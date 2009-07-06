@@ -444,8 +444,8 @@ void ScriptEdit::print(QPrinter *printer)
 
 QString ScriptEdit::importASCII(const QString &filename)
 {
-	QString filter = tr("Text") + " (*.txt *.TXT);;";
-	filter += scriptEnv->fileFilter();
+	QString filter = scriptEnv->fileFilter();
+	filter += tr("Text") + " (*.txt *.TXT);;";
 	filter += tr("All Files")+" (*)";
 
 	QString f;
@@ -708,11 +708,11 @@ void ScriptEdit::highlightErrorLine(int offset)
 
 void ScriptEdit::redirectOutputTo(QTextEdit *te)
 {
-	if (!te)
-		return;
-
 	d_output_widget = te;
-	printCursor = d_output_widget->textCursor();
+	if (d_output_widget)
+		printCursor = QTextCursor(d_output_widget->textCursor());
+	else
+		printCursor = textCursor();
 }
 
 ScriptEdit::~ScriptEdit()

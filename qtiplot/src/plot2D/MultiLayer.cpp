@@ -143,7 +143,8 @@ d_waterfall_fill_color(QColor())
 
     int canvas_width = graph_width + left_margin + right_margin;
     int canvas_height = graph_height + top_margin + bottom_margin;
-    setGeometry(QRect(0, 0, canvas_width, canvas_height + LayerButton::btnSize()));
+    //setGeometry(QRect(0, 0, canvas_width, canvas_height + LayerButton::btnSize()));
+	resize(canvas_width, canvas_height + LayerButton::btnSize());
 
     d_canvas->resize(canvas_width, canvas_height);
 	d_canvas->installEventFilter(this);

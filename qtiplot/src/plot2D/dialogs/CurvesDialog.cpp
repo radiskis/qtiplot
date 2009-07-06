@@ -82,7 +82,6 @@ CurvesDialog::CurvesDialog( QWidget* parent, Qt::WFlags fl )
 	boxMatrixStyle->addItem( QPixmap(contour_map_xpm), tr("Contour Lines"));
 	boxMatrixStyle->addItem( QPixmap(gray_map_xpm), tr("Gray Scale Map"));
 	boxMatrixStyle->addItem( QPixmap(histogram_xpm), tr("Histogram"));
-	boxMatrixStyle->hide();
     hl->addWidget(boxMatrixStyle);
     hl->addStretch();
 

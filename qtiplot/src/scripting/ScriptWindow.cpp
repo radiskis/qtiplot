@@ -42,6 +42,7 @@
 #include <QTextStream>
 #include <QLayout>
 #include <QDockWidget>
+#include <QPrintPreviewDialog>
 
 ScriptWindow::ScriptWindow(ScriptingEnv *env, ApplicationWindow *app)
 : QMainWindow(),
@@ -69,14 +70,13 @@ d_app(app)
 
 	consoleWindow = new QDockWidget(this);
 	consoleWindow->setAllowedAreas(Qt::BottomDockWidgetArea);
-	consoleWindow->setObjectName("scriptLogWindow"); // this is needed for QMainWindow::restoreState()
-	consoleWindow->setWindowTitle(tr("Script Output"));
+	consoleWindow->setWindowTitle(tr("Script Output Panel"));
 	addDockWidget( Qt::BottomDockWidgetArea, consoleWindow );
 	console = new QTextEdit(consoleWindow);
 	console->setReadOnly(true);
 	consoleWindow->setWidget(console);
 	connect(te, SIGNAL(error(const QString&, const QString&, int)), console, SLOT(setPlainText(const QString&)));
-	te->redirectOutputTo(console);
+	connect(te, SIGNAL(error(const QString&, const QString&, int)), consoleWindow, SLOT(show()));
 
 	initActions();
 	setIcon(QPixmap(logo_xpm));
@@ -113,6 +113,8 @@ void ScriptWindow::initActions()
 	connect(actionOpen, SIGNAL(activated()), this, SLOT(open()));
 	file->addAction(actionOpen);
 
+	file->addSeparator();
+
 	actionSave = new QAction(QPixmap(filesave_xpm), tr("&Save"), this);
 	actionSave->setShortcut( tr("Ctrl+S") );
 	connect(actionSave, SIGNAL(activated()), this, SLOT(save()));
@@ -121,6 +123,12 @@ void ScriptWindow::initActions()
 	actionSaveAs = new QAction(tr("Save &As..."), this);
 	connect(actionSaveAs, SIGNAL(activated()), this, SLOT(saveAs()));
 	file->addAction(actionSaveAs);
+
+	file->addSeparator();
+
+	actionPrintPreview = new QAction(tr("Print Pre&view..."), this);
+	connect(actionPrintPreview, SIGNAL(activated()), this, SLOT(printPreview()));
+	file->addAction(actionPrintPreview);
 
 	actionPrint = new QAction(QPixmap(fileprint_xpm), tr("&Print"), this);
 	actionPrint->setShortcut( tr("Ctrl+P") );
@@ -165,11 +173,6 @@ void ScriptWindow::initActions()
 	connect(actionShowLineNumbers, SIGNAL(toggled(bool)), d_line_number, SLOT(setVisible(bool)));
 	edit->addAction(actionShowLineNumbers);
 
-	actionShowConsole = consoleWindow->toggleViewAction();
-	actionShowConsole->setMenuText(tr("Show Script &Output"));
-	actionShowConsole->setToolTip(tr("Show Script Output"));
-	edit->addAction(actionShowConsole);
-
 	actionExecute = new QAction(tr("E&xecute"), this);
 	actionExecute->setShortcut( tr("CTRL+J") );
 	connect(actionExecute, SIGNAL(activated()), te, SLOT(execute()));
@@ -185,6 +188,18 @@ void ScriptWindow::initActions()
 	connect(actionEval, SIGNAL(activated()), te, SLOT(evaluate()));
 	run->addAction(actionEval);
 
+	run->addSeparator();
+
+	actionShowConsole = consoleWindow->toggleViewAction();
+	actionShowConsole->setText(tr("Show Script &Output Panel"));
+	run->addAction(actionShowConsole);
+
+	actionRedirectOutput = new QAction(tr("Ouput on Next &Line"), this);
+	actionRedirectOutput->setCheckable(true);
+	actionRedirectOutput->setChecked(true);
+	connect(actionRedirectOutput, SIGNAL(toggled(bool)), this, SLOT(redirectOutput(bool)));
+	run->addAction(actionRedirectOutput);
+
 	actionAlwaysOnTop = new QAction(tr("Always on &Top"), this);
 	actionAlwaysOnTop->setCheckable(true);
 	if (d_app)
@@ -192,7 +207,7 @@ void ScriptWindow::initActions()
 	windowMenu->addAction(actionAlwaysOnTop);
 	connect(actionAlwaysOnTop, SIGNAL(toggled(bool)), this, SLOT(setAlwaysOnTop(bool)));
 
-	actionHide = new QAction(tr("&Hide"), this);
+	actionHide = new QAction(tr("&Close"), this);
 	connect(actionHide, SIGNAL(activated()), this, SLOT(close()));
 	windowMenu->addAction(actionHide);
 
@@ -205,6 +220,7 @@ void ScriptWindow::initActions()
 void ScriptWindow::languageChange()
 {
 	setWindowTitle(tr("QtiPlot - Script Window"));
+	consoleWindow->setWindowTitle(tr("Script Output Panel"));
 
 	menuBar()->clear();
 	menuBar()->addMenu(file);
@@ -215,7 +231,7 @@ void ScriptWindow::languageChange()
 	edit->setTitle(tr("&Edit"));
 	run->setTitle(tr("E&xecute"));
 
-	menuBar()->addAction(tr("&Hide"), this, SLOT(close()));
+	menuBar()->addAction(tr("&Close"), this, SLOT(close()));
 
 	actionNew->setText(tr("&New"));
 	actionNew->setShortcut(tr("Ctrl+N"));
@@ -230,6 +246,8 @@ void ScriptWindow::languageChange()
 
 	actionPrint->setText(tr("&Print"));
 	actionPrint->setShortcut(tr("Ctrl+P"));
+
+	actionPrintPreview->setText(tr("Print Pre&view..."));
 
 	actionUndo->setText(tr("&Undo"));
 	actionUndo->setShortcut(tr("Ctrl+Z"));
@@ -254,6 +272,11 @@ void ScriptWindow::languageChange()
 
 	actionEval->setText(tr("&Evaluate Expression"));
 	actionEval->setShortcut(tr("CTRL+Return"));
+
+	actionShowConsole->setText(tr("Show Script &Output Panel"));
+	actionShowConsole->setToolTip(tr("Show Script Output Panel"));
+
+	actionRedirectOutput->setText(tr("Ouput on Next &Line"));
 }
 
 
@@ -331,4 +354,20 @@ void ScriptWindow::showLineNumbers(bool show)
 	d_line_number->setVisible(show);
 	if (show)
 		d_line_number->updateLineNumbers();
+}
+
+void ScriptWindow::redirectOutput(bool inside)
+{
+	if (inside)
+		te->redirectOutputTo(0);
+	else
+		te->redirectOutputTo(console);
+}
+
+void ScriptWindow::printPreview()
+{
+	QPrintPreviewDialog *preview = new QPrintPreviewDialog(this);
+	preview->setWindowTitle(tr("QtiPlot") + " - " + tr("Script print preview"));
+	connect(preview, SIGNAL(paintRequested(QPrinter *)), te, SLOT(print(QPrinter *)));
+	preview->exec();
 }

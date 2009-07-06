@@ -64,6 +64,8 @@ public slots:
 
 private slots:
 		void setAlwaysOnTop(bool on);
+		void redirectOutput(bool);
+		void printPreview();
 
 signals:
 		void visibilityChanged(bool visible);
@@ -86,7 +88,7 @@ private:
 		QAction *actionExecute, *actionExecuteAll, *actionEval, *actionPrint, *actionOpen;
 		QAction *actionSave, *actionSaveAs;
 		QAction *actionAlwaysOnTop, *actionHide, *actionShowLineNumbers;
-		QAction *actionShowConsole;
+		QAction *actionShowConsole, *actionRedirectOutput, *actionPrintPreview;
 
 		QDockWidget *consoleWindow;
 		QTextEdit *console;

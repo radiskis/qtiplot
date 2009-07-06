@@ -158,7 +158,7 @@ void Graph3D::initPlot()
 	connect(d_timer, SIGNAL(timeout()), this, SLOT(rotate()));
 	ignoreFonts = false;
 
-	setGeometry(0, 0, 500, 400);
+	resize(500, 400);
 
 	ApplicationWindow *app = applicationWindow();
 
