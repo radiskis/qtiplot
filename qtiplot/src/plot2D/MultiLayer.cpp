@@ -951,12 +951,12 @@ void MultiLayer::printAllLayers(QPainter *painter)
 			cr.moveTo(QPoint(margin + int(cr.x()*scaleFactorX),
 							 margin + int(cr.y()*scaleFactorY)));
 			cr.setWidth(int(cr.width()*scaleFactorX));
-			cr.setHeight(int(cr.height()*scaleFactorX));
+			cr.setHeight(int(cr.height()*scaleFactorY));
         }
 
 		foreach (Graph *g, graphsList){
 			QPoint pos = g->pos();
-			pos=QPoint(margin + int(pos.x()*scaleFactorX), margin + int(pos.y()*scaleFactorY));
+			pos = QPoint(margin + int(pos.x()*scaleFactorX), margin + int(pos.y()*scaleFactorY));
 
 			int width = int(g->frameGeometry().width()*scaleFactorX);
 			int height = int(g->frameGeometry().height()*scaleFactorY);

@@ -1574,7 +1574,7 @@ void Graph::print()
 			int margin = (int) ((2/2.54)*dpiy ); // 2 cm margins
 
 			int width = qRound(aspect*printer.height()) - 2*margin;
-			int x=qRound(abs(printer.width()- width)*0.5);
+			int x = qRound(abs(printer.width()- width)*0.5);
 
 			plotRect = QRect(x, margin, width, printer.height() - 2*margin);
 			if (x < margin){

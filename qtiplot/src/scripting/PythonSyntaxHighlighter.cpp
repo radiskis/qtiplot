@@ -73,6 +73,7 @@ PythonSyntaxHighlighter::PythonSyntaxHighlighter(ScriptEdit *parent)
 
 	quotationFormat.setForeground(app->d_quotation_highlight_color);
     rule.pattern = QRegExp("\".*\"");
+    rule.pattern.setMinimal(true);
     rule.format = quotationFormat;
     highlightingRules.append(rule);
 
@@ -84,33 +85,57 @@ PythonSyntaxHighlighter::PythonSyntaxHighlighter(ScriptEdit *parent)
 
 void PythonSyntaxHighlighter::highlightBlock(const QString &text)
 {
+	QString s = text;
+	QRegExp comment = QRegExp("\"{3}");
+	s.replace(comment, "   ");
+
     foreach (HighlightingRule rule, highlightingRules) {
         QRegExp expression(rule.pattern);
-        if (expression.pattern() == QString("\".*\""))
-			expression.setMinimal(true);
-        int index = text.indexOf(expression);
+        int index = s.indexOf(expression);
         while (index >= 0) {
             int length = expression.matchedLength();
             setFormat(index, length, rule.format);
-            index = text.indexOf(expression, index + length);
+            index = s.indexOf(expression, index + length);
         }
     }
-    setCurrentBlockState(0);
 
-	QRegExp comment = QRegExp("\"{3}");
-	int startIndex = 0;
-	if (previousBlockState() != 1)
-		startIndex = text.indexOf(comment);
+	int startIndex = text.indexOf(comment);
+	int prevState = previousBlockState ();
+	int comments = text.count(comment);
 
-	while (startIndex >= 0) {
-		int endIndex = text.indexOf(comment, startIndex + 3);
-		int commentLength;
-		if (endIndex == -1) {
-			setCurrentBlockState(1);
-			commentLength = text.length() - startIndex;
+	if (comments > 1){
+			int aux = 1;
+			if (prevState == 1)
+				setFormat(0, startIndex + 3, commentFormat);
+
+			while (aux < comments) {
+				int endIndex = text.indexOf(comment, startIndex + 3);
+				aux++;
+				if ((!prevState && (aux %2 == 0)) || (prevState == 1 && (aux %2 != 0)))
+					setFormat(startIndex, endIndex - startIndex + 3, commentFormat);
+
+				startIndex = endIndex;
+			}
+
+		int state = 0;
+		if ((!prevState && (comments % 2 != 0)) || (prevState && (comments % 2 == 0))){
+			state = 1;
+			setFormat(startIndex, text.length() - startIndex, commentFormat);
+		}
+		setCurrentBlockState(state);
+	} else if (comments == 1){
+		if (prevState == 1){
+			setCurrentBlockState(0);// end of comment block
+			setFormat(0, startIndex + 3, commentFormat);
+		} else {
+			setCurrentBlockState(1);// start of comment block
+			setFormat(startIndex, text.length() - startIndex, commentFormat);
+		}
+	} else {
+		if (prevState == 1){
+			setCurrentBlockState(1);// inside comment block
+			setFormat(0, text.length(), commentFormat);
 		} else
-			commentLength = endIndex - startIndex + comment.matchedLength();
-		setFormat(startIndex, commentLength, commentFormat);
-		startIndex = text.indexOf(comment, startIndex + commentLength + 3);
+			setCurrentBlockState(0);// outside comment block
 	}
 }
