@@ -13816,17 +13816,18 @@ void ApplicationWindow::parseCommandLineArguments(const QStringList& args)
 	bool exec = false;
 	bool noGui = false;
 	bool default_settings = false;
+	bool console = false;
 	foreach(str, args){
 		if( (str == "-a" || str == "--about") ||
 				(str == "-m" || str == "--manual") ){
 			QMessageBox::critical(this, tr("QtiPlot - Error"),
 			tr("<b> %1 </b>: This command line option must be used without other arguments!").arg(str));
 		} else if (str == "-c" || str == "--console") {
-			setScriptingLanguage("Python");
+			d_mdi_windows_area = false;
 			showScriptWindow(false);
-			enableMdiArea(false);
+			setScriptingLanguage("Python");
 			hide();
-			return;
+			console = true;
 		}
 		else if( (str == "-d" || str == "--default-settings"))
 			default_settings = true;
@@ -13885,6 +13886,9 @@ void ApplicationWindow::parseCommandLineArguments(const QStringList& args)
 
 	QString file_name = args[num_args-1]; // last argument
 	if(file_name.startsWith("-")){// no file name given
+		if (console)
+			return;
+
 		initWindow();
 		savedProject();
 		return;
@@ -13911,7 +13915,11 @@ void ApplicationWindow::parseCommandLineArguments(const QStringList& args)
 		workingDir = fi.dirPath(true);
 		saveSettings();//the recent projects must be saved
 
-		if (exec || noGui)
+		if (console){
+			scriptWindow->open(file_name);
+			if (exec)
+				scriptWindow->executeAll();
+		} else if (exec || noGui)
 			loadScript(file_name, exec, noGui, default_settings);
 		else {
 			ApplicationWindow *app = open(file_name, default_settings);
@@ -15414,11 +15422,8 @@ void ApplicationWindow::showScriptWindow(bool parent)
 		connect(scriptWindow, SIGNAL(visibilityChanged(bool)), actionShowScriptWindow, SLOT(setOn(bool)));
 	}
 
-	if (!parent){
-		scriptWindow->setParent(0);
+	if (!parent)
 		scriptWindow->setAttribute(Qt::WA_DeleteOnClose);
-		connect(scriptWindow, SIGNAL(destroyed()), qApp, SLOT(closeAllWindows()));
-	}
 
 	if (!scriptWindow->isVisible()){
 		Qt::WindowFlags flags = 0;
@@ -16617,4 +16622,23 @@ QColor ApplicationWindow::readColorFromProject(const QString& name)
 	return c;
 }
 
+void ApplicationWindow::enableMdiArea(bool on)
+{
+	if (d_mdi_windows_area == on)
+		return;
+
+	d_mdi_windows_area = on;
+
+	if (on){
+		QList<MdiSubWindow *> windows = windowsList();
+		foreach(MdiSubWindow *w, windows)
+			d_workspace->addSubWindow(w);
+	} else {
+		QList<QMdiSubWindow *> windows = d_workspace->subWindowList();
+		foreach(QMdiSubWindow *w, windows){
+			d_workspace->removeSubWindow(w);
+			w->show();
+		}
+	}
+}
 

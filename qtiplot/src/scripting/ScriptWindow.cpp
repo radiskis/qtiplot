@@ -32,6 +32,7 @@
 #include "LineNumberDisplay.h"
 #include <pixmaps.h>
 
+#include <QApplication>
 #include <QMenuBar>
 #include <QMenu>
 #include <QAction>
@@ -120,7 +121,7 @@ void ScriptWindow::initActions()
 	connect(actionSave, SIGNAL(activated()), this, SLOT(save()));
 	file->addAction(actionSave);
 
-	actionSaveAs = new QAction(tr("Save &As..."), this);
+	actionSaveAs = new QAction(QIcon(QPixmap(filesaveas_xpm)), tr("Save &As..."), this);
 	connect(actionSaveAs, SIGNAL(activated()), this, SLOT(saveAs()));
 	file->addAction(actionSaveAs);
 
@@ -207,6 +208,12 @@ void ScriptWindow::initActions()
 	windowMenu->addAction(actionAlwaysOnTop);
 	connect(actionAlwaysOnTop, SIGNAL(toggled(bool)), this, SLOT(setAlwaysOnTop(bool)));
 
+	actionShowWorkspace = new QAction(tr("Show &Workspace"), this);
+	actionShowWorkspace->setCheckable(true);
+	actionShowWorkspace->setOn(d_app->isMdiAreaEnabled());
+	connect(actionShowWorkspace, SIGNAL(toggled(bool)), this, SLOT(showWorkspace(bool)));
+	windowMenu->addAction(actionShowWorkspace);
+
 	actionHide = new QAction(tr("&Close"), this);
 	connect(actionHide, SIGNAL(activated()), this, SLOT(close()));
 	windowMenu->addAction(actionHide);
@@ -277,6 +284,7 @@ void ScriptWindow::languageChange()
 	actionShowConsole->setToolTip(tr("Show Script Output Panel"));
 
 	actionRedirectOutput->setText(tr("Ouput on Next &Line"));
+	actionShowWorkspace->setText(tr("Show &Workspace"));
 }
 
 
@@ -370,4 +378,14 @@ void ScriptWindow::printPreview()
 	preview->setWindowTitle(tr("QtiPlot") + " - " + tr("Script print preview"));
 	connect(preview, SIGNAL(paintRequested(QPrinter *)), te, SLOT(print(QPrinter *)));
 	preview->exec();
+}
+
+void ScriptWindow::showWorkspace(bool on)
+{
+	if (!d_app)
+		return;
+
+	d_app->enableMdiArea(on);
+	d_app->setVisible(on);
+	setAttribute (Qt::WA_DeleteOnClose, !on);
 }

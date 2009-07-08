@@ -31,6 +31,7 @@
 #include <Table.h>
 #include "Graph.h"
 #include "PlotCurve.h"
+#include <MultiLayer.h>
 #include <cursors.h>
 #include <SymbolBox.h>
 #include <qwt_symbol.h>
@@ -65,6 +66,9 @@ void ScreenPickerTool::append(const QPoint &point)
 
 void ScreenPickerTool::append(const QwtDoublePoint &pos)
 {
+	double x0 = d_selection_marker.xValue();//old position
+	double y0 = d_selection_marker.yValue();
+
 	switch(d_move_restriction){
 		case NoRestriction:
 			d_selection_marker.setValue(pos);
@@ -79,12 +83,28 @@ void ScreenPickerTool::append(const QwtDoublePoint &pos)
 		break;
 	}
 
-	QString info;
-	info.sprintf("x=%g; y=%g", d_selection_marker.xValue(), d_selection_marker.yValue());
-	emit statusText(info);
-
-	if (d_selection_marker.plot() == NULL)
+	double x = d_selection_marker.xValue();
+	double y = d_selection_marker.yValue();
+	double dx = fabs(x - x0);
+	double dy = fabs(y - y0);
+	if (d_selection_marker.plot() == NULL){
 		d_selection_marker.attach(d_graph);
+		dx = 0;
+		dy = 0;
+	}
+
+	QLocale locale = d_graph->multiLayer()->locale();
+	if (d_move_restriction)
+		emit statusText(QString("x=%1; y=%2")
+			.arg(locale.toString(x, 'G', 14))
+			.arg(locale.toString(y, 'G', 14)));
+	else
+		emit statusText(QString("x=%1; y=%2; dx=%3; dy=%4")
+				.arg(locale.toString(x, 'G', 14))
+				.arg(locale.toString(y, 'G', 14))
+				.arg(locale.toString(dx, 'G', 14))
+				.arg(locale.toString(dy, 'G', 14)));
+
 	d_graph->replot();
 }
 
@@ -94,6 +114,7 @@ bool ScreenPickerTool::eventFilter(QObject *obj, QEvent *event)
 		case QEvent::MouseButtonDblClick:
 			emit selected(d_selection_marker.value());
 			return true;
+
 		case QEvent::KeyPress:
 			{
 				QKeyEvent *ke = (QKeyEvent*) event;
@@ -102,13 +123,6 @@ bool ScreenPickerTool::eventFilter(QObject *obj, QEvent *event)
 					case Qt::Key_Return:
 					{
                         QwtDoublePoint pos = invTransform(canvas()->mapFromGlobal(QCursor::pos()));
-                        /*d_selection_marker.setValue(pos);
-                        if (d_selection_marker.plot() == NULL)
-                            d_selection_marker.attach(d_graph);
-                        d_graph->replot();
-						QString info;
-                        emit statusText(info.sprintf("x=%g; y=%g", pos.x(), pos.y()));*/
-
 						append(pos);
 						emit selected(pos);
 						return true;
