@@ -188,7 +188,9 @@ public:
 		QString * selectedFilter = 0, bool save = true);
 
 	QColor readColorFromProject(const QString& name);
-	void enableMdiArea(bool on = true){d_mdi_windows_area = on;};
+
+	void enableMdiArea(bool on = true);
+	bool isMdiAreaEnabled(){return d_mdi_windows_area;};
 
 public slots:
 	//! \name Projects and Project Files

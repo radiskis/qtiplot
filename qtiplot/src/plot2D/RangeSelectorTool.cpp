@@ -159,12 +159,16 @@ void RangeSelectorTool::emitStatusText()
     QLocale locale = d_graph->multiLayer()->locale();
 	if (((PlotCurve *)d_selected_curve)->type() == Graph::Function ||
 		((PlotCurve *)d_selected_curve)->type() == Graph::Histogram){
-         emit statusText(QString("%1 <=> %2[%3]: x=%4; y=%5")
+		 double x = d_selected_curve->x(d_active_point);
+		 double y = d_selected_curve->y(d_active_point);
+         emit statusText(QString("%1 <=> %2[%3]: x=%4; y=%5; dx=%6; dy=%7")
 			.arg(d_active_marker.xValue() > d_inactive_marker.xValue() ? tr("Right") : tr("Left"))
 			.arg(d_selected_curve->title().text())
 			.arg(d_active_point + 1)
-			.arg(locale.toString(d_selected_curve->x(d_active_point), 'G', 16))
-			.arg(locale.toString(d_selected_curve->y(d_active_point), 'G', 16)));
+			.arg(locale.toString(x, 'G', 16))
+			.arg(locale.toString(y, 'G', 16))
+			.arg(locale.toString(fabs(x - d_selected_curve->x(d_inactive_point)), 'G', 16))
+			.arg(locale.toString(fabs(y - d_selected_curve->y(d_inactive_point)), 'G', 16)));
     } else if (((PlotCurve *)d_selected_curve)->type() == Graph::ErrorBars){
          emit statusText(QString("%1 <=> %2[%3]: x=%4; y=%5; err=%6")
 			.arg(d_active_marker.xValue() > d_inactive_marker.xValue() ? tr("Right") : tr("Left"))
@@ -179,13 +183,16 @@ void RangeSelectorTool::emitStatusText()
             return;
 
         int row = ((DataCurve*)d_selected_curve)->tableRow(d_active_point);
-
-        emit statusText(QString("%1 <=> %2[%3]: x=%4; y=%5")
+		double x = d_selected_curve->x(d_active_point);
+		double y = d_selected_curve->y(d_active_point);
+        emit statusText(QString("%1 <=> %2[%3]: x=%4; y=%5; dx=%6; dy=%7")
 			.arg(d_active_marker.xValue() > d_inactive_marker.xValue() ? tr("Right") : tr("Left"))
 			.arg(d_selected_curve->title().text())
 			.arg(row + 1)
-			.arg(locale.toString(d_selected_curve->x(d_active_point), 'G', 16))
-			.arg(locale.toString(d_selected_curve->y(d_active_point), 'G', 16)));
+			.arg(locale.toString(x, 'G', 16))
+			.arg(locale.toString(y, 'G', 16))
+			.arg(locale.toString(fabs(x - d_selected_curve->x(d_inactive_point)), 'G', 16))
+			.arg(locale.toString(fabs(y - d_selected_curve->y(d_inactive_point)), 'G', 16)));
     }
 }
 
