@@ -2,7 +2,7 @@
  * Qwt Widget Library
  * Copyright (C) 1997   Josef Wilgen
  * Copyright (C) 2002   Uwe Rathmann
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the Qwt License, Version 1.0
  *****************************************************************************/
@@ -78,7 +78,7 @@ const QwtSpline &QwtSplineCurveFitter::spline() const
     return d_data->spline;
 }
 
-QwtSpline &QwtSplineCurveFitter::spline() 
+QwtSpline &QwtSplineCurveFitter::spline()
 {
     return d_data->spline;
 }
@@ -162,8 +162,8 @@ QPolygonF QwtSplineCurveFitter::fitSpline(
         const double v = x1 + i * delta;
         const double sv = d_data->spline.value(v);
 
-        p.setX(qRound(v));
-        p.setY(qRound(sv));
+        p.setX(v);
+        p.setY(sv);
     }
     d_data->spline.reset();
 

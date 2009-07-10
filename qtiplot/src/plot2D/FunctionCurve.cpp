@@ -80,7 +80,7 @@ QString FunctionCurve::saveToString()
 
 	ScaleEngine *sc_engine = (ScaleEngine *)plot()->axisScaleEngine(xAxis());
 	if (d_from > 0 && d_to > 0 && sc_engine &&
-		sc_engine->type() == QwtScaleTransformation::Log10)
+		sc_engine->type() == ScaleTransformation::Log10)
 		s += "<Log10>1</Log10>\n";
 
 	QMapIterator<QString, double> i(d_constants);
@@ -221,7 +221,7 @@ void FunctionCurve::loadData(int points, bool xLog10Scale)
 				sc_engine = (ScaleEngine *)plot()->axisScaleEngine(xAxis());
 
 			if (xLog10Scale || (d_from > 0 && d_to > 0 && sc_engine &&
-				sc_engine->type() == QwtScaleTransformation::Log10)){
+				sc_engine->type() == ScaleTransformation::Log10)){
 				step = log10(d_to/d_from)/(double)(points - 1);
 				for (int i = 1; i < points; i++ ){
 					x = d_from*pow(10, i*step);
