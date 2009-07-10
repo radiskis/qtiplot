@@ -18,6 +18,8 @@
 			   src/plot2D/ImageWidget.h \
 			   src/plot2D/LegendWidget.h \
 			   src/plot2D/LineProfileTool.h \
+			   src/plot2D/LnScaleEngine.h \
+			   src/plot2D/Log2ScaleEngine.h \
 			   src/plot2D/MultiLayer.h \
 			   src/plot2D/MultiPeakFitTool.h \
 			   src/plot2D/PlotCurve.h \
@@ -27,6 +29,7 @@
 			   src/plot2D/QwtHistogram.h \
                src/plot2D/QwtPieCurve.h \
 			   src/plot2D/RangeSelectorTool.h \
+			   src/plot2D/ReciprocalScaleEngine.h \
 			   src/plot2D/RectangleWidget.h \
 			   src/plot2D/ScaleDraw.h \
 			   src/plot2D/ScaleEngine.h \
@@ -53,6 +56,8 @@
 			   src/plot2D/ImageWidget.cpp \
 			   src/plot2D/LegendWidget.cpp \
 			   src/plot2D/LineProfileTool.cpp \
+			   src/plot2D/LnScaleEngine.cpp \
+			   src/plot2D/Log2ScaleEngine.cpp \
 			   src/plot2D/MultiLayer.cpp \
 			   src/plot2D/MultiPeakFitTool.cpp \
 			   src/plot2D/PlotCurve.cpp \
@@ -61,6 +66,7 @@
 			   src/plot2D/QwtHistogram.cpp \
                src/plot2D/QwtPieCurve.cpp \
 			   src/plot2D/RangeSelectorTool.cpp \
+			   src/plot2D/ReciprocalScaleEngine.cpp \
 			   src/plot2D/RectangleWidget.cpp \
 			   src/plot2D/ScaleDraw.cpp \
 			   src/plot2D/ScaleEngine.cpp \

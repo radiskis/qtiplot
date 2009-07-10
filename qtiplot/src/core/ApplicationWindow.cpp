@@ -11387,7 +11387,7 @@ void ApplicationWindow::analyzeCurve(Graph *g, Analysis operation, const QString
 			QwtPlotCurve* c = g->curve(curveTitle);
             if (c){
             	ScaleEngine *se = (ScaleEngine *)g->axisScaleEngine(c->xAxis());
-            	if(se->type() == QwtScaleTransformation::Log10)
+            	if(se->type() == ScaleTransformation::Log10)
 					fitter = new LogisticFit (this, g);
 				else
 					fitter = new SigmoidalFit (this, g);

@@ -137,7 +137,7 @@ TRANSLATIONS    = translations/qtiplot_cn.ts \
                   translations/qtiplot_sv.ts
 
 system(lupdate -verbose qtiplot.pro)
-system(lrelease -verbose qtiplot.pro)
+#system(lrelease -verbose qtiplot.pro)
 
 translations.files += translations/qtiplot_de.qm \
                   translations/qtiplot_es.qm \

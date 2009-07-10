@@ -721,18 +721,18 @@ void Graph::showAxis(int axis, int type, const QString& formatInfo, Table *table
 	ScaleDraw *sd = (ScaleDraw *)axisScaleDraw (axis);
 
 	if (axisEnabled (axis) == axisOn &&
-			majTicksTypeList[axis] == majTicksType &&
-			minTicksTypeList[axis] == minTicksType &&
-			axisColor(axis) == c &&
-            axisLabelsColor(axis) == labelsColor &&
-			prec == axisLabelPrecision (axis) &&
-			format == axisLabelFormat (axis) &&
-			labelsRotation(axis) == rotation &&
-			(int)sd->scaleType() == type &&
-			sd->formatString() == formatInfo &&
-			sd->formula() == formula &&
-			scale->margin() == baselineDist &&
-			sd->hasComponent (QwtAbstractScaleDraw::Labels) == labelsOn)
+		majTicksTypeList[axis] == majTicksType &&
+		minTicksTypeList[axis] == minTicksType &&
+		axisColor(axis) == c &&
+		axisLabelsColor(axis) == labelsColor &&
+		prec == axisLabelPrecision (axis) &&
+		format == axisLabelFormat (axis) &&
+		labelsRotation(axis) == rotation &&
+		(int)sd->scaleType() == type &&
+		sd->formatString() == formatInfo &&
+		sd->formula() == formula &&
+		scale->margin() == baselineDist &&
+		sd->hasComponent (QwtAbstractScaleDraw::Labels) == labelsOn)
 		return;
 
 	scale->setMargin(baselineDist);
@@ -1264,8 +1264,9 @@ void Graph::setScale(int axis, double start, double end, double step,
 	sc_engine->setLog10ScaleAfterBreak(log10AfterBreak);
 	sc_engine->setAttribute(QwtScaleEngine::Inverted, inverted);
 
+	sc_engine->setType((ScaleTransformation::Type)type);
 	if (type == 1){
-		sc_engine->setType(QwtScaleTransformation::Log10);
+		sc_engine->setType(ScaleTransformation::Log10);
 		if (start <= 0 || end <= 0){
             QwtDoubleInterval intv = axisBoundingInterval(axis);
             if (start < end)
@@ -1273,8 +1274,7 @@ void Graph::setScale(int axis, double start, double end, double step,
             else
                 end = intv.minValue();
 		}
-	} else
-		sc_engine->setType(QwtScaleTransformation::Linear);
+	}
 
 	int max_min_intervals = minorTicks;
 	if (minorTicks == 1)

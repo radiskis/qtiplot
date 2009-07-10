@@ -113,7 +113,7 @@ void QwtErrorPlotCurve::drawErrorBars(QPainter *painter,
 		d_yOffset = ((QwtBarCurve *)d_master_curve)->dataOffset();
 
 	ScaleEngine *yScaleEngine = (ScaleEngine *)plot()->axisScaleEngine(yAxis());
-	bool logYScale = (yScaleEngine->type() == QwtScaleTransformation::Log10) ? true : false;
+	bool logYScale = (yScaleEngine->type() == ScaleTransformation::Log10) ? true : false;
 
 	for (int i = from; i <= to; i++){
 		const int xi = xMap.transform(x(i) + d_xOffset);

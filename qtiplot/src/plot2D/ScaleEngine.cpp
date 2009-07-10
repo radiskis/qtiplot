@@ -27,6 +27,9 @@
  *                                                                         *
  ***************************************************************************/
 #include "ScaleEngine.h"
+#include "LnScaleEngine.h"
+#include "ReciprocalScaleEngine.h"
+#include "Log2ScaleEngine.h"
 #include <limits.h>
 
 QwtScaleTransformation* ScaleEngine::transformation() const
@@ -37,7 +40,7 @@ QwtScaleTransformation* ScaleEngine::transformation() const
 double ScaleTransformation::invXForm(double p, double p1, double p2, double s1, double s2) const
 {
     if (!d_engine->hasBreak()){
-        QwtScaleTransformation *tr = new QwtScaleTransformation (d_engine->type());
+    	QwtScaleTransformation *tr = newScaleTransformation();
         double res = tr->invXForm(p, p1, p2, s1, s2);
         delete tr;
         return res;
@@ -60,7 +63,7 @@ double ScaleTransformation::invXForm(double p, double p1, double p2, double s1, 
 		return pm;
 
 	bool invertedScale = d_engine->testAttribute(QwtScaleEngine::Inverted);
-	QwtScaleTransformation::Type d_type = d_engine->type();
+	ScaleTransformation::Type d_type = d_engine->type();
 
 	if (invertedScale){
 		if ((p2 > p1 && p <= pml) || (p2 < p1 && p >= pml)){
@@ -71,18 +74,18 @@ double ScaleTransformation::invXForm(double p, double p1, double p2, double s1, 
 		}
 
 		if ((p2 > p1 && p >= pmr) || (p2 < p1 && p <= pmr)){
-			if (d_type == QwtScaleTransformation::Log10)
+			if (d_type == ScaleTransformation::Log10 || d_type == ScaleTransformation::Ln)
 				return lb * exp((p - pmr)/(p2 - pmr)*log(s2/lb));
-			else if (d_type == QwtScaleTransformation::Linear)
+			else if (d_type == ScaleTransformation::Linear)
 				return lb + (p - pmr)/(p2 - pmr)*(s2 - lb);
 		}
 
 	}
 
     if ((p2 > p1 && p <= pml) || (p2 < p1 && p >= pml)){
-        if (d_type == QwtScaleTransformation::Linear)
+        if (d_type == ScaleTransformation::Linear)
             return s1 + (lb - s1)*(p - p1)/(pml - p1);
-        else if (d_type == QwtScaleTransformation::Log10)
+        else if (d_type == ScaleTransformation::Log10 || d_type == ScaleTransformation::Ln)
             return s1 * exp((p - p1)/(pml - p1)*log(lb/s1));
     }
 
@@ -98,7 +101,7 @@ double ScaleTransformation::invXForm(double p, double p1, double p2, double s1, 
 
 double ScaleTransformation::xForm(double s, double s1, double s2, double p1, double p2) const
 {
-	if (d_engine->type() == QwtScaleTransformation::Log10 && s <= 0.0){
+	if (d_engine->type() == ScaleTransformation::Log10 && s <= 0.0){
 		if (p1 < p2){
 			if (d_engine->testAttribute(QwtScaleEngine::Inverted))
 				return INT_MAX;
@@ -112,7 +115,7 @@ double ScaleTransformation::xForm(double s, double s1, double s2, double p1, dou
 	}
 
 	if (!d_engine->hasBreak()){
-		QwtScaleTransformation *tr = new QwtScaleTransformation (d_engine->type());
+		QwtScaleTransformation *tr = newScaleTransformation();
 		double res = tr->xForm(s, s1, s2, p1, p2);
 		delete tr;
 		return res;
@@ -135,13 +138,15 @@ double ScaleTransformation::xForm(double s, double s1, double s2, double p1, dou
 		return pm;
 
 	bool invertedScale = d_engine->testAttribute(QwtScaleEngine::Inverted);
-	QwtScaleTransformation::Type d_type = d_engine->type();
+	ScaleTransformation::Type d_type = d_engine->type();
 
 	if (invertedScale){
 		if (s <= lb){
-			if (d_type == QwtScaleTransformation::Linear)
+			if (d_type == ScaleTransformation::Linear)
 				return pmr + (lb - s)/(lb - s2)*(p2 - pmr);
-			else if (d_type == QwtScaleTransformation::Log10){
+			else if (d_type == ScaleTransformation::Log10 ||
+					 d_type == ScaleTransformation::Ln ||
+					 d_type == ScaleTransformation::Log2){
 				return pmr + log(lb/s)/log(lb/s2)*(p2 - pmr);
 			}
 		}
@@ -156,9 +161,11 @@ double ScaleTransformation::xForm(double s, double s1, double s2, double p1, dou
 	}
 
     if (s <= lb){
-        if (d_type == QwtScaleTransformation::Linear)
+        if (d_type == ScaleTransformation::Linear)
             return p1 + (s - s1)/(lb - s1)*(pml - p1);
-        else if (d_type == QwtScaleTransformation::Log10)
+        else if (d_type == ScaleTransformation::Log10 ||
+				 d_type == ScaleTransformation::Ln ||
+				 d_type == ScaleTransformation::Log2)
             return p1 + log(s/s1)/log(lb/s1)*(pml - p1);
     }
 
@@ -177,13 +184,33 @@ QwtScaleTransformation *ScaleTransformation::copy() const
     return new ScaleTransformation(d_engine);
 }
 
+QwtScaleTransformation* ScaleTransformation::newScaleTransformation() const
+{
+	QwtScaleTransformation *transform = NULL;
+	switch (d_engine->type()){
+		case ScaleTransformation::Log2:
+		case ScaleTransformation::Ln:
+		case ScaleTransformation::Log10:
+			transform = new QwtScaleTransformation(QwtScaleTransformation::Log10);
+		break;
+
+		case ScaleTransformation::Reciprocal:
+			transform = new ReciprocalScaleTransformation(d_engine);
+		break;
+
+		case ScaleTransformation::Linear:
+		default:
+			transform = new QwtScaleTransformation (QwtScaleTransformation::Linear);
+	}
+	return transform;
+}
 /*****************************************************************************
  *
  * Class ScaleEngine
  *
  *****************************************************************************/
 
-ScaleEngine::ScaleEngine(QwtScaleTransformation::Type type,double left_break, double right_break): QwtScaleEngine(),
+ScaleEngine::ScaleEngine(ScaleTransformation::Type type,double left_break, double right_break): QwtScaleEngine(),
 d_type(type),
 d_break_left(left_break),
 d_break_right(right_break),
@@ -232,7 +259,7 @@ double ScaleEngine::stepAfterBreak() const
     return d_step_after;
 }
 
-QwtScaleTransformation::Type ScaleEngine::type() const
+ScaleTransformation::Type ScaleEngine::type() const
 {
     return d_type;
 }
@@ -279,10 +306,7 @@ QwtScaleDiv ScaleEngine::divideScale(double x1, double x2, int maxMajSteps,
 {
 	QwtScaleEngine *engine;
 	if (!hasBreak()){
-        if (d_type == QwtScaleTransformation::Log10)
-            engine = new QwtLog10ScaleEngine();
-        else
-            engine = new QwtLinearScaleEngine();
+        engine = newScaleEngine();
 		QwtScaleDiv div = engine->divideScale(x1, x2, maxMajSteps, maxMinSteps, stepSize);
 		delete engine;
 		return div;
@@ -301,10 +325,8 @@ QwtScaleDiv ScaleEngine::divideScale(double x1, double x2, int maxMajSteps,
             engine = new QwtLog10ScaleEngine();
         else
             engine = new QwtLinearScaleEngine();
-    } else if (d_type == QwtScaleTransformation::Log10)
-        engine = new QwtLog10ScaleEngine();
-      else
-        engine = new QwtLinearScaleEngine();
+    } else
+		engine = newScaleEngine();
 
     int max_min_intervals = d_minor_ticks_before;
 	if (d_minor_ticks_before == 1)
@@ -321,15 +343,12 @@ QwtScaleDiv ScaleEngine::divideScale(double x1, double x2, int maxMajSteps,
 		max_min_intervals = d_minor_ticks_after + 1;
 
     delete engine;
-    if (testAttribute(QwtScaleEngine::Inverted)){
-        if (d_type == QwtScaleTransformation::Log10)
-            engine = new QwtLog10ScaleEngine();
-        else
-            engine = new QwtLinearScaleEngine();
-    } else if (d_log10_scale_after)
-            engine = new QwtLog10ScaleEngine();
-      else
-            engine = new QwtLinearScaleEngine();
+    if (testAttribute(QwtScaleEngine::Inverted))
+		engine = newScaleEngine();
+    else if (d_log10_scale_after)
+		engine = new QwtLog10ScaleEngine();
+	else
+		engine = new QwtLinearScaleEngine();
 
     QwtScaleDiv div2 = engine->divideScale(rb, x2, maxMajSteps/2, max_min_intervals, step2);
 
@@ -345,24 +364,14 @@ QwtScaleDiv ScaleEngine::divideScale(double x1, double x2, int maxMajSteps,
 void ScaleEngine::autoScale (int maxNumSteps, double &x1, double &x2, double &stepSize) const
 {
 	if (!hasBreak() || testAttribute(QwtScaleEngine::Inverted)){
-		QwtScaleEngine *engine;
-		if (d_type == QwtScaleTransformation::Log10)
-			engine = new QwtLog10ScaleEngine();
-		else
-			engine = new QwtLinearScaleEngine();
-
+		QwtScaleEngine *engine = newScaleEngine();
 		engine->setAttributes(attributes());
     	engine->setReference(reference());
     	engine->setMargins(lowerMargin(), upperMargin());
 		engine->autoScale(maxNumSteps, x1, x2, stepSize);
 		delete engine;
 	} else {
-		QwtScaleEngine *engine;
-		if (d_type == QwtScaleTransformation::Log10)
-			engine = new QwtLog10ScaleEngine();
-		else
-			engine = new QwtLinearScaleEngine();
-
+		QwtScaleEngine *engine = newScaleEngine();
 		engine->setAttributes(attributes());
 		double breakLeft = d_break_left;
 		engine->autoScale(maxNumSteps, x1, breakLeft, stepSize);
@@ -374,4 +383,31 @@ void ScaleEngine::autoScale (int maxNumSteps, double &x1, double &x2, double &st
 		engine->autoScale(maxNumSteps, breakRight, x2, stepSize);
 		delete engine;
 	}
+}
+
+QwtScaleEngine *ScaleEngine::newScaleEngine() const
+{
+	QwtScaleEngine *engine = NULL;
+	switch (d_type){
+		case ScaleTransformation::Log10:
+			engine = new QwtLog10ScaleEngine();
+		break;
+
+		case ScaleTransformation::Ln:
+			engine = new LnScaleEngine();
+		break;
+
+		case ScaleTransformation::Log2:
+			engine = new Log2ScaleEngine();
+		break;
+
+		case ScaleTransformation::Reciprocal:
+			engine = new ReciprocalScaleEngine();
+		break;
+
+		case ScaleTransformation::Linear:
+		default:
+			engine = new QwtLinearScaleEngine();
+	}
+	return engine;
 }
