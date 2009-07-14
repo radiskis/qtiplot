@@ -36,6 +36,7 @@
 
 class QPoint;
 class QwtPlotMarker;
+class QwtPlotCanvas;
 class LegendWidget;
 class ArrowMarker;
 
@@ -168,6 +169,8 @@ class SelectionMoveResizer : public QWidget
 		void init();
 		//! Get the bounding rectangle of a marker in paint coordinates.
 		QRect boundingRectOf(QwtPlotMarker *target) const;
+		//! Get the bounding rectangle of a plot canvas area in paint coordinates.
+		QRect boundingRectOf(QwtPlotCanvas *canvas) const;
 
 		//! Target markers I'm handling.
 		QList <ArrowMarker *> d_line_markers;

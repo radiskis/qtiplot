@@ -105,8 +105,8 @@ QwtScaleDiv Log2ScaleEngine::divideScale(double x1, double x2,
     if (interval.width() <= 0 )
         return QwtScaleDiv();
 
-    if (interval.maxValue() / interval.minValue() < exp(1)){
-        // scale width is less than one exp -> build linear scale
+    if (interval.maxValue() / interval.minValue() < 2){
+        // scale width is less than 2 -> build linear scale
         QwtLinearScaleEngine linearScaler;
         linearScaler.setAttributes(attributes());
         linearScaler.setReference(reference());

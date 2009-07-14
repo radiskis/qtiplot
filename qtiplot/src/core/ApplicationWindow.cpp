@@ -1075,7 +1075,7 @@ void ApplicationWindow::initMainMenu()
 	graph->addAction(actionAddFunctionCurve);
 	graph->addAction(actionAddErrorBars);
 	graph->addAction(actionNewLegend);
-	graph->insertSeparator();
+	graph->addSeparator();
 	graph->addAction(actionAddFormula);
 	graph->addAction(actionAddText);
 	graph->addAction(btnArrow);
@@ -1084,16 +1084,17 @@ void ApplicationWindow::initMainMenu()
 	graph->addAction(actionAddEllipse);
 	graph->addAction(actionTimeStamp);
 	graph->addAction(actionAddImage);
-	graph->insertSeparator();//layers section
+	graph->addSeparator();//layers section
 	graph->addAction(actionAddLayer);
 	graph->addAction(actionAddInsetLayer);
 	graph->addAction(actionAddInsetCurveLayer);
-	graph->insertSeparator();
+	graph->addAction(actionShowLayerDialog);
+	graph->addAction(actionAutomaticLayout);
+	graph->addSeparator();
 	graph->addAction(actionExtractLayers);
 	graph->addAction(actionExtractGraphs);
-	graph->insertSeparator();
+	graph->addSeparator();
 	graph->addAction(actionDeleteLayer);
-	graph->addAction(actionShowLayerDialog);
 
 	plot3DMenu = new QMenu(this);
 	plot3DMenu->setObjectName("plot3DMenu");
