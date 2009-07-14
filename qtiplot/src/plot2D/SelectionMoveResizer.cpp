@@ -50,16 +50,20 @@ SelectionMoveResizer::SelectionMoveResizer(ArrowMarker *target)
 SelectionMoveResizer::SelectionMoveResizer(QWidget *target)
 	: QWidget(target->parentWidget())
 {
+	QwtPlotCanvas *canvas = qobject_cast<QwtPlotCanvas *>(target);
+	if (canvas)
+		setParent(canvas->plot()->parentWidget());
+
 	init();
 	add(target);
 }
 
 void SelectionMoveResizer::init()
 {
-	d_bounding_rect = QRect(0,0,-1,-1);
+	d_bounding_rect = QRect(0, 0, -1, -1);
 	d_op = None;
-	d_op_start = QPoint(0,0);
-	d_op_dp = QPoint(0,0);
+	d_op_start = QPoint(0, 0);
+	d_op_dp = QPoint(0, 0);
 
     setAttribute(Qt::WA_DeleteOnClose);
 	setGeometry(0, 0, parentWidget()->width(), parentWidget()->height());
@@ -91,16 +95,22 @@ void SelectionMoveResizer::add(ArrowMarker *target)
 
 void SelectionMoveResizer::add(QWidget *target)
 {
-	if (target->parentWidget() != parent())
-		return;
+	//if (target->parentWidget() != parent())
+		//return;
+
 	d_widgets << target;
 	target->installEventFilter(this);
 	connect(target, SIGNAL(destroyed(QObject*)), this, SLOT(removeWidget(QObject*)));
 
+	QRect r = target->frameGeometry();
+	QwtPlotCanvas *canvas = qobject_cast<QwtPlotCanvas *>(target);
+	if (canvas)
+		r = boundingRectOf(canvas);
+
 	if (d_bounding_rect.isValid())
-		d_bounding_rect |= target->frameGeometry();
+		d_bounding_rect |= r;
 	else
-		d_bounding_rect = target->frameGeometry();
+		d_bounding_rect = r;
 
 	update();
 }
@@ -108,6 +118,14 @@ void SelectionMoveResizer::add(QWidget *target)
 QRect SelectionMoveResizer::boundingRectOf(QwtPlotMarker *target) const
 {
 	return ((ArrowMarker *)target)->rect();
+}
+
+QRect SelectionMoveResizer::boundingRectOf(QwtPlotCanvas *canvas) const
+{
+	if (!canvas)
+		return QRect();
+
+	return canvas->frameGeometry().translated(canvas->plot()->pos());
 }
 
 int SelectionMoveResizer::removeAll(ArrowMarker *target)
@@ -134,17 +152,23 @@ void SelectionMoveResizer::recalcBoundingRect()
 {
 	d_bounding_rect = QRect(0, 0, -1, -1);
 
-	foreach(ArrowMarker *i, d_line_markers) {
+	foreach(ArrowMarker *i, d_line_markers){
 		if(d_bounding_rect.isValid())
 			d_bounding_rect |= boundingRectOf(i);
 		else
 			d_bounding_rect = boundingRectOf(i);
 	}
-	foreach(QWidget *i, d_widgets) {
+
+	foreach(QWidget *i, d_widgets){
+		QRect r = i->frameGeometry();
+		QwtPlotCanvas *canvas = qobject_cast<QwtPlotCanvas *>(i);
+		if (canvas)
+			r = boundingRectOf(canvas);
+
 		if(d_bounding_rect.isValid())
-			d_bounding_rect |= i->frameGeometry();
+			d_bounding_rect |= r;
 		else
-			d_bounding_rect = i->frameGeometry();
+			d_bounding_rect = r;
 	}
 
 	update();
@@ -223,6 +247,7 @@ QRect SelectionMoveResizer::operateOn(const QRect in)
 	boundary_out = boundary_out.normalized();
 	if (in == d_bounding_rect)
 		return boundary_out;
+
 	double scale_x = ((double)boundary_out.width())/d_bounding_rect.width();
 	double scale_y = ((double)boundary_out.height())/d_bounding_rect.height();
 	int offset_x = qRound(boundary_out.left()-d_bounding_rect.left()*scale_x);
@@ -233,7 +258,7 @@ QRect SelectionMoveResizer::operateOn(const QRect in)
 
 void SelectionMoveResizer::operateOnTargets()
 {
-	foreach(ArrowMarker *i, d_line_markers) {
+	foreach(ArrowMarker *i, d_line_markers){
 		QPoint p1 = i->startPoint();
 		QPoint p2 = i->endPoint();
 		QRect new_rect = operateOn(i->rect());
@@ -246,6 +271,12 @@ void SelectionMoveResizer::operateOnTargets()
 	}
 
 	foreach(QWidget *i, d_widgets){
+		QwtPlotCanvas *canvas = qobject_cast<QwtPlotCanvas *>(i);
+		if (canvas){
+			((Graph *)canvas->plot())->adjustGeometryToCanvas(operateOn(d_bounding_rect));
+			continue;
+		}
+
 		LegendWidget *l = qobject_cast<LegendWidget *>(i);
 		if (!l){
 			QRect r = operateOn(i->geometry());

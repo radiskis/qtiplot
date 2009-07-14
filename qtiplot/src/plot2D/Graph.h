@@ -194,6 +194,7 @@ class Graph: public QwtPlot
 
     	void print(QPainter *, const QRect &rect, const QwtPlotPrintFilter & = QwtPlotPrintFilter());
 		void updateLayout();
+		void adjustGeometryToCanvas(const QRect &canvasRect);
 
     	void updateCurveLabels();
 

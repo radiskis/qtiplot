@@ -1066,14 +1066,14 @@ bool MultiLayer::eventFilter(QObject *object, QEvent *e)
                     if (d_layers_selector)
                         d_layers_selector->add(*i);
                     else {
-                        d_layers_selector = new SelectionMoveResizer(*i);
+                        d_layers_selector = new SelectionMoveResizer((*i)->canvas());
                         connect(d_layers_selector, SIGNAL(targetsChanged()), this, SIGNAL(modifiedPlot()));
                     }
                 } else {
                     setActiveLayer(g);
                     active_graph->raise();
                     if (!d_layers_selector) {
-                        d_layers_selector = new SelectionMoveResizer(*i);
+                        d_layers_selector = new SelectionMoveResizer((*i)->canvas());
                         connect(d_layers_selector, SIGNAL(targetsChanged()), this, SIGNAL(modifiedPlot()));
                     }
                 }

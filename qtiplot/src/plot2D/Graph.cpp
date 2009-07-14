@@ -1263,17 +1263,29 @@ void Graph::setScale(int axis, double start, double end, double step,
 	sc_engine->setMinTicksAfterBreak(minTicksAfterBreak);
 	sc_engine->setLog10ScaleAfterBreak(log10AfterBreak);
 	sc_engine->setAttribute(QwtScaleEngine::Inverted, inverted);
-
 	sc_engine->setType((ScaleTransformation::Type)type);
-	if (type == 1){
-		sc_engine->setType(ScaleTransformation::Log10);
-		if (start <= 0 || end <= 0){
-            QwtDoubleInterval intv = axisBoundingInterval(axis);
-            if (start < end)
-                start = intv.minValue();
-            else
-                end = intv.minValue();
-		}
+
+	bool limitInterval = false;
+	switch(type){
+		case ScaleTransformation::Log10:
+		case ScaleTransformation::Ln:
+		case ScaleTransformation::Log2:
+			if (start <= 0 || end <= 0)
+				limitInterval = true;
+		break;
+		case ScaleTransformation::Reciprocal:
+			if (start == 0 || end == 0)
+				limitInterval = true;
+		break;
+		default:
+			break;
+	}
+	if (limitInterval){
+		QwtDoubleInterval intv = axisBoundingInterval(axis);
+		if (start < end)
+			start = intv.minValue();
+		else
+			end = intv.minValue();
 	}
 
 	int max_min_intervals = minorTicks;
@@ -5723,6 +5735,24 @@ void Graph::updateLayout()
     canvas()->setUpdatesEnabled(true);
 }
 
+/*!
+  \brief Adjust plot content to its canvas size.
+  \param cr The new geometry of the canvas.
+*/
+void Graph::adjustGeometryToCanvas(const QRect &cr)
+{
+	bool scaleFonts = autoScaleFonts;
+	autoScaleFonts = false;
+
+    QRect rect = geometry();
+    QRect ocr = plotLayout()->canvasRect().translated(pos());//old canvas geometry
+
+    rect.adjust(cr.x() - ocr.x(), cr.y() - ocr.y(),
+				cr.right() - ocr.right(), cr.bottom() - ocr.bottom());
+
+    setGeometry(rect);
+    autoScaleFonts = scaleFonts;
+}
 
 const QColor & Graph::paletteBackgroundColor() const
 {
