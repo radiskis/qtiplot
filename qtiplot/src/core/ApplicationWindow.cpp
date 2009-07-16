@@ -165,6 +165,7 @@
 #include <QUndoView>
 #include <QCompleter>
 #include <QStringListModel>
+#include <QNetworkProxy>
 
 #include <zlib.h>
 #include <iostream>
@@ -4797,8 +4798,19 @@ void ApplicationWindow::readSettings()
 	d_numeric_highlight_color = settings.value("/Numbers", d_numeric_highlight_color).value<QColor>();
 	d_function_highlight_color = settings.value("/Functions", d_function_highlight_color).value<QColor>();
 	d_class_highlight_color = settings.value("/QtClasses", d_class_highlight_color).value<QColor>();
-	settings.endGroup();
-	settings.endGroup();
+	settings.endGroup(); //end group SyntaxHighlighting
+	settings.endGroup(); // end group Notes
+
+	if (settings.contains("/Proxy")){
+		settings.beginGroup("/Proxy");
+		QNetworkProxy proxy;
+		proxy.setType(QNetworkProxy::HttpProxy);
+		proxy.setHostName(settings.value("/Host", QString()).toString());
+		proxy.setPort(settings.value("/Port", 8080).toInt());
+		proxy.setUser(settings.value("/Username", QString()).toString());
+		settings.endGroup();
+		QNetworkProxy::setApplicationProxy(proxy);
+	}
 }
 
 void ApplicationWindow::saveSettings()
@@ -5172,6 +5184,16 @@ void ApplicationWindow::saveSettings()
 	settings.setValue("/QtClasses", d_class_highlight_color.name());
 	settings.endGroup();
 	settings.endGroup();
+
+	QNetworkProxy proxy = QNetworkProxy::applicationProxy();
+	if (proxy.type() == QNetworkProxy::HttpProxy){
+		settings.beginGroup("/Proxy");
+		settings.setValue("/Host", proxy.hostName());
+		settings.setValue("/Port", proxy.port());
+		settings.setValue("/Username", proxy.user());
+		settings.endGroup();
+	} else
+		settings.remove("/Proxy");
 }
 
 void ApplicationWindow::exportGraph(const QString& exportFilter)
@@ -13459,6 +13481,9 @@ MultiLayer* ApplicationWindow::plotSpectrogram(Matrix *m, Graph::CurveType type)
 		return plotImage(m);
 	else if (type == Graph::Histogram)
 		return plotHistogram(m);
+
+	if (!m)
+		return 0;
 
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 

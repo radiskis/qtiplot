@@ -60,6 +60,7 @@ public:
 
 	bool hasColorScale();
 	int colorScaleAxis(){return color_axis;};
+	void setColorScaleAxis(int axis){color_axis = axis;};
 	void showColorScale(int axis, bool on = true);
 
 	int colorBarWidth();

@@ -3844,15 +3844,19 @@ void Graph::updateMarkersBoundingRect()
 
 void Graph::resizeEvent ( QResizeEvent *e )
 {
+	QSize size = e->size();
+	if (size.height() <= 0)
+		size.setHeight(e->oldSize().height());
+
 	if (autoScaleFonts){
 		QSize oldSize = e->oldSize();
-		QSize size = e->size();
-		resize(e->size());
+
+		resize(size);
 		updateLayout();
 		if(oldSize.isValid() && size.isValid())
 			scaleFonts((double)size.height()/(double)oldSize.height());
 	} else {
-        resize(e->size());
+        resize(size);
 		updateLayout();
         updateCurveLabels();
 	}
@@ -4634,12 +4638,18 @@ Spectrogram* Graph::plotSpectrogram(Matrix *m, CurveType type)
   	rightAxis->setColorBarEnabled(type != Contour);
   	rightAxis->setColorMap(d_spectrogram->data().range(), d_spectrogram->colorMap());
 
-  	setAxisScale(QwtPlot::yRight,
-  	d_spectrogram->data().range().minValue(),
-  	d_spectrogram->data().range().maxValue());
-  	enableAxis(QwtPlot::yRight, type != Contour);
+	if (type != Contour)
+		setAxisScale(QwtPlot::yRight,
+		d_spectrogram->data().range().minValue(),
+		d_spectrogram->data().range().maxValue());
 
   	replot();
+
+	updateSecondaryAxis(QwtPlot::xTop);
+	if (type == Contour){
+		d_spectrogram->setColorScaleAxis(QwtPlot::xTop);
+		updateSecondaryAxis(QwtPlot::yRight);
+	}
 
     d_zoomer[0]->setZoomBase();
     d_zoomer[1]->setZoomBase();
