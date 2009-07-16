@@ -31,6 +31,7 @@
 #include <QtGui>
 #include <QHttp>
 #include <QIODevice>
+#include <QNetworkProxy>
 
 #include "EnrichmentDialog.h"
 #include <Graph.h>
@@ -90,6 +91,7 @@ EnrichmentDialog::EnrichmentDialog(WidgetType wt, Graph *g, QWidget *parent)
 	imagePage = NULL;
 	patternPage = NULL;
 	textPage = NULL;
+	proxyPage = NULL;
 
 	if (wt == Tex){
 		setWindowTitle(tr("QtiPlot") + " - " + tr("Tex Equation Editor"));
@@ -110,9 +112,10 @@ EnrichmentDialog::EnrichmentDialog(WidgetType wt, Graph *g, QWidget *parent)
 	tabWidget = new QTabWidget();
 	if (wt == Text)
 		initTextPage();
-	else if (wt == Tex)
+	else if (wt == Tex){
 		initEditorPage();
-	else if (wt == Image)
+		initProxyPage();
+	} else if (wt == Image)
 		initImagePage();
 	else if (wt == Frame || wt == Ellipse)
 		initPatternPage();
@@ -150,6 +153,44 @@ void EnrichmentDialog::initEditorPage()
 	layout->addWidget(outputLabel);
 
 	tabWidget->addTab(editPage, tr( "&Text" ) );
+}
+
+void EnrichmentDialog::initProxyPage()
+{
+	QNetworkProxy proxy = QNetworkProxy::applicationProxy();
+
+	proxyPage = new QWidget();
+
+	proxyGroupBox = new QGroupBox (tr("&Proxy"));
+	proxyGroupBox->setCheckable(true);
+	proxyGroupBox->setChecked(proxy.type() == QNetworkProxy::HttpProxy);
+
+	QGridLayout *gl = new QGridLayout(proxyGroupBox);
+    gl->addWidget(new QLabel( tr("Host")), 0, 0);
+    proxyHostLine = new QLineEdit(proxy.hostName ());
+    gl->addWidget(proxyHostLine, 0, 1);
+
+    gl->addWidget(new QLabel( tr("Port")), 1, 0);
+    proxyPortBox = new QSpinBox;
+    proxyPortBox->setMaximum(10000000);
+	proxyPortBox->setValue(proxy.port());
+    gl->addWidget(proxyPortBox, 1, 1);
+
+    gl->addWidget(new QLabel( tr("Username")), 2, 0);
+    proxyUserNameLine = new QLineEdit(proxy.user());
+    gl->addWidget(proxyUserNameLine, 2, 1);
+
+    gl->addWidget(new QLabel( tr("Password")), 3, 0);
+    proxyPasswordLine = new QLineEdit;
+    proxyPasswordLine->setEchoMode(QLineEdit::Password);
+    gl->addWidget(proxyPasswordLine, 3, 1);
+
+	gl->setRowStretch(4, 1);
+
+	QVBoxLayout *layout = new QVBoxLayout(proxyPage);
+    layout->addWidget(proxyGroupBox);
+
+	tabWidget->addTab(proxyPage, tr( "&Internet Connexion" ) );
 }
 
 void EnrichmentDialog::initTextPage()
@@ -646,7 +687,20 @@ void EnrichmentDialog::apply()
 		ApplicationWindow *app = (ApplicationWindow *)this->parent();
 		if (app)
 			app->setFormatBarFont(textFont);
-	}
+	} else if (proxyPage && tabWidget->currentPage() == proxyPage)
+		setApplicationCustomProxy();
+}
+
+QNetworkProxy EnrichmentDialog::setApplicationCustomProxy()
+{
+	QNetworkProxy proxy;
+	proxy.setType(QNetworkProxy::HttpProxy);
+	proxy.setHostName(proxyHostLine->text());
+	proxy.setPort(proxyPortBox->value());
+	proxy.setUser(proxyUserNameLine->text());
+	proxy.setPassword(proxyPasswordLine->text());
+	QNetworkProxy::setApplicationProxy(proxy);
+	return proxy;
 }
 
 void EnrichmentDialog::fetchImage()
@@ -667,6 +721,16 @@ void EnrichmentDialog::fetchImage()
                      equationEditor->toPlainText()));
 
     http->setHost("mathtran.org");
+
+	QNetworkProxy proxy;
+    if (proxyGroupBox->isChecked() && !proxyHostLine->text().isEmpty())
+		proxy = setApplicationCustomProxy();
+    else {
+		proxy.setType(QNetworkProxy::NoProxy);
+		QNetworkProxy::setApplicationProxy(proxy);
+    }
+	http->setProxy(proxy);
+
     http->get(url.toString());
 
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));

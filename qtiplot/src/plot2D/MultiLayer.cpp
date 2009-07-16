@@ -272,6 +272,9 @@ void MultiLayer::resizeLayers (QResizeEvent *re)
 	QSize oldSize = re->oldSize();
 	QSize size = re->size();
 
+	if (size.height() <= 0)
+		size.setHeight(oldSize.height());
+
 	bool scaleLayerFonts = false;
 	if(!oldSize.isValid()){// The old size is invalid when maximizing a window (why?)
 		QRect r = canvasChildrenRect();

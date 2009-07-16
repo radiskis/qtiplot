@@ -146,7 +146,10 @@ bool Spectrogram::hasColorScale()
 		return false;
 
 	QwtScaleWidget *colorAxis = d_graph->axisWidget(color_axis);
-	return colorAxis->isColorBarEnabled();
+	if (colorAxis)
+		return colorAxis->isColorBarEnabled();
+
+	return false;
 }
 
 void Spectrogram::showColorScale(int axis, bool on)

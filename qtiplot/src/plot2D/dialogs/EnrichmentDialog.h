@@ -34,6 +34,7 @@
 #include <QDialog>
 
 class QComboBox;
+class QGroupBox;
 class QHttp;
 class QLabel;
 class QPushButton;
@@ -43,6 +44,7 @@ class QCheckBox;
 class QLineEdit;
 class QCheckBox;
 class QSpinBox;
+class QNetworkProxy;
 
 class Graph;
 class FrameWidget;
@@ -90,6 +92,7 @@ private slots:
 private:
 	void initTextPage();
 	void initEditorPage();
+	void initProxyPage();
 	void initImagePage();
 	void initFramePage();
 	void initGeometryPage();
@@ -99,6 +102,7 @@ private:
 	void setPatternTo(FrameWidget *r);
 	void setTextFormatTo(LegendWidget *l);
 	void setText(QTextEdit *editor, const QString & t);
+	QNetworkProxy setApplicationCustomProxy();
 
     QHttp *http;
     QLabel *outputLabel;
@@ -127,6 +131,11 @@ private:
 	TextFormatButtons *formatButtons, *texFormatButtons;
 	QPushButton *textDefaultBtn, *frameDefaultBtn, *rectangleDefaultBtn;
 	QCheckBox *autoUpdateTextBox;
+	QWidget *proxyPage;
+	QGroupBox *proxyGroupBox;
+    QLineEdit *proxyHostLine, *proxyUserNameLine, *proxyPasswordLine;
+    QSpinBox *proxyPortBox;
+
 	QFont textFont;
 
 	Graph *d_plot;
