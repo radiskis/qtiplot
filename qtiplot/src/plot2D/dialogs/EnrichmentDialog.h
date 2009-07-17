@@ -32,6 +32,7 @@
 #define TEXWIDGETDIALOG_H
 
 #include <QDialog>
+#include <QProcess>
 
 class QComboBox;
 class QGroupBox;
@@ -88,6 +89,12 @@ private slots:
 	void setTextDefaultValues();
 	void setFrameDefaultValues();
 	void setRectangleDefaultValues();
+	void finishedCompiling(int, QProcess::ExitStatus);
+	void displayCompileError(QProcess::ProcessError error);
+	void createImage();
+	void updateCompilerInterface(int);
+	void chooseCompiler();
+	bool validateCompiler();
 
 private:
 	void initTextPage();
@@ -103,8 +110,11 @@ private:
 	void setTextFormatTo(LegendWidget *l);
 	void setText(QTextEdit *editor, const QString & t);
 	QNetworkProxy setApplicationCustomProxy();
+	QString createTempTexFile();
 
     QHttp *http;
+    QProcess *compileProcess;
+
     QLabel *outputLabel;
     QPushButton *clearButton;
     QPushButton *updateButton;
@@ -136,6 +146,10 @@ private:
     QLineEdit *proxyHostLine, *proxyUserNameLine, *proxyPasswordLine;
     QSpinBox *proxyPortBox;
     QComboBox *proxyTypeBox;
+    QComboBox *texCompilerBox;
+    QLineEdit *compilerPathBox;
+    QPushButton *browseCompilerBtn;
+    QGroupBox *compilerPathGroupBox;
 
 	QFont textFont;
 

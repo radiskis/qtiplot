@@ -1061,6 +1061,7 @@ private slots:
 
 // TODO: a lot of this stuff should be private
 public:
+	QString d_latex_compiler_path;
 	//! Last selected filter in open project dialog
     QString d_open_project_filter;
 	//! Default geometry unit to be displayed in the EnrichmentDialog.

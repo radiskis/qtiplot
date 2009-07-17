@@ -383,6 +383,7 @@ void ApplicationWindow::initWindow()
 
 void ApplicationWindow::initGlobalConstants()
 {
+	d_latex_compiler_path = QString::null;
 	d_mdi_windows_area = true;
 	d_open_project_filter = QString::null;//tr("QtiPlot project") + " (*.qti)";
 
@@ -4535,6 +4536,7 @@ void ApplicationWindow::readSettings()
 	helpFilePath = settings.value("/HelpFile", helpFilePath).toString();
 	d_translations_folder = settings.value("/Translations", d_translations_folder).toString();
 	d_python_config_folder = settings.value("/PythonConfigDir", d_python_config_folder).toString();
+	d_latex_compiler_path = settings.value("/LaTeXCompiler", d_latex_compiler_path).toString();
 	settings.endGroup(); // Paths
 
 	d_open_project_filter = settings.value("/OpenProjectFilter", d_open_project_filter).toString();
@@ -4815,7 +4817,6 @@ void ApplicationWindow::readSettings()
 
 void ApplicationWindow::saveSettings()
 {
-
 #ifdef Q_OS_MAC // Mac
 	QSettings settings(QSettings::IniFormat,QSettings::UserScope, "ProIndependent", "QtiPlot");
 #else
@@ -4896,6 +4897,7 @@ void ApplicationWindow::saveSettings()
     settings.setValue("/CustomActionsDir", customActionsDirPath);
 	settings.setValue("/Translations", d_translations_folder);
 	settings.setValue("/PythonConfigDir", d_python_config_folder);
+	settings.setValue("/LaTeXCompiler", d_latex_compiler_path);
 	settings.endGroup(); // Paths
 
 	settings.setValue("/OpenProjectFilter", d_open_project_filter);
