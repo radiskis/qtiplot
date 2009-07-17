@@ -135,6 +135,7 @@ private:
 	QGroupBox *proxyGroupBox;
     QLineEdit *proxyHostLine, *proxyUserNameLine, *proxyPasswordLine;
     QSpinBox *proxyPortBox;
+    QComboBox *proxyTypeBox;
 
 	QFont textFont;
 

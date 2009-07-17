@@ -4804,9 +4804,9 @@ void ApplicationWindow::readSettings()
 	if (settings.contains("/Proxy")){
 		settings.beginGroup("/Proxy");
 		QNetworkProxy proxy;
-		proxy.setType(QNetworkProxy::HttpProxy);
 		proxy.setHostName(settings.value("/Host", QString()).toString());
 		proxy.setPort(settings.value("/Port", 8080).toInt());
+		proxy.setType((QNetworkProxy::ProxyType)(settings.value("/Type", QNetworkProxy::NoProxy).toInt()));
 		proxy.setUser(settings.value("/Username", QString()).toString());
 		settings.endGroup();
 		QNetworkProxy::setApplicationProxy(proxy);
@@ -5186,10 +5186,11 @@ void ApplicationWindow::saveSettings()
 	settings.endGroup();
 
 	QNetworkProxy proxy = QNetworkProxy::applicationProxy();
-	if (proxy.type() == QNetworkProxy::HttpProxy){
+	if (proxy.type() != QNetworkProxy::NoProxy){
 		settings.beginGroup("/Proxy");
 		settings.setValue("/Host", proxy.hostName());
 		settings.setValue("/Port", proxy.port());
+		settings.setValue("/Type", proxy.type());
 		settings.setValue("/Username", proxy.user());
 		settings.endGroup();
 	} else

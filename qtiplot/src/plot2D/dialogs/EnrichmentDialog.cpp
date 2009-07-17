@@ -163,7 +163,7 @@ void EnrichmentDialog::initProxyPage()
 
 	proxyGroupBox = new QGroupBox (tr("&Proxy"));
 	proxyGroupBox->setCheckable(true);
-	proxyGroupBox->setChecked(proxy.type() == QNetworkProxy::HttpProxy);
+	proxyGroupBox->setChecked(proxy.type() != QNetworkProxy::NoProxy);
 
 	QGridLayout *gl = new QGridLayout(proxyGroupBox);
     gl->addWidget(new QLabel( tr("Host")), 0, 0);
@@ -176,21 +176,31 @@ void EnrichmentDialog::initProxyPage()
 	proxyPortBox->setValue(proxy.port());
     gl->addWidget(proxyPortBox, 1, 1);
 
-    gl->addWidget(new QLabel( tr("Username")), 2, 0);
+	gl->addWidget(new QLabel( tr("Type")), 2, 0);
+	proxyTypeBox = new QComboBox;
+    proxyTypeBox->addItem(tr("No Proxy"));
+    proxyTypeBox->addItem(tr("Default"));
+    proxyTypeBox->addItem(tr("Socks5"));
+    proxyTypeBox->addItem(tr("Http"));
+    proxyTypeBox->addItem(tr("Http Caching"));
+    proxyTypeBox->setCurrentIndex(proxy.type());
+    gl->addWidget(proxyTypeBox, 2, 1);
+
+    gl->addWidget(new QLabel( tr("Username")), 3, 0);
     proxyUserNameLine = new QLineEdit(proxy.user());
-    gl->addWidget(proxyUserNameLine, 2, 1);
+    gl->addWidget(proxyUserNameLine, 3, 1);
 
-    gl->addWidget(new QLabel( tr("Password")), 3, 0);
+    gl->addWidget(new QLabel( tr("Password")), 4, 0);
     proxyPasswordLine = new QLineEdit;
-    proxyPasswordLine->setEchoMode(QLineEdit::Password);
-    gl->addWidget(proxyPasswordLine, 3, 1);
 
-	gl->setRowStretch(4, 1);
+    gl->addWidget(proxyPasswordLine, 4, 1);
+
+	gl->setRowStretch(5, 1);
 
 	QVBoxLayout *layout = new QVBoxLayout(proxyPage);
     layout->addWidget(proxyGroupBox);
 
-	tabWidget->addTab(proxyPage, tr( "&Internet Connexion" ) );
+	tabWidget->addTab(proxyPage, tr( "&Internet Connection" ) );
 }
 
 void EnrichmentDialog::initTextPage()
@@ -697,6 +707,7 @@ QNetworkProxy EnrichmentDialog::setApplicationCustomProxy()
 	proxy.setType(QNetworkProxy::HttpProxy);
 	proxy.setHostName(proxyHostLine->text());
 	proxy.setPort(proxyPortBox->value());
+	proxy.setType((QNetworkProxy::ProxyType)proxyTypeBox->currentIndex());
 	proxy.setUser(proxyUserNameLine->text());
 	proxy.setPassword(proxyPasswordLine->text());
 	QNetworkProxy::setApplicationProxy(proxy);
