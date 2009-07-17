@@ -48,6 +48,7 @@
 #include <DoubleSpinBox.h>
 #include <PatternBox.h>
 #include <PenStyleBox.h>
+#include <pixmaps.h>
 
 static const char* choose_folder_xpm[]={
     "16 16 11 1",
@@ -137,11 +138,38 @@ void EnrichmentDialog::initEditorPage()
 	http = new QHttp(this);
     connect(http, SIGNAL(done(bool)), this, SLOT(updateForm(bool)));
 
+	compileProcess = NULL;
+
 	editPage = new QWidget();
 
     equationEditor = new QTextEdit;
 
 	texFormatButtons = new TextFormatButtons(equationEditor, TextFormatButtons::Equation);
+
+	texCompilerBox = new QComboBox;
+	texCompilerBox->addItem(tr("MathTran (http://www.mathtran.org/)"));
+	texCompilerBox->addItem(tr("locally installed"));
+	connect(texCompilerBox, SIGNAL(activated(int)), this, SLOT(updateCompilerInterface(int)));
+
+	QHBoxLayout *hl = new QHBoxLayout;
+	hl->addWidget(new QLabel(tr("LaTeX Compiler")));
+	hl->addWidget(texCompilerBox);
+
+	compilerPathGroupBox = new QGroupBox;
+	QHBoxLayout *hl1 = new QHBoxLayout(compilerPathGroupBox);
+	compilerPathBox = new QLineEdit;
+
+	QString compiler = ((ApplicationWindow *)parentWidget())->d_latex_compiler_path;
+	compilerPathBox->setText(compiler);
+	connect(compilerPathBox, SIGNAL(editingFinished ()), this, SLOT(validateCompiler()));
+
+	hl1->addWidget(compilerPathBox);
+    browseCompilerBtn = new QPushButton;
+    browseCompilerBtn->setIcon(QIcon(QPixmap(choose_folder_xpm)));
+	connect(browseCompilerBtn, SIGNAL(clicked()), this, SLOT(chooseCompiler()));
+
+    hl1->addWidget(browseCompilerBtn);
+    compilerPathGroupBox->hide();
 
 	outputLabel = new QLabel;
     outputLabel->setFrameShape(QFrame::StyledPanel);
@@ -149,10 +177,17 @@ void EnrichmentDialog::initEditorPage()
 	QVBoxLayout *layout = new QVBoxLayout(editPage);
     layout->addWidget(equationEditor, 1);
 	layout->addWidget(texFormatButtons);
+	layout->addLayout(hl);
+	layout->addWidget(compilerPathGroupBox);
 	layout->addWidget(new QLabel(tr("Preview:")));
 	layout->addWidget(outputLabel);
 
-	tabWidget->addTab(editPage, tr( "&Text" ) );
+	tabWidget->addTab(editPage, tr("&Text" ));
+
+	if (!compiler.isEmpty()){
+		texCompilerBox->setCurrentIndex(1);
+		updateCompilerInterface(1);
+	}
 }
 
 void EnrichmentDialog::initProxyPage()
@@ -270,7 +305,6 @@ void EnrichmentDialog::initTextPage()
 
 	textEditBox = new QTextEdit();
 	textEditBox->setTextFormat(Qt::PlainText);
-	//textEditBox->setFont(QFont());
 
 	formatButtons =  new TextFormatButtons(textEditBox, TextFormatButtons::Legend);
 
@@ -714,6 +748,30 @@ QNetworkProxy EnrichmentDialog::setApplicationCustomProxy()
 	return proxy;
 }
 
+QString EnrichmentDialog::createTempTexFile()
+{
+	QString path = QDir::tempPath();
+	QString name = path + "/" + "QtiPlot_temp.tex";
+
+	QFile file(name);
+
+	if (file.open(QIODevice::WriteOnly)){
+		QTextStream t( &file );
+		t.setEncoding(QTextStream::UnicodeUTF8);
+		t << "\\documentclass{article}\n";
+		t << "\\pagestyle{empty}\n";
+		t << "\\begin{document}\n";
+		t << "\\huge{\\mbox{$";
+		t << equationEditor->toPlainText();
+		t << "$}}\n";
+		t << "\\end{document}";
+		file.close();
+		return QDir::cleanPath(name);
+	}
+
+	return QString();
+}
+
 void EnrichmentDialog::fetchImage()
 {
 	TexWidget *tw = qobject_cast<TexWidget *>(d_widget);
@@ -723,6 +781,30 @@ void EnrichmentDialog::fetchImage()
 	clearButton->setEnabled(false);
     updateButton->setEnabled(false);
     equationEditor->setReadOnly(true);
+
+	if (texCompilerBox->currentIndex() == 1){
+		if (compileProcess)
+			delete compileProcess;
+
+		if (!validateCompiler())
+			return;
+
+		compileProcess = new QProcess(this);
+		connect(compileProcess, SIGNAL(finished(int, QProcess::ExitStatus)),
+			this, SLOT(finishedCompiling(int, QProcess::ExitStatus)));
+		connect(compileProcess, SIGNAL(error(QProcess::ProcessError)),
+			this, SLOT(displayCompileError(QProcess::ProcessError)));
+
+		compileProcess->setWorkingDirectory(QDir::tempPath());
+
+		QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+
+		QString program = ((ApplicationWindow *)parentWidget())->d_latex_compiler_path;
+		QStringList arguments;
+		arguments << createTempTexFile();
+		compileProcess->start(program, arguments);
+		return;
+	}
 
     QUrl url;
     url.setPath("/cgi-bin/mathtran");
@@ -1193,6 +1275,173 @@ void EnrichmentDialog::setRectangleDefaultValues()
 
 	app->d_rect_default_brush = QBrush(patternColor, patternBox->getSelectedPattern());
 	app->saveSettings();
+}
+
+void EnrichmentDialog::createImage()
+{
+	QApplication::restoreOverrideCursor();
+
+	QString path = QDir::tempPath();
+	QString fileName = QDir::cleanPath(path + "/" + "QtiPlot_temp.png");
+
+	QImage image;
+	if (image.load(fileName)){
+		QPixmap pixmap = QPixmap::fromImage(image);
+		outputLabel->setPixmap(pixmap);
+		TexWidget *tw = qobject_cast<TexWidget *>(d_widget);
+		if (tw){
+			tw->setPixmap(pixmap);
+			tw->setFormula(equationEditor->toPlainText());
+			d_plot->multiLayer()->notifyChanges();
+		}
+	}
+
+    clearButton->setEnabled(true);
+    updateButton->setEnabled(true);
+    equationEditor->setReadOnly(false);
+
+    delete compileProcess;
+    compileProcess = NULL;
+    QFile::remove(fileName);
+
+    fileName = QDir::cleanPath(path + "/" + "QtiPlot_temp.dvi");
+    QFile::remove(fileName);
+}
+
+void EnrichmentDialog::finishedCompiling(int exitCode, QProcess::ExitStatus exitStatus)
+{
+	QApplication::restoreOverrideCursor();
+	if (exitStatus != QProcess::NormalExit){
+		QMessageBox::critical(this, tr("Compile process ended"),
+		tr("Compiling process ended with exit code: %1").arg(exitCode));
+		return;
+	}
+
+	QString compiler = ((ApplicationWindow *)parentWidget())->d_latex_compiler_path;
+	QFileInfo fi(compiler);
+
+	QString dir = fi.dir().absolutePath();
+	QString program = dir + "/dvipng.exe";
+
+	QStringList arguments;
+	arguments << "-T" << "tight" << "QtiPlot_temp.dvi" << "-o" << "QtiPlot_temp.png";
+
+	if (compileProcess)
+		delete compileProcess;
+
+	compileProcess = new QProcess(this);
+	connect(compileProcess, SIGNAL(finished(int, QProcess::ExitStatus)),
+		this, SLOT(createImage()));
+	connect(compileProcess, SIGNAL(error(QProcess::ProcessError)),
+		this, SLOT(displayCompileError(QProcess::ProcessError)));
+
+	compileProcess->setWorkingDirectory (QDir::tempPath());
+
+	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+	compileProcess->start(program, arguments);
+	return;
+}
+
+void EnrichmentDialog::displayCompileError(QProcess::ProcessError error)
+{
+	QString msg;
+	switch(error){
+		case QProcess::FailedToStart:
+			msg = tr("LaTeX compile process failed to start");
+		break;
+
+		case QProcess::Crashed:
+			msg = tr("Process crashed!");
+		break;
+
+		case QProcess::Timedout:
+			msg = tr("Process timedout");
+		break;
+
+		case QProcess::WriteError:
+			msg = tr("Write Error");
+		break;
+
+		case QProcess::ReadError:
+			msg = tr("Read Error");
+		break;
+
+		case QProcess::UnknownError:
+			msg = tr("Unknown compile error");
+		break;
+	}
+
+	QApplication::restoreOverrideCursor();
+	compileProcess->kill();
+	compileProcess = NULL;
+
+	QMessageBox::critical(this, tr("Compile error"), msg);
+}
+
+void EnrichmentDialog::updateCompilerInterface(int compiler)
+{
+	switch(compiler){
+		case 0:
+			tabWidget->setTabEnabled(tabWidget->indexOf(proxyPage), true);
+			compilerPathGroupBox->hide();
+			((ApplicationWindow *)parentWidget())->d_latex_compiler_path = QString::null;
+		break;
+
+		case 1:
+			compilerPathGroupBox->show();
+			tabWidget->setTabEnabled(tabWidget->indexOf(proxyPage), false);
+		break;
+	}
+}
+
+void EnrichmentDialog::chooseCompiler()
+{
+	ApplicationWindow *app = (ApplicationWindow *)parentWidget();
+	if (!app)
+		return;
+
+	QFileInfo tfi(app->d_latex_compiler_path);
+	QString compiler = ApplicationWindow::getFileName(this, tr("Choose the location of the LaTeX compiler!"),
+	app->d_latex_compiler_path, QString(), 0, false);
+
+	if (!compiler.isEmpty()){
+		app->d_latex_compiler_path = QDir::toNativeSeparators(compiler);
+		compilerPathBox->setText(app->d_latex_compiler_path);
+	}
+}
+
+bool EnrichmentDialog::validateCompiler()
+{
+	QString path = compilerPathBox->text();
+	if (path.isEmpty())
+		return false;
+
+	ApplicationWindow *app = (ApplicationWindow *)parentWidget();
+	QFileInfo fi(path);
+	if (!fi.exists()){
+		QMessageBox::critical(this, tr("QtiPlot - File Not Found!"),
+		tr("The file %1 doesn't exist.<br>Please choose another file!").arg(path));
+		compilerPathBox->setText(app->d_latex_compiler_path);
+		return false;
+	}
+
+	if (fi.isDir()){
+		QMessageBox::critical(this, tr("QtiPlot - File Not Found!"),
+		tr("%1 is a folder.<br>Please choose a file!").arg(path));
+		compilerPathBox->setText(app->d_latex_compiler_path);
+		return false;
+	}
+
+	if (!fi.isReadable()){
+		QMessageBox::critical(this, tr("QtiPlot"),
+		tr("You don't have read access rights to file %1.<br>Please choose another file!").arg(path));
+		compilerPathBox->setText(app->d_latex_compiler_path);
+		return false;
+	}
+
+	app->d_latex_compiler_path = QDir::toNativeSeparators(path);
+	compilerPathBox->setText(app->d_latex_compiler_path);
+	return true;
 }
 
 EnrichmentDialog::~EnrichmentDialog()
