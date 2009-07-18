@@ -116,6 +116,10 @@ EnrichmentDialog::EnrichmentDialog(WidgetType wt, Graph *g, QWidget *parent)
 	else if (wt == Tex){
 		initEditorPage();
 		initProxyPage();
+		if (!(((ApplicationWindow *)parent)->d_latex_compiler_path).isEmpty()){
+			texCompilerBox->setCurrentIndex(1);
+			updateCompilerInterface(1);
+		}
 	} else if (wt == Image)
 		initImagePage();
 	else if (wt == Frame || wt == Ellipse)
@@ -159,8 +163,7 @@ void EnrichmentDialog::initEditorPage()
 	QHBoxLayout *hl1 = new QHBoxLayout(compilerPathGroupBox);
 	compilerPathBox = new QLineEdit;
 
-	QString compiler = ((ApplicationWindow *)parentWidget())->d_latex_compiler_path;
-	compilerPathBox->setText(compiler);
+	compilerPathBox->setText(((ApplicationWindow *)parentWidget())->d_latex_compiler_path);
 	connect(compilerPathBox, SIGNAL(editingFinished ()), this, SLOT(validateCompiler()));
 
 	hl1->addWidget(compilerPathBox);
@@ -183,11 +186,6 @@ void EnrichmentDialog::initEditorPage()
 	layout->addWidget(outputLabel);
 
 	tabWidget->addTab(editPage, tr("&Text" ));
-
-	if (!compiler.isEmpty()){
-		texCompilerBox->setCurrentIndex(1);
-		updateCompilerInterface(1);
-	}
 }
 
 void EnrichmentDialog::initProxyPage()
