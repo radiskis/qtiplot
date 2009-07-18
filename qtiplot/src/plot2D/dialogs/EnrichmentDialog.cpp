@@ -800,6 +800,7 @@ void EnrichmentDialog::fetchImage()
 		QString program = ((ApplicationWindow *)parentWidget())->d_latex_compiler_path;
 		QStringList arguments;
 		arguments << createTempTexFile();
+
 		compileProcess->start(program, arguments);
 		return;
 	}
@@ -1319,7 +1320,10 @@ void EnrichmentDialog::finishedCompiling(int exitCode, QProcess::ExitStatus exit
 	QFileInfo fi(compiler);
 
 	QString dir = fi.dir().absolutePath();
-	QString program = dir + "/dvipng.exe";
+        QString program = dir + "/dvipng";
+        #ifdef Q_OS_WIN
+            program += ".exe";
+        #endif
 
 	QStringList arguments;
 	arguments << "-T" << "tight" << "QtiPlot_temp.dvi" << "-o" << "QtiPlot_temp.png";
