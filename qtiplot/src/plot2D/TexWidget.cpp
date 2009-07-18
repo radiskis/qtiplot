@@ -69,16 +69,29 @@ void TexWidget::print(QPainter *painter, const QwtScaleMap map[QwtPlot::axisCnt]
 {
 	int x = map[QwtPlot::xBottom].transform(calculateXValue());
 	int y = map[QwtPlot::yLeft].transform(calculateYValue());
-	drawFrame(painter, QRect(x, y, width(), height()));
+        int xr = map[QwtPlot::xBottom].transform(calculateRightValue());
+        int yr = map[QwtPlot::yLeft].transform(calculateBottomValue());
+        int width = abs(xr - x);
+        int height = abs(yr - y);
+
+        drawFrame(painter, QRect(x, y, width, height));
 
 	int lw = d_frame_pen.width();
-	int w = width() - 2*d_margin  - 2*lw;
-	int h = height() - 2*d_margin - 2*lw;
+
+        // calculate resolution factor
+        double xfactor = (double)painter->device()->logicalDpiX()/(double)plot()->logicalDpiX();
+        double yfactor = (double)painter->device()->logicalDpiY()/(double)plot()->logicalDpiY();
+
+        int margin_x = qRound(d_margin*xfactor);
+        int margin_y = qRound(d_margin*yfactor);
+
+        int w = width - 2*margin_x  - 2*lw;
+        int h = height - 2*margin_y - 2*lw;
 	if (d_frame == Shadow){
 		w -= d_margin;
 		h -= d_margin;
 	}
-	painter->drawPixmap(QRect (x + lw + d_margin, y + lw + d_margin, w, h), d_pix);
+        painter->drawPixmap(QRect (x + lw + margin_x, y + lw + margin_y, w, h), d_pix);
 }
 
 void TexWidget::setPixmap(const QPixmap& pix)

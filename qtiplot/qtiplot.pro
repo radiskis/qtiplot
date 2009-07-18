@@ -37,7 +37,7 @@ INCLUDEPATH       += ../3rdparty/qwt/src
 INCLUDEPATH       += ../3rdparty/liborigin
 INCLUDEPATH       += ../3rdparty/gsl/include
 INCLUDEPATH       += ../3rdparty/zlib
-INCLUDEPATH       += ../3rdparty/boost_1_36_0
+INCLUDEPATH       += ../3rdparty/boost_1_38_0
 
 ##################### 3rd PARTY LIBRARIES SECTION ###########################
 #!!! Warning: You must modify these paths according to your computer settings
@@ -50,8 +50,8 @@ unix:LIBS         += ../3rdparty/muparser/lib/libmuparser.a
 unix:LIBS         += ../3rdparty/qwt/lib/libqwt.a
 unix:LIBS         += ../3rdparty/gsl/lib/libgsl.a
 unix:LIBS         += ../3rdparty/gsl/lib/libgslcblas.a
-unix:LIBS         += ../3rdparty/boost_1_36_0/lib/libboost_date_time-gcc43-mt-1_36.a
-unix:LIBS         += ../3rdparty/boost_1_36_0/lib/libboost_thread-gcc43-mt-1_36.a
+unix:LIBS         += ../3rdparty/boost_1_38_0/lib/libboost_date_time-gcc43-mt-1_38.a
+unix:LIBS         += ../3rdparty/boost_1_38_0/lib/libboost_thread-gcc43-mt-1_38.a
 
 # dynamically link against dependencies if they are installed system-wide
 #unix:LIBS         += -lmuparser
