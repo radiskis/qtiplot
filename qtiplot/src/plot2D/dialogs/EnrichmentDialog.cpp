@@ -143,6 +143,7 @@ void EnrichmentDialog::initEditorPage()
     connect(http, SIGNAL(done(bool)), this, SLOT(updateForm(bool)));
 
 	compileProcess = NULL;
+	dvipngProcess = NULL;
 
 	editPage = new QWidget();
 
@@ -196,7 +197,7 @@ void EnrichmentDialog::initProxyPage()
 
 	proxyGroupBox = new QGroupBox (tr("&Proxy"));
 	proxyGroupBox->setCheckable(true);
-	proxyGroupBox->setChecked(proxy.type() != QNetworkProxy::NoProxy);
+	proxyGroupBox->setChecked(!proxy.hostName().isEmpty());
 
 	QGridLayout *gl = new QGridLayout(proxyGroupBox);
     gl->addWidget(new QLabel( tr("Host")), 0, 0);
@@ -209,26 +210,16 @@ void EnrichmentDialog::initProxyPage()
 	proxyPortBox->setValue(proxy.port());
     gl->addWidget(proxyPortBox, 1, 1);
 
-	gl->addWidget(new QLabel( tr("Type")), 2, 0);
-	proxyTypeBox = new QComboBox;
-    proxyTypeBox->addItem(tr("No Proxy"));
-    proxyTypeBox->addItem(tr("Default"));
-    proxyTypeBox->addItem(tr("Socks5"));
-    proxyTypeBox->addItem(tr("Http"));
-    proxyTypeBox->addItem(tr("Http Caching"));
-    proxyTypeBox->setCurrentIndex(proxy.type());
-    gl->addWidget(proxyTypeBox, 2, 1);
-
-    gl->addWidget(new QLabel( tr("Username")), 3, 0);
+    gl->addWidget(new QLabel( tr("Username")), 2, 0);
     proxyUserNameLine = new QLineEdit(proxy.user());
-    gl->addWidget(proxyUserNameLine, 3, 1);
+    gl->addWidget(proxyUserNameLine, 2, 1);
 
-    gl->addWidget(new QLabel( tr("Password")), 4, 0);
+    gl->addWidget(new QLabel( tr("Password")), 3, 0);
     proxyPasswordLine = new QLineEdit;
 
-    gl->addWidget(proxyPasswordLine, 4, 1);
+    gl->addWidget(proxyPasswordLine, 3, 1);
 
-	gl->setRowStretch(5, 1);
+	gl->setRowStretch(4, 1);
 
 	QVBoxLayout *layout = new QVBoxLayout(proxyPage);
     layout->addWidget(proxyGroupBox);
@@ -736,10 +727,9 @@ void EnrichmentDialog::apply()
 QNetworkProxy EnrichmentDialog::setApplicationCustomProxy()
 {
 	QNetworkProxy proxy;
-	proxy.setType(QNetworkProxy::HttpProxy);
+	proxy.setType(QNetworkProxy::NoProxy);
 	proxy.setHostName(proxyHostLine->text());
 	proxy.setPort(proxyPortBox->value());
-	proxy.setType((QNetworkProxy::ProxyType)proxyTypeBox->currentIndex());
 	proxy.setUser(proxyUserNameLine->text());
 	proxy.setPassword(proxyPasswordLine->text());
 	QNetworkProxy::setApplicationProxy(proxy);
@@ -814,14 +804,17 @@ void EnrichmentDialog::fetchImage()
 
     http->setHost("mathtran.org");
 
-	QNetworkProxy proxy;
-    if (proxyGroupBox->isChecked() && !proxyHostLine->text().isEmpty())
-		proxy = setApplicationCustomProxy();
-    else {
+    if (proxyGroupBox->isChecked() && !proxyHostLine->text().isEmpty()){
+		setApplicationCustomProxy();
+		http->setProxy(proxyHostLine->text(), proxyPortBox->value(),
+						proxyUserNameLine->text(), proxyPasswordLine->text());
+   } else {
+		QNetworkProxy proxy;
 		proxy.setType(QNetworkProxy::NoProxy);
+		proxy.setHostName(QString::null);
 		QNetworkProxy::setApplicationProxy(proxy);
+		http->setProxy(proxy);
     }
-	http->setProxy(proxy);
 
     http->get(url.toString());
 
@@ -1299,8 +1292,9 @@ void EnrichmentDialog::createImage()
     updateButton->setEnabled(true);
     equationEditor->setReadOnly(false);
 
-    delete compileProcess;
-    compileProcess = NULL;
+	if (dvipngProcess)
+		delete dvipngProcess;
+    dvipngProcess = NULL;
     QFile::remove(fileName);
 
     fileName = QDir::cleanPath(path + "/" + "QtiPlot_temp.dvi");
@@ -1330,54 +1324,74 @@ void EnrichmentDialog::finishedCompiling(int exitCode, QProcess::ExitStatus exit
 
 	if (compileProcess)
 		delete compileProcess;
+	compileProcess = NULL;
 
-	compileProcess = new QProcess(this);
-	connect(compileProcess, SIGNAL(finished(int, QProcess::ExitStatus)),
-		this, SLOT(createImage()));
-	connect(compileProcess, SIGNAL(error(QProcess::ProcessError)),
+	dvipngProcess = new QProcess(this);
+	connect(dvipngProcess, SIGNAL(error(QProcess::ProcessError)),
 		this, SLOT(displayCompileError(QProcess::ProcessError)));
+	connect(dvipngProcess, SIGNAL(finished(int, QProcess::ExitStatus)),
+		this, SLOT(createImage()));
 
-	compileProcess->setWorkingDirectory (QDir::tempPath());
+	dvipngProcess->setWorkingDirectory (QDir::tempPath());
 
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-	compileProcess->start(program, arguments);
+	dvipngProcess->start(program, arguments);
 	return;
 }
 
 void EnrichmentDialog::displayCompileError(QProcess::ProcessError error)
 {
+	QString process = QString::null;
+	if (compileProcess)
+		process = tr("LaTeX compile process");
+	else if (dvipngProcess)
+		process = tr("dvipng process");
+
 	QString msg;
 	switch(error){
 		case QProcess::FailedToStart:
-			msg = tr("LaTeX compile process failed to start");
+			if (compileProcess)
+				msg = process + " " + tr("failed to start!");
+			else if (dvipngProcess)
+				msg = process + " " + tr("failed to start!") + " " +
+				tr("Please verify that you have dvipng installed in the same folder as your LaTeX compiler!");
 		break;
 
 		case QProcess::Crashed:
-			msg = tr("Process crashed!");
+			msg = process + " " + tr("crashed");
 		break;
 
 		case QProcess::Timedout:
-			msg = tr("Process timedout");
+			msg = process + " " + tr("timedout");
 		break;
 
 		case QProcess::WriteError:
-			msg = tr("Write Error");
+			msg = process + " " + tr("write error");
 		break;
 
 		case QProcess::ReadError:
-			msg = tr("Read Error");
+			msg = process + " " + tr("read error");
 		break;
 
 		case QProcess::UnknownError:
-			msg = tr("Unknown compile error");
+			msg =  process + " " + tr("unknown error");
 		break;
 	}
 
 	QApplication::restoreOverrideCursor();
-	compileProcess->kill();
-	compileProcess = NULL;
+	if (compileProcess){
+		compileProcess->kill();
+		compileProcess = NULL;
+	} else if (dvipngProcess){
+		dvipngProcess->kill();
+		dvipngProcess = NULL;
+	}
 
 	QMessageBox::critical(this, tr("Compile error"), msg);
+
+	clearButton->setEnabled(true);
+    updateButton->setEnabled(true);
+    equationEditor->setReadOnly(false);
 }
 
 void EnrichmentDialog::updateCompilerInterface(int compiler)
