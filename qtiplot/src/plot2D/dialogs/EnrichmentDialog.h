@@ -113,7 +113,7 @@ private:
 	QString createTempTexFile();
 
     QHttp *http;
-    QProcess *compileProcess;
+    QProcess *compileProcess, *dvipngProcess;
 
     QLabel *outputLabel;
     QPushButton *clearButton;
@@ -145,7 +145,6 @@ private:
 	QGroupBox *proxyGroupBox;
     QLineEdit *proxyHostLine, *proxyUserNameLine, *proxyPasswordLine;
     QSpinBox *proxyPortBox;
-    QComboBox *proxyTypeBox;
     QComboBox *texCompilerBox;
     QLineEdit *compilerPathBox;
     QPushButton *browseCompilerBtn;
