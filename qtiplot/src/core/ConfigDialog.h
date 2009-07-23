@@ -32,6 +32,7 @@
 #include <QDialog>
 #include <QCheckBox>
 
+class QNetworkProxy;
 class QLineEdit;
 class QGroupBox;
 class QGridLayout;
@@ -118,9 +119,11 @@ private:
 	void initFileLocationsPage();
 	void initFittingPage();
 	void initNotesPage();
+	void initProxyPage();
 	//! Calculates a sensible width for the items list
 	void updateMenuList();
 	bool validFolderPath(const QString& path);
+	QNetworkProxy setApplicationCustomProxy();
 
 	QFont textFont, headerFont, axesFont, numbersFont, legendFont, titleFont, appFont;
 	QFont d_3D_title_font, d_3D_numbers_font, d_3D_axes_font;
@@ -193,6 +196,12 @@ private:
 	QCheckBox *boxEnableAxis, *boxShowAxisLabels;
 	QGroupBox * enabledAxesGroupBox;
 	QGridLayout *enabledAxesGrid;
+
+	QWidget *proxyPage;
+	QGroupBox *proxyGroupBox;
+    QLineEdit *proxyHostLine, *proxyUserNameLine, *proxyPasswordLine;
+    QSpinBox *proxyPortBox;
+    QLabel *proxyHostLabel, *proxyPortLabel, *proxyUserLabel, *proxyPasswordLabel;
 
 #ifdef SCRIPTING_PYTHON
 	QGroupBox *groupSyntaxHighlighter;

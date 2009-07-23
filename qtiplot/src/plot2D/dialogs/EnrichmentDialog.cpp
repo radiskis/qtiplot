@@ -92,7 +92,6 @@ EnrichmentDialog::EnrichmentDialog(WidgetType wt, Graph *g, QWidget *parent)
 	imagePage = NULL;
 	patternPage = NULL;
 	textPage = NULL;
-	proxyPage = NULL;
 
 	if (wt == Tex){
 		setWindowTitle(tr("QtiPlot") + " - " + tr("Tex Equation Editor"));
@@ -115,7 +114,6 @@ EnrichmentDialog::EnrichmentDialog(WidgetType wt, Graph *g, QWidget *parent)
 		initTextPage();
 	else if (wt == Tex){
 		initEditorPage();
-		initProxyPage();
 		if (!(((ApplicationWindow *)parent)->d_latex_compiler_path).isEmpty()){
 			texCompilerBox->setCurrentIndex(1);
 			updateCompilerInterface(1);
@@ -141,6 +139,10 @@ void EnrichmentDialog::initEditorPage()
 {
 	http = new QHttp(this);
     connect(http, SIGNAL(done(bool)), this, SLOT(updateForm(bool)));
+    http->setHost("mathtran.org");
+	QNetworkProxy proxy = QNetworkProxy::applicationProxy();
+	if (!proxy.hostName().isEmpty())
+		http->setProxy(proxy.hostName(), proxy.port(), proxy.user(), proxy.password());
 
 	compileProcess = NULL;
 	dvipngProcess = NULL;
@@ -187,44 +189,6 @@ void EnrichmentDialog::initEditorPage()
 	layout->addWidget(outputLabel);
 
 	tabWidget->addTab(editPage, tr("&Text" ));
-}
-
-void EnrichmentDialog::initProxyPage()
-{
-	QNetworkProxy proxy = QNetworkProxy::applicationProxy();
-
-	proxyPage = new QWidget();
-
-	proxyGroupBox = new QGroupBox (tr("&Proxy"));
-	proxyGroupBox->setCheckable(true);
-	proxyGroupBox->setChecked(!proxy.hostName().isEmpty());
-
-	QGridLayout *gl = new QGridLayout(proxyGroupBox);
-    gl->addWidget(new QLabel( tr("Host")), 0, 0);
-    proxyHostLine = new QLineEdit(proxy.hostName ());
-    gl->addWidget(proxyHostLine, 0, 1);
-
-    gl->addWidget(new QLabel( tr("Port")), 1, 0);
-    proxyPortBox = new QSpinBox;
-    proxyPortBox->setMaximum(10000000);
-	proxyPortBox->setValue(proxy.port());
-    gl->addWidget(proxyPortBox, 1, 1);
-
-    gl->addWidget(new QLabel( tr("Username")), 2, 0);
-    proxyUserNameLine = new QLineEdit(proxy.user());
-    gl->addWidget(proxyUserNameLine, 2, 1);
-
-    gl->addWidget(new QLabel( tr("Password")), 3, 0);
-    proxyPasswordLine = new QLineEdit;
-
-    gl->addWidget(proxyPasswordLine, 3, 1);
-
-	gl->setRowStretch(4, 1);
-
-	QVBoxLayout *layout = new QVBoxLayout(proxyPage);
-    layout->addWidget(proxyGroupBox);
-
-	tabWidget->addTab(proxyPage, tr( "&Internet Connection" ) );
 }
 
 void EnrichmentDialog::initTextPage()
@@ -720,20 +684,7 @@ void EnrichmentDialog::apply()
 		ApplicationWindow *app = (ApplicationWindow *)this->parent();
 		if (app)
 			app->setFormatBarFont(textFont);
-	} else if (proxyPage && tabWidget->currentPage() == proxyPage)
-		setApplicationCustomProxy();
-}
-
-QNetworkProxy EnrichmentDialog::setApplicationCustomProxy()
-{
-	QNetworkProxy proxy;
-	proxy.setType(QNetworkProxy::NoProxy);
-	proxy.setHostName(proxyHostLine->text());
-	proxy.setPort(proxyPortBox->value());
-	proxy.setUser(proxyUserNameLine->text());
-	proxy.setPassword(proxyPasswordLine->text());
-	QNetworkProxy::setApplicationProxy(proxy);
-	return proxy;
+	}
 }
 
 QString EnrichmentDialog::createTempTexFile()
@@ -801,20 +752,6 @@ void EnrichmentDialog::fetchImage()
     url.addQueryItem("D", "3");
     url.addQueryItem("tex", QUrl::toPercentEncoding(
                      equationEditor->toPlainText()));
-
-    http->setHost("mathtran.org");
-
-    if (proxyGroupBox->isChecked() && !proxyHostLine->text().isEmpty()){
-		setApplicationCustomProxy();
-		http->setProxy(proxyHostLine->text(), proxyPortBox->value(),
-						proxyUserNameLine->text(), proxyPasswordLine->text());
-   } else {
-		QNetworkProxy proxy;
-		proxy.setType(QNetworkProxy::NoProxy);
-		proxy.setHostName(QString::null);
-		QNetworkProxy::setApplicationProxy(proxy);
-		http->setProxy(proxy);
-    }
 
     http->get(url.toString());
 
@@ -1398,14 +1335,12 @@ void EnrichmentDialog::updateCompilerInterface(int compiler)
 {
 	switch(compiler){
 		case 0:
-			tabWidget->setTabEnabled(tabWidget->indexOf(proxyPage), true);
 			compilerPathGroupBox->hide();
 			((ApplicationWindow *)parentWidget())->d_latex_compiler_path = QString::null;
 		break;
 
 		case 1:
 			compilerPathGroupBox->show();
-			tabWidget->setTabEnabled(tabWidget->indexOf(proxyPage), false);
 		break;
 	}
 }

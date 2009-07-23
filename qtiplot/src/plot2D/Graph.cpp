@@ -129,6 +129,10 @@ static const char *unzoom_xpm[]={
 	#include <EmfEngine.h>
 #endif
 
+#ifdef PGF_OUTPUT
+	#include <PgfEngine.h>
+#endif
+
 #include <ColorBox.h>
 #include <PatternBox.h>
 #include <SymbolBox.h>
@@ -1635,6 +1639,20 @@ void Graph::exportEMF(const QString& fname)
 
 	EmfPaintDevice emf(boundingRect().size(), fname);
 	QPainter paint(&emf);
+	print(&paint, rect());
+	paint.end();
+
+	QApplication::restoreOverrideCursor();
+}
+#endif
+
+#ifdef PGF_OUTPUT
+void Graph::exportPGF(const QString& fname)
+{
+	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+
+	PgfPaintDevice pgf(boundingRect().size(), fname);
+	QPainter paint(&pgf);
 	print(&paint, rect());
 	paint.end();
 
@@ -3547,6 +3565,15 @@ void Graph::enablePanningMagnifier(bool on)
 
 		d_panner = new QwtPlotPanner(cnvs);
 		connect(d_panner, SIGNAL(panned(int, int)), multiLayer(), SLOT(notifyChanges()));
+
+		foreach (QwtPlotItem *it, d_curves){
+			if (it->rtti() == QwtPlotItem::Rtti_PlotSpectrogram){
+				Spectrogram *sp = (Spectrogram *)it;
+				int axis = sp->colorScaleAxis();
+				d_magnifier->setAxisEnabled (axis, false);
+				d_panner->setAxisEnabled (axis, false);
+			}
+		}
 	} else {
 		cnvs->setCursor(Qt::arrowCursor);
 		d_magnifier = NULL;
