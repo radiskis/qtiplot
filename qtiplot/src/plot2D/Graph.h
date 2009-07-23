@@ -308,6 +308,11 @@ class Graph: public QwtPlot
 #ifdef EMF_OUTPUT
 		void exportEMF(const QString& fname);
 #endif
+
+#ifdef PGF_OUTPUT
+		void exportPGF(const QString& fname);
+#endif
+
 		void exportVector(const QString& fileName, int res = 0, bool color = true,
 						const QSizeF& customSize = QSizeF (), int unit = FrameWidget::Pixel, double fontsFactor = 1.0);
 		void exportImage(const QString& fileName, int quality = 100, bool transparent = false,

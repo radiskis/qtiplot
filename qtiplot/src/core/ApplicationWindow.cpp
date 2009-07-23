@@ -4803,16 +4803,14 @@ void ApplicationWindow::readSettings()
 	settings.endGroup(); //end group SyntaxHighlighting
 	settings.endGroup(); // end group Notes
 
-	if (settings.contains("/Proxy")){
-		settings.beginGroup("/Proxy");
-		QNetworkProxy proxy;
-		proxy.setType(QNetworkProxy::NoProxy);
-		proxy.setHostName(settings.value("/Host", QString()).toString());
-		proxy.setPort(settings.value("/Port", 8080).toInt());
-		proxy.setUser(settings.value("/Username", QString()).toString());
-		settings.endGroup();
-		QNetworkProxy::setApplicationProxy(proxy);
-	}
+	settings.beginGroup("/Proxy");
+	QNetworkProxy proxy;
+	proxy.setType(QNetworkProxy::NoProxy);
+	proxy.setHostName(settings.value("/Host", QString()).toString());
+	proxy.setPort(settings.value("/Port", 8080).toInt());
+	proxy.setUser(settings.value("/Username", QString()).toString());
+	settings.endGroup();
+	QNetworkProxy::setApplicationProxy(proxy);
 }
 
 void ApplicationWindow::saveSettings()
@@ -5323,6 +5321,10 @@ void ApplicationWindow::exportLayer()
 #ifdef EMF_OUTPUT
     else if (selected_filter.contains(".emf"))
 		g->exportEMF(file_name);
+#endif
+#ifdef PGF_OUTPUT
+    else if (selected_filter.contains(".pgf"))
+		g->exportPGF(file_name);
 #endif
     else {
 		QList<QByteArray> list = QImageWriter::supportedImageFormats();
@@ -15305,6 +15307,11 @@ void ApplicationWindow::searchForUpdates()
         version_buffer.open(IO_WriteOnly);
 		http = new QHttp(this);
 		connect(http, SIGNAL(done(bool)), this, SLOT(receivedVersionFile(bool)));
+
+        QNetworkProxy proxy = QNetworkProxy::applicationProxy();
+        if (!proxy.hostName().isEmpty())
+			http->setProxy(proxy.hostName(), proxy.port(), proxy.user(), proxy.password());
+
         http->setHost("soft.proindependent.com");
         http->get("/version.txt", &version_buffer);
     }

@@ -99,7 +99,6 @@ private slots:
 private:
 	void initTextPage();
 	void initEditorPage();
-	void initProxyPage();
 	void initImagePage();
 	void initFramePage();
 	void initGeometryPage();
@@ -109,7 +108,6 @@ private:
 	void setPatternTo(FrameWidget *r);
 	void setTextFormatTo(LegendWidget *l);
 	void setText(QTextEdit *editor, const QString & t);
-	QNetworkProxy setApplicationCustomProxy();
 	QString createTempTexFile();
 
     QHttp *http;
@@ -141,10 +139,6 @@ private:
 	TextFormatButtons *formatButtons, *texFormatButtons;
 	QPushButton *textDefaultBtn, *frameDefaultBtn, *rectangleDefaultBtn;
 	QCheckBox *autoUpdateTextBox;
-	QWidget *proxyPage;
-	QGroupBox *proxyGroupBox;
-    QLineEdit *proxyHostLine, *proxyUserNameLine, *proxyPasswordLine;
-    QSpinBox *proxyPortBox;
     QComboBox *texCompilerBox;
     QLineEdit *compilerPathBox;
     QPushButton *browseCompilerBtn;

@@ -66,6 +66,7 @@
 #include <QFontMetrics>
 #include <QFileDialog>
 #include <QFontComboBox>
+#include <QNetworkProxy>
 
 static const char * notes_32_xpm[] = {
 "32 32 343 2",
@@ -1105,6 +1106,7 @@ void ConfigDialog::initAppPage()
 	appTabWidget->addTab( numericFormatPage, QString() );
 
 	initFileLocationsPage();
+	initProxyPage();
 
 	connect( boxLanguage, SIGNAL( activated(int) ), this, SLOT( switchToLanguage(int) ) );
 	connect( fontsBtn, SIGNAL( clicked() ), this, SLOT( pickApplicationFont() ) );
@@ -1617,6 +1619,7 @@ void ConfigDialog::languageChange()
 	appTabWidget->setTabText(appTabWidget->indexOf(appColors), tr("Colors"));
 	appTabWidget->setTabText(appTabWidget->indexOf(numericFormatPage), tr("Numeric Format"));
 	appTabWidget->setTabText(appTabWidget->indexOf(fileLocationsPage), tr("File Locations"));
+	appTabWidget->setTabText(appTabWidget->indexOf(proxyPage), tr("&Internet Connection"));
 
 	lblLanguage->setText(tr("Language"));
 	lblStyle->setText(tr("Style"));
@@ -1680,6 +1683,13 @@ void ConfigDialog::languageChange()
 #ifdef SCRIPTING_PYTHON
 	lblPythonConfigDir->setText(tr("Python Configuration Files"));
 #endif
+
+	//proxy tab
+	proxyGroupBox->setTitle(tr("&Proxy"));
+    proxyHostLabel->setText(tr("Host"));
+    proxyPortLabel->setText(tr("Port"));
+    proxyUserLabel->setText(tr("Username"));
+    proxyPasswordLabel->setText(tr("Password"));
 
 	//tables page
 	boxUpdateTableValues->setText(tr("Automatically &Recalculate Column Values"));
@@ -2014,6 +2024,11 @@ void ConfigDialog::apply()
 		if (path != app->d_python_config_folder && validFolderPath(path))
 			app->d_python_config_folder = QFileInfo(path).absoluteFilePath();
 #endif
+	}
+
+	if (generalDialog->currentWidget() == appTabWidget &&
+		appTabWidget->currentWidget() == proxyPage){
+		setApplicationCustomProxy();
 	}
 
 	// general page: confirmations tab
@@ -2445,3 +2460,61 @@ bool ConfigDialog::validFolderPath(const QString& path)
 	return true;
 }
 
+void ConfigDialog::initProxyPage()
+{
+	QNetworkProxy proxy = QNetworkProxy::applicationProxy();
+
+	proxyPage = new QWidget();
+
+	proxyGroupBox = new QGroupBox (tr("&Proxy"));
+	proxyGroupBox->setCheckable(true);
+	proxyGroupBox->setChecked(!proxy.hostName().isEmpty());
+
+	QGridLayout *gl = new QGridLayout(proxyGroupBox);
+
+	proxyHostLabel = new QLabel( tr("Host"));
+    gl->addWidget(proxyHostLabel, 0, 0);
+    proxyHostLine = new QLineEdit(proxy.hostName ());
+    gl->addWidget(proxyHostLine, 0, 1);
+
+	proxyPortLabel = new QLabel( tr("Port"));
+    gl->addWidget(proxyPortLabel, 1, 0);
+    proxyPortBox = new QSpinBox;
+    proxyPortBox->setMaximum(10000000);
+	proxyPortBox->setValue(proxy.port());
+    gl->addWidget(proxyPortBox, 1, 1);
+
+	proxyUserLabel = new QLabel( tr("Username"));
+    gl->addWidget(proxyUserLabel, 2, 0);
+    proxyUserNameLine = new QLineEdit(proxy.user());
+    gl->addWidget(proxyUserNameLine, 2, 1);
+
+	proxyPasswordLabel = new QLabel( tr("Password"));
+    gl->addWidget(proxyPasswordLabel, 3, 0);
+    proxyPasswordLine = new QLineEdit;
+
+    gl->addWidget(proxyPasswordLine, 3, 1);
+
+	gl->setRowStretch(4, 1);
+
+	QVBoxLayout *layout = new QVBoxLayout(proxyPage);
+    layout->addWidget(proxyGroupBox);
+
+	appTabWidget->addTab(proxyPage, tr( "&Internet Connection" ) );
+}
+
+QNetworkProxy ConfigDialog::setApplicationCustomProxy()
+{
+	QNetworkProxy proxy;
+	proxy.setType(QNetworkProxy::NoProxy);
+	if (proxyGroupBox->isChecked())
+		proxy.setHostName(proxyHostLine->text());
+	else
+		proxy.setHostName(QString::null);
+
+	proxy.setPort(proxyPortBox->value());
+	proxy.setUser(proxyUserNameLine->text());
+	proxy.setPassword(proxyPasswordLine->text());
+	QNetworkProxy::setApplicationProxy(proxy);
+	return proxy;
+}
