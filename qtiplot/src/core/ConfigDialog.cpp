@@ -1481,21 +1481,36 @@ void ConfigDialog::initFileLocationsPage()
 	QPushButton *browseHelpBtn = new QPushButton();
 	browseHelpBtn->setIcon(QIcon(QPixmap(choose_folder_xpm)));
 	gl->addWidget(browseHelpBtn, 1, 2);
-	gl->setRowStretch(2, 1);
+
+	texCompilerLabel = new QLabel(tr("LaTeX Compiler"));
+	gl->addWidget(texCompilerLabel, 2, 0);
+
+	texCompilerPathBox = new QLineEdit(QDir::toNativeSeparators(app->d_latex_compiler_path));
+	connect(texCompilerPathBox, SIGNAL(editingFinished ()), this, SLOT(validateTexCompiler()));
+
+	gl->addWidget(texCompilerPathBox, 2, 1);
+
+    browseTexCompilerBtn = new QPushButton;
+    browseTexCompilerBtn->setIcon(QIcon(QPixmap(choose_folder_xpm)));
+	connect(browseTexCompilerBtn, SIGNAL(clicked()), this, SLOT(chooseTexCompiler()));
+
+    gl->addWidget(browseTexCompilerBtn, 2, 2);
+	gl->setRowStretch(3, 1);
 
 #ifdef SCRIPTING_PYTHON
 	lblPythonConfigDir = new QLabel(tr("Python Configuration Files"));
-	gl->addWidget(lblPythonConfigDir, 2, 0);
+	gl->addWidget(lblPythonConfigDir, 3, 0);
 
 	pythonConfigDirLine = new QLineEdit(QDir::toNativeSeparators(app->d_python_config_folder));
-	gl->addWidget(pythonConfigDirLine, 2, 1);
+	gl->addWidget(pythonConfigDirLine, 3, 1);
 
 	QPushButton *browsePythonConfigBtn = new QPushButton();
 	browsePythonConfigBtn->setIcon(QIcon(QPixmap(choose_folder_xpm)));
 	connect(browsePythonConfigBtn, SIGNAL(clicked()), this, SLOT(choosePythonConfigFolder()));
-	gl->addWidget(browsePythonConfigBtn, 2, 2);
-	gl->setRowStretch(3, 1);
+	gl->addWidget(browsePythonConfigBtn, 3, 2);
+	gl->setRowStretch(4, 1);
 #endif
+
 
 	QVBoxLayout *vl = new QVBoxLayout(fileLocationsPage);
 	vl->addWidget(gb);
@@ -2517,4 +2532,54 @@ QNetworkProxy ConfigDialog::setApplicationCustomProxy()
 	proxy.setPassword(proxyPasswordLine->text());
 	QNetworkProxy::setApplicationProxy(proxy);
 	return proxy;
+}
+
+void ConfigDialog::chooseTexCompiler()
+{
+	ApplicationWindow *app = (ApplicationWindow *)parentWidget();
+	if (!app)
+		return;
+
+	QFileInfo tfi(app->d_latex_compiler_path);
+	QString compiler = ApplicationWindow::getFileName(this, tr("Choose the location of the LaTeX compiler!"),
+	app->d_latex_compiler_path, QString(), 0, false);
+
+	if (!compiler.isEmpty()){
+		app->d_latex_compiler_path = QDir::toNativeSeparators(compiler);
+		texCompilerPathBox->setText(app->d_latex_compiler_path);
+	}
+}
+
+bool ConfigDialog::validateTexCompiler()
+{
+	QString path = texCompilerPathBox->text();
+	if (path.isEmpty())
+		return false;
+
+	ApplicationWindow *app = (ApplicationWindow *)parentWidget();
+	QFileInfo fi(path);
+	if (!fi.exists()){
+		QMessageBox::critical(this, tr("QtiPlot - File Not Found!"),
+		tr("The file %1 doesn't exist.<br>Please choose another file!").arg(path));
+		texCompilerPathBox->setText(app->d_latex_compiler_path);
+		return false;
+	}
+
+	if (fi.isDir()){
+		QMessageBox::critical(this, tr("QtiPlot - File Not Found!"),
+		tr("%1 is a folder.<br>Please choose a file!").arg(path));
+		texCompilerPathBox->setText(app->d_latex_compiler_path);
+		return false;
+	}
+
+	if (!fi.isReadable()){
+		QMessageBox::critical(this, tr("QtiPlot"),
+		tr("You don't have read access rights to file %1.<br>Please choose another file!").arg(path));
+		texCompilerPathBox->setText(app->d_latex_compiler_path);
+		return false;
+	}
+
+	app->d_latex_compiler_path = QDir::toNativeSeparators(path);
+	texCompilerPathBox->setText(app->d_latex_compiler_path);
+	return true;
 }

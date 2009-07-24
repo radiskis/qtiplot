@@ -107,6 +107,8 @@ private slots:
 	void rehighlight();
 #endif
     void customizeNotes();
+	void chooseTexCompiler();
+	bool validateTexCompiler();
 
 private:
 	void initPlotsPage();
@@ -202,6 +204,10 @@ private:
     QLineEdit *proxyHostLine, *proxyUserNameLine, *proxyPasswordLine;
     QSpinBox *proxyPortBox;
     QLabel *proxyHostLabel, *proxyPortLabel, *proxyUserLabel, *proxyPasswordLabel;
+
+    QLineEdit *texCompilerPathBox;
+    QPushButton *browseTexCompilerBtn;
+    QLabel *texCompilerLabel;
 
 #ifdef SCRIPTING_PYTHON
 	QGroupBox *groupSyntaxHighlighter;
