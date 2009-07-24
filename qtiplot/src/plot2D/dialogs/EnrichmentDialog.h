@@ -93,8 +93,6 @@ private slots:
 	void displayCompileError(QProcess::ProcessError error);
 	void createImage();
 	void updateCompilerInterface(int);
-	void chooseCompiler();
-	bool validateCompiler();
 
 private:
 	void initTextPage();
@@ -140,9 +138,6 @@ private:
 	QPushButton *textDefaultBtn, *frameDefaultBtn, *rectangleDefaultBtn;
 	QCheckBox *autoUpdateTextBox;
     QComboBox *texCompilerBox;
-    QLineEdit *compilerPathBox;
-    QPushButton *browseCompilerBtn;
-    QGroupBox *compilerPathGroupBox;
 
 	QFont textFont;
 

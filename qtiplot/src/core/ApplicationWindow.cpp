@@ -383,6 +383,7 @@ void ApplicationWindow::initWindow()
 
 void ApplicationWindow::initGlobalConstants()
 {
+	d_latex_compiler = MathTran;
 	d_latex_compiler_path = QString::null;
 	d_mdi_windows_area = true;
 	d_open_project_filter = QString::null;//tr("QtiPlot project") + " (*.qti)";
@@ -3765,11 +3766,11 @@ void ApplicationWindow::importASCII(const QStringList& files, int import_mode, c
 
 				if (w->inherits("Table")){
 					Table *t = (Table*)w;
-					for (int i=0; i<files.size(); i++)
+					for (int i = 0; i < files.size(); i++){
                         t->importASCII(files[i], local_column_separator, local_ignored_lines, local_rename_columns,
 							local_strip_spaces, local_simplify_spaces, local_import_comments,
 							local_comment_string, import_read_only, (Table::ImportMode)(import_mode - 2), endLineChar);
-
+					}
 					t->updateDecimalSeparators(local_separators);
 					t->notifyChanges();
 					emit modifiedProject(t);
@@ -4540,6 +4541,7 @@ void ApplicationWindow::readSettings()
 	settings.endGroup(); // Paths
 
 	d_open_project_filter = settings.value("/OpenProjectFilter", d_open_project_filter).toString();
+	d_latex_compiler = settings.value("/TeXCompilerPolicy", d_latex_compiler).toInt();
 	settings.endGroup();
 	/* ------------- end group General ------------------- */
 
@@ -4899,6 +4901,7 @@ void ApplicationWindow::saveSettings()
 	settings.endGroup(); // Paths
 
 	settings.setValue("/OpenProjectFilter", d_open_project_filter);
+	settings.setValue("/TeXCompilerPolicy", d_latex_compiler);
 	settings.endGroup();
 	/* ---------------- end group General --------------- */
 

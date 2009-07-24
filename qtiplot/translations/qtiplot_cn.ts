@@ -26,17 +26,17 @@
 <context>
     <name>ApplicationWindow</name>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="975"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="976"/>
         <source>QtiPlot - untitled</source>
         <translation>QtiPlot - 未命名</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="986"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="987"/>
         <source>Project Explorer</source>
         <translation>项目浏览器</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="15118"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="15121"/>
         <source>Folder</source>
         <translation>文件夹</translation>
     </message>
@@ -46,47 +46,47 @@
         <translation>未命名</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="977"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="978"/>
         <source>Name</source>
         <translation>名称</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="15100"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="15103"/>
         <source>Type</source>
         <translation>类型</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="979"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="980"/>
         <source>View</source>
         <translation>视图</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="15103"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="15106"/>
         <source>Size</source>
         <translation>大小</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="15104"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="15107"/>
         <source>Created</source>
         <translation>创建</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="15084"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="15087"/>
         <source>Label</source>
         <translation>标签</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="987"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="988"/>
         <source>Results Log</source>
         <translation>结果日志</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="990"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="991"/>
         <source>Scripting Console</source>
         <translation>脚本控制台</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="988"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="989"/>
         <source>Undo Stack</source>
         <translation>撤销堆栈</translation>
     </message>
@@ -115,587 +115,587 @@
         <translation>F6</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="996"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="997"/>
         <source>File</source>
         <translation>文件</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="997"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="998"/>
         <source>Edit</source>
         <translation>编辑</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="995"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="996"/>
         <source>Plot</source>
         <translation>绘图</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="710"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="711"/>
         <source>Disable &amp;Tools</source>
         <translation>禁用工具(&amp;T)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13244"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13247"/>
         <source>&amp;Zoom In</source>
         <translation>放大(&amp;Z)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13245"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13248"/>
         <source>Ctrl++</source>
         <translation>Ctrl++</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="728"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="729"/>
         <source>&amp;Zoom Out</source>
         <translation>缩小(&amp;Z)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13249"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13252"/>
         <source>Ctrl+-</source>
         <translation>Ctrl+-</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13252"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13255"/>
         <source>&amp;Data Reader</source>
         <translation>数据读取器(&amp;D)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13253"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13256"/>
         <source>CTRL+D</source>
         <translation>CTRL+D</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13256"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13259"/>
         <source>&amp;Select Data Range</source>
         <translation>选择数据范围(&amp;S)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13257"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13260"/>
         <source>ALT+S</source>
         <translation>ALT+S</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13260"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13263"/>
         <source>S&amp;creen Reader</source>
         <translation>屏幕读取器(&amp;c)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13263"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13266"/>
         <source>&amp;Draw Data Points</source>
         <translation>画数据点(&amp;D)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13266"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13269"/>
         <source>&amp;Move Data Points...</source>
         <translation>移动数据点(&amp;M)...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13267"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13270"/>
         <source>Ctrl+ALT+M</source>
         <translation>Ctrl+ALT+M</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13270"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13273"/>
         <source>Remove &amp;Bad Data Points...</source>
         <translation>移除坏数据点(&amp;B)...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13271"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13274"/>
         <source>Alt+B</source>
         <translation>Alt+B</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13278"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13281"/>
         <source>Add E&amp;quation</source>
         <translation>添加公式(&amp;q)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13280"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13283"/>
         <source>ALT+Q</source>
         <translation>ALT+Q</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13274"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13277"/>
         <source>Add &amp;Text</source>
         <translation>添加文本(&amp;T)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13276"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13279"/>
         <source>ALT+T</source>
         <translation>ALT+T</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13290"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13293"/>
         <source>Draw &amp;Arrow</source>
         <translation>画箭头(&amp;A)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13291"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13294"/>
         <source>CTRL+ALT+A</source>
         <translation>CTRL+ALT+A</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13294"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13297"/>
         <source>Draw &amp;Line</source>
         <translation>画线(&amp;L)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13295"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13298"/>
         <source>CTRL+ALT+L</source>
         <translation>CTRL+ALT+L</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13282"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13285"/>
         <source>Add &amp;Rectangle</source>
         <translation>添加矩形(&amp;R)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13284"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13287"/>
         <source>CTRL+ALT+R</source>
         <translation>CTRL+ALT+R</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13286"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13289"/>
         <source>Add &amp;Ellipse</source>
         <translation>添加椭圆(&amp;E)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13288"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13291"/>
         <source>CTRL+ALT+E</source>
         <translation>CTRL+ALT+E</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="15091"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="15094"/>
         <source>Table</source>
         <translation>表格</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="15434"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="15437"/>
         <source>Column</source>
         <translation>列</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="992"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="993"/>
         <source>Data Display</source>
         <translation>数据显示</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="998"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="999"/>
         <source>Matrix Plot</source>
         <translation>矩阵绘图</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="1000"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="1001"/>
         <source>Format</source>
         <translation>格式</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="985"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="986"/>
         <source>QtiPlot - Script Window</source>
         <translation>QtiPlot - 脚本窗口</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="10148"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="10151"/>
         <source>3D Surface</source>
         <translation>三维曲面图</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="8550"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="8553"/>
         <source>&amp;Recent Projects</source>
         <translation>最近项目(&amp;R)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="1003"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="1004"/>
         <source>&amp;File</source>
         <translation>文件(&amp;F)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="1004"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="1005"/>
         <source>&amp;New</source>
         <translation>新建(&amp;N)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="1005"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="1006"/>
         <source>&amp;Export Graph</source>
         <translation>导出绘图(&amp;E)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="1006"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="1007"/>
         <source>&amp;Edit</source>
         <translation>编辑(&amp;E)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="1007"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="1008"/>
         <source>&amp;View</source>
         <translation>视图(&amp;V)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="1008"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="1009"/>
         <source>&amp;Graph</source>
         <translation>绘图(&amp;G)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="9314"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="9317"/>
         <source>3D &amp;Plot</source>
         <translation>三维绘图(&amp;P)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="1010"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="1011"/>
         <source>&amp;Matrix</source>
         <translation>矩阵(&amp;M)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="6435"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="6438"/>
         <source>&amp;Plot</source>
         <translation>绘图(&amp;P)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="9235"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="9238"/>
         <source>&amp;Data</source>
         <translation>数据(&amp;D)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="6479"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="6482"/>
         <source>&amp;Normalize</source>
         <translation>归一化(&amp;N)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="6474"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="6477"/>
         <source>&amp;Fill Columns With</source>
         <translation>填充列(&amp;F)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13181"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13184"/>
         <source>&amp;Table</source>
         <translation>表格(&amp;T)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="1016"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="1017"/>
         <source>&amp;Smooth</source>
         <translation>平滑(&amp;S)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="1017"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="1018"/>
         <source>&amp;FFT filter</source>
         <translation>FFT滤波器(&amp;F)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="1018"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="1019"/>
         <source>Fit E&amp;xponential Decay</source>
         <translation>指数衰减拟合(&amp;x)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="1019"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="1020"/>
         <source>Fit &amp;Multi-peak</source>
         <translation>多峰值拟合(&amp;M)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="1020"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="1021"/>
         <source>&amp;Analysis</source>
         <translation>分析(&amp;A)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="1021"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="1022"/>
         <source>F&amp;ormat</source>
         <translation>格式(&amp;o)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="1022"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="1023"/>
         <source>&amp;Scripting</source>
         <translation>脚本(&amp;S)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="1023"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="1024"/>
         <source>&amp;Windows</source>
         <translation>窗口(&amp;W)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13102"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13105"/>
         <source>&amp;Help</source>
         <translation>帮助(&amp;H)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="1205"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="1206"/>
         <source>Set Columns &amp;As</source>
         <translation>设置列(&amp;A)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="6464"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="6467"/>
         <source>&amp;Read-only</source>
         <translation>只读(&amp;R)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="6465"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="6468"/>
         <source>Read/&amp;Write</source>
         <translation>读写(&amp;W)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="6405"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="6408"/>
         <source>Special Line/Symb&amp;ol</source>
         <translation>特殊线/符号(&amp;o)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="6425"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="6428"/>
         <source>Statistical &amp;Graphs</source>
         <translation>统计图(&amp;G)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="6432"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="6435"/>
         <source>Pa&amp;nel</source>
         <translation>面板(&amp;n)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="1325"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="1326"/>
         <source>3&amp;D Plot</source>
         <translation>三维绘图(&amp;D)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="1421"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="1422"/>
         <source>Empty Stack</source>
         <translation>空堆栈</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="2518"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="2519"/>
         <source>QtiPlot - Plot error</source>
         <translation>QtiPlot - 绘图错误</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="1723"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="1724"/>
         <source>You must select exactly one column for plotting!</source>
         <translation>你必须选择一列来绘图!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="16512"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="16515"/>
         <source>QtiPlot - Error</source>
         <translation>QtiPlot - 错误</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="1732"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="1733"/>
         <source>Please select a column to plot!</source>
         <translation>请选择一列来绘图!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="1799"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="1800"/>
         <source>Please select four columns for this operation!</source>
         <translation>请为这个操作选择四列!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="16389"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="16392"/>
         <source>QtiPlot - Warning</source>
         <translation>QtiPlot - 警告</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="9562"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="9565"/>
         <source>&lt;h4&gt;There are no tables available in this project.&lt;/h4&gt;&lt;p&gt;&lt;h4&gt;Please create a table and try again!&lt;/h4&gt;</source>
         <translation>&lt;h4&gt;项目中没有有效的表格。&lt;/h4&gt;&lt;p&gt;&lt;h4&gt;请创建表格后重试!&lt;/h4&gt;</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="1987"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="1988"/>
         <source>There are no available columns with plot designation set to Z!</source>
         <translation>绘图指示设置为Z的情况下没有有效的列!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="2003"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="2004"/>
         <source>QtiPlot - Choose data set</source>
         <translation>QtiPlot - 选择数据集</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="15088"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="15091"/>
         <source>Matrix</source>
         <translation>矩阵</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="2054"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="2055"/>
         <source>QtiPlot - Choose matrix to plot</source>
         <translation>QtiPlot - 选择需要绘制的矩阵</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="2047"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="2048"/>
         <source>&lt;h4&gt;There are no matrices available in this project.&lt;/h4&gt;&lt;p&gt;&lt;h4&gt;Please create a matrix and try again!&lt;/h4&gt;</source>
         <translation>&lt;h4&gt;项目中没有有效的矩阵。&lt;/h4&gt;&lt;p&gt;&lt;h4&gt;请创建矩阵后重试!&lt;/h4&gt;</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.h" line="254"/>
+        <location filename="src/core/ApplicationWindow.h" line="255"/>
         <source>Graph</source>
         <translation>绘图</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="7184"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="7187"/>
         <source>QtiPlot - Export error</source>
         <translation>QtiPlot - 导出错误</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="5690"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="5693"/>
         <source>Could not write to file: &lt;br&gt;&lt;h4&gt; %1 &lt;/h4&gt;&lt;p&gt;Please verify that you have the right to write to this location!</source>
         <translation>无法写入文件: &lt;br&gt;&lt;h4&gt; %1 &lt;/h4&gt;&lt;p&gt;请保证你在这个位置有写权限!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="2337"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="2338"/>
         <source>Images</source>
         <translation>图像</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="2304"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="2305"/>
         <source>QtiPlot - Import image from file</source>
         <translation>QtiPlot - 从文件导入图像</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="2349"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="2350"/>
         <source>QtiPlot - Load image from file</source>
         <translation>QtiPlot - 从文件中加载图像</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="15612"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="15615"/>
         <source>Please select a Y column to plot!</source>
         <translation>请选择需要绘制的Y列!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="2863"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="2864"/>
         <source>QtiPlot - Renamed Window</source>
         <translation>QtiPlot - 重名名窗口</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="2864"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="2865"/>
         <source>The table &apos;%1&apos; already exists. It has been renamed &apos;%2&apos;.</source>
         <translation>表格&apos;%1&apos;已经存在。重名名为&apos;%2&apos;。</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="2809"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="2810"/>
         <source>Notes</source>
         <translation>笔记</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="2880"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="2881"/>
         <source>Set Image Mode</source>
         <translation>设置图像模式</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="2892"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="2893"/>
         <source>Set Data Mode</source>
         <translation>设置数据模式</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="2904"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="2905"/>
         <source>Show X/Y</source>
         <translation>显示X/Y</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="2916"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="2917"/>
         <source>Show Column/Row</source>
         <translation>显示列/行</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="2929"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="2930"/>
         <source>Set Default Palette</source>
         <translation>设置默认调色板</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="2942"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="2943"/>
         <source>Set Gray Scale Palette</source>
         <translation>设置灰阶调色板</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="2955"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="2956"/>
         <source>Set Rainbow Palette</source>
         <translation>设置彩色调色板</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="3025"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="3026"/>
         <source>Determinant of </source>
         <translation>行列式</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13758"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13761"/>
         <source>&lt;h4&gt;There are no plot layers available in this window.&lt;/h4&gt;&lt;p&gt;&lt;h4&gt;Please add a layer and try again!&lt;/h4&gt;</source>
         <translation>&lt;h4&gt;在此窗口没有有效的绘图图层。&lt;/h4&gt;&lt;p&gt;&lt;h4&gt;请添加一个图层后重试!&lt;/h4&gt;</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="7562"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="7565"/>
         <source>There are no curves available on this plot!</source>
         <translation>在此绘图上没有有效的曲线!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13769"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13772"/>
         <source>This functionality is not available for pie plots!</source>
         <translation>这个功能在饼状图上无效!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="3352"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="3353"/>
         <source>QtiPlot - Error bars error</source>
         <translation>QtiPlot - 误差棒错误</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="3403"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="3404"/>
         <source>This feature is not available for user defined function curves!</source>
         <translation>这个功能对于用户自定义函数曲线无效!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="3409"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="3410"/>
         <source>The selected columns have different numbers of rows!</source>
         <translation>选中的列行数不同!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="3416"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="3417"/>
         <source>The selected error column is empty!</source>
         <translation>选中的误差列为空!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13940"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13943"/>
         <source>QtiPlot - File openning error</source>
         <translation>QtiPlot - 文件打开错误</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="3837"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="3838"/>
         <source>The file: &lt;b&gt;%1&lt;/b&gt; is the current file!</source>
         <translation>文件&lt;b&gt;%1&lt;/b&gt;是当前文件!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="14092"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="14095"/>
         <source>The file: &lt;b&gt;%1&lt;/b&gt; doesn&apos;t exist!</source>
         <translation>文件:&lt;b&gt;%1&lt;/b&gt;不存在!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13941"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13944"/>
         <source>You don&apos;t have the permission to open this file: &lt;b&gt;%1&lt;/b&gt;</source>
         <translation>你没有权限打开&lt;b&gt;%1&lt;/b&gt;文件</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="14096"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="14099"/>
         <source>QtiPlot - File opening error</source>
         <translation>QtiPlot - 文件打开错误</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="3896"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="3897"/>
         <source>The file &lt;b&gt;%1&lt;/b&gt; is corrupted, but there exists a backup copy.&lt;br&gt;Do you want to open the backup instead?</source>
         <translation>文件&lt;b&gt;%1&lt;/b&gt;损坏，但是有一个备份。&lt;br&gt;你想打开备份的文件吗?</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="4342"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="4343"/>
         <source>The file: &lt;b&gt; %1 &lt;/b&gt; was not created using QtiPlot!</source>
         <translation>文件&lt;b&gt; %1 &lt;/b&gt;不是QtiPlot创建的!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="3925"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="3926"/>
         <source>QtiPlot - File Open Error</source>
         <translation>QtiPlot - 文件打开错误</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="3927"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="3928"/>
         <source>The file: &lt;b&gt; %1 &lt;/b&gt; &lt;p&gt;does not exist anymore!&lt;p&gt;It will be removed from the list.</source>
         <translation>文件&lt;b&gt; %1 &lt;/b&gt; &lt;p&gt;不再存在!&lt;p&gt;它将被从列表中移除。</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="3944"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="3945"/>
         <source>The file: &lt;p&gt;&lt;b&gt; %1 &lt;/b&gt;&lt;p&gt; is the current file!</source>
         <translation>文件&lt;p&gt;&lt;b&gt; %1 &lt;/b&gt;&lt;p&gt;是当前文件!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="16237"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="16240"/>
         <source>QtiPlot</source>
         <translation>QtiPlot</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="3997"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="3998"/>
         <source>The file &quot;%1&quot; was created using &quot;%2&quot; as scripting language.
 
 Initializing support for this language FAILED; I&apos;m using &quot;%3&quot; instead.
@@ -706,314 +706,314 @@ Various parts of this file may not be displayed as expected.</source>
 这个文件的很多部分可能不会被正确的显示。</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="4004"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="4005"/>
         <source>Window</source>
         <translation>窗口</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="4011"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="4012"/>
         <source>QtiPlot - Opening file</source>
         <translation>QtiPlot - 打开文件</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="4247"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="4248"/>
         <source>Script Error</source>
         <translation>脚本错误</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="4301"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="4302"/>
         <source>QtiPlot - Scripting Error</source>
         <translation>QtiPlot - 脚本错误</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="4302"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="4303"/>
         <source>Scripting language &quot;%1&quot; failed to initialize.</source>
         <translation>&quot;%1&quot;脚本语言初始化失败。</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="4312"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="4313"/>
         <source>QtiPlot - Open Template File</source>
         <translation>QtiPlot - 打开模板文件</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="4320"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="4321"/>
         <source>The file: &lt;b&gt;%1&lt;/b&gt; is not a QtiPlot template file!</source>
         <translation>文件&lt;b&gt;%1&lt;/b&gt;不是一个QtiPlot模板文件!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="4405"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="4406"/>
         <source>Table1</source>
         <translation>表格1</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="5208"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="5211"/>
         <source>QtiPlot - Export Error</source>
         <translation>QtiPlot - 导出错误</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="5209"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="5212"/>
         <source>&lt;h4&gt;There are no plot layers available in this window!&lt;/h4&gt;</source>
         <translation>&lt;h4&gt;在此窗口没有有效的绘图图层。&lt;/h4&gt;</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="5342"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="5345"/>
         <source>Choose a directory to export the graphs to</source>
         <translation>选择一个图像导出目录</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="5346"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="5349"/>
         <source>Output format:</source>
         <translation>输出格式:</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="5347"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="5350"/>
         <source>Directory:</source>
         <translation>目录:</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="5378"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="5381"/>
         <source>There are no plot layers available in window &lt;b&gt;%1&lt;/b&gt;.&lt;br&gt;Graph window not exported!</source>
         <translation>在&lt;b&gt;%1&lt;/b&gt;窗口没有有效的绘图图层。&lt;br&gt;图像窗口没有导出!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="5958"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="5961"/>
         <source>A file called: &lt;p&gt;&lt;b&gt;%1&lt;/b&gt;&lt;p&gt;already exists. Do you want to overwrite it?</source>
         <translation>&lt;p&gt;&lt;b&gt;%1&lt;/b&gt;&lt;p&gt;文件已经存在。 你想覆盖吗?</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="5956"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="5959"/>
         <source>QtiPlot - Overwrite file?</source>
         <translation>QtiPlot - 覆盖文件?</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="5420"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="5423"/>
         <source>Could not write to file: &lt;br&gt;&lt;h4&gt;%1&lt;/h4&gt;&lt;p&gt;Please verify that you have the right to write to this location!</source>
         <translation>无法写入文件: &lt;br&gt;&lt;h4&gt; %1&lt;/h4&gt;&lt;p&gt;请保证你在这个位置有写权限!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="5514"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="5517"/>
         <source>Minimized</source>
         <translation>最小化</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="9135"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="9138"/>
         <source>Maximized</source>
         <translation>最大化</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="14444"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="14447"/>
         <source>QtiPlot project</source>
         <translation>QtiPlot项目</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="14445"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="14448"/>
         <source>Compressed QtiPlot project</source>
         <translation>压缩的QtiPlot项目</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="5609"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="5612"/>
         <source>Save Project As</source>
         <translation>项目另存为</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="5664"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="5667"/>
         <source>QtiPlot Matrix Template</source>
         <translation>QtiPlot矩阵模板</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="5666"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="5669"/>
         <source>QtiPlot 2D Graph Template</source>
         <translation>QtiPlot 2D图像模板</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="5668"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="5671"/>
         <source>QtiPlot Table Template</source>
         <translation>QtiPlot表格模板</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="5670"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="5673"/>
         <source>QtiPlot 3D Surface Template</source>
         <translation>QtiPlot 3D曲面图模板</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="5673"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="5676"/>
         <source>Save Window As Template</source>
         <translation>窗口另存为模板</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="14590"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="14593"/>
         <source>Please enter a valid name!</source>
         <translation>请输入一个有效名称!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="5759"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="5762"/>
         <source>The name you chose is not valid: only letters and digits are allowed!</source>
         <translation>你选择的名称无效:只允许字母和数字!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="14600"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="14603"/>
         <source>Please choose another name!</source>
         <translation>请选择一个其它的名称!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="5766"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="5769"/>
         <source>Name &lt;b&gt;%1&lt;/b&gt; already exists!</source>
         <translation>名称&lt;b&gt;%1&lt;/b&gt;已存在!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="5768"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="5771"/>
         <source>Warning: for internal consistency reasons the underscore character is replaced with a minus sign.</source>
         <translation>警告:因为内部一致性原因，画线字符被减号替代。</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="5942"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="5945"/>
         <source>Choose a directory to export the tables to</source>
         <translation>选择一个表格导出目录</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="15400"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="15403"/>
         <source>&amp;Yes</source>
         <translation>是(&amp;Y)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12895"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12898"/>
         <source>&amp;All</source>
         <translation>全部(&amp;A)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="10463"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="10466"/>
         <source>&amp;Cancel</source>
         <translation>取消(&amp;C)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="7172"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="7175"/>
         <source>Choose a filename to save under</source>
         <translation>选择一个文件来保存</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="6026"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="6029"/>
         <source>QtiPlot - Enter rows number</source>
         <translation>QtiPlot - 输入行号</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="6026"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="6029"/>
         <source>Rows</source>
         <translation>行</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="6042"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="6045"/>
         <source>QtiPlot - Delete rows</source>
         <translation>QtiPlot - 删除行</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="6039"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="6042"/>
         <source>Start row</source>
         <translation>起始行</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="6042"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="6045"/>
         <source>End row</source>
         <translation>终止行</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="6056"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="6059"/>
         <source>QtiPlot - Enter columns number</source>
         <translation>QtiPlot - 输入列号</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="6056"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="6059"/>
         <source>Columns</source>
         <translation>列</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="16471"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="16474"/>
         <source>QtiPlot - Column selection error</source>
         <translation>QtiPlot - 列选择错误</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="6665"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="6668"/>
         <source>Please select a column first!</source>
         <translation>请先选择一列!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="6145"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="6148"/>
         <source>Please select two columns for this operation!</source>
         <translation>请为此操作选择两列!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="6163"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="6166"/>
         <source>Please select exactly one columns for this operation!</source>
         <translation>请为此操作选择恰好一列!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="6199"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="6202"/>
         <source>Please select two columns for this operation:
  the first represents the signal and the second the response function!</source>
         <translation>请为此操作选择两列:
 第一列代表信号第二列代表函数!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="6240"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="6243"/>
         <source>QtiPlot - Row selection error</source>
         <translation>QtiPlot - 行选择错误</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="6241"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="6244"/>
         <source>Please select a row first!</source>
         <translation>请先选择一行!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12952"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12955"/>
         <source>&amp;Line</source>
         <translation>线状图(&amp;L)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13018"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13021"/>
         <source>&amp;Scatter</source>
         <translation>散点图(&amp;S)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12958"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12961"/>
         <source>Line + S&amp;ymbol</source>
         <translation>线状图+符号(&amp;y)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12961"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12964"/>
         <source>Vertical &amp;Drop Lines</source>
         <translation>垂线图(&amp;D)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12963"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12966"/>
         <source>&amp;Spline</source>
         <translation>齿形图(&amp;S)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12964"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12967"/>
         <source>&amp;Vertical Steps</source>
         <translation>垂直阶梯图(&amp;V)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12965"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12968"/>
         <source>&amp;Horizontal Steps</source>
         <translation>水平阶梯图(&amp;H)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13182"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13185"/>
         <source>&amp;Columns</source>
         <translation>柱状图(&amp;C)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12970"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12973"/>
         <source>&amp;Rows</source>
         <translation>水平柱状图(&amp;R)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12979"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12982"/>
         <source>&amp;Area</source>
         <translation>面积图(&amp;A)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12982"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12985"/>
         <source>&amp;Pie</source>
         <translation>饼状图(&amp;P)</translation>
     </message>
@@ -1038,7 +1038,7 @@ Various parts of this file may not be displayed as expected.</source>
         <translation type="obsolete">三维轨线(&amp;T)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12991"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12994"/>
         <source>&amp;Histogram</source>
         <translation>直方图(&amp;H)</translation>
     </message>
@@ -1048,97 +1048,97 @@ Various parts of this file may not be displayed as expected.</source>
         <translation type="obsolete">堆叠直方图(&amp;S)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="9438"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="9441"/>
         <source>Cu&amp;t</source>
         <translation>剪切(&amp;t)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="9439"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="9442"/>
         <source>&amp;Copy</source>
         <translation>复制(&amp;C)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="6440"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="6443"/>
         <source>Past&amp;e</source>
         <translation>粘贴(&amp;e)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13193"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13196"/>
         <source>&amp;X</source>
         <translation>&amp;X</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13195"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13198"/>
         <source>&amp;Y</source>
         <translation>&amp;Y</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13197"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13200"/>
         <source>&amp;Z</source>
         <translation>&amp;Z</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13202"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13205"/>
         <source>&amp;Label</source>
         <translation>标签(&amp;L)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="14513"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="14516"/>
         <source>&amp;None</source>
         <translation>无(&amp;N)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13199"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13202"/>
         <source>X E&amp;rror</source>
         <translation>X误差(&amp;r)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13200"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13203"/>
         <source>Y &amp;Error</source>
         <translation>Y误差(&amp;E)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="6466"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="6469"/>
         <source>Set As</source>
         <translation>设置为</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="6359"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="6362"/>
         <source>&amp;Fill Column With</source>
         <translation>填充列(&amp;F)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="6362"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="6365"/>
         <source>&amp;Column</source>
         <translation>列(&amp;C)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="9443"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="9446"/>
         <source>Clea&amp;r</source>
         <translation>清除(&amp;c)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12759"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12762"/>
         <source>&amp;Delete</source>
         <translation>删除(&amp;D)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="6449"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="6452"/>
         <source>&amp;Insert</source>
         <translation>插入(&amp;I)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="6382"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="6385"/>
         <source>&amp;Ascending</source>
         <translation>升序(&amp;A)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="6383"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="6386"/>
         <source>&amp;Descending</source>
         <translation>降序(&amp;D)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="6384"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="6387"/>
         <source>Sort Colu&amp;mn</source>
         <translation>按列排序(&amp;m)</translation>
     </message>
@@ -1148,354 +1148,354 @@ Various parts of this file may not be displayed as expected.</source>
         <translation type="obsolete">矢量图&amp;XYXY</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12993"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12996"/>
         <source>&amp;Vertical 2 Layers</source>
         <translation>垂直排列2图层(&amp;V)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12994"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12997"/>
         <source>&amp;Horizontal 2 Layers</source>
         <translation>水平排列2图层(&amp;H)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12995"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12998"/>
         <source>&amp;4 Layers</source>
         <translation>4图层(&amp;4)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12996"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12999"/>
         <source>&amp;Stacked Layers</source>
         <translation>堆叠图层(&amp;S)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="6531"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="6534"/>
         <source>You need to select at least one Y column for this operation!</source>
         <translation>你需要为此操作选择至少一个Y列!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="15649"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="15652"/>
         <source>You need at least two columns for this operation!</source>
         <translation>你需要为此操作选择至少两列!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="6598"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="6601"/>
         <source>Y2 Axis Title</source>
         <translation>Y2轴标题</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="6756"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="6759"/>
         <source>Not available for empty 3D surface plots!</source>
         <translation>空的3D曲面图绘制是无效的!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="6855"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="6858"/>
         <source>Set Display Range</source>
         <translation>设置显示范围</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="7219"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="7222"/>
         <source>&lt;h4&gt;There are no plot layers available in this window.&lt;/h4&gt;</source>
         <translation>&lt;h4&gt;在此窗口没有有效的绘图图层。&lt;/h4&gt;</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="7135"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="7138"/>
         <source>This will modify the data in the worksheets!
 Are you sure you want to continue?</source>
         <translation>这会改动工作表中的数据!
 你确定你想继续吗?</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="7136"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="7139"/>
         <source>Continue</source>
         <translation>继续</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="8918"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="8921"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="7185"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="7188"/>
         <source>Could not write to file: &lt;h4&gt;%1&lt;/h4&gt;&lt;p&gt;Please verify that you have the right to write to this location or that the file is not being used by another application!</source>
         <translation>无法写入文件: &lt;h4&gt; %1&lt;/h4&gt;&lt;p&gt;请保证你在这个位置有写权限或者这个文件不在被别的程序所使用!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="7486"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="7489"/>
         <source>Sorry, there are no results to display!</source>
         <translation>对不起，没有结果可以显示!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="7552"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="7555"/>
         <source>There are no plot layers available in this window!</source>
         <translation>在此窗口没有有效的绘图图层!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="7683"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="7686"/>
         <source>There are no layers available on this plot. Operation aborted!</source>
         <translation>此绘图上没有有效图层。操作中止!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="7719"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="7722"/>
         <source>QtiPlot - Insert image from file</source>
         <translation>QtiPlot - 从文件插入图像</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="7783"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="7786"/>
         <source>There are no plot layers available in this window.</source>
         <translation>在此窗口没有有效的绘图图层。</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="8043"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="8046"/>
         <source>QtiPlot - Duplicate window error</source>
         <translation>QtiPlot - 复制窗口错误</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="8044"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="8047"/>
         <source>There are no windows available in this project!</source>
         <translation>此项目中没有有效窗口!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="8066"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="8069"/>
         <source>QtiPlot - Duplicate error</source>
         <translation>QtiPlot - 复制错误</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="8066"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="8069"/>
         <source>Empty 3D surface plots cannot be duplicated!</source>
         <translation>空的3D曲面图不可复制!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13867"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13870"/>
         <source>Released</source>
         <translation>发布</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="8371"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="8374"/>
         <source>About QtiPlot</source>
         <translation>关于QtiPlot</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="8386"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="8389"/>
         <source>&amp;Translate</source>
         <translation>翻译(&amp;T)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="8493"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="8496"/>
         <source>Vie&amp;w</source>
         <translation>视图(&amp;w)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="8496"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="8499"/>
         <source>&amp;Palette</source>
         <translation>调色板(&amp;P)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="8505"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="8508"/>
         <source>&amp;Convert to Spreadsheet</source>
         <translation>转换为电子表格(&amp;C)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="8630"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="8633"/>
         <source>&amp;Folders</source>
         <translation>文件夹(&amp;F)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="8642"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="8645"/>
         <source>&amp;Cascade</source>
         <translation>层叠(&amp;C)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="8643"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="8646"/>
         <source>&amp;Tile</source>
         <translation>平铺(&amp;T)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13108"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13111"/>
         <source>Close &amp;Window</source>
         <translation>关闭窗口(&amp;W)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12392"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12395"/>
         <source>More windows...</source>
         <translation>更多窗口...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="8694"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="8697"/>
         <source>&amp;View Pixel Line profile</source>
         <translation>查看像素谱线轮廓(&amp;V)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="8695"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="8698"/>
         <source>&amp;Intensity Matrix</source>
         <translation>强度矩阵(&amp;I)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="8699"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="8702"/>
         <source>&amp;Cut</source>
         <translation>剪切(&amp;C)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="14522"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="14525"/>
         <source>&amp;Properties...</source>
         <translation>属性(&amp;P)...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="8714"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="8717"/>
         <source>Please use the project explorer to select a window!</source>
         <translation>请使用项目浏览器选择一个窗口!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="8728"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="8731"/>
         <source>Normal</source>
         <translation>普通</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="8916"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="8919"/>
         <source>Save changes to project: &lt;p&gt;&lt;b&gt; %1 &lt;/b&gt; ?</source>
         <translation>保存变动到项目&lt;p&gt;&lt;b&gt; %1 &lt;/b&gt;?</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="14819"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="14822"/>
         <source>Yes</source>
         <translation>是</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="14819"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="14822"/>
         <source>No</source>
         <translation>否</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="14486"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="14489"/>
         <source>&amp;Show All Windows</source>
         <translation>显示所有窗口(&amp;S)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="14487"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="14490"/>
         <source>&amp;Hide All Windows</source>
         <translation>隐藏所有窗口(&amp;H)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12852"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12855"/>
         <source>&amp;Delete Selection</source>
         <translation>删除所选(&amp;D)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="14506"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="14509"/>
         <source>New &amp;Window</source>
         <translation>新建窗口(&amp;W)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="14509"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="14512"/>
         <source>New F&amp;older</source>
         <translation>新建文件夹(&amp;o)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="9002"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="9005"/>
         <source>Auto &amp;Column Width</source>
         <translation>自动列宽(&amp;C)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="9045"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="9048"/>
         <source>&amp;Delete Window</source>
         <translation>删除窗口(&amp;D)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13106"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13109"/>
         <source>&amp;Rename Window</source>
         <translation>重命名窗口(&amp;R)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="9050"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="9053"/>
         <source>&amp;Print Window</source>
         <translation>打印窗口(&amp;P)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="9061"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="9064"/>
         <source>D&amp;epending Graphs</source>
         <translation>依赖的图像(&amp;e)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="9070"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="9073"/>
         <source>D&amp;epending 3D Graphs</source>
         <translation>依赖的3D图像(&amp;e)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="9096"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="9099"/>
         <source>D&amp;epends on</source>
         <translation>依赖</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="9099"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="9102"/>
         <source>Function</source>
         <translation>函数</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="9203"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="9206"/>
         <source>Re&amp;move Pie Curve</source>
         <translation>移除饼状图曲线(&amp;m)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="9234"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="9237"/>
         <source>Anal&amp;yze</source>
         <translation>分析(&amp;y)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="9293"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="9296"/>
         <source>&amp;Paste Layer</source>
         <translation>粘贴图层(&amp;P)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="9252"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="9255"/>
         <source>&amp;Paste Text</source>
         <translation>粘贴文本(&amp;P)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="9254"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="9257"/>
         <source>&amp;Paste Tex Formula</source>
         <translation>粘贴TeX方程式(&amp;P)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="9256"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="9259"/>
         <source>&amp;Paste Image</source>
         <translation>粘贴图像(&amp;P)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="9258"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="9261"/>
         <source>&amp;Paste Rectangle</source>
         <translation>粘贴矩形(&amp;P)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="9260"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="9263"/>
         <source>&amp;Paste Ellipse</source>
         <translation>粘贴椭圆(&amp;P)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="9262"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="9265"/>
         <source>&amp;Paste Line/Arrow</source>
         <translation>粘贴线/箭头(&amp;P)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="9270"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="9273"/>
         <source>&amp;Layer</source>
         <translation>图层(&amp;L)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="9271"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="9274"/>
         <source>&amp;Window</source>
         <translation>窗口(&amp;W)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="9267"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="9270"/>
         <source>E&amp;xport</source>
         <translation>导出(&amp;x)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12903"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12906"/>
         <source>&amp;Print</source>
         <translation>打印(&amp;P)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="9276"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="9279"/>
         <source>P&amp;roperties...</source>
         <translation>属性(&amp;r)...</translation>
     </message>
@@ -1505,2320 +1505,2320 @@ Are you sure you want to continue?</source>
         <translation type="obsolete">删除图层(&amp;D)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="9306"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="9309"/>
         <source>&amp;Copy Page</source>
         <translation>复制页(&amp;C)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="9307"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="9310"/>
         <source>E&amp;xport Page</source>
         <translation>导出页(&amp;x)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="9316"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="9319"/>
         <source>&amp;Matrix...</source>
         <translation>矩阵(&amp;M)...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="9320"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="9323"/>
         <source>Choose &amp;Data Set...</source>
         <translation>选择数据集(&amp;D)...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="9322"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="9325"/>
         <source>Choose &amp;Matrix...</source>
         <translation>选择矩阵(&amp;M)...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="9325"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="9328"/>
         <source>C&amp;lear</source>
         <translation>清除(&amp;l)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="9332"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="9335"/>
         <source>&amp;Copy Graph</source>
         <translation>复制图像(&amp;C)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="9333"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="9336"/>
         <source>&amp;Export</source>
         <translation>导出(&amp;E)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="9440"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="9443"/>
         <source>&amp;Paste</source>
         <translation>粘贴(&amp;P)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="9420"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="9423"/>
         <source>&amp;Insert Row</source>
         <translation>插入行(&amp;I)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="9345"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="9348"/>
         <source>&amp;Insert Column</source>
         <translation>插入列(&amp;I)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="9432"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="9435"/>
         <source>&amp;Delete Rows</source>
         <translation>删除行(&amp;D)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="9349"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="9352"/>
         <source>&amp;Delete Columns</source>
         <translation>删除列(&amp;D)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="9421"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="9424"/>
         <source>&amp;Delete Row</source>
         <translation>删除行(&amp;D)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="9422"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="9425"/>
         <source>Clea&amp;r Row</source>
         <translation>清除行(&amp;r)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="9433"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="9436"/>
         <source>Clea&amp;r Rows</source>
         <translation>清除行(&amp;r)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="9460"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="9463"/>
         <source>Choose the location of the QtiPlot help folder!</source>
         <translation>选择QtiPlot帮助文件夹的路径!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="9468"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="9471"/>
         <source>QtiPlot - index.html File Not Found!</source>
         <translation>QtiPlot - index.html文件没找到!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="9469"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="9472"/>
         <source>There is no file called &lt;b&gt;index.html&lt;/b&gt; in this folder.&lt;br&gt;Please choose another folder!</source>
         <translation>这个文件夹里面没有叫做&lt;b&gt;index.html&lt;/b&gt;的文件。&lt;br&gt;请另选一个文件夹!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="9523"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="9526"/>
         <source>QtiPlot - Help Files Not Found!</source>
         <translation>QtiPlot - 帮助文件没找到!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="9522"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="9525"/>
         <source>The manual can be downloaded from the following internet address:</source>
         <translation>手册可以从以下网址下载:</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="9535"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="9538"/>
         <source>QtiPlot - Help Profile Not Found!</source>
         <translation>QtiPlot - 帮助没找到!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="9536"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="9539"/>
         <source>The assistant could not start because the file &lt;b&gt;%1&lt;/b&gt; was not found in the help file directory!</source>
         <translation>助手无法启动因为文件&lt;b&gt;%1&lt;/b&gt;不在帮助文件的目录中!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="9538"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="9541"/>
         <source>This file is provided with the QtiPlot manual which can be downloaded from the following internet address:</source>
         <translation>这个文件随同QtiPlot手册提供，可以在以下网址下载:</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="9520"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="9523"/>
         <source>Please indicate the location of the help file!</source>
         <translation>请指示帮助文件的位置!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="9622"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="9625"/>
         <source>QtiPlot - Edit function</source>
         <translation>QtiPlot - 编辑函数</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="10326"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="10329"/>
         <source>QtiPlot - Set the number of pixels to average</source>
         <translation>QtiPlot - 设置象素值为平均</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="10326"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="10329"/>
         <source>Number of averaged pixels</source>
         <translation>平均象素值</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="10375"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="10378"/>
         <source>You must have more than one layer in the active window!</source>
         <translation>在一个活动窗口你需要超过一个图层!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="10402"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="10405"/>
         <source>You must have more than one dataset in the active layer!</source>
         <translation>在一个活动图层你需要超过一个数据集!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="10461"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="10464"/>
         <source>QtiPlot - Guess best origin for the new layer?</source>
         <translation>QtiPlot - 猜测新图层的最佳来源?</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="10462"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="10465"/>
         <source>Do you want QtiPlot to guess the best position for the new layer?
  Warning: this will rearrange existing layers!</source>
         <translation>你希望QtiPlot猜测新图层的最佳位置吗?
 警告:这会重排已存在的图层!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="10463"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="10466"/>
         <source>&amp;Guess</source>
         <translation>猜测(&amp;G)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="10463"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="10466"/>
         <source>&amp;Top-left corner</source>
         <translation>左上角(&amp;T)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="11373"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="11376"/>
         <source>Curve</source>
         <translation>曲线</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="11483"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="11486"/>
         <source>Integration of %1 from zero is</source>
         <translation>%1从0开始的积分</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="11626"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="11629"/>
         <source>Please select a &apos;Y&apos; column first!</source>
         <translation>请先选择一个Y列!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="11498"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="11501"/>
         <source>Integration of %1</source>
         <translation>%1的积分</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="11500"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="11503"/>
         <source>Area</source>
         <translation>面积</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="11634"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="11637"/>
         <source>Linear Regression of %1</source>
         <translation>%1线性回归</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="11639"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="11642"/>
         <source>Slope</source>
         <translation>斜率</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="11582"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="11585"/>
         <source>Intercept</source>
         <translation>截止</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="11640"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="11643"/>
         <source>Chi^2</source>
         <translation>Chi^2</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="11641"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="11644"/>
         <source>R^2</source>
         <translation>R^2</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12878"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12881"/>
         <source>Add &amp;Custom Script Action...</source>
         <translation>添加自定义脚本动作(&amp;C)...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12768"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12771"/>
         <source>New &amp;Project</source>
         <translation>新建项目(&amp;P)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12770"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12773"/>
         <source>Ctrl+N</source>
         <translation>Ctrl+N</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12780"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12783"/>
         <source>New &amp;Graph</source>
         <translation>新建绘图(&amp;G)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12782"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12785"/>
         <source>Ctrl+G</source>
         <translation>Ctrl+G</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12784"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12787"/>
         <source>New &amp;Note</source>
         <translation>新建笔记(&amp;N)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12787"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12790"/>
         <source>New &amp;Table</source>
         <translation>新建表格(&amp;T)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12788"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12791"/>
         <source>Ctrl+T</source>
         <translation>Ctrl+T</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12791"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12794"/>
         <source>New &amp;Matrix</source>
         <translation>新建矩阵(&amp;M)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12792"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12795"/>
         <source>Ctrl+M</source>
         <translation>Ctrl+M</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12795"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12798"/>
         <source>New &amp;Function Plot</source>
         <translation>新建函数绘图(&amp;F)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12797"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12800"/>
         <source>Ctrl+F</source>
         <translation>Ctrl+F</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12799"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12802"/>
         <source>New 3D &amp;Surface Plot</source>
         <translation>新建三维曲面绘图(&amp;S)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12801"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12804"/>
         <source>Ctrl+ALT+Z</source>
         <translation>Ctrl+ALT+Z</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12803"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12806"/>
         <source>&amp;Open</source>
         <translation>打开(&amp;O)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12804"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12807"/>
         <source>Ctrl+O</source>
         <translation>Ctrl+O</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12807"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12810"/>
         <source>Open Image &amp;File</source>
         <translation>打开图象文件(&amp;F)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12808"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12811"/>
         <source>Ctrl+I</source>
         <translation>Ctrl+I</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12810"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12813"/>
         <source>Import I&amp;mage...</source>
         <translation>导入图像(&amp;m)...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12812"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12815"/>
         <source>&amp;Save Project</source>
         <translation>保存项目(&amp;S)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12814"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12817"/>
         <source>Ctrl+S</source>
         <translation>Ctrl+S</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12816"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12819"/>
         <source>Save Project &amp;As...</source>
         <translation>项目另存为(&amp;A)...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12817"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12820"/>
         <source>Ctrl+Shift+S</source>
         <translation>Ctrl+Shift+S</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="11971"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="11974"/>
         <source>Open Temp&amp;late...</source>
         <translation>打开模板(&amp;l)...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12822"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12825"/>
         <source>Save As &amp;Template...</source>
         <translation>另存为模板(&amp;T)...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="11977"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="11980"/>
         <source>Save Note As...</source>
         <translation>笔记另存为...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12825"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12828"/>
         <source>&amp;Import ASCII...</source>
         <translation>导入ASCII(&amp;I)...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12829"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12832"/>
         <source>&amp;Undo</source>
         <translation>撤销(&amp;U)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12831"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12834"/>
         <source>Ctrl+Z</source>
         <translation>Ctrl+Z</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12833"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12836"/>
         <source>&amp;Redo</source>
         <translation>重做(&amp;R)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12836"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12839"/>
         <source>&amp;Duplicate</source>
         <translation>复制(&amp;D)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12840"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12843"/>
         <source>Cu&amp;t Selection</source>
         <translation>剪切所选(&amp;t)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12842"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12845"/>
         <source>Ctrl+X</source>
         <translation>Ctrl+X</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12844"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12847"/>
         <source>&amp;Copy Selection</source>
         <translation>复制所选(&amp;C)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12846"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12849"/>
         <source>Ctrl+C</source>
         <translation>Ctrl+C</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12848"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12851"/>
         <source>&amp;Paste Selection</source>
         <translation>粘贴所选(&amp;P)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12850"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12853"/>
         <source>Ctrl+V</source>
         <translation>Ctrl+V</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12854"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12857"/>
         <source>Del</source>
         <comment>delete key</comment>
         <translation>删除</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12857"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12860"/>
         <source>Ctrl+E</source>
         <translation>Ctrl+E</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12880"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12883"/>
         <source>Add La&amp;yer</source>
         <translation>添加图层(&amp;y)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12882"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12885"/>
         <source>ALT+L</source>
         <translation>ALT+L</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12884"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12887"/>
         <source>Arran&amp;ge Layers</source>
         <translation>排列图层(&amp;g)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12886"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12889"/>
         <source>Shift+A</source>
         <translation>Shift+A</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12889"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12892"/>
         <source>Automatic Layout</source>
         <translation>自动布局</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12891"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12894"/>
         <source>&amp;Current</source>
         <translation>当前(&amp;C)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13117"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13120"/>
         <source>Ctrl+Alt+G</source>
         <translation>Ctrl+Alt+G</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12896"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12899"/>
         <source>Alt+X</source>
         <translation>Alt+X</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12899"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12902"/>
         <source>&amp;Export PDF</source>
         <translation>导出PDF(&amp;E)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12900"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12903"/>
         <source>Ctrl+Alt+P</source>
         <translation>Ctrl+Alt+P</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12904"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12907"/>
         <source>Ctrl+P</source>
         <translation>Ctrl+P</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12907"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12910"/>
         <source>Print All Plo&amp;ts</source>
         <translation>打印所有绘图(&amp;t)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12908"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12911"/>
         <source>E&amp;xport ASCII</source>
         <translation>导出ASCII文件(&amp;x)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12910"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12913"/>
         <source>&amp;Quit</source>
         <translation>退出(&amp;Q)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12911"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12914"/>
         <source>Ctrl+Q</source>
         <translation>Ctrl+Q</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12913"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12916"/>
         <source>Clear &amp;Log Information</source>
         <translation>清除日志信息(&amp;L)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12914"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12917"/>
         <source>Delete &amp;Fit Tables</source>
         <translation>删除拟合表格(&amp;F)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12919"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12922"/>
         <source>Plot &amp;Wizard</source>
         <translation>绘图向导(&amp;W)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12920"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12923"/>
         <source>Ctrl+Alt+W</source>
         <translation>Ctrl+Alt+W</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12922"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12925"/>
         <source>&amp;Preferences...</source>
         <translation>选项(&amp;P)...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12924"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12927"/>
         <source>Add/Remove &amp;Curve...</source>
         <translation>添加/删除曲线(&amp;C)...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12925"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12928"/>
         <source>ALT+C</source>
         <translation>ALT+C</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12928"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12931"/>
         <source>Add &amp;Error Bars...</source>
         <translation>添加误差棒(&amp;E)...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12930"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12933"/>
         <source>Ctrl+B</source>
         <translation>Ctrl+B</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12932"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12935"/>
         <source>Add &amp;Function...</source>
         <translation>添加函数(&amp;F)...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12934"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12937"/>
         <source>Ctrl+Alt+F</source>
         <translation>Ctrl+Alt+F</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12936"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12939"/>
         <source>&amp;Rescale to Show All</source>
         <translation>重缩放显示所有(&amp;R)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12937"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12940"/>
         <source>Ctrl+Shift+R</source>
         <translation>Ctrl+Shift+R</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12940"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12943"/>
         <source>New &amp;Legend</source>
         <translation>新建图例(&amp;L)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12941"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12944"/>
         <source>Ctrl+L</source>
         <translation>Ctrl+L</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12944"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12947"/>
         <source>Add Time Stamp</source>
         <translation>添加时间标记</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12945"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12948"/>
         <source>Ctrl+ALT+T</source>
         <translation>Ctrl+ALT+T</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12948"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12951"/>
         <source>Add &amp;Image</source>
         <translation>添加图像(&amp;I)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12950"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12953"/>
         <source>ALT+I</source>
         <translation>ALT+I</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12988"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12991"/>
         <source>Vectors XY&amp;AM</source>
         <translation>矢量图XY&amp;AM</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12150"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12153"/>
         <source>&amp;Vectors &amp;XYXY</source>
         <translation>矢量图&amp;XYXY</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12992"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12995"/>
         <source>&amp;Stacked Histogram</source>
         <translation>堆叠直方图(&amp;S)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12997"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13000"/>
         <source>Stem-and-&amp;Leaf Plot</source>
         <translation>茎叶图(&amp;L)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13000"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13003"/>
         <source>D&amp;ouble-Y</source>
         <translation>双Y轴图(&amp;o)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13003"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13006"/>
         <source>&amp;Zoom</source>
         <translation>缩放(&amp;Z)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13006"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13009"/>
         <source>E&amp;xtract to Graphs</source>
         <translation>提取至绘图(&amp;x)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12186"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12189"/>
         <source>Extract to &amp;Layers</source>
         <translation>提取至层(&amp;L)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12192"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12195"/>
         <source>Add Inset Layer</source>
         <translation>添加浮动层</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13012"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13015"/>
         <source>&amp;Ribbon</source>
         <translation>带状图(&amp;R)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13015"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13018"/>
         <source>&amp;Bars</source>
         <translation>棒状图(&amp;B)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13021"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13024"/>
         <source>&amp;Trajectory</source>
         <translation>轨线(&amp;T)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13033"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13036"/>
         <source>Statistics on &amp;Columns</source>
         <translation>统计列(&amp;C)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13036"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13039"/>
         <source>Statistics on &amp;Rows</source>
         <translation>统计行(&amp;R)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13039"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13042"/>
         <source>&amp;Integrate</source>
         <translation>积分(&amp;I)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13038"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13041"/>
         <source>Integr&amp;ate Function...</source>
         <translation>函数积分(&amp;a)...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13040"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13043"/>
         <source>Inte&amp;rpolate ...</source>
         <translation>插值(&amp;r)...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13041"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13044"/>
         <source>&amp;Low Pass...</source>
         <translation>低通(&amp;L)...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13042"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13045"/>
         <source>&amp;High Pass...</source>
         <translation>高通(&amp;H)...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13043"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13046"/>
         <source>&amp;Band Pass...</source>
         <translation>带通(&amp;B)...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13044"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13047"/>
         <source>&amp;Band Block...</source>
         <translation>带阻(&amp;B)...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13045"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13048"/>
         <source>&amp;FFT...</source>
         <translation>&amp;FFT...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13046"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13049"/>
         <source>&amp;Savitzky-Golay...</source>
         <translation>Savitzky-Golay(&amp;S)...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13047"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13050"/>
         <source>&amp;FFT Filter...</source>
         <translation>FFT滤波器(&amp;F)...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13048"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13051"/>
         <source>Moving Window &amp;Average...</source>
         <translation>平均移动窗口(&amp;A)...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13049"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13052"/>
         <source>&amp;Differentiate</source>
         <translation>微分(&amp;D)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13050"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13053"/>
         <source>Fit &amp;Linear</source>
         <translation>线性拟合(&amp;L)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13052"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13055"/>
         <source>Fit &amp;Polynomial ...</source>
         <translation>多项式拟合(&amp;P)...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13053"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13056"/>
         <source>&amp;First Order ...</source>
         <translation>一阶(&amp;F)...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13054"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13057"/>
         <source>&amp;Second Order ...</source>
         <translation>二阶(&amp;S)...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13055"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13058"/>
         <source>&amp;Third Order ...</source>
         <translation>三阶(&amp;T)...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13056"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13059"/>
         <source>Fit Exponential Gro&amp;wth ...</source>
         <translation>指数增益拟合(&amp;w)...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13057"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13060"/>
         <source>Fit &amp;Boltzmann (Sigmoidal)</source>
         <translation>波尔兹曼(S型)拟合(&amp;B)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13058"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13061"/>
         <source>Fit &amp;Gaussian</source>
         <translation>高斯拟合(&amp;G)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13059"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13062"/>
         <source>Fit Lorent&amp;zian</source>
         <translation>洛仑兹拟合(&amp;z)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13061"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13064"/>
         <source>Fit &amp;Wizard...</source>
         <translation>拟合向导(&amp;W)...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13062"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13065"/>
         <source>Ctrl+Y</source>
         <translation>Ctrl+Y</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13064"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13067"/>
         <source>&amp;Plot ...</source>
         <translation>绘图(&amp;P)...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13065"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13068"/>
         <source>&amp;Scales...</source>
         <translation>比例(&amp;S)...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13066"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13069"/>
         <source>&amp;Axes...</source>
         <translation>轴(&amp;A)...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13067"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13070"/>
         <source>&amp;Grid ...</source>
         <translation>网格(&amp;G)...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13068"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13071"/>
         <source>&amp;Title ...</source>
         <translation>标题(&amp;T)...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13069"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13072"/>
         <source>Column &amp;Options ...</source>
         <translation>列选项(&amp;O)...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13070"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13073"/>
         <source>Ctrl+Alt+O</source>
         <translation>Ctrl+Alt+O</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13071"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13074"/>
         <source>Set Column &amp;Values ...</source>
         <translation>设置列值(&amp;V)...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13146"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13149"/>
         <source>Alt+Q</source>
         <translation>Alt+Q</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13073"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13076"/>
         <source>Recalculate</source>
         <translation>重新计算</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13234"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13237"/>
         <source>Ctrl+Return</source>
         <translation>Ctrl+Return</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13075"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13078"/>
         <source>&amp;Hide Selected</source>
         <translation>隐藏所选(&amp;H)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13077"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13080"/>
         <source>Sho&amp;w All Columns</source>
         <translation>显示所有列(&amp;w)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13079"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13082"/>
         <source>&amp;Swap columns</source>
         <translation>交换列(&amp;S)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13081"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13084"/>
         <source>Move &amp;Right</source>
         <translation>右移(&amp;R)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13083"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13086"/>
         <source>Move &amp;Left</source>
         <translation>左移(&amp;L)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13085"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13088"/>
         <source>Move to F&amp;irst</source>
         <translation>移至开头(&amp;i)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13087"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13090"/>
         <source>Move to Las&amp;t</source>
         <translation>移至末尾(&amp;t)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13089"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13092"/>
         <source>&amp;Columns...</source>
         <translation>列(&amp;C)...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13090"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13093"/>
         <source>&amp;Rows...</source>
         <translation>行(&amp;R)...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13091"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13094"/>
         <source>&amp;Delete Rows Interval...</source>
         <translation>删除行间隔(&amp;D)...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13099"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13102"/>
         <source>&amp;About QtiPlot</source>
         <translation>关于QtiPlot(&amp;A)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13100"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13103"/>
         <source>F1</source>
         <translation>F1</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13103"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13106"/>
         <source>Ctrl+H</source>
         <translation>Ctrl+H</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13105"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13108"/>
         <source>&amp;Choose Help Folder...</source>
         <translation>选择帮助文件夹(&amp;C)...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13109"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13112"/>
         <source>Ctrl+W</source>
         <translation>Ctrl+W</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13112"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13115"/>
         <source>Add Column</source>
         <translation>添加列</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13116"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13119"/>
         <source>&amp;Go to Row...</source>
         <translation>跳转至行(&amp;G)...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13119"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13122"/>
         <source>Go to Colum&amp;n...</source>
         <translation>跳转至列(&amp;n)...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13120"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13123"/>
         <source>Ctrl+Alt+C</source>
         <translation>Ctrl+Alt+C</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13115"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13118"/>
         <source>Clear</source>
         <translation>清除</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13122"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13125"/>
         <source>&amp;Remove Layer</source>
         <translation>移除图层(&amp;R)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13123"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13126"/>
         <source>Alt+R</source>
         <translation>Alt+R</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13125"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13128"/>
         <source>Window &amp;Geometry...</source>
         <translation>窗口几何属性(&amp;G)...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13136"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13139"/>
         <source>&amp;Hide Window</source>
         <translation>隐藏窗口(&amp;H)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13137"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13140"/>
         <source>Ctrl+Alt+H</source>
         <translation>Ctrl+Alt+H</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13129"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13132"/>
         <source>&amp;View Pixel Line Profile</source>
         <translation>查看像素谱线轮廓(&amp;V)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13130"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13133"/>
         <source>&amp;Intensity Table</source>
         <translation>强度表格(&amp;I)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13132"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13135"/>
         <source>&amp;Properties</source>
         <translation>属性(&amp;P)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13133"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13136"/>
         <source>&amp;Activate Window</source>
         <translation>激活窗口(&amp;A)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13134"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13137"/>
         <source>Mi&amp;nimize Window</source>
         <translation>最小化窗口(&amp;n)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13135"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13138"/>
         <source>Ma&amp;ximize Window</source>
         <translation>最大化窗口(&amp;x)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13138"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13141"/>
         <source>Re&amp;size Window...</source>
         <translation>调整窗口尺寸(&amp;s)...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13139"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13142"/>
         <source>&amp;Surface...</source>
         <translation>曲面图(&amp;S)...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13140"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13143"/>
         <source>&amp;Data Set...</source>
         <translation>数据集(&amp;D)...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13141"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13144"/>
         <source>Set &amp;Properties...</source>
         <translation>设置属性(&amp;P)...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13142"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13145"/>
         <source>Set &amp;Dimensions...</source>
         <translation>设置维度(&amp;D)...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13143"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13146"/>
         <source>Ctrl+D</source>
         <translation>Ctrl+D</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13144"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13147"/>
         <source>Set &amp;Values...</source>
         <translation>设置值(&amp;V)...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13147"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13150"/>
         <source>&amp;Image Plot</source>
         <translation>图像绘制(&amp;I)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13149"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13152"/>
         <source>&amp;Transpose</source>
         <translation>转置(&amp;T)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13154"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13157"/>
         <source>Flip &amp;V</source>
         <translation>V型翻转(&amp;V)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12447"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12450"/>
         <source>Ctrl+Shift+V</source>
         <translation>Ctrl+Shift+V</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13156"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13159"/>
         <source>Flip &amp;H</source>
         <translation>H型翻转(&amp;H)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12451"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12454"/>
         <source>Ctrl+Shift+H</source>
         <translation>Ctrl+Shift+H</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13150"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13153"/>
         <source>R&amp;otate 90</source>
         <translation>旋转90(&amp;o)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13152"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13155"/>
         <source>Rotate &amp;-90</source>
         <translation>旋转-90(&amp;-)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12459"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12462"/>
         <source>Ctrl+Alt+R</source>
         <translation>Ctrl+Alt+R</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13167"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13170"/>
         <source>&amp;Invert</source>
         <translation>求逆(&amp;I)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13168"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13171"/>
         <source>&amp;Determinant</source>
         <translation>秩(&amp;D)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13162"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13165"/>
         <source>&amp;Image mode</source>
         <translation>图像模式(&amp;I)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12469"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12472"/>
         <source>Ctrl+Shift+I</source>
         <translation>Ctrl+Shift+I</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13161"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13164"/>
         <source>&amp;Data mode</source>
         <translation>数据模式(&amp;D)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12474"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12477"/>
         <source>Ctrl+Shift+D</source>
         <translation>Ctrl+Shift+D</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13159"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13162"/>
         <source>Show &amp;X/Y</source>
         <translation>显示X/Y(&amp;X)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12479"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12482"/>
         <source>Ctrl+Shift+X</source>
         <translation>Ctrl+Shift+X</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13160"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13163"/>
         <source>Show &amp;Column/Row</source>
         <translation>显示列/行(&amp;C)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12484"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12487"/>
         <source>Ctrl+Shift+C</source>
         <translation>Ctrl+Shift+C</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13164"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13167"/>
         <source>&amp;Gray Scale</source>
         <translation>灰阶(&amp;G)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13163"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13166"/>
         <source>&amp;Default</source>
         <translation>默认(&amp;D)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13165"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13168"/>
         <source>&amp;Rainbow</source>
         <translation>彩虹(&amp;R)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13166"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13169"/>
         <source>&amp;Custom</source>
         <translation>自定义(&amp;C)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13172"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13175"/>
         <source>&amp;Export Image ...</source>
         <translation>导出图象(&amp;E)...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13169"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13172"/>
         <source>&amp;Direct</source>
         <translation>直接(&amp;D)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13170"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13173"/>
         <source>&amp;XYZ Columns</source>
         <translation>&amp;XYZ列</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13171"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13174"/>
         <source>&amp;YXZ Columns</source>
         <translation>&amp;YXZ列</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12516"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12519"/>
         <source>&amp;Forward FFT</source>
         <translation>正FFT(&amp;F)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12519"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12522"/>
         <source>&amp;Inverse FFT</source>
         <translation>逆FFT(&amp;I)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13174"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13177"/>
         <source>Convert to &amp;Matrix</source>
         <translation>转换为矩阵(&amp;M)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13175"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13178"/>
         <source>3D &amp;Wire Frame</source>
         <translation>三维线框(&amp;W)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13176"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13179"/>
         <source>3D &amp;Hidden Line</source>
         <translation>三维隐藏线(&amp;H)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13177"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13180"/>
         <source>3D &amp;Polygons</source>
         <translation>三维多边形(&amp;P)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13178"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13181"/>
         <source>3D Wire &amp;Surface</source>
         <translation>三维线状曲面图(&amp;S)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12537"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12540"/>
         <source>Contour - &amp;Color Fill</source>
         <translation>等值线 - 色彩填充(&amp;C)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13027"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13030"/>
         <source>Contour &amp;Lines</source>
         <translation>等值线图(&amp;L)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13030"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13033"/>
         <source>&amp;Gray Scale Map</source>
         <translation>灰阶表(&amp;G)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13179"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13182"/>
         <source>Sort Ta&amp;ble</source>
         <translation>表排序(&amp;)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13180"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13183"/>
         <source>Sort Columns</source>
         <translation>列排序</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13183"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13186"/>
         <source>Co&amp;rrelate</source>
         <translation>相关(&amp;r)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13184"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13187"/>
         <source>&amp;Autocorrelate</source>
         <translation>自动相关(&amp;A)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13185"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13188"/>
         <source>&amp;Convolute</source>
         <translation>卷积(&amp;C)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13186"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13189"/>
         <source>&amp;Deconvolute</source>
         <translation>反卷积(&amp;D)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13187"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13190"/>
         <source>&amp;Horizontal</source>
         <translation>水平(&amp;H)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13188"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13191"/>
         <source>&amp;Vertical</source>
         <translation>垂直(&amp;V)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13189"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13192"/>
         <source>Ro&amp;w Numbers</source>
         <translation>行号(&amp;w)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13191"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13194"/>
         <source>&amp;Random Values</source>
         <translation>随机数(&amp;R)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12582"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12585"/>
         <source>&amp;Frequency Count ...</source>
         <translation>频数统计(&amp;F)...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13206"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13209"/>
         <source>&amp;Read Only</source>
         <translation>只读(&amp;R)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13204"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13207"/>
         <source>&amp;Disregard</source>
         <translation>忽略该列(&amp;D)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13208"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13211"/>
         <source>&amp;Box Plot</source>
         <translation>箱形图(&amp;B)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13211"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13214"/>
         <source>&amp;Gaussian...</source>
         <translation>高斯(&amp;G)...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13212"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13215"/>
         <source>&amp;Lorentzian...</source>
         <translation>洛仑兹(&amp;L)...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13214"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13217"/>
         <source>Search for &amp;Updates</source>
         <translation>搜索更新(&amp;U)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13213"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13216"/>
         <source>&amp;QtiPlot Homepage</source>
         <translation>QtiPlot主页(&amp;Q)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12624"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12627"/>
         <source>QtiPlot &amp;Forums</source>
         <translation>QtiPlot论坛(&amp;F)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13216"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13219"/>
         <source>Report a &amp;Bug</source>
         <translation>报告BUG(&amp;B)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13217"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13220"/>
         <source>Download &amp;Manual</source>
         <translation>下载手册(&amp;M)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13218"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13221"/>
         <source>&amp;Translations</source>
         <translation>语言包(&amp;T)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13219"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13222"/>
         <source>Make a &amp;Donation</source>
         <translation>捐赠(&amp;D)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13220"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13223"/>
         <source>Technical &amp;Support</source>
         <translation>技术支持(&amp;S)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13223"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13226"/>
         <source>Scripting &amp;language</source>
         <translation>脚本语言(&amp;l)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13225"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13228"/>
         <source>&amp;Restart scripting</source>
         <translation>重新运行脚本(&amp;R)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13227"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13230"/>
         <source>E&amp;xecute</source>
         <translation>执行(&amp;x)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13228"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13231"/>
         <source>Ctrl+J</source>
         <translation>Ctrl+J</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13230"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13233"/>
         <source>Execute &amp;All</source>
         <translation>全部执行(&amp;A)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13231"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13234"/>
         <source>Ctrl+Shift+J</source>
         <translation>Ctrl+Shift+J</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13233"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13236"/>
         <source>&amp;Evaluate Expression</source>
         <translation>计算表达式(&amp;E)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13236"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13239"/>
         <source>Show Line &amp;Numbers</source>
         <translation>显示行号(&amp;N)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12874"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12877"/>
         <source>&amp;Script Window</source>
         <translation>脚本窗口(&amp;S)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12757"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12760"/>
         <source>&amp;Plot details...</source>
         <translation>绘图详情(&amp;P)...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12758"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12761"/>
         <source>&amp;Worksheet</source>
         <translation>工作表(&amp;W)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12762"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12765"/>
         <source>&amp;Reset to Full Range</source>
         <translation>重置到全部范围(&amp;R)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12763"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12766"/>
         <source>Edit &amp;Range...</source>
         <translation>编辑范围(&amp;R)...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12764"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12767"/>
         <source>&amp;Hide</source>
         <translation>隐藏(&amp;H)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12765"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12768"/>
         <source>Hide &amp;Other Curves</source>
         <translation>隐藏其他曲线(&amp;O)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12766"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12769"/>
         <source>&amp;Show All Curves</source>
         <translation>显示所有曲线(&amp;S)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12760"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12763"/>
         <source>&amp;Edit Function...</source>
         <translation>编辑函数(&amp;E)...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12916"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12919"/>
         <source>&amp;Toolbars...</source>
         <translation>工具栏(&amp;T)...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12917"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12920"/>
         <source>Ctrl+Shift+T</source>
         <translation>Ctrl+Shift+T</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12749"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12752"/>
         <source>Bold</source>
         <translation>粗体</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12750"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12753"/>
         <source>Italic</source>
         <translation>斜体</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12717"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12720"/>
         <source>Superscript</source>
         <translation>上标</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12721"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12724"/>
         <source>Subscript</source>
         <translation>下标</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12751"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12754"/>
         <source>Underline (Ctrl+U)</source>
         <translation>下划线 (Ctrl+U)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12752"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12755"/>
         <source>Ctrl+U</source>
         <translation>Ctrl+U</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12754"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12757"/>
         <source>Greek</source>
         <translation>希腊字母</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12755"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12758"/>
         <source>Mathematical Symbols</source>
         <translation>数学符号</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12769"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12772"/>
         <source>Open a new project</source>
         <translation>打开一个新项目</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12776"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12779"/>
         <source>New Fol&amp;der</source>
         <translation>新建文件夹(&amp;d)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12777"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12780"/>
         <source>Create a new folder</source>
         <translation>创建新文件夹</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12781"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12784"/>
         <source>Create an empty 2D plot</source>
         <translation>创建一个空2D绘图</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12785"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12788"/>
         <source>Create an empty note window</source>
         <translation>创建一个空笔记窗口</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12789"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12792"/>
         <source>New table</source>
         <translation>新建表格</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12793"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12796"/>
         <source>New matrix</source>
         <translation>新建矩阵</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12796"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12799"/>
         <source>Create a new 2D function plot</source>
         <translation>创建一个新的2D函数绘图</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12800"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12803"/>
         <source>Create a new 3D surface plot</source>
         <translation>创建一个新的3D曲面图</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12805"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12808"/>
         <source>Open project</source>
         <translation>打开项目</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12813"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12816"/>
         <source>Save project</source>
         <translation>保存项目</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12819"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12822"/>
         <source>Open Te&amp;mplate...</source>
         <translation>打开模板(&amp;m)...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12820"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12823"/>
         <source>Open template</source>
         <translation>打开模板</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12823"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12826"/>
         <source>Save window as template</source>
         <translation>窗口另存为模板</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12826"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12829"/>
         <source>Import data file(s)</source>
         <translation>导入数据文件</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12827"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12830"/>
         <source>Ctrl+K</source>
         <translation>Ctrl+K</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12830"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12833"/>
         <source>Undo changes</source>
         <translation>撤销修改</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12834"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12837"/>
         <source>Redo changes</source>
         <translation>重做修改</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12837"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12840"/>
         <source>Duplicate window</source>
         <translation>复制窗口</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12841"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12844"/>
         <source>Cut selection</source>
         <translation>剪切所选</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12845"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12848"/>
         <source>Copy selection</source>
         <translation>复制所选</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12849"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12852"/>
         <source>Paste selection</source>
         <translation>粘贴所选</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12853"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12856"/>
         <source>Delete selection</source>
         <translation>删除所选</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12856"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12859"/>
         <source>Project &amp;Explorer</source>
         <translation>项目浏览器(&amp;E)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12858"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12861"/>
         <source>Show project explorer</source>
         <translation>显示项目浏览器</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12862"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12865"/>
         <source>Results &amp;Log</source>
         <translation>结果日志(&amp;L)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12863"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12866"/>
         <source>Show analysis results</source>
         <translation>显示分析结果</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12865"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12868"/>
         <source>&amp;Undo/Redo Stack</source>
         <translation>撤销/重做堆栈(&amp;U)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12866"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12869"/>
         <source>Show available undo/redo commands</source>
         <translation>显示可用撤销/重做命令</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12869"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12872"/>
         <source>&amp;Console</source>
         <translation>控制台(&amp;C)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12870"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12873"/>
         <source>Show Scripting console</source>
         <translation>显示脚本控制台</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12875"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12878"/>
         <source>Script Window</source>
         <translation>脚本窗口</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12881"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12884"/>
         <source>Add Layer</source>
         <translation>添加图层</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12885"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12888"/>
         <source>Arrange Layers</source>
         <translation>排列图层</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12893"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12896"/>
         <source>Export current graph</source>
         <translation>导出当前绘图</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12897"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12900"/>
         <source>Export all graphs</source>
         <translation>导出全部绘图</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12901"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12904"/>
         <source>Export to PDF</source>
         <translation>导出到PDF</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12905"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12908"/>
         <source>Print window</source>
         <translation>打印窗口</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12926"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12929"/>
         <source>Add curve to graph</source>
         <translation>把曲线添加到绘图</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12929"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12932"/>
         <source>Add Error Bars...</source>
         <translation>添加误差棒...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12933"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12936"/>
         <source>Add Function...</source>
         <translation>添加函数...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12938"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12941"/>
         <source>Best fit</source>
         <translation>最佳拟合</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12942"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12945"/>
         <source>Add new legend</source>
         <translation>添加新图例</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12946"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12949"/>
         <source>Date &amp; time </source>
         <translation>日期 &amp; 时间</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12949"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12952"/>
         <source>Add Image</source>
         <translation>添加图像</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12953"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12956"/>
         <source>Plot as line</source>
         <translation>绘制为线</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12956"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12959"/>
         <source>Plot as symbols</source>
         <translation>绘制为符号</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12959"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12962"/>
         <source>Plot as line + symbols</source>
         <translation>绘制为线 + 符号</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12968"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12971"/>
         <source>Plot with vertical bars</source>
         <translation>用垂直棒绘制</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12971"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12974"/>
         <source>Plot with horizontal bars</source>
         <translation>用水平棒绘制</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12980"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12983"/>
         <source>Plot area</source>
         <translation>绘图区域图</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12983"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12986"/>
         <source>Plot pie</source>
         <translation>绘制饼状图</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12985"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12988"/>
         <source>&amp;Vectors XYXY</source>
         <translation>矢量图XYXY(&amp;V)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12986"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12989"/>
         <source>Vectors XYXY</source>
         <translation>矢量图XYXY</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12989"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12992"/>
         <source>Vectors XYAM</source>
         <translation>矢量图XYAM</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12998"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13001"/>
         <source>Stem-and-Leaf Plot</source>
         <translation>绘制茎叶图</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13001"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13004"/>
         <source>Double Y Axis</source>
         <translation>双Y轴</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13004"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13007"/>
         <source>Zoom</source>
         <translation>缩放</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13007"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13010"/>
         <source>Extract to Graphs</source>
         <translation>提取至绘图</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13009"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13012"/>
         <source>Extract to Layer&amp;s</source>
         <translation>提取至图层(&amp;s)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13010"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13013"/>
         <source>Extract to Layers</source>
         <translation>提取至图层</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13013"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13016"/>
         <source>Plot 3D ribbon</source>
         <translation>绘制三维带状图</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13016"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13019"/>
         <source>Plot 3D bars</source>
         <translation>绘制三维棒状图</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13019"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13022"/>
         <source>Plot 3D scatter</source>
         <translation>绘制三维散点图</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13022"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13025"/>
         <source>Plot 3D trajectory</source>
         <translation>绘制三维轨线</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13024"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13027"/>
         <source>Contour + &amp;Color Fill</source>
         <translation>等值线 + 色彩填充(&amp;C)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13025"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13028"/>
         <source>Contour Lines + Color Fill</source>
         <translation>等值线图 + 色彩填充</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13028"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13031"/>
         <source>Contour Lines</source>
         <translation>等值线图</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13031"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13034"/>
         <source>Gray Scale Map</source>
         <translation>灰阶表</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13034"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13037"/>
         <source>Selected columns statistics</source>
         <translation>选中列统计</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13037"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13040"/>
         <source>Selected rows statistics</source>
         <translation>选中行统计</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13076"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13079"/>
         <source>Hide selected columns</source>
         <translation>隐藏所选列</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13078"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13081"/>
         <source>Show all table columns</source>
         <translation>显示表格所有列</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13080"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13083"/>
         <source>Swap selected columns</source>
         <translation>交换选中列</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13082"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13085"/>
         <source>Move Right</source>
         <translation>右移</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13084"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13087"/>
         <source>Move Left</source>
         <translation>左移</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13086"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13089"/>
         <source>Move to First</source>
         <translation>移至开头</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13088"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13091"/>
         <source>Move to Last</source>
         <translation>移至末尾</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13128"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13131"/>
         <source>More Windows...</source>
         <translation>更多窗口...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13145"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13148"/>
         <source>Set Matrix Values</source>
         <translation>设置矩阵值</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13148"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13151"/>
         <source>Image Plot</source>
         <translation>图像绘制</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13151"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13154"/>
         <source>Rotate 90 Clockwise</source>
         <translation>顺时针旋转90</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13153"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13156"/>
         <source>Rotate 90 Counterclockwise</source>
         <translation>逆时针旋转90</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13155"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13158"/>
         <source>Flip Vertically</source>
         <translation>垂直翻转</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13157"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13160"/>
         <source>Flip Horizontally</source>
         <translation>水平翻转</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13190"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13193"/>
         <source>Fill selected columns with row numbers</source>
         <translation>用行号填充选中列</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13192"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13195"/>
         <source>Fill selected columns with random numbers</source>
         <translation>用随机数填充选中列</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13194"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13197"/>
         <source>Set column as X</source>
         <translation>设置列为X</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13196"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13199"/>
         <source>Set column as Y</source>
         <translation>设置列为Y</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13198"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13201"/>
         <source>Set column as Z</source>
         <translation>设置列为Z</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13201"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13204"/>
         <source>Set as Y Error Bars</source>
         <translation>设置为Y误差棒</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13203"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13206"/>
         <source>Set as Labels</source>
         <translation>设置为标签</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13205"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13208"/>
         <source>Disregard Columns</source>
         <translation>忽视列</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13209"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13212"/>
         <source>Box and whiskers plot</source>
         <translation>箱形图</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13215"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13218"/>
         <source>Visit QtiPlot &amp;Forums</source>
         <translation>访问QtiPlot论坛(&amp;F)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13238"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13241"/>
         <source>Disable &amp;tools</source>
         <translation>禁用工具(&amp;t)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13239"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13242"/>
         <source>Pointer</source>
         <translation>指针</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13246"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13249"/>
         <source>Zoom In</source>
         <translation>放大</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13248"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13251"/>
         <source>Zoom &amp;Out</source>
         <translation>缩小(&amp;O)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13250"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13253"/>
         <source>Zoom Out</source>
         <translation>缩小</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13254"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13257"/>
         <source>Data reader</source>
         <translation>数据读取器</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13258"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13261"/>
         <source>Select data range</source>
         <translation>选择数据范围</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13261"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13264"/>
         <source>Screen reader</source>
         <translation>屏幕读取器</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13264"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13267"/>
         <source>Draw Data Points</source>
         <translation>画数据点</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13268"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13271"/>
         <source>Move data points</source>
         <translation>移动数据点</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13272"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13275"/>
         <source>Remove data points</source>
         <translation>移除数据点</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13275"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13278"/>
         <source>Add Text</source>
         <translation>添加文本</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13279"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13282"/>
         <source>Add Equation</source>
         <translation>添加公式</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13283"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13286"/>
         <source>Add Rectangle</source>
         <translation>添加矩形</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13287"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13290"/>
         <source>Add Ellipse/Circle</source>
         <translation>添加椭圆/圆</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13292"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13295"/>
         <source>Draw arrow</source>
         <translation>画箭头</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13296"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13299"/>
         <source>Draw line</source>
         <translation>画线</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13305"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13308"/>
         <source>Box</source>
         <translation>箱形框</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13309"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13312"/>
         <source>Frame</source>
         <translation>框架</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13307"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13310"/>
         <source>&amp;Frame</source>
         <translation>框架(&amp;F)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13311"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13314"/>
         <source>No Axes</source>
         <translation>无轴</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13313"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13316"/>
         <source>No axes</source>
         <translation>无轴</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13315"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13318"/>
         <source>Front grid</source>
         <translation>前栅格</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13316"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13319"/>
         <source>Back grid</source>
         <translation>后栅格</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13317"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13320"/>
         <source>Right grid</source>
         <translation>右栅格</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13318"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13321"/>
         <source>Left grid</source>
         <translation>左栅格</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13319"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13322"/>
         <source>Ceiling grid</source>
         <translation>顶栅格</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13320"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13323"/>
         <source>Floor grid</source>
         <translation>底栅格</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13325"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13328"/>
         <source>Wireframe</source>
         <translation>线框架</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13327"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13330"/>
         <source>Hidden Line</source>
         <translation>隐藏线</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13329"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13332"/>
         <source>Hidden line</source>
         <translation>隐藏线</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13331"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13334"/>
         <source>Polygon Only</source>
         <translation>只有多边形</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13333"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13336"/>
         <source>Polygon only</source>
         <translation>只有多边形</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13335"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13338"/>
         <source>Mesh &amp; Filled Polygons</source>
         <translation>网格&amp;填充多边形</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13337"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13340"/>
         <source>Mesh &amp; filled Polygons</source>
         <translation>网格&amp;填充多边形</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13341"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13344"/>
         <source>Dots</source>
         <translation>点</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13345"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13348"/>
         <source>Bars</source>
         <translation>棒</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13349"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13352"/>
         <source>Cones</source>
         <translation>圆锥体</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13353"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13356"/>
         <source>Crosshairs</source>
         <translation>叉丝</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13359"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13362"/>
         <source>Floor Data Projection</source>
         <translation>底面数据投影</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13361"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13364"/>
         <source>Floor data projection</source>
         <translation>底面数据投影</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13363"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13366"/>
         <source>Floor Isolines</source>
         <translation>底面等值线</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13365"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13368"/>
         <source>Floor isolines</source>
         <translation>底面等值线</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13367"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13370"/>
         <source>Empty Floor</source>
         <translation>空底面</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13369"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13372"/>
         <source>Empty floor</source>
         <translation>空底面</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13374"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13377"/>
         <source>Animation</source>
         <translation>动画</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13379"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13382"/>
         <source>Enable perspective</source>
         <translation>启用透视</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13384"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13387"/>
         <source>Reset rotation</source>
         <translation>重置旋转</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13389"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13392"/>
         <source>Fit frame to window</source>
         <translation>使框架适合窗口</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13773"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13776"/>
         <source>QtiPlot - Enter the number of peaks</source>
         <translation>QtiPlot - 输入峰值数量</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13774"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13777"/>
         <source>Peaks</source>
         <translation>峰</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13823"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13826"/>
         <source>&lt;font size=+2, color = darkBlue&gt;&lt;b&gt;QtiPlot is open-source software and its development required hundreds of hours of work.&lt;br&gt;&lt;br&gt;<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>If you like it, you&apos;re using it in your work and you would like to see it <byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>constantly improved, please support its authors by making a donation.&lt;/b&gt;&lt;/font&gt;</source>
         <translation>&lt;font size=+2, color = darkBlue&gt;&lt;b&gt;QtiPlot是一个开源软件，它的开发需要上百小时的工作。&lt;br&gt;&lt;br&gt;如果你喜欢它，你在你的工作中应用它，并且希望看到它稳步的改进，请通过捐献的方式支持一下它的作者。&lt;/b&gt;&lt;/font&gt;</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13827"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13830"/>
         <source>Please support QtiPlot!</source>
         <translation>请支持QtiPlot!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13854"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13857"/>
         <source>&lt;b&gt; %1 &lt;/b&gt;: This command line option must be used without other arguments!</source>
         <translation>&lt;b&gt; %1 &lt;/b&gt;: 这个命令行选项不能和其他参数一起用!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13870"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13873"/>
         <source>Version</source>
         <translation>版本</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13877"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13880"/>
         <source>Usage</source>
         <translation>用法</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13878"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13881"/>
         <source>options</source>
         <translation>选项</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13889"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13892"/>
         <source>file</source>
         <translation>文件</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13889"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13892"/>
         <source>name</source>
         <translation>名称</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13879"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13882"/>
         <source>Valid options are</source>
         <translation>有效的选项是</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13887"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13890"/>
         <source>or</source>
         <translation>或者</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13880"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13883"/>
         <source>show about dialog and exit</source>
         <translation>显示关于对话框并退出</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13882"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13885"/>
         <source>start QtiPlot with the default settings</source>
         <translation>使用默认设置启动QtiPlot</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13883"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13886"/>
         <source>show command line options</source>
         <translation>显示命令行选项</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13884"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13887"/>
         <source>start QtiPlot in language</source>
         <translation>使用语言包启动QtiPlot</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13885"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13888"/>
         <source>show QtiPlot manual in a standalone window</source>
         <translation>在一个单独的窗口显示QtiPlot手册</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13886"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13889"/>
         <source>print QtiPlot version and release date</source>
         <translation>打印QtiPlot版本和发行日期</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13887"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13890"/>
         <source>execute the script file given as argument</source>
         <translation>执行参数中给出的脚本文件</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13888"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13891"/>
         <source>execute the script file given as argument without displying the user interface. Warning: 2D plots are not correctly handled in this functioning mode!</source>
         <translation>执行参数中给出的脚本文件并且不显示用户界面。警告:2D绘图在这种模式下处理不正确!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13889"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13892"/>
         <source>can be any .qti, qti.gz, .opj, .ogm, .ogw, .ogg, .py or ASCII file</source>
         <translation>可以为任何.qti, qti.gz, .opj, .ogm, .ogw, .ogg, .py或者ASCII文件</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13892"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13895"/>
         <source>Help</source>
         <translation>帮助</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13905"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13908"/>
         <source>&lt;b&gt; %1 &lt;/b&gt;: Wrong locale option or no translation available!</source>
         <translation>&lt;b&gt; %1 &lt;/b&gt;:错误的地区选项或者语言包不可用!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13913"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13916"/>
         <source>&lt;b&gt; %1 &lt;/b&gt; unknown command line option!</source>
         <translation>&lt;b&gt; %1 &lt;/b&gt; 未知命令行选项!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13913"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13916"/>
         <source>Type %1 to see the list of the valid options.</source>
         <translation>键入%1来查看有效选项列表。</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13933"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13936"/>
         <source>&lt;b&gt;%1&lt;/b&gt; is a directory, please specify a file name!</source>
         <translation>&lt;b&gt;%1&lt;/b&gt;是一个目录，请指定一个文件名!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="14097"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="14100"/>
         <source>The file: &lt;b&gt;%1&lt;/b&gt; is not a QtiPlot or Origin project file!</source>
         <translation>文件:&lt;b&gt;%1&lt;/b&gt;不是一个QtiPlot或者Origin项目文件!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="14307"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="14310"/>
         <source>QtiPlot - Demo Version</source>
         <translation>QtiPlot - 演示版本</translation>
     </message>
@@ -3828,534 +3828,534 @@ Are you sure you want to continue?</source>
         <translation type="obsolete">你正在使用演示版本的Qtiplot。它跟完全版是一致的，不过你不能保存文件，也不能一次使用超过十分钟。&lt;br&gt;&lt;br&gt;如果你准备好使用完整功能版，请在&lt;a href=&quot;http://soft.proindependent.com/individual_contract.html&quot;&gt;订阅一个单用户带维护通知的版本。&lt;/a&gt;&lt;br&gt;&lt;br&gt;QtiPlot是一个自由软件。如果你想知道如何使用，你可以免费得到&lt;a href=&quot;http://developer.berlios.de/project/showfiles.php?group_id=6626&quot;&gt;源代码&lt;/a&gt;。尽管如此，仍然欢迎你&lt;a href=&quot;http://soft.proindependent.com/why_donate.html&quot;&gt;捐助&lt;/a&gt;来支持QtiPlot未来的开发。</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="14332"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="14335"/>
         <source>QtiPlot - File backup error</source>
         <translation>QtiPlot - 文件备份错误</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="14333"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="14336"/>
         <source>Cannot make a backup copy of &lt;b&gt;%1&lt;/b&gt; (to %2).&lt;br&gt;If you ignore this, you run the risk of &lt;b&gt;data loss&lt;/b&gt;.</source>
         <translation>无法备份&lt;b&gt;%1&lt;/b&gt;(至 %2)。&lt;br&gt;如果你忽略这个，你就处于&lt;b&gt;丢失数据&lt;/b&gt;的风险中。</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="14350"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="14353"/>
         <source>QtiPlot - File save error</source>
         <translation>QtiPlot - 文件保存失败</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="14350"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="14353"/>
         <source>The file: &lt;br&gt;&lt;b&gt;%1&lt;/b&gt; is opened in read-only mode</source>
         <translation>文件: &lt;br&gt;&lt;b&gt;%1&lt;/b&gt;是以只读模式打开的</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="14448"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="14451"/>
         <source>Save project as</source>
         <translation>项目另存为</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12860"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12863"/>
         <source>&amp;Find...</source>
         <translation>查找(&amp;F)...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12772"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12775"/>
         <source>App&amp;end Project...</source>
         <translation>附加项目(&amp;e)...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="14479"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="14482"/>
         <source>Save &amp;As Project...</source>
         <translation>另存为项目(&amp;A)...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="14493"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="14496"/>
         <source>&amp;Delete Folder</source>
         <translation>删除文件夹(&amp;D)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="14494"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="14497"/>
         <source>&amp;Rename</source>
         <translation>重命名(&amp;R)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="14513"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="14516"/>
         <source>&amp;Windows in Active Folder</source>
         <translation>活动文件夹内的窗口(&amp;W)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="14513"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="14516"/>
         <source>Windows in &amp;Active Folder &amp;&amp; Subfolders</source>
         <translation>活动文件夹和自文件夹内的窗口(&amp;A)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="14520"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="14523"/>
         <source>&amp;View Windows</source>
         <translation>查看窗口(&amp;V)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="14537"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="14540"/>
         <source>Hidden</source>
         <translation>隐藏</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="14600"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="14603"/>
         <source>Name already exists!</source>
         <translation>名称已存在!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="14711"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="14714"/>
         <source>Project</source>
         <translation>项目</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="15102"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="15105"/>
         <source>Path</source>
         <translation>路径</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="14717"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="14720"/>
         <source>bytes</source>
         <translation>字节</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="14753"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="14756"/>
         <source>Contents</source>
         <translation>内容</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="14753"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="14756"/>
         <source>windows</source>
         <translation>窗口</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="14754"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="14757"/>
         <source>folders</source>
         <translation>文件夹</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="14728"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="14731"/>
         <source>Modified</source>
         <translation>改动的</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="15078"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="15081"/>
         <source>Properties</source>
         <translation>属性</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="14772"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="14775"/>
         <source>New Folder</source>
         <translation>新建文件夹</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="14817"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="14820"/>
         <source>QtiPlot - Delete folder?</source>
         <translation>QtiPlot - 删除文件夹?</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="14818"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="14821"/>
         <source>Delete folder &apos;%1&apos; and all the windows it contains?</source>
         <translation>删除文件夹&apos;%1&apos;和里面包含的所有窗口?</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="15094"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="15097"/>
         <source>Note</source>
         <translation>笔记</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="15100"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="15103"/>
         <source>3D Graph</source>
         <translation>三维绘图</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="15105"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="15108"/>
         <source>Status</source>
         <translation>状态</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="15169"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="15172"/>
         <source>QtiPlot - No match found</source>
         <translation>QtiPlot - 找不到匹配项</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="15170"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="15173"/>
         <source>Sorry, no match found for string: &apos;%1&apos;</source>
         <translation>对不起，没有找到匹配的字符串: &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="15188"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="15191"/>
         <source>Cannot move an object to itself!</source>
         <translation>不能把一个对象移到自身上!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="15193"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="15196"/>
         <source>Cannot move a parent folder into a child folder!</source>
         <translation>不能把一个父文件夹移动到资文件夹内!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="15206"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="15209"/>
         <source>Skipped moving folder</source>
         <translation>跳过移动文件夹</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="15250"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="15253"/>
         <source>The destination folder already contains a folder called &apos;%1&apos;! Folder skipped!</source>
         <translation>目的文件夹已经含有一个叫做&apos;%1&apos;的文件夹!文件夹跳过!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="16237"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="16240"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="15302"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="15305"/>
         <source>QtiPlot will try to download necessary information about the last available updates. Please modify your firewall settings in order to allow QtiPlot to connect to the internet!</source>
         <translation>QtiPlot尝试下载最新更新的必要信息。请修改你的防火墙设置来允许QtiPlot连接到英特网!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="15303"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="15306"/>
         <source>Do you wish to continue?</source>
         <translation>你想继续吗?</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="15323"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="15326"/>
         <source>QtiPlot - HTTP get version file</source>
         <translation>QtiPlot - HTTP获取版本文件</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="15324"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="15327"/>
         <source>Error while fetching version file with HTTP: %1.</source>
         <translation>HTTP取版本文件时出错: %1。</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="15339"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="15342"/>
         <source>QtiPlot - Updates Available</source>
         <translation>QtiPlot - 有更新</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="15340"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="15343"/>
         <source>There is a newer version of QtiPlot (%1) available for download. Would you like to download it?</source>
         <translation>有更新版本的QtiPlot (%1)等待下载。你希望下载它吗?</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="15344"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="15347"/>
         <source>QtiPlot - No Updates Available</source>
         <translation>QtiPlot - 没有更新</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="15345"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="15348"/>
         <source>No updates available. Your current version %1 is the last version available!</source>
         <translation>没有更新。你现在的版本%1就是最新版本!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="15399"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="15402"/>
         <source>This will clear the contents of all the data associated with the table. Are you sure?</source>
         <translation>这会清楚表格相关的数据的所有内容。你确定?</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="15400"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="15403"/>
         <source>&amp;No</source>
         <translation>否(&amp;N)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="15414"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="15417"/>
         <source>QtiPlot - Enter row number</source>
         <translation>QtiPlot - 输入行号</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="15414"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="15417"/>
         <source>Row</source>
         <translation>行</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="15434"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="15437"/>
         <source>QtiPlot - Enter column number</source>
         <translation>QtiPlot - 输入列号</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="16238"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="16241"/>
         <source>QtiPlot was not built with Python scripting support included!</source>
         <translation>QtiPlot编译时不包含Python脚本支持!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="15619"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="15622"/>
         <source>Please set a default X column for this table, first!</source>
         <translation>请先为这个表格设置一个默认的X列!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="15653"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="15656"/>
         <source>Please select a Z column for this operation!</source>
         <translation>请为这个操作选择一个Z列!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="15657"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="15660"/>
         <source>You need to define a X column first!</source>
         <translation>首先你需要定义一个X列!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="15661"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="15664"/>
         <source>You need to define a Y column first!</source>
         <translation>首先你需要定义一个Y列!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="15879"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="15882"/>
         <source>Starting with version 0.9.1 QtiPlot stores the user defined fit models to a different location.</source>
         <translation>从0.9.1版本开始QtiPlot就保存拥护定义拟合模型到不同的位置。</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="15880"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="15883"/>
         <source>If you want to save your already defined models, please choose a destination folder.</source>
         <translation>如果你想保存你已经定义的模型，请选择一个目的文件夹。</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="15881"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="15884"/>
         <source>Import fit models</source>
         <translation>导入拟合模型</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="15884"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="15887"/>
         <source>Choose a directory to export the fit models to</source>
         <translation>选择一个目录来导出拟合模型</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="16181"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="16184"/>
         <source>No Icon</source>
         <translation>无图标</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="16390"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="16393"/>
         <source>Couldn&apos;t load file: %1.
 Autocompletion will not be available!</source>
         <translation>无法加载文件:%1。
 自动完成无法使用!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="16472"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="16475"/>
         <source>Please select exactly one column and more than one non empty cell!</source>
         <translation>请选择一列和至少一个非空单元!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="16513"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="16516"/>
         <source>Data set: %1 doesn&apos;t exist!</source>
         <translation>数据集:%1不存在!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="16524"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="16527"/>
         <source>Stem and leaf plot of dataset</source>
         <translation>数据集的茎叶图</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="16525"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="16528"/>
         <source>from row</source>
         <translation>起始行</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="16526"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="16529"/>
         <source>to row</source>
         <translation>结束行</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="16537"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="16540"/>
         <source>Not enough memory for this dataset!</source>
         <translation>没有足够的内存给这个数据集!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="16541"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="16544"/>
         <source>Stem</source>
         <translation>茎</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="16541"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="16544"/>
         <source>Leaf</source>
         <translation>叶</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="16556"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="16559"/>
         <source>Please confirm the stem unit!</source>
         <translation>你确认茎单位!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="16557"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="16560"/>
         <source>Data set</source>
         <translation>数据集</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="16557"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="16560"/>
         <source>stem unit</source>
         <translation>茎单位</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="16580"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="16583"/>
         <source>Stem unit</source>
         <translation>茎单位</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="16581"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="16584"/>
         <source>Leaf unit</source>
         <translation>叶单位</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="16583"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="16586"/>
         <source>Key</source>
         <translation>链</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="16586"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="16589"/>
         <source>means</source>
         <translation>方法</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="16591"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="16594"/>
         <source>Input error: empty data set!</source>
         <translation>输入错误:空数据集!</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="2274"/>
+        <location filename="src/core/ConfigDialog.cpp" line="2289"/>
         <source>English</source>
         <translation>中文</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13113"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13116"/>
         <source>Alt+C</source>
         <translation>Alt+C</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="6413"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="6416"/>
         <source>Spec&amp;ial Bar/Column</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="9230"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="9233"/>
         <source>&amp;Add</source>
         <translation type="unfinished">添加(&amp;A)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="9238"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="9241"/>
         <source>&amp;Indexed Colors</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="9239"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="9242"/>
         <source>Pale&amp;tte</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12838"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12841"/>
         <source>Ctrl+Alt+D</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13241"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13244"/>
         <source>Zoom &amp;In/Out and Drag Canvas</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12973"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12976"/>
         <source>Stack &amp;Bar</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12976"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12979"/>
         <source>Stack &amp;Column</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12180"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12183"/>
         <source>&amp;Waterfall Plot</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13051"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13054"/>
         <source>Fit Slop&amp;e</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12974"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12977"/>
         <source>Plot stack bar</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12977"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12980"/>
         <source>Plot stack column</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13242"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13245"/>
         <source>Zoom In (Shift++) or Out (-) and Drag Canvas</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13828"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13831"/>
         <source>Make a donation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13829"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13832"/>
         <source>Close</source>
         <translation type="unfinished">关闭</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="14320"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="14323"/>
         <source>You are using the demonstration version of Qtiplot.<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>It is identical with the full version, except that you can&apos;t save your work to project files and you can&apos;t use it for more than 10 minutes per session.<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>&lt;br&gt;&lt;br&gt;<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>If you want to have ready-to-use, fully functional binaries, please subscribe for a<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>&lt;a href=&quot;http://soft.proindependent.com/individual_contract.html&quot;&gt;single-user binaries maintenance contract&lt;/a&gt;.<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>&lt;br&gt;&lt;br&gt;<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>QtiPlot is free software in the sense of free speech.<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>If you know how to use it, you can get<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>&lt;a href=&quot;http://soft.proindependent.com/download.html&quot;&gt;the source code&lt;/a&gt;<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>free of charge.<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>Nevertheless, you are welcome to<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>&lt;a href=&quot;http://soft.proindependent.com/why_donate.html&quot;&gt;make a donation&lt;/a&gt;<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>in order to support the further development of QtiPlot.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="9418"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="9421"/>
         <source>Move Row</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="7223"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="7226"/>
         <source>Print preview of window: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="8575"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="8578"/>
         <source>Print Pre&amp;view</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13096"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13099"/>
         <source>Ad&amp;just Column Width</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13092"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13095"/>
         <source>&amp;Upward</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13094"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13097"/>
         <source>&amp;Downward</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12773"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12776"/>
         <source>Append a project to the current folder</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12774"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12777"/>
         <source>Ctrl+Alt+A</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13093"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13096"/>
         <source>Move current row upward</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13095"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13098"/>
         <source>Move current row downward</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13097"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13100"/>
         <source>Set optimal column width</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13881"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13884"/>
         <source>show standalone scripting window</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5206,32 +5206,32 @@ The following special codes can be used:
 0-9eE.+-</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1710"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1725"/>
         <source>Background</source>
         <translation>背景</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1555"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1570"/>
         <source>Background Color</source>
         <translation>背景颜色</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1558"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1573"/>
         <source>Opacity</source>
         <translation>不透明度</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1557"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1572"/>
         <source>Canvas Color</source>
         <translation>画布颜色</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1559"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1574"/>
         <source>Border Color</source>
         <translation>边框颜色</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1560"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1575"/>
         <source>Width</source>
         <translation>宽度</translation>
     </message>
@@ -5251,7 +5251,7 @@ The following special codes can be used:
         <translation>CR (Mac)</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1669"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1684"/>
         <source>System Locale Setting</source>
         <translation>系统本地设置</translation>
     </message>
@@ -5266,833 +5266,863 @@ The following special codes can be used:
         <translation>&amp;It</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1681"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1696"/>
         <source>Translations</source>
         <translation>语言包</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1682"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1697"/>
         <source>Help</source>
         <translation>帮助</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1684"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1699"/>
         <source>Python Configuration Files</source>
         <translation>Python配置文件</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1511"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1526"/>
         <source>QtiPlot - Choose default settings</source>
         <translation>QtiPlot - 选择默认设置</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1516"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1531"/>
         <source>General</source>
         <translation>常规</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1599"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1614"/>
         <source>Tables</source>
         <translation>表格</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1601"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1616"/>
         <source>2D Plots</source>
         <translation>二维绘图</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1600"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1615"/>
         <source>3D Plots</source>
         <translation>三维绘图</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1520"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1535"/>
         <source>Notes</source>
         <translation>笔记</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1521"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1536"/>
         <source>Fitting</source>
         <translation>拟合</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1531"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1546"/>
         <source>Options</source>
         <translation>选项</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1532"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1547"/>
         <source>Curves</source>
         <translation>曲线</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1533"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1548"/>
         <source>Axes</source>
         <translation>轴</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1534"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1549"/>
         <source>Ticks</source>
         <translation>刻度</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1775"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1790"/>
         <source>Fonts</source>
         <translation>字体</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1537"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1552"/>
         <source>Do not &amp;resize layers when window size changes</source>
         <translation>当窗口尺寸变化的时候不改变图层尺寸(&amp;r)</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1538"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1553"/>
         <source>&amp;Disable in-place editing</source>
         <translation>禁用就地编辑(&amp;D)</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1541"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1556"/>
         <source>Length</source>
         <translation>长度</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1542"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1557"/>
         <source>Major Ticks</source>
         <translation>主刻度</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1543"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1558"/>
         <source>Minor Ticks</source>
         <translation>次刻度</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1545"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1560"/>
         <source>Margin</source>
         <translation>页边距</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1546"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1561"/>
         <source>Axes title space</source>
         <translation>轴标题空白</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1547"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1562"/>
         <source>Frame width</source>
         <translation>框架宽度</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1548"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1563"/>
         <source>Canvas Fra&amp;me</source>
         <translation>画布框架(&amp;m)</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1549"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1564"/>
         <source>Show &amp;Title</source>
         <translation>显示标题(&amp;T)</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1550"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1565"/>
         <source>Scale &amp;Fonts</source>
         <translation>缩放字体(&amp;F)</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1551"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1566"/>
         <source>Auto&amp;scaling</source>
         <translation>自动缩放(&amp;s)</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1552"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1567"/>
         <source>Antia&amp;liasing</source>
         <translation>反锯齿(&amp;l)</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1562"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1577"/>
         <source>Transparent</source>
         <translation>透明</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1565"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1580"/>
         <source>Axes &amp;backbones</source>
         <translation>轴干线(&amp;b)</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1566"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1581"/>
         <source>Axes linewidth</source>
         <translation>轴线宽</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1568"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1583"/>
         <source>Left</source>
         <translation>左</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1569"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1584"/>
         <source>Right</source>
         <translation>右</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1570"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1585"/>
         <source>Bottom</source>
         <translation>底</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1571"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1586"/>
         <source>Top</source>
         <translation>顶</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1573"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1588"/>
         <source>Enabled axes</source>
         <translation>启用轴</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1574"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1589"/>
         <source>Show</source>
         <translation>显示</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1712"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1727"/>
         <source>Labels</source>
         <translation>标签</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1584"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1599"/>
         <source>None</source>
         <translation>不选</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1585"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1600"/>
         <source>Out</source>
         <translation>外</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1586"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1601"/>
         <source>In &amp; Out</source>
         <translation>内 &amp; 外</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1587"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1602"/>
         <source>In</source>
         <translation>内</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1592"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1607"/>
         <source>Print</source>
         <translation>打印</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1593"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1608"/>
         <source>Print Crop&amp;marks</source>
         <translation>打印截角标记(&amp;m)</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1594"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1609"/>
         <source>&amp;Scale layers to paper size</source>
         <translation>缩放图层到纸张尺寸(&amp;S)</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1597"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1612"/>
         <source>Prompt on closing</source>
         <translation>关闭时提示</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1598"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1613"/>
         <source>Folders</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1602"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1617"/>
         <source>Matrices</source>
         <translation>矩阵</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1603"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1618"/>
         <source>&amp;Notes</source>
         <translation>笔记(&amp;N)</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1605"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1620"/>
         <source>&amp;OK</source>
         <translation>确定(&amp;O)</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1606"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1621"/>
         <source>&amp;Cancel</source>
         <translation>取消(&amp;C)</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1607"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1622"/>
         <source>&amp;Apply</source>
         <translation>应用(&amp;A)</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1608"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1623"/>
         <source>&amp;Text Font</source>
         <translation>文本字体(&amp;T)</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1609"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1624"/>
         <source>&amp;Labels Font</source>
         <translation>标签字体(&amp;L)</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1610"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1625"/>
         <source>A&amp;xes Labels</source>
         <translation>轴标签(&amp;x)</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1611"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1626"/>
         <source>Axes &amp;Numbers</source>
         <translation>轴数字(&amp;N)</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1612"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1627"/>
         <source>&amp;Legend</source>
         <translation>图例(&amp;L)</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1613"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1628"/>
         <source>T&amp;itle</source>
         <translation>标题(&amp;i)</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1614"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1629"/>
         <source>Prompt on &amp;renaming tables when appending projects</source>
         <translation>添加到项目重命名表格时提醒(&amp;r)</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1617"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1632"/>
         <source>Application</source>
         <translation>程序</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1618"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1633"/>
         <source>Confirmations</source>
         <translation>确认</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1772"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1787"/>
         <source>Colors</source>
         <translation>颜色</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1620"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1635"/>
         <source>Numeric Format</source>
         <translation>数字格式</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1621"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1636"/>
         <source>File Locations</source>
         <translation>文件位置</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1624"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1639"/>
         <source>Language</source>
         <translation>语言</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1625"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1640"/>
         <source>Style</source>
         <translation>样式</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1626"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1641"/>
         <source>Main Font</source>
         <translation>主字体</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1627"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1642"/>
         <source>Choose &amp;font</source>
         <translation>选择字体(&amp;f)</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1628"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1643"/>
         <source>Workspace</source>
         <translation>工作台</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1629"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1644"/>
         <source>Panels text</source>
         <translation>面板文本</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1630"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1645"/>
         <source>Panels</source>
         <translation>面板</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1631"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1646"/>
         <source>Save every</source>
         <translation>保存每</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1632"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1647"/>
         <source>&amp;Backup project before saving</source>
         <translation>保存项目前备份(&amp;B)</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1633"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1648"/>
         <source>Check for new versions at startup</source>
         <translation>启动时检查新版本</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1634"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1649"/>
         <source> minutes</source>
         <translation>分钟</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1635"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1650"/>
         <source>Default scripting language</source>
         <translation>默认脚本语言</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1636"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1651"/>
         <source>Matrix Undo Stack Size</source>
         <translation>矩阵撤销堆栈大小</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1637"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1652"/>
         <source>Endline character</source>
         <translation>行尾字符</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1638"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1653"/>
         <source>Start New Project</source>
         <translation>开始新项目</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1759"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1774"/>
         <source>Empty</source>
         <translation>空</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1641"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1656"/>
         <source>Table</source>
         <translation>表格</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1642"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1657"/>
         <source>Matrix</source>
         <translation>矩阵</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1643"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1658"/>
         <source>Empty Graph</source>
         <translation>空图</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1644"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1659"/>
         <source>Note</source>
         <translation>笔记</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1647"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1662"/>
         <source>&amp;Enable autocompletion (Ctrl+U)</source>
         <translation>启用自动完成(&amp;E)(Ctrl+U)</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1650"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1665"/>
         <source>Number of Decimal Digits</source>
         <translation>小数位数</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1651"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1666"/>
         <source>Decimal Separators</source>
         <translation>小数分隔符</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1657"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1672"/>
         <source>Omit &amp;Thousands Separator</source>
         <translation>忽略千位分隔符(&amp;T)</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1667"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1682"/>
         <source>Clipboard Decimal Separators</source>
         <translation>剪贴板小数分隔符</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1695"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1710"/>
         <source>Automatically &amp;Recalculate Column Values</source>
         <translation>自动重计算列值(&amp;R)</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1696"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1711"/>
         <source>&amp;Display Comments in Header</source>
         <translation>在头里面显示注释(&amp;D)</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1698"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1713"/>
         <source>Default Column Separator</source>
         <translation>默认列分隔符</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1829"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1844"/>
         <source>TAB</source>
         <translation>TAB</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1831"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1846"/>
         <source>SPACE</source>
         <translation>SPACE</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1711"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1726"/>
         <source>Text</source>
         <translation>文本</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1716"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1731"/>
         <source>Default curve style</source>
         <translation>默认曲线样式</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1717"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1732"/>
         <source>Line width</source>
         <translation>线宽</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1718"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1733"/>
         <source>Symbol size</source>
         <translation>符号大小</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1721"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1736"/>
         <source> Line</source>
         <translation>线状图</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1722"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1737"/>
         <source> Scatter</source>
         <translation>散点图</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1723"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1738"/>
         <source> Line + Symbol</source>
         <translation>线状图+符号</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1724"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1739"/>
         <source> Vertical drop lines</source>
         <translation>垂线图</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1725"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1740"/>
         <source> Spline</source>
         <translation>齿形图</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1726"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1741"/>
         <source> Vertical steps</source>
         <translation>垂直阶梯图</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1727"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1742"/>
         <source> Horizontal steps</source>
         <translation>水平阶梯图</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1728"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1743"/>
         <source> Area</source>
         <translation>面积</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1729"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1744"/>
         <source> Vertical Bars</source>
         <translation>垂直棒状图</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1730"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1745"/>
         <source> Horizontal Bars</source>
         <translation>水平棒状图</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1755"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1770"/>
         <source>&amp;Resolution</source>
         <translation>分辨率(&amp;R)</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1756"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1771"/>
         <source>(all data shown)</source>
         <translation>(显示所有数据)</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1757"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1772"/>
         <source>&amp;Show Legend</source>
         <translation>显示图例(&amp;S)</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1758"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1773"/>
         <source>&amp;Floor style</source>
         <translation>底线样式(&amp;F)</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1760"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1775"/>
         <source>Isolines</source>
         <translation>等值线</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1761"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1776"/>
         <source>Projection</source>
         <translation>投影</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1764"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1779"/>
         <source>Smoot&amp;h Line</source>
         <translation>平滑线(&amp;h)</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1765"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1780"/>
         <source>O&amp;rthogonal</source>
         <translation>正交(&amp;r)</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1766"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1781"/>
         <source>Lab&amp;els</source>
         <translation>标签(&amp;e)</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1767"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1782"/>
         <source>&amp;Mesh</source>
         <translation>网格(&amp;M)</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1768"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1783"/>
         <source>&amp;Grid</source>
         <translation>栅格(&amp;G)</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1789"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1804"/>
         <source>&amp;Numbers</source>
         <translation>数字(&amp;N)</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1770"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1785"/>
         <source>A&amp;xes</source>
         <translation>轴(&amp;x)</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1771"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1786"/>
         <source>&amp;Background</source>
         <translation>背景(&amp;B)</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1773"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1788"/>
         <source>Default Color Map</source>
         <translation>默认颜色表</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1776"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1791"/>
         <source>&amp;Title</source>
         <translation>标题(&amp;T)</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1777"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1792"/>
         <source>&amp;Axes Labels</source>
         <translation>轴标签(&amp;A)</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1779"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1794"/>
         <source>Autosca&amp;ling</source>
         <translation>自动缩放(&amp;l)</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1782"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1797"/>
         <source>Tab length (pixels)</source>
         <translation>制表符长度(像素)</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1783"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1798"/>
         <source>Font</source>
         <translation>字体</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1784"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1799"/>
         <source>&amp;Display line numbers</source>
         <translation>显示行号(&amp;D)</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1786"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1801"/>
         <source>Syntax Highlighting</source>
         <translation>语法高亮</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1787"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1802"/>
         <source>Co&amp;mments</source>
         <translation>注释(&amp;m)</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1788"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1803"/>
         <source>&amp;Keywords</source>
         <translation>关键字(&amp;K)</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1790"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1805"/>
         <source>&amp;Quotations</source>
         <translation>引用(&amp;Q)</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1791"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1806"/>
         <source>&amp;Functions</source>
         <translation>函数(&amp;F)</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1792"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1807"/>
         <source>Q&amp;t Classes</source>
         <translation>Qt类(&amp;t)</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1796"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1811"/>
         <source>Generated Fit Curve</source>
         <translation>拟合生成的曲线</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1797"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1812"/>
         <source>Uniform X Function</source>
         <translation>统一X的函数</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1798"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1813"/>
         <source>Points</source>
         <translation>点</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1799"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1814"/>
         <source>Same X as Fitting Data</source>
         <translation>跟拟合数据的X相同</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1800"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1815"/>
         <source>2 points for linear fits</source>
         <translation>线性拟合两点</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1809"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1824"/>
         <source>Display Peak Curves for Multi-peak Fits</source>
         <translation>多峰拟合显示峰值曲线</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1804"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1819"/>
         <source>Parameters Output</source>
         <translation>参数输出</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1805"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1820"/>
         <source>Significant Digits</source>
         <translation>有效数字</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1806"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1821"/>
         <source>Write Parameters to Result Log</source>
         <translation>参数写到结果日志</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1807"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1822"/>
         <source>Paste Parameters to Plot</source>
         <translation>参数粘贴到绘图上</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1808"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1823"/>
         <source>Scale Errors with sqrt(Chi^2/doF)</source>
         <translation>用sqrt(Chi^2/doF)调整误差</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1810"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1825"/>
         <source>Peaks Color</source>
         <translation>峰值颜色</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1835"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1850"/>
         <source>QtiPlot - Import options error</source>
         <translation>QtiPlot - 导入选项错误</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="1836"/>
+        <location filename="src/core/ConfigDialog.cpp" line="1851"/>
         <source>The separator must not contain the following characters: 0-9eE.+-</source>
         <translation>分隔符不能包含以下字符: 0-9eE.+-</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="2342"/>
+        <location filename="src/core/ConfigDialog.cpp" line="2357"/>
         <source>QtiPlot - index.html File Not Found!</source>
         <translation>QtiPlot - index.html没有找到!</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="2018"/>
+        <location filename="src/core/ConfigDialog.cpp" line="2033"/>
         <source>There is no file called &lt;b&gt;index.html&lt;/b&gt; in folder %1.&lt;br&gt;Please choose another folder!</source>
         <translation>%1文件夹中没有&lt;b&gt;index.html&lt;/b&gt;文件.&lt;br&gt;请选择另一个文件夹!</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="2309"/>
+        <location filename="src/core/ConfigDialog.cpp" line="2324"/>
         <source>Choose the location of the QtiPlot translations folder!</source>
         <translation>选择QtiPlot语言包文件夹的位置!</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="2331"/>
+        <location filename="src/core/ConfigDialog.cpp" line="2346"/>
         <source>Choose the location of the QtiPlot help folder!</source>
         <translation>选择QtiPlot帮助文件夹的位置!</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="2343"/>
+        <location filename="src/core/ConfigDialog.cpp" line="2358"/>
         <source>There is no file called &lt;b&gt;index.html&lt;/b&gt; in this folder.&lt;br&gt;Please choose another folder!</source>
         <translation>文件夹中没有&lt;b&gt;index.html&lt;/b&gt;文件.&lt;br&gt;请选择另一个文件夹!</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="2359"/>
+        <location filename="src/core/ConfigDialog.cpp" line="2374"/>
         <source>Choose the location of the Python configuration files!</source>
         <translation>选择Python配置文件的位置!</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="2450"/>
+        <location filename="src/core/ConfigDialog.cpp" line="2465"/>
         <source>QtiPlot - Folder Not Found!</source>
         <translation>QtiPlot - 文件夹未找到!</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="2445"/>
+        <location filename="src/core/ConfigDialog.cpp" line="2460"/>
         <source>The folder %1 doesn&apos;t exist.&lt;br&gt;Please choose another folder!</source>
         <translation>文件夹%1不存在.&lt;br&gt;请选择另一个文件夹!</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="2451"/>
+        <location filename="src/core/ConfigDialog.cpp" line="2466"/>
         <source>%1 is not a folder.&lt;br&gt;Please choose another folder!</source>
         <translation>%1不是文件夹.&lt;br&gt;请选择另一个文件夹!</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="2456"/>
+        <location filename="src/core/ConfigDialog.cpp" line="2576"/>
         <source>QtiPlot</source>
         <translation>QtiPlot</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="2457"/>
+        <location filename="src/core/ConfigDialog.cpp" line="2472"/>
         <source>You don&apos;t have read access rights to folder %1.&lt;br&gt;Please choose another folder!</source>
         <translation>你没有%1文件夹的阅读权限.&lt;br&gt;请选择另一个文件夹!</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="2503"/>
+        <location filename="src/core/ConfigDialog.cpp" line="2518"/>
         <source>&amp;Internet Connection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="2469"/>
+        <location filename="src/core/ConfigDialog.cpp" line="2484"/>
         <source>&amp;Proxy</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="2475"/>
+        <location filename="src/core/ConfigDialog.cpp" line="2490"/>
         <source>Host</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="2480"/>
+        <location filename="src/core/ConfigDialog.cpp" line="2495"/>
         <source>Port</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="2487"/>
+        <location filename="src/core/ConfigDialog.cpp" line="2502"/>
         <source>Username</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="2492"/>
+        <location filename="src/core/ConfigDialog.cpp" line="2507"/>
         <source>Password</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/core/ConfigDialog.cpp" line="1485"/>
+        <source>LaTeX Compiler</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/core/ConfigDialog.cpp" line="2544"/>
+        <source>Choose the location of the LaTeX compiler!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/core/ConfigDialog.cpp" line="2569"/>
+        <source>QtiPlot - File Not Found!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/core/ConfigDialog.cpp" line="2563"/>
+        <source>The file %1 doesn&apos;t exist.&lt;br&gt;Please choose another file!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/core/ConfigDialog.cpp" line="2570"/>
+        <source>%1 is a folder.&lt;br&gt;Please choose a file!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/core/ConfigDialog.cpp" line="2577"/>
+        <source>You don&apos;t have read access rights to file %1.&lt;br&gt;Please choose another file!</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -6753,7 +6783,7 @@ The following special codes can be used:
 <context>
     <name>EnrichmentDialog</name>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="1387"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="758"/>
         <source>QtiPlot</source>
         <translation>QtiPlot</translation>
     </message>
@@ -6788,368 +6818,348 @@ The following special codes can be used:
         <translation>关闭(&amp;C)</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="188"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="171"/>
         <source>Preview:</source>
         <translation>预览:</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="274"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="257"/>
         <source>&amp;Text</source>
         <translation>文本(&amp;T)</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="324"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="307"/>
         <source>Color</source>
         <translation>颜色</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="204"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="187"/>
         <source>&amp;Font</source>
         <translation>字体(&amp;F)</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="208"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="191"/>
         <source>Background</source>
         <translation>背景</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="389"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="372"/>
         <source>Opacity</source>
         <translation>不透明度</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="394"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="377"/>
         <source>Transparent</source>
         <translation>透明</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="224"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="207"/>
         <source>Rotate (deg.)</source>
         <translation>旋转(角度)</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="233"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="216"/>
         <source>Auto-&amp;update</source>
         <translation>自动更新(&amp;u)</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="417"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="400"/>
         <source>Set As &amp;Default</source>
         <translation>设为默认(&amp;D)</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="243"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="226"/>
         <source>Apply format &amp;to...</source>
         <translation>应用格式到(&amp;t)...</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="425"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="408"/>
         <source>Object</source>
         <translation>对象</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="426"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="409"/>
         <source>Layer</source>
         <translation>图层</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="427"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="410"/>
         <source>Window</source>
         <translation>窗口</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="428"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="411"/>
         <source>All Windows</source>
         <translation>所有窗口</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="283"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="266"/>
         <source>File</source>
         <translation>文件</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="293"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="276"/>
         <source>&amp;Save internally</source>
         <translation>内部保存(&amp;S)</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="302"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="285"/>
         <source>&amp;Image</source>
         <translation>图像(&amp;I)</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="311"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="294"/>
         <source>Shape</source>
         <translation>形状</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="314"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="297"/>
         <source>None</source>
         <translation>不选</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="316"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="299"/>
         <source>Line</source>
         <translation>线</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="318"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="301"/>
         <source>Rectangle</source>
         <translation>矩形</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="319"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="302"/>
         <source>Shadow</source>
         <translation>阴影</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="329"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="312"/>
         <source>Line Style</source>
         <translation>线样式</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="489"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="472"/>
         <source>Width</source>
         <translation>宽度</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="421"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="404"/>
         <source>Apply t&amp;o...</source>
         <translation>应用到(&amp;o)...</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="374"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="357"/>
         <source>&amp;Frame</source>
         <translation>框架(&amp;F)</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="383"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="366"/>
         <source>Fill Color</source>
         <translation>填充颜色</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="398"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="381"/>
         <source>Pattern</source>
         <translation>图案</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="403"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="386"/>
         <source>Pattern Color</source>
         <translation>图案颜色</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="408"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="391"/>
         <source>Use &amp;Frame Color</source>
         <translation>使用框架颜色(&amp;F)</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="437"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="420"/>
         <source>Fill &amp;Pattern</source>
         <translation>填充图案(&amp;P)</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="445"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="428"/>
         <source>inch</source>
         <translation>英寸</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="446"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="429"/>
         <source>mm</source>
         <translation>毫米</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="447"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="430"/>
         <source>cm</source>
         <translation>厘米</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="448"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="431"/>
         <source>point</source>
         <translation>点</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="449"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="432"/>
         <source>pixel</source>
         <translation>像素</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="451"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="434"/>
         <source>scale</source>
         <translation>比例</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="454"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="437"/>
         <source>Unit</source>
         <translation>单位</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="462"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="445"/>
         <source>Position</source>
         <translation>位置</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="472"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="455"/>
         <source>X</source>
         <translation>X</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="474"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="457"/>
         <source>Y</source>
         <translation>Y</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="480"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="463"/>
         <source>Size</source>
         <translation>大小</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="492"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="475"/>
         <source>Height</source>
         <translation>高</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="495"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="478"/>
         <source>&amp;Keep aspect ratio</source>
         <translation>保持宽高比(&amp;K)</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="498"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="481"/>
         <source>&amp;Best size</source>
         <translation>最佳尺寸(&amp;B)</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="522"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="505"/>
         <source>&amp;Geometry</source>
         <translation>布局(&amp;G)</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="778"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="758"/>
         <source>Network connection error</source>
         <translation>网络连接错误</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="779"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="759"/>
         <source>Error while trying to connect to host %1:</source>
         <translation>尝试连接主机%1时错误:</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="780"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="760"/>
         <source>Please verify your network connection!</source>
         <translation>请检查你的网络连接!</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="796"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="776"/>
         <source>QtiPlot - Import image from file</source>
         <translation>QtiPlot - 从文件导入图像</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="823"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="803"/>
         <source>QtiPlot - Warning</source>
         <translation>QtiPlot - 警告</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="824"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="804"/>
         <source>The file %1 doesn&apos;t exist. The image cannot be restored when reloading the project file!</source>
         <translation>文件%1不存在。当重载项目文件时图像无法恢复!</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="157"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="155"/>
         <source>MathTran (http://www.mathtran.org/)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="158"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="156"/>
         <source>locally installed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="162"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="161"/>
         <source>LaTeX Compiler</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="1245"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="1225"/>
         <source>Compile process ended</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="1246"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="1226"/>
         <source>Compiling process ended with exit code: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="1283"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="1263"/>
         <source>LaTeX compile process</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="1285"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="1265"/>
         <source>dvipng process</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="1293"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="1274"/>
         <source>failed to start!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="1294"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="1275"/>
         <source>Please verify that you have dvipng installed in the same folder as your LaTeX compiler!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="1298"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="1279"/>
         <source>crashed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="1302"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="1283"/>
         <source>timedout</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="1306"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="1287"/>
         <source>write error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="1310"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="1291"/>
         <source>read error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="1314"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="1295"/>
         <source>unknown error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="1327"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="1308"/>
         <source>Compile error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="1355"/>
-        <source>Choose the location of the LaTeX compiler!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="1380"/>
-        <source>QtiPlot - File Not Found!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="1374"/>
-        <source>The file %1 doesn&apos;t exist.&lt;br&gt;Please choose another file!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="1381"/>
-        <source>%1 is a folder.&lt;br&gt;Please choose a file!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="1388"/>
-        <source>You don&apos;t have read access rights to file %1.&lt;br&gt;Please choose another file!</source>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="1272"/>
+        <source>Please set the correct path to the compiler in the preferences dialog!</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

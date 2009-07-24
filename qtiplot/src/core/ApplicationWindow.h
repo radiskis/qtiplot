@@ -130,6 +130,7 @@ public:
 	enum MatrixToTableConversion{Direct, XYZ, YXZ};
 	enum EndLineChar{LF, CRLF, CR};
 	enum Analysis{NoAnalysis, Integrate, Diff, FitLinear, FitGauss, FitLorentz, FitSigmoidal, FitSlope};
+	enum LaTeXCompiler{MathTran, Local};
 
 	FolderListView *lv, *folders;
 	QDockWidget *logWindow;
@@ -1061,6 +1062,7 @@ private slots:
 
 // TODO: a lot of this stuff should be private
 public:
+	int d_latex_compiler;
 	QString d_latex_compiler_path;
 	//! Last selected filter in open project dialog
     QString d_open_project_filter;

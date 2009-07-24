@@ -112,13 +112,9 @@ EnrichmentDialog::EnrichmentDialog(WidgetType wt, Graph *g, QWidget *parent)
 	tabWidget = new QTabWidget();
 	if (wt == Text)
 		initTextPage();
-	else if (wt == Tex){
+	else if (wt == Tex)
 		initEditorPage();
-		if (!(((ApplicationWindow *)parent)->d_latex_compiler_path).isEmpty()){
-			texCompilerBox->setCurrentIndex(1);
-			updateCompilerInterface(1);
-		}
-	} else if (wt == Image)
+	else if (wt == Image)
 		initImagePage();
 	else if (wt == Frame || wt == Ellipse)
 		initPatternPage();
@@ -156,26 +152,12 @@ void EnrichmentDialog::initEditorPage()
 	texCompilerBox = new QComboBox;
 	texCompilerBox->addItem(tr("MathTran (http://www.mathtran.org/)"));
 	texCompilerBox->addItem(tr("locally installed"));
+	texCompilerBox->setCurrentIndex(((ApplicationWindow *)parentWidget())->d_latex_compiler);
 	connect(texCompilerBox, SIGNAL(activated(int)), this, SLOT(updateCompilerInterface(int)));
 
 	QHBoxLayout *hl = new QHBoxLayout;
 	hl->addWidget(new QLabel(tr("LaTeX Compiler")));
 	hl->addWidget(texCompilerBox);
-
-	compilerPathGroupBox = new QGroupBox;
-	QHBoxLayout *hl1 = new QHBoxLayout(compilerPathGroupBox);
-	compilerPathBox = new QLineEdit;
-
-	compilerPathBox->setText(((ApplicationWindow *)parentWidget())->d_latex_compiler_path);
-	connect(compilerPathBox, SIGNAL(editingFinished ()), this, SLOT(validateCompiler()));
-
-	hl1->addWidget(compilerPathBox);
-    browseCompilerBtn = new QPushButton;
-    browseCompilerBtn->setIcon(QIcon(QPixmap(choose_folder_xpm)));
-	connect(browseCompilerBtn, SIGNAL(clicked()), this, SLOT(chooseCompiler()));
-
-    hl1->addWidget(browseCompilerBtn);
-    compilerPathGroupBox->hide();
 
 	outputLabel = new QLabel;
     outputLabel->setFrameShape(QFrame::StyledPanel);
@@ -184,7 +166,6 @@ void EnrichmentDialog::initEditorPage()
     layout->addWidget(equationEditor, 1);
 	layout->addWidget(texFormatButtons);
 	layout->addLayout(hl);
-	layout->addWidget(compilerPathGroupBox);
 	layout->addWidget(new QLabel(tr("Preview:")));
 	layout->addWidget(outputLabel);
 
@@ -724,9 +705,6 @@ void EnrichmentDialog::fetchImage()
 	if (texCompilerBox->currentIndex() == 1){
 		if (compileProcess)
 			delete compileProcess;
-
-		if (!validateCompiler())
-			return;
 
 		compileProcess = new QProcess(this);
 		connect(compileProcess, SIGNAL(finished(int, QProcess::ExitStatus)),
@@ -1288,7 +1266,8 @@ void EnrichmentDialog::displayCompileError(QProcess::ProcessError error)
 	switch(error){
 		case QProcess::FailedToStart:
 			if (compileProcess)
-				msg = process + " " + tr("failed to start!");
+				msg = process + " " + tr("failed to start!") + " " +
+				tr("Please set the correct path to the compiler in the preferences dialog!");
 			else if (dvipngProcess)
 				msg = process + " " + tr("failed to start!") + " " +
 				tr("Please verify that you have dvipng installed in the same folder as your LaTeX compiler!");
@@ -1333,66 +1312,7 @@ void EnrichmentDialog::displayCompileError(QProcess::ProcessError error)
 
 void EnrichmentDialog::updateCompilerInterface(int compiler)
 {
-	switch(compiler){
-		case 0:
-			compilerPathGroupBox->hide();
-			((ApplicationWindow *)parentWidget())->d_latex_compiler_path = QString::null;
-		break;
-
-		case 1:
-			compilerPathGroupBox->show();
-		break;
-	}
-}
-
-void EnrichmentDialog::chooseCompiler()
-{
-	ApplicationWindow *app = (ApplicationWindow *)parentWidget();
-	if (!app)
-		return;
-
-	QFileInfo tfi(app->d_latex_compiler_path);
-	QString compiler = ApplicationWindow::getFileName(this, tr("Choose the location of the LaTeX compiler!"),
-	app->d_latex_compiler_path, QString(), 0, false);
-
-	if (!compiler.isEmpty()){
-		app->d_latex_compiler_path = QDir::toNativeSeparators(compiler);
-		compilerPathBox->setText(app->d_latex_compiler_path);
-	}
-}
-
-bool EnrichmentDialog::validateCompiler()
-{
-	QString path = compilerPathBox->text();
-	if (path.isEmpty())
-		return false;
-
-	ApplicationWindow *app = (ApplicationWindow *)parentWidget();
-	QFileInfo fi(path);
-	if (!fi.exists()){
-		QMessageBox::critical(this, tr("QtiPlot - File Not Found!"),
-		tr("The file %1 doesn't exist.<br>Please choose another file!").arg(path));
-		compilerPathBox->setText(app->d_latex_compiler_path);
-		return false;
-	}
-
-	if (fi.isDir()){
-		QMessageBox::critical(this, tr("QtiPlot - File Not Found!"),
-		tr("%1 is a folder.<br>Please choose a file!").arg(path));
-		compilerPathBox->setText(app->d_latex_compiler_path);
-		return false;
-	}
-
-	if (!fi.isReadable()){
-		QMessageBox::critical(this, tr("QtiPlot"),
-		tr("You don't have read access rights to file %1.<br>Please choose another file!").arg(path));
-		compilerPathBox->setText(app->d_latex_compiler_path);
-		return false;
-	}
-
-	app->d_latex_compiler_path = QDir::toNativeSeparators(path);
-	compilerPathBox->setText(app->d_latex_compiler_path);
-	return true;
+	((ApplicationWindow *)parentWidget())->d_latex_compiler = compiler;
 }
 
 EnrichmentDialog::~EnrichmentDialog()
