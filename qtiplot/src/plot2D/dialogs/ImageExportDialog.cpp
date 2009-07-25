@@ -59,7 +59,7 @@ ImageExportDialog::ImageExportDialog(MdiSubWindow *window, QWidget * parent, boo
 		list << "EMF";
 	#endif
 
-	if (qobject_cast<Graph3D *> (d_window))
+	//if (qobject_cast<Graph3D *> (d_window))
         list << "PGF";
 
 	QStringList filters;

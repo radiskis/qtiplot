@@ -20,15 +20,15 @@ CONFIG          += HAVE_LIBPNG
 # Uncomment the next line in order to enable export of 2D plots to the EMF file format on Windows. You need EmfEngine on your system.
 CONFIG          += HAVE_EMF
 
-# Uncomment the next line in order to enable export of 2D plots to the PGF file format on Windows. You need EmfEngine on your system.
-#CONFIG          += HAVE_PGF
+# Uncomment the next line in order to enable export of 2D plots to the PGF file format. You need PgfEngine on your system.
+CONFIG          += HAVE_PGF
 
 # Uncomment the following line if you want to perform a custom installation using the *.path variables defined bellow.
 #CONFIG          += CustomInstall
 
 CONFIG          += release
 #CONFIG          += debug
-#win32: CONFIG   += console
+win32: CONFIG   += console
 
 ##################### 3rd PARTY HEADER FILES SECTION ########################
 #!!! Warning: You must modify these paths according to your computer settings
@@ -130,6 +130,7 @@ mac:RC_FILE   = icons/qtiplot.icns
 ###################### TRANSLATIONS #########################################
 
 TRANSLATIONS    = translations/qtiplot_cn.ts \
+				  translations/qtiplot_cz.ts \
 				  translations/qtiplot_de.ts \
                   translations/qtiplot_es.ts \
                   translations/qtiplot_fr.ts \
@@ -140,7 +141,7 @@ TRANSLATIONS    = translations/qtiplot_cn.ts \
                   translations/qtiplot_sv.ts
 
 system(lupdate -verbose qtiplot.pro)
-#system(lrelease -verbose qtiplot.pro)
+system(lrelease -verbose qtiplot.pro)
 
 translations.files += translations/qtiplot_de.qm \
                   translations/qtiplot_es.qm \
