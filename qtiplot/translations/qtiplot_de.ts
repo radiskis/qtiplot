@@ -10929,7 +10929,7 @@ Die folgenden Spezialcodes können benutzt werden:
 <context>
     <name>EnrichmentDialog</name>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="758"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="756"/>
         <source>QtiPlot</source>
         <translation>QtiPlot</translation>
     </message>
@@ -10964,42 +10964,42 @@ Die folgenden Spezialcodes können benutzt werden:
         <translation>S&amp;chließen</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="171"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="169"/>
         <source>Preview:</source>
         <translation>Vorschau:</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="257"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="255"/>
         <source>&amp;Text</source>
         <translation>&amp;Text</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="307"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="305"/>
         <source>Color</source>
         <translation>Farbe</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="400"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="398"/>
         <source>Set As &amp;Default</source>
         <translation>Als Stan&amp;dard setzen</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="187"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="185"/>
         <source>&amp;Font</source>
         <translation>Schri&amp;ftart</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="216"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="214"/>
         <source>Auto-&amp;update</source>
         <translation>&amp;Automatisch aktualisieren</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="372"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="370"/>
         <source>Opacity</source>
         <translation>Deckkraft</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="377"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="375"/>
         <source>Transparent</source>
         <translation>Transparent</translation>
     </message>
@@ -11009,307 +11009,307 @@ Die folgenden Spezialcodes können benutzt werden:
         <translation type="obsolete">Hintergrundfarbe</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="266"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="264"/>
         <source>File</source>
         <translation>Datei</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="276"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="274"/>
         <source>&amp;Save internally</source>
         <translation>Intern &amp;speichern</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="285"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="283"/>
         <source>&amp;Image</source>
         <translation>&amp;Bild</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="294"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="292"/>
         <source>Shape</source>
         <translation>Form</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="297"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="295"/>
         <source>None</source>
         <translation>Keine</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="301"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="299"/>
         <source>Rectangle</source>
         <translation>Rechteck</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="302"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="300"/>
         <source>Shadow</source>
         <translation>Schatten</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="312"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="310"/>
         <source>Line Style</source>
         <translation>Linienstil</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="472"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="470"/>
         <source>Width</source>
         <translation>Breite</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="411"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="409"/>
         <source>All Windows</source>
         <translation>Alle Fenster</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="357"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="355"/>
         <source>&amp;Frame</source>
         <translation>Rahmen</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="366"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="364"/>
         <source>Fill Color</source>
         <translation>Füllfarbe</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="381"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="379"/>
         <source>Pattern</source>
         <translation>Füllmuster</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="386"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="384"/>
         <source>Pattern Color</source>
         <translation>Musterfarbe</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="391"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="389"/>
         <source>Use &amp;Frame Color</source>
         <translation>Benutze &amp;Rahmenfarbe</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="420"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="418"/>
         <source>Fill &amp;Pattern</source>
         <translation>Mit &amp;Muster füllen</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="428"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="426"/>
         <source>inch</source>
         <translation>Zoll</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="429"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="427"/>
         <source>mm</source>
         <translation>mm</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="430"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="428"/>
         <source>cm</source>
         <translation>cm</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="431"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="429"/>
         <source>point</source>
         <translation>Punkt</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="432"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="430"/>
         <source>pixel</source>
         <translation>Pixel</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="434"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="432"/>
         <source>scale</source>
         <translation>Skala</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="437"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="435"/>
         <source>Unit</source>
         <translation>Einheit</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="445"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="443"/>
         <source>Position</source>
         <translation>Position</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="455"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="453"/>
         <source>X</source>
         <translation>X</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="457"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="455"/>
         <source>Y</source>
         <translation>Y</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="463"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="461"/>
         <source>Size</source>
         <translation>Größe</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="475"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="473"/>
         <source>Height</source>
         <translation>Höhe</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="478"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="476"/>
         <source>&amp;Keep aspect ratio</source>
         <translation>&amp;Seitenverhältnis beibehalten</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="481"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="479"/>
         <source>&amp;Best size</source>
         <translation>&amp;Optimale Größe</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="505"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="503"/>
         <source>&amp;Geometry</source>
         <translation>&amp;Geometrie</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="758"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="756"/>
         <source>Network connection error</source>
         <translation>Netzwerkverbindungsfehler</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="759"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="757"/>
         <source>Error while trying to connect to host %1:</source>
         <translation>Fehler beim Versuch eine Verbindung zum Host &apos;%1&apos; herzustellen.</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="760"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="758"/>
         <source>Please verify your network connection!</source>
         <translation>Bitte prüfen Sie Ihre Netzwerkverbindung!</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="776"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="774"/>
         <source>QtiPlot - Import image from file</source>
         <translation>QtiPlot - Bild aus Datei importieren</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="803"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="801"/>
         <source>QtiPlot - Warning</source>
         <translation>QtiPlot - Warnung</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="804"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="802"/>
         <source>The file %1 doesn&apos;t exist. The image cannot be restored when reloading the project file!</source>
         <translation>Die Datei &apos;%1&apos; existiert nicht. Das Bild kann beim Neuladen der Projektdatei nicht wiederhergestellt werden!</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="409"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="407"/>
         <source>Layer</source>
         <translation>Ebene</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="410"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="408"/>
         <source>Window</source>
         <translation>Fenster</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="191"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="189"/>
         <source>Background</source>
         <translation>Hintergrund</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="207"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="205"/>
         <source>Rotate (deg.)</source>
         <translation>Rotieren (Grad)</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="408"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="406"/>
         <source>Object</source>
         <translation>Objekt</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="404"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="402"/>
         <source>Apply t&amp;o...</source>
         <translation>&amp;Anwenden auf...</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="299"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="297"/>
         <source>Line</source>
         <translation>Linie</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="226"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="224"/>
         <source>Apply format &amp;to...</source>
         <translation>Wende das Forma&amp;t auf...</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="155"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="153"/>
         <source>MathTran (http://www.mathtran.org/)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="156"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="154"/>
         <source>locally installed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="161"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="159"/>
         <source>LaTeX Compiler</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="1225"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="1223"/>
         <source>Compile process ended</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="1226"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="1224"/>
         <source>Compiling process ended with exit code: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="1263"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="1261"/>
         <source>LaTeX compile process</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="1265"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="1263"/>
         <source>dvipng process</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="1274"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="1272"/>
         <source>failed to start!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="1275"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="1273"/>
         <source>Please verify that you have dvipng installed in the same folder as your LaTeX compiler!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="1279"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="1277"/>
         <source>crashed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="1283"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="1281"/>
         <source>timedout</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="1287"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="1285"/>
         <source>write error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="1291"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="1289"/>
         <source>read error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="1295"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="1293"/>
         <source>unknown error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="1308"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="1306"/>
         <source>Compile error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="1272"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="1270"/>
         <source>Please set the correct path to the compiler in the preferences dialog!</source>
         <translation type="unfinished"></translation>
     </message>
