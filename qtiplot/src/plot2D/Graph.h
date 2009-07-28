@@ -309,8 +309,8 @@ class Graph: public QwtPlot
 		void exportEMF(const QString& fname);
 #endif
 
-#ifdef PGF_OUTPUT
-		void exportPGF(const QString& fname);
+#ifdef TEX_OUTPUT
+		void exportTeX(const QString& fname);
 #endif
 
 		void exportVector(const QString& fileName, int res = 0, bool color = true,

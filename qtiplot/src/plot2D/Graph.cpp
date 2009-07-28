@@ -129,8 +129,8 @@ static const char *unzoom_xpm[]={
 	#include <EmfEngine.h>
 #endif
 
-#ifdef PGF_OUTPUT
-	#include <PgfEngine.h>
+#ifdef TEX_OUTPUT
+	#include <QTeXEngine.h>
 #endif
 
 #include <ColorBox.h>
@@ -1646,13 +1646,13 @@ void Graph::exportEMF(const QString& fname)
 }
 #endif
 
-#ifdef PGF_OUTPUT
-void Graph::exportPGF(const QString& fname)
+#ifdef TEX_OUTPUT
+void Graph::exportTeX(const QString& fname)
 {
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
-	PgfPaintDevice pgf(boundingRect().size(), fname);
-	QPainter paint(&pgf);
+	QTeXPaintDevice tex(boundingRect().size(), fname);
+	QPainter paint(&tex);
 	print(&paint, rect());
 	paint.end();
 

@@ -12260,12 +12260,12 @@ Följande specialkoder kan användas:
         <translation type="obsolete">Visa exp&amp;ortval</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="97"/>
+        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="102"/>
         <source>Resolution (DPI)</source>
         <translation>Upplösning (DPI)</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="106"/>
+        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="111"/>
         <source>&amp;Export in &amp;color</source>
         <translation>&amp;Exportera i &amp;färg</translation>
     </message>
@@ -12280,12 +12280,12 @@ Följande specialkoder kan användas:
         <translation type="obsolete">Behåll aspe&amp;kten</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="135"/>
+        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="140"/>
         <source>Image quality</source>
         <translation>Bildkvalitet</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="150"/>
+        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="155"/>
         <source>Save transparency</source>
         <translation>Spara tarnsparens</translation>
     </message>
@@ -12295,102 +12295,102 @@ Följande specialkoder kan användas:
         <translation type="obsolete">An&amp;passad sidstorlek</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="115"/>
+        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="120"/>
         <source>Native fonts</source>
         <translation>Ursprungliga teckensniitt</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="116"/>
+        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="121"/>
         <source>LaTeX file</source>
         <translation>LaTeX-fil</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="110"/>
+        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="115"/>
         <source>Export 3D texts as</source>
         <translation>Exportera 3D-texter som</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="114"/>
+        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="119"/>
         <source>Bitmap images</source>
         <translation>Bitmapbilder</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="120"/>
+        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="125"/>
         <source>3D Sort mode</source>
         <translation>3D-sorteringsmod</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="123"/>
+        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="128"/>
         <source>No sort</source>
         <translation>Ingen sortering</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="124"/>
+        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="129"/>
         <source>Simple sort</source>
         <translation>Enkel sortering</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="125"/>
+        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="130"/>
         <source>BSP sort</source>
         <translation>BSO-sortering</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="165"/>
+        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="170"/>
         <source>inch</source>
         <translation>tum</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="166"/>
+        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="171"/>
         <source>mm</source>
         <translation>mm</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="167"/>
+        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="172"/>
         <source>cm</source>
         <translation>cm</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="168"/>
+        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="173"/>
         <source>point</source>
         <translation>punkt</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="169"/>
+        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="174"/>
         <source>pixel</source>
         <translation>pixel</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="172"/>
+        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="177"/>
         <source>Unit</source>
         <translation>Enhet</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="175"/>
+        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="180"/>
         <source>Width</source>
         <translation>Bredd</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="183"/>
+        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="188"/>
         <source>Height</source>
         <translation>Höjd</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="159"/>
+        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="164"/>
         <source>Custom print size</source>
         <translation>Anpassad utskriftsstorlek</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="190"/>
+        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="195"/>
         <source>Scale Fonts Factor</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="193"/>
+        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="198"/>
         <source>Automatic</source>
         <translation type="unfinished">Automatiskt</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="141"/>
+        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="146"/>
         <source>Print Resolution (DPI)</source>
         <translation type="unfinished"></translation>
     </message>

@@ -20,15 +20,15 @@ CONFIG          += HAVE_LIBPNG
 # Uncomment the next line in order to enable export of 2D plots to the EMF file format on Windows. You need EmfEngine on your system.
 CONFIG          += HAVE_EMF
 
-# Uncomment the next line in order to enable export of 2D plots to the PGF file format. You need PgfEngine on your system.
-CONFIG          += HAVE_PGF
+# Uncomment the next line in order to enable export of 2D plots to TeX. You need QTeXEngine on your system.
+#CONFIG          += HAVE_TEX_ENGINE
 
 # Uncomment the following line if you want to perform a custom installation using the *.path variables defined bellow.
 #CONFIG          += CustomInstall
 
 CONFIG          += release
 #CONFIG          += debug
-win32: CONFIG   += console
+#win32: CONFIG   += console
 
 ##################### 3rd PARTY HEADER FILES SECTION ########################
 #!!! Warning: You must modify these paths according to your computer settings
@@ -140,8 +140,8 @@ TRANSLATIONS    = translations/qtiplot_cn.ts \
                   translations/qtiplot_ja.ts \
                   translations/qtiplot_sv.ts
 
-system(lupdate -verbose qtiplot.pro)
-system(lrelease -verbose qtiplot.pro)
+#system(lupdate -verbose qtiplot.pro)
+#system(lrelease -verbose qtiplot.pro)
 
 translations.files += translations/qtiplot_de.qm \
                   translations/qtiplot_es.qm \
@@ -234,12 +234,12 @@ contains(CONFIG, HAVE_EMF){
 
 ###############################################################
 
-contains(CONFIG, HAVE_PGF){
-	DEFINES 	+= PGF_OUTPUT
-	INCLUDEPATH += ../3rdparty/QtPgfEngine
-	HEADERS 	+= ../3rdparty/QtPgfEngine/PgfEngine.h
-	SOURCES     += ../3rdparty/QtPgfEngine/PgfPaintEngine.cpp
-	SOURCES     += ../3rdparty/QtPgfEngine/PgfPaintDevice.cpp
+contains(CONFIG, HAVE_TEX_ENGINE){
+	DEFINES 	+= TEX_OUTPUT
+	INCLUDEPATH += ../3rdparty/QTeXEngine/src
+	HEADERS 	+= ../3rdparty/QTeXEngine/src/QTeXEngine.h
+	SOURCES     += ../3rdparty/QTeXEngine/src/QTeXPaintEngine.cpp
+	SOURCES     += ../3rdparty/QTeXEngine/src/QTeXPaintDevice.cpp
 }
 
 ###############################################################

@@ -59,7 +59,12 @@ ImageExportDialog::ImageExportDialog(MdiSubWindow *window, QWidget * parent, boo
 		list << "EMF";
 	#endif
 
-	//if (qobject_cast<Graph3D *> (d_window))
+#if TEX_OUTPUT
+	if (qobject_cast<MultiLayer *> (d_window))
+        list << "TEX";
+#endif
+
+	if (qobject_cast<Graph3D *> (d_window))
         list << "PGF";
 
 	QStringList filters;
@@ -226,6 +231,14 @@ void ImageExportDialog::updateAdvancedOptions (const QString & filter)
 
 #if EMF_OUTPUT
 	if (filter.contains("*.emf")){
+		d_extension_toggle->setChecked(false);
+		d_extension_toggle->setEnabled(false);
+		return;
+	}
+#endif
+
+#if TEX_OUTPUT
+	if (filter.contains("*.tex")){
 		d_extension_toggle->setChecked(false);
 		d_extension_toggle->setEnabled(false);
 		return;

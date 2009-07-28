@@ -52,6 +52,10 @@
 	#include <EmfEngine.h>
 #endif
 
+#ifdef TEX_OUTPUT
+	#include <QTeXEngine.h>
+#endif
+
 #include <qwt_plot.h>
 #include <qwt_plot_canvas.h>
 #include <qwt_plot_layout.h>
@@ -211,18 +215,22 @@ void MultiLayer::adjustSize()
 
 void MultiLayer::activateGraph(LayerButton* button)
 {
-	for (int i=0;i<buttonsList.count();i++)
-	{
+	for (int i = 0; i<buttonsList.count(); i++){
 		LayerButton *btn=(LayerButton*)buttonsList.at(i);
 		if (btn->isOn())
 			btn->setOn(false);
 
-		if (btn == button)
-		{
+		if (btn == button){
 			active_graph = (Graph*) graphsList.at(i);
 			active_graph->setFocus();
 			active_graph->raise();//raise layer on top of the layers stack
-			active_graph->raiseEnrichements();
+
+			if (d_layers_selector){
+				delete d_layers_selector;
+				d_layers_selector = new SelectionMoveResizer(active_graph->canvas());
+				connect(d_layers_selector, SIGNAL(targetsChanged()), this, SIGNAL(modifiedPlot()));
+			} else
+				active_graph->raiseEnrichements();
 			button->setOn(true);
 		}
 	}
@@ -845,6 +853,25 @@ void MultiLayer::exportEMF(const QString& fname)
 }
 #endif
 
+#ifdef TEX_OUTPUT
+void MultiLayer::exportTeX(const QString& fname)
+{
+	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+
+	QTeXPaintDevice tex(d_canvas->size(), fname);
+	QPainter paint(&tex);
+	QObjectList lst = d_canvas->children();
+	foreach (QObject *o, lst){
+		Graph *g = qobject_cast<Graph *>(o);
+		if (g)
+			g->print(&paint, g->geometry());
+	}
+	paint.end();
+
+	QApplication::restoreOverrideCursor();
+}
+#endif
+
 void MultiLayer::copyAllLayers()
 {
 	bool selectionOn = false;
@@ -1066,7 +1093,7 @@ bool MultiLayer::eventFilter(QObject *object, QEvent *e)
             if (igeo.contains(pos)) {
                 if (me->modifiers() & Qt::ShiftModifier) {
                     if (d_layers_selector)
-                        d_layers_selector->add(*i);
+                        d_layers_selector->add((*i)->canvas());
                     else {
                         d_layers_selector = new SelectionMoveResizer((*i)->canvas());
                         connect(d_layers_selector, SIGNAL(targetsChanged()), this, SIGNAL(modifiedPlot()));
@@ -1082,15 +1109,8 @@ bool MultiLayer::eventFilter(QObject *object, QEvent *e)
                 return true;
             }
         }
-        if (d_layers_selector){
-			foreach(Graph *g, graphsList){
-				if (d_layers_selector->contains((QWidget *)g)){
-					g->raiseEnrichements();
-					break;
-				}
-			}
+        if (d_layers_selector)
             delete d_layers_selector;
-		}
 	}
 
 	return MdiSubWindow::eventFilter(object, e);
@@ -1099,12 +1119,6 @@ bool MultiLayer::eventFilter(QObject *object, QEvent *e)
 void MultiLayer::keyPressEvent(QKeyEvent * e)
 {
 	if (e->key() == Qt::Key_Escape && d_layers_selector){
-		foreach(Graph *g, graphsList){
-			if (d_layers_selector->contains((QWidget *)g)){
-				g->raiseEnrichements();
-				break;
-			}
-		}
 		delete d_layers_selector;
 		return;
 	}

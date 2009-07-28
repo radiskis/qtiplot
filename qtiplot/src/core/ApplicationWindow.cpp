@@ -5254,6 +5254,12 @@ void ApplicationWindow::exportGraph(const QString& exportFilter)
 		return;
     }
 #endif
+#ifdef TEX_OUTPUT
+    if (plot2D && selected_filter.contains(".tex")){
+		plot2D->exportTeX(file_name);
+		return;
+    }
+#endif
 
 	if (selected_filter.contains(".eps") || selected_filter.contains(".pdf") ||
 		selected_filter.contains(".ps") || selected_filter.contains(".svg")) {
@@ -5325,9 +5331,9 @@ void ApplicationWindow::exportLayer()
     else if (selected_filter.contains(".emf"))
 		g->exportEMF(file_name);
 #endif
-#ifdef PGF_OUTPUT
-    else if (selected_filter.contains(".pgf"))
-		g->exportPGF(file_name);
+#ifdef TEX_OUTPUT
+    else if (selected_filter.contains(".tex"))
+		g->exportTeX(file_name);
 #endif
     else {
 		QList<QByteArray> list = QImageWriter::supportedImageFormats();
