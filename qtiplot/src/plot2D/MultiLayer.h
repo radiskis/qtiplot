@@ -161,6 +161,9 @@ public slots:
 #ifdef EMF_OUTPUT
 	void exportEMF(const QString& fname);
 #endif
+#ifdef TEX_OUTPUT
+	void exportTeX(const QString& fname);
+#endif
 
 	void copyAllLayers();
 	void print();

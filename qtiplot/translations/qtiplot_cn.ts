@@ -9302,122 +9302,122 @@ The following special codes can be used:
         <translation>QtiPlot - 选择一个文件来保存</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="97"/>
+        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="102"/>
         <source>Resolution (DPI)</source>
         <translation>分辨率(DPI)</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="106"/>
+        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="111"/>
         <source>&amp;Export in &amp;color</source>
         <translation>彩色输出(&amp;E)</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="110"/>
+        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="115"/>
         <source>Export 3D texts as</source>
         <translation>导出三维文字为</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="114"/>
+        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="119"/>
         <source>Bitmap images</source>
         <translation>Bitmap图像</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="115"/>
+        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="120"/>
         <source>Native fonts</source>
         <translation>点阵字体</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="116"/>
+        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="121"/>
         <source>LaTeX file</source>
         <translation>LaTeX文件</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="120"/>
+        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="125"/>
         <source>3D Sort mode</source>
         <translation>三维排序模式</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="123"/>
+        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="128"/>
         <source>No sort</source>
         <translation>不排序</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="124"/>
+        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="129"/>
         <source>Simple sort</source>
         <translation>简单排序</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="125"/>
+        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="130"/>
         <source>BSP sort</source>
         <translation>BSP排序</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="135"/>
+        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="140"/>
         <source>Image quality</source>
         <translation>图像质量</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="150"/>
+        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="155"/>
         <source>Save transparency</source>
         <translation>保存透明度</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="159"/>
+        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="164"/>
         <source>Custom print size</source>
         <translation>自定义打印尺寸</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="165"/>
+        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="170"/>
         <source>inch</source>
         <translation>英寸</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="166"/>
+        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="171"/>
         <source>mm</source>
         <translation>毫米</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="167"/>
+        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="172"/>
         <source>cm</source>
         <translation>厘米</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="168"/>
+        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="173"/>
         <source>point</source>
         <translation>点</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="169"/>
+        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="174"/>
         <source>pixel</source>
         <translation>像素</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="172"/>
+        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="177"/>
         <source>Unit</source>
         <translation>单位</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="175"/>
+        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="180"/>
         <source>Width</source>
         <translation>宽</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="183"/>
+        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="188"/>
         <source>Height</source>
         <translation>高</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="190"/>
+        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="195"/>
         <source>Scale Fonts Factor</source>
         <translation>字体调整比例</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="193"/>
+        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="198"/>
         <source>Automatic</source>
         <translation>自动</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="141"/>
+        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="146"/>
         <source>Print Resolution (DPI)</source>
         <translation type="unfinished"></translation>
     </message>
