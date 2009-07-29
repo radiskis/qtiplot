@@ -3940,9 +3940,10 @@ void ApplicationWindow::openRecentProject(int index)
 	if (projectname != "untitled"){
 		QFileInfo fi(projectname);
 		QString pn = fi.absFilePath();
-		if (fn == pn){
+
+		if (QDir::toNativeSeparators(fn) == QDir::toNativeSeparators(pn)){
 			QMessageBox::warning(this, tr("QtiPlot - File openning error"),
-					tr("The file: <p><b> %1 </b><p> is the current file!").arg(fn));
+					tr("The file: <p><b> %1 </b><p> is the current file!").arg(QDir::toNativeSeparators(fn)));
 			return;
 		}
 	}
@@ -11800,6 +11801,9 @@ void ApplicationWindow::custom2DPlotTools(MultiLayer *plot)
 				}
 				return;
 			}
+		} else if (g->hasPanningMagnifierEnabled()){
+			actionMagnify->setChecked(true);
+			return;
 		} else if (g->drawArrow()){
 			btnArrow->setChecked(true);
 			return;
