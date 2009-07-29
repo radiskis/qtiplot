@@ -209,6 +209,7 @@ class Graph: public QwtPlot
 		bool isPrinting(){return d_is_printing;};
 
 		void enablePanningMagnifier(bool on = true);
+		bool hasPanningMagnifierEnabled(){if (d_magnifier && d_panner) return true; return false;}
 
 	public slots:
 		void copy(Graph* g);
