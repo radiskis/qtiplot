@@ -21,7 +21,7 @@ CONFIG          += HAVE_LIBPNG
 CONFIG          += HAVE_EMF
 
 # Uncomment the next line in order to enable export of 2D plots to TeX. You need QTeXEngine on your system.
-#CONFIG          += HAVE_TEX_ENGINE
+CONFIG          += HAVE_TEX_ENGINE
 
 # Uncomment the following line if you want to perform a custom installation using the *.path variables defined bellow.
 #CONFIG          += CustomInstall

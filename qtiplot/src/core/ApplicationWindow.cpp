@@ -2535,6 +2535,10 @@ MultiLayer* ApplicationWindow::waterfallPlot(Table *t, const QStringList& list)
 	foreach(Graph *g, layersList){
 		legend += g->legendText(true) + "\n";
 		setPreferences(g);
+		g->setCanvasFrame(0);
+		g->setTitle(QString::null);
+		g->setMargin(0);
+		g->setFrame(0);
 		g->raise();
 	}
 
@@ -5257,7 +5261,7 @@ void ApplicationWindow::exportGraph(const QString& exportFilter)
 #endif
 #ifdef TEX_OUTPUT
     if (plot2D && selected_filter.contains(".tex")){
-		plot2D->exportTeX(file_name);
+		plot2D->exportTeX(file_name, ied->color(), ied->customExportSize(), ied->sizeUnit());
 		return;
     }
 #endif
@@ -5334,7 +5338,7 @@ void ApplicationWindow::exportLayer()
 #endif
 #ifdef TEX_OUTPUT
     else if (selected_filter.contains(".tex"))
-		g->exportTeX(file_name);
+		g->exportTeX(file_name, ied->color(), ied->customExportSize(), ied->sizeUnit());
 #endif
     else {
 		QList<QByteArray> list = QImageWriter::supportedImageFormats();
@@ -5433,11 +5437,19 @@ void ApplicationWindow::exportAllGraphs()
 		f.close();
 
 #ifdef EMF_OUTPUT
-		if (plot2D && file_suffix.contains(".emf")){
-			plot2D->exportEMF(file_name);
-			return;
-		}
+	if (plot2D && file_suffix.contains(".emf")){
+		plot2D->exportEMF(file_name);
+		return;
+	}
 #endif
+#ifdef TEX_OUTPUT
+    else if (plot2D && file_suffix.contains(".tex")){
+		plot2D->exportTeX(file_name, ied->color(), ied->customExportSize(), ied->sizeUnit());
+		return;
+    }
+#endif
+
+
 		if (file_suffix.contains(".eps") || file_suffix.contains(".pdf") ||
 			file_suffix.contains(".ps") || file_suffix.contains(".svg")) {
 			if (plot3D)
