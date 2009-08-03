@@ -237,14 +237,6 @@ void ImageExportDialog::updateAdvancedOptions (const QString & filter)
 	}
 #endif
 
-#if TEX_OUTPUT
-	if (filter.contains("*.tex")){
-		d_extension_toggle->setChecked(false);
-		d_extension_toggle->setEnabled(false);
-		return;
-	}
-#endif
-
 	if (filter.contains("*.svg")){
 		if (qobject_cast<Graph3D *> (d_window)){
 			d_extension_toggle->setEnabled(true);
@@ -258,10 +250,14 @@ void ImageExportDialog::updateAdvancedOptions (const QString & filter)
 
 	d_extension_toggle->setEnabled(true);
 	if (filter.contains("*.eps") || filter.contains("*.ps") ||
-        filter.contains("*.pdf") || filter.contains("*.pgf")){
+        filter.contains("*.pdf") || filter.contains("*.tex")){
 		d_vector_options->show();
-		if (qobject_cast<MultiLayer *> (d_window))
+		if (qobject_cast<MultiLayer *> (d_window)){
 			d_custom_size_box->show();
+			//d_vector_options->setVisible(!filter.contains("*.tex"));
+			d_vector_resolution->setEnabled(!filter.contains("*.tex"));
+			scaleFontsBox->setEnabled(!filter.contains("*.tex"));
+		}
 	} else {
 		d_raster_options->show();
 		if (!qobject_cast<Matrix *> (d_window))

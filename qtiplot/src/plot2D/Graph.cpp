@@ -1647,13 +1647,28 @@ void Graph::exportEMF(const QString& fname)
 #endif
 
 #ifdef TEX_OUTPUT
-void Graph::exportTeX(const QString& fname)
+void Graph::exportTeX(const QString& fname, bool color, const QSizeF& customSize, int unit)
 {
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
-	QTeXPaintDevice tex(boundingRect().size(), fname);
+	QRect r = rect();
+	QRect br = boundingRect();
+
+	if (customSize.isValid()){
+		int res = logicalDpiX();
+		QSize size = customPrintSize(customSize, unit, res);
+		if (br.width() != width() || br.height() != height()){
+			double wfactor = (double)br.width()/(double)width();
+			double hfactor = (double)br.height()/(double)height();
+			r.setSize(QSize(qRound(size.width()/wfactor), qRound(size.height()/hfactor)));
+		} else
+			r.setSize(size);
+	}
+
+	QTeXPaintDevice tex(fname, br.size());
+	tex.setGrayScale(!color);
 	QPainter paint(&tex);
-	print(&paint, rect());
+	print(&paint, r);
 	paint.end();
 
 	QApplication::restoreOverrideCursor();

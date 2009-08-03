@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS><TS version="1.1" language="cs_CZ">
+<!DOCTYPE TS>
+<TS version="2.0" language="cs_CZ">
 <context>
     <name>AddWidgetTool</name>
     <message>
@@ -73,12 +74,12 @@
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="15087"/>
         <source>Label</source>
-        <translation>Štítek</translation>
+        <translation>Popis</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="988"/>
         <source>Results Log</source>
-        <translation>Záznam výsledků</translation>
+        <translation>Zápis výsledků</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="991"/>
@@ -127,7 +128,7 @@
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="996"/>
         <source>Plot</source>
-        <translation>Nakreslit</translation>
+        <translation>Nákres</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="711"/>
@@ -182,7 +183,7 @@
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13266"/>
         <source>&amp;Draw Data Points</source>
-        <translation>&amp;Kreslit datové body</translation>
+        <translation>&amp;Nakreslit datové body</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13269"/>
@@ -197,7 +198,7 @@
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13273"/>
         <source>Remove &amp;Bad Data Points...</source>
-        <translation>Přesunout &amp;špatné datové body...</translation>
+        <translation>Odstranit &amp;špatné datové body...</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13274"/>
@@ -297,12 +298,12 @@
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="10151"/>
         <source>3D Surface</source>
-        <translation>Povrch 3D</translation>
+        <translation>Nákres trojrozměrného povrchu</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="8553"/>
         <source>&amp;Recent Projects</source>
-        <translation>&amp;Nedávné projekty</translation>
+        <translation>&amp;Naposledy otevřené projekty</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="1004"/>
@@ -322,12 +323,12 @@
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="1007"/>
         <source>&amp;Edit</source>
-        <translation>&amp;Upravovat</translation>
+        <translation>&amp;Úpravy</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="1008"/>
         <source>&amp;View</source>
-        <translation>&amp;Zobrazit</translation>
+        <translation>&amp;Pohled</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="1009"/>
@@ -337,7 +338,7 @@
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="9317"/>
         <source>3D &amp;Plot</source>
-        <translation>3D &amp;nákres</translation>
+        <translation>Trojrozměrný &amp;nákres</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="1011"/>
@@ -382,12 +383,12 @@
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="1019"/>
         <source>Fit E&amp;xponential Decay</source>
-        <translation>Umístit e&amp;xponenciální rozpad radioaktivní látky</translation>
+        <translation>Přizpůsobit ex&amp;ponenciální pokles</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="1020"/>
         <source>Fit &amp;Multi-peak</source>
-        <translation>Umístit &amp;mnohačetný vrchol</translation>
+        <translation>Přizpůsobení s &amp;mnohačetnými vrcholy</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="1021"/>
@@ -447,7 +448,7 @@
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="1326"/>
         <source>3&amp;D Plot</source>
-        <translation>3&amp;D nákres</translation>
+        <translation>&amp;Trojrozměrný nákres</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="1422"/>
@@ -462,7 +463,7 @@
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="1724"/>
         <source>You must select exactly one column for plotting!</source>
-        <translation>Musíte vybrat přesně jeden sloupec, který bude zakreslen!</translation>
+        <translation>Pro tento nákres musíte vybrat přesně jeden sloupec, který bude nakreslen!</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="16515"/>
@@ -472,12 +473,12 @@
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="1733"/>
         <source>Please select a column to plot!</source>
-        <translation>Vyberte, prosím, sloupec, který bude zakreslen!</translation>
+        <translation>Vyberte, prosím, sloupec, který bude nakreslen!</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="1800"/>
         <source>Please select four columns for this operation!</source>
-        <translation>Vyberte, prosím, pro tuto operaci čtyři sloupce!</translation>
+        <translation>Vyberte, prosím, čtyři sloupce pro tuto operaci!</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="16392"/>
@@ -492,7 +493,7 @@
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="1988"/>
         <source>There are no available columns with plot designation set to Z!</source>
-        <translation>Nejsou zde dostupné žádné sloupce, u nichž by bylo označení zákresu nastaveno na Z!</translation>
+        <translation>Nejsou zde dostupné žádné sloupce s přiřazením nákresu nastaveným na Z!</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="2004"/>
@@ -607,7 +608,7 @@
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13761"/>
         <source>&lt;h4&gt;There are no plot layers available in this window.&lt;/h4&gt;&lt;p&gt;&lt;h4&gt;Please add a layer and try again!&lt;/h4&gt;</source>
-        <translation>&lt;h4&gt;V tomto okně nejsou žádné vrstvy nákresu.&lt;/h4&gt;&lt;p&gt;&lt;h4&gt;Přidejte, prosím, vrdtvu, a zkuste to znovu!&lt;/h4&gt;</translation>
+        <translation>&lt;h4&gt;V tomto okně nejsou dostupné žádné vrstvy nákresu.&lt;/h4&gt;&lt;p&gt;&lt;h4&gt;Přidejte, prosím, vrstvu, a zkuste to znovu!&lt;/h4&gt;</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="7565"/>
@@ -622,12 +623,12 @@
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="3353"/>
         <source>QtiPlot - Error bars error</source>
-        <translation>QtiPlot - Chyba zakazuje chybu</translation>
+        <translation>QtiPlot - Chyba pruhu s chybami</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="3404"/>
         <source>This feature is not available for user defined function curves!</source>
-        <translation>Tento prvek není pro uživatelem stanovené křivky funkcí dostupný!</translation>
+        <translation>Tato funkce není pro uživatelem stanovené křivky funkcí dostupná!</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="3410"/>
@@ -657,7 +658,7 @@
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13944"/>
         <source>You don&apos;t have the permission to open this file: &lt;b&gt;%1&lt;/b&gt;</source>
-        <translation>Pro otevření tohoto souboru nemáte oprávnění: &lt;b&gt;%1&lt;/b&gt;</translation>
+        <translation>Nemáte oprávnění pro otevření tohoto souboru: &lt;b&gt;%1&lt;/b&gt;</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="14099"/>
@@ -728,7 +729,7 @@ Různé části tohoto souboru se nemusí zobrazovat tak, jak se očekává.</tr
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="4303"/>
         <source>Scripting language &quot;%1&quot; failed to initialize.</source>
-        <translation>Skriptovací jazyk &quot;%1&quot; selhal při inicializaci.</translation>
+        <translation>Skriptovací jazyk &quot;%1&quot; se nepodařilo inicializovat.</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="4313"/>
@@ -738,7 +739,7 @@ Různé části tohoto souboru se nemusí zobrazovat tak, jak se očekává.</tr
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="4321"/>
         <source>The file: &lt;b&gt;%1&lt;/b&gt; is not a QtiPlot template file!</source>
-        <translation>Soubor: &lt;b&gt; %1&lt;/b&gt; není souborem šablony QtiPlot!</translation>
+        <translation>Soubor: &lt;b&gt; %1&lt;/b&gt; není souborem šablony programu QtiPlot!</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="4406"/>
@@ -758,7 +759,7 @@ Různé části tohoto souboru se nemusí zobrazovat tak, jak se očekává.</tr
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="5345"/>
         <source>Choose a directory to export the graphs to</source>
-        <translation>Vybrat adresář, do něhož se budou exportovat obrazce</translation>
+        <translation>Vybrat adresář, do něhož se budou vyvádět obrazce</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="5349"/>
@@ -773,7 +774,7 @@ Různé části tohoto souboru se nemusí zobrazovat tak, jak se očekává.</tr
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="5381"/>
         <source>There are no plot layers available in window &lt;b&gt;%1&lt;/b&gt;.&lt;br&gt;Graph window not exported!</source>
-        <translation>V tomto okně nejsou dostupné žádné vrstvy nákresu, &lt;b&gt;%1&lt;/b&gt;.&lt;br&gt;Okno s obrazcem nebylo exportováno!</translation>
+        <translation>V tomto okně nejsou dostupné žádné vrstvy nákresu, &lt;b&gt;%1&lt;/b&gt;.&lt;br&gt;Okno s obrazcem nebylo vyvedeno!</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="5961"/>
@@ -793,12 +794,12 @@ Různé části tohoto souboru se nemusí zobrazovat tak, jak se očekává.</tr
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="5517"/>
         <source>Minimized</source>
-        <translation>Zminimalizován</translation>
+        <translation>Zmenšen</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="9138"/>
         <source>Maximized</source>
-        <translation>Zmaximalizován</translation>
+        <translation>Zvětšen</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="14447"/>
@@ -813,7 +814,7 @@ Různé části tohoto souboru se nemusí zobrazovat tak, jak se očekává.</tr
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="5612"/>
         <source>Save Project As</source>
-        <translation>Uložit projekt jako</translation>
+        <translation>Projekt uložit jako</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="5667"/>
@@ -823,17 +824,17 @@ Různé části tohoto souboru se nemusí zobrazovat tak, jak se očekává.</tr
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="5669"/>
         <source>QtiPlot 2D Graph Template</source>
-        <translation>Šablona QtiPlotu pro dvojrozměrné obrazce</translation>
+        <translation>Předloha QtiPlotu pro dvojrozměrné obrazce</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="5671"/>
         <source>QtiPlot Table Template</source>
-        <translation>Šablona QtiPlotu pro tabulky</translation>
+        <translation>Předloha tabulky pro QtiPlot</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="5673"/>
         <source>QtiPlot 3D Surface Template</source>
-        <translation>Šablona QtiPlotu pro trojrozměrné povrchy</translation>
+        <translation>Předloha QtiPlotu pro trojrozměrné povrchy</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="5676"/>
@@ -863,12 +864,12 @@ Různé části tohoto souboru se nemusí zobrazovat tak, jak se očekává.</tr
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="5771"/>
         <source>Warning: for internal consistency reasons the underscore character is replaced with a minus sign.</source>
-        <translation>Varování: z důvodů vnitřní ucelenosti je znak podtržení nahrazen znaménkem mínus.</translation>
+        <translation>Varování: Kvůli zajištění vnitřní ucelenosti byl znak podtržení nahrazen znaménkem mínus.</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="5945"/>
         <source>Choose a directory to export the tables to</source>
-        <translation>Vybrat adresář, do něhož se budou exportovat tabulky</translation>
+        <translation>Vybrat, prosím, adresář, do něhož se budou vyvádět tabulky</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="15403"/>
@@ -938,19 +939,19 @@ Různé části tohoto souboru se nemusí zobrazovat tak, jak se očekává.</tr
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="6148"/>
         <source>Please select two columns for this operation!</source>
-        <translation>Vyberte, prosím, pro tuto operaci dva sloupce!</translation>
+        <translation>Vyberte, prosím, dva sloupce pro tuto operaci!</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="6166"/>
         <source>Please select exactly one columns for this operation!</source>
-        <translation>Vyberte, prosím, pro tuto operaci přesně jeden sloupec!</translation>
+        <translation>Vyberte, prosím, přesně jeden sloupec pro tuto operaci!</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="6202"/>
         <source>Please select two columns for this operation:
  the first represents the signal and the second the response function!</source>
-        <translation>Vyberte, prosím, pro tuto operaci dva sloupce:
-první představuje funkci podnětu a druhý funkci odpovědi!</translation>
+        <translation>Vyberte, prosím, dva sloupce pro tuto operaci:
+První představuje funkci signálu a druhý funkci odpovědi!</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="6243"/>
@@ -970,22 +971,22 @@ první představuje funkci podnětu a druhý funkci odpovědi!</translation>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13021"/>
         <source>&amp;Scatter</source>
-        <translation>&amp;Změť</translation>
+        <translation>&amp;Body</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="12961"/>
         <source>Line + S&amp;ymbol</source>
-        <translation>Čára + Z&amp;načka</translation>
+        <translation>Čára + &amp;Značky</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="12964"/>
         <source>Vertical &amp;Drop Lines</source>
-        <translation>Svislé &amp;klesající čáry</translation>
+        <translation>Svislé &amp;čáry</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="12966"/>
         <source>&amp;Spline</source>
-        <translation>&amp;Tvárné křivítko</translation>
+        <translation>&amp;Zub</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="12967"/>
@@ -995,7 +996,7 @@ první představuje funkci podnětu a druhý funkci odpovědi!</translation>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="12968"/>
         <source>&amp;Horizontal Steps</source>
-        <translation>&amp;Vodorovné stupně</translation>
+        <translation>&amp;Vodorovné kroky</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13185"/>
@@ -1015,7 +1016,7 @@ první představuje funkci podnětu a druhý funkci odpovědi!</translation>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="12985"/>
         <source>&amp;Pie</source>
-        <translation>&amp;Koláč</translation>
+        <translation>&amp;Koláčový obrazec</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="6076"/>
@@ -1085,7 +1086,7 @@ první představuje funkci podnětu a druhý funkci odpovědi!</translation>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="14516"/>
         <source>&amp;None</source>
-        <translation>&amp;Žádný</translation>
+        <translation>&amp;Žádná</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13202"/>
@@ -1105,7 +1106,7 @@ první představuje funkci podnětu a druhý funkci odpovědi!</translation>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="6362"/>
         <source>&amp;Fill Column With</source>
-        <translation>&amp;Vyplnit slopec</translation>
+        <translation>&amp;Vyplnit sloupec</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="6365"/>
@@ -1155,7 +1156,7 @@ první představuje funkci podnětu a druhý funkci odpovědi!</translation>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="12997"/>
         <source>&amp;Horizontal 2 Layers</source>
-        <translation>&amp;Dvě vodorovné vrstvy</translation>
+        <translation>Dvě vodo&amp;rovné vrstvy</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="12998"/>
@@ -1165,7 +1166,7 @@ první představuje funkci podnětu a druhý funkci odpovědi!</translation>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="12999"/>
         <source>&amp;Stacked Layers</source>
-        <translation>&amp;Naskládané vrstvy</translation>
+        <translation>&amp;Vrstvené vrstvy</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="6534"/>
@@ -1180,12 +1181,12 @@ první představuje funkci podnětu a druhý funkci odpovědi!</translation>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="6601"/>
         <source>Y2 Axis Title</source>
-        <translation>Název osy y2</translation>
+        <translation>Název osy Y2</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="6759"/>
         <source>Not available for empty 3D surface plots!</source>
-        <translation>Není dostupné pro nákresy 3D povrchů!</translation>
+        <translation>Není dostupné pro nákresy trojrozměrných povrchů bez dat!</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="6858"/>
@@ -1201,8 +1202,8 @@ první představuje funkci podnětu a druhý funkci odpovědi!</translation>
         <location filename="src/core/ApplicationWindow.cpp" line="7138"/>
         <source>This will modify the data in the worksheets!
 Are you sure you want to continue?</source>
-        <translation>Toto upraví data v pracovních listech!
-Jste si jist, že chcete pokračovat!</translation>
+        <translation>Tato operace upraví data v pracovních listech!
+Jste si jist, že chcete pokračovat?</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="7139"/>
@@ -1222,7 +1223,7 @@ Jste si jist, že chcete pokračovat!</translation>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="7489"/>
         <source>Sorry, there are no results to display!</source>
-        <translation>Promiňte. Nejsou zde žádné výsledky, které by bylo možné zobrazit!</translation>
+        <translation>Promiňte, ale nejsou zde žádné výsledky, které by bylo možné zobrazit!</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="7555"/>
@@ -1247,7 +1248,7 @@ Jste si jist, že chcete pokračovat!</translation>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="8046"/>
         <source>QtiPlot - Duplicate window error</source>
-        <translation>QtiPlot - Chyba zdvojení okna</translation>
+        <translation>QtiPlot - Chyba při zdvojení okna</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="8047"/>
@@ -1257,12 +1258,12 @@ Jste si jist, že chcete pokračovat!</translation>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="8069"/>
         <source>QtiPlot - Duplicate error</source>
-        <translation>QtiPlot - Chyba zdvojení</translation>
+        <translation>QtiPlot - Chyba při zdvojení</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="8069"/>
         <source>Empty 3D surface plots cannot be duplicated!</source>
-        <translation>Nelze zdvojit prázdné nákresy 3D povrchů!</translation>
+        <translation>Nelze zdvojit prázdné nákresy trojrozměrných povrchů!</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13870"/>
@@ -1282,7 +1283,7 @@ Jste si jist, že chcete pokračovat!</translation>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="8496"/>
         <source>Vie&amp;w</source>
-        <translation>Pohle&amp;d</translation>
+        <translation>&amp;Pohled</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="8499"/>
@@ -1292,7 +1293,7 @@ Jste si jist, že chcete pokračovat!</translation>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="8508"/>
         <source>&amp;Convert to Spreadsheet</source>
-        <translation>&amp;Proměnit na tabulkový kalkulátor</translation>
+        <translation>&amp;Převést na tabulku</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="8633"/>
@@ -1302,12 +1303,12 @@ Jste si jist, že chcete pokračovat!</translation>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="8645"/>
         <source>&amp;Cascade</source>
-        <translation>&amp;Stupňovité zapojení</translation>
+        <translation>&amp;Překrývat</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="8646"/>
         <source>&amp;Tile</source>
-        <translation>&amp;Kachlička</translation>
+        <translation>Jeden &amp;vedle druhého (kachlička)</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13111"/>
@@ -1317,12 +1318,12 @@ Jste si jist, že chcete pokračovat!</translation>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="12395"/>
         <source>More windows...</source>
-        <translation>Více oken...</translation>
+        <translation>Další okna...</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="8697"/>
         <source>&amp;View Pixel Line profile</source>
-        <translation>&amp;Zobrazit profil čáry pixelů</translation>
+        <translation>&amp;Ukázat profil čár</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="8698"/>
@@ -1347,12 +1348,12 @@ Jste si jist, že chcete pokračovat!</translation>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="8731"/>
         <source>Normal</source>
-        <translation>Obvyklý</translation>
+        <translation>Obvyklá</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="8919"/>
         <source>Save changes to project: &lt;p&gt;&lt;b&gt; %1 &lt;/b&gt; ?</source>
-        <translation>Uložit změny do projektu: &lt;p&gt;&lt;b&gt; %1 &lt;/b&gt; ?</translation>
+        <translation>Uložit změny do projektu: &lt;p&gt;&lt;b&gt; %1 &lt;/b&gt;?</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="14822"/>
@@ -1412,12 +1413,12 @@ Jste si jist, že chcete pokračovat!</translation>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="9064"/>
         <source>D&amp;epending Graphs</source>
-        <translation>Zá&amp;visející obrazce</translation>
+        <translation>&amp;Závisející obrazce</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="9073"/>
         <source>D&amp;epending 3D Graphs</source>
-        <translation>Zá&amp;visející trojrozměrné obrazce</translation>
+        <translation>&amp;Závisející trojrozměrné obrazce</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="9099"/>
@@ -1432,22 +1433,22 @@ Jste si jist, že chcete pokračovat!</translation>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="9206"/>
         <source>Re&amp;move Pie Curve</source>
-        <translation>Od&amp;stranit křivku koláče</translation>
+        <translation>Odstranit &amp;zobrazení koláče</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="9237"/>
         <source>Anal&amp;yze</source>
-        <translation>Roze&amp;brat</translation>
+        <translation>Provést &amp;rozbor</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="9296"/>
         <source>&amp;Paste Layer</source>
-        <translation>&amp;Vložit vrstvu</translation>
+        <translation>&amp;Vložit zkopírovanou vrstvu</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="9255"/>
         <source>&amp;Paste Text</source>
-        <translation>&amp;Vložit text</translation>
+        <translation>&amp;Vložit zkopírovaný text</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="9257"/>
@@ -1457,7 +1458,7 @@ Jste si jist, že chcete pokračovat!</translation>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="9259"/>
         <source>&amp;Paste Image</source>
-        <translation>&amp;Vložit obrázek</translation>
+        <translation>&amp;Vložit zkopírovaný obrázek</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="9261"/>
@@ -1472,7 +1473,7 @@ Jste si jist, že chcete pokračovat!</translation>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="9265"/>
         <source>&amp;Paste Line/Arrow</source>
-        <translation>&amp;Vložit čáru/šipku</translation>
+        <translation>&amp;Vložit zkopírovanou čáru/šipku</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="9273"/>
@@ -1487,7 +1488,7 @@ Jste si jist, že chcete pokračovat!</translation>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="9270"/>
         <source>E&amp;xport</source>
-        <translation>E&amp;xport</translation>
+        <translation>&amp;Export</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="12906"/>
@@ -1512,7 +1513,7 @@ Jste si jist, že chcete pokračovat!</translation>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="9310"/>
         <source>E&amp;xport Page</source>
-        <translation>&amp;Exportovat stranu</translation>
+        <translation>&amp;Vyvést stranu</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="9319"/>
@@ -1532,7 +1533,7 @@ Jste si jist, že chcete pokračovat!</translation>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="9328"/>
         <source>C&amp;lear</source>
-        <translation>Vypráz&amp;dnit</translation>
+        <translation>&amp;Vyprázdnit</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="9335"/>
@@ -1542,7 +1543,7 @@ Jste si jist, že chcete pokračovat!</translation>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="9336"/>
         <source>&amp;Export</source>
-        <translation>&amp;Exportovat</translation>
+        <translation>&amp;Vyvést</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="9443"/>
@@ -1592,22 +1593,22 @@ Jste si jist, že chcete pokračovat!</translation>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="9471"/>
         <source>QtiPlot - index.html File Not Found!</source>
-        <translation></translation>
+        <translation>QtiPlot - index.html nebyl nalezen!</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="9472"/>
         <source>There is no file called &lt;b&gt;index.html&lt;/b&gt; in this folder.&lt;br&gt;Please choose another folder!</source>
-        <translation></translation>
+        <translation>V tomto adresáři nebyl nalezen žádný soubor s názvem &lt;b&gt;index.html&lt;/b&gt;&lt;br&gt;Zvolte, prosím, jiný adresář!</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="9526"/>
         <source>QtiPlot - Help Files Not Found!</source>
-        <translation></translation>
+        <translation>QtiPlot - Soubor s nápovědou nenalezen!</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="9525"/>
         <source>The manual can be downloaded from the following internet address:</source>
-        <translation></translation>
+        <translation>Příručku lze stáhnout z následující adresy:</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="9538"/>
@@ -1632,7 +1633,7 @@ Jste si jist, že chcete pokračovat!</translation>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="9625"/>
         <source>QtiPlot - Edit function</source>
-        <translation>QtiPlot - Funkce pro úpravy</translation>
+        <translation>QtiPlot - Upravit funkci</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="10329"/>
@@ -1642,7 +1643,7 @@ Jste si jist, že chcete pokračovat!</translation>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="10329"/>
         <source>Number of averaged pixels</source>
-        <translation>Průměrný počet pixelů</translation>
+        <translation>Počet zprůměrovaných pixelů</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="10378"/>
@@ -1657,19 +1658,19 @@ Jste si jist, že chcete pokračovat!</translation>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="10464"/>
         <source>QtiPlot - Guess best origin for the new layer?</source>
-        <translation>QtiPlot - Odhadnout nejlepší počátek souřadnic pro novou vrstvu?</translation>
+        <translation>QtiPlot - Určit nejlepší počátek souřadnic pro novou vrstvu?</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="10465"/>
         <source>Do you want QtiPlot to guess the best position for the new layer?
  Warning: this will rearrange existing layers!</source>
-        <translation>Chcete, aby QtiPlot odhadl nejlepší polohu pro novou vrstvu?
+        <translation>Chcete, aby QtiPlot určil nejlepší polohu pro novou vrstvu?
 Varování. Tento krok přeuspořádá stávající vrstvy!</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="10466"/>
         <source>&amp;Guess</source>
-        <translation>&amp;Odhadnout</translation>
+        <translation>&amp;Určit</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="10466"/>
@@ -1759,7 +1760,7 @@ Varování. Tento krok přeuspořádá stávající vrstvy!</translation>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="12790"/>
         <source>New &amp;Table</source>
-        <translation>Novou &amp;tabulku</translation>
+        <translation>Nová &amp;tabulka</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="12791"/>
@@ -1769,7 +1770,7 @@ Varování. Tento krok přeuspořádá stávající vrstvy!</translation>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="12794"/>
         <source>New &amp;Matrix</source>
-        <translation>Novou &amp;matici</translation>
+        <translation>Nová &amp;matice</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="12795"/>
@@ -1844,12 +1845,12 @@ Varování. Tento krok přeuspořádá stávající vrstvy!</translation>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="11974"/>
         <source>Open Temp&amp;late...</source>
-        <translation>Otevřít šab&amp;lonu...</translation>
+        <translation>Otevřít &amp;předlohu...</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="12825"/>
         <source>Save As &amp;Template...</source>
-        <translation>Uložit jako &amp;šablonu...</translation>
+        <translation>Uložit jako &amp;předlohu...</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="11980"/>
@@ -1859,7 +1860,7 @@ Varování. Tento krok přeuspořádá stávající vrstvy!</translation>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="12828"/>
         <source>&amp;Import ASCII...</source>
-        <translation>&amp;Zavést ASCII...</translation>
+        <translation>&amp;Zavedení ASCII...</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="12832"/>
@@ -1915,7 +1916,7 @@ Varování. Tento krok přeuspořádá stávající vrstvy!</translation>
         <location filename="src/core/ApplicationWindow.cpp" line="12857"/>
         <source>Del</source>
         <comment>delete key</comment>
-        <translation>Delete</translation>
+        <translation>Klávesa Delete</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="12860"/>
@@ -1935,7 +1936,7 @@ Varování. Tento krok přeuspořádá stávající vrstvy!</translation>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="12887"/>
         <source>Arran&amp;ge Layers</source>
-        <translation>Uspořá&amp;dat vrstvy</translation>
+        <translation>&amp;Uspořádat vrstvy</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="12889"/>
@@ -1965,7 +1966,7 @@ Varování. Tento krok přeuspořádá stávající vrstvy!</translation>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="12902"/>
         <source>&amp;Export PDF</source>
-        <translation>&amp;Export PDF</translation>
+        <translation>&amp;Vyvést jako PDF</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="12903"/>
@@ -1985,7 +1986,7 @@ Varování. Tento krok přeuspořádá stávající vrstvy!</translation>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="12911"/>
         <source>E&amp;xport ASCII</source>
-        <translation>E&amp;xport ASCII</translation>
+        <translation>&amp;Export ASCII</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="12913"/>
@@ -2000,17 +2001,17 @@ Varování. Tento krok přeuspořádá stávající vrstvy!</translation>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="12916"/>
         <source>Clear &amp;Log Information</source>
-        <translation>Smazat informace v &amp;zápisu</translation>
+        <translation>Smazat všechny informace v &amp;zápisu</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="12917"/>
         <source>Delete &amp;Fit Tables</source>
-        <translation>Smazat &amp;Umístit tabulky</translation>
+        <translation>Smazat &amp;tabulky přizpůsobení</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="12922"/>
         <source>Plot &amp;Wizard</source>
-        <translation>Kouzelník &amp;nákresu</translation>
+        <translation>Průvodce &amp;nákresem</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="12923"/>
@@ -2020,7 +2021,7 @@ Varování. Tento krok přeuspořádá stávající vrstvy!</translation>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="12925"/>
         <source>&amp;Preferences...</source>
-        <translation>&amp;Preference...</translation>
+        <translation>&amp;Nastavení...</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="12927"/>
@@ -2035,7 +2036,7 @@ Varování. Tento krok přeuspořádá stávající vrstvy!</translation>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="12931"/>
         <source>Add &amp;Error Bars...</source>
-        <translation>Přidat &amp;tabulky s chybami...</translation>
+        <translation>Přidat &amp;pruhy s chybami...</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="12933"/>
@@ -2095,17 +2096,17 @@ Varování. Tento krok přeuspořádá stávající vrstvy!</translation>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="12991"/>
         <source>Vectors XY&amp;AM</source>
-        <translation>Vektory xy&amp;AM</translation>
+        <translation>Vektory XY&amp;AM</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="12153"/>
         <source>&amp;Vectors &amp;XYXY</source>
-        <translation>&amp;Vektory &amp;xyxy</translation>
+        <translation>Vektory &amp;XYXY</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="12995"/>
         <source>&amp;Stacked Histogram</source>
-        <translation>&amp;Naskládané histogramy</translation>
+        <translation>&amp;Vrstvený histogram</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13000"/>
@@ -2155,12 +2156,12 @@ Varování. Tento krok přeuspořádá stávající vrstvy!</translation>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13036"/>
         <source>Statistics on &amp;Columns</source>
-        <translation>Statistické údaje u &amp;sloupců</translation>
+        <translation>Statistické údaje ke &amp;sloupcům</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13039"/>
         <source>Statistics on &amp;Rows</source>
-        <translation>Statistické údaje u &amp;řádků</translation>
+        <translation>Statistické údaje k &amp;řádkům</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13042"/>
@@ -2175,7 +2176,7 @@ Varování. Tento krok přeuspořádá stávající vrstvy!</translation>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13043"/>
         <source>Inte&amp;rpolate ...</source>
-        <translation>Vlo&amp;žit...</translation>
+        <translation>&amp;Interpolovat...</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13044"/>
@@ -2195,7 +2196,7 @@ Varování. Tento krok přeuspořádá stávající vrstvy!</translation>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13047"/>
         <source>&amp;Band Block...</source>
-        <translation>&amp;Pásmový blok...</translation>
+        <translation>&amp;Pásmovou závoru...</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13048"/>
@@ -2215,22 +2216,22 @@ Varování. Tento krok přeuspořádá stávající vrstvy!</translation>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13051"/>
         <source>Moving Window &amp;Average...</source>
-        <translation>Posunout &amp;průměr okna...</translation>
+        <translation>Klouzající &amp;okenní průměr...</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13052"/>
         <source>&amp;Differentiate</source>
-        <translation>&amp;Derivovat</translation>
+        <translation>&amp;Diferencovat</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13053"/>
         <source>Fit &amp;Linear</source>
-        <translation>Umístit &amp;přímočarý</translation>
+        <translation>&amp;Přímočaré přizpůsobení</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13055"/>
         <source>Fit &amp;Polynomial ...</source>
-        <translation>Umístit &amp;mnohočlenný...</translation>
+        <translation>&amp;Mnohočlenné přizpůsobení...</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13056"/>
@@ -2250,27 +2251,27 @@ Varování. Tento krok přeuspořádá stávající vrstvy!</translation>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13059"/>
         <source>Fit Exponential Gro&amp;wth ...</source>
-        <translation>Umístit exponenciální &amp;růst...</translation>
+        <translation>Přizpůsobit exponenciální &amp;růst...</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13060"/>
         <source>Fit &amp;Boltzmann (Sigmoidal)</source>
-        <translation>Umístit &amp;Boltzmann (esovitý)</translation>
+        <translation>&amp;Boltzmannovo přizpůsobení (esovité)</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13061"/>
         <source>Fit &amp;Gaussian</source>
-        <translation>Umístit &amp;Gaussův</translation>
+        <translation>&amp;Gaussovo přizpůsobení</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13062"/>
         <source>Fit Lorent&amp;zian</source>
-        <translation>Umístit Lorent&amp;zův</translation>
+        <translation>&amp;Lorentzovo přizpůsobení</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13064"/>
         <source>Fit &amp;Wizard...</source>
-        <translation>Umístit &amp;kouzelníka...</translation>
+        <translation>&amp;Průvodce přízpůsobením křivek...</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13065"/>
@@ -2285,7 +2286,7 @@ Varování. Tento krok přeuspořádá stávající vrstvy!</translation>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13068"/>
         <source>&amp;Scales...</source>
-        <translation>&amp;Rozměry...</translation>
+        <translation>&amp;Stupnice...</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13069"/>
@@ -2460,7 +2461,7 @@ Varování. Tento krok přeuspořádá stávající vrstvy!</translation>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13132"/>
         <source>&amp;View Pixel Line Profile</source>
-        <translation>&amp;Zobrazit profil čáry pixelů</translation>
+        <translation>&amp;Zobrazit profil čár</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13133"/>
@@ -2475,12 +2476,12 @@ Varování. Tento krok přeuspořádá stávající vrstvy!</translation>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13136"/>
         <source>&amp;Activate Window</source>
-        <translation>&amp;Spustit okno</translation>
+        <translation>&amp;Aktivovat okno</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13137"/>
         <source>Mi&amp;nimize Window</source>
-        <translation>Ome&amp;zit okno na nejmenší míru</translation>
+        <translation>&amp;Zmenšit okno</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13138"/>
@@ -2555,12 +2556,12 @@ Varování. Tento krok přeuspořádá stávající vrstvy!</translation>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13153"/>
         <source>R&amp;otate 90</source>
-        <translation>Oto&amp;čit o 90</translation>
+        <translation>O&amp;točit o 90°</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13155"/>
         <source>Rotate &amp;-90</source>
-        <translation>Otočit &amp;o 90</translation>
+        <translation>Otočit &amp;o 90°</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="12462"/>
@@ -2600,7 +2601,7 @@ Varování. Tento krok přeuspořádá stávající vrstvy!</translation>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13162"/>
         <source>Show &amp;X/Y</source>
-        <translation>Ukázat &amp;x/y</translation>
+        <translation>Ukázat &amp;X/Y</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="12482"/>
@@ -2650,12 +2651,12 @@ Varování. Tento krok přeuspořádá stávající vrstvy!</translation>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13173"/>
         <source>&amp;XYZ Columns</source>
-        <translation>Sloupce &amp;xyz</translation>
+        <translation>Sloupce &amp;XYZ</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13174"/>
         <source>&amp;YXZ Columns</source>
-        <translation>Sloupce &amp;yxz</translation>
+        <translation>Sloupce &amp;YXZ</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="12519"/>
@@ -2670,17 +2671,17 @@ Varování. Tento krok přeuspořádá stávající vrstvy!</translation>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13177"/>
         <source>Convert to &amp;Matrix</source>
-        <translation>Převést do &amp;matice</translation>
+        <translation>Převést do &amp;matici</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13178"/>
         <source>3D &amp;Wire Frame</source>
-        <translation>Trojrozměrný &amp;drátěný rámeček</translation>
+        <translation>Trojrozměrná &amp;drátěná mřížka</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13179"/>
         <source>3D &amp;Hidden Line</source>
-        <translation>Trojrozměrná &amp;skrytá čára</translation>
+        <translation>Trojrozměrné &amp;skryté čáry</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13180"/>
@@ -2690,12 +2691,12 @@ Varování. Tento krok přeuspořádá stávající vrstvy!</translation>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13181"/>
         <source>3D Wire &amp;Surface</source>
-        <translation>Trojrozměrný &amp;drátěný povrch</translation>
+        <translation>Trojrozměrný &amp;povrch drátěné mřížky</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="12540"/>
         <source>Contour - &amp;Color Fill</source>
-        <translation>Obrysy - &amp;Barevná výplň</translation>
+        <translation>Obrys - &amp;Barevná výplň</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13030"/>
@@ -2705,7 +2706,7 @@ Varování. Tento krok přeuspořádá stávající vrstvy!</translation>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13033"/>
         <source>&amp;Gray Scale Map</source>
-        <translation>&amp;Zobrazení odstínů šedi</translation>
+        <translation>&amp;Zobrazení povrchu v odstínech šedi</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13182"/>
@@ -2730,22 +2731,22 @@ Varování. Tento krok přeuspořádá stávající vrstvy!</translation>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13188"/>
         <source>&amp;Convolute</source>
-        <translation>&amp;Svinout</translation>
+        <translation>&amp;Složit</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13189"/>
         <source>&amp;Deconvolute</source>
-        <translation>&amp;Rozvinout</translation>
+        <translation>&amp;Rozložit</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13190"/>
         <source>&amp;Horizontal</source>
-        <translation>&amp;Vodorovný</translation>
+        <translation>&amp;Vodorovně</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13191"/>
         <source>&amp;Vertical</source>
-        <translation>&amp;Svislý</translation>
+        <translation>&amp;Svisle</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13192"/>
@@ -2775,7 +2776,7 @@ Varování. Tento krok přeuspořádá stávající vrstvy!</translation>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13211"/>
         <source>&amp;Box Plot</source>
-        <translation>&amp;Nákres krabice</translation>
+        <translation>&amp;Nákres bedny</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13214"/>
@@ -2860,7 +2861,7 @@ Varování. Tento krok přeuspořádá stávající vrstvy!</translation>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13236"/>
         <source>&amp;Evaluate Expression</source>
-        <translation>&amp;vyjádřit hodnotu výrazu číselně</translation>
+        <translation>&amp;Vyhodnotit výraz</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13239"/>
@@ -2885,7 +2886,7 @@ Varování. Tento krok přeuspořádá stávající vrstvy!</translation>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="12765"/>
         <source>&amp;Reset to Full Range</source>
-        <translation>&amp;Znovu nastavit plný rozsah</translation>
+        <translation>&amp;Znovu nastavit na plný rozsah</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="12766"/>
@@ -2900,7 +2901,7 @@ Varování. Tento krok přeuspořádá stávající vrstvy!</translation>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="12768"/>
         <source>Hide &amp;Other Curves</source>
-        <translation>Skrýt &amp;další křivky</translation>
+        <translation>Skrýt &amp;jiné křivky</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="12769"/>
@@ -3020,7 +3021,7 @@ Varování. Tento krok přeuspořádá stávající vrstvy!</translation>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="12822"/>
         <source>Open Te&amp;mplate...</source>
-        <translation>Otevřít ša&amp;blonu...</translation>
+        <translation>Otevřít před&amp;lohu...</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="12823"/>
@@ -3030,7 +3031,7 @@ Varování. Tento krok přeuspořádá stávající vrstvy!</translation>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="12826"/>
         <source>Save window as template</source>
-        <translation>Uložit okno jako šablonu</translation>
+        <translation>Uložit okno jako předlohu</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="12829"/>
@@ -3045,12 +3046,12 @@ Varování. Tento krok přeuspořádá stávající vrstvy!</translation>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="12833"/>
         <source>Undo changes</source>
-        <translation>Vrátit zpět změny</translation>
+        <translation>Změny vrátit zpět</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="12837"/>
         <source>Redo changes</source>
-        <translation>Udělat znovu změny</translation>
+        <translation>Změny provést znovu</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="12840"/>
@@ -3080,7 +3081,7 @@ Varování. Tento krok přeuspořádá stávající vrstvy!</translation>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="12859"/>
         <source>Project &amp;Explorer</source>
-        <translation>Průzkumník &amp;projektu</translation>
+        <translation>&amp;Průzkumník projektu</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="12861"/>
@@ -3090,12 +3091,12 @@ Varování. Tento krok přeuspořádá stávající vrstvy!</translation>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="12865"/>
         <source>Results &amp;Log</source>
-        <translation>Záznam &amp;výsledků</translation>
+        <translation>Zápis &amp;výsledků</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="12866"/>
         <source>Show analysis results</source>
-        <translation>Ukázat výsledky rozboru</translation>
+        <translation>Ukázat výsledky výpočtů</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="12868"/>
@@ -3135,7 +3136,7 @@ Varování. Tento krok přeuspořádá stávající vrstvy!</translation>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="12896"/>
         <source>Export current graph</source>
-        <translation>Exportovat nynější obrazec</translation>
+        <translation>Vyvést nynější obrazec</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="12900"/>
@@ -3145,12 +3146,12 @@ Varování. Tento krok přeuspořádá stávající vrstvy!</translation>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="12904"/>
         <source>Export to PDF</source>
-        <translation>Exportovat do PDF</translation>
+        <translation>Vyvést do PDF</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="12908"/>
         <source>Print window</source>
-        <translation>Tiskové okno</translation>
+        <translation>Tisk okna</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="12929"/>
@@ -3160,7 +3161,7 @@ Varování. Tento krok přeuspořádá stávající vrstvy!</translation>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="12932"/>
         <source>Add Error Bars...</source>
-        <translation>Přidat tabulky s chybami...</translation>
+        <translation>Přidat pruhy s chybami...</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="12936"/>
@@ -3170,7 +3171,7 @@ Varování. Tento krok přeuspořádá stávající vrstvy!</translation>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="12941"/>
         <source>Best fit</source>
-        <translation>Nejlepší uchycení</translation>
+        <translation>Nejlepší přizpůsobení</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="12945"/>
@@ -3220,22 +3221,22 @@ Varování. Tento krok přeuspořádá stávající vrstvy!</translation>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="12986"/>
         <source>Plot pie</source>
-        <translation>Nakreslit koláč</translation>
+        <translation>Nakreslit koláčový obrazec</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="12988"/>
         <source>&amp;Vectors XYXY</source>
-        <translation>&amp;Vektory xyxy</translation>
+        <translation>&amp;Vektory XYXY</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="12989"/>
         <source>Vectors XYXY</source>
-        <translation>Vektory xyxy</translation>
+        <translation>Vektory XYXY</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="12992"/>
         <source>Vectors XYAM</source>
-        <translation>Vektory xyam</translation>
+        <translation>Vektory XYAM</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13001"/>
@@ -3245,7 +3246,7 @@ Varování. Tento krok přeuspořádá stávající vrstvy!</translation>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13004"/>
         <source>Double Y Axis</source>
-        <translation>Zdvojit osu y</translation>
+        <translation>Zdvojit osu Y</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13007"/>
@@ -3280,7 +3281,7 @@ Varování. Tento krok přeuspořádá stávající vrstvy!</translation>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13022"/>
         <source>Plot 3D scatter</source>
-        <translation>Nakreslit trojrozměrnou změť</translation>
+        <translation>Nakreslit trojrozměrné body</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13025"/>
@@ -3290,7 +3291,7 @@ Varování. Tento krok přeuspořádá stávající vrstvy!</translation>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13027"/>
         <source>Contour + &amp;Color Fill</source>
-        <translation>Obrysy + &amp;Barevná výplň</translation>
+        <translation>Obrys + &amp;Barevná výplň</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13028"/>
@@ -3305,17 +3306,17 @@ Varování. Tento krok přeuspořádá stávající vrstvy!</translation>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13034"/>
         <source>Gray Scale Map</source>
-        <translation>Zobrazení odstínů šedi</translation>
+        <translation>Zobrazení povrchu v odstínech šedi</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13037"/>
         <source>Selected columns statistics</source>
-        <translation>Vybrané statistické údaje sloupců</translation>
+        <translation>Statistické údaje pro vybrané sloupce</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13040"/>
         <source>Selected rows statistics</source>
-        <translation>Vybrané statistické údaje řádků</translation>
+        <translation>Statistické údaje pro vybrané řádky</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13079"/>
@@ -3355,7 +3356,7 @@ Varování. Tento krok přeuspořádá stávající vrstvy!</translation>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13131"/>
         <source>More Windows...</source>
-        <translation>Více oken...</translation>
+        <translation>Další okna...</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13148"/>
@@ -3400,22 +3401,22 @@ Varování. Tento krok přeuspořádá stávající vrstvy!</translation>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13197"/>
         <source>Set column as X</source>
-        <translation>Nastavit sloupec jako x</translation>
+        <translation>Nastavit sloupec jako X</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13199"/>
         <source>Set column as Y</source>
-        <translation>Nastavit sloupec jako y</translation>
+        <translation>Nastavit sloupec jako Y</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13201"/>
         <source>Set column as Z</source>
-        <translation>Nastavit sloupec jako z</translation>
+        <translation>Nastavit sloupec jako Z</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13204"/>
         <source>Set as Y Error Bars</source>
-        <translation>Nastavit jako tabulky s chybami</translation>
+        <translation>Nastavit jako pruhy s chybami Y</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13206"/>
@@ -3430,7 +3431,7 @@ Varování. Tento krok přeuspořádá stávající vrstvy!</translation>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13212"/>
         <source>Box and whiskers plot</source>
-        <translation>Krabicový a vousatý nákres</translation>
+        <translation>Bednový a vousatý nákres</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13218"/>
@@ -3445,7 +3446,7 @@ Varování. Tento krok přeuspořádá stávající vrstvy!</translation>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13242"/>
         <source>Pointer</source>
-        <translation>Ukazatel</translation>
+        <translation>Ukazovátko</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13249"/>
@@ -3455,7 +3456,7 @@ Varování. Tento krok přeuspořádá stávající vrstvy!</translation>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13251"/>
         <source>Zoom &amp;Out</source>
-        <translation>Oddá&amp;lit</translation>
+        <translation>&amp;Oddálit</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13253"/>
@@ -3480,7 +3481,7 @@ Varování. Tento krok přeuspořádá stávající vrstvy!</translation>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13267"/>
         <source>Draw Data Points</source>
-        <translation>Kreslit datové body</translation>
+        <translation>Nakreslit datové body</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13271"/>
@@ -3525,17 +3526,17 @@ Varování. Tento krok přeuspořádá stávající vrstvy!</translation>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13308"/>
         <source>Box</source>
-        <translation>Krabice</translation>
+        <translation>Bedna</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13312"/>
         <source>Frame</source>
-        <translation>Rámeček</translation>
+        <translation>Rám</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13310"/>
         <source>&amp;Frame</source>
-        <translation>&amp;Rámeček</translation>
+        <translation>&amp;Rám</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13314"/>
@@ -3550,12 +3551,12 @@ Varování. Tento krok přeuspořádá stávající vrstvy!</translation>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13318"/>
         <source>Front grid</source>
-        <translation>Přední mřížka</translation>
+        <translation>Mřížka popředí</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13319"/>
         <source>Back grid</source>
-        <translation>Zadní mřížka</translation>
+        <translation>Mřížka pozadí</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13320"/>
@@ -3570,7 +3571,7 @@ Varování. Tento krok přeuspořádá stávající vrstvy!</translation>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13322"/>
         <source>Ceiling grid</source>
-        <translation>Stropová mřížka</translation>
+        <translation>Stropní mřížka</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13323"/>
@@ -3580,17 +3581,17 @@ Varování. Tento krok přeuspořádá stávající vrstvy!</translation>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13328"/>
         <source>Wireframe</source>
-        <translation>Drátěný rámeček</translation>
+        <translation>Drátěná mříž</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13330"/>
         <source>Hidden Line</source>
-        <translation>Skrytá čára</translation>
+        <translation>Skryté čáry</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13332"/>
         <source>Hidden line</source>
-        <translation>Skrytá čára</translation>
+        <translation>Skryté čáry</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13334"/>
@@ -3630,27 +3631,27 @@ Varování. Tento krok přeuspořádá stávající vrstvy!</translation>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13356"/>
         <source>Crosshairs</source>
-        <translation>Nitkové kříže</translation>
+        <translation>Nitkový kříž</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13362"/>
         <source>Floor Data Projection</source>
-        <translation>Promítání dat povrchu</translation>
+        <translation>Povrchové promítání dat</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13364"/>
         <source>Floor data projection</source>
-        <translation>Promítání dat povrchu</translation>
+        <translation>Promítání povrchu dat</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13366"/>
         <source>Floor Isolines</source>
-        <translation>Izokřivky povrchu</translation>
+        <translation>Povrchové obrysové čáry</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13368"/>
         <source>Floor isolines</source>
-        <translation>Izokřivky povrchu</translation>
+        <translation>Povrchové obrysové čáry</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13370"/>
@@ -3670,7 +3671,7 @@ Varování. Tento krok přeuspořádá stávající vrstvy!</translation>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13382"/>
         <source>Enable perspective</source>
-        <translation>Povolit perspektivu</translation>
+        <translation>Povolit perspektivní zobrazení</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13387"/>
@@ -3680,7 +3681,7 @@ Varování. Tento krok přeuspořádá stávající vrstvy!</translation>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13392"/>
         <source>Fit frame to window</source>
-        <translation>Uchytit rámeček k oknu</translation>
+        <translation>Přizpůsobit rámeček oknu</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13776"/>
@@ -3694,8 +3695,8 @@ Varování. Tento krok přeuspořádá stávající vrstvy!</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13826"/>
-        <source>&lt;font size=+2, color = darkBlue&gt;&lt;b&gt;QtiPlot is open-source software and its development required hundreds of hours of work.&lt;br&gt;&lt;br&gt;<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>If you like it, you&apos;re using it in your work and you would like to see it <byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>constantly improved, please support its authors by making a donation.&lt;/b&gt;&lt;/font&gt;</source>
-        <translation>&lt;font size=+2, color = darkBlue&gt;&lt;b&gt;QtiPlot je otevřený program a jeho vývoj vyžaduje stovky hodin práce.&lt;br&gt;&lt;br&gt;<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>Jestliže se vám líbí, používáte jej při své práci a rád byste viděl <byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>jeho stálé vylepšování, podpořte, prosím, jeho autory darem.&lt;/b&gt;&lt;/font&gt;</translation>
+        <source>&lt;font size=+2, color = darkBlue&gt;&lt;b&gt;QtiPlot is open-source software and its development required hundreds of hours of work.&lt;br&gt;&lt;br&gt;				If you like it, you&apos;re using it in your work and you would like to see it 				constantly improved, please support its authors by making a donation.&lt;/b&gt;&lt;/font&gt;</source>
+        <translation>&lt;font size=+2, color = darkBlue&gt;&lt;b&gt;QtiPlot je otevřený program a jeho vývoj vyžaduje stovky hodin práce.&lt;br&gt;&lt;br&gt;				Jestliže se vám líbí, používáte jej při své práci a rád byste viděl 				jeho stálé vylepšování, podpořte, prosím, jeho autory darem.&lt;/b&gt;&lt;/font&gt;</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13830"/>
@@ -3745,7 +3746,7 @@ Varování. Tento krok přeuspořádá stávající vrstvy!</translation>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13883"/>
         <source>show about dialog and exit</source>
-        <translation>ukázat dialog &quot;O&quot; a ukončit</translation>
+        <translation>Ukázat dialog &quot;O programu&quot; a ukončit</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13885"/>
@@ -3760,7 +3761,7 @@ Varování. Tento krok přeuspořádá stávající vrstvy!</translation>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13887"/>
         <source>start QtiPlot in language</source>
-        <translation>Spustit QtiPlot s jazykem</translation>
+        <translation>Spustit QtiPlot v jazyce</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13888"/>
@@ -3775,7 +3776,7 @@ Varování. Tento krok přeuspořádá stávající vrstvy!</translation>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13890"/>
         <source>execute the script file given as argument</source>
-        <translation>Vykonat soubor se skriptem jako nezávislou proměnnou</translation>
+        <translation>Vykonat soubor se skriptem zadaným jako nezávislou proměnnou</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13891"/>
@@ -3795,7 +3796,7 @@ Varování. Tento krok přeuspořádá stávající vrstvy!</translation>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13908"/>
         <source>&lt;b&gt; %1 &lt;/b&gt;: Wrong locale option or no translation available!</source>
-        <translation>&lt;b&gt; %1 &lt;/b&gt;: Nesprávná volba umístění, nebo není dostupný žádný překlad!</translation>
+        <translation>&lt;b&gt; %1 &lt;/b&gt;: Nesprávná zkratka pro zemi, nebo není dostupný žádný překlad!</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13916"/>
@@ -3810,7 +3811,7 @@ Varování. Tento krok přeuspořádá stávající vrstvy!</translation>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13936"/>
         <source>&lt;b&gt;%1&lt;/b&gt; is a directory, please specify a file name!</source>
-        <translation>&lt;b&gt;%1&lt;/b&gt; Je adresářem. Určete, prosím, název souboru!</translation>
+        <translation>&lt;b&gt;%1&lt;/b&gt; Je adresářem. Zadejte, prosím, název souboru!</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="14100"/>
@@ -3820,12 +3821,12 @@ Varování. Tento krok přeuspořádá stávající vrstvy!</translation>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="14310"/>
         <source>QtiPlot - Demo Version</source>
-        <translation></translation>
+        <translation>QtiPlot - Demoverze</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13861"/>
-        <source>You are using the demonstration version of Qtiplot.<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>It is identical with the full version, except that you can&apos;t save your work to project files and you can&apos;t use it for more than 10 minutes per session.<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>&lt;br&gt;&lt;br&gt;<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>If you want to have ready-to-use, fully functional binaries, please subscribe for a<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>&lt;a href=&quot;http://soft.proindependent.com/individual_contract.html&quot;&gt;single-user binaries maintenance contract&lt;/a&gt;.<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>&lt;br&gt;&lt;br&gt;<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>QtiPlot is free software in the sense of free speech.<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>If you know how to use it, you can get<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>&lt;a href=&quot;http://developer.berlios.de/project/showfiles.php?group_id=6626&quot;&gt;the source code&lt;/a&gt;<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>free of charge.<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>Nevertheless, you are welcome to<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>&lt;a href=&quot;http://soft.proindependent.com/why_donate.html&quot;&gt;make a donation&lt;/a&gt;<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>in order to support the further development of QtiPlot.</source>
-        <translation type="obsolete">Používáte předváděcí verzi Qtiplotu.<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>Je totožná s plnou verzí, mimo to, že vaši práci nelze uložit do souboru s projektem a nemůžete ji používat déle než  10 minut na jedno sezení.<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>&lt;br&gt;&lt;br&gt;<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>Pokud chcete mít verzi připravenou k používání s plně pracující binární soubory, podepište se, prosím, na <byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>&lt;a href=&quot;http://soft.proindependent.com/individual_contract.html&quot;&gt;smlouva na starání se o binární soubory pro jednoho-uživatele&lt;/a&gt;.<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>&lt;br&gt;&lt;br&gt;<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>QtiPlot je svobodný software ve smyslu svobody projevu.<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>Pokud víte, jak jej používat, můžete získat<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>&lt;a href=&quot;http://developer.berlios.de/project/showfiles.php?group_id=6626&quot;&gt;zdrojový kód&lt;/a&gt;<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>zdarma.<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>Přesto však jste vítán,<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>&lt;a href=&quot;http://soft.proindependent.com/why_donate.html&quot;&gt;hodláte-li poskytnout dar, &lt;/a&gt;<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>kterým podpoříte budoucí vývoj QtiPlotu.</translation>
+        <source>You are using the demonstration version of Qtiplot.				It is identical with the full version, except that you can&apos;t save your work to project files and you can&apos;t use it for more than 10 minutes per session.				&lt;br&gt;&lt;br&gt;				If you want to have ready-to-use, fully functional binaries, please subscribe for a				&lt;a href=&quot;http://soft.proindependent.com/individual_contract.html&quot;&gt;single-user binaries maintenance contract&lt;/a&gt;.				&lt;br&gt;&lt;br&gt;				QtiPlot is free software in the sense of free speech.				If you know how to use it, you can get				&lt;a href=&quot;http://developer.berlios.de/project/showfiles.php?group_id=6626&quot;&gt;the source code&lt;/a&gt;				free of charge.				Nevertheless, you are welcome to				&lt;a href=&quot;http://soft.proindependent.com/why_donate.html&quot;&gt;make a donation&lt;/a&gt;				in order to support the further development of QtiPlot.</source>
+        <translation type="obsolete">Používáte předváděcí verzi Qtiplotu.				Je totožná s plnou verzí, mimo to, že vaši práci nelze uložit do souboru s projektem a nemůžete ji používat déle než  10 minut na jedno sezení.				&lt;br&gt;&lt;br&gt;				Pokud chcete mít verzi připravenou k používání s plně pracující binární soubory, podepište se, prosím, na 				&lt;a href=&quot;http://soft.proindependent.com/individual_contract.html&quot;&gt;smlouva na starání se o binární soubory pro jednoho-uživatele&lt;/a&gt;.				&lt;br&gt;&lt;br&gt;				QtiPlot je svobodný software ve smyslu svobody projevu.				Pokud víte, jak jej používat, můžete získat				&lt;a href=&quot;http://developer.berlios.de/project/showfiles.php?group_id=6626&quot;&gt;zdrojový kód&lt;/a&gt;				zdarma.				Přesto však jste vítán,				&lt;a href=&quot;http://soft.proindependent.com/why_donate.html&quot;&gt;hodláte-li poskytnout dar, &lt;/a&gt;				kterým podpoříte budoucí vývoj QtiPlotu.</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="14335"/>
@@ -3895,7 +3896,7 @@ Varování. Tento krok přeuspořádá stávající vrstvy!</translation>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="14540"/>
         <source>Hidden</source>
-        <translation>Skryto</translation>
+        <translation>Skryt</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="14603"/>
@@ -3925,12 +3926,12 @@ Varování. Tento krok přeuspořádá stávající vrstvy!</translation>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="14756"/>
         <source>windows</source>
-        <translation>okna</translation>
+        <translation>Okna</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="14757"/>
         <source>folders</source>
-        <translation>složky</translation>
+        <translation>Složky</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="14731"/>
@@ -3980,7 +3981,7 @@ Varování. Tento krok přeuspořádá stávající vrstvy!</translation>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="15173"/>
         <source>Sorry, no match found for string: &apos;%1&apos;</source>
-        <translation>Promiňte, ale nebyla nalezena žádná shoda pro řetězec: &apos;%1&apos;</translation>
+        <translation>Promiňte, ale nebyla nalezena žádná shoda pro řetězec znaků: &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="15191"/>
@@ -3990,7 +3991,7 @@ Varování. Tento krok přeuspořádá stávající vrstvy!</translation>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="15196"/>
         <source>Cannot move a parent folder into a child folder!</source>
-        <translation>Nelze přesunout rodičovskou složku do jejího potomka!</translation>
+        <translation>Nelze přesunout složku do její podsložky!</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="15209"/>
@@ -4025,7 +4026,7 @@ Varování. Tento krok přeuspořádá stávající vrstvy!</translation>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="15327"/>
         <source>Error while fetching version file with HTTP: %1.</source>
-        <translation>Při získávání souboru s verzí programu s pomocí HTTP došlo k chybě: %1.</translation>
+        <translation>Při získávání souboru s verzí programu přes HTTP došlo k chybě: %1.</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="15342"/>
@@ -4050,7 +4051,7 @@ Varování. Tento krok přeuspořádá stávající vrstvy!</translation>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="15402"/>
         <source>This will clear the contents of all the data associated with the table. Are you sure?</source>
-        <translation>Tímto se smažou všechna data spojená s tabulkou. Jste si jist tímto krokem?</translation>
+        <translation>Tímto se smažou všechna data přiřazená k tabulce. Jste si jist tímto krokem?</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="15403"/>
@@ -4080,7 +4081,7 @@ Varování. Tento krok přeuspořádá stávající vrstvy!</translation>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="15622"/>
         <source>Please set a default X column for this table, first!</source>
-        <translation>Nejprve, prosím, u této tabulky nastavte výchozí sloupec x!</translation>
+        <translation>Nejprve, prosím, u této tabulky nastavte jeden sloupec jako výchozí sloupec X!</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="15656"/>
@@ -4110,12 +4111,12 @@ Varování. Tento krok přeuspořádá stávající vrstvy!</translation>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="15884"/>
         <source>Import fit models</source>
-        <translation>Zavést odpovídající modely</translation>
+        <translation>Zavést modely přizpůsobení</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="15887"/>
         <source>Choose a directory to export the fit models to</source>
-        <translation>Vybrat adresář, do něhož se budou exportovat odpovídající modely</translation>
+        <translation>Vybrat adresář, do něhož se budou exportovat modely přizpůsobení</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="16184"/>
@@ -4142,7 +4143,7 @@ Automatické dokončení nebude dostupné!</translation>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="16527"/>
         <source>Stem and leaf plot of dataset</source>
-        <translation>Sloupcový nákres souboru dat</translation>
+        <translation>Stonkový a listový nákres souboru dat</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="16528"/>
@@ -4162,7 +4163,7 @@ Automatické dokončení nebude dostupné!</translation>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="16544"/>
         <source>Stem</source>
-        <translation>Stopka</translation>
+        <translation>Stonek</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="16544"/>
@@ -4172,7 +4173,7 @@ Automatické dokončení nebude dostupné!</translation>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="16559"/>
         <source>Please confirm the stem unit!</source>
-        <translation>Potvrďte, prosím, jednotku pro stopku!</translation>
+        <translation>Potvrďte, prosím, jednotku pro stonek!</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="16560"/>
@@ -4182,12 +4183,12 @@ Automatické dokončení nebude dostupné!</translation>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="16560"/>
         <source>stem unit</source>
-        <translation>Jednotka pro stopku</translation>
+        <translation>Jednotka pro stonek</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="16583"/>
         <source>Stem unit</source>
-        <translation>Jednotka pro stopku</translation>
+        <translation>Jednotka pro stonek</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="16584"/>
@@ -4212,152 +4213,152 @@ Automatické dokončení nebude dostupné!</translation>
     <message>
         <location filename="src/core/ConfigDialog.cpp" line="2289"/>
         <source>English</source>
-        <translation>Angličtina</translation>
+        <translation>Český</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="9421"/>
         <source>Move Row</source>
-        <translation type="unfinished"></translation>
+        <translation>Přesunout řádek</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="6416"/>
         <source>Spec&amp;ial Bar/Column</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Zvláštní pruh/sloupec</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="7226"/>
         <source>Print preview of window: </source>
-        <translation type="unfinished"></translation>
+        <translation>Tisk náhledu okna:</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="8578"/>
         <source>Print Pre&amp;view</source>
-        <translation type="unfinished"></translation>
+        <translation>Tisk &amp;náhledu</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="9233"/>
         <source>&amp;Add</source>
-        <translation type="unfinished">&amp;Přidat</translation>
+        <translation>&amp;Přidat</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="9241"/>
         <source>&amp;Indexed Colors</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Indexované barvy</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="9242"/>
         <source>Pale&amp;tte</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Paleta</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="12841"/>
         <source>Ctrl+Alt+D</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+Alt+D</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13244"/>
         <source>Zoom &amp;In/Out and Drag Canvas</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Přiblížit/Oddálit a táhnout plátnem</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="12976"/>
         <source>Stack &amp;Bar</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Pruh zásobníku</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="12979"/>
         <source>Stack &amp;Column</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Sloupec zásobníku</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="12183"/>
         <source>&amp;Waterfall Plot</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Vodopádový nákres</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13054"/>
         <source>Fit Slop&amp;e</source>
-        <translation type="unfinished"></translation>
+        <translation>Přizpůsobit &amp;sklon</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13099"/>
         <source>Ad&amp;just Column Width</source>
-        <translation type="unfinished"></translation>
+        <translation>Upravit &amp;šířku sloupce</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13095"/>
         <source>&amp;Upward</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Nahoru</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13097"/>
         <source>&amp;Downward</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Dolů</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="12776"/>
         <source>Append a project to the current folder</source>
-        <translation type="unfinished"></translation>
+        <translation>Projekt připojit k nynější složce</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="12777"/>
         <source>Ctrl+Alt+A</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+Alt+A</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="12977"/>
         <source>Plot stack bar</source>
-        <translation type="unfinished"></translation>
+        <translation>Nakreslit pruh se zásobníkem</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="12980"/>
         <source>Plot stack column</source>
-        <translation type="unfinished"></translation>
+        <translation>Nakreslit sloupec se zásobníkem</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13096"/>
         <source>Move current row upward</source>
-        <translation type="unfinished"></translation>
+        <translation>Přesunout nynější řádek nahoru</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13098"/>
         <source>Move current row downward</source>
-        <translation type="unfinished"></translation>
+        <translation>Přesunout nynější řádek dolů</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13100"/>
         <source>Set optimal column width</source>
-        <translation type="unfinished"></translation>
+        <translation>Nastavit nejlepší šířku sloupců</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13116"/>
         <source>Alt+C</source>
-        <translation type="unfinished"></translation>
+        <translation>ALT+C</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13245"/>
         <source>Zoom In (Shift++) or Out (-) and Drag Canvas</source>
-        <translation type="unfinished"></translation>
+        <translation>Přiblížit(Shift++) nebo Oddálit (-) a táhnout plátnem</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13831"/>
         <source>Make a donation</source>
-        <translation type="unfinished"></translation>
+        <translation>Poskytněte dar</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13832"/>
         <source>Close</source>
-        <translation type="unfinished">Zavřít</translation>
+        <translation>Zavřít</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13884"/>
         <source>show standalone scripting window</source>
-        <translation type="unfinished"></translation>
+        <translation>Ukázat samostatné skriptovací okno</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="14323"/>
-        <source>You are using the demonstration version of Qtiplot.<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>It is identical with the full version, except that you can&apos;t save your work to project files and you can&apos;t use it for more than 10 minutes per session.<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>&lt;br&gt;&lt;br&gt;<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>If you want to have ready-to-use, fully functional binaries, please subscribe for a<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>&lt;a href=&quot;http://soft.proindependent.com/individual_contract.html&quot;&gt;single-user binaries maintenance contract&lt;/a&gt;.<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>&lt;br&gt;&lt;br&gt;<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>QtiPlot is free software in the sense of free speech.<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>If you know how to use it, you can get<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>&lt;a href=&quot;http://soft.proindependent.com/download.html&quot;&gt;the source code&lt;/a&gt;<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>free of charge.<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>Nevertheless, you are welcome to<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>&lt;a href=&quot;http://soft.proindependent.com/why_donate.html&quot;&gt;make a donation&lt;/a&gt;<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>in order to support the further development of QtiPlot.</source>
-        <translation type="unfinished"></translation>
+        <source>You are using the demonstration version of Qtiplot.				It is identical with the full version, except that you can&apos;t save your work to project files and you can&apos;t use it for more than 10 minutes per session.				&lt;br&gt;&lt;br&gt;				If you want to have ready-to-use, fully functional binaries, please subscribe for a				&lt;a href=&quot;http://soft.proindependent.com/individual_contract.html&quot;&gt;single-user binaries maintenance contract&lt;/a&gt;.				&lt;br&gt;&lt;br&gt;				QtiPlot is free software in the sense of free speech.				If you know how to use it, you can get				&lt;a href=&quot;http://soft.proindependent.com/download.html&quot;&gt;the source code&lt;/a&gt;				free of charge.				Nevertheless, you are welcome to				&lt;a href=&quot;http://soft.proindependent.com/why_donate.html&quot;&gt;make a donation&lt;/a&gt;				in order to support the further development of QtiPlot.</source>
+        <translation>Používáte předváděcí verzi Qtiplotu.				Je totožná s plnou verzí, mimo to, že vaši práci nelze uložit do souboru s projektem a nemůžete ji používat déle než  10 minut na jedno sezení.				&lt;br&gt;&lt;br&gt;				Pokud chcete mít verzi připravenou k používání, plně pracující binární soubory, podepište se, prosím, na 				&lt;a href=&quot;http://soft.proindependent.com/individual_contract.html&quot;&gt;smlouva na starání se o binární soubory pro jednoho-uživatele&lt;/a&gt;.				&lt;br&gt;&lt;br&gt;				QtiPlot je svobodný software ve smyslu svobody projevu.				Pokud víte, jak jej používat, můžete získat				&lt;a href=&quot;http://developer.berlios.de/project/showfiles.php?group_id=6626&quot;&gt;zdrojový kód&lt;/a&gt;				zdarma.				Přesto však jste vítán,				&lt;a href=&quot;http://soft.proindependent.com/why_donate.html&quot;&gt;hodláte-li poskytnout dar, &lt;/a&gt;				kterým podpoříte budoucí vývoj QtiPlotu.</translation>
     </message>
 </context>
 <context>
@@ -4584,17 +4585,17 @@ Automatické dokončení nebude dostupné!</translation>
     <message>
         <location filename="src/plot2D/dialogs/AxesDialog.cpp" line="306"/>
         <source>Scale</source>
-        <translation>Rozsah</translation>
+        <translation>Stupnice</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/AxesDialog.cpp" line="323"/>
         <source>Major Grids</source>
-        <translation>Větší mřížka</translation>
+        <translation>Hlavní mřížka</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/AxesDialog.cpp" line="328"/>
         <source>Minor Grids</source>
-        <translation>Menší mřížka</translation>
+        <translation>Podmřížka</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/AxesDialog.cpp" line="332"/>
@@ -4934,32 +4935,32 @@ Automatické dokončení nebude dostupné!</translation>
     <message>
         <location filename="src/plot2D/dialogs/AxesDialog.cpp" line="152"/>
         <source>Linear</source>
-        <translation type="unfinished"></translation>
+        <translation>Přímočarý</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/AxesDialog.cpp" line="153"/>
         <source>Log10</source>
-        <translation type="unfinished"></translation>
+        <translation>Log10</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/AxesDialog.cpp" line="154"/>
         <source>ln</source>
-        <translation type="unfinished"></translation>
+        <translation>ln</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/AxesDialog.cpp" line="155"/>
         <source>Log2</source>
-        <translation type="unfinished"></translation>
+        <translation>Log2</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/AxesDialog.cpp" line="156"/>
         <source>Reciprocal</source>
-        <translation type="unfinished"></translation>
+        <translation>Převrácený</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/AxesDialog.cpp" line="504"/>
         <source>&amp;Inverted</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Obrácený</translation>
     </message>
 </context>
 <context>
@@ -4967,122 +4968,122 @@ Automatické dokončení nebude dostupné!</translation>
     <message>
         <location filename="src/lib/src/ColorBox.cpp" line="135"/>
         <source>black</source>
-        <translation>černý</translation>
+        <translation>černá</translation>
     </message>
     <message>
         <location filename="src/lib/src/ColorBox.cpp" line="136"/>
         <source>red</source>
-        <translation>červený</translation>
+        <translation>červená</translation>
     </message>
     <message>
         <location filename="src/lib/src/ColorBox.cpp" line="137"/>
         <source>green</source>
-        <translation>zelený</translation>
+        <translation>zelená</translation>
     </message>
     <message>
         <location filename="src/lib/src/ColorBox.cpp" line="138"/>
         <source>blue</source>
-        <translation>modrý</translation>
+        <translation>modrá</translation>
     </message>
     <message>
         <location filename="src/lib/src/ColorBox.cpp" line="139"/>
         <source>cyan</source>
-        <translation>modrozelený</translation>
+        <translation>modrozelená</translation>
     </message>
     <message>
         <location filename="src/lib/src/ColorBox.cpp" line="140"/>
         <source>magenta</source>
-        <translation>červenorudý</translation>
+        <translation>červenorudá</translation>
     </message>
     <message>
         <location filename="src/lib/src/ColorBox.cpp" line="141"/>
         <source>yellow</source>
-        <translation>žlutý</translation>
+        <translation>žlutá</translation>
     </message>
     <message>
         <location filename="src/lib/src/ColorBox.cpp" line="142"/>
         <source>dark yellow</source>
-        <translation>tmavě žlutý</translation>
+        <translation>tmavě žlutá</translation>
     </message>
     <message>
         <location filename="src/lib/src/ColorBox.cpp" line="143"/>
         <source>navy</source>
-        <translation>tmavomodrý</translation>
+        <translation>tmavomodrá</translation>
     </message>
     <message>
         <location filename="src/lib/src/ColorBox.cpp" line="144"/>
         <source>purple</source>
-        <translation>purpurový</translation>
+        <translation>purpurová</translation>
     </message>
     <message>
         <location filename="src/lib/src/ColorBox.cpp" line="145"/>
         <source>wine</source>
-        <translation>vínový (tmavě červený)</translation>
+        <translation>vínová (tmavě červená)</translation>
     </message>
     <message>
         <location filename="src/lib/src/ColorBox.cpp" line="146"/>
         <source>olive</source>
-        <translation>olivový (olivová zeleň)</translation>
+        <translation>olivová (olivově zelená)</translation>
     </message>
     <message>
         <location filename="src/lib/src/ColorBox.cpp" line="147"/>
         <source>dark cyan</source>
-        <translation>tmavě modrozelený</translation>
+        <translation>tmavě modrozelená</translation>
     </message>
     <message>
         <location filename="src/lib/src/ColorBox.cpp" line="148"/>
         <source>royal</source>
-        <translation>královský</translation>
+        <translation>královská modř</translation>
     </message>
     <message>
         <location filename="src/lib/src/ColorBox.cpp" line="149"/>
         <source>orange</source>
-        <translation>oranžový</translation>
+        <translation>oranžová</translation>
     </message>
     <message>
         <location filename="src/lib/src/ColorBox.cpp" line="150"/>
         <source>violet</source>
-        <translation>fialový</translation>
+        <translation>fialová</translation>
     </message>
     <message>
         <location filename="src/lib/src/ColorBox.cpp" line="151"/>
         <source>pink</source>
-        <translation>růžový</translation>
+        <translation>růžová</translation>
     </message>
     <message>
         <location filename="src/lib/src/ColorBox.cpp" line="152"/>
         <source>white</source>
-        <translation>bílý</translation>
+        <translation>bílá</translation>
     </message>
     <message>
         <location filename="src/lib/src/ColorBox.cpp" line="153"/>
         <source>light gray</source>
-        <translation>světle šedý</translation>
+        <translation>světle šedá</translation>
     </message>
     <message>
         <location filename="src/lib/src/ColorBox.cpp" line="154"/>
         <source>gray</source>
-        <translation>šedý</translation>
+        <translation>šedá</translation>
     </message>
     <message>
         <location filename="src/lib/src/ColorBox.cpp" line="155"/>
         <source>light yellow</source>
-        <translation>světle žlutý</translation>
+        <translation>světle žlutá</translation>
     </message>
     <message>
         <location filename="src/lib/src/ColorBox.cpp" line="156"/>
         <source>light cyan</source>
-        <translation>světle modrozelený</translation>
+        <translation>světle modrozelená</translation>
     </message>
     <message>
         <location filename="src/lib/src/ColorBox.cpp" line="157"/>
         <source>light magenta</source>
-        <translation>světle červenorudý</translation>
+        <translation>světle červenorudá</translation>
     </message>
     <message>
         <location filename="src/lib/src/ColorBox.cpp" line="158"/>
         <source>dark gray</source>
-        <translation>tmavě šedý</translation>
+        <translation>tmavě šedá</translation>
     </message>
 </context>
 <context>
@@ -5090,7 +5091,7 @@ Automatické dokončení nebude dostupné!</translation>
     <message>
         <location filename="src/lib/src/ColorButton.cpp" line="40"/>
         <source>Custom</source>
-        <translation type="unfinished"></translation>
+        <translation>Vlastní</translation>
     </message>
 </context>
 <context>
@@ -5146,7 +5147,7 @@ Automatické dokončení nebude dostupné!</translation>
     <message>
         <location filename="src/lib/src/ColorMapEditor.cpp" line="76"/>
         <source>&amp;Scale Colors</source>
-        <translation>&amp;Barevný rozsah</translation>
+        <translation>Barvy &amp;zařadit do stupnice</translation>
     </message>
 </context>
 <context>
@@ -5182,7 +5183,7 @@ Automatické dokončení nebude dostupné!</translation>
     <message>
         <location filename="src/lib/3rdparty/qtcolorpicker/src/qtcolorpicker.cpp" line="897"/>
         <source>Custom</source>
-        <translation type="unfinished"></translation>
+        <translation>Vlastní</translation>
     </message>
 </context>
 <context>
@@ -5313,7 +5314,7 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/core/ConfigDialog.cpp" line="1536"/>
         <source>Fitting</source>
-        <translation>Fitink (tvarovka se závitem)</translation>
+        <translation>Přizpůsobení křivek</translation>
     </message>
     <message>
         <location filename="src/core/ConfigDialog.cpp" line="1546"/>
@@ -5333,7 +5334,7 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/core/ConfigDialog.cpp" line="1549"/>
         <source>Ticks</source>
-        <translation>Fajfky</translation>
+        <translation>Značení os</translation>
     </message>
     <message>
         <location filename="src/core/ConfigDialog.cpp" line="1790"/>
@@ -5358,17 +5359,17 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/core/ConfigDialog.cpp" line="1557"/>
         <source>Major Ticks</source>
-        <translation>Větší fajfky</translation>
+        <translation>Hlavní označení os</translation>
     </message>
     <message>
         <location filename="src/core/ConfigDialog.cpp" line="1558"/>
         <source>Minor Ticks</source>
-        <translation>Menší fajfky</translation>
+        <translation>Vedlejší označení os</translation>
     </message>
     <message>
         <location filename="src/core/ConfigDialog.cpp" line="1560"/>
         <source>Margin</source>
-        <translation>Okraj</translation>
+        <translation>Odstup</translation>
     </message>
     <message>
         <location filename="src/core/ConfigDialog.cpp" line="1561"/>
@@ -5383,7 +5384,7 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/core/ConfigDialog.cpp" line="1563"/>
         <source>Canvas Fra&amp;me</source>
-        <translation>Rámeček plá&amp;tna</translation>
+        <translation>Rámeček &amp;podkladu</translation>
     </message>
     <message>
         <location filename="src/core/ConfigDialog.cpp" line="1564"/>
@@ -5403,7 +5404,7 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/core/ConfigDialog.cpp" line="1567"/>
         <source>Antia&amp;liasing</source>
-        <translation>Vyhla&amp;zování</translation>
+        <translation>Vyhla&amp;zování okrajů</translation>
     </message>
     <message>
         <location filename="src/core/ConfigDialog.cpp" line="1577"/>
@@ -5413,7 +5414,7 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/core/ConfigDialog.cpp" line="1580"/>
         <source>Axes &amp;backbones</source>
-        <translation>&amp;Opory os</translation>
+        <translation>&amp;Základové čáry os</translation>
     </message>
     <message>
         <location filename="src/core/ConfigDialog.cpp" line="1581"/>
@@ -5433,7 +5434,7 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/core/ConfigDialog.cpp" line="1585"/>
         <source>Bottom</source>
-        <translation>Tlačítko</translation>
+        <translation>Dole</translation>
     </message>
     <message>
         <location filename="src/core/ConfigDialog.cpp" line="1586"/>
@@ -5453,7 +5454,7 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/core/ConfigDialog.cpp" line="1727"/>
         <source>Labels</source>
-        <translation>Štítky</translation>
+        <translation>Popisy</translation>
     </message>
     <message>
         <location filename="src/core/ConfigDialog.cpp" line="1599"/>
@@ -5463,17 +5464,17 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/core/ConfigDialog.cpp" line="1600"/>
         <source>Out</source>
-        <translation>Vypnuto</translation>
+        <translation>Vně</translation>
     </message>
     <message>
         <location filename="src/core/ConfigDialog.cpp" line="1601"/>
         <source>In &amp; Out</source>
-        <translation>Zapnuto &amp; Vypnuto</translation>
+        <translation>Uvnitř &amp; Vně</translation>
     </message>
     <message>
         <location filename="src/core/ConfigDialog.cpp" line="1602"/>
         <source>In</source>
-        <translation>Zapnuto</translation>
+        <translation>Uvnitř</translation>
     </message>
     <message>
         <location filename="src/core/ConfigDialog.cpp" line="1607"/>
@@ -5493,7 +5494,7 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/core/ConfigDialog.cpp" line="1612"/>
         <source>Prompt on closing</source>
-        <translation>Výzva při uzavření</translation>
+        <translation>Ptát se při uzavření</translation>
     </message>
     <message>
         <location filename="src/core/ConfigDialog.cpp" line="1613"/>
@@ -5533,17 +5534,17 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/core/ConfigDialog.cpp" line="1624"/>
         <source>&amp;Labels Font</source>
-        <translation>&amp;Písmo štítků</translation>
+        <translation>&amp;Písmo popisů</translation>
     </message>
     <message>
         <location filename="src/core/ConfigDialog.cpp" line="1625"/>
         <source>A&amp;xes Labels</source>
-        <translation>Štítky &amp;os</translation>
+        <translation>Popisy &amp;os</translation>
     </message>
     <message>
         <location filename="src/core/ConfigDialog.cpp" line="1626"/>
         <source>Axes &amp;Numbers</source>
-        <translation>Počet &amp;os</translation>
+        <translation>Čísla &amp;os</translation>
     </message>
     <message>
         <location filename="src/core/ConfigDialog.cpp" line="1627"/>
@@ -5553,7 +5554,7 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/core/ConfigDialog.cpp" line="1628"/>
         <source>T&amp;itle</source>
-        <translation>Ná&amp;zev</translation>
+        <translation>&amp;Název</translation>
     </message>
     <message>
         <location filename="src/core/ConfigDialog.cpp" line="1629"/>
@@ -5563,12 +5564,12 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/core/ConfigDialog.cpp" line="1632"/>
         <source>Application</source>
-        <translation>Použití</translation>
+        <translation>Program</translation>
     </message>
     <message>
         <location filename="src/core/ConfigDialog.cpp" line="1633"/>
         <source>Confirmations</source>
-        <translation>Potvrzování</translation>
+        <translation>Potvrzení</translation>
     </message>
     <message>
         <location filename="src/core/ConfigDialog.cpp" line="1787"/>
@@ -5578,7 +5579,7 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/core/ConfigDialog.cpp" line="1635"/>
         <source>Numeric Format</source>
-        <translation>Formát čísel</translation>
+        <translation>Číselný formát</translation>
     </message>
     <message>
         <location filename="src/core/ConfigDialog.cpp" line="1636"/>
@@ -5593,7 +5594,7 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/core/ConfigDialog.cpp" line="1640"/>
         <source>Style</source>
-        <translation>Způsob kreslení</translation>
+        <translation>Styl</translation>
     </message>
     <message>
         <location filename="src/core/ConfigDialog.cpp" line="1641"/>
@@ -5608,22 +5609,22 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/core/ConfigDialog.cpp" line="1643"/>
         <source>Workspace</source>
-        <translation>Pracovní prostředí</translation>
+        <translation>Pracovní oblast</translation>
     </message>
     <message>
         <location filename="src/core/ConfigDialog.cpp" line="1644"/>
         <source>Panels text</source>
-        <translation>Text panelů</translation>
+        <translation>Podokno: text</translation>
     </message>
     <message>
         <location filename="src/core/ConfigDialog.cpp" line="1645"/>
         <source>Panels</source>
-        <translation>Panely</translation>
+        <translation>Podokno: Pozadí</translation>
     </message>
     <message>
         <location filename="src/core/ConfigDialog.cpp" line="1646"/>
         <source>Save every</source>
-        <translation>Uložit každých</translation>
+        <translation>Uložit vše</translation>
     </message>
     <message>
         <location filename="src/core/ConfigDialog.cpp" line="1647"/>
@@ -5633,7 +5634,7 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/core/ConfigDialog.cpp" line="1648"/>
         <source>Check for new versions at startup</source>
-        <translation>Při spuštění provést vyhledávání nových verzí</translation>
+        <translation>Při spuštění provést ověření dostupnosti nových verzí</translation>
     </message>
     <message>
         <location filename="src/core/ConfigDialog.cpp" line="1649"/>
@@ -5653,7 +5654,7 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/core/ConfigDialog.cpp" line="1652"/>
         <source>Endline character</source>
-        <translation>Znak pro koncovou čáru</translation>
+        <translation>Znak pro konec řádku</translation>
     </message>
     <message>
         <location filename="src/core/ConfigDialog.cpp" line="1653"/>
@@ -5673,7 +5674,7 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/core/ConfigDialog.cpp" line="1657"/>
         <source>Matrix</source>
-        <translation>Vzor</translation>
+        <translation>Matice</translation>
     </message>
     <message>
         <location filename="src/core/ConfigDialog.cpp" line="1658"/>
@@ -5693,22 +5694,22 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/core/ConfigDialog.cpp" line="1665"/>
         <source>Number of Decimal Digits</source>
-        <translation>Počet desetinných číslic</translation>
+        <translation>Počet desetinných míst</translation>
     </message>
     <message>
         <location filename="src/core/ConfigDialog.cpp" line="1666"/>
         <source>Decimal Separators</source>
-        <translation>Oddělovače desetinných číslic</translation>
+        <translation>Oddělovače desetinných míst</translation>
     </message>
     <message>
         <location filename="src/core/ConfigDialog.cpp" line="1672"/>
         <source>Omit &amp;Thousands Separator</source>
-        <translation>Vynechat oddělovač pro &amp;tisíc</translation>
+        <translation>Vynechat oddělovač míst (&amp;tisíce)</translation>
     </message>
     <message>
         <location filename="src/core/ConfigDialog.cpp" line="1682"/>
         <source>Clipboard Decimal Separators</source>
-        <translation>Oddělovače desetinných  číslic pro schránku</translation>
+        <translation>Oddělovače desetinných míst pro schránku</translation>
     </message>
     <message>
         <location filename="src/core/ConfigDialog.cpp" line="1710"/>
@@ -5718,7 +5719,7 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/core/ConfigDialog.cpp" line="1711"/>
         <source>&amp;Display Comments in Header</source>
-        <translation>&amp;Zobrazovat poznámky v záhlaví</translation>
+        <translation>&amp;Zobrazovat poznámky v záhlaví sloupce</translation>
     </message>
     <message>
         <location filename="src/core/ConfigDialog.cpp" line="1713"/>
@@ -5728,12 +5729,12 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/core/ConfigDialog.cpp" line="1844"/>
         <source>TAB</source>
-        <translation>TABULÁTOR (TAB)</translation>
+        <translation>Tabulátor (TAB)</translation>
     </message>
     <message>
         <location filename="src/core/ConfigDialog.cpp" line="1846"/>
         <source>SPACE</source>
-        <translation>MEZERNÍK (SPACE)</translation>
+        <translation>Mezerník (SPACE)</translation>
     </message>
     <message>
         <location filename="src/core/ConfigDialog.cpp" line="1726"/>
@@ -5743,7 +5744,7 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/core/ConfigDialog.cpp" line="1731"/>
         <source>Default curve style</source>
-        <translation>Výchozí způsob kreslení křivek</translation>
+        <translation>Přednastavený způsob kreslení křivek</translation>
     </message>
     <message>
         <location filename="src/core/ConfigDialog.cpp" line="1732"/>
@@ -5753,7 +5754,7 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/core/ConfigDialog.cpp" line="1733"/>
         <source>Symbol size</source>
-        <translation>Velikost symbolů</translation>
+        <translation>Velikost symbolu</translation>
     </message>
     <message>
         <location filename="src/core/ConfigDialog.cpp" line="1736"/>
@@ -5763,7 +5764,7 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/core/ConfigDialog.cpp" line="1737"/>
         <source> Scatter</source>
-        <translation> Změť</translation>
+        <translation> Body</translation>
     </message>
     <message>
         <location filename="src/core/ConfigDialog.cpp" line="1738"/>
@@ -5773,22 +5774,22 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/core/ConfigDialog.cpp" line="1739"/>
         <source> Vertical drop lines</source>
-        <translation> Svisle klesající čáry</translation>
+        <translation>Svislé čáry</translation>
     </message>
     <message>
         <location filename="src/core/ConfigDialog.cpp" line="1740"/>
         <source> Spline</source>
-        <translation> Tvárné křivítko</translation>
+        <translation>Zub</translation>
     </message>
     <message>
         <location filename="src/core/ConfigDialog.cpp" line="1741"/>
         <source> Vertical steps</source>
-        <translation> Svislé stupně</translation>
+        <translation>Svislé kroky</translation>
     </message>
     <message>
         <location filename="src/core/ConfigDialog.cpp" line="1742"/>
         <source> Horizontal steps</source>
-        <translation> Vodorovné stupně</translation>
+        <translation> Vodorovné kroky</translation>
     </message>
     <message>
         <location filename="src/core/ConfigDialog.cpp" line="1743"/>
@@ -5798,12 +5799,12 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/core/ConfigDialog.cpp" line="1744"/>
         <source> Vertical Bars</source>
-        <translation> Svislé čáry</translation>
+        <translation>Svislé pruhy</translation>
     </message>
     <message>
         <location filename="src/core/ConfigDialog.cpp" line="1745"/>
         <source> Horizontal Bars</source>
-        <translation> Vodorovné čáry</translation>
+        <translation>Vodorovné pruhy</translation>
     </message>
     <message>
         <location filename="src/core/ConfigDialog.cpp" line="1770"/>
@@ -5828,17 +5829,17 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/core/ConfigDialog.cpp" line="1775"/>
         <source>Isolines</source>
-        <translation>Izokřivky</translation>
+        <translation>Obrysové čáry</translation>
     </message>
     <message>
         <location filename="src/core/ConfigDialog.cpp" line="1776"/>
         <source>Projection</source>
-        <translation>Promítání</translation>
+        <translation>Zobrazení</translation>
     </message>
     <message>
         <location filename="src/core/ConfigDialog.cpp" line="1779"/>
         <source>Smoot&amp;h Line</source>
-        <translation>&amp;Vyhladit čáru</translation>
+        <translation>&amp;Vyhlazená čára</translation>
     </message>
     <message>
         <location filename="src/core/ConfigDialog.cpp" line="1780"/>
@@ -5848,7 +5849,7 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/core/ConfigDialog.cpp" line="1781"/>
         <source>Lab&amp;els</source>
-        <translation>Štít&amp;ky</translation>
+        <translation>&amp;Popisy</translation>
     </message>
     <message>
         <location filename="src/core/ConfigDialog.cpp" line="1782"/>
@@ -5863,7 +5864,7 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/core/ConfigDialog.cpp" line="1804"/>
         <source>&amp;Numbers</source>
-        <translation>&amp;Číslice</translation>
+        <translation>&amp;Čísla</translation>
     </message>
     <message>
         <location filename="src/core/ConfigDialog.cpp" line="1785"/>
@@ -5888,7 +5889,7 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/core/ConfigDialog.cpp" line="1792"/>
         <source>&amp;Axes Labels</source>
-        <translation>&amp;Štítky u os</translation>
+        <translation>&amp;Popisy os</translation>
     </message>
     <message>
         <location filename="src/core/ConfigDialog.cpp" line="1794"/>
@@ -5943,12 +5944,12 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/core/ConfigDialog.cpp" line="1811"/>
         <source>Generated Fit Curve</source>
-        <translation>Vytvořená odpovídající křivka</translation>
+        <translation>Vytvořená křivka přizpůsobení</translation>
     </message>
     <message>
         <location filename="src/core/ConfigDialog.cpp" line="1812"/>
         <source>Uniform X Function</source>
-        <translation>Jednotná x funkce</translation>
+        <translation>Jednotná funkce X</translation>
     </message>
     <message>
         <location filename="src/core/ConfigDialog.cpp" line="1813"/>
@@ -5958,52 +5959,52 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/core/ConfigDialog.cpp" line="1814"/>
         <source>Same X as Fitting Data</source>
-        <translation>Stejné x jako uchycení dat</translation>
+        <translation>Stejná hodnota X jako data pro přizpůsobení</translation>
     </message>
     <message>
         <location filename="src/core/ConfigDialog.cpp" line="1815"/>
         <source>2 points for linear fits</source>
-        <translation>2 body pro přímočaré uchycení</translation>
+        <translation>Dva body pro přímočaré přizpůsobení</translation>
     </message>
     <message>
         <location filename="src/core/ConfigDialog.cpp" line="1824"/>
         <source>Display Peak Curves for Multi-peak Fits</source>
-        <translation>Zobrazovat vrcholy křivek u uchycení s více vrcholy</translation>
+        <translation>Ukazovat vrcholy křivek pro přizpůsobení s více vrcholy</translation>
     </message>
     <message>
         <location filename="src/core/ConfigDialog.cpp" line="1819"/>
         <source>Parameters Output</source>
-        <translation>Výstup závislých proměnných</translation>
+        <translation>Výstup parametrů</translation>
     </message>
     <message>
         <location filename="src/core/ConfigDialog.cpp" line="1820"/>
         <source>Significant Digits</source>
-        <translation>Podstatné číslice</translation>
+        <translation>Statisticky významná desetinná místa</translation>
     </message>
     <message>
         <location filename="src/core/ConfigDialog.cpp" line="1821"/>
         <source>Write Parameters to Result Log</source>
-        <translation>Zapsat závislé proměnné do zápisu s výsledky</translation>
+        <translation>Zapsat parametry do zápisu s výsledky</translation>
     </message>
     <message>
         <location filename="src/core/ConfigDialog.cpp" line="1822"/>
         <source>Paste Parameters to Plot</source>
-        <translation>Vložit závislé proměnné do nákresu</translation>
+        <translation>Vložit parametry do nákresu</translation>
     </message>
     <message>
         <location filename="src/core/ConfigDialog.cpp" line="1823"/>
         <source>Scale Errors with sqrt(Chi^2/doF)</source>
-        <translation>Chyby měřítka s sqrt(Chi^2/doF)</translation>
+        <translation>Zařazovat do stupnice hodnoty chyb s (kořenem) sqrt(Chi^2/doF)</translation>
     </message>
     <message>
         <location filename="src/core/ConfigDialog.cpp" line="1825"/>
         <source>Peaks Color</source>
-        <translation>Barvy vrcholů</translation>
+        <translation>Barva vrcholů</translation>
     </message>
     <message>
         <location filename="src/core/ConfigDialog.cpp" line="1850"/>
         <source>QtiPlot - Import options error</source>
-        <translation>QtiPlot - chyba voleb zavádění</translation>
+        <translation>QtiPlot - chyba ve volbách pro zavádění</translation>
     </message>
     <message>
         <location filename="src/core/ConfigDialog.cpp" line="1851"/>
@@ -6068,62 +6069,62 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/core/ConfigDialog.cpp" line="1485"/>
         <source>LaTeX Compiler</source>
-        <translation type="unfinished"></translation>
+        <translation>LaTeXový překladač</translation>
     </message>
     <message>
         <location filename="src/core/ConfigDialog.cpp" line="2518"/>
         <source>&amp;Internet Connection</source>
-        <translation type="unfinished"></translation>
+        <translation>Připojení k &amp;internetu</translation>
     </message>
     <message>
         <location filename="src/core/ConfigDialog.cpp" line="2484"/>
         <source>&amp;Proxy</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Proxy</translation>
     </message>
     <message>
         <location filename="src/core/ConfigDialog.cpp" line="2490"/>
         <source>Host</source>
-        <translation type="unfinished"></translation>
+        <translation>Hostitelský počítač</translation>
     </message>
     <message>
         <location filename="src/core/ConfigDialog.cpp" line="2495"/>
         <source>Port</source>
-        <translation type="unfinished"></translation>
+        <translation>Port</translation>
     </message>
     <message>
         <location filename="src/core/ConfigDialog.cpp" line="2502"/>
         <source>Username</source>
-        <translation type="unfinished"></translation>
+        <translation>Uživatelské jméno</translation>
     </message>
     <message>
         <location filename="src/core/ConfigDialog.cpp" line="2507"/>
         <source>Password</source>
-        <translation type="unfinished"></translation>
+        <translation>Heslo</translation>
     </message>
     <message>
         <location filename="src/core/ConfigDialog.cpp" line="2544"/>
         <source>Choose the location of the LaTeX compiler!</source>
-        <translation type="unfinished"></translation>
+        <translation>Vyberte umístění s LaTeXovým překladačem!</translation>
     </message>
     <message>
         <location filename="src/core/ConfigDialog.cpp" line="2569"/>
         <source>QtiPlot - File Not Found!</source>
-        <translation type="unfinished"></translation>
+        <translation>QtiPlot - Soubor nebyl nenalezen!</translation>
     </message>
     <message>
         <location filename="src/core/ConfigDialog.cpp" line="2563"/>
         <source>The file %1 doesn&apos;t exist.&lt;br&gt;Please choose another file!</source>
-        <translation type="unfinished"></translation>
+        <translation>Soubor %1 neexistuje.&lt;br&gt;Vyberte, prosím, jiný soubor!</translation>
     </message>
     <message>
         <location filename="src/core/ConfigDialog.cpp" line="2570"/>
         <source>%1 is a folder.&lt;br&gt;Please choose a file!</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 je složkou.&lt;br&gt;Vyberte, prosím, soubor!</translation>
     </message>
     <message>
         <location filename="src/core/ConfigDialog.cpp" line="2577"/>
         <source>You don&apos;t have read access rights to file %1.&lt;br&gt;Please choose another file!</source>
-        <translation type="unfinished"></translation>
+        <translation>K souboru %1 nemáte oprávnění pro čtení.&lt;br&gt;Vyberte, prosím, jiný soubor!</translation>
     </message>
 </context>
 <context>
@@ -6131,57 +6132,57 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/plot2D/dialogs/ContourLinesEditor.cpp" line="61"/>
         <source>Level</source>
-        <translation type="unfinished">Úroveň</translation>
+        <translation>Úroveň</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/ContourLinesEditor.cpp" line="61"/>
         <source>Pen</source>
-        <translation type="unfinished"></translation>
+        <translation>Pero</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/ContourLinesEditor.cpp" line="67"/>
         <source>&amp;Insert</source>
-        <translation type="unfinished">&amp;Vložit</translation>
+        <translation>&amp;Vložit</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/ContourLinesEditor.cpp" line="71"/>
         <source>&amp;Delete</source>
-        <translation type="unfinished">&amp;Smazat</translation>
+        <translation>&amp;Smazat</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/ContourLinesEditor.cpp" line="240"/>
         <source>QtiPlot - Edit pen</source>
-        <translation type="unfinished"></translation>
+        <translation>QtiPlot - Upravit pero</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/ContourLinesEditor.cpp" line="245"/>
         <source>Color</source>
-        <translation type="unfinished">Barva</translation>
+        <translation>Barva</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/ContourLinesEditor.cpp" line="267"/>
         <source>Apply to all</source>
-        <translation type="unfinished">Použít na vše</translation>
+        <translation>Použít na vše</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/ContourLinesEditor.cpp" line="253"/>
         <source>Style</source>
-        <translation type="unfinished"></translation>
+        <translation>Styl</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/ContourLinesEditor.cpp" line="261"/>
         <source>Width</source>
-        <translation type="unfinished">Šířka</translation>
+        <translation>Šířka</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/ContourLinesEditor.cpp" line="270"/>
         <source>&amp;Ok</source>
-        <translation type="unfinished">&amp;OK</translation>
+        <translation>&amp;OK</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/ContourLinesEditor.cpp" line="273"/>
         <source>&amp;Close</source>
-        <translation type="unfinished">&amp;Zavřít</translation>
+        <translation>&amp;Zavřít</translation>
     </message>
 </context>
 <context>
@@ -6189,7 +6190,7 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/analysis/Convolution.cpp" line="40"/>
         <source>Convolution</source>
-        <translation>Svinutí</translation>
+        <translation>Složení</translation>
     </message>
     <message>
         <location filename="src/analysis/Convolution.cpp" line="111"/>
@@ -6204,27 +6205,27 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/analysis/Convolution.cpp" line="55"/>
         <source>The signal data set %1 does not exist!</source>
-        <translation>Sada s daty signálu  %1 neexistuje!</translation>
+        <translation>Záznam s údaji o signálu  %1 neexistuje!</translation>
     </message>
     <message>
         <location filename="src/analysis/Convolution.cpp" line="62"/>
         <source>The response data set %1 does not exist!</source>
-        <translation>Sada s daty odezvy %1 neexistuje!</translation>
+        <translation>Záznam s údaji o odpovědi %1 neexistuje!</translation>
     </message>
     <message>
         <location filename="src/analysis/Convolution.cpp" line="80"/>
         <source>The response dataset &apos;%1&apos; must be less then half the size of the signal dataset &apos;%2&apos;!</source>
-        <translation>Sada s daty odezvy &apos;%1&apos; musí být menší než poloviční oproti sadě s daty signálu &apos;%2&apos;!</translation>
+        <translation>Záznam s údaji o odpovědi &apos;%1&apos; musí být menší než poloviční oproti záznamu s údaji o  signálu &apos;%2&apos;!</translation>
     </message>
     <message>
         <location filename="src/analysis/Convolution.cpp" line="87"/>
         <source>The response dataset &apos;%1&apos; must contain an odd number of points!</source>
-        <translation>Sada s daty odezvy &apos;%1&apos; musí obsahovat neobvyklý počet bodů!</translation>
+        <translation>Záznam s údaji o odpovědi &apos;%1&apos; musí obsahovat lichý počet bodů!</translation>
     </message>
     <message>
         <location filename="src/analysis/Convolution.cpp" line="112"/>
         <source>Could not allocate memory, operation aborted!</source>
-        <translation>Paměť nelze přidělit, operace zrušena!</translation>
+        <translation>Nepodařilo se přidělit dostatek paměti. Operace zrušena!</translation>
     </message>
     <message>
         <location filename="src/analysis/Convolution.cpp" line="151"/>
@@ -6252,12 +6253,12 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/analysis/Correlation.cpp" line="63"/>
         <source>The data set %1 does not exist!</source>
-        <translation>Sada s daty  %1 neexistuje!</translation>
+        <translation>Záznam s údaji %1 neexistuje!</translation>
     </message>
     <message>
         <location filename="src/analysis/Correlation.cpp" line="133"/>
         <source>Error in GSL forward FFT operation!</source>
-        <translation>Chyba v GSL pokročilé operaci FFT!</translation>
+        <translation>Chyba v GSL vpřed FFT operaci!</translation>
     </message>
     <message>
         <location filename="src/analysis/Correlation.cpp" line="180"/>
@@ -6275,17 +6276,17 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/plot2D/dialogs/CurveRangeDialog.cpp" line="49"/>
         <source>Data set: </source>
-        <translation>Soubor s daty:</translation>
+        <translation>Záznam s údaji:</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/CurveRangeDialog.cpp" line="54"/>
         <source>From row number</source>
-        <translation>Z čísla řádku</translation>
+        <translation>Od řádku s číslem</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/CurveRangeDialog.cpp" line="59"/>
         <source>To row number</source>
-        <translation>K číslu řádku</translation>
+        <translation>Po řádek s číslem</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/CurveRangeDialog.cpp" line="65"/>
@@ -6328,22 +6329,22 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/plot2D/dialogs/CurvesDialog.cpp" line="70"/>
         <source> Vertical drop lines</source>
-        <translation> Svisle klesající čáry</translation>
+        <translation> Svislé čáry</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/CurvesDialog.cpp" line="71"/>
         <source> Spline</source>
-        <translation> Tvárné křivítko</translation>
+        <translation> Zub</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/CurvesDialog.cpp" line="72"/>
         <source> Vertical steps</source>
-        <translation> Svislé stupně</translation>
+        <translation> Svislé kroky</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/CurvesDialog.cpp" line="73"/>
         <source> Horizontal steps</source>
-        <translation> Vodorovné stupně</translation>
+        <translation> Vodorovné kroky</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/CurvesDialog.cpp" line="74"/>
@@ -6353,12 +6354,12 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/plot2D/dialogs/CurvesDialog.cpp" line="75"/>
         <source> Vertical Bars</source>
-        <translation> Svislé tyče</translation>
+        <translation> Svislé pruhy</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/CurvesDialog.cpp" line="76"/>
         <source> Horizontal Bars</source>
-        <translation> Vodorovné tyče</translation>
+        <translation> Vodorovné pruhy</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/CurvesDialog.cpp" line="77"/>
@@ -6368,7 +6369,7 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/plot2D/dialogs/CurvesDialog.cpp" line="81"/>
         <source>Contour - Color Fill</source>
-        <translation>Obrysy - Barevná výplň</translation>
+        <translation>Obrys - Barevná výplň</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/CurvesDialog.cpp" line="82"/>
@@ -6378,7 +6379,7 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/plot2D/dialogs/CurvesDialog.cpp" line="83"/>
         <source>Gray Scale Map</source>
-        <translation>Zobrazení odstínů šedi</translation>
+        <translation>Zobrazení povrchu v odstínech šedi</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/CurvesDialog.cpp" line="84"/>
@@ -6398,7 +6399,7 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/plot2D/dialogs/CurvesDialog.cpp" line="116"/>
         <source>&amp;Plot Associations...</source>
-        <translation>&amp;Sdružení nákresu...</translation>
+        <translation>&amp;Přiřazení nákresu...</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/CurvesDialog.cpp" line="120"/>
@@ -6676,7 +6677,7 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/core/CustomActionDialog.cpp" line="592"/>
         <source>There&apos;s already a menu item with this title, please choose another title!</source>
-        <translation type="unfinished"></translation>
+        <translation>Položka menu, která má shodný název, již existuje. Vyberte, prosím, jiný název!</translation>
     </message>
 </context>
 <context>
@@ -6684,12 +6685,12 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/plot2D/DataPickerTool.cpp" line="73"/>
         <source>Click on plot or move cursor to display coordinates!</source>
-        <translation>Klepněte na nákres nebo pohněte kurzorem pro zobrazení souřadnic!</translation>
+        <translation>Klepněte na nákres nebo pohněte ukazovátkem pro zobrazení souřadnic!</translation>
     </message>
     <message>
         <location filename="src/plot2D/DataPickerTool.cpp" line="76"/>
         <source>Please, click on plot and move cursor!</source>
-        <translation>Klepněte, prosím, na nákres a pohněte kurzorem!</translation>
+        <translation>Klepněte, prosím, na nákres a pohněte ukazovátkem!</translation>
     </message>
     <message>
         <location filename="src/plot2D/DataPickerTool.cpp" line="79"/>
@@ -6699,12 +6700,12 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/plot2D/DataPickerTool.cpp" line="330"/>
         <source>QtiPlot - Remove point error</source>
-        <translation>QtiPlot - Chyba při odstranění souboru</translation>
+        <translation>QtiPlot - Chyba při odstranění bodů</translation>
     </message>
     <message>
         <location filename="src/plot2D/DataPickerTool.cpp" line="331"/>
         <source>Sorry, but removing points of a function is not possible.</source>
-        <translation>Promiňte, ale odstranění bodů z funkce není možné.</translation>
+        <translation>Promiňte, ale odstranění bodů funkce není možné.</translation>
     </message>
     <message>
         <location filename="src/plot2D/DataPickerTool.cpp" line="405"/>
@@ -6724,7 +6725,7 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/plot2D/DataPickerTool.cpp" line="359"/>
         <source>Sorry, but moving points of a function is not possible.</source>
-        <translation>Promiňte, ale přesun bodů z funkce není možný.</translation>
+        <translation>Promiňte, ale přesun bodů funkce není možný.</translation>
     </message>
     <message>
         <location filename="src/plot2D/DataPickerTool.cpp" line="372"/>
@@ -6737,7 +6738,7 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/core/DataSetDialog.cpp" line="45"/>
         <source>QtiPlot - Select data set</source>
-        <translation>QtiPlot - Vybrat sadu s daty</translation>
+        <translation>QtiPlot - Vybrat záznam s údaji</translation>
     </message>
     <message>
         <location filename="src/core/DataSetDialog.cpp" line="61"/>
@@ -6755,7 +6756,7 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/analysis/Convolution.cpp" line="227"/>
         <source>Deconvolution</source>
-        <translation>Rozvinutí</translation>
+        <translation>Rozložení</translation>
     </message>
 </context>
 <context>
@@ -6769,7 +6770,7 @@ Dají se použít následující zvláštní kódy:
         <location filename="src/analysis/Differentiation.cpp" line="84"/>
         <source>of</source>
         <comment>Derivative of</comment>
-        <translation> </translation>
+        <translation>z</translation>
     </message>
 </context>
 <context>
@@ -7085,82 +7086,82 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="153"/>
         <source>MathTran (http://www.mathtran.org/)</source>
-        <translation type="unfinished"></translation>
+        <translation>MathTran (http://www.mathtran.org/)</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="154"/>
         <source>locally installed</source>
-        <translation type="unfinished"></translation>
+        <translation>instalováno místně</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="159"/>
         <source>LaTeX Compiler</source>
-        <translation type="unfinished"></translation>
+        <translation>LaTeXový překladač</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="1223"/>
         <source>Compile process ended</source>
-        <translation type="unfinished"></translation>
+        <translation>Proces překladu dokončen</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="1224"/>
         <source>Compiling process ended with exit code: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Proces překladu skončil s kódem ukončení: %1</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="1261"/>
         <source>LaTeX compile process</source>
-        <translation type="unfinished"></translation>
+        <translation>LaTeXový překladový proces</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="1263"/>
         <source>dvipng process</source>
-        <translation type="unfinished"></translation>
+        <translation>dvipng proces</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="1272"/>
         <source>failed to start!</source>
-        <translation type="unfinished"></translation>
+        <translation>nepodařilo se spustit!</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="1270"/>
         <source>Please set the correct path to the compiler in the preferences dialog!</source>
-        <translation type="unfinished"></translation>
+        <translation>Nastavte, prosím, v dialogu nastavení správnou cestu k překladači!</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="1273"/>
         <source>Please verify that you have dvipng installed in the same folder as your LaTeX compiler!</source>
-        <translation type="unfinished"></translation>
+        <translation>Ověřte, prosím, že máte nainstalován dvipng v té samé složce jako svůj LaTeXový překladač!</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="1277"/>
         <source>crashed</source>
-        <translation type="unfinished"></translation>
+        <translation>spadlo</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="1281"/>
         <source>timedout</source>
-        <translation type="unfinished"></translation>
+        <translation>vypršelo</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="1285"/>
         <source>write error</source>
-        <translation type="unfinished"></translation>
+        <translation>chyba zápisu</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="1289"/>
         <source>read error</source>
-        <translation type="unfinished"></translation>
+        <translation>chyba čtení</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="1293"/>
         <source>unknown error</source>
-        <translation type="unfinished"></translation>
+        <translation>neznámá chyba</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="1306"/>
         <source>Compile error</source>
-        <translation type="unfinished"></translation>
+        <translation>Chyba překladu</translation>
     </message>
 </context>
 <context>
@@ -7168,17 +7169,17 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/plot2D/dialogs/ErrDialog.cpp" line="195"/>
         <source>Source of errors</source>
-        <translation>Zdroj chyb</translation>
+        <translation>Chybové údaje</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/ErrDialog.cpp" line="191"/>
         <source>QtiPlot - Error Bars</source>
-        <translation>QtiPlot - Tabulky s chybami</translation>
+        <translation>QtiPlot - Pruhy s chybami</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/ErrDialog.cpp" line="192"/>
         <source>&amp;X Error Bars</source>
-        <translation>Tabulky s chybami u &amp;x</translation>
+        <translation>Pruhy s chybami pro &amp;X</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/ErrDialog.cpp" line="193"/>
@@ -7188,22 +7189,22 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/plot2D/dialogs/ErrDialog.cpp" line="194"/>
         <source>Add Error Bars to</source>
-        <translation>Přidat tabulky s chybami k</translation>
+        <translation>Pruhy s chybami přidat k</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/ErrDialog.cpp" line="196"/>
         <source>Percent of data (%)</source>
-        <translation>Procento dat (%)</translation>
+        <translation>Procento údajů (%)</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/ErrDialog.cpp" line="197"/>
         <source>Standard Deviation of Data</source>
-        <translation>Obvyklá odchylka v datech</translation>
+        <translation>Obvyklá odchylka v údajích</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/ErrDialog.cpp" line="198"/>
         <source>&amp;Y Error Bars</source>
-        <translation>Tabulky s chybami u &amp;y</translation>
+        <translation>Pruhy s chybami pro &amp;Y</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/ErrDialog.cpp" line="199"/>
@@ -7213,7 +7214,7 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/plot2D/dialogs/ErrDialog.cpp" line="200"/>
         <source>Existing column</source>
-        <translation>Stávající</translation>
+        <translation>Stávající sloupec</translation>
     </message>
 </context>
 <context>
@@ -7221,12 +7222,12 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/analysis/dialogs/ExpDecayDialog.cpp" line="48"/>
         <source>QtiPlot - Verify initial guesses</source>
-        <translation>QtiPlot - Ověřit počáteční předpoklady</translation>
+        <translation>QtiPlot - Ověřit počáteční hodnoty</translation>
     </message>
     <message>
         <location filename="src/analysis/dialogs/ExpDecayDialog.cpp" line="57"/>
         <source>Exponential Fit of</source>
-        <translation>Exponenciální uchycení</translation>
+        <translation>Exponenciální přizpůsobení</translation>
     </message>
     <message>
         <location filename="src/analysis/dialogs/ExpDecayDialog.cpp" line="64"/>
@@ -7236,32 +7237,32 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/analysis/dialogs/ExpDecayDialog.cpp" line="66"/>
         <source>Decay time</source>
-        <translation>Čas rozpadu radioaktivní látky</translation>
+        <translation>Čas rozpadu</translation>
     </message>
     <message>
         <location filename="src/analysis/dialogs/ExpDecayDialog.cpp" line="68"/>
         <source>First decay time (t1)</source>
-        <translation>První čas rozpadu radioaktivní látky (t1)</translation>
+        <translation>První čas rozpadu (t1)</translation>
     </message>
     <message>
         <location filename="src/analysis/dialogs/ExpDecayDialog.cpp" line="78"/>
         <source>Second decay time (t2)</source>
-        <translation>Druhý čas rozpadu radioaktivní látky (t2)</translation>
+        <translation>Druhý čas rozpadu (t2)</translation>
     </message>
     <message>
         <location filename="src/analysis/dialogs/ExpDecayDialog.cpp" line="86"/>
         <source>Third decay time (t3)</source>
-        <translation>Třetí čas rozpadu radioaktivní látky (t3)</translation>
+        <translation>Třetí čas rozpadu (t3)</translation>
     </message>
     <message>
         <location filename="src/analysis/dialogs/ExpDecayDialog.cpp" line="102"/>
         <source>Amplitude</source>
-        <translation>Rozkmit</translation>
+        <translation>Rozkmit (amplituda)</translation>
     </message>
     <message>
         <location filename="src/analysis/dialogs/ExpDecayDialog.cpp" line="110"/>
         <source>Y Offset</source>
-        <translation>y vyrovnání</translation>
+        <translation>Posunutí Y</translation>
     </message>
     <message>
         <location filename="src/analysis/dialogs/ExpDecayDialog.cpp" line="117"/>
@@ -7276,7 +7277,7 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/analysis/dialogs/ExpDecayDialog.cpp" line="134"/>
         <source>&amp;Fit</source>
-        <translation>&amp;Uchytit</translation>
+        <translation>&amp;Přizpůsobení</translation>
     </message>
     <message>
         <location filename="src/analysis/dialogs/ExpDecayDialog.cpp" line="137"/>
@@ -7319,22 +7320,22 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/analysis/ExponentialFit.cpp" line="89"/>
         <source>offset</source>
-        <translation>vyrovnání</translation>
+        <translation>posun</translation>
     </message>
     <message>
         <location filename="src/analysis/ExponentialFit.cpp" line="86"/>
         <source>ExpDecay1</source>
-        <translation>Exp. čas rozpadu radioaktivní látky 1</translation>
+        <translation>Exp. rozpad 1</translation>
     </message>
     <message>
         <location filename="src/analysis/ExponentialFit.cpp" line="87"/>
         <source>Exponential decay</source>
-        <translation>Exponenciální čas rozpadu radioaktivní látky</translation>
+        <translation>Exponenciální rozpad</translation>
     </message>
     <message>
         <location filename="src/analysis/ExponentialFit.cpp" line="89"/>
         <source>e-folding time</source>
-        <translation>e-čas skládání</translation>
+        <translation>čas e-skládání</translation>
     </message>
 </context>
 <context>
@@ -7342,7 +7343,7 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/table/ExportDialog.cpp" line="42"/>
         <source>QtiPlot - Export ASCII</source>
-        <translation>QtiPlot - Export ASCII</translation>
+        <translation>QtiPlot - Vyvést jako soubor ASCII</translation>
     </message>
     <message>
         <location filename="src/table/ExportDialog.cpp" line="48"/>
@@ -7357,32 +7358,31 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/table/ExportDialog.cpp" line="61"/>
         <source>Separator</source>
-        <translation>Oddělovač</translation>
+        <translation>Oddělovač sloupců</translation>
     </message>
     <message>
         <location filename="src/table/ExportDialog.cpp" line="200"/>
         <source>TAB</source>
-        <translation>TABULÁTOR (TAB)</translation>
+        <translation>Tabulátor (TAB)</translation>
     </message>
     <message>
         <location filename="src/table/ExportDialog.cpp" line="201"/>
         <source>SPACE</source>
-        <translation>MEZERNÍK (SPACE)</translation>
+        <translation>Mezerník (SPACE)</translation>
     </message>
     <message>
         <location filename="src/table/ExportDialog.cpp" line="131"/>
         <source>The column separator can be customized. The following special codes can be used:
 \t for a TAB character 
 \s for a SPACE</source>
-        <translation>Oddělovač sloupců může být uživatelem upraven.
-Dají se použít následující zvláštní kódy:
+        <translation>Oddělovač sloupců může být uživatelem upraven. Dají se použít následující zvláštní kódy:
 \t pro znak TAB (tabulátor)
 \s pro SPACE (mezerník)</translation>
     </message>
     <message>
         <location filename="src/table/ExportDialog.cpp" line="155"/>
         <source>The separator must not contain the following characters: 0-9eE.+-</source>
-        <translation>Oddělovač nesmí obsahovat následující znaky: 0-9eE.+-</translation>
+        <translation>Oddělovač sloupců nesmí obsahovat následující znaky: 0-9eE.+-</translation>
     </message>
     <message>
         <location filename="src/table/ExportDialog.cpp" line="86"/>
@@ -7397,7 +7397,7 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/table/ExportDialog.cpp" line="92"/>
         <source>Export &amp;Selection</source>
-        <translation>Exportovat &amp;výběr</translation>
+        <translation>Vyvést &amp;výběr</translation>
     </message>
     <message>
         <location filename="src/table/ExportDialog.cpp" line="102"/>
@@ -7422,7 +7422,7 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/table/ExportDialog.cpp" line="154"/>
         <source>QtiPlot - Import options error</source>
-        <translation>QtiPlot - chyba voleb zavádění</translation>
+        <translation>QtiPlot - Chyba ve volbách pro zavádění</translation>
     </message>
 </context>
 <context>
@@ -7430,7 +7430,7 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/lib/src/ExtensibleFileDialog.cpp" line="40"/>
         <source>&lt;&lt; &amp;Advanced</source>
-        <translation>&lt;&lt; &amp;Pokročilé volby</translation>
+        <translation>&lt;&lt; &amp;Rozšířené volby</translation>
     </message>
 </context>
 <context>
@@ -7458,7 +7458,7 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/analysis/FFT.cpp" line="188"/>
         <source>Inverse</source>
-        <translation>Převrácený</translation>
+        <translation>Převrácená hodnota</translation>
     </message>
     <message>
         <location filename="src/analysis/FFT.cpp" line="264"/>
@@ -7473,7 +7473,7 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/analysis/FFT.cpp" line="222"/>
         <source>Imaginary</source>
-        <translation>Pomyslný</translation>
+        <translation>Pomyslná část</translation>
     </message>
     <message>
         <location filename="src/analysis/FFT.cpp" line="267"/>
@@ -7511,7 +7511,7 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/analysis/dialogs/FFTDialog.cpp" line="63"/>
         <source>&amp;Inverse</source>
-        <translation>&amp;Převrácený</translation>
+        <translation>&amp;Převracet</translation>
     </message>
     <message>
         <location filename="src/analysis/dialogs/FFTDialog.cpp" line="75"/>
@@ -7526,17 +7526,17 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/analysis/dialogs/FFTDialog.cpp" line="91"/>
         <source>Real</source>
-        <translation>Skutečný</translation>
+        <translation>Skutečná část</translation>
     </message>
     <message>
         <location filename="src/analysis/dialogs/FFTDialog.cpp" line="95"/>
         <source>Imaginary</source>
-        <translation>Pomyslný</translation>
+        <translation>Pomyslná část</translation>
     </message>
     <message>
         <location filename="src/analysis/dialogs/FFTDialog.cpp" line="104"/>
         <source>Sampling Interval</source>
-        <translation>Vzorkovací rozestup</translation>
+        <translation>Vzorkovací rozmezí</translation>
     </message>
     <message>
         <location filename="src/analysis/dialogs/FFTDialog.cpp" line="111"/>
@@ -7586,7 +7586,7 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/analysis/dialogs/FFTDialog.cpp" line="296"/>
         <source>Real part of the FFT transform of</source>
-        <translation>Skutečná část FFT zobrazení</translation>
+        <translation>Skutečná část FFT přeměnění</translation>
     </message>
     <message>
         <location filename="src/analysis/dialogs/FFTDialog.cpp" line="299"/>
@@ -7596,7 +7596,7 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/analysis/dialogs/FFTDialog.cpp" line="301"/>
         <source>Imaginary part of the FFT transform of</source>
-        <translation>Pomyslná část FFT zobrazení</translation>
+        <translation>Pomyslná část FFT přeměnění</translation>
     </message>
     <message>
         <location filename="src/analysis/dialogs/FFTDialog.cpp" line="304"/>
@@ -7606,7 +7606,7 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/analysis/dialogs/FFTDialog.cpp" line="306"/>
         <source>Amplitudes of the FFT transform of</source>
-        <translation>Rozkmity FFT zobrazení</translation>
+        <translation>Rozkmity FFT přeměnění</translation>
     </message>
 </context>
 <context>
@@ -7634,12 +7634,12 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/analysis/FFTFilter.cpp" line="74"/>
         <source>Unknown filter type. Valid values are: 1 - Low pass, 2 - High Pass, 3 - Band Pass, 4 - Band block.</source>
-        <translation>Neznámý druh filtru: Platnými hodnotami jsou: 1 - s nízkým průchodem, 2 - s vysokým průchodem, 3 - s pásmovým průchodem, 4 - s pásmovým blokem.</translation>
+        <translation>Neznámý druh filtru: Platnými hodnotami jsou: 1 - s nízkým průchodem, 2 - s vysokým průchodem, 3 - s pásmovým průchodem, 4 - s pásmovou závorou.</translation>
     </message>
     <message>
         <location filename="src/analysis/FFTFilter.cpp" line="96"/>
         <source>Please enter different values for the band limits.</source>
-        <translation>Zadejte, prosím, jiné hodnoty pro hranice pásma.</translation>
+        <translation>Zadejte, prosím, různé hodnoty pro hranice pásma.</translation>
     </message>
     <message>
         <location filename="src/analysis/FFTFilter.cpp" line="134"/>
@@ -7669,7 +7669,7 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/analysis/FFTFilter.cpp" line="173"/>
         <source>Band Block FFT Filter</source>
-        <translation>FFT filtr s pásmovým blokem</translation>
+        <translation>FFT filtr s pásmovou závorou</translation>
     </message>
 </context>
 <context>
@@ -7722,7 +7722,7 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/analysis/Filter.cpp" line="211"/>
         <source>You didn&apos;t specify a valid data set for this operation!</source>
-        <translation>Pro tuto operaci jste nestanovil platný soubor dat!</translation>
+        <translation>Pro tuto operaci jste nestanovil platný záznam s údaji!</translation>
     </message>
     <message>
         <location filename="src/analysis/Filter.cpp" line="355"/>
@@ -7732,7 +7732,7 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/analysis/Filter.cpp" line="389"/>
         <source>Plot</source>
-        <translation>Nakreslit</translation>
+        <translation>Nákres</translation>
     </message>
     <message>
         <location filename="src/analysis/Filter.cpp" line="490"/>
@@ -7760,27 +7760,27 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/analysis/dialogs/FilterDialog.cpp" line="58"/>
         <source>Frequency cutoff (Hz)</source>
-        <translation>Odříznutí kmitočetu (Hz)</translation>
+        <translation>Hodnota náběhu kmitočtu (Hz)</translation>
     </message>
     <message>
         <location filename="src/analysis/dialogs/FilterDialog.cpp" line="60"/>
         <source>Low Frequency (Hz)</source>
-        <translation>Nízký kmitočet (Hz)</translation>
+        <translation>Spodní kmitočet (Hz)</translation>
     </message>
     <message>
         <location filename="src/analysis/dialogs/FilterDialog.cpp" line="74"/>
         <source>High Frequency (Hz)</source>
-        <translation>Vysoký kmitočet (Hz)</translation>
+        <translation>Horní kmitočet (Hz)</translation>
     </message>
     <message>
         <location filename="src/analysis/dialogs/FilterDialog.cpp" line="84"/>
         <source>Add DC Offset</source>
-        <translation>Přidat DC vyrovnání</translation>
+        <translation>Přidat DC posunutí</translation>
     </message>
     <message>
         <location filename="src/analysis/dialogs/FilterDialog.cpp" line="86"/>
         <source>Substract DC Offset</source>
-        <translation>Odečíst DC vyrovnání</translation>
+        <translation>Stáhnout DC posunutí</translation>
     </message>
     <message>
         <location filename="src/analysis/dialogs/FilterDialog.cpp" line="95"/>
@@ -7800,12 +7800,12 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/analysis/dialogs/FilterDialog.cpp" line="125"/>
         <source>QtiPlot - Frequency input error</source>
-        <translation>QtiPlot - Chyba u vstupu kmitočtu</translation>
+        <translation>QtiPlot - Chyba při zadání kmitočtu</translation>
     </message>
     <message>
         <location filename="src/analysis/dialogs/FilterDialog.cpp" line="126"/>
         <source>Please enter frequency limits that satisfy: Low &lt; High !</source>
-        <translation>Zadejte, prosím, hranice kmitočtu, které vyhoví: Nízký &lt; Vysoký!</translation>
+        <translation>Zadejte, prosím, hranice kmitočtu, které vyhoví: Spodní &lt; Horní!</translation>
     </message>
 </context>
 <context>
@@ -7838,7 +7838,7 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/core/FindDialog.cpp" line="76"/>
         <source>Window &amp;Labels</source>
-        <translation>Štítky u &amp;oken</translation>
+        <translation>Popisy &amp;oken</translation>
     </message>
     <message>
         <location filename="src/core/FindDialog.cpp" line="80"/>
@@ -7848,12 +7848,12 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/core/FindDialog.cpp" line="86"/>
         <source>Case &amp;Sensitive</source>
-        <translation>Rozlišující &amp;velká a malá písmena</translation>
+        <translation>Rozlišující psaní &amp;velkých a malých písmen</translation>
     </message>
     <message>
         <location filename="src/core/FindDialog.cpp" line="90"/>
         <source>&amp;Partial Match Allowed</source>
-        <translation>&amp;Povolena částečná shoda</translation>
+        <translation>Hledat také &amp;částečnou shodu</translation>
     </message>
     <message>
         <location filename="src/core/FindDialog.cpp" line="94"/>
@@ -7954,7 +7954,7 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/analysis/Fit.cpp" line="296"/>
         <source>Plot</source>
-        <translation>Nakreslit</translation>
+        <translation>Nákres</translation>
     </message>
     <message>
         <location filename="src/analysis/Fit.cpp" line="298"/>
@@ -7964,32 +7964,32 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/analysis/Fit.cpp" line="302"/>
         <source>of dataset</source>
-        <translation>souboru s daty</translation>
+        <translation>záznamu s údaji</translation>
     </message>
     <message>
         <location filename="src/analysis/Fit.cpp" line="304"/>
         <source>using function</source>
-        <translation>použití funkce</translation>
+        <translation>za použití funkce</translation>
     </message>
     <message>
         <location filename="src/analysis/Fit.cpp" line="308"/>
         <source>Weighting Method</source>
-        <translation>Způsob statistického vážení</translation>
+        <translation>Způsob zvážení</translation>
     </message>
     <message>
         <location filename="src/analysis/Fit.cpp" line="312"/>
         <source>No weighting</source>
-        <translation>Žádné statistické vážení</translation>
+        <translation>Žádné zvážení</translation>
     </message>
     <message>
         <location filename="src/analysis/Fit.cpp" line="315"/>
         <source>Instrumental</source>
-        <translation>Nápomocný</translation>
+        <translation>Nástrojový</translation>
     </message>
     <message>
         <location filename="src/analysis/Fit.cpp" line="315"/>
         <source>using error bars dataset</source>
-        <translation>za použití souboru dat chybových lišt</translation>
+        <translation>za použití souboru dat chybových pruhů</translation>
     </message>
     <message>
         <location filename="src/analysis/Fit.cpp" line="318"/>
@@ -7999,12 +7999,12 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/analysis/Fit.cpp" line="321"/>
         <source>Arbitrary Dataset</source>
-        <translation>Libovolný soubor dat</translation>
+        <translation>Libovolný záznam s údaji</translation>
     </message>
     <message>
         <location filename="src/analysis/Fit.cpp" line="324"/>
         <source>Direct Weighting using Dataset</source>
-        <translation>Přímé statistické vážení za použití souboru dat</translation>
+        <translation>Přímé zvážení za použití záznamu s údaji</translation>
     </message>
     <message>
         <location filename="src/analysis/Fit.cpp" line="333"/>
@@ -8014,17 +8014,17 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/analysis/Fit.cpp" line="335"/>
         <source>Unscaled Levenberg-Marquardt</source>
-        <translation>Nevážené Levenberg-Marquardt</translation>
+        <translation>Levenberg-Marquardt nezařazený do stupnice</translation>
     </message>
     <message>
         <location filename="src/analysis/Fit.cpp" line="337"/>
         <source>Scaled Levenberg-Marquardt</source>
-        <translation>Vážené Levenberg-Marquardt</translation>
+        <translation>Levenberg-Marquardt zařazený do stupnice</translation>
     </message>
     <message>
         <location filename="src/analysis/Fit.cpp" line="339"/>
         <source> algorithm with tolerance = </source>
-        <translation>algoritmus s povolenou odchylkou = </translation>
+        <translation> Algoritmus s povolenou odchylkou = </translation>
     </message>
     <message>
         <location filename="src/analysis/Fit.cpp" line="342"/>
@@ -8044,7 +8044,7 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/analysis/Fit.cpp" line="357"/>
         <source>Adjusted R^2</source>
-        <translation>Nastavený R^2</translation>
+        <translation>Upravený R^2</translation>
     </message>
     <message>
         <location filename="src/analysis/Fit.cpp" line="358"/>
@@ -8069,7 +8069,7 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/analysis/Fit.cpp" line="403"/>
         <source>Dataset</source>
-        <translation>Soubor dat</translation>
+        <translation>Záznam s údaji</translation>
     </message>
     <message>
         <location filename="src/analysis/Fit.cpp" line="404"/>
@@ -8084,17 +8084,17 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/analysis/Fit.cpp" line="450"/>
         <source>You cannot use the instrumental weighting method.</source>
-        <translation>Nemůžete použít nástrojový způsob statistického vážení.</translation>
+        <translation>Nemůžete použít nástrojový způsob statistického zvážení.</translation>
     </message>
     <message>
         <location filename="src/analysis/Fit.cpp" line="469"/>
         <source>The curve %1 has no associated Y error bars. You cannot use instrumental weighting method.</source>
-        <translation>Křivka %1 není spojena s žádnými Y chybovými pruhy. Nemůžete použít nástrojový způsob statistického vážení.</translation>
+        <translation>Křivka %1 není spojena s žádnými Y chybovými pruhy. Nemůžete použít nástrojový způsob statistického zvážení.</translation>
     </message>
     <message>
         <location filename="src/analysis/Fit.cpp" line="527"/>
         <source>The column %1 has less points than the fitted data set. Please choose another column!.</source>
-        <translation>Sloupec %1 má méně bodů než umístěný soubor dat. Vyberte, prosím, jiný sloupec!</translation>
+        <translation>Sloupec %1 má méně bodů než záznam s údaji o přizpůsobení. Vyberte, prosím, jiný sloupec!</translation>
     </message>
     <message>
         <location filename="src/analysis/Fit.cpp" line="552"/>
@@ -8114,17 +8114,17 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/analysis/Fit.cpp" line="918"/>
         <source>QtiPlot - Fit Error</source>
-        <translation>QtiPlot - Chyba při umístění</translation>
+        <translation>QtiPlot - Chyba při přizpůsobení</translation>
     </message>
     <message>
         <location filename="src/analysis/Fit.cpp" line="805"/>
         <source>Please perform a fit first!</source>
-        <translation>Proveďte, prosím, nejprve uchycení!</translation>
+        <translation>Proveďte, prosím, nejprve přizpůsobení!</translation>
     </message>
     <message>
         <location filename="src/analysis/Fit.cpp" line="653"/>
         <source>FitResiduals</source>
-        <translation>UmístitZbytky</translation>
+        <translation>Zbytky přizpůsobení</translation>
     </message>
     <message>
         <location filename="src/analysis/Fit.cpp" line="653"/>
@@ -8149,7 +8149,7 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/analysis/Fit.cpp" line="840"/>
         <source>FitStats</source>
-        <translation>UmístitStatistiky</translation>
+        <translation>Statistiky přizpůsobení</translation>
     </message>
     <message>
         <location filename="src/analysis/Fit.cpp" line="721"/>
@@ -8209,22 +8209,22 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/analysis/Fit.cpp" line="904"/>
         <source>You didn&apos;t specify a valid data set for this fit operation. Operation aborted!</source>
-        <translation>Nestanovil jste platný soubor dat pro operaci umístění. Operace zrušena!</translation>
+        <translation>Nestanovil jste platný záznam s údaji pro operaci přizpůsobení. Operace zrušena!</translation>
     </message>
     <message>
         <location filename="src/analysis/Fit.cpp" line="909"/>
         <source>There are no parameters specified for this fit operation. Operation aborted!</source>
-        <translation>Pro tuto operaci umístění nejsou stanoveny žádné parametry. Operace zrušena!</translation>
+        <translation>Pro tuto operaci přizpůsobení nejsou stanoveny žádné parametry. Operace zrušena!</translation>
     </message>
     <message>
         <location filename="src/analysis/Fit.cpp" line="914"/>
         <source>You need at least %1 data points for this fit operation. Operation aborted!</source>
-        <translation>Pro tuto operaci umístění potřebujete alespoň %1 datových bodů! Operace zrušena!</translation>
+        <translation>Pro tuto operaci přizpůsobení potřebujete alespoň %1 datových bodů! Operace zrušena!</translation>
     </message>
     <message>
         <location filename="src/analysis/Fit.cpp" line="919"/>
         <source>You must specify a valid fit function first. Operation aborted!</source>
-        <translation>Nejprve musíte stanovit platnou úlohu umístění. Operace zrušena!</translation>
+        <translation>Nejprve musíte stanovit platnou funkci přizpůsobení. Operace zrušena!</translation>
     </message>
     <message>
         <location filename="src/analysis/Fit.cpp" line="988"/>
@@ -8239,7 +8239,7 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/analysis/Fit.cpp" line="1002"/>
         <source>Fit</source>
-        <translation>Umístit</translation>
+        <translation>Přizpůsobení</translation>
     </message>
     <message>
         <location filename="src/analysis/Fit.cpp" line="1035"/>
@@ -8259,7 +8259,7 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/analysis/Fit.cpp" line="1074"/>
         <source>QtiPlot Fit Model</source>
-        <translation>QtiPlot - Model umístění</translation>
+        <translation>QtiPlot - Model přizpůsobení</translation>
     </message>
     <message>
         <location filename="src/analysis/Fit.cpp" line="1076"/>
@@ -8274,7 +8274,7 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/analysis/dialogs/FitDialog.cpp" line="95"/>
         <source>QtiPlot - Fit Wizard</source>
-        <translation>QtiPlot - Průvodce umístěním</translation>
+        <translation>QtiPlot - Průvodce přizpůsobením</translation>
     </message>
     <message>
         <location filename="src/analysis/dialogs/FitDialog.cpp" line="147"/>
@@ -8289,7 +8289,7 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/analysis/dialogs/FitDialog.cpp" line="162"/>
         <source>Initial guesses</source>
-        <translation>Počáteční odhady</translation>
+        <translation>Počáteční odhadní hodnoty</translation>
     </message>
     <message>
         <location filename="src/analysis/dialogs/FitDialog.cpp" line="355"/>
@@ -8344,7 +8344,7 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/analysis/dialogs/FitDialog.cpp" line="198"/>
         <source>Nelder-Mead Simplex</source>
-        <translation></translation>
+        <translation>Simplexní Nelder-Mead</translation>
     </message>
     <message>
         <location filename="src/analysis/dialogs/FitDialog.cpp" line="201"/>
@@ -8369,17 +8369,17 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/analysis/dialogs/FitDialog.cpp" line="236"/>
         <source>Tolerance</source>
-        <translation>Tolerance</translation>
+        <translation>Dovolená odchylka</translation>
     </message>
     <message>
         <location filename="src/analysis/dialogs/FitDialog.cpp" line="254"/>
         <source>Weighting Method</source>
-        <translation>Způsob statistického vážení</translation>
+        <translation>Způsob zvážení</translation>
     </message>
     <message>
         <location filename="src/analysis/dialogs/FitDialog.cpp" line="256"/>
         <source>No weighting</source>
-        <translation>Žádné statistické vážení</translation>
+        <translation>Žádné zvážení</translation>
     </message>
     <message>
         <location filename="src/analysis/dialogs/FitDialog.cpp" line="257"/>
@@ -8394,27 +8394,27 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/analysis/dialogs/FitDialog.cpp" line="259"/>
         <source>Arbitrary Dataset</source>
-        <translation>Libovolný soubor dat</translation>
+        <translation>Libovolný záznam s údaji</translation>
     </message>
     <message>
         <location filename="src/analysis/dialogs/FitDialog.cpp" line="260"/>
         <source>Direct Weighting</source>
-        <translation>Přímé statistické vážení</translation>
+        <translation>Přímé statistické zvážení</translation>
     </message>
     <message>
         <location filename="src/analysis/dialogs/FitDialog.cpp" line="273"/>
         <source>&lt;&lt; &amp;Edit function</source>
-        <translation>&lt;&lt; &amp;Funkce úprav</translation>
+        <translation>&lt;&lt; &amp;Upravit funkci</translation>
     </message>
     <message>
         <location filename="src/analysis/dialogs/FitDialog.cpp" line="275"/>
         <source>&amp;Delete Fit Curves</source>
-        <translation>&amp;Smazat křivky umístění</translation>
+        <translation>&amp;Smazat křivky přizpůsobení</translation>
     </message>
     <message>
         <location filename="src/analysis/dialogs/FitDialog.cpp" line="277"/>
         <source>&amp;Fit</source>
-        <translation>&amp;Umístit</translation>
+        <translation>&amp;Přizpůsobit</translation>
     </message>
     <message>
         <location filename="src/analysis/dialogs/FitDialog.cpp" line="524"/>
@@ -8459,17 +8459,17 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/analysis/dialogs/FitDialog.cpp" line="329"/>
         <source>Fit with &amp;built-in function</source>
-        <translation>Umístit s &amp;funkcí vestavění</translation>
+        <translation>Přizpůsobení s &amp;vestavěnou funkcí</translation>
     </message>
     <message>
         <location filename="src/analysis/dialogs/FitDialog.cpp" line="1086"/>
         <source>Polynomial Order</source>
-        <translation>Mnohočlenný řád</translation>
+        <translation>Řád mnohočlenů</translation>
     </message>
     <message>
         <location filename="src/analysis/dialogs/FitDialog.cpp" line="954"/>
         <source>Choose plug&amp;ins folder...</source>
-        <translation>&amp;Vybrat složku s přídavnými moduly...</translation>
+        <translation>&amp;Vybrat složku pro přídavné moduly...</translation>
     </message>
     <message>
         <location filename="src/analysis/dialogs/FitDialog.cpp" line="352"/>
@@ -8479,7 +8479,7 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/analysis/dialogs/FitDialog.cpp" line="353"/>
         <source>user1</source>
-        <translation>uživatel1</translation>
+        <translation>Uživatel1</translation>
     </message>
     <message>
         <location filename="src/analysis/dialogs/FitDialog.cpp" line="468"/>
@@ -8504,17 +8504,17 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/analysis/dialogs/FitDialog.cpp" line="382"/>
         <source>Rese&amp;t</source>
-        <translation>Obno&amp;vit</translation>
+        <translation>&amp;Znovu nastavit</translation>
     </message>
     <message>
         <location filename="src/analysis/dialogs/FitDialog.cpp" line="386"/>
         <source>&amp;Fit &gt;&gt;</source>
-        <translation>&amp;Umístit &gt;&gt;</translation>
+        <translation>&amp;Přizpůsobit &gt;&gt;</translation>
     </message>
     <message>
         <location filename="src/analysis/dialogs/FitDialog.cpp" line="426"/>
         <source>&amp;Uniform X Function</source>
-        <translation>&amp;Jednotná x funkce</translation>
+        <translation>&amp;Jednotná funkce X</translation>
     </message>
     <message>
         <location filename="src/analysis/dialogs/FitDialog.cpp" line="433"/>
@@ -8524,17 +8524,17 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/analysis/dialogs/FitDialog.cpp" line="449"/>
         <source>Same X as Fitting &amp;Data</source>
-        <translation>Stejné X jako umístění &amp;dat</translation>
+        <translation>Stejné hodnoty X jako &amp;data přizpůsobení</translation>
     </message>
     <message>
         <location filename="src/analysis/dialogs/FitDialog.cpp" line="454"/>
         <source>Generated Fit Curve</source>
-        <translation>Vytvořená křivka umístění</translation>
+        <translation>Vytvořená křivka přizpůsobení</translation>
     </message>
     <message>
         <location filename="src/analysis/dialogs/FitDialog.cpp" line="458"/>
         <source>Significant Digits</source>
-        <translation>Podstatné číslice</translation>
+        <translation>Statisticky významná desetinná místa</translation>
     </message>
     <message>
         <location filename="src/analysis/dialogs/FitDialog.cpp" line="465"/>
@@ -8549,7 +8549,7 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/analysis/dialogs/FitDialog.cpp" line="470"/>
         <source>&amp;One table for all fits</source>
-        <translation>&amp;Jedna tabilka pro všechna umístění</translation>
+        <translation>&amp;Jedna tabulka pro všechna přizpůsobení</translation>
     </message>
     <message>
         <location filename="src/analysis/dialogs/FitDialog.cpp" line="472"/>
@@ -8579,7 +8579,7 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/analysis/dialogs/FitDialog.cpp" line="498"/>
         <source>&amp;Scale Errors with sqrt(Chi^2/doF)</source>
-        <translation>&amp;Chyby měřítka s sqrt(Chi^2/doF)</translation>
+        <translation>&amp;Zařazovat do stupnice hodnoty chyb s (kořenem) sqrt(Chi^2/doF)</translation>
     </message>
     <message>
         <location filename="src/analysis/dialogs/FitDialog.cpp" line="502"/>
@@ -8599,7 +8599,7 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/analysis/dialogs/FitDialog.cpp" line="515"/>
         <source>&lt;&lt; &amp;Fit</source>
-        <translation>&lt;&lt; &amp;Umístit</translation>
+        <translation>&lt;&lt; &amp;Přizpůsobit</translation>
     </message>
     <message>
         <location filename="src/analysis/dialogs/FitDialog.cpp" line="519"/>
@@ -8619,7 +8619,7 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/analysis/dialogs/FitDialog.cpp" line="1657"/>
         <source>Please perform a fit first and try again.</source>
-        <translation>Proveďte, prosím, nejprve umístění a zkuste to znovu!</translation>
+        <translation>Proveďte, prosím, nejprve přizpůsobení a pak to zkuste znovu.</translation>
     </message>
     <message>
         <location filename="src/analysis/dialogs/FitDialog.cpp" line="595"/>
@@ -8629,7 +8629,7 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/analysis/dialogs/FitDialog.cpp" line="1216"/>
         <source>QtiPlot - Input function error</source>
-        <translation>QtiPlot - Chyba vstupní funkce</translation>
+        <translation>QtiPlot - Chyba při zadání funkce</translation>
     </message>
     <message>
         <location filename="src/analysis/dialogs/FitDialog.cpp" line="767"/>
@@ -8659,7 +8659,7 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/analysis/dialogs/FitDialog.cpp" line="1498"/>
         <source>QtiPlot fit model</source>
-        <translation>Model umístění v QtiPlotu</translation>
+        <translation>Model přizpůsobení v QtiPlotu</translation>
     </message>
     <message>
         <location filename="src/analysis/dialogs/FitDialog.cpp" line="1499"/>
@@ -8674,19 +8674,19 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/analysis/dialogs/FitDialog.cpp" line="1500"/>
         <source>Save Fit Model As</source>
-        <translation>Uložit model umístění jako</translation>
+        <translation>Uložit model přizpůsobení jako</translation>
     </message>
     <message>
         <location filename="src/analysis/dialogs/FitDialog.cpp" line="738"/>
         <source>Are you sure you want to remove fit model file:
  %1 ?</source>
-        <translation>Jste si jist, že chcete odstranit soubor s modelem umístění:
+        <translation>Jste si jist, že chcete odstranit soubor s modelem přizpůsobení:
  %1?</translation>
     </message>
     <message>
         <location filename="src/analysis/dialogs/FitDialog.cpp" line="739"/>
         <source>Remove Fit Model</source>
-        <translation>Odstranit model umístění</translation>
+        <translation>Odstranit model přizpůsobení</translation>
     </message>
     <message>
         <location filename="src/analysis/dialogs/FitDialog.cpp" line="935"/>
@@ -8696,27 +8696,27 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/analysis/dialogs/FitDialog.cpp" line="937"/>
         <source>Fit with selected &amp;user function</source>
-        <translation>Umístit s vybranou &amp;uživatelovou funkcí</translation>
+        <translation>Přizpůsobit s &amp;uživatelem stanovenou funkcí</translation>
     </message>
     <message>
         <location filename="src/analysis/dialogs/FitDialog.cpp" line="943"/>
         <source>Fit using &amp;built-in function</source>
-        <translation>Umístit s &amp;pomocí vestavěné funkce</translation>
+        <translation>Přizpůsobit s pomocí &amp;vestavěné funkce</translation>
     </message>
     <message>
         <location filename="src/analysis/dialogs/FitDialog.cpp" line="956"/>
         <source>Fit using &amp;plugin function</source>
-        <translation>Umístit s &amp;pomocí funkce přídavného modulu</translation>
+        <translation>Přizpůsobit s pomocí &amp;funkce přídavného modulu</translation>
     </message>
     <message>
         <location filename="src/analysis/dialogs/FitDialog.cpp" line="980"/>
         <source>Choose the plugins folder</source>
-        <translation>Vybrat složku pro přídavný modul</translation>
+        <translation>Vybrat složku pro přídavné moduly</translation>
     </message>
     <message>
         <location filename="src/analysis/dialogs/FitDialog.cpp" line="992"/>
         <source>Choose the fit models folder</source>
-        <translation>Vybrat složku pro model umístění</translation>
+        <translation>Vybrat složku pro model přizpůsobení</translation>
     </message>
     <message>
         <location filename="src/analysis/dialogs/FitDialog.cpp" line="1410"/>
@@ -8751,12 +8751,12 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/analysis/dialogs/FitDialog.cpp" line="1150"/>
         <source>QtiPlot - Input error</source>
-        <translation>QtiPlot - Chyba vstupu</translation>
+        <translation>QtiPlot - Chyba při zadání</translation>
     </message>
     <message>
         <location filename="src/analysis/dialogs/FitDialog.cpp" line="1151"/>
         <source>Please enter x limits that satisfy: from &lt; end!</source>
-        <translation>Zadejte, prosím, mezní hodnoty pro x, které vyhoví: od &lt; konec!</translation>
+        <translation>Zadejte, prosím, rozsah x, který vyhoví: Začátek &lt; Konec!</translation>
     </message>
     <message>
         <location filename="src/analysis/dialogs/FitDialog.cpp" line="1214"/>
@@ -8905,7 +8905,7 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/plot2D/dialogs/FunctionDialog.cpp" line="66"/>
         <source>Curve type </source>
-        <translation>Druh křivky</translation>
+        <translation>Druh křivky </translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/FunctionDialog.cpp" line="68"/>
@@ -8920,7 +8920,7 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/plot2D/dialogs/FunctionDialog.cpp" line="70"/>
         <source>Polar plot</source>
-        <translation>Pólový nákres</translation>
+        <translation>Nákres s polárními souřadnicemi</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/FunctionDialog.cpp" line="78"/>
@@ -8945,7 +8945,7 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/plot2D/dialogs/FunctionDialog.cpp" line="106"/>
         <source>Constant</source>
-        <translation>Stálá hodnota</translation>
+        <translation>Stálá hodnota (konstanta)</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/FunctionDialog.cpp" line="106"/>
@@ -8990,7 +8990,7 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/plot2D/dialogs/FunctionDialog.cpp" line="194"/>
         <source>Clea&amp;r Function</source>
-        <translation>Vyp&amp;rázdnit funkci</translation>
+        <translation>&amp;Smazat funkci</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/FunctionDialog.cpp" line="196"/>
@@ -9010,42 +9010,42 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/plot2D/dialogs/FunctionDialog.cpp" line="231"/>
         <source>Clear Function</source>
-        <translation>Vyprázdnit funkci</translation>
+        <translation>Smazat funkci</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/FunctionDialog.cpp" line="516"/>
         <source>QtiPlot - Input error</source>
-        <translation>QtiPlot - Chyba vstupu</translation>
+        <translation>QtiPlot - Chyba při zadání</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/FunctionDialog.cpp" line="328"/>
         <source>Please enter x limits that satisfy: from &lt; end!</source>
-        <translation>Zadejte, prosím, mezní hodnoty pro x, které vyhoví: od &lt; konec!</translation>
+        <translation>Zadejte, prosím, rozsah x, který vyhoví: Začátek &lt; Konec!</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/FunctionDialog.cpp" line="557"/>
         <source>QtiPlot - Input function error</source>
-        <translation>QtiPlot - Chyba vstupní funkce</translation>
+        <translation>QtiPlot - Chyba při zadání funkce</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/FunctionDialog.cpp" line="496"/>
         <source>QtiPlot - Start limit error</source>
-        <translation>QtiPlot - Chyba počáteční mezní hodnoty</translation>
+        <translation>QtiPlot - Chyba počáteční hranice</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/FunctionDialog.cpp" line="509"/>
         <source>QtiPlot - End limit error</source>
-        <translation>QtiPlot - Chyba koncové mezní hodnoty</translation>
+        <translation>QtiPlot - Chyba koncové hranice</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/FunctionDialog.cpp" line="517"/>
         <source>Please enter parameter limits that satisfy: from &lt; end!</source>
-        <translation>Zadejte, prosím, mezní hodnoty pro parametr, které vyhoví: Od &lt; Konec!</translation>
+        <translation>Zadejte, prosím, parametrický rozsah, který vyhoví: Začátek &lt; Konec!</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/FunctionDialog.cpp" line="187"/>
         <source>&amp;Add Function</source>
-        <translation type="unfinished"></translation>
+        <translation>Přidat &amp;funkci</translation>
     </message>
 </context>
 <context>
@@ -9058,27 +9058,27 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/analysis/MultiPeakFit.cpp" line="534"/>
         <source>offset</source>
-        <translation>Vyrovnání</translation>
+        <translation>posun</translation>
     </message>
     <message>
         <location filename="src/analysis/MultiPeakFit.cpp" line="534"/>
         <source>amplitude</source>
-        <translation>Rozkmit</translation>
+        <translation>rozkmit</translation>
     </message>
     <message>
         <location filename="src/analysis/MultiPeakFit.cpp" line="534"/>
         <source>center</source>
-        <translation>Na střed</translation>
+        <translation>střed</translation>
     </message>
     <message>
         <location filename="src/analysis/MultiPeakFit.cpp" line="534"/>
         <source>width</source>
-        <translation>Šířka</translation>
+        <translation>šířka</translation>
     </message>
     <message>
         <location filename="src/analysis/MultiPeakFit.cpp" line="536"/>
         <source>GaussAmp Fit</source>
-        <translation>Uchycení GaussAmp</translation>
+        <translation>Přizpůsobení GaussAmp</translation>
     </message>
 </context>
 <context>
@@ -9091,27 +9091,27 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/analysis/MultiPeakFit.cpp" line="488"/>
         <source>Gauss Fit</source>
-        <translation>Uchycení Gauss</translation>
+        <translation>Gaussovo přizpůsobení</translation>
     </message>
     <message>
         <location filename="src/analysis/MultiPeakFit.cpp" line="489"/>
         <source>area</source>
-        <translation>Oblast</translation>
+        <translation>oblast</translation>
     </message>
     <message>
         <location filename="src/analysis/MultiPeakFit.cpp" line="489"/>
         <source>center</source>
-        <translation>Na střed</translation>
+        <translation>střed</translation>
     </message>
     <message>
         <location filename="src/analysis/MultiPeakFit.cpp" line="489"/>
         <source>width</source>
-        <translation>Šířka</translation>
+        <translation>šířka</translation>
     </message>
     <message>
         <location filename="src/analysis/MultiPeakFit.cpp" line="489"/>
         <source>offset</source>
-        <translation>Vyrovnání</translation>
+        <translation>posun</translation>
     </message>
 </context>
 <context>
@@ -9139,12 +9139,12 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/plot2D/Graph.cpp" line="1496"/>
         <source>Please provide a valid file name!</source>
-        <translation>Poskytněte, prosím, platný název souboru!</translation>
+        <translation>Zadejte, prosím, platný název souboru!</translation>
     </message>
     <message>
         <location filename="src/plot2D/Graph.cpp" line="1450"/>
         <source>File format not handled, operation aborted!</source>
-        <translation>Program si neví rady, co s tímto formátem souboru. Operace byla zrušena!</translation>
+        <translation>Tento souborový formát se nepodařilo zpracovat. Operace byla zrušena!</translation>
     </message>
     <message>
         <location filename="src/plot2D/Graph.cpp" line="1819"/>
@@ -9164,7 +9164,7 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/plot2D/Graph.cpp" line="3812"/>
         <source>Data set generated from curve</source>
-        <translation>Soubor dat vytvořen z křivky</translation>
+        <translation>Záznam s údaji vytvořený z křivky</translation>
     </message>
     <message>
         <location filename="src/plot2D/Graph.cpp" line="3813"/>
@@ -9224,7 +9224,7 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/plot2D/Graph.cpp" line="4120"/>
         <source>&amp;Rescale to show all</source>
-        <translation>&amp;Změnit měřítko na Ukázat vše</translation>
+        <translation>&amp;Změnit měřítko pohledu na Ukázat vše</translation>
     </message>
     <message>
         <location filename="src/plot2D/Graph.cpp" line="4120"/>
@@ -9244,17 +9244,17 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/plot2D/Graph.cpp" line="4134"/>
         <source>&amp;Scale...</source>
-        <translation>&amp;Rozsah...</translation>
+        <translation>&amp;Stupnice...</translation>
     </message>
     <message>
         <location filename="src/plot2D/Graph.cpp" line="4843"/>
         <source>There are no curves available on this plot!</source>
-        <translation>Nejsou zde žádné křivky, které by byly dostupné pro tento nákres!</translation>
+        <translation>V tomto nákresu nejsou žádné křivky!</translation>
     </message>
     <message>
         <location filename="src/plot2D/Graph.cpp" line="4854"/>
         <source>There are no curves with more than two points on this plot. Operation aborted!</source>
-        <translation>Nejsou zde žádné křivky, které by měly více než dva body pro tento nákres Operace zrušena!</translation>
+        <translation>V tomto nákresu nejsou žádné křivky, které by měly více než dva body. Operace zrušena!</translation>
     </message>
     <message>
         <location filename="src/plot2D/Graph.h" line="622"/>
@@ -9292,7 +9292,7 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/plot3D/Graph3D.cpp" line="2119"/>
         <source>File format not handled, operation aborted!</source>
-        <translation>Program si neví rady, co s tímto formátem souboru. Operace byla zrušena!</translation>
+        <translation>Tento souborový formát se nepodařilo zpracovat. Operace byla zrušena!</translation>
     </message>
 </context>
 <context>
@@ -9300,127 +9300,127 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="48"/>
         <source>QtiPlot - Choose a filename to save under</source>
-        <translation>QtiPlot - Vybrat název souboru, pod nímž se bude ukládat</translation>
+        <translation>QtiPlot - Vybrat název souboru pro uložení</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="102"/>
+        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="97"/>
         <source>Resolution (DPI)</source>
         <translation>Rozlišení (DPI)</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="111"/>
+        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="106"/>
         <source>&amp;Export in &amp;color</source>
-        <translation>Vyvést do &amp;barvy</translation>
+        <translation>Vyvést v &amp;barvě</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="115"/>
+        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="110"/>
         <source>Export 3D texts as</source>
         <translation>Vyvést trojrozměrné texty jako</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="119"/>
+        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="114"/>
         <source>Bitmap images</source>
         <translation>Bitmapové obrázky</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="120"/>
+        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="115"/>
         <source>Native fonts</source>
         <translation>Původní písma</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="121"/>
+        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="116"/>
         <source>LaTeX file</source>
         <translation>Soubor LaTeXu</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="125"/>
+        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="120"/>
         <source>3D Sort mode</source>
         <translation>Režim trojrozměrného třídění</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="128"/>
+        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="123"/>
         <source>No sort</source>
         <translation>Žádné třídění</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="129"/>
+        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="124"/>
         <source>Simple sort</source>
         <translation>Jednoduché třídění</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="130"/>
+        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="125"/>
         <source>BSP sort</source>
         <translation>BSP třídění</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="140"/>
+        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="135"/>
         <source>Image quality</source>
         <translation>Kvalita obrázku</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="155"/>
+        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="150"/>
         <source>Save transparency</source>
         <translation>Uložit průhlednost</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="164"/>
+        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="159"/>
         <source>Custom print size</source>
         <translation>Vlastní velikost tisku</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="170"/>
+        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="165"/>
         <source>inch</source>
         <translation>palec</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="171"/>
+        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="166"/>
         <source>mm</source>
         <translation>mm</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="172"/>
+        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="167"/>
         <source>cm</source>
         <translation>cm</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="173"/>
+        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="168"/>
         <source>point</source>
         <translation>bod</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="174"/>
+        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="169"/>
         <source>pixel</source>
         <translation>pixel</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="177"/>
+        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="172"/>
         <source>Unit</source>
         <translation>Jednotka</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="180"/>
+        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="175"/>
         <source>Width</source>
         <translation>Šířka</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="188"/>
+        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="183"/>
         <source>Height</source>
         <translation>Výška</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="146"/>
+        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="141"/>
         <source>Print Resolution (DPI)</source>
-        <translation type="unfinished"></translation>
+        <translation>Rozlišení tisku (DPI)</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="195"/>
+        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="190"/>
         <source>Scale Fonts Factor</source>
-        <translation type="unfinished"></translation>
+        <translation>Faktor změny velikosti písem</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="198"/>
+        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="193"/>
         <source>Automatic</source>
-        <translation type="unfinished">Automaticky</translation>
+        <translation>Automaticky</translation>
     </message>
 </context>
 <context>
@@ -9471,7 +9471,7 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/core/ImportASCIIDialog.cpp" line="127"/>
         <source>Import each file as: </source>
-        <translation>Zavést každý soubor jako:</translation>
+        <translation>Zavést každý soubor jako: </translation>
     </message>
     <message>
         <location filename="src/core/ImportASCIIDialog.cpp" line="503"/>
@@ -9528,7 +9528,7 @@ Dají se použít následující zvláštní kódy:
         <location filename="src/core/ImportASCIIDialog.cpp" line="153"/>
         <source>The separator must not contain the following characters: 
 0-9eE.+-</source>
-        <translation>Oddělovač nesmí obsahovat následující znaky: 
+        <translation>Oddělovač sloupců nesmí obsahovat následující znaky: 
 0-9eE.+-</translation>
     </message>
     <message>
@@ -9549,7 +9549,7 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/core/ImportASCIIDialog.cpp" line="171"/>
         <source>Use first row to &amp;name columns</source>
-        <translation>Pro &amp;pojmenování sloupců použít první řádek</translation>
+        <translation>Pro &amp;pojmenování sloupců použít záznam v prvním řádku</translation>
     </message>
     <message>
         <location filename="src/core/ImportASCIIDialog.cpp" line="174"/>
@@ -9559,7 +9559,7 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/core/ImportASCIIDialog.cpp" line="178"/>
         <source>&amp;Remove white spaces from line ends</source>
-        <translation>Z konců řádků &amp;odstranit prázdná místa</translation>
+        <translation>Z konců řádků &amp;odstranit mezery</translation>
     </message>
     <message>
         <location filename="src/core/ImportASCIIDialog.cpp" line="181"/>
@@ -9567,8 +9567,8 @@ Dají se použít následující zvláštní kódy:
 removed from the beginning and the end of 
 the lines in the ASCII file.</source>
         <comment>when translating this check the what&apos;s this functions and tool tips to place the &apos;\n&apos;s correctly</comment>
-        <translation>Zaškrtnutím této volby, budou všechna prázdná 
-místa odstraněna ze začátků a konců řádků 
+        <translation>Zaškrtnutím této volby, budou všechny 
+mezery odstraněny ze začátků a konců řádků 
 v ASCII souboru.</translation>
     </message>
     <message>
@@ -9593,7 +9593,7 @@ pro TAB(ULÁTOR) a MEZERNÍK.</translation>
     <message>
         <location filename="src/core/ImportASCIIDialog.cpp" line="187"/>
         <source>&amp;Simplify white spaces</source>
-        <translation>&amp;Zjednodušit prázdná místa</translation>
+        <translation>&amp;Zjednodušit mezery</translation>
     </message>
     <message>
         <location filename="src/core/ImportASCIIDialog.cpp" line="190"/>
@@ -9603,8 +9603,8 @@ lines and each sequence of internal
 whitespaces (including the TAB character) will 
 be replaced with a single space.</source>
         <comment>when translating this check the what&apos;s this functions and tool tips to place the &apos;\n&apos;s correctly</comment>
-        <translation>Zaškrtnutím této volby, budou všechna prázdná 
-místa odstraněna ze začátků a konců řádků 
+        <translation>Zaškrtnutím této volby, budou všechny mezery 
+odstraněny ze začátků a konců řádků 
 a každá posloupnost vnitřních prázdných míst 
 (včetně znaku pro TABULÁTOR) bude nahrazena 
 jednoduchou mezerou.</translation>
@@ -9622,7 +9622,7 @@ stejný počet řádků.</translation>
     <message>
         <location filename="src/core/ImportASCIIDialog.cpp" line="196"/>
         <source>Decimal Separators</source>
-        <translation>Oddělovače desetinných číslic</translation>
+        <translation>Oddělovače desetinných míst</translation>
     </message>
     <message>
         <location filename="src/core/ImportASCIIDialog.cpp" line="198"/>
@@ -9632,12 +9632,12 @@ stejný počet řádků.</translation>
     <message>
         <location filename="src/core/ImportASCIIDialog.cpp" line="204"/>
         <source>Omit &amp;thousands separator</source>
-        <translation>Vynechat oddělovač pro &amp;tisíc</translation>
+        <translation>Vynechat oddělovač míst (&amp;tisíce)</translation>
     </message>
     <message>
         <location filename="src/core/ImportASCIIDialog.cpp" line="207"/>
         <source>Endline character</source>
-        <translation>Znak pro koncový řádek</translation>
+        <translation>Znak pro konec řádku</translation>
     </message>
     <message>
         <location filename="src/core/ImportASCIIDialog.cpp" line="209"/>
@@ -9657,7 +9657,7 @@ stejný počet řádků.</translation>
     <message>
         <location filename="src/core/ImportASCIIDialog.cpp" line="215"/>
         <source>Import as &amp;read-only</source>
-        <translation>Zavést jako pouze pro &amp;čtení</translation>
+        <translation>Zavést jako &amp;pouze pro &amp;čtení</translation>
     </message>
     <message>
         <location filename="src/core/ImportASCIIDialog.cpp" line="218"/>
@@ -9687,32 +9687,32 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/core/ImportASCIIDialog.cpp" line="350"/>
         <source>The separator must not contain the following characters: 0-9eE.+-</source>
-        <translation>Oddělovač nesmí obsahovat následující znaky: 0-9eE.+-</translation>
+        <translation>Oddělovač sloupců nesmí obsahovat následující znaky: 0-9eE.+-</translation>
     </message>
     <message>
         <location filename="src/core/ImportASCIIDialog.cpp" line="351"/>
         <source>Remove white spaces from line ends</source>
-        <translation>Z konců řádků odstranit prázdná místa</translation>
+        <translation>Z konců řádků odstranit mezery</translation>
     </message>
     <message>
         <location filename="src/core/ImportASCIIDialog.cpp" line="352"/>
         <source>By checking this option all white spaces will be removed from the beginning and the end of the lines in the ASCII file.</source>
-        <translation>Zaškrtnutím této volby, budou všechna prázdná místa odstraněna ze začátků a konců řádků v ASCII souboru.</translation>
+        <translation>Zaškrtnutím této volby budou všechny mezery odstraněny ze začátků a konců řádků v ASCII souboru.</translation>
     </message>
     <message>
         <location filename="src/core/ImportASCIIDialog.cpp" line="353"/>
         <source>Simplify white spaces</source>
-        <translation>Zjednodušit prázdná místa</translation>
+        <translation>Zjednodušit mezery</translation>
     </message>
     <message>
         <location filename="src/core/ImportASCIIDialog.cpp" line="354"/>
         <source>By checking this option each sequence of internal whitespaces (including the TAB character) will be replaced with a single space.</source>
-        <translation>Zaškrtnutím této volby, bude každá posloupnost vnitřních prázdných míst (včetně znaku pro TABULÁTOR) nahrazena jednoduchou mezerou.</translation>
+        <translation>Zaškrtnutím této volby budou všechny mezery mezi sloupci (včetně znaku pro TABULÁTOR) nahrazeny jednoduchou mezerou.</translation>
     </message>
     <message>
         <location filename="src/core/ImportASCIIDialog.cpp" line="355"/>
         <source>By checking this option all white spaces will be removed from the beginning and the end of the lines and each sequence of internal whitespaces (including the TAB character) will be replaced with a single space.</source>
-        <translation>Zaškrtnutím této volby, budou všechna prázdná místa odstraněna ze začátků a konců řádků a každá posloupnost vnitřních prázdných míst (včetně znaku pro TABULÁTOR) bude nahrazena jednoduchou mezerou.</translation>
+        <translation>Zaškrtnutím této volby budou všechny mezery ze začátků a konců řádků odstraněny a všechny mezery mezi sloupci (včetně znaku pro TABULÁTOR) budou nahrazeny jednoduchou mezerou.</translation>
     </message>
     <message>
         <location filename="src/core/ImportASCIIDialog.cpp" line="357"/>
@@ -9722,7 +9722,7 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/core/ImportASCIIDialog.cpp" line="358"/>
         <source>To avoid this problem you should precisely define the column separator using TAB and SPACE characters.</source>
-        <translation>Abyste se vyhnul tomuto problému, měl byste přesně určit oddělovač sloupců s pomocí znaků pro TAB(ULÁTOR) a MEZERNÍK.</translation>
+        <translation>Abyste se vyhnul tomuto problému, měl byste přesně určit oddělovač sloupců s pomocí znaků pro TAB(ULÁTOR) a MEZERU.</translation>
     </message>
     <message>
         <location filename="src/core/ImportASCIIDialog.cpp" line="360"/>
@@ -9760,12 +9760,12 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/analysis/dialogs/IntDialog.cpp" line="65"/>
         <source>Order (1 - 5, 1 = Trapezoidal Rule)</source>
-        <translation>Pořadí (1 - 5, 1 = různoběžníkové pravidlo)</translation>
+        <translation>Řád (1 - 5, 1 = lichoběžníkové pravidlo)</translation>
     </message>
     <message>
         <location filename="src/analysis/dialogs/IntDialog.cpp" line="70"/>
         <source>Number of iterations (Max=20)</source>
-        <translation>Počet opakování (Max=20)</translation>
+        <translation>Počet opakování (iterací) (Max=20)</translation>
     </message>
     <message>
         <location filename="src/analysis/dialogs/IntDialog.cpp" line="77"/>
@@ -9775,7 +9775,7 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/analysis/dialogs/IntDialog.cpp" line="85"/>
         <source>Lower limit</source>
-        <translation>Dolní mez</translation>
+        <translation>Spodní mez</translation>
     </message>
     <message>
         <location filename="src/analysis/dialogs/IntDialog.cpp" line="90"/>
@@ -9803,7 +9803,7 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/analysis/Integration.cpp" line="61"/>
         <source>QtiPlot - Input error</source>
-        <translation>QtiPlot - Chyba vstupu</translation>
+        <translation>QtiPlot - Chyba při zadání</translation>
     </message>
     <message>
         <location filename="src/analysis/Integration.cpp" line="101"/>
@@ -9818,7 +9818,7 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/analysis/Integration.cpp" line="194"/>
         <source>using a %1 order method</source>
-        <translation>s pomocí %1 způsobu pořadí</translation>
+        <translation>s pomocí způsobu %1. Řád</translation>
     </message>
     <message>
         <location filename="src/analysis/Integration.cpp" line="195"/>
@@ -9838,17 +9838,17 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/analysis/Integration.cpp" line="198"/>
         <source>Iterations</source>
-        <translation>Opakování</translation>
+        <translation>Opakování (iterace)</translation>
     </message>
     <message>
         <location filename="src/analysis/Integration.cpp" line="201"/>
-        <source><byte value="x9"/>Plot</source>
-        <translation>Nákres</translation>
+        <source>	Plot</source>
+        <translation>	Nákres</translation>
     </message>
     <message>
         <location filename="src/analysis/Integration.cpp" line="210"/>
         <source>using the Trapezoidal Rule</source>
-        <translation>s pomocí různoběžníkového pravidla</translation>
+        <translation>s pomocí lichoběžníkového pravidla</translation>
     </message>
     <message>
         <location filename="src/analysis/Integration.cpp" line="211"/>
@@ -9863,12 +9863,12 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/analysis/Integration.cpp" line="221"/>
         <source>Peak at</source>
-        <translation>Vrchol na</translation>
+        <translation>Vrchol při</translation>
     </message>
     <message>
         <location filename="src/analysis/Integration.cpp" line="226"/>
         <source>Area</source>
-        <translation> Oblast</translation>
+        <translation>Oblast</translation>
     </message>
     <message>
         <location filename="src/analysis/Integration.cpp" line="234"/>
@@ -9878,7 +9878,7 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/analysis/Integration.cpp" line="235"/>
         <source>Unknown integration method. Valid values must be in the range: 1 (Trapezoidal Method) to 5.</source>
-        <translation>Neznámý způsob začlenění. Platné hodnoty musí být v rozsahu: 1 (různoběžníkový způsob) do 5.</translation>
+        <translation>Neznámý způsob začlenění. Platné hodnoty musí být v rozsahu: 1 (lichoběžníkový způsob) do 5.</translation>
     </message>
 </context>
 <context>
@@ -9896,7 +9896,7 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/analysis/Interpolation.cpp" line="63"/>
         <source>Unknown interpolation method. Valid values are: 0 - Linear, 1 - Cubic, 2 - Akima.</source>
-        <translation>Neznámý způsob interpolace. Platné hodnoty jsou: 0 - přímočará, 1 - trojrozměrná, 2 - akima.</translation>
+        <translation>Neznámý způsob interpolace. Platné hodnoty jsou: 0 - přímočará, 1 - trojrozměrná, 2 - Akima.</translation>
     </message>
     <message>
         <location filename="src/analysis/Interpolation.cpp" line="139"/>
@@ -9931,7 +9931,7 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/analysis/Interpolation.cpp" line="104"/>
         <source>Unknown interpolation method, valid values are: 0 - Linear, 1 - Cubic, 2 - Akima.</source>
-        <translation>Neznámý způsob interpolace. Platné hodnoty jsou: 0 - přímočará, 1 - trojrozměrná, 2 - akima.</translation>
+        <translation>Neznámý způsob interpolace. Platné hodnoty jsou: 0 - přímočará, 1 - trojrozměrná, 2 - Akima.</translation>
     </message>
     <message>
         <location filename="src/analysis/Interpolation.cpp" line="127"/>
@@ -9954,7 +9954,7 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/analysis/dialogs/InterpolationDialog.cpp" line="58"/>
         <source>Spline</source>
-        <translation>Spline funkce/aproximace</translation>
+        <translation>Zub</translation>
     </message>
     <message>
         <location filename="src/analysis/dialogs/InterpolationDialog.cpp" line="60"/>
@@ -9994,7 +9994,7 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/analysis/dialogs/InterpolationDialog.cpp" line="94"/>
         <source>&amp;Make</source>
-        <translation>&amp;Udělat</translation>
+        <translation>&amp;Použít</translation>
     </message>
     <message>
         <location filename="src/analysis/dialogs/InterpolationDialog.cpp" line="96"/>
@@ -10014,12 +10014,12 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/analysis/dialogs/InterpolationDialog.cpp" line="127"/>
         <source>QtiPlot - Input error</source>
-        <translation>QtiPlot - Chyba vstupu</translation>
+        <translation>QtiPlot - Chyba v zadání</translation>
     </message>
     <message>
         <location filename="src/analysis/dialogs/InterpolationDialog.cpp" line="127"/>
         <source>Please enter x limits that satisfy: from &lt; to!</source>
-        <translation>Zadejte, prosím, mezní hodnoty pro x, které vyhoví: od &lt; do!</translation>
+        <translation>Zadejte, prosím, rozsah x, který vyhoví: Začátek &lt; Konec!</translation>
     </message>
 </context>
 <context>
@@ -10037,7 +10037,7 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/plot2D/dialogs/LayerDialog.cpp" line="51"/>
         <source>Number</source>
-        <translation>Číslo</translation>
+        <translation>Počet</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/LayerDialog.cpp" line="56"/>
@@ -10052,7 +10052,7 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/plot2D/dialogs/LayerDialog.cpp" line="63"/>
         <source>Horizontal</source>
-        <translation>Vodorovný</translation>
+        <translation>Vodorovné</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/LayerDialog.cpp" line="73"/>
@@ -10102,7 +10102,7 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/plot2D/dialogs/LayerDialog.cpp" line="90"/>
         <source>&amp;Layer Canvas Size</source>
-        <translation>&amp;Velikost plátna vrstvy</translation>
+        <translation>&amp;Velikost podkladu vrstvy</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/LayerDialog.cpp" line="95"/>
@@ -10122,17 +10122,17 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/plot2D/dialogs/LayerDialog.cpp" line="108"/>
         <source>Spacing</source>
-        <translation>Řádkování</translation>
+        <translation>Odstup</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/LayerDialog.cpp" line="110"/>
         <source>Columns gap</source>
-        <translation>Mezera mezi sloupci</translation>
+        <translation>Odstup sloupců</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/LayerDialog.cpp" line="116"/>
         <source>Rows gap</source>
-        <translation>Mezera mezi řádky</translation>
+        <translation>Odstup řádků</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/LayerDialog.cpp" line="122"/>
@@ -10212,22 +10212,22 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/plot2D/dialogs/LayerDialog.cpp" line="251"/>
         <source>QtiPlot - Columns input error</source>
-        <translation>QtiPlot - Chyba vstupu u sloupců</translation>
+        <translation>QtiPlot - Chyba v zadání sloupců</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/LayerDialog.cpp" line="252"/>
         <source>The number of columns you&apos;ve entered is greater than the number of graphs (%1)!</source>
-        <translation>Počet sloupců, který jste zadal, je větší než počet grafů (%1)!</translation>
+        <translation>Počet sloupců, který jste zadal, je větší než počet obrazců (%1)!</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/LayerDialog.cpp" line="259"/>
         <source>QtiPlot - Rows input error</source>
-        <translation>QtiPlot - Chyba vstupu u řádků</translation>
+        <translation>QtiPlot - Chyba v zadání řádků</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/LayerDialog.cpp" line="260"/>
         <source>The number of rows you&apos;ve entered is greater than the number of graphs (%1)!</source>
-        <translation>Počet řádků, který jste zadal, je větší než počet grafů (%1)!</translation>
+        <translation>Počet řádků, který jste zadal, je větší než počet obrazců (%1)!</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/LayerDialog.cpp" line="304"/>
@@ -10290,7 +10290,7 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/plot2D/dialogs/LineDialog.cpp" line="118"/>
         <source>&amp;Filled</source>
-        <translation>&amp;Plná</translation>
+        <translation>&amp;Vyplněná</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/LineDialog.cpp" line="130"/>
@@ -10300,7 +10300,7 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/plot2D/dialogs/LineDialog.cpp" line="134"/>
         <source>Set &amp;Default</source>
-        <translation>Nastavit &amp;výchozí</translation>
+        <translation>Nastavit &amp;výchozí hodnotu</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/LineDialog.cpp" line="135"/>
@@ -10315,7 +10315,7 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/plot2D/dialogs/LineDialog.cpp" line="161"/>
         <source>Scale Coordinates</source>
-        <translation>Rozsah souřadnic</translation>
+        <translation>Souřadnice zařadit do stupnice</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/LineDialog.cpp" line="162"/>
@@ -10401,7 +10401,7 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/analysis/PolynomialFit.cpp" line="261"/>
         <source>Linear Regression</source>
-        <translation>Přímočarý návrat</translation>
+        <translation>Přímočarý návrat zpět</translation>
     </message>
     <message>
         <location filename="src/analysis/PolynomialFit.cpp" line="262"/>
@@ -10411,12 +10411,12 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/analysis/PolynomialFit.cpp" line="271"/>
         <source>QtiPlot - Fit Error</source>
-        <translation>QtiPlot - Chyba při umístění</translation>
+        <translation>QtiPlot - Chyba při přizpůsobení</translation>
     </message>
     <message>
         <location filename="src/analysis/PolynomialFit.cpp" line="272"/>
         <source>You need at least %1 data points for this fit operation. Operation aborted!</source>
-        <translation>Pro tuto operaci umístění potřebujete alespoň %1 datových bodů! Operace zrušena!</translation>
+        <translation>Pro tuto operaci přizpůsobení potřebujete alespoň %1 datových bodů! Operace zrušena!</translation>
     </message>
 </context>
 <context>
@@ -10485,7 +10485,7 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/analysis/MultiPeakFit.cpp" line="448"/>
         <source>Lorentz Fit</source>
-        <translation>Lorentzovo umístění</translation>
+        <translation>Lorentzovo přizpůsobení</translation>
     </message>
     <message>
         <location filename="src/analysis/MultiPeakFit.cpp" line="449"/>
@@ -10495,7 +10495,7 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/analysis/MultiPeakFit.cpp" line="449"/>
         <source>center</source>
-        <translation>na střed</translation>
+        <translation>střed</translation>
     </message>
     <message>
         <location filename="src/analysis/MultiPeakFit.cpp" line="449"/>
@@ -10505,7 +10505,7 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/analysis/MultiPeakFit.cpp" line="449"/>
         <source>offset</source>
-        <translation>vyrovnání</translation>
+        <translation>posun</translation>
     </message>
 </context>
 <context>
@@ -10523,7 +10523,7 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/matrix/Matrix.cpp" line="389"/>
         <source>Calculation failed, the matrix is not square!</source>
-        <translation>Výpočet selhal, matice není čtvercová!</translation>
+        <translation>Výpočet není možný, protože matice není kvadratická (matice druhého stupně)!</translation>
     </message>
     <message>
         <location filename="src/matrix/Matrix.cpp" line="1553"/>
@@ -10538,12 +10538,12 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/matrix/Matrix.cpp" line="1554"/>
         <source>Not enough memory, operation aborted!</source>
-        <translation>Není dostatek paměti, a tak byla operace zrušena!</translation>
+        <translation>Není dostatek paměti. Operace zrušena!</translation>
     </message>
     <message>
         <location filename="src/matrix/Matrix.cpp" line="428"/>
         <source>Inversion failed, the matrix is not square!</source>
-        <translation>Převrácení selhalo, matice není čtvercová!</translation>
+        <translation>Převrácení selhalo, protože matice není kvadratická (matice druhého stupně)!</translation>
     </message>
     <message>
         <location filename="src/matrix/Matrix.cpp" line="432"/>
@@ -10567,12 +10567,12 @@ Dají se použít následující zvláštní kódy:
     </message>
     <message>
         <location filename="src/matrix/Matrix.cpp" line="469"/>
-        <source>Rotate 90&#xb0;</source>
+        <source>Rotate 90°</source>
         <translation>Otočit o 90°</translation>
     </message>
     <message>
         <location filename="src/matrix/Matrix.cpp" line="471"/>
-        <source>Rotate -90&#xb0;</source>
+        <source>Rotate -90°</source>
         <translation>Otočit -90°</translation>
     </message>
     <message>
@@ -10659,7 +10659,7 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/matrix/Matrix.cpp" line="1529"/>
         <source>Import ASCII File</source>
-        <translation>Zavést ASCII</translation>
+        <translation>Zavést soubor ASCII</translation>
     </message>
     <message>
         <location filename="src/matrix/Matrix.cpp" line="1542"/>
@@ -10712,12 +10712,12 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/matrix/MatrixDialog.cpp" line="65"/>
         <source>Default Decimal Digits</source>
-        <translation>Výchozí desetinné číslice</translation>
+        <translation>Výchozí desetinná místa</translation>
     </message>
     <message>
         <location filename="src/matrix/MatrixDialog.cpp" line="66"/>
         <source>Significant Digits=</source>
-        <translation>Podstatné číslice=</translation>
+        <translation>Statisticky významná desetinná místa=</translation>
     </message>
     <message>
         <location filename="src/matrix/MatrixDialog.cpp" line="74"/>
@@ -10757,7 +10757,7 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/matrix/MatrixDialog.cpp" line="130"/>
         <source>Precision %1 digits</source>
-        <translation>Přesnost %1 číslic</translation>
+        <translation>Přesnost %1 desetinných míst</translation>
     </message>
 </context>
 <context>
@@ -10992,7 +10992,7 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/plot2D/MultiLayer.cpp" line="305"/>
         <source>QtiPlot - Guess best layout?</source>
-        <translation>QtiPlot - Odhadnout nejlepší rozvržení?</translation>
+        <translation>QtiPlot - Automaticky určit nejlepší rozvržení?</translation>
     </message>
     <message>
         <location filename="src/plot2D/MultiLayer.cpp" line="306"/>
@@ -11027,7 +11027,7 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/plot2D/MultiLayer.cpp" line="687"/>
         <source>File format not handled, operation aborted!</source>
-        <translation>Program si neví rady, co s tímto formátem souboru. Operace byla zrušena!</translation>
+        <translation>Tento souborový formát se nepodařilo zpracovat. Operace byla zrušena!</translation>
     </message>
     <message>
         <location filename="src/plot2D/MultiLayer.cpp" line="1387"/>
@@ -11037,62 +11037,62 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/plot2D/MultiLayer.cpp" line="1429"/>
         <source>Offset Amount...</source>
-        <translation type="unfinished"></translation>
+        <translation>Velikost posunu...</translation>
     </message>
     <message>
         <location filename="src/plot2D/MultiLayer.cpp" line="1433"/>
         <source>Reverse Order</source>
-        <translation type="unfinished"></translation>
+        <translation>Převrátit řád</translation>
     </message>
     <message>
         <location filename="src/plot2D/MultiLayer.cpp" line="1437"/>
         <source>Fill Area...</source>
-        <translation type="unfinished"></translation>
+        <translation>Vyplnit oblast...</translation>
     </message>
     <message>
         <location filename="src/plot2D/MultiLayer.cpp" line="1526"/>
         <source>Offset Dialog</source>
-        <translation type="unfinished"></translation>
+        <translation>Dialog pro posun</translation>
     </message>
     <message>
         <location filename="src/plot2D/MultiLayer.cpp" line="1531"/>
         <source>Total Y Offset (%)</source>
-        <translation type="unfinished"></translation>
+        <translation>Celkový posun Y (%)</translation>
     </message>
     <message>
         <location filename="src/plot2D/MultiLayer.cpp" line="1537"/>
         <source>Total X Offset (%)</source>
-        <translation type="unfinished"></translation>
+        <translation>Celkový posun X (%)</translation>
     </message>
     <message>
         <location filename="src/plot2D/MultiLayer.cpp" line="1547"/>
         <source>&amp;Apply</source>
-        <translation type="unfinished">&amp;Použít</translation>
+        <translation>&amp;Použít</translation>
     </message>
     <message>
         <location filename="src/plot2D/MultiLayer.cpp" line="1655"/>
         <source>&amp;Close</source>
-        <translation type="unfinished">&amp;Zavřít</translation>
+        <translation>&amp;Zavřít</translation>
     </message>
     <message>
         <location filename="src/plot2D/MultiLayer.cpp" line="1627"/>
         <source>Fill Curves</source>
-        <translation type="unfinished"></translation>
+        <translation>Vyplnit křivky</translation>
     </message>
     <message>
         <location filename="src/plot2D/MultiLayer.cpp" line="1629"/>
         <source>Enable Fill</source>
-        <translation type="unfinished"></translation>
+        <translation>Povolit výplň</translation>
     </message>
     <message>
         <location filename="src/plot2D/MultiLayer.cpp" line="1633"/>
         <source>Fill with Color</source>
-        <translation type="unfinished"></translation>
+        <translation>Vyplnit barvou</translation>
     </message>
     <message>
         <location filename="src/plot2D/MultiLayer.cpp" line="1637"/>
         <source>Side Lines</source>
-        <translation type="unfinished"></translation>
+        <translation>Postranní čáry</translation>
     </message>
 </context>
 <context>
@@ -11110,12 +11110,12 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/analysis/MultiPeakFit.cpp" line="84"/>
         <source>Gauss Fit</source>
-        <translation>Uchycení Gauss</translation>
+        <translation>Gaussovo přizpůsobení</translation>
     </message>
     <message>
         <location filename="src/analysis/MultiPeakFit.cpp" line="86"/>
         <source>Lorentz Fit</source>
-        <translation>Lorentzovo umístění</translation>
+        <translation>Lorentzovo přizpůsobení</translation>
     </message>
     <message>
         <location filename="src/analysis/MultiPeakFit.cpp" line="88"/>
@@ -11130,7 +11130,7 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/analysis/MultiPeakFit.cpp" line="124"/>
         <source>center</source>
-        <translation>na střed</translation>
+        <translation>střed</translation>
     </message>
     <message>
         <location filename="src/analysis/MultiPeakFit.cpp" line="125"/>
@@ -11140,7 +11140,7 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/analysis/MultiPeakFit.cpp" line="127"/>
         <source>offset</source>
-        <translation>vyrovnání</translation>
+        <translation>posun</translation>
     </message>
     <message>
         <location filename="src/analysis/MultiPeakFit.cpp" line="394"/>
@@ -11150,37 +11150,37 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/analysis/MultiPeakFit.cpp" line="282"/>
         <source>Fit</source>
-        <translation>Umístit</translation>
+        <translation>Přizpůsobení</translation>
     </message>
     <message>
         <location filename="src/analysis/MultiPeakFit.cpp" line="271"/>
         <source>QtiPlot - Fit Error</source>
-        <translation>QtiPlot - Chyba při umístění</translation>
+        <translation>QtiPlot - Chyba při přizpůsobení</translation>
     </message>
     <message>
         <location filename="src/analysis/MultiPeakFit.cpp" line="272"/>
         <source>Could not allocate enough memory for the fit curves!</source>
-        <translation>Nepodařilo se přidělit dost paměti pro křivky umístění!</translation>
+        <translation>Nepodařilo se přidělit dostatek paměti. Operace zrušena!</translation>
     </message>
     <message>
         <location filename="src/analysis/MultiPeakFit.cpp" line="288"/>
         <source>fit of</source>
-        <translation>umístění z</translation>
+        <translation>Přizpůsobení </translation>
     </message>
     <message>
         <location filename="src/analysis/MultiPeakFit.cpp" line="347"/>
         <source>peak</source>
-        <translation>vrchol</translation>
+        <translation>vrcholu</translation>
     </message>
     <message>
         <location filename="src/analysis/MultiPeakFit.cpp" line="394"/>
         <source>Area</source>
-        <translation> Oblast</translation>
+        <translation>Oblast</translation>
     </message>
     <message>
         <location filename="src/analysis/MultiPeakFit.cpp" line="395"/>
         <source>Center</source>
-        <translation>Na střed</translation>
+        <translation>Střed</translation>
     </message>
     <message>
         <location filename="src/analysis/MultiPeakFit.cpp" line="395"/>
@@ -11198,7 +11198,7 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/plot2D/MultiPeakFitTool.cpp" line="60"/>
         <source>Move cursor and click to select a point and double-click/press &apos;Enter&apos; to set the position of a peak!</source>
-        <translation>Posuňte kurzor a klepněte pro výběr bodu a dvakrát klepněte/stiskněte &apos;Enter&apos; pro stanovení polohy vrcholu!</translation>
+        <translation>Posuňte ukazovátko a klepněte pro výběr bodu a dvakrát klepněte/stiskněte &apos;Enter&apos; pro stanovení polohy vrcholu!</translation>
     </message>
     <message>
         <location filename="src/plot2D/MultiPeakFitTool.cpp" line="101"/>
@@ -11216,12 +11216,12 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/analysis/NonLinearFit.cpp" line="74"/>
         <source>Non-linear Fit</source>
-        <translation>Nepřímočaré umístění</translation>
+        <translation>Nepřímočaré přizpůsobení</translation>
     </message>
     <message>
         <location filename="src/analysis/NonLinearFit.cpp" line="119"/>
         <source>QtiPlot - Input function error</source>
-        <translation>QtiPlot - Chyba vstupní funkce</translation>
+        <translation>QtiPlot - Chyba v zadání funkce</translation>
     </message>
     <message>
         <location filename="src/analysis/NonLinearFit.cpp" line="82"/>
@@ -11231,22 +11231,22 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/analysis/NonLinearFit.cpp" line="132"/>
         <source>QtiPlot - Fit Error</source>
-        <translation>QtiPlot - Chyba při umístění</translation>
+        <translation>QtiPlot - Chyba při přizpůsobení</translation>
     </message>
     <message>
         <location filename="src/analysis/NonLinearFit.cpp" line="94"/>
         <source>There are no parameters specified for this fit operation. Please define a list of parameters first!</source>
-        <translation>Pro tuto operaci umístění nejsou stanoveny žádné parametry. Nejprve, prosím, určete seznam parametrů!</translation>
+        <translation>Pro tuto operaci přizpůsobení nebyly stanoveny žádné parametry. Nejprve, prosím, určete seznam parametrů!</translation>
     </message>
     <message>
         <location filename="src/analysis/NonLinearFit.cpp" line="133"/>
         <source>You must provide a list containing at least one parameter for this type of fit. Operation aborted!</source>
-        <translation>Musíte poskytnout seznam, který bude obsahovat alespoň jeden parametr pro tento typ umístění. Operace zrušena!</translation>
+        <translation>Musíte poskytnout seznam, který bude obsahovat alespoň jeden parametr pro tento typ přizpůsobení. Operace zrušena!</translation>
     </message>
     <message>
         <location filename="src/analysis/NonLinearFit.cpp" line="242"/>
         <source>constant</source>
-        <translation>stálá hodnota</translation>
+        <translation>stálé</translation>
     </message>
 </context>
 <context>
@@ -11284,7 +11284,7 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/core/OpenProjectDialog.cpp" line="48"/>
         <source>Origin graph</source>
-        <translation>Původní graf</translation>
+        <translation>Původní obrazec</translation>
     </message>
     <message>
         <location filename="src/core/OpenProjectDialog.cpp" line="49"/>
@@ -11304,7 +11304,7 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/core/OpenProjectDialog.cpp" line="60"/>
         <source>New Project Window</source>
-        <translation>Okno s novým projektem</translation>
+        <translation>Nové okno s projektem</translation>
     </message>
     <message>
         <location filename="src/core/OpenProjectDialog.cpp" line="61"/>
@@ -11317,7 +11317,7 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/lib/src/PatternBox.cpp" line="68"/>
         <source>Solid</source>
-        <translation>Pevný</translation>
+        <translation>Vyplněný</translation>
     </message>
     <message>
         <location filename="src/lib/src/PatternBox.cpp" line="74"/>
@@ -11332,7 +11332,7 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/lib/src/PatternBox.cpp" line="86"/>
         <source>Cross</source>
-        <translation>Kříž</translation>
+        <translation>Křížový</translation>
     </message>
     <message>
         <location filename="src/lib/src/PatternBox.cpp" line="92"/>
@@ -11347,7 +11347,7 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/lib/src/PatternBox.cpp" line="104"/>
         <source>DiagCross</source>
-        <translation>Úhlopříčný kříž</translation>
+        <translation>Úhlopříčný křížový</translation>
     </message>
     <message>
         <location filename="src/lib/src/PatternBox.cpp" line="110"/>
@@ -11465,7 +11465,7 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/plot3D/Plot3DDialog.cpp" line="180"/>
         <source>&amp;Scale</source>
-        <translation>&amp;Rozsah</translation>
+        <translation>&amp;Stupnice</translation>
     </message>
     <message>
         <location filename="src/plot3D/Plot3DDialog.cpp" line="193"/>
@@ -11475,7 +11475,7 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/plot3D/Plot3DDialog.cpp" line="197"/>
         <source>Axis Font</source>
-        <translation>Písmo osy</translation>
+        <translation>Písmo os</translation>
     </message>
     <message>
         <location filename="src/plot3D/Plot3DDialog.cpp" line="200"/>
@@ -11485,12 +11485,12 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/plot3D/Plot3DDialog.cpp" line="211"/>
         <source>Major Ticks Length</source>
-        <translation>Délka větších fajfek</translation>
+        <translation>Délka hlavního označení os</translation>
     </message>
     <message>
         <location filename="src/plot3D/Plot3DDialog.cpp" line="217"/>
         <source>Minor Ticks Length</source>
-        <translation>Délka menších fajfek</translation>
+        <translation>Délka vedlejšího označení os</translation>
     </message>
     <message>
         <location filename="src/plot3D/Plot3DDialog.cpp" line="233"/>
@@ -11555,12 +11555,12 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/plot3D/Plot3DDialog.cpp" line="335"/>
         <source>Lab&amp;els</source>
-        <translation>Štít&amp;ky</translation>
+        <translation>&amp;Popisy</translation>
     </message>
     <message>
         <location filename="src/plot3D/Plot3DDialog.cpp" line="341"/>
         <source>&amp;Numbers</source>
-        <translation>&amp;Číslice</translation>
+        <translation>&amp;Čísla</translation>
     </message>
     <message>
         <location filename="src/plot3D/Plot3DDialog.cpp" line="347"/>
@@ -11610,7 +11610,7 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/plot3D/Plot3DDialog.cpp" line="398"/>
         <source>Distance labels - axis</source>
-        <translation>Štítky se vzdáleností - osa</translation>
+        <translation>Popis odstupu- osa</translation>
     </message>
     <message>
         <location filename="src/plot3D/Plot3DDialog.cpp" line="409"/>
@@ -11675,12 +11675,12 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/plot3D/Plot3DDialog.cpp" line="501"/>
         <source>Smooth line</source>
-        <translation>Hladká čára</translation>
+        <translation>Vyhladit čáry</translation>
     </message>
     <message>
         <location filename="src/plot3D/Plot3DDialog.cpp" line="505"/>
         <source>Boxed</source>
-        <translation>Orámečkovaná</translation>
+        <translation>Zarámované</translation>
     </message>
     <message>
         <location filename="src/plot3D/Plot3DDialog.cpp" line="522"/>
@@ -11700,7 +11700,7 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/plot3D/Plot3DDialog.cpp" line="660"/>
         <source>&amp;Matrix</source>
-        <translation>&amp;Vzor</translation>
+        <translation>&amp;Matice</translation>
     </message>
     <message>
         <location filename="src/plot3D/Plot3DDialog.cpp" line="689"/>
@@ -11753,7 +11753,7 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2008"/>
         <source>&amp;Plot Associations...</source>
-        <translation>&amp;Souvislosti s nákresem...</translation>
+        <translation>&amp;Přiřazení nákresu...</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="316"/>
@@ -11763,12 +11763,12 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="317"/>
         <source>Axes Labels</source>
-        <translation>Štítky os</translation>
+        <translation>Popisy os</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="318"/>
         <source>Axes Numbers</source>
-        <translation>Počet os</translation>
+        <translation>Očíslování os</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="319"/>
@@ -11798,12 +11798,12 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="357"/>
         <source>Canvas Color</source>
-        <translation>Barva plátna</translation>
+        <translation>Barva podkladu</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="368"/>
         <source>Border Color</source>
-        <translation>Barva okraje</translation>
+        <translation>Barva rámu</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1165"/>
@@ -11813,12 +11813,12 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="376"/>
         <source>Antialiasing</source>
-        <translation>Vyhlazování</translation>
+        <translation>Vyhlazování okrajů</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="379"/>
         <source>Margin</source>
-        <translation>Okraj</translation>
+        <translation>Odstup</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="389"/>
@@ -11928,7 +11928,7 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="519"/>
         <source>Border</source>
-        <translation>Okraj</translation>
+        <translation>Rám</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="523"/>
@@ -11943,7 +11943,7 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="533"/>
         <source>Fill</source>
-        <translation>Vyplnit</translation>
+        <translation>Výplň</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="550"/>
@@ -11993,7 +11993,7 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1689"/>
         <source>Pie Geometry</source>
-        <translation>Uspořádání koláče</translation>
+        <translation>Uspořádání koláčového obrazce</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="612"/>
@@ -12018,22 +12018,22 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="627"/>
         <source>Associate Position with &amp;Wedge</source>
-        <translation>Spojit polohu s &amp;klínem</translation>
+        <translation>Přiřadit polohu ke &amp;klínu</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="631"/>
         <source>Dist. from Pie Edge</source>
-        <translation>Vzdálenost od okraje koláče</translation>
+        <translation>Vzdálenost od okraje koláčového obrazce</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1752"/>
         <source>Labels</source>
-        <translation>Štítky</translation>
+        <translation>Popisy</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="651"/>
         <source>&amp;Scale layers to paper size</source>
-        <translation>&amp;Změnit rozměry na velikost papíru</translation>
+        <translation>&amp;Změnit velikost vrstev na velikost papíru</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="653"/>
@@ -12063,7 +12063,7 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="680"/>
         <source>Justify</source>
-        <translation>Zarovnat</translation>
+        <translation>Zarovnat do bloku</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="683"/>
@@ -12103,7 +12103,7 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="729"/>
         <source>Attach curve to: </source>
-        <translation>Připojit křivku k: </translation>
+        <translation>Křivku spojit s: </translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="731"/>
@@ -12148,12 +12148,12 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="761"/>
         <source>Sticks</source>
-        <translation>Tyče</translation>
+        <translation>Svislé čáry</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="762"/>
         <source>Horizontal Steps</source>
-        <translation>Vodorovné stupně</translation>
+        <translation>Vodorovné kroky</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="763"/>
@@ -12168,7 +12168,7 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="765"/>
         <source>Vertical Steps</source>
-        <translation>Svislé stupně</translation>
+        <translation>Svislé kroky</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="785"/>
@@ -12193,12 +12193,12 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="992"/>
         <source>Edge Color</source>
-        <translation>Barva okraje</translation>
+        <translation>Barva orámování</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="996"/>
         <source>Edge Width</source>
-        <translation>Šířka okraje</translation>
+        <translation>Šířka orámování</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1707"/>
@@ -12208,7 +12208,7 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1826"/>
         <source>Box</source>
-        <translation>Okénko</translation>
+        <translation>Bedna</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="955"/>
@@ -12218,17 +12218,17 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="859"/>
         <source>No Box</source>
-        <translation>Žádné okénko</translation>
+        <translation>Žádná bedna</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="860"/>
         <source>Rectangle</source>
-        <translation>Obdélníkový</translation>
+        <translation>Obdélník</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="861"/>
         <source>Diamond</source>
-        <translation>Diamant</translation>
+        <translation>Kosočtverec</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="862"/>
@@ -12238,7 +12238,7 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="863"/>
         <source>Notch</source>
-        <translation>Stupínek</translation>
+        <translation>S vroubkem</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="903"/>
@@ -12298,7 +12298,7 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="895"/>
         <source>Box Width</source>
-        <translation>Šířka okénka</translation>
+        <translation>Šířka bedny</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="901"/>
@@ -12353,7 +12353,7 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1459"/>
         <source>Mean</source>
-        <translation>Průměr</translation>
+        <translation>Průměrná hodnota</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="970"/>
@@ -12378,22 +12378,22 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1055"/>
         <source>&amp;Gray Scale</source>
-        <translation>&amp;Stupnice šedi</translation>
+        <translation>&amp;Stupnice odstínů šedi</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1058"/>
         <source>&amp;Default Color Map</source>
-        <translation>&amp;Výchozí mapa barev</translation>
+        <translation>&amp;Výchozí tabulka barev</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1061"/>
         <source>&amp;Custom Color Map</source>
-        <translation>&amp;Vlastní mapa barev</translation>
+        <translation>&amp;Vlastní tabulka barev</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1740"/>
         <source>Contour Lines</source>
-        <translation>&amp;Obrysové čáry</translation>
+        <translation>Obrysové čáry</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1112"/>
@@ -12413,7 +12413,7 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1070"/>
         <source>Color Bar Scale</source>
-        <translation>Rozsah pruhu barev</translation>
+        <translation>Vysvětlivka k barvám</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1074"/>
@@ -12438,7 +12438,7 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1207"/>
         <source>Minus</source>
-        <translation>Minus</translation>
+        <translation>Mínus</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1209"/>
@@ -12448,12 +12448,12 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1316"/>
         <source>Line Width</source>
-        <translation>Šířka čáry</translation>
+        <translation>Šířka čar</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1228"/>
         <source>Cap Width</source>
-        <translation>Šířka velkých písmen</translation>
+        <translation>Šířka přestřižení</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1230"/>
@@ -12483,7 +12483,7 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1238"/>
         <source>Through Symbol</source>
-        <translation>Symbol pro skrz</translation>
+        <translation>Přes symbol</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1811"/>
@@ -12493,7 +12493,7 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1259"/>
         <source>Automatic Binning</source>
-        <translation>Automatické vyhození</translation>
+        <translation>Automatické rozdělení</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1262"/>
@@ -12503,17 +12503,17 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1267"/>
         <source>Bin Size</source>
-        <translation>Velikost koše</translation>
+        <translation>Velikost rozmezí</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1270"/>
         <source>Begin</source>
-        <translation>Začít</translation>
+        <translation>Začátek</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1273"/>
         <source>End</source>
-        <translation>Končit</translation>
+        <translation>Konec</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1717"/>
@@ -12523,17 +12523,17 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1294"/>
         <source>Gap Between Bars (in %)</source>
-        <translation>Mezera mezi pruhy (v %)</translation>
+        <translation>Odstup mezi pruhy (v %)</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1299"/>
         <source>Offset (in %)</source>
-        <translation>Odskok (v %)</translation>
+        <translation>Posun (v %)</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1714"/>
         <source>Spacing</source>
-        <translation>Řádkování</translation>
+        <translation>Odstup</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1323"/>
@@ -12553,7 +12553,7 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1334"/>
         <source>&amp;Filled</source>
-        <translation>&amp;Vyplněné</translation>
+        <translation>&amp;Vyplněno</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2787"/>
@@ -12578,17 +12578,17 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1353"/>
         <source>Tail</source>
-        <translation>Koncová část</translation>
+        <translation>Vzadu</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1354"/>
         <source>Middle</source>
-        <translation>Prostřední</translation>
+        <translation>Vprostřed</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1355"/>
         <source>Head</source>
-        <translation>Přední část</translation>
+        <translation>Hlava</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1724"/>
@@ -12598,7 +12598,7 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1463"/>
         <source>Bins</source>
-        <translation>Koše</translation>
+        <translation>Rozdělení</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1458"/>
@@ -12648,7 +12648,7 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1813"/>
         <source>Pie</source>
-        <translation>Koláč</translation>
+        <translation>Koláčový obrazec</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1815"/>
@@ -12678,7 +12678,7 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1831"/>
         <source>Scatter</source>
-        <translation>Rozhoz</translation>
+        <translation>Body</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1832"/>
@@ -12688,47 +12688,47 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2675"/>
         <source>QtiPlot - Input error</source>
-        <translation>QtiPlot - Chyba vstupu</translation>
+        <translation>QtiPlot - Chyba při zadání</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2602"/>
         <source>Please enter a valid start limit!</source>
-        <translation>Zadejte, prosím, platnou počáteční mezní hodnotu!</translation>
+        <translation>Zadejte, prosím, platnou počáteční hodnotu!</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2609"/>
         <source>Please enter a valid end limit!</source>
-        <translation>Zadejte, prosím, platnou konečnou mezní hodnotu!</translation>
+        <translation>Zadejte, prosím, platnou koncovou hodnotu!</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2616"/>
         <source>Please enter a valid bin size value!</source>
-        <translation>Zadejte, prosím, platnou hodnotu pro velikost schránky!</translation>
+        <translation>Zadejte, prosím, platnou hodnotu pro šířku rozmezí!</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2645"/>
         <source>QtiPlot - Start limit error</source>
-        <translation>QtiPlot - Chyba počáteční mezní hodnoty</translation>
+        <translation>QtiPlot - Chyba počáteční hodnoty</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2664"/>
         <source>QtiPlot - End limit error</source>
-        <translation>QtiPlot - Chyba konečné mezní hodnoty</translation>
+        <translation>QtiPlot - Chyba koncové hodnoty</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2675"/>
         <source>Please enter limits that satisfy: begin &lt; end!</source>
-        <translation>Zadejte, prosím, mezní hodnoty, které vyhoví: začátek &lt; konec!</translation>
+        <translation>Zadejte, prosím, mezní hodnoty, které vyhoví: Začátek &lt; Konec!</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2701"/>
         <source>QtiPlot - Bin size input error</source>
-        <translation>QtiPlot - Chyba vstupní velikosti schránky</translation>
+        <translation>QtiPlot - Chyba ve velikosti rozmezí</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2701"/>
         <source>Please enter a positive bin size value!</source>
-        <translation>Zadejte, prosím, kladnou hodnotu pro velikost schránky!</translation>
+        <translation>Zadejte, prosím, kladnou hodnotu pro velikost rozmezí!</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2779"/>
@@ -12743,52 +12743,52 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1029"/>
         <source>Matrix</source>
-        <translation type="unfinished"></translation>
+        <translation>Matice</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1036"/>
         <source>Use matrix formula to calculate values</source>
-        <translation type="unfinished"></translation>
+        <translation>Použít maticový vzorec pro výpočet hodnot</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1738"/>
         <source>Values</source>
-        <translation type="unfinished"></translation>
+        <translation>Hodnoty</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1105"/>
         <source>&amp;Show Contour Lines</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Ukázat obrysové čáry</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1109"/>
         <source>Set Equidistant Levels</source>
-        <translation type="unfinished"></translation>
+        <translation>Nastavit stejně vzdálené úrovně</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1117"/>
         <source>Start</source>
-        <translation type="unfinished"></translation>
+        <translation>Začátek</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1123"/>
         <source>Step</source>
-        <translation type="unfinished">Krok</translation>
+        <translation>Krok</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1129"/>
         <source>Set &amp;Levels</source>
-        <translation type="unfinished"></translation>
+        <translation>Nastavit &amp;úrovně</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1140"/>
         <source>Pen</source>
-        <translation type="unfinished"></translation>
+        <translation>Pero</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1152"/>
         <source>Use &amp;Table Custom Pen</source>
-        <translation type="unfinished"></translation>
+        <translation>Použít vlastní pero &amp;tabulky</translation>
     </message>
 </context>
 <context>
@@ -12866,7 +12866,7 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/core/PlotWizard.cpp" line="278"/>
         <source>You must define a X column first!</source>
-        <translation>Neprve musíte stanovit sloupec X!</translation>
+        <translation>Neprve musíte vybrat sloupec X!</translation>
     </message>
     <message>
         <location filename="src/core/PlotWizard.cpp" line="224"/>
@@ -12886,12 +12886,12 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/core/PlotWizard.cpp" line="280"/>
         <source>You must define a Y column first!</source>
-        <translation>Neprve musíte stanovit sloupec Y!</translation>
+        <translation>Neprve musíte vybrat sloupec Y!</translation>
     </message>
     <message>
         <location filename="src/core/PlotWizard.cpp" line="282"/>
         <source>You have already defined an error-bars column!</source>
-        <translation>Již jste stanovil sloupec chybového pruhu!</translation>
+        <translation>Již jste stanovil sloupec pro chybový pruh!</translation>
     </message>
     <message>
         <location filename="src/core/PlotWizard.cpp" line="321"/>
@@ -12904,7 +12904,7 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/analysis/PluginFit.cpp" line="63"/>
         <source>Plugin Fit</source>
-        <translation>Umístění přídavného modulu</translation>
+        <translation>Přizpůsobení z přídavného modulu</translation>
     </message>
     <message>
         <location filename="src/analysis/PluginFit.cpp" line="70"/>
@@ -12924,12 +12924,12 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/analysis/PluginFit.cpp" line="81"/>
         <source>The plugin does not implement a %1 method necessary for simplex fitting.</source>
-        <translation>Přídavný modul neprovádí %1 metodu nezbytnou pro simplexní (jednoduché, jednosměrné?) umísťování.</translation>
+        <translation>Přídavný modul neprovádí žádnou %1 metodu nezbytnou pro simplexní přizpůsobení.</translation>
     </message>
     <message>
         <location filename="src/analysis/PluginFit.cpp" line="102"/>
         <source>The plugin does not implement a %1 method necessary for Levenberg-Marquardt fitting.</source>
-        <translation>Přídavný modul neprovádí %1 metodu nezbytnou pro Levenberg-Marquardt umísťování.</translation>
+        <translation>Přídavný modul neprovádí žádnou %1 metodu nezbytnou pro Levenberg-Marquardt přizpůsobení.</translation>
     </message>
 </context>
 <context>
@@ -12937,22 +12937,22 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/analysis/dialogs/PolynomFitDialog.cpp" line="49"/>
         <source>QtiPlot - Polynomial Fit Options</source>
-        <translation>QtiPlot - Volby mnohočlenného (polynomického) umístění</translation>
+        <translation>QtiPlot - Volby mnohočlenného (polynomického) přizpůsobení</translation>
     </message>
     <message>
         <location filename="src/analysis/dialogs/PolynomFitDialog.cpp" line="55"/>
         <source>Polynomial Fit of</source>
-        <translation>Mnohočlenné (polynomické) umístění</translation>
+        <translation>Mnohočlenné (polynomické) přizpůsobení</translation>
     </message>
     <message>
         <location filename="src/analysis/dialogs/PolynomFitDialog.cpp" line="60"/>
         <source>Order (1 - 9, 1 = linear)</source>
-        <translation>Pořadí (1 - 9, 1 = přímočaré)</translation>
+        <translation>Řád (1 - 9, 1 = přímočaré)</translation>
     </message>
     <message>
         <location filename="src/analysis/dialogs/PolynomFitDialog.cpp" line="66"/>
         <source>Fit curve # pts</source>
-        <translation>Křivka umístění # pts</translation>
+        <translation>Počet bodů křivky přizpůsobení</translation>
     </message>
     <message>
         <location filename="src/analysis/dialogs/PolynomFitDialog.cpp" line="70"/>
@@ -12962,12 +12962,12 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/analysis/dialogs/PolynomFitDialog.cpp" line="75"/>
         <source>Fit curve Xmin</source>
-        <translation>Xmin křivky umístění</translation>
+        <translation>Křivka přizpůsobení min. X</translation>
     </message>
     <message>
         <location filename="src/analysis/dialogs/PolynomFitDialog.cpp" line="81"/>
         <source>Fit curve Xmax</source>
-        <translation>Xmax křivky umístění</translation>
+        <translation>Křivka přizpůsobení max. X</translation>
     </message>
     <message>
         <location filename="src/analysis/dialogs/PolynomFitDialog.cpp" line="87"/>
@@ -12977,12 +12977,12 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/analysis/dialogs/PolynomFitDialog.cpp" line="92"/>
         <source>Show Formula on Graph?</source>
-        <translation>Ukázat vzorec na grafu?</translation>
+        <translation>Ukázat vzorec v nákresu?</translation>
     </message>
     <message>
         <location filename="src/analysis/dialogs/PolynomFitDialog.cpp" line="98"/>
         <source>&amp;Fit</source>
-        <translation>&amp;Umístit</translation>
+        <translation>&amp;Přizpůsobení</translation>
     </message>
     <message>
         <location filename="src/analysis/dialogs/PolynomFitDialog.cpp" line="101"/>
@@ -13010,17 +13010,17 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/analysis/PolynomialFit.cpp" line="68"/>
         <source>Polynomial Fit</source>
-        <translation>Polynomické (mnohočlenné) umístění</translation>
+        <translation>Polynomické (mnohočlenné) přizpůsobení</translation>
     </message>
     <message>
         <location filename="src/analysis/PolynomialFit.cpp" line="152"/>
         <source>QtiPlot - Fit Error</source>
-        <translation>QtiPlot - Chyba při umístění</translation>
+        <translation>QtiPlot - Chyba při přizpůsobení</translation>
     </message>
     <message>
         <location filename="src/analysis/PolynomialFit.cpp" line="153"/>
         <source>You need at least %1 data points for this fit operation. Operation aborted!</source>
-        <translation>Pro tuto operaci umístění potřebujete alespoň %1 datových bodů! Operace zrušena!</translation>
+        <translation>Pro tuto operaci přizpůsobení potřebujete alespoň %1 datových bodů! Operace zrušena!</translation>
     </message>
 </context>
 <context>
@@ -13038,7 +13038,7 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/scripting/PythonScripting.cpp" line="230"/>
         <source>Accessing QtiPlot functions or objects from Python code won&apos;t work. Probably your version of Qt/SIP/PyQt differs from the one QtiPlot was compiled against.</source>
-        <translation type="unfinished"></translation>
+        <translation>Přístup k funkcím a objektům z pythonovského kódu u programu QtiPlot není možný. Pravděpodobně je nainstalována jiná verze Qt/SIP/PyQt než ta, která byla použita při sestavení programu QtiPlot; Aktualizace SIP nebo nové sestavení programu QtiPlot by problém odstranilo.</translation>
     </message>
 </context>
 <context>
@@ -13046,12 +13046,12 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/analysis/FitModelHandler.cpp" line="46"/>
         <source>The file is not an QtiPlot fit model file.</source>
-        <translation>Soubor není souborem QtiPlot modelu umístění.</translation>
+        <translation>Soubor není souborem QtiPlot modelu přizpůsobení.</translation>
     </message>
     <message>
         <location filename="src/analysis/FitModelHandler.cpp" line="53"/>
         <source>The file is not an QtiPlot fit model version 1.0 file.</source>
-        <translation>Soubor není souborem QtiPlot modelu umístění verze 1.0.</translation>
+        <translation>Soubor není souborem QtiPlot modelu přizpůsobení verze 1.0.</translation>
     </message>
     <message>
         <location filename="src/core/CustomActionDialog.cpp" line="699"/>
@@ -13076,255 +13076,293 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/analysis/NonLinearFit.cpp" line="322"/>
         <source>QtiPlot</source>
-        <translation type="unfinished">QtiPlot</translation>
+        <translation>QtiPlot</translation>
     </message>
     <message>
         <location filename="src/analysis/NonLinearFit.cpp" line="323"/>
         <source>Ignored data point at x = %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>Datový bod na x = %1 nebrán v úvahu.</translation>
     </message>
     <message>
         <location filename="src/plot2D/Spectrogram.cpp" line="100"/>
         <source>QtiPlot - Script Error</source>
-        <translation type="unfinished"></translation>
+        <translation>QtiPlot - Chyba skriptu</translation>
     </message>
     <message>
         <location filename="src/plot2D/Spectrogram.cpp" line="101"/>
         <source>Python-like syntax is not supported in this case since it severely reduces drawing speed!</source>
-        <translation type="unfinished"></translation>
+        <translation>Skladba na způsob Pythonu není v tomto případě podporována, jelikož vážně omezuje rychlost kreslení!</translation>
     </message>
     <message>
         <location filename="src/scripting/MyParser.cpp" line="81"/>
         <source>abs(x):
  Absolute value of x.</source>
-        <translation type="unfinished"></translation>
+        <translation>abs(x):
+ Absolutní hodnota x.</translation>
     </message>
     <message>
         <location filename="src/scripting/MyParser.cpp" line="85"/>
         <source>acos(x):
  Inverse cos function.</source>
-        <translation type="unfinished"></translation>
+        <translation>acos(x):
+ Obrácená funkce ke cos funkci.</translation>
     </message>
     <message>
         <location filename="src/scripting/MyParser.cpp" line="89"/>
         <source>acosh(x):
  Hyperbolic inverse cos function.</source>
-        <translation type="unfinished"></translation>
+        <translation>acosh(x):
+ Hyperbolická brácená funkce ke cos funkci.</translation>
     </message>
     <message>
         <location filename="src/scripting/MyParser.cpp" line="93"/>
         <source>asin(x):
  Inverse sin function.</source>
-        <translation type="unfinished"></translation>
+        <translation>asin(x):
+ Obrácená funkce k sin funkci.</translation>
     </message>
     <message>
         <location filename="src/scripting/MyParser.cpp" line="97"/>
         <source>asinh(x):
  Hyperbolic inverse sin function.</source>
-        <translation type="unfinished"></translation>
+        <translation>asinh(x):
+ Hyperbolická brácená funkce k sin funkci.</translation>
     </message>
     <message>
         <location filename="src/scripting/MyParser.cpp" line="100"/>
         <source>atan(x):
  Inverse tan function.</source>
-        <translation type="unfinished"></translation>
+        <translation>atan(x):
+ Obrácená funkce k funkci tangens.</translation>
     </message>
     <message>
         <location filename="src/scripting/MyParser.cpp" line="103"/>
         <source>atanh(x):
   Hyperbolic inverse tan function.</source>
-        <translation type="unfinished"></translation>
+        <translation>atanh(x):
+ Hyperbolická brácená funkce k funkci tangens.</translation>
     </message>
     <message>
         <location filename="src/scripting/MyParser.cpp" line="106"/>
         <source>avg(x,y,...):
   Mean value of all arguments.</source>
-        <translation type="unfinished"></translation>
+        <translation>avg(x,y,...):
+  Průměrná hodnota všech argumentů.</translation>
     </message>
     <message>
         <location filename="src/scripting/MyParser.cpp" line="109"/>
         <source>bessel_j0(x):
   Regular cylindrical Bessel function of zeroth order, J_0(x).</source>
-        <translation type="unfinished"></translation>
+        <translation>bessel_j0(x):
+ Pravidelná válcovitá Besselova funkce nultého řádu, J_0(x).</translation>
     </message>
     <message>
         <location filename="src/scripting/MyParser.cpp" line="112"/>
         <source>bessel_j1(x):
   Regular cylindrical Bessel function of first order, J_1(x).</source>
-        <translation type="unfinished"></translation>
+        <translation>bessel_j1(x):
+ Pravidelná válcovitá Besselova funkce prvního řádu, J_1(x).</translation>
     </message>
     <message>
         <location filename="src/scripting/MyParser.cpp" line="115"/>
         <source>bessel_jn(double x, int n):
  Regular cylindrical Bessel function of order n, J_n(x).</source>
-        <translation type="unfinished"></translation>
+        <translation>bessel_jn(double x, int n):
+ Pravidelná válcovitá Besselova funkce n-tého řádu, J_n(x).</translation>
     </message>
     <message>
         <location filename="src/scripting/MyParser.cpp" line="118"/>
         <source>bessel_y0(x):
  Irregular cylindrical Bessel function of zeroth order, Y_0(x), for x&gt;0.</source>
-        <translation type="unfinished"></translation>
+        <translation>bessel_y0(x):
+ Nepravidelná válcovitá Besselova funkce nultého řádu, Y_0(x),pro x&gt;0.</translation>
     </message>
     <message>
         <location filename="src/scripting/MyParser.cpp" line="121"/>
         <source>bessel_y1(x):
  Irregular cylindrical Bessel function of first order, Y_1(x), for x&gt;0.</source>
-        <translation type="unfinished"></translation>
+        <translation>bessel_y1(x):
+ Nepravidelná válcovitá Besselova funkce prvního řádu, Y_1(x),pro x&gt;0.</translation>
     </message>
     <message>
         <location filename="src/scripting/MyParser.cpp" line="124"/>
         <source>bessel_yn(double x, int n):
  Irregular cylindrical Bessel function of order n, Y_n(x), for x&gt;0.</source>
-        <translation type="unfinished"></translation>
+        <translation>bessel_yn(double x, int n):
+ Nepravidelná válcovitá Besselova funkce n-tého řádu, Y_n(x), pro x&gt;0.</translation>
     </message>
     <message>
         <location filename="src/scripting/MyParser.cpp" line="127"/>
         <source>beta (a,b):
  Computes the Beta Function, B(a,b) = Gamma(a)*Gamma(b)/Gamma(a+b) for a &gt; 0, b &gt; 0.</source>
-        <translation type="unfinished"></translation>
+        <translation>beta (a,b):
+ Počítá funkci beta, B(a,b) = Gamma(a)*Gamma(b)/Gamma(a+b) pro a &gt; 0, b &gt; 0.</translation>
     </message>
     <message>
         <location filename="src/scripting/MyParser.cpp" line="130"/>
         <source>cos (x):
  Calculate cosine.</source>
-        <translation type="unfinished"></translation>
+        <translation>cos (x):
+ Počítá cosinus.</translation>
     </message>
     <message>
         <location filename="src/scripting/MyParser.cpp" line="133"/>
         <source>cosh(x):
  Hyperbolic cos function.</source>
-        <translation type="unfinished"></translation>
+        <translation>cosh(x):
+ Hyperbolická funkce cosinus.</translation>
     </message>
     <message>
         <location filename="src/scripting/MyParser.cpp" line="136"/>
         <source>erf(x):
   The error function.</source>
-        <translation type="unfinished"></translation>
+        <translation>erf(x):
+ Funkce chyby.</translation>
     </message>
     <message>
         <location filename="src/scripting/MyParser.cpp" line="139"/>
         <source>erfc(x):
  Complementary error function erfc(x) = 1 - erf(x).</source>
-        <translation type="unfinished"></translation>
+        <translation>erfc(x):
+ Doplňková funkce chyby erfc(x) = 1 - erf(x).</translation>
     </message>
     <message>
         <location filename="src/scripting/MyParser.cpp" line="142"/>
         <source>erfz(x):
  The Gaussian probability density function Z(x).</source>
-        <translation type="unfinished"></translation>
+        <translation>erfz(x):
+ Gaussova funkce hustoty pravděpodobnosti Z(x).</translation>
     </message>
     <message>
         <location filename="src/scripting/MyParser.cpp" line="145"/>
         <source>erfq(x):
  The upper tail of the Gaussian probability function Q(x).</source>
-        <translation type="unfinished"></translation>
+        <translation>erfq(x):
+ Horní část Gaussovy funkce hustoty pravděpodobnosti Q(x).</translation>
     </message>
     <message>
         <location filename="src/scripting/MyParser.cpp" line="148"/>
         <source>exp(x):
  Exponential function: e raised to the power of x.</source>
-        <translation type="unfinished"></translation>
+        <translation>exp(x):
+ Exponenciální funkce: e umocnilo x.</translation>
     </message>
     <message>
         <location filename="src/scripting/MyParser.cpp" line="151"/>
         <source>gamma(x):
  Computes the Gamma function, subject to x not being a negative integer.</source>
-        <translation type="unfinished"></translation>
+        <translation>gamma(x):
+ Počítá funkci gama, předmět x není záporné celé číslo.</translation>
     </message>
     <message>
         <location filename="src/scripting/MyParser.cpp" line="154"/>
         <source>gammaln(x):
  Computes the logarithm of the Gamma function, subject to x not a being negative integer. For x&lt;0, log(|Gamma(x)|) is returned.</source>
-        <translation type="unfinished"></translation>
+        <translation>gammaln(x):
+ Počítá logaritmus funkce gama function, předmět x není záporné celé číslo. Pro x&lt;0, log(|Gamma(x)|) je vrácen.</translation>
     </message>
     <message>
         <location filename="src/scripting/MyParser.cpp" line="157"/>
         <source>hazard(x):
  Computes the hazard function for the normal distribution h(x) = erfz(x)/erfq(x).</source>
-        <translation type="unfinished"></translation>
+        <translation>hazard(x):
+ Počítá funkci nebezpečí pro normální/Gaussovo rozdělení h(x) = erfz(x)/erfq(x).</translation>
     </message>
     <message>
         <location filename="src/scripting/MyParser.cpp" line="160"/>
-        <source>if(e1, e2, e3):<byte value="x9"/>if e1 then e2 else e3.</source>
-        <translation type="unfinished"></translation>
+        <source>if(e1, e2, e3):	if e1 then e2 else e3.</source>
+        <translation>if(e1, e2, e3):	pokud e1 pak e2 else e3.</translation>
     </message>
     <message>
         <location filename="src/scripting/MyParser.cpp" line="163"/>
         <source>ln(x):
  Calculate natural logarithm.</source>
-        <translation type="unfinished"></translation>
+        <translation>ln(x):
+ Počítá přirozený logaritmus.</translation>
     </message>
     <message>
         <location filename="src/scripting/MyParser.cpp" line="166"/>
         <source>log(x):
  Calculate decimal logarithm.</source>
-        <translation type="unfinished"></translation>
+        <translation>log(x):
+ Počítá desetinný logaritmus.</translation>
     </message>
     <message>
         <location filename="src/scripting/MyParser.cpp" line="169"/>
         <source>log2(x):
- Calculate <byte value="x9"/>logarithm to the base 2.</source>
-        <translation type="unfinished"></translation>
+ Calculate 	logarithm to the base 2.</source>
+        <translation>log2(x):
+ Počítá 	logaritmus o základu 2.</translation>
     </message>
     <message>
         <location filename="src/scripting/MyParser.cpp" line="172"/>
         <source>min(x,y,...):
  Calculate minimum of all arguments.</source>
-        <translation type="unfinished"></translation>
+        <translation>min(x,y,...):
+ Počítá minimum všech argumentů.</translation>
     </message>
     <message>
         <location filename="src/scripting/MyParser.cpp" line="175"/>
         <source>max(x,y,...):
  Calculate maximum of all arguments.</source>
-        <translation type="unfinished"></translation>
+        <translation>max(x,y,...):
+ Počítá maximum všech argumentů.</translation>
     </message>
     <message>
         <location filename="src/scripting/MyParser.cpp" line="178"/>
         <source>rint(x):
  Round to nearest integer.</source>
-        <translation type="unfinished"></translation>
+        <translation>rint(x):
+ Zaokrouhlit na nejbližší celé číslo.</translation>
     </message>
     <message>
         <location filename="src/scripting/MyParser.cpp" line="181"/>
         <source>sign(x):
  Sign function: -1 if x&lt;0; 1 if x&gt;0.</source>
-        <translation type="unfinished"></translation>
+        <translation>sign(x):
+ Funkce sign: -1 pokud f x&lt;0; 1 pokud x&gt;0.</translation>
     </message>
     <message>
         <location filename="src/scripting/MyParser.cpp" line="184"/>
         <source>sin(x):
  Calculate sine.</source>
-        <translation type="unfinished"></translation>
+        <translation>sin (x):
+ Počítá sinus.</translation>
     </message>
     <message>
         <location filename="src/scripting/MyParser.cpp" line="187"/>
         <source>sinh(x):
  Hyperbolic sin function.</source>
-        <translation type="unfinished"></translation>
+        <translation>sinh(x):
+ Hyperbolická funkce sinus.</translation>
     </message>
     <message>
         <location filename="src/scripting/MyParser.cpp" line="190"/>
         <source>sqrt(x):
  Square root function.</source>
-        <translation type="unfinished"></translation>
+        <translation>sqrt(x):
+ Funkce druhé mocniny (dvojmocniny).</translation>
     </message>
     <message>
         <location filename="src/scripting/MyParser.cpp" line="193"/>
         <source>tan(x):
  Calculate tangent function.</source>
-        <translation type="unfinished"></translation>
+        <translation>tan(x):
+ Počítá funkci tangens.</translation>
     </message>
     <message>
         <location filename="src/scripting/MyParser.cpp" line="196"/>
         <source>tanh(x):
  Hyperbolic tan function.</source>
-        <translation type="unfinished"></translation>
+        <translation>tanh(x):
+ Hyperbolická funkce tangens.</translation>
     </message>
     <message>
         <location filename="src/scripting/MyParser.cpp" line="199"/>
         <source>ttable(x, n):
  Student&apos;s t-distribution with n degrees of freedom.</source>
-        <translation type="unfinished"></translation>
+        <translation>ttable(x, n):
+ Studentovo rozložení s n stupni volnosti.</translation>
     </message>
     <message>
         <location filename="src/scripting/MyParser.cpp" line="202"/>
@@ -13332,7 +13370,10 @@ Dají se použít následující zvláštní kódy:
  Compute the principal branch of Lambert&apos;s W function, W_0(x).
  W is defined as a solution to the equation W(x)*exp(W(x))=x.
  For x&lt;0, there are two real-valued branches; this function computes the one where W&gt;-1 for x&lt;0 (also see wm1(x)).</source>
-        <translation type="unfinished"></translation>
+        <translation>w0(x):
+ Počítá hlavní větev Lambertovy funkce W, W_0(x).
+ W je vymezeno jako řešení rovnice W(x)*exp(W(x))=x.
+ Pro x&lt;0, jsou dvě větve nabývající reálných hodnot; tato funkce počítá tu, kde W&gt;-1 pro x&lt;0 (také se podívejte na wm1(x)).</translation>
     </message>
     <message>
         <location filename="src/scripting/MyParser.cpp" line="205"/>
@@ -13340,17 +13381,20 @@ Dají se použít následující zvláštní kódy:
  Compute the secondary branch of Lambert&apos;s W function, W_{-1}(x).
  W is defined as a solution to the equation W(x)*exp(W(x))=x.
  For x&lt;0, there are two real-valued branches; this function computes the one where W&lt;-1 for x&lt;0. (also see w0(x)).</source>
-        <translation type="unfinished"></translation>
+        <translation>wm1(x):
+ Počítá vedlejší větev Lambertovy funkce W, W_{-1}(x).
+ W je vymezeno jako řešení rovnice W(x)*exp(W(x))=x.
+ Pro x&lt;0, jsou dvě větve nabývající reálných hodnot; tato funkce počítá tu, kde W&lt;-1 pro x&lt;0 (také se podívejte na wm0(x)).</translation>
     </message>
     <message>
         <location filename="src/scripting/MyParser.cpp" line="240"/>
         <source>QtiPlot - Math Error</source>
-        <translation type="unfinished"></translation>
+        <translation>QtiPlot - Chyba v matematice</translation>
     </message>
     <message>
         <location filename="src/scripting/MyParser.cpp" line="241"/>
         <source>Found non-removable singularity at x = %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nalezena neodstranitelná singularita na x = %1.</translation>
     </message>
 </context>
 <context>
@@ -13358,92 +13402,92 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/lib/3rdparty/qtcolorpicker/src/qtcolorpicker.cpp" line="508"/>
         <source>Black</source>
-        <translation type="unfinished"></translation>
+        <translation>Černá</translation>
     </message>
     <message>
         <location filename="src/lib/3rdparty/qtcolorpicker/src/qtcolorpicker.cpp" line="509"/>
         <source>White</source>
-        <translation type="unfinished"></translation>
+        <translation>Bílá</translation>
     </message>
     <message>
         <location filename="src/lib/3rdparty/qtcolorpicker/src/qtcolorpicker.cpp" line="510"/>
         <source>Red</source>
-        <translation type="unfinished"></translation>
+        <translation>Červená</translation>
     </message>
     <message>
         <location filename="src/lib/3rdparty/qtcolorpicker/src/qtcolorpicker.cpp" line="511"/>
         <source>Dark red</source>
-        <translation type="unfinished"></translation>
+        <translation>Tmavě červená</translation>
     </message>
     <message>
         <location filename="src/lib/3rdparty/qtcolorpicker/src/qtcolorpicker.cpp" line="512"/>
         <source>Green</source>
-        <translation type="unfinished"></translation>
+        <translation>Zelená</translation>
     </message>
     <message>
         <location filename="src/lib/3rdparty/qtcolorpicker/src/qtcolorpicker.cpp" line="513"/>
         <source>Dark green</source>
-        <translation type="unfinished"></translation>
+        <translation>Tmavě zelená</translation>
     </message>
     <message>
         <location filename="src/lib/3rdparty/qtcolorpicker/src/qtcolorpicker.cpp" line="514"/>
         <source>Blue</source>
-        <translation type="unfinished"></translation>
+        <translation>Modrá</translation>
     </message>
     <message>
         <location filename="src/lib/3rdparty/qtcolorpicker/src/qtcolorpicker.cpp" line="515"/>
         <source>Dark blue</source>
-        <translation type="unfinished"></translation>
+        <translation>Tmavě modrá</translation>
     </message>
     <message>
         <location filename="src/lib/3rdparty/qtcolorpicker/src/qtcolorpicker.cpp" line="516"/>
         <source>Cyan</source>
-        <translation type="unfinished"></translation>
+        <translation>Modrozelená</translation>
     </message>
     <message>
         <location filename="src/lib/3rdparty/qtcolorpicker/src/qtcolorpicker.cpp" line="517"/>
         <source>Dark cyan</source>
-        <translation type="unfinished"></translation>
+        <translation>Tmavě modrozelená</translation>
     </message>
     <message>
         <location filename="src/lib/3rdparty/qtcolorpicker/src/qtcolorpicker.cpp" line="518"/>
         <source>Magenta</source>
-        <translation type="unfinished"></translation>
+        <translation>Červenorudá</translation>
     </message>
     <message>
         <location filename="src/lib/3rdparty/qtcolorpicker/src/qtcolorpicker.cpp" line="519"/>
         <source>Dark magenta</source>
-        <translation type="unfinished"></translation>
+        <translation>Tmavě červenorudá</translation>
     </message>
     <message>
         <location filename="src/lib/3rdparty/qtcolorpicker/src/qtcolorpicker.cpp" line="520"/>
         <source>Yellow</source>
-        <translation type="unfinished"></translation>
+        <translation>Žlutá</translation>
     </message>
     <message>
         <location filename="src/lib/3rdparty/qtcolorpicker/src/qtcolorpicker.cpp" line="521"/>
         <source>Dark yellow</source>
-        <translation type="unfinished"></translation>
+        <translation>Tmavě žlutá</translation>
     </message>
     <message>
         <location filename="src/lib/3rdparty/qtcolorpicker/src/qtcolorpicker.cpp" line="522"/>
         <source>Gray</source>
-        <translation type="unfinished"></translation>
+        <translation>Šedá</translation>
     </message>
     <message>
         <location filename="src/lib/3rdparty/qtcolorpicker/src/qtcolorpicker.cpp" line="523"/>
         <source>Dark gray</source>
-        <translation type="unfinished"></translation>
+        <translation>Tmavě šedá</translation>
     </message>
     <message>
         <location filename="src/lib/3rdparty/qtcolorpicker/src/qtcolorpicker.cpp" line="524"/>
         <source>Light gray</source>
-        <translation type="unfinished"></translation>
+        <translation>Světle šedá</translation>
     </message>
     <message>
         <location filename="src/lib/3rdparty/qtcolorpicker/src/qtcolorpicker.cpp" line="439"/>
         <source>Custom</source>
-        <translation type="unfinished"></translation>
+        <translation>Vlastní</translation>
     </message>
 </context>
 <context>
@@ -13461,7 +13505,7 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/plot2D/RangeSelectorTool.cpp" line="96"/>
         <source>Click or use Ctrl+arrow key to select range (arrows select active cursor)!</source>
-        <translation>Klepněte nebo použijte Ctrl+klávesu šipky pro výběr rozsahu (šipky vybírají aktivní kurzor)!</translation>
+        <translation>Klepněte nebo použijte Ctrl+klávesu šipky pro výběr rozsahu (šipky vybírají aktivní ukazovátko)!</translation>
     </message>
     <message>
         <location filename="src/plot2D/RangeSelectorTool.cpp" line="189"/>
@@ -13481,12 +13525,12 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/plot2D/RangeSelectorTool.cpp" line="441"/>
         <source>Remove data from curves?</source>
-        <translation type="unfinished"></translation>
+        <translation>Odstranit data z křivek?</translation>
     </message>
     <message>
         <location filename="src/plot2D/RangeSelectorTool.cpp" line="443"/>
         <source>Copy data to clipboard?</source>
-        <translation type="unfinished"></translation>
+        <translation>Kopírovat data do schránky?</translation>
     </message>
 </context>
 <context>
@@ -13504,17 +13548,17 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/core/RenameWindowDialog.cpp" line="54"/>
         <source>&amp;Name (single word)</source>
-        <translation>&amp;Název (jednoduché slovo)</translation>
+        <translation>&amp;Název (jednotlivé slovo)</translation>
     </message>
     <message>
         <location filename="src/core/RenameWindowDialog.cpp" line="60"/>
         <source>&amp;Label</source>
-        <translation>&amp;Štítek</translation>
+        <translation>&amp;Popis</translation>
     </message>
     <message>
         <location filename="src/core/RenameWindowDialog.cpp" line="67"/>
         <source>&amp;Both Name and Label</source>
-        <translation>&amp;Jak název tak štítek</translation>
+        <translation>&amp;Jak název tak popis</translation>
     </message>
     <message>
         <location filename="src/core/RenameWindowDialog.cpp" line="75"/>
@@ -13534,7 +13578,7 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/core/RenameWindowDialog.cpp" line="142"/>
         <source>For internal consistency reasons the underscore character is replaced with a minus sign.</source>
-        <translation>Z důvodů vnitřní ucelenosti je znak podtržení nahrazen znaménkem mínus.</translation>
+        <translation>Z důvodů zajištění vnitřní ucelenosti by znaky podtržení nahrazeny znaménkem mínus.</translation>
     </message>
 </context>
 <context>
@@ -13542,7 +13586,7 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/plot2D/ScreenPickerTool.cpp" line="52"/>
         <source>Click on plot or move cursor to display coordinates!</source>
-        <translation>Klepněte na nákres nebo pohněte kurzorem pro zobrazení souřadnic!</translation>
+        <translation>Klepněte na nákres nebo pohněte ukazovátkem pro zobrazení souřadnic!</translation>
     </message>
 </context>
 <context>
@@ -13863,42 +13907,42 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/scripting/ScriptWindow.cpp" line="230"/>
         <source>Script Output Panel</source>
-        <translation type="unfinished"></translation>
+        <translation>Výstupní panel pro skript</translation>
     </message>
     <message>
         <location filename="src/scripting/ScriptWindow.cpp" line="257"/>
         <source>Print Pre&amp;view...</source>
-        <translation type="unfinished"></translation>
+        <translation>Náhled &amp;tisku...</translation>
     </message>
     <message>
         <location filename="src/scripting/ScriptWindow.cpp" line="283"/>
         <source>Show Script &amp;Output Panel</source>
-        <translation type="unfinished"></translation>
+        <translation>Ukázat &amp;výstupní panel pro skript</translation>
     </message>
     <message>
         <location filename="src/scripting/ScriptWindow.cpp" line="286"/>
         <source>Ouput on Next &amp;Line</source>
-        <translation type="unfinished"></translation>
+        <translation>Výstup na dalším &amp;řádku</translation>
     </message>
     <message>
         <location filename="src/scripting/ScriptWindow.cpp" line="287"/>
         <source>Show &amp;Workspace</source>
-        <translation type="unfinished"></translation>
+        <translation>Ukázat &amp;pracovní prostor</translation>
     </message>
     <message>
         <location filename="src/scripting/ScriptWindow.cpp" line="241"/>
         <source>&amp;Close</source>
-        <translation type="unfinished">&amp;Zavřít</translation>
+        <translation>&amp;Zavřít</translation>
     </message>
     <message>
         <location filename="src/scripting/ScriptWindow.cpp" line="284"/>
         <source>Show Script Output Panel</source>
-        <translation type="unfinished"></translation>
+        <translation>Ukázat výstupní panel pro skript</translation>
     </message>
     <message>
         <location filename="src/scripting/ScriptWindow.cpp" line="378"/>
         <source>Script print preview</source>
-        <translation type="unfinished"></translation>
+        <translation>Náhled tisku skriptu</translation>
     </message>
 </context>
 <context>
@@ -13987,7 +14031,7 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/table/SetColValuesDialog.cpp" line="120"/>
         <source>Clear &amp;Formulas</source>
-        <translation type="unfinished"></translation>
+        <translation>Smazat &amp;vzorce</translation>
     </message>
 </context>
 <context>
@@ -14010,17 +14054,17 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/analysis/SigmoidalFit.cpp" line="66"/>
         <source>center</source>
-        <translation>na střed</translation>
+        <translation>střed</translation>
     </message>
     <message>
         <location filename="src/analysis/SigmoidalFit.cpp" line="66"/>
         <source>time constant</source>
-        <translation>konstanta času</translation>
+        <translation>stálá hodnota času</translation>
     </message>
     <message>
         <location filename="src/analysis/SigmoidalFit.cpp" line="68"/>
         <source>Boltzmann (Sigmoidal) Fit</source>
-        <translation>Boltzmannovo (esovité) spojení</translation>
+        <translation>Boltzmannovo přizpůsobení (esovité)</translation>
     </message>
 </context>
 <context>
@@ -14091,7 +14135,7 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/analysis/SmoothFilter.cpp" line="74"/>
         <source>Unknown smooth filter. Valid values are: 1 - Savitky-Golay, 2 - FFT, 3 - Moving Window Average.</source>
-        <translation>Neznámý filtr pro vyhlazování. Platnými hodnotami jsou: 1 - Savitky-Golay, 2 - FFT, 3 - Pohybující se okenní průměr.</translation>
+        <translation>Neznámý filtr pro vyhlazování. Platnými hodnotami jsou: 1 - Savitky-Golay, 2 - FFT, 3 - Klouzající okenní průměr.</translation>
     </message>
     <message>
         <location filename="src/analysis/SmoothFilter.cpp" line="99"/>
@@ -14144,7 +14188,7 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/table/SortDialog.cpp" line="51"/>
         <source>Separately</source>
-        <translation>Odděleně</translation>
+        <translation>Jednotlivě</translation>
     </message>
     <message>
         <location filename="src/table/SortDialog.cpp" line="52"/>
@@ -14154,22 +14198,22 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/table/SortDialog.cpp" line="55"/>
         <source>Order</source>
-        <translation>Pořádek</translation>
+        <translation>Směr</translation>
     </message>
     <message>
         <location filename="src/table/SortDialog.cpp" line="57"/>
         <source>Ascending</source>
-        <translation>Vzestupný</translation>
+        <translation>Vzestupně</translation>
     </message>
     <message>
         <location filename="src/table/SortDialog.cpp" line="58"/>
         <source>Descending</source>
-        <translation>Sestupný</translation>
+        <translation>Sestupně</translation>
     </message>
     <message>
         <location filename="src/table/SortDialog.cpp" line="61"/>
         <source>Leading column</source>
-        <translation>Hlavní sloupec</translation>
+        <translation>Seřadit podle hlavního sloupce</translation>
     </message>
     <message>
         <location filename="src/table/SortDialog.cpp" line="66"/>
@@ -14327,62 +14371,62 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/plot3D/SurfaceDialog.cpp" line="372"/>
         <source>QtiPlot - u start limit error</source>
-        <translation>QtiPlot - Chyba počáteční mezní hodnoty u</translation>
+        <translation>QtiPlot - Chyba počáteční hodnoty u</translation>
     </message>
     <message>
         <location filename="src/plot3D/SurfaceDialog.cpp" line="402"/>
         <source>QtiPlot - u end limit error</source>
-        <translation>QtiPlot - Chyba koncové mezní hodnoty u</translation>
+        <translation>QtiPlot - Chyba koncové hodnoty u</translation>
     </message>
     <message>
         <location filename="src/plot3D/SurfaceDialog.cpp" line="392"/>
         <source>QtiPlot - v start limit error</source>
-        <translation>QtiPlot - Chyba počáteční mezní hodnoty v</translation>
+        <translation>QtiPlot - Chyba počáteční hodnoty v</translation>
     </message>
     <message>
         <location filename="src/plot3D/SurfaceDialog.cpp" line="440"/>
         <source>QtiPlot - X Start limit error</source>
-        <translation>QtiPlot - Chyba počáteční mezní hodnoty x</translation>
+        <translation>QtiPlot - Chyba: neplatná počáteční hodnota x</translation>
     </message>
     <message>
         <location filename="src/plot3D/SurfaceDialog.cpp" line="452"/>
         <source>QtiPlot - X End limit error</source>
-        <translation>QtiPlot - Chyba koncové mezní hodnoty x</translation>
+        <translation>QtiPlot - Chyba: neplatná konečná hodnota x</translation>
     </message>
     <message>
         <location filename="src/plot3D/SurfaceDialog.cpp" line="465"/>
         <source>QtiPlot - Y Start limit error</source>
-        <translation>QtiPlot - Chyba počáteční mezní hodnoty y</translation>
+        <translation>QtiPlot - Chyba: neplatná počáteční hodnota y</translation>
     </message>
     <message>
         <location filename="src/plot3D/SurfaceDialog.cpp" line="477"/>
         <source>QtiPlot - Y End limit error</source>
-        <translation>QtiPlot - Chyba koncové mezní hodnoty y</translation>
+        <translation>QtiPlot - Chyba: neplatná konečná hodnota y</translation>
     </message>
     <message>
         <location filename="src/plot3D/SurfaceDialog.cpp" line="489"/>
         <source>QtiPlot - Z Start limit error</source>
-        <translation>QtiPlot - Chyba počáteční mezní hodnoty z</translation>
+        <translation>QtiPlot - Chyba: neplatná počáteční hodnota z</translation>
     </message>
     <message>
         <location filename="src/plot3D/SurfaceDialog.cpp" line="501"/>
         <source>QtiPlot - Z End limit error</source>
-        <translation>QtiPlot - Chyba koncové mezní hodnoty z</translation>
+        <translation>QtiPlot - Chyba: neplatná konečná hodnota z</translation>
     </message>
     <message>
         <location filename="src/plot3D/SurfaceDialog.cpp" line="508"/>
         <source>QtiPlot - Input error</source>
-        <translation>QtiPlot - Chyba vstupu</translation>
+        <translation>QtiPlot - Chyba v zadání</translation>
     </message>
     <message>
         <location filename="src/plot3D/SurfaceDialog.cpp" line="509"/>
         <source>Please enter limits that satisfy: from &lt; end!</source>
-        <translation>Zadejte, prosím, mezní hodnoty, které vyhoví: od &lt; konec!</translation>
+        <translation>Zadejte, prosím, hodnoty x, který vyhoví: Začátek &lt; Konec!</translation>
     </message>
     <message>
         <location filename="src/plot3D/SurfaceDialog.cpp" line="531"/>
         <source>QtiPlot - Input function error</source>
-        <translation>QtiPlot - Chyba vstupní funkce</translation>
+        <translation>QtiPlot - Chyba v zadání funkce</translation>
     </message>
 </context>
 <context>
@@ -14405,7 +14449,7 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/lib/src/SymbolBox.cpp" line="84"/>
         <source>Diamond</source>
-        <translation>Diamant</translation>
+        <translation>Kosočtverec</translation>
     </message>
     <message>
         <location filename="src/lib/src/SymbolBox.cpp" line="89"/>
@@ -14415,12 +14459,12 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/lib/src/SymbolBox.cpp" line="94"/>
         <source>Down Triangle</source>
-        <translation>Trojúhelník směrem dolů</translation>
+        <translation>Trojúhelník dolů</translation>
     </message>
     <message>
         <location filename="src/lib/src/SymbolBox.cpp" line="99"/>
         <source>Up Triangle</source>
-        <translation>Trojúhelník směrem nahoru</translation>
+        <translation>Trojúhelník nahoru</translation>
     </message>
     <message>
         <location filename="src/lib/src/SymbolBox.cpp" line="104"/>
@@ -14445,12 +14489,12 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/lib/src/SymbolBox.cpp" line="124"/>
         <source>Horizontal Line</source>
-        <translation> Vodorovný kříž</translation>
+        <translation>Vodorovná čára</translation>
     </message>
     <message>
         <location filename="src/lib/src/SymbolBox.cpp" line="129"/>
         <source>Vertical Line</source>
-        <translation> Svislá čára</translation>
+        <translation>Svislá čára</translation>
     </message>
     <message>
         <location filename="src/lib/src/SymbolBox.cpp" line="134"/>
@@ -14478,7 +14522,7 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/lib/src/SymbolDialog.cpp" line="373"/>
         <source>QtiPlot - Choose Symbol</source>
-        <translation>QtiPlot - Vyberte symbol</translation>
+        <translation>QtiPlot - Vybrat symbol</translation>
     </message>
 </context>
 <context>
@@ -14556,7 +14600,7 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/table/Table.cpp" line="2459"/>
         <source>QtiPlot - ASCII Export Error</source>
-        <translation>QtiPlot - Chyba při exportu ASCII</translation>
+        <translation>QtiPlot - Chyba při vyvedení ASCII</translation>
     </message>
     <message>
         <location filename="src/table/Table.cpp" line="2460"/>
@@ -14629,7 +14673,7 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/table/TableDialog.cpp" line="101"/>
         <source>Plot Designation:</source>
-        <translation>Označení nákresu:</translation>
+        <translation>Přiřazení nákresu:</translation>
     </message>
     <message>
         <location filename="src/table/TableDialog.cpp" line="104"/>
@@ -14639,12 +14683,12 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/table/TableDialog.cpp" line="105"/>
         <source>X (abscissae)</source>
-        <translation>X (abscisa, x-ová souřadnice)</translation>
+        <translation>Hodnota pro X (abscisa, x-ová souřadnice)</translation>
     </message>
     <message>
         <location filename="src/table/TableDialog.cpp" line="106"/>
         <source>Y (ordinates)</source>
-        <translation>Y (pořadnice, ordináta)</translation>
+        <translation>Hodnota pro Y (pořadnice, ordináta)</translation>
     </message>
     <message>
         <location filename="src/table/TableDialog.cpp" line="107"/>
@@ -14942,12 +14986,12 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/table/TableStatistics.cpp" line="48"/>
         <source>RowStats</source>
-        <translation>Statistické údaje řádků</translation>
+        <translation>Statistické údaje k řádkům</translation>
     </message>
     <message>
         <location filename="src/table/TableStatistics.cpp" line="49"/>
         <source>Row Statistics of %1</source>
-        <translation>Statistické údaje řádků %1</translation>
+        <translation>Statistické údaje řádků pro %1</translation>
     </message>
     <message>
         <location filename="src/table/TableStatistics.cpp" line="52"/>
@@ -14962,12 +15006,12 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/table/TableStatistics.cpp" line="75"/>
         <source>Mean</source>
-        <translation>Průměr</translation>
+        <translation>Průměrná hodnota</translation>
     </message>
     <message>
         <location filename="src/table/TableStatistics.cpp" line="76"/>
         <source>StandardDev</source>
-        <translation>ObvyklýDev</translation>
+        <translation>Obvyklá odchylka</translation>
     </message>
     <message>
         <location filename="src/table/TableStatistics.cpp" line="77"/>
@@ -14977,7 +15021,7 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/table/TableStatistics.cpp" line="79"/>
         <source>Variance</source>
-        <translation>Rozdíl</translation>
+        <translation>Odchylka</translation>
     </message>
     <message>
         <location filename="src/table/TableStatistics.cpp" line="80"/>
@@ -15002,12 +15046,12 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/table/TableStatistics.cpp" line="69"/>
         <source>ColStats</source>
-        <translation>Statistické údaje sloupců</translation>
+        <translation>Statistické údaje ke sloupcům</translation>
     </message>
     <message>
         <location filename="src/table/TableStatistics.cpp" line="70"/>
         <source>Column Statistics of %1</source>
-        <translation>Statistické údaje sloupců %1</translation>
+        <translation>Statistické údaje sloupců pro %1</translation>
     </message>
     <message>
         <location filename="src/table/TableStatistics.cpp" line="73"/>
@@ -15135,7 +15179,7 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/plot2D/dialogs/TextDialog.cpp" line="89"/>
         <source>&amp;Inverted</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Obrácený</translation>
     </message>
 </context>
 <context>
@@ -15174,7 +15218,7 @@ Dají se použít následující zvláštní kódy:
         <location filename="src/lib/src/TextFormatButtons.cpp" line="213"/>
         <source>U</source>
         <comment>Button underline</comment>
-        <translation>Podtržené</translation>
+        <translation>Podtržení</translation>
     </message>
 </context>
 <context>
@@ -15182,7 +15226,7 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/analysis/ExponentialFit.cpp" line="229"/>
         <source>ExpDecay3</source>
-        <translation>Exp. čas rozpadu radioaktivní látky 3</translation>
+        <translation>Exp. čas rozpadu 3</translation>
     </message>
     <message>
         <location filename="src/analysis/ExponentialFit.cpp" line="237"/>
@@ -15222,7 +15266,7 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/analysis/ExponentialFit.cpp" line="239"/>
         <source>offset</source>
-        <translation>vyrovnání</translation>
+        <translation>posun</translation>
     </message>
 </context>
 <context>
@@ -15245,7 +15289,7 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/plot2D/TranslateCurveTool.cpp" line="93"/>
         <source>Curve selected! Move cursor and click to choose a point and double-click/press &apos;Enter&apos; to finish!</source>
-        <translation>Křivka byla vybrána! Pohněte kurzorem a klepněte pro výběr bodu a dvakrát klepněte/stiskněte &apos;Enter&apos;pro dokončení!</translation>
+        <translation>Křivka byla vybrána! Pohněte ukazovátkem a klepněte pro výběr bodu a dvakrát klepněte/stiskněte &apos;Enter&apos;pro dokončení!</translation>
     </message>
     <message>
         <location filename="src/plot2D/TranslateCurveTool.cpp" line="107"/>
@@ -15263,12 +15307,12 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/analysis/ExponentialFit.cpp" line="156"/>
         <source>ExpDecay2</source>
-        <translation>Exp. čas rozpadu radioaktivní látky 2</translation>
+        <translation>Exp. čas rozpadu 2</translation>
     </message>
     <message>
         <location filename="src/analysis/ExponentialFit.cpp" line="164"/>
         <source>Exponential decay</source>
-        <translation>Exponenciální čas rozpadu radioaktivní látky</translation>
+        <translation>Exponenciální rozpad</translation>
     </message>
     <message>
         <location filename="src/analysis/ExponentialFit.cpp" line="166"/>
@@ -15293,7 +15337,7 @@ Dají se použít následující zvláštní kódy:
     <message>
         <location filename="src/analysis/ExponentialFit.cpp" line="166"/>
         <source>offset</source>
-        <translation>vyrovnání</translation>
+        <translation>posun</translation>
     </message>
 </context>
 <context>

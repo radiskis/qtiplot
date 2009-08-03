@@ -116,8 +116,8 @@ vert_align(VCenter),
 d_scale_on_print(true),
 d_print_cropmarks(false),
 d_scale_layers(parent->autoResizeLayers),
-d_waterfall_offset_x(10),
-d_waterfall_offset_y(20),
+d_waterfall_offset_x(1),
+d_waterfall_offset_y(3),
 d_is_waterfall_plot(false),
 d_side_lines(false),
 d_waterfall_fill_color(QColor())
@@ -854,19 +854,45 @@ void MultiLayer::exportEMF(const QString& fname)
 #endif
 
 #ifdef TEX_OUTPUT
-void MultiLayer::exportTeX(const QString& fname)
+void MultiLayer::exportTeX(const QString& fname, bool color, const QSizeF& customSize, int unit)
 {
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
-	QTeXPaintDevice tex(d_canvas->size(), fname);
-	QPainter paint(&tex);
-	QObjectList lst = d_canvas->children();
-	foreach (QObject *o, lst){
-		Graph *g = qobject_cast<Graph *>(o);
-		if (g)
-			g->print(&paint, g->geometry());
+	if (customSize.isValid()){
+		int res = logicalDpiX();
+		QSize size = Graph::customPrintSize(customSize, unit, res);
+
+		QTeXPaintDevice tex(fname, size);
+		tex.setGrayScale(!color);
+		QPainter paint(&tex);
+
+		QObjectList lst = d_canvas->children();
+		foreach (QObject *o, lst){
+			Graph *g = qobject_cast<Graph *>(o);
+			if (!g)
+				continue;
+
+			QRect r = g->geometry();
+			double wfactor = (double)size.width()/(double)d_canvas->width();
+			double hfactor = (double)size.height()/(double)d_canvas->height();
+			r.setSize(QSize(int(r.width()*wfactor), int(r.height()*hfactor)));
+			r.moveTo(int(r.x()*wfactor), int(r.y()*hfactor));
+
+        	g->print(&paint, r);
+		}
+		paint.end();
+	} else {
+		QTeXPaintDevice tex(fname, d_canvas->size());
+		tex.setGrayScale(color);
+		QPainter paint(&tex);
+    	QObjectList lst = d_canvas->children();
+		foreach (QObject *o, lst){
+			Graph *g = qobject_cast<Graph *>(o);
+			if (g)
+				g->print(&paint, g->geometry());
+		}
+		paint.end();
 	}
-	paint.end();
 
 	QApplication::restoreOverrideCursor();
 }
@@ -1490,19 +1516,16 @@ void MultiLayer::updateWaterfallLayout()
 	first->enableAxis(QwtPlot::yLeft, true);
 	first->enableAxis(QwtPlot::xTop, false);
 	first->enableAxis(QwtPlot::yRight, false);
-	first->setCanvasFrame(0);
-	first->setTitle(QString::null);
-	first->setMargin(0);
-	first->setFrame(0);
 
 	int dx = qRound(d_waterfall_offset_x*d_canvas->width()/100.0);
 	int dy = qRound(d_waterfall_offset_y*d_canvas->height()/100.0);
 	first->resize(QSize(d_canvas->width() - aux*dx - left_margin - right_margin,
 			d_canvas->height() - aux*dy - top_margin - bottom_margin));
-
-	QPoint pos = first->canvas()->pos();
-	QSize size = first->canvas()->size();
 	first->move(first->x(), first->canvas()->y() + aux*dy);
+
+	QSize size = first->canvas()->size();
+	QPoint pos = QPoint(first->canvas()->x() + left_margin,
+						first->canvas()->y() + top_margin);
 
 	QColor c = Qt::white;
 	c.setAlpha(0);
@@ -1515,10 +1538,6 @@ void MultiLayer::updateWaterfallLayout()
 		if (!g)
 			continue;
 
-		g->setCanvasFrame(0);
-		g->setTitle(QString::null);
-		g->setMargin(0);
-		g->setFrame(0);
 		g->setBackgroundColor(c);
 		g->setCanvasBackground(c);
 		for (int j = 0; j < QwtPlot::axisCnt; j++)
@@ -1629,7 +1648,10 @@ void MultiLayer::reverseWaterfallOrder()
 		if (!g)
 			continue;
 
-		g->insertCurve(lst[layers - i - 1]);
+		int index = layers - i - 1;
+		if (index >= 0 && index < lst.size())
+			g->insertCurve(lst[index]);
+
 		g->replot();
 	}
 	emit modifiedWindow(this);
