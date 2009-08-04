@@ -305,11 +305,10 @@ class Graph: public QwtPlot
 		QPixmap graphPixmap(const QSize& size = QSize(), double scaleFontsFactor = 1.0);
 		//! Provided for convenience in scripts
 		void exportToFile(const QString& fileName);
-		void exportSVG(const QString& fname);
+		void exportSVG(const QString& fname, const QSizeF& customSize = QSizeF(), int unit = FrameWidget::Pixel, double fontsFactor = 1.0);
 #ifdef EMF_OUTPUT
-		void exportEMF(const QString& fname);
+		void exportEMF(const QString& fname, const QSizeF& customSize = QSizeF(), int unit = FrameWidget::Pixel, double fontsFactor = 1.0);
 #endif
-
 #ifdef TEX_OUTPUT
 		void exportTeX(const QString& fname, bool color = true, const QSizeF& customSize = QSizeF(), int unit = FrameWidget::Pixel);
 #endif
@@ -319,6 +318,7 @@ class Graph: public QwtPlot
 						 int dpi = 0, const QSizeF& customSize = QSizeF (),
 						 int unit = FrameWidget::Pixel, double fontsFactor = 1.0);
 
+		void draw(QPaintDevice *, const QSizeF& customSize, int unit, int res, double fontsFactor = 1.0);
 		static QSize customPrintSize(const QSizeF& customSize, int unit, int dpi);
 		//@}
 

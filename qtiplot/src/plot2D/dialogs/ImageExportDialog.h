@@ -38,6 +38,7 @@
 #include <QComboBox>
 #include <QPrinter>
 
+class QLabel;
 class QStackedWidget;
 class QGroupBox;
 class MdiSubWindow;
@@ -75,6 +76,7 @@ private:
 	QGroupBox *d_custom_size_box;
 	DoubleSpinBox *widthBox, *heightBox, *scaleFontsBox;
 	QComboBox *unitBox;
+	QLabel *resolutionLabel;
 
 public:
 	//! Constructor

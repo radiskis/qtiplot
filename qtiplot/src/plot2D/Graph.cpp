@@ -1439,7 +1439,20 @@ void Graph::exportToFile(const QString& fileName)
 	} else if(fileName.contains(".svg")){
 		exportSVG(fileName);
 		return;
-	} else {
+	}
+#ifdef TEX_OUTPUT
+	 else if(fileName.contains(".tex")){
+		exportTeX(fileName);
+		return;
+	}
+#endif
+#ifdef EMF_OUTPUT
+	 else if(fileName.contains(".emf")){
+		exportEMF(fileName);
+		return;
+	}
+#endif
+	else {
 		QList<QByteArray> list = QImageWriter::supportedImageFormats();
     	for(int i=0 ; i<list.count() ; i++){
 			if (fileName.contains( "." + list[i].toLower())){
@@ -1620,43 +1633,37 @@ void Graph::print()
 	}
 }
 
-void Graph::exportSVG(const QString& fname)
+void Graph::exportSVG(const QString& fname, const QSizeF& customSize, int unit, double fontsFactor)
 {
+	int res = 96;
+
+	QSize size = boundingRect().size();
+	if (customSize.isValid())
+		size = Graph::customPrintSize(customSize, unit, res);
+
 	QSvgGenerator svg;
 	svg.setFileName(fname);
-	svg.setSize(boundingRect().size());
-	svg.setResolution(96);
+	svg.setSize(size);
+	svg.setResolution(res);
 
-	QPainter p(&svg);
-	print(&p, rect());
-	p.end();
+	draw(&svg, customSize, unit, res, fontsFactor);
 }
 
-#ifdef EMF_OUTPUT
-void Graph::exportEMF(const QString& fname)
-{
-	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-
-	EmfPaintDevice emf(boundingRect().size(), fname);
-	QPainter paint(&emf);
-	print(&paint, rect());
-	paint.end();
-
-	QApplication::restoreOverrideCursor();
-}
-#endif
-
-#ifdef TEX_OUTPUT
-void Graph::exportTeX(const QString& fname, bool color, const QSizeF& customSize, int unit)
+void Graph::draw(QPaintDevice *device, const QSizeF& customSize, int unit, int res, double fontsFactor)
 {
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
 	QRect r = rect();
 	QRect br = boundingRect();
+	QSize size = br.size();
 
 	if (customSize.isValid()){
 		int res = logicalDpiX();
-		QSize size = customPrintSize(customSize, unit, res);
+		if (fontsFactor == 0.0)
+			fontsFactor = customPrintSize(customSize, unit, res).height()/(double)height();
+
+		size = customPrintSize(customSize, unit, res);
+
 		if (br.width() != width() || br.height() != height()){
 			double wfactor = (double)br.width()/(double)width();
 			double hfactor = (double)br.height()/(double)height();
@@ -1665,13 +1672,42 @@ void Graph::exportTeX(const QString& fname, bool color, const QSizeF& customSize
 			r.setSize(size);
 	}
 
-	QTeXPaintDevice tex(fname, br.size());
-	tex.setGrayScale(!color);
-	QPainter paint(&tex);
-	print(&paint, r);
-	paint.end();
+	scaleFonts(fontsFactor);
+
+	QPainter p(device);
+	print(&p, r);
+	p.end();
+
+	scaleFonts(1.0/fontsFactor);
 
 	QApplication::restoreOverrideCursor();
+}
+
+#ifdef EMF_OUTPUT
+void Graph::exportEMF(const QString& fname, const QSizeF& customSize, int unit, double fontsFactor)
+{
+	int res = logicalDpiX();
+	QSize size = boundingRect().size();
+	if (customSize.isValid())
+		size = Graph::customPrintSize(customSize, unit, res);
+
+	EmfPaintDevice emf(size, fname);
+	draw(&emf, customSize, unit, res, fontsFactor);
+}
+#endif
+
+#ifdef TEX_OUTPUT
+void Graph::exportTeX(const QString& fname, bool color, const QSizeF& customSize, int unit)
+{
+	int res = logicalDpiX();
+	QSize size = boundingRect().size();
+	if (customSize.isValid())
+		size = Graph::customPrintSize(customSize, unit, res);
+
+	QTeXPaintDevice tex(fname, size);
+	if (!color)
+		tex.setColorMode(QPrinter::GrayScale);
+	draw(&tex, customSize, unit, res);
 }
 #endif
 

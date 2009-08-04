@@ -153,15 +153,16 @@ public slots:
 	void exportToFile(const QString& fileName);
 	void exportImage(const QString& fileName, int quality = 100, bool transparent = false,
 		int dpi = 0, const QSizeF& customSize = QSizeF (), int unit = FrameWidget::Pixel, double fontsFactor = 1.0);
-	void exportSVG(const QString& fname);
+	void exportSVG(const QString& fname, const QSizeF& customSize = QSizeF(), int unit = FrameWidget::Pixel, double fontsFactor = 1.0);
     void exportPDF(const QString& fname);
 	void exportVector(const QString& fileName, int res = 0, bool color = true,
 		const QSizeF& customSize = QSizeF (), int unit = FrameWidget::Pixel, double fontsFactor = 1.0);
 
-#ifdef EMF_OUTPUT
-	void exportEMF(const QString& fname);
-#endif
+	void draw(QPaintDevice *, const QSizeF& customSize, int unit, int res, double fontsFactor = 1.0);
 
+#ifdef EMF_OUTPUT
+	void exportEMF(const QString& fname, const QSizeF& customSize = QSizeF(), int unit = FrameWidget::Pixel, double fontsFactor = 1.0);
+#endif
 #ifdef TEX_OUTPUT
 	void exportTeX(const QString& fname, bool color = true, const QSizeF& customSize = QSizeF(), int unit = FrameWidget::Pixel);
 #endif
