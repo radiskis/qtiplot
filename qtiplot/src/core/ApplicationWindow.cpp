@@ -5255,7 +5255,7 @@ void ApplicationWindow::exportGraph(const QString& exportFilter)
 
 #ifdef EMF_OUTPUT
     if (plot2D && selected_filter.contains(".emf")){
-		plot2D->exportEMF(file_name);
+		plot2D->exportEMF(file_name, ied->customExportSize(), ied->sizeUnit(), ied->scaleFontsFactor());
 		return;
     }
 #endif
@@ -5272,7 +5272,7 @@ void ApplicationWindow::exportGraph(const QString& exportFilter)
 			plot3D->exportVector(file_name, ied->textExportMode(), ied->sortMode());
 		else if (plot2D){
 			if (selected_filter.contains(".svg"))
-				plot2D->exportSVG(file_name);
+				plot2D->exportSVG(file_name, ied->customExportSize(), ied->sizeUnit(), ied->scaleFontsFactor());
 			else
 				plot2D->exportVector(file_name, ied->vectorResolution(), ied->color(),
 						ied->customExportSize(), ied->sizeUnit(), ied->scaleFontsFactor());
@@ -5331,10 +5331,10 @@ void ApplicationWindow::exportLayer()
 		g->exportVector(file_name, ied->vectorResolution(), ied->color(),
 			ied->customExportSize(), ied->sizeUnit(), ied->scaleFontsFactor());
 	else if (selected_filter.contains(".svg"))
-		g->exportSVG(file_name);
+		g->exportSVG(file_name, ied->customExportSize(), ied->sizeUnit(), ied->scaleFontsFactor());
 #ifdef EMF_OUTPUT
     else if (selected_filter.contains(".emf"))
-		g->exportEMF(file_name);
+		g->exportEMF(file_name, ied->customExportSize(), ied->sizeUnit(), ied->scaleFontsFactor());
 #endif
 #ifdef TEX_OUTPUT
     else if (selected_filter.contains(".tex"))
@@ -5438,7 +5438,7 @@ void ApplicationWindow::exportAllGraphs()
 
 #ifdef EMF_OUTPUT
 	if (plot2D && file_suffix.contains(".emf")){
-		plot2D->exportEMF(file_name);
+		plot2D->exportEMF(file_name, ied->customExportSize(), ied->sizeUnit(), ied->scaleFontsFactor());
 		return;
 	}
 #endif
@@ -5449,14 +5449,13 @@ void ApplicationWindow::exportAllGraphs()
     }
 #endif
 
-
 		if (file_suffix.contains(".eps") || file_suffix.contains(".pdf") ||
 			file_suffix.contains(".ps") || file_suffix.contains(".svg")) {
 			if (plot3D)
 				plot3D->exportVector(file_name);
 			else if (plot2D){
 				if (file_suffix.contains(".svg"))
-					plot2D->exportSVG(file_name);
+					plot2D->exportSVG(file_name, ied->customExportSize(), ied->sizeUnit(), ied->scaleFontsFactor());
 				else
 					plot2D->exportVector(file_name, ied->vectorResolution(), ied->color(),
 							ied->customExportSize(), ied->sizeUnit(), ied->scaleFontsFactor());

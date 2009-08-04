@@ -99,8 +99,8 @@ void ImageExportDialog::initAdvancedOptions()
 	d_vector_options = new QGroupBox();
 	QGridLayout *vector_layout = new QGridLayout(d_vector_options);
 
-	QLabel *resLabel = new QLabel(tr("Resolution (DPI)"));
-	vector_layout->addWidget(resLabel, 1, 0);
+	resolutionLabel = new QLabel(tr("Resolution (DPI)"));
+	vector_layout->addWidget(resolutionLabel, 1, 0);
 
 	d_vector_resolution = new QSpinBox();
 	d_vector_resolution->setRange(0, 10000);
@@ -210,7 +210,7 @@ void ImageExportDialog::initAdvancedOptions()
 		return;
 
 	if (qobject_cast<Graph3D *> (d_window)){
-		resLabel->hide();
+		resolutionLabel->hide();
 		d_vector_resolution->hide();
 		d_color->hide();
 	} else {
@@ -230,7 +230,7 @@ void ImageExportDialog::updateAdvancedOptions (const QString & filter)
 	d_custom_size_box->hide();
 
 #if EMF_OUTPUT
-	if (filter.contains("*.emf")){
+	if (filter.contains("*.emf") && !qobject_cast<MultiLayer *> (d_window)){
 		d_extension_toggle->setChecked(false);
 		d_extension_toggle->setEnabled(false);
 		return;
@@ -241,22 +241,25 @@ void ImageExportDialog::updateAdvancedOptions (const QString & filter)
 		if (qobject_cast<Graph3D *> (d_window)){
 			d_extension_toggle->setEnabled(true);
 			d_vector_options->show();
-		} else {
+			return;
+		} else if (!qobject_cast<MultiLayer *> (d_window)){
 			d_extension_toggle->setChecked(false);
 			d_extension_toggle->setEnabled(false);
+			return;
 		}
-		return;
 	}
 
 	d_extension_toggle->setEnabled(true);
-	if (filter.contains("*.eps") || filter.contains("*.ps") ||
-        filter.contains("*.pdf") || filter.contains("*.tex")){
+	if (filter.contains("*.eps") || filter.contains("*.emf") ||
+		filter.contains("*.ps") || filter.contains("*.pdf") ||
+		filter.contains("*.svg") || filter.contains("*.tex")){
 		d_vector_options->show();
 		if (qobject_cast<MultiLayer *> (d_window)){
 			d_custom_size_box->show();
-			//d_vector_options->setVisible(!filter.contains("*.tex"));
-			d_vector_resolution->setEnabled(!filter.contains("*.tex"));
-			scaleFontsBox->setEnabled(!filter.contains("*.tex"));
+			d_vector_options->setVisible(!filter.contains("*.svg") && !filter.contains("*.emf"));
+			d_vector_resolution->setVisible(!filter.contains("*.tex"));
+			resolutionLabel->setVisible(!filter.contains("*.tex"));
+			scaleFontsBox->setEnabled(d_custom_size_box->isChecked() && !filter.contains("*.tex"));
 		}
 	} else {
 		d_raster_options->show();

@@ -684,7 +684,20 @@ void MultiLayer::exportToFile(const QString& fileName)
 	} else if(fileName.contains(".svg")){
 		exportSVG(fileName);
 		return;
-	} else {
+	}
+#ifdef TEX_OUTPUT
+	 else if(fileName.contains(".tex")){
+		exportTeX(fileName);
+		return;
+	}
+#endif
+#ifdef EMF_OUTPUT
+	 else if(fileName.contains(".emf")){
+		exportEMF(fileName);
+		return;
+	}
+#endif
+	 else {
 		QList<QByteArray> list = QImageWriter::supportedImageFormats();
     	for(int i=0 ; i<list.count() ; i++){
 			if (fileName.contains( "." + list[i].toLower())){
@@ -817,84 +830,86 @@ void MultiLayer::exportVector(const QString& fileName, int res, bool color,
 	}
 }
 
-void MultiLayer::exportSVG(const QString& fname)
-{
-	QSvgGenerator generator;
-	generator.setFileName(fname);
-	generator.setSize(d_canvas->size());
-	generator.setResolution(96);
-
-	QPainter p(&generator);
-	QObjectList lst = d_canvas->children();
-	foreach (QObject *o, lst){
-		Graph *g = qobject_cast<Graph *>(o);
-		if (g)
-			g->print(&p, g->geometry());
-	}
-	p.end();
-}
-
-#ifdef EMF_OUTPUT
-void MultiLayer::exportEMF(const QString& fname)
+void MultiLayer::draw(QPaintDevice *device, const QSizeF& customSize, int unit, int res, double fontsFactor)
 {
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
-	EmfPaintDevice emf(d_canvas->size(), fname);
-	QPainter paint(&emf);
-	QObjectList lst = d_canvas->children();
-	foreach (QObject *o, lst){
-		Graph *g = qobject_cast<Graph *>(o);
-		if (g)
-			g->print(&paint, g->geometry());
-	}
-	paint.end();
-
-	QApplication::restoreOverrideCursor();
-}
-#endif
-
-#ifdef TEX_OUTPUT
-void MultiLayer::exportTeX(const QString& fname, bool color, const QSizeF& customSize, int unit)
-{
-	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+	QPainter paint(device);
 
 	if (customSize.isValid()){
-		int res = logicalDpiX();
 		QSize size = Graph::customPrintSize(customSize, unit, res);
-
-		QTeXPaintDevice tex(fname, size);
-		tex.setGrayScale(!color);
-		QPainter paint(&tex);
-
 		QObjectList lst = d_canvas->children();
 		foreach (QObject *o, lst){
 			Graph *g = qobject_cast<Graph *>(o);
 			if (!g)
 				continue;
-
 			QRect r = g->geometry();
 			double wfactor = (double)size.width()/(double)d_canvas->width();
 			double hfactor = (double)size.height()/(double)d_canvas->height();
 			r.setSize(QSize(int(r.width()*wfactor), int(r.height()*hfactor)));
 			r.moveTo(int(r.x()*wfactor), int(r.y()*hfactor));
 
+			if (fontsFactor == 0.0)
+				fontsFactor = Graph::customPrintSize(customSize, unit, logicalDpiX()).height()/(double)height();
+
+			g->scaleFonts(fontsFactor);
         	g->print(&paint, r);
+        	g->scaleFonts(1.0/fontsFactor);
 		}
-		paint.end();
 	} else {
-		QTeXPaintDevice tex(fname, d_canvas->size());
-		tex.setGrayScale(color);
-		QPainter paint(&tex);
     	QObjectList lst = d_canvas->children();
 		foreach (QObject *o, lst){
 			Graph *g = qobject_cast<Graph *>(o);
 			if (g)
 				g->print(&paint, g->geometry());
 		}
-		paint.end();
+	}
+	paint.end();
+	QApplication::restoreOverrideCursor();
+}
+
+void MultiLayer::exportSVG(const QString& fname, const QSizeF& customSize, int unit, double fontsFactor)
+{
+	int res = 96;
+
+	QSvgGenerator svg;
+	svg.setFileName(fname);
+	svg.setSize(d_canvas->size());
+	svg.setResolution(res);
+
+	if (customSize.isValid()){
+		QSize size = Graph::customPrintSize(customSize, unit, res);
+		svg.setSize(size);
 	}
 
-	QApplication::restoreOverrideCursor();
+	draw(&svg, customSize, unit, res, fontsFactor);
+}
+
+#ifdef EMF_OUTPUT
+void MultiLayer::exportEMF(const QString& fname, const QSizeF& customSize, int unit, double fontsFactor)
+{
+	int res = logicalDpiX();
+	QSize size = d_canvas->size();
+	if (customSize.isValid())
+		size = Graph::customPrintSize(customSize, unit, res);
+
+	EmfPaintDevice emf(size, fname);
+	draw(&emf, customSize, unit, res, fontsFactor);
+}
+#endif
+
+#ifdef TEX_OUTPUT
+void MultiLayer::exportTeX(const QString& fname, bool color, const QSizeF& customSize, int unit)
+{
+	int res = logicalDpiX();
+	QSize size = d_canvas->size();
+	if (customSize.isValid())
+		size = Graph::customPrintSize(customSize, unit, res);
+
+	QTeXPaintDevice tex(fname, size);
+	if (!color)
+		tex.setColorMode(QPrinter::GrayScale);
+	draw(&tex, customSize, unit, res);
 }
 #endif
 
