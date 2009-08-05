@@ -2461,10 +2461,18 @@ bool Table::exportASCII(const QString& fname, const QString& separator,
 		return false;
 	}
 
-	QString text;
+	QTextStream t( &f );
 	QString eol = applicationWindow()->endOfLine();
-	int rows=d_table->numRows();
-	int cols=d_table->numCols();
+	QString sep = separator;
+	bool exportTex = (fname.endsWith(".tex")) ? true : false;
+	if (exportTex){
+		t << "\\begin{tabular}{|";
+		eol = "\\\\\\hline\n";
+		sep = " & ";
+	}
+
+	int rows = d_table->numRows();
+	int cols = d_table->numCols();
 	int selectedCols = 0;
 	int topRow = 0, bottomRow = 0;
 	int *sCols = 0;
@@ -2490,7 +2498,7 @@ bool Table::exportASCII(const QString& fname, const QString& separator,
 			}
 		}
 
-		for (int i=rows - 1; i>0; i--){
+		for (int i = rows - 1; i > 0; i--){
 			if (d_table->isRowSelected(i)){
 				bottomRow = i;
 				break;
@@ -2498,67 +2506,78 @@ bool Table::exportASCII(const QString& fname, const QString& separator,
 		}
 	}
 
-	int aux = selectedCols-1;
+	int aux = selectedCols - 1;
+	if (!selectedCols)
+		aux = cols - 1;
+
+	if (exportTex){
+		for (int i = 0; i <= aux; i++)
+			t << "c|";
+		t << "}\\hline\n";
+	}
+
 	if (withLabels){
 		QStringList header = colNames();
 		QStringList ls = header.grep ( QRegExp ("\\D"));
 		if (exportSelection){
-			for (int i=0; i<aux; i++){
+			for (int i = 0; i < aux; i++){
 				if (ls.count()>0)
-					text += header[sCols[i]] + separator;
+					t << header[sCols[i]] + sep;
 				else
-					text += "C" + header[sCols[i]] + separator;
+					t << "C" + header[sCols[i]] + sep;
 			}
 
 			if (aux >= 0){
 				if (ls.count()>0)
-					text += header[sCols[aux]] + eol;
+					t << header[sCols[aux]] + eol;
 				else
-					text += "C" + header[sCols[aux]] + eol;
+					t << "C" + header[sCols[aux]] + eol;
 			}
 		} else {
 			if (ls.count()>0){
-				for (int j=0; j<cols-1; j++)
-					text += header[j] + separator;
-				text += header[cols-1] + eol;
+				for (int j = 0; j < aux; j++)
+					t << header[j] + sep;
+				t << header[aux] + eol;
 			} else {
-				for (int j=0; j<cols-1; j++)
-					text += "C" + header[j] + separator;
-				text += "C" + header[cols-1] + eol;
+				for (int j = 0; j < aux; j++)
+					t << "C" + header[j] + sep;
+				t << "C" + header[aux] + eol;
 			}
 		}
 	}// finished writting labels
 
 	if (exportComments){
 		if (exportSelection){
-			for (int i=0; i<aux; i++)
-                text += comments[sCols[i]] + separator;
+			for (int i = 0; i < aux; i++)
+                t << comments[sCols[i]] + sep;
 			if (aux >= 0)
-				text += comments[sCols[aux]] + eol;
+				t << comments[sCols[aux]] + eol;
 		} else {
-            for (int i=0; i<cols-1; i++)
-                text += comments[i] + separator;
-            text += comments[cols-1] + eol;
+            for (int i = 0; i < aux; i++)
+                t << comments[i] + sep;
+            t << comments[aux] + eol;
         }
 	}
 
 	if (exportSelection){
-		for (int i=topRow; i<=bottomRow; i++){
-			for (int j=0; j<aux; j++)
-				text += d_table->text(i, sCols[j]) + separator;
+		for (int i = topRow; i <= bottomRow; i++){
+			for (int j = 0; j < aux; j++)
+				t << d_table->text(i, sCols[j]) + sep;
 			if (aux >= 0)
-				text += d_table->text(i, sCols[aux]) + eol;
+				t << d_table->text(i, sCols[aux]) + eol;
 		}
 		delete [] sCols;
 	} else {
-		for (int i=0;i<rows;i++) {
-			for (int j=0; j<cols-1; j++)
-				text += d_table->text(i,j) + separator;
-			text += d_table->text(i, cols-1) + eol;
+		for (int i = 0; i < rows; i++) {
+			for (int j = 0; j < aux; j++)
+				t << d_table->text(i, j) + sep;
+			t << d_table->text(i, aux) + eol;
 		}
 	}
-	QTextStream t( &f );
-	t << text;
+
+	if (exportTex)
+		t << "\\end{tabular}\n";
+
 	f.close();
 	return true;
 }
