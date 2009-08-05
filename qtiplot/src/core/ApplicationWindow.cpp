@@ -5443,7 +5443,7 @@ void ApplicationWindow::exportAllGraphs()
 	}
 #endif
 #ifdef TEX_OUTPUT
-    else if (plot2D && file_suffix.contains(".tex")){
+    if (plot2D && file_suffix.contains(".tex")){
 		plot2D->exportTeX(file_name, ied->color(), ied->customExportSize(), ied->sizeUnit());
 		return;
     }
@@ -6019,7 +6019,7 @@ void ApplicationWindow::exportASCII(const QString& tableName, const QString& sep
 
 	QString selectedFilter;
 	QString fname = getFileName(this, tr("Choose a filename to save under"),
-                    asciiDirPath + "/" + w->objectName(), "*.txt;;*.dat;;*.DAT", &selectedFilter);
+                    asciiDirPath + "/" + w->objectName(), "*.txt;;*.tex;;*.dat;;*.DAT", &selectedFilter);
 	if (!fname.isEmpty()){
 		QFileInfo fi(fname);
 		selectedFilter.remove("*");

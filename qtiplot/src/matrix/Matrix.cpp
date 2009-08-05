@@ -1471,16 +1471,28 @@ bool Matrix::exportASCII(const QString& fname, const QString& separator, bool ex
 		return false;
 	}
 
-	int rows = numRows();
-	int cols = numCols();
+	int topRow = 0;
+	int bottomRow = numRows() - 1;
+	int leftCol = 0;
+	int rightCol = numCols() - 1;
+
 	QTextStream t( &f );
 	QString eol = applicationWindow()->endOfLine();
+	QString sep = separator;
+
+	bool exportTex = (fname.endsWith(".tex")) ? true : false;
+	if (exportTex){
+		t << "\\begin{tabular}{|";
+		eol = "\\\\\\hline\n";
+		sep = " & ";
+	}
+
 	if (exportSelection && d_view_type == TableView){
         QModelIndexList selectedIndexes = d_table_view->selectionModel()->selectedIndexes();
-        int topRow = selectedIndexes[0].row();
-        int bottomRow = topRow;
-        int leftCol = selectedIndexes[0].column();
-        int rightCol = leftCol;
+        topRow = selectedIndexes[0].row();
+        bottomRow = topRow;
+        leftCol = selectedIndexes[0].column();
+        rightCol = leftCol;
         foreach(QModelIndex index, selectedIndexes){
             int row = index.row();
             if (row < topRow)
@@ -1494,25 +1506,26 @@ bool Matrix::exportASCII(const QString& fname, const QString& separator, bool ex
             if (col > rightCol)
                 rightCol = col;
         }
-
-		for (int i = topRow; i <= bottomRow; i++){
-			for (int j = leftCol; j < rightCol; j++){
-				t << d_matrix_model->text(i, j);
-				t << separator;
-			}
-			t << d_matrix_model->text(i, rightCol);
-			t << eol;
-		}
-	} else {
-		for (int i=0; i<rows; i++) {
-			for (int j=0; j<cols-1; j++){
-				t << d_matrix_model->text(i,j);
-				t << separator;
-			}
-			t << d_matrix_model->text(i, cols-1);
-			t << eol;
-		}
 	}
+
+	if (exportTex){
+		for (int i = leftCol; i <= rightCol; i++)
+			t << "c|";
+		t << "}\\hline\n";
+	}
+
+	for (int i = topRow; i <= bottomRow; i++){
+		for (int j = leftCol; j < rightCol; j++){
+			t << d_matrix_model->text(i, j);
+			t << sep;
+		}
+		t << d_matrix_model->text(i, rightCol);
+		t << eol;
+	}
+
+	if (exportTex)
+		t << "\\end{tabular}\n";
+
 	f.close();
 	return true;
 }
