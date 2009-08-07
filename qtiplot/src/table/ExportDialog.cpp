@@ -2,8 +2,8 @@
     File                 : ExportDialog.cpp
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2006 by Ion Vasilief, Tilman Hoener zu Siederdissen
-    Email (use @ for *)  : ion_vasilief*yahoo.fr, thzs*gmx.net
+    Copyright            : (C) 2006 by Ion Vasilief
+    Email (use @ for *)  : ion_vasilief*yahoo.fr
     Description          : Export ASCII dialog
 
  ***************************************************************************/
@@ -28,6 +28,8 @@
  ***************************************************************************/
 #include "ExportDialog.h"
 #include "ApplicationWindow.h"
+#include <MdiSubWindow.h>
+#include <Matrix.h>
 
 #include <QLayout>
 #include <QLabel>
@@ -35,21 +37,50 @@
 #include <QPushButton>
 #include <QCheckBox>
 #include <QComboBox>
+#include <QGroupBox>
 
-ExportDialog::ExportDialog(const QString& tableName, QWidget* parent, Qt::WFlags fl )
-    : QDialog( parent, fl )
+ExportDialog::ExportDialog(MdiSubWindow *window, QWidget * parent, bool extended, Qt::WFlags flags)
+: ExtensibleFileDialog( parent, extended, flags ), d_window(window)
 {
 	setWindowTitle( tr( "QtiPlot - Export ASCII" ) );
+	setAttribute(Qt::WA_DeleteOnClose);
 	setSizeGripEnabled( true );
+	setAcceptMode(QFileDialog::AcceptSave);
 
-	ApplicationWindow *app = (ApplicationWindow *)parent;
+	initAdvancedOptions();
+	setExtensionWidget((QWidget *)d_advanced_options);
+
+	setFileTypeFilters();
+	setFileMode(QFileDialog::AnyFile);
+	if (d_window){
+		boxTable->setCurrentIndex(boxTable->findText(d_window->objectName()));
+		selectFile(d_window->objectName());
+	}
+
+#if QT_VERSION >= 0x040300
+	connect(this, SIGNAL(filterSelected ( const QString & )),
+			this, SLOT(updateAdvancedOptions ( const QString & )));
+#else
+	QList<QComboBox*> combo_boxes = findChildren<QComboBox*>();
+	if (combo_boxes.size() >= 2)
+		connect(combo_boxes[1], SIGNAL(currentIndexChanged ( const QString & )),
+				this, SLOT(updateAdvancedOptions ( const QString & )));
+#endif
+
+	selectNameFilter(((ApplicationWindow *)parent)->d_export_ASCII_file_filter);
+	updateAdvancedOptions(selectedFilter());
+}
+
+void ExportDialog::initAdvancedOptions()
+{
+	ApplicationWindow *app = (ApplicationWindow *)this->parent();
+	d_advanced_options = new QGroupBox();
 
 	QGridLayout *gl1 = new QGridLayout();
     gl1->addWidget(new QLabel(tr("Table")), 0, 0);
 	boxTable = new QComboBox();
 	QStringList tables = app->tableNames() + app->matrixNames();
 	boxTable->addItems(tables);
-	boxTable->setCurrentIndex(0);
 
 	boxTable->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed));
 	gl1->addWidget(boxTable, 0, 1);
@@ -58,8 +89,8 @@ ExportDialog::ExportDialog(const QString& tableName, QWidget* parent, Qt::WFlags
     boxAllTables->setChecked(false);
 	gl1->addWidget(boxAllTables, 0, 2);
 
-    QLabel *sepText = new QLabel( tr( "Separator" ) );
-	gl1->addWidget(sepText, 1, 0);
+    separatorLbl = new QLabel( tr( "Separator" ) );
+	gl1->addWidget(separatorLbl, 1, 0);
 
     boxSeparator = new QComboBox();
 	boxSeparator->addItem(tr("TAB"));
@@ -75,55 +106,46 @@ ExportDialog::ExportDialog(const QString& tableName, QWidget* parent, Qt::WFlags
 	gl1->addWidget(boxSeparator, 1, 1);
 	setColumnSeparator(app->d_export_col_separator);
 
+	buttonHelp = new QPushButton(tr( "&Help" ));
+	gl1->addWidget( buttonHelp, 1, 2);
+
 	QString help = tr("The column separator can be customized. The following special codes can be used:\n\\t for a TAB character \n\\s for a SPACE");
 	help += "\n"+tr("The separator must not contain the following characters: 0-9eE.+-");
 
 	boxSeparator->setWhatsThis(help);
-	sepText->setWhatsThis(help);
+	separatorLbl->setWhatsThis(help);
 	boxSeparator->setToolTip(help);
-	sepText->setToolTip(help);
+	separatorLbl->setToolTip(help);
 
 	boxNames = new QCheckBox(tr( "Include Column &Names" ));
     boxNames->setChecked( app->d_export_col_names );
+	boxNames->setVisible(d_window && d_window->inherits("Table"));
 
 	boxComments = new QCheckBox(tr( "Include Column Co&mments" ));
     boxComments->setChecked( app->d_export_col_comment );
+	boxComments->setVisible(d_window && d_window->inherits("Table"));
 
     boxSelection = new QCheckBox(tr( "Export &Selection" ));
     boxSelection->setChecked( app->d_export_table_selection );
 
-	QVBoxLayout *vl1 = new QVBoxLayout();
+	QVBoxLayout *vl1 = new QVBoxLayout(d_advanced_options);
 	vl1->addLayout( gl1 );
 	vl1->addWidget( boxNames );
 	vl1->addWidget( boxComments );
 	vl1->addWidget( boxSelection );
 
-	QHBoxLayout *hbox3 = new QHBoxLayout();
-	buttonOk = new QPushButton(tr( "&OK" ));
-    buttonOk->setDefault( true );
-	hbox3->addWidget( buttonOk );
-    buttonCancel = new QPushButton(tr( "&Cancel" ));
-	hbox3->addWidget( buttonCancel );
-	buttonHelp = new QPushButton(tr( "&Help" ));
-	hbox3->addWidget( buttonHelp );
-	hbox3->addStretch();
-
-	QVBoxLayout *vl = new QVBoxLayout( this );
-    vl->addLayout(vl1);
-	vl->addStretch();
-	vl->addLayout(hbox3);
-
     // signals and slots connections
     connect( boxTable, SIGNAL(activated(const QString &)), this, SLOT(updateOptions(const QString &)));
-    connect( buttonOk, SIGNAL( clicked() ), this, SLOT( accept() ) );
-	connect( buttonCancel, SIGNAL( clicked() ), this, SLOT( close() ) );
-    connect( buttonHelp, SIGNAL( clicked() ), this, SLOT( help() ) );
-	connect( boxAllTables, SIGNAL( toggled(bool) ), this, SLOT( enableTableName(bool) ) );
+    connect( buttonHelp, SIGNAL(clicked()), this, SLOT(help()));
+	connect( boxAllTables, SIGNAL(toggled(bool)), this, SLOT( enableTableName(bool)));
+}
 
-    if (tables.contains(tableName)){
-		boxTable->setCurrentIndex(boxTable->findText(tableName));
-		updateOptions(tableName);
-    }
+void ExportDialog::updateAdvancedOptions (const QString & filter)
+{
+	bool on = !filter.contains("*.tex");
+	separatorLbl->setVisible(on);
+	boxSeparator->setVisible(on);
+	buttonHelp->setVisible(on);
 }
 
 void ExportDialog::help()
@@ -135,7 +157,35 @@ void ExportDialog::help()
 
 void ExportDialog::enableTableName(bool ok)
 {
+	QString selected_filter = selectedFilter();
 	boxTable->setEnabled(!ok);
+	if (!ok){
+		setFileMode(QFileDialog::AnyFile);
+
+		if (d_window){
+			boxTable->setCurrentIndex(boxTable->findText(d_window->objectName()));
+			selectFile(d_window->objectName());
+		}
+	} else
+		setFileMode(QFileDialog::Directory);
+
+	setFileTypeFilters();
+	selectNameFilter(selected_filter);
+}
+
+void ExportDialog::setFileTypeFilters()
+{
+	QList<QByteArray> list;
+	list << "DAT";
+	list << "TXT";
+	list << "TEX";
+
+	QStringList filters;
+	for(int i = 0 ; i < list.count() ; i++)
+		filters << "*." + list[i].toLower();
+
+	filters.sort();
+	setFilters(filters);
 }
 
 void ExportDialog::accept()
@@ -156,11 +206,33 @@ void ExportDialog::accept()
 		return;
 	}
 
-	hide();
+	app->asciiDirPath = directory().path();
+	if (selectedFiles().isEmpty())
+		return;
+
+	QString selected_filter = selectedFilter().remove("*");
 	if (boxAllTables->isChecked())
-		app->exportAllTables(sep, boxNames->isChecked(), boxComments->isChecked(), boxSelection->isChecked());
-	else
-		app->exportASCII(boxTable->currentText(), sep, boxNames->isChecked(), boxComments->isChecked(), boxSelection->isChecked());
+		app->exportAllTables(directory().absolutePath(), selected_filter, sep, boxNames->isChecked(), boxComments->isChecked(), boxSelection->isChecked());
+	else {
+		QString file_name = selectedFiles()[0];
+		if(!file_name.endsWith(selected_filter, Qt::CaseInsensitive))
+			file_name.append(selected_filter);
+
+		QFile file(file_name);
+		if ( !file.open( QIODevice::WriteOnly ) ){
+			QMessageBox::critical(this, tr("QtiPlot - Export error"),
+					tr("Could not write to file: <br><h4> %1 </h4><p>Please verify that you have the right to write to this location!").arg(file_name));
+			return;
+		}
+		file.close();
+
+		if (d_window->inherits("Table"))
+            ((Table *)d_window)->exportASCII(file_name, sep, boxNames->isChecked(),
+								boxComments->isChecked(), boxSelection->isChecked());
+        else if (d_window->isA("Matrix"))
+            ((Matrix *)d_window)->exportASCII(file_name, sep, boxSelection->isChecked());
+	}
+
 	close();
 }
 
@@ -195,6 +267,7 @@ void ExportDialog::closeEvent(QCloseEvent* e)
 		app->d_export_col_names = boxNames->isChecked();
 		app->d_export_table_selection = boxSelection->isChecked();
 		app->d_export_col_comment = boxComments->isChecked();
+		app->d_export_ASCII_file_filter = selectedFilter();
 
 		QString sep = boxSeparator->currentText();
 		sep.replace(tr("TAB"), "\t", Qt::CaseInsensitive);
@@ -203,7 +276,6 @@ void ExportDialog::closeEvent(QCloseEvent* e)
 		sep.replace("\\t", "\t");
 		app->d_export_col_separator = sep;
 	}
-
 	e->accept();
 }
 
@@ -217,6 +289,6 @@ void ExportDialog::updateOptions(const QString & name)
     if (!w)
 		return;
 
-    boxComments->setEnabled(w->inherits("Table"));
-    boxNames->setEnabled(w->inherits("Table"));
+    boxComments->setVisible(w->inherits("Table"));
+    boxNames->setVisible(w->inherits("Table"));
 }

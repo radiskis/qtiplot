@@ -43,6 +43,7 @@ class QStackedWidget;
 class QGroupBox;
 class MdiSubWindow;
 class DoubleSpinBox;
+class Graph;
 
 //! QFileDialog extended with options for image export
 class ImageExportDialog: public ExtensibleFileDialog
@@ -77,6 +78,10 @@ private:
 	DoubleSpinBox *widthBox, *heightBox, *scaleFontsBox;
 	QComboBox *unitBox;
 	QLabel *resolutionLabel;
+	QCheckBox *keepRatioBox;
+
+	double aspect_ratio;
+	Graph *d_layer;
 
 public:
 	//! Constructor
@@ -87,7 +92,7 @@ public:
 	 * \param extended flag: show/hide the advanced options on start-up
 	 * \param flags window flags
 	 */
-	ImageExportDialog(MdiSubWindow *window, QWidget * parent = 0, bool extended = true, Qt::WFlags flags = 0 );
+	ImageExportDialog(MdiSubWindow *window, QWidget * parent = 0, bool extended = true, Graph *g = 0, Qt::WFlags flags = 0 );
 	//! For vector formats: returns the output resolution the user selected, defaulting to the screen resolution.
 	int vectorResolution() const { return d_vector_resolution->value(); };
 	//! For vector formats: returns whether colors should be enabled for ouput (default: true).
@@ -117,6 +122,8 @@ protected slots:
 	void closeEvent(QCloseEvent*);
 	//! Update which options are visible and enabled based on the output format.
 	void updateAdvancedOptions (const QString &filter);
+	void adjustWidth(double height);
+	void adjustHeight(double width);
 };
 
 #endif

@@ -2455,11 +2455,12 @@ bool Table::exportASCII(const QString& fname, const QString& separator,
 {
 	QFile f(fname);
 	if ( !f.open( QIODevice::WriteOnly ) ){
-		QApplication::restoreOverrideCursor();
 		QMessageBox::critical(0, tr("QtiPlot - ASCII Export Error"),
 				tr("Could not write to file: <br><h4>"+fname+ "</h4><p>Please verify that you have the right to write to this location!").arg(fname));
 		return false;
 	}
+
+	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
 	QTextStream t( &f );
 	QString eol = applicationWindow()->endOfLine();
@@ -2579,6 +2580,7 @@ bool Table::exportASCII(const QString& fname, const QString& separator,
 		t << "\\end{tabular}\n";
 
 	f.close();
+	QApplication::restoreOverrideCursor();
 	return true;
 }
 

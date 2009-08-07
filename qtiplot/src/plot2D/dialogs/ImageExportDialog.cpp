@@ -42,8 +42,8 @@
 #include <QPrinter>
 #include <QLabel>
 
-ImageExportDialog::ImageExportDialog(MdiSubWindow *window, QWidget * parent, bool extended, Qt::WFlags flags)
-	: ExtensibleFileDialog( parent, extended, flags ), d_window(window)
+ImageExportDialog::ImageExportDialog(MdiSubWindow *window, QWidget * parent, bool extended, Graph *g, Qt::WFlags flags)
+	: ExtensibleFileDialog( parent, extended, flags ), d_window(window), d_layer(g)
 {
 	setWindowTitle( tr( "QtiPlot - Choose a filename to save under" ) );
 	setAcceptMode(QFileDialog::AcceptSave);
@@ -177,6 +177,27 @@ void ImageExportDialog::initAdvancedOptions()
 	size_layout->addWidget(new QLabel(tr( "Unit" )), 0, 0);
 	size_layout->addWidget(unitBox, 0, 1);
 
+	if (!customSize.isValid()){
+		if (d_layer)
+			customSize = d_layer->size();
+		else if (d_window){
+			if (qobject_cast<MultiLayer *> (d_window))
+				customSize = ((MultiLayer *)d_window)->canvas()->size();
+			else
+				customSize = d_window->widget()->size();
+		}
+	}
+
+	if (d_layer)
+		aspect_ratio = (double)d_layer->width()/(double)d_layer->height();
+	else if (d_window){
+		MultiLayer *ml = qobject_cast<MultiLayer *> (d_window);
+		if (ml)
+			aspect_ratio = (double)ml->canvas()->width()/(double)ml->canvas()->height();
+		else
+			aspect_ratio = (double)d_window->widget()->width()/(double)d_window->widget()->height();
+	}
+
 	size_layout->addWidget(new QLabel( tr("Width")), 1, 0);
 	widthBox = new DoubleSpinBox();
 	widthBox->setLocale(app->locale());
@@ -192,6 +213,9 @@ void ImageExportDialog::initAdvancedOptions()
 	heightBox->setValue(customSize.height());
 	size_layout->addWidget(heightBox, 2, 1);
 
+	connect(widthBox, SIGNAL(valueChanged (double)), this, SLOT(adjustHeight(double)));
+	connect(heightBox, SIGNAL(valueChanged (double)), this, SLOT(adjustWidth(double)));
+
 	size_layout->addWidget(new QLabel(tr("Scale Fonts Factor")), 3, 0);
 	scaleFontsBox = new DoubleSpinBox();
 	scaleFontsBox->setMinimum (0.0);
@@ -203,6 +227,10 @@ void ImageExportDialog::initAdvancedOptions()
 	else
 		scaleFontsBox->setValue(0.0);
 	size_layout->addWidget(scaleFontsBox, 3, 1);
+
+	keepRatioBox = new QCheckBox(tr("Keep aspect ratio"));
+	keepRatioBox->setChecked(true);
+    size_layout->addWidget(keepRatioBox, 4, 1);
 
 	vert_layout->addWidget(d_custom_size_box);
 
@@ -321,3 +349,30 @@ double ImageExportDialog::scaleFontsFactor()
 	return scaleFontsBox->value();
 }
 
+void ImageExportDialog::adjustWidth(double height)
+{
+	if (keepRatioBox->isChecked()){
+		widthBox->blockSignals(true);
+		double val = height*aspect_ratio;
+		if (unitBox->currentIndex() >= 3)// point and pixel
+			widthBox->setValue(qRound(val));
+		else
+			widthBox->setValue(val);
+		widthBox->blockSignals(false);
+	} else
+		aspect_ratio = widthBox->value()/height;
+}
+
+void ImageExportDialog::adjustHeight(double width)
+{
+	if (keepRatioBox->isChecked()){
+		heightBox->blockSignals(true);
+		double val = width/aspect_ratio;
+		if (unitBox->currentIndex() >= 3)// point and pixel
+			heightBox->setValue(qRound(val));
+		else
+			heightBox->setValue(val);
+		heightBox->blockSignals(false);
+	} else
+		aspect_ratio = width/heightBox->value();
+}

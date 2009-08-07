@@ -49,6 +49,7 @@
 #include <QShortcut>
 #include <QKeySequence>
 #include <QMenu>
+#include <QTreeWidget>
 
 #include <QMessageBox>
 
@@ -89,7 +90,10 @@ CurvesDialog::CurvesDialog( QWidget* parent, Qt::WFlags fl )
     gl->addWidget(new QLabel( tr( "Available data" )), 0, 0);
     gl->addWidget(new QLabel( tr( "Graph contents" )), 0, 2);
 
-	available = new QListWidget();
+	available = new QTreeWidget();
+	available->setColumnCount(1);
+	available->header()->hide();
+    available->setIndentation(15);
 	available->setSelectionMode (QAbstractItemView::ExtendedSelection);
     gl->addWidget(available, 1, 0);
 
@@ -246,11 +250,22 @@ void CurvesDialog::contextMenuEvent(QContextMenuEvent *e)
 	QRect rect = available->visualItemRect(available->currentItem());
 	if (rect.contains(pos))
 	{
+       QList<QTreeWidgetItem *> lst = available->selectedItems();
+       int count = 0;
+	   foreach (QTreeWidgetItem *item, lst){
+			if (item->type() == FolderItem)
+				continue;
+
+			count++;
+	   }
+
+	   if (!count)
+		return;
+
 	   QMenu contextMenu(this);
-       QList<QListWidgetItem *> lst = available->selectedItems();
-       if (lst.size() > 1)
+       if (count > 1)
 	       contextMenu.insertItem(tr("&Plot Selection"), this, SLOT(addCurves()));
-       else if (lst.size() == 1)
+       else if (count == 1)
 	       contextMenu.insertItem(tr("&Plot"), this, SLOT(addCurves()));
 	   contextMenu.exec(QCursor::pos());
     }
@@ -302,7 +317,7 @@ void CurvesDialog::init()
             boxStyle->setCurrentItem(9);
     }
 
-	if (!available->count())
+	if (!available->topLevelItemCount())
 		btnAdd->setDisabled(true);
 }
 
@@ -317,14 +332,35 @@ void CurvesDialog::setGraph(Graph *graph)
 void CurvesDialog::addCurves()
 {
 	QStringList emptyColumns;
-    QList<QListWidgetItem *> lst = available->selectedItems();
-    for (int i = 0; i < lst.size(); ++i){
-        QString text = lst.at(i)->text();
+    QList<QTreeWidgetItem *> lst = available->selectedItems ();
+    foreach (QTreeWidgetItem *item, lst){
+		if (item->type() == FolderItem)
+			continue;
+
+		QString text = item->text(0);
+		if (item->type() == TableItem){
+			ApplicationWindow *app = (ApplicationWindow *)this->parent();
+			Table *t = app->table(text);
+			if (!t)
+				continue;
+
+			QStringList lst = t->YColumns();
+			for(int i = 0; i < lst.size(); i++){
+				QString s = lst[i];
+				if (contents->findItems(s, Qt::MatchExactly ).isEmpty ()){
+					if (!addCurve(s))
+						emptyColumns << s;
+				}
+			}
+			continue;
+		}
+
         if (contents->findItems(text, Qt::MatchExactly ).isEmpty ()){
 			if (!addCurve(text))
 				emptyColumns << text;
-			}
+		}
     }
+
 	d_graph->updatePlot();
 	Graph::showPlotErrorMessage(this, emptyColumns);
 
@@ -440,7 +476,8 @@ void CurvesDialog::removeCurves()
 
 void CurvesDialog::enableAddBtn()
 {
-    btnAdd->setEnabled (available->count()>0 && !available->selectedItems().isEmpty());
+    btnAdd->setEnabled (available->topLevelItemCount() > 0 &&
+						!available->selectedItems().isEmpty());
 }
 
 void CurvesDialog::enableRemoveBtn()
@@ -532,30 +569,69 @@ void CurvesDialog::showCurrentFolder(bool currentFolder)
 
     if (currentFolder){
     	Folder *f = app->currentFolder();
-		if (f){
-			QStringList columns;
-			QStringList matrices;
-			foreach (MdiSubWindow *w, f->windowsList()){
-				if (w->inherits("Table")){
-					Table *t = (Table *)w;
-					for (int i=0; i < t->numCols(); i++){
-						if(t->colPlotDesignation(i) == Table::Y)
-							columns << QString(t->objectName()) + "_" + t->colLabel(i);
-					}
-					continue;
-				}
-				Matrix *m = qobject_cast<Matrix *>(w);
-				if (m)
-					matrices << QString(m->objectName());
-
-			}
-			available->addItems(columns);
-			available->addItems(matrices);
-		}
+		if (f)
+			addFolderItems(f);
     } else {
-        available->addItems(app->columnsList(Table::Y));
-        available->addItems(app->matrixNames());
+    	Folder *f = app->projectFolder();
+		addFolderItems(f);
+
+		f = f->folderBelow();
+		QTreeWidgetItem *folderItem = NULL;
+		int depth = 0;
+		while (f){
+			if (folderItem && f->depth() > depth)
+				folderItem = new QTreeWidgetItem(folderItem, QStringList(f->objectName()), FolderItem);
+			else
+				folderItem = new QTreeWidgetItem(available, QStringList(f->objectName()), FolderItem);
+
+			folderItem->setIcon(0, QIcon(QPixmap(folder_open)));
+			folderItem->setExpanded(true);
+			available->addTopLevelItem(folderItem);
+
+			addFolderItems(f, folderItem);
+			depth = f->depth();
+			f = f->folderBelow();
+		}
     }
+}
+
+void CurvesDialog::addFolderItems(Folder *f, QTreeWidgetItem* parent)
+{
+	if (!f)
+		return;
+
+	foreach (MdiSubWindow *w, f->windowsList()){
+		if (w->inherits("Table")){
+			Table *t = (Table *)w;
+
+			QTreeWidgetItem *tableItem;
+			if (!parent)
+				tableItem = new QTreeWidgetItem(available, QStringList(t->objectName()), TableItem);
+			else
+				tableItem = new QTreeWidgetItem(parent, QStringList(t->objectName()), TableItem);
+			tableItem->setIcon(0, QIcon(QPixmap(worksheet_xpm)));
+			available->addTopLevelItem(tableItem);
+
+			for (int i=0; i < t->numCols(); i++){
+				if(t->colPlotDesignation(i) == Table::Y){
+					QTreeWidgetItem *colItem = new QTreeWidgetItem(tableItem, QStringList(t->objectName() + "_" + t->colLabel(i)), ColumnItem);
+					available->addTopLevelItem(colItem);
+				}
+			}
+
+			continue;
+		}
+		Matrix *m = qobject_cast<Matrix *>(w);
+		if (m){
+			QTreeWidgetItem *item;
+			if (!parent)
+				item = new QTreeWidgetItem(available, QStringList(m->objectName()), MatrixItem);
+			else
+				item = new QTreeWidgetItem(parent, QStringList(m->objectName()), MatrixItem);
+			item->setIcon(0, QIcon(QPixmap(matrix_xpm)));
+			available->addTopLevelItem(item);
+		}
+	}
 }
 
 void CurvesDialog::closeEvent(QCloseEvent* e)

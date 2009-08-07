@@ -46,6 +46,7 @@
 #include <PatternBox.h>
 #include <SymbolBox.h>
 #include <ContourLinesEditor.h>
+#include <pixmaps.h>
 
 #include <QTreeWidget>
 #include <QLineEdit>

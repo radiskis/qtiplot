@@ -418,8 +418,7 @@ public slots:
 	void importASCII(const QStringList& files, int import_mode, const QString& local_column_separator, int local_ignored_lines, bool local_rename_columns,
         bool local_strip_spaces, bool local_simplify_spaces, bool local_import_comments,
         QLocale local_separators, const QString& local_comment_string, bool import_read_only, int endLineChar);
-	void exportAllTables(const QString& sep, bool colNames, bool colComments, bool expSelection);
-	void exportASCII(const QString& tableName, const QString& sep, bool colNames, bool colComments, bool expSelection);
+	void exportAllTables(const QString& dir, const QString& filter, const QString& sep, bool colNames, bool colComments, bool expSelection);
 
 	//! recalculate selected cells of current table
 	void recalculateTable();
@@ -1097,7 +1096,7 @@ public:
 	QString d_export_col_separator;
 	bool d_export_col_names, d_export_table_selection, d_export_col_comment;
     //! Last selected filter in export image dialog
-    QString d_image_export_filter;
+    QString d_image_export_filter, d_export_ASCII_file_filter;
     double d_scale_fonts_factor;
     bool d_export_transparency;
     int d_export_quality;
