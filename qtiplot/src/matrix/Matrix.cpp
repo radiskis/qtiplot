@@ -1465,11 +1465,12 @@ bool Matrix::exportASCII(const QString& fname, const QString& separator, bool ex
 {
 	QFile f(fname);
 	if ( !f.open( QIODevice::WriteOnly ) ){
-		QApplication::restoreOverrideCursor();
 		QMessageBox::critical(this, tr("QtiPlot - ASCII Export Error"),
 				tr("Could not write to file: <br><h4>%1</h4><p>Please verify that you have the right to write to this location!").arg(fname));
 		return false;
 	}
+
+	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
 	int topRow = 0;
 	int bottomRow = numRows() - 1;
@@ -1527,6 +1528,7 @@ bool Matrix::exportASCII(const QString& fname, const QString& separator, bool ex
 		t << "\\end{tabular}\n";
 
 	f.close();
+	QApplication::restoreOverrideCursor();
 	return true;
 }
 

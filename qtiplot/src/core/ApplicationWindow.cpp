@@ -618,6 +618,7 @@ void ApplicationWindow::initGlobalConstants()
 	d_export_col_names = false;
     d_export_col_comment = false;
 	d_export_table_selection = false;
+	d_export_ASCII_file_filter = ".dat";
 
 	d_scale_fonts_factor = 0.0;
 	d_image_export_filter = ".png";
@@ -4756,8 +4757,8 @@ void ApplicationWindow::readSettings()
 	d_export_col_separator.replace("\\t", "\t").replace("\\s", " ");
 	d_export_col_names = settings.value("/ExportLabels", false).toBool();
     d_export_col_comment = settings.value("/ExportComments", false).toBool();
-
 	d_export_table_selection = settings.value("/ExportSelection", false).toBool();
+	d_export_ASCII_file_filter = settings.value("/ExportAsciiFilter", d_export_ASCII_file_filter).toString();
 	settings.endGroup(); // ExportASCII
 
     settings.beginGroup("/ExportImage");
@@ -5140,6 +5141,7 @@ void ApplicationWindow::saveSettings()
 	settings.setValue("/ExportLabels", d_export_col_names);
 	settings.setValue("/ExportComments", d_export_col_comment);
 	settings.setValue("/ExportSelection", d_export_table_selection);
+	settings.setValue("/ExportAsciiFilter", d_export_ASCII_file_filter);
 	settings.endGroup(); // ExportASCII
 
     settings.beginGroup("/ExportImage");
@@ -5304,7 +5306,7 @@ void ApplicationWindow::exportLayer()
 	if (!g)
 		return;
 
-	ImageExportDialog *ied = new ImageExportDialog(w, this, d_extended_export_dialog);
+	ImageExportDialog *ied = new ImageExportDialog(w, this, d_extended_export_dialog, g);
 	ied->setDir(imagesDirPath);
 	ied->selectFile(w->objectName());
 	ied->selectFilter(d_image_export_filter);
@@ -5948,93 +5950,66 @@ void ApplicationWindow::showAxisTitleDialog()
 
 void ApplicationWindow::showExportASCIIDialog()
 {
-    QString tableName = QString::null;
     MdiSubWindow* t = activeWindow();
-    if (t && (t->isA("Matrix") || t->inherits("Table")))
-        tableName = t->objectName();
+    if (!t)
+        return;
+	if (!qobject_cast<Matrix*>(t) && !t->inherits("Table"))
+        return;
 
-    ExportDialog* ed = new ExportDialog(tableName, this, Qt::WindowContextHelpButtonHint);
-    ed->setAttribute(Qt::WA_DeleteOnClose);
-    ed->exec();
+    ExportDialog* ed = new ExportDialog(t, this, true);
+	ed->exec();
 }
 
-void ApplicationWindow::exportAllTables(const QString& sep, bool colNames, bool colComments, bool expSelection)
+void ApplicationWindow::exportAllTables(const QString& dir, const QString& filter, const QString& sep, bool colNames, bool colComments, bool expSelection)
 {
-	QString dir = QFileDialog::getExistingDirectory(this, tr("Choose a directory to export the tables to"), workingDir, QFileDialog::ShowDirsOnly);
-	if (!dir.isEmpty()){
-		QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-		workingDir = dir;
-
-		bool confirmOverwrite = true;
-		bool success = true;
-		QList<MdiSubWindow *> windows = windowsList();
-		foreach(MdiSubWindow *w, windows){
-			if (w->inherits("Table") || w->isA("Matrix")){
-				QString fileName = dir + "/" + w->objectName() + ".txt";
-				QFile f(fileName);
-				if (f.exists(fileName) && confirmOverwrite){
-					QApplication::restoreOverrideCursor();
-					switch(QMessageBox::question(this, tr("QtiPlot - Overwrite file?"),
-								tr("A file called: <p><b>%1</b><p>already exists. "
-									"Do you want to overwrite it?").arg(fileName), tr("&Yes"), tr("&All"), tr("&Cancel"), 0, 1))
-					{
-						case 0:
-                            if (w->inherits("Table"))
-                                success = ((Table*)w)->exportASCII(fileName, sep, colNames, colComments, expSelection);
-							else if (w->isA("Matrix"))
-                                success = ((Matrix*)w)->exportASCII(fileName, sep, expSelection);
-							break;
-
-						case 1:
-							confirmOverwrite = false;
-							if (w->inherits("Table"))
-                                success = ((Table*)w)->exportASCII(fileName, sep, colNames, colComments, expSelection);
-                            else if (w->isA("Matrix"))
-                                success = ((Matrix*)w)->exportASCII(fileName, sep, expSelection);
-							break;
-
-						case 2:
-							return;
-							break;
-					}
-				} else if (w->inherits("Table"))
-					success = ((Table*)w)->exportASCII(fileName, sep, colNames, colComments, expSelection);
-                  else if (w->isA("Matrix"))
-                    success = ((Matrix*)w)->exportASCII(fileName, sep, expSelection);
-
-				if (!success)
-					break;
-			}
-		}
-		QApplication::restoreOverrideCursor();
-	}
-}
-
-void ApplicationWindow::exportASCII(const QString& tableName, const QString& sep,
-                        bool colNames, bool colComments, bool expSelection)
-{
-    MdiSubWindow* w = window(tableName);
-    if (!w || !(w->isA("Matrix") || w->inherits("Table")))
+	if (dir.isEmpty())
 		return;
 
-	QString selectedFilter;
-	QString fname = getFileName(this, tr("Choose a filename to save under"),
-                    asciiDirPath + "/" + w->objectName(), "*.txt;;*.tex;;*.dat;;*.DAT", &selectedFilter);
-	if (!fname.isEmpty()){
-		QFileInfo fi(fname);
-		selectedFilter.remove("*");
-		if (!fname.endsWith(selectedFilter, Qt::CaseInsensitive))
-			fname.append(selectedFilter);
+	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+	workingDir = dir;
 
-		asciiDirPath = fi.dirPath(true);
+	bool confirmOverwrite = true;
+	bool success = true;
+	QList<MdiSubWindow *> windows = windowsList();
+	foreach(MdiSubWindow *w, windows){
+		if (w->inherits("Table") || w->isA("Matrix")){
+			QString fileName = dir + "/" + w->objectName() + filter;
+			QFile f(fileName);
+			if (f.exists(fileName) && confirmOverwrite){
+				QApplication::restoreOverrideCursor();
+				switch(QMessageBox::question(this, tr("QtiPlot - Overwrite file?"),
+							tr("A file called: <p><b>%1</b><p>already exists. "
+								"Do you want to overwrite it?").arg(fileName), tr("&Yes"), tr("&All"), tr("&Cancel"), 0, 1))
+				{
+					case 0:
+						if (w->inherits("Table"))
+							success = ((Table*)w)->exportASCII(fileName, sep, colNames, colComments, expSelection);
+						else if (w->isA("Matrix"))
+							success = ((Matrix*)w)->exportASCII(fileName, sep, expSelection);
+						break;
 
-		QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-		if (w->inherits("Table"))
-            ((Table *)w)->exportASCII(fname, sep, colNames, colComments, expSelection);
-        else if (w->isA("Matrix"))
-            ((Matrix *)w)->exportASCII(fname, sep, expSelection);
-		QApplication::restoreOverrideCursor();
+					case 1:
+						confirmOverwrite = false;
+						if (w->inherits("Table"))
+							success = ((Table*)w)->exportASCII(fileName, sep, colNames, colComments, expSelection);
+						else if (w->isA("Matrix"))
+							success = ((Matrix*)w)->exportASCII(fileName, sep, expSelection);
+						break;
+
+					case 2:
+						return;
+						break;
+				}
+			} else if (w->inherits("Table"))
+				success = ((Table*)w)->exportASCII(fileName, sep, colNames, colComments, expSelection);
+			  else if (w->isA("Matrix"))
+				success = ((Matrix*)w)->exportASCII(fileName, sep, expSelection);
+
+			if (!success)
+				break;
+		}
 	}
+	QApplication::restoreOverrideCursor();
 }
 
 void ApplicationWindow::showRowsDialog()

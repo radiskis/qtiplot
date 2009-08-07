@@ -35,7 +35,10 @@ class QComboBox;
 class QListWidget;
 class QPushButton;
 class QCheckBox;
+class QTreeWidget;
+class QTreeWidgetItem;
 class Graph;
+class Folder;
 
 //! Add/remove curves dialog
 class CurvesDialog : public QDialog
@@ -62,7 +65,10 @@ private slots:
 	void showCurrentFolder(bool);
 
 private:
+	enum TreeItemType{FolderItem, ColumnItem, TableItem, MatrixItem};
+
 	void closeEvent(QCloseEvent*);
+	void addFolderItems(Folder *f, QTreeWidgetItem* parent = 0);
 
     void init();
     bool addCurve(const QString& name);
@@ -78,7 +84,7 @@ private:
 	QPushButton* btnAssociations;
 	QPushButton* btnEditFunction;
 	QPushButton* btnRange;
-    QListWidget* available;
+    QTreeWidget* available;
     QListWidget* contents;
 	QComboBox* boxStyle;
 	QComboBox* boxMatrixStyle;
