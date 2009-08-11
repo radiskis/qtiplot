@@ -164,7 +164,7 @@ public slots:
 	void exportEMF(const QString& fname, const QSizeF& customSize = QSizeF(), int unit = FrameWidget::Pixel, double fontsFactor = 1.0);
 #endif
 #ifdef TEX_OUTPUT
-	void exportTeX(const QString& fname, bool color = true, const QSizeF& customSize = QSizeF(), int unit = FrameWidget::Pixel);
+	void exportTeX(const QString& fname, bool color = true, bool escapeStrings = true, const QSizeF& customSize = QSizeF(), int unit = FrameWidget::Pixel, double fontsFactor = 1.0);
 #endif
 
 	void copyAllLayers();

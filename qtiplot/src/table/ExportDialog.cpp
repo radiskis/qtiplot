@@ -152,7 +152,7 @@ void ExportDialog::help()
 {
 	QString s = tr("The column separator can be customized. The following special codes can be used:\n\\t for a TAB character \n\\s for a SPACE");
 	s += "\n"+tr("The separator must not contain the following characters: 0-9eE.+-");
-	QMessageBox::about(0, tr("QtiPlot - Help"),s);
+	QMessageBox::about((ApplicationWindow *)parent(), tr("QtiPlot - Help"), s);
 }
 
 void ExportDialog::enableTableName(bool ok)

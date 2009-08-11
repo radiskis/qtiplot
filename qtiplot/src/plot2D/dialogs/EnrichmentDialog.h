@@ -136,7 +136,7 @@ private:
 	QSpinBox *boxBackgroundTransparency;
 	TextFormatButtons *formatButtons, *texFormatButtons;
 	QPushButton *textDefaultBtn, *frameDefaultBtn, *rectangleDefaultBtn;
-	QCheckBox *autoUpdateTextBox;
+	QCheckBox *autoUpdateTextBox, *texOutputBox;
     QComboBox *texCompilerBox;
 
 	QFont textFont;

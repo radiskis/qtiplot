@@ -211,6 +211,9 @@ class Graph: public QwtPlot
 		void enablePanningMagnifier(bool on = true);
 		bool hasPanningMagnifierEnabled(){if (d_magnifier && d_panner) return true; return false;}
 
+		static QString escapeTeXSpecialCharacters(const QString &);
+		static QString texSuperscripts(const QString &);
+
 	public slots:
 		void copy(Graph* g);
 		void copyCurves(Graph* g);
@@ -310,7 +313,7 @@ class Graph: public QwtPlot
 		void exportEMF(const QString& fname, const QSizeF& customSize = QSizeF(), int unit = FrameWidget::Pixel, double fontsFactor = 1.0);
 #endif
 #ifdef TEX_OUTPUT
-		void exportTeX(const QString& fname, bool color = true, const QSizeF& customSize = QSizeF(), int unit = FrameWidget::Pixel);
+		void exportTeX(const QString& fname, bool color = true, bool escapeStrings = true, const QSizeF& customSize = QSizeF(), int unit = FrameWidget::Pixel, double fontsFactor = 1.0);
 #endif
 		void exportVector(const QString& fileName, int res = 0, bool color = true,
 						const QSizeF& customSize = QSizeF (), int unit = FrameWidget::Pixel, double fontsFactor = 1.0);
@@ -318,8 +321,12 @@ class Graph: public QwtPlot
 						 int dpi = 0, const QSizeF& customSize = QSizeF (),
 						 int unit = FrameWidget::Pixel, double fontsFactor = 1.0);
 
-		void draw(QPaintDevice *, const QSizeF& customSize, int unit, int res, double fontsFactor = 1.0);
+		void draw(QPaintDevice *, const QSize& size, double fontsFactor = 1.0);
 		static QSize customPrintSize(const QSizeF& customSize, int unit, int dpi);
+
+		bool isExportingTeX(){return d_is_exporting_tex;};
+		void setTeXExportingMode(bool on = true){d_is_exporting_tex = on;};
+		void setEscapeTeXStringsMode(bool on = true){d_tex_escape_strings = on;};
 		//@}
 
 		void updatePlot();
@@ -781,6 +788,8 @@ signals:
 		bool d_auto_scale;
 		//! Axes tick lengths
 		int d_min_tick_length, d_maj_tick_length;
+		bool d_is_exporting_tex;
+		bool d_tex_escape_strings;
 		QList<FrameWidget*> d_enrichments;
 		QwtPlotMagnifier *d_magnifier;
 		QwtPlotPanner *d_panner;

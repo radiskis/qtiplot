@@ -108,9 +108,15 @@ void ImageExportDialog::initAdvancedOptions()
 	vector_layout->addWidget(d_vector_resolution, 1, 1);
 
 	d_color = new QCheckBox();
-	d_color->setText(tr("&Export in &color"));
+	d_color->setText(tr("Export in &color"));
 	d_color->setChecked(app->d_export_color);
 	vector_layout->addWidget(d_color, 2, 1);
+
+	d_escape_tex_strings = new QCheckBox();
+	d_escape_tex_strings->setText(tr("&Escape special characters in title/axis labels"));
+	d_escape_tex_strings->setChecked(app->d_export_escape_tex_strings);
+	vector_layout->addWidget(d_escape_tex_strings, 3, 1);
+	d_escape_tex_strings->hide();
 
 	QLabel *text3DLabel = new QLabel(tr("Export 3D texts as"));
 	vector_layout->addWidget(text3DLabel, 4, 0);
@@ -228,7 +234,7 @@ void ImageExportDialog::initAdvancedOptions()
 		scaleFontsBox->setValue(0.0);
 	size_layout->addWidget(scaleFontsBox, 3, 1);
 
-	keepRatioBox = new QCheckBox(tr("Keep aspect ratio"));
+	keepRatioBox = new QCheckBox(tr("&Keep aspect ratio"));
 	keepRatioBox->setChecked(true);
     size_layout->addWidget(keepRatioBox, 4, 1);
 
@@ -241,6 +247,7 @@ void ImageExportDialog::initAdvancedOptions()
 		resolutionLabel->hide();
 		d_vector_resolution->hide();
 		d_color->hide();
+		d_escape_tex_strings->hide();
 	} else {
 		if (qobject_cast<Matrix *> (d_window))
 			d_custom_size_box->hide();
@@ -287,7 +294,7 @@ void ImageExportDialog::updateAdvancedOptions (const QString & filter)
 			d_vector_options->setVisible(!filter.contains("*.svg") && !filter.contains("*.emf"));
 			d_vector_resolution->setVisible(!filter.contains("*.tex"));
 			resolutionLabel->setVisible(!filter.contains("*.tex"));
-			scaleFontsBox->setEnabled(d_custom_size_box->isChecked() && !filter.contains("*.tex"));
+			d_escape_tex_strings->setVisible(filter.contains("*.tex"));
 		}
 	} else {
 		d_raster_options->show();
@@ -309,6 +316,7 @@ void ImageExportDialog::closeEvent(QCloseEvent* e)
 		app->d_export_size_unit = unitBox->currentIndex();
         app->d_export_vector_resolution = d_vector_resolution->value();
         app->d_export_color = d_color->isChecked();
+        app->d_export_escape_tex_strings = d_escape_tex_strings->isChecked();
         app->d_export_raster_size = customExportSize();
         app->d_scale_fonts_factor = scaleFontsBox->value();
 
