@@ -214,6 +214,9 @@ void EnrichmentDialog::initTextPage()
     autoUpdateTextBox = new QCheckBox(tr("Auto-&update"));
 	gl1->addWidget(autoUpdateTextBox, 1, 2);
 
+	texOutputBox = new QCheckBox(tr("TeX &Output"));
+	gl1->addWidget(texOutputBox, 2, 2);
+
 	gl1->setColumnStretch(4, 1);
 
     QVBoxLayout *vl = new QVBoxLayout();
@@ -580,6 +583,7 @@ void EnrichmentDialog::setWidget(QWidget *w)
             boxTextAngle->setValue(l->angle());
 			boxTextAngle->blockSignals(false);
 			autoUpdateTextBox->setChecked(l->isAutoUpdateEnabled());
+			texOutputBox->setChecked(l->hasTeXOutput());
 		}
 	} else if (d_widget_type == Tex){
 		TexWidget *tw = qobject_cast<TexWidget *>(d_widget);
@@ -1136,6 +1140,7 @@ void EnrichmentDialog::setTextFormatTo(LegendWidget *l)
     l->setFont(textFont);
     l->setAngle(boxTextAngle->value());
     l->setAutoUpdate(autoUpdateTextBox->isChecked());
+    l->setTeXOutput(texOutputBox->isChecked());
     l->repaint();
 }
 

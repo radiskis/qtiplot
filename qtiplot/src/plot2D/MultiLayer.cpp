@@ -899,7 +899,7 @@ void MultiLayer::exportEMF(const QString& fname, const QSizeF& customSize, int u
 #endif
 
 #ifdef TEX_OUTPUT
-void MultiLayer::exportTeX(const QString& fname, bool color, const QSizeF& customSize, int unit)
+void MultiLayer::exportTeX(const QString& fname, bool color, bool escapeStrings, const QSizeF& customSize, int unit, double fontsFactor)
 {
 	int res = logicalDpiX();
 	QSize size = d_canvas->size();
@@ -907,9 +907,19 @@ void MultiLayer::exportTeX(const QString& fname, bool color, const QSizeF& custo
 		size = Graph::customPrintSize(customSize, unit, res);
 
 	QTeXPaintDevice tex(fname, size);
+	tex.setEscapeTextMode(false);
 	if (!color)
 		tex.setColorMode(QPrinter::GrayScale);
-	draw(&tex, customSize, unit, res);
+
+	foreach (Graph* g, graphsList){
+		g->setTeXExportingMode();
+		g->setEscapeTeXStringsMode(escapeStrings);
+	}
+
+	draw(&tex, customSize, unit, res, fontsFactor);
+
+	foreach (Graph* g, graphsList)
+		g->setTeXExportingMode(false);
 }
 #endif
 
@@ -921,8 +931,8 @@ void MultiLayer::copyAllLayers()
 		selectionOn = true;
 	}
 
-	foreach (QWidget* g, graphsList)
-		((Graph *)g)->deselectMarker();
+	foreach (Graph* g, graphsList)
+		g->deselectMarker();
 
 #ifdef EMF_OUTPUT
 	if (OpenClipboard(0)){

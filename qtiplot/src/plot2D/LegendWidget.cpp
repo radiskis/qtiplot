@@ -56,7 +56,8 @@ h_space(5),
 left_margin(10),
 top_margin(5),
 line_length(20),
-d_auto_update(false)
+d_auto_update(false),
+d_tex_output(false)
 {
 	setAttribute(Qt::WA_DeleteOnClose);
 
@@ -638,6 +639,14 @@ QString LegendWidget::parse(const QString& str)
 			aux = aux.right(aux.length() - pos2 - 1);
 		}
     }
+
+	if (plot()->isExportingTeX()){
+		if (d_tex_output)
+			s = Graph::texSuperscripts(s);
+		else
+			s = Graph::escapeTeXSpecialCharacters(s);
+	}
+
     return s;
 }
 
@@ -686,6 +695,7 @@ void LegendWidget::clone(LegendWidget* t)
 	d_angle = t->angle();
 	setFramePen(t->framePen());
 	d_auto_update = t->isAutoUpdateEnabled();
+	d_tex_output = t->hasTeXOutput();
 
 	setTextColor(t->textColor());
 	setBackgroundColor(t->backgroundColor());
@@ -714,6 +724,7 @@ QString LegendWidget::saveToString()
 	s += "<Alpha>" + QString::number(bc.alpha()) + "</Alpha>\n";
 	s += "<Angle>" + QString::number(d_angle) + "</Angle>\n";
 	s += "<AutoUpdate>" + QString::number(d_auto_update) + "</AutoUpdate>\n";
+	s += "<TeXOutput>" + QString::number(d_tex_output) + "</TeXOutput>\n";
 	return s + "</Legend>\n";
 }
 
@@ -761,6 +772,8 @@ void LegendWidget::restore(Graph *g, const QStringList& lst)
 			l->setAngle(s.remove("<Angle>").remove("</Angle>").toInt());
 		else if (s.contains("<AutoUpdate>"))
 			l->setAutoUpdate(s.remove("<AutoUpdate>").remove("</AutoUpdate>").toInt());
+		else if (s.contains("<TeXOutput>"))
+			l->setTeXOutput(s.remove("<TeXOutput>").remove("</TeXOutput>").toInt());
 	}
 	if (l){
 		l->setBackgroundColor(backgroundColor);
@@ -787,6 +800,18 @@ void LegendWidget::setAngle(int angle)
 QSize LegendWidget::textSize(QPainter *p, const QwtText& text)
 {
 	QSize size = text.textSize(text.font());
+	if (d_tex_output){
+		QString s = text.text();
+		QFontMetrics fm(text.font(), p->device());
+		int superscripts = s.count("$^{");
+		int subscripts = s.count("$_{");
+		int width = size.width() - superscripts*fm.boundingRect("$^{").width();
+		width -= subscripts*fm.boundingRect("$_{").width();
+		width -= (superscripts + subscripts)*fm.boundingRect("}$").width();
+		width += fm.boundingRect(" ").width();
+		return QSize(width, size.height());
+	}
+
 	QwtMetricsMap map;
 	map.setMetrics(this, p->device());
 	if (!map.isIdentity()){

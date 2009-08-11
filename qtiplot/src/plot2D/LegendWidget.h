@@ -72,6 +72,9 @@ public:
 
 	QSize textSize(QPainter *p, const QwtText& text);
 
+	bool hasTeXOutput(){return d_tex_output;};
+	void setTeXOutput(bool on = true){d_tex_output = on;};
+
 private:
 	PlotCurve* getCurve(const QString& s, int &point);
 	void drawVector(PlotCurve *c, QPainter *p, int x, int y, int l);
@@ -96,6 +99,8 @@ private:
 	int line_length;
 	//! Flag telling if the legend should be updated each time a curve is added/removed from the parent plot
 	bool d_auto_update;
+	//! Flag telling if the legend contains TeX commands that mustn't be escaped when exporting to .tex
+	bool d_tex_output;
 
 signals:
 	void enableEditor();

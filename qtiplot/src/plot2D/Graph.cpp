@@ -190,6 +190,8 @@ Graph::Graph(int x, int y, int width, int height, QWidget* parent, Qt::WFlags f)
 	d_scale_on_print = true;
 	d_print_cropmarks = false;
 	d_is_printing = false;
+	d_is_exporting_tex = false;
+	d_tex_escape_strings = true;
 
 	d_user_step = QVector<double>(QwtPlot::axisCnt);
 	for (int i=0; i<QwtPlot::axisCnt; i++)
@@ -1646,24 +1648,19 @@ void Graph::exportSVG(const QString& fname, const QSizeF& customSize, int unit, 
 	svg.setSize(size);
 	svg.setResolution(res);
 
-	draw(&svg, customSize, unit, res, fontsFactor);
+	draw(&svg, size, fontsFactor);
 }
 
-void Graph::draw(QPaintDevice *device, const QSizeF& customSize, int unit, int res, double fontsFactor)
+void Graph::draw(QPaintDevice *device, const QSize& size, double fontsFactor)
 {
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
+	if (fontsFactor == 0.0)
+		fontsFactor = size.height()/(double)height();
+
 	QRect r = rect();
 	QRect br = boundingRect();
-	QSize size = br.size();
-
-	if (customSize.isValid()){
-		int res = logicalDpiX();
-		if (fontsFactor == 0.0)
-			fontsFactor = customPrintSize(customSize, unit, res).height()/(double)height();
-
-		size = customPrintSize(customSize, unit, res);
-
+	if (size != br.size()){
 		if (br.width() != width() || br.height() != height()){
 			double wfactor = (double)br.width()/(double)width();
 			double hfactor = (double)br.height()/(double)height();
@@ -1692,22 +1689,29 @@ void Graph::exportEMF(const QString& fname, const QSizeF& customSize, int unit, 
 		size = Graph::customPrintSize(customSize, unit, res);
 
 	EmfPaintDevice emf(size, fname);
-	draw(&emf, customSize, unit, res, fontsFactor);
+	draw(&emf, size, fontsFactor);
 }
 #endif
 
 #ifdef TEX_OUTPUT
-void Graph::exportTeX(const QString& fname, bool color, const QSizeF& customSize, int unit)
+void Graph::exportTeX(const QString& fname, bool color, bool escapeStrings, const QSizeF& customSize, int unit, double fontsFactor)
 {
 	int res = logicalDpiX();
 	QSize size = boundingRect().size();
 	if (customSize.isValid())
 		size = Graph::customPrintSize(customSize, unit, res);
 
+	d_is_exporting_tex = true;
+	d_tex_escape_strings = escapeStrings;
+
 	QTeXPaintDevice tex(fname, size);
+	tex.setEscapeTextMode(false);
 	if (!color)
 		tex.setColorMode(QPrinter::GrayScale);
-	draw(&tex, customSize, unit, res);
+
+	draw(&tex, size, fontsFactor);
+
+	d_is_exporting_tex = false;
 }
 #endif
 
@@ -5933,7 +5937,21 @@ void Graph::print(QPainter *painter, const QRect &plotRect,
 
     if ((pfilter.options() & QwtPlotPrintFilter::PrintTitle)
         && (!titleLabel()->text().isEmpty())){
+
+		QwtTextLabel *title = titleLabel();
+		QString old_title = t.text();
+		if (d_is_exporting_tex){
+			QString s = old_title;
+			if (d_tex_escape_strings)
+				s = escapeTeXSpecialCharacters(s);
+			s = texSuperscripts(s);
+			title->setText(s);
+		}
+
         printTitle(painter, plotLayout()->titleRect());
+
+        if (d_is_exporting_tex)
+        	title->setText(old_title);
     }
 
 	QRect canvasRect = plotLayout()->canvasRect();
@@ -6240,7 +6258,7 @@ void Graph::printScale(QPainter *painter,
     if (!axisEnabled(axisId))
         return;
 
-    const QwtScaleWidget *scaleWidget = axisWidget(axisId);
+    QwtScaleWidget *scaleWidget = (QwtScaleWidget *)axisWidget(axisId);
     if ( scaleWidget->isColorBarEnabled()
         && scaleWidget->colorBarWidth() > 0)
     {
@@ -6300,7 +6318,23 @@ void Graph::printScale(QPainter *painter,
             return;
     }
 
+	QwtText title = scaleWidget->title();
+	QString old_title = title.text();
+	if (d_is_exporting_tex){
+		QString s = old_title;
+		if (d_tex_escape_strings)
+			s = escapeTeXSpecialCharacters(s);
+		s = texSuperscripts(s);
+		title.setText(s);
+		scaleWidget->setTitle(title);
+	}
+
     scaleWidget->drawTitle(painter, align, rect);
+
+	if (d_is_exporting_tex){
+		title.setText(old_title);
+		scaleWidget->setTitle(title);
+	}
 
     painter->save();
     painter->setFont(scaleWidget->font());
@@ -6326,4 +6360,28 @@ void Graph::printScale(QPainter *painter,
     sd->setLength(sdLength);
 
     painter->restore();
+}
+
+QString Graph::escapeTeXSpecialCharacters(const QString &s)
+{
+	QString text = s;
+	text.replace("$", "\\$");
+	text.replace("_", "\\_");
+	text.replace("{", "\\{");
+	text.replace("}", "\\}");
+	text.replace("^", "\\^");
+	text.replace("&", "\\&");
+	text.replace("%", "\\%");
+	text.replace("#", "\\#");
+	return text;
+}
+
+QString Graph::texSuperscripts(const QString &text)
+{
+	QString s = text;
+	s.replace("<sub>", "$_{");
+	s.replace("<sup>", "$^{");
+	s.replace("</sub>", "}$");
+	s.replace("</sup>", "}$");
+	return s;
 }
