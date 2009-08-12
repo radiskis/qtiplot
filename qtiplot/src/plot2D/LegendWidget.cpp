@@ -115,7 +115,8 @@ void LegendWidget::print(QPainter *painter, const QwtScaleMap map[QwtPlot::axisC
 
 	int dfx = qRound(d_frame_pen.width()*xfactor);
 	int dfy = qRound(d_frame_pen.width()*yfactor);
-	drawFrame(painter, QRect(x, y, width, height).adjusted(-dfx, -dfy, dfx, dfy));
+
+	drawFrame(painter, QRect(x, y, this->width()*xfactor, height).adjusted(-dfx, -dfy, dfx, dfy));
 	drawText(painter, QRect(x, y, textWidth, textHeight), heights, symbolLineLength);
 
 	// restore screen geometry parameters
@@ -641,10 +642,10 @@ QString LegendWidget::parse(const QString& str)
     }
 
 	if (plot()->isExportingTeX()){
-		if (d_tex_output)
-			s = Graph::texSuperscripts(s);
-		else
+		if (!d_tex_output)
 			s = Graph::escapeTeXSpecialCharacters(s);
+
+		s = Graph::texSuperscripts(s);
 	}
 
     return s;
@@ -800,18 +801,6 @@ void LegendWidget::setAngle(int angle)
 QSize LegendWidget::textSize(QPainter *p, const QwtText& text)
 {
 	QSize size = text.textSize(text.font());
-	if (d_tex_output){
-		QString s = text.text();
-		QFontMetrics fm(text.font(), p->device());
-		int superscripts = s.count("$^{");
-		int subscripts = s.count("$_{");
-		int width = size.width() - superscripts*fm.boundingRect("$^{").width();
-		width -= subscripts*fm.boundingRect("$_{").width();
-		width -= (superscripts + subscripts)*fm.boundingRect("}$").width();
-		width += fm.boundingRect(" ").width();
-		return QSize(width, size.height());
-	}
-
 	QwtMetricsMap map;
 	map.setMetrics(this, p->device());
 	if (!map.isIdentity()){
