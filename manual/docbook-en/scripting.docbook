@@ -952,6 +952,38 @@ t.addColumn()
 t.insertColumns(startColumn, count)
 </programlisting>
 
+You can set the format of a column to text using:
+<programlisting>
+t.setColTextFormat(col)
+</programlisting>
+
+Or you can adjust the numeric format:
+<programlisting>
+t.setColNumericFormat(col, format, precision, update=true)
+</programlisting>
+were <varname>col</varname> is the number of the column to adjust and <varname>precision</varname> states the number of digits.
+The <varname>format</varname> can be one of the following:
+<variablelist spacing="compact">
+            <varlistentry>
+              <term>0.</term>
+              <listitem>
+                <para>standard format</para>
+              </listitem>
+            </varlistentry>
+            <varlistentry>
+              <term>1.</term>
+              <listitem>
+                <para>decimal format with <varname>precision</varname> digits</para>
+              </listitem>
+            </varlistentry>
+            <varlistentry>
+              <term>2.</term>
+              <listitem>
+                <para>scientific format</para>
+              </listitem>
+            </varlistentry>
+</variablelist>
+
 It is also possible to swap two columns using:
 <programlisting>
 t.swapColumns(column1, column2)
