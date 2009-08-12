@@ -304,6 +304,22 @@ public:
 	}
 %End
 
+	void setColTextFormat(SIP_PYOBJECT);
+%MethodCode
+  	sipIsErr = 0;
+  	CHECK_TABLE_COL(a0);
+	if (sipIsErr == 0)
+		sipCpp->setTextFormat(col);
+%End
+
+	void setColNumericFormat(SIP_PYOBJECT, int, int,  bool = true);
+%MethodCode
+  	sipIsErr = 0;
+  	CHECK_TABLE_COL(a0);
+	if (sipIsErr == 0)
+		sipCpp->setColNumericFormat(a1, a2, col, a3);
+%End
+
 	void setColumnWidth(SIP_PYOBJECT, int);
 %MethodCode
   	sipIsErr = 0;

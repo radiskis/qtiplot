@@ -621,3 +621,5 @@ setWaterfallOffset
 reverseWaterfallOrder
 setIndexedColors
 setObjectName
+setColNumericFormat
+setColTextFormat
