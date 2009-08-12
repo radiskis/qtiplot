@@ -80,6 +80,7 @@ private:
 	QLabel *resolutionLabel;
 	QCheckBox *keepRatioBox;
 	QCheckBox *d_escape_tex_strings;
+	QCheckBox *d_tex_font_sizes;
 
 	double aspect_ratio;
 	Graph *d_layer;
@@ -100,6 +101,8 @@ public:
 	bool color() const { return d_color->isChecked(); };
 	//! For TeX format: returns whether special characters should be escaped for ouput (default: true).
 	bool escapeStrings(){return d_escape_tex_strings->isChecked();};
+	//! For TeX format: returns whether font sizes should be exported (default: true).
+	bool exportFontSizes(){return d_tex_font_sizes->isChecked();};
 
 	//! For raster formats: returns the output resolution the user selected, defaulting to the screen resolution.
 	int bitmapResolution() const { return d_bitmap_resolution->value(); };

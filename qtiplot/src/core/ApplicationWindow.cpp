@@ -630,6 +630,7 @@ void ApplicationWindow::initGlobalConstants()
 	d_export_bitmap_resolution = d_export_vector_resolution;
 	d_export_color = true;
 	d_export_escape_tex_strings = true;
+	d_export_tex_font_sizes = true;
 	d_3D_export_text_mode = 0; //VectorWriter::PIXEL
 	d_3D_export_sort = 1; //VectorWriter::SIMPLESORT
 }
@@ -4775,6 +4776,7 @@ void ApplicationWindow::readSettings()
 	d_export_size_unit = settings.value("/SizeUnit", d_export_size_unit).toInt();
 	d_scale_fonts_factor = settings.value("/ScaleFontsFactor", d_scale_fonts_factor).toDouble();
 	d_export_escape_tex_strings = settings.value("/EscapeTeXStrings", true).toBool();
+	d_export_tex_font_sizes = settings.value("/ExportTeXFontSize", true).toBool();
 	settings.endGroup(); // ExportImage
 
 	settings.beginGroup("/ScriptWindow");
@@ -5159,6 +5161,7 @@ void ApplicationWindow::saveSettings()
 	settings.setValue("/SizeUnit", d_export_size_unit);
 	settings.setValue("/ScaleFontsFactor", d_scale_fonts_factor);
 	settings.setValue("/EscapeTeXStrings", d_export_escape_tex_strings);
+	settings.setValue("/ExportTeXFontSize", d_export_tex_font_sizes);
 	settings.endGroup(); // ExportImage
 
 	settings.beginGroup("/ScriptWindow");
@@ -5266,7 +5269,7 @@ void ApplicationWindow::exportGraph(const QString& exportFilter)
 #endif
 #ifdef TEX_OUTPUT
     if (plot2D && selected_filter.contains(".tex")){
-		plot2D->exportTeX(file_name, ied->color(), ied->escapeStrings(), ied->customExportSize(), ied->sizeUnit(), ied->scaleFontsFactor());
+		plot2D->exportTeX(file_name, ied->color(), ied->escapeStrings(), ied->exportFontSizes(), ied->customExportSize(), ied->sizeUnit(), ied->scaleFontsFactor());
 		return;
     }
 #endif
@@ -5343,7 +5346,7 @@ void ApplicationWindow::exportLayer()
 #endif
 #ifdef TEX_OUTPUT
     else if (selected_filter.contains(".tex"))
-		g->exportTeX(file_name, ied->color(), ied->escapeStrings(), ied->customExportSize(), ied->sizeUnit(), ied->scaleFontsFactor());
+		g->exportTeX(file_name, ied->color(), ied->escapeStrings(), ied->exportFontSizes(), ied->customExportSize(), ied->sizeUnit(), ied->scaleFontsFactor());
 #endif
     else {
 		QList<QByteArray> list = QImageWriter::supportedImageFormats();
@@ -5448,7 +5451,7 @@ void ApplicationWindow::exportAllGraphs()
 #endif
 #ifdef TEX_OUTPUT
     if (plot2D && file_suffix.contains(".tex")){
-		plot2D->exportTeX(file_name, ied->color(), ied->escapeStrings(), ied->customExportSize(), ied->sizeUnit(), ied->scaleFontsFactor());
+		plot2D->exportTeX(file_name, ied->color(), ied->escapeStrings(), ied->exportFontSizes(), ied->customExportSize(), ied->sizeUnit(), ied->scaleFontsFactor());
 		return;
     }
 #endif

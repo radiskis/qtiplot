@@ -899,7 +899,7 @@ void MultiLayer::exportEMF(const QString& fname, const QSizeF& customSize, int u
 #endif
 
 #ifdef TEX_OUTPUT
-void MultiLayer::exportTeX(const QString& fname, bool color, bool escapeStrings, const QSizeF& customSize, int unit, double fontsFactor)
+void MultiLayer::exportTeX(const QString& fname, bool color, bool escapeStrings, bool fontSizes, const QSizeF& customSize, int unit, double fontsFactor)
 {
 	int res = logicalDpiX();
 	QSize size = d_canvas->size();
@@ -908,6 +908,7 @@ void MultiLayer::exportTeX(const QString& fname, bool color, bool escapeStrings,
 
 	QTeXPaintDevice tex(fname, size);
 	tex.setEscapeTextMode(false);
+	tex.exportFontSizes(fontSizes);
 	if (!color)
 		tex.setColorMode(QPrinter::GrayScale);
 
@@ -915,6 +916,9 @@ void MultiLayer::exportTeX(const QString& fname, bool color, bool escapeStrings,
 		g->setTeXExportingMode();
 		g->setEscapeTeXStringsMode(escapeStrings);
 	}
+
+	if (!fontSizes)
+		fontsFactor = 1.0;
 
 	draw(&tex, customSize, unit, res, fontsFactor);
 

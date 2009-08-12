@@ -1694,7 +1694,7 @@ void Graph::exportEMF(const QString& fname, const QSizeF& customSize, int unit, 
 #endif
 
 #ifdef TEX_OUTPUT
-void Graph::exportTeX(const QString& fname, bool color, bool escapeStrings, const QSizeF& customSize, int unit, double fontsFactor)
+void Graph::exportTeX(const QString& fname, bool color, bool escapeStrings, bool fontSizes, const QSizeF& customSize, int unit, double fontsFactor)
 {
 	int res = logicalDpiX();
 	QSize size = boundingRect().size();
@@ -1706,8 +1706,13 @@ void Graph::exportTeX(const QString& fname, bool color, bool escapeStrings, cons
 
 	QTeXPaintDevice tex(fname, size);
 	tex.setEscapeTextMode(false);
+	tex.exportFontSizes(fontSizes);
+	tex.setDocumentMode();
 	if (!color)
 		tex.setColorMode(QPrinter::GrayScale);
+
+	if (!fontSizes)
+		fontsFactor = 1.0;
 
 	draw(&tex, size, fontsFactor);
 
