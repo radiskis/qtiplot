@@ -92,6 +92,7 @@ image
 exportRasterImage
 export
 exportVector
+exportTex
 importASCII
 exportASCII
 ArrowMarker

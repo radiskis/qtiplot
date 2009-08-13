@@ -20,9 +20,6 @@ CONFIG          += HAVE_LIBPNG
 # Uncomment the next line in order to enable export of 2D plots to the EMF file format on Windows. You need EmfEngine on your system.
 CONFIG          += HAVE_EMF
 
-# Uncomment the next line in order to enable export of 2D plots to TeX. You need QTeXEngine on your system.
-CONFIG          += HAVE_TEX_ENGINE
-
 # Uncomment the following line if you want to perform a custom installation using the *.path variables defined bellow.
 #CONFIG          += CustomInstall
 
@@ -183,6 +180,15 @@ include(src/table/table.pri)
 include(src/scripting/scripting.pri)
 
 ###############################################################
+##################### TeX export: QTeXEngine ##################
+###############################################################
+
+INCLUDEPATH += ../3rdparty/QTeXEngine/src
+HEADERS 	+= ../3rdparty/QTeXEngine/src/QTeXEngine.h
+SOURCES     += ../3rdparty/QTeXEngine/src/QTeXPaintEngine.cpp
+SOURCES     += ../3rdparty/QTeXEngine/src/QTeXPaintDevice.cpp
+
+###############################################################
 ##################### Scripting: PYTHON + SIP + PyQT ##########
 ###############################################################
 
@@ -230,16 +236,6 @@ contains(CONFIG, HAVE_EMF){
 		INCLUDEPATH += ../3rdparty/EmfEngine/src
 		LIBS        += ../3rdparty/EmfEngine/libEmfEngine.a -lgdiplus
 	}
-}
-
-###############################################################
-
-contains(CONFIG, HAVE_TEX_ENGINE){
-	DEFINES 	+= TEX_OUTPUT
-	INCLUDEPATH += ../3rdparty/QTeXEngine/src
-	HEADERS 	+= ../3rdparty/QTeXEngine/src/QTeXEngine.h
-	SOURCES     += ../3rdparty/QTeXEngine/src/QTeXPaintEngine.cpp
-	SOURCES     += ../3rdparty/QTeXEngine/src/QTeXPaintDevice.cpp
 }
 
 ###############################################################

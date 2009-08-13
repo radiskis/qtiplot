@@ -630,10 +630,8 @@ void ApplicationWindow::initGlobalConstants()
 	d_export_vector_resolution = QWidget().logicalDpiX();
 	d_export_bitmap_resolution = d_export_vector_resolution;
 	d_export_color = true;
-#ifdef TEX_OUTPUT
 	d_export_escape_tex_strings = true;
 	d_export_tex_font_sizes = true;
-#endif
 	d_3D_export_text_mode = 0; //VectorWriter::PIXEL
 	d_3D_export_sort = 1; //VectorWriter::SIMPLESORT
 }
@@ -4779,10 +4777,8 @@ void ApplicationWindow::readSettings()
 	d_export_raster_size = settings.value("/RasterSize", d_export_raster_size).toSizeF();
 	d_export_size_unit = settings.value("/SizeUnit", d_export_size_unit).toInt();
 	d_scale_fonts_factor = settings.value("/ScaleFontsFactor", d_scale_fonts_factor).toDouble();
-#ifdef TEX_OUTPUT
 	d_export_escape_tex_strings = settings.value("/EscapeTeXStrings", true).toBool();
 	d_export_tex_font_sizes = settings.value("/ExportTeXFontSize", true).toBool();
-#endif
 	settings.endGroup(); // ExportImage
 
 	settings.beginGroup("/ScriptWindow");
@@ -5168,10 +5164,8 @@ void ApplicationWindow::saveSettings()
 	settings.setValue("/RasterSize", d_export_raster_size);
 	settings.setValue("/SizeUnit", d_export_size_unit);
 	settings.setValue("/ScaleFontsFactor", d_scale_fonts_factor);
-#ifdef TEX_OUTPUT
 	settings.setValue("/EscapeTeXStrings", d_export_escape_tex_strings);
 	settings.setValue("/ExportTeXFontSize", d_export_tex_font_sizes);
-#endif
 	settings.endGroup(); // ExportImage
 
 	settings.beginGroup("/ScriptWindow");
@@ -5277,12 +5271,11 @@ void ApplicationWindow::exportGraph(const QString& exportFilter)
 		return;
     }
 #endif
-#ifdef TEX_OUTPUT
+
     if (plot2D && selected_filter.contains(".tex")){
 		plot2D->exportTeX(file_name, ied->color(), ied->escapeStrings(), ied->exportFontSizes(), ied->customExportSize(), ied->sizeUnit(), ied->scaleFontsFactor());
 		return;
     }
-#endif
 
 	if (selected_filter.contains(".eps") || selected_filter.contains(".pdf") ||
 		selected_filter.contains(".ps") || selected_filter.contains(".svg")) {
@@ -5354,10 +5347,8 @@ void ApplicationWindow::exportLayer()
     else if (selected_filter.contains(".emf"))
 		g->exportEMF(file_name, ied->customExportSize(), ied->sizeUnit(), ied->scaleFontsFactor());
 #endif
-#ifdef TEX_OUTPUT
     else if (selected_filter.contains(".tex"))
 		g->exportTeX(file_name, ied->color(), ied->escapeStrings(), ied->exportFontSizes(), ied->customExportSize(), ied->sizeUnit(), ied->scaleFontsFactor());
-#endif
     else {
 		QList<QByteArray> list = QImageWriter::supportedImageFormats();
 		for (int i=0; i<(int)list.count(); i++)
@@ -5459,12 +5450,10 @@ void ApplicationWindow::exportAllGraphs()
 		return;
 	}
 #endif
-#ifdef TEX_OUTPUT
     if (plot2D && file_suffix.contains(".tex")){
 		plot2D->exportTeX(file_name, ied->color(), ied->escapeStrings(), ied->exportFontSizes(), ied->customExportSize(), ied->sizeUnit(), ied->scaleFontsFactor());
 		return;
     }
-#endif
 
 		if (file_suffix.contains(".eps") || file_suffix.contains(".pdf") ||
 			file_suffix.contains(".ps") || file_suffix.contains(".svg")) {
