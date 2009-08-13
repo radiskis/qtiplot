@@ -1707,7 +1707,7 @@ void Graph::exportTeX(const QString& fname, bool color, bool escapeStrings, bool
 	QTeXPaintDevice tex(fname, size);
 	tex.setEscapeTextMode(false);
 	tex.exportFontSizes(fontSizes);
-	tex.setDocumentMode();
+	//tex.setDocumentMode();
 	if (!color)
 		tex.setColorMode(QPrinter::GrayScale);
 
@@ -1919,6 +1919,26 @@ QString Graph::legendText(bool layerSpec)
 				text += QString::number(i + 1);
 				text += ")%(";
 				text += QString::number(i + 1);
+
+				LegendDisplayMode mode = ColumnName;
+				ApplicationWindow *app = multiLayer()->applicationWindow();
+				if (app)
+					mode = app->d_graph_legend_display;
+
+				switch(mode){
+					case ColumnComment:
+						text += ",@L";
+					break;
+					case TableName:
+						text += ",@W";
+					break;
+					case TableLegend:
+						text += ",@WL";
+					break;
+					default:
+					break;
+				}
+
 				text += ")\n";
 				i++;
 			}
@@ -5943,6 +5963,7 @@ void Graph::print(QPainter *painter, const QRect &plotRect,
     if ((pfilter.options() & QwtPlotPrintFilter::PrintTitle)
         && (!titleLabel()->text().isEmpty())){
 
+#ifdef TEX_OUTPUT
 		QwtTextLabel *title = titleLabel();
 		QString old_title = t.text();
 		if (d_is_exporting_tex){
@@ -5951,12 +5972,23 @@ void Graph::print(QPainter *painter, const QRect &plotRect,
 				s = escapeTeXSpecialCharacters(s);
 			s = texSuperscripts(s);
 			title->setText(s);
-		}
 
+			int flags = title->text().renderFlags();
+			if (flags & Qt::AlignLeft)
+				((QTeXPaintDevice *)painter->device())->setTextHorizontalAlignment(Qt::AlignLeft);
+			else if (flags & Qt::AlignRight)
+				((QTeXPaintDevice *)painter->device())->setTextHorizontalAlignment(Qt::AlignRight);
+
+		}
+#endif
         printTitle(painter, plotLayout()->titleRect());
 
-        if (d_is_exporting_tex)
+#ifdef TEX_OUTPUT
+        if (d_is_exporting_tex){
         	title->setText(old_title);
+			((QTeXPaintDevice *)painter->device())->setTextHorizontalAlignment(Qt::AlignHCenter);
+        }
+#endif
     }
 
 	QRect canvasRect = plotLayout()->canvasRect();
@@ -6323,6 +6355,7 @@ void Graph::printScale(QPainter *painter,
             return;
     }
 
+#ifdef TEX_OUTPUT
 	QwtText title = scaleWidget->title();
 	QString old_title = title.text();
 	if (d_is_exporting_tex){
@@ -6331,15 +6364,26 @@ void Graph::printScale(QPainter *painter,
 			s = escapeTeXSpecialCharacters(s);
 		s = texSuperscripts(s);
 		title.setText(s);
+
+		int flags = title.renderFlags();
+		if (flags & Qt::AlignLeft)
+			((QTeXPaintDevice *)painter->device())->setTextHorizontalAlignment(Qt::AlignLeft);
+		else if (flags & Qt::AlignRight)
+			((QTeXPaintDevice *)painter->device())->setTextHorizontalAlignment(Qt::AlignRight);
+
 		scaleWidget->setTitle(title);
 	}
+#endif
 
     scaleWidget->drawTitle(painter, align, rect);
 
+#ifdef TEX_OUTPUT
 	if (d_is_exporting_tex){
 		title.setText(old_title);
 		scaleWidget->setTitle(title);
+		((QTeXPaintDevice *)painter->device())->setTextHorizontalAlignment(Qt::AlignHCenter);
 	}
+#endif
 
     painter->save();
     painter->setFont(scaleWidget->font());

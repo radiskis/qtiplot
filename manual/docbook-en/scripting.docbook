@@ -959,25 +959,25 @@ t.setColTextFormat(col)
 
 Or you can adjust the numeric format:
 <programlisting>
-t.setColNumericFormat(col, format, precision, update=true)
+t.setColNumericFormat(col, format, precision, update=True)
 </programlisting>
 were <varname>col</varname> is the number of the column to adjust and <varname>precision</varname> states the number of digits.
 The <varname>format</varname> can be one of the following:
 <variablelist spacing="compact">
             <varlistentry>
-              <term>0.</term>
+              <term>Table.Default (0)</term>
               <listitem>
                 <para>standard format</para>
               </listitem>
             </varlistentry>
             <varlistentry>
-              <term>1.</term>
+              <term>Table.Decimal (1)</term>
               <listitem>
                 <para>decimal format with <varname>precision</varname> digits</para>
               </listitem>
             </varlistentry>
             <varlistentry>
-              <term>2.</term>
+              <term>Table.Scientific (2)</term>
               <listitem>
                 <para>scientific format</para>
               </listitem>

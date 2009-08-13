@@ -623,3 +623,6 @@ setIndexedColors
 setObjectName
 setColNumericFormat
 setColTextFormat
+Default
+Decimal
+Scientific

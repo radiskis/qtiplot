@@ -224,6 +224,7 @@ private:
 	//@{
 	void wheelEvent(QWheelEvent *);
 	void keyPressEvent(QKeyEvent *);
+	void mouseDoubleClickEvent(QMouseEvent *);
 	bool eventFilter(QObject *object, QEvent *);
 	void releaseLayer();
 	void resizeLayers(QResizeEvent *);
@@ -242,7 +243,7 @@ private:
 
     QList<LayerButton *> buttonsList;
     QList<Graph *> graphsList;
-	QHBoxLayout *layerButtonsBox, *waterfallBox;
+	QHBoxLayout *layerButtonsBox, *waterfallBox, *toolbuttonsBox;
     QWidget *d_canvas;
 
 	QPointer<SelectionMoveResizer> d_layers_selector;
@@ -252,6 +253,8 @@ private:
 	//! Flag telling if we need to draw side lines for curves in a waterfall plot
 	bool d_side_lines;
 	QColor d_waterfall_fill_color;
+
+	QPushButton *d_add_layer_btn, *d_remove_layer_btn;
 };
 
 //! Button with layer number

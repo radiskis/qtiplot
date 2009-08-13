@@ -1,0 +1,5 @@
+QTeXEngine GNU GPL v. 3.0
+------------------------
+
+05/08/2009 - Release 0.1: Initial release.
+

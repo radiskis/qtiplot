@@ -538,6 +538,7 @@ void ApplicationWindow::initGlobalConstants()
 	antialiasing2DPlots = true;
 	d_scale_plots_on_print = false;
 	d_print_cropmarks = false;
+	d_graph_legend_display = Graph::ColumnName;
 
 	defaultCurveStyle = int(Graph::LineSymbols);
 	defaultCurveLineWidth = 1;
@@ -629,8 +630,10 @@ void ApplicationWindow::initGlobalConstants()
 	d_export_vector_resolution = QWidget().logicalDpiX();
 	d_export_bitmap_resolution = d_export_vector_resolution;
 	d_export_color = true;
+#ifdef TEX_OUTPUT
 	d_export_escape_tex_strings = true;
 	d_export_tex_font_sizes = true;
+#endif
 	d_3D_export_text_mode = 0; //VectorWriter::PIXEL
 	d_3D_export_sort = 1; //VectorWriter::SIMPLESORT
 }
@@ -4637,6 +4640,7 @@ void ApplicationWindow::readSettings()
 		d_show_axes_labels[i] = settings.value("labels", true).toBool();
 	}
 	settings.endArray();
+	d_graph_legend_display = (Graph::LegendDisplayMode)settings.value("/LegendDisplayMode", d_graph_legend_display).toInt();
 	settings.endGroup(); // General
 
 	settings.beginGroup("/Curves");
@@ -4775,8 +4779,10 @@ void ApplicationWindow::readSettings()
 	d_export_raster_size = settings.value("/RasterSize", d_export_raster_size).toSizeF();
 	d_export_size_unit = settings.value("/SizeUnit", d_export_size_unit).toInt();
 	d_scale_fonts_factor = settings.value("/ScaleFontsFactor", d_scale_fonts_factor).toDouble();
+#ifdef TEX_OUTPUT
 	d_export_escape_tex_strings = settings.value("/EscapeTeXStrings", true).toBool();
 	d_export_tex_font_sizes = settings.value("/ExportTeXFontSize", true).toBool();
+#endif
 	settings.endGroup(); // ExportImage
 
 	settings.beginGroup("/ScriptWindow");
@@ -5010,6 +5016,8 @@ void ApplicationWindow::saveSettings()
 		settings.setValue("labels", d_show_axes_labels[i]);
 	}
 	settings.endArray();
+
+	settings.setValue("/LegendDisplayMode", d_graph_legend_display);
 	settings.endGroup(); // General
 
 	settings.beginGroup("/Curves");
@@ -5160,8 +5168,10 @@ void ApplicationWindow::saveSettings()
 	settings.setValue("/RasterSize", d_export_raster_size);
 	settings.setValue("/SizeUnit", d_export_size_unit);
 	settings.setValue("/ScaleFontsFactor", d_scale_fonts_factor);
+#ifdef TEX_OUTPUT
 	settings.setValue("/EscapeTeXStrings", d_export_escape_tex_strings);
 	settings.setValue("/ExportTeXFontSize", d_export_tex_font_sizes);
+#endif
 	settings.endGroup(); // ExportImage
 
 	settings.beginGroup("/ScriptWindow");
@@ -8550,6 +8560,7 @@ void ApplicationWindow::fileMenuAboutToShow()
 
 	recentMenuID = fileMenu->insertItem(tr("&Recent Projects"), recent);
 
+	fileMenu->addAction(actionCloseProject);
 	fileMenu->insertSeparator();
 	fileMenu->addAction(actionLoadImage);
 	fileMenu->addAction(actionImportImage);
@@ -10458,6 +10469,12 @@ void ApplicationWindow::addLayer()
 	MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
 	if (!plot)
 		return;
+
+	if (plot->numLayers() == 0){
+		setPreferences(plot->addLayer());
+		return;
+	}
+
 	switch(QMessageBox::information(this,
 				tr("QtiPlot - Guess best origin for the new layer?"),
 				tr("Do you want QtiPlot to guess the best position for the new layer?\n Warning: this will rearrange existing layers!"),
@@ -12065,6 +12082,9 @@ void ApplicationWindow::createActions()
 	actionCloseAllWindows->setShortcut( tr("Ctrl+Q") );
 	connect(actionCloseAllWindows, SIGNAL(activated()), qApp, SLOT(closeAllWindows()));
 
+	actionCloseProject = new QAction(QIcon(QPixmap(delete_xpm)), tr("&Close"), this);
+	connect(actionCloseProject, SIGNAL(activated()), this, SLOT(newProject()));
+
 	actionClearLogInfo = new QAction(tr("Clear &Log Information"), this);
 	connect(actionClearLogInfo, SIGNAL(activated()), this, SLOT(clearLogInfo()));
 
@@ -12913,6 +12933,7 @@ void ApplicationWindow::translateActionsStrings()
 
 	actionCloseAllWindows->setMenuText(tr("&Quit"));
 	actionCloseAllWindows->setShortcut(tr("Ctrl+Q"));
+	actionCloseProject->setMenuText(tr("&Close"));
 
 	actionClearLogInfo->setMenuText(tr("Clear &Log Information"));
 	actionDeleteFitTables->setMenuText(tr("Delete &Fit Tables"));
