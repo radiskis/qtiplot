@@ -2371,7 +2371,8 @@ This function uses some default parameters
 for the properties of the image. If you need more control over the exported images you can use one
 of the following specialized functions:<programlisting>
 l.exportVector(fileName, dpi = 96, color = True, size = QSizeF(), unit = Frame.Pixel, fontsFactor = 1.0)
-l.exportImage(filename, quality = 100, transparent = False, dpi = 0, size = QSizeF(), unit = Frame.Pixel, fontsFactor = 1.0)</programlisting>
+l.exportImage(fileName, quality = 100, transparent = False, dpi = 0, size = QSizeF(), unit = Frame.Pixel, fontsFactor = 1.0)
+l.exportTex(fileName, color = True, escapeStrings = True, fontSizes = True, size = QSizeF(), unit = Frame.Pixel, fontsFactor = 1.0)</programlisting>
 
 <para>The function <varname>exportVector</varname> can export the plot/layer to the following vector formats:
 .eps, .ps, .pdf.</para>
@@ -2425,7 +2426,16 @@ and can take one of the following values:
 The <varname>fontsFactor</varname> parameter represents a scaling factor
 for the font sizes of all texts in the plot (the default is 1.0, meaning no scaling).
 If you set this parameter to 0, the program will automatically try to calculate
-a scale factor.
+a scale factor.</para>
+
+<para>
+The function <varname>exportTex</varname> can be used if you need to export to
+a TeX file. The <varname>escapeStrings</varname> parameter enables/disables the escaping of
+special TeX characters like: $, {, }, ^, etc...
+If <varname>True</varname>, the <varname>fontSizes</varname> parameter triggers the export of the original
+font sizes in the plot layer.
+Otherwise all exported text strings will use the font size specified in the preamble of
+the TeX document.
 </para>
 
 <para>All the export functions rely on the file name suffix in order to choose the image format.</para>

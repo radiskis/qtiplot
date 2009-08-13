@@ -52,9 +52,7 @@
 	#include <EmfEngine.h>
 #endif
 
-#ifdef TEX_OUTPUT
-	#include <QTeXEngine.h>
-#endif
+#include <QTeXEngine.h>
 
 #include <qwt_plot.h>
 #include <qwt_plot_canvas.h>
@@ -704,13 +702,10 @@ void MultiLayer::exportToFile(const QString& fileName)
 	} else if(fileName.contains(".svg")){
 		exportSVG(fileName);
 		return;
-	}
-#ifdef TEX_OUTPUT
-	 else if(fileName.contains(".tex")){
+	} else if(fileName.contains(".tex")){
 		exportTeX(fileName);
 		return;
 	}
-#endif
 #ifdef EMF_OUTPUT
 	 else if(fileName.contains(".emf")){
 		exportEMF(fileName);
@@ -918,7 +913,6 @@ void MultiLayer::exportEMF(const QString& fname, const QSizeF& customSize, int u
 }
 #endif
 
-#ifdef TEX_OUTPUT
 void MultiLayer::exportTeX(const QString& fname, bool color, bool escapeStrings, bool fontSizes, const QSizeF& customSize, int unit, double fontsFactor)
 {
 	int res = logicalDpiX();
@@ -945,7 +939,6 @@ void MultiLayer::exportTeX(const QString& fname, bool color, bool escapeStrings,
 	foreach (Graph* g, graphsList)
 		g->setTeXExportingMode(false);
 }
-#endif
 
 void MultiLayer::copyAllLayers()
 {

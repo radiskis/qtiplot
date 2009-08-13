@@ -59,11 +59,8 @@ ImageExportDialog::ImageExportDialog(MdiSubWindow *window, QWidget * parent, boo
 		list << "EMF";
 	#endif
 
-#if TEX_OUTPUT
 	if (qobject_cast<MultiLayer *> (d_window))
         list << "TEX";
-#endif
-
 	if (qobject_cast<Graph3D *> (d_window))
         list << "PGF";
 
@@ -112,7 +109,6 @@ void ImageExportDialog::initAdvancedOptions()
 	d_color->setChecked(app->d_export_color);
 	vector_layout->addWidget(d_color, 2, 1);
 
-#ifdef TEX_OUTPUT
 	d_escape_tex_strings = new QCheckBox();
 	d_escape_tex_strings->setText(tr("&Escape special characters in title/axis labels"));
 	d_escape_tex_strings->setChecked(app->d_export_escape_tex_strings);
@@ -124,7 +120,6 @@ void ImageExportDialog::initAdvancedOptions()
 	d_tex_font_sizes->setChecked(app->d_export_tex_font_sizes);
 	vector_layout->addWidget(d_tex_font_sizes, 4, 1);
 	d_tex_font_sizes->hide();
-#endif
 
 	QLabel *text3DLabel = new QLabel(tr("Export 3D texts as"));
 	vector_layout->addWidget(text3DLabel, 4, 0);
@@ -255,10 +250,8 @@ void ImageExportDialog::initAdvancedOptions()
 		resolutionLabel->hide();
 		d_vector_resolution->hide();
 		d_color->hide();
-#ifdef TEX_OUTPUT
 		d_escape_tex_strings->hide();
 		d_tex_font_sizes->hide();
-#endif
 	} else {
 		if (qobject_cast<Matrix *> (d_window))
 			d_custom_size_box->hide();
@@ -309,10 +302,8 @@ void ImageExportDialog::updateAdvancedOptions (const QString & filter)
 			d_vector_resolution->setVisible(!texOutput);
 			resolutionLabel->setVisible(!texOutput);
 
-#ifdef TEX_OUTPUT
 			d_escape_tex_strings->setVisible(texOutput);
 			d_tex_font_sizes->setVisible(texOutput);
-#endif
 		}
 	} else {
 		d_raster_options->show();
@@ -334,10 +325,8 @@ void ImageExportDialog::closeEvent(QCloseEvent* e)
 		app->d_export_size_unit = unitBox->currentIndex();
         app->d_export_vector_resolution = d_vector_resolution->value();
         app->d_export_color = d_color->isChecked();
-#ifdef TEX_OUTPUT
         app->d_export_escape_tex_strings = d_escape_tex_strings->isChecked();
         app->d_export_tex_font_sizes = d_tex_font_sizes->isChecked();
-#endif
         app->d_export_raster_size = customExportSize();
         app->d_scale_fonts_factor = scaleFontsBox->value();
 

@@ -1135,6 +1135,8 @@ public:
 
   void replot();
 
+  void exportTeX(const QString& fname, bool color = true, bool escapeStrings = true, bool fontSizes = true,
+				const QSizeF& customSize = QSizeF(), int unit = FrameWidget::Pixel, double fontsFactor = 1.0)/PyName=exportTex/;
   void exportImage(const QString& fileName, int quality = 100, bool transparent = false,
 				int dpi = 0, const QSizeF& customSize = QSizeF(), int unit = FrameWidget::Pixel, double fontsFactor = 1.0);
   void exportVector(const QString&, int = 0, bool = true,
@@ -1208,6 +1210,8 @@ public:
 		double fontsFactor = 1.0);
   void exportVector(const QString&, int = 0, bool = true,
 		const QSizeF& customSize = QSizeF(), int unit = FrameWidget::Pixel, double fontsFactor = 1.0);
+  void exportTeX(const QString& fname, bool color = true, bool escapeStrings = true, bool fontSizes = true,
+		const QSizeF& customSize = QSizeF(), int unit = FrameWidget::Pixel, double fontsFactor = 1.0)/PyName=exportTex/;
 
   void setWaterfallSideLines(bool = true);
   void setWaterfallFillColor(const QColor&);
