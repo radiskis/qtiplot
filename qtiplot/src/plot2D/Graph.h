@@ -135,6 +135,7 @@ class Graph: public QwtPlot
 			Spline, HorizontalSteps, Histogram, HorizontalBars, VectXYXY, ErrorBars,
 			Box, VectXYAM, VerticalSteps, ColorMap, GrayScale, Contour, Function, ImagePlot,
 			StackBar, StackColumn};
+		enum LegendDisplayMode{ColumnName, ColumnComment, TableName, TableLegend};
 
 		//! Returns a pointer to the parent MultiLayer object.
 		MultiLayer *multiLayer();

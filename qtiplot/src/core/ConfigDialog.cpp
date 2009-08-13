@@ -694,7 +694,13 @@ void ConfigDialog::initPlotsPage()
 	boxMargin->setSingleStep(5);
 	boxMargin->setValue(app->defaultPlotMargin);
 	optionsLayout->addWidget(boxMargin, 5, 1);
-	optionsLayout->setRowStretch(6, 1);
+
+	legendDisplayLabel = new QLabel;
+	optionsLayout->addWidget(legendDisplayLabel, 6, 0);
+	legendDisplayBox = new QComboBox;
+	optionsLayout->addWidget(legendDisplayBox, 6, 1);
+
+	optionsLayout->setRowStretch(7, 1);
 
 	groupBackgroundOptions = new QGroupBox(tr("Background"));
 	optionsTabLayout->addWidget( groupBackgroundOptions );
@@ -1566,6 +1572,14 @@ void ConfigDialog::languageChange()
 	boxAutoscaling->setText(tr("Auto&scaling"));
 	boxAntialiasing->setText(tr("Antia&liasing"));
 
+	legendDisplayLabel->setText(tr("Legend display" ));
+	legendDisplayBox->clear();
+	legendDisplayBox->addItem(tr("Column name"));
+	legendDisplayBox->addItem(tr("Column comment"));
+	legendDisplayBox->addItem(tr("Table name"));
+	legendDisplayBox->addItem(tr("Table legend"));
+	legendDisplayBox->setCurrentIndex(app->d_graph_legend_display);
+
 	groupBackgroundOptions->setTitle(tr("Background"));
 	labelGraphBkgColor->setText(tr("Background Color"));
 	labelGraphBkgOpacity->setText(tr( "Opacity" ));
@@ -1897,6 +1911,7 @@ void ConfigDialog::apply()
 
 	app->defaultPlotMargin = boxMargin->value();
 	app->d_graph_axes_labels_dist = boxAxesLabelsDist->value();
+	app->d_graph_legend_display = (Graph::LegendDisplayMode)legendDisplayBox->currentIndex();
 	app->setGraphDefaultSettings(boxAutoscaling->isChecked(), boxScaleFonts->isChecked(),
 		boxResize->isChecked(), boxAntialiasing->isChecked());
 	// 2D plots page: curves tab

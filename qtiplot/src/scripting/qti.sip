@@ -114,6 +114,7 @@ class Table: MdiSubWindow
 public:
   enum PlotDesignation{None = 0, X = 1, Y = 2, Z = 3, xErr = 4, yErr = 5, Label = 6};
   enum ImportMode{NewColumns, NewRows, Overwrite};
+  enum NumericFormat{Default = 0, Decimal = 1, Scientific = 2};
 
   int numRows();
   int numCols();

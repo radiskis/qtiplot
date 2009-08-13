@@ -63,6 +63,7 @@ class Table: public MdiSubWindow, public scripted
 public:
 	enum PlotDesignation{All = -1, None = 0, X = 1, Y = 2, Z = 3, xErr = 4, yErr = 5, Label = 6};
 	enum ColType{Numeric = 0, Text = 1, Date = 2, Time = 3, Month = 4, Day = 5};
+	enum NumericFormat{Default = 0, Decimal = 1, Scientific = 2};
 	enum ImportMode {
 		NewColumns, //!< add file as new columns to this table
 		NewRows, //!< add file as new rows to this table

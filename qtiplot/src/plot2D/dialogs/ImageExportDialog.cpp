@@ -112,6 +112,7 @@ void ImageExportDialog::initAdvancedOptions()
 	d_color->setChecked(app->d_export_color);
 	vector_layout->addWidget(d_color, 2, 1);
 
+#ifdef TEX_OUTPUT
 	d_escape_tex_strings = new QCheckBox();
 	d_escape_tex_strings->setText(tr("&Escape special characters in title/axis labels"));
 	d_escape_tex_strings->setChecked(app->d_export_escape_tex_strings);
@@ -123,6 +124,7 @@ void ImageExportDialog::initAdvancedOptions()
 	d_tex_font_sizes->setChecked(app->d_export_tex_font_sizes);
 	vector_layout->addWidget(d_tex_font_sizes, 4, 1);
 	d_tex_font_sizes->hide();
+#endif
 
 	QLabel *text3DLabel = new QLabel(tr("Export 3D texts as"));
 	vector_layout->addWidget(text3DLabel, 4, 0);
@@ -239,7 +241,6 @@ void ImageExportDialog::initAdvancedOptions()
 	else
 		scaleFontsBox->setValue(0.0);
 	size_layout->addWidget(scaleFontsBox, 3, 1);
-	connect(d_tex_font_sizes, SIGNAL(toggled(bool)), scaleFontsBox, SLOT(setEnabled(bool)));
 
 	keepRatioBox = new QCheckBox(tr("&Keep aspect ratio"));
 	keepRatioBox->setChecked(true);
@@ -254,8 +255,10 @@ void ImageExportDialog::initAdvancedOptions()
 		resolutionLabel->hide();
 		d_vector_resolution->hide();
 		d_color->hide();
+#ifdef TEX_OUTPUT
 		d_escape_tex_strings->hide();
 		d_tex_font_sizes->hide();
+#endif
 	} else {
 		if (qobject_cast<Matrix *> (d_window))
 			d_custom_size_box->hide();
@@ -297,6 +300,7 @@ void ImageExportDialog::updateAdvancedOptions (const QString & filter)
 		filter.contains("*.ps") || filter.contains("*.pdf") ||
 		filter.contains("*.svg") || filter.contains("*.tex")){
 		d_vector_options->show();
+
 		if (qobject_cast<MultiLayer *> (d_window)){
 			d_custom_size_box->show();
 			d_vector_options->setVisible(!filter.contains("*.svg") && !filter.contains("*.emf"));
@@ -304,9 +308,11 @@ void ImageExportDialog::updateAdvancedOptions (const QString & filter)
 			bool texOutput = filter.contains("*.tex");
 			d_vector_resolution->setVisible(!texOutput);
 			resolutionLabel->setVisible(!texOutput);
+
+#ifdef TEX_OUTPUT
 			d_escape_tex_strings->setVisible(texOutput);
 			d_tex_font_sizes->setVisible(texOutput);
-			scaleFontsBox->setDisabled(texOutput && !d_tex_font_sizes->isChecked());
+#endif
 		}
 	} else {
 		d_raster_options->show();
@@ -328,8 +334,10 @@ void ImageExportDialog::closeEvent(QCloseEvent* e)
 		app->d_export_size_unit = unitBox->currentIndex();
         app->d_export_vector_resolution = d_vector_resolution->value();
         app->d_export_color = d_color->isChecked();
+#ifdef TEX_OUTPUT
         app->d_export_escape_tex_strings = d_escape_tex_strings->isChecked();
         app->d_export_tex_font_sizes = d_tex_font_sizes->isChecked();
+#endif
         app->d_export_raster_size = customExportSize();
         app->d_scale_fonts_factor = scaleFontsBox->value();
 

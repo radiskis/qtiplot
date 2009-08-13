@@ -209,6 +209,9 @@ private:
     QPushButton *browseTexCompilerBtn;
     QLabel *texCompilerLabel;
 
+    QComboBox *legendDisplayBox;
+	QLabel *legendDisplayLabel;
+
 #ifdef SCRIPTING_PYTHON
 	QGroupBox *groupSyntaxHighlighter;
 	ColorButton *buttonCommentColor, *buttonNumericColor, *buttonQuotationColor;

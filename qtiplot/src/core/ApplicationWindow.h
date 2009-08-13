@@ -1061,6 +1061,7 @@ private slots:
 
 // TODO: a lot of this stuff should be private
 public:
+	Graph::LegendDisplayMode d_graph_legend_display;
 	int d_latex_compiler;
 	QString d_latex_compiler_path;
 	//! Last selected filter in open project dialog
@@ -1103,8 +1104,10 @@ public:
     int d_export_vector_resolution, d_export_bitmap_resolution, d_export_size_unit;
     QSizeF d_export_raster_size;
     bool d_export_color;
+#ifdef TEX_OUTPUT
     bool d_export_escape_tex_strings;
     bool d_export_tex_font_sizes;
+#endif
 	int d_3D_export_text_mode, d_3D_export_sort;
 	//! Locale used to specify the decimal separators in imported ASCII files
 	QLocale d_clipboard_locale;
@@ -1303,7 +1306,7 @@ private:
     QAction *actionSwapColumns, *actionMoveColRight, *actionMoveColLeft, *actionMoveColFirst, *actionMoveColLast;
     QAction *actionExportGraph, *actionExportAllGraphs, *actionPrint, *actionPrintAllPlots, *actionShowExportASCIIDialog;
     QAction *actionExportPDF, *actionReadOnlyCol, *actionStemPlot;
-    QAction *actionCloseAllWindows, *actionClearLogInfo, *actionShowPlotWizard, *actionShowConfigureDialog;
+    QAction *actionCloseAllWindows, *actionCloseProject, *actionClearLogInfo, *actionShowPlotWizard, *actionShowConfigureDialog;
     QAction *actionShowCurvesDialog, *actionAddErrorBars, *actionAddFunctionCurve, *actionUnzoom, *actionNewLegend, *actionAddImage, *actionAddText;
     QAction *actionPlotL, *actionPlotP, *actionPlotLP, *actionPlotVerticalDropLines, *actionPlotSpline;
     QAction *actionPlotVertSteps, *actionPlotHorSteps, *actionPlotVerticalBars, *actionStackBars, *actionStackColumns;

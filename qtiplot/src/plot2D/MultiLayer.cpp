@@ -70,7 +70,7 @@
 #include "SelectionMoveResizer.h"
 #include <ApplicationWindow.h>
 #include <ColorButton.h>
-
+#include <pixmaps.h>
 #include <gsl/gsl_vector.h>
 
 LayerButton::LayerButton(const QString& text, QWidget* parent)
@@ -82,6 +82,7 @@ LayerButton::LayerButton(const QString& text, QWidget* parent)
 	setOn(true);
 	setMaximumWidth(btn_size);
 	setMaximumHeight(btn_size);
+	setToolTip(tr("Activate layer"));
 }
 
 void LayerButton::mousePressEvent( QMouseEvent *event )
@@ -124,12 +125,31 @@ d_waterfall_fill_color(QColor())
 {
 	layerButtonsBox = new QHBoxLayout();
 	waterfallBox = new QHBoxLayout();
+	toolbuttonsBox = new QHBoxLayout();
+
+	d_add_layer_btn = new QPushButton();
+	d_add_layer_btn->setToolTip(tr("Add layer"));
+	d_add_layer_btn->setIcon(QIcon(QPixmap(plus_xpm)));
+	d_add_layer_btn->setMaximumWidth(LayerButton::btnSize());
+	d_add_layer_btn->setMaximumHeight(LayerButton::btnSize());
+	connect (d_add_layer_btn, SIGNAL(clicked()), this->applicationWindow(), SLOT(addLayer()));
+	toolbuttonsBox->addWidget(d_add_layer_btn);
+
+	d_remove_layer_btn = new QPushButton();
+	d_remove_layer_btn->setToolTip(tr("Remove active layer"));
+	d_remove_layer_btn->setIcon(QIcon(QPixmap(delete_xpm)));
+	d_remove_layer_btn->setMaximumWidth(LayerButton::btnSize());
+	d_remove_layer_btn->setMaximumHeight(LayerButton::btnSize());
+	connect (d_remove_layer_btn, SIGNAL(clicked()), this, SLOT(confirmRemoveLayer()));
+	toolbuttonsBox->addWidget(d_remove_layer_btn);
+
 #ifdef Q_OS_MAC
 	layerButtonsBox->setSpacing(12);
 #endif
 	QHBoxLayout *hbox = new QHBoxLayout();
 	hbox->addLayout(layerButtonsBox);
 	hbox->addStretch();
+	hbox->addLayout(toolbuttonsBox);
 	hbox->addLayout(waterfallBox);
 
 	d_canvas = new QWidget();
@@ -1171,6 +1191,19 @@ bool MultiLayer::eventFilter(QObject *object, QEvent *e)
 	return MdiSubWindow::eventFilter(object, e);
 }
 
+void MultiLayer::mouseDoubleClickEvent(QMouseEvent * event)
+{
+	if (d_is_waterfall_plot){
+		event->accept();
+		return;
+	}
+
+	if(applicationWindow())
+		applicationWindow()->addLayer();
+
+	event->accept();
+}
+
 void MultiLayer::keyPressEvent(QKeyEvent * e)
 {
 	if (e->key() == Qt::Key_Escape && d_layers_selector){
@@ -1511,6 +1544,10 @@ void MultiLayer::createWaterfallBox()
 
 	foreach(LayerButton *btn, buttonsList)
 		btn->hide();
+
+
+	d_add_layer_btn->hide();
+	d_remove_layer_btn->hide();
 
 	Graph *first = graphsList.last();
 	if (first)
