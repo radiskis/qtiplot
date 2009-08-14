@@ -7876,7 +7876,11 @@ void ApplicationWindow::clearSelection()
 			((DataPickerTool *)g->activeTool())->removePoint();
         else if (g->titleSelected())
 			g->removeTitle();
-		else
+		else if (g->axisTitleSelected()){
+			QwtScaleWidget *axis = g->currentScale();
+			if (axis)
+				axis->setTitle(QString::null);
+		} else
 			g->removeMarker();
 	}
 	else if (m->isA("Note"))

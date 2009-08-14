@@ -1906,6 +1906,16 @@ QString Graph::legendText(bool layerSpec)
 			if (it->rtti() == QwtPlotItem::Rtti_PlotSpectrogram)
 				continue;
 
+			if (((PlotCurve *)it)->type() == Function){
+				text += "\\l(";
+				text += QString::number(i + 1);
+				text += ")%(";
+				text += QString::number(i + 1);
+				text += ")\n";
+				i++;
+				continue;
+			}
+
 			if (((PlotCurve *)it)->type() != ErrorBars ){
 				text += "\\l(";
 				text += QString::number(i + 1);
@@ -5248,6 +5258,11 @@ int Graph::visibleCurves()
 QwtScaleWidget* Graph::selectedScale()
 {
 	return scalePicker->selectedAxis();
+}
+
+bool Graph::axisTitleSelected()
+{
+	return scalePicker->titleSelected();
 }
 
 QwtScaleWidget* Graph::currentScale()
