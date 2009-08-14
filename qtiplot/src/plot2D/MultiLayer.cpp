@@ -208,8 +208,8 @@ Graph* MultiLayer::addLayer(int x, int y, int width, int height)
 {
 	addLayerButton();
 	if (!width && !height){
-		width =	d_canvas->width() - left_margin - right_margin - (d_cols - 1)*colsSpace;
-		height = d_canvas->height() - top_margin - left_margin - (d_rows - 1)*rowsSpace;
+		width =	(int)(d_canvas->width() - left_margin - right_margin - (d_cols - 1)*colsSpace)/(double)d_cols;
+		height = (int)(d_canvas->height() - top_margin - left_margin - (d_rows - 1)*rowsSpace)/(double)d_rows;
 
 		int layers = graphsList.size();
 		x = left_margin + (layers % d_cols)*(width + colsSpace);
@@ -413,6 +413,33 @@ void MultiLayer::setGraphGeometry(int x, int y, int w, int h)
 	emit modifiedPlot();
 }
 
+void MultiLayer::setEqualSizedLayers()
+{
+	int layers = graphsList.size();
+	const QRect rect = d_canvas->geometry();
+
+	int width = qRound((rect.width() - (d_cols - 1)*colsSpace - right_margin - left_margin)/(double)d_cols);
+	int height = qRound((rect.height() - (d_rows - 1)*rowsSpace - top_margin - bottom_margin)/(double)d_rows);
+
+	for(int i = 0; i < layers; i++){
+		Graph *g = graphsList[i];
+
+		int row = i / d_cols;
+		if (row >= d_rows )
+			row = d_rows - 1;
+
+		int col = i % d_cols;
+
+		int x = left_margin + col*(width + colsSpace);
+	    int y = top_margin + row*(height + rowsSpace);
+
+		bool autoscaleFonts = g->autoscaleFonts();//save user settings
+		g->setAutoscaleFonts(false);
+		g->setGeometry(x, y, width, height);
+		g->setAutoscaleFonts(autoscaleFonts);
+	}
+}
+
 QSize MultiLayer::arrangeLayers(bool userSize)
 {
 	int layers = graphsList.size();
@@ -493,7 +520,7 @@ QSize MultiLayer::arrangeLayers(bool userSize)
 	}
 
 	double c_heights = 0.0;
-	for (int i=0; i<d_rows; i++){
+	for (int i = 0; i < d_rows; i++){
 		gsl_vector_set (Y, i, c_heights);
 		c_heights += 1 + gsl_vector_get(maxXTopHeight, i) + gsl_vector_get(maxXBottomHeight, i);
 	}
@@ -505,9 +532,12 @@ QSize MultiLayer::arrangeLayers(bool userSize)
 	}
 
 	if (!userSize){
-		l_canvas_width = int((rect.width()-(d_cols-1)*colsSpace - right_margin - left_margin)/c_widths);
-		l_canvas_height = int((rect.height()-(d_rows-1)*rowsSpace - top_margin - bottom_margin)/c_heights);
+		l_canvas_width = qRound((rect.width()-(d_cols-1)*colsSpace - right_margin - left_margin)/(double)c_widths);
+		l_canvas_height = qRound((rect.height()-(d_rows-1)*rowsSpace - top_margin - bottom_margin)/(double)c_heights);
 	}
+
+	if (l_canvas_width < 50 || l_canvas_height < 50)
+		return QSize();
 
 	QSize size = QSize(l_canvas_width, l_canvas_height);
 
@@ -568,39 +598,20 @@ QSize MultiLayer::arrangeLayers(bool userSize)
 
 void MultiLayer::findBestLayout(int &d_rows, int &d_cols)
 {
-	int NumGraph = graphsList.size();
-	if(NumGraph%2==0) // NumGraph is an even number
-	{
-		if(NumGraph<=2)
-			d_cols=NumGraph/2+1;
-		else if(NumGraph>2)
-			d_cols=NumGraph/2;
+	int layers = graphsList.size();
+	int sqr = (int)ceil(sqrt(layers));
+	d_rows = sqr;
+	d_cols = sqr;
 
-		if(NumGraph<8)
-			d_rows=NumGraph/4+1;
-		if(NumGraph>=8)
-			d_rows=NumGraph/4;
-	}
-	else if(NumGraph%2!=0) // NumGraph is an odd number
-	{
-		int Num=NumGraph+1;
+	if (d_rows*d_cols - layers >= d_rows)
+		d_rows--;
 
-		if(Num<=2)
-			d_cols=1;
-		else if(Num>2)
-			d_cols=Num/2;
-
-		if(Num<8)
-			d_rows=Num/4+1;
-		if(Num>=8)
-			d_rows=Num/4;
-	}
 }
 
-void MultiLayer::arrangeLayers(bool fit, bool userSize)
+bool MultiLayer::arrangeLayers(bool fit, bool userSize)
 {
 	if (graphsList.size() == 0)
-		return;
+		return false;
 
 	QApplication::setOverrideCursor(Qt::waitCursor);
 
@@ -614,11 +625,22 @@ void MultiLayer::arrangeLayers(bool fit, bool userSize)
 	//resize iterations, due to the way Qwt handles the plot layout
 	int iterations = 0;
 	QSize size = arrangeLayers(userSize);
+	if (!size.isValid()){
+		QApplication::restoreOverrideCursor();
+		setEqualSizedLayers();
+		return false;
+	}
+
 	QSize canvas_size = QSize(1,1);
 	while (canvas_size != size && iterations < 10){
 		iterations++;
 		canvas_size = size;
 		size = arrangeLayers(userSize);
+		if (!size.isValid()){
+			QApplication::restoreOverrideCursor();
+			setEqualSizedLayers();
+			return false;
+		}
 	}
 
 	if (userSize){//resize window
@@ -630,6 +652,7 @@ void MultiLayer::arrangeLayers(bool fit, bool userSize)
 
 	emit modifiedPlot();
 	QApplication::restoreOverrideCursor();
+	return true;
 }
 
 void MultiLayer::setCols(int c)
@@ -1182,19 +1205,6 @@ bool MultiLayer::eventFilter(QObject *object, QEvent *e)
 	}
 
 	return MdiSubWindow::eventFilter(object, e);
-}
-
-void MultiLayer::mouseDoubleClickEvent(QMouseEvent * event)
-{
-	if (d_is_waterfall_plot){
-		event->accept();
-		return;
-	}
-
-	if(applicationWindow())
-		applicationWindow()->addLayer();
-
-	event->accept();
 }
 
 void MultiLayer::keyPressEvent(QKeyEvent * e)

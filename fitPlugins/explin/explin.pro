@@ -1,3 +1,8 @@
+QTI_ROOT = ../..
+!include( $$QTI_ROOT/build.conf ) {
+  message( "You need a build.conf with local settings!" )
+}
+
 QMAKE_PROJECT_DEPTH = 0
 linux-g++-64: libsuff=64
 
@@ -11,15 +16,14 @@ CONFIG           += dll
 
 DESTDIR           = ../
  
-# statically link against GSL in 3rdparty
-INCLUDEPATH += ../../3rdparty/gsl/include/
-LIBS        += ../../3rdparty/gsl/lib/libgsl.a
-LIBS        += ../../3rdparty/gsl/lib/libgslcblas.a
-
-#dynamically link against GSL installed system-wide
-#unix:LIBS += -L /usr/lib$${libsuff} -lgsl -lgslcblas
+INCLUDEPATH += $$GSL_INCLUDEPATH
+LIBS        += $$GSL_LIBS
 
 target.path=/usr/lib$${libsuff}/qtiplot/plugins
 INSTALLS += target
 
 SOURCES += explin.c
+
+# At the very end: add global include- and lib path
+INCLUDEPATH += $$SYS_INCLUDEPATH
+LIBS += $$SYS_LIBS

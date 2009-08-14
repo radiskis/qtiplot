@@ -482,6 +482,7 @@ class Graph: public QwtPlot
 		QwtScaleWidget* currentScale();
 		QwtScaleWidget* selectedScale();
 		QRect axisTitleRect(const QwtScaleWidget *scale);
+		bool axisTitleSelected();
 
 		ScaleDraw::ScaleType axisType(int axis);
 

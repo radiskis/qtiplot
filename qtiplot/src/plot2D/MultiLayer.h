@@ -101,6 +101,8 @@ public:
 	void setWaterfallOffset(int x, int y, bool update = false);
 	bool sideLinesEnabled(){return d_side_lines;};
 
+	void setEqualSizedLayers();
+
 public slots:
 	Graph* addLayer(int x = 0, int y = 0, int width = 0, int height = 0);
 
@@ -120,7 +122,7 @@ public slots:
 	void findBestLayout(int &rows, int &cols);
 
 	QSize arrangeLayers(bool userSize);
-	void arrangeLayers(bool fit, bool userSize);
+	bool arrangeLayers(bool fit, bool userSize);
 	bool swapLayers(int src, int dest);
     void adjustSize();
 
@@ -222,7 +224,6 @@ private:
 	//@{
 	void wheelEvent(QWheelEvent *);
 	void keyPressEvent(QKeyEvent *);
-	void mouseDoubleClickEvent(QMouseEvent *);
 	bool eventFilter(QObject *object, QEvent *);
 	void releaseLayer();
 	void resizeLayers(QResizeEvent *);
