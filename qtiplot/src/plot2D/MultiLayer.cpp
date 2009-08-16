@@ -286,16 +286,19 @@ QRect MultiLayer::canvasChildrenRect()
 	QRect r = QRect();
 	foreach (Graph *g, graphsList)
 		r = r.united(g->boundingRect());
-	return r;
+
+	return r.adjusted(0, 0, right_margin, bottom_margin);
 }
 
 void MultiLayer::resizeLayers (QResizeEvent *re)
 {
-	if (!d_scale_layers || applicationWindow()->d_opening_file)
+	if (!d_scale_layers || applicationWindow()->d_opening_file){
+		emit modifiedPlot();
 		return;
+	}
 
-	QSize oldSize = re->oldSize();
 	QSize size = re->size();
+	QSize oldSize = re->oldSize();
 
 	if (size.height() <= 0)
 		size.setHeight(oldSize.height());
@@ -844,7 +847,8 @@ void MultiLayer::exportVector(const QString& fileName, int res, bool color,
 		double wfactor = (double)res/(double)logicalDpiX();
 		double hfactor = (double)res/(double)logicalDpiY();
 		printer.setResolution(res);
-		printer.setPaperSize (QSizeF(d_canvas->width()*wfactor*1.05, d_canvas->height()*hfactor), QPrinter::DevicePixel);
+		QRect cr = canvasChildrenRect();
+		printer.setPaperSize (QSizeF(cr.width()*wfactor*1.05, cr.height()*hfactor), QPrinter::DevicePixel);
 		QPainter paint(&printer);
 		QObjectList lst = d_canvas->children();
 		foreach (QObject *o, lst){
@@ -857,7 +861,8 @@ void MultiLayer::exportVector(const QString& fileName, int res, bool color,
         	g->print(&paint, r);
 		}
 	} else {
-    	printer.setPaperSize(QSizeF(d_canvas->width(), d_canvas->height()), QPrinter::DevicePixel);
+		QRect cr = canvasChildrenRect();
+    	printer.setPaperSize(QSizeF(cr.width(), cr.height()), QPrinter::DevicePixel);
 		QPainter paint(&printer);
     	QObjectList lst = d_canvas->children();
 		foreach (QObject *o, lst){
@@ -912,7 +917,7 @@ void MultiLayer::exportSVG(const QString& fname, const QSizeF& customSize, int u
 
 	QSvgGenerator svg;
 	svg.setFileName(fname);
-	svg.setSize(d_canvas->size());
+	svg.setSize(canvasChildrenRect().size());
 	svg.setResolution(res);
 
 	if (customSize.isValid()){
@@ -927,7 +932,7 @@ void MultiLayer::exportSVG(const QString& fname, const QSizeF& customSize, int u
 void MultiLayer::exportEMF(const QString& fname, const QSizeF& customSize, int unit, double fontsFactor)
 {
 	int res = logicalDpiX();
-	QSize size = d_canvas->size();
+	QSize size = canvasChildrenRect().size();
 	if (customSize.isValid())
 		size = Graph::customPrintSize(customSize, unit, res);
 
@@ -939,7 +944,7 @@ void MultiLayer::exportEMF(const QString& fname, const QSizeF& customSize, int u
 void MultiLayer::exportTeX(const QString& fname, bool color, bool escapeStrings, bool fontSizes, const QSizeF& customSize, int unit, double fontsFactor)
 {
 	int res = logicalDpiX();
-	QSize size = d_canvas->size();
+	QSize size = canvasChildrenRect().size();
 	if (customSize.isValid())
 		size = Graph::customPrintSize(customSize, unit, res);
 
