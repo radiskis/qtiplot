@@ -30,6 +30,9 @@
 #define RANGE_SELECTOR_TOOL_H
 
 #include "PlotToolInterface.h"
+
+#include <QPointer>
+
 #include <qwt_double_rect.h>
 #include <qwt_plot_marker.h>
 #include <qwt_plot_picker.h>
@@ -118,7 +121,7 @@ class RangeSelectorTool : public QwtPlotPicker, public PlotToolInterface
 		bool d_enabled;
 		bool d_visible;
 
-		QDialog *d_selection_dialog;
+		QPointer <QDialog> d_selection_dialog;
 		//! Keeps track of the multiple curves selection
 		QList<QCheckBox *> d_selection_lst;
 };

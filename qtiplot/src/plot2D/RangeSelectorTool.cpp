@@ -358,7 +358,6 @@ void RangeSelectorTool::copyMultipleSelection()
 	int end_point = QMAX(d_active_point, d_inactive_point);
 	QLocale locale = d_graph->multiLayer()->locale();
 	QString text;
-
 	QList <PlotCurve*> cvs;
 	for (int j = 0; j < d_selection_lst.count(); j++){
 		QCheckBox *box = d_selection_lst[j];
@@ -466,6 +465,7 @@ void RangeSelectorTool::showSelectionDialog(RangeEditOperation op)
 			}
 		}
 	}
+	vb->addStretch();
 
 	QDialogButtonBox *btnBox = new QDialogButtonBox ();
 
