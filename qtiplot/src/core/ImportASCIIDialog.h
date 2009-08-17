@@ -49,7 +49,7 @@ class MatrixModel;
 class PreviewTable : public Q3Table
 {
 	Q_OBJECT
-	
+
 public:
     PreviewTable(int numRows, int numCols, QWidget * parent = 0, const char * name = 0);
 
@@ -123,13 +123,14 @@ public:
 	//! Return the number of lines to be skipped at the start of each file.
 	int ignoredLines() const { return d_ignored_lines->value(); }
 	//! Whether to rename columns based on the first (non-skipped) line.
-	bool renameColumns() const { return d_rename_columns->isChecked(); }
+	bool renameColumns() const { return d_rename_columns->isChecked() && !d_first_line_role->currentIndex(); };
+	bool useFirstRow() const { return d_rename_columns->isChecked();};
 	//! Whether to replace sequences of whitespace charecters with a single space.
-	bool simplifySpaces() const { return d_simplify_spaces->isChecked(); }
+	bool simplifySpaces() const { return d_simplify_spaces->isChecked(); };
 	//! Whether to remove whitespace from beginning and end of lines.
-	bool stripSpaces() const { return d_strip_spaces->isChecked(); }
+	bool stripSpaces() const { return d_strip_spaces->isChecked(); };
 	//! Whether the user wants the import options to be saved.
-	bool readOnly() const {return d_read_only->isChecked(); }
+	bool readOnly() const {return d_read_only->isChecked(); };
 
 	//! Set the selected columns separator.
 	void setColumnSeparator(const QString &sep);
@@ -141,11 +142,12 @@ public:
 	QString commentString(){return d_comment_string->text();};
 
     //! Returns true if the second line of the ASCII file should be used to set comments in table
-    bool importComments(){return d_import_comments->isChecked();};
-	
+    bool importComments();
+    bool useSecondRow() const { return d_import_comments->isChecked();};
+
 	//! Returns the convention used for the end line character!
 	inline int endLineChar(){return boxEndLine->currentIndex();};
-			
+
 private slots:
 	//! Display help for advanced options.
 	void displayHelp();
@@ -155,6 +157,7 @@ private slots:
 	void changePreviewFile(const QString& path);
 	//! Enable/Disable options which are only available for tables.
 	void enableTableOptions(bool on);
+	void enableComments();
 
 private:
 	void initPreview(int previewMode);
@@ -180,6 +183,7 @@ private:
 	QCheckBox *d_preview_button;
 	QStackedWidget *d_preview_stack;
 	QString d_current_path;
+	QComboBox *d_first_line_role;
 };
 
 #endif

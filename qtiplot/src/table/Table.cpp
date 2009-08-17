@@ -2283,169 +2283,173 @@ void Table::importASCII(const QString &fname, const QString &sep, int ignoredLin
 		return;
 
 	QFile f(name);
-	if (f.open(QIODevice::ReadOnly)){
-        QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+	if (!f.open(QIODevice::ReadOnly))
+		return;
 
-        QTextStream t(&f);
-		QString s = t.readLine();//read first line
+	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+
+	QTextStream t(&f);
+	QString s = t.readLine();//read first line
+	if (simplifySpaces)
+		s = s.simplifyWhiteSpace();
+	else if (stripSpaces)
+		s = s.stripWhiteSpace();
+
+	QStringList line = s.split(sep);
+	int cols = line.size();
+
+	bool allNumbers = true;
+	for (int i=0; i<cols; i++)
+	{//verify if the strings in the line used to rename the columns are not all numbers
+		locale().toDouble(line[i], &allNumbers);
+		if (!allNumbers)
+			break;
+	}
+	if (renameCols && !allNumbers)
+		rows--;
+	if (importComments)
+		rows--;
+
+	QStringList oldHeader;
+	int startRow = 0, startCol = 0;
+	int c = d_table->numCols();
+	int r = d_table->numRows();
+	switch(importAs){
+		case Overwrite:
+			if (d_table->numRows() != rows)
+				d_table->setNumRows(rows);
+
+			oldHeader = col_label;
+			if (c != cols){
+				if (c < cols)
+					addColumns(cols - c);
+				else {
+					d_table->setNumCols(cols);
+					for (int i = c-1; i>=cols; i--){
+						emit removedCol(QString(objectName()) + "_" + oldHeader[i]);
+						commands.removeLast();
+						comments.removeLast();
+						col_format.removeLast();
+						col_label.removeLast();
+						colTypes.removeLast();
+						col_plot_type.removeLast();
+					}
+				}
+			}
+		break;
+		case NewColumns:
+			startCol = c;
+			addColumns(cols);
+			if (r < rows)
+				d_table->setNumRows(rows);
+		break;
+		case NewRows:
+			startRow = r;
+			if (c < cols)
+				addColumns(cols - c);
+			d_table->setNumRows(r + rows);
+		break;
+	}
+
+	if (renameCols && !allNumbers){//use first line to set the table header
+		for (int i = 0; i<cols; i++){
+			int aux = i + startCol;
+			col_label[aux] = QString::null;
+			if (!importComments)
+				comments[aux] = line[i];
+			s = line[i].replace("-","_").remove(QRegExp("\\W")).replace("_","-");
+			int n = col_label.count(s);
+			if(n){//avoid identical col names
+				while (col_label.contains(s+QString::number(n)))
+					n++;
+				s += QString::number(n);
+			}
+			col_label[aux] = s;
+		}
+	}
+
+	if (importComments){//import comments
+		if (renameCols && !allNumbers)
+			s = t.readLine();//read 2nd line
 		if (simplifySpaces)
 			s = s.simplifyWhiteSpace();
 		else if (stripSpaces)
 			s = s.stripWhiteSpace();
-
-		QStringList line = s.split(sep);
-		int cols = line.size();
-
-		bool allNumbers = true;
-		for (int i=0; i<cols; i++)
-		{//verify if the strings in the line used to rename the columns are not all numbers
-			locale().toDouble(line[i], &allNumbers);
-			if (!allNumbers)
-				break;
+		line = s.split(sep, QString::SkipEmptyParts);
+		for (int i=0; i<line.size(); i++){
+			int aux = startCol + i;
+			if (aux < comments.size())
+				comments[aux] = line[i];
 		}
-        if (renameCols && !allNumbers){
-            rows--;
-            if (importComments)
-                rows--;
-        }
+		qApp->processEvents(QEventLoop::ExcludeUserInput);
+		showComments(true);
+	}
 
-		QStringList oldHeader;
-        int startRow = 0, startCol = 0;
-        int c = d_table->numCols();
-        int r = d_table->numRows();
-		switch(importAs){
-			case Overwrite:
-                if (d_table->numRows() != rows)
-                    d_table->setNumRows(rows);
+	if ((!renameCols || allNumbers) && !importComments && rows > 0){
+		//put values in the first line of the table
+		for (int i = 0; i<cols; i++)
+			d_table->setText(startRow, startCol + i, line[i]);
+		startRow++;
+	}
 
-                oldHeader = col_label;
-                if (c != cols){
-                    if (c < cols)
-                        addColumns(cols - c);
-                    else {
-                        d_table->setNumCols(cols);
-                        for (int i = c-1; i>=cols; i--){
-                            emit removedCol(QString(objectName()) + "_" + oldHeader[i]);
-                            commands.removeLast();
-                            comments.removeLast();
-                            col_format.removeLast();
-                            col_label.removeLast();
-                            colTypes.removeLast();
-                            col_plot_type.removeLast();
-                        }
-                    }
-                }
-			break;
-			case NewColumns:
-                startCol = c;
-                addColumns(cols);
-                if (r < rows)
-                    d_table->setNumRows(rows);
-			break;
-			case NewRows:
-                startRow = r;
-                if (c < cols)
-                    addColumns(cols - c);
-                d_table->setNumRows(r + rows);
-			break;
+	d_table->blockSignals(true);
+	setHeaderColType();
+
+	int steps = rows/100 + 1;
+	QProgressDialog progress((QWidget *)applicationWindow());
+	progress.setWindowTitle(tr("Qtiplot") + " - " + tr("Reading file..."));
+	progress.setLabelText(fname);
+	progress.setActiveWindow();
+	progress.setAutoClose(true);
+	progress.setAutoReset(true);
+	progress.setRange(0, steps);
+
+	QApplication::restoreOverrideCursor();
+
+	int l = 0;
+	int row = startRow;
+	rows = d_table->numRows();
+	while (!t.atEnd() && row < rows){
+		if (progress.wasCanceled()){
+			f.close();
+			return;
 		}
-
-		if (renameCols && !allNumbers){//use first line to set the table header
-			for (int i = 0; i<cols; i++){
-			    int aux = i + startCol;
-                col_label[aux] = QString::null;
-			    if (!importComments)
-                    comments[aux] = line[i];
-				s = line[i].replace("-","_").remove(QRegExp("\\W")).replace("_","-");
-				int n = col_label.count(s);
-				if(n){//avoid identical col names
-					while (col_label.contains(s+QString::number(n)))
-						n++;
-					s += QString::number(n);
-				}
-				col_label[aux] = s;
-			}
-
-            if (importComments){//import comments
-                s = t.readLine();//read 2nd line
-                if (simplifySpaces)
-                    s = s.simplifyWhiteSpace();
-                else if (stripSpaces)
-                    s = s.stripWhiteSpace();
-                line = s.split(sep, QString::SkipEmptyParts);
-				for (int i=0; i<line.size(); i++){
-					int aux = startCol + i;
-					if (aux < comments.size())
-                    	comments[aux] = line[i];
-				}
-                qApp->processEvents(QEventLoop::ExcludeUserInput);
-				showComments(true);
-            }
-        } else if (rows > 0){//put values in the first line of the table
-            for (int i = 0; i<cols; i++)
-				d_table->setText(startRow, startCol + i, line[i]);
-            startRow++;
-        }
-
-        d_table->blockSignals(true);
-		setHeaderColType();
-
-        int steps = rows/100 + 1;
-		QProgressDialog progress((QWidget *)applicationWindow());
-		progress.setWindowTitle(tr("Qtiplot") + " - " + tr("Reading file..."));
-		progress.setLabelText(fname);
-		progress.setActiveWindow();
-		progress.setAutoClose(true);
-		progress.setAutoReset(true);
-		progress.setRange(0, steps);
-
-        QApplication::restoreOverrideCursor();
-
-		int l = 0;
-		int row = startRow;
-		rows = d_table->numRows();
-		while (!t.atEnd() && row < rows){
-		    if (progress.wasCanceled()){
-				f.close();
-				return;
-			}
-		    s = t.readLine();
-			if (simplifySpaces)
-				s = s.simplifyWhiteSpace();
-			else if (stripSpaces)
-				s = s.stripWhiteSpace();
-			line = s.split(sep);
-			int lc = line.size();
-			if (lc > cols) {
-				addColumns(lc - cols);
-				cols = lc;
-			}
-			for (int j=0; j<cols && j<lc; j++)
-				d_table->setText(row, startCol + j, line[j]);
-
-            l++;
-            row++;
-            if (l%100 == 0)
-                progress.setValue(l/100);
-            qApp->processEvents();
+		s = t.readLine();
+		if (simplifySpaces)
+			s = s.simplifyWhiteSpace();
+		else if (stripSpaces)
+			s = s.stripWhiteSpace();
+		line = s.split(sep);
+		int lc = line.size();
+		if (lc > cols) {
+			addColumns(lc - cols);
+			cols = lc;
 		}
+		for (int j=0; j<cols && j<lc; j++)
+			d_table->setText(row, startCol + j, line[j]);
 
-		d_table->blockSignals(false);
-		f.remove();
+		l++;
+		row++;
+		if (l%100 == 0)
+			progress.setValue(l/100);
+		qApp->processEvents();
+	}
 
-        if (readOnly){
-            for (int i = 0; i<cols; i++)
-				d_table->setColumnReadOnly(startCol + i, true);
-        }
+	d_table->blockSignals(false);
+	f.remove();
 
-		if (importAs == Overwrite || importAs == NewRows){
-			if (cols > c)
-				cols = c;
-			for (int i=0; i<cols; i++){
-				emit modifiedData(this, colName(i));
-				if (colLabel(i) != oldHeader[i])
-					emit changedColHeader(QString(objectName()) + "_" + oldHeader[i], QString(objectName())+"_"+colLabel(i));
-			}
+	if (readOnly){
+		for (int i = 0; i<cols; i++)
+			d_table->setColumnReadOnly(startCol + i, true);
+	}
+
+	if (importAs == Overwrite || importAs == NewRows){
+		if (cols > c)
+			cols = c;
+		for (int i=0; i<cols; i++){
+			emit modifiedData(this, colName(i));
+			if (colLabel(i) != oldHeader[i])
+				emit changedColHeader(QString(objectName()) + "_" + oldHeader[i], QString(objectName())+"_"+colLabel(i));
 		}
 	}
 }
