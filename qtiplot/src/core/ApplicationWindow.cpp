@@ -603,6 +603,7 @@ void ApplicationWindow::initGlobalConstants()
 	d_ASCII_file_filter = "*";
 	d_ASCII_import_locale = QLocale::system().name();
 	d_ASCII_import_mode = int(ImportASCIIDialog::NewTables);
+	d_ASCII_import_first_row_role = 0;//column names
 	d_ASCII_comment_string = "#";
 	d_ASCII_import_comments = false;
 	d_ASCII_import_read_only = false;
@@ -3676,12 +3677,12 @@ void ApplicationWindow::importASCII()
     d_ASCII_import_mode = import_dialog->importMode();
     columnSeparator = import_dialog->columnSeparator();
     ignoredLines = import_dialog->ignoredLines();
-    renameColumns = import_dialog->renameColumns();
+    renameColumns = import_dialog->useFirstRow();
     strip_spaces = import_dialog->stripSpaces();
     simplify_spaces = import_dialog->simplifySpaces();
     d_ASCII_import_locale = import_dialog->decimalSeparators();
     d_ASCII_comment_string = import_dialog->commentString();
-    d_ASCII_import_comments = import_dialog->importComments();
+    d_ASCII_import_comments = import_dialog->useSecondRow();
     d_ASCII_import_read_only = import_dialog->readOnly();
 	d_ASCII_end_line = (EndLineChar)import_dialog->endLineChar();
     saveSettings();
@@ -4754,6 +4755,7 @@ void ApplicationWindow::readSettings()
 	d_ASCII_import_preview = settings.value("/Preview", true).toBool();
 	d_preview_lines = settings.value("/PreviewLines", 100).toInt();
     d_ASCII_end_line = (EndLineChar)settings.value("/EndLineCharacter", d_ASCII_end_line).toInt();
+	d_ASCII_import_first_row_role = settings.value("/FirstLineRole", 0).toInt();
 	settings.endGroup(); // Import ASCII
 
 	settings.beginGroup("/ExportASCII");
@@ -5141,6 +5143,7 @@ void ApplicationWindow::saveSettings()
 	settings.setValue("/Preview", d_ASCII_import_preview);
 	settings.setValue("/PreviewLines", d_preview_lines);
 	settings.setValue("/EndLineCharacter", (int)d_ASCII_end_line);
+	settings.setValue("/FirstLineRole", d_ASCII_import_first_row_role);
 	settings.endGroup(); // ImportASCII
 
 	settings.beginGroup("/ExportASCII");

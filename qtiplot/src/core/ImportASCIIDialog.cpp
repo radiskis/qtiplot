@@ -78,6 +78,7 @@ ImportASCIIDialog::ImportASCIIDialog(bool new_windows_only, QWidget * parent, bo
 	setColumnSeparator(app->columnSeparator);
     d_comment_string->setText(app->d_ASCII_comment_string);
     d_import_comments->setChecked(app->d_ASCII_import_comments);
+    d_first_line_role->setCurrentIndex(app->d_ASCII_import_first_row_role);
     d_read_only->setChecked(app->d_ASCII_import_read_only);
 
 	if (app->d_ASCII_import_locale.name() == QLocale::c().name())
@@ -168,12 +169,21 @@ void ImportASCIIDialog::initAdvancedOptions()
 	d_comment_string = new QLineEdit();
     advanced_layout->addWidget(d_comment_string, 3, 1);
 
-	d_rename_columns = new QCheckBox(tr("Use first row to &name columns"));
-	advanced_layout->addWidget(d_rename_columns, 0, 2, 1, 2);
+	QHBoxLayout *renameBox = new QHBoxLayout;
+	d_rename_columns = new QCheckBox(tr("Use first row &as"));
+	connect(d_rename_columns, SIGNAL(toggled(bool)), this, SLOT(enableComments()));
+	renameBox->addWidget(d_rename_columns);
+
+	d_first_line_role = new QComboBox();
+	d_first_line_role->addItem(tr("Column Names"));
+	d_first_line_role->addItem(tr("Column Comments"));
+	connect(d_first_line_role, SIGNAL(activated(int)), this, SLOT(enableComments()));
+	connect(d_first_line_role, SIGNAL(activated(int)), this, SLOT(preview()));
+	renameBox->addWidget(d_first_line_role);
+	advanced_layout->addLayout(renameBox, 0, 2, 1, 2);
 
     d_import_comments = new QCheckBox(tr("Use second row as &comments"));
 	advanced_layout->addWidget(d_import_comments, 1, 2, 1, 2);
-	connect(d_rename_columns, SIGNAL(toggled(bool)), d_import_comments, SLOT(setEnabled(bool)));
 
 	d_strip_spaces = new QCheckBox(tr("&Remove white spaces from line ends"));
 	advanced_layout->addWidget(d_strip_spaces, 2, 2, 1, 2);
@@ -378,6 +388,7 @@ void ImportASCIIDialog::closeEvent(QCloseEvent* e)
 		app->d_ASCII_file_filter = this->selectedFilter();
 		app->d_ASCII_import_preview = d_preview_button->isChecked();
 		app->d_preview_lines = d_preview_lines_box->value();
+		app->d_ASCII_import_first_row_role = d_first_line_role->currentIndex();
 	}
 
 	e->accept();
@@ -443,8 +454,8 @@ void ImportASCIIDialog::previewTable()
 
 	d_preview_table->resetHeader();
 	d_preview_table->importASCII(d_current_path, columnSeparator(), d_ignored_lines->value(),
-							d_rename_columns->isChecked(), d_strip_spaces->isChecked(),
-							d_simplify_spaces->isChecked(), d_import_comments->isChecked(),
+							renameColumns(), d_strip_spaces->isChecked(),
+							d_simplify_spaces->isChecked(), importComments(),
                             d_comment_string->text(), (Table::ImportMode)importMode,
                             boxEndLine->currentIndex(), d_preview_lines_box->value());
 
@@ -507,6 +518,22 @@ void ImportASCIIDialog::setNewWindowsOnly(bool on)
     d_preview_button->setChecked(false);
 }
 
+bool ImportASCIIDialog::importComments()
+{
+	if (!d_rename_columns->isChecked())
+		return false;
+
+	return (d_first_line_role->currentIndex() == 1) ||
+			(d_import_comments->isChecked() && d_import_comments->isEnabled());
+
+}
+
+void ImportASCIIDialog::enableComments()
+{
+	d_import_comments->setEnabled(d_rename_columns->isChecked() &&
+								!d_first_line_role->currentIndex());
+}
+
 /*****************************************************************************
  *
  * Class PreviewTable
@@ -542,125 +569,131 @@ void PreviewTable::importASCII(const QString &fname, const QString &sep, int ign
 		return;
 
 	QFile f(name);
-	if (f.open(QIODevice::ReadOnly)){
-        QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+	if (!f.open(QIODevice::ReadOnly))
+		return;
 
-        QTextStream t(&f);
-		QString s = t.readLine();//read first line
+	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+
+	QTextStream t(&f);
+	QString s = t.readLine();//read first line
+	if (simplifySpaces)
+		s = s.simplifyWhiteSpace();
+	else if (stripSpaces)
+		s = s.stripWhiteSpace();
+
+	QStringList line = s.split(sep);
+	int cols = line.size();
+
+	bool allNumbers = true;
+	for (int i=0; i<cols; i++)
+	{//verify if the strings in the line used to rename the columns are not all numbers
+		locale().toDouble(line[i], &allNumbers);
+		if (!allNumbers)
+			break;
+	}
+
+	if (renameCols && !allNumbers)
+		rows--;
+	if (importComments)
+		rows--;
+
+	int startRow = 0, startCol = 0;
+	int c = numCols();
+	int r = numRows();
+	switch(importMode){
+		case Table::Overwrite:
+			if (numRows() != rows)
+				setNumRows(rows);
+
+			if (c != cols){
+				if (c < cols)
+					addColumns(cols - c);
+				else
+					setNumCols(cols);
+			}
+		break;
+		case Table::NewColumns:
+			startCol = c;
+			addColumns(cols);
+			if (r < rows)
+				setNumRows(rows);
+		break;
+		case Table::NewRows:
+			startRow = r;
+			if (c < cols)
+				addColumns(cols - c);
+			setNumRows(r + rows);
+		break;
+	}
+
+	if (renameCols && !allNumbers){//use first line to set the table header
+		for (int i = 0; i<cols; i++){
+			int aux = i + startCol;
+			col_label[aux] = QString::null;
+			if (!importComments)
+				comments[aux] = line[i];
+			s = line[i].replace("-","_").remove(QRegExp("\\W")).replace("_","-");
+			int n = col_label.count(s);
+			if(n){//avoid identical col names
+				while (col_label.contains(s + QString::number(n)))
+					n++;
+				s += QString::number(n);
+			}
+			col_label[aux] = s;
+		}
+	}
+
+	if (importComments){//import comments
+		if (renameCols && !allNumbers)
+			s = t.readLine();//read 2nd line
+
 		if (simplifySpaces)
 			s = s.simplifyWhiteSpace();
 		else if (stripSpaces)
 			s = s.stripWhiteSpace();
-
-		QStringList line = s.split(sep);
-		int cols = line.size();
-
-		bool allNumbers = true;
-		for (int i=0; i<cols; i++)
-		{//verify if the strings in the line used to rename the columns are not all numbers
-			locale().toDouble(line[i], &allNumbers);
-			if (!allNumbers)
-				break;
+		line = s.split(sep, QString::SkipEmptyParts);
+		for (int i=0; i<line.size(); i++){
+			int aux = startCol + i;
+			if (aux < comments.size())
+				comments[aux] = line[i];
 		}
-        if (renameCols && !allNumbers){
-            rows--;
-            if (importComments)
-                rows--;
-        }
-
-        int startRow = 0, startCol = 0;
-        int c = numCols();
-        int r = numRows();
-		switch(importMode){
-			case Table::Overwrite:
-                if (numRows() != rows)
-                    setNumRows(rows);
-
-                if (c != cols){
-                    if (c < cols)
-                        addColumns(cols - c);
-                    else
-                        setNumCols(cols);
-                }
-			break;
-			case Table::NewColumns:
-                startCol = c;
-                addColumns(cols);
-                if (r < rows)
-                    setNumRows(rows);
-			break;
-			case Table::NewRows:
-                startRow = r;
-                if (c < cols)
-                    addColumns(cols - c);
-                setNumRows(r + rows);
-			break;
-		}
-
-		if (renameCols && !allNumbers){//use first line to set the table header
-			for (int i = 0; i<cols; i++){
-			    int aux = i + startCol;
-                col_label[aux] = QString::null;
-			    if (!importComments)
-                    comments[aux] = line[i];
-				s = line[i].replace("-","_").remove(QRegExp("\\W")).replace("_","-");
-				int n = col_label.count(s);
-				if(n){//avoid identical col names
-					while (col_label.contains(s + QString::number(n)))
-						n++;
-					s += QString::number(n);
-				}
-				col_label[aux] = s;
-			}
-
-            if (importComments){//import comments
-                s = t.readLine();//read 2nd line
-                if (simplifySpaces)
-                    s = s.simplifyWhiteSpace();
-                else if (stripSpaces)
-                    s = s.stripWhiteSpace();
-                line = s.split(sep, QString::SkipEmptyParts);
-                for (int i=0; i<line.size(); i++){
-					int aux = startCol + i;
-					if (aux < comments.size())
-                    	comments[aux] = line[i];
-				}
-                qApp->processEvents(QEventLoop::ExcludeUserInput);
-            }
-        } else if (rows > 0){//put values in the first line of the table
-            for (int i = 0; i<cols; i++)
-				setText(startRow, startCol + i, line[i]);
-            startRow++;
-        }
-
-        blockSignals(true);
-		setHeader();
-
-        QApplication::restoreOverrideCursor();
-
-		int row = startRow;
-		rows = numRows();
-		while (!t.atEnd() && row < rows){
-		    s = t.readLine();
-			if (simplifySpaces)
-				s = s.simplifyWhiteSpace();
-			else if (stripSpaces)
-				s = s.stripWhiteSpace();
-			line = s.split(sep);
-			int lc = line.size();
-			if (lc > cols) {
-				addColumns(lc - cols);
-				cols = lc;
-			}
-			for (int j=0; j<cols && j<lc; j++)
-				setText(row, startCol + j, line[j]);
-
-            row++;
-            qApp->processEvents(QEventLoop::ExcludeUserInput);
-		}
-		blockSignals(false);
-		f.remove();
+		qApp->processEvents(QEventLoop::ExcludeUserInput);
 	}
+
+	if ((!renameCols || allNumbers)&& !importComments && rows > 0){
+		//put values in the first line of the table
+		for (int i = 0; i<cols; i++)
+			setText(startRow, startCol + i, line[i]);
+		startRow++;
+	}
+
+	blockSignals(true);
+	setHeader();
+
+	QApplication::restoreOverrideCursor();
+
+	int row = startRow;
+	rows = numRows();
+	while (!t.atEnd() && row < rows){
+		s = t.readLine();
+		if (simplifySpaces)
+			s = s.simplifyWhiteSpace();
+		else if (stripSpaces)
+			s = s.stripWhiteSpace();
+		line = s.split(sep);
+		int lc = line.size();
+		if (lc > cols) {
+			addColumns(lc - cols);
+			cols = lc;
+		}
+		for (int j=0; j<cols && j<lc; j++)
+			setText(row, startCol + j, line[j]);
+
+		row++;
+		qApp->processEvents(QEventLoop::ExcludeUserInput);
+	}
+	blockSignals(false);
+	f.remove();
 }
 
 void PreviewTable::resetHeader()
