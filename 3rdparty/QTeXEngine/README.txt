@@ -5,7 +5,7 @@ AUTHOR: Ion Vasilief
 FEATURES:  QTeXEngine enables Qt based applications to easily export graphics created using the 
 	   QPainter class to the .tex format using Pgf/TikZ packages (http://sourceforge.net/projects/pgf/).
 ---------------------------------------------------------------------------
-DEPENDENCIES: You need Qt (http://www.qtsoftware.com) installed on your system in order to build EmfEngine.
+DEPENDENCIES: You need Qt (http://www.qtsoftware.com) installed on your system in order to build QTeXEngine.
 ---------------------------------------------------------------------------
 COMPILING: QTeXEngine uses qmake for the building process. 
 	qmake is part of a Qt distribution: 
