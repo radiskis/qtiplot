@@ -184,12 +184,29 @@ FunctionDialog::FunctionDialog( QWidget* parent, Qt::WFlags fl )
 	polarPage->setLayout(gl3);
 	optionStack->addWidget( polarPage );
 
+	boxFunctionExplain = new QTextEdit;
+	boxFunctionExplain->setReadOnly(true);
+	boxFunctionExplain->setMaximumHeight(50);
+	QPalette palette = boxFunctionExplain->palette();
+	palette.setColor(QPalette::Active, QPalette::Base, Qt::lightGray);
+	boxFunctionExplain->setPalette(palette);
+
 	addFunctionBtn = new QPushButton(tr( "&Add Function" ));
 	addFunctionBtn->setAutoDefault(false);
 	connect(addFunctionBtn, SIGNAL(clicked()), this, SLOT(insertFunction()));
 
 	boxMathFunctions = new QComboBox();
 	boxMathFunctions->addItems(MyParser::functionsList());
+	connect(boxMathFunctions, SIGNAL(activated(int)), this, SLOT(updateFunctionExplain(int)));
+	updateFunctionExplain(0);
+
+	QVBoxLayout *vbox = new QVBoxLayout();
+	vbox->addWidget(boxMathFunctions);
+	vbox->addWidget(addFunctionBtn);
+
+	QHBoxLayout *hbox3 = new QHBoxLayout();
+	hbox3->addWidget(boxFunctionExplain);
+	hbox3->addLayout(vbox);
 
 	buttonClear = new QPushButton(tr( "Clea&r Function" ));
 	buttonClear->setAutoDefault(false);
@@ -199,16 +216,15 @@ FunctionDialog::FunctionDialog( QWidget* parent, Qt::WFlags fl )
 	buttonCancel->setAutoDefault(false);
 
 	QHBoxLayout *hbox2 = new QHBoxLayout();
-	hbox2->addWidget(addFunctionBtn);
-	hbox2->addWidget(boxMathFunctions);
 	hbox2->addWidget(buttonClear);
-	hbox2->addStretch();
 	hbox2->addWidget(buttonOk);
 	hbox2->addWidget(buttonCancel);
+	hbox2->addStretch();
 
 	QVBoxLayout *vbox1 = new QVBoxLayout();
     vbox1->addLayout(hbox1);
 	vbox1->addWidget(optionStack);
+	vbox1->addLayout(hbox3);
 	vbox1->addLayout(hbox2);
 
 	setLayout(vbox1);
@@ -634,4 +650,9 @@ void FunctionDialog::insertFunction()
 		else
 			boxPolarTheta->lineEdit()->insert(fname);
 	}
+}
+
+void FunctionDialog::updateFunctionExplain(int index)
+{
+	boxFunctionExplain->setText(MyParser::explainFunction(index));
 }

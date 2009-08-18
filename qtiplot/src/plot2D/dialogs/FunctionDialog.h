@@ -53,6 +53,7 @@ public:
 protected slots:
 	void raiseWidget(int index);
 	void insertFunction();
+	void updateFunctionExplain(int);
 
 public slots:
 	void accept();
@@ -101,6 +102,7 @@ private:
 	QTableWidget *boxConstants;
 	QPushButton *addFunctionBtn;
 	QComboBox* boxMathFunctions;
+	QTextEdit* boxFunctionExplain;
 };
 
 #endif // FUNCTIONDIALOG_H

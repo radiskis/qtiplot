@@ -30,7 +30,6 @@
 
 #include <QApplication>
 #include <QDesktopWidget>
-#include <QMessageBox>
 
 QTeXPaintDevice::QTeXPaintDevice(const QString& fileName, const QSize& s, Unit u)
 : QPaintDevice()
