@@ -49,7 +49,7 @@ TranslateCurveTool::TranslateCurveTool(Graph *graph, ApplicationWindow *app, Dir
 
 	// Phase 1: select curve point
 	d_sub_tool = new DataPickerTool(d_graph, app, DataPickerTool::Display, this, SIGNAL(statusText(const QString&)));
-	connect((DataPickerTool*)d_sub_tool, SIGNAL(selected(QwtPlotCurve*,int)),
+	connect((DataPickerTool*)d_sub_tool, SIGNAL(selected(QwtPlotCurve*, int)),
 			this, SLOT(selectCurvePoint(QwtPlotCurve*,int)));
 
 	emit statusText(tr("Double-click on plot to select a data point!"));
@@ -57,6 +57,9 @@ TranslateCurveTool::TranslateCurveTool(Graph *graph, ApplicationWindow *app, Dir
 
 void TranslateCurveTool::selectCurvePoint(QwtPlotCurve *curve, int point_index)
 {
+	if (!curve)
+		return;
+
 	if(((PlotCurve *)curve)->type() != Graph::Function){
 		DataCurve *c = (DataCurve *)curve;
 		Table *t = c->table();

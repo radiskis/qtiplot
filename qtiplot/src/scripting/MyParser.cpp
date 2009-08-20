@@ -56,10 +56,10 @@ const QStringList MyParser::functionsList()
 {
   QStringList l;
   for (const muParserScripting::mathFunction *i = muParserScripting::math_functions; i->name; i++){
-    if (i->numargs == 1 && i->fun1 != NULL)
-      l << QString(i->name) + "()";
-    else if (i->numargs == 2 && i->fun2 != NULL)
+    if (i->numargs == 2)
       l << QString(i->name) + "(,)";
+	else
+      l << QString(i->name) + "()";
   }
   return l;
 }

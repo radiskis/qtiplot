@@ -20,6 +20,7 @@
 			   src/plot2D/LineProfileTool.h \
 			   src/plot2D/LnScaleEngine.h \
 			   src/plot2D/Log2ScaleEngine.h \
+			   src/plot2D/LogitScaleEngine.h \
 			   src/plot2D/MultiLayer.h \
 			   src/plot2D/MultiPeakFitTool.h \
 			   src/plot2D/PlotCurve.h \
@@ -59,6 +60,7 @@
 			   src/plot2D/LineProfileTool.cpp \
 			   src/plot2D/LnScaleEngine.cpp \
 			   src/plot2D/Log2ScaleEngine.cpp \
+			   src/plot2D/LogitScaleEngine.cpp \
 			   src/plot2D/MultiLayer.cpp \
 			   src/plot2D/MultiPeakFitTool.cpp \
 			   src/plot2D/PlotCurve.cpp \
