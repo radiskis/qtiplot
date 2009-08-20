@@ -38,7 +38,7 @@ class ScaleEngine;
 class ScaleTransformation: public QwtScaleTransformation
 {
 public:
-	enum Type{Linear, Log10, Ln, Log2, Reciprocal};
+	enum Type{Linear, Log10, Ln, Log2, Reciprocal, Probability};
 
 	ScaleTransformation(const ScaleEngine *engine):QwtScaleTransformation(Other), d_engine(engine){};
 	virtual double xForm(double x, double, double, double p1, double p2) const;

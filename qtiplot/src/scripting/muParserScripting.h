@@ -38,6 +38,7 @@
 #include "math.h"
 #include <gsl/gsl_sf.h>
 #include <gsl/gsl_cdf.h>
+#include <gsl/gsl_randist.h>
 
 //! TODO
 class muParserScripting: public ScriptingEnv
@@ -116,6 +117,12 @@ class muParserScripting: public ScriptingEnv
 	   { return gsl_sf_lambert_Wm1(x); }
 	static double ttable(double x, double n)
 	   { return gsl_cdf_tdist_Pinv(x, n); }
+	static double gauss_pdf(double x, double sigma )
+		{return gsl_ran_gaussian_pdf (x, sigma);};
+	static double gauss_cdf(double x, double sigma )
+		{return gsl_cdf_gaussian_P (x, sigma);};
+	static double inv_gauss_cdf(double x, double sigma)
+		{return gsl_cdf_gaussian_Pinv(x, sigma);};
 };
 
 class EmptySourceError : public mu::ParserError

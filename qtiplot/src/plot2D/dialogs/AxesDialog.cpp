@@ -47,6 +47,7 @@
 #include <QComboBox>
 #include <QLabel>
 #include <QPushButton>
+#include <QRadioButton>
 #include <QSpinBox>
 #include <QTabWidget>
 #include <QLayout>
@@ -154,6 +155,7 @@ void AxesDialog::initScalesPage()
 	boxScaleType->addItem(QIcon(QPixmap(ln_scale_xpm)), tr( "ln" ));
 	boxScaleType->addItem(QIcon(QPixmap(log2_scale_xpm)), tr( "Log2" ));
 	boxScaleType->addItem(QIcon(QPixmap(reciprocal_scale_xpm)), tr( "Reciprocal" ));
+	boxScaleType->addItem(QIcon(QPixmap(probability_scale_xpm)), tr( "Probability" ));
 	middleLayout->addWidget( boxScaleTypeLabel, 2, 0);
 	middleLayout->addWidget( boxScaleType, 2, 1);
 
@@ -231,7 +233,7 @@ void AxesDialog::initScalesPage()
 	QHBoxLayout * stepWidgetLayout = new QHBoxLayout( stepWidget );
 	stepWidgetLayout->setMargin(0);
 
-	btnStep = new QCheckBox(tr("Step"));
+	btnStep = new QRadioButton(tr("Step"));
 	btnStep->setChecked(true);
 	rightLayout->addWidget( btnStep, 0, 0 );
 
@@ -247,7 +249,7 @@ void AxesDialog::initScalesPage()
 
 	rightLayout->addWidget( stepWidget, 0, 1 );
 
-	btnMajor = new QCheckBox();
+	btnMajor = new QRadioButton();
 	btnMajor->setText( tr( "Major Ticks" ) );
 	rightLayout->addWidget( btnMajor, 1, 0);
 
