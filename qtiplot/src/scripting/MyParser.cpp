@@ -30,6 +30,7 @@
 #include <QMessageBox>
 #include <QApplication>
 #include "NonLinearFit.h"
+#include "muParserScripting.h"
 
 MyParser::MyParser()
 :Parser()
@@ -37,175 +38,36 @@ MyParser::MyParser()
 	DefineConst("pi", M_PI);
 	DefineConst("Pi", M_PI);
 	DefineConst("PI", M_PI);
+	DefineConst("e", M_E);
+	DefineConst("E", M_E);
 
-	DefineFun("bessel_j0", bessel_J0);
-	DefineFun("bessel_j1", bessel_J1);
-	DefineFun("bessel_jn", bessel_Jn);
-	DefineFun("bessel_y0", bessel_Y0);
-	DefineFun("bessel_y1", bessel_Y1);
-	DefineFun("bessel_yn", bessel_Yn);
-	DefineFun("beta", beta);
-	DefineFun("erf", erf);
-	DefineFun("erfc", erfc);
-	DefineFun("erfz", erfz);
-	DefineFun("erfq", erfq);
-	DefineFun("gamma", gamma);
-	DefineFun("gammaln", gammaln);
-	DefineFun("hazard", hazard);
-	DefineFun("ttable", ttable);
-	DefineFun("w0", lambert_W0);
-	DefineFun("wm1", lambert_Wm1);
-
+	for (const muParserScripting::mathFunction *i=muParserScripting::math_functions; i->name; i++){
+		if (i->numargs == 1 && i->fun1 != NULL)
+			DefineFun(i->name, i->fun1);
+		else if (i->numargs == 2 && i->fun2 != NULL)
+			DefineFun(i->name, i->fun2);
+		else if (i->numargs == 3 && i->fun3 != NULL)
+			DefineFun(i->name, i->fun3);
+	}
 	gsl_set_error_handler_off();
 }
 
-QStringList MyParser::functionsList()
+const QStringList MyParser::functionsList()
 {
-QStringList l;
-l << "abs()" << "acos()" << "acosh()" << "asin()" << "asinh()" << "atan()";
-l << "atanh()" << "avg(,)" << "bessel_j0()" << "bessel_j1()" << "bessel_jn(,)";
-l << "bessel_y0()" << "bessel_y1()" << "bessel_yn(,)" << "beta(,)";
-l << "cos()" << "cosh()" << "erf()" << "erfc()" << "erfz()" << "erfq()";
-l << "exp()" << "gamma()" << "gammaln()" << "hazard()";
-l << "if( , , )" << "ln()" << "log()" << "log2()" << "min()" << "max()";
-l << "rint()" << "sign()" << "sin()" << "sinh()" << "sqrt()" << "tan()" << "tanh()";
-l << "ttable(,)" << "w0()" << "wm1()";
-return l;
+  QStringList l;
+  for (const muParserScripting::mathFunction *i = muParserScripting::math_functions; i->name; i++){
+    if (i->numargs == 1 && i->fun1 != NULL)
+      l << QString(i->name) + "()";
+    else if (i->numargs == 2 && i->fun2 != NULL)
+      l << QString(i->name) + "(,)";
+  }
+  return l;
 }
 
 QString MyParser::explainFunction(int index)
 {
-QString blabla;
-switch (index){
-	case 0:
-		blabla = QObject::tr("abs(x):\n Absolute value of x.");
-	break;
-
-	case 1:
-		blabla = QObject::tr("acos(x):\n Inverse cos function.");
-	break;
-
-	case 2:
-		blabla = QObject::tr("acosh(x):\n Hyperbolic inverse cos function.");
-	break;
-
-	case 3:
-		blabla = QObject::tr("asin(x):\n Inverse sin function.");
-	break;
-
-	case 4:
-		blabla = QObject::tr("asinh(x):\n Hyperbolic inverse sin function.");
-	break;
-	case 5:
-		blabla = QObject::tr("atan(x):\n Inverse tan function.");
-	break;
-	case 6:
-		blabla = QObject::tr("atanh(x):\n  Hyperbolic inverse tan function.");
-	break;
-	case 7:
-		blabla = QObject::tr("avg(x,y,...):\n  Mean value of all arguments.");
-	break;
-	case 8:
-		blabla = QObject::tr("bessel_j0(x):\n  Regular cylindrical Bessel function of zeroth order, J_0(x).");
-	break;
-	case 9:
-		blabla = QObject::tr("bessel_j1(x):\n  Regular cylindrical Bessel function of first order, J_1(x).");
-	break;
-	case 10:
-		blabla = QObject::tr("bessel_jn(double x, int n):\n Regular cylindrical Bessel function of order n, J_n(x).");
-	break;
-	case 11:
-		blabla = QObject::tr("bessel_y0(x):\n Irregular cylindrical Bessel function of zeroth order, Y_0(x), for x>0.");
-	break;
-	case 12:
-		blabla = QObject::tr("bessel_y1(x):\n Irregular cylindrical Bessel function of first order, Y_1(x), for x>0.");
-	break;
-	case 13:
-		blabla = QObject::tr("bessel_yn(double x, int n):\n Irregular cylindrical Bessel function of order n, Y_n(x), for x>0.");
-	break;
-	case 14:
-		blabla = QObject::tr("beta (a,b):\n Computes the Beta Function, B(a,b) = Gamma(a)*Gamma(b)/Gamma(a+b) for a > 0, b > 0.");
-	break;
-	case 15:
-		blabla = QObject::tr("cos (x):\n Calculate cosine.");
-	break;
-	case 16:
-		blabla = QObject::tr("cosh(x):\n Hyperbolic cos function.");
-	break;
-	case 17:
-		blabla = QObject::tr("erf(x):\n  The error function.");
-	break;
-	case 18:
-		blabla = QObject::tr("erfc(x):\n Complementary error function erfc(x) = 1 - erf(x).");
-	break;
-	case 19:
-		blabla = QObject::tr("erfz(x):\n The Gaussian probability density function Z(x).");
-	break;
-	case 20:
-		blabla = QObject::tr("erfq(x):\n The upper tail of the Gaussian probability function Q(x).");
-	break;
-	case 21:
-		blabla = QObject::tr("exp(x):\n Exponential function: e raised to the power of x.");
-	break;
-	case 22:
-		blabla = QObject::tr("gamma(x):\n Computes the Gamma function, subject to x not being a negative integer.");
-	break;
-	case 23:
-		blabla = QObject::tr("gammaln(x):\n Computes the logarithm of the Gamma function, subject to x not a being negative integer. For x<0, log(|Gamma(x)|) is returned.");
-	break;
-	case 24:
-		blabla = QObject::tr("hazard(x):\n Computes the hazard function for the normal distribution h(x) = erfz(x)/erfq(x).");
-	break;
-	case 25:
-		blabla = QObject::tr("if(e1, e2, e3):	if e1 then e2 else e3.");
-	break;
-	case 26:
-		blabla = QObject::tr("ln(x):\n Calculate natural logarithm.");
-	break;
-	case 27:
-		blabla = QObject::tr("log(x):\n Calculate decimal logarithm.");
-	break;
-	case 28:
-		blabla = QObject::tr("log2(x):\n Calculate 	logarithm to the base 2.");
-	break;
-	case 29:
-		blabla = QObject::tr("min(x,y,...):\n Calculate minimum of all arguments.");
-	break;
-	case 30:
-		blabla = QObject::tr("max(x,y,...):\n Calculate maximum of all arguments.");
-	break;
-	case 31:
-		blabla = QObject::tr("rint(x):\n Round to nearest integer.");
-	break;
-	case 32:
-		blabla = QObject::tr("sign(x):\n Sign function: -1 if x<0; 1 if x>0.");
-	break;
-	case 33:
-		blabla = QObject::tr("sin(x):\n Calculate sine.");
-	break;
-	case 34:
-		blabla = QObject::tr("sinh(x):\n Hyperbolic sin function.");
-	break;
-	case 35:
-		blabla = QObject::tr("sqrt(x):\n Square root function.");
-	break;
-	case 36:
-		blabla = QObject::tr("tan(x):\n Calculate tangent function.");
-	break;
-	case 37:
-		blabla = QObject::tr("tanh(x):\n Hyperbolic tan function.");
-	break;
-	case 38:
-		blabla = QObject::tr("ttable(x, n):\n Student's t-distribution with n degrees of freedom.");
-	break;
-	case 39:
-		blabla = QObject::tr("w0(x):\n Compute the principal branch of Lambert's W function, W_0(x).\n W is defined as a solution to the equation W(x)*exp(W(x))=x.\n For x<0, there are two real-valued branches; this function computes the one where W>-1 for x<0 (also see wm1(x)).");
-	break;
-	case 40:
-		blabla = QObject::tr("wm1(x):\n Compute the secondary branch of Lambert's W function, W_{-1}(x).\n W is defined as a solution to the equation W(x)*exp(W(x))=x.\n For x<0, there are two real-valued branches; this function computes the one where W<-1 for x<0. (also see w0(x)).");
-	break;
-	}
-return blabla;
+	const muParserScripting::mathFunction i = muParserScripting::math_functions[index];
+	return i.description;
 }
 
 double MyParser::EvalRemoveSingularity(double *xvar, bool noisy) const

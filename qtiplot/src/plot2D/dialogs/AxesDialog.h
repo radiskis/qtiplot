@@ -151,9 +151,10 @@ protected:
     QComboBox* boxScaleType;
     QComboBox* boxMinorValue;
     DoubleSpinBox* boxStep;
-    QCheckBox* btnStep, *btnInvert;
+    QRadioButton* btnStep;
+    QCheckBox *btnInvert;
     QSpinBox* boxMajorValue;
-    QCheckBox* btnMajor;
+    QRadioButton* btnMajor;
     QListWidget* axesList;
     QWidget* gridPage;
     QCheckBox* boxMajorGrid;

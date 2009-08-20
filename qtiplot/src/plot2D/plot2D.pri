@@ -24,6 +24,7 @@
 			   src/plot2D/MultiPeakFitTool.h \
 			   src/plot2D/PlotCurve.h \
 			   src/plot2D/PlotToolInterface.h \
+			   src/plot2D/ProbabilityScaleEngine.h \
 			   src/plot2D/QwtBarCurve.h \
                src/plot2D/QwtErrorPlotCurve.h \
 			   src/plot2D/QwtHistogram.h \
@@ -61,6 +62,7 @@
 			   src/plot2D/MultiLayer.cpp \
 			   src/plot2D/MultiPeakFitTool.cpp \
 			   src/plot2D/PlotCurve.cpp \
+			   src/plot2D/ProbabilityScaleEngine.cpp \
 			   src/plot2D/QwtBarCurve.cpp \
                src/plot2D/QwtErrorPlotCurve.cpp \
 			   src/plot2D/QwtHistogram.cpp \
