@@ -31,6 +31,7 @@
 #include "ReciprocalScaleEngine.h"
 #include "Log2ScaleEngine.h"
 #include "ProbabilityScaleEngine.h"
+#include "LogitScaleEngine.h"
 #include <limits.h>
 
 QwtScaleTransformation* ScaleEngine::transformation() const
@@ -201,6 +202,10 @@ QwtScaleTransformation* ScaleTransformation::newScaleTransformation() const
 
 		case ScaleTransformation::Probability:
 			transform = new ProbabilityScaleTransformation(d_engine);
+		break;
+
+		case ScaleTransformation::Logit:
+			transform = new LogitScaleTransformation(d_engine);
 		break;
 
 		case ScaleTransformation::Linear:
@@ -412,6 +417,10 @@ QwtScaleEngine *ScaleEngine::newScaleEngine() const
 
 		case ScaleTransformation::Probability:
 			engine = new ProbabilityScaleEngine();
+		break;
+
+		case ScaleTransformation::Logit:
+			engine = new LogitScaleEngine();
 		break;
 
 		case ScaleTransformation::Linear:

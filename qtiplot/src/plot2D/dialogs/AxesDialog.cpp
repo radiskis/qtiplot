@@ -156,6 +156,7 @@ void AxesDialog::initScalesPage()
 	boxScaleType->addItem(QIcon(QPixmap(log2_scale_xpm)), tr( "Log2" ));
 	boxScaleType->addItem(QIcon(QPixmap(reciprocal_scale_xpm)), tr( "Reciprocal" ));
 	boxScaleType->addItem(QIcon(QPixmap(probability_scale_xpm)), tr( "Probability" ));
+	boxScaleType->addItem(QIcon(QPixmap(logit_scale_xpm)), tr( "Logit" ));
 	middleLayout->addWidget( boxScaleTypeLabel, 2, 0);
 	middleLayout->addWidget( boxScaleType, 2, 1);
 
