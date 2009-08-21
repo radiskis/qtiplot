@@ -67,9 +67,21 @@ void Differentiation::init()
 
 void Differentiation::output()
 {
-    double *result = new double[d_n-1];
-	for (int i = 1; i < d_n-1; i++)
-		result[i]=0.5*((d_y[i+1]-d_y[i])/(d_x[i+1]-d_x[i]) + (d_y[i]-d_y[i-1])/(d_x[i]-d_x[i-1]));
+    double *result = new double[d_n - 1];
+	for (int i = 1; i < d_n - 1; i++){
+		double xl = d_x[i - 1];
+		double xc = d_x[i];
+		double xr = d_x[i + 1];
+
+		if (xr != xc && xl != xc)
+			result[i] = 0.5*((d_y[i + 1] - d_y[i])/(xr - xc) + (d_y[i] - d_y[i - 1])/(xc - xl));
+		else if (xr != xc)
+			result[i] = (d_y[i + 1] - d_y[i])/(xr - xc);
+		else if (xl != xc)
+			result[i] = (d_y[i] - d_y[i - 1])/(xc - xl);
+		else
+			result[i] = result[i - 1];
+	}
 
     ApplicationWindow *app = (ApplicationWindow *)parent();
     QLocale locale = app->locale();

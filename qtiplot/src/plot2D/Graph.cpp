@@ -1317,6 +1317,10 @@ void Graph::setScale(int axis, double start, double end, double step,
   	}
 
 	replot();
+
+	updateMarkersBoundingRect();//keep markers on canvas area
+
+	replot();
 	axisWidget(axis)->repaint();
 	emit axisDivChanged(this, axis);
 }
