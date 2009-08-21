@@ -59,10 +59,12 @@ private slots:
 	void showFunctionDialog();
 	void showCurveBtn(int);
     void enableAddBtn();
-	void enableRemoveBtn();
+	void enableContentsBtns();
 	void showCurveRange(bool);
 	void updateCurveRange();
 	void showCurrentFolder(bool);
+	void raiseCurve();
+	void shiftCurveBy(int offset = 1);
 
 private:
 	enum TreeItemType{FolderItem, ColumnItem, TableItem, MatrixItem};
@@ -90,6 +92,8 @@ private:
 	QComboBox* boxMatrixStyle;
 	QCheckBox* boxShowRange;
 	QCheckBox* boxShowCurrentFolder;
+	QPushButton* btnUp;
+	QPushButton* btnDown;
 };
 
 #endif // CurvesDialog_H

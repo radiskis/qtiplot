@@ -215,6 +215,8 @@ class Graph: public QwtPlot
 		static QString escapeTeXSpecialCharacters(const QString &);
 		static QString texSuperscripts(const QString &);
 
+		void moveCurve(int fromIndex, int toIndex);
+
 	public slots:
 		void copy(Graph* g);
 		void copyCurves(Graph* g);

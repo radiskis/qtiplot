@@ -6431,3 +6431,14 @@ QString Graph::texSuperscripts(const QString &text)
 	s.replace("</sup>", "}$");
 	return s;
 }
+
+void Graph::moveCurve(int fromIndex, int toIndex)
+{
+	if (d_curves.isEmpty())
+		return;
+
+	if (fromIndex < 0 || fromIndex >= d_curves.size() ||
+		toIndex < 0 || toIndex >= d_curves.size()) return;
+
+	d_curves.move ( fromIndex, toIndex );
+}
