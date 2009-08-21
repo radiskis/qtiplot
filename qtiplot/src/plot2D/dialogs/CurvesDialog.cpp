@@ -88,7 +88,20 @@ CurvesDialog::CurvesDialog( QWidget* parent, Qt::WFlags fl )
 
     QGridLayout *gl = new QGridLayout();
     gl->addWidget(new QLabel( tr( "Available data" )), 0, 0);
-    gl->addWidget(new QLabel( tr( "Graph contents" )), 0, 2);
+
+    QHBoxLayout *hbc = new QHBoxLayout;
+    hbc->addWidget(new QLabel( tr( "Graph contents" )));
+
+    btnUp = new QPushButton();
+    btnUp->setIcon(QPixmap(arrow_up_xpm));
+    btnUp->setMaximumWidth(20);
+    hbc->addWidget(btnUp);
+	btnDown = new QPushButton();
+	btnDown->setIcon(QPixmap(arrow_down_xpm));
+	btnDown->setMaximumWidth(20);
+	hbc->addWidget(btnDown);
+	hbc->addStretch();
+	gl->addLayout(hbc, 0, 2);
 
 	available = new QTreeWidget();
 	available->setColumnCount(1);
@@ -151,6 +164,9 @@ CurvesDialog::CurvesDialog( QWidget* parent, Qt::WFlags fl )
 
     init();
 
+	connect(btnUp, SIGNAL(clicked()),this, SLOT(raiseCurve()));
+	connect(btnDown, SIGNAL(clicked()),this, SLOT(shiftCurveBy()));
+
 	connect(boxShowCurrentFolder, SIGNAL(toggled(bool)), this, SLOT(showCurrentFolder(bool)));
     connect(boxShowRange, SIGNAL(toggled(bool)), this, SLOT(showCurveRange(bool)));
 	connect(btnRange, SIGNAL(clicked()),this, SLOT(showCurveRangeDialog()));
@@ -161,7 +177,7 @@ CurvesDialog::CurvesDialog( QWidget* parent, Qt::WFlags fl )
 	connect(btnOK, SIGNAL(clicked()),this, SLOT(close()));
 	connect(btnCancel, SIGNAL(clicked()),this, SLOT(close()));
 	connect(contents, SIGNAL(currentRowChanged(int)), this, SLOT(showCurveBtn(int)));
-    connect(contents, SIGNAL(itemSelectionChanged()), this, SLOT(enableRemoveBtn()));
+    connect(contents, SIGNAL(itemSelectionChanged()), this, SLOT(enableContentsBtns()));
     connect(available, SIGNAL(itemSelectionChanged()), this, SLOT(enableAddBtn()));
 
     QShortcut *shortcut = new QShortcut(QKeySequence(Qt::Key_Delete), this);
@@ -325,7 +341,7 @@ void CurvesDialog::setGraph(Graph *graph)
 {
 	d_graph = graph;
 	contents->addItems(d_graph->plotItemsList());
-	enableRemoveBtn();
+	enableContentsBtns();
     enableAddBtn();
 }
 
@@ -480,9 +496,14 @@ void CurvesDialog::enableAddBtn()
 						!available->selectedItems().isEmpty());
 }
 
-void CurvesDialog::enableRemoveBtn()
+void CurvesDialog::enableContentsBtns()
 {
-    btnRemove->setEnabled (contents->count()>0 && !contents->selectedItems().isEmpty());
+	QList<QListWidgetItem *> lst = contents->selectedItems();
+    btnRemove->setEnabled (contents->count()>0 && !lst.isEmpty());
+
+    int row = contents->currentRow();
+	btnUp->setEnabled (lst.size() == 1 && row > 0);
+	btnDown->setEnabled (lst.size() == 1 && row < contents->count() - 1);
 }
 
 int CurvesDialog::curveStyle()
@@ -550,7 +571,7 @@ void CurvesDialog::showCurveRange(bool on )
         contents->addItems(d_graph->plotItemsList());
 
     contents->setCurrentRow(row);
-    enableRemoveBtn();
+    enableContentsBtns();
 }
 
 void CurvesDialog::updateCurveRange()
@@ -641,4 +662,22 @@ void CurvesDialog::closeEvent(QCloseEvent* e)
 		app->d_add_curves_dialog_size = this->size();
 
 	e->accept();
+}
+
+void CurvesDialog::raiseCurve()
+{
+	shiftCurveBy(-1);
+}
+
+void CurvesDialog::shiftCurveBy(int offset)
+{
+	if (!d_graph)
+		return;
+
+	int row = contents->currentRow();
+	d_graph->moveCurve(row, row + offset);
+
+	contents->clear();
+	contents->addItems(d_graph->plotItemsList());
+	contents->setCurrentRow(row + offset);
 }
