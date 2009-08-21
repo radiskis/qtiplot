@@ -44,6 +44,7 @@ public:
 
 private:
 	double func(double x) const;
+	double invFunc(double x) const;
 };
 
 class ProbabilityScaleEngine: public QwtScaleEngine

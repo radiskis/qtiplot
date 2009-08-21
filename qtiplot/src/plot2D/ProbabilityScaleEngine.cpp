@@ -159,10 +159,15 @@ double ProbabilityScaleTransformation::xForm(
 double ProbabilityScaleTransformation::invXForm(double p, double p1, double p2,
     double s1, double s2) const
 {
-	return s1*gsl_cdf_ugaussian_P((p - p1)/(p2 - p1)*(func(s2) - func(s1)));
+	return invFunc(func(s1) + (p - p1)/(p2 - p1)*(func(s2) - func(s1)));
 }
 
 double ProbabilityScaleTransformation::func(double x) const
 {
 	return gsl_cdf_ugaussian_Pinv(0.01*x);
+}
+
+double ProbabilityScaleTransformation::invFunc(double x) const
+{
+	return 100*gsl_cdf_ugaussian_P(x);
 }
