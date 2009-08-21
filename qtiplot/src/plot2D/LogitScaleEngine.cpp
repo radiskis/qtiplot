@@ -155,7 +155,7 @@ double LogitScaleTransformation::xForm(
 double LogitScaleTransformation::invXForm(double p, double p1, double p2,
     double s1, double s2) const
 {
-	return s1*invFunc((p - p1)/(p2 - p1)*(func(s2) - func(s1)));
+	return invFunc(func(s1) + (p - p1)/(p2 - p1)*(func(s2) - func(s1)));
 }
 
 double LogitScaleTransformation::func(double x) const
@@ -165,5 +165,5 @@ double LogitScaleTransformation::func(double x) const
 
 double LogitScaleTransformation::invFunc(double x) const
 {
-	return exp(x)/(1 + exp(x));
+	return 100*exp(x)/(1 + exp(x));
 }
