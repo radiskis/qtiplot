@@ -25,9 +25,9 @@
  *   Boston, MA  02110-1301  USA                                           *
  *                                                                         *
  ***************************************************************************/
-#include "Spectrogram.h"
-#include "Graph.h"
-#include "MultiLayer.h"
+#include <Spectrogram.h>
+#include <Graph.h>
+#include <MultiLayer.h>
 #include <ColorMapEditor.h>
 #include <ApplicationWindow.h>
 #include <PlotCurve.h>
@@ -58,6 +58,7 @@ Spectrogram::Spectrogram(Graph *graph, Matrix *m):
 	d_color_map_pen(false)
 {
 	setData(MatrixData(m));
+
 	double step = fabs(data().range().maxValue() - data().range().minValue())/5.0;
 
 	QwtValueList contourLevels;
@@ -364,11 +365,7 @@ QwtDoubleRect Spectrogram::boundingRect() const
 
 void Spectrogram::createLabels()
 {
-	foreach(QwtPlotMarker *m, d_labels_list){
-		m->detach();
-		delete m;
-	}
-	d_labels_list.clear();
+	clearLabels();
 
 	QwtValueList levels = contourLevels();
 	const int numLevels = levels.size();

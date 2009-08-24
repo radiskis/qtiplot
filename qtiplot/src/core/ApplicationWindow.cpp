@@ -502,7 +502,11 @@ void ApplicationWindow::initGlobalConstants()
 	autoSave = true;
 	autoSaveTime = 15;
 	d_backup_files = true;
+
 	defaultScriptingLang = "muParser";
+#ifdef SCRIPTING_PYTHON
+	defaultScriptingLang = "Python";
+#endif
 
 	d_decimal_digits = 13;
 
@@ -4000,7 +4004,7 @@ ApplicationWindow* ApplicationWindow::openProject(const QString& fn, bool factor
 	QStringList list=s.split("\t", QString::SkipEmptyParts);
 	if (list[0] == "<scripting-lang>")
 	{
-		if (!app->setScriptingLanguage(list[1], true))
+		if (!app->setScriptingLanguage(list[1]))
 			QMessageBox::warning(app, tr("QtiPlot - File opening error"),
 					tr("The file \"%1\" was created using \"%2\" as scripting language.\n\n"\
 						"Initializing support for this language FAILED; I'm using \"%3\" instead.\n"\
@@ -4269,7 +4273,7 @@ void ApplicationWindow::scriptPrint(const QString &text)
 
 bool ApplicationWindow::setScriptingLanguage(const QString &lang, bool force)
 {
-	if (!force && lang == scriptEnv->name()) return true;
+	if (!force && lang == scriptEnv->name())return true;
 	if (lang.isEmpty()) return false;
 
 	ScriptingEnv *newEnv = ScriptingLangManager::newEnv(lang, this);
