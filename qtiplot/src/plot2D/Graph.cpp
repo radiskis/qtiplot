@@ -4734,9 +4734,10 @@ Spectrogram* Graph::plotSpectrogram(Matrix *m, CurveType type)
   	Spectrogram *d_spectrogram = new Spectrogram(this, m);
 	insertCurve(d_spectrogram);
 
-  	if (type == GrayScale)
+  	if (type == GrayScale){
   		d_spectrogram->setGrayScale();
-  	else if (type == Contour){
+  		d_spectrogram->clearLabels();
+  	} else if (type == Contour){
   	    d_spectrogram->setDisplayMode(QwtPlotSpectrogram::ImageMode, false);
   	    d_spectrogram->setDisplayMode(QwtPlotSpectrogram::ContourMode, true);
     } else if (type == ColorMap){

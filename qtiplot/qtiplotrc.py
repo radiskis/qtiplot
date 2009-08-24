@@ -101,122 +101,6 @@ try:
 	print("Loaded %d special functions from scipy.special." % len(special_functions))
 except(ImportError): pass
 
-# Import selected parts of pygsl.sf (if available) into global namespace.
-# See pygsl.sourceforge.net for information on pygsl and how to get it.
-try:
-	# special functions not defined in SciPy
-	special_functions = [
-			# Restriction functions
-			"angle_restrict_pos_err", "angle_restrict_symm_err",
-			# Gamma and Related Functions
-			"choose", "fact", "doublefact",
-			"gammastar", "gammainv",
-			"lnfact", "lndoublefact",
-			"poch", "pochrel", "lnpoch", "lnpoch_sgn",
-			"psi_1_int", "psi_1piy", "psi_int", "psi_n",
-			# Fermi-Dirac integrals
-			"fermi_dirac_0", "fermi_dirac_half", "fermi_dirac_1",
-			"fermi_dirac_3half", "fermi_dirac_2",
-			"fermi_dirac_inc_0", "fermi_dirac_int", "fermi_dirac_m1",
-			"fermi_dirac_mhalf",
-			# Elliptic Functions and Integrals
-			"ellint_D", "ellint_F",
-			"ellint_RC", "ellint_RD", "ellint_RF", "ellint_RJ",
-			"elljac",
-			# Error Function and Fresnel Integrals
-			"log_erfc",
-			# Other Integrals
-			"atanint",
-			"expint_3", "expint_E1", "expint_E2", "expint_Ei",
-			# Legendre Functions and Spherical Harmonics
-			"conicalP_0", "conicalP_1", "conicalP_half", "conicalP_mhalf",
-			"conicalP_sph_reg", "conicalP_cyl_reg",
-			"legendre_H3d", "legendre_H3d_0", "legendre_H3d_1",
-			"legendre_Q0", "legendre_Q1", "legendre_Ql",
-			"legendre_sphPlm",
-			# Coulomb Functions
-			"hydrogenicR", "hydrogenicR_1",
-			"coulomb_CL", "coulomb_wave_FG",
-			# Lambert's W function
-			"lambert_W0", "lambert_Wm1",
-			# Synchrotron functions
-			"synchrotron_1", "synchrotron_2",
-			# Transport functions
-			"transport_2", "transport_3", "transport_4", "transport_5",
-			# Clausen function
-			"clausen",
-			# Coupling coefficients
-			"coupling_3j", "coupling_6j", "coupling_9j",
-			# Debye functions
-			"debye_1", "debye_2", "debye_3", "debye_4",
-			# Dilogarithm
-			"dilog",
-			# Zeta Functions
-			"eta", "eta_int",
-			"hzeta", "zeta_int",
-			# HyperGeometric Functions
-			"hyperg_1F1_int",
-			"hyperg_2F1_conj", "hyperg_2F1_conj_renorm", "hyperg_2F1_renorm",
-			"hyperg_U_e10", "hyperg_U_int", "hyperg_U_int_e10",
-			# Trigonometric Functions
-			"hypot", "sinc",
-			"lnsinh", "lncosh",
-			# Other Special Functions
-			"log_abs", "taylorcoeff",
-			]
-	# special functions also defined in SciPy
-	special_functions_doublets = [
-			# Airy functions
-			"airy_Ai", "airy_Ai_deriv", "airy_Ai_scaled", "airy_Ai_deriv_scaled",
-			"airy_Bi", "airy_Bi_deriv", "airy_Bi_scaled", "airy_Bi_deriv_scaled",
-			"airy_zero_Ai", "airy_zero_Ai_deriv", "airy_zero_Bi", "airy_zero_Bi_deriv",
-			# Bessel functions
-			"bessel_I0", "bessel_I1", "bessel_In", "bessel_Inu",
-			"bessel_I0_scaled", "bessel_I1_scaled", "bessel_In_scaled", "bessel_Inu_scaled",
-			"bessel_J0", "bessel_J1", "bessel_Jn", "bessel_Jnu",
-			"bessel_K0", "bessel_K1", "bessel_Kn", "bessel_Knu",
-			"bessel_K0_scaled", "bessel_K1_scaled", "bessel_Kn_scaled", "bessel_Knu_scaled",
-			"bessel_Y0", "bessel_Y1", "bessel_Yn", "bessel_Ynu",
-			"bessel_i0_scaled", "bessel_i1_scaled", "bessel_i2_scaled", "bessel_il_scaled",
-			"bessel_j0", "bessel_j1", "bessel_j2", "bessel_jl",
-			"bessel_k0_scaled", "bessel_k1_scaled", "bessel_k2_scaled", "bessel_kl_scaled",
-			"bessel_y0", "bessel_y1", "bessel_y2", "bessel_yl",
-			"bessel_lnKnu",
-			"bessel_zero_J0", "bessel_zero_J1", "bessel_zero_Jnu",
-			# Gamma and Related Functions
-			"beta", "beta_inc",
-			"gamma", "gamma_inc_P", "gamma_inc_Q",
-			"lnbeta", "lngamma",
-			"psi",
-			# Elliptic Functions and Integrals
-			"ellint_E", "ellint_Ecomp", "ellint_Kcomp", "ellint_P",
-			# Error Function and Fresnel Integrals
-			"erf", "erfc", "erf_Q", "erf_Z",
-			# Gegenbauer polynomials
-			"gegenpoly_1", "gegenpoly_2", "gegenpoly_3", "gegenpoly_n",
-			# HyperGeometric Functions
-			"hyperg_0F1", "hyperg_1F1", "hyperg_2F0", "hyperg_2F1",
-			"hyperg_U",
-			# Orthogonal Polynomials
-			"laguerre_1", "laguerre_2", "laguerre_3", "laguerre_n",
-			"legendre_P1", "legendre_P2", "legendre_P3",
-			"legendre_Pl", "legendre_Plm",
-			# Zeta Functions
-			"zeta",
-			# Other special functions
-			"Shi", "Chi", "Si", "Ci",
-			"dawson",
-			"log_1plusx", "log_1plusx_mx",
-			]
-	import_to_global("pygsl.sf", special_functions, True)
-	if have_scipy:
-		print("Loaded %d special functions from pygsl.sf." % len(special_functions))
-	else:
-		import_to_global("pygsl.sf", special_functions_doublets, True)
-		print("Loaded %d special functions from pygsl.sf." % (len(special_functions) + len(special_functions_doublets)))
-except(ImportError): pass
-
-
 # make Qt API available (it gets imported in any case by the qti module)
 global QtGui
 from PyQt4 import QtGui
@@ -260,3 +144,55 @@ try:
 	print "qtiUtil file successfully imported!"
 except(ImportError):
 	print "Failed to import qtiUtil file!"
+
+# Provide easy access to SymPy, for symbolic mathematics
+try:
+	import_to_global("sympy", None, False)
+	print "\nsympy module successfully imported: SymPy is a Python library for symbolic mathematics."
+	print "If you are new to SymPy, start with the documentation: http://docs.sympy.org/\n"
+except(ImportError): pass
+
+# Provide easy access to R, for statistical computing.
+# See http://www.r-project.org/ for information on R and how to get it.
+# See http://rpy.sourceforge.net/rpy2.html for the Python/R bridge
+try:
+  from rpy2.robjects import r as R
+  have_R = True
+  # now create some convenience helper
+  import rpy2.rlike.container
+  import rpy2.robjects
+
+  def tableToRDataFrame(t):
+    "Create a R data frame from this table"
+    # create an empty TaggedList and append values later
+    tl = rpy2.rlike.container.TaggedList([])
+    # cache row indices for later use
+    rowIndices = range(1, t.numRows()+1)
+    for c in  range(1, t.numCols() + 1):
+      values = [t.cell(c, r) for r in rowIndices]
+      tl.append(rpy2.robjects.FloatVector(values), tag=t.colName(c))
+    # build an R dataframe
+    return rpy2.robjects.RDataFrame(tl)
+  # make it also avilable as a table instance method
+  setattr(Table, "toRDataFrame", tableToRDataFrame)
+
+  def newTableFromRDataFrame(df, name = "R result"):
+    "create a new table from a R data frame"
+    t = newTable(name, df.nrow(), df.ncol())
+    col = 0
+    for colname in df.colnames():
+      col += 1
+      t.setColName(col, colname)
+    col = 0
+    for coldata in df:
+      row = 0
+      col += 1
+      for value in coldata:
+        row += 1
+        t.setCell(col, row, value)
+    return t
+  # make it also avilable as a function of qti.app
+  setattr(app, "newTableFromRDataFrame", newTableFromRDataFrame)
+
+  print "R support successfully set up"
+except(ImportError): pass
