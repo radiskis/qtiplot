@@ -835,7 +835,14 @@ void PlotDialog::initSymbolsPage()
 	boxPenWidth->setSingleStep(0.1);
     boxPenWidth->setRange(0.1, 100);
     gl->addWidget(boxPenWidth, 4, 1);
-    gl->setRowStretch (5, 1);
+
+	gl->addWidget(new QLabel(tr( "Skip Points" )), 5, 0);
+    boxSkipSymbols = new QSpinBox();
+    boxSkipSymbols->setMinimum(1);
+    boxSkipSymbols->setWrapping(true);
+    boxSkipSymbols->setSpecialValueText(tr("None"));
+    gl->addWidget(boxSkipSymbols, 5, 1);
+    gl->setRowStretch (6, 1);
 
     symbolPage = new QWidget();
 	QHBoxLayout* hl = new QHBoxLayout(symbolPage);
@@ -847,6 +854,7 @@ void PlotDialog::initSymbolsPage()
 	connect(boxSymbolStyle, SIGNAL(activated(int)), this, SLOT(acceptParams()));
 	connect(boxFillColor, SIGNAL(colorChanged()), this, SLOT(acceptParams()));
 	connect(boxFillSymbol, SIGNAL(clicked()), this, SLOT(fillSymbols()));
+	connect(boxSkipSymbols, SIGNAL(valueChanged(int)), this, SLOT(acceptParams()));
 }
 
 void PlotDialog::initBoxPage()
@@ -2083,6 +2091,8 @@ void PlotDialog::setActiveCurve(CurveTreeItem *item)
     boxFillColor->blockSignals(true);
     boxFillColor->setColor(s.brush().color());
     boxFillColor->blockSignals(false);
+    boxSkipSymbols->setValue(c->skipSymbolsCount());
+    boxSkipSymbols->setMaximum(c->dataSize());
 
     if (c->type() == Graph::Function)
         return;
@@ -2442,6 +2452,9 @@ bool PlotDialog::acceptParams()
 		pen.setCosmetic(true);
 		QwtSymbol s = QwtSymbol(boxSymbolStyle->selectedSymbol(), br, pen, QSize(size, size));
 		((QwtPlotCurve *)plotItem)->setSymbol(s);
+
+		((PlotCurve *)plotItem)->setSkipSymbolsCount(boxSkipSymbols->value());
+
 	} else if (privateTabWidget->currentPage() == histogramPage){
         QwtHistogram *h = (QwtHistogram *)plotItem;
 		if (!h)

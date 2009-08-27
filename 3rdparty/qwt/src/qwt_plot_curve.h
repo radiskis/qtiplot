@@ -253,7 +253,7 @@ protected:
     void drawLines(QPainter *p,
         const QwtScaleMap &xMap, const QwtScaleMap &yMap,
         int from, int to) const;
-    void drawSticks(QPainter *p,
+    virtual void drawSticks(QPainter *p,
         const QwtScaleMap &xMap, const QwtScaleMap &yMap,
         int from, int to) const;
     void drawDots(QPainter *p,

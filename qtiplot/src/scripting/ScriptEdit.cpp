@@ -200,12 +200,12 @@ void ScriptEdit::keyPressEvent(QKeyEvent *e)
      QString completionPrefix = textUnderCursor();
 
      if (!isShortcut && (hasModifier || e->text().isEmpty()|| completionPrefix.length() < 2
-                       || eow.contains(e->text().right(1)))) {
+		 || eow.contains(e->text().right(1)))){
          d_completer->popup()->hide();
          return;
      }
 
-     if (completionPrefix != d_completer->completionPrefix()) {
+     if (completionPrefix != d_completer->completionPrefix()){
          d_completer->setCompletionPrefix(completionPrefix);
          d_completer->popup()->setCurrentIndex(d_completer->completionModel()->index(0, 0));
      }
@@ -547,6 +547,7 @@ void ScriptEdit::updateIndentation()
 	QTextCursor cursor = textCursor();
 	QTextBlock para = cursor.block();
 	QString prev = para.previous().text();
+
 	int i;
 	for (i=0; prev[i].isSpace(); i++);
 	QString indent = prev.mid(0, i);

@@ -11013,6 +11013,10 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot,
 			}
 			lst.pop_back();
 			ag->restoreCurveLabels(curveID - 1, lst);
+		} else if (s.contains("<SkipPoints>")){
+			PlotCurve *c = (PlotCurve *)ag->curve(curveID - 1);
+			if (c)
+				c->setSkipSymbolsCount(s.remove("<SkipPoints>").remove("</SkipPoints>").toInt());
 		} else if (s.contains("<StackWhiteOut>")){
 			QwtBarCurve *b = (QwtBarCurve *)ag->curve(curveID - 1);
 			if (b)
