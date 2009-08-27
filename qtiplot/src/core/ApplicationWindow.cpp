@@ -504,9 +504,9 @@ void ApplicationWindow::initGlobalConstants()
 	d_backup_files = true;
 
 	defaultScriptingLang = "muParser";
-#ifdef SCRIPTING_PYTHON
+/*#ifdef SCRIPTING_PYTHON
 	defaultScriptingLang = "Python";
-#endif
+#endif*/
 
 	d_decimal_digits = 13;
 
@@ -6835,11 +6835,9 @@ void ApplicationWindow::showCurveContextMenu(QwtPlotItem *cv)
 		curveMenu.addAction(actionShowAllCurves);
 	curveMenu.insertSeparator();
 
-    if (g->activeTool()){
-        if (g->activeTool()->rtti() == PlotToolInterface::Rtti_RangeSelector ||
-            g->activeTool()->rtti() == PlotToolInterface::Rtti_DataPicker)
-            curveMenu.addAction(actionCopySelection);
-    }
+    if (g->rangeSelectorsEnabled() || (g->activeTool() &&
+		g->activeTool()->rtti() == PlotToolInterface::Rtti_DataPicker))
+		curveMenu.addAction(actionCopySelection);
 
 	if (spectrogram){
 		curveMenu.insertSeparator();
@@ -6851,18 +6849,16 @@ void ApplicationWindow::showCurveContextMenu(QwtPlotItem *cv)
 			curveMenu.addAction(actionEditFunction);
 			actionEditFunction->setData(curveIndex);
 		} else if (type != Graph::ErrorBars){
-			if (g->activeTool()){
-				if (g->activeTool()->rtti() == PlotToolInterface::Rtti_RangeSelector ||
-					g->activeTool()->rtti() == PlotToolInterface::Rtti_DataPicker){
-					curveMenu.addAction(actionCutSelection);
-					curveMenu.addAction(actionPasteSelection);
-					curveMenu.addAction(actionClearSelection);
-					curveMenu.insertSeparator();
-					if (g->activeTool()->rtti() == PlotToolInterface::Rtti_RangeSelector){
-						QAction *act = new QAction(tr("Set Display Range"), this);
-						connect(act, SIGNAL(activated()), (RangeSelectorTool *)g->activeTool(), SLOT(setCurveRange()));
-						curveMenu.addAction(act);
-					}
+			if (g->rangeSelectorsEnabled() || (g->activeTool() &&
+				g->activeTool()->rtti() == PlotToolInterface::Rtti_DataPicker)){
+				curveMenu.addAction(actionCutSelection);
+				curveMenu.addAction(actionPasteSelection);
+				curveMenu.addAction(actionClearSelection);
+				curveMenu.insertSeparator();
+				if (g->rangeSelectorsEnabled()){
+					QAction *act = new QAction(tr("Set Display Range"), this);
+					connect(act, SIGNAL(activated()), g->rangeSelectorTool(), SLOT(setCurveRange()));
+					curveMenu.addAction(act);
 				}
 			}
 
