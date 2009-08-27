@@ -2091,8 +2091,10 @@ void PlotDialog::setActiveCurve(CurveTreeItem *item)
     boxFillColor->blockSignals(true);
     boxFillColor->setColor(s.brush().color());
     boxFillColor->blockSignals(false);
+    boxSkipSymbols->blockSignals(true);
     boxSkipSymbols->setValue(c->skipSymbolsCount());
     boxSkipSymbols->setMaximum(c->dataSize());
+	boxSkipSymbols->blockSignals(false);
 
     if (c->type() == Graph::Function)
         return;

@@ -4666,6 +4666,7 @@ bool Graph::enableRangeSelectors(const QObject *status_target, const char *statu
 	}
 
 	d_range_selector->setVisible(true);
+	d_range_selector->setEnabled(true);
 	return true;
 }
 
