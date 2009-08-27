@@ -627,3 +627,5 @@ setColTextFormat
 Default
 Decimal
 Scientific
+skipSymbolsCount
+setSkipSymbolsCount

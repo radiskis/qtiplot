@@ -746,11 +746,28 @@ class QwtPlotCurve
 		void setSymbol(const QwtSymbol &s);
 		const QwtSymbol& symbol() const;
 
+		void setVisible(bool on);
+
 	private:
 		QwtPlotCurve(const QwtPlotCurve&);
 };
 
-class DataCurve : QwtPlotCurve
+class PlotCurve : QwtPlotCurve
+{
+%TypeHeaderCode
+#include "src/plot2D/PlotCurve.h"
+%End
+public:
+	PlotCurve(const QString& name = QString());
+
+	int skipSymbolsCount();
+	void setSkipSymbolsCount(int);
+
+private:
+	PlotCurve(const PlotCurve&);
+};
+
+class DataCurve : PlotCurve
 {
 %TypeHeaderCode
 #include "src/plot2D/PlotCurve.h"
@@ -794,7 +811,6 @@ public:
 	void loadData();
 
 	void clearLabels();
-	void setVisible(bool on);
 
 private:
 	DataCurve(const DataCurve&);

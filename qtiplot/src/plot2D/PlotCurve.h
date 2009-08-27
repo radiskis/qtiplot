@@ -65,9 +65,20 @@ public:
 	QString saveCurveLayout();
 	void restoreCurveLayout(const QStringList& lst);
 
+	//! Set the number of symbols not to be drawn: usefull for large data sets
+	void setSkipSymbolsCount(int count);
+	//! Returns the number of symbols not to be drawn
+	int skipSymbolsCount(){return d_skip_symbols;};
+
 protected:
 	virtual void drawCurve(QPainter *p, int style, const QwtScaleMap &xMap, const QwtScaleMap &yMap, int from, int to) const;
 	void drawSideLines(QPainter *p, const QwtScaleMap &xMap, const QwtScaleMap &yMap, int from, int to) const;
+
+    virtual void drawSymbols(QPainter *p, const QwtSymbol &,
+        const QwtScaleMap &xMap, const QwtScaleMap &yMap, int from, int to) const;
+
+	void drawSticks(QPainter *p,
+        const QwtScaleMap &xMap, const QwtScaleMap &yMap, int from, int to) const;
 
 	// Rtti
 	int d_type;
@@ -75,6 +86,7 @@ protected:
 	int d_plot_style;
 	double d_x_offset, d_y_offset;
 	bool d_side_lines;
+	int d_skip_symbols;
 };
 
 class DataCurve: public PlotCurve

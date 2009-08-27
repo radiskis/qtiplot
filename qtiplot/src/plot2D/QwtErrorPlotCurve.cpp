@@ -115,7 +115,11 @@ void QwtErrorPlotCurve::drawErrorBars(QPainter *painter,
 	ScaleEngine *yScaleEngine = (ScaleEngine *)plot()->axisScaleEngine(yAxis());
 	bool logYScale = (yScaleEngine->type() == ScaleTransformation::Log10) ? true : false;
 
-	for (int i = from; i <= to; i++){
+	int skipPoints = d_master_curve->skipSymbolsCount();
+	if (skipPoints == 0)
+		skipPoints = 1;
+
+	for (int i = from; i <= to; i += skipPoints){
 		const int xi = xMap.transform(x(i) + d_xOffset);
 		const int yi = yMap.transform(y(i) + d_yOffset);
 

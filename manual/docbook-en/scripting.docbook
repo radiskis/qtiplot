@@ -1621,6 +1621,13 @@ c.setBrush(QtGui.QBrush(Qt.darkYellow))
 c.setSymbol(PlotSymbol(PlotSymbol.Hexagon, QtGui.QBrush(Qt.yellow), QtGui.QPen(Qt.blue, 1.5), QtCore.QSize(15, 15)))
 </programlisting>
 
+It is possible to change the number of symbols to be displayed for a curve using the function bellow.
+This option can be very usefull for very large data sets:
+<programlisting>
+c.setSkipSymbolsCount(3)
+print c.skipSymbolsCount()
+</programlisting>
+
 An alternative way of customizing a curve is by using the functions bellow:
 <programlisting>
 l.setCurveLineColor(int curve, int color) # uses the index of the colors in the default QtiPlot color list: 0 = black, 1 = red, 2 = green, etc...

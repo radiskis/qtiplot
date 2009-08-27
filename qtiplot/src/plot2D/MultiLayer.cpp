@@ -143,6 +143,7 @@ d_waterfall_fill_color(QColor())
 
 #ifdef Q_OS_MAC
 	layerButtonsBox->setSpacing(12);
+	toolbuttonsBox->setSpacing(12);
 #endif
 	QHBoxLayout *hbox = new QHBoxLayout();
 	hbox->addLayout(layerButtonsBox);

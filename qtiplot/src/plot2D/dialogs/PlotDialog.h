@@ -390,6 +390,8 @@ private:
 	ContourLinesEditor *contourLinesEditor;
 	QPushButton *btnSetEquidistantLevels;
 	QRadioButton *customPenBtn;
+
+	QSpinBox *boxSkipSymbols;
 };
 
 /*****************************************************************************
