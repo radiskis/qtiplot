@@ -6438,7 +6438,7 @@ QString Graph::texSuperscripts(const QString &text)
 	return s;
 }
 
-void Graph::moveCurve(int fromIndex, int toIndex)
+void Graph::changeCurveIndex(int fromIndex, int toIndex)
 {
 	if (d_curves.isEmpty())
 		return;
