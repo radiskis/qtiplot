@@ -782,6 +782,12 @@ void ApplicationWindow::initToolBars()
 	btnRemovePoints->setIcon(QIcon(QPixmap(delete_xpm)));
 	plotTools->addAction(btnRemovePoints);
 
+	actionDragCurve = new QAction(tr("Dra&g Curve"), this);
+	actionDragCurve->setActionGroup(dataTools);
+	actionDragCurve->setCheckable( true );
+	actionDragCurve->setIcon(QIcon(QPixmap(drag_curve_xpm)) );
+	plotTools->addAction(actionDragCurve);
+
 	connect( dataTools, SIGNAL( triggered( QAction* ) ), this, SLOT( pickDataTool( QAction* ) ) );
 	plotTools->addSeparator ();
 
@@ -1284,6 +1290,7 @@ void ApplicationWindow::plotDataMenuAboutToShow()
 	plotDataMenu->addAction(actionDrawPoints);
 	plotDataMenu->addAction(btnMovePoints);
 	plotDataMenu->addAction(btnRemovePoints);
+	plotDataMenu->addAction(actionDragCurve);
 
     reloadCustomActions();
 }
@@ -7108,7 +7115,7 @@ void ApplicationWindow::removePoints()
 	}
 }
 
-void ApplicationWindow::movePoints()
+void ApplicationWindow::movePoints(bool wholeCurve)
 {
 	MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
 	if (!plot)
@@ -7140,7 +7147,10 @@ void ApplicationWindow::movePoints()
 		{
 			case 0:
 				if (g){
-					g->setActiveTool(new DataPickerTool(g, this, DataPickerTool::Move, info, SLOT(setText(const QString&))));
+					DataPickerTool *tool = new DataPickerTool(g, this, DataPickerTool::Move, info, SLOT(setText(const QString&)));
+					if (wholeCurve)
+						tool->setMode(DataPickerTool::MoveCurve);
+					g->setActiveTool(tool);
 					displayBar->show();
 				}
 				break;
@@ -11741,6 +11751,8 @@ void ApplicationWindow::pickDataTool( QAction* action )
 		showScreenReader();
 	else if (action == btnMovePoints)
 		movePoints();
+	else if (action == actionDragCurve)
+		movePoints(true);
 	else if (action == btnRemovePoints)
 		removePoints();
 	else if (action == actionDrawPoints)
@@ -11784,6 +11796,9 @@ void ApplicationWindow::custom2DPlotTools(MultiLayer *plot)
 					break;
 					case DataPickerTool::Remove:
 						btnRemovePoints->setChecked(true);
+					break;
+					case DataPickerTool::MoveCurve:
+						actionDragCurve->setChecked(true);
 					break;
 				}
 				return;
@@ -13291,6 +13306,9 @@ void ApplicationWindow::translateActionsStrings()
 	btnMovePoints->setMenuText(tr("&Move Data Points..."));
 	btnMovePoints->setShortcut(tr("Ctrl+ALT+M"));
 	btnMovePoints->setToolTip(tr("Move data points"));
+
+	actionDragCurve->setMenuText(tr("Dra&g Curve"));
+	actionDragCurve->setToolTip(tr("Drag Curve"));
 
 	btnRemovePoints->setMenuText(tr("Remove &Bad Data Points..."));
 	btnRemovePoints->setShortcut(tr("Alt+B"));

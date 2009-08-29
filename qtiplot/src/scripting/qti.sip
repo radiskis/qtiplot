@@ -1045,6 +1045,8 @@ public:
   QwtPlotCurve* curve(int index);
   QwtPlotCurve* curve(const QString &title);
 
+  void changeCurveIndex(int fromIndex, int toIndex);
+
   void setCurveLineColor(int, int);
   void setCurveLineStyle(int, Qt::PenStyle);
   void setCurveLineWidth(int, double);

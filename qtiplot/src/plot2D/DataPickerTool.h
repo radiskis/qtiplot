@@ -44,7 +44,7 @@ class DataPickerTool : public QwtPlotPicker, public PlotToolInterface
 {
 	Q_OBJECT
 	public:
-		enum Mode { Display, Move, Remove };
+		enum Mode { Display, Move, Remove, MoveCurve };
 		enum MoveMode {Free, Vertical, Horizontal};
 		DataPickerTool(Graph *graph, ApplicationWindow *app, Mode mode, const QObject *status_target=NULL, const char *status_slot="");
 		virtual ~DataPickerTool();
@@ -59,6 +59,7 @@ class DataPickerTool : public QwtPlotPicker, public PlotToolInterface
 
         //! Returns the information about the functioning mode of the tool
         Mode mode(){return d_mode;};
+        void setMode(Mode m){d_mode = m;};
 
         //! Searches the index of the closest point to the given x coordinate
         int findClosestPoint(QwtPlotCurve *c, double x, bool up);

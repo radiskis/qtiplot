@@ -629,3 +629,4 @@ Decimal
 Scientific
 skipSymbolsCount
 setSkipSymbolsCount
+changeCurveIndex

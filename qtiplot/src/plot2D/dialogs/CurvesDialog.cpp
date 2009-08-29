@@ -675,7 +675,7 @@ void CurvesDialog::shiftCurveBy(int offset)
 		return;
 
 	int row = contents->currentRow();
-	d_graph->moveCurve(row, row + offset);
+	d_graph->changeCurveIndex(row, row + offset);
 
 	contents->clear();
 	contents->addItems(d_graph->plotItemsList());

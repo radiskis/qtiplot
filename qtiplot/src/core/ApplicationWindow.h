@@ -648,7 +648,7 @@ public slots:
 	void addErrorBars();
 	void defineErrorBars(const QString& name,int type,const QString& percent,int direction);
 	void defineErrorBars(const QString& curveName,const QString& errColumnName, int direction);
-	void movePoints();
+	void movePoints(bool wholeCurve = false);
 	void removePoints();
 
 	//! \name Event Handlers
@@ -1349,7 +1349,7 @@ private:
 	QAction *actionShowScriptWindow, *actionFrequencyCount;
 	QAction *actionAnimate, *actionPerspective, *actionFitFrame, *actionResetRotation;
     QAction *actionDeleteRows, *actionDrawPoints, *actionAddZoomPlot;
-	QAction *btnCursor, *btnSelect, *btnPicker, *btnRemovePoints, *btnMovePoints;
+	QAction *btnCursor, *btnSelect, *btnPicker, *btnRemovePoints, *btnMovePoints, *actionDragCurve;
 	QAction *btnZoomIn, *btnZoomOut, *btnPointer, *btnLine, *btnArrow;
 	QAction *actionFlipMatrixVertically, *actionFlipMatrixHorizontally, *actionRotateMatrix;
 	QAction *actionViewMatrixImage, *actionViewMatrix, *actionExportMatrix, *actionMatrixDefaultScale;
