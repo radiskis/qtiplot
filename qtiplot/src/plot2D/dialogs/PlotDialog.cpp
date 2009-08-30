@@ -781,7 +781,19 @@ void PlotDialog::initLinePage()
 	gl1->addWidget(new QLabel(tr( "Color" )), 3, 0);
 	boxLineColor = new ColorButton();
 	gl1->addWidget(boxLineColor, 3, 1);
-    gl1->setRowStretch (4, 1);
+
+	QLabel *l = new QLabel(tr("Apply Format &to"));
+	gl1->addWidget(l, 4, 0);
+
+	lineFormatApplyToBox = new QComboBox();
+	lineFormatApplyToBox->insertItem(tr("Selected Curve"));
+	lineFormatApplyToBox->insertItem(tr("Layer"));
+    lineFormatApplyToBox->insertItem(tr("Window"));
+    lineFormatApplyToBox->insertItem(tr("All Windows"));
+	gl1->addWidget(lineFormatApplyToBox, 4, 1);
+	l->setBuddy(lineFormatApplyToBox);
+
+    gl1->setRowStretch (5, 1);
 
 	fillGroupBox = new QGroupBox(tr( "Fill area under curve" ));
 	fillGroupBox->setCheckable(true);
@@ -842,7 +854,19 @@ void PlotDialog::initSymbolsPage()
     boxSkipSymbols->setWrapping(true);
     boxSkipSymbols->setSpecialValueText(tr("None"));
     gl->addWidget(boxSkipSymbols, 5, 1);
-    gl->setRowStretch (6, 1);
+
+    QLabel *l = new QLabel(tr("Apply Format &to"));
+	gl->addWidget(l, 6, 0);
+
+	symbolsFormatApplyToBox = new QComboBox();
+	symbolsFormatApplyToBox->insertItem(tr("Selected Curve"));
+	symbolsFormatApplyToBox->insertItem(tr("Layer"));
+    symbolsFormatApplyToBox->insertItem(tr("Window"));
+    symbolsFormatApplyToBox->insertItem(tr("All Windows"));
+	gl->addWidget(symbolsFormatApplyToBox, 6, 1);
+	l->setBuddy(symbolsFormatApplyToBox);
+
+    gl->setRowStretch (7, 1);
 
     symbolPage = new QWidget();
 	QHBoxLayout* hl = new QHBoxLayout(symbolPage);
@@ -2445,19 +2469,11 @@ bool PlotDialog::acceptParams()
 		QwtPlotCurve *curve = (QwtPlotCurve *)plotItem;
 		curve->setPen(pen);
 		curve->setBrush(br);
-	} else if (privateTabWidget->currentPage() == symbolPage){
-		int size = 2*boxSymbolSize->value() + 1;
-		QBrush br = QBrush(boxFillColor->color(), Qt::SolidPattern);
-		if (!boxFillSymbol->isChecked())
-			br = QBrush();
-		QPen pen = QPen(boxSymbolColor->color(), boxPenWidth->value(), Qt::SolidLine, Qt::FlatCap, Qt::MiterJoin);
-		pen.setCosmetic(true);
-		QwtSymbol s = QwtSymbol(boxSymbolStyle->selectedSymbol(), br, pen, QSize(size, size));
-		((QwtPlotCurve *)plotItem)->setSymbol(s);
 
-		((PlotCurve *)plotItem)->setSkipSymbolsCount(boxSkipSymbols->value());
-
-	} else if (privateTabWidget->currentPage() == histogramPage){
+		applyLineFormat((QwtPlotCurve *)plotItem);
+	} else if (privateTabWidget->currentPage() == symbolPage)
+		applySymbolsFormat((QwtPlotCurve *)plotItem);
+	else if (privateTabWidget->currentPage() == histogramPage){
         QwtHistogram *h = (QwtHistogram *)plotItem;
 		if (!h)
 			return false;
@@ -3076,6 +3092,155 @@ void PlotDialog::setEquidistantLevels()
 	contourLinesEditor->updateContents();
 }
 
+void PlotDialog::applyLineFormatToLayer(Graph *g)
+{
+	if (!g)
+		return;
+
+	QList<QwtPlotItem *> lst = g->curvesList();
+	int i = -1;
+	foreach (QwtPlotItem *it, lst){
+		i++;
+		if (it->rtti() == QwtPlotItem::Rtti_PlotSpectrogram)
+			continue;
+
+		QwtPlotCurve *c = (QwtPlotCurve *)it;
+
+		QPen pen = QPen(c->pen().color(), boxLineWidth->value(),
+					boxLineStyle->style(), Qt::FlatCap, Qt::MiterJoin);
+		pen.setCosmetic(true);
+		c->setPen(pen);
+
+		g->setCurveStyle(i, boxConnect->currentIndex());
+	}
+	g->replot();
+}
+
+void PlotDialog::applyLineFormat(QwtPlotCurve *c)
+{
+    if (!c || privateTabWidget->currentPage() != linePage)
+		return;
+
+	Graph *layer = (Graph *)c->plot();
+    ApplicationWindow *app = (ApplicationWindow *)this->parent();
+	switch(lineFormatApplyToBox->currentIndex()){
+		case 0://selected curve
+		break;
+		case 1://this layer
+			applyLineFormatToLayer(layer);
+		break;
+		case 2://this window
+		{
+			QList<Graph *> layersLst = layer->multiLayer()->layersList();
+			foreach(Graph *g, layersLst)
+				applyLineFormatToLayer(g);
+		}
+		break;
+		case 3://all windows
+		{
+			QList<MdiSubWindow *> windows = app->windowsList();
+			foreach(MdiSubWindow *w, windows){
+				MultiLayer *ml = qobject_cast<MultiLayer *>(w);
+				if (!ml)
+					continue;
+
+				QList<Graph *> layersLst = ml->layersList();
+				foreach(Graph *g, layersLst)
+					applyLineFormatToLayer(g);
+			}
+		}
+		break;
+		default:
+			break;
+	}
+	app->modifiedProject();
+}
+
+void PlotDialog::applySymbolsFormatToCurve(QwtPlotCurve *c, bool fillColor, bool penColor)
+{
+	if (!c)
+		return;
+
+	QwtSymbol symbol = c->symbol();
+	if (symbol.style() == QwtSymbol::NoSymbol)
+		return;
+
+	int size = 2*boxSymbolSize->value() + 1;
+
+	QBrush br = symbol.brush();
+	if (fillColor)
+		br = QBrush(boxFillColor->color(), Qt::SolidPattern);
+	if (!boxFillSymbol->isChecked())
+		br = QBrush();
+
+	QPen pen = QPen(symbol.pen().color(), boxPenWidth->value(), Qt::SolidLine, Qt::FlatCap, Qt::MiterJoin);
+	if (penColor)
+		pen.setColor(boxSymbolColor->color());
+	pen.setCosmetic(true);
+
+	QwtSymbol s = QwtSymbol(boxSymbolStyle->selectedSymbol(), br, pen, QSize(size, size));
+	c->setSymbol(s);
+
+	((PlotCurve *)c)->setSkipSymbolsCount(boxSkipSymbols->value());
+}
+
+void PlotDialog::applySymbolsFormatToLayer(Graph *g)
+{
+	if (!g)
+		return;
+
+	QList<QwtPlotItem *> lst = g->curvesList();
+	foreach (QwtPlotItem *it, lst){
+		if (it->rtti() == QwtPlotItem::Rtti_PlotSpectrogram)
+			continue;
+
+		QwtPlotCurve *c = (QwtPlotCurve *)it;
+		if (c->symbol().style() != QwtSymbol::NoSymbol)
+			applySymbolsFormatToCurve(c, false, false);
+	}
+	g->replot();
+}
+
+void PlotDialog::applySymbolsFormat(QwtPlotCurve *c)
+{
+    if (!c || privateTabWidget->currentPage() != symbolPage)
+		return;
+
+	Graph *layer = (Graph *)c->plot();
+    ApplicationWindow *app = (ApplicationWindow *)this->parent();
+	switch(symbolsFormatApplyToBox->currentIndex()){
+		case 0://selected curve
+			applySymbolsFormatToCurve(c);
+		break;
+		case 1://this layer
+			applySymbolsFormatToLayer(layer);
+		break;
+		case 2://this window
+		{
+			QList<Graph *> layersLst = layer->multiLayer()->layersList();
+			foreach(Graph *g, layersLst)
+				applySymbolsFormatToLayer(g);
+		}
+		break;
+		case 3://all windows
+		{
+			QList<MdiSubWindow *> windows = app->windowsList();
+			foreach(MdiSubWindow *w, windows){
+				MultiLayer *ml = qobject_cast<MultiLayer *>(w);
+				if (!ml)
+					continue;
+
+				QList<Graph *> layersLst = ml->layersList();
+				foreach(Graph *g, layersLst)
+					applySymbolsFormatToLayer(g);
+			}
+		}
+		break;
+		default:
+			break;
+	}
+	app->modifiedProject();
+}
 /*****************************************************************************
  *
  * Class LayerItem

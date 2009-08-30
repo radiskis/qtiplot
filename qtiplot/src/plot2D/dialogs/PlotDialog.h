@@ -256,6 +256,13 @@ protected slots:
 
 private:
 	void applyFormatToLayer(Graph *g);
+	void applySymbolsFormatToCurve(QwtPlotCurve *c, bool fillColor = true, bool penColor = true);
+	void applySymbolsFormatToLayer(Graph *g);
+	void applySymbolsFormat(QwtPlotCurve *c);
+
+	void applyLineFormatToLayer(Graph *g);
+	void applyLineFormat(QwtPlotCurve *c);
+
     int labelsAlignment();
 	void closeEvent(QCloseEvent* e);
 
@@ -392,6 +399,7 @@ private:
 	QRadioButton *customPenBtn;
 
 	QSpinBox *boxSkipSymbols;
+	QComboBox *symbolsFormatApplyToBox, *lineFormatApplyToBox;
 };
 
 /*****************************************************************************
