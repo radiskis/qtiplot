@@ -70,6 +70,7 @@ public:
 	void setDefaultColorMap();
 
 	QwtLinearColorMap colorMap(){return color_map;};
+	QwtLinearColorMap *colorMapPointer(){return &color_map;};
 	void setCustomColorMap(const QwtLinearColorMap& map);
 
 	//! Used when saving a project file

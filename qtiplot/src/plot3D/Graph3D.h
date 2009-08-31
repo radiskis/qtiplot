@@ -275,6 +275,7 @@ public slots:
 
 	QString colorMapFile(){return d_color_map_file;};
 	QwtLinearColorMap colorMap(){return d_color_map;};
+	QwtLinearColorMap *colorMapPointer(){return &d_color_map;};
 
 	static bool openColorMapFile(ColorVector& cv, QString fname);
 

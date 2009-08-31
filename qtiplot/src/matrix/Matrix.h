@@ -140,6 +140,7 @@ public:
 	void setColorMapType(ColorMapType mapType);
 
 	QwtLinearColorMap colorMap(){return d_color_map;};
+	QwtLinearColorMap *colorMapPointer(){return &d_color_map;};
 	void setColorMap(const QwtLinearColorMap& map);
 	//! Used when restoring from project files
 	void setColorMap(const QStringList& lst);
