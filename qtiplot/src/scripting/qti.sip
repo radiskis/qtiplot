@@ -522,7 +522,7 @@ public:
 	void setDefaultColorMap();
 	void setGrayScale();
 	void setRainbowColorMap();
-	QwtLinearColorMap colorMap();
+	QwtLinearColorMap *colorMapPointer()/PyName=colorMap/;
 	void setColorMap(const QwtLinearColorMap&);
 
 	void resetView();
@@ -904,7 +904,7 @@ public:
 	void setGrayScale();
 	void setDefaultColorMap();
 
-	QwtLinearColorMap colorMap();
+	QwtLinearColorMap *colorMapPointer()/PyName=colorMap/;
 	void setCustomColorMap(const QwtLinearColorMap& map);
 
 	bool hasLabels();
@@ -1206,6 +1206,7 @@ public:
   int numLayers();
   void setNumLayers(int n);
   Graph* layer(int num);
+  QList<Graph *> layersList();
   Graph* addLayer(int = 0, int = 0, int = 0, int = 0);
 
   bool removeLayer(Graph *g);
@@ -1295,7 +1296,7 @@ public:
     void setDataColors(const QColor&, const QColor&);
 	QString colorMapFile();
     void setDataColorMap(const QString& fileName);
-	QwtLinearColorMap colorMap();
+	QwtLinearColorMap *colorMapPointer()/PyName=colorMap/;
 	void setDataColorMap(const QwtLinearColorMap&);
 
     void changeTransparency(double) /PyName=setOpacity/;

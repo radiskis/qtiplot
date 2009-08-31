@@ -242,6 +242,7 @@ setActiveLayer
 numLayers
 setNumLayers
 layer
+layersList
 Layer
 addLayer
 removeLayer

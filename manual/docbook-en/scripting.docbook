@@ -1226,8 +1226,10 @@ m.setColorMap(map)
 You have direct access to the color map used for a matrix via the following functions:
 <programlisting>
 map = m.colorMap()
-from = map.color1()
-to = map.color2()
+col1 = map.color1()
+print col1.green()
+col2 = map.color2()
+print col2.blue()
 </programlisting>
 
 Accessing cell values is very similar to Table,
