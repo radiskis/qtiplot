@@ -70,7 +70,9 @@ MatrixDialog::MatrixDialog( QWidget* parent, Qt::WFlags fl )
 	boxPrecision->setRange(0, 13);
 	boxPrecision->setEnabled( false );
 	topLayout->addWidget( boxPrecision, 2, 2 );
+	topLayout->setColStretch(3, 1);
 
+	bottomLayout->addStretch();
 	buttonApply = new QPushButton(tr( "&Apply" ));
 	buttonApply->setAutoDefault( true );
 	bottomLayout->addWidget( buttonApply );
@@ -83,9 +85,11 @@ MatrixDialog::MatrixDialog( QWidget* parent, Qt::WFlags fl )
 	buttonCancel = new QPushButton(tr( "&Cancel" ));
 	buttonCancel->setAutoDefault( true );
 	bottomLayout->addWidget( buttonCancel );
+	bottomLayout->addStretch();
 
 	QVBoxLayout * mainLayout = new QVBoxLayout(this);
 	mainLayout->addLayout(topLayout);
+	mainLayout->addStretch();
 	mainLayout->addLayout(bottomLayout);
 
 	// signals and slots connections

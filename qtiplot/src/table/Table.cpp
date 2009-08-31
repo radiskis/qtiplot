@@ -947,10 +947,9 @@ QStringList Table::selectedColumns()
 QStringList Table::YColumns()
 {
 	QStringList names;
-	for (int i=0;i<d_table->numCols();i++)
-	{
+	for (int i = 0; i < d_table->numCols(); i++){
 		if(col_plot_type[i] == Y)
-			names<<QString(name())+"_"+col_label[i];
+			names << QString(name()) + "_" + col_label[i];
 	}
 	return names;
 }
@@ -958,10 +957,9 @@ QStringList Table::YColumns()
 QStringList Table::selectedYColumns()
 {
 	QStringList names;
-	for (int i=0;i<d_table->numCols();i++)
-	{
-	if(d_table->isColumnSelected (i) && col_plot_type[i] == Y)
-  		names<<QString(name())+"_"+col_label[i];
+	for (int i = 0; i < d_table->numCols(); i++){
+		if(d_table->isColumnSelected (i) && col_plot_type[i] == Y)
+			names << QString(objectName()) + "_" + col_label[i];
   	}
   	return names;
 }
@@ -969,26 +967,23 @@ QStringList Table::selectedYColumns()
 QStringList Table::selectedErrColumns()
 {
   	QStringList names;
-  	for (int i=0;i<d_table->numCols();i++)
-  		{
-  	    if(d_table->isColumnSelected (i,true) &&
+  	for (int i=0;i<d_table->numCols();i++){
+  	    if(d_table->isColumnSelected (i, true) &&
   	       (col_plot_type[i] == yErr || col_plot_type[i] == xErr))
   	       	names<<QString(objectName())+"_"+col_label[i];
-  	    }
+	}
   	return names;
 }
 
 QStringList Table::drawableColumnSelection()
 {
   	QStringList names;
-  	for (int i=0; i<d_table->numCols(); i++)
-  	{
+  	for (int i=0; i<d_table->numCols(); i++){
 	if(d_table->isColumnSelected (i) && col_plot_type[i] == Y)
 		names << QString(objectName()) + "_" + col_label[i];
     }
 
-  	for (int i=0; i<d_table->numCols(); i++)
-  	{
+  	for (int i=0; i<d_table->numCols(); i++){
   	 	if(d_table->isColumnSelected (i) &&
 			(col_plot_type[i] == yErr || col_plot_type[i] == xErr || col_plot_type[i] == Label))
   	    	names << QString(objectName()) + "_" + col_label[i];
@@ -999,8 +994,7 @@ QStringList Table::drawableColumnSelection()
 QStringList Table::selectedYLabels()
 {
 	QStringList names;
-	for (int i=0;i<d_table->numCols();i++)
-	{
+	for (int i=0;i<d_table->numCols();i++){
 		if(d_table->isColumnSelected (i) && col_plot_type[i] == Y)
 			names<<col_label[i];
 	}
@@ -1049,17 +1043,54 @@ int Table::selectedColsNumber()
 
 QVarLengthArray<double> Table::col(int c)
 {
+	if (c < 0 || c >= d_table->numCols())
+		return QVarLengthArray<double>();
+
 	int rows = d_table->numRows();
 	QVarLengthArray<double> Y(rows);
-	if (c >= 0 && c <= d_table->numCols()){
-        char format;
-        int prec;
-        columnNumericFormat(c, &format, &prec);
-        QLocale l = locale();
-		for (int i=0; i<rows; i++)
-			Y[i] = l.toDouble(d_table->text(i, c));
-	}
+	QLocale l = locale();
+	for (int i = 0; i<rows; i++)
+		Y[i] = l.toDouble(d_table->text(i, c));
 	return Y;
+}
+
+void Table::columnRange(int c, double *min, double *max)
+{
+	if (c < 0 || c >= d_table->numCols())
+		return;
+
+	double d_min = 0.0;
+	double d_max = 0.0;
+
+	Q3TableSelection selection = getSelection();
+
+	QLocale l = locale();
+	int startRow = selection.topRow();
+	for (int i = selection.topRow(); i <= selection.bottomRow(); i++){
+		QString s = d_table->text(i, c);
+		if (!s.isEmpty()){
+			d_min = l.toDouble(s);
+			d_max = d_min;
+			startRow = i;
+			break;
+		}
+	}
+
+	for (int i = startRow; i <= selection.bottomRow(); i++){
+		QString s = d_table->text(i, c);
+		if (!s.isEmpty()){
+			double aux = l.toDouble(s);
+
+			if (aux <= d_min)
+				d_min = aux;
+
+			if (aux >= d_max)
+				d_max = aux;
+		}
+	}
+
+	*min = d_min;
+	*max = d_max;
 }
 
 void Table::insertCols(int start, int count)

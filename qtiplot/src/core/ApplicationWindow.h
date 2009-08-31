@@ -188,6 +188,7 @@ public:
 		const QString & dir = QString(), const QString & filter = QString(),
 		QString * selectedFilter = 0, bool save = true);
 
+	static void memoryAllocationError();
 	QColor readColorFromProject(const QString& name);
 
 	void enableMdiArea(bool on = true);
@@ -354,6 +355,7 @@ public slots:
 	Matrix* matrix(const QString& name);
 	Matrix* convertTableToMatrix();
 	Matrix* tableToMatrix(Table* t);
+	void showBinMatrixDialog();
 	void initMatrix(Matrix* m, const QString& caption);
 	void transposeMatrix();
 	void invertMatrix();
@@ -1321,7 +1323,7 @@ private:
     QAction *actionShowColumnOptionsDialog, *actionShowColumnValuesDialog, *actionShowColsDialog, *actionShowRowsDialog;
     QAction *actionTableRecalculate, *actionExtractGraphs, *actionExtractLayers;
     QAction *actionAbout, *actionShowHelp, *actionChooseHelpFolder;
-    QAction *actionRename, *actionCloseWindow, *actionConvertTable;
+    QAction *actionRename, *actionCloseWindow, *actionConvertTableDirect, *actionConvertTableBinning;
     QAction *actionAddColToTable, *actionDeleteLayer, *actionInterpolate;
     QAction *actionResizeActiveWindow, *actionHideActiveWindow;
     QAction *actionShowMoreWindows, *actionPixelLineProfile, *actionIntensityTable;
