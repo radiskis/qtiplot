@@ -121,6 +121,7 @@
 #include <Note.h>
 #include <ScriptingLangDialog.h>
 #include <ScriptWindow.h>
+#include <CreateBinMatrixDialog.h>
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -1268,7 +1269,10 @@ void ApplicationWindow::tableMenuAboutToShow()
 	tableMenu->addAction(actionGoToRow);
 	tableMenu->addAction(actionGoToColumn);
 	tableMenu->insertSeparator();
-	tableMenu->addAction(actionConvertTable);
+
+	QMenu *convertToMatrixMenu = tableMenu->addMenu(tr("Convert to &Matrix"));
+	convertToMatrixMenu->addAction(actionConvertTableDirect);
+	convertToMatrixMenu->addAction(actionConvertTableBinning);
 
     reloadCustomActions();
 }
@@ -1973,15 +1977,18 @@ void ApplicationWindow::updateMatrixPlots(Matrix *m)
 				foreach (QwtPlotItem *it, curvesList){
 					if (it->rtti() == QwtPlotItem::Rtti_PlotSpectrogram){
                         Spectrogram *sp = (Spectrogram *)it;
-                        if (sp->matrix() == m)
+                        if (sp->matrix() == m){
                             sp->updateData();
+                            g->updatePlot();
+                        }
 				    } else if (((PlotCurve *)it)->type() == Graph::Histogram){
 						QwtHistogram *h = (QwtHistogram *)it;
-                        if (h->matrix() == m)
+                        if (h->matrix() == m){
                             h->loadData();
+                            g->updatePlot();
+                        }
 					}
 				}
-                g->updatePlot();
 			}
 		}
 	}
@@ -3173,6 +3180,23 @@ void ApplicationWindow::initMatrix(Matrix* m, const QString& caption)
 	emit modified();
 }
 
+void ApplicationWindow::showBinMatrixDialog()
+{
+	Table* t = (Table*)activeWindow(TableWindow);
+	if (!t)
+		return;
+
+	Q3TableSelection sel = t->getSelection();
+	if (t->selectedYColumns().size() != 1 || fabs(sel.topRow() - sel.bottomRow()) < 2){
+        QMessageBox::warning(this, tr("QtiPlot - Column selection error"),
+			tr("You must select a single Y column that has an associated X column!"));
+		return;
+	}
+
+	CreateBinMatrixDialog *cbmd = new CreateBinMatrixDialog(t, sel.topRow(), sel.bottomRow(), this);
+	cbmd->exec();
+}
+
 Matrix* ApplicationWindow::convertTableToMatrix()
 {
 	Table* t = (Table*)activeWindow(TableWindow);
@@ -3201,9 +3225,6 @@ Matrix* ApplicationWindow::tableToMatrix(Table* t)
 			m->setCell(i, j, t->cell(i, j));
 	}
 
-	m->setWindowLabel(m->windowLabel());
-	m->setCaptionPolicy(m->captionPolicy());
-	m->resize(m->size());
 	m->showNormal();
 
 	QApplication::restoreOverrideCursor();
@@ -12558,8 +12579,11 @@ void ApplicationWindow::createActions()
 	actionMatrixFFTInverse = new QAction(tr("&Inverse FFT"), this);
 	connect(actionMatrixFFTInverse, SIGNAL(activated()), this, SLOT(matrixInverseFFT()));
 
-	actionConvertTable= new QAction(tr("Convert to &Matrix"), this);
-	connect(actionConvertTable, SIGNAL(activated()), this, SLOT(convertTableToMatrix()));
+	actionConvertTableDirect= new QAction(tr("&Direct"), this);
+	connect(actionConvertTableDirect, SIGNAL(activated()), this, SLOT(convertTableToMatrix()));
+
+	actionConvertTableBinning = new QAction(tr("2D &Binning"), this);
+	connect(actionConvertTableBinning, SIGNAL(activated()), this, SLOT(showBinMatrixDialog()));
 
 	actionPlot3DWireFrame = new QAction(QIcon(QPixmap(lineMesh_xpm)), tr("3D &Wire Frame"), this);
 	connect(actionPlot3DWireFrame, SIGNAL(activated()), this, SLOT(plot3DWireframe()));
@@ -13211,7 +13235,9 @@ void ApplicationWindow::translateActionsStrings()
 	actionConvertMatrixYXZ->setMenuText(tr("&YXZ Columns"));
 	actionExportMatrix->setMenuText(tr("&Export Image ..."));
 
-	actionConvertTable->setMenuText(tr("Convert to &Matrix"));
+	actionConvertTableDirect->setMenuText(tr("&Direct"));
+	actionConvertTableBinning->setMenuText(tr("2D &Binning"));
+
 	actionPlot3DWireFrame->setMenuText(tr("3D &Wire Frame"));
 	actionPlot3DHiddenLine->setMenuText(tr("3D &Hidden Line"));
 	actionPlot3DPolygons->setMenuText(tr("3D &Polygons"));
@@ -16720,3 +16746,8 @@ void ApplicationWindow::enableMdiArea(bool on)
 	}
 }
 
+void ApplicationWindow::memoryAllocationError()
+{
+	QMessageBox::critical(0, tr("QtiPlot") + " - " + tr("Memory Allocation Error"),
+		tr("Not enough memory, operation aborted!"));
+}

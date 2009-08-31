@@ -196,6 +196,8 @@ public slots:
 	//@}
 
 	QVarLengthArray<double> col(int ycol);
+	void columnRange(int c, double *min, double *max);
+
 	int firstXCol();
 	bool noXColumn();
 	bool noYColumn();
