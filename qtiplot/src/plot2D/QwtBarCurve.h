@@ -52,7 +52,7 @@ public:
 	int offset() const {return bar_offset;};
 
 	double dataOffset();
-	void setWhiteOut(bool on = true){d_white_out = true;};
+	void setWhiteOut(bool on = true){d_white_out = on;};
 
 	virtual QString saveToString();
 

@@ -92,6 +92,8 @@ private:
 	void drawErrorBars(QPainter *painter, const QwtScaleMap &xMap,
 		const QwtScaleMap &yMap, int from, int to) const;
 
+	void init();
+
     //! Stores the error bar values
     QwtArray<double> err;
 

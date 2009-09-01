@@ -1270,20 +1270,51 @@ void PlotDialog::initErrorsPage()
 
 	throughBox = new QCheckBox(tr( "Through Symbol" ));
     gl->addWidget(throughBox, 3, 0);
-    gl->setRowStretch (4, 1);
+	gl->setRowStretch (4, 1);
+
+
+	QGroupBox *gb3 = new QGroupBox();
+	QGridLayout *gl3 = new QGridLayout(gb3);
+
+	gl3->addWidget(new QLabel(tr( "Skip Points" )), 0, 0);
+	boxSkipErrorBars = new QSpinBox;
+	boxSkipErrorBars->setMinimum(1);
+	boxSkipErrorBars->setWrapping(true);
+	boxSkipErrorBars->setSpecialValueText(tr("None"));
+	gl3->addWidget(boxSkipErrorBars, 0, 1);
+
+	errorBarsFormatApplyToBox = new QComboBox;
+
+	QLabel *l = new QLabel(tr("Apply Format &to"));
+	gl3->addWidget(l, 2, 0);
+
+	errorBarsFormatApplyToBox->insertItem(tr("Selected Curve"));
+	errorBarsFormatApplyToBox->insertItem(tr("Layer"));
+	errorBarsFormatApplyToBox->insertItem(tr("Window"));
+	errorBarsFormatApplyToBox->insertItem(tr("All Windows"));
+	gl3->addWidget(errorBarsFormatApplyToBox, 2, 1);
+	l->setBuddy(errorBarsFormatApplyToBox);
+
 
     errorsPage = new QWidget();
-	QHBoxLayout* hl = new QHBoxLayout(errorsPage);
+	QHBoxLayout* hl = new QHBoxLayout();
 	hl->addWidget(gb1);
 	hl->addWidget(gb2);
+
+	QVBoxLayout* vl0 = new QVBoxLayout(errorsPage);
+	vl0->addLayout(hl);
+	vl0->addWidget(gb3);
+
     privateTabWidget->insertTab( errorsPage, tr( "Error Bars" ) );
 
+	connect(boxSkipErrorBars, SIGNAL(valueChanged(int)), this, SLOT(acceptParams()));
+	connect(capBox, SIGNAL(activated(int)), this, SLOT(acceptParams()));
 	connect(widthBox, SIGNAL(valueChanged(double)), this, SLOT(acceptParams()));
 	connect(colorBox, SIGNAL(colorChanged()), this, SLOT(pickErrorBarsColor()));
-	connect(xBox, SIGNAL(clicked()), this, SLOT(changeErrorBarsType()));
-	connect(plusBox, SIGNAL(clicked()), this, SLOT(changeErrorBarsPlus()));
-	connect(minusBox, SIGNAL(clicked()), this, SLOT(changeErrorBarsMinus()));
-	connect(throughBox, SIGNAL(clicked()), this, SLOT(changeErrorBarsThrough()));
+	connect(xBox, SIGNAL(clicked()), this, SLOT(acceptParams()));
+	connect(plusBox, SIGNAL(clicked()), this, SLOT(acceptParams()));
+	connect(minusBox, SIGNAL(clicked()), this, SLOT(acceptParams()));
+	connect(throughBox, SIGNAL(clicked()), this, SLOT(acceptParams()));
 }
 
 void PlotDialog::initHistogramPage()
@@ -1570,74 +1601,6 @@ void PlotDialog::removeSelectedCurve()
 			setActiveLayer(layerItem);
 		}
     }
-}
-
-void PlotDialog::changeErrorBarsPlus()
-{
-    CurveTreeItem *item = (CurveTreeItem *)listBox->currentItem();
-    if (!item)
-        return;
-    if (item->type() != CurveTreeItem::PlotCurveTreeItem)
-        return;
-
-    Graph *graph = item->graph();
-    if (!graph)
-        return;
-
-	graph->updateErrorBars((QwtErrorPlotCurve *)item->plotItem(), xBox->isChecked(),widthBox->value(),
-			capBox->currentText().toInt(),colorBox->color(), plusBox->isChecked(),minusBox->isChecked(),
-			throughBox->isChecked());
-}
-
-void PlotDialog::changeErrorBarsMinus()
-{
-	CurveTreeItem *item = (CurveTreeItem *)listBox->currentItem();
-    if (!item)
-        return;
-    if (item->type() != CurveTreeItem::PlotCurveTreeItem)
-        return;
-
-    Graph *graph = item->graph();
-    if (!graph)
-        return;
-
-	graph->updateErrorBars((QwtErrorPlotCurve *)item->plotItem(), xBox->isChecked(),widthBox->value(),
-			capBox->currentText().toInt(), colorBox->color(),plusBox->isChecked(),minusBox->isChecked(),
-			throughBox->isChecked());
-}
-
-void PlotDialog::changeErrorBarsThrough()
-{
-    CurveTreeItem *item = (CurveTreeItem *)listBox->currentItem();
-    if (!item)
-        return;
-    if (item->type() != CurveTreeItem::PlotCurveTreeItem)
-        return;
-
-    Graph *graph = item->graph();
-    if (!graph)
-        return;
-
-	graph->updateErrorBars((QwtErrorPlotCurve *)item->plotItem(), xBox->isChecked(),widthBox->value(),
-			capBox->currentText().toInt(), colorBox->color(),plusBox->isChecked(),minusBox->isChecked(),
-			throughBox->isChecked());
-}
-
-void PlotDialog::changeErrorBarsType()
-{
-    CurveTreeItem *item = (CurveTreeItem *)listBox->currentItem();
-    if (!item)
-        return;
-    if (item->type() != CurveTreeItem::PlotCurveTreeItem)
-        return;
-
-    Graph *graph = item->graph();
-    if (!graph)
-        return;
-
-	graph->updateErrorBars((QwtErrorPlotCurve *)item->plotItem(), xBox->isChecked(), widthBox->value(),
-			capBox->currentText().toInt(), colorBox->color(), plusBox->isChecked(), minusBox->isChecked(),
-			throughBox->isChecked());
 }
 
 void PlotDialog::pickErrorBarsColor()
@@ -2180,6 +2143,11 @@ void PlotDialog::setActiveCurve(CurveTreeItem *item)
 			xBox->blockSignals(true);
 			xBox->setChecked(err->xErrors());
 			xBox->blockSignals(false);
+
+			boxSkipErrorBars->blockSignals(true);
+			boxSkipErrorBars->setMaximum(err->dataSize());
+			boxSkipErrorBars->setValue(err->skipSymbolsCount());
+			boxSkipErrorBars->blockSignals(false);
         }
 		return;
     }
@@ -2513,10 +2481,17 @@ bool PlotDialog::acceptParams()
 		item->setText(0, table + ": " + v->plotAssociation().remove(table + "_"));
 		return true;
 	} else if (privateTabWidget->currentPage() == errorsPage){
-		graph->updateErrorBars((QwtErrorPlotCurve *)item->plotItem(), xBox->isChecked(), widthBox->value(),
+		QwtErrorPlotCurve *err = (QwtErrorPlotCurve *)item->plotItem();
+		if (!err)
+			return false;
+
+		/*graph->updateErrorBars(err, xBox->isChecked(), widthBox->value(),
 				capBox->currentText().toInt(), colorBox->color(), plusBox->isChecked(), minusBox->isChecked(),
 				throughBox->isChecked());
-        return true;
+		err->setSkipSymbolsCount(boxSkipErrorBars->value());*/
+
+		applyErrorBarFormat(err);
+
 	} else if (privateTabWidget->currentPage() == piePage){
 		QwtPieCurve *pie = (QwtPieCurve*)plotItem;
 		pie->setPen(QPen(boxPieLineColor->color(), boxPieLineWidth->value(), boxPieLineStyle->style()));
@@ -3241,6 +3216,89 @@ void PlotDialog::applySymbolsFormat(QwtPlotCurve *c)
 	}
 	app->modifiedProject();
 }
+
+void PlotDialog::applyErrorBarFormatToCurve(QwtErrorPlotCurve *err, bool color)
+{
+	if (!err)
+		return;
+
+	Graph *g = (Graph *)err->plot();
+	if (!g)
+		return;
+
+	QColor col = err->color();
+	if (color)
+		col = colorBox->color();
+
+	g->updateErrorBars(err, xBox->isChecked(), widthBox->value(),
+			capBox->currentText().toInt(), col, plusBox->isChecked(), minusBox->isChecked(),
+			throughBox->isChecked());
+	err->setSkipSymbolsCount(boxSkipErrorBars->value());
+}
+
+void PlotDialog::applyErrorBarFormatToLayer(Graph *g)
+{
+	if (!g)
+		return;
+
+	QList<QwtPlotItem *> lst = g->curvesList();
+	int i = -1;
+	foreach (QwtPlotItem *it, lst){
+		i++;
+		if (it->rtti() == QwtPlotItem::Rtti_PlotSpectrogram)
+			continue;
+
+		PlotCurve *c = (QwtErrorPlotCurve *)it;
+		if (c->type() == Graph::ErrorBars)
+			applyErrorBarFormatToCurve((QwtErrorPlotCurve *)it, false);
+	}
+	g->replot();
+}
+
+void PlotDialog::applyErrorBarFormat(QwtErrorPlotCurve *c)
+{
+	if (!c || privateTabWidget->currentPage() != errorsPage)
+		return;
+
+	Graph *layer = (Graph *)c->plot();
+	if (!layer)
+		return;
+
+	ApplicationWindow *app = (ApplicationWindow *)this->parent();
+	switch(errorBarsFormatApplyToBox->currentIndex()){
+		case 0://selected curve
+			applyErrorBarFormatToCurve(c);
+		break;
+		case 1://this layer
+			applyErrorBarFormatToLayer(layer);
+		break;
+		case 2://this window
+		{
+			QList<Graph *> layersLst = layer->multiLayer()->layersList();
+			foreach(Graph *g, layersLst)
+				applyErrorBarFormatToLayer(g);
+		}
+		break;
+		case 3://all windows
+		{
+			QList<MdiSubWindow *> windows = app->windowsList();
+			foreach(MdiSubWindow *w, windows){
+				MultiLayer *ml = qobject_cast<MultiLayer *>(w);
+				if (!ml)
+					continue;
+
+				QList<Graph *> layersLst = ml->layersList();
+				foreach(Graph *g, layersLst)
+					applyErrorBarFormatToLayer(g);
+			}
+		}
+		break;
+		default:
+			break;
+	}
+	app->modifiedProject();
+}
+
 /*****************************************************************************
  *
  * Class LayerItem
