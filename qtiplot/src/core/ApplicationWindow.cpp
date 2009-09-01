@@ -1273,6 +1273,7 @@ void ApplicationWindow::tableMenuAboutToShow()
 	QMenu *convertToMatrixMenu = tableMenu->addMenu(tr("Convert to &Matrix"));
 	convertToMatrixMenu->addAction(actionConvertTableDirect);
 	convertToMatrixMenu->addAction(actionConvertTableBinning);
+	convertToMatrixMenu->addAction(actionConvertTableRegularXYZ);
 
     reloadCustomActions();
 }
@@ -3197,6 +3198,136 @@ void ApplicationWindow::showBinMatrixDialog()
 	cbmd->exec();
 }
 
+Matrix* ApplicationWindow::convertTableToMatrixRegularXYZ()
+{
+	Table* t = (Table*)activeWindow(TableWindow);
+	if (!t)
+		return 0;
+
+	Q3TableSelection sel = t->getSelection();
+	if (t->selectedColumns().size() != 1 ||
+		t->colPlotDesignation(t->colIndex(t->selectedColumns()[0])) != Table::Z ||
+		fabs(sel.topRow() - sel.bottomRow()) < 2){
+        QMessageBox::warning(this, tr("QtiPlot - Column selection error"),
+			tr("You must select exactly one Z column!"));
+		return 0;
+	}
+
+	int zcol = t->colIndex(t->selectedColumns()[0]);
+	int ycol = t->colY(zcol);
+	int xcol = t->colX(ycol);
+
+	int cells = 0;
+	int startRow = sel.topRow();
+	int endRow = sel.bottomRow();
+	for (int i = startRow; i <= endRow; i++){
+		QString xs = t->text(i, xcol);
+		QString ys = t->text(i, ycol);
+		QString zs = t->text(i, zcol);
+		if (!xs.isEmpty() && !ys.isEmpty() && !zs.isEmpty())
+			cells++;
+	}
+
+	if (!cells)
+		return 0;
+
+	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+
+	QLocale locale = this->locale();
+	bool xVariesFirst = false;
+	int firstValidRow = sel.topRow();
+	double x0 = 0.0, y0 = 0.0, xstart = 0.0, ystart = 0.0;
+	double tolerance = 0.15;
+	for (int i = startRow; i <= endRow; i++){
+		QString xs = t->text(i, xcol);
+		QString ys = t->text(i, ycol);
+		QString zs = t->text(i, zcol);
+		if (!xs.isEmpty() && !ys.isEmpty() && !zs.isEmpty()){
+			x0 = locale.toDouble(xs);
+			y0 = locale.toDouble(ys);
+			xstart = x0;
+			ystart = y0;
+			firstValidRow = i;
+
+			for (int j = i + 1; j <= endRow; j++){
+				xs = t->text(j, xcol);
+				ys = t->text(j, ycol);
+				zs = t->text(j, zcol);
+				if (!xs.isEmpty() && !ys.isEmpty() && !zs.isEmpty()){
+					double x = locale.toDouble(xs);
+					double y = locale.toDouble(ys);
+					if (fabs(x - x0) > tolerance*x0 && fabs(y - y0) <= tolerance*y0)
+						xVariesFirst = true;
+					break;
+				}
+			}
+			break;
+		}
+	}
+
+	int rows = 0;
+	int cols = 0;
+	for (int i = firstValidRow; i <= endRow; i++){
+		QString xs = t->text(i, xcol);
+		QString ys = t->text(i, ycol);
+		QString zs = t->text(i, zcol);
+		if (!xs.isEmpty() && !ys.isEmpty() && !zs.isEmpty()){
+			double x = locale.toDouble(xs);
+			double y = locale.toDouble(ys);
+			if (xVariesFirst){
+				if (fabs(y - y0) <= tolerance*y0){
+					cols++;
+					y0 = y;
+				} else
+					break;
+			} else {
+				if (fabs(x - x0) <= tolerance*x0){
+					rows++;
+					x0 = x;
+				} else
+					break;
+			}
+		}
+	}
+
+	if (rows)
+		cols = cells/rows;
+	else
+		rows = cells/cols;
+
+	double xend = xstart, yend = ystart;
+	Matrix* m = newMatrix(rows, cols);
+	for (int i = startRow; i <= endRow; i++){
+		QString xs = t->text(i, xcol);
+		QString ys = t->text(i, ycol);
+		QString zs = t->text(i, zcol);
+		if (!xs.isEmpty() && !ys.isEmpty() && !zs.isEmpty()){
+			int row = 0, col = 0;
+			if (xVariesFirst){
+				col = i%cols;
+				row = i/cols;
+			} else {
+				row = i%rows;
+				col = i/rows;
+			}
+
+			double x = locale.toDouble(xs);
+			double y = locale.toDouble(ys);
+			if (x > xend)
+				xend = x;
+			if (y > yend)
+				yend = y;
+
+			m->setCell(row, col, locale.toDouble(zs));
+		}
+	}
+
+	m->setCoordinates(QMIN(xstart, xend), QMAX(xstart, xend), QMIN(ystart, yend), QMAX(ystart, yend));
+
+	QApplication::restoreOverrideCursor();
+	return m;
+}
+
 Matrix* ApplicationWindow::convertTableToMatrix()
 {
 	Table* t = (Table*)activeWindow(TableWindow);
@@ -3216,10 +3347,7 @@ Matrix* ApplicationWindow::tableToMatrix(Table* t)
 	int rows = t->numRows();
 	int cols = t->numCols();
 
-	QString caption = generateUniqueName(tr("Matrix"));
-	Matrix* m = new Matrix(scriptEnv, rows, cols, "", this, 0);
-	initMatrix(m, caption);
-
+	Matrix* m = newMatrix(rows, cols);
 	for (int i = 0; i<rows; i++){
 		for (int j = 0; j<cols; j++)
 			m->setCell(i, j, t->cell(i, j));
@@ -12584,6 +12712,9 @@ void ApplicationWindow::createActions()
 
 	actionConvertTableBinning = new QAction(tr("2D &Binning"), this);
 	connect(actionConvertTableBinning, SIGNAL(activated()), this, SLOT(showBinMatrixDialog()));
+
+	actionConvertTableRegularXYZ = new QAction(tr("&Regular XYZ"), this);
+	connect(actionConvertTableRegularXYZ, SIGNAL(activated()), this, SLOT(convertTableToMatrixRegularXYZ()));
 
 	actionPlot3DWireFrame = new QAction(QIcon(QPixmap(lineMesh_xpm)), tr("3D &Wire Frame"), this);
 	connect(actionPlot3DWireFrame, SIGNAL(activated()), this, SLOT(plot3DWireframe()));
