@@ -2453,6 +2453,7 @@ QString Graph::saveCurves()
   	            s += QString::number(er->throughSymbol())+"\t";
   	            s += QString::number(er->plusSide())+"\t";
   	            s += QString::number(er->minusSide())+"\n";
+  	            s += er->saveToString();
   	       }
 		}
 	}

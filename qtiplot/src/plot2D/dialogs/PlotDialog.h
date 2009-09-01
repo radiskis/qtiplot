@@ -60,6 +60,7 @@ class QwtPlotItem;
 class DoubleSpinBox;
 class PenStyleBox;
 class Spectrogram;
+class QwtErrorPlotCurve;
 class ContourLinesEditor;
 
 static const char* folder_closed[]={
@@ -213,12 +214,7 @@ private slots:
 
 	void removeSelectedCurve();
 
-	/******* error bars options **************/
 	void pickErrorBarsColor();
-	void changeErrorBarsType();
-	void changeErrorBarsPlus();
-	void changeErrorBarsMinus();
-	void changeErrorBarsThrough();
 
 	void setAutomaticBinning();
 	bool validInput();
@@ -262,6 +258,10 @@ private:
 
 	void applyLineFormatToLayer(Graph *g);
 	void applyLineFormat(QwtPlotCurve *c);
+
+	void applyErrorBarFormatToCurve(QwtErrorPlotCurve *err, bool color = true);
+	void applyErrorBarFormatToLayer(Graph *g);
+	void applyErrorBarFormat(QwtErrorPlotCurve *c);
 
     int labelsAlignment();
 	void closeEvent(QCloseEvent* e);
@@ -398,8 +398,8 @@ private:
 	QPushButton *btnSetEquidistantLevels;
 	QRadioButton *customPenBtn;
 
-	QSpinBox *boxSkipSymbols;
-	QComboBox *symbolsFormatApplyToBox, *lineFormatApplyToBox;
+	QSpinBox *boxSkipSymbols, *boxSkipErrorBars;
+	QComboBox *symbolsFormatApplyToBox, *lineFormatApplyToBox, *errorBarsFormatApplyToBox;
 };
 
 /*****************************************************************************

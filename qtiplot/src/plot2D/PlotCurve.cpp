@@ -1101,7 +1101,7 @@ bool DataCurve::validCurveType()
 {
 	int style = type();
 	if (style == Graph::Function || style == Graph::Box ||
-		style == Graph::Pie || style == Graph::ErrorBars ||
+		style == Graph::Pie || //style == Graph::ErrorBars ||
 		style == Graph::ColorMap ||  style == Graph::GrayScale ||
 		style == Graph::Contour || style == Graph::ImagePlot)
 		return false;

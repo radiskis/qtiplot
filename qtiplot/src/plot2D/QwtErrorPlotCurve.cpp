@@ -40,22 +40,20 @@ QwtErrorPlotCurve::QwtErrorPlotCurve(int orientation, Table *t, const QString& n
 	DataCurve(t, QString(), name),
 	d_master_curve(NULL)
 {
-	d_cap_length = 10;
 	type = orientation;
-	plus = true;
-	minus = true;
-	through = false;
-	setType(Graph::ErrorBars);
-	setPlotStyle(Graph::ErrorBars);
-    setStyle(QwtPlotCurve::UserCurve);
+	init();
 }
 
 QwtErrorPlotCurve::QwtErrorPlotCurve(Table *t, const QString& name):
 	DataCurve(t, QString(), name),
 	d_master_curve(NULL)
 {
-	d_cap_length = 10;
 	type = Vertical;
+	init();
+}
+
+void QwtErrorPlotCurve::init()
+{
 	plus = true;
 	minus = true;
 	through = false;
@@ -115,7 +113,9 @@ void QwtErrorPlotCurve::drawErrorBars(QPainter *painter,
 	ScaleEngine *yScaleEngine = (ScaleEngine *)plot()->axisScaleEngine(yAxis());
 	bool logYScale = (yScaleEngine->type() == ScaleTransformation::Log10) ? true : false;
 
-	int skipPoints = d_master_curve->skipSymbolsCount();
+	int skipPoints = d_master_curve->skipSymbolsCount() + d_skip_symbols;
+	if (d_skip_symbols > 0)
+		skipPoints--;
 	if (skipPoints == 0)
 		skipPoints = 1;
 
