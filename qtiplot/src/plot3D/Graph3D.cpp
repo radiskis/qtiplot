@@ -148,6 +148,8 @@ Graph3D::Graph3D(const QString& label, ApplicationWindow* parent, const char* na
 
 void Graph3D::initPlot()
 {
+	setAcceptDrops(true);
+
 	d_table = 0;
 	d_table_plot_type = NoTable;
 	d_matrix = 0;
@@ -556,6 +558,7 @@ void Graph3D::loadData(Table* table, int xCol, int yCol, int zCol,
 		return;
 
 	d_table = table;
+	d_matrix = NULL;
 
 	plotAssociation = table->colName(xCol) + "(X),";
 	plotAssociation += table->colName(yCol) + "(Y),";
@@ -3086,6 +3089,33 @@ Graph3D* Graph3D::restore(ApplicationWindow* app, const QStringList &lst, int fi
 	plot->setDataColorMap(colorMap);
 	plot->update();
 	return plot;
+}
+
+void Graph3D::dragEnterEvent( QDragEnterEvent* e )
+{
+	if (e->mimeData()->hasFormat("text/plain"))
+		e->acceptProposedAction();
+}
+
+void Graph3D::dropEvent(QDropEvent* event)
+{
+	Table *t = qobject_cast<Table*>(event->source());
+	if (t){
+		QStringList columns = event->mimeData()->text().split("\n");
+		if (columns.isEmpty())
+			return;
+
+		int zcol = t->colIndex(columns[0]);
+		if (t->colPlotDesignation(zcol) != Table::Z)
+			return;
+
+		addData(t, t->colX(zcol), t->colY(zcol), zcol, Trajectory);
+		return;
+	}
+
+	Matrix *m = qobject_cast<Matrix*>(event->source());
+	if (m)
+		addMatrixData(m);
 }
 
 Graph3D::~Graph3D()

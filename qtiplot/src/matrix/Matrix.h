@@ -2,11 +2,8 @@
     File                 : Matrix.h
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2006 by Ion Vasilief,
-                           Tilman Hoener zu Siederdissen
-                           Knut Franke
-    Email (use @ for *)  : ion_vasilief*yahoo.fr, thzs*gmx.net,
-                           knut.franke*gmx.de
+    Copyright            : (C) 2006 - 2009 by Ion Vasilief
+    Email (use @ for *)  : ion_vasilief*yahoo.fr
     Description          : Matrix worksheet class
 
  ***************************************************************************/
@@ -305,6 +302,8 @@ signals:
 	void modifiedData(Matrix *);
 
 private:
+	void mousePressEvent(QMouseEvent *event);
+
 	//! Initialize the matrix
 	void initTable(int rows, int cols);
 	void initImage(const QImage& image);

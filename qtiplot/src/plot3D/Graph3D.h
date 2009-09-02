@@ -116,6 +116,8 @@ public slots:
 
 	//! \name Event Handlers
 	//@{
+	void dropEvent(QDropEvent*);
+	void dragEnterEvent(QDragEnterEvent*);
 	bool eventFilter(QObject *object, QEvent *e);
 	void resizeEvent (QResizeEvent *);
 	void scaleFonts(double factor);
