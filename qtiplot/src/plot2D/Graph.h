@@ -743,6 +743,8 @@ signals:
         QwtDoubleInterval axisBoundingInterval(int axis);
         void deselectCurves();
 
+		void dropEvent(QDropEvent*);
+		void dragEnterEvent(QDragEnterEvent*);
 		void showEvent (QShowEvent * event);
     	void printFrame(QPainter *painter, const QRect &rect) const;
 		void printCanvas(QPainter *painter, const QRect &canvasRect,

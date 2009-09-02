@@ -2,8 +2,8 @@
     File                 : Matrix.cpp
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2004-2007 by Ion Vasilief, Knut Franke
-    Email (use @ for *)  : ion_vasilief*yahoo.fr, knut.franke*gmx.de
+    Copyright            : (C) 2004-2009 by Ion Vasilief
+    Email (use @ for *)  : ion_vasilief*yahoo.fr
     Description          : Matrix worksheet class
 
  ***************************************************************************/
@@ -1575,6 +1575,21 @@ QString Matrix::sizeToString()
 {
 	int size = d_matrix_model->rowCount() * d_matrix_model->columnCount();
 	return QString::number((sizeof(Matrix) + size*sizeof(double))/1024.0, 'f', 1) + " " + tr("kB");
+}
+
+void Matrix::mousePressEvent(QMouseEvent *event)
+{
+	if (d_view_type != ImageView)
+		return;
+
+	if (event->button() == Qt::LeftButton){
+		QDrag *drag = new QDrag(this);
+		QMimeData *mimeData = new QMimeData;
+		mimeData->setText(objectName());
+		drag->setMimeData(mimeData);
+		drag->setPixmap(this->windowIcon().pixmap(16));
+		drag->exec();
+	}
 }
 
 Matrix::~Matrix()

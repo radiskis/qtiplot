@@ -173,6 +173,7 @@ Graph::Graph(int x, int y, int width, int height, QWidget* parent, Qt::WFlags f)
 {
 	setWindowFlags(f);
     setAttribute(Qt::WA_DeleteOnClose);
+	setAcceptDrops(true);
 
 	d_active_tool = NULL;
 	d_range_selector = NULL;
@@ -3129,6 +3130,9 @@ DataCurve* Graph::insertCurve(Table* w, int xcol, const QString& name, int style
 
 DataCurve* Graph::insertCurve(Table* w, const QString& xColName, const QString& yColName, int style, int startRow, int endRow)
 {
+	if (plotItemsList().contains(yColName))
+		return NULL;
+
 	if (style == Histogram){
 		DataCurve *c = new QwtHistogram(w, yColName, startRow, endRow);
 		insertCurve(c);
@@ -4732,6 +4736,9 @@ Spectrogram* Graph::plotSpectrogram(Matrix *m, CurveType type)
 {
 	if (!m || (type != GrayScale && type != ColorMap && type != Contour))
   		return 0;
+
+	if (plotItemsList().contains(m->objectName()))
+		return 0;
 
   	Spectrogram *d_spectrogram = new Spectrogram(this, m);
 	insertCurve(d_spectrogram);
@@ -6448,4 +6455,32 @@ void Graph::changeCurveIndex(int fromIndex, int toIndex)
 		toIndex < 0 || toIndex >= d_curves.size()) return;
 
 	d_curves.move ( fromIndex, toIndex );
+}
+
+void Graph::dragEnterEvent( QDragEnterEvent* e )
+{
+	if (e->mimeData()->hasFormat("text/plain"))
+		e->acceptProposedAction();
+}
+
+void Graph::dropEvent(QDropEvent* event)
+{
+	MultiLayer *ml = multiLayer();
+	if (!ml)
+		return;
+
+	ApplicationWindow *app = ml->applicationWindow();
+	Table *t = qobject_cast<Table*>(event->source());
+	if (t){
+		QStringList columns = event->mimeData()->text().split("\n");
+		if (columns.isEmpty())
+			return;
+
+		addCurves(t, columns, app->defaultCurveStyle, app->defaultCurveLineWidth, app->defaultSymbolSize);
+		return;
+	}
+
+	Matrix *m = qobject_cast<Matrix*>(event->source());
+	if (m)
+		plotSpectrogram(m, ColorMap);
 }

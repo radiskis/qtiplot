@@ -34,6 +34,7 @@
 #include <ImportASCIIDialog.h>
 #include <muParserScript.h>
 #include <ApplicationWindow.h>
+#include <pixmaps.h>
 
 #include <QMessageBox>
 #include <QDateTime>
@@ -2663,28 +2664,38 @@ bool Table::eventFilter(QObject *object, QEvent *e)
 		return true;
 	} else if (e->type() == QEvent::MouseButtonPress && object == (QObject*)hheader) {
 		const QMouseEvent *me = (const QMouseEvent *)e;
-		if (me->button() == Qt::LeftButton && me->state() == Qt::ControlButton) {
+		if (me->button() == Qt::LeftButton) {
 			int col = hheader->sectionAt (me->pos().x() + hheader->offset());
-			if (!d_table->isColumnSelected(col, true)){
-			    selectedCol = col;
-                d_table->selectColumn (col);
-                d_table->setCurrentCell (0, col);
-			} else {//deselect already selected column: dirty hack to be modified when porting Table to Qt4
-			    QVector<int> sel;
-			    int cols = 0;
-			    for (int i = 0; i < d_table->numCols(); i++){
-                    if(d_table->isColumnSelected (i, true) && i != col){
-                        sel << i;
-                        cols++;
-                    }
-                }
-                sel.resize(cols);
-                d_table->clearSelection();
-                for (int i = 0; i < cols; i++)
-                    d_table->selectColumn (sel[i]);
+			if (me->state() == Qt::ControlButton){
+				if (!d_table->isColumnSelected(col, true)){
+					selectedCol = col;
+					d_table->selectColumn (col);
+					d_table->setCurrentCell (0, col);
+				} else {//deselect already selected column: dirty hack to be modified when porting Table to Qt4
+					QVector<int> sel;
+					int cols = 0;
+					for (int i = 0; i < d_table->numCols(); i++){
+						if(d_table->isColumnSelected (i, true) && i != col){
+							sel << i;
+							cols++;
+						}
+					}
+					sel.resize(cols);
+					d_table->clearSelection();
+					for (int i = 0; i < cols; i++)
+						d_table->selectColumn (sel[i]);
+				}
+				setActiveWindow();
+				return true;
+			} else if (d_table->isColumnSelected(col, true)){
+				QDrag *drag = new QDrag(this);
+				QMimeData *mimeData = new QMimeData;
+				mimeData->setText(selectedColumns().join("\n"));
+				drag->setMimeData(mimeData);
+				drag->setPixmap(QPixmap(drag_curves_xpm));
+				drag->exec();
+				return true;
 			}
-			setActiveWindow();
-			return true;
 		} else if (selectedColsNumber() <= 1) {
 			selectedCol = hheader->sectionAt (me->pos().x() + hheader->offset());
 			d_table->clearSelection();
@@ -2710,6 +2721,17 @@ bool Table::eventFilter(QObject *object, QEvent *e)
             emit showContextMenu(false);
         else if (d_table->numCols() > 0 && d_table->numRows() > 0)
             emit showContextMenu(true);
+    } else if (e->type() == QEvent::MouseMove && object == (QObject*)hheader) {
+		const QMouseEvent *me = (const QMouseEvent *)e;
+		int col = hheader->sectionAt (me->pos().x() + hheader->offset());
+		QRect r = QRect(hheader->sectionRect(col).topLeft(), QSize(10, 10));
+		if (d_table->isColumnSelected(col, true)){
+			if (r.contains(me->pos()))
+				setCursor(QCursor(QPixmap(append_drag_curves_xpm)));
+			else
+				setCursor(QCursor(Qt::ArrowCursor));
+		}
+		return false;
     }
 
 	return MdiSubWindow::eventFilter(object, e);
