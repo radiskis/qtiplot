@@ -39,6 +39,7 @@
 #include <QSplitter>
 #include <QDesktopServices>
 #include <QBuffer>
+#include <QLineEdit>
 
 #include <Graph.h>
 #include <Table.h>
@@ -57,7 +58,6 @@ class QTranslator;
 class QDockWidget;
 class QAction;
 class QActionGroup;
-class QLineEdit;
 class QTranslator;
 class QToolButton;
 class QShortcut;
@@ -193,6 +193,8 @@ public:
 
 	void enableMdiArea(bool on = true);
 	bool isMdiAreaEnabled(){return d_mdi_windows_area;};
+
+	void displayInfo(const QString& text){info->setText(text);};
 
 public slots:
 	//! \name Projects and Project Files

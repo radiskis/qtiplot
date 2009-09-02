@@ -26,9 +26,11 @@
  *   Boston, MA  02110-1301  USA                                           *
  *                                                                         *
  ***************************************************************************/
-#include "ArrowMarker.h"
-#include "Graph.h"
-#include "dialogs/LineDialog.h"
+#include <ArrowMarker.h>
+#include <Graph.h>
+#include <MultiLayer.h>
+#include <LineDialog.h>
+#include <ApplicationWindow.h>
 
 #include <QPainter>
 #include <QMouseEvent>
@@ -387,11 +389,15 @@ void ArrowMarker::setEditable(bool yes)
 {
 	if (yes == d_editable)
 		return;
+
+	displayInfo(!yes);
+
 	if (yes) {
 		d_editable = true;
 		plot()->canvas()->installEventFilter(this);
 	} else {
 		d_editable = false;
+
 		plot()->canvas()->removeEventFilter(this);
 	}
 	plot()->replot();
@@ -454,18 +460,21 @@ bool ArrowMarker::eventFilter(QObject *, QEvent *e)
 		case QEvent::MouseButtonRelease:
 			{
 				const QMouseEvent *me = (const QMouseEvent *)e;
+
 				switch(d_op) {
 					case MoveStart:
 						setStartPoint(me->pos());
 						plot()->replot();
 						d_op = None;
 						QApplication::restoreOverrideCursor();
+						displayInfo();
 						return true;
 					case MoveEnd:
 						setEndPoint(me->pos());
 						plot()->replot();
 						d_op = None;
 						QApplication::restoreOverrideCursor();
+						displayInfo();
 						return true;
 					case MoveBoth:
 						setXValue(plot()->invTransform(xAxis(), me->pos().x()-d_op_startat.x()));
@@ -473,6 +482,7 @@ bool ArrowMarker::eventFilter(QObject *, QEvent *e)
 						plot()->replot();
 						d_op = None;
 						QApplication::restoreOverrideCursor();
+						displayInfo();
 						return true;
 					default:
 						d_op = None;
@@ -501,4 +511,51 @@ bool ArrowMarker::eventFilter(QObject *, QEvent *e)
 		default:
 			return false;
 	}
+}
+
+void ArrowMarker::displayInfo(bool clear)
+{
+	Graph *g = (Graph *)plot();
+	if (!g)
+		return;
+
+	MultiLayer *ml = g->multiLayer();
+	if (!ml)
+		return;
+
+	ApplicationWindow *app = ml->applicationWindow();
+	if (clear){
+		app->displayInfo(QString::null);
+		return;
+	}
+
+	QLocale locale = app->locale();
+	int prec = app->d_decimal_digits;
+
+	QLineF line(d_rect.topLeft(), d_rect.bottomRight());
+	QString s = tr("dx") + ": " + locale.toString(line.dx(), 'g', prec);
+	s += " " + tr("dy") + ": " + locale.toString(line.dy(), 'g', prec);
+	s += " " + tr("angle") + ": " + locale.toString(line.angle(), 'g', prec);
+	s += " " + tr("length") + ": " + locale.toString(line.length(), 'g', prec);
+
+	double den = line.x2() - line.x1();
+	if (den != 0.0){
+		double slope = (line.y2() - line.y1())/den;
+		s += " " + tr("eqn") + ": " + tr("y") + "=";
+		if (slope != 0.0){
+			if (slope != 1.0)
+				s += locale.toString(slope, 'g', prec) + "*";
+			s += tr("x");
+		}
+
+		double intercept = line.y1() - slope*line.x1();
+		if (intercept > 0){
+			if (slope != 0.0)
+				s += "+";
+			s += locale.toString(intercept, 'g', prec);
+		} else if (intercept < 0)
+			s += locale.toString(intercept, 'g', prec);
+	} else
+		s += " " + tr("eqn") + ": " + tr("x") + "=" + locale.toString(line.x1(), 'g', prec);
+	app->displayInfo(s);
 }
