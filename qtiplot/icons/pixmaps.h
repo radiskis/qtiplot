@@ -31,7 +31,7 @@
 #define PIXMAPS_H
 
 /* XPM */
-static const char * arrow_down_xpm[] = {
+static char * arrow_down_xpm[] = {
 "11 12 2 1",
 " 	c None",
 ".	c #000000",
@@ -49,7 +49,7 @@ static const char * arrow_down_xpm[] = {
 "    ...    "};
 
 /* XPM */
-static const char * arrow_up_xpm[] = {
+static char * arrow_up_xpm[] = {
 "11 12 2 1",
 " 	c None",
 ".	c #000000",
@@ -88,7 +88,7 @@ static char * drag_curves_xpm[] = {
 "..........     "};
 
 /* XPM */
-static const char * append_drag_curves_xpm[] = {
+static char * append_drag_curves_xpm[] = {
 "16 16 70 1",
 " 	c None",
 ".	c #239500",
@@ -178,7 +178,7 @@ static const char * append_drag_curves_xpm[] = {
 "    bbbbbbbbbb  "};
 
 /* XPM */
-static const char * plus_xpm[] = {
+static char * plus_xpm[] = {
 "13 13 67 1",
 " 	c None",
 ".	c #239500",
@@ -261,7 +261,7 @@ static const char * plus_xpm[] = {
 "    xygzm    ",
 "    AuhBt    "};
 
-static const char* folder_open[]={
+static char* folder_open[]={
     "16 16 11 1",
     "# c #000000",
     "g c #c0c0c0",
@@ -292,7 +292,7 @@ static const char* folder_open[]={
     "............#ee#"};
 
 /* XPM */
-static const char * adjust_col_width_xpm[] = {
+static char * adjust_col_width_xpm[] = {
 "16 13 12 1",
 " 	c None",
 ".	c #000000",
@@ -321,7 +321,7 @@ static const char * adjust_col_width_xpm[] = {
 "     ......     "};
 
 /* XPM */
-static const char * move_row_down_xpm[] = {
+static char * move_row_down_xpm[] = {
 "16 10 4 1",
 " 	c None",
 ".	c #000000",
@@ -339,7 +339,7 @@ static const char * move_row_down_xpm[] = {
 "        @       "};
 
 /* XPM */
-static const char * move_row_up_xpm[] = {
+static char * move_row_up_xpm[] = {
 "16 10 4 1",
 " 	c None",
 ".	c #D2211C",
@@ -357,7 +357,7 @@ static const char * move_row_up_xpm[] = {
 "++++++++++++++++"};
 
 /* XPM */
-static const char * stack_column_xpm[] = {
+static char * stack_column_xpm[] = {
 "15 15 5 1",
 " 	c None",
 ".	c #000000",
@@ -381,7 +381,7 @@ static const char * stack_column_xpm[] = {
 ".###..###..###."};
 
 /* XPM */
-static const char * stack_bar_xpm[] = {
+static char * stack_bar_xpm[] = {
 "15 15 5 1",
 " 	c None",
 ".	c #000000",
@@ -405,7 +405,7 @@ static const char * stack_bar_xpm[] = {
 "...........    "};
 
 /* XPM */
-static const char * waterfall_plot_xpm[] = {
+static char * waterfall_plot_xpm[] = {
 "16 16 4 1",
 " 	c None",
 ".	c #000000",
@@ -429,7 +429,7 @@ static const char * waterfall_plot_xpm[] = {
 "@@              "};
 
 /* XPM */
-static const char * delete_xpm[] = {
+static char * delete_xpm[] = {
 "11 12 40 1",
 " 	c None",
 ".	c #ECBCBC",
@@ -485,7 +485,7 @@ static const char * delete_xpm[] = {
 " aa     aa "};
 
 /* XPM */
-static const char * append_file_xpm[] = {
+static char * append_file_xpm[] = {
 "16 16 102 2",
 "  	c None",
 ". 	c #3AAB00",
@@ -607,7 +607,7 @@ static const char * append_file_xpm[] = {
 "      2 2 2 2 2 2 2 2 2 2 2 2 2 "};
 
 /* XPM */
-static const char * find_xpm[] = {
+static char * find_xpm[] = {
 "16 16 46 1",
 " 	c None",
 ".	c #2A2A2A",
@@ -673,7 +673,7 @@ static const char * find_xpm[] = {
 "g66666g  g66666g"};
 
 /* XPM */
-static const char * magnifier_xpm[] = {
+static char * magnifier_xpm[] = {
 "24 24 240 2",
 "  	c None",
 ". 	c #C5C5BF",
@@ -966,7 +966,7 @@ static char * leaf_xpm[] = {
 "@@              "};
 
 /* XPM */
-static const char * extract_layers_xpm[] = {
+static char * extract_layers_xpm[] = {
 "16 16 5 1",
 " 	c None",
 ".	c #000000",
@@ -991,7 +991,7 @@ static const char * extract_layers_xpm[] = {
 "................"};
 
 /* XPM */
-static const char * extract_graphs_xpm[] = {
+static char * extract_graphs_xpm[] = {
 "16 16 3 1",
 " 	c None",
 ".	c #000000",
@@ -1014,7 +1014,7 @@ static const char * extract_graphs_xpm[] = {
 ".......  ......."};
 
 /* XPM */
-static const char * add_zoom_plot_xpm[] = {
+static char * add_zoom_plot_xpm[] = {
 "16 16 3 1",
 " 	c None",
 ".	c #000000",
@@ -1037,7 +1037,7 @@ static const char * add_zoom_plot_xpm[] = {
 "................"};
 
 /* XPM */
-static const char * add_inset_curve_layer_xpm[] = {
+static char * add_inset_curve_layer_xpm[] = {
 "13 13 4 1",
 " 	c None",
 ".	c #ACA899",
@@ -1059,7 +1059,7 @@ static const char * add_inset_curve_layer_xpm[] = {
 
 
 /* XPM */
-static const char * add_inset_layer_xpm[] = {
+static char * add_inset_layer_xpm[] = {
 "13 13 3 1",
 " 	c None",
 ".	c #ACA899",
@@ -1080,7 +1080,7 @@ static const char * add_inset_layer_xpm[] = {
 
 
 /* XPM */
-static const char * plot_double_y_xpm[] = {
+static char * plot_double_y_xpm[] = {
 "16 16 3 1",
 " 	c None",
 ".	c #000000",
@@ -1103,7 +1103,7 @@ static const char * plot_double_y_xpm[] = {
 "...............+"};
 
 /* XPM */
-static const char * equation_xpm[] = {
+static char * equation_xpm[] = {
 "16 11 4 1",
 " 	c None",
 ".	c #A64D4D",
@@ -1122,7 +1122,7 @@ static const char * equation_xpm[] = {
 "   .            "};
 
 /* XPM */
-static const char * sort_descending_xpm[] = {
+static char * sort_descending_xpm[] = {
 "13 16 36 1",
 " 	c None",
 ".	c #C8C5DA",
@@ -1178,7 +1178,7 @@ static const char * sort_descending_xpm[] = {
 "^5 6^7       "};
 
 /* XPM */
-static const char * sort_ascending_xpm[] = {
+static char * sort_ascending_xpm[] = {
 "13 16 35 1",
 " 	c None",
 ".	c #A09BCF",
@@ -1233,7 +1233,7 @@ static const char * sort_ascending_xpm[] = {
 "5[[[[6       "};
 
 /* XPM */
-static const char * formula_xpm[] = {
+static char * formula_xpm[] = {
 "9 9 3 1",
 " 	c None",
 ".	c #000000",
@@ -1249,7 +1249,7 @@ static const char * formula_xpm[] = {
 "........."};
 
 /* XPM */
-static const char * rotate_counterclockwise_xpm[] = {
+static char * rotate_counterclockwise_xpm[] = {
 "11 13 15 1",
 " 	c None",
 ".	c #ABBBD2",
@@ -1281,7 +1281,7 @@ static const char * rotate_counterclockwise_xpm[] = {
 "           "};
 
 /* XPM */
-static const char * rotate_clockwise_xpm[] = {
+static char * rotate_clockwise_xpm[] = {
 "11 13 15 1",
 " 	c None",
 ".	c #204A87",
@@ -1313,7 +1313,7 @@ static const char * rotate_clockwise_xpm[] = {
 "           "};
 
 /* XPM */
-static const char * flip_vertical_xpm[] = {
+static char * flip_vertical_xpm[] = {
 "9 14 18 1",
 " 	c None",
 ".	c #C0CCDD",
@@ -1349,7 +1349,7 @@ static const char * flip_vertical_xpm[] = {
 "   !+~   "};
 
 /* XPM */
-static const char * flip_horizontal_xpm[] = {
+static char * flip_horizontal_xpm[] = {
 "14 9 18 1",
 " 	c None",
 ".	c #C3CEDF",
@@ -1380,7 +1380,7 @@ static const char * flip_horizontal_xpm[] = {
 "   ~++  ++~   "};
 
 /* XPM */
-static const char * delete_column_xpm[] = {
+static char * delete_column_xpm[] = {
 "16 13 6 1",
 " 	c None",
 ".	c #878B98",
@@ -1403,7 +1403,7 @@ static const char * delete_column_xpm[] = {
 ".####.####.#####"};
 
 /* XPM */
-static const char * insert_column_xpm[] = {
+static char * insert_column_xpm[] = {
 "16 15 8 1",
 " 	c None",
 ".	c #594FBF",
@@ -1430,7 +1430,7 @@ static const char * insert_column_xpm[] = {
 "@%%%%@%%%%@%%%%%"};
 
 /* XPM */
-static const char * delete_row_xpm[] = {
+static char * delete_row_xpm[] = {
 "16 13 6 1",
 " 	c None",
 ".	c #878B98",
@@ -1453,7 +1453,7 @@ static const char * delete_row_xpm[] = {
 ".@@@@.@@@@.@@@@@"};
 
 /* XPM */
-static const char * insert_row_xpm[] = {
+static char * insert_row_xpm[] = {
 "16 13 9 1",
 " 	c None",
 ".	c #878B98",
@@ -1479,7 +1479,7 @@ static const char * insert_row_xpm[] = {
 ".@@@@.@@@@.@@@@@"};
 
 /* XPM */
-static const char * set_label_col_xpm[] = {
+static char * set_label_col_xpm[] = {
 "14 11 2 1",
 " 	c None",
 ".	c #000000",
@@ -1496,7 +1496,7 @@ static const char * set_label_col_xpm[] = {
 "     ....     "};
 
 /* XPM */
-static const char *index_xpm[]={
+static char *index_xpm[]={
 "11 16 3 1",
 " 	c None",
 ".	c #000000",
@@ -1519,7 +1519,7 @@ static const char *index_xpm[]={
 "           "};
 
 /* XPM */
-static const char *exp_xpm[]={
+static char *exp_xpm[]={
 "11 16 3 1",
 " 	c None",
 ".	c #FF0000",
@@ -1542,7 +1542,7 @@ static const char *exp_xpm[]={
 "           "};
 
 /* XPM */
-static const char * draw_points_xpm[] = {
+static char * draw_points_xpm[] = {
 "10 10 2 1",
 " 	c None",
 ".	c #BC0F0F",
@@ -1558,7 +1558,7 @@ static const char * draw_points_xpm[] = {
 "    ..    "};
 
 /* XPM */
-static const char * image_plot_xpm[] = {
+static char * image_plot_xpm[] = {
 "14 14 6 1",
 " 	c None",
 ".	c #000000",
@@ -1582,7 +1582,7 @@ static const char * image_plot_xpm[] = {
 ".............."};
 
 /* XPM */
-static const char * move_col_first_xpm[] = {
+static char * move_col_first_xpm[] = {
 "11 14 2 1",
 " 	c None",
 ".	c #000000",
@@ -1602,7 +1602,7 @@ static const char * move_col_first_xpm[] = {
 "..         "};
 
 /* XPM */
-static const char * move_col_last_xpm[] = {
+static char * move_col_last_xpm[] = {
 "11 14 2 1",
 " 	c None",
 ".	c #000000",
@@ -1622,7 +1622,7 @@ static const char * move_col_last_xpm[] = {
 "         .."};
 
 /* XPM */
-static const char * x_col_xpm[] = {
+static char * x_col_xpm[] = {
 "10 11 2 1",
 " 	c None",
 ".	c #000000",
@@ -1639,7 +1639,7 @@ static const char * x_col_xpm[] = {
 ".        ."};
 
 /* XPM */
-static const char * y_col_xpm[] = {
+static char * y_col_xpm[] = {
 "12 11 2 1",
 " 	c None",
 ".	c #000000",
@@ -1656,7 +1656,7 @@ static const char * y_col_xpm[] = {
 "    ....    "};
 
 /* XPM */
-static const char * z_col_xpm[] = {
+static char * z_col_xpm[] = {
 "9 11 2 1",
 " 	c None",
 ".	c #000000",
@@ -1673,7 +1673,7 @@ static const char * z_col_xpm[] = {
 "........."};
 
 /* XPM */
-static const char * disregard_col_xpm[] = {
+static char * disregard_col_xpm[] = {
 "15 5 2 1",
 " 	c None",
 ".	c #000000",
@@ -1684,7 +1684,7 @@ static const char * disregard_col_xpm[] = {
 ". .  .  . . ..."};
 
 /* XPM */
-static const char * move_col_right_xpm[] = {
+static char * move_col_right_xpm[] = {
 "7 11 2 1",
 " 	c None",
 ".	c #000000",
@@ -1701,7 +1701,7 @@ static const char * move_col_right_xpm[] = {
 "  .    "};
 
 /* XPM */
-static const char * move_col_left_xpm[] = {
+static char * move_col_left_xpm[] = {
 "7 11 2 1",
 " 	c None",
 ".	c #000000",
@@ -1719,7 +1719,7 @@ static const char * move_col_left_xpm[] = {
 
 
 /* XPM */
-static const char * pdf_xpm[] = {
+static char * pdf_xpm[] = {
 "16 16 149 2",
 "  	c None",
 ". 	c #A5A38D",
@@ -1888,7 +1888,7 @@ static const char * pdf_xpm[] = {
 "      n.o.p.p.p.p.p.p.p.p.q.o.r."};
 
 /* XPM */
-static const char * fit_frame_xpm[] = {
+static char * fit_frame_xpm[] = {
 "12 12 2 1",
 " 	c None",
 ".	c #0810B5",
@@ -1906,7 +1906,7 @@ static const char * fit_frame_xpm[] = {
 "....    ...."};
 
 /* XPM */
-static const char * reset_rotation_xpm[] = {
+static char * reset_rotation_xpm[] = {
 "15 15 2 1",
 " 	c None",
 ".	c #0810B5",
@@ -1927,7 +1927,7 @@ static const char * reset_rotation_xpm[] = {
 "..             "};
 
 /* XPM */
-static const char * perspective_xpm[] = {
+static char * perspective_xpm[] = {
 "16 16 2 1",
 " 	c None",
 ".	c #0810B5",
@@ -1949,7 +1949,7 @@ static const char * perspective_xpm[] = {
 "................"};
 
 /* XPM */
-static const char * gray_map_xpm[] = {
+static char * gray_map_xpm[] = {
 "16 15 5 1",
 " 	c None",
 ".	c #000000",
@@ -1973,7 +1973,7 @@ static const char * gray_map_xpm[] = {
 "................"};
 
 /* XPM */
-static const char * contour_map_xpm[] = {
+static char * contour_map_xpm[] = {
 "16 15 3 1",
 " 	c None",
 ".	c #000000",
@@ -1995,7 +1995,7 @@ static const char * contour_map_xpm[] = {
 "................"};
 
 /* XPM */
-static const char * color_map_xpm[] = {
+static char * color_map_xpm[] = {
 "16 15 6 1",
 " 	c None",
 ".	c #000000",
@@ -2020,7 +2020,7 @@ static const char * color_map_xpm[] = {
 "................"};
 
 /* XPM */
-static const char * auto_layout_xpm[] = {
+static char * auto_layout_xpm[] = {
 "16 16 3 1",
 " 	c None",
 ".	c #000000",
@@ -2043,7 +2043,7 @@ static const char * auto_layout_xpm[] = {
 "...          ..."};
 
 /* XPM */
-static const char * movie_xpm[] = {
+static char * movie_xpm[] = {
 "32 32 257 2",
 "  	c None",
 ". 	c #000000",
@@ -2336,7 +2336,7 @@ static const char * movie_xpm[] = {
 "                                                                "};
 
 /* XPM */
-static const char * python_xpm[] = {
+static char * python_xpm[] = {
 "16 16 36 1",
 " 	c None",
 ".	c #000000",
@@ -2392,7 +2392,7 @@ static const char * python_xpm[] = {
 " .............. "};
 
 /* XPM */
-static const char * fit_xpm[] = {
+static char * fit_xpm[] = {
 "32 32 4 1",
 " 	c None",
 ".	c #000000",
@@ -2432,7 +2432,7 @@ static const char * fit_xpm[] = {
 "................................"};
 
 /* XPM */
-static const char * zoomOut_xpm[] = {
+static char * zoomOut_xpm[] = {
 "20 20 101 2",
 "  	c None",
 ". 	c #8D8C89",
@@ -2557,7 +2557,7 @@ static const char * zoomOut_xpm[] = {
 "                                  &.# *."};
 
 /* XPM */
-static const char * configTable_xpm[] = {
+static char * configTable_xpm[] = {
 "32 32 99 2",
 "  	c None",
 ". 	c #B9B8A7",
@@ -2692,7 +2692,7 @@ static const char * configTable_xpm[] = {
 "4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 "};
 
 /* XPM */
-static const char * config_curves_xpm[] = {
+static char * config_curves_xpm[] = {
 "32 32 234 2",
 "  	c #000000",
 ". 	c #808080",
@@ -2962,7 +2962,7 @@ static const char * config_curves_xpm[] = {
 "                                                              . "};
 
 /* XPM */
-static const char * general_xpm[] = {
+static char * general_xpm[] = {
 "32 32 760 2",
 "  	c None",
 ". 	c #AFB7C3",
@@ -3758,7 +3758,7 @@ static const char * general_xpm[] = {
 ".*+*@*#*$*$*%*&***=*-*;*>*,*'*)*!*~*{*{*{*{*{*{*{*]*]*]*^*/*(*_*"};
 
 /* XPM */
-static const char * swap_columns_xpm[] = {
+static char * swap_columns_xpm[] = {
 "10 12 2 1",
 " 	c None",
 ".	c #000000",
@@ -3776,7 +3776,7 @@ static const char * swap_columns_xpm[] = {
 "  .       "};
 
 /* XPM */
-static const char * resize_xpm[] = {
+static char * resize_xpm[] = {
 "16 15 28 1",
 " 	c None",
 ".	c #010000",
@@ -3822,7 +3822,7 @@ static const char * resize_xpm[] = {
 "                ",
 "   ) ) ) ) ) ) )"};
 
-static const char* newfolder_xpm[] = {
+static char* newfolder_xpm[] = {
     "15 14 4 1",
     " 	c None",
     ".	c #000000",
@@ -3843,7 +3843,7 @@ static const char* newfolder_xpm[] = {
     ".+@+@+@+@+.    ",
     "...........    "};
 
-static const char* folder_open_xpm[]={
+static char* folder_open_xpm[]={
     "16 16 11 1",
     "# c #000000",
     "g c #c0c0c0",
@@ -3874,7 +3874,7 @@ static const char* folder_open_xpm[]={
     "............#ee#"};
 
 /* XPM */
-static const char * note_xpm[] = {
+static char * note_xpm[] = {
 "16 16 28 1",
 " 	c None",
 ".	c #3F3F3F",
@@ -3922,7 +3922,7 @@ static const char * note_xpm[] = {
 "      +++++++++ "};
 
 /* XPM */
-static const char * new_note_xpm[] = {
+static char * new_note_xpm[] = {
 "15 16 6 1",
 " 	c None",
 ".	c #000000",
@@ -3948,7 +3948,7 @@ static const char * new_note_xpm[] = {
 "..............$"};
 
 /* XPM */
-static const char * new_graph_xpm[] = {
+static char * new_graph_xpm[] = {
 "14 16 5 1",
 " 	c None",
 ".	c #000000",
@@ -3973,7 +3973,7 @@ static const char * new_graph_xpm[] = {
 ".............."};
 
 /* XPM */
-static const char * vectXYAM_xpm[] = {
+static char * vectXYAM_xpm[] = {
 "15 15 2 1",
 " 	c None",
 ".	c #882F2A",
@@ -3993,7 +3993,7 @@ static const char * vectXYAM_xpm[] = {
 "            .  ",
 "               "};
 
-static const char * vectXYXY_xpm[] = {
+static char * vectXYXY_xpm[] = {
 "15 15 3 1",
 " 	c None",
 ".	c #080000",
@@ -4015,7 +4015,7 @@ static const char * vectXYXY_xpm[] = {
 "     .         "};
 
 /* XPM */
-static const char * open_template_xpm[] = {
+static char * open_template_xpm[] = {
 "15 16 7 1",
 " 	c None",
 ".	c #000000",
@@ -4042,7 +4042,7 @@ static const char * open_template_xpm[] = {
 "   ............"};
 
 /* XPM */
-static const char * save_template_xpm[] = {
+static char * save_template_xpm[] = {
 "17 16 83 1",
 " 	c None",
 ".	c #030003",
@@ -4145,7 +4145,7 @@ static const char * save_template_xpm[] = {
 "     wwwwwwwwwwww"};
 
 /* XPM */
-static const char * boxPlot_xpm[] = {
+static char * boxPlot_xpm[] = {
 "16 16 2 1",
 " 	c None",
 ".	c #1F0E77",
@@ -4166,7 +4166,7 @@ static const char * boxPlot_xpm[] = {
 "    .......     ",
 "                "};
 
-static const char * clock_xpm[] = {
+static char * clock_xpm[] = {
 "17 17 57 1",
 " 	c None",
 ".	c #808080",
@@ -4243,7 +4243,7 @@ static const char * clock_xpm[] = {
 "    $$+++++$$    ",
 "      $$$$$      "};
 
-static const char * matrix_xpm[] = {
+static char * matrix_xpm[] = {
 "13 12 20 1",
 " 	c None",
 ".	c #000821",
@@ -4279,7 +4279,7 @@ static const char * matrix_xpm[] = {
 "{{{{{{{{{{{{{"};
 
 
-static const char * new_matrix_xpm[] = {
+static char * new_matrix_xpm[] = {
 "15 16 6 1",
 " 	c None",
 ".	c #000000",
@@ -4304,7 +4304,7 @@ static const char * new_matrix_xpm[] = {
 ".+.$$.$$.$$.$$.",
 "..............."};
 
-static const char * prev_xpm[] = {
+static char * prev_xpm[] = {
 "16 17 27 1",
 " 	c None",
 ".	c #000000",
@@ -4351,7 +4351,7 @@ static const char * prev_xpm[] = {
 "       ..       ",
 "        .       "};
 
-static const char * next_xpm[] = {
+static char * next_xpm[] = {
 "16 17 26 1",
 " 	c None",
 ".	c #000000",
@@ -4397,7 +4397,7 @@ static const char * next_xpm[] = {
 "       ..       ",
 "       .        "};
 
-static const char *stacked_xpm[] = {
+static char *stacked_xpm[] = {
 "    16    16      256            2",
 /* colors */
 "`` c #ffffff",
@@ -4676,7 +4676,7 @@ static const char *stacked_xpm[] = {
 };
 
 
-static const char *panel_v2_xpm[] = {
+static char *panel_v2_xpm[] = {
 /* width height num_colors chars_per_pixel */
 "    16    16      256            2",
 /* colors */
@@ -4956,7 +4956,7 @@ static const char *panel_v2_xpm[] = {
 };
 
 
-static const char *panel_4_xpm[] = {
+static char *panel_4_xpm[] = {
 /* width height num_colors chars_per_pixel */
 "    16    16      256            2",
 /* colors */
@@ -5235,7 +5235,7 @@ static const char *panel_4_xpm[] = {
 "auauauauauauauavauauauauauauauau"
 };
 
-static const char *panel_h2_xpm[] = {
+static char *panel_h2_xpm[] = {
 /* width height num_colors chars_per_pixel */
 "    16    16      256            2",
 /* colors */
@@ -5514,7 +5514,7 @@ static const char *panel_h2_xpm[] = {
 "avavavavavavavavavavavavavavavav"
 };
 
-static const char *stacked_hist_xpm[] = {
+static char *stacked_hist_xpm[] = {
 "    16    16      256            2",
 /* colors */
 "`` c #ffffff",
@@ -5792,7 +5792,7 @@ static const char *stacked_hist_xpm[] = {
 "auauauauauauauauauauauauauauauau"
 };
 
-static const char *histogram_xpm[] = {
+static char *histogram_xpm[] = {
 /* width height num_colors chars_per_pixel */
 "    16    16      256            2",
 /* colors */
@@ -6072,7 +6072,7 @@ static const char *histogram_xpm[] = {
 };
 
 
-static const char * dropLines_xpm[] = {
+static char * dropLines_xpm[] = {
 "16 16 3 1",
 " 	c None",
 ".	c #000000",
@@ -6094,7 +6094,7 @@ static const char * dropLines_xpm[] = {
 "  ..............",
 "    .  .  .  .  "};
 
-static const char * spline_xpm[] = {
+static char * spline_xpm[] = {
 "17 13 2 1",
 " 	c None",
 ".	c #000000",
@@ -6113,7 +6113,7 @@ static const char * spline_xpm[] = {
 "                 "};
 
 /* XPM */
-static const char * hor_steps_xpm[] = {
+static char * hor_steps_xpm[] = {
 "13 13 2 1",
 " 	c None",
 ".	c #6B0808",
@@ -6133,7 +6133,7 @@ static const char * hor_steps_xpm[] = {
 
 
 /* XPM */
-static const char * vert_steps_xpm[] = {
+static char * vert_steps_xpm[] = {
 "13 13 2 1",
 " 	c None",
 ".	c #6B0808",
@@ -6151,7 +6151,7 @@ static const char * vert_steps_xpm[] = {
 ".            ",
 ".            "};
 
-static const char * cones_xpm[] = {
+static char * cones_xpm[] = {
 "19 20 9 1",
 " 	c None",
 ".	c #FFFFFF",
@@ -6183,7 +6183,7 @@ static const char * cones_xpm[] = {
 "    #.......###.   ",
 "             #     "};
 
-static const char * crosses_xpm[] = {
+static char * crosses_xpm[] = {
 "19 20 11 1",
 " 	c None",
 ".	c #FFFFFF",
@@ -6217,7 +6217,7 @@ static const char * crosses_xpm[] = {
 "    #...###.###. # ",
 "        .#   #.    "};
 
-static const char * plot_bars_xpm[] = {
+static char * plot_bars_xpm[] = {
 "32 32 99 2",
 "  	c None",
 ". 	c #000000",
@@ -6352,7 +6352,7 @@ static const char * plot_bars_xpm[] = {
 "                      . .                                       ",
 "                                                                "};
 
-static const char * bars_xpm[] = {
+static char * bars_xpm[] = {
 "16 16 6 1",
 " 	c None",
 ".	c #000000",
@@ -6377,7 +6377,7 @@ static const char * bars_xpm[] = {
 " ..+++++#$.     ",
 " .........      "};
 
-static const char * trajectory_xpm[] = {
+static char * trajectory_xpm[] = {
 "15 16 4 1",
 " 	c None",
 ".	c #000000",
@@ -6400,7 +6400,7 @@ static const char * trajectory_xpm[] = {
 "..+++++++.     ",
 ".........      "};
 
-static const char * scatter_xpm[] = {
+static char * scatter_xpm[] = {
 "16 16 4 1",
 " 	c None",
 ".	c #000000",
@@ -6423,7 +6423,7 @@ static const char * scatter_xpm[] = {
 " ..+++++++.     ",
 " .........      "};
 
-static const char * ribbon_xpm[] = {
+static char * ribbon_xpm[] = {
 "16 16 6 1",
 " 	c None",
 ".	c #000000",
@@ -6448,7 +6448,7 @@ static const char * ribbon_xpm[] = {
 " ..++++##+.     ",
 " .........      "};
 
-static const char * pointer_xpm[] = {
+static char * pointer_xpm[] = {
 "16 17 3 1",
 " 	c None",
 ".	c #000000",
@@ -6471,7 +6471,7 @@ static const char * pointer_xpm[] = {
 "         ...    ",
 "                "};
 
-static const char * arrangeLayers_xpm[] = {
+static char * arrangeLayers_xpm[] = {
 "15 15 2 1",
 " 	c None",
 ".	c #000000",
@@ -6492,7 +6492,7 @@ static const char * arrangeLayers_xpm[] = {
 "   . .    .  . "};
 
 /* XPM */
-static const char * newLayer_xpm[] = {
+static char * newLayer_xpm[] = {
 "16 12 4 1",
 " 	c None",
 ".	c #000000",
@@ -6511,7 +6511,7 @@ static const char * newLayer_xpm[] = {
 "    .++++++++++.",
 "    ............"};
 
-static const char * pixelProfile_xpm[] = {
+static char * pixelProfile_xpm[] = {
 "20 20 56 1",
 " 	c None",
 ".	c #6B696B",
@@ -6590,7 +6590,7 @@ static const char * pixelProfile_xpm[] = {
 " ; ~-:<:/b _ a _ ^c+",
 ". +@^ ^ # _ _ _ _ # "};
 
-static const char * monalisa_xpm[] = {
+static char * monalisa_xpm[] = {
 "19 19 219 2",
 "  	c None",
 ". 	c #B5AEA5",
@@ -6831,7 +6831,7 @@ static const char * monalisa_xpm[] = {
 "% <+*.<+[+K i m.e e }+|+_+1+_+2+3+4+5+",
 "& < e e e e e e e e e e e e e e e 5+6+"};
 
-static const char * lineMesh_xpm[] = {
+static char * lineMesh_xpm[] = {
 "20 18 130 2",
 "  	c None",
 ". 	c #4245E7",
@@ -6982,7 +6982,7 @@ static const char * lineMesh_xpm[] = {
 "& ( ` ..1.2.@ i ' 3.L 4.! 5.6.7.@.4.@ d ",
 "^           w S h 9 4.H @ @ 8.9.@     s "};
 
-static const char * rightGrid_xpm[] = {
+static char * rightGrid_xpm[] = {
 "20 19 25 1",
 " 	c None",
 ".	c #C60000",
@@ -7029,7 +7029,7 @@ static const char * rightGrid_xpm[] = {
 ".(             @    ",
 ": @ @ @ @ @ @ @     "};
 
-static const char * leftGrid_xpm[] = {
+static char * leftGrid_xpm[] = {
 "20 19 25 1",
 " 	c None",
 ".	c #0810B5",
@@ -7076,7 +7076,7 @@ static const char * leftGrid_xpm[] = {
 " $            @=    ",
 ". . . . . . . :     "};
 
-static const char * backGrid_xpm[] = {
+static char * backGrid_xpm[] = {
 "20 19 31 1",
 " 	c None",
 ".	c #C60000",
@@ -7129,7 +7129,7 @@ static const char * backGrid_xpm[] = {
 " 2             )    ",
 ") ) ) ) ) ) ) )     "};
 
-static const char * ceilGrid_xpm[] = {
+static char * ceilGrid_xpm[] = {
 "20 19 24 1",
 " 	c None",
 ".	c #C60000",
@@ -7175,7 +7175,7 @@ static const char * ceilGrid_xpm[] = {
 " _             )    ",
 ") ) ) ) ) ) ) )     "};
 
-static const char * floorGrid_xpm[] = {
+static char * floorGrid_xpm[] = {
 "20 19 30 1",
 " 	c None",
 ".	c #0810B5",
@@ -7228,7 +7228,7 @@ static const char * floorGrid_xpm[] = {
 ",*|*1*|*|*1*|*,     "};
 
 
-static const char * pointsMesh_xpm[] = {
+static char * pointsMesh_xpm[] = {
 "19 20 14 1",
 " 	c None",
 ".	c #1800FF",
@@ -7266,7 +7266,7 @@ static const char * pointsMesh_xpm[] = {
 "        ..   ..    "};
 
 
-static const char * frontGrid_xpm[] = {
+static char * frontGrid_xpm[] = {
 "20 19 22 1",
 " 	c None",
 ".	c #0810B5",
@@ -7311,7 +7311,7 @@ static const char * frontGrid_xpm[] = {
 "^%*%/%*%*%/%*%^     "};
 
 
-static const char * no_floor_xpm[] = {
+static char * no_floor_xpm[] = {
 "20 10 2 1",
 " 	c None",
 ".	c #000000",
@@ -7326,7 +7326,7 @@ static const char * no_floor_xpm[] = {
 ".               .   ",
 "................    "};
 
-static const char * isolines_xpm[] = {
+static char * isolines_xpm[] = {
 "20 10 9 1",
 " 	c None",
 ".	c #000000",
@@ -7348,7 +7348,7 @@ static const char * isolines_xpm[] = {
 ".    +     +    .   ",
 "................    "};
 
-static const char * floor_xpm[] = {
+static char * floor_xpm[] = {
 "20 10 22 1",
 " 	c None",
 ".	c #000000",
@@ -7383,7 +7383,7 @@ static const char * floor_xpm[] = {
 ".^/^/^/^/^/^/^/^.   ",
 "................    "};
 
-static const char * grid_poly_xpm[] = {
+static char * grid_poly_xpm[] = {
 "20 18 86 1",
 " 	c None",
 ".	c #101010",
@@ -7490,7 +7490,7 @@ static const char * grid_poly_xpm[] = {
 "$]MNO3p6PQQQPQpRS3pl",
 "R     !TU<UUpp6pp  ."};
 
-static const char * grid_only_xpm[] = {
+static char * grid_only_xpm[] = {
 "20 18 69 1",
 " 	c None",
 ".	c #101010",
@@ -7580,7 +7580,7 @@ static const char * grid_only_xpm[] = {
 "$~4t%5+6=}a*_h+)D5+>",
 ")     /,#1##++6++  ."};
 
-static const char * no_grid_xpm[] = {
+static char * no_grid_xpm[] = {
 "20 18 54 1",
 " 	c None",
 ".	c #181818",
@@ -7655,7 +7655,7 @@ static const char * no_grid_xpm[] = {
 "%~gh&7#(_iiijk(l#7+e",
 ",     m#nonn+++++  ["};
 
-static const char * no_axes_xpm[] = {
+static char * no_axes_xpm[] = {
 "20 19 6 1",
 " 	c None",
 ".	c #0810B5",
@@ -7683,7 +7683,7 @@ static const char * no_axes_xpm[] = {
 "               .    ",
 ". . . . . . . .     "};
 
-static const char * box_xpm[] = {
+static char * box_xpm[] = {
 "20 19 7 1",
 " 	c None",
 ".	c #101CB5",
@@ -7713,7 +7713,7 @@ static const char * box_xpm[] = {
 "@             @+    ",
 "+@+@+@+@+@+@+@+     "};
 
-static const char * free_axes_xpm[] = {
+static char * free_axes_xpm[] = {
 "17 18 3 1",
 " 	c None",
 ".	c #0810B5",
@@ -7737,7 +7737,7 @@ static const char * free_axes_xpm[] = {
 "       +.  +     ",
 "         .+      "};
 
-static const char * newFxy_xpm[] = {
+static char * newFxy_xpm[] = {
 "14 16 75 1",
 " 	c None",
 ".	c #000000",
@@ -7832,7 +7832,7 @@ static const char * newFxy_xpm[] = {
 ".jGHIyyIqyJj.."};
 
 /* XPM */
-static const char * newF_xpm[] = {
+static char * newF_xpm[] = {
 "14 16 4 1",
 " 	c None",
 ".	c #000000",
@@ -7856,7 +7856,7 @@ static const char * newF_xpm[] = {
 ".............."};
 
 /* XPM */
-static const char * newFolder_xpm[] = {
+static char * newFolder_xpm[] = {
 "15 16 5 1",
 " 	c None",
 ".	c #000000",
@@ -7880,7 +7880,7 @@ static const char * newFolder_xpm[] = {
 ".+.#+#+#+#+#+#.",
 "..............."};
 
-static const char * stat_rows_xpm[] = {
+static char * stat_rows_xpm[] = {
 "16 15 3 1",
 " 	c None",
 ".	c #000000",
@@ -7902,7 +7902,7 @@ static const char * stat_rows_xpm[] = {
 "................"};
 
 /* XPM */
-static const char * fx_xpm[] = {
+static char * fx_xpm[] = {
 "14 16 4 1",
 " 	c None",
 ".	c #000000",
@@ -7925,7 +7925,7 @@ static const char * fx_xpm[] = {
 ".++++++++++++.",
 ".............."};
 
-static const char * redo_xpm[] = {
+static char * redo_xpm[] = {
 "14 18 36 1",
 " 	c None",
 ".	c #000000",
@@ -7982,7 +7982,7 @@ static const char * redo_xpm[] = {
 "  .56.        ",
 "   ..7        "};
 
-static const char * undo_xpm[] = {
+static char * undo_xpm[] = {
 "16 18 34 1",
 " 	c None",
 ".	c #000000",
@@ -8039,7 +8039,7 @@ static const char * undo_xpm[] = {
 
 
 
-static const char * col_stat_xpm[] = {
+static char * col_stat_xpm[] = {
 "16 16 3 1",
 " 	c None",
 ".	c #000000",
@@ -8061,7 +8061,7 @@ static const char * col_stat_xpm[] = {
 "          ......",
 "                "};
 
-static const char * wizard_xpm[] = {
+static char * wizard_xpm[] = {
 "32 32 91 1",
 " 	c None",
 ".	c #FF6500",
@@ -8188,7 +8188,7 @@ static const char * wizard_xpm[] = {
 " TTTXHG                         "};
 
 
-static const char * pie_xpm[] = {
+static char * pie_xpm[] = {
 "16 16 7 1",
 " 	c None",
 ".	c #000000",
@@ -8214,7 +8214,7 @@ static const char * pie_xpm[] = {
 "   ..$$$.%%..   ",
 "     ......     "};
 
-static const char * randomNumbers_xpm[] = {
+static char * randomNumbers_xpm[] = {
 "15 14 3 1",
 " 	c None",
 ".	c #000000",
@@ -8234,7 +8234,7 @@ static const char * randomNumbers_xpm[] = {
 ".+..+..+..+..+.",
 "..............."};
 
-static const char * rowNumbers_xpm[] = {
+static char * rowNumbers_xpm[] = {
 "15 15 3 1",
 " 	c None",
 ".	c #000000",
@@ -8255,7 +8255,7 @@ static const char * rowNumbers_xpm[] = {
 ".+..+..+..+..+.",
 "..............."};
 
-static const char * hBars_xpm[] = {
+static char * hBars_xpm[] = {
 "16 16 16 1",
 " 	c None",
 ".	c #000000",
@@ -8291,7 +8291,7 @@ static const char * hBars_xpm[] = {
 "................"};
 
 
-static const char * vertBars_xpm[] = {
+static char * vertBars_xpm[] = {
 "16 17 16 1",
 " 	c None",
 ".	c #000000",
@@ -8327,7 +8327,7 @@ static const char * vertBars_xpm[] = {
 ".+%''%--.**.)%+.",
 "................"};
 
-static const char * area_xpm[] = {
+static char * area_xpm[] = {
 "16 16 4 1",
 " 	c #000000",
 ".	c #FFFFFF",
@@ -8350,7 +8350,7 @@ static const char * area_xpm[] = {
 "                ",
 "                "};
 
-static const char * cursors_xpm[] = {
+static char * cursors_xpm[] = {
 "16 16 8 1",
 " 	c None",
 ".	c #D51309",
@@ -8377,7 +8377,7 @@ static const char * cursors_xpm[] = {
 "    ++          ",
 "    ++          "};
 
-static const char *close_xpm[] = {
+static char *close_xpm[] = {
 "13 15 26 1",
 " 	c None",
 ".	c #8A9BA7",
@@ -8421,7 +8421,7 @@ static const char *close_xpm[] = {
 " .@+.+@#%%@] ",
 "  <]]]]]]]]< "};
 
-static const char *logo_xpm[]={
+static char *logo_xpm[]={
 "32 32 144 2",
 "Qt c None",
 ".# c #000000",
@@ -8602,7 +8602,7 @@ static const char *logo_xpm[]={
 
 
 /* XPM */
-static const char * hand_xpm[] = {
+static char * hand_xpm[] = {
 "16 20 3 1",
 " 	c None",
 ".	c #000000",
@@ -8629,7 +8629,7 @@ static const char * hand_xpm[] = {
 "    ..........  "};
 
 /* XPM */
-static const char * drag_curve_xpm[] = {
+static char * drag_curve_xpm[] = {
 "13 16 4 1",
 " 	c None",
 ".	c #FF0000",
@@ -8653,7 +8653,7 @@ static const char * drag_curve_xpm[] = {
 "   +@@@@@@+  "};
 
 /* XPM */
-static const char *errors_xpm[]={
+static char *errors_xpm[]={
 "3 11 2 1",
 " 	c None",
 ".	c #000000",
@@ -8669,7 +8669,7 @@ static const char *errors_xpm[]={
 " . ",
 "..."};
 
-static const char *curves_xpm[]={
+static char *curves_xpm[]={
 "14 16 5 1",
 " 	c None",
 ".	c #000000",
@@ -8693,7 +8693,7 @@ static const char *curves_xpm[]={
 ".@@@@@@@@@@@@.",
 ".............."};
 
-static const char *arrow_xpm[]={
+static char *arrow_xpm[]={
 "11 12 2 1",
 " 	c None",
 ".	c #000000",
@@ -8710,7 +8710,7 @@ static const char *arrow_xpm[]={
 "..         ",
 ".          "};
 
-static const char *legend_xpm[]={
+static char *legend_xpm[]={
 "14 15 4 1",
 " 	c None",
 ".	c #000000",
@@ -8733,7 +8733,7 @@ static const char *legend_xpm[]={
 ".............."};
 
 
-static const char *select_xpm[]={
+static char *select_xpm[]={
 "16 16 4 1",
 " 	c None",
 ".	c #D51309",
@@ -8756,7 +8756,7 @@ static const char *select_xpm[]={
 "        .       ",
 "        .       "};
 
-static const char *cursor_16[]={
+static char *cursor_16[]={
 "16 16 2 1",
 ". c None",
 "# c #000000",
@@ -8777,7 +8777,7 @@ static const char *cursor_16[]={
 "................",
 "................"};
 
-static const char *unzoom_xpm[]={
+static char *unzoom_xpm[]={
 "15 15 2 1",
 ". c None",
 "# c #000000",
@@ -8797,7 +8797,7 @@ static const char *unzoom_xpm[]={
 ".....#.......#.",
 "......#.....#.."};
 
-static const char *paste_xpm[]={
+static char *paste_xpm[]={
 "16 15 7 1",
 ". c None",
 "# c #000000",
@@ -8822,7 +8822,7 @@ static const char *paste_xpm[]={
 "..#####deeeeeeed",
 ".......ddddddddd"};
 
-static const char *cut_xpm[]={
+static char *cut_xpm[]={
 "18 18 3 1",
 ". c None",
 "# c #000000",
@@ -8846,7 +8846,7 @@ static const char *cut_xpm[]={
 "......aa..........",
 ".................."};
 
-static const char *copy_xpm[]={
+static char *copy_xpm[]={
 "15 13 4 1",
 "# c None",
 ". c #000000",
@@ -8867,7 +8867,7 @@ static const char *copy_xpm[]={
 "######bbbbbbbbb"};
 
 /* XPM */
-static const char * text_xpm[] = {
+static char * text_xpm[] = {
 "12 11 2 1",
 " 	c None",
 ".	c #1F0E77",
@@ -8884,7 +8884,7 @@ static const char * text_xpm[] = {
 "    ....    "};
 
 
-static const char * duplicate_xpm[] = {
+static char * duplicate_xpm[] = {
 "14 14 4 1",
 " 	c None",
 ".	c #000000",
@@ -8905,7 +8905,7 @@ static const char * duplicate_xpm[] = {
 ".@@@@@@@@@@@@.",
 ".............."};
 
-static const char *new_xpm[]={
+static char *new_xpm[]={
 "14 16 4 1",
 "# c None",
 ". c #000000",
@@ -8928,7 +8928,7 @@ static const char *new_xpm[]={
 ".aaaaaaaaaaaa.",
 ".............."};
 
-static const char *addCol_xpm[]={
+static char *addCol_xpm[]={
 "15 16 5 1",
 ". c None",
 "# c #000000",
@@ -8952,7 +8952,7 @@ static const char *addCol_xpm[]={
 ".......######..",
 "..............."};
 
-static const char *pPlot_xpm[]={
+static char *pPlot_xpm[]={
 "13 13 2 1",
 ". c None",
 "# c #000000",
@@ -8971,7 +8971,7 @@ static const char *pPlot_xpm[]={
 "###.........."};
 
 
-static const char *lpPlot_xpm[]={
+static char *lpPlot_xpm[]={
 "13 13 2 1",
 ". c None",
 "# c #000000",
@@ -8989,7 +8989,7 @@ static const char *lpPlot_xpm[]={
 "###..........",
 "###.........."};
 
-static const char *lPlot_xpm[]={
+static char *lPlot_xpm[]={
 "14 14 2 1",
 ". c None",
 "# c #000000",
@@ -9009,7 +9009,7 @@ static const char *lPlot_xpm[]={
 "#............."};
 
 
-static const char *table_xpm[]={
+static char *table_xpm[]={
 "15 16 5 1",
 "# c None",
 ". c #000000",
@@ -9033,7 +9033,7 @@ static const char *table_xpm[]={
 ".a.aa.aa.aa.aa.",
 "..............."};
 
-static const char *multiload_xpm[]={
+static char *multiload_xpm[]={
 "16 15 5 1",
 ". c None",
 "# c #000000",
@@ -9056,7 +9056,7 @@ static const char *multiload_xpm[]={
 "....#c#..#..#..#",
 "....############"};
 
-static const char *import_xpm[]={
+static char *import_xpm[]={
 "16 15 5 1",
 " 	c None",
 ".	c #000000",
@@ -9079,7 +9079,7 @@ static const char *import_xpm[]={
 "    .#.##.##.##.",
 "    ............"};
 
-static const char * graph_xpm[] = {
+static char * graph_xpm[] = {
 "14 14 6 1",
 " 	c None",
 ".	c #030003",
@@ -9102,7 +9102,7 @@ static const char * graph_xpm[] = {
 ".++++++++++++.",
 ".............."};
 
-static const char *worksheet_xpm[]={
+static char *worksheet_xpm[]={
 "13 12 32 1",
 "  c black",
 ". c #000100",
@@ -9151,7 +9151,7 @@ static const char *worksheet_xpm[]={
 "XXXXXXXXXXXXX"
 };
 
-static const char *folder_xpm[]={
+static char *folder_xpm[]={
 "32 32 161 2",
 "Qt c None",
 ".b c #000000",
@@ -9348,7 +9348,7 @@ static const char *folder_xpm[]={
 "QtQtQtQtQtQtQtQtQtQtQtQtQtQtQtQtQtQtQtQtQtQtQtQtQtQtQtQt.b.b.bQt"};
 
 
-static const char *fileopen_xpm[] = {
+static char *fileopen_xpm[] = {
 "    16    13        5            1",
 ". c #040404",
 "# c #808304",
@@ -9370,7 +9370,7 @@ static const char *fileopen_xpm[] = {
 "...........aaaaa"
 };
 
-static const char *fileprint_xpm[] = {
+static char *fileprint_xpm[] = {
 "    16    14        6            1",
 ". c #000000",
 "# c #848284",
@@ -9395,7 +9395,7 @@ static const char *fileprint_xpm[] = {
 };
 
 /* XPM */
-static const char *filesave_xpm[] = {
+static char *filesave_xpm[] = {
 "14 15 54 1",
 " 	c None",
 ".	c #7393A7",
@@ -9468,7 +9468,7 @@ static const char *filesave_xpm[] = {
 " llllllllllllo"};
 
 /* XPM */
-static const char * filesaveas_xpm[] = {
+static char * filesaveas_xpm[] = {
 "14 15 59 1",
 " 	c None",
 ".	c #7393A7",
@@ -9545,7 +9545,7 @@ static const char * filesaveas_xpm[] = {
 "qrrrrrrrrrrrrs",
 " qqqqqqqqqqqqt"};
 
-static const char *erase_xpm[]={
+static char *erase_xpm[]={
 "29 28 256 2",
 "Qt c None",
 "aC c #000000",
@@ -9832,7 +9832,7 @@ static const char *erase_xpm[]={
 "QtQtQtQtQtQtQtQtQtQtQtQtQtQtQtQtQtQtQtQtQtQtQtQtQtQtQtQtQt",
 "QtQtQtQtQtQtQtQtQtQtQtQtQtQtQtQtQtQtQtQtQtQtQtQtQtQtQtQtQt"};
 
-static const char *zoom_xpm[]={
+static char *zoom_xpm[]={
 "20 20 106 2",
 "  	c None",
 ". 	c #8D8C89",
@@ -9962,7 +9962,7 @@ static const char *zoom_xpm[]={
 "                                  >.# ,."};
 
 /* XPM */
-static const char * log_xpm[] = {
+static char * log_xpm[] = {
 "16 14 4 1",
 " 	c None",
 ".	c #000000",
@@ -9983,7 +9983,7 @@ static const char * log_xpm[] = {
 ".@@@@@@@@@@@@@@.",
 "................"};
 
-static const char *quit_xpm[]={
+static char *quit_xpm[]={
 "32 32 170 2",
 "Qt c None",
 ".c c #000000",
@@ -10189,7 +10189,7 @@ static const char *quit_xpm[]={
 "QtQtQtaCaBaBaCaCaCaBaBaCaCaCaBaBaCaCaC.c.c.caCaCaBaBaCaCQtQtQtQt"};
 
 /* XPM */
-static const char * qtiplot_logo_xpm[] = {
+static char * qtiplot_logo_xpm[] = {
 "64 64 1304 2",
 "  	c None",
 ". 	c #4A81AE",
