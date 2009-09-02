@@ -3079,7 +3079,9 @@ void PlotDialog::applyLineFormatToLayer(Graph *g)
 		if (it->rtti() == QwtPlotItem::Rtti_PlotSpectrogram)
 			continue;
 
-		QwtPlotCurve *c = (QwtPlotCurve *)it;
+		PlotCurve *c = (PlotCurve *)it;
+		if (c->type() == Graph::ErrorBars)
+			continue;
 
 		QPen pen = QPen(c->pen().color(), boxLineWidth->value(),
 					boxLineStyle->style(), Qt::FlatCap, Qt::MiterJoin);
