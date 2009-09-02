@@ -126,6 +126,7 @@ public:
 	bool eventFilter(QObject *o, QEvent *e);
 
 private:
+	void displayInfo(bool clear = false);
 	void draw(QPainter *p, const QwtScaleMap &xMap, const QwtScaleMap &yMap, const QRect &r) const;
 	double theta(int xs, int ys, int xe, int ye) const;
 
