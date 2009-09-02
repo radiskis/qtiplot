@@ -33,7 +33,6 @@
 #include "ApplicationWindow.h"
 #include "pixmaps.h"
 #include "PlotWizard.h"
-#include "DataSetDialog.h"
 #include "ConfigDialog.h"
 #include "importOPJ.h"
 #include "RenameWindowDialog.h"
@@ -2006,42 +2005,41 @@ void ApplicationWindow::add3DData()
 	}
 
 	QStringList zColumns = columnsList(Table::Z);
-	if ((int)zColumns.count() <= 0)
-	{
+	if ((int)zColumns.count() <= 0){
 		QMessageBox::critical(this,tr("QtiPlot - Warning"),
 				tr("There are no available columns with plot designation set to Z!"));
 		return;
 	}
 
-	DataSetDialog *ad = new DataSetDialog(tr("Column") + ": ", this);
-	connect (ad,SIGNAL(options(const QString&)), this, SLOT(insertNew3DData(const QString&)));
-	ad->setWindowTitle(tr("QtiPlot - Choose data set"));
-	ad->setCurveNames(zColumns);
-	ad->exec();
+	bool ok;
+	QString column = QInputDialog::getItem(this, tr("QtiPlot - Choose data set"),
+									tr("Column") + ": ", zColumns, 0, false, &ok);
+	if (ok && !column.isEmpty())
+		insertNew3DData(column);
 }
 
 void ApplicationWindow::change3DData()
 {
-	DataSetDialog *ad = new DataSetDialog(tr("Column") + ": ", this);
-	connect (ad, SIGNAL(options(const QString&)), this, SLOT(change3DData(const QString&)));
-
-	ad->setWindowTitle(tr("QtiPlot - Choose data set"));
-	ad->setCurveNames(columnsList(Table::Z));
-	ad->exec();
+	bool ok;
+	QString column = QInputDialog::getItem(this, tr("QtiPlot - Choose data set"),
+									tr("Column") + ": ", columnsList(Table::Z), 0, false, &ok);
+	if (ok && !column.isEmpty())
+		change3DData(column);
 }
 
 void ApplicationWindow::change3DMatrix()
 {
-	DataSetDialog *ad = new DataSetDialog(tr("Matrix") + ": ", this);
-	connect (ad, SIGNAL(options(const QString&)), this, SLOT(change3DMatrix(const QString&)));
-
-	ad->setWindowTitle(tr("QtiPlot - Choose matrix to plot"));
-	ad->setCurveNames(matrixNames());
-
+	QStringList matrices = matrixNames();
+	int currentIndex = 0;
 	Graph3D* g = (Graph3D*)activeWindow(Plot3DWindow);
 	if (g && g->matrix())
-		ad->setCurentDataSet(g->matrix()->objectName());
-	ad->exec();
+		currentIndex = matrices.indexOf(g->matrix()->objectName());
+
+	bool ok;
+	QString matrixName = QInputDialog::getItem(this, tr("QtiPlot - Choose matrix to plot"),
+							tr("Matrix") + ": ", matrices, currentIndex, false, &ok);
+	if (ok && !matrixName.isEmpty())
+		change3DMatrix(matrixName);
 }
 
 void ApplicationWindow::change3DMatrix(const QString& matrix_name)
@@ -2065,20 +2063,18 @@ void ApplicationWindow::change3DMatrix(const QString& matrix_name)
 void ApplicationWindow::add3DMatrixPlot()
 {
 	QStringList matrices = matrixNames();
-	if ((int)matrices.count() <= 0)
-	{
+	if ((int)matrices.count() <= 0){
 		QMessageBox::warning(this, tr("QtiPlot - Warning"),
 				tr("<h4>There are no matrices available in this project.</h4>"
 					"<p><h4>Please create a matrix and try again!</h4>"));
 		return;
 	}
 
-	DataSetDialog *ad = new DataSetDialog(tr("Matrix") + " :", this);
-	connect (ad,SIGNAL(options(const QString&)), this, SLOT(insert3DMatrixPlot(const QString&)));
-
-	ad->setWindowTitle(tr("QtiPlot - Choose matrix to plot"));
-	ad->setCurveNames(matrices);
-	ad->exec();
+	bool ok;
+	QString matrixName = QInputDialog::getItem(this, tr("QtiPlot - Choose matrix to plot"),
+							tr("Matrix") + ": ", matrices, 0, false, &ok);
+	if (ok && !matrixName.isEmpty())
+		insert3DMatrixPlot(matrixName);
 }
 
 void ApplicationWindow::insert3DMatrixPlot(const QString& matrix_name)
@@ -11547,10 +11543,11 @@ void ApplicationWindow::showDataSetDialog(Analysis operation)
 	if (!g)
         return;
 
-	DataSetDialog *ad = new DataSetDialog(tr("Curve") + ": ", this);
-	ad->setGraph(g);
-	ad->setOperationType(operation);
-	ad->exec();
+	bool ok;
+	QString curve = QInputDialog::getItem(this, tr("QtiPlot - Choose data set"),
+					tr("Curve") + ": ", g->analysableCurvesList(), 0, false, &ok);
+	if (ok && !curve.isEmpty())
+		analyzeCurve(g, operation, curve);
 }
 
 void ApplicationWindow::analyzeCurve(Graph *g, Analysis operation, const QString& curveTitle)

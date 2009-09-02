@@ -449,6 +449,8 @@ void Graph3D::addMatrixData(Matrix* m)
 	if (!m || d_matrix == m)
 		return;
 
+	d_table = NULL;
+
 	bool first_time = false;
 	if(!d_matrix)
 		first_time = true;
@@ -483,7 +485,11 @@ void Graph3D::addMatrixData(Matrix* m)
 void Graph3D::addMatrixData(Matrix* m, double xl, double xr,
 		double yl, double yr, double zl, double zr)
 {
+	if (!m)
+		return;
+
 	d_matrix = m;
+	d_table = NULL;
 	plotAssociation = "matrix<" + QString(m->objectName()) + ">";
 
 	updateScalesFromMatrix(xl, xr, yl, yr, zl, zr);
