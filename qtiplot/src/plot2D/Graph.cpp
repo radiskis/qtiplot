@@ -6455,6 +6455,14 @@ void Graph::changeCurveIndex(int fromIndex, int toIndex)
 		toIndex < 0 || toIndex >= d_curves.size()) return;
 
 	d_curves.move ( fromIndex, toIndex );
+
+	int z = 0;
+	foreach(QwtPlotItem *c, d_curves){
+		c->setZ(z);
+		z++;
+	}
+	replot();
+	modifiedGraph();
 }
 
 void Graph::dragEnterEvent( QDragEnterEvent* e )
