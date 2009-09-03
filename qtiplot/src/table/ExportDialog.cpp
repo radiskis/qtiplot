@@ -142,7 +142,7 @@ void ExportDialog::initAdvancedOptions()
 
 void ExportDialog::updateAdvancedOptions (const QString & filter)
 {
-	bool on = !filter.contains("*.tex");
+	bool on = !filter.contains("*.tex") && !filter.contains("*.odf") && !filter.contains("*.html");
 	separatorLbl->setVisible(on);
 	boxSeparator->setVisible(on);
 	buttonHelp->setVisible(on);
@@ -177,6 +177,8 @@ void ExportDialog::setFileTypeFilters()
 {
 	QList<QByteArray> list;
 	list << "DAT";
+	list << "ODF";
+	list << "HTML";
 	list << "TXT";
 	list << "TEX";
 
