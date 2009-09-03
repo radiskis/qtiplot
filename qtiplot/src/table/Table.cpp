@@ -50,6 +50,8 @@
 #include <QProgressDialog>
 #include <QFile>
 #include <QRegion>
+#include <QTextDocumentWriter>
+#include <QTextTable>
 
 #include <q3paintdevicemetrics.h>
 #include <q3dragobject.h>
@@ -2487,6 +2489,146 @@ void Table::importASCII(const QString &fname, const QString &sep, int ignoredLin
 	}
 }
 
+bool Table::exportODF(const QString& fname, bool withLabels, bool exportComments, bool exportSelection)
+{
+	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+
+	int rows = d_table->numRows();
+	int cols = d_table->numCols();
+	int selectedCols = 0;
+	int topRow = 0, bottomRow = 0;
+	int *sCols = 0;
+	int r = rows;
+	if (exportSelection){
+		for (int i=0; i<cols; i++){
+			if (d_table->isColumnSelected(i))
+				selectedCols++;
+		}
+
+		sCols = new int[selectedCols];
+		int aux = 0;
+		for (int i=0; i<cols; i++){
+			if (d_table->isColumnSelected(i)){
+				sCols[aux] = i;
+				aux++;
+			}
+		}
+
+		for (int i=0; i<rows; i++){
+			if (d_table->isRowSelected(i)){
+				topRow = i;
+				break;
+			}
+		}
+
+		for (int i = rows - 1; i > 0; i--){
+			if (d_table->isRowSelected(i)){
+				bottomRow = i;
+				break;
+			}
+		}
+
+		r = abs(bottomRow - topRow) + 1;
+	}
+
+	int aux = selectedCols;
+	if (!selectedCols)
+		aux = cols;
+
+	QTextDocument *document = new QTextDocument();
+	QTextCursor cursor = QTextCursor(document);
+
+	QTextTableFormat tableFormat;
+	tableFormat.setAlignment(Qt::AlignCenter);
+	tableFormat.setCellPadding(0);
+	tableFormat.setHeaderRowCount(0);
+	tableFormat.setBorder (1);
+	tableFormat.setBorderStyle(QTextFrameFormat::BorderStyle_Solid);
+	tableFormat.setWidth(QTextLength(QTextLength::PercentageLength, 100));
+
+	int headerRows = 0;
+	if (withLabels)
+		headerRows++;
+	if (exportComments)
+		headerRows++;
+	r += headerRows;
+
+	QTextTable *table = cursor.insertTable(r, aux, tableFormat);
+	QTextCharFormat cellFormat;
+	cellFormat.setBackground (QBrush(Qt::gray));
+	for (int i = 0; i < aux; i++){
+		for (int j = 0; j < headerRows; j++){
+			QTextTableCell cell = table->cellAt(j, i);
+			cell.setFormat(cellFormat);
+		}
+	}
+
+	if (withLabels){
+		QStringList header = colNames();
+		QStringList ls = header.grep ( QRegExp ("\\D"));
+		if (exportSelection){
+			for (int i = 0; i < aux; i++){
+				if (ls.count()>0)
+					cursor.insertText(header[sCols[i]]);
+				else
+					cursor.insertText("C" + header[sCols[i]]);
+				cursor.movePosition(QTextCursor::NextCell);
+			}
+		} else {
+			if (ls.count() > 0){
+				for (int j = 0; j < aux; j++){
+					cursor.insertText(header[j]);
+					cursor.movePosition(QTextCursor::NextCell);
+				}
+			} else {
+				for (int j = 0; j < aux; j++){
+					cursor.insertText("C" + header[j]);
+					cursor.movePosition(QTextCursor::NextCell);
+				}
+			}
+		}
+	}// finished writting labels
+
+	if (exportComments){
+		if (exportSelection){
+			for (int i = 0; i < aux; i++){
+                cursor.insertText(comments[sCols[i]]);
+                cursor.movePosition(QTextCursor::NextCell);
+			}
+		} else {
+            for (int i = 0; i < aux; i++){
+                cursor.insertText(comments[i]);
+				cursor.movePosition(QTextCursor::NextCell);
+            }
+        }
+	}
+
+	if (exportSelection){
+		for (int i = topRow; i <= bottomRow; i++){
+			for (int j = 0; j < aux; j++){
+				cursor.insertText(d_table->text(i, sCols[j]));
+				cursor.movePosition(QTextCursor::NextCell);
+			}
+		}
+		delete [] sCols;
+	} else {
+		for (int i = 0; i < rows; i++) {
+			for (int j = 0; j < aux; j++){
+				cursor.insertText(d_table->text(i, j));
+				cursor.movePosition(QTextCursor::NextCell);
+			}
+		}
+	}
+
+	QTextDocumentWriter writer(fname);
+	if (fname.endsWith(".html"))
+		writer.setFormat("HTML");
+	writer.write(document);
+
+	QApplication::restoreOverrideCursor();
+	return true;
+}
+
 bool Table::exportASCII(const QString& fname, const QString& separator,
 		bool withLabels, bool exportComments, bool exportSelection)
 {
@@ -2495,6 +2637,11 @@ bool Table::exportASCII(const QString& fname, const QString& separator,
 		QMessageBox::critical(0, tr("QtiPlot - ASCII Export Error"),
 				tr("Could not write to file: <br><h4>"+fname+ "</h4><p>Please verify that you have the right to write to this location!").arg(fname));
 		return false;
+	}
+
+	if (fname.endsWith(".odf") || fname.endsWith(".html")){
+		f.close();
+		return exportODF(fname, withLabels, exportComments, exportSelection);
 	}
 
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));

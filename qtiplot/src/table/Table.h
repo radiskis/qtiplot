@@ -295,6 +295,7 @@ public slots:
 	void setMonthFormat(const QString& format, int col, bool updateCells = true);
 	void setDayFormat(const QString& format, int col, bool updateCells = true);
 
+	bool exportODF(const QString& fname, bool withLabels, bool exportComments, bool exportSelection);
 	bool exportASCII(const QString& fname, const QString& separator, bool withLabels = false,
                      bool exportComments = false, bool exportSelection = false);
 	void importASCII(const QString &fname, const QString &sep, int ignoredLines, bool renameCols,

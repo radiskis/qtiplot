@@ -159,6 +159,7 @@ public:
 	//! Calculate matrix values using the #formula_str (optimization for muParser).
 	bool muParserCalculate(int startRow = 0, int endRow = -1, int startCol = 0, int endCol = -1);
 
+	bool exportODF(const QString& fname, bool exportSelection);
 	bool exportASCII(const QString& fname, const QString& separator, bool exportSelection);
 	void importASCII(const QString &fname, const QString &sep, int ignoredLines, bool stripSpaces,
 					bool simplifySpaces, const QString& commentString, ImportMode importAs = Overwrite,

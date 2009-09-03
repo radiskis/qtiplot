@@ -57,6 +57,8 @@
 #include <QSvgGenerator>
 #include <QFile>
 #include <QUndoStack>
+#include <QTextDocumentWriter>
+#include <QTextTable>
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -1462,6 +1464,65 @@ void Matrix::fft(bool inverse)
 	}
 }
 
+bool Matrix::exportODF(const QString& fname, bool exportSelection)
+{
+	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+
+	int topRow = 0;
+	int bottomRow = numRows() - 1;
+	int leftCol = 0;
+	int rightCol = numCols() - 1;
+
+	if (exportSelection && d_view_type == TableView){
+        QModelIndexList selectedIndexes = d_table_view->selectionModel()->selectedIndexes();
+        topRow = selectedIndexes[0].row();
+        bottomRow = topRow;
+        leftCol = selectedIndexes[0].column();
+        rightCol = leftCol;
+        foreach(QModelIndex index, selectedIndexes){
+            int row = index.row();
+            if (row < topRow)
+                topRow = row;
+            if (row > bottomRow)
+                bottomRow = row;
+
+            int col = index.column();
+            if (col < leftCol)
+                leftCol = col;
+            if (col > rightCol)
+                rightCol = col;
+        }
+	}
+
+	QTextDocument *document = new QTextDocument();
+	QTextCursor cursor = QTextCursor(document);
+
+	QTextTableFormat tableFormat;
+	tableFormat.setAlignment(Qt::AlignCenter);
+	tableFormat.setCellPadding(1);
+	tableFormat.setHeaderRowCount(0);
+	tableFormat.setBorder (1);
+	tableFormat.setBorderStyle(QTextFrameFormat::BorderStyle_Solid);
+	tableFormat.setWidth(QTextLength(QTextLength::PercentageLength, 100));
+
+	cursor.insertTable(abs(bottomRow - topRow) + 1, abs(rightCol - leftCol) + 1, tableFormat);
+
+	for (int i = topRow; i <= bottomRow; i++){
+		for (int j = leftCol; j <= rightCol; j++){
+			cursor.insertText(d_matrix_model->text(i, j));
+			cursor.movePosition(QTextCursor::NextCell);
+		}
+	}
+
+	QTextDocumentWriter writer(fname);
+	if (fname.endsWith(".html"))
+		writer.setFormat("HTML");
+	writer.write(document);
+
+	QApplication::restoreOverrideCursor();
+	return true;
+}
+
 bool Matrix::exportASCII(const QString& fname, const QString& separator, bool exportSelection)
 {
 	QFile f(fname);
@@ -1469,6 +1530,11 @@ bool Matrix::exportASCII(const QString& fname, const QString& separator, bool ex
 		QMessageBox::critical(this, tr("QtiPlot - ASCII Export Error"),
 				tr("Could not write to file: <br><h4>%1</h4><p>Please verify that you have the right to write to this location!").arg(fname));
 		return false;
+	}
+
+	if (fname.endsWith(".odf") || fname.endsWith(".html")){
+		f.close();
+		return exportODF(fname, exportSelection);
 	}
 
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
