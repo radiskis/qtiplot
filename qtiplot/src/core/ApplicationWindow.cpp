@@ -9530,6 +9530,8 @@ void ApplicationWindow::showWindowContextMenu()
             cm.insertSeparator();
             cm.addAction(actionTransposeMatrix);
             cm.addAction(actionInvertMatrix);
+            cm.insertSeparator();
+            cm.addAction(actionViewMatrix);
 		}
 	}
 	cm.exec(QCursor::pos());

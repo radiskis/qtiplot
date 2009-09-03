@@ -49,6 +49,7 @@
 #include <QShortcut>
 #include <QProgressDialog>
 #include <QFile>
+#include <QRegion>
 
 #include <q3paintdevicemetrics.h>
 #include <q3dragobject.h>
@@ -2689,7 +2690,8 @@ bool Table::eventFilter(QObject *object, QEvent *e)
 				return true;
 			}
 
-			QRect r = QRect(hheader->sectionRect(col).topLeft(), QSize(10, 10));
+			QRect r = hheader->sectionRect(col);
+			r = QRect(r.topLeft(), QSize(r.width(), 10));
 			if (d_table->isColumnSelected(col, true) && r.contains(me->pos())){
 				QDrag *drag = new QDrag(this);
 				QMimeData *mimeData = new QMimeData;
@@ -2699,13 +2701,15 @@ bool Table::eventFilter(QObject *object, QEvent *e)
 				drag->exec();
 				return true;
 			}
-		} else if (selectedColsNumber() <= 1) {
-			selectedCol = hheader->sectionAt (me->pos().x() + hheader->offset());
-			d_table->clearSelection();
-			d_table->selectColumn (selectedCol);
-			d_table->setCurrentCell (0, selectedCol);
-			setActiveWindow();
-			return false;
+
+			if (selectedColsNumber() <= 1) {
+				selectedCol = hheader->sectionAt (me->pos().x() + hheader->offset());
+				d_table->clearSelection();
+				d_table->selectColumn (selectedCol);
+				d_table->setCurrentCell (0, selectedCol);
+				setActiveWindow();
+				return false;
+			}
 		}
 	} else if (e->type() == QEvent::MouseButtonPress && object == (QObject*)vheader) {
 		const QMouseEvent *me = (const QMouseEvent *)e;
@@ -2727,7 +2731,8 @@ bool Table::eventFilter(QObject *object, QEvent *e)
     } else if (e->type() == QEvent::MouseMove && object == (QObject*)hheader){
 		const QMouseEvent *me = (const QMouseEvent *)e;
 		int col = hheader->sectionAt (me->pos().x() + hheader->offset());
-		QRect r = QRect(hheader->sectionRect(col).topLeft(), QSize(10, 10));
+		QRect r = hheader->sectionRect(col);
+		r = QRect(r.topLeft(), QSize(r.width(), 10));
 		if (d_table->isColumnSelected(col, true) && r.contains(me->pos()))
 			setCursor(QCursor(QPixmap(append_drag_curves_xpm)));
 		else

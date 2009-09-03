@@ -1245,6 +1245,7 @@ void Matrix::initImageView()
     imageLabel->setBackgroundRole(QPalette::Base);
     imageLabel->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
     imageLabel->setScaledContents(true);
+    imageLabel->installEventFilter(this);
     d_stack->addWidget(imageLabel);
 }
 
@@ -1577,19 +1578,24 @@ QString Matrix::sizeToString()
 	return QString::number((sizeof(Matrix) + size*sizeof(double))/1024.0, 'f', 1) + " " + tr("kB");
 }
 
-void Matrix::mousePressEvent(QMouseEvent *event)
+bool Matrix::eventFilter(QObject *object, QEvent *e)
 {
-	if (d_view_type != ImageView)
-		return;
+	if (object != (QObject*)imageLabel)
+		return MdiSubWindow::eventFilter(object, e);
 
-	if (event->button() == Qt::LeftButton){
-		QDrag *drag = new QDrag(this);
-		QMimeData *mimeData = new QMimeData;
-		mimeData->setText(objectName());
-		drag->setMimeData(mimeData);
-		drag->setPixmap(this->windowIcon().pixmap(16));
-		drag->exec();
+	if (e->type() == QEvent::MouseButtonPress && object == (QObject*)imageLabel){
+		const QMouseEvent *me = (const QMouseEvent *)e;
+		if (me->button() == Qt::LeftButton){
+			QDrag *drag = new QDrag(this);
+			QMimeData *mimeData = new QMimeData;
+			mimeData->setText(objectName());
+			drag->setMimeData(mimeData);
+			drag->setPixmap(this->windowIcon().pixmap(16));
+			drag->exec();
+		}
 	}
+
+	return QObject::eventFilter(object, e);
 }
 
 Matrix::~Matrix()

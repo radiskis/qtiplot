@@ -302,7 +302,7 @@ signals:
 	void modifiedData(Matrix *);
 
 private:
-	void mousePressEvent(QMouseEvent *event);
+	bool eventFilter(QObject *, QEvent *);
 
 	//! Initialize the matrix
 	void initTable(int rows, int cols);
