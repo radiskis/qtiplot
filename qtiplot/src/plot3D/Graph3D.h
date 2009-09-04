@@ -43,6 +43,7 @@
 
 using namespace Qwt3D;
 
+class QTextDocument;
 class UserFunction;
 class UserParametricSurface;
 
@@ -243,6 +244,8 @@ public slots:
 	void print();
 	void print(QPrinter *printer);
 	void copyImage();
+	void exportImage(QTextDocument *document, int quality, bool transparent,
+						int dpi, const QSizeF& customSize, int unit, double fontsFactor);
 	void exportImage(const QString& fileName, int quality = 100, bool transparent = false, int dpi = 0,
 		const QSizeF& customSize = QSizeF(), int unit = FrameWidget::Pixel, double fontsFactor = 1.0);
     void exportPDF(const QString& fileName);

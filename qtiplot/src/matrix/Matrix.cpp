@@ -864,7 +864,18 @@ void Matrix::exportRasterImage(const QString& fileName, int quality, int dpi)
 	int dpm = (int)ceil(100.0/2.54*dpi);
 	image.setDotsPerMeterX(dpm);
 	image.setDotsPerMeterY(dpm);
-	image.save(fileName, 0, quality);
+	if (fileName.endsWith(".odf")){
+		QTextDocument *document = new QTextDocument();
+		QTextCursor cursor = QTextCursor(document);
+		cursor.movePosition(QTextCursor::End);
+		cursor.insertText(objectName());
+		cursor.insertBlock();
+		cursor.insertImage(image);
+
+		QTextDocumentWriter writer(fileName);
+		writer.write(document);
+	} else
+		image.save(fileName, 0, quality);
 }
 
 void Matrix::exportToFile(const QString& fileName)

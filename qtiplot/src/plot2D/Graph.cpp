@@ -151,6 +151,7 @@ static const char *unzoom_xpm[]={
 #include <QFileInfo>
 #include <QSvgGenerator>
 #include <QDir>
+#include <QTextDocumentWriter>
 
 #include <qwt_painter.h>
 #include <qwt_plot_canvas.h>
@@ -1498,7 +1499,21 @@ void Graph::exportImage(const QString& fileName, int quality, bool transparent, 
 	int dpm = (int)ceil(100.0/2.54*dpi);
 	image.setDotsPerMeterX(dpm);
 	image.setDotsPerMeterY(dpm);
-	image.save(fileName, 0, quality);
+
+	if (fileName.endsWith(".odf")){
+		QTextDocument *document = new QTextDocument();
+		QTextCursor cursor = QTextCursor(document);
+		cursor.movePosition(QTextCursor::End);
+		MultiLayer *ml = multiLayer();
+		if (ml)
+			cursor.insertText(ml->objectName() + ", " + tr("layer") + " " + QString::number(ml->layerIndex(this) + 1));
+		cursor.insertBlock();
+		cursor.insertImage(image);
+
+		QTextDocumentWriter writer(fileName);
+		writer.write(document);
+	} else
+		image.save(fileName, 0, quality);
 }
 
 void Graph::exportVector(const QString& fileName, int res, bool color,

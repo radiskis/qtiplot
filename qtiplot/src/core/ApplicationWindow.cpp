@@ -121,6 +121,7 @@
 #include <ScriptingLangDialog.h>
 #include <ScriptWindow.h>
 #include <CreateBinMatrixDialog.h>
+#include <QTextDocumentWriter>
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -2309,6 +2310,8 @@ void ApplicationWindow::exportMatrix(const QString& exportFilter)
 	else if (selected_filter.contains(".emf"))
 		m->exportEMF(file_name);
 #endif
+	else if (selected_filter.contains(".odf"))
+		m->exportRasterImage(file_name, ied->quality(), ied->bitmapResolution());
 	else {
 		QList<QByteArray> list = QImageWriter::supportedImageFormats();
 		for (int i=0; i<(int)list.count(); i++){
@@ -5447,6 +5450,14 @@ void ApplicationWindow::exportGraph(const QString& exportFilter)
 				plot2D->exportVector(file_name, ied->vectorResolution(), ied->color(),
 						ied->customExportSize(), ied->sizeUnit(), ied->scaleFontsFactor());
 		}
+	} else if (selected_filter.contains(".odf")){
+		if (plot2D)
+			plot2D->exportImage(file_name, ied->quality(), ied->transparency(), ied->bitmapResolution(),
+					ied->customExportSize(), ied->sizeUnit(), ied->scaleFontsFactor());
+		else if (plot3D)
+			plot3D->exportImage(file_name, ied->quality(), ied->transparency(), ied->bitmapResolution(),
+					ied->customExportSize(), ied->sizeUnit(), ied->scaleFontsFactor());
+
 	} else {
 		QList<QByteArray> list = QImageWriter::supportedImageFormats();
 		for (int i=0; i<(int)list.count(); i++){
@@ -5508,6 +5519,9 @@ void ApplicationWindow::exportLayer()
 #endif
     else if (selected_filter.contains(".tex"))
 		g->exportTeX(file_name, ied->color(), ied->escapeStrings(), ied->exportFontSizes(), ied->customExportSize(), ied->sizeUnit(), ied->scaleFontsFactor());
+    else if (selected_filter.contains(".odf"))
+		g->exportImage(file_name, ied->quality(), ied->transparency(), ied->bitmapResolution(),
+						ied->customExportSize(), ied->sizeUnit(), ied->scaleFontsFactor());
     else {
 		QList<QByteArray> list = QImageWriter::supportedImageFormats();
 		for (int i=0; i<(int)list.count(); i++)
@@ -5516,6 +5530,47 @@ void ApplicationWindow::exportLayer()
 				ied->bitmapResolution(), ied->customExportSize(), ied->sizeUnit(),
 				ied->scaleFontsFactor());
 	}
+}
+
+void ApplicationWindow::exportPresentationODF()
+{
+	ImageExportDialog *ied = new ImageExportDialog(NULL, this, d_extended_export_dialog);
+	ied->setDir(imagesDirPath);
+	ied->selectFilter("*.odf");
+	if ( ied->exec() != QDialog::Accepted )
+		return;
+	imagesDirPath = ied->directory().path();
+	if (ied->selectedFiles().isEmpty())
+		return;
+
+	QString selected_filter = ied->selectedFilter().remove("*");
+	QString file_name = ied->selectedFiles()[0];
+	if(!file_name.endsWith(selected_filter, Qt::CaseInsensitive))
+		file_name.append(selected_filter);
+
+	QFile file(file_name);
+	if ( !file.open( QIODevice::WriteOnly ) ){
+		QMessageBox::critical(this, tr("QtiPlot - Export error"),
+				tr("Could not write to file: <br><h4> %1 </h4><p>Please verify that you have the right to write to this location!").arg(file_name));
+		return;
+	}
+	file.close();
+
+	QTextDocument *document = new QTextDocument();
+
+	QList<MdiSubWindow *> windows = windowsList();
+	foreach(MdiSubWindow *w, windows){
+		if (qobject_cast<MultiLayer*>(w)){
+			MultiLayer *plot2D = qobject_cast<MultiLayer*>(w);
+			if (!plot2D->isEmpty())
+				plot2D->exportImage(document, ied->quality(), ied->transparency(), ied->bitmapResolution(),
+						ied->customExportSize(), ied->sizeUnit(), ied->scaleFontsFactor());
+		} else if (qobject_cast<Graph3D*>(w))
+			((Graph3D *)w)->exportImage(document, ied->quality(), ied->transparency(), ied->bitmapResolution(),
+						ied->customExportSize(), ied->sizeUnit(), ied->scaleFontsFactor());
+	}
+	QTextDocumentWriter writer(file_name);
+	writer.write(document);
 }
 
 void ApplicationWindow::exportAllGraphs()
@@ -8732,6 +8787,7 @@ void ApplicationWindow::fileMenuAboutToShow()
 		fileMenu->addMenu (exportPlotMenu);
 		exportPlotMenu->addAction(actionExportGraph);
 		exportPlotMenu->addAction(actionExportAllGraphs);
+		exportPlotMenu->addAction(actionPresentationODF);
 	}
 	fileMenu->insertSeparator();
 	fileMenu->addAction(actionPrint);
@@ -12226,6 +12282,9 @@ void ApplicationWindow::createActions()
 	actionExportAllGraphs = new QAction(tr("&All"), this);
 	actionExportAllGraphs->setShortcut( tr("Alt+X") );
 	connect(actionExportAllGraphs, SIGNAL(activated()), this, SLOT(exportAllGraphs()));
+
+	actionPresentationODF = new QAction(tr("&Presentation ODF"), this);
+	connect(actionPresentationODF, SIGNAL(activated()), this, SLOT(exportPresentationODF()));
 
     actionExportPDF = new QAction(QIcon(QPixmap(pdf_xpm)), tr("&Export PDF"), this);
 	actionExportPDF->setShortcut( tr("Ctrl+Alt+P") );

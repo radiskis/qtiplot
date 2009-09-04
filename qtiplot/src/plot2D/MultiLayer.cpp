@@ -47,6 +47,7 @@
 #include <QLabel>
 #include <QGroupBox>
 #include <QSpinBox>
+#include <QTextDocumentWriter>
 
 #ifdef EMF_OUTPUT
 	#include <EmfEngine.h>
@@ -786,7 +787,63 @@ void MultiLayer::exportImage(const QString& fileName, int quality, bool transpar
 	int dpm = (int)ceil(100.0/2.54*dpi);
 	image.setDotsPerMeterX(dpm);
 	image.setDotsPerMeterY(dpm);
-	image.save(fileName, 0, quality);
+	if (fileName.endsWith(".odf")){
+		QTextDocument *document = new QTextDocument();
+		QTextCursor cursor = QTextCursor(document);
+		cursor.movePosition(QTextCursor::End);
+		cursor.insertText(objectName());
+		cursor.insertBlock();
+		cursor.insertImage(image);
+
+		QTextDocumentWriter writer(fileName);
+		writer.write(document);
+	} else
+		image.save(fileName, 0, quality);
+}
+
+void MultiLayer::exportImage(QTextDocument *document, int quality, bool transparent,
+				int dpi, const QSizeF& customSize, int unit, double fontsFactor)
+{
+	if (!document)
+		return;
+
+	if (!dpi)
+		dpi = logicalDpiX();
+
+	QSize size = QSize();
+	if (customSize.isValid())
+		size = Graph::customPrintSize(customSize, unit, dpi);
+
+	QPixmap pic = canvasPixmap(size, fontsFactor);
+	QImage image = pic.toImage();
+
+	if (transparent){
+		QBitmap mask(size);
+		mask.fill(Qt::color1);
+		QPainter p(&mask);
+		p.setPen(Qt::color0);
+
+		QRgb backgroundPixel = QColor(Qt::white).rgb ();
+		for (int y = 0; y < image.height(); y++){
+			for (int x = 0; x < image.width(); x++){
+				QRgb rgb = image.pixel(x, y);
+				if (rgb == backgroundPixel) // we want the frame transparent
+					p.drawPoint(x, y);
+			}
+		}
+		p.end();
+		pic.setMask(mask);
+		image = pic.toImage();
+	}
+
+	int dpm = (int)ceil(100.0/2.54*dpi);
+	image.setDotsPerMeterX(dpm);
+	image.setDotsPerMeterY(dpm);
+
+	QTextCursor cursor = QTextCursor(document);
+	cursor.movePosition(QTextCursor::End);
+	cursor.insertBlock();
+	cursor.insertImage(image);
 }
 
 void MultiLayer::exportPDF(const QString& fname)
