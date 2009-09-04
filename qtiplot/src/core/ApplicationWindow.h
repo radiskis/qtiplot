@@ -484,6 +484,7 @@ public slots:
 	void exportLayer();
 	void exportGraph(const QString& exportFilter = QString::null);
 	void exportAllGraphs();
+	void exportPresentationODF();
 	void exportPDF();
 	void print();
 	void printPreview();
@@ -1372,6 +1373,7 @@ private:
     QActionGroup *coord, *floorstyle, *grids, *plotstyle, *dataTools;
     QAction *actionMagnify, *actionFindWindow, *actionWaterfallPlot;
     QAction *actionMoveRowUp, *actionMoveRowDown, *actionAdjustColumnWidth;
+    QAction *actionPresentationODF;
     QList<QAction *> d_user_actions;
     QUndoView *d_undo_view;
     QList<QMenu *> d_user_menus;

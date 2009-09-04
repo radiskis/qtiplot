@@ -50,6 +50,7 @@ ImageExportDialog::ImageExportDialog(MdiSubWindow *window, QWidget * parent, boo
 
 	QList<QByteArray> list = QImageWriter::supportedImageFormats();
 	list << "EPS";
+	list << "ODF";
 	list << "PS";
 	list << "PDF";
 	list << "SVG";
