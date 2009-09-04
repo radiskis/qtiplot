@@ -5417,10 +5417,8 @@ void Graph::printCanvas(QPainter *painter, const QRect &canvasRect,
 		painter->restore();
 	}
 
-	foreach(FrameWidget *f, d_enrichments){
-		if (f->isVisible())
-			f->print(painter, map);
-	}
+	foreach(FrameWidget *f, d_enrichments)
+		f->print(painter, map);
 }
 
 void Graph::drawItems (QPainter *painter, const QRect &rect,
