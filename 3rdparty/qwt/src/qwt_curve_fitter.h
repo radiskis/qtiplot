@@ -2,7 +2,7 @@
  * Qwt Widget Library
  * Copyright (C) 1997   Josef Wilgen
  * Copyright (C) 2002   Uwe Rathmann
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the Qwt License, Version 1.0
  *****************************************************************************/
@@ -108,9 +108,48 @@ private:
     QPolygonF fitSpline(const QPolygonF &) const;
     QPolygonF fitParametric(const QPolygonF &) const;
 #endif
-    
+
     class PrivateData;
     PrivateData *d_data;
 };
 
+/*!
+  \brief A curve fitter implementing Douglas and Peucker algorithm
+
+  The purpose of the Douglas and Peucker algorithm is that given a 'curve'
+  composed of line segments to find a curve not too dissimilar but that
+  has fewer points. The algorithm defines 'too dissimilar' based on the
+  maximum distance (tolerance) between the original curve and the
+  smoothed curve.
+
+  The smoothed curve consists of a subset of the points that defined the
+  original curve.
+
+  In opposite to QwtSplineCurveFitter the Douglas and Peucker algorithm reduces
+  the number of points. By adjusting the tolerance parameter according to the
+  axis scales QwtSplineCurveFitter can be used to implement different
+  level of details to speed up painting of curves of many points.
+*/
+class QWT_EXPORT QwtWeedingCurveFitter: public QwtCurveFitter
+{
+public:
+    QwtWeedingCurveFitter(double tolerance = 1.0);
+    virtual ~QwtWeedingCurveFitter();
+
+    void setTolerance(double);
+    double tolerance() const;
+
+#if QT_VERSION < 0x040000
+    virtual QwtArray<QwtDoublePoint> fitCurve(
+        const QwtArray<QwtDoublePoint> &) const;
+#else
+    virtual QPolygonF fitCurve(const QPolygonF &) const;
+#endif
+
+private:
+    class Line;
+
+    class PrivateData;
+    PrivateData *d_data;
+};
 #endif
