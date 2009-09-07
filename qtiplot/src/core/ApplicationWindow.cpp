@@ -1070,6 +1070,8 @@ void ApplicationWindow::initMainMenu()
 	edit->insertSeparator();
 	edit->addAction(actionDeleteFitTables);
 	edit->addAction(actionClearLogInfo);
+	edit->insertSeparator();
+	edit->addAction(actionShowConfigureDialog);
 
 	connect(edit, SIGNAL(aboutToShow()), this, SLOT(editMenuAboutToShow()));
 
@@ -1085,7 +1087,6 @@ void ApplicationWindow::initMainMenu()
 #ifdef SCRIPTING_CONSOLE
 	view->addAction(actionShowConsole);
 #endif
-	view->addAction(actionShowConfigureDialog);
 
 	graph = new QMenu(this);
 	graph->setObjectName("graphMenu");
@@ -2518,7 +2519,6 @@ MultiLayer* ApplicationWindow::multilayerPlot(const QStringList& colList)
         ag->updateCurveLayout(c, &cl);
 	}
 	ag->newLegend();
-	ag->initScaleLimits(defaultCurveStyle);
 	QApplication::restoreOverrideCursor();
 	return g;
 }
@@ -5536,7 +5536,8 @@ void ApplicationWindow::exportPresentationODF()
 {
 	ImageExportDialog *ied = new ImageExportDialog(NULL, this, d_extended_export_dialog);
 	ied->setDir(imagesDirPath);
-	ied->selectFilter("*.odf");
+	ied->setNameFilter("*.odf");
+
 	if ( ied->exec() != QDialog::Accepted )
 		return;
 	imagesDirPath = ied->directory().path();
@@ -5548,15 +5549,34 @@ void ApplicationWindow::exportPresentationODF()
 	if(!file_name.endsWith(selected_filter, Qt::CaseInsensitive))
 		file_name.append(selected_filter);
 
-	QFile file(file_name);
-	if ( !file.open( QIODevice::WriteOnly ) ){
+	QFileInfo fi(file_name);
+	if (!fi.isWritable()){
 		QMessageBox::critical(this, tr("QtiPlot - Export error"),
 				tr("Could not write to file: <br><h4> %1 </h4><p>Please verify that you have the right to write to this location!").arg(file_name));
 		return;
 	}
-	file.close();
 
-	QTextDocument *document = new QTextDocument();
+	QDialog *previewDlg = new QDialog(this);
+	previewDlg->setSizeGripEnabled(true);
+	previewDlg->setWindowTitle(tr("QtiPlot") + " - " + tr("Presentation Preview"));
+
+	QHBoxLayout *bl = new QHBoxLayout();
+	bl->addStretch();
+	QPushButton *okBtn = new QPushButton(tr("&Save"));
+	connect(okBtn, SIGNAL(clicked()), previewDlg, SLOT(accept()));
+	bl->addWidget(okBtn);
+
+	QPushButton *cancelBtn = new QPushButton(tr("&Cancel"));
+	connect(cancelBtn, SIGNAL(clicked()), previewDlg, SLOT(reject()));
+	bl->addWidget(cancelBtn);
+	bl->addStretch();
+
+	QVBoxLayout *vl = new QVBoxLayout(previewDlg);
+	QTextEdit *te = new QTextEdit();
+	vl->addWidget(te);
+	vl->addLayout(bl);
+
+	QTextDocument *document = te->document();
 
 	QList<MdiSubWindow *> windows = windowsList();
 	foreach(MdiSubWindow *w, windows){
@@ -5569,8 +5589,11 @@ void ApplicationWindow::exportPresentationODF()
 			((Graph3D *)w)->exportImage(document, ied->quality(), ied->transparency(), ied->bitmapResolution(),
 						ied->customExportSize(), ied->sizeUnit(), ied->scaleFontsFactor());
 	}
-	QTextDocumentWriter writer(file_name);
-	writer.write(document);
+
+	if (previewDlg->exec()){
+		QTextDocumentWriter writer(file_name);
+		writer.write(document);
+	}
 }
 
 void ApplicationWindow::exportAllGraphs()
@@ -8088,11 +8111,11 @@ void ApplicationWindow::clearSelection()
 		else if (g->activeTool() && g->activeTool()->rtti() == PlotToolInterface::Rtti_DataPicker)
 			((DataPickerTool *)g->activeTool())->removePoint();
         else if (g->titleSelected())
-			g->removeTitle();
+			g->clearTitle();
 		else if (g->axisTitleSelected()){
 			QwtScaleWidget *axis = g->currentScale();
 			if (axis)
-				axis->setTitle(QString::null);
+				axis->setTitle(" ");
 		} else
 			g->removeMarker();
 	}
@@ -8787,8 +8810,9 @@ void ApplicationWindow::fileMenuAboutToShow()
 		fileMenu->addMenu (exportPlotMenu);
 		exportPlotMenu->addAction(actionExportGraph);
 		exportPlotMenu->addAction(actionExportAllGraphs);
-		exportPlotMenu->addAction(actionPresentationODF);
+		fileMenu->addAction(actionPresentationODF);
 	}
+
 	fileMenu->insertSeparator();
 	fileMenu->addAction(actionPrint);
 	fileMenu->insertItem(tr("Print Pre&view"), this, SLOT(printPreview()));
@@ -12283,7 +12307,7 @@ void ApplicationWindow::createActions()
 	actionExportAllGraphs->setShortcut( tr("Alt+X") );
 	connect(actionExportAllGraphs, SIGNAL(activated()), this, SLOT(exportAllGraphs()));
 
-	actionPresentationODF = new QAction(tr("&Presentation ODF"), this);
+	actionPresentationODF = new QAction(tr("Create Open &Document Presentation..."), this);
 	connect(actionPresentationODF, SIGNAL(activated()), this, SLOT(exportPresentationODF()));
 
     actionExportPDF = new QAction(QIcon(QPixmap(pdf_xpm)), tr("&Export PDF"), this);
@@ -13147,6 +13171,8 @@ void ApplicationWindow::translateActionsStrings()
 	actionExportAllGraphs->setMenuText(tr("&All"));
 	actionExportAllGraphs->setShortcut(tr("Alt+X"));
 	actionExportAllGraphs->setToolTip(tr("Export all graphs"));
+
+	actionPresentationODF->setMenuText(tr("Create Open &Document Presentation..."));
 
     actionExportPDF->setMenuText(tr("&Export PDF"));
 	actionExportPDF->setShortcut(tr("Ctrl+Alt+P"));

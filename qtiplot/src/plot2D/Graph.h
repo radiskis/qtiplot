@@ -162,8 +162,6 @@ class Graph: public QwtPlot
 		QwtPlotItem* selectedCurveLabels();
         //! Used when restoring DataCurve curveID from a project file
         void restoreCurveLabels(int curveID, const QStringList& lst);
-		//! Called first time we add curves in order to determine the best plot limits.
-		void initScaleLimits(int style);
 
 		Grid *grid(){return (Grid *)d_grid;};
 		QList<QwtPlotItem *> curvesList(){return d_curves;};

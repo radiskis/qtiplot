@@ -842,6 +842,7 @@ void MultiLayer::exportImage(QTextDocument *document, int quality, bool transpar
 
 	QTextCursor cursor = QTextCursor(document);
 	cursor.movePosition(QTextCursor::End);
+	cursor.insertText(objectName());
 	cursor.insertBlock();
 	cursor.insertImage(image);
 }
