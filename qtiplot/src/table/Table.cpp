@@ -1411,7 +1411,7 @@ void Table::pasteSelection()
 	bool allNumbers = true;
 	bool pasteComments = false;
 	bool pasteHeader = false;
-	for (int i = 0; i < cols; i++)
+	for (int i = 0; i < firstLine.size(); i++)
 	{//verify if the strings in the line used to rename the columns are not all numbers
 		clipboardLocale.toDouble(firstLine[i], &allNumbers);
 		if (!allNumbers){
@@ -1472,7 +1472,7 @@ void Table::pasteSelection()
 
 	if (pasteComments || pasteHeader){
 		for (int j = left; j < left + cols; j++){
-			if (d_table->isColumnReadOnly(j))
+			if (d_table->isColumnReadOnly(j) || firstLine.size() <= j)
 				continue;
 
 			if (pasteComments)
