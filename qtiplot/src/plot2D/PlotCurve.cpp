@@ -52,6 +52,23 @@ d_skip_symbols(1)
 	setCurveAttribute(QwtPlotCurve::Fitted, false);
 }
 
+QwtDoubleRect PlotCurve::boundingRect() const
+{
+	QwtDoubleRect r = QwtPlotCurve::boundingRect();
+
+	double percent = 0.01;
+
+	double dw = percent*fabs(r.right() - r.left());
+	r.setLeft(r.left() - dw);
+	r.setRight(r.right() + dw);
+
+	double dh = percent*fabs(r.top() - r.bottom());
+	r.setBottom(r.bottom() + dh);
+	r.setTop(r.top() - dh);
+
+	return r;
+}
+
 QString PlotCurve::saveCurveLayout()
 {
 	QString s = "<Style>" + QString::number(d_plot_style) + "</Style>\n";

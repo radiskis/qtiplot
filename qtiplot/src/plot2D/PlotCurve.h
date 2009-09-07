@@ -80,6 +80,8 @@ protected:
 	void drawSticks(QPainter *p,
         const QwtScaleMap &xMap, const QwtScaleMap &yMap, int from, int to) const;
 
+	QwtDoubleRect boundingRect() const;
+
 	// Rtti
 	int d_type;
 	// The plot style of the curve

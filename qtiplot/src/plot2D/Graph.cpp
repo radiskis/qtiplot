@@ -30,6 +30,62 @@
 #include <QVarLengthArray>
 #include <PenStyleBox.h>
 
+/* XPM */
+static char * delete_xpm[] = {
+"11 12 40 1",
+" 	c None",
+".	c #ECBCBC",
+"+	c #BB0000",
+"@	c #DD8989",
+"#	c #B60000",
+"$	c #FFCBCB",
+"%	c #DB8989",
+"&	c #AF0000",
+"*	c #FF7C7C",
+"=	c #FFB4B4",
+"-	c #D88989",
+";	c #BC6D6D",
+">	c #A70000",
+",	c #FF4949",
+"'	c #FF9A9A",
+")	c #B86D6D",
+"!	c #9E0000",
+"~	c #FF1D1D",
+"{	c #FF8787",
+"]	c #B36D6D",
+"^	c #940000",
+"/	c #FF0000",
+"(	c #C68989",
+"_	c #890000",
+":	c #FF7E7E",
+"<	c #C28989",
+"[	c #7E0000",
+"}	c #FF7F7F",
+"|	c #FF0606",
+"1	c #740000",
+"2	c #FF8686",
+"3	c #FF1C1C",
+"4	c #A46D6D",
+"5	c #6B0000",
+"6	c #FF3434",
+"7	c #9F6D6D",
+"8	c #B19696",
+"9	c #630000",
+"0	c #9B6D6D",
+"a	c #CBCBCB",
+".++@   @++.",
+"#$$#% %#$$#",
+"&**=&-&=**&",
+";>,,'>',,>;",
+" )!~~{~~!) ",
+"  ]^///^]  ",
+" (_:///:_( ",
+"<[}||[||}[<",
+"12331413321",
+"56657 75665",
+"8990   0998",
+" aa     aa "};
+
 static const char *cut_xpm[]={
 "18 18 3 1",
 ". c None",
@@ -1119,105 +1175,6 @@ void Graph::updateSecondaryAxis(int axis)
 
 	setAxisScaleDiv (axis, *axisScaleDiv(a));
 	d_user_step[axis] = d_user_step[a];
-}
-
-void Graph::initScaleLimits(int style)
-{//We call this function the first time we add curves to a plot in order to avoid curves with cut symbols.
-	replot();
-
-	if (style == HorizontalBars || style == VerticalBars){
-		int axis = QwtPlot::yLeft;
-		if (style == VerticalBars)
-			axis = QwtPlot::xBottom;
-
-		ScaleDraw *scaleDraw = (ScaleDraw *)axisScaleDraw(axis);
-		if (scaleDraw && scaleDraw->scaleType() == ScaleDraw::Text){
-			QwtScaleDiv *scaleDiv = axisScaleDiv (axis);
-			setAxisScale (axis, scaleDiv->lowerBound(), scaleDiv->upperBound(), 1.0);
-			setAxisMaxMinor (axis, 2);
-			scaleDraw->enableComponent(QwtAbstractScaleDraw::Backbone, drawAxesBackbone);
-			if (style == VerticalBars)
-				setAxisLabelRotation (axis, -90);
-		}
-		d_zoomer[0]->setZoomBase();
-		d_zoomer[1]->setZoomBase();
-		return;
-	}
-
-	QwtDoubleInterval intv[QwtPlot::axisCnt];
-    const QwtPlotItemList& itmList = itemList();
-    QwtPlotItemIterator it;
-	double maxSymbolSize = 0;
-    for ( it = itmList.begin(); it != itmList.end(); ++it ){
-        const QwtPlotItem *item = *it;
-        if (item->rtti() != QwtPlotItem::Rtti_PlotCurve)
-            continue;
-
-		const QwtPlotCurve *c = (QwtPlotCurve *)item;
-		const QwtSymbol s = c->symbol();
-		if (s.style() != QwtSymbol::NoSymbol && s.size().width() >= maxSymbolSize)
-			maxSymbolSize = s.size().width();
-
-        const QwtDoubleRect rect = item->boundingRect();
-        intv[item->xAxis()] |= QwtDoubleInterval(rect.left(), rect.right());
-        intv[item->yAxis()] |= QwtDoubleInterval(rect.top(), rect.bottom());
-    }
-
-	if (maxSymbolSize == 0.0){
-	    d_zoomer[0]->setZoomBase();
-        d_zoomer[1]->setZoomBase();
-		return;
-	}
-
-	maxSymbolSize *= 0.5;
-
-	QwtScaleDiv *div = axisScaleDiv(QwtPlot::xBottom);
-	double start = div->lowerBound();
-	double end = div->upperBound();
-	QwtValueList majTicksLst = div->ticks(QwtScaleDiv::MajorTick);
-	int ticks = majTicksLst.size();
-	double step = fabs(end - start)/(double)(ticks - 1.0);
-    d_user_step[QwtPlot::xBottom] = step;
-    d_user_step[QwtPlot::xTop] = step;
-
-	const QwtScaleMap &xMap = canvasMap(QwtPlot::xBottom);
-    double x_left = xMap.xTransform(intv[QwtPlot::xBottom].minValue());
-
-	if (start >= xMap.invTransform(x_left - maxSymbolSize))
-		start = div->lowerBound() - step;
-
-	double x_right = xMap.xTransform(intv[QwtPlot::xBottom].maxValue());
-	if (end <= xMap.invTransform(x_right + maxSymbolSize))
-		end = div->upperBound() + step;
-
-	setAxisScale(QwtPlot::xBottom, start, end, step);
-	setAxisScale(QwtPlot::xTop, start, end, step);
-
-	div = axisScaleDiv(QwtPlot::yLeft);
-	start = div->lowerBound();
-	end = div->upperBound();
-	majTicksLst = div->ticks(QwtScaleDiv::MajorTick);
-	ticks = majTicksLst.size();
-	step = fabs(end - start)/(double)(ticks - 1.0);
-    d_user_step[QwtPlot::yLeft] = step;
-    d_user_step[QwtPlot::yRight] = step;
-
-	const QwtScaleMap &yMap = canvasMap(QwtPlot::yLeft);
-    double y_bottom = yMap.xTransform(intv[QwtPlot::yLeft].minValue());
-	if (start >= yMap.invTransform(y_bottom + maxSymbolSize))
-		start = div->lowerBound() - step;
-
-	double y_top = yMap.xTransform(intv[QwtPlot::yLeft].maxValue());
-	if (end <= yMap.invTransform(y_top - maxSymbolSize))
-		end = div->upperBound() + step;
-
-	setAxisScale(QwtPlot::yLeft, start, end, step);
-	setAxisScale(QwtPlot::yRight, start, end, step);
-
-	replot();
-
-	d_zoomer[0]->setZoomBase();
-	d_zoomer[1]->setZoomBase();
 }
 
 void Graph::invertScale(int axis)
@@ -3123,7 +3080,17 @@ bool Graph::addCurves(Table* w, const QStringList& names, int style, double lWid
 			}
 		}
 	}
-	initScaleLimits(style);
+
+	replot();
+
+	updateSecondaryAxis(QwtPlot::xTop);
+	updateSecondaryAxis(QwtPlot::yRight);
+
+	replot();
+
+	d_zoomer[0]->setZoomBase();
+	d_zoomer[1]->setZoomBase();
+
 	return true;
 }
 
@@ -3259,7 +3226,7 @@ DataCurve* Graph::insertCurve(Table* w, const QString& xColName, const QString& 
 	else
 		c->setData(X.data(), Y.data(), size);
 
-	if (xColType == Table::Text ){
+	if (xColType == Table::Text){
 		if (style == HorizontalBars)
 			setAxisScaleDraw(QwtPlot::yLeft, new ScaleDraw(this, xLabels, xColName));
 		else
@@ -3376,6 +3343,7 @@ void Graph::setAutoScale()
 	}
 
 	replot();
+
 	updateScale();
 	emit modifiedGraph();
 }
@@ -4157,7 +4125,7 @@ void Graph::showTitleContextMenu()
 	titleMenu.insertItem(QPixmap(cut_xpm), tr("Cu&t"),this, SLOT(cutTitle()));
 	titleMenu.insertItem(QPixmap(copy_xpm), tr("&Copy"),this, SLOT(copyTitle()));
 	titleMenu.insertItem(tr("C&lear"),this, SLOT(clearTitle()));
-	titleMenu.insertItem(tr("&Delete"),this, SLOT(removeTitle()));
+	titleMenu.insertItem(QPixmap(delete_xpm), tr("&Delete"),this, SLOT(removeTitle()));
 	titleMenu.insertSeparator();
 	titleMenu.insertItem(tr("&Properties..."), this, SIGNAL(viewTitleDialog()));
 	titleMenu.exec(QCursor::pos());
@@ -4210,7 +4178,7 @@ void Graph::showAxisTitleMenu()
 	titleMenu.insertItem(QPixmap(cut_xpm), tr("Cu&t"), this, SLOT(cutAxisTitle()));
 	titleMenu.insertItem(QPixmap(copy_xpm), tr("&Copy"), this, SLOT(copyAxisTitle()));
 	titleMenu.insertItem(tr("C&lear"),this, SLOT(clearAxisTitle()));
-	titleMenu.insertItem(tr("&Delete"),this, SLOT(removeAxisTitle()));
+	titleMenu.insertItem(QPixmap(delete_xpm), tr("&Delete"),this, SLOT(removeAxisTitle()));
 	titleMenu.insertSeparator();
 	titleMenu.insertItem(tr("&Properties..."), this, SIGNAL(showAxisTitleDialog()));
 	titleMenu.exec(QCursor::pos());
