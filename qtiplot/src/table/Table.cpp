@@ -1397,11 +1397,42 @@ void Table::pasteSelection()
 	if (rows < 1)
 		return;
 
-	int cols = linesList[0].split("\t").count();
+	QStringList firstLine = linesList[0].split("\t", QString::SkipEmptyParts);
+	int cols = firstLine.count();
 	for (int i = 1; i < rows; i++){
 		int aux = linesList[i].split("\t").count();
 		if (aux > cols)
             cols = aux;
+	}
+
+	QLocale l = locale();
+	QLocale clipboardLocale = applicationWindow()->clipboardLocale();
+
+	bool allNumbers = true;
+	bool pasteComments = false;
+	bool pasteHeader = false;
+	for (int i = 0; i < cols; i++)
+	{//verify if the strings in the line used to rename the columns are not all numbers
+		clipboardLocale.toDouble(firstLine[i], &allNumbers);
+		if (!allNumbers){
+			switch(QMessageBox::question(this, tr("QtiPlot") + " - " + tr("Paste operation"),
+			tr("How should QtiPlot interpret first clipboard line?"),
+			tr("&Values"), tr("Column &Names"), tr("&Comments"), 1, 1)){
+				case 0:
+				break;
+				case 1:
+					pasteHeader = true;
+					linesList.pop_front();
+					rows--;
+				break;
+				case 2:
+					pasteComments = true;
+					linesList.pop_front();
+					rows--;
+				break;
+			}
+			break;
+		}
 	}
 
 	int top, left, firstCol = firstSelectedColumn();
@@ -1439,12 +1470,26 @@ void Table::pasteSelection()
 
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
-	QLocale l = locale();
-	QLocale clipboardLocale = applicationWindow()->clipboardLocale();
-	for (int i=0; i < rows; i++){
+	if (pasteComments || pasteHeader){
+		for (int j = left; j < left + cols; j++){
+			if (d_table->isColumnReadOnly(j))
+				continue;
+
+			if (pasteComments)
+				comments[j] = firstLine[j];
+			else if (pasteHeader)
+				col_label[j] = firstLine[j].replace("-","_").remove(QRegExp("\\W")).replace("_","-");
+		}
+		if (pasteComments)
+			showComments();
+		else if (pasteHeader)
+			setHeaderColType();
+	}
+
+	for (int i = 0; i < rows; i++){
 		int row = top + i;
 		QStringList cells = linesList[i].split("\t");
-		for (int j = left; j< left + cols; j++){
+		for (int j = left; j < left + cols; j++){
 			if (d_table->isColumnReadOnly(j))
 				continue;
 
