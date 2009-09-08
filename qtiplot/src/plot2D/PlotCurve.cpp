@@ -38,6 +38,7 @@
 #include <QPainter>
 #include <qwt_symbol.h>
 #include <qwt_painter.h>
+#include <qwt_curve_fitter.h>
 
 PlotCurve::PlotCurve(const QString& name): QwtPlotCurve(name),
 d_type(0),
@@ -530,6 +531,21 @@ bool DataCurve::updateData(Table *t, const QString& colName)
 	return true;
 }
 
+void DataCurve::enableSpeedMode()
+{
+	Graph *g = (Graph *)plot();
+	if (!g)
+		return;
+
+	if (g->getDouglasPeukerTolerance() != 0.0 && dataSize() >= g->speedModeMaxPoints()){
+		setCurveAttribute(QwtPlotCurve::Fitted);
+
+		QwtWeedingCurveFitter *fitter = new QwtWeedingCurveFitter(g->getDouglasPeukerTolerance());
+		setCurveFitter(fitter);
+	}
+	//g->replot();
+}
+
 void DataCurve::loadData()
 {
 	Graph *g = (Graph *)plot();
@@ -643,6 +659,8 @@ void DataCurve::loadData()
 		if (yColType == Table::Text)
             g->setLabelsTextFormat(QwtPlot::yLeft, ScaleDraw::Text, title().text(), yLabels);
 	}
+
+	enableSpeedMode();
 
     if (!d_labels_list.isEmpty()){
         ((Graph*)plot())->updatePlot();

@@ -137,6 +137,7 @@ public:
 
 	virtual bool updateData(Table *t, const QString& colName);
 	virtual void loadData();
+	void enableSpeedMode();
 
 	//! Returns the row index in the data source table corresponding to the data point index.
 	int tableRow(int point);

@@ -214,6 +214,10 @@ class Graph: public QwtPlot
 		static QString texSuperscripts(const QString &);
 
 		void changeCurveIndex(int fromIndex, int toIndex);
+		void enableDouglasPeukerSpeedMode(double tolerance, int maxPoints);
+
+		int speedModeMaxPoints(){return d_speed_mode_points;};
+		double getDouglasPeukerTolerance(){return d_Douglas_Peuker_tolerance;};
 
 	public slots:
 		void copy(Graph* g);
@@ -796,5 +800,8 @@ signals:
 		QList<FrameWidget*> d_enrichments;
 		QwtPlotMagnifier *d_magnifier;
 		QwtPlotPanner *d_panner;
+
+		double d_Douglas_Peuker_tolerance;
+		int d_speed_mode_points;
 };
 #endif // GRAPH_H

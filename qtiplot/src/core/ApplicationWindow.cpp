@@ -127,6 +127,11 @@
 #include <stdlib.h>
 #include <math.h>
 
+#include <fstream>
+#include <iostream>
+#include <string>
+using namespace std;
+
 #include <qwt_scale_engine.h>
 #include <qwt_scale_widget.h>
 
@@ -1020,6 +1025,7 @@ void ApplicationWindow::insertTranslatedStrings()
 	fileMenu->setTitle(tr("&File"));
 	newMenu->setTitle(tr("&New"));
 	exportPlotMenu->setTitle(tr("&Export Graph"));
+	importMenu->setTitle(tr("&Import"));
 	edit->setTitle(tr("&Edit"));
 	view->setTitle(tr("&View"));
 	graph->setTitle(tr("&Graph"));
@@ -1057,6 +1063,8 @@ void ApplicationWindow::initMainMenu()
 	newMenu->setObjectName("newMenu");
 	exportPlotMenu = new QMenu(this);
 	exportPlotMenu->setObjectName("exportPlotMenu");
+	importMenu = new QMenu(this);
+	importMenu->setObjectName("importMenu");
 
 	edit = new QMenu(this);
 	edit->setObjectName("editMenu");
@@ -1207,7 +1215,7 @@ void ApplicationWindow::initMainMenu()
 	menus << windowsMenu << view << graph << fileMenu << format << edit;
 	menus << help << plot2DMenu << analysisMenu;
 	menus << matrixMenu << plot3DMenu << plotDataMenu << scriptingMenu;
-	menus << tableMenu << newMenu << exportPlotMenu;
+	menus << tableMenu << newMenu << exportPlotMenu << importMenu;
 
 	foreach (QMenu *m, menus)
     	connect(m, SIGNAL(triggered(QAction *)), this, SLOT(performCustomAction(QAction *)));
@@ -3824,6 +3832,106 @@ ApplicationWindow * ApplicationWindow::plotFile(const QString& fn)
 	return app;
 }
 
+void ApplicationWindow::importWaveFile()
+{
+	QString fn = getFileName(this, tr("Open File"), QString::null, "*.wav", 0, false);
+	if (fn.isEmpty())
+		return;
+
+	QString log = QDateTime::currentDateTime ().toString(Qt::LocalDate) + " - ";
+	log += tr("Imported sound file") + ": " + fn + "\n";
+	ifstream file(fn, ios::in | ios::binary);
+
+	file.seekg(4, ios::beg);
+	int chunkSize;
+	file.read( (char*) &chunkSize, 4 ); // read the ChunkSize
+
+	file.seekg(16, ios::beg);
+	int	subChunk1Size;
+	file.read( (char*) &subChunk1Size, 4 ); // read the SubChunk1Size
+
+	short format;
+	file.read( (char*) &format, sizeof(short) ); // read the file format.  This should be 1 for PCM
+	log += tr("Format") + ": ";
+	if (format != 1){
+		QMessageBox::information(this, tr("QtiPlot"),
+		tr("This is not a PCM type WAV file, operation aborted!"));
+		log +=  QString::number(format) + "\n";
+		showResults(log, true);
+		return;
+	} else
+		log += tr("PCM") + "\n";
+
+	short channels;
+	file.read( (char*) &channels, sizeof(short) ); // read the # of channels (1 or 2)
+	QStringList header;
+	if (channels == 2)
+		header << tr("Time") << tr("Left") << tr("Right");
+	else if (channels == 1)
+		header << tr("Time") << tr("Data");
+	log += tr("Channels") + ": " + QString::number(channels) + "\n";
+
+	int sampleRate;
+	file.read( (char*) &sampleRate, sizeof(int) );
+	log += tr("Sample Rate") + ": " + QString::number(sampleRate) + "\n";
+
+	int byteRate;
+	file.read( (char*) &byteRate, sizeof(int) );
+	log += tr("Byte Rate") + ": " + QString::number(byteRate) + "\n";
+
+	short blockAlign;
+	file.read( (char*) &blockAlign, sizeof(short) );
+	log += tr("Block Align") + ": " + QString::number(blockAlign) + "\n";
+
+	short bitsPerSample;
+	file.read( (char*) &bitsPerSample, sizeof(short) );
+	log += tr("Bits Per Sample") + ": " + QString::number(bitsPerSample) + "\n";
+	log += "__________________________________\n";
+	showResults(log, true);
+
+	int rows = (chunkSize - 36)/blockAlign;
+	Table *t = newTable(rows, int(channels + 1), QFileInfo(fn).baseName(), fn);
+	if (!t)
+		return;
+
+	t->setHeader(header);
+
+	file.seekg(44, ios::beg);
+
+	double dt = 1.0/(double)sampleRate;
+	int aux = 1;
+	if (bitsPerSample == 8){
+		if (channels == 2)
+			file.seekg(46, ios::beg);//???Why???
+		int size = 1;
+		uchar ch;
+		while(!file.eof()){
+			int i = aux - 1;
+			t->setCell(i, 0, dt*aux);
+			for (int j = 1; j <= channels; j++){
+				file.read((char*) &ch, size);
+				t->setText(i, j, QString::number(ch));
+			}
+			aux++;
+		}
+	} else if (bitsPerSample == 16){
+		int size = sizeof(short);
+		short ch;
+		while(!file.eof()){
+			int i = aux - 1;
+			t->setCell(i, 0, dt*aux);
+			for (int j = 1; j <= channels; j++){
+				file.read((char*) &ch, size);
+				t->setText(i, j, QString::number(ch));
+			}
+			aux++;
+		}
+	}
+
+	file.close();
+	t->show();
+}
+
 void ApplicationWindow::importASCII()
 {
 	ImportASCIIDialog *import_dialog = new ImportASCIIDialog(!activeWindow(TableWindow) && !activeWindow(MatrixWindow), this, d_extended_import_ASCII_dialog);
@@ -5549,12 +5657,13 @@ void ApplicationWindow::exportPresentationODF()
 	if(!file_name.endsWith(selected_filter, Qt::CaseInsensitive))
 		file_name.append(selected_filter);
 
-	QFileInfo fi(file_name);
-	if (!fi.isWritable()){
+	QFile file(file_name);
+	if (!file.open( QIODevice::WriteOnly)){
 		QMessageBox::critical(this, tr("QtiPlot - Export error"),
-				tr("Could not write to file: <br><h4> %1 </h4><p>Please verify that you have the right to write to this location!").arg(file_name));
+		tr("Could not write to file: <br><h4> %1 </h4><p>Please verify that you have the right to write to this location!").arg(file_name));
 		return;
 	}
+	file.close();
 
 	QDialog *previewDlg = new QDialog(this);
 	previewDlg->setSizeGripEnabled(true);
@@ -8774,6 +8883,8 @@ void ApplicationWindow::fileMenuAboutToShow()
 		newMenu->clear();
 	if (exportPlotMenu)
 		exportPlotMenu->clear();
+	if (importMenu)
+		importMenu->clear();
 
 	fileMenu->addMenu(newMenu);
 	newMenu->addAction(actionNewProject);
@@ -8819,7 +8930,11 @@ void ApplicationWindow::fileMenuAboutToShow()
 	fileMenu->addAction(actionPrintAllPlots);
 	fileMenu->insertSeparator();
 	fileMenu->addAction(actionShowExportASCIIDialog);
-	fileMenu->addAction(actionLoad);
+
+	fileMenu->addMenu(importMenu);
+	importMenu->addAction(actionLoad);
+	importMenu->addAction(actionImportSound);
+
 	fileMenu->insertSeparator();
 	fileMenu->addAction(actionCloseAllWindows);
 
@@ -11591,6 +11706,10 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot,
 				Table *nw = app->table(colName);
 				ag->setLabelsTextFormat(i, ag->axisType(i), colName, nw);
 			}
+		} else if (s.startsWith ("<SpeedMode>") && s.endsWith ("</SpeedMode>")){
+			QStringList lst = s.remove("<SpeedMode>").remove("</SpeedMode>").split("\t");
+			if (lst.size() == 2)
+				ag->enableDouglasPeukerSpeedMode(lst[0].toDouble(), lst[1].toInt());
 		}
 	}
 	ag->updateLayout();
@@ -12243,6 +12362,9 @@ void ApplicationWindow::createActions()
 
 	actionLoad = new QAction(QIcon(QPixmap(import_xpm)), tr("&Import ASCII..."), this);
 	connect(actionLoad, SIGNAL(activated()), this, SLOT(importASCII()));
+
+	actionImportSound = new QAction(tr("&Sound (WAV)..."), this);
+	connect(actionImportSound, SIGNAL(activated()), this, SLOT(importWaveFile()));
 
 	actionUndo = new QAction(QIcon(QPixmap(undo_xpm)), tr("&Undo"), this);
 	actionUndo->setShortcut( tr("Ctrl+Z") );
@@ -16577,7 +16699,7 @@ QList<QMenu *> ApplicationWindow::customizableMenusList()
 	lst << help << plot2DMenu;
 	lst << analysisMenu << multiPeakMenu  << smoothMenu << filterMenu << decayMenu  << normMenu;
 	lst << matrixMenu << plot3DMenu << plotDataMenu << scriptingMenu;
-	lst << tableMenu << fillMenu << newMenu << exportPlotMenu;
+	lst << tableMenu << fillMenu << newMenu << exportPlotMenu << importMenu;
 	return lst;
 }
 

@@ -281,6 +281,7 @@ private:
 	void initContourLinesPage();
 	void initLayerPage();
 	void initLayerGeometryPage();
+	void initLayerSpeedPage();
 	void initFontsPage();
 	void initPiePage();
 	void initPieGeometryPage();
@@ -303,7 +304,7 @@ private:
 
     QPushButton *btnTitle, *btnAxesLabels, *btnAxesNumbers, *btnLegend;
 	ColorMapEditor *colorMapEditor;
-    QWidget *curvePlotTypeBox, *layerPage, *layerGeometryPage, *piePage, *fontsPage, *printPage;
+    QWidget *curvePlotTypeBox, *layerPage, *layerGeometryPage, *piePage, *fontsPage, *printPage, *speedPage;
     QTreeWidget* listBox;
     QCheckBox *boxAntialiasing, *boxScaleLayers, *boxPrintCrops;
     ColorButton *boxBorderColor, *boxBackgroundColor, *boxCanvasColor;
@@ -400,6 +401,9 @@ private:
 
 	QSpinBox *boxSkipSymbols, *boxSkipErrorBars;
 	QComboBox *symbolsFormatApplyToBox, *lineFormatApplyToBox, *errorBarsFormatApplyToBox;
+	QSpinBox *boxMaxPoints;
+	DoubleSpinBox *boxDouglasPeukerTolerance;
+	QGroupBox *speedModeBox;
 };
 
 /*****************************************************************************
