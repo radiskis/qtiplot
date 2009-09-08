@@ -500,16 +500,17 @@ void PlotDialog::initLayerSpeedPage()
 {
 	speedPage = new QWidget();
 
-	speedModeBox = new QGroupBox(tr("Speed Mode, Skip Points if needed"));
+	speedModeBox = new QGroupBox(tr("&Speed Mode, Skip Points if needed"));
 	speedModeBox->setCheckable(true);
 	speedModeBox->setChecked(false);
 
 	boxMaxPoints = new QSpinBox();
 	boxMaxPoints->setMaximum(INT_MAX);
+	boxMaxPoints->setSuffix(" " + tr("data points"));
 	boxMaxPoints->setValue(3000);
 
     QGridLayout *gl1 = new QGridLayout(speedModeBox);
-    gl1->addWidget(new QLabel(tr("Maximum points per curve")), 0, 0);
+    gl1->addWidget(new QLabel(tr("Apply to curves with more than:")), 0, 0);
     gl1->addWidget(boxMaxPoints, 0, 1);
 
 	ApplicationWindow *app = (ApplicationWindow *)parent();
@@ -519,7 +520,7 @@ void PlotDialog::initLayerSpeedPage()
 
 	boxDouglasPeukerTolerance = new DoubleSpinBox();
 	boxDouglasPeukerTolerance->setLocale(locale);
-	gl1->addWidget(new QLabel(tr("Douglas Peuker Tolerance")), 1, 0);
+	gl1->addWidget(new QLabel(tr("Tolerance (Douglas Peuker algorithm)")), 1, 0);
 	gl1->addWidget(boxDouglasPeukerTolerance, 1, 1);
     gl1->setRowStretch(2, 1);
 
