@@ -545,7 +545,7 @@ void ApplicationWindow::initGlobalConstants()
 	autoscale2DPlots = true;
 	autoScaleFonts = true;
 	autoResizeLayers = true;
-	antialiasing2DPlots = true;
+	antialiasing2DPlots = false;
 	d_scale_plots_on_print = false;
 	d_print_cropmarks = false;
 	d_graph_legend_display = Graph::ColumnName;
@@ -5657,17 +5657,10 @@ void ApplicationWindow::exportPresentationODF()
 	if(!file_name.endsWith(selected_filter, Qt::CaseInsensitive))
 		file_name.append(selected_filter);
 
-	QFile file(file_name);
-	if (!file.open( QIODevice::WriteOnly)){
-		QMessageBox::critical(this, tr("QtiPlot - Export error"),
-		tr("Could not write to file: <br><h4> %1 </h4><p>Please verify that you have the right to write to this location!").arg(file_name));
-		return;
-	}
-	file.close();
-
 	QDialog *previewDlg = new QDialog(this);
 	previewDlg->setSizeGripEnabled(true);
 	previewDlg->setWindowTitle(tr("QtiPlot") + " - " + tr("Presentation Preview"));
+	previewDlg->resize(QSize(600, 400));
 
 	QHBoxLayout *bl = new QHBoxLayout();
 	bl->addStretch();
@@ -5700,6 +5693,14 @@ void ApplicationWindow::exportPresentationODF()
 	}
 
 	if (previewDlg->exec()){
+		QFile file(file_name);
+		if (!file.open( QIODevice::WriteOnly)){
+			QMessageBox::critical(this, tr("QtiPlot - Export error"),
+			tr("Could not write to file: <br><h4> %1 </h4><p>Please verify that you have the right to write to this location!").arg(file_name));
+			return;
+		}
+		file.close();
+
 		QTextDocumentWriter writer(file_name);
 		writer.write(document);
 	}

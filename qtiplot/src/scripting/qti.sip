@@ -36,7 +36,7 @@
 class ScriptEdit: QTextEdit
 {
 %TypeHeaderCode
-#include "src/scripting/ScriptEdit.h"
+#include "../src/scripting/ScriptEdit.h"
 %End
 public slots:
   void execute();
@@ -51,7 +51,7 @@ private:
 class MdiSubWindow: QMdiSubWindow /PyName=MDIWindow/
 {
 %TypeHeaderCode
-#include "src/core/MdiSubWindow.h"
+#include "../src/core/MdiSubWindow.h"
 %End
 public:
   enum CaptionPolicy{Name = 0, Label = 1, Both = 2};
@@ -77,7 +77,7 @@ private:
 class Table: MdiSubWindow
 {
 %TypeHeaderCode
-#include "src/table/Table.h"
+#include "../src/table/Table.h"
 #include <QMessageBox>
 #define CHECK_TABLE_COL(arg)\
     int col;\
@@ -437,7 +437,7 @@ private:
 class Matrix: MdiSubWindow
 {
 %TypeHeaderCode
-#include "src/matrix/Matrix.h"
+#include "../src/matrix/Matrix.h"
 #define CHECK_MATRIX_COL(arg)\
 	int col = arg-1;\
    if (col < 0 || col >= sipCpp->numCols()) {\
@@ -544,7 +544,7 @@ private:
 class ArrowMarker // : QwtPlotMarker
 {
 %TypeHeaderCode
-#include "src/plot2D/ArrowMarker.h"
+#include "../src/plot2D/ArrowMarker.h"
 %End
 public:
 
@@ -569,7 +569,7 @@ private:
 class FrameWidget : QWidget  /PyName=Frame/
 {
 %TypeHeaderCode
-#include "src/plot2D/FrameWidget.h"
+#include "../src/plot2D/FrameWidget.h"
 %End
 
 public:
@@ -619,7 +619,7 @@ private:
 class ImageWidget : FrameWidget /PyName=Image/
 {
 %TypeHeaderCode
-#include "src/plot2D/ImageWidget.h"
+#include "../src/plot2D/ImageWidget.h"
 %End
 public:
 
@@ -634,7 +634,7 @@ private:
 class LegendWidget : FrameWidget /PyName=Legend/
 {
 %TypeHeaderCode
-#include "src/plot2D/LegendWidget.h"
+#include "../src/plot2D/LegendWidget.h"
 %End
 public:
 
@@ -654,7 +654,7 @@ private:
 class RectangleWidget : FrameWidget /PyName=Rectangle/
 {
 %TypeHeaderCode
-#include "src/plot2D/RectangleWidget.h"
+#include "../src/plot2D/RectangleWidget.h"
 %End
 public:
 
@@ -667,7 +667,7 @@ private:
 class EllipseWidget : FrameWidget /PyName=Ellipse/
 {
 %TypeHeaderCode
-#include "src/plot2D/EllipseWidget.h"
+#include "../src/plot2D/EllipseWidget.h"
 %End
 public:
 
@@ -755,7 +755,7 @@ class QwtPlotCurve
 class PlotCurve : QwtPlotCurve
 {
 %TypeHeaderCode
-#include "src/plot2D/PlotCurve.h"
+#include "../src/plot2D/PlotCurve.h"
 %End
 public:
 	PlotCurve(const QString& name = QString());
@@ -770,7 +770,7 @@ private:
 class DataCurve : PlotCurve
 {
 %TypeHeaderCode
-#include "src/plot2D/PlotCurve.h"
+#include "../src/plot2D/PlotCurve.h"
 %End
 public:
 	DataCurve(Table *t, const QString& xColName, const QString& name, int startRow = 0, int endRow = -1);
@@ -819,7 +819,7 @@ private:
 class QwtHistogram : QwtPlotCurve /PyName=Histogram/
 {
 %TypeHeaderCode
-#include "src/plot2D/QwtHistogram.h"
+#include "../src/plot2D/QwtHistogram.h"
 %End
 public:
 	QwtHistogram(Table *t, const QString& name, int startRow = 0, int endRow = -1);
@@ -866,7 +866,7 @@ private:
 class Spectrogram : QwtPlotSpectrogram
 {
 %TypeHeaderCode
-#include "src/plot2D/Spectrogram.h"
+#include "../src/plot2D/Spectrogram.h"
 %End
 public:
 
@@ -939,7 +939,7 @@ private:
 class Grid // : QwtPlotGrid
 {
 %TypeHeaderCode
-#include "src/plot2D/Grid.h"
+#include "../src/plot2D/Grid.h"
 %End
 public:
 
@@ -989,8 +989,8 @@ private:
 class Graph : QwtPlot /PyName=Layer/
 {
 %TypeHeaderCode
-#include "src/plot2D/Graph.h"
-#include "src/plot2D/LegendWidget.h"
+#include "../src/plot2D/Graph.h"
+#include "../src/plot2D/LegendWidget.h"
 %End
 public:
   enum Scale{Linear, Log10};
@@ -1194,7 +1194,7 @@ private:
 class MultiLayer : MdiSubWindow /PyName=Graph/
 {
 %TypeHeaderCode
-#include "src/plot2D/MultiLayer.h"
+#include "../src/plot2D/MultiLayer.h"
 %End
 public:
 
@@ -1244,7 +1244,7 @@ private:
 class Note: MdiSubWindow
 {
 %TypeHeaderCode
-#include "src/scripting/Note.h"
+#include "../src/scripting/Note.h"
 %End
 public:
   void execute() const;
@@ -1270,7 +1270,7 @@ private:
 class Graph3D: MdiSubWindow
 {
 %TypeHeaderCode
-#include "src/plot3D/Graph3D.h"
+#include "../src/plot3D/Graph3D.h"
 %End
 public:
 	enum PlotType{Scatter = 0, Trajectory = 1, Bars = 2, Ribbon = 3};
@@ -1363,7 +1363,7 @@ private:
 class ApplicationWindow: QMainWindow
 {
 %TypeHeaderCode
-#include "src/core/ApplicationWindow.h"
+#include "../src/core/ApplicationWindow.h"
 %End
 %ConvertToSubClassCode
 // we have to do this to override casting in qt/qobject.sip
@@ -1531,7 +1531,7 @@ private:
 class Fit : Filter
 {
 %TypeHeaderCode
-#include "src/analysis/Fit.h"
+#include "../src/analysis/Fit.h"
 %End
 public:
   enum Algorithm{ScaledLevenbergMarquardt, UnscaledLevenbergMarquardt, NelderMeadSimplex};
@@ -1670,7 +1670,7 @@ else { sipCpp = NULL; }
 class ExponentialFit : Fit
 {
 %TypeHeaderCode
-#include "src/analysis/ExponentialFit.h"
+#include "../src/analysis/ExponentialFit.h"
 %End
 public:
   ExponentialFit(ApplicationWindow * /TransferThis/, Table *, const QString&, const QString&, int, int, bool);
@@ -1694,7 +1694,7 @@ public:
 class TwoExpFit : Fit
 {
 %TypeHeaderCode
-#include "src/analysis/ExponentialFit.h"
+#include "../src/analysis/ExponentialFit.h"
 %End
 public:
   TwoExpFit(ApplicationWindow * /TransferThis/, Table *, const QString&, const QString&, int, int);
@@ -1718,7 +1718,7 @@ public:
 class ThreeExpFit : Fit
 {
 %TypeHeaderCode
-#include "src/analysis/ExponentialFit.h"
+#include "../src/analysis/ExponentialFit.h"
 %End
 public:
   ThreeExpFit(ApplicationWindow * /TransferThis/, Table *, const QString&, const QString&, int, int);
@@ -1742,7 +1742,7 @@ public:
 class SigmoidalFit : Fit
 {
 %TypeHeaderCode
-#include "src/analysis/SigmoidalFit.h"
+#include "../src/analysis/SigmoidalFit.h"
 %End
 public:
   SigmoidalFit(ApplicationWindow * /TransferThis/, Table *, const QString&, const QString&, int, int);
@@ -1768,7 +1768,7 @@ public:
 class LogisticFit : Fit
 {
 %TypeHeaderCode
-#include "src/analysis/LogisticFit.h"
+#include "../src/analysis/LogisticFit.h"
 %End
 public:
   LogisticFit(ApplicationWindow * /TransferThis/, Table *, const QString&, const QString&, int, int);
@@ -1794,7 +1794,7 @@ public:
 class GaussAmpFit : Fit
 {
 %TypeHeaderCode
-#include "src/analysis/MultiPeakFit.h"
+#include "../src/analysis/MultiPeakFit.h"
 %End
 public:
   GaussAmpFit(ApplicationWindow * /TransferThis/, Table *, const QString&, const QString&, int, int);
@@ -1820,7 +1820,7 @@ public:
 class NonLinearFit : Fit
 {
 %TypeHeaderCode
-#include "src/analysis/NonLinearFit.h"
+#include "../src/analysis/NonLinearFit.h"
 %End
 public:
   NonLinearFit(ApplicationWindow * /TransferThis/, Table *, const QString&, const QString&, int, int);
@@ -1860,7 +1860,7 @@ public:
 class PluginFit : Fit
 {
 %TypeHeaderCode
-#include "src/analysis/PluginFit.h"
+#include "../src/analysis/PluginFit.h"
 %End
 public:
   PluginFit(ApplicationWindow * /TransferThis/, Table *, const QString&, const QString&, int, int);
@@ -1885,7 +1885,7 @@ public:
 class MultiPeakFit : Fit
 {
 %TypeHeaderCode
-#include "src/analysis/MultiPeakFit.h"
+#include "../src/analysis/MultiPeakFit.h"
 %End
 public:
   enum PeakProfile{Gauss, Lorentz};
@@ -1906,7 +1906,7 @@ public:
 class LorentzFit : MultiPeakFit
 {
 %TypeHeaderCode
-#include "src/analysis/MultiPeakFit.h"
+#include "../src/analysis/MultiPeakFit.h"
 %End
 public:
   LorentzFit(ApplicationWindow * /TransferThis/, Table *, const QString&, const QString&, int, int);
@@ -1930,7 +1930,7 @@ public:
 class GaussFit : MultiPeakFit
 {
 %TypeHeaderCode
-#include "src/analysis/MultiPeakFit.h"
+#include "../src/analysis/MultiPeakFit.h"
 %End
 public:
   GaussFit(ApplicationWindow * /TransferThis/, Table *, const QString&, const QString&, int, int);
@@ -1954,7 +1954,7 @@ public:
 class PolynomialFit : Fit
 {
 %TypeHeaderCode
-#include "src/analysis/PolynomialFit.h"
+#include "../src/analysis/PolynomialFit.h"
 %End
 public:
   PolynomialFit(ApplicationWindow * /TransferThis/, Table *, const QString&, const QString&, int, int, int, bool);
@@ -1984,7 +1984,7 @@ public:
 class LinearFit : Fit
 {
 %TypeHeaderCode
-#include "src/analysis/PolynomialFit.h"
+#include "../src/analysis/PolynomialFit.h"
 %End
 public:
   LinearFit(ApplicationWindow * /TransferThis/, Table *, const QString&, const QString&, int, int);
@@ -2009,7 +2009,7 @@ public:
 class Filter : QObject
 {
 %TypeHeaderCode
-#include "src/analysis/Filter.h"
+#include "../src/analysis/Filter.h"
 %End
 public:
   Filter(ApplicationWindow* /TransferThis/, Graph*=0, const char*=0);
@@ -2034,7 +2034,7 @@ public:
 class Differentiation : Filter
 {
 %TypeHeaderCode
-#include "src/analysis/Differentiation.h"
+#include "../src/analysis/Differentiation.h"
 %End
 public:
   Differentiation(ApplicationWindow * /TransferThis/, Table *, const QString&, const QString&, int, int);
@@ -2059,7 +2059,7 @@ public:
 class Integration : Filter
 {
 %TypeHeaderCode
-#include "src/analysis/Integration.h"
+#include "../src/analysis/Integration.h"
 %End
 public:
   Integration(ApplicationWindow * /TransferThis/, Table *, const QString&, const QString&, int, int);
@@ -2089,7 +2089,7 @@ public:
 class Interpolation : Filter
 {
 %TypeHeaderCode
-#include "src/analysis/Interpolation.h"
+#include "../src/analysis/Interpolation.h"
 %End
 public:
   enum InterpolationMethod{Linear, Cubic, Akima};
@@ -2118,7 +2118,7 @@ public:
 class SmoothFilter : Filter
 {
 %TypeHeaderCode
-#include "src/analysis/SmoothFilter.h"
+#include "../src/analysis/SmoothFilter.h"
 %End
 public:
   enum SmoothMethod{SavitzkyGolay = 1, FFT = 2, Average = 3};
@@ -2149,7 +2149,7 @@ public:
 class FFTFilter : Filter
 {
 %TypeHeaderCode
-#include "src/analysis/FFTFilter.h"
+#include "../src/analysis/FFTFilter.h"
 %End
 public:
   enum FilterType{LowPass = 1, HighPass = 2, BandPass = 3, BandBlock = 4};
@@ -2182,7 +2182,7 @@ public:
 class FFT : Filter
 {
 %TypeHeaderCode
-#include "src/analysis/FFT.h"
+#include "../src/analysis/FFT.h"
 %End
 public:
 
@@ -2214,7 +2214,7 @@ public:
 class Correlation : Filter
 {
 %TypeHeaderCode
-#include "src/analysis/Correlation.h"
+#include "../src/analysis/Correlation.h"
 %End
 public:
 
@@ -2231,7 +2231,7 @@ public:
 class Convolution : Filter
 {
 %TypeHeaderCode
-#include "src/analysis/Convolution.h"
+#include "../src/analysis/Convolution.h"
 %End
 public:
 
@@ -2248,7 +2248,7 @@ public:
 class Deconvolution : Filter
 {
 %TypeHeaderCode
-#include "src/analysis/Convolution.h"
+#include "../src/analysis/Convolution.h"
 %End
 public:
 
@@ -2266,7 +2266,7 @@ public:
 class PythonScripting
 {
 %TypeHeaderCode
-#include "src/scripting/PythonScripting.h"
+#include "../src/scripting/PythonScripting.h"
 %End
 public:
   void write(const QString&);
@@ -2276,7 +2276,7 @@ private:
 class PythonScript
 {
 %TypeHeaderCode
-#include "src/scripting/PythonScript.h"
+#include "../src/scripting/PythonScript.h"
 %End
 public:
   void write(const QString&);
@@ -2287,7 +2287,7 @@ private:
 class Folder : QObject
 {
 %TypeHeaderCode
-#include "src/core/Folder.h"
+#include "../src/core/Folder.h"
 %End
 public:
   QList<MdiSubWindow*> windowsList() /PyName=windows/;
