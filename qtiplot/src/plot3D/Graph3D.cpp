@@ -2154,6 +2154,8 @@ void Graph3D::exportImage(QTextDocument *document, int quality, bool transparent
 	QTextCursor cursor = QTextCursor(document);
 	cursor.movePosition(QTextCursor::End);
 	cursor.insertBlock();
+	cursor.insertText(objectName());
+	cursor.insertBlock();
 	cursor.insertImage(image);
 }
 

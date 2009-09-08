@@ -115,6 +115,7 @@ PlotDialog::PlotDialog(bool showExtended, QWidget* parent, Qt::WFlags fl )
 	initPieLabelsPage();
 	initLayerPage();
 	initLayerGeometryPage();
+	initLayerSpeedPage();
 	initFontsPage();
 	initPrintPage();
 	initLabelsPage();
@@ -493,6 +494,41 @@ void PlotDialog::initLayerGeometryPage()
 	connect(boxLayerHeight, SIGNAL(valueChanged (double)), this, SLOT(adjustLayerWidth(double)));
 	connect(unitBox, SIGNAL(activated(int)), this, SLOT(displayCoordinates(int)));
 	unitBox->setCurrentIndex(app->d_layer_geometry_unit);
+}
+
+void PlotDialog::initLayerSpeedPage()
+{
+	speedPage = new QWidget();
+
+	speedModeBox = new QGroupBox(tr("Speed Mode, Skip Points if needed"));
+	speedModeBox->setCheckable(true);
+	speedModeBox->setChecked(false);
+
+	boxMaxPoints = new QSpinBox();
+	boxMaxPoints->setMaximum(INT_MAX);
+	boxMaxPoints->setValue(3000);
+
+    QGridLayout *gl1 = new QGridLayout(speedModeBox);
+    gl1->addWidget(new QLabel(tr("Maximum points per curve")), 0, 0);
+    gl1->addWidget(boxMaxPoints, 0, 1);
+
+	ApplicationWindow *app = (ApplicationWindow *)parent();
+	QLocale locale = QLocale();
+	if (app)
+		locale = app->locale();
+
+	boxDouglasPeukerTolerance = new DoubleSpinBox();
+	boxDouglasPeukerTolerance->setLocale(locale);
+	gl1->addWidget(new QLabel(tr("Douglas Peuker Tolerance")), 1, 0);
+	gl1->addWidget(boxDouglasPeukerTolerance, 1, 1);
+    gl1->setRowStretch(2, 1);
+
+    QVBoxLayout * vl = new QVBoxLayout( speedPage );
+    vl->addWidget(speedModeBox);
+
+    privateTabWidget->addTab(speedPage, tr("Speed"));
+	connect(speedModeBox, SIGNAL(toggled(bool)), this, SLOT(acceptParams()));
+	connect(boxDouglasPeukerTolerance, SIGNAL(valueChanged(double)), this, SLOT(acceptParams()));
 }
 
 void PlotDialog::initPiePage()
@@ -1596,6 +1632,7 @@ void PlotDialog::removeSelectedCurve()
 			clearTabWidget();
             privateTabWidget->addTab (layerPage, tr("Layer"));
 			privateTabWidget->addTab (layerGeometryPage, tr("Geometry"));
+			privateTabWidget->addTab (speedPage, tr("Speed"));
             privateTabWidget->showPage(layerPage);
 
 			setActiveLayer(layerItem);
@@ -1662,6 +1699,7 @@ void PlotDialog::updateTabWindow(QTreeWidgetItem *currentItem, QTreeWidgetItem *
             clearTabWidget();
             privateTabWidget->addTab (layerPage, tr("Layer"));
 			privateTabWidget->addTab (layerGeometryPage, tr("Geometry"));
+			privateTabWidget->addTab (speedPage, tr("Speed"));
             privateTabWidget->showPage(layerPage);
         }
         setActiveLayer((LayerItem *)currentItem);
@@ -1771,6 +1809,7 @@ void PlotDialog::clearTabWidget()
     privateTabWidget->removeTab(privateTabWidget->indexOf(pieLabelsPage));
 	privateTabWidget->removeTab(privateTabWidget->indexOf(layerPage));
 	privateTabWidget->removeTab(privateTabWidget->indexOf(layerGeometryPage));
+	privateTabWidget->removeTab(privateTabWidget->indexOf(speedPage));
 	privateTabWidget->removeTab(privateTabWidget->indexOf(fontsPage));
 	privateTabWidget->removeTab(privateTabWidget->indexOf(printPage));
 }
@@ -1906,6 +1945,18 @@ void PlotDialog::setActiveLayer(LayerItem *item)
     boxCanvasColor->blockSignals(false);
     boxAntialiasing->blockSignals(false);
     boxMargin->blockSignals(false);
+
+	speedModeBox->blockSignals(true);
+	speedModeBox->setChecked(g->getDouglasPeukerTolerance() > 0.0);
+	speedModeBox->blockSignals(false);
+
+	boxDouglasPeukerTolerance->blockSignals(true);
+    boxDouglasPeukerTolerance->setValue(g->getDouglasPeukerTolerance());
+    boxDouglasPeukerTolerance->blockSignals(false);
+
+    boxMaxPoints->blockSignals(true);
+    boxMaxPoints->setValue(g->speedModeMaxPoints());
+    boxMaxPoints->blockSignals(false);
 }
 
 void PlotDialog::updateContourLevelsDisplay(Spectrogram *sp)
@@ -2353,6 +2404,20 @@ bool PlotDialog::acceptParams()
 		if (app)
 			app->d_layer_geometry_unit = unitBox->currentIndex();
 
+		return true;
+	} else if (privateTabWidget->currentWidget() == speedPage){
+		LayerItem *item = (LayerItem *)listBox->currentItem();
+        if (!item)
+            return false;
+        Graph *g = item->graph();
+		if (!g)
+			return false;
+
+		double tolerance = boxDouglasPeukerTolerance->value();
+		if (!speedModeBox->isChecked())
+			tolerance = 0;
+
+		g->enableDouglasPeukerSpeedMode(tolerance, boxMaxPoints->value());
 		return true;
 	}
 

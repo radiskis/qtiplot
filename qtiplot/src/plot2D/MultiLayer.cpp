@@ -210,8 +210,8 @@ Graph* MultiLayer::addLayer(int x, int y, int width, int height)
 {
 	addLayerButton();
 	if (!width && !height){
-		width =	(int)(d_canvas->width() - left_margin - right_margin - (d_cols - 1)*colsSpace)/(double)d_cols;
-		height = (int)(d_canvas->height() - top_margin - left_margin - (d_rows - 1)*rowsSpace)/(double)d_rows;
+		width =	(int)((d_canvas->width() - left_margin - right_margin - (d_cols - 1)*colsSpace)/(double)d_cols);
+		height = (int)((d_canvas->height() - top_margin - left_margin - (d_rows - 1)*rowsSpace)/(double)d_rows);
 
 		int layers = graphsList.size();
 		x = left_margin + (layers % d_cols)*(width + colsSpace);
@@ -842,6 +842,7 @@ void MultiLayer::exportImage(QTextDocument *document, int quality, bool transpar
 
 	QTextCursor cursor = QTextCursor(document);
 	cursor.movePosition(QTextCursor::End);
+	cursor.insertBlock();
 	cursor.insertText(objectName());
 	cursor.insertBlock();
 	cursor.insertImage(image);

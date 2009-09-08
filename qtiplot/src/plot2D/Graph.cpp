@@ -219,6 +219,7 @@ static const char *unzoom_xpm[]={
 #include <qwt_scale_engine.h>
 #include <qwt_text_label.h>
 #include <qwt_color_map.h>
+#include <qwt_curve_fitter.h>
 
 #include <math.h>
 #include <stdlib.h>
@@ -248,6 +249,8 @@ Graph::Graph(int x, int y, int width, int height, QWidget* parent, Qt::WFlags f)
 	d_is_printing = false;
 	d_is_exporting_tex = false;
 	d_tex_escape_strings = true;
+	d_Douglas_Peuker_tolerance = 0;
+	d_speed_mode_points = 3000;
 
 	d_user_step = QVector<double>(QwtPlot::axisCnt);
 	for (int i=0; i<QwtPlot::axisCnt; i++)
@@ -3226,6 +3229,8 @@ DataCurve* Graph::insertCurve(Table* w, const QString& xColName, const QString& 
 	else
 		c->setData(X.data(), Y.data(), size);
 
+	c->enableSpeedMode();
+
 	if (xColType == Table::Text){
 		if (style == HorizontalBars)
 			setAxisScaleDraw(QwtPlot::yLeft, new ScaleDraw(this, xLabels, xColName));
@@ -3922,6 +3927,10 @@ QString Graph::saveToString(bool saveAsTemplate)
 	s+="AxesLineWidth\t"+QString::number(axesLinewidth())+"\n";
 	s+=saveLabelsRotation();
 	s+=saveMarkers();
+	if (d_Douglas_Peuker_tolerance > 0.0){
+		s += "<SpeedMode>" + QString::number(d_Douglas_Peuker_tolerance) + "\t";
+		s += QString::number(d_speed_mode_points) + "</SpeedMode>\n";
+	}
 	s+="</graph>\n";
 	return s;
 }
@@ -4302,6 +4311,8 @@ void Graph::copy(Graph* g)
 	setCanvasFrame(g->canvasFrameWidth(), g->canvasFrameColor());
 	setAxesLinewidth(g->axesLinewidth());
 
+	d_Douglas_Peuker_tolerance = g->getDouglasPeukerTolerance();
+
     copyCurves(g);
 
 	for (int i=0; i<QwtPlot::axisCnt; i++){
@@ -4465,9 +4476,13 @@ void Graph::copyCurves(Graph* g)
 			c->setStyle(cv->style());
 			c->setSymbol(cv->symbol());
 
-			if (cv->testCurveAttribute (QwtPlotCurve::Fitted))
+			if (cv->testCurveAttribute (QwtPlotCurve::Fitted)){
 				c->setCurveAttribute(QwtPlotCurve::Fitted, true);
-			else if (cv->testCurveAttribute (QwtPlotCurve::Inverted))
+				if (d_Douglas_Peuker_tolerance > 0.0 && c->dataSize() >= d_speed_mode_points){
+					QwtWeedingCurveFitter *fitter = new QwtWeedingCurveFitter(d_Douglas_Peuker_tolerance);
+					c->setCurveFitter(fitter);
+				}
+			} else if (cv->testCurveAttribute (QwtPlotCurve::Inverted))
 				c->setCurveAttribute(QwtPlotCurve::Inverted, true);
 
 			c->setAxis(cv->xAxis(), cv->yAxis());
@@ -4557,6 +4572,8 @@ void Graph::setCurveStyle(int index, int s)
 	}
 
 	c->setStyle((QwtPlotCurve::CurveStyle)s);
+	if (curve_type != Function)
+		((DataCurve *)c)->enableSpeedMode();
 }
 
 BoxCurve* Graph::openBoxDiagram(Table *w, const QStringList& l, int fileVersion)
@@ -6472,4 +6489,34 @@ void Graph::dropEvent(QDropEvent* event)
 	Matrix *m = qobject_cast<Matrix*>(event->source());
 	if (m)
 		plotSpectrogram(m, ColorMap);
+}
+
+void Graph::enableDouglasPeukerSpeedMode(double tolerance, int maxPoints)
+{
+	if (d_speed_mode_points == maxPoints &&
+		d_Douglas_Peuker_tolerance == tolerance)
+		return;
+
+	d_speed_mode_points = maxPoints;
+	d_Douglas_Peuker_tolerance = tolerance;
+
+	foreach (QwtPlotItem *item, d_curves){
+		if(item->rtti() == QwtPlotItem::Rtti_PlotSpectrogram)
+			continue;
+
+		PlotCurve *c = (PlotCurve *)item;
+		if (!c || c->type() == Function)
+			continue;
+
+		if (tolerance == 0.0 || c->dataSize() < d_speed_mode_points){
+			c->setCurveAttribute(QwtPlotCurve::Fitted, false);
+			continue;
+		}
+
+		c->setCurveAttribute(QwtPlotCurve::Fitted);
+
+		QwtWeedingCurveFitter *fitter = new QwtWeedingCurveFitter(tolerance);
+		c->setCurveFitter(fitter);
+	}
+	replot();
 }

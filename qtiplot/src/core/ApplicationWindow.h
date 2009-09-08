@@ -419,6 +419,7 @@ public slots:
 	void initTable(Table* w, const QString& caption);
 	void customTable(Table* w);
 
+	void importWaveFile();
 	void importASCII();
 	void importASCII(const QStringList& files, int import_mode, const QString& local_column_separator, int local_ignored_lines, bool local_rename_columns,
         bool local_strip_spaces, bool local_simplify_spaces, bool local_import_comments,
@@ -1294,14 +1295,14 @@ private:
 	QMenu *windowsMenu, *foldersMenu, *view, *graph, *fileMenu, *format, *edit, *recent;
 	QMenu *help, *plot2DMenu, *analysisMenu, *multiPeakMenu;
 	QMenu *matrixMenu, *plot3DMenu, *plotDataMenu, *tablesDepend, *scriptingMenu;
-	QMenu *tableMenu, *fillMenu, *normMenu, *newMenu, *exportPlotMenu, *smoothMenu, *filterMenu, *decayMenu;
+	QMenu *tableMenu, *fillMenu, *normMenu, *newMenu, *exportPlotMenu, *smoothMenu, *filterMenu, *decayMenu, *importMenu;
 
 	QAction *actionEditCurveRange, *actionCurveFullRange, *actionShowAllCurves, *actionHideCurve, *actionHideOtherCurves;
 	QAction *actionEditFunction, *actionRemoveCurve, *actionShowCurveWorksheet, *actionShowCurvePlotDialog;
     QAction *actionNewProject, *actionAppendProject, *actionNewNote, *actionNewTable, *actionNewFunctionPlot;
     QAction *actionNewSurfacePlot, *actionNewMatrix, *actionNewGraph, *actionNewFolder;
     QAction *actionOpen, *actionLoadImage, *actionSaveProject, *actionSaveProjectAs, *actionImportImage;
-    QAction *actionLoad, *actionUndo, *actionRedo;
+    QAction *actionLoad, *actionUndo, *actionRedo, *actionImportSound;
     QAction *actionCopyWindow, *actionShowAllColumns, *actionHideSelectedColumns;
     QAction *actionCutSelection, *actionCopySelection, *actionPasteSelection, *actionClearSelection;
     QAction *actionShowExplorer, *actionShowLog, *actionAddLayer, *actionShowLayerDialog, *actionAutomaticLayout;
