@@ -61,6 +61,7 @@
 #include <gsl/gsl_vector.h>
 #include <gsl/gsl_sort.h>
 #include <gsl/gsl_sort_vector.h>
+#include <gsl/gsl_heapsort.h>
 
 Table::Table(ScriptingEnv *env, int r, int c, const QString& label, ApplicationWindow* parent, const QString& name, Qt::WFlags f)
 : MdiSubWindow(label,parent,name,f), scripted(env)
@@ -1672,22 +1673,24 @@ void Table::sortColumns(int type, int order, const QString& leadCol)
     QApplication::restoreOverrideCursor();
 }
 
+int compare_qstrings (const void * a, const void * b)
+{
+	QString *bb = (QString *)b;
+	return ((QString *)a)->compare(*bb);
+}
+
 void Table::sortColumns(const QStringList&s, int type, int order, const QString& leadCol)
 {
-	int cols=s.count();
+	int cols = s.count();
 	if(!type){//Sort columns separately
 		for(int i=0;i<cols;i++)
 			sortColumn(colIndex(s[i]), order);
-	}else{
+	} else {
 		int leadcol = colIndex(leadCol);
 		if (leadcol < 0){
+			QApplication::restoreOverrideCursor();
 			QMessageBox::critical(this, tr("QtiPlot - Error"),
 			tr("Please indicate the name of the leading column!"));
-			return;
-		}
-		if (columnType(leadcol) == Table::Text){
-			QMessageBox::critical(this, tr("QtiPlot - Error"),
-			tr("The leading column has the type set to 'Text'! Operation aborted!"));
 			return;
 		}
 
@@ -1695,8 +1698,10 @@ void Table::sortColumns(const QStringList&s, int type, int order, const QString&
 		int non_empty_cells = 0;
 		QVarLengthArray<int> valid_cell(rows);
 		QVarLengthArray<double> data_double(rows);
+		QVarLengthArray<QString> strings(rows);
 		for (int j = 0; j <rows; j++){
 			if (!d_table->text(j, leadcol).isEmpty()){
+				strings[non_empty_cells] = d_table->text(j, leadcol);
 				data_double[non_empty_cells] = cell(j, leadcol);
 				valid_cell[non_empty_cells] = j;
 				non_empty_cells++;
@@ -1704,6 +1709,7 @@ void Table::sortColumns(const QStringList&s, int type, int order, const QString&
 		}
 
 		if (!non_empty_cells){
+			QApplication::restoreOverrideCursor();
 			QMessageBox::critical(this, tr("QtiPlot - Error"),
 			tr("The leading column is empty! Operation aborted!"));
 			return;
@@ -1711,27 +1717,30 @@ void Table::sortColumns(const QStringList&s, int type, int order, const QString&
 
 		data_double.resize(non_empty_cells);
 		valid_cell.resize(non_empty_cells);
-		QVarLengthArray<QString> data_string(non_empty_cells);
-		size_t *p= new size_t[non_empty_cells];
+		strings.resize(non_empty_cells);
 
 		// Find the permutation index for the lead col
-		gsl_sort_index(p, data_double.data(), 1, non_empty_cells);
+		size_t *p = new size_t[non_empty_cells];
+		if (columnType(leadcol) == Table::Text)
+			gsl_heapsort_index(p, strings.data(), strings.count(), sizeof(QString), compare_qstrings);
+		else
+			gsl_sort_index(p, data_double.data(), 1, non_empty_cells);
 
-		for(int i=0;i<cols;i++){// Since we have the permutation index, sort all the columns
-            int col=colIndex(s[i]);
+		for(int i = 0; i < cols; i++){// Since we have the permutation index, sort all the columns
+            int col = colIndex(s[i]);
             if (d_table->isColumnReadOnly(col))
                 continue;
 
             if (columnType(col) == Text){
-                for (int j=0; j<non_empty_cells; j++)
-                    data_string[j] = text(valid_cell[j], col);
+                for (int j = 0; j<non_empty_cells; j++)
+                    strings[j] = text(valid_cell[j], col);
                 if(!order)
-                    for (int j=0; j<non_empty_cells; j++)
-                        d_table->setText(valid_cell[j], col, data_string[p[j]]);
+                    for (int j = 0; j < non_empty_cells; j++)
+                        d_table->setText(valid_cell[j], col, strings[p[j]]);
                 else
-                    for (int j=0; j<non_empty_cells; j++)
-                        d_table->setText(valid_cell[j], col, data_string[p[non_empty_cells-j-1]]);
-            }else{
+                    for (int j = 0; j < non_empty_cells; j++)
+						d_table->setText(valid_cell[j], col, strings[p[non_empty_cells - j - 1]]);
+            } else {
                 for (int j = 0; j<non_empty_cells; j++)
                     data_double[j] = cell(valid_cell[j], col);
                 int prec;
