@@ -84,6 +84,18 @@ bool CanvasPicker::eventFilter(QObject *object, QEvent *e)
 					return true;
 				}
 
+				if (me->button() == Qt::LeftButton){
+					QDrag *drag = new QDrag(plot());
+					QMimeData *mimeData = new QMimeData;
+					QPoint p = plot()->canvas()->mapToParent(me->pos());
+					mimeData->setText(QString::number(abs(plot()->x() - p.x())) + ";" +
+									QString::number(abs(plot()->y() - p.y())));
+					drag->setMimeData(mimeData);
+					drag->setPixmap(plot()->multiLayer()->windowIcon().pixmap(16));
+					drag->exec();
+					return true;
+				}
+
 				if (!g->zoomOn() && selectMarker(me)){
 					if (me->button() == Qt::RightButton)
 						emit showMarkerPopupMenu();

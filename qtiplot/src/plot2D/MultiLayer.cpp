@@ -181,6 +181,7 @@ d_waterfall_fill_color(QColor())
 
 	setFocusPolicy(Qt::StrongFocus);
 	setFocus();
+	setAcceptDrops(true);
 }
 
 Graph *MultiLayer::layer(int num)
@@ -1896,6 +1897,34 @@ void MultiLayer::updateWaterfallFill(bool on)
 		}
 	}
 	emit modifiedWindow(this);
+}
+
+void MultiLayer::dragEnterEvent( QDragEnterEvent* e )
+{
+	Graph *g = qobject_cast<Graph*>(e->source());
+	if (!g || g->multiLayer() == this)
+		return;
+
+	if (e->mimeData()->hasFormat("text/plain"))
+		e->acceptProposedAction();
+}
+
+void MultiLayer::dropEvent(QDropEvent* event)
+{
+	Graph *g = qobject_cast<Graph*>(event->source());
+	if (!g)
+		return;
+
+	if (g->multiLayer() == this)
+		return;
+
+	QStringList lst = event->mimeData()->text().split(";");
+
+	QPoint pos = d_canvas->mapFromGlobal(QCursor::pos());
+	pos = QPoint(pos.x() - lst[0].toInt(), pos.y() - lst[1].toInt());
+	Graph *clone = addLayer(pos.x(), pos.y(), g->width(), g->height());
+	if (clone)
+		clone->copy(g);
 }
 
 MultiLayer::~MultiLayer()
