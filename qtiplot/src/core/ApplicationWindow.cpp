@@ -9057,7 +9057,7 @@ void ApplicationWindow::showMarkerPopupMenu()
 	if (!g->activeEnrichment())
 		markerMenu.insertItem(QPixmap(cut_xpm),tr("&Cut"),this, SLOT(cutSelection()));
 	markerMenu.insertItem(QPixmap(copy_xpm), tr("&Copy"),this, SLOT(copySelection()));
-	markerMenu.insertItem(QPixmap(erase_xpm), tr("&Delete"),this, SLOT(clearSelection()));
+	markerMenu.insertItem(QPixmap(delete_xpm), tr("&Delete"),this, SLOT(clearSelection()));
 	markerMenu.insertSeparator();
 	if (g->arrowMarkerSelected())
 		markerMenu.insertItem(tr("&Properties..."),this, SLOT(showLineDialog()));

@@ -225,6 +225,8 @@ signals:
 private:
 	//! \name Event Handlers
 	//@{
+	void dropEvent(QDropEvent*);
+	void dragEnterEvent(QDragEnterEvent*);
 	void wheelEvent(QWheelEvent *);
 	void keyPressEvent(QKeyEvent *);
 	bool eventFilter(QObject *object, QEvent *);

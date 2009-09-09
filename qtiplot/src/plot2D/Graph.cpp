@@ -6465,6 +6465,10 @@ void Graph::changeCurveIndex(int fromIndex, int toIndex)
 
 void Graph::dragEnterEvent( QDragEnterEvent* e )
 {
+	Graph *g = qobject_cast<Graph*>(e->source());
+	if (g && g->multiLayer() == this->multiLayer())
+		return;
+
 	if (e->mimeData()->hasFormat("text/plain"))
 		e->acceptProposedAction();
 }
@@ -6487,8 +6491,22 @@ void Graph::dropEvent(QDropEvent* event)
 	}
 
 	Matrix *m = qobject_cast<Matrix*>(event->source());
-	if (m)
+	if (m){
 		plotSpectrogram(m, ColorMap);
+		return;
+	}
+
+	Graph *g = qobject_cast<Graph*>(event->source());
+	if (!g || g->multiLayer() == this->multiLayer())
+		return;
+
+	QStringList lst = event->mimeData()->text().split(";");
+
+	QPoint pos = multiLayer()->canvas()->mapFromGlobal(QCursor::pos());
+	pos = QPoint(pos.x() - lst[0].toInt(), pos.y() - lst[1].toInt());
+	Graph *clone = multiLayer()->addLayer(pos.x(), pos.y(), g->width(), g->height());
+	if (clone)
+		clone->copy(g);
 }
 
 void Graph::enableDouglasPeukerSpeedMode(double tolerance, int maxPoints)
