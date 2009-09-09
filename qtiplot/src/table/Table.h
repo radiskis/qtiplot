@@ -2,10 +2,8 @@
     File                 : Table.h
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2006 by Ion Vasilief,
-                           Tilman Hoener zu Siederdissen,
-                           Knut Franke
-    Email (use @ for *)  : ion_vasilief*yahoo.fr, thzs*gmx.net
+    Copyright            : (C) 2006 by Ion Vasilief, Knut Franke
+    Email (use @ for *)  : ion_vasilief*yahoo.fr
     Description          : Table worksheet class
 
  ***************************************************************************/
