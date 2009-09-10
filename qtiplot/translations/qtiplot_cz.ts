@@ -35,11 +35,6 @@
         <translation type="unfinished">QtiPlot - Demoverze</translation>
     </message>
     <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="14715"/>
-        <source>You are using the demonstration version of Qtiplot.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="14739"/>
         <source>QtiPlot - File backup error</source>
         <translation type="unfinished">QtiPlot - Chyba při zálohování souboru</translation>
@@ -605,6 +600,11 @@ Automatické dokončení nebude dostupné!</translation>
     <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="17090"/>
         <source>Not enough memory, operation aborted!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="14715"/>
+        <source>You are using the demonstration version of Qtiplot.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -5648,39 +5648,39 @@ Automatické dokončení nebude dostupné!</translation>
 <context>
     <name>ArrowMarker</name>
     <message>
-        <location filename="../src/plot2D/ArrowMarker.cpp" line="536"/>
+        <location filename="../src/plot2D/ArrowMarker.cpp" line="537"/>
         <source>dx</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/plot2D/ArrowMarker.cpp" line="537"/>
+        <location filename="../src/plot2D/ArrowMarker.cpp" line="538"/>
         <source>dy</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/plot2D/ArrowMarker.cpp" line="538"/>
+        <location filename="../src/plot2D/ArrowMarker.cpp" line="539"/>
         <source>angle</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/plot2D/ArrowMarker.cpp" line="539"/>
+        <location filename="../src/plot2D/ArrowMarker.cpp" line="540"/>
         <source>length</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/plot2D/ArrowMarker.cpp" line="544"/>
-        <location filename="../src/plot2D/ArrowMarker.cpp" line="559"/>
+        <location filename="../src/plot2D/ArrowMarker.cpp" line="545"/>
+        <location filename="../src/plot2D/ArrowMarker.cpp" line="560"/>
         <source>eqn</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/plot2D/ArrowMarker.cpp" line="544"/>
+        <location filename="../src/plot2D/ArrowMarker.cpp" line="545"/>
         <source>y</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/plot2D/ArrowMarker.cpp" line="548"/>
-        <location filename="../src/plot2D/ArrowMarker.cpp" line="559"/>
+        <location filename="../src/plot2D/ArrowMarker.cpp" line="549"/>
+        <location filename="../src/plot2D/ArrowMarker.cpp" line="560"/>
         <source>x</source>
         <translation type="unfinished"></translation>
     </message>
@@ -10599,161 +10599,161 @@ Dají se použít následující zvláštní kódy:
         <translation>QtiPlot - Přidat křivku funkce</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="66"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="67"/>
         <source>Curve type </source>
         <translation>Druh křivky </translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="68"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="69"/>
         <source>Function</source>
         <translation>Funkce</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="69"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="70"/>
         <source>Parametric plot</source>
         <translation>Parametrický nákres</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="70"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="71"/>
         <source>Polar plot</source>
         <translation>Nákres s polárními souřadnicemi</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="78"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="79"/>
         <source>f(x)= </source>
         <translation>f(x)= </translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="82"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="83"/>
         <source>From x= </source>
         <translation>Od  x= </translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="88"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="89"/>
         <source>To x= </source>
         <translation>Do x= </translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="94"/>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="142"/>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="175"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="95"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="143"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="176"/>
         <source>Points</source>
         <translation>Body</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="106"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="107"/>
         <source>Constant</source>
         <translation>Stálá hodnota (konstanta)</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="106"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="107"/>
         <source>Value</source>
         <translation>Hodnota</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="122"/>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="155"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="123"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="156"/>
         <source>Parameter</source>
         <translation>Parametr</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="126"/>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="159"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="127"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="160"/>
         <source>From</source>
         <translation>Od</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="130"/>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="163"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="131"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="164"/>
         <source>To</source>
         <translation>Do</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="134"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="135"/>
         <source>x = </source>
         <translation>x = </translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="138"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="139"/>
         <source>y = </source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="167"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="168"/>
         <source>R =</source>
         <translation>R =</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="171"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="172"/>
         <source>Theta =</source>
         <translation>Théta =</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="211"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="212"/>
         <source>Clea&amp;r Function</source>
         <translation>&amp;Smazat funkci</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="213"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="214"/>
         <source>&amp;Ok</source>
         <translation>&amp;OK</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="215"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="216"/>
         <source>&amp;Close</source>
         <translation>&amp;Zavřít</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="245"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="246"/>
         <source>Clear list</source>
         <translation>Vyprázdnit seznam</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="247"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="248"/>
         <source>Clear Function</source>
         <translation>Smazat funkci</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="344"/>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="431"/>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="532"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="345"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="432"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="533"/>
         <source>QtiPlot - Input error</source>
         <translation>QtiPlot - Chyba při zadání</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="344"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="345"/>
         <source>Please enter x limits that satisfy: from &lt; end!</source>
         <translation>Zadejte, prosím, rozsah x, který vyhoví: Začátek &lt; Konec!</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="371"/>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="455"/>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="472"/>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="556"/>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="573"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="372"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="456"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="473"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="557"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="574"/>
         <source>QtiPlot - Input function error</source>
         <translation>QtiPlot - Chyba při zadání funkce</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="411"/>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="512"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="412"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="513"/>
         <source>QtiPlot - Start limit error</source>
         <translation>QtiPlot - Chyba počáteční hranice</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="424"/>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="525"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="425"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="526"/>
         <source>QtiPlot - End limit error</source>
         <translation>QtiPlot - Chyba koncové hranice</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="432"/>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="533"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="433"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="534"/>
         <source>Please enter parameter limits that satisfy: from &lt; end!</source>
         <translation>Zadejte, prosím, parametrický rozsah, který vyhoví: Začátek &lt; Konec!</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="194"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="195"/>
         <source>&amp;Add Function</source>
         <translation>Přidat &amp;funkci</translation>
     </message>
@@ -12848,111 +12848,111 @@ Dají se použít následující zvláštní kódy:
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/plot2D/MultiLayer.cpp" line="337"/>
+        <location filename="../src/plot2D/MultiLayer.cpp" line="340"/>
         <source>QtiPlot - Guess best layout?</source>
         <translation>QtiPlot - Automaticky určit nejlepší rozvržení?</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/MultiLayer.cpp" line="338"/>
+        <location filename="../src/plot2D/MultiLayer.cpp" line="341"/>
         <source>Do you want QtiPlot to rearrange the remaining layers?</source>
         <translation>Chcete, aby QtiPlot přeuspořádal zbývající vrstvy?</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/MultiLayer.cpp" line="339"/>
+        <location filename="../src/plot2D/MultiLayer.cpp" line="342"/>
         <source>&amp;Yes</source>
         <translation>&amp;Ano</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/MultiLayer.cpp" line="339"/>
+        <location filename="../src/plot2D/MultiLayer.cpp" line="342"/>
         <source>&amp;No</source>
         <translation>&amp;Ne</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/MultiLayer.cpp" line="339"/>
+        <location filename="../src/plot2D/MultiLayer.cpp" line="342"/>
         <source>&amp;Cancel</source>
         <translation>&amp;Zrušit</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/MultiLayer.cpp" line="724"/>
-        <location filename="../src/plot2D/MultiLayer.cpp" line="752"/>
-        <location filename="../src/plot2D/MultiLayer.cpp" line="861"/>
+        <location filename="../src/plot2D/MultiLayer.cpp" line="727"/>
+        <location filename="../src/plot2D/MultiLayer.cpp" line="755"/>
+        <location filename="../src/plot2D/MultiLayer.cpp" line="864"/>
         <source>QtiPlot - Error</source>
         <translation>QtiPlot - Chyba</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/MultiLayer.cpp" line="724"/>
-        <location filename="../src/plot2D/MultiLayer.cpp" line="862"/>
+        <location filename="../src/plot2D/MultiLayer.cpp" line="727"/>
+        <location filename="../src/plot2D/MultiLayer.cpp" line="865"/>
         <source>Please provide a valid file name!</source>
         <translation>Poskytněte, prosím, platný název souboru!</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/MultiLayer.cpp" line="752"/>
+        <location filename="../src/plot2D/MultiLayer.cpp" line="755"/>
         <source>File format not handled, operation aborted!</source>
         <translation>Tento souborový formát se nepodařilo zpracovat. Operace byla zrušena!</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/MultiLayer.cpp" line="1558"/>
+        <location filename="../src/plot2D/MultiLayer.cpp" line="1561"/>
         <source>kB</source>
         <translation>kB</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/MultiLayer.cpp" line="1600"/>
+        <location filename="../src/plot2D/MultiLayer.cpp" line="1603"/>
         <source>Offset Amount...</source>
         <translation>Velikost posunu...</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/MultiLayer.cpp" line="1604"/>
+        <location filename="../src/plot2D/MultiLayer.cpp" line="1607"/>
         <source>Reverse Order</source>
         <translation>Převrátit řád</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/MultiLayer.cpp" line="1608"/>
+        <location filename="../src/plot2D/MultiLayer.cpp" line="1611"/>
         <source>Fill Area...</source>
         <translation>Vyplnit oblast...</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/MultiLayer.cpp" line="1694"/>
+        <location filename="../src/plot2D/MultiLayer.cpp" line="1696"/>
         <source>Offset Dialog</source>
         <translation>Dialog pro posun</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/MultiLayer.cpp" line="1699"/>
+        <location filename="../src/plot2D/MultiLayer.cpp" line="1701"/>
         <source>Total Y Offset (%)</source>
         <translation>Celkový posun Y (%)</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/MultiLayer.cpp" line="1705"/>
+        <location filename="../src/plot2D/MultiLayer.cpp" line="1707"/>
         <source>Total X Offset (%)</source>
         <translation>Celkový posun X (%)</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/MultiLayer.cpp" line="1715"/>
+        <location filename="../src/plot2D/MultiLayer.cpp" line="1717"/>
         <source>&amp;Apply</source>
         <translation>&amp;Použít</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/MultiLayer.cpp" line="1718"/>
-        <location filename="../src/plot2D/MultiLayer.cpp" line="1826"/>
+        <location filename="../src/plot2D/MultiLayer.cpp" line="1720"/>
+        <location filename="../src/plot2D/MultiLayer.cpp" line="1828"/>
         <source>&amp;Close</source>
         <translation>&amp;Zavřít</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/MultiLayer.cpp" line="1798"/>
+        <location filename="../src/plot2D/MultiLayer.cpp" line="1800"/>
         <source>Fill Curves</source>
         <translation>Vyplnit křivky</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/MultiLayer.cpp" line="1800"/>
+        <location filename="../src/plot2D/MultiLayer.cpp" line="1802"/>
         <source>Enable Fill</source>
         <translation>Povolit výplň</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/MultiLayer.cpp" line="1804"/>
+        <location filename="../src/plot2D/MultiLayer.cpp" line="1806"/>
         <source>Fill with Color</source>
         <translation>Vyplnit barvou</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/MultiLayer.cpp" line="1808"/>
+        <location filename="../src/plot2D/MultiLayer.cpp" line="1810"/>
         <source>Side Lines</source>
         <translation>Postranní čáry</translation>
     </message>
@@ -16777,174 +16777,172 @@ Dají se použít následující zvláštní kódy:
 <context>
     <name>Table</name>
     <message>
-        <location filename="../src/table/Table.cpp" line="530"/>
+        <location filename="../src/table/Table.cpp" line="531"/>
         <source>Multiline expressions take much more time to evaluate! Do you want to continue anyways?</source>
         <translation>Vyhodnocení výrazů zybírajících více řádků trvá mnohem delší dobu! Tak či tak chcete pokračovat?</translation>
     </message>
     <message>
-        <location filename="../src/table/Table.cpp" line="531"/>
-        <location filename="../src/table/Table.cpp" line="1418"/>
-        <location filename="../src/table/Table.cpp" line="2981"/>
-        <location filename="../src/table/Table.cpp" line="3014"/>
+        <location filename="../src/table/Table.cpp" line="532"/>
+        <location filename="../src/table/Table.cpp" line="1419"/>
+        <location filename="../src/table/Table.cpp" line="2990"/>
+        <location filename="../src/table/Table.cpp" line="3023"/>
         <source>QtiPlot</source>
         <translation>QtiPlot</translation>
     </message>
     <message>
-        <location filename="../src/table/Table.cpp" line="531"/>
+        <location filename="../src/table/Table.cpp" line="532"/>
         <source>Warning</source>
         <translation>Varování</translation>
     </message>
     <message>
-        <location filename="../src/table/Table.cpp" line="587"/>
-        <location filename="../src/table/Table.cpp" line="917"/>
-        <location filename="../src/table/Table.cpp" line="1220"/>
-        <location filename="../src/table/Table.cpp" line="1240"/>
-        <location filename="../src/table/Table.cpp" line="1295"/>
-        <location filename="../src/table/Table.cpp" line="1315"/>
-        <location filename="../src/table/Table.cpp" line="1329"/>
-        <location filename="../src/table/Table.cpp" line="1467"/>
-        <location filename="../src/table/Table.cpp" line="1537"/>
-        <location filename="../src/table/Table.cpp" line="1586"/>
-        <location filename="../src/table/Table.cpp" line="1605"/>
-        <location filename="../src/table/Table.cpp" line="1684"/>
-        <location filename="../src/table/Table.cpp" line="1689"/>
-        <location filename="../src/table/Table.cpp" line="1707"/>
-        <location filename="../src/table/Table.cpp" line="2150"/>
-        <location filename="../src/table/Table.cpp" line="2305"/>
+        <location filename="../src/table/Table.cpp" line="588"/>
+        <location filename="../src/table/Table.cpp" line="918"/>
+        <location filename="../src/table/Table.cpp" line="1221"/>
+        <location filename="../src/table/Table.cpp" line="1241"/>
+        <location filename="../src/table/Table.cpp" line="1296"/>
+        <location filename="../src/table/Table.cpp" line="1316"/>
+        <location filename="../src/table/Table.cpp" line="1330"/>
+        <location filename="../src/table/Table.cpp" line="1468"/>
+        <location filename="../src/table/Table.cpp" line="1538"/>
+        <location filename="../src/table/Table.cpp" line="1587"/>
+        <location filename="../src/table/Table.cpp" line="1606"/>
+        <location filename="../src/table/Table.cpp" line="1692"/>
+        <location filename="../src/table/Table.cpp" line="1713"/>
+        <location filename="../src/table/Table.cpp" line="2159"/>
+        <location filename="../src/table/Table.cpp" line="2314"/>
         <source>QtiPlot - Error</source>
         <translation>QtiPlot - Chyba</translation>
     </message>
     <message>
-        <location filename="../src/table/Table.cpp" line="588"/>
-        <location filename="../src/table/Table.cpp" line="1220"/>
-        <location filename="../src/table/Table.cpp" line="1316"/>
+        <location filename="../src/table/Table.cpp" line="589"/>
+        <location filename="../src/table/Table.cpp" line="1221"/>
+        <location filename="../src/table/Table.cpp" line="1317"/>
         <source>Column &apos;%1&apos; is read only!</source>
         <translation>Sloupec &apos;%1&apos; je pouze pro čtení!</translation>
     </message>
     <message>
-        <location filename="../src/table/Table.cpp" line="918"/>
+        <location filename="../src/table/Table.cpp" line="919"/>
         <source>There is already a column called : &lt;b&gt;</source>
         <translation>Již zde je sloupec s názvem: &lt;b&gt;</translation>
     </message>
     <message>
-        <location filename="../src/table/Table.cpp" line="1241"/>
+        <location filename="../src/table/Table.cpp" line="1242"/>
         <source>The table &apos;%1&apos; contains read-only columns! Operation aborted!</source>
         <translation>Tabulka &apos;%1&apos; obsahuje sloupce pouze pro čtení! Operace zrušena!</translation>
     </message>
     <message>
-        <location filename="../src/table/Table.cpp" line="1296"/>
-        <location filename="../src/table/Table.cpp" line="1330"/>
-        <location filename="../src/table/Table.cpp" line="1468"/>
-        <location filename="../src/table/Table.cpp" line="1538"/>
-        <location filename="../src/table/Table.cpp" line="1587"/>
-        <location filename="../src/table/Table.cpp" line="1606"/>
-        <location filename="../src/table/Table.cpp" line="2151"/>
-        <location filename="../src/table/Table.cpp" line="2306"/>
+        <location filename="../src/table/Table.cpp" line="1297"/>
+        <location filename="../src/table/Table.cpp" line="1331"/>
+        <location filename="../src/table/Table.cpp" line="1469"/>
+        <location filename="../src/table/Table.cpp" line="1539"/>
+        <location filename="../src/table/Table.cpp" line="1588"/>
+        <location filename="../src/table/Table.cpp" line="1607"/>
+        <location filename="../src/table/Table.cpp" line="2160"/>
+        <location filename="../src/table/Table.cpp" line="2315"/>
         <source>The folowing columns</source>
         <translation>Následující sloupce</translation>
     </message>
     <message>
-        <location filename="../src/table/Table.cpp" line="1296"/>
-        <location filename="../src/table/Table.cpp" line="1330"/>
-        <location filename="../src/table/Table.cpp" line="1468"/>
-        <location filename="../src/table/Table.cpp" line="1538"/>
-        <location filename="../src/table/Table.cpp" line="1587"/>
-        <location filename="../src/table/Table.cpp" line="1606"/>
-        <location filename="../src/table/Table.cpp" line="2151"/>
-        <location filename="../src/table/Table.cpp" line="2306"/>
+        <location filename="../src/table/Table.cpp" line="1297"/>
+        <location filename="../src/table/Table.cpp" line="1331"/>
+        <location filename="../src/table/Table.cpp" line="1469"/>
+        <location filename="../src/table/Table.cpp" line="1539"/>
+        <location filename="../src/table/Table.cpp" line="1588"/>
+        <location filename="../src/table/Table.cpp" line="1607"/>
+        <location filename="../src/table/Table.cpp" line="2160"/>
+        <location filename="../src/table/Table.cpp" line="2315"/>
         <source>are read only!</source>
         <translation>jsou pouze pro čtení!</translation>
     </message>
     <message>
-        <location filename="../src/table/Table.cpp" line="1418"/>
+        <location filename="../src/table/Table.cpp" line="1419"/>
         <source>Paste operation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/table/Table.cpp" line="1419"/>
+        <location filename="../src/table/Table.cpp" line="1420"/>
         <source>How should QtiPlot interpret first clipboard line?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/table/Table.cpp" line="1420"/>
+        <location filename="../src/table/Table.cpp" line="1421"/>
         <source>&amp;Values</source>
         <translation type="unfinished">&amp;Hodnoty</translation>
     </message>
     <message>
-        <location filename="../src/table/Table.cpp" line="1420"/>
+        <location filename="../src/table/Table.cpp" line="1421"/>
         <source>Column &amp;Names</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/table/Table.cpp" line="1420"/>
+        <location filename="../src/table/Table.cpp" line="1421"/>
         <source>&amp;Comments</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/table/Table.cpp" line="1685"/>
+        <location filename="../src/table/Table.cpp" line="1693"/>
         <source>Please indicate the name of the leading column!</source>
         <translation>Ukažte, prosím, název hlavního sloupce!</translation>
     </message>
     <message>
-        <location filename="../src/table/Table.cpp" line="1690"/>
         <source>The leading column has the type set to &apos;Text&apos;! Operation aborted!</source>
-        <translation>Hlavní sloupec má typ nastavený na &apos;Text&apos;! Operace zrušena!</translation>
+        <translation type="obsolete">Hlavní sloupec má typ nastavený na &apos;Text&apos;! Operace zrušena!</translation>
     </message>
     <message>
-        <location filename="../src/table/Table.cpp" line="1708"/>
+        <location filename="../src/table/Table.cpp" line="1714"/>
         <source>The leading column is empty! Operation aborted!</source>
         <translation>Hlavní sloupec je prázdný! Operace zrušena!</translation>
     </message>
     <message>
-        <location filename="../src/table/Table.cpp" line="2480"/>
+        <location filename="../src/table/Table.cpp" line="2489"/>
         <source>Qtiplot</source>
         <translation>QtiPlot</translation>
     </message>
     <message>
-        <location filename="../src/table/Table.cpp" line="2480"/>
+        <location filename="../src/table/Table.cpp" line="2489"/>
         <source>Reading file...</source>
         <translation>Čte se soubor...</translation>
     </message>
     <message>
-        <location filename="../src/table/Table.cpp" line="2682"/>
+        <location filename="../src/table/Table.cpp" line="2691"/>
         <source>QtiPlot - ASCII Export Error</source>
         <translation>QtiPlot - Chyba při vyvedení ASCII</translation>
     </message>
     <message>
-        <location filename="../src/table/Table.cpp" line="2683"/>
+        <location filename="../src/table/Table.cpp" line="2692"/>
         <source>Could not write to file: &lt;br&gt;&lt;h4&gt;</source>
         <translation>Nelze zapisovat do souboru: &lt;br&gt;&lt;h4&gt;</translation>
     </message>
     <message>
-        <location filename="../src/table/Table.cpp" line="2978"/>
+        <location filename="../src/table/Table.cpp" line="2987"/>
         <source>Rows will be deleted from the table!</source>
         <translation>Řádky budou vymazány z tabulky!</translation>
     </message>
     <message>
-        <location filename="../src/table/Table.cpp" line="2979"/>
-        <location filename="../src/table/Table.cpp" line="3013"/>
+        <location filename="../src/table/Table.cpp" line="2988"/>
+        <location filename="../src/table/Table.cpp" line="3022"/>
         <source>Do you really want to continue?</source>
         <translation>Opravdu chcete pokračovat?</translation>
     </message>
     <message>
-        <location filename="../src/table/Table.cpp" line="2981"/>
-        <location filename="../src/table/Table.cpp" line="3014"/>
+        <location filename="../src/table/Table.cpp" line="2990"/>
+        <location filename="../src/table/Table.cpp" line="3023"/>
         <source>Yes</source>
         <translation>Ano</translation>
     </message>
     <message>
-        <location filename="../src/table/Table.cpp" line="2981"/>
-        <location filename="../src/table/Table.cpp" line="3014"/>
+        <location filename="../src/table/Table.cpp" line="2990"/>
+        <location filename="../src/table/Table.cpp" line="3023"/>
         <source>Cancel</source>
         <translation>Zrušit</translation>
     </message>
     <message>
-        <location filename="../src/table/Table.cpp" line="3012"/>
+        <location filename="../src/table/Table.cpp" line="3021"/>
         <source>Columns will be deleted from the table!</source>
         <translation>Sloupce budou vymazány z tabulky!</translation>
     </message>
     <message>
-        <location filename="../src/table/Table.cpp" line="3335"/>
+        <location filename="../src/table/Table.cpp" line="3344"/>
         <source>kB</source>
         <translation>kB</translation>
     </message>
