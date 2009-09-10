@@ -389,6 +389,26 @@ Z levels.</para>
     </mediaobject>
   </figure>
 
+  <para>The third tab can be used to customize the speed mode for the layer. This can be very usefull when dealing with very large data sets.
+  The speed mode uses the Douglas and Peucker algorithm which purpose is that given a 'curve'
+  composed of line segments to find a curve not too dissimilar but that
+  has fewer points. The algorithm defines 'too dissimilar' based on the
+  maximum distance (tolerance) between the original curve and the smoothed curve.
+  The smoothed curve consists of a subset of the points that defined the
+  original curve.
+  
+  If the speed mode is enabled, the filtering of the data points is activated only for the curves with more than the 
+  maximum specified number of points.
+  </para>
+  <figure id="fig-custom-curves-pie-2">
+    <title>The Plot Details Dialog: Layer Speed Mode.</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/custom-layer-speed.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+  
   <para>The right part of the dialog box contains several tabs which depend on the kind of plot that you are
   using, they are described in the following subsections. The left part of the dialog window shows the
   curves which are plotted in the active layer. All the modifications will be done on the selected curve.
@@ -445,6 +465,18 @@ Z levels.</para>
     <mediaobject>
       <imageobject>
         <imagedata  format="PNG" fileref="pics/custom-curves-labels.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+</sect2>
+
+<sect2 id="custom-error-bars-box">
+<title>Custom error bars</title>
+  <figure id="fig-custom-error-bars">
+    <title>The Plot Details Dialog for error bars formatting.</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/custom-error-bars.png"/>
       </imageobject>
     </mediaobject>
   </figure>
@@ -590,7 +622,9 @@ parametric surface to the drawing routines, using the two <varname>Periodic</var
       <indexterm><primary>table</primary></indexterm>
   <para>This dialog is activated by selecting the command <link linkend="export-ascii-cmd">&export-ascii-cmd;</link> from the <link linkend="sec-file-menu">File Menu</link>.
   The command is active if there is at least a table window in the project.</para>
-  <para>This command is used to export all or a part of the data of a project in an ASCII file.</para>
+  <para>This command is used to export all or a part of the data of a project to an ASCII file. 
+  Alternatively you can also choose to export the tables/matrices to one of the following formats: TeX (.tex), Open Document Format (.odf)
+  or as web pages (.html).</para>
   <figure id="fig-export-ascii">
     <title>Export of a selection in a table to an ASCII file.</title>
     <informalexample>
@@ -680,7 +714,12 @@ which opens a dialog allowing to edit the plot range.</para>
 <!-- ************************************************** -->
 <sect1 id="integrate-dialog">
   <title>Integrate dialog</title>
-  <para>This dialog box is opened if you select the &integrate-cmd; command from the &analysis-menu-lnk; The first field is the curve that will be integrated. The second one is the order of the integration: the order 1 corresponds to the trapezoid rule, i.e. the curve is aproximated by a straight line between 2 successive points. If you choose the order 2, three successive points are used and a second order polynome is used to approximate the curve. etc. If you have a large amount of points in your curve, the order 1 is enough.</para>
+  <para>This dialog box is opened if you select the &integrate-function-cmd; command from the &analysis-menu-lnk; 
+  The <emphasis>Function</emphasis> text box allows you to edit the analytical function that will be integrated. 
+  The second input field displays the name of the independent variable of the function and is set to <emphasis>x</emphasis> by default. 
+  The third parameter is order of the integration: the order 1 corresponds to the trapezoid rule, i.e. the curve is aproximated
+  by a straight line between 2 successive points. If you choose the order 2, three successive points are used and a second order polynome 
+  is used to approximate the curve. etc. If you have a large amount of points in your curve, the order 1 is enough.</para>
   <figure id="fig-integrate-dialog">
     <title>The &integrate-cmd; dialog box.</title>
     <mediaobject>

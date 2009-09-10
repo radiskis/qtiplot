@@ -575,6 +575,8 @@
 <!ENTITY differentiate-lnk '<link linkend="differentiate-cmd"><command>Differentiate</command> command</link>'>
 <!ENTITY integrate-cmd "<command>Integrate...</command>">
 <!ENTITY integrate-lnk '<link linkend="integrate-cmd"><command>Integrate...</command> command</link>'>
+<!ENTITY integrate-function-cmd "<command>Integrate Function...</command>">
+<!ENTITY integrate-function-lnk '<link linkend="integrate-function-cmd"><command>Integrate Function...</command> command</link>'>
 <!ENTITY smooth-cmd "<command>Smooth</command>">
 <!ENTITY smooth-lnk '<link linkend="smooth-cmd"><command>Smooth</command> command</link>'>
 <!ENTITY savitsky-golay-cmd "<command>Smooth -> Savitsky-Golay...</command>">
