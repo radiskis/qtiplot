@@ -526,6 +526,7 @@ void ArrowMarker::displayInfo(bool clear)
 	ApplicationWindow *app = ml->applicationWindow();
 	if (clear){
 		app->displayInfo(QString::null);
+		g->setToolTip(QString::null);
 		return;
 	}
 
@@ -533,10 +534,10 @@ void ArrowMarker::displayInfo(bool clear)
 	int prec = app->d_decimal_digits;
 
 	QLineF line(d_rect.topLeft(), d_rect.bottomRight());
-	QString s = tr("dx") + ": " + locale.toString(line.dx(), 'g', prec);
-	s += " " + tr("dy") + ": " + locale.toString(line.dy(), 'g', prec);
-	s += " " + tr("angle") + ": " + locale.toString(line.angle(), 'g', prec);
-	s += " " + tr("length") + ": " + locale.toString(line.length(), 'g', prec);
+	QString s = tr("dx") + ": " + locale.toString(line.dx(), 'g', prec) + ";";
+	s += " " + tr("dy") + ": " + locale.toString(line.dy(), 'g', prec) + ";";
+	s += " " + tr("angle") + ": " + locale.toString(line.angle(), 'g', prec) + ";";
+	s += " " + tr("length") + ": " + locale.toString(line.length(), 'g', prec) + ";";
 
 	double den = line.x2() - line.x1();
 	if (den != 0.0){
@@ -558,4 +559,5 @@ void ArrowMarker::displayInfo(bool clear)
 	} else
 		s += " " + tr("eqn") + ": " + tr("x") + "=" + locale.toString(line.x1(), 'g', prec);
 	app->displayInfo(s);
+	g->setToolTip(s.split("; ").join("\n"));
 }

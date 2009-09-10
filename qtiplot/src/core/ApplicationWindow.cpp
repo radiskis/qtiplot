@@ -9988,12 +9988,12 @@ FunctionDialog* ApplicationWindow::showFunctionDialog(Graph *g, int curve)
 FunctionDialog* ApplicationWindow::functionDialog()
 {
 	FunctionDialog* fd = new FunctionDialog(this);
-	fd->setAttribute(Qt::WA_DeleteOnClose);
 	connect (fd,SIGNAL(clearParamFunctionsList()),this,SLOT(clearParamFunctionsList()));
 	connect (fd,SIGNAL(clearPolarFunctionsList()),this,SLOT(clearPolarFunctionsList()));
 
 	fd->insertParamFunctionsList(xFunctions, yFunctions);
 	fd->insertPolarFunctionsList(rFunctions, thetaFunctions);
+	fd->setModal(true);
 	fd->show();
 	fd->setActiveWindow();
 	return fd;

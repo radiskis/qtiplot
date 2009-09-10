@@ -61,6 +61,7 @@ FunctionDialog::FunctionDialog( QWidget* parent, Qt::WFlags fl )
     setObjectName( "FunctionDialog" );
 	setWindowTitle( tr( "QtiPlot - Add function curve" ) );
 	setSizeGripEnabled(true);
+	setAttribute(Qt::WA_DeleteOnClose);
 
 	QHBoxLayout *hbox1 = new QHBoxLayout();
 	hbox1->addWidget(new QLabel(tr( "Curve type " )));
