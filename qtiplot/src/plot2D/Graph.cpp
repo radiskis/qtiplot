@@ -3893,10 +3893,10 @@ QString Graph::saveToString(bool saveAsTemplate)
 {
 	QString s="<graph>\n";
 	s+="ggeometry\t";
-	s+=QString::number(this->pos().x())+"\t";
-	s+=QString::number(this->pos().y())+"\t";
-	s+=QString::number(this->frameGeometry().width())+"\t";
-	s+=QString::number(this->frameGeometry().height())+"\n";
+	s+=QString::number(pos().x())+"\t";
+	s+=QString::number(pos().y())+"\t";
+	s+=QString::number(geometry().width())+"\t";
+	s+=QString::number(geometry().height())+"\n";
 	s+=saveTitle();
 	s+="<Antialiasing>" + QString::number(d_antialiasing) + "</Antialiasing>\n";
 	s+="Background\t" + paletteBackgroundColor().name() + "\t";
@@ -5844,7 +5844,6 @@ void Graph::axisLabelFormat(int axis, char &f, int &prec) const
 void Graph::updateLayout()
 {
     plotLayout()->activate(this, contentsRect());
-
     // resize and show the visible widgets
 
     if (!titleLabel()->text().isEmpty()){

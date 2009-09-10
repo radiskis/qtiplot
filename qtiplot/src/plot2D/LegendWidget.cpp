@@ -121,7 +121,7 @@ void LegendWidget::print(QPainter *painter, const QwtScaleMap map[QwtPlot::axisC
 	int dfy = qRound(d_frame_pen.width()*yfactor);
 
 	if (plot()->isExportingTeX()){
-		drawFrame(painter, QRect(x, y, this->width()*xfactor, height).adjusted(-dfx, -dfy, dfx, dfy));
+		drawFrame(painter, QRect(x, y, qRound(this->width()*xfactor), height).adjusted(-dfx, -dfy, dfx, dfy));
 #ifdef TEX_OUTPUT
 		((QTeXPaintDevice *)painter->device())->setTextHorizontalAlignment(Qt::AlignLeft);
 #endif
@@ -798,6 +798,14 @@ void LegendWidget::restore(Graph *g, const QStringList& lst)
 			l->setTeXOutput(s.remove("<TeXOutput>").remove("</TeXOutput>").toInt());
 	}
 	if (l){
+		QPoint pos = QPoint(g->transform(QwtPlot::xBottom, x),
+							g->transform(QwtPlot::yLeft, y));
+		if (!g->multiLayer()->rect().contains(pos)){
+		//delete out of screen legends since they create a lot of layout problems
+			delete l;
+			return;
+		}
+
 		l->setBackgroundColor(backgroundColor);
 		l->setOriginCoord(x, y);
 		g->add(l, false);

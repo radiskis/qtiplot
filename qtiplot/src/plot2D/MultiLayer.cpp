@@ -1507,7 +1507,7 @@ void MultiLayer::copy(MultiLayer* ml)
 		Graph* g2 = addLayer(g->pos().x(), g->pos().y(), g->width(), g->height());
 		g2->setAutoscaleFonts(false);
 		g2->copy(g);
-		//g2->setAutoscaleFonts(g->autoscaleFonts());
+		g2->setAutoscaleFonts(g->autoscaleFonts());
 	}
 
 	if (ml->isWaterfallPlot()){
@@ -1613,7 +1613,6 @@ void MultiLayer::createWaterfallBox()
 
 	foreach(LayerButton *btn, buttonsList)
 		btn->hide();
-
 
 	d_add_layer_btn->hide();
 	d_remove_layer_btn->hide();
