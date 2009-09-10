@@ -217,7 +217,10 @@ Graph* MultiLayer::addLayer(int x, int y, int width, int height)
 		int layers = graphsList.size();
 		x = left_margin + (layers % d_cols)*(width + colsSpace);
 	    y = top_margin + (layers / d_cols)*(height + rowsSpace);
-	}
+	} else if (!width)
+		 width = height;
+	  else if (!height)
+		 height = width;
 
 	Graph* g = new Graph(x, y, width, height, d_canvas);
     g->show();

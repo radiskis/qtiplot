@@ -35,11 +35,6 @@
         <translation type="unfinished">QtiPlot - Versiune de test</translation>
     </message>
     <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="14715"/>
-        <source>You are using the demonstration version of Qtiplot.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="14739"/>
         <source>QtiPlot - File backup error</source>
         <translation type="unfinished">QtiPlot - Eroare de salvare a fişerului</translation>
@@ -605,6 +600,11 @@ Autocompletion will not be available!</source>
         <location filename="../src/core/ApplicationWindow.cpp" line="17090"/>
         <source>Not enough memory, operation aborted!</source>
         <translation type="unfinished">Memorie insuficientă, operaţia a fost abandonată!</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="14715"/>
+        <source>You are using the demonstration version of Qtiplot.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -5659,39 +5659,39 @@ Autocompletion will not be available!</source>
 <context>
     <name>ArrowMarker</name>
     <message>
-        <location filename="../src/plot2D/ArrowMarker.cpp" line="536"/>
+        <location filename="../src/plot2D/ArrowMarker.cpp" line="537"/>
         <source>dx</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/plot2D/ArrowMarker.cpp" line="537"/>
+        <location filename="../src/plot2D/ArrowMarker.cpp" line="538"/>
         <source>dy</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/plot2D/ArrowMarker.cpp" line="538"/>
+        <location filename="../src/plot2D/ArrowMarker.cpp" line="539"/>
         <source>angle</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/plot2D/ArrowMarker.cpp" line="539"/>
+        <location filename="../src/plot2D/ArrowMarker.cpp" line="540"/>
         <source>length</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/plot2D/ArrowMarker.cpp" line="544"/>
-        <location filename="../src/plot2D/ArrowMarker.cpp" line="559"/>
+        <location filename="../src/plot2D/ArrowMarker.cpp" line="545"/>
+        <location filename="../src/plot2D/ArrowMarker.cpp" line="560"/>
         <source>eqn</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/plot2D/ArrowMarker.cpp" line="544"/>
+        <location filename="../src/plot2D/ArrowMarker.cpp" line="545"/>
         <source>y</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/plot2D/ArrowMarker.cpp" line="548"/>
-        <location filename="../src/plot2D/ArrowMarker.cpp" line="559"/>
+        <location filename="../src/plot2D/ArrowMarker.cpp" line="549"/>
+        <location filename="../src/plot2D/ArrowMarker.cpp" line="560"/>
         <source>x</source>
         <translation type="unfinished"></translation>
     </message>
@@ -10638,161 +10638,161 @@ The following special codes can be used:
         <translation>QtiPlot - Adaugă funcţie</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="66"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="67"/>
         <source>Curve type </source>
         <translation>Tip de funcţie</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="68"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="69"/>
         <source>Function</source>
         <translation>Funcţie de o variabilă</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="69"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="70"/>
         <source>Parametric plot</source>
         <translation>Curbă parametrică</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="70"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="71"/>
         <source>Polar plot</source>
         <translation>Coordonate polare</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="78"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="79"/>
         <source>f(x)= </source>
         <translation>f(x)= </translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="82"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="83"/>
         <source>From x= </source>
         <translation>De la x=</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="88"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="89"/>
         <source>To x= </source>
         <translation>La x= </translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="94"/>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="142"/>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="175"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="95"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="143"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="176"/>
         <source>Points</source>
         <translation>Puncte</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="106"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="107"/>
         <source>Constant</source>
         <translation>Constantă</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="106"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="107"/>
         <source>Value</source>
         <translation>Valoare</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="122"/>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="155"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="123"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="156"/>
         <source>Parameter</source>
         <translation>Parametru</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="126"/>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="159"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="127"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="160"/>
         <source>From</source>
         <translation>De la</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="130"/>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="163"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="131"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="164"/>
         <source>To</source>
         <translation>La</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="134"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="135"/>
         <source>x = </source>
         <translation>x = </translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="138"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="139"/>
         <source>y = </source>
         <translation>y = </translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="167"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="168"/>
         <source>R =</source>
         <translation>R =</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="171"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="172"/>
         <source>Theta =</source>
         <translation>Theta =</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="211"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="212"/>
         <source>Clea&amp;r Function</source>
         <translation>Şte&amp;rge funcţia</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="213"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="214"/>
         <source>&amp;Ok</source>
         <translation>&amp;OK</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="215"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="216"/>
         <source>&amp;Close</source>
         <translation>În&amp;chide</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="245"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="246"/>
         <source>Clear list</source>
         <translation>Goleşte lista</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="247"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="248"/>
         <source>Clear Function</source>
         <translation>Şterge funcţia</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="344"/>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="431"/>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="532"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="345"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="432"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="533"/>
         <source>QtiPlot - Input error</source>
         <translation>QtiPlot - Eroare</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="344"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="345"/>
         <source>Please enter x limits that satisfy: from &lt; end!</source>
         <translation>Vă rugam să introduceţi limite care satisfac condiţia: început &lt; sfarşit !</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="371"/>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="455"/>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="472"/>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="556"/>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="573"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="372"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="456"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="473"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="557"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="574"/>
         <source>QtiPlot - Input function error</source>
         <translation>QtiPlot - Eroare detectată în funcţia introdusă</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="411"/>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="512"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="412"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="513"/>
         <source>QtiPlot - Start limit error</source>
         <translation>QtiPlot - Eroare detectată la valoarea de start</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="424"/>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="525"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="425"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="526"/>
         <source>QtiPlot - End limit error</source>
         <translation>QtiPlot - Eroare detectată la valoarea de sfarşit</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="432"/>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="533"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="433"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="534"/>
         <source>Please enter parameter limits that satisfy: from &lt; end!</source>
         <translation>Vă rugam să introduceţi limite care satisfac condiţia: început &lt; sfarşit !</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="194"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="195"/>
         <source>&amp;Add Function</source>
         <translation type="unfinished"></translation>
     </message>
@@ -12876,111 +12876,111 @@ have the same number of rows.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/plot2D/MultiLayer.cpp" line="337"/>
+        <location filename="../src/plot2D/MultiLayer.cpp" line="340"/>
         <source>QtiPlot - Guess best layout?</source>
         <translation>QtiPlot -  Aranjare automată a graficelor?</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/MultiLayer.cpp" line="338"/>
+        <location filename="../src/plot2D/MultiLayer.cpp" line="341"/>
         <source>Do you want QtiPlot to rearrange the remaining layers?</source>
         <translation>Doriţi să rearanjaţi graficele rămase?</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/MultiLayer.cpp" line="339"/>
+        <location filename="../src/plot2D/MultiLayer.cpp" line="342"/>
         <source>&amp;Yes</source>
         <translation>&amp;Da</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/MultiLayer.cpp" line="339"/>
+        <location filename="../src/plot2D/MultiLayer.cpp" line="342"/>
         <source>&amp;No</source>
         <translation>&amp;Nu</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/MultiLayer.cpp" line="339"/>
+        <location filename="../src/plot2D/MultiLayer.cpp" line="342"/>
         <source>&amp;Cancel</source>
         <translation>&amp;Anulează</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/MultiLayer.cpp" line="724"/>
-        <location filename="../src/plot2D/MultiLayer.cpp" line="752"/>
-        <location filename="../src/plot2D/MultiLayer.cpp" line="861"/>
+        <location filename="../src/plot2D/MultiLayer.cpp" line="727"/>
+        <location filename="../src/plot2D/MultiLayer.cpp" line="755"/>
+        <location filename="../src/plot2D/MultiLayer.cpp" line="864"/>
         <source>QtiPlot - Error</source>
         <translation>QtiPlot - Eroare</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/MultiLayer.cpp" line="724"/>
-        <location filename="../src/plot2D/MultiLayer.cpp" line="862"/>
+        <location filename="../src/plot2D/MultiLayer.cpp" line="727"/>
+        <location filename="../src/plot2D/MultiLayer.cpp" line="865"/>
         <source>Please provide a valid file name!</source>
         <translation>Vă rugăm introduceţi un nume valid!</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/MultiLayer.cpp" line="752"/>
+        <location filename="../src/plot2D/MultiLayer.cpp" line="755"/>
         <source>File format not handled, operation aborted!</source>
         <translation>Format de fişier necunoscut, operaţiunea a fost abandonată!</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/MultiLayer.cpp" line="1558"/>
+        <location filename="../src/plot2D/MultiLayer.cpp" line="1561"/>
         <source>kB</source>
         <translation>kilobiţi</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/MultiLayer.cpp" line="1600"/>
+        <location filename="../src/plot2D/MultiLayer.cpp" line="1603"/>
         <source>Offset Amount...</source>
         <translation>Distanţe...</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/MultiLayer.cpp" line="1604"/>
+        <location filename="../src/plot2D/MultiLayer.cpp" line="1607"/>
         <source>Reverse Order</source>
         <translation>Inversează ordinea</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/MultiLayer.cpp" line="1608"/>
+        <location filename="../src/plot2D/MultiLayer.cpp" line="1611"/>
         <source>Fill Area...</source>
         <translation>Umplere curbe...</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/MultiLayer.cpp" line="1694"/>
+        <location filename="../src/plot2D/MultiLayer.cpp" line="1696"/>
         <source>Offset Dialog</source>
         <translation>Dialog distanţe</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/MultiLayer.cpp" line="1699"/>
+        <location filename="../src/plot2D/MultiLayer.cpp" line="1701"/>
         <source>Total Y Offset (%)</source>
         <translation>Distanţă Y (% din înlţime)</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/MultiLayer.cpp" line="1705"/>
+        <location filename="../src/plot2D/MultiLayer.cpp" line="1707"/>
         <source>Total X Offset (%)</source>
         <translation>Distanţă X (% din lăţime)</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/MultiLayer.cpp" line="1715"/>
+        <location filename="../src/plot2D/MultiLayer.cpp" line="1717"/>
         <source>&amp;Apply</source>
         <translation>&amp;Aplică</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/MultiLayer.cpp" line="1718"/>
-        <location filename="../src/plot2D/MultiLayer.cpp" line="1826"/>
+        <location filename="../src/plot2D/MultiLayer.cpp" line="1720"/>
+        <location filename="../src/plot2D/MultiLayer.cpp" line="1828"/>
         <source>&amp;Close</source>
         <translation>În&amp;chide</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/MultiLayer.cpp" line="1798"/>
+        <location filename="../src/plot2D/MultiLayer.cpp" line="1800"/>
         <source>Fill Curves</source>
         <translation>Umplere curbe</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/MultiLayer.cpp" line="1800"/>
+        <location filename="../src/plot2D/MultiLayer.cpp" line="1802"/>
         <source>Enable Fill</source>
         <translation>Autorizează umplerea</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/MultiLayer.cpp" line="1804"/>
+        <location filename="../src/plot2D/MultiLayer.cpp" line="1806"/>
         <source>Fill with Color</source>
         <translation>Culoare de umplere</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/MultiLayer.cpp" line="1808"/>
+        <location filename="../src/plot2D/MultiLayer.cpp" line="1810"/>
         <source>Side Lines</source>
         <translation>Linii laterale</translation>
     </message>
@@ -16748,174 +16748,172 @@ have the same number of rows.</source>
 <context>
     <name>Table</name>
     <message>
-        <location filename="../src/table/Table.cpp" line="530"/>
+        <location filename="../src/table/Table.cpp" line="531"/>
         <source>Multiline expressions take much more time to evaluate! Do you want to continue anyways?</source>
         <translation>Evaluarea expresiilor conţinand mai multe linii durează mult mai mult timp! Doriţi să continuaţi?</translation>
     </message>
     <message>
-        <location filename="../src/table/Table.cpp" line="531"/>
-        <location filename="../src/table/Table.cpp" line="1418"/>
-        <location filename="../src/table/Table.cpp" line="2981"/>
-        <location filename="../src/table/Table.cpp" line="3014"/>
+        <location filename="../src/table/Table.cpp" line="532"/>
+        <location filename="../src/table/Table.cpp" line="1419"/>
+        <location filename="../src/table/Table.cpp" line="2990"/>
+        <location filename="../src/table/Table.cpp" line="3023"/>
         <source>QtiPlot</source>
         <translation>QtiPlot</translation>
     </message>
     <message>
-        <location filename="../src/table/Table.cpp" line="531"/>
+        <location filename="../src/table/Table.cpp" line="532"/>
         <source>Warning</source>
         <translation>Avertisment</translation>
     </message>
     <message>
-        <location filename="../src/table/Table.cpp" line="587"/>
-        <location filename="../src/table/Table.cpp" line="917"/>
-        <location filename="../src/table/Table.cpp" line="1220"/>
-        <location filename="../src/table/Table.cpp" line="1240"/>
-        <location filename="../src/table/Table.cpp" line="1295"/>
-        <location filename="../src/table/Table.cpp" line="1315"/>
-        <location filename="../src/table/Table.cpp" line="1329"/>
-        <location filename="../src/table/Table.cpp" line="1467"/>
-        <location filename="../src/table/Table.cpp" line="1537"/>
-        <location filename="../src/table/Table.cpp" line="1586"/>
-        <location filename="../src/table/Table.cpp" line="1605"/>
-        <location filename="../src/table/Table.cpp" line="1684"/>
-        <location filename="../src/table/Table.cpp" line="1689"/>
-        <location filename="../src/table/Table.cpp" line="1707"/>
-        <location filename="../src/table/Table.cpp" line="2150"/>
-        <location filename="../src/table/Table.cpp" line="2305"/>
+        <location filename="../src/table/Table.cpp" line="588"/>
+        <location filename="../src/table/Table.cpp" line="918"/>
+        <location filename="../src/table/Table.cpp" line="1221"/>
+        <location filename="../src/table/Table.cpp" line="1241"/>
+        <location filename="../src/table/Table.cpp" line="1296"/>
+        <location filename="../src/table/Table.cpp" line="1316"/>
+        <location filename="../src/table/Table.cpp" line="1330"/>
+        <location filename="../src/table/Table.cpp" line="1468"/>
+        <location filename="../src/table/Table.cpp" line="1538"/>
+        <location filename="../src/table/Table.cpp" line="1587"/>
+        <location filename="../src/table/Table.cpp" line="1606"/>
+        <location filename="../src/table/Table.cpp" line="1692"/>
+        <location filename="../src/table/Table.cpp" line="1713"/>
+        <location filename="../src/table/Table.cpp" line="2159"/>
+        <location filename="../src/table/Table.cpp" line="2314"/>
         <source>QtiPlot - Error</source>
         <translation>QtiPlot - Eroare</translation>
     </message>
     <message>
-        <location filename="../src/table/Table.cpp" line="588"/>
-        <location filename="../src/table/Table.cpp" line="1220"/>
-        <location filename="../src/table/Table.cpp" line="1316"/>
+        <location filename="../src/table/Table.cpp" line="589"/>
+        <location filename="../src/table/Table.cpp" line="1221"/>
+        <location filename="../src/table/Table.cpp" line="1317"/>
         <source>Column &apos;%1&apos; is read only!</source>
         <translation>Coloana &apos;%1&apos; nu poate fi modificată!</translation>
     </message>
     <message>
-        <location filename="../src/table/Table.cpp" line="918"/>
+        <location filename="../src/table/Table.cpp" line="919"/>
         <source>There is already a column called : &lt;b&gt;</source>
         <translation>Există deja o coloană denumită: &lt;b&gt;</translation>
     </message>
     <message>
-        <location filename="../src/table/Table.cpp" line="1241"/>
+        <location filename="../src/table/Table.cpp" line="1242"/>
         <source>The table &apos;%1&apos; contains read-only columns! Operation aborted!</source>
         <translation>Tabelul &apos;%1&apos; conţine numai coloane care nu pot fi modificate! Operaţiune abandonată!</translation>
     </message>
     <message>
-        <location filename="../src/table/Table.cpp" line="1296"/>
-        <location filename="../src/table/Table.cpp" line="1330"/>
-        <location filename="../src/table/Table.cpp" line="1468"/>
-        <location filename="../src/table/Table.cpp" line="1538"/>
-        <location filename="../src/table/Table.cpp" line="1587"/>
-        <location filename="../src/table/Table.cpp" line="1606"/>
-        <location filename="../src/table/Table.cpp" line="2151"/>
-        <location filename="../src/table/Table.cpp" line="2306"/>
+        <location filename="../src/table/Table.cpp" line="1297"/>
+        <location filename="../src/table/Table.cpp" line="1331"/>
+        <location filename="../src/table/Table.cpp" line="1469"/>
+        <location filename="../src/table/Table.cpp" line="1539"/>
+        <location filename="../src/table/Table.cpp" line="1588"/>
+        <location filename="../src/table/Table.cpp" line="1607"/>
+        <location filename="../src/table/Table.cpp" line="2160"/>
+        <location filename="../src/table/Table.cpp" line="2315"/>
         <source>The folowing columns</source>
         <translation>Coloanele următoare</translation>
     </message>
     <message>
-        <location filename="../src/table/Table.cpp" line="1296"/>
-        <location filename="../src/table/Table.cpp" line="1330"/>
-        <location filename="../src/table/Table.cpp" line="1468"/>
-        <location filename="../src/table/Table.cpp" line="1538"/>
-        <location filename="../src/table/Table.cpp" line="1587"/>
-        <location filename="../src/table/Table.cpp" line="1606"/>
-        <location filename="../src/table/Table.cpp" line="2151"/>
-        <location filename="../src/table/Table.cpp" line="2306"/>
+        <location filename="../src/table/Table.cpp" line="1297"/>
+        <location filename="../src/table/Table.cpp" line="1331"/>
+        <location filename="../src/table/Table.cpp" line="1469"/>
+        <location filename="../src/table/Table.cpp" line="1539"/>
+        <location filename="../src/table/Table.cpp" line="1588"/>
+        <location filename="../src/table/Table.cpp" line="1607"/>
+        <location filename="../src/table/Table.cpp" line="2160"/>
+        <location filename="../src/table/Table.cpp" line="2315"/>
         <source>are read only!</source>
         <translation>nu pot fi modificate!</translation>
     </message>
     <message>
-        <location filename="../src/table/Table.cpp" line="1418"/>
+        <location filename="../src/table/Table.cpp" line="1419"/>
         <source>Paste operation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/table/Table.cpp" line="1419"/>
+        <location filename="../src/table/Table.cpp" line="1420"/>
         <source>How should QtiPlot interpret first clipboard line?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/table/Table.cpp" line="1420"/>
+        <location filename="../src/table/Table.cpp" line="1421"/>
         <source>&amp;Values</source>
         <translation type="unfinished">&amp;Valori</translation>
     </message>
     <message>
-        <location filename="../src/table/Table.cpp" line="1420"/>
+        <location filename="../src/table/Table.cpp" line="1421"/>
         <source>Column &amp;Names</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/table/Table.cpp" line="1420"/>
+        <location filename="../src/table/Table.cpp" line="1421"/>
         <source>&amp;Comments</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/table/Table.cpp" line="1685"/>
+        <location filename="../src/table/Table.cpp" line="1693"/>
         <source>Please indicate the name of the leading column!</source>
         <translation>Vă rugam să indicaţi numele coloanei principale!</translation>
     </message>
     <message>
-        <location filename="../src/table/Table.cpp" line="1690"/>
         <source>The leading column has the type set to &apos;Text&apos;! Operation aborted!</source>
-        <translation>Coloana principală este de tip &apos;Text&apos;! Operaţie abandonată!</translation>
+        <translation type="obsolete">Coloana principală este de tip &apos;Text&apos;! Operaţie abandonată!</translation>
     </message>
     <message>
-        <location filename="../src/table/Table.cpp" line="1708"/>
+        <location filename="../src/table/Table.cpp" line="1714"/>
         <source>The leading column is empty! Operation aborted!</source>
         <translation>Coloana principală este vidă! Operaţie abandonată!</translation>
     </message>
     <message>
-        <location filename="../src/table/Table.cpp" line="2480"/>
+        <location filename="../src/table/Table.cpp" line="2489"/>
         <source>Qtiplot</source>
         <translation>QtiPlot</translation>
     </message>
     <message>
-        <location filename="../src/table/Table.cpp" line="2480"/>
+        <location filename="../src/table/Table.cpp" line="2489"/>
         <source>Reading file...</source>
         <translation>Citire fişier...</translation>
     </message>
     <message>
-        <location filename="../src/table/Table.cpp" line="2682"/>
+        <location filename="../src/table/Table.cpp" line="2691"/>
         <source>QtiPlot - ASCII Export Error</source>
         <translation>QtiPlot - Eroare de export ASCII</translation>
     </message>
     <message>
-        <location filename="../src/table/Table.cpp" line="2683"/>
+        <location filename="../src/table/Table.cpp" line="2692"/>
         <source>Could not write to file: &lt;br&gt;&lt;h4&gt;</source>
         <translation>Nu a fost posibilă scrierea în fişierul: &lt;br&gt;&lt;h4&gt;</translation>
     </message>
     <message>
-        <location filename="../src/table/Table.cpp" line="2978"/>
+        <location filename="../src/table/Table.cpp" line="2987"/>
         <source>Rows will be deleted from the table!</source>
         <translation>Din tabel vor fi şterse linii!</translation>
     </message>
     <message>
-        <location filename="../src/table/Table.cpp" line="2979"/>
-        <location filename="../src/table/Table.cpp" line="3013"/>
+        <location filename="../src/table/Table.cpp" line="2988"/>
+        <location filename="../src/table/Table.cpp" line="3022"/>
         <source>Do you really want to continue?</source>
         <translation>Doriţi intr-adevăr să continuaţi?</translation>
     </message>
     <message>
-        <location filename="../src/table/Table.cpp" line="2981"/>
-        <location filename="../src/table/Table.cpp" line="3014"/>
+        <location filename="../src/table/Table.cpp" line="2990"/>
+        <location filename="../src/table/Table.cpp" line="3023"/>
         <source>Yes</source>
         <translation>Da</translation>
     </message>
     <message>
-        <location filename="../src/table/Table.cpp" line="2981"/>
-        <location filename="../src/table/Table.cpp" line="3014"/>
+        <location filename="../src/table/Table.cpp" line="2990"/>
+        <location filename="../src/table/Table.cpp" line="3023"/>
         <source>Cancel</source>
         <translation>Anulează</translation>
     </message>
     <message>
-        <location filename="../src/table/Table.cpp" line="3012"/>
+        <location filename="../src/table/Table.cpp" line="3021"/>
         <source>Columns will be deleted from the table!</source>
         <translation>Din tabel vor fi şterse coloane!</translation>
     </message>
     <message>
-        <location filename="../src/table/Table.cpp" line="3335"/>
+        <location filename="../src/table/Table.cpp" line="3344"/>
         <source>kB</source>
         <translation>kilobiţi</translation>
     </message>
