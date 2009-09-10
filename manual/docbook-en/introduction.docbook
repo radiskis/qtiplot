@@ -70,6 +70,7 @@ You must take care of the format of the ASCII file because it will be read with 
 <para>Valid options are:</para>
 <itemizedlist>
 <listitem><para>-a or --about: show about dialog and exit</para></listitem>
+<listitem><para>-c or --console: show standalone scripting window</para></listitem>
 <listitem><para>-d or --default-settings: start &appname; with the default settings</para></listitem>
 <listitem><para>-h or --help: show command line options</para></listitem>
 <listitem><para>-l=XX or --lang=XX: start &appname; in language XX ('en', 'fr', 'de', ...)</para></listitem>

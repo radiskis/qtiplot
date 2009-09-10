@@ -201,13 +201,11 @@ The active items in the menus depend on the active window in the project. If the
   If you increase this parameter, the quality of the graphic elements will be better
   (but the overall size of the plot will be unchanged).</para>
 
-  <para>By default the plot is exported to a page size that fits best its real size on screen, but if you want
-  you can choose a different page size, by checking the <emphasis>Custom page size</emphasis> option.
-  The orientation of the exported image will be automatically adapted to the sheet size.</para>
-
-  <para>In addition, you have the option to <emphasis>Keep the aspect ratio</emphasis> of the plot.
-  If you leave this box unchecked, the exported image will be scaled to the entire sheet size, in order to avoid blank
-  margins around the plot and therefore the width/height ratio of the plot will be modified.</para>
+  <para>By default the plot is exported to its real size on screen, but if you want
+  you can choose a different size, by checking the <emphasis>Custom print size</emphasis> box. 
+  In addition, you have the option to <emphasis>Keep aspect ratio</emphasis> of the plot.
+  If you check this box and you modify one dimension of the plot, the other dimension will be automatically modified
+  so that the plot aspect remains the same.</para>
     <informalfigure id="fig-export-graph-eps">
       <mediaobject>
         <imageobject>
@@ -215,6 +213,22 @@ The active items in the menus depend on the active window in the project. If the
         </imageobject>
       </mediaobject>
     </informalfigure>
+	
+	<para>When exporting the plot to LaTeX (.tex) you have two very useful options: <emphasis>Export font sizes</emphasis> and
+	<emphasis>Escape special characters in title/axis labels</emphasis>. If checked, the first option allows you to keep the 
+	original font sizes. If not, the font size specified in the preamble of the TeX document will be used for all text strings in the plot.
+    The second option specifies if LaTeX special characters should be escaped or not when exporting. If the title or the axis labels contain
+	LaTeX syntax (like superscripts, subscripts, etc...) and you want them to be interpreted by the LaTeX compiler, 
+	you should uncheck this option.</para>
+  
+	<informalfigure id="fig-export-graph-tex">
+      <mediaobject>
+        <imageobject>
+          <imagedata  format="PNG" fileref="pics/export-graph-tex.png"/>
+        </imageobject>
+      </mediaobject>
+    </informalfigure>
+	
      <variablelist>
        <varlistentry id="export-graph-current-cmd">
          <term>&export-graph-current-cmd; (&export-graph-current-key;)</term>
@@ -617,7 +631,7 @@ The active items in the menus depend on the active window in the project. If the
 <varlistentry id="pie-cmd">
   <term>&pie-cmd;</term>
   <listitem>
-    <para>Creates a 2D Pie plot of the selected column in the active table window (only one column allowed).</para>
+    <para>Creates a pseudo 3D Pie plot of the selected column in the active table window (only one column allowed).</para>
       <informalfigure id="fig-plot-pie">
         <mediaobject>
           <imageobject>
