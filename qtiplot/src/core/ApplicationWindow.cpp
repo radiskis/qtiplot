@@ -15427,7 +15427,7 @@ bool ApplicationWindow::changeFolder(Folder *newFolder, bool force)
 	connect(d_workspace, SIGNAL(subWindowActivated(QMdiSubWindow *)),
 		this, SLOT(windowActivated(QMdiSubWindow*)));
 
-	if (d_opening_file)
+	if (!d_opening_file)
 		modifiedProject();
 	return true;
 }
