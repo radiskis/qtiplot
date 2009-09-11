@@ -108,12 +108,29 @@ The active items in the menus depend on the active window in the project. If the
      <para>This command can also be used to open projects which have been built with the <emphasis>Origin</emphasis> software.</para>
   </listitem>
 </varlistentry>
+
+<varlistentry id="append-cmd">
+  <term>File -> &append-cmd; (&append-key;)</term>
+  <listitem>
+     <para>Appends an existing QtiPlot project file (.qti) to the current project as a new folder.</para>
+     <para>This command can also be used to open projects which have been built with the <emphasis>Origin</emphasis> software.</para>
+  </listitem>
+</varlistentry>
+
 <varlistentry id="recent-projects-cmd">
   <term>File-> &recent-projects-cmd;</term>
   <listitem>
      <para>Opens a list of the most recently used QtiPlot project files. You can open one of these files by selecting it from the list. If the file doesn't exist anymore an error message will pop-out and the file will be automatically deleted from the list.</para>
   </listitem>
 </varlistentry>
+
+<varlistentry id="close-cmd">
+  <term>File -> &close-cmd;</term>
+  <listitem>
+     <para>Closes current project, without quitting the application.</para>
+  </listitem>
+</varlistentry>
+
 <!--
 		Insertion of images
 -->
@@ -202,7 +219,7 @@ The active items in the menus depend on the active window in the project. If the
   (but the overall size of the plot will be unchanged).</para>
 
   <para>By default the plot is exported to its real size on screen, but if you want
-  you can choose a different size, by checking the <emphasis>Custom print size</emphasis> box. 
+  you can choose a different size, by checking the <emphasis>Custom print size</emphasis> box.
   In addition, you have the option to <emphasis>Keep aspect ratio</emphasis> of the plot.
   If you check this box and you modify one dimension of the plot, the other dimension will be automatically modified
   so that the plot aspect remains the same.</para>
@@ -213,14 +230,14 @@ The active items in the menus depend on the active window in the project. If the
         </imageobject>
       </mediaobject>
     </informalfigure>
-	
+
 	<para>When exporting the plot to LaTeX (.tex) you have two very useful options: <emphasis>Export font sizes</emphasis> and
-	<emphasis>Escape special characters in title/axis labels</emphasis>. If checked, the first option allows you to keep the 
+	<emphasis>Escape special characters in title/axis labels</emphasis>. If checked, the first option allows you to keep the
 	original font sizes. If not, the font size specified in the preamble of the TeX document will be used for all text strings in the plot.
     The second option specifies if LaTeX special characters should be escaped or not when exporting. If the title or the axis labels contain
-	LaTeX syntax (like superscripts, subscripts, etc...) and you want them to be interpreted by the LaTeX compiler, 
+	LaTeX syntax (like superscripts, subscripts, etc...) and you want them to be interpreted by the LaTeX compiler,
 	you should uncheck this option.</para>
-  
+
 	<informalfigure id="fig-export-graph-tex">
       <mediaobject>
         <imageobject>
@@ -228,7 +245,7 @@ The active items in the menus depend on the active window in the project. If the
         </imageobject>
       </mediaobject>
     </informalfigure>
-	
+
      <variablelist>
        <varlistentry id="export-graph-current-cmd">
          <term>&export-graph-current-cmd; (&export-graph-current-key;)</term>
@@ -242,6 +259,15 @@ The active items in the menus depend on the active window in the project. If the
            <para>Here you have the possibility to save all plots of the project under different image formats.</para>
          </listitem>
        </varlistentry>
+
+       <varlistentry id="odf-presentation-cmd">
+         <term> &odf-presentation-cmd;</term>
+         <listitem>
+           <para>Here you have the possibility to save all plots of the project to an Open Document Format file (.odf)
+           that can be opened and edited with OpenOffice.</para>
+         </listitem>
+       </varlistentry>
+
      </variablelist>
 <!--		end of Export Graph				-->
   </listitem>
@@ -252,6 +278,15 @@ The active items in the menus depend on the active window in the project. If the
      <para>Prints the active plot. A print <link linkend="printer-setup-dialog">dialog</link> is opened where you can select the printer, different paper sizes, etc.</para>
   </listitem>
 </varlistentry>
+
+<varlistentry id="print-preview-cmd">
+  <term>File-> &print-preview-cmd;</term>
+  <listitem>
+     <para>Displays a print preview for the active window.
+     You can also use this dialog in order to actually print the window.</para>
+  </listitem>
+</varlistentry>
+
 <varlistentry id="print-all-plots-cmd">
   <term>File-> &print-all-plots-cmd;</term>
   <listitem>
@@ -273,6 +308,14 @@ The active items in the menus depend on the active window in the project. If the
     <para>The options for the importation of ASCII data files are set by the <link linkend="set-import-options-dialog">Import dialog</link>.</para>
   </listitem>
 </varlistentry>
+
+<varlistentry id="import-sound-cmd">
+  <term>File -> &import-sound-cmd; </term>
+  <listitem>
+    <para>This allows you to import an uncompressed sound .wav file (PCM format).</para>
+  </listitem>
+</varlistentry>
+
 <varlistentry id="quit-cmd">
   <term>File -> &quit-cmd; (&quit-key;)</term>
   <listitem>
@@ -339,6 +382,12 @@ The active items in the menus depend on the active window in the project. If the
      <para>Deletes from the project file all the history information about the analysis operations performed by the user. The <link linkend="sec-intro-log-window">log panel</link> is then empty.</para>
   </listitem>
 </varlistentry>
+<varlistentry id="preferences-cmd">
+  <term>View -> &preferences-cmd;</term>
+  <listitem>
+     <para>Opens the <link linkend="preferences-dialog">Preferences dialog</link>.</para>
+  </listitem>
+</varlistentry>
 </variablelist>
 
 </sect1>
@@ -371,12 +420,6 @@ The active items in the menus depend on the active window in the project. If the
   <term>View -> &results-log-cmd;</term>
   <listitem>
      <para>Opens/Close a <link linkend="sec-intro-log-window">panel</link> displaying the historic of the data analysis operations performed by the user.</para>
-  </listitem>
-</varlistentry>
-<varlistentry id="preferences-cmd">
-  <term>View -> &preferences-cmd;</term>
-  <listitem>
-     <para>Opens the <link linkend="preferences-dialog">Preferences dialog</link>.</para>
   </listitem>
 </varlistentry>
 </variablelist>

@@ -52,7 +52,7 @@
 <!ENTITY new-folder-cmd "<command>New -> New Folder</command>">
 <!ENTITY new-folder-lnk '<link linkend="new-folder-cmd"><command>New -> New Folder</command> command</link>'>
   <!ENTITY new-folder-key "<keycode>F7</keycode>">
-  <!ENTITY new-folder-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/new_folder.png"/></imageobject></inlinemediaobject>'>
+  <!ENTITY new-folder-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/newfolder.png"/></imageobject></inlinemediaobject>'>
 
 <!ENTITY new-table-cmd "<command>New -> New Table</command>">
 <!ENTITY new-table-lnk '<link linkend="new-table-cmd"><command>New -> New Table</command> command</link>'>
@@ -77,12 +77,20 @@
 <!ENTITY new-surface-3d-plot-lnk '<link linkend="new-surface-3d-plot-cmd"><command>New -> New Surface 3D Plot</command> command</link>'>
   <!ENTITY new-surface-3d-plot-key "<keycode>Ctrl-Alt-Z</keycode>">
   <!ENTITY new-surface-3d-plot-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/newFxy.png"/></imageobject></inlinemediaobject>'>
+
 <!ENTITY open-cmd "<command>Open</command>">
 <!ENTITY open-lnk '<link linkend="open-cmd"><command>Open</command> command</link>'>
   <!ENTITY open-key "<keycode>Ctrl-O</keycode>">
   <!ENTITY open-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/fileopen.png"/></imageobject></inlinemediaobject>'>
+
+<!ENTITY append-cmd "<command>Append Project...</command>">
+<!ENTITY append-lnk '<link linkend="append-cmd"><command>Append Project...</command> command</link>'>
+  <!ENTITY append-key "<keycode>Ctrl-Alt-A</keycode>">
+  <!ENTITY append-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/fileappend.png"/></imageobject></inlinemediaobject>'>
+
 <!ENTITY recent-projects-cmd "<command>Recent Projects</command>">
 <!ENTITY recent-projects-lnk '<link linkend="recent-projects-cmd"><command>Recent Projects</command> command</link>'>
+<!ENTITY close-cmd "<command>Close</command>">
 <!ENTITY open-image-file-cmd "<command>Open Image File</command>">
 <!ENTITY open-image-file-lnk '<link linkend="open-image-file-cmd"><command>Open Image File</command> command</link>'>
   <!ENTITY open-image-file-key "<keycode>Ctrl-I</keycode>">
@@ -108,10 +116,17 @@
 <!ENTITY export-graph-all-cmd "<command>Export Graph -> All</command>">
 <!ENTITY export-graph-all-lnk '<link linkend="export-graph-all-cmd"><command>Export Graph -> All</command> command</link>'>
   <!ENTITY export-graph-all-key "<keycode>Alt-X</keycode>">
+
+<!ENTITY odf-presentation-cmd "<command>File -> Create Open Document Presentation...</command>">
+<!ENTITY odf-presentation-lnk '<link linkend="odf-presentation-cmd"><command>File -> Create Open Document Presentation...</command> command</link>'>
+
 <!ENTITY print-cmd "<command>Print</command>">
 <!ENTITY print-lnk '<link linkend="print-cmd"><command>Print</command> command</link>'>
   <!ENTITY print-key "<keycode>Ctrl-P</keycode>">
   <!ENTITY print-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/fileprint.png"/></imageobject></inlinemediaobject>'>
+
+<!ENTITY print-preview-cmd "<command>Print Preview</command>">
+<!ENTITY print-preview-lnk '<link linkend="print-preview-cmd"><command>Print Preview</command> command</link>'>
 
 <!ENTITY script-window-cmd "<command>Script Window</command>">
 <!ENTITY script-window-lnk '<link linkend="script-window-cmd"><command>Script Window</command> command</link>'>
@@ -126,10 +141,14 @@
 <!ENTITY export-ascii-cmd "<command>Export ASCII</command>">
 <!ENTITY export-ascii-lnk '<link linkend="export-ascii-cmd"><command>Export ASCII</command> command</link>'>
 
-<!ENTITY import-ascii-cmd "<command>Import ASCII...</command>">
-<!ENTITY import-ascii-lnk '<link linkend="import-ascii-cmd"><command>Import ASCII...</command> command</link>'>
+<!ENTITY import-ascii-cmd "<command>Import -> Import ASCII...</command>">
+<!ENTITY import-ascii-lnk '<link linkend="import-ascii-cmd"><command>Import -> Import ASCII...</command> command</link>'>
 <!ENTITY import-ascii-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/import.png"/></imageobject></inlinemediaobject>'>
 <!ENTITY import-ascii-key "<keycode>Ctrl-K</keycode>">
+
+<!ENTITY import-sound-cmd "<command>Import -> Sound (WAV)...</command>">
+<!ENTITY import-sound-lnk '<link linkend="import-sound-cmd"><command>Import -> Sound (WAV)...</command> command</link>'>
+
 <!ENTITY quit-cmd "<command>Quit</command>">
 <!ENTITY quit-lnk '<link linkend="quit-cmd"><command>Quit</command> command</link>'>
 <!ENTITY quit-key "<keycode>Alt-F4</keycode>">
