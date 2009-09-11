@@ -13206,6 +13206,7 @@ void ApplicationWindow::translateActionsStrings()
 	actionLoadImage->setMenuText(tr("Open Image &File"));
 	actionLoadImage->setShortcut(tr("Ctrl+I"));
 
+	actionImportSound->setMenuText(tr("&Sound (WAV)..."));
 	actionImportImage->setMenuText(tr("Import I&mage..."));
 
 	actionSaveProject->setMenuText(tr("&Save Project"));
@@ -13575,6 +13576,7 @@ void ApplicationWindow::translateActionsStrings()
 
 	actionConvertTableDirect->setMenuText(tr("&Direct"));
 	actionConvertTableBinning->setMenuText(tr("2D &Binning"));
+	actionConvertTableRegularXYZ->setMenuText(tr("&Regular XYZ"));
 
 	actionPlot3DWireFrame->setMenuText(tr("3D &Wire Frame"));
 	actionPlot3DHiddenLine->setMenuText(tr("3D &Hidden Line"));

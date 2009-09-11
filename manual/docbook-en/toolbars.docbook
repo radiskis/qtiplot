@@ -165,6 +165,12 @@ The <emphasis>File Toolbar</emphasis> allows to access commands mainly from the 
    <entry>Opens an existing QtiPlot project file.</entry>
   </row>
   <row>
+   <entry>&append-icon;</entry>
+   <entry>&append-lnk;</entry>
+   <entry>&append-key;</entry>
+   <entry>Appends an existing QtiPlot project file as a new folder to the currend project.</entry>
+  </row>
+  <row>
    <entry>&open-template-icon;</entry>
    <entry>&open-template-lnk;</entry>
    <entry></entry>
