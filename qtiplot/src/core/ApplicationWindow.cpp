@@ -13596,6 +13596,7 @@ void ApplicationWindow::translateActionsStrings()
 	actionSetAscValues->setToolTip(tr("Fill selected columns with row numbers"));
 	actionSetRandomValues->setMenuText(tr("&Random Values"));
 	actionSetRandomValues->setToolTip(tr("Fill selected columns with random numbers"));
+	actionFrequencyCount->setMenuText(tr("&Frequency Count ..."));
 	actionSetXCol->setMenuText(tr("&X"));
 	actionSetXCol->setToolTip(tr("Set column as X"));
 	actionSetYCol->setMenuText(tr("&Y"));
