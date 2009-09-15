@@ -2,8 +2,8 @@
     File                 : TableDialog.cpp
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2006 by Ion Vasilief, Tilman Hoener zu Siederdissen
-    Email (use @ for *)  : ion_vasilief*yahoo.fr, thzs*gmx.net
+    Copyright            : (C) 2006 - 2009 by Ion Vasilief
+    Email (use @ for *)  : ion_vasilief*yahoo.fr
     Description          : Column options dialog
 
  ***************************************************************************/
@@ -139,7 +139,7 @@ TableDialog::TableDialog(Table *t, QWidget* parent, Qt::WFlags fl )
 
 	boxHideColumn = new QCheckBox(tr("&Hidden" ));
     gl1->addWidget(boxHideColumn, 4, 1);
-	
+
 	applyToRightCols = new QCheckBox(tr( "Apply to all columns to the right" ));
 
     QVBoxLayout *vbox3 = new QVBoxLayout();

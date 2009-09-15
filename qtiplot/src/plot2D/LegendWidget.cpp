@@ -35,9 +35,7 @@
 #include <ApplicationWindow.h>
 #include <PenStyleBox.h>
 
-#ifdef TEX_OUTPUT
-	#include <QTeXEngine.h>
-#endif
+#include <QTeXEngine.h>
 
 #include <QPainter>
 #include <QPaintEngine>
@@ -122,18 +120,14 @@ void LegendWidget::print(QPainter *painter, const QwtScaleMap map[QwtPlot::axisC
 
 	if (plot()->isExportingTeX()){
 		drawFrame(painter, QRect(x, y, qRound(this->width()*xfactor), height).adjusted(-dfx, -dfy, dfx, dfy));
-#ifdef TEX_OUTPUT
 		((QTeXPaintDevice *)painter->device())->setTextHorizontalAlignment(Qt::AlignLeft);
-#endif
 	} else
 		drawFrame(painter, QRect(x, y, width, height).adjusted(-dfx, -dfy, dfx, dfy));
 
 	drawText(painter, QRect(x, y, textWidth, textHeight), heights, symbolLineLength);
 
-#ifdef TEX_OUTPUT
 	if (plot()->isExportingTeX())
 		((QTeXPaintDevice *)painter->device())->setTextHorizontalAlignment(Qt::AlignHCenter);
-#endif
 
 	// restore screen geometry parameters
 	h_space = space;
