@@ -2902,15 +2902,15 @@ bool Table::eventFilter(QObject *object, QEvent *e)
 				drag->exec();
 				return true;
 			}
+		}
 
-			if (selectedColsNumber() <= 1) {
-				selectedCol = hheader->sectionAt (me->pos().x() + hheader->offset());
-				d_table->clearSelection();
-				d_table->selectColumn (selectedCol);
-				d_table->setCurrentCell (0, selectedCol);
-				setActiveWindow();
-				return false;
-			}
+		if (selectedColsNumber() <= 1) {
+			selectedCol = hheader->sectionAt (me->pos().x() + hheader->offset());
+			d_table->clearSelection();
+			d_table->selectColumn (selectedCol);
+			d_table->setCurrentCell (0, selectedCol);
+			setActiveWindow();
+			return false;
 		}
 	} else if (e->type() == QEvent::MouseButtonPress && object == (QObject*)vheader) {
 		const QMouseEvent *me = (const QMouseEvent *)e;

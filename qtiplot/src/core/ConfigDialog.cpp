@@ -2421,8 +2421,10 @@ void ConfigDialog::rehighlight()
     QList<MdiSubWindow *> windows = app->windowsList();
     foreach(MdiSubWindow *w, windows){
         Note *n = qobject_cast<Note *>(w);
-        if (n)
-			n->editor()->rehighlight();
+        if (n){
+        	for (int i = 0; i < n->tabs(); i++)
+				n->editor(i)->rehighlight();
+        }
     }
 }
 #endif
@@ -2447,7 +2449,7 @@ void ConfigDialog::customizeNotes()
         Note *n = qobject_cast<Note *>(w);
         if (n){
             n->showLineNumbers(app->d_note_line_numbers);
-            n->editor()->setTabStopWidth(app->d_notes_tab_length);
+            n->setTabStopWidth(app->d_notes_tab_length);
             n->setFont(f);
         }
     }
