@@ -624,7 +624,7 @@ bool ImportOPJ::importNotes(const OriginFile& opj)
 		note->setName(name);
 
 		note->setWindowLabel(_note.label.c_str());
-		note->setText(_note.text.c_str());
+		note->setText(QString(_note.text.c_str()));
 		note->setCaptionPolicy((MdiSubWindow::CaptionPolicy)_note.title);
 		note->setBirthDate(posixTimeToString(_note.creationDate));
 

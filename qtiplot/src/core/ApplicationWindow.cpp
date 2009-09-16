@@ -1589,7 +1589,7 @@ void ApplicationWindow::customToolBars(QMdiSubWindow* w)
             formatToolBar->show();
 
         formatToolBar->setEnabled (true);
-        setFormatBarFont(((Note*)w)->editor()->currentFont());
+        setFormatBarFont(((Note*)w)->currentEditor()->currentFont());
     }
 }
 
@@ -2847,12 +2847,6 @@ Note* ApplicationWindow::newNote(const QString& caption)
 	m->setName(name);
 	m->setIcon(QPixmap(note_xpm));
 	m->askOnCloseEvent(confirmCloseNotes);
-	m->setDirPath(scriptsDirPath);
-    m->showLineNumbers(d_note_line_numbers);
-    m->editor()->setTabStopWidth(d_notes_tab_length);
-    m->setFont(d_notes_font);
-	if (d_completer && d_completion)
-        m->editor()->setCompleter(d_completer);
 
 	if (d_mdi_windows_area)
 		d_workspace->addSubWindow(m);
@@ -8230,7 +8224,7 @@ void ApplicationWindow::clearSelection()
 			g->removeMarker();
 	}
 	else if (m->isA("Note"))
-		((Note*)m)->editor()->textCursor().removeSelectedText();
+		((Note*)m)->currentEditor()->textCursor().removeSelectedText();
 	emit modified();
 }
 
@@ -8270,7 +8264,7 @@ void ApplicationWindow::copySelection()
 		else
 			copyActiveLayer();
 	} else if (m->isA("Note"))
-		((Note*)m)->editor()->copy();
+		((Note*)m)->currentEditor()->copy();
 }
 
 void ApplicationWindow::cutSelection()
@@ -8301,7 +8295,7 @@ void ApplicationWindow::cutSelection()
             g->removeMarker();
         }
 	} else if (m->isA("Note"))
-		((Note*)m)->editor()->cut();
+		((Note*)m)->currentEditor()->cut();
 
 	emit modified();
 }
@@ -8336,7 +8330,7 @@ void ApplicationWindow::pasteSelection()
 	else if (m->isA("Matrix"))
 		((Matrix*)m)->pasteSelection();
 	else if (m->isA("Note"))
-		((Note*)m)->editor()->paste();
+		((Note*)m)->currentEditor()->paste();
 	else if (m->isA("MultiLayer")){
 		MultiLayer* plot = (MultiLayer*)m;
 		if (!plot)
@@ -8469,7 +8463,7 @@ void ApplicationWindow::undo()
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
 	if (qobject_cast<Note*>(w))
-		((Note*)w)->editor()->undo();
+		((Note*)w)->currentEditor()->undo();
 	else if (qobject_cast<Matrix*>(w)){
 	    QUndoStack *stack = ((Matrix *)w)->undoStack();
 	    if (stack && stack->canUndo())
@@ -8486,7 +8480,7 @@ void ApplicationWindow::redo()
 
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 	if (qobject_cast<Note*>(w))
-		((Note*)w)->editor()->redo();
+		((Note*)w)->currentEditor()->redo();
 	else if (qobject_cast<Matrix*>(w)){
 	    QUndoStack *stack = ((Matrix *)w)->undoStack();
 	    if (stack && stack->canRedo())
@@ -8952,7 +8946,7 @@ void ApplicationWindow::editMenuAboutToShow()
 	}
 
 	if (qobject_cast<Note *>(w)){
-		QTextDocument *doc = ((Note *)w)->editor()->document();
+		QTextDocument *doc = ((Note *)w)->currentEditor()->document();
 		actionUndo->setEnabled(doc->isUndoAvailable());
 		actionRedo->setEnabled(doc->isRedoAvailable());
 	} else if (qobject_cast<Matrix *>(w)){
@@ -16844,9 +16838,9 @@ void ApplicationWindow::enableCompletion(bool on)
 		foreach(MdiSubWindow *w, folderWindows){
 			if(w->isA("Note")){
                 if (d_completion)
-                    ((Note *)w)->editor()->setCompleter(d_completer);
+                    ((Note *)w)->currentEditor()->setCompleter(d_completer);
                 else
-                    ((Note *)w)->editor()->setCompleter(0);
+                    ((Note *)w)->currentEditor()->setCompleter(0);
 			}
         }
 		f = f->folderBelow();
@@ -16897,7 +16891,7 @@ Note * ApplicationWindow::newStemPlot()
 		return NULL;
 	n->hide();
 
-	ScriptEdit* editor = n->editor();
+	ScriptEdit* editor = n->currentEditor();
 	QStringList lst = t->selectedColumns();
 	if (lst.isEmpty()){
 		Q3TableSelection sel = t->table()->selection(ts);

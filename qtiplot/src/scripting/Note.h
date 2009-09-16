@@ -2,7 +2,7 @@
     File                 : Note.h
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2006 - 2008 by Ion Vasilief
+    Copyright            : (C) 2006 - 2009 by Ion Vasilief
     Email (use @ for *)  : ion_vasilief*yahoo.fr
     Description          : Notes window class
 
@@ -33,13 +33,12 @@
 #include <ScriptEdit.h>
 #include <LineNumberDisplay.h>
 #include <QTextEdit>
+#include <QTabWidget>
 
 class ScriptingEnv;
 
 /*!\brief Notes window class.
  *
- * \section future Future Plans
- * - Search and replace
  */
 class Note: public MdiSubWindow
 {
@@ -52,42 +51,52 @@ public:
 
 	void init(ScriptingEnv *env);
 	void setName(const QString& name);
+	void setTabStopWidth(int length);
+	void setTabText(int index, const QString & label){d_tab_widget->setTabText(index, label);};
+	int indexOf(ScriptEdit* editor);
+	ScriptEdit* editor(int index);
+	ScriptEdit* currentEditor();
+	int tabs(){return d_tab_widget->count();};
 
 public slots:
 	void save(const QString& fn, const QString &info, bool = false);
 	void restore(const QStringList&);
 
-	ScriptEdit* editor(){return te;};
 	bool autoexec() const { return autoExec; }
 	void setAutoexec(bool);
 	void modifiedNote();
 
 	// ScriptEdit methods
-	QString text() { return te->text(); };
-	void setText(const QString &s) { te->setText(s); };
-	void print() { te->print(); };
-	void print(QPrinter *printer) { te->print(printer); };
-	void exportPDF(const QString& fileName){te->exportPDF(fileName);};
-	QString exportASCII(const QString &file=QString::null) { return te->exportASCII(file); };
-	QString importASCII(const QString &file=QString::null){ return te->importASCII(file);};
-	void execute() { te->execute(); };
-	void executeAll() { te->executeAll(); };
-	void evaluate() { te->evaluate(); };
-	void setDirPath(const QString& path){te->setDirPath(path);};
+	QString text() { return currentEditor()->text(); };
+	void setText(const QString &s) { currentEditor()->setText(s); };
+	void print() { currentEditor()->print(); };
+	void print(QPrinter *printer) { currentEditor()->print(printer); };
+	void exportPDF(const QString& fileName){currentEditor()->exportPDF(fileName);};
+	QString exportASCII(const QString &file=QString::null) { return currentEditor()->exportASCII(file); };
+	QString importASCII(const QString &file=QString::null){ return currentEditor()->importASCII(file);};
+	void execute() { currentEditor()->execute(); };
+	void executeAll() { currentEditor()->executeAll(); };
+	void evaluate() { currentEditor()->evaluate(); };
+	void setDirPath(const QString& path){currentEditor()->setDirPath(path);};
 
 	//! Enables/Disables the line number display
-	void showLineNumbers(bool show = true){d_line_number->setVisible(show);};
-	bool hasLineNumbers(){return d_line_number->isVisible();};
+	void showLineNumbers(bool show = true);
+	bool hasLineNumbers(){return d_line_number_enabled;};
 
     void setFont(const QFont& f);
+    void addTab();
+    void removeTab(int);
 
  signals:
 	void dirPathChanged(const QString& path);
 
 private:
-	ScriptEdit *te;
-	LineNumberDisplay *d_line_number;
+	void saveTab(int index, const QString &fn);
+
+	ScriptingEnv *d_env;
 	QWidget *d_frame;
+	QTabWidget *d_tab_widget;
+	bool d_line_number_enabled;
 	bool autoExec;
 };
 
