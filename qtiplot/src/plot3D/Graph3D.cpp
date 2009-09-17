@@ -1478,20 +1478,21 @@ void Graph3D::updateScalesFromMatrix(double xl, double xr, double yl, double yr,
 	double dy = d_matrix->dy();
     double x_begin = qMin(xl, xr);
 	double y_begin = qMin(yl, yr);
-	int nc = qRound(fabs(xr - xl)/dx) + 1; // new number of columns
-	int nr = qRound(fabs(yr - yl)/dy) + 1; // new number of rows
+	int nc = qRound(fabs(xr - xl)/dx) + 1;// new number of columns
+	int nr = qRound(fabs(yr - yl)/dy) + 1;// new number of rows
 	double **data_matrix = Matrix::allocateMatrixData(nc, nr);
 	for (int i = 0; i < nc; i++){
 		double x = x_begin + i*dx;
         double dli, dlf;
         dlf = modf(fabs((x - xStart)/dx), &dli);
-        int l = (int)dli; if (dlf > 0.5) l++;
+        int l = int(dli); if (dlf > 0.5) l++;
 		for (int j = 0; j < nr; j++){
 			double y = y_begin + j*dy;
+			qApp->processEvents(QEventLoop::ExcludeUserInput);
 			if (x >= xStart && x <= xEnd && y >= yStart && y <= yEnd){
                 double dki, dkf;
                 dkf = modf(fabs((y - yStart)/dy), &dki);
-                int k = (int)dki; if (dkf > 0.5) k++;
+                int k = int(dki); if (dkf > 0.5) k++;
 				double val = d_matrix->cell(k, l);
 				if (val > zr)
 					data_matrix[i][j] = zr;

@@ -45,12 +45,12 @@ QtiPlot is distributed under the <a href="http://www.gnu.org/licenses/gpl.html">
 
 <h2>General requirements:</h2>
 You need to install the following libraries:
-<a href="http://www.trolltech.com/products/qt/index.html">Qt (>= 4.4.0)</a>,
+<a href="http://www.trolltech.com/products/qt/index.html">Qt (>= 4.5.0)</a>,
 <a href="http://sources.redhat.com/gsl/">GSL</a>,
 <a href="http://muparser.sourceforge.net/">muParser (1.28)</a>,
 <a href="http://www.zlib.net/">zlib</a>,
 <a href="http://www.libpng.org/pub/png/libpng.html">libpng</a>
-and <a href="http://www.boost.org/">BOOST C++ libraries (1.36.0)</a>.<br><br>
+and <a href="http://www.boost.org/">BOOST C++ libraries</a>.<br><br>
 The QtiPlot developers also work very actively on the <a href="http://soft.proindependent.com/liborigin2/index.html">liborigin2</a> library.
 The development version of this library is shipped with QtiPlot in the "3rdparty" folder and
 does not need to be compiled or installed separately. The same considerations apply for 
@@ -59,16 +59,16 @@ the <a href="http://qwtplot3d.sourceforge.net/">QwtPlot3D</a> library.<br><br>
 You must use the slightly modified version of the <a href="http://qwt.sourceforge.net/index.html">Qwt (5.2)</a> library 
 which is shipped with QtiPlot in the "3rdparty/qwt" folder.<br><br>
 
-If you need Python scripting support, don't forget to download and install <a href="http://www.python.org/">Python  2.5</a>, 
-<a href="http://www.riverbankcomputing.co.uk/software/sip/download">SIP (4.7.9)</a> and 
-<a href="http://www.riverbankcomputing.co.uk/software/pyqt/download">PyQt (4.4.4)</a>.<br>
+If you need Python scripting support, don't forget to download and install <a href="http://www.python.org/">Python</a>, 
+<a href="http://www.riverbankcomputing.co.uk/software/sip/download">SIP</a> and 
+<a href="http://www.riverbankcomputing.co.uk/software/pyqt/download">PyQt4</a>.<br>
 In order to build QtiPlot you also need <b>qmake</b>, which is distributed as a part of Qt. <br>
 
 <h2>Linux/Mac OS X:</h2>
 
 <h3>Binaries from maintenance contracts:</h3>
 Ion Vasilief offers supported QtiPlot binaries as <a href="http://www.debian.org/">Debian</a> packages (for Debian, Ubuntu, ...) as well as for Mac OS X (>= 10.4). 
-The packages provide all needed libraries, except Python 2.5 and Qt (on Linux), which must be installed separately on your system.
+The packages provide all needed libraries, except Python and Qt (on Linux), which must be installed separately on your system.
 <h3>QtiPlot Linux binaries free of charge:</h3>
 The QtiPlot team offers GNU/Linux binaries free of charge but without any guaranteed support.<br>
 To use this service, you need to subscribe to a maintenance contract. 
@@ -92,9 +92,9 @@ Some time after each release, you will find these (including notes how to instal
 	<code>tar -xvjf qtiplot-X.X.X.tar.bz2</code> (or <code>unzip qtiplot-X.X.X.zip</code>, respectively)</li>
 	<li>Go to the directory qtiplot-X.X.X/qtiplot:<br><code>cd qtiplot-X.X.X/qtiplot</code></li>
 	<li>Open qtiplot.pro in your favorite editor. Near the head of the same file, either comment out the line <code>SCRIPTING_LANGS += Python</code> or make sure you have the following additional dependencies installed:
-	<a href="http://www.python.org/">Python</a> 2.5,
-	<a href="http://www.riverbankcomputing.co.uk/software/sip/download">SIP (4.7.9)</a> and 
-	<a href="http://www.riverbankcomputing.co.uk/software/pyqt/download">PyQt (4.4.4)</a>
+	<a href="http://www.python.org/">Python</a>,
+	<a href="http://www.riverbankcomputing.co.uk/software/sip/download">SIP</a> and 
+	<a href="http://www.riverbankcomputing.co.uk/software/pyqt/download">PyQt4</a>
 	</li>
 	<li>Go to the main directory qtiplot-X.X.X:<br><code>cd ..</code></li>
 	<li>Build qtiplot:<br><code>qmake &amp;&amp; make</code></li>

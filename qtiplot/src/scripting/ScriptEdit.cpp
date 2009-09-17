@@ -236,18 +236,28 @@ void ScriptEdit::contextMenuEvent(QContextMenuEvent *e)
 	menu->addAction(actionSave);
 	menu->addAction(actionExport);
 	menu->insertSeparator();
+
+	Note *sp = qobject_cast<Note*>(myScript->context());
+	if (sp){
+		QAction *actionRenameTab = new QAction(tr("Rename &Tab..."), menu);
+		connect(actionRenameTab, SIGNAL(triggered(bool)), sp, SLOT(renameCurrentTab()));
+		menu->addAction(actionRenameTab);
+		menu->insertSeparator();
+	}
+
 	if (!emptyText){
 		menu->addAction(actionExecute);
 		menu->addAction(actionExecuteAll);
 		menu->addAction(actionEval);
 	}
-	if (parent()->isA("Note")){
-		Note *sp = (Note*) parent();
+
+	if (sp){
 		QAction *actionAutoexec = new QAction(tr("Auto&exec"), menu);
 		actionAutoexec->setToggleAction(true);
 		actionAutoexec->setOn(sp->autoexec());
 		connect(actionAutoexec, SIGNAL(toggled(bool)), sp, SLOT(setAutoexec(bool)));
 		menu->addAction(actionAutoexec);
+		menu->insertSeparator();
 	}
 
 	functionsMenu->clear();
