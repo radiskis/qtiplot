@@ -86,6 +86,7 @@ public slots:
     void setFont(const QFont& f);
     void addTab();
     void removeTab(int);
+    void renameCurrentTab();
 
  signals:
 	void dirPathChanged(const QString& path);

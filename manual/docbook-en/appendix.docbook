@@ -160,9 +160,9 @@ dpkg -i qtiplot_0.x.x_i386.deb
 If you want to build &appname; from sources, you need the following libraries:
 <variablelist>
 <varlistentry>
-  <term>Qt (>= 4.4.0)</term>
+  <term>Qt (>= 4.5.0)</term>
   <listitem>
-    <para>&appname; only works with the 4.4.x versions of the
+    <para>&appname; only works with the 4.5.x versions of the
 	<ulink url="http://trolltech.com/products/qt">Qt</ulink> library.</para>
   </listitem>
 </varlistentry>
@@ -221,7 +221,7 @@ If you want to build &appname; from sources, you need the following libraries:
 </variablelist>
 
 <para>Finally, if you want Python scripting support, you will also need to download and install:
-<ulink url="http://www.python.org/">Python</ulink> 2.5,
+<ulink url="http://www.python.org/">Python</ulink> 2.x,
 <ulink url="http://www.riverbankcomputing.co.uk/software/sip/intro">SIP</ulink>,
 and <ulink url="http://www.riverbankcomputing.co.uk/software/pyqt/intro">PyQt v4</ulink>.
 All three of them are included in many Linux distributions.

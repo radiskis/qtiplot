@@ -4444,10 +4444,9 @@ ApplicationWindow* ApplicationWindow::openProject(const QString& fn, bool factor
 			list.clear();
 			title = titleBase + QString::number(++aux)+"/"+QString::number(widgets);
 			progress.setLabelText(title);
-			while ( s!="</SurfacePlot>" )
-			{
-				s=t.readLine();
-				list<<s;
+			while ( s != "</SurfacePlot>" ){
+				s = t.readLine();
+				list << s;
 			}
 			Graph3D::restore(app, list, d_file_version);
 			progress.setValue(aux);

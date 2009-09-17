@@ -34,7 +34,7 @@
 #include <QFile>
 #include <QTextStream>
 #include <QPushButton>
-#include <QMessageBox>
+#include <QInputDialog>
 
 Note::Note(ScriptingEnv *env, const QString& label, ApplicationWindow* parent, const QString& name, Qt::WFlags f)
 		 : MdiSubWindow(label, parent, name, f), d_env(env),
@@ -95,6 +95,16 @@ void Note::showLineNumbers(bool show)
 			}
 		}
 	}
+}
+
+void Note::renameCurrentTab()
+{
+	bool ok;
+	int index = d_tab_widget->currentIndex();
+	QString title = QInputDialog::getText(this, tr("Please, enter new title:"), tr("Title"),
+					QLineEdit::Normal, d_tab_widget->tabText(index), &ok);
+	if (ok && !title.isEmpty())
+		d_tab_widget->setTabText(index, title);
 }
 
 void Note::removeTab(int index)

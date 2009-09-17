@@ -6468,6 +6468,9 @@ void Graph::dragEnterEvent( QDragEnterEvent* e )
 	if (g && g->multiLayer() == this->multiLayer())
 		return;
 
+	if (d_panner || zoomOn())
+		return;
+
 	if (e->mimeData()->hasFormat("text/plain"))
 		e->acceptProposedAction();
 }

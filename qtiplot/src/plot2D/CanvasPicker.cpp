@@ -90,7 +90,7 @@ bool CanvasPicker::eventFilter(QObject *object, QEvent *e)
 					return true;
 				}
 
-				if (me->button() == Qt::LeftButton){
+				if (me->button() == Qt::LeftButton && !g->zoomOn() && !g->hasPanningMagnifierEnabled()){
 					QDrag *drag = new QDrag(plot());
 					QMimeData *mimeData = new QMimeData;
 					QPoint p = plot()->canvas()->mapToParent(me->pos());
