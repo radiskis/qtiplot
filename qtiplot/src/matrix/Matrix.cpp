@@ -1279,7 +1279,7 @@ void Matrix::initTableView()
 	// set header properties
 	QHeaderView* hHeader = (QHeaderView*)d_table_view->horizontalHeader();
 	hHeader->setMovable(false);
-	hHeader->setResizeMode(QHeaderView::Fixed);
+	hHeader->setResizeMode(QHeaderView::Interactive);
 	hHeader->setDefaultSectionSize(d_column_width);
 
     int cols = numCols();

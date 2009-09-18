@@ -5,9 +5,6 @@ QtCore
 QtGui
 ScriptEdit
 QTextEdit
-execute
-executeAll
-evaluate
 print
 insertFunction
 MDIWindow
@@ -631,3 +628,13 @@ Scientific
 skipSymbolsCount
 setSkipSymbolsCount
 changeCurveIndex
+setFont
+tabs
+addTab
+removeTab
+renameTab
+setTabStopWidth
+editor
+currentEditor
+indexOf
+saveAs

@@ -3350,6 +3350,38 @@ smooth.run()
 </sect3>
 </sect2>
 
+<sect2 id = "Python-Notes">
+<title>Working with Notes</title>
+<para>
+The following functions are available when dealing with multi-tab notes:
+</para>
+
+<programlisting>
+setAutoexec(on = True)
+
+text()
+setText(const QString &s)
+
+exportPDF(fileName)
+saveAs(fileName)
+importASCII(fileName)
+
+showLineNumbers(on = True)
+
+setFont(QFont& f)
+setTabStopWidth(int length)
+
+tabs()
+addTab()
+removeTab(tabIndex)
+renameTab(tabIndex, title)
+
+e = editor(int index)
+e = currentEditor()
+</programlisting>
+</para>
+</sect2>
+
 <sect2 id="Python-QtDialogs">
 <title>Using Qt's dialogs and classes</title>
 Let's assume that you have a lot of ASCII data files to analyze.

@@ -52,16 +52,16 @@ public:
 	void init(ScriptingEnv *env);
 	void setName(const QString& name);
 	void setTabStopWidth(int length);
-	void setTabText(int index, const QString & label){d_tab_widget->setTabText(index, label);};
 	int indexOf(ScriptEdit* editor);
 	ScriptEdit* editor(int index);
 	ScriptEdit* currentEditor();
 	int tabs(){return d_tab_widget->count();};
+    void renameTab(int, const QString&);
 
-public slots:
 	void save(const QString& fn, const QString &info, bool = false);
 	void restore(const QStringList&);
 
+public slots:
 	bool autoexec() const { return autoExec; }
 	void setAutoexec(bool);
 	void modifiedNote();

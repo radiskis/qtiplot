@@ -298,6 +298,7 @@ public slots:
 	void freeWorkspace(){free(d_workspace); d_workspace = NULL;};
 
 	bool canCalculate(bool useMuParser = true);
+	void notifyModifiedData(){emit modifiedData(this);};
 
 signals:
 	void modifiedData(Matrix *);

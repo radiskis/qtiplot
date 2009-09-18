@@ -320,8 +320,18 @@ bool MatrixModel::setData(const QModelIndex & index, const QVariant & value, int
  	if(role == Qt::EditRole){
 		if (value.toString().isEmpty())
 			d_data[i] = GSL_NAN;
-		else
-			d_data[i] = value.toDouble();
+		else {
+			double val = GSL_NAN;
+			if (d_matrix)
+				val = d_matrix->locale().toDouble(value.toString());
+			else
+				val = d_locale.toDouble(value.toString());
+
+			if (val != valBefore)
+				d_data[i] = val;
+			else
+				return false;
+		}
 	}
 
 	if(index.row() + 1 >= d_rows){
@@ -333,6 +343,7 @@ bool MatrixModel::setData(const QModelIndex & index, const QVariant & value, int
                                 tr("Edited cell") + " (" + QString::number(index.row() + 1) + "," +
                                 QString::number(index.column() + 1) + ")"));
     d_matrix->notifyChanges();
+    d_matrix->notifyModifiedData();
 	d_matrix->moveCell(index);
 	return false;
 }

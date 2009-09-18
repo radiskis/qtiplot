@@ -107,6 +107,11 @@ void Note::renameCurrentTab()
 		d_tab_widget->setTabText(index, title);
 }
 
+void Note::renameTab(int index, const QString& title)
+{
+	d_tab_widget->setTabText(index, title);
+}
+
 void Note::removeTab(int index)
 {
 	if (index < 0)
@@ -191,6 +196,7 @@ ScriptEdit* Note::editor(int index)
 		if (edit)
 			return edit;
 	}
+	return 0;
 }
 
 ScriptEdit* Note::currentEditor()
@@ -205,7 +211,6 @@ ScriptEdit* Note::currentEditor()
 		if (editor)
 			return editor;
 	}
-
 	return 0;
 }
 
@@ -306,12 +311,12 @@ void Note::restore(const QStringList& data)
 	int activeTab = 0;
 	while (line != data.end() && *line != "</note>"){
 		QString s = *line;
-
 		if (s == "<tab>"){
 			addTab();
 
 			line++;
 			s = *line;
+
 			if (s.startsWith("<active>")){
 				activeTab = d_tab_widget->currentIndex();
 				line++;

@@ -560,7 +560,7 @@ void ScriptEdit::setFileName(const QString& fn)
 	d_file_name = fn;
 	Note *note = qobject_cast<Note *>(myScript->context());
 	if (note)
-		note->setTabText(note->indexOf(this), QFileInfo(d_file_name).fileName());
+		note->renameTab(note->indexOf(this), QFileInfo(d_file_name).fileName());
 }
 
 void ScriptEdit::updateIndentation()

@@ -1450,13 +1450,6 @@ void ApplicationWindow::customMenu(QMdiSubWindow* w)
 		} else if (w->isA("Note")){
 			actionSaveTemplate->setEnabled(false);
 			actionNoteEvaluate->setEnabled(true);
-
-			actionNoteExecute->disconnect(SIGNAL(activated()));
-			actionNoteExecuteAll->disconnect(SIGNAL(activated()));
-			actionNoteEvaluate->disconnect(SIGNAL(activated()));
-			connect(actionNoteExecute, SIGNAL(activated()), w, SLOT(execute()));
-			connect(actionNoteExecuteAll, SIGNAL(activated()), w, SLOT(executeAll()));
-			connect(actionNoteEvaluate, SIGNAL(activated()), w, SLOT(evaluate()));
 		} else
 			disableActions();
 	} else
@@ -8763,6 +8756,13 @@ void ApplicationWindow::scriptingMenuAboutToShow()
 		actionShowNoteLineNumbers->setChecked(note->hasLineNumbers());
 		scriptingMenu->addAction(actionShowNoteLineNumbers);
 	}
+
+	actionNoteExecute->disconnect(SIGNAL(activated()));
+	actionNoteExecuteAll->disconnect(SIGNAL(activated()));
+	actionNoteEvaluate->disconnect(SIGNAL(activated()));
+	connect(actionNoteExecute, SIGNAL(activated()), note, SLOT(execute()));
+	connect(actionNoteExecuteAll, SIGNAL(activated()), note, SLOT(executeAll()));
+	connect(actionNoteEvaluate, SIGNAL(activated()), note, SLOT(evaluate()));
 
 	reloadCustomActions();
 }
