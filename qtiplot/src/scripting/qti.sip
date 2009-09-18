@@ -39,11 +39,13 @@ class ScriptEdit: QTextEdit
 #include "../src/scripting/ScriptEdit.h"
 %End
 public slots:
-  void execute();
-  void executeAll();
-  void evaluate();
   void print();
   void insertFunction(const QString &);
+  void exportPDF(const QString& fileName);
+  QString save();
+  QString exportASCII(const QString &file=QString::null)/PyName=saveAs/;
+  QString importASCII(const QString &file=QString::null);
+
 private:
   ScriptEdit(ScriptEdit&);
 };
@@ -1247,10 +1249,6 @@ class Note: MdiSubWindow
 #include "../src/scripting/Note.h"
 %End
 public:
-  void execute() const;
-  void executeAll();
-  void evaluate();
-
   bool autoexec() const;
   void setAutoexec(bool = true);
 
@@ -1258,10 +1256,22 @@ public:
   void setText(const QString &s);
 
   void exportPDF(const QString& fileName);
-  QString exportASCII(const QString &file=QString::null)/PyName=export/;
+  QString exportASCII(const QString &file=QString::null)/PyName=saveAs/;
   QString importASCII(const QString &file=QString::null);
 
   void showLineNumbers(bool = true);
+
+  void setFont(const QFont& f);
+  void setTabStopWidth(int length);
+
+  int tabs();
+  void addTab();
+  void removeTab(int = -1);
+  void renameTab(int, const QString&);
+
+  int indexOf(ScriptEdit*);
+  ScriptEdit* editor(int index);
+  ScriptEdit* currentEditor();
 
 private:
   Note(const Note&);

@@ -1465,15 +1465,14 @@ void Graph3D::setScales(double xl, double xr, double yl, double yr, double zl, d
 			updateScales(xl, xr, yl, yr, zl, zr, xCol, yCol);
 	}
     resetAxesLabels();
+    findBestLayout();
 	QApplication::restoreOverrideCursor();
 }
 
 void Graph3D::updateScalesFromMatrix(double xl, double xr, double yl, double yr, double zl, double zr)
 {
 	double xStart = qMin(d_matrix->xStart(), d_matrix->xEnd());
-	double xEnd = qMax(d_matrix->xStart(), d_matrix->xEnd());
 	double yStart = qMin(d_matrix->yStart(), d_matrix->yEnd());
-	double yEnd = qMax(d_matrix->yStart(), d_matrix->yEnd());
 	double dx = d_matrix->dx();
 	double dy = d_matrix->dy();
     double x_begin = qMin(xl, xr);
@@ -1488,20 +1487,16 @@ void Graph3D::updateScalesFromMatrix(double xl, double xr, double yl, double yr,
         int l = int(dli); if (dlf > 0.5) l++;
 		for (int j = 0; j < nr; j++){
 			double y = y_begin + j*dy;
-			qApp->processEvents(QEventLoop::ExcludeUserInput);
-			if (x >= xStart && x <= xEnd && y >= yStart && y <= yEnd){
-                double dki, dkf;
-                dkf = modf(fabs((y - yStart)/dy), &dki);
-                int k = int(dki); if (dkf > 0.5) k++;
-				double val = d_matrix->cell(k, l);
-				if (val > zr)
-					data_matrix[i][j] = zr;
-				else if (val < zl)
-					data_matrix[i][j] = zl;
-				else
-					data_matrix[i][j] = val;
-			} else
-				data_matrix[i][j] = 0.0;
+			double dki, dkf;
+			dkf = modf(fabs((y - yStart)/dy), &dki);
+			int k = int(dki); if (dkf > 0.5) k++;
+			double val = d_matrix->cell(k, l);
+			if (val > zr)
+				data_matrix[i][j] = zr;
+			else if (val < zl)
+				data_matrix[i][j] = zl;
+			else
+				data_matrix[i][j] = val;
 		}
 	}
 	sp->loadFromData(data_matrix, nc, nr, xl, xr, yl, yr);
@@ -1510,6 +1505,7 @@ void Graph3D::updateScalesFromMatrix(double xl, double xr, double yl, double yr,
 	sp->createCoordinateSystem(Triple(xl, yl, zl), Triple(xr, yr, zr));
 	sp->legend()->setLimits(zl, zr);
 	sp->legend()->setMajors(legendMajorTicks);
+
 	update();
 }
 
@@ -2087,7 +2083,7 @@ void Graph3D::exportImage(const QString& fileName, int quality, bool transparent
 }
 
 
-void Graph3D::exportImage(QTextDocument *document, int quality, bool transparent,
+void Graph3D::exportImage(QTextDocument *document, int, bool transparent,
 						int dpi, const QSizeF& customSize, int unit, double fontsFactor)
 {
 	if (!document)
