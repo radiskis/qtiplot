@@ -109,6 +109,9 @@ void Note::renameCurrentTab()
 
 void Note::removeTab(int index)
 {
+	if (index < 0)
+		index = d_tab_widget->currentIndex();
+
 	if (d_tab_widget->count() == 1)
 		return;
 

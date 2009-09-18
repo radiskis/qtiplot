@@ -866,6 +866,9 @@ public slots:
 	Note* openNote(ApplicationWindow* app, const QStringList &flist);
 	void saveNoteAs();
 	void showNoteLineNumbers(bool show = true);
+	void renameCurrentNoteTab();
+	void addNoteTab();
+	void closeNoteTab();
 	//@}
 
 	//! \name Folders
@@ -1035,6 +1038,7 @@ private slots:
 	//@}
 
 	void analysisMenuAboutToShow();
+	void scriptingMenuAboutToShow();
 	void fileMenuAboutToShow();
 	void editMenuAboutToShow();
 	void matrixMenuAboutToShow();
@@ -1374,7 +1378,7 @@ private:
     QActionGroup *coord, *floorstyle, *grids, *plotstyle, *dataTools;
     QAction *actionMagnify, *actionFindWindow, *actionWaterfallPlot;
     QAction *actionMoveRowUp, *actionMoveRowDown, *actionAdjustColumnWidth;
-    QAction *actionPresentationODF;
+    QAction *actionPresentationODF, *actionRenameNoteTab, *actionAddNoteTab, *actionCloseNoteTab;
     QList<QAction *> d_user_actions;
     QUndoView *d_undo_view;
     QList<QMenu *> d_user_menus;

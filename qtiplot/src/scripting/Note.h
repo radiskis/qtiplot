@@ -85,7 +85,7 @@ public slots:
 
     void setFont(const QFont& f);
     void addTab();
-    void removeTab(int);
+    void removeTab(int = -1);
     void renameCurrentTab();
 
  signals:
