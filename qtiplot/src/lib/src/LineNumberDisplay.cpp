@@ -42,14 +42,47 @@ LineNumberDisplay::LineNumberDisplay(QTextEdit *te, QWidget *parent)
 	setLineWidth(0);
 	setFocusPolicy(Qt::NoFocus);
 	setCurrentFont(te->currentFont());
+	viewport()->setCursor(Qt::ArrowCursor);
+
+	QPalette palette = this->palette();
+	palette.setColor(QPalette::Highlight, palette.color(QPalette::Base));
+	setPalette(palette);
 
 	if (te){
+		connect(this, SIGNAL(selectionChanged()), this, SLOT(updateDocumentSelection()));
+
 		connect(te->document(), SIGNAL(contentsChanged()), this, SLOT(updateLineNumbers()));
 		connect((QObject *)te->verticalScrollBar(), SIGNAL(valueChanged(int)),
 			(QObject *)verticalScrollBar(), SLOT(setValue(int)));
         connect(te, SIGNAL(currentCharFormatChanged (const QTextCharFormat &)),
                 this, SLOT(changeCharFormat (const QTextCharFormat &)));
 	}
+}
+
+void LineNumberDisplay::updateDocumentSelection()
+{
+	if (!isVisible() || !d_text_edit)
+		return;
+
+	QTextCursor c = textCursor();
+	int selectionStart = document()->findBlock(c.selectionStart()).firstLineNumber();
+	int selectionEnd = document()->findBlock(c.selectionEnd()).firstLineNumber();
+	int selectedLines = abs(selectionEnd - selectionStart);
+
+	QTextCursor cursor(d_text_edit->textCursor());
+	cursor.movePosition(QTextCursor::Start);
+	for (int i = 0; i < selectionStart; i++)
+		cursor.movePosition(QTextCursor::Down);
+
+	for (int i = 0; i < selectedLines; i++)
+		cursor.movePosition(QTextCursor::Down, QTextCursor::KeepAnchor);
+
+	cursor.movePosition(QTextCursor::EndOfLine, QTextCursor::KeepAnchor);
+
+	if (selectionEnd == d_text_edit->document()->blockCount() - 1)
+		cursor.movePosition(QTextCursor::End, QTextCursor::KeepAnchor);
+
+	d_text_edit->setTextCursor(cursor);
 }
 
 void LineNumberDisplay::updateLineNumbers(bool force)

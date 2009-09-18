@@ -1185,6 +1185,7 @@ void ApplicationWindow::initMainMenu()
 
 	scriptingMenu = new QMenu(this);
 	scriptingMenu->setObjectName("scriptingMenu");
+	connect(scriptingMenu, SIGNAL(aboutToShow()), this, SLOT(scriptingMenuAboutToShow()));
 
 	windowsMenu = new QMenu(this);
 	windowsMenu->setObjectName("windowsMenu");
@@ -1371,13 +1372,7 @@ void ApplicationWindow::customMenu(QMdiSubWindow* w)
 	editMenuAboutToShow();
 	menuBar()->addMenu(view);
 	menuBar()->addMenu(scriptingMenu);
-
-	scriptingMenu->clear();
-#ifdef SCRIPTING_DIALOG
-	scriptingMenu->addAction(actionScriptingLang);
-#endif
-	scriptingMenu->addAction(actionRestartScripting);
-    scriptingMenu->addAction(actionCustomActionDialog);
+    scriptingMenuAboutToShow();
 
 	// these use the same keyboard shortcut (Ctrl+Return) and should not be enabled at the same time
 	actionNoteEvaluate->setEnabled(false);
@@ -1452,16 +1447,9 @@ void ApplicationWindow::customMenu(QMdiSubWindow* w)
 			d_undo_view->setEmptyLabel(w->objectName() + ": " + tr("Empty Stack"));
 			QUndoStack *stack = ((Matrix *)w)->undoStack();
 			d_undo_view->setStack(stack);
-		} else if (w->isA("Note")) {
+		} else if (w->isA("Note")){
 			actionSaveTemplate->setEnabled(false);
 			actionNoteEvaluate->setEnabled(true);
-			scriptingMenu->insertSeparator();
-			scriptingMenu->addAction(actionNoteExecute);
-			scriptingMenu->addAction(actionNoteExecuteAll);
-			scriptingMenu->addAction(actionNoteEvaluate);
-			scriptingMenu->insertSeparator();
-			actionShowNoteLineNumbers->setChecked(((Note *)w)->hasLineNumbers());
-			scriptingMenu->addAction(actionShowNoteLineNumbers);
 
 			actionNoteExecute->disconnect(SIGNAL(activated()));
 			actionNoteExecuteAll->disconnect(SIGNAL(activated()));
@@ -6016,6 +6004,33 @@ void ApplicationWindow::showNoteLineNumbers(bool show)
 	modifiedProject();
 }
 
+void ApplicationWindow::renameCurrentNoteTab()
+{
+	Note* w = (Note*)activeWindow(NoteWindow);
+	if (!w)
+		return;
+	w->renameCurrentTab();
+	modifiedProject();
+}
+
+void ApplicationWindow::addNoteTab()
+{
+	Note* w = (Note*)activeWindow(NoteWindow);
+	if (!w)
+		return;
+	w->addTab();
+	modifiedProject();
+}
+
+void ApplicationWindow::closeNoteTab()
+{
+	Note* w = (Note*)activeWindow(NoteWindow);
+	if (!w)
+		return;
+	w->removeTab();
+	modifiedProject();
+}
+
 void ApplicationWindow::saveAsTemplate(MdiSubWindow* w, const QString& fileName)
 {
 	if (!w) {
@@ -8706,16 +8721,50 @@ void ApplicationWindow::closeWindow(MdiSubWindow* window)
 
 void ApplicationWindow::about()
 {
-QString text = "<h2>"+ versionString() + "</h2>";
-text +=	"<h3>" + QString(copyright_string).replace("\n", "<br>") + "</h3>";
-text += "<h3>" + tr("Released") + ": " + QString(release_date) + "</h3>";
+	QString text = "<h2>"+ versionString() + "</h2>";
+	text +=	"<h3>" + QString(copyright_string).replace("\n", "<br>") + "</h3>";
+	text += "<h3>" + tr("Released") + ": " + QString(release_date) + "</h3>";
 
-QMessageBox *mb = new QMessageBox();
-mb->setWindowTitle (tr("About QtiPlot"));
-mb->setWindowIcon (QPixmap(logo_xpm));
-mb->setIconPixmap(QPixmap(logo_xpm));
-mb->setText(text);
-mb->exec();
+	QMessageBox *mb = new QMessageBox();
+	mb->setWindowTitle (tr("About QtiPlot"));
+	mb->setWindowIcon (QPixmap(logo_xpm));
+	mb->setIconPixmap(QPixmap(logo_xpm));
+	mb->setText(text);
+	mb->exec();
+}
+
+void ApplicationWindow::scriptingMenuAboutToShow()
+{
+    scriptingMenu->clear();
+    MdiSubWindow *w = activeWindow();
+    if (!w)
+        return;
+
+#ifdef SCRIPTING_DIALOG
+	scriptingMenu->addAction(actionScriptingLang);
+#endif
+	scriptingMenu->addAction(actionRestartScripting);
+    scriptingMenu->addAction(actionCustomActionDialog);
+
+	scriptingMenu->insertSeparator();
+	Note *note = qobject_cast<Note *>(w);
+	if (note){
+		if (!note->text().isEmpty()){
+			scriptingMenu->addAction(actionNoteExecute);
+			scriptingMenu->addAction(actionNoteExecuteAll);
+			scriptingMenu->addAction(actionNoteEvaluate);
+		}
+		scriptingMenu->insertSeparator();
+		scriptingMenu->addAction(actionRenameNoteTab);
+		scriptingMenu->addAction(actionAddNoteTab);
+		if (note->tabs() > 1)
+			scriptingMenu->addAction(actionCloseNoteTab);
+		scriptingMenu->insertSeparator();
+		actionShowNoteLineNumbers->setChecked(note->hasLineNumbers());
+		scriptingMenu->addAction(actionShowNoteLineNumbers);
+	}
+
+	reloadCustomActions();
 }
 
 void ApplicationWindow::analysisMenuAboutToShow()
@@ -13042,7 +13091,7 @@ void ApplicationWindow::createActions()
 	actionNoteExecute = new QAction(tr("E&xecute"), this);
 	actionNoteExecute->setShortcut(tr("Ctrl+J"));
 
-	actionNoteExecuteAll = new QAction(tr("Execute &All"), this);
+	actionNoteExecuteAll = new QAction(QIcon(QPixmap(play_xpm)), tr("Execute &All"), this);
 	actionNoteExecuteAll->setShortcut(tr("Ctrl+Shift+J"));
 
 	actionNoteEvaluate = new QAction(tr("&Evaluate Expression"), this);
@@ -13051,6 +13100,15 @@ void ApplicationWindow::createActions()
 	actionShowNoteLineNumbers = new QAction(tr("Show Line &Numbers"), this);
 	actionShowNoteLineNumbers->setCheckable(true);
 	connect(actionShowNoteLineNumbers, SIGNAL(toggled(bool)), this, SLOT(showNoteLineNumbers(bool)));
+
+	actionRenameNoteTab = new QAction(tr("Rena&me Tab..."), this);
+	connect(actionRenameNoteTab, SIGNAL(activated()), this, SLOT(renameCurrentNoteTab()));
+
+	actionAddNoteTab = new QAction(QIcon(QPixmap(plus_xpm)), tr("A&dd Tab"), this);
+	connect(actionAddNoteTab, SIGNAL(activated()), this, SLOT(addNoteTab()));
+
+	actionCloseNoteTab = new QAction(QIcon(QPixmap(delete_xpm)), tr("C&lose Tab"), this);
+	connect(actionCloseNoteTab, SIGNAL(activated()), this, SLOT(closeNoteTab()));
 
 #ifdef SCRIPTING_PYTHON
 	actionShowScriptWindow = new QAction(QPixmap(python_xpm), tr("&Script Window"), this);
@@ -13634,6 +13692,9 @@ void ApplicationWindow::translateActionsStrings()
 	actionNoteEvaluate->setShortcut(tr("Ctrl+Return"));
 
 	actionShowNoteLineNumbers->setMenuText(tr("Show Line &Numbers"));
+	actionRenameNoteTab->setMenuText(tr("Rena&me Tab..."));
+	actionAddNoteTab->setMenuText(tr("A&dd Tab"));
+	actionCloseNoteTab->setMenuText(tr("C&lose Tab"));
 
 	btnPointer->setMenuText(tr("Disable &tools"));
 	btnPointer->setToolTip( tr( "Pointer" ) );

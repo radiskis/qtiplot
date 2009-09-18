@@ -79,7 +79,7 @@ ScriptEdit::ScriptEdit(ScriptingEnv *env, QWidget *parent, const char *name)
 	actionExecute->setShortcut( tr("Ctrl+J") );
 	connect(actionExecute, SIGNAL(activated()), this, SLOT(execute()));
 
-	actionExecuteAll = new QAction(tr("Execute &All"), this);
+	actionExecuteAll = new QAction(QIcon(QPixmap(play_xpm)), tr("Execute &All"), this);
 	actionExecuteAll->setShortcut( tr("Ctrl+Shift+J") );
 	connect(actionExecuteAll, SIGNAL(activated()), this, SLOT(executeAll()));
 
@@ -239,9 +239,20 @@ void ScriptEdit::contextMenuEvent(QContextMenuEvent *e)
 
 	Note *sp = qobject_cast<Note*>(myScript->context());
 	if (sp){
-		QAction *actionRenameTab = new QAction(tr("Rename &Tab..."), menu);
-		connect(actionRenameTab, SIGNAL(triggered(bool)), sp, SLOT(renameCurrentTab()));
+		QAction *actionRenameTab = new QAction(tr("Rena&me Tab..."), menu);
+		connect(actionRenameTab, SIGNAL(activated()), sp, SLOT(renameCurrentTab()));
 		menu->addAction(actionRenameTab);
+
+		QAction *actionAddTab = new QAction(QIcon(QPixmap(plus_xpm)), tr("A&dd Tab"), menu);
+		connect(actionAddTab, SIGNAL(activated()), sp, SLOT(addTab()));
+		menu->addAction(actionAddTab);
+
+		if (sp->tabs() > 1){
+			QAction *actionRemoveTab = new QAction(QIcon(QPixmap(delete_xpm)), tr("C&lose Tab"), menu);
+			connect(actionRemoveTab, SIGNAL(activated()), sp, SLOT(removeTab()));
+			menu->addAction(actionRemoveTab);
+		}
+
 		menu->insertSeparator();
 	}
 

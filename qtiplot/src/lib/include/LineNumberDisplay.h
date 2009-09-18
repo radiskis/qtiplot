@@ -49,6 +49,7 @@ public:
 
 public slots:
 	void updateLineNumbers(bool force = false);
+	void updateDocumentSelection();
 
 private slots:
 	void changeCharFormat (const QTextCharFormat &);
