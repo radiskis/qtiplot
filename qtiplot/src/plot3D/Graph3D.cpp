@@ -51,6 +51,7 @@
 #include <qwt_color_map.h>
 
 #include <gsl/gsl_vector.h>
+#include <gsl/gsl_math.h>
 #include <fstream>
 
 UserFunction::UserFunction(const QString& s, SurfacePlot& pw)
@@ -1433,6 +1434,8 @@ void Graph3D::setScales(double xl, double xr, double yl, double yr, double zl, d
 {
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
+	sp->hide();//in order to avoid flickering, due to changes in tick length
+
 	if (d_matrix)
 		updateScalesFromMatrix(xl, xr, yl, yr, zl, zr);
     else if (d_func){
@@ -1466,31 +1469,48 @@ void Graph3D::setScales(double xl, double xr, double yl, double yr, double zl, d
 	}
     resetAxesLabels();
     findBestLayout();
+
+    sp->show();
+
 	QApplication::restoreOverrideCursor();
 }
 
 void Graph3D::updateScalesFromMatrix(double xl, double xr, double yl, double yr, double zl, double zr)
 {
 	double xStart = qMin(d_matrix->xStart(), d_matrix->xEnd());
+	double xEnd = qMax(d_matrix->xStart(), d_matrix->xEnd());
 	double yStart = qMin(d_matrix->yStart(), d_matrix->yEnd());
+	double yEnd = qMax(d_matrix->yStart(), d_matrix->yEnd());
 	double dx = d_matrix->dx();
 	double dy = d_matrix->dy();
     double x_begin = qMin(xl, xr);
 	double y_begin = qMin(yl, yr);
-	int nc = qRound(fabs(xr - xl)/dx) + 1;// new number of columns
-	int nr = qRound(fabs(yr - yl)/dy) + 1;// new number of rows
+	int nc = int(fabs(xr - xl)/dx) + 1;// new number of columns
+	int nr = int(fabs(yr - yl)/dy) + 1;// new number of rows
 	double **data_matrix = Matrix::allocateMatrixData(nc, nr);
 	for (int i = 0; i < nc; i++){
 		double x = x_begin + i*dx;
+		if (x < xStart || x > xEnd){
+			for (int j = 0; j < nr; j++)
+				data_matrix[i][j] = GSL_NAN;
+			continue;
+		}
+
         double dli, dlf;
         dlf = modf(fabs((x - xStart)/dx), &dli);
         int l = int(dli); if (dlf > 0.5) l++;
 		for (int j = 0; j < nr; j++){
 			double y = y_begin + j*dy;
+			if (y < yStart || y > yEnd){
+				data_matrix[i][j] = GSL_NAN;
+				continue;
+			}
+
 			double dki, dkf;
 			dkf = modf(fabs((y - yStart)/dy), &dki);
 			int k = int(dki); if (dkf > 0.5) k++;
 			double val = d_matrix->cell(k, l);
+
 			if (val > zr)
 				data_matrix[i][j] = zr;
 			else if (val < zl)
@@ -1939,7 +1959,7 @@ void Graph3D::setGrid(Qwt3D::SIDE s, bool b)
 	else
 		sum &= ~s;
 
-	sp->coordinates()->setGridLines(sum!=Qwt3D::NOSIDEGRID, false, sum);
+	sp->coordinates()->setGridLines(sum!=Qwt3D::NOSIDEGRID, true, sum);
 	sp->updateGL();
 	emit modified();
 }
@@ -1949,7 +1969,7 @@ void Graph3D::setGrid(int grids)
 	if (!sp)
 		return;
 
-	sp->coordinates()->setGridLines(true, false, grids);
+	sp->coordinates()->setGridLines(true, true, grids);
 }
 
 void Graph3D::setLeftGrid(bool b)

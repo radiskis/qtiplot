@@ -142,11 +142,16 @@ void Plot3DDialog::initScalesPage()
     boxFrom->setDecimals(app->d_decimal_digits);
     gl1->addWidget(boxFrom, 0, 1);
 
+    connect(boxFrom, SIGNAL(valueChanged(double)), this, SLOT(updatePlot()));
+
     gl1->addWidget(new QLabel(tr("To")), 1, 0);
 	boxTo = new DoubleSpinBox();
 	boxTo->setLocale(app->locale());
     boxTo->setDecimals(app->d_decimal_digits);
     gl1->addWidget(boxTo, 1, 1);
+
+    connect(boxTo, SIGNAL(valueChanged(double)), this, SLOT(updatePlot()));
+
     gl1->addWidget(new QLabel(tr("Type")), 2, 0);
 	boxType=new QComboBox();
 	boxType->addItem(tr("linear"));

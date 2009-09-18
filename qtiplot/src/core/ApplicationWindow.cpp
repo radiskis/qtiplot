@@ -8755,14 +8755,14 @@ void ApplicationWindow::scriptingMenuAboutToShow()
 		scriptingMenu->insertSeparator();
 		actionShowNoteLineNumbers->setChecked(note->hasLineNumbers());
 		scriptingMenu->addAction(actionShowNoteLineNumbers);
-	}
 
-	actionNoteExecute->disconnect(SIGNAL(activated()));
-	actionNoteExecuteAll->disconnect(SIGNAL(activated()));
-	actionNoteEvaluate->disconnect(SIGNAL(activated()));
-	connect(actionNoteExecute, SIGNAL(activated()), note, SLOT(execute()));
-	connect(actionNoteExecuteAll, SIGNAL(activated()), note, SLOT(executeAll()));
-	connect(actionNoteEvaluate, SIGNAL(activated()), note, SLOT(evaluate()));
+		actionNoteExecute->disconnect(SIGNAL(activated()));
+		actionNoteExecuteAll->disconnect(SIGNAL(activated()));
+		actionNoteEvaluate->disconnect(SIGNAL(activated()));
+		connect(actionNoteExecute, SIGNAL(activated()), note, SLOT(execute()));
+		connect(actionNoteExecuteAll, SIGNAL(activated()), note, SLOT(executeAll()));
+		connect(actionNoteEvaluate, SIGNAL(activated()), note, SLOT(evaluate()));
+	}
 
 	reloadCustomActions();
 }

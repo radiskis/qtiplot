@@ -170,11 +170,10 @@ void MatrixModel::setDimensions(int rows, int cols)
 double MatrixModel::cell(int row, int col)
 {
     int i = d_cols*row + col;
-    double val = d_data[i];
-    if (i < 0 || i>= d_rows*d_cols || gsl_isnan (val))
-        return 0.0;
+    if (i < 0 || i >= d_rows*d_cols)
+        return GSL_NAN;
 
-	return val;
+	return d_data[i];
 }
 
 void MatrixModel::setCell(int row, int col, double val)
