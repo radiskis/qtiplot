@@ -90,6 +90,7 @@ private slots:
 	void updateLinearColorMapGroupBox(bool);
 
 private:
+	void initConnections();
     void initScalesPage();
 	void initAxesPage();
 	void initTitlePage();

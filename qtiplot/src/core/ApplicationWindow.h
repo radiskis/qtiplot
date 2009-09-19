@@ -866,6 +866,12 @@ public slots:
 	Note* openNote(ApplicationWindow* app, const QStringList &flist);
 	void saveNoteAs();
 	void showNoteLineNumbers(bool show = true);
+	void increaseNoteIndent();
+	void decreaseNoteIndent();
+	void noteFindDialogue();
+	void noteFindNext();
+	void noteFindPrev();
+	void noteReplaceDialogue();
 	void renameCurrentNoteTab();
 	void addNoteTab();
 	void closeNoteTab();
@@ -1099,7 +1105,7 @@ public:
 	bool d_is_appending_file;
     QString customActionsDirPath;
 	bool d_matrix_tool_bar, d_file_tool_bar, d_table_tool_bar, d_column_tool_bar, d_edit_tool_bar;
-	bool d_plot_tool_bar, d_plot3D_tool_bar, d_display_tool_bar, d_format_tool_bar;
+	bool d_plot_tool_bar, d_plot3D_tool_bar, d_display_tool_bar, d_format_tool_bar, d_notes_tool_bar;
 	bool d_backup_files;
 	WindowType d_init_window_type;
 	QRect d_script_win_rect, d_app_rect;
@@ -1289,7 +1295,7 @@ private:
 	QMdiArea *d_workspace;
 
     QToolBar *fileTools, *plotTools, *tableTools, *columnTools, *plot3DTools, *displayBar, *editTools, *plotMatrixBar;
-	QToolBar *formatToolBar;
+	QToolBar *formatToolBar, *noteTools;
 	QToolButton *btnResults;
 	QWidgetList *hiddenWindows;
 	QLineEdit *info;
@@ -1379,6 +1385,7 @@ private:
     QAction *actionMagnify, *actionFindWindow, *actionWaterfallPlot;
     QAction *actionMoveRowUp, *actionMoveRowDown, *actionAdjustColumnWidth;
     QAction *actionPresentationODF, *actionRenameNoteTab, *actionAddNoteTab, *actionCloseNoteTab;
+    QAction *actionIncreaseIndent, *actionDecreaseIndent, *actionFind, *actionFindNext, *actionFindPrev, *actionReplace;
     QList<QAction *> d_user_actions;
     QUndoView *d_undo_view;
     QList<QMenu *> d_user_menus;

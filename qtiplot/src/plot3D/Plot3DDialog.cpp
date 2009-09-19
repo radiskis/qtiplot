@@ -142,15 +142,11 @@ void Plot3DDialog::initScalesPage()
     boxFrom->setDecimals(app->d_decimal_digits);
     gl1->addWidget(boxFrom, 0, 1);
 
-    connect(boxFrom, SIGNAL(valueChanged(double)), this, SLOT(updatePlot()));
-
     gl1->addWidget(new QLabel(tr("To")), 1, 0);
 	boxTo = new DoubleSpinBox();
 	boxTo->setLocale(app->locale());
     boxTo->setDecimals(app->d_decimal_digits);
     gl1->addWidget(boxTo, 1, 1);
-
-    connect(boxTo, SIGNAL(valueChanged(double)), this, SLOT(updatePlot()));
 
     gl1->addWidget(new QLabel(tr("Type")), 2, 0);
 	boxType=new QComboBox();
@@ -223,6 +219,7 @@ void Plot3DDialog::initAxesPage()
 	boxMinorLength = new DoubleSpinBox();
 	boxMinorLength->setLocale(app->locale());
     boxMinorLength->setDecimals(app->d_decimal_digits);
+
     gl1->addWidget(boxMinorLength, 3, 1);
     gl1->setRowStretch(4, 1);
 
@@ -664,12 +661,27 @@ void Plot3DDialog::setPlot(Graph3D *g)
 		else if (g->matrix())
 			btnTable->setText(tr("&Matrix"));
 
-	connect( boxMeshLineWidth, SIGNAL(valueChanged(double)), d_plot, SLOT(setMeshLineWidth(double)));
-	connect( boxOrthogonal, SIGNAL(toggled(bool)), d_plot, SLOT(setOrthogonal(bool)));
-	connect( boxLegend, SIGNAL(toggled(bool)), d_plot, SLOT(showColorLegend(bool)));
-    connect( boxResolution, SIGNAL(valueChanged(int)), d_plot, SLOT(setResolution(int)));
-	connect( boxDistance, SIGNAL(valueChanged(int)), d_plot, SLOT(setLabelsDistance(int)));
-};
+	initConnections();
+}
+
+void Plot3DDialog::initConnections()
+{
+	// scales page connections
+	connect(boxFrom, SIGNAL(valueChanged(double)), this, SLOT(updatePlot()));
+    connect(boxTo, SIGNAL(valueChanged(double)), this, SLOT(updatePlot()));
+	connect(boxMajors, SIGNAL(valueChanged(int)), this, SLOT(updatePlot()));
+	connect(boxMinors, SIGNAL(valueChanged(int)), this, SLOT(updatePlot()));
+
+	// axes page connections
+	connect(boxMajorLength, SIGNAL(valueChanged(double)), this, SLOT(updatePlot()));
+	connect(boxMinorLength, SIGNAL(valueChanged(double)), this, SLOT(updatePlot()));
+
+	connect(boxMeshLineWidth, SIGNAL(valueChanged(double)), d_plot, SLOT(setMeshLineWidth(double)));
+	connect(boxOrthogonal, SIGNAL(toggled(bool)), d_plot, SLOT(setOrthogonal(bool)));
+	connect(boxLegend, SIGNAL(toggled(bool)), d_plot, SLOT(showColorLegend(bool)));
+    connect(boxResolution, SIGNAL(valueChanged(int)), d_plot, SLOT(setResolution(int)));
+	connect(boxDistance, SIGNAL(valueChanged(int)), d_plot, SLOT(setLabelsDistance(int)));
+}
 
 void Plot3DDialog::worksheet()
 {

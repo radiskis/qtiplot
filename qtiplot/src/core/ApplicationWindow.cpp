@@ -419,6 +419,7 @@ void ApplicationWindow::initGlobalConstants()
 	d_table_tool_bar = true;
 	d_column_tool_bar = true;
 	d_edit_tool_bar = true;
+	d_notes_tool_bar = true;
 	d_plot_tool_bar = true;
 	d_plot3D_tool_bar = true;
 	d_display_tool_bar = false;
@@ -697,6 +698,18 @@ void ApplicationWindow::initToolBars()
 	editTools->addAction(actionCopySelection);
 	editTools->addAction(actionPasteSelection);
 	editTools->addAction(actionClearSelection);
+
+	noteTools = new QToolBar(tr("Notes"), this);
+	noteTools->setObjectName("noteTools"); // this is needed for QMainWindow::restoreState()
+	noteTools->setIconSize( QSize(18,20) );
+	noteTools->addAction(actionNoteExecuteAll);
+	noteTools->addAction(actionDecreaseIndent);
+	noteTools->addAction(actionIncreaseIndent);
+	noteTools->addAction(actionFind);
+	noteTools->addAction(actionFindPrev);
+	noteTools->addAction(actionFindNext);
+	noteTools->addAction(actionReplace);
+	addToolBar( noteTools );
 
 	plotTools = new QToolBar(tr("Plot"), this);
 	plotTools->setObjectName("plotTools"); // this is needed for QMainWindow::restoreState()
@@ -1017,6 +1030,7 @@ void ApplicationWindow::insertTranslatedStrings()
 	plotTools->setWindowTitle(tr("Plot"));
 	fileTools->setWindowTitle(tr("File"));
 	editTools->setWindowTitle(tr("Edit"));
+	noteTools->setWindowTitle(tr("Notes"));
 	plotMatrixBar->setWindowTitle(tr("Matrix Plot"));
 	plot3DTools->setWindowTitle(tr("3D Surface"));
 	formatToolBar->setWindowTitle(tr("Format"));
@@ -1568,8 +1582,11 @@ void ApplicationWindow::customToolBars(QMdiSubWindow* w)
     } else if (w->isA("Note")){
 		if(d_format_tool_bar && !formatToolBar->isVisible())
             formatToolBar->show();
+		if(d_notes_tool_bar && !noteTools->isVisible())
+            noteTools->show();
 
         formatToolBar->setEnabled (true);
+        noteTools->setEnabled (true);
         setFormatBarFont(((Note*)w)->currentEditor()->currentFont());
     }
 }
@@ -1581,6 +1598,7 @@ void ApplicationWindow::disableToolbars()
 	columnTools->setEnabled(false);
 	plot3DTools->setEnabled(false);
 	plotMatrixBar->setEnabled(false);
+	noteTools->setEnabled(false);
 }
 
 void ApplicationWindow::plot3DRibbon()
@@ -5040,6 +5058,7 @@ void ApplicationWindow::readSettings()
 	d_plot3D_tool_bar = settings.value("/Plot3DToolBar", true).toBool();
 	d_display_tool_bar = settings.value("/DisplayToolBar", false).toBool();
 	d_format_tool_bar = settings.value("/FormatToolBar", true).toBool();
+	d_notes_tool_bar = settings.value("/NotesToolBar", true).toBool();
 	settings.endGroup();
 
     settings.beginGroup("/Notes");
@@ -5430,6 +5449,7 @@ void ApplicationWindow::saveSettings()
     settings.setValue("/Plot3DToolBar", d_plot3D_tool_bar);
     settings.setValue("/DisplayToolBar", d_display_tool_bar);
 	settings.setValue("/FormatToolBar", d_format_tool_bar);
+	settings.setValue("/NotesToolBar", d_notes_tool_bar);
 	settings.endGroup();
 
 	settings.beginGroup("/Notes");
@@ -5988,6 +6008,26 @@ void ApplicationWindow::saveNoteAs()
 	w->exportASCII();
 }
 
+void ApplicationWindow::increaseNoteIndent()
+{
+	Note* w = (Note*)activeWindow(NoteWindow);
+	if (!w)
+		return;
+
+	w->setTabStopWidth(w->currentEditor()->tabStopWidth() + 5);
+	modifiedProject();
+}
+
+void ApplicationWindow::decreaseNoteIndent()
+{
+	Note* w = (Note*)activeWindow(NoteWindow);
+	if (!w)
+		return;
+
+	w->setTabStopWidth(w->currentEditor()->tabStopWidth() - 5);
+	modifiedProject();
+}
+
 void ApplicationWindow::showNoteLineNumbers(bool show)
 {
 	Note* w = (Note*)activeWindow(NoteWindow);
@@ -5995,6 +6035,42 @@ void ApplicationWindow::showNoteLineNumbers(bool show)
 		return;
 	w->showLineNumbers(show);
 	modifiedProject();
+}
+
+void ApplicationWindow::noteFindDialogue()
+{
+	Note* w = (Note*)activeWindow(NoteWindow);
+	if (!w)
+		return;
+
+	w->currentEditor()->showFindDialog();
+}
+
+void ApplicationWindow::noteFindNext()
+{
+	Note* w = (Note*)activeWindow(NoteWindow);
+	if (!w)
+		return;
+
+	w->currentEditor()->findNext();
+}
+
+void ApplicationWindow::noteFindPrev()
+{
+	Note* w = (Note*)activeWindow(NoteWindow);
+	if (!w)
+		return;
+
+	w->currentEditor()->findPrevious();
+}
+
+void ApplicationWindow::noteReplaceDialogue()
+{
+	Note* w = (Note*)activeWindow(NoteWindow);
+	if (!w)
+		return;
+
+	w->currentEditor()->showFindDialog(true);
 }
 
 void ApplicationWindow::renameCurrentNoteTab()
@@ -8739,15 +8815,23 @@ void ApplicationWindow::scriptingMenuAboutToShow()
 	scriptingMenu->addAction(actionRestartScripting);
     scriptingMenu->addAction(actionCustomActionDialog);
 
-	scriptingMenu->insertSeparator();
 	Note *note = qobject_cast<Note *>(w);
 	if (note){
+		scriptingMenu->insertSeparator();
 		if (!note->text().isEmpty()){
 			scriptingMenu->addAction(actionNoteExecute);
 			scriptingMenu->addAction(actionNoteExecuteAll);
 			scriptingMenu->addAction(actionNoteEvaluate);
+			scriptingMenu->insertSeparator();
+			scriptingMenu->addAction(actionIncreaseIndent);
+			scriptingMenu->addAction(actionDecreaseIndent);
+			scriptingMenu->insertSeparator();
+			scriptingMenu->addAction(actionFind);
+			scriptingMenu->addAction(actionFindNext);
+			scriptingMenu->addAction(actionFindPrev);
+			scriptingMenu->addAction(actionReplace);
+			scriptingMenu->insertSeparator();
 		}
-		scriptingMenu->insertSeparator();
 		scriptingMenu->addAction(actionRenameNoteTab);
 		scriptingMenu->addAction(actionAddNoteTab);
 		if (note->tabs() > 1)
@@ -13101,6 +13185,27 @@ void ApplicationWindow::createActions()
 	actionShowNoteLineNumbers->setCheckable(true);
 	connect(actionShowNoteLineNumbers, SIGNAL(toggled(bool)), this, SLOT(showNoteLineNumbers(bool)));
 
+	actionFind = new QAction(QIcon(QPixmap(find_xpm)), tr("&Find..."), this);
+	actionFind->setShortcut(tr("Ctrl+Alt+F"));
+	connect(actionFind, SIGNAL(activated()), this, SLOT(noteFindDialogue()));
+
+	actionFindNext = new QAction(QIcon(QPixmap(find_next_xpm)), tr("Find &Next"), this);
+	actionFindNext->setShortcut(tr("F3"));
+	connect(actionFindNext, SIGNAL(activated()), this, SLOT(noteFindNext()));
+
+	actionFindPrev = new QAction(QIcon(QPixmap(find_previous_xpm)), tr("Find &Previous"), this);
+	actionFindPrev->setShortcut(tr("F4"));
+	connect(actionFindPrev, SIGNAL(activated()), this, SLOT(noteFindPrev()));
+
+	actionReplace = new QAction(QIcon(QPixmap(replace_xpm)), tr("&Replace..."), this);
+	connect(actionReplace, SIGNAL(activated()), this, SLOT(noteReplaceDialogue()));
+
+	actionIncreaseIndent = new QAction(QIcon(QPixmap(increase_indent_xpm)), tr("Increase Indent"), this);
+	connect(actionIncreaseIndent, SIGNAL(activated()), this, SLOT(increaseNoteIndent()));
+
+	actionDecreaseIndent = new QAction(QIcon(QPixmap(decrease_indent_xpm)),tr("Decrease Indent"), this);
+	connect(actionDecreaseIndent, SIGNAL(activated()), this, SLOT(decreaseNoteIndent()));
+
 	actionRenameNoteTab = new QAction(tr("Rena&me Tab..."), this);
 	connect(actionRenameNoteTab, SIGNAL(activated()), this, SLOT(renameCurrentNoteTab()));
 
@@ -13695,6 +13800,25 @@ void ApplicationWindow::translateActionsStrings()
 	actionRenameNoteTab->setMenuText(tr("Rena&me Tab..."));
 	actionAddNoteTab->setMenuText(tr("A&dd Tab"));
 	actionCloseNoteTab->setMenuText(tr("C&lose Tab"));
+
+	actionFind->setMenuText(tr("&Find..."));
+	actionFind->setToolTip(tr("Show find dialog"));
+	actionFind->setShortcut(tr("Ctrl+Alt+F"));
+
+	actionFindNext->setMenuText(tr("Find &Next"));
+	actionFindNext->setToolTip(tr("Find Next"));
+	actionFindNext->setShortcut(tr("F3"));
+
+	actionFindPrev->setMenuText(tr("Find &Previous"));
+	actionFindPrev->setToolTip(tr("Find Previous"));
+	actionFindPrev->setShortcut(tr("F4"));
+
+	actionReplace->setMenuText(tr("&Replace..."));
+	actionReplace->setToolTip(tr("Show replace dialog"));
+	actionReplace->setShortcut(tr("Ctrl+Alt+R"));
+
+	actionIncreaseIndent->setToolTip(tr("Increase Indent"));
+	actionDecreaseIndent->setToolTip(tr("Decrease Indent"));
 
 	btnPointer->setMenuText(tr("Disable &tools"));
 	btnPointer->setToolTip( tr( "Pointer" ) );
@@ -15007,7 +15131,6 @@ void ApplicationWindow::setShowWindowsPolicy(int p)
 void ApplicationWindow::showFindDialogue()
 {
 	FindDialog *fd = new FindDialog(this);
-	fd->setAttribute(Qt::WA_DeleteOnClose);
 	fd->exec();
 }
 
@@ -16261,6 +16384,12 @@ void ApplicationWindow::showToolBarsMenu()
 	connect(actionEditTools, SIGNAL(toggled(bool)), editTools, SLOT(setVisible(bool)));
 	toolBarsMenu.addAction(actionEditTools);
 
+	QAction *actionNoteTools = new QAction(noteTools->windowTitle(), this);
+	actionNoteTools->setCheckable(true);
+	actionNoteTools->setChecked(noteTools->isVisible());
+	connect(actionNoteTools, SIGNAL(toggled(bool)), noteTools, SLOT(setVisible(bool)));
+	toolBarsMenu.addAction(actionNoteTools);
+
 	QAction *actionTableTools = new QAction(tableTools->windowTitle(), this);
 	actionTableTools->setCheckable(true);
 	actionTableTools->setChecked(tableTools->isVisible());
@@ -16332,6 +16461,8 @@ void ApplicationWindow::showToolBarsMenu()
 		d_display_tool_bar = action->isChecked();
 	} else if (action->text() == formatToolBar->windowTitle()){
 		d_format_tool_bar = action->isChecked();
+	} else if (action->text() == noteTools->windowTitle()){
+		d_notes_tool_bar = action->isChecked();
 	}
 }
 
