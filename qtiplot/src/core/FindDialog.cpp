@@ -45,6 +45,7 @@ FindDialog::FindDialog( QWidget* parent, Qt::WFlags fl )
 {
 	setWindowTitle (tr("QtiPlot") + " - " + tr("Find"));
 	setSizeGripEnabled( true );
+	setAttribute(Qt::WA_DeleteOnClose);
 
 	QGridLayout * topLayout = new QGridLayout();
 	QGridLayout * bottomLayout = new QGridLayout();
