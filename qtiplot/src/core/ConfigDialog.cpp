@@ -480,6 +480,7 @@ ConfigDialog::ConfigDialog( QWidget* parent, Qt::WFlags fl )
     : QDialog( parent, fl )
 {
 	setAttribute(Qt::WA_DeleteOnClose);
+	setSizeGripEnabled(true);
 
 	ApplicationWindow *app = (ApplicationWindow *)parentWidget();
 	d_3D_title_font = app->d_3D_title_font;
@@ -910,19 +911,16 @@ void ConfigDialog::initPlots3DPage()
 	middleLayout->addWidget(btnAxes, 0, 0);
 	btnLabels = new ColorButton();
 	btnLabels->setColor(app->d_3D_labels_color);
-	middleLayout->addWidget(btnLabels, 1, 0);
+	middleLayout->addWidget(btnLabels, 0, 1);
 	btnNumbers = new ColorButton();
 	btnNumbers->setColor(app->d_3D_numbers_color);
-	middleLayout->addWidget(btnNumbers, 2, 0);
+	middleLayout->addWidget(btnNumbers, 0, 2);
 	btnMesh = new ColorButton();
 	btnMesh->setColor(app->d_3D_mesh_color);
-	middleLayout->addWidget(btnMesh, 0, 1);
-	btnGrid = new ColorButton();
-	btnGrid->setColor(app->d_3D_grid_color);
-	middleLayout->addWidget(btnGrid, 1, 1);
+	middleLayout->addWidget(btnMesh, 1, 0);
 	btnBackground3D = new ColorButton();
 	btnBackground3D->setColor(app->d_3D_background_color);
-	middleLayout->addWidget(btnBackground3D, 2, 1);
+	middleLayout->addWidget(btnBackground3D, 1, 1);
 
     groupBox3DFonts = new QGroupBox();
 	QGridLayout * fl = new QGridLayout( groupBox3DFonts );
@@ -934,9 +932,64 @@ void ConfigDialog::initPlots3DPage()
 	fl->addWidget( btnNumFnt, 0, 2);
 	fl->setRowStretch(1, 1);
 
+	groupBox3DGrids = new QGroupBox(tr("Grids"));
+	QGridLayout *gl1 = new QGridLayout(groupBox3DGrids);
+
+	boxMajorGrids = new QCheckBox(tr("Ma&jor Grids"));
+	boxMajorGrids->setChecked(app->d_3D_major_grids);
+	connect(boxMajorGrids, SIGNAL(toggled(bool)), this, SLOT(enableMajorGrids(bool)));
+	gl1->addWidget(boxMajorGrids, 0, 1);
+
+	boxMinorGrids = new QCheckBox(tr("Mi&nor Grids"));
+	boxMinorGrids->setChecked(app->d_3D_minor_grids);
+	connect(boxMinorGrids, SIGNAL(toggled(bool)), this, SLOT(enableMinorGrids(bool)));
+	gl1->addWidget(boxMinorGrids, 0, 2);
+
+	label3DGridsColor = new QLabel(tr("Color"));
+    gl1->addWidget(label3DGridsColor, 1, 0);
+
+	btnGrid = new ColorButton();
+	btnGrid->setColor(app->d_3D_grid_color);
+    gl1->addWidget(btnGrid, 1, 1);
+
+    btnGridMinor = new ColorButton();
+    btnGridMinor->setColor(app->d_3D_minor_grid_color);
+    gl1->addWidget(btnGridMinor, 1, 2);
+
+	label3DGridsStyle = new QLabel(tr("Style"));
+    gl1->addWidget(label3DGridsStyle, 2, 0);
+
+	boxMajorGridStyle = new QComboBox();
+	gl1->addWidget(boxMajorGridStyle, 2, 1);
+
+	boxMinorGridStyle = new QComboBox();
+	gl1->addWidget(boxMinorGridStyle, 2, 2);
+
+	label3DGridsWidth = new QLabel(tr("Width"));
+	gl1->addWidget(label3DGridsWidth, 3, 0);
+
+	boxMajorGridWidth = new DoubleSpinBox();
+	boxMajorGridWidth->setLocale(app->locale());
+	boxMajorGridWidth->setMinimum(0.0);
+	boxMajorGridWidth->setValue(app->d_3D_major_width);
+	gl1->addWidget(boxMajorGridWidth, 3, 1);
+
+	boxMinorGridWidth = new DoubleSpinBox();
+	boxMinorGridWidth->setLocale(app->locale());
+	boxMinorGridWidth->setMinimum(0.0);
+	boxMinorGridWidth->setValue(app->d_3D_minor_width);
+	gl1->addWidget(boxMinorGridWidth, 3, 2);
+
+	gl1->setRowStretch(4, 1);
+	gl1->setColumnStretch(3, 1);
+
+	enableMajorGrids(app->d_3D_major_grids);
+	enableMinorGrids(app->d_3D_minor_grids);
+
     QVBoxLayout *vl = new QVBoxLayout();
     vl->addWidget(groupBox3DCol);
     vl->addWidget(groupBox3DFonts);
+    vl->addWidget(groupBox3DGrids);
 
     QHBoxLayout *hb = new QHBoxLayout();
     hb->addWidget(colorMapBox);
@@ -1807,6 +1860,36 @@ void ConfigDialog::languageChange()
 	btnNumFnt->setText( tr( "&Numbers" ) );
 	boxAutoscale3DPlots->setText( tr( "Autosca&ling" ) );
 
+	groupBox3DGrids->setTitle(tr("Grids"));
+	boxMajorGrids->setText(tr("Ma&jor Grids"));
+	boxMinorGrids->setText(tr("Mi&nor Grids"));
+
+	boxMajorGridStyle->clear();
+	boxMajorGridStyle->addItem(tr("Solid"));
+	boxMajorGridStyle->addItem(tr("Dash"));
+	boxMajorGridStyle->addItem(tr("Dot"));
+	boxMajorGridStyle->addItem(tr("Dash Dot"));
+	boxMajorGridStyle->addItem(tr("Dash Dot Dot"));
+	boxMajorGridStyle->addItem(tr("Short Dash"));
+	boxMajorGridStyle->addItem(tr("Short Dot"));
+	boxMajorGridStyle->addItem(tr("Short Dash Dot"));
+	boxMajorGridStyle->setCurrentIndex(app->d_3D_major_style);
+
+	boxMinorGridStyle->clear();
+	boxMinorGridStyle->addItem(tr("Solid"));
+	boxMinorGridStyle->addItem(tr("Dash"));
+	boxMinorGridStyle->addItem(tr("Dot"));
+	boxMinorGridStyle->addItem(tr("Dash Dot"));
+	boxMinorGridStyle->addItem(tr("Dash Dot Dot"));
+	boxMinorGridStyle->addItem(tr("Short Dash"));
+	boxMinorGridStyle->addItem(tr("Short Dot"));
+	boxMinorGridStyle->addItem(tr("Short Dash Dot"));
+	boxMinorGridStyle->setCurrentIndex(app->d_3D_minor_style);
+
+	label3DGridsColor->setText(tr("Color"));
+	label3DGridsWidth->setText(tr("Style"));
+	label3DGridsStyle->setText(tr("Width"));
+
     //Notes page
     labelTabLength->setText(tr("Tab length (pixels)"));
     labelNotesFont->setText(tr("Font"));
@@ -2087,6 +2170,15 @@ void ConfigDialog::apply()
 	app->d_3D_smooth_mesh = boxSmoothMesh->isChecked();
 	app->d_3D_autoscale = boxAutoscale3DPlots->isChecked();
 	app->setPlot3DOptions();
+
+	app->d_3D_grid_color = btnGrid->color();
+	app->d_3D_minor_grid_color = btnGridMinor->color();
+	app->d_3D_minor_grids = boxMajorGrids->isChecked();
+	app->d_3D_major_grids = boxMinorGrids->isChecked();
+	app->d_3D_major_style = boxMajorGridStyle->currentIndex();
+	app->d_3D_minor_style = boxMinorGridStyle->currentIndex();
+	app->d_3D_major_width = boxMajorGridWidth->value();
+	app->d_3D_minor_width = boxMinorGridWidth->value();
 
 	// fitting page
 	app->fit_output_precision = boxPrecision->value();
@@ -2599,4 +2691,18 @@ bool ConfigDialog::validateTexCompiler()
 	app->d_latex_compiler_path = QDir::toNativeSeparators(path);
 	texCompilerPathBox->setText(app->d_latex_compiler_path);
 	return true;
+}
+
+void ConfigDialog::enableMajorGrids(bool on)
+{
+	btnGrid->setEnabled(on);
+	boxMajorGridStyle->setEnabled(on);
+	boxMajorGridWidth->setEnabled(on);
+}
+
+void ConfigDialog::enableMinorGrids(bool on)
+{
+	btnGridMinor->setEnabled(on);
+	boxMinorGridStyle->setEnabled(on);
+	boxMinorGridWidth->setEnabled(on);
 }

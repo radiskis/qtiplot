@@ -233,8 +233,8 @@ void Graph3D::initPlot()
 	setLabelsColor(app->d_3D_labels_color);
 	setBackgroundColor(app->d_3D_background_color);
 
-	Qwt3D::GridLine majorGrid(true, Qt2GL(app->d_3D_grid_color), Qwt3D::SOLID, 1.0);
-	Qwt3D::GridLine minorGrid(true, Qt2GL(app->d_3D_grid_color), Qwt3D::DASH, 0.5);
+	Qwt3D::GridLine majorGrid(app->d_3D_major_grids, Qt2GL(app->d_3D_grid_color), (Qwt3D::LINESTYLE)app->d_3D_major_style, app->d_3D_major_width);
+	Qwt3D::GridLine minorGrid(app->d_3D_minor_grids, Qt2GL(app->d_3D_minor_grid_color), (Qwt3D::LINESTYLE)app->d_3D_minor_style, app->d_3D_minor_width);
 	for (int i = 0; i < 12; i++){
 		sp->coordinates()->setMajorGridLines((Qwt3D::AXIS)i, majorGrid);
 		sp->coordinates()->setMinorGridLines((Qwt3D::AXIS)i, minorGrid);

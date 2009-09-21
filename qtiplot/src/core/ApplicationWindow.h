@@ -1259,7 +1259,10 @@ public:
 	QColor d_3D_numbers_color;
 	QColor d_3D_labels_color;
 	QColor d_3D_background_color;
-	QColor d_3D_grid_color;
+	QColor d_3D_grid_color, d_3D_minor_grid_color;
+	bool d_3D_minor_grids, d_3D_major_grids;
+	int d_3D_major_style, d_3D_minor_style;
+	double d_3D_major_width, d_3D_minor_width;
 
     void setPlot3DOptions();
 	//@}
