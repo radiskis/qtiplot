@@ -187,37 +187,28 @@ TableDialog::TableDialog(Table *t, QWidget* parent, Qt::WFlags fl )
 	connect(displayBox, SIGNAL(activated(int)), this, SLOT(updateDisplay(int)));
 	connect(buttonPrev, SIGNAL(clicked()), this, SLOT(prevColumn()));
 	connect(buttonNext, SIGNAL(clicked()), this, SLOT(nextColumn()));
-	connect(formatBox, SIGNAL(activated(int)), this, SLOT(enablePrecision(int)) );
 	connect(precisionBox, SIGNAL(valueChanged(int)), this, SLOT(updatePrecision(int)));
 	connect(boxShowTableComments, SIGNAL(toggled(bool)), d_table, SLOT(showComments(bool)));
 }
 
-void TableDialog::enablePrecision(int f)
-{
-if(displayBox->currentIndex())
-	return;//the col type != "Numeric"
-
-precisionBox->setEnabled(f > 0);
-}
-
 void TableDialog::accept()
 {
-apply();
-close();
+	apply();
+	close();
 }
 
 void TableDialog::prevColumn()
 {
-int sc = d_table->selectedColumn();
-apply();
-updateColumn(--sc);
+	int sc = d_table->selectedColumn();
+	apply();
+	updateColumn(--sc);
 }
 
 void TableDialog::nextColumn()
 {
-int sc = d_table->selectedColumn();
-apply();
-updateColumn(++sc);
+	int sc = d_table->selectedColumn();
+	apply();
+	updateColumn(++sc);
 }
 
 void TableDialog::updateColumn(int sc)
@@ -265,7 +256,6 @@ void TableDialog::updateColumn(int sc)
 
         formatBox->setCurrentIndex(f);
         precisionBox->setValue(prec);
-        enablePrecision(f);
 	} else if (colType == Table::Time || colType == Table::Date){
         QString format = d_table->columnFormat(sc);
         if (formatBox->findText(format) < 0)
@@ -293,8 +283,8 @@ void TableDialog::updateColumn(int sc)
 
 void TableDialog::setColumnWidth(int width)
 {
-d_table->setColumnWidth(width, applyToAllBox->isChecked());
-d_table->setHeaderColType();
+	d_table->setColumnWidth(width, applyToAllBox->isChecked());
+	d_table->setHeaderColType();
 }
 
 void TableDialog::apply()
@@ -368,8 +358,8 @@ void TableDialog::apply()
 
 void TableDialog::closeEvent( QCloseEvent* ce )
 {
-d_table->freeMemory();
-ce->accept();
+	d_table->freeMemory();
+	ce->accept();
 }
 
 void TableDialog::setPlotDesignation(int i)

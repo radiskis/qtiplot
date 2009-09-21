@@ -210,7 +210,7 @@ public slots:
 	 *
 	 * \sa precision(), setNumericFormat(), setTextFormat()
 	 */
-	void setNumericPrecision(int prec){num_precision = prec;};
+	void setNumericPrecision(int prec);
 
 	/*!
 	 * \brief Set the number format for the cells

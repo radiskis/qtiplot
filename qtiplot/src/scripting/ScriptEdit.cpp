@@ -111,15 +111,15 @@ ScriptEdit::ScriptEdit(ScriptingEnv *env, QWidget *parent, const char *name)
 	actionFind->setShortcut(QKeySequence(Qt::CTRL+Qt::ALT+Qt::Key_F));
 	connect(actionFind, SIGNAL(activated()), this, SLOT(showFindDialog()));
 
-	actionReplace = new QAction(tr("&Replace..."), this);
+	actionReplace = new QAction(QPixmap(replace_xpm), tr("&Replace..."), this);
 	actionReplace->setShortcut(QKeySequence(Qt::CTRL+Qt::ALT+Qt::Key_R));
 	connect(actionReplace, SIGNAL(activated()), this, SLOT(replace()));
 
-	actionFindNext = new QAction(tr("&Find next"), this);
+	actionFindNext = new QAction(QPixmap(find_next_xpm), tr("&Find next"), this);
 	actionFindNext->setShortcut(QKeySequence(Qt::Key_F3));
 	connect(actionFindNext, SIGNAL(activated()), this, SLOT(findNext()));
 
-	actionFindPrevious = new QAction(tr("&Find previous"), this);
+	actionFindPrevious = new QAction(QPixmap(find_previous_xpm), tr("&Find previous"), this);
 	actionFindPrevious->setShortcut(QKeySequence(Qt::Key_F4));
 	connect(actionFindPrevious, SIGNAL(activated()), this, SLOT(findPrevious()));
 

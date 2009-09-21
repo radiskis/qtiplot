@@ -32,7 +32,6 @@
 #include <SymbolDialog.h>
 #include <ApplicationWindow.h>
 #include <TextFormatButtons.h>
-
 #include <DoubleSpinBox.h>
 #include <ColorMapEditor.h>
 #include <ColorButton.h>
@@ -110,6 +109,7 @@ Plot3DDialog::Plot3DDialog( QWidget* parent,  Qt::WFlags fl )
 
     initScalesPage();
 	initAxesPage();
+	initGridPage();
 	initTitlePage();
 	initColorsPage();
 	initGeneralPage();
@@ -234,8 +234,6 @@ void Plot3DDialog::initAxesPage()
     axes->setLayout(hb2);
 	generalDialog->insertTab(axes, tr( "&Axis" ) );
 
-	connect( axesList2, SIGNAL(currentRowChanged(int)), this, SLOT(viewAxisOptions(int)));
-	connect( axesList, SIGNAL(currentRowChanged(int)), this, SLOT(viewScaleLimits(int)));
 	connect( btnLabelFont, SIGNAL(clicked()), this, SLOT(pickAxisLabelFont()));
 }
 
@@ -344,13 +342,7 @@ void Plot3DDialog::initColorsPage()
     numbersLabel->setBuddy(btnNumbers);
 	gl1->addWidget(numbersLabel, 2, 0);
     gl1->addWidget(btnNumbers, 2, 1);
-
-	btnGrid = new ColorButton();
-	QLabel *gridLabel = new QLabel(tr( "&Grid" ));
-	gridLabel->setBuddy(btnGrid);
-	gl1->addWidget(gridLabel, 3, 0);
-    gl1->addWidget(btnGrid, 3, 1);
-    gl1->setRowStretch(4, 1);
+    gl1->setRowStretch(3, 1);
 
     AxesColorGroupBox = new QGroupBox(tr( "Coordinate System" ));
     AxesColorGroupBox->setLayout(gl1);
@@ -449,6 +441,90 @@ void Plot3DDialog::initGeneralPage()
 	connect( boxYScale, SIGNAL(valueChanged(int)), this, SLOT(changeZoom(int)));
 	connect( boxZScale, SIGNAL(valueChanged(int)), this, SLOT(changeZoom(int)));
 	connect( btnNumbersFont, SIGNAL(clicked()), this, SLOT(pickNumbersFont()));
+}
+
+void Plot3DDialog::enableMajorGrids(bool on)
+{
+	btnGrid->setEnabled(on);
+	boxMajorGridStyle->setEnabled(on);
+	boxMajorGridWidth->setEnabled(on);
+}
+
+void Plot3DDialog::enableMinorGrids(bool on)
+{
+	btnGridMinor->setEnabled(on);
+	boxMinorGridStyle->setEnabled(on);
+	boxMinorGridWidth->setEnabled(on);
+}
+
+void Plot3DDialog::initGridPage()
+{
+	QGroupBox *gb1 = new QGroupBox();
+	QGridLayout *gl1 = new QGridLayout(gb1);
+
+	boxMajorGrids = new QCheckBox(tr("Ma&jor Grids"));
+	gl1->addWidget(boxMajorGrids, 0, 1);
+
+	boxMinorGrids = new QCheckBox(tr("Mi&nor Grids"));
+	gl1->addWidget(boxMinorGrids, 0, 2);
+
+    gl1->addWidget(new QLabel(tr("Color")), 1, 0);
+
+	btnGrid = new ColorButton();
+    gl1->addWidget(btnGrid, 1, 1);
+
+    btnGridMinor = new ColorButton();
+    gl1->addWidget(btnGridMinor, 1, 2);
+
+    gl1->addWidget(new QLabel(tr("Style")), 2, 0);
+
+	boxMajorGridStyle = new QComboBox();
+	boxMajorGridStyle->addItem(tr("Solid"));
+	boxMajorGridStyle->addItem(tr("Dash"));
+	boxMajorGridStyle->addItem(tr("Dot"));
+	boxMajorGridStyle->addItem(tr("Dash Dot"));
+	boxMajorGridStyle->addItem(tr("Dash Dot Dot"));
+	boxMajorGridStyle->addItem(tr("Short Dash"));
+	boxMajorGridStyle->addItem(tr("Short Dot"));
+	boxMajorGridStyle->addItem(tr("Short Dash Dot"));
+
+	gl1->addWidget(boxMajorGridStyle, 2, 1);
+
+	boxMinorGridStyle = new QComboBox();
+	boxMinorGridStyle->addItem(tr("Solid"));
+	boxMinorGridStyle->addItem(tr("Dash"));
+	boxMinorGridStyle->addItem(tr("Dot"));
+	boxMinorGridStyle->addItem(tr("Dash Dot"));
+	boxMinorGridStyle->addItem(tr("Dash Dot Dot"));
+	boxMinorGridStyle->addItem(tr("Short Dash"));
+	boxMinorGridStyle->addItem(tr("Short Dot"));
+	boxMinorGridStyle->addItem(tr("Short Dash Dot"));
+
+	gl1->addWidget(boxMinorGridStyle, 2, 2);
+
+	gl1->addWidget(new QLabel(tr("Width")), 3, 0);
+
+	ApplicationWindow *app = (ApplicationWindow *)parent();
+
+	boxMajorGridWidth = new DoubleSpinBox();
+	boxMajorGridWidth->setLocale(app->locale());
+	boxMajorGridWidth->setMinimum(0.0);
+	gl1->addWidget(boxMajorGridWidth, 3, 1);
+
+	boxMinorGridWidth = new DoubleSpinBox();
+	boxMinorGridWidth->setLocale(app->locale());
+	boxMinorGridWidth->setMinimum(0.0);
+	gl1->addWidget(boxMinorGridWidth, 3, 2);
+
+	gl1->setRowStretch(4, 1);
+	gl1->setColumnStretch(3, 1);
+
+    QHBoxLayout* hl = new QHBoxLayout();
+	hl->addWidget(gb1);
+
+    gridPage = new QWidget();
+    gridPage->setLayout(hl);
+	generalDialog->insertTab(gridPage, tr("G&rid"));
 }
 
 void Plot3DDialog::initPointsOptionsStack()
@@ -557,7 +633,22 @@ void Plot3DDialog::setPlot(Graph3D *g)
 	btnNumbers->setColor(g->numColor());
 	btnLabels->setColor(g->labelColor());
 	btnBackground->setColor(g->bgColor());
-	btnGrid->setColor(g->gridColor());
+
+	//Set major grid properties
+	Qwt3D::GridLine majorGridLine = g->surface()->coordinates()->majorGridLine(Qwt3D::X1);
+	boxMajorGrids->setChecked(majorGridLine.visible_);
+	RGBA color = majorGridLine.color_;
+	btnGrid->setColor(GL2Qt(color.r, color.g, color.b));
+	boxMajorGridWidth->setValue(majorGridLine.width_);
+	boxMajorGridStyle->setCurrentIndex(majorGridLine.style_);
+
+	//Set minor grid properties
+	Qwt3D::GridLine minorGridLine = g->surface()->coordinates()->minorGridLine(Qwt3D::X1);
+	boxMinorGrids->setChecked(minorGridLine.visible_);
+	color = minorGridLine.color_;
+	btnGridMinor->setColor(GL2Qt(color.r, color.g, color.b));
+	boxMinorGridWidth->setValue(minorGridLine.width_);
+	boxMinorGridStyle->setCurrentIndex(minorGridLine.style_);
 
 	d_color_map_file = g->colorMapFile();
 	setColorMapPreview(d_color_map_file);
@@ -595,12 +686,7 @@ void Plot3DDialog::setPlot(Graph3D *g)
 	yAxisFont = g->yAxisLabelFont();
 	zAxisFont = g->zAxisLabelFont();
 
-	scales = g->scaleLimits();
-	boxFrom->setValue(scales[0].toDouble());
-	boxTo->setValue(scales[1].toDouble());
-	boxMajors->setValue(scales[2].toInt());
-	boxMinors->setValue(scales[3].toInt());
-	boxType->setCurrentIndex(scales[4].toInt());
+	viewScaleLimits(0);
 
 	boxDistance->setValue(g->labelsDistance());
 	numbersFont = g->numbersFont();
@@ -652,7 +738,7 @@ void Plot3DDialog::setPlot(Graph3D *g)
 			boxLegend->setDisabled(true);
 
 		if (g->grids() == 0)
-			btnGrid->setDisabled(true);
+			gridPage->setDisabled(true);
 
 		if (g->userFunction() || g->parametricSurface())
 			btnTable->hide();
@@ -671,10 +757,24 @@ void Plot3DDialog::initConnections()
     connect(boxTo, SIGNAL(valueChanged(double)), this, SLOT(updatePlot()));
 	connect(boxMajors, SIGNAL(valueChanged(int)), this, SLOT(updatePlot()));
 	connect(boxMinors, SIGNAL(valueChanged(int)), this, SLOT(updatePlot()));
+	connect(axesList, SIGNAL(currentRowChanged(int)), this, SLOT(viewScaleLimits(int)));
 
 	// axes page connections
 	connect(boxMajorLength, SIGNAL(valueChanged(double)), this, SLOT(updatePlot()));
 	connect(boxMinorLength, SIGNAL(valueChanged(double)), this, SLOT(updatePlot()));
+	connect(axesList2, SIGNAL(currentRowChanged(int)), this, SLOT(viewAxisOptions(int)));
+
+	//grid page connections
+	connect(boxMajorGrids, SIGNAL(toggled(bool)), this, SLOT(enableMajorGrids(bool)));
+	connect(boxMajorGrids, SIGNAL(toggled(bool)), this, SLOT(updatePlot()));
+	connect(boxMinorGrids, SIGNAL(toggled(bool)), this, SLOT(enableMinorGrids(bool)));
+	connect(boxMinorGrids, SIGNAL(toggled(bool)), this, SLOT(updatePlot()));
+	connect(boxMajorGridStyle, SIGNAL(activated(int)), this, SLOT(updatePlot()));
+	connect(boxMinorGridStyle, SIGNAL(activated(int)), this, SLOT(updatePlot()));
+	connect(boxMajorGridWidth, SIGNAL(valueChanged(double)), this, SLOT(updatePlot()));
+	connect(boxMinorGridWidth, SIGNAL(valueChanged(double)), this, SLOT(updatePlot()));
+	connect(btnGrid, SIGNAL(colorChanged()), this, SLOT(updatePlot()));
+	connect(btnGridMinor, SIGNAL(colorChanged()), this, SLOT(updatePlot()));
 
 	connect(boxMeshLineWidth, SIGNAL(valueChanged(double)), d_plot, SLOT(setMeshLineWidth(double)));
 	connect(boxOrthogonal, SIGNAL(toggled(bool)), d_plot, SLOT(setOrthogonal(bool)));
@@ -816,17 +916,39 @@ void Plot3DDialog::viewAxisOptions(int axis)
 {
 	boxLabel->setText(labels[axis]);
 
+	boxMajorLength->blockSignals(true);
 	boxMajorLength->setValue(tickLengths[2*axis+0].toDouble());
+	boxMajorLength->blockSignals(false);
+
+	boxMinorLength->blockSignals(true);
 	boxMinorLength->setValue(tickLengths[2*axis+1].toDouble());
+	boxMinorLength->blockSignals(false);
 }
 
 void Plot3DDialog::viewScaleLimits(int axis)
 {
-	boxFrom->setValue(scales[5*axis+0].toDouble());
-	boxTo->setValue(scales[5*axis+1].toDouble());
-	boxMajors->setValue(scales[5*axis+2].toInt());
-	boxMinors->setValue(scales[5*axis+3].toInt());
-	boxType->setCurrentIndex(scales[5*axis+4].toInt());
+	Qwt3D::Axis a = d_plot->surface()->coordinates()->axes[axis];
+
+	double start, end;
+	a.limits(start, end);
+
+	boxFrom->blockSignals(true);
+	boxFrom->setValue(start);
+	boxFrom->blockSignals(false);
+
+	boxTo->blockSignals(true);
+	boxTo->setValue(end);
+	boxTo->blockSignals(false);
+
+	boxMajors->blockSignals(true);
+	boxMajors->setValue(a.majors());
+	boxMajors->blockSignals(false);
+
+	boxMinors->blockSignals(true);
+	boxMinors->setValue(a.minors());
+	boxMinors->blockSignals(false);
+
+	boxType->setCurrentIndex(d_plot->axisType(axis));
 }
 
 void Plot3DDialog::accept()
@@ -865,12 +987,12 @@ bool Plot3DDialog::updatePlot()
     if (!app)
         return false;
 
-	if (generalDialog->currentPage()==(QWidget*)bars){
+	if (generalDialog->currentPage() == bars){
 		d_plot->setBarRadius(boxBarsRad->text().toDouble());
 		d_plot->setBarLines(boxBarLines->isChecked());
 		d_plot->setFilledBars(boxFilledBars->isChecked());
 		d_plot->setBarStyle();
-	} else if (generalDialog->currentPage() == (QWidget*)points){
+	} else if (generalDialog->currentPage() == points){
 		if (boxPointStyle->currentIndex() == 0) {
 			d_plot->setDotOptions(boxSize->text().toDouble(), boxSmooth->isChecked());
 			d_plot->setDotStyle();
@@ -882,11 +1004,10 @@ bool Plot3DDialog::updatePlot()
 			d_plot->setConeOptions(boxConesRad->text().toDouble(), boxQuality->value());
 			d_plot->setConeStyle();
         }
-
         app->custom3DActions(d_plot);
-	} else if (generalDialog->currentPage()==(QWidget*)title){
+	} else if (generalDialog->currentPage() == title){
 		d_plot->setTitle(boxTitle->text().remove("\n"), btnTitleColor->color(), titleFont);
-	} else if (generalDialog->currentPage()==(QWidget*)colors){
+	} else if (generalDialog->currentPage() == colors){
 		d_plot->changeTransparency(boxTransparency->value()*0.01);
 		if (linearColorMapGroupBox->isChecked())
 			d_plot->setDataColorMap(d_color_map_editor->colorMap());
@@ -900,8 +1021,14 @@ bool Plot3DDialog::updatePlot()
 		d_plot->setNumbersColor(btnNumbers->color());
 		d_plot->setLabelsColor(btnLabels->color());
 		d_plot->setBackgroundColor(btnBackground->color());
-		d_plot->setGridColor(btnGrid->color());
-	} else if (generalDialog->currentPage()==(QWidget*)general){
+	} else if (generalDialog->currentPage() == gridPage){
+		Qwt3D::GridLine majorGrid(boxMajorGrids->isChecked(), Qt2GL(btnGrid->color()), (Qwt3D::LINESTYLE)boxMajorGridStyle->currentIndex(), boxMajorGridWidth->value());
+		Qwt3D::GridLine minorGrid(boxMinorGrids->isChecked(), Qt2GL(btnGridMinor->color()), (Qwt3D::LINESTYLE)boxMinorGridStyle->currentIndex(), boxMinorGridWidth->value());
+		for (int i = 0; i < 12; i++){
+			d_plot->coordinateSystem()->setMajorGridLines((Qwt3D::AXIS)i, majorGrid);
+			d_plot->coordinateSystem()->setMinorGridLines((Qwt3D::AXIS)i, minorGrid);
+		}
+	} else if (generalDialog->currentPage() == general){
 		d_plot->showColorLegend(boxLegend->isChecked());
 		d_plot->setResolution(boxResolution->value());
 		d_plot->setMeshLineWidth(boxMeshLineWidth->value());
@@ -910,9 +1037,9 @@ bool Plot3DDialog::updatePlot()
 		d_plot->setZoom(zoom*boxZoom->value()*0.01);
 		d_plot->setScale(xScale*boxXScale->value()*0.01, yScale*boxYScale->value()*0.01, zScale*boxZScale->value()*0.01);
 	} else if (generalDialog->currentPage()==(QWidget*)scale){
-		int axis = axesList->currentRow();
-        d_plot->updateScale(axis, scaleOptions(axis, boxFrom->value(), boxTo->value(), boxMajors->text(), boxMinors->text()));
-	} else if (generalDialog->currentPage()==(QWidget*)axes){
+		d_plot->setScale(axesList->currentRow(), boxFrom->value(), boxTo->value(), boxMajors->value(),
+						 boxMinors->value(), (Qwt3D::SCALETYPE)boxType->currentIndex());
+	} else if (generalDialog->currentPage() == axes){
 		int axis = axesList2->currentRow();
 		labels[axis] = boxLabel->text();
 
@@ -939,21 +1066,6 @@ bool Plot3DDialog::updatePlot()
     d_plot->update();
     app->modifiedProject(d_plot);
 	return true;
-}
-
-QStringList Plot3DDialog::scaleOptions(int axis, double start, double end,
-		const QString& majors, const QString& minors)
-{
-	QStringList l;
-	l<<QString::number(start);
-	l<<QString::number(end);
-	l<<majors;
-	l<<minors;
-	l<<QString::number(boxType->currentIndex());
-
-	for (int i=0;i<5;i++)
-		scales[5*axis+i]=l[i];
-	return l;
 }
 
 void Plot3DDialog::pickAxisLabelFont()

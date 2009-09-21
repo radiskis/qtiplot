@@ -1,4 +1,7 @@
 #include "qwt3d_axis.h"
+#include "qwt3d_plot.h"
+
+#include <QLocale>
 
 using namespace Qwt3D;
 
@@ -270,7 +273,8 @@ void Axis::drawTicLabel(Triple pos, int mtic)
 
 	markerLabel_[mtic].setFont(numberfont_.family(), numberfont_.pointSize(), numberfont_.weight(), numberfont_.italic());
 	markerLabel_[mtic].setColor(numbercolor_);
-  	markerLabel_[mtic].setString(scale_->ticLabel(mtic));
+  	//markerLabel_[mtic].setString(scale_->ticLabel(mtic));
+  	markerLabel_[mtic].setString(plot()->locale().toString(scale_->ticValue(mtic)));
   	markerLabel_[mtic].setPosition(pos, scaleNumberAnchor_);
 	markerLabel_[mtic].setPlot(plot());
 	markerLabel_[mtic].adjust(numbergap_);
