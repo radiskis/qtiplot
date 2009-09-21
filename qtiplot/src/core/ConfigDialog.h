@@ -110,6 +110,9 @@ private slots:
 	void chooseTexCompiler();
 	bool validateTexCompiler();
 
+	void enableMajorGrids(bool on);
+	void enableMinorGrids(bool on);
+
 private:
 	void initPlotsPage();
 	void initAppPage();
@@ -132,7 +135,7 @@ private:
 
 	QCheckBox *boxScaleLayersOnPrint, *boxPrintCropmarks, *linearFit2PointsBox;
 	QTabWidget *plotsTabWidget, *appTabWidget;
-	ColorButton *btnBackground3D, *btnMesh, *btnAxes, *btnLabels, *btnNumbers, *btnGrid;
+	ColorButton *btnBackground3D, *btnMesh, *btnAxes, *btnLabels, *btnNumbers;
 	QGroupBox *colorMapBox;
 	ColorMapEditor *colorMapEditor;
 	QPushButton	*btnTitleFnt, *btnLabelsFnt, *btnNumFnt;
@@ -211,6 +214,13 @@ private:
 
     QComboBox *legendDisplayBox;
 	QLabel *legendDisplayLabel;
+
+	DoubleSpinBox *boxMajorGridWidth, *boxMinorGridWidth;
+	QComboBox *boxMajorGridStyle, *boxMinorGridStyle;
+	QCheckBox *boxMajorGrids, *boxMinorGrids;
+	ColorButton *btnGrid, *btnGridMinor;
+	QLabel *label3DGridsColor, *label3DGridsWidth, *label3DGridsStyle;
+	QGroupBox *groupBox3DGrids;
 
 #ifdef SCRIPTING_PYTHON
 	QGroupBox *groupSyntaxHighlighter;

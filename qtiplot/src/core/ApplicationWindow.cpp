@@ -594,7 +594,14 @@ void ApplicationWindow::initGlobalConstants()
 	d_3D_numbers_color = Qt::black;
 	d_3D_labels_color = Qt::black;
 	d_3D_background_color = Qt::white;
-	d_3D_grid_color = Qt::black;
+	d_3D_grid_color = Qt::blue;
+	d_3D_minor_grid_color = Qt::lightGray;
+	d_3D_minor_grids = true;
+	d_3D_major_grids = true;
+	d_3D_major_style = Qwt3D::SOLID;
+	d_3D_minor_style = Qwt3D::DASH;
+	d_3D_major_width = 1.0;
+	d_3D_minor_width = 0.8;
 
 	fit_output_precision = 13;
 	pasteFitResultsToPlot = false;
@@ -4969,7 +4976,6 @@ void ApplicationWindow::readSettings()
 	QColor max_color = settings.value("/MaxData", Qt::red).value<QColor>();
 	d_3D_labels_color = settings.value("/Labels", d_3D_labels_color).value<QColor>();
 	d_3D_mesh_color = settings.value("/Mesh", d_3D_mesh_color).value<QColor>();
-	d_3D_grid_color = settings.value("/Grid", d_3D_grid_color).value<QColor>();
 	QColor min_color = settings.value("/MinData", Qt::blue).value<QColor>();
 	d_3D_numbers_color = settings.value("/Numbers", d_3D_numbers_color).value<QColor>();
 	d_3D_axes_color = settings.value("/Axes", d_3D_axes_color).value<QColor>();
@@ -4983,6 +4989,19 @@ void ApplicationWindow::readSettings()
         d_3D_color_map.addColorStop(stop_values[i].toDouble(), QColor(stop_colors[i]));
 
 	settings.endGroup(); // Colors
+
+	settings.beginGroup("/Grids");
+	d_3D_major_grids = settings.value("/EnableMajor", d_3D_major_grids).toBool();
+	d_3D_grid_color = settings.value("/MajorColor", d_3D_grid_color).value<QColor>();
+	d_3D_major_style = settings.value("/MajorStyle", d_3D_major_style).toInt();
+	d_3D_major_width = settings.value("/MajorWidth", d_3D_major_width).toDouble();
+
+	d_3D_minor_grids = settings.value("/EnableMinor", d_3D_minor_grids).toBool();
+	d_3D_minor_grid_color = settings.value("/MinorColor", d_3D_minor_grid_color).value<QColor>();
+	d_3D_minor_style = settings.value("/MinorStyle", d_3D_minor_style).toInt();
+	d_3D_minor_width = settings.value("/MinorWidth", d_3D_minor_width).toDouble();
+	settings.endGroup(); // Grids
+
 	settings.endGroup();
 	/* ----------------- end group 3D Plots --------------------------- */
 
@@ -5352,7 +5371,6 @@ void ApplicationWindow::saveSettings()
 	settings.setValue("/MaxData", d_3D_color_map.color2());
 	settings.setValue("/Labels", d_3D_labels_color);
 	settings.setValue("/Mesh", d_3D_mesh_color);
-	settings.setValue("/Grid", d_3D_grid_color);
 	settings.setValue("/MinData", d_3D_color_map.color1());
 	settings.setValue("/Numbers", d_3D_numbers_color);
 	settings.setValue("/Axes", d_3D_axes_color);
@@ -5371,6 +5389,19 @@ void ApplicationWindow::saveSettings()
     settings.setValue("/ColorMapColors", stop_colors);
 
 	settings.endGroup(); // Colors
+
+	settings.beginGroup("/Grids");
+	settings.setValue("/EnableMajor", d_3D_major_grids);
+	settings.setValue("/MajorColor", d_3D_grid_color);
+	settings.setValue("/MajorStyle", d_3D_major_style);
+	settings.setValue("/MajorWidth", d_3D_major_width);
+	settings.setValue("/EnableMinor", d_3D_minor_grids);
+	settings.setValue("/MinorColor", d_3D_minor_grid_color);
+	settings.setValue("/MinorStyle", d_3D_minor_style);
+	settings.setValue("/MinorWidth", d_3D_minor_width);
+	settings.endGroup(); // Grids
+
+	settings.endGroup();
 	settings.endGroup();
 	/* ----------------- end group 2D Plots -------- */
 

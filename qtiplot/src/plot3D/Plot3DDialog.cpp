@@ -90,6 +90,7 @@ Plot3DDialog::Plot3DDialog( QWidget* parent,  Qt::WFlags fl )
 {
     setName( "Plot3DDialog" );
 	setWindowTitle( tr( "QtiPlot - Surface Plot Options" ) );
+	setSizeGripEnabled(true);
 
 	bars=0; points=0;
 
