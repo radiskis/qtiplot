@@ -1958,6 +1958,11 @@ void Table::setTextFormat(int col)
 
 void Table::setColNumericFormat(int f, int prec, int col, bool updateCells)
 {
+	if (prec < 0)
+		prec = 0;
+	else if (prec > 14)
+		prec = 14;
+
 	if (colTypes[col] == Numeric){
 		int old_f, old_prec;
 		columnNumericFormat(col, &old_f, &old_prec);
@@ -1975,12 +1980,12 @@ void Table::setColNumericFormat(int f, int prec, int col, bool updateCells)
 	for (int i=0; i<d_table->numRows(); i++) {
 		QString t = text(i, col);
 		if (!t.isEmpty()) {
-			if (!f)
-				prec = 6;
-			else if (f == 1)
+			if (f == 1)
                 format = 'f';
 			else if (f == 2)
                 format = 'e';
+			else
+				format = 'g';
 
 			if (d_saved_cells)
 				setText(i, col, locale().toString(d_saved_cells[col][i], format, prec));

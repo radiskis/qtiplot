@@ -1076,6 +1076,9 @@ private slots:
 	void showAllColumns();
 	void closedLastCopiedLayer(){lastCopiedLayer = NULL;};
 
+	void increasePrecision();
+	void decreasePrecision();
+
 // TODO: a lot of this stuff should be private
 public:
 	Graph::LegendDisplayMode d_graph_legend_display;
@@ -1386,6 +1389,7 @@ private:
     QAction *actionMoveRowUp, *actionMoveRowDown, *actionAdjustColumnWidth;
     QAction *actionPresentationODF, *actionRenameNoteTab, *actionAddNoteTab, *actionCloseNoteTab;
     QAction *actionIncreaseIndent, *actionDecreaseIndent, *actionFind, *actionFindNext, *actionFindPrev, *actionReplace;
+    QAction *actionIncreasePrecision, *actionDecreasePrecision;
     QList<QAction *> d_user_actions;
     QUndoView *d_undo_view;
     QList<QMenu *> d_user_menus;

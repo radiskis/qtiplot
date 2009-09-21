@@ -162,8 +162,10 @@ public slots:
 	double yStop();
 	double zStart();
 	double zStop();
-	QStringList scaleLimits();
-	void updateScale(int axis, const QStringList& options);
+
+	int axisType(int axis){return scaleType[axis];};
+	void setAxisType(int axis, int type);
+
 	void setScales(double xl, double xr, double yl, double yr, double zl, double zr);
 	void updateScales(double xl, double xr, double yl, double yr,
 				  		double zl, double zr, int xcol, int ycol);
@@ -374,6 +376,7 @@ signals:
 	void modified();
 
 private:
+	void resetAxesType();
 	//! Wait this many msecs before redraw 3D plot (used for animations)
   	int animation_redraw_wait;
 	//! File name of the color map used for the data (if any)

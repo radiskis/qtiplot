@@ -972,6 +972,9 @@ void ApplicationWindow::initToolBars()
 	actionFlipMatrixVertically->addTo(plotMatrixBar);
 	actionRotateMatrix->addTo(plotMatrixBar);
 	actionRotateMatrixMinus->addTo(plotMatrixBar);
+	plotMatrixBar->addSeparator();
+	plotMatrixBar->addAction(actionIncreasePrecision);
+	plotMatrixBar->addAction(actionDecreasePrecision);
 	plotMatrixBar->hide();
 
 	formatToolBar = new QToolBar(tr( "Format" ), this);
@@ -12590,7 +12593,7 @@ void ApplicationWindow::createActions()
 	actionShowPlotWizard->setShortcut( tr("Ctrl+Alt+W") );
 	connect(actionShowPlotWizard, SIGNAL(activated()), this, SLOT(showPlotWizard()));
 
-	actionShowConfigureDialog = new QAction(tr("&Preferences..."), this);
+	actionShowConfigureDialog = new QAction(QIcon(QPixmap(configure_xpm)), tr("&Preferences..."), this);
 	connect(actionShowConfigureDialog, SIGNAL(activated()), this, SLOT(showPreferencesDialog()));
 
 	actionShowCurvesDialog = new QAction(QIcon(QPixmap(curves_xpm)), tr("Add/Remove &Curve..."), this);
@@ -13297,6 +13300,12 @@ void ApplicationWindow::createActions()
 	actionMathSymbol = new QAction(QString(QChar(0x222B)), this);
 	actionMathSymbol->setToolTip(tr("Mathematical Symbols"));
 	connect(actionMathSymbol, SIGNAL(activated()), this, SLOT(insertMathSymbol()));
+
+	actionIncreasePrecision = new QAction(QPixmap(increase_decimals_xpm), tr("Increase Precision"), this);
+	connect(actionIncreasePrecision, SIGNAL(activated()), this, SLOT(increasePrecision()));
+
+	actionDecreasePrecision = new QAction(QPixmap(decrease_decimals_xpm), tr("Decrease Precision"), this);
+	connect(actionDecreasePrecision, SIGNAL(activated()), this, SLOT(decreasePrecision()));
 }
 
 void ApplicationWindow::translateActionsStrings()
@@ -17276,4 +17285,38 @@ void ApplicationWindow::memoryAllocationError()
 {
 	QMessageBox::critical(0, tr("QtiPlot") + " - " + tr("Memory Allocation Error"),
 		tr("Not enough memory, operation aborted!"));
+}
+
+void ApplicationWindow::increasePrecision()
+{
+	Matrix *m = (Matrix *)activeWindow(MatrixWindow);
+	if (!m)
+		return;
+
+	int oldPrec = m->precision();
+	if (oldPrec == 13)
+		return;
+
+	int prec = oldPrec + 1;
+	QChar format = m->textFormat();
+	m->undoStack()->push(new MatrixSetPrecisionCommand(m, format, format,
+					oldPrec, prec, tr("Set Precision %1 digits").arg(prec)));
+	m->setNumericPrecision(prec);
+}
+
+void ApplicationWindow::decreasePrecision()
+{
+	Matrix *m = (Matrix *)activeWindow(MatrixWindow);
+	if (!m)
+		return;
+
+	int oldPrec = m->precision();
+	if (oldPrec == 0)
+		return;
+
+	int prec = oldPrec - 1;
+	QChar format = m->textFormat();
+	m->undoStack()->push(new MatrixSetPrecisionCommand(m, format, format,
+					oldPrec, prec, tr("Set Precision %1 digits").arg(prec)));
+	m->setNumericPrecision(prec);
 }

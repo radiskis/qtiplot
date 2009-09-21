@@ -307,6 +307,16 @@ void Matrix::restore(const QStringList &lst)
     resetView();
 }
 
+void Matrix::setNumericPrecision(int prec)
+{
+	if (prec < 0)
+		prec = 0;
+	else if (prec > 13)
+		prec = 13;
+
+	num_precision = prec;
+}
+
 void Matrix::setNumericFormat(const QChar& f, int prec)
 {
 	if (txt_format == f && num_precision == prec)

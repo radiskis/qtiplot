@@ -10,6 +10,9 @@
 #include "qwt3d_io_gl2ps.h"
 #include "qwt3d_plot.h"
 
+#include <QFileInfo>
+#include <QMessageBox>
+
 using namespace Qwt3D;
 
 //! Provides a new VectorWriter object.
@@ -232,9 +235,13 @@ bool VectorWriter::operator()(Plot3D* plot, QString const& fname)
   // extra TeX file
   if (textmode_ == TEX)
   {
-    QString fn = (texfname_.isEmpty())
+  	/*QString fn = (texfname_.isEmpty())
       ? fname + ".tex"
-      : texfname_;
+      : texfname_;*/
+
+	QFileInfo fi(fname);
+	QString fn = fname;
+	fn = fn.remove(fi.suffix()) + "tex";
 
     fp = fopen(QWT3DLOCAL8BIT(fn), "wb");
     if (!fp)
@@ -249,7 +256,7 @@ bool VectorWriter::operator()(Plot3D* plot, QString const& fname)
     while( state == GL2PS_OVERFLOW )
     {
       bufsize += 2*1024*1024;
-      gl2psBeginPage ( QWT3DLOCAL8BIT(fname), QWT3DLOCAL8BIT(producer), viewport,
+      gl2psBeginPage ( QWT3DLOCAL8BIT(QString("test")), QWT3DLOCAL8BIT(producer), viewport,
         GL2PS_TEX, sortmode,
         options, GL_RGBA, 0, NULL, 0, 0, 0, bufsize,
         fp, QWT3DLOCAL8BIT(fn) );

@@ -176,6 +176,7 @@ void Graph3D::initPlot()
 	sp->setSmoothMesh(app->d_3D_smooth_mesh);
 	sp->setResolution(app->d_3D_resolution);
 	sp->setFloorStyle((Qwt3D::FLOORSTYLE)app->d_3D_projection);
+	sp->setLocale(app->locale());
 	setWidget(sp);
 
 	d_autoscale = app->d_3D_autoscale;
@@ -231,7 +232,13 @@ void Graph3D::initPlot()
 	setNumbersColor(app->d_3D_numbers_color);
 	setLabelsColor(app->d_3D_labels_color);
 	setBackgroundColor(app->d_3D_background_color);
-	setGridColor(app->d_3D_grid_color);
+
+	Qwt3D::GridLine majorGrid(true, Qt2GL(app->d_3D_grid_color), Qwt3D::SOLID, 1.0);
+	Qwt3D::GridLine minorGrid(true, Qt2GL(app->d_3D_grid_color), Qwt3D::DASH, 0.5);
+	for (int i = 0; i < 12; i++){
+		sp->coordinates()->setMajorGridLines((Qwt3D::AXIS)i, majorGrid);
+		sp->coordinates()->setMinorGridLines((Qwt3D::AXIS)i, minorGrid);
+	}
 
 	connect(sp,SIGNAL(rotationChanged(double, double, double)),this,SLOT(rotationChanged(double, double, double)));
 	connect(sp,SIGNAL(zoomChanged(double)),this,SLOT(zoomChanged(double)));
@@ -1132,45 +1139,6 @@ double Graph3D::zStop()
 	return stop;
 }
 
-QStringList Graph3D::scaleLimits()
-{
-	QStringList limits;
-	double start, stop;
-	int majors, minors;
-
-	sp->coordinates()->axes[X1].limits (start,stop);
-	majors=sp->coordinates()->axes[X1].majors();
-	minors=sp->coordinates()->axes[X1].minors();
-
-	limits<<QString::number(start);
-	limits<<QString::number(stop);
-	limits<<QString::number(majors);
-	limits<<QString::number(minors);
-	limits<<QString::number(scaleType[0]);
-
-	sp->coordinates()->axes[Y1].limits (start,stop);
-	majors=sp->coordinates()->axes[Y1].majors();
-	minors=sp->coordinates()->axes[Y1].minors();
-
-	limits<<QString::number(start);
-	limits<<QString::number(stop);
-	limits<<QString::number(majors);
-	limits<<QString::number(minors);
-	limits<<QString::number(scaleType[1]);
-
-	sp->coordinates()->axes[Z1].limits (start,stop);
-	majors=sp->coordinates()->axes[Z1].majors();
-	minors=sp->coordinates()->axes[Z1].minors();
-
-	limits<<QString::number(start);
-	limits<<QString::number(stop);
-	limits<<QString::number(majors);
-	limits<<QString::number(minors);
-	limits<<QString::number(scaleType[2]);
-
-	return limits;
-}
-
 QStringList Graph3D::scaleTicks()
 {
 	QStringList limits;
@@ -1196,13 +1164,24 @@ QStringList Graph3D::scaleTicks()
 
 void Graph3D::setScale(int axis, double start, double end, int majorTicks, int minorTicks, Qwt3D::SCALETYPE type)
 {
+	double left, right;
+	sp->coordinates()->axes[axis].limits(left, right);
+
+	if (left == start && right == end &&
+		sp->coordinates()->axes[axis].majors() == majorTicks &&
+		sp->coordinates()->axes[axis].minors() == minorTicks &&
+		scaleType[axis] == type) return;
+
 	double xMin, xMax, yMin, yMax, zMin, zMax;
-	int baseAxis = X1;
+	int axis1 = X1, axis2 = X2, axis3 = X3, axis4 = X4;
 
 	sp->makeCurrent();
 	sp->coordinates()->axes[X1].limits(xMin, xMax);
 	sp->coordinates()->axes[Y1].limits(yMin, yMax);
 	sp->coordinates()->axes[Z1].limits(zMin, zMax);
+
+	double majorTicLength, minorTicLength;
+	sp->coordinates()->axes[axis].ticLength(majorTicLength, minorTicLength);
 
 	switch(axis)
 	{
@@ -1212,7 +1191,6 @@ void Graph3D::setScale(int axis, double start, double end, int majorTicks, int m
 			xMin = start;
 			xMax = end;
 		}
-		baseAxis = X1;
 		break;
 	case 1:
 		if (yMin != start || yMax != end)
@@ -1220,7 +1198,7 @@ void Graph3D::setScale(int axis, double start, double end, int majorTicks, int m
 			yMin = start;
 			yMax = end;
 		}
-		baseAxis = Y1;
+		axis1 = Y1, axis2 = Y2, axis3 = Y3, axis4 = Y4;
 		break;
 	case 2:
 		if (zMin != start || zMax != end)
@@ -1228,7 +1206,7 @@ void Graph3D::setScale(int axis, double start, double end, int majorTicks, int m
 			zMin = start;
 			zMax = end;
 		}
-		baseAxis = Z1;
+		axis1 = Z1, axis2 = Z2, axis3 = Z3, axis4 = Z4;
 		break;
 	}
 
@@ -1237,195 +1215,42 @@ void Graph3D::setScale(int axis, double start, double end, int majorTicks, int m
 		d_func->setMinZ(zMin);
 		d_func->setMaxZ(zMax);
 		d_func->create();
-		sp->createCoordinateSystem(Triple(xMin, yMin, zMin), Triple(xMax, yMax, zMax));
 	} else if (d_surface){
 		d_surface->restrictRange(ParallelEpiped(Triple(xMin, yMin, zMin), Triple(xMax, yMax, zMax)));
 		d_surface->create();
-		sp->createCoordinateSystem(Triple(xMin, yMin, zMin), Triple(xMax, yMax, zMax));
 	} else
 		setScales(xMin, xMax, yMin, yMax, zMin, zMax);
 
+	sp->coordinates()->axes[axis1].setLimits(start, end);
+	sp->coordinates()->axes[axis2].setLimits(start, end);
+	sp->coordinates()->axes[axis3].setLimits(start, end);
+	sp->coordinates()->axes[axis4].setLimits(start, end);
+
+	resetAxesType();
 	if(scaleType[axis] != type){
-		sp->coordinates()->axes[baseAxis].setScale(type);
+		sp->coordinates()->axes[axis1].setScale(type);
+		sp->coordinates()->axes[axis2].setScale(type);
+		sp->coordinates()->axes[axis3].setScale(type);
+		sp->coordinates()->axes[axis4].setScale(type);
 		scaleType[axis] = type;
 	}
 
-	if (sp->coordinates()->axes[baseAxis].majors() != majorTicks){
-		sp->coordinates()->axes[baseAxis].setMajors(majorTicks);
-		sp->coordinates()->axes[(baseAxis+1)*3].setMajors(majorTicks);
-		sp->coordinates()->axes[(baseAxis+1)*3+1].setMajors(majorTicks);
-		sp->coordinates()->axes[(baseAxis+1)*3+2].setMajors(majorTicks);
+	if (sp->coordinates()->axes[axis1].majors() != majorTicks){
+		sp->coordinates()->axes[axis1].setMajors(majorTicks);
+		sp->coordinates()->axes[axis2].setMajors(majorTicks);
+		sp->coordinates()->axes[axis3].setMajors(majorTicks);
+		sp->coordinates()->axes[axis4].setMajors(majorTicks);
 	}
 
-	if (sp->coordinates()->axes[baseAxis].minors() != minorTicks){
-		sp->coordinates()->axes[baseAxis].setMinors(minorTicks);
-		sp->coordinates()->axes[(baseAxis+1)*3].setMinors(minorTicks);
-		sp->coordinates()->axes[(baseAxis+1)*3+1].setMinors(minorTicks);
-		sp->coordinates()->axes[(baseAxis+1)*3+2].setMinors(minorTicks);
+	if (sp->coordinates()->axes[axis1].minors() != minorTicks){
+		sp->coordinates()->axes[axis1].setMinors(minorTicks);
+		sp->coordinates()->axes[axis2].setMinors(minorTicks);
+		sp->coordinates()->axes[axis3].setMinors(minorTicks);
+		sp->coordinates()->axes[axis4].setMinors(minorTicks);
 	}
 
-	update();
-	emit modified();
-}
+	sp->coordinates()->axes[axis].setTicLength(majorTicLength, minorTicLength);
 
-void Graph3D::updateScale(int axis, const QStringList& options)
-{
-	QString st = QString::number(scaleType[axis]);
-	double start, stop, xl, xr, yl, yr;
-	int majors, minors, newMaj, newMin;
-
-	sp->makeCurrent();
-	switch(axis)
-	{
-		case 0:
-			majors=sp->coordinates()->axes[X1].majors ();
-  	        minors=sp->coordinates()->axes[X1].minors ();
-			sp->coordinates()->axes[X1].limits(xl,xr);
-			if (xl !=options[0].toDouble() || xr != options[1].toDouble())
-			{
-				xl=options[0].toDouble();
-				xr=options[1].toDouble();
-				sp->coordinates()->axes[Y1].limits(yl,yr);
-				sp->coordinates()->axes[Z1].limits(start,stop);
-
-				if (d_func){
-					d_func->setDomain(xl,xr,yl,yr);
-					d_func->create ();
-					sp->createCoordinateSystem(Triple(xl, yl, start), Triple(xr, yr, stop));
-				} else if (d_surface){
-					d_surface->restrictRange (ParallelEpiped(Triple(xl, yl, start), Triple(xr, yr, stop)));
-					d_surface->create();
-					sp->createCoordinateSystem(Triple(xl, yl, start), Triple(xr, yr, stop));
-				} else
-					setScales(xl, xr, yl, yr, start, stop);
-			}
-
-			if(st != options[4]){
-				if (options[4]=="0"){
-					sp->coordinates()->axes[X1].setScale (LINEARSCALE);
-					scaleType[axis]=0;
-				} else {
-					sp->coordinates()->axes[X1].setScale (LOG10SCALE);
-					scaleType[axis]=1;
-				}
-			}
-
-			newMaj = options[2].toInt();
-			if (majors != newMaj){
-				sp->coordinates()->axes[X1].setMajors(newMaj);
-				sp->coordinates()->axes[X2].setMajors(newMaj);
-				sp->coordinates()->axes[X3].setMajors(newMaj);
-				sp->coordinates()->axes[X4].setMajors(newMaj);
-			}
-
-			newMin = options[3].toInt();
-			if (minors != newMin){
-				sp->coordinates()->axes[X1].setMinors(newMin);
-				sp->coordinates()->axes[X2].setMinors(newMin);
-				sp->coordinates()->axes[X3].setMinors(newMin);
-				sp->coordinates()->axes[X4].setMinors(newMin);
-			}
-			break;
-
-		case 1:
-			majors = sp->coordinates()->axes[Y1].majors ();
-  	        minors = sp->coordinates()->axes[Y1].minors ();
-			sp->coordinates()->axes[Y1].limits(yl, yr);
-			if (yl != options[0].toDouble() || yr != options[1].toDouble()){
-				yl = options[0].toDouble();
-				yr = options[1].toDouble();
-				sp->coordinates()->axes[X1].limits(xl, xr);
-				sp->coordinates()->axes[Z1].limits(start, stop);
-
-				if (d_func){
-					d_func->setDomain(xl, xr, yl, yr);
-					d_func->create();
-					sp->createCoordinateSystem(Triple(xl, yl, start), Triple(xr, yr, stop));
-				} else if (d_surface){
-					d_surface->restrictRange (ParallelEpiped(Triple(xl, yl, start), Triple(xr, yr, stop)));
-					d_surface->create();
-					sp->createCoordinateSystem(Triple(xl, yl, start), Triple(xr, yr, stop));
-				} else
-					setScales(xl, xr, yl, yr, start, stop);
-			}
-
-			newMaj = options[2].toInt();
-			if (majors != newMaj ){
-				sp->coordinates()->axes[Y1].setMajors(newMaj);
-				sp->coordinates()->axes[Y2].setMajors(newMaj);
-				sp->coordinates()->axes[Y3].setMajors(newMaj);
-				sp->coordinates()->axes[Y4].setMajors(newMaj);
-			}
-
-            newMin = options[3].toInt();
-			if (minors != newMin){
-				sp->coordinates()->axes[Y1].setMinors(newMin);
-				sp->coordinates()->axes[Y2].setMinors(newMin);
-				sp->coordinates()->axes[Y3].setMinors(newMin);
-				sp->coordinates()->axes[Y4].setMinors(newMin);
-			}
-
-			if(st != options[4]){
-				if (options[4]=="0"){
-					sp->coordinates()->axes[Y1].setScale (LINEARSCALE);
-					scaleType[axis]=0;
-				} else {
-					sp->coordinates()->axes[Y1].setScale (LOG10SCALE);
-					scaleType[axis]=1;
-				}
-			}
-			break;
-
-		case 2:
-			majors=sp->coordinates()->axes[Z1].majors();
-			minors=sp->coordinates()->axes[Z1].minors();
-			sp->coordinates()->axes[Z1].limits(start,stop);
-			if (start != options[0].toDouble() || stop != options[1].toDouble())
-			{
-				start=options[0].toDouble();
-				stop=options[1].toDouble();
-				sp->coordinates()->axes[X1].limits(xl,xr);
-  	            sp->coordinates()->axes[Y1].limits(yl,yr);
-				if (d_func){
-					d_func->setMinZ(start);
-					d_func->setMaxZ(stop);
-					d_func->create ();
-					sp->createCoordinateSystem(Triple(xl, yl, start), Triple(xr, yr, stop));
-				} else if (d_surface){
-					d_surface->restrictRange (ParallelEpiped(Triple(xl, yl, start), Triple(xr, yr, stop)));
-					d_surface->create();
-					sp->createCoordinateSystem(Triple(xl, yl, start), Triple(xr, yr, stop));
-				} else
-					setScales(xl, xr, yl, yr, start, stop);
-				sp->legend()->setLimits(start,stop);
-			}
-
-			newMaj= options[2].toInt();
-			if (majors != newMaj ){
-				sp->coordinates()->axes[Z1].setMajors(newMaj);
-				sp->coordinates()->axes[Z2].setMajors(newMaj);
-				sp->coordinates()->axes[Z3].setMajors(newMaj);
-				sp->coordinates()->axes[Z4].setMajors(newMaj);
-			}
-
-			newMin = options[3].toInt();
-			if (minors != newMin){
-				sp->coordinates()->axes[Z1].setMinors(newMin);
-				sp->coordinates()->axes[Z2].setMinors(newMin);
-				sp->coordinates()->axes[Z3].setMinors(newMin);
-				sp->coordinates()->axes[Z4].setMinors(newMin);
-			}
-			if(st != options[4]){
-  	         	if (options[4]=="0"){
-  	             	sp->coordinates()->axes[Z1].setScale (LINEARSCALE);
-  	            	scaleType[axis]=0;
-  	            } else {
-  	            	sp->coordinates()->axes[Z1].setScale (LOG10SCALE);
-  	                scaleType[axis]=1;
-  	            }
-  	        }
-			break;
-	}
 	update();
 	emit modified();
 }
@@ -1435,6 +1260,11 @@ void Graph3D::setScales(double xl, double xr, double yl, double yr, double zl, d
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
 	sp->hide();//in order to avoid flickering, due to changes in tick length
+
+	double *majorTicLengths = new double[12];
+	double *minorTicLengths = new double[12];
+	for (int i = 0; i < 12; i++)
+		sp->coordinates()->axes[i].ticLength(majorTicLengths[i], minorTicLengths[i]);
 
 	if (d_matrix)
 		updateScalesFromMatrix(xl, xr, yl, yr, zl, zr);
@@ -1469,6 +1299,12 @@ void Graph3D::setScales(double xl, double xr, double yl, double yr, double zl, d
 	}
     resetAxesLabels();
     findBestLayout();
+
+	for (int i = 0; i < 12; i++)
+		sp->coordinates()->axes[i].setTicLength(majorTicLengths[i], minorTicLengths[i]);
+
+	delete [] majorTicLengths;
+	delete [] minorTicLengths;
 
     sp->show();
 
@@ -1522,7 +1358,7 @@ void Graph3D::updateScalesFromMatrix(double xl, double xr, double yl, double yr,
 	sp->loadFromData(data_matrix, nc, nr, xl, xr, yl, yr);
 	Matrix::freeMatrixData(data_matrix, nc);
 
-	sp->createCoordinateSystem(Triple(xl, yl, zl), Triple(xr, yr, zr));
+	sp->coordinates()->setPosition(Triple(xl, yl, zl), Triple(xr, yr, zr));
 	sp->legend()->setLimits(zl, zr);
 	sp->legend()->setMajors(legendMajorTicks);
 
@@ -1681,7 +1517,7 @@ void Graph3D::setNumbersColor(const QColor& numColor)
 
 void Graph3D::setLabelsColor(const QColor& labelColor)
 {
-	if(labelsCol !=labelColor){
+	if(labelsCol != labelColor){
 		sp->coordinates()->setLabelColor(Qt2GL(labelColor));
 		labelsCol=labelColor;
 	}
@@ -1689,9 +1525,9 @@ void Graph3D::setLabelsColor(const QColor& labelColor)
 
 void Graph3D::setBackgroundColor(const QColor& bgColor)
 {
-	if(bgCol !=bgColor){
+	if(bgCol != bgColor){
 		sp->setBackgroundColor(Qt2GL(bgColor));
-		bgCol=bgColor;
+		bgCol = bgColor;
 	}
 }
 
@@ -1699,7 +1535,15 @@ void Graph3D::setGridColor(const QColor& gridColor)
 {
 	if(gridCol != gridColor){
 		sp->coordinates()->setGridLinesColor(Qt2GL(gridColor));
-		gridCol=gridColor;
+
+		Qwt3D::GridLine majorGrid(true, Qt2GL(gridColor), Qwt3D::SOLID, 1.0);
+		Qwt3D::GridLine minorGrid(true, Qt2GL(gridColor), Qwt3D::DASH, 0.5);
+		for (int i = 0; i < 12; i++){
+			sp->coordinates()->setMajorGridLines((Qwt3D::AXIS)i, majorGrid);
+			sp->coordinates()->setMinorGridLines((Qwt3D::AXIS)i, minorGrid);
+		}
+
+		gridCol = gridColor;
 	}
 }
 
@@ -2667,6 +2511,25 @@ void Graph3D::save(const QString &fn, const QString &geometry, bool)
 	t << "Orthogonal\t" + QString::number(sp->ortho())+"\n";
 	if (d_color_map_file.isEmpty())
 		t << ColorMapEditor::saveToXmlString(d_color_map);
+
+
+	t << "axisType\t" << scaleType[0] << "\t" << scaleType[1] << "\t" << scaleType[2] << "\n";
+
+	Qwt3D::GridLine gridLine = sp->coordinates()->majorGridLine(Qwt3D::X1);
+	RGBA color = gridLine.color_;
+	QColor c = GL2Qt(color.r, color.g, color.b);
+
+	t << "<Grid>\n";
+	t << "\t<Major>" + QString::number(gridLine.visible_) + "\t" + c.name() + "\t";
+	t << QString::number(gridLine.style_) + "\t" + QString::number(gridLine.width_) + "</Major>\n";
+
+	gridLine = sp->coordinates()->minorGridLine(Qwt3D::X1);
+	color = gridLine.color_;
+	c = GL2Qt(color.r, color.g, color.b);
+	t << "\t<Minor>" + QString::number(gridLine.visible_) + "\t" + c.name() + "\t";
+	t << QString::number(gridLine.style_) + "\t" + QString::number(gridLine.width_) + "</Minor>\n";
+	t << "</Grid>\n";
+
 	t << "</SurfacePlot>\n";
 }
 
@@ -3015,7 +2878,6 @@ void Graph3D::copy(Graph3D* g)
 	setNumbersColor(g->numColor());
 	setLabelsColor(g->labelColor());
 	setBackgroundColor(g->bgColor());
-	setGridColor(g->gridColor());
 
 	setAxesLabels(g->axesLabels());
 	setTicks(g->scaleTicks());
@@ -3031,15 +2893,74 @@ void Graph3D::copy(Graph3D* g)
 	setShift(g->xShift(),g->yShift(),g->zShift());
 	setMeshLineWidth(g->meshLineWidth());
 
+	for (int i = 0; i < 3; i++)
+		scaleType[i] = g->axisType(i);
+
+	resetAxesType();
+
+	CoordinateSystem *coord = sp->coordinates();
+	CoordinateSystem *gcoord = g->surface()->coordinates();
+	for (int i = 0; i < 12; i++){
+		coord->axes[i].setMajors(gcoord->axes[i].majors());
+		coord->axes[i].setMinors(gcoord->axes[i].minors());
+
+		Qwt3D::AXIS axis = (Qwt3D::AXIS)i;
+		coord->setMajorGridLines(axis, gcoord->majorGridLine(axis));
+		coord->setMinorGridLines(axis, gcoord->minorGridLine(axis));
+	}
+
 	bool smooth = g->antialiasing();
     sp->setSmoothMesh(smooth);
-	sp->coordinates()->setLineSmooth(smooth);
+	coord->setLineSmooth(smooth);
 
 	setOrthogonal(g->isOrthogonal());
 
 	sp->updateData();
 	sp->updateGL();
 	animate(g->isAnimated());
+}
+
+void Graph3D::setAxisType(int axis, int type)
+{
+	if (axis >= 0 && axis < 3)
+		scaleType[axis] = type;
+}
+
+void Graph3D::resetAxesType()
+{
+	CoordinateSystem *coord = sp->coordinates();
+
+	int *majorTics = new int[12];
+	int *minorTics = new int[12];
+	for (int i = 0; i < 12; i++){
+		majorTics[i] = coord->axes[i].majors();
+		minorTics[i] = coord->axes[i].minors();
+	}
+
+	SCALETYPE type = (SCALETYPE)scaleType[0];
+	coord->axes[X1].setScale(type);
+	coord->axes[X2].setScale(type);
+	coord->axes[X3].setScale(type);
+	coord->axes[X4].setScale(type);
+	type = (SCALETYPE)scaleType[1];
+	coord->axes[Y1].setScale(type);
+	coord->axes[Y2].setScale(type);
+	coord->axes[Y3].setScale(type);
+	coord->axes[Y4].setScale(type);
+	type = (SCALETYPE)scaleType[2];
+	coord->axes[Z1].setScale(type);
+	coord->axes[Z2].setScale(type);
+	coord->axes[Z3].setScale(type);
+	coord->axes[Z4].setScale(type);
+
+	for (int i = 0; i < 12; i++){
+		coord->axes[i].setMajors(majorTics[i]);
+		coord->axes[i].setMinors(minorTics[i]);
+	}
+
+	delete [] majorTics;
+	delete [] minorTics;
+
 }
 
 Graph3D* Graph3D::restore(ApplicationWindow* app, const QStringList &lst, int fileVersion)
@@ -3195,6 +3116,45 @@ Graph3D* Graph3D::restore(ApplicationWindow* app, const QStringList &lst, int fi
 		colorMap.addColorStop(l[0].toDouble(), QColor(l[1]));
 	}
 	plot->setDataColorMap(colorMap);
+
+	line.next();
+	s = line.next();
+
+	fList = s.split("\t", QString::SkipEmptyParts);
+	if (fList.size() == 4 && fList[0] == "axisType"){
+		fList.removeFirst();
+		for (int i = 0; i < 3; i++)
+			plot->setAxisType(i, fList[i].toInt());
+
+		plot->resetAxesType();
+	}
+
+	if (line.hasNext()){
+		s = line.next();
+		if (s == "<Grid>" && line.hasNext()){
+			s = line.next().stripWhiteSpace();
+			if (s.contains("<Major>")){
+				fList = s.remove("<Major>").remove("</Major>").split("\t", QString::SkipEmptyParts);
+				if (fList.size() == 4){
+					Qwt3D::GridLine line(fList[0].toInt(), Qt2GL(QColor(fList[1])), (Qwt3D::LINESTYLE)fList[2].toInt(), fList[3].toDouble());
+					for (int i = 0; i < 12; i++)
+						plot->coordinateSystem()->setMajorGridLines((Qwt3D::AXIS)i, line);
+				}
+			}
+
+			if (line.hasNext())
+				s = line.next().stripWhiteSpace();
+			if (s.contains("<Minor>")){
+				fList = s.remove("<Minor>").remove("</Minor>").split("\t", QString::SkipEmptyParts);
+				if (fList.size() == 4){
+					Qwt3D::GridLine line(fList[0].toInt(), Qt2GL(QColor(fList[1])), (Qwt3D::LINESTYLE)fList[2].toInt(), fList[3].toDouble());
+					for (int i = 0; i < 12; i++)
+						plot->coordinateSystem()->setMinorGridLines((Qwt3D::AXIS)i, line);
+				}
+			}
+		}
+	}
+
 	plot->update();
 	return plot;
 }

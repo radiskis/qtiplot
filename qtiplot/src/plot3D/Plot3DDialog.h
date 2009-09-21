@@ -75,8 +75,6 @@ private slots:
 	void pickAxisLabelFont();
 	void pickNumbersFont();
 
-	QStringList scaleOptions(int axis, double start, double end,
-							const QString& majors, const QString& minors);
 	void viewScaleLimits(int axis);
 	void disableMeshOptions();
 
@@ -88,12 +86,15 @@ private slots:
     void pickDataColorMap();
 	void updateColorMapFileGroupBox(bool);
 	void updateLinearColorMapGroupBox(bool);
+	void enableMajorGrids(bool on);
+	void enableMinorGrids(bool on);
 
 private:
 	void initConnections();
     void initScalesPage();
 	void initAxesPage();
 	void initTitlePage();
+	void initGridPage();
 	void initColorsPage();
 	void initGeneralPage();
 	void setColorMapPreview(const QString& fileName);
@@ -107,17 +108,17 @@ private:
 	QGroupBox *linearColorMapGroupBox, *colorMapFileGroupBox;
 	QLabel *colorMapPreviewLabel;
 	QFont titleFont, xAxisFont,yAxisFont,zAxisFont, numbersFont;
-	QStringList labels, scales, tickLengths;
+	QStringList labels, tickLengths;
     QDoubleSpinBox *boxMeshLineWidth;
     QPushButton* buttonApply;
     QPushButton* buttonOk;
     QPushButton* buttonCancel;
 	QPushButton *btnTitleFont, *btnLabelFont;
     QPushButton *btnNumbersFont, *btnTable, *btnColorMap;
-	ColorButton *btnBackground, *btnMesh, *btnAxes, *btnTitleColor, *btnLabels, *btnNumbers, *btnGrid;
+	ColorButton *btnBackground, *btnMesh, *btnAxes, *btnTitleColor, *btnLabels, *btnNumbers, *btnGrid, *btnGridMinor;
 	ColorMapEditor *d_color_map_editor;
     QTabWidget* generalDialog;
-	QWidget *scale, *colors, *general, *axes, *title, *bars, *points;
+	QWidget *scale, *colors, *general, *axes, *title, *bars, *points, *gridPage;
 	DoubleSpinBox *boxFrom, *boxTo;
 	QTextEdit *boxTitle, *boxLabel;
 	QSpinBox *boxMajors, *boxMinors;
@@ -135,6 +136,9 @@ private:
 	TextFormatButtons *titleFormatButtons, *axisTitleFormatButtons;
     double zoom, xScale, yScale, zScale;
 	QString d_color_map_file;
+	DoubleSpinBox *boxMajorGridWidth, *boxMinorGridWidth;
+	QComboBox *boxMajorGridStyle, *boxMinorGridStyle;
+	QCheckBox *boxMajorGrids, *boxMinorGrids;
 };
 
 #endif

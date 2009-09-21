@@ -944,10 +944,7 @@ void AxesDialog::showAxis()
 	else
 		boxAngle->setDisabled(true);
 
-	bool userFormat=true;
-    if (boxFormat->currentIndex() == 0)
-        userFormat=false;
-	boxPrecision->setEnabled(labels && ok && userFormat);
+	boxPrecision->setEnabled(labels && ok);
 
 	QString formula =  boxFormula->text();
 	if (!boxShowFormula->isChecked())
@@ -1657,10 +1654,7 @@ void AxesDialog::updateTickLabelsList(bool on)
 	if (axis == QwtPlot::xBottom || axis == QwtPlot::xTop)
 		boxAngle->setEnabled(on);
 
-	bool userFormat = true;
-	if (boxFormat->currentIndex() == 0)
-		userFormat = false;
-	boxPrecision->setEnabled(on && userFormat);
+	boxPrecision->setEnabled(on);
 
 	if (tickLabelsOn[axis] == QString::number(on))
 		return;
@@ -1735,10 +1729,7 @@ void AxesDialog::setLabelsNumericFormat(int)
 			d_graph->axisLabelPrecision(axis) == prec)
 			return;
 
-		if (format == 0)
-			boxPrecision->setEnabled(false);
-		else
-			boxPrecision->setEnabled(true);
+		boxPrecision->setEnabled(true);
     } else if (type == ScaleDraw::Day || type == ScaleDraw::Month)
 		formatInfo = QString::number(format);
 	else if (type == ScaleDraw::Date)
@@ -1780,11 +1771,7 @@ void AxesDialog::updateLabelsFormat(int)
 		int format = d_graph->axisLabelFormat(a);
         boxFormat->setCurrentIndex(format);
 		boxPrecision->setValue(d_graph->axisLabelPrecision(a));
-
-        if (format == 0)
-        	boxPrecision->setEnabled(false);
-        else
-        	boxPrecision->setEnabled(true);
+		boxPrecision->setEnabled(true);
 
         QString formula = d_graph->axisFormula(a);
         if (!formula.isEmpty())
