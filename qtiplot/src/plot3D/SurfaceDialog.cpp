@@ -30,6 +30,7 @@
 #include "Graph3D.h"
 #include <MyParser.h>
 #include <ApplicationWindow.h>
+#include <DoubleSpinBox.h>
 
 #include <QMessageBox>
 #include <QLayout>
@@ -69,7 +70,7 @@ SurfaceDialog::SurfaceDialog( QWidget* parent, Qt::WFlags fl )
     buttonOk->setDefault(true);
     buttonCancel = new QPushButton(tr("&Close"));
 
-    QBoxLayout *bl2 = new QBoxLayout ( QBoxLayout::LeftToRight);
+    QBoxLayout *bl2 = new QBoxLayout(QBoxLayout::LeftToRight);
     bl2->addStretch();
 	bl2->addWidget(buttonClear);
 	bl2->addWidget(buttonOk);
@@ -108,11 +109,17 @@ void SurfaceDialog::initFunctionPage()
 
     QGroupBox *gb1 = new QGroupBox(tr("X - axis"));
 
-	boxXFrom = new QLineEdit();
-	boxXFrom->setText(tr("-1"));
+	ApplicationWindow *app = (ApplicationWindow *)parent();
+	QLocale locale = QLocale();
+	if (app)
+		locale = app->locale();
 
-	boxXTo = new QLineEdit();
-	boxXTo->setText(tr("1"));
+	boxXFrom = new DoubleSpinBox();
+	boxXFrom->setLocale(locale);
+
+	boxXTo = new DoubleSpinBox();
+	boxXTo->setLocale(locale);
+	boxXTo->setValue(1.0);
 
     QGridLayout *gl1 = new QGridLayout();
     gl1->addWidget(new QLabel( tr("From")), 0, 0);
@@ -123,11 +130,11 @@ void SurfaceDialog::initFunctionPage()
     gb1->setLayout(gl1);
 
     QGroupBox *gb2 = new QGroupBox(tr("Y - axis"));
-	boxYFrom = new QLineEdit();
-	boxYFrom->setText(tr("-1"));
-
-	boxYTo = new QLineEdit();
-	boxYTo->setText(tr("1"));
+	boxYFrom = new DoubleSpinBox();
+	boxYFrom->setLocale(locale);
+	boxYTo = new DoubleSpinBox();
+	boxYTo->setLocale(locale);
+	boxYTo->setValue(1.0);
 
     QGridLayout *gl2 = new QGridLayout();
     gl2->addWidget(new QLabel( tr("From")), 0, 0);
@@ -138,11 +145,11 @@ void SurfaceDialog::initFunctionPage()
     gb2->setLayout(gl2);
 
     QGroupBox *gb3 = new QGroupBox(tr("Z - axis"));
-	boxZFrom = new QLineEdit();
-	boxZFrom->setText(tr("-1"));
-
-	boxZTo = new QLineEdit();
-	boxZTo->setText(tr("1"));
+	boxZFrom = new DoubleSpinBox();
+	boxZFrom->setLocale(locale);
+	boxZTo = new DoubleSpinBox();
+	boxZTo->setLocale(locale);
+	boxZTo->setValue(1.0);
 
     QGridLayout *gl3 = new QGridLayout();
     gl3->addWidget(new QLabel( tr("From")), 0, 0);
@@ -265,9 +272,9 @@ void SurfaceDialog::clearList()
 {
     ApplicationWindow *app = (ApplicationWindow *)this->parent();
 
-    if (app && boxType->currentIndex()){
+    if (app && boxType->currentIndex())
         app->d_param_surface_func.clear();
-    }else{
+    else {
         boxFunction->clear();
         if (app)
             app->clearSurfaceFunctionsList();
@@ -287,13 +294,12 @@ void SurfaceDialog::setFunction(Graph3D *g)
 	boxFunction->setCurrentText(f->function());
 	boxFuncColumns->setValue(f->columns());
 	boxFuncRows->setValue(f->rows());
-
-	boxXFrom->setText(QString::number(g->xStart()));
-	boxXTo->setText(QString::number(g->xStop()));
-	boxYFrom->setText(QString::number(g->yStart()));
-	boxYTo->setText(QString::number(g->yStop()));
-	boxZFrom->setText(QString::number(g->zStart()));
-	boxZTo->setText(QString::number(g->zStop()));
+	boxXFrom->setValue(g->xStart());
+	boxXTo->setValue(g->xStop());
+	boxYFrom->setValue(g->yStart());
+	boxYTo->setValue(g->yStop());
+	boxZFrom->setValue(g->zStart());
+	boxZTo->setValue(g->zStop());
 }
 
 void SurfaceDialog::accept()
@@ -419,132 +425,53 @@ void SurfaceDialog::acceptParametricSurface()
 
 void SurfaceDialog::acceptFunction()
 {
-ApplicationWindow *app = (ApplicationWindow *)this->parent();
+	ApplicationWindow *app = (ApplicationWindow *)this->parent();
 
-QString Xfrom=boxXFrom->text().lower();
-QString Xto=boxXTo->text().lower();
-QString Yfrom=boxYFrom->text().lower();
-QString Yto=boxYTo->text().lower();
-QString Zfrom=boxZFrom->text().lower();
-QString Zto=boxZTo->text().lower();
+	double fromX = boxXFrom->value();
+	double toX = boxXTo->value();
+	double fromY = boxYFrom->value();
+	double toY = boxYTo->value();
+	double fromZ = boxZFrom->value();
+	double toZ = boxZTo->value();
 
-double fromX, toX, fromY,toY, fromZ,toZ;
-try
-	{
-	MyParser parser;
-	parser.SetExpr(Xfrom.ascii());
-	fromX=parser.Eval();
-	}
-catch(mu::ParserError &e)
-	{
-	QMessageBox::critical(app, tr("QtiPlot - X Start limit error"), QString::fromStdString(e.GetMsg()));
-	boxXFrom->setFocus();
-	return;
-	}
-try
-	{
-	MyParser parser;
-	parser.SetExpr(Xto.ascii());
-	toX=parser.Eval();
-	}
-catch(mu::ParserError &e)
-	{
-	QMessageBox::critical(app, tr("QtiPlot - X End limit error"), QString::fromStdString(e.GetMsg()));
-	boxXTo->setFocus();
-	return;
+	if (fromX >= toX || fromY >= toY || fromZ >= toZ){
+		QMessageBox::critical(app, tr("QtiPlot - Input error"),
+					tr("Please enter limits that satisfy: from < end!"));
+		boxXTo->setFocus();
+		return;
 	}
 
-try
-	{
-	MyParser parser;
-	parser.SetExpr(Yfrom.ascii());
-	fromY=parser.Eval();
-	}
-catch(mu::ParserError &e)
-	{
-	QMessageBox::critical(app, tr("QtiPlot - Y Start limit error"), QString::fromStdString(e.GetMsg()));
-	boxYFrom->setFocus();
-	return;
-	}
-try
-	{
-	MyParser parser;
-	parser.SetExpr(Yto.ascii());
-	toY=parser.Eval();
-	}
-catch(mu::ParserError &e)
-	{
-	QMessageBox::critical(app, tr("QtiPlot - Y End limit error"), QString::fromStdString(e.GetMsg()));
-	boxYTo->setFocus();
-	return;
-	}
-try
-	{
-	MyParser parser;
-	parser.SetExpr(Zfrom.ascii());
-	fromZ=parser.Eval();
-	}
-catch(mu::ParserError &e)
-	{
-	QMessageBox::critical(app, tr("QtiPlot - Z Start limit error"), QString::fromStdString(e.GetMsg()));
-	boxZFrom->setFocus();
-	return;
-	}
-try
-	{
-	MyParser parser;
-	parser.SetExpr(Zto.ascii());
-	toZ=parser.Eval();
-	}
-catch(mu::ParserError &e)
-	{
-	QMessageBox::critical(app, tr("QtiPlot - Z End limit error"), QString::fromStdString(e.GetMsg()));
-	boxZTo->setFocus();
-	return;
+	QString formula = boxFunction->currentText();
+	bool error = false;
+	try{
+		MyParser parser;
+		double x,y;
+		parser.DefineVar("x", &x);
+		parser.DefineVar("y", &y);
+		parser.SetExpr(formula.ascii());
+
+		x = fromX; y = fromY;
+		parser.Eval();
+		x = toX; y = toY;
+		parser.Eval();
+	} catch(mu::ParserError &e){
+		QMessageBox::critical(app, tr("QtiPlot - Input function error"), QString::fromStdString(e.GetMsg()));
+		boxFunction->setFocus();
+		error = true;
 	}
 
-if (fromX >= toX || fromY >= toY || fromZ >= toZ)
-	{
-	QMessageBox::critical(app, tr("QtiPlot - Input error"),
-				tr("Please enter limits that satisfy: from < end!"));
-	boxXTo->setFocus();
-	return;
-	}
+	if (!error){
+		QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+		if (!d_graph)
+			app->plotSurface(boxFunction->currentText(), fromX, toX, fromY, toY, fromZ, toZ,
+						 boxFuncColumns->value(), boxFuncRows->value());
+		else
+			d_graph->addFunction(boxFunction->currentText(),fromX, toX, fromY, toY, fromZ, toZ,
+						 boxFuncColumns->value(), boxFuncRows->value());
 
-double x,y;
-QString formula=boxFunction->currentText();
-bool error=false;
-try
-	{
-	MyParser parser;
-	parser.DefineVar("x", &x);
-	parser.DefineVar("y", &y);
-	parser.SetExpr(formula.ascii());
-
-	x=fromX; y=fromY;
-	parser.Eval();
-	x=toX; y=toY;
-	parser.Eval();
-	}
-catch(mu::ParserError &e)
-	{
-	QMessageBox::critical(0, tr("QtiPlot - Input function error"), QString::fromStdString(e.GetMsg()));
-	boxFunction->setFocus();
-	error=true;
-	}
-
-if (!error){
-    QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-	if (!d_graph){
-		app->plotSurface(boxFunction->currentText(),fromX, toX, fromY, toY, fromZ, toZ,
-					 boxFuncColumns->value(), boxFuncRows->value());
-	} else
-		d_graph->addFunction(boxFunction->currentText(),fromX, toX, fromY, toY, fromZ, toZ,
-					 boxFuncColumns->value(), boxFuncRows->value());
-
-	app->updateSurfaceFuncList(boxFunction->currentText());
-    QApplication::restoreOverrideCursor();
-	close();
+		app->updateSurfaceFuncList(boxFunction->currentText());
+		QApplication::restoreOverrideCursor();
+		close();
 	}
 }
 

@@ -90,7 +90,7 @@ ScriptEdit::ScriptEdit(ScriptingEnv *env, QWidget *parent, const char *name)
 	actionPrint = new QAction(QPixmap(fileprint_xpm), tr("&Print"), this);
 	connect(actionPrint, SIGNAL(activated()), this, SLOT(print()));
 
-	actionImport = new QAction(tr("&Import..."), this);
+	actionImport = new QAction(QPixmap(fileopen_xpm), tr("&Import..."), this);
 	actionImport->setShortcut(QKeySequence(Qt::CTRL+Qt::ALT+Qt::Key_O));
 	connect(actionImport, SIGNAL(activated()), this, SLOT(importASCII()));
 

@@ -282,10 +282,13 @@ void Graph3D::initCoord()
 void Graph3D::addFunction(const QString& s, double xl, double xr, double yl,
 						double yr, double zl, double zr, int columns, int rows)
 {
-	if (d_surface)
+	if (d_surface){
 		delete d_surface;
-	else if (d_func)
+		d_surface = 0;
+	} else if (d_func){
 		delete d_func;
+		d_func = 0;
+	}
 
 	sp->makeCurrent();
 
@@ -298,6 +301,7 @@ void Graph3D::addFunction(const QString& s, double xl, double xr, double yl,
 	d_func->create();
 
 	sp->legend()->setLimits(zl, zr);
+	sp->legend()->setMajors(legendMajorTicks);
 
 	if (sp->plotStyle() == NOPLOT){
 		sp->setPlotStyle(FILLED);
@@ -313,13 +317,15 @@ void Graph3D::addParametricSurface(const QString& xFormula, const QString& yForm
 						const QString& zFormula, double ul, double ur, double vl, double vr,
 						int columns, int rows, bool uPeriodic, bool vPeriodic)
 {
-	if (d_surface)
+	if (d_surface){
 		delete d_surface;
-	else if (d_func)
+		d_surface = 0;
+	} else if (d_func){
 		delete d_func;
+		d_func = 0;
+	}
 
 	sp->makeCurrent();
-	sp->resize(this->size());
 
 	d_surface = new UserParametricSurface(xFormula, yFormula, zFormula, *sp);
 	d_surface->setMesh(columns, rows);
@@ -330,13 +336,13 @@ void Graph3D::addParametricSurface(const QString& xFormula, const QString& yForm
 	double zl, zr;
 	sp->coordinates()->axes[Z1].limits(zl, zr);
 	sp->legend()->setLimits(zl, zr);
+	sp->legend()->setMajors(legendMajorTicks);
 
 	if (sp->plotStyle() == NOPLOT){
 		sp->setPlotStyle(FILLED);
 		style_=FILLED;
 		pointStyle = None;
 	}
-  	//sp->createCoordinateSystem(Triple(xl, yl, zl), Triple(xr, yr, zr));
 	findBestLayout();
 	update();
 }

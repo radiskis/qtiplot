@@ -63,6 +63,9 @@ public:
 	//! Exports the map to a pseudo-XML string
 	static QString saveToXmlString(const QwtLinearColorMap& color_map);
 
+signals:
+	void scalingChanged();
+
 protected slots:
 	void updateColorMap();
 	void enableButtons(int row);
@@ -76,7 +79,7 @@ protected slots:
 
 private:
 	//! Table displaying the values ranges in the first column and their corresponding colors in the second column
-	QTableWidget *table;	
+	QTableWidget *table;
 	QPushButton *insertBtn, *deleteBtn;
 	QCheckBox *scaleColorsBox;
 
@@ -89,5 +92,5 @@ private:
 	//! Precision used to display level values
 	int d_precision;
 };
-   
+
 #endif
