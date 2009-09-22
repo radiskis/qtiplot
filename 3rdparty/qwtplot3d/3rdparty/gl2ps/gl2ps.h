@@ -1,7 +1,6 @@
-/* $Id: gl2ps.h 173 2007-05-20 15:51:51Z krischnamurti $ */
 /*
  * GL2PS, an OpenGL to PostScript Printing Library
- * Copyright (C) 1999-2006 Christophe Geuzaine <geuz@geuz.org>
+ * Copyright (C) 1999-2009 C. Geuzaine
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of either:
@@ -43,9 +42,6 @@
 #if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__)
 #  if defined(_MSC_VER)
 #    pragma warning(disable:4115)
-#    if (_MSC_VER >= 1400) /* VS8 - not sure about VC7 */
-#      pragma warning(disable: 4996) /* MS security enhancements */
-#    endif
 #  endif
 #  include <windows.h>
 #  if defined(GL2PSDLL)
@@ -81,14 +77,14 @@
 
 #define GL2PS_MAJOR_VERSION 1
 #define GL2PS_MINOR_VERSION 3
-#define GL2PS_PATCH_VERSION 2
+#define GL2PS_PATCH_VERSION 3
 #define GL2PS_EXTRA_VERSION ""
 
 #define GL2PS_VERSION (GL2PS_MAJOR_VERSION + \
                        0.01 * GL2PS_MINOR_VERSION + \
                        0.0001 * GL2PS_PATCH_VERSION)
 
-#define GL2PS_COPYRIGHT "(C) 1999-2006 Christophe Geuzaine (geuz@geuz.org)"
+#define GL2PS_COPYRIGHT "(C) 1999-2009 C. Geuzaine"
 
 /* Output file formats (the values and the ordering are important!) */
 
@@ -169,6 +165,7 @@ GL2PSDLL_API GLint gl2psBeginPage(const char *title, const char *producer,
                                   FILE *stream, const char *filename);
 GL2PSDLL_API GLint gl2psEndPage(void);
 GL2PSDLL_API GLint gl2psSetOptions(GLint options);
+GL2PSDLL_API GLint gl2psGetOptions(GLint *options);
 GL2PSDLL_API GLint gl2psBeginViewport(GLint viewport[4]);
 GL2PSDLL_API GLint gl2psEndViewport(void);
 GL2PSDLL_API GLint gl2psText(const char *str, const char *fontname, 

@@ -387,7 +387,7 @@ void Plot3DDialog::initGeneralPage()
     gl1->addWidget(boxResolution, 2, 1);
 
     gl1->addWidget(new QLabel( tr( "Numbers Font" )), 3, 0);
-	btnNumbersFont=new QPushButton(tr( "&Choose Font" ));
+	btnNumbersFont = new QPushButton(tr( "&Choose Font" ));
     gl1->addWidget(btnNumbersFont, 3, 1);
 
     gl1->addWidget(new QLabel( tr( "Distance labels - axis" )), 4, 0);
@@ -777,6 +777,14 @@ void Plot3DDialog::initConnections()
 	connect(btnGrid, SIGNAL(colorChanged()), this, SLOT(updatePlot()));
 	connect(btnGridMinor, SIGNAL(colorChanged()), this, SLOT(updatePlot()));
 
+	//color page connections
+	connect(btnAxes, SIGNAL(colorChanged()), this, SLOT(updatePlot()));
+	connect(btnLabels, SIGNAL(colorChanged()), this, SLOT(updatePlot()));
+	connect(btnNumbers, SIGNAL(colorChanged()), this, SLOT(updatePlot()));
+	connect(btnMesh, SIGNAL(colorChanged()), this, SLOT(updatePlot()));
+	connect(btnBackground, SIGNAL(colorChanged()), this, SLOT(updatePlot()));
+	connect(d_color_map_editor, SIGNAL(scalingChanged()), this, SLOT(updatePlot()));
+
 	connect(boxMeshLineWidth, SIGNAL(valueChanged(double)), d_plot, SLOT(setMeshLineWidth(double)));
 	connect(boxOrthogonal, SIGNAL(toggled(bool)), d_plot, SLOT(setOrthogonal(bool)));
 	connect(boxLegend, SIGNAL(toggled(bool)), d_plot, SLOT(showColorLegend(bool)));
@@ -908,9 +916,9 @@ void Plot3DDialog::pickNumbersFont()
 	QFont font = QFontDialog::getFont(&ok,numbersFont,this);
 	if ( ok ) {
 		numbersFont = font;
-	} else {
+		updatePlot();
+	} else
 		return;
-	}
 }
 
 void Plot3DDialog::viewAxisOptions(int axis)

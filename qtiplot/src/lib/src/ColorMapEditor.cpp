@@ -113,7 +113,7 @@ void ColorMapEditor::setColorMap(const QwtLinearColorMap& map)
 	table->blockSignals(true);
 
 	QwtDoubleInterval range = QwtDoubleInterval(min_val, max_val);
-	for (int i = 0; i < rows; i++){		
+	for (int i = 0; i < rows; i++){
 		DoubleSpinBox *sb = new DoubleSpinBox();
 		sb->setLocale(d_locale);
 		sb->setDecimals(d_precision);
@@ -152,21 +152,21 @@ void ColorMapEditor::setRange(double min, double max)
 
 void ColorMapEditor::insertLevel()
 {
-	int row = table->currentRow();	
+	int row = table->currentRow();
 	DoubleSpinBox *sb = (DoubleSpinBox*)table->cellWidget(row, 0);
 	if (!sb)
 		return;
-	
+
 	double current_value = sb->value();
 	double previous_value = min_val;
 	sb = (DoubleSpinBox*)table->cellWidget(row - 1, 0);
 	if (sb)
 		previous_value = sb->value();
-	
+
 	double val = 0.5*(current_value + previous_value);
 	QwtDoubleInterval range = QwtDoubleInterval(min_val, max_val);
 	double mapped_val = (val - min_val)/range.width();
-		
+
 	QColor c = QColor(color_map.rgb(QwtDoubleInterval(0, 1), mapped_val));
 
 	table->blockSignals(true);
@@ -180,7 +180,7 @@ void ColorMapEditor::insertLevel()
 	connect(sb, SIGNAL(valueChanged(double)), this, SLOT(updateColorMap()));
 	connect(sb, SIGNAL(activated(DoubleSpinBox *)), this, SLOT(spinBoxActivated(DoubleSpinBox *)));
     table->setCellWidget(row, 0, sb);
-	
+
 	QTableWidgetItem *it = new QTableWidgetItem(c.name());
 #ifdef Q_CC_MSVC
 	it->setFlags(it->flags() & (~Qt::ItemIsEditable));
@@ -209,7 +209,7 @@ void ColorMapEditor::showColorDialog(int row, int col)
 		return;
 
 	enableButtons(row);
-	
+
 	QColor c = QColor(table->item(row, 1)->text());
 	QColor color = QColorDialog::getColor(c, this);
 	if (!color.isValid() || color == c)
@@ -251,7 +251,7 @@ void ColorMapEditor::enableButtons(int row)
 {
 	if (row < 0)
 		return;
-	
+
 	if (row == 0 || row == table->rowCount()-1)
 		deleteBtn->setEnabled(false);
 	else
@@ -269,6 +269,8 @@ void ColorMapEditor::setScaledColors(bool scale)
 		color_map.setMode(QwtLinearColorMap::ScaledColors);
 	else
 		color_map.setMode(QwtLinearColorMap::FixedColors);
+
+	scalingChanged();
 }
 
 QString ColorMapEditor::saveToXmlString(const QwtLinearColorMap& color_map)
@@ -293,7 +295,7 @@ void ColorMapEditor::spinBoxActivated(DoubleSpinBox *sb)
 {
 	if (!sb)
 		return;
-		
+
 	int rows = table->rowCount();
 	for (int i = 0; i < rows; i++){
 		DoubleSpinBox *box = (DoubleSpinBox*)table->cellWidget(i, 0);

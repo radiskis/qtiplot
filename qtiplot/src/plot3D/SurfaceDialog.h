@@ -32,12 +32,13 @@
 #include <QDialog>
 
 class QPushButton;
-class QLineEdit;
+class DoubleSpinBox;
 class QCheckBox;
 class QComboBox;
 class QStackedWidget;
 class QSpinBox;
 class Graph3D;
+class QLineEdit;
 
 //! Define surface plot dialog
 class SurfaceDialog : public QDialog
@@ -48,21 +49,21 @@ public:
     SurfaceDialog( QWidget* parent = 0, Qt::WFlags fl = 0 );
 
 public slots:
-	void accept();
 	void setFunction(Graph3D *);
 	void setParametricSurface(Graph3D *);
 	void setGraph(Graph3D *g){d_graph = g;};
 
 private slots:
 	void clearList();
+	void accept();
 
 private:
 	Graph3D *d_graph;
 
-	void acceptParametricSurface();
-	void acceptFunction();
 	void initFunctionPage();
 	void initParametricSurfacePage();
+	void acceptParametricSurface();
+	void acceptFunction();
 
 	QWidget* functionPage;
 	QWidget* parametricPage;
@@ -72,12 +73,12 @@ private:
 	QPushButton* buttonClear;
 	QComboBox* boxType;
 	QComboBox* boxFunction;
-	QLineEdit* boxXFrom;
-	QLineEdit* boxXTo;
-	QLineEdit* boxYFrom;
-	QLineEdit* boxYTo;
-	QLineEdit* boxZFrom;
-	QLineEdit* boxZTo;
+	DoubleSpinBox* boxXFrom;
+	DoubleSpinBox* boxXTo;
+	DoubleSpinBox* boxYFrom;
+	DoubleSpinBox* boxYTo;
+	DoubleSpinBox* boxZFrom;
+	DoubleSpinBox* boxZTo;
 
 	QLineEdit* boxX;
 	QLineEdit* boxY;
