@@ -35,6 +35,11 @@
         <translation type="unfinished">QtiPlot - 演示版本</translation>
     </message>
     <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="14936"/>
+        <source>You are using the demonstration version of Qtiplot.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="14960"/>
         <source>QtiPlot - File backup error</source>
         <translation type="unfinished">QtiPlot - 文件备份错误</translation>
@@ -606,11 +611,6 @@ Autocompletion will not be available!</source>
         <location filename="../src/core/ApplicationWindow.cpp" line="17334"/>
         <location filename="../src/core/ApplicationWindow.cpp" line="17351"/>
         <source>Set Precision %1 digits</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="14936"/>
-        <source>You are using the demonstration version of Qtiplot.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -11180,20 +11180,20 @@ The following special codes can be used:
         <translation>Z轴</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/Graph3D.cpp" line="2031"/>
-        <location filename="../src/plot3D/Graph3D.cpp" line="2058"/>
-        <location filename="../src/plot3D/Graph3D.cpp" line="2074"/>
+        <location filename="../src/plot3D/Graph3D.cpp" line="2037"/>
+        <location filename="../src/plot3D/Graph3D.cpp" line="2064"/>
+        <location filename="../src/plot3D/Graph3D.cpp" line="2080"/>
         <source>QtiPlot - Error</source>
         <translation>QtiPlot - 错误</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/Graph3D.cpp" line="2031"/>
-        <location filename="../src/plot3D/Graph3D.cpp" line="2058"/>
+        <location filename="../src/plot3D/Graph3D.cpp" line="2037"/>
+        <location filename="../src/plot3D/Graph3D.cpp" line="2064"/>
         <source>Please provide a valid file name!</source>
         <translation>请提供有效的文件名!</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/Graph3D.cpp" line="2074"/>
+        <location filename="../src/plot3D/Graph3D.cpp" line="2080"/>
         <source>File format not handled, operation aborted!</source>
         <translation>无法处理的文件格式,操作中止!</translation>
     </message>
@@ -13584,8 +13584,8 @@ have the same number of rows.</source>
     </message>
     <message>
         <location filename="../src/plot3D/Plot3DDialog.cpp" line="297"/>
-        <location filename="../src/plot3D/Plot3DDialog.cpp" line="870"/>
-        <location filename="../src/plot3D/Plot3DDialog.cpp" line="876"/>
+        <location filename="../src/plot3D/Plot3DDialog.cpp" line="878"/>
+        <location filename="../src/plot3D/Plot3DDialog.cpp" line="884"/>
         <source>None</source>
         <translation>不选</translation>
     </message>
@@ -13788,7 +13788,7 @@ have the same number of rows.</source>
         <location filename="../src/plot3D/Plot3DDialog.cpp" line="506"/>
         <location filename="../src/plot3D/Plot3DDialog.cpp" line="549"/>
         <location filename="../src/plot3D/Plot3DDialog.cpp" line="594"/>
-        <location filename="../src/plot3D/Plot3DDialog.cpp" line="798"/>
+        <location filename="../src/plot3D/Plot3DDialog.cpp" line="806"/>
         <source>Width</source>
         <translation>宽度</translation>
     </message>
@@ -13833,17 +13833,17 @@ have the same number of rows.</source>
         <translation>矩阵(&amp;M)</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/Plot3DDialog.cpp" line="807"/>
+        <location filename="../src/plot3D/Plot3DDialog.cpp" line="815"/>
         <source>Draw lines</source>
         <translation>画线</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/Plot3DDialog.cpp" line="811"/>
+        <location filename="../src/plot3D/Plot3DDialog.cpp" line="819"/>
         <source>Filled bars</source>
         <translation>填充棒</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/Plot3DDialog.cpp" line="816"/>
+        <location filename="../src/plot3D/Plot3DDialog.cpp" line="824"/>
         <source>Bars</source>
         <translation>棒</translation>
     </message>
@@ -16651,219 +16651,207 @@ have the same number of rows.</source>
 <context>
     <name>SurfaceDialog</name>
     <message>
-        <location filename="../src/plot3D/SurfaceDialog.cpp" line="51"/>
+        <location filename="../src/plot3D/SurfaceDialog.cpp" line="52"/>
         <source>QtiPlot - Define surface plot</source>
         <translation>QtiPlot - 定义曲面图</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/SurfaceDialog.cpp" line="55"/>
+        <location filename="../src/plot3D/SurfaceDialog.cpp" line="56"/>
         <source>Surface type</source>
         <translation>曲面图类型</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/SurfaceDialog.cpp" line="57"/>
+        <location filename="../src/plot3D/SurfaceDialog.cpp" line="58"/>
         <source>Function</source>
         <translation>函数</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/SurfaceDialog.cpp" line="58"/>
+        <location filename="../src/plot3D/SurfaceDialog.cpp" line="59"/>
         <source>Parametric</source>
         <translation>参数的</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/SurfaceDialog.cpp" line="67"/>
+        <location filename="../src/plot3D/SurfaceDialog.cpp" line="68"/>
         <source>Clear &amp;list</source>
         <translation>清除列表(&amp;l)</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/SurfaceDialog.cpp" line="68"/>
+        <location filename="../src/plot3D/SurfaceDialog.cpp" line="69"/>
         <source>&amp;OK</source>
         <translation>确定(&amp;O)</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/SurfaceDialog.cpp" line="70"/>
+        <location filename="../src/plot3D/SurfaceDialog.cpp" line="71"/>
         <source>&amp;Close</source>
         <translation>关闭(&amp;C)</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/SurfaceDialog.cpp" line="106"/>
+        <location filename="../src/plot3D/SurfaceDialog.cpp" line="107"/>
         <source>f(x,y)=</source>
         <translation>f(x,y)=</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/SurfaceDialog.cpp" line="109"/>
+        <location filename="../src/plot3D/SurfaceDialog.cpp" line="110"/>
         <source>X - axis</source>
         <translation>X - 轴</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/SurfaceDialog.cpp" line="112"/>
-        <location filename="../src/plot3D/SurfaceDialog.cpp" line="127"/>
-        <location filename="../src/plot3D/SurfaceDialog.cpp" line="142"/>
         <source>-1</source>
-        <translation>-1</translation>
+        <translation type="obsolete">-1</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/SurfaceDialog.cpp" line="115"/>
-        <location filename="../src/plot3D/SurfaceDialog.cpp" line="130"/>
-        <location filename="../src/plot3D/SurfaceDialog.cpp" line="145"/>
         <source>1</source>
-        <translation>1</translation>
+        <translation type="obsolete">1</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/SurfaceDialog.cpp" line="118"/>
-        <location filename="../src/plot3D/SurfaceDialog.cpp" line="133"/>
-        <location filename="../src/plot3D/SurfaceDialog.cpp" line="148"/>
-        <location filename="../src/plot3D/SurfaceDialog.cpp" line="207"/>
-        <location filename="../src/plot3D/SurfaceDialog.cpp" line="224"/>
+        <location filename="../src/plot3D/SurfaceDialog.cpp" line="125"/>
+        <location filename="../src/plot3D/SurfaceDialog.cpp" line="140"/>
+        <location filename="../src/plot3D/SurfaceDialog.cpp" line="155"/>
+        <location filename="../src/plot3D/SurfaceDialog.cpp" line="214"/>
+        <location filename="../src/plot3D/SurfaceDialog.cpp" line="231"/>
         <source>From</source>
         <translation>自</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/SurfaceDialog.cpp" line="120"/>
-        <location filename="../src/plot3D/SurfaceDialog.cpp" line="135"/>
-        <location filename="../src/plot3D/SurfaceDialog.cpp" line="150"/>
-        <location filename="../src/plot3D/SurfaceDialog.cpp" line="209"/>
-        <location filename="../src/plot3D/SurfaceDialog.cpp" line="226"/>
+        <location filename="../src/plot3D/SurfaceDialog.cpp" line="127"/>
+        <location filename="../src/plot3D/SurfaceDialog.cpp" line="142"/>
+        <location filename="../src/plot3D/SurfaceDialog.cpp" line="157"/>
+        <location filename="../src/plot3D/SurfaceDialog.cpp" line="216"/>
+        <location filename="../src/plot3D/SurfaceDialog.cpp" line="233"/>
         <source>To</source>
         <translation>至</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/SurfaceDialog.cpp" line="125"/>
+        <location filename="../src/plot3D/SurfaceDialog.cpp" line="132"/>
         <source>Y - axis</source>
         <translation>Y - 轴</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/SurfaceDialog.cpp" line="140"/>
+        <location filename="../src/plot3D/SurfaceDialog.cpp" line="147"/>
         <source>Z - axis</source>
         <translation>Z - 轴</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/SurfaceDialog.cpp" line="160"/>
-        <location filename="../src/plot3D/SurfaceDialog.cpp" line="233"/>
+        <location filename="../src/plot3D/SurfaceDialog.cpp" line="167"/>
+        <location filename="../src/plot3D/SurfaceDialog.cpp" line="240"/>
         <source>Mesh</source>
         <translation>网格</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/SurfaceDialog.cpp" line="170"/>
-        <location filename="../src/plot3D/SurfaceDialog.cpp" line="243"/>
+        <location filename="../src/plot3D/SurfaceDialog.cpp" line="177"/>
+        <location filename="../src/plot3D/SurfaceDialog.cpp" line="250"/>
         <source>Columns</source>
         <translation>列</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/SurfaceDialog.cpp" line="172"/>
-        <location filename="../src/plot3D/SurfaceDialog.cpp" line="245"/>
+        <location filename="../src/plot3D/SurfaceDialog.cpp" line="179"/>
+        <location filename="../src/plot3D/SurfaceDialog.cpp" line="252"/>
         <source>Rows</source>
         <translation>行</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/SurfaceDialog.cpp" line="191"/>
+        <location filename="../src/plot3D/SurfaceDialog.cpp" line="198"/>
         <source>Equations</source>
         <translation>公式</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/SurfaceDialog.cpp" line="193"/>
+        <location filename="../src/plot3D/SurfaceDialog.cpp" line="200"/>
         <source>X(u,v)=</source>
         <translation>X(u,v)=</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/SurfaceDialog.cpp" line="195"/>
+        <location filename="../src/plot3D/SurfaceDialog.cpp" line="202"/>
         <source>Y(u,v)=</source>
         <translation>Y(u,v)=</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/SurfaceDialog.cpp" line="197"/>
+        <location filename="../src/plot3D/SurfaceDialog.cpp" line="204"/>
         <source>Z(u,v)=</source>
         <translation>Z(u,v)=</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/SurfaceDialog.cpp" line="201"/>
+        <location filename="../src/plot3D/SurfaceDialog.cpp" line="208"/>
         <source>u</source>
         <translation>u</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/SurfaceDialog.cpp" line="211"/>
-        <location filename="../src/plot3D/SurfaceDialog.cpp" line="228"/>
+        <location filename="../src/plot3D/SurfaceDialog.cpp" line="218"/>
+        <location filename="../src/plot3D/SurfaceDialog.cpp" line="235"/>
         <source>Periodic</source>
         <translation>周期的</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/SurfaceDialog.cpp" line="216"/>
+        <location filename="../src/plot3D/SurfaceDialog.cpp" line="223"/>
         <source>v</source>
         <translation>v</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/SurfaceDialog.cpp" line="322"/>
+        <location filename="../src/plot3D/SurfaceDialog.cpp" line="328"/>
         <source>QtiPlot - X Formula Error</source>
         <translation>QtiPlot - X方程式错误</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/SurfaceDialog.cpp" line="337"/>
+        <location filename="../src/plot3D/SurfaceDialog.cpp" line="343"/>
         <source>QtiPlot - Y Formula Error</source>
         <translation>QtiPlot - Y方程式错误</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/SurfaceDialog.cpp" line="352"/>
+        <location filename="../src/plot3D/SurfaceDialog.cpp" line="358"/>
         <source>QtiPlot - Z Formula Error</source>
         <translation>QtiPlot - Z方程式错误</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/SurfaceDialog.cpp" line="372"/>
+        <location filename="../src/plot3D/SurfaceDialog.cpp" line="378"/>
         <source>QtiPlot - u start limit error</source>
         <translation>QtiPlot - u起始限制错误</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/SurfaceDialog.cpp" line="382"/>
-        <location filename="../src/plot3D/SurfaceDialog.cpp" line="402"/>
+        <location filename="../src/plot3D/SurfaceDialog.cpp" line="388"/>
+        <location filename="../src/plot3D/SurfaceDialog.cpp" line="408"/>
         <source>QtiPlot - u end limit error</source>
         <translation>QtiPlot - u结束限制错误</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/SurfaceDialog.cpp" line="392"/>
+        <location filename="../src/plot3D/SurfaceDialog.cpp" line="398"/>
         <source>QtiPlot - v start limit error</source>
         <translation>QtiPlot - v起始限制错误</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/SurfaceDialog.cpp" line="440"/>
         <source>QtiPlot - X Start limit error</source>
-        <translation>QtiPlot - X起始限制错误</translation>
+        <translation type="obsolete">QtiPlot - X起始限制错误</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/SurfaceDialog.cpp" line="452"/>
         <source>QtiPlot - X End limit error</source>
-        <translation>QtiPlot - X结束限制错误</translation>
+        <translation type="obsolete">QtiPlot - X结束限制错误</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/SurfaceDialog.cpp" line="465"/>
         <source>QtiPlot - Y Start limit error</source>
-        <translation>QtiPlot - Y起始限制错误</translation>
+        <translation type="obsolete">QtiPlot - Y起始限制错误</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/SurfaceDialog.cpp" line="477"/>
         <source>QtiPlot - Y End limit error</source>
-        <translation>QtiPlot - Y结束限制错误</translation>
+        <translation type="obsolete">QtiPlot - Y结束限制错误</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/SurfaceDialog.cpp" line="489"/>
         <source>QtiPlot - Z Start limit error</source>
-        <translation>QtiPlot - Z起始限制错误</translation>
+        <translation type="obsolete">QtiPlot - Z起始限制错误</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/SurfaceDialog.cpp" line="501"/>
         <source>QtiPlot - Z End limit error</source>
-        <translation>QtiPlot - Z结束限制错误</translation>
+        <translation type="obsolete">QtiPlot - Z结束限制错误</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/SurfaceDialog.cpp" line="508"/>
+        <location filename="../src/plot3D/SurfaceDialog.cpp" line="438"/>
         <source>QtiPlot - Input error</source>
         <translation>QtiPlot - 输入错误</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/SurfaceDialog.cpp" line="509"/>
+        <location filename="../src/plot3D/SurfaceDialog.cpp" line="439"/>
         <source>Please enter limits that satisfy: from &lt; end!</source>
         <translation>请输入限制满足from &lt; end 的上下限!</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/SurfaceDialog.cpp" line="531"/>
+        <location filename="../src/plot3D/SurfaceDialog.cpp" line="458"/>
         <source>QtiPlot - Input function error</source>
         <translation>QtiPlot - 输入函数错误</translation>
     </message>

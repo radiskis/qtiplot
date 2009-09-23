@@ -289,12 +289,16 @@ void ImageExportDialog::updateAdvancedOptions (const QString & filter)
 		}
 	}
 
+	if (filter.contains("*.pgf") && qobject_cast<Graph3D *> (d_window)){
+		d_vector_options->show();
+		return;
+	}
+
 	d_extension_toggle->setEnabled(true);
 	if (filter.contains("*.eps") || filter.contains("*.emf") ||
 		filter.contains("*.ps") || filter.contains("*.pdf") ||
 		filter.contains("*.svg") || filter.contains("*.tex")){
 		d_vector_options->show();
-
 		if (qobject_cast<MultiLayer *> (d_window)){
 			d_custom_size_box->show();
 			d_vector_options->setVisible(!filter.contains("*.svg") && !filter.contains("*.emf"));
