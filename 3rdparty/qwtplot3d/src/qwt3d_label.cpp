@@ -29,11 +29,9 @@ void Label::init()
 	end_ = beg_;
 	pos_ = beg_;
 	setColor(0,0,0);
-	pm_ = QPixmap(0, 0);
 	font_ = QFont();
 	anchor_ = BottomLeft;
 	gap_ = 0;
-	flagforupdate_ = true;
 }
 
 void Label::useDeviceFonts(bool val)
@@ -44,25 +42,21 @@ void Label::useDeviceFonts(bool val)
 void Label::setFont(const QString & family, int pointSize, int weight, bool italic)
 {
 	font_ = QFont(family, pointSize, weight, italic );
-	flagforupdate_ = true;
 }
 
 void Label::setString(QString const& s)
 {
 	text_ = s;
-	flagforupdate_ = true;
 }
 
 void Label::setColor(double r, double g, double b, double a)
 {
   Drawable::setColor(r,g,b,a);
-  flagforupdate_ = true;
 }
 
 void Label::setColor(Qwt3D::RGBA rgba)
 {
   Drawable::setColor(rgba);
-  flagforupdate_ = true;
 }
 
 /**
@@ -93,7 +87,7 @@ void Label::setRelPosition(Tuple rpos, ANCHOR a)
 	setPosition(beg_, a);
 }
 
-void Label::update()
+QImage Label::createImage()
 {
 	QPainter p;
 	QFontMetrics fm(font_);
@@ -102,7 +96,7 @@ void Label::update()
     QRect r = QRect(QPoint(0, 0), fm.size(Qwt3D::SingleLine, text_));//fm.boundingRect(text_)  misbehaviour under linux;
     r.translate(0, -r.top());
 
-	pm_ = QPixmap(r.width(), r.height());
+	QPixmap pm_ = QPixmap(r.width(), r.height());
 	if (pm_.isNull()){ // else crash under linux
 		r = QRect(QPoint(0,0),fm.size(Qwt3D::SingleLine, QString(" "))); // draw empty space else //todo
  		r.translate(0, -r.top());
@@ -118,28 +112,9 @@ void Label::update()
     	p.setPen( GL2Qt(color.r, color.g, color.b) );
     	p.drawText(0, r.height() - fm.descent() - 1, text_);
 		p.end();
-	} else {
-		QBitmap bm(pm_.width(), pm_.height());
-  		bm.fill(Qt::color0);
-		p.begin( &bm );
-		p.setPen(Qt::color1);
-		p.setFont(font_);
-		p.drawText(0,r.height() - fm.descent() -1 , text_);
-		p.end();
-
-		pm_.setMask(bm);
-
-  		// avoids uninitialized areas in some cases
-		p.begin( &pm_ );
-	  	p.setFont( font_ );
-	  	p.setPen( Qt::SolidLine );
-	  	p.setPen( GL2Qt(color.r, color.g, color.b) );
-	  	p.drawText(0,r.height() - fm.descent() -1 , text_);
-		p.end();
 	}
 
-    buf_ = pm_.toImage();
-	tex_ = QGLWidget::convertToGLFormat( buf_ );	  // flipped 32bit RGBA ?
+	return QGLWidget::convertToGLFormat(pm_.toImage());	  // flipped 32bit RGBA ?
 }
 
 /**
@@ -202,21 +177,10 @@ void Label::convert2screen()
 
 void Label::draw()
 {
-	if (!plot()->isVisible())
+	if (!plot() || !plot()->isVisible())
 		return;
 
 	if (text_.isEmpty())
-		return;
-
-	if (flagforupdate_){
-		update();
-		flagforupdate_ = false;
-	}
-
-    if (plot() && plot()->isExportingVector())
-        update();
-
-	if (buf_.isNull())
 		return;
 
 	GLboolean b;
@@ -232,23 +196,31 @@ void Label::draw()
 	convert2screen();
 	glRasterPos3d(beg_.x, beg_.y, beg_.z);
 
-	if (devicefonts_)
-		drawDeviceText(QWT3DLOCAL8BIT(text_), "Courier", font_.pointSize(), pos_, color, anchor_, gap_);
-	else
-		drawDevicePixels(tex_.width(), tex_.height(), GL_RGBA, GL_UNSIGNED_BYTE, tex_.bits());
-		//plot()->renderText(beg_.x, beg_.y, beg_.z, text_, font_);
+	if (plot()->isExportingVector()){
+		if (devicefonts_)
+			drawDeviceText(QWT3DLOCAL8BIT(text_), "Courier", font_.pointSize(), pos_, color, anchor_, gap_);
+		else {
+			QImage tex_ = createImage();
+			drawDevicePixels(tex_.width(), tex_.height(), GL_RGBA, GL_UNSIGNED_BYTE, tex_.bits());
+		}
+	} else {
+		Triple start = World2ViewPort(beg_);
+		start = ViewPort2World(start + Triple(0, QFontMetrics(font_).descent(), 0));
+
+		plot()->qglColor(GL2Qt(color.r, color.g, color.b));
+		plot()->renderText(start.x, start.y, start.z, text_, font_);
+	}
 
 	glAlphaFunc(func,v);
 	Enable(GL_ALPHA_TEST, b);
 }
 
-
 double Label::width() const
 {
-	return pm_.width();
+	return QRect(QPoint(0, 0), QFontMetrics(font_).size(Qwt3D::SingleLine, text_)).width();
 }
 
 double Label::height() const
 {
-	return pm_.height();
+	return QRect(QPoint(0, 0), QFontMetrics(font_).size(Qwt3D::SingleLine, text_)).height();
 }

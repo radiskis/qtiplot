@@ -125,7 +125,6 @@ void Axis::draw()
 	drawBase();
 	drawTics();
 	drawLabel();
-
 	restoreGLState();
 }
 
@@ -273,7 +272,6 @@ void Axis::drawTicLabel(Triple pos, int mtic)
 
 	markerLabel_[mtic].setFont(numberfont_.family(), numberfont_.pointSize(), numberfont_.weight(), numberfont_.italic());
 	markerLabel_[mtic].setColor(numbercolor_);
-  	//markerLabel_[mtic].setString(scale_->ticLabel(mtic));
   	markerLabel_[mtic].setString(plot()->locale().toString(scale_->ticValue(mtic)));
   	markerLabel_[mtic].setPosition(pos, scaleNumberAnchor_);
 	markerLabel_[mtic].setPlot(plot());
@@ -286,6 +284,7 @@ Triple Axis::drawTic(Triple nadir, double length)
 	double ilength = (symtics_) ? -length : 0.0;
 
 	glBegin( GL_LINES );
+	glColor4d(color.r,color.g,color.b,color.a);
 	glVertex3d( nadir.x  + ilength * orientation_.x,
 				      nadir.y  + ilength * orientation_.y,
 							nadir.z  + ilength * orientation_.z) ;
