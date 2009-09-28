@@ -318,19 +318,18 @@ GLint Qwt3D::drawDevicePixels(GLsizei width, GLsizei height,
   if(format != GL_RGBA || type != GL_UNSIGNED_BYTE)
 		return GL2PS_ERROR;
 
-	GLfloat* convertedpixel = (GLfloat*)malloc(3 * width * height * sizeof(GLfloat));
+	GLfloat* convertedpixel = (GLfloat*)malloc(4 * width * height * sizeof(GLfloat));
 	if (!convertedpixel)
 		return GL2PS_ERROR;
 
 	GLubyte* px = (GLubyte*)pixels;
-	for (int i=0; i!=3*width*height; i+=3)
-	{
-		int pxi = (4*i)/3;
-		convertedpixel[i] = px[pxi] / float(255);
-		convertedpixel[i+1] = px[pxi+1] / float(255);
-		convertedpixel[i+2] = px[pxi+2] / float(255);
+	for (int i = 0; i != 4*width*height; i += 4){
+		convertedpixel[i] = px[i] / 255.0;
+		convertedpixel[i+1] = px[i+1] / 255.0;
+		convertedpixel[i+2] = px[i+2] / 255.0;
+		convertedpixel[i+3] = px[i+3] / 255.0;
 	}
-	GLint ret = gl2psDrawPixels(width, height, 0, 0, GL_RGB, GL_FLOAT, convertedpixel);
+	GLint ret = gl2psDrawPixels(width, height, 0, 0, GL_RGBA, GL_FLOAT, convertedpixel);
 	free(convertedpixel);
 	return ret;
 }

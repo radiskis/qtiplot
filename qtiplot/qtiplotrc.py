@@ -6,6 +6,9 @@ def import_to_global(modname, attrs=None, math=False):
 		but imports to global namespace (__main__).
 		If math==True, also registers functions with QtiPlot's math function list.
 	"""
+	import sys
+	import os
+	sys.path.append(os.path.dirname(__file__))
 	mod = __import__(modname)
 	for submod in modname.split(".")[1:]:
 		mod = getattr(mod, submod)
@@ -137,13 +140,7 @@ for name in appImports:
 	setattr(__main__,name,getattr(qti.app,name))
 
 # import utility module
-import sys
-sys.path.append(".")
-try:
-	import_to_global("qtiUtil")
-	print "qtiUtil file successfully imported!"
-except(ImportError):
-	print "Failed to import qtiUtil file!"
+import_to_global("qtiUtil", None, True)
 
 # Provide easy access to SymPy, for symbolic mathematics
 try:
@@ -196,3 +193,5 @@ try:
 
   print "R support successfully set up"
 except(ImportError): pass
+
+print "Python scripting engine is ready."

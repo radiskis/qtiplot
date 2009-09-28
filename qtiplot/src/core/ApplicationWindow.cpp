@@ -5387,7 +5387,6 @@ void ApplicationWindow::saveSettings()
     }
     settings.setValue("/ColorMapStops", QVariant(stop_values));
     settings.setValue("/ColorMapColors", stop_colors);
-
 	settings.endGroup(); // Colors
 
 	settings.beginGroup("/Grids");
@@ -5400,10 +5399,9 @@ void ApplicationWindow::saveSettings()
 	settings.setValue("/MinorStyle", d_3D_minor_style);
 	settings.setValue("/MinorWidth", d_3D_minor_width);
 	settings.endGroup(); // Grids
-
+	
 	settings.endGroup();
-	settings.endGroup();
-	/* ----------------- end group 2D Plots -------- */
+	/* ----------------- end group 3D Plots -------- */
 
 	settings.beginGroup("/Fitting");
 	settings.setValue("/OutputPrecision", fit_output_precision);
@@ -5471,7 +5469,7 @@ void ApplicationWindow::saveSettings()
 	settings.setValue("/y", d_script_win_rect.y());
 	settings.setValue("/width", d_script_win_rect.width());
 	settings.setValue("/height", d_script_win_rect.height());
-	settings.endGroup();
+	settings.endGroup();//ScriptWindow
 
     settings.beginGroup("/ToolBars");
     settings.setValue("/FileToolBar", d_file_tool_bar);
@@ -5484,7 +5482,7 @@ void ApplicationWindow::saveSettings()
     settings.setValue("/DisplayToolBar", d_display_tool_bar);
 	settings.setValue("/FormatToolBar", d_format_tool_bar);
 	settings.setValue("/NotesToolBar", d_notes_tool_bar);
-	settings.endGroup();
+	settings.endGroup();//ToolBars
 
 	settings.beginGroup("/Notes");
     settings.setValue("/LineNumbers", d_note_line_numbers);
@@ -5500,8 +5498,8 @@ void ApplicationWindow::saveSettings()
 	settings.setValue("/Numbers", d_numeric_highlight_color.name());
 	settings.setValue("/Functions", d_function_highlight_color.name());
 	settings.setValue("/QtClasses", d_class_highlight_color.name());
-	settings.endGroup();
-	settings.endGroup();
+	settings.endGroup();//SyntaxHighlighting
+	settings.endGroup();//Notes
 
 	QNetworkProxy proxy = QNetworkProxy::applicationProxy();
 	if (!proxy.hostName().isEmpty()){
@@ -5509,7 +5507,7 @@ void ApplicationWindow::saveSettings()
 		settings.setValue("/Host", proxy.hostName());
 		settings.setValue("/Port", proxy.port());
 		settings.setValue("/Username", proxy.user());
-		settings.endGroup();
+		settings.endGroup();//Proxy
 	} else
 		settings.remove("/Proxy");
 }

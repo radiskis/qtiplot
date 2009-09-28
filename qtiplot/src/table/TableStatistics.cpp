@@ -85,7 +85,6 @@ TableStatistics::TableStatistics(ScriptingEnv *env, ApplicationWindow *parent, T
             setColName(11, "N");
             setColName(12, tr("Median"));
 
-            //setColumnType(0, Text);
             setColumnType(1, Text);
 
 		for (int i=0; i < d_targets.size(); i++){
