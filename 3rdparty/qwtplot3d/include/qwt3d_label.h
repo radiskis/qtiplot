@@ -41,7 +41,7 @@ public:
 	For unicode labeling (<tt> QChar(0x3c0) </tt> etc.) please look at <a href="http://www.unicode.org/charts/">www.unicode.org</a>.
 	*/
 	void setString(QString const& s);
-	void draw(); //!< Actual drawing
+	void draw(double angle = 0.0); //!< Actual drawing
 
 	/**
 		\brief Decides about use of PDF standard fonts for PDF output
@@ -49,7 +49,9 @@ public:
 		otherwise it dumps  pixmaps in the PDF stream (poor quality)
 	*/
 	static void useDeviceFonts(bool val);
-
+	double width() const;
+	double height() const;
+	double textHeight() const;
 
 private:
 
@@ -61,14 +63,13 @@ private:
 
 	void init();
 	void init(const QString & family, int pointSize, int weight = QFont::Normal, bool italic = false);
-	QImage createImage(); //!< Creates an internal bitmap used when exporting to vector formats
+	QImage createImage(double angle);//!< Creates an internal bitmap used only for axis labels
+
 	void convert2screen();
-	double width() const;
-	double height() const;
 
 	int gap_;
 	static bool devicefonts_;
-
+	double width_, height_;
 };
 
 } // ns

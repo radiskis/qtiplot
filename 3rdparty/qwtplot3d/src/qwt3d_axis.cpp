@@ -2,6 +2,7 @@
 #include "qwt3d_plot.h"
 
 #include <QLocale>
+#include <QMessageBox>
 
 using namespace Qwt3D;
 
@@ -136,42 +137,34 @@ void Axis::drawLabel()
 	if (!drawLabel_)
 		return;
 
-  Triple diff = end() - begin();
-	Triple center = begin() + diff/2;
+	Triple end = World2ViewPort(end_);
+	Triple beg = World2ViewPort(beg_);
 
-	Triple bnumber = biggestNumberString();
-//	double fac = 6*(second()-first()).length() / 100;
+	double angle = 360 - fabs(QLineF(beg.x, beg.y, end.x, end.y).angle());
 
-	switch (scaleNumberAnchor_)
-	{
-		case BottomLeft:
-		case TopLeft:
-		case CenterLeft:
-			bnumber.y = 0;
-			break;
-		case BottomRight:
-		case TopRight:
-		case CenterRight:
-			bnumber.x = -bnumber.x;
-			bnumber.y = 0;
-			break;
-		case TopCenter:
-			bnumber.x = 0;
-			bnumber.y = -bnumber.y;
-			break;
-		case BottomCenter:
-			bnumber.x = 0;
-			break;
-		default:
-			break;
+	double width = 0.0;
+	for (unsigned i = 0; i != markerLabel_.size(); ++i){
+		double aux = fabs((markerLabel_[i].second() - markerLabel_[i].first()).length());
+		if (aux > width)
+			width = aux;
 	}
 
-	Triple pos = ViewPort2World(World2ViewPort(center + ticOrientation() * lmaj_) + bnumber);
-	setLabelPosition(pos, scaleNumberAnchor_);
+	Triple diff = end_ - beg_;
+	Triple center = begin() + diff/2;
+	Triple pos = ViewPort2World(World2ViewPort(center + ticOrientation() * (lmaj_ + width)));
+
+	double d = labelgap_ + label_.textHeight();
+	double rad = M_PI/180.0*angle;
+
+	Triple pos_ = ViewPort2World(World2ViewPort(pos) + Triple(d*cos(rad), d*sin(rad), 0));
+
+	d = fabs(sqrt((pos_.x - pos.x)*(pos_.x - pos.x) + (pos_.y - pos.y)*(pos_.y - pos.y)));
+	pos_ = ViewPort2World(World2ViewPort(center + ticOrientation() * (lmaj_ + width + d)));
+
+	setLabelPosition(pos_, Center);
 
 	label_.setPlot(plot());
-	label_.adjust(labelgap_);
-	label_.draw();
+	label_.draw(angle);
 }
 
 void Axis::drawBase()
@@ -338,26 +331,6 @@ void Axis::setLabelPosition(const Triple& pos,Qwt3D::ANCHOR an)
 void Axis::setLabelColor(RGBA col)
 {
 	label_.setColor(col);
-}
-
-Triple Axis::biggestNumberString()
-{
-	Triple ret;
-	unsigned size = markerLabel_.size();
-
-	double width, height;
-
-	for (unsigned i=0; i!=size; ++i)
-	{
-		width = fabs( (World2ViewPort(markerLabel_[i].second())-World2ViewPort(markerLabel_[i].first())).x );
-		height = fabs( (World2ViewPort(markerLabel_[i].second())-World2ViewPort(markerLabel_[i].first())).y );
-
-		if (width > ret.x)
-			ret.x = width + markerLabel_[i].gap();
-		if (height > ret.y)
-			ret.y = height + markerLabel_[i].gap();;
-	}
-	return ret;
 }
 
 /*!

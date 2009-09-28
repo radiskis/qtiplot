@@ -32,6 +32,8 @@ void Label::init()
 	font_ = QFont();
 	anchor_ = BottomLeft;
 	gap_ = 0;
+	width_ = 0.0;
+	height_ = 0.0;
 }
 
 void Label::useDeviceFonts(bool val)
@@ -87,34 +89,58 @@ void Label::setRelPosition(Tuple rpos, ANCHOR a)
 	setPosition(beg_, a);
 }
 
-QImage Label::createImage()
+QImage Label::createImage(double angle)
 {
-	QPainter p;
-	QFontMetrics fm(font_);
-    QFontInfo info(font_);
+	QRect r = QRect(QPoint(0, 0), QFontMetrics(font_).size(Qwt3D::SingleLine, text_));
+	int textWidth = r.width();
+	int textHeight = r.height();
 
-    QRect r = QRect(QPoint(0, 0), fm.size(Qwt3D::SingleLine, text_));//fm.boundingRect(text_)  misbehaviour under linux;
-    r.translate(0, -r.top());
+	double aux_a = angle;
+	if (aux_a > 270)
+		aux_a -= 270;
+    if (aux_a >= 180)
+        aux_a -= 180;
+    if (aux_a > 90)
+        aux_a -= 90;
 
-	QPixmap pm_ = QPixmap(r.width(), r.height());
-	if (pm_.isNull()){ // else crash under linux
-		r = QRect(QPoint(0,0),fm.size(Qwt3D::SingleLine, QString(" "))); // draw empty space else //todo
- 		r.translate(0, -r.top());
-		pm_ = QPixmap(r.width(), r.height());
+	double rad = aux_a*M_PI/180.0;
+
+	int w, h;
+	if ((angle >= 0 && angle <= 90) || (angle >= 180 && angle <= 270)){
+		w = abs(textWidth*cos(rad) + textHeight*sin(rad));
+    	h = abs(textWidth*sin(rad) + textHeight*cos(rad));
+	} else {
+		w = abs(textWidth*sin(rad) + textHeight*cos(rad));
+    	h = abs(textWidth*cos(rad) + textHeight*sin(rad));
 	}
 
-	if (plot() && plot()->isExportingVector()){
-		Qwt3D::RGBA rgba = plot()->backgroundRGBAColor();
-		pm_.fill(GL2Qt(rgba.r, rgba.g, rgba.b));
-		p.begin( &pm_ );
-    	p.setFont( font_ );
-    	p.setPen( Qt::SolidLine );
-    	p.setPen( GL2Qt(color.r, color.g, color.b) );
-    	p.drawText(0, r.height() - fm.descent() - 1, text_);
-		p.end();
-	}
+	width_ = w;
+	height_ = h;
 
-	return QGLWidget::convertToGLFormat(pm_.toImage());	  // flipped 32bit RGBA ?
+	QPixmap pm_ = QPixmap(w, h);
+	pm_.fill(Qt::transparent);
+
+	QPainter p(&pm_);
+
+	if (angle >= 270)
+		p.translate(textHeight*cos(rad), 0.0);
+	else if (angle >= 180)
+		p.translate(w, textHeight*cos(rad));
+	else if (angle > 90)
+		p.translate(textWidth*sin(rad), h);
+	else
+		p.translate(0.0, textWidth*sin(rad));
+
+    p.rotate(-angle);
+    p.translate(0.0, textHeight - QFontMetrics(font_).descent());
+
+	p.setFont( font_ );
+	p.setPen(Qt::SolidLine);
+	p.setPen(GL2Qt(color.r, color.g, color.b));
+	p.drawText(0, 0, text_);
+	p.end();
+
+	return QGLWidget::convertToGLFormat(pm_.toImage());
 }
 
 /**
@@ -175,7 +201,7 @@ void Label::convert2screen()
 	end_ = ViewPort2World(start + Triple(width(), height(), 0));
 }
 
-void Label::draw()
+void Label::draw(double angle)
 {
 	if (!plot() || !plot()->isVisible())
 		return;
@@ -200,15 +226,19 @@ void Label::draw()
 		if (devicefonts_)
 			drawDeviceText(QWT3DLOCAL8BIT(text_), "Courier", font_.pointSize(), pos_, color, anchor_, gap_);
 		else {
-			QImage tex_ = createImage();
+			QImage tex_ = createImage(angle);
 			drawDevicePixels(tex_.width(), tex_.height(), GL_RGBA, GL_UNSIGNED_BYTE, tex_.bits());
 		}
 	} else {
-		Triple start = World2ViewPort(beg_);
-		start = ViewPort2World(start + Triple(0, QFontMetrics(font_).descent(), 0));
-
-		plot()->qglColor(GL2Qt(color.r, color.g, color.b));
-		plot()->renderText(start.x, start.y, start.z, text_, font_);
+		if (!angle){
+			Triple start = World2ViewPort(beg_);
+			start = ViewPort2World(start + Triple(0, QFontMetrics(font_).descent(), 0));
+			plot()->qglColor(GL2Qt(color.r, color.g, color.b));
+			plot()->renderText(start.x, start.y, start.z, text_, font_);
+		} else {
+			QImage tex_ = createImage(angle);
+			drawDevicePixels(tex_.width(), tex_.height(), GL_RGBA, GL_UNSIGNED_BYTE, tex_.bits());
+		}
 	}
 
 	glAlphaFunc(func,v);
@@ -217,10 +247,21 @@ void Label::draw()
 
 double Label::width() const
 {
+	if (width_ > 0.0 && height_ > 0.0)
+		return width_;
+
 	return QRect(QPoint(0, 0), QFontMetrics(font_).size(Qwt3D::SingleLine, text_)).width();
 }
 
 double Label::height() const
+{
+	if (width_ > 0.0 && height_ > 0.0)
+		return height_;
+
+	return QRect(QPoint(0, 0), QFontMetrics(font_).size(Qwt3D::SingleLine, text_)).height();
+}
+
+double Label::textHeight() const
 {
 	return QRect(QPoint(0, 0), QFontMetrics(font_).size(Qwt3D::SingleLine, text_)).height();
 }

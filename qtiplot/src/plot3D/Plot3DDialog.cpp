@@ -1084,26 +1084,29 @@ void Plot3DDialog::pickAxisLabelFont()
 	switch(axesList2->currentRow())
 	{
 		case 0:
-			font= QFontDialog::getFont(&ok,xAxisFont,this);
-			if ( ok )
+			font = QFontDialog::getFont(&ok, xAxisFont, this);
+			if ( ok ){
 				xAxisFont=font;
-			else
+				updatePlot();
+			} else
 				return;
 			break;
 
 		case 1:
-			font= QFontDialog::getFont(&ok,yAxisFont,this);
-			if ( ok )
-				yAxisFont=font;
-			else
+			font = QFontDialog::getFont(&ok, yAxisFont, this);
+			if ( ok ){
+				yAxisFont = font;
+				updatePlot();
+			} else
 				return;
 			break;
 
 		case 2:
-			font= QFontDialog::getFont(&ok,zAxisFont,this);
-			if ( ok )
-				zAxisFont=font;
-			else
+			font = QFontDialog::getFont(&ok, zAxisFont, this);
+			if ( ok ){
+				zAxisFont = font;
+				updatePlot();
+			} else
 				return;
 			break;
 	}
