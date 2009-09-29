@@ -214,12 +214,14 @@ void Plot3DDialog::initAxesPage()
 	boxMajorLength = new DoubleSpinBox();
 	boxMajorLength->setLocale(app->locale());
     boxMajorLength->setDecimals(app->d_decimal_digits);
+	boxMajorLength->setMinimum(0.0);
     gl1->addWidget(boxMajorLength, 2, 1);
 
     gl1->addWidget(new QLabel(tr("Minor Ticks Length")), 3, 0);
 	boxMinorLength = new DoubleSpinBox();
 	boxMinorLength->setLocale(app->locale());
     boxMinorLength->setDecimals(app->d_decimal_digits);
+	boxMinorLength->setMinimum(0.0);
 
     gl1->addWidget(boxMinorLength, 3, 1);
     gl1->setRowStretch(4, 1);
@@ -392,7 +394,7 @@ void Plot3DDialog::initGeneralPage()
 
     gl1->addWidget(new QLabel( tr( "Distance labels - axis" )), 4, 0);
 	boxDistance = new QSpinBox();
-    boxDistance->setRange(0, 1000);
+    boxDistance->setRange(-1000, 1000);
     boxDistance->setSingleStep(5);
     gl1->addWidget(boxDistance, 4, 1);
     gl1->setRowStretch(5, 1);
@@ -550,6 +552,7 @@ void Plot3DDialog::initPointsOptionsStack()
 	boxSize = new DoubleSpinBox();
 	boxSize->setLocale(app->locale());
     boxSize->setDecimals(app->d_decimal_digits);
+    boxSize->setMinimum(0.0);
 	boxSize->setValue(5);
     gl1->addWidget(boxSize, 0, 1);
 
@@ -557,6 +560,7 @@ void Plot3DDialog::initPointsOptionsStack()
 	boxSmooth = new QCheckBox();
 	boxSmooth->setChecked(false);
     gl1->addWidget(boxSmooth, 1, 1);
+    gl1->setRowStretch(2, 1);
 
     dotsPage = new QWidget();
     dotsPage->setLayout(gl1);
@@ -568,6 +572,7 @@ void Plot3DDialog::initPointsOptionsStack()
 	boxCrossRad->setLocale(app->locale());
     boxCrossRad->setDecimals(app->d_decimal_digits);
 	boxCrossRad->setValue(0.01);
+	boxCrossRad->setMinimum(0.0);
     gl2->addWidget(boxCrossRad, 0, 1);
 
 	gl2->addWidget(new QLabel(tr( "Line Width")), 1, 0);
@@ -575,6 +580,7 @@ void Plot3DDialog::initPointsOptionsStack()
 	boxCrossLinewidth->setLocale(app->locale());
     boxCrossLinewidth->setDecimals(app->d_decimal_digits);
 	boxCrossLinewidth->setValue(1);
+	boxCrossLinewidth->setMinimum(0.0);
     gl2->addWidget(boxCrossLinewidth, 1, 1);
 
 	gl2->addWidget(new QLabel(tr( "Smooth line" )), 2, 0);
@@ -585,6 +591,7 @@ void Plot3DDialog::initPointsOptionsStack()
 	boxBoxed = new QCheckBox();
 	boxBoxed->setChecked(false);
     gl2->addWidget(boxBoxed, 3, 1);
+    gl2->setRowStretch(4, 1);
 
 	crossPage = new QWidget();
     crossPage->setLayout(gl2);
@@ -596,6 +603,7 @@ void Plot3DDialog::initPointsOptionsStack()
 	boxConesRad->setLocale(app->locale());
     boxConesRad->setDecimals(app->d_decimal_digits);
 	boxConesRad->setValue(0.5);
+	boxConesRad->setMinimum(0.0);
     gl3->addWidget(boxConesRad, 0, 1);
 
     gl3->addWidget(new QLabel( tr( "Quality" )), 1, 0);
@@ -603,6 +611,7 @@ void Plot3DDialog::initPointsOptionsStack()
     boxQuality->setRange(0, 40);
 	boxQuality->setValue(32);
     gl3->addWidget(boxQuality, 1, 1);
+    gl3->setRowStretch(2, 1);
 
     conesPage = new QWidget();
     conesPage->setLayout(gl3);
@@ -932,6 +941,8 @@ void Plot3DDialog::viewAxisOptions(int axis)
 	boxMinorLength->blockSignals(true);
 	boxMinorLength->setValue(tickLengths[2*axis+1].toDouble());
 	boxMinorLength->blockSignals(false);
+
+	axesList->setCurrentRow(axis);
 }
 
 void Plot3DDialog::viewScaleLimits(int axis)
@@ -958,6 +969,8 @@ void Plot3DDialog::viewScaleLimits(int axis)
 	boxMinors->blockSignals(false);
 
 	boxType->setCurrentIndex(d_plot->axisType(axis));
+
+	axesList2->setCurrentRow(axis);
 }
 
 void Plot3DDialog::accept()
