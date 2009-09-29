@@ -105,13 +105,13 @@ QImage Label::createImage(double angle)
 
 	double rad = aux_a*M_PI/180.0;
 
-	int w, h;
+	int w = 0, h = 0;
 	if ((angle >= 0 && angle <= 90) || (angle >= 180 && angle <= 270)){
-		w = abs(textWidth*cos(rad) + textHeight*sin(rad));
-    	h = abs(textWidth*sin(rad) + textHeight*cos(rad));
+		w = qRound(fabs(textWidth*cos(rad) + textHeight*sin(rad)));
+    	h = qRound(fabs(textWidth*sin(rad) + textHeight*cos(rad)));
 	} else {
-		w = abs(textWidth*sin(rad) + textHeight*cos(rad));
-    	h = abs(textWidth*cos(rad) + textHeight*sin(rad));
+		w = qRound(fabs(textWidth*sin(rad) + textHeight*cos(rad)));
+    	h = qRound(fabs(textWidth*cos(rad) + textHeight*sin(rad)));
 	}
 
 	width_ = w;

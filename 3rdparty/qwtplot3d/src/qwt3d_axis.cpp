@@ -137,33 +137,27 @@ void Axis::drawLabel()
 	if (!drawLabel_)
 		return;
 
-	Triple end = World2ViewPort(end_);
-	Triple beg = World2ViewPort(beg_);
-
-	double angle = 360 - fabs(QLineF(beg.x, beg.y, end.x, end.y).angle());
+	label_.setPlot(plot());
 
 	double width = 0.0;
-	for (unsigned i = 0; i != markerLabel_.size(); ++i){
-		double aux = fabs((markerLabel_[i].second() - markerLabel_[i].first()).length());
+	for (unsigned i = 0; i != markerLabel_.size(); i++){
+		double aux = markerLabel_[i].width();
 		if (aux > width)
 			width = aux;
 	}
 
-	Triple diff = end_ - beg_;
-	Triple center = begin() + diff/2;
-	Triple pos = ViewPort2World(World2ViewPort(center + ticOrientation() * (lmaj_ + width)));
+	Triple center = begin() + (end_ - beg_)/2;
+	Triple ticEnd = ViewPort2World(World2ViewPort(center + ticOrientation() * lmaj_));
 
-	double d = labelgap_ + label_.textHeight();
-	double rad = M_PI/180.0*angle;
+	double rap = (width + labelgap_ + label_.textHeight())/(World2ViewPort(ticEnd) - World2ViewPort(center)).length();
 
-	Triple pos_ = ViewPort2World(World2ViewPort(pos) + Triple(d*cos(rad), d*sin(rad), 0));
+	Triple pos = ViewPort2World(World2ViewPort(center + ticOrientation() * lmaj_*(1 + rap)));
+	setLabelPosition(pos, Center);
 
-	d = fabs(sqrt((pos_.x - pos.x)*(pos_.x - pos.x) + (pos_.y - pos.y)*(pos_.y - pos.y)));
-	pos_ = ViewPort2World(World2ViewPort(center + ticOrientation() * (lmaj_ + width + d)));
+	Triple end = World2ViewPort(end_);
+	Triple beg = World2ViewPort(beg_);
+	double angle = 360 - fabs(QLineF(beg.x, beg.y, end.x, end.y).angle());
 
-	setLabelPosition(pos_, Center);
-
-	label_.setPlot(plot());
 	label_.draw(angle);
 }
 
