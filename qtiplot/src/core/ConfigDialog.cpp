@@ -67,6 +67,8 @@
 #include <QFileDialog>
 #include <QFontComboBox>
 #include <QNetworkProxy>
+#include <QCompleter>
+#include <QDirModel>
 
 static const char * notes_32_xpm[] = {
 "32 32 343 2",
@@ -1516,6 +1518,11 @@ void ConfigDialog::initFileLocationsPage()
 	ApplicationWindow *app = (ApplicationWindow *)parentWidget();
 	fileLocationsPage = new QWidget();
 
+	QCompleter *completer = new QCompleter(this);
+	completer->setModel(new QDirModel(completer));
+    completer->setModelSorting(QCompleter::CaseSensitivelySortedModel);
+    completer->setCompletionMode(QCompleter::InlineCompletion);
+
 	QGroupBox *gb = new QGroupBox();
 	QGridLayout *gl = new QGridLayout(gb);
 
@@ -1524,6 +1531,7 @@ void ConfigDialog::initFileLocationsPage()
 
 	translationsPathLine = new QLineEdit();
 	translationsPathLine->setText(QDir::toNativeSeparators(app->d_translations_folder));
+	translationsPathLine->setCompleter(completer);
 	gl->addWidget(translationsPathLine, 0, 1);
 
 	QPushButton *browseTranslationsBtn = new QPushButton();
@@ -1535,6 +1543,7 @@ void ConfigDialog::initFileLocationsPage()
 
 	QFileInfo hfi(app->helpFilePath);
 	helpPathLine = new QLineEdit(QDir::toNativeSeparators(hfi.dir().absolutePath()));
+	helpPathLine->setCompleter(completer);
 	gl->addWidget( helpPathLine, 1, 1);
 
 	QPushButton *browseHelpBtn = new QPushButton();
@@ -1545,6 +1554,7 @@ void ConfigDialog::initFileLocationsPage()
 	gl->addWidget(texCompilerLabel, 2, 0);
 
 	texCompilerPathBox = new QLineEdit(QDir::toNativeSeparators(app->d_latex_compiler_path));
+	texCompilerPathBox->setCompleter(completer);
 	connect(texCompilerPathBox, SIGNAL(editingFinished ()), this, SLOT(validateTexCompiler()));
 
 	gl->addWidget(texCompilerPathBox, 2, 1);
@@ -1561,6 +1571,7 @@ void ConfigDialog::initFileLocationsPage()
 	gl->addWidget(lblPythonConfigDir, 3, 0);
 
 	pythonConfigDirLine = new QLineEdit(QDir::toNativeSeparators(app->d_python_config_folder));
+	pythonConfigDirLine->setCompleter(completer);
 	gl->addWidget(pythonConfigDirLine, 3, 1);
 
 	QPushButton *browsePythonConfigBtn = new QPushButton();
