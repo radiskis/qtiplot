@@ -6468,7 +6468,7 @@ void Graph::dragEnterEvent( QDragEnterEvent* e )
 	if (g && g->multiLayer() == this->multiLayer())
 		return;
 
-	if (d_panner || zoomOn() || d_active_tool)
+	if (d_panner || zoomOn() || d_active_tool || selectedCurveLabels())
 		return;
 
 	if (e->mimeData()->hasFormat("text/plain"))
