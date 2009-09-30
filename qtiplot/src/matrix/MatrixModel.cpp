@@ -795,12 +795,21 @@ bool MatrixModel::muParserCalculate(int startRow, int endRow, int startCol, int 
 
 	double dx = d_matrix->dx();
 	double dy = d_matrix->dy();
+	double x_start = d_matrix->xStart();
+	double y_start = d_matrix->yStart();
+
     double *ri = mup->defineVariable("i");
     double *rr = mup->defineVariable("row");
     double *cj = mup->defineVariable("j");
     double *cc = mup->defineVariable("col");
     double *x = mup->defineVariable("x");
     double *y = mup->defineVariable("y");
+
+	double r = 1.0, c = 1.0;
+	*ri = r; *rr = r;
+	*y = y_start + dy;
+	*cj = c; *cc = c;
+	*x = x_start + dx;
 
 	if (!mup->compile()){
 		QApplication::restoreOverrideCursor();
@@ -809,8 +818,6 @@ bool MatrixModel::muParserCalculate(int startRow, int endRow, int startCol, int 
 
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
-	double x_start = d_matrix->xStart();
-	double y_start = d_matrix->yStart();
     if (mup->codeLines() == 1){
         for(int row = startRow; row <= endRow; row++){
             double r = row + 1.0;

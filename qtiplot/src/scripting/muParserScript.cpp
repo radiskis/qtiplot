@@ -68,7 +68,7 @@ muParserScript::muParserScript(ScriptingEnv *env, const QString &code, QObject *
 	  parser.DefineFun("cell", mu_cell);
 
 	rparser = parser;
-	if (Context->inherits("Table") || Context->isA("Matrix")){							   
+	if (Context->inherits("Table") || Context->isA("Matrix")){
 		connect(this, SIGNAL(error(const QString&,const QString&,int)), env, SIGNAL(error(const QString&,const QString&,int)));
 		connect(this, SIGNAL(print(const QString&)), env, SIGNAL(print(const QString&)));
 		if (code.count("\n") > 0){//autodetect new variables only for scripts having minimum 2 lines
@@ -213,10 +213,10 @@ double muParserScript::cell(int row, int col)
 	if (col < 1 || col > matrix->numCols())
 		throw Parser::exception_type(tr("There's no column %1 in matrix %2!").
 				arg(col).arg(Context->name()).ascii());
-	if (matrix->text(row-1,col-1).isEmpty())
+	if (matrix->text(row - 1,col - 1).isEmpty())
 		throw new EmptySourceError();
 	else
-		return matrix->cell(row-1,col-1);
+		return matrix->cell(row - 1, col - 1);
 }
 
 double muParserScript::tableCell(int col, int row)
@@ -361,7 +361,7 @@ bool muParserScript::compile(bool)
 {
 	muCode.clear();
 	QString muCodeLine = "";
-	for (int i=0; i < Code.size(); i++)
+	for (int i=0; i < Code.size(); i++){
 		if (Code[i] == 'c' && Code.mid(i,4)=="col(") {
 			muCodeLine += "col(";
 			QString arg = "";
@@ -397,14 +397,17 @@ bool muParserScript::compile(bool)
 			muCodeLine = "";
 		} else
 			muCodeLine += Code[i];
+	}
+
 	muCodeLine = muCodeLine.stripWhiteSpace();
 	if (!muCodeLine.isEmpty())
 		muCode += muCodeLine;
 	compiled = Script::isCompiled;
 
-	if (muCode.size() == 1){		
+	if (muCode.size() == 1){
 	    current = this;
         parser.SetExpr(muCode[0].ascii());
+
         try {
 			parser.Eval();
 		} catch (EmptySourceError *e) {

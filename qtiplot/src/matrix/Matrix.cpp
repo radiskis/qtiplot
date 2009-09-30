@@ -497,12 +497,13 @@ bool Matrix::canCalculate(bool useMuParser)
     	double *x = mup->defineVariable("x");
     	double *y = mup->defineVariable("y");
 
-		if (!mup->compile())
-			return false;
-
 		double r = 1.0;
         *ri = r; *rr = r; *y = r;
         double c = 1.0; *cj = c; *cc = c; *x = c;
+
+		if (!mup->compile())
+			return false;
+
 		int codeLines = mup->codeLines();
 		if (codeLines == 1 && gsl_isnan(mup->evalSingleLine()))
 			return false;
