@@ -224,7 +224,7 @@ void Label::draw(double angle)
 
 	if (plot()->isExportingVector()){
 		if (devicefonts_)
-			drawDeviceText(QWT3DLOCAL8BIT(text_), "Courier", font_.pointSize(), pos_, color, anchor_, gap_);
+			drawDeviceText(QWT3DLOCAL8BIT(text_), "Courier", font_.pointSize(), pos_, color, anchor_, gap_, angle);
 		else {
 			QImage tex_ = createImage(angle);
 			drawDevicePixels(tex_.width(), tex_.height(), GL_RGBA, GL_UNSIGNED_BYTE, tex_.bits());

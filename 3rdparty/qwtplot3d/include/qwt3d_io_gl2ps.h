@@ -31,38 +31,38 @@ public:
     NATIVE, //!< Text output in the native output format
     TEX //!< Text output in additional LaTeX file as an overlay
   };
-  //! The possible behaviour for landscape settings 
+  //! The possible behaviour for landscape settings
   enum LANDSCAPEMODE
   {
     ON,  //!< Landscape mode on
     OFF, //!< Landscape mode off
     AUTO //!< The output orientation depends on the plot widgets aspect ratio (default)
   };
-  
-  //! The possible sorting types which are translated in gl2ps types  
+
+  //! The possible sorting types which are translated in gl2ps types
   enum SORTMODE
   {
     NOSORT,  //!< No sorting at all
     SIMPLESORT, //!< A more simple (yet quicker) algorithm (default)
     BSPSORT //!< BSP SORT (best and slow!)
   };
-  
-  VectorWriter(); 
+
+  VectorWriter();
 
   void setLandscape(LANDSCAPEMODE val) {landscape_ = val;} //!< Sets landscape mode.
   LANDSCAPEMODE landscape() const {return landscape_;} //!< Returns the current landscape mode
-  
+
   void setTextMode(TEXTMODE val, QString fname = "");
   TEXTMODE textMode() const {return textmode_;} //!< Return current text output mode.
-  
-  
+
+
   //! Sets one of the SORTMODE sorting modes.
   void setSortMode(SORTMODE val) {sortmode_ = val;}
   SORTMODE sortMode() const {return sortmode_;} //!< Returns gl2ps sorting type.
   //! Turns compressed output on or off (no effect if zlib support is not available)
   void setCompressed(bool val);
-  //! Returns compression mode (always false if zlib support has not been set) 
-  bool compressed() const {return compressed_;} 
+  //! Returns compression mode (always false if zlib support has not been set)
+  bool compressed() const {return compressed_;}
 
   bool setFormat(QString const& format);
 
@@ -82,7 +82,7 @@ private:
 GLint setDeviceLineWidth(GLfloat val);
 GLint setDevicePointSize(GLfloat val);
 GLint drawDevicePixels(GLsizei width, GLsizei height, GLenum format, GLenum type, const void *pixels);
-GLint drawDeviceText(const char* str, const char* fontname, int fontsize, Qwt3D::Triple pos, Qwt3D::RGBA rgba, Qwt3D::ANCHOR align, double gap);
+GLint drawDeviceText(const char* str, const char* fontname, int fontsize, Qwt3D::Triple pos, Qwt3D::RGBA rgba, Qwt3D::ANCHOR align, double gap, double angle);
 void setDevicePolygonOffset(GLfloat factor, GLfloat units);
 
 

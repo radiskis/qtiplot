@@ -334,7 +334,7 @@ GLint Qwt3D::drawDevicePixels(GLsizei width, GLsizei height,
 	return ret;
 }
 
-GLint Qwt3D::drawDeviceText(const char* str, const char* fontname, int fontsize, Triple pos, RGBA color, ANCHOR align, double gap)
+GLint Qwt3D::drawDeviceText(const char* str, const char* fontname, int fontsize, Triple pos, RGBA color, ANCHOR align, double gap, double angle)
 {
 	double vp[3];
 
@@ -397,7 +397,7 @@ GLint Qwt3D::drawDeviceText(const char* str, const char* fontname, int fontsize,
 	Triple adjpos(vp[0],vp[1],vp[2]);
 
 	glRasterPos3d(adjpos.x, adjpos.y, adjpos.z);
-	ret = gl2psTextOpt(str, fontname, (int)fontsize, a, 0);
+	ret = gl2psTextOpt(str, fontname, (int)fontsize, a, angle);
 	glColor4dv(fcol);
 	glClearColor(bcol[0], bcol[1], bcol[2], bcol[3]);
   return ret;
