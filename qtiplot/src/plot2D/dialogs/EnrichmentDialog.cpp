@@ -425,6 +425,16 @@ void EnrichmentDialog::initGeometryPage()
 {
     geometryPage = new QWidget();
 
+	QGridLayout *bl1 = new QGridLayout();
+
+	attachToBox = new QComboBox();
+	attachToBox->insertItem(tr("Page"));
+	attachToBox->insertItem(tr("Layer Scales"));
+	//attachToBox->setCurrentIndex((int)lm->attachPolicy());
+
+	bl1->addWidget(new QLabel(tr( "Attach to" )), 0, 0);
+	bl1->addWidget(attachToBox, 0, 1);
+
 	unitBox = new QComboBox();
 	unitBox->insertItem(tr("inch"));
 	unitBox->insertItem(tr("mm"));
@@ -434,9 +444,8 @@ void EnrichmentDialog::initGeometryPage()
 	if (d_widget_type != MDIWindow)
         unitBox->insertItem(tr("scale"));
 
-	QBoxLayout *bl1 = new QBoxLayout (QBoxLayout::LeftToRight);
-	bl1->addWidget(new QLabel(tr( "Unit" )));
-	bl1->addWidget(unitBox);
+	bl1->addWidget(new QLabel(tr( "Unit" )), 1, 0);
+	bl1->addWidget(unitBox, 1, 1);
 
 	ApplicationWindow *app = (ApplicationWindow *)parent();
 	QLocale locale = QLocale();
@@ -551,6 +560,7 @@ void EnrichmentDialog::setWidget(QWidget *w)
 		boxFrameWidth->blockSignals(false);
 
 		unitBox->setCurrentIndex(app->d_frame_geometry_unit);
+		attachToBox->setCurrentIndex((int)fw->attachPolicy());
 		displayCoordinates(app->d_frame_geometry_unit);
     } else {
 		unitBox->setCurrentIndex(FrameWidget::Pixel);
@@ -656,9 +666,12 @@ void EnrichmentDialog::apply()
 		frameApplyTo();
 	else if (imagePage && tabWidget->currentPage() == imagePage)
 		chooseImageFile(imagePathBox->text());
-	else if (tabWidget->currentPage() == geometryPage)
+	else if (tabWidget->currentPage() == geometryPage){
 		setCoordinates(unitBox->currentIndex());
-	else if (patternPage && tabWidget->currentPage() == patternPage)
+		FrameWidget *fw = qobject_cast<FrameWidget *>(d_widget);
+        if (fw)
+            fw->setAttachPolicy((FrameWidget::AttachPolicy)attachToBox->currentIndex());
+	} else if (patternPage && tabWidget->currentPage() == patternPage)
 		patternApplyTo();
 	else if (textPage && tabWidget->currentPage() == textPage){
 		LegendWidget *l = qobject_cast<LegendWidget *>(d_widget);

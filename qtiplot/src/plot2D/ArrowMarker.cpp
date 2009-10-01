@@ -51,7 +51,8 @@ ArrowMarker::ArrowMarker():
 		d_head_length(4),
 		d_rect(0, 0, 1, 1),
 		d_editable(false),
-		d_op(None)
+		d_op(None),
+		d_attach_policy(Scales)
 {
 }
 
@@ -376,13 +377,16 @@ QwtDoubleRect ArrowMarker::boundingRect() const
 
 void ArrowMarker::updateBoundingRect()
 {
-const QwtScaleMap &xMap = plot()->canvasMap(xAxis());
-const QwtScaleMap &yMap = plot()->canvasMap(yAxis());
+	if (d_attach_policy == Scales)
+		return;
 
-d_rect.setLeft(xMap.invTransform(d_start.x()));
-d_rect.setTop(yMap.invTransform(d_start.y()));
-d_rect.setRight(xMap.invTransform(d_end.x()));
-d_rect.setBottom(yMap.invTransform(d_end.y()));
+	const QwtScaleMap &xMap = plot()->canvasMap(xAxis());
+	const QwtScaleMap &yMap = plot()->canvasMap(yAxis());
+
+	d_rect.setLeft(xMap.invTransform(d_start.x()));
+	d_rect.setTop(yMap.invTransform(d_start.y()));
+	d_rect.setRight(xMap.invTransform(d_end.x()));
+	d_rect.setBottom(yMap.invTransform(d_end.y()));
 }
 
 void ArrowMarker::setEditable(bool yes)
@@ -560,4 +564,10 @@ void ArrowMarker::displayInfo(bool clear)
 		s += " " + tr("eqn") + ": " + tr("x") + "=" + locale.toString(line.x1(), 'g', prec);
 	app->displayInfo(s);
 	g->setToolTip(s.split("; ").join("\n"));
+}
+
+void ArrowMarker::setAttachPolicy(AttachPolicy attachTo)
+{
+	if (attachTo != d_attach_policy)
+		d_attach_policy = attachTo;
 }

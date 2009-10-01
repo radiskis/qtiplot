@@ -157,13 +157,22 @@ LineDialog::LineDialog( ArrowMarker *line, QWidget* parent,  Qt::WFlags fl )
 
 void LineDialog::initGeometryTab()
 {
+	QGridLayout *bl1 = new QGridLayout();
+
+	attachToBox = new QComboBox();
+	attachToBox->insertItem(tr("Page"));
+	attachToBox->insertItem(tr("Layer Scales"));
+	attachToBox->setCurrentIndex((int)lm->attachPolicy());
+
+	bl1->addWidget(new QLabel(tr( "Attach to" )), 0, 0);
+	bl1->addWidget(attachToBox, 0, 1);
+
 	unitBox = new QComboBox();
 	unitBox->insertItem(tr("Scale Coordinates"));
 	unitBox->insertItem(tr("Pixels"));
 
-	QBoxLayout *bl1 = new QBoxLayout (QBoxLayout::LeftToRight);
-	bl1->addWidget(new QLabel(tr( "Unit" )));
-	bl1->addWidget(unitBox);
+	bl1->addWidget(new QLabel(tr( "Unit" )), 1, 0);
+	bl1->addWidget(unitBox, 1, 1);
 
 	ApplicationWindow *app = (ApplicationWindow *)parent();
 	QLocale locale = QLocale();
@@ -226,6 +235,7 @@ void LineDialog::initGeometryTab()
 	QVBoxLayout* vl = new QVBoxLayout();
     vl->addLayout(bl1);
     vl->addLayout(bl2);
+    vl->addStretch();
 
     geometry = new QWidget();
     geometry->setLayout(vl);
@@ -303,8 +313,10 @@ void LineDialog::apply()
 
         if (lm->filledArrowHead() != filledBox->isChecked())
             lm->fillArrowHead( filledBox->isChecked() );
-	} else if (tw->currentPage()==(QWidget *)geometry)
+	} else if (tw->currentPage()==(QWidget *)geometry){
+		lm->setAttachPolicy((ArrowMarker::AttachPolicy)attachToBox->currentIndex());
         setCoordinates(unitBox->currentItem());
+	}
 
 	Graph *g = (Graph *)lm->plot();
 	g->replot();
