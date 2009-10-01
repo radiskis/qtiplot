@@ -49,6 +49,8 @@ public:
 
 	//! The kinds of frame a FrameWidget can draw around.
 	enum FrameStyle{None = 0, Line = 1, Shadow = 2};
+	//! The attach to policy.
+	enum AttachPolicy {Page, Scales};
 
     //! Returns the x axis coordiante of the top left corner
     double xValue(){return d_x;};
@@ -115,6 +117,9 @@ public:
     virtual void updateCoordinates();
 	virtual QString saveToString();
 
+	void setAttachPolicy(AttachPolicy attachTo);
+	AttachPolicy attachPolicy(){return d_attach_policy;};
+
 signals:
 	void showDialog();
 	void showMenu();
@@ -158,6 +163,8 @@ protected:
     double d_y_bottom;
 	//! Frame width in pixels
 	int d_shadow_width;
+	//! The attach to policy
+	AttachPolicy d_attach_policy;
 };
 
 #endif

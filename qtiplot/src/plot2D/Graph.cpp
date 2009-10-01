@@ -2615,6 +2615,9 @@ void Graph::addArrow(QStringList list, int fileVersion)
 		mrk->setHeadAngle(list[11].toInt());
 		mrk->fillArrowHead(list[12]=="1");
 	}
+
+	if (list.count()>13)//introduced in file version 0.9.7.10
+		mrk->setAttachPolicy((ArrowMarker::AttachPolicy)list[13].toInt());
 }
 
 ArrowMarker* Graph::addArrow(ArrowMarker* mrk)
@@ -2634,6 +2637,7 @@ ArrowMarker* Graph::addArrow(ArrowMarker* mrk)
 		aux->setHeadLength(mrk->headLength());
 		aux->setHeadAngle(mrk->headAngle());
 		aux->fillArrowHead(mrk->filledArrowHead());
+		aux->setAttachPolicy(mrk->attachPolicy());
 	}
 	return aux;
 }
@@ -2670,7 +2674,8 @@ QString Graph::saveMarkers()
 		s+=QString::number(mrkL->hasStartArrow())+"\t";
 		s+=QString::number(mrkL->headLength())+"\t";
 		s+=QString::number(mrkL->headAngle())+"\t";
-		s+=QString::number(mrkL->filledArrowHead())+"</line>\n";
+		s+=QString::number(mrkL->filledArrowHead())+"\t";
+		s+=QString::number(mrkL->attachPolicy())+"</line>\n";
 	}
 
 	foreach(FrameWidget *f, d_enrichments)
@@ -3937,8 +3942,12 @@ QString Graph::saveToString(bool saveAsTemplate)
 
 void Graph::updateMarkersBoundingRect()
 {
-    foreach(FrameWidget *f, d_enrichments)
-		f->updateCoordinates();
+    foreach(FrameWidget *f, d_enrichments){
+    	if (f->attachPolicy() == FrameWidget::Scales)
+			f->resetCoordinates();
+		else
+			f->updateCoordinates();
+    }
 
 	if (!d_lines.size())
 		return;
@@ -6216,6 +6225,8 @@ FrameWidget* Graph::add(FrameWidget* fw, bool copy)
 		aux = new EllipseWidget(this);
 		((EllipseWidget *)aux)->clone(e);
 	}
+
+	aux->setAttachPolicy(fw->attachPolicy());
 
 	d_enrichments << aux;
 	d_active_enrichment = aux;

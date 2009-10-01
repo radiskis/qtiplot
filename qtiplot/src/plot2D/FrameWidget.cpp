@@ -45,7 +45,8 @@ FrameWidget::FrameWidget(Graph *plot):QWidget(plot->multiLayer()->canvas()),
 	d_frame_pen(QPen(Qt::black, 1, Qt::SolidLine, Qt::SquareCap, Qt::MiterJoin)),
 	d_brush(QBrush()),
 	d_angle(0),
-	d_shadow_width(5)
+	d_shadow_width(5),
+	d_attach_policy(Scales)
 {
 	setAttribute(Qt::WA_DeleteOnClose);
 
@@ -262,6 +263,7 @@ QString FrameWidget::saveToString()
 	s += "<y>" + QString::number(d_y, 'g', 14) + "</y>\n";
 	s += "<right>" + QString::number(d_x_right, 'g', 15) + "</right>\n";
     s += "<bottom>" + QString::number(d_y_bottom, 'g', 15) + "</bottom>\n";
+    s += "<attachTo>" + QString::number(d_attach_policy) + "</attachTo>\n";
 	return s;
 }
 
@@ -433,4 +435,10 @@ void FrameWidget::setRect(QWidget *widget, double x, double y, double w, double 
 		default:
             break;
 	}
+}
+
+void FrameWidget::setAttachPolicy(AttachPolicy attachTo)
+{
+	if (attachTo != d_attach_policy)
+		d_attach_policy = attachTo;
 }

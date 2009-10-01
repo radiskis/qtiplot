@@ -210,6 +210,7 @@ void ImageWidget::restore(Graph *g, const QStringList& lst)
 	QString fn;
 	bool save_xpm = false;
 	ImageWidget *i = NULL;
+	AttachPolicy attachTo = FrameWidget::Page;
 	for (line = lst.begin(); line != lst.end(); line++){
         QString s = *line;
         if (s.contains("<Frame>"))
@@ -228,6 +229,8 @@ void ImageWidget::restore(Graph *g, const QStringList& lst)
 			right = s.remove("<right>").remove("</right>").toDouble();
 		else if (s.contains("<bottom>"))
 			bottom = s.remove("<bottom>").remove("</bottom>").toDouble();
+		else if (s.contains("<attachTo>"))
+			attachTo = (FrameWidget::AttachPolicy)s.remove("<attachTo>").remove("</attachTo>").toInt();
 		else if (s.contains("<path>"))
 			i = g->addImage(s.remove("<path>").remove("</path>"));
 		else if (s.contains("<xpm>")){
@@ -250,5 +253,6 @@ void ImageWidget::restore(Graph *g, const QStringList& lst)
 		i->setFramePen(pen);
 		i->setCoordinates(x, y, right, bottom);
 		i->setSaveInternally(save_xpm);
+		i->setAttachPolicy(attachTo);
 	}
 }

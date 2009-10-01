@@ -91,6 +91,8 @@ void EllipseWidget::restore(Graph *g, const QStringList& lst)
 			right = s.remove("<right>").remove("</right>").toDouble();
 		else if (s.contains("<bottom>"))
 			bottom = s.remove("<bottom>").remove("</bottom>").toDouble();
+		else if (s.contains("<attachTo>"))
+			r->setAttachPolicy((FrameWidget::AttachPolicy)s.remove("<attachTo>").remove("</attachTo>").toInt());
 		else if (s.contains("<Background>"))
 			backgroundColor = QColor(s.remove("<Background>").remove("</Background>"));
 		else if (s.contains("<Alpha>"))

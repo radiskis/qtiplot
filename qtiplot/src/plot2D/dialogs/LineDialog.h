@@ -81,6 +81,7 @@ private:
 	DoubleSpinBox *xStartBox, *yStartBox, *xEndBox, *yEndBox;
 	QSpinBox *xStartPixelBox, *yStartPixelBox, *xEndPixelBox, *yEndPixelBox;
 	QSpinBox *boxHeadAngle, *boxHeadLength;
+	QComboBox* attachToBox;
 };
 
 #endif // LINEDIALOG_H

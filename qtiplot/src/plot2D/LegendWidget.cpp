@@ -77,6 +77,7 @@ d_tex_output(false)
 	setMouseTracking(true);
 	show();
 	setFocus();
+	d_attach_policy = Page;
 }
 
 void LegendWidget::paintEvent(QPaintEvent *e)
@@ -764,6 +765,8 @@ void LegendWidget::restore(Graph *g, const QStringList& lst)
 			x = s.remove("<x>").remove("</x>").toDouble();
 		else if (s.contains("<y>"))
 			y = s.remove("<y>").remove("</y>").toDouble();
+		else if (s.contains("<attachTo>"))
+			l->setAttachPolicy((FrameWidget::AttachPolicy)s.remove("<attachTo>").remove("</attachTo>").toInt());
 		else if (s.contains("<Text>")){
 			QStringList txt;
 			while ( s != "</Text>" ){

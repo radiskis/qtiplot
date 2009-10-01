@@ -44,6 +44,7 @@ class ArrowMarker: public QObject, public QwtPlotMarker
 {
 public:
 	enum Operation { None, MoveStart, MoveEnd, MoveBoth };
+	enum AttachPolicy {Page, Scales};
     ArrowMarker();
 
 	//! Pixel coordinates of the start point
@@ -125,6 +126,9 @@ public:
 	//! Filters events for the canvas while #d_editable is true.
 	bool eventFilter(QObject *o, QEvent *e);
 
+	void setAttachPolicy(AttachPolicy attachTo);
+	AttachPolicy attachPolicy(){return d_attach_policy;};
+
 private:
 	void displayInfo(bool clear = false);
 	void draw(QPainter *p, const QwtScaleMap &xMap, const QwtScaleMap &yMap, const QRect &r) const;
@@ -165,5 +169,7 @@ private:
 	 * need to remember this bit.
 	 */
 	QPoint d_op_startat;
+
+	AttachPolicy d_attach_policy;
 };
 #endif

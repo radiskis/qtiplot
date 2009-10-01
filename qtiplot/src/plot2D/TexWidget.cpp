@@ -153,6 +153,7 @@ void TexWidget::restore(Graph *g, const QStringList& lst)
 	int frameStyle = 0;
 	QPen pen = QPen(Qt::black, 1, Qt::SolidLine, Qt::SquareCap, Qt::MiterJoin);
 	double x = 0.0, y = 0.0, right = 0.0, bottom = 0.0;
+	AttachPolicy attachTo = FrameWidget::Page;
 	QPixmap pix;
 	QStringList::const_iterator line;
 	QString formula;
@@ -174,6 +175,8 @@ void TexWidget::restore(Graph *g, const QStringList& lst)
 			right = s.remove("<right>").remove("</right>").toDouble();
 		else if (s.contains("<bottom>"))
 			bottom = s.remove("<bottom>").remove("</bottom>").toDouble();
+		else if (s.contains("<attachTo>"))
+			attachTo = (FrameWidget::AttachPolicy)s.remove("<attachTo>").remove("</attachTo>").toInt();
 		else if (s.contains("<tex>"))
 			formula = s.remove("<tex>").remove("</tex>");
 		else if (s.contains("<xpm>")){
@@ -191,4 +194,5 @@ void TexWidget::restore(Graph *g, const QStringList& lst)
 	t->setFrameStyle(frameStyle);
 	t->setFramePen(pen);
 	t->setCoordinates(x, y, right, bottom);
+	t->setAttachPolicy(attachTo);
 }

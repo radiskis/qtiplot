@@ -138,6 +138,7 @@ private:
 	QPushButton *textDefaultBtn, *frameDefaultBtn, *rectangleDefaultBtn;
 	QCheckBox *autoUpdateTextBox, *texOutputBox;
     QComboBox *texCompilerBox;
+    QComboBox* attachToBox;
 
 	QFont textFont;
 
