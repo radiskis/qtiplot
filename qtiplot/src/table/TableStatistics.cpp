@@ -45,8 +45,6 @@ TableStatistics::TableStatistics(ScriptingEnv *env, ApplicationWindow *parent, T
     d_table->setReadOnly(true);
 	setCaptionPolicy(MdiSubWindow::Both);
 	if (d_type == row){
-		setName(QString(d_base->objectName())+"-"+tr("RowStats"));
-		setWindowLabel(tr("Row Statistics of %1").arg(base->objectName()));
 		resizeRows(d_targets.size());
         resizeCols(11);
 		setColName(0, tr("Row"));
@@ -64,10 +62,12 @@ TableStatistics::TableStatistics(ScriptingEnv *env, ApplicationWindow *parent, T
 		for (int i=0; i < d_targets.size(); i++)
             setText(i, 0, QString::number(d_targets[i]+1));
 
-		update(d_base, QString::null);
+		if (d_base){
+			setName(QString(d_base->objectName()) + "-" + tr("RowStats"));
+			setWindowLabel(tr("Row Statistics of %1").arg(base->objectName()));
+			update(d_base, QString::null);
+		}
     } else if (d_type == column) {
-            setName(QString(d_base->objectName())+"-"+tr("ColStats"));
-            setWindowLabel(tr("Column Statistics of %1").arg(base->objectName()));
             resizeRows(d_targets.size());
             resizeCols(13);
             setColName(0, tr("Col"));
@@ -87,27 +87,33 @@ TableStatistics::TableStatistics(ScriptingEnv *env, ApplicationWindow *parent, T
 
             setColumnType(1, Text);
 
-		for (int i=0; i < d_targets.size(); i++){
-            setText(i, 0, d_base->colLabel(d_targets[i]));
-            update(d_base, d_base->colName(d_targets[i]));
+		if (d_base){
+			setName(QString(d_base->objectName()) + "-" + tr("ColStats"));
+            setWindowLabel(tr("Column Statistics of %1").arg(base->objectName()));
+			for (int i=0; i < d_targets.size(); i++){
+				setText(i, 0, d_base->colLabel(d_targets[i]));
+				update(d_base, d_base->colName(d_targets[i]));
+			}
 		}
 	}
     int w = 9*(d_table->horizontalHeader())->sectionSize(0);
-	int h;
+	int h = 0;
 	if (numRows()>11)
         h = 11*(d_table->verticalHeader())->sectionSize(0);
 	else
         h = (numRows()+1)*(d_table->verticalHeader())->sectionSize(0);
-	setGeometry(50,50,w + 45, h + 45);
+	setGeometry(50, 50, w + 45, h + 45);
 
     setColPlotDesignation(0, Table::X);
     setColPlotDesignation(4, Table::yErr);
 	setHeaderColType();
 
-    connect(d_base, SIGNAL(modifiedData(Table*, const QString&)), this, SLOT(update(Table*, const QString&)));
-	connect(d_base, SIGNAL(changedColHeader(const QString&, const QString&)), this, SLOT(renameCol(const QString&, const QString&)));
-	connect(d_base, SIGNAL(removedCol(const QString&)), this, SLOT(removeCol(const QString&)));
-	connect(d_base, SIGNAL(destroyed()), this, SLOT(closedBase()));
+	if (d_base){
+		connect(d_base, SIGNAL(modifiedData(Table*, const QString&)), this, SLOT(update(Table*, const QString&)));
+		connect(d_base, SIGNAL(changedColHeader(const QString&, const QString&)), this, SLOT(renameCol(const QString&, const QString&)));
+		connect(d_base, SIGNAL(removedCol(const QString&)), this, SLOT(removeCol(const QString&)));
+		connect(d_base, SIGNAL(destroyed()), this, SLOT(closedBase()));
+	}
 }
 
 void TableStatistics::closedBase()
