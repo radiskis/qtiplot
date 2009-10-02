@@ -875,6 +875,9 @@ public slots:
 	void renameCurrentNoteTab();
 	void addNoteTab();
 	void closeNoteTab();
+	void execute();
+	void executeAll();
+	void evaluate();
 	//@}
 
 	//! \name Folders

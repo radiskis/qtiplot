@@ -1471,7 +1471,7 @@ void ApplicationWindow::customMenu(QMdiSubWindow* w)
 			d_undo_view->setEmptyLabel(w->objectName() + ": " + tr("Empty Stack"));
 			QUndoStack *stack = ((Matrix *)w)->undoStack();
 			d_undo_view->setStack(stack);
-		} else if (w->isA("Note")){
+		} else if (qobject_cast<Note*>(w)){
 			actionSaveTemplate->setEnabled(false);
 			actionNoteEvaluate->setEnabled(true);
 		} else
@@ -2870,6 +2870,7 @@ Note* ApplicationWindow::newNote(const QString& caption)
 	connect(m, SIGNAL(hiddenWindow(MdiSubWindow*)), this, SLOT(hideWindow(MdiSubWindow*)));
 	connect(m, SIGNAL(statusChanged(MdiSubWindow*)), this, SLOT(updateWindowStatus(MdiSubWindow*)));
 	connect(m, SIGNAL(dirPathChanged(const QString&)), this, SLOT(scriptsDirPathChanged(const QString&)));
+	connect(m, SIGNAL(currentEditorChanged()), this, SLOT(scriptingMenuAboutToShow()));
 
 	m->showNormal();
 	return m;
@@ -5399,7 +5400,7 @@ void ApplicationWindow::saveSettings()
 	settings.setValue("/MinorStyle", d_3D_minor_style);
 	settings.setValue("/MinorWidth", d_3D_minor_width);
 	settings.endGroup(); // Grids
-	
+
 	settings.endGroup();
 	/* ----------------- end group 3D Plots -------- */
 
@@ -8837,20 +8838,19 @@ void ApplicationWindow::about()
 void ApplicationWindow::scriptingMenuAboutToShow()
 {
     scriptingMenu->clear();
-    MdiSubWindow *w = activeWindow();
-    if (!w)
-        return;
-
 #ifdef SCRIPTING_DIALOG
 	scriptingMenu->addAction(actionScriptingLang);
 #endif
 	scriptingMenu->addAction(actionRestartScripting);
     scriptingMenu->addAction(actionCustomActionDialog);
 
-	Note *note = qobject_cast<Note *>(w);
-	if (note){
+	Note *note = (Note *)activeWindow(NoteWindow);
+    if (note){
 		scriptingMenu->insertSeparator();
-		if (!note->text().isEmpty()){
+
+    	bool noteHasText = !note->text().isEmpty();
+    	noteTools->setEnabled(noteHasText);
+		if (noteHasText){
 			scriptingMenu->addAction(actionNoteExecute);
 			scriptingMenu->addAction(actionNoteExecuteAll);
 			scriptingMenu->addAction(actionNoteEvaluate);
@@ -8871,14 +8871,7 @@ void ApplicationWindow::scriptingMenuAboutToShow()
 		scriptingMenu->insertSeparator();
 		actionShowNoteLineNumbers->setChecked(note->hasLineNumbers());
 		scriptingMenu->addAction(actionShowNoteLineNumbers);
-
-		actionNoteExecute->disconnect(SIGNAL(activated()));
-		actionNoteExecuteAll->disconnect(SIGNAL(activated()));
-		actionNoteEvaluate->disconnect(SIGNAL(activated()));
-		connect(actionNoteExecute, SIGNAL(activated()), note, SLOT(execute()));
-		connect(actionNoteExecuteAll, SIGNAL(activated()), note, SLOT(executeAll()));
-		connect(actionNoteEvaluate, SIGNAL(activated()), note, SLOT(evaluate()));
-	}
+    }
 
 	reloadCustomActions();
 }
@@ -13206,12 +13199,15 @@ void ApplicationWindow::createActions()
 
 	actionNoteExecute = new QAction(tr("E&xecute"), this);
 	actionNoteExecute->setShortcut(tr("Ctrl+J"));
+	connect(actionNoteExecute, SIGNAL(activated()), this, SLOT(execute()));
 
 	actionNoteExecuteAll = new QAction(QIcon(QPixmap(play_xpm)), tr("Execute &All"), this);
 	actionNoteExecuteAll->setShortcut(tr("Ctrl+Shift+J"));
+	connect(actionNoteExecuteAll, SIGNAL(activated()), this, SLOT(executeAll()));
 
 	actionNoteEvaluate = new QAction(tr("&Evaluate Expression"), this);
 	actionNoteEvaluate->setShortcut(tr("Ctrl+Return"));
+	connect(actionNoteEvaluate, SIGNAL(activated()), this, SLOT(evaluate()));
 
 	actionShowNoteLineNumbers = new QAction(tr("Show Line &Numbers"), this);
 	actionShowNoteLineNumbers->setCheckable(true);
@@ -17348,4 +17344,31 @@ void ApplicationWindow::decreasePrecision()
 	m->undoStack()->push(new MatrixSetPrecisionCommand(m, format, format,
 					oldPrec, prec, tr("Set Precision %1 digits").arg(prec)));
 	m->setNumericPrecision(prec);
+}
+
+void ApplicationWindow::execute()
+{
+	Note *note = (Note *)activeWindow(NoteWindow);
+    if (!note)
+		return;
+
+	note->execute();
+}
+
+void ApplicationWindow::executeAll()
+{
+	Note *note = (Note *)activeWindow(NoteWindow);
+    if (!note)
+		return;
+
+	note->executeAll();
+}
+
+void ApplicationWindow::evaluate()
+{
+	Note *note = (Note *)activeWindow(NoteWindow);
+    if (!note)
+		return;
+
+	note->evaluate();
 }
