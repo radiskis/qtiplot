@@ -409,7 +409,7 @@ void QTeXPaintEngine::drawPixmap(const QPixmap &pix, const QRectF &r)
 
 	t << "\\pgfputat";
 	t << pgfPoint(convertPoint(painter()->worldMatrix().map(r.bottomLeft())));
-	t << "{\\pgfimage[interpolate=true,width=";
+	t << "{\\pgfimage[interpolate=false,width=";
 
 	QString u = unit();
 	t << QString::number(r.width()*resFactorX()) + u + ",height=";
