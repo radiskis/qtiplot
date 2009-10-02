@@ -142,6 +142,8 @@ void Note::addTab()
 	editor->setCompleter(app->completer());
 	editor->setDirPath(app->scriptsDirPath);
 
+	d_tab_widget->setFocusProxy(editor);
+
 	LineNumberDisplay *ln = new LineNumberDisplay(editor, this);
 	ln->setCurrentFont(f);
 
@@ -158,6 +160,7 @@ void Note::addTab()
 	d_tab_widget->setCurrentIndex(d_tab_widget->addTab(frame, tr("untitled")));
 
 	connect(editor, SIGNAL(textChanged()), this, SLOT(modifiedNote()));
+	connect(editor, SIGNAL(textChanged()), this, SIGNAL(currentEditorChanged()));
 	connect(editor, SIGNAL(dirPathChanged(const QString& )), this, SIGNAL(dirPathChanged(const QString&)));
 }
 

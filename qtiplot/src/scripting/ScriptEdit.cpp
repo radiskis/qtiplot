@@ -404,11 +404,9 @@ void ScriptEdit::evaluate()
 
 	myScript->setName(fname);
 	myScript->setCode(codeCursor.selectedText().replace(QChar::ParagraphSeparator,"\n"));
-	//printCursor.setPosition(codeCursor.selectionEnd(), QTextCursor::MoveAnchor);
-	//printCursor.movePosition(QTextCursor::EndOfLine, QTextCursor::MoveAnchor);
 	QVariant res = myScript->eval();
 
-	if (res.isValid())
+	if (res.isValid() && !myScript->code().isEmpty())
 		if (!res.isNull() && res.canConvert(QVariant::String)){
 			QString strVal = res.toString();
 			strVal.replace("\n", "\n#> ");

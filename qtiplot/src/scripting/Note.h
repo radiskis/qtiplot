@@ -90,6 +90,7 @@ public slots:
 
  signals:
 	void dirPathChanged(const QString& path);
+	void currentEditorChanged();
 
 private:
 	void saveTab(int index, const QString &fn);
