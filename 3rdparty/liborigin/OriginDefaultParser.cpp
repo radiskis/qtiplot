@@ -413,7 +413,7 @@ bool OriginDefaultParser::parse()
 			fread(&name,25,1,f);
 
 			fseek(f,LAYER+ATYPE+j*COL_JUMP-1, SEEK_SET);
-			fread(&c,1,1,f);
+			fread(&c, 1, 1, f);
 			SpreadColumn::ColumnType type;
 			switch(c) {
 			case 3:
@@ -439,10 +439,10 @@ bool OriginDefaultParser::parse()
 				break;
 			}
 
-			speadSheets[spread].columns[j].type=type;
+			speadSheets[spread].columns[j].type = type;
 
 			fprintf(debug,"				COLUMN \"%s\" type = %d (@ 0x%X)\n",
-				speadSheets[spread].columns[j].name.c_str(),type,LAYER+ATYPE+j*COL_JUMP);
+				speadSheets[spread].columns[j].name.c_str(), type, LAYER+ATYPE+j*COL_JUMP);
 			fflush(debug);
 
 			// check column name

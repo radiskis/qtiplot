@@ -274,9 +274,6 @@ void QwtErrorPlotCurve::loadData()
 	if (xcol<0 || ycol<0 || errcol<0)
 		return;
 
-	int xColType = mt->columnType(xcol);
-	int yColType = mt->columnType(ycol);
-
 	d_start_row = d_master_curve->startRow();
 	d_end_row = d_master_curve->endRow();
     int r = abs(d_end_row - d_start_row) + 1;
@@ -288,20 +285,10 @@ void QwtErrorPlotCurve::loadData()
 		QString yval = mt->text(i, ycol);
 		QString errval = d_table->text(i, errcol);
 		if (!xval.isEmpty() && !yval.isEmpty() && !errval.isEmpty()){
-		    bool ok = true;
-			if (xColType == Table::Text)
-				X[data_size] = (double)(data_size + 1);
-			else
-				X[data_size] = locale.toDouble(xval, &ok);
+			X[data_size] = d_master_curve->x(data_size);
+			Y[data_size] = d_master_curve->y(data_size);
 
-			if (yColType == Table::Text)
-				Y[data_size] = (double)(data_size + 1);
-			else
-				Y[data_size] = locale.toDouble(yval, &ok);
-
-            if (!ok)
-                continue;
-
+			bool ok = true;
 			err[data_size] = locale.toDouble(errval, &ok);
 			if (ok)
                 data_size++;

@@ -5,7 +5,7 @@
     Copyright            : (C) 2006 by Ion Vasilief, Tilman Hoener zu Siederdissen
     Email (use @ for *)  : ion_vasilief*yahoo.fr, thzs*gmx.net
     Description          : Add error bars dialog
-                           
+
  ***************************************************************************/
 
 /***************************************************************************
@@ -34,12 +34,12 @@
 class QLabel;
 class QComboBox;
 class QRadioButton;
-class QLineEdit;
+class DoubleSpinBox;
 class QPushButton;
 class QGroupBox;
 class QButtonGroup;
 class MdiSubWindow;
-	
+
 //! Add error bars dialog
 class ErrDialog : public QDialog
 {
@@ -61,7 +61,7 @@ private:
 	QButtonGroup *buttonGroup1, *buttonGroup2;
     QRadioButton* standardBox, *columnBox;
     QRadioButton* percentBox;
-    QLineEdit* valueBox;
+    DoubleSpinBox* valueBox;
     QRadioButton* xErrBox;
     QRadioButton* yErrBox;
 	QPushButton* buttonAdd;
@@ -84,7 +84,7 @@ public slots:
 
 signals:
 	//! This is usually connected to the main window's defineErrorBars() slot
-	void options(const QString& curveName, int type, const QString& percent,int direction);
+	void options(const QString& curveName, int type, double percent, int direction);
 	//! This is usually connected to the main window's defineErrorBars() slot
 	void options(const QString& curveName, const QString& errColumnName, int direction);
 };
