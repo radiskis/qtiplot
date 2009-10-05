@@ -3511,15 +3511,15 @@ void ApplicationWindow::addErrorBars()
 	}
 
     ErrDialog* ed = new ErrDialog(this);
-    connect (ed,SIGNAL(options(const QString&,int,const QString&,int)),this,SLOT(defineErrorBars(const QString&,int,const QString&,int)));
-    connect (ed,SIGNAL(options(const QString&,const QString&,int)),this,SLOT(defineErrorBars(const QString&,const QString&,int)));
+    connect (ed, SIGNAL(options(const QString&, int, double, int)), this, SLOT(defineErrorBars(const QString&, int, double, int)));
+    connect (ed, SIGNAL(options(const QString&, const QString&, int)), this, SLOT(defineErrorBars(const QString&, const QString&, int)));
 
     ed->setCurveNames(g->analysableCurvesList());
     ed->setSrcTables(tableList());
     ed->exec();
 }
 
-void ApplicationWindow::defineErrorBars(const QString& name, int type, const QString& percent, int direction)
+void ApplicationWindow::defineErrorBars(const QString& name, int type, double percent, int direction)
 {
     MdiSubWindow *w = activeWindow(MultiLayerWindow);
     if (!w)
@@ -3546,25 +3546,36 @@ void ApplicationWindow::defineErrorBars(const QString& name, int type, const QSt
 	else
 		t->addCol(Table::yErr);
 
-	int r = t->numRows();
-	int c = t->numCols()-1;
+	int r = master_curve->dataSize();
+	int rows = t->numRows();
+	int c = t->numCols() - 1;
 	int ycol = t->colIndex(name);
 	if (!direction)
 		ycol = t->colIndex(xColName);
 
 	QVarLengthArray<double> Y(r);
-	Y = t->col(ycol);
+	if (direction == QwtErrorPlotCurve::Horizontal){
+		for (int i = 0; i < r; i++)
+			Y[i] = master_curve->x(i);
+	} else {
+		for (int i = 0; i < r; i++)
+			Y[i] = master_curve->y(i);
+	}
+
 	QString errColName = t->colName(c);
 
 	if (type == 0){
-        double prc = 0.01*percent.toDouble();
-		for (int i=0; i<r; i++){
-			if (!t->text(i, ycol).isEmpty())
-				t->setCell(i, c, Y[i]*prc);
+        double prc = 0.01*percent;
+		int aux = 0;
+		for (int i = 0; i < rows; i++){
+			if (!t->text(i, ycol).isEmpty() && aux < r){
+				t->setCell(i, c, Y[aux]*prc);
+				aux++;
+			}
 		}
 	} else if (type == 1) {
 		double sd = gsl_stats_sd(Y.data(), 1, r);
-		for (int i = 0; i<r; i++){
+		for (int i = 0; i < rows; i++){
 			if (!t->text(i, ycol).isEmpty())
 				t->setCell(i, c, sd);
 		}

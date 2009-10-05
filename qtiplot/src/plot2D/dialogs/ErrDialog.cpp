@@ -5,7 +5,7 @@
     Copyright            : (C) 2006 by Ion Vasilief, Tilman Hoener zu Siederdissen
     Email (use @ for *)  : ion_vasilief*yahoo.fr, thzs*gmx.net
     Description          : Add error bars dialog
-                           
+
  ***************************************************************************/
 
 /***************************************************************************
@@ -27,7 +27,9 @@
  *                                                                         *
  ***************************************************************************/
 #include "ErrDialog.h"
-#include "../../table/Table.h"
+#include <Table.h>
+#include <ApplicationWindow.h>
+#include <DoubleSpinBox.h>
 
 #include <QHBoxLayout>
 #include <QVBoxLayout>
@@ -36,7 +38,6 @@
 #include <QLabel>
 #include <QComboBox>
 #include <QRadioButton>
-#include <QLineEdit>
 #include <QPushButton>
 #include <QGroupBox>
 #include <QButtonGroup>
@@ -53,7 +54,7 @@ ErrDialog::ErrDialog( QWidget* parent, Qt::WFlags fl )
 
 	QVBoxLayout *vbox1 = new QVBoxLayout();
 	vbox1->setSpacing (5);
-	
+
 	QHBoxLayout *hbox1 = new QHBoxLayout();
 	vbox1->addLayout(hbox1);
 
@@ -69,15 +70,15 @@ ErrDialog::ErrDialog( QWidget* parent, Qt::WFlags fl )
 
 	buttonGroup1 = new QButtonGroup();
 	buttonGroup1->setExclusive( true );
-	
+
 	columnBox = new QRadioButton();
     columnBox->setChecked( true );
 	buttonGroup1->addButton(columnBox);
 	gridLayout->addWidget(columnBox, 0, 0 );
-	
+
 	colNamesBox = new QComboBox();
     tableNamesBox = new QComboBox();
-	
+
     QHBoxLayout * comboBoxes = new QHBoxLayout();
 	comboBoxes->addWidget(tableNamesBox);
 	comboBoxes->addWidget(colNamesBox);
@@ -88,12 +89,14 @@ ErrDialog::ErrDialog( QWidget* parent, Qt::WFlags fl )
 	buttonGroup1->addButton(percentBox);
 	gridLayout->addWidget(percentBox, 1, 0 );
 
-    valueBox = new QLineEdit();
-	valueBox->setText("5");
+    valueBox = new DoubleSpinBox();
+    valueBox->setMinimum(0.0);
+    valueBox->setLocale(((ApplicationWindow *)parent)->locale());
+	valueBox->setValue(5);
     valueBox->setAlignment( Qt::AlignHCenter );
 	valueBox->setEnabled(false);
 	gridLayout->addWidget(valueBox, 1, 1);
-	
+
 	standardBox = new QRadioButton();
 	buttonGroup1->addButton(standardBox);
 	gridLayout->addWidget(standardBox, 2, 0 );
@@ -104,7 +107,7 @@ ErrDialog::ErrDialog( QWidget* parent, Qt::WFlags fl )
 
 	buttonGroup2 = new QButtonGroup();
 	buttonGroup2->setExclusive( true );
-	
+
     xErrBox = new QRadioButton();
 	buttonGroup2->addButton(xErrBox);
 	hbox2->addWidget(xErrBox );
@@ -113,7 +116,7 @@ ErrDialog::ErrDialog( QWidget* parent, Qt::WFlags fl )
 	buttonGroup2->addButton(yErrBox);
 	hbox2->addWidget(yErrBox );
     yErrBox->setChecked( true );
-	
+
 	QVBoxLayout * vbox2 = new QVBoxLayout();
 	buttonAdd = new QPushButton();
     buttonAdd->setDefault( true );
@@ -123,11 +126,11 @@ ErrDialog::ErrDialog( QWidget* parent, Qt::WFlags fl )
 	vbox2->addWidget(buttonCancel);
 
 	vbox2->addStretch(1);
-	
+
 	QHBoxLayout * hlayout1 = new QHBoxLayout(this);
 	hlayout1->addLayout(vbox1);
     hlayout1->addLayout(vbox2);
-	
+
     languageChange();
 
   // signals and slots connections
@@ -148,7 +151,7 @@ void ErrDialog::setSrcTables(QList<MdiSubWindow *> tables)
 {
 	if (tables.isEmpty())
 		return;
-	
+
 	srcTables = tables;
 	tableNamesBox->clear();
 
@@ -166,23 +169,22 @@ void ErrDialog::selectSrcTable(int tabnr)
 
 void ErrDialog::add()
 {
-	int direction=-1;
-	if (xErrBox->isChecked()) 
-		direction = 0; 
-	else 
+	int direction = -1;
+	if (xErrBox->isChecked())
+		direction = 0;
+	else
 		direction = 1;
 
 	if (columnBox->isChecked())
-		emit options(nameLabel->currentText(), tableNamesBox->currentText()+"_"+colNamesBox->currentText(), direction);	
-	else
-	{
+		emit options(nameLabel->currentText(), tableNamesBox->currentText() + "_" + colNamesBox->currentText(), direction);
+	else {
 		int type;
-		if (percentBox->isChecked()) 
-			type = 0; 
-		else 
+		if (percentBox->isChecked())
+			type = 0;
+		else
 			type = 1;
 
-		emit options(nameLabel->currentText(),type, valueBox->text(), direction);
+		emit options(nameLabel->currentText(),type, valueBox->value(), direction);
 	}
 }
 
