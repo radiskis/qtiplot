@@ -595,7 +595,7 @@ QString LegendWidget::parse(const QString& str)
 			PlotCurve *c = getCurve(lst[0], point);
 			if (c){
 				Table *t = 0;
-				if (c->type() == Graph::Function)
+				if (c->type() == Graph::Function || c->type() == Graph::Histogram)
 					s = s.replace(pos, pos2 - pos + 1, c->title().text());
 				else
 					t = ((DataCurve *)c)->table();

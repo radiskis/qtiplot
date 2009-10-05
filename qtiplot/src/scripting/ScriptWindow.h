@@ -67,6 +67,13 @@ private slots:
 		void redirectOutput(bool);
 		void printPreview();
 		void showWorkspace(bool on = true);
+		void find();
+		void findNext();
+		void findPrevious();
+		void replace();
+		void increaseIndent();
+		void decreaseIndent();
+		void enableActions();
 
 signals:
 		void visibilityChanged(bool visible);
@@ -91,7 +98,8 @@ private:
 		QAction *actionAlwaysOnTop, *actionHide, *actionShowLineNumbers;
 		QAction *actionShowConsole, *actionRedirectOutput, *actionPrintPreview;
 		QAction *actionShowWorkspace;
-
+		QAction *actionFind, *actionFindNext, *actionFindPrev, *actionReplace;
+		QAction *actionIncreaseIndent, *actionDecreaseIndent;
 		QDockWidget *consoleWindow;
 		QTextEdit *console;
 };

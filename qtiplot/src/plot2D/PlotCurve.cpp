@@ -295,8 +295,8 @@ void PlotCurve::drawSideLines(QPainter *p, const QwtScaleMap &xMap, const QwtSca
 	p->setPen(pen);
 
 	double lw = 0.5*pen.widthF();
-	const double xl = xMap.xTransform(minXValue());
-	const double xr = xMap.xTransform(maxXValue());
+	const double xl = xMap.xTransform(x(from));
+	const double xr = xMap.xTransform(x(to));
 	const double yl = yMap.xTransform(y(from)) - lw;
 	const double yr = yMap.xTransform(y(to)) - lw;
 	const double base = yMap.xTransform(baseline());

@@ -1152,7 +1152,7 @@ void Graph::setAxisTitle(int axis, const QString& text)
 	emit modifiedGraph();
 }
 
-void Graph::updateSecondaryAxis(int axis)
+void Graph::updateSecondaryAxis(int axis, bool changeFormat)
 {
 	foreach (QwtPlotItem *it, d_curves){
 		if (it->rtti() == QwtPlotItem::Rtti_PlotSpectrogram){
@@ -1172,6 +1172,19 @@ void Graph::updateSecondaryAxis(int axis)
 
 	if (!axisEnabled(a))
 		return;
+
+	if (changeFormat){
+		ScaleDraw *sd = (ScaleDraw *)axisScaleDraw (a);
+		ScaleDraw::ScaleType type = sd->scaleType();
+		if (type == ScaleDraw::Day)
+			setLabelsDayFormat(axis, sd->nameFormat());
+		else if (type == ScaleDraw::Month)
+			setLabelsMonthFormat(axis, sd->nameFormat());
+		else if (type == ScaleDraw::Time || type == ScaleDraw::Date)
+			setLabelsDateTimeFormat(axis, type, sd->formatString());
+		else
+			setAxisScaleDraw(axis, new ScaleDraw(this, sd->labelsList(), sd->formatString(), sd->scaleType()));
+	}
 
 	ScaleEngine *sc_engine = (ScaleEngine *)axisScaleEngine(axis);
 	sc_engine->clone((ScaleEngine *)axisScaleEngine(a));
@@ -3091,8 +3104,8 @@ bool Graph::addCurves(Table* w, const QStringList& names, int style, double lWid
 
 	replot();
 
-	updateSecondaryAxis(QwtPlot::xTop);
-	updateSecondaryAxis(QwtPlot::yRight);
+	updateSecondaryAxis(QwtPlot::xTop, true);
+	updateSecondaryAxis(QwtPlot::yRight, true);
 
 	replot();
 
@@ -3599,6 +3612,7 @@ bool Graph::zoomOn()
 
 void Graph::zoomed (const QwtDoubleRect &)
 {
+	updateMarkersBoundingRect();
 	emit modifiedGraph();
 }
 
@@ -3644,6 +3658,12 @@ void Graph::enablePanningMagnifier(bool on)
 		d_magnifier = new QwtPlotMagnifier(cnvs);
 		d_magnifier->setZoomInKey(Qt::Key_Plus, Qt::ShiftModifier);
 
+		for (int i = 0; i < QwtPlot::axisCnt; i++){
+			QwtScaleWidget *scale = axisWidget(i);
+			if (scale)
+                connect(scale, SIGNAL(scaleDivChanged()), this, SLOT(updateMarkersBoundingRect()));
+		}
+
 		d_panner = new QwtPlotPanner(cnvs);
 		connect(d_panner, SIGNAL(panned(int, int)), multiLayer(), SLOT(notifyChanges()));
 
@@ -3656,6 +3676,12 @@ void Graph::enablePanningMagnifier(bool on)
 			}
 		}
 	} else {
+		for (int i = 0; i < QwtPlot::axisCnt; i++){
+			QwtScaleWidget *scale = axisWidget(i);
+			if (scale)
+				disconnect(scale, SIGNAL(scaleDivChanged()), this, SLOT(updateMarkersBoundingRect()));
+		}
+
 		cnvs->setCursor(Qt::arrowCursor);
 		d_magnifier = NULL;
 		d_panner = NULL;
