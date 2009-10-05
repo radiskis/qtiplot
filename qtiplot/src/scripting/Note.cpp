@@ -52,6 +52,7 @@ void Note::init(ScriptingEnv *env)
 	d_tab_widget->setDocumentMode(true);
 	connect(d_tab_widget, SIGNAL(tabCloseRequested(int)), this, SLOT(removeTab(int)));
 	connect(d_tab_widget, SIGNAL(currentChanged(int)), this, SLOT(notifyChanges()));
+	connect(d_tab_widget, SIGNAL(currentChanged(int)), this, SIGNAL(currentEditorChanged()));
 
 	QPushButton *btnAdd = new QPushButton("+");
 	btnAdd->setToolTip(tr("Add tab"));

@@ -1654,6 +1654,9 @@ void MultiLayer::updateWaterfallLayout()
 	first->enableAxis(QwtPlot::xTop, false);
 	first->enableAxis(QwtPlot::yRight, false);
 
+	if (!first->isVisible())
+		first->show();
+
 	int dx = qRound(d_waterfall_offset_x*d_canvas->width()/100.0);
 	int dy = qRound(d_waterfall_offset_y*d_canvas->height()/100.0);
 	first->resize(QSize(d_canvas->width() - aux*dx - left_margin - right_margin,
@@ -1669,6 +1672,9 @@ void MultiLayer::updateWaterfallLayout()
 	first->setBackgroundColor(c);
 	first->setCanvasBackground(c);
 
+	QwtScaleDiv *xScaleDiv = first->axisScaleDiv(QwtPlot::xBottom);
+	QwtScaleDiv *yScaleDiv = first->axisScaleDiv(QwtPlot::yLeft);
+
 	QObjectList lst = d_canvas->children();
 	for (int i = 1; i < layers; i++){
 		Graph *g = qobject_cast<Graph *>(lst[aux - i]);
@@ -1677,11 +1683,18 @@ void MultiLayer::updateWaterfallLayout()
 
 		g->setBackgroundColor(c);
 		g->setCanvasBackground(c);
+
 		for (int j = 0; j < QwtPlot::axisCnt; j++)
 			g->enableAxis(j, false);
 
 		g->move(pos.x() + i*dx, pos.y() + (aux - i)*dy);
 		g->resize(size);
+
+		if (!g->isVisible())
+			g->show();
+
+		g->setAxisScaleDiv(QwtPlot::xBottom, *xScaleDiv);
+		g->setAxisScaleDiv(QwtPlot::yLeft, *yScaleDiv);
 	}
 	first->setAutoscaleFonts(scaleFonts);
 
@@ -1810,6 +1823,7 @@ void MultiLayer::showWaterfallFillDialog()
 	QCheckBox *sideLinesBox = new QCheckBox(tr("Side Lines"));
 	sideLinesBox->setChecked(d_side_lines);
 	hl1->addWidget(sideLinesBox, 1, 0);
+	hl1->setRowStretch(2, 1);
 
 	if (active_graph){
 		QwtPlotCurve *cv = (QwtPlotCurve *)active_graph->curve(0);

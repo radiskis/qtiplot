@@ -78,8 +78,11 @@ d_app(app)
 	consoleWindow->setWidget(console);
 	connect(te, SIGNAL(error(const QString&, const QString&, int)), console, SLOT(setPlainText(const QString&)));
 	connect(te, SIGNAL(error(const QString&, const QString&, int)), consoleWindow, SLOT(show()));
+	connect(te, SIGNAL(textChanged ()), this, SLOT(enableActions()));
 
 	initActions();
+	enableActions();
+
 	setIcon(QPixmap(logo_xpm));
 	setWindowTitle(tr("QtiPlot - Script Window"));
 	setFocusProxy(te);
@@ -168,6 +171,37 @@ void ScriptWindow::initActions()
 
 	edit->insertSeparator();
 
+	actionIncreaseIndent = new QAction(QPixmap(increase_indent_xpm), tr("Increase Indent"), this);
+	connect(actionIncreaseIndent, SIGNAL(activated()), this, SLOT(increaseIndent()));
+	edit->addAction(actionIncreaseIndent);
+
+	actionDecreaseIndent = new QAction(QPixmap(decrease_indent_xpm),tr("Decrease Indent"), this);
+	connect(actionDecreaseIndent, SIGNAL(activated()), this, SLOT(decreaseIndent()));
+	edit->addAction(actionDecreaseIndent);
+
+	edit->insertSeparator();
+
+	actionFind = new QAction(QPixmap(find_xpm), tr("&Find..."), this);
+	actionFind->setShortcut(tr("Ctrl+Alt+F"));
+	connect(actionFind, SIGNAL(activated()), this, SLOT(find()));
+	edit->addAction(actionFind);
+
+	actionFindNext = new QAction(QPixmap(find_next_xpm), tr("Find &Next"), this);
+	actionFindNext->setShortcut(tr("F3"));
+	connect(actionFindNext, SIGNAL(activated()), this, SLOT(findNext()));
+	edit->addAction(actionFindNext);
+
+	actionFindPrev = new QAction(QPixmap(find_previous_xpm), tr("Find &Previous"), this);
+	actionFindPrev->setShortcut(tr("F4"));
+	connect(actionFindPrev, SIGNAL(activated()), this, SLOT(findPrevious()));
+	edit->addAction(actionFindPrev);
+
+	actionReplace = new QAction(QPixmap(replace_xpm), tr("&Replace..."), this);
+	connect(actionReplace, SIGNAL(activated()), this, SLOT(replace()));
+	edit->addAction(actionReplace);
+
+	edit->insertSeparator();
+
 	actionShowLineNumbers = new QAction(tr("Show &Line Numbers"), this);
 	actionShowLineNumbers->setCheckable(true);
 	actionShowLineNumbers->setChecked(d_app->d_note_line_numbers);
@@ -179,7 +213,7 @@ void ScriptWindow::initActions()
 	connect(actionExecute, SIGNAL(activated()), te, SLOT(execute()));
 	run->addAction(actionExecute);
 
-	actionExecuteAll = new QAction(tr("Execute &All"), this);
+	actionExecuteAll = new QAction(QPixmap(play_xpm), tr("Execute &All"), this);
 	actionExecuteAll->setShortcut( tr("CTRL+SHIFT+J") );
 	connect(actionExecuteAll, SIGNAL(activated()), te, SLOT(executeAll()));
 	run->addAction(actionExecuteAll);
@@ -285,6 +319,20 @@ void ScriptWindow::languageChange()
 
 	actionRedirectOutput->setText(tr("Ouput on Next &Line"));
 	actionShowWorkspace->setText(tr("Show &Workspace"));
+
+	actionFind->setText(tr("&Find..."));
+	actionFind->setShortcut(tr("Ctrl+Alt+F"));
+
+	actionReplace->setText(tr("&Replace..."));
+
+	actionFindNext->setText(tr("Find &Next"));
+	actionFindNext->setShortcut(tr("F3"));
+
+	actionFindPrev->setText(tr("Find &Previous"));
+	actionFindPrev->setShortcut(tr("F4"));
+
+	actionIncreaseIndent->setText(tr("Increase Indent"));
+	actionDecreaseIndent->setText(tr("Decrease Indent"));
 }
 
 
@@ -388,4 +436,47 @@ void ScriptWindow::showWorkspace(bool on)
 	d_app->enableMdiArea(on);
 	d_app->setVisible(on);
 	setAttribute (Qt::WA_DeleteOnClose, !on);
+}
+
+void ScriptWindow::find()
+{
+	te->showFindDialog();
+}
+
+void ScriptWindow::findNext()
+{
+	te->findNext();
+}
+
+void ScriptWindow::findPrevious()
+{
+	te->findPrevious();
+}
+
+void ScriptWindow::replace()
+{
+	te->showFindDialog(true);
+}
+
+void ScriptWindow::increaseIndent()
+{
+	te->setTabStopWidth(te->tabStopWidth() + 5);
+}
+
+void ScriptWindow::decreaseIndent()
+{
+	te->setTabStopWidth(te->tabStopWidth() - 5);
+}
+
+void ScriptWindow::enableActions()
+{
+	bool hasText = !te->text().isEmpty();
+
+	actionFind->setEnabled(hasText);
+	actionFindNext->setEnabled(hasText);
+	actionFindPrev->setEnabled(hasText);
+	actionReplace->setEnabled(hasText);
+	actionExecute->setEnabled(hasText);
+	actionExecuteAll->setEnabled(hasText);
+	actionEval->setEnabled(hasText);
 }

@@ -2573,6 +2573,7 @@ MultiLayer* ApplicationWindow::waterfallPlot(Table *t, const QStringList& list)
 	QString legend = QString();
 	initMultilayerPlot(ml, QString());
 	foreach(Graph *g, layersList){
+		g->hide();
 		legend += g->legendText(true) + "\n";
 		setPreferences(g);
 		g->setCanvasFrame(0);
@@ -9834,7 +9835,7 @@ void ApplicationWindow::showWindowContextMenu()
 				cm.addAction(actionEditSurfacePlot);
 			cm.insertItem(QPixmap(erase_xpm), tr("C&lear"), g, SLOT(clearData()));
 		}
-
+		cm.addMenu(format);
 		cm.insertSeparator();
 		cm.addAction(actionRename);
 		cm.addAction(actionCopyWindow);
@@ -9844,8 +9845,17 @@ void ApplicationWindow::showWindowContextMenu()
 		cm.addAction(actionPrint);
 		cm.insertSeparator();
 		cm.addAction(actionCloseWindow);
-	} else if (w->isA("Matrix")) {
+	} else if (qobject_cast<Matrix *>(w)){
 		Matrix *t = (Matrix *)w;
+		cm.addMenu(plot3DMenu);
+		cm.insertSeparator();
+		cm.addAction(actionSetMatrixProperties);
+		cm.addAction(actionSetMatrixDimensions);
+		cm.insertSeparator();
+		cm.addAction(actionSetMatrixValues);
+		cm.addAction(actionTableRecalculate);
+		cm.insertSeparator();
+
 		if (t->viewType() == Matrix::TableView){
             cm.insertItem(QPixmap(cut_xpm),tr("Cu&t"), t, SLOT(cutSelection()));
             cm.insertItem(QPixmap(copy_xpm),tr("&Copy"), t, SLOT(copySelection()));
@@ -9859,15 +9869,11 @@ void ApplicationWindow::showWindowContextMenu()
                 cm.insertItem(QPixmap(delete_column_xpm), tr("&Delete Columns"), t, SLOT(deleteSelectedColumns()));
 
             cm.insertItem(QPixmap(erase_xpm),tr("Clea&r"), t, SLOT(clearSelection()));
+            cm.insertSeparator();
+            cm.addAction(actionViewMatrixImage);
 		} else if (t->viewType() == Matrix::ImageView){
 		    cm.addAction(actionImportImage);
             cm.addAction(actionExportMatrix);
-            cm.insertSeparator();
-            cm.addAction(actionSetMatrixProperties);
-            cm.addAction(actionSetMatrixDimensions);
-            cm.insertSeparator();
-            cm.addAction(actionSetMatrixValues);
-            cm.addAction(actionTableRecalculate);
             cm.insertSeparator();
             cm.addAction(actionRotateMatrix);
             cm.addAction(actionRotateMatrixMinus);

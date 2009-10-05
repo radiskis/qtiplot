@@ -660,7 +660,7 @@ class Graph: public QwtPlot
 
 		void notifyChanges();
 
-		void updateSecondaryAxis(int axis);
+		void updateSecondaryAxis(int axis, bool changeFormat = false);
 
 		bool isAutoscalingEnabled(){return d_auto_scale;};
 		void enableAutoscaling(bool on = true){d_auto_scale = on;};
