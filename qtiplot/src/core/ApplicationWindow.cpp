@@ -686,6 +686,7 @@ void ApplicationWindow::initToolBars()
 	fileTools->addSeparator ();
 	fileTools->addAction(actionCopyWindow);
 	fileTools->addAction(actionPrint);
+	fileTools->addAction(actionPrintPreview);
 	fileTools->addAction(actionExportPDF);
 	fileTools->addSeparator();
 	fileTools->addAction(actionShowExplorer);
@@ -1406,6 +1407,11 @@ void ApplicationWindow::customMenu(QMdiSubWindow* w)
 	d_undo_view->setStack(0);
 	actionUndo->setEnabled(false);
 	actionRedo->setEnabled(false);
+
+	actionCopyWindow->setEnabled(w);
+	actionPrint->setEnabled(w);
+	actionPrintPreview->setEnabled(w);
+	actionExportPDF->setEnabled(w);
 
 	if(w){
 		actionPrintAllPlots->setEnabled(projectHas2DPlots());
@@ -8513,7 +8519,7 @@ MdiSubWindow* ApplicationWindow::clone(MdiSubWindow* w)
         w = activeWindow();
 		if (!w){
 			QMessageBox::critical(this,tr("QtiPlot - Duplicate window error"),
-				tr("There are no windows available in this project!"));
+				tr("There are no windows available in this folder!"));
 			return 0;
 		}
 	}
@@ -8809,6 +8815,14 @@ void ApplicationWindow::closeWindow(MdiSubWindow* window)
 
 	window->close();
 
+	QList<MdiSubWindow *> windows = f->windowsList();
+	if (!windows.isEmpty()){
+		MdiSubWindow *w = windows.first();
+		d_workspace->setActiveSubWindow(w);
+		d_active_window = w;
+		f->setActiveWindow(w);
+	}
+
     if (show_windows_policy == ActiveFolder && !f->windowsList().count()){
         customMenu(0);
         customToolBars(0);
@@ -9090,7 +9104,7 @@ void ApplicationWindow::fileMenuAboutToShow()
 
 	fileMenu->insertSeparator();
 	fileMenu->addAction(actionPrint);
-	fileMenu->insertItem(tr("Print Pre&view"), this, SLOT(printPreview()));
+	fileMenu->addAction(actionPrintPreview);
 	fileMenu->addAction(actionPrintAllPlots);
 	fileMenu->insertSeparator();
 	fileMenu->addAction(actionShowExportASCIIDialog);
@@ -12609,6 +12623,9 @@ void ApplicationWindow::createActions()
 	actionPrint->setShortcut( tr("Ctrl+P") );
 	connect(actionPrint, SIGNAL(activated()), this, SLOT(print()));
 
+	actionPrintPreview = new QAction(QPixmap(preview_xpm), tr("Print Pre&view"), this);
+	connect(actionPrintPreview, SIGNAL(activated()), this, SLOT(printPreview()));
+
 	actionPrintAllPlots = new QAction(tr("Print All Plo&ts"), this);
 	connect(actionPrintAllPlots, SIGNAL(activated()), this, SLOT(printAllPlots()));
 
@@ -13512,6 +13529,9 @@ void ApplicationWindow::translateActionsStrings()
 	actionPrint->setMenuText(tr("&Print"));
 	actionPrint->setShortcut(tr("Ctrl+P"));
 	actionPrint->setToolTip(tr("Print window"));
+
+	actionPrintPreview->setMenuText(tr("Print Pre&view"));
+	actionPrintPreview->setToolTip(tr("Print preview"));
 
 	actionPrintAllPlots->setMenuText(tr("Print All Plo&ts"));
 	actionShowExportASCIIDialog->setMenuText(tr("E&xport ASCII"));
@@ -15637,8 +15657,7 @@ bool ApplicationWindow::changeFolder(Folder *newFolder, bool force)
     if (active_window){
 		d_active_window = active_window;
         d_workspace->setActiveSubWindow(active_window);
-		customMenu(active_window);
-		customToolBars(active_window);
+
         if (active_window_state == MdiSubWindow::Minimized)
             active_window->showMinimized();//ws->setActiveWindow() makes minimized windows to be shown normally
         else if (active_window_state == MdiSubWindow::Maximized){
@@ -15648,7 +15667,11 @@ bool ApplicationWindow::changeFolder(Folder *newFolder, bool force)
             if (active_window->isA("Graph3D"))
                 ((Graph3D *)active_window)->setIgnoreFonts(false);
             }
-	}
+	} else
+		d_active_window = NULL;
+
+	customMenu(d_active_window);
+	customToolBars(d_active_window);
 
     if (old_active_window){
         old_active_window->setStatus(old_active_window_state);
