@@ -55,6 +55,8 @@ public:
   void setTextMode(TEXTMODE val, QString fname = "");
   TEXTMODE textMode() const {return textmode_;} //!< Return current text output mode.
 
+  void setExportSize(const QSize& size){export_size_ = size;};//!< Sets a custom output size.
+  QSize exportSize(){return export_size_;};//!< Return current output size.
 
   //! Sets one of the SORTMODE sorting modes.
   void setSortMode(SORTMODE val) {sortmode_ = val;}
@@ -77,6 +79,7 @@ private:
   LANDSCAPEMODE landscape_;
   TEXTMODE textmode_;
   QString texfname_;
+  QSize export_size_;
 };
 
 GLint setDeviceLineWidth(GLfloat val);

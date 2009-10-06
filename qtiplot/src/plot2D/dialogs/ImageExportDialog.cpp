@@ -281,6 +281,7 @@ void ImageExportDialog::updateAdvancedOptions (const QString & filter)
 		if (qobject_cast<Graph3D *> (d_window)){
 			d_extension_toggle->setEnabled(true);
 			d_vector_options->show();
+			d_custom_size_box->show();
 			return;
 		} else if (!qobject_cast<MultiLayer *> (d_window)){
 			d_extension_toggle->setChecked(false);
@@ -309,7 +310,8 @@ void ImageExportDialog::updateAdvancedOptions (const QString & filter)
 
 			d_escape_tex_strings->setVisible(texOutput);
 			d_tex_font_sizes->setVisible(texOutput);
-		}
+		} else if (qobject_cast<Graph3D *> (d_window))
+			d_custom_size_box->show();
 	} else {
 		d_raster_options->show();
 		if (!qobject_cast<Matrix *> (d_window))
@@ -382,8 +384,7 @@ void ImageExportDialog::adjustWidth(double height)
 		else
 			widthBox->setValue(val);
 		widthBox->blockSignals(false);
-	} else
-		aspect_ratio = widthBox->value()/height;
+	}
 }
 
 void ImageExportDialog::adjustHeight(double width)
@@ -396,6 +397,5 @@ void ImageExportDialog::adjustHeight(double width)
 		else
 			heightBox->setValue(val);
 		heightBox->blockSignals(false);
-	} else
-		aspect_ratio = width/heightBox->value();
+	}
 }

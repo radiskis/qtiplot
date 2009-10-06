@@ -5595,7 +5595,8 @@ void ApplicationWindow::exportGraph(const QString& exportFilter)
 	if (selected_filter.contains(".eps") || selected_filter.contains(".pdf") ||
 		selected_filter.contains(".ps") || selected_filter.contains(".svg")) {
 		if (plot3D)
-			plot3D->exportVector(file_name, ied->textExportMode(), ied->sortMode());
+			plot3D->exportVector(file_name, ied->textExportMode(), ied->sortMode(),
+					ied->customExportSize(), ied->sizeUnit(), ied->scaleFontsFactor());
 		else if (plot2D){
 			if (selected_filter.contains(".svg"))
 				plot2D->exportSVG(file_name, ied->customExportSize(), ied->sizeUnit(), ied->scaleFontsFactor());
@@ -5850,7 +5851,8 @@ void ApplicationWindow::exportAllGraphs()
 		if (file_suffix.contains(".eps") || file_suffix.contains(".pdf") ||
 			file_suffix.contains(".ps") || file_suffix.contains(".svg")) {
 			if (plot3D)
-				plot3D->exportVector(file_name);
+				plot3D->exportVector(file_name, ied->textExportMode(), ied->sortMode(),
+					ied->customExportSize(), ied->sizeUnit(), ied->scaleFontsFactor());
 			else if (plot2D){
 				if (file_suffix.contains(".svg"))
 					plot2D->exportSVG(file_name, ied->customExportSize(), ied->sizeUnit(), ied->scaleFontsFactor());
