@@ -2902,7 +2902,7 @@ a scale factor.
 3D plots can be exported to any of the following vector formats: .eps, .ps, .pdf, .pgf and .svg, using
 the function bellow:
 <programlisting>
-g.exportVector(fileName, textMode = 0, sortMode = 1)
+g.exportVector(fileName, textMode = 0, sortMode = 1, size = QSizeF(), unit = Frame.Pixel, fontsFactor = 1.0)
 </programlisting>
 where <varname>textMode</varname> is an integer value, specifing how texts are handled. It can take
 one of the following values:
@@ -2927,7 +2927,7 @@ one of the following values:
             </varlistentry>
 </variablelist>
 
-The last option <varname>sortMode</varname> is also an integer value and can take one of the following values:
+The <varname>sortMode</varname> parameter is also an integer value and can take one of the following values:
 <variablelist spacing="compact">
             <varlistentry>
               <term>0.</term>
@@ -2948,6 +2948,8 @@ The last option <varname>sortMode</varname> is also an integer value and can tak
               </listitem>
             </varlistentry>
 </variablelist>
+
+The other parameters have the same meaning as for the export of 2D plots.
 </para>
 </sect3>
 </sect2>

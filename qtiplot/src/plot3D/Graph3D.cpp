@@ -1963,25 +1963,8 @@ void Graph3D::exportImage(QTextDocument *document, int, bool transparent,
 		dpi = logicalDpiX();
 
 	QSize size = this->size();
-	if (customSize.isValid()){
-		switch(unit){
-			case FrameWidget::Pixel:
-				size = customSize.toSize();
-			break;
-			case FrameWidget::Inch:
-				size = QSize((qRound)(customSize.width()*dpi), (qRound)(customSize.height()*dpi));
-			break;
-			case FrameWidget::Millimeter:
-				size = QSize((qRound)(customSize.width()*dpi/25.4), (qRound)(customSize.height()*dpi/25.4));
-			break;
-			case FrameWidget::Centimeter:
-				size = QSize((qRound)(customSize.width()*dpi/2.54), (qRound)(customSize.height()*dpi/2.54));
-			break;
-			case FrameWidget::Point:
-				size = QSize((qRound)(customSize.width()*dpi/72.0), (qRound)(customSize.height()*dpi/72.0));
-			break;
-		}
-	}
+	if (customSize.isValid())
+		size = Graph::customPrintSize(customSize, unit, dpi);
 
 	if (fontsFactor == 0.0)
 		fontsFactor = (double)size.height()/(double)this->height();
@@ -2031,7 +2014,8 @@ void Graph3D::exportPDF(const QString& fileName)
 	exportVector(fileName);
 }
 
-void Graph3D::exportVector(const QString& fileName, int textExportMode, int sortMode)
+void Graph3D::exportVector(const QString& fileName, int textExportMode, int sortMode,
+				const QSizeF& customSize, int unit, double fontsFactor)
 {
 	if ( fileName.isEmpty() ){
 		QMessageBox::critical(this, tr("QtiPlot - Error"), tr("Please provide a valid file name!"));
@@ -2048,14 +2032,26 @@ void Graph3D::exportVector(const QString& fileName, int textExportMode, int sort
     else if (fileName.endsWith(".pgf", Qt::CaseInsensitive))
         format = "PGF";
 
+	QSize size = this->size();
+	if (customSize.isValid())
+		size = Graph::customPrintSize(customSize, unit, 72);
+
+	if (fontsFactor == 0.0)
+		fontsFactor = (double)size.height()/(double)this->height();
+
     VectorWriter * gl2ps = (VectorWriter*)IO::outputHandler(format);
     if (gl2ps){
 		gl2ps->setTextMode((VectorWriter::TEXTMODE)textExportMode);
 		gl2ps->setLandscape(VectorWriter::OFF);
 		gl2ps->setSortMode((VectorWriter::SORTMODE)sortMode);
+		gl2ps->setExportSize(Graph::customPrintSize(customSize, unit, 72));
 	}
 
+	scaleFonts(fontsFactor);
+
 	IO::save(sp, fileName, format);
+
+	scaleFonts(1.0/fontsFactor);
 }
 
 void Graph3D::exportToFile(const QString& fileName)

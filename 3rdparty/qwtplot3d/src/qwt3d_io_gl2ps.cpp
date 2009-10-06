@@ -32,7 +32,8 @@ VectorWriter::VectorWriter()
     sortmode_(SIMPLESORT),
     landscape_(VectorWriter::AUTO),
     textmode_(VectorWriter::PIXEL),
-    texfname_("")
+    texfname_(""),
+    export_size_(QSize())
   {}
 
 
@@ -133,6 +134,9 @@ bool VectorWriter::operator()(Plot3D* plot, QString const& fname)
 
   plot->makeCurrent();
 
+	QSize size = plot->size();
+	if (export_size_.isValid())
+		plot->resize(export_size_);
 
 	GLint bufsize = 0, state = GL2PS_OVERFLOW;
 	GLint viewport[4];
@@ -265,6 +269,9 @@ bool VectorWriter::operator()(Plot3D* plot, QString const& fname)
   Label::useDeviceFonts(false);
 
   setlocale(LC_ALL, tmploc);
+  if (export_size_.isValid())
+		plot->resize(size);// restore original plot size
+
   return true;
 }
 
