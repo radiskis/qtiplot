@@ -1395,7 +1395,7 @@ private:
     QAction *actionMoveRowUp, *actionMoveRowDown, *actionAdjustColumnWidth;
     QAction *actionPresentationODF, *actionRenameNoteTab, *actionAddNoteTab, *actionCloseNoteTab;
     QAction *actionIncreaseIndent, *actionDecreaseIndent, *actionFind, *actionFindNext, *actionFindPrev, *actionReplace;
-    QAction *actionIncreasePrecision, *actionDecreasePrecision;
+    QAction *actionIncreasePrecision, *actionDecreasePrecision, *actionPrintPreview;
     QList<QAction *> d_user_actions;
     QUndoView *d_undo_view;
     QList<QMenu *> d_user_menus;
