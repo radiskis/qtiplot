@@ -1,6 +1,7 @@
 #include <qbitmap.h>
 #include "qwt3d_label.h"
 #include "qwt3d_plot.h"
+#include "../3rdparty/gl2ps/gl2ps.h"
 
 using namespace Qwt3D;
 
@@ -118,7 +119,12 @@ QImage Label::createImage(double angle)
 	height_ = h;
 
 	QPixmap pm_ = QPixmap(w, h);
-	pm_.fill(Qt::transparent);
+
+	if (plot() && plot()->isExportingVector() && plot()->vectorExportFormat() != GL2PS_PDF){
+		Qwt3D::RGBA rgba = plot()->backgroundRGBAColor();
+		pm_.fill(GL2Qt(rgba.r, rgba.g, rgba.b));
+	} else
+		pm_.fill(Qt::transparent);
 
 	QPainter p(&pm_);
 
@@ -201,6 +207,37 @@ void Label::convert2screen()
 	end_ = ViewPort2World(start + Triple(width(), height(), 0));
 }
 
+const char * Label::fontname()
+{
+	char *name = "Helvetica";
+	if (font_.family() == "Times New Roman"){
+		name = "Times";
+		if (font_.bold() && font_.italic ())
+			name = "Times-BoldItalic";
+		else if (font_.italic())
+			name = "Times-Italic";
+		else if (font_.bold())
+			name = "Times-Bold";
+	} else if (font_.family() == "Courier" || font_.family() == "Courier New"){
+		name = "Courier";
+		if (font_.bold() && font_.italic ())
+			name = "Courier-BoldOblique";
+		else if (font_.italic())
+			name = "Courier-Oblique";
+		else if (font_.bold())
+			name = "Courier-Bold";
+	} else {
+		if (font_.bold() && font_.italic ())
+			name = "Helvetica-BoldOblique";
+		else if (font_.italic())
+			name = "Helvetica-Oblique";
+		else if (font_.bold())
+			name = "Helvetica-Bold";
+	}
+
+	return (const char*) name;
+}
+
 void Label::draw(double angle)
 {
 	if (!plot() || !plot()->isVisible())
@@ -224,7 +261,7 @@ void Label::draw(double angle)
 
 	if (plot()->isExportingVector()){
 		if (devicefonts_)
-			drawDeviceText(QWT3DLOCAL8BIT(text_), "Courier", font_.pointSize(), pos_, color, anchor_, gap_, angle);
+			drawDeviceText(QWT3DLOCAL8BIT(text_), fontname(), font_.pointSize(), pos_, color, anchor_, gap_, angle);
 		else {
 			QImage tex_ = createImage(angle);
 			drawDevicePixels(tex_.width(), tex_.height(), GL_RGBA, GL_UNSIGNED_BYTE, tex_.bits());

@@ -2032,9 +2032,10 @@ void Graph3D::exportVector(const QString& fileName, int textExportMode, int sort
     else if (fileName.endsWith(".pgf", Qt::CaseInsensitive))
         format = "PGF";
 
+	QSize cs = Graph::customPrintSize(customSize, unit, 72);
 	QSize size = this->size();
 	if (customSize.isValid())
-		size = Graph::customPrintSize(customSize, unit, 72);
+		size = cs;
 
 	if (fontsFactor == 0.0)
 		fontsFactor = (double)size.height()/(double)this->height();
@@ -2044,7 +2045,7 @@ void Graph3D::exportVector(const QString& fileName, int textExportMode, int sort
 		gl2ps->setTextMode((VectorWriter::TEXTMODE)textExportMode);
 		gl2ps->setLandscape(VectorWriter::OFF);
 		gl2ps->setSortMode((VectorWriter::SORTMODE)sortMode);
-		gl2ps->setExportSize(Graph::customPrintSize(customSize, unit, 72));
+		gl2ps->setExportSize(cs);
 	}
 
 	scaleFonts(fontsFactor);

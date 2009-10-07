@@ -140,7 +140,8 @@ public:
     bool hasData() const { return (actualData_p) ? !actualData_p->empty() : false;}
 
     bool isExportingVector(){return d_exporting_vector;};
-    void setExportingVector(bool on = true){d_exporting_vector = on;};
+    GLint vectorExportFormat(){return gl2ps_export_format_;};
+    void setExportingVector(bool on = true, GLint format = 0){d_exporting_vector = on; gl2ps_export_format_ = format;};
 
 signals:
 
@@ -309,6 +310,7 @@ private:
     bool initializedGL_;
     bool renderpixmaprequest_;
     bool d_exporting_vector;
+    GLint gl2ps_export_format_;
 };
 
 

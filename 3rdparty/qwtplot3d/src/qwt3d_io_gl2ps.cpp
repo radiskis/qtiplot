@@ -220,7 +220,7 @@ bool VectorWriter::operator()(Plot3D* plot, QString const& fname)
     return false;
   }
 
-   plot->setExportingVector();
+   plot->setExportingVector(true, gl2ps_format_);
 
     while( state == GL2PS_OVERFLOW ){
 		bufsize += 2*1024*1024;
