@@ -64,6 +64,7 @@ private:
 	void init();
 	void init(const QString & family, int pointSize, int weight = QFont::Normal, bool italic = false);
 	QImage createImage(double angle);//!< Creates an internal bitmap used only for axis labels
+	const char * fontname(); //!< Try to guess an appropriate font name from the 14 standard Type 1 fonts available
 
 	void convert2screen();
 
