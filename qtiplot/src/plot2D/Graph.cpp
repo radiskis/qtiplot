@@ -1173,7 +1173,7 @@ void Graph::updateSecondaryAxis(int axis, bool changeFormat)
 	if (!axisEnabled(a))
 		return;
 
-	if (changeFormat){
+	if (changeFormat && axisScaleDraw(axis)->hasComponent(QwtAbstractScaleDraw::Labels)){
 		ScaleDraw *sd = (ScaleDraw *)axisScaleDraw (a);
 		ScaleDraw::ScaleType type = sd->scaleType();
 		if (type == ScaleDraw::Day)
