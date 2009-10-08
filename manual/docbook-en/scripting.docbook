@@ -3362,7 +3362,7 @@ The following functions are available when dealing with multi-tab notes:
 setAutoexec(on = True)
 
 text()
-setText(const QString &s)
+setText(text)
 
 exportPDF(fileName)
 saveAs(fileName)
@@ -3370,7 +3370,7 @@ importASCII(fileName)
 
 showLineNumbers(on = True)
 
-setFont(QFont& f)
+setFont(QFont f)
 setTabStopWidth(int length)
 
 tabs()
@@ -3381,7 +3381,6 @@ renameTab(tabIndex, title)
 e = editor(int index)
 e = currentEditor()
 </programlisting>
-</para>
 </sect2>
 
 <sect2 id="Python-QtDialogs">
