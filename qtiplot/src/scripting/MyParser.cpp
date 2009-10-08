@@ -67,7 +67,7 @@ const QStringList MyParser::functionsList()
 QString MyParser::explainFunction(int index)
 {
 	const muParserScripting::mathFunction i = muParserScripting::math_functions[index];
-	return i.description;
+	return QObject::tr(i.description);
 }
 
 double MyParser::EvalRemoveSingularity(double *xvar, bool noisy) const

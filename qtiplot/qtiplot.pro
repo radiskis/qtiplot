@@ -103,7 +103,7 @@ translations.files += translations/qtiplot_de.qm \
                   translations/qtiplot_sv.qm
 				  
 system(lupdate -verbose qtiplot.pro)
-#system(lrelease -verbose qtiplot.pro)
+system(lrelease -verbose qtiplot.pro)
 
 ###################### DOCUMENTATION ########################################
 

@@ -231,14 +231,14 @@ All three of them are included in many Linux distributions.
 <sect2 id="compilation-linux">
 <title>Linux and Mac OS X</title>
 
-<para>Download the <ulink url="&kappdownload;">qtiplot archive</ulink> (.tar.bz2 or .zip file) and decompress it. Then open a terminal (console) window and go to the main folder of the decompressed archive (which should be named &kappdirectory;-&version;).
-You must be sure that &appname; is able to find the third party libraries it depends on.
-You have to go to the &kappdirectory; directory and open the file &kappdirectory;.pro.
-As an example, the folowing line describes the path to the Qwt library header files which should be available for the compilation:</para>
+<para>Download the <ulink url="&kappdownload;">qtiplot archive</ulink> (.tar.bz2 or .zip file) and decompress it. 
+Then open a terminal (console) window and go to the main folder of the decompressed archive (which should be named &kappdirectory;-&version;).
+Create a build.conf file. You can use the provided example for this: </para>
 <screen>
-unix:INCLUDEPATH  += ../3rdparty/qwt/include/
+cp build.conf.example build.conf
 </screen>
-<para>it should point to the correct directory. Once this is done, go back to the main directory &kappdirectory;-&version; and type:</para>
+<para>You must make sure that &appname; is able to find the third party libraries it depends on. For this you have to edit the build.conf file.
+Once this is done, go back to the main directory &kappdirectory;-&version; and type:</para>
 <screen>
 qmake qtiplot.pro
 make
