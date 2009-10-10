@@ -79,6 +79,14 @@ EMF_ENGINE_INCLUDEPATH = $$QTI_ROOT/3rdparty/EmfEngine/src
 # link locally against a copy in 3rdparty/
 EMF_ENGINE_LIBS = $$QTI_ROOT/3rdparty/EmfEngine/libEmfEngine.a
 
+##########################################################
+## python - only used if python is needed
+##########################################################
+
+# the python interpreter to use
+# (unix only, windows will use what ever is configured to execute .py files!)
+PYTHON = python
+
 ############################################################
 ##  Target specific configuration: configure Qtiplot itself
 ############################################################

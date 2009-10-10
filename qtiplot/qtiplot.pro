@@ -163,11 +163,12 @@ contains(SCRIPTING_LANGS, Python) {
   }
 
   unix {
-    INCLUDEPATH += $$system(python python-includepath.py)
-    LIBS        += $$system(python -c "\"from distutils import sysconfig; print '-lpython'+sysconfig.get_config_var('VERSION')\"")
+    isEmpty(PYTHON): PYTHON = python
+    INCLUDEPATH += $$system($$PYTHON python-includepath.py)
+    LIBS        += $$system($$PYTHON -c "\"from distutils import sysconfig; print '-lpython'+sysconfig.get_config_var('VERSION')\"")
     LIBS        += -lm
     system(mkdir -p $${SIP_DIR})
-    system($$system(python python-sipcmd.py) -c $${SIP_DIR} src/scripting/qti.sip)
+    system($$system($$PYTHON python-sipcmd.py) -c $${SIP_DIR} src/scripting/qti.sip)
   }
 
   win32 {
