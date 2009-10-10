@@ -1,0 +1,9 @@
+Makefile
+*.o
+*.a
+*.dylib
+.*.swp
+3rdparty/qwt/src/moc/
+build.conf
+qtiplot/qtiplot.app/
+tmp/
