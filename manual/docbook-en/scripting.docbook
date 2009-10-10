@@ -984,6 +984,208 @@ The <varname>format</varname> can be one of the following:
             </varlistentry>
 </variablelist>
 
+In the same way you can set a column hold a date. Here the text of a cell is interpreted using a format string:
+<programlisting>
+t.setColDateFormat(col, format, update=True)
+t.setColDateFormat("col1", "yyyy-MM-dd HH:mm")
+</programlisting>
+were <varname>col</varname> is the name/number of a column and <varname>format</varname> the format string.
+In this string, the following placeholder are recognized:
+<variablelist spacing="compact">
+            <varlistentry>
+              <term>d</term>
+              <listitem>
+                <para>the day as number without a leading zero (1 to 31)</para>
+              </listitem>
+            </varlistentry>
+            <varlistentry>
+              <term>dd</term>
+              <listitem>
+                <para>the day as number with a leading zero (01 to 31)</para>
+              </listitem>
+            </varlistentry>
+            <varlistentry>
+              <term>ddd</term>
+              <listitem>
+                <para>the abbreviated localized day name (e.g. 'Mon' to 'Sun')</para>
+              </listitem>
+            </varlistentry>
+            <varlistentry>
+              <term>dddd</term>
+              <listitem>
+                <para>the long localized day name (e.g. 'Monday' to 'Sunday')</para>
+              </listitem>
+            </varlistentry>
+            <varlistentry>
+              <term>M</term>
+              <listitem>
+                <para>the month as number without a leading zero (1-12)</para>
+              </listitem>
+            </varlistentry>
+            <varlistentry>
+              <term>MM</term>
+              <listitem>
+                <para>the month as number with a leading zero (01-12)</para>
+              </listitem>
+            </varlistentry>
+            <varlistentry>
+              <term>MMM</term>
+              <listitem>
+                <para>the abbreviated localized month name (e.g. 'Jan' to 'Dec')</para>
+              </listitem>
+            </varlistentry>
+            <varlistentry>
+              <term>MMMM</term>
+              <listitem>
+                <para>the long localized month name (e.g. 'January' to 'December')</para>
+              </listitem>
+            </varlistentry>
+            <varlistentry>
+              <term>yy</term>
+              <listitem>
+                <para>the year as two digit number (00-99)</para>
+              </listitem>
+            </varlistentry>
+            <varlistentry>
+              <term>yyyy</term>
+              <listitem>
+                <para>the year as four digit number</para>
+              </listitem>
+            </varlistentry>
+            <varlistentry>
+              <term>h</term>
+              <listitem>
+                <para>the hour without a leading zero (0 to 23 or 1 to 12 if AM/PM display)</para>
+              </listitem>
+            </varlistentry>
+            <varlistentry>
+              <term>hh</term>
+              <listitem>
+                <para>the hour with a leading zero (00 to 23 or 01 to 12 if AM/PM display)</para>
+              </listitem>
+            </varlistentry>
+            <varlistentry>
+              <term>H</term>
+              <listitem>
+                <para>the hour without a leading zero (0 to 23, even with AM/PM display)</para>
+              </listitem>
+            </varlistentry>
+            <varlistentry>
+              <term>HH</term>
+              <listitem>
+                <para>the hour with a leading zero (00 to 23, even with AM/PM display)</para>
+              </listitem>
+            </varlistentry>
+            <varlistentry>
+              <term>m</term>
+              <listitem>
+                <para>the minute without a leading zero (0 to 59)</para>
+              </listitem>
+            </varlistentry>
+            <varlistentry>
+              <term>mm</term>
+              <listitem>
+                <para>the minute with a leading zero (00 to 59)</para>
+              </listitem>
+            </varlistentry>
+            <varlistentry>
+              <term>s</term>
+              <listitem>
+                <para>the second without a leading zero (0 to 59)</para>
+              </listitem>
+            </varlistentry>
+            <varlistentry>
+              <term>ss</term>
+              <listitem>
+                <para>the second with a leading zero (00 to 59)</para>
+              </listitem>
+            </varlistentry>
+            <varlistentry>
+              <term>z</term>
+              <listitem>
+                <para>the milliseconds without leading zeroes (0 to 999)</para>
+              </listitem>
+            </varlistentry>
+            <varlistentry>
+              <term>zzz</term>
+              <listitem>
+                <para>the milliseconds with leading zeroes (000 to 999)</para>
+              </listitem>
+            </varlistentry>
+            <varlistentry>
+              <term>AP or A</term>
+              <listitem>
+                <para>interpret as an AM/PM time. AP must be either "AM" or "PM".</para>
+              </listitem>
+            </varlistentry>
+            <varlistentry>
+              <term>ap or a</term>
+              <listitem>
+                <para>interpret as an AM/PM time. ap must be either "am" or "pm".</para>
+              </listitem>
+            </varlistentry>
+</variablelist>
+
+Analog you can say that a text column should hold a time only...
+<programlisting>
+t.setColTimeFormat(col, format, update=True)
+t.setColTimeFormat(1, "HH:mm:ss")
+</programlisting>
+
+... a month ...
+<programlisting>
+t.setColMonthFormat(col, format, update=True)
+t.setColMonthFormat(1, "M")
+</programlisting>
+Here the format is the following:
+<variablelist spacing="compact">
+            <varlistentry>
+              <term>M</term>
+              <listitem>
+                <para>Only the first letter of the month, i.e. "J"</para>
+              </listitem>
+            </varlistentry>
+            <varlistentry>
+              <term>MMM</term>
+              <listitem>
+                <para>The short form, like "Jan"</para>
+              </listitem>
+            </varlistentry>
+            <varlistentry>
+              <term>MMMM</term>
+              <listitem>
+                <para>The full name, "January"</para>
+              </listitem>
+            </varlistentry>
+</variablelist>
+
+... or the day of week:
+<programlisting>
+t.setColDayFormat(col, format, update=True)
+t.setColDayFormat(1, "ddd")
+</programlisting>
+Here the format is the following:
+<variablelist spacing="compact">
+            <varlistentry>
+              <term>d</term>
+              <listitem>
+                <para>Only the first letter of the day, i.e. "M"</para>
+              </listitem>
+            </varlistentry>
+            <varlistentry>
+              <term>ddd</term>
+              <listitem>
+                <para>The short form, like "Mon"</para>
+              </listitem>
+            </varlistentry>
+            <varlistentry>
+              <term>dddd</term>
+              <listitem>
+                <para>The full name, "Monday"</para>
+              </listitem>
+            </varlistentry>
+</variablelist>
+
 It is also possible to swap two columns using:
 <programlisting>
 t.swapColumns(column1, column2)

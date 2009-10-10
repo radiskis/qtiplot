@@ -622,6 +622,10 @@ setIndexedColors
 setObjectName
 setColNumericFormat
 setColTextFormat
+setColDateFormat
+setColTimeFormat
+setColMonthFormat
+setColDayFormat
 Default
 Decimal
 Scientific
