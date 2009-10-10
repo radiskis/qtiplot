@@ -452,9 +452,11 @@
       modules and define functions and classes that will be available in all
       of your projects. The default initialization file shipped with QtiPlot
       imports Python's <link linkend="Python-functions">standard math
-      functions</link> as well as special functions from <ulink
-      url="http://www.scipy.org">SciPy</ulink> (if available). Also, it
-      creates some handy shortcuts, like
+      functions</link> as well as (if available) special functions from
+      <ulink url="http://www.scipy.org">SciPy</ulink>, the symbolic mathematics
+      library <ulink url="http://www.sympy.org/">SymPy</ulink>
+      and helper functions for <ulink url="http://rpy.sourceforge.net/rpy2.html">RPy2</ulink>.
+      Also, it creates some handy shortcuts, like
       <userinput>table("table1")</userinput> for
       <userinput>qti.app.table("table1")</userinput>.</para>
 
@@ -1395,6 +1397,28 @@ You can check if a column or row of a table is selected by using the following f
 <programlisting>
 t.isColSelected(col)
 t.isRowSelected(row)
+</programlisting>
+
+If <ulink url="http://rpy.sourceforge.net/rpy2.html">RPy2</ulink> is available,
+the <link linkend="Python-init">default initialization file</link> sets up the
+helper functions <userinput>qti.Table.toRDataFrame</userinput> and
+<userinput>qti.app.newTableFromRDataFrame</userinput> to convert back and forth
+between R data frames and Qtiplot tables.
+Here is a little example of an R session...
+<programlisting>
+df &lt;- read.table("/some/path/data.csv", header=TRUE)
+m &lt;- mean(df)
+v &lt;- var(df)
+source("/some/path/my_func.r")
+new_df &lt;- my_func(df, foo=bar)
+</programlisting>
+... and now the same from within Qtiplot:
+<programlisting>
+df = table("Table1").toRDataFrame()
+print R.mean(df), R.var(df)
+R.source("/some/path/my_func.r")
+new_df = R.my_func(df, foo=bar)
+newTableFromRDataFrame(new_df, "my result table")
 </programlisting>
 
 </sect2>
