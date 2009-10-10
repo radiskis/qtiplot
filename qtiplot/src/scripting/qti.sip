@@ -323,6 +323,38 @@ public:
 		sipCpp->setColNumericFormat(a1, a2, col, a3);
 %End
 
+	void setColDateFormat(SIP_PYOBJECT, const QString&,  bool = true);
+%MethodCode
+  	sipIsErr = 0;
+  	CHECK_TABLE_COL(a0);
+	if (sipIsErr == 0)
+		sipCpp->setDateFormat(*a1, col, a2);
+%End
+
+	void setColTimeFormat(SIP_PYOBJECT, const QString&,  bool = true);
+%MethodCode
+  	sipIsErr = 0;
+  	CHECK_TABLE_COL(a0);
+	if (sipIsErr == 0)
+		sipCpp->setTimeFormat(*a1, col, a2);
+%End
+
+	void setColMonthFormat(SIP_PYOBJECT, const QString&,  bool = true);
+%MethodCode
+  	sipIsErr = 0;
+  	CHECK_TABLE_COL(a0);
+	if (sipIsErr == 0)
+		sipCpp->setMonthFormat(*a1, col, a2);
+%End
+
+	void setColDayFormat(SIP_PYOBJECT, const QString&,  bool = true);
+%MethodCode
+  	sipIsErr = 0;
+  	CHECK_TABLE_COL(a0);
+	if (sipIsErr == 0)
+		sipCpp->setDayFormat(*a1, col, a2);
+%End
+
 	void setColumnWidth(SIP_PYOBJECT, int);
 %MethodCode
   	sipIsErr = 0;
