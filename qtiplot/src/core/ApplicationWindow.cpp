@@ -3427,8 +3427,13 @@ Matrix* ApplicationWindow::matrix(const QString& name)
 
 MdiSubWindow *ApplicationWindow::activeWindow(WindowType type)
 {
-	if (!d_active_window)
-		return NULL;
+	if (!d_active_window){
+		QList<MdiSubWindow *> windows = current_folder->windowsList();
+		if (!current_folder->activeWindow() && windows.size() > 0)
+			d_active_window = windows[0];
+		else
+			return NULL;
+	}
 
 	switch(type){
 		case NoWindow:
@@ -15670,7 +15675,7 @@ bool ApplicationWindow::changeFolder(Folder *newFolder, bool force)
                 ((Graph3D *)active_window)->setIgnoreFonts(false);
             }
 	} else
-		d_active_window = NULL;
+		d_active_window = (MdiSubWindow *)d_workspace->activeSubWindow();
 
 	customMenu(d_active_window);
 	customToolBars(d_active_window);
@@ -15881,6 +15886,7 @@ void ApplicationWindow::dropFolderItems(Q3ListViewItem *dest)
 				current_folder->removeWindow(w);
 				w->hide();
 				dest_f->addWindow(w);
+				dest_f->setActiveWindow(w);
 				delete it;
 			}
 		}

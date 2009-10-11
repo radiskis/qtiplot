@@ -799,6 +799,9 @@ void Plot3DDialog::initConnections()
 	connect(boxLegend, SIGNAL(toggled(bool)), d_plot, SLOT(showColorLegend(bool)));
     connect(boxResolution, SIGNAL(valueChanged(int)), d_plot, SLOT(setResolution(int)));
 	connect(boxDistance, SIGNAL(valueChanged(int)), d_plot, SLOT(setLabelsDistance(int)));
+
+	//title page connections
+	connect(btnTitleColor, SIGNAL(colorChanged()), this, SLOT(updatePlot()));
 }
 
 void Plot3DDialog::worksheet()
@@ -912,11 +915,11 @@ void Plot3DDialog::pickTitleFont()
 {
 	bool ok;
 	QFont font = QFontDialog::getFont(&ok,titleFont,this);
-	if ( ok ) {
+	if (ok){
 		titleFont = font;
-	} else {
+		updatePlot();
+	} else
 		return;
-	}
 }
 
 void Plot3DDialog::pickNumbersFont()
