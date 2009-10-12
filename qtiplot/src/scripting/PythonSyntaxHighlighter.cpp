@@ -28,12 +28,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <QtGui>
 #include "PythonSyntaxHighlighter.h"
 #include <ApplicationWindow.h>
 
 PythonSyntaxHighlighter::PythonSyntaxHighlighter(ScriptEdit *parent)
-    : QSyntaxHighlighter(parent->document())
+    : SyntaxHighlighter(parent)
 {
     HighlightingRule rule;
 	ApplicationWindow *app = parent->scriptingEnv()->application();
@@ -138,4 +137,38 @@ void PythonSyntaxHighlighter::highlightBlock(const QString &text)
 		} else
 			setCurrentBlockState(0);// outside comment block
 	}
+
+	SyntaxHighlighter::highlightBlock(text);//parentheses matching
+}
+
+SyntaxHighlighter::SyntaxHighlighter(ScriptEdit * parent) : QSyntaxHighlighter(parent->document())
+{}
+
+//! Parentheses matching code taken from Qt Quarterly Issue 31 · Q3 2009
+void SyntaxHighlighter::highlightBlock(const QString &text)
+{
+	TextBlockData *data = new TextBlockData;
+
+    int leftPos = text.indexOf('(');
+    while (leftPos != -1) {
+        ParenthesisInfo *info = new ParenthesisInfo;
+        info->character = '(';
+        info->position = leftPos;
+
+        data->insert(info);
+        leftPos = text.indexOf('(', leftPos + 1);
+    }
+
+    int rightPos = text.indexOf(')');
+    while (rightPos != -1) {
+        ParenthesisInfo *info = new ParenthesisInfo;
+        info->character = ')';
+        info->position = rightPos;
+
+        data->insert(info);
+
+        rightPos = text.indexOf(')', rightPos +1);
+    }
+
+    setCurrentBlockUserData(data);
 }

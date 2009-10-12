@@ -38,9 +38,8 @@
 class QAction;
 class QMenu;
 class QCompleter;
-#ifdef SCRIPTING_PYTHON
-class PythonSyntaxHighlighter;
-#endif
+
+class SyntaxHighlighter;
 
 /*!\brief Editor widget with support for evaluating expressions and executing code.
  *
@@ -119,9 +118,7 @@ class ScriptEdit: public QTextEdit, public scripted
 
 	QCompleter *d_completer;
   	QString d_file_name;
- #ifdef SCRIPTING_PYTHON
-	PythonSyntaxHighlighter *d_highlighter;
- #endif
+	SyntaxHighlighter *d_highlighter;
 	QString d_search_string;
 	QTextDocument::FindFlags d_search_flags;
 	QTextEdit *d_output_widget;
@@ -134,9 +131,41 @@ class ScriptEdit: public QTextEdit, public scripted
 		*/
     void insertErrorMsg(const QString &message);
 	void insertCompletion(const QString &completion);
+	void matchParentheses();
 
   private:
     QString textUnderCursor() const;
+	bool matchLeftParenthesis(QTextBlock currentBlock, int index, int numRightParentheses);
+    bool matchRightParenthesis(QTextBlock currentBlock, int index, int numLeftParentheses);
+    void createParenthesisSelection(int pos);
+};
+
+//! Structure used for parentheses matching
+struct ParenthesisInfo
+{
+    char character;
+    int position;
+};
+
+//! Help class used for parentheses matching (code taken from Qt Quarterly Issue 31 · Q3 2009)
+class TextBlockData : public QTextBlockUserData
+{
+public:
+    TextBlockData(){};
+
+    QVector<ParenthesisInfo *> parentheses(){return m_parentheses;};
+    void insert(ParenthesisInfo *info)
+	{
+		int i = 0;
+		while (i < m_parentheses.size() &&
+			info->position > m_parentheses.at(i)->position)
+			++i;
+
+		m_parentheses.insert(i, info);
+	}
+
+private:
+    QVector<ParenthesisInfo *> m_parentheses;
 };
 
 #endif

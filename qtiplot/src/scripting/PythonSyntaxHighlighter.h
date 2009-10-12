@@ -41,12 +41,23 @@ QT_BEGIN_NAMESPACE
 class QTextDocument;
 QT_END_NAMESPACE
 
-class PythonSyntaxHighlighter : public QSyntaxHighlighter
+class SyntaxHighlighter : public QSyntaxHighlighter
 {
     Q_OBJECT
 
 public:
-    PythonSyntaxHighlighter(ScriptEdit *parent = 0);
+    SyntaxHighlighter(ScriptEdit * parent);
+
+protected:
+    void highlightBlock(const QString &text);
+};
+
+class PythonSyntaxHighlighter : public SyntaxHighlighter
+{
+    Q_OBJECT
+
+public:
+    PythonSyntaxHighlighter(ScriptEdit *parent);
 
 protected:
     void highlightBlock(const QString &text);

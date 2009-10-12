@@ -67,8 +67,8 @@ ScriptEdit::ScriptEdit(ScriptingEnv *env, QWidget *parent, const char *name)
 	if (scriptEnv->name() == QString("Python"))
 		d_highlighter = new PythonSyntaxHighlighter(this);
 	else
-		d_highlighter = NULL;
 #endif
+		d_highlighter = new SyntaxHighlighter(this);
 
 	d_fmt_default.setBackground(palette().brush(QPalette::Base));
 
@@ -126,6 +126,8 @@ ScriptEdit::ScriptEdit(ScriptingEnv *env, QWidget *parent, const char *name)
 	functionsMenu = new QMenu(this);
 	Q_CHECK_PTR(functionsMenu);
 	connect(functionsMenu, SIGNAL(triggered(QAction *)), this, SLOT(insertFunction(QAction *)));
+
+	connect(this, SIGNAL(cursorPositionChanged()), this, SLOT(matchParentheses()));
 }
 
 void ScriptEdit::customEvent(QEvent *e)
@@ -145,7 +147,7 @@ void ScriptEdit::customEvent(QEvent *e)
 		if (scriptEnv->name() == QString("Python"))
 			d_highlighter = new PythonSyntaxHighlighter(this);
 		else
-			d_highlighter = 0;
+			d_highlighter = new SyntaxHighlighter(this);
 	#endif
 	}
 }
@@ -723,10 +725,108 @@ void ScriptEdit::redirectOutputTo(QTextEdit *te)
 		printCursor = textCursor();
 }
 
+void ScriptEdit::matchParentheses()
+{
+    QList<QTextEdit::ExtraSelection> selections;
+    setExtraSelections(selections);
+
+    TextBlockData *data = static_cast<TextBlockData *>(textCursor().block().userData());
+
+    if (data) {
+        QVector<ParenthesisInfo *> infos = data->parentheses();
+
+        int pos = textCursor().block().position();
+        for (int i = 0; i < infos.size(); ++i) {
+            ParenthesisInfo *info = infos.at(i);
+
+            int curPos = textCursor().position() - textCursor().block().position();
+            if (info->position == curPos - 1 && info->character == '(') {
+                if (matchLeftParenthesis(textCursor().block(), i + 1, 0))
+                    createParenthesisSelection(pos + info->position);
+            } else if (info->position == curPos - 1 && info->character == ')') {
+                if (matchRightParenthesis(textCursor().block(), i - 1, 0))
+                    createParenthesisSelection(pos + info->position);
+            }
+        }
+    }
+}
+
+bool ScriptEdit::matchLeftParenthesis(QTextBlock currentBlock, int i, int numLeftParentheses)
+{
+    TextBlockData *data = static_cast<TextBlockData *>(currentBlock.userData());
+    QVector<ParenthesisInfo *> infos = data->parentheses();
+
+    int docPos = currentBlock.position();
+    for (; i < infos.size(); ++i) {
+        ParenthesisInfo *info = infos.at(i);
+
+        if (info->character == '(') {
+            ++numLeftParentheses;
+            continue;
+        }
+
+        if (info->character == ')' && numLeftParentheses == 0) {
+            createParenthesisSelection(docPos + info->position);
+            return true;
+        } else
+            --numLeftParentheses;
+    }
+
+    currentBlock = currentBlock.next();
+    if (currentBlock.isValid())
+        return matchLeftParenthesis(currentBlock, 0, numLeftParentheses);
+
+    return false;
+}
+
+bool ScriptEdit::matchRightParenthesis(QTextBlock currentBlock, int i, int numRightParentheses)
+{
+    TextBlockData *data = static_cast<TextBlockData *>(currentBlock.userData());
+    QVector<ParenthesisInfo *> parentheses = data->parentheses();
+
+    int docPos = currentBlock.position();
+    for (; i > -1 && parentheses.size() > 0; --i) {
+        ParenthesisInfo *info = parentheses.at(i);
+        if (info->character == ')') {
+            ++numRightParentheses;
+            continue;
+        }
+        if (info->character == '(' && numRightParentheses == 0) {
+            createParenthesisSelection(docPos + info->position);
+            return true;
+        } else
+            --numRightParentheses;
+    }
+
+    currentBlock = currentBlock.previous();
+    if (currentBlock.isValid())
+        return matchRightParenthesis(currentBlock, 0, numRightParentheses);
+
+    return false;
+}
+
+void ScriptEdit::createParenthesisSelection(int pos)
+{
+    QList<QTextEdit::ExtraSelection> selections = extraSelections();
+
+    QTextEdit::ExtraSelection selection;
+    QTextCharFormat format = selection.format;
+    format.setBackground(Qt::green);
+    selection.format = format;
+
+    QTextCursor cursor = textCursor();
+    cursor.setPosition(pos);
+    cursor.movePosition(QTextCursor::NextCharacter, QTextCursor::KeepAnchor);
+    selection.cursor = cursor;
+
+    selections.append(selection);
+
+    setExtraSelections(selections);
+}
+
 ScriptEdit::~ScriptEdit()
 {
- #ifdef SCRIPTING_PYTHON
 	if (d_highlighter)
 		delete d_highlighter;
- #endif
 }
+
