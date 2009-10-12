@@ -8,6 +8,7 @@ HEADERS  += src/scripting/customevents.h\
             src/scripting/FindReplaceDialog.h\
             src/scripting/MyParser.h\
             src/scripting/Note.h\
+            src/scripting/PythonSyntaxHighlighter.h\
             src/scripting/ScriptingEnv.h\
             src/scripting/Script.h\
             src/scripting/ScriptEdit.h\
@@ -17,6 +18,7 @@ HEADERS  += src/scripting/customevents.h\
 SOURCES  += src/scripting/FindReplaceDialog.cpp\
             src/scripting/MyParser.cpp\
             src/scripting/Note.cpp\
+            src/scripting/PythonSyntaxHighlighter.cpp\
             src/scripting/ScriptingEnv.cpp\
             src/scripting/Script.cpp\
             src/scripting/ScriptEdit.cpp\
@@ -43,11 +45,9 @@ contains(SCRIPTING_LANGS, Python) {
 
   HEADERS += src/scripting/PythonScript.h\
              src/scripting/PythonScripting.h\
-             src/scripting/PythonSyntaxHighlighter.h\
 
   SOURCES += src/scripting/PythonScript.cpp\
   			 src/scripting/PythonScripting.cpp\
-			 src/scripting/PythonSyntaxHighlighter.cpp\
 
 ##################### SIP generated files #####################
 
