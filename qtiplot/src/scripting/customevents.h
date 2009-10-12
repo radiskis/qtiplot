@@ -2,17 +2,14 @@
     File                 : customevents.h
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2006 by Ion Vasilief, 
-                           Tilman Hoener zu Siederdissen,
-                           Knut Franke
-    Email (use @ for *)  : ion_vasilief*yahoo.fr, thzs*gmx.net,
-                           knut.franke*gmx.de
+    Copyright            : (C) 2006 by Ion Vasilief, Knut Franke
+    Email (use @ for *)  : ion_vasilief*yahoo.fr, knut.franke*gmx.de
     Description          : registry of custom event types
 
     Please use only event types defined here in order to avoid clashes.
     The lowest event ID not used by Qt is QEvent::User. See documentation
     of QEvent for details.
-                           
+
  ***************************************************************************/
 
 /***************************************************************************

@@ -2,10 +2,10 @@
     File                 : FindDialog.h
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2006 by Ion Vasilief, Tilman Hoener zu Siederdissen
-    Email (use @ for *)  : ion_vasilief*yahoo.fr, thzs*gmx.net
+    Copyright            : (C) 2006 by Ion Vasilief
+    Email (use @ for *)  : ion_vasilief*yahoo.fr
     Description          : Find dialog
-                           
+
  ***************************************************************************/
 
 /***************************************************************************
@@ -64,7 +64,7 @@ private:
 
 public slots:
 
-	//! Displays the project current folder path 
+	//! Displays the project current folder path
 	void setStartPath();
 
 protected slots:

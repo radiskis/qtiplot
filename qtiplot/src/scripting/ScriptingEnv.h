@@ -2,12 +2,10 @@
     File                 : ScriptingEnv.h
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2006 by Ion Vasilief, 
-                           Tilman Hoener zu Siederdissen,
-                           Knut Franke
-    Email (use @ for *)  : ion_vasilief*yahoo.fr, thzs*gmx.net
+    Copyright            : (C) 2006 by Ion Vasilief, Knut Franke
+    Email (use @ for *)  : ion_vasilief*yahoo.fr
     Description          : Scripting abstraction layer
-                           
+
  ***************************************************************************/
 
 /***************************************************************************
@@ -61,10 +59,10 @@ class ScriptingEnv : public QObject
     bool initialized() const { return d_initialized; }
     //! whether asynchronuous execution is enabled (if supported by the implementation)
     virtual bool isRunning() const { return false; }
-    
+
     //! Instantiate the Script subclass matching the ScriptEnv subclass.
     virtual Script *newScript(const QString&, QObject*, const QString&) { return 0; }
-      
+
     //! If an exception / error occured, return a nicely formated stack backtrace.
     virtual QString stackTraceString() { return QString::null; }
 
@@ -102,7 +100,7 @@ class ScriptingEnv : public QObject
     void error(const QString & message, const QString & scriptName, int lineNumber);
     //! output that is not handled by a Script
     void print(const QString & output);
-    
+
   protected:
     //! whether the interpreter has been successfully initialized
     bool d_initialized;
