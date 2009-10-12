@@ -2,8 +2,8 @@
     File                 : FFTDialog.cpp
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2006 by Ion Vasilief, Tilman Hoener zu Siederdissen
-    Email (use @ for *)  : ion_vasilief*yahoo.fr, thzs*gmx.net
+    Copyright            : (C) 2006 by Ion Vasilief
+    Email (use @ for *)  : ion_vasilief*yahoo.fr
     Description          : Fast Fourier transform options dialog
 
  ***************************************************************************/
@@ -52,7 +52,7 @@ FFTDialog::FFTDialog(int type, QWidget* parent, Qt::WFlags fl )
 {
 	setWindowTitle(tr("QtiPlot - FFT Options"));
 	setSizeGripEnabled( true );
-	
+
     d_matrix = 0;
 	d_table = 0;
 	graph = 0;
@@ -66,7 +66,7 @@ FFTDialog::FFTDialog(int type, QWidget* parent, Qt::WFlags fl )
     hbox1->addWidget(forwardBtn);
     hbox1->addWidget(backwardBtn);
 	hbox1->addStretch();
-	
+
 	QGroupBox *gb1 = new QGroupBox();
     gb1->setLayout(hbox1);
 
@@ -86,7 +86,7 @@ FFTDialog::FFTDialog(int type, QWidget* parent, Qt::WFlags fl )
     boxSampling = new DoubleSpinBox();
 	boxSampling->setDecimals(((ApplicationWindow *)parent)->d_decimal_digits);
 	boxSampling->setLocale(((ApplicationWindow *)parent)->locale());
-	
+
 	if (d_type == onTable || d_type == onMatrix){
 		gl1->addWidget(new QLabel(tr("Real")), 1, 0);
 		boxReal = new QComboBox();

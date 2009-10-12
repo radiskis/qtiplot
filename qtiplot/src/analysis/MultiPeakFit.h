@@ -2,8 +2,8 @@
     File                 : MultiPeakFit.h
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2006 by Ion Vasilief, Tilman Hoener zu Siederdissen
-    Email (use @ for *)  : ion_vasilief*yahoo.fr, thzs*gmx.net
+    Copyright            : (C) 2006 by Ion Vasilief
+    Email (use @ for *)  : ion_vasilief*yahoo.fr
     Description          : MultiPeakFit module with Lorentz and Gauss peak shapes
 
  ***************************************************************************/
@@ -56,7 +56,7 @@ class MultiPeakFit : public Fit
 
 		virtual double eval(double *par, double x);
 		double evalPeak(double *par, double x, int peak);
-		
+
 		PeakProfile profile(){return d_profile;};
 
 	private:

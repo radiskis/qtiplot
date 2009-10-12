@@ -2,8 +2,8 @@
     File                 : FilterDialog.cpp
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2006 by Ion Vasilief, Tilman Hoener zu Siederdissen
-    Email (use @ for *)  : ion_vasilief*yahoo.fr, thzs*gmx.net
+    Copyright            : (C) 2006 by Ion Vasilief
+    Email (use @ for *)  : ion_vasilief*yahoo.fr
     Description          : Filter options dialog
 
  ***************************************************************************/
@@ -46,7 +46,7 @@ FilterDialog::FilterDialog(int type, QWidget* parent, Qt::WFlags fl )
 	setObjectName( "FilterDialog" );
 	setWindowTitle(tr("QtiPlot - Filter options"));
 	setSizeGripEnabled( true );
-	
+
     QGroupBox *gb1 = new QGroupBox();
     QGridLayout *gl1 = new QGridLayout(gb1);
 	gl1->addWidget(new QLabel(tr("Filter curve: ")), 0, 0);
@@ -60,7 +60,7 @@ FilterDialog::FilterDialog(int type, QWidget* parent, Qt::WFlags fl )
 		gl1->addWidget(new QLabel(tr("Low Frequency (Hz)")), 1, 0);
 
 	ApplicationWindow *app = (ApplicationWindow *)parent;
-	
+
 	boxStart = new DoubleSpinBox();
 	boxStart->setValue(0.0);
 	boxStart->setDecimals(app->d_decimal_digits);
@@ -97,7 +97,7 @@ FilterDialog::FilterDialog(int type, QWidget* parent, Qt::WFlags fl )
         gl1->setRowStretch(3, 1);
 	}
 	gl1->setColumnStretch(1, 1);
-	
+
 	buttonFilter = new QPushButton(tr( "&Filter" ));
     buttonFilter->setDefault( true );
     buttonCancel = new QPushButton(tr( "&Close" ));
