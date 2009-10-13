@@ -2022,6 +2022,8 @@ void Graph3D::exportVector(const QString& fileName, int textExportMode, int sort
         return;
 	}
 
+	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+
     QString format = "PDF";
     if (fileName.endsWith(".eps", Qt::CaseInsensitive))
         format = "EPS";
@@ -2053,6 +2055,8 @@ void Graph3D::exportVector(const QString& fileName, int textExportMode, int sort
 	IO::save(sp, fileName, format);
 
 	scaleFonts(1.0/fontsFactor);
+
+	QApplication::restoreOverrideCursor();
 }
 
 void Graph3D::exportToFile(const QString& fileName)
