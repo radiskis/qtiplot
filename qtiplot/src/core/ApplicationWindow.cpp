@@ -7636,16 +7636,16 @@ void ApplicationWindow::exportPDF()
 	if (!w)
 		return;
 
-	if(w->isA("MultiLayer") && ((MultiLayer *)w)->isEmpty()){
+	if(qobject_cast<MultiLayer *>(w) && ((MultiLayer *)w)->isEmpty()){
 		QMessageBox::warning(this,tr("QtiPlot - Warning"),
 			tr("<h4>There are no plot layers available in this window.</h4>"));
 		return;
 	}
 
-	if (w->isA("MultiLayer")){
+	if (qobject_cast<MultiLayer *>(w) || qobject_cast<Graph3D *>(w)){
 		exportGraph("*.pdf");
 		return;
-	} else if (w->isA("Matrix")){
+	} else if (qobject_cast<Matrix *>(w)){
 		exportMatrix("*.pdf");
 		return;
 	}

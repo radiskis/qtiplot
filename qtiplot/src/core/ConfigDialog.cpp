@@ -2313,12 +2313,13 @@ void ConfigDialog::pickTitleFont()
 void ConfigDialog::pickApplicationFont()
 {
 	bool ok;
-	QFont font = QFontDialog::getFont(&ok,appFont,this);
+	QFont font = QFontDialog::getFont(&ok, appFont,this);
 	if ( ok )
 		appFont = font;
 	else
 		return;
-	fontsBtn->setFont(appFont);
+
+	((ApplicationWindow *)parentWidget())->changeAppFont(appFont);
 }
 
 void ConfigDialog::pick3DTitleFont()
