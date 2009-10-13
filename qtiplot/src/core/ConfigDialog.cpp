@@ -1898,8 +1898,8 @@ void ConfigDialog::languageChange()
 	boxMinorGridStyle->setCurrentIndex(app->d_3D_minor_style);
 
 	label3DGridsColor->setText(tr("Color"));
-	label3DGridsWidth->setText(tr("Style"));
-	label3DGridsStyle->setText(tr("Width"));
+	label3DGridsWidth->setText(tr("Width"));
+	label3DGridsStyle->setText(tr("Style"));
 
     //Notes page
     labelTabLength->setText(tr("Tab length (pixels)"));
