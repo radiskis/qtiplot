@@ -1234,42 +1234,65 @@ void ConfigDialog::initNotesPage()
 	QVBoxLayout* vl = new QVBoxLayout(notesPage);
 	vl->addWidget(gb1);
 
-#ifdef SCRIPTING_PYTHON
 	groupSyntaxHighlighter = new QGroupBox();
 	QGridLayout *gl = new QGridLayout(groupSyntaxHighlighter);
+
+	buttonCommentLabel = new QLabel;
+	gl->addWidget(buttonCommentLabel, 0, 0);
 
 	buttonCommentColor = new ColorButton();
 	buttonCommentColor->setColor(app->d_comment_highlight_color);
 	connect(buttonCommentColor, SIGNAL(colorChanged()), this, SLOT(rehighlight()));
-	gl->addWidget(buttonCommentColor, 0, 0);
+	gl->addWidget(buttonCommentColor, 0, 1);
+	buttonCommentLabel->setBuddy (buttonCommentColor);
+
+	buttonKeywordLabel = new QLabel;
+	gl->addWidget(buttonKeywordLabel, 1, 0);
 
 	buttonKeywordColor = new ColorButton();
 	buttonKeywordColor->setColor(app->d_keyword_highlight_color);
 	connect(buttonKeywordColor, SIGNAL(colorChanged()), this, SLOT(rehighlight()));
-	gl->addWidget(buttonKeywordColor, 0, 1);
+	gl->addWidget(buttonKeywordColor, 1, 1);
+	buttonKeywordLabel->setBuddy (buttonKeywordColor);
+
+	buttonQuotationLabel = new QLabel;
+	gl->addWidget(buttonQuotationLabel, 2, 0);
 
 	buttonQuotationColor = new ColorButton();
 	buttonQuotationColor->setColor(app->d_quotation_highlight_color);
 	connect(buttonQuotationColor, SIGNAL(colorChanged()), this, SLOT(rehighlight()));
-	gl->addWidget(buttonQuotationColor, 1, 0);
+	gl->addWidget(buttonQuotationColor, 2, 1);
+	buttonQuotationLabel->setBuddy (buttonQuotationColor);
+
+	buttonNumericLabel = new QLabel;
+	gl->addWidget(buttonNumericLabel, 3, 0);
 
 	buttonNumericColor = new ColorButton();
 	buttonNumericColor->setColor(app->d_numeric_highlight_color);
 	connect(buttonNumericColor, SIGNAL(colorChanged()), this, SLOT(rehighlight()));
-	gl->addWidget(buttonNumericColor, 1, 1);
+	gl->addWidget(buttonNumericColor, 3, 1);
+	buttonNumericLabel->setBuddy (buttonNumericColor);
+
+	buttonFunctionLabel = new QLabel;
+	gl->addWidget(buttonFunctionLabel, 4, 0);
 
 	buttonFunctionColor = new ColorButton();
 	buttonFunctionColor->setColor(app->d_function_highlight_color);
 	connect(buttonFunctionColor, SIGNAL(colorChanged()), this, SLOT(rehighlight()));
-	gl->addWidget(buttonFunctionColor, 2, 0);
+	gl->addWidget(buttonFunctionColor, 4, 1);
+	buttonFunctionLabel->setBuddy (buttonFunctionColor);
+
+	buttonClassLabel = new QLabel;
+	gl->addWidget(buttonClassLabel, 5, 0);
 
 	buttonClassColor = new ColorButton();
 	buttonClassColor->setColor(app->d_class_highlight_color);
 	connect(buttonClassColor, SIGNAL(colorChanged()), this, SLOT(rehighlight()));
-	gl->addWidget(buttonClassColor, 2, 1);
+	gl->addWidget(buttonClassColor, 5, 1);
+	buttonClassLabel->setBuddy (buttonClassColor);
+	gl->setRowStretch(6, 1);
 
 	vl->addWidget(groupSyntaxHighlighter);
-#endif
 
 	vl->addStretch();
 }
@@ -1905,15 +1928,14 @@ void ConfigDialog::languageChange()
     labelTabLength->setText(tr("Tab length (pixels)"));
     labelNotesFont->setText(tr("Font"));
     lineNumbersBox->setText(tr("&Display line numbers"));
-#ifdef SCRIPTING_PYTHON
+
 	groupSyntaxHighlighter->setTitle(tr("Syntax Highlighting"));
-	buttonCommentColor->setText(tr("Co&mments"));
-	buttonKeywordColor->setText(tr("&Keywords"));
-	buttonNumericColor->setText(tr("&Numbers"));
-	buttonQuotationColor->setText(tr("&Quotations"));
-	buttonFunctionColor->setText(tr("&Functions"));
-	buttonClassColor->setText(tr("Q&t Classes"));
-#endif
+	buttonCommentLabel->setText(tr("Co&mments"));
+	buttonKeywordLabel->setText(tr("&Keywords"));
+	buttonNumericLabel->setText(tr("&Numbers"));
+	buttonQuotationLabel->setText(tr("&Quotations"));
+	buttonFunctionLabel->setText(tr("&Functions"));
+	buttonClassLabel->setText(tr("Q&t Classes"));
 
 	//Fitting page
 	groupBoxFittingCurve->setTitle(tr("Generated Fit Curve"));
@@ -2505,6 +2527,7 @@ void ConfigDialog::choosePythonConfigFolder()
 			app->setScriptingLanguage(QString("Python"), true);
 	}
 }
+#endif
 
 void ConfigDialog::rehighlight()
 {
@@ -2531,7 +2554,6 @@ void ConfigDialog::rehighlight()
         }
     }
 }
-#endif
 
 void ConfigDialog::customizeNotes()
 {

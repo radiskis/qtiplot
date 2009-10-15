@@ -1027,7 +1027,7 @@ via a proxy.</para>
   If the <emphasis>Automatically Recalculate Column Values</emphasis> option is checked, all modifications in the values
   of a column trigger a recalculation of all columns with formulas depending on the modified column.
   </para>
-  <figure id="fig-preferences-dialog-4">
+  <informalfigure id="fig-preferences-dialog-4">
     <title>The preferences dialog: table options.</title>
     <mediaobject>
       <imageobject>
@@ -1180,8 +1180,9 @@ Displaying the line numbers can be particularly helpful when debugging Python sc
     </mediaobject>
   </figure>
 
-  <para>Warning: If you make some changes in the table, the values are not computed again.
-	  You have to explicitly tell QtiPlot to recalculate individual cells or whole columns or rows by selecting "Recalculate" from their context menu or by pressing Control+Return.
+  <para>Warning: If you make some changes in the table, the values are not computed again, unless you check the
+   <emphasis>Automatically Recalculate Column Values</emphasis> option in the <emphasis>Tables</emphasis> tab of the<link linkend="fig-preferences-dialog-4">Preferences dialog</link>.
+	If this option is unchecked you have to explicitly tell QtiPlot to recalculate individual cells or whole columns or rows by selecting "Recalculate" from their context menu or by pressing Control+Return.
   </para>
 
 </sect1>

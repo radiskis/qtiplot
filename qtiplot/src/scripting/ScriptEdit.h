@@ -117,8 +117,8 @@ class ScriptEdit: public QTextEdit, public scripted
 	QString d_err_message;
 
 	QCompleter *d_completer;
-  	QString d_file_name;
 	SyntaxHighlighter *d_highlighter;
+	QString d_file_name;
 	QString d_search_string;
 	QTextDocument::FindFlags d_search_flags;
 	QTextEdit *d_output_widget;

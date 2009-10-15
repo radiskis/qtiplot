@@ -104,8 +104,8 @@ private slots:
 	void chooseHelpFolder();
 #ifdef SCRIPTING_PYTHON
 	void choosePythonConfigFolder();
-	void rehighlight();
 #endif
+	void rehighlight();
     void customizeNotes();
 	void chooseTexCompiler();
 	bool validateTexCompiler();
@@ -222,11 +222,11 @@ private:
 	QLabel *label3DGridsColor, *label3DGridsWidth, *label3DGridsStyle;
 	QGroupBox *groupBox3DGrids;
 
-#ifdef SCRIPTING_PYTHON
 	QGroupBox *groupSyntaxHighlighter;
 	ColorButton *buttonCommentColor, *buttonNumericColor, *buttonQuotationColor;
 	ColorButton *buttonKeywordColor, *buttonFunctionColor, *buttonClassColor;
-#endif
+	QLabel *buttonCommentLabel, *buttonNumericLabel, *buttonQuotationLabel;
+	QLabel *buttonKeywordLabel, *buttonFunctionLabel, *buttonClassLabel;
 };
 
 #endif // CONFIGDIALOG_H
