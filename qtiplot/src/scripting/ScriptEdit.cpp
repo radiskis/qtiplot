@@ -49,7 +49,7 @@
 #include <QDockWidget>
 
 ScriptEdit::ScriptEdit(ScriptingEnv *env, QWidget *parent, const char *name)
-  : QTextEdit(parent, name), scripted(env), d_error(false), d_completer(0),
+  : QTextEdit(parent, name), scripted(env), d_error(false), d_completer(0), d_highlighter(0),
   d_file_name(QString::null), d_search_string(QString::null), d_output_widget(NULL)
 {
 	myScript = scriptEnv->newScript("", this, name);
@@ -63,12 +63,7 @@ ScriptEdit::ScriptEdit(ScriptingEnv *env, QWidget *parent, const char *name)
 	setTextFormat(Qt::PlainText);
 	setAcceptRichText (false);
 
-#ifdef SCRIPTING_PYTHON
-	if (scriptEnv->name() == QString("Python"))
-		d_highlighter = new PythonSyntaxHighlighter(this);
-	else
-#endif
-		d_highlighter = new SyntaxHighlighter(this);
+	rehighlight();
 
 	d_fmt_default.setBackground(palette().brush(QPalette::Base));
 
@@ -140,15 +135,7 @@ void ScriptEdit::customEvent(QEvent *e)
 		connect(myScript, SIGNAL(error(const QString&, const QString&, int)), this, SLOT(insertErrorMsg(const QString&)));
 		connect(myScript, SIGNAL(print(const QString&)), this, SLOT(scriptPrint(const QString&)));
 
-	#ifdef SCRIPTING_PYTHON
-		if (d_highlighter)
-			delete d_highlighter;
-
-		if (scriptEnv->name() == QString("Python"))
-			d_highlighter = new PythonSyntaxHighlighter(this);
-		else
-			d_highlighter = new SyntaxHighlighter(this);
-	#endif
+		rehighlight();
 	}
 }
 
@@ -611,15 +598,15 @@ void ScriptEdit::setDirPath(const QString& path)
 
 void ScriptEdit::rehighlight()
 {
-#ifdef SCRIPTING_PYTHON
-	if (scriptEnv->name() != QString("Python"))
-		return;
-
 	if (d_highlighter)
 		delete d_highlighter;
 
-	d_highlighter = new PythonSyntaxHighlighter(this);
+#ifdef SCRIPTING_PYTHON
+	if (scriptEnv->name() == QString("Python"))
+		d_highlighter = new PythonSyntaxHighlighter(this);
+	else
 #endif
+		d_highlighter = new SyntaxHighlighter(this);
 }
 
 void ScriptEdit::showFindDialog(bool replace)

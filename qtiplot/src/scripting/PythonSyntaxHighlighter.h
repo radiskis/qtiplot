@@ -50,6 +50,19 @@ public:
 
 protected:
     void highlightBlock(const QString &text);
+
+	struct HighlightingRule
+	{
+		QRegExp pattern;
+		QTextCharFormat format;
+	};
+
+	QVector<HighlightingRule> highlightingRules;
+
+	QTextCharFormat commentFormat;
+	QTextCharFormat quotationFormat;
+	QTextCharFormat functionFormat;
+	QTextCharFormat numericFormat;
 };
 
 class PythonSyntaxHighlighter : public SyntaxHighlighter
@@ -63,19 +76,10 @@ protected:
     void highlightBlock(const QString &text);
 
 private:
-    struct HighlightingRule
-    {
-        QRegExp pattern;
-        QTextCharFormat format;
-    };
-    QVector<HighlightingRule> highlightingRules;
+	QVector<HighlightingRule> pythonHighlightingRules;
 
     QTextCharFormat keywordFormat;
     QTextCharFormat classFormat;
-    QTextCharFormat commentFormat;
-    QTextCharFormat quotationFormat;
-    QTextCharFormat functionFormat;
-	QTextCharFormat numericFormat;
 };
 
 #endif

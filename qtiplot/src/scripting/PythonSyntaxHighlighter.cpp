@@ -50,36 +50,14 @@ PythonSyntaxHighlighter::PythonSyntaxHighlighter(ScriptEdit *parent)
     foreach (QString pattern, keywordPatterns) {
         rule.pattern = QRegExp(pattern);
         rule.format = keywordFormat;
-        highlightingRules.append(rule);
+        pythonHighlightingRules.append(rule);
     }
 
     classFormat.setFontWeight(QFont::Bold);
 	classFormat.setForeground(app->d_class_highlight_color);
     rule.pattern = QRegExp("\\bQ[A-Za-z]+\\b");
     rule.format = classFormat;
-    highlightingRules.append(rule);
-
-    functionFormat.setFontItalic(true);
-	functionFormat.setForeground(app->d_function_highlight_color);
-    rule.pattern = QRegExp("\\b[A-Za-z0-9_]+(?=\\()");
-    rule.format = functionFormat;
-    highlightingRules.append(rule);
-
-	numericFormat.setForeground(app->d_numeric_highlight_color);
-    rule.pattern = QRegExp("\\b\\d+[eE.]*\\d*\\b");
-    rule.format = numericFormat;
-    highlightingRules.append(rule);
-
-	quotationFormat.setForeground(app->d_quotation_highlight_color);
-    rule.pattern = QRegExp("\".*\"");
-    rule.pattern.setMinimal(true);
-    rule.format = quotationFormat;
-    highlightingRules.append(rule);
-
-	commentFormat.setForeground(app->d_comment_highlight_color);
-	rule.pattern = QRegExp("#[^\n]*");
-    rule.format = commentFormat;
-    highlightingRules.append(rule);
+	pythonHighlightingRules.append(rule);
 }
 
 void PythonSyntaxHighlighter::highlightBlock(const QString &text)
@@ -88,7 +66,7 @@ void PythonSyntaxHighlighter::highlightBlock(const QString &text)
 	QRegExp comment = QRegExp("\"{3}");
 	s.replace(comment, "   ");
 
-    foreach (HighlightingRule rule, highlightingRules) {
+    foreach (HighlightingRule rule, pythonHighlightingRules) {
         QRegExp expression(rule.pattern);
         int index = s.indexOf(expression);
         while (index >= 0) {
@@ -97,6 +75,8 @@ void PythonSyntaxHighlighter::highlightBlock(const QString &text)
             index = s.indexOf(expression, index + length);
         }
     }
+
+	SyntaxHighlighter::highlightBlock(text);//process common rules and parentheses matching
 
 	int startIndex = text.indexOf(comment);
 	int prevState = previousBlockState ();
@@ -137,16 +117,50 @@ void PythonSyntaxHighlighter::highlightBlock(const QString &text)
 		} else
 			setCurrentBlockState(0);// outside comment block
 	}
-
-	SyntaxHighlighter::highlightBlock(text);//parentheses matching
 }
 
 SyntaxHighlighter::SyntaxHighlighter(ScriptEdit * parent) : QSyntaxHighlighter(parent->document())
-{}
+{
+	HighlightingRule rule;
+	ApplicationWindow *app = parent->scriptingEnv()->application();
+
+	functionFormat.setFontItalic(true);
+	functionFormat.setForeground(app->d_function_highlight_color);
+	rule.pattern = QRegExp("\\b[A-Za-z0-9_]+(?=\\()");
+	rule.format = functionFormat;
+	highlightingRules.append(rule);
+
+	numericFormat.setForeground(app->d_numeric_highlight_color);
+	rule.pattern = QRegExp("\\b\\d+[eE.]*\\d*\\b");
+	rule.format = numericFormat;
+	highlightingRules.append(rule);
+
+	quotationFormat.setForeground(app->d_quotation_highlight_color);
+	rule.pattern = QRegExp("\".*\"");
+	rule.pattern.setMinimal(true);
+	rule.format = quotationFormat;
+	highlightingRules.append(rule);
+
+	commentFormat.setForeground(app->d_comment_highlight_color);
+	rule.pattern = QRegExp("#[^\n]*");
+	rule.format = commentFormat;
+	highlightingRules.append(rule);
+}
 
 //! Parentheses matching code taken from Qt Quarterly Issue 31 · Q3 2009
 void SyntaxHighlighter::highlightBlock(const QString &text)
 {
+	QString s = text;
+	foreach (HighlightingRule rule, highlightingRules) {
+		QRegExp expression(rule.pattern);
+		int index = s.indexOf(expression);
+		while (index >= 0) {
+			int length = expression.matchedLength();
+			setFormat(index, length, rule.format);
+			index = s.indexOf(expression, index + length);
+		}
+	}
+
 	TextBlockData *data = new TextBlockData;
 
     int leftPos = text.indexOf('(');
