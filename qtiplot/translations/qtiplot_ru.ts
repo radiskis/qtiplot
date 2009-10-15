@@ -672,7 +672,7 @@
     <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="1308"/>
         <source>Convert to &amp;Matrix</source>
-        <translation>Преобразовать в матрицу</translation>
+        <translation>Преобразовать в &amp;матрицу</translation>
     </message>
     <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="9034"/>
@@ -1596,7 +1596,7 @@
         <location filename="../src/core/ApplicationWindow.cpp" line="12950"/>
         <location filename="../src/core/ApplicationWindow.cpp" line="13748"/>
         <source>&amp;Go to Row...</source>
-        <translation>Перейти к &amp;строке</translation>
+        <translation>Перейти к &amp;строке...</translation>
     </message>
     <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="1056"/>
@@ -1683,7 +1683,7 @@
         <location filename="../src/core/ApplicationWindow.cpp" line="13307"/>
         <location filename="../src/core/ApplicationWindow.cpp" line="13390"/>
         <source>Hide &amp;Other Curves</source>
-        <translation>Спрятать другие графики</translation>
+        <translation>Спрятать &amp;другие графики</translation>
     </message>
     <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="12968"/>
@@ -2266,7 +2266,7 @@
     <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="6640"/>
         <source>Please select exactly one columns for this operation!</source>
-        <translation>Выберите ровно один столбец для данной операции.</translation>
+        <translation>Выберите ровно один столбец для данной операции!</translation>
     </message>
     <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="1829"/>
@@ -2898,7 +2898,7 @@
         <location filename="../src/core/ApplicationWindow.cpp" line="13165"/>
         <location filename="../src/core/ApplicationWindow.cpp" line="13826"/>
         <source>&amp;Random Values</source>
-        <translation>Случайными значениями</translation>
+        <translation>&amp;Случайными значениями</translation>
     </message>
     <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="12886"/>
@@ -2967,7 +2967,7 @@
         <location filename="../src/core/ApplicationWindow.cpp" line="13213"/>
         <location filename="../src/core/ApplicationWindow.cpp" line="13852"/>
         <source>Report a &amp;Bug</source>
-        <translation>Сообщить об ошибке</translation>
+        <translation>Сообщить об оши&amp;бке</translation>
     </message>
     <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="12669"/>
@@ -3256,7 +3256,7 @@
         <location filename="../src/core/ApplicationWindow.cpp" line="13310"/>
         <location filename="../src/core/ApplicationWindow.cpp" line="13391"/>
         <source>&amp;Show All Curves</source>
-        <translation>Показать все графики</translation>
+        <translation>&amp;Показать все графики</translation>
     </message>
     <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="9518"/>
@@ -4183,13 +4183,13 @@ Are you sure you want to continue?</source>
         <location filename="../src/core/ApplicationWindow.cpp" line="13105"/>
         <location filename="../src/core/ApplicationWindow.cpp" line="13807"/>
         <source>2D &amp;Binning</source>
-        <translation type="unfinished"></translation>
+        <translation>2D &amp;гистограмма</translation>
     </message>
     <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="13108"/>
         <location filename="../src/core/ApplicationWindow.cpp" line="13808"/>
         <source>&amp;Regular XYZ</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Обычная XYZ</translation>
     </message>
     <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="13171"/>
@@ -7476,7 +7476,7 @@ The following special codes can be used:
     <message>
         <location filename="../src/core/CreateBinMatrixDialog.cpp" line="48"/>
         <source>Bin Matrix Dialog</source>
-        <translation type="unfinished"></translation>
+        <translation>Матрица 2D гистограммы</translation>
     </message>
     <message>
         <location filename="../src/core/CreateBinMatrixDialog.cpp" line="55"/>
@@ -12998,7 +12998,7 @@ have the same number of rows.</source>
     <message>
         <location filename="../src/plot3D/Plot3DDialog.cpp" line="627"/>
         <source>Points</source>
-        <translation>Точек</translation>
+        <translation>Точки</translation>
     </message>
     <message>
         <location filename="../src/plot3D/Plot3DDialog.cpp" line="92"/>
@@ -13033,7 +13033,7 @@ have the same number of rows.</source>
     <message>
         <location filename="../src/plot3D/Plot3DDialog.cpp" line="559"/>
         <source>Smooth angles</source>
-        <translation>Угол сглаживания</translation>
+        <translation>Сгладить углы</translation>
     </message>
     <message>
         <location filename="../src/plot3D/Plot3DDialog.cpp" line="586"/>
