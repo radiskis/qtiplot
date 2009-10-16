@@ -31,6 +31,14 @@
 #include "PythonSyntaxHighlighter.h"
 #include <ApplicationWindow.h>
 
+const QStringList PythonSyntaxHighlighter::d_keywords = QStringList() << "and" << "assert" << "break"
+					<< "class" << "continue"  << "def" << "del"
+					<< "elif" << "else" << "except" << "exec"
+					<< "finally" << "for" << "from" << "global"
+					<< "if" << "import" << "in" << "is"
+					<< "lambda" << "not" << "or" << "pass"
+					<< "print" << "raise" << "return" << "try" << "while";
+
 PythonSyntaxHighlighter::PythonSyntaxHighlighter(ScriptEdit *parent)
     : SyntaxHighlighter(parent)
 {
@@ -39,16 +47,9 @@ PythonSyntaxHighlighter::PythonSyntaxHighlighter(ScriptEdit *parent)
 
 	keywordFormat.setForeground(app->d_keyword_highlight_color);
     keywordFormat.setFontWeight(QFont::Bold);
-    QStringList keywordPatterns;
-    keywordPatterns << "\\band\\b" << "\\bassert\\b" << "\\bbreak\\b"
-					<< "\\bclass\\b" << "\\bcontinue\\b"  << "\\bdef\\b" << "\\bdel\\b"
-					<< "\\belif\\b" << "\\belse\\b" << "\\bexcept\\b" << "\\bexec\\b"
-					<< "\\bfinally\\b" << "\\bfor\\b" << "\\bfrom\\b" << "\\bglobal\\b"
-					<< "\\bif\\b" << "\\bimport\\b" << "\\bin\\b" << "\\bis\\b"
-					<< "\\blambda\\b" << "\\bnot\\b" << "\\bor\\b" << "\\bpass\\b"
-					<< "\\bprint\\b" << "\\braise\\b" << "\\breturn\\b" << "\\try\b" << "\\bwhile\\b";
-    foreach (QString pattern, keywordPatterns) {
-        rule.pattern = QRegExp(pattern);
+
+	foreach (QString pattern, d_keywords) {
+        rule.pattern = QRegExp("\\b" + pattern + "\\b");
         rule.format = keywordFormat;
         pythonHighlightingRules.append(rule);
     }

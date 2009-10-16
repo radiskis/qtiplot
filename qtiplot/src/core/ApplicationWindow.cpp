@@ -120,6 +120,7 @@
 #include <Note.h>
 #include <ScriptingLangDialog.h>
 #include <ScriptWindow.h>
+#include <PythonSyntaxHighlighter.h>
 #include <CreateBinMatrixDialog.h>
 #include <QTextDocumentWriter>
 
@@ -4532,6 +4533,7 @@ ApplicationWindow* ApplicationWindow::openProject(const QString& fn, bool factor
 	app->savedProject();
 	app->d_opening_file = false;
 	app->d_workspace->blockSignals(false);
+	app->addWindowsListToCompleter();
 	return app;
 }
 
@@ -4581,6 +4583,8 @@ bool ApplicationWindow::setScriptingLanguage(const QString &lang, bool force)
 	ScriptingChangeEvent *sce = new ScriptingChangeEvent(newEnv);
 	QApplication::sendEvent(this, sce);
 	delete sce;
+
+	initCompleter();
 
 	foreach(QObject *i, findChildren<QObject*>())
 		QApplication::postEvent(i, new ScriptingChangeEvent(newEnv));
@@ -6286,6 +6290,7 @@ bool ApplicationWindow::setWindowName(MdiSubWindow *w, const QString &text)
 	w->setCaptionPolicy(w->captionPolicy());
 	w->setName(newName);
 	renameListViewItem(name, newName);
+	updateCompleter(name, false, newName);
 	return true;
 }
 
@@ -8800,6 +8805,8 @@ void ApplicationWindow::removeWindowFromLists(MdiSubWindow* w)
 
 	if (hiddenWindows->contains(w))
 		hiddenWindows->takeAt(hiddenWindows->indexOf(w));
+
+	updateCompleter(caption, true);
 }
 
 void ApplicationWindow::closeWindow(MdiSubWindow* window)
@@ -15734,6 +15741,8 @@ void ApplicationWindow::addListViewItem(MdiSubWindow *w)
 	it->setText(3, w->sizeToString());
 	it->setText(4, w->birthDate());
 	it->setText(5, w->windowLabel());
+
+	updateCompleter(w->objectName());
 }
 
 void ApplicationWindow::windowProperties()
@@ -17058,41 +17067,58 @@ QString ApplicationWindow::endOfLine()
 
 void ApplicationWindow::initCompleter()
 {
+	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+
+	QStringList words;
 #ifdef SCRIPTING_PYTHON
-    QString fn = d_python_config_folder + "/qti_wordlist.txt";
-    QFile file(fn);
-    if (!file.open(QFile::ReadOnly)){
-        QFileInfo fi(file);
-        QMessageBox::critical(this, tr("QtiPlot - Warning"),
-				tr("Couldn't load file: %1.\nAutocompletion will not be available!").arg(fi.absoluteFilePath()));
-        return;
-    }
+	if (scriptEnv->name() == QString("Python")){
+		QString fn = d_python_config_folder + "/qti_wordlist.txt";
+		QFile file(fn);
+		if (!file.open(QFile::ReadOnly)){
+			QMessageBox::critical(this, tr("QtiPlot - Warning"),
+			tr("Couldn't load file: %1.\nAutocompletion will not be available!").arg(QFileInfo(file).absoluteFilePath()));
+		} else {
+			while (!file.atEnd()){
+				QByteArray line = file.readLine();
+				if (!line.isEmpty()){
+					QString s = line.trimmed();
+					if (!words.contains(s))
+						words << s;
+				}
+			}
+			file.close();
+		}
 
-    QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+		words.append(PythonSyntaxHighlighter::keywordsList());
 
-    QStringList words;
-    while (!file.atEnd()){
-        QByteArray line = file.readLine();
-        if (!line.isEmpty()){
-            QString s = line.trimmed();
-            if (!words.contains(s))
-                words << s;
-        }
-    }
+		Folder *f = projectFolder();
+		while (f){
+			QList<MdiSubWindow *> folderWindows = f->windowsList();
+			foreach(MdiSubWindow *w, folderWindows)
+				words << w->objectName();
+			f = f->folderBelow();
+		}
+	}
+#endif
+
+	QStringList functions = scriptEnv->mathFunctions();
+	foreach(QString s, functions)
+		words.append(s + "()");
+
     words.sort();
 
-    QApplication::restoreOverrideCursor();
+	if (!d_completer){
+		d_completer = new QCompleter(this);
+		d_completer->setModelSorting(QCompleter::CaseSensitivelySortedModel);
+		d_completer->setCompletionMode(QCompleter::PopupCompletion);
+	}
+	d_completer->setModel(new QStringListModel(words, d_completer));
 
-    d_completer = new QCompleter(this);
-    d_completer->setModel(new QStringListModel(words, d_completer));
-    d_completer->setModelSorting(QCompleter::CaseSensitivelySortedModel);
-    d_completer->setCompletionMode(QCompleter::PopupCompletion);
-#endif
+	QApplication::restoreOverrideCursor();
 }
 
 void ApplicationWindow::enableCompletion(bool on)
 {
-#ifdef SCRIPTING_PYTHON
     if (!d_completer || d_completion == on)
         return;
 
@@ -17118,7 +17144,6 @@ void ApplicationWindow::enableCompletion(bool on)
         }
 		f = f->folderBelow();
 	}
-#endif
 }
 
 void ApplicationWindow::showFrequencyCountDialog()
@@ -17419,4 +17444,61 @@ void ApplicationWindow::evaluate()
 		return;
 
 	note->evaluate();
+}
+
+void ApplicationWindow::addWindowsListToCompleter()
+{
+#ifdef SCRIPTING_PYTHON
+	if (scriptEnv->name() != QString("Python"))
+		return;
+
+	if (!d_completer)
+		return;
+
+	QStringListModel *model = qobject_cast<QStringListModel *> (d_completer->model());
+	if (!model)
+		return;
+
+	QStringList lst = model->stringList();
+	Folder *f = projectFolder();
+	while (f){
+		QList<MdiSubWindow *> folderWindows = f->windowsList();
+		foreach(MdiSubWindow *w, folderWindows)
+			lst << w->objectName();
+		f = f->folderBelow();
+	}
+	lst.sort();
+	model->setStringList(lst);
+#endif
+}
+
+void ApplicationWindow::updateCompleter(const QString& windowName, bool remove, const QString& newName)
+{
+#ifdef SCRIPTING_PYTHON
+	if (scriptEnv->name() != QString("Python"))
+		return;
+
+	if (!d_completer || d_is_appending_file || d_opening_file)
+		return;
+
+	QStringListModel *model = qobject_cast<QStringListModel *> (d_completer->model());
+	if (!model)
+		return;
+
+	QStringList lst = model->stringList();
+
+	if (newName.isEmpty()){
+		if (remove)
+			lst.removeAll(windowName);
+		else
+			lst.append(windowName);
+	} else {
+		int index = lst.indexOf(windowName);
+		if (index >= 0)
+			lst.replace(index, newName);
+	}
+
+	lst.sort();
+	model->setStringList(lst);
+#endif
 }
