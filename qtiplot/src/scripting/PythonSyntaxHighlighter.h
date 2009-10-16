@@ -72,6 +72,8 @@ class PythonSyntaxHighlighter : public SyntaxHighlighter
 public:
     PythonSyntaxHighlighter(ScriptEdit *parent);
 
+    static QStringList keywordsList(){return d_keywords;};
+
 protected:
     void highlightBlock(const QString &text);
 
@@ -80,6 +82,8 @@ private:
 
     QTextCharFormat keywordFormat;
     QTextCharFormat classFormat;
+
+    static const QStringList d_keywords;
 };
 
 #endif

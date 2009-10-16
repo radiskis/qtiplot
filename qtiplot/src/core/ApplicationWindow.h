@@ -174,6 +174,7 @@ public:
 
 	QCompleter* completer(){return d_completer;};
 	void enableCompletion(bool on = true);
+	void addWindowsListToCompleter();
 
 	QLocale clipboardLocale(){return d_clipboard_locale;};
 	void setClipboardLocale(const QLocale& locale){d_clipboard_locale = locale;};
@@ -1021,22 +1022,23 @@ signals:
 	void modified();
 
 private:
-    void initCompleter();
-	virtual QMenu * createPopupMenu(){return NULL;};
-
-	void initPlot3D(Graph3D *plot);
-
-private slots:
-    //! \name Initialization
+	//! \name Initialization
 	//@{
-	void insertTranslatedStrings();
-	void translateActionsStrings();
 	void init(bool factorySettings = false);
-	void initGlobalConstants();
+    void initCompleter();
+    void initGlobalConstants();
 	void createActions();
 	void initMainMenu();
 	void initToolBars();
 	void initPlot3DToolBar();
+	void initPlot3D(Graph3D *plot);
+	void insertTranslatedStrings();
+	void translateActionsStrings();
+	//@}
+	virtual QMenu * createPopupMenu(){return NULL;};
+	void updateCompleter(const QString& windowName, bool remove = false, const QString& newName = QString::null);
+
+private slots:
 	void disableActions();
 	void customColumnActions();
 	void disableToolbars();
@@ -1044,7 +1046,6 @@ private slots:
 	void customMenu(QMdiSubWindow* w);
 	void windowActivated(QMdiSubWindow *w);
 	void custom2DPlotTools(MultiLayer *);
-	//@}
 
 	void analysisMenuAboutToShow();
 	void scriptingMenuAboutToShow();

@@ -1085,11 +1085,9 @@ void ConfigDialog::initAppPage()
 	boxSearchUpdates->setChecked(app->autoSearchUpdates);
 	topBoxLayout->addWidget( boxSearchUpdates, 9, 0, 1, 2 );
 
-#ifdef SCRIPTING_PYTHON
     completionBox = new QCheckBox();
 	completionBox->setChecked(app->d_completion);
 	topBoxLayout->addWidget(completionBox, 10, 0);
-#endif
 
 	topBoxLayout->setRowStretch(11, 1);
 
@@ -1759,9 +1757,7 @@ void ConfigDialog::languageChange()
 	boxInitWindow->addItem(tr("Empty Graph"));
 	boxInitWindow->addItem(tr("Note"));
 	boxInitWindow->setCurrentIndex((int)app->d_init_window_type);
-#ifdef SCRIPTING_PYTHON
     completionBox->setText(tr("&Enable autocompletion (Ctrl+U)"));
-#endif
 
 	lblAppPrecision->setText(tr("Number of Decimal Digits"));
 	lblDecimalSeparator->setText(tr("Decimal Separators"));
@@ -2083,9 +2079,7 @@ void ConfigDialog::apply()
 	app->d_init_window_type = (ApplicationWindow::WindowType)boxInitWindow->currentIndex();
 	app->setMatrixUndoStackSize(undoStackSizeBox->value());
 	app->d_eol = (ApplicationWindow::EndLineChar)boxEndLine->currentIndex();
-#ifdef SCRIPTING_PYTHON
     app->enableCompletion(completionBox->isChecked());
-#endif
 
 	// general page: numeric format tab
 	app->d_decimal_digits = boxAppPrecision->value();
