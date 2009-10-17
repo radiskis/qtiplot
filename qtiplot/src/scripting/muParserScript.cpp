@@ -46,20 +46,6 @@ muParserScript::muParserScript(ScriptingEnv *env, const QString &code, QObject *
   variables.setAutoDelete(true);
   rvariables.setAutoDelete(true);
 
-  parser.DefineConst("pi", M_PI);
-  parser.DefineConst("Pi", M_PI);
-  parser.DefineConst("PI", M_PI);
-  parser.DefineConst("e", M_E);
-  parser.DefineConst("E", M_E);
-
-  for (const muParserScripting::mathFunction *i=muParserScripting::math_functions; i->name; i++)
-    if (i->numargs == 1 && i->fun1 != NULL)
-      parser.DefineFun(i->name, i->fun1);
-    else if (i->numargs == 2 && i->fun2 != NULL)
-      parser.DefineFun(i->name, i->fun2);
-    else if (i->numargs == 3 && i->fun3 != NULL)
-      parser.DefineFun(i->name, i->fun3);
-
   if (Context->isA("Table")) {
 	  parser.DefineFun("col", mu_col, false);
 	  parser.DefineFun("cell", mu_tableCell);

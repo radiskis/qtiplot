@@ -33,7 +33,7 @@
 #include "ScriptingEnv.h"
 #include "Script.h"
 
-#include <muParser.h>
+#include <MyParser.h>
 #include "math.h"
 #include <gsl/gsl_sf.h>
 #include <q3asciidict.h>
@@ -74,7 +74,7 @@ class muParserScript: public Script
     static double *mu_addVariableR(const char *name, void *) { return current->addVariableR(name); }
     static QString compileColArg(const QString& in);
 
-    mu::Parser parser, rparser;
+    MyParser parser, rparser;
     Q3AsciiDict<double> variables, rvariables;
     QStringList muCode;
 
