@@ -3,6 +3,7 @@
     Project              : QtiPlot
     --------------------------------------------------------------------
     Copyright            : (C) 2007 by Ion Vasilief
+                           (C) 2009 by Jonas Bähr <jonas * fs.ei.tum.de>
     Email (use @ for *)  : ion_vasilief*yahoo.fr
     Description          : Numerical smoothing of data sets
 
@@ -69,9 +70,9 @@ void SmoothFilter::init (int m)
 
 void SmoothFilter::setMethod(int m)
 {
-if (m < 1 || m > 3){
+if (m < 1 || m > 4){
     QMessageBox::critical((ApplicationWindow *)parent(), tr("QtiPlot") + " - " + tr("Error"),
-    tr("Unknown smooth filter. Valid values are: 1 - Savitky-Golay, 2 - FFT, 3 - Moving Window Average."));
+    tr("Unknown smooth filter. Valid values are: 1 - Savitky-Golay, 2 - FFT, 3 - Moving Window Average, 4 - Lowess."));
     d_init_err = true;
     return;
     }
@@ -98,6 +99,10 @@ void SmoothFilter::calculateOutputData(double *x, double *y)
 		case 3:
             d_explanation = QString::number(d_smooth_points) + " " + tr("points") + " " + tr("average smoothing");
     		smoothAverage(x, y);
+			break;
+		case 4:
+            d_explanation = QString::number(d_smooth_points) + " " + tr("points") + " " + tr("Lowess smoothing");
+    		smoothLowess(x, y);
 			break;
 	}
 }
@@ -244,3 +249,45 @@ void SmoothFilter::setPolynomOrder(int order)
     }
     d_polynom_order = order;
 }
+
+void SmoothFilter::setLowessParameter(double f, int iterations)
+{
+	if (d_method != Lowess)
+    {
+        QMessageBox::critical((ApplicationWindow *)parent(), tr("QtiPlot") + " - " + tr("Error"),
+				tr("Setting Lowess parameter is only available for Lowess smooth filters! Ignored option!"));
+		return;
+    }
+
+    if (f < 0 || f > 1)
+    {
+        QMessageBox::critical((ApplicationWindow *)parent(), tr("QtiPlot") + " - " + tr("Error"),
+				tr("The parameter f must be between 0 and 1!"));
+		d_init_err = true;
+		return;
+    }
+    if (iterations < 1)
+    {
+        QMessageBox::critical((ApplicationWindow *)parent(), tr("QtiPlot") + " - " + tr("Error"),
+				tr("The number of iterations must be at least 1!"));
+		d_init_err = true;
+		return;
+    }
+    d_f = f;
+    d_iterations = iterations;
+}
+
+#include "lowess.c" // from the R project; see also lowess.doc from the R sources
+void SmoothFilter::smoothLowess(double *x, double *y)
+{
+    double initial_y[d_n]; // we need to conserve the initial y as y will become the output
+    for (int i = 0; i < d_n; i++)
+        initial_y[i] = y[i];
+    double delta = 0.0; // see lowess.doc
+    double robustness_weights[d_n]; // currently unused output
+    double residuals[d_n]; // currently unused output
+
+    clowess(x, initial_y, d_n, d_f, d_iterations, delta, // inputs
+            y, robustness_weights, residuals); // outputs
+}
+

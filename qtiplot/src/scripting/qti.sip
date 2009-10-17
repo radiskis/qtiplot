@@ -2164,7 +2164,7 @@ class SmoothFilter : Filter
 #include "../src/analysis/SmoothFilter.h"
 %End
 public:
-  enum SmoothMethod{SavitzkyGolay = 1, FFT = 2, Average = 3};
+  enum SmoothMethod{SavitzkyGolay = 1, FFT = 2, Average = 3, Lowess = 4};
 
   SmoothFilter(ApplicationWindow * /TransferThis/, Table *, const QString&, const QString&, int, int, int);
   SmoothFilter(Table *, const QString&, const QString&, int = 1, int = -1, int = 3) /NoDerived/;
@@ -2186,6 +2186,7 @@ public:
   void setMethod(int);
   void setSmoothPoints(int, int = 0);
   void setPolynomOrder(int);
+  void setLowessParameter(double f, int iterations);
   bool run();
 };
 

@@ -7908,6 +7908,11 @@ void ApplicationWindow::showSmoothAverageDialog()
 	showSmoothDialog(SmoothFilter::Average);
 }
 
+void ApplicationWindow::showSmoothLowessDialog()
+{
+	showSmoothDialog(SmoothFilter::Lowess);
+}
+
 void ApplicationWindow::showInterpolationDialog()
 {
 	MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
@@ -8937,6 +8942,7 @@ void ApplicationWindow::analysisMenuAboutToShow()
         analysisMenu->addMenu(smoothMenu);
         smoothMenu->addAction(actionSmoothSavGol);
         smoothMenu->addAction(actionSmoothAverage);
+        smoothMenu->addAction(actionSmoothLowess);
         smoothMenu->addAction(actionSmoothFFT);
 
 		filterMenu->clear();
@@ -12835,6 +12841,9 @@ void ApplicationWindow::createActions()
 	actionSmoothAverage = new QAction(tr("Moving Window &Average..."), this);
 	connect(actionSmoothAverage, SIGNAL(activated()), this, SLOT(showSmoothAverageDialog()));
 
+	actionSmoothLowess = new QAction(tr("&Lowess..."), this);
+	connect(actionSmoothLowess, SIGNAL(activated()), this, SLOT(showSmoothLowessDialog()));
+
 	actionDifferentiate = new QAction(tr("&Differentiate"), this);
 	connect(actionDifferentiate, SIGNAL(activated()), this, SLOT(differentiate()));
 
@@ -13690,6 +13699,7 @@ void ApplicationWindow::translateActionsStrings()
 	actionSmoothSavGol->setMenuText(tr("&Savitzky-Golay..."));
 	actionSmoothFFT->setMenuText(tr("&FFT Filter..."));
 	actionSmoothAverage->setMenuText(tr("Moving Window &Average..."));
+	actionSmoothLowess->setMenuText(tr("&Lowess..."));
 	actionDifferentiate->setMenuText(tr("&Differentiate"));
 	actionFitLinear->setMenuText(tr("Fit &Linear"));
 	actionFitSlope->setMenuText(tr("Fit Slop&e"));

@@ -602,6 +602,8 @@
 <!ENTITY savitsky-golay-lnk '<link linkend="savitsky-golay-cmd"><command>Smooth -> Savitsky-Golay...</command> command</link>'>
 <!ENTITY moving-window-cmd "<command>Smooth -> Moving Window Average...</command>">
 <!ENTITY moving-window-lnk '<link linkend="moving-window-cmd"><command>Smooth -> Moving Window Average...</command> command</link>'>
+<!ENTITY lowess-cmd "<command>Smooth -> Lowess...</command>">
+<!ENTITY lowess-lnk '<link linkend="lowess-cmd"><command>Smooth -> Lowess...</command> command</link>'>
 <!ENTITY smooth-fft-filter-cmd "<command>Smooth -> FFT Filter...</command>">
 <!ENTITY smooth-fft-filter-lnk '<link linkend="smooth-fft-filter-cmd"><command>Smooth -> FFT Filter...</command> command</link>'>
 <!ENTITY fft-filter-cmd "<command>FFT Filter</command>">
