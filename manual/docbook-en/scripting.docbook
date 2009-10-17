@@ -17,7 +17,95 @@
     <title>muParser</title>
 
     <para>The constants _e=e=E and _pi=pi=PI=Pi are defined, as well as the
-    following operators and functions.</para>
+    following fundamental physical constants, operators and functions.
+    Please note that the fundamental constants cannot be redefined.
+    Doing so will raise an error message.</para>
+
+    <table frame="sides" pgwide="1" tocentry="1">
+      <title>Predefined Fundamental Physical Constants</title>
+
+      <tgroup cols="2">
+        <colspec align="left" colname="name" colwidth="1*" />
+
+        <colspec align="justify" colname="description" colwidth="10*" />
+
+        <thead>
+          <row>
+            <entry>Name</entry>
+
+            <entry>Description</entry>
+          </row>
+        </thead>
+
+        <tbody>
+          <row>
+            <entry>c</entry>
+
+            <entry>The speed of light in vacuum</entry>
+          </row>
+
+          <row>
+            <entry>eV</entry>
+
+            <entry>The energy of 1 electron volt</entry>
+          </row>
+
+          <row>
+            <entry>g</entry>
+
+            <entry>The standard gravitational acceleration on Earth</entry>
+          </row>
+
+          <row>
+            <entry>G</entry>
+
+            <entry>The gravitational constant</entry>
+          </row>
+
+          <row>
+            <entry>h</entry>
+
+            <entry>Planck's constant</entry>
+          </row>
+
+          <row>
+            <entry>hbar</entry>
+
+            <entry>Planck's constant divided by 2 pi</entry>
+          </row>
+
+          <row>
+            <entry>k</entry>
+
+            <entry>The Boltzmann constant</entry>
+          </row>
+
+          <row>
+            <entry>Na</entry>
+
+            <entry>Avogadro's number</entry>
+          </row>
+
+          <row>
+            <entry>R0</entry>
+
+            <entry>The molar gas constant</entry>
+          </row>
+
+          <row>
+            <entry>V0</entry>
+
+            <entry>The standard gas volume</entry>
+          </row>
+
+          <row>
+            <entry>Ry</entry>
+
+            <entry>The Rydberg constant, in units of energy</entry>
+          </row>
+        </tbody>
+      </tgroup>
+    </table>
 
     <table frame="sides" pgwide="1" tocentry="1">
       <title>Supported Mathematical Operators</title>

@@ -31,6 +31,8 @@
 #include <QApplication>
 #include "NonLinearFit.h"
 #include "muParserScripting.h"
+#include <gsl/gsl_const_mksa.h>
+#include <gsl/gsl_const_num.h>
 
 MyParser::MyParser()
 :Parser()
@@ -40,6 +42,19 @@ MyParser::MyParser()
 	DefineConst("PI", M_PI);
 	DefineConst("e", M_E);
 	DefineConst("E", M_E);
+
+	//Fundamental Constants defined in GSL
+	DefineConst("c", GSL_CONST_MKSA_SPEED_OF_LIGHT);//The speed of light in vacuum
+	DefineConst("eV", GSL_CONST_MKSA_ELECTRON_VOLT);//The energy of 1 electron volt
+	DefineConst("g", GSL_CONST_MKSA_GRAV_ACCEL);//The standard gravitational acceleration on Earth
+	DefineConst("G", GSL_CONST_MKSA_GRAVITATIONAL_CONSTANT);//The gravitational constant
+	DefineConst("h", GSL_CONST_MKSA_PLANCKS_CONSTANT_H);//Planck's constant
+	DefineConst("hbar", GSL_CONST_MKSA_PLANCKS_CONSTANT_HBAR);//Planck's constant divided by 2 pi
+	DefineConst("k", GSL_CONST_MKSA_PLANCKS_CONSTANT_H);//The Boltzmann constant
+	DefineConst("Na", GSL_CONST_NUM_AVOGADRO);//Avogadro's number
+	DefineConst("R0", GSL_CONST_MKSA_MOLAR_GAS);//The molar gas constant
+	DefineConst("V0", GSL_CONST_MKSA_STANDARD_GAS_VOLUME);//The standard gas volume
+	DefineConst("Ry", GSL_CONST_MKSA_RYDBERG);//The Rydberg constant, Ry, in units of energy
 
 	for (const muParserScripting::mathFunction *i=muParserScripting::math_functions; i->name; i++){
 		if (i->numargs == 1 && i->fun1 != NULL)

@@ -27,6 +27,7 @@
  *                                                                         *
  ***************************************************************************/
 #include "DoubleSpinBox.h"
+#include <MyParser.h>
 #include <QLineEdit>
 #include <QHBoxLayout>
 #include <QCloseEvent>
@@ -83,11 +84,27 @@ void DoubleSpinBox::setRange(double min, double max)
 void DoubleSpinBox::interpretText()
 {
 	bool ok = false;
-	double value = locale().toDouble(text(), &ok);
+	QString s = text();
+	double value = locale().toDouble(s, &ok);
 	if (ok && value == d_value)
 		return;
 
-	if (ok && setValue(value))
+	if (!ok){
+		MyParser parser;
+		try {
+			parser.SetExpr(s.toAscii().constData());
+			parser.SetDecSep(locale().decimalPoint().toAscii());
+			if (locale().numberOptions () != QLocale::OmitGroupSeparator)
+				parser.SetThousandsSep(locale().groupSeparator().toAscii());
+
+			value = parser.Eval();
+		} catch (mu::ParserError &e){
+			lineEdit()->setText(textFromValue(d_value));
+			return;
+		}
+	}
+
+	if (setValue(value))
         emit valueChanged(d_value);
     else
         lineEdit()->setText(textFromValue(d_value));
