@@ -3655,8 +3655,13 @@ smooth.run()
 </programlisting>
 
 The default smoothing method is the mowing window average. Other smoothing methods are the
-<varname>SmoothFilter.FFT</varname> and <varname>SmoothFilter.SavitzkyGolay</varname>. Here's an example
-of how to use this last method:
+<varname>SmoothFilter.FFT</varname>, <varname>SmoothFilter.Lowess</varname> and <varname>SmoothFilter.SavitzkyGolay</varname>. Here's an example
+of how to use the last two methods:
+<programlisting>
+smooth.setMethod(SmoothFilter.Lowess)
+smooth.setLowessParameter(0.2, 2)
+smooth.run()
+</programlisting>
 <programlisting>
 smooth.setSmoothPoints(5,5)
 smooth.setMethod(SmoothFilter.SavitzkyGolay)

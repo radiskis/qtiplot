@@ -40,7 +40,7 @@ public:
 	SmoothFilter(ApplicationWindow *parent, Graph *g, const QString& curveTitle, double start, double end, int m = 3);
 	SmoothFilter(ApplicationWindow *parent, Table *t, const QString& xCol, const QString& yCol, int start = 0, int end = -1, int m = 3);
 
-    enum SmoothMethod{SavitzkyGolay = 1, FFT = 2, Average = 3};
+    enum SmoothMethod{SavitzkyGolay = 1, FFT = 2, Average = 3, Lowess = 4};
 
     int method(){return (int)d_method;};
     void setMethod(int m);
@@ -48,6 +48,7 @@ public:
     void setSmoothPoints(int points, int left_points = 0);
     //! Sets the polynomial order in the Savitky-Golay algorithm.
     void setPolynomOrder(int order);
+    void setLowessParameter(double f, int iterations);
 
 private:
     void init(int m);
@@ -55,6 +56,7 @@ private:
     void smoothFFT(double *x, double *y);
     void smoothAverage(double *x, double *y);
     void smoothSavGol(double *x, double *y);
+    void smoothLowess(double *x, double *y);
 
     //! The smooth method.
     SmoothMethod d_method;
@@ -67,6 +69,12 @@ private:
 
     //! Polynomial order in the Savitky-Golay algorithm (see Numerical Receipes in C for details).
     int d_polynom_order;
+
+    //! Parameter f for the Lowess algorithm
+    double d_f;
+
+    //! Number of iterations for the Lowess algorithm
+    int d_iterations;
 };
 
 #endif

@@ -742,6 +742,7 @@ public slots:
 	void showSmoothSavGolDialog();
 	void showSmoothFFTDialog();
 	void showSmoothAverageDialog();
+	void showSmoothLowessDialog();
     void showSmoothDialog(int m);
 	void showFilterDialog(int filter);
 	void lowPassFilterDialog();
@@ -1361,7 +1362,7 @@ private:
 	QAction *actionPlot3DWireFrame, *actionPlot3DHiddenLine, *actionPlot3DPolygons, *actionPlot3DWireSurface;
 	QAction *actionColorMap, *actionContourMap, *actionGrayMap;
 	QAction *actionDeleteFitTables, *actionShowGridDialog, *actionTimeStamp;
-	QAction *actionSmoothSavGol, *actionSmoothFFT, *actionSmoothAverage, *actionFFT;
+	QAction *actionSmoothSavGol, *actionSmoothFFT, *actionSmoothAverage, *actionSmoothLowess, *actionFFT;
 	QAction *actionLowPassFilter, *actionHighPassFilter, *actionBandPassFilter, *actionBandBlockFilter;
 	QAction *actionSortTable, *actionSortSelection, *actionNormalizeSelection;
 	QAction *actionNormalizeTable, *actionConvolute, *actionDeconvolute, *actionCorrelate, *actionAutoCorrelate;

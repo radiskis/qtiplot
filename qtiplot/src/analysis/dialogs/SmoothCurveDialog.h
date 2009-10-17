@@ -34,6 +34,7 @@
 class QPushButton;
 class QComboBox;
 class QSpinBox;
+class QDoubleSpinBox;
 class Graph;
 class ColorBox;
 
@@ -57,6 +58,7 @@ private:
 	QPushButton* buttonCancel;
 	QComboBox* boxName;
 	QSpinBox *boxPointsLeft, *boxPointsRight, *boxOrder;
+  QDoubleSpinBox *boxF;
 	ColorBox* boxColor;
 };
 

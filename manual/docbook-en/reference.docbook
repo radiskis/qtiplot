@@ -1257,6 +1257,32 @@ The active items in the menus depend on the active window in the project. If the
 	</listitem>
       </varlistentry>
 <!--************************************************************************** -->
+       <varlistentry>
+	<term>Lowess...</term>
+	<listitem>
+	  <para>
+      This command performs a smoothing of the selected curve using the Lowess (aka Loess) algorithm.
+      It provides a  robust locally weighted regression and is well suited to smooth data for which no
+      formal model exists.
+    </para>
+    <para>
+      It's parameter <emphasis>f</emphasis> is the fraction of points which define the local neighborhood.
+      A value of 0.2 uses 20% of the curve total points as neighbors for each data point (+/- 10%).
+      Choose it closer to 1 for a smoother curve.
+      The parameter <emphasis>iterations</emphasis> tells how often the algorithm runs over the whole data,
+      each time refining the local weights. For most cases two iterations are enough.
+    </para>
+	  <figure id="fig-smooth-3">
+	    <title>The &lowess-cmd; dialog.</title>
+	    <mediaobject>
+	      <imageobject>
+	        <imagedata  format="PNG" fileref="pics/smooth-3-dialog.png"/>
+	      </imageobject>
+	    </mediaobject>
+	  </figure>
+	</listitem>
+      </varlistentry>
+<!--************************************************************************** -->
     </variablelist>
   </listitem>
 </varlistentry>

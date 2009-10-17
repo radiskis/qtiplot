@@ -3,6 +3,7 @@
     Project              : QtiPlot
     --------------------------------------------------------------------
     Copyright            : (C) 2006 by Ion Vasilief
+                           (C) 2009 by Jonas Bähr <jonas * fs.ei.tum.de>
     Email (use @ for *)  : ion_vasilief*yahoo.fr
     Description          : Smoothing options dialog
 
@@ -34,6 +35,7 @@
 
 #include <QGroupBox>
 #include <QSpinBox>
+#include <QDoubleSpinBox>
 #include <QMessageBox>
 #include <QPushButton>
 #include <QLabel>
@@ -83,6 +85,26 @@ SmoothCurveDialog::SmoothCurveDialog(int method, QWidget* parent, Qt::WFlags fl 
         gl1->setRowStretch(5, 1);
 		}
 	else
+	if (method == SmoothFilter::Lowess)
+		{
+        gl1->addWidget(new QLabel(tr("f")), 1, 0);
+		boxF = new QDoubleSpinBox();
+		boxF->setRange(0, 1);
+		boxF->setValue(0.2);
+		boxF->setSingleStep(0.05);
+		gl1->addWidget(boxF, 1, 1);
+
+		gl1->addWidget(new QLabel(tr("Iterations")), 2, 0);
+		boxOrder = new QSpinBox();
+		boxOrder->setRange(1, 9);
+		boxOrder->setValue(2);
+		gl1->addWidget(boxOrder, 2, 1);
+
+		gl1->addWidget(new QLabel(tr("Color")), 3, 0);
+		gl1->addWidget(boxColor, 3, 1);
+        gl1->setRowStretch(4, 1);
+		}
+	else
 		{
 		gl1->addWidget(new QLabel(tr("Points")), 1, 0);
 		boxPointsLeft = new QSpinBox();
@@ -123,6 +145,11 @@ void SmoothCurveDialog::smooth()
     {
         sf->setSmoothPoints(boxPointsLeft->value(), boxPointsRight->value());
         sf->setPolynomOrder(boxOrder->value());
+    }
+    else
+    if (smooth_method == SmoothFilter::Lowess)
+    {
+        sf->setLowessParameter(boxF->value(), boxOrder->value()); // we use the "order" spinbox for "iterations"
     }
     else
         sf->setSmoothPoints(boxPointsLeft->value());
