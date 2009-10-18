@@ -43,7 +43,7 @@ MyParser::MyParser()
 	DefineConst("e", M_E);
 	DefineConst("E", M_E);
 
-	//Fundamental Constants defined in GSL
+	//Fundamental constants provided by GSL
 	DefineConst("c", GSL_CONST_MKSA_SPEED_OF_LIGHT);//The speed of light in vacuum
 	DefineConst("eV", GSL_CONST_MKSA_ELECTRON_VOLT);//The energy of 1 electron volt
 	DefineConst("g", GSL_CONST_MKSA_GRAV_ACCEL);//The standard gravitational acceleration on Earth

@@ -432,7 +432,11 @@ SmoothFilter
 setMethod
 setSmoothPoints
 setPolynomOrder
-FFTFilte
+setLowessParameter
+SavitzkyGolay
+Average
+Lowess
+FFTFilter
 LowPass
 HighPass
 BandPass
