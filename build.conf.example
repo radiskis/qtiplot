@@ -87,6 +87,13 @@ EMF_ENGINE_LIBS = $$QTI_ROOT/3rdparty/EmfEngine/libEmfEngine.a
 # (unix only, windows will use what ever is configured to execute .py files!)
 PYTHON = python
 
+##########################################################
+## Qt tools - allows to use specific versions
+##########################################################
+
+LUPDATE = lupdate
+LRELEASE = lrelease
+
 ############################################################
 ##  Target specific configuration: configure Qtiplot itself
 ############################################################
