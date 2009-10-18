@@ -3,7 +3,10 @@ Makefile
 *.a
 *.dylib
 .*.swp
+*.qm
 3rdparty/qwt/src/moc/
 build.conf
 qtiplot/qtiplot.app/
+qtiplot-manual-en.pdf
 tmp/
+.DS_Store
