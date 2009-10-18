@@ -1783,7 +1783,7 @@
         <location filename="../src/core/ApplicationWindow.cpp" line="13063"/>
         <location filename="../src/core/ApplicationWindow.cpp" line="13821"/>
         <source>&amp;Invert</source>
-        <translation>&amp;Инвертировать</translation>
+        <translation>О&amp;братная матрица</translation>
     </message>
     <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="248"/>
@@ -4147,7 +4147,7 @@ Are you sure you want to continue?</source>
         <location filename="../src/core/ApplicationWindow.cpp" line="12844"/>
         <location filename="../src/core/ApplicationWindow.cpp" line="13702"/>
         <source>&amp;Lowess...</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="12917"/>
@@ -9560,7 +9560,7 @@ The following special codes can be used:
     <message>
         <location filename="../src/analysis/Fit.cpp" line="502"/>
         <source>The column %1 has less points than the fitted data set. Please choose another column!</source>
-        <translation type="unfinished"></translation>
+        <translation>Столбец %1 содержит меньше точек, чем обрабатываемый набор данных. Пожалуйста, выберите другой столбец!</translation>
     </message>
     <message>
         <location filename="../src/analysis/Fit.cpp" line="653"/>
@@ -9670,89 +9670,89 @@ The following special codes can be used:
 <context>
     <name>FitDialog</name>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="669"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="670"/>
         <source> is a built-in function name&lt;p&gt;You must choose another name for your function!</source>
         <translation> является именем встроенной функции&lt;p&gt;Для вашей функции вы должны выбрать другое имя!</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="273"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="274"/>
         <source>&lt;&lt; &amp;Edit function</source>
         <translation>&lt;&lt; &amp;Редактировать функцию</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="515"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="516"/>
         <source>&lt;&lt; &amp;Fit</source>
         <translation>&lt;&lt; &amp;Аппроксимировать</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="378"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="379"/>
         <source>Add &amp;expression</source>
         <translation>Добавить &amp;выражение</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="380"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="381"/>
         <source>Add &amp;name</source>
         <translation>Добавить &amp;название</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="194"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="195"/>
         <source>Algorithm</source>
         <translation>Алгоритм</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="519"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="520"/>
         <source>&amp;Apply</source>
         <translation>&amp;Применить</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="259"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="260"/>
         <source>Arbitrary Dataset</source>
         <translation>Произвольный набор данных</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="319"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="320"/>
         <source>Basic</source>
         <translation>Основные</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="318"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="319"/>
         <source>Built-in</source>
         <translation>Встроенные</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="312"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="313"/>
         <source>Category</source>
         <translation>Категория</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="980"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="987"/>
         <source>Choose the plugins folder</source>
         <translation>Выбрать папку с расширениями</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="280"/>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="384"/>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="524"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="281"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="385"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="525"/>
         <source>&amp;Close</source>
         <translation>&amp;Закрыть</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="201"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="202"/>
         <source>Color</source>
         <translation>Цвет</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="186"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="187"/>
         <source>Constant</source>
         <translation>Константа</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="475"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="476"/>
         <source>CovMatrix</source>
         <translation>КовМатрица</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="472"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="473"/>
         <source>Covariance &amp;Matrix</source>
         <translation>Ковариационная &amp;матрица</translation>
     </message>
@@ -9762,69 +9762,69 @@ The following special codes can be used:
         <translation>График функции</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="282"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="283"/>
         <source>Custom &amp;Output &gt;&gt;</source>
         <translation>&amp;Пользовательский вывод &gt;&gt;</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="275"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="276"/>
         <source>&amp;Delete Fit Curves</source>
         <translation>&amp;Удалить аппроксимирующие кривые</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="314"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="315"/>
         <source>Expression</source>
         <translation>Выражение</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="277"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="278"/>
         <source>&amp;Fit</source>
         <translation>&amp;Аппроксимировать</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="386"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="387"/>
         <source>&amp;Fit &gt;&gt;</source>
         <translation>&amp;Аппроксимировать &gt;&gt;</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="943"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="950"/>
         <source>Fit using &amp;built-in function</source>
         <translation>Аппроксимация &amp;встроенной функцией</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="956"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="963"/>
         <source>Fit using &amp;plugin function</source>
         <translation>Аппроксимация функцией из &amp;модуля расширения</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="329"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="330"/>
         <source>Fit with &amp;built-in function</source>
         <translation>Аппроксимация &amp;встроенной функцией</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="937"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="944"/>
         <source>Fit with selected &amp;user function</source>
         <translation>Аппроксимация &amp;пользовательской функцией</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="210"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="211"/>
         <source>From x=</source>
         <translation>От x= </translation>
     </message>
     <message>
         <location filename="../src/analysis/dialogs/FitDialog.cpp" line="150"/>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="313"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="314"/>
         <source>Function</source>
         <translation>Функция</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1080"/>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1409"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1087"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1423"/>
         <source>Gauss</source>
         <translation>Гаусс</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="454"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="455"/>
         <source>Generated Fit Curve</source>
         <translation>Аппроксимирующая кривая</translation>
     </message>
@@ -9834,154 +9834,154 @@ The following special codes can be used:
         <translation>Начальные оценки</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="257"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="258"/>
         <source>Instrumental</source>
         <translation>Инструментальный</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="230"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="231"/>
         <source>Iterations</source>
         <translation>Итераций</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1081"/>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1410"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1088"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1424"/>
         <source>Lorentz</source>
         <translation>Лоренц</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="352"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="353"/>
         <source>Name</source>
         <translation>Имя</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="467"/>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="474"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="468"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="475"/>
         <source>Name: </source>
         <translation>Название: </translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="198"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="199"/>
         <source>Nelder-Mead Simplex</source>
         <translation>Симплекс Нелдера-Мида</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1303"/>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1304"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1317"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1318"/>
         <source>No data tables</source>
         <translation>Нет таблиц данных</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="256"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="257"/>
         <source>No weighting</source>
         <translation>Без взвешивания</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="186"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="187"/>
         <source>Parameter</source>
         <translation>Параметр</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="357"/>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="468"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="358"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="469"/>
         <source>Parameters</source>
         <translation>Параметры</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="502"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="503"/>
         <source>Parameters Output</source>
         <translation>Вывод параметров</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="465"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="466"/>
         <source>Parameters &amp;Table</source>
         <translation>&amp;Таблица параметров</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="509"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="510"/>
         <source>&amp;Paste Parameters to Plot</source>
         <translation>Вставить параметры на &amp;график</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1082"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1089"/>
         <source>Peaks</source>
         <translation>Пиков</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="662"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="663"/>
         <source>Please enter a function name!</source>
         <translation>Пожалуйста введите имя функции!</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="657"/>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="767"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="658"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="768"/>
         <source>Please enter a valid function!</source>
         <translation>Пожалуйста введите допустимую функцию!</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="595"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="596"/>
         <source>Please enter a valid name for the covariance matrix.</source>
         <translation>Введите, пожалуйста, допустимое название матрицы ковариации.</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="577"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="578"/>
         <source>Please enter a valid name for the parameters table.</source>
         <translation>Введите, пожалуйста, допустимое название таблицы параметров.</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1151"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1158"/>
         <source>Please enter x limits that satisfy: from &lt; end!</source>
         <translation>Введите параметры удовлетворяющие условию: начало &lt; конец!</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="583"/>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="601"/>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1635"/>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1646"/>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1657"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="584"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="602"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1649"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1660"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1671"/>
         <source>Please perform a fit first and try again.</source>
         <translation>Сперва нужно аппроксимировать данные.</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1214"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1221"/>
         <source>Please verify that you have initialized all the parameters!</source>
         <translation>Пожалуйста проверьте, что все параметры заданы!</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="320"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="321"/>
         <source>Plugins</source>
         <translation>Модули расширения</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="433"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="434"/>
         <source>Points</source>
         <translation>Точек</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1085"/>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1412"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1092"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1426"/>
         <source>Polynomial</source>
         <translation>Полиномиальная</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="336"/>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1086"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="337"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1093"/>
         <source>Polynomial Order</source>
         <translation>Порядок полинома</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="576"/>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="582"/>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="594"/>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="600"/>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1634"/>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1645"/>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1656"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="577"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="583"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="595"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="601"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1648"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1659"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1670"/>
         <source>QtiPlot - Error</source>
         <translation>QtiPlot - Ошибка</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="668"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="669"/>
         <source>QtiPlot - Error: function name</source>
         <translation>QtiPlot - Ошибка: наименование функции</translation>
     </message>
@@ -9991,170 +9991,175 @@ The following special codes can be used:
         <translation>QtiPlot - Мастер Аппроксимации</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1150"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1157"/>
         <source>QtiPlot - Input error</source>
         <translation>QtiPlot - Ошибка ввода</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="657"/>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="661"/>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="676"/>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="767"/>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1216"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="658"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="662"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="677"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="768"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1223"/>
         <source>QtiPlot - Input function error</source>
         <translation>QtiPlot - Ошибка ввода функции</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1138"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1145"/>
         <source>QtiPlot - Warning</source>
         <translation>QtiPlot - Предупреждение</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="361"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="362"/>
         <source>&amp;Remove</source>
         <translation>&amp;Удалить</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="382"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="383"/>
         <source>Rese&amp;t</source>
         <translation>&amp;Сбросить</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="449"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="450"/>
         <source>Same X as Fitting &amp;Data</source>
         <translation>Тот же X, что и у аппроксимируемых &amp;данных</translation>
     </message>
     <message>
         <location filename="../src/analysis/dialogs/FitDialog.cpp" line="163"/>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="355"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="356"/>
         <source>&amp;Save</source>
         <translation>&amp;Сохранить</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="196"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="197"/>
         <source>Scaled Levenberg-Marquardt</source>
         <translation>Масштабированный Левенберг-Макуардт</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="458"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="459"/>
         <source>Significant Digits</source>
         <translation>Значащие разряды</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="258"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="259"/>
         <source>Statistical</source>
         <translation>Статистический</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1139"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1146"/>
         <source>The curve &lt;b&gt; %1 &lt;/b&gt; doesn&apos;t exist anymore! Operation aborted!</source>
         <translation>Кривая &lt;b&gt; %1 &lt;/b&gt; больше не существует! Операция отменена!</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="218"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="219"/>
         <source>To x=</source>
         <translation>До x=</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="236"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="237"/>
         <source>Tolerance</source>
         <translation>Допуск</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="426"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="427"/>
         <source>&amp;Uniform X Function</source>
         <translation>&amp;Однородная функция X</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="197"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="198"/>
         <source>Unscaled Levenberg-Marquardt</source>
         <translation>Немасштабированный Левенберг-Макуардт</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="317"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="318"/>
         <source>User defined</source>
         <translation>Определённые пользователем</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="186"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="187"/>
         <source>Value</source>
         <translation>Значение</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="254"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="255"/>
         <source>Weighting Method</source>
         <translation>Способ взвешивания</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="505"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="506"/>
         <source>&amp;Write Parameters to Result Log</source>
         <translation>Записать параметры в &amp;журнал результатов</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="353"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="354"/>
         <source>user1</source>
         <translation>имя функции</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="470"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="471"/>
         <source>&amp;One table for all fits</source>
         <translation>&amp;Одна таблица для всех аппроксимаций</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="347"/>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="954"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="348"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="961"/>
         <source>Choose plug&amp;ins folder...</source>
         <translation>&amp;Выбрать папку с расширениями...</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="677"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="187"/>
+        <source>Error</source>
+        <translation>Ошибка</translation>
+    </message>
+    <message>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="678"/>
         <source>You can&apos;t define functions recursively!</source>
         <translation>Вы не можете определять функции рекурсивно!</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="699"/>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1498"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="700"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1512"/>
         <source>QtiPlot fit model</source>
         <translation>Аппроксимационная модель</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="700"/>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1499"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="701"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1513"/>
         <source>All files</source>
         <translation>Все файлы</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="701"/>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="739"/>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1500"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="702"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="740"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1514"/>
         <source>QtiPlot</source>
         <translation>QtiPlot</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="701"/>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1500"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="702"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1514"/>
         <source>Save Fit Model As</source>
         <translation>Сохранить аппроксимационную модель как</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="738"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="739"/>
         <source>Are you sure you want to remove fit model file:
  %1 ?</source>
         <translation>Вы уверены, что хотите удалить файл аппросимационной модели:
  %1 ?</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="739"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="740"/>
         <source>Remove Fit Model</source>
         <translation>Удалить аппроксимационную модель</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="935"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="942"/>
         <source>Choose &amp;models folder...</source>
         <translation>&amp;Выбрать папку моделей...</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="992"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="999"/>
         <source>Choose the fit models folder</source>
         <translation>Выбрать папку аппроксимационных моделей</translation>
     </message>
@@ -10164,42 +10169,42 @@ The following special codes can be used:
         <translation>&amp;Просмотр</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="186"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="187"/>
         <source>From</source>
         <translation>От</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="186"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="187"/>
         <source>To</source>
         <translation>До</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="494"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="495"/>
         <source>&amp;Residuals Plot</source>
         <translation>&amp;График разности</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="478"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="479"/>
         <source>Co&amp;nf. Bands</source>
         <translation>&amp;Довер. Интервал</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="490"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="491"/>
         <source>Pred. &amp;Bands</source>
         <translation>&amp;Прогноз. Интервал</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="498"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="499"/>
         <source>&amp;Scale Errors with sqrt(Chi^2/doF)</source>
         <translation>&amp;Масштабировать ошибки по sqrt(Chi^2/doF)</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="260"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="261"/>
         <source>Direct Weighting</source>
         <translation>Непосредственное взвешивание</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1680"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1694"/>
         <source>Error: </source>
         <translation>Ошибка:</translation>
     </message>
@@ -12075,7 +12080,7 @@ have the same number of rows.</source>
     <message>
         <location filename="../src/matrix/Matrix.cpp" line="369"/>
         <source>Set Dimensions</source>
-        <translation type="unfinished"></translation>
+        <translation>Задать размеры</translation>
     </message>
     <message>
         <location filename="../src/matrix/Matrix.cpp" line="400"/>
@@ -12084,12 +12089,12 @@ have the same number of rows.</source>
         <location filename="../src/matrix/Matrix.cpp" line="920"/>
         <location filename="../src/matrix/Matrix.cpp" line="1059"/>
         <source>QtiPlot - Error</source>
-        <translation type="unfinished">QtiPlot - Ошибка</translation>
+        <translation>QtiPlot - Ошибка</translation>
     </message>
     <message>
         <location filename="../src/matrix/Matrix.cpp" line="401"/>
         <source>Calculation failed, the matrix is not square!</source>
-        <translation type="unfinished"></translation>
+        <translation>Вычисление провести не удалось, матрица не квадратная!</translation>
     </message>
     <message>
         <location filename="../src/matrix/Matrix.cpp" line="412"/>
@@ -12099,7 +12104,7 @@ have the same number of rows.</source>
         <location filename="../src/matrix/Matrix.cpp" line="1648"/>
         <location filename="../src/matrix/Matrix.cpp" line="1657"/>
         <source>QtiPlot</source>
-        <translation type="unfinished">QtiPlot</translation>
+        <translation>QtiPlot</translation>
     </message>
     <message>
         <location filename="../src/matrix/Matrix.cpp" line="412"/>
@@ -12108,7 +12113,7 @@ have the same number of rows.</source>
         <location filename="../src/matrix/Matrix.cpp" line="1141"/>
         <location filename="../src/matrix/Matrix.cpp" line="1657"/>
         <source>Memory Allocation Error</source>
-        <translation type="unfinished">Ошибка выделения памяти</translation>
+        <translation>Ошибка выделения памяти</translation>
     </message>
     <message>
         <location filename="../src/matrix/Matrix.cpp" line="413"/>
@@ -12117,147 +12122,147 @@ have the same number of rows.</source>
         <location filename="../src/matrix/Matrix.cpp" line="1142"/>
         <location filename="../src/matrix/Matrix.cpp" line="1658"/>
         <source>Not enough memory, operation aborted!</source>
-        <translation type="unfinished">Недостаточно памяти, операция отменена!</translation>
+        <translation>Недостаточно памяти, операция отменена!</translation>
     </message>
     <message>
         <location filename="../src/matrix/Matrix.cpp" line="440"/>
         <source>Inversion failed, the matrix is not square!</source>
-        <translation type="unfinished"></translation>
+        <translation>Вычисление провести не удалось, матрица не квадратная!</translation>
     </message>
     <message>
         <location filename="../src/matrix/Matrix.cpp" line="444"/>
         <source>Invert</source>
-        <translation type="unfinished"></translation>
+        <translation>Обратная матрица</translation>
     </message>
     <message>
         <location filename="../src/matrix/Matrix.cpp" line="453"/>
         <source>Transpose</source>
-        <translation type="unfinished"></translation>
+        <translation>Транспонировать</translation>
     </message>
     <message>
         <location filename="../src/matrix/Matrix.cpp" line="462"/>
         <source>Flip Vertically</source>
-        <translation type="unfinished">Отразить вертикально</translation>
+        <translation>Отразить вертикально</translation>
     </message>
     <message>
         <location filename="../src/matrix/Matrix.cpp" line="471"/>
         <source>Flip Horizontally</source>
-        <translation type="unfinished">Отразить горизонтально</translation>
+        <translation>Отразить горизонтально</translation>
     </message>
     <message>
         <location filename="../src/matrix/Matrix.cpp" line="481"/>
         <source>Rotate 90°</source>
-        <translation type="unfinished"></translation>
+        <translation>Повернуть на 90°</translation>
     </message>
     <message>
         <location filename="../src/matrix/Matrix.cpp" line="483"/>
         <source>Rotate -90°</source>
-        <translation type="unfinished"></translation>
+        <translation>Повернуть на -90°</translation>
     </message>
     <message>
         <location filename="../src/matrix/Matrix.cpp" line="545"/>
         <location filename="../src/matrix/Matrix.cpp" line="566"/>
         <source>Calculate Values</source>
-        <translation type="unfinished"></translation>
+        <translation>Расчитать значения</translation>
     </message>
     <message>
         <location filename="../src/matrix/Matrix.cpp" line="595"/>
         <source>Clear Selection</source>
-        <translation type="unfinished"></translation>
+        <translation>Очистить выделенное</translation>
     </message>
     <message>
         <location filename="../src/matrix/Matrix.cpp" line="711"/>
         <source>Paste</source>
-        <translation type="unfinished"></translation>
+        <translation>Вставить</translation>
     </message>
     <message>
         <location filename="../src/matrix/Matrix.cpp" line="748"/>
         <source>Delete Rows</source>
-        <translation type="unfinished"></translation>
+        <translation>Удалить строки</translation>
     </message>
     <message>
         <location filename="../src/matrix/Matrix.cpp" line="781"/>
         <source>Delete Columns</source>
-        <translation type="unfinished"></translation>
+        <translation>Удалить столбцы</translation>
     </message>
     <message>
         <location filename="../src/matrix/Matrix.cpp" line="836"/>
         <source>Insert Row</source>
-        <translation type="unfinished"></translation>
+        <translation>Вставить строку</translation>
     </message>
     <message>
         <location filename="../src/matrix/Matrix.cpp" line="856"/>
         <source>Insert Column</source>
-        <translation type="unfinished"></translation>
+        <translation>Вставить столбец</translation>
     </message>
     <message>
         <location filename="../src/matrix/Matrix.cpp" line="895"/>
         <location filename="../src/matrix/Matrix.cpp" line="1059"/>
         <source>Please provide a valid file name!</source>
-        <translation type="unfinished">Укажите допустимое имя файла!</translation>
+        <translation>Укажите допустимое имя файла!</translation>
     </message>
     <message>
         <location filename="../src/matrix/Matrix.cpp" line="920"/>
         <source>File format not handled, operation aborted!</source>
-        <translation type="unfinished">Формат файла не поддерживается, операция отменена!</translation>
+        <translation>Формат файла не поддерживается, операция отменена!</translation>
     </message>
     <message>
         <location filename="../src/matrix/Matrix.cpp" line="1163"/>
         <location filename="../src/matrix/Matrix.cpp" line="1174"/>
         <source>Set Data Mode</source>
-        <translation type="unfinished">Режим данных</translation>
+        <translation>Режим данных</translation>
     </message>
     <message>
         <location filename="../src/matrix/Matrix.cpp" line="1307"/>
         <source>Ctrl+A</source>
         <comment>Matrix: select all</comment>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/matrix/Matrix.cpp" line="1325"/>
         <location filename="../src/matrix/Matrix.cpp" line="1346"/>
         <source>Import Image</source>
-        <translation type="unfinished"></translation>
+        <translation>Импорт изображения</translation>
     </message>
     <message>
         <location filename="../src/matrix/Matrix.cpp" line="1477"/>
         <source>Inverse FFT</source>
-        <translation type="unfinished"></translation>
+        <translation>Обратное БПФ</translation>
     </message>
     <message>
         <location filename="../src/matrix/Matrix.cpp" line="1477"/>
         <source>Forward FFT</source>
-        <translation type="unfinished"></translation>
+        <translation>Прямое БПФ</translation>
     </message>
     <message>
         <location filename="../src/matrix/Matrix.cpp" line="1552"/>
         <source>QtiPlot - ASCII Export Error</source>
-        <translation type="unfinished">QtiPlot - ошибка при экспортировании в ASCII</translation>
+        <translation>QtiPlot - ошибка при экспортировании в ASCII</translation>
     </message>
     <message>
         <location filename="../src/matrix/Matrix.cpp" line="1553"/>
         <source>Could not write to file: &lt;br&gt;&lt;h4&gt;%1&lt;/h4&gt;&lt;p&gt;Please verify that you have the right to write to this location!</source>
-        <translation type="unfinished">Невозможно выполнить записать в файл: &lt;br&gt;&lt;h4&gt;%1&lt;/h4&gt;&lt;p&gt;Удостоверьтесь, что у вас есть права доступа на запись в данное место!</translation>
+        <translation>Невозможно выполнить записать в файл: &lt;br&gt;&lt;h4&gt;%1&lt;/h4&gt;&lt;p&gt;Удостоверьтесь, что у вас есть права доступа на запись в данное место!</translation>
     </message>
     <message>
         <location filename="../src/matrix/Matrix.cpp" line="1633"/>
         <source>Import ASCII File</source>
-        <translation type="unfinished"></translation>
+        <translation>Импорт файла ASCII</translation>
     </message>
     <message>
         <location filename="../src/matrix/Matrix.cpp" line="1646"/>
         <source>Due to memory limitations it will not be possible to undo this change. Do you want to continue anyways?</source>
-        <translation type="unfinished"></translation>
+        <translation>Это изменение невозможно будет отменить ввиду ограничений на память. Продолжить?</translation>
     </message>
     <message>
         <location filename="../src/matrix/Matrix.cpp" line="1648"/>
         <source>Warning</source>
-        <translation type="unfinished">Предупреждение</translation>
+        <translation>Предупреждение</translation>
     </message>
     <message>
         <location filename="../src/matrix/Matrix.cpp" line="1666"/>
         <source>kB</source>
-        <translation type="unfinished">кб</translation>
+        <translation>кб</translation>
     </message>
 </context>
 <context>
@@ -12808,11 +12813,13 @@ have the same number of rows.</source>
 <context>
     <name>MultiPeakFitTool</name>
     <message>
+        <location filename="../src/core/MultiPeakFitTool.cpp" line="61"/>
         <location filename="../src/plot2D/MultiPeakFitTool.cpp" line="60"/>
         <source>Move cursor and click to select a point and double-click/press &apos;Enter&apos; to set the position of a peak!</source>
         <translation>Для выделения точки подведите к ней указатель и щёлкните, двойной щелчок или &apos;Enter&apos; для установки положения вершины!</translation>
     </message>
     <message>
+        <location filename="../src/core/MultiPeakFitTool.cpp" line="94"/>
         <location filename="../src/plot2D/MultiPeakFitTool.cpp" line="100"/>
         <source>Peak %1 selected! Click to select a point and double-click/press &apos;Enter&apos; to set the position of the next peak!</source>
         <translation>Пик %1 выбран! Один щелчок для выбора точки и двойной щелчок или &apos;Enter&apos;, для указания положения следующего пика!</translation>
@@ -14960,7 +14967,7 @@ have the same number of rows.</source>
     <message>
         <location filename="../src/plot2D/Spectrogram.cpp" line="102"/>
         <source>Python-like syntax is not supported in this case since it severely reduces drawing speed!</source>
-        <translation type="unfinished"></translation>
+        <translation>Синтаксис в стиле Python не поддерживается в этом случае, т.к. он значительно уменьшает скорость отрисовки!</translation>
     </message>
     <message>
         <location filename="../src/scripting/MyParser.cpp" line="117"/>
@@ -14975,12 +14982,12 @@ have the same number of rows.</source>
     <message>
         <location filename="../src/analysis/NonLinearFit.cpp" line="323"/>
         <source>Ignored data point at x = %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>Игнорируемые данные при x = %1.</translation>
     </message>
     <message>
         <location filename="../src/scripting/MyParser.cpp" line="118"/>
         <source>Found non-removable singularity at x = %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>Найдена неустранимая особенная точка при x = %1.</translation>
     </message>
     <message>
         <location filename="../src/scripting/muParserScripting.cpp" line="40"/>
@@ -16122,12 +16129,12 @@ have the same number of rows.</source>
     <message>
         <location filename="../src/analysis/dialogs/SmoothCurveDialog.cpp" line="90"/>
         <source>f</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/analysis/dialogs/SmoothCurveDialog.cpp" line="97"/>
         <source>Iterations</source>
-        <translation type="unfinished">Итераций</translation>
+        <translation>Итераций</translation>
     </message>
     <message>
         <location filename="../src/analysis/dialogs/SmoothCurveDialog.cpp" line="109"/>
@@ -16194,17 +16201,17 @@ have the same number of rows.</source>
     <message>
         <location filename="../src/analysis/SmoothFilter.cpp" line="75"/>
         <source>Unknown smooth filter. Valid values are: 1 - Savitky-Golay, 2 - FFT, 3 - Moving Window Average, 4 - Lowess.</source>
-        <translation type="unfinished"></translation>
+        <translation>Неизвестный тип сглаживания. Допустимые значения:1 - Савицкий-Голай, 2 - Фурье, 3 - Скользящее среднее, 4 - Lowess.</translation>
     </message>
     <message>
         <location filename="../src/analysis/SmoothFilter.cpp" line="92"/>
         <source>Savitzky-Golay smoothing</source>
-        <translation>Сглаживание Савицкого—Голея</translation>
+        <translation>Сглаживание Савицкого-Голея</translation>
     </message>
     <message>
         <location filename="../src/analysis/SmoothFilter.cpp" line="104"/>
         <source>Lowess smoothing</source>
-        <translation type="unfinished"></translation>
+        <translation>Сглаживание Lowess</translation>
     </message>
     <message>
         <location filename="../src/analysis/SmoothFilter.cpp" line="239"/>
@@ -16214,17 +16221,17 @@ have the same number of rows.</source>
     <message>
         <location filename="../src/analysis/SmoothFilter.cpp" line="258"/>
         <source>Setting Lowess parameter is only available for Lowess smooth filters! Ignored option!</source>
-        <translation type="unfinished"></translation>
+        <translation>Настройка параметра доступна только для метода сглаживания Lowess! Опция игнорируется!</translation>
     </message>
     <message>
         <location filename="../src/analysis/SmoothFilter.cpp" line="265"/>
         <source>The parameter f must be between 0 and 1!</source>
-        <translation type="unfinished"></translation>
+        <translation>Параметр f должен быть от 0 до 1!</translation>
     </message>
     <message>
         <location filename="../src/analysis/SmoothFilter.cpp" line="272"/>
         <source>The number of iterations must be at least 1!</source>
-        <translation type="unfinished"></translation>
+        <translation>Количество итераций должно быть не меньше 1!</translation>
     </message>
     <message>
         <location filename="../src/analysis/SmoothFilter.cpp" line="62"/>
@@ -16241,10 +16248,6 @@ have the same number of rows.</source>
         <location filename="../src/analysis/SmoothFilter.cpp" line="246"/>
         <source>The polynomial order must be lower than the number of left points plus the number of right points!</source>
         <translation>Порядок полинома должен быть меньше, чем суммарное количество точек слева и справа!</translation>
-    </message>
-    <message>
-        <source>Unknown smooth filter. Valid values are: 1 - Savitky-Golay, 2 - FFT, 3 - Moving Window Average.</source>
-        <translation type="obsolete">Неизвестный фильтр сглаживания. Допустимые значения: 1 - Савицкого-Голея, 2 - быстрое преобразование Фурье, 3 - среднее скользящего окна.</translation>
     </message>
     <message>
         <location filename="../src/analysis/SmoothFilter.cpp" line="100"/>
