@@ -1034,7 +1034,7 @@ via a proxy.</para>
         <imagedata  format="PNG" fileref="pics/preferences-dialog4.png"/>
       </imageobject>
     </mediaobject>
-  </figure>
+  </informalfigure>
   <para>The second set of options is used to customize the default aspect of <emphasis>2D plots</emphasis>.
   The first tab is used to modify some general options. Most of the changes made to these
   options will be applied only to the newly created plots.
@@ -1181,7 +1181,7 @@ Displaying the line numbers can be particularly helpful when debugging Python sc
   </figure>
 
   <para>Warning: If you make some changes in the table, the values are not computed again, unless you check the
-   <emphasis>Automatically Recalculate Column Values</emphasis> option in the <emphasis>Tables</emphasis> tab of the<link linkend="fig-preferences-dialog-4">Preferences dialog</link>.
+   <emphasis>Automatically Recalculate Column Values</emphasis> option in the <emphasis>Tables</emphasis> tab of the <link linkend="fig-preferences-dialog-4">Preferences dialog</link>.
 	If this option is unchecked you have to explicitly tell QtiPlot to recalculate individual cells or whole columns or rows by selecting "Recalculate" from their context menu or by pressing Control+Return.
   </para>
 
