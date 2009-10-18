@@ -34,7 +34,7 @@ contains(SCRIPTING_LANGS, muParser) {
              src/scripting/muParserScripting.h \
 
   SOURCES += src/scripting/muParserScript.cpp \
-             src/scripting/muParserScripting.cpp \
+             src/scripting/muParserScripting.cpp
 }
 
 ##################### PYTHON + SIP + PyQT #####################
@@ -104,5 +104,5 @@ contains(SCRIPTING_LANGS, Python) {
 			 $${SIP_DIR}/sipqtiFFT.cpp \
 			 $${SIP_DIR}/sipqtiCorrelation.cpp \
 			 $${SIP_DIR}/sipqtiConvolution.cpp \
-			 $${SIP_DIR}/sipqtiDeconvolution.cpp \
+			 $${SIP_DIR}/sipqtiDeconvolution.cpp
 }
