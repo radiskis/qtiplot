@@ -176,14 +176,15 @@ void FitDialog::initFitPage()
 	gl1->addLayout(vb, 3, 0);
 
 	boxParams = new QTableWidget();
-    boxParams->setColumnCount(5);
+    boxParams->setColumnCount(6);
     boxParams->horizontalHeader()->setClickable(false);
     boxParams->horizontalHeader()->setResizeMode (0, QHeaderView::ResizeToContents);
 	boxParams->horizontalHeader()->setResizeMode (1, QHeaderView::Stretch);
     boxParams->horizontalHeader()->setResizeMode (2, QHeaderView::Stretch);
     boxParams->horizontalHeader()->setResizeMode (3, QHeaderView::Stretch);
 	boxParams->horizontalHeader()->setResizeMode (4, QHeaderView::ResizeToContents);
-    QStringList header = QStringList() << tr("Parameter") << tr("From") << tr("Value") << tr("To") << tr("Constant");
+	boxParams->horizontalHeader()->setResizeMode (5, QHeaderView::Stretch);
+    QStringList header = QStringList() << tr("Parameter") << tr("From") << tr("Value") << tr("To") << tr("Constant") << tr("Error");
     boxParams->setHorizontalHeaderLabels(header);
     boxParams->verticalHeader()->setResizeMode(QHeaderView::ResizeToContents);
     boxParams->verticalHeader()->hide();
@@ -838,7 +839,13 @@ void FitDialog::showFitPage()
 		sb->setValue(d_current_fit->initialGuess(i));
         connect(sb, SIGNAL(valueChanged(double)), this, SLOT(updatePreview()));
         boxParams->setCellWidget(i, 2, sb);
+
+        it = new QTableWidgetItem();
+		it->setFlags(!Qt::ItemIsEditable);
+		it->setText("--");
+		boxParams->setItem(i, 5, it);
 	}
+
     for (int i = 0; i<parameters; i++)
         boxParams->item (i, 0)->setText(paramList[i]);
 
@@ -1256,16 +1263,23 @@ void FitDialog::accept()
 			d_current_fit->scaleErrors(scaleErrorsBox->isChecked());
 		d_current_fit->fit();
 		double *res = d_current_fit->results();
+		double *err = d_current_fit->errors();
+		QLocale locale = app->locale();
 		if (!boxParams->isColumnHidden(4)){
 			int j = 0;
 			for (int i = 0; i < rows; i++){
                 QCheckBox *cb = (QCheckBox*)boxParams->cellWidget(i, 4);
-				if (!cb->isChecked())
+				if (!cb->isChecked()){
+					boxParams->item(i, 5)->setText(QString(QChar(0x00B1)) + " " + locale.toString(err[j], 'e', boxPrecision->value()));
 					((DoubleSpinBox*)boxParams->cellWidget(i, 2))->setValue(res[j++]);
+				} else
+					boxParams->item(i, 5)->setText("--");
 			}
 		} else {
-			for (int i = 0; i < rows; i++)
+			for (int i = 0; i < rows; i++){
 				((DoubleSpinBox*)boxParams->cellWidget(i, 2))->setValue(res[i]);
+				boxParams->item(i, 5)->setText(QString(QChar(0x00B1)) + " " + locale.toString(err[i], 'e', boxPrecision->value()));
+			}
 		}
 
 		if (globalParamTableBox->isChecked() && d_param_table)
