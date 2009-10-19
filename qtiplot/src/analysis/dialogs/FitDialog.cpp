@@ -40,6 +40,7 @@
 #include <ColorBox.h>
 #include <DoubleSpinBox.h>
 #include <FunctionCurve.h>
+#include <pixmaps.h>
 
 #include <QListWidget>
 #include <QTableWidget>
@@ -143,24 +144,47 @@ void FitDialog::initFitPage()
 {
     ApplicationWindow *app = (ApplicationWindow *)parent();
 
+	QColor blue = QColor(85, 85, 255);
+	QPalette palette = this->palette();
+    palette.setColor(QPalette::WindowText, blue);
+
+	QFont font = this->font();
+	font.setBold(true);
+	font.setPointSize(font.pointSize() + 1);
+
+	QLabel *l = new QLabel(tr("Function") + ":");
+	l->setFont(font);
+	l->setPalette(palette);
+
+	QHBoxLayout *hbox0 = new QHBoxLayout();
+    hbox0->addWidget(l);
+
+    lblFunction = new QLabel();
+    lblFunction->setFont(font);
+    lblFunction->setFrameStyle(QFrame::Box | QFrame::Plain);
+	lblFunction->setLineWidth(2);
+	lblFunction->setMargin(10);
+	lblFunction->setPalette(palette);
+
+    hbox0->addWidget(lblFunction);
+
     QGridLayout *gl1 = new QGridLayout();
     gl1->addWidget(new QLabel(tr("Curve")), 0, 0);
 	boxCurve = new QComboBox();
     gl1->addWidget(boxCurve, 0, 1);
-    gl1->addWidget(new QLabel(tr("Function")), 1, 0);
-	lblFunction = new QLabel();
-    gl1->addWidget(lblFunction, 1, 1);
+
 	boxFunction = new QTextEdit();
 	boxFunction->setReadOnly(true);
-    QPalette palette = boxFunction->palette();
-    palette.setColor(QPalette::Active, QPalette::Base, Qt::lightGray);
+    palette = boxFunction->palette();
+    palette.setColor(QPalette::Base, Qt::lightGray);
     boxFunction->setPalette(palette);
+    boxFunction->setFont(font);
 	boxFunction->setMaximumHeight(50);
-    gl1->addWidget(boxFunction, 2, 1);
 
     QVBoxLayout *vb = new QVBoxLayout();
     vb->addWidget(new QLabel(tr("Initial guesses")));
     btnSaveGuesses = new QPushButton(tr( "&Save" ));
+    btnSaveGuesses->setPixmap(QPixmap(filesave_xpm));
     connect(btnSaveGuesses, SIGNAL(clicked()), this, SLOT(saveInitialGuesses()));
     vb->addWidget(btnSaveGuesses);
     btnParamRange = new QPushButton();
@@ -168,10 +192,7 @@ void FitDialog::initFitPage()
     btnParamRange->setCheckable(true);
     connect(btnParamRange, SIGNAL(toggled(bool)), this, SLOT(showParameterRange(bool)));
     vb->addWidget(btnParamRange);
-    previewBox = new QCheckBox(tr("&Preview"));
-	previewBox->setChecked(false);
-    connect(previewBox, SIGNAL(clicked(bool)), this, SLOT(showPreview(bool)));
-    vb->addWidget(previewBox);
+
     vb->addStretch();
 	gl1->addLayout(vb, 3, 0);
 
@@ -184,6 +205,7 @@ void FitDialog::initFitPage()
     boxParams->horizontalHeader()->setResizeMode (3, QHeaderView::Stretch);
 	boxParams->horizontalHeader()->setResizeMode (4, QHeaderView::ResizeToContents);
 	boxParams->horizontalHeader()->setResizeMode (5, QHeaderView::Stretch);
+
     QStringList header = QStringList() << tr("Parameter") << tr("From") << tr("Value") << tr("To") << tr("Constant") << tr("Error");
     boxParams->setHorizontalHeaderLabels(header);
     boxParams->verticalHeader()->setResizeMode(QHeaderView::ResizeToContents);
@@ -271,24 +293,111 @@ void FitDialog::initFitPage()
     hbox2->addWidget(colNamesBox);
 
     QHBoxLayout *hbox3 = new QHBoxLayout();
-	buttonEdit = new QPushButton(tr( "<< &Edit function" ) );
-    hbox3->addWidget(buttonEdit);
+	buttonCancel1 = new QPushButton(tr( "&Close" ));
+	buttonCancel1->setPixmap(QPixmap(delete_xpm));
+    hbox3->addWidget(buttonCancel1);
+	hbox3->addStretch();
+	previewBox = new QCheckBox(tr("&Preview"));
+	previewBox->setChecked(false);
+    connect(previewBox, SIGNAL(clicked(bool)), this, SLOT(showPreview(bool)));
+    hbox3->addWidget(previewBox);
+
 	btnDeleteFitCurves = new QPushButton(tr( "&Delete Fit Curves" ));
     hbox3->addWidget(btnDeleteFitCurves);
-	buttonOk = new QPushButton(tr( "&Fit" ) );
+    btnDeleteFitCurves->setPixmap(QPixmap(close_xpm));
+    buttonOk = new QPushButton(tr( "&Fit" ) );
+    buttonOk->setPixmap(QPixmap(play_xpm));
 	buttonOk->setDefault( true );
     hbox3->addWidget(buttonOk);
-	buttonCancel1 = new QPushButton(tr( "&Close" ));
-    hbox3->addWidget(buttonCancel1);
-	buttonAdvanced = new QPushButton(tr( "Custom &Output >>" ));
-    hbox3->addWidget(buttonAdvanced);
-    hbox3->addStretch();
+
+	QFrame *frame1 = new QFrame();
+	frame1->setFrameStyle(QFrame::Box | QFrame::Plain);
+	frame1->setLineWidth(2);
+
+	palette = frame1->palette();
+	palette.setColor(QPalette::WindowText, blue);
+	frame1->setPalette(palette);
+
+	QLabel *selectFunctionLbl = new QLabel(tr("Select Function"));
+	selectFunctionLbl->setFont(font);
+
+	int space = 10;
+	QHBoxLayout *frameLayout = new QHBoxLayout(frame1);
+	frameLayout->addSpacing (space);
+	frameLayout->addWidget(selectFunctionLbl);
+	frameLayout->addSpacing (space);
+
+	buttonEdit = new QPushButton();
+	buttonEdit->setIcon(QPixmap(prev_xpm));
+	buttonEdit->setToolTip(tr("Select Function"));
+
+	QFrame *frame2 = new QFrame();
+	frame2->setFrameShape(QFrame::Box);
+	frame2->setLineWidth(2);
+
+	palette = this->palette();
+	palette.setColor(QPalette::WindowText, Qt::white);
+	palette.setColor(QPalette::Window, blue);
+	frame2->setAutoFillBackground(true);
+	frame2->setPalette(palette);
+
+	QLabel *fittingSessionLbl = new QLabel(tr("Fitting Session"));
+	fittingSessionLbl->setFont(font);
+
+	frameLayout = new QHBoxLayout(frame2);
+	frameLayout->addSpacing (space);
+	frameLayout->addWidget(fittingSessionLbl);
+	frameLayout->addSpacing (space);
+
+	buttonAdvanced = new QPushButton();
+	buttonAdvanced->setIcon(QPixmap(next_xpm));
+	buttonAdvanced->setToolTip(tr("Custom Output"));
+
+	QFrame *frame3 = new QFrame();
+	frame3->setFrameShape(QFrame::Box);
+	frame3->setLineWidth(2);
+
+	palette = this->palette();
+	palette.setColor(QPalette::WindowText, blue);
+	frame3->setPalette(palette);
+
+	QLabel *advancedLbl = new QLabel(tr("Custom Output"));
+	advancedLbl->setFont(font);
+
+	frameLayout = new QHBoxLayout(frame3);
+	frameLayout->addSpacing (space);
+	frameLayout->addWidget(advancedLbl);
+	frameLayout->addSpacing (space);
+
+	QHBoxLayout *hbox4 = new QHBoxLayout();
+	hbox4->addStretch();
+	hbox4->addWidget(frame1);
+	hbox4->addWidget(buttonEdit);
+	hbox4->addWidget(frame2);
+	hbox4->addWidget(buttonAdvanced);
+	hbox4->addWidget(frame3);
+	hbox4->addStretch();
 
     QVBoxLayout *vbox1 = new QVBoxLayout();
+    vbox1->addLayout(hbox0);
+    vbox1->addWidget(boxFunction);
+    vbox1->addSpacing(20);
     vbox1->addWidget(gb1);
     vbox1->addLayout(hbox1);
     vbox1->addWidget(gb4);
+    vbox1->addSpacing(10);
     vbox1->addLayout(hbox3);
+    vbox1->addSpacing(10);
+
+    QFrame *frame4 = new QFrame();
+	frame4->setFrameShape(QFrame::HLine);
+	frame4->setLineWidth(10);
+	palette = this->palette();
+	palette.setColor(QPalette::WindowText, Qt::darkGray);
+	frame4->setPalette(palette);
+	vbox1->addWidget(frame4);
+	vbox1->addSpacing(10);
+    vbox1->addLayout(hbox4);
 
     fitPage = new QWidget();
     fitPage->setLayout(vbox1);
@@ -309,10 +418,29 @@ void FitDialog::initFitPage()
 
 void FitDialog::initEditPage()
 {
+	QColor blue = QColor(85, 85, 255);
+	QPalette palette;
+    palette.setColor(QPalette::WindowText, blue);
+
+	QFont font = this->font();
+	font.setBold(true);
+	font.setPointSize(font.pointSize() + 1);
+
     QGridLayout *gl1 = new QGridLayout();
-    gl1->addWidget(new QLabel(tr("Category")), 0, 0);
-    gl1->addWidget(new QLabel(tr("Function")), 0, 1);
-    gl1->addWidget(new QLabel(tr("Expression")), 0, 2);
+    QLabel *l = new QLabel(tr("Category"));
+    l->setFont(font);
+    l->setPalette(palette);
+    gl1->addWidget(l, 0, 0);
+
+    l = new QLabel(tr("Function"));
+    l->setFont(font);
+	l->setPalette(palette);
+    gl1->addWidget(l, 0, 1);
+
+    l = new QLabel(tr("Expression"));
+    l->setFont(font);
+	l->setPalette(palette);
+    gl1->addWidget(l, 0, 2);
 
 	categoryBox = new QListWidget();
 	categoryBox->addItem(tr("User defined"));
@@ -382,11 +510,10 @@ void FitDialog::initEditPage()
     vbox1->addWidget(btnAddName);
 	buttonClear = new QPushButton(tr( "Rese&t" ));
     vbox1->addWidget(buttonClear);
+	vbox1->addStretch();
 	buttonCancel2 = new QPushButton(tr( "&Close" ));
+	buttonCancel2->setPixmap(QPixmap(delete_xpm));
     vbox1->addWidget(buttonCancel2);
-    btnContinue = new QPushButton(tr( "&Fit >>" ));
-    vbox1->addWidget(btnContinue);
-    vbox1->addStretch();
 
 	QVBoxLayout *vb = new QVBoxLayout();
 	vb->addWidget(editBox);
@@ -396,11 +523,67 @@ void FitDialog::initEditPage()
 	hbox2->addLayout(vb);
     hbox2->addLayout(vbox1);
 
+	palette.setColor(QPalette::WindowText, Qt::white);
+    palette.setColor(QPalette::Window, blue);
+
+	QFrame *frame1 = new QFrame();
+	frame1->setFrameStyle(QFrame::Box | QFrame::Plain);
+	frame1->setLineWidth(2);
+	frame1->setAutoFillBackground(true);
+	frame1->setPalette(palette);
+
+	QLabel *selectFunctionLbl = new QLabel(tr("Select Function"));
+	selectFunctionLbl->setFont(font);
+
+	int space = 10;
+	QHBoxLayout *frameLayout = new QHBoxLayout(frame1);
+	frameLayout->addSpacing (space);
+	frameLayout->addWidget(selectFunctionLbl);
+	frameLayout->addSpacing (space);
+
+	btnContinue = new QPushButton();
+	btnContinue->setIcon(QPixmap(next_xpm));
+	btnContinue->setToolTip(tr("Start Fitting Session"));
+
+	QFrame *frame2 = new QFrame();
+	frame2->setFrameShape(QFrame::Box);
+	frame2->setLineWidth(2);
+
+	palette = this->palette();
+	palette.setColor(QPalette::WindowText, blue);
+	frame2->setPalette(palette);
+
+	QLabel *fittingSessionLbl = new QLabel(tr("Fitting Session"));
+	fittingSessionLbl->setFont(font);
+
+	frameLayout = new QHBoxLayout(frame2);
+	frameLayout->addSpacing (space);
+	frameLayout->addWidget(fittingSessionLbl);
+	frameLayout->addSpacing (space);
+
+	QHBoxLayout *hbox3 = new QHBoxLayout();
+	hbox3->addStretch();
+	hbox3->addWidget(frame1);
+    hbox3->addWidget(btnContinue);
+    hbox3->addWidget(frame2);
+
     QVBoxLayout *vbox2 = new QVBoxLayout();
     vbox2->addLayout(gl1);
     vbox2->addLayout(hbox1);
     vbox2->addWidget(gb);
     vbox2->addLayout(hbox2);
+	vbox2->addSpacing (10);
+
+    QFrame *frame3 = new QFrame();
+	frame3->setFrameShape(QFrame::HLine);
+	frame3->setLineWidth(5);
+	palette = this->palette();
+	palette.setColor(QPalette::WindowText, Qt::darkGray);
+	frame3->setPalette(palette);
+	vbox2->addWidget(frame3);
+
+	vbox2->addSpacing (10);
+    vbox2->addLayout(hbox3);
 
     editPage = new QWidget();
     editPage->setLayout(vbox2);
@@ -512,19 +695,14 @@ void FitDialog::initAdvancedPage()
 	connect( plotLabelBox, SIGNAL(stateChanged (int)), this, SLOT(enableApplyChanges(int)));
 
     QHBoxLayout *hbox1 = new QHBoxLayout();
-
-	btnBack = new QPushButton(tr( "<< &Fit" ));
-	connect( btnBack, SIGNAL(clicked()), this, SLOT(returnToFitPage()));
-    hbox1->addWidget(btnBack);
-
+	buttonCancel3 = new QPushButton(tr( "&Close" ));
+	buttonCancel3->setPixmap(QPixmap(delete_xpm));
+    hbox1->addWidget(buttonCancel3);
+    hbox1->addStretch();
 	btnApply = new QPushButton(tr( "&Apply" ));
 	btnApply->setEnabled(false);
 	connect( btnApply, SIGNAL(clicked()), this, SLOT(applyChanges()));
     hbox1->addWidget(btnApply);
-
-	buttonCancel3 = new QPushButton(tr( "&Close" ));
-    hbox1->addWidget(buttonCancel3);
-    hbox1->addStretch();
 
     QVBoxLayout *vbox1 = new QVBoxLayout();
     vbox1->addWidget(gb1);
@@ -534,6 +712,70 @@ void FitDialog::initAdvancedPage()
     vbox1->addWidget(plotLabelBox);
     vbox1->addStretch();
     vbox1->addLayout(hbox1);
+
+	QColor blue = QColor(85, 85, 255);
+	QPalette palette = this->palette();
+    palette.setColor(QPalette::WindowText, blue);
+
+	QFont font = this->font();
+	font.setBold(true);
+	font.setPointSize(font.pointSize() + 1);
+
+	QFrame *frame1 = new QFrame();
+	frame1->setFrameStyle(QFrame::Box | QFrame::Plain);
+	frame1->setLineWidth(2);
+	frame1->setPalette(palette);
+
+	QLabel *selectFunctionLbl = new QLabel(tr("Fitting Session"));
+	selectFunctionLbl->setFont(font);
+
+	int space = 10;
+	QHBoxLayout *frameLayout = new QHBoxLayout(frame1);
+	frameLayout->addSpacing (space);
+	frameLayout->addWidget(selectFunctionLbl);
+	frameLayout->addSpacing (space);
+
+	btnBack = new QPushButton();
+	connect( btnBack, SIGNAL(clicked()), this, SLOT(returnToFitPage()));
+	btnBack->setIcon(QPixmap(prev_xpm));
+	btnBack->setToolTip(tr("Fitting Session"));
+
+	QFrame *frame2 = new QFrame();
+	frame2->setFrameShape(QFrame::Box);
+	frame2->setLineWidth(2);
+
+	palette = this->palette();
+	palette.setColor(QPalette::WindowText, Qt::white);
+	palette.setColor(QPalette::Window, blue);
+	frame2->setAutoFillBackground(true);
+	frame2->setPalette(palette);
+
+	QLabel *fittingSessionLbl = new QLabel(tr("Custom Output"));
+	fittingSessionLbl->setFont(font);
+
+	frameLayout = new QHBoxLayout(frame2);
+	frameLayout->addSpacing (space);
+	frameLayout->addWidget(fittingSessionLbl);
+	frameLayout->addSpacing (space);
+
+	QHBoxLayout *hbox2 = new QHBoxLayout();
+	hbox2->addWidget(frame1);
+	hbox2->addWidget(btnBack);
+	hbox2->addWidget(frame2);
+	hbox2->addStretch();
+
+	vbox1->addSpacing (10);
+
+	QFrame *frame3 = new QFrame();
+	frame3->setFrameShape(QFrame::HLine);
+	frame3->setLineWidth(10);
+	palette = this->palette();
+	palette.setColor(QPalette::WindowText, Qt::darkGray);
+	frame3->setPalette(palette);
+	vbox1->addWidget(frame3);
+
+	vbox1->addSpacing (10);
+	vbox1->addLayout(hbox2);
 
     advancedPage = new QWidget();
 	advancedPage->setLayout(vbox1);
@@ -817,7 +1059,7 @@ void FitDialog::showFitPage()
         it->setFlags(!Qt::ItemIsEditable);
 #endif
         it->setBackground(QBrush(Qt::lightGray));
-        it->setForeground(QBrush(Qt::darkRed));
+        it->setForeground(Qt::black);
         QFont font = it->font();
         font.setBold(true);
         it->setFont(font);
