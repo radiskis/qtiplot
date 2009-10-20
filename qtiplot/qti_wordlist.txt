@@ -37,6 +37,8 @@ text
 cell
 rowData
 colData
+setRowData
+setColData
 setText
 setCell
 colName
