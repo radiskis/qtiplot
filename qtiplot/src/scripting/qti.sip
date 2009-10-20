@@ -203,6 +203,17 @@ public:
     } // for each col
 	} // if not sip error
 %End
+  SIP_PYTUPLE __getitem__(int); // this is operator[]
+%MethodCode
+  SIP_SSIZE_T idx = sipConvertFromSequenceIndex(a0, sipCpp->numRows());
+  if (idx < 0)
+    sipIsErr = 1;
+  else {
+    sipRes = PyObject_CallMethod(sipSelf, "rowData", "i", idx + 1); // rowData's index starts at 1
+    if (sipRes == NULL)
+      sipIsErr = 1;
+  }
+%End
   SIP_PYLIST colData(SIP_PYOBJECT);
 %MethodCode
   PyObject *item;
@@ -281,6 +292,23 @@ public:
         break;
     } // for each col
 	} // if not sip error
+%End
+  void __setitem__(int, SIP_PYTUPLE);
+%MethodCode
+  SIP_SSIZE_T idx = sipConvertFromSequenceIndex(a0, sipCpp->numRows());
+  if (idx < 0)
+    sipIsErr = 1;
+  else {
+    PyObject* methodName = PyString_FromString("setRowData");
+    PyObject* rowNumber = PyInt_FromLong(idx + 1); // setRowData's index starts at 1
+    PyObject* ret = PyObject_CallMethodObjArgs(sipSelf, methodName, rowNumber, a1, NULL);
+    if (ret == NULL)
+      sipIsErr = 1;
+    else
+      Py_DECREF(ret);
+    Py_DECREF(rowNumber);
+    Py_DECREF(methodName);
+  }
 %End
   int appendRowData(SIP_PYTUPLE);
 %MethodCode
