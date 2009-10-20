@@ -38,6 +38,7 @@ cell
 rowData
 colData
 setRowData
+appendRowData
 setColData
 setText
 setCell
@@ -538,6 +539,7 @@ Scale
 resultsLog
 stemPlot
 addColumn
+addRow
 insertColumns
 swapColumns
 showAllColumns
