@@ -192,6 +192,17 @@ public:
 	} else
 		sipRes = PyString_FromString(sipCpp->colLabel(a0-1));
 %End
+  SIP_PYTUPLE colNames();
+%MethodCode
+  QStringList l = sipCpp->colNames();
+  int size = l.length();
+  sipRes = PyTuple_New(size);
+  if(sipRes) {
+    for(int i=0; i<size; i++)
+      PyTuple_SET_ITEM(sipRes, i, PyString_FromString(l.at(i)));
+  } else
+    sipIsErr = 1;
+%End
   void setColName(SIP_PYOBJECT, const QString&, bool=false);
 %MethodCode
 	sipIsErr = 0;
@@ -199,6 +210,7 @@ public:
 	if (sipIsErr == 0)
 		sipCpp->setColName(col, *a1, a2);
 %End
+  void setHeader(QStringList header)/PyName=setColNames/;
   void notifyChanges();
 
   void importASCII(const QString&, const QString&="\t", int=0, bool=false,

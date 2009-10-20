@@ -38,7 +38,9 @@ cell
 setText
 setCell
 colName
+colNames
 setColName
+setColNames
 notifyChanges
 importASCII
 exportASCII
