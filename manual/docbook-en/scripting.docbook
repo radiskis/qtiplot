@@ -1918,6 +1918,11 @@ It is possible to change the order of the curves inserted in a layer using the f
 l.changeCurveIndex(int oldIndex, int newIndex)
 </programlisting>
 
+Sometimes, when performing data analysis, one might need the curve title. It is possible to obtain it using the method bellow:
+<programlisting>
+	title = l.curveTitle(curveIndex)
+</programlisting>
+
 Use the following function to change the axis attachment of a curve:
 <programlisting>
 l.setCurveAxes(number, x-axis, y-axis)

@@ -11951,171 +11951,174 @@ Följande specialkoder kan användas:
         <translation type="obsolete">QtiPlot - Ickelinjär kuvanpasssning</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="147"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="172"/>
         <source>Curve</source>
         <translation>Kurva</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="150"/>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="313"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="155"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="435"/>
         <source>Function</source>
         <translation>Funktion</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="162"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="185"/>
         <source>Initial guesses</source>
         <translation>Initial gissning</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="186"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="209"/>
         <source>Parameter</source>
         <translation>Parameter</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="186"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="209"/>
         <source>Value</source>
         <translation>Värde</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="186"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="209"/>
         <source>Constant</source>
         <translation>Konstant</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="194"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="209"/>
+        <source>Error</source>
+        <translation type="unfinished">Fel</translation>
+    </message>
+    <message>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="217"/>
         <source>Algorithm</source>
         <translation>Algoritm</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="196"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="219"/>
         <source>Scaled Levenberg-Marquardt</source>
         <translation>Skalad Levenberg-Marquardt</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="197"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="220"/>
         <source>Unscaled Levenberg-Marquardt</source>
         <translation>Oskalad Levenberg-Marquardt</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="198"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="221"/>
         <source>Nelder-Mead Simplex</source>
         <translation>Nelder-Mead Simplex</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="201"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="224"/>
         <source>Color</source>
         <translation>Färg</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="210"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="233"/>
         <source>From x=</source>
         <translation>Från x=</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="218"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="241"/>
         <source>To x=</source>
         <translation>Till x=</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="230"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="253"/>
         <source>Iterations</source>
         <translation>Iterationer</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="236"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="259"/>
         <source>Tolerance</source>
         <translation>Tolerans</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="254"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="277"/>
         <source>Weighting Method</source>
         <translation>Viktningsmetod</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="256"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="279"/>
         <source>No weighting</source>
         <translation>Ingen viktning</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="257"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="280"/>
         <source>Instrumental</source>
         <translation>Instrumentell</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="258"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="281"/>
         <source>Statistical</source>
         <translation>Statistiskt</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="259"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="282"/>
         <source>Arbitrary Dataset</source>
         <translation>Godtycklig datamängd</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="273"/>
         <source>&lt;&lt; &amp;Edit function</source>
-        <translation>&lt;&lt; &amp;Redigera funktion</translation>
+        <translation type="obsolete">&lt;&lt; &amp;Redigera funktion</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="275"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="305"/>
         <source>&amp;Delete Fit Curves</source>
         <translation>&amp;Tag bort anpassade kurvor</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="277"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="308"/>
         <source>&amp;Fit</source>
         <translation>&amp;Anpassa</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="280"/>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="384"/>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="524"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="296"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="514"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="698"/>
         <source>&amp;Close</source>
         <translation>&amp;Stäng</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="282"/>
         <source>Custom &amp;Output &gt;&gt;</source>
-        <translation>Anpassad &amp;utdata&gt;&gt;</translation>
+        <translation type="obsolete">Anpassad &amp;utdata&gt;&gt;</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="312"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="430"/>
         <source>Category</source>
         <translation>Kategori</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="314"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="440"/>
         <source>Expression</source>
         <translation>Uttryck</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="317"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="446"/>
         <source>User defined</source>
         <translation>Användardefinierad</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="318"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="447"/>
         <source>Built-in</source>
         <translation>Inbyggd</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="319"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="448"/>
         <source>Basic</source>
         <translation>Grundläggande</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="320"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="449"/>
         <source>Plugins</source>
         <translation>Plugin</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="329"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="458"/>
         <source>Fit with &amp;built-in function</source>
         <translation>Anpassa med in&amp;byggd funktion</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="336"/>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1086"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="465"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1335"/>
         <source>Polynomial Order</source>
         <translation>Polynomordning</translation>
     </message>
@@ -12128,95 +12131,94 @@ Följande specialkoder kan användas:
         <translation type="obsolete">Rensa användar&amp;lista</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="352"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="481"/>
         <source>Name</source>
         <translation>Namn</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="353"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="482"/>
         <source>user1</source>
         <translation>användare1</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="163"/>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="355"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="186"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="484"/>
         <source>&amp;Save</source>
         <translation>&amp;Spara</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="357"/>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="468"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="486"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="652"/>
         <source>Parameters</source>
         <translation>Parametrar</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="361"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="490"/>
         <source>&amp;Remove</source>
         <translation>&amp;Tag bort</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="378"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="507"/>
         <source>Add &amp;expression</source>
         <translation>Lägg till &amp;uttryck</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="380"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="509"/>
         <source>Add &amp;name</source>
         <translation>Lägg till &amp;namn</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="382"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="511"/>
         <source>Rese&amp;t</source>
         <translation>Åters&amp;täll</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="386"/>
         <source>&amp;Fit &gt;&gt;</source>
-        <translation>&amp;Anpassa &gt;&gt;</translation>
+        <translation type="obsolete">&amp;Anpassa &gt;&gt;</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="426"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="610"/>
         <source>&amp;Uniform X Function</source>
         <translation>Likformig X-f&amp;unktion</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="433"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="617"/>
         <source>Points</source>
         <translation>Punkter</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="449"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="633"/>
         <source>Same X as Fitting &amp;Data</source>
         <translation>Samma X som anpassnings&amp;data</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="454"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="638"/>
         <source>Generated Fit Curve</source>
         <translation>Skapad anpasssningskurva</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="458"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="642"/>
         <source>Significant Digits</source>
         <translation>Signifikanta siffror</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="465"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="649"/>
         <source>Parameters &amp;Table</source>
         <translation>parameter&amp;tabell</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="467"/>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="474"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="651"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="658"/>
         <source>Name: </source>
         <translation>Namn: </translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="472"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="656"/>
         <source>Covariance &amp;Matrix</source>
         <translation>Kovarians&amp;matris</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="475"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="659"/>
         <source>CovMatrix</source>
         <translation>KovMatris</translation>
     </message>
@@ -12225,77 +12227,76 @@ Följande specialkoder kan användas:
         <translation type="obsolete">Skalningfel med sqrt(Chi^2/doF)</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="502"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="686"/>
         <source>Parameters Output</source>
         <translation>Parameterutdata</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="505"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="689"/>
         <source>&amp;Write Parameters to Result Log</source>
         <translation>Skri&amp;v parametrar till resultatlogg</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="509"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="693"/>
         <source>&amp;Paste Parameters to Plot</source>
         <translation>Klistra in &amp;parametrar i diagram</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="515"/>
         <source>&lt;&lt; &amp;Fit</source>
-        <translation>&lt;&lt; &amp;Anpassa</translation>
+        <translation type="obsolete">&lt;&lt; &amp;Anpassa</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="519"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="702"/>
         <source>&amp;Apply</source>
         <translation>&amp;Tillämpa</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="576"/>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="582"/>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="594"/>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="600"/>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1634"/>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1645"/>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1656"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="819"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="825"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="837"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="843"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1890"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1901"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1912"/>
         <source>QtiPlot - Error</source>
         <translation>QtiPlot - Fel</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="577"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="820"/>
         <source>Please enter a valid name for the parameters table.</source>
         <translation>Skriv in ett giltigt namn på parametertabellen.</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="583"/>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="601"/>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1635"/>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1646"/>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1657"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="826"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="844"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1891"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1902"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1913"/>
         <source>Please perform a fit first and try again.</source>
         <translation>Genomför en anpassning först och försök igen.</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="595"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="838"/>
         <source>Please enter a valid name for the covariance matrix.</source>
         <translation>Skriv in ett giltigt namn på kovariansmatrisen.</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="657"/>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="661"/>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="676"/>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="767"/>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1216"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="900"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="904"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="919"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1010"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1465"/>
         <source>QtiPlot - Input function error</source>
         <translation>QtiPlot - Fel i indatafunktion</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="657"/>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="767"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="900"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1010"/>
         <source>Please enter a valid function!</source>
         <translation>Mata in en giltig funktion!</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="662"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="905"/>
         <source>Please enter a function name!</source>
         <translation>Mata in ett funktionsnamn!</translation>
     </message>
@@ -12304,12 +12305,12 @@ Följande specialkoder kan användas:
         <translation type="obsolete">Mata in åtminstone ett parameternamn!</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="668"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="911"/>
         <source>QtiPlot - Error: function name</source>
         <translation>QtiPlot - Fel: funktionsnamn</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="669"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="912"/>
         <source> is a built-in function name&lt;p&gt;You must choose another name for your function!</source>
         <translation> är ett inbyggt funktionsnamn&lt;p&gt;Du måste välja ett annat namn på din funktion!</translation>
     </message>
@@ -12318,55 +12319,55 @@ Följande specialkoder kan användas:
         <translation type="obsolete">Du kan inte definiera funktioner rekursivt!</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="937"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1186"/>
         <source>Fit with selected &amp;user function</source>
         <translation>Anpassad med vald an&amp;vändarfunktion</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="943"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1192"/>
         <source>Fit using &amp;built-in function</source>
         <translation>Anpassa med in&amp;byggd funktion</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="956"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1205"/>
         <source>Fit using &amp;plugin function</source>
         <translation>Anpassa med &amp;plugin-funktion</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="980"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1229"/>
         <source>Choose the plugins folder</source>
         <translation>Välj plugin-mappen</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1080"/>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1409"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1329"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1665"/>
         <source>Gauss</source>
         <translation>Gauss</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1082"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1331"/>
         <source>Peaks</source>
         <translation>Toppar</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1081"/>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1410"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1330"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1666"/>
         <source>Lorentz</source>
         <translation>Lorentz</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1085"/>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1412"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1334"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1668"/>
         <source>Polynomial</source>
         <translation>Polynomisk</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1138"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1387"/>
         <source>QtiPlot - Warning</source>
         <translation>QtiPlot - Varning</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1139"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1388"/>
         <source>The curve &lt;b&gt; %1 &lt;/b&gt; doesn&apos;t exist anymore! Operation aborted!</source>
         <translation>Kurvan &lt;b&gt; %1 &lt;/b&gt; finns inte längre. Åtgärden avbruten!</translation>
     </message>
@@ -12379,12 +12380,12 @@ Följande specialkoder kan användas:
         <translation type="obsolete">QtiPlot - Slutgränsfel</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1150"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1399"/>
         <source>QtiPlot - Input error</source>
         <translation>QtiPlot - Indatafel</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1151"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1400"/>
         <source>Please enter x limits that satisfy: from &lt; end!</source>
         <translation>Mata in x-gränser som tillfredställer villkoret: från &lt; slut!</translation>
     </message>
@@ -12397,7 +12398,7 @@ Följande specialkoder kan användas:
         <translation type="obsolete">Toleransvärdet måste vara positivt och mindre än 1!</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1214"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1463"/>
         <source>Please verify that you have initialized all the parameters!</source>
         <translation>Verifiera att du har initialiserat alla parametrarna!</translation>
     </message>
@@ -12410,121 +12411,148 @@ Följande specialkoder kan användas:
         <translation type="obsolete">Mata in begynnelsegissningar för dina parametrar!</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1303"/>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1304"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1559"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1560"/>
         <source>No data tables</source>
         <translation>Inga datatabeller</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="95"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="96"/>
         <source>QtiPlot - Fit Wizard</source>
         <translation>QtiPlot - Anpassningshjälpreda</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="171"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="300"/>
         <source>&amp;Preview</source>
         <translation>&amp;Förhandsgranskning</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="186"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="209"/>
         <source>From</source>
         <translation>Från</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="186"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="209"/>
         <source>To</source>
         <translation>Till</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="347"/>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="954"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="321"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="332"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="535"/>
+        <source>Select Function</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="344"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="556"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="729"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="741"/>
+        <source>Fitting Session</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="354"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="364"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="753"/>
+        <source>Custom Output</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="476"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1203"/>
         <source>Choose plug&amp;ins folder...</source>
         <translation>Välj plug&amp;in-mapp...</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="470"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="546"/>
+        <source>Start Fitting Session</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="654"/>
         <source>&amp;One table for all fits</source>
         <translation>&amp;En tabell för alla anpassningar</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="677"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="920"/>
         <source>You can&apos;t define functions recursively!</source>
         <translation>Du kan inte definiera funktioner rekursivt!</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="699"/>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1498"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="942"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1754"/>
         <source>QtiPlot fit model</source>
         <translation>QtiPlot anpassningsmodell</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="700"/>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1499"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="943"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1755"/>
         <source>All files</source>
         <translation>Alla filer</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="701"/>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="739"/>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1500"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="944"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="982"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1756"/>
         <source>QtiPlot</source>
         <translation>QtiPlot</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="701"/>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1500"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="944"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1756"/>
         <source>Save Fit Model As</source>
         <translation>Spara anpassningsmodell som</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="738"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="981"/>
         <source>Are you sure you want to remove fit model file:
  %1 ?</source>
         <translation>Är du säker på att du vill ta bort anpassningsmodellfil:
 %1 ?</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="739"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="982"/>
         <source>Remove Fit Model</source>
         <translation>Tag bort anpassningsmodell</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="935"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1184"/>
         <source>Choose &amp;models folder...</source>
         <translation>Väl&amp;j modellmapp...</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="992"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1241"/>
         <source>Choose the fit models folder</source>
         <translation>Välj modellanpassningsmappen</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="494"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="678"/>
         <source>&amp;Residuals Plot</source>
         <translation>&amp;Residudiagram</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="478"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="662"/>
         <source>Co&amp;nf. Bands</source>
         <translation>Ko&amp;nf. band</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="490"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="674"/>
         <source>Pred. &amp;Bands</source>
         <translation>Pred. &amp;band</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="498"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="682"/>
         <source>&amp;Scale Errors with sqrt(Chi^2/doF)</source>
         <translation>&amp;Skalfel med sqrt(Chi^2/doF)</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="260"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="283"/>
         <source>Direct Weighting</source>
         <translation>Direkt viktning</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1680"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1936"/>
         <source>Error: </source>
         <translation>Fel:</translation>
     </message>
@@ -12939,9 +12967,9 @@ Följande specialkoder kan användas:
         <translation type="obsolete">Höger</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.cpp" line="4158"/>
-        <location filename="../src/plot2D/Graph.cpp" line="4162"/>
-        <location filename="../src/plot2D/Graph.cpp" line="4971"/>
+        <location filename="../src/plot2D/Graph.cpp" line="4168"/>
+        <location filename="../src/plot2D/Graph.cpp" line="4172"/>
+        <location filename="../src/plot2D/Graph.cpp" line="4981"/>
         <source>QtiPlot - Warning</source>
         <translation>QtiPlot - Varning</translation>
     </message>
@@ -12975,12 +13003,12 @@ Följande specialkoder kan användas:
         <translation type="obsolete">QtiPlot - Flytta punktfel</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.cpp" line="3731"/>
+        <location filename="../src/plot2D/Graph.cpp" line="3741"/>
         <source>QtiPlot - File open error</source>
         <translation>QtiPlot - Filöppningsfel</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.cpp" line="3732"/>
+        <location filename="../src/plot2D/Graph.cpp" line="3742"/>
         <source>Image file: &lt;p&gt;&lt;b&gt; %1 &lt;/b&gt;&lt;p&gt;does not exist anymore!</source>
         <translation>Bildfil: &lt;p&gt;&lt;b&gt; %1 &lt;/b&gt;&lt;p&gt; finns inte längre!</translation>
     </message>
@@ -12989,22 +13017,22 @@ Följande specialkoder kan användas:
         <translation type="obsolete">QtiPlot - Fel i indatafuktion</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.cpp" line="4159"/>
+        <location filename="../src/plot2D/Graph.cpp" line="4169"/>
         <source>The columns</source>
         <translation>Kolumnerna</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.cpp" line="4159"/>
+        <location filename="../src/plot2D/Graph.cpp" line="4169"/>
         <source>are empty and will not be added to the plot!</source>
         <translation>är tomma och kommer ej att läggas till diagrammet!</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.cpp" line="4163"/>
+        <location filename="../src/plot2D/Graph.cpp" line="4173"/>
         <source>The column</source>
         <translation>Kolumnen</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.cpp" line="4163"/>
+        <location filename="../src/plot2D/Graph.cpp" line="4173"/>
         <source>is empty and will not be added to the plot!</source>
         <translation>är tom och kommer ej att läggas till diagrammet!</translation>
     </message>
@@ -13013,46 +13041,46 @@ Följande specialkoder kan användas:
         <translation type="obsolete">Klipp &amp;ut</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.cpp" line="4170"/>
-        <location filename="../src/plot2D/Graph.cpp" line="4223"/>
+        <location filename="../src/plot2D/Graph.cpp" line="4180"/>
+        <location filename="../src/plot2D/Graph.cpp" line="4233"/>
         <source>&amp;Copy</source>
         <translation>&amp;Kopiera</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.cpp" line="4172"/>
-        <location filename="../src/plot2D/Graph.cpp" line="4225"/>
+        <location filename="../src/plot2D/Graph.cpp" line="4182"/>
+        <location filename="../src/plot2D/Graph.cpp" line="4235"/>
         <source>&amp;Delete</source>
         <translation>&amp;Tag bort</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.cpp" line="4174"/>
-        <location filename="../src/plot2D/Graph.cpp" line="4227"/>
-        <location filename="../src/plot2D/Graph.cpp" line="4250"/>
+        <location filename="../src/plot2D/Graph.cpp" line="4184"/>
+        <location filename="../src/plot2D/Graph.cpp" line="4237"/>
+        <location filename="../src/plot2D/Graph.cpp" line="4260"/>
         <source>&amp;Properties...</source>
         <translation>&amp;Egenskaper...</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.cpp" line="4235"/>
+        <location filename="../src/plot2D/Graph.cpp" line="4245"/>
         <source>&amp;Rescale to show all</source>
         <translation>&amp;Skala om för att visa allt</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.cpp" line="4235"/>
+        <location filename="../src/plot2D/Graph.cpp" line="4245"/>
         <source>Ctrl+Shift+R</source>
         <translation>Ctrl+Shift+S</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.cpp" line="4237"/>
+        <location filename="../src/plot2D/Graph.cpp" line="4247"/>
         <source>&amp;Hide axis</source>
         <translation>&amp;Dölj axlar</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.cpp" line="4239"/>
+        <location filename="../src/plot2D/Graph.cpp" line="4249"/>
         <source>&amp;Show grids</source>
         <translation>&amp;Visa rutnät</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.cpp" line="4249"/>
+        <location filename="../src/plot2D/Graph.cpp" line="4259"/>
         <source>&amp;Scale...</source>
         <translation>&amp;Skala...</translation>
     </message>
@@ -13327,7 +13355,7 @@ Följande specialkoder kan användas:
         <translation type="obsolete">Bandsspärr-FFT-filter av </translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.cpp" line="4971"/>
+        <location filename="../src/plot2D/Graph.cpp" line="4981"/>
         <source>There are no curves available on this plot!</source>
         <translation>Det finns inga kurvor tillgängliga på detta diagram!</translation>
     </message>
@@ -13337,12 +13365,12 @@ Följande specialkoder kan användas:
         <location filename="../src/plot2D/Graph.cpp" line="1408"/>
         <location filename="../src/plot2D/Graph.cpp" line="1436"/>
         <location filename="../src/plot2D/Graph.cpp" line="1496"/>
-        <location filename="../src/plot2D/Graph.cpp" line="4981"/>
+        <location filename="../src/plot2D/Graph.cpp" line="4991"/>
         <source>QtiPlot - Error</source>
         <translation>QtiPlot - Fel</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.cpp" line="4982"/>
+        <location filename="../src/plot2D/Graph.cpp" line="4992"/>
         <source>There are no curves with more than two points on this plot. Operation aborted!</source>
         <translation>Det finns inga kurvor med mer än två punkter i detta diagram. Åtgärd avbruten!</translation>
     </message>
@@ -13431,17 +13459,17 @@ Följande specialkoder kan användas:
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.cpp" line="3919"/>
+        <location filename="../src/plot2D/Graph.cpp" line="3929"/>
         <source>Data set generated from curve</source>
         <translation>Datamängd genererad från kurva</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.cpp" line="3920"/>
+        <location filename="../src/plot2D/Graph.cpp" line="3930"/>
         <source>Table</source>
         <translation>Tabell</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.h" line="634"/>
+        <location filename="../src/plot2D/Graph.h" line="636"/>
         <source>F</source>
         <translation>F</translation>
     </message>
@@ -13466,14 +13494,14 @@ Följande specialkoder kan användas:
         <translation type="obsolete"> </translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.cpp" line="4169"/>
-        <location filename="../src/plot2D/Graph.cpp" line="4222"/>
+        <location filename="../src/plot2D/Graph.cpp" line="4179"/>
+        <location filename="../src/plot2D/Graph.cpp" line="4232"/>
         <source>Cu&amp;t</source>
         <translation>Klipp u&amp;t</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.cpp" line="4171"/>
-        <location filename="../src/plot2D/Graph.cpp" line="4224"/>
+        <location filename="../src/plot2D/Graph.cpp" line="4181"/>
+        <location filename="../src/plot2D/Graph.cpp" line="4234"/>
         <source>C&amp;lear</source>
         <translation>&amp;Rensa</translation>
     </message>

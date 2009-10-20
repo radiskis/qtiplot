@@ -1078,6 +1078,7 @@ public:
   int curveCount() /PyName=numCurves/;
   QwtPlotCurve* curve(int index);
   QwtPlotCurve* curve(const QString &title);
+  QString curveTitle(int);
 
   void changeCurveIndex(int fromIndex, int toIndex);
 
