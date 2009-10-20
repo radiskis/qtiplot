@@ -10254,535 +10254,563 @@ The following special codes can be used:
 <context>
     <name>FitDialog</name>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="95"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="96"/>
         <source>QtiPlot - Fit Wizard</source>
         <translation>QtiPlot - Asistent de ajustare</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="147"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="172"/>
         <source>Curve</source>
         <translation>Curbă</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="150"/>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="313"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="155"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="435"/>
         <source>Function</source>
         <translation>Funcţie</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="162"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="185"/>
         <source>Initial guesses</source>
         <translation>Valori iniţiale</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="163"/>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="355"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="186"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="484"/>
         <source>&amp;Save</source>
         <translation>&amp;Salvează</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="171"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="300"/>
         <source>&amp;Preview</source>
         <translation>&amp;Previzualizare</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="186"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="209"/>
         <source>Parameter</source>
         <translation>Parametru</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="186"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="209"/>
         <source>From</source>
         <translation>De la</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="186"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="209"/>
         <source>Value</source>
         <translation>Valoare</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="186"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="209"/>
         <source>To</source>
         <translation>Pană la</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="186"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="209"/>
         <source>Constant</source>
         <translation>Constant</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="194"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="209"/>
+        <source>Error</source>
+        <translation type="unfinished">Eroare</translation>
+    </message>
+    <message>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="217"/>
         <source>Algorithm</source>
         <translation>Algoritm</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="196"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="219"/>
         <source>Scaled Levenberg-Marquardt</source>
         <translation>Levenberg-Marquardt scalat </translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="197"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="220"/>
         <source>Unscaled Levenberg-Marquardt</source>
         <translation>Levenberg-Marquardt nescalat </translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="198"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="221"/>
         <source>Nelder-Mead Simplex</source>
         <translation>Nelder-Mead Simplex</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="201"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="224"/>
         <source>Color</source>
         <translation>Culoare</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="210"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="233"/>
         <source>From x=</source>
         <translation>De la x=</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="218"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="241"/>
         <source>To x=</source>
         <translation>La x= </translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="230"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="253"/>
         <source>Iterations</source>
         <translation>Iteraţii</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="236"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="259"/>
         <source>Tolerance</source>
         <translation>Toleranţă</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="254"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="277"/>
         <source>Weighting Method</source>
         <translation>Metodă de ponderare</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="256"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="279"/>
         <source>No weighting</source>
         <translation>Fără ponderare</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="257"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="280"/>
         <source>Instrumental</source>
         <translation>Instrumentală</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="258"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="281"/>
         <source>Statistical</source>
         <translation>Statistică</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="259"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="282"/>
         <source>Arbitrary Dataset</source>
         <translation>Set de date arbitrar</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="260"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="283"/>
         <source>Direct Weighting</source>
         <translation>Ponderare directă</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="273"/>
         <source>&lt;&lt; &amp;Edit function</source>
-        <translation>&lt;&lt; &amp;Editează funcţia</translation>
+        <translation type="obsolete">&lt;&lt; &amp;Editează funcţia</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="275"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="305"/>
         <source>&amp;Delete Fit Curves</source>
         <translation>Şterge curbele &amp;de ajustare</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="277"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="308"/>
         <source>&amp;Fit</source>
         <translation>&amp;Ajustează</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="280"/>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="384"/>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="524"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="296"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="514"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="698"/>
         <source>&amp;Close</source>
         <translation>În&amp;chide</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="282"/>
         <source>Custom &amp;Output &gt;&gt;</source>
-        <translation>Personalizare &amp;rezultate &gt;&gt;</translation>
+        <translation type="obsolete">Personalizare &amp;rezultate &gt;&gt;</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="312"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="430"/>
         <source>Category</source>
         <translation>Categorie</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="314"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="440"/>
         <source>Expression</source>
         <translation>Expresie</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="317"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="446"/>
         <source>User defined</source>
         <translation>Funcţii utilizator</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="318"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="447"/>
         <source>Built-in</source>
         <translation>Funcţii predefinite</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="319"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="448"/>
         <source>Basic</source>
         <translation>Funcţii elementare</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="320"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="449"/>
         <source>Plugins</source>
         <translation>Extensii</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="329"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="458"/>
         <source>Fit with &amp;built-in function</source>
         <translation>Ajustare cu funţia &amp;predefinită</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="336"/>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1086"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="465"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1335"/>
         <source>Polynomial Order</source>
         <translation>Ordinul polinomului</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="347"/>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="954"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="476"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1203"/>
         <source>Choose plug&amp;ins folder...</source>
         <translation>Alegeţi dosarul conţinând extens&amp;ii...</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="352"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="481"/>
         <source>Name</source>
         <translation>Nume</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="353"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="482"/>
         <source>user1</source>
         <translation>funcţie1</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="357"/>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="468"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="486"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="652"/>
         <source>Parameters</source>
         <translation>Parametri</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="361"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="490"/>
         <source>&amp;Remove</source>
         <translation>Şte&amp;rge</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="378"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="507"/>
         <source>Add &amp;expression</source>
         <translation>Adaugă &amp;expresie</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="380"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="509"/>
         <source>Add &amp;name</source>
         <translation>Adaugă &amp;nume</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="382"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="511"/>
         <source>Rese&amp;t</source>
         <translation>Ş&amp;terge</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="386"/>
         <source>&amp;Fit &gt;&gt;</source>
-        <translation>&amp;Ajustează &gt;&gt;</translation>
+        <translation type="obsolete">&amp;Ajustează &gt;&gt;</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="426"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="610"/>
         <source>&amp;Uniform X Function</source>
         <translation>Funcţie de X &amp;uniformă</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="433"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="617"/>
         <source>Points</source>
         <translation>Puncte</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="449"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="633"/>
         <source>Same X as Fitting &amp;Data</source>
         <translation>Aceleaşi abscise ca &amp;datele sursă</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="454"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="638"/>
         <source>Generated Fit Curve</source>
         <translation>Curba de ajustare generată</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="458"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="642"/>
         <source>Significant Digits</source>
         <translation>Cifre semnificative</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="465"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="649"/>
         <source>Parameters &amp;Table</source>
         <translation>&amp;Tabel parametri</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="467"/>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="474"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="651"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="658"/>
         <source>Name: </source>
         <translation>Nume:</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="470"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="654"/>
         <source>&amp;One table for all fits</source>
         <translation>&amp;Un tabel pentru toate ajustările</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="472"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="656"/>
         <source>Covariance &amp;Matrix</source>
         <translation>&amp;Matricea de covarianţă</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="475"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="659"/>
         <source>CovMatrix</source>
         <translation>MatriceCovarianţă</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="478"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="662"/>
         <source>Co&amp;nf. Bands</source>
         <translation>Interval de î&amp;ncredere </translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="490"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="674"/>
         <source>Pred. &amp;Bands</source>
         <translation>&amp;Benzi de predicţie</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="494"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="678"/>
         <source>&amp;Residuals Plot</source>
         <translation>Afişază &amp;reziduurile</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="498"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="682"/>
         <source>&amp;Scale Errors with sqrt(Chi^2/doF)</source>
         <translation>Multiplică erorile cu &amp;sqrt(Chi^2/doF)</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="502"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="686"/>
         <source>Parameters Output</source>
         <translation>Rezultate parametri</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="505"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="689"/>
         <source>&amp;Write Parameters to Result Log</source>
         <translation>Scrie re&amp;zultatele în istoric</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="509"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="693"/>
         <source>&amp;Paste Parameters to Plot</source>
         <translation>Afişază rezultatele în &amp;grafic </translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="515"/>
         <source>&lt;&lt; &amp;Fit</source>
-        <translation>&lt;&lt; Ajus&amp;tează</translation>
+        <translation type="obsolete">&lt;&lt; Ajus&amp;tează</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="519"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="321"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="332"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="535"/>
+        <source>Select Function</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="344"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="556"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="729"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="741"/>
+        <source>Fitting Session</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="354"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="364"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="753"/>
+        <source>Custom Output</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="546"/>
+        <source>Start Fitting Session</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="702"/>
         <source>&amp;Apply</source>
         <translation>&amp;Aplică</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="576"/>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="582"/>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="594"/>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="600"/>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1634"/>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1645"/>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1656"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="819"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="825"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="837"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="843"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1890"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1901"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1912"/>
         <source>QtiPlot - Error</source>
         <translation>QtiPlot - Eroare</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="577"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="820"/>
         <source>Please enter a valid name for the parameters table.</source>
         <translation>Vă rugăm introduceţi un nume valid pentru tabelul de parametri.</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="583"/>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="601"/>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1635"/>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1646"/>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1657"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="826"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="844"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1891"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1902"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1913"/>
         <source>Please perform a fit first and try again.</source>
         <translation>Vă rugam să efectuaţi mai întâi o ajustare şi apoi să încercaţi din nu.</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="595"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="838"/>
         <source>Please enter a valid name for the covariance matrix.</source>
         <translation>Vă rugăm introduceţi un nume valid pentru matrice.</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="657"/>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="661"/>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="676"/>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="767"/>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1216"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="900"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="904"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="919"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1010"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1465"/>
         <source>QtiPlot - Input function error</source>
         <translation>QtiPlot - Eroare detectată în funcţia introdusă</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="657"/>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="767"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="900"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1010"/>
         <source>Please enter a valid function!</source>
         <translation>Vă rugăm să introduceţi o funcţie validă!</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="662"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="905"/>
         <source>Please enter a function name!</source>
         <translation>Vă rugăm să introduceţi un nume de funcţie!</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="668"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="911"/>
         <source>QtiPlot - Error: function name</source>
         <translation>QtiPlot - Eroare: numele funcţiei</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="669"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="912"/>
         <source> is a built-in function name&lt;p&gt;You must choose another name for your function!</source>
         <translation>este un nume de funcţie predefinită. &lt;p&gt; Trebuie să alegeţi un alt nume pentru funcţia dumneavoastră!</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="677"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="920"/>
         <source>You can&apos;t define functions recursively!</source>
         <translation>Nu puteţi defini funcţii în mod recursiv!</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="699"/>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1498"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="942"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1754"/>
         <source>QtiPlot fit model</source>
         <translation>Funcţie de ajustare QtiPlot</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="700"/>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1499"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="943"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1755"/>
         <source>All files</source>
         <translation>Toate fişierele</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="701"/>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="739"/>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1500"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="944"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="982"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1756"/>
         <source>QtiPlot</source>
         <translation>QtiPlot</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="701"/>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1500"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="944"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1756"/>
         <source>Save Fit Model As</source>
         <translation>Salvează funcţia de ajustare ca</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="738"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="981"/>
         <source>Are you sure you want to remove fit model file:
  %1 ?</source>
         <translation>Sunteţi sigur că vreţi să ştergeţi fişierul conţinînd un model de ajustare: %1 ?</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="739"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="982"/>
         <source>Remove Fit Model</source>
         <translation>Şterge funcţia de ajustare</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="935"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1184"/>
         <source>Choose &amp;models folder...</source>
         <translation>Alegeţi dosarul conţinând &amp;modele de ajustare...</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="937"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1186"/>
         <source>Fit with selected &amp;user function</source>
         <translation>Ajustare cu funţia selecţionată de &amp;utilizatorului</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="943"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1192"/>
         <source>Fit using &amp;built-in function</source>
         <translation>Ajustare cu funţia &amp;predefinită</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="956"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1205"/>
         <source>Fit using &amp;plugin function</source>
         <translation>Ajustare folosind e&amp;xtensia</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="980"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1229"/>
         <source>Choose the plugins folder</source>
         <translation>Alegeţi dosarul conţinând extensii</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="992"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1241"/>
         <source>Choose the fit models folder</source>
         <translation>Alegeţi dosarul conţinând modele de ajustare</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1080"/>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1409"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1329"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1665"/>
         <source>Gauss</source>
         <translation>Gauss</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1081"/>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1410"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1330"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1666"/>
         <source>Lorentz</source>
         <translation>Lorenz</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1082"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1331"/>
         <source>Peaks</source>
         <translation>Extreme</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1085"/>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1412"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1334"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1668"/>
         <source>Polynomial</source>
         <translation>Polinomial</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1138"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1387"/>
         <source>QtiPlot - Warning</source>
         <translation>QtiPlot - Avertisment</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1139"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1388"/>
         <source>The curve &lt;b&gt; %1 &lt;/b&gt; doesn&apos;t exist anymore! Operation aborted!</source>
         <translation>Curba &lt;b&gt; %1 &lt;/b&gt; nu mai există! Operaţiunea a fost abandonată!</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1150"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1399"/>
         <source>QtiPlot - Input error</source>
         <translation>QtiPlot - Eroare</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1151"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1400"/>
         <source>Please enter x limits that satisfy: from &lt; end!</source>
         <translation>Vă rugam să introduceţi limite care satisfac condiţia: început &lt; sfarşit !</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1214"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1463"/>
         <source>Please verify that you have initialized all the parameters!</source>
         <translation>Vă rugăm verificaţi că aţi iniţializat toţi parametrii!</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1303"/>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1304"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1559"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1560"/>
         <source>No data tables</source>
         <translation>Nu există tabele de date</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1680"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1936"/>
         <source>Error: </source>
         <translation>Eroare: </translation>
     </message>
@@ -11160,7 +11188,7 @@ The following special codes can be used:
         <location filename="../src/plot2D/Graph.cpp" line="1408"/>
         <location filename="../src/plot2D/Graph.cpp" line="1436"/>
         <location filename="../src/plot2D/Graph.cpp" line="1496"/>
-        <location filename="../src/plot2D/Graph.cpp" line="4981"/>
+        <location filename="../src/plot2D/Graph.cpp" line="4991"/>
         <source>QtiPlot - Error</source>
         <translation>QtiPlot - Eroare</translation>
     </message>
@@ -11192,120 +11220,120 @@ The following special codes can be used:
         <translation>Titlu</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.cpp" line="3731"/>
+        <location filename="../src/plot2D/Graph.cpp" line="3741"/>
         <source>QtiPlot - File open error</source>
         <translation>QtiPlot - Eroare de deschidere fişier</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.cpp" line="3732"/>
+        <location filename="../src/plot2D/Graph.cpp" line="3742"/>
         <source>Image file: &lt;p&gt;&lt;b&gt; %1 &lt;/b&gt;&lt;p&gt;does not exist anymore!</source>
         <translation>Fişierul imagine: &lt;p&gt;&lt;b&gt; %1 &lt;/b&gt;&lt;p&gt; nu mai există!</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.cpp" line="3919"/>
+        <location filename="../src/plot2D/Graph.cpp" line="3929"/>
         <source>Data set generated from curve</source>
         <translation>Set de date generat folosind curba</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.cpp" line="3920"/>
+        <location filename="../src/plot2D/Graph.cpp" line="3930"/>
         <source>Table</source>
         <translation>Tabel</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.cpp" line="4158"/>
-        <location filename="../src/plot2D/Graph.cpp" line="4162"/>
-        <location filename="../src/plot2D/Graph.cpp" line="4971"/>
+        <location filename="../src/plot2D/Graph.cpp" line="4168"/>
+        <location filename="../src/plot2D/Graph.cpp" line="4172"/>
+        <location filename="../src/plot2D/Graph.cpp" line="4981"/>
         <source>QtiPlot - Warning</source>
         <translation>QtiPlot - Avertisment</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.cpp" line="4159"/>
+        <location filename="../src/plot2D/Graph.cpp" line="4169"/>
         <source>The columns</source>
         <translation>Coloanele</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.cpp" line="4159"/>
+        <location filename="../src/plot2D/Graph.cpp" line="4169"/>
         <source>are empty and will not be added to the plot!</source>
         <translation>sunt vide şi nu vor fi adăugate graficului!</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.cpp" line="4163"/>
+        <location filename="../src/plot2D/Graph.cpp" line="4173"/>
         <source>The column</source>
         <translation>Coloana</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.cpp" line="4163"/>
+        <location filename="../src/plot2D/Graph.cpp" line="4173"/>
         <source>is empty and will not be added to the plot!</source>
         <translation>este vidă şi nu va fi adăugată graficului!</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.cpp" line="4169"/>
-        <location filename="../src/plot2D/Graph.cpp" line="4222"/>
+        <location filename="../src/plot2D/Graph.cpp" line="4179"/>
+        <location filename="../src/plot2D/Graph.cpp" line="4232"/>
         <source>Cu&amp;t</source>
         <translation>&amp;Taie</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.cpp" line="4170"/>
-        <location filename="../src/plot2D/Graph.cpp" line="4223"/>
+        <location filename="../src/plot2D/Graph.cpp" line="4180"/>
+        <location filename="../src/plot2D/Graph.cpp" line="4233"/>
         <source>&amp;Copy</source>
         <translation>&amp;Copiază</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.cpp" line="4171"/>
-        <location filename="../src/plot2D/Graph.cpp" line="4224"/>
+        <location filename="../src/plot2D/Graph.cpp" line="4181"/>
+        <location filename="../src/plot2D/Graph.cpp" line="4234"/>
         <source>C&amp;lear</source>
         <translation>Go&amp;leşte</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.cpp" line="4172"/>
-        <location filename="../src/plot2D/Graph.cpp" line="4225"/>
+        <location filename="../src/plot2D/Graph.cpp" line="4182"/>
+        <location filename="../src/plot2D/Graph.cpp" line="4235"/>
         <source>&amp;Delete</source>
         <translation>Şte&amp;rge</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.cpp" line="4174"/>
-        <location filename="../src/plot2D/Graph.cpp" line="4227"/>
-        <location filename="../src/plot2D/Graph.cpp" line="4250"/>
+        <location filename="../src/plot2D/Graph.cpp" line="4184"/>
+        <location filename="../src/plot2D/Graph.cpp" line="4237"/>
+        <location filename="../src/plot2D/Graph.cpp" line="4260"/>
         <source>&amp;Properties...</source>
         <translation>&amp;Proprietăti...</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.cpp" line="4235"/>
+        <location filename="../src/plot2D/Graph.cpp" line="4245"/>
         <source>&amp;Rescale to show all</source>
         <translation>&amp;Afişază toate datele</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.cpp" line="4235"/>
+        <location filename="../src/plot2D/Graph.cpp" line="4245"/>
         <source>Ctrl+Shift+R</source>
         <translation>Ctrl+Shift+R</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.cpp" line="4237"/>
+        <location filename="../src/plot2D/Graph.cpp" line="4247"/>
         <source>&amp;Hide axis</source>
         <translation>Ascu&amp;nde axa</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.cpp" line="4239"/>
+        <location filename="../src/plot2D/Graph.cpp" line="4249"/>
         <source>&amp;Show grids</source>
         <translation>Afişază &amp;grilajul</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.cpp" line="4249"/>
+        <location filename="../src/plot2D/Graph.cpp" line="4259"/>
         <source>&amp;Scale...</source>
         <translation>&amp;Scală...</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.cpp" line="4971"/>
+        <location filename="../src/plot2D/Graph.cpp" line="4981"/>
         <source>There are no curves available on this plot!</source>
         <translation>Nu există curbe disponibile în acest grafic!</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.cpp" line="4982"/>
+        <location filename="../src/plot2D/Graph.cpp" line="4992"/>
         <source>There are no curves with more than two points on this plot. Operation aborted!</source>
         <translation>Nu există curbe conţinând mai mult de două puncte în acest grafic. Operaţie abandonată!</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.h" line="634"/>
+        <location filename="../src/plot2D/Graph.h" line="636"/>
         <source>F</source>
         <translation>F</translation>
     </message>

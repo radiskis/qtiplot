@@ -581,6 +581,7 @@ standardDeviation
 minimum
 maximum
 curve
+curveTitle
 dataSize
 minXValue
 maxXValue
