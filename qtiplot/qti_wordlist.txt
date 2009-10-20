@@ -35,6 +35,8 @@ setNumCols
 deleteRows
 text
 cell
+rowData
+colData
 setText
 setCell
 colName
