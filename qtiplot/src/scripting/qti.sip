@@ -168,6 +168,73 @@ public:
 		}
 	}
 %End
+  SIP_PYTUPLE rowData(int);
+%MethodCode
+  PyObject *item;
+  sipIsErr = 0;
+  CHECK_TABLE_ROW(a0);
+	if (sipIsErr == 0){
+    int size = sipCpp->numCols();
+    sipRes = PyTuple_New(size);
+    for(int col = 0; col < size; col++) {
+      switch (sipCpp->columnType(col)) {
+      case Table::Numeric:
+        if (sipCpp->text(row, col).isEmpty())
+          item = Py_None;
+        else
+          item = PyFloat_FromDouble(sipCpp->cell(row, col));
+        break;
+      case Table::Text:
+        item = PyString_FromString(sipCpp->text(row, col));
+        break;
+      default:
+        sipIsErr = 1;
+        PyErr_Format(PyExc_ValueError, "Type %d of column %d in table %s not supported!",
+                     sipCpp->columnType(col), col+1, sipCpp->name().ascii());
+        break;
+      } // switch column type
+      if (sipIsErr == 0)
+        PyTuple_SET_ITEM(sipRes, col, item);
+      else {
+        Py_DECREF(sipRes);
+        sipRes = NULL;
+        break;
+      }
+    } // for each col
+	} // if not sip error
+%End
+  SIP_PYLIST colData(SIP_PYOBJECT);
+%MethodCode
+  PyObject *item;
+  sipIsErr = 0;
+  CHECK_TABLE_COL(a0);
+	if (sipIsErr == 0){
+    int size = sipCpp->numRows();
+    sipRes = PyList_New(size);
+    switch (sipCpp->columnType(col)) {
+    case Table::Numeric:
+      for(int row = 0; row < size; row++) {
+        if (sipCpp->text(row, col).isEmpty())
+          item = Py_None;
+        else
+          item = PyFloat_FromDouble(sipCpp->cell(row, col));
+        PyList_SET_ITEM(sipRes, row, item);
+      } // for
+      break;
+    case Table::Text:
+      for(int row = 0; row < size; row++)
+        PyList_SET_ITEM(sipRes, row, PyString_FromString(sipCpp->text(row, col)));
+      break;
+    default:
+      Py_DECREF(sipRes);
+      sipRes = NULL;
+      sipIsErr = 1;
+      PyErr_Format(PyExc_ValueError, "Type %d of column %d in table %s not supported!",
+                   sipCpp->columnType(col), col+1, sipCpp->name().ascii());
+      break;
+    } // switch column type
+	} // if not sip error
+%End
   void setText(SIP_PYOBJECT, int, const QString&);
 %MethodCode
   sipIsErr = 0;
