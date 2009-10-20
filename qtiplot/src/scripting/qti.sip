@@ -282,6 +282,20 @@ public:
     } // for each col
 	} // if not sip error
 %End
+  int appendRowData(SIP_PYTUPLE);
+%MethodCode
+  sipRes = sipCpp->numRows() + 1;
+  sipCpp->resizeRows(sipRes);
+  PyObject* methodName = PyString_FromString("setRowData");
+  PyObject* rowNumber = PyInt_FromLong(sipRes);
+  PyObject* ret = PyObject_CallMethodObjArgs(sipSelf, methodName, rowNumber, a0, NULL);
+  if (ret == NULL)
+    sipIsErr = 1;
+  else
+    Py_DECREF(ret);
+  Py_DECREF(rowNumber);
+  Py_DECREF(methodName);
+%End
   void setColData(SIP_PYOBJECT, SIP_PYLIST, int=0); // a2 can be used as an offset
 %MethodCode
   PyObject *item;
@@ -578,6 +592,11 @@ public:
 	int selectedColumn();
 
 	void addCol(PlotDesignation pd = Y)/PyName=addColumn/;
+  int addRow();
+%MethodCode
+  sipRes = sipCpp->numRows() + 1;
+  sipCpp->resizeRows(sipRes);
+%End
 	void insertColumns(SIP_PYOBJECT, int);
 %MethodCode
   	sipIsErr = 0;
