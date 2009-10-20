@@ -119,6 +119,10 @@ public:
   enum NumericFormat{Default = 0, Decimal = 1, Scientific = 2};
 
   int numRows();
+  int __len__();
+%MethodCode
+  sipRes = sipCpp->numRows();
+%End
   int numCols();
   void resizeRows(int) /PyName=setNumRows/;
   void resizeCols(int) /PyName=setNumCols/;
