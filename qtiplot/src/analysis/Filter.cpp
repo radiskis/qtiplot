@@ -42,8 +42,16 @@
 
 #include <gsl/gsl_sort.h>
 
+Filter::Filter(ApplicationWindow *parent, QwtPlotCurve *c)
+: QObject(parent)
+{
+	init();
+	if (c)
+		setObjectName(c->title().text());
+}
+
 Filter::Filter( ApplicationWindow *parent, Graph *g, const QString& name)
-: QObject( parent)
+: QObject(parent)
 {
 	init();
 	setObjectName(name);
@@ -52,7 +60,7 @@ Filter::Filter( ApplicationWindow *parent, Graph *g, const QString& name)
 }
 
 Filter::Filter( ApplicationWindow *parent, Table *t, const QString& name)
-: QObject( parent, name)
+: QObject(parent)
 {
 	init();
 	setObjectName(name);
@@ -90,13 +98,16 @@ void Filter::setInterval(double from, double to)
 	setDataFromCurve (d_curve->title().text(), from, to);
 }
 
-void Filter::setDataCurve(int curve, double start, double end)
+void Filter::setDataCurve(QwtPlotCurve *curve, double start, double end)
 {
+	if (!curve)
+		return;
+
     if (d_n > 0)//delete previousely allocated memory
 		freeMemory();
 
 	d_init_err = false;
-	d_curve = d_graph->curve(curve);
+	d_curve = curve;
     if (d_sort_data)
         d_n = sortedCurveData(d_curve, start, end, &d_x, &d_y);
     else
@@ -140,6 +151,42 @@ int Filter::curveIndex(const QString& curveTitle, Graph *g)
 	return d_graph->curveIndex(curveTitle);
 }
 
+bool Filter::setDataFromCurve(QwtPlotCurve *c)
+{
+	if (!c || !c->plot()){
+		d_init_err = true;
+		return false;
+	}
+
+	d_graph = qobject_cast<Graph *>(c->plot());
+	if (!d_graph){
+		d_init_err = true;
+		return false;
+	}
+	d_output_graph = d_graph;
+
+  	d_graph->range(c, &d_from, &d_to);
+    setDataCurve(c, d_from, d_to);
+	return true;
+}
+
+bool Filter::setDataFromCurve(QwtPlotCurve *c, double from, double to)
+{
+	if (!c || !c->plot()){
+		d_init_err = true;
+		return false;
+	}
+
+	d_graph = qobject_cast<Graph *>(c->plot());
+	if (!d_graph){
+		d_init_err = true;
+		return false;
+	}
+	d_output_graph = d_graph;
+    setDataCurve(c, from, to);
+	return true;
+}
+
 bool Filter::setDataFromCurve(const QString& curveTitle, Graph *g)
 {
 	int index = curveIndex(curveTitle, g);
@@ -149,7 +196,7 @@ bool Filter::setDataFromCurve(const QString& curveTitle, Graph *g)
 	}
 
   	d_graph->range(curveTitle, &d_from, &d_to);
-    setDataCurve(index, d_from, d_to);
+    setDataCurve(d_graph->curve(index), d_from, d_to);
 	return true;
 }
 
@@ -161,7 +208,7 @@ bool Filter::setDataFromCurve(const QString& curveTitle, double from, double to,
 		return false;
 	}
 
-	setDataCurve(index, from, to);
+	setDataCurve(d_graph->curve(index), from, to);
 	return true;
 }
 

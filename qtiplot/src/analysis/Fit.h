@@ -56,6 +56,7 @@ class Fit : public Filter
 		enum WeightingMethod{NoWeighting, Instrumental, Statistical, Dataset, Direct};
         enum FitType{BuiltIn = 0, Plugin = 1, User = 2};
 
+		Fit(ApplicationWindow *parent, QwtPlotCurve *c);
 		Fit(ApplicationWindow *parent, Graph *g = 0, const QString& name = QString());
 		Fit(ApplicationWindow *parent, Table *t, const QString& name = QString());
 		~Fit();
@@ -67,7 +68,7 @@ class Fit : public Filter
 		//! Sets the data set to be used for weighting
 		bool setWeightingData(WeightingMethod w, const QString& colName = QString::null);
 
-		void setDataCurve(int curve, double start, double end);
+		void setDataCurve(QwtPlotCurve *curve, double start, double end);
 		bool setDataFromTable(Table *t, const QString& xColName, const QString& yColName, int from = 1, int to = -1);
 
 		QString resultFormula(){return d_result_formula;};

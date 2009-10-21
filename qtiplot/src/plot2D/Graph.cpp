@@ -2747,16 +2747,24 @@ QString Graph::curveTitle(int index)
 
 int Graph::range(const QString& curveTitle, double *start, double *end)
 {
+	QwtPlotCurve *c = curve(curveTitle);
+	if (!c)
+		return 0;
+
+	return range(c, start, end);
+}
+
+int Graph::range(QwtPlotCurve *c, double *start, double *end)
+{
+	if (!c)
+		return 0;
+
 	if (d_range_selector && d_range_selector->isVisible() &&
-		d_range_selector->selectedCurve() == curve(curveTitle)) {
+		d_range_selector->selectedCurve() == c) {
 		*start = d_range_selector->minXValue();
 		*end = d_range_selector->maxXValue();
 		return d_range_selector->dataSize();
 	} else {
-		QwtPlotCurve *c = curve(curveTitle);
-		if (!c)
-			return 0;
-
 		*start = c->minXValue();
 		*end = c->maxXValue();
 		return c->dataSize();
@@ -5446,9 +5454,6 @@ void Graph::printCanvas(QPainter *painter, const QRect &canvasRect,
 		painter->drawRect(rect.adjusted(0, 0, -2, -2));
 		painter->restore();
 	}
-
-	foreach(FrameWidget *f, d_enrichments)
-		f->print(painter, map);
 }
 
 void Graph::drawItems (QPainter *painter, const QRect &rect,
@@ -6050,10 +6055,9 @@ void Graph::print(QPainter *painter, const QRect &plotRect,
 
 	QRect canvasRect = plotLayout()->canvasRect();
 
-	/*
-       The border of the bounding rect needs to be scaled to
-       layout coordinates, so that it is aligned to the axes
-     */
+	// The border of the bounding rect needs to be scaled to
+	// layout coordinates, so that it is aligned to the axes
+
     QRect boundingRect( canvasRect.left() - 1, canvasRect.top() - 1,
         canvasRect.width() + 2, canvasRect.height() + 2);
     boundingRect = metricsMap.layoutToDevice(boundingRect);
@@ -6206,7 +6210,11 @@ void Graph::print(QPainter *painter, const QRect &plotRect,
         }
     }
 
-    painter->restore();
+	QwtPainter::setMetricsMap(painter->device(), painter->device());
+	QList<FrameWidget*> enrichments = stackingOrderEnrichmentsList();
+	foreach(FrameWidget *f, enrichments)
+		f->print(painter, map);
+	QwtPainter::resetMetricsMap();
 
 	d_is_printing = false;
     setTitle(t);//hack used to avoid bug in Qwt::printTitle(): the title attributes are overwritten
@@ -6586,4 +6594,20 @@ void Graph::enableDouglasPeukerSpeedMode(double tolerance, int maxPoints)
 		c->setCurveFitter(fitter);
 	}
 	replot();
+}
+
+QList<FrameWidget*> Graph::stackingOrderEnrichmentsList()
+{
+	MultiLayer *ml = multiLayer();
+	if (!ml)
+		return d_enrichments;
+
+	QList<FrameWidget*> enrichements;
+	QObjectList lst =  ml->canvas()->children();
+	foreach(QObject *o, lst){
+		FrameWidget *fw = qobject_cast<FrameWidget *>(o);
+		if (fw)
+			enrichements << fw;
+	}
+	return enrichements;
 }

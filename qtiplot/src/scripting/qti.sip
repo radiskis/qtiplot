@@ -1814,11 +1814,7 @@ public:
   virtual bool run();
 
   bool setWeightingData(WeightingMethod, const QString&=QString::null);
-
-  bool setDataFromCurve(const QString&, Graph*=0);
-  bool setDataFromCurve(const QString&, double, double, Graph*=0);
   bool setDataFromTable(Table *, const QString&, const QString&, int = 1, int = -1);
-
   void setInterval(double from, double to);
 
   QString formula();
@@ -1949,8 +1945,18 @@ public:
   SIPQTI_APP(new sipExponentialFit(app, a0, *a1, *a2, a3, a4, a5))
 %End
 
+  ExponentialFit(ApplicationWindow * /TransferThis/, QwtPlotCurve *, bool=false);
+  ExponentialFit(ApplicationWindow * /TransferThis/, QwtPlotCurve *, double, double, bool=false);
   ExponentialFit(ApplicationWindow * /TransferThis/, Graph *, const QString&, bool=false);
   ExponentialFit(ApplicationWindow * /TransferThis/, Graph *, const QString&, double, double, bool=false);
+  ExponentialFit(QwtPlotCurve *, bool=false) /NoDerived/;
+%MethodCode
+  SIPQTI_APP(new sipExponentialFit(app, a0, a1))
+%End
+  ExponentialFit(QwtPlotCurve *, double, double, bool=false) /NoDerived/;
+%MethodCode
+  SIPQTI_APP(new sipExponentialFit(app, a0, a1, a2, a3))
+%End
   ExponentialFit(Graph *, const QString&, bool=false) /NoDerived/;
 %MethodCode
   SIPQTI_APP(new sipExponentialFit(app, a0, *a1, a2))
@@ -1973,8 +1979,18 @@ public:
   SIPQTI_APP(new sipTwoExpFit(app, a0, *a1, *a2, a3, a4))
 %End
 
+  TwoExpFit(ApplicationWindow * /TransferThis/, QwtPlotCurve *);
+  TwoExpFit(ApplicationWindow * /TransferThis/, QwtPlotCurve *, double, double);
   TwoExpFit(ApplicationWindow * /TransferThis/, Graph *, const QString&);
   TwoExpFit(ApplicationWindow * /TransferThis/, Graph *, const QString&, double, double);
+  TwoExpFit(QwtPlotCurve *) /NoDerived/;
+%MethodCode
+  SIPQTI_APP(new sipTwoExpFit(app, a0))
+%End
+  TwoExpFit(QwtPlotCurve *, double, double) /NoDerived/;
+%MethodCode
+  SIPQTI_APP(new sipTwoExpFit(app, a0, a1, a2))
+%End
   TwoExpFit(Graph *, const QString&) /NoDerived/;
 %MethodCode
   SIPQTI_APP(new sipTwoExpFit(app, a0, *a1))
@@ -1997,8 +2013,18 @@ public:
   SIPQTI_APP(new sipThreeExpFit(app, a0, *a1, *a2, a3, a4))
 %End
 
+  ThreeExpFit(ApplicationWindow * /TransferThis/, QwtPlotCurve *);
+  ThreeExpFit(ApplicationWindow * /TransferThis/, QwtPlotCurve *, double, double);
   ThreeExpFit(ApplicationWindow * /TransferThis/, Graph *, const QString&);
   ThreeExpFit(ApplicationWindow * /TransferThis/, Graph *, const QString&, double, double);
+  ThreeExpFit(QwtPlotCurve *) /NoDerived/;
+%MethodCode
+  SIPQTI_APP(new sipThreeExpFit(app, a0))
+%End
+  ThreeExpFit(QwtPlotCurve *, double, double) /NoDerived/;
+%MethodCode
+  SIPQTI_APP(new sipThreeExpFit(app, a0, a1, a2))
+%End
   ThreeExpFit(Graph *, const QString&) /NoDerived/;
 %MethodCode
   SIPQTI_APP(new sipThreeExpFit(app, a0, *a1))
@@ -2021,8 +2047,18 @@ public:
   SIPQTI_APP(new sipSigmoidalFit(app, a0, *a1, *a2, a3, a4))
 %End
 
+  SigmoidalFit(ApplicationWindow * /TransferThis/, QwtPlotCurve *);
+  SigmoidalFit(ApplicationWindow * /TransferThis/, QwtPlotCurve *, double, double);
   SigmoidalFit(ApplicationWindow * /TransferThis/, Graph *, const QString&);
   SigmoidalFit(ApplicationWindow * /TransferThis/, Graph *, const QString&, double, double);
+  SigmoidalFit(QwtPlotCurve *) /NoDerived/;
+%MethodCode
+  SIPQTI_APP(new sipSigmoidalFit(app, a0))
+%End
+  SigmoidalFit(QwtPlotCurve *, double, double) /NoDerived/;
+%MethodCode
+  SIPQTI_APP(new sipSigmoidalFit(app, a0, a1, a2))
+%End
   SigmoidalFit(Graph *, const QString&) /NoDerived/;
 %MethodCode
   SIPQTI_APP(new sipSigmoidalFit(app, a0, *a1))
@@ -2047,8 +2083,18 @@ public:
   SIPQTI_APP(new sipLogisticFit(app, a0, *a1, *a2, a3, a4))
 %End
 
+  LogisticFit(ApplicationWindow * /TransferThis/, QwtPlotCurve *);
+  LogisticFit(ApplicationWindow * /TransferThis/, QwtPlotCurve *, double, double);
   LogisticFit(ApplicationWindow * /TransferThis/, Graph *, const QString&);
   LogisticFit(ApplicationWindow * /TransferThis/, Graph *, const QString&, double, double);
+  LogisticFit(QwtPlotCurve *) /NoDerived/;
+%MethodCode
+  SIPQTI_APP(new sipLogisticFit(app, a0))
+%End
+  LogisticFit(QwtPlotCurve *, double, double) /NoDerived/;
+%MethodCode
+  SIPQTI_APP(new sipLogisticFit(app, a0, a1, a2))
+%End
   LogisticFit(Graph *, const QString&) /NoDerived/;
 %MethodCode
   SIPQTI_APP(new sipLogisticFit(app, a0, *a1))
@@ -2073,8 +2119,18 @@ public:
   SIPQTI_APP(new sipGaussAmpFit(app, a0, *a1, *a2, a3, a4))
 %End
 
+  GaussAmpFit(ApplicationWindow * /TransferThis/, QwtPlotCurve *);
+  GaussAmpFit(ApplicationWindow * /TransferThis/, QwtPlotCurve *, double, double);
   GaussAmpFit(ApplicationWindow * /TransferThis/, Graph *, const QString&);
   GaussAmpFit(ApplicationWindow * /TransferThis/, Graph *, const QString&, double, double);
+  GaussAmpFit(QwtPlotCurve *) /NoDerived/;
+%MethodCode
+  SIPQTI_APP(new sipGaussAmpFit(app, a0))
+%End
+  GaussAmpFit(QwtPlotCurve *, double, double) /NoDerived/;
+%MethodCode
+  SIPQTI_APP(new sipGaussAmpFit(app, a0, a1, a2))
+%End
   GaussAmpFit(Graph *, const QString&) /NoDerived/;
 %MethodCode
   SIPQTI_APP(new sipGaussAmpFit(app, a0, *a1))
@@ -2099,8 +2155,18 @@ public:
   SIPQTI_APP(new sipNonLinearFit(app, a0, *a1, *a2, a3, a4))
 %End
 
+  NonLinearFit(ApplicationWindow * /TransferThis/, QwtPlotCurve *);
+  NonLinearFit(ApplicationWindow * /TransferThis/, QwtPlotCurve *, double, double);
   NonLinearFit(ApplicationWindow * /TransferThis/, Graph *, const QString&);
   NonLinearFit(ApplicationWindow * /TransferThis/, Graph *, const QString&, double, double);
+  NonLinearFit(QwtPlotCurve *) /NoDerived/;
+%MethodCode
+  SIPQTI_APP(new sipNonLinearFit(app, a0))
+%End
+  NonLinearFit(QwtPlotCurve *, double, double) /NoDerived/;
+%MethodCode
+  SIPQTI_APP(new sipNonLinearFit(app, a0, a1, a2))
+%End
   NonLinearFit(Graph *, const QString&) /NoDerived/;
 %MethodCode
   SIPQTI_APP(new sipNonLinearFit(app, a0, *a1))
@@ -2139,8 +2205,18 @@ public:
   SIPQTI_APP(new sipPluginFit(app, a0, *a1, *a2, a3, a4))
 %End
 
+  PluginFit(ApplicationWindow * /TransferThis/, QwtPlotCurve *);
+  PluginFit(ApplicationWindow * /TransferThis/, QwtPlotCurve *, double, double);
   PluginFit(ApplicationWindow * /TransferThis/, Graph *, const QString&);
   PluginFit(ApplicationWindow * /TransferThis/, Graph *, const QString&, double, double);
+  PluginFit(QwtPlotCurve *) /NoDerived/;
+%MethodCode
+  SIPQTI_APP(new sipPluginFit(app, a0))
+%End
+  PluginFit(QwtPlotCurve *, double, double) /NoDerived/;
+%MethodCode
+  SIPQTI_APP(new sipPluginFit(app, a0, a1, a2))
+%End
   PluginFit(Graph *, const QString&) /NoDerived/;
 %MethodCode
   SIPQTI_APP(new sipPluginFit(app, a0, *a1))
@@ -2159,6 +2235,7 @@ class MultiPeakFit : Fit
 %End
 public:
   enum PeakProfile{Gauss, Lorentz};
+  MultiPeakFit(ApplicationWindow * /TransferThis/, QwtPlotCurve *, PeakProfile=Gauss, int=1);
   MultiPeakFit(ApplicationWindow * /TransferThis/, Graph *, PeakProfile=Gauss, int=1);
 
   int peaks() /PyName=numPeaks/;
@@ -2185,8 +2262,18 @@ public:
   SIPQTI_APP(new sipLorentzFit(app, a0, *a1, *a2, a3, a4))
 %End
 
+  LorentzFit(ApplicationWindow * /TransferThis/, QwtPlotCurve *);
+  LorentzFit(ApplicationWindow * /TransferThis/, QwtPlotCurve *, double, double);
   LorentzFit(ApplicationWindow * /TransferThis/, Graph *, const QString&);
   LorentzFit(ApplicationWindow * /TransferThis/, Graph *, const QString&, double, double);
+  LorentzFit(QwtPlotCurve *) /NoDerived/;
+%MethodCode
+  SIPQTI_APP(new sipLorentzFit(app, a0))
+%End
+  LorentzFit(QwtPlotCurve *, double, double) /NoDerived/;
+%MethodCode
+  SIPQTI_APP(new sipLorentzFit(app, a0, a1, a2))
+%End
   LorentzFit(Graph *, const QString&) /NoDerived/;
 %MethodCode
   SIPQTI_APP(new sipLorentzFit(app, a0, *a1))
@@ -2209,8 +2296,18 @@ public:
   SIPQTI_APP(new sipGaussFit(app, a0, *a1, *a2, a3, a4))
 %End
 
+  GaussFit(ApplicationWindow * /TransferThis/, QwtPlotCurve *);
+  GaussFit(ApplicationWindow * /TransferThis/, QwtPlotCurve *, double, double);
   GaussFit(ApplicationWindow * /TransferThis/, Graph *, const QString&);
   GaussFit(ApplicationWindow * /TransferThis/, Graph *, const QString&, double, double);
+  GaussFit(QwtPlotCurve *) /NoDerived/;
+%MethodCode
+  SIPQTI_APP(new sipGaussFit(app, a0))
+%End
+  GaussFit(QwtPlotCurve *, double, double) /NoDerived/;
+%MethodCode
+  SIPQTI_APP(new sipGaussFit(app, a0, a1, a2))
+%End
   GaussFit(Graph *, const QString&) /NoDerived/;
 %MethodCode
   SIPQTI_APP(new sipGaussFit(app, a0, *a1))
@@ -2233,13 +2330,23 @@ public:
   SIPQTI_APP(new sipPolynomialFit(app, a0, *a1, *a2, a3, a4, a5, a6))
 %End
 
+  PolynomialFit(ApplicationWindow * /TransferThis/, QwtPlotCurve *, int=2, bool=false);
+  PolynomialFit(ApplicationWindow * /TransferThis/, QwtPlotCurve *, double, double, int=2, bool=false);
   PolynomialFit(ApplicationWindow * /TransferThis/, Graph *, QString&, int=2, bool=false);
-  PolynomialFit(ApplicationWindow * /TransferThis/, Graph *, QString&, int, int, int=2, bool=false);
+  PolynomialFit(ApplicationWindow * /TransferThis/, Graph *, QString&, double, double, int=2, bool=false);
+  PolynomialFit(QwtPlotCurve *, int=2, bool=false) /NoDerived/;
+%MethodCode
+  SIPQTI_APP(new sipPolynomialFit(app, a0, a1, a2))
+%End
+  PolynomialFit(QwtPlotCurve *, double, double, int=2, bool=false) /NoDerived/;
+%MethodCode
+  SIPQTI_APP(new sipPolynomialFit(app, a0, a1, a2, a3, a4))
+%End
   PolynomialFit(Graph *, QString&, int=2, bool=false) /NoDerived/;
 %MethodCode
   SIPQTI_APP(new sipPolynomialFit(app, a0, *a1, a2, a3))
 %End
-  PolynomialFit(Graph *, QString&, int, int, int=2, bool=false) /NoDerived/;
+  PolynomialFit(Graph *, QString&, double, double, int=2, bool=false) /NoDerived/;
 %MethodCode
   SIPQTI_APP(new sipPolynomialFit(app, a0, *a1, a2, a3, a4, a5))
 %End
@@ -2263,8 +2370,18 @@ public:
   SIPQTI_APP(new sipLinearFit(app, a0, *a1, *a2, a3, a4))
 %End
 
+  LinearFit(ApplicationWindow * /TransferThis/, QwtPlotCurve *);
+  LinearFit(ApplicationWindow * /TransferThis/, QwtPlotCurve *, double, double);
   LinearFit(ApplicationWindow * /TransferThis/, Graph *, const QString&);
   LinearFit(ApplicationWindow * /TransferThis/, Graph *, const QString&, double, double);
+  LinearFit(QwtPlotCurve *) /NoDerived/;
+%MethodCode
+  SIPQTI_APP(new sipLinearFit(app, a0))
+%End
+  LinearFit(QwtPlotCurve *, double, double) /NoDerived/;
+%MethodCode
+  SIPQTI_APP(new sipLinearFit(app, a0, a1, a2))
+%End
   LinearFit(Graph *, const QString&) /NoDerived/;
 %MethodCode
   SIPQTI_APP(new sipLinearFit(app, a0, *a1))
@@ -2292,6 +2409,9 @@ public:
   void setColor(int);
   void setColor(const QString&);
 
+  bool setDataFromCurve(QwtPlotCurve *c);
+  bool setDataFromCurve(QwtPlotCurve *c, double from, double to);
+  bool setDataFromCurve(const QString&, Graph*=0);
   bool setDataFromCurve(const QString& curveTitle, double from, double to, Graph *g = 0);
   virtual bool setDataFromTable(Table *t, const QString& xColName, const QString& yColName, int from = 1, int to = -1);
 
@@ -2313,8 +2433,18 @@ public:
   SIPQTI_APP(new sipDifferentiation(app, a0, *a1, *a2, a3, a4))
 %End
 
+  Differentiation(ApplicationWindow * /TransferThis/, QwtPlotCurve *);
+  Differentiation(ApplicationWindow * /TransferThis/, QwtPlotCurve *, double, double);
   Differentiation(ApplicationWindow * /TransferThis/, Graph *, const QString&);
   Differentiation(ApplicationWindow * /TransferThis/, Graph *, const QString&, double, double);
+  Differentiation(QwtPlotCurve *, double, double) /NoDerived/;
+%MethodCode
+  SIPQTI_APP(new sipDifferentiation(app, a0, a1, a2))
+%End
+  Differentiation(QwtPlotCurve *) /NoDerived/;
+%MethodCode
+  SIPQTI_APP(new sipDifferentiation(app, a0))
+%End
   Differentiation(Graph *, const QString&) /NoDerived/;
 %MethodCode
   SIPQTI_APP(new sipDifferentiation(app, a0, *a1))
@@ -2338,8 +2468,18 @@ public:
   SIPQTI_APP(new sipIntegration(app, a0, *a1, *a2, a3, a4))
 %End
 
+  Integration(ApplicationWindow * /TransferThis/, QwtPlotCurve *);
+  Integration(ApplicationWindow * /TransferThis/, QwtPlotCurve *, double, double);
   Integration(ApplicationWindow * /TransferThis/, Graph *, const QString&);
   Integration(ApplicationWindow * /TransferThis/, Graph *, const QString&, double, double);
+  Integration(QwtPlotCurve *) /NoDerived/;
+%MethodCode
+  SIPQTI_APP(new sipIntegration(app, a0))
+%End
+  Integration(QwtPlotCurve *, double, double) /NoDerived/;
+%MethodCode
+  SIPQTI_APP(new sipIntegration(app, a0, a1, a2))
+%End
   Integration(Graph *, const QString&) /NoDerived/;
 %MethodCode
   SIPQTI_APP(new sipIntegration(app, a0, *a1))
@@ -2370,8 +2510,18 @@ public:
   SIPQTI_APP(new sipInterpolation(app, a0, *a1, *a2, a3, a4, a5))
 %End
 
+  Interpolation(ApplicationWindow * /TransferThis/, QwtPlotCurve *, int=0);
+  Interpolation(ApplicationWindow * /TransferThis/, QwtPlotCurve *, double, double, int=0);
   Interpolation(ApplicationWindow * /TransferThis/, Graph *, const QString&, int=0);
   Interpolation(ApplicationWindow * /TransferThis/, Graph *, const QString&, double, double, int=0);
+  Interpolation(QwtPlotCurve *, int=0) /NoDerived/;
+%MethodCode
+  SIPQTI_APP(new sipInterpolation(app, a0, a1))
+%End
+  Interpolation(QwtPlotCurve *, double, double, int=0) /NoDerived/;
+%MethodCode
+  SIPQTI_APP(new sipInterpolation(app, a0, a1, a2, a3))
+%End
   Interpolation(Graph *, const QString&, int=0) /NoDerived/;
 %MethodCode
   SIPQTI_APP(new sipInterpolation(app, a0, *a1, a2))
@@ -2399,8 +2549,18 @@ public:
   SIPQTI_APP(new sipSmoothFilter(app, a0, *a1, *a2, a3, a4, a5))
 %End
 
+  SmoothFilter(ApplicationWindow * /TransferThis/, QwtPlotCurve *, int = 3);
+  SmoothFilter(ApplicationWindow * /TransferThis/, QwtPlotCurve *, double, double, int = 3);
   SmoothFilter(ApplicationWindow * /TransferThis/, Graph *, const QString&, int=3);
   SmoothFilter(ApplicationWindow * /TransferThis/, Graph *, const QString&, double, double, int=3);
+  SmoothFilter(QwtPlotCurve *, int=3) /NoDerived/;
+%MethodCode
+  SIPQTI_APP(new sipSmoothFilter(app, a0, a1))
+%End
+  SmoothFilter(QwtPlotCurve *, double, double, int=3) /NoDerived/;
+%MethodCode
+  SIPQTI_APP(new sipSmoothFilter(app, a0, a1, a2, a3))
+%End
   SmoothFilter(Graph *, const QString&, int=3) /NoDerived/;
 %MethodCode
   SIPQTI_APP(new sipSmoothFilter(app, a0, *a1, a2))
@@ -2431,8 +2591,18 @@ public:
   SIPQTI_APP(new sipFFTFilter(app, a0, *a1, *a2, a3, a4, a5))
 %End
 
+  FFTFilter(ApplicationWindow * /TransferThis/, QwtPlotCurve *, int = 1);
+  FFTFilter(ApplicationWindow * /TransferThis/, QwtPlotCurve *, double, double, int = 1);
   FFTFilter(ApplicationWindow * /TransferThis/, Graph *, const QString&, int=1);
   FFTFilter(ApplicationWindow * /TransferThis/, Graph *, const QString&, double, double, int=1);
+  FFTFilter(QwtPlotCurve *, int=1) /NoDerived/;
+%MethodCode
+  SIPQTI_APP(new sipFFTFilter(app, a0, a1))
+%End
+  FFTFilter(QwtPlotCurve *, double, double, int=1) /NoDerived/;
+%MethodCode
+  SIPQTI_APP(new sipFFTFilter(app, a0, a1, a2, a3))
+%End
   FFTFilter(Graph *, const QString&, int=1) /NoDerived/;
 %MethodCode
   SIPQTI_APP(new sipFFTFilter(app, a0, *a1, a2))
@@ -2460,6 +2630,8 @@ public:
   FFT(ApplicationWindow * /TransferThis/, Table *, const QString&, const QString& = QString(), int = 1, int = -1);
   FFT(ApplicationWindow * /TransferThis/, Graph *, const QString&, double, double);
   FFT(ApplicationWindow * /TransferThis/, Graph *, const QString&);
+  FFT(ApplicationWindow * /TransferThis/, QwtPlotCurve *);
+  FFT(ApplicationWindow * /TransferThis/, QwtPlotCurve *, double, double);
 
   FFT(Table *, const QString&, const QString& = QString(), int = 1, int = -1) /NoDerived/;
 %MethodCode
@@ -2472,6 +2644,14 @@ public:
   FFT(Graph *, const QString&, double, double) /NoDerived/;
 %MethodCode
   SIPQTI_APP(new sipFFT(app, a0, *a1, a2, a3))
+%End
+  FFT(QwtPlotCurve *&) /NoDerived/;
+%MethodCode
+  SIPQTI_APP(new sipFFT(app, a0))
+%End
+  FFT(QwtPlotCurve *&, double, double) /NoDerived/;
+%MethodCode
+  SIPQTI_APP(new sipFFT(app, a0, a1, a2))
 %End
 
   void setInverseFFT(bool=true);

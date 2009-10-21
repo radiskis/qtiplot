@@ -40,6 +40,20 @@ PolynomialFit::PolynomialFit(ApplicationWindow *parent, Graph *g, int order, boo
 	init();
 }
 
+PolynomialFit::PolynomialFit(ApplicationWindow *parent, QwtPlotCurve *c, int order, bool legend)
+: Fit(parent, c), d_order(order), show_legend(legend)
+{
+	init();
+	setDataFromCurve(c);
+}
+
+PolynomialFit::PolynomialFit(ApplicationWindow *parent, QwtPlotCurve *c, double start, double end, int order, bool legend)
+: Fit(parent, c), d_order(order), show_legend(legend)
+{
+	init();
+	setDataFromCurve(c, start, end);
+}
+
 PolynomialFit::PolynomialFit(ApplicationWindow *parent, Graph *g, QString& curveTitle, int order, bool legend)
 : Fit(parent, g), d_order(order), show_legend(legend)
 {
@@ -214,6 +228,20 @@ QString PolynomialFit::legendInfo()
  *
  *****************************************************************************/
 
+LinearFit::LinearFit(ApplicationWindow *parent, QwtPlotCurve *c)
+: Fit(parent, c)
+{
+	init();
+	setDataFromCurve(c);
+}
+
+LinearFit::LinearFit(ApplicationWindow *parent, QwtPlotCurve *c, double start, double end)
+: Fit(parent, c)
+{
+	init();
+	setDataFromCurve(c, start, end);
+}
+
 LinearFit::LinearFit(ApplicationWindow *parent, Graph *g)
 : Fit(parent, g)
 {
@@ -244,10 +272,10 @@ LinearFit::LinearFit(ApplicationWindow *parent, Table *t, const QString& xCol, c
 void LinearFit::init()
 {
 	d_scale_errors = false;
-	
+
 	d_p = 2;
     d_min_points = d_p;
-	
+
 	covar = gsl_matrix_alloc (d_p, d_p);
 	d_results = new double[d_p];
 
@@ -350,7 +378,7 @@ LinearSlopeFit::LinearSlopeFit(ApplicationWindow *parent, Table *t, const QStrin
 void LinearSlopeFit::init()
 {
 	d_scale_errors = false;
-	
+
 	d_p = 1;
     d_min_points = d_p;
 

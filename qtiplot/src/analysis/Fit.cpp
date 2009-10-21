@@ -46,6 +46,12 @@
 #include <QLocale>
 #include <QTextStream>
 
+Fit::Fit( ApplicationWindow *parent, QwtPlotCurve *c)
+: Filter( parent, c)
+{
+	init();
+}
+
 Fit::Fit( ApplicationWindow *parent, Graph *g, const QString& name)
 : Filter( parent, g, name)
 {
@@ -238,7 +244,7 @@ bool Fit::setDataFromTable(Table *t, const QString& xColName, const QString& yCo
 		return false;
 }
 
-void Fit::setDataCurve(int curve, double start, double end)
+void Fit::setDataCurve(QwtPlotCurve *curve, double start, double end)
 {
     Filter::setDataCurve(curve, start, end);
 

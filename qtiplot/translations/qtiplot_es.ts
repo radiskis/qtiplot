@@ -11948,82 +11948,82 @@ The following special codes can be used:
 <context>
     <name>Filter</name>
     <message>
-        <location filename="../src/analysis/Filter.cpp" line="86"/>
-        <location filename="../src/analysis/Filter.cpp" line="106"/>
-        <location filename="../src/analysis/Filter.cpp" line="111"/>
-        <location filename="../src/analysis/Filter.cpp" line="210"/>
-        <location filename="../src/analysis/Filter.cpp" line="436"/>
-        <location filename="../src/analysis/Filter.cpp" line="490"/>
+        <location filename="../src/analysis/Filter.cpp" line="94"/>
+        <location filename="../src/analysis/Filter.cpp" line="117"/>
+        <location filename="../src/analysis/Filter.cpp" line="122"/>
+        <location filename="../src/analysis/Filter.cpp" line="240"/>
+        <location filename="../src/analysis/Filter.cpp" line="466"/>
+        <location filename="../src/analysis/Filter.cpp" line="520"/>
         <source>QtiPlot</source>
         <translation type="unfinished">QtiPlot</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Filter.cpp" line="86"/>
-        <location filename="../src/analysis/Filter.cpp" line="106"/>
-        <location filename="../src/analysis/Filter.cpp" line="111"/>
-        <location filename="../src/analysis/Filter.cpp" line="210"/>
-        <location filename="../src/analysis/Filter.cpp" line="436"/>
+        <location filename="../src/analysis/Filter.cpp" line="94"/>
+        <location filename="../src/analysis/Filter.cpp" line="117"/>
+        <location filename="../src/analysis/Filter.cpp" line="122"/>
+        <location filename="../src/analysis/Filter.cpp" line="240"/>
+        <location filename="../src/analysis/Filter.cpp" line="466"/>
         <source>Error</source>
         <translation type="unfinished">Error</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Filter.cpp" line="87"/>
+        <location filename="../src/analysis/Filter.cpp" line="95"/>
         <source>Please assign a curve first!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/analysis/Filter.cpp" line="107"/>
+        <location filename="../src/analysis/Filter.cpp" line="118"/>
         <source>Several data points have the same x value causing divisions by zero, operation aborted!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/analysis/Filter.cpp" line="112"/>
-        <location filename="../src/analysis/Filter.cpp" line="437"/>
+        <location filename="../src/analysis/Filter.cpp" line="123"/>
+        <location filename="../src/analysis/Filter.cpp" line="467"/>
         <source>You need at least %1 points in order to perform this operation!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/analysis/Filter.cpp" line="124"/>
+        <location filename="../src/analysis/Filter.cpp" line="135"/>
         <source>QtiPlot - Filter Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/analysis/Filter.cpp" line="125"/>
+        <location filename="../src/analysis/Filter.cpp" line="136"/>
         <source>Please enter a valid curve name!</source>
         <translation type="unfinished">¡Por favor, introduzca un nombre válido de curva!</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Filter.cpp" line="176"/>
+        <location filename="../src/analysis/Filter.cpp" line="206"/>
         <source>QtiPlot - Color Name Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/analysis/Filter.cpp" line="177"/>
+        <location filename="../src/analysis/Filter.cpp" line="207"/>
         <source>The color name &apos;%1&apos; is not valid, a default color (red) will be used instead!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/analysis/Filter.cpp" line="211"/>
+        <location filename="../src/analysis/Filter.cpp" line="241"/>
         <source>You didn&apos;t specify a valid data set for this operation!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/analysis/Filter.cpp" line="355"/>
+        <location filename="../src/analysis/Filter.cpp" line="385"/>
         <source>of</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/analysis/Filter.cpp" line="389"/>
+        <location filename="../src/analysis/Filter.cpp" line="419"/>
         <source>Plot</source>
         <translation type="unfinished">Gráfica</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Filter.cpp" line="490"/>
+        <location filename="../src/analysis/Filter.cpp" line="520"/>
         <source>Memory Allocation Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/analysis/Filter.cpp" line="491"/>
+        <location filename="../src/analysis/Filter.cpp" line="521"/>
         <source>Not enough memory, operation aborted!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -13633,7 +13633,7 @@ The following special codes can be used:
 <context>
     <name>Graph</name>
     <message>
-        <location filename="../src/plot2D/Graph.cpp" line="3741"/>
+        <location filename="../src/plot2D/Graph.cpp" line="3749"/>
         <source>QtiPlot - File open error</source>
         <translation>QtiPlot - Error de apertura de archivo</translation>
     </message>
@@ -13654,26 +13654,26 @@ The following special codes can be used:
         <translation type="obsolete">&amp;Cortar</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.cpp" line="4180"/>
-        <location filename="../src/plot2D/Graph.cpp" line="4233"/>
+        <location filename="../src/plot2D/Graph.cpp" line="4188"/>
+        <location filename="../src/plot2D/Graph.cpp" line="4241"/>
         <source>&amp;Copy</source>
         <translation>&amp;Copiar</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.cpp" line="4182"/>
-        <location filename="../src/plot2D/Graph.cpp" line="4235"/>
+        <location filename="../src/plot2D/Graph.cpp" line="4190"/>
+        <location filename="../src/plot2D/Graph.cpp" line="4243"/>
         <source>&amp;Delete</source>
         <translation>&amp;Eliminar</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.cpp" line="4184"/>
-        <location filename="../src/plot2D/Graph.cpp" line="4237"/>
-        <location filename="../src/plot2D/Graph.cpp" line="4260"/>
+        <location filename="../src/plot2D/Graph.cpp" line="4192"/>
+        <location filename="../src/plot2D/Graph.cpp" line="4245"/>
+        <location filename="../src/plot2D/Graph.cpp" line="4268"/>
         <source>&amp;Properties...</source>
         <translation>&amp;Propiedades...</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.cpp" line="4245"/>
+        <location filename="../src/plot2D/Graph.cpp" line="4253"/>
         <source>&amp;Rescale to show all</source>
         <translation>&amp;Reescalar para mostrar todo</translation>
     </message>
@@ -13682,17 +13682,17 @@ The following special codes can be used:
         <translation type="obsolete">Ctrl+R</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.cpp" line="4247"/>
+        <location filename="../src/plot2D/Graph.cpp" line="4255"/>
         <source>&amp;Hide axis</source>
         <translation>&amp;Ocultar eje</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.cpp" line="4249"/>
+        <location filename="../src/plot2D/Graph.cpp" line="4257"/>
         <source>&amp;Show grids</source>
         <translation>Mo&amp;strar mallas</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.cpp" line="4259"/>
+        <location filename="../src/plot2D/Graph.cpp" line="4267"/>
         <source>&amp;Scale...</source>
         <translation>E&amp;scala...</translation>
     </message>
@@ -13769,9 +13769,9 @@ The following special codes can be used:
         <translation type="obsolete">Regresión lineal de </translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.cpp" line="4168"/>
-        <location filename="../src/plot2D/Graph.cpp" line="4172"/>
-        <location filename="../src/plot2D/Graph.cpp" line="4981"/>
+        <location filename="../src/plot2D/Graph.cpp" line="4176"/>
+        <location filename="../src/plot2D/Graph.cpp" line="4180"/>
+        <location filename="../src/plot2D/Graph.cpp" line="4989"/>
         <source>QtiPlot - Warning</source>
         <translation>QtiPlot- Aviso</translation>
     </message>
@@ -13826,7 +13826,7 @@ The following special codes can be used:
         <translation type="obsolete">Filtro FFT Bloquea Banda de </translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.cpp" line="4981"/>
+        <location filename="../src/plot2D/Graph.cpp" line="4989"/>
         <source>There are no curves available on this plot!</source>
         <translation>¡No hay curvas disponibles en esta gráfica!</translation>
     </message>
@@ -13836,12 +13836,12 @@ The following special codes can be used:
         <location filename="../src/plot2D/Graph.cpp" line="1408"/>
         <location filename="../src/plot2D/Graph.cpp" line="1436"/>
         <location filename="../src/plot2D/Graph.cpp" line="1496"/>
-        <location filename="../src/plot2D/Graph.cpp" line="4991"/>
+        <location filename="../src/plot2D/Graph.cpp" line="4999"/>
         <source>QtiPlot - Error</source>
         <translation>QtiPlot - Error</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.cpp" line="4992"/>
+        <location filename="../src/plot2D/Graph.cpp" line="5000"/>
         <source>There are no curves with more than two points on this plot. Operation aborted!</source>
         <translation>No hay curvas con más de dos puntos en esta gráfica. ¡Operación abortada!</translation>
     </message>
@@ -13986,22 +13986,22 @@ The following special codes can be used:
         <translation type="obsolete">Boltzmann (Sigmoidal) ajuste de </translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.cpp" line="4169"/>
+        <location filename="../src/plot2D/Graph.cpp" line="4177"/>
         <source>The columns</source>
         <translation>Las columnas</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.cpp" line="4169"/>
+        <location filename="../src/plot2D/Graph.cpp" line="4177"/>
         <source>are empty and will not be added to the plot!</source>
         <translation>están vacías y no serán añadidas a la gráfica!</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.cpp" line="4173"/>
+        <location filename="../src/plot2D/Graph.cpp" line="4181"/>
         <source>The column</source>
         <translation>La columna</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.cpp" line="4173"/>
+        <location filename="../src/plot2D/Graph.cpp" line="4181"/>
         <source>is empty and will not be added to the plot!</source>
         <translation>está vacía y no será añadida a la gráfica!</translation>
     </message>
@@ -14047,7 +14047,7 @@ The following special codes can be used:
         <translation type="obsolete">Los índices válidos tienen valores comprendidos entre 0 y %1</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.cpp" line="3742"/>
+        <location filename="../src/plot2D/Graph.cpp" line="3750"/>
         <source>Image file: &lt;p&gt;&lt;b&gt; %1 &lt;/b&gt;&lt;p&gt;does not exist anymore!</source>
         <translation>¡El archivo de imagen: &lt;p&gt;&lt;b&gt; %1 &lt;/b&gt;&lt;p&gt; ya no existe!</translation>
     </message>
@@ -14056,7 +14056,7 @@ The following special codes can be used:
         <translation type="obsolete">QtiPlot - Error en la fórmula introducida</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.cpp" line="4245"/>
+        <location filename="../src/plot2D/Graph.cpp" line="4253"/>
         <source>Ctrl+Shift+R</source>
         <translation>Ctrl+Shift+R</translation>
     </message>
@@ -14133,17 +14133,17 @@ The following special codes can be used:
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.cpp" line="3929"/>
+        <location filename="../src/plot2D/Graph.cpp" line="3937"/>
         <source>Data set generated from curve</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.cpp" line="3930"/>
+        <location filename="../src/plot2D/Graph.cpp" line="3938"/>
         <source>Table</source>
         <translation type="unfinished">Tabla</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.h" line="636"/>
+        <location filename="../src/plot2D/Graph.h" line="641"/>
         <source>F</source>
         <translation type="unfinished"></translation>
     </message>
@@ -14164,14 +14164,14 @@ The following special codes can be used:
         <translation type="unfinished">Título del Eje X</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.cpp" line="4179"/>
-        <location filename="../src/plot2D/Graph.cpp" line="4232"/>
+        <location filename="../src/plot2D/Graph.cpp" line="4187"/>
+        <location filename="../src/plot2D/Graph.cpp" line="4240"/>
         <source>Cu&amp;t</source>
         <translation type="unfinished">Cor&amp;tar</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.cpp" line="4181"/>
-        <location filename="../src/plot2D/Graph.cpp" line="4234"/>
+        <location filename="../src/plot2D/Graph.cpp" line="4189"/>
+        <location filename="../src/plot2D/Graph.cpp" line="4242"/>
         <source>C&amp;lear</source>
         <translation type="unfinished">Vac&amp;iar</translation>
     </message>
@@ -20438,95 +20438,95 @@ Do you want to overwrite it?</source>
 <context>
     <name>SmoothFilter</name>
     <message>
-        <location filename="../src/analysis/SmoothFilter.cpp" line="62"/>
+        <location filename="../src/analysis/SmoothFilter.cpp" line="69"/>
         <source>Smoothed</source>
         <translation type="unfinished">Suavizado</translation>
     </message>
     <message>
-        <location filename="../src/analysis/SmoothFilter.cpp" line="74"/>
-        <location filename="../src/analysis/SmoothFilter.cpp" line="217"/>
+        <location filename="../src/analysis/SmoothFilter.cpp" line="81"/>
         <location filename="../src/analysis/SmoothFilter.cpp" line="224"/>
-        <location filename="../src/analysis/SmoothFilter.cpp" line="238"/>
+        <location filename="../src/analysis/SmoothFilter.cpp" line="231"/>
         <location filename="../src/analysis/SmoothFilter.cpp" line="245"/>
-        <location filename="../src/analysis/SmoothFilter.cpp" line="257"/>
+        <location filename="../src/analysis/SmoothFilter.cpp" line="252"/>
         <location filename="../src/analysis/SmoothFilter.cpp" line="264"/>
         <location filename="../src/analysis/SmoothFilter.cpp" line="271"/>
+        <location filename="../src/analysis/SmoothFilter.cpp" line="278"/>
         <source>QtiPlot</source>
         <translation type="unfinished">QtiPlot</translation>
     </message>
     <message>
-        <location filename="../src/analysis/SmoothFilter.cpp" line="74"/>
-        <location filename="../src/analysis/SmoothFilter.cpp" line="217"/>
+        <location filename="../src/analysis/SmoothFilter.cpp" line="81"/>
         <location filename="../src/analysis/SmoothFilter.cpp" line="224"/>
-        <location filename="../src/analysis/SmoothFilter.cpp" line="238"/>
+        <location filename="../src/analysis/SmoothFilter.cpp" line="231"/>
         <location filename="../src/analysis/SmoothFilter.cpp" line="245"/>
-        <location filename="../src/analysis/SmoothFilter.cpp" line="257"/>
+        <location filename="../src/analysis/SmoothFilter.cpp" line="252"/>
         <location filename="../src/analysis/SmoothFilter.cpp" line="264"/>
         <location filename="../src/analysis/SmoothFilter.cpp" line="271"/>
+        <location filename="../src/analysis/SmoothFilter.cpp" line="278"/>
         <source>Error</source>
         <translation type="unfinished">Error</translation>
     </message>
     <message>
-        <location filename="../src/analysis/SmoothFilter.cpp" line="75"/>
+        <location filename="../src/analysis/SmoothFilter.cpp" line="82"/>
         <source>Unknown smooth filter. Valid values are: 1 - Savitky-Golay, 2 - FFT, 3 - Moving Window Average, 4 - Lowess.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/analysis/SmoothFilter.cpp" line="92"/>
-        <location filename="../src/analysis/SmoothFilter.cpp" line="96"/>
-        <location filename="../src/analysis/SmoothFilter.cpp" line="100"/>
-        <location filename="../src/analysis/SmoothFilter.cpp" line="104"/>
+        <location filename="../src/analysis/SmoothFilter.cpp" line="99"/>
+        <location filename="../src/analysis/SmoothFilter.cpp" line="103"/>
+        <location filename="../src/analysis/SmoothFilter.cpp" line="107"/>
+        <location filename="../src/analysis/SmoothFilter.cpp" line="111"/>
         <source>points</source>
         <translation type="unfinished">puntos</translation>
     </message>
     <message>
-        <location filename="../src/analysis/SmoothFilter.cpp" line="92"/>
+        <location filename="../src/analysis/SmoothFilter.cpp" line="99"/>
         <source>Savitzky-Golay smoothing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/analysis/SmoothFilter.cpp" line="96"/>
+        <location filename="../src/analysis/SmoothFilter.cpp" line="103"/>
         <source>FFT smoothing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/analysis/SmoothFilter.cpp" line="100"/>
+        <location filename="../src/analysis/SmoothFilter.cpp" line="107"/>
         <source>average smoothing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/analysis/SmoothFilter.cpp" line="104"/>
+        <location filename="../src/analysis/SmoothFilter.cpp" line="111"/>
         <source>Lowess smoothing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/analysis/SmoothFilter.cpp" line="218"/>
+        <location filename="../src/analysis/SmoothFilter.cpp" line="225"/>
         <source>The number of points must be positive!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/analysis/SmoothFilter.cpp" line="225"/>
-        <location filename="../src/analysis/SmoothFilter.cpp" line="246"/>
+        <location filename="../src/analysis/SmoothFilter.cpp" line="232"/>
+        <location filename="../src/analysis/SmoothFilter.cpp" line="253"/>
         <source>The polynomial order must be lower than the number of left points plus the number of right points!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/analysis/SmoothFilter.cpp" line="239"/>
+        <location filename="../src/analysis/SmoothFilter.cpp" line="246"/>
         <source>Setting polynomial order is only available for Savitzky-Golay smooth filters! Ignored option!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/analysis/SmoothFilter.cpp" line="258"/>
+        <location filename="../src/analysis/SmoothFilter.cpp" line="265"/>
         <source>Setting Lowess parameter is only available for Lowess smooth filters! Ignored option!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/analysis/SmoothFilter.cpp" line="265"/>
+        <location filename="../src/analysis/SmoothFilter.cpp" line="272"/>
         <source>The parameter f must be between 0 and 1!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/analysis/SmoothFilter.cpp" line="272"/>
+        <location filename="../src/analysis/SmoothFilter.cpp" line="279"/>
         <source>The number of iterations must be at least 1!</source>
         <translation type="unfinished"></translation>
     </message>

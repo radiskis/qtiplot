@@ -75,6 +75,20 @@ Integration::Integration(ApplicationWindow *parent, Graph *g)
 	init();
 }
 
+Integration::Integration(ApplicationWindow *parent, QwtPlotCurve *c)
+: Filter(parent, c)
+{
+	init();
+	setDataFromCurve(c);
+}
+
+Integration::Integration(ApplicationWindow *parent, QwtPlotCurve *c, double start, double end)
+: Filter(parent, c)
+{
+	init();
+	setDataFromCurve(c, start, end);
+}
+
 Integration::Integration(ApplicationWindow *parent, Graph *g, const QString& curveTitle)
 : Filter(parent, g)
 {

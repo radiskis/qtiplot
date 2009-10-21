@@ -12920,82 +12920,82 @@ Die folgenden Spezialcodes können benutzt werden:
 <context>
     <name>Filter</name>
     <message>
-        <location filename="../src/analysis/Filter.cpp" line="86"/>
-        <location filename="../src/analysis/Filter.cpp" line="106"/>
-        <location filename="../src/analysis/Filter.cpp" line="111"/>
-        <location filename="../src/analysis/Filter.cpp" line="210"/>
-        <location filename="../src/analysis/Filter.cpp" line="436"/>
-        <location filename="../src/analysis/Filter.cpp" line="490"/>
+        <location filename="../src/analysis/Filter.cpp" line="94"/>
+        <location filename="../src/analysis/Filter.cpp" line="117"/>
+        <location filename="../src/analysis/Filter.cpp" line="122"/>
+        <location filename="../src/analysis/Filter.cpp" line="240"/>
+        <location filename="../src/analysis/Filter.cpp" line="466"/>
+        <location filename="../src/analysis/Filter.cpp" line="520"/>
         <source>QtiPlot</source>
         <translation>QtiPlot</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Filter.cpp" line="86"/>
-        <location filename="../src/analysis/Filter.cpp" line="106"/>
-        <location filename="../src/analysis/Filter.cpp" line="111"/>
-        <location filename="../src/analysis/Filter.cpp" line="210"/>
-        <location filename="../src/analysis/Filter.cpp" line="436"/>
+        <location filename="../src/analysis/Filter.cpp" line="94"/>
+        <location filename="../src/analysis/Filter.cpp" line="117"/>
+        <location filename="../src/analysis/Filter.cpp" line="122"/>
+        <location filename="../src/analysis/Filter.cpp" line="240"/>
+        <location filename="../src/analysis/Filter.cpp" line="466"/>
         <source>Error</source>
         <translation>Fehler</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Filter.cpp" line="87"/>
+        <location filename="../src/analysis/Filter.cpp" line="95"/>
         <source>Please assign a curve first!</source>
         <translation>Bitte zuerst eine Kurve zuweisen!</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Filter.cpp" line="107"/>
+        <location filename="../src/analysis/Filter.cpp" line="118"/>
         <source>Several data points have the same x value causing divisions by zero, operation aborted!</source>
         <translation>Mehrere Datenpunkte haben den gleichen X-Wert und erzeugen dadurch Divisionen durch Null, Operation abgebrochen!</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Filter.cpp" line="112"/>
-        <location filename="../src/analysis/Filter.cpp" line="437"/>
+        <location filename="../src/analysis/Filter.cpp" line="123"/>
+        <location filename="../src/analysis/Filter.cpp" line="467"/>
         <source>You need at least %1 points in order to perform this operation!</source>
         <translation>Sie benötigen mindestens %1 Punkte für diese Operation!</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Filter.cpp" line="124"/>
+        <location filename="../src/analysis/Filter.cpp" line="135"/>
         <source>QtiPlot - Filter Error</source>
         <translation>QtiPlot - Filter-Fehler</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Filter.cpp" line="125"/>
+        <location filename="../src/analysis/Filter.cpp" line="136"/>
         <source>Please enter a valid curve name!</source>
         <translation>Bitte einen gültigen Kurvennamen eingeben!</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Filter.cpp" line="176"/>
+        <location filename="../src/analysis/Filter.cpp" line="206"/>
         <source>QtiPlot - Color Name Error</source>
         <translation>QtiPlot - Farbnamenfehler</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Filter.cpp" line="177"/>
+        <location filename="../src/analysis/Filter.cpp" line="207"/>
         <source>The color name &apos;%1&apos; is not valid, a default color (red) will be used instead!</source>
         <translation>Der Farbname &apos;%1&apos; is ungültig, die Standardfarbe (rot) wird stattdessen benutzt!</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Filter.cpp" line="211"/>
+        <location filename="../src/analysis/Filter.cpp" line="241"/>
         <source>You didn&apos;t specify a valid data set for this operation!</source>
         <translation>Sie haben keinen gültigen Datensatz für diese Operation angegeben!</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Filter.cpp" line="355"/>
+        <location filename="../src/analysis/Filter.cpp" line="385"/>
         <source>of</source>
         <translation>von</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Filter.cpp" line="389"/>
+        <location filename="../src/analysis/Filter.cpp" line="419"/>
         <source>Plot</source>
         <translation>Diagramm</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Filter.cpp" line="490"/>
+        <location filename="../src/analysis/Filter.cpp" line="520"/>
         <source>Memory Allocation Error</source>
         <translation>Fehler bei der Speicherreservierung</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Filter.cpp" line="491"/>
+        <location filename="../src/analysis/Filter.cpp" line="521"/>
         <source>Not enough memory, operation aborted!</source>
         <translation>Nicht genug Speicher, Operation abgebrochen!</translation>
     </message>
@@ -15155,7 +15155,7 @@ die Reihenfolge der Parameter ist wichtig!</translation>
         <translation type="obsolete">QtiPlot - Export-Fehler</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.cpp" line="3741"/>
+        <location filename="../src/plot2D/Graph.cpp" line="3749"/>
         <source>QtiPlot - File open error</source>
         <translation>QtiPlot - Fehler beim Öffnen der Datei</translation>
     </message>
@@ -15168,9 +15168,9 @@ die Reihenfolge der Parameter ist wichtig!</translation>
         <translation type="obsolete">QtiPlot - Pixelauswahl-Warnung</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.cpp" line="4168"/>
-        <location filename="../src/plot2D/Graph.cpp" line="4172"/>
-        <location filename="../src/plot2D/Graph.cpp" line="4981"/>
+        <location filename="../src/plot2D/Graph.cpp" line="4176"/>
+        <location filename="../src/plot2D/Graph.cpp" line="4180"/>
+        <location filename="../src/plot2D/Graph.cpp" line="4989"/>
         <source>QtiPlot - Warning</source>
         <translation>QtiPlot - Warnung</translation>
     </message>
@@ -15199,22 +15199,22 @@ die Reihenfolge der Parameter ist wichtig!</translation>
         <translation type="obsolete">Peak %1 ausgewählt! Bewegen Sie den Cursor, wählen Sie durch einen Klick einen Punkt aus und bestätigen Sie durch einen Doppelklick oder &apos;Enter&apos; den nächsten Peak!</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.cpp" line="4169"/>
+        <location filename="../src/plot2D/Graph.cpp" line="4177"/>
         <source>The columns</source>
         <translation>Die Spalten</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.cpp" line="4169"/>
+        <location filename="../src/plot2D/Graph.cpp" line="4177"/>
         <source>are empty and will not be added to the plot!</source>
         <translation>sind leer und werden nicht zum Diagramm hinzugefügt!</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.cpp" line="4173"/>
+        <location filename="../src/plot2D/Graph.cpp" line="4181"/>
         <source>The column</source>
         <translation>Die Spalte</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.cpp" line="4173"/>
+        <location filename="../src/plot2D/Graph.cpp" line="4181"/>
         <source>is empty and will not be added to the plot!</source>
         <translation>ist leer und wird nicht zum Diagramm hinzugefügt!</translation>
     </message>
@@ -15223,26 +15223,26 @@ die Reihenfolge der Parameter ist wichtig!</translation>
         <translation type="obsolete">&amp;Ausschneiden</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.cpp" line="4180"/>
-        <location filename="../src/plot2D/Graph.cpp" line="4233"/>
+        <location filename="../src/plot2D/Graph.cpp" line="4188"/>
+        <location filename="../src/plot2D/Graph.cpp" line="4241"/>
         <source>&amp;Copy</source>
         <translation>&amp;Kopieren</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.cpp" line="4182"/>
-        <location filename="../src/plot2D/Graph.cpp" line="4235"/>
+        <location filename="../src/plot2D/Graph.cpp" line="4190"/>
+        <location filename="../src/plot2D/Graph.cpp" line="4243"/>
         <source>&amp;Delete</source>
         <translation>&amp;Löschen</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.cpp" line="4184"/>
-        <location filename="../src/plot2D/Graph.cpp" line="4237"/>
-        <location filename="../src/plot2D/Graph.cpp" line="4260"/>
+        <location filename="../src/plot2D/Graph.cpp" line="4192"/>
+        <location filename="../src/plot2D/Graph.cpp" line="4245"/>
+        <location filename="../src/plot2D/Graph.cpp" line="4268"/>
         <source>&amp;Properties...</source>
         <translation>&amp;Eigenschaften...</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.cpp" line="4245"/>
+        <location filename="../src/plot2D/Graph.cpp" line="4253"/>
         <source>&amp;Rescale to show all</source>
         <translation>Auf Komplettansicht &amp;reskalierenskalieren</translation>
     </message>
@@ -15251,17 +15251,17 @@ die Reihenfolge der Parameter ist wichtig!</translation>
         <translation type="obsolete">Ctrl+R</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.cpp" line="4247"/>
+        <location filename="../src/plot2D/Graph.cpp" line="4255"/>
         <source>&amp;Hide axis</source>
         <translation>Achse &amp;verbergen</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.cpp" line="4249"/>
+        <location filename="../src/plot2D/Graph.cpp" line="4257"/>
         <source>&amp;Show grids</source>
         <translation>Gitter &amp;anzeigen</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.cpp" line="4259"/>
+        <location filename="../src/plot2D/Graph.cpp" line="4267"/>
         <source>&amp;Scale...</source>
         <translation>&amp;Skala...</translation>
     </message>
@@ -15484,7 +15484,7 @@ die Reihenfolge der Parameter ist wichtig!</translation>
         <translation type="obsolete">Band FFT Filter von</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.cpp" line="4981"/>
+        <location filename="../src/plot2D/Graph.cpp" line="4989"/>
         <source>There are no curves available on this plot!</source>
         <translation>In diesem Diagramm existieren keine Kurven!</translation>
     </message>
@@ -15494,12 +15494,12 @@ die Reihenfolge der Parameter ist wichtig!</translation>
         <location filename="../src/plot2D/Graph.cpp" line="1408"/>
         <location filename="../src/plot2D/Graph.cpp" line="1436"/>
         <location filename="../src/plot2D/Graph.cpp" line="1496"/>
-        <location filename="../src/plot2D/Graph.cpp" line="4991"/>
+        <location filename="../src/plot2D/Graph.cpp" line="4999"/>
         <source>QtiPlot - Error</source>
         <translation>QtiPlot - Fehler</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.cpp" line="4992"/>
+        <location filename="../src/plot2D/Graph.cpp" line="5000"/>
         <source>There are no curves with more than two points on this plot. Operation aborted!</source>
         <translation>Es gibt keine Kurven mit mehr als 2 Punkten in diesem Diagramm. Operation abgebrochen!</translation>
     </message>
@@ -15528,7 +15528,7 @@ die Reihenfolge der Parameter ist wichtig!</translation>
         <translation type="obsolete">Boltzmann (Sigmoidal) Fit von</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.cpp" line="4245"/>
+        <location filename="../src/plot2D/Graph.cpp" line="4253"/>
         <source>Ctrl+Shift+R</source>
         <translation>Ctrl+Shift+R</translation>
     </message>
@@ -15590,7 +15590,7 @@ die Reihenfolge der Parameter ist wichtig!</translation>
         <translation>Titel</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.cpp" line="3742"/>
+        <location filename="../src/plot2D/Graph.cpp" line="3750"/>
         <source>Image file: &lt;p&gt;&lt;b&gt; %1 &lt;/b&gt;&lt;p&gt;does not exist anymore!</source>
         <translation>Die Bilddatei: &lt;p&gt;&lt;b&gt; %1 &lt;/b&gt;&lt;p&gt; existiert nicht mehr!</translation>
     </message>
@@ -15645,17 +15645,17 @@ die Reihenfolge der Parameter ist wichtig!</translation>
         <translation>Bitte einen gültigen Dateinamen eingeben!</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.h" line="636"/>
+        <location filename="../src/plot2D/Graph.h" line="641"/>
         <source>F</source>
         <translation>F</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.cpp" line="3929"/>
+        <location filename="../src/plot2D/Graph.cpp" line="3937"/>
         <source>Data set generated from curve</source>
         <translation>Aus der Kurve generierter Datensatz</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.cpp" line="3930"/>
+        <location filename="../src/plot2D/Graph.cpp" line="3938"/>
         <source>Table</source>
         <translation>Tabelle</translation>
     </message>
@@ -15686,14 +15686,14 @@ die Reihenfolge der Parameter ist wichtig!</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.cpp" line="4179"/>
-        <location filename="../src/plot2D/Graph.cpp" line="4232"/>
+        <location filename="../src/plot2D/Graph.cpp" line="4187"/>
+        <location filename="../src/plot2D/Graph.cpp" line="4240"/>
         <source>Cu&amp;t</source>
         <translation>Ausschneiden</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.cpp" line="4181"/>
-        <location filename="../src/plot2D/Graph.cpp" line="4234"/>
+        <location filename="../src/plot2D/Graph.cpp" line="4189"/>
+        <location filename="../src/plot2D/Graph.cpp" line="4242"/>
         <source>C&amp;lear</source>
         <translation>Daten &amp;löschen</translation>
     </message>
@@ -22767,31 +22767,31 @@ Wollen Sie sie überschreiben?</translation>
 <context>
     <name>SmoothFilter</name>
     <message>
-        <location filename="../src/analysis/SmoothFilter.cpp" line="62"/>
+        <location filename="../src/analysis/SmoothFilter.cpp" line="69"/>
         <source>Smoothed</source>
         <translation>Geglättet</translation>
     </message>
     <message>
-        <location filename="../src/analysis/SmoothFilter.cpp" line="74"/>
-        <location filename="../src/analysis/SmoothFilter.cpp" line="217"/>
+        <location filename="../src/analysis/SmoothFilter.cpp" line="81"/>
         <location filename="../src/analysis/SmoothFilter.cpp" line="224"/>
-        <location filename="../src/analysis/SmoothFilter.cpp" line="238"/>
+        <location filename="../src/analysis/SmoothFilter.cpp" line="231"/>
         <location filename="../src/analysis/SmoothFilter.cpp" line="245"/>
-        <location filename="../src/analysis/SmoothFilter.cpp" line="257"/>
+        <location filename="../src/analysis/SmoothFilter.cpp" line="252"/>
         <location filename="../src/analysis/SmoothFilter.cpp" line="264"/>
         <location filename="../src/analysis/SmoothFilter.cpp" line="271"/>
+        <location filename="../src/analysis/SmoothFilter.cpp" line="278"/>
         <source>QtiPlot</source>
         <translation>QtiPlot</translation>
     </message>
     <message>
-        <location filename="../src/analysis/SmoothFilter.cpp" line="74"/>
-        <location filename="../src/analysis/SmoothFilter.cpp" line="217"/>
+        <location filename="../src/analysis/SmoothFilter.cpp" line="81"/>
         <location filename="../src/analysis/SmoothFilter.cpp" line="224"/>
-        <location filename="../src/analysis/SmoothFilter.cpp" line="238"/>
+        <location filename="../src/analysis/SmoothFilter.cpp" line="231"/>
         <location filename="../src/analysis/SmoothFilter.cpp" line="245"/>
-        <location filename="../src/analysis/SmoothFilter.cpp" line="257"/>
+        <location filename="../src/analysis/SmoothFilter.cpp" line="252"/>
         <location filename="../src/analysis/SmoothFilter.cpp" line="264"/>
         <location filename="../src/analysis/SmoothFilter.cpp" line="271"/>
+        <location filename="../src/analysis/SmoothFilter.cpp" line="278"/>
         <source>Error</source>
         <translation>Fehler</translation>
     </message>
@@ -22800,66 +22800,66 @@ Wollen Sie sie überschreiben?</translation>
         <translation type="obsolete">Unbekannter Glättungsfilter. Gültige Werte sind: 1 - Savitky-Golay, 2 - FFT, 3 - Gleitender Fensterdurchschnitt.</translation>
     </message>
     <message>
-        <location filename="../src/analysis/SmoothFilter.cpp" line="75"/>
+        <location filename="../src/analysis/SmoothFilter.cpp" line="82"/>
         <source>Unknown smooth filter. Valid values are: 1 - Savitky-Golay, 2 - FFT, 3 - Moving Window Average, 4 - Lowess.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/analysis/SmoothFilter.cpp" line="92"/>
-        <location filename="../src/analysis/SmoothFilter.cpp" line="96"/>
-        <location filename="../src/analysis/SmoothFilter.cpp" line="100"/>
-        <location filename="../src/analysis/SmoothFilter.cpp" line="104"/>
+        <location filename="../src/analysis/SmoothFilter.cpp" line="99"/>
+        <location filename="../src/analysis/SmoothFilter.cpp" line="103"/>
+        <location filename="../src/analysis/SmoothFilter.cpp" line="107"/>
+        <location filename="../src/analysis/SmoothFilter.cpp" line="111"/>
         <source>points</source>
         <translation>Punkte</translation>
     </message>
     <message>
-        <location filename="../src/analysis/SmoothFilter.cpp" line="92"/>
+        <location filename="../src/analysis/SmoothFilter.cpp" line="99"/>
         <source>Savitzky-Golay smoothing</source>
         <translation>Savitzky-Golay-Glättung</translation>
     </message>
     <message>
-        <location filename="../src/analysis/SmoothFilter.cpp" line="96"/>
+        <location filename="../src/analysis/SmoothFilter.cpp" line="103"/>
         <source>FFT smoothing</source>
         <translation>FFT-Glättung</translation>
     </message>
     <message>
-        <location filename="../src/analysis/SmoothFilter.cpp" line="100"/>
+        <location filename="../src/analysis/SmoothFilter.cpp" line="107"/>
         <source>average smoothing</source>
         <translation>Durchschnittsglättung</translation>
     </message>
     <message>
-        <location filename="../src/analysis/SmoothFilter.cpp" line="104"/>
+        <location filename="../src/analysis/SmoothFilter.cpp" line="111"/>
         <source>Lowess smoothing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/analysis/SmoothFilter.cpp" line="218"/>
+        <location filename="../src/analysis/SmoothFilter.cpp" line="225"/>
         <source>The number of points must be positive!</source>
         <translation>Die Anzahl der Punkte muss positiv sein!</translation>
     </message>
     <message>
-        <location filename="../src/analysis/SmoothFilter.cpp" line="225"/>
-        <location filename="../src/analysis/SmoothFilter.cpp" line="246"/>
+        <location filename="../src/analysis/SmoothFilter.cpp" line="232"/>
+        <location filename="../src/analysis/SmoothFilter.cpp" line="253"/>
         <source>The polynomial order must be lower than the number of left points plus the number of right points!</source>
         <translation>Die Ordnung des Polynoms muss kleiner als die Summe der linken und rechten Punkte sein!</translation>
     </message>
     <message>
-        <location filename="../src/analysis/SmoothFilter.cpp" line="239"/>
+        <location filename="../src/analysis/SmoothFilter.cpp" line="246"/>
         <source>Setting polynomial order is only available for Savitzky-Golay smooth filters! Ignored option!</source>
         <translation>Einstellen der Polynomgrads ist nur für Savitzky-Golay Glättungsfilter verfügbar! Ignoriere Einstellung!</translation>
     </message>
     <message>
-        <location filename="../src/analysis/SmoothFilter.cpp" line="258"/>
+        <location filename="../src/analysis/SmoothFilter.cpp" line="265"/>
         <source>Setting Lowess parameter is only available for Lowess smooth filters! Ignored option!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/analysis/SmoothFilter.cpp" line="265"/>
+        <location filename="../src/analysis/SmoothFilter.cpp" line="272"/>
         <source>The parameter f must be between 0 and 1!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/analysis/SmoothFilter.cpp" line="272"/>
+        <location filename="../src/analysis/SmoothFilter.cpp" line="279"/>
         <source>The number of iterations must be at least 1!</source>
         <translation type="unfinished"></translation>
     </message>
