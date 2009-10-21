@@ -6216,6 +6216,8 @@ void Graph::print(QPainter *painter, const QRect &plotRect,
 		f->print(painter, map);
 	QwtPainter::resetMetricsMap();
 
+	painter->restore();
+
 	d_is_printing = false;
     setTitle(t);//hack used to avoid bug in Qwt::printTitle(): the title attributes are overwritten
 }
