@@ -128,6 +128,23 @@ public:
   void resizeCols(int) /PyName=setNumCols/;
 
   void deleteRows(int, int);
+  void __delitem__(int);
+%MethodCode
+  int len = sipCpp->numRows();
+  if ((a0 = (int)sipConvertFromSequenceIndex(a0, len)) < 0)
+    sipIsErr = 1;
+  else
+    sipCpp->deleteRows(a0 + 1, a0 + 1); // start and stop are equal, counting starts at 1
+%End
+  void __delitem__(SIP_PYSLICE);
+%MethodCode
+  SIP_SSIZE_T len, start, stop, step, slicelength, i;
+  len = sipCpp->numRows();
+  if (PySlice_GetIndicesEx((PySliceObject *)a0, len, &start, &stop, &step, &slicelength) < 0)
+    sipIsErr = 1;
+  else
+    sipCpp->deleteRows(start + 1, stop); // row index starts at 1 (python at 0); the stop is inclusive (python exclusive)
+%End
 
   SIP_PYOBJECT text(SIP_PYOBJECT, int);
 %MethodCode
