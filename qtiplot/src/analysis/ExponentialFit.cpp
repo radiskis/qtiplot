@@ -35,6 +35,22 @@
  *
  *****************************************************************************/
 
+ExponentialFit::ExponentialFit(ApplicationWindow *parent, QwtPlotCurve *c, bool expGrowth)
+: Fit(parent, c),
+	is_exp_growth(expGrowth)
+{
+	init();
+	setDataFromCurve(c);
+}
+
+ExponentialFit::ExponentialFit(ApplicationWindow *parent, QwtPlotCurve *c, double start, double end, bool expGrowth)
+: Fit(parent, c),
+	is_exp_growth(expGrowth)
+{
+	init();
+	setDataFromCurve(c, start, end);
+}
+
 ExponentialFit::ExponentialFit(ApplicationWindow *parent, Graph *g, bool expGrowth)
 : Fit(parent, g),
 	is_exp_growth(expGrowth)
@@ -124,6 +140,20 @@ void ExponentialFit::calculateFitCurveData(double *X, double *Y)
  *
  *****************************************************************************/
 
+TwoExpFit::TwoExpFit(ApplicationWindow *parent, QwtPlotCurve *c)
+: Fit(parent, c)
+{
+	init();
+	setDataFromCurve(c);
+}
+
+TwoExpFit::TwoExpFit(ApplicationWindow *parent, QwtPlotCurve *c, double start, double end)
+: Fit(parent, c)
+{
+	init();
+	setDataFromCurve(c, start, end);
+}
+
 TwoExpFit::TwoExpFit(ApplicationWindow *parent, Graph *g)
 : Fit(parent, g)
 {
@@ -196,6 +226,20 @@ void TwoExpFit::calculateFitCurveData(double *X, double *Y)
  * Class ThreeExpFit
  *
  *****************************************************************************/
+
+ThreeExpFit::ThreeExpFit(ApplicationWindow *parent, QwtPlotCurve *c)
+: Fit(parent, c)
+{
+	init();
+	setDataFromCurve(c);
+}
+
+ThreeExpFit::ThreeExpFit(ApplicationWindow *parent, QwtPlotCurve *c, double start, double end)
+: Fit(parent, c)
+{
+	init();
+	setDataFromCurve(c, start, end);
+}
 
 ThreeExpFit::ThreeExpFit(ApplicationWindow *parent, Graph *g)
 : Fit(parent, g)

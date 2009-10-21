@@ -620,6 +620,11 @@ class Graph: public QwtPlot
 		 * \return the number of selected or total points
 		 */
 		int range(const QString& curveTitle, double *start, double *end);
+		/*! Set start and end to selected X range of curve "curve" or, if there's no selection, to the curve's total range.
+		 *
+		 * \return the number of selected or total points
+		 */
+		int range(QwtPlotCurve *c, double *start, double *end);
 
 		//!  Used for VerticalBars, HorizontalBars and Histograms
 		void setBarsGap(int curve, int gapPercent, int offset);
@@ -743,6 +748,7 @@ signals:
         void axisDivChanged(Graph *, int);
 
 	private:
+		QList<FrameWidget*> stackingOrderEnrichmentsList();
         //! Finds bounding interval of the plot data.
         QwtDoubleInterval axisBoundingInterval(int axis);
         void deselectCurves();

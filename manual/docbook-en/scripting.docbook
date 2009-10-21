@@ -3284,6 +3284,7 @@ smoothing, fitting and numerical integration of data sets.
 Generally, you can declare/initialize an analysis operation using one of the following methods,
 depending on the data source, which can be a 2D plot curve or a table:
 <programlisting>
+op = LogisticFit(graph("Graph1").activeLayer().curve(0), 15.2, 30.9)
 op = FFTFilter(graph("Graph1").activeLayer(), "Table1_2", 1.5, 3.9)
 op = LinearFit(table("Table1"), "colX", "colY", 10, 100)
 </programlisting>
@@ -3304,6 +3305,7 @@ as data sources for the moment.
 <para>Once you have initialized an operation, you can still chage its input data via
 the following functions:</para>
 <programlisting>
+op.setDataFromCurve(graph("Graph2").activeLayer().curve(1), 10.5, 20.1)
 op.setDataFromCurve("Table1_energy", 10.5, 20.1, graph("Graph2").activeLayer())
 op.setDataFromTable(table("Table1"), "colX", "colY", 10, 100)
 </programlisting>
@@ -3371,11 +3373,11 @@ cor.run()
 
 <sect3 id="Python-Differentiation">
 <title>Differentiation</title>
-Assuming you have a Graph named "Graph1" with a curve entitled
-"Table1_2" (on its active layer), here's how you can differentiate this curve within a defined x interval,
+Assuming you have a Graph named "Graph1" containing one curve
+(on its active layer), here's how you can differentiate this curve within a defined x interval,
 [2,10] in this case:
 <programlisting>
-diff = Differentiation(graph("Graph1").activeLayer(), "Table1_2", 2, 10)
+diff = Differentiation(graph("Graph1").activeLayer().curve(0), 2, 10)
 diff.run()
 </programlisting>
 The result of these code sequence would be a new plot window displaying the derivative of the initial curve.
@@ -3384,13 +3386,13 @@ The numerical derivative is calculated using a five terms formula.
 
 <sect3 id="Python-FFT">
 <title>FFT</title>
-Assuming you have a graph named "Graph1" with a curve entitled
-"Table1_2" (on its active layer), having a periodicity of 0.1 in the time domain,
+Assuming you have a graph named "Graph1" containing one curve on its active layer and having a
+periodicity of 0.1 in the time domain,
 a FFT will allow you to extract its characteristic frequencies.
 The results will be stored in a hidden table named "FFT1".
 
 <programlisting>
-fft = FFT(graph("Graph1").activeLayer(), "Table1_2")
+fft = FFT(graph("Graph1").activeLayer().curve(0))
 fft.normalizeAmplitudes(False)
 fft.shiftFrequencies(False)
 fft.setSampling(0.1)
@@ -3416,12 +3418,12 @@ ifft.run()
 
 <sect3 id="Python-Filtering">
 <title>FFT Filters</title>
-In this section, it will be assumed that you have a signal (data set "Table1_2") displayed in a graph ("Graph1", on its active layer).
+In this section, it will be assumed that you have a signal displayed in a graph ("Graph1", on its active layer).
 This signal has a power spectrum with high and low frequencies.
 You can filter some of these frequencies according to your needs, using a FFTFilter.
 Here's how you can cut all the frequencies lower than 1 Hz:
 <programlisting>
-filter = FFTFilter(graph("Graph1").activeLayer(), "Table1_2", FFTFilter.HighPass)
+filter = FFTFilter(graph("Graph1").activeLayer().curve(0), FFTFilter.HighPass)
 filter.setCutoff(1)
 filter.run()
 </programlisting>
@@ -3440,53 +3442,53 @@ and band block (<varname>FFTFilter.BandBlock</varname>).
 </sect3>
 <sect3 id="Python-Fitting">
 <title>Fitting</title>
-        Assuming you have a graph named "Graph1" with a curve entitled
-        "Table1_2" (on its active layer), a minimal Fit example would be:
+        Assuming you have a graph named "Graph1" displaying a curve entitled "Table1_2" on its active layer,
+        a minimal Fit example would be:
         <programlisting>
-f = GaussFit(graph("Graph1").activeLayer(), "Table1_2")
+f = GaussFit(graph("Graph1").activeLayer().curve(0))
 f.guessInitialValues()
 f.fit()
 	  </programlisting> This creates a new GaussFit object on the curve, lets it guess
         the start parameters and does the fit. The following fit types are
         supported: <itemizedlist>
             <listitem>
-              <para>LinearFit(layer, curve)</para>
+              <para>LinearFit(curve)</para>
             </listitem>
 
             <listitem>
-              <para>PolynomialFit(layer, curve, degree=2, legend=False)</para>
+              <para>PolynomialFit(curve, degree=2, legend=False)</para>
             </listitem>
 
             <listitem>
-              <para>ExponentialFit(layer, curve, growth=False)</para>
+              <para>ExponentialFit(curve, growth=False)</para>
             </listitem>
 
             <listitem>
-              <para>TwoExpFit(layer, curve)</para>
+              <para>TwoExpFit(curve)</para>
             </listitem>
 
             <listitem>
-              <para>ThreeExpFit(layer, curve)</para>
+              <para>ThreeExpFit(curve)</para>
             </listitem>
 
             <listitem>
-              <para>GaussFit(layer, curve)</para>
+              <para>GaussFit(curve)</para>
             </listitem>
 
             <listitem>
-              <para>GaussAmpFit(layer, curve)</para>
+              <para>GaussAmpFit(curve)</para>
             </listitem>
             <listitem>
-              <para>LorentzFit(layer, curve)</para>
+              <para>LorentzFit(curve)</para>
             </listitem>
 			<listitem>
-              <para>LogisticFit(layer, curve)</para>
+              <para>LogisticFit(curve)</para>
             </listitem>
             <listitem>
-              <para>SigmoidalFit(layer, curve)</para>
+              <para>SigmoidalFit(curve)</para>
             </listitem>
             <listitem>
-              <para>NonLinearFit(layer, curve)</para>
+              <para>NonLinearFit(curve)</para>
 		    <programlisting>
 f = NonLinearFit(layer, curve)
 f.setFormula(formula_string)
@@ -3494,21 +3496,21 @@ f.save(fileName)
 		    </programlisting>
             </listitem>
             <listitem>
-		    <para>PluginFit(layer, curve)</para>
+		    <para>PluginFit(curve)</para>
 		    <programlisting>
-f = PluginFit(layer, curve)
+f = PluginFit(curve)
 f.load(pluginName)
 		    </programlisting>
             </listitem>
           </itemizedlist> For each of these, you can optionally restrict the X
         range that will be used for the fit, like in <programlisting>
-f = LinearFit(graph("Graph1").activeLayer(), "Table1_2", 2, 7)
+f = LinearFit(graph("Graph1").activeLayer().curve(0), 2, 7)
 f.fit()
 	  </programlisting>
 
 You can also restrict the search range for any of the fit parameters:
 <programlisting>
-f = NonLinearFit(graph("Graph1").activeLayer(), "Table1_2")
+f = NonLinearFit(graph("Graph1").activeLayer().curve(0))
 f.setFormula("a0+a1*x+a2*x*x")
 f.setParameterRange(parameterIndex, start, end)
 </programlisting>
@@ -3536,9 +3538,9 @@ f.setFormula("a0+a1*x+a2*x*x",0)
         <programlisting>
 f.setDataFromTable(table("Table4"), "w", "energy", 10, 200) <lineannotation>change data source</lineannotation>
 f.setDataFromCurve(curve)			<lineannotation>change data source</lineannotation>
-f.setDataFromCurve(curve, graph)		<lineannotation>change data source</lineannotation>
+f.setDataFromCurve(curveTitle, graph)		<lineannotation>change data source</lineannotation>
 f.setDataFromCurve(curve, from, to)		<lineannotation>change data source</lineannotation>
-f.setDataFromCurve(curve, from, to, graph)	<lineannotation>change data source</lineannotation>
+f.setDataFromCurve(curveTitle, from, to, graph)	<lineannotation>change data source</lineannotation>
 f.setInterval(from, to)				<lineannotation>change data range</lineannotation>
 f.setInitialValue(number, value)
 f.setInitialValues(value1, ...)
@@ -3615,7 +3617,7 @@ t = f.resultTable()
 <title>Integration</title>
 With the same assumptions as above, here's how you can integrate a curve within a given interval:
 <programlisting>
-integral = Integration(graph("Graph1").activeLayer(), "Table1_2", 2, 10)
+integral = Integration(graph("Graph1").activeLayer().curve(0), 2, 10)
 integral.setMethodOrder(4)
 integral.setTolerance(1e-4)
 integral.setMaximumIterations(100)
@@ -3636,7 +3638,7 @@ via the <varname>area()</varname> function.</para>
 The interpolation is used to generate a new data curve with a high number of points
 from an existing data set. Here's an example:
 <programlisting>
-interpolation = Interpolation(graph("Graph1").activeLayer(), "Table1_2", 2, 10, Interpolation.Linear)
+interpolation = Interpolation(graph("Graph1").activeLayer().curve(0), 2, 10, Interpolation.Linear)
 interpolation.setOutputPoints(10000)
 interpolation.setColor("green")
 interpolation.run()
@@ -3654,7 +3656,7 @@ interpolation.setMethod(Interpolation.Akima)
 Assuming you have a graph named "Graph1" with an irregular curve entitled
 "Table1_2" (on its active layer). You can smooth this curve using a SmoothFilter:
 <programlisting>
-smooth = SmoothFilter(graph("Graph1").activeLayer(), "Table1_2", SmoothFilter.Average)
+smooth = SmoothFilter(graph("Graph1").activeLayer().curve(0), SmoothFilter.Average)
 smooth.setSmoothPoints(10)
 smooth.run()
 </programlisting>

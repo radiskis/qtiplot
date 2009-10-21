@@ -37,6 +37,7 @@ class MultiPeakFit : public Fit
 
 	public:
 		enum PeakProfile{Gauss, Lorentz};
+		MultiPeakFit(ApplicationWindow *parent, QwtPlotCurve *c, PeakProfile profile = Gauss, int peaks = 1);
 		MultiPeakFit(ApplicationWindow *parent, Graph *g = 0, PeakProfile profile = Gauss, int peaks = 1);
 		MultiPeakFit(ApplicationWindow *parent, Table *t, const QString& xCol, const QString& yCol,
 		  			 int startRow = 0, int endRow = -1, PeakProfile profile = Gauss, int peaks = 1);
@@ -87,6 +88,8 @@ class LorentzFit : public MultiPeakFit
 	Q_OBJECT
 
 	public:
+		LorentzFit(ApplicationWindow *parent, QwtPlotCurve *);
+		LorentzFit(ApplicationWindow *parent, QwtPlotCurve *, double, double);
 		LorentzFit(ApplicationWindow *parent, Graph *g);
 		LorentzFit(ApplicationWindow *parent, Graph *g, const QString& curveTitle);
 		LorentzFit(ApplicationWindow *parent, Graph *g, const QString& curveTitle, double start, double end);
@@ -101,6 +104,8 @@ class GaussFit : public MultiPeakFit
 	Q_OBJECT
 
 	public:
+		GaussFit(ApplicationWindow *parent, QwtPlotCurve *);
+		GaussFit(ApplicationWindow *parent, QwtPlotCurve *, double, double);
 		GaussFit(ApplicationWindow *parent, Graph *g);
 		GaussFit(ApplicationWindow *parent, Graph *g, const QString& curveTitle);
 		GaussFit(ApplicationWindow *parent, Graph *g, const QString& curveTitle, double start, double end);
@@ -115,6 +120,8 @@ class GaussAmpFit : public Fit
 	Q_OBJECT
 
 	public:
+		GaussAmpFit(ApplicationWindow *parent, QwtPlotCurve *);
+		GaussAmpFit(ApplicationWindow *parent, QwtPlotCurve *, double, double);
 		GaussAmpFit(ApplicationWindow *parent, Graph *g);
 		GaussAmpFit(ApplicationWindow *parent, Graph *g, const QString& curveTitle);
 		GaussAmpFit(ApplicationWindow *parent, Graph *g, const QString& curveTitle, double start, double end);

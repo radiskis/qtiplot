@@ -41,14 +41,20 @@
 MultiPeakFit::MultiPeakFit(ApplicationWindow *parent, Graph *g, PeakProfile profile, int peaks)
 : Fit(parent, g), d_profile(profile)
 {
-init(peaks);
+	init(peaks);
+}
+
+MultiPeakFit::MultiPeakFit(ApplicationWindow *parent, QwtPlotCurve *c, PeakProfile profile, int peaks)
+: Fit(parent, c), d_profile(profile)
+{
+	init(peaks);
 }
 
 MultiPeakFit::MultiPeakFit(ApplicationWindow *parent, Table *t, const QString&, const QString&,
 		  				  int, int, PeakProfile profile, int peaks)
 : Fit(parent, t), d_profile(profile)
 {
-init(peaks);
+	init(peaks);
 }
 
 void MultiPeakFit::init(int peaks)
@@ -415,6 +421,20 @@ QString MultiPeakFit::logFitInfo(int iterations, int status)
  *
  *****************************************************************************/
 
+LorentzFit::LorentzFit(ApplicationWindow *parent, QwtPlotCurve *c)
+: MultiPeakFit(parent, c, MultiPeakFit::Lorentz, 1)
+{
+	init();
+	setDataFromCurve(c);
+}
+
+LorentzFit::LorentzFit(ApplicationWindow *parent, QwtPlotCurve *c, double start, double end)
+: MultiPeakFit(parent, c, MultiPeakFit::Lorentz, 1)
+{
+	init();
+	setDataFromCurve(c, start, end);
+}
+
 LorentzFit::LorentzFit(ApplicationWindow *parent, Graph *g)
 : MultiPeakFit(parent, g, MultiPeakFit::Lorentz, 1)
 {
@@ -455,6 +475,20 @@ void LorentzFit::init()
  *
  *****************************************************************************/
 
+GaussFit::GaussFit(ApplicationWindow *parent, QwtPlotCurve *c)
+: MultiPeakFit(parent, c, MultiPeakFit::Gauss, 1)
+{
+	init();
+	setDataFromCurve(c);
+}
+
+GaussFit::GaussFit(ApplicationWindow *parent, QwtPlotCurve *c, double start, double end)
+: MultiPeakFit(parent, c, MultiPeakFit::Gauss, 1)
+{
+	init();
+	setDataFromCurve(c, start, end);
+}
+
 GaussFit::GaussFit(ApplicationWindow *parent, Graph *g)
 : MultiPeakFit(parent, g, MultiPeakFit::Gauss, 1)
 {
@@ -494,6 +528,20 @@ void GaussFit::init()
  * Class GaussAmpFit
  *
  *****************************************************************************/
+
+GaussAmpFit::GaussAmpFit(ApplicationWindow *parent, QwtPlotCurve *c)
+: Fit(parent, c)
+{
+	init();
+	setDataFromCurve(c);
+}
+
+GaussAmpFit::GaussAmpFit(ApplicationWindow *parent, QwtPlotCurve *c, double start, double end)
+: Fit(parent, c)
+{
+	init();
+	setDataFromCurve(c, start, end);
+}
 
 GaussAmpFit::GaussAmpFit(ApplicationWindow *parent, Graph *g)
 : Fit(parent, g)

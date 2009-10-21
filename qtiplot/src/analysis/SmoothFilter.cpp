@@ -35,6 +35,20 @@
 
 #include <gsl/gsl_fft_halfcomplex.h>
 
+SmoothFilter::SmoothFilter(ApplicationWindow *parent, QwtPlotCurve *c, int m)
+: Filter(parent, c)
+{
+	setDataFromCurve(c);
+	init(m);
+}
+
+SmoothFilter::SmoothFilter(ApplicationWindow *parent, QwtPlotCurve *c, double start, double end, int m)
+: Filter(parent, c)
+{
+	setDataFromCurve(c, start, end);
+	init(m);
+}
+
 SmoothFilter::SmoothFilter(ApplicationWindow *parent, Graph *g, const QString& curveTitle, int m)
 : Filter(parent, g)
 {

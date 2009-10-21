@@ -34,6 +34,20 @@
 #include <gsl/gsl_spline.h>
 #include <gsl/gsl_interp.h>
 
+Interpolation::Interpolation(ApplicationWindow *parent, QwtPlotCurve *c, int m)
+: Filter(parent, c)
+{
+	init(m);
+	setDataFromCurve(c);
+}
+
+Interpolation::Interpolation(ApplicationWindow *parent, QwtPlotCurve *c, double start, double end, int m)
+: Filter(parent, c)
+{
+	init(m);
+	setDataFromCurve(c, start, end);
+}
+
 Interpolation::Interpolation(ApplicationWindow *parent, Graph *g, const QString& curveTitle, int m)
 : Filter(parent, g)
 {

@@ -44,6 +44,20 @@ FFT::FFT(ApplicationWindow *parent, Table *t, const QString& realColName, const 
     setDataFromTable(t, realColName, imagColName, from, to);
 }
 
+FFT::FFT(ApplicationWindow *parent, QwtPlotCurve *c)
+: Filter(parent, c)
+{
+	init();
+    setDataFromCurve(c);
+}
+
+FFT::FFT(ApplicationWindow *parent, QwtPlotCurve *c, double start, double end)
+: Filter(parent, c)
+{
+	init();
+    setDataFromCurve(c, start, end);
+}
+
 FFT::FFT(ApplicationWindow *parent, Graph *g, const QString& curveTitle)
 : Filter(parent, g)
 {

@@ -36,6 +36,8 @@ class PluginFit : public Fit
 	Q_OBJECT
 
 	public:
+	    PluginFit(ApplicationWindow *parent, QwtPlotCurve *);
+	    PluginFit(ApplicationWindow *parent, QwtPlotCurve *, double, double);
 		PluginFit(ApplicationWindow *parent, Graph *g);
 		PluginFit(ApplicationWindow *parent, Graph *g, const QString& curveTitle);
 		PluginFit(ApplicationWindow *parent, Graph *g, const QString& curveTitle, double start, double end);

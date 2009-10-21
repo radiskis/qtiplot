@@ -37,6 +37,20 @@ PluginFit::PluginFit(ApplicationWindow *parent, Graph *g)
 	init();
 }
 
+PluginFit::PluginFit(ApplicationWindow *parent, QwtPlotCurve *c)
+: Fit(parent, c)
+{
+	init();
+	setDataFromCurve(c);
+}
+
+PluginFit::PluginFit(ApplicationWindow *parent, QwtPlotCurve *c, double start, double end)
+: Fit(parent, c)
+{
+	init();
+	setDataFromCurve(c, start, end);
+}
+
 PluginFit::PluginFit(ApplicationWindow *parent, Graph *g, const QString& curveTitle)
 : Fit(parent, g)
 {

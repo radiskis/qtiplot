@@ -35,6 +35,20 @@ LogisticFit::LogisticFit(ApplicationWindow *parent, Graph *g)
 	init();
 }
 
+LogisticFit::LogisticFit(ApplicationWindow *parent, QwtPlotCurve *c)
+: Fit(parent, c)
+{
+	init();
+	setDataFromCurve(c);
+}
+
+LogisticFit::LogisticFit(ApplicationWindow *parent, QwtPlotCurve *c, double start, double end)
+: Fit(parent, c)
+{
+	init();
+	setDataFromCurve(c, start, end);
+}
+
 LogisticFit::LogisticFit(ApplicationWindow *parent, Graph *g, const QString& curveTitle)
 : Fit(parent, g)
 {
@@ -67,7 +81,7 @@ void LogisticFit::init()
 	d_param_names << "A1" << "A2" << "x0" << "p";
 	d_explanation = tr("Logistic Fit");
 	d_formula = "A2+(A1-A2)/(1+(x/x0)^p)";
-	d_p = 4;    
+	d_p = 4;
 	initWorkspace(d_p);
 }
 
@@ -85,7 +99,7 @@ void LogisticFit::calculateFitCurveData(double *X, double *Y)
 			double x = X0+i*step;
         	X[i] = x;
         	Y[i] = (a1 - a2)/(1 + pow(x/x0, p)) + a2;
-		} 
+		}
 	} else {
       	for (int i=0; i<d_points; i++){
 			double x = d_x[i];

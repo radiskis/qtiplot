@@ -41,6 +41,20 @@ NonLinearFit::NonLinearFit(ApplicationWindow *parent, Graph *g)
 	init();
 }
 
+NonLinearFit::NonLinearFit(ApplicationWindow *parent, QwtPlotCurve *c)
+: Fit(parent, c)
+{
+	init();
+	setDataFromCurve(c);
+}
+
+NonLinearFit::NonLinearFit(ApplicationWindow *parent, QwtPlotCurve *c, double start, double end)
+: Fit(parent, c)
+{
+	init();
+	setDataFromCurve(c, start, end);
+}
+
 NonLinearFit::NonLinearFit(ApplicationWindow *parent, Graph *g, const QString& curveTitle)
 : Fit(parent, g)
 {

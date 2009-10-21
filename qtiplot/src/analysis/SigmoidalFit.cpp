@@ -29,6 +29,20 @@
 #include "SigmoidalFit.h"
 #include "fit_gsl.h"
 
+SigmoidalFit::SigmoidalFit(ApplicationWindow *parent, QwtPlotCurve *c)
+: Fit(parent, c)
+{
+	init();
+	setDataFromCurve(c);
+}
+
+SigmoidalFit::SigmoidalFit(ApplicationWindow *parent, QwtPlotCurve *c, double start, double end)
+: Fit(parent, c)
+{
+	init();
+	setDataFromCurve(c, start, end);
+}
+
 SigmoidalFit::SigmoidalFit(ApplicationWindow *parent, Graph *g)
 : Fit(parent, g)
 {
@@ -77,7 +91,7 @@ void SigmoidalFit::calculateFitCurveData(double *X, double *Y)
 	double a2 = d_results[1];
 	double x0 = d_results[2];
 	double p = d_results[3];
-	
+
 	if (d_gen_function){
 		double X0 = d_x[0];
 		double step = (d_x[d_n-1]-X0)/(d_points-1);

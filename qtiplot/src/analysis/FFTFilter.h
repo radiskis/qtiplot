@@ -36,6 +36,8 @@ class FFTFilter : public Filter
 Q_OBJECT
 
 public:
+	FFTFilter(ApplicationWindow *parent, QwtPlotCurve *c, int m = 1);
+	FFTFilter(ApplicationWindow *parent, QwtPlotCurve *c, double start, double end, int m = 1);
 	FFTFilter(ApplicationWindow *parent, Graph *g, const QString& curveTitle, int m = 1);
 	FFTFilter(ApplicationWindow *parent, Graph *g, const QString& curveTitle, double start, double end, int m = 1);
 	FFTFilter(ApplicationWindow *parent, Table *t, const QString& xCol, const QString& yCol, int start = 0, int end = -1, int m = 1);

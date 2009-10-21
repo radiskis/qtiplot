@@ -201,13 +201,16 @@ QRectF FrameWidget::boundingRect() const
 
 void FrameWidget::drawFrame(QPainter *p, const QRect& rect)
 {
+	QColor background = palette().color(QPalette::Window);
+
 	p->save();
 	if (d_frame == Line){
 		QPen pen = QwtPainter::scaledPen(d_frame_pen);
 		p->setPen(pen);
 		int lw = pen.width()/2;
 		QRect r = rect.adjusted(lw, lw, -lw - 1, -lw - 1);
-		p->fillRect(r, palette().color(QPalette::Window));
+		if (background.alpha() != 0)
+			p->fillRect(r, background);
 		if (d_brush.style() != Qt::NoBrush)
 			p->setBrush(d_brush);
 
@@ -231,13 +234,15 @@ void FrameWidget::drawFrame(QPainter *p, const QRect& rect)
 		shadow.addRect(rect.adjusted(qRound(d_shadow_width*factorX), qRound(d_shadow_width*factorY), 0, 0));
 
 		p->fillPath(shadow.subtracted(contents), Qt::black);//draw shadow
-		p->fillRect(r, palette().color(QPalette::Window));
+		if (background.alpha() != 0)
+			p->fillRect(r, background);
 		p->setPen(QwtPainter::scaledPen(d_frame_pen));
 		if (d_brush.style() != Qt::NoBrush)
 			p->setBrush(d_brush);
 		QwtPainter::drawRect(p, r);
 	} else {
-		p->fillRect(rect, palette().color(QPalette::Window));
+		if (background.alpha() != 0)
+			p->fillRect(rect, background);
 		if (d_brush.style() != Qt::NoBrush)
 			p->fillRect(rect, d_brush);
 	}

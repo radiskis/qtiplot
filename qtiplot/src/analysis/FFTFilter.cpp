@@ -33,6 +33,20 @@
 
 #include <gsl/gsl_fft_halfcomplex.h>
 
+FFTFilter::FFTFilter(ApplicationWindow *parent, QwtPlotCurve *c, int m)
+: Filter(parent, c)
+{
+	setDataFromCurve(c);
+	init(m);
+}
+
+FFTFilter::FFTFilter(ApplicationWindow *parent, QwtPlotCurve *c, double start, double end, int m)
+: Filter(parent, c)
+{
+	setDataFromCurve(c, start, end);
+	init(m);
+}
+
 FFTFilter::FFTFilter(ApplicationWindow *parent, Graph *g, const QString& curveTitle, int m)
 : Filter(parent, g)
 {
@@ -119,7 +133,7 @@ void FFTFilter::calculateOutputData(double *x, double *y)
 
     //double df = 0.5/(double)(d_n*(x[1]-x[0]));//half frequency sampling due to GSL storing
 	double df = 1.0/(double)(d_n*(x[1]-x[0]));
-	
+
 	gsl_fft_real_workspace *work = gsl_fft_real_workspace_alloc(d_n);
 	gsl_fft_real_wavetable *real = gsl_fft_real_wavetable_alloc(d_n);
 
@@ -177,7 +191,7 @@ void FFTFilter::calculateOutputData(double *x, double *y)
 
 			//for (int i = 1; i < d_n; i++)
 				//y[i] = ((i*df > d_low_freq ) && (i*df < d_high_freq )) ? 0 : y[i];
-			
+
 			for (int i = 1; i < d_n; i++)
 				if ((((i+1)/2)*df > d_low_freq ) && (((i+1)/2)*df < d_high_freq ))
 					y[i] = 0;
