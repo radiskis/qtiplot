@@ -10159,13 +10159,13 @@ Följande specialkoder kan användas:
 <context>
     <name>Differentiation</name>
     <message>
-        <location filename="../src/analysis/Differentiation.cpp" line="63"/>
-        <location filename="../src/analysis/Differentiation.cpp" line="96"/>
+        <location filename="../src/analysis/Differentiation.cpp" line="77"/>
+        <location filename="../src/analysis/Differentiation.cpp" line="110"/>
         <source>Derivative</source>
         <translation>Derivata</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Differentiation.cpp" line="96"/>
+        <location filename="../src/analysis/Differentiation.cpp" line="110"/>
         <source>of</source>
         <comment>Derivative of</comment>
         <translation>av</translation>
@@ -10812,44 +10812,44 @@ Följande specialkoder kan användas:
 <context>
     <name>ExponentialFit</name>
     <message>
-        <location filename="../src/analysis/ExponentialFit.cpp" line="82"/>
+        <location filename="../src/analysis/ExponentialFit.cpp" line="98"/>
         <source>Exponential growth</source>
         <translation>Exponentiell tillväxt</translation>
     </message>
     <message>
-        <location filename="../src/analysis/ExponentialFit.cpp" line="87"/>
+        <location filename="../src/analysis/ExponentialFit.cpp" line="103"/>
         <source>Exponential decay</source>
         <translation>Exponentiellt avtagande</translation>
     </message>
     <message>
-        <location filename="../src/analysis/ExponentialFit.cpp" line="81"/>
+        <location filename="../src/analysis/ExponentialFit.cpp" line="97"/>
         <source>ExpGrowth</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/analysis/ExponentialFit.cpp" line="84"/>
-        <location filename="../src/analysis/ExponentialFit.cpp" line="89"/>
+        <location filename="../src/analysis/ExponentialFit.cpp" line="100"/>
+        <location filename="../src/analysis/ExponentialFit.cpp" line="105"/>
         <source>amplitude</source>
         <translation>Amplitud</translation>
     </message>
     <message>
-        <location filename="../src/analysis/ExponentialFit.cpp" line="84"/>
+        <location filename="../src/analysis/ExponentialFit.cpp" line="100"/>
         <source>lifetime</source>
         <translation>livslängd</translation>
     </message>
     <message>
-        <location filename="../src/analysis/ExponentialFit.cpp" line="84"/>
-        <location filename="../src/analysis/ExponentialFit.cpp" line="89"/>
+        <location filename="../src/analysis/ExponentialFit.cpp" line="100"/>
+        <location filename="../src/analysis/ExponentialFit.cpp" line="105"/>
         <source>offset</source>
         <translation>förskjutning</translation>
     </message>
     <message>
-        <location filename="../src/analysis/ExponentialFit.cpp" line="86"/>
+        <location filename="../src/analysis/ExponentialFit.cpp" line="102"/>
         <source>ExpDecay1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/analysis/ExponentialFit.cpp" line="89"/>
+        <location filename="../src/analysis/ExponentialFit.cpp" line="105"/>
         <source>e-folding time</source>
         <translation></translation>
     </message>
@@ -10971,11 +10971,11 @@ Följande specialkoder kan användas:
 <context>
     <name>FFT</name>
     <message>
-        <location filename="../src/analysis/FFT.cpp" line="63"/>
-        <location filename="../src/analysis/FFT.cpp" line="89"/>
-        <location filename="../src/analysis/FFT.cpp" line="106"/>
-        <location filename="../src/analysis/FFT.cpp" line="184"/>
-        <location filename="../src/analysis/FFT.cpp" line="188"/>
+        <location filename="../src/analysis/FFT.cpp" line="77"/>
+        <location filename="../src/analysis/FFT.cpp" line="103"/>
+        <location filename="../src/analysis/FFT.cpp" line="120"/>
+        <location filename="../src/analysis/FFT.cpp" line="198"/>
+        <location filename="../src/analysis/FFT.cpp" line="202"/>
         <source>FFT</source>
         <translation>FFT</translation>
     </message>
@@ -10992,72 +10992,72 @@ Följande specialkoder kan användas:
         <translation type="obsolete">Kunde inte tilldela minne, åtgärden avbröts!</translation>
     </message>
     <message>
-        <location filename="../src/analysis/FFT.cpp" line="89"/>
-        <location filename="../src/analysis/FFT.cpp" line="184"/>
+        <location filename="../src/analysis/FFT.cpp" line="103"/>
+        <location filename="../src/analysis/FFT.cpp" line="198"/>
         <source>Forward</source>
         <translation>Framåt</translation>
     </message>
     <message>
-        <location filename="../src/analysis/FFT.cpp" line="89"/>
-        <location filename="../src/analysis/FFT.cpp" line="106"/>
-        <location filename="../src/analysis/FFT.cpp" line="184"/>
-        <location filename="../src/analysis/FFT.cpp" line="188"/>
+        <location filename="../src/analysis/FFT.cpp" line="103"/>
+        <location filename="../src/analysis/FFT.cpp" line="120"/>
+        <location filename="../src/analysis/FFT.cpp" line="198"/>
+        <location filename="../src/analysis/FFT.cpp" line="202"/>
         <source>of</source>
         <translation>av</translation>
     </message>
     <message>
-        <location filename="../src/analysis/FFT.cpp" line="90"/>
-        <location filename="../src/analysis/FFT.cpp" line="185"/>
-        <location filename="../src/analysis/FFT.cpp" line="262"/>
+        <location filename="../src/analysis/FFT.cpp" line="104"/>
+        <location filename="../src/analysis/FFT.cpp" line="199"/>
+        <location filename="../src/analysis/FFT.cpp" line="276"/>
         <source>Frequency</source>
         <translation>Frekvens</translation>
     </message>
     <message>
-        <location filename="../src/analysis/FFT.cpp" line="106"/>
-        <location filename="../src/analysis/FFT.cpp" line="188"/>
+        <location filename="../src/analysis/FFT.cpp" line="120"/>
+        <location filename="../src/analysis/FFT.cpp" line="202"/>
         <source>Inverse</source>
         <translation>Invers</translation>
     </message>
     <message>
-        <location filename="../src/analysis/FFT.cpp" line="107"/>
-        <location filename="../src/analysis/FFT.cpp" line="189"/>
-        <location filename="../src/analysis/FFT.cpp" line="264"/>
+        <location filename="../src/analysis/FFT.cpp" line="121"/>
+        <location filename="../src/analysis/FFT.cpp" line="203"/>
+        <location filename="../src/analysis/FFT.cpp" line="278"/>
         <source>Time</source>
         <translation>Tid</translation>
     </message>
     <message>
-        <location filename="../src/analysis/FFT.cpp" line="150"/>
-        <location filename="../src/analysis/FFT.cpp" line="222"/>
+        <location filename="../src/analysis/FFT.cpp" line="164"/>
+        <location filename="../src/analysis/FFT.cpp" line="236"/>
         <source>Real</source>
         <translation>Real</translation>
     </message>
     <message>
-        <location filename="../src/analysis/FFT.cpp" line="150"/>
-        <location filename="../src/analysis/FFT.cpp" line="222"/>
+        <location filename="../src/analysis/FFT.cpp" line="164"/>
+        <location filename="../src/analysis/FFT.cpp" line="236"/>
         <source>Imaginary</source>
         <translation>Imaginär</translation>
     </message>
     <message>
-        <location filename="../src/analysis/FFT.cpp" line="150"/>
-        <location filename="../src/analysis/FFT.cpp" line="222"/>
-        <location filename="../src/analysis/FFT.cpp" line="265"/>
-        <location filename="../src/analysis/FFT.cpp" line="267"/>
+        <location filename="../src/analysis/FFT.cpp" line="164"/>
+        <location filename="../src/analysis/FFT.cpp" line="236"/>
+        <location filename="../src/analysis/FFT.cpp" line="279"/>
+        <location filename="../src/analysis/FFT.cpp" line="281"/>
         <source>Amplitude</source>
         <translation>Amplitud</translation>
     </message>
     <message>
-        <location filename="../src/analysis/FFT.cpp" line="150"/>
-        <location filename="../src/analysis/FFT.cpp" line="222"/>
+        <location filename="../src/analysis/FFT.cpp" line="164"/>
+        <location filename="../src/analysis/FFT.cpp" line="236"/>
         <source>Angle</source>
         <translation>Vinkel</translation>
     </message>
     <message>
-        <location filename="../src/analysis/FFT.cpp" line="262"/>
+        <location filename="../src/analysis/FFT.cpp" line="276"/>
         <source>Hz</source>
         <translation>Hz</translation>
     </message>
     <message>
-        <location filename="../src/analysis/FFT.cpp" line="264"/>
+        <location filename="../src/analysis/FFT.cpp" line="278"/>
         <source>s</source>
         <translation>s</translation>
     </message>
@@ -11195,64 +11195,64 @@ Följande specialkoder kan användas:
 <context>
     <name>FFTFilter</name>
     <message>
-        <location filename="../src/analysis/FFTFilter.cpp" line="60"/>
+        <location filename="../src/analysis/FFTFilter.cpp" line="74"/>
         <source>FFT</source>
         <translation>FFT</translation>
     </message>
     <message>
-        <location filename="../src/analysis/FFTFilter.cpp" line="60"/>
+        <location filename="../src/analysis/FFTFilter.cpp" line="74"/>
         <source>Filtered</source>
         <translation>Filtrerad</translation>
     </message>
     <message>
-        <location filename="../src/analysis/FFTFilter.cpp" line="73"/>
-        <location filename="../src/analysis/FFTFilter.cpp" line="95"/>
+        <location filename="../src/analysis/FFTFilter.cpp" line="87"/>
+        <location filename="../src/analysis/FFTFilter.cpp" line="109"/>
         <source>QtiPlot</source>
         <translation>QtiPlot</translation>
     </message>
     <message>
-        <location filename="../src/analysis/FFTFilter.cpp" line="73"/>
-        <location filename="../src/analysis/FFTFilter.cpp" line="95"/>
+        <location filename="../src/analysis/FFTFilter.cpp" line="87"/>
+        <location filename="../src/analysis/FFTFilter.cpp" line="109"/>
         <source>Error</source>
         <translation>Fel</translation>
     </message>
     <message>
-        <location filename="../src/analysis/FFTFilter.cpp" line="74"/>
+        <location filename="../src/analysis/FFTFilter.cpp" line="88"/>
         <source>Unknown filter type. Valid values are: 1 - Low pass, 2 - High Pass, 3 - Band Pass, 4 - Band block.</source>
         <translation>Okänd filtertyp, Giltiga värden är: 1 - logpass, 2 - högpass, 3 - bandpass, 4 - bandsspärr.</translation>
     </message>
     <message>
-        <location filename="../src/analysis/FFTFilter.cpp" line="96"/>
+        <location filename="../src/analysis/FFTFilter.cpp" line="110"/>
         <source>Please enter different values for the band limits.</source>
         <translation>mata in skilda värden för bandgränser.</translation>
     </message>
     <message>
-        <location filename="../src/analysis/FFTFilter.cpp" line="134"/>
+        <location filename="../src/analysis/FFTFilter.cpp" line="148"/>
         <source>to</source>
         <translation>till</translation>
     </message>
     <message>
-        <location filename="../src/analysis/FFTFilter.cpp" line="135"/>
+        <location filename="../src/analysis/FFTFilter.cpp" line="149"/>
         <source>Hz</source>
         <translation>Hz</translation>
     </message>
     <message>
-        <location filename="../src/analysis/FFTFilter.cpp" line="140"/>
+        <location filename="../src/analysis/FFTFilter.cpp" line="154"/>
         <source>Low Pass FFT Filter</source>
         <translation>Lågpass FFT-filter</translation>
     </message>
     <message>
-        <location filename="../src/analysis/FFTFilter.cpp" line="148"/>
+        <location filename="../src/analysis/FFTFilter.cpp" line="162"/>
         <source>High Pass FFT Filter</source>
         <translation>Högpass FFT-filter</translation>
     </message>
     <message>
-        <location filename="../src/analysis/FFTFilter.cpp" line="156"/>
+        <location filename="../src/analysis/FFTFilter.cpp" line="170"/>
         <source>Band Pass FFT Filter</source>
         <translation>Bandpass FFT-filter</translation>
     </message>
     <message>
-        <location filename="../src/analysis/FFTFilter.cpp" line="173"/>
+        <location filename="../src/analysis/FFTFilter.cpp" line="187"/>
         <source>Band Block FFT Filter</source>
         <translation>Bandspärr FFT-filter</translation>
     </message>
@@ -11263,9 +11263,9 @@ Följande specialkoder kan användas:
         <location filename="../src/analysis/Filter.cpp" line="94"/>
         <location filename="../src/analysis/Filter.cpp" line="117"/>
         <location filename="../src/analysis/Filter.cpp" line="122"/>
-        <location filename="../src/analysis/Filter.cpp" line="240"/>
-        <location filename="../src/analysis/Filter.cpp" line="466"/>
-        <location filename="../src/analysis/Filter.cpp" line="520"/>
+        <location filename="../src/analysis/Filter.cpp" line="257"/>
+        <location filename="../src/analysis/Filter.cpp" line="483"/>
+        <location filename="../src/analysis/Filter.cpp" line="537"/>
         <source>QtiPlot</source>
         <translation>QtiPlot</translation>
     </message>
@@ -11273,8 +11273,8 @@ Följande specialkoder kan användas:
         <location filename="../src/analysis/Filter.cpp" line="94"/>
         <location filename="../src/analysis/Filter.cpp" line="117"/>
         <location filename="../src/analysis/Filter.cpp" line="122"/>
-        <location filename="../src/analysis/Filter.cpp" line="240"/>
-        <location filename="../src/analysis/Filter.cpp" line="466"/>
+        <location filename="../src/analysis/Filter.cpp" line="257"/>
+        <location filename="../src/analysis/Filter.cpp" line="483"/>
         <source>Error</source>
         <translation>Fel</translation>
     </message>
@@ -11290,7 +11290,7 @@ Följande specialkoder kan användas:
     </message>
     <message>
         <location filename="../src/analysis/Filter.cpp" line="123"/>
-        <location filename="../src/analysis/Filter.cpp" line="467"/>
+        <location filename="../src/analysis/Filter.cpp" line="484"/>
         <source>You need at least %1 points in order to perform this operation!</source>
         <translation>Du behöver mints %1 punkter för att utföra åtgärden!</translation>
     </message>
@@ -11305,37 +11305,37 @@ Följande specialkoder kan användas:
         <translation>Skriv in ett giltigt kurvnamn!</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Filter.cpp" line="206"/>
+        <location filename="../src/analysis/Filter.cpp" line="223"/>
         <source>QtiPlot - Color Name Error</source>
         <translation>QtiPlot - Färgnamnfel</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Filter.cpp" line="207"/>
+        <location filename="../src/analysis/Filter.cpp" line="224"/>
         <source>The color name &apos;%1&apos; is not valid, a default color (red) will be used instead!</source>
         <translation>Färgnamnet &apos;%1&apos; är ogiltigt, en standardfärg (röd) kommer att utnyttjas i stället!</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Filter.cpp" line="241"/>
+        <location filename="../src/analysis/Filter.cpp" line="258"/>
         <source>You didn&apos;t specify a valid data set for this operation!</source>
         <translation>Du specificerade inte en giltig datamängd för denna åtgärd!</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Filter.cpp" line="385"/>
+        <location filename="../src/analysis/Filter.cpp" line="402"/>
         <source>of</source>
         <translation>av</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Filter.cpp" line="419"/>
+        <location filename="../src/analysis/Filter.cpp" line="436"/>
         <source>Plot</source>
         <translation>Rita</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Filter.cpp" line="520"/>
+        <location filename="../src/analysis/Filter.cpp" line="537"/>
         <source>Memory Allocation Error</source>
         <translation>Minnesallokeringsfel</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Filter.cpp" line="521"/>
+        <location filename="../src/analysis/Filter.cpp" line="538"/>
         <source>Not enough memory, operation aborted!</source>
         <translation>Ej tillräckligt med minne, uppgiften avbruten!</translation>
     </message>
@@ -11568,13 +11568,13 @@ Följande specialkoder kan användas:
 <context>
     <name>Fit</name>
     <message>
-        <location filename="../src/analysis/Fit.cpp" line="644"/>
-        <location filename="../src/analysis/Fit.cpp" line="685"/>
-        <location filename="../src/analysis/Fit.cpp" line="804"/>
-        <location filename="../src/analysis/Fit.cpp" line="903"/>
-        <location filename="../src/analysis/Fit.cpp" line="908"/>
-        <location filename="../src/analysis/Fit.cpp" line="913"/>
-        <location filename="../src/analysis/Fit.cpp" line="918"/>
+        <location filename="../src/analysis/Fit.cpp" line="650"/>
+        <location filename="../src/analysis/Fit.cpp" line="691"/>
+        <location filename="../src/analysis/Fit.cpp" line="810"/>
+        <location filename="../src/analysis/Fit.cpp" line="909"/>
+        <location filename="../src/analysis/Fit.cpp" line="914"/>
+        <location filename="../src/analysis/Fit.cpp" line="919"/>
+        <location filename="../src/analysis/Fit.cpp" line="924"/>
         <source>QtiPlot - Fit Error</source>
         <translation>QtiPlot - Anpassningsfel</translation>
     </message>
@@ -11587,7 +11587,7 @@ Följande specialkoder kan användas:
         <translation type="obsolete">Skriv in ett giltigt kurvnamn!</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Fit.cpp" line="296"/>
+        <location filename="../src/analysis/Fit.cpp" line="302"/>
         <source>Plot</source>
         <translation>Rita</translation>
     </message>
@@ -11596,118 +11596,118 @@ Följande specialkoder kan användas:
         <translation type="obsolete">anpassning av datamängd</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Fit.cpp" line="304"/>
+        <location filename="../src/analysis/Fit.cpp" line="310"/>
         <source>using function</source>
         <translation>använder funktion</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Fit.cpp" line="308"/>
+        <location filename="../src/analysis/Fit.cpp" line="314"/>
         <source>Weighting Method</source>
         <translation>Viktningsmetod</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Fit.cpp" line="312"/>
+        <location filename="../src/analysis/Fit.cpp" line="318"/>
         <source>No weighting</source>
         <translation>Ingen viktning</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Fit.cpp" line="315"/>
+        <location filename="../src/analysis/Fit.cpp" line="321"/>
         <source>Instrumental</source>
         <translation>Instrumentell</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Fit.cpp" line="315"/>
+        <location filename="../src/analysis/Fit.cpp" line="321"/>
         <source>using error bars dataset</source>
         <translation>använder felstaplars-datamängd</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Fit.cpp" line="318"/>
+        <location filename="../src/analysis/Fit.cpp" line="324"/>
         <source>Statistical</source>
         <translation>Statistiskt</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Fit.cpp" line="321"/>
+        <location filename="../src/analysis/Fit.cpp" line="327"/>
         <source>Arbitrary Dataset</source>
         <translation>Godtycklig datamängd</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Fit.cpp" line="333"/>
+        <location filename="../src/analysis/Fit.cpp" line="339"/>
         <source>Nelder-Mead Simplex</source>
         <translation>Nelder-Mead Simplex</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Fit.cpp" line="335"/>
+        <location filename="../src/analysis/Fit.cpp" line="341"/>
         <source>Unscaled Levenberg-Marquardt</source>
         <translation>Oskalad Levenberg-Marquardt</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Fit.cpp" line="337"/>
+        <location filename="../src/analysis/Fit.cpp" line="343"/>
         <source>Scaled Levenberg-Marquardt</source>
         <translation>Skalad Levenberg-Marquardt</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Fit.cpp" line="339"/>
+        <location filename="../src/analysis/Fit.cpp" line="345"/>
         <source> algorithm with tolerance = </source>
         <translation> algoritm med tolerans = </translation>
     </message>
     <message>
-        <location filename="../src/analysis/Fit.cpp" line="342"/>
+        <location filename="../src/analysis/Fit.cpp" line="348"/>
         <source>From x</source>
         <translation>Från x</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Fit.cpp" line="342"/>
+        <location filename="../src/analysis/Fit.cpp" line="348"/>
         <source>to x</source>
         <translation>till x</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Fit.cpp" line="356"/>
-        <location filename="../src/analysis/Fit.cpp" line="411"/>
+        <location filename="../src/analysis/Fit.cpp" line="362"/>
+        <location filename="../src/analysis/Fit.cpp" line="417"/>
         <source>R^2</source>
         <translation>R^2</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Fit.cpp" line="362"/>
+        <location filename="../src/analysis/Fit.cpp" line="368"/>
         <source>Iterations</source>
         <translation>Iterationer</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Fit.cpp" line="363"/>
+        <location filename="../src/analysis/Fit.cpp" line="369"/>
         <source>Status</source>
         <translation>Status</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Fit.cpp" line="403"/>
+        <location filename="../src/analysis/Fit.cpp" line="409"/>
         <source>Dataset</source>
         <translation>Datamängd</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Fit.cpp" line="404"/>
+        <location filename="../src/analysis/Fit.cpp" line="410"/>
         <source>Function</source>
         <translation>Funktion</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Fit.cpp" line="502"/>
+        <location filename="../src/analysis/Fit.cpp" line="508"/>
         <source>The column %1 has less points than the fitted data set. Please choose another column!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/analysis/Fit.cpp" line="552"/>
+        <location filename="../src/analysis/Fit.cpp" line="558"/>
         <source>Error</source>
         <translation>Fel</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Fit.cpp" line="469"/>
+        <location filename="../src/analysis/Fit.cpp" line="475"/>
         <source>The curve %1 has no associated Y error bars. You cannot use instrumental weighting method.</source>
         <translation>Kurvan %1 har inga kopplade Y-felstaplar. Du kan inte använda instrumentell viktningsmetod.</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Fit.cpp" line="552"/>
+        <location filename="../src/analysis/Fit.cpp" line="558"/>
         <source>Parameter</source>
         <translation>Parameter</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Fit.cpp" line="552"/>
+        <location filename="../src/analysis/Fit.cpp" line="558"/>
         <source>Value</source>
         <translation>Värde</translation>
     </message>
@@ -11716,17 +11716,17 @@ Följande specialkoder kan användas:
         <translation type="obsolete">Du specificerade inte en datamängd för denna åtgärd. Åtgärden avbröts!</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Fit.cpp" line="909"/>
+        <location filename="../src/analysis/Fit.cpp" line="915"/>
         <source>There are no parameters specified for this fit operation. Operation aborted!</source>
         <translation>Inga parametrar har specificerats för denna anpassningsåtgärd! Åtgärden avbröts!</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Fit.cpp" line="919"/>
+        <location filename="../src/analysis/Fit.cpp" line="925"/>
         <source>You must specify a valid fit function first. Operation aborted!</source>
         <translation>Du måste specificera en giltig anpassningsfunktion först. Åtgärden avbröts!</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Fit.cpp" line="1002"/>
+        <location filename="../src/analysis/Fit.cpp" line="1008"/>
         <source>Fit</source>
         <translation>Anpassning</translation>
     </message>
@@ -11735,10 +11735,10 @@ Följande specialkoder kan användas:
         <translation type="obsolete"> av </translation>
     </message>
     <message>
-        <location filename="../src/analysis/Fit.cpp" line="449"/>
-        <location filename="../src/analysis/Fit.cpp" line="468"/>
-        <location filename="../src/analysis/Fit.cpp" line="501"/>
-        <location filename="../src/analysis/Fit.cpp" line="526"/>
+        <location filename="../src/analysis/Fit.cpp" line="455"/>
+        <location filename="../src/analysis/Fit.cpp" line="474"/>
+        <location filename="../src/analysis/Fit.cpp" line="507"/>
+        <location filename="../src/analysis/Fit.cpp" line="532"/>
         <source>QtiPlot - Error</source>
         <translation>QtiPlot - Fel</translation>
     </message>
@@ -11747,66 +11747,66 @@ Följande specialkoder kan användas:
         <translation type="obsolete">Du behöver minst %1 punkter för att genomföra denna åtgärd. Åtgärden avbruten!</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Fit.cpp" line="904"/>
+        <location filename="../src/analysis/Fit.cpp" line="910"/>
         <source>You didn&apos;t specify a valid data set for this fit operation. Operation aborted!</source>
         <translation>Du specificerade inte en giltig datamängd för denna anpassningsåtgärd. Åtgärden avbruten!</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Fit.cpp" line="914"/>
+        <location filename="../src/analysis/Fit.cpp" line="920"/>
         <source>You need at least %1 data points for this fit operation. Operation aborted!</source>
         <translation>Du behöver minst %1 punkter för att genomföra denna åtgärd. Åtgärden avbruten!</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Fit.cpp" line="527"/>
+        <location filename="../src/analysis/Fit.cpp" line="533"/>
         <source>The column %1 has less points than the fitted data set. Please choose another column!.</source>
         <translation>Kolumnen %1 har färre punkter än den anpassade datamängden. Välj en annan kolumn!.</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Fit.cpp" line="298"/>
+        <location filename="../src/analysis/Fit.cpp" line="304"/>
         <source>graphics display disabled</source>
         <translation>grafisk visning ej tillgänglig</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Fit.cpp" line="302"/>
+        <location filename="../src/analysis/Fit.cpp" line="308"/>
         <source>of dataset</source>
         <translation>av datamängd</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Fit.cpp" line="450"/>
+        <location filename="../src/analysis/Fit.cpp" line="456"/>
         <source>You cannot use the instrumental weighting method.</source>
         <translation>Man kan inte använda den &quot;instrumentella&quot; viktningsmetoden.</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Fit.cpp" line="1035"/>
+        <location filename="../src/analysis/Fit.cpp" line="1041"/>
         <source>QtiPlot</source>
         <translation>QtiPlot</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Fit.cpp" line="1035"/>
+        <location filename="../src/analysis/Fit.cpp" line="1041"/>
         <source>File Save Error</source>
         <translation>Fillagringsfel</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Fit.cpp" line="1036"/>
+        <location filename="../src/analysis/Fit.cpp" line="1042"/>
         <source>Could not write to file: &lt;br&gt;&lt;h4&gt; %1 &lt;/h4&gt;&lt;p&gt;Please verify that you have the right to write to this location!</source>
         <translation>Kunde inte skriva till filen: &lt;br&gt;&lt;h4&gt; %1 &lt;/h4&gt;&lt;p&gt;Verifiera att du har rättighet att skriva på denna plats!</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Fit.cpp" line="1074"/>
+        <location filename="../src/analysis/Fit.cpp" line="1080"/>
         <source>QtiPlot Fit Model</source>
         <translation>QtiPlot anpassningsmodell</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Fit.cpp" line="1075"/>
+        <location filename="../src/analysis/Fit.cpp" line="1081"/>
         <source>Cannot read file %1:
 %2.</source>
         <translation>Kan ej läsa %!:
 %2.</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Fit.cpp" line="645"/>
-        <location filename="../src/analysis/Fit.cpp" line="686"/>
-        <location filename="../src/analysis/Fit.cpp" line="805"/>
+        <location filename="../src/analysis/Fit.cpp" line="651"/>
+        <location filename="../src/analysis/Fit.cpp" line="692"/>
+        <location filename="../src/analysis/Fit.cpp" line="811"/>
         <source>Please perform a fit first!</source>
         <translation>Genom för en anpassning först!</translation>
     </message>
@@ -11815,131 +11815,131 @@ Följande specialkoder kan användas:
         <translation type="obsolete">Residuer</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Fit.cpp" line="653"/>
+        <location filename="../src/analysis/Fit.cpp" line="659"/>
         <source>Residuals of %1</source>
         <translation>Residuer av %1</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Fit.cpp" line="657"/>
+        <location filename="../src/analysis/Fit.cpp" line="663"/>
         <source>residue</source>
         <translation>residu</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Fit.cpp" line="357"/>
+        <location filename="../src/analysis/Fit.cpp" line="363"/>
         <source>Adjusted R^2</source>
         <translation>Justerad R²</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Fit.cpp" line="358"/>
+        <location filename="../src/analysis/Fit.cpp" line="364"/>
         <source>RMSE (Root Mean Squared Error)</source>
         <translation>RMSE (Root Mean Squared Error)</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Fit.cpp" line="359"/>
+        <location filename="../src/analysis/Fit.cpp" line="365"/>
         <source>RSS (Residual Sum of Squares)</source>
         <translation>RSS (Residual summa av kvadrater)</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Fit.cpp" line="653"/>
+        <location filename="../src/analysis/Fit.cpp" line="659"/>
         <source>FitResiduals</source>
         <translation>FitResiduals</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Fit.cpp" line="721"/>
-        <location filename="../src/analysis/Fit.cpp" line="840"/>
+        <location filename="../src/analysis/Fit.cpp" line="727"/>
+        <location filename="../src/analysis/Fit.cpp" line="846"/>
         <source>FitStats</source>
         <translation>FitStats</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Fit.cpp" line="721"/>
+        <location filename="../src/analysis/Fit.cpp" line="727"/>
         <source>Confidence Limits of %1</source>
         <translation>Konfidensgränser för %1</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Fit.cpp" line="725"/>
-        <location filename="../src/analysis/Fit.cpp" line="844"/>
+        <location filename="../src/analysis/Fit.cpp" line="731"/>
+        <location filename="../src/analysis/Fit.cpp" line="850"/>
         <source>Independent Variable</source>
         <translation>Oberoende variabel</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Fit.cpp" line="726"/>
+        <location filename="../src/analysis/Fit.cpp" line="732"/>
         <source>LCL</source>
         <translation>LCL</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Fit.cpp" line="727"/>
+        <location filename="../src/analysis/Fit.cpp" line="733"/>
         <source>Lower %1 Confidence Limit</source>
         <translation>Lägra %1 konfidensgräns</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Fit.cpp" line="728"/>
+        <location filename="../src/analysis/Fit.cpp" line="734"/>
         <source>UCL</source>
         <translation>UCL</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Fit.cpp" line="729"/>
+        <location filename="../src/analysis/Fit.cpp" line="735"/>
         <source>Upper %1 Confidence Limit</source>
         <translation>Övre %1 konfidensgräns</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Fit.cpp" line="840"/>
+        <location filename="../src/analysis/Fit.cpp" line="846"/>
         <source>Prediction Limits of %1</source>
         <translation>Prediktionsgränser för %1</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Fit.cpp" line="845"/>
+        <location filename="../src/analysis/Fit.cpp" line="851"/>
         <source>LPL</source>
         <translation>LPL</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Fit.cpp" line="846"/>
+        <location filename="../src/analysis/Fit.cpp" line="852"/>
         <source>Lower %1 Prediction Limit</source>
         <translation>Lägre %1 prediktionsgräns</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Fit.cpp" line="847"/>
+        <location filename="../src/analysis/Fit.cpp" line="853"/>
         <source>UPL</source>
         <translation>UPL</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Fit.cpp" line="848"/>
+        <location filename="../src/analysis/Fit.cpp" line="854"/>
         <source>Upper %1 Prediction Limit</source>
         <translation>Övre %1 prediktionsgräns</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Fit.cpp" line="324"/>
+        <location filename="../src/analysis/Fit.cpp" line="330"/>
         <source>Direct Weighting using Dataset</source>
         <translation>Direkt viktning med datamängd</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Fit.cpp" line="695"/>
-        <location filename="../src/analysis/Fit.cpp" line="709"/>
+        <location filename="../src/analysis/Fit.cpp" line="701"/>
         <location filename="../src/analysis/Fit.cpp" line="715"/>
-        <location filename="../src/analysis/Fit.cpp" line="814"/>
-        <location filename="../src/analysis/Fit.cpp" line="828"/>
+        <location filename="../src/analysis/Fit.cpp" line="721"/>
+        <location filename="../src/analysis/Fit.cpp" line="820"/>
         <location filename="../src/analysis/Fit.cpp" line="834"/>
-        <location filename="../src/analysis/Fit.cpp" line="981"/>
+        <location filename="../src/analysis/Fit.cpp" line="840"/>
+        <location filename="../src/analysis/Fit.cpp" line="987"/>
         <source>QtiPlot - Memory Allocation Error</source>
         <translation>QtiPlot - Minnesallokeringsfel</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Fit.cpp" line="982"/>
         <location filename="../src/analysis/Fit.cpp" line="988"/>
+        <location filename="../src/analysis/Fit.cpp" line="994"/>
         <source>Could not allocate enough memory for the fit curves!</source>
         <translation>Kunde inte tilldela tillräckligt med minne för anpassningskurvorna!</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Fit.cpp" line="987"/>
+        <location filename="../src/analysis/Fit.cpp" line="993"/>
         <source>QtiPlot  - Memory Allocation Error</source>
         <translation>QtiPlot - Minnesallokeringsfel</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Fit.cpp" line="696"/>
-        <location filename="../src/analysis/Fit.cpp" line="710"/>
+        <location filename="../src/analysis/Fit.cpp" line="702"/>
         <location filename="../src/analysis/Fit.cpp" line="716"/>
-        <location filename="../src/analysis/Fit.cpp" line="815"/>
-        <location filename="../src/analysis/Fit.cpp" line="829"/>
+        <location filename="../src/analysis/Fit.cpp" line="722"/>
+        <location filename="../src/analysis/Fit.cpp" line="821"/>
         <location filename="../src/analysis/Fit.cpp" line="835"/>
+        <location filename="../src/analysis/Fit.cpp" line="841"/>
         <source>Not enough memory!</source>
         <translation>Ej tillräckligt med minne!</translation>
     </message>
@@ -12877,32 +12877,32 @@ Följande specialkoder kan användas:
         <translation type="obsolete">(bredd)</translation>
     </message>
     <message>
-        <location filename="../src/analysis/MultiPeakFit.cpp" line="527"/>
+        <location filename="../src/analysis/MultiPeakFit.cpp" line="575"/>
         <source>GaussAmp</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/analysis/MultiPeakFit.cpp" line="536"/>
+        <location filename="../src/analysis/MultiPeakFit.cpp" line="584"/>
         <source>GaussAmp Fit</source>
         <translation>GaussAmp-anpassning</translation>
     </message>
     <message>
-        <location filename="../src/analysis/MultiPeakFit.cpp" line="534"/>
+        <location filename="../src/analysis/MultiPeakFit.cpp" line="582"/>
         <source>offset</source>
         <translation>förskjutning</translation>
     </message>
     <message>
-        <location filename="../src/analysis/MultiPeakFit.cpp" line="534"/>
+        <location filename="../src/analysis/MultiPeakFit.cpp" line="582"/>
         <source>amplitude</source>
         <translation>amplitud</translation>
     </message>
     <message>
-        <location filename="../src/analysis/MultiPeakFit.cpp" line="534"/>
+        <location filename="../src/analysis/MultiPeakFit.cpp" line="582"/>
         <source>center</source>
         <translation>centrum</translation>
     </message>
     <message>
-        <location filename="../src/analysis/MultiPeakFit.cpp" line="534"/>
+        <location filename="../src/analysis/MultiPeakFit.cpp" line="582"/>
         <source>width</source>
         <translation>bredd</translation>
     </message>
@@ -12910,7 +12910,7 @@ Följande specialkoder kan användas:
 <context>
     <name>GaussFit</name>
     <message>
-        <location filename="../src/analysis/MultiPeakFit.cpp" line="487"/>
+        <location filename="../src/analysis/MultiPeakFit.cpp" line="521"/>
         <source>Gauss</source>
         <translation>Gauss</translation>
     </message>
@@ -12931,27 +12931,27 @@ Följande specialkoder kan användas:
         <translation type="obsolete">(offset)</translation>
     </message>
     <message>
-        <location filename="../src/analysis/MultiPeakFit.cpp" line="488"/>
+        <location filename="../src/analysis/MultiPeakFit.cpp" line="522"/>
         <source>Gauss Fit</source>
         <translation>Gaussanpassning</translation>
     </message>
     <message>
-        <location filename="../src/analysis/MultiPeakFit.cpp" line="489"/>
+        <location filename="../src/analysis/MultiPeakFit.cpp" line="523"/>
         <source>area</source>
         <translation>yta</translation>
     </message>
     <message>
-        <location filename="../src/analysis/MultiPeakFit.cpp" line="489"/>
+        <location filename="../src/analysis/MultiPeakFit.cpp" line="523"/>
         <source>center</source>
         <translation>centrum</translation>
     </message>
     <message>
-        <location filename="../src/analysis/MultiPeakFit.cpp" line="489"/>
+        <location filename="../src/analysis/MultiPeakFit.cpp" line="523"/>
         <source>width</source>
         <translation>bredd</translation>
     </message>
     <message>
-        <location filename="../src/analysis/MultiPeakFit.cpp" line="489"/>
+        <location filename="../src/analysis/MultiPeakFit.cpp" line="523"/>
         <source>offset</source>
         <translation>förskjutning</translation>
     </message>
@@ -14582,7 +14582,7 @@ Gränserna måste vara inom definitionsområdet för x; om du inte vet maximum- 
     <name>Integration</name>
     <message>
         <location filename="../src/analysis/Integration.cpp" line="65"/>
-        <location filename="../src/analysis/Integration.cpp" line="101"/>
+        <location filename="../src/analysis/Integration.cpp" line="115"/>
         <source>Integration</source>
         <translation>Integrering</translation>
     </message>
@@ -14591,23 +14591,23 @@ Gränserna måste vara inom definitionsområdet för x; om du inte vet maximum- 
         <translation type="obsolete">Rita</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Integration.cpp" line="193"/>
-        <location filename="../src/analysis/Integration.cpp" line="209"/>
+        <location filename="../src/analysis/Integration.cpp" line="207"/>
+        <location filename="../src/analysis/Integration.cpp" line="223"/>
         <source>Numerical integration of</source>
         <translation>Numerisk integration av</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Integration.cpp" line="194"/>
+        <location filename="../src/analysis/Integration.cpp" line="208"/>
         <source>using a %1 order method</source>
         <translation>genom en %1-ordningens metod</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Integration.cpp" line="198"/>
+        <location filename="../src/analysis/Integration.cpp" line="212"/>
         <source>Iterations</source>
         <translation>Iterationer</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Integration.cpp" line="197"/>
+        <location filename="../src/analysis/Integration.cpp" line="211"/>
         <source>Tolerance</source>
         <translation>Tolerans</translation>
     </message>
@@ -14616,43 +14616,43 @@ Gränserna måste vara inom definitionsområdet för x; om du inte vet maximum- 
         <translation type="obsolete">max</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Integration.cpp" line="211"/>
+        <location filename="../src/analysis/Integration.cpp" line="225"/>
         <source>Points</source>
         <translation>Punkter</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Integration.cpp" line="211"/>
+        <location filename="../src/analysis/Integration.cpp" line="225"/>
         <source>from</source>
         <translation>från</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Integration.cpp" line="196"/>
-        <location filename="../src/analysis/Integration.cpp" line="212"/>
+        <location filename="../src/analysis/Integration.cpp" line="210"/>
+        <location filename="../src/analysis/Integration.cpp" line="226"/>
         <source>to</source>
         <translation>till</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Integration.cpp" line="221"/>
+        <location filename="../src/analysis/Integration.cpp" line="235"/>
         <source>Peak at</source>
         <translation>Topp vid</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Integration.cpp" line="226"/>
+        <location filename="../src/analysis/Integration.cpp" line="240"/>
         <source>Area</source>
         <translation>Yta</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Integration.cpp" line="234"/>
+        <location filename="../src/analysis/Integration.cpp" line="248"/>
         <source>QtiPlot - Error</source>
         <translation>QtiPlot - Fel</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Integration.cpp" line="235"/>
+        <location filename="../src/analysis/Integration.cpp" line="249"/>
         <source>Unknown integration method. Valid values must be in the range: 1 (Trapezoidal Method) to 5.</source>
         <translation>Okänd integrationsmetod. Giltiga värden måste vara i området: 1 (Trapestmetod) till 5.</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Integration.cpp" line="201"/>
+        <location filename="../src/analysis/Integration.cpp" line="215"/>
         <source>	Plot</source>
         <translation>	Rita</translation>
     </message>
@@ -14662,12 +14662,12 @@ Gränserna måste vara inom definitionsområdet för x; om du inte vet maximum- 
         <translation>QtiPlot - Indatafel</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Integration.cpp" line="195"/>
+        <location filename="../src/analysis/Integration.cpp" line="209"/>
         <source>From</source>
         <translation>Från</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Integration.cpp" line="210"/>
+        <location filename="../src/analysis/Integration.cpp" line="224"/>
         <source>using the Trapezoidal Rule</source>
         <translation>använder trapetsregel</translation>
     </message>
@@ -14675,78 +14675,78 @@ Gränserna måste vara inom definitionsområdet för x; om du inte vet maximum- 
 <context>
     <name>Interpolation</name>
     <message>
-        <location filename="../src/analysis/Interpolation.cpp" line="62"/>
-        <location filename="../src/analysis/Interpolation.cpp" line="126"/>
+        <location filename="../src/analysis/Interpolation.cpp" line="76"/>
+        <location filename="../src/analysis/Interpolation.cpp" line="140"/>
         <source>QtiPlot</source>
         <translation>QtiPlot</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Interpolation.cpp" line="62"/>
-        <location filename="../src/analysis/Interpolation.cpp" line="126"/>
+        <location filename="../src/analysis/Interpolation.cpp" line="76"/>
+        <location filename="../src/analysis/Interpolation.cpp" line="140"/>
         <source>Error</source>
         <translation>Fel</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Interpolation.cpp" line="63"/>
+        <location filename="../src/analysis/Interpolation.cpp" line="77"/>
         <source>Unknown interpolation method. Valid values are: 0 - Linear, 1 - Cubic, 2 - Akima.</source>
         <translation>Okänd interpoleringsmetod. Giltiga värden måste vara i området: 0- linjär, 1 - kubisk, 2- Akima. </translation>
     </message>
     <message>
-        <location filename="../src/analysis/Interpolation.cpp" line="74"/>
-        <location filename="../src/analysis/Interpolation.cpp" line="75"/>
-        <location filename="../src/analysis/Interpolation.cpp" line="138"/>
-        <location filename="../src/analysis/Interpolation.cpp" line="139"/>
+        <location filename="../src/analysis/Interpolation.cpp" line="88"/>
+        <location filename="../src/analysis/Interpolation.cpp" line="89"/>
+        <location filename="../src/analysis/Interpolation.cpp" line="152"/>
+        <location filename="../src/analysis/Interpolation.cpp" line="153"/>
         <source>Linear</source>
         <translation>Linjär</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Interpolation.cpp" line="74"/>
-        <location filename="../src/analysis/Interpolation.cpp" line="79"/>
-        <location filename="../src/analysis/Interpolation.cpp" line="84"/>
-        <location filename="../src/analysis/Interpolation.cpp" line="138"/>
-        <location filename="../src/analysis/Interpolation.cpp" line="142"/>
-        <location filename="../src/analysis/Interpolation.cpp" line="146"/>
+        <location filename="../src/analysis/Interpolation.cpp" line="88"/>
+        <location filename="../src/analysis/Interpolation.cpp" line="93"/>
+        <location filename="../src/analysis/Interpolation.cpp" line="98"/>
+        <location filename="../src/analysis/Interpolation.cpp" line="152"/>
+        <location filename="../src/analysis/Interpolation.cpp" line="156"/>
+        <location filename="../src/analysis/Interpolation.cpp" line="160"/>
         <source>Int</source>
         <translation>Int</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Interpolation.cpp" line="75"/>
-        <location filename="../src/analysis/Interpolation.cpp" line="80"/>
-        <location filename="../src/analysis/Interpolation.cpp" line="85"/>
-        <location filename="../src/analysis/Interpolation.cpp" line="139"/>
-        <location filename="../src/analysis/Interpolation.cpp" line="143"/>
-        <location filename="../src/analysis/Interpolation.cpp" line="147"/>
+        <location filename="../src/analysis/Interpolation.cpp" line="89"/>
+        <location filename="../src/analysis/Interpolation.cpp" line="94"/>
+        <location filename="../src/analysis/Interpolation.cpp" line="99"/>
+        <location filename="../src/analysis/Interpolation.cpp" line="153"/>
+        <location filename="../src/analysis/Interpolation.cpp" line="157"/>
+        <location filename="../src/analysis/Interpolation.cpp" line="161"/>
         <source>Interpolation</source>
         <translation>Interpolation</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Interpolation.cpp" line="79"/>
-        <location filename="../src/analysis/Interpolation.cpp" line="80"/>
-        <location filename="../src/analysis/Interpolation.cpp" line="142"/>
-        <location filename="../src/analysis/Interpolation.cpp" line="143"/>
+        <location filename="../src/analysis/Interpolation.cpp" line="93"/>
+        <location filename="../src/analysis/Interpolation.cpp" line="94"/>
+        <location filename="../src/analysis/Interpolation.cpp" line="156"/>
+        <location filename="../src/analysis/Interpolation.cpp" line="157"/>
         <source>Cubic</source>
         <translation>Kubisk</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Interpolation.cpp" line="84"/>
-        <location filename="../src/analysis/Interpolation.cpp" line="85"/>
-        <location filename="../src/analysis/Interpolation.cpp" line="146"/>
-        <location filename="../src/analysis/Interpolation.cpp" line="147"/>
+        <location filename="../src/analysis/Interpolation.cpp" line="98"/>
+        <location filename="../src/analysis/Interpolation.cpp" line="99"/>
+        <location filename="../src/analysis/Interpolation.cpp" line="160"/>
+        <location filename="../src/analysis/Interpolation.cpp" line="161"/>
         <source>Akima</source>
         <translation>Akima</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Interpolation.cpp" line="103"/>
+        <location filename="../src/analysis/Interpolation.cpp" line="117"/>
         <source>QtiPlot - Error</source>
         <translation>QtiPlot - Fel</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Interpolation.cpp" line="104"/>
+        <location filename="../src/analysis/Interpolation.cpp" line="118"/>
         <source>Unknown interpolation method, valid values are: 0 - Linear, 1 - Cubic, 2 - Akima.</source>
         <translation>Okänd interpoleringsmetod. Giltiga värden måste vara i området: 0- linjär, 1 - kubisk, 2- Akima. </translation>
     </message>
     <message>
-        <location filename="../src/analysis/Interpolation.cpp" line="127"/>
+        <location filename="../src/analysis/Interpolation.cpp" line="141"/>
         <source>You need at least %1 points in order to perform this operation!</source>
         <translation>Du behöver mints %1 punkter för att utföra åtgärden!</translation>
     </message>
@@ -15326,22 +15326,22 @@ Gränserna måste vara inom definitionsområdet för x; om du inte vet maximum- 
 <context>
     <name>LinearFit</name>
     <message>
-        <location filename="../src/analysis/PolynomialFit.cpp" line="261"/>
+        <location filename="../src/analysis/PolynomialFit.cpp" line="289"/>
         <source>Linear Regression</source>
         <translation>Linjär regression</translation>
     </message>
     <message>
-        <location filename="../src/analysis/PolynomialFit.cpp" line="262"/>
+        <location filename="../src/analysis/PolynomialFit.cpp" line="290"/>
         <source>Linear</source>
         <translation>Linjär</translation>
     </message>
     <message>
-        <location filename="../src/analysis/PolynomialFit.cpp" line="271"/>
+        <location filename="../src/analysis/PolynomialFit.cpp" line="299"/>
         <source>QtiPlot - Fit Error</source>
         <translation>QtiPlot - Anpassningsfel</translation>
     </message>
     <message>
-        <location filename="../src/analysis/PolynomialFit.cpp" line="272"/>
+        <location filename="../src/analysis/PolynomialFit.cpp" line="300"/>
         <source>You need at least %1 data points for this fit operation. Operation aborted!</source>
         <translation>Du behöver minst %1 punkter för att genomföra denna anpassningsåtgärd. Åtgärden avbruten!</translation>
     </message>
@@ -15349,22 +15349,22 @@ Gränserna måste vara inom definitionsområdet för x; om du inte vet maximum- 
 <context>
     <name>LinearSlopeFit</name>
     <message>
-        <location filename="../src/analysis/PolynomialFit.cpp" line="367"/>
+        <location filename="../src/analysis/PolynomialFit.cpp" line="395"/>
         <source>Linear Regression</source>
         <translation>Linjär regression</translation>
     </message>
     <message>
-        <location filename="../src/analysis/PolynomialFit.cpp" line="368"/>
+        <location filename="../src/analysis/PolynomialFit.cpp" line="396"/>
         <source>LinearSlope</source>
         <translation>Linjärlutning</translation>
     </message>
     <message>
-        <location filename="../src/analysis/PolynomialFit.cpp" line="377"/>
+        <location filename="../src/analysis/PolynomialFit.cpp" line="405"/>
         <source>QtiPlot - Fit Error</source>
         <translation>QtiPlot - Anpassningsfel</translation>
     </message>
     <message>
-        <location filename="../src/analysis/PolynomialFit.cpp" line="378"/>
+        <location filename="../src/analysis/PolynomialFit.cpp" line="406"/>
         <source>You need at least %1 data points for this fit operation. Operation aborted!</source>
         <translation>Du behöver minst %1 punkter för att denna anpassning. Åtgärden avbruten!</translation>
     </message>
@@ -15372,32 +15372,32 @@ Gränserna måste vara inom definitionsområdet för x; om du inte vet maximum- 
 <context>
     <name>LogisticFit</name>
     <message>
-        <location filename="../src/analysis/LogisticFit.cpp" line="61"/>
+        <location filename="../src/analysis/LogisticFit.cpp" line="75"/>
         <source>Logistic</source>
         <translation>Logistik</translation>
     </message>
     <message>
-        <location filename="../src/analysis/LogisticFit.cpp" line="66"/>
+        <location filename="../src/analysis/LogisticFit.cpp" line="80"/>
         <source>init value</source>
         <translation>begynnelsevärde</translation>
     </message>
     <message>
-        <location filename="../src/analysis/LogisticFit.cpp" line="66"/>
+        <location filename="../src/analysis/LogisticFit.cpp" line="80"/>
         <source>final value</source>
         <translation>slutvärde</translation>
     </message>
     <message>
-        <location filename="../src/analysis/LogisticFit.cpp" line="66"/>
+        <location filename="../src/analysis/LogisticFit.cpp" line="80"/>
         <source>center</source>
         <translation>centrum</translation>
     </message>
     <message>
-        <location filename="../src/analysis/LogisticFit.cpp" line="66"/>
+        <location filename="../src/analysis/LogisticFit.cpp" line="80"/>
         <source>power</source>
         <translation>effekt</translation>
     </message>
     <message>
-        <location filename="../src/analysis/LogisticFit.cpp" line="68"/>
+        <location filename="../src/analysis/LogisticFit.cpp" line="82"/>
         <source>Logistic Fit</source>
         <translation>Logistisk anpassning</translation>
     </message>
@@ -15405,7 +15405,7 @@ Gränserna måste vara inom definitionsområdet för x; om du inte vet maximum- 
 <context>
     <name>LorentzFit</name>
     <message>
-        <location filename="../src/analysis/MultiPeakFit.cpp" line="447"/>
+        <location filename="../src/analysis/MultiPeakFit.cpp" line="467"/>
         <source>Lorentz</source>
         <translation>Lorentz</translation>
     </message>
@@ -15426,27 +15426,27 @@ Gränserna måste vara inom definitionsområdet för x; om du inte vet maximum- 
         <translation type="obsolete">(offset)</translation>
     </message>
     <message>
-        <location filename="../src/analysis/MultiPeakFit.cpp" line="448"/>
+        <location filename="../src/analysis/MultiPeakFit.cpp" line="468"/>
         <source>Lorentz Fit</source>
         <translation>Lorenzanpassning</translation>
     </message>
     <message>
-        <location filename="../src/analysis/MultiPeakFit.cpp" line="449"/>
+        <location filename="../src/analysis/MultiPeakFit.cpp" line="469"/>
         <source>area</source>
         <translation>yta</translation>
     </message>
     <message>
-        <location filename="../src/analysis/MultiPeakFit.cpp" line="449"/>
+        <location filename="../src/analysis/MultiPeakFit.cpp" line="469"/>
         <source>center</source>
         <translation>centrum</translation>
     </message>
     <message>
-        <location filename="../src/analysis/MultiPeakFit.cpp" line="449"/>
+        <location filename="../src/analysis/MultiPeakFit.cpp" line="469"/>
         <source>width</source>
         <translation>bredd</translation>
     </message>
     <message>
-        <location filename="../src/analysis/MultiPeakFit.cpp" line="449"/>
+        <location filename="../src/analysis/MultiPeakFit.cpp" line="469"/>
         <source>offset</source>
         <translation>förskjutning</translation>
     </message>
@@ -16164,106 +16164,106 @@ Vill du skjuta in celler?</translation>
         <translation type="obsolete">Mångtopp</translation>
     </message>
     <message>
-        <location filename="../src/analysis/MultiPeakFit.cpp" line="57"/>
+        <location filename="../src/analysis/MultiPeakFit.cpp" line="63"/>
         <source>Gauss</source>
         <translation>Gauss</translation>
     </message>
     <message>
-        <location filename="../src/analysis/MultiPeakFit.cpp" line="63"/>
+        <location filename="../src/analysis/MultiPeakFit.cpp" line="69"/>
         <source>Lorentz</source>
         <translation>Lorentz</translation>
     </message>
     <message>
-        <location filename="../src/analysis/MultiPeakFit.cpp" line="88"/>
+        <location filename="../src/analysis/MultiPeakFit.cpp" line="94"/>
         <source>multi-peak</source>
         <translation>mångtopp</translation>
     </message>
     <message>
-        <location filename="../src/analysis/MultiPeakFit.cpp" line="219"/>
-        <location filename="../src/analysis/MultiPeakFit.cpp" line="222"/>
-        <location filename="../src/analysis/MultiPeakFit.cpp" line="394"/>
+        <location filename="../src/analysis/MultiPeakFit.cpp" line="225"/>
+        <location filename="../src/analysis/MultiPeakFit.cpp" line="228"/>
+        <location filename="../src/analysis/MultiPeakFit.cpp" line="400"/>
         <source>Peak</source>
         <translation>Topp</translation>
     </message>
     <message>
-        <location filename="../src/analysis/MultiPeakFit.cpp" line="271"/>
+        <location filename="../src/analysis/MultiPeakFit.cpp" line="277"/>
         <source>QtiPlot - Fit Error</source>
         <translation>QtiPlot - Anpassningsfel</translation>
     </message>
     <message>
-        <location filename="../src/analysis/MultiPeakFit.cpp" line="272"/>
+        <location filename="../src/analysis/MultiPeakFit.cpp" line="278"/>
         <source>Could not allocate enough memory for the fit curves!</source>
         <translation>Kunde inte tilldela tillräckligt med minne för anpassningskurvorna!</translation>
     </message>
     <message>
-        <location filename="../src/analysis/MultiPeakFit.cpp" line="258"/>
-        <location filename="../src/analysis/MultiPeakFit.cpp" line="260"/>
-        <location filename="../src/analysis/MultiPeakFit.cpp" line="282"/>
+        <location filename="../src/analysis/MultiPeakFit.cpp" line="264"/>
+        <location filename="../src/analysis/MultiPeakFit.cpp" line="266"/>
+        <location filename="../src/analysis/MultiPeakFit.cpp" line="288"/>
         <source>Fit</source>
         <translation>Anpassa</translation>
     </message>
     <message>
-        <location filename="../src/analysis/MultiPeakFit.cpp" line="288"/>
+        <location filename="../src/analysis/MultiPeakFit.cpp" line="294"/>
         <source>fit of</source>
         <translation>anpassning av</translation>
     </message>
     <message>
-        <location filename="../src/analysis/MultiPeakFit.cpp" line="293"/>
-        <location filename="../src/analysis/MultiPeakFit.cpp" line="347"/>
+        <location filename="../src/analysis/MultiPeakFit.cpp" line="299"/>
+        <location filename="../src/analysis/MultiPeakFit.cpp" line="353"/>
         <source>peak</source>
         <translation>topp</translation>
     </message>
     <message>
-        <location filename="../src/analysis/MultiPeakFit.cpp" line="394"/>
+        <location filename="../src/analysis/MultiPeakFit.cpp" line="400"/>
         <source>Area</source>
         <translation>Yta</translation>
     </message>
     <message>
-        <location filename="../src/analysis/MultiPeakFit.cpp" line="395"/>
+        <location filename="../src/analysis/MultiPeakFit.cpp" line="401"/>
         <source>Center</source>
         <translation>Centrum</translation>
     </message>
     <message>
-        <location filename="../src/analysis/MultiPeakFit.cpp" line="395"/>
+        <location filename="../src/analysis/MultiPeakFit.cpp" line="401"/>
         <source>Width</source>
         <translation>Bredd</translation>
     </message>
     <message>
-        <location filename="../src/analysis/MultiPeakFit.cpp" line="395"/>
+        <location filename="../src/analysis/MultiPeakFit.cpp" line="401"/>
         <source>Height</source>
         <translation>Höjd</translation>
     </message>
     <message>
-        <location filename="../src/analysis/MultiPeakFit.cpp" line="84"/>
+        <location filename="../src/analysis/MultiPeakFit.cpp" line="90"/>
         <source>Gauss Fit</source>
         <translation>Gaussanpassning</translation>
     </message>
     <message>
-        <location filename="../src/analysis/MultiPeakFit.cpp" line="86"/>
+        <location filename="../src/analysis/MultiPeakFit.cpp" line="92"/>
         <source>Lorentz Fit</source>
         <translation>Lorenzanpassning</translation>
     </message>
     <message>
-        <location filename="../src/analysis/MultiPeakFit.cpp" line="118"/>
-        <location filename="../src/analysis/MultiPeakFit.cpp" line="123"/>
+        <location filename="../src/analysis/MultiPeakFit.cpp" line="124"/>
+        <location filename="../src/analysis/MultiPeakFit.cpp" line="129"/>
         <source>area</source>
         <translation>yta</translation>
     </message>
     <message>
-        <location filename="../src/analysis/MultiPeakFit.cpp" line="118"/>
         <location filename="../src/analysis/MultiPeakFit.cpp" line="124"/>
+        <location filename="../src/analysis/MultiPeakFit.cpp" line="130"/>
         <source>center</source>
         <translation>centrum</translation>
     </message>
     <message>
-        <location filename="../src/analysis/MultiPeakFit.cpp" line="118"/>
-        <location filename="../src/analysis/MultiPeakFit.cpp" line="125"/>
+        <location filename="../src/analysis/MultiPeakFit.cpp" line="124"/>
+        <location filename="../src/analysis/MultiPeakFit.cpp" line="131"/>
         <source>width</source>
         <translation>bredd</translation>
     </message>
     <message>
-        <location filename="../src/analysis/MultiPeakFit.cpp" line="118"/>
-        <location filename="../src/analysis/MultiPeakFit.cpp" line="127"/>
+        <location filename="../src/analysis/MultiPeakFit.cpp" line="124"/>
+        <location filename="../src/analysis/MultiPeakFit.cpp" line="133"/>
         <source>offset</source>
         <translation>förskjutning</translation>
     </message>
@@ -16327,7 +16327,7 @@ Vill du skjuta in celler?</translation>
 <context>
     <name>NonLinearFit</name>
     <message>
-        <location filename="../src/analysis/NonLinearFit.cpp" line="68"/>
+        <location filename="../src/analysis/NonLinearFit.cpp" line="82"/>
         <source>NonLinear</source>
         <translation>Icke-linjär</translation>
     </message>
@@ -16336,24 +16336,24 @@ Vill du skjuta in celler?</translation>
         <translation type="obsolete">Icke-linjär</translation>
     </message>
     <message>
-        <location filename="../src/analysis/NonLinearFit.cpp" line="81"/>
-        <location filename="../src/analysis/NonLinearFit.cpp" line="119"/>
+        <location filename="../src/analysis/NonLinearFit.cpp" line="95"/>
+        <location filename="../src/analysis/NonLinearFit.cpp" line="133"/>
         <source>QtiPlot - Input function error</source>
         <translation>QtiPlot - Fel i indatafunktion</translation>
     </message>
     <message>
-        <location filename="../src/analysis/NonLinearFit.cpp" line="82"/>
+        <location filename="../src/analysis/NonLinearFit.cpp" line="96"/>
         <source>Please enter a valid non-empty expression! Operation aborted!</source>
         <translation>Skriv in ett giltigt, ej tomt, uttryck! Åtgärden avbröts!</translation>
     </message>
     <message>
-        <location filename="../src/analysis/NonLinearFit.cpp" line="93"/>
-        <location filename="../src/analysis/NonLinearFit.cpp" line="132"/>
+        <location filename="../src/analysis/NonLinearFit.cpp" line="107"/>
+        <location filename="../src/analysis/NonLinearFit.cpp" line="146"/>
         <source>QtiPlot - Fit Error</source>
         <translation>QtiPlot - Anpassningsfel</translation>
     </message>
     <message>
-        <location filename="../src/analysis/NonLinearFit.cpp" line="94"/>
+        <location filename="../src/analysis/NonLinearFit.cpp" line="108"/>
         <source>There are no parameters specified for this fit operation. Please define a list of parameters first!</source>
         <translation>Inga parametrar har specificerats för denna anpassningsåtgärd! Definiera en lista med parameterar först!</translation>
     </message>
@@ -16362,18 +16362,18 @@ Vill du skjuta in celler?</translation>
         <translation type="obsolete">Du måste tillhandahålla en lista med åtminstone 2 parametrar för denna anpassningstyp. Åtgärden avbröts!</translation>
     </message>
     <message>
-        <location filename="../src/analysis/NonLinearFit.cpp" line="133"/>
+        <location filename="../src/analysis/NonLinearFit.cpp" line="147"/>
         <source>You must provide a list containing at least one parameter for this type of fit. Operation aborted!</source>
         <translation>Du måste lämna en lista med åtminstone en parameter för denna typ av anpasssning. Åtgärden avbruten!</translation>
     </message>
     <message>
-        <location filename="../src/analysis/NonLinearFit.cpp" line="74"/>
+        <location filename="../src/analysis/NonLinearFit.cpp" line="88"/>
         <source>Non-linear Fit</source>
         <translation>Icke-linjär anpassning</translation>
     </message>
     <message>
-        <location filename="../src/analysis/NonLinearFit.cpp" line="223"/>
-        <location filename="../src/analysis/NonLinearFit.cpp" line="242"/>
+        <location filename="../src/analysis/NonLinearFit.cpp" line="237"/>
+        <location filename="../src/analysis/NonLinearFit.cpp" line="256"/>
         <source>constant</source>
         <translation>konstant</translation>
     </message>
@@ -18513,37 +18513,37 @@ Vill du skjuta in celler?</translation>
         <translation type="obsolete">Plugin</translation>
     </message>
     <message>
-        <location filename="../src/analysis/PluginFit.cpp" line="70"/>
+        <location filename="../src/analysis/PluginFit.cpp" line="84"/>
         <source>QtiPlot - File not found</source>
         <translation>QtiPlot - Fil inte hittad</translation>
     </message>
     <message>
-        <location filename="../src/analysis/PluginFit.cpp" line="71"/>
+        <location filename="../src/analysis/PluginFit.cpp" line="85"/>
         <source>Plugin file: &lt;p&gt;&lt;b&gt; %1 &lt;/b&gt; &lt;p&gt;not found. Operation aborted!</source>
         <translation>Plugin-fil: &lt;p&gt;&lt;b&gt; %1 &lt;/b&gt; &lt;p&gt; ej hittad. Åtgärd avbruten!</translation>
     </message>
     <message>
-        <location filename="../src/analysis/PluginFit.cpp" line="80"/>
-        <location filename="../src/analysis/PluginFit.cpp" line="87"/>
         <location filename="../src/analysis/PluginFit.cpp" line="94"/>
         <location filename="../src/analysis/PluginFit.cpp" line="101"/>
+        <location filename="../src/analysis/PluginFit.cpp" line="108"/>
+        <location filename="../src/analysis/PluginFit.cpp" line="115"/>
         <source>QtiPlot - Plugin Error</source>
         <translation>QtiPlot - Plugin-fel</translation>
     </message>
     <message>
-        <location filename="../src/analysis/PluginFit.cpp" line="81"/>
+        <location filename="../src/analysis/PluginFit.cpp" line="95"/>
         <source>The plugin does not implement a %1 method necessary for simplex fitting.</source>
         <translation>Denna  Plugin implementerar ej en %1 metod, nödvändig för simplex-anpassning.</translation>
     </message>
     <message>
-        <location filename="../src/analysis/PluginFit.cpp" line="88"/>
-        <location filename="../src/analysis/PluginFit.cpp" line="95"/>
         <location filename="../src/analysis/PluginFit.cpp" line="102"/>
+        <location filename="../src/analysis/PluginFit.cpp" line="109"/>
+        <location filename="../src/analysis/PluginFit.cpp" line="116"/>
         <source>The plugin does not implement a %1 method necessary for Levenberg-Marquardt fitting.</source>
         <translation>Denna  Plugin implementerar ej en %1 metod, nödvändig för Levenberg-Marquardt-anpassning.</translation>
     </message>
     <message>
-        <location filename="../src/analysis/PluginFit.cpp" line="63"/>
+        <location filename="../src/analysis/PluginFit.cpp" line="77"/>
         <source>Plugin Fit</source>
         <translation>Plugin-anpassning</translation>
     </message>
@@ -18627,22 +18627,22 @@ Vill du skjuta in celler?</translation>
         <translation type="obsolete">Mång</translation>
     </message>
     <message>
-        <location filename="../src/analysis/PolynomialFit.cpp" line="66"/>
+        <location filename="../src/analysis/PolynomialFit.cpp" line="80"/>
         <source>Polynomial</source>
         <translation>Polynomisk</translation>
     </message>
     <message>
-        <location filename="../src/analysis/PolynomialFit.cpp" line="152"/>
+        <location filename="../src/analysis/PolynomialFit.cpp" line="166"/>
         <source>QtiPlot - Fit Error</source>
         <translation>QtiPlot - Anpassningsfel</translation>
     </message>
     <message>
-        <location filename="../src/analysis/PolynomialFit.cpp" line="153"/>
+        <location filename="../src/analysis/PolynomialFit.cpp" line="167"/>
         <source>You need at least %1 data points for this fit operation. Operation aborted!</source>
         <translation>Du behöver minst %1 punkter för denna anpassningsåtgärd. Åtgärden avbruten!</translation>
     </message>
     <message>
-        <location filename="../src/analysis/PolynomialFit.cpp" line="68"/>
+        <location filename="../src/analysis/PolynomialFit.cpp" line="82"/>
         <source>Polynomial Fit</source>
         <translation>Polynomanpasssning</translation>
     </message>
@@ -18722,12 +18722,12 @@ Vill du skjuta in celler?</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/analysis/NonLinearFit.cpp" line="322"/>
+        <location filename="../src/analysis/NonLinearFit.cpp" line="336"/>
         <source>QtiPlot</source>
         <translation type="unfinished">QtiPlot</translation>
     </message>
     <message>
-        <location filename="../src/analysis/NonLinearFit.cpp" line="323"/>
+        <location filename="../src/analysis/NonLinearFit.cpp" line="337"/>
         <source>Ignored data point at x = %1.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -19908,32 +19908,32 @@ Vill du skriva över den?</translation>
         <translation type="obsolete">Boltzmann (Sigmodial)</translation>
     </message>
     <message>
-        <location filename="../src/analysis/SigmoidalFit.cpp" line="68"/>
+        <location filename="../src/analysis/SigmoidalFit.cpp" line="82"/>
         <source>Boltzmann (Sigmoidal) Fit</source>
         <translation>Biltzmann (sigmoidal) anpassning</translation>
     </message>
     <message>
-        <location filename="../src/analysis/SigmoidalFit.cpp" line="61"/>
+        <location filename="../src/analysis/SigmoidalFit.cpp" line="75"/>
         <source>Boltzmann</source>
         <translation>Boltzmann</translation>
     </message>
     <message>
-        <location filename="../src/analysis/SigmoidalFit.cpp" line="66"/>
+        <location filename="../src/analysis/SigmoidalFit.cpp" line="80"/>
         <source>init value</source>
         <translation>begynnelsevärde</translation>
     </message>
     <message>
-        <location filename="../src/analysis/SigmoidalFit.cpp" line="66"/>
+        <location filename="../src/analysis/SigmoidalFit.cpp" line="80"/>
         <source>final value</source>
         <translation>slutvärde</translation>
     </message>
     <message>
-        <location filename="../src/analysis/SigmoidalFit.cpp" line="66"/>
+        <location filename="../src/analysis/SigmoidalFit.cpp" line="80"/>
         <source>center</source>
         <translation>centrum</translation>
     </message>
     <message>
-        <location filename="../src/analysis/SigmoidalFit.cpp" line="66"/>
+        <location filename="../src/analysis/SigmoidalFit.cpp" line="80"/>
         <source>time constant</source>
         <translation>tidskonstant</translation>
     </message>
@@ -20001,31 +20001,31 @@ Vill du skriva över den?</translation>
 <context>
     <name>SmoothFilter</name>
     <message>
-        <location filename="../src/analysis/SmoothFilter.cpp" line="69"/>
+        <location filename="../src/analysis/SmoothFilter.cpp" line="76"/>
         <source>Smoothed</source>
         <translation>Utjämnad</translation>
     </message>
     <message>
-        <location filename="../src/analysis/SmoothFilter.cpp" line="81"/>
-        <location filename="../src/analysis/SmoothFilter.cpp" line="224"/>
+        <location filename="../src/analysis/SmoothFilter.cpp" line="88"/>
         <location filename="../src/analysis/SmoothFilter.cpp" line="231"/>
-        <location filename="../src/analysis/SmoothFilter.cpp" line="245"/>
+        <location filename="../src/analysis/SmoothFilter.cpp" line="238"/>
         <location filename="../src/analysis/SmoothFilter.cpp" line="252"/>
-        <location filename="../src/analysis/SmoothFilter.cpp" line="264"/>
+        <location filename="../src/analysis/SmoothFilter.cpp" line="259"/>
         <location filename="../src/analysis/SmoothFilter.cpp" line="271"/>
         <location filename="../src/analysis/SmoothFilter.cpp" line="278"/>
+        <location filename="../src/analysis/SmoothFilter.cpp" line="285"/>
         <source>QtiPlot</source>
         <translation>QtiPlot</translation>
     </message>
     <message>
-        <location filename="../src/analysis/SmoothFilter.cpp" line="81"/>
-        <location filename="../src/analysis/SmoothFilter.cpp" line="224"/>
+        <location filename="../src/analysis/SmoothFilter.cpp" line="88"/>
         <location filename="../src/analysis/SmoothFilter.cpp" line="231"/>
-        <location filename="../src/analysis/SmoothFilter.cpp" line="245"/>
+        <location filename="../src/analysis/SmoothFilter.cpp" line="238"/>
         <location filename="../src/analysis/SmoothFilter.cpp" line="252"/>
-        <location filename="../src/analysis/SmoothFilter.cpp" line="264"/>
+        <location filename="../src/analysis/SmoothFilter.cpp" line="259"/>
         <location filename="../src/analysis/SmoothFilter.cpp" line="271"/>
         <location filename="../src/analysis/SmoothFilter.cpp" line="278"/>
+        <location filename="../src/analysis/SmoothFilter.cpp" line="285"/>
         <source>Error</source>
         <translation>Fel</translation>
     </message>
@@ -20034,66 +20034,66 @@ Vill du skriva över den?</translation>
         <translation type="obsolete">Okänt utjämningsfilter. Giltiga värden är: 1 - Savitky-Golay, 2 - FFR, 3 - glidande medelvärdesfönster.</translation>
     </message>
     <message>
-        <location filename="../src/analysis/SmoothFilter.cpp" line="82"/>
+        <location filename="../src/analysis/SmoothFilter.cpp" line="89"/>
         <source>Unknown smooth filter. Valid values are: 1 - Savitky-Golay, 2 - FFT, 3 - Moving Window Average, 4 - Lowess.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/analysis/SmoothFilter.cpp" line="99"/>
-        <location filename="../src/analysis/SmoothFilter.cpp" line="103"/>
-        <location filename="../src/analysis/SmoothFilter.cpp" line="107"/>
-        <location filename="../src/analysis/SmoothFilter.cpp" line="111"/>
+        <location filename="../src/analysis/SmoothFilter.cpp" line="106"/>
+        <location filename="../src/analysis/SmoothFilter.cpp" line="110"/>
+        <location filename="../src/analysis/SmoothFilter.cpp" line="114"/>
+        <location filename="../src/analysis/SmoothFilter.cpp" line="118"/>
         <source>points</source>
         <translation>punkter</translation>
     </message>
     <message>
-        <location filename="../src/analysis/SmoothFilter.cpp" line="99"/>
+        <location filename="../src/analysis/SmoothFilter.cpp" line="106"/>
         <source>Savitzky-Golay smoothing</source>
         <translation>Savitzky-Golay-utjämning</translation>
     </message>
     <message>
-        <location filename="../src/analysis/SmoothFilter.cpp" line="103"/>
+        <location filename="../src/analysis/SmoothFilter.cpp" line="110"/>
         <source>FFT smoothing</source>
         <translation>FFT-utjämning</translation>
     </message>
     <message>
-        <location filename="../src/analysis/SmoothFilter.cpp" line="107"/>
+        <location filename="../src/analysis/SmoothFilter.cpp" line="114"/>
         <source>average smoothing</source>
         <translation>medelvärdesutjämning</translation>
     </message>
     <message>
-        <location filename="../src/analysis/SmoothFilter.cpp" line="111"/>
+        <location filename="../src/analysis/SmoothFilter.cpp" line="118"/>
         <source>Lowess smoothing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/analysis/SmoothFilter.cpp" line="225"/>
+        <location filename="../src/analysis/SmoothFilter.cpp" line="232"/>
         <source>The number of points must be positive!</source>
         <translation>Antal punkter måste vara positivt!</translation>
     </message>
     <message>
-        <location filename="../src/analysis/SmoothFilter.cpp" line="232"/>
-        <location filename="../src/analysis/SmoothFilter.cpp" line="253"/>
+        <location filename="../src/analysis/SmoothFilter.cpp" line="239"/>
+        <location filename="../src/analysis/SmoothFilter.cpp" line="260"/>
         <source>The polynomial order must be lower than the number of left points plus the number of right points!</source>
         <translation>Polynomordningen måste vara lägre än antal vänsterpunkter plus antal högrepunkter!</translation>
     </message>
     <message>
-        <location filename="../src/analysis/SmoothFilter.cpp" line="246"/>
+        <location filename="../src/analysis/SmoothFilter.cpp" line="253"/>
         <source>Setting polynomial order is only available for Savitzky-Golay smooth filters! Ignored option!</source>
         <translation>Inställnnga av polynpmordning är bara giltigt vid Savitky-Golay-utjämningsfilter. Åtgärden avbryts!</translation>
     </message>
     <message>
-        <location filename="../src/analysis/SmoothFilter.cpp" line="265"/>
+        <location filename="../src/analysis/SmoothFilter.cpp" line="272"/>
         <source>Setting Lowess parameter is only available for Lowess smooth filters! Ignored option!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/analysis/SmoothFilter.cpp" line="272"/>
+        <location filename="../src/analysis/SmoothFilter.cpp" line="279"/>
         <source>The parameter f must be between 0 and 1!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/analysis/SmoothFilter.cpp" line="279"/>
+        <location filename="../src/analysis/SmoothFilter.cpp" line="286"/>
         <source>The number of iterations must be at least 1!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -21452,47 +21452,47 @@ den första representerar signalen och den andra svarsfunktionen!</translation>
 <context>
     <name>ThreeExpFit</name>
     <message>
-        <location filename="../src/analysis/ExponentialFit.cpp" line="237"/>
+        <location filename="../src/analysis/ExponentialFit.cpp" line="281"/>
         <source>Exponential decay</source>
         <translation>Exponentiellt avtagande</translation>
     </message>
     <message>
-        <location filename="../src/analysis/ExponentialFit.cpp" line="229"/>
+        <location filename="../src/analysis/ExponentialFit.cpp" line="273"/>
         <source>ExpDecay3</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/analysis/ExponentialFit.cpp" line="239"/>
+        <location filename="../src/analysis/ExponentialFit.cpp" line="283"/>
         <source>first amplitude</source>
         <translation>första anmplitud</translation>
     </message>
     <message>
-        <location filename="../src/analysis/ExponentialFit.cpp" line="239"/>
+        <location filename="../src/analysis/ExponentialFit.cpp" line="283"/>
         <source>first lifetime</source>
         <translation>första livslängd</translation>
     </message>
     <message>
-        <location filename="../src/analysis/ExponentialFit.cpp" line="239"/>
+        <location filename="../src/analysis/ExponentialFit.cpp" line="283"/>
         <source>second amplitude</source>
         <translation>andra anmplitud</translation>
     </message>
     <message>
-        <location filename="../src/analysis/ExponentialFit.cpp" line="239"/>
+        <location filename="../src/analysis/ExponentialFit.cpp" line="283"/>
         <source>second lifetime</source>
         <translation>andra livslängd</translation>
     </message>
     <message>
-        <location filename="../src/analysis/ExponentialFit.cpp" line="239"/>
+        <location filename="../src/analysis/ExponentialFit.cpp" line="283"/>
         <source>third amplitude</source>
         <translation>tredje anmplitud</translation>
     </message>
     <message>
-        <location filename="../src/analysis/ExponentialFit.cpp" line="239"/>
+        <location filename="../src/analysis/ExponentialFit.cpp" line="283"/>
         <source>third lifetime</source>
         <translation>tredje livslängd</translation>
     </message>
     <message>
-        <location filename="../src/analysis/ExponentialFit.cpp" line="239"/>
+        <location filename="../src/analysis/ExponentialFit.cpp" line="283"/>
         <source>offset</source>
         <translation>förskjutning</translation>
     </message>
@@ -21537,37 +21537,37 @@ den första representerar signalen och den andra svarsfunktionen!</translation>
 <context>
     <name>TwoExpFit</name>
     <message>
-        <location filename="../src/analysis/ExponentialFit.cpp" line="164"/>
+        <location filename="../src/analysis/ExponentialFit.cpp" line="194"/>
         <source>Exponential decay</source>
         <translation>Exponentiellt avtagande</translation>
     </message>
     <message>
-        <location filename="../src/analysis/ExponentialFit.cpp" line="156"/>
+        <location filename="../src/analysis/ExponentialFit.cpp" line="186"/>
         <source>ExpDecay2</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/analysis/ExponentialFit.cpp" line="166"/>
+        <location filename="../src/analysis/ExponentialFit.cpp" line="196"/>
         <source>first amplitude</source>
         <translation>första anmplitud</translation>
     </message>
     <message>
-        <location filename="../src/analysis/ExponentialFit.cpp" line="166"/>
+        <location filename="../src/analysis/ExponentialFit.cpp" line="196"/>
         <source>first lifetime</source>
         <translation>första livslängd</translation>
     </message>
     <message>
-        <location filename="../src/analysis/ExponentialFit.cpp" line="166"/>
+        <location filename="../src/analysis/ExponentialFit.cpp" line="196"/>
         <source>second amplitude</source>
         <translation>andra anmplitud</translation>
     </message>
     <message>
-        <location filename="../src/analysis/ExponentialFit.cpp" line="166"/>
+        <location filename="../src/analysis/ExponentialFit.cpp" line="196"/>
         <source>second lifetime</source>
         <translation>andra livslängd</translation>
     </message>
     <message>
-        <location filename="../src/analysis/ExponentialFit.cpp" line="166"/>
+        <location filename="../src/analysis/ExponentialFit.cpp" line="196"/>
         <source>offset</source>
         <translation>förskjutning</translation>
     </message>
