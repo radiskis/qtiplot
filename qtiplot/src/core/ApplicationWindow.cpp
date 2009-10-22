@@ -16584,7 +16584,7 @@ void ApplicationWindow::saveFitFunctions(const QStringList& lst)
         for (int i = 0; i<lst.count(); i++){
             QString s = lst[i].simplified();
             if (!s.isEmpty()){
-                NonLinearFit *fit = new NonLinearFit(this, 0);
+                NonLinearFit *fit = new NonLinearFit(this, (Graph*)0);
 
                 QStringList l = s.split("=");
                 if (l.count() == 2)
