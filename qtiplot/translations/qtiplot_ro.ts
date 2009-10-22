@@ -8598,13 +8598,13 @@ The following special codes can be used:
 <context>
     <name>Differentiation</name>
     <message>
-        <location filename="../src/analysis/Differentiation.cpp" line="63"/>
-        <location filename="../src/analysis/Differentiation.cpp" line="96"/>
+        <location filename="../src/analysis/Differentiation.cpp" line="77"/>
+        <location filename="../src/analysis/Differentiation.cpp" line="110"/>
         <source>Derivative</source>
         <translation>Derivata</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Differentiation.cpp" line="96"/>
+        <location filename="../src/analysis/Differentiation.cpp" line="110"/>
         <source>of</source>
         <comment>Derivative of</comment>
         <translation>a</translation>
@@ -9176,44 +9176,44 @@ The following special codes can be used:
 <context>
     <name>ExponentialFit</name>
     <message>
-        <location filename="../src/analysis/ExponentialFit.cpp" line="81"/>
+        <location filename="../src/analysis/ExponentialFit.cpp" line="97"/>
         <source>ExpGrowth</source>
         <translation>CreştereExp</translation>
     </message>
     <message>
-        <location filename="../src/analysis/ExponentialFit.cpp" line="82"/>
+        <location filename="../src/analysis/ExponentialFit.cpp" line="98"/>
         <source>Exponential growth</source>
         <translation>Creştere exponenţială</translation>
     </message>
     <message>
-        <location filename="../src/analysis/ExponentialFit.cpp" line="84"/>
-        <location filename="../src/analysis/ExponentialFit.cpp" line="89"/>
+        <location filename="../src/analysis/ExponentialFit.cpp" line="100"/>
+        <location filename="../src/analysis/ExponentialFit.cpp" line="105"/>
         <source>amplitude</source>
         <translation>amplitudine</translation>
     </message>
     <message>
-        <location filename="../src/analysis/ExponentialFit.cpp" line="84"/>
+        <location filename="../src/analysis/ExponentialFit.cpp" line="100"/>
         <source>lifetime</source>
         <translation>durata de viaţă</translation>
     </message>
     <message>
-        <location filename="../src/analysis/ExponentialFit.cpp" line="84"/>
-        <location filename="../src/analysis/ExponentialFit.cpp" line="89"/>
+        <location filename="../src/analysis/ExponentialFit.cpp" line="100"/>
+        <location filename="../src/analysis/ExponentialFit.cpp" line="105"/>
         <source>offset</source>
         <translation>constantă</translation>
     </message>
     <message>
-        <location filename="../src/analysis/ExponentialFit.cpp" line="86"/>
+        <location filename="../src/analysis/ExponentialFit.cpp" line="102"/>
         <source>ExpDecay1</source>
         <translation>ScădereExp1</translation>
     </message>
     <message>
-        <location filename="../src/analysis/ExponentialFit.cpp" line="87"/>
+        <location filename="../src/analysis/ExponentialFit.cpp" line="103"/>
         <source>Exponential decay</source>
         <translation>Scădere exponenţială</translation>
     </message>
     <message>
-        <location filename="../src/analysis/ExponentialFit.cpp" line="89"/>
+        <location filename="../src/analysis/ExponentialFit.cpp" line="105"/>
         <source>e-folding time</source>
         <translation>durata de viaţă (1/e)</translation>
     </message>
@@ -9335,11 +9335,11 @@ The following special codes can be used:
 <context>
     <name>FFT</name>
     <message>
-        <location filename="../src/analysis/FFT.cpp" line="63"/>
-        <location filename="../src/analysis/FFT.cpp" line="89"/>
-        <location filename="../src/analysis/FFT.cpp" line="106"/>
-        <location filename="../src/analysis/FFT.cpp" line="184"/>
-        <location filename="../src/analysis/FFT.cpp" line="188"/>
+        <location filename="../src/analysis/FFT.cpp" line="77"/>
+        <location filename="../src/analysis/FFT.cpp" line="103"/>
+        <location filename="../src/analysis/FFT.cpp" line="120"/>
+        <location filename="../src/analysis/FFT.cpp" line="198"/>
+        <location filename="../src/analysis/FFT.cpp" line="202"/>
         <source>FFT</source>
         <translation>Transformată Fourier rapidă</translation>
     </message>
@@ -9356,72 +9356,72 @@ The following special codes can be used:
         <translation type="obsolete">Memorie insuficientă, operaţia a fost abandonată!</translation>
     </message>
     <message>
-        <location filename="../src/analysis/FFT.cpp" line="89"/>
-        <location filename="../src/analysis/FFT.cpp" line="184"/>
+        <location filename="../src/analysis/FFT.cpp" line="103"/>
+        <location filename="../src/analysis/FFT.cpp" line="198"/>
         <source>Forward</source>
         <translation>Directă</translation>
     </message>
     <message>
-        <location filename="../src/analysis/FFT.cpp" line="89"/>
-        <location filename="../src/analysis/FFT.cpp" line="106"/>
-        <location filename="../src/analysis/FFT.cpp" line="184"/>
-        <location filename="../src/analysis/FFT.cpp" line="188"/>
+        <location filename="../src/analysis/FFT.cpp" line="103"/>
+        <location filename="../src/analysis/FFT.cpp" line="120"/>
+        <location filename="../src/analysis/FFT.cpp" line="198"/>
+        <location filename="../src/analysis/FFT.cpp" line="202"/>
         <source>of</source>
         <translation>a</translation>
     </message>
     <message>
-        <location filename="../src/analysis/FFT.cpp" line="90"/>
-        <location filename="../src/analysis/FFT.cpp" line="185"/>
-        <location filename="../src/analysis/FFT.cpp" line="262"/>
+        <location filename="../src/analysis/FFT.cpp" line="104"/>
+        <location filename="../src/analysis/FFT.cpp" line="199"/>
+        <location filename="../src/analysis/FFT.cpp" line="276"/>
         <source>Frequency</source>
         <translation>Frecvenţă</translation>
     </message>
     <message>
-        <location filename="../src/analysis/FFT.cpp" line="106"/>
-        <location filename="../src/analysis/FFT.cpp" line="188"/>
+        <location filename="../src/analysis/FFT.cpp" line="120"/>
+        <location filename="../src/analysis/FFT.cpp" line="202"/>
         <source>Inverse</source>
         <translation>Inversă</translation>
     </message>
     <message>
-        <location filename="../src/analysis/FFT.cpp" line="107"/>
-        <location filename="../src/analysis/FFT.cpp" line="189"/>
-        <location filename="../src/analysis/FFT.cpp" line="264"/>
+        <location filename="../src/analysis/FFT.cpp" line="121"/>
+        <location filename="../src/analysis/FFT.cpp" line="203"/>
+        <location filename="../src/analysis/FFT.cpp" line="278"/>
         <source>Time</source>
         <translation>Timp</translation>
     </message>
     <message>
-        <location filename="../src/analysis/FFT.cpp" line="150"/>
-        <location filename="../src/analysis/FFT.cpp" line="222"/>
+        <location filename="../src/analysis/FFT.cpp" line="164"/>
+        <location filename="../src/analysis/FFT.cpp" line="236"/>
         <source>Real</source>
         <translation>Real</translation>
     </message>
     <message>
-        <location filename="../src/analysis/FFT.cpp" line="150"/>
-        <location filename="../src/analysis/FFT.cpp" line="222"/>
+        <location filename="../src/analysis/FFT.cpp" line="164"/>
+        <location filename="../src/analysis/FFT.cpp" line="236"/>
         <source>Imaginary</source>
         <translation>Imaginar</translation>
     </message>
     <message>
-        <location filename="../src/analysis/FFT.cpp" line="150"/>
-        <location filename="../src/analysis/FFT.cpp" line="222"/>
-        <location filename="../src/analysis/FFT.cpp" line="265"/>
-        <location filename="../src/analysis/FFT.cpp" line="267"/>
+        <location filename="../src/analysis/FFT.cpp" line="164"/>
+        <location filename="../src/analysis/FFT.cpp" line="236"/>
+        <location filename="../src/analysis/FFT.cpp" line="279"/>
+        <location filename="../src/analysis/FFT.cpp" line="281"/>
         <source>Amplitude</source>
         <translation>Amplitudine</translation>
     </message>
     <message>
-        <location filename="../src/analysis/FFT.cpp" line="150"/>
-        <location filename="../src/analysis/FFT.cpp" line="222"/>
+        <location filename="../src/analysis/FFT.cpp" line="164"/>
+        <location filename="../src/analysis/FFT.cpp" line="236"/>
         <source>Angle</source>
         <translation>Unghi</translation>
     </message>
     <message>
-        <location filename="../src/analysis/FFT.cpp" line="262"/>
+        <location filename="../src/analysis/FFT.cpp" line="276"/>
         <source>Hz</source>
         <translation>Hz</translation>
     </message>
     <message>
-        <location filename="../src/analysis/FFT.cpp" line="264"/>
+        <location filename="../src/analysis/FFT.cpp" line="278"/>
         <source>s</source>
         <translation>s</translation>
     </message>
@@ -9543,64 +9543,64 @@ The following special codes can be used:
 <context>
     <name>FFTFilter</name>
     <message>
-        <location filename="../src/analysis/FFTFilter.cpp" line="60"/>
+        <location filename="../src/analysis/FFTFilter.cpp" line="74"/>
         <source>FFT</source>
         <translation>Transformată Fourier rapidă</translation>
     </message>
     <message>
-        <location filename="../src/analysis/FFTFilter.cpp" line="60"/>
+        <location filename="../src/analysis/FFTFilter.cpp" line="74"/>
         <source>Filtered</source>
         <translation>Filtrat(ă)</translation>
     </message>
     <message>
-        <location filename="../src/analysis/FFTFilter.cpp" line="73"/>
-        <location filename="../src/analysis/FFTFilter.cpp" line="95"/>
+        <location filename="../src/analysis/FFTFilter.cpp" line="87"/>
+        <location filename="../src/analysis/FFTFilter.cpp" line="109"/>
         <source>QtiPlot</source>
         <translation>QtiPlot</translation>
     </message>
     <message>
-        <location filename="../src/analysis/FFTFilter.cpp" line="73"/>
-        <location filename="../src/analysis/FFTFilter.cpp" line="95"/>
+        <location filename="../src/analysis/FFTFilter.cpp" line="87"/>
+        <location filename="../src/analysis/FFTFilter.cpp" line="109"/>
         <source>Error</source>
         <translation>Eroare</translation>
     </message>
     <message>
-        <location filename="../src/analysis/FFTFilter.cpp" line="74"/>
+        <location filename="../src/analysis/FFTFilter.cpp" line="88"/>
         <source>Unknown filter type. Valid values are: 1 - Low pass, 2 - High Pass, 3 - Band Pass, 4 - Band block.</source>
         <translation>Tip de filtru necunoscut! Valorile valide sunt: 1 - Trece jos, 2 - Trece sus, 3 - Trece bandă, 4 - Blochează bandă.</translation>
     </message>
     <message>
-        <location filename="../src/analysis/FFTFilter.cpp" line="96"/>
+        <location filename="../src/analysis/FFTFilter.cpp" line="110"/>
         <source>Please enter different values for the band limits.</source>
         <translation>Vă rugam să introduceţi valori diferite pentru limitele benzii.</translation>
     </message>
     <message>
-        <location filename="../src/analysis/FFTFilter.cpp" line="134"/>
+        <location filename="../src/analysis/FFTFilter.cpp" line="148"/>
         <source>to</source>
         <translation>la</translation>
     </message>
     <message>
-        <location filename="../src/analysis/FFTFilter.cpp" line="135"/>
+        <location filename="../src/analysis/FFTFilter.cpp" line="149"/>
         <source>Hz</source>
         <translation>Hz</translation>
     </message>
     <message>
-        <location filename="../src/analysis/FFTFilter.cpp" line="140"/>
+        <location filename="../src/analysis/FFTFilter.cpp" line="154"/>
         <source>Low Pass FFT Filter</source>
         <translation>Filtru FFT trece jos</translation>
     </message>
     <message>
-        <location filename="../src/analysis/FFTFilter.cpp" line="148"/>
+        <location filename="../src/analysis/FFTFilter.cpp" line="162"/>
         <source>High Pass FFT Filter</source>
         <translation>Filtru FFT trece sus</translation>
     </message>
     <message>
-        <location filename="../src/analysis/FFTFilter.cpp" line="156"/>
+        <location filename="../src/analysis/FFTFilter.cpp" line="170"/>
         <source>Band Pass FFT Filter</source>
         <translation>Filtru FFT trece bandă</translation>
     </message>
     <message>
-        <location filename="../src/analysis/FFTFilter.cpp" line="173"/>
+        <location filename="../src/analysis/FFTFilter.cpp" line="187"/>
         <source>Band Block FFT Filter</source>
         <translation>Filtru FFT blochează bandă</translation>
     </message>
@@ -9611,9 +9611,9 @@ The following special codes can be used:
         <location filename="../src/analysis/Filter.cpp" line="94"/>
         <location filename="../src/analysis/Filter.cpp" line="117"/>
         <location filename="../src/analysis/Filter.cpp" line="122"/>
-        <location filename="../src/analysis/Filter.cpp" line="240"/>
-        <location filename="../src/analysis/Filter.cpp" line="466"/>
-        <location filename="../src/analysis/Filter.cpp" line="520"/>
+        <location filename="../src/analysis/Filter.cpp" line="257"/>
+        <location filename="../src/analysis/Filter.cpp" line="483"/>
+        <location filename="../src/analysis/Filter.cpp" line="537"/>
         <source>QtiPlot</source>
         <translation>QtiPlot</translation>
     </message>
@@ -9621,8 +9621,8 @@ The following special codes can be used:
         <location filename="../src/analysis/Filter.cpp" line="94"/>
         <location filename="../src/analysis/Filter.cpp" line="117"/>
         <location filename="../src/analysis/Filter.cpp" line="122"/>
-        <location filename="../src/analysis/Filter.cpp" line="240"/>
-        <location filename="../src/analysis/Filter.cpp" line="466"/>
+        <location filename="../src/analysis/Filter.cpp" line="257"/>
+        <location filename="../src/analysis/Filter.cpp" line="483"/>
         <source>Error</source>
         <translation>Eroare</translation>
     </message>
@@ -9638,7 +9638,7 @@ The following special codes can be used:
     </message>
     <message>
         <location filename="../src/analysis/Filter.cpp" line="123"/>
-        <location filename="../src/analysis/Filter.cpp" line="467"/>
+        <location filename="../src/analysis/Filter.cpp" line="484"/>
         <source>You need at least %1 points in order to perform this operation!</source>
         <translation>Aveţi nevoie de cel puţin %1 puncte pentru a efectua această operaţia!</translation>
     </message>
@@ -9653,37 +9653,37 @@ The following special codes can be used:
         <translation>Vă rugăm introduceţi un nume de curbă valid!</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Filter.cpp" line="206"/>
+        <location filename="../src/analysis/Filter.cpp" line="223"/>
         <source>QtiPlot - Color Name Error</source>
         <translation>QtiPlot - Eroare detectată în numele culorii</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Filter.cpp" line="207"/>
+        <location filename="../src/analysis/Filter.cpp" line="224"/>
         <source>The color name &apos;%1&apos; is not valid, a default color (red) will be used instead!</source>
         <translation>Numele culorii &apos;%1&apos; nu este valid, se va folosi o culoare implicită (roşu)!</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Filter.cpp" line="241"/>
+        <location filename="../src/analysis/Filter.cpp" line="258"/>
         <source>You didn&apos;t specify a valid data set for this operation!</source>
         <translation>Nu aţi specificat un set de date valid pentru această operaţie!</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Filter.cpp" line="385"/>
+        <location filename="../src/analysis/Filter.cpp" line="402"/>
         <source>of</source>
         <translation>a</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Filter.cpp" line="419"/>
+        <location filename="../src/analysis/Filter.cpp" line="436"/>
         <source>Plot</source>
         <translation>Grafic</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Filter.cpp" line="520"/>
+        <location filename="../src/analysis/Filter.cpp" line="537"/>
         <source>Memory Allocation Error</source>
         <translation>Eroare de alocare a memoriei</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Filter.cpp" line="521"/>
+        <location filename="../src/analysis/Filter.cpp" line="538"/>
         <source>Not enough memory, operation aborted!</source>
         <translation>Memorie insuficientă, operaţia a fost abandonată!</translation>
     </message>
@@ -9904,348 +9904,348 @@ The following special codes can be used:
 <context>
     <name>Fit</name>
     <message>
-        <location filename="../src/analysis/Fit.cpp" line="296"/>
+        <location filename="../src/analysis/Fit.cpp" line="302"/>
         <source>Plot</source>
         <translation>Grafic</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Fit.cpp" line="298"/>
+        <location filename="../src/analysis/Fit.cpp" line="304"/>
         <source>graphics display disabled</source>
         <translation>afişaj grafic dezactivat</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Fit.cpp" line="302"/>
+        <location filename="../src/analysis/Fit.cpp" line="308"/>
         <source>of dataset</source>
         <translation>a setului de date</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Fit.cpp" line="304"/>
+        <location filename="../src/analysis/Fit.cpp" line="310"/>
         <source>using function</source>
         <translation>folosind funcţia</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Fit.cpp" line="308"/>
+        <location filename="../src/analysis/Fit.cpp" line="314"/>
         <source>Weighting Method</source>
         <translation>Metodă de ponderare</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Fit.cpp" line="312"/>
+        <location filename="../src/analysis/Fit.cpp" line="318"/>
         <source>No weighting</source>
         <translation>Fără ponderare</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Fit.cpp" line="315"/>
+        <location filename="../src/analysis/Fit.cpp" line="321"/>
         <source>Instrumental</source>
         <translation>Instrumentală</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Fit.cpp" line="315"/>
+        <location filename="../src/analysis/Fit.cpp" line="321"/>
         <source>using error bars dataset</source>
         <translation>folosind bare de eroare din setul de date</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Fit.cpp" line="318"/>
+        <location filename="../src/analysis/Fit.cpp" line="324"/>
         <source>Statistical</source>
         <translation>Statistică</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Fit.cpp" line="321"/>
+        <location filename="../src/analysis/Fit.cpp" line="327"/>
         <source>Arbitrary Dataset</source>
         <translation>Set de date arbitrar</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Fit.cpp" line="324"/>
+        <location filename="../src/analysis/Fit.cpp" line="330"/>
         <source>Direct Weighting using Dataset</source>
         <translation>Ponderare directă folosind setul de date</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Fit.cpp" line="333"/>
+        <location filename="../src/analysis/Fit.cpp" line="339"/>
         <source>Nelder-Mead Simplex</source>
         <translation>Nelder-Mead Simplex</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Fit.cpp" line="335"/>
+        <location filename="../src/analysis/Fit.cpp" line="341"/>
         <source>Unscaled Levenberg-Marquardt</source>
         <translation>Levenberg-Marquardt nescalat </translation>
     </message>
     <message>
-        <location filename="../src/analysis/Fit.cpp" line="337"/>
+        <location filename="../src/analysis/Fit.cpp" line="343"/>
         <source>Scaled Levenberg-Marquardt</source>
         <translation>Levenberg-Marquardt scalat </translation>
     </message>
     <message>
-        <location filename="../src/analysis/Fit.cpp" line="339"/>
+        <location filename="../src/analysis/Fit.cpp" line="345"/>
         <source> algorithm with tolerance = </source>
         <translation> algoritm cu toleranţa =</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Fit.cpp" line="342"/>
+        <location filename="../src/analysis/Fit.cpp" line="348"/>
         <source>From x</source>
         <translation>De la x</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Fit.cpp" line="342"/>
+        <location filename="../src/analysis/Fit.cpp" line="348"/>
         <source>to x</source>
         <translation>până la x</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Fit.cpp" line="356"/>
-        <location filename="../src/analysis/Fit.cpp" line="411"/>
+        <location filename="../src/analysis/Fit.cpp" line="362"/>
+        <location filename="../src/analysis/Fit.cpp" line="417"/>
         <source>R^2</source>
         <translation>R^2</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Fit.cpp" line="357"/>
+        <location filename="../src/analysis/Fit.cpp" line="363"/>
         <source>Adjusted R^2</source>
         <translation>R^2 ajustat</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Fit.cpp" line="358"/>
+        <location filename="../src/analysis/Fit.cpp" line="364"/>
         <source>RMSE (Root Mean Squared Error)</source>
         <translation>RMSE (Eroarea pătratică medie)</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Fit.cpp" line="359"/>
+        <location filename="../src/analysis/Fit.cpp" line="365"/>
         <source>RSS (Residual Sum of Squares)</source>
         <translation>RSS (Suma reziduală a pătratelor)</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Fit.cpp" line="362"/>
+        <location filename="../src/analysis/Fit.cpp" line="368"/>
         <source>Iterations</source>
         <translation>Iteraţii</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Fit.cpp" line="363"/>
+        <location filename="../src/analysis/Fit.cpp" line="369"/>
         <source>Status</source>
         <translation>Statut</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Fit.cpp" line="403"/>
+        <location filename="../src/analysis/Fit.cpp" line="409"/>
         <source>Dataset</source>
         <translation>Set de date</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Fit.cpp" line="404"/>
+        <location filename="../src/analysis/Fit.cpp" line="410"/>
         <source>Function</source>
         <translation>Funcţie</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Fit.cpp" line="449"/>
-        <location filename="../src/analysis/Fit.cpp" line="468"/>
-        <location filename="../src/analysis/Fit.cpp" line="501"/>
-        <location filename="../src/analysis/Fit.cpp" line="526"/>
+        <location filename="../src/analysis/Fit.cpp" line="455"/>
+        <location filename="../src/analysis/Fit.cpp" line="474"/>
+        <location filename="../src/analysis/Fit.cpp" line="507"/>
+        <location filename="../src/analysis/Fit.cpp" line="532"/>
         <source>QtiPlot - Error</source>
         <translation>QtiPlot - Eroare</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Fit.cpp" line="450"/>
+        <location filename="../src/analysis/Fit.cpp" line="456"/>
         <source>You cannot use the instrumental weighting method.</source>
         <translation>Nu puteţi folosi metoda de ponderare instrumentală.</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Fit.cpp" line="469"/>
+        <location filename="../src/analysis/Fit.cpp" line="475"/>
         <source>The curve %1 has no associated Y error bars. You cannot use instrumental weighting method.</source>
         <translation>Curba %1 nu are ataşate bare de eroare. Nu puteţi folosi metoda de ponderare instrumentală.</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Fit.cpp" line="502"/>
+        <location filename="../src/analysis/Fit.cpp" line="508"/>
         <source>The column %1 has less points than the fitted data set. Please choose another column!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/analysis/Fit.cpp" line="527"/>
+        <location filename="../src/analysis/Fit.cpp" line="533"/>
         <source>The column %1 has less points than the fitted data set. Please choose another column!.</source>
         <translation>Coloana %1 are mai puţine puncte decat setul de date folosit pentru ajustare. Vă rugăm să alegeţi o altă coloană!</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Fit.cpp" line="552"/>
+        <location filename="../src/analysis/Fit.cpp" line="558"/>
         <source>Parameter</source>
         <translation>Parametru</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Fit.cpp" line="552"/>
+        <location filename="../src/analysis/Fit.cpp" line="558"/>
         <source>Value</source>
         <translation>Valoare</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Fit.cpp" line="552"/>
+        <location filename="../src/analysis/Fit.cpp" line="558"/>
         <source>Error</source>
         <translation>Eroare</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Fit.cpp" line="644"/>
-        <location filename="../src/analysis/Fit.cpp" line="685"/>
-        <location filename="../src/analysis/Fit.cpp" line="804"/>
-        <location filename="../src/analysis/Fit.cpp" line="903"/>
-        <location filename="../src/analysis/Fit.cpp" line="908"/>
-        <location filename="../src/analysis/Fit.cpp" line="913"/>
-        <location filename="../src/analysis/Fit.cpp" line="918"/>
+        <location filename="../src/analysis/Fit.cpp" line="650"/>
+        <location filename="../src/analysis/Fit.cpp" line="691"/>
+        <location filename="../src/analysis/Fit.cpp" line="810"/>
+        <location filename="../src/analysis/Fit.cpp" line="909"/>
+        <location filename="../src/analysis/Fit.cpp" line="914"/>
+        <location filename="../src/analysis/Fit.cpp" line="919"/>
+        <location filename="../src/analysis/Fit.cpp" line="924"/>
         <source>QtiPlot - Fit Error</source>
         <translation>QtiPlot - Eroare de ajustare</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Fit.cpp" line="645"/>
-        <location filename="../src/analysis/Fit.cpp" line="686"/>
-        <location filename="../src/analysis/Fit.cpp" line="805"/>
+        <location filename="../src/analysis/Fit.cpp" line="651"/>
+        <location filename="../src/analysis/Fit.cpp" line="692"/>
+        <location filename="../src/analysis/Fit.cpp" line="811"/>
         <source>Please perform a fit first!</source>
         <translation>Vă rugam să efectuaţi mai întâi o ajustare!</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Fit.cpp" line="653"/>
+        <location filename="../src/analysis/Fit.cpp" line="659"/>
         <source>FitResiduals</source>
         <translation>ReziduuriAjustare</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Fit.cpp" line="653"/>
+        <location filename="../src/analysis/Fit.cpp" line="659"/>
         <source>Residuals of %1</source>
         <translation>Reziduuri ale %1</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Fit.cpp" line="657"/>
+        <location filename="../src/analysis/Fit.cpp" line="663"/>
         <source>residue</source>
         <translation>reziduu</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Fit.cpp" line="695"/>
-        <location filename="../src/analysis/Fit.cpp" line="709"/>
+        <location filename="../src/analysis/Fit.cpp" line="701"/>
         <location filename="../src/analysis/Fit.cpp" line="715"/>
-        <location filename="../src/analysis/Fit.cpp" line="814"/>
-        <location filename="../src/analysis/Fit.cpp" line="828"/>
+        <location filename="../src/analysis/Fit.cpp" line="721"/>
+        <location filename="../src/analysis/Fit.cpp" line="820"/>
         <location filename="../src/analysis/Fit.cpp" line="834"/>
-        <location filename="../src/analysis/Fit.cpp" line="981"/>
+        <location filename="../src/analysis/Fit.cpp" line="840"/>
+        <location filename="../src/analysis/Fit.cpp" line="987"/>
         <source>QtiPlot - Memory Allocation Error</source>
         <translation>QtiPlot  - Eroare de alocare a memoriei</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Fit.cpp" line="696"/>
-        <location filename="../src/analysis/Fit.cpp" line="710"/>
+        <location filename="../src/analysis/Fit.cpp" line="702"/>
         <location filename="../src/analysis/Fit.cpp" line="716"/>
-        <location filename="../src/analysis/Fit.cpp" line="815"/>
-        <location filename="../src/analysis/Fit.cpp" line="829"/>
+        <location filename="../src/analysis/Fit.cpp" line="722"/>
+        <location filename="../src/analysis/Fit.cpp" line="821"/>
         <location filename="../src/analysis/Fit.cpp" line="835"/>
+        <location filename="../src/analysis/Fit.cpp" line="841"/>
         <source>Not enough memory!</source>
         <translation>Memorie insuficientă!</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Fit.cpp" line="721"/>
-        <location filename="../src/analysis/Fit.cpp" line="840"/>
+        <location filename="../src/analysis/Fit.cpp" line="727"/>
+        <location filename="../src/analysis/Fit.cpp" line="846"/>
         <source>FitStats</source>
         <translation>StatisticiAjustare</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Fit.cpp" line="721"/>
+        <location filename="../src/analysis/Fit.cpp" line="727"/>
         <source>Confidence Limits of %1</source>
         <translation>Interval de încredere pentru %1</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Fit.cpp" line="725"/>
-        <location filename="../src/analysis/Fit.cpp" line="844"/>
+        <location filename="../src/analysis/Fit.cpp" line="731"/>
+        <location filename="../src/analysis/Fit.cpp" line="850"/>
         <source>Independent Variable</source>
         <translation>Variabilă independentă</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Fit.cpp" line="726"/>
+        <location filename="../src/analysis/Fit.cpp" line="732"/>
         <source>LCL</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/analysis/Fit.cpp" line="727"/>
+        <location filename="../src/analysis/Fit.cpp" line="733"/>
         <source>Lower %1 Confidence Limit</source>
         <translation>Limită de încredere inferioară %1</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Fit.cpp" line="728"/>
+        <location filename="../src/analysis/Fit.cpp" line="734"/>
         <source>UCL</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/analysis/Fit.cpp" line="729"/>
+        <location filename="../src/analysis/Fit.cpp" line="735"/>
         <source>Upper %1 Confidence Limit</source>
         <translation>Limită de încredere superioară %1</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Fit.cpp" line="840"/>
+        <location filename="../src/analysis/Fit.cpp" line="846"/>
         <source>Prediction Limits of %1</source>
         <translation>Benzi de predicţie pentru %1</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Fit.cpp" line="845"/>
+        <location filename="../src/analysis/Fit.cpp" line="851"/>
         <source>LPL</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/analysis/Fit.cpp" line="846"/>
+        <location filename="../src/analysis/Fit.cpp" line="852"/>
         <source>Lower %1 Prediction Limit</source>
         <translation>Limită de predicţie inferioară %1</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Fit.cpp" line="847"/>
+        <location filename="../src/analysis/Fit.cpp" line="853"/>
         <source>UPL</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/analysis/Fit.cpp" line="848"/>
+        <location filename="../src/analysis/Fit.cpp" line="854"/>
         <source>Upper %1 Prediction Limit</source>
         <translation>Limită de predicţie superioară %1</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Fit.cpp" line="904"/>
+        <location filename="../src/analysis/Fit.cpp" line="910"/>
         <source>You didn&apos;t specify a valid data set for this fit operation. Operation aborted!</source>
         <translation>Nu aţi specificat un set de date valid pentru această operaţie. Operaţia a fost abandonată!</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Fit.cpp" line="909"/>
+        <location filename="../src/analysis/Fit.cpp" line="915"/>
         <source>There are no parameters specified for this fit operation. Operation aborted!</source>
         <translation>Nu aţi definit parametrii pentru această operaţie de ajustare. Operaţia a fost abandonată!</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Fit.cpp" line="914"/>
+        <location filename="../src/analysis/Fit.cpp" line="920"/>
         <source>You need at least %1 data points for this fit operation. Operation aborted!</source>
         <translation>Aveţi nevoie de cel puţin %1 puncte pentru a efectua operaţia de ajustare. Operaţia fost abandonată!</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Fit.cpp" line="919"/>
+        <location filename="../src/analysis/Fit.cpp" line="925"/>
         <source>You must specify a valid fit function first. Operation aborted!</source>
         <translation>Trebuie să specificaţi mai întâi o funcţie de ajustare validă. Operaţia a fost abandonată!</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Fit.cpp" line="982"/>
         <location filename="../src/analysis/Fit.cpp" line="988"/>
+        <location filename="../src/analysis/Fit.cpp" line="994"/>
         <source>Could not allocate enough memory for the fit curves!</source>
         <translation>Memorie insuficientă pentru curbele de ajustare!</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Fit.cpp" line="987"/>
+        <location filename="../src/analysis/Fit.cpp" line="993"/>
         <source>QtiPlot  - Memory Allocation Error</source>
         <translation>QtiPlot  - Eroare de alocare a memoriei</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Fit.cpp" line="1002"/>
+        <location filename="../src/analysis/Fit.cpp" line="1008"/>
         <source>Fit</source>
         <translation>Ajustare</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Fit.cpp" line="1035"/>
+        <location filename="../src/analysis/Fit.cpp" line="1041"/>
         <source>QtiPlot</source>
         <translation>QtiPlot</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Fit.cpp" line="1035"/>
+        <location filename="../src/analysis/Fit.cpp" line="1041"/>
         <source>File Save Error</source>
         <translation>Eroare de salvare a fişerului</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Fit.cpp" line="1036"/>
+        <location filename="../src/analysis/Fit.cpp" line="1042"/>
         <source>Could not write to file: &lt;br&gt;&lt;h4&gt; %1 &lt;/h4&gt;&lt;p&gt;Please verify that you have the right to write to this location!</source>
         <translation>Nu a fost posibilă scrierea în fişierul: &lt;br&gt;&lt;h4&gt; %1 &lt;/h4&gt;&lt;p&gt;Vă rugam să verificaţi că aveţi drept de scriere in această locaţie!</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Fit.cpp" line="1074"/>
+        <location filename="../src/analysis/Fit.cpp" line="1080"/>
         <source>QtiPlot Fit Model</source>
         <translation>Funcţie de ajustare QtiPlot</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Fit.cpp" line="1075"/>
+        <location filename="../src/analysis/Fit.cpp" line="1081"/>
         <source>Cannot read file %1:
 %2.</source>
         <translation>Nu a fost posibilă citirea fişierului %1:%2.</translation>
@@ -11107,32 +11107,32 @@ The following special codes can be used:
 <context>
     <name>GaussAmpFit</name>
     <message>
-        <location filename="../src/analysis/MultiPeakFit.cpp" line="527"/>
+        <location filename="../src/analysis/MultiPeakFit.cpp" line="575"/>
         <source>GaussAmp</source>
         <translation>GaussAmp</translation>
     </message>
     <message>
-        <location filename="../src/analysis/MultiPeakFit.cpp" line="534"/>
+        <location filename="../src/analysis/MultiPeakFit.cpp" line="582"/>
         <source>offset</source>
         <translation>constantă</translation>
     </message>
     <message>
-        <location filename="../src/analysis/MultiPeakFit.cpp" line="534"/>
+        <location filename="../src/analysis/MultiPeakFit.cpp" line="582"/>
         <source>amplitude</source>
         <translation>amplitudine</translation>
     </message>
     <message>
-        <location filename="../src/analysis/MultiPeakFit.cpp" line="534"/>
+        <location filename="../src/analysis/MultiPeakFit.cpp" line="582"/>
         <source>center</source>
         <translation>centru</translation>
     </message>
     <message>
-        <location filename="../src/analysis/MultiPeakFit.cpp" line="534"/>
+        <location filename="../src/analysis/MultiPeakFit.cpp" line="582"/>
         <source>width</source>
         <translation>lăţime</translation>
     </message>
     <message>
-        <location filename="../src/analysis/MultiPeakFit.cpp" line="536"/>
+        <location filename="../src/analysis/MultiPeakFit.cpp" line="584"/>
         <source>GaussAmp Fit</source>
         <translation>Ajustare cu funcţia GaussAmp</translation>
     </message>
@@ -11140,32 +11140,32 @@ The following special codes can be used:
 <context>
     <name>GaussFit</name>
     <message>
-        <location filename="../src/analysis/MultiPeakFit.cpp" line="487"/>
+        <location filename="../src/analysis/MultiPeakFit.cpp" line="521"/>
         <source>Gauss</source>
         <translation>Gauss</translation>
     </message>
     <message>
-        <location filename="../src/analysis/MultiPeakFit.cpp" line="488"/>
+        <location filename="../src/analysis/MultiPeakFit.cpp" line="522"/>
         <source>Gauss Fit</source>
         <translation>Ajustare gaussiană</translation>
     </message>
     <message>
-        <location filename="../src/analysis/MultiPeakFit.cpp" line="489"/>
+        <location filename="../src/analysis/MultiPeakFit.cpp" line="523"/>
         <source>area</source>
         <translation>aria</translation>
     </message>
     <message>
-        <location filename="../src/analysis/MultiPeakFit.cpp" line="489"/>
+        <location filename="../src/analysis/MultiPeakFit.cpp" line="523"/>
         <source>center</source>
         <translation>centru</translation>
     </message>
     <message>
-        <location filename="../src/analysis/MultiPeakFit.cpp" line="489"/>
+        <location filename="../src/analysis/MultiPeakFit.cpp" line="523"/>
         <source>width</source>
         <translation>lăţime</translation>
     </message>
     <message>
-        <location filename="../src/analysis/MultiPeakFit.cpp" line="489"/>
+        <location filename="../src/analysis/MultiPeakFit.cpp" line="523"/>
         <source>offset</source>
         <translation>constantă</translation>
     </message>
@@ -11919,79 +11919,79 @@ have the same number of rows.</source>
     </message>
     <message>
         <location filename="../src/analysis/Integration.cpp" line="65"/>
-        <location filename="../src/analysis/Integration.cpp" line="101"/>
+        <location filename="../src/analysis/Integration.cpp" line="115"/>
         <source>Integration</source>
         <translation>Integrare</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Integration.cpp" line="193"/>
-        <location filename="../src/analysis/Integration.cpp" line="209"/>
+        <location filename="../src/analysis/Integration.cpp" line="207"/>
+        <location filename="../src/analysis/Integration.cpp" line="223"/>
         <source>Numerical integration of</source>
         <translation>Integrare numerică a setului de date</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Integration.cpp" line="194"/>
+        <location filename="../src/analysis/Integration.cpp" line="208"/>
         <source>using a %1 order method</source>
         <translation>folosind o metodă de ordinul %1 </translation>
     </message>
     <message>
-        <location filename="../src/analysis/Integration.cpp" line="195"/>
+        <location filename="../src/analysis/Integration.cpp" line="209"/>
         <source>From</source>
         <translation>De la</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Integration.cpp" line="196"/>
-        <location filename="../src/analysis/Integration.cpp" line="212"/>
+        <location filename="../src/analysis/Integration.cpp" line="210"/>
+        <location filename="../src/analysis/Integration.cpp" line="226"/>
         <source>to</source>
         <translation>la</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Integration.cpp" line="197"/>
+        <location filename="../src/analysis/Integration.cpp" line="211"/>
         <source>Tolerance</source>
         <translation>Toleranţă</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Integration.cpp" line="198"/>
+        <location filename="../src/analysis/Integration.cpp" line="212"/>
         <source>Iterations</source>
         <translation>Iteraţii</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Integration.cpp" line="201"/>
+        <location filename="../src/analysis/Integration.cpp" line="215"/>
         <source>	Plot</source>
         <translation>Grafic</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Integration.cpp" line="210"/>
+        <location filename="../src/analysis/Integration.cpp" line="224"/>
         <source>using the Trapezoidal Rule</source>
         <translation>folosind metoda trapezelor</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Integration.cpp" line="211"/>
+        <location filename="../src/analysis/Integration.cpp" line="225"/>
         <source>Points</source>
         <translation>Puncte</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Integration.cpp" line="211"/>
+        <location filename="../src/analysis/Integration.cpp" line="225"/>
         <source>from</source>
         <translation>de la</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Integration.cpp" line="221"/>
+        <location filename="../src/analysis/Integration.cpp" line="235"/>
         <source>Peak at</source>
         <translation>Maxim la</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Integration.cpp" line="226"/>
+        <location filename="../src/analysis/Integration.cpp" line="240"/>
         <source>Area</source>
         <translation>Aria</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Integration.cpp" line="234"/>
+        <location filename="../src/analysis/Integration.cpp" line="248"/>
         <source>QtiPlot - Error</source>
         <translation>QtiPlot - Eroare</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Integration.cpp" line="235"/>
+        <location filename="../src/analysis/Integration.cpp" line="249"/>
         <source>Unknown integration method. Valid values must be in the range: 1 (Trapezoidal Method) to 5.</source>
         <translation>Metodă de integrare necunoscută. Valorile valide trebuie să se situeze în intervalul: 1 ( metoda trapezelor) - 5.</translation>
     </message>
@@ -11999,78 +11999,78 @@ have the same number of rows.</source>
 <context>
     <name>Interpolation</name>
     <message>
-        <location filename="../src/analysis/Interpolation.cpp" line="62"/>
-        <location filename="../src/analysis/Interpolation.cpp" line="126"/>
+        <location filename="../src/analysis/Interpolation.cpp" line="76"/>
+        <location filename="../src/analysis/Interpolation.cpp" line="140"/>
         <source>QtiPlot</source>
         <translation>QtiPlot</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Interpolation.cpp" line="62"/>
-        <location filename="../src/analysis/Interpolation.cpp" line="126"/>
+        <location filename="../src/analysis/Interpolation.cpp" line="76"/>
+        <location filename="../src/analysis/Interpolation.cpp" line="140"/>
         <source>Error</source>
         <translation>Eroare</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Interpolation.cpp" line="63"/>
+        <location filename="../src/analysis/Interpolation.cpp" line="77"/>
         <source>Unknown interpolation method. Valid values are: 0 - Linear, 1 - Cubic, 2 - Akima.</source>
         <translation>Metodă de interpolare necunoscută, valorile valide sunt: 0 - Liniar, 1 - Cubic, 2 - Akima.</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Interpolation.cpp" line="74"/>
-        <location filename="../src/analysis/Interpolation.cpp" line="75"/>
-        <location filename="../src/analysis/Interpolation.cpp" line="138"/>
-        <location filename="../src/analysis/Interpolation.cpp" line="139"/>
+        <location filename="../src/analysis/Interpolation.cpp" line="88"/>
+        <location filename="../src/analysis/Interpolation.cpp" line="89"/>
+        <location filename="../src/analysis/Interpolation.cpp" line="152"/>
+        <location filename="../src/analysis/Interpolation.cpp" line="153"/>
         <source>Linear</source>
         <translation>Liniară</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Interpolation.cpp" line="74"/>
-        <location filename="../src/analysis/Interpolation.cpp" line="79"/>
-        <location filename="../src/analysis/Interpolation.cpp" line="84"/>
-        <location filename="../src/analysis/Interpolation.cpp" line="138"/>
-        <location filename="../src/analysis/Interpolation.cpp" line="142"/>
-        <location filename="../src/analysis/Interpolation.cpp" line="146"/>
+        <location filename="../src/analysis/Interpolation.cpp" line="88"/>
+        <location filename="../src/analysis/Interpolation.cpp" line="93"/>
+        <location filename="../src/analysis/Interpolation.cpp" line="98"/>
+        <location filename="../src/analysis/Interpolation.cpp" line="152"/>
+        <location filename="../src/analysis/Interpolation.cpp" line="156"/>
+        <location filename="../src/analysis/Interpolation.cpp" line="160"/>
         <source>Int</source>
         <translation>Int</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Interpolation.cpp" line="75"/>
-        <location filename="../src/analysis/Interpolation.cpp" line="80"/>
-        <location filename="../src/analysis/Interpolation.cpp" line="85"/>
-        <location filename="../src/analysis/Interpolation.cpp" line="139"/>
-        <location filename="../src/analysis/Interpolation.cpp" line="143"/>
-        <location filename="../src/analysis/Interpolation.cpp" line="147"/>
+        <location filename="../src/analysis/Interpolation.cpp" line="89"/>
+        <location filename="../src/analysis/Interpolation.cpp" line="94"/>
+        <location filename="../src/analysis/Interpolation.cpp" line="99"/>
+        <location filename="../src/analysis/Interpolation.cpp" line="153"/>
+        <location filename="../src/analysis/Interpolation.cpp" line="157"/>
+        <location filename="../src/analysis/Interpolation.cpp" line="161"/>
         <source>Interpolation</source>
         <translation>Interpolare</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Interpolation.cpp" line="79"/>
-        <location filename="../src/analysis/Interpolation.cpp" line="80"/>
-        <location filename="../src/analysis/Interpolation.cpp" line="142"/>
-        <location filename="../src/analysis/Interpolation.cpp" line="143"/>
+        <location filename="../src/analysis/Interpolation.cpp" line="93"/>
+        <location filename="../src/analysis/Interpolation.cpp" line="94"/>
+        <location filename="../src/analysis/Interpolation.cpp" line="156"/>
+        <location filename="../src/analysis/Interpolation.cpp" line="157"/>
         <source>Cubic</source>
         <translation>Cubică</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Interpolation.cpp" line="84"/>
-        <location filename="../src/analysis/Interpolation.cpp" line="85"/>
-        <location filename="../src/analysis/Interpolation.cpp" line="146"/>
-        <location filename="../src/analysis/Interpolation.cpp" line="147"/>
+        <location filename="../src/analysis/Interpolation.cpp" line="98"/>
+        <location filename="../src/analysis/Interpolation.cpp" line="99"/>
+        <location filename="../src/analysis/Interpolation.cpp" line="160"/>
+        <location filename="../src/analysis/Interpolation.cpp" line="161"/>
         <source>Akima</source>
         <translation>Akima</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Interpolation.cpp" line="103"/>
+        <location filename="../src/analysis/Interpolation.cpp" line="117"/>
         <source>QtiPlot - Error</source>
         <translation>QtiPlot - Eroare</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Interpolation.cpp" line="104"/>
+        <location filename="../src/analysis/Interpolation.cpp" line="118"/>
         <source>Unknown interpolation method, valid values are: 0 - Linear, 1 - Cubic, 2 - Akima.</source>
         <translation>Metodă de interpolare necunoscută, valorile valide sunt: 0 - Liniar, 1 - Cubic, 2 - Akima.</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Interpolation.cpp" line="127"/>
+        <location filename="../src/analysis/Interpolation.cpp" line="141"/>
         <source>You need at least %1 points in order to perform this operation!</source>
         <translation>Aveţi nevoie de cel puţin %1 puncte pentru a efectua această operaţia!</translation>
     </message>
@@ -12570,22 +12570,22 @@ have the same number of rows.</source>
 <context>
     <name>LinearFit</name>
     <message>
-        <location filename="../src/analysis/PolynomialFit.cpp" line="261"/>
+        <location filename="../src/analysis/PolynomialFit.cpp" line="289"/>
         <source>Linear Regression</source>
         <translation>Regresie liniară</translation>
     </message>
     <message>
-        <location filename="../src/analysis/PolynomialFit.cpp" line="262"/>
+        <location filename="../src/analysis/PolynomialFit.cpp" line="290"/>
         <source>Linear</source>
         <translation>Liniară</translation>
     </message>
     <message>
-        <location filename="../src/analysis/PolynomialFit.cpp" line="271"/>
+        <location filename="../src/analysis/PolynomialFit.cpp" line="299"/>
         <source>QtiPlot - Fit Error</source>
         <translation>QtiPlot - Eroare de ajustare</translation>
     </message>
     <message>
-        <location filename="../src/analysis/PolynomialFit.cpp" line="272"/>
+        <location filename="../src/analysis/PolynomialFit.cpp" line="300"/>
         <source>You need at least %1 data points for this fit operation. Operation aborted!</source>
         <translation>Aveţi nevoie de cel puţin %1 puncte pentru a efectua operaţia de ajustare. Operaţia fost abandonată!</translation>
     </message>
@@ -12593,22 +12593,22 @@ have the same number of rows.</source>
 <context>
     <name>LinearSlopeFit</name>
     <message>
-        <location filename="../src/analysis/PolynomialFit.cpp" line="367"/>
+        <location filename="../src/analysis/PolynomialFit.cpp" line="395"/>
         <source>Linear Regression</source>
         <translation>Regresie liniară</translation>
     </message>
     <message>
-        <location filename="../src/analysis/PolynomialFit.cpp" line="368"/>
+        <location filename="../src/analysis/PolynomialFit.cpp" line="396"/>
         <source>LinearSlope</source>
         <translation>PantăLiniară</translation>
     </message>
     <message>
-        <location filename="../src/analysis/PolynomialFit.cpp" line="377"/>
+        <location filename="../src/analysis/PolynomialFit.cpp" line="405"/>
         <source>QtiPlot - Fit Error</source>
         <translation>QtiPlot - Eroare de ajustare</translation>
     </message>
     <message>
-        <location filename="../src/analysis/PolynomialFit.cpp" line="378"/>
+        <location filename="../src/analysis/PolynomialFit.cpp" line="406"/>
         <source>You need at least %1 data points for this fit operation. Operation aborted!</source>
         <translation>Aveţi nevoie de cel puţin %1 puncte pentru a efectua operaţia de ajustare. Operaţia fost abandonată!</translation>
     </message>
@@ -12616,32 +12616,32 @@ have the same number of rows.</source>
 <context>
     <name>LogisticFit</name>
     <message>
-        <location filename="../src/analysis/LogisticFit.cpp" line="61"/>
+        <location filename="../src/analysis/LogisticFit.cpp" line="75"/>
         <source>Logistic</source>
         <translation>Logistic</translation>
     </message>
     <message>
-        <location filename="../src/analysis/LogisticFit.cpp" line="66"/>
+        <location filename="../src/analysis/LogisticFit.cpp" line="80"/>
         <source>init value</source>
         <translation>valoare iniţială</translation>
     </message>
     <message>
-        <location filename="../src/analysis/LogisticFit.cpp" line="66"/>
+        <location filename="../src/analysis/LogisticFit.cpp" line="80"/>
         <source>final value</source>
         <translation>valoare finală</translation>
     </message>
     <message>
-        <location filename="../src/analysis/LogisticFit.cpp" line="66"/>
+        <location filename="../src/analysis/LogisticFit.cpp" line="80"/>
         <source>center</source>
         <translation>centru</translation>
     </message>
     <message>
-        <location filename="../src/analysis/LogisticFit.cpp" line="66"/>
+        <location filename="../src/analysis/LogisticFit.cpp" line="80"/>
         <source>power</source>
         <translation>putere</translation>
     </message>
     <message>
-        <location filename="../src/analysis/LogisticFit.cpp" line="68"/>
+        <location filename="../src/analysis/LogisticFit.cpp" line="82"/>
         <source>Logistic Fit</source>
         <translation>Ajustare cu funcţia logistică</translation>
     </message>
@@ -12649,32 +12649,32 @@ have the same number of rows.</source>
 <context>
     <name>LorentzFit</name>
     <message>
-        <location filename="../src/analysis/MultiPeakFit.cpp" line="447"/>
+        <location filename="../src/analysis/MultiPeakFit.cpp" line="467"/>
         <source>Lorentz</source>
         <translation>Lorenz</translation>
     </message>
     <message>
-        <location filename="../src/analysis/MultiPeakFit.cpp" line="448"/>
+        <location filename="../src/analysis/MultiPeakFit.cpp" line="468"/>
         <source>Lorentz Fit</source>
         <translation>Ajustare Lorentz</translation>
     </message>
     <message>
-        <location filename="../src/analysis/MultiPeakFit.cpp" line="449"/>
+        <location filename="../src/analysis/MultiPeakFit.cpp" line="469"/>
         <source>area</source>
         <translation>aria</translation>
     </message>
     <message>
-        <location filename="../src/analysis/MultiPeakFit.cpp" line="449"/>
+        <location filename="../src/analysis/MultiPeakFit.cpp" line="469"/>
         <source>center</source>
         <translation>centru</translation>
     </message>
     <message>
-        <location filename="../src/analysis/MultiPeakFit.cpp" line="449"/>
+        <location filename="../src/analysis/MultiPeakFit.cpp" line="469"/>
         <source>width</source>
         <translation>lăţime</translation>
     </message>
     <message>
-        <location filename="../src/analysis/MultiPeakFit.cpp" line="449"/>
+        <location filename="../src/analysis/MultiPeakFit.cpp" line="469"/>
         <source>offset</source>
         <translation>constantă</translation>
     </message>
@@ -13310,106 +13310,106 @@ have the same number of rows.</source>
 <context>
     <name>MultiPeakFit</name>
     <message>
-        <location filename="../src/analysis/MultiPeakFit.cpp" line="57"/>
+        <location filename="../src/analysis/MultiPeakFit.cpp" line="63"/>
         <source>Gauss</source>
         <translation>Gauss</translation>
     </message>
     <message>
-        <location filename="../src/analysis/MultiPeakFit.cpp" line="63"/>
+        <location filename="../src/analysis/MultiPeakFit.cpp" line="69"/>
         <source>Lorentz</source>
         <translation>Lorenz</translation>
     </message>
     <message>
-        <location filename="../src/analysis/MultiPeakFit.cpp" line="84"/>
+        <location filename="../src/analysis/MultiPeakFit.cpp" line="90"/>
         <source>Gauss Fit</source>
         <translation>Ajustare gaussiană</translation>
     </message>
     <message>
-        <location filename="../src/analysis/MultiPeakFit.cpp" line="86"/>
+        <location filename="../src/analysis/MultiPeakFit.cpp" line="92"/>
         <source>Lorentz Fit</source>
         <translation>Ajustare Lorentz</translation>
     </message>
     <message>
-        <location filename="../src/analysis/MultiPeakFit.cpp" line="88"/>
+        <location filename="../src/analysis/MultiPeakFit.cpp" line="94"/>
         <source>multi-peak</source>
         <translation>extreme</translation>
     </message>
     <message>
-        <location filename="../src/analysis/MultiPeakFit.cpp" line="118"/>
-        <location filename="../src/analysis/MultiPeakFit.cpp" line="123"/>
+        <location filename="../src/analysis/MultiPeakFit.cpp" line="124"/>
+        <location filename="../src/analysis/MultiPeakFit.cpp" line="129"/>
         <source>area</source>
         <translation>aria</translation>
     </message>
     <message>
-        <location filename="../src/analysis/MultiPeakFit.cpp" line="118"/>
         <location filename="../src/analysis/MultiPeakFit.cpp" line="124"/>
+        <location filename="../src/analysis/MultiPeakFit.cpp" line="130"/>
         <source>center</source>
         <translation>centru</translation>
     </message>
     <message>
-        <location filename="../src/analysis/MultiPeakFit.cpp" line="118"/>
-        <location filename="../src/analysis/MultiPeakFit.cpp" line="125"/>
+        <location filename="../src/analysis/MultiPeakFit.cpp" line="124"/>
+        <location filename="../src/analysis/MultiPeakFit.cpp" line="131"/>
         <source>width</source>
         <translation>lăţime</translation>
     </message>
     <message>
-        <location filename="../src/analysis/MultiPeakFit.cpp" line="118"/>
-        <location filename="../src/analysis/MultiPeakFit.cpp" line="127"/>
+        <location filename="../src/analysis/MultiPeakFit.cpp" line="124"/>
+        <location filename="../src/analysis/MultiPeakFit.cpp" line="133"/>
         <source>offset</source>
         <translation>constantă</translation>
     </message>
     <message>
-        <location filename="../src/analysis/MultiPeakFit.cpp" line="219"/>
-        <location filename="../src/analysis/MultiPeakFit.cpp" line="222"/>
-        <location filename="../src/analysis/MultiPeakFit.cpp" line="394"/>
+        <location filename="../src/analysis/MultiPeakFit.cpp" line="225"/>
+        <location filename="../src/analysis/MultiPeakFit.cpp" line="228"/>
+        <location filename="../src/analysis/MultiPeakFit.cpp" line="400"/>
         <source>Peak</source>
         <translation>Extrem</translation>
     </message>
     <message>
-        <location filename="../src/analysis/MultiPeakFit.cpp" line="258"/>
-        <location filename="../src/analysis/MultiPeakFit.cpp" line="260"/>
-        <location filename="../src/analysis/MultiPeakFit.cpp" line="282"/>
+        <location filename="../src/analysis/MultiPeakFit.cpp" line="264"/>
+        <location filename="../src/analysis/MultiPeakFit.cpp" line="266"/>
+        <location filename="../src/analysis/MultiPeakFit.cpp" line="288"/>
         <source>Fit</source>
         <translation>Ajustare</translation>
     </message>
     <message>
-        <location filename="../src/analysis/MultiPeakFit.cpp" line="271"/>
+        <location filename="../src/analysis/MultiPeakFit.cpp" line="277"/>
         <source>QtiPlot - Fit Error</source>
         <translation>QtiPlot - Eroare de ajustare</translation>
     </message>
     <message>
-        <location filename="../src/analysis/MultiPeakFit.cpp" line="272"/>
+        <location filename="../src/analysis/MultiPeakFit.cpp" line="278"/>
         <source>Could not allocate enough memory for the fit curves!</source>
         <translation>Memorie insuficientă pentru curbele de ajustare!</translation>
     </message>
     <message>
-        <location filename="../src/analysis/MultiPeakFit.cpp" line="288"/>
+        <location filename="../src/analysis/MultiPeakFit.cpp" line="294"/>
         <source>fit of</source>
         <translation>ajustare a</translation>
     </message>
     <message>
-        <location filename="../src/analysis/MultiPeakFit.cpp" line="293"/>
-        <location filename="../src/analysis/MultiPeakFit.cpp" line="347"/>
+        <location filename="../src/analysis/MultiPeakFit.cpp" line="299"/>
+        <location filename="../src/analysis/MultiPeakFit.cpp" line="353"/>
         <source>peak</source>
         <translation>extrem</translation>
     </message>
     <message>
-        <location filename="../src/analysis/MultiPeakFit.cpp" line="394"/>
+        <location filename="../src/analysis/MultiPeakFit.cpp" line="400"/>
         <source>Area</source>
         <translation>Aria</translation>
     </message>
     <message>
-        <location filename="../src/analysis/MultiPeakFit.cpp" line="395"/>
+        <location filename="../src/analysis/MultiPeakFit.cpp" line="401"/>
         <source>Center</source>
         <translation>Centrat</translation>
     </message>
     <message>
-        <location filename="../src/analysis/MultiPeakFit.cpp" line="395"/>
+        <location filename="../src/analysis/MultiPeakFit.cpp" line="401"/>
         <source>Width</source>
         <translation>Lăţime</translation>
     </message>
     <message>
-        <location filename="../src/analysis/MultiPeakFit.cpp" line="395"/>
+        <location filename="../src/analysis/MultiPeakFit.cpp" line="401"/>
         <source>Height</source>
         <translation>Înălţime</translation>
     </message>
@@ -13430,45 +13430,45 @@ have the same number of rows.</source>
 <context>
     <name>NonLinearFit</name>
     <message>
-        <location filename="../src/analysis/NonLinearFit.cpp" line="68"/>
+        <location filename="../src/analysis/NonLinearFit.cpp" line="82"/>
         <source>NonLinear</source>
         <translation>Neliniar</translation>
     </message>
     <message>
-        <location filename="../src/analysis/NonLinearFit.cpp" line="74"/>
+        <location filename="../src/analysis/NonLinearFit.cpp" line="88"/>
         <source>Non-linear Fit</source>
         <translation>Ajustare neliniară</translation>
     </message>
     <message>
-        <location filename="../src/analysis/NonLinearFit.cpp" line="81"/>
-        <location filename="../src/analysis/NonLinearFit.cpp" line="119"/>
+        <location filename="../src/analysis/NonLinearFit.cpp" line="95"/>
+        <location filename="../src/analysis/NonLinearFit.cpp" line="133"/>
         <source>QtiPlot - Input function error</source>
         <translation>QtiPlot - Eroare detectată în funcţia introdusă</translation>
     </message>
     <message>
-        <location filename="../src/analysis/NonLinearFit.cpp" line="82"/>
+        <location filename="../src/analysis/NonLinearFit.cpp" line="96"/>
         <source>Please enter a valid non-empty expression! Operation aborted!</source>
         <translation>Vă rugăm să introduceţi o expresie validă! Operaţie abandonată!</translation>
     </message>
     <message>
-        <location filename="../src/analysis/NonLinearFit.cpp" line="93"/>
-        <location filename="../src/analysis/NonLinearFit.cpp" line="132"/>
+        <location filename="../src/analysis/NonLinearFit.cpp" line="107"/>
+        <location filename="../src/analysis/NonLinearFit.cpp" line="146"/>
         <source>QtiPlot - Fit Error</source>
         <translation>QtiPlot - Eroare de ajustare</translation>
     </message>
     <message>
-        <location filename="../src/analysis/NonLinearFit.cpp" line="94"/>
+        <location filename="../src/analysis/NonLinearFit.cpp" line="108"/>
         <source>There are no parameters specified for this fit operation. Please define a list of parameters first!</source>
         <translation>Nu aţi definit parametrii pentru această operaţie de ajustare. Vă rugăm să definiţi mai întâi o listă de parametri!</translation>
     </message>
     <message>
-        <location filename="../src/analysis/NonLinearFit.cpp" line="133"/>
+        <location filename="../src/analysis/NonLinearFit.cpp" line="147"/>
         <source>You must provide a list containing at least one parameter for this type of fit. Operation aborted!</source>
         <translation>Trebuie să introduceţi o listă conţinand cel puţin un parametru pentru a efectua acest tip de ajustare. Operaţia fost abandonată!</translation>
     </message>
     <message>
-        <location filename="../src/analysis/NonLinearFit.cpp" line="223"/>
-        <location filename="../src/analysis/NonLinearFit.cpp" line="242"/>
+        <location filename="../src/analysis/NonLinearFit.cpp" line="237"/>
+        <location filename="../src/analysis/NonLinearFit.cpp" line="256"/>
         <source>constant</source>
         <translation>constant(ă)</translation>
     </message>
@@ -15406,37 +15406,37 @@ have the same number of rows.</source>
 <context>
     <name>PluginFit</name>
     <message>
-        <location filename="../src/analysis/PluginFit.cpp" line="63"/>
+        <location filename="../src/analysis/PluginFit.cpp" line="77"/>
         <source>Plugin Fit</source>
         <translation>Ajustare folosind o extensie</translation>
     </message>
     <message>
-        <location filename="../src/analysis/PluginFit.cpp" line="70"/>
+        <location filename="../src/analysis/PluginFit.cpp" line="84"/>
         <source>QtiPlot - File not found</source>
         <translation>QtiPlot - Fişierul nu a fost găsit</translation>
     </message>
     <message>
-        <location filename="../src/analysis/PluginFit.cpp" line="71"/>
+        <location filename="../src/analysis/PluginFit.cpp" line="85"/>
         <source>Plugin file: &lt;p&gt;&lt;b&gt; %1 &lt;/b&gt; &lt;p&gt;not found. Operation aborted!</source>
         <translation>Fişierul extensie&lt;p&gt;&lt;b&gt; %1 &lt;/b&gt; &lt;p&gt;nu a fost găsit! Operaţiunea a fost abandonată!</translation>
     </message>
     <message>
-        <location filename="../src/analysis/PluginFit.cpp" line="80"/>
-        <location filename="../src/analysis/PluginFit.cpp" line="87"/>
         <location filename="../src/analysis/PluginFit.cpp" line="94"/>
         <location filename="../src/analysis/PluginFit.cpp" line="101"/>
+        <location filename="../src/analysis/PluginFit.cpp" line="108"/>
+        <location filename="../src/analysis/PluginFit.cpp" line="115"/>
         <source>QtiPlot - Plugin Error</source>
         <translation>QtiPlot - Eroare extensie</translation>
     </message>
     <message>
-        <location filename="../src/analysis/PluginFit.cpp" line="81"/>
+        <location filename="../src/analysis/PluginFit.cpp" line="95"/>
         <source>The plugin does not implement a %1 method necessary for simplex fitting.</source>
         <translation>Extensia nu implementează metoda %1 necesară pentru ajustările de tip simplex.</translation>
     </message>
     <message>
-        <location filename="../src/analysis/PluginFit.cpp" line="88"/>
-        <location filename="../src/analysis/PluginFit.cpp" line="95"/>
         <location filename="../src/analysis/PluginFit.cpp" line="102"/>
+        <location filename="../src/analysis/PluginFit.cpp" line="109"/>
+        <location filename="../src/analysis/PluginFit.cpp" line="116"/>
         <source>The plugin does not implement a %1 method necessary for Levenberg-Marquardt fitting.</source>
         <translation>Extensia nu implementează metoda %1 necesară pentru ajustările de tip Levenberg-Marquardt.</translation>
     </message>
@@ -15512,22 +15512,22 @@ have the same number of rows.</source>
 <context>
     <name>PolynomialFit</name>
     <message>
-        <location filename="../src/analysis/PolynomialFit.cpp" line="66"/>
+        <location filename="../src/analysis/PolynomialFit.cpp" line="80"/>
         <source>Polynomial</source>
         <translation>Polinomial</translation>
     </message>
     <message>
-        <location filename="../src/analysis/PolynomialFit.cpp" line="68"/>
+        <location filename="../src/analysis/PolynomialFit.cpp" line="82"/>
         <source>Polynomial Fit</source>
         <translation>Ajustare polinomială</translation>
     </message>
     <message>
-        <location filename="../src/analysis/PolynomialFit.cpp" line="152"/>
+        <location filename="../src/analysis/PolynomialFit.cpp" line="166"/>
         <source>QtiPlot - Fit Error</source>
         <translation>QtiPlot - Eroare de ajustare</translation>
     </message>
     <message>
-        <location filename="../src/analysis/PolynomialFit.cpp" line="153"/>
+        <location filename="../src/analysis/PolynomialFit.cpp" line="167"/>
         <source>You need at least %1 data points for this fit operation. Operation aborted!</source>
         <translation>Aveţi nevoie de cel puţin %1 puncte pentru a efectua operaţia de ajustare. Operaţia fost abandonată!</translation>
     </message>
@@ -15944,12 +15944,12 @@ have the same number of rows.</source>
         <translation type="obsolete">O singularitate a fost detectată pentru x = %1. Operaţiune abandonată!</translation>
     </message>
     <message>
-        <location filename="../src/analysis/NonLinearFit.cpp" line="322"/>
+        <location filename="../src/analysis/NonLinearFit.cpp" line="336"/>
         <source>QtiPlot</source>
         <translation>QtiPlot</translation>
     </message>
     <message>
-        <location filename="../src/analysis/NonLinearFit.cpp" line="323"/>
+        <location filename="../src/analysis/NonLinearFit.cpp" line="337"/>
         <source>Ignored data point at x = %1.</source>
         <translation>Punctul x = %1 a fost ignorat.</translation>
     </message>
@@ -16737,32 +16737,32 @@ have the same number of rows.</source>
 <context>
     <name>SigmoidalFit</name>
     <message>
-        <location filename="../src/analysis/SigmoidalFit.cpp" line="61"/>
+        <location filename="../src/analysis/SigmoidalFit.cpp" line="75"/>
         <source>Boltzmann</source>
         <translation>Boltzmann</translation>
     </message>
     <message>
-        <location filename="../src/analysis/SigmoidalFit.cpp" line="66"/>
+        <location filename="../src/analysis/SigmoidalFit.cpp" line="80"/>
         <source>init value</source>
         <translation>Valoare iniţială</translation>
     </message>
     <message>
-        <location filename="../src/analysis/SigmoidalFit.cpp" line="66"/>
+        <location filename="../src/analysis/SigmoidalFit.cpp" line="80"/>
         <source>final value</source>
         <translation>Valoare finală</translation>
     </message>
     <message>
-        <location filename="../src/analysis/SigmoidalFit.cpp" line="66"/>
+        <location filename="../src/analysis/SigmoidalFit.cpp" line="80"/>
         <source>center</source>
         <translation>Centru</translation>
     </message>
     <message>
-        <location filename="../src/analysis/SigmoidalFit.cpp" line="66"/>
+        <location filename="../src/analysis/SigmoidalFit.cpp" line="80"/>
         <source>time constant</source>
         <translation>Constanta de timp</translation>
     </message>
     <message>
-        <location filename="../src/analysis/SigmoidalFit.cpp" line="68"/>
+        <location filename="../src/analysis/SigmoidalFit.cpp" line="82"/>
         <source>Boltzmann (Sigmoidal) Fit</source>
         <translation>Ajustare Boltzmann (Sigmoidală)</translation>
     </message>
@@ -16830,31 +16830,31 @@ have the same number of rows.</source>
 <context>
     <name>SmoothFilter</name>
     <message>
-        <location filename="../src/analysis/SmoothFilter.cpp" line="69"/>
+        <location filename="../src/analysis/SmoothFilter.cpp" line="76"/>
         <source>Smoothed</source>
         <translation>Neted</translation>
     </message>
     <message>
-        <location filename="../src/analysis/SmoothFilter.cpp" line="81"/>
-        <location filename="../src/analysis/SmoothFilter.cpp" line="224"/>
+        <location filename="../src/analysis/SmoothFilter.cpp" line="88"/>
         <location filename="../src/analysis/SmoothFilter.cpp" line="231"/>
-        <location filename="../src/analysis/SmoothFilter.cpp" line="245"/>
+        <location filename="../src/analysis/SmoothFilter.cpp" line="238"/>
         <location filename="../src/analysis/SmoothFilter.cpp" line="252"/>
-        <location filename="../src/analysis/SmoothFilter.cpp" line="264"/>
+        <location filename="../src/analysis/SmoothFilter.cpp" line="259"/>
         <location filename="../src/analysis/SmoothFilter.cpp" line="271"/>
         <location filename="../src/analysis/SmoothFilter.cpp" line="278"/>
+        <location filename="../src/analysis/SmoothFilter.cpp" line="285"/>
         <source>QtiPlot</source>
         <translation>QtiPlot</translation>
     </message>
     <message>
-        <location filename="../src/analysis/SmoothFilter.cpp" line="81"/>
-        <location filename="../src/analysis/SmoothFilter.cpp" line="224"/>
+        <location filename="../src/analysis/SmoothFilter.cpp" line="88"/>
         <location filename="../src/analysis/SmoothFilter.cpp" line="231"/>
-        <location filename="../src/analysis/SmoothFilter.cpp" line="245"/>
+        <location filename="../src/analysis/SmoothFilter.cpp" line="238"/>
         <location filename="../src/analysis/SmoothFilter.cpp" line="252"/>
-        <location filename="../src/analysis/SmoothFilter.cpp" line="264"/>
+        <location filename="../src/analysis/SmoothFilter.cpp" line="259"/>
         <location filename="../src/analysis/SmoothFilter.cpp" line="271"/>
         <location filename="../src/analysis/SmoothFilter.cpp" line="278"/>
+        <location filename="../src/analysis/SmoothFilter.cpp" line="285"/>
         <source>Error</source>
         <translation>Eroare</translation>
     </message>
@@ -16863,66 +16863,66 @@ have the same number of rows.</source>
         <translation type="obsolete">Tip de filtru necunoscut! Valorile valide sunt: 1 - Savitky-Golay, 2 - FFT, 3 - Medie glisantă.</translation>
     </message>
     <message>
-        <location filename="../src/analysis/SmoothFilter.cpp" line="82"/>
+        <location filename="../src/analysis/SmoothFilter.cpp" line="89"/>
         <source>Unknown smooth filter. Valid values are: 1 - Savitky-Golay, 2 - FFT, 3 - Moving Window Average, 4 - Lowess.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/analysis/SmoothFilter.cpp" line="99"/>
-        <location filename="../src/analysis/SmoothFilter.cpp" line="103"/>
-        <location filename="../src/analysis/SmoothFilter.cpp" line="107"/>
-        <location filename="../src/analysis/SmoothFilter.cpp" line="111"/>
+        <location filename="../src/analysis/SmoothFilter.cpp" line="106"/>
+        <location filename="../src/analysis/SmoothFilter.cpp" line="110"/>
+        <location filename="../src/analysis/SmoothFilter.cpp" line="114"/>
+        <location filename="../src/analysis/SmoothFilter.cpp" line="118"/>
         <source>points</source>
         <translation>puncte</translation>
     </message>
     <message>
-        <location filename="../src/analysis/SmoothFilter.cpp" line="99"/>
+        <location filename="../src/analysis/SmoothFilter.cpp" line="106"/>
         <source>Savitzky-Golay smoothing</source>
         <translation>Netezire Savitzky-Golay</translation>
     </message>
     <message>
-        <location filename="../src/analysis/SmoothFilter.cpp" line="103"/>
+        <location filename="../src/analysis/SmoothFilter.cpp" line="110"/>
         <source>FFT smoothing</source>
         <translation>Netezire FFT</translation>
     </message>
     <message>
-        <location filename="../src/analysis/SmoothFilter.cpp" line="107"/>
+        <location filename="../src/analysis/SmoothFilter.cpp" line="114"/>
         <source>average smoothing</source>
         <translation>Netezire prin mediere</translation>
     </message>
     <message>
-        <location filename="../src/analysis/SmoothFilter.cpp" line="111"/>
+        <location filename="../src/analysis/SmoothFilter.cpp" line="118"/>
         <source>Lowess smoothing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/analysis/SmoothFilter.cpp" line="225"/>
+        <location filename="../src/analysis/SmoothFilter.cpp" line="232"/>
         <source>The number of points must be positive!</source>
         <translation>Numărul de puncte trebuie să fie o valoare pozitivă!</translation>
     </message>
     <message>
-        <location filename="../src/analysis/SmoothFilter.cpp" line="232"/>
-        <location filename="../src/analysis/SmoothFilter.cpp" line="253"/>
+        <location filename="../src/analysis/SmoothFilter.cpp" line="239"/>
+        <location filename="../src/analysis/SmoothFilter.cpp" line="260"/>
         <source>The polynomial order must be lower than the number of left points plus the number of right points!</source>
         <translation>Ordinul polinomului trebuie să fie mai mic decat numărul de puncte la stânga adunat cu numărul de puncte la dreapta!</translation>
     </message>
     <message>
-        <location filename="../src/analysis/SmoothFilter.cpp" line="246"/>
+        <location filename="../src/analysis/SmoothFilter.cpp" line="253"/>
         <source>Setting polynomial order is only available for Savitzky-Golay smooth filters! Ignored option!</source>
         <translation>Definirea ordinului polinomului este disounibilă numai pentru filtrele de netezire de tip Savitzky-Golay! Opţiunea va fi ignorată!</translation>
     </message>
     <message>
-        <location filename="../src/analysis/SmoothFilter.cpp" line="265"/>
+        <location filename="../src/analysis/SmoothFilter.cpp" line="272"/>
         <source>Setting Lowess parameter is only available for Lowess smooth filters! Ignored option!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/analysis/SmoothFilter.cpp" line="272"/>
+        <location filename="../src/analysis/SmoothFilter.cpp" line="279"/>
         <source>The parameter f must be between 0 and 1!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/analysis/SmoothFilter.cpp" line="279"/>
+        <location filename="../src/analysis/SmoothFilter.cpp" line="286"/>
         <source>The number of iterations must be at least 1!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -18055,47 +18055,47 @@ have the same number of rows.</source>
 <context>
     <name>ThreeExpFit</name>
     <message>
-        <location filename="../src/analysis/ExponentialFit.cpp" line="229"/>
+        <location filename="../src/analysis/ExponentialFit.cpp" line="273"/>
         <source>ExpDecay3</source>
         <translation>ScădereExp3</translation>
     </message>
     <message>
-        <location filename="../src/analysis/ExponentialFit.cpp" line="237"/>
+        <location filename="../src/analysis/ExponentialFit.cpp" line="281"/>
         <source>Exponential decay</source>
         <translation>Scădere exponenţială</translation>
     </message>
     <message>
-        <location filename="../src/analysis/ExponentialFit.cpp" line="239"/>
+        <location filename="../src/analysis/ExponentialFit.cpp" line="283"/>
         <source>first amplitude</source>
         <translation>prima amplitudine</translation>
     </message>
     <message>
-        <location filename="../src/analysis/ExponentialFit.cpp" line="239"/>
+        <location filename="../src/analysis/ExponentialFit.cpp" line="283"/>
         <source>first lifetime</source>
         <translation>prima durată de viaţă</translation>
     </message>
     <message>
-        <location filename="../src/analysis/ExponentialFit.cpp" line="239"/>
+        <location filename="../src/analysis/ExponentialFit.cpp" line="283"/>
         <source>second amplitude</source>
         <translation>a doua amplitudine</translation>
     </message>
     <message>
-        <location filename="../src/analysis/ExponentialFit.cpp" line="239"/>
+        <location filename="../src/analysis/ExponentialFit.cpp" line="283"/>
         <source>second lifetime</source>
         <translation>a doua durată de viaţă</translation>
     </message>
     <message>
-        <location filename="../src/analysis/ExponentialFit.cpp" line="239"/>
+        <location filename="../src/analysis/ExponentialFit.cpp" line="283"/>
         <source>third amplitude</source>
         <translation>a treia amplitudine</translation>
     </message>
     <message>
-        <location filename="../src/analysis/ExponentialFit.cpp" line="239"/>
+        <location filename="../src/analysis/ExponentialFit.cpp" line="283"/>
         <source>third lifetime</source>
         <translation>a treia durată de viaţă</translation>
     </message>
     <message>
-        <location filename="../src/analysis/ExponentialFit.cpp" line="239"/>
+        <location filename="../src/analysis/ExponentialFit.cpp" line="283"/>
         <source>offset</source>
         <translation>constantă</translation>
     </message>
@@ -18140,37 +18140,37 @@ have the same number of rows.</source>
 <context>
     <name>TwoExpFit</name>
     <message>
-        <location filename="../src/analysis/ExponentialFit.cpp" line="156"/>
+        <location filename="../src/analysis/ExponentialFit.cpp" line="186"/>
         <source>ExpDecay2</source>
         <translation>ScădereExp2</translation>
     </message>
     <message>
-        <location filename="../src/analysis/ExponentialFit.cpp" line="164"/>
+        <location filename="../src/analysis/ExponentialFit.cpp" line="194"/>
         <source>Exponential decay</source>
         <translation>Scădere exponenţială</translation>
     </message>
     <message>
-        <location filename="../src/analysis/ExponentialFit.cpp" line="166"/>
+        <location filename="../src/analysis/ExponentialFit.cpp" line="196"/>
         <source>first amplitude</source>
         <translation>prima amplitudine</translation>
     </message>
     <message>
-        <location filename="../src/analysis/ExponentialFit.cpp" line="166"/>
+        <location filename="../src/analysis/ExponentialFit.cpp" line="196"/>
         <source>first lifetime</source>
         <translation>prima durată de viaţă</translation>
     </message>
     <message>
-        <location filename="../src/analysis/ExponentialFit.cpp" line="166"/>
+        <location filename="../src/analysis/ExponentialFit.cpp" line="196"/>
         <source>second amplitude</source>
         <translation>a doua amplitudine</translation>
     </message>
     <message>
-        <location filename="../src/analysis/ExponentialFit.cpp" line="166"/>
+        <location filename="../src/analysis/ExponentialFit.cpp" line="196"/>
         <source>second lifetime</source>
         <translation>a doua durată de viaţă</translation>
     </message>
     <message>
-        <location filename="../src/analysis/ExponentialFit.cpp" line="166"/>
+        <location filename="../src/analysis/ExponentialFit.cpp" line="196"/>
         <source>offset</source>
         <translation>constantă</translation>
     </message>

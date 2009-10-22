@@ -101,7 +101,7 @@ translations.files += translations/qtiplot_de.qm \
                   translations/qtiplot_ru.qm \
                   translations/qtiplot_ja.qm \
                   translations/qtiplot_sv.qm
-				  
+
 isEmpty(LUPDATE): LUPDATE = lupdate
 #system($$LUPDATE -verbose qtiplot.pro)
 isEmpty(LRELEASE): LRELEASE = lrelease
@@ -152,7 +152,6 @@ SOURCES     += ../3rdparty/QTeXEngine/src/QTeXPaintDevice.cpp
 ###############################################################
 
 contains(SCRIPTING_LANGS, Python) {
-
   contains(CONFIG, CustomInstall){
   	INSTALLS += pythonconfig
   	pythonconfig.files += qtiplotrc.py \
