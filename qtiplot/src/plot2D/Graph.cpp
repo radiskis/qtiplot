@@ -6608,7 +6608,7 @@ QList<FrameWidget*> Graph::stackingOrderEnrichmentsList()
 	QObjectList lst =  ml->canvas()->children();
 	foreach(QObject *o, lst){
 		FrameWidget *fw = qobject_cast<FrameWidget *>(o);
-		if (fw)
+		if (fw && fw->plot() == this)
 			enrichements << fw;
 	}
 	return enrichements;
