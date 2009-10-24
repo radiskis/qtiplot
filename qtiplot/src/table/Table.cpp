@@ -2893,6 +2893,13 @@ bool Table::eventFilter(QObject *object, QEvent *e)
 				return true;
 			}
 
+			if (me->modifiers() == Qt::ShiftModifier){
+				int col = hheader->sectionAt (me->pos().x() + hheader->offset());
+				for (int i = selectedCol; i <= col; i++)
+					d_table->selectColumn(i);
+				return true;
+			}
+
 			QRect r = hheader->sectionRect(col);
 			r = QRect(r.topLeft(), QSize(r.width(), 10));
 			if (d_table->isColumnSelected(col, true) && r.contains(me->pos())){
@@ -2904,9 +2911,16 @@ bool Table::eventFilter(QObject *object, QEvent *e)
 				drag->exec();
 				return true;
 			}
+
+			selectedCol = hheader->sectionAt (me->pos().x() + hheader->offset());
+			d_table->clearSelection();
+			d_table->selectColumn (selectedCol);
+			d_table->setCurrentCell (0, selectedCol);
+			setActiveWindow();
+			return false;
 		}
 
-		if (selectedColsNumber() <= 1) {
+		if (me->button() == Qt::RightButton && selectedColsNumber() <= 1){
 			selectedCol = hheader->sectionAt (me->pos().x() + hheader->offset());
 			d_table->clearSelection();
 			d_table->selectColumn (selectedCol);
