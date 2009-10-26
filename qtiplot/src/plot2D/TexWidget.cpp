@@ -69,29 +69,30 @@ void TexWidget::print(QPainter *painter, const QwtScaleMap map[QwtPlot::axisCnt]
 {
 	int x = map[QwtPlot::xBottom].transform(calculateXValue());
 	int y = map[QwtPlot::yLeft].transform(calculateYValue());
-        int xr = map[QwtPlot::xBottom].transform(calculateRightValue());
-        int yr = map[QwtPlot::yLeft].transform(calculateBottomValue());
-        int width = abs(xr - x);
-        int height = abs(yr - y);
+	int xr = map[QwtPlot::xBottom].transform(calculateRightValue());
+	int yr = map[QwtPlot::yLeft].transform(calculateBottomValue());
+	int width = abs(xr - x);
+	int height = abs(yr - y);
 
-        drawFrame(painter, QRect(x, y, width, height));
+	drawFrame(painter, QRect(x, y, width, height));
 
 	int lw = d_frame_pen.width();
 
-        // calculate resolution factor
-        double xfactor = (double)painter->device()->logicalDpiX()/(double)plot()->logicalDpiX();
-        double yfactor = (double)painter->device()->logicalDpiY()/(double)plot()->logicalDpiY();
+	// calculate resolution factor
+	double xfactor = (double)painter->device()->logicalDpiX()/(double)plot()->logicalDpiX();
+	double yfactor = (double)painter->device()->logicalDpiY()/(double)plot()->logicalDpiY();
 
-        int margin_x = qRound(d_margin*xfactor);
-        int margin_y = qRound(d_margin*yfactor);
+	int margin_x = qRound(d_margin*xfactor);
+	int margin_y = qRound(d_margin*yfactor);
 
-        int w = width - 2*margin_x  - 2*lw;
-        int h = height - 2*margin_y - 2*lw;
+	int w = width - 2*margin_x  - 2*lw;
+	int h = height - 2*margin_y - 2*lw;
+
 	if (d_frame == Shadow){
 		w -= d_margin;
 		h -= d_margin;
 	}
-        painter->drawPixmap(QRect (x + lw + margin_x, y + lw + margin_y, w, h), d_pix);
+	painter->drawPixmap(QRect (x + lw + margin_x, y + lw + margin_y, w, h), d_pix);
 }
 
 void TexWidget::setPixmap(const QPixmap& pix)
@@ -150,6 +151,9 @@ QString TexWidget::saveToString()
 
 void TexWidget::restore(Graph *g, const QStringList& lst)
 {
+	if (!g)
+		return;
+
 	int frameStyle = 0;
 	QPen pen = QPen(Qt::black, 1, Qt::SolidLine, Qt::SquareCap, Qt::MiterJoin);
 	double x = 0.0, y = 0.0, right = 0.0, bottom = 0.0;
@@ -190,6 +194,9 @@ void TexWidget::restore(Graph *g, const QStringList& lst)
 				pix = QPixmap::fromImage(image);
 		}
 	}
+
+	g->updateLayout();
+
 	TexWidget *t = g->addTexFormula(formula, pix);
 	t->setFrameStyle(frameStyle);
 	t->setFramePen(pen);
