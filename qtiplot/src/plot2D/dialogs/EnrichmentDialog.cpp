@@ -216,6 +216,7 @@ void EnrichmentDialog::initTextPage()
 
 	texOutputBox = new QCheckBox(tr("TeX &Output"));
 	gl1->addWidget(texOutputBox, 2, 2);
+	connect(texOutputBox, SIGNAL(clicked()), this, SLOT(updateButtons()));
 
 	gl1->setColumnStretch(4, 1);
 
@@ -594,6 +595,7 @@ void EnrichmentDialog::setWidget(QWidget *w)
 			boxTextAngle->blockSignals(false);
 			autoUpdateTextBox->setChecked(l->isAutoUpdateEnabled());
 			texOutputBox->setChecked(l->hasTeXOutput());
+			updateButtons();
 		}
 	} else if (d_widget_type == Tex){
 		TexWidget *tw = qobject_cast<TexWidget *>(d_widget);
@@ -1331,6 +1333,14 @@ void EnrichmentDialog::displayCompileError(QProcess::ProcessError error)
 void EnrichmentDialog::updateCompilerInterface(int compiler)
 {
 	((ApplicationWindow *)parentWidget())->d_latex_compiler = compiler;
+}
+
+void EnrichmentDialog::updateButtons()
+{
+	if (texOutputBox->isChecked())
+		formatButtons->setButtons(TextFormatButtons::TexLegend);
+	else
+		formatButtons->setButtons(TextFormatButtons::Legend);
 }
 
 EnrichmentDialog::~EnrichmentDialog()

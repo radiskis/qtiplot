@@ -128,13 +128,25 @@ d_buttons(buttons)
 	layout->setMargin(0);
 	layout->setSpacing(0);
 
+	init(buttons);
+}
+
+void TextFormatButtons::init(Buttons buttons)
+{
+	QHBoxLayout *layout = (QHBoxLayout*)this->layout();
+	QLayoutItem *child;
+	while ((child = layout->takeAt(0)) != 0){
+		if (child->widget())
+			delete child->widget();
+	}
+
 	QFont font = QFont();
 	int btnSize = 32;
 #ifdef Q_OS_MAC
 	btnSize = 38;
 #endif
-	if (buttons == Legend){
-		buttonCurve = new QPushButton( QPixmap(lineSymbol_xpm), QString());
+	if (buttons == Legend || buttons == TexLegend){
+		QPushButton *buttonCurve = new QPushButton( QPixmap(lineSymbol_xpm), QString());
 		buttonCurve->setFixedWidth(btnSize);
 		buttonCurve->setFixedHeight(btnSize);
 		buttonCurve->setFont(font);
@@ -142,55 +154,72 @@ d_buttons(buttons)
 		connect( buttonCurve, SIGNAL(clicked()), this, SLOT(addCurve()) );
 	}
 
-	buttonSubscript = new QPushButton(QPixmap(index_xpm), QString());
+	QPushButton *buttonSubscript = new QPushButton(QPixmap(index_xpm), QString());
 	buttonSubscript->setFixedWidth(btnSize);
 	buttonSubscript->setFixedHeight(btnSize);
 	buttonSubscript->setFont(font);
 	layout->addWidget(buttonSubscript);
 	connect( buttonSubscript, SIGNAL(clicked()), this, SLOT(addSubscript()) );
 
-	buttonSuperscript = new QPushButton(QPixmap(exp_xpm), QString());
+	QPushButton *buttonSuperscript = new QPushButton(QPixmap(exp_xpm), QString());
 	buttonSuperscript->setFixedWidth(btnSize);
 	buttonSuperscript->setFixedHeight(btnSize);
 	buttonSuperscript->setFont(font);
 	layout->addWidget(buttonSuperscript);
 	connect( buttonSuperscript, SIGNAL(clicked()), this, SLOT(addSuperscript()));
 
-	if (buttons != Equation){
-		buttonLowerGreek = new QPushButton(QString(QChar(0x3B1)));
-		buttonLowerGreek->setFont(font);
-		buttonLowerGreek->setFixedWidth(btnSize);
-		buttonLowerGreek->setFixedHeight(btnSize);
-		layout->addWidget(buttonLowerGreek);
-		connect( buttonLowerGreek, SIGNAL(clicked()), this, SLOT(showLowerGreek()));
+	if (buttons == Equation || buttons == TexLegend){
+		QPushButton *buttonFraction = new QPushButton(QPixmap(fraction_xpm), QString());
+		buttonFraction->setFixedWidth(btnSize);
+		buttonFraction->setFixedHeight(btnSize);
+		buttonFraction->setFont(font);
+		layout->addWidget(buttonFraction);
+		connect(buttonFraction, SIGNAL(clicked()), this, SLOT(addFraction()));
 
-		buttonUpperGreek = new QPushButton(QString(QChar(0x393)));
+		QPushButton *buttonSquareRoot = new QPushButton(QPixmap(square_root_xpm), QString());
+		buttonSquareRoot->setFixedWidth(btnSize);
+		buttonSquareRoot->setFixedHeight(btnSize);
+		buttonSquareRoot->setFont(font);
+		layout->addWidget(buttonSquareRoot);
+		connect(buttonSquareRoot, SIGNAL(clicked()), this, SLOT(addSquareRoot()));
+	}
+
+	QPushButton *buttonLowerGreek = new QPushButton(QString(QChar(0x3B1)));
+	buttonLowerGreek->setFont(font);
+	buttonLowerGreek->setFixedWidth(btnSize);
+	buttonLowerGreek->setFixedHeight(btnSize);
+	layout->addWidget(buttonLowerGreek);
+	connect( buttonLowerGreek, SIGNAL(clicked()), this, SLOT(showLowerGreek()));
+
+	if (buttons != Equation && buttons != TexLegend){
+		QPushButton *buttonUpperGreek = new QPushButton(QString(QChar(0x393)));
 		buttonUpperGreek->setFont(font);
 		buttonUpperGreek->setFixedWidth(btnSize);
 		buttonUpperGreek->setFixedHeight(btnSize);
 		layout->addWidget(buttonUpperGreek);
 		connect( buttonUpperGreek, SIGNAL(clicked()), this, SLOT(showUpperGreek()));
 
-		buttonMathSymbols = new QPushButton(QString(QChar(0x222B)));
+		QPushButton *buttonMathSymbols = new QPushButton(QString(QChar(0x222B)));
 		buttonMathSymbols->setFont(font);
 		buttonMathSymbols->setFixedWidth(btnSize);
 		buttonMathSymbols->setFixedHeight(btnSize);
 		layout->addWidget(buttonMathSymbols);
 		connect( buttonMathSymbols, SIGNAL(clicked()), this, SLOT(showMathSymbols()));
 
-		buttonArrowSymbols = new QPushButton(QString(QChar(0x2192)));
+		QPushButton *buttonArrowSymbols = new QPushButton(QString(QChar(0x2192)));
 		buttonArrowSymbols->setFont(font);
 		buttonArrowSymbols->setFixedWidth(btnSize);
 		buttonArrowSymbols->setFixedHeight(btnSize);
 		layout->addWidget(buttonArrowSymbols);
 		connect( buttonArrowSymbols, SIGNAL(clicked()), this, SLOT(showArrowSymbols()));
-	}
+	} else
+		layout->addStretch();
 
-	if (buttons != Plot3D && buttons != Equation){
+	if (buttons != Plot3D && buttons != Equation && buttons != TexLegend){
 		font = this->font();
 		font.setBold(true);
 
-		buttonBold = new QPushButton(tr("B","Button bold"));
+		QPushButton *buttonBold = new QPushButton(tr("B","Button bold"));
 		buttonBold->setFont(font);
 		buttonBold->setFixedWidth(btnSize);
 		buttonBold->setFixedHeight(btnSize);
@@ -200,7 +229,7 @@ d_buttons(buttons)
 		font = this->font();
 		font.setItalic(true);
 
-		buttonItalics = new QPushButton(tr("It","Button italics"));
+		QPushButton *buttonItalics = new QPushButton(tr("It","Button italics"));
 		buttonItalics->setFont(font);
 		buttonItalics->setFixedWidth(btnSize);
 		buttonItalics->setFixedHeight(btnSize);
@@ -210,30 +239,13 @@ d_buttons(buttons)
 		font = this->font();
 		font.setUnderline(true);
 
-		buttonUnderline = new QPushButton(tr("U","Button underline"));
+		QPushButton *buttonUnderline = new QPushButton(tr("U","Button underline"));
 		buttonUnderline->setFont(font);
 		buttonUnderline->setFixedWidth(btnSize);
 		buttonUnderline->setFixedHeight(btnSize);
 		layout->addWidget(buttonUnderline);
    		layout->addStretch();
 		connect( buttonUnderline, SIGNAL(clicked()), this, SLOT(addUnderline()));
-	}
-
-	if (buttons == Equation){
-		buttonFraction = new QPushButton(QPixmap(fraction_xpm), QString());
-		buttonFraction->setFixedWidth(btnSize);
-		buttonFraction->setFixedHeight(btnSize);
-		buttonFraction->setFont(font);
-		layout->addWidget(buttonFraction);
-		connect(buttonFraction, SIGNAL(clicked()), this, SLOT(addFraction()));
-
-		buttonSquareRoot = new QPushButton(QPixmap(square_root_xpm), QString());
-		buttonSquareRoot->setFixedWidth(btnSize);
-		buttonSquareRoot->setFixedHeight(btnSize);
-		buttonSquareRoot->setFont(font);
-		layout->addWidget(buttonSquareRoot);
-		connect(buttonSquareRoot, SIGNAL(clicked()), this, SLOT(addSquareRoot()));
-		layout->addStretch();
 	}
 }
 
@@ -288,7 +300,60 @@ void TextFormatButtons::showArrowSymbols()
 
 void TextFormatButtons::addSymbol(const QString & letter)
 {
-	connectedTextEdit->textCursor().insertText(letter);
+	if (d_buttons == Equation || d_buttons == TexLegend){
+		int alpha = 0x3B1;
+		if (letter == QString(QChar(alpha)))
+			connectedTextEdit->textCursor().insertText("\\alpha");
+		else if (letter == QString(QChar(1 + alpha)))
+			connectedTextEdit->textCursor().insertText("\\beta");
+		else if (letter == QString(QChar(2 + alpha)))
+			connectedTextEdit->textCursor().insertText("\\gamma");
+		else if (letter == QString(QChar(3 + alpha)))
+			connectedTextEdit->textCursor().insertText("\\delta");
+		else if (letter == QString(QChar(4 + alpha)))
+			connectedTextEdit->textCursor().insertText("\\epsilon");
+		else if (letter == QString(QChar(5 + alpha)))
+			connectedTextEdit->textCursor().insertText("\\zeta");
+		else if (letter == QString(QChar(6 + alpha)))
+			connectedTextEdit->textCursor().insertText("\\eta");
+		else if (letter == QString(QChar(7 + alpha)))
+			connectedTextEdit->textCursor().insertText("\\theta");
+		else if (letter == QString(QChar(8 + alpha)))
+			connectedTextEdit->textCursor().insertText("\\iota");
+		else if (letter == QString(QChar(9 + alpha)))
+			connectedTextEdit->textCursor().insertText("\\kappa");
+		else if (letter == QString(QChar(10 + alpha)))
+			connectedTextEdit->textCursor().insertText("\\lambda");
+		else if (letter == QString(QChar(11 + alpha)))
+			connectedTextEdit->textCursor().insertText("\\mu");
+		else if (letter == QString(QChar(12 + alpha)))
+			connectedTextEdit->textCursor().insertText("\\nu");
+		else if (letter == QString(QChar(13 + alpha)))
+			connectedTextEdit->textCursor().insertText("\\xi");
+		else if (letter == QString(QChar(14 + alpha)))
+			connectedTextEdit->textCursor().insertText("\\\\o");
+		else if (letter == QString(QChar(15 + alpha)))
+			connectedTextEdit->textCursor().insertText("\\pi");
+		else if (letter == QString(QChar(16 + alpha)))
+			connectedTextEdit->textCursor().insertText("\\rho");
+		else if (letter == QString(QChar(17 + alpha)))
+			connectedTextEdit->textCursor().insertText("\\varsigma");
+		else if (letter == QString(QChar(18 + alpha)))
+			connectedTextEdit->textCursor().insertText("\\sigma");
+		else if (letter == QString(QChar(19 + alpha)))
+			connectedTextEdit->textCursor().insertText("\\tau");
+		else if (letter == QString(QChar(20 + alpha)))
+			connectedTextEdit->textCursor().insertText("\\upsilon");
+		else if (letter == QString(QChar(21 + alpha)))
+			connectedTextEdit->textCursor().insertText("\\varphi");
+		else if (letter == QString(QChar(22 + alpha)))
+			connectedTextEdit->textCursor().insertText("\\chi");
+		else if (letter == QString(QChar(23 + alpha)))
+			connectedTextEdit->textCursor().insertText("\\psi");
+		else if (letter == QString(QChar(24 + alpha)))
+			connectedTextEdit->textCursor().insertText("\\omega");
+	} else
+		connectedTextEdit->textCursor().insertText(letter);
 }
 
 void TextFormatButtons::addCurve()
@@ -313,7 +378,7 @@ void TextFormatButtons::addBold()
 
 void TextFormatButtons::addSubscript()
 {
-	if (d_buttons == Equation || d_buttons == Plot3D)
+	if (d_buttons == TexLegend || d_buttons == Equation || d_buttons == Plot3D)
 		formatText("_{","}");
 	else
 		formatText("<sub>","</sub>");
@@ -321,7 +386,7 @@ void TextFormatButtons::addSubscript()
 
 void TextFormatButtons::addSuperscript()
 {
-	if (d_buttons == Equation  || d_buttons == Plot3D)
+	if (d_buttons == TexLegend || d_buttons == Equation  || d_buttons == Plot3D)
 		formatText("^{","}");
 	else
 		formatText("<sup>","</sup>");
@@ -329,13 +394,13 @@ void TextFormatButtons::addSuperscript()
 
 void TextFormatButtons::addFraction()
 {
-	if (d_buttons == Equation)
+	if (d_buttons == TexLegend || d_buttons == Equation)
 		formatText("\\frac{","}{}");
 }
 
 void TextFormatButtons::addSquareRoot()
 {
-	if (d_buttons == Equation)
+	if (d_buttons == TexLegend || d_buttons == Equation)
 		formatText("\\sqrt{","}");
 }
 
@@ -356,4 +421,13 @@ void TextFormatButtons::formatText(const QString & prefix, const QString & postf
 	}
 	// give focus back to text edit
 	connectedTextEdit->setFocus();
+}
+
+void TextFormatButtons::setButtons(Buttons btns)
+{
+	if (btns == d_buttons)
+		return;
+
+	d_buttons = btns;
+	init(d_buttons);
 }

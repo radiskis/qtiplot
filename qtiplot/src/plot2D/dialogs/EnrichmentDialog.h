@@ -93,6 +93,7 @@ private slots:
 	void displayCompileError(QProcess::ProcessError error);
 	void createImage();
 	void updateCompilerInterface(int);
+	void updateButtons();
 
 private:
 	void initTextPage();
