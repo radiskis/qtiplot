@@ -5,7 +5,7 @@
     Copyright            : (C) 2006 by Ion Vasilief, Tilman Hoener zu Siederdissen
     Email (use @ for *)  : ion_vasilief*yahoo.fr, thzs*gmx.net
     Description          : Widget with text format buttons (connected to a QTextEdit)
-                           
+
  ***************************************************************************/
 
 /***************************************************************************
@@ -40,33 +40,22 @@ class TextFormatButtons : public QWidget
 	Q_OBJECT
 
 public:
-	enum Buttons{Plot3D, AxisLabel, Legend, Equation};
-	
+	enum Buttons{Plot3D, AxisLabel, Legend, Equation, TexLegend};
+
 	//! Constructor
 	/**
 	 * \param textEdit the QTextEdit that the buttons shall affect
 	 * \param parent parent widget
 	 */
 	TextFormatButtons(QTextEdit * textEdit, Buttons buttons = Plot3D, QWidget * parent=0);
+	void setButtons(Buttons btns);
 
 private:
 	QTextEdit *connectedTextEdit;
-	QPushButton *buttonCurve;
-	QPushButton *buttonSubscript;
-	QPushButton *buttonSuperscript;
-	QPushButton *buttonLowerGreek;
-	QPushButton *buttonUpperGreek;
-	QPushButton *buttonMathSymbols;
-	QPushButton *buttonArrowSymbols;
-	QPushButton *buttonBold;
-	QPushButton *buttonItalics; 
-	QPushButton *buttonUnderline;
-	QPushButton *buttonFraction;
-	QPushButton *buttonSquareRoot;
-
 	Buttons d_buttons;
 	//! Internal function: format selected text with prefix and postfix
 	void formatText(const QString & prefix, const QString & postfix);
+	void init(Buttons btns);
 
 private slots:
 	//! Format seleted text to fraction
