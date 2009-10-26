@@ -1313,7 +1313,7 @@ private:
 	//! Completer used in notes and in the script window
 	QCompleter *d_completer;
 
-	QMenu *windowsMenu, *foldersMenu, *view, *graph, *fileMenu, *format, *edit, *recent;
+	QMenu *windowsMenu, *foldersMenu, *view, *graphMenu, *fileMenu, *format, *edit, *recent;
 	QMenu *help, *plot2DMenu, *analysisMenu, *multiPeakMenu;
 	QMenu *matrixMenu, *plot3DMenu, *plotDataMenu, *tablesDepend, *scriptingMenu;
 	QMenu *tableMenu, *fillMenu, *normMenu, *newMenu, *exportPlotMenu, *smoothMenu, *filterMenu, *decayMenu, *importMenu;

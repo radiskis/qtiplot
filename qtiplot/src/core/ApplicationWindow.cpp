@@ -1054,7 +1054,7 @@ void ApplicationWindow::insertTranslatedStrings()
 	importMenu->setTitle(tr("&Import"));
 	edit->setTitle(tr("&Edit"));
 	view->setTitle(tr("&View"));
-	graph->setTitle(tr("&Graph"));
+	graphMenu->setTitle(tr("&Graph"));
 	plot3DMenu->setTitle(tr("3D &Plot"));
 	matrixMenu->setTitle(tr("&Matrix"));
     plot2DMenu->setTitle(tr("&Plot"));
@@ -1083,6 +1083,7 @@ void ApplicationWindow::initMainMenu()
 	fileMenu = new QMenu(this);
 	fileMenu->setObjectName("fileMenu");
 	connect(fileMenu, SIGNAL(aboutToShow()), this, SLOT(fileMenuAboutToShow()));
+	menuBar()->addMenu(fileMenu);
 
 	recent = new QMenu(this);
 	newMenu = new QMenu(this);
@@ -1094,6 +1095,7 @@ void ApplicationWindow::initMainMenu()
 
 	edit = new QMenu(this);
 	edit->setObjectName("editMenu");
+	menuBar()->addMenu(edit);
 
 	edit->addAction(actionUndo);
 	edit->addAction(actionRedo);
@@ -1111,6 +1113,7 @@ void ApplicationWindow::initMainMenu()
 
 	view = new QMenu(this);
 	view->setObjectName("viewMenu");
+	menuBar()->addMenu(view);
 
 	view->setCheckable(true);
 	view->addAction(actionToolBars);
@@ -1122,33 +1125,40 @@ void ApplicationWindow::initMainMenu()
 	view->addAction(actionShowConsole);
 #endif
 
-	graph = new QMenu(this);
-	graph->setObjectName("graphMenu");
-	graph->setCheckable(true);
-	graph->addAction(actionShowCurvesDialog);
-	graph->addAction(actionAddFunctionCurve);
-	graph->addAction(actionAddErrorBars);
-	graph->addAction(actionNewLegend);
-	graph->addSeparator();
-	graph->addAction(actionAddFormula);
-	graph->addAction(actionAddText);
-	graph->addAction(btnArrow);
-	graph->addAction(btnLine);
-	graph->addAction(actionAddRectangle);
-	graph->addAction(actionAddEllipse);
-	graph->addAction(actionTimeStamp);
-	graph->addAction(actionAddImage);
-	graph->addSeparator();//layers section
-	graph->addAction(actionAddLayer);
-	graph->addAction(actionAddInsetLayer);
-	graph->addAction(actionAddInsetCurveLayer);
-	graph->addAction(actionShowLayerDialog);
-	graph->addAction(actionAutomaticLayout);
-	graph->addSeparator();
-	graph->addAction(actionExtractLayers);
-	graph->addAction(actionExtractGraphs);
-	graph->addSeparator();
-	graph->addAction(actionDeleteLayer);
+	scriptingMenu = new QMenu(this);
+	scriptingMenu->setObjectName("scriptingMenu");
+	connect(scriptingMenu, SIGNAL(aboutToShow()), this, SLOT(scriptingMenuAboutToShow()));
+	menuBar()->addMenu(scriptingMenu);
+
+	graphMenu = new QMenu(this);
+	graphMenu->setObjectName("graphMenu");
+	graphMenu->setCheckable(true);
+	menuBar()->addMenu(graphMenu);
+
+	graphMenu->addAction(actionShowCurvesDialog);
+	graphMenu->addAction(actionAddFunctionCurve);
+	graphMenu->addAction(actionAddErrorBars);
+	graphMenu->addAction(actionNewLegend);
+	graphMenu->addSeparator();
+	graphMenu->addAction(actionAddFormula);
+	graphMenu->addAction(actionAddText);
+	graphMenu->addAction(btnArrow);
+	graphMenu->addAction(btnLine);
+	graphMenu->addAction(actionAddRectangle);
+	graphMenu->addAction(actionAddEllipse);
+	graphMenu->addAction(actionTimeStamp);
+	graphMenu->addAction(actionAddImage);
+	graphMenu->addSeparator();//layers section
+	graphMenu->addAction(actionAddLayer);
+	graphMenu->addAction(actionAddInsetLayer);
+	graphMenu->addAction(actionAddInsetCurveLayer);
+	graphMenu->addAction(actionShowLayerDialog);
+	graphMenu->addAction(actionAutomaticLayout);
+	graphMenu->addSeparator();
+	graphMenu->addAction(actionExtractLayers);
+	graphMenu->addAction(actionExtractGraphs);
+	graphMenu->addSeparator();
+	graphMenu->addAction(actionDeleteLayer);
 
 	plot3DMenu = new QMenu(this);
 	plot3DMenu->setObjectName("plot3DMenu");
@@ -1166,19 +1176,23 @@ void ApplicationWindow::initMainMenu()
 	plot3DMenu->addAction(actionGrayMap);
 	plot3DMenu->insertSeparator();
 	plot3DMenu->addAction(actionPlotHistogram);
+	menuBar()->addMenu(plot3DMenu);
 
 	matrixMenu = new QMenu(this);
 	matrixMenu->setObjectName("matrixMenu");
 	connect(matrixMenu, SIGNAL(aboutToShow()), this, SLOT(matrixMenuAboutToShow()));
+	menuBar()->addMenu(matrixMenu);
 
     plot2DMenu = new QMenu(this);
 	plot2DMenu->setObjectName("plot2DMenu");
     connect(plot2DMenu, SIGNAL(aboutToShow()), this, SLOT(plotMenuAboutToShow()));
+    menuBar()->addMenu(plot2DMenu);
 
     plotDataMenu = new QMenu(this);
 	plotDataMenu->setObjectName("plotDataMenu");
 	plotDataMenu->setCheckable(true);
     connect(plotDataMenu, SIGNAL(aboutToShow()), this, SLOT(plotDataMenuAboutToShow()));
+    menuBar()->addMenu(plotDataMenu);
 
 	normMenu = new QMenu(this);
 	normMenu->setObjectName("normMenu");
@@ -1186,9 +1200,15 @@ void ApplicationWindow::initMainMenu()
 	fillMenu = new QMenu();
 	fillMenu->setObjectName("fillMenu");
 
+	analysisMenu = new QMenu(this);
+	analysisMenu->setObjectName("analysisMenu");
+    connect(analysisMenu, SIGNAL(aboutToShow()), this, SLOT(analysisMenuAboutToShow()));
+    menuBar()->addMenu(analysisMenu);
+
 	tableMenu = new QMenu(this);
 	tableMenu->setObjectName("tableMenu");
     connect(tableMenu, SIGNAL(aboutToShow()), this, SLOT(tableMenuAboutToShow()));
+    menuBar()->addMenu(tableMenu);
 
 	smoothMenu = new QMenu(this);
 	smoothMenu->setObjectName("smoothMenu");
@@ -1202,27 +1222,23 @@ void ApplicationWindow::initMainMenu()
 	multiPeakMenu = new QMenu(this);
 	multiPeakMenu->setObjectName("multiPeakMenu");
 
-	analysisMenu = new QMenu(this);
-	analysisMenu->setObjectName("analysisMenu");
-    connect(analysisMenu, SIGNAL(aboutToShow()), this, SLOT(analysisMenuAboutToShow()));
-
 	format = new QMenu(this);
 	format->setObjectName("formatMenu");
-
-	scriptingMenu = new QMenu(this);
-	scriptingMenu->setObjectName("scriptingMenu");
-	connect(scriptingMenu, SIGNAL(aboutToShow()), this, SLOT(scriptingMenuAboutToShow()));
+	menuBar()->addMenu(format);
 
 	windowsMenu = new QMenu(this);
 	windowsMenu->setObjectName("windowsMenu");
 	windowsMenu->setCheckable(true);
 	connect(windowsMenu, SIGNAL(aboutToShow()), this, SLOT(windowsMenuAboutToShow()));
+	menuBar()->addMenu(windowsMenu);
 
 	foldersMenu = new QMenu(this);
 	foldersMenu->setCheckable(true);
 
 	help = new QMenu(this);
 	help->setObjectName("helpMenu");
+	menuBar()->addMenu(help);
+
 	help->addAction(actionShowHelp);
 	help->addAction(actionChooseHelpFolder);
 	help->insertSeparator();
@@ -1239,7 +1255,7 @@ void ApplicationWindow::initMainMenu()
 	help->addAction(actionAbout);
 
 	QList<QMenu *> menus;
-	menus << windowsMenu << view << graph << fileMenu << format << edit;
+	menus << windowsMenu << view << graphMenu << fileMenu << format << edit;
 	menus << help << plot2DMenu << analysisMenu;
 	menus << matrixMenu << plot3DMenu << plotDataMenu << scriptingMenu;
 	menus << tableMenu << newMenu << exportPlotMenu << importMenu;
@@ -1391,14 +1407,14 @@ void ApplicationWindow::plotMenuAboutToShow()
 
 void ApplicationWindow::customMenu(QMdiSubWindow* w)
 {
-	menuBar()->clear();
-	menuBar()->addMenu (fileMenu);
-	fileMenuAboutToShow();
-	menuBar()->addMenu(edit);
-	editMenuAboutToShow();
-	menuBar()->addMenu(view);
-	menuBar()->addMenu(scriptingMenu);
-    scriptingMenuAboutToShow();
+    analysisMenu->menuAction()->setVisible(false);
+    tableMenu->menuAction()->setVisible(false);
+    plotDataMenu->menuAction()->setVisible(false);
+    graphMenu->menuAction()->setVisible(false);
+    matrixMenu->menuAction()->setVisible(false);
+	format->menuAction()->setVisible(false);
+    plot2DMenu->menuAction()->setVisible(false);
+    plot3DMenu->menuAction()->setVisible(false);
 
 	// these use the same keyboard shortcut (Ctrl+Return) and should not be enabled at the same time
 	actionNoteEvaluate->setEnabled(false);
@@ -1429,13 +1445,10 @@ void ApplicationWindow::customMenu(QMdiSubWindow* w)
 			actionShowExportASCIIDialog->setEnabled(false);
 
 		if (w->isA("MultiLayer")) {
-			menuBar()->addMenu(graph);
-			menuBar()->addMenu(plotDataMenu);
-			plotDataMenuAboutToShow();
-			menuBar()->addMenu(analysisMenu);
-			analysisMenuAboutToShow();
-			menuBar()->addMenu(format);
-
+			graphMenu->menuAction()->setVisible(true);
+			plotDataMenu->menuAction()->setVisible(true);
+			analysisMenu->menuAction()->setVisible(true);
+			format->menuAction()->setVisible(true);
 			format->clear();
 			format->addAction(actionShowPlotDialog);
 			format->insertSeparator();
@@ -1448,11 +1461,10 @@ void ApplicationWindow::customMenu(QMdiSubWindow* w)
 		} else if (w->isA("Graph3D")) {
 			disableActions();
 
-			menuBar()->addMenu(format);
-
 			actionPrint->setEnabled(true);
 			actionSaveTemplate->setEnabled(true);
 
+			format->menuAction()->setVisible(true);
 			format->clear();
 			format->addAction(actionShowPlotDialog);
 			format->addAction(actionShowScaleDialog);
@@ -1461,19 +1473,17 @@ void ApplicationWindow::customMenu(QMdiSubWindow* w)
 			if (((Graph3D*)w)->coordStyle() == Qwt3D::NOCOORD)
 				actionShowAxisDialog->setEnabled(false);
 		} else if (w->inherits("Table")) {
-			menuBar()->addMenu(plot2DMenu);
-            menuBar()->addMenu(analysisMenu);
-			analysisMenuAboutToShow();
-            menuBar()->addMenu(tableMenu);
-			tableMenuAboutToShow();
+			plot2DMenu->menuAction()->setVisible(true);
+			analysisMenu->menuAction()->setVisible(true);
+			tableMenu->menuAction()->setVisible(true);
+
 			actionTableRecalculate->setEnabled(true);
 		} else if (w->isA("Matrix")){
 			actionTableRecalculate->setEnabled(true);
-			menuBar()->addMenu(plot3DMenu);
-			menuBar()->addMenu(matrixMenu);
-			matrixMenuAboutToShow();
-			menuBar()->addMenu(analysisMenu);
-			analysisMenuAboutToShow();
+
+			plot3DMenu->menuAction()->setVisible(true);
+			analysisMenu->menuAction()->setVisible(true);
+			matrixMenu->menuAction()->setVisible(true);
 
 			d_undo_view->setEmptyLabel(w->objectName() + ": " + tr("Empty Stack"));
 			QUndoStack *stack = ((Matrix *)w)->undoStack();
@@ -1485,10 +1495,6 @@ void ApplicationWindow::customMenu(QMdiSubWindow* w)
 			disableActions();
 	} else
 		disableActions();
-
-    menuBar()->addMenu(windowsMenu);
-	windowsMenuAboutToShow();
-	menuBar()->addMenu(help);
 
 	reloadCustomActions();
 }
@@ -16985,7 +16991,7 @@ void ApplicationWindow::loadCustomActions()
 QList<QMenu *> ApplicationWindow::customizableMenusList()
 {
 	QList<QMenu *> lst;
-	lst << windowsMenu << view << graph << fileMenu << format << edit;
+	lst << windowsMenu << view << graphMenu << fileMenu << format << edit;
 	lst << help << plot2DMenu;
 	lst << analysisMenu << multiPeakMenu  << smoothMenu << filterMenu << decayMenu  << normMenu;
 	lst << matrixMenu << plot3DMenu << plotDataMenu << scriptingMenu;
@@ -17347,8 +17353,9 @@ void ApplicationWindow::removeCustomMenu(const QString& title)
 void ApplicationWindow::reloadCustomMenus()
 {
 	foreach(QMenu *m, d_user_menus){
-		if (m->parentWidget())
-			((QMenu *)m->parentWidget())->addMenu (m);
+		QWidget *parent = m->parentWidget();
+		if (parent && !parent->children().contains(m))
+			((QMenu *)parent)->addMenu(m);
 	}
 }
 
