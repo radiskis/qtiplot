@@ -5,7 +5,7 @@
     Copyright            : (C) 2006 by Ion Vasilief, Tilman Hoener zu Siederdissen
     Email (use @ for *)  : ion_vasilief*yahoo.fr, thzs*gmx.net
     Description          : Tool window to select special text characters
-                           
+
  ***************************************************************************/
 
 /***************************************************************************
@@ -51,7 +51,8 @@ public:
 		upperGreek = 1,  /*!< upper case Greek letters */
 		mathSymbols = 2, /*!< mathematical symbols */
 		arrowSymbols = 3, /*!< arrow symbols */
-		numberSymbols = 4 /*!< number symbols (e.g. 1/2, vi)*/
+		numberSymbols = 4, /*!< number symbols (e.g. 1/2, vi)*/
+		latexArrowSymbols = 5 /*!< default LaTeX arrow symbols */
 	};
 
 	//! Constructor
@@ -73,6 +74,8 @@ private:
 	void initArrowSymbols();
 	//! Show number symbols
 	void initNumberSymbols();
+	//! Show default LaTeX arrow symbols
+	void initLatexArrowSymbols();
 
     QButtonGroup * buttons;
 	QPushButton * closeButton;
