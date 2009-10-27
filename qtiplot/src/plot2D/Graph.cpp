@@ -4847,16 +4847,13 @@ void Graph::restoreSpectrogram(ApplicationWindow *app, const QStringList& lst)
         QString s = *line;
         if (s.contains("<useMatrixFormula>") && (s.trimmed().remove("<useMatrixFormula>").remove("</useMatrixFormula>")).toInt())
 			sp->setUseMatrixFormula(true);
-        else if (s.contains("<ColorPolicy>"))
-        {
+        else if (s.contains("<ColorPolicy>")){
             int color_policy = s.remove("<ColorPolicy>").remove("</ColorPolicy>").stripWhiteSpace().toInt();
             if (color_policy == Spectrogram::GrayScale)
                 sp->setGrayScale();
             else if (color_policy == Spectrogram::Default)
                 sp->setDefaultColorMap();
-        }
-        else if (s.contains("<ColorMap>"))
-        {
+        } else if (s.contains("<ColorMap>")){
             s = *(++line);
             int mode = s.remove("<Mode>").remove("</Mode>").stripWhiteSpace().toInt();
             s = *(++line);
@@ -4877,14 +4874,10 @@ void Graph::restoreSpectrogram(ApplicationWindow *app, const QStringList& lst)
             }
             sp->setCustomColorMap(colorMap);
             line++;
-        }
-        else if (s.contains("<Image>"))
-        {
+        } else if (s.contains("<Image>")){
             int mode = s.remove("<Image>").remove("</Image>").stripWhiteSpace().toInt();
             sp->setDisplayMode(QwtPlotSpectrogram::ImageMode, mode);
-        }
-        else if (s.contains("<ContourLines>"))
-        {
+        } else if (s.contains("<ContourLines>")){
             int contours = s.remove("<ContourLines>").remove("</ContourLines>").stripWhiteSpace().toInt();
             sp->setDisplayMode(QwtPlotSpectrogram::ContourMode, contours);
             if (contours){
@@ -4917,7 +4910,8 @@ void Graph::restoreSpectrogram(ApplicationWindow *app, const QStringList& lst)
                     sp->setDefaultContourPen(pen);
                 }
                 sp->showContourLineLabels(false);
-            }
+            } else
+				sp->clearLabels();
 		} else if (s.contains("<PenList>")){
 			int levels = sp->contourLevels().size();
 			QList <QPen> penLst;
@@ -4965,9 +4959,7 @@ void Graph::restoreSpectrogram(ApplicationWindow *app, const QStringList& lst)
                 colorAxis->setColorBarEnabled(true);
             }
             line++;
-        }
-		else if (s.contains("<Visible>"))
-        {
+        } else if (s.contains("<Visible>")){
             int on = s.remove("<Visible>").remove("</Visible>").stripWhiteSpace().toInt();
             sp->setVisible(on);
         }

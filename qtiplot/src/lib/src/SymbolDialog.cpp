@@ -34,7 +34,6 @@
 #include <QHBoxLayout>
 #include <QButtonGroup>
 #include <QTextCodec>
-#include <QMessageBox>
 #include <QFontDatabase>
 
 SymbolDialog::SymbolDialog(CharSet charSet, QWidget* parent, Qt::WFlags fl )
