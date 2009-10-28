@@ -508,6 +508,15 @@ public:
 	if (sipIsErr == 0)
 		sipCpp->setCommand(col, *a1);
 %End
+  bool calculate(SIP_PYOBJECT col, int startRow = 1, int endRow = -1, bool forceMuParser = false, bool notifyChanges = true)/PyName=recalculate/;
+%MethodCode
+  sipIsErr = 0;
+  CHECK_TABLE_COL(a0);
+  if (a2 == -1)
+    a2 = sipCpp->numRows();
+  if (sipIsErr == 0)
+    sipCpp->calculate(col, a1 - 1, a2 - 1, a3, a4); // row indes starts at 0
+%End
 
 	QString comment(SIP_PYOBJECT);
 %MethodCode

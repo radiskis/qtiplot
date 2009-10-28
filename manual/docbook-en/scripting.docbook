@@ -1442,12 +1442,16 @@ possible to export only the selected cells of the table.</para>
 <programlisting>
 t.exportASCII(file,sep="\t",ignore=0,ColumnLabels=False,ColumnComments=False,SelectionOnly=False)
 </programlisting>
-Other settings that you can modify are the text displayed as a comment in the header of a column
-or the expression used to calculate the column values. Please beware that changing the command doesn't automatically
-update the values of the column!
+Other settings that you can modify are the text displayed as a comment in the header of a column...
 <programlisting>
 t.setComment(col, newComment)
+</programlisting>
+... or the expression used to calculate the column values. Please beware that changing the command doesn't automatically
+update the values of the column; you have to call <varname>recalculate</varname> explicitly.
+Calling it with just the column as argument will recalculate every row. Forcing muParser can speed things up.
+<programlisting>
 t.setCommand(col, newExpression)
+t.recalculate(col, startRow=1, endRow=-1, forceMuParser=False, notifyChanges=True)
 </programlisting>
 
 You can access the column comments and enable/disable their display via the following functions:
