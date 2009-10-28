@@ -2507,6 +2507,8 @@ grid.enableYMax()
 grid.enableYMin(False)
 grid.enableZeroLineX(True)
 grid.enableZeroLineY(False)
+grid.setXZeroLinePen(QtGui.QPen(QtCore.Qt.black, 2))
+grid.setYZeroLinePen(QtGui.QPen(QtCore.Qt.black, 2))
 l.replot()
 </programlisting>
 All the grid functions containing an <varname>X</varname> refer to the vertical grid lineas, whereas the <varname>Y</varname> leter indicates the horizontal ones.

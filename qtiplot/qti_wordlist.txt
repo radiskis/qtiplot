@@ -161,6 +161,10 @@ xZeroLineEnabled
 enableZeroLineX
 yZeroLineEnabled
 enableZeroLineY
+xZeroLinePen
+setXZeroLinePen
+yZeroLinePen
+setYZeroLinePen
 setMajPenX
 majPenX
 setMinPenX
