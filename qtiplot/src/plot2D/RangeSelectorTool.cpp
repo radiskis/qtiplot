@@ -32,6 +32,7 @@
 #include "MultiLayer.h"
 #include <QwtErrorPlotCurve.h>
 #include <cursors.h>
+#include <ApplicationWindow.h>
 
 #include <qwt_symbol.h>
 #include <QPoint>
@@ -183,16 +184,33 @@ void RangeSelectorTool::emitStatusText()
             return;
 
         int row = ((DataCurve*)d_selected_curve)->tableRow(d_active_point);
+
 		double x = d_selected_curve->x(d_active_point);
 		double y = d_selected_curve->y(d_active_point);
+
+		ApplicationWindow *app = d_graph->multiLayer()->applicationWindow();
+		int prec = 15;
+		if (app)
+			prec = app->d_decimal_digits;
+
+        int xcol = t->colIndex(((DataCurve*)d_selected_curve)->xColumnName());
+		QString xs = locale.toString(x, 'G', prec);
+		if (t->columnType(xcol) != Table::Numeric)
+			xs = t->text(row, xcol);
+
+		int ycol = t->colIndex(((DataCurve*)d_selected_curve)->title().text());
+		QString ys = locale.toString(y, 'G', prec);
+		if (t->columnType(ycol) != Table::Numeric)
+			ys = t->text(row, ycol);
+
         emit statusText(QString("%1 <=> %2[%3]: x=%4; y=%5; dx=%6; dy=%7")
 			.arg(d_active_marker.xValue() > d_inactive_marker.xValue() ? tr("Right") : tr("Left"))
 			.arg(d_selected_curve->title().text())
 			.arg(row + 1)
-			.arg(locale.toString(x, 'G', 16))
-			.arg(locale.toString(y, 'G', 16))
-			.arg(locale.toString(fabs(x - d_selected_curve->x(d_inactive_point)), 'G', 16))
-			.arg(locale.toString(fabs(y - d_selected_curve->y(d_inactive_point)), 'G', 16)));
+			.arg(xs)
+			.arg(ys)
+			.arg(locale.toString(fabs(x - d_selected_curve->x(d_inactive_point)), 'G', prec))
+			.arg(locale.toString(fabs(y - d_selected_curve->y(d_inactive_point)), 'G', prec)));
     }
 }
 
@@ -320,10 +338,15 @@ void RangeSelectorTool::copySelectedCurve()
 	int start_point = QMIN(d_active_point, d_inactive_point);
 	int end_point = QMAX(d_active_point, d_inactive_point);
 	QLocale locale = d_graph->multiLayer()->locale();
+	ApplicationWindow *app = d_graph->multiLayer()->applicationWindow();
+	int prec = 15;
+	if (app)
+		prec = app->d_decimal_digits;
+
 	QString text;
 	for (int i = start_point; i <= end_point; i++){
-		text += locale.toString(d_selected_curve->x(i), 'G', 16) + "\t";
-		text += locale.toString(d_selected_curve->y(i), 'G', 16) + "\n";
+		text += locale.toString(d_selected_curve->x(i), 'G', prec) + "\t";
+		text += locale.toString(d_selected_curve->y(i), 'G', prec) + "\n";
 	}
 	QApplication::clipboard()->setText(text);
 }
