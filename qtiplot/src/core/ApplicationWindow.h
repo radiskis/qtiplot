@@ -1084,6 +1084,10 @@ private slots:
 	void increasePrecision();
 	void decreasePrecision();
 
+#ifdef SCRIPTING_PYTHON
+    void openQtDesignerUi();
+#endif
+
 // TODO: a lot of this stuff should be private
 public:
 	Graph::LegendDisplayMode d_graph_legend_display;
@@ -1330,6 +1334,9 @@ private:
 #ifdef SCRIPTING_CONSOLE
     QAction *actionShowConsole;
 #endif
+#ifdef SCRIPTING_PYTHON
+    QAction *actionOpenQtDesignerUi, *actionShowScriptWindow;
+#endif
     QAction *actionSwapColumns, *actionMoveColRight, *actionMoveColLeft, *actionMoveColFirst, *actionMoveColLast;
     QAction *actionExportGraph, *actionExportAllGraphs, *actionPrint, *actionPrintAllPlots, *actionShowExportASCIIDialog;
     QAction *actionExportPDF, *actionReadOnlyCol, *actionStemPlot;
@@ -1374,8 +1381,7 @@ private:
 	QAction *actionShowPlotDialog, *actionShowScaleDialog, *actionOpenTemplate, *actionSaveTemplate;
 	QAction *actionNextWindow, *actionPrevWindow;
 	QAction *actionScriptingLang, *actionRestartScripting, *actionClearTable, *actionGoToRow, *actionGoToColumn;
-	QAction *actionNoteExecute, *actionNoteExecuteAll, *actionNoteEvaluate, *actionSaveNote;
-	QAction *actionShowScriptWindow, *actionFrequencyCount;
+	QAction *actionNoteExecute, *actionNoteExecuteAll, *actionNoteEvaluate, *actionSaveNote, *actionFrequencyCount;
 	QAction *actionAnimate, *actionPerspective, *actionFitFrame, *actionResetRotation;
     QAction *actionDeleteRows, *actionDrawPoints, *actionAddZoomPlot;
 	QAction *btnCursor, *btnSelect, *btnPicker, *btnRemovePoints, *btnMovePoints, *actionDragCurve;

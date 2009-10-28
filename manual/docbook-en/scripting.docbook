@@ -3743,6 +3743,39 @@ please take a look at the
 <ulink url="http://www.riverbankcomputing.com/static/Docs/PyQt4/html/classes.html">PyQt documentation</ulink>.
 </sect2>
 
+<sect2 id="Python-QtDesigner">
+<title>Using Qt Designer for easy creation of custom user dialogs</title>
+Writing and designing user dialogs can be a very complicated task.
+The QtDesigner application provided by the Qt framework makes it easy and very pleasant.
+It allows you to design widgets, dialogs or complete main windows using on-screen forms and a simple drag-and-drop interface.
+Qt Designer uses XML .ui files to store designs.
+Once you have finished the design process you can load and use an .ui file in your Python scripts
+with the help of the <varname>uic</varname> module.
+
+<para>
+As an example, suppose that we have created a test dialog containing an input QDoubleSpinBox called "valueBox"
+and a QPushButton called "okButton". On pressing this button, we would like to create a new table displaying
+the input value in its first cell. We have saved this dialog to a file called "myDialog.ui".
+A minimalistic approach is shown in the small script bellow:
+</para>
+
+<programlisting>
+from PyQt4 import uic
+
+global createTable, ui
+ui = uic.loadUi("myDialog.ui")
+ui.connect(ui.okButton, QtCore.SIGNAL("clicked()"),  createTable)
+ui.show()
+
+def createTable():
+	t = newTable()
+	t.setCell(1, 1, ui.valueBox.value())
+</programlisting>
+
+For more details about how to use .ui files in your Python scripts please read the
+<ulink url="http://www.riverbankcomputing.co.uk/static/Docs/PyQt4/pyqt4ref.html#using-the-generated-code">PyQt4 documentation</ulink>.
+</sect2>
+
 <sect2 id="Python-AutomatizationExample">
 <title>Task automatization example</title>
 Bellow you can find a detailed example showing how to completely automatize tasks in QtiPlot.

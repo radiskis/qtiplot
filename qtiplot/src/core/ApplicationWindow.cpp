@@ -8894,6 +8894,9 @@ void ApplicationWindow::scriptingMenuAboutToShow()
 #endif
 	scriptingMenu->addAction(actionRestartScripting);
     scriptingMenu->addAction(actionCustomActionDialog);
+#ifdef SCRIPTING_PYTHON
+    scriptingMenu->addAction(actionOpenQtDesignerUi);
+#endif
 
 	Note *note = (Note *)activeWindow(NoteWindow);
     if (note){
@@ -9526,11 +9529,9 @@ void ApplicationWindow::deleteSelectedItems()
 
 	folders->blockSignals(true);
 	foreach(item, lst){
-		if (item->rtti() == FolderListItem::RTTI){
-			Folder *f = ((FolderListItem *)item)->folder();
-			if (deleteFolder(f))
-				delete item;
-		} else
+		if (item->rtti() == FolderListItem::RTTI)
+			deleteFolder(((FolderListItem *)item)->folder());
+		else
 			((WindowListItem *)item)->window()->close();
 	}
 	folders->blockSignals(false);
@@ -13311,6 +13312,9 @@ void ApplicationWindow::createActions()
 	actionShowScriptWindow->setShortcut(QKeySequence(Qt::ALT + Qt::Key_F3));
 	actionShowScriptWindow->setToggleAction( true );
 	connect(actionShowScriptWindow, SIGNAL(activated()), this, SLOT(showScriptWindow()));
+
+	actionOpenQtDesignerUi = new QAction(tr("Load Custom User &Interface..."), this);
+	connect(actionOpenQtDesignerUi, SIGNAL(activated()), this, SLOT(openQtDesignerUi()));
 #endif
 
 	actionShowCurvePlotDialog = new QAction(tr("&Plot details..."), this);
@@ -13526,6 +13530,7 @@ void ApplicationWindow::translateActionsStrings()
 #ifdef SCRIPTING_PYTHON
 	actionShowScriptWindow->setMenuText(tr("&Script Window"));
 	actionShowScriptWindow->setToolTip(tr("Script Window"));
+	actionOpenQtDesignerUi->setMenuText(tr("Load Custom User &Interface..."));
 #endif
 
 	actionCustomActionDialog->setMenuText(tr("Add &Custom Script Action..."));
@@ -15543,6 +15548,7 @@ bool ApplicationWindow::deleteFolder(Folder *f)
 		current_folder = parent;
 		folders->setCurrentItem(parent->folderListItem());
 		changeFolder(parent, true);
+
 		folders->blockSignals(false);
 		folders->setFocus();
 		return true;
@@ -17519,3 +17525,32 @@ void ApplicationWindow::updateCompleter(const QString& windowName, bool remove, 
 	model->setStringList(lst);
 #endif
 }
+
+#ifdef SCRIPTING_PYTHON
+void ApplicationWindow::openQtDesignerUi()
+{
+	QString fn = getFileName(this, tr("QtiPlot") + " - " + tr("Choose custom user interface"), workingDir, "*.ui", 0, false);
+	if (!fn.isEmpty()){
+		QFileInfo fi(fn);
+		workingDir = fi.dirPath(true);
+		QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+
+		setScriptingLanguage("Python");
+
+		QString script = "# " + tr("Custom user interfaces can be created using the QtDesigner application provided by the Qt framework") + ":\n";
+		script += "# http://qt.nokia.com\n";
+		script += "# " + tr("For more details about how to use .ui files in your Python scripts please read the PyQt4 documentation") + ":\n";
+		script += "# http://www.riverbankcomputing.co.uk/static/Docs/PyQt4/pyqt4ref.html#using-the-generated-code\n";
+		script += "##############################################################################################\n";
+		script += "from PyQt4 import uic\n";
+		script += "ui = uic.loadUi(\"" + fn + "\")\n";
+		script += "ui.show()\n";
+
+		Note *note = newNote();
+		note->setText(script);
+		note->executeAll();
+
+		QApplication::restoreOverrideCursor();
+	}
+}
+#endif
