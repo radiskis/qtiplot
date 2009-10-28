@@ -139,11 +139,18 @@ void DataPickerTool::setSelection(QwtPlotCurve *curve, int point_index)
         int row = ((DataCurve*)d_selected_curve)->tableRow(d_selected_point);
         Table *t = ((DataCurve*)d_selected_curve)->table();
 		if (t){
+			int xcol = t->colIndex(((DataCurve*)d_selected_curve)->xColumnName());
+			QString xs = locale.toString(d_selected_curve->x(d_selected_point), 'G', d_app->d_decimal_digits);
+			if (t->columnType(xcol) != Table::Numeric)
+				xs = t->text(row, xcol);
+
+			int ycol = t->colIndex(((DataCurve*)d_selected_curve)->title().text());
+			QString ys = locale.toString(d_selected_curve->y(d_selected_point), 'G', d_app->d_decimal_digits);
+			if (t->columnType(ycol) != Table::Numeric)
+				ys = t->text(row, ycol);
+
 			emit statusText(QString("%1[%2]: x=%3; y=%4")
-				.arg(d_selected_curve->title().text())
-				.arg(row + 1)
-				.arg(locale.toString(d_selected_curve->x(d_selected_point), 'G', d_app->d_decimal_digits))
-				.arg(locale.toString(d_selected_curve->y(d_selected_point), 'G', d_app->d_decimal_digits)));
+				.arg(d_selected_curve->title().text()).arg(row + 1).arg(xs).arg(ys));
 		}
     }
 
@@ -409,10 +416,14 @@ void DataPickerTool::movePoint(const QPoint &pos)
 
 		d_app->updateCurves(t, d_selected_curve->title().text());
 		d_app->modifiedProject();
-	} else
+	} else {
 		QMessageBox::warning(d_graph, tr("QtiPlot - Warning"),
         tr("This operation cannot be performed on curves plotted from columns having a non-numerical format."));
-
+        d_selected_curve = NULL;
+		d_selection_marker.detach();
+		d_graph->replot();
+		return;
+	}
 
 	emit statusText(QString("%1[%2]: x=%3; y=%4")
 			.arg(d_selected_curve->title().text())
