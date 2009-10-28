@@ -59,6 +59,14 @@ public:
 	void copy(Grid *);
 	QString saveToString();
 
+	QwtPlotMarker *xZeroLineMarker(){return mrkX;};
+	QwtPlotMarker *yZeroLineMarker(){return mrkY;};
+
+	const QPen& xZeroLinePen();
+	void setXZeroLinePen(const QPen &p);
+	const QPen& yZeroLinePen();
+	void setYZeroLinePen(const QPen &p);
+
 private:
 	void draw (QPainter *p, const QwtScaleMap &xMap, const QwtScaleMap &yMap, const QRect &rect) const;
 	void drawLines(QPainter *painter, const QRect &rect, Qt::Orientation orientation, const QwtScaleMap &map,

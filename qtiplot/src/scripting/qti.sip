@@ -1236,6 +1236,10 @@ public:
 	void enableZeroLineX(bool = true);
 	bool yZeroLineEnabled();
 	void enableZeroLineY(bool = true);
+	const QPen& xZeroLinePen();
+	void setXZeroLinePen(const QPen &p);
+	const QPen& yZeroLinePen();
+	void setYZeroLinePen(const QPen &p);
 
 	void setMajPenX(const QPen &p);
 	const QPen& majPenX();

@@ -32,7 +32,7 @@
 
 #include <qwt_plot_canvas.h>
 #include <qwt_painter.h>
-
+#include <qwt_scale_widget.h>
 #include <QPainter>
 
 Grid::Grid() : QwtPlotGrid(),
@@ -208,13 +208,13 @@ void Grid::enableZeroLineX(bool enable)
 		mrkX->setLineStyle(QwtPlotMarker::VLine);
 		mrkX->setValue(0.0, 0.0);
 
-		double width = 1;
-		if (d_plot->canvas()->lineWidth())
-			width = d_plot->canvas()->lineWidth();
-		else if (d_plot->axisEnabled (QwtPlot::yLeft) || d_plot->axisEnabled (QwtPlot::yRight))
-			width =  d_plot->axesLinewidth();
+		QColor c = Qt::black;
+		if (d_plot->axisEnabled (QwtPlot::yLeft))
+			c = d_plot->axisWidget(QwtPlot::yLeft)->palette().color(QPalette::Foreground);
+		else if (d_plot->axisEnabled (QwtPlot::yRight))
+			c = d_plot->axisWidget(QwtPlot::yRight)->palette().color(QPalette::Foreground);
 
-		mrkX->setLinePen(QPen(Qt::black, width, Qt::SolidLine));
+		mrkX->setLinePen(QPen(c, d_plot->axesLinewidth(), Qt::SolidLine));
 	} else if (mrkX && !enable) {
 		mrkX->detach();
 		d_plot->replot();
@@ -236,18 +236,46 @@ void Grid::enableZeroLineY(bool enable)
 		mrkY->setLineStyle(QwtPlotMarker::HLine);
 		mrkY->setValue(0.0, 0.0);
 
-		double width = 1;
-		if (d_plot->canvas()->lineWidth())
-			width = d_plot->canvas()->lineWidth();
-		else if (d_plot->axisEnabled (QwtPlot::xBottom) || d_plot->axisEnabled (QwtPlot::xTop))
-			width =  d_plot->axesLinewidth();
+		QColor c = Qt::black;
+		if (d_plot->axisEnabled (QwtPlot::xBottom))
+			c = d_plot->axisWidget(QwtPlot::xBottom)->palette().color(QPalette::Foreground);
+		else if (d_plot->axisEnabled (QwtPlot::xTop))
+			c = d_plot->axisWidget(QwtPlot::xTop)->palette().color(QPalette::Foreground);
 
-		mrkY->setLinePen(QPen(Qt::black, width, Qt::SolidLine));
+		mrkY->setLinePen(QPen(c, d_plot->axesLinewidth(), Qt::SolidLine));
 	} else if (mrkY && !enable){
 		mrkY->detach();
 		d_plot->replot();
 		mrkY = NULL;
 	}
+}
+
+const QPen& Grid::xZeroLinePen()
+{
+	if (mrkX)
+		return mrkX->linePen();
+
+	return QPen();
+}
+
+void Grid::setXZeroLinePen(const QPen &p)
+{
+	if (mrkX && mrkX->linePen() != p)
+		mrkX->setLinePen(p);
+}
+
+const QPen& Grid::yZeroLinePen()
+{
+	if (mrkY)
+		return mrkY->linePen();
+
+	return QPen();
+}
+
+void Grid::setYZeroLinePen(const QPen &p)
+{
+	if (mrkY && mrkY->linePen() != p)
+		mrkY->setLinePen(p);
 }
 
 void Grid::copy(Grid *grid)

@@ -808,6 +808,16 @@ void Graph::showAxis(int axis, int type, const QString& formatInfo, Table *table
 		pal.setColor(QColorGroup::Text, labelsColor);
     scale->setPalette(pal);
 
+	if (axis == yLeft && d_grid->xZeroLineMarker()){
+		QPen pen = d_grid->xZeroLineMarker()->linePen();
+		pen.setColor(c);
+		d_grid->xZeroLineMarker()->setLinePen(pen);
+	} else if (axis == xBottom && d_grid->yZeroLineMarker()){
+		QPen pen = d_grid->yZeroLineMarker()->linePen();
+		pen.setColor(c);
+		d_grid->yZeroLineMarker()->setLinePen(pen);
+	}
+
 	if (!labelsOn)
 		sd->enableComponent (QwtAbstractScaleDraw::Labels, false);
 	else {
@@ -987,10 +997,21 @@ void Graph::setAxisLabelsColor(int axis, const QColor& color)
 void Graph::setAxisColor(int axis, const QColor& color)
 {
 	QwtScaleWidget *scale = (QwtScaleWidget *)axisWidget(axis);
-	if (scale){
-		QPalette pal = scale->palette();
-		pal.setColor(QColorGroup::Foreground, color);
-		scale->setPalette(pal);
+	if (!scale)
+		return;
+
+	QPalette pal = scale->palette();
+	pal.setColor(QColorGroup::Foreground, color);
+	scale->setPalette(pal);
+
+	if (axis == yLeft && d_grid->xZeroLineMarker()){
+		QPen pen = d_grid->xZeroLineMarker()->linePen();
+		pen.setColor(color);
+		d_grid->xZeroLineMarker()->setLinePen(pen);
+	} else if (axis == xBottom && d_grid->yZeroLineMarker()){
+		QPen pen = d_grid->yZeroLineMarker()->linePen();
+		pen.setColor(color);
+		d_grid->yZeroLineMarker()->setLinePen(pen);
 	}
 }
 
@@ -2067,6 +2088,19 @@ void Graph::setAxesLinewidth(int width)
 		if (scale){
 			scale->setPenWidth(width);
 			scale->repaint();
+		}
+	}
+
+	if (d_grid){
+		if (d_grid->xZeroLineMarker()){
+			QPen pen = d_grid->xZeroLineMarker()->linePen();
+			pen.setWidth(width);
+			d_grid->xZeroLineMarker()->setLinePen(pen);
+		}
+		if (d_grid->yZeroLineMarker()){
+			QPen pen = d_grid->yZeroLineMarker()->linePen();
+			pen.setWidth(width);
+			d_grid->yZeroLineMarker()->setLinePen(pen);
 		}
 	}
 
