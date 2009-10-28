@@ -273,7 +273,11 @@ void TextFormatButtons::showUpperGreek()
 
 void TextFormatButtons::showMathSymbols()
 {
-	SymbolDialog *mathSymbols = new SymbolDialog(SymbolDialog::mathSymbols, this, Qt::Tool);
+	SymbolDialog::CharSet charSet = SymbolDialog::mathSymbols;
+	if (d_buttons == Equation || d_buttons == TexLegend)
+		charSet = SymbolDialog::latexMathSymbols;
+
+	SymbolDialog *mathSymbols = new SymbolDialog(charSet, this, Qt::Tool);
 	mathSymbols->setAttribute(Qt::WA_DeleteOnClose);
 	QFont f = connectedTextEdit->font();
 	f.setPointSize(12);
@@ -449,14 +453,10 @@ void TextFormatButtons::addSymbol(const QString & letter)
 			connectedTextEdit->textCursor().insertText("\\in");
 		else if (letter == QString(QChar(9 + s)))
 			connectedTextEdit->textCursor().insertText("\\notin");
-		else if (letter == QString(QChar(10 + s)))
-			connectedTextEdit->textCursor().insertText("\\in");
 		else if (letter == QString(QChar(11 + s)))
 			connectedTextEdit->textCursor().insertText("\\ni");
 		else if (letter == QString(QChar(12 + s)))
 			connectedTextEdit->textCursor().insertText("\\not\\ni");
-		else if (letter == QString(QChar(13 + s)))
-			connectedTextEdit->textCursor().insertText("\\ni");
 
 		s = 0x220F;
 		if (letter == QString(QChar(s)))
