@@ -52,7 +52,8 @@ public:
 		mathSymbols = 2, /*!< mathematical symbols */
 		arrowSymbols = 3, /*!< arrow symbols */
 		numberSymbols = 4, /*!< number symbols (e.g. 1/2, vi)*/
-		latexArrowSymbols = 5 /*!< default LaTeX arrow symbols */
+		latexArrowSymbols = 5, /*!< default LaTeX arrow symbols */
+		latexMathSymbols = 6 /*!< default LaTeX math symbols */
 	};
 
 	//! Constructor
@@ -76,6 +77,8 @@ private:
 	void initNumberSymbols();
 	//! Show default LaTeX arrow symbols
 	void initLatexArrowSymbols();
+	//! Show default LaTeX math symbols
+	void initLatexMathSymbols();
 
     QButtonGroup * buttons;
 	QPushButton * closeButton;
