@@ -3766,14 +3766,15 @@ A minimalistic approach is shown in the small script bellow:
 <programlisting>
 from PyQt4 import uic
 
-global createTable, ui
-ui = uic.loadUi("myDialog.ui")
-ui.connect(ui.okButton, QtCore.SIGNAL("clicked()"),  createTable)
-ui.show()
+global ui, createTable
 
 def createTable():
 	t = newTable()
 	t.setCell(1, 1, ui.valueBox.value())
+
+ui = uic.loadUi("dialog.ui")
+ui.connect(ui.okButton, QtCore.SIGNAL("clicked()"),  createTable)
+ui.show()
 </programlisting>
 
 For more details about how to use .ui files in your Python scripts please read the

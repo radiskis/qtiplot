@@ -100,6 +100,7 @@ yEnd
 setCoordinates
 setFormula
 calculate
+recalculate
 setNumericPrecision
 transpose
 invert

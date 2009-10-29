@@ -17543,6 +17543,7 @@ void ApplicationWindow::openQtDesignerUi()
 		script += "# http://www.riverbankcomputing.co.uk/static/Docs/PyQt4/pyqt4ref.html#using-the-generated-code\n";
 		script += "##############################################################################################\n";
 		script += "from PyQt4 import uic\n";
+		script += "global ui\n";
 		script += "ui = uic.loadUi(\"" + fn + "\")\n";
 		script += "ui.show()\n";
 
