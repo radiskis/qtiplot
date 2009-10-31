@@ -113,6 +113,10 @@ class Table: MdiSubWindow
 	}
 
 static int setCellDataHelper(Table* table, int row, int col, PyObject* item) {
+  if (item == Py_None) {
+    table->clearCell(row, col);
+    return 0;
+  }
   switch (table->columnType(col)) {
   case Table::Numeric:
     item = PyNumber_Float(item);
