@@ -111,6 +111,60 @@ class Table: MdiSubWindow
 		sipIsErr = 1;\
 		PyErr_Format(PyExc_ValueError, "There's no row %d in table %s!", row+1, sipCpp->name().ascii());\
 	}
+
+static int setCellDataHelper(Table* table, int row, int col, PyObject* item) {
+  switch (table->columnType(col)) {
+  case Table::Numeric:
+    item = PyNumber_Float(item);
+    if (item) {
+      table->setCell(row, col, PyFloat_AsDouble(item));
+      Py_DECREF(item);
+    }
+    else {
+      PyErr_Format(PyExc_TypeError, "Can't convert item %d into a float!", col);
+      return 1;
+    }
+    break;
+  case Table::Text:
+    item = PyObject_Str(item);
+    if (item) {
+      table->setText(row, col, PyString_AsString(item));
+      Py_DECREF(item);
+    }
+    else {
+      PyErr_Format(PyExc_TypeError, "Can't convert item %d into a string!", col);
+      return 1;
+    }
+    break;
+  default:
+    PyErr_Format(PyExc_ValueError, "Type %d of column %d in table %s not supported!",
+                 table->columnType(col), col+1, table->name().ascii());
+    return 1;
+    break;
+  } // switch column type
+  return 0; // everything ok
+}
+
+static int cellDataHelper(Table* table, int row, int col, PyObject** item) {
+  switch (table->columnType(col)) {
+  case Table::Numeric:
+    if (table->text(row, col).isEmpty())
+      *item = Py_None;
+    else
+      *item = PyFloat_FromDouble(table->cell(row, col));
+    break;
+  case Table::Text:
+    *item = PyString_FromString(table->text(row, col));
+    break;
+  default:
+    *item = NULL;
+    PyErr_Format(PyExc_ValueError, "Type %d of column %d in table %s not supported!",
+                 table->columnType(col), col+1, table->name().ascii());
+    return 1;
+    break;
+  } // switch column type
+  return 0; // everything ok
+}
 %End
 
 public:
@@ -189,6 +243,14 @@ public:
 		}
 	}
 %End
+  SIP_PYOBJECT cellData(SIP_PYOBJECT, int);
+%MethodCode
+  sipIsErr = 0;
+  CHECK_TABLE_COL(a0);
+  CHECK_TABLE_ROW(a1);
+	if (sipIsErr == 0)
+    sipIsErr = cellDataHelper(sipCpp, row, col, &sipRes);
+%End
   SIP_PYTUPLE rowData(int);
 %MethodCode
   PyObject *item;
@@ -198,22 +260,7 @@ public:
     int size = sipCpp->numCols();
     sipRes = PyTuple_New(size);
     for(int col = 0; col < size; col++) {
-      switch (sipCpp->columnType(col)) {
-      case Table::Numeric:
-        if (sipCpp->text(row, col).isEmpty())
-          item = Py_None;
-        else
-          item = PyFloat_FromDouble(sipCpp->cell(row, col));
-        break;
-      case Table::Text:
-        item = PyString_FromString(sipCpp->text(row, col));
-        break;
-      default:
-        sipIsErr = 1;
-        PyErr_Format(PyExc_ValueError, "Type %d of column %d in table %s not supported!",
-                     sipCpp->columnType(col), col+1, sipCpp->name().ascii());
-        break;
-      } // switch column type
+      sipIsErr = cellDataHelper(sipCpp, row, col, &item);
       if (sipIsErr == 0)
         PyTuple_SET_ITEM(sipRes, col, item);
       else {
@@ -243,28 +290,16 @@ public:
 	if (sipIsErr == 0){
     int size = sipCpp->numRows();
     sipRes = PyList_New(size);
-    switch (sipCpp->columnType(col)) {
-    case Table::Numeric:
-      for(int row = 0; row < size; row++) {
-        if (sipCpp->text(row, col).isEmpty())
-          item = Py_None;
-        else
-          item = PyFloat_FromDouble(sipCpp->cell(row, col));
+    for(int row = 0; row < size; row++) {
+      sipIsErr = cellDataHelper(sipCpp, row, col, &item);
+      if (sipIsErr == 0)
         PyList_SET_ITEM(sipRes, row, item);
-      } // for
-      break;
-    case Table::Text:
-      for(int row = 0; row < size; row++)
-        PyList_SET_ITEM(sipRes, row, PyString_FromString(sipCpp->text(row, col)));
-      break;
-    default:
-      Py_DECREF(sipRes);
-      sipRes = NULL;
-      sipIsErr = 1;
-      PyErr_Format(PyExc_ValueError, "Type %d of column %d in table %s not supported!",
-                   sipCpp->columnType(col), col+1, sipCpp->name().ascii());
-      break;
-    } // switch column type
+      else {
+        Py_DECREF(sipRes);
+        sipRes = NULL;
+        break;
+      }
+    } // for
 	} // if not sip error
 %End
   void setRowData(int, SIP_PYTUPLE);
@@ -280,36 +315,9 @@ public:
   }
 	if (sipIsErr == 0){
     for(int col = 0; col < size; col++) {
-      switch (sipCpp->columnType(col)) {
-      case Table::Numeric:
-        item = PyNumber_Float(PyTuple_GET_ITEM(a1, col));
-        if (item) {
-          sipCpp->setCell(row, col, PyFloat_AsDouble(item));
-          Py_DECREF(item);
-        }
-        else {
-          sipIsErr = 1;
-          PyErr_Format(PyExc_TypeError, "Can't convert item %d into a float!", col);
-        }
-        break;
-      case Table::Text:
-        item = PyObject_Str(PyTuple_GET_ITEM(a1, col));
-        if (item) {
-          sipCpp->setText(row, col, PyString_AsString(item));
-          Py_DECREF(item);
-        }
-        else {
-          sipIsErr = 1;
-          PyErr_Format(PyExc_TypeError, "Can't convert item %d into a string!", col);
-        }
-        break;
-      default:
-        sipIsErr = 1;
-        PyErr_Format(PyExc_ValueError, "Type %d of column %d in table %s not supported!",
-                     sipCpp->columnType(col), col+1, sipCpp->name().ascii());
-        break;
-      } // switch column type
-      if (sipIsErr != 0)
+      item = PyTuple_GET_ITEM(a1, col);
+      sipIsErr = setCellDataHelper(sipCpp, row, col, item);
+      if (sipIsErr)
         break;
     } // for each col
 	} // if not sip error
@@ -360,36 +368,9 @@ public:
         PyErr_SetString(PyExc_StopIteration, "List argument ended before all rows were filled!");
         break;
       }
-      switch (colType) {
-      case Table::Numeric:
-        item = PyNumber_Float(PyList_GET_ITEM(a1, idx));
-        if (item) {
-          sipCpp->setCell(row, col, PyFloat_AsDouble(item));
-          Py_DECREF(item);
-        }
-        else {
-          sipIsErr = 1;
-          PyErr_Format(PyExc_TypeError, "Can't convert item %d into a float!", idx );
-        }
-        break;
-      case Table::Text:
-        item = PyObject_Str(PyList_GET_ITEM(a1, idx));
-        if (item) {
-          sipCpp->setText(row, col, PyString_AsString(item));
-          Py_DECREF(item);
-        }
-        else {
-          sipIsErr = 1;
-          PyErr_Format(PyExc_TypeError, "Can't convert item %d into a string!", idx);
-        }
-        break;
-      default:
-        sipIsErr = 1;
-        PyErr_Format(PyExc_ValueError, "Type %d of column %d in table %s not supported!",
-                     sipCpp->columnType(col), col+1, sipCpp->name().ascii());
-        break;
-      } // switch column type
-      if (sipIsErr != 0)
+      item = PyList_GET_ITEM(a1, idx);
+      sipIsErr = setCellDataHelper(sipCpp, row, col, item);
+      if (sipIsErr)
         break;
     } // for each col
 	} // if not sip error
@@ -409,6 +390,14 @@ public:
   CHECK_TABLE_ROW(a1);
 	if (sipIsErr == 0)
 		sipCpp->setCell(row, col, a2);
+%End
+  void setCellData(SIP_PYOBJECT, int, SIP_PYOBJECT);
+%MethodCode
+  sipIsErr = 0;
+  CHECK_TABLE_COL(a0);
+  CHECK_TABLE_ROW(a1);
+	if (sipIsErr == 0)
+		sipIsErr = setCellDataHelper(sipCpp, row, col, a2);
 %End
   SIP_PYOBJECT colName(int);
 %MethodCode
