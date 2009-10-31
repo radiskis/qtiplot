@@ -286,6 +286,29 @@ public:
       sipIsErr = 1;
   }
 %End
+  SIP_PYTUPLE __getitem__(SIP_PYSLICE); // this is operator[]
+%MethodCode
+  SIP_SSIZE_T len, start, stop, step, slicelength, i;
+  len = sipCpp->numRows();
+  if (PySlice_GetIndicesEx((PySliceObject *)a0, len, &start, &stop, &step, &slicelength) < 0)
+    sipIsErr = 1;
+  else {
+    PyObject *item;
+    sipRes = PyList_New(slicelength);
+    for(int i = 0; i < slicelength; i++) {
+      item = PyObject_CallMethod(sipSelf, "rowData", "i", start + 1); // rowData's index starts at 1
+      start += step;
+      if (item)
+        PyList_SET_ITEM(sipRes, i, item);
+      else {
+        Py_DECREF(sipRes);
+        sipRes = NULL;
+        sipIsErr = 1;
+        break;
+      }
+    } // for
+  }
+%End
   SIP_PYLIST colData(SIP_PYOBJECT);
 %MethodCode
   PyObject *item;
