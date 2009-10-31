@@ -200,8 +200,17 @@ public:
   len = sipCpp->numRows();
   if (PySlice_GetIndicesEx((PySliceObject *)a0, len, &start, &stop, &step, &slicelength) < 0)
     sipIsErr = 1;
-  else
-    sipCpp->deleteRows(start + 1, stop); // row index starts at 1 (python at 0); the stop is inclusive (python exclusive)
+  else {
+    start += 1; // row index starts at 1 (python at 0); the stop is inclusive (python exclusive) so no need to change
+    if (step == 1)
+      sipCpp->deleteRows(start, stop);
+    else {
+      for (int i = 0; i < slicelength; i++) {
+        sipCpp->deleteRows(start, start);
+        start += step - 1; // the "- 1" is needed since the removal also shifts the index
+      }
+    }
+  }
 %End
 
   SIP_PYOBJECT text(SIP_PYOBJECT, int);
