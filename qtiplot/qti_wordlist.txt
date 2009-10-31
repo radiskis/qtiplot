@@ -57,6 +57,7 @@ setNumCols
 deleteRows
 text
 cell
+cellData
 rowData
 colData
 setRowData
@@ -64,6 +65,7 @@ appendRowData
 setColData
 setText
 setCell
+setCellData
 colName
 colNames
 setColName
