@@ -386,6 +386,7 @@ void ApplicationWindow::initWindow()
 		default:
 			break;
 	}
+	savedProject();
 }
 
 void ApplicationWindow::initGlobalConstants()
@@ -1419,6 +1420,13 @@ void ApplicationWindow::customMenu(QMdiSubWindow* w)
 	// these use the same keyboard shortcut (Ctrl+Return) and should not be enabled at the same time
 	actionNoteEvaluate->setEnabled(false);
 	actionTableRecalculate->setEnabled(false);
+	// these use the same keyboard shortcut (Alt+C) and should not be enabled at the same time
+	actionShowCurvesDialog->setEnabled(false);
+	actionAddColToTable->setEnabled(false);
+	// these use the same keyboard shortcut (Alt+Q) and should not be enabled at the same time
+	actionAddFormula->setEnabled(false);
+	actionShowColumnValuesDialog->setEnabled(false);
+	actionSetMatrixValues->setEnabled(false);
 
 	// clear undo stack view (in case window is not a matrix)
 	d_undo_view->setStack(0);
@@ -1445,6 +1453,9 @@ void ApplicationWindow::customMenu(QMdiSubWindow* w)
 			actionShowExportASCIIDialog->setEnabled(false);
 
 		if (w->isA("MultiLayer")) {
+			actionShowCurvesDialog->setEnabled(true);
+			actionAddFormula->setEnabled(true);
+
 			graphMenu->menuAction()->setVisible(true);
 			plotDataMenu->menuAction()->setVisible(true);
 			analysisMenu->menuAction()->setVisible(true);
@@ -1478,8 +1489,11 @@ void ApplicationWindow::customMenu(QMdiSubWindow* w)
 			tableMenu->menuAction()->setVisible(true);
 
 			actionTableRecalculate->setEnabled(true);
+			actionAddColToTable->setEnabled(true);
+			actionShowColumnValuesDialog->setEnabled(true);
 		} else if (w->isA("Matrix")){
 			actionTableRecalculate->setEnabled(true);
+			actionSetMatrixValues->setEnabled(true);
 
 			plot3DMenu->menuAction()->setVisible(true);
 			analysisMenu->menuAction()->setVisible(true);
@@ -3474,28 +3488,32 @@ MdiSubWindow *ApplicationWindow::activeWindow(WindowType type)
 
 void ApplicationWindow::windowActivated(QMdiSubWindow *w)
 {
-	if (!w || (d_active_window && d_active_window == (MdiSubWindow *)w))
+	MdiSubWindow *window = qobject_cast<MdiSubWindow *>(w);
+	if (!window)
 		return;
 
-	d_active_window = (MdiSubWindow *)w;
+	if (d_active_window && d_active_window == window)
+		return;
 
-	customToolBars(w);
-	customMenu(w);
+	d_active_window = window;
+
+	customToolBars(window);
+	customMenu(window);
 
 	if (d_opening_file)
 		return;
 
 	QList<MdiSubWindow *> windows = current_folder->windowsList();
 	foreach(MdiSubWindow *ow, windows){
-		if (ow != w && ow->status() == MdiSubWindow::Maximized){
+		if (ow != window && ow->status() == MdiSubWindow::Maximized){
 			ow->setNormal();
 			break;
 		}
 	}
 
-	Folder *f = ((MdiSubWindow *)w)->folder();
+	Folder *f = window->folder();
 	if (f)
-        f->setActiveWindow((MdiSubWindow *)w);
+        f->setActiveWindow(window);
 
 	emit modified();
 }
@@ -4157,13 +4175,9 @@ void ApplicationWindow::open()
 				}
 
 				saveSettings();//the recent projects must be saved
-
-				ApplicationWindow *a = open (fn);
-				if (a){
-					a->workingDir = workingDir;
-					if (!(fn.endsWith(".ogm",Qt::CaseInsensitive) ||
-						fn.endsWith(".ogw",Qt::CaseInsensitive))) this->close();
-				}
+				if (!(fn.endsWith(".ogm", Qt::CaseInsensitive) || fn.endsWith(".ogw", Qt::CaseInsensitive)))
+					closeProject();
+				open(fn, false, false);
 				break;
 			}
 		case OpenProjectDialog::NewFolder:
@@ -4260,16 +4274,9 @@ void ApplicationWindow::openRecentProject(int index)
 
 	if (!fn.isEmpty()){
 		saveSettings();//the recent projects must be saved
-		bool isSaved = saved;
-		ApplicationWindow * a = open (fn);
-		if (a){
-			if (isSaved)
-				savedProject();//force saved state
-			if (!(fn.endsWith(".ogm", Qt::CaseInsensitive) || fn.endsWith(".ogw",Qt::CaseInsensitive)))
-				close();
-			else
-				modifiedProject();
-		}
+		if (!(fn.endsWith(".ogm", Qt::CaseInsensitive) || fn.endsWith(".ogw",Qt::CaseInsensitive)))
+			closeProject();
+		open (fn, false, false);
 	}
 }
 
@@ -4277,7 +4284,7 @@ ApplicationWindow* ApplicationWindow::openProject(const QString& fn, bool factor
 {
 	ApplicationWindow *app = this;
 	if (newProject)
-		app = new ApplicationWindow(factorySettings);
+		app = new ApplicationWindow();
 
 	app->projectname = fn;
 	app->d_file_version = d_file_version;
@@ -8889,7 +8896,7 @@ void ApplicationWindow::about()
 void ApplicationWindow::scriptingMenuAboutToShow()
 {
     scriptingMenu->clear();
-#ifdef SCRIPTING_DIALOG
+#ifdef SCRIPTING_PYTHON
 	scriptingMenu->addAction(actionScriptingLang);
 #endif
 	scriptingMenu->addAction(actionRestartScripting);
@@ -9315,18 +9322,12 @@ void ApplicationWindow::newProject()
 {
 	saveSettings();//the recent projects must be saved
 
-	ApplicationWindow *ed = new ApplicationWindow();
-	ed->restoreApplicationGeometry();
-	ed->initWindow();
-	ed->savedProject();
-
-	close();
+	closeProject();
+	initWindow();
 }
 
 void ApplicationWindow::savedProject()
 {
-	QCoreApplication::processEvents();
-
 	actionSaveProject->setEnabled(false);
 	saved = true;
 
@@ -9504,6 +9505,62 @@ void ApplicationWindow::closeEvent( QCloseEvent* ce )
 		saveSettings();
 		ce->accept();
 	}
+}
+
+void ApplicationWindow::closeProject()
+{
+	if (!saved){
+		QString s = tr("Save changes to project: <p><b> %1 </b> ?").arg(projectname);
+		switch( QMessageBox::information(this, tr("QtiPlot"), s, tr("Yes"), tr("No"),
+					tr("Cancel"), 0, 2 ) ){
+			case 0:
+			#ifdef QTIPLOT_DEMO
+				showDemoVersionMessage();
+				return;
+			#else
+				saveProject();
+			#endif
+			break;
+			case 1:
+			default:
+			break;
+			case 2:
+				return;
+			break;
+		}
+	}
+
+	blockSignals(true);
+
+	Folder *f = projectFolder();
+	f->folderListItem()->setText(0, tr("UNTITLED"));
+	current_folder = f;
+	projectname = "untitled";
+
+	foreach(MdiSubWindow *w, f->windowsList()){
+		w->askOnCloseEvent(false);
+		closeWindow(w);
+	}
+
+	if (!(f->children()).isEmpty()){
+		Folder *subFolder = f->folderBelow();
+		int initial_depth = f->depth();
+		while (subFolder && subFolder->depth() > initial_depth){
+			foreach(MdiSubWindow *w, subFolder->windowsList()){
+				removeWindowFromLists(w);
+				subFolder->removeWindow(w);
+				delete w;
+			}
+			delete subFolder->folderListItem();
+			delete subFolder;
+
+			subFolder = f->folderBelow();
+		}
+	}
+
+	blockSignals(false);
+	savedProject();
+	setWindowTitle(tr("QtiPlot - untitled"));
 }
 
 void ApplicationWindow::customEvent(QEvent *e)
@@ -12664,7 +12721,7 @@ void ApplicationWindow::createActions()
 	connect(actionCloseAllWindows, SIGNAL(activated()), qApp, SLOT(closeAllWindows()));
 
 	actionCloseProject = new QAction(QIcon(QPixmap(delete_xpm)), tr("&Close"), this);
-	connect(actionCloseProject, SIGNAL(activated()), this, SLOT(newProject()));
+	connect(actionCloseProject, SIGNAL(activated()), this, SLOT(closeProject()));
 
 	actionClearLogInfo = new QAction(tr("Clear &Log Information"), this);
 	connect(actionClearLogInfo, SIGNAL(activated()), this, SLOT(clearLogInfo()));
@@ -13253,7 +13310,7 @@ void ApplicationWindow::createActions()
 	actionTechnicalSupport = new QAction(tr("Technical &Support"), this);
 	connect(actionTechnicalSupport, SIGNAL(activated()), this, SLOT(showSupportPage()));
 
-#ifdef SCRIPTING_DIALOG
+#ifdef SCRIPTING_PYTHON
 	actionScriptingLang = new QAction(tr("Scripting &language"), this);
 	connect(actionScriptingLang, SIGNAL(activated()), this, SLOT(showScriptingLangDialog()));
 #endif
@@ -13888,7 +13945,7 @@ void ApplicationWindow::translateActionsStrings()
 	actionDonate->setMenuText(tr("Make a &Donation"));
 	actionTechnicalSupport->setMenuText(tr("Technical &Support"));
 
-#ifdef SCRIPTING_DIALOG
+#ifdef SCRIPTING_PYTHON
 	actionScriptingLang->setMenuText(tr("Scripting &language"));
 #endif
 	actionRestartScripting->setMenuText(tr("&Restart scripting"));
@@ -14202,7 +14259,7 @@ ApplicationWindow* ApplicationWindow::importOPJ(const QString& filename, bool fa
 
 		ApplicationWindow *app = this;
 		if (newProject)
-        	app = new ApplicationWindow(factorySettings);
+        	app = new ApplicationWindow();
 
 		app->setWindowTitle("QtiPlot - " + filename);
 		app->restoreApplicationGeometry();
@@ -14532,7 +14589,6 @@ void ApplicationWindow::parseCommandLineArguments(const QStringList& args)
 	int num_args = args.count();
 	if(num_args == 0){
 		initWindow();
-		savedProject();
 		return;
 	}
 
@@ -14614,7 +14670,6 @@ void ApplicationWindow::parseCommandLineArguments(const QStringList& args)
 			return;
 
 		initWindow();
-		savedProject();
 		return;
 	}
 
@@ -17554,4 +17609,10 @@ void ApplicationWindow::openQtDesignerUi()
 		QApplication::restoreOverrideCursor();
 	}
 }
+#endif
+
+#ifdef BROWSER_PLUGIN
+QTNPFACTORY_BEGIN("QtiPlot Browser Plugin", "A Qt-based NSAPI plug-in application that graphs numeric data");
+    QTNPCLASS(ApplicationWindow)
+QTNPFACTORY_END()
 #endif

@@ -31,8 +31,11 @@ LIBS         += $$BOOST_LIBS
 #############################################################################
 
 QMAKE_PROJECT_DEPTH = 0
+	
+!contains(CONFIG, BrowserPlugin){
+	TEMPLATE       = app
+}
 
-TEMPLATE       = app
 CONFIG        += qt warn_on exceptions opengl thread
 CONFIG        += assistant
 
@@ -204,3 +207,13 @@ contains(SCRIPTING_LANGS, Python) {
 # At the very end: add global include- and lib path
 unix:INCLUDEPATH += $$SYS_INCLUDEPATH
 unix:LIBS += $$SYS_LIBS
+
+###############################################################
+############### Building QtiPlot as a browser plugin ##########
+###############################################################
+
+contains(CONFIG, BrowserPlugin){
+	DEFINES += BROWSER_PLUGIN
+	RC_FILE	= qtiplot.rc
+	include(../3rdparty/QtSolutions/qtbrowserplugin/src/qtbrowserplugin.pri)
+}  

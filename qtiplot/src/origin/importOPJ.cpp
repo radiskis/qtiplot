@@ -656,18 +656,21 @@ bool ImportOPJ::importNotes(const OriginFile& opj)
 
 bool ImportOPJ::importGraphs(const OriginFile& opj)
 {
-	double pi=3.141592653589793;
+	double pi = M_PI;
 	int tickTypeMap[]={0,3,1,2};
 
-	MultiLayer* fake = mw->multilayerPlot("fake", 0);
-	fake->setParent(0);
-	frameWidth = fake->frameGeometry().width() - fake->geometry().width();
-	frameHeight = fake->frameGeometry().height() - fake->geometry().height();
-	Origin::Rect standardFrame(fake->geometry().width(), fake->geometry().height());
-	fake->setMaximized();
-	Origin::Rect maximazedFrame(fake->geometry().width(), fake->geometry().height());
-	fake->askOnCloseEvent(false);
-	fake->close();
+	Origin::Rect maximazedFrame, standardFrame;
+	if (opj.graphCount()){
+		MultiLayer* fake = mw->multilayerPlot("fake", 0);
+		fake->setParent(0);
+		frameWidth = fake->frameGeometry().width() - fake->geometry().width();
+		frameHeight = fake->frameGeometry().height() - fake->geometry().height();
+		standardFrame = Origin::Rect(fake->geometry().width(), fake->geometry().height());
+		fake->setMaximized();
+		maximazedFrame = Origin::Rect(fake->geometry().width(), fake->geometry().height());
+		fake->askOnCloseEvent(false);
+		fake->close();
+	}
 
 	for(unsigned int g = 0; g < opj.graphCount(); ++g)
 	{

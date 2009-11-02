@@ -260,6 +260,12 @@ bool PythonScripting::initialize()
 	bool initialized = loadInitFile(d_parent->d_python_config_folder + "/qtiplotrc");
 	if(!initialized)
 		initialized = loadInitFile(d_parent->d_python_config_folder + "/.qtiplotrc");
+
+	if(!initialized){
+		QMessageBox::critical(d_parent, tr("Couldn't find initialization files"),
+		tr("Please indicate the correct path to the Python configuration files in the preferences dialog."));
+	}
+
 	return initialized;
 
 //	PyEval_ReleaseLock();

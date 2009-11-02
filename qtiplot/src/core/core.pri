@@ -17,8 +17,11 @@ HEADERS  += src/core/ApplicationWindow.h \
 
 ###################### SOURCES ##############################################
 
-SOURCES  += src/core/main.cpp \
-            src/core/ApplicationWindow.cpp \
+!contains(CONFIG, BrowserPlugin){
+	SOURCES  += src/core/main.cpp
+}
+
+SOURCES  += src/core/ApplicationWindow.cpp \
             src/core/ConfigDialog.cpp \
             src/core/CreateBinMatrixDialog.cpp \
             src/core/CustomActionDialog.cpp \

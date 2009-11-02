@@ -373,14 +373,14 @@ void CustomActionDialog::customizeAction(QAction *action)
 
 void CustomActionDialog::removeAction()
 {
-	QString s = tr("Are you sure you want to remove this action?");
-    if (QMessageBox::Yes != QMessageBox::question(this, tr("QtiPlot") + " - " + tr("Remove Action"), s, QMessageBox::Yes, QMessageBox::Cancel))
-        return;
-
 	int row = itemsList->currentRow();
     QAction *action = actionAt(row);
 	if (!action)
 		return;
+
+	QString s = tr("Are you sure you want to remove this action?");
+    if (QMessageBox::Yes != QMessageBox::question(this, tr("QtiPlot") + " - " + tr("Remove Action"), s, QMessageBox::Yes, QMessageBox::Cancel))
+        return;
 
 	ApplicationWindow *app = (ApplicationWindow *)parentWidget();
     QFile f(app->customActionsDirPath + "/" + action->text() + ".qca");

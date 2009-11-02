@@ -49,6 +49,10 @@
 
 #include <qwt_color_map.h>
 
+#ifdef BROWSER_PLUGIN
+	#include <qtbrowserplugin.h>
+#endif
+
 class QPixmap;
 class QCloseEvent;
 class QDropEvent;
@@ -116,9 +120,22 @@ class AssociationsDialog;
  * in ApplicationWindow after the above reorganizations. Think about whether a Model/View approach can be
  * used for Project/ProjectExplorer.
  */
+
+#ifdef BROWSER_PLUGIN
+class ApplicationWindow: public QMainWindow, public scripted, public QtNPBindable
+#else
 class ApplicationWindow: public QMainWindow, public scripted
+#endif
 {
     Q_OBJECT
+
+#ifdef BROWSER_PLUGIN
+    Q_CLASSINFO("ClassID", "{2e5b2715-46b2-4831-ba9b-6a3b195d5ec8}")
+    Q_CLASSINFO("InterfaceID", "{94581136-3c0c-46cc-97a1-066061356d43}")
+    Q_CLASSINFO("EventsID", "{8c191b77-1894-45c7-9d6b-201dede95410}")
+
+    Q_CLASSINFO("MIME", "application/x-graphable")
+#endif
 
 public:
     ApplicationWindow(bool factorySettings = false);
@@ -204,6 +221,8 @@ public slots:
 	ApplicationWindow* open(const QString& fn, bool factorySettings = false, bool newProject = true);
 	ApplicationWindow* openProject(const QString& fn, bool factorySettings = false, bool newProject = true);
 	ApplicationWindow* importOPJ(const QString& fn, bool factorySettings = false, bool newProject = true);
+
+	void closeProject();
 
 	/**
 	 * \brief Create a new project from a data file.
@@ -1335,9 +1354,9 @@ private:
     QAction *actionShowConsole;
 #endif
 #ifdef SCRIPTING_PYTHON
-    QAction *actionOpenQtDesignerUi, *actionShowScriptWindow;
+    QAction *actionOpenQtDesignerUi;
 #endif
-    QAction *actionSwapColumns, *actionMoveColRight, *actionMoveColLeft, *actionMoveColFirst, *actionMoveColLast;
+    QAction *actionSwapColumns, *actionMoveColRight, *actionMoveColLeft, *actionMoveColFirst, *actionMoveColLast, *actionShowScriptWindow;
     QAction *actionExportGraph, *actionExportAllGraphs, *actionPrint, *actionPrintAllPlots, *actionShowExportASCIIDialog;
     QAction *actionExportPDF, *actionReadOnlyCol, *actionStemPlot;
     QAction *actionCloseAllWindows, *actionCloseProject, *actionClearLogInfo, *actionShowPlotWizard, *actionShowConfigureDialog;
