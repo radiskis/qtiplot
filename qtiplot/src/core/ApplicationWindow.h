@@ -40,6 +40,7 @@
 #include <QDesktopServices>
 #include <QBuffer>
 #include <QLineEdit>
+#include <QMessageBox>
 
 #include <Graph.h>
 #include <Table.h>
@@ -1057,6 +1058,7 @@ private:
 	//@}
 	virtual QMenu * createPopupMenu(){return NULL;};
 	void updateCompleter(const QString& windowName, bool remove = false, const QString& newName = QString::null);
+	QMessageBox::StandardButton showSaveProjectMessage();
 
 private slots:
 	void disableActions();

@@ -4144,6 +4144,9 @@ void ApplicationWindow::importASCII(const QStringList& files, int import_mode, c
 
 void ApplicationWindow::open()
 {
+	if (showSaveProjectMessage() == QMessageBox::Cancel)
+		return;
+
 	OpenProjectDialog *open_dialog = new OpenProjectDialog(this, d_extended_open_dialog);
 	open_dialog->setDirectory(workingDir);
 	open_dialog->selectNameFilter(d_open_project_filter);
@@ -4175,9 +4178,20 @@ void ApplicationWindow::open()
 				}
 
 				saveSettings();//the recent projects must be saved
+
+				#ifdef BROWSER_PLUGIN
 				if (!(fn.endsWith(".ogm", Qt::CaseInsensitive) || fn.endsWith(".ogw", Qt::CaseInsensitive)))
 					closeProject();
 				open(fn, false, false);
+				#else
+				ApplicationWindow *a = open (fn);
+				if (a){
+					a->workingDir = workingDir;
+					if (!(fn.endsWith(".ogm",Qt::CaseInsensitive) || fn.endsWith(".ogw",Qt::CaseInsensitive)))
+						this->close();
+				}
+				#endif
+
 				break;
 			}
 		case OpenProjectDialog::NewFolder:
@@ -4241,6 +4255,9 @@ ApplicationWindow* ApplicationWindow::open(const QString& fn, bool factorySettin
 
 void ApplicationWindow::openRecentProject(int index)
 {
+	if (showSaveProjectMessage() == QMessageBox::Cancel)
+		return;
+
 	QString fn = recent->text(index);
 	int pos = fn.find(" ", 0);
 	fn = fn.right(fn.length() - pos - 1);
@@ -4274,9 +4291,22 @@ void ApplicationWindow::openRecentProject(int index)
 
 	if (!fn.isEmpty()){
 		saveSettings();//the recent projects must be saved
-		if (!(fn.endsWith(".ogm", Qt::CaseInsensitive) || fn.endsWith(".ogw",Qt::CaseInsensitive)))
+	#ifdef BROWSER_PLUGIN
+		if (!(fn.endsWith(".ogm", Qt::CaseInsensitive) || fn.endsWith(".ogw", Qt::CaseInsensitive)))
 			closeProject();
 		open (fn, false, false);
+	#else
+		bool isSaved = saved;
+		ApplicationWindow * a = open (fn);
+		if (a){
+			if (isSaved)
+				savedProject();//force saved state
+			if (!(fn.endsWith(".ogm", Qt::CaseInsensitive) || fn.endsWith(".ogw", Qt::CaseInsensitive)))
+				close();
+			else
+				modifiedProject();
+		}
+	#endif
 	}
 }
 
@@ -4284,7 +4314,7 @@ ApplicationWindow* ApplicationWindow::openProject(const QString& fn, bool factor
 {
 	ApplicationWindow *app = this;
 	if (newProject)
-		app = new ApplicationWindow();
+		app = new ApplicationWindow(factorySettings);
 
 	app->projectname = fn;
 	app->d_file_version = d_file_version;
@@ -9320,14 +9350,26 @@ void ApplicationWindow::foldersMenuActivated( int id )
 
 void ApplicationWindow::newProject()
 {
+	if (showSaveProjectMessage() == QMessageBox::Cancel)
+		return;
+
 	saveSettings();//the recent projects must be saved
 
+#ifdef BROWSER_PLUGIN
 	closeProject();
 	initWindow();
+#else
+	ApplicationWindow *ed = new ApplicationWindow();
+	ed->restoreApplicationGeometry();
+	ed->initWindow();
+	close();
+#endif
 }
 
 void ApplicationWindow::savedProject()
 {
+	QCoreApplication::processEvents();
+
 	actionSaveProject->setEnabled(false);
 	saved = true;
 
@@ -9478,57 +9520,59 @@ void ApplicationWindow::closeEvent( QCloseEvent* ce )
         showDemoVersionMessage();
     #endif
 
-	if (!saved){
-		QString s = tr("Save changes to project: <p><b> %1 </b> ?").arg(projectname);
-		switch( QMessageBox::information(this, tr("QtiPlot"), s, tr("Yes"), tr("No"),
-					tr("Cancel"), 0, 2 ) ){
-			case 0:
-				if (!saveProject()){
-					ce->ignore();
-					break;
-				}
-				saveSettings();
-				ce->accept();
-				break;
-
-			case 1:
-			default:
-				saveSettings();
-				ce->accept();
-				break;
-
-			case 2:
+	switch(showSaveProjectMessage()){
+		case QMessageBox::Yes:
+			if (!saveProject()){
 				ce->ignore();
 				break;
+			}
+			saveSettings();
+			ce->accept();
+			break;
+
+		case QMessageBox::No:
+		default:
+			saveSettings();
+			ce->accept();
+			break;
+
+		case QMessageBox::Cancel:
+			ce->ignore();
+			break;
+	}
+}
+
+QMessageBox::StandardButton ApplicationWindow::showSaveProjectMessage()
+{
+	if (!saved){
+		QString s = tr("Save changes to project: <p><b> %1 </b> ?").arg(projectname);
+		switch(QMessageBox::information(this, tr("QtiPlot"), s, tr("Yes"), tr("No"),
+					tr("Cancel"), 0, 2 )){
+			case 0:
+			#ifdef QTIPLOT_DEMO
+				showDemoVersionMessage();
+				return QMessageBox::Discard;
+			#else
+				saveProject();
+				return QMessageBox::Yes;
+			#endif
+			break;
+			case 1:
+			default:
+				savedProject();
+				return QMessageBox::No;
+			break;
+			case 2:
+				return QMessageBox::Cancel;
+			break;
 		}
-	} else {
-		saveSettings();
-		ce->accept();
 	}
 }
 
 void ApplicationWindow::closeProject()
 {
-	if (!saved){
-		QString s = tr("Save changes to project: <p><b> %1 </b> ?").arg(projectname);
-		switch( QMessageBox::information(this, tr("QtiPlot"), s, tr("Yes"), tr("No"),
-					tr("Cancel"), 0, 2 ) ){
-			case 0:
-			#ifdef QTIPLOT_DEMO
-				showDemoVersionMessage();
-				return;
-			#else
-				saveProject();
-			#endif
-			break;
-			case 1:
-			default:
-			break;
-			case 2:
-				return;
-			break;
-		}
-	}
+	if (showSaveProjectMessage() == QMessageBox::Cancel)
+		return;
 
 	blockSignals(true);
 
@@ -12721,7 +12765,11 @@ void ApplicationWindow::createActions()
 	connect(actionCloseAllWindows, SIGNAL(activated()), qApp, SLOT(closeAllWindows()));
 
 	actionCloseProject = new QAction(QIcon(QPixmap(delete_xpm)), tr("&Close"), this);
+#ifdef BROWSER_PLUGIN
 	connect(actionCloseProject, SIGNAL(activated()), this, SLOT(closeProject()));
+#else
+	connect(actionCloseProject, SIGNAL(activated()), this, SLOT(newProject()));
+#endif
 
 	actionClearLogInfo = new QAction(tr("Clear &Log Information"), this);
 	connect(actionClearLogInfo, SIGNAL(activated()), this, SLOT(clearLogInfo()));
@@ -14259,7 +14307,7 @@ ApplicationWindow* ApplicationWindow::importOPJ(const QString& filename, bool fa
 
 		ApplicationWindow *app = this;
 		if (newProject)
-        	app = new ApplicationWindow();
+        	app = new ApplicationWindow(factorySettings);
 
 		app->setWindowTitle("QtiPlot - " + filename);
 		app->restoreApplicationGeometry();
