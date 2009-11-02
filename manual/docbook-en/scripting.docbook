@@ -3772,7 +3772,7 @@ def createTable():
 	t = newTable()
 	t.setCell(1, 1, ui.valueBox.value())
 
-ui = uic.loadUi("dialog.ui")
+ui = uic.loadUi("myDialog.ui")
 ui.connect(ui.okButton, QtCore.SIGNAL("clicked()"),  createTable)
 ui.show()
 </programlisting>

@@ -3,7 +3,7 @@ isEmpty( QTI_ROOT ) {
 }
 
 ##########################################################
-##     System specific configuration     
+##     System specific configuration
 ##########################################################
 
 # Global include path which is always added at the end of the INCLUDEPATH
@@ -23,7 +23,7 @@ MUPARSER_LIBS = $$QTI_ROOT/3rdparty/muparser/lib/libmuparser.a
 #MUPARSER_LIBS = -lmuparser
 
 ##########################################################
-## GNU Sientific Library (http://www.gnu.org/software/gsl/) 
+## GNU Sientific Library (http://www.gnu.org/software/gsl/)
 ##########################################################
 
 # include path. leave it blank to use SYS_INCLUDE
@@ -53,7 +53,7 @@ win32:BOOST_LIBS = $$QTI_ROOT/3rdparty/boost/lib/libboost_date_time-mgw34-mt.lib
 # http://qwt.sourceforge.net/index.html
 ##########################################################
 
-# include path. 
+# include path.
 QWT_INCLUDEPATH = $$QTI_ROOT/3rdparty/qwt/src
 # link locally against a copy in 3rdparty/
 QWT_LIBS = $$QTI_ROOT/3rdparty/qwt/lib/libqwt.a
@@ -74,7 +74,7 @@ LIBPNG_LIBS = $$QTI_ROOT/3rdparty/libpng/libpng.a
 # http://soft.proindependent.com/emf/index.html
 ##########################################################
 
-# include path. 
+# include path.
 EMF_ENGINE_INCLUDEPATH = $$QTI_ROOT/3rdparty/EmfEngine/src
 # link locally against a copy in 3rdparty/
 EMF_ENGINE_LIBS = $$QTI_ROOT/3rdparty/EmfEngine/libEmfEngine.a
@@ -107,9 +107,6 @@ contains( TARGET, qtiplot ) {
   # where running QtiPlot from a terminal is inconvenient
   DEFINES         += SCRIPTING_CONSOLE
 
-  # a dialog for selecting the scripting language on a per-project basis
-  DEFINES         += SCRIPTING_DIALOG
-
   #DEFINES         += QTIPLOT_DEMO
 
   # Comment the following lines to disable donations start-up message.
@@ -118,6 +115,9 @@ contains( TARGET, qtiplot ) {
   # Uncomment the following line if you want to perform a custom installation using the *.path variables defined in ./qtiplot.pro.
   #CONFIG          += CustomInstall
 
+  # Uncomment the following line if you want to build QtiPlot as a browser plugin (not working on Internet Explorer).
+  #CONFIG          += BrowserPlugin
+  
   CONFIG          += release
   #CONFIG          += debug
   #win32: CONFIG   += console

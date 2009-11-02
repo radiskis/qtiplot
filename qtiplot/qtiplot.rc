@@ -1,0 +1,40 @@
+1 TYPELIB "qtiplot.rc"
+
+1 VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x2L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904e4"
+        BEGIN
+            VALUE "Comments", "\0"
+            VALUE "CompanyName", "ProIndep Serv S.r.l.\0"
+            VALUE "FileDescription", "qtiplot\0"
+            VALUE "FileExtents", "qti\0"
+            VALUE "FileOpenName", "QtiPlot project file (*.qti)\0"
+            VALUE "FileVersion", "1, 0, 0, 1\0"
+            VALUE "InternalName", "qtiplot\0"
+            VALUE "LegalTrademarks", "\0"
+            VALUE "MIMEType", "application/x-graphable\0"
+            VALUE "OriginalFilename", "qtiplot.dll\0"
+            VALUE "PrivateBuild", "\0"
+            VALUE "ProductName", "QtiPlot browser plug-in\0"
+            VALUE "ProductVersion", "1, 0, 0, 1\0"
+            VALUE "SpecialBuild", "\0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1252
+    END
+END

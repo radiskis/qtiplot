@@ -4,8 +4,9 @@
 	File                 : qti.sip
 	Project              : QtiPlot
 --------------------------------------------------------------------
-	Copyright            : (C) 2006 by Knut Franke, Ion Vasilief, Michael Roemer
-	Email                : knut.franke*gmx.de, ion_vasilief*yahoo.fr, roemer*nano.uni-hannover.de
+	Copyright            : (C) 2006 by Knut Franke, Ion Vasilief, Michael Roemer, Jonas Bähr
+	Email                : knut.franke*gmx.de, ion_vasilief*yahoo.fr,
+						   roemer*nano.uni-hannover.de, Jonas.Baehr*web.de
 	Description          : Specifications for Python bindings
 
  ***************************************************************************/
