@@ -390,27 +390,47 @@ public:
   Py_DECREF(rowNumber);
   Py_DECREF(methodName);
 %End
-  void setColData(SIP_PYOBJECT, SIP_PYLIST, int=0); // a2 can be used as an offset
+  void setColData(SIP_PYOBJECT, SIP_PYOBJECT, int=0); // a2 can be used as an offset
 %MethodCode
   PyObject *item;
+  PyObject *iterator = PyObject_GetIter(a1);
   sipIsErr = 0;
   CHECK_TABLE_COL(a0);
-  int listSize = PyList_Size(a1);
   int tableLength = sipCpp->numRows();
+  if (iterator == NULL) {
+    sipIsErr = 1;
+    PyErr_SetString(PyExc_TypeError, "Object needs to be iterable");
+  }
+  else {
+    while (a2 < 0) { // a negative offset should skip the first values in the iterator
+      if (item = PyIter_Next(iterator))
+        Py_DECREF(item); // not needed any more
+      else {
+        sipIsErr = 1;
+        if (! PyErr_Occurred())
+          PyErr_SetString(PyExc_StopIteration, "Iterator ended before any row could be filled!");
+      }
+      a2++;
+    } //while
+  }
 	if (sipIsErr == 0){
     int colType = sipCpp->columnType(col);
-    for(int row = a2, idx = 0; row < tableLength; row++, idx++) {
-      if (idx >= listSize) {
-        sipIsErr = 1;
-        PyErr_SetString(PyExc_StopIteration, "List argument ended before all rows were filled!");
-        break;
+    for(int row = a2; row < tableLength; row++) {
+      if (item = PyIter_Next(iterator)) {
+        sipIsErr = setCellDataHelper(sipCpp, row, col, item);
+        Py_DECREF(item);
       }
-      item = PyList_GET_ITEM(a1, idx);
-      sipIsErr = setCellDataHelper(sipCpp, row, col, item);
+      else {
+        sipIsErr = 1;
+        if (! PyErr_Occurred())
+          PyErr_SetString(PyExc_StopIteration, "Iterator ended before all rows were filled!");
+      }
       if (sipIsErr)
         break;
-    } // for each col
+    } // for each row
 	} // if not sip error
+  if (iterator)
+    Py_DECREF(iterator);
 %End
   void setText(SIP_PYOBJECT, int, const QString&);
 %MethodCode
