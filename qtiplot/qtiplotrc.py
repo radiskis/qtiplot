@@ -177,7 +177,7 @@ try:
     t = newTable(name, df.nrow(), df.ncol())
     t.setColNames(df.colnames())
     for i, coldata in enumerate(df):
-      t.setColData(i+1, list(coldata))
+      t.setColData(i+1, coldata)
     return t
   # make it also avilable as a function of qti.app
   setattr(app, "newTableFromRDataFrame", newTableFromRDataFrame)
