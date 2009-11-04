@@ -743,6 +743,15 @@ public:
 		sipCpp->swapColumns(col, col2);
 %End
 
+void scrollToCell(SIP_PYOBJECT, int);
+%MethodCode
+  sipIsErr = 0;
+  CHECK_TABLE_COL(a0);
+  CHECK_TABLE_ROW(a1);
+  if (sipIsErr == 0)
+    sipCpp->table()->ensureCellVisible(row, col); // for some reason these indices seem to start at 1
+%End
+
 private:
   Table(const Table&);
 };

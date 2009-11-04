@@ -86,6 +86,7 @@ setReadOnlyColumn
 setColumnRole
 setColumnWidth
 hideColumn
+scrollToCell
 Matrix
 ColumnRow
 XY
