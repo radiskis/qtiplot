@@ -164,10 +164,9 @@ try:
     # create an empty TaggedList and append values later
     tl = rpy2.rlike.container.TaggedList([])
     # cache row indices for later use
-    rowIndices = range(1, t.numRows()+1)
-    for c in  range(1, t.numCols() + 1):
-      values = [t.cell(c, r) for r in rowIndices]
-      tl.append(rpy2.robjects.FloatVector(values), tag=t.colName(c))
+    for colName in  t.colNames():
+      values = t.colData(colName)
+      tl.append(rpy2.robjects.FloatVector(values), tag=colName)
     # build an R dataframe
     return rpy2.robjects.RDataFrame(tl)
   # make it also avilable as a table instance method
@@ -176,17 +175,9 @@ try:
   def newTableFromRDataFrame(df, name = "R result"):
     "create a new table from a R data frame"
     t = newTable(name, df.nrow(), df.ncol())
-    col = 0
-    for colname in df.colnames():
-      col += 1
-      t.setColName(col, colname)
-    col = 0
-    for coldata in df:
-      row = 0
-      col += 1
-      for value in coldata:
-        row += 1
-        t.setCell(col, row, value)
+    t.setColNames(df.colnames())
+    for i, coldata in enumerate(df):
+      t.setColData(i+1, list(coldata))
     return t
   # make it also avilable as a function of qti.app
   setattr(app, "newTableFromRDataFrame", newTableFromRDataFrame)
