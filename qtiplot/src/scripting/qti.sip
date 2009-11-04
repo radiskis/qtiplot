@@ -114,6 +114,7 @@ class Table: MdiSubWindow
 	}
 
 static int setCellDataHelper(Table* table, int row, int col, PyObject* item) {
+  PyTypeObject* item_type = item->ob_type;
   if (item == Py_None) {
     table->clearCell(row, col);
     return 0;
@@ -126,7 +127,8 @@ static int setCellDataHelper(Table* table, int row, int col, PyObject* item) {
       Py_DECREF(item);
     }
     else {
-      PyErr_Format(PyExc_TypeError, "Can't convert item %d into a float!", col);
+      if (PyType_Ready(item_type) == 0)
+        PyErr_Format(PyExc_TypeError, "Can't convert <%s> into a float!", item_type->tp_name);
       return 1;
     }
     break;
@@ -137,7 +139,8 @@ static int setCellDataHelper(Table* table, int row, int col, PyObject* item) {
       Py_DECREF(item);
     }
     else {
-      PyErr_Format(PyExc_TypeError, "Can't convert item %d into a string!", col);
+      if (PyType_Ready(item_type) == 0)
+        PyErr_Format(PyExc_TypeError, "Can't convert <%s> into a string!", item_type->tp_name);
       return 1;
     }
     break;
