@@ -51,7 +51,13 @@
 #include <qwt_color_map.h>
 
 #ifdef BROWSER_PLUGIN
-	#include <qtbrowserplugin.h>
+#include <qtbrowserplugin.h>
+#endif
+
+#ifdef QAXSERVER
+#include <ActiveQt/QAxBindable>
+#include <ActiveQt/QAxFactory>
+#include <qt_windows.h>
 #endif
 
 class QPixmap;
@@ -122,10 +128,12 @@ class AssociationsDialog;
  * used for Project/ProjectExplorer.
  */
 
-#ifdef BROWSER_PLUGIN
-class ApplicationWindow: public QMainWindow, public scripted, public QtNPBindable
-#else
 class ApplicationWindow: public QMainWindow, public scripted
+#ifdef BROWSER_PLUGIN
+	, public QtNPBindable
+#endif
+#ifdef QAXSERVER
+	, public QAxBindable
 #endif
 {
     Q_OBJECT
@@ -135,7 +143,7 @@ class ApplicationWindow: public QMainWindow, public scripted
     Q_CLASSINFO("InterfaceID", "{94581136-3c0c-46cc-97a1-066061356d43}")
     Q_CLASSINFO("EventsID", "{8c191b77-1894-45c7-9d6b-201dede95410}")
 
-    Q_CLASSINFO("MIME", "application/x-graphable")
+    Q_CLASSINFO("MIME", "application/x-qtiplot")
 #endif
 
 public:

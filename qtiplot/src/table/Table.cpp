@@ -2366,7 +2366,7 @@ bool Table::noYColumn()
 
 void Table::importASCII(const QString &fname, const QString &sep, int ignoredLines, bool renameCols,
     bool stripSpaces, bool simplifySpaces, bool importComments, const QString& commentString,
-    bool readOnly, ImportMode importAs, int endLine, int maxRows)
+    bool readOnly, ImportMode importAs, const QLocale& importLocale, int endLine, int maxRows)
 {
 	int rows;
 	QString name = MdiSubWindow::parseAsciiFile(fname, commentString, endLine, ignoredLines, maxRows, rows);
@@ -2378,6 +2378,9 @@ void Table::importASCII(const QString &fname, const QString &sep, int ignoredLin
 		return;
 
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+
+	QLocale locale = this->locale();
+	bool updateDecimalSeparators = (importLocale != locale) ? true : false;
 
 	QTextStream t(&f);
 	QString s = t.readLine();//read first line
@@ -2392,7 +2395,7 @@ void Table::importASCII(const QString &fname, const QString &sep, int ignoredLin
 	bool allNumbers = true;
 	for (int i=0; i<cols; i++)
 	{//verify if the strings in the line used to rename the columns are not all numbers
-		locale().toDouble(line[i], &allNumbers);
+		locale.toDouble(line[i], &allNumbers);
 		if (!allNumbers)
 			break;
 	}
@@ -2478,8 +2481,15 @@ void Table::importASCII(const QString &fname, const QString &sep, int ignoredLin
 
 	if ((!renameCols || allNumbers) && !importComments && rows > 0){
 		//put values in the first line of the table
-		for (int i = 0; i<cols; i++)
-			d_table->setText(startRow, startCol + i, line[i]);
+		for (int i = 0; i<cols; i++){
+			if (updateDecimalSeparators){
+				char format;
+				int prec;
+				columnNumericFormat(startCol + i, &format, &prec);
+				d_table->setText(startRow, startCol + i, locale.toString(importLocale.toDouble(line[i]), format, prec));
+			} else
+				d_table->setText(startRow, startCol + i, line[i]);
+		}
 		startRow++;
 	}
 
@@ -2516,8 +2526,16 @@ void Table::importASCII(const QString &fname, const QString &sep, int ignoredLin
 			addColumns(lc - cols);
 			cols = lc;
 		}
-		for (int j=0; j<cols && j<lc; j++)
-			d_table->setText(row, startCol + j, line[j]);
+
+		for (int j = 0; j<cols && j<lc; j++){
+			if (updateDecimalSeparators){
+				char format;
+				int prec;
+				columnNumericFormat(startCol + j, &format, &prec);
+				d_table->setText(row, startCol + j, locale.toString(importLocale.toDouble(line[j]), format, prec));
+			} else
+				d_table->setText(row, startCol + j, line[j]);
+		}
 
 		l++;
 		row++;

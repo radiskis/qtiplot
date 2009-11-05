@@ -25,7 +25,7 @@ BEGIN
             VALUE "FileVersion", "1, 0, 0, 1\0"
             VALUE "InternalName", "qtiplot\0"
             VALUE "LegalTrademarks", "\0"
-            VALUE "MIMEType", "application/x-graphable\0"
+            VALUE "MIMEType", "application/x-qtiplot\0"
             VALUE "OriginalFilename", "qtiplot.dll\0"
             VALUE "PrivateBuild", "\0"
             VALUE "ProductName", "QtiPlot browser plug-in\0"

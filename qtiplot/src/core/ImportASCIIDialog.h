@@ -55,11 +55,10 @@ public:
 
 	void importASCII(const QString &fname, const QString &sep, int ignoredLines, bool renameCols,
 		bool stripSpaces, bool simplifySpaces, bool importComments, const QString& commentString,
-		int importMode, int endLine, int maxRows);
+		int importMode, const QLocale& importLocale, int endLine, int maxRows);
 
 	void resetHeader();
 	void clear();
-	void updateDecimalSeparators(const QLocale& oldSeparators);
 	void setNumericPrecision(int prec) {d_numeric_precision = prec;};
 
 private slots:
@@ -68,7 +67,7 @@ private slots:
 private:
 	void addColumns(int c);
 	QStringList comments, col_label;
-	int d_numeric_precision;
+	int d_numeric_precision, d_start_col;
 };
 
 class PreviewMatrix : public QTableView

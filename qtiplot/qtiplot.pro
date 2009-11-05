@@ -214,6 +214,7 @@ unix:LIBS += $$SYS_LIBS
 
 contains(CONFIG, BrowserPlugin){
 	DEFINES += BROWSER_PLUGIN
+	win32: CONFIG  += qaxserver
 	RC_FILE	= qtiplot.rc
 	include(../3rdparty/QtSolutions/qtbrowserplugin/src/qtbrowserplugin.pri)
 }  

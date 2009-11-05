@@ -3873,7 +3873,7 @@ ApplicationWindow * ApplicationWindow::plotFile(const QString& fn)
         }
         t->importASCII(fn, app->columnSeparator, 0, app->renameColumns, app->strip_spaces, app->simplify_spaces,
                 app->d_ASCII_import_comments, app->d_ASCII_comment_string,
-				app->d_ASCII_import_read_only, Table::Overwrite, app->d_ASCII_end_line);
+				app->d_ASCII_import_read_only, Table::Overwrite, app->d_ASCII_import_locale, app->d_ASCII_end_line);
         t->setCaptionPolicy(MdiSubWindow::Both);
         app->multilayerPlot(t, t->YColumns(), defaultCurveStyle);
     }
@@ -4043,7 +4043,7 @@ void ApplicationWindow::importASCII(const QStringList& files, int import_mode, c
 					w->importASCII(sorted_files[i], local_column_separator, local_ignored_lines,
                                    local_rename_columns, local_strip_spaces, local_simplify_spaces,
                                    local_import_comments, local_comment_string, import_read_only,
-								   Table::Overwrite, endLineChar);
+								   Table::Overwrite, local_separators, endLineChar);
 					if (!w) continue;
 					w->setWindowLabel(sorted_files[i]);
 					w->setCaptionPolicy(MdiSubWindow::Both);
@@ -4053,8 +4053,6 @@ void ApplicationWindow::importASCII(const QStringList& files, int import_mode, c
 					}
 					if (filesCount > 1)
 						w->move(QPoint(i*dx, i*dy));
-
-					w->updateDecimalSeparators(local_separators);
 				}
 				modifiedProject();
 				break;
@@ -4097,9 +4095,8 @@ void ApplicationWindow::importASCII(const QStringList& files, int import_mode, c
 					for (int i = 0; i < files.size(); i++){
                         t->importASCII(files[i], local_column_separator, local_ignored_lines, local_rename_columns,
 							local_strip_spaces, local_simplify_spaces, local_import_comments,
-							local_comment_string, import_read_only, (Table::ImportMode)(import_mode - 2), endLineChar);
+							local_comment_string, import_read_only, (Table::ImportMode)(import_mode - 2), local_separators, endLineChar);
 					}
-					t->updateDecimalSeparators(local_separators);
 					t->notifyChanges();
 					emit modifiedProject(t);
 				} else if (w->isA("Matrix")){
@@ -4124,8 +4121,7 @@ void ApplicationWindow::importASCII(const QStringList& files, int import_mode, c
 				    Table *t = (Table *)w;
 					t->importASCII(files[0], local_column_separator, local_ignored_lines, local_rename_columns,
                                     local_strip_spaces, local_simplify_spaces, local_import_comments,
-                                    local_comment_string, import_read_only, Table::Overwrite, endLineChar);
-					t->updateDecimalSeparators(local_separators);
+                                    local_comment_string, import_read_only, Table::Overwrite, local_separators, endLineChar);
 					t->notifyChanges();
 				} else if (w->isA("Matrix")){
 				    Matrix *m = (Matrix *)w;
@@ -9546,9 +9542,8 @@ QMessageBox::StandardButton ApplicationWindow::showSaveProjectMessage()
 {
 	if (!saved){
 		QString s = tr("Save changes to project: <p><b> %1 </b> ?").arg(projectname);
-		switch(QMessageBox::information(this, tr("QtiPlot"), s, tr("Yes"), tr("No"),
-					tr("Cancel"), 0, 2 )){
-			case 0:
+		switch(QMessageBox::information(this, tr("QtiPlot"), s, QMessageBox::Yes|QMessageBox::No|QMessageBox::Cancel, QMessageBox::Yes)){
+			case QMessageBox::Yes:
 			#ifdef QTIPLOT_DEMO
 				showDemoVersionMessage();
 				return QMessageBox::Discard;
@@ -9557,16 +9552,17 @@ QMessageBox::StandardButton ApplicationWindow::showSaveProjectMessage()
 				return QMessageBox::Yes;
 			#endif
 			break;
-			case 1:
+			case QMessageBox::No:
 			default:
 				savedProject();
 				return QMessageBox::No;
 			break;
-			case 2:
+			case QMessageBox::Cancel:
 				return QMessageBox::Cancel;
 			break;
 		}
 	}
+	return QMessageBox::No;
 }
 
 void ApplicationWindow::closeProject()
@@ -17663,4 +17659,11 @@ void ApplicationWindow::openQtDesignerUi()
 QTNPFACTORY_BEGIN("QtiPlot Browser Plugin", "A Qt-based NSAPI plug-in application that graphs numeric data");
     QTNPCLASS(ApplicationWindow)
 QTNPFACTORY_END()
+#endif
+
+#ifdef QAXSERVER
+#include <ActiveQt/QAxFactory>
+QAXFACTORY_BEGIN("{89ab08da-df8c-4bd0-8327-72f73741c1a6}", "{082bd921-0832-4ca7-ab5a-ec06ca7f3350}")
+    QAXCLASS(ApplicationWindow)
+QAXFACTORY_END()
 #endif

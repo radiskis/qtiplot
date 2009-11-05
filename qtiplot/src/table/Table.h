@@ -33,6 +33,7 @@
 #include <q3header.h>
 #include <Q3ValueList>
 #include <QVarLengthArray>
+#include <QLocale>
 
 #include <MdiSubWindow.h>
 #include <ScriptingEnv.h>
@@ -299,7 +300,7 @@ public slots:
 	void importASCII(const QString &fname, const QString &sep, int ignoredLines, bool renameCols,
                     bool stripSpaces, bool simplifySpaces, bool importComments,
                     const QString& commentString, bool readOnly = false,
-					ImportMode importAs = Overwrite, int endLine = 0, int maxRows = -1);
+					ImportMode importAs = Overwrite, const QLocale& importLocale = QLocale(), int endLine = 0, int maxRows = -1);
 
 	//! \name Saving and Restoring
 	//@{

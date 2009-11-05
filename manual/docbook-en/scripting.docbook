@@ -1362,7 +1362,7 @@ Import values from <varname>file</varname>, using <varname>sep</varname> as sepa
 <varname>ignoreLines</varname> lines at the head of the file and all lines starting with a <varname>comment</varname> string.
 <programlisting>
 t.importASCII(file, sep="\t",ignoreLines=0,renameCols=False,stripSpaces=True,simplifySpace=False,
-importComments=False,comment="#",readOnly=False,importAs=Table.Overwrite,endLine=0,maxRows=-1)
+importComments=False,comment="#",readOnly=False,importAs=Table.Overwrite,locale=QLocale(),endLine=0,maxRows=-1)
 </programlisting>
 
 As you see from the above list of import options, you have the possibility to set the new columns as read-only.

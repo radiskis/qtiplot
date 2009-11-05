@@ -490,7 +490,7 @@ public:
 
   void importASCII(const QString&, const QString&="\t", int=0, bool=false,
   					bool=true, bool=false, bool=false, const QString&="#", bool=false,
-					ImportMode = Overwrite, int = 0, int = -1);
+					ImportMode = Overwrite, const QLocale& = QLocale(), int = 0, int = -1);
   bool exportASCII(const QString&, const QString&="\t", bool=false, bool=false, bool=false);
 
   void setDecimalSeparators(int,bool=true);
