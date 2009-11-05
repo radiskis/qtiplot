@@ -2482,11 +2482,13 @@ void Table::importASCII(const QString &fname, const QString &sep, int ignoredLin
 	if ((!renameCols || allNumbers) && !importComments && rows > 0){
 		//put values in the first line of the table
 		for (int i = 0; i<cols; i++){
-			if (updateDecimalSeparators){
+			bool ok;
+			double val = importLocale.toDouble(line[i], &ok);
+			if (ok && updateDecimalSeparators){
 				char format;
 				int prec;
 				columnNumericFormat(startCol + i, &format, &prec);
-				d_table->setText(startRow, startCol + i, locale.toString(importLocale.toDouble(line[i]), format, prec));
+				d_table->setText(startRow, startCol + i, locale.toString(val, format, prec));
 			} else
 				d_table->setText(startRow, startCol + i, line[i]);
 		}
@@ -2528,11 +2530,13 @@ void Table::importASCII(const QString &fname, const QString &sep, int ignoredLin
 		}
 
 		for (int j = 0; j<cols && j<lc; j++){
-			if (updateDecimalSeparators){
+			bool ok;
+			double val = importLocale.toDouble(line[j], &ok);
+			if (ok && updateDecimalSeparators){
 				char format;
 				int prec;
 				columnNumericFormat(startCol + j, &format, &prec);
-				d_table->setText(row, startCol + j, locale.toString(importLocale.toDouble(line[j]), format, prec));
+				d_table->setText(row, startCol + j, locale.toString(val, format, prec));
 			} else
 				d_table->setText(row, startCol + j, line[j]);
 		}
