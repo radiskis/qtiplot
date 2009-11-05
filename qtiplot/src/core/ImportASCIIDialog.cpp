@@ -666,10 +666,11 @@ void PreviewTable::importASCII(const QString &fname, const QString &sep, int ign
 	if ((!renameCols || allNumbers)&& !importComments && rows > 0){
 		//put values in the first line of the table
 		for (int i = 0; i<cols; i++){
-			if (updateDecimalSeparators){
-				double val = importLocale.toDouble(line[i]);
+			bool ok;
+			double val = importLocale.toDouble(line[i], &ok);
+			if (ok && updateDecimalSeparators)
 				setText(startRow, startCol + i, locale.toString(val, 'g', d_numeric_precision));
-			} else
+			else
 				setText(startRow, startCol + i, line[i]);
 		}
 		startRow++;
@@ -694,11 +695,12 @@ void PreviewTable::importASCII(const QString &fname, const QString &sep, int ign
 			addColumns(lc - cols);
 			cols = lc;
 		}
-		for (int j=0; j<cols && j<lc; j++){
-			if (updateDecimalSeparators){
-				double val = importLocale.toDouble(line[j]);
+		for (int j = 0; j < cols && j < lc; j++){
+			bool ok;
+			double val = importLocale.toDouble(line[j], &ok);
+			if (ok && updateDecimalSeparators)
 				setText(row, startCol + j, locale.toString(val, 'g', d_numeric_precision));
-			} else
+			else
 				setText(row, startCol + j, line[j]);
 		}
 
