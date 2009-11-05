@@ -287,7 +287,7 @@ void ImportASCIIDialog::initPreview(int previewMode)
 				return;
 
 			if (w->inherits("Table")){
-				d_preview_table = new PreviewTable(30, 2, this);
+				d_preview_table = new PreviewTable(30, ((Table*)w)->numCols(), this);
 				d_preview_table->setNumericPrecision(app->d_decimal_digits);
 				d_preview_stack->addWidget(d_preview_table);
 				enableTableOptions(true);
@@ -456,10 +456,8 @@ void ImportASCIIDialog::previewTable()
 	d_preview_table->importASCII(d_current_path, columnSeparator(), d_ignored_lines->value(),
 							renameColumns(), d_strip_spaces->isChecked(),
 							d_simplify_spaces->isChecked(), importComments(),
-                            d_comment_string->text(), (Table::ImportMode)importMode,
+                            d_comment_string->text(), (Table::ImportMode)importMode, decimalSeparators(),
                             boxEndLine->currentIndex(), d_preview_lines_box->value());
-
-	d_preview_table->updateDecimalSeparators(decimalSeparators());
 
     if (!d_preview_table->isVisible())
         d_preview_table->show();
@@ -554,6 +552,7 @@ PreviewTable::PreviewTable(int numRows, int numCols, QWidget * parent, const cha
 		comments << "";
 		col_label << QString::number(i+1);
 	}
+	d_start_col = numCols;
 	setHeader();
 	setMinimumHeight(2*horizontalHeader()->height());
 	connect(horizontalHeader(), SIGNAL(sizeChange(int, int, int)), this, SLOT(setHeader()));
@@ -561,7 +560,7 @@ PreviewTable::PreviewTable(int numRows, int numCols, QWidget * parent, const cha
 
 void PreviewTable::importASCII(const QString &fname, const QString &sep, int ignoredLines, bool renameCols,
     bool stripSpaces, bool simplifySpaces, bool importComments, const QString& commentString,
-	int importMode, int endLine, int maxRows)
+	int importMode, const QLocale& importLocale, int endLine, int maxRows)
 {
 	int rows;
 	QString name = MdiSubWindow::parseAsciiFile(fname, commentString, endLine, ignoredLines, maxRows, rows);
@@ -573,6 +572,9 @@ void PreviewTable::importASCII(const QString &fname, const QString &sep, int ign
 		return;
 
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+
+	QLocale locale = this->locale();
+	bool updateDecimalSeparators = (importLocale != locale) ? true : false;
 
 	QTextStream t(&f);
 	QString s = t.readLine();//read first line
@@ -587,7 +589,7 @@ void PreviewTable::importASCII(const QString &fname, const QString &sep, int ign
 	bool allNumbers = true;
 	for (int i=0; i<cols; i++)
 	{//verify if the strings in the line used to rename the columns are not all numbers
-		locale().toDouble(line[i], &allNumbers);
+		locale.toDouble(line[i], &allNumbers);
 		if (!allNumbers)
 			break;
 	}
@@ -613,8 +615,9 @@ void PreviewTable::importASCII(const QString &fname, const QString &sep, int ign
 			}
 		break;
 		case Table::NewColumns:
-			startCol = c;
-			addColumns(cols);
+			startCol = d_start_col;
+			if (abs(c - d_start_col) < cols)
+				addColumns(cols);
 			if (r < rows)
 				setNumRows(rows);
 		break;
@@ -662,8 +665,13 @@ void PreviewTable::importASCII(const QString &fname, const QString &sep, int ign
 
 	if ((!renameCols || allNumbers)&& !importComments && rows > 0){
 		//put values in the first line of the table
-		for (int i = 0; i<cols; i++)
-			setText(startRow, startCol + i, line[i]);
+		for (int i = 0; i<cols; i++){
+			if (updateDecimalSeparators){
+				double val = importLocale.toDouble(line[i]);
+				setText(startRow, startCol + i, locale.toString(val, 'g', d_numeric_precision));
+			} else
+				setText(startRow, startCol + i, line[i]);
+		}
 		startRow++;
 	}
 
@@ -686,8 +694,13 @@ void PreviewTable::importASCII(const QString &fname, const QString &sep, int ign
 			addColumns(lc - cols);
 			cols = lc;
 		}
-		for (int j=0; j<cols && j<lc; j++)
-			setText(row, startCol + j, line[j]);
+		for (int j=0; j<cols && j<lc; j++){
+			if (updateDecimalSeparators){
+				double val = importLocale.toDouble(line[j]);
+				setText(row, startCol + j, locale.toString(val, 'g', d_numeric_precision));
+			} else
+				setText(row, startCol + j, line[j]);
+		}
 
 		row++;
 		qApp->processEvents(QEventLoop::ExcludeUserInput);
@@ -709,22 +722,6 @@ void PreviewTable::clear()
 	for (int i=0; i<numCols(); i++){
 		for (int j=0; j<numRows(); j++)
 			setText(j, i, QString::null);
-	}
-}
-
-void PreviewTable::updateDecimalSeparators(const QLocale& oldSeparators)
-{
-	QLocale locale = ((QWidget *)parent())->locale();
-	if (locale == oldSeparators)
-        return;
-
-	for (int i=0; i<numCols(); i++){
-        for (int j=0; j<numRows(); j++){
-            if (!text(j, i).isEmpty()){
-				double val = oldSeparators.toDouble(text(j, i));
-                setText(j, i, locale.toString(val, 'g', d_numeric_precision));
-			}
-		}
 	}
 }
 
