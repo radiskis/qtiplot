@@ -249,7 +249,7 @@ void TextFormatButtons::init(Buttons buttons)
 
 void TextFormatButtons::showLowerGreek()
 {
-	SymbolDialog *greekLetters = new SymbolDialog(SymbolDialog::lowerGreek, this, Qt::Tool);
+	SymbolDialog *greekLetters = new SymbolDialog(SymbolDialog::lowerGreek, this, Qt::Tool|Qt::WindowStaysOnTopHint);
 	greekLetters->setAttribute(Qt::WA_DeleteOnClose);
 	QFont f = connectedTextEdit->font();
 	f.setPointSize(12);
@@ -261,7 +261,7 @@ void TextFormatButtons::showLowerGreek()
 
 void TextFormatButtons::showUpperGreek()
 {
-	SymbolDialog *greekLetters = new SymbolDialog(SymbolDialog::upperGreek, this, Qt::Tool);
+	SymbolDialog *greekLetters = new SymbolDialog(SymbolDialog::upperGreek, this, Qt::Tool|Qt::WindowStaysOnTopHint);
 	greekLetters->setAttribute(Qt::WA_DeleteOnClose);
 	QFont f = connectedTextEdit->font();
 	f.setPointSize(12);
@@ -277,7 +277,7 @@ void TextFormatButtons::showMathSymbols()
 	if (d_buttons == Equation || d_buttons == TexLegend)
 		charSet = SymbolDialog::latexMathSymbols;
 
-	SymbolDialog *mathSymbols = new SymbolDialog(charSet, this, Qt::Tool);
+	SymbolDialog *mathSymbols = new SymbolDialog(charSet, this, Qt::Tool|Qt::WindowStaysOnTopHint);
 	mathSymbols->setAttribute(Qt::WA_DeleteOnClose);
 	QFont f = connectedTextEdit->font();
 	f.setPointSize(12);
@@ -293,7 +293,7 @@ void TextFormatButtons::showArrowSymbols()
 	if (d_buttons == Equation || d_buttons == TexLegend)
 		charSet = SymbolDialog::latexArrowSymbols;
 
-	SymbolDialog *arrowSymbols = new SymbolDialog(charSet, this, Qt::Tool);
+	SymbolDialog *arrowSymbols = new SymbolDialog(charSet, this, Qt::Tool|Qt::WindowStaysOnTopHint);
 	arrowSymbols->setAttribute(Qt::WA_DeleteOnClose);
 	arrowSymbols->setFont(connectedTextEdit->font());
 	QFont f = connectedTextEdit->font();

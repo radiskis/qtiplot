@@ -2297,9 +2297,6 @@ void ApplicationWindow::initPlot3D(Graph3D *plot)
 
 	plot->setIcon(QPixmap(trajectory_xpm));
 	plot->show();
-#ifdef Q_OS_MAC // otherwise crash on Mac OS X
-	plot->surface()->resize(plot->size());
-#endif
 	plot->setFocus();
 
 	addListViewItem(plot);

@@ -1252,15 +1252,7 @@ using different decimal separator conventions than the ones you're using, like f
 a comma character for the decimal point instead of a dot character, you have the possibility
 to convert the data to your current settings, by specifying the
 <emphasis>Decimal Separators</emphasis> convention used in the ASCII files
-in conjunction with the <emphasis>Omit thousands separator</emphasis> option.
-
-If an ASCII file contains text columns you can only import them correctly if the
-combination <emphasis>Decimal Separators</emphasis> + <emphasis>Omit thousands separator</emphasis>
-is the same as the one specified in the <emphasis>Numeric Format</emphasis>
-tab from the <link linkend="fig-preferences-dialog-11">Preferences dialog</link> (the default settings).
-Otherwise &appname; will try to convert the texts to floating point values and
-all text cells will be overwritten and set to zero.
-</para>
+in conjunction with the <emphasis>Omit thousands separator</emphasis> option.</para>
 </sect1>
 
 <!-- ************************************************** -->
