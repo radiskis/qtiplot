@@ -100,13 +100,8 @@ double muParserScript::col(const QString &arg)
 		if (col<0)
 			throw Parser::exception_type(tr("There's no column named %1 in table %2!").
 					arg(items[0]).arg(Context->name()).ascii());
-	} else {// for backwards compatibility
-		col = table->colNames().findIndex(items[0]);
-		if (col<0) {
-			local_parser.SetExpr(items[0].ascii());
-			col = qRound(local_parser.Eval()) - 1;
-		}
-	}
+	} else
+		col = items[0].toInt() - 1; //use column index
 
 	if (items.count() == 2)
 	{
