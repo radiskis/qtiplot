@@ -53,6 +53,7 @@ muParserScript::muParserScript(ScriptingEnv *env, const QString &code, QObject *
   } else if (Context->isA("Matrix"))
 	  parser.DefineFun("cell", mu_cell);
 
+	parser.addGSLConstants();
 	rparser = parser;
 	if (Context->inherits("Table") || Context->isA("Matrix")){
 		connect(this, SIGNAL(error(const QString&,const QString&,int)), env, SIGNAL(error(const QString&,const QString&,int)));

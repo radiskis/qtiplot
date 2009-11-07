@@ -46,6 +46,7 @@ class MyParser : public Parser
 {
 public:
 	MyParser();
+	void addGSLConstants();
 
 	const static QStringList functionsList();
 	static QString explainFunction(int index);

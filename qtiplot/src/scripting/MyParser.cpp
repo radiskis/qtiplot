@@ -40,6 +40,20 @@ MyParser::MyParser()
 	DefineConst("pi", M_PI);
 	DefineConst("Pi", M_PI);
 	DefineConst("PI", M_PI);
+
+	for (const muParserScripting::mathFunction *i=muParserScripting::math_functions; i->name; i++){
+		if (i->numargs == 1 && i->fun1 != NULL)
+			DefineFun(i->name, i->fun1);
+		else if (i->numargs == 2 && i->fun2 != NULL)
+			DefineFun(i->name, i->fun2);
+		else if (i->numargs == 3 && i->fun3 != NULL)
+			DefineFun(i->name, i->fun3);
+	}
+	gsl_set_error_handler_off();
+}
+
+void MyParser::addGSLConstants()
+{
 	DefineConst("e", M_E);
 	DefineConst("E", M_E);
 
@@ -55,16 +69,6 @@ MyParser::MyParser()
 	DefineConst("R0", GSL_CONST_MKSA_MOLAR_GAS);//The molar gas constant
 	DefineConst("V0", GSL_CONST_MKSA_STANDARD_GAS_VOLUME);//The standard gas volume
 	DefineConst("Ry", GSL_CONST_MKSA_RYDBERG);//The Rydberg constant, Ry, in units of energy
-
-	for (const muParserScripting::mathFunction *i=muParserScripting::math_functions; i->name; i++){
-		if (i->numargs == 1 && i->fun1 != NULL)
-			DefineFun(i->name, i->fun1);
-		else if (i->numargs == 2 && i->fun2 != NULL)
-			DefineFun(i->name, i->fun2);
-		else if (i->numargs == 3 && i->fun3 != NULL)
-			DefineFun(i->name, i->fun3);
-	}
-	gsl_set_error_handler_off();
 }
 
 const QStringList MyParser::functionsList()

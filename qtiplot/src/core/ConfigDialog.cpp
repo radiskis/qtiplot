@@ -448,36 +448,6 @@ static const char * notes_32_xpm[] = {
 "                      @ v@r@w@x@y@x@x@x@x@x@ @z@z@z@z@z@A@B@m@' ",
 "                        @ @ @ @ @ @ @ @ @ @ @ @ @ @ @ @ @ @ @   "};
 
-static const char* choose_folder_xpm[]={
-    "16 16 11 1",
-    "# c #000000",
-    "g c #c0c0c0",
-    "e c #303030",
-    "a c #ffa858",
-    "b c #808080",
-    "d c #a0a0a4",
-    "f c #585858",
-    "c c #ffdca8",
-    "h c #dcdcdc",
-    "i c #ffffff",
-    ". c None",
-    "....###.........",
-    "....#ab##.......",
-    "....#acab####...",
-    "###.#acccccca#..",
-    "#ddefaaaccccca#.",
-    "#bdddbaaaacccab#",
-    ".eddddbbaaaacab#",
-    ".#bddggdbbaaaab#",
-    "..edgdggggbbaab#",
-    "..#bgggghghdaab#",
-    "...ebhggghicfab#",
-    "....#edhhiiidab#",
-    "......#egiiicfb#",
-    "........#egiibb#",
-    "..........#egib#",
-    "............#ee#"};
-
 ConfigDialog::ConfigDialog( QWidget* parent, Qt::WFlags fl )
     : QDialog( parent, fl )
 {
