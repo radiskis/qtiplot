@@ -383,8 +383,8 @@ void FitDialog::initFitPage()
     vbox1->addWidget(boxFunction);
     vbox1->addSpacing(20);
     vbox1->addWidget(gb1);
-    vbox1->addLayout(hbox1);
     vbox1->addWidget(gb4);
+    vbox1->addLayout(hbox1);
     vbox1->addSpacing(10);
     vbox1->addLayout(hbox3);
     vbox1->addSpacing(10);
@@ -474,6 +474,7 @@ void FitDialog::initEditPage()
     hbox1->addWidget(polynomOrderBox);
 
 	buttonPlugins = new QPushButton(tr( "Choose plug&ins folder..." ) );
+	buttonPlugins->setIcon(QPixmap(choose_folder_xpm));
     hbox1->addWidget(buttonPlugins);
 	buttonPlugins->hide();
 
@@ -482,12 +483,14 @@ void FitDialog::initEditPage()
 	boxName = new QLineEdit(tr("user1"));
     gl2->addWidget(boxName, 0, 1);
 	btnAddFunc = new QPushButton(tr( "&Save" ));
+	btnAddFunc->setPixmap(QPixmap(filesave_xpm));
     gl2->addWidget(btnAddFunc, 0, 2);
     gl2->addWidget(new QLabel(tr("Parameters")), 1, 0);
 	boxParam = new QLabel();
 	boxParam->setFrameStyle(QFrame::Box | QFrame::Sunken);
     gl2->addWidget(boxParam, 1, 1);
 	btnDelFunc = new QPushButton( tr( "&Remove" ));
+	btnDelFunc->setPixmap(QPixmap(close_xpm));
     gl2->addWidget(btnDelFunc, 1, 2);
 
     QGroupBox *gb = new QGroupBox();

@@ -90,6 +90,7 @@ void DoubleSpinBox::interpretText()
 
 	if (!ok){
 		MyParser parser;
+		parser.addGSLConstants();
 		try {
 			parser.SetExpr(s.toAscii().constData());
 			parser.SetDecSep(locale().decimalPoint().toAscii());
