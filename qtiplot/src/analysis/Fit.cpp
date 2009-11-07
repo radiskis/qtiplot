@@ -530,7 +530,7 @@ bool Fit::setWeightingData(WeightingMethod w, const QString& colName)
 
 				if (t->numRows() < d_n){
   	            	QMessageBox::critical((ApplicationWindow *)parent(), tr("QtiPlot - Error"),
-  	                tr("The column %1 has less points than the fitted data set. Please choose another column!.").arg(colName));
+  	                tr("The column %1 has less points than the fitted data set. Please choose another column!").arg(colName));
   	                return false;
   	            }
 
