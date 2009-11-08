@@ -1129,7 +1129,9 @@ void ApplicationWindow::initMainMenu()
 	scriptingMenu = new QMenu(this);
 	scriptingMenu->setObjectName("scriptingMenu");
 	connect(scriptingMenu, SIGNAL(aboutToShow()), this, SLOT(scriptingMenuAboutToShow()));
+#ifdef SCRIPTING_PYTHON
 	menuBar()->addMenu(scriptingMenu);
+#endif
 
 	graphMenu = new QMenu(this);
 	graphMenu->setObjectName("graphMenu");

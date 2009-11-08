@@ -191,6 +191,14 @@ void SurfaceDialog::initFunctionPage()
 
 void SurfaceDialog::initParametricSurfacePage()
 {
+	ApplicationWindow *app = (ApplicationWindow *)parent();
+	QLocale locale = QLocale();
+	int prec = 6;
+	if (app){
+		locale = app->locale();
+		prec = app->d_decimal_digits;
+	}
+
 	boxX = new QLineEdit();
 	boxY = new QLineEdit();
 	boxZ = new QLineEdit();
@@ -206,10 +214,15 @@ void SurfaceDialog::initParametricSurfacePage()
     gl->setRowStretch(3, 1);
 
     QGroupBox *gb1 = new QGroupBox(tr("u"));
-	boxUFrom = new QLineEdit();
-	boxUFrom->setText("0");
-	boxUTo = new QLineEdit();
-	boxUTo->setText("pi");
+	boxUFrom = new DoubleSpinBox();
+	boxUFrom->setDecimals(prec);
+	boxUFrom->setLocale(locale);
+
+	boxUTo = new DoubleSpinBox();
+	boxUTo->setLocale(locale);
+	boxUTo->setDecimals(prec);
+	boxUTo->setValue(3.1415);
+
     QGridLayout *gl1 = new QGridLayout();
     gl1->addWidget(new QLabel( tr("From")), 0, 0);
     gl1->addWidget(boxUFrom, 0, 1);
@@ -221,11 +234,14 @@ void SurfaceDialog::initParametricSurfacePage()
     gb1->setLayout(gl1);
 
     QGroupBox *gb2 = new QGroupBox(tr("v"));
-	boxVFrom = new QLineEdit();
-	boxVFrom->setText("0");
+	boxVFrom = new DoubleSpinBox();
+	boxVFrom->setDecimals(prec);
+	boxVFrom->setLocale(locale);
 
-	boxVTo = new QLineEdit();
-	boxVTo->setText("pi");
+	boxVTo = new DoubleSpinBox();
+	boxVTo->setLocale(locale);
+	boxVTo->setDecimals(prec);
+	boxVTo->setValue(3.1415);
 
     QGridLayout *gl2 = new QGridLayout();
     gl2->addWidget(new QLabel( tr("From")), 0, 0);
@@ -365,50 +381,10 @@ void SurfaceDialog::acceptParametricSurface()
 	while ((int)app->d_param_surface_func.size() > list_size)
 		app->d_param_surface_func.pop_back();
 
-	QString ufrom = boxUFrom->text().lower();
-	QString uto = boxUTo->text().lower();
-	QString vfrom = boxVFrom->text().lower();
-	QString vto = boxVTo->text().lower();
-	double ul, ur, vl, vr;
-	try{
-		parser.SetExpr(ufrom.ascii());
-		ul = parser.Eval();
-	}
-	catch(mu::ParserError &e){
-		QMessageBox::critical(app, tr("QtiPlot - u start limit error"), QString::fromStdString(e.GetMsg()));
-		boxUFrom->setFocus();
-		return;
-	}
-
-	try{
-		parser.SetExpr(uto.ascii());
-		ur = parser.Eval();
-	}
-	catch(mu::ParserError &e){
-		QMessageBox::critical(app, tr("QtiPlot - u end limit error"), QString::fromStdString(e.GetMsg()));
-		boxUTo->setFocus();
-		return;
-	}
-
-	try{
-		parser.SetExpr(vfrom.ascii());
-		vl = parser.Eval();
-	}
-	catch(mu::ParserError &e){
-		QMessageBox::critical(app, tr("QtiPlot - v start limit error"), QString::fromStdString(e.GetMsg()));
-		boxVFrom->setFocus();
-		return;
-	}
-
-	try{
-		parser.SetExpr(vto.ascii());
-		vr = parser.Eval();
-	}
-	catch(mu::ParserError &e){
-		QMessageBox::critical(app, tr("QtiPlot - u end limit error"), QString::fromStdString(e.GetMsg()));
-		boxVTo->setFocus();
-		return;
-	}
+	double ul = boxUFrom->value();
+	double ur = boxUTo->value();
+	double vl = boxVFrom->value();
+	double vr = boxVTo->value();
 
     QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 	if (!d_graph)
@@ -490,10 +466,10 @@ void SurfaceDialog::setParametricSurface(Graph3D *g)
 	boxY->setText(s->yFormula());
 	boxZ->setText(s->zFormula());
 
-	boxUFrom->setText(QString::number(s->uStart()));
-	boxUTo->setText(QString::number(s->uEnd()));
-	boxVFrom->setText(QString::number(s->vStart()));
-	boxVTo->setText(QString::number(s->vEnd()));
+	boxUFrom->setValue(s->uStart());
+	boxUTo->setValue(s->uEnd());
+	boxVFrom->setValue(s->vStart());
+	boxVTo->setValue(s->vEnd());
 
 	boxColumns->setValue(s->columns());
 	boxRows->setValue(s->rows());
