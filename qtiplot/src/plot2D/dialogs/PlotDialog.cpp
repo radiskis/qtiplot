@@ -46,6 +46,7 @@
 #include <PatternBox.h>
 #include <SymbolBox.h>
 #include <ContourLinesEditor.h>
+#include <FunctionDialog.h>
 #include <pixmaps.h>
 
 #include <QTreeWidget>
@@ -119,7 +120,7 @@ PlotDialog::PlotDialog(bool showExtended, QWidget* parent, Qt::WFlags fl )
 	initFontsPage();
 	initPrintPage();
 	initLabelsPage();
-
+	initFunctionPage();
 	clearTabWidget();
 
     QHBoxLayout* hb2 = new QHBoxLayout();
@@ -205,11 +206,7 @@ void PlotDialog::showPlotAssociations(QTreeWidgetItem *item, int)
     }
 
 	hide();
-	if (((PlotCurve *)it)->type() == Graph::Function){
-  	    FunctionDialog *fd = app->showFunctionDialog(((CurveTreeItem *)item)->graph(), ((CurveTreeItem *)item)->plotItemIndex());
-		if (fd)
-			connect((QObject *)fd, SIGNAL(destroyed()), this, SLOT(show()));
-	} else {
+	if (((PlotCurve *)it)->type() != Graph::Function){
         AssociationsDialog* ad = app->showPlotAssociations(((CurveTreeItem *)item)->plotItemIndex());
 		if (ad)
 			connect((QObject *)ad, SIGNAL(destroyed()), this, SLOT(show()));
@@ -258,7 +255,7 @@ void PlotDialog::changePlotType(int plotType)
     if (!graph)
         return;
 
-	int curveType = item->plotItemType();
+	int curveType = item->plotItemStyle();
 	if (curveType == Graph::ColorMap || curveType == Graph::Contour || curveType == Graph::GrayScale)
   		clearTabWidget();
   	else if (curveType == Graph::VectXYAM || curveType == Graph::VectXYXY){
@@ -696,6 +693,20 @@ void PlotDialog::initPrintPage()
 	QHBoxLayout* hlayout = new QHBoxLayout(printPage);
 	hlayout->addWidget(gb);
 	privateTabWidget->addTab(printPage, tr( "Print" ) );
+}
+
+void PlotDialog::initFunctionPage()
+{
+	ApplicationWindow *app = (ApplicationWindow *)this->parent();
+	if (!app)
+		return;
+
+	functionEdit = new FunctionDialog(app, false);//in order to have correct locale settings, parent must be app window
+
+	functionPage = new QWidget();
+	QVBoxLayout* vl = new QVBoxLayout(functionPage);
+	vl->addWidget(functionEdit);
+	vl->addStretch();
 }
 
 void PlotDialog::initLabelsPage()
@@ -1587,12 +1598,8 @@ void PlotDialog::contextMenuEvent(QContextMenuEvent *e)
 	if (rect.contains(pos)){
 	   QMenu contextMenu(this);
 	   contextMenu.insertItem(tr("&Delete"), this, SLOT(removeSelectedCurve()));
-	   if (it->rtti() == QwtPlotItem::Rtti_PlotCurve){
-            if (((PlotCurve *)it)->type() == Graph::Function)
-                contextMenu.insertItem(tr("&Edit..."), this, SLOT(editCurve()));
-            else
-                contextMenu.insertItem(tr("&Plot Associations..."), this, SLOT(editCurve()));
-	   }
+	   if (it->rtti() == QwtPlotItem::Rtti_PlotCurve && ((PlotCurve *)it)->type() != Graph::Function)
+			contextMenu.insertItem(tr("&Plot Associations..."), this, SLOT(editCurve()));
 	   contextMenu.exec(QCursor::pos());
     }
     e->accept();
@@ -1685,6 +1692,7 @@ void PlotDialog::updateTabWindow(QTreeWidgetItem *currentItem, QTreeWidgetItem *
     if (currentItem->type() == CurveTreeItem::PlotCurveTreeItem){
         CurveTreeItem *curveItem = (CurveTreeItem *)currentItem;
         if (previousItem->type() != CurveTreeItem::PlotCurveTreeItem ||
+           ((CurveTreeItem *)previousItem)->plotItemStyle() != curveItem->plotItemStyle() ||
            ((CurveTreeItem *)previousItem)->plotItemType() != curveItem->plotItemType() ||
 			forceClearTabs){
             clearTabWidget();
@@ -1782,11 +1790,21 @@ void PlotDialog::insertTabs(int plot_type)
     if (!item || item->type() != CurveTreeItem::PlotCurveTreeItem)
         return;
 
-    DataCurve *c = (DataCurve *)((CurveTreeItem *)item)->plotItem();
-    if (c && c->type() != Graph::Function && c->type() != Graph::ErrorBars){
-        privateTabWidget->addTab (labelsPage, tr("Labels"));
-		if (c->hasSelectedLabels())
-			privateTabWidget->showPage(labelsPage);
+	PlotCurve *fc = (PlotCurve *)((CurveTreeItem *)item)->plotItem();
+	if (fc->type() == Graph::Function){
+        privateTabWidget->addTab(functionPage, tr("&Function"));
+        Graph *g = qobject_cast<Graph*>(fc->plot());
+        if (g){
+			functionEdit->setCurveToModify(g, g->curveIndex(fc));
+			privateTabWidget->showPage(functionPage);
+        }
+	} else {
+		DataCurve *c = (DataCurve *)((CurveTreeItem *)item)->plotItem();
+		if (c && c->type() != Graph::Function && c->type() != Graph::ErrorBars){
+			privateTabWidget->addTab (labelsPage, tr("Labels"));
+			if (c->hasSelectedLabels())
+				privateTabWidget->showPage(labelsPage);
+		}
 	}
 }
 
@@ -1813,6 +1831,7 @@ void PlotDialog::clearTabWidget()
 	privateTabWidget->removeTab(privateTabWidget->indexOf(speedPage));
 	privateTabWidget->removeTab(privateTabWidget->indexOf(fontsPage));
 	privateTabWidget->removeTab(privateTabWidget->indexOf(printPage));
+	privateTabWidget->removeTab(privateTabWidget->indexOf(functionPage));
 }
 
 void PlotDialog::quit()
@@ -1839,7 +1858,7 @@ void PlotDialog::showWorksheet()
 
 int PlotDialog::setPlotType(CurveTreeItem *item)
 {
-	int curveType = item->plotItemType();
+	int curveType = item->plotItemStyle();
 	if (curveType >= 0){
 		boxPlotType->clear();
 
@@ -2050,12 +2069,9 @@ void PlotDialog::setActiveCurve(CurveTreeItem *item)
     }
 
     PlotCurve *c = (PlotCurve*)i;
-	if (c->type() == Graph::Function)
-        btnEditCurve->setText(tr("&Edit..."));
-    else
-        btnEditCurve->setText(tr("&Plot Associations..."));
+	btnEditCurve->setVisible(c->type() != Graph::Function);
 
-	int curveType = item->plotItemType();
+	int curveType = item->plotItemStyle();
     if (curveType == Graph::Pie){
         QwtPieCurve *pie = (QwtPieCurve*)i;
         boxPiePattern->setPattern(pie->pattern());
@@ -2652,7 +2668,10 @@ bool PlotDialog::acceptParams()
 			c->setLabelsColor(boxLabelsColor->color());
 			c->setLabelsAlignment(labelsAlignment());
   	    }
+	} else if (privateTabWidget->currentPage() == functionPage){
+		functionEdit->accept();
 	}
+
 	graph->replot();
 	graph->notifyChanges();
 	return true;
@@ -3444,10 +3463,20 @@ int CurveTreeItem::plotItemIndex()
 	return itemsList.indexOf(d_curve);
 }
 
-int CurveTreeItem::plotItemType()
+int CurveTreeItem::plotItemStyle()
 {
 	if (d_curve->rtti() != QwtPlotItem::Rtti_PlotSpectrogram)
 		return ((PlotCurve *)d_curve)->plotStyle();
+	else
+		return Graph::ColorMap;
+
+	return -1;
+}
+
+int CurveTreeItem::plotItemType()
+{
+	if (d_curve->rtti() != QwtPlotItem::Rtti_PlotSpectrogram)
+		return ((PlotCurve *)d_curve)->type();
 	else
 		return Graph::ColorMap;
 

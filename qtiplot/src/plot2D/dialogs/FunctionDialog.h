@@ -48,23 +48,24 @@ class FunctionDialog : public QDialog
     Q_OBJECT
 
 public:
-    FunctionDialog( QWidget* parent = 0, Qt::WFlags fl = 0 );
+    FunctionDialog(QWidget* parent = 0, bool standAlone = true, Qt::WFlags fl = 0 );
+
+    void setCurveToModify(Graph *g, int curve);
+	void setGraph(Graph *g){graph = g;};
 
 protected slots:
 	void raiseWidget(int index);
 	void insertFunction();
 	void updateFunctionExplain(int);
-
-public slots:
-	void accept();
 	void acceptFunction();
 	void acceptParametric();
 	void acceptPolar();
-	void setCurveToModify(Graph *g, int curve);
+
+public slots:
+	void accept();
 	void insertParamFunctionsList(const QStringList& xList, const QStringList& yList);
 	void insertPolarFunctionsList(const QStringList& rList, const QStringList& thetaList);
 	void clearList();
-	void setGraph(Graph *g){graph = g;};
 
 signals:
 	void clearParamFunctionsList();

@@ -194,8 +194,7 @@ void CurvesDialog::showCurveBtn(int)
 	if (!it)
 		return;
 
-    if (it->rtti() == QwtPlotItem::Rtti_PlotSpectrogram)
-    {
+    if (it->rtti() == QwtPlotItem::Rtti_PlotSpectrogram){
         btnEditFunction->setEnabled(false);
         btnAssociations->setEnabled(false);
         btnRange->setEnabled(false);
@@ -203,19 +202,11 @@ void CurvesDialog::showCurveBtn(int)
     }
 
     PlotCurve *c = (PlotCurve *)it;
-	if (c->type() == Graph::Function)
-	{
-		btnEditFunction->setEnabled(true);
-		btnAssociations->setEnabled(false);
-		btnRange->setEnabled(false);
-		return;
-	}
-
-    btnAssociations->setEnabled(true);
-
-    btnRange->setEnabled(true);
-	if (c->type() == Graph::ErrorBars)
-  		btnRange->setEnabled(false);
+    if (c){
+		btnEditFunction->setEnabled(c->type() == Graph::Function);
+		btnRange->setEnabled(c->type() != Graph::Function && c->type() != Graph::ErrorBars);
+		btnAssociations->setEnabled(c->type() != Graph::Function);
+    }
 }
 
 void CurvesDialog::showCurveRangeDialog()
