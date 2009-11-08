@@ -47,7 +47,7 @@
 #include <QTableWidget>
 #include <QHeaderView>
 
-FunctionDialog::FunctionDialog( QWidget* parent, Qt::WFlags fl )
+FunctionDialog::FunctionDialog(QWidget* parent, bool standAlone, Qt::WFlags fl )
 : QDialog( parent, fl )
 {
 	ApplicationWindow *app = (ApplicationWindow *)parent;
@@ -59,9 +59,6 @@ FunctionDialog::FunctionDialog( QWidget* parent, Qt::WFlags fl )
 	}
 
     setObjectName( "FunctionDialog" );
-	setWindowTitle( tr( "QtiPlot - Add function curve" ) );
-	setSizeGripEnabled(true);
-	setAttribute(Qt::WA_DeleteOnClose);
 
 	QHBoxLayout *hbox1 = new QHBoxLayout();
 	hbox1->addWidget(new QLabel(tr( "Curve type " )));
@@ -79,6 +76,7 @@ FunctionDialog::FunctionDialog( QWidget* parent, Qt::WFlags fl )
     gl1->addWidget(new QLabel(tr( "f(x)= " )), 0, 0);
 	boxFunction = new QTextEdit();
 	boxFunction->setMinimumWidth(350);
+	boxFunction->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Maximum);
 	gl1->addWidget(boxFunction, 0, 1);
 	gl1->addWidget(new QLabel(tr( "From x= " )), 1, 0);
 	boxFrom = new DoubleSpinBox();
@@ -187,7 +185,7 @@ FunctionDialog::FunctionDialog( QWidget* parent, Qt::WFlags fl )
 
 	boxFunctionExplain = new QTextEdit;
 	boxFunctionExplain->setReadOnly(true);
-	boxFunctionExplain->setMaximumHeight(50);
+	boxFunctionExplain->setMaximumHeight(80);
 	QPalette palette = boxFunctionExplain->palette();
 	palette.setColor(QPalette::Active, QPalette::Base, Qt::lightGray);
 	boxFunctionExplain->setPalette(palette);
@@ -205,36 +203,49 @@ FunctionDialog::FunctionDialog( QWidget* parent, Qt::WFlags fl )
 	vbox->addWidget(boxMathFunctions);
 	vbox->addWidget(addFunctionBtn);
 
+	buttonClear = new QPushButton(tr( "Clea&r Function" ));
+	connect( buttonClear, SIGNAL( clicked() ), this, SLOT(clearList()));
+	vbox->addWidget(buttonClear);
+	vbox->addStretch();
+
 	QHBoxLayout *hbox3 = new QHBoxLayout();
 	hbox3->addWidget(boxFunctionExplain);
 	hbox3->addLayout(vbox);
 
-	buttonClear = new QPushButton(tr( "Clea&r Function" ));
-	buttonClear->setAutoDefault(false);
-	buttonOk = new QPushButton(tr( "&Ok" ));
-	buttonOk->setDefault(true);
-	buttonCancel = new QPushButton(tr( "&Close" ));
-	buttonCancel->setAutoDefault(false);
+	QVBoxLayout *vbox2 = new QVBoxLayout();
+	vbox2->addLayout(hbox3);
+	vbox2->addStretch();
 
-	QHBoxLayout *hbox2 = new QHBoxLayout();
-	hbox2->addWidget(buttonClear);
-	hbox2->addWidget(buttonOk);
-	hbox2->addWidget(buttonCancel);
-	hbox2->addStretch();
-
-	QVBoxLayout *vbox1 = new QVBoxLayout();
+	QVBoxLayout *vbox1 = new QVBoxLayout(this);
     vbox1->addLayout(hbox1);
 	vbox1->addWidget(optionStack);
-	vbox1->addLayout(hbox3);
-	vbox1->addLayout(hbox2);
+	vbox1->addLayout(vbox2);
+	vbox1->addStretch();
 
-	setLayout(vbox1);
+	if (standAlone){
+		buttonOk = new QPushButton(tr( "&Ok" ));
+		buttonOk->setDefault(true);
+		connect( buttonOk, SIGNAL( clicked() ), this, SLOT( accept() ) );
+
+		buttonCancel = new QPushButton(tr( "&Close" ));
+		buttonCancel->setAutoDefault(false);
+		connect( buttonCancel, SIGNAL( clicked() ), this, SLOT( reject() ) );
+
+		QHBoxLayout *hbox2 = new QHBoxLayout();
+		hbox2->addWidget(buttonOk);
+		hbox2->addWidget(buttonCancel);
+		hbox2->addStretch();
+
+		vbox1->addLayout(hbox2);
+
+		setSizeGripEnabled(true);
+		setWindowTitle( tr( "QtiPlot - Add function curve" ) );
+		setAttribute(Qt::WA_DeleteOnClose);
+	} else
+		setMaximumHeight(300);
+
 	setFocusProxy (boxFunction);
-
 	connect( boxType, SIGNAL( activated(int) ), this, SLOT( raiseWidget(int) ) );
-	connect( buttonOk, SIGNAL( clicked() ), this, SLOT( accept() ) );
-	connect( buttonCancel, SIGNAL( clicked() ), this, SLOT( reject() ) );
-	connect( buttonClear, SIGNAL( clicked() ), this, SLOT(clearList() ) );
 
 	curveID = -1;
 	graph = 0;
@@ -292,9 +303,6 @@ void FunctionDialog::setCurveToModify(Graph *g, int curve)
 		boxTo->setValue(c->endRange());
 		boxPoints->setValue(c->dataSize());
 	} else if (c->functionType() == FunctionCurve::Polar) {
-		optionStack->setCurrentIndex(2);
-		boxType->setCurrentItem(2);
-
 		boxPolarRadius->setCurrentText(formulas[0]);
 		boxPolarTheta->setCurrentText(formulas[1]);
 		boxPolarParameter->setText(c->variable());
@@ -302,9 +310,6 @@ void FunctionDialog::setCurveToModify(Graph *g, int curve)
 		boxPolarTo->setText(QString::number(c->endRange(), 'g', 15));
 		boxPolarPoints->setValue(c->dataSize());
 	} else if (c->functionType() == FunctionCurve::Parametric) {
-		boxType->setCurrentItem(1);
-		optionStack->setCurrentIndex(1);
-
 		boxXFunction->setCurrentText(formulas[0]);
 		boxYFunction->setCurrentText(formulas[1]);
 		boxParameter->setText(c->variable());
@@ -312,6 +317,8 @@ void FunctionDialog::setCurveToModify(Graph *g, int curve)
 		boxParTo->setText(QString::number(c->endRange(), 'g', 15));
 		boxParPoints->setValue(c->dataSize());
 	}
+	boxType->setCurrentIndex(c->functionType());
+	optionStack->setCurrentIndex(c->functionType());
 }
 
 void FunctionDialog::clearList()

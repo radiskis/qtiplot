@@ -366,7 +366,6 @@ public slots:
 	MultiLayer * newFunctionPlot(QStringList &formulas, double start, double end, int points = 100, const QString& var = "x", int type = 0);
 
 	FunctionDialog* functionDialog();
-	FunctionDialog* showFunctionDialog();
 	FunctionDialog* showFunctionDialog(Graph * g, int curve);
 	void addFunctionCurve();
 	void clearSurfaceFunctionsList();
@@ -1352,7 +1351,7 @@ private:
 	QMenu *tableMenu, *fillMenu, *normMenu, *newMenu, *exportPlotMenu, *smoothMenu, *filterMenu, *decayMenu, *importMenu;
 
 	QAction *actionEditCurveRange, *actionCurveFullRange, *actionShowAllCurves, *actionHideCurve, *actionHideOtherCurves;
-	QAction *actionEditFunction, *actionRemoveCurve, *actionShowCurveWorksheet, *actionShowCurvePlotDialog;
+	QAction *actionRemoveCurve, *actionShowCurveWorksheet, *actionShowCurvePlotDialog;
     QAction *actionNewProject, *actionAppendProject, *actionNewNote, *actionNewTable, *actionNewFunctionPlot;
     QAction *actionNewSurfacePlot, *actionNewMatrix, *actionNewGraph, *actionNewFolder;
     QAction *actionOpen, *actionLoadImage, *actionSaveProject, *actionSaveProjectAs, *actionImportImage;

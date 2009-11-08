@@ -62,6 +62,7 @@ class PenStyleBox;
 class Spectrogram;
 class QwtErrorPlotCurve;
 class ContourLinesEditor;
+class FunctionDialog;
 
 static const char* folder_closed[]={
     "16 16 9 1",
@@ -288,6 +289,7 @@ private:
 	void initPieLabelsPage();
 	void initPrintPage();
 	void initLabelsPage();
+	void initFunctionPage();
     void contextMenuEvent(QContextMenuEvent *e);
     void showAllLabelControls(bool show = true);
     void updateContourLevelsDisplay(Spectrogram *sp);
@@ -304,7 +306,7 @@ private:
 
     QPushButton *btnTitle, *btnAxesLabels, *btnAxesNumbers, *btnLegend;
 	ColorMapEditor *colorMapEditor;
-    QWidget *curvePlotTypeBox, *layerPage, *layerGeometryPage, *piePage, *fontsPage, *printPage, *speedPage;
+    QWidget *curvePlotTypeBox, *layerPage, *layerGeometryPage, *piePage, *fontsPage, *printPage, *speedPage, *functionPage;
     QTreeWidget* listBox;
     QCheckBox *boxAntialiasing, *boxScaleLayers, *boxPrintCrops;
     ColorButton *boxBorderColor, *boxBackgroundColor, *boxCanvasColor;
@@ -404,6 +406,8 @@ private:
 	QSpinBox *boxMaxPoints;
 	DoubleSpinBox *boxDouglasPeukerTolerance;
 	QGroupBox *speedModeBox;
+
+	FunctionDialog *functionEdit;
 };
 
 /*****************************************************************************
@@ -443,6 +447,7 @@ public:
 
     const QwtPlotItem *plotItem() { return d_curve; };
     int plotItemType();
+    int plotItemStyle();
     int plotItemIndex();
 
 protected:

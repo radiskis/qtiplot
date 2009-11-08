@@ -7359,37 +7359,31 @@ void ApplicationWindow::showCurveContextMenu(QwtPlotItem *cv)
 		curveMenu.insertSeparator();
 		curveMenu.addAction(actionSetMatrixValues);
 		actionSetMatrixValues->setData(curveIndex);
-	} else {
-		if (type == Graph::Function){
+	} else if (type != Graph::Function && type != Graph::ErrorBars){
+		if (g->rangeSelectorsEnabled() || (g->activeTool() &&
+			g->activeTool()->rtti() == PlotToolInterface::Rtti_DataPicker)){
+			curveMenu.addAction(actionCutSelection);
+			curveMenu.addAction(actionPasteSelection);
+			curveMenu.addAction(actionClearSelection);
 			curveMenu.insertSeparator();
-			curveMenu.addAction(actionEditFunction);
-			actionEditFunction->setData(curveIndex);
-		} else if (type != Graph::ErrorBars){
-			if (g->rangeSelectorsEnabled() || (g->activeTool() &&
-				g->activeTool()->rtti() == PlotToolInterface::Rtti_DataPicker)){
-				curveMenu.addAction(actionCutSelection);
-				curveMenu.addAction(actionPasteSelection);
-				curveMenu.addAction(actionClearSelection);
-				curveMenu.insertSeparator();
-				if (g->rangeSelectorsEnabled()){
-					QAction *act = new QAction(tr("Set Display Range"), this);
-					connect(act, SIGNAL(activated()), g->rangeSelectorTool(), SLOT(setCurveRange()));
-					curveMenu.addAction(act);
-				}
+			if (g->rangeSelectorsEnabled()){
+				QAction *act = new QAction(tr("Set Display Range"), this);
+				connect(act, SIGNAL(activated()), g->rangeSelectorTool(), SLOT(setCurveRange()));
+				curveMenu.addAction(act);
 			}
-
-			curveMenu.addAction(actionEditCurveRange);
-			actionEditCurveRange->setData(curveIndex);
-
-			curveMenu.addAction(actionCurveFullRange);
-			if (((DataCurve *)cv)->isFullRange())
-				actionCurveFullRange->setDisabled(true);
-			else
-				actionCurveFullRange->setEnabled(true);
-			actionCurveFullRange->setData(curveIndex);
-
-			curveMenu.insertSeparator();
 		}
+
+		curveMenu.addAction(actionEditCurveRange);
+		actionEditCurveRange->setData(curveIndex);
+
+		curveMenu.addAction(actionCurveFullRange);
+		if (((DataCurve *)cv)->isFullRange())
+			actionCurveFullRange->setDisabled(true);
+		else
+			actionCurveFullRange->setEnabled(true);
+		actionCurveFullRange->setData(curveIndex);
+
+		curveMenu.insertSeparator();
 	}
 
 	curveMenu.addAction(actionShowCurveWorksheet);
@@ -10262,19 +10256,6 @@ CurveRangeDialog* ApplicationWindow::showCurveRangeDialog(Graph *g, int curve)
 	crd->setCurveToModify(g, curve);
 	crd->exec();
 	return crd;
-}
-
-FunctionDialog* ApplicationWindow::showFunctionDialog()
-{
-    MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
-	if (!plot)
-		return 0;
-
-	Graph* g = plot->activeLayer();
-	if (!g)
-		return 0;
-
-	return showFunctionDialog(g, actionEditFunction->data().toInt());
 }
 
 FunctionDialog* ApplicationWindow::showFunctionDialog(Graph *g, int curve)
@@ -13439,9 +13420,6 @@ void ApplicationWindow::createActions()
 	actionShowAllCurves = new QAction(tr("&Show All Curves"), this);
 	connect(actionShowAllCurves, SIGNAL(activated()), this, SLOT(showAllCurves()));
 
-	actionEditFunction = new QAction(tr("&Edit Function..."), this);
-	connect(actionEditFunction, SIGNAL(activated()), this, SLOT(showFunctionDialog()));
-
 	actionToolBars = new QAction(tr("&Toolbars..."), this);
 	actionToolBars->setShortcut(tr("Ctrl+Shift+T"));
 	connect(actionToolBars, SIGNAL(activated()), this, SLOT(showToolBarsMenu()));
@@ -13511,7 +13489,6 @@ void ApplicationWindow::translateActionsStrings()
 	actionShowCurvePlotDialog->setMenuText(tr("&Plot details..."));
 	actionShowCurveWorksheet->setMenuText(tr("&Worksheet"));
 	actionRemoveCurve->setMenuText(tr("&Delete"));
-	actionEditFunction->setMenuText(tr("&Edit Function..."));
 
 	actionCurveFullRange->setMenuText(tr("&Reset to Full Range"));
 	actionEditCurveRange->setMenuText(tr("Edit &Range..."));
