@@ -84,10 +84,10 @@ private:
 	QLineEdit* boxY;
 	QLineEdit* boxZ;
 
-	QLineEdit* boxUFrom;
-	QLineEdit* boxUTo;
-	QLineEdit* boxVFrom;
-	QLineEdit* boxVTo;
+	DoubleSpinBox* boxUFrom;
+	DoubleSpinBox* boxUTo;
+	DoubleSpinBox* boxVFrom;
+	DoubleSpinBox* boxVTo;
 
 	QCheckBox *boxUPeriodic, *boxVPeriodic;
 	QSpinBox *boxColumns, *boxRows, *boxFuncColumns, *boxFuncRows;
