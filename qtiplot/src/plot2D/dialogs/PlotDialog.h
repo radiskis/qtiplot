@@ -293,6 +293,7 @@ private:
     void contextMenuEvent(QContextMenuEvent *e);
     void showAllLabelControls(bool show = true);
     void updateContourLevelsDisplay(Spectrogram *sp);
+    QRect layerCanvasRect(QWidget *widget, double x, double y, double w, double h, FrameWidget::Unit unit);
 
 	double aspect_ratio;
 

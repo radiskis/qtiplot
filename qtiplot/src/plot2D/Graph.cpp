@@ -5959,6 +5959,9 @@ void Graph::adjustGeometryToCanvas(const QRect &cr)
 				cr.right() - ocr.right(), cr.bottom() - ocr.bottom());
 
     setGeometry(rect);
+
+    updateMarkersBoundingRect();
+
     autoScaleFonts = scaleFonts;
 }
 

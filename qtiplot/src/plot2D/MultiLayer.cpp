@@ -911,8 +911,7 @@ void MultiLayer::exportVector(const QString& fileName, int res, bool color,
 		double wfactor = (double)res/(double)logicalDpiX();
 		double hfactor = (double)res/(double)logicalDpiY();
 		printer.setResolution(res);
-		QRect cr = canvasChildrenRect();
-		printer.setPaperSize (QSizeF(cr.width()*wfactor*1.05, cr.height()*hfactor), QPrinter::DevicePixel);
+		printer.setPaperSize (QSizeF(d_canvas->width()*wfactor*1.05, d_canvas->height()*hfactor), QPrinter::DevicePixel);
 		QPainter paint(&printer);
 		QObjectList lst = d_canvas->children();
 		foreach (QObject *o, lst){
@@ -925,8 +924,7 @@ void MultiLayer::exportVector(const QString& fileName, int res, bool color,
         	g->print(&paint, r);
 		}
 	} else {
-		QRect cr = canvasChildrenRect();
-    	printer.setPaperSize(QSizeF(cr.width(), cr.height()), QPrinter::DevicePixel);
+    	printer.setPaperSize(QSizeF(d_canvas->width(), d_canvas->height()), QPrinter::DevicePixel);
 		QPainter paint(&printer);
     	QObjectList lst = d_canvas->children();
 		foreach (QObject *o, lst){
@@ -981,7 +979,7 @@ void MultiLayer::exportSVG(const QString& fname, const QSizeF& customSize, int u
 
 	QSvgGenerator svg;
 	svg.setFileName(fname);
-	svg.setSize(canvasChildrenRect().size());
+	svg.setSize(d_canvas->size());
 	svg.setResolution(res);
 
 	if (customSize.isValid()){
@@ -996,7 +994,7 @@ void MultiLayer::exportSVG(const QString& fname, const QSizeF& customSize, int u
 void MultiLayer::exportEMF(const QString& fname, const QSizeF& customSize, int unit, double fontsFactor)
 {
 	int res = logicalDpiX();
-	QSize size = canvasChildrenRect().size();
+	QSize size = d_canvas->size();
 	if (customSize.isValid())
 		size = Graph::customPrintSize(customSize, unit, res);
 
@@ -1008,7 +1006,7 @@ void MultiLayer::exportEMF(const QString& fname, const QSizeF& customSize, int u
 void MultiLayer::exportTeX(const QString& fname, bool color, bool escapeStrings, bool fontSizes, const QSizeF& customSize, int unit, double fontsFactor)
 {
 	int res = logicalDpiX();
-	QSize size = canvasChildrenRect().size();
+	QSize size = d_canvas->size();
 	if (customSize.isValid())
 		size = Graph::customPrintSize(customSize, unit, res);
 
