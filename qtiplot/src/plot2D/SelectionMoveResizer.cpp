@@ -70,6 +70,7 @@ void SelectionMoveResizer::init()
 	setMouseTracking(true);
 	parentWidget()->installEventFilter(this);
 	show();
+	setFocusPolicy (Qt::StrongFocus);
 	setFocus();
 }
 
