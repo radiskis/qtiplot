@@ -16183,19 +16183,25 @@ void ApplicationWindow::goToRow()
 	MdiSubWindow *w = activeWindow();
 	if (!w)
 		return;
+	if (!w->inherits("Table") && !w->isA("Matrix"))
+		return;
 
-	if (w->inherits("Table") || w->isA("Matrix")){
-		bool ok;
-		int row = QInputDialog::getInteger(this, tr("QtiPlot - Enter row number"), tr("Row"),
-				1, 0, 1000000, 1, &ok, windowFlags() & ~Qt::WindowContextHelpButtonHint & ~Qt::WindowMinMaxButtonsHint );
-		if ( !ok )
-			return;
+	int rows = 0;
+	if (w->inherits("Table"))
+		rows = ((Table *)w)->numRows();
+	else if (w->isA("Matrix"))
+		rows = ((Matrix *)w)->numRows();
 
-		if (w->inherits("Table"))
-			((Table *)w)->goToRow(row);
-		else if (w->isA("Matrix"))
-			((Matrix *)w)->goToRow(row);
-	}
+	bool ok;
+	int row = QInputDialog::getInteger(this, tr("QtiPlot - Enter row number"), tr("Row"),
+			1, 1, rows, 1, &ok, windowFlags() & ~Qt::WindowContextHelpButtonHint & ~Qt::WindowMinMaxButtonsHint );
+	if ( !ok )
+		return;
+
+	if (w->inherits("Table"))
+		((Table *)w)->goToRow(row);
+	else if (w->isA("Matrix"))
+		((Matrix *)w)->goToRow(row);
 }
 
 void ApplicationWindow::goToColumn()
@@ -16203,19 +16209,25 @@ void ApplicationWindow::goToColumn()
 	MdiSubWindow *w = activeWindow();
 	if (!w)
 		return;
+	if (!w->inherits("Table") && !w->isA("Matrix"))
+		return;
 
-	if (w->inherits("Table") || w->isA("Matrix")){
-		bool ok;
-		int col = QInputDialog::getInteger(this, tr("QtiPlot - Enter column number"), tr("Column"),
-				1, 0, 1000000, 1, &ok, windowFlags() & ~Qt::WindowContextHelpButtonHint & ~Qt::WindowMinMaxButtonsHint );
-		if ( !ok )
-			return;
+	int columns = 0;
+	if (w->inherits("Table"))
+		columns = ((Table *)w)->numCols();
+	else if (w->isA("Matrix"))
+		columns = ((Matrix *)w)->numCols();
 
-		if (w->inherits("Table"))
-			((Table *)w)->goToColumn(col);
-		else if (w->isA("Matrix"))
-			((Matrix *)w)->goToColumn(col);
-	}
+	bool ok;
+	int col = QInputDialog::getInt (this, tr("QtiPlot - Enter column number"), tr("Column"),
+			1, 1, columns, 1, &ok, windowFlags() & ~Qt::WindowContextHelpButtonHint & ~Qt::WindowMinMaxButtonsHint );
+	if ( !ok )
+		return;
+
+	if (w->inherits("Table"))
+		((Table *)w)->goToColumn(col);
+	else if (w->isA("Matrix"))
+		((Matrix *)w)->goToColumn(col);
 }
 
 void ApplicationWindow::showScriptWindow(bool parent)

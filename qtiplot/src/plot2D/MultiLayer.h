@@ -259,6 +259,8 @@ private:
 	QColor d_waterfall_fill_color;
 
 	QPushButton *d_add_layer_btn, *d_remove_layer_btn;
+
+	QSize d_canvas_size;
 };
 
 //! Button with layer number
