@@ -3189,14 +3189,17 @@ void Table::goToRow(int row)
 	if( (row < 1) || (row > numRows()) ) return;
 
 	d_table->ensureCellVisible ( row-1, 0 );
+	d_table->clearSelection();
 	d_table->selectRow(row-1);
 }
 
 void Table::goToColumn(int col)
 {
-	if( (col < 1) || (col > numCols()) ) return;
+	if( (col < 1) || (col > numCols()) )
+		return;
 
 	d_table->ensureCellVisible (0, col - 1);
+	d_table->clearSelection();
 	d_table->selectColumn(col - 1);
 }
 

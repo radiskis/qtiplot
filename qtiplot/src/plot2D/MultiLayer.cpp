@@ -120,7 +120,8 @@ d_waterfall_offset_x(1),
 d_waterfall_offset_y(3),
 d_is_waterfall_plot(false),
 d_side_lines(false),
-d_waterfall_fill_color(QColor())
+d_waterfall_fill_color(QColor()),
+d_canvas_size(QSize())
 {
 	layerButtonsBox = new QHBoxLayout();
 	waterfallBox = new QHBoxLayout();
@@ -309,26 +310,28 @@ void MultiLayer::resizeLayers (QResizeEvent *re)
 	if (size.height() <= 0)
 		size.setHeight(oldSize.height());
 
-	bool scaleLayerFonts = false;
 	if(!oldSize.isValid()){// The old size is invalid when maximizing a window (why?)
-		QRect r = canvasChildrenRect();
-        oldSize = QSize(r.width() + left_margin + right_margin,
-						r.height() + top_margin + bottom_margin);
-		scaleLayerFonts = true;
+		if (d_canvas_size.isValid())
+			oldSize = d_canvas_size;
+		else {
+			QRect r = canvasChildrenRect();
+			oldSize = QSize(r.width() + left_margin + right_margin, r.height() + top_margin + bottom_margin);
+		}
 	}
 
 	double w_ratio = (double)size.width()/(double)oldSize.width();
 	double h_ratio = (double)(size.height())/(double)(oldSize.height());
 
 	foreach (Graph *g, graphsList){
-		int gx = qRound(g->x()*w_ratio);
-		int gy = qRound(g->y()*h_ratio);
-		int gw = qRound(g->width()*w_ratio);
-		int gh = qRound(g->height()*h_ratio);
-		g->setGeometry(QRect(gx, gy, gw, gh));
+		QwtPlotCanvas *canvas = g->canvas();
+		int gx = qRound((g->x() + canvas->x())*w_ratio);
+		int gy = qRound((g->y() + canvas->y())*h_ratio);
+		QRect r = QRect(gx, gy, qRound(canvas->width()*w_ratio), qRound(canvas->height()*h_ratio));
 
-		if (scaleLayerFonts && g->autoscaleFonts())
+		if (g->autoscaleFonts())
 			g->scaleFonts(h_ratio);
+
+		g->adjustGeometryToCanvas(r);
 	}
 	emit modifiedPlot();
 }
@@ -1230,6 +1233,7 @@ bool MultiLayer::eventFilter(QObject *object, QEvent *e)
 		d_canvas->setUpdatesEnabled(false);
 		resizeLayers((QResizeEvent *)e);
 		d_canvas->setUpdatesEnabled(true);
+		d_canvas_size = d_canvas->size();
 	} else if (e->type() == QEvent::MouseButtonPress && object == (QObject *)d_canvas){
 	    const QMouseEvent *me = (const QMouseEvent *)e;
 	    if (me->button() == Qt::RightButton)
