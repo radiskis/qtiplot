@@ -70,6 +70,8 @@
 #include <QMenu>
 #include <QDateTime>
 
+#include <qwt_plot_canvas.h>
+
 PlotDialog::PlotDialog(bool showExtended, QWidget* parent, Qt::WFlags fl )
 : QDialog(parent, fl),
   d_ml(0)
@@ -1955,7 +1957,7 @@ void PlotDialog::setActiveLayer(LayerItem *item)
 	boxLayerWidth->blockSignals(false);
 	boxLayerHeight->blockSignals(false);
 
-	aspect_ratio = (double)g->width()/(double)g->height();
+	aspect_ratio = (double)g->canvas()->width()/(double)g->canvas()->height();
 
     boxBackgroundTransparency->blockSignals(false);
     boxCanvasTransparency->blockSignals(false);
@@ -2412,10 +2414,8 @@ bool PlotDialog::acceptParams()
 		if (!g)
 			return false;
 
-		FrameWidget::setRect(g, boxX->value(), boxY->value(), boxLayerWidth->value(),
-					boxLayerHeight->value(), (FrameWidget::Unit)unitBox->currentIndex());
-
-		d_ml->repaint();
+		g->adjustGeometryToCanvas(layerCanvasRect(g, boxX->value(), boxY->value(), boxLayerWidth->value(),
+								boxLayerHeight->value(), (FrameWidget::Unit)unitBox->currentIndex()));
 
 		ApplicationWindow *app = (ApplicationWindow *)this->parent();
 		if (app)
@@ -3087,10 +3087,11 @@ void PlotDialog::displayCoordinates(int unit, Graph *g)
 		boxLayerHeight->setSingleStep(0.1);
 	}
 
-	boxX->setValue(FrameWidget::xIn(g, (FrameWidget::Unit)unit));
-	boxY->setValue(FrameWidget::yIn(g, (FrameWidget::Unit)unit));
-	boxLayerWidth->setValue(FrameWidget::widthIn(g, (FrameWidget::Unit)unit));
-	boxLayerHeight->setValue(FrameWidget::heightIn(g, (FrameWidget::Unit)unit));
+	QwtPlotCanvas *canvas = g->canvas();
+	boxX->setValue(FrameWidget::xIn(canvas, (FrameWidget::Unit)unit) + FrameWidget::xIn(g, (FrameWidget::Unit)unit));
+	boxY->setValue(FrameWidget::yIn(canvas, (FrameWidget::Unit)unit) + FrameWidget::yIn(g, (FrameWidget::Unit)unit));
+	boxLayerWidth->setValue(FrameWidget::widthIn(canvas, (FrameWidget::Unit)unit));
+	boxLayerHeight->setValue(FrameWidget::heightIn(canvas, (FrameWidget::Unit)unit));
 
 	aspect_ratio = boxLayerWidth->value()/boxLayerHeight->value();
 }
@@ -3384,6 +3385,35 @@ void PlotDialog::applyErrorBarFormat(QwtErrorPlotCurve *c)
 			break;
 	}
 	app->modifiedProject();
+}
+
+QRect PlotDialog::layerCanvasRect(QWidget *widget, double x, double y, double w, double h, FrameWidget::Unit unit)
+{
+    if (!widget)
+        return QRect(qRound(x), qRound(y), qRound(w), qRound(h));
+
+	int dpiX = widget->logicalDpiX();
+	int dpiY = widget->logicalDpiY();
+
+    switch(unit){
+		case FrameWidget::Pixel:
+		default:
+			return QRect(qRound(x), qRound(y), qRound(w), qRound(h));
+		break;
+		case FrameWidget::Inch:
+			return QRect(qRound(x*dpiX), qRound(y*dpiY), qRound(w*dpiX), qRound(h*dpiY));
+		break;
+		case FrameWidget::Millimeter:
+			return QRect(qRound(x*dpiX/25.4), qRound(y*dpiY/25.4), qRound(w*dpiX/25.4), qRound(h*dpiY/25.4));
+		break;
+		case FrameWidget::Centimeter:
+			return QRect(qRound(x*dpiX/2.54), qRound(y*dpiY/2.54), qRound(w*dpiX/2.54), qRound(h*dpiY/2.54));
+		break;
+		case FrameWidget::Point:
+			return QRect(qRound(x*dpiX/72.0), qRound(y*dpiY/72.0), qRound(w*dpiX/72.0), qRound(h*dpiY/72.0));
+		break;
+	}
+	return QRect(qRound(x), qRound(y), qRound(w), qRound(h));
 }
 
 /*****************************************************************************
