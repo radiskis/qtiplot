@@ -75,7 +75,6 @@ FunctionDialog::FunctionDialog(QWidget* parent, bool standAlone, Qt::WFlags fl )
 	QGridLayout *gl1 = new QGridLayout();
     gl1->addWidget(new QLabel(tr( "f(x)= " )), 0, 0);
 	boxFunction = new QTextEdit();
-	boxFunction->setMinimumWidth(350);
 	gl1->addWidget(boxFunction, 0, 1);
 	gl1->addWidget(new QLabel(tr( "From x= " )), 1, 0);
 	boxFrom = new DoubleSpinBox();

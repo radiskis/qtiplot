@@ -9129,19 +9129,10 @@ void ApplicationWindow::fileMenuAboutToShow()
 	newMenu->addAction(actionNewFunctionPlot);
 	newMenu->addAction(actionNewSurfacePlot);
 	fileMenu->addAction(actionOpen);
-	fileMenu->addAction(actionAppendProject);
-
-	recentMenuID = fileMenu->insertItem(tr("&Recent Projects"), recent);
-
-	fileMenu->addAction(actionCloseProject);
-	fileMenu->insertSeparator();
 	fileMenu->addAction(actionLoadImage);
-	fileMenu->addAction(actionImportImage);
-
-	MdiSubWindow *w = activeWindow();
-	if (w && w->isA("Matrix"))
-		fileMenu->addAction(actionExportMatrix);
-
+	fileMenu->addAction(actionAppendProject);
+	recentMenuID = fileMenu->insertItem(tr("&Recent Projects"), recent);
+	fileMenu->addAction(actionCloseProject);
 	fileMenu->insertSeparator();
 	fileMenu->addAction(actionSaveProject);
 	fileMenu->addAction(actionSaveProjectAs);
@@ -9149,24 +9140,31 @@ void ApplicationWindow::fileMenuAboutToShow()
 	fileMenu->addAction(actionOpenTemplate);
 	fileMenu->addAction(actionSaveTemplate);
 	fileMenu->insertSeparator();
-
-	if (w && (w->isA("MultiLayer") || w->isA("Graph3D"))){
-		fileMenu->addMenu (exportPlotMenu);
-		exportPlotMenu->addAction(actionExportGraph);
-		exportPlotMenu->addAction(actionExportAllGraphs);
-		fileMenu->addAction(actionPresentationODF);
-	}
-
-	fileMenu->insertSeparator();
 	fileMenu->addAction(actionPrint);
 	fileMenu->addAction(actionPrintPreview);
 	fileMenu->addAction(actionPrintAllPlots);
 	fileMenu->insertSeparator();
-	fileMenu->addAction(actionShowExportASCIIDialog);
+
+	MdiSubWindow *w = activeWindow();
+	if (w){
+		if (w->isA("MultiLayer") || w->isA("Graph3D")){
+			fileMenu->addMenu (exportPlotMenu);
+			exportPlotMenu->addAction(actionExportGraph);
+			exportPlotMenu->addAction(actionExportAllGraphs);
+			exportPlotMenu->addAction(actionPresentationODF);
+		} else if (w->inherits("Table"))
+			fileMenu->addAction(actionShowExportASCIIDialog);
+		else if (w->isA("Matrix")){
+			QMenu *exportMatrixMenu = fileMenu->addMenu(tr("Export"));
+			exportMatrixMenu->addAction(actionShowExportASCIIDialog);
+			exportMatrixMenu->addAction(actionExportMatrix);
+		}
+	}
 
 	fileMenu->addMenu(importMenu);
 	importMenu->addAction(actionLoad);
 	importMenu->addAction(actionImportSound);
+	importMenu->addAction(actionImportImage);
 
 	fileMenu->insertSeparator();
 	fileMenu->addAction(actionCloseAllWindows);
@@ -12627,7 +12625,7 @@ void ApplicationWindow::createActions()
 	actionLoadImage->setShortcut( tr("Ctrl+I") );
 	connect(actionLoadImage, SIGNAL(activated()), this, SLOT(loadImage()));
 
-	actionImportImage = new QAction(tr("Import I&mage..."), this);
+	actionImportImage = new QAction(QPixmap(monalisa_xpm), tr("Import I&mage..."), this);
 	connect(actionImportImage, SIGNAL(activated()), this, SLOT(importImage()));
 
 	actionSaveProject = new QAction(QIcon(QPixmap(filesave_xpm)), tr("&Save Project"), this);
