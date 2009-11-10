@@ -51,8 +51,13 @@ LineProfileTool::LineProfileTool(Graph *graph, ApplicationWindow *app, int avera
 	if (!d_target)
 		QMessageBox::critical(d_graph->window(), tr("QtiPlot - Pixel selection warning"),
 				tr("Please select an image marker first."));
+	else
+		setParent(d_target);
+
 	d_graph->deselectMarker();
+
 	setGeometry(0, 0, parentWidget()->width(), parentWidget()->height());
+	setCursor(Qt::PointingHandCursor);
 	show();
 	setFocus();
 }
@@ -186,6 +191,13 @@ void LineProfileTool::mouseMoveEvent(QMouseEvent *e)
 {
 	d_op_dp = e->pos() - d_op_start;
 	repaint();
+
+	QRect rect = d_target->geometry();
+	if (!rect.contains(e->pos()))
+		setCursor(Qt::ArrowCursor);
+	else
+		setCursor(Qt::PointingHandCursor);
+
 	e->accept();
 }
 
