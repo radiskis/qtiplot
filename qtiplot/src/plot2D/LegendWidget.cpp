@@ -658,7 +658,7 @@ QString LegendWidget::parse(const QString& str)
     }
 
 	if (plot()->isExportingTeX()){
-		if (!d_tex_output)
+		if (!d_tex_output && plot()->escapeTeXStrings())
 			s = Graph::escapeTeXSpecialCharacters(s);
 
 		s = Graph::texSuperscripts(s);
