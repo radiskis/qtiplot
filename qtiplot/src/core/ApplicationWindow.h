@@ -307,6 +307,7 @@ public slots:
   	MultiLayer* plotContour(Matrix *m = 0);
   	MultiLayer* plotColorMap(Matrix *m = 0);
   	MultiLayer* plotImage(Matrix *m = 0);
+  	MultiLayer* plotImageProfiles(Matrix *m = 0);
 
 	//! Rearrange the layersin order to fit to the size of the plot window
   	void autoArrangeLayers();
@@ -1417,7 +1418,7 @@ private:
 	QAction *actionFlipMatrixVertically, *actionFlipMatrixHorizontally, *actionRotateMatrix;
 	QAction *actionViewMatrixImage, *actionViewMatrix, *actionExportMatrix, *actionMatrixDefaultScale;
     QAction *actionMatrixGrayScale, *actionMatrixRainbowScale, *actionMatrixCustomScale, *actionRotateMatrixMinus;
-    QAction *actionMatrixXY, *actionMatrixColumnRow, *actionImagePlot, *actionToolBars;
+    QAction *actionMatrixXY, *actionMatrixColumnRow, *actionImagePlot, *actionToolBars, *actionImageProfilesPlot;
     QAction *actionMatrixFFTDirect, *actionMatrixFFTInverse;
 	QAction *actionFontBold, *actionFontItalic, *actionFontBox, *actionFontSize;
 	QAction *actionSuperscript, *actionSubscript, *actionUnderline, *actionGreekSymbol, *actionCustomActionDialog;

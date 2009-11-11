@@ -29,6 +29,7 @@
 #include "ScreenPickerTool.h"
 #include <ApplicationWindow.h>
 #include <Table.h>
+#include <Matrix.h>
 #include "Graph.h"
 #include "PlotCurve.h"
 #include <MultiLayer.h>
@@ -38,7 +39,7 @@
 
 ScreenPickerTool::ScreenPickerTool(Graph *graph, const QObject *status_target, const char *status_slot)
 	: QwtPlotPicker(graph->canvas()),
-	PlotToolInterface(graph),
+	PlotToolInterface(graph, status_target, status_slot),
 	d_move_restriction(NoRestriction)
 {
 	d_selection_marker.setLineStyle(QwtPlotMarker::Cross);
@@ -150,8 +151,11 @@ void DrawPointTool::appendPoint(const QwtDoublePoint &pos)
 	if (!d_app)
 		return;
 
-    QString info;
-	emit statusText(info.sprintf("x=%g; y=%g", pos.x(), pos.y()));
+	QLocale locale = d_app->locale();
+	int prec = d_app->d_decimal_digits;
+	emit statusText(QString("x=%1; y=%2")
+					.arg(locale.toString(pos.x(), 'G', prec))
+					.arg(locale.toString(pos.y(), 'G', prec)));
 
 	if (!d_table){
 		d_table = d_app->newHiddenTable(d_app->generateUniqueName(tr("Draw")), "", 30, 2, "");
@@ -213,4 +217,85 @@ bool DrawPointTool::eventFilter(QObject *obj, QEvent *event)
 			break;
 	}
 	return QwtPlotPicker::eventFilter(obj, event);
+}
+
+ImageProfilesTool::ImageProfilesTool(ApplicationWindow *app, Graph *graph, Matrix *m, Table *horTable, Table *verTable,
+						const QObject *status_target, const char *status_slot)
+	: ScreenPickerTool(graph, status_target, status_slot),
+	d_app(app),
+	d_matrix(m),
+	d_hor_table(horTable),
+	d_ver_table(verTable)
+{
+	if (d_matrix){
+		append(QwtDoublePoint(0.5*(m->xStart() + m->xEnd()), 0.5*(m->yStart() + m->yEnd())));
+		if (d_graph)
+			connect(d_matrix, SIGNAL(destroyed()), d_graph, SLOT(disableTools()));
+	}
+
+	if (d_hor_table){
+		for (int i = 0; i < d_hor_table->numRows(); i++)
+			d_hor_table->setText(i, 0, QString::number(i));
+	}
+	if (d_ver_table){
+		for (int i = 0; i < d_ver_table->numRows(); i++)
+			d_ver_table->setText(i, 0, QString::number(i));
+	}
+
+}
+
+ImageProfilesTool* ImageProfilesTool::clone(Graph *g)
+{
+	ImageProfilesTool *tool = new ImageProfilesTool(d_app, g, d_matrix, d_hor_table, d_ver_table, d_status_target, d_status_slot);
+	tool->append(QwtDoublePoint(xValue(), yValue()));
+	return tool;
+}
+
+void ImageProfilesTool::append(const QwtDoublePoint &pos)
+{
+	ScreenPickerTool::append(pos);
+
+	if (!d_app || !d_matrix)
+		return;
+
+	double x = pos.x();
+	double y = pos.y();
+
+	x += 0.5*d_matrix->dx();
+	y -= 0.5*d_matrix->dy();
+
+	int row = qRound(fabs((y - d_matrix->yStart())/d_matrix->dy()));
+	int col = qRound(fabs((x - d_matrix->xStart())/d_matrix->dx()));
+
+	if (d_hor_table){
+		for (int i = 0; i < d_matrix->numCols(); i++)
+			d_hor_table->setCell(i, 1, d_matrix->cell(row, i));
+		d_hor_table->notifyChanges();
+	}
+
+	if (d_ver_table){
+		for (int i = 0; i < d_matrix->numRows(); i++)
+			d_ver_table->setCell(i, 1, d_matrix->cell(i, col));
+		d_ver_table->notifyChanges();
+	}
+
+	QLocale locale = d_app->locale();
+	int prec = d_app->d_decimal_digits;
+	emit statusText(QString("x=%1; y=%2; z=%3")
+					.arg(locale.toString(pos.x(), 'G', prec))
+					.arg(locale.toString(pos.y(), 'G', prec))
+					.arg(locale.toString(d_matrix->cell(row, col), 'G', prec)));
+}
+
+ImageProfilesTool::~ImageProfilesTool()
+{
+	if (d_hor_table){
+		d_hor_table->askOnCloseEvent(false);
+		d_hor_table->close();
+	}
+
+	if (d_ver_table){
+		d_ver_table->askOnCloseEvent(false);
+		d_ver_table->close();
+	}
 }

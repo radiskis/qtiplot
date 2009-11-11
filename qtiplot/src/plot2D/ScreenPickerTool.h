@@ -31,12 +31,15 @@
 
 #include "PlotToolInterface.h"
 #include <QObject>
+#include <QPointer>
+
 #include <qwt_double_rect.h>
 #include <qwt_plot_marker.h>
 #include <qwt_plot_picker.h>
 
 class ApplicationWindow;
 class Table;
+class Matrix;
 class DataCurve;
 
 /*!Plot tool for selecting arbitrary points.
@@ -51,8 +54,11 @@ class ScreenPickerTool : public QwtPlotPicker, public PlotToolInterface
 		enum MoveRestriction { NoRestriction, Vertical, Horizontal };
 		ScreenPickerTool(Graph *graph, const QObject *status_target=NULL, const char *status_slot="");
 		virtual ~ScreenPickerTool();
-		void append(const QwtDoublePoint &pos);
+		virtual void append(const QwtDoublePoint &pos);
 		void setMoveRestriction(ScreenPickerTool::MoveRestriction r){d_move_restriction = r;};
+
+		double xValue(){return d_selection_marker.xValue();};
+		double yValue(){return d_selection_marker.yValue();};
 
 	signals:
 		/*! Emitted whenever a new message should be presented to the user.
@@ -83,6 +89,33 @@ class DrawPointTool : public ScreenPickerTool
 		DataCurve *d_curve;
 		Table *d_table;
 		ApplicationWindow *d_app;
+};
+
+/*!Plot tool for image analysis.
+ *
+ */
+class ImageProfilesTool : public ScreenPickerTool
+{
+	Q_OBJECT
+	public:
+		ImageProfilesTool(ApplicationWindow *app, Graph *graph, Matrix *m, Table *horTable, Table *verTable,
+						const QObject *status_target=NULL, const char *status_slot="");
+
+		ImageProfilesTool* clone(Graph *g);
+
+		virtual ~ImageProfilesTool();
+		virtual void append(const QwtDoublePoint &pos);
+		virtual int rtti() const { return Rtti_ImageProfilesTool;};
+
+
+		QPointer<Matrix> matrix(){return d_matrix;};
+		QPointer<Table> horizontalTable(){return d_hor_table;};
+		QPointer<Table> verticalTable(){return d_ver_table;};
+
+	protected:
+		ApplicationWindow *d_app;
+		QPointer<Matrix> d_matrix;
+		QPointer<Table> d_hor_table, d_ver_table;
 };
 
 #endif // ifndef SCREEN_PICKER_TOOL_H

@@ -902,13 +902,6 @@ void ApplicationWindow::initToolBars()
 	tableTools->addAction(actionPlot3DBars);
 	tableTools->addAction(actionPlot3DScatter);
 	tableTools->addAction(actionPlot3DTrajectory);
-	tableTools->addSeparator();
-	tableTools->addAction(actionAddColToTable);
-	tableTools->addAction(actionShowColStatistics);
-	tableTools->addAction(actionShowRowStatistics);
-	tableTools->addSeparator();
-	tableTools->addAction(actionMoveRowUp);
-	tableTools->addAction(actionMoveRowDown);
 	tableTools->setEnabled(false);
     tableTools->hide();
 
@@ -920,6 +913,10 @@ void ApplicationWindow::initToolBars()
 	columnTools->addAction(actionShowColumnValuesDialog);
 	columnTools->addAction(actionSetAscValues);
 	columnTools->addAction(actionSetRandomValues);
+	columnTools->addSeparator();
+	columnTools->addAction(actionSortTable);
+	columnTools->addAction(actionShowColStatistics);
+	columnTools->addAction(actionShowRowStatistics);
 	columnTools->addSeparator();
 	columnTools->addAction(actionSetXCol);
 	columnTools->addAction(actionSetYCol);
@@ -935,6 +932,10 @@ void ApplicationWindow::initToolBars()
 	columnTools->addAction(actionSwapColumns);
 	columnTools->addSeparator();
 	columnTools->addAction(actionAdjustColumnWidth);
+	columnTools->addAction(actionMoveRowUp);
+	columnTools->addAction(actionMoveRowDown);
+	columnTools->addSeparator();
+	columnTools->addAction(actionAddColToTable);
     columnTools->setEnabled(false);
 	columnTools->hide();
 
@@ -975,6 +976,7 @@ void ApplicationWindow::initToolBars()
 	actionContourMap->addTo(plotMatrixBar);
 	actionGrayMap->addTo(plotMatrixBar);
 	actionImagePlot->addTo(plotMatrixBar);
+	actionImageProfilesPlot->addTo(plotMatrixBar);
 	actionPlotHistogram->addTo(plotMatrixBar);
 	plotMatrixBar->addSeparator();
 	actionSetMatrixValues->addTo(plotMatrixBar);
@@ -1173,10 +1175,12 @@ void ApplicationWindow::initMainMenu()
 	plot3DMenu->addAction(actionPlot3DBars);
 	plot3DMenu->addAction(actionPlot3DScatter);
 	plot3DMenu->insertSeparator();
-    plot3DMenu->addAction(actionImagePlot);
 	plot3DMenu->addAction(actionColorMap);
 	plot3DMenu->addAction(actionContourMap);
 	plot3DMenu->addAction(actionGrayMap);
+	plot3DMenu->insertSeparator();
+	plot3DMenu->addAction(actionImagePlot);
+	plot3DMenu->addAction(actionImageProfilesPlot);
 	plot3DMenu->insertSeparator();
 	plot3DMenu->addAction(actionPlotHistogram);
 	menuBar()->addMenu(plot3DMenu);
@@ -11995,6 +11999,20 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot,
 			QStringList lst = s.remove("<SpeedMode>").remove("</SpeedMode>").split("\t");
 			if (lst.size() == 2)
 				ag->enableDouglasPeukerSpeedMode(lst[0].toDouble(), lst[1].toInt());
+		} else if (s.startsWith ("<ImageProfileTool>") && s.endsWith ("</ImageProfileTool>")){
+			QStringList lst = s.remove("<ImageProfileTool>").remove("</ImageProfileTool>").split("\t");
+			if (!lst.isEmpty()){
+				Table *hort = 0, *vert = 0;
+				if (lst.size() >= 2)
+					hort = app->table(lst[1]);
+				if (lst.size() >= 3)
+					vert = app->table(lst[2]);
+				ag->setActiveTool(new ImageProfilesTool(app, ag, app->matrix(lst[0]), hort, vert, app->info, SLOT(setText(const QString&))));
+			}
+		} else if (s.startsWith ("<ImageProfileValues>") && s.endsWith ("</ImageProfileValues>")){
+			QStringList lst = s.remove("<ImageProfileValues>").remove("</ImageProfileValues>").split("\t");
+			if (lst.size() == 2 && ag->activeTool())
+				((ImageProfilesTool *)ag->activeTool())->append(QwtDoublePoint(lst[0].toDouble(), lst[1].toDouble()));
 		}
 	}
 	ag->updateLayout();
@@ -13124,8 +13142,11 @@ void ApplicationWindow::createActions()
 	connect(actionSetMatrixValues, SIGNAL(activated()), this, SLOT(showMatrixValuesDialog()));
 	actionSetMatrixValues->setShortcut(tr("Alt+Q"));
 
-    actionImagePlot =  new QAction(QIcon(QPixmap(image_plot_xpm)), tr("&Image Plot"), this);
+    actionImagePlot = new QAction(QIcon(QPixmap(image_plot_xpm)), tr("&Image Plot"), this);
 	connect(actionImagePlot, SIGNAL(activated()), this, SLOT(plotImage()));
+
+	actionImageProfilesPlot = new QAction(QIcon(QPixmap(image_profiles_xpm)), tr("&Image Profiles"), this);
+	connect(actionImageProfilesPlot, SIGNAL(activated()), this, SLOT(plotImageProfiles()));
 
 	actionTransposeMatrix = new QAction(tr("&Transpose"), this);
 	connect(actionTransposeMatrix, SIGNAL(activated()), this, SLOT(transposeMatrix()));
@@ -13236,7 +13257,7 @@ void ApplicationWindow::createActions()
 	actionGrayMap = new QAction(QIcon(QPixmap(gray_map_xpm)), tr("&Gray Scale Map"), this);
 	connect(actionGrayMap, SIGNAL(activated()), this, SLOT(plotGrayScale()));
 
-	actionSortTable = new QAction(tr("Sort Ta&ble"), this);
+	actionSortTable = new QAction(QPixmap(sort_xpm), tr("Sort Ta&ble"), this);
 	connect(actionSortTable, SIGNAL(activated()), this, SLOT(sortActiveTable()));
 
 	actionSortSelection = new QAction(tr("Sort Columns"), this);
@@ -13886,6 +13907,10 @@ void ApplicationWindow::translateActionsStrings()
     actionSetMatrixValues->setShortcut(tr("Alt+Q"));
     actionImagePlot->setMenuText(tr("&Image Plot"));
     actionImagePlot->setToolTip(tr("Image Plot"));
+
+	actionImageProfilesPlot->setMenuText(tr("&Image Profiles"));
+	actionImageProfilesPlot->setToolTip(tr("Image Profiles"));
+
 	actionTransposeMatrix->setMenuText(tr("&Transpose"));
 	actionRotateMatrix->setMenuText(tr("R&otate 90"));
     actionRotateMatrix->setToolTip(tr("Rotate 90 Clockwise"));
@@ -14235,6 +14260,7 @@ MultiLayer* ApplicationWindow::plotImage(Matrix *m)
 	s->setAxis(QwtPlot::xTop, QwtPlot::yLeft);
 	plot->enableAxis(QwtPlot::xTop, true);
 	plot->setScale(QwtPlot::xTop, QMIN(m->xStart(), m->xEnd()), QMAX(m->xStart(), m->xEnd()));
+	plot->setScale(QwtPlot::xBottom, QMIN(m->xStart(), m->xEnd()), QMAX(m->xStart(), m->xEnd()));
 	plot->enableAxis(QwtPlot::xBottom, false);
 	plot->enableAxis(QwtPlot::yRight, false);
 	plot->setScale(QwtPlot::yLeft, QMIN(m->yStart(), m->yEnd()), QMAX(m->yStart(), m->yEnd()),
@@ -14265,6 +14291,40 @@ MultiLayer* ApplicationWindow::plotSpectrogram(Matrix *m, Graph::CurveType type)
 	setPreferences(plot);
 
 	plot->plotSpectrogram(m, type);
+	QApplication::restoreOverrideCursor();
+	return g;
+}
+
+MultiLayer* ApplicationWindow::plotImageProfiles(Matrix *m)
+{
+    if (!m) {
+		m = (Matrix*)activeWindow(MatrixWindow);
+		if (!m)
+			return 0;
+	}
+
+    QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+
+    MultiLayer* g = multilayerPlot(generateUniqueName(tr("Profiles")), 0);
+    g->resize(650, 600);
+    g->plotProfiles(m);
+
+	Table *horTable = newHiddenTable(tr("Horizontal"), QString::null, m->numCols(), 2);
+    Table *verTable = newHiddenTable(tr("Vertical"), QString::null, m->numRows(), 2);
+
+	Graph *sg = g->layer(1);
+	ImageProfilesTool *screener = new ImageProfilesTool(this, sg, m, horTable, verTable, info, SLOT(setText(const QString&)));
+	sg->setActiveTool(screener);
+
+	if (horTable && g->layer(2))
+		g->layer(2)->addCurves(horTable, QStringList(horTable->colName(1)));
+
+	if (verTable && g->layer(3)){
+		DataCurve *c = g->layer(3)->insertCurve(verTable, verTable->colName(1), verTable->colName(0), Graph::Line);
+		if (c)
+			c->setAxis(QwtPlot::xTop, QwtPlot::yLeft);
+	}
+
 	QApplication::restoreOverrideCursor();
 	return g;
 }
