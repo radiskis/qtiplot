@@ -42,6 +42,7 @@ class SelectionMoveResizer;
 class LegendWidget;
 class Graph;
 class QwtPlotCurve;
+class Matrix;
 
 /**
  * \brief An MDI window (MdiSubWindow) managing one or more Graph objects.
@@ -103,6 +104,8 @@ public:
 	bool sideLinesEnabled(){return d_side_lines;};
 
 	void setEqualSizedLayers();
+
+	void plotProfiles(Matrix* m);
 
 public slots:
 	Graph* addLayer(int x = 0, int y = 0, int width = 0, int height = 0);

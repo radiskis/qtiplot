@@ -29,6 +29,7 @@
 
 #include <QVarLengthArray>
 #include <PenStyleBox.h>
+#include <ScreenPickerTool.h>
 
 /* XPM */
 static char * delete_xpm[] = {
@@ -4014,7 +4015,22 @@ QString Graph::saveToString(bool saveAsTemplate)
 		s += "<SpeedMode>" + QString::number(d_Douglas_Peuker_tolerance) + "\t";
 		s += QString::number(d_speed_mode_points) + "</SpeedMode>\n";
 	}
-	s+="</graph>\n";
+
+	if (d_active_tool && d_active_tool->rtti() == PlotToolInterface::Rtti_ImageProfilesTool){
+		ImageProfilesTool *ipt = (ImageProfilesTool *)d_active_tool;
+		if (ipt){
+			s += "<ImageProfileTool>" +  ipt->matrix()->objectName();
+			if (!ipt->horizontalTable().isNull())
+				s += "\t" + ipt->horizontalTable()->objectName();
+			if (!ipt->verticalTable().isNull())
+				s += "\t" + ipt->verticalTable()->objectName();
+			s += "</ImageProfileTool>\n";
+			s += "<ImageProfileValues>";
+			s += QString::number(ipt->xValue()) + "\t" + QString::number(ipt->yValue());
+			s += "</ImageProfileValues>\n";
+		}
+	}
+	s += "</graph>\n";
 	return s;
 }
 
@@ -4480,6 +4496,12 @@ void Graph::copy(Graph* g)
 
 	setAntialiasing(g->antialiasing(), true);
 	autoScaleFonts = g->autoscaleFonts();
+
+	if (g->activeTool() && g->activeTool()->rtti() == PlotToolInterface::Rtti_ImageProfilesTool){
+		ImageProfilesTool *ipt = (ImageProfilesTool *)g->activeTool();
+		if (ipt)
+			d_active_tool = ipt->clone(this);
+	}
 }
 
 void Graph::copyCurves(Graph* g)

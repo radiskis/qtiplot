@@ -140,6 +140,11 @@ void Matrix::initImage(const QImage& image)
     } else
 		imageLabel->resize(500, 500);
 
+	x_start = 0.0;
+	x_end = w - 1.0;
+	y_start = 0.0;
+	y_end = h - 1.0;
+
 	displayImage(image);
 }
 
@@ -1332,6 +1337,12 @@ void Matrix::importImage(const QString& fn)
 		emit modifiedWindow(this);
 		modifiedData(this);
 	}
+
+	x_start = 0.0;
+	x_end = image.width() - 1.0;
+	y_start = 0.0;
+	y_end = image.height() - 1.0;
+
 	setWindowLabel(fn);
 }
 

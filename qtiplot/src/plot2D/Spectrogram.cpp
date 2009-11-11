@@ -240,6 +240,9 @@ Spectrogram* Spectrogram::copy(Graph *g)
 	else
 		new_s->d_color_map_pen = d_color_map_pen;
 
+	if (d_labels_list.isEmpty())
+		return new_s;
+
 	QList <PlotMarker *> lst = new_s->labelsList();
 	int count = lst.size();
 	for(int i = 0; i < count; i++){
@@ -248,6 +251,7 @@ Spectrogram* Spectrogram::copy(Graph *g)
 		if (m && mrk)
 			m->setLabelOffset(mrk->xLabelOffset(), mrk->yLabelOffset());
 	}
+
 	return new_s;
 }
 

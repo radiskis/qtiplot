@@ -68,6 +68,7 @@
 #include "Spectrogram.h"
 #include "SelectionMoveResizer.h"
 #include <ApplicationWindow.h>
+#include <Matrix.h>
 #include <ColorButton.h>
 #include <pixmaps.h>
 #include <gsl/gsl_vector.h>
@@ -1497,7 +1498,6 @@ void MultiLayer::setNumLayers(int n)
 
 void MultiLayer::copy(MultiLayer* ml)
 {
-	hide();//FIXME: find a better way to avoid a resize event
     resize(ml->size());
 
 	setSpacing(ml->rowsSpacing(), ml->colsSpacing());
@@ -1521,8 +1521,6 @@ void MultiLayer::copy(MultiLayer* ml)
 		createWaterfallBox();
 		setWaterfallSideLines(ml->sideLinesEnabled());
 	}
-
-	show();
 }
 
 bool MultiLayer::swapLayers(int src, int dest)
@@ -1943,6 +1941,70 @@ void MultiLayer::dropEvent(QDropEvent* event)
 	Graph *clone = addLayer(pos.x(), pos.y(), g->width(), g->height());
 	if (clone)
 		clone->copy(g);
+}
+
+void MultiLayer::plotProfiles(Matrix* m)
+{
+	if (!m)
+		return;
+
+	double mmin, mmax;
+	m->range(&mmin, &mmax);
+	Graph* g = addLayer();
+
+	Spectrogram *s = g->plotSpectrogram(m, Graph::GrayScale);
+	if (!s)
+		return;
+
+	s->setAxis(QwtPlot::xTop, QwtPlot::yLeft);
+	g->enableAxis(QwtPlot::xTop, true);
+	g->setScale(QwtPlot::xTop, QMIN(m->xStart(), m->xEnd()), QMAX(m->xStart(), m->xEnd()));
+	g->setScale(QwtPlot::xBottom, QMIN(m->xStart(), m->xEnd()), QMAX(m->xStart(), m->xEnd()));
+	g->enableAxis(QwtPlot::xBottom, false);
+	g->enableAxis(QwtPlot::yRight, false);
+	g->setScale(QwtPlot::yLeft, QMIN(m->yStart(), m->yEnd()), QMAX(m->yStart(), m->yEnd()),
+					0.0, 5, 5, Graph::Linear, true);
+	g->setAxisTitle(QwtPlot::yLeft, QString::null);
+	g->setAxisTitle(QwtPlot::xTop, QString::null);
+	g->setTitle(QString::null);
+	g->enableAutoscaling(false);
+	g->adjustGeometryToCanvas(QRect(40, 150, 400, 400));
+
+	g = addLayer();
+
+	g->enableAxis(QwtPlot::xTop, false);
+	g->enableAxis(QwtPlot::xBottom, true);
+	g->setScale(QwtPlot::xBottom, QMIN(m->xStart(), m->xEnd()), QMAX(m->xStart(), m->xEnd()));
+	g->enableAxisLabels(QwtPlot::xBottom, false);
+
+	g->enableAxis(QwtPlot::yRight, false);
+	g->setScale(QwtPlot::yLeft, mmin, mmax);
+	g->setAxisTitle(QwtPlot::yLeft, QString::null);
+	g->setAxisTitle(QwtPlot::xBottom, QString::null);
+	g->setTitle(QString::null);
+	g->enableAutoscaling(false);
+	g->adjustGeometryToCanvas(QRect(40, 0, 400, 100));
+
+	g = addLayer();
+
+	g->enableAxis(QwtPlot::xTop, true);
+	g->setScale(QwtPlot::xTop, mmin, mmax);
+	g->setAxisLabelRotation(QwtPlot::xTop, 90);
+	g->setScale(QwtPlot::xBottom, mmin, mmax);
+	g->enableAxis(QwtPlot::xBottom, false);
+	g->enableAxis(QwtPlot::yRight, false);
+	g->setScale(QwtPlot::yLeft, QMIN(m->yStart(), m->yEnd()), QMAX(m->yStart(), m->yEnd()),
+					0.0, 5, 5, Graph::Linear, true);
+
+	g->setAxisTitle(QwtPlot::yLeft, QString::null);
+	g->setAxisTitle(QwtPlot::xTop, QString::null);
+	g->setTitle(QString::null);
+	g->enableAutoscaling(false);
+	g->adjustGeometryToCanvas(QRect(500, 150, 110, 400));
+
+	QPalette pal = palette();
+	pal.setColor(QPalette::Window, QColor(Qt::lightGray));
+	setPalette(pal);
 }
 
 MultiLayer::~MultiLayer()
