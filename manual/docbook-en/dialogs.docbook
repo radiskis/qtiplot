@@ -1421,8 +1421,13 @@ The format of the file is simple: each line defines a color by red, green and bl
   </para>
 
 <para>If the <emphasis>Auto-update</emphasis> box is checked the legend is updated each time
-a curve is added or removed from the plot layer.
-By pressing the <emphasis>Set As Default</emphasis> button all text format options will
+a curve is added or removed from the plot layer.</para>
+
+<para>The <emphasis>TeX Output</emphasis> option specifies if LaTeX special characters should be escaped or not when exporting
+to .tex files. If the text contains LaTeX syntax (like superscripts, subscripts, etc...) and you want them to be interpreted
+by the LaTeX compiler, you should check this option.</para>
+
+<para>By pressing the <emphasis>Set As Default</emphasis> button all text format options will
 be saved to the user preferences and will be applied to new text objects.
 The <emphasis>Apply to...</emphasis> button can be used to apply the format options to
 all text objects in the active plot layer or in the current plot window or in

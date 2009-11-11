@@ -111,7 +111,7 @@ void ImageExportDialog::initAdvancedOptions()
 	vector_layout->addWidget(d_color, 2, 1);
 
 	d_escape_tex_strings = new QCheckBox();
-	d_escape_tex_strings->setText(tr("&Escape special characters in title/axis labels"));
+	d_escape_tex_strings->setText(tr("&Escape special characters in texts"));
 	d_escape_tex_strings->setChecked(app->d_export_escape_tex_strings);
 	vector_layout->addWidget(d_escape_tex_strings, 3, 1);
 	d_escape_tex_strings->hide();

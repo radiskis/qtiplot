@@ -332,6 +332,7 @@ class Graph: public QwtPlot
 
 		bool isExportingTeX(){return d_is_exporting_tex;};
 		void setTeXExportingMode(bool on = true){d_is_exporting_tex = on;};
+		bool escapeTeXStrings(){return d_tex_escape_strings;};
 		void setEscapeTeXStringsMode(bool on = true){d_tex_escape_strings = on;};
 		//@}
 
