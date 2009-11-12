@@ -2334,21 +2334,11 @@ void ApplicationWindow::exportMatrix(const QString& exportFilter)
 	if ( ied->exec() != QDialog::Accepted )
 		return;
 	imagesDirPath = ied->directory().path();
-	if (ied->selectedFiles().isEmpty())
-		return;
 
 	QString selected_filter = ied->selectedFilter().remove("*");
 	QString file_name = ied->selectedFiles()[0];
 	if(!file_name.endsWith(selected_filter, Qt::CaseInsensitive))
 		file_name.append(selected_filter);
-
-	QFile file(file_name);
-	if (!file.open( QIODevice::WriteOnly )){
-		QMessageBox::critical(this, tr("QtiPlot - Export error"),
-        tr("Could not write to file: <br><h4> %1 </h4><p>Please verify that you have the right to write to this location!").arg(file_name));
-		return;
-	}
-	file.close();
 
 	if (selected_filter.contains(".eps") || selected_filter.contains(".pdf") || selected_filter.contains(".ps"))
 		m->exportVector(file_name, ied->vectorResolution(), ied->color());
@@ -5610,21 +5600,11 @@ void ApplicationWindow::exportGraph(const QString& exportFilter)
 	if ( ied->exec() != QDialog::Accepted )
 		return;
 	imagesDirPath = ied->directory().path();
-	if (ied->selectedFiles().isEmpty())
-		return;
 
 	QString selected_filter = ied->selectedFilter().remove("*");
 	QString file_name = ied->selectedFiles()[0];
 	if(!file_name.endsWith(selected_filter, Qt::CaseInsensitive))
 		file_name.append(selected_filter);
-
-	QFile file(file_name);
-	if (!file.open( QIODevice::WriteOnly )){
-		QMessageBox::critical(this, tr("QtiPlot - Export error"),
-				tr("Could not write to file: <br><h4> %1 </h4><p>Please verify that you have the right to write to this location!").arg(file_name));
-		return;
-	}
-	file.close();
 
     if (plot3D && selected_filter.contains(".pgf")){
         plot3D->exportVector(file_name, ied->textExportMode(), ied->sortMode());
@@ -5697,21 +5677,11 @@ void ApplicationWindow::exportLayer()
 	if ( ied->exec() != QDialog::Accepted )
 		return;
 	imagesDirPath = ied->directory().path();
-	if (ied->selectedFiles().isEmpty())
-		return;
 
-	QString selected_filter = ied->selectedFilter().remove("*");
 	QString file_name = ied->selectedFiles()[0];
+	QString selected_filter = ied->selectedFilter().remove("*");
 	if(!file_name.endsWith(selected_filter, Qt::CaseInsensitive))
 		file_name.append(selected_filter);
-
-	QFile file(file_name);
-	if ( !file.open( QIODevice::WriteOnly ) ){
-		QMessageBox::critical(this, tr("QtiPlot - Export error"),
-				tr("Could not write to file: <br><h4> %1 </h4><p>Please verify that you have the right to write to this location!").arg(file_name));
-		return;
-	}
-	file.close();
 
 	if (selected_filter.contains(".eps") || selected_filter.contains(".pdf") || selected_filter.contains(".ps"))
 		g->exportVector(file_name, ied->vectorResolution(), ied->color(),
@@ -5746,8 +5716,6 @@ void ApplicationWindow::exportPresentationODF()
 	if ( ied->exec() != QDialog::Accepted )
 		return;
 	imagesDirPath = ied->directory().path();
-	if (ied->selectedFiles().isEmpty())
-		return;
 
 	QString selected_filter = ied->selectedFilter().remove("*");
 	QString file_name = ied->selectedFiles()[0];
@@ -5789,15 +5757,7 @@ void ApplicationWindow::exportPresentationODF()
 						ied->customExportSize(), ied->sizeUnit(), ied->scaleFontsFactor());
 	}
 
-	if (previewDlg->exec()){
-		QFile file(file_name);
-		if (!file.open( QIODevice::WriteOnly)){
-			QMessageBox::critical(this, tr("QtiPlot - Export error"),
-			tr("Could not write to file: <br><h4> %1 </h4><p>Please verify that you have the right to write to this location!").arg(file_name));
-			return;
-		}
-		file.close();
-
+	if (previewDlg->exec() == QDialog::Accepted){
 		QTextDocumentWriter writer(file_name);
 		writer.write(document);
 	}
