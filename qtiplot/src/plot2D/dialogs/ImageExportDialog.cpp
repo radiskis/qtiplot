@@ -47,6 +47,7 @@ ImageExportDialog::ImageExportDialog(MdiSubWindow *window, QWidget * parent, boo
 {
 	setWindowTitle( tr( "QtiPlot - Choose a filename to save under" ) );
 	setAcceptMode(QFileDialog::AcceptSave);
+	setConfirmOverwrite(false);
 
 	QList<QByteArray> list = QImageWriter::supportedImageFormats();
 	list << "EPS";
@@ -398,4 +399,32 @@ void ImageExportDialog::adjustHeight(double width)
 			heightBox->setValue(val);
 		heightBox->blockSignals(false);
 	}
+}
+
+void ImageExportDialog::accept()
+{
+	if (selectedFiles().isEmpty())
+		return;
+
+	QString file_name = selectedFiles()[0];
+	QString selected_filter = selectedFilter().remove("*");
+	if(!file_name.endsWith(selected_filter, Qt::CaseInsensitive))
+		file_name.append(selected_filter);
+
+	if (QFileInfo(file_name).exists() &&
+		QMessageBox::warning(this, tr("QtiPlot") + " - " + tr("Overwrite file?"),
+		tr("%1 already exists.").arg(file_name) + "\n" + tr("Do you want to replace it?"),
+		QMessageBox::Yes|QMessageBox::No) == QMessageBox::No)
+		return;
+
+	QFile file(file_name);
+	if(!file.open( QIODevice::WriteOnly ) ){
+		QMessageBox::critical(this, tr("QtiPlot - Export error"),
+		tr("Could not write to file: <br><h4> %1 </h4><p>Please verify that you have the right to write to this location!").arg(file_name));
+		return;
+	}
+	file.close();
+	file.remove();
+
+	return QFileDialog::accept();
 }

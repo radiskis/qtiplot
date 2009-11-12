@@ -122,6 +122,9 @@ public:
 	//! Return the scale fonts factor
 	double scaleFontsFactor();
 
+public slots:
+	void accept();
+
 protected slots:
 	void closeEvent(QCloseEvent*);
 	//! Update which options are visible and enabled based on the output format.
