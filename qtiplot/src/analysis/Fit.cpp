@@ -618,15 +618,15 @@ Matrix* Fit::covarianceMatrix(const QString& matrixName)
 
 double *Fit::errors()
 {
-	if (!d_errors) {
+	if (!d_errors)
 		d_errors = new double[d_p];
-		double chi_2_dof = chi_2/(d_n - d_p);
-                for (int i = 0; i < d_p; i++){
-			if (d_scale_errors)
-				d_errors[i] = sqrt(chi_2_dof*gsl_matrix_get(covar,i,i));
-			else
-				d_errors[i] = sqrt(gsl_matrix_get(covar,i,i));
-		}
+
+	double chi_2_dof = chi_2/(d_n - d_p);
+	for (int i = 0; i < d_p; i++){
+		if (d_scale_errors)
+			d_errors[i] = sqrt(chi_2_dof*gsl_matrix_get(covar,i,i));
+		else
+			d_errors[i] = sqrt(gsl_matrix_get(covar,i,i));
 	}
 	return d_errors;
 }
