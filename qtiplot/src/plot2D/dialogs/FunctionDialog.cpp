@@ -259,6 +259,15 @@ void FunctionDialog::raiseWidget(int index)
 	optionStack->setCurrentIndex(index);
 }
 
+void FunctionDialog::setCurveToModify(FunctionCurve *c)
+{
+	Graph *g = (Graph *)c->plot();
+	if (!g)
+		return;
+
+	setCurveToModify(g, g->curveIndex(c));
+}
+
 void FunctionDialog::setCurveToModify(Graph *g, int curve)
 {
 	if (!g)

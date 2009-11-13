@@ -51,6 +51,7 @@ public:
     FunctionDialog(QWidget* parent = 0, bool standAlone = true, Qt::WFlags fl = 0 );
 
     void setCurveToModify(Graph *g, int curve);
+    void setCurveToModify(FunctionCurve *c);
 	void setGraph(Graph *g){graph = g;};
 
 protected slots:
