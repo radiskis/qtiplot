@@ -2153,8 +2153,10 @@ void PlotDialog::setActiveCurve(CurveTreeItem *item)
     boxSkipSymbols->setMaximum(c->dataSize());
 	boxSkipSymbols->blockSignals(false);
 
-    if (c->type() == Graph::Function)
+    if (c->type() == Graph::Function){
+		functionEdit->setCurveToModify((FunctionCurve *)c);
         return;
+    }
 
     if (curveType == Graph::VerticalBars || curveType == Graph::HorizontalBars ||
 				curveType == Graph::Histogram){//spacing page
