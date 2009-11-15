@@ -1036,6 +1036,10 @@ t.setText(col, row, string)
 An alternative way to get/set the value of a cell is using the format of the column (Text, Numeric, ...).
 Qtiplot handles all the casting under the hood and throws an <varname>TypeError</varname> if this isn't possible.
 Assigning <varname>None</varname> will clear the cell's value.
+The column type Day-of-Week returns/accepts the numbers 1 (monday) to 7 (sunday, for which also 0 is accepted).
+The column type Month returns/accepts the numbers 1 to 12.
+The column type Date returns/accepts <varname>datetime.datetime</varname> objects and also accepts a <varname>QDateTime</varname>.
+The column type Time returns/accepts <varname>datetime.time</varname> objects and also accepts a <varname>QTime</varname>.
 <programlisting>
 t.cellData(col, row)
 # and
