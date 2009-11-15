@@ -148,6 +148,80 @@ static int setCellDataHelper(Table* table, int row, int col, PyObject* item) {
       return 1;
     }
     break;
+  case Table::Date:
+    if (sipCanConvertToType(item, sipType_QDateTime, 0)) {
+      int isErr = 0;
+      QDateTime* dateTime = reinterpret_cast<QDateTime*>(sipConvertToType(item, sipType_QDateTime,
+                            0/*sipTransferObj*/, 0/*flags*/, 0/*state*/, &isErr));
+      if (isErr)
+        return 1;
+      table->setText(row, col, dateTime->toString(table->columnFormat(col)));
+      delete dateTime;
+    }
+    else {
+      if (PyType_Ready(item_type) == 0)
+        PyErr_Format(PyExc_TypeError, "Can't convert <%s> into a datetime!", item_type->tp_name);
+      return 1;
+    }
+    break;
+  case Table::Time:
+    if (sipCanConvertToType(item, sipType_QTime, 0)) {
+      int isErr = 0;
+      QTime* time = reinterpret_cast<QTime*>(sipConvertToType(item, sipType_QTime,
+                            0/*sipTransferObj*/, 0/*flags*/, 0/*state*/, &isErr));
+      if (isErr)
+        return 1;
+      table->setText(row, col, time->toString(table->columnFormat(col)));
+      delete time;
+    }
+    else {
+      if (PyType_Ready(item_type) == 0)
+        PyErr_Format(PyExc_TypeError, "Can't convert <%s> into a time!", item_type->tp_name);
+      return 1;
+    }
+    break;
+  case Table::Month:
+    item = PyNumber_Int(item);
+    if (item) {
+      int m = PyInt_AS_LONG(item) % 12; // no type checking required since we casted above
+      if (!m)
+        m = 12;
+      QString format = table->columnFormat(col);
+      Py_DECREF(item);
+      if (format == "M")
+          table->setText(row, col, QDate::shortMonthName(m).left(1));
+      else if (format == "MMM")
+          table->setText(row, col, QDate::shortMonthName(m));
+      else if (format == "MMMM")
+          table->setText(row, col, QDate::longMonthName(m));
+    }
+    else {
+      if (PyType_Ready(item_type) == 0)
+        PyErr_Format(PyExc_TypeError, "Can't convert <%s> into a number!", item_type->tp_name);
+      return 1;
+    }
+    break;
+  case Table::Day:
+    item = PyNumber_Int(item);
+    if (item) {
+      int day = PyInt_AS_LONG(item) % 7; // no type checking required since we casted above
+      if (!day)
+        day = 7;
+      QString format = table->columnFormat(col);
+      Py_DECREF(item);
+      if (format == "d")
+          table->setText(row, col, QDate::shortDayName(day).left(1));
+      else if (format == "ddd")
+          table->setText(row, col, QDate::shortDayName(day));
+      else if (format == "dddd")
+          table->setText(row, col, QDate::longDayName(day));
+    }
+    else {
+      if (PyType_Ready(item_type) == 0)
+        PyErr_Format(PyExc_TypeError, "Can't convert <%s> into a number!", item_type->tp_name);
+      return 1;
+    }
+    break;
   default:
     PyErr_Format(PyExc_ValueError, "Type %d of column %d in table %s not supported!",
                  table->columnType(col), col+1, table->name().ascii());
