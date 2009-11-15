@@ -1017,19 +1017,33 @@ t.cell(col, row)
 # and
 t.setCell(col, row, value)
 </programlisting>
+<para>
 Whenever you have to specify a column, you can use either the
 column name (as a string) or the consecutive column number (starting
-with 1). Row numbers also start with 1, just as they are displayed. If
-you want to work with arbitrary texts or the textual representations
+with 1). Row numbers also start with 1, just as they are displayed.
+In many places there is an alternative API which represents a table
+as a Python sequence is provided. Here rows are addressed by Python
+indices or slices which start at 0. These places are marked as such.
+</para>
+
+If you want to work with arbitrary texts or the textual representations
 of numeric values, you can use:
 <programlisting>
 t.text(col, row)
 # and
 t.setText(col, row, string)
 </programlisting>
+An alternative way to get/set the value of a cell is using the format of the column (Text, Numeric, ...).
+Qtiplot handles all the casting under the hood and throws an <varname>TypeError</varname> if this isn't possible.
+Assigning <varname>None</varname> will clear the cell's value.
+<programlisting>
+t.cellData(col, row)
+# and
+t.setCellData(col, row, value)
+</programlisting>
 The number of columns and rows is accessed via:
 <programlisting>
-t.numRows()
+t.numRows() # same as len(t)
 t.numCols()
 t.setNumRows(number)
 t.setNumCols(number)
@@ -1040,6 +1054,54 @@ You can add a new column at the end of the table or you can insert new columns b
 <programlisting>
 t.addColumn()
 t.insertColumns(startColumn, count)
+</programlisting>
+Adding an empty row at the end of the table is done with the <varname>addRow()</varname> method.
+It returns the new row number.
+<programlisting>
+newRowIndex = t.addRow()
+</programlisting>
+
+If you need all the data of a row or column you can use the <varname>rowData()</varname>
+and <varname>colData()</varname> methods. This is much faster then iterating manually over the cells.
+Alternatively you can use the <varname>[]</varname> operator in combination with Python indices or slices,
+which start at 0.
+<programlisting>
+valueList = t.colData(col) # col may be a string or a number starting at 1
+rowTuple = t.rowData(row) # row number starting at 1
+rowTuple = t[idx] # row index starts at 0
+rowTupleList = t[slice]
+</programlisting>
+
+A Table is iteratable. The data is returned row wise as tuple.
+<programlisting>
+for c1, c2, c3 in t:
+  # do stuff, assuming t has three columns
+</programlisting>
+
+Assigning values to a complete row or column is also possible.
+While the new row data has to be a tuple which length must match the column number,
+column data just has to be iteratable. If the iterator stops before the end of the table
+is reached, a <varname>StopIteration</varname> exception is raised.
+In combination with the <varname>offset</varname> this allows to fill a column chunk wise.
+A positive offset starts filling the column after this row number.
+A negative offset ignores the firsts values of the iterator.
+<programlisting>
+t.setColData(col, iterableValueSequence, offset=0)
+# just fill the first column with a list of values, staring at row 6
+t.setColData(1, [12,23,34,56,67], 5)
+# fill the second column with fibonacci numbers, omitting the first three.
+def FibonacciGenerator():
+  a, b = 1, 1
+  while True:
+    a, b = b, a+b
+    yield a
+t.setColData(2, FibonacciGenerator(), -3)
+t.setRowData(row, rowTuple) # row starts at 1
+# assuming t has exactly two columns...
+t.setRowData(2, (23, 5)) # fill the second row
+t[1] = 23, 5 # using a Python index, starting at 0
+# adding a new row and set it's values
+t.appendRowData(rowTuple)
 </programlisting>
 
 You can set the format of a column to text using:
@@ -1286,16 +1348,25 @@ You can delete a colum or a range of rows using the functions bellow:
 t.removeCol(number)
 t.deleteRows(startRowNumber, endRowNumber)
 </programlisting>
+It is also possible to use Python's <varname>del</varname> statement to remove rows.
+Note that in this case a Python index or slice (instead of row numbers) is used, which start at 0.
+<programlisting>
+del t[5] # deletes row 6
+del t[0:4] # deletes row 1 to 5
+</programlisting>
 
 Column names can be read and written with:
 <programlisting>
 t.colName(number)
+t.colNames()
 t.setColName(col, newName, enumerateRight=False)
+t.setColNames(newNamesList)
 </programlisting>
 If <varname>enumerateRight</varname> is set to True, all the table columns starting from index
 <varname>col</varname> will have their names modified to a combination of the
 <varname>newName</varname> and a numerical increasing index. If this parameter is not specified,
 by default it is set to False.
+The plural forms get/set all headers at once.
 
 <para>You can change the plot role of a table column (abscissae, ordinates, error bars, etc...) using:</para>
 <programlisting>
@@ -1471,6 +1542,11 @@ If one or several tabel columns are hidden you can make them visible again using
 t.showAllColumns()
 </programlisting>
 
+You can ensure the visibility of a cell with:
+<programlisting>
+t.scrollToCell(col, row)
+</programlisting>
+
 After having changed some table values from a script, you will likely want to update dependent Graphs:
 <programlisting>
 t.notifyChanges()
@@ -1481,6 +1557,12 @@ As a simple example, let's set some column values without using the dialog.
 t = table("table1")
 for i in range(1, t.numRows()+1):
 	t.setCell(1, i, i**2)
+t.notifyChanges()
+</programlisting>
+While the above is easy to understand, there is a faster and more pythonic way of doing the same:
+<programlisting>
+t = table("table1")
+t.setColData(1, [i*i for i in range(len(t))])
 t.notifyChanges()
 </programlisting>
 
