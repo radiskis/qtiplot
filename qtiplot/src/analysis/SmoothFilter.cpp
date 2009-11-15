@@ -115,7 +115,7 @@ void SmoothFilter::calculateOutputData(double *x, double *y)
     		smoothAverage(x, y);
 			break;
 		case 4:
-            d_explanation = QString::number(d_smooth_points) + " " + tr("points") + " " + tr("Lowess smoothing");
+            d_explanation = tr("Lowess smoothing with f=%1 and %2 iterations").arg(d_f).arg(d_iterations);
     		smoothLowess(x, y);
 			break;
 	}
