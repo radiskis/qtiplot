@@ -82,6 +82,10 @@ class Table: MdiSubWindow
 %TypeHeaderCode
 #include "../src/table/Table.h"
 #include <QMessageBox>
+#include <QDate>
+#include <QTime>
+#include <QDateTime>
+#include <datetime.h> // python include
 #define CHECK_TABLE_COL(arg)\
     int col;\
     if (PyInt_Check(arg)) {\
@@ -163,6 +167,45 @@ static int cellDataHelper(Table* table, int row, int col, PyObject** item) {
     break;
   case Table::Text:
     *item = PyString_FromString(table->text(row, col));
+    break;
+  case Table::Date:
+    if (table->text(row, col).isEmpty())
+      *item = Py_None;
+    else {
+      if (!PyDateTimeAPI)
+        PyDateTime_IMPORT;
+      QDateTime dateTime = QDateTime::fromString(table->text(row, col), table->columnFormat(col));
+      QDate date = dateTime.date();
+      QTime time = dateTime.time();
+      *item = PyDateTime_FromDateAndTime(date.year(), date.month(), date.day(),
+                                         time.hour(), time.minute(), time.second(), time.msec()*1000);
+    }
+    break;
+  case Table::Time:
+    if (table->text(row, col).isEmpty())
+      *item = Py_None;
+    else {
+      if (!PyDateTimeAPI)
+        PyDateTime_IMPORT;
+      QTime time = QTime::fromString(table->text(row, col), table->columnFormat(col));
+      *item = PyTime_FromTime(time.hour(), time.minute(), time.second(), time.msec()*1000);
+    }
+    break;
+  case Table::Month:
+    if (table->text(row, col).isEmpty())
+      *item = Py_None;
+    else {
+      QDate date = QDate::fromString(table->text(row, col), table->columnFormat(col));
+      *item = PyInt_FromLong(date.month());
+    }
+    break;
+  case Table::Day:
+    if (table->text(row, col).isEmpty())
+      *item = Py_None;
+    else {
+      QDate date = QDate::fromString(table->text(row, col), table->columnFormat(col));
+      *item = PyInt_FromLong(date.dayOfWeek());
+    }
     break;
   default:
     *item = NULL;
