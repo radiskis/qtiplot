@@ -93,10 +93,6 @@ void DoubleSpinBox::interpretText()
 		parser.addGSLConstants();
 		try {
 			parser.SetExpr(s.toAscii().constData());
-			parser.SetDecSep(locale().decimalPoint().toAscii());
-			if (locale().numberOptions () != QLocale::OmitGroupSeparator)
-				parser.SetThousandsSep(locale().groupSeparator().toAscii());
-
 			value = parser.Eval();
 		} catch (mu::ParserError &e){
 			lineEdit()->setText(textFromValue(d_value));

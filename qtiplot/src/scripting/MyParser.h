@@ -34,6 +34,8 @@
 
 using namespace mu;
 
+class QLocale;
+
 /*!\brief Mathematical parser class based on muParser.
  *
  * \section future Future Plans
@@ -47,6 +49,7 @@ class MyParser : public Parser
 public:
 	MyParser();
 	void addGSLConstants();
+	void setLocale(const QLocale& locale);
 
 	const static QStringList functionsList();
 	static QString explainFunction(int index);

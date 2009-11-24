@@ -50,6 +50,21 @@ MyParser::MyParser()
 			DefineFun(i->name, i->fun3);
 	}
 	gsl_set_error_handler_off();
+	setLocale(QLocale());
+}
+
+void MyParser::setLocale(const QLocale& locale)
+{
+	const char decPoint = locale.decimalPoint().toAscii();
+	if (decPoint != '.'){
+		SetDecSep(decPoint);
+		SetArgSep(';');
+		SetThousandsSep(locale.groupSeparator().toAscii());
+	} else { // reset C locale
+		SetDecSep('.');
+		SetThousandsSep(0);
+		SetArgSep(',');
+	}
 }
 
 void MyParser::addGSLConstants()
@@ -74,9 +89,14 @@ void MyParser::addGSLConstants()
 const QStringList MyParser::functionsList()
 {
   QStringList l;
+
+  QString argSeparator = ",";
+  if (QString(QLocale().decimalPoint()) == argSeparator)
+	argSeparator = ";";
+
   for (const muParserScripting::mathFunction *i = muParserScripting::math_functions; i->name; i++){
     if (i->numargs == 2)
-      l << QString(i->name) + "(,)";
+      l << QString(i->name) + "(" + argSeparator + ")";
 	else
       l << QString(i->name) + "()";
   }
@@ -86,7 +106,11 @@ const QStringList MyParser::functionsList()
 QString MyParser::explainFunction(int index)
 {
 	const muParserScripting::mathFunction i = muParserScripting::math_functions[index];
-	return QObject::tr(i.description);
+	QString s = QObject::tr(i.description);
+	if (QLocale().decimalPoint() == ',')
+		s.replace(",", ";");
+
+	return s;
 }
 
 double MyParser::EvalRemoveSingularity(double *xvar, bool noisy) const

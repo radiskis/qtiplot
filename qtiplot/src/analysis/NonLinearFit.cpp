@@ -283,6 +283,8 @@ QStringList NonLinearFit::guessParameters(const QString& s, bool *error, string 
 		MyParser parser;
 		ParserTokenReader reader(&parser);
 
+		QLocale locale = QLocale();
+
 		const char *formula = text.toAscii().data();
 		int length = text.toAscii().length();
 		reader.SetFormula (formula);
@@ -291,9 +293,26 @@ QStringList NonLinearFit::guessParameters(const QString& s, bool *error, string 
 		while(pos < length){
 			ParserToken<value_type, string_type> token = reader.ReadNextToken();
 			QString str = QString(token.GetAsString().c_str());
+
+			bool isNumber;
+			locale.toDouble(str, &isNumber);
+
 			if (token.GetCode () == cmVAR && str.contains(QRegExp("\\D"))
-				&& str != "x" && !parList.contains(str))
-				parList << str;
+				&& str != "x" && !parList.contains(str) && !isNumber){
+				if (str.endsWith("e", Qt::CaseInsensitive) &&
+					str.count("e", Qt::CaseInsensitive) == 1){
+
+					QString aux = str;
+					aux.remove("e", Qt::CaseInsensitive);
+
+					bool auxIsNumber;
+					locale.toDouble(aux, &auxIsNumber);
+					if (!auxIsNumber)
+						parList << str;
+				} else
+					parList << str;
+			}
+
 			pos = reader.GetPos();
 		}
 		parList.sort();
@@ -333,7 +352,7 @@ void NonLinearFit::removeDataSingularities()
 			parser.EvalRemoveSingularity(&xvar);
     	} catch(MyParser::Pole){
 			QApplication::restoreOverrideCursor();
-			QMessageBox::critical(0, QObject::tr("QtiPlot"),
+			QMessageBox::critical((ApplicationWindow *)parent(), QObject::tr("QtiPlot"),
 			QObject::tr("Ignored data point at x = %1.").arg(xvar));
 
     		removePole(i);

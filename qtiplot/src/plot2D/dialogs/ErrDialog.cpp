@@ -28,7 +28,6 @@
  ***************************************************************************/
 #include "ErrDialog.h"
 #include <Table.h>
-#include <ApplicationWindow.h>
 #include <DoubleSpinBox.h>
 
 #include <QHBoxLayout>
@@ -91,7 +90,7 @@ ErrDialog::ErrDialog( QWidget* parent, Qt::WFlags fl )
 
     valueBox = new DoubleSpinBox();
     valueBox->setMinimum(0.0);
-    valueBox->setLocale(((ApplicationWindow *)parent)->locale());
+    valueBox->setLocale(QLocale());
 	valueBox->setValue(5);
     valueBox->setAlignment( Qt::AlignHCenter );
 	valueBox->setEnabled(false);

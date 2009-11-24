@@ -2073,6 +2073,7 @@ void ConfigDialog::apply()
 
     QLocale oldLocale = app->locale();
     app->setLocale(locale);
+	QLocale::setDefault(locale);
 
 	if (generalDialog->currentWidget() == appTabWidget &&
 		appTabWidget->currentWidget() == numericFormatPage){

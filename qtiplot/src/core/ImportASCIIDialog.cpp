@@ -129,7 +129,7 @@ void ImportASCIIDialog::initAdvancedOptions()
 	d_import_mode = new QComboBox();
 	// Important: Keep this in sync with the ImportMode enum.
 	d_import_mode->addItem(tr("New Table"));
-	d_import_mode->addItem(tr("New Matrice"));
+	d_import_mode->addItem(tr("New Matrix"));
 	d_import_mode->addItem(tr("New Columns"));
 	d_import_mode->addItem(tr("New Rows"));
 	d_import_mode->addItem(tr("Overwrite Current Window"));

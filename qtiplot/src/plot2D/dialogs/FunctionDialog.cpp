@@ -287,7 +287,6 @@ void FunctionDialog::setCurveToModify(Graph *g, int curve)
 		boxConstants->clearContents();
 		boxConstants->setRowCount(constants.size());
 		boxConstants->show();
-		ApplicationWindow *app = (ApplicationWindow *)parent();
 		QMapIterator<QString, double> i(constants);
 		int row = 0;
  		while (i.hasNext()) {
@@ -295,8 +294,7 @@ void FunctionDialog::setCurveToModify(Graph *g, int curve)
 			boxConstants->setItem(row, 0, new QTableWidgetItem(i.key()));
 
 			DoubleSpinBox *sb = new DoubleSpinBox();
-			sb->setLocale(app->locale());
-			sb->setDecimals(app->fit_output_precision);
+			sb->setLocale(QLocale());
 			sb->setValue(i.value());
         	boxConstants->setCellWidget(row, 1, sb);
 			connect(sb, SIGNAL(valueChanged(double)), this, SLOT(acceptFunction()));
