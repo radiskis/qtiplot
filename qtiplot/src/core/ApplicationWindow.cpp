@@ -4813,6 +4813,7 @@ void ApplicationWindow::readSettings()
 	if (!thousandsSep)
         loc.setNumberOptions(QLocale::OmitGroupSeparator);
 	setLocale(loc);
+	QLocale::setDefault(loc);
 
 	d_decimal_digits = settings.value("/DecimalDigits", 13).toInt();
 	d_clipboard_locale = QLocale(settings.value("/ClipboardLocale", QLocale::system().name()).toString());

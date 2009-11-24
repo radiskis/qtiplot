@@ -397,7 +397,12 @@ void ScriptEdit::evaluate()
 
 	if (res.isValid() && !myScript->code().isEmpty())
 		if (!res.isNull() && res.canConvert(QVariant::String)){
-			QString strVal = res.toString();
+			QString strVal;
+			if (myScript->scriptingEnv()->name() == QString("Python"))
+				strVal = res.toString();
+			else
+				strVal = QLocale().toString(res.toDouble());
+
 			strVal.replace("\n", "\n#> ");
 
 			printCursor.insertText("\n");

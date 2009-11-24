@@ -31,6 +31,7 @@
 #include "muParserScripting.h"
 
 #include <qstringlist.h>
+#include <QLocale>
 
 using namespace mu;
 
@@ -96,13 +97,19 @@ const QStringList muParserScripting::mathFunctions() const
   QStringList l;
   for (const mathFunction *i=math_functions; i->name; i++)
     l << i->name;
+
   return l;
 }
 
 const QString muParserScripting::mathFunctionDoc (const QString &name) const
 {
   for (const mathFunction *i=math_functions; i->name; i++)
-    if (name==i->name)
-      return i->description;
+    if (name == i->name){
+    	QString s = i->description;
+		if (QLocale().decimalPoint() == ',')
+			s.replace(",", ";");
+
+      	return s;
+      }
   return QString::null;
 }
