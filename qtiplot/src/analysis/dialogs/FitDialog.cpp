@@ -168,10 +168,34 @@ void FitDialog::initFitPage()
 
     hbox0->addWidget(lblFunction);
 
-    QGridLayout *gl1 = new QGridLayout();
+	QGroupBox *gb1 = new QGroupBox(tr("Data Set"));
+    QGridLayout *gl1 = new QGridLayout(gb1);
     gl1->addWidget(new QLabel(tr("Curve")), 0, 0);
 	boxCurve = new QComboBox();
     gl1->addWidget(boxCurve, 0, 1);
+    gl1->setColumnStretch(1, 1);
+
+    gl1->addWidget(new QLabel( tr("Color")), 1, 0);
+	boxColor = new ColorBox( false );
+	boxColor->setColor(QColor(Qt::red));
+    gl1->addWidget(boxColor, 1, 1);
+
+    gl1->addWidget(new QLabel(tr("From x=")), 0, 2);
+
+	boxFrom = new DoubleSpinBox();
+    boxFrom->setLocale(app->locale());
+    boxFrom->setDecimals(app->d_decimal_digits);
+    connect(boxFrom, SIGNAL(valueChanged(double)), this, SLOT(updatePreview()));
+    gl1->addWidget(boxFrom, 0, 3);
+
+	gl1->addWidget(new QLabel( tr("To x=")), 1, 2);
+
+	boxTo = new DoubleSpinBox();
+    boxTo->setLocale(app->locale());
+    boxTo->setDecimals(app->d_decimal_digits);
+    connect(boxTo, SIGNAL(valueChanged(double)), this, SLOT(updatePreview()));
+    gl1->addWidget(boxTo, 1, 3);
+    gl1->setColumnStretch(3, 1);
 
 	boxFunction = new QTextEdit();
 	boxFunction->setReadOnly(true);
@@ -182,19 +206,31 @@ void FitDialog::initFitPage()
 	boxFunction->setMaximumHeight(50);
 
     QVBoxLayout *vb = new QVBoxLayout();
-    vb->addWidget(new QLabel(tr("Initial guesses")));
     btnSaveGuesses = new QPushButton(tr( "&Save" ));
     btnSaveGuesses->setPixmap(QPixmap(filesave_xpm));
     connect(btnSaveGuesses, SIGNAL(clicked()), this, SLOT(saveInitialGuesses()));
     vb->addWidget(btnSaveGuesses);
-    btnParamRange = new QPushButton();
+
+    btnLoadGuesses = new QPushButton(tr("Re&load" ));
+    btnLoadGuesses->setPixmap(QPixmap(reload_xpm));
+    connect(btnLoadGuesses, SIGNAL(clicked()), this, SLOT(loadInitialGuesses()));
+    vb->addWidget(btnLoadGuesses);
+
+	btnGuess = new QPushButton(tr( "&Guess" ));
+    btnGuess->setPixmap(QPixmap(help_xpm));
+    connect(btnGuess, SIGNAL(clicked()), this, SLOT(guessInitialValues()));
+    vb->addWidget(btnGuess);
+
+    btnParamRange = new QPushButton(tr("&Range" ));
     btnParamRange->setIcon(QIcon(QPixmap(param_range_btn_xpm)));
     btnParamRange->setCheckable(true);
     connect(btnParamRange, SIGNAL(toggled(bool)), this, SLOT(showParameterRange(bool)));
     vb->addWidget(btnParamRange);
 
     vb->addStretch();
-	gl1->addLayout(vb, 3, 0);
+
+	QGroupBox *gb0 = new QGroupBox(tr("Initial guesses"));
+	QGridLayout *gl0 = new QGridLayout(gb0);
 
 	boxParams = new QTableWidget();
     boxParams->setColumnCount(6);
@@ -212,69 +248,38 @@ void FitDialog::initFitPage()
     boxParams->verticalHeader()->hide();
     boxParams->hideColumn(1);
     boxParams->hideColumn(3);
-    gl1->addWidget(boxParams, 3, 1);
 
-	gl1->addWidget(new QLabel( tr("Algorithm")), 4, 0 );
+    gl0->addWidget(boxParams, 0, 0);
+	gl0->addLayout(vb, 0, 1);
+
+	QGroupBox *gb3 = new QGroupBox(tr("Algorithm"));
+    QGridLayout *gl3 = new QGridLayout(gb3);
+
 	boxAlgorithm = new QComboBox();
 	boxAlgorithm->addItem(tr("Scaled Levenberg-Marquardt"));
 	boxAlgorithm->addItem(tr("Unscaled Levenberg-Marquardt"));
 	boxAlgorithm->addItem(tr("Nelder-Mead Simplex"));
-    gl1->addWidget(boxAlgorithm, 4, 1);
+    gl3->addWidget(boxAlgorithm, 0, 0);
 
-	gl1->addWidget(new QLabel( tr("Color")), 5, 0);
-	boxColor = new ColorBox( false );
-	boxColor->setColor(QColor(Qt::red));
-    gl1->addWidget(boxColor, 5, 1);
-
-    QGroupBox *gb1 = new QGroupBox();
-    gb1->setLayout(gl1);
-
-    QGridLayout *gl2 = new QGridLayout();
-    gl2->addWidget(new QLabel(tr("From x=")), 0, 0);
-
-	boxFrom = new DoubleSpinBox();
-    boxFrom->setLocale(app->locale());
-    boxFrom->setDecimals(app->d_decimal_digits);
-    connect(boxFrom, SIGNAL(valueChanged(double)), this, SLOT(updatePreview()));
-    gl2->addWidget(boxFrom, 0, 1);
-
-	gl2->addWidget(new QLabel( tr("To x=")), 1, 0);
-
-	boxTo = new DoubleSpinBox();
-    boxTo->setLocale(app->locale());
-    boxTo->setDecimals(app->d_decimal_digits);
-    connect(boxTo, SIGNAL(valueChanged(double)), this, SLOT(updatePreview()));
-    gl2->addWidget(boxTo, 1, 1);
-
-    QGroupBox *gb2 = new QGroupBox();
-    gb2->setLayout(gl2);
-
-    QGridLayout *gl3 = new QGridLayout();
-    gl3->addWidget(new QLabel(tr("Iterations")), 0, 0);
+    gl3->addWidget(new QLabel(tr("Iterations")), 0, 1);
 	boxPoints = new QSpinBox();
     boxPoints->setRange(10, 10000);
 	boxPoints->setSingleStep(50);
 	boxPoints->setValue(1000);
-    gl3->addWidget(boxPoints, 0, 1);
-	gl3->addWidget(new QLabel( tr("Tolerance")), 1, 0);
+    gl3->addWidget(boxPoints, 0, 2);
+    gl3->setColumnStretch(2, 1);
 
+	gl3->addWidget(new QLabel( tr("Tolerance")), 0, 3);
 	boxTolerance = new DoubleSpinBox();
 	boxTolerance->setRange(0.0, 1.0);
 	boxTolerance->setSingleStep(1e-4);
     boxTolerance->setLocale(app->locale());
     boxTolerance->setDecimals(13);
     boxTolerance->setValue(1e-4);
-	gl3->addWidget(boxTolerance, 1, 1);
-
-    QGroupBox *gb3 = new QGroupBox();
-    gb3->setLayout(gl3);
-
-    QHBoxLayout *hbox1 = new QHBoxLayout();
-    hbox1->addWidget(gb2);
-    hbox1->addWidget(gb3);
+	gl3->addWidget(boxTolerance, 0, 4);
+	gl3->setColumnStretch(4, 1);
 
     QHBoxLayout *hbox2 = new QHBoxLayout();
-	hbox2->addWidget(new QLabel(tr( "Weighting Method" )));
 	boxWeighting = new QComboBox();
 	boxWeighting->addItem(tr("No weighting"));
 	boxWeighting->addItem(tr("Instrumental"));
@@ -282,7 +287,7 @@ void FitDialog::initFitPage()
 	boxWeighting->addItem(tr("Arbitrary Dataset"));
 	boxWeighting->addItem(tr("Direct Weighting"));
     hbox2->addWidget(boxWeighting);
-    QGroupBox *gb4 = new QGroupBox();
+    QGroupBox *gb4 = new QGroupBox(tr( "Weighting Method" ));
     gb4->setLayout(hbox2);
 
 	tableNamesBox = new QComboBox();
@@ -381,10 +386,10 @@ void FitDialog::initFitPage()
     QVBoxLayout *vbox1 = new QVBoxLayout();
     vbox1->addLayout(hbox0);
     vbox1->addWidget(boxFunction);
-    vbox1->addSpacing(20);
+	vbox1->addWidget(gb0);
     vbox1->addWidget(gb1);
     vbox1->addWidget(gb4);
-    vbox1->addLayout(hbox1);
+    vbox1->addWidget(gb3);
     vbox1->addSpacing(10);
     vbox1->addLayout(hbox3);
     vbox1->addSpacing(10);
@@ -604,7 +609,6 @@ void FitDialog::initEditPage()
 	connect( btnDelFunc, SIGNAL(clicked()), this, SLOT(removeUserFunction()));
 	connect( buttonCancel2, SIGNAL(clicked()), this, SLOT(close()));
 }
-
 
 void FitDialog::initAdvancedPage()
 {
@@ -1034,11 +1038,13 @@ void FitDialog::showFitPage()
         boxAlgorithm->setEnabled(false);
 		boxPoints->setEnabled(false);
 		boxTolerance->setEnabled(false);
+		btnGuess->setVisible(false);
     } else {
         btnParamRange->setEnabled(true);
         boxAlgorithm->setEnabled(true);
 		boxPoints->setEnabled(true);
 		boxTolerance->setEnabled(true);
+		btnGuess->setVisible(d_current_fit->type() == Fit::BuiltIn);
     }
 
 	QStringList paramList = d_current_fit->parameterNames();
@@ -1114,7 +1120,7 @@ void FitDialog::showFitPage()
 	boxFunction->setText(formula);
 	lblFunction->setText(boxName->text() +" (x, " + boxParam->text().simplified() + ")");
 
-	tw->setCurrentWidget (fitPage);
+	tw->setCurrentWidget(fitPage);
 	if (previewBox->isChecked())
 		updatePreview();
 }
@@ -1418,11 +1424,12 @@ void FitDialog::accept()
 	QStringList parameters = QStringList();
 	MyParser parser;
 	bool error = false;
-#ifdef Q_CC_MSVC
-    QVarLengthArray<double> paramsInit(n), paramRangeLeft(n), paramRangeRight(n);
-#else
-	double paramsInit[n], paramRangeLeft[n], paramRangeRight[n];
-#endif
+	double *paramsInit = (double *)malloc(n*sizeof(double));
+	double *paramRangeLeft = (double *)malloc(n*sizeof(double));
+	double *paramRangeRight = (double *)malloc(n*sizeof(double));
+	if (!paramsInit || !paramRangeLeft || !paramRangeRight)
+		return;
+
 	QString formula = boxFunction->text();
 	NonLinearFit *nlf = qobject_cast<NonLinearFit *>(d_current_fit);
 	if (nlf)
@@ -1472,22 +1479,14 @@ void FitDialog::accept()
 
 	if (!error){
 		if (d_current_fit->type() == Fit::BuiltIn)
-#ifdef Q_CC_MSVC
-			modifyGuesses (paramsInit.data());
-#else
 			modifyGuesses (paramsInit);
-#endif
 
 		if (nlf){
 			if (!nlf->setParametersList(parameters)) return;
 			if (!nlf->setFormula(formula, false)) return;
 		}
 
-#ifdef Q_CC_MSVC
-		d_current_fit->setInitialGuesses(paramsInit.data());
-#else
 		d_current_fit->setInitialGuesses(paramsInit);
-#endif
 
 		if (!d_current_fit->setDataFromCurve(curve, start, end) ||
 			!d_current_fit->setWeightingData ((Fit::WeightingMethod)boxWeighting->currentIndex(),
@@ -1532,6 +1531,10 @@ void FitDialog::accept()
 
 		if (previewBox->isChecked())
 			updatePreview();
+
+		free (paramsInit);
+		free (paramRangeLeft);
+		free (paramRangeRight);
 	}
 }
 
@@ -1768,6 +1771,42 @@ void FitDialog::saveInitialGuesses()
                 d_user_functions.append(d_current_fit);
           }
     }
+}
+
+void FitDialog::loadInitialGuesses()
+{
+	if (!d_current_fit)
+		return;
+	if (!d_current_fit->load(d_current_fit->fileName()))
+		return;
+
+	for (int i = 0; i < d_current_fit->numParameters(); i++){
+		((DoubleSpinBox*)boxParams->cellWidget(i, 2))->setValue(d_current_fit->initialGuess(i));
+		boxParams->item(i, boxParams->columnCount() - 1)->setText("--");
+	}
+
+	if (previewBox->isChecked())
+		updatePreview();
+}
+
+void FitDialog::guessInitialValues()
+{
+	if (!d_current_fit)
+		return;
+
+	if (d_current_fit->type() == Fit::BuiltIn){
+		d_current_fit->setDataFromCurve(boxCurve->currentText(), boxFrom->value(), boxTo->value());
+		d_current_fit->guessInitialValues();
+		//modifyGuesses (paramsInit);
+	}
+
+	for (int i = 0; i < d_current_fit->numParameters(); i++){
+		((DoubleSpinBox*)boxParams->cellWidget(i, 2))->setValue(d_current_fit->initialGuess(i));
+		boxParams->item(i, boxParams->columnCount() - 1)->setText("--");
+	}
+
+	if (previewBox->isChecked())
+		updatePreview();
 }
 
 QStringList FitDialog::plugInNames()
