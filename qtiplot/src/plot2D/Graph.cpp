@@ -1646,6 +1646,9 @@ void Graph::print()
 void Graph::exportSVG(const QString& fname, const QSizeF& customSize, int unit, double fontsFactor)
 {
 	int res = 96;
+#ifdef Q_OS_MAC
+    res = 72;
+#endif
 
 	QSize size = boundingRect().size();
 	if (customSize.isValid())
@@ -2889,14 +2892,14 @@ void Graph::updateCurveLayout(PlotCurve* c, const CurveLayout *cL)
 	if (d_curves.size() < index)
 		return;
 
-	QPen pen = QPen(cL->symCol, cL->penWidth, Qt::SolidLine, Qt::FlatCap, Qt::MiterJoin);
+	QPen pen = QPen(cL->symCol, cL->penWidth, Qt::SolidLine, Qt::SquareCap, Qt::MiterJoin);
 	pen.setCosmetic(true);
 	if (cL->fillCol.isValid())
 		c->setSymbol(QwtSymbol(SymbolBox::style(cL->sType), QBrush(cL->fillCol), pen, QSize(cL->sSize, cL->sSize)));
 	else
 		c->setSymbol(QwtSymbol(SymbolBox::style(cL->sType), QBrush(), pen, QSize(cL->sSize, cL->sSize)));
 
-	pen = QPen(cL->lCol, cL->lWidth, getPenStyle(cL->lStyle), Qt::FlatCap, Qt::MiterJoin);
+	pen = QPen(cL->lCol, cL->lWidth, getPenStyle(cL->lStyle), Qt::SquareCap, Qt::MiterJoin);
 	pen.setCosmetic(true);
 	c->setPen(pen);
 

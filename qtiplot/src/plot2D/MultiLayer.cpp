@@ -981,6 +981,9 @@ void MultiLayer::draw(QPaintDevice *device, const QSizeF& customSize, int unit, 
 void MultiLayer::exportSVG(const QString& fname, const QSizeF& customSize, int unit, double fontsFactor)
 {
 	int res = 96;
+#ifdef Q_OS_MAC
+    res = 72;
+#endif
 
 	QSvgGenerator svg;
 	svg.setFileName(fname);
