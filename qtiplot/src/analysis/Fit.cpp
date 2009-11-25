@@ -312,8 +312,7 @@ QString Fit::logFitInfo(int iterations, int status)
 		info +="\n";
 
 	info += tr("Weighting Method") + ": ";
-	switch(d_weighting)
-	{
+	switch(d_weighting){
 		case NoWeighting:
 			info += tr("No weighting");
 			break;
@@ -346,7 +345,8 @@ QString Fit::logFitInfo(int iterations, int status)
 	}
 
 	info += tr("From x")+" = "+locale.toString(d_x[0], 'e', d_prec)+" "+tr("to x")+" = "+locale.toString(d_x[d_n-1], 'e', d_prec)+"\n";
-	double chi_2_dof = chi_2/(d_n - d_p);
+	int dof = d_n - d_p;
+	double chi_2_dof = chi_2/dof;
 	for (int i=0; i<d_p; i++){
 		info += d_param_names[i];
 		if (!d_param_explain[i].isEmpty())
@@ -360,8 +360,10 @@ QString Fit::logFitInfo(int iterations, int status)
 	info += "--------------------------------------------------------------------------------------\n";
 	info += "Chi^2/doF = " + locale.toString(chi_2_dof, 'e', d_prec) + "\n";
 	info += tr("R^2") + " = " + locale.toString(rSquare(), 'g', d_prec) + "\n";
-	info += tr("Adjusted R^2") + " = " + locale.toString(d_adjusted_r_square, 'g', d_prec) + "\n";
-	info += tr("RMSE (Root Mean Squared Error)") + " = " + locale.toString(sqrt(d_rss/(d_n - d_p)), 'g', d_prec) + "\n";
+	if (dof > 1)
+		info += tr("Adjusted R^2") + " = " + locale.toString(d_adjusted_r_square, 'g', d_prec) + "\n";
+	if (dof >= 1)
+		info += tr("RMSE (Root Mean Squared Error)") + " = " + locale.toString(sqrt(d_rss/dof), 'g', d_prec) + "\n";
 	info += tr("RSS (Residual Sum of Squares)") + " = " + locale.toString(d_rss, 'g', d_prec) + "\n";
 	info += "---------------------------------------------------------------------------------------\n";
 	if (is_non_linear){

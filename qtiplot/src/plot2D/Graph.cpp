@@ -1524,6 +1524,7 @@ void Graph::exportVector(const QString& fileName, int res, bool color,
 		printer.setResolution(logicalDpiX());//we set screen resolution as default
 
 	printer.setDocName(multiLayer()->objectName());
+	printer.setFontEmbeddingEnabled(true);
     printer.setCreator("QtiPlot");
 	printer.setFullPage(true);
 	QRect r = rect();

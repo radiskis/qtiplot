@@ -875,6 +875,7 @@ void MultiLayer::exportVector(const QString& fileName, int res, bool color,
 		printer.setResolution(logicalDpiX());//we set screen resolution as default
 
     printer.setDocName (objectName());
+    printer.setFontEmbeddingEnabled(true);
     printer.setCreator("QtiPlot");
 	printer.setFullPage(true);
 	printer.setOutputFileName(fileName);
