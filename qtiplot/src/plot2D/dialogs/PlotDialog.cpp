@@ -2516,7 +2516,7 @@ bool PlotDialog::acceptParams()
 		if (!fillGroupBox->isChecked())
 			br = QBrush();
 		QPen pen = QPen(boxLineColor->color(), boxLineWidth->value(),
-						boxLineStyle->style(), Qt::FlatCap, Qt::MiterJoin);
+						boxLineStyle->style(), Qt::SquareCap, Qt::MiterJoin);
 		pen.setCosmetic(true);
 		QwtPlotCurve *curve = (QwtPlotCurve *)plotItem;
 		curve->setPen(pen);
@@ -3172,7 +3172,7 @@ void PlotDialog::applyLineFormatToLayer(Graph *g)
 			continue;
 
 		QPen pen = QPen(c->pen().color(), boxLineWidth->value(),
-					boxLineStyle->style(), Qt::FlatCap, Qt::MiterJoin);
+					boxLineStyle->style(), Qt::SquareCap, Qt::MiterJoin);
 		pen.setCosmetic(true);
 		c->setPen(pen);
 
