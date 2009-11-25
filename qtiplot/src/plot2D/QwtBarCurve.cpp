@@ -39,7 +39,7 @@ QwtBarCurve::QwtBarCurve(BarStyle style, Table *t, const QString& xColName, cons
 {
 	bar_style = style;
 
-	QPen pen = QPen(Qt::black, 1, Qt::SolidLine, Qt::FlatCap, Qt::MiterJoin);
+	QPen pen = QPen(Qt::black, 1, Qt::SolidLine, Qt::SquareCap, Qt::MiterJoin);
 	pen.setCosmetic(true);
 	setPen(pen);
 	setBrush(QBrush(Qt::red));
