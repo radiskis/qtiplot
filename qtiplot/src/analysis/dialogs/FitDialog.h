@@ -108,6 +108,8 @@ private slots:
 	void enableApplyChanges(int = 0);
 	void setNumPeaks(int peaks);
 	void saveInitialGuesses();
+	void loadInitialGuesses();
+	void guessInitialValues();
 	void returnToFitPage();
 	void updatePreview();
 	void updatePreviewColor(int);
@@ -144,7 +146,7 @@ private:
 	QPushButton* buttonClear;
 	QPushButton* buttonPlugins;
 	QPushButton* btnBack;
-	QPushButton* btnSaveGuesses;
+	QPushButton* btnSaveGuesses, *btnLoadGuesses, *btnGuess;
 	QComboBox* boxCurve;
 	QComboBox* boxAlgorithm;
 	QTableWidget* boxParams;
