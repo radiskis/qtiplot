@@ -197,6 +197,28 @@ void FitDialog::initFitPage()
     gl1->addWidget(boxTo, 1, 3);
     gl1->setColumnStretch(3, 1);
 
+	gl1->addWidget(new QLabel(tr("Weighting")), 2, 0);
+	boxWeighting = new QComboBox();
+	boxWeighting->addItem(tr("No weighting"));
+	boxWeighting->addItem(tr("Instrumental"));
+	boxWeighting->addItem(tr("Statistical"));
+	boxWeighting->addItem(tr("Arbitrary Dataset"));
+	boxWeighting->addItem(tr("Direct Weighting"));
+    gl1->addWidget(boxWeighting, 2, 1);
+	gl1->addWidget(new QLabel(), 2, 2);
+
+	QHBoxLayout *hbox2 = new QHBoxLayout();
+
+	tableNamesBox = new QComboBox();
+	tableNamesBox->setVisible(false);
+    hbox2->addWidget(tableNamesBox);
+
+	colNamesBox = new QComboBox();
+	colNamesBox->setVisible(false);
+    hbox2->addWidget(colNamesBox);
+
+	gl1->addLayout(hbox2, 2, 3);
+
 	boxFunction = new QTextEdit();
 	boxFunction->setReadOnly(true);
     palette = boxFunction->palette();
@@ -278,24 +300,6 @@ void FitDialog::initFitPage()
     boxTolerance->setValue(1e-4);
 	gl3->addWidget(boxTolerance, 0, 4);
 	gl3->setColumnStretch(4, 1);
-
-    QHBoxLayout *hbox2 = new QHBoxLayout();
-	boxWeighting = new QComboBox();
-	boxWeighting->addItem(tr("No weighting"));
-	boxWeighting->addItem(tr("Instrumental"));
-	boxWeighting->addItem(tr("Statistical"));
-	boxWeighting->addItem(tr("Arbitrary Dataset"));
-	boxWeighting->addItem(tr("Direct Weighting"));
-    hbox2->addWidget(boxWeighting);
-    QGroupBox *gb4 = new QGroupBox(tr( "Weighting Method" ));
-    gb4->setLayout(hbox2);
-
-	tableNamesBox = new QComboBox();
-	tableNamesBox->setEnabled(false);
-    hbox2->addWidget(tableNamesBox);
-	colNamesBox = new QComboBox();
-	colNamesBox->setEnabled(false);
-    hbox2->addWidget(colNamesBox);
 
     QHBoxLayout *hbox3 = new QHBoxLayout();
 	buttonCancel1 = new QPushButton(tr( "&Close" ));
@@ -388,7 +392,6 @@ void FitDialog::initFitPage()
     vbox1->addWidget(boxFunction);
 	vbox1->addWidget(gb0);
     vbox1->addWidget(gb1);
-    vbox1->addWidget(gb4);
     vbox1->addWidget(gb3);
     vbox1->addSpacing(10);
     vbox1->addLayout(hbox3);
@@ -1589,13 +1592,10 @@ void FitDialog::selectSrcTable(int tabnr)
 
 void FitDialog::enableWeightingParameters(int index)
 {
-	if (index == Fit::Dataset || index == Fit::Direct){
-		tableNamesBox->setEnabled(true);
-		colNamesBox->setEnabled(true);
-	} else {
-		tableNamesBox->setEnabled(false);
-		colNamesBox->setEnabled(false);
-	}
+	bool on = (index == Fit::Dataset || index == Fit::Direct);
+
+	tableNamesBox->setVisible(on);
+	colNamesBox->setVisible(on);
 }
 
 void FitDialog::closeEvent (QCloseEvent * e)
