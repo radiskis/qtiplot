@@ -1131,7 +1131,11 @@ void ConfigDialog::initAppPage()
 	boxClipboardLocale->addItem("1 000,0");
 	numericFormatLayout->addWidget(boxClipboardLocale, 2, 1);
 
-	numericFormatLayout->setRowStretch(3, 1);
+	boxMuParserCLocale = new QCheckBox();
+    boxMuParserCLocale->setChecked(app->d_muparser_c_locale);
+    numericFormatLayout->addWidget(boxMuParserCLocale, 3, 0);
+
+	numericFormatLayout->setRowStretch(4, 1);
 	appTabWidget->addTab( numericFormatPage, QString() );
 
 	initFileLocationsPage();
@@ -1737,6 +1741,7 @@ void ConfigDialog::languageChange()
 	boxDecimalSeparator->addItem("1.000,0");
 	boxDecimalSeparator->addItem("1 000,0");
 	boxThousandsSeparator->setText(tr("Omit &Thousands Separator"));
+	boxMuParserCLocale->setText(tr("mu&Parser uses C locale settings"));
 
     QLocale locale = app->locale();
     if (locale.name() == QLocale::c().name())
@@ -2074,6 +2079,7 @@ void ConfigDialog::apply()
     QLocale oldLocale = app->locale();
     app->setLocale(locale);
 	QLocale::setDefault(locale);
+	app->d_muparser_c_locale = boxMuParserCLocale->isChecked();
 
 	if (generalDialog->currentWidget() == appTabWidget &&
 		appTabWidget->currentWidget() == numericFormatPage){

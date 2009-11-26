@@ -90,6 +90,7 @@ void DoubleSpinBox::interpretText()
 
 	if (!ok){
 		MyParser parser;
+		parser.setLocale(QLocale());
 		parser.addGSLConstants();
 		try {
 			parser.SetExpr(s.toAscii().constData());

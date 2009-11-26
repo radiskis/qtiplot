@@ -27,10 +27,14 @@
  *                                                                         *
  ***************************************************************************/
 #include "MyParser.h"
+#include "muParserScripting.h"
+#include "NonLinearFit.h"
+
 #include <QMessageBox>
 #include <QApplication>
-#include "NonLinearFit.h"
-#include "muParserScripting.h"
+#include <QSettings>
+#include <QLocale>
+
 #include <gsl/gsl_const_mksa.h>
 #include <gsl/gsl_const_num.h>
 
@@ -50,7 +54,21 @@ MyParser::MyParser()
 			DefineFun(i->name, i->fun3);
 	}
 	gsl_set_error_handler_off();
-	setLocale(QLocale());
+
+#ifdef Q_OS_MAC
+	QSettings settings(QSettings::IniFormat,QSettings::UserScope, "ProIndependent", "QtiPlot");
+#else
+	QSettings settings(QSettings::NativeFormat,QSettings::UserScope, "ProIndependent", "QtiPlot");
+#endif
+	settings.beginGroup("/General");
+	bool cLocale = settings.value("/MuParserCLocale", true).toBool();
+	settings.endGroup();
+
+	QLocale locale = QLocale::c();
+	if (!cLocale)
+		locale = QLocale();
+
+	setLocale(locale);
 }
 
 void MyParser::setLocale(const QLocale& locale)

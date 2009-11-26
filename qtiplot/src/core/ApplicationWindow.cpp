@@ -518,6 +518,7 @@ void ApplicationWindow::initGlobalConstants()
 #endif*/
 
 	d_decimal_digits = 13;
+	d_muparser_c_locale = true;
 
 	d_extended_open_dialog = true;
 	d_extended_export_dialog = true;
@@ -4817,6 +4818,7 @@ void ApplicationWindow::readSettings()
 
 	d_decimal_digits = settings.value("/DecimalDigits", 13).toInt();
 	d_clipboard_locale = QLocale(settings.value("/ClipboardLocale", QLocale::system().name()).toString());
+	d_muparser_c_locale = settings.value("/MuParserCLocale", true).toBool();
 
     d_matrix_undo_stack_size = settings.value("/MatrixUndoStackSize", 10).toInt();
 	d_eol = (EndLineChar)settings.value("/EndOfLine", d_eol).toInt();
@@ -5212,6 +5214,8 @@ void ApplicationWindow::saveSettings()
 	settings.setValue("/Locale", locale().name());
 	settings.setValue("/DecimalDigits", d_decimal_digits);
 	settings.setValue("/ClipboardLocale", d_clipboard_locale.name());
+	settings.setValue("/MuParserCLocale", d_muparser_c_locale);
+
     settings.setValue("/MatrixUndoStackSize", d_matrix_undo_stack_size);
 	settings.setValue("/EndOfLine", (int)d_eol);
 	settings.setValue("/DockWindows", saveState());

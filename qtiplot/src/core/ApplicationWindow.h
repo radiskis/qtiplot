@@ -1119,6 +1119,7 @@ private slots:
 
 // TODO: a lot of this stuff should be private
 public:
+	bool d_muparser_c_locale;
 	Graph::LegendDisplayMode d_graph_legend_display;
 	int d_latex_compiler;
 	QString d_latex_compiler_path;
