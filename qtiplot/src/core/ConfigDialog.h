@@ -227,6 +227,8 @@ private:
 	ColorButton *buttonKeywordColor, *buttonFunctionColor, *buttonClassColor;
 	QLabel *buttonCommentLabel, *buttonNumericLabel, *buttonQuotationLabel;
 	QLabel *buttonKeywordLabel, *buttonFunctionLabel, *buttonClassLabel;
+
+	QCheckBox *boxMuParserCLocale;
 };
 
 #endif // CONFIGDIALOG_H
