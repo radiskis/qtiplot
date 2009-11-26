@@ -4244,12 +4244,23 @@ ApplicationWindow* ApplicationWindow::open(const QString& fn, bool factorySettin
 
 void ApplicationWindow::openRecentProject(int index)
 {
-	if (showSaveProjectMessage() == QMessageBox::Cancel)
-		return;
-
 	QString fn = recent->text(index);
 	int pos = fn.find(" ", 0);
 	fn = fn.right(fn.length() - pos - 1);
+
+	if (projectname != "untitled"){
+		QFileInfo fi(projectname);
+		QString pn = fi.absFilePath();
+
+		if (QDir::toNativeSeparators(fn) == QDir::toNativeSeparators(pn)){
+			QMessageBox::warning(this, tr("QtiPlot - File openning error"),
+					tr("The file: <p><b> %1 </b><p> is the current file!").arg(QDir::toNativeSeparators(fn)));
+			return;
+		}
+	}
+
+	if (showSaveProjectMessage() == QMessageBox::Cancel)
+		return;
 
 	QFile f(fn);
 	if (!f.exists()){
@@ -4265,17 +4276,6 @@ void ApplicationWindow::openRecentProject(int index)
 		}
         updateRecentProjectsList();
 		return;
-	}
-
-	if (projectname != "untitled"){
-		QFileInfo fi(projectname);
-		QString pn = fi.absFilePath();
-
-		if (QDir::toNativeSeparators(fn) == QDir::toNativeSeparators(pn)){
-			QMessageBox::warning(this, tr("QtiPlot - File openning error"),
-					tr("The file: <p><b> %1 </b><p> is the current file!").arg(QDir::toNativeSeparators(fn)));
-			return;
-		}
 	}
 
 	if (!fn.isEmpty()){
@@ -8489,8 +8489,9 @@ void ApplicationWindow::pasteSelection()
 
 			Graph* g = plot->addLayer();
 			g->copy(lastCopiedLayer);
-			QPoint pos = plot->mapFromGlobal(QCursor::pos());
-			plot->setGraphGeometry(pos.x(), pos.y()-20, lastCopiedLayer->width(), lastCopiedLayer->height());
+			QPoint pos = plot->canvas()->mapFromGlobal(QCursor::pos());
+			g->adjustGeometryToCanvas(QRect(pos.x(), pos.y(),
+				lastCopiedLayer->canvas()->width(), lastCopiedLayer->canvas()->height()));
 
 			QApplication::restoreOverrideCursor();
 		} else {
