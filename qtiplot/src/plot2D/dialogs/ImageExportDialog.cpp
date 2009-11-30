@@ -406,6 +406,9 @@ void ImageExportDialog::accept()
 	if (selectedFiles().isEmpty())
 		return;
 
+	if (fileMode() == QFileDialog::Directory)
+		return QFileDialog::accept();
+
 	QString file_name = selectedFiles()[0];
 	QString selected_filter = selectedFilter().remove("*");
 	if(!file_name.endsWith(selected_filter, Qt::CaseInsensitive))

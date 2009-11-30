@@ -4907,7 +4907,11 @@ void Graph::restoreSpectrogram(ApplicationWindow *app, const QStringList& lst)
         QString s = *line;
         if (s.contains("<useMatrixFormula>") && (s.trimmed().remove("<useMatrixFormula>").remove("</useMatrixFormula>")).toInt())
 			sp->setUseMatrixFormula(true);
-        else if (s.contains("<ColorPolicy>")){
+		else if (s.contains("<xAxis>")){
+			sp->setXAxis(s.trimmed().remove("<xAxis>").remove("</xAxis>").toInt());
+        } else if (s.contains("<yAxis>")){
+			sp->setYAxis(s.trimmed().remove("<yAxis>").remove("</yAxis>").toInt());
+        } else if (s.contains("<ColorPolicy>")){
             int color_policy = s.remove("<ColorPolicy>").remove("</ColorPolicy>").stripWhiteSpace().toInt();
             if (color_policy == Spectrogram::GrayScale)
                 sp->setGrayScale();

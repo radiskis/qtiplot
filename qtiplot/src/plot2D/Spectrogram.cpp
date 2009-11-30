@@ -302,6 +302,8 @@ QString Spectrogram::saveToString()
 QString s = "<spectrogram>\n";
 s += "\t<matrix>" + QString(d_matrix->objectName()) + "</matrix>\n";
 s += "\t<useMatrixFormula>" + QString::number(d_use_matrix_formula) + "</useMatrixFormula>\n";
+s += "\t<xAxis>" + QString::number(xAxis()) + "</xAxis>\n";
+s += "\t<yAxis>" + QString::number(yAxis()) + "</yAxis>\n";
 
 if (color_map_policy != Custom)
 	s += "\t<ColorPolicy>" + QString::number(color_map_policy) + "</ColorPolicy>\n";
