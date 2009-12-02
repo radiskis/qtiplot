@@ -1972,7 +1972,7 @@ void MultiLayer::plotProfiles(Matrix* m)
 	g->setAxisTitle(QwtPlot::xTop, QString::null);
 	g->setTitle(QString::null);
 	g->enableAutoscaling(false);
-	g->adjustGeometryToCanvas(QRect(40, 150, 400, 400));
+	g->adjustGeometryToCanvas(QRect(60, 150, 400, 400));
 
 	g = addLayer();
 
@@ -1987,7 +1987,7 @@ void MultiLayer::plotProfiles(Matrix* m)
 	g->setAxisTitle(QwtPlot::xBottom, QString::null);
 	g->setTitle(QString::null);
 	g->enableAutoscaling(false);
-	g->adjustGeometryToCanvas(QRect(40, 0, 400, 100));
+	g->adjustGeometryToCanvas(QRect(60, 0, 400, 100));
 
 	g = addLayer();
 
@@ -2006,9 +2006,10 @@ void MultiLayer::plotProfiles(Matrix* m)
 	g->enableAutoscaling(false);
 	g->adjustGeometryToCanvas(QRect(500, 150, 110, 400));
 
-	QPalette pal = palette();
-	pal.setColor(QPalette::Window, QColor(Qt::lightGray));
-	setPalette(pal);
+	QColor color = Qt::white;
+	color.setAlpha(0);
+	foreach(Graph *g, graphsList)
+		g->setBackgroundColor(color);
 }
 
 MultiLayer::~MultiLayer()

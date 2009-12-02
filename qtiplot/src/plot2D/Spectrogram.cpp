@@ -75,7 +75,8 @@ void Spectrogram::updateData()
 		return;
 
 	setData(MatrixData(d_matrix, d_use_matrix_formula));
-	setLevelsNumber(levels());
+	if(testDisplayMode(QwtPlotSpectrogram::ContourMode))
+		setLevelsNumber(levels());
 
 	QwtScaleWidget *colorAxis = d_graph->axisWidget(color_axis);
 	if (colorAxis)
@@ -122,14 +123,17 @@ bool Spectrogram::setMatrix(Matrix *m, bool useFormula)
 
 void Spectrogram::setLevelsNumber(int levels)
 {
-double step = fabs(data().range().maxValue() - data().range().minValue())/(double)levels;
+	if (levels <= 0)
+		return;
 
-QwtValueList contourLevels;
-for ( double level = data().range().minValue() + 0.5*step;
-	level < data().range().maxValue(); level += step )
-    contourLevels += level;
+	double step = fabs(data().range().maxValue() - data().range().minValue())/(double)levels;
 
-setContourLevels(contourLevels);
+	QwtValueList contourLevels;
+	for ( double level = data().range().minValue() + 0.5*step;
+		level < data().range().maxValue(); level += step )
+		contourLevels += level;
+
+	setContourLevels(contourLevels);
 }
 
 void Spectrogram::setContourLevels (const QwtValueList & levels)
@@ -232,7 +236,6 @@ Spectrogram* Spectrogram::copy(Graph *g)
 	new_s->d_labels_font = d_labels_font;
 	new_s->d_labels_x_offset = d_labels_x_offset;
 	new_s->d_labels_y_offset = d_labels_y_offset;
-
 	new_s->setContourLevels(contourLevels());
 
 	if (defaultContourPen().style() == Qt::NoPen && !d_color_map_pen)
@@ -240,8 +243,10 @@ Spectrogram* Spectrogram::copy(Graph *g)
 	else
 		new_s->d_color_map_pen = d_color_map_pen;
 
-	if (d_labels_list.isEmpty())
+	if (d_labels_list.isEmpty()){
+		new_s->clearLabels();
 		return new_s;
+	}
 
 	QList <PlotMarker *> lst = new_s->labelsList();
 	int count = lst.size();

@@ -719,6 +719,7 @@ void LegendWidget::clone(LegendWidget* t)
 	setFont(t->font());
 	setText(t->text());
 	setOriginCoord(t->xValue(), t->yValue());
+	setAttachPolicy(t->attachPolicy());
 }
 
 QString LegendWidget::saveToString()

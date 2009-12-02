@@ -1324,6 +1324,11 @@ void Matrix::importImage(const QString& fn)
     if (image.isNull())
         return;
 
+	x_start = 0.0;
+	x_end = image.width() - 1.0;
+	y_start = 0.0;
+	y_end = image.height() - 1.0;
+
 	double *buffer = d_matrix_model->dataCopy();
 	if (buffer){
     	d_undo_stack->push(new MatrixSetImageCommand(d_matrix_model, image, d_view_type, 0,
@@ -1337,11 +1342,6 @@ void Matrix::importImage(const QString& fn)
 		emit modifiedWindow(this);
 		modifiedData(this);
 	}
-
-	x_start = 0.0;
-	x_end = image.width() - 1.0;
-	y_start = 0.0;
-	y_end = image.height() - 1.0;
 
 	setWindowLabel(fn);
 }

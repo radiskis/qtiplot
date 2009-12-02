@@ -36,6 +36,9 @@
 #include <cursors.h>
 #include <SymbolBox.h>
 #include <qwt_symbol.h>
+#include <qwt_scale_widget.h>
+
+#include <QLayout>
 
 ScreenPickerTool::ScreenPickerTool(Graph *graph, const QObject *status_target, const char *status_slot)
 	: QwtPlotPicker(graph->canvas()),
@@ -227,10 +230,54 @@ ImageProfilesTool::ImageProfilesTool(ApplicationWindow *app, Graph *graph, Matri
 	d_hor_table(horTable),
 	d_ver_table(verTable)
 {
+	d_selection_marker.setAxis(QwtPlot::xTop, QwtPlot::yLeft);
+
 	if (d_matrix){
-		append(QwtDoublePoint(0.5*(m->xStart() + m->xEnd()), 0.5*(m->yStart() + m->yEnd())));
-		if (d_graph)
+		double xVal = 0.5*(m->xStart() + m->xEnd());
+		double yVal = 0.5*(m->yStart() + m->yEnd());
+		if (d_graph){
 			connect(d_matrix, SIGNAL(destroyed()), d_graph, SLOT(disableTools()));
+			connect(d_matrix, SIGNAL(modifiedData(Matrix *)), this, SLOT(modifiedMatrix(Matrix *)));
+
+			horSpinBox = new DoubleSpinBox('g');
+			horSpinBox->setMinimumWidth(80);
+			horSpinBox->setSingleStep(1.0);
+			horSpinBox->setLocale(QLocale());
+			horSpinBox->setDecimals(6);
+
+			vertSpinBox = new DoubleSpinBox('g');
+			vertSpinBox->setMinimumWidth(80);
+			vertSpinBox->setSingleStep(1.0);
+			vertSpinBox->setLocale(QLocale());
+			vertSpinBox->setDecimals(6);
+
+			zLabel = new QLabel();
+			zLabel->setMinimumWidth(80);
+			zLabel->setFrameStyle(QFrame::Panel | QFrame::Sunken);
+
+			append(QwtDoublePoint(xVal, yVal));
+
+			connect(horSpinBox, SIGNAL(valueChanged(double)), this, SLOT(updateCursorPosition()));
+			connect(vertSpinBox, SIGNAL(valueChanged(double)), this, SLOT(updateCursorPosition()));
+
+			MultiLayer *plot = d_graph->multiLayer();
+			if (plot){
+				QPalette pal = plot->palette();
+				pal.setColor(QPalette::Window, QColor(Qt::lightGray));
+				plot->setPalette(pal);
+
+				QHBoxLayout *box = new QHBoxLayout();
+				box->setSpacing(5);
+				box->addWidget(new QLabel(tr("Position") + ": " + tr("x")));
+				box->addWidget(horSpinBox);
+				box->addWidget(new QLabel(tr("y")));
+				box->addWidget(vertSpinBox);
+				box->addWidget(new QLabel(tr("Z-Value")));
+				box->addWidget(zLabel);
+
+				plot->toolBox()->insertLayout(0, box);
+			}
+		}
 	}
 
 	if (d_hor_table){
@@ -241,7 +288,59 @@ ImageProfilesTool::ImageProfilesTool(ApplicationWindow *app, Graph *graph, Matri
 		for (int i = 0; i < d_ver_table->numRows(); i++)
 			d_ver_table->setText(i, 0, QString::number(i));
 	}
+}
 
+void ImageProfilesTool::updateCursorPosition()
+{
+	append(QwtDoublePoint(horSpinBox->value(), vertSpinBox->value()));
+
+	if (d_graph)
+		d_graph->replot();
+}
+
+void ImageProfilesTool::modifiedMatrix(Matrix *m)
+{
+	if (!m)
+		return;
+
+	double mmin, mmax;
+	m->range(&mmin, &mmax);
+
+	if (d_hor_table){
+		d_hor_table->setNumRows(m->numCols());
+		for (int i = 0; i < d_hor_table->numRows(); i++)
+			d_hor_table->setText(i, 0, QString::number(i));
+	}
+	if (d_ver_table){
+		d_ver_table->setNumRows(m->numRows());
+		for (int i = 0; i < d_ver_table->numRows(); i++)
+			d_ver_table->setText(i, 0, QString::number(i));
+	}
+
+	if (d_graph){
+		d_graph->setScale(QwtPlot::yLeft, QMIN(m->yStart(), m->yEnd()), QMAX(m->yStart(), m->yEnd()),
+					0.0, 5, 5, Graph::Linear, true);
+		d_graph->setScale(QwtPlot::xTop, QMIN(m->xStart(), m->xEnd()), QMAX(m->xStart(), m->xEnd()));
+		d_graph->replot();
+
+		MultiLayer *plot = d_graph->multiLayer();
+		Graph *gHor = plot->layer(2);
+		if (gHor){
+			gHor->setScale(QwtPlot::xBottom, QMIN(m->xStart(), m->xEnd()), QMAX(m->xStart(), m->xEnd()));
+			gHor->setScale(QwtPlot::yLeft, mmin, mmax);
+			gHor->replot();
+		}
+
+		Graph *gVert = plot->layer(3);
+		if (gVert){
+			gVert->setScale(QwtPlot::xTop, mmin, mmax);
+			gVert->setScale(QwtPlot::yLeft, QMIN(m->yStart(), m->yEnd()), QMAX(m->yStart(), m->yEnd()),
+					0.0, 5, 5, Graph::Linear, true);
+			gVert->replot();
+		}
+	}
+
+	append(QwtDoublePoint(d_selection_marker.xValue(), d_selection_marker.yValue()));
 }
 
 ImageProfilesTool* ImageProfilesTool::clone(Graph *g)
@@ -261,11 +360,16 @@ void ImageProfilesTool::append(const QwtDoublePoint &pos)
 	double x = pos.x();
 	double y = pos.y();
 
+	horSpinBox->setValue(x);
+	vertSpinBox->setValue(y);
+
 	x += 0.5*d_matrix->dx();
 	y -= 0.5*d_matrix->dy();
 
 	int row = qRound(fabs((y - d_matrix->yStart())/d_matrix->dy()));
 	int col = qRound(fabs((x - d_matrix->xStart())/d_matrix->dx()));
+
+	zLabel->setText(QLocale().toString(d_matrix->cell(row, col)));
 
 	if (d_hor_table){
 		for (int i = 0; i < d_matrix->numCols(); i++)
