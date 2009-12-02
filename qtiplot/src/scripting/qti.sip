@@ -1943,6 +1943,7 @@ public:
 
 	Matrix* importImage(const QString&, bool);
 	MultiLayer* plotSpectrogram(Matrix*, Graph::CurveType = Graph::ColorMap) /PyName=plot/;
+	MultiLayer* plotImageProfiles(Matrix*);
 	MultiLayer* plot(const QString&, double, double, int = 100);
 %MethodCode
   QStringList l;

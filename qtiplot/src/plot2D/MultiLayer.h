@@ -107,6 +107,8 @@ public:
 
 	void plotProfiles(Matrix* m);
 
+	QHBoxLayout *toolBox(){return toolbuttonsBox;};
+
 public slots:
 	Graph* addLayer(int x = 0, int y = 0, int width = 0, int height = 0);
 

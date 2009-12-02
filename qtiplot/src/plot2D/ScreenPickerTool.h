@@ -32,6 +32,8 @@
 #include "PlotToolInterface.h"
 #include <QObject>
 #include <QPointer>
+#include <QLabel>
+#include <DoubleSpinBox.h>
 
 #include <qwt_double_rect.h>
 #include <qwt_plot_marker.h>
@@ -112,10 +114,16 @@ class ImageProfilesTool : public ScreenPickerTool
 		QPointer<Table> horizontalTable(){return d_hor_table;};
 		QPointer<Table> verticalTable(){return d_ver_table;};
 
+	private slots:
+		void modifiedMatrix(Matrix *);
+		void updateCursorPosition();
+
 	protected:
 		ApplicationWindow *d_app;
 		QPointer<Matrix> d_matrix;
 		QPointer<Table> d_hor_table, d_ver_table;
+		DoubleSpinBox *horSpinBox, *vertSpinBox;
+		QLabel *zLabel;
 };
 
 #endif // ifndef SCREEN_PICKER_TOOL_H
