@@ -2434,12 +2434,7 @@ void ConfigDialog::chooseTranslationsFolder()
 
 	QFileInfo tfi(app->d_translations_folder);
 	QString dir = QFileDialog::getExistingDirectory(this, tr("Choose the location of the QtiPlot translations folder!"),
-#ifdef Q_CC_MSVC
-		tfi.dir().absolutePath(), 0);
-#else
-		tfi.dir().absolutePath(), !QFileDialog::ShowDirsOnly);
-#endif
-
+		tfi.absoluteFilePath(), QFileDialog::ShowDirsOnly);
 	if (!dir.isEmpty()){
 		app->d_translations_folder = QDir::toNativeSeparators(dir);
 		translationsPathLine->setText(app->d_translations_folder);
@@ -2456,16 +2451,10 @@ void ConfigDialog::chooseHelpFolder()
 
 	QFileInfo hfi(app->helpFilePath);
 	QString dir = QFileDialog::getExistingDirectory(this, tr("Choose the location of the QtiPlot help folder!"),
-#ifdef Q_CC_MSVC
-		hfi.dir().absolutePath(), 0);
-#else
-		hfi.dir().absolutePath(), !QFileDialog::ShowDirsOnly);
-#endif
-
+		hfi.dir().absolutePath(), QFileDialog::ShowDirsOnly);
 	if (!dir.isEmpty()){
-		QString helpFilePath = dir + "index.html";
-		QFile helpFile(helpFilePath);
-		if (!helpFile.exists()){
+		QString helpFilePath = QDir(dir).absoluteFilePath ("index.html");
+		if (!QFile(helpFilePath).exists()){
 			QMessageBox::critical(this, tr("QtiPlot - index.html File Not Found!"),
 					tr("There is no file called <b>index.html</b> in this folder.<br>Please choose another folder!"));
 		} else
@@ -2484,12 +2473,7 @@ void ConfigDialog::choosePythonConfigFolder()
 
 	QFileInfo tfi(app->d_python_config_folder);
 	QString dir = QFileDialog::getExistingDirectory(this, tr("Choose the location of the Python configuration files!"),
-#ifdef Q_CC_MSVC
-		tfi.dir().absolutePath(), 0);
-#else
-		tfi.dir().absolutePath(), !QFileDialog::ShowDirsOnly);
-#endif
-
+		tfi.absoluteFilePath(), QFileDialog::ShowDirsOnly);
 	if (!dir.isEmpty()){
 		app->d_python_config_folder = QDir::toNativeSeparators(dir);
 		pythonConfigDirLine->setText(app->d_python_config_folder);

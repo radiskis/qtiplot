@@ -10086,13 +10086,10 @@ void ApplicationWindow::chooseHelpFolder()
 {
 	QFileInfo hfi(helpFilePath);
 	QString dir = QFileDialog::getExistingDirectory(this, tr("Choose the location of the QtiPlot help folder!"),
-	hfi.dir().absolutePath(), !QFileDialog::ShowDirsOnly);
-
+		hfi.dir().absolutePath(), QFileDialog::ShowDirsOnly);
 	if (!dir.isEmpty()){
-		helpFilePath = dir + "index.html";
-
-		QFile helpFile(helpFilePath);
-		if (!helpFile.exists()){
+		helpFilePath = QDir(dir).absoluteFilePath ("index.html");
+		if (!QFile(helpFilePath).exists()){
 			QMessageBox::critical(this, tr("QtiPlot - index.html File Not Found!"),
 					tr("There is no file called <b>index.html</b> in this folder.<br>Please choose another folder!"));
 		}
