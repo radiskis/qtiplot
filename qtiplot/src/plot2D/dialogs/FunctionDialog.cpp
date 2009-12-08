@@ -239,8 +239,7 @@ FunctionDialog::FunctionDialog(QWidget* parent, bool standAlone, Qt::WFlags fl )
 		setSizeGripEnabled(true);
 		setWindowTitle( tr( "QtiPlot - Add function curve" ) );
 		setAttribute(Qt::WA_DeleteOnClose);
-	} else
-		setMaximumHeight(300);
+	}
 
 	setFocusProxy (boxFunction);
 	connect( boxType, SIGNAL( activated(int) ), this, SLOT( raiseWidget(int) ) );

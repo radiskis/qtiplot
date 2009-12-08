@@ -1133,7 +1133,7 @@ void ConfigDialog::initAppPage()
 
 	boxMuParserCLocale = new QCheckBox();
     boxMuParserCLocale->setChecked(app->d_muparser_c_locale);
-    numericFormatLayout->addWidget(boxMuParserCLocale, 3, 0);
+	//numericFormatLayout->addWidget(boxMuParserCLocale, 3, 0); //TODO: Uncomment when bug in muParser is fixed
 
 	numericFormatLayout->setRowStretch(4, 1);
 	appTabWidget->addTab( numericFormatPage, QString() );

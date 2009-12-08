@@ -4818,7 +4818,7 @@ void ApplicationWindow::readSettings()
 
 	d_decimal_digits = settings.value("/DecimalDigits", 13).toInt();
 	d_clipboard_locale = QLocale(settings.value("/ClipboardLocale", QLocale::system().name()).toString());
-	d_muparser_c_locale = settings.value("/MuParserCLocale", true).toBool();
+	//d_muparser_c_locale = settings.value("/MuParserCLocale", true).toBool();
 
     d_matrix_undo_stack_size = settings.value("/MatrixUndoStackSize", 10).toInt();
 	d_eol = (EndLineChar)settings.value("/EndOfLine", d_eol).toInt();
@@ -5214,7 +5214,7 @@ void ApplicationWindow::saveSettings()
 	settings.setValue("/Locale", locale().name());
 	settings.setValue("/DecimalDigits", d_decimal_digits);
 	settings.setValue("/ClipboardLocale", d_clipboard_locale.name());
-	settings.setValue("/MuParserCLocale", d_muparser_c_locale);
+	//settings.setValue("/MuParserCLocale", d_muparser_c_locale);
 
     settings.setValue("/MatrixUndoStackSize", d_matrix_undo_stack_size);
 	settings.setValue("/EndOfLine", (int)d_eol);
@@ -11252,7 +11252,7 @@ Table* ApplicationWindow::openTable(ApplicationWindow* app, const QStringList &f
 			fields.pop_front();
 			w->setColComments(fields);
 			w->setHeaderColType();
-		} else if (fields[0] == "WindowLabel") { // d_file_version > 71
+		} else if (fields[0] == "WindowLabel" && fields.size() >= 3) { // d_file_version > 71
 			w->setWindowLabel(fields[1]);
 			w->setCaptionPolicy((MdiSubWindow::CaptionPolicy)fields[2].toInt());
 		} else if (fields[0] == "ReadOnlyColumn") { // d_file_version > 91

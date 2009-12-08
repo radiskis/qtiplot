@@ -55,6 +55,7 @@ MyParser::MyParser()
 	}
 	gsl_set_error_handler_off();
 
+	/* TODO: Uncomment when bug in muParser is fixed
 #ifdef Q_OS_MAC
 	QSettings settings(QSettings::IniFormat,QSettings::UserScope, "ProIndependent", "QtiPlot");
 #else
@@ -69,10 +70,12 @@ MyParser::MyParser()
 		locale = QLocale();
 
 	setLocale(locale);
+*/
 }
 
 void MyParser::setLocale(const QLocale& locale)
 {
+#if __GNUC__ < 4
 	const char decPoint = locale.decimalPoint().toAscii();
 	if (decPoint != '.'){
 		SetDecSep(decPoint);
@@ -83,6 +86,7 @@ void MyParser::setLocale(const QLocale& locale)
 		SetThousandsSep(0);
 		SetArgSep(',');
 	}
+#endif
 }
 
 void MyParser::addGSLConstants()
