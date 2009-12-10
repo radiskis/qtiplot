@@ -11112,11 +11112,17 @@ Note* ApplicationWindow::openNote(ApplicationWindow* app, const QStringList &fli
 		app->setListViewDate(caption, lst[1]);
 		w->setBirthDate(lst[1]);
 	}
-	restoreWindowGeometry(app, w, flist[1]);
 
-	lst=flist[2].split("\t");
-	w->setWindowLabel(lst[1]);
-	w->setCaptionPolicy((MdiSubWindow::CaptionPolicy)lst[2].toInt());
+	if (flist.size() >= 2)
+		restoreWindowGeometry(app, w, flist[1]);
+
+	if (flist.size() >= 3){
+		lst = flist[2].split("\t");
+		if (lst.size() >= 3){
+			w->setWindowLabel(lst[1]);
+			w->setCaptionPolicy((MdiSubWindow::CaptionPolicy)lst[2].toInt());
+		}
+	}
 	return w;
 }
 
@@ -11153,7 +11159,7 @@ Matrix* ApplicationWindow::openMatrix(ApplicationWindow* app, const QStringList 
 				w->setTextFormat('f', fields[2].toInt());
 			else
 				w->setTextFormat('e', fields[2].toInt());
-		} else if (fields[0] == "WindowLabel") { // d_file_version > 71
+		} else if (fields[0] == "WindowLabel" && fields.size() >= 3) { // d_file_version > 71
 			w->setWindowLabel(fields[1]);
 			w->setCaptionPolicy((MdiSubWindow::CaptionPolicy)fields[2].toInt());
 		} else if (fields[0] == "Coordinates") { // d_file_version > 81
@@ -11351,7 +11357,7 @@ TableStatistics* ApplicationWindow::openTableStatistics(const QStringList &flist
 		} else if (fields[0] == "Comments") { // d_file_version > 71
 			fields.pop_front();
 			w->setColComments(fields);
-		} else if (fields[0] == "WindowLabel") { // d_file_version > 71
+		} else if (fields[0] == "WindowLabel" && fields.size() >= 3) { // d_file_version > 71
 			w->setWindowLabel(fields[1]);
 			w->setCaptionPolicy((MdiSubWindow::CaptionPolicy)fields[2].toInt());
 		}
@@ -15026,9 +15032,11 @@ Folder* ApplicationWindow::appendProject(const QString& fn, Folder* parentFolder
 				restoreWindowGeometry(this, plot, t.readLine());
 
 				if (d_file_version > 71){
-					QStringList lst=t.readLine().split("\t");
-					plot->setWindowLabel(lst[1]);
-					plot->setCaptionPolicy((MdiSubWindow::CaptionPolicy)lst[2].toInt());
+					QStringList lst = t.readLine().split("\t");
+					if (lst.size() >= 3){
+						plot->setWindowLabel(lst[1]);
+						plot->setCaptionPolicy((MdiSubWindow::CaptionPolicy)lst[2].toInt());
+					}
 				}
 
 				if (d_file_version > 83){
