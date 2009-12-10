@@ -1364,7 +1364,7 @@ void Graph3D::updateScalesFromMatrix(double xl, double xr, double yl, double yr,
 	sp->loadFromData(data_matrix, nc, nr, xl, xr, yl, yr);
 	Matrix::freeMatrixData(data_matrix, nc);
 
-	sp->coordinates()->setPosition(Triple(xl, yl, zl), Triple(xr, yr, zr));
+	sp->createCoordinateSystem(Triple(xl, yl, zl), Triple(xr, yr, zr));
 	sp->legend()->setLimits(zl, zr);
 	sp->legend()->setMajors(legendMajorTicks);
 
@@ -3087,9 +3087,11 @@ Graph3D* Graph3D::restore(ApplicationWindow* app, const QStringList &lst, int fi
 	plot->setMeshLineWidth(fList[1].toDouble());
 
 	if (fileVersion > 71){
-		fList=lst[20].split("\t"); // using QString::SkipEmptyParts here causes a crash for empty window labels
-		plot->setWindowLabel(fList[1]);
-		plot->setCaptionPolicy((MdiSubWindow::CaptionPolicy)fList[2].toInt());
+		fList = lst[20].split("\t"); // using QString::SkipEmptyParts here causes a crash for empty window labels
+		if (fList.size() >= 3){
+			plot->setWindowLabel(fList[1]);
+			plot->setCaptionPolicy((MdiSubWindow::CaptionPolicy)fList[2].toInt());
+		}
 	}
 
 	if (fileVersion >= 88){
