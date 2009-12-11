@@ -1214,8 +1214,6 @@ void MultiLayer::connectLayer(Graph *g)
 {
 	connect (g,SIGNAL(drawLineEnded(bool)), this, SIGNAL(drawLineEnded(bool)));
 	connect (g,SIGNAL(showPlotDialog(int)),this,SIGNAL(showPlotDialog(int)));
-	connect (g,SIGNAL(createTable(const QString&,int,int,const QString&)),
-			this,SIGNAL(createTable(const QString&,int,int,const QString&)));
 	connect (g,SIGNAL(viewLineDialog()),this,SIGNAL(showLineDialog()));
 	connect (g,SIGNAL(showContextMenu()),this,SIGNAL(showGraphContextMenu()));
 	connect (g,SIGNAL(showAxisDialog(int)),this,SIGNAL(showAxisDialog(int)));

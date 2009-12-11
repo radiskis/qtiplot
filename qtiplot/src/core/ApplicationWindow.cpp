@@ -2770,33 +2770,6 @@ Table* ApplicationWindow::newTable(int r, int c, const QString& name, const QStr
 	return w;
 }
 
-Table* ApplicationWindow::newTable(const QString& caption, int r, int c, const QString& text)
-{
-	QStringList lst = caption.split("\t", QString::SkipEmptyParts);
-    QString legend = QString();
-    if (lst.count() == 2)
-        legend = lst[1];
-
-	Table* w = new Table(scriptEnv, r, c, legend, this, 0);
-
-	QStringList rows = text.split("\n", QString::SkipEmptyParts);
-	QString rlist = rows[0];
-	QStringList list = rlist.split("\t");
-	w->setHeader(list);
-
-	for (int i=0; i<r; i++)
-	{
-		rlist=rows[i+1];
-		list=rlist.split("\t");
-		for (int j=0; j<c; j++)
-			w->setText(i, j, list[j]);
-	}
-
-	initTable(w, lst[0]);
-	w->showNormal();
-	return w;
-}
-
 Table* ApplicationWindow::newHiddenTable(const QString& name, const QString& label, int r, int c, const QString& text)
 {
 	Table* w = new Table(scriptEnv, r, c, label, this, 0);
@@ -12492,8 +12465,6 @@ void ApplicationWindow::connectMultilayerPlot(MultiLayer *g)
 	connect (g,SIGNAL(hiddenWindow(MdiSubWindow*)),this, SLOT(hideWindow(MdiSubWindow*)));
 	connect (g,SIGNAL(statusChanged(MdiSubWindow*)),this, SLOT(updateWindowStatus(MdiSubWindow*)));
 	connect (g,SIGNAL(cursorInfo(const QString&)),info,SLOT(setText(const QString&)));
-	connect (g,SIGNAL(createTable(const QString&,int,int,const QString&)),
-			this,SLOT(newTable(const QString&,int,int,const QString&)));
 	connect (g,SIGNAL(viewTitleDialog()),this,SLOT(showTitleDialog()));
 	connect (g,SIGNAL(modifiedWindow(MdiSubWindow*)),this,SLOT(modifiedProject(MdiSubWindow*)));
 	connect (g,SIGNAL(modifiedPlot()), this, SLOT(modifiedProject()));
@@ -12522,7 +12493,6 @@ void ApplicationWindow::connectTable(Table* w)
 	connect (w,SIGNAL(colValuesDialog()),this,SLOT(showColumnValuesDialog()));
 	connect (w,SIGNAL(showContextMenu(bool)),this,SLOT(showTableContextMenu(bool)));
 	connect (w,SIGNAL(changedColHeader(const QString&,const QString&)),this,SLOT(updateColNames(const QString&,const QString&)));
-	connect (w,SIGNAL(createTable(const QString&,int,int,const QString&)),this,SLOT(newTable(const QString&,int,int,const QString&)));
 
 	w->askOnCloseEvent(confirmCloseTable);
 }

@@ -344,7 +344,6 @@ signals:
 	void colValuesDialog();
 	void resizedTable(QWidget*);
 	void showContextMenu(bool selection);
-	void createTable(const QString&,int,int,const QString&);
 
 protected:
 	MyTable *d_table;

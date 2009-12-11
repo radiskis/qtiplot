@@ -3966,15 +3966,21 @@ void Graph::createTable(const QwtPlotCurve* curve)
     if (!curve)
         return;
 
-    int size = curve->dataSize();
-    QString text = "1\t2\n";
-    for (int i=0; i<size; i++)
-	{
-        text += QString::number(curve->x(i))+"\t";
-        text += QString::number(curve->y(i))+"\n";
-    }
-    QString legend = tr("Data set generated from curve") + ": " + curve->title().text();
-    emit createTable(tr("Table") + "1" + "\t" + legend, size, 2, text);
+	MultiLayer *plot = multiLayer();
+	if (!plot)
+		return;
+
+	ApplicationWindow *app = plot->applicationWindow();
+	if (!app)
+		return;
+
+	int size = curve->dataSize();
+	Table *t = app->newTable(size, 2, QString::null, tr("Data set generated from curve") + ": " + curve->title().text());
+	for (int i = 0; i < size; i++){
+		t->setCell(i, 0, curve->x(i));
+		t->setCell(i, 1, curve->y(i));
+	}
+	t->showNormal();
 }
 
 QString Graph::saveToString(bool saveAsTemplate)

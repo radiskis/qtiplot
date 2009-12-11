@@ -77,7 +77,7 @@ class LineProfileTool : public QWidget, public PlotToolInterface
 		void statusText(const QString&);
 
 	protected:
-		int averageImagePixel(const QImage &image, int px, int py, bool moreHorizontal);
+		double averageImagePixel(const QImage &image, int px, int py, bool moreHorizontal);
 		/*!\brief Draw line during operation.
 		 */
 		virtual void paintEvent(QPaintEvent *e);
