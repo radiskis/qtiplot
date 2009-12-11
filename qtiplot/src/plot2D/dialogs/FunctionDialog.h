@@ -41,6 +41,7 @@ class QSpinBox;
 class QLabel;
 class QTextEdit;
 class DoubleSpinBox;
+class ScriptEdit;
 
 //! Function dialog
 class FunctionDialog : public QDialog
@@ -97,7 +98,7 @@ private:
 	QSpinBox* boxParPoints;
 	QSpinBox* boxPolarPoints;
 	QStackedWidget* optionStack;
-    QTextEdit* boxFunction;
+	ScriptEdit* boxFunction;
 	QWidget* functionPage;
 	QWidget* polarPage;
 	QWidget* parametricPage;

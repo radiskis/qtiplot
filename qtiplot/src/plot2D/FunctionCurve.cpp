@@ -194,7 +194,6 @@ void FunctionCurve::loadData(int points, bool xLog10Scale)
 	}
 
 	double step = (d_to - d_from)/(double)(points - 1.0);
-    bool error = false;
 	if (d_function_type == Normal){
 		MyParser parser;
 		double x = d_from;
@@ -210,9 +209,9 @@ void FunctionCurve::loadData(int points, bool xLog10Scale)
 			X[0] = d_from;
 			try {
 				Y[0] = parser.EvalRemoveSingularity(&x, false);
-			} catch (MyParser::Pole) {
-			    error = true;
-			}
+			} catch (MyParser::Pole) {}
+
+			int lastButOne = points - 1;
 
 			ScaleEngine *sc_engine = 0;
 			if (plot())
@@ -221,42 +220,29 @@ void FunctionCurve::loadData(int points, bool xLog10Scale)
 			if (xLog10Scale || (d_from > 0 && d_to > 0 && sc_engine &&
 				sc_engine->type() == ScaleTransformation::Log10)){
 				step = log10(d_to/d_from)/(double)(points - 1);
-				for (int i = 1; i < points; i++ ){
+				for (int i = 1; i < lastButOne; i++ ){
 					x = d_from*pow(10, i*step);
-					if (x > d_to){// due to floating point representation the last point might be outside the interval
-						points = i;
-						break;
-					}
 					X[i] = x;
 					try {
 						Y[i] = parser.EvalRemoveSingularity(&x, false);
-					} catch (MyParser::Pole){
-						error = true;
-					}
+					} catch (MyParser::Pole){}
 				}
 			} else {
-				int lastButOne = points - 1;
 				for (int i = 1; i < lastButOne; i++ ){
 					x += step;
 					X[i] = x;
 					try {
 						Y[i] = parser.EvalRemoveSingularity(&x, false);
-					} catch (MyParser::Pole){
-						error = true;
-					}
-				}
-				//the last point might be outside the interval, therefore we calculate it separately at its precise value
-				x = d_to;
-				X[lastButOne] = x;
-				try {
-					Y[lastButOne] = parser.EvalRemoveSingularity(&x, false);
-				} catch (MyParser::Pole){
-					error = true;
+					} catch (MyParser::Pole){}
 				}
 			}
-		} catch(mu::ParserError &e) {
-			error = true;
-		}
+			//the last point might be outside the interval, therefore we calculate it separately at its precise value
+			x = d_to;
+			X[lastButOne] = x;
+			try {
+				Y[lastButOne] = parser.EvalRemoveSingularity(&x, false);
+			} catch (MyParser::Pole){}
+		} catch(mu::ParserError &e) {}
 	} else if (d_function_type == Parametric || d_function_type == Polar) {
 		QStringList aux = d_formulas;
 		MyParser xparser;
@@ -279,9 +265,7 @@ void FunctionCurve::loadData(int points, bool xLog10Scale)
 				Y[i] = yparser.Eval();
 				par += step;
 			}
-		} catch(mu::ParserError &) {
-			error = true;
-		}
+		} catch(mu::ParserError &) {}
 	}
 
 	setData(X, Y, points);
