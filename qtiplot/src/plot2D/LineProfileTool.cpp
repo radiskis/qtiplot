@@ -92,11 +92,10 @@ void LineProfileTool::calculateLineProfile(const QPoint& start, const QPoint& en
 		y2 = int(y2*ratioY);
 	}
 
-	QString text = tr("pixel") + "\tx\ty\t" + tr("intensity") + "\n";
+	QString text =  + "\n";
 
 	//uses the fast Bresenham's line-drawing algorithm
 #define sgn(x) ((x<0)?-1:((x>0)?1:0))
-	int i = 0, n = 0;
 	int dx = x2 - x1;      //the horizontal distance of the line
 	int dy = y2 - y1;      //the vertical distance of the line
 	int dxabs = abs(dx);
@@ -108,39 +107,41 @@ void LineProfileTool::calculateLineProfile(const QPoint& start, const QPoint& en
 	int px = x1;
 	int py = y1;
 
-	if (dxabs>=dyabs){ //the line is more horizontal than vertical
-		for(i=0;i<dxabs;i++){
-			y+=dyabs;
-			if (y>=dxabs){
-				y-=dxabs;
-				py+=sdy;
-			}
-			px+=sdx;
+	int n = (dxabs >= dyabs) ? dxabs : dyabs;
+	Table *t = d_app->newTable(n, 4, QString::null, QString::null);
+	t->setHeader(QStringList() << tr("pixel") << tr("x") << tr("y") << tr("intensity"));
 
-			n=dxabs;
-			text+=QString::number(i)+"\t";
-			text+=QString::number(px)+"\t";
-			text+=QString::number(py)+"\t";
-			text+=QString::number(averageImagePixel(image, px, py, true))+"\n";
+	if (dxabs >= dyabs){ //the line is more horizontal than vertical
+		for(int i = 0; i< dxabs; i++){
+			y += dyabs;
+			if (y >= dxabs){
+				y -= dxabs;
+				py += sdy;
+			}
+			px += sdx;
+
+			t->setText(i, 0, QString::number(i));
+			t->setText(i, 1, QString::number(px));
+			t->setText(i, 2, QString::number(py));
+			t->setCell(i, 3, averageImagePixel(image, px, py, true));
 		}
 	} else {// the line is more vertical than horizontal
-		for(i=0;i<dyabs;i++){
-			x+=dxabs;
-			if (x>=dyabs){
-				x-=dyabs;
-				px+=sdx;
+		for(int i = 0; i < dyabs; i++){
+			x += dxabs;
+			if (x >= dyabs){
+				x -= dyabs;
+				px += sdx;
 			}
-			py+=sdy;
+			py += sdy;
 
-			n=dyabs;
-			text+=QString::number(i)+"\t";
-			text+=QString::number(px)+"\t";
-			text+=QString::number(py)+"\t";
-			text+=QString::number(averageImagePixel(image, px, py, false))+"\n";
+			t->setText(i, 0, QString::number(i));
+			t->setText(i, 1, QString::number(px));
+			t->setText(i, 2, QString::number(py));
+			t->setCell(i, 3, averageImagePixel(image, px, py, true));
 		}
 	}
+	t->showNormal();
 
-	Table *t = d_app->newTable(tr("Table") + "1", n, 4, text);
 	MultiLayer* plot = d_app->multilayerPlot(t, QStringList(QString(t->objectName())+"_intensity"), 0);
 	Graph *g = (Graph*)plot->activeLayer();
 	if (g){
@@ -151,7 +152,7 @@ void LineProfileTool::calculateLineProfile(const QPoint& start, const QPoint& en
 
 }
 
-int LineProfileTool::averageImagePixel(const QImage& image, int px, int py, bool moreHorizontal)
+double LineProfileTool::averageImagePixel(const QImage& image, int px, int py, bool moreHorizontal)
 {
 	QRgb pixel;
 	int sum=0,start,i;
@@ -169,7 +170,7 @@ int LineProfileTool::averageImagePixel(const QImage& image, int px, int py, bool
 			sum+=qGray(pixel);
 		}
 	}
-	return sum/d_average_pixels;
+	return (double)sum/(double)d_average_pixels;
 }
 
 void LineProfileTool::paintEvent(QPaintEvent *)

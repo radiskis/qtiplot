@@ -221,7 +221,6 @@ signals:
 	void cursorInfo(const QString&);
 	void showLineDialog();
 	void viewTitleDialog();
-	void createTable(const QString&,int,int,const QString&);
 	void pasteMarker();
 	void setPointerCursor();
 	void currentFontChanged(const QFont&);

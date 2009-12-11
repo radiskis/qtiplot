@@ -726,7 +726,6 @@ signals:
 		void drawLineEnded(bool);
 		void cursorInfo(const QString&);
 		void showPlotDialog(int);
-		void createTable(const QString&,int,int,const QString&);
 
 		void viewLineDialog();
 		void viewTitleDialog();

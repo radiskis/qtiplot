@@ -187,18 +187,17 @@ void FunctionCurve::loadData(int points, bool xLog10Scale)
 	}
 	double *Y = (double *)malloc(points*sizeof(double));
 	if (!Y){
-		QMessageBox::critical(0, "QtiPlot  - Memory Allocation Error",
+		QMessageBox::critical(0, "QtiPlot - Memory Allocation Error",
 		"Not enough memory, operation aborted!");
 		free(X);
 		return;
 	}
 
-    double step = (d_to - d_from)/(double)(points - 1);
+	double step = (d_to - d_from)/(double)(points - 1.0);
     bool error = false;
-
 	if (d_function_type == Normal){
 		MyParser parser;
-		double x;
+		double x = d_from;
 		try {
 			parser.DefineVar(d_variable.ascii(), &x);
 			QMapIterator<QString, double> i(d_constants);
@@ -209,7 +208,6 @@ void FunctionCurve::loadData(int points, bool xLog10Scale)
 			parser.SetExpr(d_formulas[0].ascii());
 
 			X[0] = d_from;
-			x = d_from;
 			try {
 				Y[0] = parser.EvalRemoveSingularity(&x, false);
 			} catch (MyParser::Pole) {
@@ -225,6 +223,10 @@ void FunctionCurve::loadData(int points, bool xLog10Scale)
 				step = log10(d_to/d_from)/(double)(points - 1);
 				for (int i = 1; i < points; i++ ){
 					x = d_from*pow(10, i*step);
+					if (x > d_to){// due to floating point representation the last point might be outside the interval
+						points = i;
+						break;
+					}
 					X[i] = x;
 					try {
 						Y[i] = parser.EvalRemoveSingularity(&x, false);
@@ -233,7 +235,8 @@ void FunctionCurve::loadData(int points, bool xLog10Scale)
 					}
 				}
 			} else {
-				for (int i = 1; i < points; i++ ){
+				int lastButOne = points - 1;
+				for (int i = 1; i < lastButOne; i++ ){
 					x += step;
 					X[i] = x;
 					try {
@@ -241,6 +244,14 @@ void FunctionCurve::loadData(int points, bool xLog10Scale)
 					} catch (MyParser::Pole){
 						error = true;
 					}
+				}
+				//the last point might be outside the interval, therefore we calculate it separately at its precise value
+				x = d_to;
+				X[lastButOne] = x;
+				try {
+					Y[lastButOne] = parser.EvalRemoveSingularity(&x, false);
+				} catch (MyParser::Pole){
+					error = true;
 				}
 			}
 		} catch(mu::ParserError &e) {
@@ -276,3 +287,4 @@ void FunctionCurve::loadData(int points, bool xLog10Scale)
 	setData(X, Y, points);
 	free(X); free(Y);
 }
+
