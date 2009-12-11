@@ -32,6 +32,7 @@
 #include <MultiLayer.h>
 #include <FunctionCurve.h>
 #include <DoubleSpinBox.h>
+#include <ScriptEdit.h>
 
 #include <QTextEdit>
 #include <QLineEdit>
@@ -46,6 +47,8 @@
 #include <QMessageBox>
 #include <QTableWidget>
 #include <QHeaderView>
+#include <QCompleter>
+#include <QStringListModel>
 
 FunctionDialog::FunctionDialog(QWidget* parent, bool standAlone, Qt::WFlags fl )
 : QDialog( parent, fl )
@@ -74,7 +77,18 @@ FunctionDialog::FunctionDialog(QWidget* parent, bool standAlone, Qt::WFlags fl )
 
 	QGridLayout *gl1 = new QGridLayout();
     gl1->addWidget(new QLabel(tr( "f(x)= " )), 0, 0);
-	boxFunction = new QTextEdit();
+	boxFunction = new ScriptEdit(app->scriptingEnv());
+
+	QStringList functions = MyParser::functionsList();
+	functions.sort();
+
+	QCompleter *completer = new QCompleter(this);
+	completer->setModelSorting(QCompleter::CaseSensitivelySortedModel);
+	completer->setCompletionMode(QCompleter::PopupCompletion);
+	completer->setModel(new QStringListModel(functions, completer));
+
+	boxFunction->setCompleter(completer);
+
 	gl1->addWidget(boxFunction, 0, 1);
 	gl1->addWidget(new QLabel(tr( "From x= " )), 1, 0);
 	boxFrom = new DoubleSpinBox();
