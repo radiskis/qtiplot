@@ -32,6 +32,7 @@
 #include "FindReplaceDialog.h"
 #include <ApplicationWindow.h>
 #include <pixmaps.h>
+#include <MyParser.h>
 
 #include <QAction>
 #include <QMenu>
@@ -67,6 +68,15 @@ ScriptEdit::ScriptEdit(ScriptingEnv *env, QWidget *parent, const char *name)
 	rehighlight();
 
 	d_fmt_default.setBackground(palette().brush(QPalette::Base));
+
+	//Init completer based on parser built-in functions
+	QStringList functions = MyParser::functionsList();
+	functions.sort();
+	QCompleter *completer = new QCompleter(this);
+	completer->setModelSorting(QCompleter::CaseSensitivelySortedModel);
+	completer->setCompletionMode(QCompleter::PopupCompletion);
+	completer->setModel(new QStringListModel(functions, completer));
+	setCompleter(completer);
 
 	printCursor = textCursor();
 	scriptsDirPath = qApp->applicationDirPath();

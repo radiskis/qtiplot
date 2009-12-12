@@ -41,6 +41,7 @@
 #include <DoubleSpinBox.h>
 #include <FunctionCurve.h>
 #include <pixmaps.h>
+#include <ScriptEdit.h>
 
 #include <QListWidget>
 #include <QTableWidget>
@@ -504,9 +505,8 @@ void FitDialog::initEditPage()
     QGroupBox *gb = new QGroupBox();
     gb->setLayout(gl2);
 
-	editBox = new QTextEdit();
-	editBox->setTextFormat(Qt::PlainText);
-	editBox->setAcceptRichText(false);
+	editBox = new ScriptEdit(((ApplicationWindow *)parent())->scriptingEnv());
+	editBox->enableShortcuts();
 	connect(editBox->document(), SIGNAL(contentsChange(int,int,int)), this, SLOT(guessParameters()));
 	editBox->setFocus();
 

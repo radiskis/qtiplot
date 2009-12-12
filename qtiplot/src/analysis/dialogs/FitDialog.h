@@ -51,6 +51,7 @@ class Table;
 class DoubleSpinBox;
 class FunctionCurve;
 class MdiSubWindow;
+class ScriptEdit;
 
 //! Fit Wizard
 class FitDialog : public QDialog
@@ -155,7 +156,8 @@ private:
 	DoubleSpinBox* boxTolerance;
 	QSpinBox* boxPoints, *generatePointsBox, *boxPrecision, *polynomOrderBox;
 	QWidget *fitPage, *editPage, *advancedPage;
-	QTextEdit *editBox, *explainBox, *boxFunction;
+	ScriptEdit *editBox;
+	QTextEdit *explainBox, *boxFunction;
 	QListWidget *categoryBox, *funcBox;
 	QLineEdit *boxName;
 	QLabel *boxErrorMsg, *boxParam;
