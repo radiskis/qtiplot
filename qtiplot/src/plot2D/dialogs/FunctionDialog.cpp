@@ -80,16 +80,6 @@ FunctionDialog::FunctionDialog(QWidget* parent, bool standAlone, Qt::WFlags fl )
 	boxFunction = new ScriptEdit(app->scriptingEnv());
 	boxFunction->enableShortcuts();
 
-	QStringList functions = MyParser::functionsList();
-	functions.sort();
-
-	QCompleter *completer = new QCompleter(this);
-	completer->setModelSorting(QCompleter::CaseSensitivelySortedModel);
-	completer->setCompletionMode(QCompleter::PopupCompletion);
-	completer->setModel(new QStringListModel(functions, completer));
-
-	boxFunction->setCompleter(completer);
-
 	gl1->addWidget(boxFunction, 0, 1);
 	gl1->addWidget(new QLabel(tr( "From x= " )), 1, 0);
 	boxFrom = new DoubleSpinBox();
