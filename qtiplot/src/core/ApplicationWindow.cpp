@@ -1132,9 +1132,7 @@ void ApplicationWindow::initMainMenu()
 	scriptingMenu = new QMenu(this);
 	scriptingMenu->setObjectName("scriptingMenu");
 	connect(scriptingMenu, SIGNAL(aboutToShow()), this, SLOT(scriptingMenuAboutToShow()));
-#ifdef SCRIPTING_PYTHON
 	menuBar()->addMenu(scriptingMenu);
-#endif
 
 	graphMenu = new QMenu(this);
 	graphMenu->setObjectName("graphMenu");
@@ -1423,6 +1421,9 @@ void ApplicationWindow::customMenu(QMdiSubWindow* w)
 	format->menuAction()->setVisible(false);
     plot2DMenu->menuAction()->setVisible(false);
     plot3DMenu->menuAction()->setVisible(false);
+#ifndef SCRIPTING_PYTHON
+	scriptingMenu->menuAction()->setVisible(false);
+#endif
 
 	// these use the same keyboard shortcut (Ctrl+Return) and should not be enabled at the same time
 	actionNoteEvaluate->setEnabled(false);
@@ -1434,6 +1435,9 @@ void ApplicationWindow::customMenu(QMdiSubWindow* w)
 	actionAddFormula->setEnabled(false);
 	actionShowColumnValuesDialog->setEnabled(false);
 	actionSetMatrixValues->setEnabled(false);
+	// these use the same keyboard shortcut (Ctrl+Alt+F) and should not be enabled at the same time
+	actionAddFunctionCurve->setEnabled(false);
+	actionFind->setEnabled(false);
 
 	// clear undo stack view (in case window is not a matrix)
 	d_undo_view->setStack(0);
@@ -1460,6 +1464,7 @@ void ApplicationWindow::customMenu(QMdiSubWindow* w)
 			actionShowExportASCIIDialog->setEnabled(false);
 
 		if (w->isA("MultiLayer")) {
+			actionAddFunctionCurve->setEnabled(true);
 			actionShowCurvesDialog->setEnabled(true);
 			actionAddFormula->setEnabled(true);
 
@@ -1510,8 +1515,12 @@ void ApplicationWindow::customMenu(QMdiSubWindow* w)
 			QUndoStack *stack = ((Matrix *)w)->undoStack();
 			d_undo_view->setStack(stack);
 		} else if (qobject_cast<Note*>(w)){
+			#ifndef SCRIPTING_PYTHON
+			scriptingMenu->menuAction()->setVisible(true);
+			#endif
 			actionSaveTemplate->setEnabled(false);
 			actionNoteEvaluate->setEnabled(true);
+			actionFind->setEnabled(true);
 		} else
 			disableActions();
 	} else
@@ -8860,10 +8869,8 @@ void ApplicationWindow::scriptingMenuAboutToShow()
     scriptingMenu->clear();
 #ifdef SCRIPTING_PYTHON
 	scriptingMenu->addAction(actionScriptingLang);
-#endif
 	scriptingMenu->addAction(actionRestartScripting);
     scriptingMenu->addAction(actionCustomActionDialog);
-#ifdef SCRIPTING_PYTHON
     scriptingMenu->addAction(actionOpenQtDesignerUi);
 #endif
 
@@ -8874,8 +8881,10 @@ void ApplicationWindow::scriptingMenuAboutToShow()
     	bool noteHasText = !note->text().isEmpty();
     	noteTools->setEnabled(noteHasText);
 		if (noteHasText){
-			scriptingMenu->addAction(actionNoteExecute);
-			scriptingMenu->addAction(actionNoteExecuteAll);
+			if (scriptEnv->name() == QString("Python")){
+				scriptingMenu->addAction(actionNoteExecute);
+				scriptingMenu->addAction(actionNoteExecuteAll);
+			}
 			scriptingMenu->addAction(actionNoteEvaluate);
 			scriptingMenu->insertSeparator();
 			scriptingMenu->addAction(actionIncreaseIndent);
@@ -13960,7 +13969,7 @@ void ApplicationWindow::translateActionsStrings()
 
 	actionReplace->setMenuText(tr("&Replace..."));
 	actionReplace->setToolTip(tr("Show replace dialog"));
-	actionReplace->setShortcut(tr("Ctrl+Alt+R"));
+	actionReplace->setShortcut(tr("Ctrl+R"));
 
 	actionIncreaseIndent->setToolTip(tr("Increase Indent"));
 	actionDecreaseIndent->setToolTip(tr("Decrease Indent"));

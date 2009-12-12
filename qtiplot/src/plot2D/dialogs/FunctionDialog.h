@@ -86,11 +86,11 @@ private:
     DoubleSpinBox* boxFrom;
     DoubleSpinBox* boxTo;
 	QLineEdit* boxParameter;
-    QLineEdit* boxParFrom;
-    QLineEdit* boxParTo;
+	DoubleSpinBox* boxParFrom;
+	DoubleSpinBox* boxParTo;
 	QLineEdit* boxPolarParameter;
-    QLineEdit* boxPolarFrom;
-    QLineEdit* boxPolarTo;
+	DoubleSpinBox* boxPolarFrom;
+	DoubleSpinBox* boxPolarTo;
     QPushButton* buttonClear;
     QPushButton* buttonCancel;
     QPushButton* buttonOk;
