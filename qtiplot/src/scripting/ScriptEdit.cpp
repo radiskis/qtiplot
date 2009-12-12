@@ -62,6 +62,7 @@ ScriptEdit::ScriptEdit(ScriptingEnv *env, QWidget *parent, const char *name)
 	setUndoRedoEnabled(true);
 	setTextFormat(Qt::PlainText);
 	setAcceptRichText (false);
+	setFocusPolicy(Qt::StrongFocus);
 
 	rehighlight();
 
@@ -89,15 +90,9 @@ ScriptEdit::ScriptEdit(ScriptingEnv *env, QWidget *parent, const char *name)
 	actionImport->setShortcut(QKeySequence(Qt::CTRL+Qt::ALT+Qt::Key_O));
 	connect(actionImport, SIGNAL(activated()), this, SLOT(importASCII()));
 
-	QShortcut *accelImport = new QShortcut(actionImport->shortcut(), this);
-	connect(accelImport, SIGNAL(activated()), this, SLOT(importASCII()));
-
 	actionSave = new QAction(QPixmap(filesave_xpm), tr("&Save"), this);
 	actionSave->setShortcut(QKeySequence(Qt::CTRL+Qt::ALT+Qt::Key_S));
 	connect(actionSave, SIGNAL(activated()), this, SLOT(save()));
-
-	QShortcut *accelSave = new QShortcut(actionSave->shortcut(), this);
-	connect(accelSave, SIGNAL(activated()), this, SLOT(save()));
 
 	actionExport = new QAction(QIcon(QPixmap(filesaveas_xpm)), tr("Sa&ve as..."), this);
 	connect(actionExport, SIGNAL(activated()), this, SLOT(exportASCII()));
@@ -107,7 +102,7 @@ ScriptEdit::ScriptEdit(ScriptingEnv *env, QWidget *parent, const char *name)
 	connect(actionFind, SIGNAL(activated()), this, SLOT(showFindDialog()));
 
 	actionReplace = new QAction(QPixmap(replace_xpm), tr("&Replace..."), this);
-	actionReplace->setShortcut(QKeySequence(Qt::CTRL+Qt::ALT+Qt::Key_R));
+	actionReplace->setShortcut(QKeySequence(Qt::CTRL+Qt::Key_R));
 	connect(actionReplace, SIGNAL(activated()), this, SLOT(replace()));
 
 	actionFindNext = new QAction(QPixmap(find_next_xpm), tr("&Find next"), this);
@@ -123,6 +118,30 @@ ScriptEdit::ScriptEdit(ScriptingEnv *env, QWidget *parent, const char *name)
 	connect(functionsMenu, SIGNAL(triggered(QAction *)), this, SLOT(insertFunction(QAction *)));
 
 	connect(this, SIGNAL(cursorPositionChanged()), this, SLOT(matchParentheses()));
+}
+
+void ScriptEdit::enableShortcuts()
+{
+	QShortcut *accelFindNext = new QShortcut(actionFindNext->shortcut(), this);
+	connect(accelFindNext, SIGNAL(activated()), this, SLOT(findNext()));
+
+	QShortcut *accelReplace = new QShortcut(actionReplace->shortcut(), this);
+	connect(accelReplace, SIGNAL(activated()), this, SLOT(replace()));
+
+	QShortcut *accelFindPrevious = new QShortcut(actionFindPrevious->shortcut(), this);
+	connect(accelFindPrevious, SIGNAL(activated()), this, SLOT(findPrevious()));
+
+	QShortcut *accelFind = new QShortcut(actionFind->shortcut(), this);
+	connect(accelFind, SIGNAL(activated()), this, SLOT(showFindDialog()));
+
+	QShortcut *accelSave = new QShortcut(actionSave->shortcut(), this);
+	connect(accelSave, SIGNAL(activated()), this, SLOT(save()));
+
+	QShortcut *accelImport = new QShortcut(actionImport->shortcut(), this);
+	connect(accelImport, SIGNAL(activated()), this, SLOT(importASCII()));
+
+	QShortcut *accelEval = new QShortcut(actionEval->shortcut(), this);
+	connect(accelEval, SIGNAL(activated()), this, SLOT(evaluate()));
 }
 
 void ScriptEdit::customEvent(QEvent *e)
@@ -233,13 +252,16 @@ void ScriptEdit::contextMenuEvent(QContextMenuEvent *e)
 		menu->insertSeparator();
 	}
 
+	bool python = myScript->scriptingEnv()->name() == QString("Python");
 	if (!emptyText){
-		menu->addAction(actionExecute);
-		menu->addAction(actionExecuteAll);
+		if (python){
+			menu->addAction(actionExecute);
+			menu->addAction(actionExecuteAll);
+		}
 		menu->addAction(actionEval);
 	}
 
-	if (sp){
+	if (sp && python){
 		QAction *actionAutoexec = new QAction(tr("Auto&exec"), menu);
 		actionAutoexec->setToggleAction(true);
 		actionAutoexec->setOn(sp->autoexec());

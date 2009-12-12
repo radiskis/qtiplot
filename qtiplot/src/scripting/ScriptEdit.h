@@ -64,6 +64,7 @@ class ScriptEdit: public QTextEdit, public scripted
 	void setFileName(const QString& fn);
 	void rehighlight();
 	void redirectOutputTo(QTextEdit *);
+	void enableShortcuts();
 
   public slots:
     void execute();
