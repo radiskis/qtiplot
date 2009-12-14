@@ -49,16 +49,17 @@
 #include <QHeaderView>
 #include <QCompleter>
 #include <QStringListModel>
+#include <QInputDialog>
+#include <QApplication>
 
-FunctionDialog::FunctionDialog(QWidget* parent, bool standAlone, Qt::WFlags fl )
-: QDialog( parent, fl )
+FunctionDialog::FunctionDialog(ApplicationWindow* parent, bool standAlone, Qt::WFlags fl )
+: QDialog( parent, fl ), d_app(parent), d_active_editor(0)
 {
-	ApplicationWindow *app = (ApplicationWindow *)parent;
 	QLocale locale = QLocale();
 	int prec = 6;
-	if (app){
-		locale = app->locale();
-		prec = app->d_decimal_digits;
+	if (d_app){
+		locale = d_app->locale();
+		prec = d_app->d_decimal_digits;
 	}
 
     setObjectName( "FunctionDialog" );
@@ -77,7 +78,7 @@ FunctionDialog::FunctionDialog(QWidget* parent, bool standAlone, Qt::WFlags fl )
 
 	QGridLayout *gl1 = new QGridLayout();
     gl1->addWidget(new QLabel(tr( "f(x)= " )), 0, 0);
-	boxFunction = new ScriptEdit(app->scriptingEnv());
+	boxFunction = new ScriptEdit(d_app->scriptingEnv());
 	boxFunction->enableShortcuts();
 
 	gl1->addWidget(boxFunction, 0, 1);
@@ -125,27 +126,46 @@ FunctionDialog::FunctionDialog(QWidget* parent, bool standAlone, Qt::WFlags fl )
 	boxParameter->setText("m");
 	gl2->addWidget(boxParameter, 0, 1);
 
-	gl2->addWidget(new QLabel(tr( "From" )), 1, 0);
+	gl2->addWidget(new QLabel(tr( "x = " )), 1, 0);
+	boxXFunction = new ScriptEdit(d_app->scriptingEnv());
+	boxXFunction->setMaximumHeight(100);
+	boxXFunction->enableShortcuts();
+	connect(boxXFunction, SIGNAL(activated(ScriptEdit *)), this, SLOT(setActiveEditor(ScriptEdit *)));
+	gl2->addWidget(boxXFunction, 1, 1);
+
+	QString recentTip = tr("Click here to select a recently typed expression");
+	QString recentBtnText = tr("Rece&nt");
+	buttonXParLog = new QPushButton(recentBtnText);
+	buttonXParLog->setToolTip(recentTip);
+	gl2->addWidget(buttonXParLog, 1, 2);
+	connect(buttonXParLog, SIGNAL(clicked()), this, SLOT(showXParLog()));
+
+	gl2->addWidget(new QLabel(tr( "y = " )), 2, 0);
+
+	boxYFunction = new ScriptEdit(d_app->scriptingEnv());
+	boxYFunction->setMaximumHeight(100);
+	boxYFunction->enableShortcuts();
+	connect(boxYFunction, SIGNAL(activated(ScriptEdit *)), this, SLOT(setActiveEditor(ScriptEdit *)));
+	gl2->addWidget(boxYFunction, 2, 1);
+
+	buttonYParLog = new QPushButton(recentBtnText);
+	buttonYParLog->setToolTip(recentTip);
+	gl2->addWidget(buttonYParLog, 2, 2);
+	connect(buttonYParLog, SIGNAL(clicked()), this, SLOT(showYParLog()));
+
+	gl2->addWidget(new QLabel(tr( "From" )), 3, 0);
 	boxParFrom = new DoubleSpinBox();
 	boxParFrom->setLocale(locale);
 	boxParFrom->setDecimals(prec);
-	gl2->addWidget(boxParFrom, 1, 1);
+	gl2->addWidget(boxParFrom, 3, 1);
 
-	gl2->addWidget(new QLabel(tr( "To" )), 2, 0);
+	gl2->addWidget(new QLabel(tr( "To" )), 4, 0);
 	boxParTo = new DoubleSpinBox();
 	boxParTo->setValue(1);
 	boxParTo->setLocale(locale);
 	boxParTo->setDecimals(prec);
-	gl2->addWidget(boxParTo, 2, 1);
+	gl2->addWidget(boxParTo, 4, 1);
 
-	gl2->addWidget(new QLabel(tr( "x = " )), 3, 0);
-	boxXFunction = new QComboBox( );
-	boxXFunction->setEditable ( true );
-	gl2->addWidget(boxXFunction, 3, 1);
-	gl2->addWidget(new QLabel(tr( "y = " )), 4, 0);
-	boxYFunction = new QComboBox( );
-	boxYFunction->setEditable ( true );
-	gl2->addWidget(boxYFunction, 4, 1);
 	gl2->addWidget(new QLabel(tr( "Points" )), 5, 0);
 	boxParPoints = new QSpinBox();
 	boxParPoints->setRange(2, INT_MAX);
@@ -164,34 +184,51 @@ FunctionDialog::FunctionDialog(QWidget* parent, bool standAlone, Qt::WFlags fl )
 	boxPolarParameter->setText ("t");
 	gl3->addWidget(boxPolarParameter, 0, 1);
 
-	gl3->addWidget(new QLabel(tr( "From" )), 2, 0);
+	gl3->addWidget(new QLabel(tr( "R =" )), 1, 0);
+	boxPolarRadius = new ScriptEdit(d_app->scriptingEnv());
+	boxPolarRadius->setMaximumHeight(100);
+	boxPolarRadius->enableShortcuts();
+	connect(boxPolarRadius, SIGNAL(activated(ScriptEdit *)), this, SLOT(setActiveEditor(ScriptEdit *)));
+	gl3->addWidget(boxPolarRadius, 1, 1);
+
+	buttonPolarRadiusLog = new QPushButton(recentBtnText);
+	buttonPolarRadiusLog->setToolTip(recentTip);
+	gl3->addWidget(buttonPolarRadiusLog, 1, 2);
+	connect(buttonPolarRadiusLog, SIGNAL(clicked()), this, SLOT(showPolarRadiusLog()));
+
+	gl3->addWidget(new QLabel(tr( "Theta =" )), 2, 0);
+
+	boxPolarTheta = new ScriptEdit(d_app->scriptingEnv());
+	boxPolarTheta->setMaximumHeight(100);
+	boxPolarTheta->enableShortcuts();
+	connect(boxPolarTheta, SIGNAL(activated(ScriptEdit *)), this, SLOT(setActiveEditor(ScriptEdit *)));
+	gl3->addWidget(boxPolarTheta, 2, 1);
+
+	buttonPolarRThetaLog = new QPushButton(recentBtnText);
+	buttonPolarRThetaLog->setToolTip(recentTip);
+	gl3->addWidget(buttonPolarRThetaLog, 2, 2);
+	connect(buttonPolarRThetaLog, SIGNAL(clicked()), this, SLOT(showPolarThetaLog()));
+
+	gl3->addWidget(new QLabel(tr( "From" )), 3, 0);
 	boxPolarFrom = new DoubleSpinBox();
 	boxPolarFrom->setLocale(locale);
 	boxPolarFrom->setDecimals(prec);
-	gl3->addWidget(boxPolarFrom, 2, 1);
+	gl3->addWidget(boxPolarFrom, 3, 1);
 
-	gl3->addWidget(new QLabel(tr( "To" )), 3, 0);
+	gl3->addWidget(new QLabel(tr( "To" )), 4, 0);
 	boxPolarTo = new DoubleSpinBox();
 	boxPolarTo->setValue(M_PI);
 	boxPolarTo->setLocale(locale);
 	boxPolarTo->setDecimals(prec);
+	gl3->addWidget(boxPolarTo, 4, 1);
 
-	gl3->addWidget(boxPolarTo, 3, 1);
-	gl3->addWidget(new QLabel(tr( "R =" )), 4, 0);
-	boxPolarRadius = new QComboBox();
-	boxPolarRadius->setEditable ( true );
-	gl3->addWidget(boxPolarRadius, 4, 1);
-	gl3->addWidget(new QLabel(tr( "Theta =" )), 5, 0);
-	boxPolarTheta = new QComboBox();
-	boxPolarTheta->setEditable ( true );
-	gl3->addWidget(boxPolarTheta, 5, 1);
-	gl3->addWidget(new QLabel(tr( "Points" )), 6, 0);
+	gl3->addWidget(new QLabel(tr( "Points" )), 5, 0);
 	boxPolarPoints = new QSpinBox();
 	boxPolarPoints->setRange(2, INT_MAX);
 	boxPolarPoints->setSingleStep(100);
 	boxPolarPoints->setValue(100);
-	gl3->addWidget(boxPolarPoints, 6, 1);
-	gl3->setRowStretch(7, 1);
+	gl3->addWidget(boxPolarPoints, 5, 1);
+	gl3->setRowStretch(6, 1);
 
 	polarPage = new QWidget();
 	polarPage->setLayout(gl3);
@@ -323,15 +360,15 @@ void FunctionDialog::setCurveToModify(Graph *g, int curve)
 		boxTo->setValue(c->endRange());
 		boxPoints->setValue(c->dataSize());
 	} else if (c->functionType() == FunctionCurve::Polar) {
-		boxPolarRadius->setCurrentText(formulas[0]);
-		boxPolarTheta->setCurrentText(formulas[1]);
+		boxPolarRadius->setText(formulas[0]);
+		boxPolarTheta->setText(formulas[1]);
 		boxPolarParameter->setText(c->variable());
 		boxPolarFrom->setValue(c->startRange());
 		boxPolarTo->setValue(c->endRange());
 		boxPolarPoints->setValue(c->dataSize());
 	} else if (c->functionType() == FunctionCurve::Parametric) {
-		boxXFunction->setCurrentText(formulas[0]);
-		boxYFunction->setCurrentText(formulas[1]);
+		boxXFunction->setText(formulas[0]);
+		boxYFunction->setText(formulas[1]);
 		boxParameter->setText(c->variable());
 		boxParFrom->setValue(c->startRange());
 		boxParTo->setValue(c->endRange());
@@ -406,10 +443,8 @@ void FunctionDialog::acceptFunction()
 	QStringList formulas;
 	formulas += formula;
 	if (!error){
-		ApplicationWindow *app = (ApplicationWindow *)this->parent();
-		app->updateFunctionLists(type,formulas);
 		if (!graph){
-			MultiLayer *plot = app->newFunctionPlot(formulas, start, end, boxPoints->value(), "x", type);
+			MultiLayer *plot = d_app->newFunctionPlot(formulas, start, end, boxPoints->value(), "x", type);
 			if (plot)
 				graph = plot->activeLayer();
 		} else {
@@ -434,18 +469,18 @@ void FunctionDialog::acceptParametric()
 	}
 
 	double parameter;
-	QString xformula=boxXFunction->currentText();
-	QString yformula=boxYFunction->currentText();
-	bool error=false;
+	QString xformula = boxXFunction->text().simplified();
+	QString yformula = boxYFunction->text().simplified();
+	bool error = false;
 
 	try {
 		MyParser parser;
 		parser.DefineVar((boxParameter->text()).ascii(), &parameter);
 		parser.SetExpr(xformula.ascii());
 
-		parameter=start;
+		parameter = start;
 		parser.Eval();
-		parameter=end;
+		parameter = end;
 		parser.Eval();
 	} catch(mu::ParserError &e) {
 		QMessageBox::critical(this, tr("QtiPlot - Input function error"), QString::fromStdString(e.GetMsg()));
@@ -472,11 +507,10 @@ void FunctionDialog::acceptParametric()
 	QStringList formulas;
 	formulas += xformula;
 	formulas += yformula;
-	if (!error){
-		ApplicationWindow *app = (ApplicationWindow *)this->parent();
-		app->updateFunctionLists(type,formulas);
+	if (!error && d_app){
+		d_app->updateFunctionLists(type, formulas);
 		if (!graph){
-			MultiLayer *plot = app->newFunctionPlot(formulas, start, end, boxParPoints->value(), boxParameter->text(), type);
+			MultiLayer *plot = d_app->newFunctionPlot(formulas, start, end, boxParPoints->value(), boxParameter->text(), type);
 			if (plot)
 				graph = plot->activeLayer();
 		} else {
@@ -500,23 +534,23 @@ void FunctionDialog::acceptPolar()
 	}
 
 	double parameter;
-	QString rformula=boxPolarRadius->currentText();
-	QString tformula=boxPolarTheta->currentText();
-	bool error=false;
+	QString rformula = boxPolarRadius->text().simplified();
+	QString tformula = boxPolarTheta->text().simplified();
+	bool error = false;
 
 	try {
 		MyParser parser;
 		parser.DefineVar((boxPolarParameter->text()).ascii(), &parameter);
 		parser.SetExpr(rformula.ascii());
 
-		parameter=start;
+		parameter = start;
 		parser.Eval();
-		parameter=end;
+		parameter = end;
 		parser.Eval();
 	} catch(mu::ParserError &e) {
 		QMessageBox::critical(this, tr("QtiPlot - Input function error"), QString::fromStdString(e.GetMsg()));
 		boxPolarRadius->setFocus();
-		error=true;
+		error = true;
 	}
 
 	try {
@@ -524,26 +558,25 @@ void FunctionDialog::acceptPolar()
 		parser.DefineVar((boxPolarParameter->text()).ascii(), &parameter);
 		parser.SetExpr(tformula.ascii());
 
-		parameter=start;
+		parameter = start;
 		parser.Eval();
-		parameter=end;
+		parameter = end;
 		parser.Eval();
 	} catch(mu::ParserError &e) {
 		QMessageBox::critical(this, tr("QtiPlot - Input function error"), QString::fromStdString(e.GetMsg()));
 		boxPolarTheta->setFocus();
-		error=true;
+		error = true;
 	}
 	// Collecting all the information
 	int type = boxType->currentItem();
 	QStringList formulas;
-	formulas+=rformula;
-	formulas+=tformula;
-	if (!error){
-		ApplicationWindow *app = (ApplicationWindow *)this->parent();
-		app->updateFunctionLists(type,formulas);
+	formulas += rformula;
+	formulas += tformula;
+	if (!error && d_app){
+		d_app->updateFunctionLists(type, formulas);
 
 		if (!graph){
-			MultiLayer *plot = app->newFunctionPlot(formulas, start, end, boxPolarPoints->value(), boxPolarParameter->text(), type);
+			MultiLayer *plot = d_app->newFunctionPlot(formulas, start, end, boxPolarPoints->value(), boxPolarParameter->text(), type);
 			if (plot)
 				graph = plot->activeLayer();
 		} else {
@@ -573,34 +606,74 @@ void FunctionDialog::accept()
 	}
 }
 
-void FunctionDialog::insertParamFunctionsList(const QStringList& xList, const QStringList& yList)
+void FunctionDialog::showXParLog()
 {
-	boxXFunction->insertItems (0, xList);
-	boxYFunction->insertItems (0, yList);
+	if (!d_app)
+		return;
+
+	bool ok;
+	QString s = QInputDialog::getItem(this, tr("QtiPlot") + " - " + tr("Recent Functions"), tr("Please, choose a function:"), d_app->xFunctions, 0, false, &ok);
+	if (ok && !s.isEmpty())
+		boxXFunction->setText(s);
 }
 
-void FunctionDialog::insertPolarFunctionsList(const QStringList& rList, const QStringList& thetaList)
+
+void FunctionDialog::showYParLog()
 {
-	boxPolarRadius->insertItems (0, rList);
-	boxPolarTheta->insertItems (0, thetaList);
+	if (!d_app)
+		return;
+
+	bool ok;
+	QString s = QInputDialog::getItem(this, tr("QtiPlot") + " - " + tr("Recent Functions"), tr("Please, choose a function:"), d_app->yFunctions, 0, false, &ok);
+	if (ok && !s.isEmpty())
+		boxYFunction->setText(s);
+}
+
+void FunctionDialog::showPolarRadiusLog()
+{
+	if (!d_app)
+		return;
+
+	bool ok;
+	QString s = QInputDialog::getItem(this, tr("QtiPlot") + " - " + tr("Recent Functions"), tr("Please, choose a function:"), d_app->rFunctions, 0, false, &ok);
+	if (ok && !s.isEmpty())
+		boxPolarRadius->setText(s);
+}
+
+
+void FunctionDialog::showPolarThetaLog()
+{
+	if (!d_app)
+		return;
+
+	bool ok;
+	QString s = QInputDialog::getItem(this, tr("QtiPlot") + " - " + tr("Recent Functions"), tr("Please, choose a function:"), d_app->thetaFunctions, 0, false, &ok);
+	if (ok && !s.isEmpty())
+		boxPolarTheta->setText(s);
 }
 
 void FunctionDialog::insertFunction()
 {
-	QString fname = boxMathFunctions->currentText();
+	QString fname = boxMathFunctions->currentText().remove("(").remove(")").remove(",").remove(";");
 	if (optionStack->currentWidget () == functionPage){
-		boxFunction->insertFunction(fname.remove("(").remove(")").remove(",").remove(";"));
+		boxFunction->insertFunction(fname);
 		boxFunction->setFocus();
 	} else if (optionStack->currentWidget () == parametricPage){
-		if (boxYFunction->lineEdit()->hasFocus())
-			boxYFunction->lineEdit()->insert(fname);
-		else
-			boxXFunction->lineEdit()->insert(fname);
+		if (d_active_editor == boxYFunction){
+			boxYFunction->insertFunction(fname);
+			boxYFunction->setFocus();
+		} else if (d_active_editor == boxXFunction){
+			boxXFunction->insertFunction(fname);
+			boxXFunction->setFocus();
+		}
 	} else if (optionStack->currentWidget () == polarPage){
-		if (boxPolarRadius->lineEdit()->hasFocus())
-			boxPolarRadius->lineEdit()->insert(fname);
-		else
-			boxPolarTheta->lineEdit()->insert(fname);
+		if (d_active_editor == boxPolarRadius){
+			boxPolarRadius->insertFunction(fname);
+			boxPolarRadius->setFocus();
+		} else if (d_active_editor == boxPolarTheta){
+			boxPolarTheta->insertFunction(fname);
+			boxPolarTheta->setFocus();
+		}
 	}
 }
 

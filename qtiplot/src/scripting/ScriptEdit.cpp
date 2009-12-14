@@ -172,7 +172,9 @@ void ScriptEdit::focusInEvent(QFocusEvent *e)
 {
      if (d_completer)
          d_completer->setWidget(this);
-     QTextEdit::focusInEvent(e);
+
+	 activated(this);
+	 return QTextEdit::focusInEvent(e);
 }
 
 void ScriptEdit::keyPressEvent(QKeyEvent *e)
@@ -617,11 +619,15 @@ void ScriptEdit::setDirPath(const QString& path)
      if (d_completer->widget() != this)
          return;
 
-	 QTextCursor tc = textCursor();
+     QTextCursor tc = textCursor();
      int extra = completion.length() - d_completer->completionPrefix().length();
      tc.movePosition(QTextCursor::Left);
      tc.movePosition(QTextCursor::EndOfWord);
      tc.insertText(completion.right(extra));
+
+     if (completion.contains(")"))
+		tc.movePosition(QTextCursor::PreviousCharacter, QTextCursor::MoveAnchor, 1);
+
      setTextCursor(tc);
  }
 
