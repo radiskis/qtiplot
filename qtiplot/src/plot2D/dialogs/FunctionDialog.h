@@ -42,6 +42,7 @@ class QLabel;
 class QTextEdit;
 class DoubleSpinBox;
 class ScriptEdit;
+class ApplicationWindow;
 
 //! Function dialog
 class FunctionDialog : public QDialog
@@ -49,7 +50,7 @@ class FunctionDialog : public QDialog
     Q_OBJECT
 
 public:
-    FunctionDialog(QWidget* parent = 0, bool standAlone = true, Qt::WFlags fl = 0 );
+	FunctionDialog(ApplicationWindow* parent, bool standAlone = true, Qt::WFlags fl = 0 );
 
     void setCurveToModify(Graph *g, int curve);
     void setCurveToModify(FunctionCurve *c);
@@ -62,11 +63,14 @@ protected slots:
 	void acceptFunction();
 	void acceptParametric();
 	void acceptPolar();
+	void showXParLog();
+	void showYParLog();
+	void showPolarRadiusLog();
+	void showPolarThetaLog();
+	void setActiveEditor(ScriptEdit *edit){d_active_editor = edit;};
 
 public slots:
 	void accept();
-	void insertParamFunctionsList(const QStringList& xList, const QStringList& yList);
-	void insertPolarFunctionsList(const QStringList& rList, const QStringList& thetaList);
 	void clearList();
 
 signals:
@@ -77,10 +81,10 @@ private:
 	Graph *graph;
 	int curveID;
 
-	QComboBox* boxXFunction;
-    QComboBox* boxYFunction;
-    QComboBox* boxPolarRadius;
-    QComboBox* boxPolarTheta;
+	ScriptEdit* boxXFunction;
+    ScriptEdit* boxYFunction;
+	ScriptEdit* boxPolarRadius;
+	ScriptEdit* boxPolarTheta;
     QComboBox* boxType;
     QLabel* textFunction;
     DoubleSpinBox* boxFrom;
@@ -106,6 +110,10 @@ private:
 	QPushButton *addFunctionBtn;
 	QComboBox* boxMathFunctions;
 	QTextEdit* boxFunctionExplain;
+	QPushButton *buttonXParLog, *buttonYParLog, *buttonPolarRadiusLog, *buttonPolarRThetaLog;
+
+	ApplicationWindow *d_app;
+	ScriptEdit *d_active_editor;
 };
 
 #endif // FUNCTIONDIALOG_H

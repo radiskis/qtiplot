@@ -92,6 +92,7 @@ class ScriptEdit: public QTextEdit, public scripted
   signals:
 	void dirPathChanged(const QString& path);
 	void error(const QString&, const QString&, int);
+	void activated(ScriptEdit *);
 
   protected:
     virtual void contextMenuEvent(QContextMenuEvent *e);

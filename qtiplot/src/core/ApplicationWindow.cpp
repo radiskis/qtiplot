@@ -10221,11 +10221,9 @@ FunctionDialog* ApplicationWindow::showFunctionDialog(Graph *g, int curve)
 FunctionDialog* ApplicationWindow::functionDialog()
 {
 	FunctionDialog* fd = new FunctionDialog(this);
-	connect (fd,SIGNAL(clearParamFunctionsList()),this,SLOT(clearParamFunctionsList()));
-	connect (fd,SIGNAL(clearPolarFunctionsList()),this,SLOT(clearPolarFunctionsList()));
+	connect (fd, SIGNAL(clearParamFunctionsList()), this, SLOT(clearParamFunctionsList()));
+	connect (fd, SIGNAL(clearPolarFunctionsList()), this, SLOT(clearPolarFunctionsList()));
 
-	fd->insertParamFunctionsList(xFunctions, yFunctions);
-	fd->insertPolarFunctionsList(rFunctions, thetaFunctions);
 	fd->setModal(true);
 	fd->show();
 	fd->setActiveWindow();
@@ -10256,7 +10254,7 @@ void ApplicationWindow::addFunctionCurve()
 void ApplicationWindow::updateFunctionLists(int type, QStringList &formulas)
 {
 	int maxListSize = 10;
-	if (type == 2)
+	if (type == 2 && formulas.size() >= 2)
 	{
 		rFunctions.remove(formulas[0]);
 		rFunctions.push_front(formulas[0]);
@@ -10269,8 +10267,8 @@ void ApplicationWindow::updateFunctionLists(int type, QStringList &formulas)
 		while ((int)thetaFunctions.size() > maxListSize)
 			thetaFunctions.pop_back();
 	}
-	else if (type == 1)
-	{
+	else if (type == 1 && formulas.size() >= 2)
+	{		
 		xFunctions.remove(formulas[0]);
 		xFunctions.push_front(formulas[0]);
 
