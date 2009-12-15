@@ -612,6 +612,11 @@ void FunctionDialog::showXParLog()
 	if (!d_app)
 		return;
 
+	if (d_app->xFunctions.isEmpty()){
+		QMessageBox::information(this, tr("QtiPlot"), tr("Sorry, there are no recent expressions available!"));
+		return;
+	}
+
 	bool ok;
 	QString s = QInputDialog::getItem(this, tr("QtiPlot") + " - " + tr("Recent Functions"), tr("Please, choose a function:"), d_app->xFunctions, 0, false, &ok);
 	if (ok && !s.isEmpty())
@@ -624,6 +629,11 @@ void FunctionDialog::showYParLog()
 	if (!d_app)
 		return;
 
+	if (d_app->yFunctions.isEmpty()){
+		QMessageBox::information(this, tr("QtiPlot"), tr("Sorry, there are no recent expressions available!"));
+		return;
+	}
+
 	bool ok;
 	QString s = QInputDialog::getItem(this, tr("QtiPlot") + " - " + tr("Recent Functions"), tr("Please, choose a function:"), d_app->yFunctions, 0, false, &ok);
 	if (ok && !s.isEmpty())
@@ -634,6 +644,11 @@ void FunctionDialog::showPolarRadiusLog()
 {
 	if (!d_app)
 		return;
+
+	if (d_app->rFunctions.isEmpty()){
+		QMessageBox::information(this, tr("QtiPlot"), tr("Sorry, there are no recent expressions available!"));
+		return;
+	}
 
 	bool ok;
 	QString s = QInputDialog::getItem(this, tr("QtiPlot") + " - " + tr("Recent Functions"), tr("Please, choose a function:"), d_app->rFunctions, 0, false, &ok);
@@ -646,6 +661,11 @@ void FunctionDialog::showPolarThetaLog()
 {
 	if (!d_app)
 		return;
+
+	if (d_app->thetaFunctions.isEmpty()){
+		QMessageBox::information(this, tr("QtiPlot"), tr("Sorry, there are no recent expressions available!"));
+		return;
+	}
 
 	bool ok;
 	QString s = QInputDialog::getItem(this, tr("QtiPlot") + " - " + tr("Recent Functions"), tr("Please, choose a function:"), d_app->thetaFunctions, 0, false, &ok);
