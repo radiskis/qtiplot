@@ -39,6 +39,7 @@ class QStackedWidget;
 class QSpinBox;
 class Graph3D;
 class QLineEdit;
+class ScriptEdit;
 
 //! Define surface plot dialog
 class SurfaceDialog : public QDialog
@@ -56,6 +57,10 @@ public slots:
 private slots:
 	void clearList();
 	void accept();
+	void showFunctionLog();
+	void showXLog();
+	void showYLog();
+	void showZLog();
 
 private:
 	Graph3D *d_graph;
@@ -72,7 +77,7 @@ private:
 	QPushButton* buttonCancel;
 	QPushButton* buttonClear;
 	QComboBox* boxType;
-	QComboBox* boxFunction;
+	ScriptEdit* boxFunction;
 	DoubleSpinBox* boxXFrom;
 	DoubleSpinBox* boxXTo;
 	DoubleSpinBox* boxYFrom;
@@ -80,9 +85,9 @@ private:
 	DoubleSpinBox* boxZFrom;
 	DoubleSpinBox* boxZTo;
 
-	QLineEdit* boxX;
-	QLineEdit* boxY;
-	QLineEdit* boxZ;
+	ScriptEdit* boxX;
+	ScriptEdit* boxY;
+	ScriptEdit* boxZ;
 
 	DoubleSpinBox* boxUFrom;
 	DoubleSpinBox* boxUTo;
@@ -91,6 +96,7 @@ private:
 
 	QCheckBox *boxUPeriodic, *boxVPeriodic;
 	QSpinBox *boxColumns, *boxRows, *boxFuncColumns, *boxFuncRows;
+	QPushButton *buttonRecentFunc, *buttonXLog, *buttonYLog, *buttonZLog;
 };
 
 #endif
