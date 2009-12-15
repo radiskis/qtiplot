@@ -126,9 +126,10 @@ FunctionDialog::FunctionDialog(ApplicationWindow* parent, bool standAlone, Qt::W
 	boxParameter->setText("m");
 	gl2->addWidget(boxParameter, 0, 1);
 
+	int maxH = 80;
 	gl2->addWidget(new QLabel(tr( "x = " )), 1, 0);
 	boxXFunction = new ScriptEdit(d_app->scriptingEnv());
-	boxXFunction->setMaximumHeight(100);
+	boxXFunction->setMaximumHeight(maxH);
 	boxXFunction->enableShortcuts();
 	connect(boxXFunction, SIGNAL(activated(ScriptEdit *)), this, SLOT(setActiveEditor(ScriptEdit *)));
 	gl2->addWidget(boxXFunction, 1, 1);
@@ -143,7 +144,7 @@ FunctionDialog::FunctionDialog(ApplicationWindow* parent, bool standAlone, Qt::W
 	gl2->addWidget(new QLabel(tr( "y = " )), 2, 0);
 
 	boxYFunction = new ScriptEdit(d_app->scriptingEnv());
-	boxYFunction->setMaximumHeight(100);
+	boxYFunction->setMaximumHeight(maxH);
 	boxYFunction->enableShortcuts();
 	connect(boxYFunction, SIGNAL(activated(ScriptEdit *)), this, SLOT(setActiveEditor(ScriptEdit *)));
 	gl2->addWidget(boxYFunction, 2, 1);
@@ -186,7 +187,7 @@ FunctionDialog::FunctionDialog(ApplicationWindow* parent, bool standAlone, Qt::W
 
 	gl3->addWidget(new QLabel(tr( "R =" )), 1, 0);
 	boxPolarRadius = new ScriptEdit(d_app->scriptingEnv());
-	boxPolarRadius->setMaximumHeight(100);
+	boxPolarRadius->setMaximumHeight(maxH);
 	boxPolarRadius->enableShortcuts();
 	connect(boxPolarRadius, SIGNAL(activated(ScriptEdit *)), this, SLOT(setActiveEditor(ScriptEdit *)));
 	gl3->addWidget(boxPolarRadius, 1, 1);
@@ -199,7 +200,7 @@ FunctionDialog::FunctionDialog(ApplicationWindow* parent, bool standAlone, Qt::W
 	gl3->addWidget(new QLabel(tr( "Theta =" )), 2, 0);
 
 	boxPolarTheta = new ScriptEdit(d_app->scriptingEnv());
-	boxPolarTheta->setMaximumHeight(100);
+	boxPolarTheta->setMaximumHeight(maxH);
 	boxPolarTheta->enableShortcuts();
 	connect(boxPolarTheta, SIGNAL(activated(ScriptEdit *)), this, SLOT(setActiveEditor(ScriptEdit *)));
 	gl3->addWidget(boxPolarTheta, 2, 1);

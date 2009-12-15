@@ -31,6 +31,7 @@
 #include <MyParser.h>
 #include <ApplicationWindow.h>
 #include <DoubleSpinBox.h>
+#include <ScriptEdit.h>
 
 #include <QMessageBox>
 #include <QLayout>
@@ -44,6 +45,7 @@
 #include <QStackedWidget>
 #include <QCompleter>
 #include <QApplication>
+#include <QInputDialog>
 
 SurfaceDialog::SurfaceDialog( QWidget* parent, Qt::WFlags fl )
     : QDialog( parent, fl )
@@ -81,14 +83,6 @@ SurfaceDialog::SurfaceDialog( QWidget* parent, Qt::WFlags fl )
 	vl->addWidget(optionStack);
 	vl->addLayout(bl2);
 
-	ApplicationWindow *app = (ApplicationWindow *)parent;
-	if (app){
-		boxFunction->insertItems(0, app->surfaceFunc);
-		boxX->setCompleter (new QCompleter(app->d_param_surface_func));
-		boxY->setCompleter (new QCompleter(app->d_param_surface_func));
-		boxZ->setCompleter (new QCompleter(app->d_param_surface_func));
-	}
-
 	d_graph = 0;
     setFocusProxy(boxFunction);
 
@@ -100,19 +94,28 @@ SurfaceDialog::SurfaceDialog( QWidget* parent, Qt::WFlags fl )
 
 void SurfaceDialog::initFunctionPage()
 {
-	boxFunction = new QComboBox();
-	boxFunction->setEditable(true);
+	ApplicationWindow *app = (ApplicationWindow *)parent();
+	QLocale locale = QLocale();
+
+	boxFunction = new ScriptEdit(app->scriptingEnv());
+	boxFunction->enableShortcuts();
+	boxFunction->setFocus();
 
 	QBoxLayout *bl1 = new QBoxLayout (QBoxLayout::LeftToRight);
-	bl1->addWidget(new QLabel( tr("f(x,y)=")), 1);
+
+	QVBoxLayout *vl1 = new QVBoxLayout();
+	vl1->addWidget(new QLabel( tr("f(x,y)=")));
+
+	buttonRecentFunc = new QPushButton(tr("Rece&nt"));
+	buttonRecentFunc->setToolTip(tr("Click here to select a recently typed expression"));
+	connect(buttonRecentFunc, SIGNAL(clicked()), this, SLOT(showFunctionLog()));
+	vl1->addWidget(buttonRecentFunc);
+	vl1->addStretch();
+
+	bl1->addLayout(vl1, 1);
 	bl1->addWidget(boxFunction, 10);
 
     QGroupBox *gb1 = new QGroupBox(tr("X - axis"));
-
-	ApplicationWindow *app = (ApplicationWindow *)parent();
-	QLocale locale = QLocale();
-	if (app)
-		locale = app->locale();
 
 	boxXFrom = new DoubleSpinBox();
 	boxXFrom->setLocale(locale);
@@ -182,9 +185,10 @@ void SurfaceDialog::initFunctionPage()
 	functionPage = new QWidget();
 
 	QVBoxLayout* vl = new QVBoxLayout(functionPage);
-    vl->addLayout(bl1);
+	vl->addLayout(bl1);
 	vl->addLayout(bl2);
 	vl->addWidget(gb4);
+	vl->addStretch();
 
 	optionStack->addWidget(functionPage);
 }
@@ -194,23 +198,51 @@ void SurfaceDialog::initParametricSurfacePage()
 	ApplicationWindow *app = (ApplicationWindow *)parent();
 	QLocale locale = QLocale();
 	int prec = 6;
-	if (app){
-		locale = app->locale();
+	if (app)
 		prec = app->d_decimal_digits;
-	}
 
-	boxX = new QLineEdit();
-	boxY = new QLineEdit();
-	boxZ = new QLineEdit();
+	int maxH = 80;
+	boxX = new ScriptEdit(app->scriptingEnv());
+	boxX->setMaximumHeight(maxH);
+	boxX->enableShortcuts();
+
+	boxY = new ScriptEdit(app->scriptingEnv());
+	boxY->setMaximumHeight(maxH);
+	boxY->enableShortcuts();
+
+	boxZ = new ScriptEdit(app->scriptingEnv());
+	boxZ->setMaximumHeight(maxH);
+	boxZ->enableShortcuts();
+
+	QString recentTip = tr("Click here to select a recently typed expression");
+	QString recentBtnText = tr("Rece&nt");
+
+	buttonXLog = new QPushButton(recentBtnText);
+	buttonXLog->setToolTip(recentTip);
+	connect(buttonXLog, SIGNAL(clicked()), this, SLOT(showXLog()));
+
+	buttonYLog = new QPushButton(recentBtnText);
+	buttonYLog->setToolTip(recentTip);
+	connect(buttonYLog, SIGNAL(clicked()), this, SLOT(showYLog()));
+
+	buttonZLog = new QPushButton(recentBtnText);
+	buttonZLog->setToolTip(recentTip);
+	connect(buttonZLog, SIGNAL(clicked()), this, SLOT(showZLog()));
 
 	QGroupBox *gb = new QGroupBox(tr("Equations"));
 	QGridLayout *gl = new QGridLayout(gb);
     gl->addWidget(new QLabel( tr("X(u,v)=")), 0, 0);
     gl->addWidget(boxX, 0, 1);
+	gl->addWidget(buttonXLog, 0, 2);
+
     gl->addWidget(new QLabel(tr("Y(u,v)=")), 1, 0);
     gl->addWidget(boxY, 1, 1);
+	gl->addWidget(buttonYLog, 1, 2);
+
 	gl->addWidget(new QLabel(tr("Z(u,v)=")), 2, 0);
     gl->addWidget(boxZ, 2, 1);
+	gl->addWidget(buttonZLog, 2, 2);
+
     gl->setRowStretch(3, 1);
 
     QGroupBox *gb1 = new QGroupBox(tr("u"));
@@ -221,7 +253,7 @@ void SurfaceDialog::initParametricSurfacePage()
 	boxUTo = new DoubleSpinBox();
 	boxUTo->setLocale(locale);
 	boxUTo->setDecimals(prec);
-	boxUTo->setValue(3.1415);
+	boxUTo->setValue(M_PI);
 
     QGridLayout *gl1 = new QGridLayout();
     gl1->addWidget(new QLabel( tr("From")), 0, 0);
@@ -241,7 +273,7 @@ void SurfaceDialog::initParametricSurfacePage()
 	boxVTo = new DoubleSpinBox();
 	boxVTo->setLocale(locale);
 	boxVTo->setDecimals(prec);
-	boxVTo->setValue(3.1415);
+	boxVTo->setValue(M_PI);
 
     QGridLayout *gl2 = new QGridLayout();
     gl2->addWidget(new QLabel( tr("From")), 0, 0);
@@ -307,7 +339,7 @@ void SurfaceDialog::setFunction(Graph3D *g)
 	if (!f)
 		return;
 
-	boxFunction->setCurrentText(f->function());
+	boxFunction->setText(f->function());
 	boxFuncColumns->setValue(f->columns());
 	boxFuncRows->setValue(f->rows());
 	boxXFrom->setValue(g->xStart());
@@ -336,7 +368,7 @@ void SurfaceDialog::acceptParametricSurface()
 	parser.DefineVar("v", &v);
 
     int list_size = 15;
-    QString x_formula = boxX->text();
+	QString x_formula = boxX->text().simplified();
 	try {
 		parser.SetExpr(x_formula.ascii());
 		parser.Eval();
@@ -351,7 +383,7 @@ void SurfaceDialog::acceptParametricSurface()
 	while ((int)app->d_param_surface_func.size() > list_size)
 		app->d_param_surface_func.pop_back();
 
-    QString y_formula = boxY->text();
+	QString y_formula = boxY->text().simplified();
 	try {
 		parser.SetExpr(y_formula.ascii());
 		parser.Eval();
@@ -366,7 +398,7 @@ void SurfaceDialog::acceptParametricSurface()
 	while ((int)app->d_param_surface_func.size() > list_size)
 		app->d_param_surface_func.pop_back();
 
-    QString z_formula = boxZ->text();
+	QString z_formula = boxZ->text().simplified();
 	try {
 		parser.SetExpr(z_formula.ascii());
 		parser.Eval();
@@ -417,7 +449,7 @@ void SurfaceDialog::acceptFunction()
 		return;
 	}
 
-	QString formula = boxFunction->currentText();
+	QString formula = boxFunction->text().simplified();
 	bool error = false;
 	try{
 		MyParser parser;
@@ -439,13 +471,13 @@ void SurfaceDialog::acceptFunction()
 	if (!error){
 		QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 		if (!d_graph)
-			app->plotSurface(boxFunction->currentText(), fromX, toX, fromY, toY, fromZ, toZ,
+			app->plotSurface(formula, fromX, toX, fromY, toY, fromZ, toZ,
 						 boxFuncColumns->value(), boxFuncRows->value());
 		else
-			d_graph->addFunction(boxFunction->currentText(),fromX, toX, fromY, toY, fromZ, toZ,
+			d_graph->addFunction(formula,fromX, toX, fromY, toY, fromZ, toZ,
 						 boxFuncColumns->value(), boxFuncRows->value());
 
-		app->updateSurfaceFuncList(boxFunction->currentText());
+		app->updateSurfaceFuncList(formula);
 		QApplication::restoreOverrideCursor();
 		close();
 	}
@@ -476,4 +508,52 @@ void SurfaceDialog::setParametricSurface(Graph3D *g)
 
 	boxUPeriodic->setChecked(s->uPeriodic());
 	boxVPeriodic->setChecked(s->vPeriodic());
+}
+
+void SurfaceDialog::showFunctionLog()
+{
+	ApplicationWindow *app = (ApplicationWindow *)this->parent();
+	if (!app)
+		return;
+
+	bool ok;
+	QString s = QInputDialog::getItem(this, tr("QtiPlot") + " - " + tr("Recent Functions"), tr("Please, choose a function:"), app->surfaceFunc, 0, false, &ok);
+	if (ok && !s.isEmpty())
+		boxFunction->setText(s);
+}
+
+void SurfaceDialog::showXLog()
+{
+	ApplicationWindow *app = (ApplicationWindow *)this->parent();
+	if (!app)
+		return;
+
+	bool ok;
+	QString s = QInputDialog::getItem(this, tr("QtiPlot") + " - " + tr("Recent Functions"), tr("Please, choose a function:"), app->d_param_surface_func, 0, false, &ok);
+	if (ok && !s.isEmpty())
+		boxX->setText(s);
+}
+
+void SurfaceDialog::showYLog()
+{
+	ApplicationWindow *app = (ApplicationWindow *)this->parent();
+	if (!app)
+		return;
+
+	bool ok;
+	QString s = QInputDialog::getItem(this, tr("QtiPlot") + " - " + tr("Recent Functions"), tr("Please, choose a function:"), app->d_param_surface_func, 0, false, &ok);
+	if (ok && !s.isEmpty())
+		boxY->setText(s);
+}
+
+void SurfaceDialog::showZLog()
+{
+	ApplicationWindow *app = (ApplicationWindow *)this->parent();
+	if (!app)
+		return;
+
+	bool ok;
+	QString s = QInputDialog::getItem(this, tr("QtiPlot") + " - " + tr("Recent Functions"), tr("Please, choose a function:"), app->d_param_surface_func, 0, false, &ok);
+	if (ok && !s.isEmpty())
+		boxZ->setText(s);
 }
