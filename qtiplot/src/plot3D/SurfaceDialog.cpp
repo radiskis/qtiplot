@@ -130,6 +130,7 @@ void SurfaceDialog::initFunctionPage()
     gl1->addWidget(new QLabel(tr("To")), 1, 0);
     gl1->addWidget(boxXTo, 1, 1);
     gl1->setRowStretch(2, 1);
+	gl1->setColumnStretch(1, 10);
     gb1->setLayout(gl1);
 
     QGroupBox *gb2 = new QGroupBox(tr("Y - axis"));
@@ -145,6 +146,7 @@ void SurfaceDialog::initFunctionPage()
     gl2->addWidget(new QLabel(tr("To")), 1, 0);
     gl2->addWidget(boxYTo, 1, 1);
     gl2->setRowStretch(2, 1);
+	gl2->setColumnStretch(1, 10);
     gb2->setLayout(gl2);
 
     QGroupBox *gb3 = new QGroupBox(tr("Z - axis"));
@@ -160,6 +162,7 @@ void SurfaceDialog::initFunctionPage()
     gl3->addWidget(new QLabel(tr("To")), 1, 0);
     gl3->addWidget(boxZTo, 1, 1);
     gl3->setRowStretch(2, 1);
+	gl3->setColumnStretch(1, 10);
     gb3->setLayout(gl3);
 
 	QBoxLayout *bl2 = new QBoxLayout (QBoxLayout::LeftToRight);
@@ -263,6 +266,7 @@ void SurfaceDialog::initParametricSurfacePage()
 	boxUPeriodic = new QCheckBox(tr("Periodic"));
 	gl1->addWidget(boxUPeriodic, 2, 1);
     gl1->setRowStretch(3, 1);
+	gl1->setColumnStretch(1, 10);
     gb1->setLayout(gl1);
 
     QGroupBox *gb2 = new QGroupBox(tr("v"));
@@ -283,6 +287,7 @@ void SurfaceDialog::initParametricSurfacePage()
 	boxVPeriodic = new QCheckBox(tr("Periodic"));
 	gl2->addWidget(boxVPeriodic, 2, 1);
     gl2->setRowStretch(3, 1);
+	gl2->setColumnStretch(1, 10);
     gb2->setLayout(gl2);
 
 	QGroupBox *gb3 = new QGroupBox(tr("Mesh"));
@@ -516,6 +521,11 @@ void SurfaceDialog::showFunctionLog()
 	if (!app)
 		return;
 
+	if (app->surfaceFunc.isEmpty()){
+		QMessageBox::information(this, tr("QtiPlot"), tr("Sorry, there are no recent expressions available!"));
+		return;
+	}
+
 	bool ok;
 	QString s = QInputDialog::getItem(this, tr("QtiPlot") + " - " + tr("Recent Functions"), tr("Please, choose a function:"), app->surfaceFunc, 0, false, &ok);
 	if (ok && !s.isEmpty())
@@ -527,6 +537,11 @@ void SurfaceDialog::showXLog()
 	ApplicationWindow *app = (ApplicationWindow *)this->parent();
 	if (!app)
 		return;
+
+	if (app->d_param_surface_func.isEmpty()){
+		QMessageBox::information(this, tr("QtiPlot"), tr("Sorry, there are no recent expressions available!"));
+		return;
+	}
 
 	bool ok;
 	QString s = QInputDialog::getItem(this, tr("QtiPlot") + " - " + tr("Recent Functions"), tr("Please, choose a function:"), app->d_param_surface_func, 0, false, &ok);
@@ -540,6 +555,11 @@ void SurfaceDialog::showYLog()
 	if (!app)
 		return;
 
+	if (app->d_param_surface_func.isEmpty()){
+		QMessageBox::information(this, tr("QtiPlot"), tr("Sorry, there are no recent expressions available!"));
+		return;
+	}
+
 	bool ok;
 	QString s = QInputDialog::getItem(this, tr("QtiPlot") + " - " + tr("Recent Functions"), tr("Please, choose a function:"), app->d_param_surface_func, 0, false, &ok);
 	if (ok && !s.isEmpty())
@@ -551,6 +571,11 @@ void SurfaceDialog::showZLog()
 	ApplicationWindow *app = (ApplicationWindow *)this->parent();
 	if (!app)
 		return;
+	
+	if (app->d_param_surface_func.isEmpty()){
+		QMessageBox::information(this, tr("QtiPlot"), tr("Sorry, there are no recent expressions available!"));
+		return;
+	}
 
 	bool ok;
 	QString s = QInputDialog::getItem(this, tr("QtiPlot") + " - " + tr("Recent Functions"), tr("Please, choose a function:"), app->d_param_surface_func, 0, false, &ok);
