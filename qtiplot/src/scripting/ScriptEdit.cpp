@@ -841,7 +841,8 @@ void ScriptEdit::createParenthesisSelection(int pos)
 
     QTextEdit::ExtraSelection selection;
     QTextCharFormat format = selection.format;
-    format.setBackground(Qt::green);
+	format.setBackground(Qt::green);
+	format.setForeground (Qt::red);
     selection.format = format;
 
     QTextCursor cursor = textCursor();

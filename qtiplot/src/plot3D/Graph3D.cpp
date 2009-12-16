@@ -1304,7 +1304,8 @@ void Graph3D::setScales(double xl, double xr, double yl, double yr, double zl, d
 			updateScales(xl, xr, yl, yr, zl, zr, xCol, yCol);
 	}
     resetAxesLabels();
-    findBestLayout();
+	if (d_autoscale)
+		findBestLayout();
 
 	for (int i = 0; i < 12; i++)
 		sp->coordinates()->axes[i].setTicLength(majorTicLengths[i], minorTicLengths[i]);
@@ -1319,6 +1320,7 @@ void Graph3D::setScales(double xl, double xr, double yl, double yr, double zl, d
 
 void Graph3D::updateScalesFromMatrix(double xl, double xr, double yl, double yr, double zl, double zr)
 {
+	double zmin = qMin(zl, zr);
 	double xStart = qMin(d_matrix->xStart(), d_matrix->xEnd());
 	double xEnd = qMax(d_matrix->xStart(), d_matrix->xEnd());
 	double yStart = qMin(d_matrix->yStart(), d_matrix->yEnd());
@@ -1334,7 +1336,7 @@ void Graph3D::updateScalesFromMatrix(double xl, double xr, double yl, double yr,
 		double x = x_begin + i*dx;
 		if (x < xStart || x > xEnd){
 			for (int j = 0; j < nr; j++)
-				data_matrix[i][j] = GSL_NAN;
+				data_matrix[i][j] = zmin;
 			continue;
 		}
 
@@ -1344,7 +1346,7 @@ void Graph3D::updateScalesFromMatrix(double xl, double xr, double yl, double yr,
 		for (int j = 0; j < nr; j++){
 			double y = y_begin + j*dy;
 			if (y < yStart || y > yEnd){
-				data_matrix[i][j] = GSL_NAN;
+				data_matrix[i][j] = zmin;
 				continue;
 			}
 
