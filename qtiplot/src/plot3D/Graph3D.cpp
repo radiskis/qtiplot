@@ -1265,8 +1265,6 @@ void Graph3D::setScales(double xl, double xr, double yl, double yr, double zl, d
 {
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
-	sp->hide();//in order to avoid flickering, due to changes in tick length
-
 	double *majorTicLengths = new double[12];
 	double *minorTicLengths = new double[12];
 	for (int i = 0; i < 12; i++)
@@ -1313,52 +1311,50 @@ void Graph3D::setScales(double xl, double xr, double yl, double yr, double zl, d
 	delete [] majorTicLengths;
 	delete [] minorTicLengths;
 
-    sp->show();
-
 	QApplication::restoreOverrideCursor();
 }
 
 void Graph3D::updateScalesFromMatrix(double xl, double xr, double yl, double yr, double zl, double zr)
 {
 	double zmin = qMin(zl, zr);
+	double zmax = qMax(zl, zr);
+
 	double xStart = qMin(d_matrix->xStart(), d_matrix->xEnd());
 	double xEnd = qMax(d_matrix->xStart(), d_matrix->xEnd());
 	double yStart = qMin(d_matrix->yStart(), d_matrix->yEnd());
 	double yEnd = qMax(d_matrix->yStart(), d_matrix->yEnd());
 	double dx = d_matrix->dx();
 	double dy = d_matrix->dy();
-    double x_begin = qMin(xl, xr);
+	double x_begin = qMin(xl, xr);
 	double y_begin = qMin(yl, yr);
-	int nc = int(fabs(xr - xl)/dx) + 1;// new number of columns
-	int nr = int(fabs(yr - yl)/dy) + 1;// new number of rows
+
+	int nc = qRound(fabs(xr - xl)/dx) + 1;// new number of columns
+	int nr = qRound(fabs(yr - yl)/dy) + 1;// new number of rows
+
 	double **data_matrix = Matrix::allocateMatrixData(nc, nr);
 	for (int i = 0; i < nc; i++){
 		double x = x_begin + i*dx;
 		if (x < xStart || x > xEnd){
 			for (int j = 0; j < nr; j++)
 				data_matrix[i][j] = zmin;
-			continue;
 		}
 
-        double dli, dlf;
-        dlf = modf(fabs((x - xStart)/dx), &dli);
-        int l = int(dli); if (dlf > 0.5) l++;
+		double dli, dlf;
+		dlf = modf(fabs((x - xStart)/dx), &dli);
+		int l = qRound(dli); if (dlf > 0.5) l++;
 		for (int j = 0; j < nr; j++){
 			double y = y_begin + j*dy;
-			if (y < yStart || y > yEnd){
+			if (y < yStart || y > yEnd)
 				data_matrix[i][j] = zmin;
-				continue;
-			}
 
 			double dki, dkf;
 			dkf = modf(fabs((y - yStart)/dy), &dki);
-			int k = int(dki); if (dkf > 0.5) k++;
+			int k = qRound(dki); if (dkf > 0.5) k++;
 			double val = d_matrix->cell(k, l);
-
-			if (val > zr)
-				data_matrix[i][j] = zr;
-			else if (val < zl)
-				data_matrix[i][j] = zl;
+			if (val > zmax)
+				data_matrix[i][j] = zmax;
+			else if (val < zmin)
+				data_matrix[i][j] = zmin;
 			else
 				data_matrix[i][j] = val;
 		}
@@ -1366,8 +1362,8 @@ void Graph3D::updateScalesFromMatrix(double xl, double xr, double yl, double yr,
 	sp->loadFromData(data_matrix, nc, nr, xl, xr, yl, yr);
 	Matrix::freeMatrixData(data_matrix, nc);
 
-	sp->createCoordinateSystem(Triple(xl, yl, zl), Triple(xr, yr, zr));
-	sp->legend()->setLimits(zl, zr);
+	sp->createCoordinateSystem(Triple(xl, yl, zmin), Triple(xr, yr, zmax));
+	sp->legend()->setLimits(zmin, zmax);
 	sp->legend()->setMajors(legendMajorTicks);
 
 	update();

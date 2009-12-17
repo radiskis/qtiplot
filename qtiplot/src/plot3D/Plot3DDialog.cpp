@@ -1061,8 +1061,10 @@ bool Plot3DDialog::updatePlot()
 		d_plot->setNumbersFont(numbersFont);
 		d_plot->setZoom(zoom*boxZoom->value()*0.01);
 		d_plot->setScale(xScale*boxXScale->value()*0.01, yScale*boxYScale->value()*0.01, zScale*boxZScale->value()*0.01);
-	} else if (generalDialog->currentPage()==(QWidget*)scale){
-		d_plot->setScale(axesList->currentRow(), boxFrom->value(), boxTo->value(), boxMajors->value(),
+	} else if (generalDialog->currentPage() == (QWidget*)scale){
+		double start = qMin(boxFrom->value(), boxTo->value());
+		double end = qMax(boxFrom->value(), boxTo->value());
+		d_plot->setScale(axesList->currentRow(), start, end, boxMajors->value(),
 						 boxMinors->value(), (Qwt3D::SCALETYPE)boxType->currentIndex());
 	} else if (generalDialog->currentPage() == axes){
 		int axis = axesList2->currentRow();

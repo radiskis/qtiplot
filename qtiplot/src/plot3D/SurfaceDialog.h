@@ -55,7 +55,7 @@ public slots:
 	void setGraph(Graph3D *g){d_graph = g;};
 
 private slots:
-	void clearList();
+	void clearFunction();
 	void accept();
 	void showFunctionLog();
 	void showXLog();
