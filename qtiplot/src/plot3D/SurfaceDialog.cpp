@@ -67,7 +67,7 @@ SurfaceDialog::SurfaceDialog( QWidget* parent, Qt::WFlags fl )
 	initFunctionPage();
 	initParametricSurfacePage();
 
-	buttonClear = new QPushButton(tr("Clear &list"));
+	buttonClear = new QPushButton(tr("Clea&r"));
 	buttonOk = new QPushButton(tr("&OK"));
     buttonOk->setDefault(true);
     buttonCancel = new QPushButton(tr("&Close"));
@@ -87,7 +87,7 @@ SurfaceDialog::SurfaceDialog( QWidget* parent, Qt::WFlags fl )
     setFocusProxy(boxFunction);
 
 	connect( boxType, SIGNAL(activated(int)), optionStack, SLOT(setCurrentIndex(int)));
-	connect( buttonClear, SIGNAL(clicked()), this, SLOT(clearList()));
+	connect( buttonClear, SIGNAL(clicked()), this, SLOT(clearFunction()));
     connect( buttonOk, SIGNAL(clicked()), this, SLOT(accept()));
     connect( buttonCancel, SIGNAL(clicked()), this, SLOT(reject()));
 }
@@ -321,17 +321,14 @@ void SurfaceDialog::initParametricSurfacePage()
 	optionStack->addWidget(parametricPage);
 }
 
-void SurfaceDialog::clearList()
+void SurfaceDialog::clearFunction()
 {
-    ApplicationWindow *app = (ApplicationWindow *)this->parent();
-
-    if (app && boxType->currentIndex())
-        app->d_param_surface_func.clear();
-    else {
-        boxFunction->clear();
-        if (app)
-            app->clearSurfaceFunctionsList();
-    }
+	if (boxType->currentIndex()){
+		boxX->clear();
+		boxY->clear();
+		boxZ->clear();
+	} else
+		boxFunction->clear();
 }
 
 void SurfaceDialog::setFunction(Graph3D *g)

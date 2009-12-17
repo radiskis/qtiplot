@@ -369,10 +369,7 @@ public slots:
 	FunctionDialog* functionDialog();
 	FunctionDialog* showFunctionDialog(Graph * g, int curve);
 	void addFunctionCurve();
-	void clearSurfaceFunctionsList();
 	void clearLogInfo();
-	void clearParamFunctionsList();
-	void clearPolarFunctionsList();
 	void updateFunctionLists(int type, QStringList &formulas);
 	void updateSurfaceFuncList(const QString& s);
 	//@}
@@ -1263,7 +1260,7 @@ public:
 	QStringList recentProjects;
 	bool saved;
 	QStringList locales;
-	QStringList functions; //user-defined functions;
+	QStringList d_recent_functions; //user-defined functions;
 	QStringList xFunctions, yFunctions, rFunctions, thetaFunctions; // user functions for parametric and polar plots
 	QStringList surfaceFunc; //user-defined surface functions;
     QStringList d_param_surface_func; //user-defined parametric surface functions;

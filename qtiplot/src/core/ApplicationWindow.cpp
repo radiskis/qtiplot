@@ -4881,6 +4881,7 @@ void ApplicationWindow::readSettings()
 	rFunctions = settings.value("/rFunctions").toStringList();
 	thetaFunctions = settings.value("/thetaFunctions").toStringList();
 	d_param_surface_func = settings.value("/ParametricSurfaces").toStringList();
+	d_recent_functions = settings.value("/Functions").toStringList();
 	settings.endGroup(); // UserFunctions
 
 	settings.beginGroup("/Confirmations");
@@ -5255,6 +5256,7 @@ void ApplicationWindow::saveSettings()
 	settings.setValue("/rFunctions", rFunctions);
 	settings.setValue("/thetaFunctions", thetaFunctions);
     settings.setValue("/ParametricSurfaces", d_param_surface_func);
+	settings.setValue("/Functions", d_recent_functions);
 	settings.endGroup(); // UserFunctions
 
 	settings.beginGroup("/Confirmations");
@@ -10221,9 +10223,6 @@ FunctionDialog* ApplicationWindow::showFunctionDialog(Graph *g, int curve)
 FunctionDialog* ApplicationWindow::functionDialog()
 {
 	FunctionDialog* fd = new FunctionDialog(this);
-	connect (fd, SIGNAL(clearParamFunctionsList()), this, SLOT(clearParamFunctionsList()));
-	connect (fd, SIGNAL(clearPolarFunctionsList()), this, SLOT(clearPolarFunctionsList()));
-
 	fd->setModal(true);
 	fd->show();
 	fd->setActiveWindow();
@@ -10254,8 +10253,7 @@ void ApplicationWindow::addFunctionCurve()
 void ApplicationWindow::updateFunctionLists(int type, QStringList &formulas)
 {
 	int maxListSize = 10;
-	if (type == 2 && formulas.size() >= 2)
-	{
+	if (type == 2 && formulas.size() >= 2){
 		rFunctions.remove(formulas[0]);
 		rFunctions.push_front(formulas[0]);
 
@@ -10266,9 +10264,7 @@ void ApplicationWindow::updateFunctionLists(int type, QStringList &formulas)
 			rFunctions.pop_back();
 		while ((int)thetaFunctions.size() > maxListSize)
 			thetaFunctions.pop_back();
-	}
-	else if (type == 1 && formulas.size() >= 2)
-	{		
+	} else if (type == 1 && formulas.size() >= 2){
 		xFunctions.remove(formulas[0]);
 		xFunctions.push_front(formulas[0]);
 
@@ -10279,6 +10275,12 @@ void ApplicationWindow::updateFunctionLists(int type, QStringList &formulas)
 			xFunctions.pop_back();
 		while ((int)yFunctions.size() > maxListSize)
 			yFunctions.pop_back();
+	} else if (type == 0 && formulas.size() >= 1){
+		d_recent_functions.remove(formulas[0]);
+		d_recent_functions.push_front(formulas[0]);
+
+		while ((int)d_recent_functions.size() > maxListSize)
+			d_recent_functions.pop_back();
 	}
 }
 
@@ -10299,23 +10301,6 @@ void ApplicationWindow::clearLogInfo()
 		results->setText("");
 		emit modified();
 	}
-}
-
-void ApplicationWindow::clearParamFunctionsList()
-{
-	xFunctions.clear();
-	yFunctions.clear();
-}
-
-void ApplicationWindow::clearPolarFunctionsList()
-{
-	rFunctions.clear();
-	thetaFunctions.clear();
-}
-
-void ApplicationWindow::clearSurfaceFunctionsList()
-{
-	surfaceFunc.clear();
 }
 
 void ApplicationWindow::setFramed3DPlot()

@@ -63,6 +63,7 @@ protected slots:
 	void acceptFunction();
 	void acceptParametric();
 	void acceptPolar();
+	void showFunctionLog();
 	void showXParLog();
 	void showYParLog();
 	void showPolarRadiusLog();
@@ -72,10 +73,6 @@ protected slots:
 public slots:
 	void accept();
 	void clearList();
-
-signals:
-	void clearParamFunctionsList();
-	void clearPolarFunctionsList();
 
 private:
 	Graph *graph;
@@ -110,7 +107,7 @@ private:
 	QPushButton *addFunctionBtn;
 	QComboBox* boxMathFunctions;
 	QTextEdit* boxFunctionExplain;
-	QPushButton *buttonXParLog, *buttonYParLog, *buttonPolarRadiusLog, *buttonPolarRThetaLog;
+	QPushButton *buttonFunctionLog, *buttonXParLog, *buttonYParLog, *buttonPolarRadiusLog, *buttonPolarRThetaLog;
 
 	ApplicationWindow *d_app;
 	ScriptEdit *d_active_editor;

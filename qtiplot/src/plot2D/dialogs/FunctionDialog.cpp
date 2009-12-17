@@ -63,6 +63,8 @@ FunctionDialog::FunctionDialog(ApplicationWindow* parent, bool standAlone, Qt::W
 	}
 
     setObjectName( "FunctionDialog" );
+	QString recentTip = tr("Click here to select a recently typed expression");
+	QString recentBtnText = tr("Rece&nt");
 
 	QHBoxLayout *hbox1 = new QHBoxLayout();
 	hbox1->addWidget(new QLabel(tr( "Curve type " )));
@@ -76,12 +78,22 @@ FunctionDialog::FunctionDialog(ApplicationWindow* parent, bool standAlone, Qt::W
 	optionStack->setFrameShape( QFrame::StyledPanel );
 	optionStack->setFrameShadow( QStackedWidget::Plain );
 
+	QVBoxLayout *vl = new QVBoxLayout();
+	vl->addWidget(new QLabel(tr( "f(x)= " )));
+
+	buttonFunctionLog = new QPushButton(recentBtnText);
+	buttonFunctionLog->setToolTip(recentTip);
+	connect(buttonFunctionLog, SIGNAL(clicked()), this, SLOT(showFunctionLog()));
+	vl->addWidget(buttonFunctionLog);
+	vl->addStretch();
+
 	QGridLayout *gl1 = new QGridLayout();
-    gl1->addWidget(new QLabel(tr( "f(x)= " )), 0, 0);
+	gl1->addLayout(vl, 0, 0);
+
 	boxFunction = new ScriptEdit(d_app->scriptingEnv());
 	boxFunction->enableShortcuts();
-
 	gl1->addWidget(boxFunction, 0, 1);
+
 	gl1->addWidget(new QLabel(tr( "From x= " )), 1, 0);
 	boxFrom = new DoubleSpinBox();
 	boxFrom->setLocale(locale);
@@ -134,8 +146,6 @@ FunctionDialog::FunctionDialog(ApplicationWindow* parent, bool standAlone, Qt::W
 	connect(boxXFunction, SIGNAL(activated(ScriptEdit *)), this, SLOT(setActiveEditor(ScriptEdit *)));
 	gl2->addWidget(boxXFunction, 1, 1);
 
-	QString recentTip = tr("Click here to select a recently typed expression");
-	QString recentBtnText = tr("Rece&nt");
 	buttonXParLog = new QPushButton(recentBtnText);
 	buttonXParLog->setToolTip(recentTip);
 	gl2->addWidget(buttonXParLog, 1, 2);
@@ -304,11 +314,6 @@ FunctionDialog::FunctionDialog(ApplicationWindow* parent, bool standAlone, Qt::W
 
 void FunctionDialog::raiseWidget(int index)
 {
-	if (index)
-		buttonClear->setText( tr( "Clear list" ) );
-	else
-		buttonClear->setText( tr( "Clear Function" ) );
-
 	optionStack->setCurrentIndex(index);
 }
 
@@ -381,7 +386,7 @@ void FunctionDialog::setCurveToModify(Graph *g, int curve)
 
 void FunctionDialog::clearList()
 {
-	int type=boxType->currentItem();
+	int type = boxType->currentItem();
 	switch (type)
 	{
 		case 0:
@@ -391,13 +396,11 @@ void FunctionDialog::clearList()
 		case 1:
 			boxXFunction->clear();
 			boxYFunction->clear();
-			emit clearParamFunctionsList();
 			break;
 
 		case 2:
 			boxPolarTheta->clear();
 			boxPolarRadius->clear();
-			emit clearPolarFunctionsList();
 			break;
 	}
 }
@@ -443,7 +446,8 @@ void FunctionDialog::acceptFunction()
 	int type = boxType->currentItem();
 	QStringList formulas;
 	formulas += formula;
-	if (!error){
+	if (!error && d_app){
+		d_app->updateFunctionLists(type, formulas);
 		if (!graph){
 			MultiLayer *plot = d_app->newFunctionPlot(formulas, start, end, boxPoints->value(), "x", type);
 			if (plot)
@@ -605,6 +609,22 @@ void FunctionDialog::accept()
 			acceptPolar();
 			break;
 	}
+}
+
+void FunctionDialog::showFunctionLog()
+{
+	if (!d_app)
+		return;
+
+	if (d_app->d_recent_functions.isEmpty()){
+		QMessageBox::information(this, tr("QtiPlot"), tr("Sorry, there are no recent expressions available!"));
+		return;
+	}
+
+	bool ok;
+	QString s = QInputDialog::getItem(this, tr("QtiPlot") + " - " + tr("Recent Functions"), tr("Please, choose a function:"), d_app->d_recent_functions, 0, false, &ok);
+	if (ok && !s.isEmpty())
+		boxFunction->setText(s);
 }
 
 void FunctionDialog::showXParLog()
