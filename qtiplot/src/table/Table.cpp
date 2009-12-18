@@ -1380,7 +1380,7 @@ void Table::copySelection()
 	}
 
 	// Copy text into the clipboard
-	QApplication::clipboard()->setText(text);
+	QApplication::clipboard()->setText(text.trimmed());
 }
 
 // Paste text from the clipboard
