@@ -841,14 +841,15 @@ static GLint gl2psAddText(GLint type, const char *str, const char *fontname,
 {
   GLfloat pos[4];
   GL2PSprimitive *prim;
-  GLboolean valid;
+  //GLboolean valid;
 
   if(!gl2ps || !str || !fontname) return GL2PS_UNINITIALIZED;
 
   if(gl2ps->options & GL2PS_NO_TEXT) return GL2PS_SUCCESS;
 
-  glGetBooleanv(GL_CURRENT_RASTER_POSITION_VALID, &valid);
-  if(GL_FALSE == valid) return GL2PS_SUCCESS; /* the primitive is culled */
+  //The lines bellow were commented out by Ion Vasilief since this check prevents the export of some texts
+  //glGetBooleanv(GL_CURRENT_RASTER_POSITION_VALID, &valid);
+  //if(GL_FALSE == valid) return GL2PS_SUCCESS; /* the primitive is culled */
 
   glGetFloatv(GL_CURRENT_RASTER_POSITION, pos);
 
