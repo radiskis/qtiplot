@@ -160,7 +160,7 @@ void Axis::drawLabel()
 
 	int ax = 0;
 	Qwt3D::CoordinateSystem *coords = plot()->coordinates();
-	for (int i = 0; i < coords->axes.size(); i++){
+        for (int i = 0; i < (int)coords->axes.size(); i++){
 		Qwt3D::Axis axis = coords->axes[i];
 		if (axis.begin() == beg_ && axis.end() == end_){
 			ax = i;
@@ -173,8 +173,7 @@ void Axis::drawLabel()
 			angle += 180;
 		if (angle > 180 && angle < 270)
 			angle -= 180;
-	} else if (angle > 270)
-		angle -= 180;
+            }
 
 	label_.draw(angle);
 }
