@@ -158,6 +158,24 @@ void Axis::drawLabel()
 	Triple beg = World2ViewPort(beg_);
 	double angle = 360 - fabs(QLineF(beg.x, beg.y, end.x, end.y).angle());
 
+	int ax = 0;
+	Qwt3D::CoordinateSystem *coords = plot()->coordinates();
+	for (int i = 0; i < coords->axes.size(); i++){
+		Qwt3D::Axis axis = coords->axes[i];
+		if (axis.begin() == beg_ && axis.end() == end_){
+			ax = i;
+			break;
+		}
+	}
+
+	if (ax != Qwt3D::Z1 && ax != Qwt3D::Z2 && ax != Qwt3D::Z3 && ax != Qwt3D::Z4){
+		if (angle > 90 && angle < 180)
+			angle += 180;
+		if (angle > 180 && angle < 270)
+			angle -= 180;
+	} else if (angle > 270)
+		angle -= 180;
+
 	label_.draw(angle);
 }
 

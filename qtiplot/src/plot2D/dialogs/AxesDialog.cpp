@@ -843,19 +843,21 @@ void AxesDialog::showAxisFormatOptions(int format)
 				originDateTimeBox->setDateTime (scaleDraw->dateTimeOrigin());
 			}
 
-            boxFormat->insertItem("h");
-            boxFormat->insertItem("h ap");
-            boxFormat->insertItem("h AP");
-            boxFormat->insertItem("h:mm");
-            boxFormat->insertItem("h:mm ap");
-            boxFormat->insertItem("hh:mm");
-            boxFormat->insertItem("h:mm:ss");
-            boxFormat->insertItem("h:mm:ss.zzz");
-            boxFormat->insertItem("mm:ss");
-            boxFormat->insertItem("mm:ss.zzz");
-            boxFormat->insertItem("hmm");
-            boxFormat->insertItem("hmmss");
-            boxFormat->insertItem("hhmmss");
+			boxFormat->insertItem("h");
+			boxFormat->insertItem("h ap");
+			boxFormat->insertItem("h AP");
+			boxFormat->insertItem("h:mm");
+			boxFormat->insertItem("h:mm ap");
+			boxFormat->insertItem("hh:mm");
+			boxFormat->insertItem("h:mm:ss");
+			boxFormat->insertItem("h:mm:ss.zzz");
+			boxFormat->insertItem("m");
+			boxFormat->insertItem("mm");
+			boxFormat->insertItem("mm:ss");
+			boxFormat->insertItem("mm:ss.zzz");
+			boxFormat->insertItem("hmm");
+			boxFormat->insertItem("hmmss");
+			boxFormat->insertItem("hhmmss");
         }
         break;
 

@@ -234,8 +234,14 @@ QwtText ScaleDraw::label(double value) const
 		}
 
 		case Time:
-			return QwtText(d_date_time_origin.time().addMSecs((int)value).toString(d_format_info));
+		{
+			QTime time = d_date_time_origin.time().addMSecs((int)value);
+			if (d_format_info == "M")
+				return QwtText(QString::number(60*time.hour() + time.minute()));
+
+			return QwtText(time.toString(d_format_info));
 		break;
+		}
 
 		case Date:
             return QwtText(d_date_time_origin.addSecs((int)value).toString(d_format_info));
