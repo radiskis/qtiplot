@@ -67,17 +67,17 @@ public slots:
 	void modifiedNote();
 
 	// ScriptEdit methods
-	QString text() { return currentEditor()->text(); };
-	void setText(const QString &s) { currentEditor()->setText(s); };
-	void print() { currentEditor()->print(); };
-	void print(QPrinter *printer) { currentEditor()->print(printer); };
-	void exportPDF(const QString& fileName){currentEditor()->exportPDF(fileName);};
-	QString exportASCII(const QString &file=QString::null) { return currentEditor()->exportASCII(file); };
-	QString importASCII(const QString &file=QString::null){ return currentEditor()->importASCII(file);};
-	void execute() { currentEditor()->execute(); };
-	void executeAll() { currentEditor()->executeAll(); };
-	void evaluate() { currentEditor()->evaluate(); };
-	void setDirPath(const QString& path){currentEditor()->setDirPath(path);};
+        QString text() { if(currentEditor()) return currentEditor()->text(); return QString::null;};
+        void setText(const QString &s) { if(currentEditor()) currentEditor()->setText(s); };
+        void print() { if(currentEditor()) currentEditor()->print(); };
+        void print(QPrinter *printer) { if(currentEditor()) currentEditor()->print(printer); };
+        void exportPDF(const QString& fileName){if(currentEditor()) currentEditor()->exportPDF(fileName);};
+        QString exportASCII(const QString &file=QString::null) { if(currentEditor()) return currentEditor()->exportASCII(file); return QString::null;};
+        QString importASCII(const QString &file=QString::null){ if(currentEditor()) return currentEditor()->importASCII(file); return QString::null;};
+        void execute() { if(currentEditor()) currentEditor()->execute(); };
+        void executeAll() { if(currentEditor()) currentEditor()->executeAll(); };
+        void evaluate() { if(currentEditor()) currentEditor()->evaluate(); };
+        void setDirPath(const QString& path){if(currentEditor()) currentEditor()->setDirPath(path);};
 
 	//! Enables/Disables the line number display
 	void showLineNumbers(bool show = true);

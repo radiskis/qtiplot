@@ -4406,13 +4406,8 @@ ApplicationWindow* ApplicationWindow::openProject(const QString& fn, bool factor
 			cont.pop_back();
 			m->restore(cont);
 			progress.setValue(aux);
-		} else if  (s == "</folder>") {
-			Folder *parent = (Folder *)app->current_folder->parent();
-			if (!parent)
-				app->current_folder = app->projectFolder();
-			else
-				app->current_folder = parent;
-		}
+                } else if  (s == "</folder>")
+                        app->goToParentFolder();
 	}
 	f.close();
 
@@ -4430,7 +4425,8 @@ ApplicationWindow* ApplicationWindow::openProject(const QString& fn, bool factor
 		s=t.readLine();
 		if  (s.left(8) == "<folder>"){
 			list = s.split("\t");
-			app->current_folder = app->current_folder->findSubfolder(list[1]);
+                        if (app->current_folder && list.size() >= 2)
+                            app->current_folder = app->current_folder->findSubfolder(list[1]);
 		} else if  (s == "<multiLayer>"){//process multilayers information
 			title = titleBase + QString::number(++aux) + "/" + QString::number(widgets);
 			progress.setLabelText(title);
@@ -4488,8 +4484,7 @@ ApplicationWindow* ApplicationWindow::openProject(const QString& fn, bool factor
 			plot->blockSignals(false);
 			progress.setValue(aux);
 		}
-		else if  (s == "<SurfacePlot>")
-		{//process 3D plots information
+                else if  (s == "<SurfacePlot>") {//process 3D plots information
 			list.clear();
 			title = titleBase + QString::number(++aux)+"/"+QString::number(widgets);
 			progress.setLabelText(title);
@@ -4499,24 +4494,17 @@ ApplicationWindow* ApplicationWindow::openProject(const QString& fn, bool factor
 			}
 			Graph3D::restore(app, list, d_file_version);
 			progress.setValue(aux);
-		}
-		else if (s == "</folder>")
-		{
-			Folder *parent = (Folder *)app->current_folder->parent();
-			if (!parent)
-				app->current_folder = projectFolder();
-			else
-				app->current_folder = parent;
-		}
-		else if (s == "<log>")
-		{//process analysis information
+                } else if (s == "</folder>")
+                        app->goToParentFolder();
+                 else if (s == "<log>") {//process analysis information
 			s = t.readLine();
 			QString log = s + "\n";
 			while(s != "</log>"){
 				s = t.readLine();
 				log += s + "\n";
 			}
-			app->current_folder->appendLogInfo(log.remove("</log>"));
+                        if (app->current_folder)
+                            app->current_folder->appendLogInfo(log.remove("</log>"));
 		}
 	}
 	f.close();
@@ -8880,7 +8868,7 @@ void ApplicationWindow::scriptingMenuAboutToShow()
     if (note){
 		scriptingMenu->insertSeparator();
 
-    	bool noteHasText = !note->text().isEmpty();
+        bool noteHasText = !note->text().isEmpty();
     	noteTools->setEnabled(noteHasText);
 		if (noteHasText){
 			if (scriptEnv->name() == QString("Python")){
@@ -14963,13 +14951,8 @@ Folder* ApplicationWindow::appendProject(const QString& fn, Folder* parentFolder
 				}
 				cont.pop_back();
 				m->restore(cont);
-			}else if  (s == "</folder>"){
-				Folder *parent = (Folder *)current_folder->parent();
-				if (!parent)
-					current_folder = projectFolder();
-				else
-					current_folder = parent;
-			}
+                        } else if  (s == "</folder>")
+                                goToParentFolder();
 		}
 		f.close();
 
@@ -14981,7 +14964,8 @@ Folder* ApplicationWindow::appendProject(const QString& fn, Folder* parentFolder
 			s=t.readLine();
 			if  (s.left(8) == "<folder>"){
 				lst = s.split("\t");
-				current_folder = current_folder->findSubfolder(lst[1]);
+                                if (current_folder && lst.size() >= 2)
+                                    current_folder = current_folder->findSubfolder(lst[1]);
 			}else if  (s == "<multiLayer>"){//process multilayers information
 				s=t.readLine();
 				QStringList graph=s.split("\t");
@@ -15039,13 +15023,8 @@ Folder* ApplicationWindow::appendProject(const QString& fn, Folder* parentFolder
 					lst<<s;
 				}
 				Graph3D::restore(this, lst, d_file_version);
-			}else if  (s == "</folder>"){
-				Folder *parent = (Folder *)current_folder->parent();
-				if (!parent)
-					current_folder = projectFolder();
-				else
-					current_folder = parent;
-			}
+                        } else if  (s == "</folder>")
+                            goToParentFolder();
 		}
 		f.close();
 	}
@@ -15679,6 +15658,14 @@ void ApplicationWindow::hideFolderWindows(Folder *f)
 
 		dir = dir->folderBelow();
 	}
+}
+
+void ApplicationWindow::goToParentFolder()
+{
+    if (current_folder &&  current_folder->parent())
+        current_folder = (Folder *)current_folder->parent();
+    else
+        current_folder = projectFolder();
 }
 
 bool ApplicationWindow::changeFolder(Folder *newFolder, bool force)

@@ -1063,6 +1063,7 @@ private:
 	virtual QMenu * createPopupMenu(){return NULL;};
 	void updateCompleter(const QString& windowName, bool remove = false, const QString& newName = QString::null);
 	QMessageBox::StandardButton showSaveProjectMessage();
+        void goToParentFolder();
 
 private slots:
 	void disableActions();
