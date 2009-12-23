@@ -846,6 +846,8 @@ void AxesDialog::showAxisFormatOptions(int format)
 			boxFormat->insertItem("h");
 			boxFormat->insertItem("h ap");
 			boxFormat->insertItem("h AP");
+			boxFormat->insertItem("M");
+			boxFormat->insertItem("S");
 			boxFormat->insertItem("h:mm");
 			boxFormat->insertItem("h:mm ap");
 			boxFormat->insertItem("hh:mm");
@@ -1312,8 +1314,7 @@ bool AxesDialog::updatePlot()
 	}
 	else if (generalDialog->currentWidget() == gridPage)
 		updateGrid();
-	else if (generalDialog->currentWidget() == (QWidget*)axesPage)
-	{
+	else if (generalDialog->currentWidget() == (QWidget*)axesPage){
 		int axis = mapToQwtAxisId();
 		int format = boxAxisType->currentIndex();
 
@@ -2030,7 +2031,13 @@ void AxesDialog::applyAxisFormat()
 	app->modifiedProject();
 }
 
-void AxesDialog::setDisplayDateTimeFormat( const QString & format)
+void AxesDialog::setDisplayDateTimeFormat(const QString & format)
 {
+	ScaleDraw *scaleDraw = (ScaleDraw *) d_graph->axisScaleDraw(mapToQwtAxisId());
+	if (scaleDraw && scaleDraw->scaleType() == ScaleDraw::Time && (format == "M" || format == "S")){
+		originDateTimeBox->setDisplayFormat("hh:mm:ss");
+		return;
+	}
+
 	originDateTimeBox->setDisplayFormat(format);
 }
