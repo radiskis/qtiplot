@@ -238,6 +238,8 @@ QwtText ScaleDraw::label(double value) const
 			QTime time = d_date_time_origin.time().addMSecs((int)value);
 			if (d_format_info == "M")
 				return QwtText(QString::number(60*time.hour() + time.minute()));
+			else if (d_format_info == "S")
+				return QwtText(QString::number(3600*time.hour() + 60*time.minute() + time.second()));
 
 			return QwtText(time.toString(d_format_info));
 		break;
