@@ -127,7 +127,7 @@ appImports = (
 	"tableToMatrix", "matrixToTable",
 	"openTemplate", "saveAsTemplate",
 	"clone", "setWindowName",
-	"importImage",
+	"importImage", "importExcel", "importWaveFile",
 	"setPreferences",
 	"plot", "plot3D", "stemPlot", "waterfallPlot", "plotImageProfiles",
 	"activeFolder", "rootFolder",

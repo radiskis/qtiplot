@@ -368,6 +368,8 @@ note
 newNote
 plot
 importImage
+importExcel
+importWaveFile
 newPlot3D
 plot3D
 windows
