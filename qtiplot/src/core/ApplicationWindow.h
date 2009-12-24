@@ -443,7 +443,7 @@ public slots:
 	void connectTable(Table* w);
 	void initTable(Table* w, const QString& caption);
 	void customTable(Table* w);
-
+	void importExcel(const QString& = QString::null);
 	void importWaveFile();
 	void importASCII();
 	void importASCII(const QStringList& files, int import_mode, const QString& local_column_separator, int local_ignored_lines, bool local_rename_columns,
@@ -1354,7 +1354,10 @@ private:
     QAction *actionNewProject, *actionAppendProject, *actionNewNote, *actionNewTable, *actionNewFunctionPlot;
     QAction *actionNewSurfacePlot, *actionNewMatrix, *actionNewGraph, *actionNewFolder;
     QAction *actionOpen, *actionLoadImage, *actionSaveProject, *actionSaveProjectAs, *actionImportImage;
-    QAction *actionLoad, *actionUndo, *actionRedo, *actionImportSound;
+	QAction *actionLoad, *actionUndo, *actionRedo, *actionImportSound;
+#ifdef XLS_IMPORT
+	QAction *actionOpenExcel;
+#endif
     QAction *actionCopyWindow, *actionShowAllColumns, *actionHideSelectedColumns;
     QAction *actionCutSelection, *actionCopySelection, *actionPasteSelection, *actionClearSelection;
     QAction *actionShowExplorer, *actionShowLog, *actionAddLayer, *actionShowLayerDialog, *actionAutomaticLayout;

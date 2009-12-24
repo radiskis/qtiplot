@@ -58,6 +58,16 @@ QWT_INCLUDEPATH = $$QTI_ROOT/3rdparty/qwt/src
 # link locally against a copy in 3rdparty/
 QWT_LIBS = $$QTI_ROOT/3rdparty/qwt/lib/libqwt.a
 
+###########################################################
+## libxls - optional. you don't have to set these variables
+# http://libxls.sourceforge.net/
+###########################################################
+
+# include path.
+XLS_INCLUDEPATH = $$QTI_ROOT/3rdparty/libxls/include/
+# link locally against a copy in 3rdparty/
+XLS_LIBS = $$QTI_ROOT/3rdparty/libxls/lib/libxlsreader.a
+
 ##########################################################
 ## libpng - optional. you don't have to set these variables
 ##########################################################

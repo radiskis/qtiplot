@@ -180,6 +180,10 @@ using namespace std;
 #include <gsl/gsl_statistics.h>
 #include <gsl/gsl_sort.h>
 
+#ifdef XLS_IMPORT
+	#include <libxls/xls.h>
+#endif
+
 using namespace Qwt3D;
 
 extern "C"
@@ -680,6 +684,9 @@ void ApplicationWindow::initToolBars()
 	fileTools->addAction(actionNewSurfacePlot);
 	fileTools->addSeparator ();
 	fileTools->addAction(actionOpen);
+#ifdef XLS_IMPORT
+	fileTools->addAction(actionOpenExcel);
+#endif
 	fileTools->addAction(actionOpenTemplate);
 	fileTools->addAction(actionAppendProject);
 	fileTools->addAction(actionSaveProject);
@@ -3858,6 +3865,56 @@ ApplicationWindow * ApplicationWindow::plotFile(const QString& fn)
     savedProject();//force saved state
     close();
 	return app;
+}
+
+void ApplicationWindow::importExcel(const QString& fileName)
+{
+#ifdef XLS_IMPORT
+	QString fn = fileName;
+	if (fn.isEmpty()){
+		fn = getFileName(this, tr("Open File"), QString::null, "*.xls", 0, false);
+		if (fn.isEmpty())
+			return;
+	}
+
+	// open workbook, choose standard conversion
+	xlsWorkBook* pWB = xls_open(fn.toAscii().data(), "iso-8859-15//TRANSLIT");
+	if (!pWB)
+		return;
+
+	for (int i = 0; i < pWB->sheets.count; i++){// process all sheets
+		xlsWorkSheet* pWS = xls_getWorkSheet(pWB, i);// open and parse the sheet
+		xls_parseWorkSheet(pWS);
+
+		int rows = pWS->rows.lastrow + 1;
+		int cols = pWS->rows.lastcol + 1;
+		if (rows == 1 && cols == 1)
+			continue;
+
+		Table *table = newTable(rows, cols, QString::null, fn);
+		for (int t = 0; t <= pWS->rows.lastrow; t++){// process all rows of the sheet
+			struct st_row::st_row_data* row = &pWS->rows.row[t];
+			for (int tt = 0; tt <= pWS->rows.lastcol; tt++){
+				if (!row->cells.cell[tt].ishiden){
+					// display the colspan as only one cell, but reject rowspans (they can't be converted to CSV)
+					if (row->cells.cell[tt].rowspan > 1){
+						printf("%d,%d: rowspan=%i", tt, t, row->cells.cell[tt].rowspan);
+						continue;
+					}
+					// display the value of the cell (either numeric or string)
+					if (row->cells.cell[tt].id == 0x27e || row->cells.cell[tt].id == 0x0BD || row->cells.cell[tt].id == 0x203)
+						table->setCell(t, tt, row->cells.cell[tt].d);
+					else if (row->cells.cell[tt].str != NULL)
+						table->setText(t, tt, QString(row->cells.cell[tt].str));
+				}
+			}
+		}
+		table->showNormal();
+	}
+	xls_close(pWB);
+#else
+	QMessageBox::critical(this, tr("QtiPlot"), tr("QtiPlot was built without libxls support!");
+#endif
 }
 
 void ApplicationWindow::importWaveFile()
@@ -9071,6 +9128,9 @@ void ApplicationWindow::fileMenuAboutToShow()
 	newMenu->addAction(actionNewFunctionPlot);
 	newMenu->addAction(actionNewSurfacePlot);
 	fileMenu->addAction(actionOpen);
+#ifdef XLS_IMPORT
+	fileMenu->addAction(actionOpenExcel);
+#endif
 	fileMenu->addAction(actionLoadImage);
 	fileMenu->addAction(actionAppendProject);
 	recentMenuID = fileMenu->insertItem(tr("&Recent Projects"), recent);
@@ -12557,7 +12617,11 @@ void ApplicationWindow::createActions()
 	actionOpen = new QAction(QIcon(QPixmap(fileopen_xpm)), tr("&Open"), this);
 	actionOpen->setShortcut( tr("Ctrl+O") );
 	connect(actionOpen, SIGNAL(activated()), this, SLOT(open()));
-
+#ifdef XLS_IMPORT
+	actionOpenExcel = new QAction(QIcon(QPixmap(open_excel_xpm)), tr("&Open Excel ..."), this);
+	actionOpenExcel->setShortcut( tr("Ctrl+Shift+E") );
+	connect(actionOpenExcel, SIGNAL(activated()), this, SLOT(importExcel()));
+#endif
 	actionLoadImage = new QAction(tr("Open Image &File"), this);
 	actionLoadImage->setShortcut( tr("Ctrl+I") );
 	connect(actionLoadImage, SIGNAL(activated()), this, SLOT(loadImage()));
@@ -13474,6 +13538,12 @@ void ApplicationWindow::translateActionsStrings()
 	actionOpen->setMenuText(tr("&Open"));
 	actionOpen->setShortcut(tr("Ctrl+O"));
 	actionOpen->setToolTip(tr("Open project"));
+
+#ifdef XLS_IMPORT
+	actionOpenExcel->setMenuText(tr("&Open Excel ..."));
+	actionOpenExcel->setShortcut( tr("Ctrl+Shift+E") );
+	actionOpenExcel->setToolTip(tr("Open Excel"));
+#endif
 
 	actionLoadImage->setMenuText(tr("Open Image &File"));
 	actionLoadImage->setShortcut(tr("Ctrl+I"));

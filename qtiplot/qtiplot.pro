@@ -202,6 +202,13 @@ contains(SCRIPTING_LANGS, Python) {
   unix:LIBS += -lEMF
 }
 
+# check if we have libxls
+!isEmpty(XLS_LIBS) {
+	DEFINES += XLS_IMPORT
+	INCLUDEPATH += $$XLS_INCLUDEPATH
+	LIBS        += $$XLS_LIBS
+}
+
 ###############################################################
 
 # At the very end: add global include- and lib path
