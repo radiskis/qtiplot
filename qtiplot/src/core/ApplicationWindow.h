@@ -443,8 +443,8 @@ public slots:
 	void connectTable(Table* w);
 	void initTable(Table* w, const QString& caption);
 	void customTable(Table* w);
-	void importExcel(const QString& = QString::null);
-	void importWaveFile();
+	Table* importExcel(const QString& = QString::null);
+	Table* importWaveFile();
 	void importASCII();
 	void importASCII(const QStringList& files, int import_mode, const QString& local_column_separator, int local_ignored_lines, bool local_rename_columns,
         bool local_strip_spaces, bool local_simplify_spaces, bool local_import_comments,
@@ -843,7 +843,7 @@ public slots:
 	void custom3DGrids(int grids);
 	//@}
 
-	void updateRecentProjectsList();
+	void updateRecentProjectsList(const QString& fn = QString::null);
 
 	//!  connected to the done(bool) signal of the http object
 	void receivedVersionFile(bool error);
@@ -1050,8 +1050,8 @@ private:
 	//! \name Initialization
 	//@{
 	void init(bool factorySettings = false);
-    void initCompleter();
-    void initGlobalConstants();
+	void initCompleter();
+	void initGlobalConstants();
 	void createActions();
 	void initMainMenu();
 	void initToolBars();
@@ -1063,7 +1063,8 @@ private:
 	virtual QMenu * createPopupMenu(){return NULL;};
 	void updateCompleter(const QString& windowName, bool remove = false, const QString& newName = QString::null);
 	QMessageBox::StandardButton showSaveProjectMessage();
-        void goToParentFolder();
+	void goToParentFolder();
+	bool isProjectFile(const QString& fn);
 
 private slots:
 	void disableActions();

@@ -1999,8 +1999,8 @@ public:
   QString stemPlot(Table *t, const QString& colName, int power = 1001, int startRow = 0, int endRow = -1);
 
   QMdiArea* workspace();
-  void importExcel(const QString& = QString::null);
-  void importWaveFile();
+  Table* importExcel(const QString& = QString::null);
+  Table* importWaveFile();
 
 private:
   ApplicationWindow(const ApplicationWindow&);
