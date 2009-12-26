@@ -3867,7 +3867,7 @@ ApplicationWindow * ApplicationWindow::plotFile(const QString& fn)
 	return app;
 }
 
-Table * ApplicationWindow::importExcel(const QString& fileName)
+Table * ApplicationWindow::importExcel(const QString& fileName, int sheet)
 {
 #ifdef XLS_IMPORT
 	QString fn = fileName;
@@ -3882,17 +3882,31 @@ Table * ApplicationWindow::importExcel(const QString& fileName)
 	if (!pWB)
 		return NULL;
 
+	if (sheet > pWB->sheets.count){
+		QMessageBox::critical(this, tr("QtiPlot"), tr("File %1 contains only %2 sheets, operation aborted!").arg(fn).arg(pWB->sheets.count));
+		return NULL;
+	}
+
 	Table *table = NULL;
 	for (int i = 0; i < pWB->sheets.count; i++){// process all sheets
+		int currentSheet = i + 1;
+		if (sheet > 0 && sheet != currentSheet)
+			continue;
+
 		xlsWorkSheet* pWS = xls_getWorkSheet(pWB, i);// open and parse the sheet
 		xls_parseWorkSheet(pWS);
 
 		int rows = pWS->rows.lastrow + 1;
 		int cols = pWS->rows.lastcol;
-		if (rows == 1 && !cols)
-			continue;
+		if (rows == 1 && !cols){
+			if (sheet > 0 && sheet == currentSheet){
+				QMessageBox::critical(this, tr("QtiPlot"), tr("Sheet %1 is empty, operation aborted!").arg(sheet));
+				return NULL;
+			} else
+				continue;
+		}
 
-		table = newTable(rows, cols, QString::null, fn);
+		table = newTable(rows, cols, QString::null, fn + ", " + tr("sheet") + ": " + QString(pWB->sheets.sheet[i].name));
 		for (int t = 0; t <= pWS->rows.lastrow; t++){// process all rows of the sheet
 			struct st_row::st_row_data* row = &pWS->rows.row[t];
 			for (int tt = 0; tt <= pWS->rows.lastcol; tt++){
@@ -3911,6 +3925,9 @@ Table * ApplicationWindow::importExcel(const QString& fileName)
 			}
 		}
 		table->showNormal();
+
+		if (sheet > 0 && sheet == currentSheet)
+			break;
 	}
 	xls_close(pWB);
 
@@ -4236,11 +4253,10 @@ void ApplicationWindow::open()
 
 bool ApplicationWindow::isProjectFile(const QString& fn)
 {
-	if (fn.endsWith(".ogm", Qt::CaseInsensitive) ||
-		fn.endsWith(".ogw", Qt::CaseInsensitive) ||
-		fn.endsWith(".xls",Qt::CaseInsensitive))
-		return false;
-	return true;
+	if (fn.endsWith(".qti", Qt::CaseInsensitive) || fn.endsWith(".qti.gz", Qt::CaseInsensitive) ||
+		fn.endsWith(".opj",Qt::CaseInsensitive) || fn.endsWith(".ogg",Qt::CaseInsensitive))
+		return true;
+	return false;
 }
 
 ApplicationWindow* ApplicationWindow::open(const QString& fn, bool factorySettings, bool newProject)
@@ -14721,7 +14737,7 @@ void ApplicationWindow::parseCommandLineArguments(const QStringList& args)
 			s += "-v " + tr("or") + " --version: " + tr("print QtiPlot version and release date") + "\n";
 			s += "-x " + tr("or") + " --execute: " + tr("execute the script file given as argument") + "\n";
 			s += "-X: " + tr("execute the script file given as argument without displying the user interface. Warning: 2D plots are not correctly handled in this functioning mode!") + "\n\n";
-			s += "'" + tr("file") + "_" + tr("name") + "' " + tr("can be any .qti, qti.gz, .opj, .ogm, .ogw, .ogg, .py or ASCII file") + "\n";
+			s += "'" + tr("file") + "_" + tr("name") + "' " + tr("can be any .qti, qti.gz, .opj, .ogm, .ogw, .ogg, .py, .xls or ASCII file") + "\n";
 			#ifdef Q_OS_WIN
                 hide();
 				QMessageBox::information(this, tr("QtiPlot") + " - " + tr("Help"), s);
