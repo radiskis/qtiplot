@@ -443,7 +443,7 @@ public slots:
 	void connectTable(Table* w);
 	void initTable(Table* w, const QString& caption);
 	void customTable(Table* w);
-	Table* importExcel(const QString& = QString::null);
+	Table* importExcel(const QString& = QString::null, int sheet = -1);
 	Table* importWaveFile();
 	void importASCII();
 	void importASCII(const QStringList& files, int import_mode, const QString& local_column_separator, int local_ignored_lines, bool local_rename_columns,
