@@ -3867,31 +3867,32 @@ ApplicationWindow * ApplicationWindow::plotFile(const QString& fn)
 	return app;
 }
 
-void ApplicationWindow::importExcel(const QString& fileName)
+Table * ApplicationWindow::importExcel(const QString& fileName)
 {
 #ifdef XLS_IMPORT
 	QString fn = fileName;
 	if (fn.isEmpty()){
 		fn = getFileName(this, tr("Open File"), QString::null, "*.xls", 0, false);
 		if (fn.isEmpty())
-			return;
+			return NULL;
 	}
 
 	// open workbook, choose standard conversion
 	xlsWorkBook* pWB = xls_open(fn.toAscii().data(), "iso-8859-15//TRANSLIT");
 	if (!pWB)
-		return;
+		return NULL;
 
+	Table *table = NULL;
 	for (int i = 0; i < pWB->sheets.count; i++){// process all sheets
 		xlsWorkSheet* pWS = xls_getWorkSheet(pWB, i);// open and parse the sheet
 		xls_parseWorkSheet(pWS);
 
 		int rows = pWS->rows.lastrow + 1;
-		int cols = pWS->rows.lastcol + 1;
-		if (rows == 1 && cols == 1)
+		int cols = pWS->rows.lastcol;
+		if (rows == 1 && !cols)
 			continue;
 
-		Table *table = newTable(rows, cols, QString::null, fn);
+		table = newTable(rows, cols, QString::null, fn);
 		for (int t = 0; t <= pWS->rows.lastrow; t++){// process all rows of the sheet
 			struct st_row::st_row_data* row = &pWS->rows.row[t];
 			for (int tt = 0; tt <= pWS->rows.lastcol; tt++){
@@ -3912,16 +3913,20 @@ void ApplicationWindow::importExcel(const QString& fileName)
 		table->showNormal();
 	}
 	xls_close(pWB);
+
+	updateRecentProjectsList(fn);
+	return table;
 #else
 	QMessageBox::critical(this, tr("QtiPlot"), tr("QtiPlot was built without libxls support!");
+	return NULL;
 #endif
 }
 
-void ApplicationWindow::importWaveFile()
+Table * ApplicationWindow::importWaveFile()
 {
 	QString fn = getFileName(this, tr("Open File"), QString::null, "*.wav", 0, false);
 	if (fn.isEmpty())
-		return;
+		return NULL;
 
 	QString log = QDateTime::currentDateTime ().toString(Qt::LocalDate) + " - ";
 	log += tr("Imported sound file") + ": " + fn + "\n";
@@ -3943,7 +3948,7 @@ void ApplicationWindow::importWaveFile()
 		tr("This is not a PCM type WAV file, operation aborted!"));
 		log +=  QString::number(format) + "\n";
 		showResults(log, true);
-		return;
+		return NULL;
 	} else
 		log += tr("PCM") + "\n";
 
@@ -3977,7 +3982,7 @@ void ApplicationWindow::importWaveFile()
 	int rows = (chunkSize - 36)/blockAlign;
 	Table *t = newTable(rows, int(channels + 1), QFileInfo(fn).baseName(), fn);
 	if (!t)
-		return;
+		return NULL;
 
 	t->setHeader(header);
 
@@ -4015,6 +4020,7 @@ void ApplicationWindow::importWaveFile()
 
 	file.close();
 	t->show();
+	return t;
 }
 
 void ApplicationWindow::importASCII()
@@ -4178,7 +4184,6 @@ void ApplicationWindow::open()
 
 	OpenProjectDialog *open_dialog = new OpenProjectDialog(this, d_extended_open_dialog);
 	open_dialog->setDirectory(workingDir);
-	open_dialog->selectNameFilter(d_open_project_filter);
 
 	if (open_dialog->exec() != QDialog::Accepted || open_dialog->selectedFiles().isEmpty())
 		return;
@@ -4209,14 +4214,14 @@ void ApplicationWindow::open()
 				saveSettings();//the recent projects must be saved
 
 				#ifdef BROWSER_PLUGIN
-				if (!(fn.endsWith(".ogm", Qt::CaseInsensitive) || fn.endsWith(".ogw", Qt::CaseInsensitive)))
+				if (isProjectFile(fn))
 					closeProject();
 				open(fn, false, false);
 				#else
 				ApplicationWindow *a = open (fn);
 				if (a){
 					a->workingDir = workingDir;
-					if (!(fn.endsWith(".ogm",Qt::CaseInsensitive) || fn.endsWith(".ogw",Qt::CaseInsensitive)))
+					if (isProjectFile(fn))
 						this->close();
 				}
 				#endif
@@ -4227,6 +4232,15 @@ void ApplicationWindow::open()
 			appendProject(open_dialog->selectedFiles()[0]);
 			break;
 	}
+}
+
+bool ApplicationWindow::isProjectFile(const QString& fn)
+{
+	if (fn.endsWith(".ogm", Qt::CaseInsensitive) ||
+		fn.endsWith(".ogw", Qt::CaseInsensitive) ||
+		fn.endsWith(".xls",Qt::CaseInsensitive))
+		return false;
+	return true;
 }
 
 ApplicationWindow* ApplicationWindow::open(const QString& fn, bool factorySettings, bool newProject)
@@ -4243,6 +4257,10 @@ ApplicationWindow* ApplicationWindow::open(const QString& fn, bool factorySettin
 		return importOPJ(fn, factorySettings, newProject);
 	else if (fn.endsWith(".py", Qt::CaseInsensitive))
 		return loadScript(fn);
+	else if (fn.endsWith(".xls", Qt::CaseInsensitive)){
+		importExcel(fn);
+		return this;
+	}
 
 	QString fname = fn;
 	if (fn.endsWith(".qti.gz", Qt::CaseInsensitive)){//decompress using zlib
@@ -4299,8 +4317,10 @@ void ApplicationWindow::openRecentProject(int index)
 		}
 	}
 
-	if (showSaveProjectMessage() == QMessageBox::Cancel)
-		return;
+	if (isProjectFile(fn)){
+		if (showSaveProjectMessage() == QMessageBox::Cancel)
+			return;
+	}
 
 	QFile f(fn);
 	if (!f.exists()){
@@ -4321,7 +4341,7 @@ void ApplicationWindow::openRecentProject(int index)
 	if (!fn.isEmpty()){
 		saveSettings();//the recent projects must be saved
 	#ifdef BROWSER_PLUGIN
-		if (!(fn.endsWith(".ogm", Qt::CaseInsensitive) || fn.endsWith(".ogw", Qt::CaseInsensitive)))
+		if (isProjectFile(fn))
 			closeProject();
 		open (fn, false, false);
 	#else
@@ -4330,7 +4350,7 @@ void ApplicationWindow::openRecentProject(int index)
 		if (a){
 			if (isSaved)
 				savedProject();//force saved state
-			if (!(fn.endsWith(".ogm", Qt::CaseInsensitive) || fn.endsWith(".ogw", Qt::CaseInsensitive)))
+			if (isProjectFile(fn))
 				close();
 			else
 				modifiedProject();
@@ -4576,9 +4596,7 @@ ApplicationWindow* ApplicationWindow::openProject(const QString& fn, bool factor
 	QFileInfo fi2(f);
 	QString fileName = fi2.absFilePath();
 
-	app->recentProjects.removeAll(fileName);
-	app->recentProjects.push_front(fileName);
-	app->updateRecentProjectsList();
+	app->updateRecentProjectsList(fileName);
 
 	app->folders->setCurrentItem(cf->folderListItem());
 	app->folders->blockSignals (false);
@@ -6085,9 +6103,7 @@ void ApplicationWindow::saveProjectAs(const QString& fileName, bool compress)
 
 		projectname = fn;
 		if (saveProject(compress)){
-			recentProjects.removeAll(projectname);
-			recentProjects.push_front(projectname);
-			updateRecentProjectsList();
+			updateRecentProjectsList(projectname);
 
 			QFileInfo fi(fn);
 			QString baseName = fi.baseName();
@@ -14331,9 +14347,7 @@ ApplicationWindow* ApplicationWindow::importOPJ(const QString& filename, bool fa
 		app->setWindowTitle("QtiPlot - " + filename);
 		app->restoreApplicationGeometry();
 		app->projectname = filename;
-        app->recentProjects.removeAll(filename);
-        app->recentProjects.push_front(filename);
-        app->updateRecentProjectsList();
+		app->updateRecentProjectsList(filename);
 
         ImportOPJ(app, filename);
 
@@ -14343,9 +14357,7 @@ ApplicationWindow* ApplicationWindow::importOPJ(const QString& filename, bool fa
     else if (filename.endsWith(".ogm", Qt::CaseInsensitive) || filename.endsWith(".ogw", Qt::CaseInsensitive))
     {
 		ImportOPJ(this, filename);
-        recentProjects.removeAll(filename);
-        recentProjects.push_front(filename);
-        updateRecentProjectsList();
+		updateRecentProjectsList(filename);
         return this;
     }
 	return 0;
@@ -14395,10 +14407,16 @@ QList<MdiSubWindow *> ApplicationWindow::windowsList()
 	return lst;
 }
 
-void ApplicationWindow::updateRecentProjectsList()
+void ApplicationWindow::updateRecentProjectsList(const QString& fn)
 {
-    if (recentProjects.isEmpty())
-        return;
+	QString nativeFileName = QDir::toNativeSeparators(fn);
+	if (!nativeFileName.isEmpty()){
+		recentProjects.removeAll(nativeFileName);
+		recentProjects.push_front(nativeFileName);
+	}
+
+	if (recentProjects.isEmpty())
+		return;
 
 	while ((int)recentProjects.size() > MaxRecentProjects)
 		recentProjects.pop_back();
@@ -14406,7 +14424,7 @@ void ApplicationWindow::updateRecentProjectsList()
 	recent->clear();
 
 	for (int i = 0; i<(int)recentProjects.size(); i++ )
-        recent->insertItem("&" + QString::number(i+1) + " " + QDir::toNativeSeparators(recentProjects[i]));
+		recent->insertItem("&" + QString::number(i+1) + " " + QDir::toNativeSeparators(recentProjects[i]));
 }
 
 void ApplicationWindow::translateCurveHor()
@@ -14899,28 +14917,23 @@ Folder* ApplicationWindow::appendProject(const QString& fn, Folder* parentFolder
 	QFileInfo fi(fn);
 	workingDir = fi.dirPath(true);
 
-	if (fn.contains(".qti") || fn.contains(".opj", Qt::CaseInsensitive) ||
-		fn.contains(".ogm", Qt::CaseInsensitive) || fn.contains(".ogw", Qt::CaseInsensitive) ||
-        fn.contains(".ogg", Qt::CaseInsensitive)){
+	if (fn.endsWith(".qti") || fn.endsWith(".opj", Qt::CaseInsensitive) ||
+		fn.endsWith(".ogm", Qt::CaseInsensitive) || fn.endsWith(".ogw", Qt::CaseInsensitive) ||
+		fn.endsWith(".ogg", Qt::CaseInsensitive) || fn.endsWith(".xls", Qt::CaseInsensitive)){
 		QFileInfo f(fn);
 		if (!f.exists ()){
-			QMessageBox::critical(this, tr("QtiPlot - File opening error"),
-					tr("The file: <b>%1</b> doesn't exist!").arg(fn));
+			QMessageBox::critical(this, tr("QtiPlot - File opening error"), tr("The file: <b>%1</b> doesn't exist!").arg(fn));
 			return 0;
 		}
 	} else {
-		QMessageBox::critical(this,tr("QtiPlot - File opening error"),
-				tr("The file: <b>%1</b> is not a QtiPlot or Origin project file!").arg(fn));
+		QMessageBox::critical(this,tr("QtiPlot - File opening error"), tr("The file: <b>%1</b> is not a QtiPlot or Origin project file!").arg(fn));
 		return 0;
 	}
 
 	d_is_appending_file = true;
 
-	if (fn != projectname){
-		recentProjects.removeAll(fn);
-		recentProjects.push_front(fn);
-		updateRecentProjectsList();
-	}
+	if (fn != projectname)
+		updateRecentProjectsList(fn);
 
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
@@ -14960,7 +14973,9 @@ Folder* ApplicationWindow::appendProject(const QString& fn, Folder* parentFolder
 	if (fn.contains(".opj", Qt::CaseInsensitive) || fn.contains(".ogm", Qt::CaseInsensitive) ||
         fn.contains(".ogw", Qt::CaseInsensitive) || fn.contains(".ogg", Qt::CaseInsensitive))
 		ImportOPJ(this, fn);
-	else{
+	else if (fn.endsWith(".xls", Qt::CaseInsensitive))
+		importExcel(fn);
+	else {
 		QFile f(fname);
 		QTextStream t( &f );
 		t.setEncoding(QTextStream::UnicodeUTF8);

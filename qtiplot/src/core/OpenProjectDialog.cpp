@@ -48,6 +48,9 @@ OpenProjectDialog::OpenProjectDialog(QWidget *parent, bool extended, Qt::WFlags 
 		<< tr("Origin graph") + " (*.ogg *.OGG)"
 		<< tr("Backup files") + " (*.qti~)"
 		//<< tr("Python Source") + " (*.py *.PY)"
+#ifdef XLS_IMPORT
+		<< tr("Excel") + " (*.xls)"
+#endif
 		<< tr("All files") + " (*)";
 	setFilters(filters);
 
@@ -71,12 +74,17 @@ OpenProjectDialog::OpenProjectDialog(QWidget *parent, bool extended, Qt::WFlags 
 		connect(combo_boxes[1], SIGNAL(currentIndexChanged ( const QString & )),
 				this, SLOT(updateAdvancedOptions ( const QString & )));
 #endif
-	updateAdvancedOptions(selectedFilter());
+
+	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent);
+	if (app){
+		selectNameFilter(app->d_open_project_filter);
+		updateAdvancedOptions(app->d_open_project_filter);
+	}
 }
 
 void OpenProjectDialog::updateAdvancedOptions (const QString & filter)
 {
-	if (filter.contains("*.ogm") || filter.contains("*.ogw")) {
+	if (filter.contains("*.ogm") || filter.contains("*.ogw") || filter.contains("*.xls")) {
 		d_extension_toggle->setChecked(false);
 		d_extension_toggle->setEnabled(false);
 		return;
