@@ -4,163 +4,3873 @@
 <context>
     <name></name>
     <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="4219"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="4226"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="4266"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="4330"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="14782"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="14786"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="14790"/>
         <source>QtiPlot - File openning error</source>
-        <translation type="unfinished">QtiPlot - Chyba při otevírání souboru</translation>
+        <translation type="obsolete">QtiPlot - Chyba při otevírání souboru</translation>
     </message>
     <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="4267"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="14791"/>
         <source>You don&apos;t have the permission to open this file: &lt;b&gt;%1&lt;/b&gt;</source>
-        <translation type="unfinished">Nemáte oprávnění pro otevření tohoto souboru: &lt;b&gt;%1&lt;/b&gt;</translation>
+        <translation type="obsolete">Nemáte oprávnění pro otevření tohoto souboru: &lt;b&gt;%1&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="4297"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="4303"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="4407"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="4721"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="4731"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="4743"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="14941"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="14945"/>
         <source>QtiPlot - File opening error</source>
-        <translation type="unfinished">QtiPlot - Chyba při otevírání souboru</translation>
+        <translation type="obsolete">QtiPlot - Chyba při otevírání souboru</translation>
     </message>
     <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="4227"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="4732"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="14787"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="14941"/>
         <source>The file: &lt;b&gt;%1&lt;/b&gt; doesn&apos;t exist!</source>
-        <translation type="unfinished">Soubor: &lt;b&gt;%1&lt;/b&gt; neexistuje!</translation>
+        <translation type="obsolete">Soubor: &lt;b&gt;%1&lt;/b&gt; neexistuje!</translation>
     </message>
     <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="14945"/>
         <source>The file: &lt;b&gt;%1&lt;/b&gt; is not a QtiPlot or Origin project file!</source>
-        <translation type="unfinished">Soubor: &lt;b&gt;%1&lt;/b&gt; není souborem projektu QtiPlot nebo Origin!</translation>
+        <translation type="obsolete">Soubor: &lt;b&gt;%1&lt;/b&gt; není souborem projektu QtiPlot nebo Origin!</translation>
     </message>
     <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="15147"/>
         <source>QtiPlot - Demo Version</source>
-        <translation type="unfinished">QtiPlot - Demoverze</translation>
+        <translation type="obsolete">QtiPlot - Demoverze</translation>
     </message>
     <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="15172"/>
         <source>QtiPlot - File backup error</source>
-        <translation type="unfinished">QtiPlot - Chyba při zálohování souboru</translation>
+        <translation type="obsolete">QtiPlot - Chyba při zálohování souboru</translation>
     </message>
     <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="15173"/>
         <source>Cannot make a backup copy of &lt;b&gt;%1&lt;/b&gt; (to %2).&lt;br&gt;If you ignore this, you run the risk of &lt;b&gt;data loss&lt;/b&gt;.</source>
-        <translation type="unfinished">Nelze vytvořit záložní kopii z &lt;b&gt;%1&lt;/b&gt; (do %2).&lt;br&gt;Pokud si této věci nebudete všímat, riskujete &lt;b&gt;ztrátu dat&lt;/b&gt;.</translation>
+        <translation type="obsolete">Nelze vytvořit záložní kopii z &lt;b&gt;%1&lt;/b&gt; (do %2).&lt;br&gt;Pokud si této věci nebudete všímat, riskujete &lt;b&gt;ztrátu dat&lt;/b&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="15190"/>
         <source>QtiPlot - File save error</source>
-        <translation type="unfinished">QtiPlot - Chyba při ukládání souboru</translation>
+        <translation type="obsolete">QtiPlot - Chyba při ukládání souboru</translation>
     </message>
     <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="15190"/>
         <source>The file: &lt;br&gt;&lt;b&gt;%1&lt;/b&gt; is opened in read-only mode</source>
-        <translation type="unfinished">Soubor: &lt;br&gt;&lt;b&gt; %1 &lt;/b&gt; je otevřen v režimu pouze pro čtení</translation>
+        <translation type="obsolete">Soubor: &lt;br&gt;&lt;b&gt; %1 &lt;/b&gt; je otevřen v režimu pouze pro čtení</translation>
     </message>
     <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="6105"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="15284"/>
         <source>QtiPlot project</source>
-        <translation type="unfinished">Projekt QtiPlotu</translation>
+        <translation type="obsolete">Projekt QtiPlotu</translation>
     </message>
     <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="6106"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="15285"/>
         <source>Compressed QtiPlot project</source>
-        <translation type="unfinished">Stlačený projekt QtiPlotu</translation>
+        <translation type="obsolete">Stlačený projekt QtiPlotu</translation>
     </message>
     <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="15288"/>
         <source>Save project as</source>
-        <translation type="unfinished">Uložit projekt jako</translation>
+        <translation type="obsolete">Uložit projekt jako</translation>
     </message>
     <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="15319"/>
         <source>Save &amp;As Project...</source>
-        <translation type="unfinished">Uložit &amp;jako projekt...</translation>
+        <translation type="obsolete">Uložit &amp;jako projekt...</translation>
     </message>
     <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="9665"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="15326"/>
         <source>&amp;Show All Windows</source>
-        <translation type="unfinished">&amp;Ukázat všechna okna</translation>
+        <translation type="obsolete">&amp;Ukázat všechna okna</translation>
     </message>
     <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="9666"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="15327"/>
         <source>&amp;Hide All Windows</source>
-        <translation type="unfinished">&amp;Skrýt všechna okna</translation>
+        <translation type="obsolete">&amp;Skrýt všechna okna</translation>
     </message>
     <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="15333"/>
         <source>&amp;Delete Folder</source>
-        <translation type="unfinished">&amp;Smazat složku</translation>
+        <translation type="obsolete">&amp;Smazat složku</translation>
     </message>
     <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="15334"/>
         <source>&amp;Rename</source>
-        <translation type="unfinished">&amp;Přejmenovat</translation>
+        <translation type="obsolete">&amp;Přejmenovat</translation>
     </message>
     <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="9683"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="15346"/>
         <source>New &amp;Window</source>
-        <translation type="unfinished">Nové &amp;okno</translation>
+        <translation type="obsolete">Nové &amp;okno</translation>
     </message>
     <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="9685"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="15349"/>
         <source>New F&amp;older</source>
-        <translation type="unfinished">Nová &amp;složka</translation>
+        <translation type="obsolete">Nová &amp;složka</translation>
     </message>
     <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="6875"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="15353"/>
         <source>&amp;None</source>
-        <translation type="unfinished">&amp;Žádná</translation>
+        <translation type="obsolete">&amp;Žádná</translation>
     </message>
     <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="15353"/>
         <source>&amp;Windows in Active Folder</source>
-        <translation type="unfinished">&amp;Okna v činné složce</translation>
+        <translation type="obsolete">&amp;Okna v činné složce</translation>
     </message>
     <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="15353"/>
         <source>Windows in &amp;Active Folder &amp;&amp; Subfolders</source>
-        <translation type="unfinished">Okna v &amp;činné složce &amp;&amp; podsložkách</translation>
+        <translation type="obsolete">Okna v &amp;činné složce &amp;&amp; podsložkách</translation>
     </message>
     <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="15360"/>
         <source>&amp;View Windows</source>
-        <translation type="unfinished">&amp;Zobrazit okna</translation>
+        <translation type="obsolete">&amp;Zobrazit okna</translation>
     </message>
     <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="9327"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="9329"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="9737"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="15362"/>
         <source>&amp;Properties...</source>
-        <translation type="unfinished">&amp;Vlastnosti...</translation>
+        <translation type="obsolete">&amp;Vlastnosti...</translation>
     </message>
     <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="15377"/>
         <source>Hidden</source>
-        <translation type="unfinished">Skryto</translation>
+        <translation type="obsolete">Skryto</translation>
     </message>
     <message>
+        <source>QtiPlot - Error</source>
+        <translation type="obsolete">QtiPlot - Chyba</translation>
+    </message>
+    <message>
+        <source>Please enter a valid name!</source>
+        <translation type="obsolete">Zadejte, prosím, platný název!</translation>
+    </message>
+    <message>
+        <source>Name already exists!</source>
+        <translation type="obsolete">Název již existuje!</translation>
+    </message>
+    <message>
+        <source>Please choose another name!</source>
+        <translation type="obsolete">Vyberte, prosím, jiný název!</translation>
+    </message>
+    <message>
+        <source>Type</source>
+        <translation type="obsolete">Typ</translation>
+    </message>
+    <message>
+        <source>Project</source>
+        <translation type="obsolete">Projekt</translation>
+    </message>
+    <message>
+        <source>Path</source>
+        <translation type="obsolete">Cesta</translation>
+    </message>
+    <message>
+        <source>Size</source>
+        <translation type="obsolete">Velikost</translation>
+    </message>
+    <message>
+        <source>bytes</source>
+        <translation type="obsolete">byty</translation>
+    </message>
+    <message>
+        <source>Contents</source>
+        <translation type="obsolete">Obsah</translation>
+    </message>
+    <message>
+        <source>windows</source>
+        <translation type="obsolete">Okna</translation>
+    </message>
+    <message>
+        <source>folders</source>
+        <translation type="obsolete">Složky</translation>
+    </message>
+    <message>
+        <source>Created</source>
+        <translation type="obsolete">Vytvořeno</translation>
+    </message>
+    <message>
+        <source>Modified</source>
+        <translation type="obsolete">Upraveno</translation>
+    </message>
+    <message>
+        <source>Properties</source>
+        <translation type="obsolete">Vlastnosti</translation>
+    </message>
+    <message>
+        <source>Folder</source>
+        <translation type="obsolete">Složka</translation>
+    </message>
+    <message>
+        <source>New Folder</source>
+        <translation type="obsolete">Nová složka</translation>
+    </message>
+    <message>
+        <source>QtiPlot - Delete folder?</source>
+        <translation type="obsolete">QtiPlot - Odstranit složku?</translation>
+    </message>
+    <message>
+        <source>Delete folder &apos;%1&apos; and all the windows it contains?</source>
+        <translation type="obsolete">Odstranit složku &apos;%1&apos; a všechna okna, jež obsahuje?</translation>
+    </message>
+    <message>
+        <source>Yes</source>
+        <translation type="obsolete">Ano</translation>
+    </message>
+    <message>
+        <source>No</source>
+        <translation type="obsolete">Ne</translation>
+    </message>
+    <message>
+        <source>Matrix</source>
+        <translation type="obsolete">Matice</translation>
+    </message>
+    <message>
+        <source>Table</source>
+        <translation type="obsolete">Tabulka</translation>
+    </message>
+    <message>
+        <source>Note</source>
+        <translation type="obsolete">Poznámka</translation>
+    </message>
+    <message>
+        <source>Graph</source>
+        <translation type="obsolete">Nákres</translation>
+    </message>
+    <message>
+        <source>3D Graph</source>
+        <translation type="obsolete">Trojrozměrný nákres</translation>
+    </message>
+    <message>
+        <source>Label</source>
+        <translation type="obsolete">Popis</translation>
+    </message>
+    <message>
+        <source>Status</source>
+        <translation type="obsolete">Stav</translation>
+    </message>
+    <message>
+        <source>QtiPlot - No match found</source>
+        <translation type="obsolete">QtiPlot - Nenalezena žádná shoda</translation>
+    </message>
+    <message>
+        <source>Sorry, no match found for string: &apos;%1&apos;</source>
+        <translation type="obsolete">Promiňte, ale nebyla nalezena žádná shoda pro řetězec znaků: &apos;%1&apos;</translation>
+    </message>
+    <message>
+        <source>Cannot move an object to itself!</source>
+        <translation type="obsolete">Nelze přesunout předmět do sebe sama!</translation>
+    </message>
+    <message>
+        <source>Cannot move a parent folder into a child folder!</source>
+        <translation type="obsolete">Nelze přesunout složku do její podsložky!</translation>
+    </message>
+    <message>
+        <source>QtiPlot</source>
+        <translation type="obsolete">QtiPlot</translation>
+    </message>
+    <message>
+        <source>Skipped moving folder</source>
+        <translation type="obsolete">Přesunutí složky bylo přeskočeno</translation>
+    </message>
+    <message>
+        <source>The destination folder already contains a folder called &apos;%1&apos;! Folder skipped!</source>
+        <translation type="obsolete">Cílová složka již obsahuje složku nazvanou &apos;%1&apos;! Složka byla přeskočena!</translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation type="obsolete">Chyba</translation>
+    </message>
+    <message>
+        <source>QtiPlot will try to download necessary information about the last available updates. Please modify your firewall settings in order to allow QtiPlot to connect to the internet!</source>
+        <translation type="obsolete">QtiPlot se pokusí stáhnout z internetu nezbytnou informaci o posledních dostupných aktualizacích. Upravte, prosím, nastavení své ochrany počítače před viry a nežádoucími průniky do systému, aby se QtiPlot mohl připojit k internetu!</translation>
+    </message>
+    <message>
+        <source>Do you wish to continue?</source>
+        <translation type="obsolete">Chcete pokračovat?</translation>
+    </message>
+    <message>
+        <source>QtiPlot - HTTP get version file</source>
+        <translation type="obsolete">QtiPlot - HTTP získání souboru s verzí</translation>
+    </message>
+    <message>
+        <source>Error while fetching version file with HTTP: %1.</source>
+        <translation type="obsolete">Při získávání souboru s verzí programu přes HTTP došlo k chybě: %1.</translation>
+    </message>
+    <message>
+        <source>QtiPlot - Updates Available</source>
+        <translation type="obsolete">QtiPlot - Aktualizace jsou dostupné</translation>
+    </message>
+    <message>
+        <source>There is a newer version of QtiPlot (%1) available for download. Would you like to download it?</source>
+        <translation type="obsolete">Existuje novější verze QtiPlotu  (%1) ḋostupná ke stažení. Chcete ji stáhnout?</translation>
+    </message>
+    <message>
+        <source>QtiPlot - No Updates Available</source>
+        <translation type="obsolete">QtiPlot - Žádné aktualizace nejsou dostupné</translation>
+    </message>
+    <message>
+        <source>No updates available. Your current version %1 is the last version available!</source>
+        <translation type="obsolete">Žádné aktualizace nejsou dostupné. Verze %1, kterou nyní používáte, je poslední verzí, jež je dostupná!</translation>
+    </message>
+    <message>
+        <source>QtiPlot - Warning</source>
+        <translation type="obsolete">QtiPlot - Varování</translation>
+    </message>
+    <message>
+        <source>This will clear the contents of all the data associated with the table. Are you sure?</source>
+        <translation type="obsolete">Tímto se smažou všechna data přiřazená k tabulce. Jste si jist tímto krokem?</translation>
+    </message>
+    <message>
+        <source>&amp;Yes</source>
+        <translation type="obsolete">&amp;Ano</translation>
+    </message>
+    <message>
+        <source>&amp;No</source>
+        <translation type="obsolete">&amp;Ne</translation>
+    </message>
+    <message>
+        <source>QtiPlot - Enter row number</source>
+        <translation type="obsolete">QtiPlot - Zadat číslo řádku</translation>
+    </message>
+    <message>
+        <source>Row</source>
+        <translation type="obsolete">Řádek</translation>
+    </message>
+    <message>
+        <source>QtiPlot - Enter column number</source>
+        <translation type="obsolete">QtiPlot - Zadat počet sloupců</translation>
+    </message>
+    <message>
+        <source>Column</source>
+        <translation type="obsolete">Sloupec</translation>
+    </message>
+    <message>
+        <source>QtiPlot was not built with Python scripting support included!</source>
+        <translation type="obsolete">QtiPlot nebyl sestaven se zahrnutou podporou pro skriptování s Pythonem!</translation>
+    </message>
+    <message>
+        <source>Please select a Y column to plot!</source>
+        <translation type="obsolete">Vyberte, prosím, sloupec Y pro nakreslení!</translation>
+    </message>
+    <message>
+        <source>You need at least two columns for this operation!</source>
+        <translation type="obsolete">Pro tuto operaci je potřeba, abyste vybral alespoň dva sloupce!</translation>
+    </message>
+    <message>
+        <source>Please set a default X column for this table, first!</source>
+        <translation type="obsolete">Nejprve, prosím, u této tabulky nastavte jeden sloupec jako výchozí sloupec X!</translation>
+    </message>
+    <message>
+        <source>Please select a Z column for this operation!</source>
+        <translation type="obsolete">Vyberte, prosím, pro tuto operaci sloupec Z!</translation>
+    </message>
+    <message>
+        <source>You need to define a X column first!</source>
+        <translation type="obsolete">Neprve musíte stanovit sloupec X!</translation>
+    </message>
+    <message>
+        <source>You need to define a Y column first!</source>
+        <translation type="obsolete">Neprve musíte stanovit sloupec Y!</translation>
+    </message>
+    <message>
+        <source>Starting with version 0.9.1 QtiPlot stores the user defined fit models to a different location.</source>
+        <translation type="obsolete">Počínaje verzí 0.9.1 QtiPlot ukládá uživatelsky stanovené odpovídající modely do jiného umístění.</translation>
+    </message>
+    <message>
+        <source>If you want to save your already defined models, please choose a destination folder.</source>
+        <translation type="obsolete">Pokud chcete uložit své již stanovené modely, vyberte, prosím, cílovou složku.</translation>
+    </message>
+    <message>
+        <source>Import fit models</source>
+        <translation type="obsolete">Zavést modely umístění</translation>
+    </message>
+    <message>
+        <source>Choose a directory to export the fit models to</source>
+        <translation type="obsolete">Vybrat adresář, do něhož se budou vyvádět modely umístění</translation>
+    </message>
+    <message>
+        <source>No Icon</source>
+        <translation type="obsolete">Bez ikony</translation>
+    </message>
+    <message>
+        <source>Couldn&apos;t load file: %1.
+Autocompletion will not be available!</source>
+        <translation type="obsolete">Nelze nahrát soubor: %1.
+Automatické dokončení nebude dostupné!</translation>
+    </message>
+    <message>
+        <source>QtiPlot - Column selection error</source>
+        <translation type="obsolete">QtiPlot - Chyba při výběru sloupců</translation>
+    </message>
+    <message>
+        <source>Open File</source>
+        <translation type="obsolete">Otevřít soubor</translation>
+    </message>
+    <message>
+        <source>Imported sound file</source>
+        <translation type="obsolete">Zavedený zvukový soubor</translation>
+    </message>
+    <message>
+        <source>Format</source>
+        <translation type="obsolete">Formát</translation>
+    </message>
+    <message>
+        <source>This is not a PCM type WAV file, operation aborted!</source>
+        <translation type="obsolete">Toto není soubor WAV typu PCM. Operace byla zrušena!</translation>
+    </message>
+    <message>
+        <source>PCM</source>
+        <translation type="obsolete">PCM</translation>
+    </message>
+    <message>
+        <source>Time</source>
+        <translation type="obsolete">Čas</translation>
+    </message>
+    <message>
+        <source>Data</source>
+        <translation type="obsolete">Data</translation>
+    </message>
+    <message>
+        <source>Channels</source>
+        <translation type="obsolete">Kanály</translation>
+    </message>
+    <message>
+        <source>Sample Rate</source>
+        <translation type="obsolete">Vzorkovací kmitočet</translation>
+    </message>
+    <message>
+        <source>Byte Rate</source>
+        <translation type="obsolete">Rychlost bajtů</translation>
+    </message>
+    <message>
+        <source>Block Align</source>
+        <translation type="obsolete">Spojení bloků</translation>
+    </message>
+    <message>
+        <source>Bits Per Sample</source>
+        <translation type="obsolete">Bitů na vzorek</translation>
+    </message>
+    <message>
+        <source>The file: &lt;b&gt;%1&lt;/b&gt; is the current file!</source>
+        <translation type="obsolete">Soubor: &lt;b&gt;%1&lt;/b&gt; je nynější soubor!</translation>
+    </message>
+    <message>
+        <source>The file &lt;b&gt;%1&lt;/b&gt; is corrupted, but there exists a backup copy.&lt;br&gt;Do you want to open the backup instead?</source>
+        <translation type="obsolete">Soubor &lt;b&gt;%1&lt;/b&gt; je porušen, ale existuje kopie se zálohou dat.&lt;br&gt;Chcete místo něj otevřít zálohu?</translation>
+    </message>
+    <message>
+        <source>The file: &lt;b&gt; %1 &lt;/b&gt; was not created using QtiPlot!</source>
+        <translation type="obsolete">Soubor: &lt;b&gt; %1&lt;/b&gt; nebyl vytvořen QtiPlotem!</translation>
+    </message>
+    <message>
+        <source>The file: &lt;p&gt;&lt;b&gt; %1 &lt;/b&gt;&lt;p&gt; is the current file!</source>
+        <translation type="obsolete">Soubor: &lt;p&gt;&lt;b&gt; %1 &lt;/b&gt;&lt;p&gt; je nynější soubor!</translation>
+    </message>
+    <message>
+        <source>QtiPlot - File Open Error</source>
+        <translation type="obsolete">QtiPlot - Chyba při otevírání souboru</translation>
+    </message>
+    <message>
+        <source>The file: &lt;b&gt; %1 &lt;/b&gt; &lt;p&gt;does not exist anymore!&lt;p&gt;It will be removed from the list.</source>
+        <translation type="obsolete">Soubor: &lt;b&gt; %1&lt;/b&gt; &lt;p&gt;už neexistuje!&lt;p&gt;Bude odstraněn ze seznamu.</translation>
+    </message>
+    <message>
+        <source>The file &quot;%1&quot; was created using &quot;%2&quot; as scripting language.
+
+Initializing support for this language FAILED; I&apos;m using &quot;%3&quot; instead.
+Various parts of this file may not be displayed as expected.</source>
+        <translation type="obsolete">Soubor &quot;%1&quot; byl vytvořen &quot;%2&quot; jako skriptovací jazyk.
+
+Inicializace podpory pro tento jazyk SELHALA; Místo toho se používá &quot;%3&quot;.
+Různé části tohoto souboru se nemusí zobrazovat tak, jak se očekává.</translation>
+    </message>
+    <message>
+        <source>Window</source>
+        <translation type="obsolete">Okno</translation>
+    </message>
+    <message>
+        <source>QtiPlot - Opening file</source>
+        <translation type="obsolete">QtiPlot - Otevírá se soubor</translation>
+    </message>
+    <message>
+        <source>Script Error</source>
+        <translation type="obsolete">Chyba skriptu</translation>
+    </message>
+    <message>
+        <source>QtiPlot - Scripting Error</source>
+        <translation type="obsolete">QtiPlot - Chyba skriptu</translation>
+    </message>
+    <message>
+        <source>Scripting language &quot;%1&quot; failed to initialize.</source>
+        <translation type="obsolete">Skriptovací jazyk &quot;%1&quot; se nepodařilo inicializovat.</translation>
+    </message>
+    <message>
+        <source>QtiPlot - Open Template File</source>
+        <translation type="obsolete">QtiPlot - Otevřít soubor šablony</translation>
+    </message>
+    <message>
+        <source>The file: &lt;b&gt;%1&lt;/b&gt; is not a QtiPlot template file!</source>
+        <translation type="obsolete">Soubor: &lt;b&gt; %1&lt;/b&gt; není souborem šablony programu QtiPlot!</translation>
+    </message>
+    <message>
+        <source>Table1</source>
+        <translation type="obsolete">Tabulka 1</translation>
+    </message>
+    <message>
+        <source>QtiPlot - Export Error</source>
+        <translation type="obsolete">QtiPlot - Chyba při vyvedení</translation>
+    </message>
+    <message>
+        <source>&lt;h4&gt;There are no plot layers available in this window!&lt;/h4&gt;</source>
+        <translation type="obsolete">&lt;h4&gt;V tomto okně nejsou dostupné žádné vrstvy nákresu!&lt;/h4&gt;</translation>
+    </message>
+    <message>
+        <source>Presentation Preview</source>
+        <translation type="obsolete">Náhled provedení</translation>
+    </message>
+    <message>
+        <source>&amp;Save</source>
+        <translation type="obsolete">&amp;Uložit</translation>
+    </message>
+    <message>
+        <source>&amp;Cancel</source>
+        <translation type="obsolete">&amp;Zrušit</translation>
+    </message>
+    <message>
+        <source>Choose a directory to export the graphs to</source>
+        <translation type="obsolete">Vybrat adresář, do něhož se budou vyvádět nákresy</translation>
+    </message>
+    <message>
+        <source>Output format:</source>
+        <translation type="obsolete">Výstupní formát:</translation>
+    </message>
+    <message>
+        <source>Directory:</source>
+        <translation type="obsolete">Adresář:</translation>
+    </message>
+    <message>
+        <source>There are no plot layers available in window &lt;b&gt;%1&lt;/b&gt;.&lt;br&gt;Graph window not exported!</source>
+        <translation type="obsolete">V tomto okně nejsou dostupné žádné vrstvy nákresu, &lt;b&gt;%1&lt;/b&gt;.&lt;br&gt;Okno s nákresem nebylo vyvedeno!</translation>
+    </message>
+    <message>
+        <source>A file called: &lt;p&gt;&lt;b&gt;%1&lt;/b&gt;&lt;p&gt;already exists. Do you want to overwrite it?</source>
+        <translation type="obsolete">Soubor nazvaný: &lt;p&gt;&lt;b&gt;%1&lt;/b&gt;&lt;p&gt;již existuje. Chcete jej přepsat?</translation>
+    </message>
+    <message>
+        <source>QtiPlot - Overwrite file?</source>
+        <translation type="obsolete">QtiPlot - Přepsat soubor?</translation>
+    </message>
+    <message>
+        <source>QtiPlot - Export error</source>
+        <translation type="obsolete">QtiPlot - Chyba při vyvedení</translation>
+    </message>
+    <message>
+        <source>Could not write to file: &lt;br&gt;&lt;h4&gt;%1&lt;/h4&gt;&lt;p&gt;Please verify that you have the right to write to this location!</source>
+        <translation type="obsolete">Nelze zapisovat do souboru: &lt;br&gt;&lt;h4&gt; %1 &lt;/h4&gt;&lt;p&gt;Ověřte, prosím, že máte oprávnění pro zápis do tohoto umístění!</translation>
+    </message>
+    <message>
+        <source>Save Project As</source>
+        <translation type="obsolete">Projekt uložit jako</translation>
+    </message>
+    <message>
+        <source>QtiPlot Matrix Template</source>
+        <translation type="obsolete">Předloha matice pro QtiPlot</translation>
+    </message>
+    <message>
+        <source>QtiPlot 2D Graph Template</source>
+        <translation type="obsolete">Předloha QtiPlotu pro dvojrozměrné nákresy</translation>
+    </message>
+    <message>
+        <source>QtiPlot Table Template</source>
+        <translation type="obsolete">Předloha tabulky pro QtiPlot</translation>
+    </message>
+    <message>
+        <source>QtiPlot 3D Surface Template</source>
+        <translation type="obsolete">Předloha QtiPlotu pro trojrozměrné povrchy</translation>
+    </message>
+    <message>
+        <source>Save Window As Template</source>
+        <translation type="obsolete">Uložit okno jako šablonu</translation>
+    </message>
+    <message>
+        <source>Could not write to file: &lt;br&gt;&lt;h4&gt; %1 &lt;/h4&gt;&lt;p&gt;Please verify that you have the right to write to this location!</source>
+        <translation type="obsolete">Nelze zapisovat do souboru: &lt;br&gt;&lt;h4&gt; %1 &lt;/h4&gt;&lt;p&gt;Ověřte, prosím, že máte oprávnění pro zápis do tohoto umístění!</translation>
+    </message>
+    <message>
+        <source>The name you chose is not valid: only letters and digits are allowed!</source>
+        <translation type="obsolete">Název, který jste vybral, není platný: jsou povoleny pouze číslice a písmena!</translation>
+    </message>
+    <message>
+        <source>Name &lt;b&gt;%1&lt;/b&gt; already exists!</source>
+        <translation type="obsolete">Název: &lt;b&gt;%1&lt;/b&gt; již existuje!</translation>
+    </message>
+    <message>
+        <source>Warning: for internal consistency reasons the underscore character is replaced with a minus sign.</source>
+        <translation type="obsolete">Varování: Kvůli zajištění vnitřní ucelenosti byl znak podtržení nahrazen znaménkem mínus.</translation>
+    </message>
+    <message>
+        <source>&lt;h4&gt;There are no plot layers available in this window.&lt;/h4&gt;&lt;p&gt;&lt;h4&gt;Please add a layer and try again!&lt;/h4&gt;</source>
+        <translation type="obsolete">&lt;h4&gt;V tomto okně nejsou dostupné žádné vrstvy nákresu.&lt;/h4&gt;&lt;p&gt;&lt;h4&gt;Přidejte, prosím, vrstvu, a zkuste to znovu!&lt;/h4&gt;</translation>
+    </message>
+    <message>
+        <source>This functionality is not available for pie plots!</source>
+        <translation type="obsolete">Tento rozsah funkcí není pro koláčové nákresy dostupný!</translation>
+    </message>
+    <message>
+        <source>&amp;All</source>
+        <translation type="obsolete">&amp;Vše</translation>
+    </message>
+    <message>
+        <source>QtiPlot - Enter rows number</source>
+        <translation type="obsolete">QtiPlot - Zadat počet řádků</translation>
+    </message>
+    <message>
+        <source>Rows</source>
+        <translation type="obsolete">Řádky</translation>
+    </message>
+    <message>
+        <source>QtiPlot - Delete rows</source>
+        <translation type="obsolete">QtiPlot - Odstranit řádky</translation>
+    </message>
+    <message>
+        <source>Start row</source>
+        <translation type="obsolete">Začátek řádku</translation>
+    </message>
+    <message>
+        <source>End row</source>
+        <translation type="obsolete">Konec řádku</translation>
+    </message>
+    <message>
+        <source>QtiPlot - Enter columns number</source>
+        <translation type="obsolete">QtiPlot - Chyba v počtu sloupců</translation>
+    </message>
+    <message>
+        <source>Columns</source>
+        <translation type="obsolete">Sloupce</translation>
+    </message>
+    <message>
+        <source>Please select a column first!</source>
+        <translation type="obsolete">Vyberte, prosím, nejprve sloupec!</translation>
+    </message>
+    <message>
+        <source>Please select two columns for this operation!</source>
+        <translation type="obsolete">Vyberte, prosím, dva sloupce pro tuto operaci!</translation>
+    </message>
+    <message>
+        <source>Please select exactly one columns for this operation!</source>
+        <translation type="obsolete">Vyberte, prosím, přesně jeden sloupec pro tuto operaci!</translation>
+    </message>
+    <message>
+        <source>Please select two columns for this operation:
+ the first represents the signal and the second the response function!</source>
+        <translation type="obsolete">Vyberte, prosím, dva sloupce pro tuto operaci:
+První představuje funkci signálu a druhý funkci odpovědi!</translation>
+    </message>
+    <message>
+        <source>QtiPlot - Row selection error</source>
+        <translation type="obsolete">QtiPlot - Chyba při výběru řádků</translation>
+    </message>
+    <message>
+        <source>Please select a row first!</source>
+        <translation type="obsolete">Vyberte, prosím, nejprve řádek!</translation>
+    </message>
+    <message>
+        <source>Special Line/Symb&amp;ol</source>
+        <translation type="obsolete">Zvláštní řádek/Symb&amp;ol</translation>
+    </message>
+    <message>
+        <source>Spec&amp;ial Bar/Column</source>
+        <translation type="obsolete">&amp;Zvláštní pruh/sloupec</translation>
+    </message>
+    <message>
+        <source>Statistical &amp;Graphs</source>
+        <translation type="obsolete">Statistické &amp;nákresy</translation>
+    </message>
+    <message>
+        <source>&amp;Plot</source>
+        <translation type="obsolete">&amp;Nákres</translation>
+    </message>
+    <message>
+        <source>Cu&amp;t</source>
+        <translation type="obsolete">Vyj&amp;mout</translation>
+    </message>
+    <message>
+        <source>&amp;Copy</source>
+        <translation type="obsolete">&amp;Kopírovat</translation>
+    </message>
+    <message>
+        <source>Past&amp;e</source>
+        <translation type="obsolete">Vlo&amp;žit</translation>
+    </message>
+    <message>
+        <source>X E&amp;rror</source>
+        <translation type="obsolete">Chy&amp;ba x</translation>
+    </message>
+    <message>
+        <source>Y &amp;Error</source>
+        <translation type="obsolete">Chy&amp;ba y</translation>
+    </message>
+    <message>
+        <source>Set As</source>
+        <translation type="obsolete">Nastavit jako</translation>
+    </message>
+    <message>
+        <source>&amp;Fill Column With</source>
+        <translation type="obsolete">&amp;Vyplnit sloupec</translation>
+    </message>
+    <message>
+        <source>&amp;Column</source>
+        <translation type="obsolete">&amp;Sloupec</translation>
+    </message>
+    <message>
+        <source>&amp;Normalize</source>
+        <translation type="obsolete">&amp;Normalizovat</translation>
+    </message>
+    <message>
+        <source>Clea&amp;r</source>
+        <translation type="obsolete">Vypráz&amp;dnit</translation>
+    </message>
+    <message>
+        <source>&amp;Delete</source>
+        <translation type="obsolete">&amp;Smazat</translation>
+    </message>
+    <message>
+        <source>&amp;Insert</source>
+        <translation type="obsolete">&amp;Vložit</translation>
+    </message>
+    <message>
+        <source>&amp;Ascending</source>
+        <translation type="obsolete">&amp;Vzestupný</translation>
+    </message>
+    <message>
+        <source>&amp;Descending</source>
+        <translation type="obsolete">&amp;Sestupný</translation>
+    </message>
+    <message>
+        <source>Sort Colu&amp;mn</source>
+        <translation type="obsolete">Seřadit slou&amp;pec</translation>
+    </message>
+    <message>
+        <source>Pa&amp;nel</source>
+        <translation type="obsolete">Pa&amp;nel</translation>
+    </message>
+    <message>
+        <source>&amp;Read-only</source>
+        <translation type="obsolete">&amp;Pouze pro čtení</translation>
+    </message>
+    <message>
+        <source>Read/&amp;Write</source>
+        <translation type="obsolete">Číst/&amp;Zapisovat</translation>
+    </message>
+    <message>
+        <source>&amp;Fill Columns With</source>
+        <translation type="obsolete">&amp;Naplnit sloupce</translation>
+    </message>
+    <message>
+        <source>You need to select at least one Y column for this operation!</source>
+        <translation type="obsolete">Pro tuto operaci je potřeba, abyste vybral alespoň jeden sloupec Y!</translation>
+    </message>
+    <message>
+        <source>Y2 Axis Title</source>
+        <translation type="obsolete">Název osy Y2</translation>
+    </message>
+    <message>
+        <source>Not available for empty 3D surface plots!</source>
+        <translation type="obsolete">Není dostupné pro nákresy trojrozměrných povrchů bez dat!</translation>
+    </message>
+    <message>
+        <source>Set Display Range</source>
+        <translation type="obsolete">Nastavit rozsah zobrazení</translation>
+    </message>
+    <message>
+        <source>&lt;h4&gt;There are no plot layers available in this window.&lt;/h4&gt;</source>
+        <translation type="obsolete">&lt;h4&gt;V tomto okně nejsou dostupné žádné vrstvy nákresu.&lt;/h4&gt;</translation>
+    </message>
+    <message>
+        <source>This will modify the data in the worksheets!
+Are you sure you want to continue?</source>
+        <translation type="obsolete">Tato operace upraví data v pracovních listech!
+Jste si jist, že chcete pokračovat?</translation>
+    </message>
+    <message>
+        <source>Continue</source>
+        <translation type="obsolete">Pokračovat</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="obsolete">Zrušit</translation>
+    </message>
+    <message>
+        <source>Choose a filename to save under</source>
+        <translation type="obsolete">Vybrat název souboru, pod nímž se bude ukládat</translation>
+    </message>
+    <message>
+        <source>Could not write to file: &lt;h4&gt;%1&lt;/h4&gt;&lt;p&gt;Please verify that you have the right to write to this location or that the file is not being used by another application!</source>
+        <translation type="obsolete">Nelze zapisovat do souboru: &lt;h4&gt;%1&lt;/h4&gt;&lt;p&gt;Ověřte, prosím, že máte oprávnění pro zápis do tohoto umístění, nebo že soubor nepoužívá další aplikace!</translation>
+    </message>
+    <message>
+        <source>Print preview of window: </source>
+        <translation type="obsolete">Tisk náhledu okna:</translation>
+    </message>
+    <message>
+        <source>Please select a &apos;Y&apos; column first!</source>
+        <translation type="obsolete">Vyberte, prosím, nejprve sloupec &apos;y&apos;!</translation>
+    </message>
+    <message>
+        <source>Sorry, there are no results to display!</source>
+        <translation type="obsolete">Promiňte, ale nejsou zde žádné výsledky, které by bylo možné zobrazit!</translation>
+    </message>
+    <message>
+        <source>There are no plot layers available in this window!</source>
+        <translation type="obsolete">V tomto okně nejsou dostupné žádné vrstvy nákresu!</translation>
+    </message>
+    <message>
+        <source>There are no layers available on this plot. Operation aborted!</source>
+        <translation type="obsolete">U tohoto nákresu nejsou dostupné žádné vrstvy. Operace byla zrušena!</translation>
+    </message>
+    <message>
+        <source>QtiPlot - Insert image from file</source>
+        <translation type="obsolete">QtiPlot - Vložit obrázek ze souboru</translation>
+    </message>
+    <message>
+        <source>There are no plot layers available in this window.</source>
+        <translation type="obsolete">V tomto okně nejsou dostupné žádné vrstvy nákresu.</translation>
+    </message>
+    <message>
+        <source>QtiPlot - Duplicate window error</source>
+        <translation type="obsolete">QtiPlot - Chyba při zdvojení okna</translation>
+    </message>
+    <message>
+        <source>There are no windows available in this folder!</source>
+        <translation type="obsolete">V tomto projektu nejsou dostupná žádná okna!</translation>
+    </message>
+    <message>
+        <source>QtiPlot - Duplicate error</source>
+        <translation type="obsolete">QtiPlot - Chyba při zdvojení</translation>
+    </message>
+    <message>
+        <source>Empty 3D surface plots cannot be duplicated!</source>
+        <translation type="obsolete">Nelze zdvojit prázdné nákresy trojrozměrných povrchů!</translation>
+    </message>
+    <message>
+        <source>Released</source>
+        <translation type="obsolete">Uvolněno</translation>
+    </message>
+    <message>
+        <source>About QtiPlot</source>
+        <translation type="obsolete">O programu QtiPlot</translation>
+    </message>
+    <message>
+        <source>&amp;Translate</source>
+        <translation type="obsolete">&amp;Přeložit</translation>
+    </message>
+    <message>
+        <source>Vie&amp;w</source>
+        <translation type="obsolete">&amp;Pohled</translation>
+    </message>
+    <message>
+        <source>&amp;Palette</source>
+        <translation type="obsolete">&amp;Paleta</translation>
+    </message>
+    <message>
+        <source>&amp;Convert to Spreadsheet</source>
+        <translation type="obsolete">&amp;Převést na tabulku</translation>
+    </message>
+    <message>
+        <source>&amp;Recent Projects</source>
+        <translation type="obsolete">&amp;Naposledy otevřené projekty</translation>
+    </message>
+    <message>
+        <source>&amp;Folders</source>
+        <translation type="obsolete">&amp;Složky</translation>
+    </message>
+    <message>
+        <source>&amp;Cascade</source>
+        <translation type="obsolete">&amp;Překrývat</translation>
+    </message>
+    <message>
+        <source>&amp;Tile</source>
+        <translation type="obsolete">Jeden &amp;vedle druhého (kachlička)</translation>
+    </message>
+    <message>
+        <source>Close &amp;Window</source>
+        <translation type="obsolete">Zavřít &amp;okno</translation>
+    </message>
+    <message>
+        <source>More windows...</source>
+        <translation type="obsolete">Další okna...</translation>
+    </message>
+    <message>
+        <source>&amp;View Pixel Line profile</source>
+        <translation type="obsolete">&amp;Ukázat profil čár</translation>
+    </message>
+    <message>
+        <source>&amp;Intensity Matrix</source>
+        <translation type="obsolete">&amp;Matice síly</translation>
+    </message>
+    <message>
+        <source>&amp;Cut</source>
+        <translation type="obsolete">&amp;Vyjmout</translation>
+    </message>
+    <message>
+        <source>Please use the project explorer to select a window!</source>
+        <translation type="obsolete">Pro výběr okna použijte, prosím, projektového průzkumníka!</translation>
+    </message>
+    <message>
+        <source>Save changes to project: &lt;p&gt;&lt;b&gt; %1 &lt;/b&gt; ?</source>
+        <translation type="obsolete">Uložit změny do projektu: &lt;p&gt;&lt;b&gt; %1 &lt;/b&gt;?</translation>
+    </message>
+    <message>
+        <source>UNTITLED</source>
+        <translation type="obsolete">BEZ NÁZVU</translation>
+    </message>
+    <message>
+        <source>QtiPlot - untitled</source>
+        <translation type="obsolete">QtiPlot - Bez názvu</translation>
+    </message>
+    <message>
+        <source>&amp;Delete Selection</source>
+        <translation type="obsolete">&amp;Smazat výběr</translation>
+    </message>
+    <message>
+        <source>Auto &amp;Column Width</source>
+        <translation type="obsolete">Automatická &amp;šířka sloupce</translation>
+    </message>
+    <message>
+        <source>&amp;Delete Window</source>
+        <translation type="obsolete">&amp;Smazat okno</translation>
+    </message>
+    <message>
+        <source>&amp;Rename Window</source>
+        <translation type="obsolete">&amp;Přejmenovat okno</translation>
+    </message>
+    <message>
+        <source>&amp;Print Window</source>
+        <translation type="obsolete">&amp;Tisk okna</translation>
+    </message>
+    <message>
+        <source>D&amp;epending Graphs</source>
+        <translation type="obsolete">&amp;Závisející nákresy</translation>
+    </message>
+    <message>
+        <source>D&amp;epending 3D Graphs</source>
+        <translation type="obsolete">&amp;Závisející trojrozměrné nákresy</translation>
+    </message>
+    <message>
+        <source>D&amp;epends on</source>
+        <translation type="obsolete">Zá&amp;visí na</translation>
+    </message>
+    <message>
+        <source>Function</source>
+        <translation type="obsolete">Funkce</translation>
+    </message>
+    <message>
+        <source>Re&amp;move Pie Curve</source>
+        <translation type="obsolete">Odstranit &amp;zobrazení koláče</translation>
+    </message>
+    <message>
+        <source>&amp;Add</source>
+        <translation type="obsolete">&amp;Přidat</translation>
+    </message>
+    <message>
+        <source>Anal&amp;yze</source>
+        <translation type="obsolete">Provést &amp;rozbor</translation>
+    </message>
+    <message>
+        <source>&amp;Data</source>
+        <translation type="obsolete">&amp;Data</translation>
+    </message>
+    <message>
+        <source>&amp;Indexed Colors</source>
+        <translation type="obsolete">&amp;Indexované barvy</translation>
+    </message>
+    <message>
+        <source>Pale&amp;tte</source>
+        <translation type="obsolete">&amp;Paleta</translation>
+    </message>
+    <message>
+        <source>&amp;Layer</source>
+        <translation type="obsolete">&amp;Vrstva</translation>
+    </message>
+    <message>
+        <source>&amp;Window</source>
+        <translation type="obsolete">&amp;Okno</translation>
+    </message>
+    <message>
+        <source>&amp;Paste Layer</source>
+        <translation type="obsolete">&amp;Vložit zkopírovanou vrstvu</translation>
+    </message>
+    <message>
+        <source>&amp;Paste Text</source>
+        <translation type="obsolete">&amp;Vložit zkopírovaný text</translation>
+    </message>
+    <message>
+        <source>&amp;Paste Tex Formula</source>
+        <translation type="obsolete">&amp;Vložit vzorec TeX</translation>
+    </message>
+    <message>
+        <source>&amp;Paste Image</source>
+        <translation type="obsolete">&amp;Vložit zkopírovaný obrázek</translation>
+    </message>
+    <message>
+        <source>&amp;Paste Rectangle</source>
+        <translation type="obsolete">&amp;Vložit obdélník</translation>
+    </message>
+    <message>
+        <source>&amp;Paste Ellipse</source>
+        <translation type="obsolete">&amp;Vložit elipsu</translation>
+    </message>
+    <message>
+        <source>&amp;Paste Line/Arrow</source>
+        <translation type="obsolete">&amp;Vložit zkopírovanou čáru/šipku</translation>
+    </message>
+    <message>
+        <source>E&amp;xport</source>
+        <translation type="obsolete">&amp;Vyvést</translation>
+    </message>
+    <message>
+        <source>&amp;Print</source>
+        <translation type="obsolete">&amp;Tisk</translation>
+    </message>
+    <message>
+        <source>P&amp;roperties...</source>
+        <translation type="obsolete">Vla&amp;stnosti...</translation>
+    </message>
+    <message>
+        <source>&amp;Copy Page</source>
+        <translation type="obsolete">&amp;Kopírovat stranu</translation>
+    </message>
+    <message>
+        <source>E&amp;xport Page</source>
+        <translation type="obsolete">&amp;Vyvést stranu</translation>
+    </message>
+    <message>
+        <source>3D &amp;Plot</source>
+        <translation type="obsolete">Trojrozměrný &amp;nákres</translation>
+    </message>
+    <message>
+        <source>&amp;Matrix...</source>
+        <translation type="obsolete">&amp;Matice...</translation>
+    </message>
+    <message>
+        <source>Choose &amp;Data Set...</source>
+        <translation type="obsolete">Vybrat &amp;datový soubor...</translation>
+    </message>
+    <message>
+        <source>Choose &amp;Matrix...</source>
+        <translation type="obsolete">Vybrat &amp;matici...</translation>
+    </message>
+    <message>
+        <source>&amp;Copy Graph</source>
+        <translation type="obsolete">&amp;Kopírovat nákres</translation>
+    </message>
+    <message>
+        <source>&amp;Export</source>
+        <translation type="obsolete">&amp;Vyvést</translation>
+    </message>
+    <message>
+        <source>&amp;Paste</source>
+        <translation type="obsolete">&amp;Vložit</translation>
+    </message>
+    <message>
+        <source>&amp;Insert Row</source>
+        <translation type="obsolete">&amp;Vložit řádek</translation>
+    </message>
+    <message>
+        <source>&amp;Insert Column</source>
+        <translation type="obsolete">&amp;Vložit sloupec</translation>
+    </message>
+    <message>
+        <source>&amp;Delete Rows</source>
+        <translation type="obsolete">&amp;Smazat řádky</translation>
+    </message>
+    <message>
+        <source>&amp;Delete Columns</source>
+        <translation type="obsolete">&amp;Smazat sloupce</translation>
+    </message>
+    <message>
+        <source>Move Row</source>
+        <translation type="obsolete">Přesunout řádek</translation>
+    </message>
+    <message>
+        <source>&amp;Delete Row</source>
+        <translation type="obsolete">&amp;Smazat řádek</translation>
+    </message>
+    <message>
+        <source>Clea&amp;r Row</source>
+        <translation type="obsolete">Vyprá&amp;zdnit řádek</translation>
+    </message>
+    <message>
+        <source>Clea&amp;r Rows</source>
+        <translation type="obsolete">Vyprá&amp;zdnit řádky</translation>
+    </message>
+    <message>
+        <source>QtiPlot - Help Files Not Found!</source>
+        <translation type="obsolete">QtiPlot - Soubor s nápovědou nenalezen!</translation>
+    </message>
+    <message>
+        <source>The manual can be downloaded from the following internet address:</source>
+        <translation type="obsolete">Příručku lze stáhnout z následující adresy:</translation>
+    </message>
+    <message>
+        <source>QtiPlot - Help Profile Not Found!</source>
+        <translation type="obsolete">QtiPlot - Profil nápovědy nenalezen!</translation>
+    </message>
+    <message>
+        <source>The assistant could not start because the file &lt;b&gt;%1&lt;/b&gt; was not found in the help file directory!</source>
+        <translation type="obsolete">Pomocník nemohl být spuštěn, protože soubor &lt;b&gt;%1&lt;/b&gt; nebyl nalezen v adresáři se soubory nápovědy!</translation>
+    </message>
+    <message>
+        <source>This file is provided with the QtiPlot manual which can be downloaded from the following internet address:</source>
+        <translation type="obsolete">Tento soubor je poskytován s nápovědou ke QtiPlotu, která se dá stáhnout z následující internetové adresy:</translation>
+    </message>
+    <message>
+        <source>Please indicate the location of the help file!</source>
+        <translation type="obsolete">Ukažte, prosím, umístění souboru s nápovědou!</translation>
+    </message>
+    <message>
+        <source>&lt;h4&gt;There are no tables available in this project.&lt;/h4&gt;&lt;p&gt;&lt;h4&gt;Please create a table and try again!&lt;/h4&gt;</source>
+        <translation type="obsolete">&lt;h4&gt;V tomto projektu nejsou dostupné žádné tabulky.&lt;/h4&gt;&lt;p&gt;&lt;h4&gt;Vytvořte, prosím, tabulku a zkuste to znovu!&lt;/h4&gt;</translation>
+    </message>
+    <message>
+        <source>QtiPlot - Edit function</source>
+        <translation type="obsolete">QtiPlot - Upravit funkci</translation>
+    </message>
+    <message>
+        <source>3D Surface</source>
+        <translation type="obsolete">Nákres trojrozměrného povrchu</translation>
+    </message>
+    <message>
+        <source>QtiPlot - Set the number of pixels to average</source>
+        <translation type="obsolete">QtiPlot - Nastavit počet pixelů na průměrnou hodnotu</translation>
+    </message>
+    <message>
+        <source>Number of averaged pixels</source>
+        <translation type="obsolete">Počet zprůměrovaných pixelů</translation>
+    </message>
+    <message>
+        <source>You must have more than one layer in the active window!</source>
+        <translation type="obsolete">V činném okně musíte mít více než jednu vrstvu!</translation>
+    </message>
+    <message>
+        <source>You must have more than one dataset in the active layer!</source>
+        <translation type="obsolete">V činné vrstvě musíte mít více než jeden soubor s daty!</translation>
+    </message>
+    <message>
+        <source>QtiPlot - Guess best origin for the new layer?</source>
+        <translation type="obsolete">QtiPlot - Určit nejlepší počátek souřadnic pro novou vrstvu?</translation>
+    </message>
+    <message>
+        <source>Do you want QtiPlot to guess the best position for the new layer?
+ Warning: this will rearrange existing layers!</source>
+        <translation type="obsolete">Chcete, aby QtiPlot určil nejlepší polohu pro novou vrstvu?
+Varování. Tento krok přeuspořádá stávající vrstvy!</translation>
+    </message>
+    <message>
+        <source>&amp;Guess</source>
+        <translation type="obsolete">&amp;Určit</translation>
+    </message>
+    <message>
+        <source>&amp;Top-left corner</source>
+        <translation type="obsolete">&amp;Horní levý roh</translation>
+    </message>
+    <message>
+        <source>QtiPlot - Choose data set</source>
+        <translation type="obsolete">QtiPlot - Vyberte soubor s daty</translation>
+    </message>
+    <message>
+        <source>Curve</source>
+        <translation type="obsolete">Křivka</translation>
+    </message>
+    <message>
+        <source>Integration of %1 from zero is</source>
+        <translation type="obsolete">Začlenění %1 od nuly je</translation>
+    </message>
+    <message>
+        <source>Integration of %1</source>
+        <translation type="obsolete">Začlenění %1</translation>
+    </message>
+    <message>
+        <source>Linear Regression of %1</source>
+        <translation type="obsolete">Přímočarý pokles %1</translation>
+    </message>
+    <message>
+        <source>Slope</source>
+        <translation type="obsolete">Sklon</translation>
+    </message>
+    <message>
+        <source>Intercept</source>
+        <translation type="obsolete">Ohraničený úsek</translation>
+    </message>
+    <message>
+        <source>Chi^2</source>
+        <translation type="obsolete">Chi^2</translation>
+    </message>
+    <message>
+        <source>R^2</source>
+        <translation type="obsolete">R^2</translation>
+    </message>
+    <message>
+        <source>Add &amp;Custom Script Action...</source>
+        <translation type="obsolete">Přidat &amp;akci vlastního skriptu...</translation>
+    </message>
+    <message>
+        <source>New &amp;Project</source>
+        <translation type="obsolete">Nový &amp;projekt</translation>
+    </message>
+    <message>
+        <source>Ctrl+N</source>
+        <translation type="obsolete">Ctrl+N</translation>
+    </message>
+    <message>
+        <source>App&amp;end Project...</source>
+        <translation type="obsolete">Při&amp;pojit projekt...</translation>
+    </message>
+    <message>
+        <source>New &amp;Graph</source>
+        <translation type="obsolete">Nový &amp;nákres</translation>
+    </message>
+    <message>
+        <source>Ctrl+G</source>
+        <translation type="obsolete">Ctrl+G</translation>
+    </message>
+    <message>
+        <source>New &amp;Note</source>
+        <translation type="obsolete">Novou &amp;poznámku</translation>
+    </message>
+    <message>
+        <source>New &amp;Table</source>
+        <translation type="obsolete">Nová &amp;tabulka</translation>
+    </message>
+    <message>
+        <source>Ctrl+T</source>
+        <translation type="obsolete">Ctrl+T</translation>
+    </message>
+    <message>
+        <source>New &amp;Matrix</source>
+        <translation type="obsolete">Nová &amp;matice</translation>
+    </message>
+    <message>
+        <source>Ctrl+M</source>
+        <translation type="obsolete">Ctrl+M</translation>
+    </message>
+    <message>
+        <source>New &amp;Function Plot</source>
+        <translation type="obsolete">Nový &amp;nákres funkce</translation>
+    </message>
+    <message>
+        <source>Ctrl+F</source>
+        <translation type="obsolete">Ctrl+F</translation>
+    </message>
+    <message>
+        <source>New 3D &amp;Surface Plot</source>
+        <translation type="obsolete">Nový trojrozměrný &amp;nákres povrchu</translation>
+    </message>
+    <message>
+        <source>Ctrl+ALT+Z</source>
+        <translation type="obsolete">Ctrl+ALT+Z</translation>
+    </message>
+    <message>
+        <source>&amp;Open</source>
+        <translation type="obsolete">&amp;Otevřít</translation>
+    </message>
+    <message>
+        <source>Ctrl+O</source>
+        <translation type="obsolete">Ctrl+O</translation>
+    </message>
+    <message>
+        <source>Open Image &amp;File</source>
+        <translation type="obsolete">Otevřít soubor s &amp;obrázkem</translation>
+    </message>
+    <message>
+        <source>Ctrl+I</source>
+        <translation type="obsolete">Ctrl+I</translation>
+    </message>
+    <message>
+        <source>Import I&amp;mage...</source>
+        <translation type="obsolete">Zavést &amp;obrázek...</translation>
+    </message>
+    <message>
+        <source>&amp;Save Project</source>
+        <translation type="obsolete">&amp;Uložit projekt</translation>
+    </message>
+    <message>
+        <source>Ctrl+S</source>
+        <translation type="obsolete">Ctrl+S</translation>
+    </message>
+    <message>
+        <source>Save Project &amp;As...</source>
+        <translation type="obsolete">Uložit projekt &amp;jako...</translation>
+    </message>
+    <message>
+        <source>Ctrl+Shift+S</source>
+        <translation type="obsolete">Ctrl+Shift+S</translation>
+    </message>
+    <message>
+        <source>Open Temp&amp;late...</source>
+        <translation type="obsolete">Otevřít &amp;předlohu...</translation>
+    </message>
+    <message>
+        <source>Save As &amp;Template...</source>
+        <translation type="obsolete">Uložit jako &amp;předlohu...</translation>
+    </message>
+    <message>
+        <source>Save Note As...</source>
+        <translation type="obsolete">Uložit poznámku jako...</translation>
+    </message>
+    <message>
+        <source>&amp;Import ASCII...</source>
+        <translation type="obsolete">&amp;Zavést ASCII...</translation>
+    </message>
+    <message>
+        <source>&amp;Sound (WAV)...</source>
+        <translation type="obsolete">&amp;Zvuk (WAV)...</translation>
+    </message>
+    <message>
+        <source>&amp;Undo</source>
+        <translation type="obsolete">&amp;Vrátit zpět</translation>
+    </message>
+    <message>
+        <source>Ctrl+Z</source>
+        <translation type="obsolete">Ctrl+Z</translation>
+    </message>
+    <message>
+        <source>&amp;Redo</source>
+        <translation type="obsolete">&amp;Udělat znovu</translation>
+    </message>
+    <message>
+        <source>&amp;Duplicate</source>
+        <translation type="obsolete">&amp;Zdvojit</translation>
+    </message>
+    <message>
+        <source>Ctrl+Alt+D</source>
+        <translation type="obsolete">Ctrl+Alt+D</translation>
+    </message>
+    <message>
+        <source>Cu&amp;t Selection</source>
+        <translation type="obsolete">Vyj&amp;mout výběr</translation>
+    </message>
+    <message>
+        <source>Ctrl+X</source>
+        <translation type="obsolete">Ctrl+X</translation>
+    </message>
+    <message>
+        <source>&amp;Copy Selection</source>
+        <translation type="obsolete">&amp;Kopírovat výběr</translation>
+    </message>
+    <message>
+        <source>Ctrl+C</source>
+        <translation type="obsolete">Ctrl+C</translation>
+    </message>
+    <message>
+        <source>&amp;Paste Selection</source>
+        <translation type="obsolete">&amp;Vložit výběr</translation>
+    </message>
+    <message>
+        <source>Ctrl+V</source>
+        <translation type="obsolete">Ctrl+V</translation>
+    </message>
+    <message>
+        <source>Del</source>
+        <comment>delete key</comment>
+        <translation type="obsolete">Klávesa Delete</translation>
+    </message>
+    <message>
+        <source>Ctrl+E</source>
+        <translation type="obsolete">Ctrl+E</translation>
+    </message>
+    <message>
+        <source>&amp;Find...</source>
+        <translation type="obsolete">&amp;Najít...</translation>
+    </message>
+    <message>
+        <source>Add La&amp;yer</source>
+        <translation type="obsolete">Přidat &amp;vrstvu</translation>
+    </message>
+    <message>
+        <source>ALT+L</source>
+        <translation type="obsolete">ALT+L</translation>
+    </message>
+    <message>
+        <source>Arran&amp;ge Layers</source>
+        <translation type="obsolete">&amp;Uspořádat vrstvy</translation>
+    </message>
+    <message>
+        <source>Shift+A</source>
+        <translation type="obsolete">Shift+A</translation>
+    </message>
+    <message>
+        <source>Automatic Layout</source>
+        <translation type="obsolete">Automatické rozvržení</translation>
+    </message>
+    <message>
+        <source>&amp;Current</source>
+        <translation type="obsolete">&amp;Nynější</translation>
+    </message>
+    <message>
+        <source>Ctrl+Alt+G</source>
+        <translation type="obsolete">Ctrl+Alt+G</translation>
+    </message>
+    <message>
+        <source>Alt+X</source>
+        <translation type="obsolete">Alt+X</translation>
+    </message>
+    <message>
+        <source>Create Open &amp;Document Presentation...</source>
+        <translation type="obsolete">Vytvořit představení v Open &amp;Document...</translation>
+    </message>
+    <message>
+        <source>&amp;Export PDF</source>
+        <translation type="obsolete">&amp;Vyvést jako PDF</translation>
+    </message>
+    <message>
+        <source>Ctrl+Alt+P</source>
+        <translation type="obsolete">Ctrl+Alt+P</translation>
+    </message>
+    <message>
+        <source>Ctrl+P</source>
+        <translation type="obsolete">Ctrl+P</translation>
+    </message>
+    <message>
+        <source>Print Pre&amp;view</source>
+        <translation type="obsolete">Tisk &amp;náhledu</translation>
+    </message>
+    <message>
+        <source>Print All Plo&amp;ts</source>
+        <translation type="obsolete">Tisk všech ná&amp;kresů</translation>
+    </message>
+    <message>
+        <source>E&amp;xport ASCII</source>
+        <translation type="obsolete">&amp;Vyvést jako ASCII</translation>
+    </message>
+    <message>
+        <source>&amp;Quit</source>
+        <translation type="obsolete">&amp;Ukončit</translation>
+    </message>
+    <message>
+        <source>Ctrl+Q</source>
+        <translation type="obsolete">Ctrl+Q</translation>
+    </message>
+    <message>
+        <source>&amp;Close</source>
+        <translation type="obsolete">&amp;Zavřít</translation>
+    </message>
+    <message>
+        <source>Clear &amp;Log Information</source>
+        <translation type="obsolete">Smazat všechny informace v &amp;zápisu</translation>
+    </message>
+    <message>
+        <source>Delete &amp;Fit Tables</source>
+        <translation type="obsolete">Smazat &amp;tabulky umístění</translation>
+    </message>
+    <message>
+        <source>Plot &amp;Wizard</source>
+        <translation type="obsolete">Průvodce &amp;nákresem</translation>
+    </message>
+    <message>
+        <source>Ctrl+Alt+W</source>
+        <translation type="obsolete">Ctrl+Alt+W</translation>
+    </message>
+    <message>
+        <source>&amp;Preferences...</source>
+        <translation type="obsolete">&amp;Nastavení...</translation>
+    </message>
+    <message>
+        <source>Add/Remove &amp;Curve...</source>
+        <translation type="obsolete">Přidat/Odstranit &amp;křivku...</translation>
+    </message>
+    <message>
+        <source>ALT+C</source>
+        <translation type="obsolete">ALT+C</translation>
+    </message>
+    <message>
+        <source>Add &amp;Error Bars...</source>
+        <translation type="obsolete">Přidat &amp;pruhy s chybami...</translation>
+    </message>
+    <message>
+        <source>Ctrl+B</source>
+        <translation type="obsolete">Ctrl+B</translation>
+    </message>
+    <message>
+        <source>Add &amp;Function...</source>
+        <translation type="obsolete">Přidat &amp;funkci...</translation>
+    </message>
+    <message>
+        <source>Ctrl+Alt+F</source>
+        <translation type="obsolete">Ctrl+Alt+F</translation>
+    </message>
+    <message>
+        <source>&amp;Rescale to Show All</source>
+        <translation type="obsolete">&amp;Změnit měřítko na Ukázat vše</translation>
+    </message>
+    <message>
+        <source>Ctrl+Shift+R</source>
+        <translation type="obsolete">Ctrl+Shift+R</translation>
+    </message>
+    <message>
+        <source>Zoom &amp;In/Out and Drag Canvas</source>
+        <translation type="obsolete">&amp;Přiblížit/Oddálit a táhnout plátnem</translation>
+    </message>
+    <message>
+        <source>New &amp;Legend</source>
+        <translation type="obsolete">Nová &amp;vysvětlivka</translation>
+    </message>
+    <message>
+        <source>Ctrl+L</source>
+        <translation type="obsolete">Ctrl+L</translation>
+    </message>
+    <message>
+        <source>Add Time Stamp</source>
+        <translation type="obsolete">Přidat označení času</translation>
+    </message>
+    <message>
+        <source>Ctrl+ALT+T</source>
+        <translation type="obsolete">Ctrl+ALT+T</translation>
+    </message>
+    <message>
+        <source>Add &amp;Image</source>
+        <translation type="obsolete">Přidat &amp;obrázek</translation>
+    </message>
+    <message>
+        <source>ALT+I</source>
+        <translation type="obsolete">ALT+I</translation>
+    </message>
+    <message>
+        <source>&amp;Line</source>
+        <translation type="obsolete">&amp;Čára</translation>
+    </message>
+    <message>
+        <source>&amp;Scatter</source>
+        <translation type="obsolete">&amp;Body</translation>
+    </message>
+    <message>
+        <source>Line + S&amp;ymbol</source>
+        <translation type="obsolete">Čára + &amp;Značky</translation>
+    </message>
+    <message>
+        <source>Vertical &amp;Drop Lines</source>
+        <translation type="obsolete">Svislé &amp;čáry</translation>
+    </message>
+    <message>
+        <source>&amp;Spline</source>
+        <translation type="obsolete">&amp;Spline</translation>
+    </message>
+    <message>
+        <source>&amp;Horizontal Steps</source>
+        <translation type="obsolete">&amp;Vodorovné kroky</translation>
+    </message>
+    <message>
+        <source>&amp;Vertical Steps</source>
+        <translation type="obsolete">&amp;Svislé stupně</translation>
+    </message>
+    <message>
+        <source>&amp;Columns</source>
+        <translation type="obsolete">&amp;Sloupce</translation>
+    </message>
+    <message>
+        <source>&amp;Rows</source>
+        <translation type="obsolete">&amp;Řádky</translation>
+    </message>
+    <message>
+        <source>Stack &amp;Bar</source>
+        <translation type="obsolete">&amp;Pruh zásobníku</translation>
+    </message>
+    <message>
+        <source>Stack &amp;Column</source>
+        <translation type="obsolete">&amp;Sloupec zásobníku</translation>
+    </message>
+    <message>
+        <source>&amp;Area</source>
+        <translation type="obsolete">&amp;Oblast</translation>
+    </message>
+    <message>
+        <source>&amp;Pie</source>
+        <translation type="obsolete">&amp;Koláčový nákres</translation>
+    </message>
+    <message>
+        <source>Vectors XY&amp;AM</source>
+        <translation type="obsolete">Vektory XY&amp;AM</translation>
+    </message>
+    <message>
+        <source>&amp;Vectors &amp;XYXY</source>
+        <translation type="obsolete">Vektory &amp;XYXY</translation>
+    </message>
+    <message>
+        <source>&amp;Histogram</source>
+        <translation type="obsolete">&amp;Histogram</translation>
+    </message>
+    <message>
+        <source>&amp;Stacked Histogram</source>
+        <translation type="obsolete">&amp;Vrstvený histogram</translation>
+    </message>
+    <message>
+        <source>Stem-and-&amp;Leaf Plot</source>
+        <translation type="obsolete">Stonkový a &amp;listový nákres</translation>
+    </message>
+    <message>
+        <source>&amp;Vertical 2 Layers</source>
+        <translation type="obsolete">&amp;Dvě svislé vrstvy</translation>
+    </message>
+    <message>
+        <source>&amp;Horizontal 2 Layers</source>
+        <translation type="obsolete">Dvě vodo&amp;rovné vrstvy</translation>
+    </message>
+    <message>
+        <source>&amp;4 Layers</source>
+        <translation type="obsolete">&amp;Čtyři vrstvy</translation>
+    </message>
+    <message>
+        <source>&amp;Stacked Layers</source>
+        <translation type="obsolete">&amp;Vrstvené vrstvy</translation>
+    </message>
+    <message>
+        <source>D&amp;ouble-Y</source>
+        <translation type="obsolete">Zdvo&amp;jit y</translation>
+    </message>
+    <message>
+        <source>&amp;Zoom</source>
+        <translation type="obsolete">&amp;Přiblížit</translation>
+    </message>
+    <message>
+        <source>&amp;Waterfall Plot</source>
+        <translation type="obsolete">&amp;Vodopádový nákres</translation>
+    </message>
+    <message>
+        <source>E&amp;xtract to Graphs</source>
+        <translation type="obsolete">V&amp;ytáhnout do obrazců</translation>
+    </message>
+    <message>
+        <source>Extract to &amp;Layers</source>
+        <translation type="obsolete">Vytáhnout do &amp;vrstev</translation>
+    </message>
+    <message>
+        <source>Add Inset Layer</source>
+        <translation type="obsolete">Přidat vloženou vrstvu</translation>
+    </message>
+    <message>
+        <source>&amp;Ribbon</source>
+        <translation type="obsolete">&amp;Stuha</translation>
+    </message>
+    <message>
+        <source>&amp;Bars</source>
+        <translation type="obsolete">&amp;Pruhy</translation>
+    </message>
+    <message>
+        <source>&amp;Trajectory</source>
+        <translation type="obsolete">&amp;Dráha</translation>
+    </message>
+    <message>
+        <source>Statistics on &amp;Columns</source>
+        <translation type="obsolete">Statistické údaje ke &amp;sloupcům</translation>
+    </message>
+    <message>
+        <source>Statistics on &amp;Rows</source>
+        <translation type="obsolete">Statistické údaje k &amp;řádkům</translation>
+    </message>
+    <message>
+        <source>&amp;Integrate</source>
+        <translation type="obsolete">&amp;Začlenit</translation>
+    </message>
+    <message>
+        <source>Integr&amp;ate Function...</source>
+        <translation type="obsolete">Začle&amp;nit funkci...</translation>
+    </message>
+    <message>
+        <source>Inte&amp;rpolate ...</source>
+        <translation type="obsolete">&amp;Interpolovat...</translation>
+    </message>
+    <message>
+        <source>&amp;Low Pass...</source>
+        <translation type="obsolete">&amp;Nízké posunutí...</translation>
+    </message>
+    <message>
+        <source>&amp;High Pass...</source>
+        <translation type="obsolete">&amp;Vysoké posunutí...</translation>
+    </message>
+    <message>
+        <source>&amp;Band Pass...</source>
+        <translation type="obsolete">&amp;Pásmové posunutí...</translation>
+    </message>
+    <message>
+        <source>&amp;Band Block...</source>
+        <translation type="obsolete">&amp;Pásmovou závoru...</translation>
+    </message>
+    <message>
+        <source>&amp;FFT...</source>
+        <translation type="obsolete">&amp;FFT...</translation>
+    </message>
+    <message>
+        <source>&amp;Savitzky-Golay...</source>
+        <translation type="obsolete">&amp;Savitzky-Golay...</translation>
+    </message>
+    <message>
+        <source>&amp;FFT Filter...</source>
+        <translation type="obsolete">&amp;FFT filtr...</translation>
+    </message>
+    <message>
+        <source>Moving Window &amp;Average...</source>
+        <translation type="obsolete">Klouzající &amp;okenní průměr...</translation>
+    </message>
+    <message>
+        <source>&amp;Differentiate</source>
+        <translation type="obsolete">&amp;Diferencovat</translation>
+    </message>
+    <message>
+        <source>Fit Slop&amp;e</source>
+        <translation type="obsolete">Umístit &amp;sklon</translation>
+    </message>
+    <message>
+        <source>Fit &amp;Linear</source>
+        <translation type="obsolete">&amp;Přímočaré umístění</translation>
+    </message>
+    <message>
+        <source>Fit &amp;Polynomial ...</source>
+        <translation type="obsolete">&amp;Mnohočlenné umístění...</translation>
+    </message>
+    <message>
+        <source>&amp;First Order ...</source>
+        <translation type="obsolete">&amp;První řád...</translation>
+    </message>
+    <message>
+        <source>&amp;Second Order ...</source>
+        <translation type="obsolete">&amp;Druhý řád...</translation>
+    </message>
+    <message>
+        <source>&amp;Third Order ...</source>
+        <translation type="obsolete">&amp;Třetí řád...</translation>
+    </message>
+    <message>
+        <source>Fit Exponential Gro&amp;wth ...</source>
+        <translation type="obsolete">Umístit exponenciální &amp;růst...</translation>
+    </message>
+    <message>
+        <source>Fit &amp;Boltzmann (Sigmoidal)</source>
+        <translation type="obsolete">&amp;Boltzmannovo umístění (esovité)</translation>
+    </message>
+    <message>
+        <source>Fit &amp;Gaussian</source>
+        <translation type="obsolete">&amp;Gaussovo umístění</translation>
+    </message>
+    <message>
+        <source>Fit Lorent&amp;zian</source>
+        <translation type="obsolete">&amp;Lorentzovo umístění</translation>
+    </message>
+    <message>
+        <source>Fit &amp;Wizard...</source>
+        <translation type="obsolete">&amp;Průvodce přízpůsobením křivek...</translation>
+    </message>
+    <message>
+        <source>Ctrl+Y</source>
+        <translation type="obsolete">Ctrl+Y</translation>
+    </message>
+    <message>
+        <source>&amp;Plot ...</source>
+        <translation type="obsolete">&amp;Nákres...</translation>
+    </message>
+    <message>
+        <source>&amp;Scales...</source>
+        <translation type="obsolete">&amp;Stupnice...</translation>
+    </message>
+    <message>
+        <source>&amp;Axes...</source>
+        <translation type="obsolete">&amp;Osy...</translation>
+    </message>
+    <message>
+        <source>&amp;Grid ...</source>
+        <translation type="obsolete">&amp;Mřížka...</translation>
+    </message>
+    <message>
+        <source>&amp;Title ...</source>
+        <translation type="obsolete">&amp;Název...</translation>
+    </message>
+    <message>
+        <source>Column &amp;Options ...</source>
+        <translation type="obsolete">Volby pro &amp;sloupce...</translation>
+    </message>
+    <message>
+        <source>Ctrl+Alt+O</source>
+        <translation type="obsolete">Ctrl+Alt+O</translation>
+    </message>
+    <message>
+        <source>Set Column &amp;Values ...</source>
+        <translation type="obsolete">Nastavit hodnoty pro &amp;sloupce...</translation>
+    </message>
+    <message>
+        <source>Alt+Q</source>
+        <translation type="obsolete">Alt+Q</translation>
+    </message>
+    <message>
+        <source>Recalculate</source>
+        <translation type="obsolete">Znovu spočítat</translation>
+    </message>
+    <message>
+        <source>Ctrl+Return</source>
+        <translation type="obsolete">Ctrl+Return</translation>
+    </message>
+    <message>
+        <source>&amp;Hide Selected</source>
+        <translation type="obsolete">&amp;Skrýt vybrané</translation>
+    </message>
+    <message>
+        <source>Sho&amp;w All Columns</source>
+        <translation type="obsolete">Uká&amp;zat všechny sloupce</translation>
+    </message>
+    <message>
+        <source>&amp;Swap columns</source>
+        <translation type="obsolete">&amp;Vyměnit sloupce</translation>
+    </message>
+    <message>
+        <source>Move &amp;Right</source>
+        <translation type="obsolete">Přesunout &amp;doprava</translation>
+    </message>
+    <message>
+        <source>Move &amp;Left</source>
+        <translation type="obsolete">Přesunout &amp;doleva</translation>
+    </message>
+    <message>
+        <source>Move to F&amp;irst</source>
+        <translation type="obsolete">Přesunout k prv&amp;nímu</translation>
+    </message>
+    <message>
+        <source>Move to Las&amp;t</source>
+        <translation type="obsolete">Přesunout k pos&amp;lednímu</translation>
+    </message>
+    <message>
+        <source>Ad&amp;just Column Width</source>
+        <translation type="obsolete">Upravit &amp;šířku sloupce</translation>
+    </message>
+    <message>
+        <source>&amp;Columns...</source>
+        <translation type="obsolete">&amp;Sloupce...</translation>
+    </message>
+    <message>
+        <source>&amp;Rows...</source>
+        <translation type="obsolete">&amp;Řádky...</translation>
+    </message>
+    <message>
+        <source>&amp;Delete Rows Interval...</source>
+        <translation type="obsolete">&amp;Smazat řádky od do...</translation>
+    </message>
+    <message>
+        <source>&amp;Upward</source>
+        <translation type="obsolete">&amp;Nahoru</translation>
+    </message>
+    <message>
+        <source>&amp;Downward</source>
+        <translation type="obsolete">&amp;Dolů</translation>
+    </message>
+    <message>
+        <source>&amp;About QtiPlot</source>
+        <translation type="obsolete">&amp;O programu QtiPlot</translation>
+    </message>
+    <message>
+        <source>F1</source>
+        <translation type="obsolete">F1</translation>
+    </message>
+    <message>
+        <source>&amp;Help</source>
+        <translation type="obsolete">&amp;Nápověda</translation>
+    </message>
+    <message>
+        <source>Ctrl+H</source>
+        <translation type="obsolete">Ctrl+H</translation>
+    </message>
+    <message>
+        <source>&amp;Choose Help Folder...</source>
+        <translation type="obsolete">&amp;Vybrat složku s nápovědou...</translation>
+    </message>
+    <message>
+        <source>Ctrl+W</source>
+        <translation type="obsolete">Ctrl+W</translation>
+    </message>
+    <message>
+        <source>Add Column</source>
+        <translation type="obsolete">Přidat sloupec</translation>
+    </message>
+    <message>
+        <source>&amp;Go to Row...</source>
+        <translation type="obsolete">&amp;Jít na řádek...</translation>
+    </message>
+    <message>
+        <source>Go to Colum&amp;n...</source>
+        <translation type="obsolete">Jít na slou&amp;pec...</translation>
+    </message>
+    <message>
+        <source>Ctrl+Alt+C</source>
+        <translation type="obsolete">Ctrl+Alt+C</translation>
+    </message>
+    <message>
+        <source>Clear</source>
+        <translation type="obsolete">Vyprázdnit</translation>
+    </message>
+    <message>
+        <source>&amp;Remove Layer</source>
+        <translation type="obsolete">&amp;Odstranit vrstvu</translation>
+    </message>
+    <message>
+        <source>Alt+R</source>
+        <translation type="obsolete">Alt+R</translation>
+    </message>
+    <message>
+        <source>Window &amp;Geometry...</source>
+        <translation type="obsolete">Uspořádání &amp;oken...</translation>
+    </message>
+    <message>
+        <source>&amp;Hide Window</source>
+        <translation type="obsolete">&amp;Skrýt okno</translation>
+    </message>
+    <message>
+        <source>Ctrl+Alt+H</source>
+        <translation type="obsolete">Ctrl+Alt+H</translation>
+    </message>
+    <message>
+        <source>&amp;View Pixel Line Profile</source>
+        <translation type="obsolete">&amp;Zobrazit profil čár</translation>
+    </message>
+    <message>
+        <source>&amp;Intensity Table</source>
+        <translation type="obsolete">&amp;Tabulka síly</translation>
+    </message>
+    <message>
+        <source>&amp;Properties</source>
+        <translation type="obsolete">&amp;Vlastnosti</translation>
+    </message>
+    <message>
+        <source>&amp;Activate Window</source>
+        <translation type="obsolete">&amp;Aktivovat okno</translation>
+    </message>
+    <message>
+        <source>Mi&amp;nimize Window</source>
+        <translation type="obsolete">&amp;Zmenšit okno</translation>
+    </message>
+    <message>
+        <source>Ma&amp;ximize Window</source>
+        <translation type="obsolete">Zvět&amp;šit okno</translation>
+    </message>
+    <message>
+        <source>Re&amp;size Window...</source>
+        <translation type="obsolete">Změnit &amp;velikost okna...</translation>
+    </message>
+    <message>
+        <source>&amp;Surface...</source>
+        <translation type="obsolete">&amp;Povrch...</translation>
+    </message>
+    <message>
+        <source>&amp;Data Set...</source>
+        <translation type="obsolete">&amp;Soubor s daty...</translation>
+    </message>
+    <message>
+        <source>Set &amp;Properties...</source>
+        <translation type="obsolete">Nastavit &amp;vlastnosti...</translation>
+    </message>
+    <message>
+        <source>Set &amp;Dimensions...</source>
+        <translation type="obsolete">Nastavit &amp;rozměry...</translation>
+    </message>
+    <message>
+        <source>Ctrl+D</source>
+        <translation type="obsolete">Ctrl+D</translation>
+    </message>
+    <message>
+        <source>Set &amp;Values...</source>
+        <translation type="obsolete">Nastavit &amp;hodnoty...</translation>
+    </message>
+    <message>
+        <source>&amp;Image Plot</source>
+        <translation type="obsolete">&amp;Znázornit nákres</translation>
+    </message>
+    <message>
+        <source>&amp;Transpose</source>
+        <translation type="obsolete">&amp;Převést</translation>
+    </message>
+    <message>
+        <source>Flip &amp;V</source>
+        <translation type="obsolete">Obrátit &amp;svisle</translation>
+    </message>
+    <message>
+        <source>Ctrl+Shift+V</source>
+        <translation type="obsolete">Ctrl+Shift+V</translation>
+    </message>
+    <message>
+        <source>Flip &amp;H</source>
+        <translation type="obsolete">Obrátit &amp;vodorovně</translation>
+    </message>
+    <message>
+        <source>Ctrl+Shift+H</source>
+        <translation type="obsolete">Ctrl+Shift+H</translation>
+    </message>
+    <message>
+        <source>R&amp;otate 90</source>
+        <translation type="obsolete">O&amp;točit o 90°</translation>
+    </message>
+    <message>
+        <source>Rotate &amp;-90</source>
+        <translation type="obsolete">Otočit &amp;o 90°</translation>
+    </message>
+    <message>
+        <source>Ctrl+Alt+R</source>
+        <translation type="obsolete">Ctrl+Alt+R</translation>
+    </message>
+    <message>
+        <source>&amp;Invert</source>
+        <translation type="obsolete">&amp;Převrátit</translation>
+    </message>
+    <message>
+        <source>&amp;Determinant</source>
+        <translation type="obsolete">&amp;Determinant</translation>
+    </message>
+    <message>
+        <source>&amp;Image mode</source>
+        <translation type="obsolete">&amp;Obrazový režim</translation>
+    </message>
+    <message>
+        <source>Ctrl+Shift+I</source>
+        <translation type="obsolete">Ctrl+Shift+I</translation>
+    </message>
+    <message>
+        <source>&amp;Data mode</source>
+        <translation type="obsolete">&amp;Datový režim</translation>
+    </message>
+    <message>
+        <source>Ctrl+Shift+D</source>
+        <translation type="obsolete">Ctrl+Shift+D</translation>
+    </message>
+    <message>
+        <source>Show &amp;X/Y</source>
+        <translation type="obsolete">Ukázat &amp;X/Y</translation>
+    </message>
+    <message>
+        <source>Ctrl+Shift+X</source>
+        <translation type="obsolete">Ctrl+Shift+X</translation>
+    </message>
+    <message>
+        <source>Show &amp;Column/Row</source>
+        <translation type="obsolete">Ukázat &amp;Sloupec/Řádek</translation>
+    </message>
+    <message>
+        <source>Ctrl+Shift+C</source>
+        <translation type="obsolete">Ctrl+Shift+C</translation>
+    </message>
+    <message>
+        <source>&amp;Default</source>
+        <translation type="obsolete">&amp;Výchozí</translation>
+    </message>
+    <message>
+        <source>&amp;Rainbow</source>
+        <translation type="obsolete">&amp;Duha</translation>
+    </message>
+    <message>
+        <source>&amp;Custom</source>
+        <translation type="obsolete">&amp;Vlastní</translation>
+    </message>
+    <message>
+        <source>&amp;Export Image ...</source>
+        <translation type="obsolete">&amp;Vyvést obrázek...</translation>
+    </message>
+    <message>
+        <source>&amp;Direct</source>
+        <translation type="obsolete">&amp;Přímo</translation>
+    </message>
+    <message>
+        <source>&amp;XYZ Columns</source>
+        <translation type="obsolete">Sloupce &amp;XYZ</translation>
+    </message>
+    <message>
+        <source>&amp;YXZ Columns</source>
+        <translation type="obsolete">Sloupce &amp;YXZ</translation>
+    </message>
+    <message>
+        <source>&amp;Forward FFT</source>
+        <translation type="obsolete">&amp;FFT dopředu</translation>
+    </message>
+    <message>
+        <source>&amp;Inverse FFT</source>
+        <translation type="obsolete">&amp;Převrácená hodnota FFT</translation>
+    </message>
+    <message>
+        <source>2D &amp;Binning</source>
+        <translation type="obsolete">Dvojrozměrné &amp;uložení do bedny</translation>
+    </message>
+    <message>
+        <source>&amp;Regular XYZ</source>
+        <translation type="obsolete">&amp;Pravidelný XYZ</translation>
+    </message>
+    <message>
+        <source>3D &amp;Wire Frame</source>
+        <translation type="obsolete">Trojrozměrná &amp;drátěná mřížka</translation>
+    </message>
+    <message>
+        <source>3D &amp;Hidden Line</source>
+        <translation type="obsolete">Trojrozměrné &amp;skryté čáry</translation>
+    </message>
+    <message>
+        <source>3D &amp;Polygons</source>
+        <translation type="obsolete">Trojrozměrné &amp;mnohoúhelníky</translation>
+    </message>
+    <message>
+        <source>3D Wire &amp;Surface</source>
+        <translation type="obsolete">Trojrozměrný &amp;povrch drátěné mřížky</translation>
+    </message>
+    <message>
+        <source>Contour - &amp;Color Fill</source>
+        <translation type="obsolete">Obrys - &amp;Barevná výplň</translation>
+    </message>
+    <message>
+        <source>Contour &amp;Lines</source>
+        <translation type="obsolete">Obrysové &amp;čáry</translation>
+    </message>
+    <message>
+        <source>&amp;Gray Scale Map</source>
+        <translation type="obsolete">&amp;Zobrazení povrchu v odstínech šedi</translation>
+    </message>
+    <message>
+        <source>Sort Ta&amp;ble</source>
+        <translation type="obsolete">Seřadit tabul&amp;ku</translation>
+    </message>
+    <message>
+        <source>Sort Columns</source>
+        <translation type="obsolete">Seřadit sloupce</translation>
+    </message>
+    <message>
+        <source>&amp;Table</source>
+        <translation type="obsolete">&amp;Tabulka</translation>
+    </message>
+    <message>
+        <source>Co&amp;rrelate</source>
+        <translation type="obsolete">Dát do &amp;vzájemného vztahu</translation>
+    </message>
+    <message>
+        <source>&amp;Autocorrelate</source>
+        <translation type="obsolete">&amp;Automaticky dát do vzájemného vztahu</translation>
+    </message>
+    <message>
+        <source>&amp;Convolute</source>
+        <translation type="obsolete">&amp;Složit</translation>
+    </message>
+    <message>
+        <source>&amp;Deconvolute</source>
+        <translation type="obsolete">&amp;Rozložit</translation>
+    </message>
+    <message>
+        <source>&amp;Horizontal</source>
+        <translation type="obsolete">&amp;Vodorovně</translation>
+    </message>
+    <message>
+        <source>&amp;Vertical</source>
+        <translation type="obsolete">&amp;Svisle</translation>
+    </message>
+    <message>
+        <source>Ro&amp;w Numbers</source>
+        <translation type="obsolete">Čís&amp;la řádků</translation>
+    </message>
+    <message>
+        <source>&amp;Random Values</source>
+        <translation type="obsolete">&amp;Náhodné hodnoty</translation>
+    </message>
+    <message>
+        <source>&amp;Frequency Count ...</source>
+        <translation type="obsolete">&amp;Počítání kmitočtu...</translation>
+    </message>
+    <message>
+        <source>&amp;Read Only</source>
+        <translation type="obsolete">&amp;Pouze pro čtení</translation>
+    </message>
+    <message>
+        <source>&amp;Disregard</source>
+        <translation type="obsolete">&amp;Nebrat v úvahu</translation>
+    </message>
+    <message>
+        <source>&amp;Box Plot</source>
+        <translation type="obsolete">&amp;Krabicový nákres</translation>
+    </message>
+    <message>
+        <source>&amp;Gaussian...</source>
+        <translation type="obsolete">&amp;Gaussův...</translation>
+    </message>
+    <message>
+        <source>&amp;Lorentzian...</source>
+        <translation type="obsolete">&amp;Lorentzův...</translation>
+    </message>
+    <message>
+        <source>Search for &amp;Updates</source>
+        <translation type="obsolete">Hledat &amp;aktualizace</translation>
+    </message>
+    <message>
+        <source>&amp;QtiPlot Homepage</source>
+        <translation type="obsolete">&amp;Domovská stránky QtiPlotu</translation>
+    </message>
+    <message>
+        <source>QtiPlot &amp;Forums</source>
+        <translation type="obsolete">Fórum &amp;QtiPlotu</translation>
+    </message>
+    <message>
+        <source>Report a &amp;Bug</source>
+        <translation type="obsolete">Nahlásit &amp;chybu v programu</translation>
+    </message>
+    <message>
+        <source>Download &amp;Manual</source>
+        <translation type="obsolete">Stáhnout &amp;příručku</translation>
+    </message>
+    <message>
+        <source>&amp;Translations</source>
+        <translation type="obsolete">&amp;Překlady</translation>
+    </message>
+    <message>
+        <source>Make a &amp;Donation</source>
+        <translation type="obsolete">Poskytněte &amp;dar</translation>
+    </message>
+    <message>
+        <source>Technical &amp;Support</source>
+        <translation type="obsolete">Technická &amp;podpora</translation>
+    </message>
+    <message>
+        <source>Scripting &amp;language</source>
+        <translation type="obsolete">Skriptovací &amp;jazyk</translation>
+    </message>
+    <message>
+        <source>&amp;Restart scripting</source>
+        <translation type="obsolete">&amp;Vynulovat skriptování</translation>
+    </message>
+    <message>
+        <source>Ctrl+J</source>
+        <translation type="obsolete">Ctrl+J</translation>
+    </message>
+    <message>
+        <source>Execute &amp;All</source>
+        <translation type="obsolete">Vykonat &amp;vše</translation>
+    </message>
+    <message>
+        <source>Ctrl+Shift+J</source>
+        <translation type="obsolete">Ctrl+Shift+J</translation>
+    </message>
+    <message>
+        <source>&amp;Evaluate Expression</source>
+        <translation type="obsolete">&amp;Vyhodnotit výraz</translation>
+    </message>
+    <message>
+        <source>Show Line &amp;Numbers</source>
+        <translation type="obsolete">Ukázat čísla &amp;řádků</translation>
+    </message>
+    <message>
+        <source>Find &amp;Next</source>
+        <translation type="obsolete">Najít &amp;další</translation>
+    </message>
+    <message>
+        <source>F3</source>
+        <translation type="obsolete">F3</translation>
+    </message>
+    <message>
+        <source>Find &amp;Previous</source>
+        <translation type="obsolete">Najít &amp;předchozí</translation>
+    </message>
+    <message>
+        <source>F4</source>
+        <translation type="obsolete">F4</translation>
+    </message>
+    <message>
+        <source>&amp;Replace...</source>
+        <translation type="obsolete">&amp;Nahradit...</translation>
+    </message>
+    <message>
+        <source>Increase Indent</source>
+        <translation type="obsolete">Zvětšit odsazení</translation>
+    </message>
+    <message>
+        <source>Decrease Indent</source>
+        <translation type="obsolete">Zmenšit odsazení</translation>
+    </message>
+    <message>
+        <source>Rena&amp;me Tab...</source>
+        <translation type="obsolete">&amp;Přejmenovat kartu...</translation>
+    </message>
+    <message>
+        <source>A&amp;dd Tab</source>
+        <translation type="obsolete">Při&amp;dat kartu</translation>
+    </message>
+    <message>
+        <source>C&amp;lose Tab</source>
+        <translation type="obsolete">&amp;Zavřít kartu</translation>
+    </message>
+    <message>
+        <source>&amp;Script Window</source>
+        <translation type="obsolete">&amp;Skriptovací okno</translation>
+    </message>
+    <message>
+        <source>&amp;Plot details...</source>
+        <translation type="obsolete">&amp;Podrobnosti nákresu...</translation>
+    </message>
+    <message>
+        <source>&amp;Worksheet</source>
+        <translation type="obsolete">&amp;Pracovní list</translation>
+    </message>
+    <message>
+        <source>&amp;Reset to Full Range</source>
+        <translation type="obsolete">&amp;Znovu nastavit na plný rozsah</translation>
+    </message>
+    <message>
+        <source>&amp;Hide</source>
+        <translation type="obsolete">&amp;Skrýt</translation>
+    </message>
+    <message>
+        <source>Hide &amp;Other Curves</source>
+        <translation type="obsolete">Skrýt &amp;jiné křivky</translation>
+    </message>
+    <message>
+        <source>&amp;Show All Curves</source>
+        <translation type="obsolete">&amp;Ukázat všechny křivky</translation>
+    </message>
+    <message>
+        <source>&amp;Toolbars...</source>
+        <translation type="obsolete">&amp;Nástrojové lišty...</translation>
+    </message>
+    <message>
+        <source>Ctrl+Shift+T</source>
+        <translation type="obsolete">Ctrl+Shift+T</translation>
+    </message>
+    <message>
+        <source>Bold</source>
+        <translation type="obsolete">Tučné písmo</translation>
+    </message>
+    <message>
+        <source>Italic</source>
+        <translation type="obsolete">Kurzíva</translation>
+    </message>
+    <message>
+        <source>Superscript</source>
+        <translation type="obsolete">Horní index</translation>
+    </message>
+    <message>
+        <source>Subscript</source>
+        <translation type="obsolete">Dolní index</translation>
+    </message>
+    <message>
+        <source>Underline (Ctrl+U)</source>
+        <translation type="obsolete">Podtržení (Ctrl+U)</translation>
+    </message>
+    <message>
+        <source>Ctrl+U</source>
+        <translation type="obsolete">Ctrl+U</translation>
+    </message>
+    <message>
+        <source>Greek</source>
+        <translation type="obsolete">Řecké symboly</translation>
+    </message>
+    <message>
+        <source>Mathematical Symbols</source>
+        <translation type="obsolete">Matematické symboly</translation>
+    </message>
+    <message>
+        <source>Increase Precision</source>
+        <translation type="obsolete">Zvětšit přesnost</translation>
+    </message>
+    <message>
+        <source>Decrease Precision</source>
+        <translation type="obsolete">Zmenšit přesnost</translation>
+    </message>
+    <message>
+        <source>Open a new project</source>
+        <translation type="obsolete">Otevřít nový projekt</translation>
+    </message>
+    <message>
+        <source>Append a project to the current folder</source>
+        <translation type="obsolete">Projekt připojit k nynější složce</translation>
+    </message>
+    <message>
+        <source>Ctrl+Alt+A</source>
+        <translation type="obsolete">Ctrl+Alt+A</translation>
+    </message>
+    <message>
+        <source>New Fol&amp;der</source>
+        <translation type="obsolete">Nová slož&amp;ka</translation>
+    </message>
+    <message>
+        <source>Create a new folder</source>
+        <translation type="obsolete">Vytvořit novou složku</translation>
+    </message>
+    <message>
+        <source>Create an empty 2D plot</source>
+        <translation type="obsolete">Vytvořit prázdný dvojrozměrný nákres</translation>
+    </message>
+    <message>
+        <source>Create an empty note window</source>
+        <translation type="obsolete">Vytvořit prázdné okno na poznámky</translation>
+    </message>
+    <message>
+        <source>New table</source>
+        <translation type="obsolete">Nová tabulka</translation>
+    </message>
+    <message>
+        <source>New matrix</source>
+        <translation type="obsolete">Nová matice</translation>
+    </message>
+    <message>
+        <source>Create a new 2D function plot</source>
+        <translation type="obsolete">Vytvořit nový dvojrozměrný nákres funkce</translation>
+    </message>
+    <message>
+        <source>Create a new 3D surface plot</source>
+        <translation type="obsolete">Vytvořit nový trojrozměrný nákres povrchu</translation>
+    </message>
+    <message>
+        <source>Open project</source>
+        <translation type="obsolete">Otevřít projekt</translation>
+    </message>
+    <message>
+        <source>Save project</source>
+        <translation type="obsolete">Uložit projekt</translation>
+    </message>
+    <message>
+        <source>Open Te&amp;mplate...</source>
+        <translation type="obsolete">Otevřít před&amp;lohu...</translation>
+    </message>
+    <message>
+        <source>Open template</source>
+        <translation type="obsolete">Otevřít šablonu</translation>
+    </message>
+    <message>
+        <source>Save window as template</source>
+        <translation type="obsolete">Uložit okno jako předlohu</translation>
+    </message>
+    <message>
+        <source>Import data file(s)</source>
+        <translation type="obsolete">Zavést soubor(y) s daty</translation>
+    </message>
+    <message>
+        <source>Ctrl+K</source>
+        <translation type="obsolete">Ctrl+K</translation>
+    </message>
+    <message>
+        <source>Undo changes</source>
+        <translation type="obsolete">Změny vrátit zpět</translation>
+    </message>
+    <message>
+        <source>Redo changes</source>
+        <translation type="obsolete">Změny provést znovu</translation>
+    </message>
+    <message>
+        <source>Duplicate window</source>
+        <translation type="obsolete">Zdvojit okno</translation>
+    </message>
+    <message>
+        <source>Cut selection</source>
+        <translation type="obsolete">Vyjmout výběr</translation>
+    </message>
+    <message>
+        <source>Copy selection</source>
+        <translation type="obsolete">Kopírovat výběr</translation>
+    </message>
+    <message>
+        <source>Paste selection</source>
+        <translation type="obsolete">Vložit výběr</translation>
+    </message>
+    <message>
+        <source>Delete selection</source>
+        <translation type="obsolete">Smazat výběr</translation>
+    </message>
+    <message>
+        <source>Project &amp;Explorer</source>
+        <translation type="obsolete">&amp;Průzkumník projektu</translation>
+    </message>
+    <message>
+        <source>Show project explorer</source>
+        <translation type="obsolete">Ukázat průzkumníka projektu</translation>
+    </message>
+    <message>
+        <source>Results &amp;Log</source>
+        <translation type="obsolete">Zápis &amp;výsledků</translation>
+    </message>
+    <message>
+        <source>Show analysis results</source>
+        <translation type="obsolete">Ukázat výsledky výpočtů</translation>
+    </message>
+    <message>
+        <source>&amp;Undo/Redo Stack</source>
+        <translation type="obsolete">&amp;Zpět/Znovu zásobník</translation>
+    </message>
+    <message>
+        <source>Show available undo/redo commands</source>
+        <translation type="obsolete">Ukázat dostupné příkazy Zpět/Znovu</translation>
+    </message>
+    <message>
+        <source>&amp;Console</source>
+        <translation type="obsolete">&amp;Konzole - ovládací panel</translation>
+    </message>
+    <message>
+        <source>Show Scripting console</source>
+        <translation type="obsolete">Ukázat skriptovací konzoli</translation>
+    </message>
+    <message>
+        <source>Script Window</source>
+        <translation type="obsolete">Skriptovací okno</translation>
+    </message>
+    <message>
+        <source>Add Layer</source>
+        <translation type="obsolete">Přidat vrstvu</translation>
+    </message>
+    <message>
+        <source>Arrange Layers</source>
+        <translation type="obsolete">Uspořádat vrstvy</translation>
+    </message>
+    <message>
+        <source>Export current graph</source>
+        <translation type="obsolete">Vyvést nynější nákres</translation>
+    </message>
+    <message>
+        <source>Export all graphs</source>
+        <translation type="obsolete">Vyvést všechny nákresy</translation>
+    </message>
+    <message>
+        <source>Export to PDF</source>
+        <translation type="obsolete">Vyvést do PDF</translation>
+    </message>
+    <message>
+        <source>Print window</source>
+        <translation type="obsolete">Tisk okna</translation>
+    </message>
+    <message>
+        <source>Print preview</source>
+        <translation type="obsolete">Tisk náhledu</translation>
+    </message>
+    <message>
+        <source>Add curve to graph</source>
+        <translation type="obsolete">Do nákresu přidat křivku</translation>
+    </message>
+    <message>
+        <source>Add Error Bars...</source>
+        <translation type="obsolete">Přidat pruhy s chybami...</translation>
+    </message>
+    <message>
+        <source>Add Function...</source>
+        <translation type="obsolete">Přidat funkci...</translation>
+    </message>
+    <message>
+        <source>Best fit</source>
+        <translation type="obsolete">Nejlepší umístění</translation>
+    </message>
+    <message>
+        <source>Add new legend</source>
+        <translation type="obsolete">Přidat novou vysvětlivku</translation>
+    </message>
+    <message>
+        <source>Date &amp; time </source>
+        <translation type="obsolete">Datum &amp; čas</translation>
+    </message>
+    <message>
+        <source>Add Image</source>
+        <translation type="obsolete">Přidat obrázek</translation>
+    </message>
+    <message>
+        <source>Plot as line</source>
+        <translation type="obsolete">Nakreslit jako čáru</translation>
+    </message>
+    <message>
+        <source>Plot as symbols</source>
+        <translation type="obsolete">Nakreslit jako symboly</translation>
+    </message>
+    <message>
+        <source>Plot as line + symbols</source>
+        <translation type="obsolete">Nakreslit jako čáru + symboly</translation>
+    </message>
+    <message>
+        <source>Plot with vertical bars</source>
+        <translation type="obsolete">Nakreslit se svislými pruhy</translation>
+    </message>
+    <message>
+        <source>Plot with horizontal bars</source>
+        <translation type="obsolete">Nakreslit s vodorovnými pruhy</translation>
+    </message>
+    <message>
+        <source>Plot stack bar</source>
+        <translation type="obsolete">Nakreslit pruh se zásobníkem</translation>
+    </message>
+    <message>
+        <source>Plot stack column</source>
+        <translation type="obsolete">Nakreslit sloupec se zásobníkem</translation>
+    </message>
+    <message>
+        <source>Plot area</source>
+        <translation type="obsolete">Nakreslit oblast</translation>
+    </message>
+    <message>
+        <source>Plot pie</source>
+        <translation type="obsolete">Nakreslit koláčový nákres</translation>
+    </message>
+    <message>
+        <source>&amp;Vectors XYXY</source>
+        <translation type="obsolete">&amp;Vektory XYXY</translation>
+    </message>
+    <message>
+        <source>Vectors XYXY</source>
+        <translation type="obsolete">Vektory XYXY</translation>
+    </message>
+    <message>
+        <source>Vectors XYAM</source>
+        <translation type="obsolete">Vektory XYAM</translation>
+    </message>
+    <message>
+        <source>Stem-and-Leaf Plot</source>
+        <translation type="obsolete">Stonkový a listový nákres</translation>
+    </message>
+    <message>
+        <source>Double Y Axis</source>
+        <translation type="obsolete">Zdvojit osu Y</translation>
+    </message>
+    <message>
+        <source>Zoom</source>
+        <translation type="obsolete">Přiblížit</translation>
+    </message>
+    <message>
+        <source>Extract to Graphs</source>
+        <translation type="obsolete">Vytáhnout do obrazců</translation>
+    </message>
+    <message>
+        <source>Extract to Layer&amp;s</source>
+        <translation type="obsolete">Vytáhnout do vrstev</translation>
+    </message>
+    <message>
+        <source>Extract to Layers</source>
+        <translation type="obsolete">Vytáhnout do vrstev</translation>
+    </message>
+    <message>
+        <source>Plot 3D ribbon</source>
+        <translation type="obsolete">Nakreslit trojrozměrnou stuhu</translation>
+    </message>
+    <message>
+        <source>Plot 3D bars</source>
+        <translation type="obsolete">Nakreslit trojrozměrné pruhy</translation>
+    </message>
+    <message>
+        <source>Plot 3D scatter</source>
+        <translation type="obsolete">Nakreslit trojrozměrné body</translation>
+    </message>
+    <message>
+        <source>Plot 3D trajectory</source>
+        <translation type="obsolete">Nakreslit trojrozměrnou dráhu</translation>
+    </message>
+    <message>
+        <source>Contour + &amp;Color Fill</source>
+        <translation type="obsolete">Obrys + &amp;Barevná výplň</translation>
+    </message>
+    <message>
+        <source>Contour Lines + Color Fill</source>
+        <translation type="obsolete">Obrysové čáry + Barevná výplň</translation>
+    </message>
+    <message>
+        <source>Contour Lines</source>
+        <translation type="obsolete">Obrysové čáry</translation>
+    </message>
+    <message>
+        <source>Gray Scale Map</source>
+        <translation type="obsolete">Zobrazení povrchu v odstínech šedi</translation>
+    </message>
+    <message>
+        <source>Selected columns statistics</source>
+        <translation type="obsolete">Statistické údaje pro vybrané sloupce</translation>
+    </message>
+    <message>
+        <source>Selected rows statistics</source>
+        <translation type="obsolete">Statistické údaje pro vybrané řádky</translation>
+    </message>
+    <message>
+        <source>Hide selected columns</source>
+        <translation type="obsolete">Skrýt vybrané sloupce</translation>
+    </message>
+    <message>
+        <source>Show all table columns</source>
+        <translation type="obsolete">Ukázat všechny sloupce tabulky</translation>
+    </message>
+    <message>
+        <source>Swap selected columns</source>
+        <translation type="obsolete">Vyměnit vybrané sloupce</translation>
+    </message>
+    <message>
+        <source>Move Right</source>
+        <translation type="obsolete">Přesunout vpravo</translation>
+    </message>
+    <message>
+        <source>Move Left</source>
+        <translation type="obsolete">Přesunout vlevo</translation>
+    </message>
+    <message>
+        <source>Move to First</source>
+        <translation type="obsolete">Přesunout k prvnímu</translation>
+    </message>
+    <message>
+        <source>Move to Last</source>
+        <translation type="obsolete">Přesunout k poslednímu</translation>
+    </message>
+    <message>
+        <source>Move current row upward</source>
+        <translation type="obsolete">Přesunout nynější řádek nahoru</translation>
+    </message>
+    <message>
+        <source>Move current row downward</source>
+        <translation type="obsolete">Přesunout nynější řádek dolů</translation>
+    </message>
+    <message>
+        <source>Set optimal column width</source>
+        <translation type="obsolete">Nastavit nejlepší šířku sloupců</translation>
+    </message>
+    <message>
+        <source>Alt+C</source>
+        <translation type="obsolete">ALT+C</translation>
+    </message>
+    <message>
+        <source>More Windows...</source>
+        <translation type="obsolete">Další okna...</translation>
+    </message>
+    <message>
+        <source>Set Matrix Values</source>
+        <translation type="obsolete">Nastavit hodnoty matice</translation>
+    </message>
+    <message>
+        <source>Image Plot</source>
+        <translation type="obsolete">Znázornit nákres</translation>
+    </message>
+    <message>
+        <source>Rotate 90 Clockwise</source>
+        <translation type="obsolete">Otočit o 90° po směru hodinových ručiček</translation>
+    </message>
+    <message>
+        <source>Rotate 90 Counterclockwise</source>
+        <translation type="obsolete">Otočit o 90° proti směru hodinových ručiček</translation>
+    </message>
+    <message>
+        <source>Flip Vertically</source>
+        <translation type="obsolete">Obrátit svisle</translation>
+    </message>
+    <message>
+        <source>Flip Horizontally</source>
+        <translation type="obsolete">Obrátit vodorovně</translation>
+    </message>
+    <message>
+        <source>Fill selected columns with row numbers</source>
+        <translation type="obsolete">Naplnit vybrané sloupce řadovými čísly</translation>
+    </message>
+    <message>
+        <source>Fill selected columns with random numbers</source>
+        <translation type="obsolete">Naplnit vybrané sloupce náhodnými čísly</translation>
+    </message>
+    <message>
+        <source>Set column as X</source>
+        <translation type="obsolete">Nastavit sloupec jako X</translation>
+    </message>
+    <message>
+        <source>Set column as Y</source>
+        <translation type="obsolete">Nastavit sloupec jako Y</translation>
+    </message>
+    <message>
+        <source>Set column as Z</source>
+        <translation type="obsolete">Nastavit sloupec jako Z</translation>
+    </message>
+    <message>
+        <source>Set as Y Error Bars</source>
+        <translation type="obsolete">Nastavit jako pruhy s chybami Y</translation>
+    </message>
+    <message>
+        <source>Set as Labels</source>
+        <translation type="obsolete">Nastavit jako štítky</translation>
+    </message>
+    <message>
+        <source>Disregard Columns</source>
+        <translation type="obsolete">Sloupce nebrat v úvahu</translation>
+    </message>
+    <message>
+        <source>Box and whiskers plot</source>
+        <translation type="obsolete">Bednový a vousatý nákres</translation>
+    </message>
+    <message>
+        <source>Visit QtiPlot &amp;Forums</source>
+        <translation type="obsolete">Navštívit fóra ke &amp;QtiPlotu</translation>
+    </message>
+    <message>
+        <source>Show find dialog</source>
+        <translation type="obsolete">Ukázat dialog pro hledání</translation>
+    </message>
+    <message>
+        <source>Find Next</source>
+        <translation type="obsolete">Najít další</translation>
+    </message>
+    <message>
+        <source>Find Previous</source>
+        <translation type="obsolete">Najít předchozí</translation>
+    </message>
+    <message>
+        <source>Show replace dialog</source>
+        <translation type="obsolete">Ukázat dialog pro nahrazování</translation>
+    </message>
+    <message>
+        <source>Disable &amp;tools</source>
+        <translation type="obsolete">Zakázat &amp;nástroje</translation>
+    </message>
+    <message>
+        <source>Pointer</source>
+        <translation type="obsolete">Ukazovátko</translation>
+    </message>
+    <message>
+        <source>Zoom In (Shift++) or Out (-) and Drag Canvas</source>
+        <translation type="obsolete">Přiblížit(Shift++) nebo Oddálit (-) a táhnout plátnem</translation>
+    </message>
+    <message>
+        <source>&amp;Zoom In</source>
+        <translation type="obsolete">&amp;Přiblížit</translation>
+    </message>
+    <message>
+        <source>Ctrl++</source>
+        <translation type="obsolete">Ctrl++</translation>
+    </message>
+    <message>
+        <source>Zoom In</source>
+        <translation type="obsolete">Přiblížit</translation>
+    </message>
+    <message>
+        <source>Zoom &amp;Out</source>
+        <translation type="obsolete">&amp;Oddálit</translation>
+    </message>
+    <message>
+        <source>Ctrl+-</source>
+        <translation type="obsolete">Ctrl+-</translation>
+    </message>
+    <message>
+        <source>Zoom Out</source>
+        <translation type="obsolete">Oddálit</translation>
+    </message>
+    <message>
+        <source>&amp;Data Reader</source>
+        <translation type="obsolete">&amp;Čtečka dat</translation>
+    </message>
+    <message>
+        <source>CTRL+D</source>
+        <translation type="obsolete">CTRL+D</translation>
+    </message>
+    <message>
+        <source>Data reader</source>
+        <translation type="obsolete">Čtečka dat</translation>
+    </message>
+    <message>
+        <source>&amp;Select Data Range</source>
+        <translation type="obsolete">&amp;Vybrat rozsah dat</translation>
+    </message>
+    <message>
+        <source>ALT+S</source>
+        <translation type="obsolete">ALT+S</translation>
+    </message>
+    <message>
+        <source>Select data range</source>
+        <translation type="obsolete">Vybrat rozsah dat</translation>
+    </message>
+    <message>
+        <source>S&amp;creen Reader</source>
+        <translation type="obsolete">Č&amp;tečka obrazovky</translation>
+    </message>
+    <message>
+        <source>Screen reader</source>
+        <translation type="obsolete">Čtečka obrazovky</translation>
+    </message>
+    <message>
+        <source>&amp;Draw Data Points</source>
+        <translation type="obsolete">&amp;Nakreslit datové body</translation>
+    </message>
+    <message>
+        <source>Draw Data Points</source>
+        <translation type="obsolete">Nakreslit datové body</translation>
+    </message>
+    <message>
+        <source>&amp;Move Data Points...</source>
+        <translation type="obsolete">&amp;Přesunout datové body...</translation>
+    </message>
+    <message>
+        <source>Ctrl+ALT+M</source>
+        <translation type="obsolete">Ctrl+ALT+M</translation>
+    </message>
+    <message>
+        <source>Move data points</source>
+        <translation type="obsolete">Přesunout datové body</translation>
+    </message>
+    <message>
+        <source>Dra&amp;g Curve</source>
+        <translation type="obsolete">&amp;Táhnout křivku</translation>
+    </message>
+    <message>
+        <source>Drag Curve</source>
+        <translation type="obsolete">Táhnout křivku</translation>
+    </message>
+    <message>
+        <source>Remove &amp;Bad Data Points...</source>
+        <translation type="obsolete">Odstranit &amp;špatné datové body...</translation>
+    </message>
+    <message>
+        <source>Alt+B</source>
+        <translation type="obsolete">Alt+B</translation>
+    </message>
+    <message>
+        <source>Remove data points</source>
+        <translation type="obsolete">Přesunout datové body</translation>
+    </message>
+    <message>
+        <source>Add &amp;Text</source>
+        <translation type="obsolete">Přidat &amp;text</translation>
+    </message>
+    <message>
+        <source>Add Text</source>
+        <translation type="obsolete">Přidat text</translation>
+    </message>
+    <message>
+        <source>ALT+T</source>
+        <translation type="obsolete">ALT+T</translation>
+    </message>
+    <message>
+        <source>Add E&amp;quation</source>
+        <translation type="obsolete">Přidat R&amp;ovnici</translation>
+    </message>
+    <message>
+        <source>Add Equation</source>
+        <translation type="obsolete">Přidat rovnici</translation>
+    </message>
+    <message>
+        <source>ALT+Q</source>
+        <translation type="obsolete">ALT+Q</translation>
+    </message>
+    <message>
+        <source>Add &amp;Rectangle</source>
+        <translation type="obsolete">Přidat &amp;obdélník</translation>
+    </message>
+    <message>
+        <source>Add Rectangle</source>
+        <translation type="obsolete">Přidat obdélník</translation>
+    </message>
+    <message>
+        <source>CTRL+ALT+R</source>
+        <translation type="obsolete">CTRL+ALT+R</translation>
+    </message>
+    <message>
+        <source>Add &amp;Ellipse</source>
+        <translation type="obsolete">Přidat &amp;elipsu</translation>
+    </message>
+    <message>
+        <source>Add Ellipse/Circle</source>
+        <translation type="obsolete">Přidat elipsu/kružnici</translation>
+    </message>
+    <message>
+        <source>CTRL+ALT+E</source>
+        <translation type="obsolete">CTRL+ALT+E</translation>
+    </message>
+    <message>
+        <source>Draw &amp;Arrow</source>
+        <translation type="obsolete">Nakreslit &amp;šipku</translation>
+    </message>
+    <message>
+        <source>CTRL+ALT+A</source>
+        <translation type="obsolete">CTRL+ALT+A</translation>
+    </message>
+    <message>
+        <source>Draw arrow</source>
+        <translation type="obsolete">Nakreslit šipku</translation>
+    </message>
+    <message>
+        <source>Draw &amp;Line</source>
+        <translation type="obsolete">Nakreslit &amp;čáru</translation>
+    </message>
+    <message>
+        <source>CTRL+ALT+L</source>
+        <translation type="obsolete">CTRL+ALT+L</translation>
+    </message>
+    <message>
+        <source>Draw line</source>
+        <translation type="obsolete">Nakreslit čáru</translation>
+    </message>
+    <message>
+        <source>Box</source>
+        <translation type="obsolete">Bedna</translation>
+    </message>
+    <message>
+        <source>Frame</source>
+        <translation type="obsolete">Rám</translation>
+    </message>
+    <message>
+        <source>No Axes</source>
+        <translation type="obsolete">Žádné osy</translation>
+    </message>
+    <message>
+        <source>No axes</source>
+        <translation type="obsolete">Žádné osy</translation>
+    </message>
+    <message>
+        <source>Front grid</source>
+        <translation type="obsolete">Mřížka popředí</translation>
+    </message>
+    <message>
+        <source>Back grid</source>
+        <translation type="obsolete">Mřížka pozadí</translation>
+    </message>
+    <message>
+        <source>Right grid</source>
+        <translation type="obsolete">Pravá mřížka</translation>
+    </message>
+    <message>
+        <source>Left grid</source>
+        <translation type="obsolete">Levá mřížka</translation>
+    </message>
+    <message>
+        <source>Ceiling grid</source>
+        <translation type="obsolete">Stropní mřížka</translation>
+    </message>
+    <message>
+        <source>Floor grid</source>
+        <translation type="obsolete">Povrchová mřížka</translation>
+    </message>
+    <message>
+        <source>Wireframe</source>
+        <translation type="obsolete">Drátěná mříž</translation>
+    </message>
+    <message>
+        <source>Hidden Line</source>
+        <translation type="obsolete">Skryté čáry</translation>
+    </message>
+    <message>
+        <source>Hidden line</source>
+        <translation type="obsolete">Skryté čáry</translation>
+    </message>
+    <message>
+        <source>Polygon Only</source>
+        <translation type="obsolete">Pouze mnohoúhelník</translation>
+    </message>
+    <message>
+        <source>Polygon only</source>
+        <translation type="obsolete">Pouze mnohoúhelník</translation>
+    </message>
+    <message>
+        <source>Mesh &amp; Filled Polygons</source>
+        <translation type="obsolete">Síť &amp; vyplněné mnohoúhelníky</translation>
+    </message>
+    <message>
+        <source>Mesh &amp; filled Polygons</source>
+        <translation type="obsolete">Síť &amp; vyplněné mnohoúhelníky</translation>
+    </message>
+    <message>
+        <source>Dots</source>
+        <translation type="obsolete">Tečky</translation>
+    </message>
+    <message>
+        <source>Bars</source>
+        <translation type="obsolete">Pruhy</translation>
+    </message>
+    <message>
+        <source>Cones</source>
+        <translation type="obsolete">Kužely</translation>
+    </message>
+    <message>
+        <source>Crosshairs</source>
+        <translation type="obsolete">Nitkový kříž</translation>
+    </message>
+    <message>
+        <source>Floor Data Projection</source>
+        <translation type="obsolete">Povrchové promítání dat</translation>
+    </message>
+    <message>
+        <source>Floor data projection</source>
+        <translation type="obsolete">Promítání povrchu dat</translation>
+    </message>
+    <message>
+        <source>Floor Isolines</source>
+        <translation type="obsolete">Povrchové obrysové čáry</translation>
+    </message>
+    <message>
+        <source>Floor isolines</source>
+        <translation type="obsolete">Povrchové obrysové čáry</translation>
+    </message>
+    <message>
+        <source>Empty Floor</source>
+        <translation type="obsolete">Prázdný povrch</translation>
+    </message>
+    <message>
+        <source>Empty floor</source>
+        <translation type="obsolete">Prázdný povrch</translation>
+    </message>
+    <message>
+        <source>Animation</source>
+        <translation type="obsolete">Kreslený film</translation>
+    </message>
+    <message>
+        <source>Enable perspective</source>
+        <translation type="obsolete">Povolit perspektivní zobrazení</translation>
+    </message>
+    <message>
+        <source>Reset rotation</source>
+        <translation type="obsolete">Znovu nastavit otáčení</translation>
+    </message>
+    <message>
+        <source>Fit frame to window</source>
+        <translation type="obsolete">Umístit rámeček oknu</translation>
+    </message>
+    <message>
+        <source>QtiPlot - Enter the number of peaks</source>
+        <translation type="obsolete">QtiPlot - Zadat počet vrcholů</translation>
+    </message>
+    <message>
+        <source>Peaks</source>
+        <translation type="obsolete">Vrcholy</translation>
+    </message>
+    <message>
+        <source>&lt;font size=+2, color = darkBlue&gt;&lt;b&gt;QtiPlot is open-source software and its development required hundreds of hours of work.&lt;br&gt;&lt;br&gt;				If you like it, you&apos;re using it in your work and you would like to see it 				constantly improved, please support its authors by making a donation.&lt;/b&gt;&lt;/font&gt;</source>
+        <translation type="obsolete">&lt;font size=+2, color = darkBlue&gt;&lt;b&gt;QtiPlot je otevřený program a jeho vývoj vyžaduje stovky hodin práce.&lt;br&gt;&lt;br&gt;				Jestliže se vám líbí, používáte jej při své práci a rád byste viděl 				jeho stálé vylepšování, podpořte, prosím, jeho autory darem.&lt;/b&gt;&lt;/font&gt;</translation>
+    </message>
+    <message>
+        <source>Please support QtiPlot!</source>
+        <translation type="obsolete">Podpořte, prosím, QtiPlot!</translation>
+    </message>
+    <message>
+        <source>Make a donation</source>
+        <translation type="obsolete">Poskytněte dar</translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="obsolete">Zavřít</translation>
+    </message>
+    <message>
+        <source>&lt;b&gt; %1 &lt;/b&gt;: This command line option must be used without other arguments!</source>
+        <translation type="obsolete">&lt;b&gt; %1 &lt;/b&gt;: Tato volba příkazového řádku se musí používat bez dalších nezávislých proměnných!</translation>
+    </message>
+    <message>
+        <source>Version</source>
+        <translation type="obsolete">Verze</translation>
+    </message>
+    <message>
+        <source>Usage</source>
+        <translation type="obsolete">Použití</translation>
+    </message>
+    <message>
+        <source>options</source>
+        <translation type="obsolete">Volby</translation>
+    </message>
+    <message>
+        <source>file</source>
+        <translation type="obsolete">Soubor</translation>
+    </message>
+    <message>
+        <source>name</source>
+        <translation type="obsolete">Název</translation>
+    </message>
+    <message>
+        <source>Valid options are</source>
+        <translation type="obsolete">Platnými volbami jsou</translation>
+    </message>
+    <message>
+        <source>or</source>
+        <translation type="obsolete">nebo</translation>
+    </message>
+    <message>
+        <source>show about dialog and exit</source>
+        <translation type="obsolete">Ukázat dialog &quot;O programu&quot; a ukončit</translation>
+    </message>
+    <message>
+        <source>show standalone scripting window</source>
+        <translation type="obsolete">Ukázat samostatné skriptovací okno</translation>
+    </message>
+    <message>
+        <source>start QtiPlot with the default settings</source>
+        <translation type="obsolete">Spustit QtiPlot s výchozími nastaveními</translation>
+    </message>
+    <message>
+        <source>show command line options</source>
+        <translation type="obsolete">Ukázat volby příkazového řádku</translation>
+    </message>
+    <message>
+        <source>start QtiPlot in language</source>
+        <translation type="obsolete">Spustit QtiPlot v jazyce</translation>
+    </message>
+    <message>
+        <source>show QtiPlot manual in a standalone window</source>
+        <translation type="obsolete">Ukázat příručku ke QtiPlotu v samostatném okně</translation>
+    </message>
+    <message>
+        <source>print QtiPlot version and release date</source>
+        <translation type="obsolete">Vytisknout verzi a datum vydání QtiPlotu</translation>
+    </message>
+    <message>
+        <source>execute the script file given as argument</source>
+        <translation type="obsolete">Vykonat soubor se skriptem zadaným jako nezávislou proměnnou</translation>
+    </message>
+    <message>
+        <source>execute the script file given as argument without displying the user interface. Warning: 2D plots are not correctly handled in this functioning mode!</source>
+        <translation type="obsolete">Vykonat soubor se skriptem jako nezávislou proměnnou bez zobrazení uživatelského rozhraní. Varování: Dvojrozměrné nákresy nejsou při tomto pracovním režimu zvládány správně!</translation>
+    </message>
+    <message>
+        <source>Help</source>
+        <translation type="obsolete">Nápověda</translation>
+    </message>
+    <message>
+        <source>&lt;b&gt; %1 &lt;/b&gt;: Wrong locale option or no translation available!</source>
+        <translation type="obsolete">&lt;b&gt; %1 &lt;/b&gt;: Nesprávná zkratka pro zemi, nebo není dostupný žádný překlad!</translation>
+    </message>
+    <message>
+        <source>&lt;b&gt; %1 &lt;/b&gt; unknown command line option!</source>
+        <translation type="obsolete">&lt;b&gt; %1 &lt;/b&gt; Neznámá volba příkazového řádku!</translation>
+    </message>
+    <message>
+        <source>Type %1 to see the list of the valid options.</source>
+        <translation type="obsolete">Zadejte %1 kvůli zobrazení seznamu s platnými volbami.</translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;%1&lt;/b&gt; is a directory, please specify a file name!</source>
+        <translation type="obsolete">&lt;b&gt;%1&lt;/b&gt; Je adresářem. Zadejte, prosím, název souboru!</translation>
+    </message>
+    <message>
+        <source>You are using the demonstration version of Qtiplot.				It is identical with the full version, except that you can&apos;t save your work to project files and you can&apos;t use it for more than 10 minutes per session.				&lt;br&gt;&lt;br&gt;				If you want to have ready-to-use, fully functional binaries, please subscribe for a				&lt;a href=&quot;http://soft.proindependent.com/individual_contract.html&quot;&gt;single-user binaries maintenance contract&lt;/a&gt;.				&lt;br&gt;&lt;br&gt;				QtiPlot is free software in the sense of free speech.				If you know how to use it, you can get				&lt;a href=&quot;http://soft.proindependent.com/download.html&quot;&gt;the source code&lt;/a&gt;				free of charge.				Nevertheless, you are welcome to				&lt;a href=&quot;http://soft.proindependent.com/why_donate.html&quot;&gt;make a donation&lt;/a&gt;				in order to support the further development of QtiPlot.</source>
+        <translation type="obsolete">Používáte předváděcí verzi Qtiplotu.				Je totožná s plnou verzí, mimo to, že vaši práci nelze uložit do souboru s projektem a nemůžete ji používat déle než  10 minut na jedno sezení.				&lt;br&gt;&lt;br&gt;				Pokud chcete mít verzi připravenou k používání, plně pracující binární soubory, podepište se, prosím, na 				&lt;a href=&quot;http://soft.proindependent.com/individual_contract.html&quot;&gt;smlouva na starání se o binární soubory pro jednoho-uživatele&lt;/a&gt;.				&lt;br&gt;&lt;br&gt;				QtiPlot je svobodný software ve smyslu svobody projevu.				Pokud víte, jak jej používat, můžete získat				&lt;a href=&quot;http://developer.berlios.de/project/showfiles.php?group_id=6626&quot;&gt;zdrojový kód&lt;/a&gt;				zdarma.				Přesto však jste vítán,				&lt;a href=&quot;http://soft.proindependent.com/why_donate.html&quot;&gt;hodláte-li poskytnout dar, &lt;/a&gt;				kterým podpoříte budoucí vývoj QtiPlotu.</translation>
+    </message>
+    <message>
+        <source>Please select exactly one column and more than one non empty cell!</source>
+        <translation type="obsolete">Vyberte, prosím, přesně jeden sloupec a více než jednu buňku, která není prázdná!</translation>
+    </message>
+    <message>
+        <source>Data set: %1 doesn&apos;t exist!</source>
+        <translation type="obsolete">Soubor dat: %1 neexistuje!</translation>
+    </message>
+    <message>
+        <source>Stem and leaf plot of dataset</source>
+        <translation type="obsolete">Stonkový a listový nákres souboru dat</translation>
+    </message>
+    <message>
+        <source>from row</source>
+        <translation type="obsolete">od řádku</translation>
+    </message>
+    <message>
+        <source>to row</source>
+        <translation type="obsolete">po řádek</translation>
+    </message>
+    <message>
+        <source>Not enough memory for this dataset!</source>
+        <translation type="obsolete">Pro tento soubor dat není dost paměti!</translation>
+    </message>
+    <message>
+        <source>Stem</source>
+        <translation type="obsolete">Stonek</translation>
+    </message>
+    <message>
+        <source>Leaf</source>
+        <translation type="obsolete">List</translation>
+    </message>
+    <message>
+        <source>Please confirm the stem unit!</source>
+        <translation type="obsolete">Potvrďte, prosím, jednotku pro stonek!</translation>
+    </message>
+    <message>
+        <source>Data set</source>
+        <translation type="obsolete">Soubor dat</translation>
+    </message>
+    <message>
+        <source>stem unit</source>
+        <translation type="obsolete">Jednotka pro stonek</translation>
+    </message>
+    <message>
+        <source>Stem unit</source>
+        <translation type="obsolete">Jednotka pro stonek</translation>
+    </message>
+    <message>
+        <source>Leaf unit</source>
+        <translation type="obsolete">Jednotka pro list</translation>
+    </message>
+    <message>
+        <source>Key</source>
+        <translation type="obsolete">Klávesa</translation>
+    </message>
+    <message>
+        <source>means</source>
+        <translation type="obsolete">znamená</translation>
+    </message>
+    <message>
+        <source>Input error: empty data set!</source>
+        <translation type="obsolete">Chyba vstupu: prázdný soubor dat!</translation>
+    </message>
+    <message>
+        <source>Memory Allocation Error</source>
+        <translation type="obsolete">Chyba v přidělení paměti</translation>
+    </message>
+    <message>
+        <source>Not enough memory, operation aborted!</source>
+        <translation type="obsolete">Není dostatek paměti. Operace zrušena!</translation>
+    </message>
+    <message>
+        <source>Set Precision %1 digits</source>
+        <translation type="obsolete">Nastavit přesnost %1 desetinných míst</translation>
+    </message>
+    <message>
+        <source>You are using the demonstration version of Qtiplot.
+</source>
+        <translation type="obsolete">Používáte ukázkovou verzi Qtiplotu.
+</translation>
+    </message>
+</context>
+<context>
+    <name>AddWidgetTool</name>
+    <message>
+        <location filename="../src/plot2D/AddWidgetTool.cpp" line="78"/>
+        <source>Click on plot to choose the position of the new object!</source>
+        <translation>Klepněte na nákres pro výběr polohy nového předmětu!</translation>
+    </message>
+    <message>
+        <location filename="../src/plot2D/AddWidgetTool.cpp" line="113"/>
+        <location filename="../src/plot2D/AddWidgetTool.cpp" line="135"/>
+        <source>enter your text here</source>
+        <translation>Zde zadejte svůj text</translation>
+    </message>
+    <message>
+        <location filename="../src/plot2D/AddWidgetTool.cpp" line="162"/>
+        <source>Move cursor in order to resize the new rectangle!</source>
+        <translation>Přesuňte kurzor za účelem změny velikosti nového obdélníka!</translation>
+    </message>
+    <message>
+        <location filename="../src/plot2D/AddWidgetTool.cpp" line="178"/>
+        <source>Move cursor in order to resize the new ellipse!</source>
+        <translation>Přesuňte kurzor za účelem změny velikosti nové elipsy!</translation>
+    </message>
+</context>
+<context>
+    <name>ApplicationWindow</name>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="3886"/>
+        <source>File %1 contains only %2 sheets, operation aborted!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="3903"/>
+        <source>Sheet %1 is empty, operation aborted!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="3909"/>
+        <source>sheet</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="3937"/>
+        <source>QtiPlot was built without libxls support!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="204"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="1033"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="9628"/>
+        <source>QtiPlot - untitled</source>
+        <translation>QtiPlot - Bez názvu</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="212"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="1044"/>
+        <source>Project Explorer</source>
+        <translation>Průzkumník projektu</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="220"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="15589"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="15971"/>
+        <source>Folder</source>
+        <translation>Složka</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="241"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="9601"/>
+        <source>UNTITLED</source>
+        <translation>BEZ NÁZVU</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="247"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="1035"/>
+        <source>Name</source>
+        <translation>Název</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="248"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="1036"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="15550"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="15589"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="15941"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="15944"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="15947"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="15950"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="15953"/>
+        <source>Type</source>
+        <translation>Typ</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="249"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="1037"/>
+        <source>View</source>
+        <translation>Pohled</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="250"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="1038"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="15556"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="15591"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="15956"/>
+        <source>Size</source>
+        <translation>Velikost</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="251"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="1039"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="15566"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="15570"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="15595"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="15957"/>
+        <source>Created</source>
+        <translation>Vytvořeno</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="252"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="1040"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="15937"/>
+        <source>Label</source>
+        <translation>Popis</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="269"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="1045"/>
+        <source>Results Log</source>
+        <translation>Zápis výsledků</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="281"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="1048"/>
+        <source>Scripting Console</source>
+        <translation>Skriptovací konzole</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="291"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="1046"/>
+        <source>Undo Stack</source>
+        <translation>Zpět zásobník</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="327"/>
+        <source>&amp;Next</source>
+        <comment>next window</comment>
+        <translation>&amp;Další</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="328"/>
+        <source>F5</source>
+        <comment>next window shortcut</comment>
+        <translation>F5</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="331"/>
+        <source>&amp;Previous</source>
+        <comment>previous window</comment>
+        <translation>&amp;Předchozí</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="332"/>
+        <source>F6</source>
+        <comment>previous window shortcut</comment>
+        <translation>F6</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="672"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="1054"/>
+        <source>File</source>
+        <translation>Soubor</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="708"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="1055"/>
+        <source>Edit</source>
+        <translation>Upravit</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="732"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="1053"/>
+        <source>Plot</source>
+        <translation>Nákres</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="757"/>
+        <source>Disable &amp;Tools</source>
+        <translation>Zakázat &amp;nástroje</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="768"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="14056"/>
+        <source>&amp;Zoom In</source>
+        <translation>&amp;Přiblížit</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="769"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="14057"/>
+        <source>Ctrl++</source>
+        <translation>Ctrl++</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="775"/>
+        <source>&amp;Zoom Out</source>
+        <translation>&amp;Oddálit</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="776"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="14061"/>
+        <source>Ctrl+-</source>
+        <translation>Ctrl+-</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="782"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="14064"/>
+        <source>&amp;Data Reader</source>
+        <translation>&amp;Čtečka dat</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="783"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="14065"/>
+        <source>CTRL+D</source>
+        <translation>CTRL+D</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="789"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="14068"/>
+        <source>&amp;Select Data Range</source>
+        <translation>&amp;Vybrat rozsah dat</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="790"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="14069"/>
+        <source>ALT+S</source>
+        <translation>ALT+S</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="796"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="14072"/>
+        <source>S&amp;creen Reader</source>
+        <translation>Č&amp;tečka obrazovky</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="802"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="14075"/>
+        <source>&amp;Draw Data Points</source>
+        <translation>&amp;Nakreslit datové body</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="808"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="14078"/>
+        <source>&amp;Move Data Points...</source>
+        <translation>&amp;Přesunout datové body...</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="809"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="14079"/>
+        <source>Ctrl+ALT+M</source>
+        <translation>Ctrl+ALT+M</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="815"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="14085"/>
+        <source>Remove &amp;Bad Data Points...</source>
+        <translation>Odstranit &amp;špatné datové body...</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="816"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="14086"/>
+        <source>Alt+B</source>
+        <translation>Alt+B</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="831"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="14093"/>
+        <source>Add E&amp;quation</source>
+        <translation>Přidat R&amp;ovnici</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="832"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="14095"/>
+        <source>ALT+Q</source>
+        <translation>ALT+Q</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="838"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="14089"/>
+        <source>Add &amp;Text</source>
+        <translation>Přidat &amp;text</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="839"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="14091"/>
+        <source>ALT+T</source>
+        <translation>ALT+T</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="845"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="14105"/>
+        <source>Draw &amp;Arrow</source>
+        <translation>Nakreslit &amp;šipku</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="846"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="14106"/>
+        <source>CTRL+ALT+A</source>
+        <translation>CTRL+ALT+A</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="852"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="14109"/>
+        <source>Draw &amp;Line</source>
+        <translation>Nakreslit &amp;čáru</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="853"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="14110"/>
+        <source>CTRL+ALT+L</source>
+        <translation>CTRL+ALT+L</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="866"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="14097"/>
+        <source>Add &amp;Rectangle</source>
+        <translation>Přidat &amp;obdélník</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="867"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="14099"/>
+        <source>CTRL+ALT+R</source>
+        <translation>CTRL+ALT+R</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="877"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="14101"/>
+        <source>Add &amp;Ellipse</source>
+        <translation>Přidat &amp;elipsu</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="878"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="14103"/>
+        <source>CTRL+ALT+E</source>
+        <translation>CTRL+ALT+E</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="888"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="1051"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="2757"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="2818"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="3164"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="8617"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="15900"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="15944"/>
+        <source>Table</source>
+        <translation>Tabulka</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="916"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="1052"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="2085"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="2094"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="12191"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="12272"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="12330"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="16301"/>
+        <source>Column</source>
+        <translation>Sloupec</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="950"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="1050"/>
+        <source>Data Display</source>
+        <translation>Zobrazení dat</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="967"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="1057"/>
+        <source>Matrix Plot</source>
+        <translation>Nákres matice</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="1000"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="1059"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="3962"/>
+        <source>Format</source>
+        <translation>Formát</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="1043"/>
+        <source>QtiPlot - Script Window</source>
+        <translation>QtiPlot - Skriptovací okno</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="1058"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="10805"/>
+        <source>3D Surface</source>
+        <translation>Nákres trojrozměrného povrchu</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="1061"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="9168"/>
+        <source>&amp;Recent Projects</source>
+        <translation>&amp;Naposledy otevřené projekty</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="1062"/>
+        <source>&amp;File</source>
+        <translation>&amp;Soubor</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="1063"/>
+        <source>&amp;New</source>
+        <translation>&amp;Nový</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="1064"/>
+        <source>&amp;Export Graph</source>
+        <translation>&amp;Vyvést nákres</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="1066"/>
+        <source>&amp;Edit</source>
+        <translation>&amp;Úpravy</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="1067"/>
+        <source>&amp;View</source>
+        <translation>&amp;Pohled</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="1068"/>
+        <source>&amp;Graph</source>
+        <translation>&amp;Nákres</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="1069"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="9999"/>
+        <source>3D &amp;Plot</source>
+        <translation>Trojrozměrný &amp;nákres</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="1070"/>
+        <source>&amp;Matrix</source>
+        <translation>&amp;Matice</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="1071"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="6857"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="6990"/>
+        <source>&amp;Plot</source>
+        <translation>&amp;Nákres</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="1072"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="9920"/>
+        <source>&amp;Data</source>
+        <translation>&amp;Data</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="1073"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="6919"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="7034"/>
+        <source>&amp;Normalize</source>
+        <translation>&amp;Normalizovat</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="1074"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="7029"/>
+        <source>&amp;Fill Columns With</source>
+        <translation>&amp;Naplnit sloupce</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="1075"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="13281"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="13970"/>
+        <source>&amp;Table</source>
+        <translation>&amp;Tabulka</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="1076"/>
+        <source>&amp;Smooth</source>
+        <translation>&amp;Vyhladit</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="1077"/>
+        <source>&amp;FFT filter</source>
+        <translation>&amp;FFT filtr</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="1078"/>
+        <source>Fit E&amp;xponential Decay</source>
+        <translation>Umístit ex&amp;ponenciální pokles</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="1079"/>
+        <source>Fit &amp;Multi-peak</source>
+        <translation>Umístění s &amp;mnohačetnými vrcholy</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="1080"/>
+        <source>&amp;Analysis</source>
+        <translation>&amp;Rozbor</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="1081"/>
+        <source>F&amp;ormat</source>
+        <translation>F&amp;ormát</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="1082"/>
+        <source>&amp;Scripting</source>
+        <translation>&amp;Skriptování</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="1083"/>
+        <source>&amp;Windows</source>
+        <translation>&amp;Okna</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="1084"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="13073"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="13884"/>
+        <source>&amp;Help</source>
+        <translation>&amp;Nápověda</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="1287"/>
+        <source>Set Columns &amp;As</source>
+        <translation>Nastavit sloupce &amp;jako</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="1298"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="7019"/>
+        <source>&amp;Read-only</source>
+        <translation>&amp;Pouze pro čtení</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="1299"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="7020"/>
+        <source>Read/&amp;Write</source>
+        <translation>Číst/&amp;Zapisovat</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="1376"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="6829"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="6960"/>
+        <source>Special Line/Symb&amp;ol</source>
+        <translation>Zvláštní řádek/Symb&amp;ol</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="1399"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="6854"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="6980"/>
+        <source>Statistical &amp;Graphs</source>
+        <translation>Statistické &amp;nákresy</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="1406"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="6987"/>
+        <source>Pa&amp;nel</source>
+        <translation>Pa&amp;nel</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="1412"/>
+        <source>3&amp;D Plot</source>
+        <translation>&amp;Trojrozměrný nákres</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="1521"/>
+        <source>Empty Stack</source>
+        <translation>Prázdný zásobník</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="1676"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="1713"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="1734"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="1751"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="1812"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="2504"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="2596"/>
+        <source>QtiPlot - Plot error</source>
+        <translation>QtiPlot - Chyba při kreslení</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="1676"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="1713"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="1734"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="1751"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="1813"/>
+        <source>You must select exactly one column for plotting!</source>
+        <translation>Pro tento nákres musíte vybrat přesně jeden sloupec, který bude nakreslen!</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="1822"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="1873"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="1889"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="3614"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="3621"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="3628"/>
         <location filename="../src/core/ApplicationWindow.cpp" line="6335"/>
         <location filename="../src/core/ApplicationWindow.cpp" line="6338"/>
         <location filename="../src/core/ApplicationWindow.cpp" line="6347"/>
@@ -191,279 +3901,26 @@
         <location filename="../src/core/ApplicationWindow.cpp" line="16527"/>
         <location filename="../src/core/ApplicationWindow.cpp" line="17402"/>
         <source>QtiPlot - Error</source>
-        <translation type="unfinished">QtiPlot - Chyba</translation>
+        <translation>QtiPlot - Chyba</translation>
     </message>
     <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="6335"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="15429"/>
-        <source>Please enter a valid name!</source>
-        <translation type="unfinished">Zadejte, prosím, platný název!</translation>
+        <location filename="../src/core/ApplicationWindow.cpp" line="1822"/>
+        <source>Please select a column to plot!</source>
+        <translation>Vyberte, prosím, sloupec, který bude nakreslen!</translation>
     </message>
     <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="15439"/>
-        <source>Name already exists!</source>
-        <translation type="unfinished">Název již existuje!</translation>
+        <location filename="../src/core/ApplicationWindow.cpp" line="1873"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="1889"/>
+        <source>Please select four columns for this operation!</source>
+        <translation>Vyberte, prosím, čtyři sloupce pro tuto operaci!</translation>
     </message>
     <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="6340"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="6348"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="15439"/>
-        <source>Please choose another name!</source>
-        <translation type="unfinished">Vyberte, prosím, jiný název!</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="15550"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="15589"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="15941"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="15944"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="15947"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="15950"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="15953"/>
-        <source>Type</source>
-        <translation type="unfinished">Typ</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="15550"/>
-        <source>Project</source>
-        <translation type="unfinished">Projekt</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="15553"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="15590"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="15955"/>
-        <source>Path</source>
-        <translation type="unfinished">Cesta</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="15556"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="15591"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="15956"/>
-        <source>Size</source>
-        <translation type="unfinished">Velikost</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="15556"/>
-        <source>bytes</source>
-        <translation type="unfinished">byty</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="15559"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="15592"/>
-        <source>Contents</source>
-        <translation type="unfinished">Obsah</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="15559"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="15592"/>
-        <source>windows</source>
-        <translation type="unfinished">Okna</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="15560"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="15593"/>
-        <source>folders</source>
-        <translation type="unfinished">Složky</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="15566"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="15570"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="15595"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="15957"/>
-        <source>Created</source>
-        <translation type="unfinished">Vytvořeno</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="15567"/>
-        <source>Modified</source>
-        <translation type="unfinished">Upraveno</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="15572"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="15598"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="15931"/>
-        <source>Properties</source>
-        <translation type="unfinished">Vlastnosti</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="15589"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="15971"/>
-        <source>Folder</source>
-        <translation type="unfinished">Složka</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="15611"/>
-        <source>New Folder</source>
-        <translation type="unfinished">Nová složka</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="15656"/>
-        <source>QtiPlot - Delete folder?</source>
-        <translation type="unfinished">QtiPlot - Odstranit složku?</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="15657"/>
-        <source>Delete folder &apos;%1&apos; and all the windows it contains?</source>
-        <translation type="unfinished">Odstranit složku &apos;%1&apos; a všechna okna, jež obsahuje?</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="15658"/>
-        <source>Yes</source>
-        <translation type="unfinished">Ano</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="15658"/>
-        <source>No</source>
-        <translation type="unfinished">Ne</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="9475"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="15896"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="15941"/>
-        <source>Matrix</source>
-        <translation type="unfinished">Matice</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="8617"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="15900"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="15944"/>
-        <source>Table</source>
-        <translation type="unfinished">Tabulka</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="15904"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="15947"/>
-        <source>Note</source>
-        <translation type="unfinished">Poznámka</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="4771"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="8613"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="11038"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="14273"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="14310"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="15908"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="15950"/>
-        <source>Graph</source>
-        <translation type="unfinished">Nákres</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="15912"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="15953"/>
-        <source>3D Graph</source>
-        <translation type="unfinished">Trojrozměrný nákres</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="15937"/>
-        <source>Label</source>
-        <translation type="unfinished">Popis</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="15958"/>
-        <source>Status</source>
-        <translation type="unfinished">Stav</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="16022"/>
-        <source>QtiPlot - No match found</source>
-        <translation type="unfinished">QtiPlot - Nenalezena žádná shoda</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="16023"/>
-        <source>Sorry, no match found for string: &apos;%1&apos;</source>
-        <translation type="unfinished">Promiňte, ale nebyla nalezena žádná shoda pro řetězec znaků: &apos;%1&apos;</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="16041"/>
-        <source>Cannot move an object to itself!</source>
-        <translation type="unfinished">Nelze přesunout předmět do sebe sama!</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="16046"/>
-        <source>Cannot move a parent folder into a child folder!</source>
-        <translation type="unfinished">Nelze přesunout složku do její podsložky!</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="3964"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="4386"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="4647"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="5795"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="7220"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="7637"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="7679"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="7771"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="9570"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="14721"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="14743"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="16059"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="16103"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="16155"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="16469"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="16755"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="17111"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="17573"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="17698"/>
-        <source>QtiPlot</source>
-        <translation type="unfinished">QtiPlot</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="16059"/>
-        <source>Skipped moving folder</source>
-        <translation type="unfinished">Přesunutí složky bylo přeskočeno</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="16060"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="16104"/>
-        <source>The destination folder already contains a folder called &apos;%1&apos;! Folder skipped!</source>
-        <translation type="unfinished">Cílová složka již obsahuje složku nazvanou &apos;%1&apos;! Složka byla přeskočena!</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="16103"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="16469"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="17111"/>
-        <source>Error</source>
-        <translation type="unfinished">Chyba</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="16156"/>
-        <source>QtiPlot will try to download necessary information about the last available updates. Please modify your firewall settings in order to allow QtiPlot to connect to the internet!</source>
-        <translation type="unfinished">QtiPlot se pokusí stáhnout z internetu nezbytnou informaci o posledních dostupných aktualizacích. Upravte, prosím, nastavení své ochrany počítače před viry a nežádoucími průniky do systému, aby se QtiPlot mohl připojit k internetu!</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="16157"/>
-        <source>Do you wish to continue?</source>
-        <translation type="unfinished">Chcete pokračovat?</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="16177"/>
-        <source>QtiPlot - HTTP get version file</source>
-        <translation type="unfinished">QtiPlot - HTTP získání souboru s verzí</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="16178"/>
-        <source>Error while fetching version file with HTTP: %1.</source>
-        <translation type="unfinished">Při získávání souboru s verzí programu přes HTTP došlo k chybě: %1.</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="16193"/>
-        <source>QtiPlot - Updates Available</source>
-        <translation type="unfinished">QtiPlot - Aktualizace jsou dostupné</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="16194"/>
-        <source>There is a newer version of QtiPlot (%1) available for download. Would you like to download it?</source>
-        <translation type="unfinished">Existuje novější verze QtiPlotu  (%1) ḋostupná ke stažení. Chcete ji stáhnout?</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="16198"/>
-        <source>QtiPlot - No Updates Available</source>
-        <translation type="unfinished">QtiPlot - Žádné aktualizace nejsou dostupné</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="16199"/>
-        <source>No updates available. Your current version %1 is the last version available!</source>
-        <translation type="unfinished">Žádné aktualizace nejsou dostupné. Verze %1, kterou nyní používáte, je poslední verzí, jež je dostupná!</translation>
-    </message>
-    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="2070"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="2078"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="2136"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="3512"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="3523"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="3528"/>
         <location filename="../src/core/ApplicationWindow.cpp" line="5870"/>
         <location filename="../src/core/ApplicationWindow.cpp" line="7269"/>
         <location filename="../src/core/ApplicationWindow.cpp" line="7310"/>
@@ -500,207 +3957,263 @@
         <location filename="../src/core/ApplicationWindow.cpp" line="16252"/>
         <location filename="../src/core/ApplicationWindow.cpp" line="17266"/>
         <source>QtiPlot - Warning</source>
-        <translation type="unfinished">QtiPlot - Varování</translation>
+        <translation>QtiPlot - Varování</translation>
     </message>
     <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="16253"/>
-        <source>This will clear the contents of all the data associated with the table. Are you sure?</source>
-        <translation type="unfinished">Tímto se smažou všechna data přiřazená k tabulce. Jste si jist tímto krokem?</translation>
+        <location filename="../src/core/ApplicationWindow.cpp" line="2071"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="10250"/>
+        <source>&lt;h4&gt;There are no tables available in this project.&lt;/h4&gt;&lt;p&gt;&lt;h4&gt;Please create a table and try again!&lt;/h4&gt;</source>
+        <translation>&lt;h4&gt;V tomto projektu nejsou dostupné žádné tabulky.&lt;/h4&gt;&lt;p&gt;&lt;h4&gt;Vytvořte, prosím, tabulku a zkuste to znovu!&lt;/h4&gt;</translation>
     </message>
     <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="6541"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="16254"/>
-        <source>&amp;Yes</source>
-        <translation type="unfinished">&amp;Ano</translation>
+        <location filename="../src/core/ApplicationWindow.cpp" line="2079"/>
+        <source>There are no available columns with plot designation set to Z!</source>
+        <translation>Nejsou zde dostupné žádné sloupce s přiřazením nákresu nastaveným na Z!</translation>
     </message>
     <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="16254"/>
-        <source>&amp;No</source>
-        <translation type="unfinished">&amp;Ne</translation>
+        <location filename="../src/core/ApplicationWindow.cpp" line="2084"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="2093"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="12065"/>
+        <source>QtiPlot - Choose data set</source>
+        <translation>QtiPlot - Vyberte soubor s daty</translation>
     </message>
     <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="16275"/>
-        <source>QtiPlot - Enter row number</source>
-        <translation type="unfinished">QtiPlot - Zadat číslo řádku</translation>
+        <location filename="../src/core/ApplicationWindow.cpp" line="2109"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="2144"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="2403"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="2901"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="3177"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="9475"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="15896"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="15941"/>
+        <source>Matrix</source>
+        <translation>Matice</translation>
     </message>
     <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="16275"/>
-        <source>Row</source>
-        <translation type="unfinished">Řádek</translation>
+        <location filename="../src/core/ApplicationWindow.cpp" line="2108"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="2143"/>
+        <source>QtiPlot - Choose matrix to plot</source>
+        <translation>QtiPlot - Vyberte matici, která bude nakreslena</translation>
     </message>
     <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="16301"/>
-        <source>QtiPlot - Enter column number</source>
-        <translation type="unfinished">QtiPlot - Zadat počet sloupců</translation>
+        <location filename="../src/core/ApplicationWindow.cpp" line="2137"/>
+        <source>&lt;h4&gt;There are no matrices available in this project.&lt;/h4&gt;&lt;p&gt;&lt;h4&gt;Please create a matrix and try again!&lt;/h4&gt;</source>
+        <translation>&lt;h4&gt;V tomto projektu nejsou dostupné žádné matice.&lt;/h4&gt;&lt;p&gt;&lt;h4&gt;Vytvořte, prosím, matici a zkuste to znovu!&lt;/h4&gt;</translation>
     </message>
     <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="12191"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="12272"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="12330"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="16301"/>
-        <source>Column</source>
-        <translation type="unfinished">Sloupec</translation>
+        <location filename="../src/core/ApplicationWindow.cpp" line="2273"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="2440"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="2479"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="2513"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="2529"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="2634"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="4771"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="8613"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="11038"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="14273"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="14310"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="15908"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="15950"/>
+        <location filename="../src/core/ApplicationWindow.h" line="287"/>
+        <source>Graph</source>
+        <translation>Nákres</translation>
     </message>
     <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="16470"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="17112"/>
-        <source>QtiPlot was not built with Python scripting support included!</source>
-        <translation type="unfinished">QtiPlot nebyl sestaven se zahrnutou podporou pro skriptování s Pythonem!</translation>
+        <location filename="../src/core/ApplicationWindow.cpp" line="5912"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="6270"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="7732"/>
+        <source>QtiPlot - Export error</source>
+        <translation type="unfinished">QtiPlot - Chyba při vyvedení</translation>
     </message>
     <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="6271"/>
+        <source>Could not write to file: &lt;br&gt;&lt;h4&gt; %1 &lt;/h4&gt;&lt;p&gt;Please verify that you have the right to write to this location!</source>
+        <translation type="unfinished">Nelze zapisovat do souboru: &lt;br&gt;&lt;h4&gt; %1 &lt;/h4&gt;&lt;p&gt;Ověřte, prosím, že máte oprávnění pro zápis do tohoto umístění!</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="2416"/>
+        <source>Images</source>
+        <translation>Obrázky</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="2383"/>
+        <source>QtiPlot - Import image from file</source>
+        <translation>QtiPlot - Zavést obrázek ze souboru</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="2428"/>
+        <source>QtiPlot - Load image from file</source>
+        <translation>QtiPlot - Nahrát obrázek ze souboru</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="2504"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="2597"/>
         <location filename="../src/core/ApplicationWindow.cpp" line="16478"/>
         <source>Please select a Y column to plot!</source>
-        <translation type="unfinished">Vyberte, prosím, sloupec Y pro nakreslení!</translation>
+        <translation>Vyberte, prosím, sloupec Y pro nakreslení!</translation>
     </message>
     <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="7144"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="16482"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="16515"/>
-        <source>You need at least two columns for this operation!</source>
-        <translation type="unfinished">Pro tuto operaci je potřeba, abyste vybral alespoň dva sloupce!</translation>
+        <location filename="../src/core/ApplicationWindow.cpp" line="2773"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="2914"/>
+        <source>QtiPlot - Renamed Window</source>
+        <translation>QtiPlot - přejmenované okno</translation>
     </message>
     <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="16485"/>
-        <source>Please set a default X column for this table, first!</source>
-        <translation type="unfinished">Nejprve, prosím, u této tabulky nastavte jeden sloupec jako výchozí sloupec X!</translation>
+        <location filename="../src/core/ApplicationWindow.cpp" line="2774"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="2915"/>
+        <source>The table &apos;%1&apos; already exists. It has been renamed &apos;%2&apos;.</source>
+        <translation>Tabulka &apos;%1&apos; již existuje. Byla přejmenována na &apos;%2&apos;.</translation>
     </message>
     <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="16519"/>
-        <source>Please select a Z column for this operation!</source>
-        <translation type="unfinished">Vyberte, prosím, pro tuto operaci sloupec Z!</translation>
+        <location filename="../src/core/ApplicationWindow.cpp" line="720"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="1056"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="2865"/>
+        <source>Notes</source>
+        <translation>Poznámky</translation>
     </message>
     <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="16523"/>
-        <source>You need to define a X column first!</source>
-        <translation type="unfinished">Neprve musíte stanovit sloupec X!</translation>
+        <location filename="../src/core/ApplicationWindow.cpp" line="2931"/>
+        <source>Set Image Mode</source>
+        <translation>Nastavit režim obrázku</translation>
     </message>
     <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="16527"/>
-        <source>You need to define a Y column first!</source>
-        <translation type="unfinished">Neprve musíte stanovit sloupec Y!</translation>
+        <location filename="../src/core/ApplicationWindow.cpp" line="2943"/>
+        <source>Set Data Mode</source>
+        <translation>Nastavit režim dat</translation>
     </message>
     <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="16753"/>
-        <source>Starting with version 0.9.1 QtiPlot stores the user defined fit models to a different location.</source>
-        <translation type="unfinished">Počínaje verzí 0.9.1 QtiPlot ukládá uživatelsky stanovené odpovídající modely do jiného umístění.</translation>
+        <location filename="../src/core/ApplicationWindow.cpp" line="2955"/>
+        <source>Show X/Y</source>
+        <translation>Ukázat X/Y</translation>
     </message>
     <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="16754"/>
-        <source>If you want to save your already defined models, please choose a destination folder.</source>
-        <translation type="unfinished">Pokud chcete uložit své již stanovené modely, vyberte, prosím, cílovou složku.</translation>
+        <location filename="../src/core/ApplicationWindow.cpp" line="2967"/>
+        <source>Show Column/Row</source>
+        <translation>Ukázat Sloupec/Řádek</translation>
     </message>
     <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="16755"/>
-        <source>Import fit models</source>
-        <translation type="unfinished">Zavést modely umístění</translation>
+        <location filename="../src/core/ApplicationWindow.cpp" line="2980"/>
+        <source>Set Default Palette</source>
+        <translation>Nastavit výchozí paletu</translation>
     </message>
     <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="16758"/>
-        <source>Choose a directory to export the fit models to</source>
-        <translation type="unfinished">Vybrat adresář, do něhož se budou vyvádět modely umístění</translation>
+        <location filename="../src/core/ApplicationWindow.cpp" line="2993"/>
+        <source>Set Gray Scale Palette</source>
+        <translation>Nastavit paletu odstínů šedi</translation>
     </message>
     <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="17039"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="17055"/>
-        <source>No Icon</source>
-        <translation type="unfinished">Bez ikony</translation>
+        <location filename="../src/core/ApplicationWindow.cpp" line="3006"/>
+        <source>Set Rainbow Palette</source>
+        <translation>Nastavit paletu barev</translation>
     </message>
     <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="17267"/>
-        <source>Couldn&apos;t load file: %1.
-Autocompletion will not be available!</source>
-        <translation type="unfinished">Nelze nahrát soubor: %1.
-Automatické dokončení nebude dostupné!</translation>
+        <location filename="../src/core/ApplicationWindow.cpp" line="3076"/>
+        <source>Determinant of </source>
+        <translation>Determinant</translation>
     </message>
     <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="6630"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="6677"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="6689"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="6778"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="7856"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="12185"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="12220"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="12260"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="12318"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="17361"/>
-        <source>QtiPlot - Column selection error</source>
-        <translation type="unfinished">QtiPlot - Chyba při výběru sloupců</translation>
+        <location filename="../src/core/ApplicationWindow.cpp" line="3513"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="6391"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="7536"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="7556"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="7615"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="7660"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="8066"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="8086"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="8135"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="8165"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="8183"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="8263"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="8291"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="8314"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="10320"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="14458"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="14609"/>
+        <source>&lt;h4&gt;There are no plot layers available in this window.&lt;/h4&gt;&lt;p&gt;&lt;h4&gt;Please add a layer and try again!&lt;/h4&gt;</source>
+        <translation>&lt;h4&gt;V tomto okně nejsou dostupné žádné vrstvy nákresu.&lt;/h4&gt;&lt;p&gt;&lt;h4&gt;Přidejte, prosím, vrstvu, a zkuste to znovu!&lt;/h4&gt;</translation>
     </message>
     <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="3944"/>
-        <source>Open File</source>
-        <translation type="unfinished">Otevřít soubor</translation>
+        <location filename="../src/core/ApplicationWindow.cpp" line="3523"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="8115"/>
+        <source>There are no curves available on this plot!</source>
+        <translation>Nejsou zde žádné křivky, které by byly dostupné pro tento nákres!</translation>
     </message>
     <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="3949"/>
-        <source>Imported sound file</source>
-        <translation type="unfinished">Zavedený zvukový soubor</translation>
+        <location filename="../src/core/ApplicationWindow.cpp" line="3528"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="6402"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="7269"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="7566"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="7631"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="7674"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="8119"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="8143"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="14470"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="14621"/>
+        <source>This functionality is not available for pie plots!</source>
+        <translation>Tento rozsah funkcí není pro koláčové nákresy dostupný!</translation>
     </message>
     <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="3962"/>
-        <source>Format</source>
-        <translation type="unfinished">Formát</translation>
+        <location filename="../src/core/ApplicationWindow.cpp" line="3553"/>
+        <source>QtiPlot - Error bars error</source>
+        <translation>QtiPlot - Chyba pruhu s chybami</translation>
     </message>
     <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="3965"/>
-        <source>This is not a PCM type WAV file, operation aborted!</source>
-        <translation type="unfinished">Toto není soubor WAV typu PCM. Operace byla zrušena!</translation>
+        <location filename="../src/core/ApplicationWindow.cpp" line="3554"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="3615"/>
+        <source>This feature is not available for user defined function curves!</source>
+        <translation>Tato funkce není pro uživatelem stanovené křivky funkcí dostupná!</translation>
     </message>
     <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="3970"/>
-        <source>PCM</source>
-        <translation type="unfinished">PCM</translation>
+        <location filename="../src/core/ApplicationWindow.cpp" line="3621"/>
+        <source>The selected columns have different numbers of rows!</source>
+        <translation>Vybrané sloupce mají různé počty řádků!</translation>
     </message>
     <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="3976"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="3978"/>
-        <source>Time</source>
-        <translation type="unfinished">Čas</translation>
+        <location filename="../src/core/ApplicationWindow.cpp" line="3628"/>
+        <source>The selected error column is empty!</source>
+        <translation>Vybraný chybový sloupec je prázdný!</translation>
     </message>
     <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="3976"/>
-        <source>Left</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="3976"/>
-        <source>Right</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="3978"/>
-        <source>Data</source>
-        <translation type="unfinished">Data</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="3979"/>
-        <source>Channels</source>
-        <translation type="unfinished">Kanály</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="3983"/>
-        <source>Sample Rate</source>
-        <translation type="unfinished">Vzorkovací kmitočet</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="3987"/>
-        <source>Byte Rate</source>
-        <translation type="unfinished">Rychlost bajtů</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="3991"/>
-        <source>Block Align</source>
-        <translation type="unfinished">Spojení bloků</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="3995"/>
-        <source>Bits Per Sample</source>
-        <translation type="unfinished">Bitů na vzorek</translation>
+        <location filename="../src/core/ApplicationWindow.cpp" line="4219"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="4226"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="4266"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="4330"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="14782"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="14786"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="14790"/>
+        <source>QtiPlot - File openning error</source>
+        <translation type="unfinished">QtiPlot - Chyba při otevírání souboru</translation>
     </message>
     <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="4220"/>
         <source>The file: &lt;b&gt;%1&lt;/b&gt; is the current file!</source>
         <translation type="unfinished">Soubor: &lt;b&gt;%1&lt;/b&gt; je nynější soubor!</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="4227"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="4732"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="14787"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="14941"/>
+        <source>The file: &lt;b&gt;%1&lt;/b&gt; doesn&apos;t exist!</source>
+        <translation type="unfinished">Soubor: &lt;b&gt;%1&lt;/b&gt; neexistuje!</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="4267"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="14791"/>
+        <source>You don&apos;t have the permission to open this file: &lt;b&gt;%1&lt;/b&gt;</source>
+        <translation type="unfinished">Nemáte oprávnění pro otevření tohoto souboru: &lt;b&gt;%1&lt;/b&gt;</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="4297"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="4303"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="4407"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="4721"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="4731"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="4743"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="14941"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="14945"/>
+        <source>QtiPlot - File opening error</source>
+        <translation type="unfinished">QtiPlot - Chyba při otevírání souboru</translation>
     </message>
     <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="4298"/>
@@ -714,11 +4227,6 @@ Automatické dokončení nebude dostupné!</translation>
         <translation type="unfinished">Soubor: &lt;b&gt; %1&lt;/b&gt; nebyl vytvořen QtiPlotem!</translation>
     </message>
     <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="4331"/>
-        <source>The file: &lt;p&gt;&lt;b&gt; %1 &lt;/b&gt;&lt;p&gt; is the current file!</source>
-        <translation type="unfinished">Soubor: &lt;p&gt;&lt;b&gt; %1 &lt;/b&gt;&lt;p&gt; je nynější soubor!</translation>
-    </message>
-    <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="4343"/>
         <source>QtiPlot - File Open Error</source>
         <translation type="unfinished">QtiPlot - Chyba při otevírání souboru</translation>
@@ -727,6 +4235,37 @@ Automatické dokončení nebude dostupné!</translation>
         <location filename="../src/core/ApplicationWindow.cpp" line="4344"/>
         <source>The file: &lt;b&gt; %1 &lt;/b&gt; &lt;p&gt;does not exist anymore!&lt;p&gt;It will be removed from the list.</source>
         <translation type="unfinished">Soubor: &lt;b&gt; %1&lt;/b&gt; &lt;p&gt;už neexistuje!&lt;p&gt;Bude odstraněn ze seznamu.</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="4331"/>
+        <source>The file: &lt;p&gt;&lt;b&gt; %1 &lt;/b&gt;&lt;p&gt; is the current file!</source>
+        <translation type="unfinished">Soubor: &lt;p&gt;&lt;b&gt; %1 &lt;/b&gt;&lt;p&gt; je nynější soubor!</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="3886"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="3903"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="3937"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="3964"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="4386"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="4647"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="5795"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="7220"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="7637"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="7679"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="7771"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="9570"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="14721"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="14743"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="16059"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="16103"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="16155"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="16469"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="16755"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="17111"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="17573"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="17698"/>
+        <source>QtiPlot</source>
+        <translation>QtiPlot</translation>
     </message>
     <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="4408"/>
@@ -790,23 +4329,6 @@ Různé části tohoto souboru se nemusí zobrazovat tak, jak se očekává.</tr
         <translation type="unfinished">&lt;h4&gt;V tomto okně nejsou dostupné žádné vrstvy nákresu!&lt;/h4&gt;</translation>
     </message>
     <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="5795"/>
-        <source>Presentation Preview</source>
-        <translation type="unfinished">Náhled provedení</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="5800"/>
-        <source>&amp;Save</source>
-        <translation type="unfinished">&amp;Uložit</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="5804"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="6541"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="11126"/>
-        <source>&amp;Cancel</source>
-        <translation type="unfinished">&amp;Zrušit</translation>
-    </message>
-    <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="5837"/>
         <source>Choose a directory to export the graphs to</source>
         <translation type="unfinished">Vybrat adresář, do něhož se budou vyvádět nákresy</translation>
@@ -839,13 +4361,6 @@ Různé části tohoto souboru se nemusí zobrazovat tak, jak se očekává.</tr
         <translation type="unfinished">QtiPlot - Přepsat soubor?</translation>
     </message>
     <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="5912"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="6270"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="7732"/>
-        <source>QtiPlot - Export error</source>
-        <translation type="unfinished">QtiPlot - Chyba při vyvedení</translation>
-    </message>
-    <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="5913"/>
         <source>Could not write to file: &lt;br&gt;&lt;h4&gt;%1&lt;/h4&gt;&lt;p&gt;Please verify that you have the right to write to this location!</source>
         <translation type="unfinished">Nelze zapisovat do souboru: &lt;br&gt;&lt;h4&gt; %1 &lt;/h4&gt;&lt;p&gt;Ověřte, prosím, že máte oprávnění pro zápis do tohoto umístění!</translation>
@@ -853,7 +4368,25 @@ Různé části tohoto souboru se nemusí zobrazovat tak, jak se očekává.</tr
     <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="6014"/>
         <source>Minimized</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Zmenšen</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="9803"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="9820"/>
+        <source>Maximized</source>
+        <translation type="unfinished">Zvětšen</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="6105"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="15284"/>
+        <source>QtiPlot project</source>
+        <translation type="unfinished">Projekt QtiPlotu</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="6106"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="15285"/>
+        <source>Compressed QtiPlot project</source>
+        <translation type="unfinished">Stlačený projekt QtiPlotu</translation>
     </message>
     <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="6109"/>
@@ -886,14 +4419,22 @@ Různé části tohoto souboru se nemusí zobrazovat tak, jak se očekává.</tr
         <translation type="unfinished">Uložit okno jako šablonu</translation>
     </message>
     <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="6271"/>
-        <source>Could not write to file: &lt;br&gt;&lt;h4&gt; %1 &lt;/h4&gt;&lt;p&gt;Please verify that you have the right to write to this location!</source>
-        <translation type="unfinished">Nelze zapisovat do souboru: &lt;br&gt;&lt;h4&gt; %1 &lt;/h4&gt;&lt;p&gt;Ověřte, prosím, že máte oprávnění pro zápis do tohoto umístění!</translation>
+        <location filename="../src/core/ApplicationWindow.cpp" line="6335"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="15429"/>
+        <source>Please enter a valid name!</source>
+        <translation type="unfinished">Zadejte, prosím, platný název!</translation>
     </message>
     <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="6339"/>
         <source>The name you chose is not valid: only letters and digits are allowed!</source>
         <translation type="unfinished">Název, který jste vybral, není platný: jsou povoleny pouze číslice a písmena!</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="6340"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="6348"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="15439"/>
+        <source>Please choose another name!</source>
+        <translation type="unfinished">Vyberte, prosím, jiný název!</translation>
     </message>
     <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="6347"/>
@@ -906,37 +4447,14 @@ Různé části tohoto souboru se nemusí zobrazovat tak, jak se očekává.</tr
         <translation type="unfinished">Varování: Kvůli zajištění vnitřní ucelenosti byl znak podtržení nahrazen znaménkem mínus.</translation>
     </message>
     <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="6391"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="7536"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="7556"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="7615"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="7660"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="8066"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="8086"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="8135"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="8165"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="8183"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="8263"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="8291"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="8314"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="10320"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="14458"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="14609"/>
-        <source>&lt;h4&gt;There are no plot layers available in this window.&lt;/h4&gt;&lt;p&gt;&lt;h4&gt;Please add a layer and try again!&lt;/h4&gt;</source>
-        <translation type="unfinished">&lt;h4&gt;V tomto okně nejsou dostupné žádné vrstvy nákresu.&lt;/h4&gt;&lt;p&gt;&lt;h4&gt;Přidejte, prosím, vrstvu, a zkuste to znovu!&lt;/h4&gt;</translation>
+        <source>Choose a directory to export the tables to</source>
+        <translation type="obsolete">Vybrat, prosím, adresář, do něhož se budou vyvádět tabulky</translation>
     </message>
     <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="6402"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="7269"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="7566"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="7631"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="7674"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="8119"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="8143"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="14470"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="14621"/>
-        <source>This functionality is not available for pie plots!</source>
-        <translation type="unfinished">Tento rozsah funkcí není pro koláčové nákresy dostupný!</translation>
+        <location filename="../src/core/ApplicationWindow.cpp" line="6541"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="16254"/>
+        <source>&amp;Yes</source>
+        <translation type="unfinished">&amp;Ano</translation>
     </message>
     <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="6541"/>
@@ -944,6 +4462,18 @@ Různé části tohoto souboru se nemusí zobrazovat tak, jak se očekává.</tr
         <location filename="../src/core/ApplicationWindow.cpp" line="13670"/>
         <source>&amp;All</source>
         <translation type="unfinished">&amp;Vše</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="5804"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="6541"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="11126"/>
+        <source>&amp;Cancel</source>
+        <translation type="unfinished">&amp;Zrušit</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="7720"/>
+        <source>Choose a filename to save under</source>
+        <translation type="unfinished">Vybrat název souboru, pod nímž se bude ukládat</translation>
     </message>
     <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="6581"/>
@@ -980,6 +4510,22 @@ Různé části tohoto souboru se nemusí zobrazovat tak, jak se očekává.</tr
         <location filename="../src/core/ApplicationWindow.cpp" line="6611"/>
         <source>Columns</source>
         <translation type="unfinished">Sloupce</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="3214"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="3233"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="6630"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="6677"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="6689"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="6778"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="7856"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="12185"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="12220"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="12260"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="12318"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="17361"/>
+        <source>QtiPlot - Column selection error</source>
+        <translation>QtiPlot - Chyba při výběru sloupců</translation>
     </message>
     <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="6630"/>
@@ -1019,28 +4565,100 @@ První představuje funkci signálu a druhý funkci odpovědi!</translation>
         <translation type="unfinished">Vyberte, prosím, nejprve řádek!</translation>
     </message>
     <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="6829"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="6960"/>
-        <source>Special Line/Symb&amp;ol</source>
-        <translation type="unfinished">Zvláštní řádek/Symb&amp;ol</translation>
+        <location filename="../src/core/ApplicationWindow.cpp" line="12825"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="13733"/>
+        <source>&amp;Line</source>
+        <translation type="unfinished">&amp;Čára</translation>
     </message>
     <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="6836"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="6968"/>
-        <source>Spec&amp;ial Bar/Column</source>
-        <translation type="unfinished">&amp;Zvláštní pruh/sloupec</translation>
+        <location filename="../src/core/ApplicationWindow.cpp" line="12828"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="12918"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="13736"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="13799"/>
+        <source>&amp;Scatter</source>
+        <translation type="unfinished">&amp;Body</translation>
     </message>
     <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="6854"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="6980"/>
-        <source>Statistical &amp;Graphs</source>
-        <translation type="unfinished">Statistické &amp;nákresy</translation>
+        <location filename="../src/core/ApplicationWindow.cpp" line="12831"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="13739"/>
+        <source>Line + S&amp;ymbol</source>
+        <translation type="unfinished">Čára + &amp;Značky</translation>
     </message>
     <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="6857"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="6990"/>
-        <source>&amp;Plot</source>
-        <translation type="unfinished">&amp;Nákres</translation>
+        <location filename="../src/core/ApplicationWindow.cpp" line="12834"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="13742"/>
+        <source>Vertical &amp;Drop Lines</source>
+        <translation type="unfinished">Svislé &amp;čáry</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="12837"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="13744"/>
+        <source>&amp;Spline</source>
+        <translation type="unfinished">&amp;Spline</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="12843"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="13745"/>
+        <source>&amp;Vertical Steps</source>
+        <translation type="unfinished">&amp;Svislé stupně</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="12840"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="13746"/>
+        <source>&amp;Horizontal Steps</source>
+        <translation type="unfinished">&amp;Vodorovné kroky</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="12846"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="13284"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="13748"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="13971"/>
+        <source>&amp;Columns</source>
+        <translation type="unfinished">&amp;Sloupce</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="12849"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="13751"/>
+        <source>&amp;Rows</source>
+        <translation type="unfinished">&amp;Řádky</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="12858"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="13760"/>
+        <source>&amp;Area</source>
+        <translation type="unfinished">&amp;Oblast</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="12861"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="13763"/>
+        <source>&amp;Pie</source>
+        <translation type="unfinished">&amp;Koláčový nákres</translation>
+    </message>
+    <message>
+        <source>3D Ribbo&amp;n</source>
+        <translation type="obsolete">Trojrozměrný pr&amp;uh</translation>
+    </message>
+    <message>
+        <source>3D &amp;Bars</source>
+        <translation type="obsolete">Trojrozměrné &amp;tyče</translation>
+    </message>
+    <message>
+        <source>3&amp;D Scatter</source>
+        <translation type="obsolete">Troj&amp;rozměrná změť</translation>
+    </message>
+    <message>
+        <source>3D &amp;Trajectory</source>
+        <translation type="obsolete">Trojrozměr&amp;ná dráha</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="12870"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="13772"/>
+        <source>&amp;Histogram</source>
+        <translation type="unfinished">&amp;Histogram</translation>
+    </message>
+    <message>
+        <source>&amp;Stacked Histograms</source>
+        <translation type="obsolete">&amp;Naskládané histogramy</translation>
     </message>
     <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="6861"/>
@@ -1075,28 +4693,34 @@ První představuje funkci signálu a druhý funkci odpovědi!</translation>
         <location filename="../src/core/ApplicationWindow.cpp" line="13317"/>
         <location filename="../src/core/ApplicationWindow.cpp" line="13983"/>
         <source>&amp;X</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&amp;x</translation>
     </message>
     <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="6868"/>
         <location filename="../src/core/ApplicationWindow.cpp" line="13320"/>
         <location filename="../src/core/ApplicationWindow.cpp" line="13985"/>
         <source>&amp;Y</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&amp;y</translation>
     </message>
     <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="6870"/>
         <location filename="../src/core/ApplicationWindow.cpp" line="13323"/>
         <location filename="../src/core/ApplicationWindow.cpp" line="13987"/>
         <source>&amp;Z</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&amp;z</translation>
     </message>
     <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="6873"/>
         <location filename="../src/core/ApplicationWindow.cpp" line="13335"/>
         <location filename="../src/core/ApplicationWindow.cpp" line="13992"/>
         <source>&amp;Label</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&amp;Štítek</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="6875"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="15353"/>
+        <source>&amp;None</source>
+        <translation type="unfinished">&amp;Žádná</translation>
     </message>
     <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="6878"/>
@@ -1127,12 +4751,6 @@ První představuje funkci signálu a druhý funkci odpovědi!</translation>
         <location filename="../src/core/ApplicationWindow.cpp" line="6917"/>
         <source>&amp;Column</source>
         <translation type="unfinished">&amp;Sloupec</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="6919"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="7034"/>
-        <source>&amp;Normalize</source>
-        <translation type="unfinished">&amp;Normalizovat</translation>
     </message>
     <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="6928"/>
@@ -1173,29 +4791,44 @@ První představuje funkci signálu a druhý funkci odpovědi!</translation>
         <translation type="unfinished">Seřadit slou&amp;pec</translation>
     </message>
     <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="6987"/>
-        <source>Pa&amp;nel</source>
-        <translation type="unfinished">Pa&amp;nel</translation>
+        <source>Vectors &amp;XYXY</source>
+        <translation type="obsolete">Vektory &amp;XYXY</translation>
     </message>
     <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="7019"/>
-        <source>&amp;Read-only</source>
-        <translation type="unfinished">&amp;Pouze pro čtení</translation>
+        <location filename="../src/core/ApplicationWindow.cpp" line="12879"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="13774"/>
+        <source>&amp;Vertical 2 Layers</source>
+        <translation type="unfinished">&amp;Dvě svislé vrstvy</translation>
     </message>
     <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="7020"/>
-        <source>Read/&amp;Write</source>
-        <translation type="unfinished">Číst/&amp;Zapisovat</translation>
+        <location filename="../src/core/ApplicationWindow.cpp" line="12882"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="13775"/>
+        <source>&amp;Horizontal 2 Layers</source>
+        <translation type="unfinished">Dvě vodo&amp;rovné vrstvy</translation>
     </message>
     <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="7029"/>
-        <source>&amp;Fill Columns With</source>
-        <translation type="unfinished">&amp;Naplnit sloupce</translation>
+        <location filename="../src/core/ApplicationWindow.cpp" line="12885"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="13776"/>
+        <source>&amp;4 Layers</source>
+        <translation type="unfinished">&amp;Čtyři vrstvy</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="12888"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="13777"/>
+        <source>&amp;Stacked Layers</source>
+        <translation type="unfinished">&amp;Vrstvené vrstvy</translation>
     </message>
     <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="7086"/>
         <source>You need to select at least one Y column for this operation!</source>
         <translation type="unfinished">Pro tuto operaci je potřeba, abyste vybral alespoň jeden sloupec Y!</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="7144"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="16482"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="16515"/>
+        <source>You need at least two columns for this operation!</source>
+        <translation type="unfinished">Pro tuto operaci je potřeba, abyste vybral alespoň dva sloupce!</translation>
     </message>
     <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="7153"/>
@@ -1241,28 +4874,9 @@ Jste si jist, že chcete pokračovat?</translation>
         <translation type="unfinished">Zrušit</translation>
     </message>
     <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="7720"/>
-        <source>Choose a filename to save under</source>
-        <translation type="unfinished">Vybrat název souboru, pod nímž se bude ukládat</translation>
-    </message>
-    <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="7733"/>
         <source>Could not write to file: &lt;h4&gt;%1&lt;/h4&gt;&lt;p&gt;Please verify that you have the right to write to this location or that the file is not being used by another application!</source>
         <translation type="unfinished">Nelze zapisovat do souboru: &lt;h4&gt;%1&lt;/h4&gt;&lt;p&gt;Ověřte, prosím, že máte oprávnění pro zápis do tohoto umístění, nebo že soubor nepoužívá další aplikace!</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="7771"/>
-        <source>Print preview of window: </source>
-        <translation type="unfinished">Tisk náhledu okna:</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="7857"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="12186"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="12221"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="12260"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="12318"/>
-        <source>Please select a &apos;Y&apos; column first!</source>
-        <translation type="unfinished">Vyberte, prosím, nejprve sloupec &apos;y&apos;!</translation>
     </message>
     <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="8039"/>
@@ -1273,11 +4887,6 @@ Jste si jist, že chcete pokračovat?</translation>
         <location filename="../src/core/ApplicationWindow.cpp" line="8105"/>
         <source>There are no plot layers available in this window!</source>
         <translation type="unfinished">V tomto okně nejsou dostupné žádné vrstvy nákresu!</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="8115"/>
-        <source>There are no curves available on this plot!</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="8202"/>
@@ -1302,9 +4911,8 @@ Jste si jist, že chcete pokračovat?</translation>
         <translation type="unfinished">QtiPlot - Chyba při zdvojení okna</translation>
     </message>
     <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="8602"/>
-        <source>There are no windows available in this folder!</source>
-        <translation type="unfinished">V tomto projektu nejsou dostupná žádná okna!</translation>
+        <source>There are no windows available in this project!</source>
+        <translation type="obsolete">V tomto projektu nejsou dostupná žádná okna!</translation>
     </message>
     <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="8624"/>
@@ -1346,16 +4954,6 @@ Jste si jist, že chcete pokračovat?</translation>
         <location filename="../src/core/ApplicationWindow.cpp" line="9118"/>
         <source>&amp;Convert to Spreadsheet</source>
         <translation type="unfinished">&amp;Převést na tabulku</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="9168"/>
-        <source>&amp;Recent Projects</source>
-        <translation type="unfinished">&amp;Naposledy otevřené projekty</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="9192"/>
-        <source>Export</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="9253"/>
@@ -1401,6 +4999,14 @@ Jste si jist, že chcete pokračovat?</translation>
         <translation type="unfinished">&amp;Vyjmout</translation>
     </message>
     <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="9327"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="9329"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="9737"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="15362"/>
+        <source>&amp;Properties...</source>
+        <translation type="unfinished">&amp;Vlastnosti...</translation>
+    </message>
+    <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="9337"/>
         <source>Please use the project explorer to select a window!</source>
         <translation type="unfinished">Pro výběr okna použijte, prosím, projektového průzkumníka!</translation>
@@ -1408,7 +5014,7 @@ Jste si jist, že chcete pokračovat?</translation>
     <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="9351"/>
         <source>Normal</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Obvyklá</translation>
     </message>
     <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="9569"/>
@@ -1416,14 +5022,26 @@ Jste si jist, že chcete pokračovat?</translation>
         <translation type="unfinished">Uložit změny do projektu: &lt;p&gt;&lt;b&gt; %1 &lt;/b&gt;?</translation>
     </message>
     <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="9601"/>
-        <source>UNTITLED</source>
-        <translation type="unfinished">BEZ NÁZVU</translation>
+        <location filename="../src/core/ApplicationWindow.cpp" line="15658"/>
+        <source>Yes</source>
+        <translation type="unfinished">Ano</translation>
     </message>
     <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="9628"/>
-        <source>QtiPlot - untitled</source>
-        <translation type="unfinished">QtiPlot - Bez názvu</translation>
+        <location filename="../src/core/ApplicationWindow.cpp" line="15658"/>
+        <source>No</source>
+        <translation type="unfinished">Ne</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="9665"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="15326"/>
+        <source>&amp;Show All Windows</source>
+        <translation type="unfinished">&amp;Ukázat všechna okna</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="9666"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="15327"/>
+        <source>&amp;Hide All Windows</source>
+        <translation type="unfinished">&amp;Skrýt všechna okna</translation>
     </message>
     <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="9668"/>
@@ -1431,6 +5049,18 @@ Jste si jist, že chcete pokračovat?</translation>
         <location filename="../src/core/ApplicationWindow.cpp" line="13626"/>
         <source>&amp;Delete Selection</source>
         <translation type="unfinished">&amp;Smazat výběr</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="9683"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="15346"/>
+        <source>New &amp;Window</source>
+        <translation type="unfinished">Nové &amp;okno</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="9685"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="15349"/>
+        <source>New F&amp;older</source>
+        <translation type="unfinished">Nová &amp;složka</translation>
     </message>
     <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="9687"/>
@@ -1477,61 +5107,14 @@ Jste si jist, že chcete pokračovat?</translation>
         <translation type="unfinished">Funkce</translation>
     </message>
     <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="9803"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="9820"/>
-        <source>Maximized</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="9888"/>
         <source>Re&amp;move Pie Curve</source>
         <translation type="unfinished">Odstranit &amp;zobrazení koláče</translation>
     </message>
     <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="9915"/>
-        <source>&amp;Add</source>
-        <translation type="unfinished">&amp;Přidat</translation>
-    </message>
-    <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="9919"/>
         <source>Anal&amp;yze</source>
         <translation type="unfinished">Provést &amp;rozbor</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="9920"/>
-        <source>&amp;Data</source>
-        <translation type="unfinished">&amp;Data</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="9922"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="13211"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="13950"/>
-        <source>&amp;Gray Scale</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="9923"/>
-        <source>&amp;Indexed Colors</source>
-        <translation type="unfinished">&amp;Indexované barvy</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="9924"/>
-        <source>Pale&amp;tte</source>
-        <translation type="unfinished">&amp;Paleta</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="9929"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="9950"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="9955"/>
-        <source>&amp;Layer</source>
-        <translation type="unfinished">&amp;Vrstva</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="9930"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="9951"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="9956"/>
-        <source>&amp;Window</source>
-        <translation type="unfinished">&amp;Okno</translation>
     </message>
     <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="9934"/>
@@ -1570,6 +5153,20 @@ Jste si jist, že chcete pokračovat?</translation>
         <translation type="unfinished">&amp;Vložit zkopírovanou čáru/šipku</translation>
     </message>
     <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="9929"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="9950"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="9955"/>
+        <source>&amp;Layer</source>
+        <translation type="unfinished">&amp;Vrstva</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="9930"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="9951"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="9956"/>
+        <source>&amp;Window</source>
+        <translation type="unfinished">&amp;Okno</translation>
+    </message>
+    <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="9952"/>
         <source>E&amp;xport</source>
         <translation type="unfinished">&amp;Vyvést</translation>
@@ -1587,6 +5184,10 @@ Jste si jist, že chcete pokračovat?</translation>
         <translation type="unfinished">Vla&amp;stnosti...</translation>
     </message>
     <message>
+        <source>&amp;Delete Layer</source>
+        <translation type="obsolete">&amp;Smazat vrstvu</translation>
+    </message>
+    <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="9991"/>
         <source>&amp;Copy Page</source>
         <translation type="unfinished">&amp;Kopírovat stranu</translation>
@@ -1595,11 +5196,6 @@ Jste si jist, že chcete pokračovat?</translation>
         <location filename="../src/core/ApplicationWindow.cpp" line="9992"/>
         <source>E&amp;xport Page</source>
         <translation type="unfinished">&amp;Vyvést stranu</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="9999"/>
-        <source>3D &amp;Plot</source>
-        <translation type="unfinished">Trojrozměrný &amp;nákres</translation>
     </message>
     <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="10001"/>
@@ -1619,7 +5215,7 @@ Jste si jist, že chcete pokračovat?</translation>
     <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="10010"/>
         <source>C&amp;lear</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&amp;Vyprázdnit</translation>
     </message>
     <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="10017"/>
@@ -1662,11 +5258,6 @@ Jste si jist, že chcete pokračovat?</translation>
         <translation type="unfinished">&amp;Smazat sloupce</translation>
     </message>
     <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="10110"/>
-        <source>Move Row</source>
-        <translation type="unfinished">Přesunout řádek</translation>
-    </message>
-    <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="10113"/>
         <source>&amp;Delete Row</source>
         <translation type="unfinished">&amp;Smazat řádek</translation>
@@ -1684,17 +5275,17 @@ Jste si jist, že chcete pokračovat?</translation>
     <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="10152"/>
         <source>Choose the location of the QtiPlot help folder!</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Vyberte umístění složky s nápovědou k programu QtiPlot!</translation>
     </message>
     <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="10157"/>
         <source>QtiPlot - index.html File Not Found!</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">QtiPlot - index.html nebyl nalezen!</translation>
     </message>
     <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="10158"/>
         <source>There is no file called &lt;b&gt;index.html&lt;/b&gt; in this folder.&lt;br&gt;Please choose another folder!</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">V tomto adresáři nebyl nalezen žádný soubor s názvem &lt;b&gt;index.html&lt;/b&gt;&lt;br&gt;Zvolte, prosím, jiný adresář!</translation>
     </message>
     <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="10180"/>
@@ -1733,19 +5324,9 @@ Jste si jist, že chcete pokračovat?</translation>
         <translation type="unfinished">Ukažte, prosím, umístění souboru s nápovědou!</translation>
     </message>
     <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="10250"/>
-        <source>&lt;h4&gt;There are no tables available in this project.&lt;/h4&gt;&lt;p&gt;&lt;h4&gt;Please create a table and try again!&lt;/h4&gt;</source>
-        <translation type="unfinished">&lt;h4&gt;V tomto projektu nejsou dostupné žádné tabulky.&lt;/h4&gt;&lt;p&gt;&lt;h4&gt;Vytvořte, prosím, tabulku a zkuste to znovu!&lt;/h4&gt;</translation>
-    </message>
-    <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="10298"/>
         <source>QtiPlot - Edit function</source>
         <translation type="unfinished">QtiPlot - Upravit funkci</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="10805"/>
-        <source>3D Surface</source>
-        <translation type="unfinished">Nákres trojrozměrného povrchu</translation>
     </message>
     <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="10983"/>
@@ -1790,11 +5371,6 @@ Varování. Tento krok přeuspořádá stávající vrstvy!</translation>
         <translation type="unfinished">&amp;Horní levý roh</translation>
     </message>
     <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="12065"/>
-        <source>QtiPlot - Choose data set</source>
-        <translation type="unfinished">QtiPlot - Vyberte soubor s daty</translation>
-    </message>
-    <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="12066"/>
         <source>Curve</source>
         <translation type="unfinished">Křivka</translation>
@@ -1805,6 +5381,20 @@ Varování. Tento krok přeuspořádá stávající vrstvy!</translation>
         <translation type="unfinished">Začlenění %1 od nuly je</translation>
     </message>
     <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="7857"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="12186"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="12221"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="12260"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="12318"/>
+        <source>Please select a &apos;Y&apos; column first!</source>
+        <translation type="unfinished">Vyberte, prosím, nejprve sloupec &apos;y&apos;!</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="9192"/>
+        <source>Export</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="12190"/>
         <source>Integration of %1</source>
         <translation type="unfinished">Začlenění %1</translation>
@@ -1812,7 +5402,7 @@ Varování. Tento krok přeuspořádá stávající vrstvy!</translation>
     <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="12192"/>
         <source>Area</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"> Oblast</translation>
     </message>
     <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="12268"/>
@@ -1861,12 +5451,6 @@ Varování. Tento krok přeuspořádá stávající vrstvy!</translation>
         <location filename="../src/core/ApplicationWindow.cpp" line="13537"/>
         <source>Ctrl+N</source>
         <translation type="unfinished">Ctrl+N</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="12619"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="13539"/>
-        <source>App&amp;end Project...</source>
-        <translation type="unfinished">Při&amp;pojit projekt...</translation>
     </message>
     <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="12626"/>
@@ -2023,12 +5607,6 @@ Varování. Tento krok přeuspořádá stávající vrstvy!</translation>
         <translation type="unfinished">&amp;Zavést ASCII...</translation>
     </message>
     <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="12684"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="13583"/>
-        <source>&amp;Sound (WAV)...</source>
-        <translation type="unfinished">&amp;Zvuk (WAV)...</translation>
-    </message>
-    <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="12687"/>
         <location filename="../src/core/ApplicationWindow.cpp" line="13603"/>
         <source>&amp;Undo</source>
@@ -2051,12 +5629,6 @@ Varování. Tento krok přeuspořádá stávající vrstvy!</translation>
         <location filename="../src/core/ApplicationWindow.cpp" line="13610"/>
         <source>&amp;Duplicate</source>
         <translation type="unfinished">&amp;Zdvojit</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="12696"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="13612"/>
-        <source>Ctrl+Alt+D</source>
-        <translation type="unfinished">Ctrl+Alt+D</translation>
     </message>
     <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="12699"/>
@@ -2106,14 +5678,6 @@ Varování. Tento krok přeuspořádá stávající vrstvy!</translation>
         <location filename="../src/core/ApplicationWindow.cpp" line="13631"/>
         <source>Ctrl+E</source>
         <translation type="unfinished">Ctrl+E</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="12719"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="13395"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="13634"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="14031"/>
-        <source>&amp;Find...</source>
-        <translation type="unfinished">&amp;Najít...</translation>
     </message>
     <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="12731"/>
@@ -2167,12 +5731,6 @@ Varování. Tento krok přeuspořádá stávající vrstvy!</translation>
         <translation type="unfinished">Alt+X</translation>
     </message>
     <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="12750"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="13674"/>
-        <source>Create Open &amp;Document Presentation...</source>
-        <translation type="unfinished">Vytvořit představení v Open &amp;Document...</translation>
-    </message>
-    <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="12753"/>
         <location filename="../src/core/ApplicationWindow.cpp" line="13676"/>
         <source>&amp;Export PDF</source>
@@ -2189,12 +5747,6 @@ Varování. Tento krok přeuspořádá stávající vrstvy!</translation>
         <location filename="../src/core/ApplicationWindow.cpp" line="13681"/>
         <source>Ctrl+P</source>
         <translation type="unfinished">Ctrl+P</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="12761"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="13684"/>
-        <source>Print Pre&amp;view</source>
-        <translation type="unfinished">Tisk &amp;náhledu</translation>
     </message>
     <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="12764"/>
@@ -2219,12 +5771,6 @@ Varování. Tento krok přeuspořádá stávající vrstvy!</translation>
         <location filename="../src/core/ApplicationWindow.cpp" line="13691"/>
         <source>Ctrl+Q</source>
         <translation type="unfinished">Ctrl+Q</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="12774"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="13692"/>
-        <source>&amp;Close</source>
-        <translation type="unfinished">&amp;Zavřít</translation>
     </message>
     <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="12781"/>
@@ -2308,12 +5854,6 @@ Varování. Tento krok přeuspořádá stávající vrstvy!</translation>
         <translation type="unfinished">Ctrl+Shift+R</translation>
     </message>
     <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="12810"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="14053"/>
-        <source>Zoom &amp;In/Out and Drag Canvas</source>
-        <translation type="unfinished">&amp;Přiblížit/Oddálit a táhnout plátnem</translation>
-    </message>
-    <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="12813"/>
         <location filename="../src/core/ApplicationWindow.cpp" line="13721"/>
         <source>New &amp;Legend</source>
@@ -2350,88 +5890,6 @@ Varování. Tento krok přeuspořádá stávající vrstvy!</translation>
         <translation type="unfinished">ALT+I</translation>
     </message>
     <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="12825"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="13733"/>
-        <source>&amp;Line</source>
-        <translation type="unfinished">&amp;Čára</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="12828"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="12918"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="13736"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="13799"/>
-        <source>&amp;Scatter</source>
-        <translation type="unfinished">&amp;Body</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="12831"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="13739"/>
-        <source>Line + S&amp;ymbol</source>
-        <translation type="unfinished">Čára + &amp;Značky</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="12834"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="13742"/>
-        <source>Vertical &amp;Drop Lines</source>
-        <translation type="unfinished">Svislé &amp;čáry</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="12837"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="13744"/>
-        <source>&amp;Spline</source>
-        <translation type="unfinished">&amp;Spline</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="12840"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="13746"/>
-        <source>&amp;Horizontal Steps</source>
-        <translation type="unfinished">&amp;Vodorovné kroky</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="12843"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="13745"/>
-        <source>&amp;Vertical Steps</source>
-        <translation type="unfinished">&amp;Svislé stupně</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="12846"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="13284"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="13748"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="13971"/>
-        <source>&amp;Columns</source>
-        <translation type="unfinished">&amp;Sloupce</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="12849"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="13751"/>
-        <source>&amp;Rows</source>
-        <translation type="unfinished">&amp;Řádky</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="12852"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="13754"/>
-        <source>Stack &amp;Bar</source>
-        <translation type="unfinished">&amp;Pruh zásobníku</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="12855"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="13757"/>
-        <source>Stack &amp;Column</source>
-        <translation type="unfinished">&amp;Sloupec zásobníku</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="12858"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="13760"/>
-        <source>&amp;Area</source>
-        <translation type="unfinished">&amp;Oblast</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="12861"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="13763"/>
-        <source>&amp;Pie</source>
-        <translation type="unfinished">&amp;Koláčový nákres</translation>
-    </message>
-    <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="12864"/>
         <location filename="../src/core/ApplicationWindow.cpp" line="13769"/>
         <source>Vectors XY&amp;AM</source>
@@ -2441,12 +5899,6 @@ Varování. Tento krok přeuspořádá stávající vrstvy!</translation>
         <location filename="../src/core/ApplicationWindow.cpp" line="12867"/>
         <source>&amp;Vectors &amp;XYXY</source>
         <translation type="unfinished">Vektory &amp;XYXY</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="12870"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="13772"/>
-        <source>&amp;Histogram</source>
-        <translation type="unfinished">&amp;Histogram</translation>
     </message>
     <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="12873"/>
@@ -2461,30 +5913,6 @@ Varování. Tento krok přeuspořádá stávající vrstvy!</translation>
         <translation type="unfinished">Stonkový a &amp;listový nákres</translation>
     </message>
     <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="12879"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="13774"/>
-        <source>&amp;Vertical 2 Layers</source>
-        <translation type="unfinished">&amp;Dvě svislé vrstvy</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="12882"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="13775"/>
-        <source>&amp;Horizontal 2 Layers</source>
-        <translation type="unfinished">Dvě vodo&amp;rovné vrstvy</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="12885"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="13776"/>
-        <source>&amp;4 Layers</source>
-        <translation type="unfinished">&amp;Čtyři vrstvy</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="12888"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="13777"/>
-        <source>&amp;Stacked Layers</source>
-        <translation type="unfinished">&amp;Vrstvené vrstvy</translation>
-    </message>
-    <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="12891"/>
         <location filename="../src/core/ApplicationWindow.cpp" line="13781"/>
         <source>D&amp;ouble-Y</source>
@@ -2495,11 +5923,6 @@ Varování. Tento krok přeuspořádá stávající vrstvy!</translation>
         <location filename="../src/core/ApplicationWindow.cpp" line="13784"/>
         <source>&amp;Zoom</source>
         <translation type="unfinished">&amp;Přiblížit</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="12897"/>
-        <source>&amp;Waterfall Plot</source>
-        <translation type="unfinished">&amp;Vodopádový nákres</translation>
     </message>
     <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="12900"/>
@@ -2625,12 +6048,6 @@ Varování. Tento krok přeuspořádá stávající vrstvy!</translation>
         <location filename="../src/core/ApplicationWindow.cpp" line="13831"/>
         <source>&amp;Differentiate</source>
         <translation type="unfinished">&amp;Diferencovat</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="12969"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="13833"/>
-        <source>Fit Slop&amp;e</source>
-        <translation type="unfinished">Umístit &amp;sklon</translation>
     </message>
     <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="12972"/>
@@ -2811,12 +6228,6 @@ Varování. Tento krok přeuspořádá stávající vrstvy!</translation>
         <translation type="unfinished">Přesunout k pos&amp;lednímu</translation>
     </message>
     <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="13051"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="13878"/>
-        <source>Ad&amp;just Column Width</source>
-        <translation type="unfinished">Upravit &amp;šířku sloupce</translation>
-    </message>
-    <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="13054"/>
         <location filename="../src/core/ApplicationWindow.cpp" line="13871"/>
         <source>&amp;Columns...</source>
@@ -2835,18 +6246,6 @@ Varování. Tento krok přeuspořádá stávající vrstvy!</translation>
         <translation type="unfinished">&amp;Smazat řádky od do...</translation>
     </message>
     <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="13063"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="13874"/>
-        <source>&amp;Upward</source>
-        <translation type="unfinished">&amp;Nahoru</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="13066"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="13876"/>
-        <source>&amp;Downward</source>
-        <translation type="unfinished">&amp;Dolů</translation>
-    </message>
-    <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="13069"/>
         <location filename="../src/core/ApplicationWindow.cpp" line="13881"/>
         <source>&amp;About QtiPlot</source>
@@ -2857,12 +6256,6 @@ Varování. Tento krok přeuspořádá stávající vrstvy!</translation>
         <location filename="../src/core/ApplicationWindow.cpp" line="13882"/>
         <source>F1</source>
         <translation type="unfinished">F1</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="13073"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="13884"/>
-        <source>&amp;Help</source>
-        <translation type="unfinished">&amp;Nápověda</translation>
     </message>
     <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="13074"/>
@@ -3141,6 +6534,28 @@ Varování. Tento krok přeuspořádá stávající vrstvy!</translation>
         <translation type="unfinished">Ctrl+Shift+C</translation>
     </message>
     <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="17698"/>
+        <source>Choose custom user interface</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="17706"/>
+        <source>Custom user interfaces can be created using the QtDesigner application provided by the Qt framework</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="17708"/>
+        <source>For more details about how to use .ui files in your Python scripts please read the PyQt4 documentation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="9922"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="13211"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="13950"/>
+        <source>&amp;Gray Scale</source>
+        <translation type="unfinished">&amp;Stupnice šedi</translation>
+    </message>
+    <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="13215"/>
         <location filename="../src/core/ApplicationWindow.cpp" line="13949"/>
         <source>&amp;Default</source>
@@ -3193,6 +6608,132 @@ Varování. Tento krok přeuspořádá stávající vrstvy!</translation>
         <location filename="../src/core/ApplicationWindow.cpp" line="13242"/>
         <source>&amp;Inverse FFT</source>
         <translation type="unfinished">&amp;Převrácená hodnota FFT</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="1338"/>
+        <source>Convert to &amp;Matrix</source>
+        <translation>Převést do &amp;matici</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="822"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="14082"/>
+        <source>Dra&amp;g Curve</source>
+        <translation>&amp;Táhnout křivku</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="1065"/>
+        <source>&amp;Import</source>
+        <translation>&amp;Zavést</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="3215"/>
+        <source>You must select a single Y column that has an associated X column!</source>
+        <translation>Musíte vybrat jeden sloupec Y, ke kterému je přiřazen sloupec X!</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="3234"/>
+        <source>You must select exactly one Z column!</source>
+        <translation>Musíte vybrat přesně jeden sloupec Z!</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="3875"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="3944"/>
+        <source>Open File</source>
+        <translation>Otevřít soubor</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="3949"/>
+        <source>Imported sound file</source>
+        <translation type="unfinished">Zavedený zvukový soubor</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="3965"/>
+        <source>This is not a PCM type WAV file, operation aborted!</source>
+        <translation type="unfinished">Toto není soubor WAV typu PCM. Operace byla zrušena!</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="3970"/>
+        <source>PCM</source>
+        <translation type="unfinished">PCM</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="3976"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="3978"/>
+        <source>Time</source>
+        <translation type="unfinished">Čas</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="3976"/>
+        <source>Left</source>
+        <translation type="unfinished">Levý</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="3976"/>
+        <source>Right</source>
+        <translation type="unfinished">Pravý</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="3978"/>
+        <source>Data</source>
+        <translation type="unfinished">Data</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="3979"/>
+        <source>Channels</source>
+        <translation type="unfinished">Kanály</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="3983"/>
+        <source>Sample Rate</source>
+        <translation type="unfinished">Vzorkovací kmitočet</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="3987"/>
+        <source>Byte Rate</source>
+        <translation type="unfinished">Rychlost bajtů</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="3991"/>
+        <source>Block Align</source>
+        <translation type="unfinished">Spojení bloků</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="3995"/>
+        <source>Bits Per Sample</source>
+        <translation type="unfinished">Bitů na vzorek</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="5795"/>
+        <source>Presentation Preview</source>
+        <translation type="unfinished">Náhled provedení</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="5800"/>
+        <source>&amp;Save</source>
+        <translation type="unfinished">&amp;Uložit</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="8602"/>
+        <source>There are no windows available in this folder!</source>
+        <translation type="unfinished">V tomto projektu nejsou dostupná žádná okna!</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="12684"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="13583"/>
+        <source>&amp;Sound (WAV)...</source>
+        <translation type="unfinished">&amp;Zvuk (WAV)...</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="12750"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="13674"/>
+        <source>Create Open &amp;Document Presentation...</source>
+        <translation type="unfinished">Vytvořit představení v Open &amp;Document...</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="12774"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="13692"/>
+        <source>&amp;Close</source>
+        <translation type="unfinished">&amp;Zavřít</translation>
     </message>
     <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="13248"/>
@@ -3258,12 +6799,6 @@ Varování. Tento krok přeuspořádá stávající vrstvy!</translation>
         <location filename="../src/core/ApplicationWindow.cpp" line="13969"/>
         <source>Sort Columns</source>
         <translation type="unfinished">Seřadit sloupce</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="13281"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="13970"/>
-        <source>&amp;Table</source>
-        <translation type="unfinished">&amp;Tabulka</translation>
     </message>
     <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="13287"/>
@@ -3412,7 +6947,7 @@ Varování. Tento krok přeuspořádá stávající vrstvy!</translation>
         <location filename="../src/core/ApplicationWindow.cpp" line="13379"/>
         <location filename="../src/core/ApplicationWindow.cpp" line="14017"/>
         <source>E&amp;xecute</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Vy&amp;konat</translation>
     </message>
     <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="13380"/>
@@ -3538,7 +7073,7 @@ Varování. Tento krok přeuspořádá stávající vrstvy!</translation>
         <location filename="../src/core/ApplicationWindow.cpp" line="13444"/>
         <location filename="../src/core/ApplicationWindow.cpp" line="13530"/>
         <source>Edit &amp;Range...</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Upravit &amp;rozsah...</translation>
     </message>
     <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="13450"/>
@@ -3557,6 +7092,10 @@ Varování. Tento krok přeuspořádá stávající vrstvy!</translation>
         <location filename="../src/core/ApplicationWindow.cpp" line="13533"/>
         <source>&amp;Show All Curves</source>
         <translation type="unfinished">&amp;Ukázat všechny křivky</translation>
+    </message>
+    <message>
+        <source>&amp;Edit Function...</source>
+        <translation type="obsolete">&amp;Upravit funkci...</translation>
     </message>
     <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="13459"/>
@@ -3632,16 +7171,6 @@ Varování. Tento krok přeuspořádá stávající vrstvy!</translation>
         <location filename="../src/core/ApplicationWindow.cpp" line="13536"/>
         <source>Open a new project</source>
         <translation type="unfinished">Otevřít nový projekt</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="13540"/>
-        <source>Append a project to the current folder</source>
-        <translation type="unfinished">Projekt připojit k nynější složce</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="13541"/>
-        <source>Ctrl+Alt+A</source>
-        <translation type="unfinished">Ctrl+Alt+A</translation>
     </message>
     <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="13543"/>
@@ -3899,16 +7428,6 @@ Varování. Tento krok přeuspořádá stávající vrstvy!</translation>
         <translation type="unfinished">Nakreslit s vodorovnými pruhy</translation>
     </message>
     <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="13755"/>
-        <source>Plot stack bar</source>
-        <translation type="unfinished">Nakreslit pruh se zásobníkem</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="13758"/>
-        <source>Plot stack column</source>
-        <translation type="unfinished">Nakreslit sloupec se zásobníkem</translation>
-    </message>
-    <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="13761"/>
         <source>Plot area</source>
         <translation type="unfinished">Nakreslit oblast</translation>
@@ -4049,26 +7568,6 @@ Varování. Tento krok přeuspořádá stávající vrstvy!</translation>
         <translation type="unfinished">Přesunout k poslednímu</translation>
     </message>
     <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="13875"/>
-        <source>Move current row upward</source>
-        <translation type="unfinished">Přesunout nynější řádek nahoru</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="13877"/>
-        <source>Move current row downward</source>
-        <translation type="unfinished">Přesunout nynější řádek dolů</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="13879"/>
-        <source>Set optimal column width</source>
-        <translation type="unfinished">Nastavit nejlepší šířku sloupců</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="13895"/>
-        <source>Alt+C</source>
-        <translation type="unfinished">ALT+C</translation>
-    </message>
-    <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="13910"/>
         <source>More Windows...</source>
         <translation type="unfinished">Další okna...</translation>
@@ -4194,21 +7693,6 @@ Varování. Tento krok přeuspořádá stávající vrstvy!</translation>
         <translation type="unfinished">Ukazovátko</translation>
     </message>
     <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="14054"/>
-        <source>Zoom In (Shift++) or Out (-) and Drag Canvas</source>
-        <translation type="unfinished">Přiblížit(Shift++) nebo Oddálit (-) a táhnout plátnem</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="14056"/>
-        <source>&amp;Zoom In</source>
-        <translation type="unfinished">&amp;Přiblížit</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="14057"/>
-        <source>Ctrl++</source>
-        <translation type="unfinished">Ctrl++</translation>
-    </message>
-    <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="14058"/>
         <source>Zoom In</source>
         <translation type="unfinished">Přiblížit</translation>
@@ -4219,24 +7703,9 @@ Varování. Tento krok přeuspořádá stávající vrstvy!</translation>
         <translation type="unfinished">&amp;Oddálit</translation>
     </message>
     <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="14061"/>
-        <source>Ctrl+-</source>
-        <translation type="unfinished">Ctrl+-</translation>
-    </message>
-    <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="14062"/>
         <source>Zoom Out</source>
         <translation type="unfinished">Oddálit</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="14064"/>
-        <source>&amp;Data Reader</source>
-        <translation type="unfinished">&amp;Čtečka dat</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="14065"/>
-        <source>CTRL+D</source>
-        <translation type="unfinished">CTRL+D</translation>
     </message>
     <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="14066"/>
@@ -4244,24 +7713,9 @@ Varování. Tento krok přeuspořádá stávající vrstvy!</translation>
         <translation type="unfinished">Čtečka dat</translation>
     </message>
     <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="14068"/>
-        <source>&amp;Select Data Range</source>
-        <translation type="unfinished">&amp;Vybrat rozsah dat</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="14069"/>
-        <source>ALT+S</source>
-        <translation type="unfinished">ALT+S</translation>
-    </message>
-    <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="14070"/>
         <source>Select data range</source>
         <translation type="unfinished">Vybrat rozsah dat</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="14072"/>
-        <source>S&amp;creen Reader</source>
-        <translation type="unfinished">Č&amp;tečka obrazovky</translation>
     </message>
     <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="14073"/>
@@ -4269,24 +7723,9 @@ Varování. Tento krok přeuspořádá stávající vrstvy!</translation>
         <translation type="unfinished">Čtečka obrazovky</translation>
     </message>
     <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="14075"/>
-        <source>&amp;Draw Data Points</source>
-        <translation type="unfinished">&amp;Nakreslit datové body</translation>
-    </message>
-    <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="14076"/>
         <source>Draw Data Points</source>
         <translation type="unfinished">Nakreslit datové body</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="14078"/>
-        <source>&amp;Move Data Points...</source>
-        <translation type="unfinished">&amp;Přesunout datové body...</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="14079"/>
-        <source>Ctrl+ALT+M</source>
-        <translation type="unfinished">Ctrl+ALT+M</translation>
     </message>
     <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="14080"/>
@@ -4294,24 +7733,9 @@ Varování. Tento krok přeuspořádá stávající vrstvy!</translation>
         <translation type="unfinished">Přesunout datové body</translation>
     </message>
     <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="14082"/>
-        <source>Dra&amp;g Curve</source>
-        <translation type="unfinished">&amp;Táhnout křivku</translation>
-    </message>
-    <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="14083"/>
         <source>Drag Curve</source>
         <translation type="unfinished">Táhnout křivku</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="14085"/>
-        <source>Remove &amp;Bad Data Points...</source>
-        <translation type="unfinished">Odstranit &amp;špatné datové body...</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="14086"/>
-        <source>Alt+B</source>
-        <translation type="unfinished">Alt+B</translation>
     </message>
     <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="14087"/>
@@ -4319,24 +7743,9 @@ Varování. Tento krok přeuspořádá stávající vrstvy!</translation>
         <translation type="unfinished">Přesunout datové body</translation>
     </message>
     <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="14089"/>
-        <source>Add &amp;Text</source>
-        <translation type="unfinished">Přidat &amp;text</translation>
-    </message>
-    <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="14090"/>
         <source>Add Text</source>
         <translation type="unfinished">Přidat text</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="14091"/>
-        <source>ALT+T</source>
-        <translation type="unfinished">ALT+T</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="14093"/>
-        <source>Add E&amp;quation</source>
-        <translation type="unfinished">Přidat R&amp;ovnici</translation>
     </message>
     <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="14094"/>
@@ -4344,29 +7753,9 @@ Varování. Tento krok přeuspořádá stávající vrstvy!</translation>
         <translation type="unfinished">Přidat rovnici</translation>
     </message>
     <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="14095"/>
-        <source>ALT+Q</source>
-        <translation type="unfinished">ALT+Q</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="14097"/>
-        <source>Add &amp;Rectangle</source>
-        <translation type="unfinished">Přidat &amp;obdélník</translation>
-    </message>
-    <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="14098"/>
         <source>Add Rectangle</source>
         <translation type="unfinished">Přidat obdélník</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="14099"/>
-        <source>CTRL+ALT+R</source>
-        <translation type="unfinished">CTRL+ALT+R</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="14101"/>
-        <source>Add &amp;Ellipse</source>
-        <translation type="unfinished">Přidat &amp;elipsu</translation>
     </message>
     <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="14102"/>
@@ -4374,34 +7763,9 @@ Varování. Tento krok přeuspořádá stávající vrstvy!</translation>
         <translation type="unfinished">Přidat elipsu/kružnici</translation>
     </message>
     <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="14103"/>
-        <source>CTRL+ALT+E</source>
-        <translation type="unfinished">CTRL+ALT+E</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="14105"/>
-        <source>Draw &amp;Arrow</source>
-        <translation type="unfinished">Nakreslit &amp;šipku</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="14106"/>
-        <source>CTRL+ALT+A</source>
-        <translation type="unfinished">CTRL+ALT+A</translation>
-    </message>
-    <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="14107"/>
         <source>Draw arrow</source>
         <translation type="unfinished">Nakreslit šipku</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="14109"/>
-        <source>Draw &amp;Line</source>
-        <translation type="unfinished">Nakreslit &amp;čáru</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="14110"/>
-        <source>CTRL+ALT+L</source>
-        <translation type="unfinished">CTRL+ALT+L</translation>
     </message>
     <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="14111"/>
@@ -4426,7 +7790,7 @@ Varování. Tento krok přeuspořádá stávající vrstvy!</translation>
     <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="14122"/>
         <source>&amp;Frame</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&amp;Rám</translation>
     </message>
     <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="14125"/>
@@ -4640,6 +8004,33 @@ Varování. Tento krok přeuspořádá stávající vrstvy!</translation>
         <translation type="unfinished">Vrcholy</translation>
     </message>
     <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="14740"/>
+        <source>can be any .qti, qti.gz, .opj, .ogm, .ogw, .ogg, .py, .xls or ASCII file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="17573"/>
+        <source>Memory Allocation Error</source>
+        <translation type="unfinished">Chyba v přidělení paměti</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="17574"/>
+        <source>Not enough memory, operation aborted!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="17590"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="17607"/>
+        <source>Set Precision %1 digits</source>
+        <translation type="unfinished">Nastavit přesnost %1 desetinných míst</translation>
+    </message>
+    <message>
+        <source>&lt;font size=+2, color = darkBlue&gt;&lt;b&gt;QtiPlot is open-source software and its development required hundreds of hours of work.&lt;br&gt;&lt;br&gt;
+</source>
+        <translation type="obsolete">&lt;font velikost=+2, barva = tmavomodrá&gt;&lt;b&gt;QtiPlot program s otevřeným zdrojovým kódem a jeho vývoj vyžaduje stovky hodin práce.&lt;br&gt;&lt;br&gt;
+</translation>
+    </message>
+    <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="14673"/>
         <source>&lt;font size=+2, color = darkBlue&gt;&lt;b&gt;QtiPlot is open-source software and its development required hundreds of hours of work.&lt;br&gt;&lt;br&gt;				If you like it, you&apos;re using it in your work and you would like to see it 				constantly improved, please support its authors by making a donation.&lt;/b&gt;&lt;/font&gt;</source>
         <translation type="unfinished">&lt;font size=+2, color = darkBlue&gt;&lt;b&gt;QtiPlot je otevřený program a jeho vývoj vyžaduje stovky hodin práce.&lt;br&gt;&lt;br&gt;				Jestliže se vám líbí, používáte jej při své práci a rád byste viděl 				jeho stálé vylepšování, podpořte, prosím, jeho autory darem.&lt;/b&gt;&lt;/font&gt;</translation>
@@ -4648,16 +8039,6 @@ Varování. Tento krok přeuspořádá stávající vrstvy!</translation>
         <location filename="../src/core/ApplicationWindow.cpp" line="14679"/>
         <source>Please support QtiPlot!</source>
         <translation type="unfinished">Podpořte, prosím, QtiPlot!</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="14680"/>
-        <source>Make a donation</source>
-        <translation type="unfinished">Poskytněte dar</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="14681"/>
-        <source>Close</source>
-        <translation type="unfinished">Zavřít</translation>
     </message>
     <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="14705"/>
@@ -4714,11 +8095,6 @@ Varování. Tento krok přeuspořádá stávající vrstvy!</translation>
         <translation type="unfinished">Ukázat dialog &quot;O programu&quot; a ukončit</translation>
     </message>
     <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="14732"/>
-        <source>show standalone scripting window</source>
-        <translation type="unfinished">Ukázat samostatné skriptovací okno</translation>
-    </message>
-    <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="14733"/>
         <source>start QtiPlot with the default settings</source>
         <translation type="unfinished">Spustit QtiPlot s výchozími nastaveními</translation>
@@ -4754,9 +8130,8 @@ Varování. Tento krok přeuspořádá stávající vrstvy!</translation>
         <translation type="unfinished">Vykonat soubor se skriptem jako nezávislou proměnnou bez zobrazení uživatelského rozhraní. Varování: Dvojrozměrné nákresy nejsou při tomto pracovním režimu zvládány správně!</translation>
     </message>
     <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="14740"/>
-        <source>can be any .qti, qti.gz, .opj, .ogm, .ogw, .ogg, .py, .xls or ASCII file</source>
-        <translation type="unfinished"></translation>
+        <source>can be any .qti, qti.gz, .opj, .ogm, .ogw, .ogg, .py or ASCII file</source>
+        <translation type="obsolete">Může být jakýkoli soubor .qti, qti.gz, .opj, .ogm, .ogw, .ogg, .py nebo ASCII</translation>
     </message>
     <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="14743"/>
@@ -4784,9 +8159,338 @@ Varování. Tento krok přeuspořádá stávající vrstvy!</translation>
         <translation type="unfinished">&lt;b&gt;%1&lt;/b&gt; Je adresářem. Zadejte, prosím, název souboru!</translation>
     </message>
     <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="15148"/>
-        <source>You are using the demonstration version of Qtiplot.				It is identical with the full version, except that you can&apos;t save your work to project files and you can&apos;t use it for more than 10 minutes per session.				&lt;br&gt;&lt;br&gt;				If you want to have ready-to-use, fully functional binaries, please subscribe for a				&lt;a href=&quot;http://soft.proindependent.com/individual_contract.html&quot;&gt;single-user binaries maintenance contract&lt;/a&gt;.				&lt;br&gt;&lt;br&gt;				QtiPlot is free software in the sense of free speech.				If you know how to use it, you can get				&lt;a href=&quot;http://soft.proindependent.com/download.html&quot;&gt;the source code&lt;/a&gt;				free of charge.				Nevertheless, you are welcome to				&lt;a href=&quot;http://soft.proindependent.com/why_donate.html&quot;&gt;make a donation&lt;/a&gt;				in order to support the further development of QtiPlot.</source>
-        <translation type="unfinished">Používáte předváděcí verzi Qtiplotu.				Je totožná s plnou verzí, mimo to, že vaši práci nelze uložit do souboru s projektem a nemůžete ji používat déle než  10 minut na jedno sezení.				&lt;br&gt;&lt;br&gt;				Pokud chcete mít verzi připravenou k používání, plně pracující binární soubory, podepište se, prosím, na 				&lt;a href=&quot;http://soft.proindependent.com/individual_contract.html&quot;&gt;smlouva na starání se o binární soubory pro jednoho-uživatele&lt;/a&gt;.				&lt;br&gt;&lt;br&gt;				QtiPlot je svobodný software ve smyslu svobody projevu.				Pokud víte, jak jej používat, můžete získat				&lt;a href=&quot;http://developer.berlios.de/project/showfiles.php?group_id=6626&quot;&gt;zdrojový kód&lt;/a&gt;				zdarma.				Přesto však jste vítán,				&lt;a href=&quot;http://soft.proindependent.com/why_donate.html&quot;&gt;hodláte-li poskytnout dar, &lt;/a&gt;				kterým podpoříte budoucí vývoj QtiPlotu.</translation>
+        <location filename="../src/core/ApplicationWindow.cpp" line="14945"/>
+        <source>The file: &lt;b&gt;%1&lt;/b&gt; is not a QtiPlot or Origin project file!</source>
+        <translation type="unfinished">Soubor: &lt;b&gt;%1&lt;/b&gt; není souborem projektu QtiPlot nebo Origin!</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="15147"/>
+        <source>QtiPlot - Demo Version</source>
+        <translation type="unfinished">QtiPlot - Demoverze</translation>
+    </message>
+    <message>
+        <source>You are using the demonstration version of Qtiplot.				It is identical with the full version, except that you can&apos;t save your work to project files and you can&apos;t use it for more than 10 minutes per session.				&lt;br&gt;&lt;br&gt;				If you want to have ready-to-use, fully functional binaries, please subscribe for a				&lt;a href=&quot;http://soft.proindependent.com/individual_contract.html&quot;&gt;single-user binaries maintenance contract&lt;/a&gt;.				&lt;br&gt;&lt;br&gt;				QtiPlot is free software in the sense of free speech.				If you know how to use it, you can get				&lt;a href=&quot;http://developer.berlios.de/project/showfiles.php?group_id=6626&quot;&gt;the source code&lt;/a&gt;				free of charge.				Nevertheless, you are welcome to				&lt;a href=&quot;http://soft.proindependent.com/why_donate.html&quot;&gt;make a donation&lt;/a&gt;				in order to support the further development of QtiPlot.</source>
+        <translation type="obsolete">Používáte předváděcí verzi Qtiplotu.				Je totožná s plnou verzí, mimo to, že vaši práci nelze uložit do souboru s projektem a nemůžete ji používat déle než  10 minut na jedno sezení.				&lt;br&gt;&lt;br&gt;				Pokud chcete mít verzi připravenou k používání s plně pracující binární soubory, podepište se, prosím, na 				&lt;a href=&quot;http://soft.proindependent.com/individual_contract.html&quot;&gt;smlouva na starání se o binární soubory pro jednoho-uživatele&lt;/a&gt;.				&lt;br&gt;&lt;br&gt;				QtiPlot je svobodný software ve smyslu svobody projevu.				Pokud víte, jak jej používat, můžete získat				&lt;a href=&quot;http://developer.berlios.de/project/showfiles.php?group_id=6626&quot;&gt;zdrojový kód&lt;/a&gt;				zdarma.				Přesto však jste vítán,				&lt;a href=&quot;http://soft.proindependent.com/why_donate.html&quot;&gt;hodláte-li poskytnout dar, &lt;/a&gt;				kterým podpoříte budoucí vývoj QtiPlotu.</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="15172"/>
+        <source>QtiPlot - File backup error</source>
+        <translation type="unfinished">QtiPlot - Chyba při zálohování souboru</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="15173"/>
+        <source>Cannot make a backup copy of &lt;b&gt;%1&lt;/b&gt; (to %2).&lt;br&gt;If you ignore this, you run the risk of &lt;b&gt;data loss&lt;/b&gt;.</source>
+        <translation type="unfinished">Nelze vytvořit záložní kopii z &lt;b&gt;%1&lt;/b&gt; (do %2).&lt;br&gt;Pokud si této věci nebudete všímat, riskujete &lt;b&gt;ztrátu dat&lt;/b&gt;.</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="15190"/>
+        <source>QtiPlot - File save error</source>
+        <translation type="unfinished">QtiPlot - Chyba při ukládání souboru</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="15190"/>
+        <source>The file: &lt;br&gt;&lt;b&gt;%1&lt;/b&gt; is opened in read-only mode</source>
+        <translation type="unfinished">Soubor: &lt;br&gt;&lt;b&gt; %1 &lt;/b&gt; je otevřen v režimu pouze pro čtení</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="15288"/>
+        <source>Save project as</source>
+        <translation type="unfinished">Uložit projekt jako</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="12719"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="13395"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="13634"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="14031"/>
+        <source>&amp;Find...</source>
+        <translation type="unfinished">&amp;Najít...</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="12619"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="13539"/>
+        <source>App&amp;end Project...</source>
+        <translation type="unfinished">Při&amp;pojit projekt...</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="15319"/>
+        <source>Save &amp;As Project...</source>
+        <translation type="unfinished">Uložit &amp;jako projekt...</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="15333"/>
+        <source>&amp;Delete Folder</source>
+        <translation type="unfinished">&amp;Smazat složku</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="15334"/>
+        <source>&amp;Rename</source>
+        <translation type="unfinished">&amp;Přejmenovat</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="15353"/>
+        <source>&amp;Windows in Active Folder</source>
+        <translation type="unfinished">&amp;Okna v činné složce</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="15353"/>
+        <source>Windows in &amp;Active Folder &amp;&amp; Subfolders</source>
+        <translation type="unfinished">Okna v &amp;činné složce &amp;&amp; podsložkách</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="15360"/>
+        <source>&amp;View Windows</source>
+        <translation type="unfinished">&amp;Zobrazit okna</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="15377"/>
+        <source>Hidden</source>
+        <translation type="unfinished">Skryt</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="15439"/>
+        <source>Name already exists!</source>
+        <translation type="unfinished">Název již existuje!</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="15550"/>
+        <source>Project</source>
+        <translation type="unfinished">Projekt</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="15553"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="15590"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="15955"/>
+        <source>Path</source>
+        <translation type="unfinished">Cesta</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="15556"/>
+        <source>bytes</source>
+        <translation type="unfinished">byty</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="15559"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="15592"/>
+        <source>Contents</source>
+        <translation type="unfinished">Obsah</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="15559"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="15592"/>
+        <source>windows</source>
+        <translation type="unfinished">Okna</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="15560"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="15593"/>
+        <source>folders</source>
+        <translation type="unfinished">Složky</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="15567"/>
+        <source>Modified</source>
+        <translation type="unfinished">Upraveno</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="15572"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="15598"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="15931"/>
+        <source>Properties</source>
+        <translation type="unfinished">Vlastnosti</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="15611"/>
+        <source>New Folder</source>
+        <translation type="unfinished">Nová složka</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="15656"/>
+        <source>QtiPlot - Delete folder?</source>
+        <translation type="unfinished">QtiPlot - Odstranit složku?</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="15657"/>
+        <source>Delete folder &apos;%1&apos; and all the windows it contains?</source>
+        <translation type="unfinished">Odstranit složku &apos;%1&apos; a všechna okna, jež obsahuje?</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="15904"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="15947"/>
+        <source>Note</source>
+        <translation type="unfinished">Poznámka</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="15912"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="15953"/>
+        <source>3D Graph</source>
+        <translation type="unfinished">Trojrozměrný obrazec</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="15958"/>
+        <source>Status</source>
+        <translation type="unfinished">Stav</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="16022"/>
+        <source>QtiPlot - No match found</source>
+        <translation type="unfinished">QtiPlot - Nenalezena žádná shoda</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="16023"/>
+        <source>Sorry, no match found for string: &apos;%1&apos;</source>
+        <translation type="unfinished">Promiňte, ale nebyla nalezena žádná shoda pro řetězec znaků: &apos;%1&apos;</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="16041"/>
+        <source>Cannot move an object to itself!</source>
+        <translation type="unfinished">Nelze přesunout předmět do sebe sama!</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="16046"/>
+        <source>Cannot move a parent folder into a child folder!</source>
+        <translation type="unfinished">Nelze přesunout složku do její podsložky!</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="16059"/>
+        <source>Skipped moving folder</source>
+        <translation type="unfinished">Přesunutí složky bylo přeskočeno</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="16060"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="16104"/>
+        <source>The destination folder already contains a folder called &apos;%1&apos;! Folder skipped!</source>
+        <translation type="unfinished">Cílová složka již obsahuje složku nazvanou &apos;%1&apos;! Složka byla přeskočena!</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="16103"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="16469"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="17111"/>
+        <source>Error</source>
+        <translation type="unfinished">Chyba</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="16156"/>
+        <source>QtiPlot will try to download necessary information about the last available updates. Please modify your firewall settings in order to allow QtiPlot to connect to the internet!</source>
+        <translation type="unfinished">QtiPlot se pokusí stáhnout z internetu nezbytnou informaci o posledních dostupných aktualizacích. Upravte, prosím, nastavení své ochrany počítače před viry a nežádoucími průniky do systému, aby se QtiPlot mohl připojit k internetu!</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="16157"/>
+        <source>Do you wish to continue?</source>
+        <translation type="unfinished">Chcete pokračovat?</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="16177"/>
+        <source>QtiPlot - HTTP get version file</source>
+        <translation type="unfinished">QtiPlot - HTTP získání souboru s verzí</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="16178"/>
+        <source>Error while fetching version file with HTTP: %1.</source>
+        <translation type="unfinished">Při získávání souboru s verzí programu přes HTTP došlo k chybě: %1.</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="16193"/>
+        <source>QtiPlot - Updates Available</source>
+        <translation type="unfinished">QtiPlot - Aktualizace jsou dostupné</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="16194"/>
+        <source>There is a newer version of QtiPlot (%1) available for download. Would you like to download it?</source>
+        <translation type="unfinished">Existuje novější verze QtiPlotu  (%1) ḋostupná ke stažení. Chcete ji stáhnout?</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="16198"/>
+        <source>QtiPlot - No Updates Available</source>
+        <translation type="unfinished">QtiPlot - Žádné aktualizace nejsou dostupné</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="16199"/>
+        <source>No updates available. Your current version %1 is the last version available!</source>
+        <translation type="unfinished">Žádné aktualizace nejsou dostupné. Verze %1, kterou nyní používáte, je poslední verzí, jež je dostupná!</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="16253"/>
+        <source>This will clear the contents of all the data associated with the table. Are you sure?</source>
+        <translation type="unfinished">Tímto se smažou všechna data přiřazená k tabulce. Jste si jist tímto krokem?</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="16254"/>
+        <source>&amp;No</source>
+        <translation type="unfinished">&amp;Ne</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="16275"/>
+        <source>QtiPlot - Enter row number</source>
+        <translation type="unfinished">QtiPlot - Zadat číslo řádku</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="16275"/>
+        <source>Row</source>
+        <translation type="unfinished">Řádek</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="16301"/>
+        <source>QtiPlot - Enter column number</source>
+        <translation type="unfinished">QtiPlot - Zadat počet sloupců</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="16470"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="17112"/>
+        <source>QtiPlot was not built with Python scripting support included!</source>
+        <translation type="unfinished">QtiPlot nebyl sestaven se zahrnutou podporou pro skriptování s Pythonem!</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="16485"/>
+        <source>Please set a default X column for this table, first!</source>
+        <translation type="unfinished">Nejprve, prosím, u této tabulky nastavte jeden sloupec jako výchozí sloupec X!</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="16519"/>
+        <source>Please select a Z column for this operation!</source>
+        <translation type="unfinished">Vyberte, prosím, pro tuto operaci sloupec Z!</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="16523"/>
+        <source>You need to define a X column first!</source>
+        <translation type="unfinished">Neprve musíte stanovit sloupec X!</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="16527"/>
+        <source>You need to define a Y column first!</source>
+        <translation type="unfinished">Neprve musíte stanovit sloupec Y!</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="16753"/>
+        <source>Starting with version 0.9.1 QtiPlot stores the user defined fit models to a different location.</source>
+        <translation type="unfinished">Počínaje verzí 0.9.1 QtiPlot ukládá uživatelsky stanovené odpovídající modely do jiného umístění.</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="16754"/>
+        <source>If you want to save your already defined models, please choose a destination folder.</source>
+        <translation type="unfinished">Pokud chcete uložit své již stanovené modely, vyberte, prosím, cílovou složku.</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="16755"/>
+        <source>Import fit models</source>
+        <translation type="unfinished">Zavést modely umístění</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="16758"/>
+        <source>Choose a directory to export the fit models to</source>
+        <translation type="unfinished">Vybrat adresář, do něhož se budou exportovat modely umístění</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="17039"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="17055"/>
+        <source>No Icon</source>
+        <translation type="unfinished">Bez ikony</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="17267"/>
+        <source>Couldn&apos;t load file: %1.
+Autocompletion will not be available!</source>
+        <translation type="unfinished">Nelze nahrát soubor: %1.
+Automatické dokončení nebude dostupné!</translation>
     </message>
     <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="17362"/>
@@ -4869,3942 +8573,166 @@ Varování. Tento krok přeuspořádá stávající vrstvy!</translation>
         <translation type="unfinished">Chyba vstupu: prázdný soubor dat!</translation>
     </message>
     <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="17573"/>
-        <source>Memory Allocation Error</source>
-        <translation type="unfinished">Chyba v přidělení paměti</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="17574"/>
-        <source>Not enough memory, operation aborted!</source>
-        <translation type="unfinished">Není dostatek paměti. Operace zrušena!</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="17590"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="17607"/>
-        <source>Set Precision %1 digits</source>
-        <translation type="unfinished">Nastavit přesnost %1 desetinných míst</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="17698"/>
-        <source>Choose custom user interface</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="17706"/>
-        <source>Custom user interfaces can be created using the QtDesigner application provided by the Qt framework</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="17708"/>
-        <source>For more details about how to use .ui files in your Python scripts please read the PyQt4 documentation</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>You are using the demonstration version of Qtiplot.
-</source>
-        <translation type="obsolete">Používáte ukázkovou verzi Qtiplotu.
-</translation>
-    </message>
-</context>
-<context>
-    <name>AddWidgetTool</name>
-    <message>
-        <location filename="../src/plot2D/AddWidgetTool.cpp" line="78"/>
-        <source>Click on plot to choose the position of the new object!</source>
-        <translation>Klepněte na nákres pro výběr polohy nového předmětu!</translation>
-    </message>
-    <message>
-        <location filename="../src/plot2D/AddWidgetTool.cpp" line="113"/>
-        <location filename="../src/plot2D/AddWidgetTool.cpp" line="135"/>
-        <source>enter your text here</source>
-        <translation>Zde zadejte svůj text</translation>
-    </message>
-    <message>
-        <location filename="../src/plot2D/AddWidgetTool.cpp" line="162"/>
-        <source>Move cursor in order to resize the new rectangle!</source>
-        <translation>Přesuňte kurzor za účelem změny velikosti nového obdélníka!</translation>
-    </message>
-    <message>
-        <location filename="../src/plot2D/AddWidgetTool.cpp" line="178"/>
-        <source>Move cursor in order to resize the new ellipse!</source>
-        <translation>Přesuňte kurzor za účelem změny velikosti nové elipsy!</translation>
-    </message>
-</context>
-<context>
-    <name>ApplicationWindow</name>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="3886"/>
-        <source>File %1 contains only %2 sheets, operation aborted!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="3903"/>
-        <source>Sheet %1 is empty, operation aborted!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="3909"/>
-        <source>sheet</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="3937"/>
-        <source>QtiPlot was built without libxls support!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="204"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="1033"/>
-        <source>QtiPlot - untitled</source>
-        <translation>QtiPlot - Bez názvu</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="212"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="1044"/>
-        <source>Project Explorer</source>
-        <translation>Průzkumník projektu</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="220"/>
-        <source>Folder</source>
-        <translation>Složka</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="241"/>
-        <source>UNTITLED</source>
-        <translation>BEZ NÁZVU</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="247"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="1035"/>
-        <source>Name</source>
-        <translation>Název</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="248"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="1036"/>
-        <source>Type</source>
-        <translation>Typ</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="249"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="1037"/>
-        <source>View</source>
-        <translation>Pohled</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="250"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="1038"/>
-        <source>Size</source>
-        <translation>Velikost</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="251"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="1039"/>
-        <source>Created</source>
-        <translation>Vytvořeno</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="252"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="1040"/>
-        <source>Label</source>
-        <translation>Popis</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="269"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="1045"/>
-        <source>Results Log</source>
-        <translation>Zápis výsledků</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="281"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="1048"/>
-        <source>Scripting Console</source>
-        <translation>Skriptovací konzole</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="291"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="1046"/>
-        <source>Undo Stack</source>
-        <translation>Zpět zásobník</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="327"/>
-        <source>&amp;Next</source>
-        <comment>next window</comment>
-        <translation>&amp;Další</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="328"/>
-        <source>F5</source>
-        <comment>next window shortcut</comment>
-        <translation>F5</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="331"/>
-        <source>&amp;Previous</source>
-        <comment>previous window</comment>
-        <translation>&amp;Předchozí</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="332"/>
-        <source>F6</source>
-        <comment>previous window shortcut</comment>
-        <translation>F6</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="672"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="1054"/>
-        <source>File</source>
-        <translation>Soubor</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="708"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="1055"/>
-        <source>Edit</source>
-        <translation>Upravit</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="732"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="1053"/>
-        <source>Plot</source>
-        <translation>Nákres</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="757"/>
-        <source>Disable &amp;Tools</source>
-        <translation>Zakázat &amp;nástroje</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="768"/>
-        <source>&amp;Zoom In</source>
-        <translation>&amp;Přiblížit</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="769"/>
-        <source>Ctrl++</source>
-        <translation>Ctrl++</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="775"/>
-        <source>&amp;Zoom Out</source>
-        <translation>&amp;Oddálit</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="776"/>
-        <source>Ctrl+-</source>
-        <translation>Ctrl+-</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="782"/>
-        <source>&amp;Data Reader</source>
-        <translation>&amp;Čtečka dat</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="783"/>
-        <source>CTRL+D</source>
-        <translation>CTRL+D</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="789"/>
-        <source>&amp;Select Data Range</source>
-        <translation>&amp;Vybrat rozsah dat</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="790"/>
-        <source>ALT+S</source>
-        <translation>ALT+S</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="796"/>
-        <source>S&amp;creen Reader</source>
-        <translation>Č&amp;tečka obrazovky</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="802"/>
-        <source>&amp;Draw Data Points</source>
-        <translation>&amp;Nakreslit datové body</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="808"/>
-        <source>&amp;Move Data Points...</source>
-        <translation>&amp;Přesunout datové body...</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="809"/>
-        <source>Ctrl+ALT+M</source>
-        <translation>Ctrl+ALT+M</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="815"/>
-        <source>Remove &amp;Bad Data Points...</source>
-        <translation>Odstranit &amp;špatné datové body...</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="816"/>
-        <source>Alt+B</source>
-        <translation>Alt+B</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="831"/>
-        <source>Add E&amp;quation</source>
-        <translation>Přidat R&amp;ovnici</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="832"/>
-        <source>ALT+Q</source>
-        <translation>ALT+Q</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="838"/>
-        <source>Add &amp;Text</source>
-        <translation>Přidat &amp;text</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="839"/>
-        <source>ALT+T</source>
-        <translation>ALT+T</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="845"/>
-        <source>Draw &amp;Arrow</source>
-        <translation>Nakreslit &amp;šipku</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="846"/>
-        <source>CTRL+ALT+A</source>
-        <translation>CTRL+ALT+A</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="852"/>
-        <source>Draw &amp;Line</source>
-        <translation>Nakreslit &amp;čáru</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="853"/>
-        <source>CTRL+ALT+L</source>
-        <translation>CTRL+ALT+L</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="866"/>
-        <source>Add &amp;Rectangle</source>
-        <translation>Přidat &amp;obdélník</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="867"/>
-        <source>CTRL+ALT+R</source>
-        <translation>CTRL+ALT+R</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="877"/>
-        <source>Add &amp;Ellipse</source>
-        <translation>Přidat &amp;elipsu</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="878"/>
-        <source>CTRL+ALT+E</source>
-        <translation>CTRL+ALT+E</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="888"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="1051"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="2757"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="2818"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="3164"/>
-        <source>Table</source>
-        <translation>Tabulka</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="916"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="1052"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="2085"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="2094"/>
-        <source>Column</source>
-        <translation>Sloupec</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="950"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="1050"/>
-        <source>Data Display</source>
-        <translation>Zobrazení dat</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="967"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="1057"/>
-        <source>Matrix Plot</source>
-        <translation>Nákres matice</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="1000"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="1059"/>
-        <source>Format</source>
-        <translation>Formát</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="1043"/>
-        <source>QtiPlot - Script Window</source>
-        <translation>QtiPlot - Skriptovací okno</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="1058"/>
-        <source>3D Surface</source>
-        <translation>Nákres trojrozměrného povrchu</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="1061"/>
-        <source>&amp;Recent Projects</source>
-        <translation>&amp;Naposledy otevřené projekty</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="1062"/>
-        <source>&amp;File</source>
-        <translation>&amp;Soubor</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="1063"/>
-        <source>&amp;New</source>
-        <translation>&amp;Nový</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="1064"/>
-        <source>&amp;Export Graph</source>
-        <translation>&amp;Vyvést nákres</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="1066"/>
-        <source>&amp;Edit</source>
-        <translation>&amp;Úpravy</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="1067"/>
-        <source>&amp;View</source>
-        <translation>&amp;Pohled</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="1068"/>
-        <source>&amp;Graph</source>
-        <translation>&amp;Nákres</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="1069"/>
-        <source>3D &amp;Plot</source>
-        <translation>Trojrozměrný &amp;nákres</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="1070"/>
-        <source>&amp;Matrix</source>
-        <translation>&amp;Matice</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="1071"/>
-        <source>&amp;Plot</source>
-        <translation>&amp;Nákres</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="1072"/>
-        <source>&amp;Data</source>
-        <translation>&amp;Data</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="1073"/>
-        <source>&amp;Normalize</source>
-        <translation>&amp;Normalizovat</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="1074"/>
-        <source>&amp;Fill Columns With</source>
-        <translation>&amp;Naplnit sloupce</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="1075"/>
-        <source>&amp;Table</source>
-        <translation>&amp;Tabulka</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="1076"/>
-        <source>&amp;Smooth</source>
-        <translation>&amp;Vyhladit</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="1077"/>
-        <source>&amp;FFT filter</source>
-        <translation>&amp;FFT filtr</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="1078"/>
-        <source>Fit E&amp;xponential Decay</source>
-        <translation>Umístit ex&amp;ponenciální pokles</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="1079"/>
-        <source>Fit &amp;Multi-peak</source>
-        <translation>Umístění s &amp;mnohačetnými vrcholy</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="1080"/>
-        <source>&amp;Analysis</source>
-        <translation>&amp;Rozbor</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="1081"/>
-        <source>F&amp;ormat</source>
-        <translation>F&amp;ormát</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="1082"/>
-        <source>&amp;Scripting</source>
-        <translation>&amp;Skriptování</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="1083"/>
-        <source>&amp;Windows</source>
-        <translation>&amp;Okna</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="1084"/>
-        <source>&amp;Help</source>
-        <translation>&amp;Nápověda</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="1287"/>
-        <source>Set Columns &amp;As</source>
-        <translation>Nastavit sloupce &amp;jako</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="1298"/>
-        <source>&amp;Read-only</source>
-        <translation>&amp;Pouze pro čtení</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="1299"/>
-        <source>Read/&amp;Write</source>
-        <translation>Číst/&amp;Zapisovat</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="1376"/>
-        <source>Special Line/Symb&amp;ol</source>
-        <translation>Zvláštní řádek/Symb&amp;ol</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="1399"/>
-        <source>Statistical &amp;Graphs</source>
-        <translation>Statistické &amp;nákresy</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="1406"/>
-        <source>Pa&amp;nel</source>
-        <translation>Pa&amp;nel</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="1412"/>
-        <source>3&amp;D Plot</source>
-        <translation>&amp;Trojrozměrný nákres</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="1521"/>
-        <source>Empty Stack</source>
-        <translation>Prázdný zásobník</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="1676"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="1713"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="1734"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="1751"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="1812"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="2504"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="2596"/>
-        <source>QtiPlot - Plot error</source>
-        <translation>QtiPlot - Chyba při kreslení</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="1676"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="1713"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="1734"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="1751"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="1813"/>
-        <source>You must select exactly one column for plotting!</source>
-        <translation>Pro tento nákres musíte vybrat přesně jeden sloupec, který bude nakreslen!</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="1822"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="1873"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="1889"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="3614"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="3621"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="3628"/>
-        <source>QtiPlot - Error</source>
-        <translation>QtiPlot - Chyba</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="1822"/>
-        <source>Please select a column to plot!</source>
-        <translation>Vyberte, prosím, sloupec, který bude nakreslen!</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="1873"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="1889"/>
-        <source>Please select four columns for this operation!</source>
-        <translation>Vyberte, prosím, čtyři sloupce pro tuto operaci!</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="2070"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="2078"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="2136"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="3512"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="3523"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="3528"/>
-        <source>QtiPlot - Warning</source>
-        <translation>QtiPlot - Varování</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="2071"/>
-        <source>&lt;h4&gt;There are no tables available in this project.&lt;/h4&gt;&lt;p&gt;&lt;h4&gt;Please create a table and try again!&lt;/h4&gt;</source>
-        <translation>&lt;h4&gt;V tomto projektu nejsou dostupné žádné tabulky.&lt;/h4&gt;&lt;p&gt;&lt;h4&gt;Vytvořte, prosím, tabulku a zkuste to znovu!&lt;/h4&gt;</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="2079"/>
-        <source>There are no available columns with plot designation set to Z!</source>
-        <translation>Nejsou zde dostupné žádné sloupce s přiřazením nákresu nastaveným na Z!</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="2084"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="2093"/>
-        <source>QtiPlot - Choose data set</source>
-        <translation>QtiPlot - Vyberte soubor s daty</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="2109"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="2144"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="2403"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="2901"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="3177"/>
-        <source>Matrix</source>
-        <translation>Matice</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="2108"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="2143"/>
-        <source>QtiPlot - Choose matrix to plot</source>
-        <translation>QtiPlot - Vyberte matici, která bude nakreslena</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="2137"/>
-        <source>&lt;h4&gt;There are no matrices available in this project.&lt;/h4&gt;&lt;p&gt;&lt;h4&gt;Please create a matrix and try again!&lt;/h4&gt;</source>
-        <translation>&lt;h4&gt;V tomto projektu nejsou dostupné žádné matice.&lt;/h4&gt;&lt;p&gt;&lt;h4&gt;Vytvořte, prosím, matici a zkuste to znovu!&lt;/h4&gt;</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="2273"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="2440"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="2479"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="2513"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="2529"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="2634"/>
-        <location filename="../src/core/ApplicationWindow.h" line="287"/>
-        <source>Graph</source>
-        <translation>Nákres</translation>
-    </message>
-    <message>
-        <source>QtiPlot - Export error</source>
-        <translation type="obsolete">QtiPlot - Chyba při vyvedení</translation>
-    </message>
-    <message>
-        <source>Could not write to file: &lt;br&gt;&lt;h4&gt; %1 &lt;/h4&gt;&lt;p&gt;Please verify that you have the right to write to this location!</source>
-        <translation type="obsolete">Nelze zapisovat do souboru: &lt;br&gt;&lt;h4&gt; %1 &lt;/h4&gt;&lt;p&gt;Ověřte, prosím, že máte oprávnění pro zápis do tohoto umístění!</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="2416"/>
-        <source>Images</source>
-        <translation>Obrázky</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="2383"/>
-        <source>QtiPlot - Import image from file</source>
-        <translation>QtiPlot - Zavést obrázek ze souboru</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="2428"/>
-        <source>QtiPlot - Load image from file</source>
-        <translation>QtiPlot - Nahrát obrázek ze souboru</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="2504"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="2597"/>
-        <source>Please select a Y column to plot!</source>
-        <translation>Vyberte, prosím, sloupec Y pro nakreslení!</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="2773"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="2914"/>
-        <source>QtiPlot - Renamed Window</source>
-        <translation>QtiPlot - přejmenované okno</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="2774"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="2915"/>
-        <source>The table &apos;%1&apos; already exists. It has been renamed &apos;%2&apos;.</source>
-        <translation>Tabulka &apos;%1&apos; již existuje. Byla přejmenována na &apos;%2&apos;.</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="720"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="1056"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="2865"/>
-        <source>Notes</source>
-        <translation>Poznámky</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="2931"/>
-        <source>Set Image Mode</source>
-        <translation>Nastavit režim obrázku</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="2943"/>
-        <source>Set Data Mode</source>
-        <translation>Nastavit režim dat</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="2955"/>
-        <source>Show X/Y</source>
-        <translation>Ukázat X/Y</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="2967"/>
-        <source>Show Column/Row</source>
-        <translation>Ukázat Sloupec/Řádek</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="2980"/>
-        <source>Set Default Palette</source>
-        <translation>Nastavit výchozí paletu</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="2993"/>
-        <source>Set Gray Scale Palette</source>
-        <translation>Nastavit paletu odstínů šedi</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="3006"/>
-        <source>Set Rainbow Palette</source>
-        <translation>Nastavit paletu barev</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="3076"/>
-        <source>Determinant of </source>
-        <translation>Determinant</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="3513"/>
-        <source>&lt;h4&gt;There are no plot layers available in this window.&lt;/h4&gt;&lt;p&gt;&lt;h4&gt;Please add a layer and try again!&lt;/h4&gt;</source>
-        <translation>&lt;h4&gt;V tomto okně nejsou dostupné žádné vrstvy nákresu.&lt;/h4&gt;&lt;p&gt;&lt;h4&gt;Přidejte, prosím, vrstvu, a zkuste to znovu!&lt;/h4&gt;</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="3523"/>
-        <source>There are no curves available on this plot!</source>
-        <translation>Nejsou zde žádné křivky, které by byly dostupné pro tento nákres!</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="3528"/>
-        <source>This functionality is not available for pie plots!</source>
-        <translation>Tento rozsah funkcí není pro koláčové nákresy dostupný!</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="3553"/>
-        <source>QtiPlot - Error bars error</source>
-        <translation>QtiPlot - Chyba pruhu s chybami</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="3554"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="3615"/>
-        <source>This feature is not available for user defined function curves!</source>
-        <translation>Tato funkce není pro uživatelem stanovené křivky funkcí dostupná!</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="3621"/>
-        <source>The selected columns have different numbers of rows!</source>
-        <translation>Vybrané sloupce mají různé počty řádků!</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="3628"/>
-        <source>The selected error column is empty!</source>
-        <translation>Vybraný chybový sloupec je prázdný!</translation>
-    </message>
-    <message>
-        <source>QtiPlot - File openning error</source>
-        <translation type="obsolete">QtiPlot - Chyba při otevírání souboru</translation>
-    </message>
-    <message>
-        <source>The file: &lt;b&gt;%1&lt;/b&gt; is the current file!</source>
-        <translation type="obsolete">Soubor: &lt;b&gt;%1&lt;/b&gt; je nynější soubor!</translation>
-    </message>
-    <message>
-        <source>The file: &lt;b&gt;%1&lt;/b&gt; doesn&apos;t exist!</source>
-        <translation type="obsolete">Soubor: &lt;b&gt;%1&lt;/b&gt; neexistuje!</translation>
-    </message>
-    <message>
-        <source>You don&apos;t have the permission to open this file: &lt;b&gt;%1&lt;/b&gt;</source>
-        <translation type="obsolete">Nemáte oprávnění pro otevření tohoto souboru: &lt;b&gt;%1&lt;/b&gt;</translation>
-    </message>
-    <message>
-        <source>QtiPlot - File opening error</source>
-        <translation type="obsolete">QtiPlot - Chyba při otevírání souboru</translation>
-    </message>
-    <message>
-        <source>The file &lt;b&gt;%1&lt;/b&gt; is corrupted, but there exists a backup copy.&lt;br&gt;Do you want to open the backup instead?</source>
-        <translation type="obsolete">Soubor &lt;b&gt;%1&lt;/b&gt; je porušen, ale existuje kopie se zálohou dat.&lt;br&gt;Chcete místo něj otevřít zálohu?</translation>
-    </message>
-    <message>
-        <source>The file: &lt;b&gt; %1 &lt;/b&gt; was not created using QtiPlot!</source>
-        <translation type="obsolete">Soubor: &lt;b&gt; %1&lt;/b&gt; nebyl vytvořen QtiPlotem!</translation>
-    </message>
-    <message>
-        <source>QtiPlot - File Open Error</source>
-        <translation type="obsolete">QtiPlot - Chyba při otevírání souboru</translation>
-    </message>
-    <message>
-        <source>The file: &lt;b&gt; %1 &lt;/b&gt; &lt;p&gt;does not exist anymore!&lt;p&gt;It will be removed from the list.</source>
-        <translation type="obsolete">Soubor: &lt;b&gt; %1&lt;/b&gt; &lt;p&gt;už neexistuje!&lt;p&gt;Bude odstraněn ze seznamu.</translation>
-    </message>
-    <message>
-        <source>The file: &lt;p&gt;&lt;b&gt; %1 &lt;/b&gt;&lt;p&gt; is the current file!</source>
-        <translation type="obsolete">Soubor: &lt;p&gt;&lt;b&gt; %1 &lt;/b&gt;&lt;p&gt; je nynější soubor!</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="3886"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="3903"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="3937"/>
-        <source>QtiPlot</source>
-        <translation>QtiPlot</translation>
-    </message>
-    <message>
-        <source>The file &quot;%1&quot; was created using &quot;%2&quot; as scripting language.
-
-Initializing support for this language FAILED; I&apos;m using &quot;%3&quot; instead.
-Various parts of this file may not be displayed as expected.</source>
-        <translation type="obsolete">Soubor &quot;%1&quot; byl vytvořen &quot;%2&quot; jako skriptovací jazyk.
-
-Inicializace podpory pro tento jazyk SELHALA; Místo toho se používá &quot;%3&quot;.
-Různé části tohoto souboru se nemusí zobrazovat tak, jak se očekává.</translation>
-    </message>
-    <message>
-        <source>Window</source>
-        <translation type="obsolete">Okno</translation>
-    </message>
-    <message>
-        <source>QtiPlot - Opening file</source>
-        <translation type="obsolete">QtiPlot - Otevírá se soubor</translation>
-    </message>
-    <message>
-        <source>Script Error</source>
-        <translation type="obsolete">Chyba skriptu</translation>
-    </message>
-    <message>
-        <source>QtiPlot - Scripting Error</source>
-        <translation type="obsolete">QtiPlot - Chyba skriptu</translation>
-    </message>
-    <message>
-        <source>Scripting language &quot;%1&quot; failed to initialize.</source>
-        <translation type="obsolete">Skriptovací jazyk &quot;%1&quot; se nepodařilo inicializovat.</translation>
-    </message>
-    <message>
-        <source>QtiPlot - Open Template File</source>
-        <translation type="obsolete">QtiPlot - Otevřít soubor šablony</translation>
-    </message>
-    <message>
-        <source>The file: &lt;b&gt;%1&lt;/b&gt; is not a QtiPlot template file!</source>
-        <translation type="obsolete">Soubor: &lt;b&gt; %1&lt;/b&gt; není souborem šablony programu QtiPlot!</translation>
-    </message>
-    <message>
-        <source>Table1</source>
-        <translation type="obsolete">Tabulka 1</translation>
-    </message>
-    <message>
-        <source>QtiPlot - Export Error</source>
-        <translation type="obsolete">QtiPlot - Chyba při vyvedení</translation>
-    </message>
-    <message>
-        <source>&lt;h4&gt;There are no plot layers available in this window!&lt;/h4&gt;</source>
-        <translation type="obsolete">&lt;h4&gt;V tomto okně nejsou dostupné žádné vrstvy nákresu!&lt;/h4&gt;</translation>
-    </message>
-    <message>
-        <source>Choose a directory to export the graphs to</source>
-        <translation type="obsolete">Vybrat adresář, do něhož se budou vyvádět nákresy</translation>
-    </message>
-    <message>
-        <source>Output format:</source>
-        <translation type="obsolete">Výstupní formát:</translation>
-    </message>
-    <message>
-        <source>Directory:</source>
-        <translation type="obsolete">Adresář:</translation>
-    </message>
-    <message>
-        <source>There are no plot layers available in window &lt;b&gt;%1&lt;/b&gt;.&lt;br&gt;Graph window not exported!</source>
-        <translation type="obsolete">V tomto okně nejsou dostupné žádné vrstvy nákresu, &lt;b&gt;%1&lt;/b&gt;.&lt;br&gt;Okno s nákresem nebylo vyvedeno!</translation>
-    </message>
-    <message>
-        <source>A file called: &lt;p&gt;&lt;b&gt;%1&lt;/b&gt;&lt;p&gt;already exists. Do you want to overwrite it?</source>
-        <translation type="obsolete">Soubor nazvaný: &lt;p&gt;&lt;b&gt;%1&lt;/b&gt;&lt;p&gt;již existuje. Chcete jej přepsat?</translation>
-    </message>
-    <message>
-        <source>QtiPlot - Overwrite file?</source>
-        <translation type="obsolete">QtiPlot - Přepsat soubor?</translation>
-    </message>
-    <message>
-        <source>Could not write to file: &lt;br&gt;&lt;h4&gt;%1&lt;/h4&gt;&lt;p&gt;Please verify that you have the right to write to this location!</source>
-        <translation type="obsolete">Nelze zapisovat do souboru: &lt;br&gt;&lt;h4&gt; %1 &lt;/h4&gt;&lt;p&gt;Ověřte, prosím, že máte oprávnění pro zápis do tohoto umístění!</translation>
-    </message>
-    <message>
-        <source>Minimized</source>
-        <translation type="obsolete">Zmenšen</translation>
-    </message>
-    <message>
-        <source>Maximized</source>
-        <translation type="obsolete">Zvětšen</translation>
-    </message>
-    <message>
-        <source>QtiPlot project</source>
-        <translation type="obsolete">Projekt QtiPlotu</translation>
-    </message>
-    <message>
-        <source>Compressed QtiPlot project</source>
-        <translation type="obsolete">Stlačený projekt QtiPlotu</translation>
-    </message>
-    <message>
-        <source>Save Project As</source>
-        <translation type="obsolete">Projekt uložit jako</translation>
-    </message>
-    <message>
-        <source>QtiPlot Matrix Template</source>
-        <translation type="obsolete">Předloha matice pro QtiPlot</translation>
-    </message>
-    <message>
-        <source>QtiPlot 2D Graph Template</source>
-        <translation type="obsolete">Předloha QtiPlotu pro dvojrozměrné nákresy</translation>
-    </message>
-    <message>
-        <source>QtiPlot Table Template</source>
-        <translation type="obsolete">Předloha tabulky pro QtiPlot</translation>
-    </message>
-    <message>
-        <source>QtiPlot 3D Surface Template</source>
-        <translation type="obsolete">Předloha QtiPlotu pro trojrozměrné povrchy</translation>
-    </message>
-    <message>
-        <source>Save Window As Template</source>
-        <translation type="obsolete">Uložit okno jako šablonu</translation>
-    </message>
-    <message>
-        <source>Please enter a valid name!</source>
-        <translation type="obsolete">Zadejte, prosím, platný název!</translation>
-    </message>
-    <message>
-        <source>The name you chose is not valid: only letters and digits are allowed!</source>
-        <translation type="obsolete">Název, který jste vybral, není platný: jsou povoleny pouze číslice a písmena!</translation>
-    </message>
-    <message>
-        <source>Please choose another name!</source>
-        <translation type="obsolete">Vyberte, prosím, jiný název!</translation>
-    </message>
-    <message>
-        <source>Name &lt;b&gt;%1&lt;/b&gt; already exists!</source>
-        <translation type="obsolete">Název: &lt;b&gt;%1&lt;/b&gt; již existuje!</translation>
-    </message>
-    <message>
-        <source>Warning: for internal consistency reasons the underscore character is replaced with a minus sign.</source>
-        <translation type="obsolete">Varování: Kvůli zajištění vnitřní ucelenosti byl znak podtržení nahrazen znaménkem mínus.</translation>
-    </message>
-    <message>
-        <source>Choose a directory to export the tables to</source>
-        <translation type="obsolete">Vybrat, prosím, adresář, do něhož se budou vyvádět tabulky</translation>
-    </message>
-    <message>
-        <source>&amp;Yes</source>
-        <translation type="obsolete">&amp;Ano</translation>
-    </message>
-    <message>
-        <source>&amp;All</source>
-        <translation type="obsolete">&amp;Vše</translation>
-    </message>
-    <message>
-        <source>&amp;Cancel</source>
-        <translation type="obsolete">&amp;Zrušit</translation>
-    </message>
-    <message>
-        <source>Choose a filename to save under</source>
-        <translation type="obsolete">Vybrat název souboru, pod nímž se bude ukládat</translation>
-    </message>
-    <message>
-        <source>QtiPlot - Enter rows number</source>
-        <translation type="obsolete">QtiPlot - Zadat počet řádků</translation>
-    </message>
-    <message>
-        <source>Rows</source>
-        <translation type="obsolete">Řádky</translation>
-    </message>
-    <message>
-        <source>QtiPlot - Delete rows</source>
-        <translation type="obsolete">QtiPlot - Odstranit řádky</translation>
-    </message>
-    <message>
-        <source>Start row</source>
-        <translation type="obsolete">Začátek řádku</translation>
-    </message>
-    <message>
-        <source>End row</source>
-        <translation type="obsolete">Konec řádku</translation>
-    </message>
-    <message>
-        <source>QtiPlot - Enter columns number</source>
-        <translation type="obsolete">QtiPlot - Chyba v počtu sloupců</translation>
-    </message>
-    <message>
-        <source>Columns</source>
-        <translation type="obsolete">Sloupce</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="3214"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="3233"/>
-        <source>QtiPlot - Column selection error</source>
-        <translation>QtiPlot - Chyba při výběru sloupců</translation>
-    </message>
-    <message>
-        <source>Please select a column first!</source>
-        <translation type="obsolete">Vyberte, prosím, nejprve sloupec!</translation>
-    </message>
-    <message>
-        <source>Please select two columns for this operation!</source>
-        <translation type="obsolete">Vyberte, prosím, dva sloupce pro tuto operaci!</translation>
-    </message>
-    <message>
-        <source>Please select exactly one columns for this operation!</source>
-        <translation type="obsolete">Vyberte, prosím, přesně jeden sloupec pro tuto operaci!</translation>
-    </message>
-    <message>
-        <source>Please select two columns for this operation:
- the first represents the signal and the second the response function!</source>
-        <translation type="obsolete">Vyberte, prosím, dva sloupce pro tuto operaci:
-První představuje funkci signálu a druhý funkci odpovědi!</translation>
-    </message>
-    <message>
-        <source>QtiPlot - Row selection error</source>
-        <translation type="obsolete">QtiPlot - Chyba při výběru řádků</translation>
-    </message>
-    <message>
-        <source>Please select a row first!</source>
-        <translation type="obsolete">Vyberte, prosím, nejprve řádek!</translation>
-    </message>
-    <message>
-        <source>&amp;Line</source>
-        <translation type="obsolete">&amp;Čára</translation>
-    </message>
-    <message>
-        <source>&amp;Scatter</source>
-        <translation type="obsolete">&amp;Body</translation>
-    </message>
-    <message>
-        <source>Line + S&amp;ymbol</source>
-        <translation type="obsolete">Čára + &amp;Značky</translation>
-    </message>
-    <message>
-        <source>Vertical &amp;Drop Lines</source>
-        <translation type="obsolete">Svislé &amp;čáry</translation>
-    </message>
-    <message>
-        <source>&amp;Spline</source>
-        <translation type="obsolete">&amp;Spline</translation>
-    </message>
-    <message>
-        <source>&amp;Vertical Steps</source>
-        <translation type="obsolete">&amp;Svislé stupně</translation>
-    </message>
-    <message>
-        <source>&amp;Horizontal Steps</source>
-        <translation type="obsolete">&amp;Vodorovné kroky</translation>
-    </message>
-    <message>
-        <source>&amp;Columns</source>
-        <translation type="obsolete">&amp;Sloupce</translation>
-    </message>
-    <message>
-        <source>&amp;Rows</source>
-        <translation type="obsolete">&amp;Řádky</translation>
-    </message>
-    <message>
-        <source>&amp;Area</source>
-        <translation type="obsolete">&amp;Oblast</translation>
-    </message>
-    <message>
-        <source>&amp;Pie</source>
-        <translation type="obsolete">&amp;Koláčový nákres</translation>
-    </message>
-    <message>
-        <source>3D Ribbo&amp;n</source>
-        <translation type="obsolete">Trojrozměrný pr&amp;uh</translation>
-    </message>
-    <message>
-        <source>3D &amp;Bars</source>
-        <translation type="obsolete">Trojrozměrné &amp;tyče</translation>
-    </message>
-    <message>
-        <source>3&amp;D Scatter</source>
-        <translation type="obsolete">Troj&amp;rozměrná změť</translation>
-    </message>
-    <message>
-        <source>3D &amp;Trajectory</source>
-        <translation type="obsolete">Trojrozměr&amp;ná dráha</translation>
-    </message>
-    <message>
-        <source>&amp;Histogram</source>
-        <translation type="obsolete">&amp;Histogram</translation>
-    </message>
-    <message>
-        <source>&amp;Stacked Histograms</source>
-        <translation type="obsolete">&amp;Naskládané histogramy</translation>
-    </message>
-    <message>
-        <source>Cu&amp;t</source>
-        <translation type="obsolete">Vyj&amp;mout</translation>
-    </message>
-    <message>
-        <source>&amp;Copy</source>
-        <translation type="obsolete">&amp;Kopírovat</translation>
-    </message>
-    <message>
-        <source>Past&amp;e</source>
-        <translation type="obsolete">Vlo&amp;žit</translation>
-    </message>
-    <message>
-        <source>&amp;X</source>
-        <translation type="obsolete">&amp;x</translation>
-    </message>
-    <message>
-        <source>&amp;Y</source>
-        <translation type="obsolete">&amp;y</translation>
-    </message>
-    <message>
-        <source>&amp;Z</source>
-        <translation type="obsolete">&amp;z</translation>
-    </message>
-    <message>
-        <source>&amp;Label</source>
-        <translation type="obsolete">&amp;Štítek</translation>
-    </message>
-    <message>
-        <source>&amp;None</source>
-        <translation type="obsolete">&amp;Žádná</translation>
-    </message>
-    <message>
-        <source>X E&amp;rror</source>
-        <translation type="obsolete">Chy&amp;ba x</translation>
-    </message>
-    <message>
-        <source>Y &amp;Error</source>
-        <translation type="obsolete">Chy&amp;ba y</translation>
-    </message>
-    <message>
-        <source>Set As</source>
-        <translation type="obsolete">Nastavit jako</translation>
-    </message>
-    <message>
-        <source>&amp;Fill Column With</source>
-        <translation type="obsolete">&amp;Vyplnit sloupec</translation>
-    </message>
-    <message>
-        <source>&amp;Column</source>
-        <translation type="obsolete">&amp;Sloupec</translation>
-    </message>
-    <message>
-        <source>Clea&amp;r</source>
-        <translation type="obsolete">Vypráz&amp;dnit</translation>
-    </message>
-    <message>
-        <source>&amp;Delete</source>
-        <translation type="obsolete">&amp;Smazat</translation>
-    </message>
-    <message>
-        <source>&amp;Insert</source>
-        <translation type="obsolete">&amp;Vložit</translation>
-    </message>
-    <message>
-        <source>&amp;Ascending</source>
-        <translation type="obsolete">&amp;Vzestupný</translation>
-    </message>
-    <message>
-        <source>&amp;Descending</source>
-        <translation type="obsolete">&amp;Sestupný</translation>
-    </message>
-    <message>
-        <source>Sort Colu&amp;mn</source>
-        <translation type="obsolete">Seřadit slou&amp;pec</translation>
-    </message>
-    <message>
-        <source>Vectors &amp;XYXY</source>
-        <translation type="obsolete">Vektory &amp;XYXY</translation>
-    </message>
-    <message>
-        <source>&amp;Vertical 2 Layers</source>
-        <translation type="obsolete">&amp;Dvě svislé vrstvy</translation>
-    </message>
-    <message>
-        <source>&amp;Horizontal 2 Layers</source>
-        <translation type="obsolete">Dvě vodo&amp;rovné vrstvy</translation>
-    </message>
-    <message>
-        <source>&amp;4 Layers</source>
-        <translation type="obsolete">&amp;Čtyři vrstvy</translation>
-    </message>
-    <message>
-        <source>&amp;Stacked Layers</source>
-        <translation type="obsolete">&amp;Vrstvené vrstvy</translation>
-    </message>
-    <message>
-        <source>You need to select at least one Y column for this operation!</source>
-        <translation type="obsolete">Pro tuto operaci je potřeba, abyste vybral alespoň jeden sloupec Y!</translation>
-    </message>
-    <message>
-        <source>You need at least two columns for this operation!</source>
-        <translation type="obsolete">Pro tuto operaci je potřeba, abyste vybral alespoň dva sloupce!</translation>
-    </message>
-    <message>
-        <source>Y2 Axis Title</source>
-        <translation type="obsolete">Název osy Y2</translation>
-    </message>
-    <message>
-        <source>Not available for empty 3D surface plots!</source>
-        <translation type="obsolete">Není dostupné pro nákresy trojrozměrných povrchů bez dat!</translation>
-    </message>
-    <message>
-        <source>Set Display Range</source>
-        <translation type="obsolete">Nastavit rozsah zobrazení</translation>
-    </message>
-    <message>
-        <source>&lt;h4&gt;There are no plot layers available in this window.&lt;/h4&gt;</source>
-        <translation type="obsolete">&lt;h4&gt;V tomto okně nejsou dostupné žádné vrstvy nákresu.&lt;/h4&gt;</translation>
-    </message>
-    <message>
-        <source>This will modify the data in the worksheets!
-Are you sure you want to continue?</source>
-        <translation type="obsolete">Tato operace upraví data v pracovních listech!
-Jste si jist, že chcete pokračovat?</translation>
-    </message>
-    <message>
-        <source>Continue</source>
-        <translation type="obsolete">Pokračovat</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation type="obsolete">Zrušit</translation>
-    </message>
-    <message>
-        <source>Could not write to file: &lt;h4&gt;%1&lt;/h4&gt;&lt;p&gt;Please verify that you have the right to write to this location or that the file is not being used by another application!</source>
-        <translation type="obsolete">Nelze zapisovat do souboru: &lt;h4&gt;%1&lt;/h4&gt;&lt;p&gt;Ověřte, prosím, že máte oprávnění pro zápis do tohoto umístění, nebo že soubor nepoužívá další aplikace!</translation>
-    </message>
-    <message>
-        <source>Sorry, there are no results to display!</source>
-        <translation type="obsolete">Promiňte, ale nejsou zde žádné výsledky, které by bylo možné zobrazit!</translation>
-    </message>
-    <message>
-        <source>There are no plot layers available in this window!</source>
-        <translation type="obsolete">V tomto okně nejsou dostupné žádné vrstvy nákresu!</translation>
-    </message>
-    <message>
-        <source>There are no layers available on this plot. Operation aborted!</source>
-        <translation type="obsolete">U tohoto nákresu nejsou dostupné žádné vrstvy. Operace byla zrušena!</translation>
-    </message>
-    <message>
-        <source>QtiPlot - Insert image from file</source>
-        <translation type="obsolete">QtiPlot - Vložit obrázek ze souboru</translation>
-    </message>
-    <message>
-        <source>There are no plot layers available in this window.</source>
-        <translation type="obsolete">V tomto okně nejsou dostupné žádné vrstvy nákresu.</translation>
-    </message>
-    <message>
-        <source>QtiPlot - Duplicate window error</source>
-        <translation type="obsolete">QtiPlot - Chyba při zdvojení okna</translation>
-    </message>
-    <message>
-        <source>There are no windows available in this project!</source>
-        <translation type="obsolete">V tomto projektu nejsou dostupná žádná okna!</translation>
-    </message>
-    <message>
-        <source>QtiPlot - Duplicate error</source>
-        <translation type="obsolete">QtiPlot - Chyba při zdvojení</translation>
-    </message>
-    <message>
-        <source>Empty 3D surface plots cannot be duplicated!</source>
-        <translation type="obsolete">Nelze zdvojit prázdné nákresy trojrozměrných povrchů!</translation>
-    </message>
-    <message>
-        <source>Released</source>
-        <translation type="obsolete">Uvolněno</translation>
-    </message>
-    <message>
-        <source>About QtiPlot</source>
-        <translation type="obsolete">O programu QtiPlot</translation>
-    </message>
-    <message>
-        <source>&amp;Translate</source>
-        <translation type="obsolete">&amp;Přeložit</translation>
-    </message>
-    <message>
-        <source>Vie&amp;w</source>
-        <translation type="obsolete">&amp;Pohled</translation>
-    </message>
-    <message>
-        <source>&amp;Palette</source>
-        <translation type="obsolete">&amp;Paleta</translation>
-    </message>
-    <message>
-        <source>&amp;Convert to Spreadsheet</source>
-        <translation type="obsolete">&amp;Převést na tabulku</translation>
-    </message>
-    <message>
-        <source>&amp;Folders</source>
-        <translation type="obsolete">&amp;Složky</translation>
-    </message>
-    <message>
-        <source>&amp;Cascade</source>
-        <translation type="obsolete">&amp;Překrývat</translation>
-    </message>
-    <message>
-        <source>&amp;Tile</source>
-        <translation type="obsolete">Jeden &amp;vedle druhého (kachlička)</translation>
-    </message>
-    <message>
-        <source>Close &amp;Window</source>
-        <translation type="obsolete">Zavřít &amp;okno</translation>
-    </message>
-    <message>
-        <source>More windows...</source>
-        <translation type="obsolete">Další okna...</translation>
-    </message>
-    <message>
-        <source>&amp;View Pixel Line profile</source>
-        <translation type="obsolete">&amp;Ukázat profil čár</translation>
-    </message>
-    <message>
-        <source>&amp;Intensity Matrix</source>
-        <translation type="obsolete">&amp;Matice síly</translation>
-    </message>
-    <message>
-        <source>&amp;Cut</source>
-        <translation type="obsolete">&amp;Vyjmout</translation>
-    </message>
-    <message>
-        <source>&amp;Properties...</source>
-        <translation type="obsolete">&amp;Vlastnosti...</translation>
-    </message>
-    <message>
-        <source>Please use the project explorer to select a window!</source>
-        <translation type="obsolete">Pro výběr okna použijte, prosím, projektového průzkumníka!</translation>
-    </message>
-    <message>
-        <source>Normal</source>
-        <translation type="obsolete">Obvyklá</translation>
-    </message>
-    <message>
-        <source>Save changes to project: &lt;p&gt;&lt;b&gt; %1 &lt;/b&gt; ?</source>
-        <translation type="obsolete">Uložit změny do projektu: &lt;p&gt;&lt;b&gt; %1 &lt;/b&gt;?</translation>
-    </message>
-    <message>
-        <source>Yes</source>
-        <translation type="obsolete">Ano</translation>
-    </message>
-    <message>
-        <source>No</source>
-        <translation type="obsolete">Ne</translation>
-    </message>
-    <message>
-        <source>&amp;Show All Windows</source>
-        <translation type="obsolete">&amp;Ukázat všechna okna</translation>
-    </message>
-    <message>
-        <source>&amp;Hide All Windows</source>
-        <translation type="obsolete">&amp;Skrýt všechna okna</translation>
-    </message>
-    <message>
-        <source>&amp;Delete Selection</source>
-        <translation type="obsolete">&amp;Smazat výběr</translation>
-    </message>
-    <message>
-        <source>New &amp;Window</source>
-        <translation type="obsolete">Nové &amp;okno</translation>
-    </message>
-    <message>
-        <source>New F&amp;older</source>
-        <translation type="obsolete">Nová &amp;složka</translation>
-    </message>
-    <message>
-        <source>Auto &amp;Column Width</source>
-        <translation type="obsolete">Automatická &amp;šířka sloupce</translation>
-    </message>
-    <message>
-        <source>&amp;Delete Window</source>
-        <translation type="obsolete">&amp;Smazat okno</translation>
-    </message>
-    <message>
-        <source>&amp;Rename Window</source>
-        <translation type="obsolete">&amp;Přejmenovat okno</translation>
-    </message>
-    <message>
-        <source>&amp;Print Window</source>
-        <translation type="obsolete">&amp;Tisk okna</translation>
-    </message>
-    <message>
-        <source>D&amp;epending Graphs</source>
-        <translation type="obsolete">&amp;Závisející nákresy</translation>
-    </message>
-    <message>
-        <source>D&amp;epending 3D Graphs</source>
-        <translation type="obsolete">&amp;Závisející trojrozměrné nákresy</translation>
-    </message>
-    <message>
-        <source>D&amp;epends on</source>
-        <translation type="obsolete">Zá&amp;visí na</translation>
-    </message>
-    <message>
-        <source>Function</source>
-        <translation type="obsolete">Funkce</translation>
-    </message>
-    <message>
-        <source>Re&amp;move Pie Curve</source>
-        <translation type="obsolete">Odstranit &amp;zobrazení koláče</translation>
-    </message>
-    <message>
-        <source>Anal&amp;yze</source>
-        <translation type="obsolete">Provést &amp;rozbor</translation>
-    </message>
-    <message>
-        <source>&amp;Paste Layer</source>
-        <translation type="obsolete">&amp;Vložit zkopírovanou vrstvu</translation>
-    </message>
-    <message>
-        <source>&amp;Paste Text</source>
-        <translation type="obsolete">&amp;Vložit zkopírovaný text</translation>
-    </message>
-    <message>
-        <source>&amp;Paste Tex Formula</source>
-        <translation type="obsolete">&amp;Vložit vzorec TeX</translation>
-    </message>
-    <message>
-        <source>&amp;Paste Image</source>
-        <translation type="obsolete">&amp;Vložit zkopírovaný obrázek</translation>
-    </message>
-    <message>
-        <source>&amp;Paste Rectangle</source>
-        <translation type="obsolete">&amp;Vložit obdélník</translation>
-    </message>
-    <message>
-        <source>&amp;Paste Ellipse</source>
-        <translation type="obsolete">&amp;Vložit elipsu</translation>
-    </message>
-    <message>
-        <source>&amp;Paste Line/Arrow</source>
-        <translation type="obsolete">&amp;Vložit zkopírovanou čáru/šipku</translation>
-    </message>
-    <message>
-        <source>&amp;Layer</source>
-        <translation type="obsolete">&amp;Vrstva</translation>
-    </message>
-    <message>
-        <source>&amp;Window</source>
-        <translation type="obsolete">&amp;Okno</translation>
-    </message>
-    <message>
-        <source>E&amp;xport</source>
-        <translation type="obsolete">&amp;Vyvést</translation>
-    </message>
-    <message>
-        <source>&amp;Print</source>
-        <translation type="obsolete">&amp;Tisk</translation>
-    </message>
-    <message>
-        <source>P&amp;roperties...</source>
-        <translation type="obsolete">Vla&amp;stnosti...</translation>
-    </message>
-    <message>
-        <source>&amp;Delete Layer</source>
-        <translation type="obsolete">&amp;Smazat vrstvu</translation>
-    </message>
-    <message>
-        <source>&amp;Copy Page</source>
-        <translation type="obsolete">&amp;Kopírovat stranu</translation>
-    </message>
-    <message>
-        <source>E&amp;xport Page</source>
-        <translation type="obsolete">&amp;Vyvést stranu</translation>
-    </message>
-    <message>
-        <source>&amp;Matrix...</source>
-        <translation type="obsolete">&amp;Matice...</translation>
-    </message>
-    <message>
-        <source>Choose &amp;Data Set...</source>
-        <translation type="obsolete">Vybrat &amp;datový soubor...</translation>
-    </message>
-    <message>
-        <source>Choose &amp;Matrix...</source>
-        <translation type="obsolete">Vybrat &amp;matici...</translation>
-    </message>
-    <message>
-        <source>C&amp;lear</source>
-        <translation type="obsolete">&amp;Vyprázdnit</translation>
-    </message>
-    <message>
-        <source>&amp;Copy Graph</source>
-        <translation type="obsolete">&amp;Kopírovat nákres</translation>
-    </message>
-    <message>
-        <source>&amp;Export</source>
-        <translation type="obsolete">&amp;Vyvést</translation>
-    </message>
-    <message>
-        <source>&amp;Paste</source>
-        <translation type="obsolete">&amp;Vložit</translation>
-    </message>
-    <message>
-        <source>&amp;Insert Row</source>
-        <translation type="obsolete">&amp;Vložit řádek</translation>
-    </message>
-    <message>
-        <source>&amp;Insert Column</source>
-        <translation type="obsolete">&amp;Vložit sloupec</translation>
-    </message>
-    <message>
-        <source>&amp;Delete Rows</source>
-        <translation type="obsolete">&amp;Smazat řádky</translation>
-    </message>
-    <message>
-        <source>&amp;Delete Columns</source>
-        <translation type="obsolete">&amp;Smazat sloupce</translation>
-    </message>
-    <message>
-        <source>&amp;Delete Row</source>
-        <translation type="obsolete">&amp;Smazat řádek</translation>
-    </message>
-    <message>
-        <source>Clea&amp;r Row</source>
-        <translation type="obsolete">Vyprá&amp;zdnit řádek</translation>
-    </message>
-    <message>
-        <source>Clea&amp;r Rows</source>
-        <translation type="obsolete">Vyprá&amp;zdnit řádky</translation>
-    </message>
-    <message>
-        <source>Choose the location of the QtiPlot help folder!</source>
-        <translation type="obsolete">Vyberte umístění složky s nápovědou k programu QtiPlot!</translation>
-    </message>
-    <message>
-        <source>QtiPlot - index.html File Not Found!</source>
-        <translation type="obsolete">QtiPlot - index.html nebyl nalezen!</translation>
-    </message>
-    <message>
-        <source>There is no file called &lt;b&gt;index.html&lt;/b&gt; in this folder.&lt;br&gt;Please choose another folder!</source>
-        <translation type="obsolete">V tomto adresáři nebyl nalezen žádný soubor s názvem &lt;b&gt;index.html&lt;/b&gt;&lt;br&gt;Zvolte, prosím, jiný adresář!</translation>
-    </message>
-    <message>
-        <source>QtiPlot - Help Files Not Found!</source>
-        <translation type="obsolete">QtiPlot - Soubor s nápovědou nenalezen!</translation>
-    </message>
-    <message>
-        <source>The manual can be downloaded from the following internet address:</source>
-        <translation type="obsolete">Příručku lze stáhnout z následující adresy:</translation>
-    </message>
-    <message>
-        <source>QtiPlot - Help Profile Not Found!</source>
-        <translation type="obsolete">QtiPlot - Profil nápovědy nenalezen!</translation>
-    </message>
-    <message>
-        <source>The assistant could not start because the file &lt;b&gt;%1&lt;/b&gt; was not found in the help file directory!</source>
-        <translation type="obsolete">Pomocník nemohl být spuštěn, protože soubor &lt;b&gt;%1&lt;/b&gt; nebyl nalezen v adresáři se soubory nápovědy!</translation>
-    </message>
-    <message>
-        <source>This file is provided with the QtiPlot manual which can be downloaded from the following internet address:</source>
-        <translation type="obsolete">Tento soubor je poskytován s nápovědou ke QtiPlotu, která se dá stáhnout z následující internetové adresy:</translation>
-    </message>
-    <message>
-        <source>Please indicate the location of the help file!</source>
-        <translation type="obsolete">Ukažte, prosím, umístění souboru s nápovědou!</translation>
-    </message>
-    <message>
-        <source>QtiPlot - Edit function</source>
-        <translation type="obsolete">QtiPlot - Upravit funkci</translation>
-    </message>
-    <message>
-        <source>QtiPlot - Set the number of pixels to average</source>
-        <translation type="obsolete">QtiPlot - Nastavit počet pixelů na průměrnou hodnotu</translation>
-    </message>
-    <message>
-        <source>Number of averaged pixels</source>
-        <translation type="obsolete">Počet zprůměrovaných pixelů</translation>
-    </message>
-    <message>
-        <source>You must have more than one layer in the active window!</source>
-        <translation type="obsolete">V činném okně musíte mít více než jednu vrstvu!</translation>
-    </message>
-    <message>
-        <source>You must have more than one dataset in the active layer!</source>
-        <translation type="obsolete">V činné vrstvě musíte mít více než jeden soubor s daty!</translation>
-    </message>
-    <message>
-        <source>QtiPlot - Guess best origin for the new layer?</source>
-        <translation type="obsolete">QtiPlot - Určit nejlepší počátek souřadnic pro novou vrstvu?</translation>
-    </message>
-    <message>
-        <source>Do you want QtiPlot to guess the best position for the new layer?
- Warning: this will rearrange existing layers!</source>
-        <translation type="obsolete">Chcete, aby QtiPlot určil nejlepší polohu pro novou vrstvu?
-Varování. Tento krok přeuspořádá stávající vrstvy!</translation>
-    </message>
-    <message>
-        <source>&amp;Guess</source>
-        <translation type="obsolete">&amp;Určit</translation>
-    </message>
-    <message>
-        <source>&amp;Top-left corner</source>
-        <translation type="obsolete">&amp;Horní levý roh</translation>
-    </message>
-    <message>
-        <source>Curve</source>
-        <translation type="obsolete">Křivka</translation>
-    </message>
-    <message>
-        <source>Integration of %1 from zero is</source>
-        <translation type="obsolete">Začlenění %1 od nuly je</translation>
-    </message>
-    <message>
-        <source>Please select a &apos;Y&apos; column first!</source>
-        <translation type="obsolete">Vyberte, prosím, nejprve sloupec &apos;y&apos;!</translation>
-    </message>
-    <message>
-        <source>Integration of %1</source>
-        <translation type="obsolete">Začlenění %1</translation>
-    </message>
-    <message>
-        <source>Area</source>
-        <translation type="obsolete"> Oblast</translation>
-    </message>
-    <message>
-        <source>Linear Regression of %1</source>
-        <translation type="obsolete">Přímočarý pokles %1</translation>
-    </message>
-    <message>
-        <source>Slope</source>
-        <translation type="obsolete">Sklon</translation>
-    </message>
-    <message>
-        <source>Intercept</source>
-        <translation type="obsolete">Ohraničený úsek</translation>
-    </message>
-    <message>
-        <source>Chi^2</source>
-        <translation type="obsolete">Chi^2</translation>
-    </message>
-    <message>
-        <source>R^2</source>
-        <translation type="obsolete">R^2</translation>
-    </message>
-    <message>
-        <source>Add &amp;Custom Script Action...</source>
-        <translation type="obsolete">Přidat &amp;akci vlastního skriptu...</translation>
-    </message>
-    <message>
-        <source>New &amp;Project</source>
-        <translation type="obsolete">Nový &amp;projekt</translation>
-    </message>
-    <message>
-        <source>Ctrl+N</source>
-        <translation type="obsolete">Ctrl+N</translation>
-    </message>
-    <message>
-        <source>New &amp;Graph</source>
-        <translation type="obsolete">Nový &amp;nákres</translation>
-    </message>
-    <message>
-        <source>Ctrl+G</source>
-        <translation type="obsolete">Ctrl+G</translation>
-    </message>
-    <message>
-        <source>New &amp;Note</source>
-        <translation type="obsolete">Novou &amp;poznámku</translation>
-    </message>
-    <message>
-        <source>New &amp;Table</source>
-        <translation type="obsolete">Nová &amp;tabulka</translation>
-    </message>
-    <message>
-        <source>Ctrl+T</source>
-        <translation type="obsolete">Ctrl+T</translation>
-    </message>
-    <message>
-        <source>New &amp;Matrix</source>
-        <translation type="obsolete">Nová &amp;matice</translation>
-    </message>
-    <message>
-        <source>Ctrl+M</source>
-        <translation type="obsolete">Ctrl+M</translation>
-    </message>
-    <message>
-        <source>New &amp;Function Plot</source>
-        <translation type="obsolete">Nový &amp;nákres funkce</translation>
-    </message>
-    <message>
-        <source>Ctrl+F</source>
-        <translation type="obsolete">Ctrl+F</translation>
-    </message>
-    <message>
-        <source>New 3D &amp;Surface Plot</source>
-        <translation type="obsolete">Nový trojrozměrný &amp;nákres povrchu</translation>
-    </message>
-    <message>
-        <source>Ctrl+ALT+Z</source>
-        <translation type="obsolete">Ctrl+ALT+Z</translation>
-    </message>
-    <message>
-        <source>&amp;Open</source>
-        <translation type="obsolete">&amp;Otevřít</translation>
-    </message>
-    <message>
-        <source>Ctrl+O</source>
-        <translation type="obsolete">Ctrl+O</translation>
-    </message>
-    <message>
-        <source>Open Image &amp;File</source>
-        <translation type="obsolete">Otevřít soubor s &amp;obrázkem</translation>
-    </message>
-    <message>
-        <source>Ctrl+I</source>
-        <translation type="obsolete">Ctrl+I</translation>
-    </message>
-    <message>
-        <source>Import I&amp;mage...</source>
-        <translation type="obsolete">Zavést &amp;obrázek...</translation>
-    </message>
-    <message>
-        <source>&amp;Save Project</source>
-        <translation type="obsolete">&amp;Uložit projekt</translation>
-    </message>
-    <message>
-        <source>Ctrl+S</source>
-        <translation type="obsolete">Ctrl+S</translation>
-    </message>
-    <message>
-        <source>Save Project &amp;As...</source>
-        <translation type="obsolete">Uložit projekt &amp;jako...</translation>
-    </message>
-    <message>
-        <source>Ctrl+Shift+S</source>
-        <translation type="obsolete">Ctrl+Shift+S</translation>
-    </message>
-    <message>
-        <source>Open Temp&amp;late...</source>
-        <translation type="obsolete">Otevřít &amp;předlohu...</translation>
-    </message>
-    <message>
-        <source>Save As &amp;Template...</source>
-        <translation type="obsolete">Uložit jako &amp;předlohu...</translation>
-    </message>
-    <message>
-        <source>Save Note As...</source>
-        <translation type="obsolete">Uložit poznámku jako...</translation>
-    </message>
-    <message>
-        <source>&amp;Import ASCII...</source>
-        <translation type="obsolete">&amp;Zavést ASCII...</translation>
-    </message>
-    <message>
-        <source>&amp;Undo</source>
-        <translation type="obsolete">&amp;Vrátit zpět</translation>
-    </message>
-    <message>
-        <source>Ctrl+Z</source>
-        <translation type="obsolete">Ctrl+Z</translation>
-    </message>
-    <message>
-        <source>&amp;Redo</source>
-        <translation type="obsolete">&amp;Udělat znovu</translation>
-    </message>
-    <message>
-        <source>&amp;Duplicate</source>
-        <translation type="obsolete">&amp;Zdvojit</translation>
-    </message>
-    <message>
-        <source>Cu&amp;t Selection</source>
-        <translation type="obsolete">Vyj&amp;mout výběr</translation>
-    </message>
-    <message>
-        <source>Ctrl+X</source>
-        <translation type="obsolete">Ctrl+X</translation>
-    </message>
-    <message>
-        <source>&amp;Copy Selection</source>
-        <translation type="obsolete">&amp;Kopírovat výběr</translation>
-    </message>
-    <message>
-        <source>Ctrl+C</source>
-        <translation type="obsolete">Ctrl+C</translation>
-    </message>
-    <message>
-        <source>&amp;Paste Selection</source>
-        <translation type="obsolete">&amp;Vložit výběr</translation>
-    </message>
-    <message>
-        <source>Ctrl+V</source>
-        <translation type="obsolete">Ctrl+V</translation>
-    </message>
-    <message>
-        <source>Del</source>
-        <comment>delete key</comment>
-        <translation type="obsolete">Klávesa Delete</translation>
-    </message>
-    <message>
-        <source>Ctrl+E</source>
-        <translation type="obsolete">Ctrl+E</translation>
-    </message>
-    <message>
-        <source>Add La&amp;yer</source>
-        <translation type="obsolete">Přidat &amp;vrstvu</translation>
-    </message>
-    <message>
-        <source>ALT+L</source>
-        <translation type="obsolete">ALT+L</translation>
-    </message>
-    <message>
-        <source>Arran&amp;ge Layers</source>
-        <translation type="obsolete">&amp;Uspořádat vrstvy</translation>
-    </message>
-    <message>
-        <source>Shift+A</source>
-        <translation type="obsolete">Shift+A</translation>
-    </message>
-    <message>
-        <source>Automatic Layout</source>
-        <translation type="obsolete">Automatické rozvržení</translation>
-    </message>
-    <message>
-        <source>&amp;Current</source>
-        <translation type="obsolete">&amp;Nynější</translation>
-    </message>
-    <message>
-        <source>Ctrl+Alt+G</source>
-        <translation type="obsolete">Ctrl+Alt+G</translation>
-    </message>
-    <message>
-        <source>Alt+X</source>
-        <translation type="obsolete">Alt+X</translation>
-    </message>
-    <message>
-        <source>&amp;Export PDF</source>
-        <translation type="obsolete">&amp;Vyvést jako PDF</translation>
-    </message>
-    <message>
-        <source>Ctrl+Alt+P</source>
-        <translation type="obsolete">Ctrl+Alt+P</translation>
-    </message>
-    <message>
-        <source>Ctrl+P</source>
-        <translation type="obsolete">Ctrl+P</translation>
-    </message>
-    <message>
-        <source>Print All Plo&amp;ts</source>
-        <translation type="obsolete">Tisk všech ná&amp;kresů</translation>
-    </message>
-    <message>
-        <source>E&amp;xport ASCII</source>
-        <translation type="obsolete">&amp;Vyvést jako ASCII</translation>
-    </message>
-    <message>
-        <source>&amp;Quit</source>
-        <translation type="obsolete">&amp;Ukončit</translation>
-    </message>
-    <message>
-        <source>Ctrl+Q</source>
-        <translation type="obsolete">Ctrl+Q</translation>
-    </message>
-    <message>
-        <source>Clear &amp;Log Information</source>
-        <translation type="obsolete">Smazat všechny informace v &amp;zápisu</translation>
-    </message>
-    <message>
-        <source>Delete &amp;Fit Tables</source>
-        <translation type="obsolete">Smazat &amp;tabulky umístění</translation>
-    </message>
-    <message>
-        <source>Plot &amp;Wizard</source>
-        <translation type="obsolete">Průvodce &amp;nákresem</translation>
-    </message>
-    <message>
-        <source>Ctrl+Alt+W</source>
-        <translation type="obsolete">Ctrl+Alt+W</translation>
-    </message>
-    <message>
-        <source>&amp;Preferences...</source>
-        <translation type="obsolete">&amp;Nastavení...</translation>
-    </message>
-    <message>
-        <source>Add/Remove &amp;Curve...</source>
-        <translation type="obsolete">Přidat/Odstranit &amp;křivku...</translation>
-    </message>
-    <message>
-        <source>ALT+C</source>
-        <translation type="obsolete">ALT+C</translation>
-    </message>
-    <message>
-        <source>Add &amp;Error Bars...</source>
-        <translation type="obsolete">Přidat &amp;pruhy s chybami...</translation>
-    </message>
-    <message>
-        <source>Ctrl+B</source>
-        <translation type="obsolete">Ctrl+B</translation>
-    </message>
-    <message>
-        <source>Add &amp;Function...</source>
-        <translation type="obsolete">Přidat &amp;funkci...</translation>
-    </message>
-    <message>
-        <source>Ctrl+Alt+F</source>
-        <translation type="obsolete">Ctrl+Alt+F</translation>
-    </message>
-    <message>
-        <source>&amp;Rescale to Show All</source>
-        <translation type="obsolete">&amp;Změnit měřítko na Ukázat vše</translation>
-    </message>
-    <message>
-        <source>Ctrl+Shift+R</source>
-        <translation type="obsolete">Ctrl+Shift+R</translation>
-    </message>
-    <message>
-        <source>New &amp;Legend</source>
-        <translation type="obsolete">Nová &amp;vysvětlivka</translation>
-    </message>
-    <message>
-        <source>Ctrl+L</source>
-        <translation type="obsolete">Ctrl+L</translation>
-    </message>
-    <message>
-        <source>Add Time Stamp</source>
-        <translation type="obsolete">Přidat označení času</translation>
-    </message>
-    <message>
-        <source>Ctrl+ALT+T</source>
-        <translation type="obsolete">Ctrl+ALT+T</translation>
-    </message>
-    <message>
-        <source>Add &amp;Image</source>
-        <translation type="obsolete">Přidat &amp;obrázek</translation>
-    </message>
-    <message>
-        <source>ALT+I</source>
-        <translation type="obsolete">ALT+I</translation>
-    </message>
-    <message>
-        <source>Vectors XY&amp;AM</source>
-        <translation type="obsolete">Vektory XY&amp;AM</translation>
-    </message>
-    <message>
-        <source>&amp;Vectors &amp;XYXY</source>
-        <translation type="obsolete">Vektory &amp;XYXY</translation>
-    </message>
-    <message>
-        <source>&amp;Stacked Histogram</source>
-        <translation type="obsolete">&amp;Vrstvený histogram</translation>
-    </message>
-    <message>
-        <source>Stem-and-&amp;Leaf Plot</source>
-        <translation type="obsolete">Stonkový a &amp;listový nákres</translation>
-    </message>
-    <message>
-        <source>D&amp;ouble-Y</source>
-        <translation type="obsolete">Zdvo&amp;jit y</translation>
-    </message>
-    <message>
-        <source>&amp;Zoom</source>
-        <translation type="obsolete">&amp;Přiblížit</translation>
-    </message>
-    <message>
-        <source>E&amp;xtract to Graphs</source>
-        <translation type="obsolete">V&amp;ytáhnout do obrazců</translation>
-    </message>
-    <message>
-        <source>Extract to &amp;Layers</source>
-        <translation type="obsolete">Vytáhnout do &amp;vrstev</translation>
-    </message>
-    <message>
-        <source>Add Inset Layer</source>
-        <translation type="obsolete">Přidat vloženou vrstvu</translation>
-    </message>
-    <message>
-        <source>&amp;Ribbon</source>
-        <translation type="obsolete">&amp;Stuha</translation>
-    </message>
-    <message>
-        <source>&amp;Bars</source>
-        <translation type="obsolete">&amp;Pruhy</translation>
-    </message>
-    <message>
-        <source>&amp;Trajectory</source>
-        <translation type="obsolete">&amp;Dráha</translation>
-    </message>
-    <message>
-        <source>Statistics on &amp;Columns</source>
-        <translation type="obsolete">Statistické údaje ke &amp;sloupcům</translation>
-    </message>
-    <message>
-        <source>Statistics on &amp;Rows</source>
-        <translation type="obsolete">Statistické údaje k &amp;řádkům</translation>
-    </message>
-    <message>
-        <source>&amp;Integrate</source>
-        <translation type="obsolete">&amp;Začlenit</translation>
-    </message>
-    <message>
-        <source>Integr&amp;ate Function...</source>
-        <translation type="obsolete">Začle&amp;nit funkci...</translation>
-    </message>
-    <message>
-        <source>Inte&amp;rpolate ...</source>
-        <translation type="obsolete">&amp;Interpolovat...</translation>
-    </message>
-    <message>
-        <source>&amp;Low Pass...</source>
-        <translation type="obsolete">&amp;Nízké posunutí...</translation>
-    </message>
-    <message>
-        <source>&amp;High Pass...</source>
-        <translation type="obsolete">&amp;Vysoké posunutí...</translation>
-    </message>
-    <message>
-        <source>&amp;Band Pass...</source>
-        <translation type="obsolete">&amp;Pásmové posunutí...</translation>
-    </message>
-    <message>
-        <source>&amp;Band Block...</source>
-        <translation type="obsolete">&amp;Pásmovou závoru...</translation>
-    </message>
-    <message>
-        <source>&amp;FFT...</source>
-        <translation type="obsolete">&amp;FFT...</translation>
-    </message>
-    <message>
-        <source>&amp;Savitzky-Golay...</source>
-        <translation type="obsolete">&amp;Savitzky-Golay...</translation>
-    </message>
-    <message>
-        <source>&amp;FFT Filter...</source>
-        <translation type="obsolete">&amp;FFT filtr...</translation>
-    </message>
-    <message>
-        <source>Moving Window &amp;Average...</source>
-        <translation type="obsolete">Klouzající &amp;okenní průměr...</translation>
-    </message>
-    <message>
-        <source>&amp;Differentiate</source>
-        <translation type="obsolete">&amp;Diferencovat</translation>
-    </message>
-    <message>
-        <source>Fit &amp;Linear</source>
-        <translation type="obsolete">&amp;Přímočaré umístění</translation>
-    </message>
-    <message>
-        <source>Fit &amp;Polynomial ...</source>
-        <translation type="obsolete">&amp;Mnohočlenné umístění...</translation>
-    </message>
-    <message>
-        <source>&amp;First Order ...</source>
-        <translation type="obsolete">&amp;První řád...</translation>
-    </message>
-    <message>
-        <source>&amp;Second Order ...</source>
-        <translation type="obsolete">&amp;Druhý řád...</translation>
-    </message>
-    <message>
-        <source>&amp;Third Order ...</source>
-        <translation type="obsolete">&amp;Třetí řád...</translation>
-    </message>
-    <message>
-        <source>Fit Exponential Gro&amp;wth ...</source>
-        <translation type="obsolete">Umístit exponenciální &amp;růst...</translation>
-    </message>
-    <message>
-        <source>Fit &amp;Boltzmann (Sigmoidal)</source>
-        <translation type="obsolete">&amp;Boltzmannovo umístění (esovité)</translation>
-    </message>
-    <message>
-        <source>Fit &amp;Gaussian</source>
-        <translation type="obsolete">&amp;Gaussovo umístění</translation>
-    </message>
-    <message>
-        <source>Fit Lorent&amp;zian</source>
-        <translation type="obsolete">&amp;Lorentzovo umístění</translation>
-    </message>
-    <message>
-        <source>Fit &amp;Wizard...</source>
-        <translation type="obsolete">&amp;Průvodce přízpůsobením křivek...</translation>
-    </message>
-    <message>
-        <source>Ctrl+Y</source>
-        <translation type="obsolete">Ctrl+Y</translation>
-    </message>
-    <message>
-        <source>&amp;Plot ...</source>
-        <translation type="obsolete">&amp;Nákres...</translation>
-    </message>
-    <message>
-        <source>&amp;Scales...</source>
-        <translation type="obsolete">&amp;Stupnice...</translation>
-    </message>
-    <message>
-        <source>&amp;Axes...</source>
-        <translation type="obsolete">&amp;Osy...</translation>
-    </message>
-    <message>
-        <source>&amp;Grid ...</source>
-        <translation type="obsolete">&amp;Mřížka...</translation>
-    </message>
-    <message>
-        <source>&amp;Title ...</source>
-        <translation type="obsolete">&amp;Název...</translation>
-    </message>
-    <message>
-        <source>Column &amp;Options ...</source>
-        <translation type="obsolete">Volby pro &amp;sloupce...</translation>
-    </message>
-    <message>
-        <source>Ctrl+Alt+O</source>
-        <translation type="obsolete">Ctrl+Alt+O</translation>
-    </message>
-    <message>
-        <source>Set Column &amp;Values ...</source>
-        <translation type="obsolete">Nastavit hodnoty pro &amp;sloupce...</translation>
-    </message>
-    <message>
-        <source>Alt+Q</source>
-        <translation type="obsolete">Alt+Q</translation>
-    </message>
-    <message>
-        <source>Recalculate</source>
-        <translation type="obsolete">Znovu spočítat</translation>
-    </message>
-    <message>
-        <source>Ctrl+Return</source>
-        <translation type="obsolete">Ctrl+Return</translation>
-    </message>
-    <message>
-        <source>&amp;Hide Selected</source>
-        <translation type="obsolete">&amp;Skrýt vybrané</translation>
-    </message>
-    <message>
-        <source>Sho&amp;w All Columns</source>
-        <translation type="obsolete">Uká&amp;zat všechny sloupce</translation>
-    </message>
-    <message>
-        <source>&amp;Swap columns</source>
-        <translation type="obsolete">&amp;Vyměnit sloupce</translation>
-    </message>
-    <message>
-        <source>Move &amp;Right</source>
-        <translation type="obsolete">Přesunout &amp;doprava</translation>
-    </message>
-    <message>
-        <source>Move &amp;Left</source>
-        <translation type="obsolete">Přesunout &amp;doleva</translation>
-    </message>
-    <message>
-        <source>Move to F&amp;irst</source>
-        <translation type="obsolete">Přesunout k prv&amp;nímu</translation>
-    </message>
-    <message>
-        <source>Move to Las&amp;t</source>
-        <translation type="obsolete">Přesunout k pos&amp;lednímu</translation>
-    </message>
-    <message>
-        <source>&amp;Columns...</source>
-        <translation type="obsolete">&amp;Sloupce...</translation>
-    </message>
-    <message>
-        <source>&amp;Rows...</source>
-        <translation type="obsolete">&amp;Řádky...</translation>
-    </message>
-    <message>
-        <source>&amp;Delete Rows Interval...</source>
-        <translation type="obsolete">&amp;Smazat řádky od do...</translation>
-    </message>
-    <message>
-        <source>&amp;About QtiPlot</source>
-        <translation type="obsolete">&amp;O programu QtiPlot</translation>
-    </message>
-    <message>
-        <source>F1</source>
-        <translation type="obsolete">F1</translation>
-    </message>
-    <message>
-        <source>Ctrl+H</source>
-        <translation type="obsolete">Ctrl+H</translation>
-    </message>
-    <message>
-        <source>&amp;Choose Help Folder...</source>
-        <translation type="obsolete">&amp;Vybrat složku s nápovědou...</translation>
-    </message>
-    <message>
-        <source>Ctrl+W</source>
-        <translation type="obsolete">Ctrl+W</translation>
-    </message>
-    <message>
-        <source>Add Column</source>
-        <translation type="obsolete">Přidat sloupec</translation>
-    </message>
-    <message>
-        <source>&amp;Go to Row...</source>
-        <translation type="obsolete">&amp;Jít na řádek...</translation>
-    </message>
-    <message>
-        <source>Go to Colum&amp;n...</source>
-        <translation type="obsolete">Jít na slou&amp;pec...</translation>
-    </message>
-    <message>
-        <source>Ctrl+Alt+C</source>
-        <translation type="obsolete">Ctrl+Alt+C</translation>
-    </message>
-    <message>
-        <source>Clear</source>
-        <translation type="obsolete">Vyprázdnit</translation>
-    </message>
-    <message>
-        <source>&amp;Remove Layer</source>
-        <translation type="obsolete">&amp;Odstranit vrstvu</translation>
-    </message>
-    <message>
-        <source>Alt+R</source>
-        <translation type="obsolete">Alt+R</translation>
-    </message>
-    <message>
-        <source>Window &amp;Geometry...</source>
-        <translation type="obsolete">Uspořádání &amp;oken...</translation>
-    </message>
-    <message>
-        <source>&amp;Hide Window</source>
-        <translation type="obsolete">&amp;Skrýt okno</translation>
-    </message>
-    <message>
-        <source>Ctrl+Alt+H</source>
-        <translation type="obsolete">Ctrl+Alt+H</translation>
-    </message>
-    <message>
-        <source>&amp;View Pixel Line Profile</source>
-        <translation type="obsolete">&amp;Zobrazit profil čár</translation>
-    </message>
-    <message>
-        <source>&amp;Intensity Table</source>
-        <translation type="obsolete">&amp;Tabulka síly</translation>
-    </message>
-    <message>
-        <source>&amp;Properties</source>
-        <translation type="obsolete">&amp;Vlastnosti</translation>
-    </message>
-    <message>
-        <source>&amp;Activate Window</source>
-        <translation type="obsolete">&amp;Aktivovat okno</translation>
-    </message>
-    <message>
-        <source>Mi&amp;nimize Window</source>
-        <translation type="obsolete">&amp;Zmenšit okno</translation>
-    </message>
-    <message>
-        <source>Ma&amp;ximize Window</source>
-        <translation type="obsolete">Zvět&amp;šit okno</translation>
-    </message>
-    <message>
-        <source>Re&amp;size Window...</source>
-        <translation type="obsolete">Změnit &amp;velikost okna...</translation>
-    </message>
-    <message>
-        <source>&amp;Surface...</source>
-        <translation type="obsolete">&amp;Povrch...</translation>
-    </message>
-    <message>
-        <source>&amp;Data Set...</source>
-        <translation type="obsolete">&amp;Soubor s daty...</translation>
-    </message>
-    <message>
-        <source>Set &amp;Properties...</source>
-        <translation type="obsolete">Nastavit &amp;vlastnosti...</translation>
-    </message>
-    <message>
-        <source>Set &amp;Dimensions...</source>
-        <translation type="obsolete">Nastavit &amp;rozměry...</translation>
-    </message>
-    <message>
-        <source>Ctrl+D</source>
-        <translation type="obsolete">Ctrl+D</translation>
-    </message>
-    <message>
-        <source>Set &amp;Values...</source>
-        <translation type="obsolete">Nastavit &amp;hodnoty...</translation>
-    </message>
-    <message>
-        <source>&amp;Image Plot</source>
-        <translation type="obsolete">&amp;Znázornit nákres</translation>
-    </message>
-    <message>
-        <source>&amp;Transpose</source>
-        <translation type="obsolete">&amp;Převést</translation>
-    </message>
-    <message>
-        <source>Flip &amp;V</source>
-        <translation type="obsolete">Obrátit &amp;svisle</translation>
-    </message>
-    <message>
-        <source>Ctrl+Shift+V</source>
-        <translation type="obsolete">Ctrl+Shift+V</translation>
-    </message>
-    <message>
-        <source>Flip &amp;H</source>
-        <translation type="obsolete">Obrátit &amp;vodorovně</translation>
-    </message>
-    <message>
-        <source>Ctrl+Shift+H</source>
-        <translation type="obsolete">Ctrl+Shift+H</translation>
-    </message>
-    <message>
-        <source>R&amp;otate 90</source>
-        <translation type="obsolete">O&amp;točit o 90°</translation>
-    </message>
-    <message>
-        <source>Rotate &amp;-90</source>
-        <translation type="obsolete">Otočit &amp;o 90°</translation>
-    </message>
-    <message>
-        <source>Ctrl+Alt+R</source>
-        <translation type="obsolete">Ctrl+Alt+R</translation>
-    </message>
-    <message>
-        <source>&amp;Invert</source>
-        <translation type="obsolete">&amp;Převrátit</translation>
-    </message>
-    <message>
-        <source>&amp;Determinant</source>
-        <translation type="obsolete">&amp;Determinant</translation>
-    </message>
-    <message>
-        <source>&amp;Image mode</source>
-        <translation type="obsolete">&amp;Obrazový režim</translation>
-    </message>
-    <message>
-        <source>Ctrl+Shift+I</source>
-        <translation type="obsolete">Ctrl+Shift+I</translation>
-    </message>
-    <message>
-        <source>&amp;Data mode</source>
-        <translation type="obsolete">&amp;Datový režim</translation>
-    </message>
-    <message>
-        <source>Ctrl+Shift+D</source>
-        <translation type="obsolete">Ctrl+Shift+D</translation>
-    </message>
-    <message>
-        <source>Show &amp;X/Y</source>
-        <translation type="obsolete">Ukázat &amp;X/Y</translation>
-    </message>
-    <message>
-        <source>Ctrl+Shift+X</source>
-        <translation type="obsolete">Ctrl+Shift+X</translation>
-    </message>
-    <message>
-        <source>Show &amp;Column/Row</source>
-        <translation type="obsolete">Ukázat &amp;Sloupec/Řádek</translation>
-    </message>
-    <message>
-        <source>Ctrl+Shift+C</source>
-        <translation type="obsolete">Ctrl+Shift+C</translation>
-    </message>
-    <message>
-        <source>&amp;Gray Scale</source>
-        <translation type="obsolete">&amp;Stupnice šedi</translation>
-    </message>
-    <message>
-        <source>&amp;Default</source>
-        <translation type="obsolete">&amp;Výchozí</translation>
-    </message>
-    <message>
-        <source>&amp;Rainbow</source>
-        <translation type="obsolete">&amp;Duha</translation>
-    </message>
-    <message>
-        <source>&amp;Custom</source>
-        <translation type="obsolete">&amp;Vlastní</translation>
-    </message>
-    <message>
-        <source>&amp;Export Image ...</source>
-        <translation type="obsolete">&amp;Vyvést obrázek...</translation>
-    </message>
-    <message>
-        <source>&amp;Direct</source>
-        <translation type="obsolete">&amp;Přímo</translation>
-    </message>
-    <message>
-        <source>&amp;XYZ Columns</source>
-        <translation type="obsolete">Sloupce &amp;XYZ</translation>
-    </message>
-    <message>
-        <source>&amp;YXZ Columns</source>
-        <translation type="obsolete">Sloupce &amp;YXZ</translation>
-    </message>
-    <message>
-        <source>&amp;Forward FFT</source>
-        <translation type="obsolete">&amp;FFT dopředu</translation>
-    </message>
-    <message>
-        <source>&amp;Inverse FFT</source>
-        <translation type="obsolete">&amp;Převrácená hodnota FFT</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="1338"/>
-        <source>Convert to &amp;Matrix</source>
-        <translation>Převést do &amp;matici</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="822"/>
-        <source>Dra&amp;g Curve</source>
-        <translation>&amp;Táhnout křivku</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="1065"/>
-        <source>&amp;Import</source>
-        <translation>&amp;Zavést</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="3215"/>
-        <source>You must select a single Y column that has an associated X column!</source>
-        <translation>Musíte vybrat jeden sloupec Y, ke kterému je přiřazen sloupec X!</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="3234"/>
-        <source>You must select exactly one Z column!</source>
-        <translation>Musíte vybrat přesně jeden sloupec Z!</translation>
-    </message>
-    <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="3875"/>
-        <source>Open File</source>
-        <translation>Otevřít soubor</translation>
-    </message>
-    <message>
-        <source>Imported sound file</source>
-        <translation type="obsolete">Zavedený zvukový soubor</translation>
-    </message>
-    <message>
-        <source>This is not a PCM type WAV file, operation aborted!</source>
-        <translation type="obsolete">Toto není soubor WAV typu PCM. Operace byla zrušena!</translation>
-    </message>
-    <message>
-        <source>PCM</source>
-        <translation type="obsolete">PCM</translation>
-    </message>
-    <message>
-        <source>Time</source>
-        <translation type="obsolete">Čas</translation>
-    </message>
-    <message>
-        <source>Left</source>
-        <translation type="obsolete">Levý</translation>
-    </message>
-    <message>
-        <source>Right</source>
-        <translation type="obsolete">Pravý</translation>
-    </message>
-    <message>
-        <source>Data</source>
-        <translation type="obsolete">Data</translation>
-    </message>
-    <message>
-        <source>Channels</source>
-        <translation type="obsolete">Kanály</translation>
-    </message>
-    <message>
-        <source>Sample Rate</source>
-        <translation type="obsolete">Vzorkovací kmitočet</translation>
-    </message>
-    <message>
-        <source>Byte Rate</source>
-        <translation type="obsolete">Rychlost bajtů</translation>
-    </message>
-    <message>
-        <source>Block Align</source>
-        <translation type="obsolete">Spojení bloků</translation>
-    </message>
-    <message>
-        <source>Bits Per Sample</source>
-        <translation type="obsolete">Bitů na vzorek</translation>
-    </message>
-    <message>
-        <source>Presentation Preview</source>
-        <translation type="obsolete">Náhled provedení</translation>
-    </message>
-    <message>
-        <source>&amp;Save</source>
-        <translation type="obsolete">&amp;Uložit</translation>
-    </message>
-    <message>
-        <source>There are no windows available in this folder!</source>
-        <translation type="obsolete">V tomto projektu nejsou dostupná žádná okna!</translation>
-    </message>
-    <message>
-        <source>&amp;Sound (WAV)...</source>
-        <translation type="obsolete">&amp;Zvuk (WAV)...</translation>
-    </message>
-    <message>
-        <source>Create Open &amp;Document Presentation...</source>
-        <translation type="obsolete">Vytvořit představení v Open &amp;Document...</translation>
-    </message>
-    <message>
-        <source>&amp;Close</source>
-        <translation type="obsolete">&amp;Zavřít</translation>
-    </message>
-    <message>
-        <source>2D &amp;Binning</source>
-        <translation type="obsolete">Dvojrozměrné &amp;uložení do bedny</translation>
-    </message>
-    <message>
-        <source>&amp;Regular XYZ</source>
-        <translation type="obsolete">&amp;Pravidelný XYZ</translation>
-    </message>
-    <message>
-        <source>3D &amp;Wire Frame</source>
-        <translation type="obsolete">Trojrozměrná &amp;drátěná mřížka</translation>
-    </message>
-    <message>
-        <source>3D &amp;Hidden Line</source>
-        <translation type="obsolete">Trojrozměrné &amp;skryté čáry</translation>
-    </message>
-    <message>
-        <source>3D &amp;Polygons</source>
-        <translation type="obsolete">Trojrozměrné &amp;mnohoúhelníky</translation>
-    </message>
-    <message>
-        <source>3D Wire &amp;Surface</source>
-        <translation type="obsolete">Trojrozměrný &amp;povrch drátěné mřížky</translation>
-    </message>
-    <message>
-        <source>Contour - &amp;Color Fill</source>
-        <translation type="obsolete">Obrys - &amp;Barevná výplň</translation>
-    </message>
-    <message>
-        <source>Contour &amp;Lines</source>
-        <translation type="obsolete">Obrysové &amp;čáry</translation>
-    </message>
-    <message>
-        <source>&amp;Gray Scale Map</source>
-        <translation type="obsolete">&amp;Zobrazení povrchu v odstínech šedi</translation>
-    </message>
-    <message>
-        <source>Sort Ta&amp;ble</source>
-        <translation type="obsolete">Seřadit tabul&amp;ku</translation>
-    </message>
-    <message>
-        <source>Sort Columns</source>
-        <translation type="obsolete">Seřadit sloupce</translation>
-    </message>
-    <message>
-        <source>Co&amp;rrelate</source>
-        <translation type="obsolete">Dát do &amp;vzájemného vztahu</translation>
-    </message>
-    <message>
-        <source>&amp;Autocorrelate</source>
-        <translation type="obsolete">&amp;Automaticky dát do vzájemného vztahu</translation>
-    </message>
-    <message>
-        <source>&amp;Convolute</source>
-        <translation type="obsolete">&amp;Složit</translation>
-    </message>
-    <message>
-        <source>&amp;Deconvolute</source>
-        <translation type="obsolete">&amp;Rozložit</translation>
-    </message>
-    <message>
-        <source>&amp;Horizontal</source>
-        <translation type="obsolete">&amp;Vodorovně</translation>
-    </message>
-    <message>
-        <source>&amp;Vertical</source>
-        <translation type="obsolete">&amp;Svisle</translation>
-    </message>
-    <message>
-        <source>Ro&amp;w Numbers</source>
-        <translation type="obsolete">Čís&amp;la řádků</translation>
-    </message>
-    <message>
-        <source>&amp;Random Values</source>
-        <translation type="obsolete">&amp;Náhodné hodnoty</translation>
-    </message>
-    <message>
-        <source>&amp;Frequency Count ...</source>
-        <translation type="obsolete">&amp;Počítání kmitočtu...</translation>
-    </message>
-    <message>
-        <source>&amp;Read Only</source>
-        <translation type="obsolete">&amp;Pouze pro čtení</translation>
-    </message>
-    <message>
-        <source>&amp;Disregard</source>
-        <translation type="obsolete">&amp;Nebrat v úvahu</translation>
-    </message>
-    <message>
-        <source>&amp;Box Plot</source>
-        <translation type="obsolete">&amp;Krabicový nákres</translation>
-    </message>
-    <message>
-        <source>&amp;Gaussian...</source>
-        <translation type="obsolete">&amp;Gaussův...</translation>
-    </message>
-    <message>
-        <source>&amp;Lorentzian...</source>
-        <translation type="obsolete">&amp;Lorentzův...</translation>
-    </message>
-    <message>
-        <source>Search for &amp;Updates</source>
-        <translation type="obsolete">Hledat &amp;aktualizace</translation>
-    </message>
-    <message>
-        <source>&amp;QtiPlot Homepage</source>
-        <translation type="obsolete">&amp;Domovská stránky QtiPlotu</translation>
-    </message>
-    <message>
-        <source>QtiPlot &amp;Forums</source>
-        <translation type="obsolete">Fórum &amp;QtiPlotu</translation>
-    </message>
-    <message>
-        <source>Report a &amp;Bug</source>
-        <translation type="obsolete">Nahlásit &amp;chybu v programu</translation>
-    </message>
-    <message>
-        <source>Download &amp;Manual</source>
-        <translation type="obsolete">Stáhnout &amp;příručku</translation>
-    </message>
-    <message>
-        <source>&amp;Translations</source>
-        <translation type="obsolete">&amp;Překlady</translation>
-    </message>
-    <message>
-        <source>Make a &amp;Donation</source>
-        <translation type="obsolete">Poskytněte &amp;dar</translation>
-    </message>
-    <message>
-        <source>Technical &amp;Support</source>
-        <translation type="obsolete">Technická &amp;podpora</translation>
-    </message>
-    <message>
-        <source>Scripting &amp;language</source>
-        <translation type="obsolete">Skriptovací &amp;jazyk</translation>
-    </message>
-    <message>
-        <source>&amp;Restart scripting</source>
-        <translation type="obsolete">&amp;Vynulovat skriptování</translation>
-    </message>
-    <message>
-        <source>E&amp;xecute</source>
-        <translation type="obsolete">Vy&amp;konat</translation>
-    </message>
-    <message>
-        <source>Ctrl+J</source>
-        <translation type="obsolete">Ctrl+J</translation>
-    </message>
-    <message>
-        <source>Execute &amp;All</source>
-        <translation type="obsolete">Vykonat &amp;vše</translation>
-    </message>
-    <message>
-        <source>Ctrl+Shift+J</source>
-        <translation type="obsolete">Ctrl+Shift+J</translation>
-    </message>
-    <message>
-        <source>&amp;Evaluate Expression</source>
-        <translation type="obsolete">&amp;Vyhodnotit výraz</translation>
-    </message>
-    <message>
-        <source>Show Line &amp;Numbers</source>
-        <translation type="obsolete">Ukázat čísla &amp;řádků</translation>
-    </message>
-    <message>
-        <source>Find &amp;Next</source>
-        <translation type="obsolete">Najít &amp;další</translation>
-    </message>
-    <message>
-        <source>F3</source>
-        <translation type="obsolete">F3</translation>
-    </message>
-    <message>
-        <source>Find &amp;Previous</source>
-        <translation type="obsolete">Najít &amp;předchozí</translation>
-    </message>
-    <message>
-        <source>F4</source>
-        <translation type="obsolete">F4</translation>
-    </message>
-    <message>
-        <source>&amp;Replace...</source>
-        <translation type="obsolete">&amp;Nahradit...</translation>
-    </message>
-    <message>
-        <source>Increase Indent</source>
-        <translation type="obsolete">Zvětšit odsazení</translation>
-    </message>
-    <message>
-        <source>Decrease Indent</source>
-        <translation type="obsolete">Zmenšit odsazení</translation>
-    </message>
-    <message>
-        <source>Rena&amp;me Tab...</source>
-        <translation type="obsolete">&amp;Přejmenovat kartu...</translation>
-    </message>
-    <message>
-        <source>A&amp;dd Tab</source>
-        <translation type="obsolete">Při&amp;dat kartu</translation>
-    </message>
-    <message>
-        <source>C&amp;lose Tab</source>
-        <translation type="obsolete">&amp;Zavřít kartu</translation>
-    </message>
-    <message>
-        <source>&amp;Script Window</source>
-        <translation type="obsolete">&amp;Skriptovací okno</translation>
-    </message>
-    <message>
-        <source>&amp;Plot details...</source>
-        <translation type="obsolete">&amp;Podrobnosti nákresu...</translation>
-    </message>
-    <message>
-        <source>&amp;Worksheet</source>
-        <translation type="obsolete">&amp;Pracovní list</translation>
-    </message>
-    <message>
-        <source>&amp;Reset to Full Range</source>
-        <translation type="obsolete">&amp;Znovu nastavit na plný rozsah</translation>
-    </message>
-    <message>
-        <source>Edit &amp;Range...</source>
-        <translation type="obsolete">Upravit &amp;rozsah...</translation>
-    </message>
-    <message>
-        <source>&amp;Hide</source>
-        <translation type="obsolete">&amp;Skrýt</translation>
-    </message>
-    <message>
-        <source>Hide &amp;Other Curves</source>
-        <translation type="obsolete">Skrýt &amp;jiné křivky</translation>
-    </message>
-    <message>
-        <source>&amp;Show All Curves</source>
-        <translation type="obsolete">&amp;Ukázat všechny křivky</translation>
-    </message>
-    <message>
-        <source>&amp;Edit Function...</source>
-        <translation type="obsolete">&amp;Upravit funkci...</translation>
-    </message>
-    <message>
-        <source>&amp;Toolbars...</source>
-        <translation type="obsolete">&amp;Nástrojové lišty...</translation>
-    </message>
-    <message>
-        <source>Ctrl+Shift+T</source>
-        <translation type="obsolete">Ctrl+Shift+T</translation>
-    </message>
-    <message>
-        <source>Bold</source>
-        <translation type="obsolete">Tučné písmo</translation>
-    </message>
-    <message>
-        <source>Italic</source>
-        <translation type="obsolete">Kurzíva</translation>
-    </message>
-    <message>
-        <source>Superscript</source>
-        <translation type="obsolete">Horní index</translation>
-    </message>
-    <message>
-        <source>Subscript</source>
-        <translation type="obsolete">Dolní index</translation>
-    </message>
-    <message>
-        <source>Underline (Ctrl+U)</source>
-        <translation type="obsolete">Podtržení (Ctrl+U)</translation>
-    </message>
-    <message>
-        <source>Ctrl+U</source>
-        <translation type="obsolete">Ctrl+U</translation>
-    </message>
-    <message>
-        <source>Greek</source>
-        <translation type="obsolete">Řecké symboly</translation>
-    </message>
-    <message>
-        <source>Mathematical Symbols</source>
-        <translation type="obsolete">Matematické symboly</translation>
-    </message>
-    <message>
-        <source>Increase Precision</source>
-        <translation type="obsolete">Zvětšit přesnost</translation>
-    </message>
-    <message>
-        <source>Decrease Precision</source>
-        <translation type="obsolete">Zmenšit přesnost</translation>
-    </message>
-    <message>
-        <source>Open a new project</source>
-        <translation type="obsolete">Otevřít nový projekt</translation>
-    </message>
-    <message>
-        <source>New Fol&amp;der</source>
-        <translation type="obsolete">Nová slož&amp;ka</translation>
-    </message>
-    <message>
-        <source>Create a new folder</source>
-        <translation type="obsolete">Vytvořit novou složku</translation>
-    </message>
-    <message>
-        <source>Create an empty 2D plot</source>
-        <translation type="obsolete">Vytvořit prázdný dvojrozměrný nákres</translation>
-    </message>
-    <message>
-        <source>Create an empty note window</source>
-        <translation type="obsolete">Vytvořit prázdné okno na poznámky</translation>
-    </message>
-    <message>
-        <source>New table</source>
-        <translation type="obsolete">Nová tabulka</translation>
-    </message>
-    <message>
-        <source>New matrix</source>
-        <translation type="obsolete">Nová matice</translation>
-    </message>
-    <message>
-        <source>Create a new 2D function plot</source>
-        <translation type="obsolete">Vytvořit nový dvojrozměrný nákres funkce</translation>
-    </message>
-    <message>
-        <source>Create a new 3D surface plot</source>
-        <translation type="obsolete">Vytvořit nový trojrozměrný nákres povrchu</translation>
-    </message>
-    <message>
-        <source>Open project</source>
-        <translation type="obsolete">Otevřít projekt</translation>
-    </message>
-    <message>
-        <source>Save project</source>
-        <translation type="obsolete">Uložit projekt</translation>
-    </message>
-    <message>
-        <source>Open Te&amp;mplate...</source>
-        <translation type="obsolete">Otevřít před&amp;lohu...</translation>
-    </message>
-    <message>
-        <source>Open template</source>
-        <translation type="obsolete">Otevřít šablonu</translation>
-    </message>
-    <message>
-        <source>Save window as template</source>
-        <translation type="obsolete">Uložit okno jako předlohu</translation>
-    </message>
-    <message>
-        <source>Import data file(s)</source>
-        <translation type="obsolete">Zavést soubor(y) s daty</translation>
-    </message>
-    <message>
-        <source>Ctrl+K</source>
-        <translation type="obsolete">Ctrl+K</translation>
-    </message>
-    <message>
-        <source>Undo changes</source>
-        <translation type="obsolete">Změny vrátit zpět</translation>
-    </message>
-    <message>
-        <source>Redo changes</source>
-        <translation type="obsolete">Změny provést znovu</translation>
-    </message>
-    <message>
-        <source>Duplicate window</source>
-        <translation type="obsolete">Zdvojit okno</translation>
-    </message>
-    <message>
-        <source>Cut selection</source>
-        <translation type="obsolete">Vyjmout výběr</translation>
-    </message>
-    <message>
-        <source>Copy selection</source>
-        <translation type="obsolete">Kopírovat výběr</translation>
-    </message>
-    <message>
-        <source>Paste selection</source>
-        <translation type="obsolete">Vložit výběr</translation>
-    </message>
-    <message>
-        <source>Delete selection</source>
-        <translation type="obsolete">Smazat výběr</translation>
-    </message>
-    <message>
-        <source>Project &amp;Explorer</source>
-        <translation type="obsolete">&amp;Průzkumník projektu</translation>
-    </message>
-    <message>
-        <source>Show project explorer</source>
-        <translation type="obsolete">Ukázat průzkumníka projektu</translation>
-    </message>
-    <message>
-        <source>Results &amp;Log</source>
-        <translation type="obsolete">Zápis &amp;výsledků</translation>
-    </message>
-    <message>
-        <source>Show analysis results</source>
-        <translation type="obsolete">Ukázat výsledky výpočtů</translation>
-    </message>
-    <message>
-        <source>&amp;Undo/Redo Stack</source>
-        <translation type="obsolete">&amp;Zpět/Znovu zásobník</translation>
-    </message>
-    <message>
-        <source>Show available undo/redo commands</source>
-        <translation type="obsolete">Ukázat dostupné příkazy Zpět/Znovu</translation>
-    </message>
-    <message>
-        <source>&amp;Console</source>
-        <translation type="obsolete">&amp;Konzole - ovládací panel</translation>
-    </message>
-    <message>
-        <source>Show Scripting console</source>
-        <translation type="obsolete">Ukázat skriptovací konzoli</translation>
-    </message>
-    <message>
-        <source>Script Window</source>
-        <translation type="obsolete">Skriptovací okno</translation>
-    </message>
-    <message>
-        <source>Add Layer</source>
-        <translation type="obsolete">Přidat vrstvu</translation>
-    </message>
-    <message>
-        <source>Arrange Layers</source>
-        <translation type="obsolete">Uspořádat vrstvy</translation>
-    </message>
-    <message>
-        <source>Export current graph</source>
-        <translation type="obsolete">Vyvést nynější nákres</translation>
-    </message>
-    <message>
-        <source>Export all graphs</source>
-        <translation type="obsolete">Vyvést všechny nákresy</translation>
-    </message>
-    <message>
-        <source>Export to PDF</source>
-        <translation type="obsolete">Vyvést do PDF</translation>
-    </message>
-    <message>
-        <source>Print window</source>
-        <translation type="obsolete">Tisk okna</translation>
-    </message>
-    <message>
-        <source>Print preview</source>
-        <translation type="obsolete">Tisk náhledu</translation>
-    </message>
-    <message>
-        <source>Add curve to graph</source>
-        <translation type="obsolete">Do nákresu přidat křivku</translation>
-    </message>
-    <message>
-        <source>Add Error Bars...</source>
-        <translation type="obsolete">Přidat pruhy s chybami...</translation>
-    </message>
-    <message>
-        <source>Add Function...</source>
-        <translation type="obsolete">Přidat funkci...</translation>
-    </message>
-    <message>
-        <source>Best fit</source>
-        <translation type="obsolete">Nejlepší umístění</translation>
-    </message>
-    <message>
-        <source>Add new legend</source>
-        <translation type="obsolete">Přidat novou vysvětlivku</translation>
-    </message>
-    <message>
-        <source>Date &amp; time </source>
-        <translation type="obsolete">Datum &amp; čas</translation>
-    </message>
-    <message>
-        <source>Add Image</source>
-        <translation type="obsolete">Přidat obrázek</translation>
-    </message>
-    <message>
-        <source>Plot as line</source>
-        <translation type="obsolete">Nakreslit jako čáru</translation>
-    </message>
-    <message>
-        <source>Plot as symbols</source>
-        <translation type="obsolete">Nakreslit jako symboly</translation>
-    </message>
-    <message>
-        <source>Plot as line + symbols</source>
-        <translation type="obsolete">Nakreslit jako čáru + symboly</translation>
-    </message>
-    <message>
-        <source>Plot with vertical bars</source>
-        <translation type="obsolete">Nakreslit se svislými pruhy</translation>
-    </message>
-    <message>
-        <source>Plot with horizontal bars</source>
-        <translation type="obsolete">Nakreslit s vodorovnými pruhy</translation>
-    </message>
-    <message>
-        <source>Plot area</source>
-        <translation type="obsolete">Nakreslit oblast</translation>
-    </message>
-    <message>
-        <source>Plot pie</source>
-        <translation type="obsolete">Nakreslit koláčový nákres</translation>
-    </message>
-    <message>
-        <source>&amp;Vectors XYXY</source>
-        <translation type="obsolete">&amp;Vektory XYXY</translation>
-    </message>
-    <message>
-        <source>Vectors XYXY</source>
-        <translation type="obsolete">Vektory XYXY</translation>
-    </message>
-    <message>
-        <source>Vectors XYAM</source>
-        <translation type="obsolete">Vektory XYAM</translation>
-    </message>
-    <message>
-        <source>Stem-and-Leaf Plot</source>
-        <translation type="obsolete">Stonkový a listový nákres</translation>
-    </message>
-    <message>
-        <source>Double Y Axis</source>
-        <translation type="obsolete">Zdvojit osu Y</translation>
-    </message>
-    <message>
-        <source>Zoom</source>
-        <translation type="obsolete">Přiblížit</translation>
-    </message>
-    <message>
-        <source>Extract to Graphs</source>
-        <translation type="obsolete">Vytáhnout do obrazců</translation>
-    </message>
-    <message>
-        <source>Extract to Layer&amp;s</source>
-        <translation type="obsolete">Vytáhnout do vrstev</translation>
-    </message>
-    <message>
-        <source>Extract to Layers</source>
-        <translation type="obsolete">Vytáhnout do vrstev</translation>
-    </message>
-    <message>
-        <source>Plot 3D ribbon</source>
-        <translation type="obsolete">Nakreslit trojrozměrnou stuhu</translation>
-    </message>
-    <message>
-        <source>Plot 3D bars</source>
-        <translation type="obsolete">Nakreslit trojrozměrné pruhy</translation>
-    </message>
-    <message>
-        <source>Plot 3D scatter</source>
-        <translation type="obsolete">Nakreslit trojrozměrné body</translation>
-    </message>
-    <message>
-        <source>Plot 3D trajectory</source>
-        <translation type="obsolete">Nakreslit trojrozměrnou dráhu</translation>
-    </message>
-    <message>
-        <source>Contour + &amp;Color Fill</source>
-        <translation type="obsolete">Obrys + &amp;Barevná výplň</translation>
-    </message>
-    <message>
-        <source>Contour Lines + Color Fill</source>
-        <translation type="obsolete">Obrysové čáry + Barevná výplň</translation>
-    </message>
-    <message>
-        <source>Contour Lines</source>
-        <translation type="obsolete">Obrysové čáry</translation>
-    </message>
-    <message>
-        <source>Gray Scale Map</source>
-        <translation type="obsolete">Zobrazení povrchu v odstínech šedi</translation>
-    </message>
-    <message>
-        <source>Selected columns statistics</source>
-        <translation type="obsolete">Statistické údaje pro vybrané sloupce</translation>
-    </message>
-    <message>
-        <source>Selected rows statistics</source>
-        <translation type="obsolete">Statistické údaje pro vybrané řádky</translation>
-    </message>
-    <message>
-        <source>Hide selected columns</source>
-        <translation type="obsolete">Skrýt vybrané sloupce</translation>
-    </message>
-    <message>
-        <source>Show all table columns</source>
-        <translation type="obsolete">Ukázat všechny sloupce tabulky</translation>
-    </message>
-    <message>
-        <source>Swap selected columns</source>
-        <translation type="obsolete">Vyměnit vybrané sloupce</translation>
-    </message>
-    <message>
-        <source>Move Right</source>
-        <translation type="obsolete">Přesunout vpravo</translation>
-    </message>
-    <message>
-        <source>Move Left</source>
-        <translation type="obsolete">Přesunout vlevo</translation>
-    </message>
-    <message>
-        <source>Move to First</source>
-        <translation type="obsolete">Přesunout k prvnímu</translation>
-    </message>
-    <message>
-        <source>Move to Last</source>
-        <translation type="obsolete">Přesunout k poslednímu</translation>
-    </message>
-    <message>
-        <source>More Windows...</source>
-        <translation type="obsolete">Další okna...</translation>
-    </message>
-    <message>
-        <source>Set Matrix Values</source>
-        <translation type="obsolete">Nastavit hodnoty matice</translation>
-    </message>
-    <message>
-        <source>Image Plot</source>
-        <translation type="obsolete">Znázornit nákres</translation>
-    </message>
-    <message>
-        <source>Rotate 90 Clockwise</source>
-        <translation type="obsolete">Otočit o 90° po směru hodinových ručiček</translation>
-    </message>
-    <message>
-        <source>Rotate 90 Counterclockwise</source>
-        <translation type="obsolete">Otočit o 90° proti směru hodinových ručiček</translation>
-    </message>
-    <message>
-        <source>Flip Vertically</source>
-        <translation type="obsolete">Obrátit svisle</translation>
-    </message>
-    <message>
-        <source>Flip Horizontally</source>
-        <translation type="obsolete">Obrátit vodorovně</translation>
-    </message>
-    <message>
-        <source>Fill selected columns with row numbers</source>
-        <translation type="obsolete">Naplnit vybrané sloupce řadovými čísly</translation>
-    </message>
-    <message>
-        <source>Fill selected columns with random numbers</source>
-        <translation type="obsolete">Naplnit vybrané sloupce náhodnými čísly</translation>
-    </message>
-    <message>
-        <source>Set column as X</source>
-        <translation type="obsolete">Nastavit sloupec jako X</translation>
-    </message>
-    <message>
-        <source>Set column as Y</source>
-        <translation type="obsolete">Nastavit sloupec jako Y</translation>
-    </message>
-    <message>
-        <source>Set column as Z</source>
-        <translation type="obsolete">Nastavit sloupec jako Z</translation>
-    </message>
-    <message>
-        <source>Set as Y Error Bars</source>
-        <translation type="obsolete">Nastavit jako pruhy s chybami Y</translation>
-    </message>
-    <message>
-        <source>Set as Labels</source>
-        <translation type="obsolete">Nastavit jako štítky</translation>
-    </message>
-    <message>
-        <source>Disregard Columns</source>
-        <translation type="obsolete">Sloupce nebrat v úvahu</translation>
-    </message>
-    <message>
-        <source>Box and whiskers plot</source>
-        <translation type="obsolete">Bednový a vousatý nákres</translation>
-    </message>
-    <message>
-        <source>Visit QtiPlot &amp;Forums</source>
-        <translation type="obsolete">Navštívit fóra ke &amp;QtiPlotu</translation>
-    </message>
-    <message>
-        <source>Show find dialog</source>
-        <translation type="obsolete">Ukázat dialog pro hledání</translation>
-    </message>
-    <message>
-        <source>Find Next</source>
-        <translation type="obsolete">Najít další</translation>
-    </message>
-    <message>
-        <source>Find Previous</source>
-        <translation type="obsolete">Najít předchozí</translation>
-    </message>
-    <message>
-        <source>Show replace dialog</source>
-        <translation type="obsolete">Ukázat dialog pro nahrazování</translation>
-    </message>
-    <message>
-        <source>Disable &amp;tools</source>
-        <translation type="obsolete">Zakázat &amp;nástroje</translation>
-    </message>
-    <message>
-        <source>Pointer</source>
-        <translation type="obsolete">Ukazovátko</translation>
-    </message>
-    <message>
-        <source>Zoom In</source>
-        <translation type="obsolete">Přiblížit</translation>
-    </message>
-    <message>
-        <source>Zoom &amp;Out</source>
-        <translation type="obsolete">&amp;Oddálit</translation>
-    </message>
-    <message>
-        <source>Zoom Out</source>
-        <translation type="obsolete">Oddálit</translation>
-    </message>
-    <message>
-        <source>Data reader</source>
-        <translation type="obsolete">Čtečka dat</translation>
-    </message>
-    <message>
-        <source>Select data range</source>
-        <translation type="obsolete">Vybrat rozsah dat</translation>
-    </message>
-    <message>
-        <source>Screen reader</source>
-        <translation type="obsolete">Čtečka obrazovky</translation>
-    </message>
-    <message>
-        <source>Draw Data Points</source>
-        <translation type="obsolete">Nakreslit datové body</translation>
-    </message>
-    <message>
-        <source>Move data points</source>
-        <translation type="obsolete">Přesunout datové body</translation>
-    </message>
-    <message>
-        <source>Drag Curve</source>
-        <translation type="obsolete">Táhnout křivku</translation>
-    </message>
-    <message>
-        <source>Remove data points</source>
-        <translation type="obsolete">Přesunout datové body</translation>
-    </message>
-    <message>
-        <source>Add Text</source>
-        <translation type="obsolete">Přidat text</translation>
-    </message>
-    <message>
-        <source>Add Equation</source>
-        <translation type="obsolete">Přidat rovnici</translation>
-    </message>
-    <message>
-        <source>Add Rectangle</source>
-        <translation type="obsolete">Přidat obdélník</translation>
-    </message>
-    <message>
-        <source>Add Ellipse/Circle</source>
-        <translation type="obsolete">Přidat elipsu/kružnici</translation>
-    </message>
-    <message>
-        <source>Draw arrow</source>
-        <translation type="obsolete">Nakreslit šipku</translation>
-    </message>
-    <message>
-        <source>Draw line</source>
-        <translation type="obsolete">Nakreslit čáru</translation>
-    </message>
-    <message>
-        <source>Box</source>
-        <translation type="obsolete">Bedna</translation>
-    </message>
-    <message>
-        <source>Frame</source>
-        <translation type="obsolete">Rám</translation>
-    </message>
-    <message>
-        <source>&amp;Frame</source>
-        <translation type="obsolete">&amp;Rám</translation>
-    </message>
-    <message>
-        <source>No Axes</source>
-        <translation type="obsolete">Žádné osy</translation>
-    </message>
-    <message>
-        <source>No axes</source>
-        <translation type="obsolete">Žádné osy</translation>
-    </message>
-    <message>
-        <source>Front grid</source>
-        <translation type="obsolete">Mřížka popředí</translation>
-    </message>
-    <message>
-        <source>Back grid</source>
-        <translation type="obsolete">Mřížka pozadí</translation>
-    </message>
-    <message>
-        <source>Right grid</source>
-        <translation type="obsolete">Pravá mřížka</translation>
-    </message>
-    <message>
-        <source>Left grid</source>
-        <translation type="obsolete">Levá mřížka</translation>
-    </message>
-    <message>
-        <source>Ceiling grid</source>
-        <translation type="obsolete">Stropní mřížka</translation>
-    </message>
-    <message>
-        <source>Floor grid</source>
-        <translation type="obsolete">Povrchová mřížka</translation>
-    </message>
-    <message>
-        <source>Wireframe</source>
-        <translation type="obsolete">Drátěná mříž</translation>
-    </message>
-    <message>
-        <source>Hidden Line</source>
-        <translation type="obsolete">Skryté čáry</translation>
-    </message>
-    <message>
-        <source>Hidden line</source>
-        <translation type="obsolete">Skryté čáry</translation>
-    </message>
-    <message>
-        <source>Polygon Only</source>
-        <translation type="obsolete">Pouze mnohoúhelník</translation>
-    </message>
-    <message>
-        <source>Polygon only</source>
-        <translation type="obsolete">Pouze mnohoúhelník</translation>
-    </message>
-    <message>
-        <source>Mesh &amp; Filled Polygons</source>
-        <translation type="obsolete">Síť &amp; vyplněné mnohoúhelníky</translation>
-    </message>
-    <message>
-        <source>Mesh &amp; filled Polygons</source>
-        <translation type="obsolete">Síť &amp; vyplněné mnohoúhelníky</translation>
-    </message>
-    <message>
-        <source>Dots</source>
-        <translation type="obsolete">Tečky</translation>
-    </message>
-    <message>
-        <source>Bars</source>
-        <translation type="obsolete">Pruhy</translation>
-    </message>
-    <message>
-        <source>Cones</source>
-        <translation type="obsolete">Kužely</translation>
-    </message>
-    <message>
-        <source>Crosshairs</source>
-        <translation type="obsolete">Nitkový kříž</translation>
-    </message>
-    <message>
-        <source>Floor Data Projection</source>
-        <translation type="obsolete">Povrchové promítání dat</translation>
-    </message>
-    <message>
-        <source>Floor data projection</source>
-        <translation type="obsolete">Promítání povrchu dat</translation>
-    </message>
-    <message>
-        <source>Floor Isolines</source>
-        <translation type="obsolete">Povrchové obrysové čáry</translation>
-    </message>
-    <message>
-        <source>Floor isolines</source>
-        <translation type="obsolete">Povrchové obrysové čáry</translation>
-    </message>
-    <message>
-        <source>Empty Floor</source>
-        <translation type="obsolete">Prázdný povrch</translation>
-    </message>
-    <message>
-        <source>Empty floor</source>
-        <translation type="obsolete">Prázdný povrch</translation>
-    </message>
-    <message>
-        <source>Animation</source>
-        <translation type="obsolete">Kreslený film</translation>
-    </message>
-    <message>
-        <source>Enable perspective</source>
-        <translation type="obsolete">Povolit perspektivní zobrazení</translation>
-    </message>
-    <message>
-        <source>Reset rotation</source>
-        <translation type="obsolete">Znovu nastavit otáčení</translation>
-    </message>
-    <message>
-        <source>Fit frame to window</source>
-        <translation type="obsolete">Umístit rámeček oknu</translation>
-    </message>
-    <message>
-        <source>QtiPlot - Enter the number of peaks</source>
-        <translation type="obsolete">QtiPlot - Zadat počet vrcholů</translation>
-    </message>
-    <message>
-        <source>Peaks</source>
-        <translation type="obsolete">Vrcholy</translation>
-    </message>
-    <message>
-        <source>Memory Allocation Error</source>
-        <translation type="obsolete">Chyba v přidělení paměti</translation>
-    </message>
-    <message>
-        <source>Set Precision %1 digits</source>
-        <translation type="obsolete">Nastavit přesnost %1 desetinných míst</translation>
-    </message>
-    <message>
-        <source>&lt;font size=+2, color = darkBlue&gt;&lt;b&gt;QtiPlot is open-source software and its development required hundreds of hours of work.&lt;br&gt;&lt;br&gt;
-</source>
-        <translation type="obsolete">&lt;font velikost=+2, barva = tmavomodrá&gt;&lt;b&gt;QtiPlot program s otevřeným zdrojovým kódem a jeho vývoj vyžaduje stovky hodin práce.&lt;br&gt;&lt;br&gt;
-</translation>
-    </message>
-    <message>
-        <source>&lt;font size=+2, color = darkBlue&gt;&lt;b&gt;QtiPlot is open-source software and its development required hundreds of hours of work.&lt;br&gt;&lt;br&gt;				If you like it, you&apos;re using it in your work and you would like to see it 				constantly improved, please support its authors by making a donation.&lt;/b&gt;&lt;/font&gt;</source>
-        <translation type="obsolete">&lt;font size=+2, color = darkBlue&gt;&lt;b&gt;QtiPlot je otevřený program a jeho vývoj vyžaduje stovky hodin práce.&lt;br&gt;&lt;br&gt;				Jestliže se vám líbí, používáte jej při své práci a rád byste viděl 				jeho stálé vylepšování, podpořte, prosím, jeho autory darem.&lt;/b&gt;&lt;/font&gt;</translation>
-    </message>
-    <message>
-        <source>Please support QtiPlot!</source>
-        <translation type="obsolete">Podpořte, prosím, QtiPlot!</translation>
-    </message>
-    <message>
-        <source>&lt;b&gt; %1 &lt;/b&gt;: This command line option must be used without other arguments!</source>
-        <translation type="obsolete">&lt;b&gt; %1 &lt;/b&gt;: Tato volba příkazového řádku se musí používat bez dalších nezávislých proměnných!</translation>
-    </message>
-    <message>
-        <source>Version</source>
-        <translation type="obsolete">Verze</translation>
-    </message>
-    <message>
-        <source>Usage</source>
-        <translation type="obsolete">Použití</translation>
-    </message>
-    <message>
-        <source>options</source>
-        <translation type="obsolete">Volby</translation>
-    </message>
-    <message>
-        <source>file</source>
-        <translation type="obsolete">Soubor</translation>
-    </message>
-    <message>
-        <source>name</source>
-        <translation type="obsolete">Název</translation>
-    </message>
-    <message>
-        <source>Valid options are</source>
-        <translation type="obsolete">Platnými volbami jsou</translation>
-    </message>
-    <message>
-        <source>or</source>
-        <translation type="obsolete">nebo</translation>
-    </message>
-    <message>
-        <source>show about dialog and exit</source>
-        <translation type="obsolete">Ukázat dialog &quot;O programu&quot; a ukončit</translation>
-    </message>
-    <message>
-        <source>start QtiPlot with the default settings</source>
-        <translation type="obsolete">Spustit QtiPlot s výchozími nastaveními</translation>
-    </message>
-    <message>
-        <source>show command line options</source>
-        <translation type="obsolete">Ukázat volby příkazového řádku</translation>
-    </message>
-    <message>
-        <source>start QtiPlot in language</source>
-        <translation type="obsolete">Spustit QtiPlot v jazyce</translation>
-    </message>
-    <message>
-        <source>show QtiPlot manual in a standalone window</source>
-        <translation type="obsolete">Ukázat příručku ke QtiPlotu v samostatném okně</translation>
-    </message>
-    <message>
-        <source>print QtiPlot version and release date</source>
-        <translation type="obsolete">Vytisknout verzi a datum vydání QtiPlotu</translation>
-    </message>
-    <message>
-        <source>execute the script file given as argument</source>
-        <translation type="obsolete">Vykonat soubor se skriptem zadaným jako nezávislou proměnnou</translation>
-    </message>
-    <message>
-        <source>execute the script file given as argument without displying the user interface. Warning: 2D plots are not correctly handled in this functioning mode!</source>
-        <translation type="obsolete">Vykonat soubor se skriptem jako nezávislou proměnnou bez zobrazení uživatelského rozhraní. Varování: Dvojrozměrné nákresy nejsou při tomto pracovním režimu zvládány správně!</translation>
-    </message>
-    <message>
-        <source>can be any .qti, qti.gz, .opj, .ogm, .ogw, .ogg, .py or ASCII file</source>
-        <translation type="obsolete">Může být jakýkoli soubor .qti, qti.gz, .opj, .ogm, .ogw, .ogg, .py nebo ASCII</translation>
-    </message>
-    <message>
-        <source>Help</source>
-        <translation type="obsolete">Nápověda</translation>
-    </message>
-    <message>
-        <source>&lt;b&gt; %1 &lt;/b&gt;: Wrong locale option or no translation available!</source>
-        <translation type="obsolete">&lt;b&gt; %1 &lt;/b&gt;: Nesprávná zkratka pro zemi, nebo není dostupný žádný překlad!</translation>
-    </message>
-    <message>
-        <source>&lt;b&gt; %1 &lt;/b&gt; unknown command line option!</source>
-        <translation type="obsolete">&lt;b&gt; %1 &lt;/b&gt; Neznámá volba příkazového řádku!</translation>
-    </message>
-    <message>
-        <source>Type %1 to see the list of the valid options.</source>
-        <translation type="obsolete">Zadejte %1 kvůli zobrazení seznamu s platnými volbami.</translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;%1&lt;/b&gt; is a directory, please specify a file name!</source>
-        <translation type="obsolete">&lt;b&gt;%1&lt;/b&gt; Je adresářem. Zadejte, prosím, název souboru!</translation>
-    </message>
-    <message>
-        <source>The file: &lt;b&gt;%1&lt;/b&gt; is not a QtiPlot or Origin project file!</source>
-        <translation type="obsolete">Soubor: &lt;b&gt;%1&lt;/b&gt; není souborem projektu QtiPlot nebo Origin!</translation>
-    </message>
-    <message>
-        <source>QtiPlot - Demo Version</source>
-        <translation type="obsolete">QtiPlot - Demoverze</translation>
-    </message>
-    <message>
-        <source>You are using the demonstration version of Qtiplot.				It is identical with the full version, except that you can&apos;t save your work to project files and you can&apos;t use it for more than 10 minutes per session.				&lt;br&gt;&lt;br&gt;				If you want to have ready-to-use, fully functional binaries, please subscribe for a				&lt;a href=&quot;http://soft.proindependent.com/individual_contract.html&quot;&gt;single-user binaries maintenance contract&lt;/a&gt;.				&lt;br&gt;&lt;br&gt;				QtiPlot is free software in the sense of free speech.				If you know how to use it, you can get				&lt;a href=&quot;http://developer.berlios.de/project/showfiles.php?group_id=6626&quot;&gt;the source code&lt;/a&gt;				free of charge.				Nevertheless, you are welcome to				&lt;a href=&quot;http://soft.proindependent.com/why_donate.html&quot;&gt;make a donation&lt;/a&gt;				in order to support the further development of QtiPlot.</source>
-        <translation type="obsolete">Používáte předváděcí verzi Qtiplotu.				Je totožná s plnou verzí, mimo to, že vaši práci nelze uložit do souboru s projektem a nemůžete ji používat déle než  10 minut na jedno sezení.				&lt;br&gt;&lt;br&gt;				Pokud chcete mít verzi připravenou k používání s plně pracující binární soubory, podepište se, prosím, na 				&lt;a href=&quot;http://soft.proindependent.com/individual_contract.html&quot;&gt;smlouva na starání se o binární soubory pro jednoho-uživatele&lt;/a&gt;.				&lt;br&gt;&lt;br&gt;				QtiPlot je svobodný software ve smyslu svobody projevu.				Pokud víte, jak jej používat, můžete získat				&lt;a href=&quot;http://developer.berlios.de/project/showfiles.php?group_id=6626&quot;&gt;zdrojový kód&lt;/a&gt;				zdarma.				Přesto však jste vítán,				&lt;a href=&quot;http://soft.proindependent.com/why_donate.html&quot;&gt;hodláte-li poskytnout dar, &lt;/a&gt;				kterým podpoříte budoucí vývoj QtiPlotu.</translation>
-    </message>
-    <message>
-        <source>QtiPlot - File backup error</source>
-        <translation type="obsolete">QtiPlot - Chyba při zálohování souboru</translation>
-    </message>
-    <message>
-        <source>Cannot make a backup copy of &lt;b&gt;%1&lt;/b&gt; (to %2).&lt;br&gt;If you ignore this, you run the risk of &lt;b&gt;data loss&lt;/b&gt;.</source>
-        <translation type="obsolete">Nelze vytvořit záložní kopii z &lt;b&gt;%1&lt;/b&gt; (do %2).&lt;br&gt;Pokud si této věci nebudete všímat, riskujete &lt;b&gt;ztrátu dat&lt;/b&gt;.</translation>
-    </message>
-    <message>
-        <source>QtiPlot - File save error</source>
-        <translation type="obsolete">QtiPlot - Chyba při ukládání souboru</translation>
-    </message>
-    <message>
-        <source>The file: &lt;br&gt;&lt;b&gt;%1&lt;/b&gt; is opened in read-only mode</source>
-        <translation type="obsolete">Soubor: &lt;br&gt;&lt;b&gt; %1 &lt;/b&gt; je otevřen v režimu pouze pro čtení</translation>
-    </message>
-    <message>
-        <source>Save project as</source>
-        <translation type="obsolete">Uložit projekt jako</translation>
-    </message>
-    <message>
-        <source>&amp;Find...</source>
-        <translation type="obsolete">&amp;Najít...</translation>
-    </message>
-    <message>
-        <source>App&amp;end Project...</source>
-        <translation type="obsolete">Při&amp;pojit projekt...</translation>
-    </message>
-    <message>
-        <source>Save &amp;As Project...</source>
-        <translation type="obsolete">Uložit &amp;jako projekt...</translation>
-    </message>
-    <message>
-        <source>&amp;Delete Folder</source>
-        <translation type="obsolete">&amp;Smazat složku</translation>
-    </message>
-    <message>
-        <source>&amp;Rename</source>
-        <translation type="obsolete">&amp;Přejmenovat</translation>
-    </message>
-    <message>
-        <source>&amp;Windows in Active Folder</source>
-        <translation type="obsolete">&amp;Okna v činné složce</translation>
-    </message>
-    <message>
-        <source>Windows in &amp;Active Folder &amp;&amp; Subfolders</source>
-        <translation type="obsolete">Okna v &amp;činné složce &amp;&amp; podsložkách</translation>
-    </message>
-    <message>
-        <source>&amp;View Windows</source>
-        <translation type="obsolete">&amp;Zobrazit okna</translation>
-    </message>
-    <message>
-        <source>Hidden</source>
-        <translation type="obsolete">Skryt</translation>
-    </message>
-    <message>
-        <source>Name already exists!</source>
-        <translation type="obsolete">Název již existuje!</translation>
-    </message>
-    <message>
-        <source>Project</source>
-        <translation type="obsolete">Projekt</translation>
-    </message>
-    <message>
-        <source>Path</source>
-        <translation type="obsolete">Cesta</translation>
-    </message>
-    <message>
-        <source>bytes</source>
-        <translation type="obsolete">byty</translation>
-    </message>
-    <message>
-        <source>Contents</source>
-        <translation type="obsolete">Obsah</translation>
-    </message>
-    <message>
-        <source>windows</source>
-        <translation type="obsolete">Okna</translation>
-    </message>
-    <message>
-        <source>folders</source>
-        <translation type="obsolete">Složky</translation>
-    </message>
-    <message>
-        <source>Modified</source>
-        <translation type="obsolete">Upraveno</translation>
-    </message>
-    <message>
-        <source>Properties</source>
-        <translation type="obsolete">Vlastnosti</translation>
-    </message>
-    <message>
-        <source>New Folder</source>
-        <translation type="obsolete">Nová složka</translation>
-    </message>
-    <message>
-        <source>QtiPlot - Delete folder?</source>
-        <translation type="obsolete">QtiPlot - Odstranit složku?</translation>
-    </message>
-    <message>
-        <source>Delete folder &apos;%1&apos; and all the windows it contains?</source>
-        <translation type="obsolete">Odstranit složku &apos;%1&apos; a všechna okna, jež obsahuje?</translation>
-    </message>
-    <message>
-        <source>Note</source>
-        <translation type="obsolete">Poznámka</translation>
-    </message>
-    <message>
-        <source>3D Graph</source>
-        <translation type="obsolete">Trojrozměrný obrazec</translation>
-    </message>
-    <message>
-        <source>Status</source>
-        <translation type="obsolete">Stav</translation>
-    </message>
-    <message>
-        <source>QtiPlot - No match found</source>
-        <translation type="obsolete">QtiPlot - Nenalezena žádná shoda</translation>
-    </message>
-    <message>
-        <source>Sorry, no match found for string: &apos;%1&apos;</source>
-        <translation type="obsolete">Promiňte, ale nebyla nalezena žádná shoda pro řetězec znaků: &apos;%1&apos;</translation>
-    </message>
-    <message>
-        <source>Cannot move an object to itself!</source>
-        <translation type="obsolete">Nelze přesunout předmět do sebe sama!</translation>
-    </message>
-    <message>
-        <source>Cannot move a parent folder into a child folder!</source>
-        <translation type="obsolete">Nelze přesunout složku do její podsložky!</translation>
-    </message>
-    <message>
-        <source>Skipped moving folder</source>
-        <translation type="obsolete">Přesunutí složky bylo přeskočeno</translation>
-    </message>
-    <message>
-        <source>The destination folder already contains a folder called &apos;%1&apos;! Folder skipped!</source>
-        <translation type="obsolete">Cílová složka již obsahuje složku nazvanou &apos;%1&apos;! Složka byla přeskočena!</translation>
-    </message>
-    <message>
-        <source>Error</source>
-        <translation type="obsolete">Chyba</translation>
-    </message>
-    <message>
-        <source>QtiPlot will try to download necessary information about the last available updates. Please modify your firewall settings in order to allow QtiPlot to connect to the internet!</source>
-        <translation type="obsolete">QtiPlot se pokusí stáhnout z internetu nezbytnou informaci o posledních dostupných aktualizacích. Upravte, prosím, nastavení své ochrany počítače před viry a nežádoucími průniky do systému, aby se QtiPlot mohl připojit k internetu!</translation>
-    </message>
-    <message>
-        <source>Do you wish to continue?</source>
-        <translation type="obsolete">Chcete pokračovat?</translation>
-    </message>
-    <message>
-        <source>QtiPlot - HTTP get version file</source>
-        <translation type="obsolete">QtiPlot - HTTP získání souboru s verzí</translation>
-    </message>
-    <message>
-        <source>Error while fetching version file with HTTP: %1.</source>
-        <translation type="obsolete">Při získávání souboru s verzí programu přes HTTP došlo k chybě: %1.</translation>
-    </message>
-    <message>
-        <source>QtiPlot - Updates Available</source>
-        <translation type="obsolete">QtiPlot - Aktualizace jsou dostupné</translation>
-    </message>
-    <message>
-        <source>There is a newer version of QtiPlot (%1) available for download. Would you like to download it?</source>
-        <translation type="obsolete">Existuje novější verze QtiPlotu  (%1) ḋostupná ke stažení. Chcete ji stáhnout?</translation>
-    </message>
-    <message>
-        <source>QtiPlot - No Updates Available</source>
-        <translation type="obsolete">QtiPlot - Žádné aktualizace nejsou dostupné</translation>
-    </message>
-    <message>
-        <source>No updates available. Your current version %1 is the last version available!</source>
-        <translation type="obsolete">Žádné aktualizace nejsou dostupné. Verze %1, kterou nyní používáte, je poslední verzí, jež je dostupná!</translation>
-    </message>
-    <message>
-        <source>This will clear the contents of all the data associated with the table. Are you sure?</source>
-        <translation type="obsolete">Tímto se smažou všechna data přiřazená k tabulce. Jste si jist tímto krokem?</translation>
-    </message>
-    <message>
-        <source>&amp;No</source>
-        <translation type="obsolete">&amp;Ne</translation>
-    </message>
-    <message>
-        <source>QtiPlot - Enter row number</source>
-        <translation type="obsolete">QtiPlot - Zadat číslo řádku</translation>
-    </message>
-    <message>
-        <source>Row</source>
-        <translation type="obsolete">Řádek</translation>
-    </message>
-    <message>
-        <source>QtiPlot - Enter column number</source>
-        <translation type="obsolete">QtiPlot - Zadat počet sloupců</translation>
-    </message>
-    <message>
-        <source>QtiPlot was not built with Python scripting support included!</source>
-        <translation type="obsolete">QtiPlot nebyl sestaven se zahrnutou podporou pro skriptování s Pythonem!</translation>
-    </message>
-    <message>
-        <source>Please set a default X column for this table, first!</source>
-        <translation type="obsolete">Nejprve, prosím, u této tabulky nastavte jeden sloupec jako výchozí sloupec X!</translation>
-    </message>
-    <message>
-        <source>Please select a Z column for this operation!</source>
-        <translation type="obsolete">Vyberte, prosím, pro tuto operaci sloupec Z!</translation>
-    </message>
-    <message>
-        <source>You need to define a X column first!</source>
-        <translation type="obsolete">Neprve musíte stanovit sloupec X!</translation>
-    </message>
-    <message>
-        <source>You need to define a Y column first!</source>
-        <translation type="obsolete">Neprve musíte stanovit sloupec Y!</translation>
-    </message>
-    <message>
-        <source>Starting with version 0.9.1 QtiPlot stores the user defined fit models to a different location.</source>
-        <translation type="obsolete">Počínaje verzí 0.9.1 QtiPlot ukládá uživatelsky stanovené odpovídající modely do jiného umístění.</translation>
-    </message>
-    <message>
-        <source>If you want to save your already defined models, please choose a destination folder.</source>
-        <translation type="obsolete">Pokud chcete uložit své již stanovené modely, vyberte, prosím, cílovou složku.</translation>
-    </message>
-    <message>
-        <source>Import fit models</source>
-        <translation type="obsolete">Zavést modely umístění</translation>
-    </message>
-    <message>
-        <source>Choose a directory to export the fit models to</source>
-        <translation type="obsolete">Vybrat adresář, do něhož se budou exportovat modely umístění</translation>
-    </message>
-    <message>
-        <source>No Icon</source>
-        <translation type="obsolete">Bez ikony</translation>
-    </message>
-    <message>
-        <source>Couldn&apos;t load file: %1.
-Autocompletion will not be available!</source>
-        <translation type="obsolete">Nelze nahrát soubor: %1.
-Automatické dokončení nebude dostupné!</translation>
-    </message>
-    <message>
-        <source>Please select exactly one column and more than one non empty cell!</source>
-        <translation type="obsolete">Vyberte, prosím, přesně jeden sloupec a více než jednu buňku, která není prázdná!</translation>
-    </message>
-    <message>
-        <source>Data set: %1 doesn&apos;t exist!</source>
-        <translation type="obsolete">Soubor dat: %1 neexistuje!</translation>
-    </message>
-    <message>
-        <source>Stem and leaf plot of dataset</source>
-        <translation type="obsolete">Stonkový a listový nákres souboru dat</translation>
-    </message>
-    <message>
-        <source>from row</source>
-        <translation type="obsolete">od řádku</translation>
-    </message>
-    <message>
-        <source>to row</source>
-        <translation type="obsolete">po řádek</translation>
-    </message>
-    <message>
-        <source>Not enough memory for this dataset!</source>
-        <translation type="obsolete">Pro tento soubor dat není dost paměti!</translation>
-    </message>
-    <message>
-        <source>Stem</source>
-        <translation type="obsolete">Stonek</translation>
-    </message>
-    <message>
-        <source>Leaf</source>
-        <translation type="obsolete">List</translation>
-    </message>
-    <message>
-        <source>Please confirm the stem unit!</source>
-        <translation type="obsolete">Potvrďte, prosím, jednotku pro stonek!</translation>
-    </message>
-    <message>
-        <source>Data set</source>
-        <translation type="obsolete">Soubor dat</translation>
-    </message>
-    <message>
-        <source>stem unit</source>
-        <translation type="obsolete">Jednotka pro stonek</translation>
-    </message>
-    <message>
-        <source>Stem unit</source>
-        <translation type="obsolete">Jednotka pro stonek</translation>
-    </message>
-    <message>
-        <source>Leaf unit</source>
-        <translation type="obsolete">Jednotka pro list</translation>
-    </message>
-    <message>
-        <source>Key</source>
-        <translation type="obsolete">Klávesa</translation>
-    </message>
-    <message>
-        <source>means</source>
-        <translation type="obsolete">znamená</translation>
-    </message>
-    <message>
-        <source>Input error: empty data set!</source>
-        <translation type="obsolete">Chyba vstupu: prázdný soubor dat!</translation>
-    </message>
-    <message>
         <location filename="../src/core/ConfigDialog.cpp" line="2401"/>
         <source>English</source>
         <translation>Český</translation>
     </message>
     <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="1329"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="10110"/>
         <source>Move Row</source>
         <translation>Přesunout řádek</translation>
     </message>
     <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="1389"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="6836"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="6968"/>
         <source>Spec&amp;ial Bar/Column</source>
         <translation>&amp;Zvláštní pruh/sloupec</translation>
     </message>
     <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="7771"/>
         <source>Print preview of window: </source>
-        <translation type="obsolete">Tisk náhledu okna:</translation>
+        <translation type="unfinished">Tisk náhledu okna:</translation>
     </message>
     <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="12761"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="13684"/>
         <source>Print Pre&amp;view</source>
-        <translation type="obsolete">Tisk &amp;náhledu</translation>
+        <translation type="unfinished">Tisk &amp;náhledu</translation>
     </message>
     <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="9915"/>
         <source>&amp;Add</source>
-        <translation type="obsolete">&amp;Přidat</translation>
+        <translation type="unfinished">&amp;Přidat</translation>
     </message>
     <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="9923"/>
         <source>&amp;Indexed Colors</source>
-        <translation type="obsolete">&amp;Indexované barvy</translation>
+        <translation type="unfinished">&amp;Indexované barvy</translation>
     </message>
     <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="9924"/>
         <source>Pale&amp;tte</source>
-        <translation type="obsolete">&amp;Paleta</translation>
+        <translation type="unfinished">&amp;Paleta</translation>
     </message>
     <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="12696"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="13612"/>
         <source>Ctrl+Alt+D</source>
-        <translation type="obsolete">Ctrl+Alt+D</translation>
+        <translation type="unfinished">Ctrl+Alt+D</translation>
     </message>
     <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="12810"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="14053"/>
         <source>Zoom &amp;In/Out and Drag Canvas</source>
-        <translation type="obsolete">&amp;Přiblížit/Oddálit a táhnout plátnem</translation>
+        <translation type="unfinished">&amp;Přiblížit/Oddálit a táhnout plátnem</translation>
     </message>
     <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="12852"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="13754"/>
         <source>Stack &amp;Bar</source>
-        <translation type="obsolete">&amp;Pruh zásobníku</translation>
+        <translation type="unfinished">&amp;Pruh zásobníku</translation>
     </message>
     <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="12855"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="13757"/>
         <source>Stack &amp;Column</source>
-        <translation type="obsolete">&amp;Sloupec zásobníku</translation>
+        <translation type="unfinished">&amp;Sloupec zásobníku</translation>
     </message>
     <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="12897"/>
         <source>&amp;Waterfall Plot</source>
-        <translation type="obsolete">&amp;Vodopádový nákres</translation>
+        <translation type="unfinished">&amp;Vodopádový nákres</translation>
     </message>
     <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="12969"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="13833"/>
         <source>Fit Slop&amp;e</source>
-        <translation type="obsolete">Umístit &amp;sklon</translation>
+        <translation type="unfinished">Umístit &amp;sklon</translation>
     </message>
     <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="13051"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="13878"/>
         <source>Ad&amp;just Column Width</source>
-        <translation type="obsolete">Upravit &amp;šířku sloupce</translation>
+        <translation type="unfinished">Upravit &amp;šířku sloupce</translation>
     </message>
     <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="13063"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="13874"/>
         <source>&amp;Upward</source>
-        <translation type="obsolete">&amp;Nahoru</translation>
+        <translation type="unfinished">&amp;Nahoru</translation>
     </message>
     <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="13066"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="13876"/>
         <source>&amp;Downward</source>
-        <translation type="obsolete">&amp;Dolů</translation>
+        <translation type="unfinished">&amp;Dolů</translation>
     </message>
     <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="13540"/>
         <source>Append a project to the current folder</source>
-        <translation type="obsolete">Projekt připojit k nynější složce</translation>
+        <translation type="unfinished">Projekt připojit k nynější složce</translation>
     </message>
     <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="13541"/>
         <source>Ctrl+Alt+A</source>
-        <translation type="obsolete">Ctrl+Alt+A</translation>
+        <translation type="unfinished">Ctrl+Alt+A</translation>
     </message>
     <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="13755"/>
         <source>Plot stack bar</source>
-        <translation type="obsolete">Nakreslit pruh se zásobníkem</translation>
+        <translation type="unfinished">Nakreslit pruh se zásobníkem</translation>
     </message>
     <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="13758"/>
         <source>Plot stack column</source>
-        <translation type="obsolete">Nakreslit sloupec se zásobníkem</translation>
+        <translation type="unfinished">Nakreslit sloupec se zásobníkem</translation>
     </message>
     <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="13875"/>
         <source>Move current row upward</source>
-        <translation type="obsolete">Přesunout nynější řádek nahoru</translation>
+        <translation type="unfinished">Přesunout nynější řádek nahoru</translation>
     </message>
     <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="13877"/>
         <source>Move current row downward</source>
-        <translation type="obsolete">Přesunout nynější řádek dolů</translation>
+        <translation type="unfinished">Přesunout nynější řádek dolů</translation>
     </message>
     <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="13879"/>
         <source>Set optimal column width</source>
-        <translation type="obsolete">Nastavit nejlepší šířku sloupců</translation>
+        <translation type="unfinished">Nastavit nejlepší šířku sloupců</translation>
     </message>
     <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="13895"/>
         <source>Alt+C</source>
-        <translation type="obsolete">ALT+C</translation>
+        <translation type="unfinished">ALT+C</translation>
     </message>
     <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="14054"/>
         <source>Zoom In (Shift++) or Out (-) and Drag Canvas</source>
-        <translation type="obsolete">Přiblížit(Shift++) nebo Oddálit (-) a táhnout plátnem</translation>
+        <translation type="unfinished">Přiblížit(Shift++) nebo Oddálit (-) a táhnout plátnem</translation>
     </message>
     <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="14680"/>
         <source>Make a donation</source>
-        <translation type="obsolete">Poskytněte dar</translation>
+        <translation type="unfinished">Poskytněte dar</translation>
     </message>
     <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="14681"/>
         <source>Close</source>
-        <translation type="obsolete">Zavřít</translation>
+        <translation type="unfinished">Zavřít</translation>
     </message>
     <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="14732"/>
         <source>show standalone scripting window</source>
-        <translation type="obsolete">Ukázat samostatné skriptovací okno</translation>
+        <translation type="unfinished">Ukázat samostatné skriptovací okno</translation>
     </message>
     <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="15148"/>
         <source>You are using the demonstration version of Qtiplot.				It is identical with the full version, except that you can&apos;t save your work to project files and you can&apos;t use it for more than 10 minutes per session.				&lt;br&gt;&lt;br&gt;				If you want to have ready-to-use, fully functional binaries, please subscribe for a				&lt;a href=&quot;http://soft.proindependent.com/individual_contract.html&quot;&gt;single-user binaries maintenance contract&lt;/a&gt;.				&lt;br&gt;&lt;br&gt;				QtiPlot is free software in the sense of free speech.				If you know how to use it, you can get				&lt;a href=&quot;http://soft.proindependent.com/download.html&quot;&gt;the source code&lt;/a&gt;				free of charge.				Nevertheless, you are welcome to				&lt;a href=&quot;http://soft.proindependent.com/why_donate.html&quot;&gt;make a donation&lt;/a&gt;				in order to support the further development of QtiPlot.</source>
-        <translation type="obsolete">Používáte předváděcí verzi Qtiplotu.				Je totožná s plnou verzí, mimo to, že vaši práci nelze uložit do souboru s projektem a nemůžete ji používat déle než  10 minut na jedno sezení.				&lt;br&gt;&lt;br&gt;				Pokud chcete mít verzi připravenou k používání, plně pracující binární soubory, podepište se, prosím, na 				&lt;a href=&quot;http://soft.proindependent.com/individual_contract.html&quot;&gt;smlouva na starání se o binární soubory pro jednoho-uživatele&lt;/a&gt;.				&lt;br&gt;&lt;br&gt;				QtiPlot je svobodný software ve smyslu svobody projevu.				Pokud víte, jak jej používat, můžete získat				&lt;a href=&quot;http://developer.berlios.de/project/showfiles.php?group_id=6626&quot;&gt;zdrojový kód&lt;/a&gt;				zdarma.				Přesto však jste vítán,				&lt;a href=&quot;http://soft.proindependent.com/why_donate.html&quot;&gt;hodláte-li poskytnout dar, &lt;/a&gt;				kterým podpoříte budoucí vývoj QtiPlotu.</translation>
+        <translation type="unfinished">Používáte předváděcí verzi Qtiplotu.				Je totožná s plnou verzí, mimo to, že vaši práci nelze uložit do souboru s projektem a nemůžete ji používat déle než  10 minut na jedno sezení.				&lt;br&gt;&lt;br&gt;				Pokud chcete mít verzi připravenou k používání, plně pracující binární soubory, podepište se, prosím, na 				&lt;a href=&quot;http://soft.proindependent.com/individual_contract.html&quot;&gt;smlouva na starání se o binární soubory pro jednoho-uživatele&lt;/a&gt;.				&lt;br&gt;&lt;br&gt;				QtiPlot je svobodný software ve smyslu svobody projevu.				Pokud víte, jak jej používat, můžete získat				&lt;a href=&quot;http://developer.berlios.de/project/showfiles.php?group_id=6626&quot;&gt;zdrojový kód&lt;/a&gt;				zdarma.				Přesto však jste vítán,				&lt;a href=&quot;http://soft.proindependent.com/why_donate.html&quot;&gt;hodláte-li poskytnout dar, &lt;/a&gt;				kterým podpoříte budoucí vývoj QtiPlotu.</translation>
     </message>
 </context>
 <context>
