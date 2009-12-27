@@ -3934,7 +3934,7 @@ Table * ApplicationWindow::importExcel(const QString& fileName, int sheet)
 	updateRecentProjectsList(fn);
 	return table;
 #else
-	QMessageBox::critical(this, tr("QtiPlot"), tr("QtiPlot was built without libxls support!");
+	QMessageBox::critical(this, tr("QtiPlot"), tr("QtiPlot was built without libxls support!"));
 	return NULL;
 #endif
 }
