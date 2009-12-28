@@ -535,19 +535,18 @@ QString ScriptEdit::exportASCII(const QString &filename)
 	QString selectedFilter;
 	QString fn;
 	if (filename.isEmpty())
-		fn = ApplicationWindow::getFileName(this, tr("Save Text to File"), scriptsDirPath, filter, &selectedFilter);
+		fn = ApplicationWindow::getFileName(this, tr("Save Text to File"), scriptsDirPath, filter, &selectedFilter, true, scriptEnv->application()->d_confirm_overwrite);
 	else
 		fn = filename;
 
 	if (!fn.isEmpty()){
 		QFileInfo fi(fn);
 		scriptsDirPath = fi.absolutePath();
-		if (!fn.endsWith(selectedFilter.remove("*"), Qt::CaseInsensitive)){
-			if (selectedFilter.contains(".txt"))
-				fn.append(".txt");
-			else if (selectedFilter.contains(".py"))
-				fn.append(".py");
-		}
+
+		if (selectedFilter.contains(".txt") && !fn.endsWith(".txt", Qt::CaseInsensitive))
+			fn.append(".txt");
+		else if (selectedFilter.contains(".py") && !fn.endsWith(".py", Qt::CaseInsensitive))
+			fn.append(".py");
 
 		QFile f(fn);
 		if (!f.open(IO_WriteOnly)){

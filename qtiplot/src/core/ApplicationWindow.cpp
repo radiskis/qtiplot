@@ -6075,13 +6075,13 @@ bool ApplicationWindow::saveProject(bool compress)
 	return true;
 }
 
-QString ApplicationWindow::getFileName(QWidget *parent, const QString & caption,
-			const QString & dir, const QString & filter, QString * selectedFilter, bool save)
+QString ApplicationWindow::getFileName(QWidget *parent, const QString & caption, const QString & dir, const QString & filter,
+									   QString * selectedFilter, bool save, bool confirmOverwrite)
 {
 	QFileDialog fd(parent, caption, dir, filter);
 	if (save){
 		fd.setAcceptMode(QFileDialog::AcceptSave);
-		fd.setConfirmOverwrite(true);
+		fd.setConfirmOverwrite(confirmOverwrite);
 	} else
 		fd.setAcceptMode(QFileDialog::AcceptOpen);
 
@@ -6111,7 +6111,7 @@ void ApplicationWindow::saveProjectAs(const QString& fileName, bool compress)
 		filter += tr("Compressed QtiPlot project") + " (*.qti.gz)";
 
 		QString selectedFilter;
-		fn = getFileName(this, tr("Save Project As"), workingDir, filter, &selectedFilter);
+		fn = getFileName(this, tr("Save Project As"), workingDir, filter, &selectedFilter, true, d_confirm_overwrite);
 		if (selectedFilter.contains(".gz"))
 			compress = true;
 	}
@@ -6256,7 +6256,7 @@ void ApplicationWindow::saveAsTemplate(MdiSubWindow* w, const QString& fileName)
 			filter = tr("QtiPlot 3D Surface Template")+" (*.qst)";
 
 		QString selectedFilter;
-		fn = getFileName(this, tr("Save Window As Template"), templatesDir + "/" + w->objectName(), filter, &selectedFilter);
+		fn = getFileName(this, tr("Save Window As Template"), templatesDir + "/" + w->objectName(), filter, &selectedFilter, true, d_confirm_overwrite);
 
 		if (!fn.isEmpty()){
 			QFileInfo fi(fn);
@@ -6532,7 +6532,7 @@ void ApplicationWindow::exportAllTables(const QString& dir, const QString& filte
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 	workingDir = dir;
 
-	bool confirmOverwrite = true;
+	bool confirmOverwrite = d_confirm_overwrite;
 	bool success = true;
 	QList<MdiSubWindow *> windows = windowsList();
 	foreach(MdiSubWindow *w, windows){
@@ -7723,7 +7723,7 @@ void ApplicationWindow::exportPDF()
 	}
 
     QString fname = getFileName(this, tr("Choose a filename to save under"),
-					imagesDirPath + "/" + w->objectName(), "*.pdf");
+					imagesDirPath + "/" + w->objectName(), "*.pdf", 0, true, d_confirm_overwrite);
 	if (!fname.isEmpty() ){
 		QFileInfo fi(fname);
 		QString baseName = fi.fileName();
@@ -15290,7 +15290,7 @@ void ApplicationWindow::saveFolderAsProject(Folder *f)
 	filter += tr("Compressed QtiPlot project")+" (*.qti.gz)";
 
 	QString selectedFilter;
-	QString fn = getFileName(this, tr("Save project as"), workingDir, filter, &selectedFilter);
+	QString fn = getFileName(this, tr("Save project as"), workingDir, filter, &selectedFilter, true, d_confirm_overwrite);
 	if ( !fn.isEmpty() ){
 		QFileInfo fi(fn);
 		workingDir = fi.dirPath(true);

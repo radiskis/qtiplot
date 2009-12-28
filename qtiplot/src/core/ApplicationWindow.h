@@ -213,7 +213,7 @@ public:
 	static QString imageFilter();
 	static QString getFileName(QWidget *parent = 0, const QString & caption = QString(),
 		const QString & dir = QString(), const QString & filter = QString(),
-		QString * selectedFilter = 0, bool save = true);
+		QString * selectedFilter = 0, bool save = true, bool confirmOverwrite = true);
 
 	static void memoryAllocationError();
 	QColor readColorFromProject(const QString& name);
