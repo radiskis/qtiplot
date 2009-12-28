@@ -1228,7 +1228,7 @@ public:
 	QString templatesDir;
 	bool autoScaleFonts, autoResizeLayers, autoSearchUpdates;
 	bool confirmCloseTable, confirmCloseMatrix, confirmClosePlot2D, confirmClosePlot3D;
-	bool confirmCloseFolder, confirmCloseNotes;
+	bool confirmCloseFolder, confirmCloseNotes, d_confirm_overwrite;
 	bool titleOn, autoSave, autoscale2DPlots, antialiasing2DPlots;
 	//! \name User preferences for axes in new 2D plot layers
 	//@{

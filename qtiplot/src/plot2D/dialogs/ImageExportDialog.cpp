@@ -414,7 +414,8 @@ void ImageExportDialog::accept()
 	if(!file_name.endsWith(selected_filter, Qt::CaseInsensitive))
 		file_name.append(selected_filter);
 
-	if (QFileInfo(file_name).exists() &&
+	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(this->parent());
+	if (app && app->d_confirm_overwrite && QFileInfo(file_name).exists() &&
 		QMessageBox::warning(this, tr("QtiPlot") + " - " + tr("Overwrite file?"),
 		tr("%1 already exists.").arg(file_name) + "\n" + tr("Do you want to replace it?"),
 		QMessageBox::Yes|QMessageBox::No) == QMessageBox::No)
