@@ -228,7 +228,7 @@ private:
 	QLabel *buttonCommentLabel, *buttonNumericLabel, *buttonQuotationLabel;
 	QLabel *buttonKeywordLabel, *buttonFunctionLabel, *buttonClassLabel;
 
-	QCheckBox *boxMuParserCLocale;
+	QCheckBox *boxMuParserCLocale, *boxConfirmOverwrite;
 };
 
 #endif // CONFIGDIALOG_H

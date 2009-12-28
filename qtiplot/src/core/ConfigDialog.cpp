@@ -1502,9 +1502,13 @@ void ConfigDialog::initConfirmationsPage()
 	boxPromptRenameTables = new QCheckBox();
 	boxPromptRenameTables->setChecked(app->d_inform_rename_table);
 
+	boxConfirmOverwrite = new QCheckBox();
+	boxConfirmOverwrite->setChecked(app->d_confirm_overwrite);
+
 	QVBoxLayout * confirmPageLayout = new QVBoxLayout( confirm );
 	confirmPageLayout->addWidget(groupBoxConfirm);
 	confirmPageLayout->addWidget(boxPromptRenameTables);
+	confirmPageLayout->addWidget(boxConfirmOverwrite);
 	confirmPageLayout->addStretch();
 }
 
@@ -1700,6 +1704,7 @@ void ConfigDialog::languageChange()
 	buttonLegendFont->setText( tr( "&Legend" ) );
 	buttonTitleFont->setText( tr( "T&itle" ) );
 	boxPromptRenameTables->setText( tr( "Prompt on &renaming tables when appending projects" ) );
+	boxConfirmOverwrite->setText( tr( "Ask before over&writing files" ) );
 
 	//application page
 	appTabWidget->setTabText(appTabWidget->indexOf(application), tr("Application"));
@@ -2150,6 +2155,7 @@ void ConfigDialog::apply()
 
 	// general page: confirmations tab
 	app->d_inform_rename_table = boxPromptRenameTables->isChecked();
+	app->d_confirm_overwrite = boxConfirmOverwrite->isChecked();
 	app->confirmCloseFolder = boxFolders->isChecked();
 	app->updateConfirmOptions(boxTables->isChecked(), boxMatrices->isChecked(),
 			boxPlots2D->isChecked(), boxPlots3D->isChecked(),

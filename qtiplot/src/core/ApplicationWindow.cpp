@@ -181,7 +181,9 @@ using namespace std;
 #include <gsl/gsl_sort.h>
 
 #ifdef XLS_IMPORT
+extern "C" {
 	#include <libxls/xls.h>
+}
 #endif
 
 using namespace Qwt3D;
@@ -532,6 +534,7 @@ void ApplicationWindow::initGlobalConstants()
 	d_add_curves_dialog_size = QSize(700, 400);
 	d_show_current_folder = false;
 
+	d_confirm_overwrite = true;
 	confirmCloseFolder = true;
 	confirmCloseTable = true;
 	confirmCloseMatrix = true;
@@ -4971,6 +4974,7 @@ void ApplicationWindow::readSettings()
 	confirmClosePlot3D = settings.value("/Plot3D", true).toBool();
 	confirmCloseNotes = settings.value("/Note", true).toBool();
 	d_inform_rename_table = settings.value("/RenameTable", true).toBool();
+	d_confirm_overwrite = settings.value("/Overwrite", true).toBool();
 	settings.endGroup(); // Confirmations
 
 
@@ -5346,6 +5350,7 @@ void ApplicationWindow::saveSettings()
 	settings.setValue("/Plot3D", confirmClosePlot3D);
 	settings.setValue("/Note", confirmCloseNotes);
 	settings.setValue("/RenameTable", d_inform_rename_table);
+	settings.setValue("/Overwrite", d_confirm_overwrite);
 	settings.endGroup(); // Confirmations
 
 	/* ----------------- group Tables -------------- */
@@ -5856,7 +5861,7 @@ void ApplicationWindow::exportAllGraphs()
 	file_suffix.lower();
 	file_suffix.remove("*");
 
-	bool confirm_overwrite = true;
+	bool confirm_overwrite = d_confirm_overwrite;
 	MultiLayer *plot2D;
 	Graph3D *plot3D;
 
