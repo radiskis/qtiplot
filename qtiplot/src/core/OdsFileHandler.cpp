@@ -66,13 +66,21 @@ d_ods_file_name(odsFileName)
 
 		cell.col = d_col;
 
+		int repeatCols = 1;
 		if (!attributes.value("table:number-columns-repeated").isEmpty())
-			d_col += attributes.value("table:number-columns-repeated").toInt();
+			repeatCols = attributes.value("table:number-columns-repeated").toInt();
+
+		if (cell.type != EmptyCell){
+			for (int i = 0; i < repeatCols; i++){
+				cell.col = d_col + i;
+				cells.push_back(cell);
+			}
+		}
+
+		if (repeatCols > 1)
+			d_col += repeatCols;
 		else
 			d_col++;
-
-		if (cell.type != EmptyCell)
-			cells.push_back(cell);
 	}
 
 	currentText.clear();
@@ -101,7 +109,7 @@ bool OdsFileHandler::endElement(const QString & /* namespaceURI */,
 	}
 
 	if (qName == "table:table"){
-		if (d_last_column > 1 || d_rows > 1){
+		if (!cells.empty() && (d_last_column > 1 || d_rows > 1)){
 			Table *t = d_app->newTable(d_rows, d_last_column + 1, QString::null, d_ods_file_name + ", " + d_sheet_names.last());
 			int n = cells.size();
 			for (int i = 0; i < n; i++){
