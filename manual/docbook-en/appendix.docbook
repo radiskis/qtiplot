@@ -218,13 +218,18 @@ If you want to build &appname; from sources, you need the following libraries:
     <para>For the export of 3D plots &appname; also uses the <ulink url="http://www.libpng.org/pub/png/libpng.html">libpng</ulink> library.</para>
   </listitem>
 </varlistentry>
-</variablelist>
   <varlistentry>
 	<term>libpng</term>
 	<listitem>
 	  <para>For the import of Excel .xls files &appname; also uses the <ulink url="http://libxls.sourceforge.net/">libxls</ulink> library.</para>
 	</listitem>
   </varlistentry>
+	<varlistentry>
+	  <term>libpng</term>
+	  <listitem>
+		<para>For the import of ODF spreadsheet .ods files &appname; uses the <ulink url="http://quazip.sourceforge.net/">QuaZIP</ulink> library.</para>
+	  </listitem>
+	</varlistentry>
   </variablelist>
 
 <para>Finally, if you want Python scripting support, you will also need to download and install:

@@ -369,6 +369,7 @@ newNote
 plot
 importImage
 importExcel
+importOdfSpreadsheet
 importWaveFile
 newPlot3D
 plot3D
