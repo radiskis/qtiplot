@@ -51,6 +51,9 @@ OpenProjectDialog::OpenProjectDialog(QWidget *parent, bool extended, Qt::WFlags 
 #ifdef XLS_IMPORT
 		<< tr("Excel") + " (*.xls)"
 #endif
+#ifdef ODS_IMPORT
+		<< tr("ODF Spreadsheet") + " (*.ods)"
+#endif
 		<< tr("All files") + " (*)";
 	setFilters(filters);
 

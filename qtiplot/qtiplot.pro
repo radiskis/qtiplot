@@ -209,6 +209,13 @@ contains(SCRIPTING_LANGS, Python) {
 	LIBS        += $$XLS_LIBS
 }
 
+# check if we have QuaZIP
+!isEmpty(QUAZIP_LIBS) {
+	DEFINES += ODS_IMPORT
+	INCLUDEPATH += $$QUAZIP_INCLUDEPATH
+	LIBS        += $$QUAZIP_LIBS
+}
+
 ###############################################################
 
 # At the very end: add global include- and lib path

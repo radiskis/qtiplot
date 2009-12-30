@@ -443,6 +443,7 @@ public slots:
 	void connectTable(Table* w);
 	void initTable(Table* w, const QString& caption);
 	void customTable(Table* w);
+	Table* importOdfSpreadsheet(const QString& = QString::null);
 	Table* importExcel(const QString& = QString::null, int sheet = -1);
 	Table* importWaveFile();
 	void importASCII();
@@ -1356,6 +1357,9 @@ private:
     QAction *actionNewSurfacePlot, *actionNewMatrix, *actionNewGraph, *actionNewFolder;
     QAction *actionOpen, *actionLoadImage, *actionSaveProject, *actionSaveProjectAs, *actionImportImage;
 	QAction *actionLoad, *actionUndo, *actionRedo, *actionImportSound;
+#ifdef ODS_IMPORT
+	QAction *actionOpenOds;
+#endif
 #ifdef XLS_IMPORT
 	QAction *actionOpenExcel;
 #endif
