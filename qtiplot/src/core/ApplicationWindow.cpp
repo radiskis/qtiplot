@@ -3890,41 +3890,26 @@ Table * ApplicationWindow::importOdfSpreadsheet(const QString& fileName)
 			return NULL;
 	}
 
-	QuaZip zip(fn);
-	if(!zip.open(QuaZip::mdUnzip)) {
+	QuaZipFile file(fn, "content.xml");
+	if(!file.open(QIODevice::ReadOnly)){
 		QMessageBox::critical(this, tr("QtiPlot"), tr("Couldn't open file %1").arg(fn));
 		return NULL;
 	}
-	zip.setFileNameCodec("IBM866");
-
-	QuaZipFileInfo info;
-	QuaZipFile file(&zip);
 	QTemporaryFile out;
-	for(bool more = zip.goToFirstFile(); more; more = zip.goToNextFile()){
-		QString name = file.getActualFileName();
-		if (name != "content.xml")
-			continue;
-		if(!file.open(QIODevice::ReadOnly)){
-			QMessageBox::critical(this, tr("QtiPlot"), tr("Couldn't open file %1").arg(fn));
-			return NULL;
-		}
-		if (out.open()){
-			char c;
-			while(file.getChar(&c))
-				out.putChar(c);
-		}
+	if (out.open()){
+		char c;
+		while(file.getChar(&c))
+			out.putChar(c);
 		out.close();
-		file.close();
 	}
-	zip.close();
+	file.close();
 
 	OdsFileHandler handler(this, fn);
 	QXmlSimpleReader reader;
 	reader.setContentHandler(&handler);
 	reader.setErrorHandler(&handler);
 
-	QFile contentXmlFile(out.fileName());
-	QXmlInputSource xmlInputSource(&contentXmlFile);
+	QXmlInputSource xmlInputSource(&out);
 	if (reader.parse(xmlInputSource))
 		return handler.sheet(handler.sheetsCount() - 1);
 	return NULL;
