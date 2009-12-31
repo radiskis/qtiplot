@@ -3702,7 +3702,7 @@ void Graph::zoomOut()
   	updateSecondaryAxis(QwtPlot::yRight);
 }
 
-void Graph::enablePanningMagnifier(bool on)
+void Graph::enablePanningMagnifier(bool on, int mode)
 {
 	if (d_magnifier)
 		delete d_magnifier;
@@ -3731,6 +3731,20 @@ void Graph::enablePanningMagnifier(bool on)
 				d_magnifier->setAxisEnabled (axis, false);
 				d_panner->setAxisEnabled (axis, false);
 			}
+		}
+
+		if (mode == 1){
+			cnvs->setCursor(Qt::SizeVerCursor);
+			d_magnifier->setAxisEnabled (QwtPlot::xBottom, false);
+			d_magnifier->setAxisEnabled (QwtPlot::xTop, false);
+			d_panner->setAxisEnabled (QwtPlot::xBottom, false);
+			d_panner->setAxisEnabled (QwtPlot::xTop, false);
+		} else if (mode == 2){
+			cnvs->setCursor(Qt::SizeHorCursor);
+			d_magnifier->setAxisEnabled (QwtPlot::yLeft, false);
+			d_magnifier->setAxisEnabled (QwtPlot::yRight, false);
+			d_panner->setAxisEnabled (QwtPlot::yLeft, false);
+			d_panner->setAxisEnabled (QwtPlot::yRight, false);
 		}
 	} else {
 		for (int i = 0; i < QwtPlot::axisCnt; i++){

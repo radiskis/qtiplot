@@ -207,8 +207,9 @@ class Graph: public QwtPlot
 		void addLegendItem();
 		bool isPrinting(){return d_is_printing;};
 
-		void enablePanningMagnifier(bool on = true);
-		bool hasPanningMagnifierEnabled(){if (d_magnifier && d_panner) return true; return false;}
+		void enablePanningMagnifier(bool on = true, int mode = 0);
+		bool hasPanningMagnifierEnabled(){if (d_magnifier && d_panner) return true; return false;};
+		QwtPlotMagnifier* magnifyTool(){return d_magnifier;};
 
 		static QString escapeTeXSpecialCharacters(const QString &);
 		static QString texSuperscripts(const QString &);

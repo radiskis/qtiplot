@@ -644,7 +644,7 @@ public slots:
 	void addImage();
 	void zoomIn();
 	void zoomOut();
-	void magnify();
+	void magnify(int mode = 0);
 	void setAutoScale();
 	void showRangeSelectors();
 	void showCursor();
@@ -1434,7 +1434,7 @@ private:
     QAction *wireframe, *hiddenline, *polygon, *filledmesh, *pointstyle, *barstyle, *conestyle, *crossHairStyle;
     QAction *actionShowUndoStack, *actionShowNoteLineNumbers, *actionAddFormula, *actionAddRectangle, *actionAddEllipse;
     QActionGroup *coord, *floorstyle, *grids, *plotstyle, *dataTools;
-    QAction *actionMagnify, *actionFindWindow, *actionWaterfallPlot;
+	QAction *actionMagnify, *actionFindWindow, *actionWaterfallPlot, *actionMagnifyHor, *actionMagnifyVert;
     QAction *actionMoveRowUp, *actionMoveRowDown, *actionAdjustColumnWidth;
     QAction *actionPresentationODF, *actionRenameNoteTab, *actionAddNoteTab, *actionCloseNoteTab;
     QAction *actionIncreaseIndent, *actionDecreaseIndent, *actionFind, *actionFindNext, *actionFindPrev, *actionReplace;
