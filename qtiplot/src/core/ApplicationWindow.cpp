@@ -123,6 +123,7 @@
 #include <PythonSyntaxHighlighter.h>
 #include <CreateBinMatrixDialog.h>
 #include <QTextDocumentWriter>
+#include <QToolButton>
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -135,6 +136,7 @@ using namespace std;
 
 #include <qwt_scale_engine.h>
 #include <qwt_scale_widget.h>
+#include <qwt_plot_magnifier.h>
 
 #include <QFileDialog>
 #include <QInputDialog>
@@ -776,21 +778,38 @@ void ApplicationWindow::initToolBars()
 
 	actionMagnify->setActionGroup(dataTools);
 	actionMagnify->setCheckable( true );
-	plotTools->addAction(actionMagnify);
+
+	actionMagnifyHor->setActionGroup(dataTools);
+	actionMagnifyHor->setCheckable( true );
+
+	actionMagnifyVert->setActionGroup(dataTools);
+	actionMagnifyVert->setCheckable( true );
 
 	btnZoomIn = new QAction(tr("&Zoom In"), this);
 	btnZoomIn->setShortcut( tr("Ctrl++") );
 	btnZoomIn->setActionGroup(dataTools);
 	btnZoomIn->setCheckable( true );
 	btnZoomIn->setIcon(QIcon(QPixmap(zoom_xpm)) );
-	plotTools->addAction(btnZoomIn);
 
 	btnZoomOut = new QAction(tr("&Zoom Out"), this);
 	btnZoomOut->setShortcut( tr("Ctrl+-") );
 	btnZoomOut->setActionGroup(dataTools);
 	btnZoomOut->setCheckable( true );
 	btnZoomOut->setIcon(QIcon(QPixmap(zoomOut_xpm)) );
-	plotTools->addAction(btnZoomOut);
+
+	QMenu *menu_zoom = new QMenu(this);
+	menu_zoom->addAction(actionMagnify);
+	menu_zoom->addAction(actionMagnifyHor);
+	menu_zoom->addAction(actionMagnifyVert);
+	menu_zoom->addAction(btnZoomIn);
+	menu_zoom->addAction(btnZoomOut);
+
+	QToolButton *btn_zoom = new QToolButton(this);
+	btn_zoom->setMenu(menu_zoom);
+	btn_zoom->setPopupMode(QToolButton::InstantPopup);
+	btn_zoom->setIcon(QPixmap(magnifier_xpm));
+	btn_zoom->setToolTip(tr("Zoom"));
+	plotTools->addWidget(btn_zoom);
 
 	btnCursor = new QAction(tr("&Data Reader"), this);
 	btnCursor->setShortcut( tr("CTRL+D") );
@@ -1362,6 +1381,8 @@ void ApplicationWindow::plotDataMenuAboutToShow()
 	plotDataMenu->addAction(btnPointer);
 	plotDataMenu->insertSeparator();
 	plotDataMenu->addAction(actionMagnify);
+	plotDataMenu->addAction(actionMagnifyHor);
+	plotDataMenu->addAction(actionMagnifyVert);
 	plotDataMenu->addAction(btnZoomIn);
 	plotDataMenu->addAction(btnZoomOut);
 	plotDataMenu->addAction(actionUnzoom);
@@ -7586,7 +7607,7 @@ void ApplicationWindow::showCurveWorksheet()
 	showCurveWorksheet(g, actionShowCurveWorksheet->data().toInt());
 }
 
-void ApplicationWindow::magnify()
+void ApplicationWindow::magnify(int mode)
 {
 	MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
 	if (!plot)
@@ -7602,7 +7623,7 @@ void ApplicationWindow::magnify()
 
 	QList<Graph *> layers = plot->layersList();
     foreach(Graph *g, layers)
-    	g->enablePanningMagnifier();
+		g->enablePanningMagnifier(true, mode);
 }
 
 void ApplicationWindow::zoomIn()
@@ -12495,6 +12516,10 @@ void ApplicationWindow::pickDataTool( QAction* action )
 		drawLine();
 	else if (action == actionMagnify)
 		magnify();
+	else if (action == actionMagnifyHor)
+		magnify(2);
+	else if (action == actionMagnifyVert)
+		magnify(1);
 }
 
 void ApplicationWindow::custom2DPlotTools(MultiLayer *plot)
@@ -12553,7 +12578,13 @@ void ApplicationWindow::custom2DPlotTools(MultiLayer *plot)
 				return;
 			}
 		} else if (g->hasPanningMagnifierEnabled()){
-			actionMagnify->setChecked(true);
+			QwtPlotMagnifier *magnifier = g->magnifyTool();
+			if (!magnifier->isAxisEnabled(QwtPlot::xBottom) && !magnifier->isAxisEnabled(QwtPlot::xTop))
+				actionMagnifyVert->setChecked(true);
+			else if (!magnifier->isAxisEnabled(QwtPlot::yLeft) && !magnifier->isAxisEnabled(QwtPlot::yRight))
+				actionMagnifyHor->setChecked(true);
+			else
+				actionMagnify->setChecked(true);
 			return;
 		} else if (g->drawArrow()){
 			btnArrow->setChecked(true);
@@ -12881,6 +12912,9 @@ void ApplicationWindow::createActions()
 
 	actionMagnify = new QAction(QIcon(QPixmap(magnifier_xpm)), tr("Zoom &In/Out and Drag Canvas"), this);
 	connect(actionMagnify, SIGNAL(activated()), this, SLOT(magnify()));
+
+	actionMagnifyHor = new QAction(QIcon(QPixmap(magnifier_hor_xpm)), tr("Zoom/Drag Canvas &Horizontally"), this);
+	actionMagnifyVert = new QAction(QIcon(QPixmap(magnifier_vert_xpm)), tr("Zoom/Drag Canvas &Vertically"), this);
 
 	actionNewLegend = new QAction(QIcon(QPixmap(legend_xpm)), tr("New &Legend"), this);
 	actionNewLegend->setShortcut( tr("Ctrl+L") );
@@ -14128,6 +14162,12 @@ void ApplicationWindow::translateActionsStrings()
 
 	actionMagnify->setMenuText(tr("Zoom &In/Out and Drag Canvas"));
 	actionMagnify->setToolTip(tr("Zoom In (Shift++) or Out (-) and Drag Canvas"));
+
+	actionMagnifyHor->setMenuText(tr("Zoom/Drag Canvas &Horizontally"));
+	actionMagnifyVert->setMenuText(tr("Zoom/Drag Canvas &Vertically"));
+
+	actionMagnifyHor->setToolTip(tr("Zoom In/Out and Drag Canvas Horizontally"));
+	actionMagnifyVert->setToolTip(tr("Zoom In/Out and Drag Canvas Vertically"));
 
 	btnZoomIn->setMenuText(tr("&Zoom In"));
 	btnZoomIn->setShortcut(tr("Ctrl++"));

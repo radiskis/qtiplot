@@ -57,8 +57,8 @@ bool ScalePicker::eventFilter(QObject *object, QEvent *e)
 
 	if ( e->type() == QEvent::MouseButtonDblClick ){
 		mouseDblClicked(scale, ((QMouseEvent *)e)->pos());
-        return true;
-    }
+		return true;
+	}
 
 	if ( e->type() == QEvent::MouseButtonPress){
 		const QMouseEvent *me = (const QMouseEvent *)e;
