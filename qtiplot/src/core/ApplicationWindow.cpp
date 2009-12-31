@@ -3962,17 +3962,20 @@ Table * ApplicationWindow::importExcel(const QString& fileName, int sheet)
 		for (int t = 0; t <= pWS->rows.lastrow; t++){// process all rows of the sheet
 			struct st_row::st_row_data* row = &pWS->rows.row[t];
 			for (int tt = 0; tt <= pWS->rows.lastcol; tt++){
-				if (!row->cells.cell[tt].ishiden){
+				st_cell::st_cell_data cell = row->cells.cell[tt];
+				if (!cell.ishiden){
 					// display the colspan as only one cell, but reject rowspans (they can't be converted to CSV)
-					if (row->cells.cell[tt].rowspan > 1){
-						printf("%d,%d: rowspan=%i", tt, t, row->cells.cell[tt].rowspan);
+					if (cell.rowspan > 1){
+						printf("%d,%d: rowspan=%i", tt, t, cell.rowspan);
 						continue;
 					}
 					// display the value of the cell (either numeric or string)
-					if (row->cells.cell[tt].id == 0x27e || row->cells.cell[tt].id == 0x0BD || row->cells.cell[tt].id == 0x203)
-						table->setCell(t, tt, row->cells.cell[tt].d);
-					else if (row->cells.cell[tt].str != NULL)
-						table->setText(t, tt, QString(row->cells.cell[tt].str));
+					if (cell.id == 0x27e || cell.id == 0x0BD || cell.id == 0x203)
+						table->setCell(t, tt, cell.d);
+					else if (cell.id == 0x06 && cell.l == 0)//formula
+						table->setCell(t, tt, cell.d);
+					else if (cell.str != NULL)
+						table->setText(t, tt, QString(cell.str));
 				}
 			}
 		}
