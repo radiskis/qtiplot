@@ -5686,7 +5686,7 @@ Are you sure you want to continue?</source>
         <location filename="../src/core/ApplicationWindow.cpp" line="12736"/>
         <location filename="../src/core/ApplicationWindow.cpp" line="13664"/>
         <source>Open ODF Spreads&amp;heet...</source>
-        <translation type="unfinished"></translation>
+        <translation>Desc&amp;hide foi de calcul ODF...</translation>
     </message>
     <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="12741"/>
@@ -6670,12 +6670,12 @@ Are you sure you want to continue?</source>
     <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="13666"/>
         <source>Open ODF Spreadsheet</source>
-        <translation type="unfinished"></translation>
+        <translation>Deschide foi de calcul ODF</translation>
     </message>
     <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="14828"/>
         <source>can be any .qti, qti.gz, .ods, .opj, .ogm, .ogw, .ogg, .py, .xls or ASCII file</source>
-        <translation type="unfinished"></translation>
+        <translation>poate fi orice fişier .qti, qti.gz, .ods, .opj, .ogm, .ogw, .ogg, .py, .xls sau ASCII</translation>
     </message>
     <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="17788"/>
@@ -6783,12 +6783,12 @@ Are you sure you want to continue?</source>
         <location filename="../src/core/ApplicationWindow.cpp" line="3895"/>
         <location filename="../src/core/ApplicationWindow.cpp" line="3908"/>
         <source>Couldn&apos;t open file %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Fişierul %1 nu a putut fi deschis</translation>
     </message>
     <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="3942"/>
         <source>Open Excel File</source>
-        <translation type="unfinished"></translation>
+        <translation>Deschide fișier Excel</translation>
     </message>
     <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="4011"/>
@@ -6875,7 +6875,7 @@ Are you sure you want to continue?</source>
         <location filename="../src/core/ApplicationWindow.cpp" line="12737"/>
         <location filename="../src/core/ApplicationWindow.cpp" line="13665"/>
         <source>Ctrl+Alt+S</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+Alt+S</translation>
     </message>
     <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="12768"/>
@@ -8366,12 +8366,12 @@ Are you sure you want to continue?</source>
     <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="3888"/>
         <source>Open ODF Spreadsheet File</source>
-        <translation type="unfinished"></translation>
+        <translation>Deschide foi de calcul ODF</translation>
     </message>
     <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="3932"/>
         <source>QtiPlot was built without ODF spreadsheet support!</source>
-        <translation type="unfinished"></translation>
+        <translation>QtiPlot a fost compilat fara suport pentru foile de calcul ODF!</translation>
     </message>
     <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="12695"/>
@@ -8383,7 +8383,7 @@ Are you sure you want to continue?</source>
         <location filename="../src/core/ApplicationWindow.cpp" line="12730"/>
         <location filename="../src/core/ApplicationWindow.cpp" line="13659"/>
         <source>Open Exce&amp;l ...</source>
-        <translation type="unfinished"></translation>
+        <translation>Deschide fișier Exce&amp;l...</translation>
     </message>
     <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="15409"/>
@@ -12396,22 +12396,22 @@ The following special codes can be used:
     <message>
         <location filename="../src/table/ExportDialog.cpp" line="224"/>
         <source>QtiPlot</source>
-        <translation type="unfinished">QtiPlot</translation>
+        <translation>QtiPlot</translation>
     </message>
     <message>
         <location filename="../src/table/ExportDialog.cpp" line="224"/>
         <source>Overwrite file?</source>
-        <translation type="unfinished">Rescriere fişier?</translation>
+        <translation>Rescriere fişier?</translation>
     </message>
     <message>
         <location filename="../src/table/ExportDialog.cpp" line="225"/>
         <source>%1 already exists.</source>
-        <translation type="unfinished">%1 există deja.</translation>
+        <translation>%1 există deja.</translation>
     </message>
     <message>
         <location filename="../src/table/ExportDialog.cpp" line="225"/>
         <source>Do you want to replace it?</source>
-        <translation type="unfinished">Doriţi să-l înlocuiţi?</translation>
+        <translation>Doriţi să-l înlocuiţi?</translation>
     </message>
     <message>
         <location filename="../src/table/ExportDialog.cpp" line="231"/>
@@ -16807,7 +16807,7 @@ have the same number of rows.</source>
     <message>
         <location filename="../src/core/OpenProjectDialog.cpp" line="55"/>
         <source>ODF Spreadsheet</source>
-        <translation type="unfinished"></translation>
+        <translation>Foi de calcul ODF</translation>
     </message>
     <message>
         <location filename="../src/core/OpenProjectDialog.cpp" line="57"/>
