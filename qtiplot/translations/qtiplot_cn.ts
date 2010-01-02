@@ -5482,7 +5482,7 @@ Are you sure you want to continue?</source>
         <location filename="../src/core/ApplicationWindow.cpp" line="12787"/>
         <location filename="../src/core/ApplicationWindow.cpp" line="13693"/>
         <source>&amp;Sound (WAV)...</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">导入WAV波形文件</translation>
     </message>
     <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="12790"/>
@@ -6491,12 +6491,12 @@ Are you sure you want to continue?</source>
     <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="14169"/>
         <source>Zoom In/Out and Drag Canvas Horizontally</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">横向缩放或移动画布</translation>
     </message>
     <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="14170"/>
         <source>Zoom In/Out and Drag Canvas Vertically</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">纵向缩放或移动画布</translation>
     </message>
     <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="14856"/>
@@ -6599,7 +6599,7 @@ Are you sure you want to continue?</source>
     <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="1097"/>
         <source>&amp;Import</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">导入数据</translation>
     </message>
     <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="3249"/>
@@ -7072,12 +7072,12 @@ Are you sure you want to continue?</source>
     <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="13683"/>
         <source>Open Excel</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">打开Excel文档</translation>
     </message>
     <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="13688"/>
         <source>Open ODF Spreadsheet</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">打开ODF文档</translation>
     </message>
     <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="13697"/>
@@ -7222,7 +7222,7 @@ Are you sure you want to continue?</source>
     <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="13795"/>
         <source>Print preview</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">打印预览</translation>
     </message>
     <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="13817"/>
@@ -7578,7 +7578,7 @@ Are you sure you want to continue?</source>
     <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="14164"/>
         <source>Zoom In (Shift++) or Out (-) and Drag Canvas</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">成比例缩放或移动画布</translation>
     </message>
     <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="14174"/>
@@ -7623,7 +7623,7 @@ Are you sure you want to continue?</source>
     <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="14199"/>
         <source>Drag Curve</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">移动曲线</translation>
     </message>
     <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="14203"/>
@@ -8183,7 +8183,7 @@ Are you sure you want to continue?</source>
         <location filename="../src/core/ApplicationWindow.cpp" line="13537"/>
         <location filename="../src/core/ApplicationWindow.cpp" line="13760"/>
         <source>Load Custom User &amp;Interface...</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">加载自定义用户界面</translation>
     </message>
     <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="15437"/>
@@ -14528,17 +14528,17 @@ The following special codes can be used:
     <message>
         <location filename="../src/core/ImportASCIIDialog.cpp" line="173"/>
         <source>Use first row &amp;as</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">用第一行为</translation>
     </message>
     <message>
         <location filename="../src/core/ImportASCIIDialog.cpp" line="178"/>
         <source>Column Names</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">列名</translation>
     </message>
     <message>
         <location filename="../src/core/ImportASCIIDialog.cpp" line="179"/>
         <source>Column Comments</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">列注释</translation>
     </message>
     <message>
         <location filename="../src/core/ImportASCIIDialog.cpp" line="185"/>

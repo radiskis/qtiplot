@@ -63,7 +63,7 @@ private:
 	//Current column in a row
 	int d_col;
 
-	typedef enum CellType {EmptyCell = 0, Float = 1, String = 2};
+	enum CellType {EmptyCell = 0, Float, String, Date, Time, Boolean, Currency, Percent};
 
 	struct cell_data{
 		int	row;
