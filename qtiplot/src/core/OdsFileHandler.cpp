@@ -29,8 +29,6 @@
 #include "OdsFileHandler.h"
 #include "ApplicationWindow.h"
 
-#include <QMessageBox>
-
 OdsFileHandler::OdsFileHandler(ApplicationWindow *app, const QString& odsFileName) :
 d_app(app),
 d_ods_file_name(odsFileName)
@@ -57,11 +55,24 @@ d_ods_file_name(odsFileName)
 
 	if (qName == "table:table-cell"){
 		cell_data cell = {d_rows - 1, 0, 0.0, "", EmptyCell};
-
-		if (attributes.value("office:value-type") == QString("float")){
+		QString type = attributes.value("office:value-type");
+		if (type == QString("float")){
 			cell.d = attributes.value("office:value").toDouble();
 			cell.type = Float;
-		} else if (attributes.value("office:value-type") == QString("string"))
+		} else if (type == QString("percentage")){
+			cell.d = attributes.value("office:value").toDouble();
+			cell.type = Percent;
+		} else if (type == QString("currency")){
+			cell.d = attributes.value("office:value").toDouble();
+			cell.type = Currency;
+		} else if (type == QString("boolean")){
+			cell.d = attributes.value("office:value").toDouble();
+			cell.type = Boolean;
+		} else if (type == QString("date")){
+			cell.type = Date;
+		} else if (type == QString("time")){
+			cell.type = Time;
+		} else if (type == QString("string"))
 			cell.type = String;
 
 		cell.col = d_col;
@@ -69,6 +80,10 @@ d_ods_file_name(odsFileName)
 		int repeatCols = 1;
 		if (!attributes.value("table:number-columns-repeated").isEmpty())
 			repeatCols = attributes.value("table:number-columns-repeated").toInt();
+
+		int spannedCols = 1;
+		if (!attributes.value("table:number-columns-spanned").isEmpty())
+			spannedCols = attributes.value("table:number-columns-spanned").toInt();
 
 		if (cell.type != EmptyCell){
 			for (int i = 0; i < repeatCols; i++){
@@ -81,6 +96,9 @@ d_ods_file_name(odsFileName)
 			d_col += repeatCols;
 		else
 			d_col++;
+
+		if (spannedCols > 1)
+			d_col += spannedCols - 1;
 	}
 
 	currentText.clear();
@@ -102,11 +120,8 @@ bool OdsFileHandler::endElement(const QString & /* namespaceURI */,
 		d_col = 0; //reset column index to 0
 	}
 
-	if (qName == "text:p"){
-		int index = cells.size() - 1;
-		if (cells[index].type == String)
-			cells[index].str = currentText;
-	}
+	if (qName == "text:p")
+		cells[cells.size() - 1].str = currentText;
 
 	if (qName == "table:table"){
 		if (!cells.empty() && (d_last_column > 1 || d_rows > 1)){
@@ -116,7 +131,7 @@ bool OdsFileHandler::endElement(const QString & /* namespaceURI */,
 				cell_data cell = cells[i];
 				if (cell.type == Float)
 					t->setCell(cell.row, cell.col, cell.d);
-				else if (cell.type == String)
+				else
 					t->setText(cell.row, cell.col, cell.str);
 			}
 			t->showNormal();
