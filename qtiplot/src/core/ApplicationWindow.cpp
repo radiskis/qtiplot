@@ -5086,7 +5086,7 @@ void ApplicationWindow::readSettings()
 	autoscale2DPlots = settings.value("/Autoscale", true).toBool();
 	autoScaleFonts = settings.value("/AutoScaleFonts", true).toBool();
 	autoResizeLayers = settings.value("/AutoResizeLayers", true).toBool();
-	antialiasing2DPlots = settings.value("/Antialiasing", true).toBool();
+	antialiasing2DPlots = settings.value("/Antialiasing", antialiasing2DPlots).toBool();
 	d_scale_plots_on_print = settings.value("/ScaleLayersOnPrint", false).toBool();
 	d_print_cropmarks = settings.value("/PrintCropmarks", false).toBool();
 	d_layer_geometry_unit = settings.value("/GeometryUnit", d_layer_geometry_unit).toInt();
