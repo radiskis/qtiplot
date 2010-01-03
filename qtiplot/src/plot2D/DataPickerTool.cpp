@@ -28,7 +28,6 @@
  ***************************************************************************/
 #include "DataPickerTool.h"
 #include "Graph.h"
-#include <cursors.h>
 #include "FunctionCurve.h"
 #include "PlotCurve.h"
 #include "QwtErrorPlotCurve.h"
@@ -62,7 +61,7 @@ DataPickerTool::DataPickerTool(Graph *graph, ApplicationWindow *app, Mode mode, 
 		d_graph->canvas()->setCursor(Qt::PointingHandCursor);
 	} else {
 		setSelectionFlags(QwtPicker::PointSelection | QwtPicker::ClickSelection);
-		d_graph->canvas()->setCursor(QCursor(QPixmap(vizor_xpm), -1, -1));
+		d_graph->canvas()->setCursor(QCursor(QPixmap(":/vizor.png"), -1, -1));
 	}
 
 	if (status_target)

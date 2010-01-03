@@ -30,7 +30,6 @@
 #include "RangeSelectorTool.h"
 #include <ApplicationWindow.h>
 #include "DataPickerTool.h"
-#include <cursors.h>
 
 #include <qwt_plot_curve.h>
 #include <qwt_plot_marker.h>
@@ -52,7 +51,7 @@ MultiPeakFitTool::MultiPeakFitTool(Graph *graph, ApplicationWindow *app, MultiPe
 	if (status_target)
 		connect(this, SIGNAL(statusText(const QString&)), status_target, status_slot);
 	d_picker_tool = new DataPickerTool(d_graph, app, DataPickerTool::Display, this, SIGNAL(statusText(const QString&)));
-    d_graph->canvas()->setCursor(QCursor(QPixmap(cursor_xpm), -1, -1));
+	d_graph->canvas()->setCursor(QCursor(QPixmap(":/cursor.png"), -1, -1));
 
 	connect(d_picker_tool, SIGNAL(selected(QwtPlotCurve*,int)), this, SLOT(selectPeak(QwtPlotCurve*,int)));
 	d_graph->canvas()->grabMouse();

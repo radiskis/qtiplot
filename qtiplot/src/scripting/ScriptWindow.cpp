@@ -30,7 +30,6 @@
 #include <ApplicationWindow.h>
 #include "ScriptEdit.h"
 #include "LineNumberDisplay.h"
-#include <pixmaps.h>
 
 #include <QApplication>
 #include <QMenuBar>
@@ -83,7 +82,7 @@ d_app(app)
 	initActions();
 	enableActions();
 
-	setIcon(QPixmap(logo_xpm));
+	setIcon(QPixmap(":/logo.png"));
 	setWindowTitle(tr("QtiPlot - Script Window"));
 	setFocusProxy(te);
 	setFocusPolicy(Qt::StrongFocus);
@@ -107,24 +106,24 @@ void ScriptWindow::initMenu()
 
 void ScriptWindow::initActions()
 {
-	actionNew = new QAction(QPixmap(new_xpm), tr("&New"), this);
+	actionNew = new QAction(QIcon(":/new.png"), tr("&New"), this);
 	actionNew->setShortcut( tr("Ctrl+N") );
 	connect(actionNew, SIGNAL(activated()), this, SLOT(newScript()));
 	file->addAction(actionNew);
 
-	actionOpen = new QAction(QPixmap(fileopen_xpm), tr("&Open..."), this);
+	actionOpen = new QAction(QIcon(":/fileopen.png"), tr("&Open..."), this);
 	actionOpen->setShortcut( tr("Ctrl+O") );
 	connect(actionOpen, SIGNAL(activated()), this, SLOT(open()));
 	file->addAction(actionOpen);
 
 	file->addSeparator();
 
-	actionSave = new QAction(QPixmap(filesave_xpm), tr("&Save"), this);
+	actionSave = new QAction(QIcon(":/filesave.png"), tr("&Save"), this);
 	actionSave->setShortcut( tr("Ctrl+S") );
 	connect(actionSave, SIGNAL(activated()), this, SLOT(save()));
 	file->addAction(actionSave);
 
-	actionSaveAs = new QAction(QIcon(QPixmap(filesaveas_xpm)), tr("Save &As..."), this);
+	actionSaveAs = new QAction(QIcon(":/filesaveas.png"), tr("Save &As..."), this);
 	connect(actionSaveAs, SIGNAL(activated()), this, SLOT(saveAs()));
 	file->addAction(actionSaveAs);
 
@@ -134,69 +133,69 @@ void ScriptWindow::initActions()
 	connect(actionPrintPreview, SIGNAL(activated()), this, SLOT(printPreview()));
 	file->addAction(actionPrintPreview);
 
-	actionPrint = new QAction(QPixmap(fileprint_xpm), tr("&Print"), this);
+	actionPrint = new QAction(QIcon(":/fileprint.png"), tr("&Print"), this);
 	actionPrint->setShortcut( tr("Ctrl+P") );
 	connect(actionPrint, SIGNAL(activated()), te, SLOT(print()));
 	file->addAction(actionPrint);
 
-	actionUndo = new QAction(QPixmap(undo_xpm), tr("&Undo"), this);
+	actionUndo = new QAction(QIcon(":/undo.png"), tr("&Undo"), this);
 	actionUndo->setShortcut( tr("Ctrl+Z") );
 	connect(actionUndo, SIGNAL(activated()), te, SLOT(undo()));
 	edit->addAction(actionUndo);
 	actionUndo->setEnabled(false);
 
-	actionRedo = new QAction(QPixmap(redo_xpm), tr("&Redo"), this);
+	actionRedo = new QAction(QIcon(":/redo.png"), tr("&Redo"), this);
 	actionRedo->setShortcut( tr("Ctrl+Y") );
 	connect(actionRedo, SIGNAL(activated()), te, SLOT(redo()));
 	edit->addAction(actionRedo);
 	actionRedo->setEnabled(false);
 	edit->insertSeparator();
 
-	actionCut = new QAction(QPixmap(cut_xpm), tr("&Cut"), this);
+	actionCut = new QAction(QIcon(":/cut.png"), tr("&Cut"), this);
 	actionCut->setShortcut( tr("Ctrl+x") );
 	connect(actionCut, SIGNAL(activated()), te, SLOT(cut()));
 	edit->addAction(actionCut);
 	actionCut->setEnabled(false);
 
-	actionCopy = new QAction(QPixmap(copy_xpm), tr("&Copy"), this);
+	actionCopy = new QAction(QIcon(":/copy.png"), tr("&Copy"), this);
 	actionCopy->setShortcut( tr("Ctrl+C") );
 	connect(actionCopy, SIGNAL(activated()), te, SLOT(copy()));
 	edit->addAction(actionCopy);
 	actionCopy->setEnabled(false);
 
-	actionPaste = new QAction(QPixmap(paste_xpm), tr("&Paste"), this);
+	actionPaste = new QAction(QIcon(":/paste.png"), tr("&Paste"), this);
 	actionPaste->setShortcut( tr("Ctrl+V") );
 	connect(actionPaste, SIGNAL(activated()), te, SLOT(paste()));
 	edit->addAction(actionPaste);
 
 	edit->insertSeparator();
 
-	actionIncreaseIndent = new QAction(QPixmap(increase_indent_xpm), tr("Increase Indent"), this);
+	actionIncreaseIndent = new QAction(QIcon(":/increase_indent.png"), tr("Increase Indent"), this);
 	connect(actionIncreaseIndent, SIGNAL(activated()), this, SLOT(increaseIndent()));
 	edit->addAction(actionIncreaseIndent);
 
-	actionDecreaseIndent = new QAction(QPixmap(decrease_indent_xpm),tr("Decrease Indent"), this);
+	actionDecreaseIndent = new QAction(QIcon(":/decrease_indent.png"),tr("Decrease Indent"), this);
 	connect(actionDecreaseIndent, SIGNAL(activated()), this, SLOT(decreaseIndent()));
 	edit->addAction(actionDecreaseIndent);
 
 	edit->insertSeparator();
 
-	actionFind = new QAction(QPixmap(find_xpm), tr("&Find..."), this);
+	actionFind = new QAction(QIcon(":/find.png"), tr("&Find..."), this);
 	actionFind->setShortcut(tr("Ctrl+Alt+F"));
 	connect(actionFind, SIGNAL(activated()), this, SLOT(find()));
 	edit->addAction(actionFind);
 
-	actionFindNext = new QAction(QPixmap(find_next_xpm), tr("Find &Next"), this);
+	actionFindNext = new QAction(QIcon(":/find_next.png"), tr("Find &Next"), this);
 	actionFindNext->setShortcut(tr("F3"));
 	connect(actionFindNext, SIGNAL(activated()), this, SLOT(findNext()));
 	edit->addAction(actionFindNext);
 
-	actionFindPrev = new QAction(QPixmap(find_previous_xpm), tr("Find &Previous"), this);
+	actionFindPrev = new QAction(QIcon(":/find_previous.png"), tr("Find &Previous"), this);
 	actionFindPrev->setShortcut(tr("F4"));
 	connect(actionFindPrev, SIGNAL(activated()), this, SLOT(findPrevious()));
 	edit->addAction(actionFindPrev);
 
-	actionReplace = new QAction(QPixmap(replace_xpm), tr("&Replace..."), this);
+	actionReplace = new QAction(QIcon(":/replace.png"), tr("&Replace..."), this);
 	connect(actionReplace, SIGNAL(activated()), this, SLOT(replace()));
 	edit->addAction(actionReplace);
 
@@ -213,7 +212,7 @@ void ScriptWindow::initActions()
 	connect(actionExecute, SIGNAL(activated()), te, SLOT(execute()));
 	run->addAction(actionExecute);
 
-	actionExecuteAll = new QAction(QPixmap(play_xpm), tr("Execute &All"), this);
+	actionExecuteAll = new QAction(QIcon(":/play.png"), tr("Execute &All"), this);
 	actionExecuteAll->setShortcut( tr("CTRL+SHIFT+J") );
 	connect(actionExecuteAll, SIGNAL(activated()), te, SLOT(executeAll()));
 	run->addAction(actionExecuteAll);

@@ -41,7 +41,6 @@
 #include <ColorBox.h>
 #include <ColorButton.h>
 #include <PenStyleBox.h>
-#include <axes_icons.h>
 
 #include <QCheckBox>
 #include <QComboBox>
@@ -150,13 +149,13 @@ void AxesDialog::initScalesPage()
 	boxScaleTypeLabel = new QLabel(tr( "Type" ));
 	boxScaleType = new QComboBox();
 	boxScaleType->setIconSize(QSize(27, 16));
-	boxScaleType->addItem(QIcon(QPixmap(liniar_scale_xpm)), tr( "Linear" ));
-	boxScaleType->addItem(QIcon(QPixmap(log10_xpm)), tr( "Log10" ));
-	boxScaleType->addItem(QIcon(QPixmap(ln_scale_xpm)), tr( "ln" ));
-	boxScaleType->addItem(QIcon(QPixmap(log2_scale_xpm)), tr( "Log2" ));
-	boxScaleType->addItem(QIcon(QPixmap(reciprocal_scale_xpm)), tr( "Reciprocal" ));
-	boxScaleType->addItem(QIcon(QPixmap(probability_scale_xpm)), tr( "Probability" ));
-	boxScaleType->addItem(QIcon(QPixmap(logit_scale_xpm)), tr( "Logit" ));
+	boxScaleType->addItem(QIcon(":/liniar_scale.png"), tr( "Linear" ));
+	boxScaleType->addItem(QIcon(":/log10.png"), tr( "Log10" ));
+	boxScaleType->addItem(QIcon(":/ln_scale.png"), tr( "ln" ));
+	boxScaleType->addItem(QIcon(":/log2_scale.png"), tr( "Log2" ));
+	boxScaleType->addItem(QIcon(":/reciprocal_scale.png"), tr( "Reciprocal" ));
+	boxScaleType->addItem(QIcon(":/probability_scale.png"), tr( "Probability" ));
+	boxScaleType->addItem(QIcon(":/logit_scale.png"), tr( "Logit" ));
 	middleLayout->addWidget( boxScaleTypeLabel, 2, 0);
 	middleLayout->addWidget( boxScaleType, 2, 1);
 
@@ -276,10 +275,10 @@ void AxesDialog::initScalesPage()
 	vl->addLayout(hl);
 	vl->addWidget(boxAxesBreaks);
 
-	QPixmap image0( ( const char** ) bottom_scl_xpm );
-	QPixmap image1( ( const char** ) left_scl_xpm );
-	QPixmap image2( ( const char** ) top_scl_xpm );
-	QPixmap image3( ( const char** ) right_scl_xpm );
+	QPixmap image0(":/bottom_scl.png");
+	QPixmap image1(":/left_scl.png");
+	QPixmap image2(":/top_scl.png");
+	QPixmap image3(":/right_scl.png");
 
 	axesList = new QListWidget();
 	axesList->addItem( new QListWidgetItem(image0, tr( "Bottom" )));
@@ -400,8 +399,8 @@ void AxesDialog::initGridPage()
     rightLayout->setRowStretch(7, 1);
     rightLayout->setColumnStretch(4, 1);
 
-    QPixmap image2( ( const char** ) image2_data );
-    QPixmap image3( ( const char** ) image3_data );
+	QPixmap image2(":/vertical_grid.png");
+	QPixmap image3(":/horizontal_grid.png");
 
     axesGridList = new QListWidget();
     axesGridList->addItem( new QListWidgetItem(image3, tr( "Horizontal" )) );
@@ -446,10 +445,10 @@ void AxesDialog::initGridPage()
 void AxesDialog::initAxesPage()
 {
 	//axes page
-	QPixmap bottom_axis_pic( ( const char** ) bottom_axis_xpm );
-	QPixmap left_axis_pic( ( const char** ) left_axis_xpm );
-	QPixmap top_axis_pic( ( const char** ) top_axis_xpm );
-	QPixmap right_axis_pic( ( const char** ) right_axis_xpm );
+	QPixmap bottom_axis_pic(":/bottom_axis.png");
+	QPixmap left_axis_pic(":/left_axis.png");
+	QPixmap top_axis_pic(":/top_axis.png");
+	QPixmap right_axis_pic(":/right_axis.png");
 
 	axesPage = new QWidget();
 

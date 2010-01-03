@@ -31,7 +31,6 @@
 #include "PythonSyntaxHighlighter.h"
 #include "FindReplaceDialog.h"
 #include <ApplicationWindow.h>
-#include <pixmaps.h>
 #include <MyParser.h>
 
 #include <QAction>
@@ -85,7 +84,7 @@ ScriptEdit::ScriptEdit(ScriptingEnv *env, QWidget *parent, const char *name)
 	actionExecute->setShortcut( tr("Ctrl+J") );
 	connect(actionExecute, SIGNAL(activated()), this, SLOT(execute()));
 
-	actionExecuteAll = new QAction(QIcon(QPixmap(play_xpm)), tr("Execute &All"), this);
+	actionExecuteAll = new QAction(QIcon(":/play.png"), tr("Execute &All"), this);
 	actionExecuteAll->setShortcut( tr("Ctrl+Shift+J") );
 	connect(actionExecuteAll, SIGNAL(activated()), this, SLOT(executeAll()));
 
@@ -93,33 +92,33 @@ ScriptEdit::ScriptEdit(ScriptingEnv *env, QWidget *parent, const char *name)
 	actionEval->setShortcut( tr("Ctrl+Return") );
 	connect(actionEval, SIGNAL(activated()), this, SLOT(evaluate()));
 
-	actionPrint = new QAction(QPixmap(fileprint_xpm), tr("&Print"), this);
+	actionPrint = new QAction(QIcon(":/fileprint.png"), tr("&Print"), this);
 	connect(actionPrint, SIGNAL(activated()), this, SLOT(print()));
 
-	actionImport = new QAction(QPixmap(fileopen_xpm), tr("&Import..."), this);
+	actionImport = new QAction(QIcon(":/fileopen.png"), tr("&Import..."), this);
 	actionImport->setShortcut(QKeySequence(Qt::CTRL+Qt::ALT+Qt::Key_O));
 	connect(actionImport, SIGNAL(activated()), this, SLOT(importASCII()));
 
-	actionSave = new QAction(QPixmap(filesave_xpm), tr("&Save"), this);
+	actionSave = new QAction(QIcon(":/filesave.png"), tr("&Save"), this);
 	actionSave->setShortcut(QKeySequence(Qt::CTRL+Qt::ALT+Qt::Key_S));
 	connect(actionSave, SIGNAL(activated()), this, SLOT(save()));
 
-	actionExport = new QAction(QIcon(QPixmap(filesaveas_xpm)), tr("Sa&ve as..."), this);
+	actionExport = new QAction(QIcon(":/filesaveas.png"), tr("Sa&ve as..."), this);
 	connect(actionExport, SIGNAL(activated()), this, SLOT(exportASCII()));
 
-	actionFind = new QAction(QPixmap(find_xpm), tr("&Find..."), this);
+	actionFind = new QAction(QIcon(":/find.png"), tr("&Find..."), this);
 	actionFind->setShortcut(QKeySequence(Qt::CTRL+Qt::ALT+Qt::Key_F));
 	connect(actionFind, SIGNAL(activated()), this, SLOT(showFindDialog()));
 
-	actionReplace = new QAction(QPixmap(replace_xpm), tr("&Replace..."), this);
+	actionReplace = new QAction(QIcon(":/replace.png"), tr("&Replace..."), this);
 	actionReplace->setShortcut(QKeySequence(Qt::CTRL+Qt::Key_R));
 	connect(actionReplace, SIGNAL(activated()), this, SLOT(replace()));
 
-	actionFindNext = new QAction(QPixmap(find_next_xpm), tr("&Find next"), this);
+	actionFindNext = new QAction(QIcon(":/find_next.png"), tr("&Find next"), this);
 	actionFindNext->setShortcut(QKeySequence(Qt::Key_F3));
 	connect(actionFindNext, SIGNAL(activated()), this, SLOT(findNext()));
 
-	actionFindPrevious = new QAction(QPixmap(find_previous_xpm), tr("&Find previous"), this);
+	actionFindPrevious = new QAction(QIcon(":/find_previous.png"), tr("&Find previous"), this);
 	actionFindPrevious->setShortcut(QKeySequence(Qt::Key_F4));
 	connect(actionFindPrevious, SIGNAL(activated()), this, SLOT(findPrevious()));
 
@@ -251,12 +250,12 @@ void ScriptEdit::contextMenuEvent(QContextMenuEvent *e)
 		connect(actionRenameTab, SIGNAL(activated()), sp, SLOT(renameCurrentTab()));
 		menu->addAction(actionRenameTab);
 
-		QAction *actionAddTab = new QAction(QIcon(QPixmap(plus_xpm)), tr("A&dd Tab"), menu);
+		QAction *actionAddTab = new QAction(QIcon(QPixmap(":/plus.png")), tr("A&dd Tab"), menu);
 		connect(actionAddTab, SIGNAL(activated()), sp, SLOT(addTab()));
 		menu->addAction(actionAddTab);
 
 		if (sp->tabs() > 1){
-			QAction *actionRemoveTab = new QAction(QIcon(QPixmap(delete_xpm)), tr("C&lose Tab"), menu);
+			QAction *actionRemoveTab = new QAction(QIcon(QPixmap(":/delete.png")), tr("C&lose Tab"), menu);
 			connect(actionRemoveTab, SIGNAL(activated()), sp, SLOT(removeTab()));
 			menu->addAction(actionRemoveTab);
 		}

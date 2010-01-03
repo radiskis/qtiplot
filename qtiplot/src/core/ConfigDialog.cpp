@@ -34,8 +34,6 @@
 #include <Matrix.h>
 #include <ColorButton.h>
 #include <ColorBox.h>
-#include <pixmaps.h>
-#include <axes_icons.h>
 #include <DoubleSpinBox.h>
 #include <ColorMapEditor.h>
 
@@ -69,384 +67,6 @@
 #include <QNetworkProxy>
 #include <QCompleter>
 #include <QDirModel>
-
-static const char * notes_32_xpm[] = {
-"32 32 343 2",
-"  	c None",
-". 	c #3D3939",
-"+ 	c #191414",
-"@ 	c #000000",
-"# 	c #191111",
-"$ 	c #403838",
-"% 	c #474141",
-"& 	c #171111",
-"* 	c #1F1414",
-"= 	c #433838",
-"- 	c #221B1B",
-"; 	c #474747",
-"> 	c #3F3F3F",
-", 	c #1E1E1E",
-"' 	c #1C1C1C",
-") 	c #202020",
-"! 	c #212121",
-"~ 	c #302020",
-"{ 	c #464F4F",
-"] 	c #506B6B",
-"^ 	c #416F6F",
-"/ 	c #307070",
-"( 	c #2F7373",
-"_ 	c #347474",
-": 	c #447070",
-"< 	c #416C6C",
-"[ 	c #436C6C",
-"} 	c #257979",
-"| 	c #1C7979",
-"1 	c #165353",
-"2 	c #122C2C",
-"3 	c #142121",
-"4 	c #303030",
-"5 	c #476060",
-"6 	c #609F9F",
-"7 	c #66C9C9",
-"8 	c #60DFDF",
-"9 	c #45CCCC",
-"0 	c #30AFAF",
-"a 	c #45A0A0",
-"b 	c #66C1C1",
-"c 	c #69C1C1",
-"d 	c #2DD0D0",
-"e 	c #00AFAF",
-"f 	c #138888",
-"g 	c #305F5F",
-"h 	c #2B3A3A",
-"i 	c #173C3C",
-"j 	c #2D6969",
-"k 	c #479595",
-"l 	c #62C5C5",
-"m 	c #6BE5E5",
-"n 	c #69F4F4",
-"o 	c #58E8E8",
-"p 	c #4AD5D5",
-"q 	c #55CCCC",
-"r 	c #65CCCC",
-"s 	c #6BE1E1",
-"t 	c #54C9C9",
-"u 	c #6CDCDC",
-"v 	c #69EDED",
-"w 	c #3AD0D0",
-"x 	c #14A9A9",
-"y 	c #389393",
-"z 	c #607A7A",
-"A 	c #4B5151",
-"B 	c #2F2F2F",
-"C 	c #145050",
-"D 	c #4BD2D2",
-"E 	c #63E2E2",
-"F 	c #63E4E4",
-"G 	c #42B7B7",
-"H 	c #308F8F",
-"I 	c #629090",
-"J 	c #909090",
-"K 	c #6E6868",
-"L 	c #404040",
-"M 	c #170F0F",
-"N 	c #2C6565",
-"O 	c #48CFCF",
-"P 	c #59ECEC",
-"Q 	c #60E7E7",
-"R 	c #55C8C8",
-"S 	c #48A7A7",
-"T 	c #48A4A4",
-"U 	c #4BAAAA",
-"V 	c #4AABAB",
-"W 	c #48ABAB",
-"X 	c #48A9A9",
-"Y 	c #48A2A2",
-"Z 	c #4BA6A6",
-"` 	c #57C4C4",
-" .	c #60E3E3",
-"..	c #57EEEE",
-"+.	c #48E4E4",
-"@.	c #31A7A7",
-"#.	c #2D7272",
-"$.	c #738E8E",
-"%.	c #AEABAB",
-"&.	c #807A7A",
-"*.	c #424242",
-"=.	c #2A1A1A",
-"-.	c #478282",
-";.	c #66F1F1",
-">.	c #306F6F",
-",.	c #2D6868",
-"'.	c #4BA7A7",
-").	c #4BEEEE",
-"!.	c #30DFDF",
-"~.	c #249999",
-"{.	c #809090",
-"].	c #C0C0C0",
-"^.	c #898686",
-"/.	c #183C3C",
-"(.	c #4BADAD",
-"_.	c #68DBDB",
-":.	c #60BBBB",
-"<.	c #458C8C",
-"[.	c #2A6161",
-"}.	c #275B5B",
-"|.	c #2A5F5F",
-"1.	c #266D6D",
-"2.	c #2A8585",
-"3.	c #4AB7B7",
-"4.	c #63DFDF",
-"5.	c #48D7D7",
-"6.	c #2DBABA",
-"7.	c #3C8F8F",
-"8.	c #5F7474",
-"9.	c #9C9F9F",
-"0.	c #C3C3C3",
-"a.	c #888787",
-"b.	c #4BD6D6",
-"c.	c #66C5C5",
-"d.	c #488383",
-"e.	c #2D6C6C",
-"f.	c #306B6B",
-"g.	c #2D8C8C",
-"h.	c #4BD0D0",
-"i.	c #45BABA",
-"j.	c #5A8888",
-"k.	c #B6B0B0",
-"l.	c #838383",
-"m.	c #57E6E6",
-"n.	c #63CFCF",
-"o.	c #54AFAF",
-"p.	c #46A6A6",
-"q.	c #48A5A5",
-"r.	c #48B7B7",
-"s.	c #48CBCB",
-"t.	c #4AE1E1",
-"u.	c #33A9A9",
-"v.	c #2C7171",
-"w.	c #617D7D",
-"x.	c #9E9B9B",
-"y.	c #BEB8B8",
-"z.	c #828282",
-"A.	c #63EAEA",
-"B.	c #48E7E7",
-"C.	c #269B9B",
-"D.	c #667676",
-"E.	c #A0A0A0",
-"F.	c #BEBCBC",
-"G.	c #BFBFBF",
-"H.	c #818181",
-"I.	c #4BABAB",
-"J.	c #65E7E7",
-"K.	c #60E1E1",
-"L.	c #62E5E5",
-"M.	c #63E6E6",
-"N.	c #68E6E6",
-"O.	c #66E2E2",
-"P.	c #48D3D3",
-"Q.	c #338686",
-"R.	c #4B6060",
-"S.	c #747777",
-"T.	c #9D9D9D",
-"U.	c #BAB9B9",
-"V.	c #BDBDBD",
-"W.	c #808080",
-"X.	c #44B9B9",
-"Y.	c #4A7878",
-"Z.	c #707070",
-"`.	c #8A8484",
-" +	c #BABABA",
-".+	c #57E4E4",
-"++	c #62E0E0",
-"@+	c #62DFDF",
-"#+	c #56E9E9",
-"$+	c #31A8A8",
-"%+	c #2B7070",
-"&+	c #607C7C",
-"*+	c #C2C2C2",
-"=+	c #D5D5D5",
-"-+	c #D1D1D1",
-";+	c #898989",
-">+	c #768686",
-",+	c #D8D6D6",
-"'+	c #DFDFDF",
-")+	c #EBEBEB",
-"!+	c #1E4141",
-"~+	c #337070",
-"{+	c #4DACAC",
-"]+	c #66E3E3",
-"^+	c #68E9E9",
-"/+	c #63E0E0",
-"(+	c #66E5E5",
-"_+	c #46D5D5",
-":+	c #2EBBBB",
-"<+	c #398C8C",
-"[+	c #566A6A",
-"}+	c #868989",
-"|+	c #B5B5B5",
-"1+	c #CAC9C9",
-"2+	c #D3D3D3",
-"3+	c #DDDDDD",
-"4+	c #888888",
-"5+	c #155454",
-"6+	c #43B8B8",
-"7+	c #538080",
-"8+	c #938D8D",
-"9+	c #B2B2B2",
-"0+	c #C9C9C9",
-"a+	c #176363",
-"b+	c #33D4D4",
-"c+	c #43EBEB",
-"d+	c #4BE4E4",
-"e+	c #4CE5E5",
-"f+	c #4AE3E3",
-"g+	c #48E1E1",
-"h+	c #46DFDF",
-"i+	c #45DEDE",
-"j+	c #45E0E0",
-"k+	c #46D0D0",
-"l+	c #288888",
-"m+	c #1E6363",
-"n+	c #567474",
-"o+	c #939090",
-"p+	c #9C9696",
-"q+	c #9A9A9A",
-"r+	c #AAAAAA",
-"s+	c #B9B9B9",
-"t+	c #C4C4C4",
-"u+	c #BBBBBB",
-"v+	c #7E7E7E",
-"w+	c #186868",
-"x+	c #30CFCF",
-"y+	c #33DCDC",
-"z+	c #30D3D3",
-"A+	c #31B3B3",
-"B+	c #206666",
-"C+	c #204F4F",
-"D+	c #A6A3A3",
-"E+	c #B0B0B0",
-"F+	c #104444",
-"G+	c #166565",
-"H+	c #146060",
-"I+	c #125F5F",
-"J+	c #1E6D6D",
-"K+	c #2B7C7C",
-"L+	c #388989",
-"M+	c #419292",
-"N+	c #429494",
-"O+	c #3F9393",
-"P+	c #4D8E8E",
-"Q+	c #5C8A8A",
-"R+	c #648484",
-"S+	c #718686",
-"T+	c #939C9C",
-"U+	c #B4B4B4",
-"V+	c #BDBCBC",
-"W+	c #D4D4D4",
-"X+	c #E3E3E3",
-"Y+	c #E5E5E5",
-"Z+	c #878787",
-"`+	c #151515",
-" @	c #4B4B4B",
-".@	c #606060",
-"+@	c #636363",
-"@@	c #5D5D5D",
-"#@	c #757575",
-"$@	c #ABABAB",
-"%@	c #C1C1C1",
-"&@	c #CECECE",
-"*@	c #F3F3F3",
-"=@	c #FFFFFF",
-"-@	c #FBFBFB",
-";@	c #8E8E8E",
-">@	c #403636",
-",@	c #635959",
-"'@	c #837979",
-")@	c #877D7D",
-"!@	c #817777",
-"~@	c #8F8787",
-"{@	c #9E9898",
-"]@	c #AEAAAA",
-"^@	c #BAB7B7",
-"/@	c #B6B4B4",
-"(@	c #DEDEDE",
-"_@	c #E4E4E4",
-":@	c #505050",
-"<@	c #767676",
-"[@	c #A5A5A5",
-"}@	c #9E9E9E",
-"|@	c #C7C7C7",
-"1@	c #9F9F9F",
-"2@	c #9C9C9C",
-"3@	c #979797",
-"4@	c #989898",
-"5@	c #A9A9A9",
-"6@	c #B7B7B7",
-"7@	c #BCBCBC",
-"8@	c #666666",
-"9@	c #939393",
-"0@	c #C5C5C5",
-"a@	c #CACACA",
-"b@	c #CBCBCB",
-"c@	c #E8E8E8",
-"d@	c #E0E0E0",
-"e@	c #858585",
-"f@	c #6F6F6F",
-"g@	c #A4A4A4",
-"h@	c #E6E6E6",
-"i@	c #EFEFEF",
-"j@	c #F0F0F0",
-"k@	c #CFCFCF",
-"l@	c #848484",
-"m@	c #363636",
-"n@	c #727272",
-"o@	c #CDCDCD",
-"p@	c #CCCCCC",
-"q@	c #D7D7D7",
-"r@	c #3A3A3A",
-"s@	c #A2A2A2",
-"t@	c #A1A1A1",
-"u@	c #575757",
-"v@	c #1F1F1F",
-"w@	c #454545",
-"x@	c #4C4C4C",
-"y@	c #4D4D4D",
-"z@	c #4A4A4A",
-"A@	c #484848",
-"B@	c #444444",
-"                      . + @ # $ % . & @ # $ % . & @ * = - @     ",
-"                    ; > , @ ' > ; > ' @ ' > ; > ' @ ) > ! @ @   ",
-"                  ~ { ] ^ / ( _ : ] < / ( _ : ] [ / } | 1 2 3 ' ",
-"                  4 5 6 7 8 9 0 a 6 b 8 9 0 a 6 c 8 d e f g h ) ",
-"                i j k l m n o p q r s n o p t l u v w x y z A B ",
-"                C 0 D 8 E 8 8 8 8 8 8 8 8 8 8 8 F 8 G H I J K L ",
-"              M N O P Q R S T U V W X S Y Z `  ...+.@.#.$.%.&.*.",
-"            =.4 -.8 ;.8 S >.,.>.>.>.>.>.,.>.'.8 ).!.~.g {.].^.L ",
-"            /./ (.E _.:.<.[.}.[.[.[.|.[.1.2.3.4.5.6.7.8.9.0.a.L ",
-"          @ C 0 b.8 c.6 d.>.e.>.>.>.f.>.g.0 h.8 i.H j.J k.].l.L ",
-"          M N O m.8 n.:.o.S p.S S S q.S r.s.t.+.u.v.w.x.y.].z.L ",
-"        =.4 -.8 A.8 8 8 8 8 8 8 8 8 8 8 4.8 B.!.C.g D.E.F.G.H.L ",
-"        /./ I.E J.8 K. .L.M.M.M.M.M.M.M.N.O.P.6.Q.R.S.T.U.V.W.L ",
-"      @ C 0 D 8 E 8 8 8 8 8 8 8 8 8 8 8 F 8 X.H Y.Z.`.E. +G.H.L ",
-"      M N O .+8 ++8 8 8 8 8 8 8 8 8 @+8 #++.$+%+&+x.k.*+=+-+;+L ",
-"    =.4 -.8 A.8 8 8 8 8 8 8 8 8 8 8 4.8 B.!.~.g >+].,+'+)+'+J L ",
-"    !+~+{+]+^+/+/+/+/+/+/+/+/+/+/+/+(+F _+:+<+[+}+|+1+2+3+-+4+L ",
-"  @ 5+0 D 8 E 8 8 8 8 8 8 8 8 8 8 8 F 8 6+H 7+W.8+E.9+G.0+G.W.L ",
-"  @ a+b+c+d+e+d+d+d+f+g+h+i+i+i+j+i+k+G l+m+n+o+p+q+r+s+t+u+v+L ",
-"  @ w+x+y+x+x+x+x+x+x+x+x+x+x+x+z+x+A+H B+C+8.E.D+E.E+G.0+G.W.L ",
-"  @ F+a+G+H+H+H+I+H+J+K+L+M+N+M+O+M+P+Q+R+S+T+U+V+*+W+X+Y+-+Z+L ",
-"    @ @ @ @ @ @ @ @ `+4  @.@+@.@@@.@#@J $@].%@].&@'+*@=@-@'+;@L ",
-"                      >@,@'@)@'@!@'@~@{@]@^@/@9+%@2+(@X+_@-+Z+L ",
-"                      :@<@E.[@E.E.E.E.E.E.E.}@E.E+G.%@G.|@G.W.L ",
-"                      :@#@E.[@E.E.E.1@T.2@q+3@4@5@s+ +6@%@7@v+L ",
-"                      :@<@E.[@E.E.E.E.E.E.E.}@E.E+G.%@G.|@G.W.L ",
-"                      8@9@0@a@0.0.0.0.0.*+0.b@=+(@Y+c@Y+d@b@e@*.",
-"                      f@g@'+h@'+'+'+'+'+3+'+i@=@=@=@=@=@j@k@l@L ",
-"                      m@n@u+o@o@k@o@o@o@p@o@q@'+d@(@d@(@=+ +Z.B ",
-"                      @ r@W.4@E.s@E.E.E.E.E.E.E.E.E.t@E.1@J u@) ",
-"                      @ v@r@w@x@y@x@x@x@x@x@ @z@z@z@z@z@A@B@m@' ",
-"                        @ @ @ @ @ @ @ @ @ @ @ @ @ @ @ @ @ @ @   "};
 
 ConfigDialog::ConfigDialog( QWidget* parent, Qt::WFlags fl )
     : QDialog( parent, fl )
@@ -1419,25 +1039,25 @@ void ConfigDialog::initAxesPage()
 	enabledAxesGrid->addWidget(showNumbersLabel, 0, 3);
 
 	QLabel *pixLabel = new QLabel();
-	pixLabel->setPixmap (QPixmap ( ( const char** ) left_axis_xpm ));
+	pixLabel->setPixmap (QPixmap (":/left_axis.png"));
 	enabledAxesGrid->addWidget(pixLabel, 1, 0);
 	yLeftLabel = new QLabel();
 	enabledAxesGrid->addWidget(yLeftLabel, 1, 1);
 
 	pixLabel = new QLabel();
-	pixLabel->setPixmap (QPixmap ( ( const char** ) right_axis_xpm ));
+	pixLabel->setPixmap (QPixmap (":/right_axis.png"));
 	enabledAxesGrid->addWidget(pixLabel, 2, 0);
 	yRightLabel = new QLabel();
 	enabledAxesGrid->addWidget(yRightLabel, 2, 1);
 
 	pixLabel = new QLabel();
-	pixLabel->setPixmap (QPixmap ( ( const char** ) bottom_axis_xpm ));
+	pixLabel->setPixmap (QPixmap (":/bottom_axis.png"));
 	enabledAxesGrid->addWidget(pixLabel, 3, 0);
 	xBottomLabel = new QLabel();
 	enabledAxesGrid->addWidget(xBottomLabel, 3, 1);
 
 	pixLabel = new QLabel();
-	pixLabel->setPixmap (QPixmap ( ( const char** ) top_axis_xpm ));
+	pixLabel->setPixmap (QPixmap (":/top_axis.png"));
 	enabledAxesGrid->addWidget(pixLabel, 4, 0);
 	xTopLabel = new QLabel();
 	enabledAxesGrid->addWidget(xTopLabel, 4, 1);
@@ -1534,7 +1154,7 @@ void ConfigDialog::initFileLocationsPage()
 	gl->addWidget(translationsPathLine, 0, 1);
 
 	QPushButton *browseTranslationsBtn = new QPushButton();
-	browseTranslationsBtn->setIcon(QIcon(QPixmap(choose_folder_xpm)));
+	browseTranslationsBtn->setIcon(QIcon(":/folder_open.png"));
 	gl->addWidget(browseTranslationsBtn, 0, 2);
 
 	lblHelpPath = new QLabel(tr("Help"));
@@ -1546,7 +1166,7 @@ void ConfigDialog::initFileLocationsPage()
 	gl->addWidget( helpPathLine, 1, 1);
 
 	QPushButton *browseHelpBtn = new QPushButton();
-	browseHelpBtn->setIcon(QIcon(QPixmap(choose_folder_xpm)));
+	browseHelpBtn->setIcon(QIcon(":/folder_open.png"));
 	gl->addWidget(browseHelpBtn, 1, 2);
 
 	texCompilerLabel = new QLabel(tr("LaTeX Compiler"));
@@ -1559,7 +1179,7 @@ void ConfigDialog::initFileLocationsPage()
 	gl->addWidget(texCompilerPathBox, 2, 1);
 
     browseTexCompilerBtn = new QPushButton;
-    browseTexCompilerBtn->setIcon(QIcon(QPixmap(choose_folder_xpm)));
+	browseTexCompilerBtn->setIcon(QIcon(":/folder_open.png"));
 	connect(browseTexCompilerBtn, SIGNAL(clicked()), this, SLOT(chooseTexCompiler()));
 
     gl->addWidget(browseTexCompilerBtn, 2, 2);
@@ -1574,7 +1194,7 @@ void ConfigDialog::initFileLocationsPage()
 	gl->addWidget(pythonConfigDirLine, 3, 1);
 
 	QPushButton *browsePythonConfigBtn = new QPushButton();
-	browsePythonConfigBtn->setIcon(QIcon(QPixmap(choose_folder_xpm)));
+	browsePythonConfigBtn->setIcon(QIcon(":/folder_open.png"));
 	connect(browsePythonConfigBtn, SIGNAL(clicked()), this, SLOT(choosePythonConfigFolder()));
 	gl->addWidget(browsePythonConfigBtn, 3, 2);
 	gl->setRowStretch(4, 1);
@@ -1604,12 +1224,12 @@ void ConfigDialog::languageChange()
 	itemsList->addItem( tr( "Notes" ) );
 	itemsList->addItem( tr( "Fitting" ) );
 	itemsList->setCurrentRow(0);
-	itemsList->item(0)->setIcon(QIcon(QPixmap(general_xpm)));
-	itemsList->item(1)->setIcon(QIcon(QPixmap(configTable_xpm)));
-	itemsList->item(2)->setIcon(QIcon(QPixmap(config_curves_xpm)));
-	itemsList->item(3)->setIcon(QIcon(QPixmap(logo_xpm)));
-	itemsList->item(4)->setIcon(QIcon(QPixmap(notes_32_xpm)));
-	itemsList->item(5)->setIcon(QIcon(QPixmap(fit_xpm)));
+	itemsList->item(0)->setIcon(QIcon(":/general.png"));
+	itemsList->item(1)->setIcon(QIcon(":/configTable.png"));
+	itemsList->item(2)->setIcon(QIcon(":/config_curves.png"));
+	itemsList->item(3)->setIcon(QIcon(":/logo.png"));
+	itemsList->item(4)->setIcon(QIcon(":/notes_32.png"));
+	itemsList->item(5)->setIcon(QIcon(":/fit.png"));
 
 	//plots 2D page
 	plotsTabWidget->setTabText(plotsTabWidget->indexOf(plotOptions), tr("Options"));
@@ -1810,16 +1430,16 @@ void ConfigDialog::languageChange()
 	lblSymbSize->setText(tr( "Symbol size" ));
 
 	boxCurveStyle->clear();
-	boxCurveStyle->addItem( QPixmap(lPlot_xpm), tr( " Line" ) );
-	boxCurveStyle->addItem( QPixmap(pPlot_xpm), tr( " Scatter" ) );
-	boxCurveStyle->addItem( QPixmap(lpPlot_xpm), tr( " Line + Symbol" ) );
-	boxCurveStyle->addItem( QPixmap(dropLines_xpm), tr( " Vertical drop lines" ) );
-	boxCurveStyle->addItem( QPixmap(spline_xpm), tr( " Spline" ) );
-	boxCurveStyle->addItem( QPixmap(vert_steps_xpm), tr( " Vertical steps" ) );
-	boxCurveStyle->addItem( QPixmap(hor_steps_xpm), tr( " Horizontal steps" ) );
-	boxCurveStyle->addItem( QPixmap(area_xpm), tr( " Area" ) );
-	boxCurveStyle->addItem( QPixmap(vertBars_xpm), tr( " Vertical Bars" ) );
-	boxCurveStyle->addItem( QPixmap(hBars_xpm), tr( " Horizontal Bars" ) );
+	boxCurveStyle->addItem( QPixmap(":/lPlot.png"), tr( " Line" ) );
+	boxCurveStyle->addItem( QPixmap(":/pPlot.png"), tr( " Scatter" ) );
+	boxCurveStyle->addItem( QPixmap(":/lpPlot.png"), tr( " Line + Symbol" ) );
+	boxCurveStyle->addItem( QPixmap(":/dropLines.png"), tr( " Vertical drop lines" ) );
+	boxCurveStyle->addItem( QPixmap(":/spline.png"), tr( " Spline" ) );
+	boxCurveStyle->addItem( QPixmap(":/vert_steps.png"), tr( " Vertical steps" ) );
+	boxCurveStyle->addItem( QPixmap(":/hor_steps.png"), tr( " Horizontal steps" ) );
+	boxCurveStyle->addItem( QPixmap(":/area.png"), tr( " Area" ) );
+	boxCurveStyle->addItem( QPixmap(":/vertBars.png"), tr( " Vertical Bars" ) );
+	boxCurveStyle->addItem( QPixmap(":/hBars.png"), tr( " Horizontal Bars" ) );
 
 	int style = app->defaultCurveStyle;
 	if (style == Graph::Line)

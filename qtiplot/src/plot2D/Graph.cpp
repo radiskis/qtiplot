@@ -31,128 +31,6 @@
 #include <PenStyleBox.h>
 #include <ScreenPickerTool.h>
 
-/* XPM */
-static char * delete_xpm[] = {
-"11 12 40 1",
-" 	c None",
-".	c #ECBCBC",
-"+	c #BB0000",
-"@	c #DD8989",
-"#	c #B60000",
-"$	c #FFCBCB",
-"%	c #DB8989",
-"&	c #AF0000",
-"*	c #FF7C7C",
-"=	c #FFB4B4",
-"-	c #D88989",
-";	c #BC6D6D",
-">	c #A70000",
-",	c #FF4949",
-"'	c #FF9A9A",
-")	c #B86D6D",
-"!	c #9E0000",
-"~	c #FF1D1D",
-"{	c #FF8787",
-"]	c #B36D6D",
-"^	c #940000",
-"/	c #FF0000",
-"(	c #C68989",
-"_	c #890000",
-":	c #FF7E7E",
-"<	c #C28989",
-"[	c #7E0000",
-"}	c #FF7F7F",
-"|	c #FF0606",
-"1	c #740000",
-"2	c #FF8686",
-"3	c #FF1C1C",
-"4	c #A46D6D",
-"5	c #6B0000",
-"6	c #FF3434",
-"7	c #9F6D6D",
-"8	c #B19696",
-"9	c #630000",
-"0	c #9B6D6D",
-"a	c #CBCBCB",
-".++@   @++.",
-"#$$#% %#$$#",
-"&**=&-&=**&",
-";>,,'>',,>;",
-" )!~~{~~!) ",
-"  ]^///^]  ",
-" (_:///:_( ",
-"<[}||[||}[<",
-"12331413321",
-"56657 75665",
-"8990   0998",
-" aa     aa "};
-
-static const char *cut_xpm[]={
-"18 18 3 1",
-". c None",
-"# c #000000",
-"a c #00007f",
-"..................",
-"..................",
-"..................",
-".......#...#......",
-".......#...#......",
-".......#...#......",
-".......##.##......",
-"........#.#.......",
-"........###.......",
-".........#........",
-"........a#a.......",
-"........a.aaa.....",
-"......aaa.a..a....",
-".....a..a.a..a....",
-".....a..a.a..a....",
-".....a..a..aa.....",
-"......aa..........",
-".................."};
-
-static const char *copy_xpm[]={
-"15 13 4 1",
-"# c None",
-". c #000000",
-"b c #00007f",
-"a c #ffffff",
-"......#########",
-".aaaa..########",
-".aaaa.a.#######",
-".a..a.bbbbbb###",
-".aaaaabaaaabb##",
-".a....baaaabab#",
-".aaaaaba..abbbb",
-".a....baaaaaaab",
-".aaaaaba.....ab",
-"......baaaaaaab",
-"######ba.....ab",
-"######baaaaaaab",
-"######bbbbbbbbb"};
-
-static const char *unzoom_xpm[]={
-"18 17 2 1",
-". c None",
-"# c #000000",
-"..................",
-"...#..............",
-"..###.............",
-".#.#.#.......##...",
-"...#.....##..##...",
-"...#..##.##.......",
-"...#..##....##....",
-"...#........##....",
-"...#...##.........",
-"...#...##.##.##...",
-".#.#.#....##.##...",
-"..###.............",
-"...#...#......#...",
-"...#..#........#..",
-"...##############.",
-"......#........#..",
-".......#......#..."};
-
 #include "Graph.h"
 #include "MultiLayer.h"
 #include "Grid.h"
@@ -161,7 +39,6 @@ static const char *unzoom_xpm[]={
 #include "TexWidget.h"
 #include "LegendWidget.h"
 #include "ArrowMarker.h"
-#include <cursors.h>
 #include "ScalePicker.h"
 #include "TitlePicker.h"
 #include "QwtPieCurve.h"
@@ -3688,7 +3565,7 @@ void Graph::zoom(bool on)
   	}
 
 	if (on)
-		canvas()->setCursor(QCursor(QPixmap(lens_xpm), -1, -1));
+		canvas()->setCursor(QCursor(QPixmap(":/lens.png"), -1, -1));
 	else
 		canvas()->setCursor(Qt::arrowCursor);
 }
@@ -4258,10 +4135,10 @@ void Graph::showPlotErrorMessage(QWidget *parent, const QStringList& emptyColumn
 void Graph::showTitleContextMenu()
 {
 	QMenu titleMenu(this);
-	titleMenu.insertItem(QPixmap(cut_xpm), tr("Cu&t"),this, SLOT(cutTitle()));
-	titleMenu.insertItem(QPixmap(copy_xpm), tr("&Copy"),this, SLOT(copyTitle()));
+	titleMenu.insertItem(QPixmap(":/cut.png"), tr("Cu&t"),this, SLOT(cutTitle()));
+	titleMenu.insertItem(QPixmap(":/copy.png"), tr("&Copy"),this, SLOT(copyTitle()));
 	titleMenu.insertItem(tr("C&lear"),this, SLOT(clearTitle()));
-	titleMenu.insertItem(QPixmap(delete_xpm), tr("&Delete"),this, SLOT(removeTitle()));
+	titleMenu.insertItem(QPixmap(":/delete.png"), tr("&Delete"),this, SLOT(removeTitle()));
 	titleMenu.insertSeparator();
 	titleMenu.insertItem(tr("&Properties..."), this, SIGNAL(viewTitleDialog()));
 	titleMenu.exec(QCursor::pos());
@@ -4311,10 +4188,10 @@ void Graph::copyAxisTitle()
 void Graph::showAxisTitleMenu()
 {
 	QMenu titleMenu(this);
-	titleMenu.insertItem(QPixmap(cut_xpm), tr("Cu&t"), this, SLOT(cutAxisTitle()));
-	titleMenu.insertItem(QPixmap(copy_xpm), tr("&Copy"), this, SLOT(copyAxisTitle()));
+	titleMenu.insertItem(QPixmap(":/cut.png"), tr("Cu&t"), this, SLOT(cutAxisTitle()));
+	titleMenu.insertItem(QPixmap(":/copy.png"), tr("&Copy"), this, SLOT(copyAxisTitle()));
 	titleMenu.insertItem(tr("C&lear"),this, SLOT(clearAxisTitle()));
-	titleMenu.insertItem(QPixmap(delete_xpm), tr("&Delete"),this, SLOT(removeAxisTitle()));
+	titleMenu.insertItem(QPixmap(":/delete.png"), tr("&Delete"),this, SLOT(removeAxisTitle()));
 	titleMenu.insertSeparator();
 	titleMenu.insertItem(tr("&Properties..."), this, SIGNAL(showAxisTitleDialog()));
 	titleMenu.exec(QCursor::pos());
@@ -4324,7 +4201,7 @@ void Graph::showAxisContextMenu(int axis)
 {
 	QMenu menu(this);
 	menu.setCheckable(true);
-	menu.insertItem(QPixmap(unzoom_xpm), tr("&Rescale to show all"), this, SLOT(setAutoScale()), tr("Ctrl+Shift+R"));
+	menu.insertItem(QPixmap(":/unzoom.png"), tr("&Rescale to show all"), this, SLOT(setAutoScale()), tr("Ctrl+Shift+R"));
 	menu.insertSeparator();
 	menu.insertItem(tr("&Hide axis"), this, SLOT(hideSelectedAxis()));
 
