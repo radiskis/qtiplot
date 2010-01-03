@@ -2545,7 +2545,6 @@ void Table::importASCII(const QString &fname, const QString &sep, int ignoredLin
 		row++;
 		if (l%100 == 0)
 			progress.setValue(l/100);
-		qApp->processEvents();
 	}
 
 	d_table->blockSignals(false);

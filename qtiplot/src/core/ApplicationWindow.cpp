@@ -696,10 +696,10 @@ void ApplicationWindow::initToolBars()
 	fileTools->addAction(actionNewSurfacePlot);
 	fileTools->addSeparator ();
 	fileTools->addAction(actionOpen);
+	fileTools->addAction(actionOpenTemplate);
 #ifdef XLS_IMPORT
 	fileTools->addAction(actionOpenExcel);
 #endif
-	fileTools->addAction(actionOpenTemplate);
 #ifdef ODS_IMPORT
 	fileTools->addAction(actionOpenOds);
 #endif
