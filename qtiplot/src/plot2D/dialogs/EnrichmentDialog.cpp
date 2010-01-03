@@ -48,7 +48,6 @@
 #include <DoubleSpinBox.h>
 #include <PatternBox.h>
 #include <PenStyleBox.h>
-#include <pixmaps.h>
 
 EnrichmentDialog::EnrichmentDialog(WidgetType wt, Graph *g, QWidget *parent)
     : QDialog(parent), d_plot(g), d_widget(NULL), d_widget_type(wt)
@@ -242,7 +241,7 @@ void EnrichmentDialog::initImagePage()
 
 	QPushButton *browseBtn = new QPushButton();
 	connect(browseBtn, SIGNAL(clicked()), this, SLOT(chooseImageFile()));
-	browseBtn->setIcon(QIcon(QPixmap(choose_folder_xpm)));
+	browseBtn->setIcon(QIcon(":/folder_open.png"));
 	gl->addWidget(browseBtn, 0, 2);
 
 	boxSaveImagesInternally = new QCheckBox(tr("&Save internally"));

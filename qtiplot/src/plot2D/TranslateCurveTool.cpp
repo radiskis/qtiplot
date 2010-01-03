@@ -31,7 +31,6 @@
 #include "PlotCurve.h"
 #include "FunctionCurve.h"
 #include <ApplicationWindow.h>
-#include <cursors.h>
 #include "DataPickerTool.h"
 #include "ScreenPickerTool.h"
 #include <QMessageBox>

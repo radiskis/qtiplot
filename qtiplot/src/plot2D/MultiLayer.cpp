@@ -70,7 +70,6 @@
 #include <ApplicationWindow.h>
 #include <Matrix.h>
 #include <ColorButton.h>
-#include <pixmaps.h>
 #include <gsl/gsl_vector.h>
 
 LayerButton::LayerButton(const QString& text, QWidget* parent)
@@ -130,7 +129,7 @@ d_canvas_size(QSize())
 
 	d_add_layer_btn = new QPushButton();
 	d_add_layer_btn->setToolTip(tr("Add layer"));
-	d_add_layer_btn->setIcon(QIcon(QPixmap(plus_xpm)));
+	d_add_layer_btn->setIcon(QIcon(":/plus.png"));
 	d_add_layer_btn->setMaximumWidth(LayerButton::btnSize());
 	d_add_layer_btn->setMaximumHeight(LayerButton::btnSize());
 	connect (d_add_layer_btn, SIGNAL(clicked()), this->applicationWindow(), SLOT(addLayer()));
@@ -138,7 +137,7 @@ d_canvas_size(QSize())
 
 	d_remove_layer_btn = new QPushButton();
 	d_remove_layer_btn->setToolTip(tr("Remove active layer"));
-	d_remove_layer_btn->setIcon(QIcon(QPixmap(delete_xpm)));
+	d_remove_layer_btn->setIcon(QIcon(":/delete.png"));
 	d_remove_layer_btn->setMaximumWidth(LayerButton::btnSize());
 	d_remove_layer_btn->setMaximumHeight(LayerButton::btnSize());
 	connect (d_remove_layer_btn, SIGNAL(clicked()), this, SLOT(confirmRemoveLayer()));

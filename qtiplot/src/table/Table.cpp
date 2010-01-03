@@ -31,7 +31,6 @@
 #include <ImportASCIIDialog.h>
 #include <muParserScript.h>
 #include <ApplicationWindow.h>
-#include <pixmaps.h>
 
 #include <QMessageBox>
 #include <QDateTime>
@@ -2928,7 +2927,7 @@ bool Table::eventFilter(QObject *object, QEvent *e)
 				QMimeData *mimeData = new QMimeData;
 				mimeData->setText(selectedColumns().join("\n"));
 				drag->setMimeData(mimeData);
-				drag->setPixmap(QPixmap(drag_curves_xpm));
+				drag->setPixmap(QPixmap(":/drag_curves.png"));
 				drag->exec();
 				return true;
 			}
@@ -2972,7 +2971,7 @@ bool Table::eventFilter(QObject *object, QEvent *e)
 		QRect r = hheader->sectionRect(col);
 		r = QRect(r.topLeft(), QSize(r.width(), 10));
 		if (d_table->isColumnSelected(col, true) && r.contains(me->pos()))
-			setCursor(QCursor(QPixmap(append_drag_curves_xpm)));
+			setCursor(QCursor(QPixmap(":/append_drag_curves.png")));
 		else
 			setCursor(QCursor(Qt::ArrowCursor));
 		return false;

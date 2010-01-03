@@ -35,7 +35,6 @@
 #include <PlotCurve.h>
 #include <ApplicationWindow.h>
 #include <Folder.h>
-#include <pixmaps.h>
 #include <ColorBox.h>
 
 #include <QPushButton>
@@ -65,24 +64,24 @@ CurvesDialog::CurvesDialog( QWidget* parent, Qt::WFlags fl )
 
 	hl->addWidget(new QLabel(tr("New curves style")));
 	boxStyle = new QComboBox();
-	boxStyle->addItem( QPixmap(lPlot_xpm), tr( " Line" ) );
-	boxStyle->addItem( QPixmap(pPlot_xpm), tr( " Scatter" ) );
-	boxStyle->addItem( QPixmap(lpPlot_xpm), tr( " Line + Symbol" ) );
-	boxStyle->addItem( QPixmap(dropLines_xpm), tr( " Vertical drop lines" ) );
-	boxStyle->addItem( QPixmap(spline_xpm), tr( " Spline" ) );
-	boxStyle->addItem( QPixmap(vert_steps_xpm), tr( " Vertical steps" ) );
-	boxStyle->addItem( QPixmap(hor_steps_xpm), tr( " Horizontal steps" ) );
-	boxStyle->addItem( QPixmap(area_xpm), tr( " Area" ) );
-	boxStyle->addItem( QPixmap(vertBars_xpm), tr( " Vertical Bars" ) );
-	boxStyle->addItem( QPixmap(hBars_xpm), tr( " Horizontal Bars" ) );
-	boxStyle->addItem( QPixmap(histogram_xpm), tr( " Histogram" ) );
+	boxStyle->addItem( QPixmap(":/lPlot.png"), tr( " Line" ) );
+	boxStyle->addItem( QPixmap(":/pPlot.png"), tr( " Scatter" ) );
+	boxStyle->addItem( QPixmap(":/lpPlot.png"), tr( " Line + Symbol" ) );
+	boxStyle->addItem( QPixmap(":/dropLines.png"), tr( " Vertical drop lines" ) );
+	boxStyle->addItem( QPixmap(":/spline.png"), tr( " Spline" ) );
+	boxStyle->addItem( QPixmap(":/vert_steps.png"), tr( " Vertical steps" ) );
+	boxStyle->addItem( QPixmap(":/hor_steps.png"), tr( " Horizontal steps" ) );
+	boxStyle->addItem( QPixmap(":/area.png"), tr( " Area" ) );
+	boxStyle->addItem( QPixmap(":/vertBars.png"), tr( " Vertical Bars" ) );
+	boxStyle->addItem( QPixmap(":/hBars.png"), tr( " Horizontal Bars" ) );
+	boxStyle->addItem( QPixmap(":/histogram.png"), tr( " Histogram" ) );
     hl->addWidget(boxStyle);
 
     boxMatrixStyle = new QComboBox();
-	boxMatrixStyle->addItem( QPixmap(color_map_xpm), tr("Contour - Color Fill"));
-	boxMatrixStyle->addItem( QPixmap(contour_map_xpm), tr("Contour Lines"));
-	boxMatrixStyle->addItem( QPixmap(gray_map_xpm), tr("Gray Scale Map"));
-	boxMatrixStyle->addItem( QPixmap(histogram_xpm), tr("Histogram"));
+	boxMatrixStyle->addItem( QPixmap(":/color_map.png"), tr("Contour - Color Fill"));
+	boxMatrixStyle->addItem( QPixmap(":/contour_map.png"), tr("Contour Lines"));
+	boxMatrixStyle->addItem( QPixmap(":/gray_map.png"), tr("Gray Scale Map"));
+	boxMatrixStyle->addItem( QPixmap(":/histogram.png"), tr("Histogram"));
     hl->addWidget(boxMatrixStyle);
     hl->addStretch();
 
@@ -93,11 +92,11 @@ CurvesDialog::CurvesDialog( QWidget* parent, Qt::WFlags fl )
     hbc->addWidget(new QLabel( tr( "Graph contents" )));
 
     btnUp = new QPushButton();
-    btnUp->setIcon(QPixmap(arrow_up_xpm));
+    btnUp->setIcon(QPixmap(":/arrow_up.png"));
     btnUp->setMaximumWidth(20);
     hbc->addWidget(btnUp);
 	btnDown = new QPushButton();
-	btnDown->setIcon(QPixmap(arrow_down_xpm));
+	btnDown->setIcon(QPixmap(":/arrow_down.png"));
 	btnDown->setMaximumWidth(20);
 	hbc->addWidget(btnDown);
 	hbc->addStretch();
@@ -112,13 +111,13 @@ CurvesDialog::CurvesDialog( QWidget* parent, Qt::WFlags fl )
 
     QVBoxLayout* vl1 = new QVBoxLayout();
 	btnAdd = new QPushButton();
-	btnAdd->setPixmap( QPixmap(next_xpm) );
+	btnAdd->setPixmap( QPixmap(":/next.png") );
 	btnAdd->setFixedWidth (35);
 	btnAdd->setFixedHeight (30);
     vl1->addWidget(btnAdd);
 
 	btnRemove = new QPushButton();
-	btnRemove->setPixmap( QPixmap(prev_xpm) );
+	btnRemove->setPixmap( QPixmap(":/prev.png") );
 	btnRemove->setFixedWidth (35);
 	btnRemove->setFixedHeight(30);
     vl1->addWidget(btnRemove);
@@ -596,7 +595,7 @@ void CurvesDialog::showCurrentFolder(bool currentFolder)
 			else
 				folderItem = new QTreeWidgetItem(available, QStringList(f->objectName()), FolderItem);
 
-			folderItem->setIcon(0, QIcon(QPixmap(folder_open)));
+			folderItem->setIcon(0, QIcon(":/folder_open.png"));
 			folderItem->setExpanded(true);
 			available->addTopLevelItem(folderItem);
 
@@ -621,7 +620,7 @@ void CurvesDialog::addFolderItems(Folder *f, QTreeWidgetItem* parent)
 				tableItem = new QTreeWidgetItem(available, QStringList(t->objectName()), TableItem);
 			else
 				tableItem = new QTreeWidgetItem(parent, QStringList(t->objectName()), TableItem);
-			tableItem->setIcon(0, QIcon(QPixmap(worksheet_xpm)));
+			tableItem->setIcon(0, QIcon(QPixmap(":/worksheet.png")));
 			available->addTopLevelItem(tableItem);
 
 			for (int i=0; i < t->numCols(); i++){
@@ -640,7 +639,7 @@ void CurvesDialog::addFolderItems(Folder *f, QTreeWidgetItem* parent)
 				item = new QTreeWidgetItem(available, QStringList(m->objectName()), MatrixItem);
 			else
 				item = new QTreeWidgetItem(parent, QStringList(m->objectName()), MatrixItem);
-			item->setIcon(0, QIcon(QPixmap(matrix_xpm)));
+			item->setIcon(0, QIcon(QPixmap(":/matrix.png")));
 			available->addTopLevelItem(item);
 		}
 	}

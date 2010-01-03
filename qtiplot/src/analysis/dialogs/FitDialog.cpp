@@ -40,7 +40,6 @@
 #include <ColorBox.h>
 #include <DoubleSpinBox.h>
 #include <FunctionCurve.h>
-#include <pixmaps.h>
 #include <ScriptEdit.h>
 
 #include <QListWidget>
@@ -66,29 +65,6 @@
 #include <muParserToken.h>
 
 using namespace std;
-
-/* XPM */
-static const char * param_range_btn_xpm[] = {
-"18 14 5 1",
-" 	c None",
-".	c #000000",
-"+	c #FFFFFF",
-"@	c #808000",
-"#	c #FFFF00",
-"..+            ..+",
-"..+            ..+",
-"..+  @@+  @@+  ..+",
-"..+ @#@+  @#@+ ..+",
-"..+@##@+  @##@+..+",
-"..@###@@@@@###@..+",
-"..#############..+",
-"..@###@@@@@###@..+",
-"..+@##@+  @##@+..+",
-"..++@#@+  @#@++..+",
-"..+ +@@+  @@++ ..+",
-"..+  +++  +++  ..+",
-"..+            ..+",
-"+++            +++"};
 
 FitDialog::FitDialog(Graph *g, QWidget* parent, Qt::WFlags fl )
 : QDialog( parent, fl )
@@ -230,22 +206,22 @@ void FitDialog::initFitPage()
 
     QVBoxLayout *vb = new QVBoxLayout();
     btnSaveGuesses = new QPushButton(tr( "&Save" ));
-    btnSaveGuesses->setPixmap(QPixmap(filesave_xpm));
+	btnSaveGuesses->setPixmap(QPixmap(":/filesave.png"));
     connect(btnSaveGuesses, SIGNAL(clicked()), this, SLOT(saveInitialGuesses()));
     vb->addWidget(btnSaveGuesses);
 
     btnLoadGuesses = new QPushButton(tr("Re&load" ));
-    btnLoadGuesses->setPixmap(QPixmap(reload_xpm));
+	btnLoadGuesses->setPixmap(QPixmap(":/reload.png"));
     connect(btnLoadGuesses, SIGNAL(clicked()), this, SLOT(loadInitialGuesses()));
     vb->addWidget(btnLoadGuesses);
 
 	btnGuess = new QPushButton(tr( "&Guess" ));
-    btnGuess->setPixmap(QPixmap(help_xpm));
+	btnGuess->setPixmap(QPixmap(":/help.png"));
     connect(btnGuess, SIGNAL(clicked()), this, SLOT(guessInitialValues()));
     vb->addWidget(btnGuess);
 
     btnParamRange = new QPushButton(tr("&Range" ));
-    btnParamRange->setIcon(QIcon(QPixmap(param_range_btn_xpm)));
+	btnParamRange->setIcon(QIcon(":/param_range_btn.png"));
     btnParamRange->setCheckable(true);
     connect(btnParamRange, SIGNAL(toggled(bool)), this, SLOT(showParameterRange(bool)));
     vb->addWidget(btnParamRange);
@@ -304,7 +280,7 @@ void FitDialog::initFitPage()
 
     QHBoxLayout *hbox3 = new QHBoxLayout();
 	buttonCancel1 = new QPushButton(tr( "&Close" ));
-	buttonCancel1->setPixmap(QPixmap(delete_xpm));
+	buttonCancel1->setPixmap(QPixmap(":/delete.png"));
     hbox3->addWidget(buttonCancel1);
 	hbox3->addStretch();
 	previewBox = new QCheckBox(tr("&Preview"));
@@ -314,9 +290,9 @@ void FitDialog::initFitPage()
 
 	btnDeleteFitCurves = new QPushButton(tr( "&Delete Fit Curves" ));
     hbox3->addWidget(btnDeleteFitCurves);
-    btnDeleteFitCurves->setPixmap(QPixmap(close_xpm));
+	btnDeleteFitCurves->setPixmap(QPixmap(":/close.png"));
     buttonOk = new QPushButton(tr( "&Fit" ) );
-    buttonOk->setPixmap(QPixmap(play_xpm));
+	buttonOk->setPixmap(QPixmap(":/play.png"));
 	buttonOk->setDefault( true );
     hbox3->addWidget(buttonOk);
 
@@ -338,7 +314,7 @@ void FitDialog::initFitPage()
 	frameLayout->addSpacing (space);
 
 	buttonEdit = new QPushButton();
-	buttonEdit->setIcon(QPixmap(prev_xpm));
+	buttonEdit->setIcon(QIcon(":/prev.png"));
 	buttonEdit->setToolTip(tr("Select Function"));
 
 	QFrame *frame2 = new QFrame();
@@ -360,7 +336,7 @@ void FitDialog::initFitPage()
 	frameLayout->addSpacing (space);
 
 	buttonAdvanced = new QPushButton();
-	buttonAdvanced->setIcon(QPixmap(next_xpm));
+	buttonAdvanced->setIcon(QIcon(":/next.png"));
 	buttonAdvanced->setToolTip(tr("Custom Output"));
 
 	QFrame *frame3 = new QFrame();
@@ -483,7 +459,7 @@ void FitDialog::initEditPage()
     hbox1->addWidget(polynomOrderBox);
 
 	buttonPlugins = new QPushButton(tr( "Choose plug&ins folder..." ) );
-	buttonPlugins->setIcon(QPixmap(choose_folder_xpm));
+	buttonPlugins->setIcon(QIcon(":/folder_open.png"));
     hbox1->addWidget(buttonPlugins);
 	buttonPlugins->hide();
 
@@ -492,14 +468,14 @@ void FitDialog::initEditPage()
 	boxName = new QLineEdit(tr("user1"));
     gl2->addWidget(boxName, 0, 1);
 	btnAddFunc = new QPushButton(tr( "&Save" ));
-	btnAddFunc->setPixmap(QPixmap(filesave_xpm));
+	btnAddFunc->setPixmap(QPixmap(":/filesave.png"));
     gl2->addWidget(btnAddFunc, 0, 2);
     gl2->addWidget(new QLabel(tr("Parameters")), 1, 0);
 	boxParam = new QLabel();
 	boxParam->setFrameStyle(QFrame::Box | QFrame::Sunken);
     gl2->addWidget(boxParam, 1, 1);
 	btnDelFunc = new QPushButton( tr( "&Remove" ));
-	btnDelFunc->setPixmap(QPixmap(close_xpm));
+	btnDelFunc->setPixmap(QPixmap(":/close.png"));
     gl2->addWidget(btnDelFunc, 1, 2);
 
     QGroupBox *gb = new QGroupBox();
@@ -523,7 +499,7 @@ void FitDialog::initEditPage()
     vbox1->addWidget(buttonClear);
 	vbox1->addStretch();
 	buttonCancel2 = new QPushButton(tr( "&Close" ));
-	buttonCancel2->setPixmap(QPixmap(delete_xpm));
+	buttonCancel2->setPixmap(QPixmap(":/delete.png"));
     vbox1->addWidget(buttonCancel2);
 
 	QVBoxLayout *vb = new QVBoxLayout();
@@ -553,7 +529,7 @@ void FitDialog::initEditPage()
 	frameLayout->addSpacing (space);
 
 	btnContinue = new QPushButton();
-	btnContinue->setIcon(QPixmap(next_xpm));
+	btnContinue->setIcon(QIcon(":/next.png"));
 	btnContinue->setToolTip(tr("Start Fitting Session"));
 
 	QFrame *frame2 = new QFrame();
@@ -706,7 +682,7 @@ void FitDialog::initAdvancedPage()
 
     QHBoxLayout *hbox1 = new QHBoxLayout();
 	buttonCancel3 = new QPushButton(tr( "&Close" ));
-	buttonCancel3->setPixmap(QPixmap(delete_xpm));
+	buttonCancel3->setPixmap(QPixmap(":/delete.png"));
     hbox1->addWidget(buttonCancel3);
     hbox1->addStretch();
 	btnApply = new QPushButton(tr( "&Apply" ));
@@ -747,7 +723,7 @@ void FitDialog::initAdvancedPage()
 
 	btnBack = new QPushButton();
 	connect( btnBack, SIGNAL(clicked()), this, SLOT(returnToFitPage()));
-	btnBack->setIcon(QPixmap(prev_xpm));
+	btnBack->setIcon(QIcon(":/prev.png"));
 	btnBack->setToolTip(tr("Fitting Session"));
 
 	QFrame *frame2 = new QFrame();

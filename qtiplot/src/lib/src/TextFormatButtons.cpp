@@ -29,95 +29,10 @@
 
 #include "TextFormatButtons.h"
 #include "SymbolDialog.h"
-#include "pixmaps.h"
 #include <QTextEdit>
 #include <QPushButton>
 #include <QHBoxLayout>
 #include <QString>
-
-static const char * lineSymbol_xpm[] = {
-"16 16 4 1",
-" 	c None",
-".	c #8C2727",
-"+	c #272787",
-"@	c #FFFFFF",
-"                ",
-"                ",
-"                ",
-"      ...       ",
-"  ............  ",
-"      ...       ",
-"                ",
-"                ",
-"                ",
-"      +++       ",
-"  +++++@++++++  ",
-"      +++       ",
-"                ",
-"                ",
-"                ",
-"                "};
-
-/* XPM */
-static const char * fraction_xpm[] = {
-"18 21 5 1",
-" 	c None",
-".	c #000000",
-"+	c #121212",
-"@	c #090909",
-"#	c #FC0F0F",
-"       ..  ..     ",
-"      + .@@...    ",
-"     @   @. .     ",
-"        ..        ",
-"        ..        ",
-"     @ @@   .     ",
-"    @.@@.. .      ",
-"     @.  ..       ",
-"                  ",
-"##################",
-"                  ",
-"      .@@  .@     ",
-"     . .@  .@     ",
-"       .  .@      ",
-"      ..  .@      ",
-"      .   .@      ",
-"      .@ ..       ",
-"       ....       ",
-"     @   @        ",
-"     .. ..        ",
-"      ..@         "};
-
-/* XPM */
-static const char * square_root_xpm[] = {
-"22 19 8 1",
-" 	c None",
-".	c #FC0F0F",
-"+	c #000000",
-"@	c #1A1A1A",
-"#	c #060606",
-"$	c #010101",
-"%	c #070707",
-"&	c #090909",
-"         .............",
-"         ..          .",
-"         .           .",
-"        ..            ",
-"        ..            ",
-"        ..  +@++ +++  ",
-"        .  +# ++++ $+ ",
-"  .    ..  +   ++  ++ ",
-" ..    ..      +#     ",
-"....   ..      +      ",
-". ..   .      #+      ",
-"   .  ..  ++  %+   +  ",
-"   .. ..  ++ ++++ ++  ",
-"   .. ..   +++ +++&   ",
-"    . .               ",
-"    ...               ",
-"    ...               ",
-"     .                ",
-"     .                "};
 
 TextFormatButtons::TextFormatButtons(QTextEdit * textEdit, Buttons buttons, QWidget * parent)
 : QWidget(parent),
@@ -146,7 +61,7 @@ void TextFormatButtons::init(Buttons buttons)
 	btnSize = 38;
 #endif
 	if (buttons == Legend || buttons == TexLegend){
-		QPushButton *buttonCurve = new QPushButton( QPixmap(lineSymbol_xpm), QString());
+		QPushButton *buttonCurve = new QPushButton( QPixmap(":/lineSymbol.png"), QString());
 		buttonCurve->setFixedWidth(btnSize);
 		buttonCurve->setFixedHeight(btnSize);
 		buttonCurve->setFont(font);
@@ -154,14 +69,14 @@ void TextFormatButtons::init(Buttons buttons)
 		connect( buttonCurve, SIGNAL(clicked()), this, SLOT(addCurve()) );
 	}
 
-	QPushButton *buttonSubscript = new QPushButton(QPixmap(index_xpm), QString());
+	QPushButton *buttonSubscript = new QPushButton(QPixmap(":/index.png"), QString());
 	buttonSubscript->setFixedWidth(btnSize);
 	buttonSubscript->setFixedHeight(btnSize);
 	buttonSubscript->setFont(font);
 	layout->addWidget(buttonSubscript);
 	connect( buttonSubscript, SIGNAL(clicked()), this, SLOT(addSubscript()) );
 
-	QPushButton *buttonSuperscript = new QPushButton(QPixmap(exp_xpm), QString());
+	QPushButton *buttonSuperscript = new QPushButton(QPixmap(":/exp.png"), QString());
 	buttonSuperscript->setFixedWidth(btnSize);
 	buttonSuperscript->setFixedHeight(btnSize);
 	buttonSuperscript->setFont(font);
@@ -169,14 +84,14 @@ void TextFormatButtons::init(Buttons buttons)
 	connect( buttonSuperscript, SIGNAL(clicked()), this, SLOT(addSuperscript()));
 
 	if (buttons == Equation || buttons == TexLegend){
-		QPushButton *buttonFraction = new QPushButton(QPixmap(fraction_xpm), QString());
+		QPushButton *buttonFraction = new QPushButton(QPixmap(":/fraction.png"), QString());
 		buttonFraction->setFixedWidth(btnSize);
 		buttonFraction->setFixedHeight(btnSize);
 		buttonFraction->setFont(font);
 		layout->addWidget(buttonFraction);
 		connect(buttonFraction, SIGNAL(clicked()), this, SLOT(addFraction()));
 
-		QPushButton *buttonSquareRoot = new QPushButton(QPixmap(square_root_xpm), QString());
+		QPushButton *buttonSquareRoot = new QPushButton(QPixmap(":/square_root.png"), QString());
 		buttonSquareRoot->setFixedWidth(btnSize);
 		buttonSquareRoot->setFixedHeight(btnSize);
 		buttonSquareRoot->setFont(font);
