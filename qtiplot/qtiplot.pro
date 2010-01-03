@@ -105,9 +105,9 @@ translations.files += translations/qtiplot_de.qm \
                   translations/qtiplot_sv.qm
 
 isEmpty(LUPDATE): LUPDATE = lupdate
-#system($$LUPDATE -verbose qtiplot.pro)
+system($$LUPDATE -verbose qtiplot.pro)
 isEmpty(LRELEASE): LRELEASE = lrelease
-#system($$LRELEASE -verbose qtiplot.pro)
+system($$LRELEASE -verbose qtiplot.pro)
 
 ###################### DOCUMENTATION ########################################
 

@@ -9767,7 +9767,7 @@ void ApplicationWindow::showListViewPopupMenu(const QPoint &p)
 	window.addAction(actionNewSurfacePlot);
 	cm.insertItem(tr("New &Window"), &window);
 
-	cm.insertItem(QPixmap(":/newfolder.png"), tr("New F&older"), this, SLOT(addFolder()), Qt::Key_F7);
+	cm.addAction(actionNewFolder);
 	cm.insertSeparator();
 	cm.insertItem(tr("Auto &Column Width"), lv, SLOT(adjustColumns()));
 	cm.exec(p);
@@ -12714,7 +12714,7 @@ void ApplicationWindow::createActions()
 	actionAppendProject = new QAction(QIcon(":/append_file.png"), tr("App&end Project..."), this);
 	connect(actionAppendProject, SIGNAL(activated()), this, SLOT(appendProject()));
 
-	actionNewFolder = new QAction(QIcon(":/newFolder.png"), tr("New &Project"), this);
+	actionNewFolder = new QAction(QIcon(":/newfolder.png"), tr("New F&older"), this);
 	actionNewProject->setShortcut(Qt::Key_F7);
 	connect(actionNewFolder, SIGNAL(activated()), this, SLOT(addFolder()));
 
@@ -13647,7 +13647,7 @@ void ApplicationWindow::translateActionsStrings()
 	actionAppendProject->setToolTip(tr("Append a project to the current folder"));
 	actionAppendProject->setShortcut(tr("Ctrl+Alt+A"));
 
-    actionNewFolder->setMenuText(tr("New Fol&der"));
+	actionNewFolder->setMenuText(tr("New F&older"));
 	actionNewFolder->setToolTip(tr("Create a new folder"));
 	actionNewFolder->setShortcut(Qt::Key_F7);
 
@@ -15465,7 +15465,7 @@ void ApplicationWindow::showFolderPopupMenu(Q3ListViewItem *it, const QPoint &p,
 		cm.insertItem(tr("New &Window"), &window);
 	}
 
-	cm.insertItem(QPixmap(":/newfolder.png"), tr("New F&older"), this, SLOT(addFolder()), Qt::Key_F7);
+	cm.addAction(actionNewFolder);
 	cm.insertSeparator();
 
 	QStringList lst;
