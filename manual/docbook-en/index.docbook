@@ -86,7 +86,7 @@
 <!ENTITY append-cmd "<command>Append Project...</command>">
 <!ENTITY append-lnk '<link linkend="append-cmd"><command>Append Project...</command> command</link>'>
   <!ENTITY append-key "<keycode>Ctrl-Alt-A</keycode>">
-  <!ENTITY append-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/fileappend.png"/></imageobject></inlinemediaobject>'>
+  <!ENTITY append-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/append_file.png"/></imageobject></inlinemediaobject>'>
 
 <!ENTITY recent-projects-cmd "<command>Recent Projects</command>">
 <!ENTITY recent-projects-lnk '<link linkend="recent-projects-cmd"><command>Recent Projects</command> command</link>'>
@@ -290,7 +290,7 @@
 <!ENTITY rescale-cmd "<command>Rescale to Show All</command>">
 <!ENTITY rescale-lnk '<link linkend="rescale-cmd"><command>Rescale to Show All</command> command</link>'>
 <!ENTITY rescale-key "<keycode>Ctrl-Shift-R</keycode>">
-<!ENTITY rescale-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/rescale.png"/></imageobject></inlinemediaobject>'>
+<!ENTITY rescale-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/unzoom.png"/></imageobject></inlinemediaobject>'>
 
 <!ENTITY remove-layer-cmd "<command>Remove Layer</command>">
 <!ENTITY remove-layer-lnk '<link linkend="remove-layer-cmd"><command>Remove Layer</command> command</link>'>
@@ -477,15 +477,15 @@
 <!ENTITY set-column-as-lnk '<link linkend="set-column-as-cmd"><command>Set Column As</command> command</link>'>
 <!ENTITY set-column-as-x-cmd "<command>Set Column As -> X</command>">
 <!ENTITY set-column-as-x-lnk '<link linkend="set-column-as-x-cmd"><command>Set Column As -> X</command> command</link>'>
-<!ENTITY set-column-as-x-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/set_x_col.png"/></imageobject></inlinemediaobject>'>
+<!ENTITY set-column-as-x-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/x_col.png"/></imageobject></inlinemediaobject>'>
 
 <!ENTITY set-column-as-y-cmd "<command>Set Column As -> Y</command>">
 <!ENTITY set-column-as-y-lnk '<link linkend="set-column-as-y-cmd"><command>Set Column As -> Y</command> command</link>'>
-<!ENTITY set-column-as-y-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/set_y_col.png"/></imageobject></inlinemediaobject>'>
+<!ENTITY set-column-as-y-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/y_col.png"/></imageobject></inlinemediaobject>'>
 
 <!ENTITY set-column-as-z-cmd "<command>Set Column As -> Z</command>">
 <!ENTITY set-column-as-z-lnk '<link linkend="set-column-as-z-cmd"><command>Set Column As -> Z</command> command</link>'>
-<!ENTITY set-column-as-z-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/set_z_col.png"/></imageobject></inlinemediaobject>'>
+<!ENTITY set-column-as-z-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/z_col.png"/></imageobject></inlinemediaobject>'>
 
 <!ENTITY set-column-as-x-error-cmd "<command>Set Column As -> X error</command>">
 <!ENTITY set-column-as-x-error-lnk '<link linkend="set-column-as-x-error-cmd"><command>Set Column As -> X error</command> command</link>'>
@@ -501,7 +501,7 @@
 
 <!ENTITY set-column-as-none-cmd "<command>Set Column As -> Disregard</command>">
 <!ENTITY set-column-as-none-lnk '<link linkend="set-column-as-none-cmd"><command>Set Column As -> Disregard</command> command</link>'>
-<!ENTITY set-column-as-none-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/set_none_col.png"/></imageobject></inlinemediaobject>'>
+<!ENTITY set-column-as-none-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/disregard_col.png"/></imageobject></inlinemediaobject>'>
 
 <!ENTITY column-options-cmd "<command>Column Options...</command>">
 <!ENTITY column-options-lnk '<link linkend="column-options-cmd"><command>Column Options...</command> command</link>'>
@@ -690,7 +690,7 @@
 <!ENTITY remove-data-points-cmd "<command>Remove Bad Data Points</command>">
 <!ENTITY remove-data-points-lnk '<link linkend="remove-data-points-cmd"><command>Remove Bad Data Points</command> command</link>'>
   <!ENTITY remove-data-points-key "<keycode>Alt-B</keycode>">
-  <!ENTITY remove-data-points-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/gomme.png"/></imageobject></inlinemediaobject>'>
+  <!ENTITY remove-data-points-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/delete.png"/></imageobject></inlinemediaobject>'>
 <!--
               menu: Format
 -->
