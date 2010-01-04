@@ -248,7 +248,7 @@ void FFTDialog::fftMatrix()
     Matrix *mIm = app->matrix(boxImaginary->currentText());
     if (!mIm)
         errors = true;
-    else if (mIm && mIm->numCols() != width || mIm->numRows() != height){
+    else if (mIm && (mIm->numCols() != width || mIm->numRows() != height)){
         errors = true;
         QMessageBox::warning(app, tr("QtiPlot"),
         tr("The two matrices have different dimensions, the imaginary part will be neglected!"));

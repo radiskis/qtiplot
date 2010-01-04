@@ -92,8 +92,8 @@ void ColorBox::setColor(const QColor& c)
 
 QColor ColorBox::color() const
 {
-	size_t i = this->currentIndex();
-	if (i >= 0 && i < sizeof(colors))
+        int i = this->currentIndex();
+        if (i >= 0 && i < (int)sizeof(colors))
 		return colors[this->currentIndex()];
 
 	return QColor(Qt::black); // default color is black.

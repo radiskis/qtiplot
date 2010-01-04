@@ -209,7 +209,7 @@ void Label::convert2screen()
 
 const char * Label::fontname()
 {
-	char *name = "Helvetica";
+        const char *name = "Helvetica";
 	if (font_.family() == "Times New Roman"){
 		name = "Times";
 		if (font_.bold() && font_.italic ())
