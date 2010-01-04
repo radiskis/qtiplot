@@ -303,6 +303,16 @@
 <section ref="x5278.html#Python-Folders" title="Project Folders">
 </section>
 <section ref="x5278.html#Python-Tables" title="Working with Tables">
+<section ref="x5278.html#Python-ImportASCII" title="Import ASCII files">
+</section>
+<section ref="x5278.html#Python-ImportExcel" title="Importing Excel sheets">
+</section>
+<section ref="x5278.html#Python-ImportODF" title="Importing ODF spreadsheets">
+</section>
+<section ref="x5278.html#Python-ExportTables" title="Export Tables">
+</section>
+<section ref="x5278.html#Python-R" title="R interface">
+</section>
 </section>
 <section ref="x5278.html#Python-Matrix" title="Working with Matrices">
 </section>
@@ -349,7 +359,7 @@
 <section ref="x5278.html#Python-WaterfallPlots" title="Waterfall Plots">
 </section>
 <section ref="x5278.html#Python-Plots3D" title="3D Plots">
-<section ref="x5278.html#AEN6164" title="Creating a 3D plot">
+<section ref="x5278.html#AEN6205" title="Creating a 3D plot">
 </section>
 <section ref="x5278.html#Python-3D-View" title="Customizing the view">
 </section>
@@ -396,7 +406,7 @@
 </section>
 </section>
 </section>
-<section ref="c6437.html" title="Credits and License">
+<section ref="c6478.html" title="Credits and License">
 <keyword ref="x82.html#AEN86">Command line parameters</keyword>
 <keyword ref="x82.html#AEN115">Command line options</keyword>
 <keyword ref="x139.html#AEN159">table</keyword>
@@ -409,32 +419,32 @@
 <keyword ref="x4542.html#AEN4544">matrix</keyword>
 <keyword ref="x4557.html#AEN4559">table</keyword>
 <keyword ref="x4591.html#AEN4593">matrix</keyword>
-<section ref="c6437.html#fdl" title="GNU Free Documentation License">
-<section ref="c6437.html#AEN6458" title="Preamble">
+<section ref="c6478.html#fdl" title="GNU Free Documentation License">
+<section ref="c6478.html#AEN6499" title="Preamble">
 </section>
-<section ref="c6437.html#AEN6463" title="Applicability And Definitions">
+<section ref="c6478.html#AEN6504" title="Applicability And Definitions">
 </section>
-<section ref="c6437.html#AEN6472" title="Verbatim Copying">
+<section ref="c6478.html#AEN6513" title="Verbatim Copying">
 </section>
-<section ref="c6437.html#AEN6476" title="Copying In Quantity">
+<section ref="c6478.html#AEN6517" title="Copying In Quantity">
 </section>
-<section ref="c6437.html#AEN6482" title="Modifications">
+<section ref="c6478.html#AEN6523" title="Modifications">
 </section>
-<section ref="c6437.html#AEN6500" title="Combining Documents">
+<section ref="c6478.html#AEN6541" title="Combining Documents">
 </section>
-<section ref="c6437.html#AEN6505" title="Collections Of Documents">
+<section ref="c6478.html#AEN6546" title="Collections Of Documents">
 </section>
-<section ref="c6437.html#AEN6509" title="Aggregation With Independent Works">
+<section ref="c6478.html#AEN6550" title="Aggregation With Independent Works">
 </section>
-<section ref="c6437.html#AEN6513" title="Translation">
+<section ref="c6478.html#AEN6554" title="Translation">
 </section>
-<section ref="c6437.html#AEN6516" title="Termination">
+<section ref="c6478.html#AEN6557" title="Termination">
 </section>
-<section ref="c6437.html#AEN6519" title="Future Revisions Of This License">
+<section ref="c6478.html#AEN6560" title="Future Revisions Of This License">
 </section>
 </section>
 </section>
-<section ref="a6522.html" title="Installation">
+<section ref="a6563.html" title="Installation">
 <keyword ref="x82.html#AEN86">Command line parameters</keyword>
 <keyword ref="x82.html#AEN115">Command line options</keyword>
 <keyword ref="x139.html#AEN159">table</keyword>
@@ -447,20 +457,20 @@
 <keyword ref="x4542.html#AEN4544">matrix</keyword>
 <keyword ref="x4557.html#AEN4559">table</keyword>
 <keyword ref="x4591.html#AEN4593">matrix</keyword>
-<section ref="a6522.html#getting-qtiplot" title="How to obtain QtiPlot">
+<section ref="a6563.html#getting-qtiplot" title="How to obtain QtiPlot">
 </section>
-<section ref="x6528.html" title="Installation from binary packages">
+<section ref="x6569.html" title="Installation from binary packages">
 </section>
-<section ref="x6542.html" title="Compilation and Installation from sources">
-<section ref="x6542.html#requirements" title="Requirements">
+<section ref="x6583.html" title="Compilation and Installation from sources">
+<section ref="x6583.html#requirements" title="Requirements">
 </section>
-<section ref="x6542.html#compilation-linux" title="Linux and Mac OS X">
+<section ref="x6583.html#compilation-linux" title="Linux and Mac OS X">
 </section>
-<section ref="x6542.html#compilation-windows" title="Windows">
+<section ref="x6583.html#compilation-windows" title="Windows">
 </section>
 </section>
 </section>
-<section ref="c6610.html" title="Frequently asked questions">
+<section ref="c6661.html" title="Frequently asked questions">
 </section>
 </DCF>
 </assistantconfig>
