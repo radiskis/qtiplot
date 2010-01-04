@@ -150,7 +150,7 @@ void VectorCurve::drawArrowHead(QPainter *p, int xs, int ys, int xe, int ye) con
 	p->rotate(-t);
 
 	double pi = 4*atan(-1.0);
-	double headLength = d_headLength*(double)p->device()->logicalDpiX()/(double)plot()->logicalDpiX();
+	int headLength = qRound(d_headLength*(double)p->device()->logicalDpiX()/(double)plot()->logicalDpiX());
 	int d = qRound(headLength*tan(pi*(double)d_headAngle/180.0));
 
 	QPolygon endArray(3);
