@@ -14917,7 +14917,7 @@ void ApplicationWindow::parseCommandLineArguments(const QStringList& args)
 			if (exec)
 				scriptWindow->executeAll();
 		} else if (exec || noGui)
-			loadScript(file_name, exec, noGui, default_settings);
+			loadScript(file_name, exec, noGui);
 		else {
 			ApplicationWindow *app = open(file_name, default_settings);
 			if (app && app != this)
@@ -16554,7 +16554,7 @@ void ApplicationWindow::cascade()
     modifiedProject();
 }
 
-ApplicationWindow * ApplicationWindow::loadScript(const QString& fn, bool execute, bool noGui, bool factorySettings)
+ApplicationWindow * ApplicationWindow::loadScript(const QString& fn, bool execute, bool noGui)
 {
 #ifdef SCRIPTING_PYTHON
 	if (noGui){
