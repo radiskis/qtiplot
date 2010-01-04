@@ -317,7 +317,7 @@ public:
 %End
   void __delitem__(SIP_PYSLICE);
 %MethodCode
-  SIP_SSIZE_T len, start, stop, step, slicelength, i;
+  SIP_SSIZE_T len, start, stop, step, slicelength;
   len = sipCpp->numRows();
   if (PySlice_GetIndicesEx((PySliceObject *)a0, len, &start, &stop, &step, &slicelength) < 0)
     sipIsErr = 1;
@@ -418,7 +418,7 @@ public:
 %End
   SIP_PYTUPLE __getitem__(SIP_PYSLICE); // this is operator[]
 %MethodCode
-  SIP_SSIZE_T len, start, stop, step, slicelength, i;
+  SIP_SSIZE_T len, start, stop, step, slicelength;
   len = sipCpp->numRows();
   if (PySlice_GetIndicesEx((PySliceObject *)a0, len, &start, &stop, &step, &slicelength) < 0)
     sipIsErr = 1;
@@ -534,7 +534,6 @@ public:
     } //while
   }
 	if (sipIsErr == 0){
-    int colType = sipCpp->columnType(col);
     for(int row = a2; row < tableLength; row++) {
       if (item = PyIter_Next(iterator)) {
         sipIsErr = setCellDataHelper(sipCpp, row, col, item);
