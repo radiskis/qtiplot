@@ -1607,11 +1607,14 @@ t.isColSelected(col)
 t.isRowSelected(row)
 </programlisting>
 
+<sect3 id = "Python-R">
+<title>R interface</title>
+
 If <ulink url="http://rpy.sourceforge.net/rpy2.html">RPy2</ulink> is available,
 the <link linkend="Python-init">default initialization file</link> sets up the
 helper functions <userinput>qti.Table.toRDataFrame</userinput> and
 <userinput>qti.app.newTableFromRDataFrame</userinput> to convert back and forth
-between R data frames and Qtiplot tables.
+between R data frames and &appname; tables.
 Here is a little example of an R session...
 <programlisting>
 df &lt;- read.table("/some/path/data.csv", header=TRUE)
@@ -1620,7 +1623,7 @@ v &lt;- var(df)
 source("/some/path/my_func.r")
 new_df &lt;- my_func(df, foo=bar)
 </programlisting>
-... and now the same from within Qtiplot:
+... and now the same from within &appname;:
 <programlisting>
 df = table("Table1").toRDataFrame()
 print R.mean(df), R.var(df)
@@ -1628,6 +1631,7 @@ R.source("/some/path/my_func.r")
 new_df = R.my_func(df, foo=bar)
 newTableFromRDataFrame(new_df, "my result table")
 </programlisting>
+</sect3>
 
 </sect2>
 <sect2 id="Python-Matrix">
