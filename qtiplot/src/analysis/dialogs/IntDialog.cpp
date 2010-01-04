@@ -31,6 +31,7 @@
 #include <ApplicationWindow.h>
 #include <Graph.h>
 #include <DoubleSpinBox.h>
+#include <ScriptEdit.h>
 
 #include <QGroupBox>
 #include <QSpinBox>
@@ -53,7 +54,8 @@ IntDialog::IntDialog(QWidget* parent, Graph *g, Qt::WFlags fl )
     QGroupBox *gb1 = new QGroupBox();
     QGridLayout *gl1 = new QGridLayout(gb1);
 	gl1->addWidget(new QLabel(tr("Function")), 0, 0);
-	boxName = new QTextEdit();
+	boxName = new ScriptEdit(((ApplicationWindow *)parent)->scriptingEnv());
+	boxName->enableShortcuts();
 	boxName->setMaximumHeight(60);
 	gl1->addWidget(boxName, 0, 1);
 
@@ -117,8 +119,7 @@ IntDialog::IntDialog(QWidget* parent, Graph *g, Qt::WFlags fl )
 
 void IntDialog::accept()
 {
-    QString formula = boxName->text().remove("\n");
-	Integration *i = new Integration(formula, boxVariable->text(),
+	Integration *i = new Integration(boxName->text().simplified(), boxVariable->text(),
                     (ApplicationWindow *)this->parent(), d_graph, boxStart->value(), boxEnd->value());
 	i->setTolerance(boxTol->text().toDouble());
 	i->setMaximumIterations(boxSteps->value());

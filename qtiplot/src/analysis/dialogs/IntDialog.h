@@ -34,7 +34,7 @@
 class QPushButton;
 class QCheckBox;
 class QLineEdit;
-class QTextEdit;
+class ScriptEdit;
 class QSpinBox;
 class DoubleSpinBox;
 class Graph;
@@ -56,7 +56,7 @@ private:
     QPushButton* buttonOk;
 	QPushButton* buttonCancel;
     QCheckBox* boxPlot;
-	QTextEdit* boxName;
+	ScriptEdit* boxName;
 	QLineEdit* boxVariable;
 	QSpinBox* boxOrder;
 	QSpinBox* boxSteps;
