@@ -219,13 +219,13 @@ If you want to build &appname; from sources, you need the following libraries:
   </listitem>
 </varlistentry>
   <varlistentry>
-	<term>libpng</term>
+        <term>libxls</term>
 	<listitem>
 	  <para>For the import of Excel .xls files &appname; also uses the <ulink url="http://libxls.sourceforge.net/">libxls</ulink> library.</para>
 	</listitem>
   </varlistentry>
 	<varlistentry>
-	  <term>libpng</term>
+          <term>QuaZIP</term>
 	  <listitem>
 		<para>For the import of ODF spreadsheet .ods files &appname; uses the <ulink url="http://quazip.sourceforge.net/">QuaZIP</ulink> library.</para>
 	  </listitem>
