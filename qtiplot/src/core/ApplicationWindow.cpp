@@ -789,7 +789,7 @@ void ApplicationWindow::initToolBars()
 	btnZoomIn->setShortcut( tr("Ctrl++") );
 	btnZoomIn->setActionGroup(dataTools);
 	btnZoomIn->setCheckable( true );
-	btnZoomIn->setIcon(QIcon(":/(zoom.png"));
+	btnZoomIn->setIcon(QIcon(":/zoom.png"));
 
 	btnZoomOut = new QAction(tr("&Zoom Out"), this);
 	btnZoomOut->setShortcut( tr("Ctrl+-") );
