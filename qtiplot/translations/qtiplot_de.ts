@@ -19535,7 +19535,7 @@ die Spalten unterschiedlich viele Zeilen haben.</translation>
 <context>
     <name>IntDialog</name>
     <message>
-        <location filename="../src/analysis/dialogs/IntDialog.cpp" line="50"/>
+        <location filename="../src/analysis/dialogs/IntDialog.cpp" line="51"/>
         <source>QtiPlot - Integration Options</source>
         <translation>QtiPlot - Integrationsoptionen</translation>
     </message>
@@ -19552,17 +19552,17 @@ die Spalten unterschiedlich viele Zeilen haben.</translation>
         <translation type="obsolete">Anzahl der Iterationen (Max=40)</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/IntDialog.cpp" line="77"/>
+        <location filename="../src/analysis/dialogs/IntDialog.cpp" line="79"/>
         <source>Tolerance</source>
         <translation>Toleranz</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/IntDialog.cpp" line="85"/>
+        <location filename="../src/analysis/dialogs/IntDialog.cpp" line="87"/>
         <source>Lower limit</source>
         <translation>Untere Grenze</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/IntDialog.cpp" line="90"/>
+        <location filename="../src/analysis/dialogs/IntDialog.cpp" line="92"/>
         <source>Upper limit</source>
         <translation>Obere Grenze</translation>
     </message>
@@ -19575,12 +19575,12 @@ die Spalten unterschiedlich viele Zeilen haben.</translation>
         <translation type="obsolete">&amp;Abbrechen</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/IntDialog.cpp" line="101"/>
+        <location filename="../src/analysis/dialogs/IntDialog.cpp" line="103"/>
         <source>&amp;Integrate</source>
         <translation>&amp;Integrieren</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/IntDialog.cpp" line="103"/>
+        <location filename="../src/analysis/dialogs/IntDialog.cpp" line="105"/>
         <source>&amp;Close</source>
         <translation>S&amp;chließen</translation>
     </message>
@@ -19709,22 +19709,22 @@ Die Grenzen müssen innerhalb des X-Bereichs sein. Fall diese Werte nicht bekann
         <translation type="obsolete">Sie können die Kruve nicht integrieren:</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/IntDialog.cpp" line="55"/>
+        <location filename="../src/analysis/dialogs/IntDialog.cpp" line="56"/>
         <source>Function</source>
         <translation>Funktion</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/IntDialog.cpp" line="60"/>
+        <location filename="../src/analysis/dialogs/IntDialog.cpp" line="62"/>
         <source>Variable</source>
         <translation>Variable</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/IntDialog.cpp" line="65"/>
+        <location filename="../src/analysis/dialogs/IntDialog.cpp" line="67"/>
         <source>Order (1 - 5, 1 = Trapezoidal Rule)</source>
         <translation>Ordnung (1-5, 1 = Trapez-Regel)</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/IntDialog.cpp" line="70"/>
+        <location filename="../src/analysis/dialogs/IntDialog.cpp" line="72"/>
         <source>Number of iterations (Max=20)</source>
         <translation>Anzahl der Iterationen (Max=20)</translation>
     </message>
@@ -19733,7 +19733,7 @@ Die Grenzen müssen innerhalb des X-Bereichs sein. Fall diese Werte nicht bekann
         <translation type="obsolete">Diagrammfläche</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/IntDialog.cpp" line="96"/>
+        <location filename="../src/analysis/dialogs/IntDialog.cpp" line="98"/>
         <source>&amp;Plot area</source>
         <translation>Diagrammfläche</translation>
     </message>

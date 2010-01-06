@@ -15023,57 +15023,57 @@ Dají se použít následující zvláštní kódy:
 <context>
     <name>IntDialog</name>
     <message>
-        <location filename="../src/analysis/dialogs/IntDialog.cpp" line="50"/>
+        <location filename="../src/analysis/dialogs/IntDialog.cpp" line="51"/>
         <source>QtiPlot - Integration Options</source>
         <translation>QtiPlot - Volby pro začlenění</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/IntDialog.cpp" line="55"/>
+        <location filename="../src/analysis/dialogs/IntDialog.cpp" line="56"/>
         <source>Function</source>
         <translation>Funkce</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/IntDialog.cpp" line="60"/>
+        <location filename="../src/analysis/dialogs/IntDialog.cpp" line="62"/>
         <source>Variable</source>
         <translation>Proměnná</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/IntDialog.cpp" line="65"/>
+        <location filename="../src/analysis/dialogs/IntDialog.cpp" line="67"/>
         <source>Order (1 - 5, 1 = Trapezoidal Rule)</source>
         <translation>Řád (1 - 5, 1 = lichoběžníkové pravidlo)</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/IntDialog.cpp" line="70"/>
+        <location filename="../src/analysis/dialogs/IntDialog.cpp" line="72"/>
         <source>Number of iterations (Max=20)</source>
         <translation>Počet opakování (iterací) (Max=20)</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/IntDialog.cpp" line="77"/>
+        <location filename="../src/analysis/dialogs/IntDialog.cpp" line="79"/>
         <source>Tolerance</source>
         <translation>Povolená odchylka</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/IntDialog.cpp" line="85"/>
+        <location filename="../src/analysis/dialogs/IntDialog.cpp" line="87"/>
         <source>Lower limit</source>
         <translation>Spodní mez</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/IntDialog.cpp" line="90"/>
+        <location filename="../src/analysis/dialogs/IntDialog.cpp" line="92"/>
         <source>Upper limit</source>
         <translation>Horní mez</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/IntDialog.cpp" line="96"/>
+        <location filename="../src/analysis/dialogs/IntDialog.cpp" line="98"/>
         <source>&amp;Plot area</source>
         <translation>&amp;Nakreslit oblast</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/IntDialog.cpp" line="101"/>
+        <location filename="../src/analysis/dialogs/IntDialog.cpp" line="103"/>
         <source>&amp;Integrate</source>
         <translation>&amp;Začlenit</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/IntDialog.cpp" line="103"/>
+        <location filename="../src/analysis/dialogs/IntDialog.cpp" line="105"/>
         <source>&amp;Close</source>
         <translation>&amp;Zavřít</translation>
     </message>

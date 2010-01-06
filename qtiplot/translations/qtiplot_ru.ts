@@ -11583,57 +11583,57 @@ have the same number of rows.</source>
 <context>
     <name>IntDialog</name>
     <message>
-        <location filename="../src/analysis/dialogs/IntDialog.cpp" line="103"/>
+        <location filename="../src/analysis/dialogs/IntDialog.cpp" line="105"/>
         <source>&amp;Close</source>
         <translation>&amp;Закрыть</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/IntDialog.cpp" line="101"/>
+        <location filename="../src/analysis/dialogs/IntDialog.cpp" line="103"/>
         <source>&amp;Integrate</source>
         <translation>&amp;Интегрировать</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/IntDialog.cpp" line="85"/>
+        <location filename="../src/analysis/dialogs/IntDialog.cpp" line="87"/>
         <source>Lower limit</source>
         <translation>Нижний предел</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/IntDialog.cpp" line="50"/>
+        <location filename="../src/analysis/dialogs/IntDialog.cpp" line="51"/>
         <source>QtiPlot - Integration Options</source>
         <translation>QtiPlot - Параметры интегрирования</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/IntDialog.cpp" line="77"/>
+        <location filename="../src/analysis/dialogs/IntDialog.cpp" line="79"/>
         <source>Tolerance</source>
         <translation>Допустимое отклонение</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/IntDialog.cpp" line="90"/>
+        <location filename="../src/analysis/dialogs/IntDialog.cpp" line="92"/>
         <source>Upper limit</source>
         <translation>Верхняя граница</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/IntDialog.cpp" line="55"/>
+        <location filename="../src/analysis/dialogs/IntDialog.cpp" line="56"/>
         <source>Function</source>
         <translation>Функция</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/IntDialog.cpp" line="60"/>
+        <location filename="../src/analysis/dialogs/IntDialog.cpp" line="62"/>
         <source>Variable</source>
         <translation>Переменная</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/IntDialog.cpp" line="65"/>
+        <location filename="../src/analysis/dialogs/IntDialog.cpp" line="67"/>
         <source>Order (1 - 5, 1 = Trapezoidal Rule)</source>
         <translation>Порядок (1 - 5, 1 = метод трапеций)</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/IntDialog.cpp" line="70"/>
+        <location filename="../src/analysis/dialogs/IntDialog.cpp" line="72"/>
         <source>Number of iterations (Max=20)</source>
         <translation>Число итераций (максимум=20)</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/IntDialog.cpp" line="96"/>
+        <location filename="../src/analysis/dialogs/IntDialog.cpp" line="98"/>
         <source>&amp;Plot area</source>
         <translation>&amp;Построить область</translation>
     </message>
@@ -13154,13 +13154,11 @@ have the same number of rows.</source>
 <context>
     <name>MultiPeakFitTool</name>
     <message>
-        <location filename="../src/core/MultiPeakFitTool.cpp" line="61"/>
         <location filename="../src/plot2D/MultiPeakFitTool.cpp" line="59"/>
         <source>Move cursor and click to select a point and double-click/press &apos;Enter&apos; to set the position of a peak!</source>
         <translation>Для выделения точки подведите к ней указатель и щёлкните, двойной щелчок или &apos;Enter&apos; для установки положения вершины!</translation>
     </message>
     <message>
-        <location filename="../src/core/MultiPeakFitTool.cpp" line="94"/>
         <location filename="../src/plot2D/MultiPeakFitTool.cpp" line="99"/>
         <source>Peak %1 selected! Click to select a point and double-click/press &apos;Enter&apos; to set the position of the next peak!</source>
         <translation>Пик %1 выбран! Один щелчок для выбора точки и двойной щелчок или &apos;Enter&apos;, для указания положения следующего пика!</translation>

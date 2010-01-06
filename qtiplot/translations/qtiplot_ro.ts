@@ -15126,57 +15126,57 @@ have the same number of rows.</source>
 <context>
     <name>IntDialog</name>
     <message>
-        <location filename="../src/analysis/dialogs/IntDialog.cpp" line="50"/>
+        <location filename="../src/analysis/dialogs/IntDialog.cpp" line="51"/>
         <source>QtiPlot - Integration Options</source>
         <translation>QtiPlot - Opţiuni de integrare</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/IntDialog.cpp" line="55"/>
+        <location filename="../src/analysis/dialogs/IntDialog.cpp" line="56"/>
         <source>Function</source>
         <translation>Funcţie</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/IntDialog.cpp" line="60"/>
+        <location filename="../src/analysis/dialogs/IntDialog.cpp" line="62"/>
         <source>Variable</source>
         <translation>Variabilă</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/IntDialog.cpp" line="65"/>
+        <location filename="../src/analysis/dialogs/IntDialog.cpp" line="67"/>
         <source>Order (1 - 5, 1 = Trapezoidal Rule)</source>
         <translation>Ordin (1 - 5, 1 = Metoda trapezelor)</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/IntDialog.cpp" line="70"/>
+        <location filename="../src/analysis/dialogs/IntDialog.cpp" line="72"/>
         <source>Number of iterations (Max=20)</source>
         <translation>Număr de iteraţii (Max=20)</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/IntDialog.cpp" line="77"/>
+        <location filename="../src/analysis/dialogs/IntDialog.cpp" line="79"/>
         <source>Tolerance</source>
         <translation>Toleranţă</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/IntDialog.cpp" line="85"/>
+        <location filename="../src/analysis/dialogs/IntDialog.cpp" line="87"/>
         <source>Lower limit</source>
         <translation>Limita inferioară</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/IntDialog.cpp" line="90"/>
+        <location filename="../src/analysis/dialogs/IntDialog.cpp" line="92"/>
         <source>Upper limit</source>
         <translation>Limita superioară</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/IntDialog.cpp" line="96"/>
+        <location filename="../src/analysis/dialogs/IntDialog.cpp" line="98"/>
         <source>&amp;Plot area</source>
         <translation>Trasează su&amp;prafaţă</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/IntDialog.cpp" line="101"/>
+        <location filename="../src/analysis/dialogs/IntDialog.cpp" line="103"/>
         <source>&amp;Integrate</source>
         <translation>&amp;Integrează</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/IntDialog.cpp" line="103"/>
+        <location filename="../src/analysis/dialogs/IntDialog.cpp" line="105"/>
         <source>&amp;Close</source>
         <translation>În&amp;chide</translation>
     </message>
