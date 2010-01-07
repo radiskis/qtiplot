@@ -9015,18 +9015,26 @@ void ApplicationWindow::closeWindow(MdiSubWindow* window)
 
 QMessageBox * ApplicationWindow::about()
 {
-	QString text = "<h2>"+ versionString() + "</h2>";
-	text +=	"<h3>" + QString(copyright_string).replace("\n", "<br>") + "</h3>";
-	text += "<h3>" + tr("Released") + ": " + QString(release_date) + "</h3>";
+	#ifdef Q_OS_WIN
+		QString text = "<h2>"+ versionString() + "</h2>";
+		text +=	"<h3>" + QString(copyright_string).replace("\n", "<br>") + "</h3>";
+		text += "<h3>" + tr("Released") + ": " + QString(release_date) + "</h3>";
 
-	QMessageBox *mb = new QMessageBox();
-	mb->setAttribute(Qt::WA_DeleteOnClose);
-	mb->setWindowTitle (tr("About QtiPlot"));
-	mb->setWindowIcon(QIcon(":/logo.png"));
-	mb->setIconPixmap(QPixmap(":/logo.png"));
-	mb->setText(text);
-	mb->exec();
-	return mb;
+		QMessageBox *mb = new QMessageBox();
+		mb->setAttribute(Qt::WA_DeleteOnClose);
+		mb->setWindowTitle (tr("About QtiPlot"));
+		mb->setWindowIcon(QIcon(":/logo.png"));
+		mb->setIconPixmap(QPixmap(":/logo.png"));
+		mb->setText(text);
+		mb->exec();
+		return mb;
+	#else
+		printf("%s\n", versionString().toAscii().constData());
+		printf("%s\n", copyright_string);
+		printf("%s\n", (tr("Released") + ": " + QString(release_date)).toAscii().constData());
+		exit(0);
+	#endif
+		return NULL;
 }
 
 void ApplicationWindow::scriptingMenuAboutToShow()
