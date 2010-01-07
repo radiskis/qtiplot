@@ -28,6 +28,7 @@
  ***************************************************************************/
 #include <QApplication>
 #include "ApplicationWindow.h"
+#include <QtiPlotApplication.h>
 
 // The following stuff is for the doxygen title page
 /*!  \mainpage QtiPlot - Data analysis and scientific plotting - API documentation
@@ -120,32 +121,7 @@ If you want to contribute code, please read the notes on \ref style "coding styl
 
 int main( int argc, char ** argv )
 {
-    QApplication app( argc, argv );
-
-	QStringList args = app.arguments();
-	args.removeFirst(); // remove application name
-
-	if( (args.count() == 1) && (args[0] == "-m" || args[0] == "--manual") )
-		ApplicationWindow::showStandAloneHelp();
-	else if ( (args.count() == 1) && (args[0] == "-a" || args[0] == "--about") ) {
-		ApplicationWindow::about();
-		exit(0);
-	} else {
-		bool factorySettings = false;
-		if (args.contains("-d") || args.contains("--default-settings"))
-			factorySettings = true;
-
-		ApplicationWindow *mw = new ApplicationWindow(factorySettings);
-		mw->restoreApplicationGeometry();
-	#ifdef QTIPLOT_SUPPORT
-		mw->showDonationDialog();
-	#endif
-		if (mw->autoSearchUpdates){
-			mw->autoSearchUpdatesRequest = true;
-			mw->searchForUpdates();
-		}
-		mw->parseCommandLineArguments(args);
-	}
+	QtiPlotApplication app( argc, argv );
 	app.connect( &app, SIGNAL(lastWindowClosed()), &app, SLOT(quit()) );
 	return app.exec();
 }
