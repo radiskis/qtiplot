@@ -81,7 +81,6 @@ DESTDIR        = ./
 INCLUDEPATH  += icons/
 win32:RC_FILE = icons/qtiplot.rc
 mac:RC_FILE   = icons/qtiplot.icns
-#RESOURCES     = icons/icons.qrc
 RESOURCES     = ../manual/html/icons/icons.qrc
 
 ###################### TRANSLATIONS #########################################

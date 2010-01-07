@@ -556,7 +556,7 @@ public slots:
 	//@}
 
 	//! Show about dialog
-	static void about();
+	static QMessageBox* about();
 	//! Return a version string ("QtiPlot x.y.z")
 	static QString versionString();
 	void removeCurves(const QString& name);

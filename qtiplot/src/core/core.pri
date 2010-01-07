@@ -12,6 +12,7 @@ HEADERS  += src/core/ApplicationWindow.h \
 			src/core/OdsFileHandler.h\
             src/core/OpenProjectDialog.h\
             src/core/PlotWizard.h \
+            src/core/QtiPlotApplication.h \
             src/core/RenameWindowDialog.h \
             src/core/globals.h\
 
@@ -33,4 +34,5 @@ SOURCES  += src/core/ApplicationWindow.cpp \
 			src/core/OdsFileHandler.cpp\
             src/core/OpenProjectDialog.cpp\
             src/core/PlotWizard.cpp \
+            src/core/QtiPlotApplication.cpp \
             src/core/RenameWindowDialog.cpp \

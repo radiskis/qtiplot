@@ -31,6 +31,7 @@
  ***************************************************************************/
 #include "globals.h"
 #include "ApplicationWindow.h"
+#include <QtiPlotApplication.h>
 
 #include "PlotWizard.h"
 #include "ConfigDialog.h"
@@ -208,6 +209,7 @@ ApplicationWindow::ApplicationWindow(bool factorySettings)
 {
 	setAttribute(Qt::WA_DeleteOnClose);
 	init(factorySettings);
+	((QtiPlotApplication *)QCoreApplication::instance ())->append(this);
 }
 
 void ApplicationWindow::init(bool factorySettings)
@@ -4498,7 +4500,7 @@ ApplicationWindow* ApplicationWindow::openProject(const QString& fn, bool factor
 	QString titleBase = tr("Window") + ": ";
 	QString title = titleBase + "1/" + QString::number(widgets) + "  ";
 
-	QProgressDialog progress(this);
+	QProgressDialog progress(app);
 	progress.setWindowModality(Qt::WindowModal);
 	progress.setRange(0, widgets);
 	progress.setMinimumWidth(app->width()/2);
@@ -9011,18 +9013,20 @@ void ApplicationWindow::closeWindow(MdiSubWindow* window)
 	emit modified();
 }
 
-void ApplicationWindow::about()
+QMessageBox * ApplicationWindow::about()
 {
 	QString text = "<h2>"+ versionString() + "</h2>";
 	text +=	"<h3>" + QString(copyright_string).replace("\n", "<br>") + "</h3>";
 	text += "<h3>" + tr("Released") + ": " + QString(release_date) + "</h3>";
 
 	QMessageBox *mb = new QMessageBox();
+	mb->setAttribute(Qt::WA_DeleteOnClose);
 	mb->setWindowTitle (tr("About QtiPlot"));
 	mb->setWindowIcon(QIcon(":/logo.png"));
 	mb->setIconPixmap(QPixmap(":/logo.png"));
 	mb->setText(text);
 	mb->exec();
+	return mb;
 }
 
 void ApplicationWindow::scriptingMenuAboutToShow()
@@ -9474,7 +9478,7 @@ void ApplicationWindow::newProject()
 
 void ApplicationWindow::savedProject()
 {
-	QCoreApplication::processEvents();
+	//QCoreApplication::processEvents();
 
 	actionSaveProject->setEnabled(false);
 	saved = true;
@@ -9646,6 +9650,9 @@ void ApplicationWindow::closeEvent( QCloseEvent* ce )
 			ce->ignore();
 			break;
 	}
+
+	if (ce->isAccepted())
+		((QtiPlotApplication *)QCoreApplication::instance ())->remove(this);
 }
 
 QMessageBox::StandardButton ApplicationWindow::showSaveProjectMessage()
