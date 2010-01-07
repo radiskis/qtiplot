@@ -39,8 +39,12 @@ QtiPlotApplication::QtiPlotApplication( int & argc, char ** argv) : QApplication
 	if( (args.count() == 1) && (args[0] == "-m" || args[0] == "--manual") )
 		ApplicationWindow::showStandAloneHelp();
 	else if ( (args.count() == 1) && (args[0] == "-a" || args[0] == "--about") ) {
+	#ifdef Q_OS_WIN
 		QMessageBox *msg = ApplicationWindow::about();
 		connect(msg, SIGNAL(destroyed()), this, SLOT(quit()));
+	#else
+		ApplicationWindow::about();
+	#endif
 	} else {
 		bool factorySettings = false;
 		if (args.contains("-d") || args.contains("--default-settings"))
