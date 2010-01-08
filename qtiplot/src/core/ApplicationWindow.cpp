@@ -9013,9 +9013,9 @@ void ApplicationWindow::closeWindow(MdiSubWindow* window)
 	emit modified();
 }
 
-QMessageBox * ApplicationWindow::about()
+QMessageBox * ApplicationWindow::about(bool dialog)
 {
-	#ifdef Q_OS_WIN
+	if (dialog){
 		QString text = "<h2>"+ versionString() + "</h2>";
 		text +=	"<h3>" + QString(copyright_string).replace("\n", "<br>") + "</h3>";
 		text += "<h3>" + tr("Released") + ": " + QString(release_date) + "</h3>";
@@ -9028,13 +9028,13 @@ QMessageBox * ApplicationWindow::about()
 		mb->setText(text);
 		mb->exec();
 		return mb;
-	#else
+	} else {
 		printf("%s\n", versionString().toAscii().constData());
 		printf("%s\n", copyright_string);
 		printf("%s\n", (tr("Released") + ": " + QString(release_date)).toAscii().constData());
 		exit(0);
-	#endif
-		return NULL;
+	}
+	return NULL;
 }
 
 void ApplicationWindow::scriptingMenuAboutToShow()
