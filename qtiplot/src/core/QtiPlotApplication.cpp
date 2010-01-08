@@ -43,7 +43,7 @@ QtiPlotApplication::QtiPlotApplication( int & argc, char ** argv) : QApplication
 		QMessageBox *msg = ApplicationWindow::about();
 		connect(msg, SIGNAL(destroyed()), this, SLOT(quit()));
 	#else
-		ApplicationWindow::about();
+		ApplicationWindow::about(false);
 	#endif
 	} else {
 		bool factorySettings = false;
