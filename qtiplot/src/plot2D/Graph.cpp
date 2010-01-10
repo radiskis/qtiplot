@@ -2675,16 +2675,30 @@ int Graph::range(QwtPlotCurve *c, double *start, double *end)
 	if (!c)
 		return 0;
 
-	if (d_range_selector && d_range_selector->isVisible() &&
-		d_range_selector->selectedCurve() == c) {
-		*start = d_range_selector->minXValue();
-		*end = d_range_selector->maxXValue();
-		return d_range_selector->dataSize();
+	if (c->curveType() == QwtPlotCurve::Yfx){
+		if (d_range_selector && d_range_selector->isVisible() &&
+			d_range_selector->selectedCurve() == c) {
+			*start = d_range_selector->minXValue();
+			*end = d_range_selector->maxXValue();
+			return d_range_selector->dataSize();
+		} else {
+			*start = c->minXValue();
+			*end = c->maxXValue();
+			return c->dataSize();
+		}
 	} else {
-		*start = c->minXValue();
-		*end = c->maxXValue();
-		return c->dataSize();
+		if (d_range_selector && d_range_selector->isVisible() &&
+			d_range_selector->selectedCurve() == c) {
+			*start = d_range_selector->minYValue();
+			*end = d_range_selector->maxYValue();
+			return d_range_selector->dataSize();
+		} else {
+			*start = c->minYValue();
+			*end = c->maxYValue();
+			return c->dataSize();
+		}
 	}
+	return 0;
 }
 
 CurveLayout Graph::initCurveLayout()

@@ -362,8 +362,12 @@ void ImageProfilesTool::append(const QwtDoublePoint &pos)
 	if (gHor)
 		gHor->enableAutoscaling(false);
 	Graph *gVert = plot->layer(3);
-	if (gVert)
+	if (gVert){
 		gVert->enableAutoscaling(false);
+		QwtPlotCurve *c = gVert->curve(0);
+		if (c)
+			c->setCurveType(QwtPlotCurve::Xfy);
+	}
 
 	double x = pos.x();
 	double y = pos.y();

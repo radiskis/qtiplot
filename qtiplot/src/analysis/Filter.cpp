@@ -338,12 +338,19 @@ int Filter::curveData(QwtPlotCurve *c, double start, double end, double **x, dou
 		return 0;
 	}
 
-    int j = 0;
-    for (int i = i_start; i <= i_end; i++){
-        (*x)[j] = c->x(i);
-        (*y)[j++] = c->y(i);
-    }
-    return n;
+	int j = 0;
+	if (c->curveType() == QwtPlotCurve::Yfx){
+		for (int i = i_start; i <= i_end; i++){
+			(*x)[j] = c->x(i);
+			(*y)[j++] = c->y(i);
+		}
+	} else {
+		for (int i = i_start; i <= i_end; i++){
+			(*x)[j] = c->y(i);
+			(*y)[j++] = c->x(i);
+		}
+	}
+	return n;
 }
 
 int Filter::curveRange(QwtPlotCurve *c, double start, double end, int *iStart, int *iEnd)

@@ -1024,8 +1024,12 @@ FunctionCurve * Fit::insertFitFunctionCurve(const QString& name, int penWidth, b
 	c->setPen(QPen(ColorBox::color(d_curveColorIndex), penWidth));
 	c->setRange(d_from, d_to);
 	c->setFormula(d_formula);
+	if (d_curve){
+		c->setCurveType(d_curve->curveType());
+		c->setAxis(d_curve->xAxis(), d_curve->yAxis());
+	}
 
-	for (int j=0; j<d_p; j++)
+	for (int j = 0; j < d_p; j++)
 		c->setConstant(d_param_names[j], d_results[j]);
 
 	if (updateData)
