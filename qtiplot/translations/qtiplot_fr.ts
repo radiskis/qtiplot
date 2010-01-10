@@ -4144,7 +4144,7 @@ Etes vous sûr de vouloir continuer ?</translation>
         <location filename="../src/core/ApplicationWindow.cpp" line="9765"/>
         <location filename="../src/core/ApplicationWindow.cpp" line="15460"/>
         <source>&amp;Show All Windows</source>
-        <translation>Montrer toutes les fenêtres</translation>
+        <translation>Montrer toutes le&amp;s fenêtres</translation>
     </message>
     <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="9766"/>
@@ -4165,7 +4165,7 @@ Etes vous sûr de vouloir continuer ?</translation>
     <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="15487"/>
         <source>Windows in &amp;Active Folder &amp;&amp; Subfolders</source>
-        <translation>Dans le dossier actif et les sous-dossiers</translation>
+        <translation>Dans le dossier &amp;actif et les sous-dossiers</translation>
     </message>
     <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="15494"/>
@@ -5079,7 +5079,7 @@ Quelques parties de ce fichier peuvent ne pas être affichés comme attendu.</tr
         <location filename="../src/core/ApplicationWindow.cpp" line="12956"/>
         <location filename="../src/core/ApplicationWindow.cpp" line="13868"/>
         <source>Vertical &amp;Drop Lines</source>
-        <translation>Epingles</translation>
+        <translation>Épingles</translation>
     </message>
     <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="6988"/>
@@ -7974,7 +7974,7 @@ L&apos;autocomplétion ne sera pas disponible!</translation>
     <message>
         <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="717"/>
         <source>Set As &amp;Default</source>
-        <translation>Par défaut</translation>
+        <translation>Par &amp;défaut</translation>
     </message>
     <message>
         <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="721"/>
@@ -8689,7 +8689,7 @@ Les codes spéciaux suivant peuvent être utilisés :
     <message>
         <location filename="../src/core/ConfigDialog.cpp" line="1340"/>
         <source>Choose &amp;font</source>
-        <translation>Modifier</translation>
+        <translation>Modi&amp;fier</translation>
     </message>
     <message>
         <location filename="../src/core/ConfigDialog.cpp" line="1341"/>
@@ -9222,7 +9222,7 @@ Les codes spéciaux suivant peuvent être utilisés :
     <message>
         <location filename="../src/core/ConfigDialog.cpp" line="1526"/>
         <source>&amp;Display line numbers</source>
-        <translation>Afficher les numéros des lignes</translation>
+        <translation>Afficher les numéros &amp;des lignes</translation>
     </message>
     <message>
         <location filename="../src/core/ConfigDialog.cpp" line="1250"/>
@@ -10392,7 +10392,7 @@ Les codes spéciaux suivant peuvent être utilisés :
     <message>
         <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="391"/>
         <source>Fill &amp;Pattern</source>
-        <translation>Remplir le motif</translation>
+        <translation>Rem&amp;plir le motif</translation>
     </message>
     <message>
         <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="401"/>
@@ -11592,12 +11592,12 @@ Les codes spéciaux suivant peuvent être utilisés :
         <location filename="../src/scripting/FindReplaceDialog.cpp" line="155"/>
         <location filename="../src/scripting/FindReplaceDialog.cpp" line="179"/>
         <source>The search field is empty. Please enter some text and try again.</source>
-        <translation>Le champ de recherche est vide. Veuillez entrer une expression et ré-essayer</translation>
+        <translation>Le champ de recherche est vide. Veuillez entrer une expression et ré-essayer.</translation>
     </message>
     <message>
         <location filename="../src/scripting/FindReplaceDialog.cpp" line="204"/>
         <source>QtiPlot has finished searching the document.</source>
-        <translation>Qtpilot a terminé de chercher dans le document</translation>
+        <translation>Qtpilot a terminé la recherche.</translation>
     </message>
 </context>
 <context>
@@ -17181,7 +17181,7 @@ Voulez-vous insérer des cellules?</translation>
     <message>
         <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="779"/>
         <source>Attach curve to: </source>
-        <translation>Association</translation>
+        <translation>Association :</translation>
     </message>
     <message>
         <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="781"/>
@@ -18841,7 +18841,7 @@ Voulez-vous insérer des cellules?</translation>
         <source>bessel_jn_zero(double n, unsigned int s):
  s-th positive zero x_s of regular cylindrical Bessel function of order n, J_n(x_s)=0</source>
         <translation>bessel_jn_zero(double n, unsigned int s) :
-</translation>
+s-ème zéro positif x-s de la fonction de Bessel cylindrique régulaire d&apos;ordre n, J_n(x_s) = 0</translation>
     </message>
     <message>
         <location filename="../src/scripting/muParserScripting.cpp" line="53"/>
@@ -19531,7 +19531,7 @@ Do you want to overwrite it?</source>
     <message>
         <location filename="../src/scripting/ScriptEdit.cpp" line="683"/>
         <source>QtiPlot has finished searching the document.</source>
-        <translation>Qtiplot a terminé de chercher le document</translation>
+        <translation>Qtiplot a terminé la recherche.</translation>
     </message>
 </context>
 <context>
@@ -20921,6 +20921,7 @@ La première représente le signal et la seconde la réponse de la fonction !</t
     <message>
         <location filename="../src/table/TableDialog.cpp" line="113"/>
         <source>Display</source>
+        <translatorcomment>Rémy : Laisser les &apos;:&apos; !!</translatorcomment>
         <translation>Affichage :</translation>
     </message>
     <message>
