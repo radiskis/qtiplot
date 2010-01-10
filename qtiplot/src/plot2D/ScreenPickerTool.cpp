@@ -277,15 +277,16 @@ ImageProfilesTool::ImageProfilesTool(ApplicationWindow *app, Graph *graph, Matri
 				plot->toolBox()->insertLayout(0, box);
 			}
 		}
-	}
 
-	if (d_hor_table){
-		for (int i = 0; i < d_hor_table->numRows(); i++)
-			d_hor_table->setText(i, 0, QString::number(i));
-	}
-	if (d_ver_table){
-		for (int i = 0; i < d_ver_table->numRows(); i++)
-			d_ver_table->setText(i, 0, QString::number(i));
+		MatrixModel *mm = d_matrix->matrixModel();
+		if (d_hor_table){
+			for (int i = 0; i < d_hor_table->numRows(); i++)
+				d_hor_table->setCell(i, 0, mm->x(i));
+		}
+		if (d_ver_table){
+			for (int i = 0; i < d_ver_table->numRows(); i++)
+				d_ver_table->setCell(i, 0, mm->y(i));
+		}
 	}
 }
 
@@ -355,6 +356,14 @@ void ImageProfilesTool::append(const QwtDoublePoint &pos)
 
 	if (!d_app || !d_matrix)
 		return;
+
+	MultiLayer *plot = d_graph->multiLayer();
+	Graph *gHor = plot->layer(2);
+	if (gHor)
+		gHor->enableAutoscaling(false);
+	Graph *gVert = plot->layer(3);
+	if (gVert)
+		gVert->enableAutoscaling(false);
 
 	double x = pos.x();
 	double y = pos.y();
