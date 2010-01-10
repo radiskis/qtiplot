@@ -268,7 +268,10 @@ void FunctionCurve::loadData(int points, bool xLog10Scale)
 		} catch(mu::ParserError &) {}
 	}
 
-	setData(X, Y, points);
+	if (curveType() == QwtPlotCurve::Yfx)
+		setData(X, Y, points);
+	else
+		setData(Y, X, points);
 	free(X); free(Y);
 }
 

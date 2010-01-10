@@ -14474,8 +14474,10 @@ MultiLayer* ApplicationWindow::plotImageProfiles(Matrix *m)
 
 	if (verTable && g->layer(3)){
 		DataCurve *c = g->layer(3)->insertCurve(verTable, verTable->colName(1), verTable->colName(0), Graph::Line);
-		if (c)
+		if (c){
 			c->setAxis(QwtPlot::xTop, QwtPlot::yLeft);
+			c->setCurveType(QwtPlotCurve::Xfy);
+		}
 	}
 
 	QApplication::restoreOverrideCursor();
