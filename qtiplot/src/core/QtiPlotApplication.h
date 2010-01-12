@@ -47,6 +47,11 @@ protected:
 
 private:
 	QList<ApplicationWindow *> d_windows;
+
+#ifdef QTIPLOT_DEMO
+private slots:
+	void close();
+#endif
 };
 
 #endif // QTIPLOTAPPLICATION_H
