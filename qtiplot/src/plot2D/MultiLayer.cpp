@@ -679,11 +679,14 @@ void MultiLayer::setRows(int r)
 		d_rows = r;
 }
 
-QPixmap MultiLayer::canvasPixmap(const QSize& size, double scaleFontsFactor)
+QPixmap MultiLayer::canvasPixmap(const QSize& size, double scaleFontsFactor, bool transparent)
 {
 	if (!size.isValid()){
 		QPixmap pic(d_canvas->size());
-		pic.fill();
+		if (transparent)
+			pic.fill(Qt::transparent);
+		else
+			pic.fill();
 		QPainter p(&pic);
 		QObjectList lst = d_canvas->children();//! this list is sorted according to the stack order
 		foreach (QObject *o, lst){
@@ -702,7 +705,10 @@ QPixmap MultiLayer::canvasPixmap(const QSize& size, double scaleFontsFactor)
 		scaleFontsFactor = scaleFactorY;
 
 	QPixmap pic(size);
-	pic.fill();
+	if (transparent)
+		pic.fill(Qt::transparent);
+	else
+		pic.fill();
 	QPainter p(&pic);
 	QObjectList lst = d_canvas->children();
 	foreach (QObject *o, lst){
@@ -769,28 +775,8 @@ void MultiLayer::exportImage(const QString& fileName, int quality, bool transpar
 	if (customSize.isValid())
 		size = Graph::customPrintSize(customSize, unit, dpi);
 
-	QPixmap pic = canvasPixmap(size, fontsFactor);
+	QPixmap pic = canvasPixmap(size, fontsFactor, transparent);
 	QImage image = pic.toImage();
-
-	if (transparent){
-		QBitmap mask(size);
-		mask.fill(Qt::color1);
-		QPainter p(&mask);
-		p.setPen(Qt::color0);
-
-		QRgb backgroundPixel = QColor(Qt::white).rgb ();
-		for (int y = 0; y < image.height(); y++){
-			for (int x = 0; x < image.width(); x++){
-				QRgb rgb = image.pixel(x, y);
-				if (rgb == backgroundPixel) // we want the frame transparent
-					p.drawPoint(x, y);
-			}
-		}
-		p.end();
-		pic.setMask(mask);
-		image = pic.toImage();
-	}
-
 	int dpm = (int)ceil(100.0/2.54*dpi);
 	image.setDotsPerMeterX(dpm);
 	image.setDotsPerMeterY(dpm);

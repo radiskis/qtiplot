@@ -313,7 +313,7 @@ class Graph: public QwtPlot
 		void printCropmarks(bool on){d_print_cropmarks = on;};
 
 		void copyImage();
-		QPixmap graphPixmap(const QSize& size = QSize(), double scaleFontsFactor = 1.0);
+		QPixmap graphPixmap(const QSize& size = QSize(), double scaleFontsFactor = 1.0, bool transparent = false);
 		//! Provided for convenience in scripts
 		void exportToFile(const QString& fileName);
 		void exportSVG(const QString& fname, const QSizeF& customSize = QSizeF(), int unit = FrameWidget::Pixel, double fontsFactor = 1.0);
