@@ -453,10 +453,6 @@ void ApplicationWindow::initGlobalConstants()
 
 	savingTimerId = 0;
 
-	#ifdef QTIPLOT_DEMO
-        QTimer::singleShot(600000, this, SLOT(close()));
-    #endif
-
 	autoSearchUpdatesRequest = false;
 
 	show_windows_policy = ActiveFolder;

@@ -30,6 +30,7 @@
 #include <QtiPlotApplication.h>
 #include <ApplicationWindow.h>
 #include <QFileOpenEvent>
+#include <QTimer>
 
 QtiPlotApplication::QtiPlotApplication( int & argc, char ** argv) : QApplication( argc, argv)
 {
@@ -61,7 +62,22 @@ QtiPlotApplication::QtiPlotApplication( int & argc, char ** argv) : QApplication
 		}
 		mw->parseCommandLineArguments(args);
 	}
+
+	#ifdef QTIPLOT_DEMO
+		QTimer::singleShot(600000, this, SLOT(close()));
+	#endif
 }
+
+#ifdef QTIPLOT_DEMO
+void QtiPlotApplication::close()
+{
+	ApplicationWindow *mw = d_windows.last();
+	if (mw)
+		mw->showDemoVersionMessage();
+
+	quit();
+}
+#endif
 
 bool QtiPlotApplication::event(QEvent *event)
 {
