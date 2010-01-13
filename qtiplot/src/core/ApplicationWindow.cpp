@@ -3899,7 +3899,7 @@ ApplicationWindow * ApplicationWindow::plotFile(const QString& fn)
 	return app;
 }
 
-Table * ApplicationWindow::importOdfSpreadsheet(const QString& fileName)
+Table * ApplicationWindow::importOdfSpreadsheet(const QString& fileName, int sheet)
 {
 #ifdef ODS_IMPORT
 	QString fn = fileName;
@@ -3929,8 +3929,25 @@ Table * ApplicationWindow::importOdfSpreadsheet(const QString& fileName)
 	reader.setErrorHandler(&handler);
 
 	QXmlInputSource xmlInputSource(&out);
-	if (reader.parse(xmlInputSource))
-		return handler.sheet(handler.sheetsCount() - 1);
+	if (reader.parse(xmlInputSource)){
+		int sheets = handler.sheetsCount();
+		if (sheet > sheets){
+			QMessageBox::critical(this, tr("QtiPlot"), tr("File %1 contains only %2 sheets!").arg(fn).arg(sheets));
+		} else if (sheet > 0){
+			Table *aux = NULL;
+			for (int i = 0; i < sheets; i++){
+				Table *t = handler.sheet(i);
+				if (i == sheet - 1)
+					aux = t;
+				else {
+					t->askOnCloseEvent(false);
+					t->close();
+				}
+			}
+			return aux;
+		}
+		return handler.sheet(sheets - 1);
+	}
 	return NULL;
 #else
 	QMessageBox::critical(this, tr("QtiPlot"), tr("QtiPlot was built without ODF spreadsheet support!"));

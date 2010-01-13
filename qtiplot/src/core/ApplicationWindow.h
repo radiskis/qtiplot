@@ -443,7 +443,7 @@ public slots:
 	void connectTable(Table* w);
 	void initTable(Table* w, const QString& caption);
 	void customTable(Table* w);
-	Table* importOdfSpreadsheet(const QString& = QString::null);
+	Table* importOdfSpreadsheet(const QString& = QString::null, int sheet = -1);
 	Table* importExcel(const QString& = QString::null, int sheet = -1);
 	Table* importWaveFile();
 	void importASCII();
