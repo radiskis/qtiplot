@@ -123,9 +123,13 @@ void QwtErrorPlotCurve::drawErrorBars(QPainter *painter,
 		const int xi = xMap.transform(x(i) + d_xOffset);
 		const int yi = yMap.transform(y(i) + d_yOffset);
 
+		double error = err[i];
+		if (error == 0.0)
+			continue;
+
 		if (type == Vertical){
-			const int yh = yMap.transform(y(i) + err[i]);
-			const int yl = yMap.transform(y(i) - err[i]);
+			const int yh = yMap.transform(y(i) + error);
+			const int yl = yMap.transform(y(i) - error);
 			const int yhl = yi - sh2;
 			const int ylh = yi + sh2;
 			const int cap2 = qRound(d_cap_length*0.5*x_factor);
@@ -141,8 +145,8 @@ void QwtErrorPlotCurve::drawErrorBars(QPainter *painter,
 			if (through && (plus || minus))
 				QwtPainter::drawLine(painter, xi, yhl, xi, ylh);
 		} else if (type == Horizontal) {
-			const int xp = xMap.transform(x(i) + err[i]);
-			const int xm = xMap.transform(x(i) - err[i]);
+			const int xp = xMap.transform(x(i) + error);
+			const int xm = xMap.transform(x(i) - error);
   			const int xpm = xi + sw2;
   	        const int xmp = xi - sw2;
 			const int cap2 = qRound(d_cap_length*0.5*y_factor);
@@ -284,14 +288,16 @@ void QwtErrorPlotCurve::loadData()
 		QString xval = mt->text(i, xcol);
 		QString yval = mt->text(i, ycol);
 		QString errval = d_table->text(i, errcol);
-		if (!xval.isEmpty() && !yval.isEmpty() && !errval.isEmpty()){
+		if (!xval.isEmpty() && !yval.isEmpty()){
 			X[data_size] = d_master_curve->x(data_size);
 			Y[data_size] = d_master_curve->y(data_size);
 
-			bool ok = true;
-			err[data_size] = locale.toDouble(errval, &ok);
-			if (ok)
-                data_size++;
+			if (!errval.isEmpty())
+				err[data_size] = locale.toDouble(errval);
+			else
+				err[data_size] = 0.0;
+
+			data_size++;
 		}
 	}
 
