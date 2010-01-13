@@ -1527,12 +1527,12 @@ t = importExcel(file, sheet)
 <sect3 id = "Python-ImportODF">
 <title>Importing ODF spreadsheets</title>
 
-<para>It is possible to import an ODF spreadsheet .ods <varname>file</varname> to a table, using:</para>
+<para>It is possible to import a sheet from an ODF spreadsheet .ods <varname>file</varname> to a table, using:</para>
 <programlisting>
-t = importOdfSpreadsheet(file)
+t = importOdfSpreadsheet(file, sheet)
 </programlisting>
-<para>All non-empty sheets in the spreadsheet are imported into separate tables and a reference to the table
- containing the data from the last sheet is returned.</para>
+<para>If the integer <varname>sheet</varname> variable is not specified, all non-empty sheets in the spreadsheet are imported
+ into separate tables and a reference to the table containing the data from the last sheet is returned.</para>
 </sect3>
 
 <sect3 id = "Python-ExportTables">
