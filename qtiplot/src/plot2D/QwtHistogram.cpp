@@ -178,9 +178,12 @@ void QwtHistogram::loadData()
 
 		d_begin = floor(min);
 		d_end = ceil(max);
+		if (d_end == max)
+			d_end += 1.0;
+
 		d_bin_size = (d_end - d_begin)/(double)n;
 
-		gsl_histogram_set_ranges_uniform (h, floor(min), ceil(max));
+		gsl_histogram_set_ranges_uniform (h, d_begin, d_end);
 	} else {
 		n = int((d_end - d_begin)/d_bin_size + 1);
 		h = gsl_histogram_alloc (n);
