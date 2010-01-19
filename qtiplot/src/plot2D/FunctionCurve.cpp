@@ -31,6 +31,8 @@
 #include <MyParser.h>
 #include <ScaleEngine.h>
 
+#include <gsl/gsl_math.h>
+
 #include <QMessageBox>
 
 FunctionCurve::FunctionCurve(const QString& name):
@@ -174,23 +176,23 @@ QString FunctionCurve::legend()
 	return label;
 }
 
-void FunctionCurve::loadData(int points, bool xLog10Scale)
+bool FunctionCurve::loadData(int points, bool xLog10Scale)
 {
     if (!points)
         points = dataSize();
 
 	double *X = (double *)malloc(points*sizeof(double));
 	if (!X){
-		QMessageBox::critical(0, "QtiPlot - Memory Allocation Error",
-		"Not enough memory, operation aborted!");
-		return;
+		QMessageBox::critical(0, QObject::tr("QtiPlot - Memory Allocation Error"),
+		QObject::tr("Not enough memory, operation aborted!"));
+		return false;
 	}
 	double *Y = (double *)malloc(points*sizeof(double));
 	if (!Y){
-		QMessageBox::critical(0, "QtiPlot - Memory Allocation Error",
-		"Not enough memory, operation aborted!");
+		QMessageBox::critical(0, QObject::tr("QtiPlot - Memory Allocation Error"),
+		QObject::tr("Not enough memory, operation aborted!"));
 		free(X);
-		return;
+		return false;
 	}
 
 	double step = (d_to - d_from)/(double)(points - 1.0);
@@ -206,12 +208,51 @@ void FunctionCurve::loadData(int points, bool xLog10Scale)
  			}
 			parser.SetExpr(d_formulas[0].ascii());
 
-			X[0] = d_from;
-			try {
-				Y[0] = parser.EvalRemoveSingularity(&x, false);
-			} catch (MyParser::Pole) {}
-
 			int lastButOne = points - 1;
+			try {
+				double xl = x, xr;
+				double y = parser.EvalRemoveSingularity(&x, false);
+				bool wellDefinedFunction = true;
+				if (!gsl_finite(y)){// try to find a first well defined point (might help for some not really bad functions)
+					wellDefinedFunction = false;
+					for (int i = 0; i < lastButOne; i++){
+						xl = x;
+						x += step;
+						xr = x;
+						y = parser.Eval();
+						if (gsl_finite(y)){
+							wellDefinedFunction = true;
+							int iter = 0;
+							double x0 = x, y0 = y;
+							while(fabs(xr - xl)/step > 1e-15 && iter < points){
+								x = 0.5*(xl + xr);
+								y = parser.Eval();
+								if (gsl_finite(y)){
+									xr = x;
+									x0 = x;
+									y0 = y;
+								} else
+									xl = x;
+								iter++;
+							}
+							d_from = x0;
+							X[0] = x0;
+							Y[0] = y0;
+							step = (d_to - d_from)/(double)(lastButOne);
+							break;
+						}
+					}
+					if (!wellDefinedFunction){
+						QMessageBox::critical(0, QObject::tr("QtiPlot"),
+						QObject::tr("The function %1 is not defined in the specified interval!").arg(d_formulas[0]));
+						free(X); free(Y);
+						return false;
+					}
+				} else {
+					X[0] = d_from;
+					Y[0] = y;
+				}
+			} catch (MyParser::Pole) {}
 
 			ScaleEngine *sc_engine = 0;
 			if (plot())
@@ -273,5 +314,5 @@ void FunctionCurve::loadData(int points, bool xLog10Scale)
 	else
 		setData(Y, X, points);
 	free(X); free(Y);
+	return true;
 }
-

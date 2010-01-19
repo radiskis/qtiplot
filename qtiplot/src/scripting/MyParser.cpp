@@ -164,8 +164,8 @@ double MyParser::EvalRemoveSingularity(double *xvar, bool noisy) const
 	    } catch (Pole) {
 	        if (noisy){
 	        	QApplication::restoreOverrideCursor();
-				QMessageBox::critical(0, QObject::tr("QtiPlot - Math Error"),
-				QObject::tr("Found non-removable singularity at x = %1.").arg(*xvar));
+				//QMessageBox::critical(0, QObject::tr("QtiPlot - Math Error"),
+				//QObject::tr("Found non-removable singularity at x = %1.").arg(*xvar));
 				throw Pole();
 			}
 			return GSL_NAN;

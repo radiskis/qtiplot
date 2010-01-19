@@ -3714,13 +3714,20 @@ void Graph::modifyFunctionCurve(int curve, int type, const QStringList &formulas
 	if (!c)
 		return;
 
-	if (c->functionType() == type &&
-		c->variable() == var &&
-		c->formulas() == formulas &&
-		c->startRange() == start &&
-		c->endRange() == end &&
-		c->dataSize() == points &&
-		c->constants() == constants)
+	QString oldVar = c->variable();
+	QStringList oldFormulas = c->formulas();
+	const QMap<QString, double> oldConstants = c->constants();
+	double oldStartRange = c->startRange();
+	double oldEndRange = c->endRange();
+	int oldPoints = c->dataSize();
+	int oldType = c->functionType();
+	if (oldType == type &&
+		oldVar == var &&
+		oldFormulas == formulas &&
+		oldStartRange == start &&
+		oldEndRange == end &&
+		oldPoints == points &&
+		oldConstants == constants)
 		return;
 
 	QString oldLegend = c->legend();
@@ -3730,7 +3737,14 @@ void Graph::modifyFunctionCurve(int curve, int type, const QStringList &formulas
 	c->setFormulas(formulas);
 	c->setVariable(var);
 	c->setConstants(constants);
-	c->loadData(points);
+	if (!c->loadData(points)){
+		c->setFunctionType((FunctionCurve::FunctionType)oldType);
+		c->setRange(oldStartRange, oldEndRange);
+		c->setFormulas(oldFormulas);
+		c->setVariable(oldVar);
+		c->setConstants(oldConstants);
+		return;
+	}
 
 	foreach(FrameWidget *fw, d_enrichments){
 		LegendWidget *l = qobject_cast<LegendWidget *>(fw);
