@@ -328,7 +328,7 @@ QStringList NonLinearFit::guessParameters(const QString& s, bool *error, string 
 	return parList;
 }
 
-void NonLinearFit::removeDataSingularities()
+bool NonLinearFit::removeDataSingularities()
 {
 	MyParser parser;
 	for (int i = 0; i < d_p; i++){
@@ -346,18 +346,32 @@ void NonLinearFit::removeDataSingularities()
 	parser.DefineVar("x", &xvar);
 	parser.SetExpr(d_formula.ascii());
 
-    for (int i = 0; i < d_n; i++){
-    	xvar = d_x[i];
-    	try {
+	bool confirm = true;
+	for (int i = 0; i < d_n; i++){
+		xvar = d_x[i];
+		try {
 			parser.EvalRemoveSingularity(&xvar);
-    	} catch(MyParser::Pole){
+		} catch(MyParser::Pole){
 			QApplication::restoreOverrideCursor();
-			QMessageBox::critical((ApplicationWindow *)parent(), QObject::tr("QtiPlot"),
-			QObject::tr("Ignored data point at x = %1.").arg(xvar));
-
-    		removePole(i);
-    	}
-    }
+			if(confirm){
+				switch(QMessageBox::question((ApplicationWindow *)parent(), QObject::tr("QtiPlot"),
+				QObject::tr("Found non-removable singularity at x = %1.").arg(xvar) + "\n" + tr("Ignore") + "?",
+				QMessageBox::Yes | QMessageBox::YesToAll | QMessageBox::Cancel,
+				QMessageBox::Yes)){
+					case QMessageBox::YesToAll:
+						confirm = false;
+						removePole(i);
+					break;
+					case QMessageBox::Cancel:
+						return false;
+					default:
+						removePole(i);
+				}
+			} else
+				removePole(i);
+		}
+	}
+	return true;
 }
 
 void NonLinearFit::removePole(int pole)

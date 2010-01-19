@@ -68,7 +68,7 @@ class NonLinearFit : public Fit
 	private:
 		void calculateFitCurveData(double *X, double *Y);
 		void init();
-		virtual void removeDataSingularities();
+		virtual bool removeDataSingularities();
 		void removePole(int index);
 
 		QMap<QString, double> d_constants;

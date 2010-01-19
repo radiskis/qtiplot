@@ -162,7 +162,7 @@ class Fit : public Filter
 		virtual void customizeFitResults(){};
 
 		//! Removes any data singularities before fitting
-		virtual void removeDataSingularities(){};
+		virtual bool removeDataSingularities(){return true;};
 
 	protected:
 		//! Allocates the memory for the fit workspace

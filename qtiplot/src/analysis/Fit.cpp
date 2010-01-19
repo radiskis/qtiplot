@@ -928,9 +928,10 @@ void Fit::fit()
 		return;
 	}
 
-	QApplication::setOverrideCursor(Qt::WaitCursor);
+	if (!removeDataSingularities())
+		return;
 
-	removeDataSingularities();
+	QApplication::setOverrideCursor(Qt::WaitCursor);
 
 	struct FitData d_data = {d_n, d_p, d_x, d_y, d_w, this};
 
