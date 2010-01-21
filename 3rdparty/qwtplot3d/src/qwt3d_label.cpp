@@ -42,24 +42,39 @@ void Label::useDeviceFonts(bool val)
 	devicefonts_ = val;
 }
 
+void Label::setFont(const QFont& f)
+{
+    if ( font_ == f ) {
+        return;
+    }
+    font_ = f;
+}
+
 void Label::setFont(const QString & family, int pointSize, int weight, bool italic)
 {
-	font_ = QFont(family, pointSize, weight, italic );
+    setFont( QFont(family, pointSize, weight, italic ) );
 }
 
 void Label::setString(QString const& s)
 {
-	text_ = s;
+  text_ = s;
+}
+
+const QString& Label::string() const
+{
+   return text_;
 }
 
 void Label::setColor(double r, double g, double b, double a)
 {
   Drawable::setColor(r,g,b,a);
-}
+  flagforupdate_ = true;
+}	
 
 void Label::setColor(Qwt3D::RGBA rgba)
 {
   Drawable::setColor(rgba);
+  flagforupdate_ = true;
 }
 
 /**
@@ -67,7 +82,7 @@ example:
 
 \verbatim
 
-   Anchor TopCenter (*)  resp. BottomRight(X)
+   Anchor TopCenter (*)  resp. BottomRight(X) 
 
    +----*----+
    |  Pixmap |
@@ -77,6 +92,7 @@ example:
 */
 void Label::setPosition(Triple pos, ANCHOR a)
 {
+    use_relpos_ = false;
 	anchor_ = a;
 	pos_ = pos;
 }
@@ -84,10 +100,9 @@ void Label::setPosition(Triple pos, ANCHOR a)
 void Label::setRelPosition(Tuple rpos, ANCHOR a)
 {
 	double ot = 0.99;
-
-	getMatrices(modelMatrix, projMatrix, viewport);
-	beg_ = relativePosition(Triple(rpos.x, rpos.y, ot));
-	setPosition(beg_, a);
+    relpos_ = Triple(rpos.x, rpos.y, ot);
+    anchor_ = a;
+    use_relpos_ = true;
 }
 
 QImage Label::createImage(double angle)
@@ -99,20 +114,20 @@ QImage Label::createImage(double angle)
 	double aux_a = angle;
 	if (aux_a > 270)
 		aux_a -= 270;
-    if (aux_a >= 180)
-        aux_a -= 180;
-    if (aux_a > 90)
-        aux_a -= 90;
+	if (aux_a >= 180)
+		aux_a -= 180;
+	if (aux_a > 90)
+		aux_a -= 90;
 
 	double rad = aux_a*M_PI/180.0;
 
 	int w = 0, h = 0;
 	if ((angle >= 0 && angle <= 90) || (angle >= 180 && angle <= 270)){
 		w = qRound(fabs(textWidth*cos(rad) + textHeight*sin(rad)));
-    	h = qRound(fabs(textWidth*sin(rad) + textHeight*cos(rad)));
+		h = qRound(fabs(textWidth*sin(rad) + textHeight*cos(rad)));
 	} else {
 		w = qRound(fabs(textWidth*sin(rad) + textHeight*cos(rad)));
-    	h = qRound(fabs(textWidth*cos(rad) + textHeight*sin(rad)));
+		h = qRound(fabs(textWidth*cos(rad) + textHeight*sin(rad)));
 	}
 
 	width_ = w;
@@ -137,8 +152,8 @@ QImage Label::createImage(double angle)
 	else
 		p.translate(0.0, textWidth*sin(rad));
 
-    p.rotate(-angle);
-    p.translate(0.0, textHeight - QFontMetrics(font_).descent());
+	p.rotate(-angle);
+	p.translate(0.0, textHeight - QFontMetrics(font_).descent());
 
 	p.setFont( font_ );
 	p.setPen(Qt::SolidLine);
@@ -157,7 +172,7 @@ anchor type         shift
 
 left aligned         -->
 right aligned        <--
-top aligned          top-down
+top aligned          top-down            
 bottom aligned       bottom-up
 \endverbatim
 The unit is user space dependend (one pixel on screen - play around to get satisfying results)
@@ -170,7 +185,7 @@ void Label::adjust(int gap)
 void Label::convert2screen()
 {
 	Triple start = World2ViewPort(pos_);
-
+	
 	switch (anchor_)
 	{
 		case BottomLeft :
@@ -204,12 +219,12 @@ void Label::convert2screen()
 			break;
 	}
 	start = World2ViewPort(beg_);
-	end_ = ViewPort2World(start + Triple(width(), height(), 0));
+	end_ = ViewPort2World(start + Triple(width(), height(), 0));	
 }
 
 const char * Label::fontname()
 {
-        const char *name = "Helvetica";
+	const char *name = "Helvetica";
 	if (font_.family() == "Times New Roman"){
 		name = "Times";
 		if (font_.bold() && font_.italic ())
@@ -245,6 +260,13 @@ void Label::draw(double angle)
 
 	if (text_.isEmpty())
 		return;
+
+	if ( use_relpos_ ) {
+		getMatrices(modelMatrix, projMatrix, viewport);
+		beg_ = relativePosition(relpos_);
+		setPosition(beg_, anchor_);
+		use_relpos_ = true;// reset the flag
+	}
 
 	GLboolean b;
 	GLint func;

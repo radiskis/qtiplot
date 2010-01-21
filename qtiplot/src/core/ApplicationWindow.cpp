@@ -1663,14 +1663,11 @@ void ApplicationWindow::customToolBars(QMdiSubWindow* w)
             plotMatrixBar->show();
         plotMatrixBar->setEnabled (true);
     } else if (w->isA("Graph3D") && d_plot3D_tool_bar){
-        if(!plot3DTools->isVisible())
-            plot3DTools->show();
+		if(!plot3DTools->isVisible())
+			plot3DTools->show();
 
-        if (((Graph3D*)w)->plotStyle() == Qwt3D::NOPLOT)
-            plot3DTools->setEnabled(false);
-        else
-            plot3DTools->setEnabled(true);
-        custom3DActions(w);
+		plot3DTools->setEnabled(((Graph3D*)w)->plotStyle() != Qwt3D::NOPLOT);
+		custom3DActions(w);
     } else if (w->isA("Note")){
 		if(d_format_tool_bar && !formatToolBar->isVisible())
             formatToolBar->show();
@@ -10110,8 +10107,10 @@ void ApplicationWindow::showWindowContextMenu()
 		Graph3D *g=(Graph3D*)w;
 		if (!g->hasData()){
 			cm.insertItem(tr("3D &Plot"), &plot3D);
-			plot3D.addAction(actionAdd3DData);
-			plot3D.insertItem(tr("&Matrix..."), this, SLOT(add3DMatrixPlot()));
+			if (hasTable())
+				plot3D.addAction(actionAdd3DData);
+			if (matrixNames().count())
+				plot3D.insertItem(tr("&Matrix..."), this, SLOT(add3DMatrixPlot()));
 			plot3D.addAction(actionEditSurfacePlot);
 		} else {
 			if (g->table())
@@ -14367,6 +14366,7 @@ Graph3D * ApplicationWindow::plot3DMatrix(Matrix *m, int style)
 	plot->setDataColorMap(m->colorMap());
 	plot->update();
 
+	custom3DActions(plot);
 	emit modified();
 	QApplication::restoreOverrideCursor();
 	return plot;

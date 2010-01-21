@@ -6,11 +6,10 @@
 #include "qwt3d_global.h"
 #include "qwt3d_types.h"
 #include "qwt3d_io_gl2ps.h"
-//#include "qwt3d_plot.h"
 
 namespace Qwt3D
 {
-	
+
 //! ABC for Drawables
 class QWT3D_EXPORT Drawable 
 {
@@ -18,7 +17,6 @@ class QWT3D_EXPORT Drawable
 public:
 	Drawable(Plot3D *plot = 0){d_plot = plot;};
 	virtual ~Drawable() = 0;
-	
 	virtual void draw();
 
 	virtual void saveGLState();
@@ -27,17 +25,16 @@ public:
 	void attach(Drawable*);
 	void detach(Drawable*);
 	void detachAll();
-	
+
 	virtual void setColor(double r, double g, double b, double a = 1);	
 	virtual void setColor(Qwt3D::RGBA rgba);	
-	Qwt3D::Triple relativePosition(Qwt3D::Triple rel); 
+	Qwt3D::Triple relativePosition(Qwt3D::Triple rel);
 
 	Plot3D *plot(){return d_plot;};
 	virtual void setPlot(Plot3D *plot){d_plot = plot;};
 
 protected:
-	
-	Plot3D *d_plot;	
+	Plot3D *d_plot;
 	Qwt3D::RGBA color;
 	void Enable(GLenum what, GLboolean val);
 	Qwt3D::Triple ViewPort2World(Qwt3D::Triple win, bool* err = 0);
@@ -46,21 +43,20 @@ protected:
 	GLdouble modelMatrix[16];
 	GLdouble projMatrix[16];
 	GLint viewport[4];
-	
+
 private:
-	
-	GLboolean ls;
-	GLboolean pols;
-	GLint polmode[2];
-	GLfloat lw;
-	GLint blsrc, bldst;
-	GLdouble col[4];
-	GLint pattern, factor;
-	GLboolean sallowed;
-	GLboolean tex2d;
-	GLint matrixmode;
-	GLfloat poloffs[2];
-	GLboolean poloffsfill;
+	GLboolean	ls;
+	GLboolean	pols;
+	GLint		polmode[2];
+	GLfloat		lw;
+	GLint		blsrc, bldst;
+	GLdouble	col[4];
+	GLint		pattern, factor;
+	GLboolean	sallowed;
+	GLboolean	tex2d;
+	GLint		matrixmode;
+	GLfloat		poloffs[2];
+	GLboolean	poloffsfill;
 
 	std::list<Drawable*> dlist;
 };

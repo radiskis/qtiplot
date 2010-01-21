@@ -2,7 +2,7 @@
     File                 : Graph3D.h
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2004-2007 by Ion Vasilief
+	Copyright            : (C) 2004-2010 by Ion Vasilief
     Email (use @ for *)  : ion_vasilief*yahoo.fr
     Description          : 3D graph widget
 
@@ -29,6 +29,7 @@
 #ifndef GRAPH3D_H
 #define GRAPH3D_H
 
+#include <qwt3d_curve.h>
 #include <qwt3d_surfaceplot.h>
 #include <qwt3d_function.h>
 #include <qwt3d_parametricsurface.h>
@@ -69,7 +70,7 @@ public:
 	enum PointStyle{None = 0, Dots = 1, VerticalBars = 2, HairCross = 3, Cones = 4};
 	static Graph3D* restore(ApplicationWindow* app, const QStringList &lst, int fileVersion);
 
-	Qwt3D::SurfacePlot* surface(){return sp;};
+	Qwt3D::Plot3D* surface(){return sp;};
 
 public slots:
 	void copy(Graph3D* g);
@@ -199,13 +200,13 @@ public slots:
 	void setEmptyFloor();
 
 	void setMeshLineWidth(double lw);
-	double meshLineWidth(){return sp->meshLineWidth();};
+	double meshLineWidth(){if (d_active_curve) return d_active_curve->meshLineWidth(); return 0.0;};
 	//@}
 
 	//! \name Grid
 	//@{
 	int grids();
-	void setGrid(Qwt3D::SIDE s, bool b);
+	void setGrid(int s, bool b);
 	void setGrid(int grids);
 
 	void setLeftGrid(bool b = true);
@@ -308,7 +309,7 @@ public slots:
 	//! \name Resolution
 	//@{
 	void setResolution(int r);
-	int resolution(){return sp->resolution();};
+	int resolution(){if (d_active_curve) return d_active_curve->resolution(); return 0;};
 	//@}
 
 	//! \name Legend
@@ -357,7 +358,7 @@ public slots:
 	void setPlotAssociation(const QString& s){plotAssociation = s;};
 
 	void setAntialiasing(bool smooth = true);
-	bool antialiasing(){return sp->smoothDataMesh();};
+	bool antialiasing(){if (d_active_curve) return d_active_curve->smoothDataMesh(); return false;};
 
 	//! Used for the animation: rotates the scene with 1/360 degrees
 	void rotate();
@@ -377,6 +378,9 @@ signals:
 	void modified();
 
 private:
+	Curve* addCurve();
+	void removeCurve();
+
 	void resetAxesType();
 	//! Wait this many msecs before redraw 3D plot (used for animations)
   	int animation_redraw_wait;
@@ -411,18 +415,19 @@ private:
 	PointStyle pointStyle;
 	Table *d_table;
 	Matrix *d_matrix;
-    Qwt3D::SurfacePlot* sp;
+	Qwt3D::Plot3D* sp;
 	UserFunction *d_func;
 	UserParametricSurface *d_surface;
 	Qwt3D::PLOTSTYLE style_;
 	PlotType d_table_plot_type;
+	Curve * d_active_curve;
 };
 
 //! Class for user defined surfaces
 class UserFunction : public Function
 {
 public:
-    UserFunction(const QString& s, SurfacePlot& pw);
+	UserFunction(const QString& s, Qwt3D::Curve *pw);
 
     double operator()(double x, double y);
 	QString function(){return formula;};
@@ -441,7 +446,7 @@ class UserParametricSurface : public ParametricSurface
 {
 public:
     UserParametricSurface(const QString& xFormula, const QString& yFormula,
-						  const QString& zFormula, SurfacePlot& pw);
+						  const QString& zFormula, Qwt3D::Curve *pw);
     Triple operator()(double u, double v);
 
 	unsigned int rows(){return d_rows;};

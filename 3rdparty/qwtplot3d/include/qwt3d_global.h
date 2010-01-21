@@ -7,8 +7,8 @@
 #endif
 
 #define QWT3D_MAJOR_VERSION 0
-#define QWT3D_MINOR_VERSION 2
-#define QWT3D_PATCH_VERSION 6
+#define QWT3D_MINOR_VERSION 3
+#define QWT3D_PATCH_VERSION 0
 
 //
 // Create Qwt3d DLL if QWT3D_DLL is defined (Windows only)

@@ -35,7 +35,7 @@ inline GLenum lightEnum(unsigned idx)
 
 }
 
-void Plot3D::enableLighting(bool val)
+void ExtGLWidget::enableLighting(bool val)
 {
   if (lighting_enabled_ == val)
     return;
@@ -52,12 +52,12 @@ void Plot3D::enableLighting(bool val)
   updateGL();
 }
 
-void Plot3D::disableLighting(bool val)
+void ExtGLWidget::disableLighting(bool val)
 {
   enableLighting(!val);
 }
 
-bool Plot3D::lightingEnabled() const
+bool ExtGLWidget::lightingEnabled() const
 {
   return lighting_enabled_;
 }
@@ -66,7 +66,7 @@ bool Plot3D::lightingEnabled() const
   \param light light number [0..7]
   \see setLight 
 */
-void Plot3D::illuminate(unsigned light)
+void ExtGLWidget::illuminate(unsigned light)
 {
   if (light>7)
     return;  
@@ -76,7 +76,7 @@ void Plot3D::illuminate(unsigned light)
   \param light light number [0..7]
   \see setLight  
 */
-void Plot3D::blowout(unsigned light)
+void ExtGLWidget::blowout(unsigned light)
 {
   if (light>7)
     return;
@@ -86,7 +86,7 @@ void Plot3D::blowout(unsigned light)
 /** 
   Sets GL material properties
 */
-void Plot3D::setMaterialComponent(GLenum property, double r, double g, double b, double a)
+void ExtGLWidget::setMaterialComponent(GLenum property, double r, double g, double b, double a)
 {
   GLfloat rgba[4] = {(GLfloat)r, (GLfloat)g, (GLfloat)b, (GLfloat)a};
   makeCurrent();
@@ -97,7 +97,7 @@ void Plot3D::setMaterialComponent(GLenum property, double r, double g, double b,
   This function is for convenience. It sets GL material properties with the equal r,g,b values 
   and a blending alpha with value 1.0 
 */
-void Plot3D::setMaterialComponent(GLenum property, double intensity)
+void ExtGLWidget::setMaterialComponent(GLenum property, double intensity)
 {
   setMaterialComponent(property,intensity,intensity,intensity,1.0);
 }    
@@ -105,7 +105,7 @@ void Plot3D::setMaterialComponent(GLenum property, double intensity)
 /** 
   Sets GL shininess
 */
-void Plot3D::setShininess(double exponent)
+void ExtGLWidget::setShininess(double exponent)
 {
   makeCurrent();
   glMaterialf(GL_FRONT, GL_SHININESS, exponent);
@@ -114,7 +114,7 @@ void Plot3D::setShininess(double exponent)
 /** 
   Sets GL light properties for light 'light'
 */
-void Plot3D::setLightComponent(GLenum property, double r, double g, double b, double a, unsigned light)
+void ExtGLWidget::setLightComponent(GLenum property, double r, double g, double b, double a, unsigned light)
 {
   GLfloat rgba[4] = {(GLfloat)r, (GLfloat)g, (GLfloat)b, (GLfloat)a};
   makeCurrent();
@@ -125,7 +125,7 @@ void Plot3D::setLightComponent(GLenum property, double r, double g, double b, do
   This function is for convenience. It sets GL light properties with the equal r,g,b values 
   and a blending alpha with value 1.0 
 */
-void Plot3D::setLightComponent(GLenum property, double intensity, unsigned light)
+void ExtGLWidget::setLightComponent(GLenum property, double intensity, unsigned light)
 {
   setLightComponent(property,intensity,intensity,intensity,1.0, lightEnum(light));
 }    
@@ -138,7 +138,7 @@ void Plot3D::setLightComponent(GLenum property, double intensity, unsigned light
 	\param zVal angle in \e degree to rotate around the Z axis
   \param light light number
 */
-void Plot3D::setLightRotation( double xVal, double yVal, double zVal, unsigned light )
+void ExtGLWidget::setLightRotation( double xVal, double yVal, double zVal, unsigned light )
 {
 	if (light>7)
     return; 
@@ -155,7 +155,7 @@ void Plot3D::setLightRotation( double xVal, double yVal, double zVal, unsigned l
   \param light light number
 	\see setViewportShift()
 */
-void Plot3D::setLightShift( double xVal, double yVal, double zVal, unsigned light )
+void ExtGLWidget::setLightShift( double xVal, double yVal, double zVal, unsigned light )
 {
 	if (light>7)
     return; 
@@ -164,7 +164,7 @@ void Plot3D::setLightShift( double xVal, double yVal, double zVal, unsigned ligh
   lights_[light].shift.z = zVal;
 }
 
-void Plot3D::applyLight(unsigned light)
+void ExtGLWidget::applyLight(unsigned light)
 {
 	if (lights_[light].unlit)
     return;
@@ -180,7 +180,7 @@ void Plot3D::applyLight(unsigned light)
   glLightfv(le, GL_POSITION, lightPos);  
 }
 
-void Plot3D::applyLights()
+void ExtGLWidget::applyLights()
 {
   glMatrixMode( GL_MODELVIEW );
 	glPushMatrix();

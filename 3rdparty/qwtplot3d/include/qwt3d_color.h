@@ -7,11 +7,12 @@
 
 namespace Qwt3D
 {
+    class Curve;
 
 //! Abstract base class for color functors
 /*!
 Use your own color model by providing an implementation of operator()(double x, double y, double z).
-Colors destructor has been declared \c protected, in order to use only heap based objects. Plot3D 
+Colors destructor has been declared \c protected, in order to use only heap based objects. Curve 
 will handle the objects destruction.
 See StandardColor for an example
 */
@@ -31,8 +32,8 @@ protected:
 
 
 
-class Plot3D;
-//! Standard color model for Plot3D - implements the data driven operator()(double x, double y, double z)
+class Curve;
+//! Standard color model for Curve - implements the data driven operator()(double x, double y, double z)
 /*!
 The class has a ColorVector representing z values, which will be used by operator()(double x, double y, double z)
 */
@@ -40,7 +41,7 @@ class QWT3D_EXPORT StandardColor : public Color
 {
 public:
 	//! Initializes with data and set up a ColorVector with a size of 100 z values (default);
-  explicit StandardColor(Qwt3D::Plot3D* data, unsigned size = 100);
+  explicit StandardColor(Qwt3D::Curve* data, unsigned size = 100);
 	Qwt3D::RGBA operator()(double x, double y, double z) const; //!< Receives z-dependend color from ColorVector
 	void setColorVector(Qwt3D::ColorVector const& cv);
 	void reset(unsigned size=100); //!< Resets the standard colors; 
@@ -55,7 +56,7 @@ public:
 
 protected:
 	Qwt3D::ColorVector colors_;
-	Qwt3D::Plot3D* data_;
+	Qwt3D::Curve* data_;
 };
 
 } // ns

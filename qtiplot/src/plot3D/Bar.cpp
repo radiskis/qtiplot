@@ -2,7 +2,7 @@
     File                 : Bar.cpp
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2006 - 2008 by Ion Vasilief
+	Copyright            : (C) 2006 - 2010 by Ion Vasilief
     Email (use @ for *)  : ion_vasilief*yahoo.fr
     Description          : 3D bars (modifed enrichment from QwtPlot3D)
 
@@ -28,6 +28,7 @@
  ***************************************************************************/
 #include <qbitmap.h>
 
+#include <qwt3d_curve.h>
 #include <qwt3d_color.h>
 #include <qwt3d_plot.h>
 #include "Bar.h"
@@ -69,7 +70,7 @@ void Bar::drawBegin()
   else
     glDisable(GL_LINE_SMOOTH);
 
-  glPolygonOffset(1,1);
+  glPolygonOffset(1, 1);
 }
 
 void Bar::drawEnd()
@@ -80,40 +81,45 @@ void Bar::draw(Qwt3D::Triple const& pos)
 {
     GLdouble minz = plot->hull().minVertex.z;
 
+	double xl = pos.x - diag_;
+	double xr = pos.x + diag_;
+	double yl = pos.y - diag_;
+	double yr = pos.y + diag_;
+
     if (d_filled_bars){
         RGBA rgbat = (*plot->dataColor())(pos);
 		glColor4d(rgbat.r,rgbat.g,rgbat.b,rgbat.a);
-		
+						
         glBegin(GL_QUADS);
-        glVertex3d(pos.x-diag_,pos.y-diag_,minz);
-        glVertex3d(pos.x+diag_,pos.y-diag_,minz);
-        glVertex3d(pos.x+diag_,pos.y+diag_,minz);
-        glVertex3d(pos.x-diag_,pos.y+diag_,minz);
+		glVertex3d(xl,yl,minz);
+		glVertex3d(xr,yl,minz);
+		glVertex3d(xr,yr,minz);
+		glVertex3d(xl,yr,minz);
 
-        glVertex3d(pos.x-diag_,pos.y-diag_,pos.z);
-        glVertex3d(pos.x+diag_,pos.y-diag_,pos.z);
-        glVertex3d(pos.x+diag_,pos.y+diag_,pos.z);
-        glVertex3d(pos.x-diag_,pos.y+diag_,pos.z);
+		glVertex3d(xl,yl,pos.z);
+		glVertex3d(xr,yl,pos.z);
+		glVertex3d(xr,yr,pos.z);
+		glVertex3d(xl,yr,pos.z);
 
-        glVertex3d(pos.x-diag_,pos.y-diag_,minz);
-        glVertex3d(pos.x+diag_,pos.y-diag_,minz);
-        glVertex3d(pos.x+diag_,pos.y-diag_,pos.z);
-        glVertex3d(pos.x-diag_,pos.y-diag_,pos.z);
+		glVertex3d(xl,yl,minz);
+		glVertex3d(xr,yl,minz);
+		glVertex3d(xr,yl,pos.z);
+		glVertex3d(xl,yl,pos.z);
 
-        glVertex3d(pos.x-diag_,pos.y+diag_,minz);
-        glVertex3d(pos.x+diag_,pos.y+diag_,minz);
-        glVertex3d(pos.x+diag_,pos.y+diag_,pos.z);
-        glVertex3d(pos.x-diag_,pos.y+diag_,pos.z);
+		glVertex3d(xl,yr,minz);
+		glVertex3d(xr,yr,minz);
+		glVertex3d(xr,yr,pos.z);
+		glVertex3d(xl,yr,pos.z);
 
-        glVertex3d(pos.x-diag_,pos.y-diag_,minz);
-        glVertex3d(pos.x-diag_,pos.y+diag_,minz);
-        glVertex3d(pos.x-diag_,pos.y+diag_,pos.z);
-        glVertex3d(pos.x-diag_,pos.y-diag_,pos.z);
+		glVertex3d(xl,yl,minz);
+		glVertex3d(xl,yr,minz);
+		glVertex3d(xl,yr,pos.z);
+		glVertex3d(xl,yl,pos.z);
 
-        glVertex3d(pos.x+diag_,pos.y-diag_,minz);
-        glVertex3d(pos.x+diag_,pos.y+diag_,minz);
-        glVertex3d(pos.x+diag_,pos.y+diag_,pos.z);
-        glVertex3d(pos.x+diag_,pos.y-diag_,pos.z);
+		glVertex3d(xr,yl,minz);
+		glVertex3d(xr,yr,minz);
+		glVertex3d(xr,yr,pos.z);
+		glVertex3d(xr,yl,pos.z);
         glEnd();
     }
 
@@ -124,19 +130,19 @@ void Bar::draw(Qwt3D::Triple const& pos)
     glColor3d(meshCol.r, meshCol.g, meshCol.b);
 
   glBegin(GL_LINES);
-    glVertex3d(pos.x-diag_,pos.y-diag_,minz); glVertex3d(pos.x+diag_,pos.y-diag_,minz);
-    glVertex3d(pos.x-diag_,pos.y-diag_,pos.z); glVertex3d(pos.x+diag_,pos.y-diag_,pos.z);
-    glVertex3d(pos.x-diag_,pos.y+diag_,pos.z); glVertex3d(pos.x+diag_,pos.y+diag_,pos.z);
-    glVertex3d(pos.x-diag_,pos.y+diag_,minz); glVertex3d(pos.x+diag_,pos.y+diag_,minz);
+	glVertex3d(xl,yl,minz); glVertex3d(xr,yl,minz);
+	glVertex3d(xl,yl,pos.z); glVertex3d(xr,yl,pos.z);
+	glVertex3d(xl,yr,pos.z); glVertex3d(xr,yr,pos.z);
+	glVertex3d(xl,yr,minz); glVertex3d(xr,yr,minz);
 
-    glVertex3d(pos.x-diag_,pos.y-diag_,minz); glVertex3d(pos.x-diag_,pos.y+diag_,minz);
-    glVertex3d(pos.x+diag_,pos.y-diag_,minz); glVertex3d(pos.x+diag_,pos.y+diag_,minz);
-    glVertex3d(pos.x+diag_,pos.y-diag_,pos.z); glVertex3d(pos.x+diag_,pos.y+diag_,pos.z);
-    glVertex3d(pos.x-diag_,pos.y-diag_,pos.z); glVertex3d(pos.x-diag_,pos.y+diag_,pos.z);
+	glVertex3d(xl,yl,minz); glVertex3d(xl,yr,minz);
+	glVertex3d(xr,yl,minz); glVertex3d(xr,yr,minz);
+	glVertex3d(xr,yl,pos.z); glVertex3d(xr,yr,pos.z);
+	glVertex3d(xl,yl,pos.z); glVertex3d(xl,yr,pos.z);
 
-    glVertex3d(pos.x-diag_,pos.y-diag_,minz); glVertex3d(pos.x-diag_,pos.y-diag_,pos.z);
-    glVertex3d(pos.x+diag_,pos.y-diag_,minz); glVertex3d(pos.x+diag_,pos.y-diag_,pos.z);
-    glVertex3d(pos.x+diag_,pos.y+diag_,minz); glVertex3d(pos.x+diag_,pos.y+diag_,pos.z);
-    glVertex3d(pos.x-diag_,pos.y+diag_,minz); glVertex3d(pos.x-diag_,pos.y+diag_,pos.z);
+	glVertex3d(xl,yl,minz); glVertex3d(xl,yl,pos.z);
+	glVertex3d(xr,yl,minz); glVertex3d(xr,yl,pos.z);
+	glVertex3d(xr,yr,minz); glVertex3d(xr,yr,pos.z);
+	glVertex3d(xl,yr,minz); glVertex3d(xl,yr,pos.z);
   glEnd();
 }

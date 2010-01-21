@@ -1,5 +1,5 @@
 #include "qwt3d_gridmapping.h"
-#include "qwt3d_surfaceplot.h"
+#include "qwt3d_curve.h"
 
 using namespace Qwt3D;
 

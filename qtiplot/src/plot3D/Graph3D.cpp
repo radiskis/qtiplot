@@ -2,7 +2,7 @@
     File                 : Graph3D.cpp
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2004-2007 by Ion Vasilief
+	Copyright            : (C) 2004-2010 by Ion Vasilief
     Email (use @ for *)  : ion_vasilief*yahoo.fr
     Description          : 3D graph widget
 
@@ -54,7 +54,7 @@
 #include <gsl/gsl_math.h>
 #include <fstream>
 
-UserFunction::UserFunction(const QString& s, SurfacePlot& pw)
+UserFunction::UserFunction(const QString& s, Qwt3D::Curve *pw)
 : Function(pw), formula(s)
 {}
 
@@ -88,7 +88,7 @@ void UserFunction::setMesh (unsigned int columns, unsigned int rows)
 }
 
 UserParametricSurface::UserParametricSurface(const QString& xFormula, const QString& yFormula,
-											 const QString& zFormula, SurfacePlot& pw)
+											 const QString& zFormula, Qwt3D::Curve *pw)
 : ParametricSurface(pw),
 d_x_formula(xFormula),
 d_y_formula(yFormula),
@@ -152,6 +152,8 @@ void Graph3D::initPlot()
 {
 	setAcceptDrops(true);
 
+	d_active_curve = NULL;
+
 	d_table = 0;
 	d_table_plot_type = NoTable;
 	d_matrix = 0;
@@ -166,7 +168,7 @@ void Graph3D::initPlot()
 
 	ApplicationWindow *app = applicationWindow();
 
-	sp = new SurfacePlot(this);
+	sp = new Plot3D(this);
 	sp->installEventFilter(this);
 	sp->setRotation(30, 0, 15);
 	sp->setScale(1, 1, 1);
@@ -174,7 +176,6 @@ void Graph3D::initPlot()
 	sp->setZoom(0.9);
 	sp->setOrtho(app->d_3D_orthogonal);
 	sp->setSmoothMesh(app->d_3D_smooth_mesh);
-	sp->setResolution(app->d_3D_resolution);
 	sp->setFloorStyle((Qwt3D::FLOORSTYLE)app->d_3D_projection);
 	sp->setLocale(app->locale());
 	setWidget(sp);
@@ -182,13 +183,8 @@ void Graph3D::initPlot()
 	d_autoscale = app->d_3D_autoscale;
 
 	title = QString::null;
-	sp->setTitle(title);
-
 	titleCol = Qt::black;
-	sp->setTitleColor(Qt2GL(titleCol));
-
 	titleFnt = app->d_3D_title_font;
-	sp->setTitleFont(titleFnt.family(), titleFnt.pointSize(), titleFnt.weight(), titleFnt.italic());
 
 	col_ = 0;
 	d_color_map_file = QString::null;
@@ -196,9 +192,6 @@ void Graph3D::initPlot()
 
 	legendOn = app->d_3D_legend;
 	legendMajorTicks = 5;
-	sp->showColorLegend(legendOn);
-	sp->legend()->setAutoScale(true);
-	sp->legend()->setMajors(legendMajorTicks) ;
 
 	labelsDist = 0;
 
@@ -218,7 +211,7 @@ void Graph3D::initPlot()
 	crossHairSmooth = true, crossHairBoxed = false;
 	conesQuality = 32; conesRad = 0.5;
 
-	style_ = NOPLOT;
+	style_ = Qwt3D::FILLEDMESH;
 	initCoord();
 	sp->coordinates()->setLineSmooth(app->d_3D_smooth_mesh);
 
@@ -279,8 +272,29 @@ void Graph3D::initCoord()
 	sp->coordinates()->setAutoScale(false);
 }
 
-void Graph3D::addFunction(const QString& s, double xl, double xr, double yl,
-						double yr, double zl, double zr, int columns, int rows)
+Curve* Graph3D::addCurve()
+{
+	removeCurve();
+
+	ApplicationWindow *app = applicationWindow();
+
+	d_active_curve = new Curve(sp);
+	sp->addCurve(d_active_curve);
+
+	d_active_curve->setSmoothMesh(app->d_3D_smooth_mesh);
+	d_active_curve->setDataProjection(false);
+	d_active_curve->setProjection(BASE);
+	d_active_curve->setProjection(FACE, false);
+	d_active_curve->setProjection(SIDE, false);
+	d_active_curve->setResolution(app->d_3D_resolution);
+
+	if (!title.isEmpty() && d_active_curve->title()->string() != title)
+		setTitle(title, titleCol, titleFnt);
+
+	return d_active_curve;
+}
+
+void Graph3D::removeCurve()
 {
 	if (d_surface){
 		delete d_surface;
@@ -290,9 +304,21 @@ void Graph3D::addFunction(const QString& s, double xl, double xr, double yl,
 		d_func = 0;
 	}
 
+	if (d_active_curve){
+		delete d_active_curve;
+		d_active_curve = 0;
+	}
+}
+
+void Graph3D::addFunction(const QString& s, double xl, double xr, double yl,
+						double yr, double zl, double zr, int columns, int rows)
+{
 	sp->makeCurrent();
 
-	d_func = new UserFunction(s, *sp);
+	if (!d_active_curve)
+		d_active_curve = addCurve();
+
+	d_func = new UserFunction(s, d_active_curve);
 
 	d_func->setMesh(columns, rows);
 	d_func->setDomain(xl, xr, yl, yr);
@@ -300,11 +326,12 @@ void Graph3D::addFunction(const QString& s, double xl, double xr, double yl,
 	d_func->setMaxZ(zr);
 	d_func->create();
 
-	sp->legend()->setLimits(zl, zr);
-	sp->legend()->setMajors(legendMajorTicks);
+	d_active_curve->legend()->setLimits(zl, zr);
+	d_active_curve->legend()->setMajors(legendMajorTicks);
+	d_active_curve->showColorLegend(legendOn);
 
-	if (sp->plotStyle() == NOPLOT){
-		sp->setPlotStyle(FILLED);
+	if (d_active_curve->plotStyle() == NOPLOT){
+		d_active_curve->setPlotStyle(FILLED);
 		style_=FILLED;
 		pointStyle = None;
 	}
@@ -317,17 +344,12 @@ void Graph3D::addParametricSurface(const QString& xFormula, const QString& yForm
 						const QString& zFormula, double ul, double ur, double vl, double vr,
 						int columns, int rows, bool uPeriodic, bool vPeriodic)
 {
-	if (d_surface){
-		delete d_surface;
-		d_surface = 0;
-	} else if (d_func){
-		delete d_func;
-		d_func = 0;
-	}
-
 	sp->makeCurrent();
 
-	d_surface = new UserParametricSurface(xFormula, yFormula, zFormula, *sp);
+	if (!d_active_curve)
+		d_active_curve = addCurve();
+
+	d_surface = new UserParametricSurface(xFormula, yFormula, zFormula, d_active_curve);
 	d_surface->setMesh(columns, rows);
 	d_surface->setDomain(ul, ur, vl, vr);
 	d_surface->setPeriodic(uPeriodic, vPeriodic);
@@ -335,11 +357,12 @@ void Graph3D::addParametricSurface(const QString& xFormula, const QString& yForm
 
 	double zl, zr;
 	sp->coordinates()->axes[Z1].limits(zl, zr);
-	sp->legend()->setLimits(zl, zr);
-	sp->legend()->setMajors(legendMajorTicks);
+	d_active_curve->showColorLegend(legendOn);
+	d_active_curve->legend()->setLimits(zl, zr);
+	d_active_curve->legend()->setMajors(legendMajorTicks);
 
-	if (sp->plotStyle() == NOPLOT){
-		sp->setPlotStyle(FILLED);
+	if (d_active_curve->plotStyle() == NOPLOT){
+		d_active_curve->setPlotStyle(FILLED);
 		style_=FILLED;
 		pointStyle = None;
 	}
@@ -394,8 +417,11 @@ void Graph3D::addRibbon(Table* table,const QString& xColName, const QString& yCo
 	double maxy = gsl_vector_max(y);
 	double maxz = 0.6*maxy;
 	sp->makeCurrent();
-	sp->legend()->setLimits(gsl_vector_min(y), maxy);
-	sp->loadFromData(data, xmesh, ymesh, gsl_vector_min(x), gsl_vector_max(x), 0, maxz);
+	if (!d_active_curve)
+		d_active_curve = addCurve();
+	d_active_curve->showColorLegend(legendOn);
+	d_active_curve->legend()->setLimits(gsl_vector_min(y), maxy);
+	d_active_curve->loadFromData(data, xmesh, ymesh, gsl_vector_min(x), gsl_vector_max(x), 0, maxz);
 
 	if (empty || d_autoscale)
 		findBestLayout();
@@ -451,10 +477,13 @@ void Graph3D::addRibbon(Table* table,const QString& xColName,const QString& yCol
 		}
 	}
 	sp->makeCurrent();
-	sp->loadFromData(data, xmesh, ymesh, xl, xr, yl, yr);
+	if (!d_active_curve)
+		d_active_curve = addCurve();
+	d_active_curve->loadFromData(data, xmesh, ymesh, xl, xr, yl, yr);
 	sp->createCoordinateSystem(Triple(xl, yl, zl), Triple(xr, yr, zr));
-	sp->legend()->setLimits(zl, zr);
-	sp->legend()->setMajors(legendMajorTicks);
+	d_active_curve->showColorLegend(legendOn);
+	d_active_curve->legend()->setLimits(zl, zr);
+	d_active_curve->legend()->setMajors(legendMajorTicks);
 
 	Matrix::freeMatrixData(data, xmesh);
 }
@@ -483,12 +512,15 @@ void Graph3D::addMatrixData(Matrix* m)
 	}
 
 	sp->makeCurrent();
-	sp->loadFromData(data_matrix, cols, rows, m->xStart(), m->xEnd(), m->yStart(), m->yEnd());
+	if (!d_active_curve)
+		d_active_curve = addCurve();
+	d_active_curve->loadFromData(data_matrix, cols, rows, m->xStart(), m->xEnd(), m->yStart(), m->yEnd());
 
 	double start, end;
 	sp->coordinates()->axes[Z1].limits (start, end);
-	sp->legend()->setLimits(start, end);
-	sp->legend()->setMajors(legendMajorTicks);
+	d_active_curve->showColorLegend(legendOn);
+	d_active_curve->legend()->setLimits(start, end);
+	d_active_curve->legend()->setMajors(legendMajorTicks);
 
 	Matrix::freeMatrixData(data_matrix, cols);
 
@@ -611,14 +643,17 @@ void Graph3D::loadData(Table* table, int xCol, int yCol, int zCol,
 		}
 	}
 	sp->makeCurrent();
-	sp->loadFromData (data, cells);
+	if (!d_active_curve)
+		d_active_curve = addCurve();
+	d_active_curve->loadFromData (data, cells);
 	if (check_limits)
 		sp->createCoordinateSystem(Triple(xl, yl, zl), Triple(xr, yr, zr));
 
 	double start, end;
 	sp->coordinates()->axes[Z1].limits (start, end);
-	sp->legend()->setLimits(start, end);
-	sp->legend()->setMajors(legendMajorTicks);
+	d_active_curve->showColorLegend(legendOn);
+	d_active_curve->legend()->setLimits(start, end);
+	d_active_curve->legend()->setMajors(legendMajorTicks);
 }
 
 void Graph3D::updateData(Table* table)
@@ -703,9 +738,12 @@ void Graph3D::updateDataXY(Table* table, int xCol, int yCol)
 	sp->makeCurrent();
 	resetNonEmptyStyle();
 	sp->coordinates()->axes[Y1].limits (miny,maxy);	//actual Y scale limits
-	sp->loadFromData(data, xmesh, ymesh, minx, maxx, miny, maxy);
-	sp->legend()->setLimits(minz,maxz);
-	sp->legend()->setMajors(legendMajorTicks);
+	if (!d_active_curve)
+		d_active_curve = addCurve();
+	d_active_curve->loadFromData(data, xmesh, ymesh, minx, maxx, miny, maxy);
+	d_active_curve->showColorLegend(legendOn);
+	d_active_curve->legend()->setLimits(minz,maxz);
+	d_active_curve->legend()->setMajors(legendMajorTicks);
 
 	gsl_vector_free (x);gsl_vector_free (y);
 	Matrix::freeMatrixData(data, xmesh);
@@ -721,7 +759,9 @@ void Graph3D::updateMatrixData(Matrix* m)
 		for (int j = 0; j < rows; j++)
 			data[i][j] = m->cell(j, i);
 	}
-	sp->loadFromData(data, cols, rows, m->xStart(), m->xEnd(), m->yStart(), m->yEnd());
+	if (!d_active_curve)
+		d_active_curve = addCurve();
+	d_active_curve->loadFromData(data, cols, rows, m->xStart(), m->xEnd(), m->yStart(), m->yEnd());
 
 	Qwt3D::Axis z_axis = sp->coordinates()->axes[Z1];
 	double start, end;
@@ -729,8 +769,9 @@ void Graph3D::updateMatrixData(Matrix* m)
 	z_axis.setMajors(z_axis.majors());
 	z_axis.setMajors(z_axis.minors());
 
-	sp->legend()->setLimits(start, end);
-	sp->legend()->setMajors(legendMajorTicks);
+	d_active_curve->showColorLegend(legendOn);
+	d_active_curve->legend()->setLimits(start, end);
+	d_active_curve->legend()->setMajors(legendMajorTicks);
 
 	Matrix::freeMatrixData(data, cols);
 	if (d_autoscale)
@@ -740,7 +781,8 @@ void Graph3D::updateMatrixData(Matrix* m)
 
 void Graph3D::resetNonEmptyStyle()
 {
-	if (sp->plotStyle() != Qwt3D::NOPLOT )
+
+	if (!d_active_curve || d_active_curve->plotStyle() != Qwt3D::NOPLOT )
 		return; // the plot was not previousely emptied
 
 	if (style_== Qwt3D::USER)
@@ -751,24 +793,35 @@ void Graph3D::resetNonEmptyStyle()
 				break;
 
 			case Dots :
-				sp->setPlotStyle(Dot(d_point_size, d_smooth_points));
+			{
+				Dot dot = Dot(d_point_size, d_smooth_points);
+				d_active_curve->setPlotStyle(dot);
 				break;
+			}
 
 			case VerticalBars :
-				sp->setPlotStyle(Bar(d_bars_rad));
+			{
+				Bar bar = Bar(d_bars_rad);
+				d_active_curve->setPlotStyle(bar);
 				break;
+			}
 
 			case HairCross :
-				sp->setPlotStyle(CrossHair(crossHairRad, crossHairLineWidth, crossHairSmooth, crossHairBoxed));
+			{
+				CrossHair cross = CrossHair(crossHairRad, crossHairLineWidth, crossHairSmooth, crossHairBoxed);
+				d_active_curve->setPlotStyle(cross);
 				break;
+			}
 
 			case Cones :
-				sp->setPlotStyle(Cone3D(conesRad, conesQuality));
+			{
+				Cone3D cone = Cone3D(conesRad, conesQuality);
+				d_active_curve->setPlotStyle(cone);
 				break;
+			}
 		}
-	}
-	else
-		sp->setPlotStyle(style_);
+	} else if (d_active_curve)
+		d_active_curve->setPlotStyle(style_);
 }
 
 void Graph3D::update()
@@ -800,7 +853,8 @@ QFont Graph3D::numbersFont()
 void Graph3D::setNumbersFont(const QFont& font)
 {
 	sp->coordinates()->setNumberFont (font);
-	sp->legend()->axis()->setNumberFont (font);
+	if (d_active_curve)
+		d_active_curve->legend()->axis()->setNumberFont (font);
 	sp->makeCurrent();
 	sp->updateGL();
 }
@@ -1257,6 +1311,9 @@ void Graph3D::setScale(int axis, double start, double end, int majorTicks, int m
 
 	sp->coordinates()->axes[axis].setTicLength(majorTicLength, minorTicLength);
 
+	if (d_active_curve)
+		d_active_curve->updateColorLegend(legendMajorTicks, 2);
+
 	update();
 	emit modified();
 }
@@ -1278,6 +1335,7 @@ void Graph3D::setScales(double xl, double xr, double yl, double yr, double zl, d
         d_func->setMaxZ(zr);
         d_func->create ();
         sp->createCoordinateSystem(Triple(xl, yl, zl), Triple(xr, yr, zr));
+		d_active_curve->legend()->setLimits(zl, zr);
     } else if (d_table){
 		QString name = plotAssociation;
 
@@ -1359,12 +1417,14 @@ void Graph3D::updateScalesFromMatrix(double xl, double xr, double yl, double yr,
 				data_matrix[i][j] = val;
 		}
 	}
-	sp->loadFromData(data_matrix, nc, nr, xl, xr, yl, yr);
+	if (!d_active_curve)
+		d_active_curve = addCurve();
+	d_active_curve->loadFromData(data_matrix, nc, nr, xl, xr, yl, yr);
 	Matrix::freeMatrixData(data_matrix, nc);
 
 	sp->createCoordinateSystem(Triple(xl, yl, zmin), Triple(xr, yr, zmax));
-	sp->legend()->setLimits(zmin, zmax);
-	sp->legend()->setMajors(legendMajorTicks);
+	d_active_curve->legend()->setLimits(zmin, zmax);
+	d_active_curve->legend()->setMajors(legendMajorTicks);
 
 	update();
 }
@@ -1408,7 +1468,8 @@ void Graph3D::updateScales(double xl, double xr, double yl, double yr,double zl,
 		}
 	}
 
-	sp->loadFromData(data, xmesh, ymesh, xl, xr, yl, yr);
+	if (d_active_curve)
+		d_active_curve->loadFromData(data, xmesh, ymesh, xl, xr, yl, yr);
 	sp->createCoordinateSystem(Triple(xl, yl, zl), Triple(xr, yr, zr));
 	Matrix::freeMatrixData(data, xmesh);
 }
@@ -1513,7 +1574,8 @@ void Graph3D::setAxesColor(const QColor& axesColor)
 void Graph3D::setNumbersColor(const QColor& numColor)
 {
 	if(numCol != numColor){
-		sp->legend()->axis()->setNumberColor(Qt2GL(numColor));
+		if (d_active_curve)
+			d_active_curve->legend()->axis()->setNumberColor(Qt2GL(numColor));
 		sp->coordinates()->setNumberColor(Qt2GL(numColor));
 		numCol = numColor;
 	}
@@ -1559,7 +1621,8 @@ void Graph3D::scaleFonts(double factor)
 	QFont font = sp->coordinates()->axes[X1].numberFont();
 	font.setPointSizeFloat(font.pointSizeFloat()*factor);
 	sp->coordinates()->setNumberFont (font);
-	sp->legend()->axis()->setNumberFont (font);
+	if (d_active_curve)
+		d_active_curve->legend()->axis()->setNumberFont (font);
 
 	titleFnt.setPointSizeFloat(factor*titleFnt.pointSizeFloat());
 	sp->setTitleFont(titleFnt.family(),titleFnt.pointSize(),titleFnt.weight(),titleFnt.italic());
@@ -1617,11 +1680,11 @@ void Graph3D::setNoAxes()
 
 void Graph3D::setPolygonStyle()
 {
-	if (sp->plotStyle() == FILLED)
+	if (!d_active_curve || d_active_curve->plotStyle() == FILLED)
 		return;
 
 	sp->makeCurrent();
-	sp->setPlotStyle(FILLED);
+	d_active_curve->setPlotStyle(FILLED);
 	sp->updateData();
 	sp->updateGL();
 
@@ -1631,11 +1694,11 @@ void Graph3D::setPolygonStyle()
 
 void Graph3D::setFilledMeshStyle()
 {
-	if (sp->plotStyle() == FILLEDMESH)
+	if (!d_active_curve || d_active_curve->plotStyle() == FILLEDMESH)
 		return;
 
 	sp->makeCurrent();
-	sp->setPlotStyle(FILLEDMESH);
+	d_active_curve->setPlotStyle(FILLEDMESH);
 	sp->updateData();
 	sp->updateGL();
 
@@ -1645,11 +1708,11 @@ void Graph3D::setFilledMeshStyle()
 
 void Graph3D::setHiddenLineStyle()
 {
-	if (sp->plotStyle() == HIDDENLINE)
+	if (!d_active_curve || d_active_curve->plotStyle() == HIDDENLINE)
 		return;
 
 	sp->makeCurrent();
-	sp->setPlotStyle(HIDDENLINE);
+	d_active_curve->setPlotStyle(HIDDENLINE);
 	sp->showColorLegend(false);
 	sp->updateData();
 	sp->updateGL();
@@ -1661,11 +1724,11 @@ void Graph3D::setHiddenLineStyle()
 
 void Graph3D::setWireframeStyle()
 {
-	if (sp->plotStyle() == WIREFRAME)
+	if (!d_active_curve || d_active_curve->plotStyle() == WIREFRAME)
 		return;
 
 	sp->makeCurrent();
-	sp->setPlotStyle(WIREFRAME);
+	d_active_curve->setPlotStyle(WIREFRAME);
 	sp->showColorLegend(false);
 	sp->updateData();
 	sp->updateGL();
@@ -1677,24 +1740,32 @@ void Graph3D::setWireframeStyle()
 
 void Graph3D::setDotStyle()
 {
+	if (!d_active_curve)
+		return;
+
 	pointStyle=Dots;
 	style_=Qwt3D::USER;
 
 	sp->makeCurrent();
-	sp->setPlotStyle(Dot(d_point_size, d_smooth_points));
+	Dot dot = Dot(d_point_size, d_smooth_points);
+	d_active_curve->setPlotStyle(dot);
 	sp->updateData();
 	sp->updateGL();
 }
 
 void Graph3D::setConeStyle()
 {
+	if (!d_active_curve)
+		return;
+
     QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
 	pointStyle=Cones;
 	style_=Qwt3D::USER;
 
 	sp->makeCurrent();
-	sp->setPlotStyle(Cone3D(conesRad, conesQuality));
+	Cone3D cone = Cone3D(conesRad, conesQuality);
+	d_active_curve->setPlotStyle(cone);
 	sp->updateData();
 	sp->updateGL();
 
@@ -1703,11 +1774,15 @@ void Graph3D::setConeStyle()
 
 void Graph3D::setCrossStyle()
 {
+	if (!d_active_curve)
+		return;
+
 	pointStyle=HairCross;
 	style_=Qwt3D::USER;
 
 	sp->makeCurrent();
-	sp->setPlotStyle(CrossHair(crossHairRad, crossHairLineWidth,crossHairSmooth,crossHairBoxed));
+	CrossHair cross = CrossHair(crossHairRad, crossHairLineWidth,crossHairSmooth,crossHairBoxed);
+	d_active_curve->setPlotStyle(cross);
 	sp->updateData();
 	sp->updateGL();
 }
@@ -1718,21 +1793,22 @@ void Graph3D::clearData()
 		d_matrix = 0;
 	else if (d_table)
 		d_table = 0;
-	else if (d_func){
-		delete d_func;
-		d_func = 0;
-	}
+
+	removeCurve();
+
 	plotAssociation = QString();
 	d_table_plot_type = NoTable;
 
 	sp->makeCurrent();
-	sp->loadFromData (0, 0, 0, false, false);
 	sp->updateData();
 	sp->updateGL();
 }
 
 void Graph3D::setBarStyle()
 {
+	if (!d_active_curve)
+		return;
+
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
     d_table_plot_type = Bars;
@@ -1740,7 +1816,9 @@ void Graph3D::setBarStyle()
 	style_ = Qwt3D::USER;
 
 	sp->makeCurrent();
-	sp->setPlotStyle(Bar(d_bars_rad, d_bar_lines, d_filled_bars, applicationWindow()->d_3D_smooth_mesh));
+
+	Bar bar = Bar(d_bars_rad, d_bar_lines, d_filled_bars, applicationWindow()->d_3D_smooth_mesh);
+	d_active_curve->setPlotStyle(bar);
 	sp->updateData();
 	sp->updateGL();
 	QApplication::restoreOverrideCursor();
@@ -1748,44 +1826,44 @@ void Graph3D::setBarStyle()
 
 void Graph3D::setFloorData()
 {
-	if (sp->floorStyle() == FLOORDATA)
+	if (!d_active_curve || d_active_curve->floorStyle() == FLOORDATA)
 		return;
 
 	sp->makeCurrent();
-	sp->setFloorStyle(FLOORDATA);
+	d_active_curve->setFloorStyle(FLOORDATA);
 	sp->updateData();
 	sp->updateGL();
 }
 
 void Graph3D::setFloorIsolines()
 {
-	if (sp->floorStyle() == FLOORISO)
+	if (!d_active_curve || d_active_curve->floorStyle() == FLOORISO)
 		return;
 
 	sp->makeCurrent();
-	sp->setFloorStyle(FLOORISO);
+	d_active_curve->setFloorStyle(FLOORISO);
 	sp->updateData();
 	sp->updateGL();
 }
 
 void Graph3D::setEmptyFloor()
 {
-	if (sp->floorStyle() == NOFLOOR)
+	if (!d_active_curve || d_active_curve->floorStyle() == NOFLOOR)
 		return;
 
 	sp->makeCurrent();
-	sp->setFloorStyle(NOFLOOR);
+	d_active_curve->setFloorStyle(NOFLOOR);
 	sp->updateData();
 	sp->updateGL();
 }
 
 void Graph3D::setMeshLineWidth(double lw)
 {
-	if (sp->meshLineWidth() == lw)
+	if (!d_active_curve || d_active_curve->meshLineWidth() == lw)
 		return;
 
 	sp->makeCurrent();
-	sp->setMeshLineWidth(lw);
+	d_active_curve->setMeshLineWidth(lw);
 	sp->updateData();
 	sp->updateGL();
 }
@@ -1795,7 +1873,7 @@ int Graph3D::grids()
 	return sp->coordinates()->grids();
 }
 
-void Graph3D::setGrid(Qwt3D::SIDE s, bool b)
+void Graph3D::setGrid(int s, bool b)
 {
 	if (!sp)
 		return;
@@ -1915,20 +1993,7 @@ void Graph3D::exportImage(const QString& fileName, int quality, bool transparent
 	QImage image = pic.toImage();
 
 	if (transparent){
-		QBitmap mask(size);
-		mask.fill(Qt::color1);
-		QPainter p(&mask);
-		p.setPen(Qt::color0);
-
-		QRgb backgroundPixel = QColor(Qt::white).rgb ();
-		for (int y = 0; y < image.height(); y++){
-			for (int x = 0; x < image.width(); x++){
-				QRgb rgb = image.pixel(x, y);
-				if (rgb == backgroundPixel) // we want the frame transparent
-					p.drawPoint(x, y);
-			}
-		}
-		p.end();
+		QBitmap mask = pic.createMaskFromColor (QColor(Qt::white).rgb ());
 		pic.setMask(mask);
 		image = pic.toImage();
 	}
@@ -1977,20 +2042,7 @@ void Graph3D::exportImage(QTextDocument *document, int, bool transparent,
 	QImage image = pic.toImage();
 
 	if (transparent){
-		QBitmap mask(size);
-		mask.fill(Qt::color1);
-		QPainter p(&mask);
-		p.setPen(Qt::color0);
-
-		QRgb backgroundPixel = QColor(Qt::white).rgb ();
-		for (int y = 0; y < image.height(); y++){
-			for (int x = 0; x < image.width(); x++){
-				QRgb rgb = image.pixel(x, y);
-				if (rgb == backgroundPixel) // we want the frame transparent
-					p.drawPoint(x, y);
-			}
-		}
-		p.end();
+		QBitmap mask = pic.createMaskFromColor (QColor(Qt::white).rgb());
 		pic.setMask(mask);
 		image = pic.toImage();
 	}
@@ -2092,7 +2144,10 @@ bool Graph3D::eventFilter(QObject *object, QEvent *e)
 
 double Graph3D::barsRadius()
 {
-	if (sp->plotStyle() == Qwt3D::USER && sp->plotStyle() != Qwt3D::POINTS)
+	if (!d_active_curve)
+		return 0.0;
+
+	if (d_active_curve->plotStyle() == Qwt3D::USER && d_active_curve->plotStyle() != Qwt3D::POINTS)
 		return d_bars_rad;
 	else
 		return 0.0;
@@ -2199,14 +2254,14 @@ void Graph3D::setStyle(const QStringList& st)
 void Graph3D::customPlotStyle(int style)
 {
 	sp->makeCurrent();
-	if (sp->plotStyle() == style)
+	if (!d_active_curve || d_active_curve->plotStyle() == style)
 		return;
 
 	switch (style)
 	{
 		case WIREFRAME  :
 			{
-				sp->setPlotStyle(WIREFRAME);
+				d_active_curve->setPlotStyle(WIREFRAME);
 				style_= WIREFRAME ;
 				pointStyle = None;
 
@@ -2217,7 +2272,7 @@ void Graph3D::customPlotStyle(int style)
 
 		case FILLED :
 			{
-				sp->setPlotStyle(FILLED );
+				d_active_curve->setPlotStyle(FILLED );
 				style_= FILLED;
 				pointStyle = None;
 				break;
@@ -2225,7 +2280,7 @@ void Graph3D::customPlotStyle(int style)
 
 		case FILLEDMESH  :
 			{
-				sp->setPlotStyle(FILLEDMESH);
+				d_active_curve->setPlotStyle(FILLEDMESH);
 				style_= FILLEDMESH;
 				pointStyle = None;
 				break;
@@ -2233,7 +2288,7 @@ void Graph3D::customPlotStyle(int style)
 
 		case HIDDENLINE:
 			{
-				sp->setPlotStyle(HIDDENLINE);
+				d_active_curve->setPlotStyle(HIDDENLINE);
 				style_= HIDDENLINE;
 				pointStyle = None;
 				legendOn = false;
@@ -2249,7 +2304,7 @@ void Graph3D::customPlotStyle(int style)
 				style_ = Qwt3D::USER;
 
 				Dot d(d_point_size, d_smooth_points);
-				sp->setPlotStyle(d);
+				d_active_curve->setPlotStyle(d);
 				break;
 			}
 
@@ -2257,7 +2312,8 @@ void Graph3D::customPlotStyle(int style)
 			{
 				pointStyle = VerticalBars;
 				style_ = Qwt3D::USER;
-				sp->setPlotStyle(Bar(d_bars_rad));
+				Bar bar = Bar(d_bars_rad);
+				d_active_curve->setPlotStyle(bar);
 				break;
 			}
 	}
@@ -2294,12 +2350,18 @@ void Graph3D::setShift(double  xVal,double  yVal,double  zVal)
 
 Qwt3D::PLOTSTYLE Graph3D::plotStyle()
 {
-	return sp->plotStyle();
+	if (!d_active_curve)
+		return style_;
+
+	return d_active_curve->plotStyle();
 }
 
 Qwt3D::FLOORSTYLE Graph3D::floorStyle()
 {
-	return sp->floorStyle();
+	if (d_active_curve)
+		return d_active_curve->floorStyle();
+
+	return Qwt3D::NOFLOOR;
 }
 
 Qwt3D::COORDSTYLE Graph3D::coordStyle()
@@ -2369,7 +2431,7 @@ void Graph3D::save(const QString &fn, const QString &geometry, bool)
 		st="frame";
 	t << "Style\t" + st + "\t";
 
-	switch(sp->floorStyle ())
+	switch(floorStyle())
 	{
 		case NOFLOOR:
 			st="nofloor";
@@ -2385,8 +2447,7 @@ void Graph3D::save(const QString &fn, const QString &geometry, bool)
 	}
 	t << st+"\t";
 
-	switch(sp->plotStyle())
-	{
+	switch(plotStyle()){
 		case USER:
 			if (pointStyle == VerticalBars) {
 				st = "bars\t" + QString::number(d_bars_rad);
@@ -2425,6 +2486,7 @@ void Graph3D::save(const QString &fn, const QString &geometry, bool)
 		default:
 			;
 	}
+
 	t << st + "\n";
 	t << "grids\t";
 	t << QString::number(sp->coordinates()->grids())+"\n";
@@ -2461,7 +2523,7 @@ void Graph3D::save(const QString &fn, const QString &geometry, bool)
 
 	t << "options\t";
 	t << QString::number(legendOn)+"\t";
-	t << QString::number(sp->resolution())+"\t";
+	t << QString::number(resolution())+"\t";
 	t << QString::number(labelsDist)+"\n";
 
 	t << "numbersFont\t";
@@ -2511,16 +2573,15 @@ void Graph3D::save(const QString &fn, const QString &geometry, bool)
 	t << QString::number(sp->zShift())+"\n";
 
 	t << "LineWidth\t";
-	t << QString::number(sp->meshLineWidth())+"\n";
+	t << QString::number(meshLineWidth())+"\n";
 	t << "WindowLabel\t" + windowLabel() + "\t" + QString::number(captionPolicy()) + "\n";
 	t << "Orthogonal\t" + QString::number(sp->ortho())+"\n";
 	if (d_color_map_file.isEmpty())
 		t << ColorMapEditor::saveToXmlString(d_color_map);
 
-
 	t << "axisType\t" << scaleType[0] << "\t" << scaleType[1] << "\t" << scaleType[2] << "\n";
 
-	Qwt3D::GridLine gridLine = sp->coordinates()->majorGridLine(Qwt3D::X1);
+	Qwt3D::GridLine gridLine = sp->coordinates()->majorGridLines()[Qwt3D::X1];
 	RGBA color = gridLine.color_;
 	QColor c = GL2Qt(color.r, color.g, color.b);
 
@@ -2528,7 +2589,7 @@ void Graph3D::save(const QString &fn, const QString &geometry, bool)
 	t << "\t<Major>" + QString::number(gridLine.visible_) + "\t" + c.name() + "\t";
 	t << QString::number(gridLine.style_) + "\t" + QString::number(gridLine.width_) + "</Major>\n";
 
-	gridLine = sp->coordinates()->minorGridLine(Qwt3D::X1);
+	gridLine = sp->coordinates()->minorGridLines()[Qwt3D::X1];
 	color = gridLine.color_;
 	c = GL2Qt(color.r, color.g, color.b);
 	t << "\t<Minor>" + QString::number(gridLine.visible_) + "\t" + c.name() + "\t";
@@ -2552,11 +2613,11 @@ void Graph3D::showColorLegend(bool show)
 
 void Graph3D::setResolution(int r)
 {
-	if (sp->resolution() == r)
+	if (!d_active_curve || (int)d_active_curve->resolution() == r)
 		return;
 
 	sp->makeCurrent();
-	sp->setResolution(r);
+	d_active_curve->setResolution(r);
 	sp->updateData();
 	sp->updateGL();
 	emit modified();
@@ -2564,48 +2625,46 @@ void Graph3D::setResolution(int r)
 
 void Graph3D::setTitle(const QStringList& lst)
 {
-	title=lst[1];
-	sp->setTitle(title);
+	if (lst.size() < 7)
+		return;
 
-	titleCol=QColor(lst[2]);
-	sp->setTitleColor(Qt2GL(titleCol));
-
-	titleFnt=QFont(lst[3],lst[4].toInt(),lst[5].toInt(),lst[6].toInt());
-	sp->setTitleFont(titleFnt.family(),titleFnt.pointSize(),titleFnt.weight(),titleFnt.italic());
+	setTitle(lst[1], QColor(lst[2]), QFont(lst[3], lst[4].toInt(), lst[5].toInt(), lst[6].toInt()));
 }
 
-void Graph3D::setTitle(const QString& s,const QColor& color,const QFont& font)
+void Graph3D::setTitle(const QString& s, const QColor& color, const QFont& font)
 {
-	if (title != s){
-		title=s;
-		sp->setTitle(title);
-	}
+	title = s;
+	sp->setTitle(title);
 
-	titleCol=color;
+	titleCol = color;
 	sp->setTitleColor(Qt2GL(color));
 
-	if (titleFnt != font){
-		titleFnt=font;
-		sp->setTitleFont(font.family(),font.pointSize(),font.weight(),font.italic());
-	}
+	titleFnt = font;
+	sp->setTitleFont(font.family(), font.pointSize(), font.weight(), font.italic());
 }
 
 void Graph3D::setTitleFont(const QFont& font)
 {
-	if (titleFnt != font)
-	{
-		titleFnt=font;
-		sp->setTitleFont(font.family(),font.pointSize(),font.weight(),font.italic());
+	if (titleFnt != font){
+		titleFnt = font;
+		sp->setTitleFont(font.family(), font.pointSize(), font.weight(), font.italic());
 	}
 }
 
 void Graph3D::setOptions(const QStringList& lst)
 {
-	legendOn=false;
+	if (lst.size() < 3)
+		return;
+
+	legendOn = false;
 	if (lst[1].toInt() == 1)
-		legendOn=true;
-	sp->showColorLegend(legendOn);
-	sp->setResolution(lst[2].toInt());
+		legendOn = true;
+
+	if (d_active_curve){
+		d_active_curve->showColorLegend(legendOn);
+		d_active_curve->setResolution(lst[2].toInt());
+	}
+
 	setLabelsDistance(lst[3].toInt());
 }
 
@@ -2613,12 +2672,16 @@ void Graph3D::setOptions(bool legend, int r, int dist)
 {
 	sp->showColorLegend(legend);
 	legendOn = legend;
-	sp->setResolution(r);
+	if (d_active_curve)
+		d_active_curve->setResolution(r);
 	setLabelsDistance(dist);
 }
 
 void Graph3D::setDataColorMap(const QwtLinearColorMap& colorMap)
 {
+	if (!d_active_curve)
+		return;
+
 	d_color_map = colorMap;
 	d_color_map_file = QString::null;
 
@@ -2636,7 +2699,7 @@ void Graph3D::setDataColorMap(const QwtLinearColorMap& colorMap)
 		cv.push_back(rgb);
 	}
 
-	col_ = new StandardColor(sp);
+	col_ = new StandardColor(d_active_curve);
 	col_->setColorVector(cv);
 	sp->setDataColor(col_);
 
@@ -2656,12 +2719,15 @@ void Graph3D::setDataColorMap(const ColorVector& colors, const QwtLinearColorMap
 
 void Graph3D::changeTransparency(double t)
 {
+	if (!d_active_curve)
+		return;
+
 	if (d_alpha == t)
 		return;
 
 	d_alpha = t;
 
-	Qwt3D::StandardColor* color=(StandardColor*) sp->dataColor ();
+	Qwt3D::StandardColor* color = (StandardColor*)d_active_curve->dataColor ();
 	color->setAlpha(t);
 
     sp->showColorLegend(legendOn);
@@ -2672,12 +2738,15 @@ void Graph3D::changeTransparency(double t)
 
 void Graph3D::setTransparency(double t)
 {
+	if (!d_active_curve)
+		return;
+
 	if (d_alpha == t)
 		return;
 
 	d_alpha = t;
 
-	Qwt3D::StandardColor* color=(StandardColor*) sp->dataColor ();
+	Qwt3D::StandardColor* color = (StandardColor*)d_active_curve->dataColor ();
 	color->setAlpha(t);
 }
 
@@ -2691,15 +2760,15 @@ void Graph3D::showWorksheet()
 
 void Graph3D::setAntialiasing(bool smooth)
 {
-    sp->makeCurrent();
+	sp->makeCurrent();
 	sp->setSmoothMesh(smooth);
 	sp->coordinates()->setLineSmooth(smooth);
 	if (d_table_plot_type == Bars && pointStyle == VerticalBars)
-        setBarStyle();
-    else {
-        sp->updateData();
-        sp->updateGL();
-    }
+		setBarStyle();
+	else {
+		sp->updateData();
+		sp->updateGL();
+	}
 }
 
 /*!
@@ -2736,7 +2805,10 @@ void Graph3D::setDataColorMap(const QString& fileName)
 
 void Graph3D::setDataColorMap(const ColorVector& colors)
 {
-	col_ = new StandardColor(sp);
+	if (!d_active_curve)
+		return;
+
+	col_ = new StandardColor(d_active_curve);
 	col_->setColorVector(colors);
 
 	sp->setDataColor(col_);
@@ -2838,30 +2910,43 @@ void Graph3D::copy(Graph3D* g)
 	if (g->plotStyle() == Qwt3D::USER ){
 		switch (pointStyle){
 			case None :
-				sp->setPlotStyle(g->plotStyle());
+				if (d_active_curve)
+					d_active_curve->setPlotStyle(g->plotStyle());
 			break;
 
 			case Dots :
 				d_point_size = g->pointsSize();
 				d_smooth_points = g->smoothPoints();
-				sp->setPlotStyle(Dot(d_point_size, d_smooth_points));
+				if (d_active_curve){
+					Dot dot = Dot(d_point_size, d_smooth_points);
+					d_active_curve->setPlotStyle(dot);
+				}
 			break;
 
 			case VerticalBars :
 				setBarRadius(g->barsRadius());
 				d_bar_lines = g->barLines();
 				d_filled_bars = g->filledBars();
-				sp->setPlotStyle(Bar(d_bars_rad, d_bar_lines, d_filled_bars));
+				if (d_active_curve){
+					Bar bar = Bar(d_bars_rad, d_bar_lines, d_filled_bars);
+					d_active_curve->setPlotStyle(bar);
+				}
 				break;
 
 			case HairCross :
 				setCrossOptions(g->crossHairRadius(), g->crossHairLinewidth(), g->smoothCrossHair(), g->boxedCrossHair());
-				sp->setPlotStyle(CrossHair(crossHairRad, crossHairLineWidth, crossHairSmooth, crossHairBoxed));
+				if (d_active_curve){
+					CrossHair cross = CrossHair(crossHairRad, crossHairLineWidth, crossHairSmooth, crossHairBoxed);
+					d_active_curve->setPlotStyle(cross);
+				}
 				break;
 
 			case Cones :
 				setConeOptions(g->coneRadius(), g->coneQuality());
-				sp->setPlotStyle(Cone3D(conesRad, conesQuality));
+				if (d_active_curve){
+					Cone3D cone = Cone3D(conesRad, conesQuality);
+					d_active_curve->setPlotStyle(cone);
+				}
 				break;
 		}
 	} else
@@ -2976,54 +3061,56 @@ Graph3D* Graph3D::restore(ApplicationWindow* app, const QStringList &lst, int fi
 	if (date.isEmpty())
 		date = QDateTime::currentDateTime().toString(Qt::LocalDate);
 
-	fList=lst[2].split("\t", QString::SkipEmptyParts);
+	fList = lst[2].split("\t");
 
 	Graph3D *plot = app->newPlot3D(caption);
 
 	ApplicationWindow::restoreWindowGeometry(app, plot, lst[1]);
 	QString formula = fList[1];
-	if (formula.endsWith("(Y)",true)){//Ribbon plot
-		Table* t = app->table(formula.left(formula.find("_", 0)));
-		if (!t)
-			return 0;
+	if (!formula.isEmpty()){
+		if (formula.endsWith("(Y)",true)){//Ribbon plot
+			Table* t = app->table(formula.left(formula.find("_", 0)));
+			if (!t)
+				return 0;
 
-		formula.remove("(X)").remove("(Y)");
-		QStringList l = formula.split(",");
-		if (l.size() == 2)
-			plot->addRibbon(t, l[0], l[1], fList[2].toDouble(), fList[3].toDouble(),
-			fList[4].toDouble(), fList[5].toDouble(), fList[6].toDouble(), fList[7].toDouble());
-	} else if (formula.contains("(Z)",true) > 0){
-		Table* t = app->table(formula.left(formula.find("_", 0)));
-		if (!t)
-			return 0;
-
-		plot->show();
-		formula.remove("(X)").remove("(Y)").remove("(Z)");
-		QStringList l = formula.split(",");
-		if (l.size() == 3)
-			plot->loadData(t, t->colIndex(l[0]), t->colIndex(l[1]), t->colIndex(l[2]),
-					   fList[2].toDouble(),fList[3].toDouble(), fList[4].toDouble(),
-					   fList[5].toDouble(),fList[6].toDouble(),fList[7].toDouble());
-	} else if (formula.startsWith("matrix<",true) && fList[1].endsWith(">",false)){
-		formula.remove("matrix<", true).remove(">");
-		Matrix* m = app->matrix(formula);
-		if (!m)
-			return 0;
-
-		plot->addMatrixData(m, fList[2].toDouble(),fList[3].toDouble(),
-				fList[4].toDouble(),fList[5].toDouble(),fList[6].toDouble(),fList[7].toDouble());
-	} else if (formula.contains(",")){
-		QStringList l = formula.split(",", QString::SkipEmptyParts);
-		plot->addParametricSurface(l[0], l[1], l[2], l[3].toDouble(), l[4].toDouble(),
-				l[5].toDouble(), l[6].toDouble(), l[7].toInt(), l[8].toInt(), l[9].toInt(), l[10].toInt());
-	} else {
-		QStringList l = formula.split(";", QString::SkipEmptyParts);
-		if (l.count() == 1)
-			plot->addFunction(formula, fList[2].toDouble(), fList[3].toDouble(),
+			formula.remove("(X)").remove("(Y)");
+			QStringList l = formula.split(",");
+			if (l.size() == 2)
+				plot->addRibbon(t, l[0], l[1], fList[2].toDouble(), fList[3].toDouble(),
 				fList[4].toDouble(), fList[5].toDouble(), fList[6].toDouble(), fList[7].toDouble());
-		else if (l.count() == 3)
-			plot->addFunction(l[0], fList[2].toDouble(), fList[3].toDouble(), fList[4].toDouble(),
-					fList[5].toDouble(), fList[6].toDouble(), fList[7].toDouble(), l[1].toInt(), l[2].toInt());
+		} else if (formula.contains("(Z)",true) > 0){
+			Table* t = app->table(formula.left(formula.find("_", 0)));
+			if (!t)
+				return 0;
+
+			plot->show();
+			formula.remove("(X)").remove("(Y)").remove("(Z)");
+			QStringList l = formula.split(",");
+			if (l.size() == 3)
+				plot->loadData(t, t->colIndex(l[0]), t->colIndex(l[1]), t->colIndex(l[2]),
+						   fList[2].toDouble(),fList[3].toDouble(), fList[4].toDouble(),
+						   fList[5].toDouble(),fList[6].toDouble(),fList[7].toDouble());
+		} else if (formula.startsWith("matrix<",true) && fList[1].endsWith(">",false)){
+			formula.remove("matrix<", true).remove(">");
+			Matrix* m = app->matrix(formula);
+			if (!m)
+				return 0;
+
+			plot->addMatrixData(m, fList[2].toDouble(),fList[3].toDouble(),
+					fList[4].toDouble(),fList[5].toDouble(),fList[6].toDouble(),fList[7].toDouble());
+		} else if (formula.contains(",")){
+			QStringList l = formula.split(",", QString::SkipEmptyParts);
+			plot->addParametricSurface(l[0], l[1], l[2], l[3].toDouble(), l[4].toDouble(),
+					l[5].toDouble(), l[6].toDouble(), l[7].toInt(), l[8].toInt(), l[9].toInt(), l[10].toInt());
+		} else {
+			QStringList l = formula.split(";", QString::SkipEmptyParts);
+			if (l.count() == 1)
+				plot->addFunction(formula, fList[2].toDouble(), fList[3].toDouble(),
+					fList[4].toDouble(), fList[5].toDouble(), fList[6].toDouble(), fList[7].toDouble());
+			else if (l.count() == 3)
+				plot->addFunction(l[0], fList[2].toDouble(), fList[3].toDouble(), fList[4].toDouble(),
+						fList[5].toDouble(), fList[6].toDouble(), fList[7].toDouble(), l[1].toInt(), l[2].toInt());
+		}
 	}
 
 	if (!plot)
@@ -3033,7 +3120,7 @@ Graph3D* Graph3D::restore(ApplicationWindow* app, const QStringList &lst, int fi
 	plot->setBirthDate(date);
 	plot->setIgnoreFonts(true);
 
-	fList=lst[4].split("\t", QString::SkipEmptyParts);
+	fList = lst[4].split("\t", QString::SkipEmptyParts);
 	plot->setGrid(fList[1].toInt());
 
 	plot->setTitle(lst[5].split("\t"));

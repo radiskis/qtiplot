@@ -6,7 +6,7 @@
 namespace Qwt3D
 {
 
-class Plot3D;
+class Curve;
 
 //! The Cross Hair Style
 class QWT3D_EXPORT CrossHair : public VertexEnrichment

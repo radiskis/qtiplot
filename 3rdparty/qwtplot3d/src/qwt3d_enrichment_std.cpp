@@ -1,6 +1,6 @@
 #include <math.h>
 #include "qwt3d_color.h"
-#include "qwt3d_plot.h"
+#include "qwt3d_curve.h"
 #include "qwt3d_enrichment_std.h"
 
 using namespace Qwt3D;
@@ -320,16 +320,14 @@ void Arrow::draw(Qwt3D::Triple const& pos)
 
 //! transform a vector on the z axis with length |beg-end|, to get them in coincidence with the vector(beg,end)
 /**
-	\return Angle in degree to rotate
+	\return	      Angle in degree to rotate
 	\param axis   The axis to rotate around
-	\param beg    result vector base point
-	\param end    result vector top point
+	\param vec    result vector of points
 */ 
 double Arrow::calcRotation(Triple& axis, FreeVector const& vec)
 {
-	
-	Triple end = vec.top;
-	Triple beg = vec.base;
+	Triple end = vec.top;			// param end    result vector top point
+	Triple beg = vec.base;			// param beg    result vector base point
 
 	Triple firstbeg(0.0,0.0,0.0);
 	Triple firstend(0.0,0.0,(end-beg).length());
