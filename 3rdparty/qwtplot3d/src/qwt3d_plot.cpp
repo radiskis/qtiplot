@@ -3,173 +3,93 @@
 #pragma warning ( disable : 4786 )
 #endif
 
+#include <QDebug>
+
 #include "qwt3d_plot.h"
 #include "qwt3d_enrichment.h"
-
+#include "qwt3d_curve.h"
 
 using namespace Qwt3D;
-	
+
+#ifdef QT_NO_DEBUG_STREAM
+	#define DEBUG		QNoDebug()
+#else
+	#define DEBUG		qDebug()
+#endif
+
+//! Non-member '<<' debug stream operator method used for 'Triple' types
+static QDebug operator<<(QDebug dbg, const Triple& t)
+{
+	dbg.nospace() << "Triple(" << t.x << ',' << t.y << ',' << t.z << ')';
+
+	return dbg.space();
+}
+
 /*!
-  This should be the first call in your derived classes constructors.  
+  This should be the first call in your derived classes constructor.
 */
 #if QT_VERSION < 0x040000
-Plot3D::Plot3D( QWidget* parent, const char* name )
-    : QGLWidget( parent, name )
+Plot3D::Plot3D(QWidget* parent, const char* name)
+    : QGLWidget(parent, name)
 #else
-Plot3D::Plot3D( QWidget * parent, const QGLWidget * shareWidget)
-    : QGLWidget( parent, shareWidget) 
+Plot3D::Plot3D(QWidget* parent, const QGLWidget* shareWidget)
+	: ExtGLWidget(parent, shareWidget) 
 #endif
-{  
+{
 	d_exporting_vector = false;
-	initializedGL_ = false;
 	renderpixmaprequest_ = false;
-	xRot_ = yRot_ = zRot_ = 0.0;		// default object rotation
-  
-	xShift_ = yShift_ = zShift_ = xVPShift_ = yVPShift_ = 0.0;
-	xScale_ = yScale_ = zScale_ = 1.0;
-	zoom_ = 1;
-	ortho_ = true;
-	plotstyle_ = FILLEDMESH;
-	userplotstyle_p = 0;
-	shading_ = GOURAUD;
-	floorstyle_ = NOFLOOR;
-	isolines_ = 10;
-	displaylegend_ = false;
-	smoothdatamesh_p = false;
-	actualData_p = 0;
-
-	lastMouseMovePosition_ = QPoint(0,0);
-	mpressed_ = false;
-	mouse_input_enabled_ = true;
-
-	setPolygonOffset(0.5);
-	setMeshColor(RGBA(0.0,0.0,0.0));
-	setMeshLineWidth(1);
-	setBackgroundColor(RGBA(1.0,1.0,1.0,1.0));
+	doublelegend_ 		 = false;
 
 	displaylists_p = std::vector<GLuint>(DisplayListSize);
-	for (unsigned k=0; k!=displaylists_p.size(); ++k)
+	for (unsigned k=0; k!=displaylists_p.size(); ++k) {
 		displaylists_p[k] = 0;
+	}
 
-	datacolor_p = new StandardColor(this, 100);
-	title_.setPlot(this);
-	title_.setFont("Courier", 16, QFont::Bold);
-	title_.setString("");
-
-	setTitlePosition(0.95);
-	
-	kbd_input_enabled_ = true;
-
-#if QT_VERSION < 0x040000
-  setFocusPolicy(QWidget::StrongFocus);
-  assignMouse(Qt::LeftButton, 
-							Qt::LeftButton | Qt::ShiftButton,
-							Qt::LeftButton, 
-							Qt::LeftButton | Qt::AltButton, 
-							Qt::LeftButton | Qt::AltButton, 
-							Qt::LeftButton | Qt::AltButton | Qt::ShiftButton,
-							Qt::LeftButton | Qt::AltButton | Qt::ControlButton,
-							Qt::LeftButton | Qt::ControlButton, 
-							Qt::LeftButton | Qt::ControlButton);
-
-
-	assignKeyboard(Qt::Key_Down, Qt::Key_Up,
-    Qt::ShiftButton + Qt::Key_Right, Qt::ShiftButton + Qt::Key_Left,
-    Qt::Key_Right, Qt::Key_Left,
-    Qt::AltButton + Qt::Key_Right, Qt::AltButton + Qt::Key_Left,
-    Qt::AltButton + Qt::Key_Down, Qt::AltButton + Qt::Key_Up,
-    Qt::AltButton + Qt::ShiftButton + Qt::Key_Down, Qt::AltButton + Qt::ShiftButton + Qt::Key_Up,
-    Qt::AltButton + Qt::ControlButton + Qt::Key_Down, Qt::AltButton + Qt::ControlButton + Qt::Key_Up,
-    Qt::ControlButton + Qt::Key_Right, Qt::ControlButton + Qt::Key_Left,
-    Qt::ControlButton + Qt::Key_Down, Qt::ControlButton + Qt::Key_Up
-   );
-#else
-  setFocusPolicy(Qt::StrongFocus);
-  assignMouse(Qt::LeftButton, 
-							MouseState(Qt::LeftButton, Qt::ShiftModifier),
-							Qt::LeftButton, 
-							MouseState(Qt::LeftButton, Qt::AltModifier), 
-							MouseState(Qt::LeftButton, Qt::AltModifier), 
-							MouseState(Qt::LeftButton, Qt::AltModifier | Qt::ShiftModifier),
-							MouseState(Qt::LeftButton, Qt::AltModifier | Qt::ControlModifier),
-							MouseState(Qt::LeftButton, Qt::ControlModifier), 
-							MouseState(Qt::LeftButton, Qt::ControlModifier)
-              );
-
-
-	assignKeyboard(Qt::Key_Down, Qt::Key_Up,
-    KeyboardState(Qt::Key_Right, Qt::ShiftModifier), KeyboardState(Qt::Key_Left, Qt::ShiftModifier),
-    Qt::Key_Right, Qt::Key_Left,
-    KeyboardState(Qt::Key_Right, Qt::AltModifier), KeyboardState(Qt::Key_Left, Qt::AltModifier),
-    KeyboardState(Qt::Key_Down, Qt::AltModifier), KeyboardState(Qt::Key_Up, Qt::AltModifier),
-    KeyboardState(Qt::Key_Down, Qt::AltModifier|Qt::ShiftModifier), KeyboardState(Qt::Key_Up, Qt::AltModifier|Qt::ShiftModifier),
-    KeyboardState(Qt::Key_Down, Qt::AltModifier|Qt::ControlModifier), KeyboardState(Qt::Key_Up, Qt::AltModifier|Qt::ControlModifier),
-    KeyboardState(Qt::Key_Right, Qt::ControlModifier), KeyboardState(Qt::Key_Left, Qt::ControlModifier),
-    KeyboardState(Qt::Key_Down, Qt::ControlModifier), KeyboardState(Qt::Key_Up, Qt::ControlModifier)
-   );
-#endif
-	setKeySpeed(3,5,5);
-	legend_.setPlot(this);
-	legend_.setLimits(0, 100);
-	legend_.setMajors(10);
-	legend_.setMinors(2);
-	legend_.setOrientation(ColorLegend::BottomTop, ColorLegend::Left);
-
-	lighting_enabled_ = false;
-	disableLighting();
-	lights_ = std::vector<Light>(8);
+	curve_p = 0;
+	setBackgroundColor(RGBA(1.0,1.0,1.0,1.0));
+	update_coordinate_sys_ = true;
 }
 
 /*!
   Release allocated resources
 */
-
 Plot3D::~Plot3D()
 {
+	int i;
+
 	makeCurrent();
 	SaveGlDeleteLists( displaylists_p[0], displaylists_p.size() );
-	datacolor_p->destroy();
-  delete userplotstyle_p;
-  for (ELIT it = elist_p.begin(); it!=elist_p.end(); ++it)
-    delete (*it);
 
-  elist_p.clear();
+    for (i = 0; i < curvelist_p.size(); ++i) {
+        delete curvelist_p[i];
+    }
+    for (DrawableList::const_iterator itr = drawablelist_p.begin(); itr != drawablelist_p.end(); ++itr ) {
+        delete (*itr);
+    }
+    for (i = 0; i < titlelist_p.size(); ++i) {
+        delete titlelist_p[i];
+    }
 }
-
 
 /*!
   Set up the OpenGL rendering state
 */
 void Plot3D::initializeGL()
 {
-  glEnable( GL_BLEND );
-  glEnable(GL_DEPTH_TEST);
-	glShadeModel(GL_SMOOTH);
-	
-  // Set up the lights
+	ExtGLWidget::initializeGL();
+	if (renderpixmaprequest_) {
+		renderpixmaprequest_ = false;
+	}
+}
 
-  disableLighting();
-	
-  GLfloat whiteAmb[4] = {1.0, 1.0, 1.0, 1.0};
-    
-  setLightShift(0, 0, 3000);
-  glEnable(GL_COLOR_MATERIAL);
+//! Reimplements QGLWidget::renderPixmap
+QPixmap Plot3D::renderPixmap(int w/* =0 */, int h/* =0 */, bool useContext/* =false */)
+{
+	renderpixmaprequest_ = true;
+	for (int i = 0; i != curvelist_p.size(); ++i)
+		curvelist_p[i]->queueUpdate();
 
-	glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_TRUE);
-  glLightModelfv(GL_LIGHT_MODEL_AMBIENT, whiteAmb);
-
-  setMaterialComponent(GL_DIFFUSE, 1.0);
-  setMaterialComponent(GL_SPECULAR, 0.3);
-  setMaterialComponent(GL_SHININESS, 5.0);
-  setLightComponent(GL_DIFFUSE, 1.0);
-  setLightComponent(GL_SPECULAR, 1.0);
-
-  initializedGL_ = true;	
-  if (renderpixmaprequest_)
-  {
-    updateData();
-    renderpixmaprequest_ = false;
-  }
+	return QGLWidget::renderPixmap(w, h, useContext);
 }
 
 /*!
@@ -177,81 +97,61 @@ void Plot3D::initializeGL()
 */
 void Plot3D::paintGL()
 {
+	int i;
+
 	glClearColor(bgcolor_.r, bgcolor_.g, bgcolor_.b, bgcolor_.a);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	
-  glMatrixMode( GL_MODELVIEW );
+
+	glMatrixMode( GL_MODELVIEW );
 	glPushMatrix();
-  applyLights();
+	applyLights();
 
-  glRotatef( -90, 1.0, 0.0, 0.0 ); 
-  glRotatef( 0.0, 0.0, 1.0, 0.0 ); 
-  glRotatef( 0.0, 0.0, 0.0, 1.0 );
+	glRotatef( -90, 1.0, 0.0, 0.0 ); 
+	glRotatef( 0.0, 0.0, 1.0, 0.0 ); 
+	glRotatef( 0.0, 0.0, 0.0, 1.0 );
 
-	if (displaylegend_)
-	{		
-		legend_.draw();
-	}
-	title_.setRelPosition(titlerel_, titleanchor_);
-	title_.draw();
-	
-	Triple beg = coordinates_p.first();
-	Triple end = coordinates_p.second();
-	
-	Triple center = beg + (end-beg) / 2;
-	double radius = (center-beg).length();
-	
-	glLoadIdentity();
+	CurveList::const_iterator c = curvelist_p.begin();
 
-  glRotatef( xRot_-90, 1.0, 0.0, 0.0 ); 
-  glRotatef( yRot_, 0.0, 1.0, 0.0 ); 
-  glRotatef( zRot_, 0.0, 0.0, 1.0 );
-
-	glScalef( zoom_ * xScale_, zoom_ * yScale_, zoom_ * zScale_ );
-	
-	glTranslatef(xShift_-center.x, yShift_-center.y, zShift_-center.z);
-  
-  glMatrixMode( GL_PROJECTION );
-  glLoadIdentity();
-
-	if (beg != end)
-	{		
-		if (ortho_)
-    {	
-      glOrtho( -radius, +radius, -radius, +radius, 0, 40 * radius);
-    }
-    else
-    {	
-      glFrustum( -radius, +radius, -radius, +radius, 5 * radius, 400 * radius );
-    }
-  }
-	else
-	{
-		if (ortho_)
-			glOrtho( -1.0, 1.0, -1.0, 1.0, 10.0, 100.0 );
-		else
-			glFrustum( -1.0, 1.0, -1.0, 1.0, 10.0, 100.0 );
+	for (i = 0; i != curvelist_p.size(); ++i) {
+		if (curvelist_p[i]->isColorLegend())		curvelist_p[i]->legend()->draw();
 	}
 
-  glTranslatef( xVPShift_ * 2 * radius , yVPShift_ * 2 * radius , -7 * radius );
-  
-  if (lighting_enabled_)
-    glEnable(GL_NORMALIZE);
+	for (i = 0; i != titlelist_p.size(); ++i)
+		if (c != curvelist_p.end() && (*c)) {
+			titlelist_p[i]->setRelPosition((*c)->titlerel_, (*c)->titleanchor_);
+			titlelist_p[i]->draw();
+			++c;
+		}
 
-  for (unsigned i=0; i!= displaylists_p.size(); ++i)
-	{
-		if (i!=LegendObject)
-			glCallList( displaylists_p[i] );
+	for (DrawableList::const_iterator itr = drawablelist_p.begin(); itr != drawablelist_p.end(); ++itr ) {
+		(*itr)->draw();
 	}
-  coordinates_p.draw();
+
+	ExtGLWidget::applyModelViewAndProjection(coordinates_p.first(), coordinates_p.second());
+
+	if (lighting_enabled_)	glEnable(GL_NORMALIZE);
+
+	for (unsigned int j = 0; j != displaylists_p.size(); ++j) {
+		if (j != LegendObject)		glCallList( displaylists_p[j] );
+	}
+
+	// ripped from old updateData method
+	if ( update_coordinate_sys_ ) {
+		GLStateBewarer dt(GL_DEPTH_TEST, true);
+		GLStateBewarer ls(GL_LINE_SMOOTH, true);
+		createCoordinateSystem();
+	}
+	coordinates_p.draw();
 	
-  if (lighting_enabled_)
-    glDisable(GL_NORMALIZE);
-  
-  glMatrixMode( GL_MODELVIEW );
-  glPopMatrix();
+	for (i = 0; i != curvelist_p.size(); ++i) {
+		curvelist_p[i]->draw();
+	}
+
+	if (lighting_enabled_)	glDisable(GL_NORMALIZE);
+
+	glMatrixMode( GL_MODELVIEW );
+	glPopMatrix();
 }
-
 
 /*!
   Set up the OpenGL view port
@@ -263,12 +163,115 @@ void Plot3D::resizeGL( int w, int h )
 }
 
 /*!
-  Reimplemented from QGLWidget
-*/
-QPixmap Plot3D::renderPixmap(int w/* =0 */, int h/* =0 */, bool useContext/* =false */)
+  Add a Curve object to the plot.
+  Takes ownership of the object and will delete it when finished.
+ */
+void Plot3D::addCurve(Curve* curve)
 {
-  renderpixmaprequest_ = true;
-  return QGLWidget::renderPixmap(w,h,useContext);
+	if (!curve || curvelist_p.contains(curve))		return;
+
+	if (curve->plot() != this)	curve->setPlot(this);
+	curvelist_p.push_back(curve);
+}
+
+/*!
+  Remove a Curve object from the plot.
+  Erases the curve from the object list.
+ */
+bool Plot3D::removeCurve(Curve* curve)
+{
+	if (!curve || !curvelist_p.contains(curve))		return false;
+
+	QVector<Curve*>::iterator c;
+	for (c = curvelist_p.begin(); c != curvelist_p.end(); ++c) {
+		if ((*c) == curve) {
+			curvelist_p.erase(c);
+			if (curve == curve_p)
+				setCurve(curvelist_p.size() ? curvelist_p.last() : 0);
+			return true;
+		}
+	}
+	return false;
+}
+
+/*!
+  Add a Drawable object to the plot.
+  Takes ownership of the object and will delete it when finished.
+ */
+void Plot3D::addDrawable(Drawable* drawable)
+{
+	if (!drawable || drawablelist_p.contains(drawable))		return;
+
+	drawable->setPlot(this);
+    drawablelist_p.push_back(drawable);
+}
+
+/*!
+  Remove a Drawable object from the plot.
+  Erases the drawable from the object list.
+ */
+bool Plot3D::removeDrawable(Drawable* drawable)
+{
+	if (!drawable || !drawablelist_p.contains(drawable))	return false;
+
+	QVector<Drawable*>::iterator d;
+	for (d = drawablelist_p.begin(); d != drawablelist_p.end(); ++d) {
+		if ((*d) == drawable) {
+			drawablelist_p.erase(d);
+			return true;
+		}
+	}
+	return false;
+}
+
+/*!
+  Add a Title object to the plot.
+  Takes ownership of the object and will delete it when finished.
+ */
+void Plot3D::addTitle(Label* label)
+{
+	if (!label || titlelist_p.contains(label))		return;
+
+	if (title() != label)	setTitle(label);
+	label->setPlot(this);
+	titlelist_p.push_back(label);
+}
+
+/*!
+  Remove a Title object from the plot.
+  Erases the curve from the object list.
+ */
+bool Plot3D::removeTitle(Label* title)
+{
+	if (!title || !titlelist_p.contains(title))		return false;
+
+	QVector<Label*>::iterator t;
+	for (t = titlelist_p.begin(); t != titlelist_p.end(); ++t) {
+		if ((*t) == title) {
+			titlelist_p.erase(t);
+			if (title == title_p)
+				setTitle(titlelist_p.size() ? titlelist_p.last() : 0);
+			return true;
+		}
+	}
+	return false;
+}
+
+void Plot3D::manageConnect(bool connect, Qwt3D::Curve* curve)
+{
+	DEBUG << "Plot3D:" << (connect ? "Connecting" : "Disconnecting") << "Curve(s)";
+
+	curve ? (connect ? curve->connects() : curve->disconnects()) :
+			childConnect(connect);
+}
+
+void Plot3D::childConnect(bool connect)
+{
+	DEBUG << "Plot3D:" << (connect ? "Connecting" : "Disconnecting") << "All Curves";
+
+	foreach (Curve* curve, curvelist_p) {
+		if (curve)	connect ? curve->connects() : curve->disconnects();
+	}
 }
 
 /*!
@@ -288,55 +291,52 @@ void Plot3D::createCoordinateSystem( Triple beg, Triple end )
 void Plot3D::createCoordinateSystem()
 {
 	calculateHull();
-  Triple beg = hull().minVertex; // Irix 6.5 compiler bug
-  Triple end = hull().maxVertex;
-  createCoordinateSystem(beg, end);
+	Qwt3D::ParallelEpiped the_hull = hull();
+	Triple beg = the_hull.minVertex; // Irix 6.5 compiler bug
+	Triple end = the_hull.maxVertex;
+
+	createCoordinateSystem(beg, end);
 }
 
 /*!
-  Show a color legend
+	Update the hull
 */
-void Plot3D::showColorLegend( bool show )
+void Plot3D::calculateHull()
 {
- 	displaylegend_ = show;
-	if (show)
-    datacolor_p->createVector(legend_.colors);
-	updateGL();
-}
+    Qwt3D::ParallelEpiped the_hull;
+  
+    // account for the curves (if any)
+    if ( !curvelist_p.empty() ) {
+        the_hull.minVertex.x = DBL_MAX;
+        the_hull.minVertex.y = DBL_MAX;
+        the_hull.minVertex.z = DBL_MAX;
+        the_hull.maxVertex.x = -DBL_MAX;
+        the_hull.maxVertex.y = -DBL_MAX;
+        the_hull.maxVertex.z = -DBL_MAX;
+        for ( int i = 0; i < curvelist_p.size(); ++i ) {
+            Qwt3D::ParallelEpiped sub_hull = curvelist_p[i]->hull();
 
-void Plot3D::setMeshColor(RGBA rgba)
-{
-	meshcolor_ = rgba;
-}
+            if ( sub_hull.minVertex == sub_hull.maxVertex ) {
+                continue;
+            }
 
-void Plot3D::setBackgroundColor(RGBA rgba)
-{
-	bgcolor_ = rgba;
-}
-
-
-/*!
-	assign a new coloring object for the data.
-*/
-void Plot3D::setDataColor( Color* col )
-{
-	Q_ASSERT(datacolor_p);
-
-	datacolor_p->destroy();
-	datacolor_p = col;
-}
-
-/*!
-  Set up ortogonal or perspective mode and updates widget
-*/
-void Plot3D::setOrtho( bool val )
-{
-	if (val == ortho_)
-		return;
-	ortho_ = val;
-	updateGL();
-	
-	emit projectionChanged(val);
+            if ( sub_hull.minVertex.x < the_hull.minVertex.x ) { the_hull.minVertex.x  = sub_hull.minVertex.x; }
+            if ( sub_hull.minVertex.y < the_hull.minVertex.y ) { the_hull.minVertex.y  = sub_hull.minVertex.y; }
+            if ( sub_hull.minVertex.z < the_hull.minVertex.z ) { the_hull.minVertex.z  = sub_hull.minVertex.z; }
+            if ( sub_hull.maxVertex.x > the_hull.maxVertex.x ) { the_hull.maxVertex.x  = sub_hull.maxVertex.x; }
+            if ( sub_hull.maxVertex.y > the_hull.maxVertex.y ) { the_hull.maxVertex.y  = sub_hull.maxVertex.y; }
+            if ( sub_hull.maxVertex.z > the_hull.maxVertex.z ) { the_hull.maxVertex.z  = sub_hull.maxVertex.z; }
+        }
+    }
+    setHull(the_hull);
+//
+//    Triple beg = the_hull.minVertex; // Irix 6.5 compiler bug
+//    Triple end = the_hull.maxVertex;
+//    std::cout << "Hull is from "
+//              << "(" << beg.x << ", " << beg.y << ", " << beg.z << ")"
+//              << " to "
+//              << "(" << end.x << ", " << end.y << ", " << end.z << ")"
+//              << std::endl;
 }
 
 /*!
@@ -349,152 +349,65 @@ void Plot3D::setCoordinateStyle(COORDSTYLE st)
 }
 
 /*!
-  Set plotstyle for the standard plotting types. An argument of value Qwt3D::USER
-  is ignored.
+  Update OpenGL data representation
 */
-void Plot3D::setPlotStyle( PLOTSTYLE val )
+void Plot3D::updateData(bool coord)
 {
-  if (val == Qwt3D::USER)
-    return;
-  delete userplotstyle_p;
-  userplotstyle_p = 0;
-  plotstyle_ = val;
-}
-
-/*!
-  Set plotstyle to Qwt3D::USER and an associated enrichment object.
-*/
-Qwt3D::Enrichment* Plot3D::setPlotStyle( Qwt3D::Enrichment const& obj )
-{
-  if (&obj == userplotstyle_p)
-    return userplotstyle_p;
-  
-  delete userplotstyle_p;
-  userplotstyle_p = obj.clone();
-  plotstyle_ = Qwt3D::USER;
-  return userplotstyle_p;
-}
-
-/*!
-  Set shading style
-*/
-void Plot3D::setShading( SHADINGSTYLE val )
-{
-	if (val == shading_)
-		return;
-	
-	shading_ = val;
-	
-	switch (shading_)
-	{
-		case FLAT:
-			glShadeModel(GL_FLAT);
-			break;
-		case GOURAUD:
-			glShadeModel(GL_SMOOTH);
-			break;
-		default:
-			break;
-	}
+	update_coordinate_sys_ = coord;
 	updateGL();
 }
 
 /*!
-  Set number of isolines. The lines are equidistant between minimal and maximal Z value
+  Square up the plot scale based on the loaded curve
 */
-void Plot3D::setIsolines(int steps)
+void Plot3D::normaliseScale(Curve* curve, Plot3D* parentplot, ParallelEpiped* curvehull)
 {
-	if (steps < 0)
-		return;
+	if (!parentplot) 	parentplot = this;
 
-	isolines_ = steps;
-}
+	Triple range, scale(parentplot->xScale(), parentplot->yScale(), parentplot->zScale());
+	ParallelEpiped datahull;
 
-/*!
-  Set Polygon offset. The function affects the OpenGL rendering process. 
-	Try different values for surfaces with polygons only and with mesh and polygons
-*/
-void Plot3D::setPolygonOffset( double val )
-{
-	polygonOffset_ = val;
-}
+	do {
+#ifdef BUILTIN_CURVEFIT
+		datahull = curvehull ? *curvehull : curve->data()->hull();
+#else
+		datahull = curve->data()->hull();
+#endif
+		range = Triple(datahull.maxVertex.x - datahull.minVertex.x,
+					   datahull.maxVertex.y - datahull.minVertex.y,
+					   datahull.maxVertex.z - datahull.minVertex.z);
 
-void Plot3D::setMeshLineWidth( double val )
-{
-	Q_ASSERT(val>=0);
+		DEBUG << "Plot3D: Waiting for a valid hull -" << curve
+				 << "( Min =" << datahull.minVertex << ", Max =" << datahull.maxVertex << ") range =" << range;
+	} while (!range.length());	// Waiting for a valid hull
 
-	if (val < 0)
-		return;
-	
-	meshLineWidth_ = val;
-}
+	DEBUG << "Plot3D: Existing Scale - scale =" << scale << "range =" << range << curve
+		  << "( Min =" << datahull.minVertex << ", Max =" << datahull.maxVertex << zScale() << curvehull;
 
+	scale.z = qMax(range.x/range.z, range.y/range.z);
 
-/*!
-Set relative caption position (0.5,0.5) means, the anchor point lies in the center of the screen
-*/
-void Plot3D::setTitlePosition(double rely, double relx, Qwt3D::ANCHOR anchor)
-{
-	titlerel_.y = (rely<0 || rely>1) ? 0.5 : rely;
-	titlerel_.x = (relx<0 || relx>1) ? 0.5 : relx;
+	int height	= (int)floor((range.x/range.y) + 0.5);
 
-	titleanchor_ = anchor;
-}
+	if (height == 1)	scale.y = scale.x = height;
+	else				(height > 1) ? scale.y = height : scale.x = height;
 
-/*!
-Set caption font
-*/
-void Plot3D::setTitleFont(const QString& family, int pointSize, int weight, bool italic)
-{ 
-	title_.setFont(family, pointSize, weight, italic);
-}
+	intScale(scale.x); intScale(scale.y); intScale(scale.z); // Round scales to thier nearest integers.
+	double zoomFactor = 1.0;
 
-Enrichment* Plot3D::addEnrichment(Enrichment const& e)
-{
-  if ( elist_p.end() == std::find( elist_p.begin(), elist_p.end(), &e ) )
-    elist_p.push_back(e.clone());
-  return elist_p.back();
-}
-
-bool Plot3D::degrade(Enrichment* e)
-{
-	ELIT it = std::find(elist_p.begin(), elist_p.end(), e);
-	
-	if ( it != elist_p.end() )
-	{
-		delete (*it);
-    elist_p.erase(it);
-    return true;
+	if (!parentplot) {
+		if ((xScale() != 1) && (scale.x >= xScale()) &&
+			(yScale() != 1) && (scale.y >= yScale()) &&
+			(zScale() != 1) && (scale.z >= zScale()))
+			return;
+		zoomFactor = (scale.length() > 10) ? 8/scale.length() : 2/scale.length();
+	} else {
+		if (scale.z <= zScale())
+			return;
 	}
-  return false;
-}
 
-void Plot3D::createEnrichments()
-{
-  for (ELIT it = elist_p.begin(); it!=elist_p.end(); ++it)
-  {
-    this->createEnrichment(**it);
-  } 
-}
+	setZoom(0.9 * zoomFactor * parentplot->zoom());
+	setScale(scale.x, scale.y, scale.z);
 
-/*!
-  Update OpenGL data representation
-*/
-void Plot3D::updateData()
-{
-	makeCurrent();
-  GLStateBewarer dt(GL_DEPTH_TEST, true);
-	GLStateBewarer ls(GL_LINE_SMOOTH, true);
-
-	calculateHull();	
-
-	SaveGlDeleteLists(displaylists_p[DataObject], 1); // nur Daten
-	
-	displaylists_p[DataObject] = glGenLists(1);
-	glNewList(displaylists_p[DataObject], GL_COMPILE);
-	
-  this->createEnrichments();
-	this->createData();
-		
-	glEndList();
+	DEBUG << "Plot3D: Normalised Scale - scale =" << scale << height
+		  << "( Min =" << datahull.minVertex << ", Max =" << datahull.maxVertex << "] zoom" << zoom() << zoomFactor << scale.length();
 }

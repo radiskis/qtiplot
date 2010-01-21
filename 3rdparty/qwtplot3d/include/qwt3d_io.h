@@ -48,6 +48,7 @@ public:
     framework will call this operator.
     */
     virtual bool operator()(Plot3D* plot, QString const& fname) = 0;
+    virtual bool operator()(QImage* image, QString const& fname) = 0;
   };
   
   static bool defineInputHandler( QString const& format, Function func);
@@ -55,12 +56,15 @@ public:
   static bool defineInputHandler( QString const& format, Functor const& func);
   static bool defineOutputHandler( QString const& format, Functor const& func);
   static bool save(Plot3D*, QString const& fname, QString const& format);
+  static bool save(QImage*, QString const& fname, QString const& format);
   static bool load(Plot3D*, QString const& fname, QString const& format);
   static QStringList inputFormatList();
   static QStringList outputFormatList();
   static Functor* outputHandler(QString const& format);
   static Functor* inputHandler(QString const& format);
-  
+
+  static QString title;
+
 private:  
   IO(){}
   
@@ -76,6 +80,10 @@ private:
     bool operator()(Plot3D* plot, QString const& fname)
     {
       return (hdl) ? (*hdl)(plot, fname) : false;
+    }
+    bool operator()(QImage* image, QString const& fname)
+    {
+    	Q_UNUSED(image); Q_UNUSED(fname); return false;	// image function pointer is not supported
     }
   private: 
     Function hdl;
@@ -132,6 +140,7 @@ public:
 private:
   IO::Functor* clone() const {return new PixmapWriter(*this);}
   bool operator()(Plot3D* plot, QString const& fname);
+  bool operator()(QImage* image, QString const& fname);
   QString fmt_;
   int quality_;
 };

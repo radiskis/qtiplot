@@ -792,6 +792,7 @@ void Plot3DDialog::showBarsTab()
 	boxBarsRad->setLocale(app->locale());
     boxBarsRad->setDecimals(app->d_decimal_digits);
 	boxBarsRad->setValue(d_plot->barsRadius());
+	boxBarsRad->setMinimum(0.0);
 	hb->addWidget(boxBarsRad, 0, 1);
 
 	boxBarLines = new QCheckBox(tr("Draw lines"));

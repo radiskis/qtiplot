@@ -9,7 +9,6 @@ QTI_ROOT = ..
 #############################################################################
 
 # local copy included
-INCLUDEPATH       += ../3rdparty/qwtplot3d/include
 INCLUDEPATH       += ../3rdparty/liborigin
 INCLUDEPATH       += ../3rdparty/zlib
 INCLUDEPATH 	  += ../3rdparty/QTeXEngine/src
@@ -17,12 +16,14 @@ INCLUDEPATH 	  += ../3rdparty/QTeXEngine/src
 # configurable
 INCLUDEPATH       += $$MUPARSER_INCLUDEPATH
 INCLUDEPATH       += $$QWT_INCLUDEPATH
+INCLUDEPATH       += $$QWT3D_INCLUDEPATH
 INCLUDEPATH       += $$GSL_INCLUDEPATH
 INCLUDEPATH       += $$BOOST_INCLUDEPATH
 
 # configurable libs
 LIBS         += $$MUPARSER_LIBS
 LIBS         += $$QWT_LIBS
+LIBS         += $$QWT3D_LIBS
 LIBS         += $$GSL_LIBS
 LIBS         += $$BOOST_LIBS
 
@@ -132,7 +133,6 @@ SOURCES += ../3rdparty/zlib/minigzip.c
 ################# Default Modules #############################
 ###############################################################
 
-include(../3rdparty/qwtplot3d/qwtplot3d.pri)
 include(src/analysis/analysis.pri)
 include(src/core/core.pri)
 include(src/lib/libqti.pri)

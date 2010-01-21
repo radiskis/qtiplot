@@ -6,7 +6,7 @@
 namespace Qwt3D
 {
 
-class SurfacePlot;
+class Curve;
 
 //! Abstract base class for mathematical functions
 /**
@@ -18,22 +18,22 @@ class QWT3D_EXPORT Function : public GridMapping
 
 public:
 	
-  Function(); //!< Constructs Function object w/o assigned SurfacePlot.
-  explicit Function(Qwt3D::SurfacePlot& plotWidget); //!< Constructs Function object and assigns a SurfacePlot
-  explicit Function(Qwt3D::SurfacePlot* plotWidget); //!< Constructs Function object and assigns a SurfacePlot
+  Function(); //!< Constructs Function object w/o assigned Curve.
+  explicit Function(Qwt3D::Curve& plotWidget); //!< Constructs Function object and assigns a Curve
+  explicit Function(Qwt3D::Curve* plotWidget); //!< Constructs Function object and assigns a Curve
 	virtual double operator()(double x, double y) = 0; //!< Overwrite this.
 		
 	void setMinZ(double val); //!< Sets minimal z value.
 	void setMaxZ(double val); //!< Sets maximal z value.
 
-	//! Assigns a new SurfacePlot and creates a data representation for it.
-	virtual bool create(Qwt3D::SurfacePlot& plotWidget);
-	//! Creates data representation for the actual assigned SurfacePlot.
+	//! Assigns a new Curve and creates a data representation for it.
+	virtual bool create(Qwt3D::Curve& plotWidget);
+	//! Creates data representation for the actual assigned Curve.
 	virtual bool create();
   //! Assigns the object to another widget. To see the changes, you have to call this function before create().
-  void assign(Qwt3D::SurfacePlot& plotWidget); 
+  void assign(Qwt3D::Curve& plotWidget); 
   //! Assigns the object to another widget. To see the changes, you have to call this function before create().
-  void assign(Qwt3D::SurfacePlot* plotWidget); 
+  void assign(Qwt3D::Curve* plotWidget); 
 };
 
 } // ns

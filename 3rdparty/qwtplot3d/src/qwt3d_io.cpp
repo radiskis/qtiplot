@@ -6,7 +6,13 @@
 #if QT_VERSION < 0x040000
 #else
   #include <QImageWriter>
+  #include <QMessageBox>
+  #include <QObject>
 #endif
+
+namespace {
+	QString tr(const char* val)			{ return QObject::tr(val); }
+}
 
 using namespace Qwt3D;
 
@@ -194,6 +200,16 @@ bool IO::save(Plot3D* plot, QString const& fname, QString const& format)
   return (*it->iofunc)(plot, fname);
 }
 
+bool IO::save(QImage* image, QString const& fname, QString const& format)
+{
+  IT it = IO::find(wlist(), format);
+
+  if (it == wlist().end())
+    return false;
+
+  return (*it->iofunc)(image, fname);
+}
+
 /*!
   Returns a list of currently registered input formats. 
 */
@@ -248,9 +264,14 @@ bool PixmapWriter::operator()(Plot3D* plot, QString const& fname)
 {
   QImage im = plot->grabFrameBuffer(true);
   
+  return operator()(&im, fname);
+}
+
+bool PixmapWriter::operator()(QImage* image, QString const& fname)
+{
 #if QT_VERSION < 0x040000
   QImageIO iio;
-  iio.setImage(im);
+  iio.setImage(*image);
 #else
   QImageWriter iio;
 #endif
@@ -260,7 +281,19 @@ bool PixmapWriter::operator()(Plot3D* plot, QString const& fname)
 #if QT_VERSION < 0x040000
   return iio.write();
 #else
-  return iio.write(im);
+  if (!iio.canWrite()) {
+	QMessageBox::critical(0, tr("Pixmap file Open error"),
+		tr("Could not open read only image file:<h4>%1</h4>Please check you have file/folder write access permissions").arg(fname));
+	return false;
+  }
+
+  bool status = iio.write(*image);
+
+  if (!status)
+	QMessageBox::critical(0, tr("Pixmap file Write error"),
+		tr("Could not write to image file:<h4>%1</h4>%2").arg(fname).arg(iio.errorString()));
+
+  return status;
 #endif
 }
 

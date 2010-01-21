@@ -123,25 +123,21 @@ void GridData::setSize(unsigned int columns, unsigned int rows)
 {
 	this->clear();
 	vertices = std::vector<DataRow>(columns);
+	for (unsigned int i=0; i!=vertices.size(); ++i)
 	{
-		for (unsigned int i=0; i!=vertices.size(); ++i)
+		vertices[i] = DataRow(rows);
+		for (unsigned int j=0; j!=vertices[i].size(); ++j)
 		{
-			vertices[i] = DataRow(rows);
-			for (unsigned int j=0; j!=vertices[i].size(); ++j)
-			{
-				vertices[i][j] = new GLdouble[3];
-			}
+			vertices[i][j] = new GLdouble[3];
 		}
 	}
 	normals = std::vector<DataRow>(columns);
+	for (unsigned int i=0; i!=normals.size(); ++i)
 	{
-		for (unsigned int i=0; i!=normals.size(); ++i)
+		normals[i] = DataRow(rows);
+		for (unsigned int j=0; j!=normals[i].size(); ++j)
 		{
-			normals[i] = DataRow(rows);
-			for (unsigned int j=0; j!=normals[i].size(); ++j)
-			{
-				normals[i][j] = new GLdouble[3];
-			}
+			normals[i][j] = new GLdouble[3];
 		}
 	}
 }
@@ -154,7 +150,7 @@ Triple const& CellData::operator()(unsigned cellnumber, unsigned vertexnumber)
 void CellData::clear()
 {
 	setHull(ParallelEpiped());
-  cells.clear();
+	cells.clear();
 	nodes.clear();
 	normals.clear();
 }

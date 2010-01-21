@@ -9,13 +9,13 @@
 namespace Qwt3D
 {
 
-/*!
-The class encapsulates non-visual scales.
+/*! 
+The class encapsulates non-visual scales. 
 She is utilized by Axis and also collaborates closely with AutoScaler.
-A Scale allows control over all aspects of tic generation including
-arbitrary transformations of tic values into corresponding strings.
+A Scale allows control over all aspects of tic generation including 
+arbitrary transformations of tic values into corresponding strings. 
 The strings contain what eventually will be shown as tic labels.\n
-Standard linear and logarithmic scales have been integrated yet into the Axis
+Standard linear and logarithmic scales have been integrated yet into the Axis 
 interface. User-defined axes can be derived from Scale, LinearScale et al.
 */
 class QWT3D_EXPORT Scale
@@ -27,30 +27,29 @@ class QWT3D_EXPORT Scale
     Scale();
     virtual ~Scale(){}
     virtual QString ticLabel(unsigned int idx) const;
+	double ticValue(unsigned int idx) const;
 
-    virtual void setLimits(double start, double stop);
+    virtual void setLimits(double start, double stop); 
     virtual void setMajors(int val) {majorintervals_p=val;} //!< Sets number of major intervals
     virtual void setMinors(int val) {minorintervals_p=val;} //!< Sets number of minor intervals per major interval
     virtual void setMajorLimits(double start, double stop);
 
-	double ticValue(unsigned int idx) const;
-
     int majors() const {return majorintervals_p;} //!< Returns major intervals
     int minors() const {return minorintervals_p;} //!< Returns minor intervals
 
-    //! Derived classes should return a new heap based object here.
+    //! Derived classes should return a new heap based object here.  
     virtual Scale* clone() const = 0;
     //! This function should setup the 2 vectors for major and minor positions;
     virtual void calculate() = 0;
     virtual int autoscale(double& a, double& b, double start, double stop, int ivals);
 
-    std::vector<double> majors_p, minors_p;
+    std::vector<double> majors_p, minors_p; 
     double start_p, stop_p;
     int majorintervals_p, minorintervals_p;
     double mstart_p, mstop_p;
-
+  
   private:
-    void destroy() const {delete this;} //!< Used by qwt3d_ptr
+    void destroy() const {delete this;} //!< Used by qwt3d_ptr   
 };
 
 //! The standard (1:1) mapping class for axis numbering

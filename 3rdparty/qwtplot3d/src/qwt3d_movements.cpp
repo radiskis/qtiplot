@@ -4,7 +4,7 @@
 #endif
 
 #include <float.h>
-#include "qwt3d_plot.h"
+#include "qwt3d_extglwidget.h"
 
 using namespace Qwt3D;
 
@@ -16,15 +16,14 @@ using namespace Qwt3D;
 	\param yVal angle in \e degree to rotate around the Y axis
 	\param zVal angle in \e degree to rotate around the Z axis
 */
-void Plot3D::setRotation( double xVal, double yVal, double zVal )
+void ExtGLWidget::setRotation( double xVal, double yVal, double zVal )
 {
-  if (xRot_ == xVal && yRot_ == yVal && zRot_ == zVal)
-		return;
-	
+	if (xRot_ == xVal && yRot_ == yVal && zRot_ == zVal)	return;
+
 	xRot_ = xVal;
 	yRot_ = yVal;
 	zRot_ = zVal;
-  
+
 	updateGL();
 	emit rotationChanged(xVal, yVal, zVal);
 }
@@ -36,14 +35,14 @@ void Plot3D::setRotation( double xVal, double yVal, double zVal )
 	\param zVal shift along (world) Z axis
 	\see setViewportShift()
 */
-void Plot3D::setShift( double xVal, double yVal, double zVal )
+void ExtGLWidget::setShift( double xVal, double yVal, double zVal )
 {
-  if (xShift_ == xVal && yShift_ == yVal && zShift_ == zVal)
-		return;
-	
+	if (xShift_ == xVal && yShift_ == yVal && zShift_ == zVal)	return;
+
 	xShift_ = xVal;
 	yShift_ = yVal;
 	zShift_ = zVal;
+
 	updateGL();
 	emit shiftChanged(xVal, yVal, zVal);
 }
@@ -58,14 +57,13 @@ void Plot3D::setShift( double xVal, double yVal, double zVal )
 	\param yVal shift along (view) Y axis
 	\see setShift()
 */
-void Plot3D::setViewportShift( double xVal, double yVal )
+void ExtGLWidget::setViewportShift( double xVal, double yVal )
 {
-  if (xVPShift_ == xVal && yVPShift_ == yVal)
-		return;
-	
-  xVPShift_ = xVal;
+	if (xVPShift_ == xVal && yVPShift_ == yVal)		return;
+
+	xVPShift_ = xVal;
 	yVPShift_ = yVal;
-		
+	
 	updateGL();
 	emit vieportShiftChanged(xVPShift_, yVPShift_);
 }
@@ -78,11 +76,10 @@ void Plot3D::setViewportShift( double xVal, double yVal )
 
 	A respective value of 1 represents no scaling;
 */
-void Plot3D::setScale( double xVal, double yVal, double zVal )
+void ExtGLWidget::setScale( double xVal, double yVal, double zVal )
 {
-  if (xScale_ == xVal && yScale_ == yVal && zScale_ == zVal)
-		return;
-	
+	if (xScale_ == xVal && yScale_ == yVal && zScale_ == zVal)	return;
+
 	xScale_ = (xVal < DBL_EPSILON ) ? DBL_EPSILON : xVal;
 	yScale_ = (yVal < DBL_EPSILON ) ? DBL_EPSILON : yVal;
 	zScale_ = (zVal < DBL_EPSILON ) ? DBL_EPSILON : zVal;
@@ -95,12 +92,11 @@ void Plot3D::setScale( double xVal, double yVal, double zVal )
   Set the (zoom in addition to scale).
 	\param val zoom value (value == 1 indicates no zooming)
 */
-void Plot3D::setZoom( double val )
+void ExtGLWidget::setZoom( double val )
 {
-  if (zoom_ == val)
-		return;
+	if (zoom_ == val)	return;
 
 	zoom_ = (val < DBL_EPSILON ) ? DBL_EPSILON : val;
- 	updateGL();
+	updateGL();
 	emit zoomChanged(val);
 }

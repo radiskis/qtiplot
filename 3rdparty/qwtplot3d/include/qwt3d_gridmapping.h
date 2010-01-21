@@ -6,7 +6,7 @@
 namespace Qwt3D
 {
 
-class SurfacePlot;
+class Curve;
 
 
 //! Abstract base class for mappings acting on rectangular grids
@@ -16,7 +16,7 @@ class SurfacePlot;
 class QWT3D_EXPORT GridMapping : public Mapping
 {
 public:
-  GridMapping(); //!< Constructs GridMapping object w/o assigned SurfacePlot.
+  GridMapping(); //!< Constructs GridMapping object w/o assigned Curve.
 
 	void setMesh(unsigned int columns, unsigned int rows); //!< Sets number of rows and columns. 
 	void setDomain(double minu, double maxu, double minv, double maxv); //!< Sets u-v domain boundaries.
@@ -24,7 +24,7 @@ public:
 
 protected:
   Qwt3D::ParallelEpiped range_p;
-  Qwt3D::SurfacePlot* plotwidget_p;
+  Qwt3D::Curve* plotwidget_p;
 	unsigned int umesh_p, vmesh_p;
 	double minu_p, maxu_p, minv_p, maxv_p;
 };

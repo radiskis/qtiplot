@@ -7,7 +7,7 @@
 namespace Qwt3D
 {
 
-class Plot3D;
+class Curve;
 
 
 //! Abstract base class for data dependent visible user objects
@@ -32,11 +32,11 @@ public:
   virtual Enrichment* clone() const = 0; //!< The derived class should give back a new Derived(something) here
   virtual void drawBegin(){}; //!< Empty per default. Can be overwritten.
   virtual void drawEnd(){}; //!< Empty per default. Can be overwritten.
-  virtual void assign(Plot3D const& pl) {plot = &pl;} //!< Assign to existent plot;
+  virtual void assign(Curve const& pl) {plot = &pl;} //!< Assign to existent plot;
   virtual TYPE type() const = 0; //!< Overwrite 
 
 protected:
-  const Plot3D* plot;
+  const Curve* plot;
 };
 
 //! Abstract base class for vertex dependent visible user objects

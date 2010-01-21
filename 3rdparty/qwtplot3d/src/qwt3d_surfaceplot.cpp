@@ -22,9 +22,14 @@ SurfacePlot::SurfacePlot( QWidget * parent, const QGLWidget * shareWidget)
 	actualDataG_ = new GridData();
 	actualDataC_ = new CellData();
 
-  actualData_p = actualDataG_;
+	actualData_p = actualDataG_;
 
-  floorstyle_ = NOFLOOR;
+	floorstyle_ = NOFLOOR;
+	point_size_ = 5;
+	datapoints_	= false;
+	facemode_	= false;
+	sidemode_	= false;
+	floormode_	= true;
 }
 
 SurfacePlot::~SurfacePlot()
@@ -122,11 +127,31 @@ void SurfacePlot::createData()
 void SurfacePlot::createFloorData()
 {
 	if (!actualData_p)
-    return;
-  if (actualData_p->datatype == Qwt3D::POLYGON)
-    createFloorDataC();
-  else if (actualData_p->datatype == Qwt3D::GRID)
-   createFloorDataG();  
+		return;
+	if (actualData_p->datatype == Qwt3D::POLYGON)
+		createFloorDataC();
+	else if (actualData_p->datatype == Qwt3D::GRID)
+		createFloorDataG();  
+}
+
+void SurfacePlot::createSideData()
+{
+	if (!actualData_p)
+		return;
+	if (actualData_p->datatype == Qwt3D::POLYGON)
+		createSideDataC();
+	else if (actualData_p->datatype == Qwt3D::GRID)
+		createSideDataG();  
+}
+
+void SurfacePlot::createFaceData()
+{
+	if (!actualData_p)
+		return;
+	if (actualData_p->datatype == Qwt3D::POLYGON)
+		createFaceDataC();
+	else if (actualData_p->datatype == Qwt3D::GRID)
+		createFaceDataG();  
 }
 
 /**
@@ -148,7 +173,7 @@ pair<int,int> SurfacePlot::facets() const
 
 void SurfacePlot::createPoints()
 {
-  Dot pt;
+  Dot pt(point_size_,true);
   createEnrichment(pt);
 }
 
@@ -180,4 +205,58 @@ void SurfacePlot::createEnrichment(Enrichment& p)
                                   actualDataG_->vertices[i][j][2]));
   }
   p.drawEnd(); 
+}
+
+void SurfacePlot::drawVertex(Triple& vertex, double shift, unsigned int comp)
+{
+	switch (comp) {
+	case 0:
+		glVertex3d(shift, vertex.y, vertex.z);		break;
+	case 1:
+		glVertex3d(vertex.x, shift, vertex.z);		break;
+	case 2:
+		glVertex3d(vertex.x, vertex.y, shift);		break;
+	default:
+		glVertex3d(vertex.x, vertex.y, vertex.z);		
+	}
+}
+
+void SurfacePlot::drawIntersections(vector<Triple>& intersection, double shift, unsigned int comp,
+									bool projected, vector<RGBA>* col)
+{
+	if (intersection.empty())
+		return;
+
+	if (intersection.size() > 2) {
+		glBegin(GL_LINE_STRIP);
+			for (unsigned dd = 0; dd!=intersection.size(); ++dd) {
+				if (colour)	glColor4d((*colour)[dd].r, (*colour)[dd].g, (*colour)[dd].b, (*colour)[dd].a);
+				drawVertex(intersection[dd], shift, comp);
+			}
+		glEnd();
+
+		if (projected) {
+			glBegin(GL_POINTS);
+				drawVertex(intersection[0], shift, comp);
+			glEnd();
+		}
+	} else if (intersection.size() == 2) {
+		glBegin(GL_LINES);
+			drawVertex(intersection[0], shift, comp);
+			drawVertex(intersection[1], shift, comp);
+
+			// small pixel gap problem (see OpenGL spec.)
+			drawVertex(intersection[1], shift, comp);
+			drawVertex(intersection[0], shift, comp);
+		glEnd();
+
+		if (projected) {
+			glBegin(GL_POINTS);
+				drawVertex(intersection[0], shift, comp);
+				drawVertex(intersection[1], shift, comp);
+			glEnd();
+		}
+	}
+
+	intersection.clear();
 }

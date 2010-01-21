@@ -34,13 +34,13 @@ const double PI = 3.14159265358979323846264338328;
 //! Plotting style
 enum PLOTSTYLE
 {
-	NOPLOT     , //!< No visible data
+	NOPLOT=0   , //!< No visible data
 	WIREFRAME  , //!< Wireframe style
 	HIDDENLINE , //!< Hidden Line style
 	FILLED     , //!< Color filled polygons w/o edges 
 	FILLEDMESH , //!< Color filled polygons w/ separately colored edges
-  POINTS     , //!< User defined style (used by Enrichments)
-  USER         //!< User defined style (used by Enrichments)
+	POINTS     , //!< User defined style (used by Enrichments)
+	USER         //!< User defined style (used by Enrichments)
 };
 
 //! Shading style
@@ -53,9 +53,9 @@ enum SHADINGSTYLE
 //! Style of Coordinate system
 enum COORDSTYLE
 {
-	NOCOORD, //!< Coordinate system is not visible 
-	BOX,     //!< Boxed
-	FRAME		 //!< Frame - 3 visible axes
+	NOCOORD=0,	//!< Coordinate system is not visible 
+	BOX,		//!< Boxed
+	FRAME		//!< Frame - 3 visible axes
 };
 
 //! Different types of axis scales
@@ -63,22 +63,30 @@ enum SCALETYPE
 {
 	LINEARSCALE,//!< Linear scaling 
 	LOG10SCALE,	//!< Logarithmic scaling (base 10)
-  USERSCALE   //!< User-defined (for extensions)
+	USERSCALE   //!< User-defined (for extensions)
 };
 
 //! Plotting style for floor data (projections)
 enum FLOORSTYLE
 {
-	NOFLOOR,   //!< Empty floor
-	FLOORISO,  //!< Isoline projections visible
-	FLOORDATA //!< Projected polygons visible
+	NOFLOOR=0,	//!< Empty floor
+	FLOORISO,	//!< Isoline projections visible
+	FLOORDATA	//!< Projected polygons visible
+};
+
+//! Data Projection modes
+enum PROJECTMODE
+{
+	FACE=0,		//!< Projected front and back faces
+	SIDE,		//!< Projected left and right side
+	BASE		//!< Projected onto floor base
 };
 
 //! Mesh type
 enum DATATYPE
 {
-  GRID,		//!< Rectangular grid
-	POLYGON //!< Convex polygon
+	GRID,		//!< Rectangular grid
+	POLYGON		//!< Convex polygon
 };	
 
 //! The 12 axes
@@ -238,6 +246,20 @@ struct QWT3D_EXPORT Triple
 		if (l)
 			*this /= l;
 	}
+
+	double operator()(unsigned int comp)
+	{
+		switch (comp) {
+		case 0:
+			return x;
+		case 1:
+			return y;
+		case 2:
+			return z;
+		default:
+			return 0;
+		}
+	}
 };
 
 inline const Triple operator+(const Triple& t, const Triple& t2)
@@ -378,25 +400,25 @@ protected:
 class GridData : public Data
 {
 public:
-  GridData();
-	GridData(unsigned int columns, unsigned int rows);//!< see setSize()
-  ~GridData() { clear();}
+	GridData();
+	GridData(unsigned int columns, unsigned int rows);		//!< see setSize()
+	~GridData()							{ clear();}
 
 	int columns() const;
 	int rows() const;
 
-	void clear(); //!< destroy content
-	bool empty() const { return vertices.empty();}
-	void setSize(unsigned int columns, unsigned int rows); //!< destroys content and set new size, elements are uninitialized
-	
-	DataMatrix vertices;		//!< mesh vertices
-	DataMatrix normals;		//!< mesh normals
-  void setPeriodic(bool u, bool v) {uperiodic_ = u; vperiodic_ = v;}
-  bool uperiodic() const {return uperiodic_;} 
-  bool vperiodic() const {return vperiodic_;} 
+	void clear();											//!< destroy content
+	bool empty() const					{ return vertices.empty(); }
+	void setSize(unsigned int columns, unsigned int rows);	//!< destroys content and set new size, elements are uninitialized
+
+	DataMatrix vertices;									//!< mesh vertices
+	DataMatrix normals;										//!< mesh normals
+	void setPeriodic(bool u, bool v)	{ uperiodic_ = u; vperiodic_ = v; }
+	bool uperiodic() const				{ return uperiodic_; } 
+	bool vperiodic() const				{ return vperiodic_; } 
 
 private:
-  bool uperiodic_, vperiodic_;
+	bool uperiodic_, vperiodic_;
 };
 
 
@@ -404,17 +426,17 @@ private:
 class CellData : public Data
 {
 public:
-  CellData() {datatype=Qwt3D::POLYGON;}
-  ~CellData() { clear();}
+	CellData()							{ datatype=Qwt3D::POLYGON; }
+	~CellData()							{ clear(); }
 
-	void clear(); //!< destroy content
-	bool empty() const { return cells.empty();}
+	void clear();						//!< destroy content
+	bool empty() const					{ return cells.empty(); }
 	
 	Triple const& operator()(unsigned cellnumber, unsigned vertexnumber);
-	
-	CellField cells;   //!< polygon/cell mesh 
-	TripleField    nodes;
-	TripleField    normals; //!< mesh normals
+
+	CellField		cells;				//!< polygon/cell mesh 
+	TripleField		nodes;
+	TripleField		normals;			//!< mesh normals
 };
 
 inline Triple normalizedcross(Triple const& u, Triple const& v)
