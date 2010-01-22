@@ -119,12 +119,12 @@ private slots:
 	void changeMinorTicksLength (int minLength);
 	void changeMajorTicksLength (int majLength);
 	void pageChanged ( QWidget *page);
-	void showAxis(int, int, const QString&, bool, int, int, bool,
-				  const QColor&, int, int, int, int, const QString&, const QColor&);
+	void showAxis(int, int, const QString&, bool, int, int, bool, const QColor&, int, int, int, int, const QString&, const QColor&, bool);
     void applyCanvasFormat();
     void setFrameDefaultValues();
 	void applyAxisFormat();
 	void setDisplayDateTimeFormat( const QString &);
+	void updateShowBackbone(int);
 
 protected:
     void applyCanvasFormatTo(Graph *g);
@@ -212,6 +212,7 @@ protected:
 	QComboBox *axisFormatApplyToBox;
 	QDateTimeEdit *originDateTimeBox;
 	QCheckBox *invertTitleBox;
+	QCheckBox* boxAxisBackbone;
 };
 
 #endif

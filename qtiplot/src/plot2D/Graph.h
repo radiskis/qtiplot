@@ -416,6 +416,7 @@ class Graph: public QwtPlot
 		QString saveAxesLabelsType();
 		QString saveAxesBaseline();
 		QString saveAxesFormulas();
+		QString saveAxesBackbones();
 		//@}
 
 		//! \name Texts
@@ -527,7 +528,7 @@ class Graph: public QwtPlot
 
 		void showAxis(int axis, int type, const QString& formatInfo, Table *table, bool axisOn,
 				int majTicksType, int minTicksType, bool labelsOn, const QColor& c, int format,
-                int prec, int rotation, int baselineDist, const QString& formula, const QColor& labelsColor);
+				int prec, int rotation, int baselineDist, const QString& formula, const QColor& labelsColor, bool backbone = true);
 
 		void enableAxis(int axis, bool on = true);
 		void enableAxisLabels(int axis, bool on = true);
@@ -541,7 +542,7 @@ class Graph: public QwtPlot
 		void drawAxesBackbones(bool yes);
 		bool axesBackbones(){return drawAxesBackbone;};
 		//! used when opening a project file
-		void loadAxesOptions(const QString& s);
+		void loadAxesOptions(const QStringList& lst);
 
 		void setAxisMargin(int axis, int margin);
 

@@ -645,41 +645,6 @@ file.</para>
 </sect1>
 
 <!-- ************************************************** -->
-<!--		Add / Remove curves			-->
-<!-- ************************************************** -->
-<sect1 id="add-remove-curve-dialog">
-  <title>Add/Remove curves</title>
-  <para>This dialog is activated by selecting the command <link linkend="add-remove-curve-cmd">&add-remove-curve-cmd;</link> from the <link linkend="sec-graph-menu">Graph Menu</link>.</para>
-  <para>The left window shows the columns which are available for plotting in the different tables of the project.
-  If the <emphasis>Show current folder only</emphasis> option is checked, only the tables in the active folder of the
-  project will be listed in this window.
-  The right window gives the list of the curves already plotted.
-  In the case presented below, there are two tables from which the &add-remove-curve-cmd;
-  dialog box allows to select columns. If you use this dialog box to add a column,
-  the X column will be the one defined as X in the corresponding table.</para>
-  <figure id="fig-add-remove-curve">
-    <title>The &add-remove-curve-cmd; dialog box.</title>
-    <mediaobject>
-      <imageobject>
-        <imagedata  format="PNG" fileref="pics/add-remove-curve.png"/>
-      </imageobject>
-    </mediaobject>
-  </figure>
-
-  <para>In this dialog box, if you select one curve of the plot in the right window,
-  you can change the columns used for X and Y with the <emphasis>Plot Association</emphasis> button.
-  In any case, you can't mix the X values of one table with the Y values of another one.
-  If you want to do this, you have to copy the columns in the same table.</para>
-  <para>If the curve selected is a function, you can modify it by pressing the <emphasis>Edit Function...</emphasis> button.
-  Refer to the <link linkend="add-function-dialog">&add-function-cmd; dialog box</link> for more details on functions editing.</para>
-<para>If the <emphasis>Show Range</emphasis> option is checked, the plot range of all the curves
-not defined as analytical functions will be also displayed in the right window of the dialog.
-The plot range is the interval of points which are visible in a curve. You can show/hide data points from
-a selected curve, without having to delete them, by pressing the <emphasis>Edit Range...</emphasis> button,
-which opens a dialog allowing to edit the plot range.</para>
-</sect1>
-
-<!-- ************************************************** -->
 <!--		FFT					-->
 <!-- ************************************************** -->
 <sect1 id="fft-dialog">

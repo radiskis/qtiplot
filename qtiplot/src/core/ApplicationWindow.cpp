@@ -11987,8 +11987,7 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot,
 		}
 		else if (s.contains ("DrawAxesBackbone"))
 		{
-			QStringList fList=s.split("\t");
-			ag->loadAxesOptions(fList[1]);
+			ag->loadAxesOptions(s.split("\t"));
 		}
 		else if (s.contains ("AxesLineWidth"))
 		{

@@ -517,21 +517,30 @@ QString Graph::saveLabelsFormat()
 
 QString Graph::saveAxesBaseline()
 {
-	QString s="AxesBaseline\t";
-	for (int i = 0; i<QwtPlot::axisCnt; i++)
-	{
+	QString s = "AxesBaseline\t";
+	for (int i = 0; i<QwtPlot::axisCnt; i++){
 		QwtScaleWidget *scale = (QwtScaleWidget *)axisWidget(i);
 		if (scale)
-			s+= QString::number(scale->margin()) + "\t";
+			s += QString::number(scale->margin()) + "\t";
 		else
-			s+= "0\t";
+			s += "0\t";
 	}
-	return s+"\n";
+	return s + "\n";
+}
+
+QString Graph::saveAxesBackbones()
+{
+	QString s = "DrawAxesBackbone\t" + QString::number(drawAxesBackbone);
+	for (int i = 0; i < QwtPlot::axisCnt; i++){
+		const QwtScaleDraw *sd = axisScaleDraw (i);
+		s += "\t" + QString::number(sd->hasComponent(QwtAbstractScaleDraw::Backbone));
+	}
+	return s + "\n";
 }
 
 QString Graph::saveLabelsRotation()
 {
-	QString s="LabelsRotation\t";
+	QString s = "LabelsRotation\t";
 	s+=QString::number(labelsRotation(QwtPlot::xBottom))+"\t";
 	s+=QString::number(labelsRotation(QwtPlot::xTop))+"\n";
 	return s;
@@ -651,7 +660,7 @@ void Graph::changeTicksLength(int minLength, int majLength)
 void Graph::showAxis(int axis, int type, const QString& formatInfo, Table *table,
 		bool axisOn, int majTicksType, int minTicksType, bool labelsOn,
 		const QColor& c,  int format, int prec, int rotation, int baselineDist,
-		const QString& formula, const QColor& labelsColor)
+		const QString& formula, const QColor& labelsColor, bool backbone)
 {
 	enableAxis(axis, axisOn);
 	if (!axisOn)
@@ -675,7 +684,8 @@ void Graph::showAxis(int axis, int type, const QString& formatInfo, Table *table
 		sd->formatString() == formatInfo &&
 		sd->formula() == formula &&
 		scale->margin() == baselineDist &&
-		sd->hasComponent (QwtAbstractScaleDraw::Labels) == labelsOn)
+		sd->hasComponent(QwtAbstractScaleDraw::Labels) == labelsOn &&
+		sd->hasComponent(QwtAbstractScaleDraw::Backbone) == backbone)
 		return;
 
 	scale->setMargin(baselineDist);
@@ -714,7 +724,7 @@ void Graph::showAxis(int axis, int type, const QString& formatInfo, Table *table
 	}
 
 	sd = (ScaleDraw *)axisScaleDraw (axis);
-	sd->enableComponent(QwtAbstractScaleDraw::Backbone, drawAxesBackbone);
+	sd->enableComponent(QwtAbstractScaleDraw::Backbone, backbone);
 
 	setAxisTicksLength(axis, majTicksType, minTicksType,
 			minorTickLength(), majorTickLength());
@@ -1927,21 +1937,30 @@ void Graph::drawAxesBackbones(bool yes)
 	emit modifiedGraph();
 }
 
-void Graph::loadAxesOptions(const QString& s)
+void Graph::loadAxesOptions(const QStringList& lst)
 {
-	if (s == "1")
+	if (lst.size() < 2)
 		return;
 
-	drawAxesBackbone = false;
+	drawAxesBackbone = (lst[1] == "1");
 
-	for (int i=0; i<QwtPlot::axisCnt; i++)
-	{
-		QwtScaleWidget *scale=(QwtScaleWidget*) axisWidget(i);
-		if (scale)
-		{
-			ScaleDraw *sclDraw = (ScaleDraw *)axisScaleDraw (i);
-			sclDraw->enableComponent (QwtAbstractScaleDraw::Backbone, false);
-			scale->repaint();
+	if (lst.size() == 6){
+		for (int i = 0; i<QwtPlot::axisCnt; i++){
+			QwtScaleWidget *scale = (QwtScaleWidget*) axisWidget(i);
+			if (scale){
+				ScaleDraw *sclDraw = (ScaleDraw *)axisScaleDraw (i);
+				sclDraw->enableComponent (QwtAbstractScaleDraw::Backbone, lst[i + 2].toInt());
+				scale->repaint();
+			}
+		}
+	} else if (!drawAxesBackbone){
+		for (int i=0; i<QwtPlot::axisCnt; i++){
+			QwtScaleWidget *scale=(QwtScaleWidget*) axisWidget(i);
+			if (scale){
+				ScaleDraw *sclDraw = (ScaleDraw *)axisScaleDraw (i);
+				sclDraw->enableComponent (QwtAbstractScaleDraw::Backbone, false);
+				scale->repaint();
+			}
 		}
 	}
 }
@@ -3922,7 +3941,7 @@ QString Graph::saveToString(bool saveAsTemplate)
 	s+=saveAxesLabelsType();
 	s+=saveTicksType();
 	s+="TicksLength\t"+QString::number(minorTickLength())+"\t"+QString::number(majorTickLength())+"\n";
-	s+="DrawAxesBackbone\t"+QString::number(drawAxesBackbone)+"\n";
+	s+=saveAxesBackbones();
 	s+="AxesLineWidth\t"+QString::number(axesLinewidth())+"\n";
 	s+=saveLabelsRotation();
 	s+=saveMarkers();
@@ -4354,10 +4373,8 @@ void Graph::copy(Graph* g)
 				ScaleDraw *sd = (ScaleDraw *)g->axisScaleDraw(i);
 				setAxisScaleDraw(i, new ScaleDraw(this, sd->labelsList(), sd->formatString(), sd->scaleType()));
 			}
-		} else {
-			ScaleDraw *sd = (ScaleDraw *)axisScaleDraw (i);
-			sd->enableComponent (QwtAbstractScaleDraw::Labels, false);
-		}
+		} else
+			axisScaleDraw (i)->enableComponent (QwtAbstractScaleDraw::Labels, false);
 	}
 	for (int i=0; i<QwtPlot::axisCnt; i++){//set same scales
 		const ScaleEngine *se = (ScaleEngine *)g->axisScaleEngine(i);
@@ -4383,10 +4400,16 @@ void Graph::copy(Graph* g)
 		setAxisScaleDiv (i, div);
 	}
 
-	drawAxesBackbones(g->drawAxesBackbone);
 	setMajorTicksType(g->getMajorTicksType());
 	setMinorTicksType(g->getMinorTicksType());
 	setTicksLength(g->minorTickLength(), g->majorTickLength());
+
+	for (int i = 0; i < QwtPlot::axisCnt; i++){
+		QwtScaleWidget *sc = g->axisWidget(i);
+		if (!sc)
+			continue;
+		axisScaleDraw(i)->enableComponent (QwtAbstractScaleDraw::Backbone, g->axisScaleDraw (i)->hasComponent(QwtAbstractScaleDraw::Backbone));
+	}
 
 	setAxisLabelRotation(QwtPlot::xBottom, g->labelsRotation(QwtPlot::xBottom));
   	setAxisLabelRotation(QwtPlot::xTop, g->labelsRotation(QwtPlot::xTop));

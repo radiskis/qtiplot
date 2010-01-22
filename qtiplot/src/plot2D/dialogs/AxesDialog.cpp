@@ -577,7 +577,14 @@ void AxesDialog::initAxesPage()
 	boxShowLabels->setCheckable(true);
 	boxShowLabels->setChecked(true);
 
-	bottomLayout->addWidget( boxShowLabels );
+	boxAxisBackbone = new QCheckBox(tr("Show &backbone"));
+
+	QVBoxLayout *vb = new QVBoxLayout;
+	vb->addWidget( boxShowLabels );
+	vb->addWidget( boxAxisBackbone );
+
+	bottomLayout->addLayout( vb );
+
 	QGridLayout *rightBoxLayout = new QGridLayout( boxShowLabels );
 
 	label1 = new QLabel(tr("Column"));
@@ -651,6 +658,7 @@ void AxesDialog::initAxesPage()
 	connect(axesTitlesList,SIGNAL(currentRowChanged(int)), this, SLOT(setAxisType(int)));
 	connect(axesTitlesList,SIGNAL(currentRowChanged(int)), this, SLOT(setBaselineDist(int)));
 	connect(axesTitlesList,SIGNAL(currentRowChanged(int)), this, SLOT(updateLabelsFormat(int)));
+	connect(axesTitlesList,SIGNAL(currentRowChanged(int)), this, SLOT(updateShowBackbone(int)));
 
 	connect(boxShowLabels,SIGNAL(clicked(bool)), this, SLOT(updateTickLabelsList(bool)));
 
@@ -659,6 +667,7 @@ void AxesDialog::initAxesPage()
 	connect(boxMajorTicksType, SIGNAL(activated(int)), this, SLOT(updatePlot()));
 	connect(boxMinorTicksType, SIGNAL(activated(int)), this, SLOT(updatePlot()));
 	connect(boxBaseline, SIGNAL(valueChanged(int)), this, SLOT(updatePlot()));
+	connect(boxAxisBackbone, SIGNAL(clicked(bool)), this, SLOT(updatePlot()));
 
 	connect(boxShowFormula, SIGNAL(clicked()), this, SLOT(showFormulaBox()));
 	connect(boxShowAxis, SIGNAL(clicked()), this, SLOT(showAxis()));
@@ -911,6 +920,7 @@ void AxesDialog::showAxis()
 	axisFormatBox->setEnabled(ok);
 	boxShowLabels->setEnabled(ok);
 	labelBox->setEnabled(ok);
+	boxAxisBackbone->setEnabled(ok);
 
     int axis = -1;
     int a = axesTitlesList->currentRow();
@@ -955,7 +965,7 @@ void AxesDialog::showAxis()
 
     showAxis(axis, boxAxisType->currentIndex(), boxColName->currentText(),ok, boxMajorTicksType->currentIndex(),
             boxMinorTicksType->currentIndex(), boxShowLabels->isChecked(), boxAxisColor->color(), boxFormat->currentIndex(),
-            boxPrecision->value(), boxAngle->value(), boxBaseline->value(), formula, boxAxisNumColor->color());
+			boxPrecision->value(), boxAngle->value(), boxBaseline->value(), formula, boxAxisNumColor->color(), boxAxisBackbone->isChecked());
 }
 
 void AxesDialog::updateShowBox(int axis)
@@ -1371,7 +1381,7 @@ bool AxesDialog::updatePlot()
 			formula = QString();
 		showAxis(axis, format, formatInfo, boxShowAxis->isChecked(), boxMajorTicksType->currentIndex(), boxMinorTicksType->currentIndex(),
 				boxShowLabels->isChecked(), boxAxisColor->color(), boxFormat->currentIndex(),
-				boxPrecision->value(), boxAngle->value(), baseline, formula, boxAxisNumColor->color());
+				boxPrecision->value(), boxAngle->value(), baseline, formula, boxAxisNumColor->color(), boxAxisBackbone->isChecked());
 
 		if (axis == QwtPlot::yRight){
 			QwtScaleWidget *scale = d_graph->axisWidget(axis);
@@ -1636,7 +1646,15 @@ void AxesDialog::setAxisType(int)
 
 void AxesDialog::setBaselineDist(int)
 {
-    boxBaseline->setValue(axesBaseline[mapToQwtAxisId()]);
+	boxBaseline->setValue(axesBaseline[mapToQwtAxisId()]);
+}
+
+void AxesDialog::updateShowBackbone(int)
+{
+	int axis = mapToQwtAxisId();
+	ScaleDraw *sd = (ScaleDraw *)d_graph->axisScaleDraw (axis);
+	if (sd)
+		boxAxisBackbone->setChecked(sd->hasComponent(QwtAbstractScaleDraw::Backbone));
 }
 
 void AxesDialog::setTicksType(int)
@@ -1679,7 +1697,7 @@ void AxesDialog::updateTickLabelsList(bool on)
 
     showAxis(axis, type, formatInfo, boxShowAxis->isChecked(), boxMajorTicksType->currentIndex(), boxMinorTicksType->currentIndex(),
                   boxShowLabels->isChecked(), boxAxisColor->color(), boxFormat->currentIndex(), boxPrecision->value(),
-	              boxAngle->value(), boxBaseline->value(), formula, boxAxisNumColor->color());
+				  boxAngle->value(), boxBaseline->value(), formula, boxAxisNumColor->color(), boxAxisBackbone->isChecked());
 }
 
 void AxesDialog::setCurrentScale(int axisPos)
@@ -1747,7 +1765,7 @@ void AxesDialog::setLabelsNumericFormat(int)
 
     showAxis(axis, type, formatInfo, boxShowAxis->isChecked(), boxMajorTicksType->currentIndex(),
 			boxMinorTicksType->currentIndex(), boxShowLabels->isChecked(), boxAxisColor->color(),
-			format, prec, boxAngle->value(), boxBaseline->value(), formula, boxAxisNumColor->color());
+			format, prec, boxAngle->value(), boxBaseline->value(), formula, boxAxisNumColor->color(), boxAxisBackbone->isChecked());
 }
 
 void AxesDialog::showAxisFormula(int axis)
@@ -1870,7 +1888,7 @@ void AxesDialog::updateMinorTicksList(int scaleType)
 
 void AxesDialog::showAxis(int axis, int type, const QString& labelsColName, bool axisOn,
 		int majTicksType, int minTicksType, bool labelsOn, const QColor& c, int format,
-		int prec, int rotation, int baselineDist, const QString& formula, const QColor& labelsColor)
+		int prec, int rotation, int baselineDist, const QString& formula, const QColor& labelsColor, bool backbone)
 {
 	ApplicationWindow *app = (ApplicationWindow *)this->parent();
 	if (!app)
@@ -1883,7 +1901,7 @@ void AxesDialog::showAxis(int axis, int type, const QString& labelsColName, bool
 	if (!d_graph)
 		return;
 	d_graph->showAxis(axis, type, labelsColName, w, axisOn, majTicksType, minTicksType, labelsOn,
-			c, format, prec, rotation, baselineDist, formula, labelsColor);
+			c, format, prec, rotation, baselineDist, formula, labelsColor, backbone);
 }
 
 void AxesDialog::applyCanvasFormatTo(Graph *g)
