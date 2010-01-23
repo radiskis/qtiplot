@@ -164,8 +164,6 @@ void Graph3D::initPlot()
 	connect(d_timer, SIGNAL(timeout()), this, SLOT(rotate()));
 	ignoreFonts = false;
 
-	resize(500, 400);
-
 	ApplicationWindow *app = applicationWindow();
 
 	sp = new Plot3D(this);
@@ -179,6 +177,9 @@ void Graph3D::initPlot()
 	sp->setFloorStyle((Qwt3D::FLOORSTYLE)app->d_3D_projection);
 	sp->setLocale(app->locale());
 	setWidget(sp);
+
+	show();
+	resize(500, 400);
 
 	d_autoscale = app->d_3D_autoscale;
 
@@ -831,7 +832,6 @@ void Graph3D::update()
 	resetAxesLabels();
 
 	sp->updateData();
-	sp->updateGL();
 }
 
 void Graph3D::setLabelsDistance(int val)
@@ -1685,7 +1685,6 @@ void Graph3D::setPolygonStyle()
 
 	sp->makeCurrent();
 	d_active_curve->setPlotStyle(FILLED);
-	sp->updateData();
 	sp->updateGL();
 
 	style_=FILLED;
@@ -1699,7 +1698,6 @@ void Graph3D::setFilledMeshStyle()
 
 	sp->makeCurrent();
 	d_active_curve->setPlotStyle(FILLEDMESH);
-	sp->updateData();
 	sp->updateGL();
 
 	style_=FILLEDMESH;
@@ -1714,7 +1712,6 @@ void Graph3D::setHiddenLineStyle()
 	sp->makeCurrent();
 	d_active_curve->setPlotStyle(HIDDENLINE);
 	sp->showColorLegend(false);
-	sp->updateData();
 	sp->updateGL();
 
 	style_=HIDDENLINE;
@@ -1730,7 +1727,6 @@ void Graph3D::setWireframeStyle()
 	sp->makeCurrent();
 	d_active_curve->setPlotStyle(WIREFRAME);
 	sp->showColorLegend(false);
-	sp->updateData();
 	sp->updateGL();
 
 	pointStyle = None;
@@ -1749,7 +1745,6 @@ void Graph3D::setDotStyle()
 	sp->makeCurrent();
 	Dot dot = Dot(d_point_size, d_smooth_points);
 	d_active_curve->setPlotStyle(dot);
-	sp->updateData();
 	sp->updateGL();
 }
 
@@ -1766,7 +1761,6 @@ void Graph3D::setConeStyle()
 	sp->makeCurrent();
 	Cone3D cone = Cone3D(conesRad, conesQuality);
 	d_active_curve->setPlotStyle(cone);
-	sp->updateData();
 	sp->updateGL();
 
 	QApplication::restoreOverrideCursor();
@@ -1783,7 +1777,6 @@ void Graph3D::setCrossStyle()
 	sp->makeCurrent();
 	CrossHair cross = CrossHair(crossHairRad, crossHairLineWidth,crossHairSmooth,crossHairBoxed);
 	d_active_curve->setPlotStyle(cross);
-	sp->updateData();
 	sp->updateGL();
 }
 
@@ -1800,8 +1793,7 @@ void Graph3D::clearData()
 	d_table_plot_type = NoTable;
 
 	sp->makeCurrent();
-	sp->updateData();
-	sp->updateGL();
+	sp->updateData(false);
 }
 
 void Graph3D::setBarStyle()
@@ -1819,7 +1811,6 @@ void Graph3D::setBarStyle()
 
 	Bar bar = Bar(d_bars_rad, d_bar_lines, d_filled_bars, applicationWindow()->d_3D_smooth_mesh);
 	d_active_curve->setPlotStyle(bar);
-	sp->updateData();
 	sp->updateGL();
 	QApplication::restoreOverrideCursor();
 }
@@ -1831,7 +1822,6 @@ void Graph3D::setFloorData()
 
 	sp->makeCurrent();
 	d_active_curve->setFloorStyle(FLOORDATA);
-	sp->updateData();
 	sp->updateGL();
 }
 
@@ -1842,7 +1832,6 @@ void Graph3D::setFloorIsolines()
 
 	sp->makeCurrent();
 	d_active_curve->setFloorStyle(FLOORISO);
-	sp->updateData();
 	sp->updateGL();
 }
 
@@ -1853,7 +1842,6 @@ void Graph3D::setEmptyFloor()
 
 	sp->makeCurrent();
 	d_active_curve->setFloorStyle(NOFLOOR);
-	sp->updateData();
 	sp->updateGL();
 }
 
@@ -1864,7 +1852,6 @@ void Graph3D::setMeshLineWidth(double lw)
 
 	sp->makeCurrent();
 	d_active_curve->setMeshLineWidth(lw);
-	sp->updateData();
 	sp->updateGL();
 }
 
@@ -2318,7 +2305,6 @@ void Graph3D::customPlotStyle(int style)
 			}
 	}
 
-	sp->updateData();
 	sp->updateGL();
 }
 
@@ -2619,7 +2605,6 @@ void Graph3D::setResolution(int r)
 	sp->makeCurrent();
 	d_active_curve->setResolution(r);
 	sp->updateData();
-	sp->updateGL();
 	emit modified();
 }
 
@@ -2731,7 +2716,6 @@ void Graph3D::changeTransparency(double t)
 	color->setAlpha(t);
 
     sp->showColorLegend(legendOn);
-	sp->updateData();
 	sp->updateGL();
 	emit modified();
 }
@@ -2765,10 +2749,8 @@ void Graph3D::setAntialiasing(bool smooth)
 	sp->coordinates()->setLineSmooth(smooth);
 	if (d_table_plot_type == Bars && pointStyle == VerticalBars)
 		setBarStyle();
-	else {
-		sp->updateData();
+	else
 		sp->updateGL();
-	}
 }
 
 /*!
@@ -3006,7 +2988,6 @@ void Graph3D::copy(Graph3D* g)
 	setOrthogonal(g->isOrthogonal());
 
 	sp->updateData();
-	sp->updateGL();
 	animate(g->isAnimated());
 }
 
