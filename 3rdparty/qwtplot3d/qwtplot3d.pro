@@ -27,33 +27,11 @@ win32:CONFIG    -= zlib
 linux-g++:TMAKE_CXXFLAGS += -fno-exceptions
 unix:VERSION     = 0.3.0
 
-BUILD_SUBDIR = lib
+DESTDIR  = lib
 
-win32 {
-    win32-g++ {
-        DESTDIR  = $$BUILD_SUBDIR
-    } else {
-        DESTDIR  = $$BUILD_SUBDIR/VisualStudio
-        TEMPLATE = vclib
-    }
-
-    OBJECTS_DIR  = $$DESTDIR
-    RCC_DIR      = $$DESTDIR/tmp
-    MOC_DIR      = $$DESTDIR/tmp
-}
-
-unix { 
-    linux-g++ {
-        EXTN_SUBDIR = linux
-    } else { 
-        EXTN_SUBDIR = unix
-    }
-    DESTDIR      = $$BUILD_SUBDIR/$$EXTN_SUBDIR
-
-    OBJECTS_DIR  = $$DESTDIR
-    RCC_DIR      = $$DESTDIR/tmp
-    MOC_DIR      = $$DESTDIR/tmp
-}
+OBJECTS_DIR  = $$DESTDIR/tmp
+RCC_DIR      = $$DESTDIR/tmp
+MOC_DIR      = $$DESTDIR/tmp
 
 # zlib support for gl2ps
 zlib {
