@@ -5327,7 +5327,7 @@ Quelques parties de ce fichier peuvent ne pas être affichés comme attendu.</tr
     <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="3932"/>
         <source>File %1 contains only %2 sheets!</source>
-        <translation type="unfinished"></translation>
+        <translation>Le fichier %1 ne contient que %2 feuillles !</translation>
     </message>
     <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="3950"/>
@@ -7723,7 +7723,7 @@ L&apos;autocomplétion ne sera pas disponible!</translation>
     <message>
         <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="580"/>
         <source>Show &amp;backbone</source>
-        <translation type="unfinished"></translation>
+        <translation>Montrer le renfort</translation>
     </message>
     <message>
         <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="590"/>
@@ -16440,7 +16440,7 @@ Voulez-vous insérer des cellules?</translation>
     <message>
         <location filename="../src/analysis/NonLinearFit.cpp" line="358"/>
         <source>Ignore</source>
-        <translation type="unfinished"></translation>
+        <translation>Ignorer</translation>
     </message>
     <message>
         <source>You must provide a list containing at least 2 parameters for this type of fit. Operation aborted!</source>
@@ -19150,18 +19150,18 @@ Calcule le sinus de x.</translation>
         <location filename="../src/plot2D/FunctionCurve.cpp" line="186"/>
         <location filename="../src/plot2D/FunctionCurve.cpp" line="192"/>
         <source>QtiPlot - Memory Allocation Error</source>
-        <translation type="unfinished">Qtiplot - Erreur d&apos;Allocation mémoire</translation>
+        <translation>Qtiplot - Erreur d&apos;Allocation mémoire</translation>
     </message>
     <message>
         <location filename="../src/plot2D/FunctionCurve.cpp" line="187"/>
         <location filename="../src/plot2D/FunctionCurve.cpp" line="193"/>
         <source>Not enough memory, operation aborted!</source>
-        <translation type="unfinished"></translation>
+        <translation>Pas assez de mémoire, opération annulée !</translation>
     </message>
     <message>
         <location filename="../src/plot2D/FunctionCurve.cpp" line="247"/>
         <source>The function %1 is not defined in the specified interval!</source>
-        <translation type="unfinished"></translation>
+        <translation>La fonction %1 n&apos;est pas définie dans l&apos;intervalle spécifié !</translation>
     </message>
 </context>
 <context>
