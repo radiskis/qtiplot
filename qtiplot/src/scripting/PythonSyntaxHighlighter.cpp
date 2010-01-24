@@ -132,7 +132,7 @@ SyntaxHighlighter::SyntaxHighlighter(ScriptEdit * parent) : QSyntaxHighlighter(p
 	highlightingRules.append(rule);
 
 	numericFormat.setForeground(app->d_numeric_highlight_color);
-	rule.pattern = QRegExp("\\b\\d+[eE.]*\\d*\\b");
+	rule.pattern = QRegExp("\\b\\d+[eE.,]*\\d*\\b");
 	rule.format = numericFormat;
 	highlightingRules.append(rule);
 
