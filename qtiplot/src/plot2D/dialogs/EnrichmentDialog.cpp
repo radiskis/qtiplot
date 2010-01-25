@@ -801,14 +801,14 @@ void EnrichmentDialog::setCoordinates(int unit)
 		double left = xBox->value();
 		double top = yBox->value();
 		FrameWidget *fw = qobject_cast<FrameWidget *>(d_widget);
-        if (fw)
-            fw->setCoordinates(left, top, left + widthBox->value(), top - heightBox->value());
+		if (fw)
+			fw->setCoordinates(left, top, left + widthBox->value(), top - heightBox->value());
 	} else
 		FrameWidget::setRect(d_widget, xBox->value(), yBox->value(),
-        widthBox->value(), heightBox->value(), (FrameWidget::Unit)unit);
+		widthBox->value(), heightBox->value(), (FrameWidget::Unit)unit);
 
-    if (d_plot)
-        d_plot->multiLayer()->notifyChanges();
+	if (d_plot)
+		d_plot->multiLayer()->notifyChanges();
 
 	ApplicationWindow *app = (ApplicationWindow *)parentWidget();
 	if (app)
