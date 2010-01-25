@@ -139,7 +139,7 @@ FunctionDialog::FunctionDialog(ApplicationWindow* parent, bool standAlone, Qt::W
 	gl2->addWidget(boxParameter, 0, 1);
 
 	int maxH = 80;
-	gl2->addWidget(new QLabel(tr( "x = " )), 1, 0);
+
 	boxXFunction = new ScriptEdit(d_app->scriptingEnv());
 	boxXFunction->setMaximumHeight(maxH);
 	boxXFunction->enableShortcuts();
@@ -148,10 +148,13 @@ FunctionDialog::FunctionDialog(ApplicationWindow* parent, bool standAlone, Qt::W
 
 	buttonXParLog = new QPushButton(recentBtnText);
 	buttonXParLog->setToolTip(recentTip);
-	gl2->addWidget(buttonXParLog, 1, 2);
 	connect(buttonXParLog, SIGNAL(clicked()), this, SLOT(showXParLog()));
 
-	gl2->addWidget(new QLabel(tr( "y = " )), 2, 0);
+	QVBoxLayout *vlxpar = new QVBoxLayout();
+	vlxpar->addWidget(new QLabel(tr( "x = " )));
+	vlxpar->addWidget(buttonXParLog);
+	vlxpar->addStretch();
+	gl2->addLayout(vlxpar, 1, 0);
 
 	boxYFunction = new ScriptEdit(d_app->scriptingEnv());
 	boxYFunction->setMaximumHeight(maxH);
@@ -161,8 +164,13 @@ FunctionDialog::FunctionDialog(ApplicationWindow* parent, bool standAlone, Qt::W
 
 	buttonYParLog = new QPushButton(recentBtnText);
 	buttonYParLog->setToolTip(recentTip);
-	gl2->addWidget(buttonYParLog, 2, 2);
 	connect(buttonYParLog, SIGNAL(clicked()), this, SLOT(showYParLog()));
+
+	QVBoxLayout *vlypar = new QVBoxLayout();
+	vlypar->addWidget(new QLabel(tr( "y = " )));
+	vlypar->addWidget(buttonYParLog);
+	vlypar->addStretch();
+	gl2->addLayout(vlypar, 2, 0);
 
 	gl2->addWidget(new QLabel(tr( "From" )), 3, 0);
 	boxParFrom = new DoubleSpinBox();
@@ -195,7 +203,6 @@ FunctionDialog::FunctionDialog(ApplicationWindow* parent, bool standAlone, Qt::W
 	boxPolarParameter->setText ("t");
 	gl3->addWidget(boxPolarParameter, 0, 1);
 
-	gl3->addWidget(new QLabel(tr( "R =" )), 1, 0);
 	boxPolarRadius = new ScriptEdit(d_app->scriptingEnv());
 	boxPolarRadius->setMaximumHeight(maxH);
 	boxPolarRadius->enableShortcuts();
@@ -204,10 +211,13 @@ FunctionDialog::FunctionDialog(ApplicationWindow* parent, bool standAlone, Qt::W
 
 	buttonPolarRadiusLog = new QPushButton(recentBtnText);
 	buttonPolarRadiusLog->setToolTip(recentTip);
-	gl3->addWidget(buttonPolarRadiusLog, 1, 2);
 	connect(buttonPolarRadiusLog, SIGNAL(clicked()), this, SLOT(showPolarRadiusLog()));
 
-	gl3->addWidget(new QLabel(tr( "Theta =" )), 2, 0);
+	QVBoxLayout *vlrpar = new QVBoxLayout();
+	vlrpar->addWidget(new QLabel(tr( "R =" )));
+	vlrpar->addWidget(buttonPolarRadiusLog);
+	vlrpar->addStretch();
+	gl3->addLayout(vlrpar, 1, 0);
 
 	boxPolarTheta = new ScriptEdit(d_app->scriptingEnv());
 	boxPolarTheta->setMaximumHeight(maxH);
@@ -217,8 +227,13 @@ FunctionDialog::FunctionDialog(ApplicationWindow* parent, bool standAlone, Qt::W
 
 	buttonPolarRThetaLog = new QPushButton(recentBtnText);
 	buttonPolarRThetaLog->setToolTip(recentTip);
-	gl3->addWidget(buttonPolarRThetaLog, 2, 2);
 	connect(buttonPolarRThetaLog, SIGNAL(clicked()), this, SLOT(showPolarThetaLog()));
+
+	QVBoxLayout *vltpar = new QVBoxLayout();
+	vltpar->addWidget(new QLabel(tr( "Theta =" )));
+	vltpar->addWidget(buttonPolarRThetaLog);
+	vltpar->addStretch();
+	gl3->addLayout(vltpar, 2, 0);
 
 	gl3->addWidget(new QLabel(tr( "From" )), 3, 0);
 	boxPolarFrom = new DoubleSpinBox();
