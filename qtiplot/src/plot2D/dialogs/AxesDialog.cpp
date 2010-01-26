@@ -795,6 +795,7 @@ void AxesDialog::showAxisFormatOptions(int format)
 			boxFormat->insertItem(tr( "Scientific: 1e4" ) );
 			boxFormat->insertItem(tr( "Scientific: 1x10^4" ) );
 			boxFormat->insertItem(tr( "Engineering: 10k" ) );
+			boxFormat->insertItem(tr( "Scientific: 1·10^4" ) );
 			boxFormat->setCurrentIndex(d_graph->axisLabelFormat(axis));
 
 			label3->show();

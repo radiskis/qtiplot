@@ -105,7 +105,7 @@ QwtText ScaleDraw::label(double value) const
             QLocale locale = d_plot->locale();
 			if (d_plot->parent())
 				locale = d_plot->multiLayer()->locale();
-			if (d_numeric_format == Superscripts){
+			if ((d_numeric_format == Superscripts)||(d_numeric_format == SuperscriptsGER)){
 				QString txt = locale.toString(transformValue(value), 'e', d_prec);
 				QStringList list = txt.split("e", QString::SkipEmptyParts);
 				if (list[0].toDouble() == 0.0)
@@ -126,9 +126,12 @@ QwtText ScaleDraw::label(double value) const
 
 				if (list[0] == "1")
 					return QwtText("10<sup>" + s + "</sup>");
-				else
-					return QwtText(list[0] + "x10<sup>" + s + "</sup>");
-
+				else{
+					if (d_numeric_format == SuperscriptsGER)
+						return QwtText(list[0] + "·10<sup>" + s + "</sup>");
+					else
+						return QwtText(list[0] + "x10<sup>" + s + "</sup>");
+				}
 			} else if (d_numeric_format == Engineering){
 				QString eng_suff;
 				double new_value = value;
@@ -407,6 +410,8 @@ void ScaleDraw::setNumericFormat(NumericFormat format)
 		case Engineering:
 			d_fmt = 'f';
 		break;
+		case SuperscriptsGER:
+			d_fmt = 'f';
 	}
 }
 

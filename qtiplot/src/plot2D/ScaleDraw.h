@@ -43,7 +43,7 @@ class ScaleDraw: public QwtScaleDraw
 public:
 	enum TicksStyle{None = 0, Out = 1, Both = 2, In = 3};
 	enum ScaleType{Numeric = 0, Text = 1, Day = 2, Month = 3, Time = 4, Date = 5, ColHeader = 6};
-	enum NumericFormat{Automatic, Decimal, Scientific, Superscripts, Engineering};
+	enum NumericFormat{Automatic, Decimal, Scientific, Superscripts, Engineering, SuperscriptsGER};
 	enum NameFormat{ShortName, LongName, Initial};
 
     //! Constructs a new scale draw which is a clone of sd.
