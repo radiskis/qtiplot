@@ -69,12 +69,15 @@ protected slots:
 	void showPolarRadiusLog();
 	void showPolarThetaLog();
 	void setActiveEditor(ScriptEdit *edit){d_active_editor = edit;};
+	void guessConstants();
 
 public slots:
 	void accept();
 	void clearList();
 
 private:
+	void setConstants(FunctionCurve *c, const QMap<QString, double>& constants);
+
 	Graph *graph;
 	int curveID;
 
@@ -111,6 +114,7 @@ private:
 
 	ApplicationWindow *d_app;
 	ScriptEdit *d_active_editor;
+	bool d_stand_alone;
 };
 
 #endif // FUNCTIONDIALOG_H

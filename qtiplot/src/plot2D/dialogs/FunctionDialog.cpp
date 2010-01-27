@@ -33,6 +33,7 @@
 #include <FunctionCurve.h>
 #include <DoubleSpinBox.h>
 #include <ScriptEdit.h>
+#include <NonLinearFit.h>
 
 #include <QTextEdit>
 #include <QLineEdit>
@@ -53,7 +54,7 @@
 #include <QApplication>
 
 FunctionDialog::FunctionDialog(ApplicationWindow* parent, bool standAlone, Qt::WFlags fl )
-: QDialog( parent, fl ), d_app(parent), d_active_editor(0)
+: QDialog( parent, fl ), d_app(parent), d_active_editor(0), d_stand_alone(standAlone)
 {
 	QLocale locale = QLocale();
 	int prec = 6;
@@ -92,6 +93,7 @@ FunctionDialog::FunctionDialog(ApplicationWindow* parent, bool standAlone, Qt::W
 
 	boxFunction = new ScriptEdit(d_app->scriptingEnv());
 	boxFunction->enableShortcuts();
+	connect(boxFunction, SIGNAL(textChanged()), this, SLOT(guessConstants()));
 	gl1->addWidget(boxFunction, 0, 1);
 
 	gl1->addWidget(new QLabel(tr( "From x= " )), 1, 0);
@@ -128,8 +130,6 @@ FunctionDialog::FunctionDialog(ApplicationWindow* parent, bool standAlone, Qt::W
 
 	QHBoxLayout *hb = new QHBoxLayout(functionPage);
 	hb->addLayout(gl1);
-	hb->addWidget(boxConstants);
-
 	optionStack->addWidget( functionPage );
 
 	QGridLayout *gl2 = new QGridLayout();
@@ -144,6 +144,7 @@ FunctionDialog::FunctionDialog(ApplicationWindow* parent, bool standAlone, Qt::W
 	boxXFunction->setMaximumHeight(maxH);
 	boxXFunction->enableShortcuts();
 	connect(boxXFunction, SIGNAL(activated(ScriptEdit *)), this, SLOT(setActiveEditor(ScriptEdit *)));
+	connect(boxXFunction, SIGNAL(textChanged()), this, SLOT(guessConstants()));
 	gl2->addWidget(boxXFunction, 1, 1);
 
 	buttonXParLog = new QPushButton(recentBtnText);
@@ -160,6 +161,7 @@ FunctionDialog::FunctionDialog(ApplicationWindow* parent, bool standAlone, Qt::W
 	boxYFunction->setMaximumHeight(maxH);
 	boxYFunction->enableShortcuts();
 	connect(boxYFunction, SIGNAL(activated(ScriptEdit *)), this, SLOT(setActiveEditor(ScriptEdit *)));
+	connect(boxYFunction, SIGNAL(textChanged()), this, SLOT(guessConstants()));
 	gl2->addWidget(boxYFunction, 2, 1);
 
 	buttonYParLog = new QPushButton(recentBtnText);
@@ -207,6 +209,7 @@ FunctionDialog::FunctionDialog(ApplicationWindow* parent, bool standAlone, Qt::W
 	boxPolarRadius->setMaximumHeight(maxH);
 	boxPolarRadius->enableShortcuts();
 	connect(boxPolarRadius, SIGNAL(activated(ScriptEdit *)), this, SLOT(setActiveEditor(ScriptEdit *)));
+	connect(boxPolarRadius, SIGNAL(textChanged()), this, SLOT(guessConstants()));
 	gl3->addWidget(boxPolarRadius, 1, 1);
 
 	buttonPolarRadiusLog = new QPushButton(recentBtnText);
@@ -223,6 +226,7 @@ FunctionDialog::FunctionDialog(ApplicationWindow* parent, bool standAlone, Qt::W
 	boxPolarTheta->setMaximumHeight(maxH);
 	boxPolarTheta->enableShortcuts();
 	connect(boxPolarTheta, SIGNAL(activated(ScriptEdit *)), this, SLOT(setActiveEditor(ScriptEdit *)));
+	connect(boxPolarTheta, SIGNAL(textChanged()), this, SLOT(guessConstants()));
 	gl3->addWidget(boxPolarTheta, 2, 1);
 
 	buttonPolarRThetaLog = new QPushButton(recentBtnText);
@@ -293,9 +297,13 @@ FunctionDialog::FunctionDialog(ApplicationWindow* parent, bool standAlone, Qt::W
 	vbox2->addLayout(hbox3);
 	vbox2->addStretch();
 
+	hb = new QHBoxLayout();
+	hb->addWidget(optionStack);
+	hb->addWidget(boxConstants);
+
 	QVBoxLayout *vbox1 = new QVBoxLayout(this);
-    vbox1->addLayout(hbox1);
-	vbox1->addWidget(optionStack);
+	vbox1->addLayout(hbox1);
+	vbox1->addLayout(hb);
 	vbox1->addLayout(vbox2);
 	vbox1->addStretch();
 
@@ -330,6 +338,7 @@ FunctionDialog::FunctionDialog(ApplicationWindow* parent, bool standAlone, Qt::W
 void FunctionDialog::raiseWidget(int index)
 {
 	optionStack->setCurrentIndex(index);
+	guessConstants();
 }
 
 void FunctionDialog::setCurveToModify(FunctionCurve *c)
@@ -370,26 +379,42 @@ void FunctionDialog::setCurveToModify(Graph *g, int curve)
 			sb->setLocale(QLocale());
 			sb->setValue(i.value());
         	boxConstants->setCellWidget(row, 1, sb);
-			connect(sb, SIGNAL(valueChanged(double)), this, SLOT(acceptFunction()));
+			connect(sb, SIGNAL(valueChanged(double)), this, SLOT(accept()));
 			row++;
  		}
-	}
+	} else
+		boxConstants->hide();
 
 	if (c->functionType() == FunctionCurve::Normal){
+		boxFunction->blockSignals(true);
 		boxFunction->setText(formulas[0]);
+		boxFunction->blockSignals(false);
+
 		boxFrom->setValue(c->startRange());
 		boxTo->setValue(c->endRange());
 		boxPoints->setValue(c->dataSize());
 	} else if (c->functionType() == FunctionCurve::Polar) {
+		boxPolarRadius->blockSignals(true);
 		boxPolarRadius->setText(formulas[0]);
+		boxPolarRadius->blockSignals(false);
+
+		boxPolarTheta->blockSignals(true);
 		boxPolarTheta->setText(formulas[1]);
+		boxPolarTheta->blockSignals(false);
+
 		boxPolarParameter->setText(c->variable());
 		boxPolarFrom->setValue(c->startRange());
 		boxPolarTo->setValue(c->endRange());
 		boxPolarPoints->setValue(c->dataSize());
 	} else if (c->functionType() == FunctionCurve::Parametric) {
+		boxXFunction->blockSignals(true);
 		boxXFunction->setText(formulas[0]);
+		boxXFunction->blockSignals(false);
+
+		boxYFunction->blockSignals(true);
 		boxYFunction->setText(formulas[1]);
+		boxYFunction->blockSignals(false);
+
 		boxParameter->setText(c->variable());
 		boxParFrom->setValue(c->startRange());
 		boxParTo->setValue(c->endRange());
@@ -465,17 +490,19 @@ void FunctionDialog::acceptFunction()
 		d_app->updateFunctionLists(type, formulas);
 		if (!graph){
 			MultiLayer *plot = d_app->newFunctionPlot(formulas, start, end, boxPoints->value(), "x", type);
-			if (plot)
+			if (plot){
 				graph = plot->activeLayer();
+				setConstants((FunctionCurve *)graph->curve(graph->curveCount() - 1), constants);
+			}
 		} else {
 			if (curveID >= 0)
 				graph->modifyFunctionCurve(curveID, type, formulas, "x", start, end, boxPoints->value(), constants);
 			else
-				graph->addFunction(formulas, start, end, boxPoints->value(), "x", type);
+				setConstants(graph->addFunction(formulas, start, end, boxPoints->value(), "x", type), constants);
 		}
 	}
-
 }
+
 void FunctionDialog::acceptParametric()
 {
 	double start = boxParFrom->value();
@@ -493,9 +520,19 @@ void FunctionDialog::acceptParametric()
 	QString yformula = boxYFunction->text().simplified();
 	bool error = false;
 
+	QMap<QString, double> constants;
+
 	try {
 		MyParser parser;
 		parser.DefineVar((boxParameter->text()).ascii(), &parameter);
+		for (int i = 0; i < boxConstants->rowCount(); i++){
+			double val = ((DoubleSpinBox*)boxConstants->cellWidget(i, 1))->value();
+			QString constName = boxConstants->item(i, 0)->text();
+			if (!constName.isEmpty()){
+				constants.insert(constName, val);
+				parser.DefineConst(constName.ascii(), val);
+			}
+		}
 		parser.SetExpr(xformula.ascii());
 
 		parameter = start;
@@ -505,22 +542,29 @@ void FunctionDialog::acceptParametric()
 	} catch(mu::ParserError &e) {
 		QMessageBox::critical(this, tr("QtiPlot - Input function error"), QString::fromStdString(e.GetMsg()));
 		boxXFunction->setFocus();
-		error=true;
+		error = true;
 	}
 
 	try {
 		MyParser parser;
 		parser.DefineVar((boxParameter->text()).ascii(), &parameter);
+
+		for (int i = 0; i < boxConstants->rowCount(); i++){
+			double val = ((DoubleSpinBox*)boxConstants->cellWidget(i, 1))->value();
+			QString constName = boxConstants->item(i, 0)->text();
+			if (!constName.isEmpty())
+				parser.DefineConst(constName.ascii(), val);
+		}
 		parser.SetExpr(yformula.ascii());
 
-		parameter=start;
+		parameter = start;
 		parser.Eval();
-		parameter=end;
+		parameter = end;
 		parser.Eval();
 	} catch(mu::ParserError &e) {
 		QMessageBox::critical(this, tr("QtiPlot - Input function error"), QString::fromStdString(e.GetMsg()));
 		boxYFunction->setFocus();
-		error=true;
+		error = true;
 	}
 	// Collecting all the information
 	int type = boxType->currentItem();
@@ -531,13 +575,15 @@ void FunctionDialog::acceptParametric()
 		d_app->updateFunctionLists(type, formulas);
 		if (!graph){
 			MultiLayer *plot = d_app->newFunctionPlot(formulas, start, end, boxParPoints->value(), boxParameter->text(), type);
-			if (plot)
+			if (plot){
 				graph = plot->activeLayer();
+				setConstants((FunctionCurve *)graph->curve(graph->curveCount() - 1), constants);
+			}
 		} else {
 			if (curveID >= 0)
-				graph->modifyFunctionCurve(curveID, type, formulas, boxParameter->text(), start, end, boxParPoints->value(), QMap<QString, double>());
+				graph->modifyFunctionCurve(curveID, type, formulas, boxParameter->text(), start, end, boxParPoints->value(), constants);
 			else
-				graph->addFunction(formulas, start, end, boxParPoints->value(), boxParameter->text(), type);
+				setConstants(graph->addFunction(formulas, start, end, boxParPoints->value(), boxParameter->text(), type), constants);
 		}
 	}
 }
@@ -558,9 +604,19 @@ void FunctionDialog::acceptPolar()
 	QString tformula = boxPolarTheta->text().simplified();
 	bool error = false;
 
+	QMap<QString, double> constants;
+
 	try {
 		MyParser parser;
 		parser.DefineVar((boxPolarParameter->text()).ascii(), &parameter);
+		for (int i = 0; i < boxConstants->rowCount(); i++){
+			double val = ((DoubleSpinBox*)boxConstants->cellWidget(i, 1))->value();
+			QString constName = boxConstants->item(i, 0)->text();
+			if (!constName.isEmpty()){
+				constants.insert(constName, val);
+				parser.DefineConst(constName.ascii(), val);
+			}
+		}
 		parser.SetExpr(rformula.ascii());
 
 		parameter = start;
@@ -576,6 +632,12 @@ void FunctionDialog::acceptPolar()
 	try {
 		MyParser parser;
 		parser.DefineVar((boxPolarParameter->text()).ascii(), &parameter);
+		for (int i = 0; i < boxConstants->rowCount(); i++){
+			double val = ((DoubleSpinBox*)boxConstants->cellWidget(i, 1))->value();
+			QString constName = boxConstants->item(i, 0)->text();
+			if (!constName.isEmpty())
+				parser.DefineConst(constName.ascii(), val);
+		}
 		parser.SetExpr(tformula.ascii());
 
 		parameter = start;
@@ -597,13 +659,15 @@ void FunctionDialog::acceptPolar()
 
 		if (!graph){
 			MultiLayer *plot = d_app->newFunctionPlot(formulas, start, end, boxPolarPoints->value(), boxPolarParameter->text(), type);
-			if (plot)
+			if (plot){
 				graph = plot->activeLayer();
+				setConstants((FunctionCurve *)graph->curve(graph->curveCount() - 1), constants);
+			}
 		} else {
 			if (curveID >= 0)
-				graph->modifyFunctionCurve(curveID, type, formulas, boxPolarParameter->text(), start, end, boxPolarPoints->value(), QMap<QString, double>());
+				graph->modifyFunctionCurve(curveID, type, formulas, boxPolarParameter->text(), start, end, boxPolarPoints->value(), constants);
 			else
-				graph->addFunction(formulas, start, end, boxPolarPoints->value(), boxPolarParameter->text(), type);
+				setConstants(graph->addFunction(formulas, start, end, boxPolarPoints->value(), boxPolarParameter->text(), type), constants);
 		}
 	}
 }
@@ -736,4 +800,83 @@ void FunctionDialog::insertFunction()
 void FunctionDialog::updateFunctionExplain(int index)
 {
 	boxFunctionExplain->setText(MyParser::explainFunction(index));
+}
+
+void FunctionDialog::guessConstants()
+{
+	QString text;
+	QString var = "x";
+	switch (boxType->currentIndex()){
+		case 0:
+			text = boxFunction->text().remove(QRegExp("\\s")).remove(".");
+			break;
+
+		case 1:
+			text = boxXFunction->text().remove(QRegExp("\\s")).remove(".");
+			text += "+" + boxYFunction->text().remove(QRegExp("\\s")).remove(".");
+			var = boxParameter->text();
+			break;
+
+		case 2:
+			text = boxPolarRadius->text().remove(QRegExp("\\s")).remove(".");
+			text += "+" + boxPolarTheta->text().remove(QRegExp("\\s")).remove(".");
+			var = boxPolarParameter->text();
+			break;
+	}
+
+	bool error = false;
+	string errMsg;
+	QStringList lst = NonLinearFit::guessParameters(text, &error, &errMsg, var);
+	if (error)
+		return;
+
+	QStringList constants;
+	QList<double> values;
+	for (int i = 0; i < boxConstants->rowCount(); i++){
+		constants << boxConstants->item(i, 0)->text();
+		values << ((DoubleSpinBox*)boxConstants->cellWidget(i, 1))->value();
+	}
+
+	if (lst == constants)
+		return;
+
+	boxConstants->setRowCount(lst.size());
+
+	int row = 0;
+	foreach(QString s, lst){
+		boxConstants->setItem(row, 0, new QTableWidgetItem(s));
+
+		DoubleSpinBox *sb = new DoubleSpinBox();
+		sb->setLocale(QLocale());
+		boxConstants->setCellWidget(row, 1, sb);
+		if (constants.contains(s)){
+			int index = constants.indexOf(s);
+			if (index >= 0 && index < values.size())
+				sb->setValue(values[index]);
+		}
+		if (!d_stand_alone)
+			connect(sb, SIGNAL(valueChanged(double)), this, SLOT(accept()));
+		row++;
+	}
+
+	if (!lst.size())
+		boxConstants->hide();
+	else if (!boxConstants->isVisible())
+		boxConstants->show();
+}
+
+void FunctionDialog::setConstants(FunctionCurve *c, const QMap<QString, double>& constants)
+{
+	if (!c || constants.isEmpty())
+		return;
+
+	c->setConstants(constants);
+	c->loadData();
+	if (graph){
+		graph->replot();
+		graph->updateMarkersBoundingRect();
+		graph->updateSecondaryAxis(QwtPlot::xTop);
+		graph->updateSecondaryAxis(QwtPlot::yRight);
+		graph->replot();
+	}
 }
