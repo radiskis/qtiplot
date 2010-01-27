@@ -59,7 +59,7 @@ class NonLinearFit : public Fit
 		double constValue(const QString& name){return d_constants.value(name);};
 
 		virtual QString legendInfo();
-		static QStringList guessParameters(const QString& s, bool *error = 0, string *errMsg = 0);
+		static QStringList guessParameters(const QString& s, bool *error = 0, string *errMsg = 0, const QString& var = "x");
 
 	protected:
 		QString logFitInfo(int iterations, int status);

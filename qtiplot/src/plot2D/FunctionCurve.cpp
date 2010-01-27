@@ -202,10 +202,10 @@ bool FunctionCurve::loadData(int points, bool xLog10Scale)
 		try {
 			parser.DefineVar(d_variable.ascii(), &x);
 			QMapIterator<QString, double> i(d_constants);
- 			while (i.hasNext()){
-     			i.next();
+			while (i.hasNext()){
+				i.next();
 				parser.DefineConst(i.key().ascii(), i.value());
- 			}
+			}
 			parser.SetExpr(d_formulas[0].ascii());
 
 			int lastButOne = points - 1;
@@ -296,6 +296,13 @@ bool FunctionCurve::loadData(int points, bool xLog10Scale)
 		}
 
 		try {
+			QMapIterator<QString, double> i(d_constants);
+			while (i.hasNext()){
+				i.next();
+				xparser.DefineConst(i.key().ascii(), i.value());
+				yparser.DefineConst(i.key().ascii(), i.value());
+			}
+
 			xparser.DefineVar(d_variable.ascii(), &par);
 			yparser.DefineVar(d_variable.ascii(), &par);
 			xparser.SetExpr(aux[0].ascii());

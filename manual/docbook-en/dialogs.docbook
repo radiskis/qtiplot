@@ -97,6 +97,19 @@ the hard disk.</para>
       </imageobject>
     </mediaobject>
   </figure>
+
+  <para>If the function expression contains constants, e.g.: f(x) = a*x + b, QtiPlot automatically detects them and displays a two column table
+   on the right side of the dialog, containing input spin boxes that allow to choose appropriate values for those constants:</para>
+
+  <figure id="add-function-dialog-4">
+	<title>The &add-function-cmd; dialog box: automatic detection of constants.</title>
+	<mediaobject>
+	  <imageobject>
+		<imagedata  format="PNG" fileref="pics/add-function-dialog4.png"/>
+	  </imageobject>
+	</mediaobject>
+  </figure>
+
   <para>The functions can also be defined in a parametric definition: if <emphasis>t</emphasis> is the parameter, the (x,y) data points are computed by x=f(t) and y=g(t).</para>
   <para>The first parameter is the name of the parametric variable (here <emphasis>t</emphasis>) followed by the range, the definition of the two functions and the number of data points.</para>
   <figure id="add-function-dialog-2">
