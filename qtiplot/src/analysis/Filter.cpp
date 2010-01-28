@@ -261,18 +261,31 @@ bool Filter::run()
 
 	QApplication::setOverrideCursor(Qt::WaitCursor);
 
-    output();//data analysis and output
-    ((ApplicationWindow *)parent())->updateLog(logInfo());
+	output();//data analysis and output
+	((ApplicationWindow *)parent())->updateLog(logInfo());
 
 	QApplication::restoreOverrideCursor();
-    return true;
+	return true;
 }
 
 void Filter::output()
 {
-    double X[d_points], Y[d_points];
-    calculateOutputData(X, Y); //does the data analysis
-	addResultCurve(X, Y);
+	double *x = (double *)malloc(d_points*sizeof(double));
+	if (!x){
+		memoryErrorMessage();
+		return;
+	}
+	double *y = (double *)malloc(d_points*sizeof(double));
+	if (!y){
+		free(x);
+		memoryErrorMessage();
+		return;
+	}
+
+	calculateOutputData(x, y); //does the data analysis
+	addResultCurve(x, y);
+	free(x);
+	free(y);
 }
 
 int Filter::sortedCurveData(QwtPlotCurve *c, double start, double end, double **x, double **y)
@@ -397,17 +410,20 @@ int Filter::curveRange(QwtPlotCurve *c, double start, double end, int *iStart, i
 
 QwtPlotCurve* Filter::addResultCurve(double *x, double *y)
 {
-    ApplicationWindow *app = (ApplicationWindow *)parent();
-    QLocale locale = app->locale();
-    const QString tableName = app->generateUniqueName(QString(objectName()));
+	ApplicationWindow *app = (ApplicationWindow *)parent();
+	QLocale locale = app->locale();
+	const QString tableName = app->generateUniqueName(QString(objectName()));
 	QString dataSet;
 	if (d_curve)
 		dataSet = d_curve->title().text();
 	else
 		dataSet = d_y_col_name;
 
-    d_result_table = app->newHiddenTable(tableName, d_explanation + " " + tr("of") + " " + dataSet, d_points, 2);
-	for (int i=0; i<d_points; i++){
+	d_result_table = app->newHiddenTable(tableName, d_explanation + " " + tr("of") + " " + dataSet, d_points, 2);
+	if (!d_result_table)
+		return 0;
+
+	for (int i = 0; i < d_points; i++){
 		d_result_table->setText(i, 0, locale.toString(x[i], 'g', app->d_decimal_digits));
 		d_result_table->setText(i, 1, locale.toString(y[i], 'g', app->d_decimal_digits));
 	}
@@ -416,13 +432,13 @@ QwtPlotCurve* Filter::addResultCurve(double *x, double *y)
 	if (d_graphics_display){
 		c = new DataCurve(d_result_table, tableName + "_1", tableName + "_2");
 		c->setData(x, y, d_points);
-    	c->setPen(QPen(ColorBox::color(d_curveColorIndex), 1));
+		c->setPen(QPen(ColorBox::color(d_curveColorIndex), 1));
 
 		if (!d_output_graph)
 			createOutputGraph();
 
 		d_output_graph->insertPlotItem(c, Graph::Line);
-    	d_output_graph->updatePlot();
+		d_output_graph->updatePlot();
 	}
 	return (QwtPlotCurve*)c;
 }
@@ -540,9 +556,11 @@ void Filter::memoryErrorMessage()
 {
 	d_init_err = true;
 
-    QMessageBox::critical((ApplicationWindow *)parent(),
-        tr("QtiPlot") + " - " + tr("Memory Allocation Error"),
-        tr("Not enough memory, operation aborted!"));
+	QApplication::restoreOverrideCursor();
+
+	QMessageBox::critical((ApplicationWindow *)parent(),
+		tr("QtiPlot") + " - " + tr("Memory Allocation Error"),
+		tr("Not enough memory, operation aborted!"));
 }
 
 void Filter::freeMemory()
