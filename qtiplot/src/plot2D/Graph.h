@@ -705,6 +705,8 @@ class Graph: public QwtPlot
 		void showAxisDialog();
 		void showScaleDialog();
 
+		//! Returns a pointer to the spectrogram which data source is matrix m (the pointer can be NULL)
+		Spectrogram* spectrogram(Matrix *m);
 		//! Add a spectrogram to the graph
   		Spectrogram* plotSpectrogram(Matrix *m, CurveType type);
 		//! Restores a spectrogram. Used when opening a project file.

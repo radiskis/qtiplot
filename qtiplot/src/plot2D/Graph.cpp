@@ -4781,13 +4781,29 @@ void Graph::deleteFitCurves()
 	replot();
 }
 
+//! Returns a pointer to the spectrogram which data source is matrix m (the pointer can be NULL)
+Spectrogram* Graph::spectrogram(Matrix *m)
+{
+	if (!m)
+		return NULL;
+
+	foreach (QwtPlotItem *item, d_curves){
+		if(item && item->rtti() == QwtPlotItem::Rtti_PlotSpectrogram){
+			Spectrogram *s = (Spectrogram *)item;
+			if (s && s->matrix() == m)
+				return s;
+		 }
+	}
+	return NULL;
+}
+
 Spectrogram* Graph::plotSpectrogram(Matrix *m, CurveType type)
 {
 	if (!m || (type != GrayScale && type != ColorMap && type != Contour))
   		return 0;
 
 	if (plotItemsList().contains(m->objectName()))
-		return 0;
+		return spectrogram(m);
 
   	Spectrogram *d_spectrogram = new Spectrogram(this, m);
 	insertCurve(d_spectrogram);
