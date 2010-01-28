@@ -1391,6 +1391,7 @@ public:
 
     void setColorMapPen(bool on = true);
     void setContourLinePen(int, const QPen &);
+	void updateData();
 
 private:
 	Spectrogram(const Spectrogram&);
@@ -1546,6 +1547,7 @@ public:
 
   QwtHistogram* addHistogram(Matrix*);
   Spectrogram* plotSpectrogram(Matrix *m, CurveType type);
+  Spectrogram* spectrogram(Matrix *m);
 
   ArrowMarker* addArrow(ArrowMarker*);
   void remove(ArrowMarker*);

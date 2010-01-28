@@ -581,6 +581,7 @@ workspace
 append
 objectName
 Spectrogram
+spectrogram
 plotSpectrogram
 levels
 setLevelsNumber

@@ -2289,7 +2289,18 @@ g2 = plot(m, Layer.Contour)
 g3 = plot(m, Layer.GrayScale)
 </programlisting>
 
-It is possible to fine tune the plots created from the matrix:
+The plot functions above return a reference to the multilayer plot window. If you need a reference to the
+spectrogram object itself, you can get it as shown in the example bellow:
+<programlisting>
+m = newMatrix("TestMatrix", 1000, 800)
+m.setFormula("x*y")
+m.calculate()
+g = plot(m, Layer.ColorMap)
+s = g.activeLayer().spectrogram(m)
+s.setColorBarWidth(20)
+</programlisting>
+
+It is possible to fine tune the plots created from a matrix:
 
 <programlisting>
 m = newMatrix("TestMatrix", 1000, 800)
@@ -2331,6 +2342,7 @@ s.setDefaultColorMap()
 s.setCustomColorMap(LinearColorMap map)
 s.showContourLineLabels(bool show = True) # enable/disable contour line labels
 s.setLabelsOffset(int x, int y) # offset values for all labels in % of the text size
+s.updateData()
 </programlisting>
 </sect3>
 
