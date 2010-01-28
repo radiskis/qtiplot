@@ -47,6 +47,7 @@ ExpDecayDialog::ExpDecayDialog(int type, QWidget* parent, Qt::WFlags fl )
     setName( "ExpDecayDialog" );
 	setWindowTitle(tr("QtiPlot - Verify initial guesses"));
 	setSizeGripEnabled( true );
+	setAttribute(Qt::WA_DeleteOnClose);
 
 	ApplicationWindow *app = (ApplicationWindow *)parent;
 	int precision = app->fit_output_precision;
@@ -156,20 +157,19 @@ void ExpDecayDialog::setGraph(Graph *g)
 	if (!g)
 		return;
 
-    fitter = 0;
+	fitter = 0;
 	graph = g;
 
 	boxName->addItems(graph->analysableCurvesList());
 
-    QString selectedCurve = g->selectedCurveTitle();
-	if (!selectedCurve.isEmpty()){
-	    int index = boxName->findText (selectedCurve);
-		boxName->setCurrentItem(index);
-	}
-    activateCurve(boxName->currentText());
+	QString selectedCurve = g->selectedCurveTitle();
+	if (!selectedCurve.isEmpty())
+		boxName->setCurrentIndex(boxName->findText (selectedCurve));
 
-	connect (graph, SIGNAL(closedGraph()), this, SLOT(close()));
-    connect (graph, SIGNAL(dataRangeChanged()), this, SLOT(changeDataRange()));
+	activateCurve(boxName->currentText());
+
+	connect (graph, SIGNAL(destroyed()), this, SLOT(close()));
+	connect (graph, SIGNAL(dataRangeChanged()), this, SLOT(changeDataRange()));
 }
 
 void ExpDecayDialog::activateCurve(const QString& curveName)

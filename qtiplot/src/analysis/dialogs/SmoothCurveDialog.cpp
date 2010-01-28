@@ -49,6 +49,7 @@ SmoothCurveDialog::SmoothCurveDialog(int method, QWidget* parent, Qt::WFlags fl 
     setObjectName( "SmoothCurveDialog" );
 	setWindowTitle(tr("QtiPlot - Smoothing Options"));
 	setSizeGripEnabled( true );
+	setAttribute(Qt::WA_DeleteOnClose);
 
     QGroupBox *gb1 = new QGroupBox();
     QGridLayout *gl1 = new QGridLayout(gb1);
@@ -84,8 +85,7 @@ SmoothCurveDialog::SmoothCurveDialog(int method, QWidget* parent, Qt::WFlags fl 
 		gl1->addWidget(boxColor, 4, 1);
         gl1->setRowStretch(5, 1);
 		}
-	else
-	if (method == SmoothFilter::Lowess)
+	else if (method == SmoothFilter::Lowess)
 		{
         gl1->addWidget(new QLabel(tr("f")), 1, 0);
 		boxF = new QDoubleSpinBox();
@@ -133,7 +133,7 @@ SmoothCurveDialog::SmoothCurveDialog(int method, QWidget* parent, Qt::WFlags fl 
     hb->addLayout(vl);
 
 	connect( btnSmooth, SIGNAL(clicked()), this, SLOT( smooth()));
-    connect( buttonCancel, SIGNAL(clicked()), this, SLOT( reject()));
+	connect( buttonCancel, SIGNAL(clicked()), this, SLOT( close()));
 	connect( boxName, SIGNAL(activated(const QString&)), this, SLOT(activateCurve(const QString&)));
 }
 
@@ -161,9 +161,12 @@ void SmoothCurveDialog::smooth()
 
 void SmoothCurveDialog::setGraph(Graph *g)
 {
-    graph = g;
-    boxName->addItems (g->analysableCurvesList());
-    activateCurve(boxName->currentText());
+	if (!g)
+		return;
+
+	graph = g;
+	boxName->addItems (g->analysableCurvesList());
+	activateCurve(boxName->currentText());
 }
 
 void SmoothCurveDialog::activateCurve(const QString& curveName)

@@ -110,7 +110,7 @@ PolynomFitDialog::PolynomFitDialog( QWidget* parent, Qt::WFlags fl )
 	hlayout->addLayout(vl);
 
 	connect( buttonFit, SIGNAL( clicked() ), this, SLOT( fit() ) );
-	connect( buttonCancel, SIGNAL( clicked() ), this, SLOT( reject() ) );
+	connect( buttonCancel, SIGNAL( clicked() ), this, SLOT( close() ) );
 	connect( boxName, SIGNAL( activated(const QString&) ), this, SLOT(activateCurve(const QString&)));
 }
 
@@ -140,17 +140,19 @@ void PolynomFitDialog::fit()
 
 void PolynomFitDialog::setGraph(Graph *g)
 {
+	if (!g)
+		return;
+
 	graph = g;
 	boxName->addItems (g->analysableCurvesList());
 
 	QString selectedCurve = g->selectedCurveTitle();
-	if (!selectedCurve.isEmpty()){
-	    int index = boxName->findText (selectedCurve);
-		boxName->setCurrentItem(index);
-	}
-    activateCurve(boxName->currentText());
+	if (!selectedCurve.isEmpty())
+		boxName->setCurrentIndex(boxName->findText (selectedCurve));
 
-	connect (graph, SIGNAL(closedGraph()), this, SLOT(close()));
+	activateCurve(boxName->currentText());
+
+	connect (graph, SIGNAL(destroyed()), this, SLOT(close()));
 	connect (graph, SIGNAL(dataRangeChanged()), this, SLOT(changeDataRange()));
 };
 

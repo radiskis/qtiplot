@@ -855,12 +855,11 @@ void FitDialog::setGraph(Graph *g)
 	boxCurve->clear();
 	boxCurve->addItems(d_graph->analysableCurvesList());
 
-    QString selectedCurve = g->selectedCurveTitle();
-	if (!selectedCurve.isEmpty()){
-	    int index = boxCurve->findText (selectedCurve);
-		boxCurve->setCurrentItem(index);
-	}
-    activateCurve(boxCurve->currentText());
+	QString selectedCurve = g->selectedCurveTitle();
+	if (!selectedCurve.isEmpty())
+		boxCurve->setCurrentIndex(boxCurve->findText (selectedCurve));
+
+	activateCurve(boxCurve->currentText());
 
 	connect (d_graph, SIGNAL(closedGraph()), this, SLOT(close()));
 	connect (d_graph, SIGNAL(dataRangeChanged()), this, SLOT(changeDataRange()));

@@ -195,95 +195,95 @@ void Interpolation::calculateOutputData(double *x, double *y)
 
 int Interpolation::sortedCurveData(QwtPlotCurve *c, double start, double end, double **x, double **y)
 {
-    if (!c || c->rtti() != QwtPlotItem::Rtti_PlotCurve)
-        return 0;
+	if (!c || c->rtti() != QwtPlotItem::Rtti_PlotCurve)
+		return 0;
 
 	int n = c->dataSize();
 	double *xtemp = (double *)malloc(n*sizeof(double));
 	if (!xtemp)
-        memoryErrorMessage();
+		memoryErrorMessage();
 
-    double *ytemp = (double *)malloc(n*sizeof(double));
-    if (!ytemp){
-        free(xtemp);
-        memoryErrorMessage();
-    }
+	double *ytemp = (double *)malloc(n*sizeof(double));
+	if (!ytemp){
+		free(xtemp);
+		memoryErrorMessage();
+	}
 
 	for (int i = 0; i < n; i++){
-        xtemp[i] = c->x(i);
-        ytemp[i] = c->y(i);
-    }
+		xtemp[i] = c->x(i);
+		ytemp[i] = c->y(i);
+	}
 
 	size_t *p = (size_t *)malloc(n*sizeof(size_t));
 	if (!p){
-        free(xtemp); free(ytemp);
-        memoryErrorMessage();
-    }
-    gsl_sort_index(p, xtemp, 1, n);
+		free(xtemp); free(ytemp);
+		memoryErrorMessage();
+	}
+	gsl_sort_index(p, xtemp, 1, n);
 
 	double *xtemp2 = (double *)malloc(n*sizeof(double));
-    if (!xtemp2){
-        free(xtemp); free(ytemp); free(p);
-        memoryErrorMessage();
-    }
+	if (!xtemp2){
+		free(xtemp); free(ytemp); free(p);
+		memoryErrorMessage();
+	}
 
-    double *ytemp2 = (double *)malloc(n*sizeof(double));
-    if (!ytemp2){
-        free(xtemp); free(ytemp); free(p); free(xtemp2);
-        memoryErrorMessage();
-    }
+	double *ytemp2 = (double *)malloc(n*sizeof(double));
+	if (!ytemp2){
+		free(xtemp); free(ytemp); free(p); free(xtemp2);
+		memoryErrorMessage();
+	}
 
-    for (int i = 0; i < n; i++){
-        xtemp2[i] = xtemp[p[i]];
-  	    ytemp2[i] = ytemp[p[i]];
-    }
-    free(xtemp);
-    free(ytemp);
-    free(p);
+	for (int i = 0; i < n; i++){
+		xtemp2[i] = xtemp[p[i]];
+		ytemp2[i] = ytemp[p[i]];
+	}
+	free(xtemp);
+	free(ytemp);
+	free(p);
 
 	int i_start = 0, i_end = n;
-    for (int i = 0; i < i_end; i++)
-  	    if (xtemp2[i] > start && i){
-  	      i_start = i - 1;
-          break;
-        }
-    for (int i = i_end - 1; i >= 0; i--)
-  	    if (xtemp2[i] < end && i < n){
-  	      i_end = i + 1;
-          break;
-        }
+	for (int i = 0; i < i_end; i++)
+		if (xtemp2[i] >= start){
+			i_start = i;
+			break;
+		}
+	for (int i = i_end - 1; i >= 0; i--)
+		if (xtemp2[i] <= end){
+			i_end = i;
+			break;
+		}
 
-    n = i_end - i_start + 1;
-    if (n > c->dataSize())
+	n = i_end - i_start + 1;
+	if (n > c->dataSize())
 		n = c->dataSize();
 
-    (*x) = (double *)malloc(n*sizeof(double));
-    if (!x){
-        free(xtemp2); free(ytemp2);
-        memoryErrorMessage();
-    }
+	(*x) = (double *)malloc(n*sizeof(double));
+	if (!x){
+		free(xtemp2); free(ytemp2);
+		memoryErrorMessage();
+	}
 
-    (*y) = (double *)malloc(n*sizeof(double));
-    if (!y){
-        free(xtemp2); free(ytemp2); free(x);
-        memoryErrorMessage();
-    }
+	(*y) = (double *)malloc(n*sizeof(double));
+	if (!y){
+		free(xtemp2); free(ytemp2); free(x);
+		memoryErrorMessage();
+	}
 
-    int j = 0;
+	int j = 0;
 	for (int i = i_start; i <= i_end; i++){
-        (*x)[j] = xtemp2[i];
-  	    (*y)[j] = ytemp2[i];
-  	    j++;
-    }
-    free(xtemp2);
-    free(ytemp2);
+		(*x)[j] = xtemp2[i];
+		(*y)[j] = ytemp2[i];
+		j++;
+	}
+	free(xtemp2);
+	free(ytemp2);
 
-    double pr_x = (*x)[0];
-    for (int i = 1; i < n; i++){
-    	double xval = (*x)[i];
-        if (xval <= pr_x)
-            return -1;//x values must be monotonically increasing in GSL interpolation routines
-        pr_x = xval;
-    }
+	double pr_x = (*x)[0];
+	for (int i = 1; i < n; i++){
+		double xval = (*x)[i];
+		if (xval <= pr_x)
+			return -1;//x values must be monotonically increasing in GSL interpolation routines
+		pr_x = xval;
+	}
 	return n;
 }

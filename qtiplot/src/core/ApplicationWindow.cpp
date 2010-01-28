@@ -7918,9 +7918,6 @@ void ApplicationWindow::showExpDecayDialog(int type)
 		return;
 
 	ExpDecayDialog *edd = new ExpDecayDialog(type, this);
-	edd->setAttribute(Qt::WA_DeleteOnClose);
-	connect (g, SIGNAL(destroyed()), edd, SLOT(close()));
-
 	edd->setGraph(g);
 	edd->show();
 }
@@ -7976,10 +7973,8 @@ void ApplicationWindow::showFilterDialog(int filter)
 		return;
 
 	Graph* g = plot->activeLayer();
-	if ( g && g->validCurvesDataSize())
-	{
+	if ( g && g->validCurvesDataSize()){
 		FilterDialog *fd = new FilterDialog(filter, this);
-		fd->setAttribute(Qt::WA_DeleteOnClose);
 		fd->setGraph(g);
 		fd->exec();
 	}
@@ -8016,16 +8011,13 @@ void ApplicationWindow::showFFTDialog()
 		Graph* g = ((MultiLayer*)w)->activeLayer();
 		if ( g && g->validCurvesDataSize() ){
 			sd = new FFTDialog(FFTDialog::onGraph, this);
-			sd->setAttribute(Qt::WA_DeleteOnClose);
 			sd->setGraph(g);
 		}
 	} else if (w->inherits("Table")) {
 		sd = new FFTDialog(FFTDialog::onTable, this);
-		sd->setAttribute(Qt::WA_DeleteOnClose);
 		sd->setTable((Table*)w);
 	} else if (w->inherits("Matrix")) {
 		sd = new FFTDialog(FFTDialog::onMatrix, this);
-		sd->setAttribute(Qt::WA_DeleteOnClose);
 		sd->setMatrix((Matrix*)w);
 	}
 
@@ -8044,7 +8036,6 @@ void ApplicationWindow::showSmoothDialog(int m)
 		return;
 
 	SmoothCurveDialog *sd = new SmoothCurveDialog(m, this);
-	sd->setAttribute(Qt::WA_DeleteOnClose);
 	sd->setGraph(g);
 	sd->exec();
 }
@@ -8080,7 +8071,6 @@ void ApplicationWindow::showInterpolationDialog()
 		return;
 
 	InterpolationDialog *id = new InterpolationDialog(this);
-	connect (g, SIGNAL(destroyed()), id, SLOT(close()));
 	id->setGraph(g);
 	id->show();
 }
@@ -8096,7 +8086,6 @@ void ApplicationWindow::showFitPolynomDialog()
 		return;
 
 	PolynomFitDialog *pfd = new PolynomFitDialog(this);
-	connect(g, SIGNAL(destroyed()), pfd, SLOT(close()));
 	pfd->setGraph(g);
 	pfd->show();
 }

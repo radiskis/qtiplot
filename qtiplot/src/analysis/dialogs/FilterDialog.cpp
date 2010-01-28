@@ -46,6 +46,7 @@ FilterDialog::FilterDialog(int type, QWidget* parent, Qt::WFlags fl )
 	setObjectName( "FilterDialog" );
 	setWindowTitle(tr("QtiPlot - Filter options"));
 	setSizeGripEnabled( true );
+	setAttribute(Qt::WA_DeleteOnClose);
 
     QGroupBox *gb1 = new QGroupBox();
     QGridLayout *gl1 = new QGridLayout(gb1);
@@ -112,7 +113,7 @@ FilterDialog::FilterDialog(int type, QWidget* parent, Qt::WFlags fl )
     hb->addLayout(vl);
 
 	connect( buttonFilter, SIGNAL( clicked() ), this, SLOT( filter() ) );
-    connect( buttonCancel, SIGNAL( clicked() ), this, SLOT( reject() ) );
+	connect( buttonCancel, SIGNAL( clicked() ), this, SLOT( close() ) );
 }
 
 void FilterDialog::filter()
@@ -146,6 +147,8 @@ void FilterDialog::filter()
 
 void FilterDialog::setGraph(Graph *g)
 {
+	if (!g)
+		return;
 	graph = g;
 	boxName->addItems (g->analysableCurvesList());
 }

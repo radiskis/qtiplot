@@ -2687,8 +2687,9 @@ int Graph::range(QwtPlotCurve *c, double *start, double *end)
 			*end = d_range_selector->maxXValue();
 			return d_range_selector->dataSize();
 		} else {
-			*start = c->minXValue();
-			*end = c->maxXValue();
+			const QwtData *data = &(c->data());
+			*start = data->boundingRect().left();
+			*end = data->boundingRect().right();
 			return c->dataSize();
 		}
 	} else {
@@ -2698,8 +2699,9 @@ int Graph::range(QwtPlotCurve *c, double *start, double *end)
 			*end = d_range_selector->maxYValue();
 			return d_range_selector->dataSize();
 		} else {
-			*start = c->minYValue();
-			*end = c->maxYValue();
+			const QwtData *data = &(c->data());
+			*start = data->boundingRect().bottom();
+			*end = data->boundingRect().top();
 			return c->dataSize();
 		}
 	}

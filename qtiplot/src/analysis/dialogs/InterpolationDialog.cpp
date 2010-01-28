@@ -64,7 +64,7 @@ InterpolationDialog::InterpolationDialog( QWidget* parent, Qt::WFlags fl )
 
 	gl1->addWidget(new QLabel(tr("Points")), 2, 0);
 	boxPoints = new QSpinBox();
-	boxPoints->setRange(3,100000);
+	boxPoints->setRange(3, 100000);
 	boxPoints->setSingleStep(10);
 	boxPoints->setValue(1000);
 	gl1->addWidget(boxPoints, 2, 1);
@@ -106,7 +106,7 @@ InterpolationDialog::InterpolationDialog( QWidget* parent, Qt::WFlags fl )
 
 	connect( boxName, SIGNAL(activated(const QString&)), this, SLOT( activateCurve(const QString&)));
 	connect( buttonFit, SIGNAL( clicked() ), this, SLOT( interpolate() ) );
-    connect( buttonCancel, SIGNAL( clicked() ), this, SLOT( reject() ) );
+	connect( buttonCancel, SIGNAL( clicked() ), this, SLOT( close() ) );
 }
 
 void InterpolationDialog::interpolate()
@@ -129,8 +129,7 @@ void InterpolationDialog::interpolate()
 		return;
 	}
 
-	Interpolation *i = new Interpolation((ApplicationWindow *)this->parent(), graph, curve,
-                                      from, to, boxMethod->currentIndex());
+	Interpolation *i = new Interpolation((ApplicationWindow *)this->parent(), graph, curve, from, to, boxMethod->currentIndex());
 	i->setOutputPoints(boxPoints->value());
 	i->setColor(boxColor->currentIndex());
 	i->run();
@@ -139,19 +138,19 @@ void InterpolationDialog::interpolate()
 
 void InterpolationDialog::setGraph(Graph *g)
 {
+	if (!g)
+		return;
+
 	graph = g;
 	boxName->addItems(g->analysableCurvesList());
 
-    QString selectedCurve = g->selectedCurveTitle();
+	QString selectedCurve = g->selectedCurveTitle();
 	if (!selectedCurve.isEmpty())
-	{
-	    int index = boxName->findText (selectedCurve);
-		boxName->setCurrentItem(index);
-	}
+		boxName->setCurrentIndex(boxName->findText(selectedCurve));
 
-    activateCurve(boxName->currentText());
+	activateCurve(boxName->currentText());
 
-	connect (graph, SIGNAL(closedGraph()), this, SLOT(close()));
+	connect (graph, SIGNAL(destroyed()), this, SLOT(close()));
 	connect (graph, SIGNAL(dataRangeChanged()), this, SLOT(changeDataRange()));
 };
 

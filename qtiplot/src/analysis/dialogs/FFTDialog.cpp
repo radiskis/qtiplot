@@ -52,6 +52,7 @@ FFTDialog::FFTDialog(int type, QWidget* parent, Qt::WFlags fl )
 {
 	setWindowTitle(tr("QtiPlot - FFT Options"));
 	setSizeGripEnabled( true );
+	setAttribute(Qt::WA_DeleteOnClose);
 
     d_matrix = 0;
 	d_table = 0;
@@ -139,7 +140,7 @@ FFTDialog::FFTDialog(int type, QWidget* parent, Qt::WFlags fl )
 
 	// signals and slots connections
 	connect( buttonOK, SIGNAL( clicked() ), this, SLOT( accept() ) );
-	connect( buttonCancel, SIGNAL( clicked() ), this, SLOT( reject() ) );
+	connect( buttonCancel, SIGNAL( clicked() ), this, SLOT( close() ) );
 }
 
 void FFTDialog::accept()
@@ -173,6 +174,9 @@ void FFTDialog::accept()
 
 void FFTDialog::setGraph(Graph *g)
 {
+	if (!g)
+		return;
+
 	graph = g;
 	boxName->insertStringList (g->analysableCurvesList());
 	activateCurve(boxName->currentText());
@@ -194,6 +198,9 @@ void FFTDialog::activateCurve(const QString& curveName)
 
 void FFTDialog::setTable(Table *t)
 {
+	if (!t)
+		return;
+
 	d_table = t;
 	QStringList l = t->columnsList();
 	boxName->insertStringList (l);
