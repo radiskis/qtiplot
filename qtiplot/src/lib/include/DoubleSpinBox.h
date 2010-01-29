@@ -56,7 +56,7 @@ public:
 	int decimals(){return d_prec;};
 	void setDecimals(int prec){if (prec >= 0) d_prec = prec;};
 
-	double value(){return d_value;};
+	double value(){interpretText(); return d_value;};
 	bool setValue(double val);
 	
 	void setFormat(const char format, int prec = 1){d_format = format; setDecimals(prec);};

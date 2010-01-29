@@ -11373,8 +11373,7 @@ Table* ApplicationWindow::openTable(ApplicationWindow* app, const QStringList &f
 			fields.pop_front();
 			if (d_file_version >= 78)
 				w->loadHeader(fields);
-			else
-			{
+			else if (list.size() >= 7){
 				w->setColPlotDesignation(list[4].toInt(), Table::X);
 				w->setColPlotDesignation(list[6].toInt(), Table::Y);
 				w->setHeader(fields);
@@ -11443,7 +11442,6 @@ Table* ApplicationWindow::openTable(ApplicationWindow* app, const QStringList &f
 	}
     QApplication::restoreOverrideCursor();
 
-//	w->setSpecifications(w->saveToString("geometry\n"));
 	w->table()->blockSignals(false);
 	return w;
 }
