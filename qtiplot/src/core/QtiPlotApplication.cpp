@@ -98,7 +98,7 @@ bool QtiPlotApplication::event(QEvent *event)
 
 			ApplicationWindow *mw = d_windows.last();
 			if (mw){
-				ApplicationWindow *app = mw->openProject(file, false, true);
+				ApplicationWindow *app = mw->open(file, false, true);
 				if (mw->projectname == "untitled"){
 					mw->close();
 					d_windows.removeAll(mw);
