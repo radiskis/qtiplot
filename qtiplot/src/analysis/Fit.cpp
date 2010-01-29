@@ -1023,7 +1023,7 @@ FunctionCurve * Fit::insertFitFunctionCurve(const QString& name, int penWidth, b
 	QString title = d_output_graph->generateFunctionName(name);
 	FunctionCurve *c = new FunctionCurve(FunctionCurve::Normal, title);
 	c->setPen(QPen(ColorBox::color(d_curveColorIndex), penWidth));
-	c->setRange(d_from, d_to);
+	c->setRange(QMIN(d_from, d_to), QMAX(d_from, d_to));
 	c->setFormula(d_formula);
 	if (d_curve){
 		c->setCurveType(d_curve->curveType());
