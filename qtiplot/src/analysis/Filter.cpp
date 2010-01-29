@@ -290,13 +290,13 @@ void Filter::output()
 
 int Filter::sortedCurveData(QwtPlotCurve *c, double start, double end, double **x, double **y)
 {
-    if (!c)
-        return 0;
+	if (!c)
+		return 0;
 
 	int i_start = 0, i_end = 0;
 	int n = curveRange(c, start, end, &i_start, &i_end);
 
-    (*x) = (double *)malloc(n*sizeof(double));
+	(*x) = (double *)malloc(n*sizeof(double));
 	if (!x){
 		memoryErrorMessage();
 		return 0;
@@ -309,25 +309,34 @@ int Filter::sortedCurveData(QwtPlotCurve *c, double start, double end, double **
 		return 0;
 	}
 
-    double *xtemp = new double[n];
-    double *ytemp = new double[n];
+	double *xtemp = new double[n];
+	double *ytemp = new double[n];
 
-  	int j = 0;
-    for (int i = i_start; i <= i_end; i++){
-        xtemp[j] = c->x(i);
-        ytemp[j++] = c->y(i);
-    }
-    size_t *p = new size_t[n];
-    gsl_sort_index(p, xtemp, 1, n);
-    for (int i=0; i<n; i++){
-        (*x)[i] = xtemp[p[i]];
-  	    (*y)[i] = ytemp[p[i]];
-    }
+	int j = 0;
+	if (c->curveType() == QwtPlotCurve::Yfx){
+		for (int i = i_start; i <= i_end; i++){
+			xtemp[j] = c->x(i);
+			ytemp[j++] = c->y(i);
+		}
+	} else {
+		for (int i = i_start; i <= i_end; i++){
+			xtemp[j] = c->y(i);
+			ytemp[j++] = c->x(i);
+		}
+	}
 
-    delete[] xtemp;
-    delete[] ytemp;
-    delete[] p;
-    return n;
+	size_t *p = new size_t[n];
+	gsl_sort_index(p, xtemp, 1, n);
+
+	for (int i = 0; i < n; i++){
+		(*x)[i] = xtemp[p[i]];
+		(*y)[i] = ytemp[p[i]];
+	}
+
+	delete[] xtemp;
+	delete[] ytemp;
+	delete[] p;
+	return n;
 }
 
 int Filter::curveData(QwtPlotCurve *c, double start, double end, double **x, double **y)
@@ -431,7 +440,14 @@ QwtPlotCurve* Filter::addResultCurve(double *x, double *y)
 	DataCurve *c = 0;
 	if (d_graphics_display){
 		c = new DataCurve(d_result_table, tableName + "_1", tableName + "_2");
-		c->setData(x, y, d_points);
+		if (d_curve){
+			c->setCurveType(d_curve->curveType());
+			c->setAxis(d_curve->xAxis(), d_curve->yAxis());
+		}
+		if (c->curveType() == QwtPlotCurve::Yfx)
+			c->setData(x, y, d_points);
+		else
+			c->setData(y, x, d_points);
 		c->setPen(QPen(ColorBox::color(d_curveColorIndex), 1));
 
 		if (!d_output_graph)

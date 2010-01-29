@@ -209,9 +209,16 @@ int Interpolation::sortedCurveData(QwtPlotCurve *c, double start, double end, do
 		memoryErrorMessage();
 	}
 
-	for (int i = 0; i < n; i++){
-		xtemp[i] = c->x(i);
-		ytemp[i] = c->y(i);
+	if (c->curveType() == QwtPlotCurve::Yfx){
+		for (int i = 0; i < n; i++){
+			xtemp[i] = c->x(i);
+			ytemp[i] = c->y(i);
+		}
+	} else {
+		for (int i = 0; i < n; i++){
+			xtemp[i] = c->y(i);
+			ytemp[i] = c->x(i);
+		}
 	}
 
 	size_t *p = (size_t *)malloc(n*sizeof(size_t));
