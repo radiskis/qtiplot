@@ -2823,7 +2823,21 @@ l.setAntialiasing(True, bool update = True)
 </sect3>
 
 <sect3 id="Python-Resizing">
-<title>Resize events</title>
+<title>Resizing the drawing area</title>
+ The drawing area of a layer (the canvas) can be resized using the methods bellow, where the first argument is the new width and
+ the second the new height:
+ <programlisting>
+ l.setCanvasSize(200, 200);
+ l.setCanvasSize(QSize(w, h))
+ </programlisting>
+
+ If you also need to reposition the canvas, you can use the following functions, where the first two arguments
+ specify the new position of the top left corner of the canvas:
+ <programlisting>
+ l.setCanvasGeometry(100, 100, 200, 200);
+ l.setCanvasGeometry(QRect(x, y, w, h));
+ </programlisting>
+
 The default behaviour of 2D plot layers, with respect to the resizing of the graph window
 is to adapt the sizes of the fonts used for the various texts, to the new size
 of the plot window. You can override this behaviour and keep the size of the fonts unchanged:

@@ -2493,8 +2493,8 @@ MultiLayer* ApplicationWindow::newGraph(const QString& caption)
 	if (ml){
 		Graph *g = ml->activeLayer();
 		setPreferences(g);
-        g->newLegend();
-    }
+		g->newLegend();
+	}
 	return ml;
 }
 
@@ -2510,9 +2510,8 @@ MultiLayer* ApplicationWindow::multilayerPlot(Table* w, const QStringList& colLi
 	if (!ag)
 		return 0;
 
-    setPreferences(ag);
+	setPreferences(ag);
 	ag->addCurves(w, colList, style, defaultCurveLineWidth, defaultSymbolSize, startRow, endRow);
-
 	ag->newLegend();
 
 	QApplication::restoreOverrideCursor();
@@ -8638,8 +8637,7 @@ void ApplicationWindow::pasteSelection()
 			Graph* g = plot->addLayer();
 			g->copy(lastCopiedLayer);
 			QPoint pos = plot->canvas()->mapFromGlobal(QCursor::pos());
-			g->adjustGeometryToCanvas(QRect(pos.x(), pos.y(),
-				lastCopiedLayer->canvas()->width(), lastCopiedLayer->canvas()->height()));
+			g->setCanvasGeometry(pos.x(), pos.y(), lastCopiedLayer->canvas()->width(), lastCopiedLayer->canvas()->height());
 
 			QApplication::restoreOverrideCursor();
 		} else {

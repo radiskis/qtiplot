@@ -282,7 +282,7 @@ void SelectionMoveResizer::operateOnTargets()
 	foreach(QWidget *i, d_widgets){
 		QwtPlotCanvas *canvas = qobject_cast<QwtPlotCanvas *>(i);
 		if (canvas){
-			((Graph *)canvas->plot())->adjustGeometryToCanvas(operateOn(d_bounding_rect));
+			((Graph *)canvas->plot())->setCanvasGeometry(operateOn(d_bounding_rect));
 			continue;
 		}
 
