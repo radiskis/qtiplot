@@ -193,7 +193,12 @@ class Graph: public QwtPlot
 
     	void print(QPainter *, const QRect &rect, const QwtPlotPrintFilter & = QwtPlotPrintFilter());
 		void updateLayout();
-		void adjustGeometryToCanvas(const QRect &canvasRect);
+		void setCanvasGeometry(const QRect &canvasRect);
+		//!Convenience function for scripts
+		void setCanvasGeometry(int x, int y, int w, int h){setCanvasGeometry(QRect(x, y, w, h));};
+		void setCanvasSize(const QSize &size);
+		//!Convenience function for scripts
+		void setCanvasSize(int w, int h){setCanvasSize(QSize(w, h));};
 
     	void updateCurveLabels();
 

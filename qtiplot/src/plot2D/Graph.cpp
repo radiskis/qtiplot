@@ -5929,22 +5929,38 @@ void Graph::updateLayout()
   \brief Adjust plot content to its canvas size.
   \param cr The new geometry of the canvas.
 */
-void Graph::adjustGeometryToCanvas(const QRect &cr)
+void Graph::setCanvasGeometry(const QRect &cr)
 {
 	bool scaleFonts = autoScaleFonts;
 	autoScaleFonts = false;
 
-    QRect rect = geometry();
-    QRect ocr = plotLayout()->canvasRect().translated(pos());//old canvas geometry
+	QRect ocr = plotLayout()->canvasRect().translated(pos());//old canvas geometry
 
-    rect.adjust(cr.x() - ocr.x(), cr.y() - ocr.y(),
-				cr.right() - ocr.right(), cr.bottom() - ocr.bottom());
+	QRect rect = geometry();
+	rect.adjust(cr.x() - ocr.x(), cr.y() - ocr.y(), cr.right() - ocr.right(), cr.bottom() - ocr.bottom());
+	setGeometry(rect);
 
-    setGeometry(rect);
+	updateMarkersBoundingRect();
+	autoScaleFonts = scaleFonts;
+}
 
-    updateMarkersBoundingRect();
+/*!
+  \brief Adjust plot content to its canvas size.
+  \param cr The new size of the canvas.
+*/
+void Graph::setCanvasSize(const QSize &size)
+{
+	bool scaleFonts = autoScaleFonts;
+	autoScaleFonts = false;
 
-    autoScaleFonts = scaleFonts;
+	QRect ocr = plotLayout()->canvasRect().translated(pos());//old canvas geometry
+
+	QRect rect = geometry();
+	rect.adjust(0, 0, size.width() - ocr.width(), size.height() - ocr.height());
+	setGeometry(rect);
+
+	updateMarkersBoundingRect();
+	autoScaleFonts = scaleFonts;
 }
 
 const QColor & Graph::paletteBackgroundColor() const

@@ -166,11 +166,11 @@ d_canvas_size(QSize())
 	layout->setSpacing(0);
 	setWidget(mainWidget);
 
-    int canvas_width = graph_width + left_margin + right_margin;
-    int canvas_height = graph_height + top_margin + bottom_margin;
+	int canvas_width = graph_width + left_margin + right_margin;
+	int canvas_height = graph_height + top_margin + bottom_margin;
 	resize(canvas_width, canvas_height + LayerButton::btnSize());
 
-    d_canvas->resize(canvas_width, canvas_height);
+	d_canvas->resize(canvas_width, canvas_height);
 	d_canvas->installEventFilter(this);
 
 	QPalette pal = palette();
@@ -331,7 +331,7 @@ void MultiLayer::resizeLayers (QResizeEvent *re)
 		if (g->autoscaleFonts())
 			g->scaleFonts(h_ratio);
 
-		g->adjustGeometryToCanvas(r);
+		g->setCanvasGeometry(r);
 	}
 	emit modifiedPlot();
 }
@@ -552,7 +552,6 @@ QSize MultiLayer::arrangeLayers(bool userSize)
 		return QSize();
 
 	QSize size = QSize(l_canvas_width, l_canvas_height);
-
 	for (int i=0; i<layers; i++){
 		int row = i / d_cols;
 		if (row >= d_rows )
@@ -595,6 +594,9 @@ QSize MultiLayer::arrangeLayers(bool userSize)
 		}
 
 		g->setGeometry(QRect(x, y, w, h));
+		if (userSize)
+			g->setCanvasSize(size);
+
 		if (!userSize)
 			g->setAutoscaleFonts(autoscaleFonts);//restore user settings
 	}
@@ -633,9 +635,6 @@ bool MultiLayer::arrangeLayers(bool fit, bool userSize)
 	if (fit)
 		findBestLayout(d_rows, d_cols);
 
-	//the d_canvas sizes of all layers become equal only after several
-	//resize iterations, due to the way Qwt handles the plot layout
-	int iterations = 0;
 	QSize size = arrangeLayers(userSize);
 	if (!size.isValid()){
 		QApplication::restoreOverrideCursor();
@@ -643,23 +642,34 @@ bool MultiLayer::arrangeLayers(bool fit, bool userSize)
 		return false;
 	}
 
-	QSize canvas_size = QSize(1,1);
-	while (canvas_size != size && iterations < 10){
-		iterations++;
-		canvas_size = size;
-		size = arrangeLayers(userSize);
-		if (!size.isValid()){
-			QApplication::restoreOverrideCursor();
-			setEqualSizedLayers();
-			return false;
-		}
-	}
+	int fw = width() - d_canvas->width();//frame width
+	int fh = height() - d_canvas->height();//frame height
 
-	if (userSize){//resize window
+	if (!userSize){
+		//the d_canvas sizes of all layers become equal only after several
+		//resize iterations, due to the way Qwt handles the plot layout
+		int iterations = 0;
+		QSize canvas_size = QSize(1, 1);
+		while (canvas_size != size && iterations < 10){
+			iterations++;
+			canvas_size = size;
+			size = arrangeLayers(userSize);
+			if (!size.isValid()){
+				QApplication::restoreOverrideCursor();
+				setEqualSizedLayers();
+				return false;
+			}
+		}
+	} else {//resize window to fit new dimensions of the layers
 		this->showNormal();
 		QSize size = d_canvas->childrenRect().size();
-		this->resize(d_canvas->x() + size.width() + left_margin + 2*right_margin,
-					d_canvas->y() + size.height() + bottom_margin + 2*LayerButton::btnSize());
+
+		bool resizeLayers = d_scale_layers;
+		d_scale_layers = false;
+
+		resize(d_canvas->x() + size.width() + left_margin + right_margin + fw, d_canvas->y() + size.height() + fh - bottom_margin);
+
+		d_scale_layers = resizeLayers;
 	}
 
 	emit modifiedPlot();
@@ -1955,7 +1965,7 @@ void MultiLayer::plotProfiles(Matrix* m)
 	g->setAxisTitle(QwtPlot::xTop, QString::null);
 	g->setTitle(QString::null);
 	g->enableAutoscaling(false);
-	g->adjustGeometryToCanvas(QRect(60, 150, 400, 400));
+	g->setCanvasGeometry(QRect(60, 150, 400, 400));
 
 	g = addLayer();
 
@@ -1970,7 +1980,7 @@ void MultiLayer::plotProfiles(Matrix* m)
 	g->setAxisTitle(QwtPlot::xBottom, QString::null);
 	g->setTitle(QString::null);
 	g->enableAutoscaling(false);
-	g->adjustGeometryToCanvas(QRect(60, 0, 400, 100));
+	g->setCanvasGeometry(QRect(60, 0, 400, 100));
 
 	g = addLayer();
 
@@ -1987,7 +1997,7 @@ void MultiLayer::plotProfiles(Matrix* m)
 	g->setAxisTitle(QwtPlot::xTop, QString::null);
 	g->setTitle(QString::null);
 	g->enableAutoscaling(false);
-	g->adjustGeometryToCanvas(QRect(500, 150, 110, 400));
+	g->setCanvasGeometry(QRect(500, 150, 110, 400));
 
 	QColor color = Qt::white;
 	color.setAlpha(0);

@@ -2415,7 +2415,7 @@ bool PlotDialog::acceptParams()
 		if (!g)
 			return false;
 
-		g->adjustGeometryToCanvas(layerCanvasRect(g, boxX->value(), boxY->value(), boxLayerWidth->value(),
+		g->setCanvasGeometry(layerCanvasRect(g, boxX->value(), boxY->value(), boxLayerWidth->value(),
 								boxLayerHeight->value(), (FrameWidget::Unit)unitBox->currentIndex()));
 
 		ApplicationWindow *app = (ApplicationWindow *)this->parent();

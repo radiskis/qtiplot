@@ -1614,6 +1614,11 @@ public:
   void setBackgroundColor(const QColor& color);
   void setCanvasBackground(const QColor& color) /PyName=setCanvasColor/;
 
+  void setCanvasGeometry(int x, int y, int w, int h);
+  void setCanvasGeometry(const QRect &canvasRect);
+  void setCanvasSize(int w, int h);
+  void setCanvasSize(const QSize &size);
+
   Grid* grid();
   void showGrid(int);
   void showGrid();
