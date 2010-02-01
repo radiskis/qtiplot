@@ -119,6 +119,10 @@ LayerDialog::LayerDialog( QWidget* parent, Qt::WFlags fl )
 	boxCanvasHeight->setDecimals(6);
 	gl5->addWidget(boxCanvasHeight, 2, 1);
 
+	keepRatioBox = new QCheckBox(tr("&Keep aspect ratio"));
+	keepRatioBox->setChecked(true);
+	gl5->addWidget(keepRatioBox, 3, 1);
+
     QGroupBox *gb4 = new QGroupBox(tr("Spacing"));
 	QGridLayout *gl4 = new QGridLayout(gb4);
 	gl4->addWidget(new QLabel(tr("Columns gap")), 0, 0);
@@ -133,34 +137,34 @@ LayerDialog::LayerDialog( QWidget* parent, Qt::WFlags fl )
 	boxRowsGap->setSingleStep(5);
 	boxRowsGap->setSuffix(tr(" pixels"));
 	gl4->addWidget(boxRowsGap, 1, 1);
-	gl4->addWidget(new QLabel( tr( "Left margin" )), 2, 0);
+
+	QGroupBox *gb7 = new QGroupBox(tr("Margins"));
+	gl4 = new QGridLayout(gb7);
+	gl4->addWidget(new QLabel( tr( "Left margin" )), 0, 0);
 	boxLeftSpace = new QSpinBox();
 	boxLeftSpace->setRange(0, 1000);
 	boxLeftSpace->setSingleStep(5);
 	boxLeftSpace->setSuffix(tr(" pixels"));
-	gl4->addWidget(boxLeftSpace, 2, 1);
-	gl4->addWidget(new QLabel( tr( "Right margin" )), 3, 0);
+	gl4->addWidget(boxLeftSpace, 0, 1);
+	gl4->addWidget(new QLabel( tr( "Right margin" )), 1, 0);
 	boxRightSpace = new QSpinBox();
 	boxRightSpace->setRange(0, 1000);
 	boxRightSpace->setSingleStep(5);
 	boxRightSpace->setSuffix(tr(" pixels"));
-	gl4->addWidget(boxRightSpace, 3, 1);
-	gl4->addWidget(new QLabel( tr( "Top margin" )), 4, 0);
+	gl4->addWidget(boxRightSpace, 1, 1);
+	gl4->addWidget(new QLabel( tr( "Top margin" )), 2, 0);
 	boxTopSpace = new QSpinBox();
 	boxTopSpace->setRange(0, 1000);
 	boxTopSpace->setSingleStep(5);
 	boxTopSpace->setSuffix(tr(" pixels"));
-	gl4->addWidget(boxTopSpace, 4, 1);
-	gl4->addWidget(new QLabel( tr( "Bottom margin") ), 5, 0);
+	gl4->addWidget(boxTopSpace, 2, 1);
+	gl4->addWidget(new QLabel( tr( "Bottom margin") ), 3, 0);
 	boxBottomSpace = new QSpinBox();
 	boxBottomSpace->setRange(0, 1000);
 	boxBottomSpace->setSingleStep(5);
 	boxBottomSpace->setSuffix(tr(" pixels"));
-	gl4->addWidget(boxBottomSpace, 5, 1);
-
-	QVBoxLayout *vbox1 = new QVBoxLayout();
-	vbox1->addWidget(GroupGrid);
-	vbox1->addWidget(GroupCanvasSize);
+	gl4->addWidget(boxBottomSpace, 3, 1);
+	gl4->setRowStretch(4, 1);
 
 	buttonApply = new QPushButton(tr( "&Apply" ));
 	buttonOk = new QPushButton(tr( "&OK" ));
@@ -189,9 +193,11 @@ LayerDialog::LayerDialog( QWidget* parent, Qt::WFlags fl )
 	QGridLayout *gl6 = new QGridLayout();
 	gl6->addWidget(gb1, 0, 0);
 	gl6->addWidget(gb2, 0, 1);
-	gl6->addLayout(vbox1, 1, 0);
+	gl6->addWidget(GroupGrid, 1, 0);
 	gl6->addWidget(gb4, 1, 1);
-	gl6->setRowStretch(2, 1);
+	gl6->addWidget(GroupCanvasSize, 2, 0);
+	gl6->addWidget(gb7, 2, 1);
+	gl6->setRowStretch(3, 1);
 
 	QVBoxLayout *vbox2 = new QVBoxLayout(this);
 	vbox2->addLayout(gl6);
@@ -205,6 +211,8 @@ LayerDialog::LayerDialog( QWidget* parent, Qt::WFlags fl )
 	connect( buttonCancel, SIGNAL( clicked() ), this, SLOT( reject() ) );
 	connect( fitBox, SIGNAL( toggled(bool) ), this, SLOT(enableLayoutOptions(bool) ) );
 	connect(unitBox, SIGNAL(activated(int)), this, SLOT(updateSizes(int)));
+	connect(boxCanvasWidth, SIGNAL(valueChanged (double)), this, SLOT(adjustCanvasHeight(double)));
+	connect(boxCanvasHeight, SIGNAL(valueChanged (double)), this, SLOT(adjustCanvasWidth(double)));
 }
 
 void LayerDialog::enableLayoutOptions(bool ok)
@@ -412,4 +420,26 @@ void LayerDialog::updateSizes(int unit)
 
 	boxCanvasWidth->setValue(convertFromPixels(multi_layer->layerCanvasSize().width(), (FrameWidget::Unit)unit, 0));
 	boxCanvasHeight->setValue(convertFromPixels(multi_layer->layerCanvasSize().height(), (FrameWidget::Unit)unit, 1));
+
+	aspect_ratio = boxCanvasWidth->value()/boxCanvasHeight->value();
+}
+
+void LayerDialog::adjustCanvasHeight(double width)
+{
+	if (keepRatioBox->isChecked()){
+		boxCanvasHeight->blockSignals(true);
+		boxCanvasHeight->setValue(width/aspect_ratio);
+		boxCanvasHeight->blockSignals(false);
+	} else
+		aspect_ratio = width/boxCanvasHeight->value();
+}
+
+void LayerDialog::adjustCanvasWidth(double height)
+{
+	if (keepRatioBox->isChecked()){
+		boxCanvasWidth->blockSignals(true);
+		boxCanvasWidth->setValue(height*aspect_ratio);
+		boxCanvasWidth->blockSignals(false);
+	} else
+		aspect_ratio = boxCanvasWidth->value()/height;
 }

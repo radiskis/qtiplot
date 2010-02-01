@@ -55,6 +55,8 @@ protected slots:
 	void enableLayoutOptions(bool ok);
 	void swapLayers();
 	void updateSizes(int unit);
+	void adjustCanvasHeight(double width);
+	void adjustCanvasWidth(double height);
 
 private:
 	int convertToPixels(double w, FrameWidget::Unit unit, int dimension);
@@ -75,6 +77,9 @@ private:
 	QCheckBox *fitBox;
 	QComboBox *alignHorBox, *alignVertBox;
 	QComboBox *unitBox;
+	QCheckBox *keepRatioBox;
+
+	double aspect_ratio;
 };
 
 #endif

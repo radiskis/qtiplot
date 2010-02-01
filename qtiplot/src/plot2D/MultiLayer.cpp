@@ -2,7 +2,7 @@
     File                 : MultiLayer.cpp
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2006 - 2009 by Ion Vasilief
+	Copyright            : (C) 2006 - 20010 by Ion Vasilief
     Email (use @ for *)  : ion_vasilief*yahoo.fr
     Description          : Multi layer widget
 
@@ -660,7 +660,7 @@ bool MultiLayer::arrangeLayers(bool fit, bool userSize)
 				return false;
 			}
 		}
-	} else {//resize window to fit new dimensions of the layers
+	} else if (!this->isMaximized()){//resize window to fit new dimensions of the layers
 		this->showNormal();
 		QSize size = d_canvas->childrenRect().size();
 
