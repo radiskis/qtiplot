@@ -137,6 +137,8 @@ protected slots:
     void showCustomPenColumn(bool on);
 
 private:
+	void applyCanvasSize();
+
 	void applyFormatToLayer(Graph *g);
 	void applySymbolsFormatToCurve(QwtPlotCurve *c, bool fillColor = true, bool penColor = true);
 	void applySymbolsFormatToLayer(Graph *g);
@@ -288,7 +290,7 @@ private:
 	QRadioButton *customPenBtn;
 
 	QSpinBox *boxSkipSymbols, *boxSkipErrorBars;
-	QComboBox *symbolsFormatApplyToBox, *lineFormatApplyToBox, *errorBarsFormatApplyToBox;
+	QComboBox *symbolsFormatApplyToBox, *lineFormatApplyToBox, *errorBarsFormatApplyToBox, *sizeApplyToBox;
 	QSpinBox *boxMaxPoints;
 	DoubleSpinBox *boxDouglasPeukerTolerance;
 	QGroupBox *speedModeBox;

@@ -2,7 +2,7 @@
     File                 : LayerDialog.cpp
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2004-2007 by Ion Vasilief
+	Copyright            : (C) 2004-2010 by Ion Vasilief
     Email (use @ for *)  : ion_vasilief*yahoo.fr
     Description          : Arrange layers dialog
 
@@ -28,6 +28,7 @@
  ***************************************************************************/
 #include "LayerDialog.h"
 #include <ApplicationWindow.h>
+#include <DoubleSpinBox.h>
 
 #include <QLayout>
 #include <QSpinBox>
@@ -92,18 +93,31 @@ LayerDialog::LayerDialog( QWidget* parent, Qt::WFlags fl )
 	GroupCanvasSize->setChecked(false);
 
 	QGridLayout *gl5 = new QGridLayout(GroupCanvasSize);
-	gl5->addWidget(new QLabel(tr("Width")), 0, 0);
-	boxCanvasWidth = new QSpinBox();
+
+	gl5->addWidget(new QLabel(tr("Unit")), 0, 0);
+
+	unitBox = new QComboBox();
+	unitBox->insertItem(tr("inch"));
+	unitBox->insertItem(tr("mm"));
+	unitBox->insertItem(tr("cm"));
+	unitBox->insertItem(tr("point"));
+	unitBox->insertItem(tr("pixel"));
+	gl5->addWidget(unitBox, 0, 1);
+
+	QLocale locale = QLocale();
+	gl5->addWidget(new QLabel(tr("Width")), 1, 0);
+	boxCanvasWidth = new DoubleSpinBox();
 	boxCanvasWidth->setRange(0, 10000);
-	boxCanvasWidth->setSingleStep(50);
-	boxCanvasWidth->setSuffix(tr(" pixels"));
-	gl5->addWidget(boxCanvasWidth, 0, 1);
-	gl5->addWidget(new QLabel( tr( "Height" )), 1, 0);
-	boxCanvasHeight = new QSpinBox();
+	boxCanvasWidth->setLocale(locale);
+	boxCanvasWidth->setDecimals(6);
+	gl5->addWidget(boxCanvasWidth, 1, 1);
+
+	gl5->addWidget(new QLabel( tr( "Height" )), 2, 0);
+	boxCanvasHeight = new DoubleSpinBox();
 	boxCanvasHeight->setRange(0, 10000);
-	boxCanvasHeight->setSingleStep(50);
-	boxCanvasHeight->setSuffix(tr(" pixels"));
-	gl5->addWidget(boxCanvasHeight, 1, 1);
+	boxCanvasHeight->setLocale(locale);
+	boxCanvasHeight->setDecimals(6);
+	gl5->addWidget(boxCanvasHeight, 2, 1);
 
     QGroupBox *gb4 = new QGroupBox(tr("Spacing"));
 	QGridLayout *gl4 = new QGridLayout(gb4);
@@ -190,6 +204,7 @@ LayerDialog::LayerDialog( QWidget* parent, Qt::WFlags fl )
 	connect( buttonApply, SIGNAL( clicked() ), this, SLOT(update() ) );
 	connect( buttonCancel, SIGNAL( clicked() ), this, SLOT( reject() ) );
 	connect( fitBox, SIGNAL( toggled(bool) ), this, SLOT(enableLayoutOptions(bool) ) );
+	connect(unitBox, SIGNAL(activated(int)), this, SLOT(updateSizes(int)));
 }
 
 void LayerDialog::enableLayoutOptions(bool ok)
@@ -211,8 +226,14 @@ void LayerDialog::setMultiLayer(MultiLayer *g)
 	boxRightSpace->setValue(g->rightMargin());
 	boxTopSpace->setValue(g->topMargin());
 	boxBottomSpace->setValue(g->bottomMargin());
-	boxCanvasWidth->setValue(g->layerCanvasSize().width());
-	boxCanvasHeight->setValue(g->layerCanvasSize().height());
+
+	FrameWidget::Unit unit = (FrameWidget::Unit)g->applicationWindow()->d_layer_geometry_unit;
+	unitBox->blockSignals(true);
+	unitBox->setCurrentIndex(unit);
+	unitBox->blockSignals(false);
+
+	updateSizes(unit);
+
 	alignHorBox->setCurrentItem(g->horizontalAlignement());
 	alignVertBox->setCurrentItem(g->verticalAlignement());
 
@@ -236,8 +257,7 @@ void LayerDialog::update()
 		if (!graphs)
 			return;
 
-		if (dn < 0)
-		{// Customize new layers with user default settings
+		if (dn < 0){// Customize new layers with user default settings
 			ApplicationWindow *app = (ApplicationWindow *)this->parent();
 			for (int i = old_graphs+1; i <= graphs; i++)
 				app->setPreferences(multi_layer->layer(i));
@@ -246,30 +266,33 @@ void LayerDialog::update()
 		int cols=boxX->value();
 		int rows=boxY->value();
 
-		if (cols>graphs && !fitBox->isChecked())
-		{
+		if (cols>graphs && !fitBox->isChecked()){
 			QMessageBox::about(this, tr("QtiPlot - Columns input error"),
 					tr("The number of columns you've entered is greater than the number of graphs (%1)!").arg(graphs));
 			boxX->setFocus();
 			return;
 		}
 
-		if (rows>graphs && !fitBox->isChecked())
-		{
+		if (rows>graphs && !fitBox->isChecked()){
 			QMessageBox::about(this, tr("QtiPlot - Rows input error"),
 					tr("The number of rows you've entered is greater than the number of graphs (%1)!").arg(graphs));
 			boxY->setFocus();
 			return;
 		}
 
-		if (!fitBox->isChecked())
-		{
+		if (!fitBox->isChecked()){
 			multi_layer->setCols(cols);
 			multi_layer->setRows(rows);
 		}
 
-		if (GroupCanvasSize->isChecked())
-			multi_layer->setLayerCanvasSize(boxCanvasWidth->value(), boxCanvasHeight->value());
+		if (GroupCanvasSize->isChecked()){
+			FrameWidget::Unit unit = (FrameWidget::Unit)unitBox->currentIndex();
+			ApplicationWindow *app = multi_layer->applicationWindow();
+			if (app)
+				app->d_layer_geometry_unit = unitBox->currentIndex();
+
+			multi_layer->setLayerCanvasSize(convertToPixels(boxCanvasWidth->value(), unit, 0), convertToPixels(boxCanvasHeight->value(), unit, 1));
+		}
 
 		multi_layer->setAlignement(alignHorBox->currentItem(), alignVertBox->currentItem());
 
@@ -279,14 +302,12 @@ void LayerDialog::update()
 		multi_layer->setSpacing(boxRowsGap->value(), boxColsGap->value());
 		multi_layer->arrangeLayers(fitBox->isChecked(), GroupCanvasSize->isChecked());
 
-		if (!GroupCanvasSize->isChecked())
-		{//show new layer canvas size
+		if (!GroupCanvasSize->isChecked()){//show new layer canvas size
 			boxCanvasWidth->setValue(multi_layer->layerCanvasSize().width());
 			boxCanvasHeight->setValue(multi_layer->layerCanvasSize().height());
 		}
 
-		if (fitBox->isChecked())
-		{//show new grid settings
+		if (fitBox->isChecked()){//show new grid settings
 			boxX->setValue(multi_layer->getCols());
 			boxY->setValue(multi_layer->getRows());
 		}
@@ -307,4 +328,88 @@ void LayerDialog::swapLayers()
 	}
 
 	multi_layer->swapLayers(boxLayerSrc->value(), boxLayerDest->value());
+}
+
+int LayerDialog::convertToPixels(double w, FrameWidget::Unit unit, int dimension)
+{
+	if (!multi_layer)
+		return qRound(w);
+
+	double dpi = (double)multi_layer->logicalDpiX();
+	if (dimension)
+		dpi = (double)multi_layer->logicalDpiY();
+
+	switch(unit){
+		case FrameWidget::Pixel:
+		default:
+			return qRound(w);
+		break;
+		case FrameWidget::Inch:
+			return qRound(w*dpi);
+		break;
+		case FrameWidget::Millimeter:
+			return qRound(w*dpi/25.4);
+		break;
+		case FrameWidget::Centimeter:
+			return qRound(w*dpi/2.54);
+		break;
+		case FrameWidget::Point:
+			return qRound(w*dpi/72.0);
+		break;
+	}
+	return qRound(w);
+}
+
+double LayerDialog::convertFromPixels(int w, FrameWidget::Unit unit, int dimension)
+{
+	if (!multi_layer)
+		return w;
+
+	double dpi = (double)multi_layer->logicalDpiX();
+	if (dimension)
+		dpi = (double)multi_layer->logicalDpiY();
+
+	double val = 0.0;
+	switch(unit){
+		case FrameWidget::Pixel:
+		default:
+			val = w;
+		break;
+		case FrameWidget::Inch:
+			val = (double)w/dpi;
+		break;
+		case FrameWidget::Millimeter:
+			val = 25.4*w/dpi;
+		break;
+		case FrameWidget::Centimeter:
+			val = 2.54*w/dpi;
+		break;
+		case FrameWidget::Point:
+			val = 72.0*w/dpi;
+		break;
+	}
+	return val;
+}
+
+void LayerDialog::updateSizes(int unit)
+{
+	if (unit == FrameWidget::Pixel || unit == FrameWidget::Point){
+		boxCanvasWidth->setFormat('f', 0);
+		boxCanvasHeight->setFormat('f', 0);
+
+		boxCanvasWidth->setSingleStep(1.0);
+		boxCanvasHeight->setSingleStep(1.0);
+	} else {
+		boxCanvasWidth->setFormat('g', 6);
+		boxCanvasHeight->setFormat('g', 6);
+
+		boxCanvasWidth->setSingleStep(0.1);
+		boxCanvasHeight->setSingleStep(0.1);
+	}
+
+	if (!multi_layer)
+		return;
+
+	boxCanvasWidth->setValue(convertFromPixels(multi_layer->layerCanvasSize().width(), (FrameWidget::Unit)unit, 0));
+	boxCanvasHeight->setValue(convertFromPixels(multi_layer->layerCanvasSize().height(), (FrameWidget::Unit)unit, 1));
 }
