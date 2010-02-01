@@ -2,7 +2,7 @@
     File                 : LayerDialog.h
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2004-2007 by Ion Vasilief
+	Copyright            : (C) 2004-2010 by Ion Vasilief
     Email (use @ for *)  : ion_vasilief*yahoo.fr
     Description          : Arrange layers dialog
 
@@ -33,6 +33,7 @@
 
 #include <QDialog>
 
+class DoubleSpinBox;
 class QGroupBox;
 class QPushButton;
 class QSpinBox;
@@ -53,8 +54,12 @@ protected slots:
 	void update();
 	void enableLayoutOptions(bool ok);
 	void swapLayers();
+	void updateSizes(int unit);
 
 private:
+	int convertToPixels(double w, FrameWidget::Unit unit, int dimension);
+	double convertFromPixels(int w, FrameWidget::Unit unit, int dimension);
+
 	MultiLayer *multi_layer;
 
 	QPushButton* buttonOk;
@@ -64,10 +69,12 @@ private:
     QGroupBox *GroupCanvasSize, *GroupGrid;
     QSpinBox *boxX, *boxY, *boxColsGap, *boxRowsGap;
 	QSpinBox *boxRightSpace, *boxLeftSpace, *boxTopSpace, *boxBottomSpace;
-	QSpinBox *boxCanvasWidth, *boxCanvasHeight, *layersBox;
+	DoubleSpinBox *boxCanvasWidth, *boxCanvasHeight;
+	QSpinBox *layersBox;
 	QSpinBox *boxLayerDest, *boxLayerSrc;
 	QCheckBox *fitBox;
 	QComboBox *alignHorBox, *alignVertBox;
+	QComboBox *unitBox;
 };
 
 #endif

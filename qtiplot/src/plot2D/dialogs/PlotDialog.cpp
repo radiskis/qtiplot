@@ -2,7 +2,7 @@
     File                 : PlotDialog.cpp
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2006-2009 by Ion Vasilief
+	Copyright            : (C) 2006-2010 by Ion Vasilief
     Email (use @ for *)  : ion_vasilief*yahoo.fr
     Description          : Custom curves dialog
 
@@ -420,7 +420,7 @@ void PlotDialog::initLayerPage()
 
 void PlotDialog::initLayerGeometryPage()
 {
-    layerGeometryPage = new QWidget();
+	layerGeometryPage = new QWidget();
 
 	ApplicationWindow *app = (ApplicationWindow *)parent();
 	QLocale locale = QLocale();
@@ -447,15 +447,15 @@ void PlotDialog::initLayerGeometryPage()
 	boxY->setLocale(locale);
 	boxY->setDecimals(6);
 
-    QGridLayout *gl1 = new QGridLayout(gb1);
-    gl1->addWidget(new QLabel( tr("X= ")), 0, 0);
-    gl1->addWidget(boxX, 0, 1);
-    gl1->addWidget(new QLabel(tr("Y= ")), 1, 0);
-    gl1->addWidget(boxY, 1, 1);
-    gl1->setRowStretch(2, 1);
+	QGridLayout *gl1 = new QGridLayout(gb1);
+	gl1->addWidget(new QLabel( tr("X= ")), 0, 0);
+	gl1->addWidget(boxX, 0, 1);
+	gl1->addWidget(new QLabel(tr("Y= ")), 1, 0);
+	gl1->addWidget(boxY, 1, 1);
+	gl1->setRowStretch(2, 1);
 
-    QGroupBox *gb2 = new QGroupBox(tr("Size"));
-    boxLayerWidth = new DoubleSpinBox();
+	QGroupBox *gb2 = new QGroupBox(tr("Size"));
+	boxLayerWidth = new DoubleSpinBox();
 	boxLayerWidth->setMinimum(0);
 	boxLayerWidth->setLocale(locale);
 	boxLayerWidth->setDecimals(6);
@@ -465,28 +465,39 @@ void PlotDialog::initLayerGeometryPage()
 	boxLayerHeight->setLocale(locale);
 	boxLayerHeight->setDecimals(6);
 
-    QGridLayout *gl2 = new QGridLayout(gb2);
-    gl2->addWidget(new QLabel( tr("width= ")), 0, 0);
-    gl2->addWidget(boxLayerWidth, 0, 1);
+	QGridLayout *gl2 = new QGridLayout(gb2);
+	gl2->addWidget(new QLabel( tr("width= ")), 0, 0);
+	gl2->addWidget(boxLayerWidth, 0, 1);
 
-    gl2->addWidget(new QLabel(tr("height= ")), 2, 0);
-    gl2->addWidget(boxLayerHeight, 2, 1);
+	gl2->addWidget(new QLabel(tr("height= ")), 2, 0);
+	gl2->addWidget(boxLayerHeight, 2, 1);
 
 	keepRatioBox = new QCheckBox(tr("Keep aspect ratio"));
 	keepRatioBox->setChecked(true);
-    gl2->addWidget(keepRatioBox, 3, 1);
+	gl2->addWidget(keepRatioBox, 3, 1);
 
-    gl2->setRowStretch(4, 1);
+	QLabel *l = new QLabel(tr("Apply &to..."));
+	gl2->addWidget(l, 4, 0);
 
-    QBoxLayout *bl2 = new QBoxLayout (QBoxLayout::LeftToRight);
+	sizeApplyToBox = new QComboBox();
+	sizeApplyToBox->insertItem(tr("Layer"));
+	sizeApplyToBox->insertItem(tr("Window"));
+	sizeApplyToBox->insertItem(tr("All Windows"));
+	gl2->addWidget(sizeApplyToBox, 4, 1);
+
+	l->setBuddy(sizeApplyToBox);
+
+	gl2->setRowStretch(5, 1);
+
+	QBoxLayout *bl2 = new QBoxLayout (QBoxLayout::LeftToRight);
 	bl2->addWidget(gb1);
 	bl2->addWidget(gb2);
 
-    QVBoxLayout * vl = new QVBoxLayout( layerGeometryPage );
-    vl->addLayout(bl1);
+	QVBoxLayout * vl = new QVBoxLayout( layerGeometryPage );
+	vl->addLayout(bl1);
 	vl->addLayout(bl2);
 
-    privateTabWidget->addTab(layerGeometryPage, tr("Geometry"));
+	privateTabWidget->addTab(layerGeometryPage, tr("Geometry"));
 
 	connect(boxLayerWidth, SIGNAL(valueChanged (double)), this, SLOT(adjustLayerHeight(double)));
 	connect(boxLayerHeight, SIGNAL(valueChanged (double)), this, SLOT(adjustLayerWidth(double)));
@@ -2326,6 +2337,53 @@ void PlotDialog::updateEndPointColumns(const QString& text)
 	yEndBox->setCurrentText(table + "_" + cols[3].remove("(Y)").remove("(M)"));
 }
 
+void PlotDialog::applyCanvasSize()
+{
+	if (privateTabWidget->currentWidget() != layerGeometryPage)
+		return;
+
+	ApplicationWindow *app = (ApplicationWindow *)this->parent();
+	switch(sizeApplyToBox->currentIndex()){
+		case 1://this window
+		{
+			QSize size = QSize();
+			QList<Graph *> layersLst = d_ml->layersList();
+			foreach(Graph *g, layersLst){
+				size = layerCanvasRect(g, boxX->value(), boxY->value(), boxLayerWidth->value(),
+									   boxLayerHeight->value(), (FrameWidget::Unit)unitBox->currentIndex()).size();
+				g->setCanvasSize(size);
+			}
+			if (size.isValid())
+				d_ml->setLayerCanvasSize(size.width(), size.height());
+		}
+		break;
+
+		case 2://all windows
+		{
+			QList<MdiSubWindow *> windows = app->windowsList();
+			foreach(MdiSubWindow *w, windows){
+				MultiLayer *ml = qobject_cast<MultiLayer *>(w);
+				if (!ml)
+					continue;
+
+				QSize size = QSize();
+				QList<Graph *> layersLst = ml->layersList();
+				foreach(Graph *g, layersLst){
+					size = layerCanvasRect(g, boxX->value(), boxY->value(), boxLayerWidth->value(),
+										   boxLayerHeight->value(), (FrameWidget::Unit)unitBox->currentIndex()).size();
+					g->setCanvasSize(size);
+				}
+				if (size.isValid())
+					ml->setLayerCanvasSize(size.width(), size.height());
+			}
+		}
+		break;
+
+		default:
+			break;
+	}
+}
+
 void PlotDialog::applyLayerFormat()
 {
 	if (privateTabWidget->currentWidget() != layerPage)
@@ -2417,6 +2475,8 @@ bool PlotDialog::acceptParams()
 
 		g->setCanvasGeometry(layerCanvasRect(g, boxX->value(), boxY->value(), boxLayerWidth->value(),
 								boxLayerHeight->value(), (FrameWidget::Unit)unitBox->currentIndex()));
+
+		applyCanvasSize();
 
 		ApplicationWindow *app = (ApplicationWindow *)this->parent();
 		if (app)

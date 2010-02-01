@@ -2824,8 +2824,8 @@ l.setAntialiasing(True, bool update = True)
 
 <sect3 id="Python-Resizing">
 <title>Resizing the drawing area</title>
- The drawing area of a layer (the canvas) can be resized using the methods bellow, where the first argument is the new width and
- the second the new height:
+ The drawing area of a layer (the canvas) can be resized using the methods bellow, where the first argument is the new width,
+ the second is the new height and sizes are defined in pixels:
  <programlisting>
  l.setCanvasSize(200, 200);
  l.setCanvasSize(QSize(w, h))
