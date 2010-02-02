@@ -110,7 +110,7 @@ public:
 	QHBoxLayout *toolBox(){return toolbuttonsBox;};
 
 public slots:
-	Graph* addLayer(int x = 0, int y = 0, int width = 0, int height = 0);
+	Graph* addLayer(int x = 0, int y = 0, int width = 0, int height = 0, bool = false);
 
 	bool isEmpty();
     bool removeLayer(Graph *g);

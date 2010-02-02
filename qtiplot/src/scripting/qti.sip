@@ -1679,7 +1679,7 @@ public:
   void setNumLayers(int n);
   Graph* layer(int num);
   QList<Graph *> layersList();
-  Graph* addLayer(int = 0, int = 0, int = 0, int = 0);
+  Graph* addLayer(int = 0, int = 0, int = 0, int = 0, bool = false);
 
   bool removeLayer(Graph *g);
   bool removeActiveLayer();

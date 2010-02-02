@@ -208,7 +208,7 @@ LayerButton* MultiLayer::addLayerButton()
 	return button;
 }
 
-Graph* MultiLayer::addLayer(int x, int y, int width, int height)
+Graph* MultiLayer::addLayer(int x, int y, int width, int height, bool setPreferences)
 {
 	addLayerButton();
 	if (!width && !height){
@@ -229,6 +229,9 @@ Graph* MultiLayer::addLayer(int x, int y, int width, int height)
 	graphsList.append(g);
 
 	active_graph = g;
+	if (setPreferences)
+		applicationWindow()->setPreferences(g);
+
 	connectLayer(g);
 	return g;
 }
@@ -583,22 +586,12 @@ QSize MultiLayer::arrangeLayers(bool userSize)
 
 		//resizes and moves layers
 		Graph *g = (Graph *)graphsList.at(i);
-		bool autoscaleFonts = false;
-		if (!userSize){//When the user specifies the layer d_canvas size, the window is resized
-			//and the fonts must be scaled accordingly. If the size is calculated
-			//automatically we don't rescale the fonts in order to prevent problems
-			//with too small fonts when the user adds new layers or when removing layers
-
-			autoscaleFonts = g->autoscaleFonts();//save user settings
-			g->setAutoscaleFonts(false);
-		}
-
+		bool autoscaleFonts = g->autoscaleFonts();//save user font settings
+		g->setAutoscaleFonts(false);
 		g->setGeometry(QRect(x, y, w, h));
 		if (userSize)
 			g->setCanvasSize(size);
-
-		if (!userSize)
-			g->setAutoscaleFonts(autoscaleFonts);//restore user settings
+		g->setAutoscaleFonts(autoscaleFonts);//restore user font settings
 	}
 
 	//free memory
@@ -1485,7 +1478,7 @@ void MultiLayer::setNumLayers(int n)
 				break;
 			}
 		}
-	}else{
+	} else {
 		for (int i = 0; i < abs(dn); i++)
 			addLayer();
 	}

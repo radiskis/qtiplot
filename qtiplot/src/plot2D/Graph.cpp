@@ -3970,14 +3970,14 @@ QString Graph::saveToString(bool saveAsTemplate)
 	return s;
 }
 
-void Graph::updateMarkersBoundingRect()
+void Graph::updateMarkersBoundingRect(bool rescaleEvent)
 {
-    foreach(FrameWidget *f, d_enrichments){
-    	if (f->attachPolicy() == FrameWidget::Scales)
+	foreach(FrameWidget *f, d_enrichments){
+		if (f->attachPolicy() == FrameWidget::Scales)
 			f->resetCoordinates();
-		else
+		else if (rescaleEvent)
 			f->updateCoordinates();
-    }
+	}
 
 	if (!d_lines.size())
 		return;
@@ -3985,7 +3985,7 @@ void Graph::updateMarkersBoundingRect()
 	foreach (QwtPlotMarker *i, d_lines)
 		((ArrowMarker*)i)->updateBoundingRect();
 
-    replot();
+	replot();
 }
 
 void Graph::resizeEvent ( QResizeEvent *e )
@@ -4002,18 +4002,23 @@ void Graph::resizeEvent ( QResizeEvent *e )
 		if(oldSize.isValid() && size.isValid())
 			scaleFonts((double)size.height()/(double)oldSize.height());
 	} else {
-        resize(size);
+		resize(size);
 		updateLayout();
-        updateCurveLabels();
+		updateCurveLabels();
 	}
 
+	bool layerSelected = multiLayer()->hasSelectedLayers();
 	foreach(FrameWidget *f, d_enrichments){
-		TexWidget *tw = qobject_cast<TexWidget *>(f);
-		LegendWidget *l = qobject_cast<LegendWidget *>(f);
-		if (tw || l)
-			f->resetOrigin();
-		else
-        	f->resetCoordinates();
+		if (layerSelected && f->attachPolicy() == FrameWidget::Page)
+			f->updateCoordinates();
+		else {
+			TexWidget *tw = qobject_cast<TexWidget *>(f);
+			LegendWidget *l = qobject_cast<LegendWidget *>(f);
+			if (tw || l)
+				f->resetOrigin();
+			else
+				f->resetCoordinates();
+		}
 	}
 }
 
@@ -4060,7 +4065,6 @@ void Graph::scaleFonts(double factor)
 		QFont font = l->font();
 		font.setPointSizeFloat(factor*font.pointSizeFloat());
 		l->setFont(font);
-		l->resetOrigin();
 	}
 }
 
@@ -5940,7 +5944,7 @@ void Graph::setCanvasGeometry(const QRect &cr)
 	rect.adjust(cr.x() - ocr.x(), cr.y() - ocr.y(), cr.right() - ocr.right(), cr.bottom() - ocr.bottom());
 	setGeometry(rect);
 
-	updateMarkersBoundingRect();
+	updateMarkersBoundingRect(false);
 	autoScaleFonts = scaleFonts;
 }
 
@@ -5959,7 +5963,7 @@ void Graph::setCanvasSize(const QSize &size)
 	rect.adjust(0, 0, size.width() - ocr.width(), size.height() - ocr.height());
 	setGeometry(rect);
 
-	updateMarkersBoundingRect();
+	updateMarkersBoundingRect(false);
 	autoScaleFonts = scaleFonts;
 }
 
