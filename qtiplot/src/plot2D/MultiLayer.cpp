@@ -1236,11 +1236,13 @@ bool MultiLayer::eventFilter(QObject *object, QEvent *e)
 		QPoint pos = d_canvas->mapFromParent(me->pos());
         // iterate backwards, so layers on top are preferred for selection
         QList<Graph*>::iterator i = graphsList.end();
-        while (i != graphsList.begin()) {
+		while (i != graphsList.begin()){
             --i;
             Graph *g = *i;
-            if (g->hasSeletedItems())
+			if (g->hasSeletedItems()){
+				g->deselect();
                 return true;
+			}
 
             QRect igeo = (*i)->frameGeometry();
             if (igeo.contains(pos)) {
@@ -1271,8 +1273,13 @@ bool MultiLayer::eventFilter(QObject *object, QEvent *e)
 
 void MultiLayer::keyPressEvent(QKeyEvent * e)
 {
-	if (e->key() == Qt::Key_Escape && d_layers_selector){
-		delete d_layers_selector;
+	if (e->key() == Qt::Key_Escape){
+		if (d_layers_selector)
+			delete d_layers_selector;
+		else {
+			foreach (Graph *g, graphsList)
+				g->deselect();
+		}
 		return;
 	}
 
