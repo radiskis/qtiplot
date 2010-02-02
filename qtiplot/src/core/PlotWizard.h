@@ -2,7 +2,7 @@
     File                 : PlotWizard.h
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2006 by Ion Vasilief
+	Copyright            : (C) 2004 - 2010 by Ion Vasilief
     Email (use @ for *)  : ion_vasilief*yahoo.fr
     Description          : A wizard type dialog to create new plots
 
@@ -112,15 +112,12 @@ public slots:
 	void addZCol();
 
 private:
-    void plot3D(const QStringList& lst);
-    void plot3DRibbon(const QStringList& lst);
+	void plot2D(const QStringList&);
+	void plot3D(const QStringList&);
+	void plot3DRibbon(const QStringList&);
 	//! Display a warning that a new curve must be added first before the selection of the columns
 	bool noCurves();
     QSize sizeHint() const;
-
-signals:
-	//! Emitted when new plots need to be created
-	void plot (const QStringList&);
 };
 
 #endif //  PLOTWIZARD_H

@@ -476,7 +476,7 @@ class Graph: public QwtPlot
 		//@{
 		void removeMarker();
 		//! Keep the markers on screen each time the scales are modified by adding/removing curves
-		void updateMarkersBoundingRect();
+		void updateMarkersBoundingRect(bool rescaleEvent = true);
 
 		/*!\brief Set the selected marker.
 		 * \param mrk key of the marker to be selected.

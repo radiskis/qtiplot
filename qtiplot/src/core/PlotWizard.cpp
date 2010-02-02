@@ -2,7 +2,7 @@
     File                 : PlotWizard.cpp
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2006 by Ion Vasilief
+	Copyright            : (C) 2004 - 2010 by Ion Vasilief
     Email (use @ for *)  : ion_vasilief*yahoo.fr
     Description          : A wizard type dialog to create new plots
 
@@ -30,6 +30,10 @@
 #include <ApplicationWindow.h>
 #include <Table.h>
 #include <Graph3D.h>
+#include <MultiLayer.h>
+#include <Graph.h>
+#include <Table.h>
+#include <QwtErrorPlotCurve.h>
 
 #include <QApplication>
 #include <QHBoxLayout>
@@ -47,7 +51,7 @@ PlotWizard::PlotWizard( QWidget* parent, Qt::WFlags fl )
 : QDialog( parent, fl )
 {
 	setWindowTitle( tr("QtiPlot - Select Columns to Plot") );
-
+	setAttribute(Qt::WA_DeleteOnClose);
 	setSizeGripEnabled( true );
 
 	// top part starts here
@@ -173,13 +177,13 @@ void PlotWizard::accept()
 	}
 
 	if (curves.count()>0)
-        emit plot(curves);
+		plot2D(curves);
 
-	 if (curves3D.count()>0)
+	if (curves3D.count()>0)
 		plot3D(curves3D);
 
-    if (ribbons.count()>0)
-        plot3DRibbon(ribbons);
+	if (ribbons.count()>0)
+		plot3DRibbon(ribbons);
 
 	if(!noCurves())
 		close();
@@ -396,5 +400,67 @@ void PlotWizard::plot3D(const QStringList& lst)
             }
         }
     }
+	QApplication::restoreOverrideCursor();
+}
+
+void PlotWizard::plot2D(const QStringList& colList)
+{
+	ApplicationWindow *app = (ApplicationWindow *)this->parent();
+	if (!app)
+		return;
+
+	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+
+	MultiLayer* g = new MultiLayer(app);
+	app->initMultilayerPlot(g, "");
+
+	Graph *ag = g->activeLayer();
+	app->setPreferences(ag);
+
+	int curves = (int)colList.count();
+	int errorBars = 0;
+	for (int i = 0; i < curves; i++) {
+		if (colList[i].contains("(yErr)") || colList[i].contains("(xErr)"))
+			errorBars++;
+	}
+
+	for (int i = 0; i < curves; i++){
+		QString s = colList[i];
+		int pos = s.find(":", 0);
+		QString caption = s.left(pos) + "_";
+		Table *w = (Table *)app->table(caption);
+
+		int posX = s.find("(X)", pos);
+		QString xColName = caption + s.mid(pos+2, posX-pos-2);
+
+		posX = s.find(",", posX);
+		int posY = s.find("(Y)", posX);
+		QString yColName = caption+s.mid(posX+2, posY-posX-2);
+
+		PlotCurve *c = NULL;
+		if (s.contains("(yErr)") || s.contains("(xErr)")){
+			posY = s.find(",", posY);
+			int posErr, errType;
+			if (s.contains("(yErr)")){
+				errType = QwtErrorPlotCurve::Vertical;
+				posErr = s.find("(yErr)", posY);
+			} else {
+				errType = QwtErrorPlotCurve::Horizontal;
+				posErr = s.find("(xErr)",posY);
+			}
+
+			QString errColName = caption+s.mid(posY+2, posErr-posY-2);
+			c = (PlotCurve *)ag->addErrorBars(xColName, yColName, w, errColName, errType);
+		} else
+			c = (PlotCurve *)ag->insertCurve(w, xColName, yColName, app->defaultCurveStyle);
+
+		CurveLayout cl = ag->initCurveLayout(app->defaultCurveStyle, curves - errorBars);
+		cl.lWidth = app->defaultCurveLineWidth;
+		cl.sSize = app->defaultSymbolSize;
+		ag->updateCurveLayout(c, &cl);
+	}
+	ag->updatePlot();
+	ag->newLegend();
+	g->arrangeLayers(false, true);
 	QApplication::restoreOverrideCursor();
 }

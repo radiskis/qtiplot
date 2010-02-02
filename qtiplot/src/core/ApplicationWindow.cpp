@@ -2483,18 +2483,17 @@ MultiLayer* ApplicationWindow::multilayerPlot(const QString& caption, int layers
 	MultiLayer* ml = new MultiLayer(this, layers, rows, cols);
 	QString label = caption;
 	initMultilayerPlot(ml, label.replace(QRegExp("_"), "-"));
-	ml->arrangeLayers(false, false);
+	setPreferences(ml->activeLayer());
+	ml->arrangeLayers(false, true);
 	return ml;
 }
 
 MultiLayer* ApplicationWindow::newGraph(const QString& caption)
 {
 	MultiLayer *ml = multilayerPlot(generateUniqueName(caption));
-	if (ml){
-		Graph *g = ml->activeLayer();
-		setPreferences(g);
-		g->newLegend();
-	}
+	if (ml)
+		ml->activeLayer()->newLegend();
+
 	return ml;
 }
 
@@ -2510,10 +2509,10 @@ MultiLayer* ApplicationWindow::multilayerPlot(Table* w, const QStringList& colLi
 	if (!ag)
 		return 0;
 
-	setPreferences(ag);
 	ag->addCurves(w, colList, style, defaultCurveLineWidth, defaultSymbolSize, startRow, endRow);
 	ag->newLegend();
 
+	g->arrangeLayers(false, true);
 	QApplication::restoreOverrideCursor();
 	return g;
 }
@@ -2548,60 +2547,6 @@ MultiLayer* ApplicationWindow::multilayerPlot(int c, int r, int style)
 		ag->newLegend();
 		i++;
 	}
-	return g;
-}
-
-MultiLayer* ApplicationWindow::multilayerPlot(const QStringList& colList)
-{//used when plotting from wizard
-	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-	MultiLayer* g = multilayerPlot(generateUniqueName(tr("Graph")));
-	Graph *ag = g->activeLayer();
-	setPreferences(ag);
-	int curves = (int)colList.count();
-	int errorBars = 0;
-	for (int i=0; i<curves; i++) {
-		if (colList[i].contains("(yErr)") || colList[i].contains("(xErr)"))
-			errorBars++;
-	}
-
-	for (int i=0; i<curves; i++){
-		QString s = colList[i];
-		int pos = s.find(":", 0);
-		QString caption = s.left(pos) + "_";
-		Table *w = (Table *)table(caption);
-
-		int posX = s.find("(X)", pos);
-		QString xColName = caption+s.mid(pos+2, posX-pos-2);
-		int xCol=w->colIndex(xColName);
-
-		posX = s.find(",", posX);
-		int posY = s.find("(Y)", posX);
-		QString yColName = caption+s.mid(posX+2, posY-posX-2);
-
-		PlotCurve *c = NULL;
-		if (s.contains("(yErr)") || s.contains("(xErr)")){
-			posY = s.find(",", posY);
-			int posErr, errType;
-			if (s.contains("(yErr)")){
-				errType = QwtErrorPlotCurve::Vertical;
-				posErr = s.find("(yErr)", posY);
-			} else {
-				errType = QwtErrorPlotCurve::Horizontal;
-				posErr = s.find("(xErr)",posY);
-			}
-
-			QString errColName = caption+s.mid(posY+2, posErr-posY-2);
-			c = (PlotCurve *)ag->addErrorBars(xColName, yColName, w, errColName, errType);
-		} else
-            c = (PlotCurve *)ag->insertCurve(w, xCol, yColName, defaultCurveStyle);
-
-        CurveLayout cl = ag->initCurveLayout(defaultCurveStyle, curves - errorBars);
-        cl.lWidth = defaultCurveLineWidth;
-        cl.sSize = defaultSymbolSize;
-        ag->updateCurveLayout(c, &cl);
-	}
-	ag->newLegend();
-	QApplication::restoreOverrideCursor();
 	return g;
 }
 
@@ -2712,6 +2657,9 @@ void ApplicationWindow::customTable(Table* w)
 
 void ApplicationWindow::setPreferences(Graph* g)
 {
+	if (!g)
+		return;
+
 	if (!g->isPiePlot()){
 		for (int i = 0; i < QwtPlot::axisCnt; i++){
 			bool show = d_show_axes[i];
@@ -7199,11 +7147,11 @@ void ApplicationWindow::zoomRectanglePlot()
         r->setFrameColor(Qt::blue);
         ag->add(r, false);
 
-        Graph *g = ml->addLayer();
+		Graph *g = ml->addLayer();
         if (!g)
             return;
 
-        setPreferences(g);
+		setPreferences(g);
         g->setTitle("");
         g->setAxisTitle(QwtPlot::xBottom, " ");
         g->setAxisTitle(QwtPlot::yLeft, " ");
@@ -10336,10 +10284,7 @@ void ApplicationWindow::showPlotWizard()
 {
     QStringList lst = tableNames();
 	if (lst.count() > 0){
-		PlotWizard* pw = new PlotWizard(this, 0);
-		pw->setAttribute(Qt::WA_DeleteOnClose);
-		connect (pw,SIGNAL(plot(const QStringList&)),this,SLOT(multilayerPlot(const QStringList&)));
-
+		PlotWizard* pw = new PlotWizard(this);
 		pw->insertTablesList(lst);
 		pw->setColumnsList(columnsList(Table::All));
 		pw->changeColumnsList(lst[0]);
@@ -11184,10 +11129,8 @@ void ApplicationWindow::addInsetLayer(bool curves)
         return;
 
     QRect r = al->geometry();
-    Graph *g = plot->addLayer(r.x() + r.width()/2, al->canvas()->y(), r.width()/2, r.height()/2);
+	Graph *g = plot->addLayer(r.x() + r.width()/2, al->canvas()->y(), r.width()/2, r.height()/2, true);
     if (g){
-        setPreferences(g);
-
         g->setTitle("");
         g->setAxisTitle(QwtPlot::xBottom, "");
         g->setAxisTitle(QwtPlot::yLeft, "");
@@ -11507,8 +11450,7 @@ TableStatistics* ApplicationWindow::openTableStatistics(const QStringList &flist
 	return w;
 }
 
-Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot,
-		const QStringList &list)
+Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot, const QStringList &list)
 {
 	Graph* ag = 0;
 	int curveID = 0;
@@ -11516,9 +11458,8 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot,
 		QString s=list[j];
 		if (s.contains ("ggeometry")){
 			QStringList fList = s.split("\t");
-			ag = (Graph*)plot->addLayer(fList[1].toInt(), fList[2].toInt(),
-					fList[3].toInt(), fList[4].toInt());
-            ag->blockSignals(true);
+			ag = (Graph*)plot->addLayer(fList[1].toInt(), fList[2].toInt(), fList[3].toInt(), fList[4].toInt());
+			ag->blockSignals(true);
 			ag->enableAutoscaling(autoscale2DPlots);
 		}
 		else if (s.left(10) == "Background"){
@@ -14401,8 +14342,6 @@ MultiLayer* ApplicationWindow::plotImage(Matrix *m)
 
     MultiLayer* g = multilayerPlot(generateUniqueName(tr("Graph")));
 	Graph* plot = g->activeLayer();
-	setPreferences(plot);
-
 	Spectrogram *s = plot->plotSpectrogram(m, Graph::GrayScale);
 	if (!s)
 		return 0;
@@ -14437,10 +14376,7 @@ MultiLayer* ApplicationWindow::plotSpectrogram(Matrix *m, Graph::CurveType type)
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
 	MultiLayer* g = multilayerPlot(generateUniqueName(tr("Graph")));
-	Graph* plot = g->activeLayer();
-	setPreferences(plot);
-
-	plot->plotSpectrogram(m, type);
+	g->activeLayer()->plotSpectrogram(m, type);
 	QApplication::restoreOverrideCursor();
 	return g;
 }

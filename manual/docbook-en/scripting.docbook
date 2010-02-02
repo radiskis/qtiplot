@@ -2976,12 +2976,15 @@ at any position in the plot window. In the examples bellow the x, y coordinates,
 refer to the position of the top-left corner of the layer.
 The origin of the coordinates system coincides with the top-left corner of the plot window, the y
 coordinate increasing towards the bottom of the window. If the width and height of the layer are not specified
-they will be set to the default values:
+they will be set to the default values. The last argument specifies if the default preferences, specified via the
+<link linkend="fig-preferences-dialog-5">Preferences dialog</link>, will be used to customize the new layer
+ (default value is <varname>False</varname>):
 <programlisting>
 g = newGraph()
 l1 = g.addLayer()
-l2 = g.addLayer(10, 20, 200, 200)
-l3 = g.addLayer(215, 20)
+l2 = g.addLayer(215, 20)
+l3 = g.addLayer(10, 20, 200, 200)
+l4 = g.addLayer(10, 20, 200, 200, True)
 </programlisting>
 
 You can remove a plot layer using:
