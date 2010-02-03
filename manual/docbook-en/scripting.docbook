@@ -2822,6 +2822,29 @@ l.setAntialiasing(True, bool update = True)
 </programlisting>
 </sect3>
 
+<sect3 id="Python-ResizingLayers">
+<title>Resizing layers</title>
+A layer can be resized using the methods bellow, where the first argument is the new width,
+ the second is the new height and sizes are defined in pixels:
+ <programlisting>
+ l.resize(200, 200);
+ l.resize(QSize(w, h))
+ </programlisting>
+
+ If you also need to reposition the layer, you can use the following functions, where the first two arguments
+ specify the new position of the top left corner of the canvas:
+ <programlisting>
+ l.setGeometry(100, 100, 200, 200);
+ l.setGeometry(QRect(x, y, w, h));
+ </programlisting>
+
+The default behaviour of 2D plot layers, with respect to the resizing of the graph window
+is to adapt the sizes of the fonts used for the various texts, to the new size
+of the plot window. You can override this behaviour and keep the size of the fonts unchanged:
+<programlisting>
+l.setAutoscaleFonts(False)
+</programlisting>
+
 <sect3 id="Python-Resizing">
 <title>Resizing the drawing area</title>
  The drawing area of a layer (the canvas) can be resized using the methods bellow, where the first argument is the new width,
@@ -2838,12 +2861,7 @@ l.setAntialiasing(True, bool update = True)
  l.setCanvasGeometry(QRect(x, y, w, h));
  </programlisting>
 
-The default behaviour of 2D plot layers, with respect to the resizing of the graph window
-is to adapt the sizes of the fonts used for the various texts, to the new size
-of the plot window. You can override this behaviour and keep the size of the fonts unchanged:
-<programlisting>
-l.setAutoscaleFonts(False)
-</programlisting>
+Please keep in mind that the fonts of the layer are not rescaled when you resize the layer canvas using the above methods.
 </sect3>
 
 <sect3 id="Python-Exporting-2DPlots">

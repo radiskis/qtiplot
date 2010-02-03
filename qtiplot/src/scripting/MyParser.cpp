@@ -118,6 +118,15 @@ const QStringList MyParser::functionsList()
   return l;
 }
 
+const QStringList MyParser::functionNamesList()
+{
+	QStringList l;
+	for (const muParserScripting::mathFunction *i = muParserScripting::math_functions; i->name; i++)
+		l << QString(i->name);
+
+	return l;
+}
+
 QString MyParser::explainFunction(int index)
 {
 	const muParserScripting::mathFunction i = muParserScripting::math_functions[index];
