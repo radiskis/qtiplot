@@ -53,10 +53,12 @@ MultiPeakFitTool::MultiPeakFitTool(Graph *graph, ApplicationWindow *app, MultiPe
 	d_picker_tool = new DataPickerTool(d_graph, app, DataPickerTool::Display, this, SIGNAL(statusText(const QString&)));
 	d_graph->canvas()->setCursor(QCursor(QPixmap(":/cursor.png"), -1, -1));
 
+	QString msg = tr("Move cursor and click to select a point and double-click/press 'Enter' to set the position of a peak!");
+	QMessageBox::information(app, app->objectName(), msg);
+	emit statusText(msg);
+
 	connect(d_picker_tool, SIGNAL(selected(QwtPlotCurve*,int)), this, SLOT(selectPeak(QwtPlotCurve*,int)));
 	d_graph->canvas()->grabMouse();
-
-	emit statusText(tr("Move cursor and click to select a point and double-click/press 'Enter' to set the position of a peak!"));
 }
 
 MultiPeakFitTool::~MultiPeakFitTool()
@@ -75,7 +77,6 @@ MultiPeakFitTool::~MultiPeakFitTool()
 
 void MultiPeakFitTool::selectPeak(QwtPlotCurve *curve, int point_index)
 {
-	// TODO: warn user
 	if (!curve || (d_curve && d_curve != curve))
 		return;
 	d_curve = curve;
@@ -94,10 +95,16 @@ void MultiPeakFitTool::selectPeak(QwtPlotCurve *curve, int point_index)
 	d_selected_peaks++;
 	if (d_selected_peaks == d_fit->peaks())
 		finalize();
-	else
-		emit statusText(
-				tr("Peak %1 selected! Click to select a point and double-click/press 'Enter' to set the position of the next peak!")
-				.arg(QString::number(d_selected_peaks)));
+	else {
+		QString msg = tr("Peak %1 selected! Click to select a point and double-click/press 'Enter' to set the position of the next peak!").arg(QString::number(d_selected_peaks));
+		ApplicationWindow *app = d_picker_tool->applicationWindow();
+		if (app){
+			d_graph->canvas()->releaseMouse();
+			QMessageBox::information(app, app->objectName(), msg);
+			d_graph->canvas()->grabMouse();
+		}
+		emit statusText(msg);
+	}
 }
 
 void MultiPeakFitTool::finalize()
