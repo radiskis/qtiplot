@@ -585,6 +585,8 @@ void ApplicationWindow::initGlobalConstants()
 	d_legend_default_angle = 0;
 	d_frame_geometry_unit = (int)FrameWidget::Scale;
 	d_layer_geometry_unit = (int)FrameWidget::Pixel;
+	d_layer_canvas_width = 400;
+	d_layer_canvas_height = 300;
 
 	d_rect_default_background = Qt::white;
 	d_rect_default_brush = QBrush(Qt::white);
@@ -3409,9 +3411,9 @@ MdiSubWindow *ApplicationWindow::activeWindow(WindowType type)
 {
 	if (!d_active_window){
 		QList<MdiSubWindow *> windows = current_folder->windowsList();
-		if (!current_folder->activeWindow() && windows.size() > 0)
+		if (!current_folder->activeWindow() && windows.size() > 0){
 			d_active_window = windows[0];
-		else
+		} else
 			return NULL;
 	}
 
@@ -4538,8 +4540,8 @@ ApplicationWindow* ApplicationWindow::openProject(const QString& fn, bool factor
 			cont.pop_back();
 			m->restore(cont);
 			progress.setValue(aux);
-                } else if  (s == "</folder>")
-                        app->goToParentFolder();
+				} else if  (s == "</folder>")
+						app->goToParentFolder();
 	}
 	f.close();
 
@@ -4557,8 +4559,8 @@ ApplicationWindow* ApplicationWindow::openProject(const QString& fn, bool factor
 		s=t.readLine();
 		if  (s.left(8) == "<folder>"){
 			list = s.split("\t");
-                        if (app->current_folder && list.size() >= 2)
-                            app->current_folder = app->current_folder->findSubfolder(list[1]);
+			if (app->current_folder && list.size() >= 2)
+				app->current_folder = app->current_folder->findSubfolder(list[1]);
 		} else if  (s == "<multiLayer>"){//process multilayers information
 			title = titleBase + QString::number(++aux) + "/" + QString::number(widgets);
 			progress.setLabelText(title);
@@ -4575,14 +4577,12 @@ ApplicationWindow* ApplicationWindow::openProject(const QString& fn, bool factor
 			restoreWindowGeometry(app, plot, t.readLine());
 			plot->blockSignals(true);
 
-			if (d_file_version > 71)
-			{
+			if (d_file_version > 71){
 				QStringList lst=t.readLine().split("\t");
 				plot->setWindowLabel(lst[1]);
 				plot->setCaptionPolicy((MdiSubWindow::CaptionPolicy)lst[2].toInt());
 			}
-			if (d_file_version > 83)
-			{
+			if (d_file_version > 83){
 				QStringList lst=t.readLine().split("\t", QString::SkipEmptyParts);
 				plot->setMargins(lst[1].toInt(),lst[2].toInt(),lst[3].toInt(),lst[4].toInt());
 				lst=t.readLine().split("\t", QString::SkipEmptyParts);
@@ -4615,8 +4615,7 @@ ApplicationWindow* ApplicationWindow::openProject(const QString& fn, bool factor
 			}
 			plot->blockSignals(false);
 			progress.setValue(aux);
-		}
-                else if  (s == "<SurfacePlot>") {//process 3D plots information
+		} else if  (s == "<SurfacePlot>") {//process 3D plots information
 			list.clear();
 			title = titleBase + QString::number(++aux)+"/"+QString::number(widgets);
 			progress.setLabelText(title);
@@ -4626,23 +4625,22 @@ ApplicationWindow* ApplicationWindow::openProject(const QString& fn, bool factor
 			}
 			Graph3D::restore(app, list, d_file_version);
 			progress.setValue(aux);
-                } else if (s == "</folder>")
-                        app->goToParentFolder();
-                 else if (s == "<log>") {//process analysis information
+		} else if (s == "</folder>")
+			app->goToParentFolder();
+		else if (s == "<log>"){//process analysis information
 			s = t.readLine();
 			QString log = s + "\n";
 			while(s != "</log>"){
 				s = t.readLine();
 				log += s + "\n";
 			}
-                        if (app->current_folder)
-                            app->current_folder->appendLogInfo(log.remove("</log>"));
+			if (app->current_folder)
+				app->current_folder->appendLogInfo(log.remove("</log>"));
 		}
 	}
 	f.close();
 
-	if (progress.wasCanceled())
-	{
+	if (progress.wasCanceled()){
 		app->saved = true;
 		app->close();
 		return 0;
@@ -4655,9 +4653,7 @@ ApplicationWindow* ApplicationWindow::openProject(const QString& fn, bool factor
 
 	app->folders->setCurrentItem(cf->folderListItem());
 	app->folders->blockSignals (false);
-	//change folder to user defined current folder
-	app->changeFolder(cf, true);
-
+	app->changeFolder(cf, true);//change folder to user defined current folder
 	app->blockSignals (false);
 	app->renamedTables.clear();
 
@@ -5049,6 +5045,8 @@ void ApplicationWindow::readSettings()
 	d_scale_plots_on_print = settings.value("/ScaleLayersOnPrint", false).toBool();
 	d_print_cropmarks = settings.value("/PrintCropmarks", false).toBool();
 	d_layer_geometry_unit = settings.value("/GeometryUnit", d_layer_geometry_unit).toInt();
+	d_layer_canvas_width = settings.value("/LayerCanvasWidth", d_layer_canvas_width).toInt();
+	d_layer_canvas_height = settings.value("/LayerCanvasHeight", d_layer_canvas_height).toInt();
 
 	QStringList graphFonts = settings.value("/Fonts").toStringList();
 	if (graphFonts.size() == 16) {
@@ -5427,6 +5425,8 @@ void ApplicationWindow::saveSettings()
 	settings.setValue("/ScaleLayersOnPrint", d_scale_plots_on_print);
 	settings.setValue("/PrintCropmarks", d_print_cropmarks);
 	settings.setValue("/GeometryUnit", d_layer_geometry_unit);
+	settings.setValue("/LayerCanvasWidth", d_layer_canvas_width);
+	settings.setValue("/LayerCanvasHeight", d_layer_canvas_height);
 
 	QStringList graphFonts;
 	graphFonts<<plotAxesFont.family();
@@ -15832,16 +15832,16 @@ void ApplicationWindow::hideFolderWindows(Folder *f)
 
 void ApplicationWindow::goToParentFolder()
 {
-    if (current_folder &&  current_folder->parent())
-        current_folder = (Folder *)current_folder->parent();
-    else
-        current_folder = projectFolder();
+	if (current_folder &&  current_folder->parent())
+		current_folder = (Folder *)current_folder->parent();
+	else
+		current_folder = projectFolder();
 }
 
 bool ApplicationWindow::changeFolder(Folder *newFolder, bool force)
 {
-    if (!newFolder)
-        return false;
+	if (!newFolder)
+		return false;
 
 	if (current_folder == newFolder && !force)
 		return false;
@@ -15849,25 +15849,25 @@ bool ApplicationWindow::changeFolder(Folder *newFolder, bool force)
 	disconnect(d_workspace, SIGNAL(subWindowActivated(QMdiSubWindow *)),
 			this, SLOT(windowActivated(QMdiSubWindow*)));
 
-    desactivateFolders();
+	desactivateFolders();
 	newFolder->folderListItem()->setActive(true);
 
-    Folder *oldFolder = current_folder;
-    MdiSubWindow::Status old_active_window_state = MdiSubWindow::Normal;
-    MdiSubWindow *old_active_window = oldFolder->activeWindow();
-    if (old_active_window)
-        old_active_window_state = old_active_window->status();
+	Folder *oldFolder = current_folder;
+	MdiSubWindow::Status old_active_window_state = MdiSubWindow::Normal;
+	MdiSubWindow *old_active_window = oldFolder->activeWindow();
+	if (old_active_window)
+		old_active_window_state = old_active_window->status();
 
-    MdiSubWindow::Status active_window_state = MdiSubWindow::Normal;
-    MdiSubWindow *active_window = newFolder->activeWindow();
+	MdiSubWindow::Status active_window_state = MdiSubWindow::Normal;
+	MdiSubWindow *active_window = newFolder->activeWindow();
 
-    if (active_window)
-        active_window_state = active_window->status();
+	if (active_window)
+		active_window_state = active_window->status();
 
 	hideFolderWindows(oldFolder);
 	current_folder = newFolder;
 
-    results->setText(current_folder->logInfo());
+	results->setText(current_folder->logInfo());
 
 	lv->clear();
 
@@ -15879,63 +15879,63 @@ bool ApplicationWindow::changeFolder(Folder *newFolder, bool force)
 
 	QList<MdiSubWindow *> lst = newFolder->windowsList();
 	foreach(MdiSubWindow *w, lst){
-        if (!hiddenWindows->contains(w) && show_windows_policy != HideAll){
-            //show only windows in the current folder which are not hidden by the user
-            if(w->status() == MdiSubWindow::Normal)
-                w->showNormal();
-            else if(w->status() == MdiSubWindow::Minimized)
-                w->showMinimized();
-            else if(w->status() == MdiSubWindow::Maximized)
-                w->showMaximized();
-        } else
-            w->setStatus(MdiSubWindow::Hidden);
+		if (!hiddenWindows->contains(w) && show_windows_policy != HideAll){
+			//show only windows in the current folder which are not hidden by the user
+			if(w->status() == MdiSubWindow::Normal)
+				w->showNormal();
+			else if(w->status() == MdiSubWindow::Minimized)
+				w->showMinimized();
+			else if(w->status() == MdiSubWindow::Maximized)
+				w->showMaximized();
+		} else
+			w->setStatus(MdiSubWindow::Hidden);
 
-        addListViewItem(w);
+		addListViewItem(w);
 	}
 
 	if (!(newFolder->children()).isEmpty()){
-        Folder *f = newFolder->folderBelow();
-        int initial_depth = newFolder->depth();
-        while (f && f->depth() > initial_depth){//show/hide windows in subfolders
-            lst = f->windowsList();
-            foreach(MdiSubWindow *w, lst){
-                if (!hiddenWindows->contains(w)){
-                    if (show_windows_policy == SubFolders){
-                        if (w->status() == MdiSubWindow::Normal || w->status() == MdiSubWindow::Maximized)
-                            w->showNormal();
-                        else if (w->status() == MdiSubWindow::Minimized)
-                            w->showMinimized();
-                    } else
-                        w->hide();
-                }
-            }
+		Folder *f = newFolder->folderBelow();
+		int initial_depth = newFolder->depth();
+		while (f && f->depth() > initial_depth){//show/hide windows in subfolders
+			lst = f->windowsList();
+			foreach(MdiSubWindow *w, lst){
+				if (!hiddenWindows->contains(w)){
+					if (show_windows_policy == SubFolders){
+						if (w->status() == MdiSubWindow::Normal || w->status() == MdiSubWindow::Maximized)
+							w->showNormal();
+						else if (w->status() == MdiSubWindow::Minimized)
+							w->showMinimized();
+					} else
+						w->hide();
+				}
+			}
 		f = f->folderBelow();
-        }
+		}
 	}
 
-    if (active_window){
+	if (active_window){
 		d_active_window = active_window;
-        d_workspace->setActiveSubWindow(active_window);
+		d_workspace->setActiveSubWindow(active_window);
 
-        if (active_window_state == MdiSubWindow::Minimized)
-            active_window->showMinimized();//ws->setActiveWindow() makes minimized windows to be shown normally
-        else if (active_window_state == MdiSubWindow::Maximized){
-            if (active_window->isA("Graph3D"))
-                ((Graph3D *)active_window)->setIgnoreFonts(true);
-            active_window->showMaximized();
-            if (active_window->isA("Graph3D"))
-                ((Graph3D *)active_window)->setIgnoreFonts(false);
-            }
+		if (active_window_state == MdiSubWindow::Minimized)
+			active_window->showMinimized();//ws->setActiveWindow() makes minimized windows to be shown normally
+		else if (active_window_state == MdiSubWindow::Maximized){
+			if (active_window->isA("Graph3D"))
+				((Graph3D *)active_window)->setIgnoreFonts(true);
+			active_window->showMaximized();
+			if (active_window->isA("Graph3D"))
+				((Graph3D *)active_window)->setIgnoreFonts(false);
+			}
 	} else
 		d_active_window = (MdiSubWindow *)d_workspace->activeSubWindow();
 
 	customMenu(d_active_window);
 	customToolBars(d_active_window);
 
-    if (old_active_window){
-        old_active_window->setStatus(old_active_window_state);
-        oldFolder->setActiveWindow(old_active_window);
-    }
+	if (old_active_window){
+		old_active_window->setStatus(old_active_window_state);
+		oldFolder->setActiveWindow(old_active_window);
+	}
 
 	connect(d_workspace, SIGNAL(subWindowActivated(QMdiSubWindow *)),
 		this, SLOT(windowActivated(QMdiSubWindow*)));

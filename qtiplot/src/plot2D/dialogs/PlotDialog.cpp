@@ -3149,12 +3149,12 @@ void PlotDialog::displayCoordinates(int unit, Graph *g)
 	}
 
 	QwtPlotCanvas *canvas = g->canvas();
+	aspect_ratio = (double)canvas->width()/(double)canvas->height();
+
 	boxX->setValue(FrameWidget::xIn(canvas, (FrameWidget::Unit)unit) + FrameWidget::xIn(g, (FrameWidget::Unit)unit));
 	boxY->setValue(FrameWidget::yIn(canvas, (FrameWidget::Unit)unit) + FrameWidget::yIn(g, (FrameWidget::Unit)unit));
 	boxLayerWidth->setValue(FrameWidget::widthIn(canvas, (FrameWidget::Unit)unit));
 	boxLayerHeight->setValue(FrameWidget::heightIn(canvas, (FrameWidget::Unit)unit));
-
-	aspect_ratio = boxLayerWidth->value()/boxLayerHeight->value();
 }
 
 void PlotDialog::setLayerDefaultValues()
