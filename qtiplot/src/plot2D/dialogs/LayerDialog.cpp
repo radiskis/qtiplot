@@ -293,8 +293,8 @@ void LayerDialog::update()
 			multi_layer->setRows(rows);
 		}
 
+		FrameWidget::Unit unit = (FrameWidget::Unit)unitBox->currentIndex();
 		if (GroupCanvasSize->isChecked()){
-			FrameWidget::Unit unit = (FrameWidget::Unit)unitBox->currentIndex();
 			ApplicationWindow *app = multi_layer->applicationWindow();
 			if (app)
 				app->d_layer_geometry_unit = unitBox->currentIndex();
@@ -311,8 +311,13 @@ void LayerDialog::update()
 		multi_layer->arrangeLayers(fitBox->isChecked(), GroupCanvasSize->isChecked());
 
 		if (!GroupCanvasSize->isChecked()){//show new layer canvas size
-			boxCanvasWidth->setValue(multi_layer->layerCanvasSize().width());
-			boxCanvasHeight->setValue(multi_layer->layerCanvasSize().height());
+			boxCanvasWidth->blockSignals(true);
+			boxCanvasWidth->setValue(convertFromPixels(multi_layer->layerCanvasSize().width(), unit, 0));
+			boxCanvasWidth->blockSignals(false);
+
+			boxCanvasHeight->blockSignals(true);
+			boxCanvasHeight->setValue(convertFromPixels(multi_layer->layerCanvasSize().height(), unit, 1));
+			boxCanvasHeight->blockSignals(false);
 		}
 
 		if (fitBox->isChecked()){//show new grid settings
@@ -418,10 +423,10 @@ void LayerDialog::updateSizes(int unit)
 	if (!multi_layer)
 		return;
 
+	aspect_ratio = multi_layer->layerCanvasSize().width()/multi_layer->layerCanvasSize().height();
+
 	boxCanvasWidth->setValue(convertFromPixels(multi_layer->layerCanvasSize().width(), (FrameWidget::Unit)unit, 0));
 	boxCanvasHeight->setValue(convertFromPixels(multi_layer->layerCanvasSize().height(), (FrameWidget::Unit)unit, 1));
-
-	aspect_ratio = boxCanvasWidth->value()/boxCanvasHeight->value();
 }
 
 void LayerDialog::adjustCanvasHeight(double width)

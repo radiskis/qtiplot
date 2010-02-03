@@ -2,11 +2,9 @@
     File                 : ApplicationWindow.h
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2006 by Ion Vasilief,
-                           Tilman Hoener zu Siederdissen,
-                           Knut Franke
-    Email (use @ for *)  : ion_vasilief*yahoo.fr, thzs*gmx.net,
-                           knut.franke*gmx.de
+	Copyright            : (C) 2004 - 2010 by Ion Vasilief,
+						   (C) 2006 - june 2007 Tilman Hoener zu Siederdissen, Knut Franke
+	Email (use @ for *)  : ion_vasilief*yahoo.fr
     Description          : QtiPlot's main window
 
  ***************************************************************************/
@@ -1126,6 +1124,7 @@ public:
 	int d_frame_geometry_unit;
 	//! Default geometry unit to be displayed in the PlotDialog.
 	int d_layer_geometry_unit;
+	int d_layer_canvas_width, d_layer_canvas_height;
     int d_notes_tab_length;
     QFont d_notes_font;
 	//! End of line convention used for copy/paste operations and when exporting tables/matrices to ASCII files.

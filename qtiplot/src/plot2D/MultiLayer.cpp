@@ -109,8 +109,8 @@ left_margin(5),
 right_margin(5),
 top_margin(5),
 bottom_margin(5),
-l_canvas_width(400),
-l_canvas_height(300),
+l_canvas_width(parent->d_layer_canvas_width),
+l_canvas_height(parent->d_layer_canvas_height),
 hor_align(HCenter),
 vert_align(VCenter),
 d_scale_on_print(true),
@@ -591,6 +591,7 @@ QSize MultiLayer::arrangeLayers(bool userSize)
 		g->setGeometry(QRect(x, y, w, h));
 		if (userSize)
 			g->setCanvasSize(size);
+
 		g->setAutoscaleFonts(autoscaleFonts);//restore user font settings
 	}
 
@@ -600,6 +601,15 @@ QSize MultiLayer::arrangeLayers(bool userSize)
 	gsl_vector_free (xTopR); gsl_vector_free (xBottomR);
 	gsl_vector_free (yLeftR); gsl_vector_free (yRightR);
 	gsl_vector_free (X); gsl_vector_free (Y);
+
+	if (!graphsList.isEmpty()){
+		Graph *g = graphsList[0];
+		if (g){
+			size = g->canvas()->size();//return the real size of the canvas
+			l_canvas_width = size.width();
+			l_canvas_height = size.height();
+		}
+	}
 	return size;
 }
 
@@ -628,6 +638,10 @@ bool MultiLayer::arrangeLayers(bool fit, bool userSize)
 	if (fit)
 		findBestLayout(d_rows, d_cols);
 
+	bool minimized = isMinimized();
+	if (minimized)
+		showNormal();
+
 	QSize size = arrangeLayers(userSize);
 	if (!size.isValid()){
 		QApplication::restoreOverrideCursor();
@@ -654,16 +668,17 @@ bool MultiLayer::arrangeLayers(bool fit, bool userSize)
 			}
 		}
 	} else if (!this->isMaximized()){//resize window to fit new dimensions of the layers
-		this->showNormal();
-		QSize size = d_canvas->childrenRect().size();
-
 		bool resizeLayers = d_scale_layers;
 		d_scale_layers = false;
 
+		QSize size = d_canvas->childrenRect().size();
 		resize(d_canvas->x() + size.width() + left_margin + right_margin + fw, d_canvas->y() + size.height() + fh - bottom_margin);
 
 		d_scale_layers = resizeLayers;
 	}
+
+	if (minimized)
+		showMinimized();
 
 	emit modifiedPlot();
 	QApplication::restoreOverrideCursor();

@@ -394,6 +394,9 @@ void ConfigDialog::initPlotsPage()
 
 	plotsTabWidget->addTab( plotTicks, QString() );
 
+	initLayerGeometryPage();
+	plotsTabWidget->addTab(plotGeometryPage, QString());
+
 	plotFonts = new QWidget();
 	QVBoxLayout * plotFontsLayout = new QVBoxLayout( plotFonts );
 
@@ -963,6 +966,59 @@ void ConfigDialog::initFittingPage()
 	connect(generatePointsBtn, SIGNAL(toggled(bool)), this, SLOT(showPointsBox(bool)));
 }
 
+void ConfigDialog::initLayerGeometryPage()
+{
+	ApplicationWindow *app = (ApplicationWindow *)parentWidget();
+
+	plotGeometryPage = new QWidget();
+
+	QGroupBox * gb = new QGroupBox();
+	QGridLayout * gl = new QGridLayout( gb );
+
+	unitBoxLabel = new QLabel();
+	gl->addWidget(unitBoxLabel, 0, 0);
+
+	unitBox = new QComboBox();
+	connect(unitBox, SIGNAL(activated(int)), this, SLOT(updateCanvasSize(int)));
+	gl->addWidget(unitBox, 0, 1);
+
+	QLocale locale = QLocale();
+
+	canvasWidthLabel = new QLabel();
+	gl->addWidget(canvasWidthLabel, 1, 0);
+
+	FrameWidget::Unit unit = (FrameWidget::Unit)app->d_layer_geometry_unit;
+
+	boxCanvasWidth = new DoubleSpinBox();
+	boxCanvasWidth->setRange(0, 10000);
+	boxCanvasWidth->setLocale(locale);
+	boxCanvasWidth->setDecimals(6);
+	//boxCanvasWidth->setValue(convertFromPixels(app->d_layer_canvas_width, unit,0));
+	connect(boxCanvasWidth, SIGNAL(valueChanged (double)), this, SLOT(adjustCanvasHeight(double)));
+	gl->addWidget(boxCanvasWidth, 1, 1);
+
+	canvasHeightLabel = new QLabel();
+	gl->addWidget(canvasHeightLabel, 2, 0);
+
+	boxCanvasHeight = new DoubleSpinBox();
+	boxCanvasHeight->setRange(0, 10000);
+	boxCanvasHeight->setLocale(locale);
+	boxCanvasHeight->setDecimals(6);
+	//boxCanvasHeight->setValue(convertFromPixels(app->d_layer_canvas_height, unit, 1));
+	connect(boxCanvasHeight, SIGNAL(valueChanged (double)), this, SLOT(adjustCanvasWidth(double)));
+	gl->addWidget(boxCanvasHeight, 2, 1);
+
+	keepRatioBox = new QCheckBox(tr("&Keep aspect ratio"));
+	keepRatioBox->setChecked(true);
+	gl->addWidget(keepRatioBox, 3, 1);
+
+	gl->setRowStretch(4, 1);
+
+	updateCanvasSize(unit);
+
+	QHBoxLayout * hl = new QHBoxLayout(plotGeometryPage);
+	hl->addWidget(gb);
+}
 
 void ConfigDialog::initCurvesPage()
 {
@@ -1236,6 +1292,7 @@ void ConfigDialog::languageChange()
 	plotsTabWidget->setTabText(plotsTabWidget->indexOf(curves), tr("Curves"));
 	plotsTabWidget->setTabText(plotsTabWidget->indexOf(axesPage), tr("Axes"));
 	plotsTabWidget->setTabText(plotsTabWidget->indexOf(plotTicks), tr("Ticks"));
+	plotsTabWidget->setTabText(plotsTabWidget->indexOf(plotGeometryPage), tr("Geometry"));
 	plotsTabWidget->setTabText(plotsTabWidget->indexOf(plotFonts), tr("Fonts"));
 
 	boxResize->setText(tr("Do not &resize layers when window size changes"));
@@ -1272,6 +1329,19 @@ void ConfigDialog::languageChange()
 	labelGraphFrameWidth->setText(tr( "Width" ));
 	boxBackgroundTransparency->setSpecialValueText(tr("Transparent"));
 	boxCanvasTransparency->setSpecialValueText(tr("Transparent"));
+
+	unitBoxLabel->setText(tr("Unit"));
+	unitBox->clear();
+	unitBox->insertItem(tr("inch"));
+	unitBox->insertItem(tr("mm"));
+	unitBox->insertItem(tr("cm"));
+	unitBox->insertItem(tr("point"));
+	unitBox->insertItem(tr("pixel"));
+	unitBox->setCurrentIndex(app->d_layer_geometry_unit);
+
+	canvasWidthLabel->setText(tr("Canvas Width"));
+	canvasHeightLabel->setText(tr("Canvas Height"));
+	keepRatioBox->setText(tr("&Keep aspect ratio"));
 
 	// axes page
 	boxBackbones->setText(tr("Axes &backbones"));
@@ -1646,6 +1716,14 @@ void ConfigDialog::apply()
 			box = qobject_cast<QCheckBox *>(item->widget());
 			app->d_show_axes_labels[i] = box->isChecked();
 		}
+	}
+
+	if (generalDialog->currentWidget() == plotsTabWidget &&
+		plotsTabWidget->currentWidget() == plotGeometryPage){
+		app->d_layer_geometry_unit = unitBox->currentIndex();
+		FrameWidget::Unit unit = (FrameWidget::Unit)unitBox->currentIndex();
+		app->d_layer_canvas_width = convertToPixels(boxCanvasWidth->value(), unit, 0);
+		app->d_layer_canvas_height = convertToPixels(boxCanvasHeight->value(), unit, 1);
 	}
 
 	// 2D plots page: ticks tab
@@ -2320,4 +2398,113 @@ void ConfigDialog::enableMinorGrids(bool on)
 	btnGridMinor->setEnabled(on);
 	boxMinorGridStyle->setEnabled(on);
 	boxMinorGridWidth->setEnabled(on);
+}
+
+int ConfigDialog::convertToPixels(double w, FrameWidget::Unit unit, int dimension)
+{
+	ApplicationWindow *app = (ApplicationWindow *)parentWidget();
+	if (!app)
+		return qRound(w);
+
+	double dpi = (double)app->logicalDpiX();
+	if (dimension)
+		dpi = (double)app->logicalDpiY();
+
+	switch(unit){
+		case FrameWidget::Pixel:
+		default:
+			return qRound(w);
+		break;
+		case FrameWidget::Inch:
+			return qRound(w*dpi);
+		break;
+		case FrameWidget::Millimeter:
+			return qRound(w*dpi/25.4);
+		break;
+		case FrameWidget::Centimeter:
+			return qRound(w*dpi/2.54);
+		break;
+		case FrameWidget::Point:
+			return qRound(w*dpi/72.0);
+		break;
+	}
+	return qRound(w);
+}
+
+double ConfigDialog::convertFromPixels(int w, FrameWidget::Unit unit, int dimension)
+{
+	ApplicationWindow *app = (ApplicationWindow *)parentWidget();
+	if (!app)
+		return w;
+
+	double dpi = (double)app->logicalDpiX();
+	if (dimension)
+		dpi = (double)app->logicalDpiY();
+
+	double val = 0.0;
+	switch(unit){
+		case FrameWidget::Pixel:
+		default:
+			val = w;
+		break;
+		case FrameWidget::Inch:
+			val = (double)w/dpi;
+		break;
+		case FrameWidget::Millimeter:
+			val = 25.4*w/dpi;
+		break;
+		case FrameWidget::Centimeter:
+			val = 2.54*w/dpi;
+		break;
+		case FrameWidget::Point:
+			val = 72.0*w/dpi;
+		break;
+	}
+	return val;
+}
+
+void ConfigDialog::updateCanvasSize(int unit)
+{
+	if (unit == FrameWidget::Pixel || unit == FrameWidget::Point){
+		boxCanvasWidth->setFormat('f', 0);
+		boxCanvasHeight->setFormat('f', 0);
+
+		boxCanvasWidth->setSingleStep(1.0);
+		boxCanvasHeight->setSingleStep(1.0);
+	} else {
+		boxCanvasWidth->setFormat('g', 6);
+		boxCanvasHeight->setFormat('g', 6);
+
+		boxCanvasWidth->setSingleStep(0.1);
+		boxCanvasHeight->setSingleStep(0.1);
+	}
+
+	ApplicationWindow *app = (ApplicationWindow *)parentWidget();
+	if (!app)
+		return;
+
+	aspect_ratio = (double)app->d_layer_canvas_width/(double)app->d_layer_canvas_height;
+
+	boxCanvasWidth->setValue(convertFromPixels(app->d_layer_canvas_width, (FrameWidget::Unit)unit, 0));
+	boxCanvasHeight->setValue(convertFromPixels(app->d_layer_canvas_height, (FrameWidget::Unit)unit, 1));
+}
+
+void ConfigDialog::adjustCanvasHeight(double width)
+{
+	if (keepRatioBox->isChecked()){
+		boxCanvasHeight->blockSignals(true);
+		boxCanvasHeight->setValue(width/aspect_ratio);
+		boxCanvasHeight->blockSignals(false);
+	} else
+		aspect_ratio = width/boxCanvasHeight->value();
+}
+
+void ConfigDialog::adjustCanvasWidth(double height)
+{
+	if (keepRatioBox->isChecked()){
+		boxCanvasWidth->blockSignals(true);
+		boxCanvasWidth->setValue(height*aspect_ratio);
+		boxCanvasWidth->blockSignals(false);
+	} else
+		aspect_ratio = boxCanvasWidth->value()/height;
 }

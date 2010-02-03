@@ -29,6 +29,8 @@
 #ifndef ConfigDialog_H
 #define ConfigDialog_H
 
+#include <FrameWidget.h>
+
 #include <QDialog>
 #include <QCheckBox>
 
@@ -113,6 +115,10 @@ private slots:
 	void enableMajorGrids(bool on);
 	void enableMinorGrids(bool on);
 
+	void updateCanvasSize(int unit);
+	void adjustCanvasHeight(double width);
+	void adjustCanvasWidth(double height);
+
 private:
 	void initPlotsPage();
 	void initAppPage();
@@ -125,10 +131,13 @@ private:
 	void initFittingPage();
 	void initNotesPage();
 	void initProxyPage();
+	void initLayerGeometryPage();
 	//! Calculates a sensible width for the items list
 	void updateMenuList();
 	bool validFolderPath(const QString& path);
 	QNetworkProxy setApplicationCustomProxy();
+	int convertToPixels(double w, FrameWidget::Unit unit, int dimension);
+	double convertFromPixels(int w, FrameWidget::Unit unit, int dimension);
 
 	QFont textFont, headerFont, axesFont, numbersFont, legendFont, titleFont, appFont;
 	QFont d_3D_title_font, d_3D_numbers_font, d_3D_axes_font;
@@ -144,7 +153,7 @@ private:
 	QPushButton* buttonTextFont, *buttonHeaderFont;
 	QStackedWidget * generalDialog;
 	QWidget *appColors, *tables, *plotOptions, *plotTicks, *plotFonts, *confirm, *plotPrint;
-	QWidget *application, *curves, *axesPage, *plots3D, *fitPage, *numericFormatPage, *notesPage;
+	QWidget *application, *curves, *axesPage, *plots3D, *fitPage, *numericFormatPage, *notesPage, *plotGeometryPage;
 	QPushButton* buttonAxesFont, *buttonNumbersFont, *buttonLegendFont, *buttonTitleFont, *fontsBtn;
 	QCheckBox *boxSearchUpdates, *boxOrthogonal, *logBox, *plotLabelBox, *scaleErrorsBox;
 	QCheckBox *boxTitle, *boxFrame, *boxPlots3D, *boxPlots2D, *boxTables, *boxNotes, *boxFolders;
@@ -229,6 +238,12 @@ private:
 	QLabel *buttonKeywordLabel, *buttonFunctionLabel, *buttonClassLabel;
 
 	QCheckBox *boxMuParserCLocale, *boxConfirmOverwrite;
+	DoubleSpinBox *boxCanvasHeight, *boxCanvasWidth;
+	QComboBox *unitBox;
+	QLabel *unitBoxLabel, *canvasWidthLabel, *canvasHeightLabel;
+	QCheckBox *keepRatioBox;
+
+	double aspect_ratio;
 };
 
 #endif // CONFIGDIALOG_H
