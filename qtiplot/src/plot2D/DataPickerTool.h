@@ -66,6 +66,8 @@ class DataPickerTool : public QwtPlotPicker, public PlotToolInterface
 
         void selectTableRow();
 
+		ApplicationWindow *applicationWindow(){return d_app;};
+
 	signals:
 		/*! Emitted whenever a new message should be presented to the user.
 		 *

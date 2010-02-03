@@ -215,7 +215,7 @@ ApplicationWindow::ApplicationWindow(bool factorySettings)
 void ApplicationWindow::init(bool factorySettings)
 {
 	setWindowTitle(tr("QtiPlot - untitled"));
-	setObjectName("main application");
+	setObjectName(tr("QtiPlot"));
 	initGlobalConstants();
 	QPixmapCache::setCacheLimit(20*QPixmapCache::cacheLimit ());
 
