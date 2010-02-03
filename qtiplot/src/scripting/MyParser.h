@@ -52,6 +52,7 @@ public:
 	void setLocale(const QLocale& locale);
 
 	const static QStringList functionsList();
+	const static QStringList functionNamesList();
 	static QString explainFunction(int index);
 
 	double EvalRemoveSingularity(double *xvar, bool noisy = true) const;

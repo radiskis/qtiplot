@@ -17360,7 +17360,7 @@ void ApplicationWindow::initCompleter()
 
 	QStringList functions = scriptEnv->mathFunctions();
 	foreach(QString s, functions)
-		words.append(s + "()");
+		words.append(s);
 
     words.sort();
 

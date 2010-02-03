@@ -688,5 +688,7 @@ editor
 currentEditor
 indexOf
 saveAs
+resize
+setGeometry
 setCanvasSize
 setCanvasGeometry

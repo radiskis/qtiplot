@@ -69,7 +69,7 @@ ScriptEdit::ScriptEdit(ScriptingEnv *env, QWidget *parent, const char *name)
 	d_fmt_default.setBackground(palette().brush(QPalette::Base));
 
 	//Init completer based on parser built-in functions
-	QStringList functions = MyParser::functionsList();
+	QStringList functions = MyParser::functionNamesList();
 	functions.sort();
 	QCompleter *completer = new QCompleter(this);
 	completer->setModelSorting(QCompleter::CaseSensitivelySortedModel);
@@ -614,19 +614,25 @@ void ScriptEdit::setDirPath(const QString& path)
 
  void ScriptEdit::insertCompletion(const QString& completion)
  {
-     if (d_completer->widget() != this)
-         return;
+	if (d_completer->widget() != this)
+	 return;
 
-     QTextCursor tc = textCursor();
-     int extra = completion.length() - d_completer->completionPrefix().length();
-     tc.movePosition(QTextCursor::Left);
-     tc.movePosition(QTextCursor::EndOfWord);
-     tc.insertText(completion.right(extra));
+	QTextCursor tc = textCursor();
+	int extra = completion.length() - d_completer->completionPrefix().length();
+	tc.movePosition(QTextCursor::Left);
+	tc.movePosition(QTextCursor::EndOfWord);
 
-     if (completion.contains(")"))
+	bool specialWord = (completion == "qti" || completion == "app" || completion == "self") ? true : false;
+	QChar startChar = completion[0];
+	if (startChar.category() == QChar::Letter_Lowercase && !specialWord){
+		tc.insertText(completion.right(extra) + "()");
 		tc.movePosition(QTextCursor::PreviousCharacter, QTextCursor::MoveAnchor, 1);
+	} else if (specialWord)
+		tc.insertText(completion.right(extra) + ".");
+	else
+		tc.insertText(completion.right(extra));
 
-     setTextCursor(tc);
+	setTextCursor(tc);
  }
 
  QString ScriptEdit::textUnderCursor() const
