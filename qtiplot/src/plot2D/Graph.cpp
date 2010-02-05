@@ -538,6 +538,16 @@ QString Graph::saveAxesBackbones()
 	return s + "\n";
 }
 
+QString Graph::saveTickLabelsSpace()
+{
+	QString s = "TickLabelsSpace";
+	for (int i = 0; i < QwtPlot::axisCnt; i++){
+		const QwtScaleDraw *sd = axisScaleDraw (i);
+		s += "\t" + QString::number(sd->spacing());
+	}
+	return s + "\n";
+}
+
 QString Graph::saveLabelsRotation()
 {
 	QString s = "LabelsRotation\t";
@@ -660,7 +670,7 @@ void Graph::changeTicksLength(int minLength, int majLength)
 void Graph::showAxis(int axis, int type, const QString& formatInfo, Table *table,
 		bool axisOn, int majTicksType, int minTicksType, bool labelsOn,
 		const QColor& c,  int format, int prec, int rotation, int baselineDist,
-		const QString& formula, const QColor& labelsColor, bool backbone)
+		const QString& formula, const QColor& labelsColor, int  spacing, bool backbone)
 {
 	enableAxis(axis, axisOn);
 	if (!axisOn)
@@ -685,6 +695,7 @@ void Graph::showAxis(int axis, int type, const QString& formatInfo, Table *table
 		sd->formula() == formula &&
 		scale->margin() == baselineDist &&
 		sd->hasComponent(QwtAbstractScaleDraw::Labels) == labelsOn &&
+		sd->spacing() == spacing &&
 		sd->hasComponent(QwtAbstractScaleDraw::Backbone) == backbone)
 		return;
 
@@ -725,7 +736,7 @@ void Graph::showAxis(int axis, int type, const QString& formatInfo, Table *table
 
 	sd = (ScaleDraw *)axisScaleDraw (axis);
 	sd->enableComponent(QwtAbstractScaleDraw::Backbone, backbone);
-	//sd->setSpacing();
+	sd->setSpacing(spacing);
 
 	setAxisTicksLength(axis, majTicksType, minTicksType,
 			minorTickLength(), majorTickLength());
@@ -3947,6 +3958,7 @@ QString Graph::saveToString(bool saveAsTemplate)
 	s+=saveAxesBackbones();
 	s+="AxesLineWidth\t"+QString::number(axesLinewidth())+"\n";
 	s+=saveLabelsRotation();
+	s+=saveTickLabelsSpace();
 	s+=saveMarkers();
 	if (d_Douglas_Peuker_tolerance > 0.0){
 		s += "<SpeedMode>" + QString::number(d_Douglas_Peuker_tolerance) + "\t";
@@ -4415,7 +4427,11 @@ void Graph::copy(Graph* g)
 		QwtScaleWidget *sc = g->axisWidget(i);
 		if (!sc)
 			continue;
-		axisScaleDraw(i)->enableComponent (QwtAbstractScaleDraw::Backbone, g->axisScaleDraw (i)->hasComponent(QwtAbstractScaleDraw::Backbone));
+
+		ScaleDraw *sd = (ScaleDraw *)axisScaleDraw(i);
+		ScaleDraw *sdg = (ScaleDraw *)g->axisScaleDraw (i);
+		sd->enableComponent (QwtAbstractScaleDraw::Backbone, sdg->hasComponent(QwtAbstractScaleDraw::Backbone));
+		sd->setSpacing(sdg->spacing());
 	}
 
 	setAxisLabelRotation(QwtPlot::xBottom, g->labelsRotation(QwtPlot::xBottom));

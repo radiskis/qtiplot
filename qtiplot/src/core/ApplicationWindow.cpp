@@ -11920,6 +11920,16 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot, co
 			QStringList fList=s.split("\t");
 			ag->loadAxesLinewidth(fList[1].toInt());
 		}
+		else if (s.contains ("TickLabelsSpace"))
+		{
+			QStringList lst = s.split("\t");
+			lst.removeFirst();
+			for (int i = 0; i < QwtPlot::axisCnt; i++){
+				QwtScaleDraw *sd = ag->axisScaleDraw (i);
+				if (sd && lst.count() > i)
+					sd->setSpacing(lst[i].toInt());
+			}
+		}
 		else if (s.contains ("CanvasFrame")){
 			QStringList lst = s.split("\t");
 			ag->setCanvasFrame(lst[1].toInt(), QColor(lst[2]));
