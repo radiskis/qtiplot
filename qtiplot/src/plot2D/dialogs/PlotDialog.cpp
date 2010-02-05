@@ -2475,6 +2475,7 @@ bool PlotDialog::acceptParams()
 
 		g->setCanvasGeometry(layerCanvasRect(g, boxX->value(), boxY->value(), boxLayerWidth->value(),
 								boxLayerHeight->value(), (FrameWidget::Unit)unitBox->currentIndex()));
+		g->notifyChanges();
 
 		applyCanvasSize();
 
@@ -2627,11 +2628,6 @@ bool PlotDialog::acceptParams()
 		QwtErrorPlotCurve *err = (QwtErrorPlotCurve *)item->plotItem();
 		if (!err)
 			return false;
-
-		/*graph->updateErrorBars(err, xBox->isChecked(), widthBox->value(),
-				capBox->currentText().toInt(), colorBox->color(), plusBox->isChecked(), minusBox->isChecked(),
-				throughBox->isChecked());
-		err->setSkipSymbolsCount(boxSkipErrorBars->value());*/
 
 		applyErrorBarFormat(err);
 

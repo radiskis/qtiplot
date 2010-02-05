@@ -2,7 +2,7 @@
     File                 : MultiLayer.cpp
     Project              : QtiPlot
     --------------------------------------------------------------------
-	Copyright            : (C) 2006 - 20010 by Ion Vasilief
+	Copyright            : (C) 2006 - 2010 by Ion Vasilief
     Email (use @ for *)  : ion_vasilief*yahoo.fr
     Description          : Multi layer widget
 
@@ -326,16 +326,16 @@ void MultiLayer::resizeLayers (QResizeEvent *re)
 	double h_ratio = (double)(size.height())/(double)(oldSize.height());
 
 	foreach (Graph *g, graphsList){
-		QwtPlotCanvas *canvas = g->canvas();
-		int gx = qRound((g->x() + canvas->x())*w_ratio);
-		int gy = qRound((g->y() + canvas->y())*h_ratio);
-		QRect r = QRect(gx, gy, qRound(canvas->width()*w_ratio), qRound(canvas->height()*h_ratio));
+		int gx = qRound(g->x()*w_ratio);
+		int gy = qRound(g->y()*h_ratio);
+		int gw = qRound(g->width()*w_ratio);
+		int gh = qRound(g->height()*h_ratio);
+		g->setGeometry(gx, gy, gw, gh);
 
 		if (g->autoscaleFonts())
 			g->scaleFonts(h_ratio);
-
-		g->setCanvasGeometry(r);
 	}
+
 	emit modifiedPlot();
 }
 

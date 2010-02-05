@@ -725,6 +725,7 @@ void Graph::showAxis(int axis, int type, const QString& formatInfo, Table *table
 
 	sd = (ScaleDraw *)axisScaleDraw (axis);
 	sd->enableComponent(QwtAbstractScaleDraw::Backbone, backbone);
+	//sd->setSpacing();
 
 	setAxisTicksLength(axis, majTicksType, minTicksType,
 			minorTickLength(), majorTickLength());
