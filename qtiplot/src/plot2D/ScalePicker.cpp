@@ -67,19 +67,19 @@ bool ScalePicker::eventFilter(QObject *object, QEvent *e)
 			scale->setFocus();
 			emit clicked();
 
-            deselect();
+			deselect();
 
 			if (titleRect(scale).contains(pos))
-                selectTitle(scale);
-            else if (!scaleTicksRect(scale).contains(pos))
+				selectTitle(scale);
+			else if (!scaleTicksRect(scale).contains(pos))
 				selectLabels(scale);
 
 			return !(me->modifiers() & Qt::ShiftModifier) && !scaleTicksRect(scale).contains(pos);
-        } else if (me->button() == Qt::RightButton){
+		} else if (me->button() == Qt::RightButton){
 			mouseRightClicked(scale, pos);
 			return true;
-        }
-    }
+		}
+	}
 	return QObject::eventFilter(object, e);
 }
 
@@ -140,11 +140,11 @@ return rect;
 
 void ScalePicker::refresh()
 {
-    for ( uint i = 0; i < QwtPlot::axisCnt; i++ ){
-        QwtScaleWidget *scale = (QwtScaleWidget *)plot()->axisWidget(i);
-        if ( scale )
-            scale->installEventFilter(this);
-    }
+	for ( uint i = 0; i < QwtPlot::axisCnt; i++ ){
+		QwtScaleWidget *scale = (QwtScaleWidget *)plot()->axisWidget(i);
+		if ( scale )
+			scale->installEventFilter(this);
+	}
 }
 
 QRect ScalePicker::scaleTicksRect(const QwtScaleWidget *scale) const

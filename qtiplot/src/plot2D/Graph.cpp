@@ -4007,18 +4007,9 @@ void Graph::resizeEvent ( QResizeEvent *e )
 	if (size.height() <= 0)
 		size.setHeight(e->oldSize().height());
 
-	if (autoScaleFonts){
-		QSize oldSize = e->oldSize();
-
-		resize(size);
-		updateLayout();
-		if(oldSize.isValid() && size.isValid())
-			scaleFonts((double)size.height()/(double)oldSize.height());
-	} else {
-		resize(size);
-		updateLayout();
-		updateCurveLabels();
-	}
+	resize(size);
+	updateLayout();
+	updateCurveLabels();
 
 	bool layerSelected = multiLayer()->hasSelectedLayers();
 	foreach(FrameWidget *f, d_enrichments){
