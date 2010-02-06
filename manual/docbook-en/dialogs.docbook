@@ -1053,7 +1053,17 @@ via a proxy.</para>
       </imageobject>
     </mediaobject>
   </informalfigure>
-  <para>The fifth tab named <emphasis>Fonts</emphasis> defines the default fonts used when you create a new plot.</para>
+
+  <para>The fifth tab named <emphasis>Geometry</emphasis> defines the default size for the drawing area of a plot layer.</para>
+  <informalfigure id="fig-preferences-dialog-17">
+	<mediaobject>
+	  <imageobject>
+		<imagedata  format="PNG" fileref="pics/preferences-dialog17.png"/>
+	  </imageobject>
+	</mediaobject>
+  </informalfigure>
+
+  <para>The sixth tab named <emphasis>Fonts</emphasis> defines the default fonts used when you create a new plot.</para>
   <informalfigure id="fig-preferences-dialog-8">
     <mediaobject>
       <imageobject>

@@ -204,8 +204,8 @@ private:
 	QFontComboBox *boxFontFamily;
 	QSpinBox *boxFontSize;
 	QPushButton *buttonItalicFont, *buttonBoldFont;
-	QLabel *labelGraphAxesLabelsDist;
-	QSpinBox *boxAxesLabelsDist;
+	QLabel *labelGraphAxesLabelsDist, *labelTickLabelsDist;
+	QSpinBox *boxAxesLabelsDist, *boxTickLabelsDist;
 	QLabel *xBottomLabel, *xTopLabel, *yLeftLabel, *yRightLabel, *enableAxisLabel, *showNumbersLabel;
 	QCheckBox *boxEnableAxis, *boxShowAxisLabels;
 	QGroupBox * enabledAxesGroupBox;

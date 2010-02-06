@@ -1084,7 +1084,14 @@ void ConfigDialog::initAxesPage()
 	boxAxesLabelsDist->setRange(0, 1000);
 	boxAxesLabelsDist->setValue(app->d_graph_axes_labels_dist);
 	axisOptionsLayout->addWidget(boxAxesLabelsDist, 2, 1);
-	axisOptionsLayout->setRowStretch(3, 1);
+
+	labelTickLabelsDist = new QLabel();
+	axisOptionsLayout->addWidget(labelTickLabelsDist, 3, 0);
+	boxTickLabelsDist = new QSpinBox();
+	boxTickLabelsDist->setRange(0, 1000);
+	boxTickLabelsDist->setValue(app->d_graph_tick_labels_dist);
+	axisOptionsLayout->addWidget(boxTickLabelsDist, 3, 1);
+	axisOptionsLayout->setRowStretch(4, 1);
 
 	enabledAxesGroupBox = new QGroupBox();
 	enabledAxesGrid = new QGridLayout( enabledAxesGroupBox );
@@ -1305,6 +1312,9 @@ void ConfigDialog::languageChange()
 
 	lblMargin->setText(tr("Margin" ));
 	labelGraphAxesLabelsDist->setText(tr("Axes title space" ));
+	labelTickLabelsDist->setText(tr("Ticks - Labels space" ));
+	boxAxesLabelsDist->setSuffix(" " + tr("pixels"));
+	boxTickLabelsDist->setSuffix(" " + tr("pixels"));
 	labelFrameWidth->setText(tr("Frame width" ));
 	boxFrame->setText(tr("Canvas Fra&me"));
 	boxTitle->setText(tr("Show &Title"));
@@ -1693,6 +1703,7 @@ void ConfigDialog::apply()
 
 	app->defaultPlotMargin = boxMargin->value();
 	app->d_graph_axes_labels_dist = boxAxesLabelsDist->value();
+	app->d_graph_tick_labels_dist = boxTickLabelsDist->value();
 	app->d_graph_legend_display = (Graph::LegendDisplayMode)legendDisplayBox->currentIndex();
 	app->setGraphDefaultSettings(boxAutoscaling->isChecked(), boxScaleFonts->isChecked(),
 		boxResize->isChecked(), boxAntialiasing->isChecked());

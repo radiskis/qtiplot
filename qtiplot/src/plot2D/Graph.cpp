@@ -772,6 +772,10 @@ void Graph::setLabelsTextFormat(int axis, int type, const QString& name, const Q
 	if (type != ScaleDraw::Text && type != ScaleDraw::ColHeader)
 		return;
 
+	ScaleDraw *sd = (ScaleDraw *)axisScaleDraw(axis);
+	if (sd && sd->scaleType() == type && sd->labelsList() == lst && sd->format() == name)
+		return;
+
 	setAxisScaleDraw(axis, new ScaleDraw(this, lst, name, (ScaleDraw::ScaleType)type));
 }
 
@@ -1881,6 +1885,7 @@ void Graph::updateCurvesData(Table* w, const QString& yColName)
             	updated_curves++;
 		}
 	}
+
     if (updated_curves){
         for (int i = 0; i < QwtPlot::axisCnt; i++){
 			QwtScaleWidget *scale = axisWidget(i);
