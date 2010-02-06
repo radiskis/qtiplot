@@ -2,11 +2,9 @@
 	File                 : ApplicationWindow.cpp
 	Project              : QtiPlot
 --------------------------------------------------------------------
-	Copyright            : (C) 2006 by Ion Vasilief,
-	                       Tilman Hoener zu Siederdissen,
-                           Knut Franke
-	Email (use @ for *)  : ion_vasilief*yahoo.fr, thzs*gmx.net,
-	                       knut.franke*gmx.de
+	Copyright            : (C) 2004 - 2010 by Ion Vasilief,
+						   (C) 2006 - June 2007 Tilman Hoener zu Siederdissen, Knut Franke
+	Email (use @ for *)  : ion_vasilief*yahoo.fr
 	Description          : QtiPlot's main window
 
  ***************************************************************************/
@@ -519,6 +517,7 @@ void ApplicationWindow::initGlobalConstants()
 	d_graph_background_opacity = 255;
 	d_graph_canvas_opacity = 255;
 	d_graph_border_width = 0;
+	d_graph_tick_labels_dist = 4;
 	d_graph_axes_labels_dist = 2;
 
 	autoSave = true;
@@ -2669,6 +2668,7 @@ void ApplicationWindow::setPreferences(Graph* g)
 			if(show){
 				ScaleDraw *sd = (ScaleDraw *)g->axisScaleDraw (i);
 				sd->enableComponent(QwtAbstractScaleDraw::Labels, d_show_axes_labels[i]);
+				sd->setSpacing(d_graph_tick_labels_dist);
 			}
 		}
 
@@ -5064,6 +5064,7 @@ void ApplicationWindow::readSettings()
 	d_graph_border_width = settings.value("/FrameWidth", d_graph_border_width).toInt();
     d_canvas_frame_color = settings.value("/FrameColor", Qt::black).value<QColor>();
 	d_graph_axes_labels_dist = settings.value("/LabelsAxesDist", d_graph_axes_labels_dist).toInt();
+	d_graph_tick_labels_dist = settings.value("/TickLabelsDist", d_graph_tick_labels_dist).toInt();
 	int size = settings.beginReadArray("EnabledAxes");
 	for (int i = 0; i < size; ++i) {
 		settings.setArrayIndex(i);
@@ -5457,6 +5458,7 @@ void ApplicationWindow::saveSettings()
 	settings.setValue("/FrameWidth", d_graph_border_width);
 	settings.setValue("/FrameColor", d_canvas_frame_color);
 	settings.setValue("/LabelsAxesDist", d_graph_axes_labels_dist);
+	settings.setValue("/TickLabelsDist", d_graph_tick_labels_dist);
 	settings.beginWriteArray("EnabledAxes");
 	for (int i = 0; i < QwtPlot::axisCnt; ++i) {
 		settings.setArrayIndex(i);
@@ -7424,10 +7426,9 @@ void ApplicationWindow::showCurveContextMenu(QwtPlotItem *cv)
 		curveMenu.addAction(actionShowAllCurves);
 	curveMenu.insertSeparator();
 
-    if (g->rangeSelectorsEnabled() || (g->activeTool() &&
+	if (g->rangeSelectorsEnabled() || (g->activeTool() &&
 		g->activeTool()->rtti() == PlotToolInterface::Rtti_DataPicker))
 		curveMenu.addAction(actionCopySelection);
-
 	if (spectrogram){
 		curveMenu.insertSeparator();
 		curveMenu.addAction(actionSetMatrixValues);
@@ -7437,6 +7438,15 @@ void ApplicationWindow::showCurveContextMenu(QwtPlotItem *cv)
 			g->activeTool()->rtti() == PlotToolInterface::Rtti_DataPicker)){
 			curveMenu.addAction(actionCutSelection);
 			curveMenu.addAction(actionPasteSelection);
+			if (g->activeTool() && g->activeTool()->rtti() == PlotToolInterface::Rtti_DataPicker){
+				DataPickerTool *dpt = (DataPickerTool *)g->activeTool();
+				if (dpt){
+					QAction *act = new QAction(tr("Paste Selection as Te&xt"), this);
+					connect(act, SIGNAL(activated()), dpt, SLOT(pasteSelectionAsLayerText()));
+					curveMenu.addAction(act);
+				}
+			}
+
 			curveMenu.addAction(actionClearSelection);
 			curveMenu.insertSeparator();
 			if (g->rangeSelectorsEnabled()){

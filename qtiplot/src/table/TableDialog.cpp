@@ -289,36 +289,25 @@ void TableDialog::setColumnWidth(int width)
 
 void TableDialog::apply()
 {
-    if (colName->text().contains("_")){
-        QMessageBox::warning(this, tr("QtiPlot - Warning"),
-        tr("For internal consistency reasons the underscore character is replaced with a minus sign."));}
+	if (colName->text().contains("_")){
+		QMessageBox::warning(this, tr("QtiPlot - Warning"),
+		tr("For internal consistency reasons the underscore character is replaced with a minus sign."));}
 
-    QString name=colName->text().replace("-", "_");
-    if (name.contains(QRegExp("\\W"))){
-        QMessageBox::warning(this,tr("QtiPlot - Error"), tr("The column names must only contain letters and digits!"));
-        name.remove(QRegExp("\\W"));
+	QString name=colName->text().replace("-", "_");
+	if (name.contains(QRegExp("\\W"))){
+		QMessageBox::warning(this,tr("QtiPlot - Error"), tr("The column names must only contain letters and digits!"));
+		name.remove(QRegExp("\\W"));
 	}
 
-    int sc = d_table->selectedColumn();
-    d_table->setColumnWidth(colWidth->value(), applyToAllBox->isChecked());
-    d_table->setColComment(sc, comments->text().replace("\n", " ").replace("\t", " "));
-    d_table->setColName(sc, name.replace("_", "-"), enumerateAllBox->isChecked());
+	int sc = d_table->selectedColumn();
+	d_table->setColumnWidth(colWidth->value(), applyToAllBox->isChecked());
+	d_table->setColComment(sc, comments->text().replace("\n", " ").replace("\t", " "));
+	d_table->setColName(sc, name.replace("_", "-"), enumerateAllBox->isChecked());
 
-    bool rightColumns = applyToRightCols->isChecked();
-    if (rightColumns){
-        bool readOnly = boxReadOnly->isChecked();
-		for (int i = sc; i<d_table->numCols(); i++){
-            d_table->setReadOnlyColumn(i, readOnly);
-			d_table->hideColumn(i, boxHideColumn->isChecked());
-		}
-    } else {
-        d_table->setReadOnlyColumn(sc, boxReadOnly->isChecked());
-		d_table->hideColumn(sc, boxHideColumn->isChecked());
-	}
-
-    int format = formatBox->currentIndex();
-    int colType = displayBox->currentIndex();
-    switch(colType)
+	bool rightColumns = applyToRightCols->isChecked();
+	int format = formatBox->currentIndex();
+	int colType = displayBox->currentIndex();
+	switch(colType)
 	{
 	case 0:
 		setNumericFormat(formatBox->currentIndex(), precisionBox->value(), rightColumns);
@@ -337,22 +326,33 @@ void TableDialog::apply()
 	break;
 
 	case 4:
-        if(format == 0)
-            setMonthFormat("MMM", rightColumns);
-        else if(format == 1)
-            setMonthFormat("MMMM", rightColumns);
-        else if(format == 2)
-            setMonthFormat("M", rightColumns);
+		if(format == 0)
+			setMonthFormat("MMM", rightColumns);
+		else if(format == 1)
+			setMonthFormat("MMMM", rightColumns);
+		else if(format == 2)
+			setMonthFormat("M", rightColumns);
 	break;
 
 	case 5:
-        if(format == 0)
-            setDayFormat("ddd", rightColumns);
-        else if(format == 1)
-            setDayFormat("dddd", rightColumns);
-        else if(format == 2)
-            setDayFormat("d", rightColumns);
+		if(format == 0)
+			setDayFormat("ddd", rightColumns);
+		else if(format == 1)
+			setDayFormat("dddd", rightColumns);
+		else if(format == 2)
+			setDayFormat("d", rightColumns);
 	break;
+	}
+
+	if (rightColumns){
+		bool readOnly = boxReadOnly->isChecked();
+		for (int i = sc; i<d_table->numCols(); i++){
+			d_table->setReadOnlyColumn(i, readOnly);
+			d_table->hideColumn(i, boxHideColumn->isChecked());
+		}
+	} else {
+		d_table->setReadOnlyColumn(sc, boxReadOnly->isChecked());
+		d_table->hideColumn(sc, boxHideColumn->isChecked());
 	}
 }
 

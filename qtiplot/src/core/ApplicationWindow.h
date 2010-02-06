@@ -1236,6 +1236,8 @@ public:
 	QVector<bool> d_show_axes_labels;
 	//! Draw axes backbones
 	bool drawBackbones;
+	//! Default distance between the ticks and the tick labels
+	int d_graph_tick_labels_dist;
 	//! Distance between the axes title and the backbone
 	int d_graph_axes_labels_dist;
 	//! Default axes linewidth
