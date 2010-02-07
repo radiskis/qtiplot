@@ -115,7 +115,7 @@ Graph::Graph(int x, int y, int width, int height, QWidget* parent, Qt::WFlags f)
 	d_range_selector = NULL;
 	d_peak_fit_tool = NULL;
 	d_active_enrichment = NULL;
-	d_selected_marker = NULL;
+	d_selected_arrow = NULL;
 	drawLineOn = false;
 	drawArrowOn = false;
 	drawAxesBackbone = true;
@@ -260,14 +260,14 @@ void Graph::activateGraph()
 
 void Graph::deselectMarker()
 {
-	if (d_selected_marker && d_lines.contains(d_selected_marker)){
-		ArrowMarker *a = (ArrowMarker *)d_selected_marker;
+	if (d_selected_arrow && d_lines.contains(d_selected_arrow)){
+		ArrowMarker *a = d_selected_arrow;
 		a->setEditable(false);
 	}
 
     deselect(d_active_enrichment);
 	d_active_enrichment = NULL;
-	d_selected_marker = NULL;
+	d_selected_arrow = NULL;
 	if (d_markers_selector)
         delete d_markers_selector;
 
@@ -354,7 +354,7 @@ void Graph::deselect(QWidget *l)
         d_markers_selector->removeAll(l);
 }
 
-void Graph::setSelectedMarker(QwtPlotMarker *mrk, bool add)
+void Graph::setSelectedArrow(ArrowMarker *mrk, bool add)
 {
 	if (!mrk)
 		return;
@@ -362,32 +362,32 @@ void Graph::setSelectedMarker(QwtPlotMarker *mrk, bool add)
     selectTitle(false);
 	scalePicker->deselect();
 
-	d_selected_marker = mrk;
+	d_selected_arrow = mrk;
 	if (add){
 	    if (d_markers_selector){
             if (d_lines.contains(mrk))
-                d_markers_selector->add((ArrowMarker*)mrk);
+				d_markers_selector->add(mrk);
             else
                 return;
         } else {
             if (d_lines.contains(mrk))
-                d_markers_selector = new SelectionMoveResizer((ArrowMarker*)mrk);
+				d_markers_selector = new SelectionMoveResizer(mrk);
             else
                 return;
             connect(d_markers_selector, SIGNAL(targetsChanged()), this, SIGNAL(modifiedGraph()));
         }
 	} else {
 	    if (d_lines.contains(mrk)){
-	        if (((ArrowMarker*)mrk)->editable()){
+			if (mrk->editable()){
 	            if (d_markers_selector)
 	                delete d_markers_selector;
                 return;
 	        }
 
-			if (d_markers_selector && d_markers_selector->contains((ArrowMarker*)mrk))
+			if (d_markers_selector && d_markers_selector->contains(mrk))
                 return;
             else
-                d_markers_selector = new SelectionMoveResizer((ArrowMarker*)mrk);
+				d_markers_selector = new SelectionMoveResizer(mrk);
         } else
             return;
         connect(d_markers_selector, SIGNAL(targetsChanged()), this, SIGNAL(modifiedGraph()));
@@ -1625,7 +1625,7 @@ QString Graph::selectedCurveTitle()
 
 bool Graph::markerSelected()
 {
-	if (d_selected_marker)
+	if (d_selected_arrow)
 		return true;
 	if (d_active_enrichment)
 		return true;
@@ -1634,8 +1634,8 @@ bool Graph::markerSelected()
 
 void Graph::removeMarker()
 {
-	if (d_selected_marker && d_lines.contains(d_selected_marker))
-			remove((ArrowMarker*)d_selected_marker);
+	if (d_selected_arrow && d_lines.contains(d_selected_arrow))
+			remove(d_selected_arrow);
 	else if (d_active_enrichment)
 		remove(d_active_enrichment);
 }
@@ -1656,8 +1656,8 @@ void Graph::remove(ArrowMarker* arrow)
 			d_lines.removeAt(index);
 	}
 
-	if (arrow == d_selected_marker)
-		d_selected_marker = NULL;
+	if (arrow == d_selected_arrow)
+		d_selected_arrow = NULL;
 
 	arrow->detach();
 	replot();
@@ -1686,7 +1686,7 @@ void Graph::remove(FrameWidget* f)
 
 bool Graph::arrowMarkerSelected()
 {
-	return (d_selected_marker && d_lines.contains(d_selected_marker));
+	return (d_selected_arrow && d_lines.contains(d_selected_arrow));
 }
 
 bool Graph::imageMarkerSelected()
@@ -3553,7 +3553,7 @@ void Graph::addLegendItem()
 
 void Graph::contextMenuEvent(QContextMenuEvent *e)
 {
-	if (d_selected_marker) {
+	if (d_selected_arrow) {
 		emit showMarkerPopupMenu();
 		return;
 	}
@@ -4445,9 +4445,9 @@ void Graph::copy(Graph* g)
 		add(e);
 	}
 
-	QList<QwtPlotMarker *> lines = g->linesList();
-	foreach (QwtPlotMarker *i, lines)
-		addArrow((ArrowMarker*)i);
+	QList<ArrowMarker *> lines = g->arrowsList();
+	foreach (ArrowMarker *a, lines)
+		addArrow(a);
 
 	setAntialiasing(g->antialiasing(), true);
 	autoScaleFonts = g->autoscaleFonts();
@@ -5071,8 +5071,8 @@ bool Graph::focusNextPrevChild ( bool )
 	if (markers < 1 && enrichments < 1)
 		return false;
 
-    if (d_selected_marker){
-        int next = d_lines.indexOf(d_selected_marker) + 1;
+	if (d_selected_arrow){
+		int next = d_lines.indexOf(d_selected_arrow) + 1;
         if (next >= 0 && next < markers){//select next arrow
             cp->disableEditing();
             deselectMarker();

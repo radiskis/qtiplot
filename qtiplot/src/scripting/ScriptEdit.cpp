@@ -615,7 +615,7 @@ void ScriptEdit::setDirPath(const QString& path)
  void ScriptEdit::insertCompletion(const QString& completion)
  {
 	if (d_completer->widget() != this)
-	 return;
+		return;
 
 	QTextCursor tc = textCursor();
 	int extra = completion.length() - d_completer->completionPrefix().length();
@@ -623,8 +623,10 @@ void ScriptEdit::setDirPath(const QString& path)
 	tc.movePosition(QTextCursor::EndOfWord);
 
 	bool specialWord = (completion == "qti" || completion == "app" || completion == "self") ? true : false;
+	bool keyWord = (PythonSyntaxHighlighter::keywordsList().contains(completion));
+
 	QChar startChar = completion[0];
-	if (startChar.category() == QChar::Letter_Lowercase && !specialWord){
+	if (startChar.category() == QChar::Letter_Lowercase && !specialWord && !keyWord){
 		tc.insertText(completion.right(extra) + "()");
 		tc.movePosition(QTextCursor::PreviousCharacter, QTextCursor::MoveAnchor, 1);
 	} else if (specialWord)

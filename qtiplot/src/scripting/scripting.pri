@@ -113,5 +113,6 @@ exists(../../$${SIP_DIR}/sipqtiQList.cpp) {
 			 $${SIP_DIR}/sipqtiQList0101Folder.cpp\
 			 $${SIP_DIR}/sipqtiQList0101Graph.cpp\
 			 $${SIP_DIR}/sipqtiQList0101MdiSubWindow.cpp\
+			 $${SIP_DIR}/sipqtiQList0101ArrowMarker.cpp\
 }
 }

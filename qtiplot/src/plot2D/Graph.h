@@ -451,7 +451,8 @@ class Graph: public QwtPlot
 
 		//! Used when opening a project file
 		void addArrow(QStringList list, int fileVersion);
-		QList<QwtPlotMarker *> linesList(){return d_lines;};
+		QList<ArrowMarker *> arrowsList(){return d_lines;};
+		int numArrows(){return d_lines.count();};
 
 		//!Draws a line/arrow depending on the value of "arrow"
 		void drawLine(bool on, bool arrow = false);
@@ -476,14 +477,14 @@ class Graph: public QwtPlot
 		//! Keep the markers on screen each time the scales are modified by adding/removing curves
 		void updateMarkersBoundingRect(bool rescaleEvent = true);
 
-		/*!\brief Set the selected marker.
-		 * \param mrk key of the marker to be selected.
-		 * \param add whether the marker is to be added to an existing selection.
+		/*!\brief Set the selected arrow.
+		 * \param mrk key of the arrow to be selected.
+		 * \param add whether the arrow is to be added to an existing selection.
 		 * If <i>add</i> is false (the default) or there is no existing selection, a new SelectionMoveResizer is
 		 * created and stored in #d_markers_selector.
 		 */
-		void setSelectedMarker(QwtPlotMarker* mrk, bool add = false);
-		QwtPlotMarker* selectedMarker(){return d_selected_marker;};
+		void setSelectedArrow(ArrowMarker* mrk, bool add = false);
+		ArrowMarker* selectedArrow(){return d_selected_arrow;};
 		bool markerSelected();
 		//! Reset any selection states on markers.
 		void deselectMarker();
@@ -795,9 +796,9 @@ signals:
 		//! Stores the step the user specified for the four scale. If step = 0.0, the step will be calculated automatically by the Qwt scale engine.
 		QVector<double> d_user_step;
 		//! Arrows/lines on plot
-		QList<QwtPlotMarker*> d_lines;
+		QList<ArrowMarker*> d_lines;
 		//! Pointer to the currently selected line/image
-		QwtPlotMarker* d_selected_marker;
+		ArrowMarker* d_selected_arrow;
 		//! The markers selected for move/resize operations or NULL if none are selected.
 		QPointer<SelectionMoveResizer> d_markers_selector;
 		//! The current curve selection, or NULL if none is active.
