@@ -30,6 +30,7 @@
 #include "Table.h"
 #include <ScriptEdit.h>
 #include <ApplicationWindow.h>
+#include "muParserScripting.h"
 
 #include <QTableWidget>
 #include <QTableWidgetSelectionRange>
@@ -71,6 +72,7 @@ SetColValuesDialog::SetColValuesDialog( ScriptingEnv *env, QWidget* parent, Qt::
 
 	QGridLayout *gl1 = new QGridLayout();
 	functions = new QComboBox(false);
+	functions->addItems(scriptEnv->mathFunctions());
 	gl1->addWidget(functions, 0, 0);
 	btnAddFunction = new QPushButton(tr( "Add function" ));
 	gl1->addWidget(btnAddFunction, 0, 1);
@@ -131,6 +133,8 @@ SetColValuesDialog::SetColValuesDialog( ScriptingEnv *env, QWidget* parent, Qt::
 	if (env->name() != QString("muParser")){
 		boxMuParser = new QCheckBox(tr("Use built-in muParser (much faster)"));
 		boxMuParser->setChecked(true);
+		connect(boxMuParser, SIGNAL(toggled(bool)), this, SLOT(updateFunctionsList(bool)));
+		updateFunctionsList(true);
 		vbox3->addWidget(boxMuParser);
 	}
 #endif
@@ -143,7 +147,6 @@ SetColValuesDialog::SetColValuesDialog( ScriptingEnv *env, QWidget* parent, Qt::
 	setFocusProxy (commands);
 	commands->setFocus();
 
-	functions->insertStringList(scriptEnv->mathFunctions(), -1);
 	if (functions->count() > 0)
 		insertExplain(0);
 
@@ -231,7 +234,14 @@ bool SetColValuesDialog::apply()
 
 void SetColValuesDialog::insertExplain(int index)
 {
+#ifdef SCRIPTING_PYTHON
+	if (boxMuParser->isChecked())
+		explain->setText(muParserScripting::explainFunction(functions->text(index)));
+	else
+		explain->setText(scriptEnv->mathFunctionDoc(functions->text(index)));
+#else
 	explain->setText(scriptEnv->mathFunctionDoc(functions->text(index)));
+#endif
 }
 
 void SetColValuesDialog::insertFunction()
@@ -288,5 +298,18 @@ void SetColValuesDialog::clearFormulas()
 
 	table->clearCommands();
 	commands->clear();
-
 }
+
+#ifdef SCRIPTING_PYTHON
+void SetColValuesDialog::updateFunctionsList(bool muParser)
+{
+	functions->clear();
+	if (muParser)
+		functions->addItems(muParserScripting::functionsList());
+	else
+		functions->addItems(scriptingEnv()->mathFunctions());
+
+	if (functions->count() > 0)
+		insertExplain(0);
+}
+#endif

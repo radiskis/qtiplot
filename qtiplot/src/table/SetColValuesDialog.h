@@ -67,6 +67,9 @@ private slots:
 	void insertExplain(int index);
 	void updateColumn(int sc);
 	void clearFormulas();
+#ifdef SCRIPTING_PYTHON
+	void updateFunctionsList(bool);
+#endif
 
 private:
 	Table* table;

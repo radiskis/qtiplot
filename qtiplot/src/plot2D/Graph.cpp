@@ -3016,8 +3016,7 @@ bool Graph::addCurves(Table* w, const QStringList& names, int style, double lWid
 		int curves = names.count();
         int errCurves = 0;
 		QStringList lst = QStringList();
-        for (int i=0; i<curves; i++)
-        {//We rearrange the list so that the error bars are placed at the end
+        for (int i=0; i<curves; i++){//We rearrange the list so that the error bars are placed at the end
         	int j = w->colIndex(names[i]);
   	        if (w->colPlotDesignation(j) == Table::xErr || w->colPlotDesignation(j) == Table::yErr ||
 				w->colPlotDesignation(j) == Table::Label){
@@ -3027,19 +3026,20 @@ bool Graph::addCurves(Table* w, const QStringList& names, int style, double lWid
 				lst.prepend(names[i]);
         }
 
-		for (int i=0; i<curves; i++){
+		for (int i = 0; i < curves; i++){
             int j = w->colIndex(names[i]);
             PlotCurve *c = NULL;
             if (w->colPlotDesignation(j) == Table::xErr || w->colPlotDesignation(j) == Table::yErr){
-				int ycol = w->colY(w->colIndex(names[i]));
-                if (ycol < 0)
+				int xcol = w->colX(j);
+				int ycol = w->colY(j, xcol);
+				if (xcol < 0 || ycol < 0)
                     return false;
 
 				QwtErrorPlotCurve *er = NULL;
                 if (w->colPlotDesignation(j) == Table::xErr)
-                    er = addErrorBars(w->colName(ycol), w, names[i], (int)QwtErrorPlotCurve::Horizontal);
+					er = addErrorBars(w->colName(xcol), w->colName(ycol), w, names[i], (int)QwtErrorPlotCurve::Horizontal);
                 else
-                    er = addErrorBars(w->colName(ycol), w, names[i]);
+					er = addErrorBars(w->colName(xcol), w->colName(ycol), w, names[i]);
 
 				if (!er)
 					continue;
@@ -3050,7 +3050,7 @@ bool Graph::addCurves(Table* w, const QStringList& names, int style, double lWid
 			} else if (w->colPlotDesignation(j) == Table::Label){
 				QString labelsCol = names[i];
 				int xcol = w->colX(w->colIndex(labelsCol));
-				int ycol = w->colY(w->colIndex(labelsCol));
+				int ycol = w->colY(w->colIndex(labelsCol), xcol);
 				if (xcol < 0 || ycol < 0)
                     return false;
 

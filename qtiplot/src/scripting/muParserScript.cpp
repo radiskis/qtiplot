@@ -50,6 +50,8 @@ muParserScript::muParserScript(ScriptingEnv *env, const QString &code, QObject *
 	  parser.DefineFun("col", mu_col, false);
 	  parser.DefineFun("cell", mu_tableCell);
 	  parser.DefineFun("tablecol", mu_tablecol, false);
+	  parser.DefineFun("AVG", mu_avg, false);
+	  parser.DefineFun("SUM", mu_sum, false);
   } else if (Context->isA("Matrix"))
 	  parser.DefineFun("cell", mu_cell);
 
@@ -471,4 +473,32 @@ bool muParserScript::exec()
 		return false;
 	}
 	return true;
+}
+
+double muParserScript::sum(const QString &arg)
+{
+	if (!Context->isA("Table"))
+		throw Parser::exception_type(tr("SUM() works only on tables!").ascii());
+
+	Table *table = (Table*) Context;
+	int col = table->colNames().findIndex(arg);
+	if (col < 0)
+		throw Parser::exception_type(tr("There's no column named %1 in table %2!").arg(arg).arg(Context->name()).ascii());
+
+	rvariables.clear();
+	return table->sum(col);
+}
+
+double muParserScript::avg(const QString &arg)
+{
+	if (!Context->isA("Table"))
+		throw Parser::exception_type(tr("AVG() works only on tables!").ascii());
+
+	Table *table = (Table*) Context;
+	int col = table->colNames().findIndex(arg);
+	if (col < 0)
+		throw Parser::exception_type(tr("There's no column named %1 in table %2!").arg(arg).arg(Context->name()).ascii());
+
+	rvariables.clear();
+	return table->avg(col);
 }
