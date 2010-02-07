@@ -8425,7 +8425,7 @@ void ApplicationWindow::showLineDialog()
 
 	Graph* g = plot->activeLayer();
 	if (g){
-		ArrowMarker *lm = (ArrowMarker *) g->selectedMarker();
+		ArrowMarker *lm = g->selectedArrow();
 		if (!lm)
 			return;
 
@@ -8574,7 +8574,7 @@ void ApplicationWindow::copyMarker()
 		if (g->activeEnrichment())
 			d_enrichement_copy = g->activeEnrichment();
 		else if (g->arrowMarkerSelected())
-			d_arrow_copy = (ArrowMarker *) g->selectedMarker();
+			d_arrow_copy = g->selectedArrow();
 	}
 }
 

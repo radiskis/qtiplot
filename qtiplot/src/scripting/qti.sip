@@ -1551,6 +1551,8 @@ public:
 
   ArrowMarker* addArrow(ArrowMarker*);
   void remove(ArrowMarker*);
+  QList<ArrowMarker *> arrowsList();
+  int numArrows();
 
   ImageWidget* addImage(ImageWidget*);
   ImageWidget* addImage(const QString&);

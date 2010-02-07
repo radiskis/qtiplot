@@ -55,7 +55,7 @@ bool CanvasPicker::eventFilter(QObject *object, QEvent *e)
 		return false;
 
 	Graph *g = plot();
-	QList<QwtPlotMarker *> lines = g->linesList();
+	QList<ArrowMarker *> lines = g->arrowsList();
 	switch(e->type())
 	{
 		case QEvent::MouseButtonPress:
@@ -109,8 +109,8 @@ bool CanvasPicker::eventFilter(QObject *object, QEvent *e)
 			{
 				if (d_editing_marker) {
 					return d_editing_marker->eventFilter(g->canvas(), e);
-				} else if (g->selectedMarker()) {
-					if (lines.contains(g->selectedMarker())){
+				} else if (g->selectedArrow()) {
+					if (lines.contains(g->selectedArrow())){
 						emit viewLineDialog();
 						return true;
 					}
@@ -192,7 +192,7 @@ bool CanvasPicker::eventFilter(QObject *object, QEvent *e)
 			{
 				int key = ((const QKeyEvent *)e)->key();
 
-				QwtPlotMarker *selectedMarker = g->selectedMarker();
+				ArrowMarker *selectedMarker = g->selectedArrow();
 				if (lines.contains(selectedMarker) &&
 					(key == Qt::Key_Enter || key == Qt::Key_Return)){
 					emit viewLineDialog();
@@ -243,25 +243,24 @@ bool CanvasPicker::selectMarker(const QMouseEvent *e)
 {
 	Graph *g = plot();
 	const QPoint point = e->pos();
-	QList<QwtPlotMarker *> lines = g->linesList();
-	foreach(QwtPlotMarker *i, lines){
-		ArrowMarker* mrkL = (ArrowMarker*)i;
-		int d = qRound(mrkL->width() + floor(mrkL->headLength()*tan(M_PI*mrkL->headAngle()/180.0)+0.5));
-		double dist = mrkL->dist(point.x(), point.y());
+	QList<ArrowMarker *> lines = g->arrowsList();
+	foreach(ArrowMarker *i, lines){
+		int d = qRound(i->width() + floor(i->headLength()*tan(M_PI*i->headAngle()/180.0)+0.5));
+		double dist = i->dist(point.x(), point.y());
 		if (dist <= d){
 			disableEditing();
 			if (e->modifiers() & Qt::ShiftModifier) {
-				plot()->setSelectedMarker(i, true);
+				plot()->setSelectedArrow(i, true);
 				return true;
 			} else if (e->button() == Qt::RightButton) {
-				mrkL->setEditable(false);
-				g->setSelectedMarker(i, true);
+				i->setEditable(false);
+				g->setSelectedArrow(i, true);
 				return true;
 			}
 			g->deselectMarker();
-			mrkL->setEditable(true);
-			g->setSelectedMarker(i, false);
-			d_editing_marker = mrkL;
+			i->setEditable(true);
+			g->setSelectedArrow(i, false);
+			d_editing_marker = i;
 			return true;
 		}
 	}

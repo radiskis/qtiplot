@@ -2738,9 +2738,20 @@ arrow2 = l.addArrow(arrow)
 l.remove(arrow1)
 </programlisting>
 
-As you might notice from the sample code above, the <varname>addArrow</varname> function
+<para>As you might notice from the sample code above, the <varname>addArrow</varname> function
 returns a reference to a new arrow object that can be used later on to modify this
-new arrow or to delete it with the <varname>remove</varname> function.
+new arrow or to delete it with the <varname>remove</varname> function.</para>
+
+<para>It is possible to modify the properties of all the lines/arrows in a plot layer, see the short example bellow:</para>
+<programlisting>
+g = graph("Graph1").activeLayer()
+lst = g.arrowsList()
+for i in range (0, g.numArrows()):
+	lst[i].setColor(Qt.green)
+
+g.replot()
+</programlisting>
+
 </sect3>
 
 <sect3 id="Python-Images">
@@ -2844,6 +2855,7 @@ of the plot window. You can override this behaviour and keep the size of the fon
 <programlisting>
 l.setAutoscaleFonts(False)
 </programlisting>
+</sect3>
 
 <sect3 id="Python-Resizing">
 <title>Resizing the drawing area</title>

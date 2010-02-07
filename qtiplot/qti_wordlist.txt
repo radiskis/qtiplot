@@ -223,6 +223,8 @@ addParametricFunction
 addErrorBars
 addHistogram
 addArrow
+arrowsList
+numArrows
 remove
 addImage
 setTitleFont
@@ -692,3 +694,4 @@ resize
 setGeometry
 setCanvasSize
 setCanvasGeometry
+range
