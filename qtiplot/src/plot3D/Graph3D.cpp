@@ -166,6 +166,9 @@ void Graph3D::initPlot()
 
 	ApplicationWindow *app = applicationWindow();
 
+	d_scale_on_print = app->d_scale_plots_on_print;
+	d_print_cropmarks = app->d_print_cropmarks;
+
 	sp = new Plot3D(this);
 	sp->installEventFilter(this);
 	sp->setRotation(30, 0, 15);
@@ -1930,9 +1933,48 @@ void Graph3D::print(QPrinter *printer)
 	if (!printer)
 		return;
 
-	QRect rect = printer->pageRect();
+	//printing should preserve plot aspect ratio, if possible
+	double aspect = double(width())/double(height());
+	if (aspect < 1)
+		printer->setOrientation(QPrinter::Portrait);
+	else
+		printer->setOrientation(QPrinter::Landscape);
+
+	QRect plotRect = rect();
+	QRect paperRect = printer->paperRect();
+	if (d_scale_on_print){
+		int dpiy = printer->logicalDpiY();
+		int margin = (int) ((2/2.54)*dpiy ); // 2 cm margins
+
+		int width = qRound(aspect*printer->height()) - 2*margin;
+		int x = qRound(abs(printer->width()- width)*0.5);
+
+		plotRect = QRect(x, margin, width, printer->height() - 2*margin);
+		if (x < margin){
+			plotRect.setLeft(margin);
+			plotRect.setWidth(printer->width() - 2*margin);
+		}
+	} else {
+		int x_margin = (paperRect.width() - plotRect.width())/2;
+		int y_margin = (paperRect.height() - plotRect.height())/2;
+		plotRect.moveTo(x_margin, y_margin);
+	}
+
 	QPainter paint(printer);
-	paint.drawPixmap(rect, sp->renderPixmap(rect.width(), rect.height()));
+	paint.drawPixmap(plotRect, sp->renderPixmap(plotRect.width(), plotRect.height()));
+
+	if (d_print_cropmarks){
+		QRect cr = plotRect; // cropmarks rectangle
+		cr.addCoords(-1, -1, 2, 2);
+		paint.save();
+		paint.setPen(QPen(QColor(Qt::black), 0.5, Qt::DashLine));
+		paint.drawLine(paperRect.left(), cr.top(), paperRect.right(), cr.top());
+		paint.drawLine(paperRect.left(), cr.bottom(), paperRect.right(), cr.bottom());
+		paint.drawLine(cr.left(), paperRect.top(), cr.left(), paperRect.bottom());
+		paint.drawLine(cr.right(), paperRect.top(), cr.right(), paperRect.bottom());
+		paint.restore();
+	}
+
 	paint.end();
 }
 
@@ -2991,6 +3033,9 @@ void Graph3D::copy(Graph3D* g)
 
 	sp->updateData();
 	animate(g->isAnimated());
+
+	d_scale_on_print = g->scaleOnPrint();
+	d_print_cropmarks = g->printCropmarksEnabled();
 }
 
 void Graph3D::setAxisType(int axis, int type)

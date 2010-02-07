@@ -97,6 +97,7 @@ private:
 	void initGridPage();
 	void initColorsPage();
 	void initGeneralPage();
+	void initPrintPage();
 	void setColorMapPreview(const QString& fileName);
 
 	void showBarsTab();
@@ -118,7 +119,7 @@ private:
 	ColorButton *btnBackground, *btnMesh, *btnAxes, *btnTitleColor, *btnLabels, *btnNumbers, *btnGrid, *btnGridMinor;
 	ColorMapEditor *d_color_map_editor;
     QTabWidget* generalDialog;
-	QWidget *scale, *colors, *general, *axes, *title, *bars, *points, *gridPage;
+	QWidget *scale, *colors, *general, *axes, *title, *bars, *points, *gridPage, *printPage;
 	DoubleSpinBox *boxFrom, *boxTo;
 	QTextEdit *boxTitle, *boxLabel;
 	QSpinBox *boxMajors, *boxMinors;
@@ -132,7 +133,7 @@ private:
 	DoubleSpinBox *boxSize, *boxBarsRad, *boxCrossRad, *boxCrossLinewidth;
 	QStackedWidget *optionStack;
 	QWidget *dotsPage, *conesPage, *crossPage;
-	QCheckBox *boxBarLines, *boxFilledBars;
+	QCheckBox *boxBarLines, *boxFilledBars, *boxScaleOnPrint, *boxPrintCropmarks;
 	TextFormatButtons *titleFormatButtons, *axisTitleFormatButtons;
     double zoom, xScale, yScale, zScale;
 	QString d_color_map_file;
