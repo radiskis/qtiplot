@@ -1332,15 +1332,26 @@ which will highly increase the speed of the evaluation!</para>
       </imageobject>
     </mediaobject>
   </informalfigure>
-  <para>The third tab is used to define or modify the title of the plot. You can not add subscripts/superscripts, bold characters, etc in your title as you can do it for 2D plots.</para>
+
+  <para>The third tab is used to define or modify the properties of the plot grid.</para>
   <informalfigure id="fig-surface-plot-options-3">
     <mediaobject>
       <imageobject>
-        <imagedata  format="PNG" fileref="pics/surface-plot-options-dialog3.png"/>
+		<imagedata  format="PNG" fileref="pics/surface-plot-options-dialog7.png"/>
       </imageobject>
     </mediaobject>
   </informalfigure>
-  <para>The fourth tab allows to modify the colors used in the different elements of the plot.</para>
+
+  <para>The fourth tab is used to define or modify the title of the plot. You can not add subscripts/superscripts, bold characters, etc in your title as you can do it for 2D plots.</para>
+  <informalfigure id="fig-surface-plot-options-4">
+	<mediaobject>
+	  <imageobject>
+		<imagedata  format="PNG" fileref="pics/surface-plot-options-dialog3.png"/>
+	  </imageobject>
+	</mediaobject>
+  </informalfigure>
+
+  <para>The fifth tab allows to modify the colors used in the different elements of the plot.</para>
   <informalfigure id="fig-surface-plot-options-4">
     <mediaobject>
       <imageobject>
@@ -1357,15 +1368,27 @@ The format of the file is simple: each line defines a color by red, green and bl
  between 0 and 255. The numbers should be separated by spaces. You can find several examples of colormaps on the
  <ulink url="http://soft.proindependent.com/download.html">QtiPlot web site</ulink>.</para>
 
-<para>The last tab is used to define some global parameters and the aspect ratio of the plot. The default behaviour is to use the perspective to compute the 3D plot. If you choose to check the <emphasis>Orthogonal</emphasis> check box, the plot will use vertical Z axis whatever the view angle of the plot.</para>
+<para>The <emphasis>General</emphasis> tab is used to define some global parameters and the aspect ratio of the plot. The default behaviour is to use the perspective to compute the 3D plot. If you choose to check the <emphasis>Orthogonal</emphasis> check box, the plot will use vertical Z axis whatever the view angle of the plot.</para>
 
   <figure id="fig-surface-plot-options-5">
-    <title>The surface plot options dialog box with tab 5: aspect ratio.</title>
+	<title>The general plot options tab.</title>
     <mediaobject>
       <imageobject>
         <imagedata  format="PNG" fileref="pics/surface-plot-options-dialog5.png"/>
       </imageobject>
     </mediaobject>
+  </figure>
+
+<para>The <emphasis>Print</emphasis> tab is used to define some useful print options, like scaling to the paper size or
+ showing the cropmarks.</para>
+
+  <figure id="fig-surface-plot-options-5">
+	<title>The 3D plot print options.</title>
+	<mediaobject>
+	  <imageobject>
+		<imagedata  format="PNG" fileref="pics/surface-plot-options-dialog6.png"/>
+	  </imageobject>
+	</mediaobject>
   </figure>
 </sect1>
 

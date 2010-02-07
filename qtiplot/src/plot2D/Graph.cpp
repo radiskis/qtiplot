@@ -122,8 +122,6 @@ Graph::Graph(int x, int y, int width, int height, QWidget* parent, Qt::WFlags f)
 	d_auto_scale = true;
 	autoScaleFonts = false;
 	d_antialiasing = false;
-	d_scale_on_print = true;
-	d_print_cropmarks = false;
 	d_is_printing = false;
 	d_is_exporting_tex = false;
 	d_tex_escape_strings = true;
@@ -1497,7 +1495,7 @@ void Graph::print()
 
 		QRect plotRect = rect();
 		QRect paperRect = printer.paperRect();
-		if (d_scale_on_print){
+		if (multiLayer()->scaleLayersOnPrint()){
 			int dpiy = printer.logicalDpiY();
 			int margin = (int) ((2/2.54)*dpiy ); // 2 cm margins
 
@@ -1516,7 +1514,7 @@ void Graph::print()
 		}
 
         QPainter paint(&printer);
-        if (d_print_cropmarks){
+		if (multiLayer()->printCropmarksEnabled()){
 			QRect cr = plotRect; // cropmarks rectangle
 			cr.addCoords(-1, -1, 2, 2);
             paint.save();

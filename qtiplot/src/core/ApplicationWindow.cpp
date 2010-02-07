@@ -2484,16 +2484,20 @@ MultiLayer* ApplicationWindow::multilayerPlot(const QString& caption, int layers
 	MultiLayer* ml = new MultiLayer(this, layers, rows, cols);
 	QString label = caption;
 	initMultilayerPlot(ml, label.replace(QRegExp("_"), "-"));
-	setPreferences(ml->activeLayer());
-	ml->arrangeLayers(false, true);
 	return ml;
 }
 
 MultiLayer* ApplicationWindow::newGraph(const QString& caption)
 {
 	MultiLayer *ml = multilayerPlot(generateUniqueName(caption));
-	if (ml)
-		ml->activeLayer()->newLegend();
+	if (ml){
+		Graph *g = ml->activeLayer();
+		if (g){
+			setPreferences(g);
+			g->newLegend();
+		}
+		ml->arrangeLayers(false, true);
+	}
 
 	return ml;
 }
@@ -2510,6 +2514,7 @@ MultiLayer* ApplicationWindow::multilayerPlot(Table* w, const QStringList& colLi
 	if (!ag)
 		return 0;
 
+	setPreferences(ag);
 	ag->addCurves(w, colList, style, defaultCurveLineWidth, defaultSymbolSize, startRow, endRow);
 	ag->newLegend();
 
@@ -2548,6 +2553,7 @@ MultiLayer* ApplicationWindow::multilayerPlot(int c, int r, int style)
 		ag->newLegend();
 		i++;
 	}
+	g->arrangeLayers(false, false);
 	return g;
 }
 
@@ -7818,7 +7824,7 @@ void ApplicationWindow::printPreview()
 				tr("<h4>There are no plot layers available in this window.</h4>"));
 		return;
 	}
-	QPrintPreviewDialog *preview = new QPrintPreviewDialog(this);
+	QPrintPreviewDialog *preview = new QPrintPreviewDialog(this, Qt::Window);
 	preview->setWindowTitle(tr("QtiPlot") + " - " + tr("Print preview of window: ") + w->objectName());
 	connect(preview, SIGNAL(paintRequested(QPrinter *)), w, SLOT(print(QPrinter *)));
 	preview->exec();
@@ -11178,7 +11184,7 @@ void ApplicationWindow::addLayer()
 				tr("&Guess"), tr("&Top-left corner"), tr("&Cancel"), 0, 2 ) ){
 		case 0:
 				setPreferences(plot->addLayer());
-				plot->arrangeLayers(true, false);
+				plot->arrangeLayers(true, true);
 		break;
 
 		case 1:
@@ -14362,6 +14368,7 @@ MultiLayer* ApplicationWindow::plotImage(Matrix *m)
 
     MultiLayer* g = multilayerPlot(generateUniqueName(tr("Graph")));
 	Graph* plot = g->activeLayer();
+	setPreferences(plot);
 	Spectrogram *s = plot->plotSpectrogram(m, Graph::GrayScale);
 	if (!s)
 		return 0;
@@ -14377,6 +14384,8 @@ MultiLayer* ApplicationWindow::plotImage(Matrix *m)
 	plot->setAxisTitle(QwtPlot::yLeft, QString::null);
 	plot->setAxisTitle(QwtPlot::xTop, QString::null);
 	plot->setTitle(QString::null);
+
+	g->arrangeLayers(false, true);
 
 	emit modified();
 	QApplication::restoreOverrideCursor();
@@ -14396,7 +14405,10 @@ MultiLayer* ApplicationWindow::plotSpectrogram(Matrix *m, Graph::CurveType type)
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
 	MultiLayer* g = multilayerPlot(generateUniqueName(tr("Graph")));
-	g->activeLayer()->plotSpectrogram(m, type);
+	Graph* plot = g->activeLayer();
+	setPreferences(plot);
+	plot->plotSpectrogram(m, type);
+	g->arrangeLayers(false, true);
 	QApplication::restoreOverrideCursor();
 	return g;
 }

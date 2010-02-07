@@ -1079,11 +1079,8 @@ void MultiLayer::copyAllLayers()
 
 void MultiLayer::printActiveLayer()
 {
-	if (active_graph){
-		active_graph->setScaleOnPrint(d_scale_on_print);
-		active_graph->printCropmarks(d_print_cropmarks);
+	if (active_graph)
 		active_graph->print();
-	}
 }
 
 void MultiLayer::print()
@@ -1095,15 +1092,15 @@ void MultiLayer::print()
 	printer.setOutputFileName(objectName());
 #endif
 
-    QRect canvasRect = d_canvas->rect();
-    double aspect = double(canvasRect.width())/double(canvasRect.height());
-    if (aspect < 1)
-        printer.setOrientation(QPrinter::Portrait);
-    else
-        printer.setOrientation(QPrinter::Landscape);
+	QRect canvasRect = d_canvas->rect();
+	double aspect = double(canvasRect.width())/double(canvasRect.height());
+	if (aspect < 1)
+		printer.setOrientation(QPrinter::Portrait);
+	else
+		printer.setOrientation(QPrinter::Landscape);
 
-    QPrintDialog printDialog(&printer, applicationWindow());
-    if (printDialog.exec() == QDialog::Accepted){
+	QPrintDialog printDialog(&printer, applicationWindow());
+	if (printDialog.exec() == QDialog::Accepted){
 	#ifdef Q_OS_LINUX
 		if (printDialog.enabledOptions() & QAbstractPrintDialog::PrintToFile){
 			QString fn = printer.outputFileName();
@@ -1515,6 +1512,9 @@ void MultiLayer::copy(MultiLayer* ml)
 	setSpacing(ml->rowsSpacing(), ml->colsSpacing());
 	setAlignement(ml->horizontalAlignement(), ml->verticalAlignement());
 	setMargins(ml->leftMargin(), ml->rightMargin(), ml->topMargin(), ml->bottomMargin());
+
+	d_scale_on_print = ml->scaleLayersOnPrint();
+	d_print_cropmarks = ml->printCropmarksEnabled();
 
 	QObjectList lst = ml->canvas()->children();
 	foreach (QObject *o, lst){

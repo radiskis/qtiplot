@@ -72,6 +72,12 @@ public:
 
 	Qwt3D::Plot3D* surface(){return sp;};
 
+	bool scaleOnPrint(){return d_scale_on_print;};
+	void setScaleOnPrint(bool on){d_scale_on_print = on;};
+
+	bool printCropmarksEnabled(){return d_print_cropmarks;};
+	void printCropmarks(bool on){d_print_cropmarks = on;};
+
 public slots:
 	void copy(Graph3D* g);
 	void initPlot();
@@ -393,6 +399,7 @@ private:
 	QStringList labels;
 	QFont titleFnt;
 	bool legendOn, d_autoscale;
+	bool d_scale_on_print, d_print_cropmarks;
 	QVector<int> scaleType;
 	QColor axesCol, labelsCol, titleCol, meshCol, bgCol, numCol, gridCol;
 	int labelsDist, legendMajorTicks;

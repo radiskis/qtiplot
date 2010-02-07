@@ -84,6 +84,7 @@ Plot3DDialog::Plot3DDialog( QWidget* parent,  Qt::WFlags fl )
 	initTitlePage();
 	initColorsPage();
 	initGeneralPage();
+	initPrintPage();
 
 	QVBoxLayout* vl = new QVBoxLayout(this);
 	vl->addWidget(generalDialog);
@@ -93,6 +94,21 @@ Plot3DDialog::Plot3DDialog( QWidget* parent,  Qt::WFlags fl )
 	connect( buttonCancel, SIGNAL( clicked() ), this, SLOT( reject() ) );
 	connect( buttonApply, SIGNAL( clicked() ), this, SLOT(updatePlot() ) );
 	connect( btnTable, SIGNAL( clicked() ), this, SLOT(worksheet() ) );
+}
+
+void Plot3DDialog::initPrintPage()
+{
+	printPage = new QWidget();
+	QVBoxLayout *printLayout = new QVBoxLayout( printPage );
+
+	boxScaleOnPrint = new QCheckBox(tr("Scale to paper si&ze"));
+	printLayout->addWidget( boxScaleOnPrint );
+
+	boxPrintCropmarks = new QCheckBox(tr("Print Crop&marks"));
+	printLayout->addWidget( boxPrintCropmarks );
+	printLayout->addStretch();
+
+	generalDialog->addTab(printPage, tr( "&Print" ) );
 }
 
 void Plot3DDialog::initScalesPage()
@@ -727,6 +743,9 @@ void Plot3DDialog::setPlot(Graph3D *g)
 		else if (g->matrix())
 			btnTable->setText(tr("&Matrix"));
 
+	boxPrintCropmarks->setChecked(g->printCropmarksEnabled());
+	boxScaleOnPrint->setChecked(g->scaleOnPrint());
+
 	initConnections();
 }
 
@@ -1059,6 +1078,9 @@ bool Plot3DDialog::updatePlot()
 			d_plot->setZAxisTickLength(boxMajorLength->text().toDouble(), boxMinorLength->text().toDouble());
 		break;
 		}
+	} else if (generalDialog->currentPage() == printPage){
+		d_plot->printCropmarks(boxPrintCropmarks->isChecked());
+		d_plot->setScaleOnPrint(boxScaleOnPrint->isChecked());
 	}
 
     d_plot->update();

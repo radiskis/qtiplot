@@ -314,9 +314,6 @@ class Graph: public QwtPlot
 		//! \name Output: Copy/Export/Print
 		//@{
 		void print();
-		void setScaleOnPrint(bool on){d_scale_on_print = on;};
-		void printCropmarks(bool on){d_print_cropmarks = on;};
-
 		void copyImage();
 		QPixmap graphPixmap(const QSize& size = QSize(), double scaleFontsFactor = 1.0, bool transparent = false);
 		//! Provided for convenience in scripts
@@ -792,7 +789,6 @@ signals:
 		//! Render hint for plot items.
 		bool d_antialiasing;
 		bool autoScaleFonts;
-		bool d_scale_on_print, d_print_cropmarks;
 		bool drawLineOn, drawArrowOn, drawAxesBackbone;
 		//! Flag telling if we are performing a print operation
 		bool d_is_printing;
