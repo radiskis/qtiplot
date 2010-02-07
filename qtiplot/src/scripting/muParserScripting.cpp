@@ -94,22 +94,41 @@ const muParserScripting::mathFunction muParserScripting::math_functions[] = {
 
 const QStringList muParserScripting::mathFunctions() const
 {
-  QStringList l;
-  for (const mathFunction *i=math_functions; i->name; i++)
-    l << i->name;
-
-  return l;
+	return functionsList();
 }
 
 const QString muParserScripting::mathFunctionDoc (const QString &name) const
 {
-  for (const mathFunction *i=math_functions; i->name; i++)
-    if (name == i->name){
-    	QString s = i->description;
-		if (QLocale().decimalPoint() == ',')
-			s.replace(",", ";");
+	return explainFunction(name);
+}
 
-      	return s;
-      }
-  return QString::null;
+const QStringList muParserScripting::functionsList()
+{
+	QStringList l;
+	l << "AVG";
+	l << "SUM";
+
+	for (const mathFunction *i = math_functions; i->name; i++)
+		l << i->name;
+
+	return l;
+}
+
+const QString muParserScripting::explainFunction(const QString &name)
+{
+	if (name == "AVG")
+		return QObject::tr("AVG(\"colName\"):\n The average of all cells in column colName.");
+	if (name == "SUM")
+		return QObject::tr("SUM(\"colName\"):\n The sum of all cells in column colName.");
+
+	for (const mathFunction *i = math_functions; i->name; i++){
+		if (name == i->name){
+			QString s = i->description;
+			if (QLocale().decimalPoint() == ',')
+				s.replace(",", ";");
+
+			return s;
+		}
+	}
+	return QString::null;
 }

@@ -80,6 +80,9 @@ public:
 	void setAutoUpdateValues(bool on = true);
 	virtual QString sizeToString();
 
+	double avg(int col, int startRow = 0, int endRow = -1);
+	double sum(int col, int startRow = 0, int endRow = -1);
+
 public slots:
 	MyTable* table(){return d_table;};
 	void copy(Table *m);
@@ -201,7 +204,7 @@ public slots:
 	bool noXColumn();
 	bool noYColumn();
 	int colX(int col);
-	int colY(int col);
+	int colY(int col, int xCol = -1);
 
 	QStringList getCommands(){return commands;};
 	//! Clear all column formulae.

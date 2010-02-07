@@ -64,8 +64,11 @@ class muParserScripting: public ScriptingEnv
     bool setInt(int, const char*) { return false; }
     bool setDouble(double, const char*) { return false; }
 
-    const QStringList mathFunctions() const;
-    const QString mathFunctionDoc (const QString &name) const;
+	const QStringList mathFunctions() const;
+	const QString mathFunctionDoc (const QString &name) const;
+
+	const static QStringList functionsList();
+	const static QString explainFunction(const QString &name);
 
     struct mathFunction
     {

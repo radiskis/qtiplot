@@ -329,31 +329,38 @@ void Table::cellEdited(int row, int col)
 int Table::colX(int col)
 {
 	int i, xcol = -1;
-	for(i=col-1; i>=0; i--)
-	{
+	for(i = col - 1; i >= 0; i--){
 		if (col_plot_type[i] == X)
 			return i;
 	}
-	for(i=col+1; i<(int)d_table->numCols(); i++)
-	{
+	for(i = col + 1; i < (int)d_table->numCols(); i++){
 		if (col_plot_type[i] == X)
 			return i;
 	}
 	return xcol;
 }
 
-int Table::colY(int col)
+int Table::colY(int col, int xCol)
 {
-	int i, yCol = -1;
-	for(i=col-1; i>=0; i--)
-	{
-		if (col_plot_type[i] == Y)
-			return i;
-	}
-	for(i=col+1; i<(int)d_table->numCols(); i++)
-	{
-		if (col_plot_type[i] == Y)
-			return i;
+	int yCol = -1;
+	if (xCol >= 0){
+		for(int i = col - 1; i >= 0; i--){
+			if (col_plot_type[i] == Y && colX(i) == xCol)
+				return i;
+		}
+		for(int i = col + 1; i < (int)d_table->numCols(); i++){
+			if (col_plot_type[i] == Y && colX(i) == xCol)
+				return i;
+		}
+	} else {
+		for(int i = col - 1; i >= 0; i--){
+			if (col_plot_type[i] == Y)
+				return i;
+		}
+		for(int i = col + 1; i < (int)d_table->numCols(); i++){
+			if (col_plot_type[i] == Y)
+				return i;
+		}
 	}
 	return yCol;
 }
@@ -3404,6 +3411,61 @@ void Table::moveRow(bool up)
 	d_table->updateContents();
 
 	emit modifiedWindow(this);
+}
+
+double Table::sum(int col, int startRow, int endRow)
+{
+	if (col < 0 || col >= d_table->numCols())
+		return 0.0;
+
+	if (colTypes[col] != Numeric)
+		return 0.0;
+
+	int rows = d_table->numRows();
+	if (startRow < 0 || startRow >= rows)
+		startRow = 0;
+	if (endRow < 0 || endRow >= rows)
+		endRow = d_table->numRows() - 1;
+
+	QLocale l = locale();
+	double sum = 0.0;
+	for (int i = startRow; i <= endRow; i++){
+		QString s = d_table->text(i, col);
+		if (!s.isEmpty())
+			sum += l.toDouble(s);
+	}
+	return sum;
+}
+
+double Table::avg(int col, int startRow, int endRow)
+{
+	if (col < 0 || col >= d_table->numCols())
+		return 0.0;
+
+	if (colTypes[col] != Numeric)
+		return 0.0;
+
+	int rows = d_table->numRows();
+	if (startRow < 0 || startRow >= rows)
+		startRow = 0;
+	if (endRow < 0 || endRow >= rows)
+		endRow = d_table->numRows() - 1;
+
+	QLocale l = locale();
+	double sum = 0.0;
+	int count = 0;
+	for (int i = startRow; i <= endRow; i++){
+		QString s = d_table->text(i, col);
+		if (!s.isEmpty()){
+			sum += l.toDouble(s);
+			count++;
+		}
+	}
+
+	if (count)
+		return sum/(double)count;
+
+	return 0.0;
 }
 
 /*****************************************************************************
