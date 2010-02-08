@@ -795,6 +795,7 @@ void PlotDialog::initAxesPage()
 	boxXAxis->addItem(tr("Bottom"));
 	boxXAxis->addItem(tr("Top"));
 	gl->addWidget(boxXAxis, 0, 1);
+
 	gl->addWidget(new QLabel( tr( "y Axis" )), 1, 0);
 	boxYAxis = new QComboBox();
 	boxYAxis->setEditable(false);
@@ -2549,8 +2550,8 @@ bool PlotDialog::acceptParams()
   	   sp->setColorBarWidth(colorScaleWidthBox->value());
 
   	   //Update axes page
-  	   boxXAxis->setCurrentItem(sp->xAxis()-2);
-  	   boxYAxis->setCurrentItem(sp->yAxis());
+	   boxXAxis->setCurrentIndex(sp->xAxis() - 2);
+	   boxYAxis->setCurrentIndex(sp->yAxis());
   	} else if (privateTabWidget->currentPage() == contourLinesPage){
   		Spectrogram *sp = (Spectrogram *)plotItem;
   	    if (!sp || sp->rtti() != QwtPlotItem::Rtti_PlotSpectrogram)

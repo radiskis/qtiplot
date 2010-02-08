@@ -146,15 +146,16 @@ void FunctionCurve::restore(Graph *g, const QStringList& lst)
 	c->setFormulas(formulas);
 	c->setVariable(var);
 	c->setConstants(constants);
-	c->loadData(points, logScale);
 	c->setPlotStyle(style);
 	g->insertCurve(c);
 	g->setCurveStyle(g->curveIndex(c), lineStyle);
 
 	QStringList l;
 	for (line++; line != lst.end(); line++)
-        l << *line;
+		l << *line;
 	c->restoreCurveLayout(l);
+
+	c->loadData(points, logScale);
 	g->updatePlot();
 }
 

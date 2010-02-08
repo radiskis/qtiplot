@@ -54,7 +54,8 @@ MultiPeakFitTool::MultiPeakFitTool(Graph *graph, ApplicationWindow *app, MultiPe
 	d_graph->canvas()->setCursor(QCursor(QPixmap(":/cursor.png"), -1, -1));
 
 	QString msg = tr("Move cursor and click to select a point and double-click/press 'Enter' to set the position of a peak!");
-	QMessageBox::information(app, app->objectName(), msg);
+	if (app->d_multi_peak_messages)
+		QMessageBox::information(app, app->objectName(), msg);
 	emit statusText(msg);
 
 	connect(d_picker_tool, SIGNAL(selected(QwtPlotCurve*,int)), this, SLOT(selectPeak(QwtPlotCurve*,int)));
@@ -81,13 +82,21 @@ void MultiPeakFitTool::selectPeak(QwtPlotCurve *curve, int point_index)
 		return;
 	d_curve = curve;
 
-	d_fit->setInitialGuess(3*d_selected_peaks, curve->y(point_index));
-	d_fit->setInitialGuess(3*d_selected_peaks+1, curve->x(point_index));
-
 	QwtPlotMarker *m = new QwtPlotMarker();
-	m->setLineStyle(QwtPlotMarker::VLine);
+	m->setXAxis(curve->xAxis());
 	m->setLinePen(QPen(Qt::green, 2, Qt::DashLine));
-	m->setXValue(curve->x(point_index));
+
+	if (curve->curveType() == QwtPlotCurve::Xfy){
+		m->setLineStyle(QwtPlotMarker::HLine);
+		d_fit->setInitialGuess(3*d_selected_peaks, curve->x(point_index));
+		d_fit->setInitialGuess(3*d_selected_peaks+1, curve->y(point_index));
+	} else {
+		m->setLineStyle(QwtPlotMarker::VLine);
+		d_fit->setInitialGuess(3*d_selected_peaks, curve->y(point_index));
+		d_fit->setInitialGuess(3*d_selected_peaks+1, curve->x(point_index));
+	}
+
+	m->setValue(curve->x(point_index), curve->y(point_index));
 	d_graph->insertMarker(m);
 	d_lines.append(m);
 	d_graph->replot();
@@ -98,7 +107,7 @@ void MultiPeakFitTool::selectPeak(QwtPlotCurve *curve, int point_index)
 	else {
 		QString msg = tr("Peak %1 selected! Click to select a point and double-click/press 'Enter' to set the position of the next peak!").arg(QString::number(d_selected_peaks));
 		ApplicationWindow *app = d_picker_tool->applicationWindow();
-		if (app){
+		if (app && app->d_multi_peak_messages){
 			d_graph->canvas()->releaseMouse();
 			QMessageBox::information(app, app->objectName(), msg);
 			d_graph->canvas()->grabMouse();

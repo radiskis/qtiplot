@@ -241,7 +241,7 @@ private:
 	DoubleSpinBox *boxCanvasHeight, *boxCanvasWidth;
 	QComboBox *unitBox;
 	QLabel *unitBoxLabel, *canvasWidthLabel, *canvasHeightLabel;
-	QCheckBox *keepRatioBox;
+	QCheckBox *keepRatioBox, *boxMultiPeakMsgs;
 
 	double aspect_ratio;
 };
