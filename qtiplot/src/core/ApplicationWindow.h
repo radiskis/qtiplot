@@ -1184,6 +1184,7 @@ public:
 	bool generateUniformFitPoints;
 	bool generatePeakCurves;
 	int peakCurvesColor;
+	bool d_multi_peak_messages;
 	//! User defined size for the Add/Remove curves dialog
 	QSize d_add_curves_dialog_size;
 

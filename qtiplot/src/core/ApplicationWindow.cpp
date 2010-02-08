@@ -630,6 +630,7 @@ void ApplicationWindow::initGlobalConstants()
 	peakCurvesColor = 2;
 	fit_scale_errors = true;
 	d_2_linear_fit_points = true;
+	d_multi_peak_messages = true;
 
 	columnSeparator = "\t";
 	ignoredLines = 0;
@@ -5185,6 +5186,7 @@ void ApplicationWindow::readSettings()
 	peakCurvesColor = settings.value("/PeaksColor", 2).toInt();//green color
 	fit_scale_errors = settings.value("/ScaleErrors", true).toBool();
 	d_2_linear_fit_points = settings.value("/TwoPointsLinearFit", true).toBool();
+	d_multi_peak_messages = settings.value("/MultiPeakToolMsg", d_multi_peak_messages).toBool();
 	settings.endGroup(); // Fitting
 
 	settings.beginGroup("/ImportASCII");
@@ -5590,6 +5592,7 @@ void ApplicationWindow::saveSettings()
 	settings.setValue("/PeaksColor", peakCurvesColor);
 	settings.setValue("/ScaleErrors", fit_scale_errors);
 	settings.setValue("/TwoPointsLinearFit", d_2_linear_fit_points);
+	settings.setValue("/MultiPeakToolMsg", d_multi_peak_messages);
 	settings.endGroup(); // Fitting
 
 	settings.beginGroup("/ImportASCII");

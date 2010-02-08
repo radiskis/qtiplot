@@ -236,6 +236,10 @@ void MultiPeakFit::insertPeakFunctionCurve(int peak)
 		int p = 3*peak + j;
 		c->setConstant(d_param_names[p], d_results[p]);
 	}
+	if (d_curve){
+		c->setCurveType(d_curve->curveType());
+		c->setAxis(d_curve->xAxis(), d_curve->yAxis());
+	}
 	c->loadData(d_points);
 
 	d_output_graph->insertPlotItem(c, Graph::Line);
@@ -279,11 +283,17 @@ void MultiPeakFit::generateFitCurve()
 			return;
 		}
 
-		#ifdef Q_CC_MSVC
-			QVarLengthArray<double> X(d_points), Y(d_points);
-		#else
-			double X[d_points], Y[d_points];
-		#endif
+		double *X = (double *)malloc(d_points*sizeof(double));
+		if (!X){
+			memoryErrorMessage();
+			return;
+		}
+		double *Y = (double *)malloc(d_points*sizeof(double));
+		if (!Y){
+			memoryErrorMessage();
+			free(X);
+			return;
+		}
 
 		QString tableName = app->generateUniqueName(tr("Fit"));
 		QString dataSet;
@@ -333,15 +343,20 @@ void MultiPeakFit::generateFitCurve()
 
 			label = tableName + "_2";
 			DataCurve *c = new DataCurve(d_result_table, tableName + "_1", label);
+			if (d_curve){
+				c->setCurveType(d_curve->curveType());
+				c->setAxis(d_curve->xAxis(), d_curve->yAxis());
+			}
 			if (d_peaks > 1)
 				c->setPen(QPen(ColorBox::color(d_curveColorIndex), 2));
 			else
 				c->setPen(QPen(ColorBox::color(d_curveColorIndex), 1));
-#ifdef Q_CC_MSVC
-			c->setData(X.data(), Y.data(), d_points);
-#else
-			c->setData(X, Y, d_points);
-#endif
+
+			if (c->curveType() == QwtPlotCurve::Xfy)
+				c->setData(Y, X, d_points);
+			else
+				c->setData(X, Y, d_points);
+
 			d_output_graph->insertPlotItem(c, Graph::Line);
 			d_output_graph->addFitCurve(c);
 
@@ -353,11 +368,17 @@ void MultiPeakFit::generateFitCurve()
 					label = tableName + "_" + tr("peak") + QString::number(i+1);
 					c = new DataCurve(d_result_table, tableName + "_1", label);
 					c->setPen(QPen(ColorBox::color(d_peaks_color), 1));
-#ifdef Q_CC_MSVC
-					c->setData(X.data(), Y.data(), d_points);
-#else
-					c->setData(X, Y, d_points);
-#endif
+
+					if (d_curve){
+						c->setCurveType(d_curve->curveType());
+						c->setAxis(d_curve->xAxis(), d_curve->yAxis());
+					}
+
+					if (c->curveType() == QwtPlotCurve::Xfy)
+						c->setData(Y, X, d_points);
+					else
+						c->setData(X, Y, d_points);
+
 					d_output_graph->insertPlotItem(c, Graph::Line);
 					d_output_graph->addFitCurve(c);
 				}
@@ -365,6 +386,8 @@ void MultiPeakFit::generateFitCurve()
 			d_output_graph->replot();
 		}
 		gsl_matrix_free(m);
+		free(X);
+		free(Y);
 	}
 }
 

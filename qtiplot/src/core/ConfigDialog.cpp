@@ -956,10 +956,14 @@ void ConfigDialog::initFittingPage()
 	fitParamsLayout->addWidget(scaleErrorsBox, 3, 0);
 	scaleErrorsBox->setChecked(app->fit_scale_errors);
 
+	boxMultiPeakMsgs = new QCheckBox();
+	boxMultiPeakMsgs->setChecked(app->d_multi_peak_messages);
+
 	QVBoxLayout* fitPageLayout = new QVBoxLayout(fitPage);
 	fitPageLayout->addWidget(groupBoxFittingCurve);
 	fitPageLayout->addWidget(groupBoxMultiPeak);
 	fitPageLayout->addWidget(groupBoxFitParameters);
+	fitPageLayout->addWidget(boxMultiPeakMsgs);
 	fitPageLayout->addStretch();
 
 	connect(samePointsBtn, SIGNAL(toggled(bool)), this, SLOT(showPointsBox(bool)));
@@ -1630,6 +1634,8 @@ void ConfigDialog::languageChange()
 	groupBoxMultiPeak->setTitle(tr("Display Peak Curves for Multi-peak Fits"));
 	lblPeaksColor->setText(tr("Peaks Color"));
 
+	boxMultiPeakMsgs->setText(tr("Display Confirmation &Messages for Multi-peak Fits"));
+
 	updateMenuList();
 }
 
@@ -1909,6 +1915,7 @@ void ConfigDialog::apply()
 	app->peakCurvesColor = boxPeaksColor->currentIndex();
 	app->fit_scale_errors = scaleErrorsBox->isChecked();
 	app->d_2_linear_fit_points = linearFit2PointsBox->isChecked();
+	app->d_multi_peak_messages = boxMultiPeakMsgs->isChecked();
 	app->saveSettings();
 
 	updateMenuList();

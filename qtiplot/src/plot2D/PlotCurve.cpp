@@ -119,6 +119,7 @@ QString PlotCurve::saveCurveLayout()
 	}
 	s += "<xAxis>" + QString::number(xAxis()) + "</xAxis>\n";
 	s += "<yAxis>" + QString::number(yAxis()) + "</yAxis>\n";
+	s += "<CurveType>" + QString::number(curveType()) + "</CurveType>\n";
 	s += "<Visible>" + QString::number(isVisible()) + "</Visible>\n";
 	return s;
 }
@@ -189,6 +190,8 @@ void PlotCurve::restoreCurveLayout(const QStringList& lst)
 			setXAxis(s.remove("<xAxis>").remove("</xAxis>").toInt());
 		else if (s.contains("<yAxis>"))
 			setYAxis(s.remove("<yAxis>").remove("</yAxis>").toInt());
+		else if (s.contains("<CurveType>"))
+			setCurveType((QwtPlotCurve::CurveType)s.remove("<CurveType>").remove("</CurveType>").toInt());
 		else if (s.contains("<Visible>"))
 			setVisible(s.remove("<Visible>").remove("</Visible>").toInt());
 	}

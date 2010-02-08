@@ -345,8 +345,18 @@ void ImageProfilesTool::modifiedMatrix(Matrix *m)
 
 ImageProfilesTool* ImageProfilesTool::clone(Graph *g)
 {
+	if (d_hor_table)
+		d_hor_table->blockSignals(true);
+	if (d_ver_table)
+		d_ver_table->blockSignals(true);
+
 	ImageProfilesTool *tool = new ImageProfilesTool(d_app, g, d_matrix, d_hor_table, d_ver_table, d_status_target, d_status_slot);
 	tool->append(QwtDoublePoint(xValue(), yValue()));
+
+	if (d_hor_table)
+		d_hor_table->blockSignals(false);
+	if (d_ver_table)
+		d_ver_table->blockSignals(false);
 	return tool;
 }
 

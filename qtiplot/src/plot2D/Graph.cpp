@@ -4363,7 +4363,7 @@ void Graph::copy(Graph* g)
 
 	d_Douglas_Peuker_tolerance = g->getDouglasPeukerTolerance();
 
-    copyCurves(g);
+	copyCurves(g);
 
 	for (int i=0; i<QwtPlot::axisCnt; i++){
 		QwtScaleWidget *sc = g->axisWidget(i);

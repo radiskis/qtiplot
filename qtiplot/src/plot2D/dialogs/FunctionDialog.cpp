@@ -390,8 +390,8 @@ void FunctionDialog::setCurveToModify(Graph *g, int curve)
 		boxFunction->setText(formulas[0]);
 		boxFunction->blockSignals(false);
 
-		boxFrom->setValue(c->startRange());
-		boxTo->setValue(c->endRange());
+		boxFrom->setValue(QMIN(c->startRange(), c->endRange()));
+		boxTo->setValue(QMAX(c->startRange(), c->endRange()));
 		boxPoints->setValue(c->dataSize());
 	} else if (c->functionType() == FunctionCurve::Polar) {
 		boxPolarRadius->blockSignals(true);
