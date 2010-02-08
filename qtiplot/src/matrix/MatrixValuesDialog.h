@@ -61,6 +61,9 @@ private slots:
 	void addCell();
 	void insertFunction();
 	void insertExplain(int index);
+#ifdef SCRIPTING_PYTHON
+	void updateFunctionsList(bool);
+#endif
 
 private:
 	Matrix *matrix;

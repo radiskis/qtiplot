@@ -29,6 +29,7 @@
 #include "MatrixValuesDialog.h"
 #include "MatrixCommand.h"
 #include <ApplicationWindow.h>
+#include "muParserScripting.h"
 
 #include <QLayout>
 #include <QSpinBox>
@@ -70,6 +71,7 @@ MatrixValuesDialog::MatrixValuesDialog( ScriptingEnv *env, QWidget* parent, Qt::
 	gl1->addWidget(endCol, 1, 3);
 
 	functions = new QComboBox(false);
+	functions->addItems(scriptEnv->mathFunctions());
 	btnAddFunction = new QPushButton(tr( "Add &Function" ));
 	btnAddCell = new QPushButton(tr( "Add Ce&ll" ));
 
@@ -120,13 +122,14 @@ MatrixValuesDialog::MatrixValuesDialog( ScriptingEnv *env, QWidget* parent, Qt::
 	if (scriptEnv->name() != QString("muParser")){
 		boxMuParser = new QCheckBox(tr("Use built-in muParser (much faster)"));
 		boxMuParser->setChecked(true);
+		connect(boxMuParser, SIGNAL(toggled(bool)), this, SLOT(updateFunctionsList(bool)));
+		updateFunctionsList(true);
 		vbox3->addWidget(boxMuParser);
 	}
 #endif
 	vbox3->addWidget(new QLabel(tr( "Cell(i,j)=" )));
 	vbox3->addLayout(hbox3);
 
-	functions->insertStringList(scriptEnv->mathFunctions(), -1);
 	insertExplain(0);
 
 	connect(btnAddCell, SIGNAL(clicked()), this, SLOT(addCell()));
@@ -201,7 +204,14 @@ void MatrixValuesDialog::setMatrix(Matrix* m)
 
 void MatrixValuesDialog::insertExplain(int index)
 {
+#ifdef SCRIPTING_PYTHON
+	if (boxMuParser && boxMuParser->isChecked())
+		explain->setText(muParserScripting::explainFunction(functions->text(index)));
+	else
+		explain->setText(scriptEnv->mathFunctionDoc(functions->text(index)));
+#else
 	explain->setText(scriptEnv->mathFunctionDoc(functions->text(index)));
+#endif
 }
 
 void MatrixValuesDialog::insertFunction()
@@ -221,3 +231,17 @@ void MatrixValuesDialog::setCompleter(QCompleter *completer)
 
     commands->setCompleter(completer);
 }
+
+#ifdef SCRIPTING_PYTHON
+void MatrixValuesDialog::updateFunctionsList(bool muParser)
+{
+	functions->clear();
+	if (muParser)
+		functions->addItems(muParserScripting::functionsList());
+	else
+		functions->addItems(scriptingEnv()->mathFunctions());
+
+	if (functions->count() > 0)
+		insertExplain(0);
+}
+#endif

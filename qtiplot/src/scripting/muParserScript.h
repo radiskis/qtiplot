@@ -59,8 +59,8 @@ class muParserScript: public Script
     int codeLines(){return muCode.size();};
 
   private:
-	double avg(const QString &arg);
-	double sum(const QString &arg);
+	double avg(const QString &arg, int start = 0, int end = -1);
+	double sum(const QString &arg, int start = 0, int end = -1);
 	double col(const QString &arg);
     double tablecol(const QString &arg);
     double cell(int row, int col);
@@ -68,8 +68,8 @@ class muParserScript: public Script
     double *addVariable(const char *name);
     double *addVariableR(const char *name);
     static double *mu_addVariableR(const char *name) { return current->addVariableR(name); }
-	static double mu_avg(const char *arg) {return current->avg(arg); }
-	static double mu_sum(const char *arg) {return current->sum(arg); }
+	static double mu_avg(const char *arg, double start = 1, double end = -1) {return current->avg(arg, qRound(start - 1), qRound(end - 1));}
+	static double mu_sum(const char *arg, double start = 1, double end = -1) {return current->sum(arg, qRound(start - 1), qRound(end - 1));}
     static double mu_col(const char *arg) { return current->col(arg); }
     static double mu_cell(double row, double col) { return current->cell(qRound(row), qRound(col)); }
     static double mu_tableCell(double col, double row) { return current->tableCell(qRound(col), qRound(row)); }

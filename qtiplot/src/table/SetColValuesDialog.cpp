@@ -305,7 +305,7 @@ void SetColValuesDialog::updateFunctionsList(bool muParser)
 {
 	functions->clear();
 	if (muParser)
-		functions->addItems(muParserScripting::functionsList());
+		functions->addItems(muParserScripting::functionsList(true));
 	else
 		functions->addItems(scriptingEnv()->mathFunctions());
 

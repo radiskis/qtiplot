@@ -475,7 +475,7 @@ bool muParserScript::exec()
 	return true;
 }
 
-double muParserScript::sum(const QString &arg)
+double muParserScript::sum(const QString &arg, int start, int end)
 {
 	if (!Context->isA("Table"))
 		throw Parser::exception_type(tr("SUM() works only on tables!").ascii());
@@ -486,10 +486,10 @@ double muParserScript::sum(const QString &arg)
 		throw Parser::exception_type(tr("There's no column named %1 in table %2!").arg(arg).arg(Context->name()).ascii());
 
 	rvariables.clear();
-	return table->sum(col);
+	return table->sum(col, start, end);
 }
 
-double muParserScript::avg(const QString &arg)
+double muParserScript::avg(const QString &arg, int start, int end)
 {
 	if (!Context->isA("Table"))
 		throw Parser::exception_type(tr("AVG() works only on tables!").ascii());
@@ -500,5 +500,5 @@ double muParserScript::avg(const QString &arg)
 		throw Parser::exception_type(tr("There's no column named %1 in table %2!").arg(arg).arg(Context->name()).ascii());
 
 	rvariables.clear();
-	return table->avg(col);
+	return table->avg(col, start, end);
 }
