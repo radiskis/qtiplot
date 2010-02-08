@@ -5429,7 +5429,7 @@ Quelques parties de ce fichier peuvent ne pas être affichés comme attendu.</tr
     <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="7453"/>
         <source>Paste Selection as Te&amp;xt</source>
-        <translation type="unfinished"></translation>
+        <translation>Coller le te&amp;xte</translation>
     </message>
     <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="8650"/>
@@ -7718,7 +7718,7 @@ L&apos;autocomplétion ne sera pas disponible!</translation>
     <message>
         <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="561"/>
         <source>Labels space</source>
-        <translation type="unfinished"></translation>
+        <translation>Espace entre labels</translation>
     </message>
     <message>
         <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="567"/>
@@ -8050,7 +8050,7 @@ L&apos;autocomplétion ne sera pas disponible!</translation>
     <message>
         <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="808"/>
         <source>Scientific: 1·10^4</source>
-        <translation type="unfinished"></translation>
+        <translation>Scientific : 1 10^4</translation>
     </message>
     <message>
         <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="854"/>
@@ -8383,7 +8383,7 @@ Les codes spéciaux suivant peuvent être utilisés :
         <location filename="../src/core/ConfigDialog.cpp" line="1015"/>
         <location filename="../src/core/ConfigDialog.cpp" line="1358"/>
         <source>&amp;Keep aspect ratio</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Proportionnelle</translation>
     </message>
     <message>
         <location filename="../src/core/ConfigDialog.cpp" line="1282"/>
@@ -8436,7 +8436,7 @@ Les codes spéciaux suivant peuvent être utilisés :
     <message>
         <location filename="../src/core/ConfigDialog.cpp" line="1306"/>
         <source>Geometry</source>
-        <translation type="unfinished">Géometrie</translation>
+        <translation>Géometrie</translation>
     </message>
     <message>
         <location filename="../src/core/ConfigDialog.cpp" line="1307"/>
@@ -8459,53 +8459,53 @@ Les codes spéciaux suivant peuvent être utilisés :
     <message>
         <location filename="../src/core/ConfigDialog.cpp" line="1319"/>
         <source>Ticks - Labels space</source>
-        <translation type="unfinished"></translation>
+        <translation>Espace entre étiquettes et graduations</translation>
     </message>
     <message>
         <location filename="../src/core/ConfigDialog.cpp" line="1320"/>
         <location filename="../src/core/ConfigDialog.cpp" line="1321"/>
         <source>pixels</source>
-        <translation type="unfinished">pixels</translation>
+        <translation>pixels</translation>
     </message>
     <message>
         <location filename="../src/core/ConfigDialog.cpp" line="1347"/>
         <source>Unit</source>
-        <translation type="unfinished">Unité</translation>
+        <translation>Unité</translation>
     </message>
     <message>
         <location filename="../src/core/ConfigDialog.cpp" line="1349"/>
         <source>inch</source>
-        <translation type="unfinished">pouce</translation>
+        <translation>pouce</translation>
     </message>
     <message>
         <location filename="../src/core/ConfigDialog.cpp" line="1350"/>
         <source>mm</source>
-        <translation type="unfinished">mm</translation>
+        <translation>mm</translation>
     </message>
     <message>
         <location filename="../src/core/ConfigDialog.cpp" line="1351"/>
         <source>cm</source>
-        <translation type="unfinished">cm</translation>
+        <translation>cm</translation>
     </message>
     <message>
         <location filename="../src/core/ConfigDialog.cpp" line="1352"/>
         <source>point</source>
-        <translation type="unfinished">point</translation>
+        <translation>point</translation>
     </message>
     <message>
         <location filename="../src/core/ConfigDialog.cpp" line="1353"/>
         <source>pixel</source>
-        <translation type="unfinished">pixel</translation>
+        <translation>pixel</translation>
     </message>
     <message>
         <location filename="../src/core/ConfigDialog.cpp" line="1356"/>
         <source>Canvas Width</source>
-        <translation type="unfinished"></translation>
+        <translation>Largeur du cadre</translation>
     </message>
     <message>
         <location filename="../src/core/ConfigDialog.cpp" line="1357"/>
         <source>Canvas Height</source>
-        <translation type="unfinished"></translation>
+        <translation>Hauteur du cadre</translation>
     </message>
     <message>
         <location filename="../src/core/ConfigDialog.cpp" line="1453"/>
@@ -9057,7 +9057,7 @@ Les codes spéciaux suivant peuvent être utilisés :
     <message>
         <location filename="../src/core/ConfigDialog.cpp" line="1637"/>
         <source>Display Confirmation &amp;Messages for Multi-peak Fits</source>
-        <translation type="unfinished"></translation>
+        <translation>Afficher la confirmation des &amp;messages pour l&apos;ajustement multi-pics</translation>
     </message>
     <message>
         <location filename="../src/core/ConfigDialog.cpp" line="1662"/>
@@ -15205,42 +15205,42 @@ Les limites doivent être dans la gamme de x ; Si vous ne connaissez pas la vale
     <message>
         <location filename="../src/plot2D/dialogs/LayerDialog.cpp" line="97"/>
         <source>Unit</source>
-        <translation type="unfinished">Unité</translation>
+        <translation>Unité</translation>
     </message>
     <message>
         <location filename="../src/plot2D/dialogs/LayerDialog.cpp" line="100"/>
         <source>inch</source>
-        <translation type="unfinished">pouce</translation>
+        <translation>pouce</translation>
     </message>
     <message>
         <location filename="../src/plot2D/dialogs/LayerDialog.cpp" line="101"/>
         <source>mm</source>
-        <translation type="unfinished">mm</translation>
+        <translation>mm</translation>
     </message>
     <message>
         <location filename="../src/plot2D/dialogs/LayerDialog.cpp" line="102"/>
         <source>cm</source>
-        <translation type="unfinished">cm</translation>
+        <translation>cm</translation>
     </message>
     <message>
         <location filename="../src/plot2D/dialogs/LayerDialog.cpp" line="103"/>
         <source>point</source>
-        <translation type="unfinished">point</translation>
+        <translation>point</translation>
     </message>
     <message>
         <location filename="../src/plot2D/dialogs/LayerDialog.cpp" line="104"/>
         <source>pixel</source>
-        <translation type="unfinished">pixel</translation>
+        <translation>pixel</translation>
     </message>
     <message>
         <location filename="../src/plot2D/dialogs/LayerDialog.cpp" line="122"/>
         <source>&amp;Keep aspect ratio</source>
-        <translation type="unfinished"></translation>
+        <translation>Proportionnelle</translation>
     </message>
     <message>
         <location filename="../src/plot2D/dialogs/LayerDialog.cpp" line="141"/>
         <source>Margins</source>
-        <translation type="unfinished"></translation>
+        <translation>Marges</translation>
     </message>
     <message>
         <location filename="../src/plot2D/dialogs/LayerDialog.cpp" line="179"/>
@@ -17021,17 +17021,17 @@ Voulez-vous insérer des cellules?</translation>
     <message>
         <location filename="../src/plot3D/Plot3DDialog.cpp" line="104"/>
         <source>Scale to paper si&amp;ze</source>
-        <translation type="unfinished"></translation>
+        <translation>Ajuster à la taille du papier</translation>
     </message>
     <message>
         <location filename="../src/plot3D/Plot3DDialog.cpp" line="107"/>
         <source>Print Crop&amp;marks</source>
-        <translation type="unfinished">I&amp;mprimer les marges de coupe</translation>
+        <translation>I&amp;mprimer les marges de coupe</translation>
     </message>
     <message>
         <location filename="../src/plot3D/Plot3DDialog.cpp" line="111"/>
         <source>&amp;Print</source>
-        <translation type="unfinished">Im&amp;primer</translation>
+        <translation>Im&amp;primer</translation>
     </message>
     <message>
         <location filename="../src/plot3D/Plot3DDialog.cpp" line="350"/>
@@ -19292,13 +19292,15 @@ Calcule le sinus de x.</translation>
         <location filename="../src/scripting/muParserScripting.cpp" line="120"/>
         <source>AVG(&quot;colName&quot;):
  The average of all cells in column colName.</source>
-        <translation type="unfinished"></translation>
+        <translation>AVG(&quot;colName&quot;) :
+La moyenne de toutes les celulles de la colonne colName.</translation>
     </message>
     <message>
         <location filename="../src/scripting/muParserScripting.cpp" line="122"/>
         <source>SUM(&quot;colName&quot;):
  The sum of all cells in column colName.</source>
-        <translation type="unfinished"></translation>
+        <translation>SUM(&quot;colName&quot;) :
+La somme de toutes les celulles de la colonne colName.</translation>
     </message>
     <message>
         <location filename="../src/plot2D/FunctionCurve.cpp" line="187"/>
@@ -25245,12 +25247,12 @@ Les limites doivent être dans la gamme de x ; Si vous ne connaissez pas la vale
     <message>
         <location filename="../src/scripting/muParserScript.cpp" line="481"/>
         <source>SUM() works only on tables!</source>
-        <translation type="unfinished"></translation>
+        <translation>SUM() ne fonctionne qu&apos;avec des tables !</translation>
     </message>
     <message>
         <location filename="../src/scripting/muParserScript.cpp" line="495"/>
         <source>AVG() works only on tables!</source>
-        <translation type="unfinished"></translation>
+        <translation>AVG() ne fonctionne qu&apos;avec des tables !</translation>
     </message>
     <message>
         <source>Warning</source>
