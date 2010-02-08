@@ -102,11 +102,13 @@ const QString muParserScripting::mathFunctionDoc (const QString &name) const
 	return explainFunction(name);
 }
 
-const QStringList muParserScripting::functionsList()
+const QStringList muParserScripting::functionsList(bool tableContext)
 {
 	QStringList l;
-	l << "AVG";
-	l << "SUM";
+	if (tableContext){
+		l << "AVG";
+		l << "SUM";
+	}
 
 	for (const mathFunction *i = math_functions; i->name; i++)
 		l << i->name;
@@ -117,9 +119,9 @@ const QStringList muParserScripting::functionsList()
 const QString muParserScripting::explainFunction(const QString &name)
 {
 	if (name == "AVG")
-		return QObject::tr("AVG(\"colName\"):\n The average of all cells in column colName.");
+		return QObject::tr("AVG(\"colName\", i, j):\n The average of all cells from row i to j in column colName.");
 	if (name == "SUM")
-		return QObject::tr("SUM(\"colName\"):\n The sum of all cells in column colName.");
+		return QObject::tr("SUM(\"colName\", i, j):\n The sum of all cells from row i to j in column colName.");
 
 	for (const mathFunction *i = math_functions; i->name; i++){
 		if (name == i->name){

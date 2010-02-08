@@ -67,7 +67,7 @@ class muParserScripting: public ScriptingEnv
 	const QStringList mathFunctions() const;
 	const QString mathFunctionDoc (const QString &name) const;
 
-	const static QStringList functionsList();
+	const static QStringList functionsList(bool tableContext = false);
 	const static QString explainFunction(const QString &name);
 
     struct mathFunction

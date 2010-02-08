@@ -18955,23 +18955,23 @@ Vill du skjuta in celler?</translation>
 <context>
     <name>MatrixValuesDialog</name>
     <message>
-        <location filename="../src/matrix/MatrixValuesDialog.cpp" line="50"/>
+        <location filename="../src/matrix/MatrixValuesDialog.cpp" line="51"/>
         <source>QtiPlot - Set Matrix Values</source>
         <translation>QtiPlot - Sätt matrisvärden</translation>
     </message>
     <message>
-        <location filename="../src/matrix/MatrixValuesDialog.cpp" line="55"/>
+        <location filename="../src/matrix/MatrixValuesDialog.cpp" line="56"/>
         <source>For row (i)</source>
         <translation>För rad (i)</translation>
     </message>
     <message>
-        <location filename="../src/matrix/MatrixValuesDialog.cpp" line="59"/>
-        <location filename="../src/matrix/MatrixValuesDialog.cpp" line="67"/>
+        <location filename="../src/matrix/MatrixValuesDialog.cpp" line="60"/>
+        <location filename="../src/matrix/MatrixValuesDialog.cpp" line="68"/>
         <source>to</source>
         <translation>till</translation>
     </message>
     <message>
-        <location filename="../src/matrix/MatrixValuesDialog.cpp" line="63"/>
+        <location filename="../src/matrix/MatrixValuesDialog.cpp" line="64"/>
         <source>For col (j)</source>
         <translation>För kol (j)</translation>
     </message>
@@ -18984,7 +18984,7 @@ Vill du skjuta in celler?</translation>
         <translation type="obsolete">Lägg till cell</translation>
     </message>
     <message>
-        <location filename="../src/matrix/MatrixValuesDialog.cpp" line="126"/>
+        <location filename="../src/matrix/MatrixValuesDialog.cpp" line="130"/>
         <source>Cell(i,j)=</source>
         <translation>Cell(i,j)=</translation>
     </message>
@@ -19001,32 +19001,32 @@ Vill du skjuta in celler?</translation>
         <translation type="obsolete">Avbryt</translation>
     </message>
     <message>
-        <location filename="../src/matrix/MatrixValuesDialog.cpp" line="73"/>
+        <location filename="../src/matrix/MatrixValuesDialog.cpp" line="75"/>
         <source>Add &amp;Function</source>
         <translation>Lägg till &amp;funktion</translation>
     </message>
     <message>
-        <location filename="../src/matrix/MatrixValuesDialog.cpp" line="74"/>
+        <location filename="../src/matrix/MatrixValuesDialog.cpp" line="76"/>
         <source>Add Ce&amp;ll</source>
         <translation>Lägg till c&amp;ell</translation>
     </message>
     <message>
-        <location filename="../src/matrix/MatrixValuesDialog.cpp" line="108"/>
+        <location filename="../src/matrix/MatrixValuesDialog.cpp" line="110"/>
         <source>&amp;Apply</source>
         <translation>&amp;Tillämpa</translation>
     </message>
     <message>
-        <location filename="../src/matrix/MatrixValuesDialog.cpp" line="110"/>
+        <location filename="../src/matrix/MatrixValuesDialog.cpp" line="112"/>
         <source>&amp;Close</source>
         <translation>&amp;Stäng</translation>
     </message>
     <message>
-        <location filename="../src/matrix/MatrixValuesDialog.cpp" line="165"/>
+        <location filename="../src/matrix/MatrixValuesDialog.cpp" line="168"/>
         <source>Set New Formula</source>
         <translation>Ställ in ny formel</translation>
     </message>
     <message>
-        <location filename="../src/matrix/MatrixValuesDialog.cpp" line="121"/>
+        <location filename="../src/matrix/MatrixValuesDialog.cpp" line="123"/>
         <source>Use built-in muParser (much faster)</source>
         <translation>Använd inbyggd muParser (mycket snabbare)</translation>
     </message>
@@ -22149,14 +22149,14 @@ Vill du skjuta in celler?</translation>
     </message>
     <message>
         <location filename="../src/scripting/muParserScripting.cpp" line="120"/>
-        <source>AVG(&quot;colName&quot;):
- The average of all cells in column colName.</source>
+        <source>AVG(&quot;colName&quot;, i, j):
+ The average of all cells from row i to j in column colName.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/scripting/muParserScripting.cpp" line="122"/>
-        <source>SUM(&quot;colName&quot;):
- The sum of all cells in column colName.</source>
+        <source>SUM(&quot;colName&quot;, i, j):
+ The sum of all cells from row i to j in column colName.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

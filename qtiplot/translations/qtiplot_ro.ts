@@ -7646,12 +7646,12 @@ Are you sure you want to continue?</source>
     <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="3888"/>
         <source>File %1 contains only %2 sheets!</source>
-        <translation type="unfinished"></translation>
+        <translation>Fișierul %1 conține doar %2 foi de calcul!</translation>
     </message>
     <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="7453"/>
         <source>Paste Selection as Te&amp;xt</source>
-        <translation type="unfinished"></translation>
+        <translation>Lipeşte selecţia ca &amp;text</translation>
     </message>
     <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="13880"/>
@@ -9441,7 +9441,7 @@ Autocompletion will not be available!</source>
     <message>
         <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="561"/>
         <source>Labels space</source>
-        <translation type="unfinished"></translation>
+        <translation>Spaţiu etichete</translation>
     </message>
     <message>
         <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="567"/>
@@ -9479,7 +9479,7 @@ Autocompletion will not be available!</source>
     <message>
         <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="588"/>
         <source>Show &amp;backbone</source>
-        <translation type="unfinished"></translation>
+        <translation>Afişază linia &amp;principală</translation>
     </message>
     <message>
         <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="598"/>
@@ -9637,7 +9637,7 @@ Autocompletion will not be available!</source>
     <message>
         <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="808"/>
         <source>Scientific: 1·10^4</source>
-        <translation type="unfinished"></translation>
+        <translation>Ştiinţific: 1·10^4</translation>
     </message>
     <message>
         <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="854"/>
@@ -10517,63 +10517,63 @@ The following special codes can be used:
         <location filename="../src/core/ConfigDialog.cpp" line="1015"/>
         <location filename="../src/core/ConfigDialog.cpp" line="1358"/>
         <source>&amp;Keep aspect ratio</source>
-        <translation type="unfinished">&amp;Păstrează aspectul</translation>
+        <translation>&amp;Păstrează aspectul</translation>
     </message>
     <message>
         <location filename="../src/core/ConfigDialog.cpp" line="1306"/>
         <source>Geometry</source>
-        <translation type="unfinished">Geometrie</translation>
+        <translation>Geometrie</translation>
     </message>
     <message>
         <location filename="../src/core/ConfigDialog.cpp" line="1319"/>
         <source>Ticks - Labels space</source>
-        <translation type="unfinished"></translation>
+        <translation>Distanţa diviziuni - titlu</translation>
     </message>
     <message>
         <location filename="../src/core/ConfigDialog.cpp" line="1320"/>
         <location filename="../src/core/ConfigDialog.cpp" line="1321"/>
         <source>pixels</source>
-        <translation type="unfinished">pixeli</translation>
+        <translation>pixeli</translation>
     </message>
     <message>
         <location filename="../src/core/ConfigDialog.cpp" line="1347"/>
         <source>Unit</source>
-        <translation type="unfinished">Unitate</translation>
+        <translation>Unitate</translation>
     </message>
     <message>
         <location filename="../src/core/ConfigDialog.cpp" line="1349"/>
         <source>inch</source>
-        <translation type="unfinished">ţol</translation>
+        <translation>ţol</translation>
     </message>
     <message>
         <location filename="../src/core/ConfigDialog.cpp" line="1350"/>
         <source>mm</source>
-        <translation type="unfinished">mm</translation>
+        <translation>mm</translation>
     </message>
     <message>
         <location filename="../src/core/ConfigDialog.cpp" line="1351"/>
         <source>cm</source>
-        <translation type="unfinished">cm</translation>
+        <translation>cm</translation>
     </message>
     <message>
         <location filename="../src/core/ConfigDialog.cpp" line="1352"/>
         <source>point</source>
-        <translation type="unfinished">punct</translation>
+        <translation>punct</translation>
     </message>
     <message>
         <location filename="../src/core/ConfigDialog.cpp" line="1353"/>
         <source>pixel</source>
-        <translation type="unfinished">pixel</translation>
+        <translation>pixel</translation>
     </message>
     <message>
         <location filename="../src/core/ConfigDialog.cpp" line="1356"/>
         <source>Canvas Width</source>
-        <translation type="unfinished"></translation>
+        <translation>Lăţime</translation>
     </message>
     <message>
         <location filename="../src/core/ConfigDialog.cpp" line="1357"/>
         <source>Canvas Height</source>
-        <translation type="unfinished"></translation>
+        <translation>Înălţime</translation>
     </message>
     <message>
         <location filename="../src/core/ConfigDialog.cpp" line="1411"/>
@@ -10583,7 +10583,7 @@ The following special codes can be used:
     <message>
         <location filename="../src/core/ConfigDialog.cpp" line="1453"/>
         <source>mu&amp;Parser uses C locale settings</source>
-        <translation type="unfinished"></translation>
+        <translation>mu&amp;Parser foloseşte setări locale</translation>
     </message>
     <message>
         <location filename="../src/core/ConfigDialog.cpp" line="1512"/>
@@ -10899,7 +10899,7 @@ The following special codes can be used:
     <message>
         <location filename="../src/core/ConfigDialog.cpp" line="1637"/>
         <source>Display Confirmation &amp;Messages for Multi-peak Fits</source>
-        <translation type="unfinished"></translation>
+        <translation>Afişază &amp;mesaje de confirmare pentru ajustările multi-peak</translation>
     </message>
     <message>
         <location filename="../src/core/ConfigDialog.cpp" line="1662"/>
@@ -15640,37 +15640,37 @@ have the same number of rows.</source>
     <message>
         <location filename="../src/plot2D/dialogs/LayerDialog.cpp" line="97"/>
         <source>Unit</source>
-        <translation type="unfinished">Unitate</translation>
+        <translation>Unitate</translation>
     </message>
     <message>
         <location filename="../src/plot2D/dialogs/LayerDialog.cpp" line="100"/>
         <source>inch</source>
-        <translation type="unfinished">ţol</translation>
+        <translation>ţol</translation>
     </message>
     <message>
         <location filename="../src/plot2D/dialogs/LayerDialog.cpp" line="101"/>
         <source>mm</source>
-        <translation type="unfinished">mm</translation>
+        <translation>mm</translation>
     </message>
     <message>
         <location filename="../src/plot2D/dialogs/LayerDialog.cpp" line="102"/>
         <source>cm</source>
-        <translation type="unfinished">cm</translation>
+        <translation>cm</translation>
     </message>
     <message>
         <location filename="../src/plot2D/dialogs/LayerDialog.cpp" line="103"/>
         <source>point</source>
-        <translation type="unfinished">punct</translation>
+        <translation>punct</translation>
     </message>
     <message>
         <location filename="../src/plot2D/dialogs/LayerDialog.cpp" line="104"/>
         <source>pixel</source>
-        <translation type="unfinished">pixel</translation>
+        <translation>pixel</translation>
     </message>
     <message>
         <location filename="../src/plot2D/dialogs/LayerDialog.cpp" line="122"/>
         <source>&amp;Keep aspect ratio</source>
-        <translation type="unfinished">&amp;Păstrează aspectul</translation>
+        <translation>&amp;Păstrează aspectul</translation>
     </message>
     <message>
         <location filename="../src/plot2D/dialogs/LayerDialog.cpp" line="126"/>
@@ -15690,7 +15690,7 @@ have the same number of rows.</source>
     <message>
         <location filename="../src/plot2D/dialogs/LayerDialog.cpp" line="141"/>
         <source>Margins</source>
-        <translation type="unfinished"></translation>
+        <translation>Margini</translation>
     </message>
     <message>
         <location filename="../src/plot2D/dialogs/LayerDialog.cpp" line="143"/>
@@ -16491,58 +16491,58 @@ have the same number of rows.</source>
 <context>
     <name>MatrixValuesDialog</name>
     <message>
-        <location filename="../src/matrix/MatrixValuesDialog.cpp" line="50"/>
+        <location filename="../src/matrix/MatrixValuesDialog.cpp" line="51"/>
         <source>QtiPlot - Set Matrix Values</source>
         <translation>QtiPlot - Calculează valorile matricii</translation>
     </message>
     <message>
-        <location filename="../src/matrix/MatrixValuesDialog.cpp" line="55"/>
+        <location filename="../src/matrix/MatrixValuesDialog.cpp" line="56"/>
         <source>For row (i)</source>
         <translation>De la linia (i)</translation>
     </message>
     <message>
-        <location filename="../src/matrix/MatrixValuesDialog.cpp" line="59"/>
-        <location filename="../src/matrix/MatrixValuesDialog.cpp" line="67"/>
+        <location filename="../src/matrix/MatrixValuesDialog.cpp" line="60"/>
+        <location filename="../src/matrix/MatrixValuesDialog.cpp" line="68"/>
         <source>to</source>
         <translation>la</translation>
     </message>
     <message>
-        <location filename="../src/matrix/MatrixValuesDialog.cpp" line="63"/>
+        <location filename="../src/matrix/MatrixValuesDialog.cpp" line="64"/>
         <source>For col (j)</source>
         <translation>De la coloana (j)</translation>
     </message>
     <message>
-        <location filename="../src/matrix/MatrixValuesDialog.cpp" line="73"/>
+        <location filename="../src/matrix/MatrixValuesDialog.cpp" line="75"/>
         <source>Add &amp;Function</source>
         <translation>Adaugă &amp;funcţie</translation>
     </message>
     <message>
-        <location filename="../src/matrix/MatrixValuesDialog.cpp" line="74"/>
+        <location filename="../src/matrix/MatrixValuesDialog.cpp" line="76"/>
         <source>Add Ce&amp;ll</source>
         <translation>Adaugă celu&amp;lă</translation>
     </message>
     <message>
-        <location filename="../src/matrix/MatrixValuesDialog.cpp" line="108"/>
+        <location filename="../src/matrix/MatrixValuesDialog.cpp" line="110"/>
         <source>&amp;Apply</source>
         <translation>&amp;Aplică</translation>
     </message>
     <message>
-        <location filename="../src/matrix/MatrixValuesDialog.cpp" line="110"/>
+        <location filename="../src/matrix/MatrixValuesDialog.cpp" line="112"/>
         <source>&amp;Close</source>
         <translation>În&amp;chide</translation>
     </message>
     <message>
-        <location filename="../src/matrix/MatrixValuesDialog.cpp" line="121"/>
+        <location filename="../src/matrix/MatrixValuesDialog.cpp" line="123"/>
         <source>Use built-in muParser (much faster)</source>
         <translation>Foloseşte muParser (mult mai rapid)</translation>
     </message>
     <message>
-        <location filename="../src/matrix/MatrixValuesDialog.cpp" line="126"/>
+        <location filename="../src/matrix/MatrixValuesDialog.cpp" line="130"/>
         <source>Cell(i,j)=</source>
         <translation>Celula(i,j)=</translation>
     </message>
     <message>
-        <location filename="../src/matrix/MatrixValuesDialog.cpp" line="165"/>
+        <location filename="../src/matrix/MatrixValuesDialog.cpp" line="168"/>
         <source>Set New Formula</source>
         <translation>Defineşte noua formulă</translation>
     </message>
@@ -16890,7 +16890,7 @@ have the same number of rows.</source>
     <message>
         <location filename="../src/analysis/NonLinearFit.cpp" line="358"/>
         <source>Ignore</source>
-        <translation type="unfinished"></translation>
+        <translation>Ignoră</translation>
     </message>
 </context>
 <context>
@@ -17092,17 +17092,17 @@ have the same number of rows.</source>
     <message>
         <location filename="../src/plot3D/Plot3DDialog.cpp" line="104"/>
         <source>Scale to paper si&amp;ze</source>
-        <translation type="unfinished"></translation>
+        <translation>Ajustează graficul la dimensiunile &amp;hârtiei</translation>
     </message>
     <message>
         <location filename="../src/plot3D/Plot3DDialog.cpp" line="107"/>
         <source>Print Crop&amp;marks</source>
-        <translation type="unfinished">Imprimă &amp;liniile ajutătoare pentru decupaj</translation>
+        <translation>Imprimă &amp;liniile ajutătoare pentru decupaj</translation>
     </message>
     <message>
         <location filename="../src/plot3D/Plot3DDialog.cpp" line="111"/>
         <source>&amp;Print</source>
-        <translation type="unfinished">Im&amp;primă</translation>
+        <translation>Im&amp;primă</translation>
     </message>
     <message>
         <location filename="../src/plot3D/Plot3DDialog.cpp" line="117"/>
@@ -19397,15 +19397,29 @@ have the same number of rows.</source>
     </message>
     <message>
         <location filename="../src/scripting/muParserScripting.cpp" line="120"/>
-        <source>AVG(&quot;colName&quot;):
- The average of all cells in column colName.</source>
-        <translation type="unfinished"></translation>
+        <source>AVG(&quot;colName&quot;, i, j):
+ The average of all cells from row i to j in column colName.</source>
+        <translation>AVG(&quot;colName&quot;):
+ Media celulelor de la linia i la linia j din coloana colName.</translation>
     </message>
     <message>
         <location filename="../src/scripting/muParserScripting.cpp" line="122"/>
+        <source>SUM(&quot;colName&quot;, i, j):
+ The sum of all cells from row i to j in column colName.</source>
+        <translation>SUM(&quot;colName&quot;):
+ Suma celulelor de la linia i la linia j din coloana colName.</translation>
+    </message>
+    <message>
+        <source>AVG(&quot;colName&quot;):
+ The average of all cells in column colName.</source>
+        <translation type="obsolete">AVG(&quot;colName&quot;):
+ Media tuturor celulelor din coloana colName.</translation>
+    </message>
+    <message>
         <source>SUM(&quot;colName&quot;):
  The sum of all cells in column colName.</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">SUM(&quot;colName&quot;):
+ Suma tuturor celulelor din coloana colName.</translation>
     </message>
     <message>
         <source>QtiPlot - Math Error</source>
@@ -19434,18 +19448,18 @@ have the same number of rows.</source>
         <location filename="../src/plot2D/FunctionCurve.cpp" line="187"/>
         <location filename="../src/plot2D/FunctionCurve.cpp" line="193"/>
         <source>QtiPlot - Memory Allocation Error</source>
-        <translation type="unfinished">QtiPlot  - Eroare de alocare a memoriei</translation>
+        <translation>QtiPlot - Eroare de alocare a memoriei</translation>
     </message>
     <message>
         <location filename="../src/plot2D/FunctionCurve.cpp" line="188"/>
         <location filename="../src/plot2D/FunctionCurve.cpp" line="194"/>
         <source>Not enough memory, operation aborted!</source>
-        <translation type="unfinished">Memorie insuficientă, operaţia a fost abandonată!</translation>
+        <translation>Memorie insuficientă, operaţia a fost abandonată!</translation>
     </message>
     <message>
         <location filename="../src/plot2D/FunctionCurve.cpp" line="248"/>
         <source>The function %1 is not defined in the specified interval!</source>
-        <translation type="unfinished"></translation>
+        <translation>Funcţia %1 nu este definită în intervalul specificat!</translation>
     </message>
 </context>
 <context>
@@ -21787,12 +21801,12 @@ have the same number of rows.</source>
     <message>
         <location filename="../src/scripting/muParserScript.cpp" line="481"/>
         <source>SUM() works only on tables!</source>
-        <translation type="unfinished"></translation>
+        <translation>Funcţia SUM() poate fi folosită doar pentru tabele!</translation>
     </message>
     <message>
         <location filename="../src/scripting/muParserScript.cpp" line="495"/>
         <source>AVG() works only on tables!</source>
-        <translation type="unfinished"></translation>
+        <translation>Funcţia AVG() poate fi folosită doar pentru tabele!</translation>
     </message>
 </context>
 <context>
