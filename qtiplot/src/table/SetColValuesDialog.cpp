@@ -235,7 +235,7 @@ bool SetColValuesDialog::apply()
 void SetColValuesDialog::insertExplain(int index)
 {
 #ifdef SCRIPTING_PYTHON
-	if (boxMuParser->isChecked())
+	if (boxMuParser && boxMuParser->isChecked())
 		explain->setText(muParserScripting::explainFunction(functions->text(index)));
 	else
 		explain->setText(scriptEnv->mathFunctionDoc(functions->text(index)));
