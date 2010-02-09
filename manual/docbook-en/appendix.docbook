@@ -183,7 +183,7 @@ If you want to build &appname; from sources, you need the following libraries:
 <varlistentry>
   <term>muParser</term>
   <listitem>
-    <para>The version of the <ulink url="http://muparser.sourceforge.net/">muParser</ulink> library used by &appname; is 1.28.</para>
+	<para>The version of the <ulink url="http://muparser.sourceforge.net/">muParser</ulink> library used by &appname; is 1.32.</para>
   </listitem>
 </varlistentry>
 <varlistentry>
