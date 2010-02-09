@@ -19148,7 +19148,7 @@ have the same number of rows.</source>
         <source>log2(x):
  Calculate binary logarithm log_2.</source>
         <translation>log2(x):
- Calculează logaritmul în baza doi log_2.</translation>
+ Calculează logaritmul binar log_2.</translation>
     </message>
     <message>
         <location filename="../src/scripting/muParserScripting.cpp" line="59"/>
@@ -19203,26 +19203,28 @@ have the same number of rows.</source>
         <location filename="../src/scripting/muParserScripting.cpp" line="56"/>
         <source>beta(a,b):
  Computes the Beta Function, B(a,b) = Gamma(a)*Gamma(b)/Gamma(a+b) for a &gt; 0, b &gt; 0.</source>
-        <translation type="unfinished"></translation>
+        <translation>beta(a,b):
+ Calculează funcţia Beta, B(a, b) = Gamma(a)*Gamma(b)/Gamma(a+b) pentru a &gt; 0, b &gt; 0.</translation>
     </message>
     <message>
         <location filename="../src/scripting/muParserScripting.cpp" line="57"/>
         <source>ceil(x):
  Round to the next larger integer,
  smallest integer larger or equal to x.</source>
-        <translation type="unfinished"></translation>
+        <translation>ceil(x):
+ Rotunjeşte la cel mai mic întreg mai mare sau egal cu x.</translation>
     </message>
     <message>
         <location filename="../src/scripting/muParserScripting.cpp" line="60"/>
         <source>erf(x):
   The error function.</source>
-        <translation type="unfinished">erf(x):  Funcţia eroare.</translation>
+        <translation>erf(x):  Funcţia eroare.</translation>
     </message>
     <message>
         <location filename="../src/scripting/muParserScripting.cpp" line="61"/>
         <source>erfc(x):
  Complementary error function erfc(x) = 1 - erf(x).</source>
-        <translation type="unfinished">erfc(x):
+        <translation>erfc(x):
   Funcţia eroare complementară erfc(x) = 1 - erf(x).</translation>
     </message>
     <message>
@@ -19241,7 +19243,7 @@ have the same number of rows.</source>
         <location filename="../src/scripting/muParserScripting.cpp" line="64"/>
         <source>exp(x):
  Exponential function: e raised to the power of x.</source>
-        <translation type="unfinished">exp(x):
+        <translation>exp(x):
  Funcţia exponentială: e la puterea x.</translation>
     </message>
     <message>
@@ -19249,7 +19251,8 @@ have the same number of rows.</source>
         <source>floor(x):
  Round to the next smaller integer,
  largest integer smaller or equal to x.</source>
-        <translation type="unfinished"></translation>
+        <translation>floor(x):
+ Rotunjeşte la cel mai mare întreg mai mic sau egal cu x.</translation>
     </message>
     <message>
         <location filename="../src/scripting/muParserScripting.cpp" line="66"/>
@@ -19291,14 +19294,14 @@ have the same number of rows.</source>
         <location filename="../src/scripting/muParserScripting.cpp" line="77"/>
         <source>min(x,y,...):
  Calculate minimum of all arguments.</source>
-        <translation type="unfinished">min(x,y,...):
+        <translation>min(x,y,...):
  Calculează minimul dintre toate argumentele.</translation>
     </message>
     <message>
         <location filename="../src/scripting/muParserScripting.cpp" line="78"/>
         <source>max(x,y,...):
  Calculate maximum of all arguments.</source>
-        <translation type="unfinished">max(x,y,...):
+        <translation>max(x,y,...):
  Calculează maximul dintre toate argumentele.</translation>
     </message>
     <message>
@@ -19306,7 +19309,7 @@ have the same number of rows.</source>
         <source>mod(x,y):
  Calculate rest of integer division x/y,
  x modulo y.</source>
-        <translation type="unfinished">mod(x,y):
+        <translation>mod(x,y):
  Calculează restul împarţirii lui x la y,
  x modulo y.</translation>
     </message>
@@ -19314,63 +19317,63 @@ have the same number of rows.</source>
         <location filename="../src/scripting/muParserScripting.cpp" line="80"/>
         <source>pow(x,y):
  Raise x to the power of y, x^y.</source>
-        <translation type="unfinished">pow(x,y):
+        <translation>pow(x,y):
  Ridică pe x la puterea y, x^y.</translation>
     </message>
     <message>
         <location filename="../src/scripting/muParserScripting.cpp" line="81"/>
         <source>rint(x):
  Round to nearest integer.</source>
-        <translation type="unfinished">rint(x):
+        <translation>rint(x):
  Rotunjeşte la cel mai apropiat întreg.</translation>
     </message>
     <message>
         <location filename="../src/scripting/muParserScripting.cpp" line="82"/>
         <source>sign(x):
  Sign function: -1 if x&lt;0; 1 if x&gt;0.</source>
-        <translation type="unfinished">sign(x):
- Funcţia semn: -1 if x&lt;0; 1 if x&gt;0.</translation>
+        <translation>sign(x):
+ Funcţia semn: -1 dacă x&lt;0; 1 dacă x&gt;0.</translation>
     </message>
     <message>
         <location filename="../src/scripting/muParserScripting.cpp" line="83"/>
         <source>sin(x):
  Calculate sine.</source>
-        <translation type="unfinished">cos(x):
+        <translation>cos(x):
  Calculează sinus.</translation>
     </message>
     <message>
         <location filename="../src/scripting/muParserScripting.cpp" line="84"/>
         <source>sinh(x):
  Hyperbolic sin function.</source>
-        <translation type="unfinished">sinh(x):
+        <translation>sinh(x):
   Funcţia sinus hiperbolică.</translation>
     </message>
     <message>
         <location filename="../src/scripting/muParserScripting.cpp" line="85"/>
         <source>sqrt(x):
  Square root function.</source>
-        <translation type="unfinished">sqrt(x):
+        <translation>sqrt(x):
  Rădăcină pătrată.</translation>
     </message>
     <message>
         <location filename="../src/scripting/muParserScripting.cpp" line="86"/>
         <source>sum(x,y,...):
  Calculate sum of all arguments.</source>
-        <translation type="unfinished">sum(x,y,...):
+        <translation>sum(x,y,...):
  Calculează suma tuturor argumentelor.</translation>
     </message>
     <message>
         <location filename="../src/scripting/muParserScripting.cpp" line="87"/>
         <source>tan(x):
  Calculate tangent function.</source>
-        <translation type="unfinished">tan(x):
+        <translation>tan(x):
   Funcţia tangentă.</translation>
     </message>
     <message>
         <location filename="../src/scripting/muParserScripting.cpp" line="88"/>
         <source>tanh(x):
  Hyperbolic tan function.</source>
-        <translation type="unfinished">tanh(x):
+        <translation>tanh(x):
   Funcţia tangentă hiperbolică.</translation>
     </message>
     <message>
