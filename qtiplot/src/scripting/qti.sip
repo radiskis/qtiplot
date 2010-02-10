@@ -1514,6 +1514,7 @@ public:
   void changeCurveIndex(int fromIndex, int toIndex);
 
   void setCurveLineColor(int, int);
+  void setCurveLineColor(int, QColor);
   void setCurveLineStyle(int, Qt::PenStyle);
   void setCurveLineWidth(int, double);
 

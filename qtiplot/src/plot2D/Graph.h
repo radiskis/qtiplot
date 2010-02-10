@@ -305,6 +305,7 @@ class Graph: public QwtPlot
 		void setCurveStyle(int index, int s);
 		void setCurveFullRange(int curveIndex);
 		void setCurveLineColor(int curveIndex, int colorIndex);
+		void setCurveLineColor(int curveIndex, QColor qColor);
 		void setCurveLineStyle(int curveIndex, Qt::PenStyle style);
 		void setCurveLineWidth(int curveIndex, double width);
 		void setGrayScale();

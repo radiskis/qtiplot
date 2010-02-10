@@ -5159,6 +5159,18 @@ void Graph::setCurveLineColor(int curveIndex, int colorIndex)
 	}
 }
 
+void Graph::setCurveLineColor(int curveIndex, QColor qColor)
+{
+	QwtPlotCurve *c = curve(curveIndex);
+	if (c){
+		QPen pen = c->pen();
+		pen.setColor(qColor);
+		c->setPen(pen);
+		replot();
+		emit modifiedGraph();
+	}
+}
+
 void Graph::setCurveLineStyle(int curveIndex, Qt::PenStyle style)
 {
 	QwtPlotCurve *c = curve(curveIndex);
