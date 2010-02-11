@@ -14238,7 +14238,7 @@ The following special codes can be used:
         <translation>绘图中没有包含多于两个点的曲线。操作中止!</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.h" line="649"/>
+        <location filename="../src/plot2D/Graph.h" line="650"/>
         <source>F</source>
         <translation>F</translation>
     </message>
@@ -18960,13 +18960,13 @@ have the same number of rows.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/scripting/muParserScripting.cpp" line="120"/>
+        <location filename="../src/scripting/muParserScripting.cpp" line="122"/>
         <source>AVG(&quot;colName&quot;, i, j):
  The average of all cells from row i to j in column colName.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/scripting/muParserScripting.cpp" line="122"/>
+        <location filename="../src/scripting/muParserScripting.cpp" line="124"/>
         <source>SUM(&quot;colName&quot;, i, j):
  The sum of all cells from row i to j in column colName.</source>
         <translation type="unfinished"></translation>

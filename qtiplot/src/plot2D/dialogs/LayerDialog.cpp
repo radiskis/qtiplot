@@ -87,6 +87,7 @@ LayerDialog::LayerDialog( QWidget* parent, Qt::WFlags fl )
 	boxY = new QSpinBox();
 	boxY->setRange(1, 100);
 	gl3->addWidget(boxY, 1, 1);
+	gl3->setRowStretch(2, 1);
 
 	GroupCanvasSize = new QGroupBox(tr("&Layer Canvas Size"));
 	GroupCanvasSize->setCheckable(true);
@@ -125,18 +126,29 @@ LayerDialog::LayerDialog( QWidget* parent, Qt::WFlags fl )
 
     QGroupBox *gb4 = new QGroupBox(tr("Spacing"));
 	QGridLayout *gl4 = new QGridLayout(gb4);
-	gl4->addWidget(new QLabel(tr("Columns gap")), 0, 0);
+
+	gl4->addWidget(new QLabel(tr("Align")), 0, 0);
+	alignPolicyBox = new QComboBox();
+	alignPolicyBox->addItem(tr("Layers"));
+	alignPolicyBox->addItem(tr("Canvases"));
+	gl4->addWidget(alignPolicyBox, 0, 1);
+
+	gl4->addWidget(new QLabel(tr("Columns gap")), 1, 0);
 	boxColsGap = new QSpinBox();
 	boxColsGap->setRange(0, 1000);
 	boxColsGap->setSingleStep(5);
 	boxColsGap->setSuffix(tr(" pixels"));
-	gl4->addWidget(boxColsGap, 0, 1);
-	gl4->addWidget(new QLabel( tr( "Rows gap" )), 1, 0);
+	gl4->addWidget(boxColsGap, 1, 1);
+	gl4->addWidget(new QLabel( tr( "Rows gap" )), 2, 0);
 	boxRowsGap = new QSpinBox();
 	boxRowsGap->setRange(0, 1000);
 	boxRowsGap->setSingleStep(5);
 	boxRowsGap->setSuffix(tr(" pixels"));
-	gl4->addWidget(boxRowsGap, 1, 1);
+	gl4->addWidget(boxRowsGap, 2, 1);
+
+	commonAxesBox = new QCheckBox(tr("Common a&xes"));
+	commonAxesBox->hide();
+	gl4->addWidget(commonAxesBox, 3, 1);
 
 	QGroupBox *gb7 = new QGroupBox(tr("Margins"));
 	gl4 = new QGridLayout(gb7);
@@ -213,6 +225,10 @@ LayerDialog::LayerDialog( QWidget* parent, Qt::WFlags fl )
 	connect(unitBox, SIGNAL(activated(int)), this, SLOT(updateSizes(int)));
 	connect(boxCanvasWidth, SIGNAL(valueChanged (double)), this, SLOT(adjustCanvasHeight(double)));
 	connect(boxCanvasHeight, SIGNAL(valueChanged (double)), this, SLOT(adjustCanvasWidth(double)));
+
+	connect(boxColsGap, SIGNAL(valueChanged(int)), this, SLOT(showCommonAxesBox()));
+	connect(boxRowsGap, SIGNAL(valueChanged(int)), this, SLOT(showCommonAxesBox()));
+	connect(alignPolicyBox, SIGNAL(activated(int)), this, SLOT(showCommonAxesBox()));
 }
 
 void LayerDialog::enableLayoutOptions(bool ok)
@@ -228,6 +244,8 @@ void LayerDialog::setMultiLayer(MultiLayer *g)
 	layersBox->setValue(g->numLayers());
 	boxX->setValue(g->getCols());
 	boxY->setValue(g->getRows());
+
+	alignPolicyBox->setCurrentIndex(g->alignPolicy());
 	boxColsGap->setValue(g->colsSpacing());
 	boxRowsGap->setValue(g->rowsSpacing());
 	boxLeftSpace->setValue(g->leftMargin());
@@ -242,12 +260,16 @@ void LayerDialog::setMultiLayer(MultiLayer *g)
 
 	updateSizes(unit);
 
+	GroupCanvasSize->setChecked(g->sizePolicy() == MultiLayer::UserSize);
+
 	alignHorBox->setCurrentItem(g->horizontalAlignement());
 	alignVertBox->setCurrentItem(g->verticalAlignement());
 
 	boxLayerSrc->setRange(1, g->numLayers());
 	boxLayerDest->setRange(1, g->numLayers());
 	boxLayerDest->setValue(g->numLayers());
+
+	showCommonAxesBox();
 }
 
 void LayerDialog::update()
@@ -302,11 +324,15 @@ void LayerDialog::update()
 			multi_layer->setLayerCanvasSize(convertToPixels(boxCanvasWidth->value(), unit, 0), convertToPixels(boxCanvasHeight->value(), unit, 1));
 		}
 
+		if (commonAxesBox->isVisible() && commonAxesBox->isChecked())
+			multi_layer->setCommonLayerAxes();
+
 		multi_layer->setAlignement(alignHorBox->currentItem(), alignVertBox->currentItem());
 
 		multi_layer->setMargins(boxLeftSpace->value(), boxRightSpace->value(),
 				boxTopSpace->value(), boxBottomSpace->value());
 
+		multi_layer->setAlignPolicy((MultiLayer::AlignPolicy)alignPolicyBox->currentIndex());
 		multi_layer->setSpacing(boxRowsGap->value(), boxColsGap->value());
 		multi_layer->arrangeLayers(fitBox->isChecked(), GroupCanvasSize->isChecked());
 
@@ -447,4 +473,10 @@ void LayerDialog::adjustCanvasWidth(double height)
 		boxCanvasWidth->blockSignals(false);
 	} else
 		aspect_ratio = boxCanvasWidth->value()/height;
+}
+
+void LayerDialog::showCommonAxesBox()
+{
+	commonAxesBox->setVisible(alignPolicyBox->currentIndex() == MultiLayer::AlignCanvases &&
+							  (boxColsGap->value() == 0 && boxRowsGap->value() == 0));
 }
