@@ -80,6 +80,8 @@ public:
 
 	enum HorAlignement{HCenter, Left, Right};
 	enum VertAlignement{VCenter, Top, Bottom};
+	enum AlignPolicy{AlignLayers = 0, AlignCanvases};
+	enum SizePolicy{Expanding = 0, UserSize};
 
 	bool scaleLayersOnPrint(){return d_scale_on_print;};
 	void setScaleLayersOnPrint(bool on){d_scale_on_print = on;};
@@ -108,6 +110,14 @@ public:
 	void plotProfiles(Matrix* m);
 
 	QHBoxLayout *toolBox(){return toolbuttonsBox;};
+
+	AlignPolicy alignPolicy(){return d_align_policy;};
+	void setAlignPolicy(const AlignPolicy& policy){d_align_policy = policy;};
+
+	SizePolicy sizePolicy(){return d_size_policy;};
+	void setSizePolicy(const SizePolicy& policy){d_size_policy = policy;};
+
+	void setCommonLayerAxes();
 
 public slots:
 	Graph* addLayer(int x = 0, int y = 0, int width = 0, int height = 0, bool = false);
@@ -265,6 +275,9 @@ private:
 	QPushButton *d_add_layer_btn, *d_remove_layer_btn;
 
 	QSize d_canvas_size;
+
+	AlignPolicy d_align_policy;
+	SizePolicy d_size_policy;
 };
 
 //! Button with layer number

@@ -121,7 +121,9 @@ d_waterfall_offset_y(3),
 d_is_waterfall_plot(false),
 d_side_lines(false),
 d_waterfall_fill_color(QColor()),
-d_canvas_size(QSize())
+d_canvas_size(QSize()),
+d_align_policy(AlignLayers),
+d_size_policy(UserSize)
 {
 	layerButtonsBox = new QHBoxLayout();
 	waterfallBox = new QHBoxLayout();
@@ -457,6 +459,11 @@ void MultiLayer::setEqualSizedLayers()
 
 QSize MultiLayer::arrangeLayers(bool userSize)
 {
+	if (userSize)
+		d_size_policy = UserSize;
+	else
+		d_size_policy = Expanding;
+
 	int layers = graphsList.size();
 	const QRect rect = d_canvas->geometry();
 
@@ -589,9 +596,26 @@ QSize MultiLayer::arrangeLayers(bool userSize)
 		bool autoscaleFonts = g->autoscaleFonts();//save user font settings
 		g->setAutoscaleFonts(false);
 		g->setGeometry(QRect(x, y, w, h));
-		if (userSize)
+		if (userSize && d_align_policy == AlignLayers)
 			g->setCanvasSize(size);
+		else if (d_align_policy == AlignCanvases){
+			QPoint pos = g->mapTo(d_canvas, g->canvas()->pos());
+			int index = i - 1; //left neighbour
+			if (col && index >= 0){
+				Graph *aux = graphsList.at(index);
+				if (aux)
+					pos.setX(aux->mapTo(d_canvas, aux->canvas()->pos()).x() + aux->canvas()->width() + colsSpace);
+			}
 
+			index = i - d_cols;
+			if (row && index >= 0){
+				Graph *aux = graphsList.at(index);
+				if (aux)
+					pos.setY(aux->mapTo(d_canvas, aux->canvas()->pos()).y() + aux->canvas()->height() + rowsSpace);
+			}
+
+			g->setCanvasGeometry(QRect(pos, size));
+		}
 		g->setAutoscaleFonts(autoscaleFonts);//restore user font settings
 	}
 
@@ -611,6 +635,72 @@ QSize MultiLayer::arrangeLayers(bool userSize)
 		}
 	}
 	return size;
+}
+
+void MultiLayer::setCommonLayerAxes()
+{
+	int layers = graphsList.size();
+	for (int i=0; i<layers; i++){
+		int row = i / d_cols;
+		if (row >= d_rows )
+			row = d_rows - 1;
+
+		int col = i % d_cols;
+
+		int index = i - 1; //left neighbour
+		if (col && index >= 0){
+			Graph *aux = graphsList.at(index);
+			if (aux){
+				QwtScaleWidget *scale = aux->axisWidget(QwtPlot::yRight);
+				if (scale){
+					scale->setTitle(QString::null);
+					QwtScaleDraw *sd = aux->axisScaleDraw(QwtPlot::yRight);
+					if (sd){
+						sd->enableComponent(QwtAbstractScaleDraw::Labels, false);
+						sd->enableComponent(QwtAbstractScaleDraw::Backbone, false);
+					}
+				}
+			}
+		}
+
+		index = i - d_cols;
+		if (row && index >= 0){
+			Graph *aux = graphsList.at(index);//top neighbour
+			if (aux){
+				QwtScaleWidget *scale = aux->axisWidget(QwtPlot::xBottom);
+				if (scale){
+					scale->setTitle(QString::null);
+					QwtScaleDraw *sd = aux->axisScaleDraw(QwtPlot::xBottom);
+					if (sd){
+						sd->enableComponent(QwtAbstractScaleDraw::Labels, false);
+						sd->enableComponent(QwtAbstractScaleDraw::Backbone, false);
+					}
+				}
+			}
+		}
+
+		Graph *g = (Graph *)graphsList.at(i);
+		if (!g)
+			continue;
+
+		if (col){
+			QwtScaleWidget *scale = g->axisWidget(QwtPlot::yLeft);
+			if (scale){
+				scale->setTitle(QString::null);
+				QwtScaleDraw *sd = g->axisScaleDraw(QwtPlot::yLeft);
+				if (sd)
+					sd->enableComponent(QwtAbstractScaleDraw::Labels, false);
+			}
+		}
+
+		QwtScaleWidget *scale = g->axisWidget(QwtPlot::xTop);
+		if (scale){
+			scale->setTitle(QString::null);
+			QwtScaleDraw *sd = g->axisScaleDraw(QwtPlot::xTop);
+			if (sd)
+				sd->enableComponent(QwtAbstractScaleDraw::Labels, false);
+		}
+	}
 }
 
 void MultiLayer::findBestLayout(int &d_rows, int &d_cols)
@@ -1512,6 +1602,8 @@ void MultiLayer::copy(MultiLayer* ml)
 	setSpacing(ml->rowsSpacing(), ml->colsSpacing());
 	setAlignement(ml->horizontalAlignement(), ml->verticalAlignement());
 	setMargins(ml->leftMargin(), ml->rightMargin(), ml->topMargin(), ml->bottomMargin());
+	d_size_policy = ml->sizePolicy();
+	d_align_policy = ml->alignPolicy();
 
 	d_scale_on_print = ml->scaleLayersOnPrint();
 	d_print_cropmarks = ml->printCropmarksEnabled();
