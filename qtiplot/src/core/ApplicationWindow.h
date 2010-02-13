@@ -40,6 +40,7 @@
 #include <QLineEdit>
 #include <QMessageBox>
 
+#include <MultiLayer.h>
 #include <Graph.h>
 #include <Table.h>
 #include <ScriptingEnv.h>
@@ -83,7 +84,6 @@ class Table;
 class ScalePicker;
 class Graph3D;
 class Note;
-class MultiLayer;
 class FunctionDialog;
 class Folder;
 class FolderListItem;
@@ -283,7 +283,7 @@ public slots:
 	//@{
 	//! Creates a new empty multilayer plot
 	MultiLayer* newGraph(const QString& caption = tr("Graph"));
-	MultiLayer* multilayerPlot(int c, int r, int style);
+	MultiLayer* multilayerPlot(int c, int r, int style, const MultiLayer::AlignPolicy& align = MultiLayer::AlignLayers);
 	MultiLayer* multilayerPlot(Table* w, const QStringList& colList, int style, int startRow = 0, int endRow = -1);
 	//! used when restoring a plot from a project file
 	MultiLayer* multilayerPlot(const QString& caption, int layers = 1, int rows = 1, int cols = 1);
@@ -313,6 +313,11 @@ public slots:
 	void plot4Layers();
 	void plotStackedLayers();
 	void plotStackedHistograms();
+
+	void plotStackSharedAxisLayers();
+	void plotVerticalSharedAxisLayers();
+	void plotHorizontalSharedAxisLayers();
+	void plotSharedAxesLayers();
 	//@}
 
 	//! \name 3D Data Plots
@@ -1439,6 +1444,8 @@ private:
     QAction *actionPresentationODF, *actionRenameNoteTab, *actionAddNoteTab, *actionCloseNoteTab;
     QAction *actionIncreaseIndent, *actionDecreaseIndent, *actionFind, *actionFindNext, *actionFindPrev, *actionReplace;
     QAction *actionIncreasePrecision, *actionDecreasePrecision, *actionPrintPreview;
+	QAction *actionVertSharedAxisLayers, *actionHorSharedAxisLayers, *actionSharedAxesLayers, *actionStackSharedAxisLayers;
+
     QList<QAction *> d_user_actions;
     QUndoView *d_undo_view;
     QList<QMenu *> d_user_menus;

@@ -117,7 +117,7 @@ public:
 	SizePolicy sizePolicy(){return d_size_policy;};
 	void setSizePolicy(const SizePolicy& policy){d_size_policy = policy;};
 
-	void setCommonLayerAxes();
+	void setCommonLayerAxes(bool verticalAxis = true, bool horizontalAxis = true);
 
 public slots:
 	Graph* addLayer(int x = 0, int y = 0, int width = 0, int height = 0, bool = false);

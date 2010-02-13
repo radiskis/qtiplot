@@ -573,49 +573,37 @@ QSize MultiLayer::arrangeLayers(bool userSize)
 		const int w = int (l_canvas_width*(1 + gsl_vector_get(yLeftR, i) + gsl_vector_get(yRightR, i)));
 		const int h = int (l_canvas_height*(1 + gsl_vector_get(xTopR, i) + gsl_vector_get(xBottomR, i)));
 
-		int x = left_margin + col*colsSpace;
-		if (hor_align == HCenter)
-			x += int (l_canvas_width*(gsl_vector_get(X, col) + gsl_vector_get(maxYLeftWidth, col) - gsl_vector_get(yLeftR, i)));
-		else if (hor_align == Left)
-			x += int(l_canvas_width*gsl_vector_get(X, col));
-		else if (hor_align == Right)
-			x += int(l_canvas_width*(gsl_vector_get(X, col) + gsl_vector_get(maxYLeftWidth, col) - gsl_vector_get(yLeftR, i)+
-						gsl_vector_get(maxYRightWidth, col) - gsl_vector_get(yRightR, i)));
+		int x = left_margin;
+		int y = top_margin;
 
-		int y = top_margin + row*rowsSpace;
-		if (vert_align == VCenter)
-			y += int(l_canvas_height*(gsl_vector_get(Y, row) + gsl_vector_get(maxXTopHeight, row) - gsl_vector_get(xTopR, i)));
-		else if (vert_align == Top)
-			y += int(l_canvas_height*gsl_vector_get(Y, row));
-		else if (vert_align == Bottom)
-			y += int(l_canvas_height*(gsl_vector_get(Y, row) + gsl_vector_get(maxXTopHeight, row) - gsl_vector_get(xTopR, i)+
-						+ gsl_vector_get(maxXBottomHeight, row) - gsl_vector_get(xBottomR, i)));
+		Graph *lg = graphsList.at(i - 1);//left neighbour
+		if (col && lg)
+			x = lg->x() + lg->width() + colsSpace;
+		Graph *tg = graphsList.at(i - d_cols);//top neighbour
+		if (row && tg)
+			y = tg->y() + tg->height() + rowsSpace;
 
 		//resizes and moves layers
 		Graph *g = (Graph *)graphsList.at(i);
 		bool autoscaleFonts = g->autoscaleFonts();//save user font settings
 		g->setAutoscaleFonts(false);
-		g->setGeometry(QRect(x, y, w, h));
-		if (userSize && d_align_policy == AlignLayers)
+
+		if (userSize)
 			g->setCanvasSize(size);
-		else if (d_align_policy == AlignCanvases){
+		else
+			g->resize(w, h);
+
+		g->move(x, y);
+
+		if (d_align_policy == AlignCanvases){
 			QPoint pos = g->mapTo(d_canvas, g->canvas()->pos());
-			int index = i - 1; //left neighbour
-			if (col && index >= 0){
-				Graph *aux = graphsList.at(index);
-				if (aux)
-					pos.setX(aux->mapTo(d_canvas, aux->canvas()->pos()).x() + aux->canvas()->width() + colsSpace);
-			}
-
-			index = i - d_cols;
-			if (row && index >= 0){
-				Graph *aux = graphsList.at(index);
-				if (aux)
-					pos.setY(aux->mapTo(d_canvas, aux->canvas()->pos()).y() + aux->canvas()->height() + rowsSpace);
-			}
-
+			if (col && lg)
+				pos.setX(lg->mapTo(d_canvas, lg->canvas()->pos()).x() + lg->canvas()->width() + colsSpace);
+			if (row && tg)
+				pos.setY(tg->mapTo(d_canvas, tg->canvas()->pos()).y() + tg->canvas()->height() + rowsSpace);
 			g->setCanvasGeometry(QRect(pos, size));
 		}
+
 		g->setAutoscaleFonts(autoscaleFonts);//restore user font settings
 	}
 
@@ -637,7 +625,7 @@ QSize MultiLayer::arrangeLayers(bool userSize)
 	return size;
 }
 
-void MultiLayer::setCommonLayerAxes()
+void MultiLayer::setCommonLayerAxes(bool verticalAxis, bool horizontalAxis)
 {
 	int layers = graphsList.size();
 	for (int i=0; i<layers; i++){
@@ -648,7 +636,7 @@ void MultiLayer::setCommonLayerAxes()
 		int col = i % d_cols;
 
 		int index = i - 1; //left neighbour
-		if (col && index >= 0){
+		if (verticalAxis && col && index >= 0){
 			Graph *aux = graphsList.at(index);
 			if (aux){
 				QwtScaleWidget *scale = aux->axisWidget(QwtPlot::yRight);
@@ -664,7 +652,7 @@ void MultiLayer::setCommonLayerAxes()
 		}
 
 		index = i - d_cols;
-		if (row && index >= 0){
+		if (horizontalAxis && row && index >= 0){
 			Graph *aux = graphsList.at(index);//top neighbour
 			if (aux){
 				QwtScaleWidget *scale = aux->axisWidget(QwtPlot::xBottom);
@@ -683,7 +671,15 @@ void MultiLayer::setCommonLayerAxes()
 		if (!g)
 			continue;
 
-		if (col){
+		QColor c = Qt::white;
+		c.setAlpha(0);
+		g->setBackgroundColor(c);
+		g->setCanvasBackground(c);
+
+		if (horizontalAxis && row && !g->title().text().isEmpty())
+			g->setTitle(QString::null);
+
+		if (verticalAxis && col){
 			QwtScaleWidget *scale = g->axisWidget(QwtPlot::yLeft);
 			if (scale){
 				scale->setTitle(QString::null);
@@ -693,13 +689,16 @@ void MultiLayer::setCommonLayerAxes()
 			}
 		}
 
-		QwtScaleWidget *scale = g->axisWidget(QwtPlot::xTop);
-		if (scale){
-			scale->setTitle(QString::null);
-			QwtScaleDraw *sd = g->axisScaleDraw(QwtPlot::xTop);
-			if (sd)
-				sd->enableComponent(QwtAbstractScaleDraw::Labels, false);
+		if (horizontalAxis && row){
+			QwtScaleWidget *scale = g->axisWidget(QwtPlot::xTop);
+			if (scale){
+				scale->setTitle(QString::null);
+				QwtScaleDraw *sd = g->axisScaleDraw(QwtPlot::xTop);
+				if (sd)
+					sd->enableComponent(QwtAbstractScaleDraw::Labels, false);
+			}
 		}
+		g->updateLayout();
 	}
 }
 
@@ -1625,6 +1624,8 @@ void MultiLayer::copy(MultiLayer* ml)
 		createWaterfallBox();
 		setWaterfallSideLines(ml->sideLinesEnabled());
 	}
+
+	d_scale_layers = ml->scaleLayersOnResize();
 }
 
 bool MultiLayer::swapLayers(int src, int dest)

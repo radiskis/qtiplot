@@ -44,10 +44,11 @@
 LayerDialog::LayerDialog( QWidget* parent, Qt::WFlags fl )
 : QDialog( parent, fl )
 {
-    setName("LayerDialog");
+	setName("LayerDialog");
 	setWindowTitle(tr( "QtiPlot - Arrange Layers" ));
+	setAttribute(Qt::WA_DeleteOnClose);
 
-    QGroupBox *gb1 = new QGroupBox(tr("Layers"));
+	QGroupBox *gb1 = new QGroupBox(tr("Layers"));
 	QGridLayout *gl1 = new QGridLayout(gb1);
 	gl1->addWidget(new QLabel(tr("Number")), 0, 0);
 	layersBox = new QSpinBox();
@@ -123,6 +124,9 @@ LayerDialog::LayerDialog( QWidget* parent, Qt::WFlags fl )
 	keepRatioBox = new QCheckBox(tr("&Keep aspect ratio"));
 	keepRatioBox->setChecked(true);
 	gl5->addWidget(keepRatioBox, 3, 1);
+
+	fixedSizeBox = new QCheckBox(tr("&Fixed size"));
+	gl5->addWidget(fixedSizeBox, 3, 0);
 
     QGroupBox *gb4 = new QGroupBox(tr("Spacing"));
 	QGridLayout *gl4 = new QGridLayout(gb4);
@@ -239,6 +243,9 @@ void LayerDialog::enableLayoutOptions(bool ok)
 
 void LayerDialog::setMultiLayer(MultiLayer *g)
 {
+	if (!g)
+		return;
+
 	multi_layer = g;
 
 	layersBox->setValue(g->numLayers());
@@ -262,6 +269,8 @@ void LayerDialog::setMultiLayer(MultiLayer *g)
 
 	GroupCanvasSize->setChecked(g->sizePolicy() == MultiLayer::UserSize);
 
+	fixedSizeBox->setChecked(!g->scaleLayersOnResize());
+
 	alignHorBox->setCurrentItem(g->horizontalAlignement());
 	alignVertBox->setCurrentItem(g->verticalAlignement());
 
@@ -274,82 +283,87 @@ void LayerDialog::setMultiLayer(MultiLayer *g)
 
 void LayerDialog::update()
 {
-        int graphs = layersBox->value();
-		int old_graphs = multi_layer->numLayers();
-		int dn = multi_layer->numLayers() - graphs;
-		if (dn > 0 && QMessageBox::question(0, tr("QtiPlot - Delete Layers?"),
-					tr("You are about to delete %1 existing layers.").arg(dn)+"\n"+
-					tr("Are you sure you want to continue this operation?"),
-					tr("&Continue"), tr("&Cancel"), QString(), 0, 1 )) return;
+	if (!multi_layer)
+		return;
 
-		multi_layer->setNumLayers(graphs);
+	int graphs = layersBox->value();
+	int old_graphs = multi_layer->numLayers();
+	int dn = multi_layer->numLayers() - graphs;
+	if (dn > 0 && QMessageBox::question(0, tr("QtiPlot - Delete Layers?"),
+				tr("You are about to delete %1 existing layers.").arg(dn)+"\n"+
+				tr("Are you sure you want to continue this operation?"),
+				tr("&Continue"), tr("&Cancel"), QString(), 0, 1 )) return;
 
-		if (!graphs)
-			return;
+	multi_layer->setNumLayers(graphs);
 
-		if (dn < 0){// Customize new layers with user default settings
-			ApplicationWindow *app = (ApplicationWindow *)this->parent();
-			for (int i = old_graphs+1; i <= graphs; i++)
-				app->setPreferences(multi_layer->layer(i));
-		}
+	if (!graphs)
+		return;
 
-		int cols=boxX->value();
-		int rows=boxY->value();
+	if (dn < 0){// Customize new layers with user default settings
+		ApplicationWindow *app = (ApplicationWindow *)this->parent();
+		for (int i = old_graphs+1; i <= graphs; i++)
+			app->setPreferences(multi_layer->layer(i));
+	}
 
-		if (cols>graphs && !fitBox->isChecked()){
-			QMessageBox::about(this, tr("QtiPlot - Columns input error"),
-					tr("The number of columns you've entered is greater than the number of graphs (%1)!").arg(graphs));
-			boxX->setFocus();
-			return;
-		}
+	int cols=boxX->value();
+	int rows=boxY->value();
 
-		if (rows>graphs && !fitBox->isChecked()){
-			QMessageBox::about(this, tr("QtiPlot - Rows input error"),
-					tr("The number of rows you've entered is greater than the number of graphs (%1)!").arg(graphs));
-			boxY->setFocus();
-			return;
-		}
+	if (cols>graphs && !fitBox->isChecked()){
+		QMessageBox::about(this, tr("QtiPlot - Columns input error"),
+				tr("The number of columns you've entered is greater than the number of graphs (%1)!").arg(graphs));
+		boxX->setFocus();
+		return;
+	}
 
-		if (!fitBox->isChecked()){
-			multi_layer->setCols(cols);
-			multi_layer->setRows(rows);
-		}
+	if (rows>graphs && !fitBox->isChecked()){
+		QMessageBox::about(this, tr("QtiPlot - Rows input error"),
+				tr("The number of rows you've entered is greater than the number of graphs (%1)!").arg(graphs));
+		boxY->setFocus();
+		return;
+	}
 
-		FrameWidget::Unit unit = (FrameWidget::Unit)unitBox->currentIndex();
-		if (GroupCanvasSize->isChecked()){
-			ApplicationWindow *app = multi_layer->applicationWindow();
-			if (app)
-				app->d_layer_geometry_unit = unitBox->currentIndex();
+	if (!fitBox->isChecked()){
+		multi_layer->setCols(cols);
+		multi_layer->setRows(rows);
+	}
 
-			multi_layer->setLayerCanvasSize(convertToPixels(boxCanvasWidth->value(), unit, 0), convertToPixels(boxCanvasHeight->value(), unit, 1));
-		}
+	FrameWidget::Unit unit = (FrameWidget::Unit)unitBox->currentIndex();
+	if (GroupCanvasSize->isChecked()){
+		ApplicationWindow *app = multi_layer->applicationWindow();
+		if (app)
+			app->d_layer_geometry_unit = unitBox->currentIndex();
 
-		if (commonAxesBox->isVisible() && commonAxesBox->isChecked())
-			multi_layer->setCommonLayerAxes();
+		multi_layer->setLayerCanvasSize(convertToPixels(boxCanvasWidth->value(), unit, 0), convertToPixels(boxCanvasHeight->value(), unit, 1));
+	}
 
-		multi_layer->setAlignement(alignHorBox->currentItem(), alignVertBox->currentItem());
+	if (commonAxesBox->isVisible() && commonAxesBox->isChecked())
+		multi_layer->setCommonLayerAxes(boxColsGap->value() == 0, boxRowsGap->value() == 0);
 
-		multi_layer->setMargins(boxLeftSpace->value(), boxRightSpace->value(),
-				boxTopSpace->value(), boxBottomSpace->value());
+	multi_layer->setAlignement(alignHorBox->currentItem(), alignVertBox->currentItem());
 
-		multi_layer->setAlignPolicy((MultiLayer::AlignPolicy)alignPolicyBox->currentIndex());
-		multi_layer->setSpacing(boxRowsGap->value(), boxColsGap->value());
-		multi_layer->arrangeLayers(fitBox->isChecked(), GroupCanvasSize->isChecked());
+	multi_layer->setMargins(boxLeftSpace->value(), boxRightSpace->value(),
+			boxTopSpace->value(), boxBottomSpace->value());
 
-		if (!GroupCanvasSize->isChecked()){//show new layer canvas size
-			boxCanvasWidth->blockSignals(true);
-			boxCanvasWidth->setValue(convertFromPixels(multi_layer->layerCanvasSize().width(), unit, 0));
-			boxCanvasWidth->blockSignals(false);
+	multi_layer->setScaleLayersOnResize(!fixedSizeBox->isChecked());
 
-			boxCanvasHeight->blockSignals(true);
-			boxCanvasHeight->setValue(convertFromPixels(multi_layer->layerCanvasSize().height(), unit, 1));
-			boxCanvasHeight->blockSignals(false);
-		}
+	multi_layer->setAlignPolicy((MultiLayer::AlignPolicy)alignPolicyBox->currentIndex());
+	multi_layer->setSpacing(boxRowsGap->value(), boxColsGap->value());
+	multi_layer->arrangeLayers(fitBox->isChecked(), GroupCanvasSize->isChecked());
 
-		if (fitBox->isChecked()){//show new grid settings
-			boxX->setValue(multi_layer->getCols());
-			boxY->setValue(multi_layer->getRows());
-		}
+	if (!GroupCanvasSize->isChecked()){//show new layer canvas size
+		boxCanvasWidth->blockSignals(true);
+		boxCanvasWidth->setValue(convertFromPixels(multi_layer->layerCanvasSize().width(), unit, 0));
+		boxCanvasWidth->blockSignals(false);
+
+		boxCanvasHeight->blockSignals(true);
+		boxCanvasHeight->setValue(convertFromPixels(multi_layer->layerCanvasSize().height(), unit, 1));
+		boxCanvasHeight->blockSignals(false);
+	}
+
+	if (fitBox->isChecked()){//show new grid settings
+		boxX->setValue(multi_layer->getCols());
+		boxY->setValue(multi_layer->getRows());
+	}
 }
 
 void LayerDialog::accept()
@@ -478,5 +492,5 @@ void LayerDialog::adjustCanvasWidth(double height)
 void LayerDialog::showCommonAxesBox()
 {
 	commonAxesBox->setVisible(alignPolicyBox->currentIndex() == MultiLayer::AlignCanvases &&
-							  (boxColsGap->value() == 0 && boxRowsGap->value() == 0));
+							  (boxColsGap->value() == 0 || boxRowsGap->value() == 0));
 }
