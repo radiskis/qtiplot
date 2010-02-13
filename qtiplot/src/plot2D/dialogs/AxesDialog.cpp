@@ -104,8 +104,7 @@ AxesDialog::AxesDialog( QWidget* parent, Qt::WFlags fl )
     connect( buttonOk, SIGNAL( clicked() ), this, SLOT( accept() ) );
     connect( buttonCancel, SIGNAL( clicked() ), this, SLOT( reject() ) );
     connect( buttonApply, SIGNAL( clicked() ), this, SLOT(updatePlot() ) );
-    connect( generalDialog, SIGNAL( currentChanged ( QWidget * ) ),
-            this, SLOT(pageChanged ( QWidget * ) ) );
+	connect( generalDialog, SIGNAL( currentChanged ( QWidget * ) ), this, SLOT(pageChanged( QWidget *)));
 }
 
 void AxesDialog::initScalesPage()
@@ -1266,10 +1265,13 @@ void AxesDialog::updateAxisColor(int)
 	boxAxisNumColor->blockSignals(false);
 }
 
-bool AxesDialog::updatePlot()
+bool AxesDialog::updatePlot(QWidget *page)
 {
-	if (generalDialog->currentWidget()==(QWidget*)scalesPage)
-	{
+	QWidget *currentWidget = generalDialog->currentWidget();
+	if (page)
+		currentWidget = page;
+
+	if (currentWidget == scalesPage){
         int a = mapToQwtAxis(axesList->currentRow());
         ScaleDraw::ScaleType type = d_graph->axisType(a);
 
@@ -1332,10 +1334,9 @@ bool AxesDialog::updatePlot()
                           boxMinorTicksBeforeBreak->currentText().toInt(), boxMinorTicksAfterBreak->currentText().toInt(),
                           boxLog10AfterBreak->isChecked(), boxBreakWidth->value(), boxBreakDecoration->isChecked());
 		d_graph->notifyChanges();
-	}
-	else if (generalDialog->currentWidget() == gridPage)
+	} else if (currentWidget == gridPage)
 		updateGrid();
-	else if (generalDialog->currentWidget() == (QWidget*)axesPage){
+	else if (currentWidget == axesPage){
 		int axis = mapToQwtAxisId();
 		int format = boxAxisType->currentIndex();
 
@@ -1382,7 +1383,7 @@ bool AxesDialog::updatePlot()
 			d_graph->setAxisTitle(axis, boxTitle->text());
 
 		d_graph->setAxisTitleDistance(axis, boxLabelsDistance->value());
-
+		
 		if (axis == QwtPlot::xBottom)
 			xBottomLabelsRotation = boxAngle->value();
 		else if (axis == QwtPlot::xTop)
@@ -1405,7 +1406,7 @@ bool AxesDialog::updatePlot()
 		}
 
         applyAxisFormat();
-	} else if (generalDialog->currentWidget() == (QWidget*)frame)
+	} else if (currentWidget == frame)
 		applyCanvasFormat();
 
 	return true;
@@ -1859,14 +1860,16 @@ void AxesDialog::customAxisLabelFont()
 
 void AxesDialog::pageChanged ( QWidget *page )
 {
-  	if (lastPage == scalesPage && page == axesPage){
-  		axesTitlesList->setCurrentRow(axesList->currentRow());
-  	    lastPage = page;
-  	}else if (lastPage == axesPage && page == scalesPage){
-  		axesList->setCurrentRow(axesTitlesList->currentRow());
-  		updateScale();
-  	    lastPage = page;
-  	}
+	updatePlot(lastPage);
+
+	if (lastPage == scalesPage && page == axesPage){
+		axesTitlesList->setCurrentRow(axesList->currentRow());
+	} else if (lastPage == axesPage && page == scalesPage){
+		axesList->setCurrentRow(axesTitlesList->currentRow());
+		updateScale();
+	}
+
+	lastPage = page;
 }
 
 int AxesDialog::exec()
