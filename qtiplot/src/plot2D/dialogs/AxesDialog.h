@@ -94,7 +94,7 @@ private slots:
 	void setAxisType(int axis);
 	void updateAxisType(int axis);
 	void updateTitleBox(int axis);
-	bool updatePlot();
+	bool updatePlot(QWidget *page = NULL);
 	void updateScale();
 	void stepEnabled();
 	void stepDisabled();
