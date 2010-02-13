@@ -81,6 +81,7 @@ private:
 	QCheckBox *keepRatioBox;
 	QComboBox *alignPolicyBox;
 	QCheckBox *commonAxesBox;
+	QCheckBox *fixedSizeBox;
 
 	double aspect_ratio;
 };

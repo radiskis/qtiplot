@@ -72,7 +72,6 @@
 #include <FFTDialog.h>
 #include <FrequencyCountDialog.h>
 #include <QwtErrorPlotCurve.h>
-#include <MultiLayer.h>
 #include <LegendWidget.h>
 #include <TexWidget.h>
 #include <ArrowMarker.h>
@@ -1443,6 +1442,12 @@ void ApplicationWindow::plotMenuAboutToShow()
 	panelsMenu->addAction(actionPlot4Layers);
 	panelsMenu->addAction(actionPlotStackedLayers);
 
+	QMenu *gridMenu = plot2DMenu->addMenu (tr("Shared A&xes Panel"));
+	gridMenu->addAction(actionVertSharedAxisLayers);
+	gridMenu->addAction(actionHorSharedAxisLayers);
+	gridMenu->addAction(actionSharedAxesLayers);
+	gridMenu->addAction(actionStackSharedAxisLayers);
+
 	QMenu *plot3D = plot2DMenu->addMenu (tr("3&D Plot"));
 	plot3D->addAction(actionPlot3DRibbon);
 	plot3D->addAction(actionPlot3DBars);
@@ -2524,7 +2529,7 @@ MultiLayer* ApplicationWindow::multilayerPlot(Table* w, const QStringList& colLi
 	return g;
 }
 
-MultiLayer* ApplicationWindow::multilayerPlot(int c, int r, int style)
+MultiLayer* ApplicationWindow::multilayerPlot(int c, int r, int style, const MultiLayer::AlignPolicy& align)
 {//used when plotting from the panel menu
 	Table *t = (Table *)activeWindow(TableWindow);
     if (!t)
@@ -2551,10 +2556,20 @@ MultiLayer* ApplicationWindow::multilayerPlot(int c, int r, int style)
 		setPreferences(ag);
 		if (i < curves)
 			ag->addCurves(t, QStringList(list[i]), style, defaultCurveLineWidth, defaultSymbolSize);
-		ag->newLegend();
 		i++;
 	}
-	g->arrangeLayers(false, false);
+
+	if (align == MultiLayer::AlignCanvases){
+		g->setAlignPolicy(align);
+		g->setSpacing(0, 0);
+		g->setCommonLayerAxes();
+	}
+
+	g->arrangeLayers(false, true);
+
+	foreach(Graph *ag, layersList)
+		ag->newLegend();
+
 	return g;
 }
 
@@ -6863,6 +6878,7 @@ void ApplicationWindow::showColMenu(int c)
 	QMenu colType(this);
 	colType.setCheckable(true);
 	QMenu panels(this);
+	QMenu gridMenu(this);
 	QMenu stat(this);
 	QMenu norm(this);
 
@@ -7039,6 +7055,13 @@ void ApplicationWindow::showColMenu(int c)
 		panels.setTitle(tr("Pa&nel"));
 		plot.addMenu(&panels);
 
+		gridMenu.addAction(actionVertSharedAxisLayers);
+		gridMenu.addAction(actionHorSharedAxisLayers);
+		gridMenu.addAction(actionSharedAxesLayers);
+		gridMenu.addAction(actionStackSharedAxisLayers);
+		gridMenu.setTitle(tr("Shared A&xes Panel"));
+		plot.addMenu(&gridMenu);
+
 		plot.setTitle(tr("&Plot"));
 		contextMenu.addMenu(&plot);
 		contextMenu.insertSeparator();
@@ -7098,6 +7121,26 @@ void ApplicationWindow::showColMenu(int c)
 
 	QPoint posMouse=QCursor::pos();
 	contextMenu.exec(posMouse);
+}
+
+void ApplicationWindow::plotVerticalSharedAxisLayers()
+{
+	multilayerPlot(1, 2, defaultCurveStyle, MultiLayer::AlignCanvases);
+}
+
+void ApplicationWindow::plotHorizontalSharedAxisLayers()
+{
+	multilayerPlot(2, 1, defaultCurveStyle, MultiLayer::AlignCanvases);
+}
+
+void ApplicationWindow::plotSharedAxesLayers()
+{
+	multilayerPlot(2, 2, defaultCurveStyle, MultiLayer::AlignCanvases);
+}
+
+void ApplicationWindow::plotStackSharedAxisLayers()
+{
+	multilayerPlot(1, -1, defaultCurveStyle, MultiLayer::AlignCanvases);
 }
 
 void ApplicationWindow::plot2VerticalLayers()
@@ -8379,15 +8422,14 @@ void ApplicationWindow::showLayerDialog()
 	MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
 	if (!plot)
 		return;
-	if(plot->isEmpty())
-	{
+
+	if(plot->isEmpty()){
 		QMessageBox::warning(this, tr("QtiPlot - Warning"),
 				tr("There are no plot layers available in this window."));
 		return;
 	}
 
-	LayerDialog *id=new LayerDialog(this);
-	id->setAttribute(Qt::WA_DeleteOnClose);
+	LayerDialog *id = new LayerDialog(this);
 	id->setMultiLayer(plot);
 	id->exec();
 }
@@ -12976,6 +13018,18 @@ void ApplicationWindow::createActions()
 	actionPlotStackedLayers = new QAction(QIcon(":/stacked.png"), tr("&Stacked Layers"), this);
 	connect(actionPlotStackedLayers, SIGNAL(activated()), this, SLOT(plotStackedLayers()));
 
+	actionVertSharedAxisLayers = new QAction(QIcon(":/panel_v2.png"), tr("&Vertical 2 Layers"), this);
+	connect(actionVertSharedAxisLayers, SIGNAL(activated()), this, SLOT(plotVerticalSharedAxisLayers()));
+
+	actionHorSharedAxisLayers = new QAction(QIcon(":/panel_h2.png"), tr("&Horizontal 2 Layers"), this);
+	connect(actionHorSharedAxisLayers, SIGNAL(activated()), this, SLOT(plotHorizontalSharedAxisLayers()));
+
+	actionSharedAxesLayers = new QAction(QIcon(":/panel_4.png"), tr("&4 Layers"), this);
+	connect(actionSharedAxesLayers, SIGNAL(activated()), this, SLOT(plotSharedAxesLayers()));
+
+	actionStackSharedAxisLayers = new QAction(QIcon(":/stacked.png"), tr("&Stacked Layers"), this);
+	connect(actionStackSharedAxisLayers, SIGNAL(activated()), this, SLOT(plotStackSharedAxisLayers()));
+
 	actionPlotDoubleYAxis = new QAction(QIcon(":/plot_double_y.png"), tr("D&ouble-Y"), this);
 	connect(actionPlotDoubleYAxis, SIGNAL(activated()), this, SLOT(plotDoubleYAxis()));
 
@@ -13863,10 +13917,17 @@ void ApplicationWindow::translateActionsStrings()
 
 	actionPlotHistogram->setMenuText( tr("&Histogram"));
 	actionPlotStackedHistograms->setMenuText(tr("&Stacked Histogram"));
+
 	actionPlot2VerticalLayers->setMenuText(tr("&Vertical 2 Layers"));
 	actionPlot2HorizontalLayers->setMenuText(tr("&Horizontal 2 Layers"));
 	actionPlot4Layers->setMenuText(tr("&4 Layers"));
 	actionPlotStackedLayers->setMenuText(tr("&Stacked Layers"));
+
+	actionVertSharedAxisLayers->setMenuText(tr("&Vertical 2 Layers"));
+	actionHorSharedAxisLayers->setMenuText(tr("&Horizontal 2 Layers"));
+	actionSharedAxesLayers->setMenuText(tr("&4 Layers"));
+	actionStackSharedAxisLayers->setMenuText(tr("&Stacked Layers"));
+
 	actionStemPlot->setMenuText(tr("Stem-and-&Leaf Plot"));
 	actionStemPlot->setToolTip(tr("Stem-and-Leaf Plot"));
 
