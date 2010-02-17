@@ -273,6 +273,8 @@ class Graph: public QwtPlot
 
 		void updateCurvesData(Table* w, const QString& yColName);
 
+		DataCurve* dataCurve(int index){return (DataCurve *)d_curves[index];};
+
 		int curveCount(){return d_curves.size();};
 		bool validCurvesDataSize();
 		double selectedXStartValue();

@@ -1510,6 +1510,7 @@ public:
   QwtPlotCurve* curve(int index);
   QwtPlotCurve* curve(const QString &title);
   QString curveTitle(int);
+  DataCurve* dataCurve(int index);
 
   void changeCurveIndex(int fromIndex, int toIndex);
 
