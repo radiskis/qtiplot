@@ -216,6 +216,7 @@ addCurves
 addCurve
 removeCurve
 deleteFitCurves
+dataCurve
 numCurves
 addFunction
 addPolarFunction
