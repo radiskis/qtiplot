@@ -1207,6 +1207,7 @@ class QwtPlotCurve
 		const QwtSymbol& symbol() const;
 
 		void setVisible(bool on);
+		bool isVisible();
 
 	private:
 		QwtPlotCurve(const QwtPlotCurve&);
