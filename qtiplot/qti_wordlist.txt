@@ -660,6 +660,7 @@ isFullRange
 setFullRange
 updateData
 setVisible
+isVisible
 clearLabels
 plotImageProfiles
 waterfallPlot
