@@ -529,6 +529,9 @@ void PlotDialog::initLayerSpeedPage()
 
 	boxDouglasPeukerTolerance = new DoubleSpinBox();
 	boxDouglasPeukerTolerance->setLocale(locale);
+	boxDouglasPeukerTolerance->setMinimum(0.0);
+	boxDouglasPeukerTolerance->setSpecialValueText(tr("0 (all data points)"));
+
 	gl1->addWidget(new QLabel(tr("Tolerance (Douglas-Peucker algorithm)")), 1, 0);
 	gl1->addWidget(boxDouglasPeukerTolerance, 1, 1);
     gl1->setRowStretch(2, 1);

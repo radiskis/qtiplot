@@ -299,8 +299,8 @@ void Note::restore(const QStringList& data)
 
 	fields = (*line).split("\t");
 	if (fields[0] == "AutoExec"){
-	setAutoexec(fields[1] == "1");
-	line++;
+		setAutoexec(fields[1] == "1");
+		line++;
 	}
 
 	bool lineNumbers = true;
@@ -351,6 +351,10 @@ void Note::restore(const QStringList& data)
 
 			if (*line == "</content>")
 				line++;
+		} else {//even older style, no <content> tag, versions < 0.8.5
+			if (!currentEditor())
+				addTab();
+			currentEditor()->insertPlainText((*line++) + "\n");
 		}
 	}
 
