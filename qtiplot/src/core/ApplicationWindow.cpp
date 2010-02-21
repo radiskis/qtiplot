@@ -4556,14 +4556,14 @@ ApplicationWindow* ApplicationWindow::openProject(const QString& fn, bool factor
 			Note* m = openNote(app,list);
 			QStringList cont;
 			while ( s != "</note>" ){
-				s=t.readLine();
+				s = t.readLine();
 				cont << s;
 			}
 			cont.pop_back();
 			m->restore(cont);
 			progress.setValue(aux);
-				} else if  (s == "</folder>")
-						app->goToParentFolder();
+		} else if  (s == "</folder>")
+			app->goToParentFolder();
 	}
 	f.close();
 
@@ -15212,13 +15212,13 @@ Folder* ApplicationWindow::appendProject(const QString& fn, Folder* parentFolder
 				Note* m = openNote(this, lst);
 				QStringList cont;
 				while ( s != "</note>" ){
-					s=t.readLine();
+					s = t.readLine();
 					cont << s;
 				}
 				cont.pop_back();
 				m->restore(cont);
-                        } else if  (s == "</folder>")
-                                goToParentFolder();
+			} else if  (s == "</folder>")
+				goToParentFolder();
 		}
 		f.close();
 
