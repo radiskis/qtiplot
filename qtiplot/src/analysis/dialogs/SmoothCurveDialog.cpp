@@ -28,8 +28,9 @@
  *                                                                         *
  ***************************************************************************/
 #include "SmoothCurveDialog.h"
-#include "../SmoothFilter.h"
+#include "SmoothFilter.h"
 #include <Graph.h>
+#include <PlotCurve.h>
 #include <MyParser.h>
 #include <ColorBox.h>
 
@@ -171,12 +172,11 @@ void SmoothCurveDialog::setGraph(Graph *g)
 
 void SmoothCurveDialog::activateCurve(const QString& curveName)
 {
-    if (smooth_method == SmoothFilter::Average)
-	{
-	QwtPlotCurve *c = graph->curve(curveName);
-	if (!c || c->rtti() != QwtPlotItem::Rtti_PlotCurve)
-		return;
+	if (smooth_method == SmoothFilter::Average){
+		PlotCurve *c = graph->curve(curveName);
+		if (!c || c->rtti() != QwtPlotItem::Rtti_PlotCurve)
+			return;
 
-	boxPointsLeft->setMaxValue(c->dataSize()/2);
+		boxPointsLeft->setMaxValue(c->dataSize()/2);
 	}
 }

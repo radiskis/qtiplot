@@ -2044,10 +2044,21 @@ l.changeCurveIndex(int oldIndex, int newIndex)
 
 Sometimes, when performing data analysis, one might need the curve title. It is possible to obtain it using the method bellow:
 <programlisting>
-	title = l.curveTitle(curveIndex)
+title = l.curveTitle(curveIndex)
 </programlisting>
 
-Use the following function to change the axis attachment of a curve:
+It is possible to get a reference to a curve on the layer l using it's index or it's title, like shown bellow:
+<programlisting>
+c = l.curve(curveIndex)
+c = l.curve(curveTitle)
+dc = l.dataCurve(curveIndex)
+</programlisting>
+<para>Please, keep in mind the fact that the above methods might return an invalid reference
+if the curve with the specified index/title is not a PlotCurve or a DataCurve object, respectively.
+For example, an analytical function curve is a PlotCurve but not a DataCurve and spectrograms are a
+completely different type of plot items which are neither PlotCurves nor DataCurves.</para>
+
+<para>Use the following function to change the axis attachment of a curve:</para>
 <programlisting>
 l.setCurveAxes(number, x-axis, y-axis)
 </programlisting>

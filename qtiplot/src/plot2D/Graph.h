@@ -273,8 +273,6 @@ class Graph: public QwtPlot
 
 		void updateCurvesData(Table* w, const QString& yColName);
 
-		DataCurve* dataCurve(int index){return (DataCurve *)d_curves[index];};
-
 		int curveCount(){return d_curves.size();};
 		bool validCurvesDataSize();
 		double selectedXStartValue();
@@ -283,12 +281,13 @@ class Graph: public QwtPlot
 		//! Map curve pointer to index.
 		int curveIndex(QwtPlotItem *c){return d_curves.indexOf(c);};
 		//! map curve title to index
-  	    int curveIndex(const QString &title){return plotItemsList().findIndex(title);}
-  	    //! get curve by index
-  	    QwtPlotCurve* curve(int index);
-  	    //! get curve by name
-  	    QwtPlotCurve* curve(const QString &title){return curve(curveIndex(title));};
-  	    //! get curve title string by inde (convenience function for scripts)
+		int curveIndex(const QString &title){return plotItemsList().findIndex(title);}
+		DataCurve* dataCurve(int index);
+		//! get curve by index
+		PlotCurve* curve(int index);
+		//! get curve by name
+		PlotCurve* curve(const QString &title){return curve(curveIndex(title));};
+		//! get curve title string by inde (convenience function for scripts)
 		QString curveTitle(int index);
 
 		//! Returns the names of all the curves suitable for data analysis, as a string list. The list excludes error bars and spectrograms.

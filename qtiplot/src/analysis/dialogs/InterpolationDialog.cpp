@@ -156,7 +156,7 @@ void InterpolationDialog::setGraph(Graph *g)
 
 void InterpolationDialog::activateCurve(const QString& curveName)
 {
-	QwtPlotCurve *c = graph->curve(curveName);
+	PlotCurve *c = graph->curve(curveName);
 	if (!c)
 		return;
 

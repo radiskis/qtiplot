@@ -32,6 +32,7 @@
 #include <ApplicationWindow.h>
 #include <Table.h>
 #include <Graph.h>
+#include <PlotCurve.h>
 #include <MultiLayer.h>
 #include <Matrix.h>
 #include <DoubleSpinBox.h>
@@ -185,7 +186,7 @@ void FFTDialog::setGraph(Graph *g)
 void FFTDialog::activateCurve(const QString& curveName)
 {
 	if (graph){
-		QwtPlotCurve *c = graph->curve(curveName);
+		PlotCurve *c = graph->curve(curveName);
 		if (!c)
 			return;
 
