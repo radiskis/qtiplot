@@ -2658,15 +2658,24 @@ QwtPlotItem* Graph::plotItem(int index)
 	return d_curves.at(index);
 }
 
-QwtPlotCurve *Graph::curve(int index)
+PlotCurve *Graph::curve(int index)
 {
 	int curves = d_curves.size();
-    if (!curves || index >= curves || index < 0)
+	if (!curves || index >= curves || index < 0)
 		return 0;
 
 	QwtPlotItem *it = d_curves.at(index);
-    if (it && it->rtti() != QwtPlotItem::Rtti_PlotSpectrogram)
-        return (QwtPlotCurve*)it;
+	if (it && it->rtti() != QwtPlotItem::Rtti_PlotSpectrogram)
+		return (PlotCurve*)it;
+
+	return 0;
+}
+
+DataCurve * Graph::dataCurve(int index)
+{
+	PlotCurve *c = curve(index);
+	if (c && c->type() != Function)
+		return (DataCurve*)c;
 
 	return 0;
 }

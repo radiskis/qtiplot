@@ -33,6 +33,7 @@
 #include <ApplicationWindow.h>
 #include <DoubleSpinBox.h>
 #include <ColorBox.h>
+#include <PlotCurve.h>
 
 #include <QMessageBox>
 #include <QLayout>
@@ -174,7 +175,7 @@ void ExpDecayDialog::setGraph(Graph *g)
 
 void ExpDecayDialog::activateCurve(const QString& curveName)
 {
-	QwtPlotCurve *c = graph->curve(curveName);
+	PlotCurve *c = graph->curve(curveName);
 	if (!c)
 		return;
 
@@ -201,7 +202,7 @@ void ExpDecayDialog::changeDataRange()
 void ExpDecayDialog::fit()
 {
 	QString curve = boxName->currentText();
-	QwtPlotCurve *c = graph->curve(curve);
+	PlotCurve *c = graph->curve(curve);
 	QStringList curvesList = graph->analysableCurvesList();
 	if (!c || !curvesList.contains(curve)){
 		QMessageBox::critical(this,tr("QtiPlot - Warning"),

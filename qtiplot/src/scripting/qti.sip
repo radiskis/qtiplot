@@ -1508,8 +1508,8 @@ public:
   void removeCurve(QwtPlotCurve*);
   void deleteFitCurves();
   int curveCount() /PyName=numCurves/;
-  QwtPlotCurve* curve(int index);
-  QwtPlotCurve* curve(const QString &title);
+  PlotCurve* curve(int index);
+  PlotCurve* curve(const QString &title);
   QString curveTitle(int);
   DataCurve* dataCurve(int index);
 
