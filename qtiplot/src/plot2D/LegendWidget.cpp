@@ -168,7 +168,9 @@ void LegendWidget::drawVector(PlotCurve *c, QPainter *p, int x, int y, int l)
 	if (d_plot->antialiasing())
 		p->setRenderHints(QPainter::Antialiasing);
 
-	p->setPen(QwtPainter::scaledPen(v->vectorPen()));
+	QPen pen = v->vectorPen();
+	pen.setCosmetic(false);
+	p->setPen(QwtPainter::scaledPen(pen));
 	p->drawLine(x, y, x + l, y);
 
 	p->translate(x + l, y);
@@ -191,18 +193,21 @@ void LegendWidget::drawVector(PlotCurve *c, QPainter *p, int x, int y, int l)
 
 void LegendWidget::drawSymbol(PlotCurve *c, int point, QPainter *p, int x, int y, int l)
 {
-    if (!c || c->rtti() == QwtPlotItem::Rtti_PlotSpectrogram)
-        return;
+	if (!c || c->rtti() == QwtPlotItem::Rtti_PlotSpectrogram)
+		return;
 
-    if (c->type() == Graph::VectXYXY || c->type() == Graph::VectXYAM){
-        drawVector(c, p, x, y, l);
-        return;
-    }
+	if (c->type() == Graph::VectXYXY || c->type() == Graph::VectXYAM){
+		drawVector(c, p, x, y, l);
+		return;
+	}
 
 	if (c->type() == Graph::Pie){
 		QwtPieCurve *pie = (QwtPieCurve *)c;
 		const QBrush br = QBrush(pie->color(point), pie->pattern());
-		QPen pen = QwtPainter::scaledPen(pie->pen());
+		QPen pen = pie->pen();
+		pen.setCosmetic(false);
+		pen = QwtPainter::scaledPen(pen);
+
 		p->save();
 		p->setPen (QPen(pen.color(), pen.widthF(), Qt::SolidLine, Qt::FlatCap, Qt::MiterJoin));
 		QRect lr = QRect(x, y - l/4, l, l/2);
@@ -212,27 +217,34 @@ void LegendWidget::drawSymbol(PlotCurve *c, int point, QPainter *p, int x, int y
 		return;
 	}
 
-    p->save();
-    if (c->style() != 0){
-        p->setPen (QwtPainter::scaledPen(c->pen()));
+	p->save();
+	if (c->style() != 0){
+		QPen  pen = c->pen();
+		pen.setCosmetic(false);
+		p->setPen (QwtPainter::scaledPen(pen));
 		if (c->type() == Graph::VerticalBars || c->type() == Graph::HorizontalBars ||
 			c->type() == Graph::Histogram || c->type() == Graph::Box){
 			QRect lr = QRect(x, y - l/4, l, l/2);
-            p->setBrush(c->brush());
-            QwtPainter::drawRect(p, lr);
-        } else
-            QwtPainter::drawLine(p, x, y, x + l, y);
-    }
+			p->setBrush(c->brush());
+			QwtPainter::drawRect(p, lr);
+		} else
+			QwtPainter::drawLine(p, x, y, x + l, y);
+	}
 
 	QwtSymbol symb = c->symbol();
-    int symb_size = symb.size().width();
-    if (symb_size > 15)
-        symb_size = 15;
-    else if (symb_size < 3)
-        symb_size = 3;
-    symb.setSize(symb_size);
-    symb.draw(p, x + l/2, y);
-    p->restore();
+	int symb_size = symb.size().width();
+	if (symb_size > 15)
+		symb_size = 15;
+	else if (symb_size < 3)
+		symb_size = 3;
+	symb.setSize(symb_size);
+
+	QPen pen = symb.pen();
+	pen.setCosmetic(false);
+	symb.setPen(pen);
+
+	symb.draw(p, x + l/2, y);
+	p->restore();
 }
 
 void LegendWidget::drawText(QPainter *p, const QRect& rect,
