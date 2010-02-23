@@ -4081,6 +4081,7 @@ void Graph::scaleFonts(double factor)
 		QFont font = l->font();
 		font.setPointSizeFloat(factor*font.pointSizeFloat());
 		l->setFont(font);
+		l->resetOrigin();
 	}
 }
 
