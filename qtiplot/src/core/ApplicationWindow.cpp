@@ -4634,6 +4634,9 @@ ApplicationWindow* ApplicationWindow::openProject(const QString& fn, bool factor
 					}
 					openGraph(app, plot, list);
 				}
+
+				if (s.contains("<LinkXAxes>"))
+					plot->linkXLayerAxes(s.trimmed().remove("<LinkXAxes>").remove("</LinkXAxes>").toInt());
 			}
 			plot->blockSignals(false);
 			progress.setValue(aux);
@@ -4857,6 +4860,8 @@ MdiSubWindow* ApplicationWindow::openTemplate(const QString& fn)
 						}
 					openGraph(this, ml, lst);
 					}
+					if (s.contains("<LinkXAxes>"))
+						ml->linkXLayerAxes(s.trimmed().remove("<LinkXAxes>").remove("</LinkXAxes>").toInt());
 				}
 			}
 		} else {
@@ -15280,6 +15285,8 @@ Folder* ApplicationWindow::appendProject(const QString& fn, Folder* parentFolder
 						}
 						openGraph(this, plot, lst);
 					}
+					if (s.contains("<LinkXAxes>"))
+						plot->linkXLayerAxes(s.trimmed().remove("<LinkXAxes>").remove("</LinkXAxes>").toInt());
 				}
 				plot->blockSignals(false);
 			}else if  (s == "<SurfacePlot>"){//process 3D plots information

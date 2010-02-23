@@ -118,6 +118,8 @@ public:
 	void setSizePolicy(const SizePolicy& policy){d_size_policy = policy;};
 
 	void setCommonLayerAxes(bool verticalAxis = true, bool horizontalAxis = true);
+	void linkXLayerAxes(bool link = true);
+	bool hasLinkedXLayerAxes(){return d_link_x_axes;};
 
 public slots:
 	Graph* addLayer(int x = 0, int y = 0, int width = 0, int height = 0, bool = false);
@@ -216,6 +218,8 @@ public slots:
     void updateWaterfallScales(Graph *g, int axis);
     //@}
 
+	void updateLayerAxes(Graph *g, int axis);
+
 signals:
 	void showEnrichementDialog();
 	void showPlotDialog(int);
@@ -278,6 +282,7 @@ private:
 
 	AlignPolicy d_align_policy;
 	SizePolicy d_size_policy;
+	bool d_link_x_axes;
 };
 
 //! Button with layer number

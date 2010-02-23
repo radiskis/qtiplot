@@ -171,6 +171,7 @@ private:
 	void initLayerGeometryPage();
 	void initLayerSpeedPage();
 	void initFontsPage();
+	void initMiscPage();
 	void initPiePage();
 	void initPieGeometryPage();
 	void initPieLabelsPage();
@@ -294,6 +295,10 @@ private:
 	QSpinBox *boxMaxPoints;
 	DoubleSpinBox *boxDouglasPeukerTolerance;
 	QGroupBox *speedModeBox;
+
+	QWidget *miscPage;
+	QCheckBox *boxLinkXAxes;
+	QComboBox *boxLinkAllXAxes;
 
 	FunctionDialog *functionEdit;
 };

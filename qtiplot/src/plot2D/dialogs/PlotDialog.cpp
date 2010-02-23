@@ -120,6 +120,7 @@ PlotDialog::PlotDialog(bool showExtended, QWidget* parent, Qt::WFlags fl )
 	initLayerSpeedPage();
 	initFontsPage();
 	initPrintPage();
+	initMiscPage();
 	initLabelsPage();
 	initFunctionPage();
 	clearTabWidget();
@@ -308,12 +309,39 @@ void PlotDialog::changePlotType(int plotType)
 	acceptParams();
 }
 
+void PlotDialog::initMiscPage()
+{
+	miscPage = new QWidget();
+	QGridLayout *gl = new QGridLayout(miscPage);
+
+	boxLinkXAxes = new QCheckBox(tr( "Link &X axes"));
+	gl->addWidget(boxLinkXAxes, 0, 0);
+
+	QLabel *l = new QLabel(tr("Apply &to..."));
+
+	QHBoxLayout *hl = new QHBoxLayout();
+	hl->addWidget(l);
+
+	boxLinkAllXAxes = new QComboBox();
+	boxLinkAllXAxes->addItem(tr("Window"));
+	boxLinkAllXAxes->addItem(tr("All Windows"));
+	hl->addWidget(boxLinkAllXAxes);
+	hl->addStretch();
+
+	l->setBuddy(boxLinkAllXAxes);
+
+	gl->addLayout(hl, 0, 1);
+	gl->setRowStretch(1, 1);
+
+	privateTabWidget->addTab(miscPage, tr("Miscellaneous"));
+}
+
 void PlotDialog::initFontsPage()
 {
-    QGroupBox *boxFonts = new QGroupBox();
-    QGridLayout *fl = new QGridLayout(boxFonts);
+	QGroupBox *boxFonts = new QGroupBox();
+	QGridLayout *fl = new QGridLayout(boxFonts);
 
-    btnTitle = new QPushButton(tr("Titles"));
+	btnTitle = new QPushButton(tr("Titles"));
 	btnAxesLabels = new QPushButton(tr("Axes Labels"));
 	btnAxesNumbers = new QPushButton(tr("Axes Numbers"));
 	btnLegend = new QPushButton(tr("Legends"));
@@ -326,11 +354,12 @@ void PlotDialog::initFontsPage()
 	fl->setColumnStretch(4, 1);
 
 	fontsPage = new QWidget();
-	QHBoxLayout *hl = new QHBoxLayout(fontsPage);
-    hl->addWidget(boxFonts);
-	privateTabWidget->addTab(fontsPage, tr( "Fonts" ) );
+	QVBoxLayout *vl = new QVBoxLayout(fontsPage);
+	vl->addWidget(boxFonts);
 
-    connect( btnTitle, SIGNAL( clicked() ), this, SLOT( setTitlesFont() ) );
+	privateTabWidget->addTab(fontsPage, tr( "Fonts"));
+
+	connect( btnTitle, SIGNAL( clicked() ), this, SLOT( setTitlesFont() ) );
 	connect( btnAxesLabels, SIGNAL( clicked() ), this, SLOT( setAxesLabelsFont() ) );
 	connect( btnAxesNumbers, SIGNAL( clicked() ), this, SLOT( setAxesNumbersFont() ) );
 	connect( btnLegend, SIGNAL( clicked() ), this, SLOT( setLegendsFont() ) );
@@ -1504,6 +1533,8 @@ void PlotDialog::setMultiLayer(MultiLayer *ml)
 
     d_ml = ml;
 
+	boxLinkXAxes->setChecked(d_ml->hasLinkedXLayerAxes());
+
 	boxScaleLayers->setChecked(d_ml->scaleLayersOnPrint());
 	boxPrintCrops->setChecked(d_ml->printCropmarksEnabled());
 
@@ -1732,6 +1763,7 @@ void PlotDialog::updateTabWindow(QTreeWidgetItem *currentItem, QTreeWidgetItem *
         clearTabWidget();
 		privateTabWidget->addTab(printPage, tr("Print"));
         privateTabWidget->addTab(fontsPage, tr("Fonts"));
+		privateTabWidget->addTab(miscPage, tr("Miscellaneous"));
         privateTabWidget->showPage(printPage);
 
         curvePlotTypeBox->hide();
@@ -1847,6 +1879,7 @@ void PlotDialog::clearTabWidget()
 	privateTabWidget->removeTab(privateTabWidget->indexOf(speedPage));
 	privateTabWidget->removeTab(privateTabWidget->indexOf(fontsPage));
 	privateTabWidget->removeTab(privateTabWidget->indexOf(printPage));
+	privateTabWidget->removeTab(privateTabWidget->indexOf(miscPage));
 	privateTabWidget->removeTab(privateTabWidget->indexOf(functionPage));
 }
 
@@ -2466,7 +2499,22 @@ bool PlotDialog::acceptParams()
 		d_ml->setScaleLayersOnPrint(boxScaleLayers->isChecked());
 		d_ml->printCropmarks(boxPrintCrops->isChecked());
 		return true;
-    } else if (privateTabWidget->currentWidget() == layerPage){
+	} else if (privateTabWidget->currentWidget() == miscPage){
+		d_ml->linkXLayerAxes(boxLinkXAxes->isChecked());
+		if (boxLinkAllXAxes->currentIndex() == 1){
+			ApplicationWindow *app = (ApplicationWindow *)this->parent();
+			if (app){
+				QList<MdiSubWindow *> windows = app->windowsList();
+				foreach(MdiSubWindow *w, windows){
+					MultiLayer *ml = qobject_cast<MultiLayer *>(w);
+					if (ml)
+						ml->linkXLayerAxes(boxLinkXAxes->isChecked());
+				}
+			}
+		}
+		d_ml->notifyChanges();
+		return true;
+	} else if (privateTabWidget->currentWidget() == layerPage){
 		applyLayerFormat();
 		return true;
 	} else if (privateTabWidget->currentWidget() == layerGeometryPage){
