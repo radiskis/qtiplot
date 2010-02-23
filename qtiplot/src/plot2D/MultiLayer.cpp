@@ -70,6 +70,8 @@
 #include <ApplicationWindow.h>
 #include <Matrix.h>
 #include <ColorButton.h>
+#include <ScaleEngine.h>
+
 #include <gsl/gsl_vector.h>
 
 LayerButton::LayerButton(const QString& text, QWidget* parent)
@@ -123,7 +125,8 @@ d_side_lines(false),
 d_waterfall_fill_color(QColor()),
 d_canvas_size(QSize()),
 d_align_policy(AlignLayers),
-d_size_policy(UserSize)
+d_size_policy(UserSize),
+d_link_x_axes(false)
 {
 	layerButtonsBox = new QHBoxLayout();
 	waterfallBox = new QHBoxLayout();
@@ -1316,7 +1319,9 @@ void MultiLayer::connectLayer(Graph *g)
 	connect (g,SIGNAL(modifiedGraph()),this,SLOT(notifyChanges()));
 	connect (g,SIGNAL(selectedGraph(Graph*)),this, SLOT(setActiveLayer(Graph*)));
 	connect (g,SIGNAL(currentFontChanged(const QFont&)), this, SIGNAL(currentFontChanged(const QFont&)));
-    connect (g,SIGNAL(enableTextEditor(Graph *)), this, SIGNAL(enableTextEditor(Graph *)));
+	connect (g,SIGNAL(enableTextEditor(Graph *)), this, SIGNAL(enableTextEditor(Graph *)));
+	if (d_link_x_axes)
+		connect(g, SIGNAL(axisDivChanged(Graph *, int)), this, SLOT(updateLayerAxes(Graph *, int)));
 }
 
 bool MultiLayer::eventFilter(QObject *object, QEvent *e)
@@ -1507,6 +1512,7 @@ void MultiLayer::save(const QString &fn, const QString &geometry, bool saveAsTem
 		t << QString::number(d_side_lines) + "</waterfall>\n";
 	}
 
+	t << "<LinkXAxes>" + QString::number(d_link_x_axes) + "</LinkXAxes>\n";
 	t << "</multiLayer>\n";
 }
 
@@ -1626,6 +1632,7 @@ void MultiLayer::copy(MultiLayer* ml)
 	}
 
 	d_scale_layers = ml->scaleLayersOnResize();
+	linkXLayerAxes(ml->hasLinkedXLayerAxes());
 }
 
 bool MultiLayer::swapLayers(int src, int dest)
@@ -2111,6 +2118,48 @@ void MultiLayer::plotProfiles(Matrix* m)
 	color.setAlpha(0);
 	foreach(Graph *g, graphsList)
 		g->setBackgroundColor(color);
+}
+
+void MultiLayer::linkXLayerAxes(bool link)
+{
+	d_link_x_axes = link;
+
+	if (link){
+		foreach(Graph *g, graphsList)
+			connect(g, SIGNAL(axisDivChanged(Graph *, int)), this, SLOT(updateLayerAxes(Graph *, int)));
+	} else {
+		foreach(Graph *g, graphsList)
+			disconnect(g, SIGNAL(axisDivChanged(Graph *, int)), this, SLOT(updateLayerAxes(Graph *, int)));
+	}
+}
+
+void MultiLayer::updateLayerAxes(Graph *g, int axis)
+{
+	if (!g || (axis != Graph::xBottom && axis != Graph::xTop))
+		return;
+
+	ScaleEngine *se = (ScaleEngine *)g->axisScaleEngine (axis);
+	const QwtScaleDiv *sd = g->axisScaleDiv(axis);
+	if (!se || !sd)
+		return;
+
+	int majorTicks = g->axisMaxMajor(axis);
+	int minorTicks = g->axisMaxMinor(axis);
+	double step = g->axisStep(axis);
+
+	foreach(Graph *l, graphsList){
+		if (l == g)
+			continue;
+
+		l->blockSignals(true);
+		l->setScale(axis, sd->lowerBound(), sd->upperBound(), step, majorTicks, minorTicks,
+					se->type(), se->testAttribute(QwtScaleEngine::Inverted),
+					se->axisBreakLeft(), se->axisBreakRight(), se->breakPosition(),
+					se->stepBeforeBreak(), se->stepAfterBreak(), se->minTicksBeforeBreak(),
+					se->minTicksAfterBreak(), se->log10ScaleAfterBreak(), se->breakWidth(), se->hasBreakDecoration());
+		l->replot();
+		l->blockSignals(false);
+	}
 }
 
 MultiLayer::~MultiLayer()
