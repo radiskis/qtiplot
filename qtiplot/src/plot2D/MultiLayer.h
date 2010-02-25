@@ -143,6 +143,7 @@ public slots:
 	bool arrangeLayers(bool fit, bool userSize);
 	bool swapLayers(int src, int dest);
     void adjustSize();
+	void updateLayersLayout(Graph *);
 
 	int getRows(){return d_rows;};
 	void setRows(int r);

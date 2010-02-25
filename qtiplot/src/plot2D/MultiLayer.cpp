@@ -600,10 +600,13 @@ QSize MultiLayer::arrangeLayers(bool userSize)
 
 		if (d_align_policy == AlignCanvases){
 			QPoint pos = g->mapTo(d_canvas, g->canvas()->pos());
-			if (col && lg)
+			if (col && lg){
 				pos.setX(lg->mapTo(d_canvas, lg->canvas()->pos()).x() + lg->canvas()->width() + colsSpace);
-			if (row && tg)
+				pos.setY(lg->mapTo(d_canvas, lg->canvas()->pos()).y());
+			} else if (row && tg){
+				pos.setX(tg->mapTo(d_canvas, tg->canvas()->pos()).x());
 				pos.setY(tg->mapTo(d_canvas, tg->canvas()->pos()).y() + tg->canvas()->height() + rowsSpace);
+			}
 			g->setCanvasGeometry(QRect(pos, size));
 		}
 
@@ -646,10 +649,8 @@ void MultiLayer::setCommonLayerAxes(bool verticalAxis, bool horizontalAxis)
 				if (scale){
 					scale->setTitle(QString::null);
 					QwtScaleDraw *sd = aux->axisScaleDraw(QwtPlot::yRight);
-					if (sd){
+					if (sd)
 						sd->enableComponent(QwtAbstractScaleDraw::Labels, false);
-						sd->enableComponent(QwtAbstractScaleDraw::Backbone, false);
-					}
 				}
 			}
 		}
@@ -662,10 +663,8 @@ void MultiLayer::setCommonLayerAxes(bool verticalAxis, bool horizontalAxis)
 				if (scale){
 					scale->setTitle(QString::null);
 					QwtScaleDraw *sd = aux->axisScaleDraw(QwtPlot::xBottom);
-					if (sd){
+					if (sd)
 						sd->enableComponent(QwtAbstractScaleDraw::Labels, false);
-						sd->enableComponent(QwtAbstractScaleDraw::Backbone, false);
-					}
 				}
 			}
 		}
@@ -687,8 +686,10 @@ void MultiLayer::setCommonLayerAxes(bool verticalAxis, bool horizontalAxis)
 			if (scale){
 				scale->setTitle(QString::null);
 				QwtScaleDraw *sd = g->axisScaleDraw(QwtPlot::yLeft);
-				if (sd)
+				if (sd){
 					sd->enableComponent(QwtAbstractScaleDraw::Labels, false);
+					sd->enableComponent(QwtAbstractScaleDraw::Backbone, false);
+				}
 			}
 		}
 
@@ -697,8 +698,10 @@ void MultiLayer::setCommonLayerAxes(bool verticalAxis, bool horizontalAxis)
 			if (scale){
 				scale->setTitle(QString::null);
 				QwtScaleDraw *sd = g->axisScaleDraw(QwtPlot::xTop);
-				if (sd)
+				if (sd){
 					sd->enableComponent(QwtAbstractScaleDraw::Labels, false);
+					sd->enableComponent(QwtAbstractScaleDraw::Backbone, false);
+				}
 			}
 		}
 		g->updateLayout();
@@ -774,6 +777,7 @@ bool MultiLayer::arrangeLayers(bool fit, bool userSize)
 
 	emit modifiedPlot();
 	QApplication::restoreOverrideCursor();
+
 	return true;
 }
 
@@ -2162,11 +2166,24 @@ void MultiLayer::updateLayerAxes(Graph *g, int axis)
 	}
 }
 
+void MultiLayer::updateLayersLayout(Graph *g)
+{
+	if (!g || g != graphsList.last())
+		return;
+
+	disconnect (g, SIGNAL(updatedLayout(Graph *)), this, SLOT(updateLayersLayout(Graph *)));
+	arrangeLayers(false, true);
+	foreach(Graph *ag, graphsList){
+		if (ag->curveCount())
+			ag->newLegend();
+	}
+}
+
 MultiLayer::~MultiLayer()
 {
 	if(d_layers_selector)
-        d_layers_selector->setParent(NULL);
+		d_layers_selector->setParent(NULL);
 
 	foreach(Graph *g, graphsList)
-        delete g;
+		delete g;
 }

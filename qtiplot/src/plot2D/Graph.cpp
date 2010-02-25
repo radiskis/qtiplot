@@ -4000,9 +4000,14 @@ void Graph::updateMarkersBoundingRect(bool rescaleEvent)
 	foreach(FrameWidget *f, d_enrichments){
 		if (f->attachPolicy() == FrameWidget::Scales)
 			f->resetCoordinates();
-		else if (rescaleEvent)
-			f->updateCoordinates();
+		else if (rescaleEvent){
+			if (qobject_cast<LegendWidget *>(f))
+				f->resetOrigin();
+			else
+				f->updateCoordinates();
+		}
 	}
+	replot();
 
 	if (!d_lines.size())
 		return;
@@ -5938,28 +5943,30 @@ void Graph::axisLabelFormat(int axis, char &f, int &prec) const
 */
 void Graph::updateLayout()
 {
-    plotLayout()->activate(this, contentsRect());
-    // resize and show the visible widgets
+	plotLayout()->activate(this, contentsRect());
+	// resize and show the visible widgets
 
-    if (!titleLabel()->text().isEmpty()){
-        titleLabel()->setGeometry(plotLayout()->titleRect());
-        if (!titleLabel()->isVisible())
-            titleLabel()->show();
-    } else
+	if (!titleLabel()->text().isEmpty()){
+		titleLabel()->setGeometry(plotLayout()->titleRect());
+		if (!titleLabel()->isVisible())
+			titleLabel()->show();
+	} else
 		titleLabel()->hide();
 
-    for (int axisId = 0; axisId < axisCnt; axisId++ ){
-        if (axisEnabled(axisId) ){
-            axisWidget(axisId)->setGeometry(plotLayout()->scaleRect(axisId));
-            if (!axisWidget(axisId)->isVisible())
-                axisWidget(axisId)->show();
-        } else
-            axisWidget(axisId)->hide();
-    }
+	for (int axisId = 0; axisId < axisCnt; axisId++){
+		if (axisEnabled(axisId) ){
+			axisWidget(axisId)->setGeometry(plotLayout()->scaleRect(axisId));
+			if (!axisWidget(axisId)->isVisible())
+				axisWidget(axisId)->show();
+		} else
+			axisWidget(axisId)->hide();
+	}
 
-    canvas()->setUpdatesEnabled(false);
-    canvas()->setGeometry(plotLayout()->canvasRect());
-    canvas()->setUpdatesEnabled(true);
+	canvas()->setUpdatesEnabled(false);
+	canvas()->setGeometry(plotLayout()->canvasRect());
+	canvas()->setUpdatesEnabled(true);
+
+	updatedLayout(this);
 }
 
 /*!
@@ -5977,7 +5984,7 @@ void Graph::setCanvasGeometry(const QRect &cr)
 	rect.adjust(cr.x() - ocr.x(), cr.y() - ocr.y(), cr.right() - ocr.right(), cr.bottom() - ocr.bottom());
 	setGeometry(rect);
 
-	updateMarkersBoundingRect(false);
+	updateMarkersBoundingRect();
 	autoScaleFonts = scaleFonts;
 }
 
@@ -5996,7 +6003,7 @@ void Graph::setCanvasSize(const QSize &size)
 	rect.adjust(0, 0, size.width() - ocr.width(), size.height() - ocr.height());
 	setGeometry(rect);
 
-	updateMarkersBoundingRect(false);
+	updateMarkersBoundingRect();
 	autoScaleFonts = scaleFonts;
 }
 

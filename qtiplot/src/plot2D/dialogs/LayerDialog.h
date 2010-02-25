@@ -46,8 +46,14 @@ class LayerDialog : public QDialog
     Q_OBJECT
 
 public:
-    LayerDialog( QWidget* parent = 0, Qt::WFlags fl = 0 );
+	LayerDialog(QWidget* parent, bool okMode = false, Qt::WFlags fl = 0);
 	void setMultiLayer(MultiLayer *g);
+	void setLayers(int layers);
+	void setLayerCanvasSize(int w, int h, int unit);
+	void setMargins(int, int, int, int);
+	void setRows(int);
+	void setColumns(int);
+	void setSharedAxes(bool = true);
 
 protected slots:
 	void accept();

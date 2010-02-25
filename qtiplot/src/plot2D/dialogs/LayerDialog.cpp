@@ -31,18 +31,19 @@
 #include <DoubleSpinBox.h>
 
 #include <QLayout>
-#include <QSpinBox>
 #include <QCheckBox>
 #include <QGroupBox>
 #include <QPushButton>
 #include <QLabel>
+#include <QSpinBox>
 #include <QComboBox>
 #include <QFontDialog>
 #include <QFont>
 #include <QMessageBox>
 
-LayerDialog::LayerDialog( QWidget* parent, Qt::WFlags fl )
-: QDialog( parent, fl )
+LayerDialog::LayerDialog( QWidget* parent, bool okMode, Qt::WFlags fl )
+: QDialog(parent, fl),
+multi_layer(NULL)
 {
 	setName("LayerDialog");
 	setWindowTitle(tr( "QtiPlot - Arrange Layers" ));
@@ -182,15 +183,22 @@ LayerDialog::LayerDialog( QWidget* parent, Qt::WFlags fl )
 	gl4->addWidget(boxBottomSpace, 3, 1);
 	gl4->setRowStretch(4, 1);
 
-	buttonApply = new QPushButton(tr( "&Apply" ));
 	buttonOk = new QPushButton(tr( "&OK" ));
 	buttonCancel = new QPushButton(tr( "&Cancel" ));
+	buttonApply = NULL;
 
 	QHBoxLayout *hbox1 = new QHBoxLayout();
-    hbox1->addStretch();
-	hbox1->addWidget(buttonApply);
+	hbox1->addStretch();
+
+	if (!okMode){
+		buttonApply = new QPushButton(tr( "&Apply" ));
+		connect( buttonApply, SIGNAL( clicked() ), this, SLOT(update() ) );
+		hbox1->addWidget(buttonApply);
+	}
+
 	hbox1->addWidget(buttonOk);
 	hbox1->addWidget(buttonCancel);
+	hbox1->addStretch();
 
 	QGroupBox *gb5 = new QGroupBox(tr("Swap Layers"));
 	QHBoxLayout *hbox2 = new QHBoxLayout(gb5);
@@ -223,7 +231,6 @@ LayerDialog::LayerDialog( QWidget* parent, Qt::WFlags fl )
 
 	connect( buttonSwapLayers, SIGNAL( clicked() ), this, SLOT( swapLayers() ) );
 	connect( buttonOk, SIGNAL( clicked() ), this, SLOT( accept() ) );
-	connect( buttonApply, SIGNAL( clicked() ), this, SLOT(update() ) );
 	connect( buttonCancel, SIGNAL( clicked() ), this, SLOT( reject() ) );
 	connect( fitBox, SIGNAL( toggled(bool) ), this, SLOT(enableLayoutOptions(bool) ) );
 	connect(unitBox, SIGNAL(activated(int)), this, SLOT(updateSizes(int)));
@@ -283,8 +290,13 @@ void LayerDialog::setMultiLayer(MultiLayer *g)
 
 void LayerDialog::update()
 {
-	if (!multi_layer)
-		return;
+	if (!multi_layer){
+		ApplicationWindow *app = (ApplicationWindow *)this->parent();
+		multi_layer = app->multilayerPlot(1, -1, app->defaultCurveStyle, MultiLayer::AlignLayers);
+		QList<Graph *> layersList = multi_layer->layersList();
+		foreach(Graph *g, layersList)
+			g->removeLegend();
+	}
 
 	int graphs = layersBox->value();
 	int old_graphs = multi_layer->numLayers();
@@ -305,8 +317,8 @@ void LayerDialog::update()
 			app->setPreferences(multi_layer->layer(i));
 	}
 
-	int cols=boxX->value();
-	int rows=boxY->value();
+	int cols = boxX->value();
+	int rows = boxY->value();
 
 	if (cols>graphs && !fitBox->isChecked()){
 		QMessageBox::about(this, tr("QtiPlot - Columns input error"),
@@ -349,6 +361,11 @@ void LayerDialog::update()
 	multi_layer->setAlignPolicy((MultiLayer::AlignPolicy)alignPolicyBox->currentIndex());
 	multi_layer->setSpacing(boxRowsGap->value(), boxColsGap->value());
 	multi_layer->arrangeLayers(fitBox->isChecked(), GroupCanvasSize->isChecked());
+	if (!buttonApply){
+		QList<Graph *> layersList = multi_layer->layersList();
+		foreach(Graph *g, layersList)
+			g->newLegend();
+	}
 
 	if (!GroupCanvasSize->isChecked()){//show new layer canvas size
 		boxCanvasWidth->blockSignals(true);
@@ -493,4 +510,51 @@ void LayerDialog::showCommonAxesBox()
 {
 	commonAxesBox->setVisible(alignPolicyBox->currentIndex() == MultiLayer::AlignCanvases &&
 							  (boxColsGap->value() == 0 || boxRowsGap->value() == 0));
+}
+
+void LayerDialog::setLayers(int layers)
+{
+	layersBox->setValue(layers);
+}
+
+void LayerDialog::setLayerCanvasSize(int w, int h, int unit)
+{
+	boxCanvasWidth->blockSignals(true);
+	boxCanvasWidth->setValue(convertFromPixels(w, (FrameWidget::Unit)unit, 0));
+	boxCanvasWidth->blockSignals(false);
+	boxCanvasHeight->blockSignals(true);
+	boxCanvasHeight->setValue(convertFromPixels(h, (FrameWidget::Unit)unit, 1));
+	boxCanvasHeight->blockSignals(false);
+	unitBox->blockSignals(true);
+	unitBox->setCurrentIndex(unit);
+	unitBox->blockSignals(false);
+	aspect_ratio = boxCanvasWidth->value()/boxCanvasHeight->value();
+	GroupCanvasSize->setChecked(true);
+}
+
+void LayerDialog::setRows(int r)
+{
+	boxY->setValue(r);
+}
+
+void LayerDialog::setColumns(int c)
+{
+	boxX->setValue(c);
+}
+
+void LayerDialog::setMargins(int l, int t, int r, int b)
+{
+	boxLeftSpace->setValue(l);
+	boxRightSpace->setValue(r);
+	boxTopSpace->setValue(t);
+	boxBottomSpace->setValue(b);
+}
+
+void LayerDialog::setSharedAxes(bool on)
+{
+	alignPolicyBox->setCurrentIndex(MultiLayer::AlignCanvases);
+	commonAxesBox->setChecked(on);
+	commonAxesBox->setVisible(true);
+	boxColsGap->setValue(0);
+	boxRowsGap->setValue(0);
 }
