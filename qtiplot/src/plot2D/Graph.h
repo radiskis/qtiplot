@@ -757,6 +757,7 @@ signals:
 		void currentFontChanged(const QFont&);
         void enableTextEditor(Graph *);
         void axisDivChanged(Graph *, int);
+		void updatedLayout(Graph *);
 
 	private:
 		QList<FrameWidget*> stackingOrderEnrichmentsList();

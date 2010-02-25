@@ -1441,12 +1441,14 @@ void ApplicationWindow::plotMenuAboutToShow()
 	panelsMenu->addAction(actionPlot2HorizontalLayers);
 	panelsMenu->addAction(actionPlot4Layers);
 	panelsMenu->addAction(actionPlotStackedLayers);
+	panelsMenu->addAction(actionCustomLayout);
 
 	QMenu *gridMenu = plot2DMenu->addMenu (tr("Shared A&xes Panel"));
 	gridMenu->addAction(actionVertSharedAxisLayers);
 	gridMenu->addAction(actionHorSharedAxisLayers);
 	gridMenu->addAction(actionSharedAxesLayers);
 	gridMenu->addAction(actionStackSharedAxisLayers);
+	gridMenu->addAction(actionCustomSharedAxisLayers);
 
 	QMenu *plot3D = plot2DMenu->addMenu (tr("3&D Plot"));
 	plot3D->addAction(actionPlot3DRibbon);
@@ -2538,7 +2540,7 @@ MultiLayer* ApplicationWindow::multilayerPlot(int c, int r, int style, const Mul
 	if (!validFor2DPlot(t, (Graph::CurveType)style))
 		return 0;
 
-	QStringList list = t->selectedYColumns();
+	QStringList list = t->drawableColumnSelection();
 	if((int)list.count() < 1) {
 		QMessageBox::warning(this, tr("QtiPlot - Plot error"), tr("Please select a Y column to plot!"));
 		return 0;
@@ -2554,8 +2556,18 @@ MultiLayer* ApplicationWindow::multilayerPlot(int c, int r, int style, const Mul
 	int i = 0;
 	foreach(Graph *ag, layersList){
 		setPreferences(ag);
-		if (i < curves)
-			ag->addCurves(t, QStringList(list[i]), style, defaultCurveLineWidth, defaultSymbolSize);
+		if (i < curves){
+			QStringList lst = QStringList() << list[i];
+			for (int j = 0; j < curves; j++){
+				int col = t->colIndex(list[j]);
+				if (t->colPlotDesignation(col) == Table::xErr ||
+					t->colPlotDesignation(col) == Table::yErr ||
+					t->colPlotDesignation(col) == Table::Label){
+					lst << list[j];
+				}
+			}
+			ag->addCurves(t, lst, style, defaultCurveLineWidth, defaultSymbolSize);
+		}
 		i++;
 	}
 
@@ -2563,13 +2575,14 @@ MultiLayer* ApplicationWindow::multilayerPlot(int c, int r, int style, const Mul
 		g->setAlignPolicy(align);
 		g->setSpacing(0, 0);
 		g->setCommonLayerAxes();
+		connect(layersList.last(), SIGNAL(updatedLayout(Graph *)), g, SLOT(updateLayersLayout(Graph *)));
+	} else {
+		g->arrangeLayers(false, true);
+		foreach(Graph *ag, layersList){
+			if (ag->curveCount())
+				ag->newLegend();
+		}
 	}
-
-	g->arrangeLayers(false, true);
-
-	foreach(Graph *ag, layersList)
-		ag->newLegend();
-
 	return g;
 }
 
@@ -2691,6 +2704,8 @@ void ApplicationWindow::setPreferences(Graph* g)
 				ScaleDraw *sd = (ScaleDraw *)g->axisScaleDraw (i);
 				sd->enableComponent(QwtAbstractScaleDraw::Labels, d_show_axes_labels[i]);
 				sd->setSpacing(d_graph_tick_labels_dist);
+				if (i == QwtPlot::yRight && !d_show_axes_labels[i])
+					g->setAxisTitle(i, tr(" "));
 			}
 		}
 
@@ -7057,6 +7072,7 @@ void ApplicationWindow::showColMenu(int c)
 		panels.addAction(actionPlot2HorizontalLayers);
 		panels.addAction(actionPlot4Layers);
 		panels.addAction(actionPlotStackedLayers);
+		panels.addAction(actionCustomLayout);
 		panels.setTitle(tr("Pa&nel"));
 		plot.addMenu(&panels);
 
@@ -7064,6 +7080,7 @@ void ApplicationWindow::showColMenu(int c)
 		gridMenu.addAction(actionHorSharedAxisLayers);
 		gridMenu.addAction(actionSharedAxesLayers);
 		gridMenu.addAction(actionStackSharedAxisLayers);
+		gridMenu.addAction(actionCustomSharedAxisLayers);
 		gridMenu.setTitle(tr("Shared A&xes Panel"));
 		plot.addMenu(&gridMenu);
 
@@ -7146,6 +7163,29 @@ void ApplicationWindow::plotSharedAxesLayers()
 void ApplicationWindow::plotStackSharedAxisLayers()
 {
 	multilayerPlot(1, -1, defaultCurveStyle, MultiLayer::AlignCanvases);
+}
+
+void ApplicationWindow::plotCustomLayout(bool sharedAxes)
+{
+	Table *t = (Table *)activeWindow(TableWindow);
+	if (!t || !validFor2DPlot(t, (Graph::CurveType)defaultCurveStyle))
+		return;
+
+	QStringList list = t->drawableColumnSelection();
+	int curves = list.count();
+	if(curves < 1){
+		QMessageBox::warning(this, tr("QtiPlot - Plot error"), tr("Please select a Y column to plot!"));
+		return;
+	}
+
+	LayerDialog *id = new LayerDialog(this, true);
+	id->setLayers(curves);
+	id->setRows(curves);
+	id->setMargins(5, 5, 5, 5);
+	id->setLayerCanvasSize(d_layer_canvas_width, d_layer_canvas_height, d_layer_geometry_unit);
+	if (sharedAxes)
+		id->setSharedAxes();
+	id->exec();
 }
 
 void ApplicationWindow::plot2VerticalLayers()
@@ -13035,6 +13075,12 @@ void ApplicationWindow::createActions()
 	actionStackSharedAxisLayers = new QAction(QIcon(":/stacked.png"), tr("&Stacked Layers"), this);
 	connect(actionStackSharedAxisLayers, SIGNAL(activated()), this, SLOT(plotStackSharedAxisLayers()));
 
+	actionCustomSharedAxisLayers = new QAction(QIcon(":/arrangeLayers.png"), tr("&Custom Layout..."), this);
+	connect(actionCustomSharedAxisLayers, SIGNAL(activated()), this, SLOT(plotCustomLayoutSharedAxes()));
+
+	actionCustomLayout = new QAction(QIcon(":/arrangeLayers.png"), tr("&Custom Layout..."), this);
+	connect(actionCustomLayout, SIGNAL(activated()), this, SLOT(plotCustomLayout()));
+
 	actionPlotDoubleYAxis = new QAction(QIcon(":/plot_double_y.png"), tr("D&ouble-Y"), this);
 	connect(actionPlotDoubleYAxis, SIGNAL(activated()), this, SLOT(plotDoubleYAxis()));
 
@@ -13932,6 +13978,8 @@ void ApplicationWindow::translateActionsStrings()
 	actionHorSharedAxisLayers->setMenuText(tr("&Horizontal 2 Layers"));
 	actionSharedAxesLayers->setMenuText(tr("&4 Layers"));
 	actionStackSharedAxisLayers->setMenuText(tr("&Stacked Layers"));
+	actionCustomSharedAxisLayers->setMenuText(tr("&Custom Layout..."));
+	actionCustomLayout->setMenuText(tr("&Custom Layout..."));
 
 	actionStemPlot->setMenuText(tr("Stem-and-&Leaf Plot"));
 	actionStemPlot->setToolTip(tr("Stem-and-Leaf Plot"));

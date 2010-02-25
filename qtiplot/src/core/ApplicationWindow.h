@@ -318,6 +318,8 @@ public slots:
 	void plotVerticalSharedAxisLayers();
 	void plotHorizontalSharedAxisLayers();
 	void plotSharedAxesLayers();
+	void plotCustomLayout(bool sharedAxes = false);
+	void plotCustomLayoutSharedAxes(){plotCustomLayout(true);};
 	//@}
 
 	//! \name 3D Data Plots
@@ -1445,6 +1447,7 @@ private:
     QAction *actionIncreaseIndent, *actionDecreaseIndent, *actionFind, *actionFindNext, *actionFindPrev, *actionReplace;
     QAction *actionIncreasePrecision, *actionDecreasePrecision, *actionPrintPreview;
 	QAction *actionVertSharedAxisLayers, *actionHorSharedAxisLayers, *actionSharedAxesLayers, *actionStackSharedAxisLayers;
+	QAction *actionCustomSharedAxisLayers, *actionCustomLayout;
 
     QList<QAction *> d_user_actions;
     QUndoView *d_undo_view;
