@@ -1403,7 +1403,7 @@ void Graph::exportVector(const QString& fileName, int res, bool color,
 {
 	if (fileName.isEmpty()){
 		QMessageBox::critical(this, tr("QtiPlot - Error"), tr("Please provide a valid file name!"));
-        return;
+		return;
 	}
 
 	QPrinter printer;
@@ -1412,7 +1412,7 @@ void Graph::exportVector(const QString& fileName, int res, bool color,
 
 	printer.setDocName(multiLayer()->objectName());
 	printer.setFontEmbeddingEnabled(true);
-    printer.setCreator("QtiPlot");
+	printer.setCreator("QtiPlot");
 	printer.setFullPage(true);
 	QRect r = rect();
 	QRect br = boundingRect();
@@ -1447,11 +1447,11 @@ void Graph::exportVector(const QString& fileName, int res, bool color,
 	} else
 		printer.setPaperSize (QSizeF(br.size()), QPrinter::DevicePixel);
 
-    printer.setOutputFileName(fileName);
-    if (fileName.contains(".eps"))
-    	printer.setOutputFormat(QPrinter::PostScriptFormat);
+	printer.setOutputFileName(fileName);
+	if (fileName.contains(".eps"))
+		printer.setOutputFormat(QPrinter::PostScriptFormat);
 
-    if (color)
+	if (color)
 		printer.setColorMode(QPrinter::Color);
 	else
 		printer.setColorMode(QPrinter::GrayScale);
@@ -1460,7 +1460,7 @@ void Graph::exportVector(const QString& fileName, int res, bool color,
 
 	scaleFonts(fontsFactor);
 
-    QPainter paint(&printer);
+	QPainter paint(&printer);
 	print(&paint, r);
 
 	scaleFonts(1.0/fontsFactor);
