@@ -2,7 +2,8 @@
     File                 : AxesDialog.cpp
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2006 by Ion Vasilief, Tilman Hoener zu Siederdissen
+	Copyright            : (C) 2004 - 2010 by Ion Vasilief,
+						   (C) 2006 - June 2007 Tilman Hoener zu Siederdissen
     Email (use @ for *)  : ion_vasilief*yahoo.fr, thzs*gmx.net
     Description          : General plot options dialog
 
@@ -557,27 +558,35 @@ void AxesDialog::initAxesPage()
 	boxMinorTicksType->addItem(tr( "In" ) );
 	leftBoxLayout->addWidget( boxMinorTicksType, 4, 1);
 
-	leftBoxLayout->addWidget( new QLabel(tr("Labels space")), 5, 0);
+	leftBoxLayout->addWidget( new QLabel(tr( "Hide Ticks" )), 5, 0 );
+	showTicksPolicyBox = new QComboBox();
+	showTicksPolicyBox->addItem(tr("None"));
+	showTicksPolicyBox->addItem(tr("At Axis Begin"));
+	showTicksPolicyBox->addItem(tr("At Axis End"));
+	showTicksPolicyBox->addItem(tr("At Axis Begin & End"));
+	leftBoxLayout->addWidget(showTicksPolicyBox, 5, 1);
+
+	leftBoxLayout->addWidget( new QLabel(tr("Labels space")), 6, 0);
 	boxTickLabelDistance = new QSpinBox();
 	boxTickLabelDistance->setRange( 0, 10000);
 	boxTickLabelDistance->setSuffix(" " + tr("pixels"));
-	leftBoxLayout->addWidget(boxTickLabelDistance, 5, 1);
+	leftBoxLayout->addWidget(boxTickLabelDistance, 6, 1);
 
-	leftBoxLayout->addWidget( new QLabel(tr("Stand-off")), 6, 0);
+	leftBoxLayout->addWidget( new QLabel(tr("Stand-off")), 7, 0);
 	boxBaseline = new QSpinBox();
 	boxBaseline->setRange( 0, 1000 );
 	boxBaseline->setSuffix(" " + tr("pixels"));
-	leftBoxLayout->addWidget(boxBaseline, 6, 1);
+	leftBoxLayout->addWidget(boxBaseline, 7, 1);
 
 	QLabel *l = new QLabel(tr("Apply &to"));
-	leftBoxLayout->addWidget(l, 7, 0);
+	leftBoxLayout->addWidget(l, 8, 0);
 
 	axisFormatApplyToBox = new QComboBox();
 	axisFormatApplyToBox->insertItem(tr("Axis"));
 	axisFormatApplyToBox->insertItem(tr("Layer"));
     axisFormatApplyToBox->insertItem(tr("Window"));
     axisFormatApplyToBox->insertItem(tr("All Windows"));
-	leftBoxLayout->addWidget(axisFormatApplyToBox, 7, 1);
+	leftBoxLayout->addWidget(axisFormatApplyToBox, 8, 1);
 	l->setBuddy(axisFormatApplyToBox);
 
 	boxShowLabels = new QGroupBox(tr("Show Labels"));
@@ -674,6 +683,7 @@ void AxesDialog::initAxesPage()
     connect(boxAxisNumColor, SIGNAL(colorChanged()), this, SLOT(updatePlot()));
 	connect(boxMajorTicksType, SIGNAL(activated(int)), this, SLOT(updatePlot()));
 	connect(boxMinorTicksType, SIGNAL(activated(int)), this, SLOT(updatePlot()));
+	connect(showTicksPolicyBox, SIGNAL(activated(int)), this, SLOT(updatePlot()));
 	connect(boxBaseline, SIGNAL(valueChanged(int)), this, SLOT(updatePlot()));
 	connect(boxAxisBackbone, SIGNAL(clicked(bool)), this, SLOT(updatePlot()));
 	connect(boxTickLabelDistance, SIGNAL(valueChanged(int)), this, SLOT(updatePlot()));
@@ -976,7 +986,7 @@ void AxesDialog::showAxis()
     showAxis(axis, boxAxisType->currentIndex(), boxColName->currentText(),ok, boxMajorTicksType->currentIndex(),
             boxMinorTicksType->currentIndex(), boxShowLabels->isChecked(), boxAxisColor->color(), boxFormat->currentIndex(),
 			boxPrecision->value(), boxAngle->value(), boxBaseline->value(), formula, boxAxisNumColor->color(),
-			boxTickLabelDistance->value(), boxAxisBackbone->isChecked());
+			boxTickLabelDistance->value(), boxAxisBackbone->isChecked(), showTicksPolicyBox->currentIndex());
 }
 
 void AxesDialog::updateShowBox(int axis)
@@ -1395,7 +1405,7 @@ bool AxesDialog::updatePlot(QWidget *page)
 		showAxis(axis, format, formatInfo, boxShowAxis->isChecked(), boxMajorTicksType->currentIndex(), boxMinorTicksType->currentIndex(),
 				boxShowLabels->isChecked(), boxAxisColor->color(), boxFormat->currentIndex(),
 				boxPrecision->value(), boxAngle->value(), baseline, formula, boxAxisNumColor->color(),
-				boxTickLabelDistance->value(), boxAxisBackbone->isChecked());
+				boxTickLabelDistance->value(), boxAxisBackbone->isChecked(), showTicksPolicyBox->currentIndex());
 
 		if (axis == QwtPlot::yRight){
 			QwtScaleWidget *scale = d_graph->axisWidget(axis);
@@ -1671,6 +1681,10 @@ void AxesDialog::updateSpacing()
 		boxTickLabelDistance->blockSignals(true);
 		boxTickLabelDistance->setValue(sd->spacing());
 		boxTickLabelDistance->blockSignals(false);
+
+		showTicksPolicyBox->blockSignals(true);
+		showTicksPolicyBox->setCurrentIndex(sd->showTicksPolicy());
+		showTicksPolicyBox->blockSignals(false);
 	}
 }
 
@@ -1723,7 +1737,7 @@ void AxesDialog::updateTickLabelsList(bool on)
     showAxis(axis, type, formatInfo, boxShowAxis->isChecked(), boxMajorTicksType->currentIndex(), boxMinorTicksType->currentIndex(),
                   boxShowLabels->isChecked(), boxAxisColor->color(), boxFormat->currentIndex(), boxPrecision->value(),
 				  boxAngle->value(), boxBaseline->value(), formula, boxAxisNumColor->color(),
-				  boxTickLabelDistance->value(), boxAxisBackbone->isChecked());
+				  boxTickLabelDistance->value(), boxAxisBackbone->isChecked(), showTicksPolicyBox->currentIndex());
 }
 
 void AxesDialog::setCurrentScale(int axisPos)
@@ -1792,7 +1806,7 @@ void AxesDialog::setLabelsNumericFormat(int)
     showAxis(axis, type, formatInfo, boxShowAxis->isChecked(), boxMajorTicksType->currentIndex(),
 			boxMinorTicksType->currentIndex(), boxShowLabels->isChecked(), boxAxisColor->color(),
 			format, prec, boxAngle->value(), boxBaseline->value(), formula, boxAxisNumColor->color(),
-			boxTickLabelDistance->value(), boxAxisBackbone->isChecked());
+			boxTickLabelDistance->value(), boxAxisBackbone->isChecked(), showTicksPolicyBox->currentIndex());
 }
 
 void AxesDialog::showAxisFormula(int axis)
@@ -1917,7 +1931,8 @@ void AxesDialog::updateMinorTicksList(int scaleType)
 
 void AxesDialog::showAxis(int axis, int type, const QString& labelsColName, bool axisOn,
 		int majTicksType, int minTicksType, bool labelsOn, const QColor& c, int format,
-		int prec, int rotation, int baselineDist, const QString& formula, const QColor& labelsColor, int spacing, bool backbone)
+		int prec, int rotation, int baselineDist, const QString& formula, const QColor& labelsColor,
+		int spacing, bool backbone, int showTicks)
 {
 	ApplicationWindow *app = (ApplicationWindow *)this->parent();
 	if (!app)
@@ -1930,7 +1945,7 @@ void AxesDialog::showAxis(int axis, int type, const QString& labelsColName, bool
 	if (!d_graph)
 		return;
 	d_graph->showAxis(axis, type, labelsColName, w, axisOn, majTicksType, minTicksType, labelsOn,
-			c, format, prec, rotation, baselineDist, formula, labelsColor, spacing, backbone);
+			c, format, prec, rotation, baselineDist, formula, labelsColor, spacing, backbone, (ScaleDraw::ShowTicksPolicy)showTicks);
 }
 
 void AxesDialog::applyCanvasFormatTo(Graph *g)
@@ -2036,6 +2051,7 @@ void AxesDialog::applyAxisFormatToLayer(Graph *g)
 		ScaleDraw *sd = (ScaleDraw *) d_graph->axisScaleDraw(i);
 		sd->setSpacing(boxTickLabelDistance->value());
 		sd->enableComponent (QwtAbstractScaleDraw::Backbone, boxAxisBackbone->isChecked());
+		sd->setShowTicksPolicy((ScaleDraw::ShowTicksPolicy)showTicksPolicyBox->currentIndex());
 
 		axis->repaint();
 	}

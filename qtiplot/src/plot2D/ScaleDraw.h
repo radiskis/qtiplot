@@ -45,6 +45,7 @@ public:
 	enum ScaleType{Numeric = 0, Text = 1, Day = 2, Month = 3, Time = 4, Date = 5, ColHeader = 6};
 	enum NumericFormat{Automatic, Decimal, Scientific, Superscripts, Engineering, SuperscriptsGER};
 	enum NameFormat{ShortName, LongName, Initial};
+	enum ShowTicksPolicy{ShowAll = 0, HideBegin = 1, HideEnd = 2, HideBeginEnd = 3};
 
     //! Constructs a new scale draw which is a clone of sd.
     ScaleDraw(Graph *plot, ScaleDraw *sd);
@@ -68,6 +69,9 @@ public:
 
 	int minorTicksStyle()const {return d_minTicks;};
 	void setMinorTicksStyle(TicksStyle type){d_minTicks = type;};
+
+	ShowTicksPolicy showTicksPolicy(){return d_show_ticks_policy;};
+	void setShowTicksPolicy(const ShowTicksPolicy& policy){d_show_ticks_policy = policy;};
 
 	void setSelected(bool select = true){d_selected = select;};
 
@@ -130,5 +134,7 @@ private:
 	QString d_format_info;
 	//! Stores the labels for Txt scales
 	QStringList d_text_labels;
+
+	ShowTicksPolicy d_show_ticks_policy;
 };
 #endif

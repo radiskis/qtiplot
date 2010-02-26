@@ -58,7 +58,8 @@ ScaleDraw::ScaleDraw(Graph *plot, const QString& formula):
 	d_name_format(ShortName),
 	d_date_time_origin(QDateTime::currentDateTime()),
 	d_format_info("YYYY-MM-DDTHH:MM:SS"),
-	d_text_labels(QStringList())
+	d_text_labels(QStringList()),
+	d_show_ticks_policy(ShowAll)
 {}
 
 ScaleDraw::ScaleDraw(Graph *plot, const QStringList& labels, const QString& format, ScaleType type):
@@ -92,6 +93,7 @@ ScaleDraw::ScaleDraw(Graph *plot, ScaleDraw* sd):
 	d_date_time_origin = sd->d_date_time_origin;
 	d_format_info = sd->d_format_info;
 	d_text_labels = sd->d_text_labels;
+	d_show_ticks_policy = sd->showTicksPolicy();
 
 	setLabelAlignment(sd->labelAlignment());
 	setLabelRotation(sd->labelRotation());
@@ -331,6 +333,27 @@ void ScaleDraw::drawLabel(QPainter *painter, double value) const
         	return;
 	}
 
+	QwtValueList majTicks = scaleDiv().ticks(QwtScaleDiv::MajorTick);
+	if (majTicks.contains(value)){
+		switch (d_show_ticks_policy){
+			case ShowAll:
+			break;
+
+			case HideBegin:
+				if (majTicks.first() == value)
+					return;
+			break;
+			case HideEnd:
+				if (majTicks.last() == value)
+					return;
+			break;
+			case HideBeginEnd:
+				if (majTicks.first() == value || majTicks.last() == value)
+					return;
+			break;
+		}
+	}
+
 	QwtText lbl = tickLabel(painter->font(), value);
     if ( lbl.isEmpty() )
         return;
@@ -473,9 +496,29 @@ void ScaleDraw::drawTick(QPainter *p, double value, int len) const
     }
 
 	QwtScaleDiv scDiv = scaleDiv();
-    QwtValueList majTicks = scDiv.ticks(QwtScaleDiv::MajorTick);
-    if (majTicks.contains(value) && (d_majTicks == In || d_majTicks == None))
-        return;
+	QwtValueList majTicks = scDiv.ticks(QwtScaleDiv::MajorTick);
+	if (majTicks.contains(value)){
+		if (d_majTicks == In || d_majTicks == None)
+			return;
+
+		switch (d_show_ticks_policy){
+			case ShowAll:
+			break;
+
+			case HideBegin:
+				if (majTicks.first() == value)
+					return;
+			break;
+			case HideEnd:
+				if (majTicks.last() == value)
+					return;
+			break;
+			case HideBeginEnd:
+				if (majTicks.first() == value || majTicks.last() == value)
+					return;
+			break;
+		}
+	}
 
     QwtValueList medTicks = scDiv.ticks(QwtScaleDiv::MediumTick);
     if (medTicks.contains(value) && (d_minTicks == In || d_minTicks == None))

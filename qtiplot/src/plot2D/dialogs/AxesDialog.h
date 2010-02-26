@@ -119,7 +119,7 @@ private slots:
 	void changeMinorTicksLength (int minLength);
 	void changeMajorTicksLength (int majLength);
 	void pageChanged ( QWidget *page);
-	void showAxis(int, int, const QString&, bool, int, int, bool, const QColor&, int, int, int, int, const QString&, const QColor&, int, bool);
+	void showAxis(int, int, const QString&, bool, int, int, bool, const QColor&, int, int, int, int, const QString&, const QColor&, int, bool, int);
     void applyCanvasFormat();
     void setFrameDefaultValues();
 	void applyAxisFormat();
@@ -215,6 +215,8 @@ protected:
 	QCheckBox *invertTitleBox;
 	QCheckBox* boxAxisBackbone;
 	QSpinBox *boxTickLabelDistance;
+
+	QComboBox *showTicksPolicyBox;
 };
 
 #endif

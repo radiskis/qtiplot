@@ -535,7 +535,7 @@ class Graph: public QwtPlot
 		void showAxis(int axis, int type, const QString& formatInfo, Table *table, bool axisOn,
 				int majTicksType, int minTicksType, bool labelsOn, const QColor& c, int format,
 				int prec, int rotation, int baselineDist, const QString& formula, const QColor& labelsColor,
-				int spacing = 4, bool backbone = true);
+				int spacing = 4, bool backbone = true, const ScaleDraw::ShowTicksPolicy& showTicks = ScaleDraw::ShowAll);
 
 		void enableAxis(int axis, bool on = true);
 		void enableAxisLabels(int axis, bool on = true);
