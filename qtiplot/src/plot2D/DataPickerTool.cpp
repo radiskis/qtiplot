@@ -252,7 +252,7 @@ bool DataPickerTool::keyEventFilter(QKeyEvent *ke)
 		case Qt::Key_Plus:
 			if (d_selected_curve) {
 				int n_points = d_selected_curve->dataSize();
-				if (ke->modifiers () == Qt::ShiftModifier)
+				if (ke->modifiers () & Qt::ShiftModifier)
 					setSelection(d_selected_curve, (d_selected_point + 10) % n_points);
 				else
 					setSelection(d_selected_curve, (d_selected_point + 1) % n_points);
@@ -265,7 +265,7 @@ bool DataPickerTool::keyEventFilter(QKeyEvent *ke)
 		case Qt::Key_Minus:
 			if (d_selected_curve) {
 				int n_points = d_selected_curve->dataSize();
-				if (ke->modifiers () == Qt::ShiftModifier)
+				if (ke->modifiers () & Qt::ShiftModifier)
 					setSelection(d_selected_curve, (d_selected_point - 10 + n_points) % n_points);
 				else
 					setSelection(d_selected_curve, (d_selected_point - 1 + n_points) % n_points);
