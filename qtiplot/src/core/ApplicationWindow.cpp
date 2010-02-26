@@ -12036,6 +12036,16 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot, co
 					sd->setSpacing(lst[i].toInt());
 			}
 		}
+		else if (s.contains ("ShowTicksPolicy"))
+		{
+			QStringList lst = s.split("\t");
+			lst.removeFirst();
+			for (int i = 0; i < QwtPlot::axisCnt; i++){
+				ScaleDraw *sd = (ScaleDraw *)ag->axisScaleDraw (i);
+				if (sd && lst.count() > i)
+					sd->setShowTicksPolicy((ScaleDraw::ShowTicksPolicy)lst[i].toInt());
+			}
+		}
 		else if (s.contains ("CanvasFrame")){
 			QStringList lst = s.split("\t");
 			ag->setCanvasFrame(lst[1].toInt(), QColor(lst[2]));

@@ -479,38 +479,38 @@ QString Graph::saveAxesLabelsType()
 
 QString Graph::saveTicksType()
 {
-	QList<int> ticksTypeList=getMajorTicksType();
-	QString s="MajorTicks\t";
-	for (int i=0; i<4; i++)
-		s+=QString::number(ticksTypeList[i])+"\t";
+	QList<int> ticksTypeList = getMajorTicksType();
+	QString s = "MajorTicks";
+	for (int i = 0; i < 4; i++)
+		s += "\t" + QString::number(ticksTypeList[i]);
 	s += "\n";
 
-	ticksTypeList=getMinorTicksType();
-	s += "MinorTicks\t";
-	for (int i=0; i<4; i++)
-		s+=QString::number(ticksTypeList[i])+"\t";
+	ticksTypeList = getMinorTicksType();
+	s += "MinorTicks";
+	for (int i = 0; i < 4; i++)
+		s += "\t" + QString::number(ticksTypeList[i]);
 
-	return s+"\n";
+	return s + "\n";
 }
 
 QString Graph::saveEnabledTickLabels()
 {
-	QString s="EnabledTickLabels\t";
-	for (int axis=0; axis<QwtPlot::axisCnt; axis++){
+	QString s = "EnabledTickLabels";
+	for (int axis = 0; axis < QwtPlot::axisCnt; axis++){
 		const QwtScaleDraw *sd = axisScaleDraw (axis);
-		s += QString::number(sd->hasComponent(QwtAbstractScaleDraw::Labels))+"\t";
+		s += "\t" + QString::number(sd->hasComponent(QwtAbstractScaleDraw::Labels));
 	}
-	return s+"\n";
+	return s + "\n";
 }
 
 QString Graph::saveLabelsFormat()
 {
-	QString s="LabelsFormat\t";
-	for (int axis=0; axis<QwtPlot::axisCnt; axis++){
-		s += QString::number(axisLabelFormat(axis))+"\t";
-		s += QString::number(axisLabelPrecision(axis))+"\t";
+	QString s = "LabelsFormat";
+	for (int axis = 0; axis < QwtPlot::axisCnt; axis++){
+		s += "\t" + QString::number(axisLabelFormat(axis));
+		s += "\t" + QString::number(axisLabelPrecision(axis));
 	}
-	return s+"\n";
+	return s + "\n";
 }
 
 QString Graph::saveAxesBaseline()
@@ -542,6 +542,13 @@ QString Graph::saveTickLabelsSpace()
 	for (int i = 0; i < QwtPlot::axisCnt; i++){
 		const QwtScaleDraw *sd = axisScaleDraw (i);
 		s += "\t" + QString::number(sd->spacing());
+	}
+	s += "\n";
+
+	s += "ShowTicksPolicy";
+	for (int axis = 0; axis < QwtPlot::axisCnt; axis++){
+		ScaleDraw *sd = (ScaleDraw *)axisScaleDraw (axis);
+		s += "\t" + QString::number(sd->showTicksPolicy());
 	}
 	return s + "\n";
 }
@@ -668,7 +675,7 @@ void Graph::changeTicksLength(int minLength, int majLength)
 void Graph::showAxis(int axis, int type, const QString& formatInfo, Table *table,
 		bool axisOn, int majTicksType, int minTicksType, bool labelsOn,
 		const QColor& c,  int format, int prec, int rotation, int baselineDist,
-		const QString& formula, const QColor& labelsColor, int  spacing, bool backbone)
+		const QString& formula, const QColor& labelsColor, int  spacing, bool backbone, const ScaleDraw::ShowTicksPolicy& showTicks)
 {
 	enableAxis(axis, axisOn);
 	if (!axisOn)
@@ -694,7 +701,8 @@ void Graph::showAxis(int axis, int type, const QString& formatInfo, Table *table
 		scale->margin() == baselineDist &&
 		sd->hasComponent(QwtAbstractScaleDraw::Labels) == labelsOn &&
 		sd->spacing() == spacing &&
-		sd->hasComponent(QwtAbstractScaleDraw::Backbone) == backbone)
+		sd->hasComponent(QwtAbstractScaleDraw::Backbone) == backbone &&
+		sd->showTicksPolicy() == showTicks)
 		return;
 
 	scale->setMargin(baselineDist);
@@ -735,6 +743,7 @@ void Graph::showAxis(int axis, int type, const QString& formatInfo, Table *table
 	sd = (ScaleDraw *)axisScaleDraw (axis);
 	sd->enableComponent(QwtAbstractScaleDraw::Backbone, backbone);
 	sd->setSpacing(spacing);
+	sd->setShowTicksPolicy(showTicks);
 
 	setAxisTicksLength(axis, majTicksType, minTicksType,
 			minorTickLength(), majorTickLength());
@@ -4441,6 +4450,7 @@ void Graph::copy(Graph* g)
 		ScaleDraw *sdg = (ScaleDraw *)g->axisScaleDraw (i);
 		sd->enableComponent (QwtAbstractScaleDraw::Backbone, sdg->hasComponent(QwtAbstractScaleDraw::Backbone));
 		sd->setSpacing(sdg->spacing());
+		sd->setShowTicksPolicy(sdg->showTicksPolicy());
 	}
 
 	setAxisLabelRotation(QwtPlot::xBottom, g->labelsRotation(QwtPlot::xBottom));
