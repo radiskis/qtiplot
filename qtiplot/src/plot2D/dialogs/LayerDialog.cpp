@@ -56,6 +56,10 @@ multi_layer(NULL)
 	layersBox->setRange(0, 100);
 	gl1->addWidget(layersBox, 0, 1);
 
+	linkXAxesBox = new QCheckBox(tr("Link &X axes"));
+	linkXAxesBox->setChecked(false);
+	gl1->addWidget(linkXAxesBox, 1, 0);
+
 	fitBox = new QCheckBox(tr("Automatic &layout"));
 	fitBox->setChecked(false);
 	gl1->addWidget(fitBox, 1, 1);
@@ -259,6 +263,8 @@ void LayerDialog::setMultiLayer(MultiLayer *g)
 	boxX->setValue(g->getCols());
 	boxY->setValue(g->getRows());
 
+	linkXAxesBox->setChecked(g->hasLinkedXLayerAxes());
+
 	alignPolicyBox->setCurrentIndex(g->alignPolicy());
 	boxColsGap->setValue(g->colsSpacing());
 	boxRowsGap->setValue(g->rowsSpacing());
@@ -357,6 +363,7 @@ void LayerDialog::update()
 			boxTopSpace->value(), boxBottomSpace->value());
 
 	multi_layer->setScaleLayersOnResize(!fixedSizeBox->isChecked());
+	multi_layer->linkXLayerAxes(linkXAxesBox->isChecked());
 
 	multi_layer->setAlignPolicy((MultiLayer::AlignPolicy)alignPolicyBox->currentIndex());
 	multi_layer->setSpacing(boxRowsGap->value(), boxColsGap->value());

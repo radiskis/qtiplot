@@ -1078,6 +1078,7 @@ private slots:
 	void customMenu(QMdiSubWindow* w);
 	void windowActivated(QMdiSubWindow *w);
 	void custom2DPlotTools(MultiLayer *);
+	void updateExplorerWindowLayout(Qt::DockWidgetArea);
 
 	void analysisMenuAboutToShow();
 	void scriptingMenuAboutToShow();
