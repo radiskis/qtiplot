@@ -1024,6 +1024,7 @@ void ApplicationWindow::initToolBars()
 	menuPlotSpecial->addAction(actionPlot2HorizontalLayers);
 	menuPlotSpecial->addAction(actionPlot4Layers);
 	menuPlotSpecial->addAction(actionPlotStackedLayers);
+	menuPlotSpecial->addAction(actionCustomSharedAxisLayers);
 
 	QToolButton *btnPlotSpecial = new QToolButton(this);
 	btnPlotSpecial->setMenu(menuPlotSpecial);

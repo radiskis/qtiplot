@@ -4009,12 +4009,8 @@ void Graph::updateMarkersBoundingRect(bool rescaleEvent)
 	foreach(FrameWidget *f, d_enrichments){
 		if (f->attachPolicy() == FrameWidget::Scales)
 			f->resetCoordinates();
-		else if (rescaleEvent){
-			if (qobject_cast<LegendWidget *>(f))
-				f->resetOrigin();
-			else
-				f->updateCoordinates();
-		}
+		else if (rescaleEvent)
+			f->updateCoordinates();
 	}
 	replot();
 
