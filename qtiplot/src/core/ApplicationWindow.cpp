@@ -825,9 +825,10 @@ void ApplicationWindow::initToolBars()
 
 	QToolButton *btn_zoom = new QToolButton(this);
 	btn_zoom->setMenu(menu_zoom);
-	btn_zoom->setPopupMode(QToolButton::InstantPopup);
-	btn_zoom->setIcon(QIcon(":/magnifier.png"));
-	btn_zoom->setToolTip(tr("Zoom"));
+	btn_zoom->setPopupMode(QToolButton::MenuButtonPopup);
+	btn_zoom->setDefaultAction(actionMagnify);
+	connect(menu_zoom, SIGNAL(triggered(QAction *)), btn_zoom, SLOT(setDefaultAction(QAction *)));
+
 	plotTools->addWidget(btn_zoom);
 
 	btnCursor = new QAction(tr("&Data Reader"), this);
@@ -943,19 +944,37 @@ void ApplicationWindow::initToolBars()
 
 	QMenu *menuPlotLine = new QMenu(this);
 	menuPlotLine->addAction(actionPlotL);
-	menuPlotLine->addAction(actionPlotSpline);
 	menuPlotLine->addAction(actionPlotHorSteps);
 	menuPlotLine->addAction(actionPlotVertSteps);
 
 	QToolButton *btnPlotLine = new QToolButton(this);
 	btnPlotLine->setMenu(menuPlotLine);
-	btnPlotLine->setPopupMode(QToolButton::InstantPopup);
-	btnPlotLine->setIcon(QIcon(":/lPlot.png"));
-	btnPlotLine->setToolTip(tr("Plot as line"));
+	btnPlotLine->setPopupMode(QToolButton::MenuButtonPopup);
+	btnPlotLine->setDefaultAction(actionPlotL);
+	connect(menuPlotLine, SIGNAL(triggered(QAction *)), btnPlotLine, SLOT(setDefaultAction(QAction *)));
 	tableTools->addWidget(btnPlotLine);
 
-	tableTools->addAction(actionPlotP);
-	tableTools->addAction(actionPlotLP);
+	QMenu *menuPlotScatter = new QMenu(this);
+	menuPlotScatter->addAction(actionPlotP);
+	menuPlotScatter->addAction(actionPlotVerticalDropLines);
+
+	QToolButton *btnPlotScatter = new QToolButton(this);
+	btnPlotScatter->setMenu(menuPlotScatter);
+	btnPlotScatter->setPopupMode(QToolButton::MenuButtonPopup);
+	btnPlotScatter->setDefaultAction(actionPlotP);
+	connect(menuPlotScatter, SIGNAL(triggered(QAction *)), btnPlotScatter, SLOT(setDefaultAction(QAction *)));
+	tableTools->addWidget(btnPlotScatter);
+
+	QMenu *menuPlotLineSymbol = new QMenu(this);
+	menuPlotLineSymbol->addAction(actionPlotLP);
+	menuPlotLineSymbol->addAction(actionPlotSpline);
+
+	QToolButton *btnPlotLineSymbol = new QToolButton(this);
+	btnPlotLineSymbol->setMenu(menuPlotLineSymbol);
+	btnPlotLineSymbol->setPopupMode(QToolButton::MenuButtonPopup);
+	btnPlotLineSymbol->setDefaultAction(actionPlotLP);
+	connect(menuPlotLineSymbol, SIGNAL(triggered(QAction *)), btnPlotLineSymbol, SLOT(setDefaultAction(QAction *)));
+	tableTools->addWidget(btnPlotLineSymbol);
 
 	QMenu *menuPlotBars = new QMenu(this);
 	menuPlotBars->addAction(actionPlotVerticalBars);
@@ -965,9 +984,9 @@ void ApplicationWindow::initToolBars()
 
 	QToolButton *btnPlotBars = new QToolButton(this);
 	btnPlotBars->setMenu(menuPlotBars);
-	btnPlotBars->setPopupMode(QToolButton::InstantPopup);
-	btnPlotBars->setIcon(QIcon(":/vertBars.png"));
-	btnPlotBars->setToolTip(tr("Plot with bars"));
+	btnPlotBars->setPopupMode(QToolButton::MenuButtonPopup);
+	btnPlotBars->setDefaultAction(actionPlotVerticalBars);
+	connect(menuPlotBars, SIGNAL(triggered(QAction *)), btnPlotBars, SLOT(setDefaultAction(QAction *)));
 	tableTools->addWidget(btnPlotBars);
 
 	tableTools->addAction(actionPlotArea);
@@ -981,9 +1000,9 @@ void ApplicationWindow::initToolBars()
 
 	QToolButton *btnStatisticPlots = new QToolButton(this);
 	btnStatisticPlots->setMenu(menuStatisticPlots);
-	btnStatisticPlots->setPopupMode(QToolButton::InstantPopup);
-	btnStatisticPlots->setIcon(QIcon(":/boxPlot.png"));
-	btnStatisticPlots->setToolTip(tr("Statistical Graphs"));
+	btnStatisticPlots->setPopupMode(QToolButton::MenuButtonPopup);
+	btnStatisticPlots->setDefaultAction(actionBoxPlot);
+	connect(menuStatisticPlots, SIGNAL(triggered(QAction *)), btnStatisticPlots, SLOT(setDefaultAction(QAction *)));
 	tableTools->addWidget(btnStatisticPlots);
 
 	QMenu *menuVectorPlots = new QMenu(this);
@@ -992,14 +1011,27 @@ void ApplicationWindow::initToolBars()
 
 	QToolButton *btnVectorPlots = new QToolButton(this);
 	btnVectorPlots->setMenu(menuVectorPlots);
-	btnVectorPlots->setPopupMode(QToolButton::InstantPopup);
-	btnVectorPlots->setIcon(QIcon(":/vectXYXY.png"));
-	btnVectorPlots->setToolTip(tr("Plot Vectors"));
+	btnVectorPlots->setPopupMode(QToolButton::MenuButtonPopup);
+	btnVectorPlots->setDefaultAction(actionPlotVectXYXY);
+	connect(menuVectorPlots, SIGNAL(triggered(QAction *)), btnVectorPlots, SLOT(setDefaultAction(QAction *)));
 	tableTools->addWidget(btnVectorPlots);
 
-	tableTools->addAction(actionPlotDoubleYAxis);
-	tableTools->addAction(actionWaterfallPlot);
-	tableTools->addAction(actionAddZoomPlot);
+	QMenu *menuPlotSpecial = new QMenu(this);
+	menuPlotSpecial->addAction(actionPlotDoubleYAxis);
+	menuPlotSpecial->addAction(actionWaterfallPlot);
+	menuPlotSpecial->addAction(actionAddZoomPlot);
+	menuPlotSpecial->addAction(actionPlot2VerticalLayers);
+	menuPlotSpecial->addAction(actionPlot2HorizontalLayers);
+	menuPlotSpecial->addAction(actionPlot4Layers);
+	menuPlotSpecial->addAction(actionPlotStackedLayers);
+
+	QToolButton *btnPlotSpecial = new QToolButton(this);
+	btnPlotSpecial->setMenu(menuPlotSpecial);
+	btnPlotSpecial->setPopupMode(QToolButton::MenuButtonPopup);
+	btnPlotSpecial->setDefaultAction(actionPlotDoubleYAxis);
+	connect(menuPlotSpecial, SIGNAL(triggered(QAction *)), btnPlotSpecial, SLOT(setDefaultAction(QAction *)));
+	tableTools->addWidget(btnPlotSpecial);
+
 	tableTools->addSeparator ();
 
 	QMenu *menu3DPlots = new QMenu(this);
@@ -1010,9 +1042,9 @@ void ApplicationWindow::initToolBars()
 
 	QToolButton *btn3DPlots = new QToolButton(this);
 	btn3DPlots->setMenu(menu3DPlots);
-	btn3DPlots->setPopupMode(QToolButton::InstantPopup);
-	btn3DPlots->setIcon(QIcon(":/bars.png"));
-	btn3DPlots->setToolTip(tr("Plot 3D"));
+	btn3DPlots->setPopupMode(QToolButton::MenuButtonPopup);
+	btn3DPlots->setDefaultAction(actionPlot3DBars);
+	connect(menu3DPlots, SIGNAL(triggered(QAction *)), btn3DPlots, SLOT(setDefaultAction(QAction *)));
 	tableTools->addWidget(btn3DPlots);
 
 	tableTools->setEnabled(false);
