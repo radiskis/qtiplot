@@ -369,6 +369,7 @@ void ApplicationWindow::init(bool factorySettings)
 	connect(scriptEnv, SIGNAL(print(const QString&)), this, SLOT(scriptPrint(const QString&)));
 
 	connect(recent, SIGNAL(activated(int)), this, SLOT(openRecentProject(int)));
+	connect(explorerWindow, SIGNAL(dockLocationChanged (Qt::DockWidgetArea)), this, SLOT(updateExplorerWindowLayout(Qt::DockWidgetArea)));
 
 	// this has to be done after connecting scriptEnv
 	scriptEnv->initialize();
@@ -380,6 +381,25 @@ void ApplicationWindow::init(bool factorySettings)
 
     loadCustomActions();
     initCompleter();
+}
+
+void ApplicationWindow::updateExplorerWindowLayout(Qt::DockWidgetArea area)
+{
+	switch(area){
+		case Qt::LeftDockWidgetArea:
+		case Qt::RightDockWidgetArea:
+			explorerSplitter->setOrientation(Qt::Vertical);
+		break;
+
+		case Qt::TopDockWidgetArea:
+		case Qt::BottomDockWidgetArea:
+		case Qt::NoDockWidgetArea:
+			explorerSplitter->setOrientation(Qt::Horizontal);
+		break;
+
+		default:
+			break;
+	}
 }
 
 void ApplicationWindow::initWindow()
@@ -921,26 +941,80 @@ void ApplicationWindow::initToolBars()
 	tableTools->setIconSize( QSize(16, 20));
 	addToolBar(Qt::TopToolBarArea, tableTools);
 
-	tableTools->addAction(actionPlotL);
+	QMenu *menuPlotLine = new QMenu(this);
+	menuPlotLine->addAction(actionPlotL);
+	menuPlotLine->addAction(actionPlotSpline);
+	menuPlotLine->addAction(actionPlotHorSteps);
+	menuPlotLine->addAction(actionPlotVertSteps);
+
+	QToolButton *btnPlotLine = new QToolButton(this);
+	btnPlotLine->setMenu(menuPlotLine);
+	btnPlotLine->setPopupMode(QToolButton::InstantPopup);
+	btnPlotLine->setIcon(QIcon(":/lPlot.png"));
+	btnPlotLine->setToolTip(tr("Plot as line"));
+	tableTools->addWidget(btnPlotLine);
+
 	tableTools->addAction(actionPlotP);
 	tableTools->addAction(actionPlotLP);
-	tableTools->addAction(actionPlotVerticalBars);
-	tableTools->addAction(actionPlotHorizontalBars);
+
+	QMenu *menuPlotBars = new QMenu(this);
+	menuPlotBars->addAction(actionPlotVerticalBars);
+	menuPlotBars->addAction(actionPlotHorizontalBars);
+	menuPlotBars->addAction(actionStackColumns);
+	menuPlotBars->addAction(actionStackBars);
+
+	QToolButton *btnPlotBars = new QToolButton(this);
+	btnPlotBars->setMenu(menuPlotBars);
+	btnPlotBars->setPopupMode(QToolButton::InstantPopup);
+	btnPlotBars->setIcon(QIcon(":/vertBars.png"));
+	btnPlotBars->setToolTip(tr("Plot with bars"));
+	tableTools->addWidget(btnPlotBars);
+
 	tableTools->addAction(actionPlotArea);
 	tableTools->addAction(actionPlotPie);
-	tableTools->addAction(actionPlotHistogram);
-	tableTools->addAction(actionStemPlot);
-	tableTools->addAction(actionBoxPlot);
-	tableTools->addAction(actionPlotVectXYXY);
-	tableTools->addAction(actionPlotVectXYAM);
+
+	QMenu *menuStatisticPlots = new QMenu(this);
+	menuStatisticPlots->addAction(actionBoxPlot);
+	menuStatisticPlots->addAction(actionPlotHistogram);
+	menuStatisticPlots->addAction(actionPlotStackedHistograms);
+	menuStatisticPlots->addAction(actionStemPlot);
+
+	QToolButton *btnStatisticPlots = new QToolButton(this);
+	btnStatisticPlots->setMenu(menuStatisticPlots);
+	btnStatisticPlots->setPopupMode(QToolButton::InstantPopup);
+	btnStatisticPlots->setIcon(QIcon(":/boxPlot.png"));
+	btnStatisticPlots->setToolTip(tr("Statistical Graphs"));
+	tableTools->addWidget(btnStatisticPlots);
+
+	QMenu *menuVectorPlots = new QMenu(this);
+	menuVectorPlots->addAction(actionPlotVectXYXY);
+	menuVectorPlots->addAction(actionPlotVectXYAM);
+
+	QToolButton *btnVectorPlots = new QToolButton(this);
+	btnVectorPlots->setMenu(menuVectorPlots);
+	btnVectorPlots->setPopupMode(QToolButton::InstantPopup);
+	btnVectorPlots->setIcon(QIcon(":/vectXYXY.png"));
+	btnVectorPlots->setToolTip(tr("Plot Vectors"));
+	tableTools->addWidget(btnVectorPlots);
+
 	tableTools->addAction(actionPlotDoubleYAxis);
 	tableTools->addAction(actionWaterfallPlot);
 	tableTools->addAction(actionAddZoomPlot);
 	tableTools->addSeparator ();
-	tableTools->addAction(actionPlot3DRibbon);
-	tableTools->addAction(actionPlot3DBars);
-	tableTools->addAction(actionPlot3DScatter);
-	tableTools->addAction(actionPlot3DTrajectory);
+
+	QMenu *menu3DPlots = new QMenu(this);
+	menu3DPlots->addAction(actionPlot3DBars);
+	menu3DPlots->addAction(actionPlot3DRibbon);
+	menu3DPlots->addAction(actionPlot3DScatter);
+	menu3DPlots->addAction(actionPlot3DTrajectory);
+
+	QToolButton *btn3DPlots = new QToolButton(this);
+	btn3DPlots->setMenu(menu3DPlots);
+	btn3DPlots->setPopupMode(QToolButton::InstantPopup);
+	btn3DPlots->setIcon(QIcon(":/bars.png"));
+	btn3DPlots->setToolTip(tr("Plot 3D"));
+	tableTools->addWidget(btn3DPlots);
+
 	tableTools->setEnabled(false);
     tableTools->hide();
 
