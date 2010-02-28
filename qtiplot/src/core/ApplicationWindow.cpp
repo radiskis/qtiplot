@@ -1106,21 +1106,36 @@ void ApplicationWindow::initToolBars()
 	plotMatrixBar->setObjectName("plotMatrixBar");
 	addToolBar(Qt::BottomToolBarArea, plotMatrixBar);
 
-	actionPlot3DWireFrame->addTo(plotMatrixBar);
-	actionPlot3DHiddenLine->addTo(plotMatrixBar);
+	QMenu *menu3DMatrix = new QMenu(this);
+	menu3DMatrix->addAction(actionPlot3DWireFrame);
+	menu3DMatrix->addAction(actionPlot3DHiddenLine);
+	menu3DMatrix->addAction(actionPlot3DWireSurface);
+	menu3DMatrix->addAction(actionPlot3DPolygons);
 
-	actionPlot3DPolygons->addTo(plotMatrixBar);
-	actionPlot3DWireSurface->addTo(plotMatrixBar);
-
-	plotMatrixBar->addSeparator();
+	QToolButton *btn3DMatrix = new QToolButton(this);
+	btn3DMatrix->setMenu(menu3DMatrix);
+	btn3DMatrix->setPopupMode(QToolButton::MenuButtonPopup);
+	btn3DMatrix->setDefaultAction(actionPlot3DWireSurface);
+	connect(menu3DMatrix, SIGNAL(triggered(QAction *)), btn3DMatrix, SLOT(setDefaultAction(QAction *)));
+	plotMatrixBar->addWidget(btn3DMatrix);
 
 	actionPlot3DBars->addTo(plotMatrixBar);
 	actionPlot3DScatter->addTo(plotMatrixBar);
 
 	plotMatrixBar->addSeparator();
-	actionColorMap->addTo(plotMatrixBar);
-	actionContourMap->addTo(plotMatrixBar);
-	actionGrayMap->addTo(plotMatrixBar);
+
+	QMenu *menuContourPlot = new QMenu(this);
+	menuContourPlot->addAction(actionColorMap);
+	menuContourPlot->addAction(actionContourMap);
+	menuContourPlot->addAction(actionGrayMap);
+
+	QToolButton *btnContourPlot = new QToolButton(this);
+	btnContourPlot->setMenu(menuContourPlot);
+	btnContourPlot->setPopupMode(QToolButton::MenuButtonPopup);
+	btnContourPlot->setDefaultAction(actionColorMap);
+	connect(menuContourPlot, SIGNAL(triggered(QAction *)), btnContourPlot, SLOT(setDefaultAction(QAction *)));
+	plotMatrixBar->addWidget(btnContourPlot);
+
 	actionImagePlot->addTo(plotMatrixBar);
 	actionImageProfilesPlot->addTo(plotMatrixBar);
 	actionPlotHistogram->addTo(plotMatrixBar);

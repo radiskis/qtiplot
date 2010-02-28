@@ -279,6 +279,8 @@ public slots:
 
 	 //! Min and max values of the matrix.
   	void range(double *min, double *max);
+	//! Returns true if no data values were set for this matrix
+	bool isEmpty();
 
 	//! Scroll to row (row starts with 1)
 	void goToRow(int row);

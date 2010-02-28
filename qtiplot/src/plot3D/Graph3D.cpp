@@ -382,19 +382,19 @@ void Graph3D::addRibbon(Table* table,const QString& xColName, const QString& yCo
 		return;
 
 	int xcol = table->colIndex(xColName);
-	int ycol =  table->colIndex(yColName);
+	int ycol = table->colIndex(yColName);
 
 	if (xcol < 0 || ycol < 0)
 		return;
 
     bool empty = !sp->hasData();
 
-	plotAssociation = xColName+"(X)," + yColName+"(Y)";
+	plotAssociation = xColName + "(X)," + yColName + "(Y)";
 	d_table = table;
 	d_table_plot_type = Ribbon;
-	int r=table->numRows();
-	int i, xmesh=0, ymesh=2;
-	for (i = 0; i < r; i++){
+	int r = table->numRows();
+	int xmesh = 0, ymesh = 2;
+	for (int i = 0; i < r; i++){
 		if (!table->text(i,xcol).isEmpty() && !table->text(i,ycol).isEmpty())
 			xmesh++;
 	}
@@ -403,12 +403,12 @@ void Graph3D::addRibbon(Table* table,const QString& xColName, const QString& yCo
 		xmesh++;
 
 	double **data = Matrix::allocateMatrixData(xmesh, ymesh);
-	gsl_vector * x = gsl_vector_alloc (xmesh);
-	gsl_vector * y = gsl_vector_alloc (xmesh);
+	gsl_vector *x = gsl_vector_alloc (xmesh);
+	gsl_vector *y = gsl_vector_alloc (xmesh);
 
 	for (int j = 0; j < ymesh; j++){
-		int k=0;
-		for (i = 0; i < r; i++){
+		int k = 0;
+		for (int i = 0; i < r; i++){
 			if (!table->text(i,xcol).isEmpty() && !table->text(i,ycol).isEmpty()){
 				gsl_vector_set (x, k, table->cell(i, xcol));
 
@@ -496,7 +496,7 @@ void Graph3D::addRibbon(Table* table,const QString& xColName,const QString& yCol
 
 void Graph3D::addMatrixData(Matrix* m)
 {
-	if (!m || d_matrix == m)
+	if (!m || d_matrix == m || m->isEmpty())
 		return;
 
 	d_table = NULL;
@@ -538,7 +538,7 @@ void Graph3D::addMatrixData(Matrix* m)
 void Graph3D::addMatrixData(Matrix* m, double xl, double xr,
 		double yl, double yr, double zl, double zr)
 {
-	if (!m)
+	if (!m || m->isEmpty())
 		return;
 
 	d_matrix = m;
@@ -643,12 +643,18 @@ void Graph3D::loadData(Table* table, int xCol, int yCol, int zCol,
 			Qwt3D::Cell cell;
 			cell.push_back(index);
 			if (index > 0)
-                cell.push_back(index-1);
+				cell.push_back(index-1);
 			cells.push_back (cell);
 			index ++;
 		}
 	}
+	if (!index){
+		clearData();
+		return;
+	}
+
 	sp->makeCurrent();
+
 	if (!d_active_curve)
 		d_active_curve = addCurve();
 	d_active_curve->loadFromData (data, cells);
@@ -757,8 +763,16 @@ void Graph3D::updateDataXY(Table* table, int xCol, int yCol)
 
 void Graph3D::updateMatrixData(Matrix* m)
 {
-	int cols=m->numCols();
-	int rows=m->numRows();
+	if (!m)
+		return;
+
+	if (m->isEmpty()){
+		clearData();
+		return;
+	}
+
+	int cols = m->numCols();
+	int rows = m->numRows();
 
 	double **data = Matrix::allocateMatrixData(cols, rows);
 	for (int i = 0; i < cols; i++ ){
