@@ -32,6 +32,10 @@
 #include <QFileOpenEvent>
 #include <QTimer>
 
+#ifdef Q_WS_MAC
+	void qt_mac_set_menubar_merge(bool enable);
+#endif
+
 QtiPlotApplication::QtiPlotApplication( int & argc, char ** argv) : QApplication( argc, argv)
 {
 	QStringList args = arguments();
@@ -65,6 +69,10 @@ QtiPlotApplication::QtiPlotApplication( int & argc, char ** argv) : QApplication
 
 	#ifdef QTIPLOT_DEMO
 		QTimer::singleShot(600000, this, SLOT(close()));
+	#endif
+
+	#ifdef Q_WS_MAC
+		qt_mac_set_menubar_merge(false);
 	#endif
 }
 
