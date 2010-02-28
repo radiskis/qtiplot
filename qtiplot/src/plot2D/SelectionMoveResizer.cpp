@@ -349,7 +349,7 @@ void SelectionMoveResizer::mousePressEvent(QMouseEvent *me)
 		return;
 	}
 
-	if (me->button() == Qt::LeftButton){
+	if (me->button() == Qt::LeftButton && !d_widgets.isEmpty()){
 		FrameWidget *fw = qobject_cast<FrameWidget *>(d_widgets[0]);
 		if (fw && fw->plot()){
 			QList <FrameWidget *> lst = fw->plot()->enrichmentsList();
