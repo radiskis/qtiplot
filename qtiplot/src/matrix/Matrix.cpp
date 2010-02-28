@@ -1105,6 +1105,16 @@ void Matrix::exportEMF(const QString& fileName)
 }
 #endif
 
+bool Matrix::isEmpty()
+{
+	double min, max;
+	range(&min, &max);
+	if (gsl_isnan(min) && gsl_isnan(max))
+		return true;
+
+	return false;
+}
+
 void Matrix::range(double *min, double *max)
 {
 	double d_min = cell(0, 0);
