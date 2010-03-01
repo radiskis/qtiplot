@@ -27,9 +27,9 @@
  *                                                                         *
  ***************************************************************************/
 #include "FilterDialog.h"
-#include "../FFTFilter.h"
-#include "../../plot2D/Graph.h"
-#include <ColorBox.h>
+#include "FFTFilter.h"
+#include <Graph.h>
+#include <ColorButton.h>
 #include <DoubleSpinBox.h>
 
 #include <QGroupBox>
@@ -69,8 +69,8 @@ FilterDialog::FilterDialog(int type, QWidget* parent, Qt::WFlags fl )
 	boxStart->setMinimum(0.0);
 	gl1->addWidget(boxStart, 1, 1);
 
-	boxColor = new ColorBox(false);
-	boxColor->setColor(QColor(Qt::red));
+	boxColor = new ColorButton();
+	boxColor->setColor(Qt::red);
 	if (type >= FFTFilter::BandPass){
 	    gl1->addWidget(new QLabel(tr("High Frequency (Hz)")), 2, 0);
 
@@ -140,7 +140,7 @@ void FilterDialog::filter()
     } else
     	f->setCutoff(from);
 
-	f->setColor(boxColor->currentIndex());
+	f->setColor(boxColor->color());
 	f->run();
 	delete f;
 }

@@ -35,7 +35,7 @@ class QPushButton;
 class QComboBox;
 class QCheckBox;
 class Graph;
-class ColorBox;
+class ColorButton;
 class DoubleSpinBox;
 
 //! Filter options dialog
@@ -60,7 +60,7 @@ private:
 	QCheckBox* boxOffset;
 	DoubleSpinBox* boxStart;
 	DoubleSpinBox* boxEnd;
-	ColorBox* boxColor;
+	ColorButton* boxColor;
 };
 
 #endif

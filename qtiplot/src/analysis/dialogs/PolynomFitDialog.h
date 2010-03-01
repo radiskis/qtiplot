@@ -36,7 +36,7 @@ class QSpinBox;
 class QPushButton;
 class QComboBox;
 class Graph;
-class ColorBox;
+class ColorButton;
 class DoubleSpinBox;
 
 //! Fit polynomial dialog
@@ -64,7 +64,7 @@ private:
 	QSpinBox* boxPoints;
 	DoubleSpinBox* boxStart;
 	DoubleSpinBox* boxEnd;
-	ColorBox* boxColor;
+	ColorButton* boxColor;
 };
 
 #endif

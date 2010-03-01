@@ -32,7 +32,7 @@
 #include <Graph.h>
 #include <PlotCurve.h>
 #include <MyParser.h>
-#include <ColorBox.h>
+#include <ColorButton.h>
 
 #include <QGroupBox>
 #include <QSpinBox>
@@ -59,8 +59,8 @@ SmoothCurveDialog::SmoothCurveDialog(int method, QWidget* parent, Qt::WFlags fl 
     boxName = new QComboBox();
 	gl1->addWidget(boxName, 0, 1);
 
-	boxColor = new ColorBox();
-	boxColor->setColor(QColor(Qt::red));
+	boxColor = new ColorButton();
+	boxColor->setColor(Qt::red);
 
 	if (method == SmoothFilter::SavitzkyGolay)
 		{
@@ -155,9 +155,9 @@ void SmoothCurveDialog::smooth()
     else
         sf->setSmoothPoints(boxPointsLeft->value());
 
-    sf->setColor(boxColor->currentIndex());
-    sf->run();
-    delete sf;
+	sf->setColor(boxColor->color());
+	sf->run();
+	delete sf;
 }
 
 void SmoothCurveDialog::setGraph(Graph *g)

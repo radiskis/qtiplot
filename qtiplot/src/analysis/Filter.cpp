@@ -70,7 +70,7 @@ Filter::Filter( ApplicationWindow *parent, Table *t, const QString& name)
 void Filter::init()
 {
 	d_n = 0;
-	d_curveColorIndex = 1;
+	d_curveColor = Qt::red;
 	d_tolerance = 1e-4;
 	d_points = 100;
 	d_max_iterations = 1000;
@@ -212,21 +212,28 @@ bool Filter::setDataFromCurve(const QString& curveTitle, double from, double to,
 	return true;
 }
 
+void Filter::setColor(int colorId)
+{
+	d_curveColor = ColorBox::color(colorId);
+}
+
 void Filter::setColor(const QString& colorName)
 {
-    QColor c = QColor(colorName);
-    if (colorName == "green")
-        c = QColor(Qt::green);
-    else if (colorName == "darkYellow")
-        c = QColor(Qt::darkYellow);
-    if (!ColorBox::isValidColor(c)){
-        QMessageBox::critical((ApplicationWindow *)parent(), tr("QtiPlot - Color Name Error"),
-				tr("The color name '%1' is not valid, a default color (red) will be used instead!").arg(colorName));
-        d_curveColorIndex = 1;
-        return;
-    }
+	QColor c = QColor(colorName);
+	if (d_curveColor == c)
+		return;
 
-	d_curveColorIndex = ColorBox::colorIndex(c);
+	d_curveColor = c;
+	if (colorName == "green")
+		d_curveColor = Qt::green;
+	else if (colorName == "darkYellow")
+		d_curveColor = Qt::darkYellow;
+	if (!ColorBox::isValidColor(c)){
+		QMessageBox::critical((ApplicationWindow *)parent(), tr("QtiPlot - Color Name Error"),
+				tr("The color name '%1' is not valid, a default color (red) will be used instead!").arg(colorName));
+		d_curveColor = Qt::red;
+		return;
+	}
 }
 
 void Filter::showLegend()
@@ -448,7 +455,7 @@ QwtPlotCurve* Filter::addResultCurve(double *x, double *y)
 			c->setData(x, y, d_points);
 		else
 			c->setData(y, x, d_points);
-		c->setPen(QPen(ColorBox::color(d_curveColorIndex), 1));
+		c->setPen(QPen(d_curveColor, 1));
 
 		if (!d_output_graph)
 			createOutputGraph();

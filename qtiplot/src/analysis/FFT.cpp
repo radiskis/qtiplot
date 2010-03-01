@@ -279,7 +279,7 @@ void FFT::output(const QString &text)
 		d_output_graph->setYAxisTitle(tr("Amplitude"));
 
         PlotCurve *c = d_output_graph->insertCurve(d_result_table, 0, tableName + "_" + tr("Amplitude"), 0);
-		c->setPen(QPen(ColorBox::color(d_curveColorIndex), 1));
+		c->setPen(QPen(d_curveColor, 1));
         d_output_graph->updatePlot();
 	}
 }

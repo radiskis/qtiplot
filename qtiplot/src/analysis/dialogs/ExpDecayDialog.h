@@ -35,7 +35,7 @@ class QPushButton;
 class QComboBox;
 class QLabel;
 class Graph;
-class ColorBox;
+class ColorButton;
 class Fit;
 class DoubleSpinBox;
 
@@ -77,7 +77,7 @@ private:
 	DoubleSpinBox* boxStart;
 	DoubleSpinBox* boxYOffset;
 	QLabel* thirdLabel, *dampingLabel;
-	ColorBox* boxColor;
+	ColorButton* boxColor;
 };
 
 #endif

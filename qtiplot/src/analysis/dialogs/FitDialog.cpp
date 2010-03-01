@@ -37,7 +37,7 @@
 #include <LogisticFit.h>
 #include <MyParser.h>
 #include <ApplicationWindow.h>
-#include <ColorBox.h>
+#include <ColorButton.h>
 #include <DoubleSpinBox.h>
 #include <FunctionCurve.h>
 #include <ScriptEdit.h>
@@ -153,8 +153,8 @@ void FitDialog::initFitPage()
     gl1->setColumnStretch(1, 1);
 
     gl1->addWidget(new QLabel( tr("Color")), 1, 0);
-	boxColor = new ColorBox( false );
-	boxColor->setColor(QColor(Qt::red));
+	boxColor = new ColorButton();
+	boxColor->setColor(Qt::red);
     gl1->addWidget(boxColor, 1, 1);
 
     gl1->addWidget(new QLabel(tr("From x=")), 0, 2);
@@ -397,7 +397,7 @@ void FitDialog::initFitPage()
 	connect( buttonAdvanced, SIGNAL(clicked()), this, SLOT(showAdvancedPage() ) );
     connect( tableNamesBox, SIGNAL( activated(int) ), this, SLOT( selectSrcTable(int) ) );
 
-	connect(boxColor, SIGNAL(activated(int)), this, SLOT(updatePreviewColor(int)));
+	connect(boxColor, SIGNAL(colorChanged(const QColor &)), this, SLOT(updatePreviewColor(const QColor &)));
 	setFocusProxy(boxFunction);
 }
 
@@ -1478,7 +1478,7 @@ void FitDialog::accept()
 		d_current_fit->setTolerance(eps);
 		d_current_fit->setOutputPrecision(app->fit_output_precision);
 		d_current_fit->setAlgorithm((Fit::Algorithm)boxAlgorithm->currentIndex());
-		d_current_fit->setColor(boxColor->currentIndex());
+		d_current_fit->setColor(boxColor->color());
 		d_current_fit->generateFunction(generatePointsBtn->isChecked(), generatePointsBox->value());
 		d_current_fit->setMaximumIterations(boxPoints->value());
 		if (!d_current_fit->isA("PolynomialFit") && !d_current_fit->isA("LinearFit") && !d_current_fit->isA("LinearSlopeFit"))
@@ -1817,7 +1817,7 @@ void FitDialog::updatePreview()
 		d_preview_curve = new FunctionCurve();
 		d_preview_curve->attach(d_graph);
 		d_preview_curve->setRenderHint(QwtPlotItem::RenderAntialiased, d_graph->antialiasing());
-		d_preview_curve->setPen(QPen(ColorBox::color(boxColor->currentIndex()), 1));
+		d_preview_curve->setPen(QPen(boxColor->color(), 1));
 	}
 
 	bool changedVar = false;
@@ -1861,12 +1861,12 @@ void FitDialog::updatePreview()
 	d_graph->replot();
 }
 
-void FitDialog::updatePreviewColor(int colorIndex)
+void FitDialog::updatePreviewColor(const QColor &c)
 {
     if (!d_preview_curve)
 		return;
 
-    d_preview_curve->setPen(QPen(ColorBox::color(colorIndex), 1));
+	d_preview_curve->setPen(QPen(c, 1));
 	d_graph->replot();
 }
 

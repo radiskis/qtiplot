@@ -36,15 +36,15 @@ class QComboBox;
 class QSpinBox;
 class QDoubleSpinBox;
 class Graph;
-class ColorBox;
+class ColorButton;
 
 //! Smoothing options dialog
 class SmoothCurveDialog : public QDialog
 {
-    Q_OBJECT
+	Q_OBJECT
 
 public:
-    SmoothCurveDialog(int method, QWidget* parent = 0, Qt::WFlags fl = 0 );
+	SmoothCurveDialog(int method, QWidget* parent = 0, Qt::WFlags fl = 0 );
 
 public slots:
 	void setGraph(Graph *g);
@@ -58,8 +58,8 @@ private:
 	QPushButton* buttonCancel;
 	QComboBox* boxName;
 	QSpinBox *boxPointsLeft, *boxPointsRight, *boxOrder;
-  QDoubleSpinBox *boxF;
-	ColorBox* boxColor;
+	QDoubleSpinBox *boxF;
+	ColorButton* boxColor;
 };
 
 #endif
