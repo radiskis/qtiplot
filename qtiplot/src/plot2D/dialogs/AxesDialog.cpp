@@ -1409,8 +1409,7 @@ bool AxesDialog::updatePlot(QWidget *page)
 				scale->repaint();
 			}
 		}
-
-        applyAxisFormat();
+		applyAxisFormat();
 	} else if (currentWidget == frame)
 		applyCanvasFormat();
 
@@ -2020,12 +2019,12 @@ void AxesDialog::setFrameDefaultValues()
 
 void AxesDialog::applyAxisFormatToLayer(Graph *g)
 {
-    if (!g)
-        return;
+	if (!g)
+		return;
 
-    for (int i=0; i<QwtPlot::axisCnt; i++){
-        if (!g->axisEnabled(i))
-            continue;
+	for (int i = 0; i<QwtPlot::axisCnt; i++){
+		if (!g->axisEnabled(i))
+			continue;
 
 		QwtScaleWidget *axis = g->axisWidget(i);
 		if (!axis)
@@ -2043,7 +2042,7 @@ void AxesDialog::applyAxisFormatToLayer(Graph *g)
 							boxMinorTicksLength->value(), boxMajorTicksLength->value());
 		g->setAxisFont(i, d_graph->axisFont(mapToQwtAxisId()));
 
-		ScaleDraw *sd = (ScaleDraw *) d_graph->axisScaleDraw(i);
+		ScaleDraw *sd = (ScaleDraw *)g->axisScaleDraw(i);
 		sd->setSpacing(boxTickLabelDistance->value());
 		sd->enableComponent (QwtAbstractScaleDraw::Backbone, boxAxisBackbone->isChecked());
 		sd->setShowTicksPolicy((ScaleDraw::ShowTicksPolicy)showTicksPolicyBox->currentIndex());
@@ -2051,7 +2050,7 @@ void AxesDialog::applyAxisFormatToLayer(Graph *g)
 		axis->repaint();
 	}
 	g->updateLayout();
-    g->replot();
+	g->replot();
 }
 
 void AxesDialog::applyAxisFormat()
