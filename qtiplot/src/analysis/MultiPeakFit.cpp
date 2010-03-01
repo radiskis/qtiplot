@@ -228,7 +228,7 @@ void MultiPeakFit::insertPeakFunctionCurve(int peak)
 	QString title = tr("Peak") + QString::number(++index);
 
 	FunctionCurve *c = new FunctionCurve(FunctionCurve::Normal, title);
-	c->setPen(QPen(ColorBox::color(d_peaks_color), 1));
+	c->setPen(QPen(d_peaks_color, 1));
 	c->setRange(d_from, d_to);
 	c->setFormula("y0 + " + peakFormula(peak + 1, d_profile));
 	c->setConstant(d_param_names[d_p - 1], d_results[d_p - 1]);//y0 - offset
@@ -367,7 +367,7 @@ void MultiPeakFit::generateFitCurve()
 
 					label = tableName + "_" + tr("peak") + QString::number(i+1);
 					c = new DataCurve(d_result_table, tableName + "_1", label);
-					c->setPen(QPen(ColorBox::color(d_peaks_color), 1));
+					c->setPen(QPen(d_peaks_color, 1));
 
 					if (d_curve){
 						c->setCurveType(d_curve->curveType());
@@ -436,6 +436,11 @@ QString MultiPeakFit::logFitInfo(int iterations, int status)
 	}
 	info += "---------------------------------------------------------------------------------------\n";
 	return info;
+}
+
+void MultiPeakFit::setPeakCurvesColor(int colorIndex)
+{
+	d_peaks_color = ColorBox::color(colorIndex);
 }
 
 /*****************************************************************************

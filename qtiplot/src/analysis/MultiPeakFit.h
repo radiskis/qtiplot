@@ -46,7 +46,8 @@ class MultiPeakFit : public Fit
 		void setNumPeaks(int n);
 
 		void enablePeakCurves(bool on){generate_peak_curves = on;};
-		void setPeakCurvesColor(int colorIndex){d_peaks_color = colorIndex;};
+		void setPeakCurvesColor(int colorIndex);
+		void setPeakCurvesColor(const QColor& color){d_peaks_color = color;};
 
 		static QString generateFormula(int order, PeakProfile profile);
 		static QStringList generateParameterList(int order);
@@ -76,8 +77,8 @@ class MultiPeakFit : public Fit
 		//! Tells weather the peak curves should be displayed together with the best line fit.
 		bool generate_peak_curves;
 
-		//! Color index for the peak curves
-		int d_peaks_color;
+		//! Color for the peak curves
+		QColor d_peaks_color;
 
 		//! The peak profile
 		PeakProfile d_profile;

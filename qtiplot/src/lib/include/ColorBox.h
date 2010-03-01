@@ -60,6 +60,8 @@ public:
     static int numPredefinedColors();
     //! Returns the color name for the predefined colors
     static QStringList colorNames();
+	//! Returns the list of predefined colors
+	static QList<QColor> colorList();
 
 protected:
 	//! Internal initialization function

@@ -425,6 +425,9 @@ void ApplicationWindow::initWindow()
 
 void ApplicationWindow::initGlobalConstants()
 {
+	d_indexed_colors = ColorBox::colorList();
+	d_indexed_color_names = ColorBox::colorNames();
+
 	d_latex_compiler = MathTran;
 	d_latex_compiler_path = QString::null;
 	d_mdi_windows_area = true;
@@ -646,7 +649,7 @@ void ApplicationWindow::initGlobalConstants()
 	generateUniformFitPoints = true;
 	fitPoints = 100;
 	generatePeakCurves = true;
-	peakCurvesColor = 2;
+	peakCurvesColor = Qt::green;
 	fit_scale_errors = true;
 	d_2_linear_fit_points = true;
 	d_multi_peak_messages = true;
@@ -5102,6 +5105,14 @@ void ApplicationWindow::readSettings()
 	if (applicationFont.size() == 4)
 		appFont=QFont (applicationFont[0],applicationFont[1].toInt(),applicationFont[2].toInt(),applicationFont[3].toInt());
 
+	QStringList colors = settings.value("/IndexedColors").toStringList();
+	if (!colors.isEmpty()){
+		d_indexed_colors.clear();
+		for (int i = 0; i < colors.size(); i++)
+			d_indexed_colors << QColor(colors[i]);
+	}
+	d_indexed_color_names = settings.value("/IndexedColorNames", d_indexed_color_names).toStringList();
+
 	settings.beginGroup("/Dialogs");
 	d_extended_open_dialog = settings.value("/ExtendedOpenDialog", true).toBool();
 	d_extended_export_dialog = settings.value("/ExtendedExportDialog", true).toBool();
@@ -5344,7 +5355,7 @@ void ApplicationWindow::readSettings()
 	generateUniformFitPoints = settings.value("/GenerateFunction", true).toBool();
 	fitPoints = settings.value("/Points", 100).toInt();
 	generatePeakCurves = settings.value("/GeneratePeakCurves", true).toBool();
-	peakCurvesColor = settings.value("/PeaksColor", 2).toInt();//green color
+	peakCurvesColor = QColor(settings.value("/PeakColor", peakCurvesColor.name()).toString());//green color
 	fit_scale_errors = settings.value("/ScaleErrors", true).toBool();
 	d_2_linear_fit_points = settings.value("/TwoPointsLinearFit", true).toBool();
 	d_multi_peak_messages = settings.value("/MultiPeakToolMsg", d_multi_peak_messages).toBool();
@@ -5497,6 +5508,12 @@ void ApplicationWindow::saveSettings()
 	applicationFont<<QString::number(appFont.weight());
 	applicationFont<<QString::number(appFont.italic());
 	settings.setValue("/Font", applicationFont);
+
+	QStringList indexedColors;
+	for (int i = 0; i < d_indexed_colors.size(); i++)
+		indexedColors << d_indexed_colors[i].name();
+	settings.setValue("/IndexedColors", indexedColors);
+	settings.setValue("/IndexedColorNames", d_indexed_color_names);
 
 	settings.beginGroup("/Dialogs");
 	settings.setValue("/ExtendedOpenDialog", d_extended_open_dialog);
@@ -5750,7 +5767,7 @@ void ApplicationWindow::saveSettings()
 	settings.setValue("/GenerateFunction", generateUniformFitPoints);
 	settings.setValue("/Points", fitPoints);
 	settings.setValue("/GeneratePeakCurves", generatePeakCurves);
-	settings.setValue("/PeaksColor", peakCurvesColor);
+	settings.setValue("/PeakColor", peakCurvesColor.name());
 	settings.setValue("/ScaleErrors", fit_scale_errors);
 	settings.setValue("/TwoPointsLinearFit", d_2_linear_fit_points);
 	settings.setValue("/MultiPeakToolMsg", d_multi_peak_messages);
