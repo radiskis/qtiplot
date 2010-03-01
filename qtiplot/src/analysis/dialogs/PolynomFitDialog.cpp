@@ -31,7 +31,7 @@
 #include <Graph.h>
 #include <ApplicationWindow.h>
 #include <DoubleSpinBox.h>
-#include <ColorBox.h>
+#include <ColorButton.h>
 
 #include <QSpinBox>
 #include <QCheckBox>
@@ -85,8 +85,8 @@ PolynomFitDialog::PolynomFitDialog( QWidget* parent, Qt::WFlags fl )
     gl1->addWidget(boxEnd, 4, 1);
 
     gl1->addWidget(new QLabel( tr("Color")), 5, 0);
-	boxColor = new ColorBox( false);
-	boxColor->setColor(QColor(Qt::red));
+	boxColor = new ColorButton();
+	boxColor->setColor(Qt::red);
     gl1->addWidget(boxColor, 5, 1);
 
 	boxShowFormula = new QCheckBox(tr( "Show Formula on Graph?" ));
@@ -130,7 +130,7 @@ void PolynomFitDialog::fit()
 	ApplicationWindow *app = (ApplicationWindow *)this->parent();
     PolynomialFit *fitter = new PolynomialFit(app, graph, boxOrder->value(), boxShowFormula->isChecked());
     if (fitter->setDataFromCurve(curveName, boxStart->value(), boxEnd->value())){
-        fitter->setColor(boxColor->currentItem());
+		fitter->setColor(boxColor->color());
         fitter->setOutputPrecision(app->fit_output_precision);
 		fitter->generateFunction(app->generateUniformFitPoints, app->fitPoints);
         fitter->fit();

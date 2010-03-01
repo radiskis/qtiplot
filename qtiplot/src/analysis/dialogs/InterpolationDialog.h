@@ -35,7 +35,7 @@ class QPushButton;
 class QComboBox;
 class QSpinBox;
 class Graph;
-class ColorBox;
+class ColorButton;
 class DoubleSpinBox;
 
 //! Interpolation options dialog
@@ -61,7 +61,7 @@ private:
 	QSpinBox* boxPoints;
 	DoubleSpinBox* boxStart;
 	DoubleSpinBox* boxEnd;
-	ColorBox* boxColor;
+	ColorButton* boxColor;
 };
 
 #endif

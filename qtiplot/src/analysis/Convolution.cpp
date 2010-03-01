@@ -159,7 +159,7 @@ void Convolution::addResultCurve()
 
     	DataCurve *c = new DataCurve(d_table, d_table->colName(cols), d_table->colName(cols2));
 		c->setData(x_temp, d_x, d_n);
-    	c->setPen(QPen(ColorBox::color(d_curveColorIndex), 1));
+		c->setPen(QPen(d_curveColor, 1));
 		d_output_graph->insertPlotItem(c, Graph::Line);
 		d_output_graph->updatePlot();
 	}

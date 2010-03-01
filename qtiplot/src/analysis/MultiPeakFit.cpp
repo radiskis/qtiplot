@@ -348,9 +348,9 @@ void MultiPeakFit::generateFitCurve()
 				c->setAxis(d_curve->xAxis(), d_curve->yAxis());
 			}
 			if (d_peaks > 1)
-				c->setPen(QPen(ColorBox::color(d_curveColorIndex), 2));
+				c->setPen(QPen(d_curveColor, 2));
 			else
-				c->setPen(QPen(ColorBox::color(d_curveColorIndex), 1));
+				c->setPen(QPen(d_curveColor, 1));
 
 			if (c->curveType() == QwtPlotCurve::Xfy)
 				c->setData(Y, X, d_points);

@@ -39,7 +39,6 @@
 #include <ScaleEngine.h>
 #include <FunctionCurve.h>
 #include <DoubleSpinBox.h>
-#include <ColorBox.h>
 #include <ColorButton.h>
 #include <PenStyleBox.h>
 
@@ -333,10 +332,10 @@ void AxesDialog::initGridPage()
 
     rightLayout->addWidget( new QLabel(tr( "Line Color" )), 1, 0 );
 
-    boxColorMajor = new ColorBox(0);
+	boxColorMajor = new ColorButton();
     rightLayout->addWidget( boxColorMajor, 1, 1);
 
-    boxColorMinor = new ColorBox(0);
+	boxColorMinor = new ColorButton();
     boxColorMinor->setDisabled(true);
     rightLayout->addWidget( boxColorMinor, 1, 2);
 
@@ -432,8 +431,8 @@ void AxesDialog::initGridPage()
 	connect(boxMajorGrid,SIGNAL(toggled(bool)), this, SLOT(majorGridEnabled(bool)));
 	connect(boxMinorGrid,SIGNAL(toggled(bool)), this, SLOT(minorGridEnabled(bool)));
 	connect(boxAntialiseGrid,SIGNAL(toggled(bool)), this, SLOT(updateGrid()));
-	connect(boxColorMajor,SIGNAL(activated(int)),this, SLOT(updateGrid()));
-	connect(boxColorMinor,SIGNAL(activated(int)),this, SLOT(updateGrid()));
+	connect(boxColorMajor, SIGNAL(colorChanged(const QColor &)),this, SLOT(updateGrid()));
+	connect(boxColorMinor, SIGNAL(colorChanged(const QColor &)),this, SLOT(updateGrid()));
 	connect(boxTypeMajor,SIGNAL(activated(int)),this, SLOT(updateGrid()));
 	connect(boxTypeMinor,SIGNAL(activated(int)),this, SLOT(updateGrid()));
 	connect(boxWidthMajor,SIGNAL(valueChanged(double)),this, SLOT(updateGrid()));
@@ -1142,18 +1141,14 @@ void AxesDialog::applyChangesToGrid(Grid *grid)
 		grid->enableX(boxMajorGrid->isChecked());
 		grid->enableXMin(boxMinorGrid->isChecked());
 
-		grid->setMajPenX(QPen(ColorBox::color(boxColorMajor->currentIndex()), boxWidthMajor->value(),
-					 		boxTypeMajor->style()));
-		grid->setMinPenX(QPen(ColorBox::color(boxColorMinor->currentIndex()), boxWidthMinor->value(),
-					 		boxTypeMinor->style()));
+		grid->setMajPenX(QPen(boxColorMajor->color(), boxWidthMajor->value(), boxTypeMajor->style()));
+		grid->setMinPenX(QPen(boxColorMinor->color(), boxWidthMinor->value(), boxTypeMinor->style()));
 	} else {
 		grid->enableY(boxMajorGrid->isChecked());
 		grid->enableYMin(boxMinorGrid->isChecked());
 
-		grid->setMajPenY(QPen(ColorBox::color(boxColorMajor->currentIndex()), boxWidthMajor->value(),
-					 		boxTypeMajor->style()));
-		grid->setMinPenY(QPen(ColorBox::color(boxColorMinor->currentIndex()), boxWidthMinor->value(),
-					 		boxTypeMinor->style()));
+		grid->setMajPenY(QPen(boxColorMajor->color(), boxWidthMajor->value(), boxTypeMajor->style()));
+		grid->setMinPenY(QPen(boxColorMinor->color(), boxWidthMinor->value(), boxTypeMinor->style()));
 	}
 
 	grid->enableZeroLineX(boxXLine->isChecked());

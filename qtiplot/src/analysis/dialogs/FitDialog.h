@@ -45,7 +45,7 @@ class QSpinBox;
 class QLabel;
 class QRadioButton;
 class QLineEdit;
-class ColorBox;
+class ColorButton;
 class Fit;
 class Table;
 class DoubleSpinBox;
@@ -113,7 +113,7 @@ private slots:
 	void guessInitialValues();
 	void returnToFitPage();
 	void updatePreview();
-	void updatePreviewColor(int);
+	void updatePreviewColor(const QColor &);
 	void showPreview(bool on);
 	void showParameterRange(bool);
 	void guessParameters();
@@ -164,7 +164,7 @@ private:
 	QLabel *lblFunction, *lblPoints, *polynomOrderLabel;
 	QPushButton *btnAddFunc, *btnDelFunc, *btnContinue, *btnApply;
 	QPushButton *buttonEdit, *btnAddTxt, *btnAddName, *btnDeleteFitCurves;
-	ColorBox* boxColor;
+	ColorButton* boxColor;
 	QComboBox *boxWeighting, *tableNamesBox, *colNamesBox;
 	QRadioButton *generatePointsBtn, *samePointsBtn;
 	QPushButton *btnParamTable, *btnCovMatrix, *btnParamRange;

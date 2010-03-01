@@ -27,9 +27,9 @@
  *                                                                         *
  ***************************************************************************/
 #include "InterpolationDialog.h"
-#include "../Interpolation.h"
-#include "../../plot2D/Graph.h"
-#include <ColorBox.h>
+#include <Interpolation.h>
+#include <Graph.h>
+#include <ColorButton.h>
 #include <DoubleSpinBox.h>
 
 #include <QGroupBox>
@@ -85,8 +85,8 @@ InterpolationDialog::InterpolationDialog( QWidget* parent, Qt::WFlags fl )
 
 	gl1->addWidget(new QLabel(tr("Color")), 5, 0);
 
-	boxColor = new ColorBox(false);
-	boxColor->setColor(QColor(Qt::red));
+	boxColor = new ColorButton();
+	boxColor->setColor(Qt::red);
 	gl1->addWidget(boxColor, 5, 1);
 	gl1->setRowStretch(6, 1);
 	gl1->setColumnStretch(1, 1);
@@ -131,7 +131,7 @@ void InterpolationDialog::interpolate()
 
 	Interpolation *i = new Interpolation((ApplicationWindow *)this->parent(), graph, curve, from, to, boxMethod->currentIndex());
 	i->setOutputPoints(boxPoints->value());
-	i->setColor(boxColor->currentIndex());
+	i->setColor(boxColor->color());
 	i->run();
 	delete i;
 }

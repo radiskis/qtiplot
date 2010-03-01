@@ -2628,6 +2628,7 @@ public:
 
   void setColor(int);
   void setColor(const QString&);
+  void setColor(const QColor&);
 
   bool setDataFromCurve(QwtPlotCurve *c);
   bool setDataFromCurve(QwtPlotCurve *c, double from, double to);

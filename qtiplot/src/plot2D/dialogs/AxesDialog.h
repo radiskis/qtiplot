@@ -48,7 +48,6 @@ class QSpinBox;
 class QTabWidget;
 class QWidget;
 class QStringList;
-class ColorBox;
 class ColorButton;
 class Graph;
 class TextFormatButtons;
@@ -161,8 +160,8 @@ protected:
     QCheckBox* boxMajorGrid;
     QCheckBox* boxMinorGrid;
     PenStyleBox* boxTypeMajor;
-    ColorBox* boxColorMinor;
-    ColorBox* boxColorMajor;
+	ColorButton* boxColorMinor;
+	ColorButton* boxColorMajor;
 	ColorButton *boxCanvasColor;
     DoubleSpinBox* boxWidthMajor;
     PenStyleBox* boxTypeMinor;

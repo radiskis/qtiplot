@@ -32,7 +32,7 @@
 #include <Graph.h>
 #include <ApplicationWindow.h>
 #include <DoubleSpinBox.h>
-#include <ColorBox.h>
+#include <ColorButton.h>
 #include <PlotCurve.h>
 
 #include <QMessageBox>
@@ -125,8 +125,8 @@ ExpDecayDialog::ExpDecayDialog(int type, QWidget* parent, Qt::WFlags fl )
 	gl1->addWidget(boxStart, 5, 1);
 
 	gl1->addWidget(new QLabel(tr("Color")), 6, 0 );
-	boxColor = new ColorBox(false);
-	boxColor->setColor(QColor(Qt::red));
+	boxColor = new ColorButton();
+	boxColor->setColor(Qt::red);
 	gl1->addWidget(boxColor, 6, 1);
 
 	gl1->setRowStretch(7, 1);
@@ -234,7 +234,7 @@ void ExpDecayDialog::fit()
 	}
 
   	if (fitter->setDataFromCurve(boxName->currentText(), boxStart->value(), c->maxXValue())){
-		fitter->setColor(boxColor->currentItem());
+		fitter->setColor(boxColor->color());
 		fitter->scaleErrors(app->fit_scale_errors);
         fitter->setOutputPrecision(app->fit_output_precision);
 		fitter->generateFunction(app->generateUniformFitPoints, app->fitPoints);
