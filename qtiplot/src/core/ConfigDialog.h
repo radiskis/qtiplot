@@ -48,7 +48,6 @@ class QLabel;
 class QRadioButton;
 class QListWidget;
 class ColorButton;
-class ColorBox;
 class DoubleSpinBox;
 class QFontComboBox;
 class ColorMapEditor;
@@ -120,7 +119,16 @@ private slots:
 	void adjustCanvasHeight(double width);
 	void adjustCanvasWidth(double height);
 
+	void moveColor(bool up = true);
+	void moveColorDown();
+	void removeColor();
+	void newColor();
+	void loadDefaultColors();
+	void showColorDialog(int, int);
+	void changeColorName(int, int);
+
 private:
+	void setColorsList(const QList<QColor>& colList, const QStringList& colNames);
 	void initPlotsPage();
 	void initAppPage();
 	void initCurvesPage();
@@ -179,7 +187,7 @@ private:
 	QGroupBox *groupBoxFittingCurve, *groupBoxFitParameters;
 	QRadioButton *samePointsBtn, *generatePointsBtn;
     QGroupBox *groupBoxMultiPeak;
-	ColorBox *boxPeaksColor;
+	ColorButton *boxPeaksColor;
 	QLabel *lblScriptingLanguage, *lblInitWindow;
 	QComboBox *boxScriptingLanguage, *boxInitWindow;
 	QCheckBox *boxAntialiasing, *boxAutoscale3DPlots, *boxTableComments, *boxThousandsSeparator;
@@ -248,6 +256,9 @@ private:
 
 	QGroupBox *groupIndexedColors;
 	QTableWidget *colorsList;
+	QPushButton *btnColorUp, *btnColorDown, *btnRemoveColor, *btnNewColor, *btnLoadDefaultColors;
+	QList<QColor> d_indexed_colors;
+	QStringList d_indexed_color_names;
 };
 
 #endif // CONFIGDIALOG_H

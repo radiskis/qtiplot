@@ -221,6 +221,12 @@ public:
 
 	void displayInfo(const QString& text){info->setText(text);};
 
+	QList<QColor> indexedColors(){return d_indexed_colors;};
+	void setIndexedColors(const QList<QColor>& lst){d_indexed_colors = lst;};
+
+	QStringList indexedColorNames(){return d_indexed_color_names;};
+	void setIndexedColorNames(const QStringList& lst){d_indexed_color_names = lst;};
+
 public slots:
 	//! \name Projects and Project Files
 	//@{
@@ -1191,7 +1197,7 @@ public:
 	bool d_extended_open_dialog;
 	bool generateUniformFitPoints;
 	bool generatePeakCurves;
-	int peakCurvesColor;
+	QColor peakCurvesColor;
 	bool d_multi_peak_messages;
 	//! User defined size for the Add/Remove curves dialog
 	QSize d_add_curves_dialog_size;
@@ -1453,5 +1459,8 @@ private:
     QList<QAction *> d_user_actions;
     QUndoView *d_undo_view;
     QList<QMenu *> d_user_menus;
+
+	QList<QColor> d_indexed_colors;
+	QStringList d_indexed_color_names;
 };
 #endif

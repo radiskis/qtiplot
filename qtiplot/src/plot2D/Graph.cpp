@@ -2769,7 +2769,17 @@ CurveLayout Graph::initCurveLayout(int style, int curves, bool guessLayout)
 	if (guessLayout)
 		guessUniqueCurveLayout(color, cl.sType);
 
-  	cl.lCol = ColorBox::color(color);
+	QList<QColor> indexedColors = ColorBox::colorList();
+	MultiLayer *ml = multiLayer();
+	if (ml){
+		ApplicationWindow *app = ml->applicationWindow();
+		if (app)
+			indexedColors = app->indexedColors();
+	}
+	int colorsCount = indexedColors.size();
+
+	if (color >= 0 && color < colorsCount)
+		cl.lCol = indexedColors[color];
   	cl.symCol = cl.lCol;
   	cl.fillCol = cl.lCol;
 
@@ -2787,7 +2797,8 @@ CurveLayout Graph::initCurveLayout(int style, int curves, bool guessLayout)
 	else if (curves && (style == VerticalBars || style == HorizontalBars)){
 		cl.filledArea = 1;
 		cl.lCol = Qt::black;
-		cl.aCol = ColorBox::color(i + 1);
+		if (i >= 0 && i < colorsCount)
+			cl.aCol = indexedColors[i];
 		cl.sType = 0;
 		QwtBarCurve *b = (QwtBarCurve*)curve(i);
 		if (b && (b->type() == VerticalBars || b->type() == HorizontalBars)){
@@ -2797,12 +2808,14 @@ CurveLayout Graph::initCurveLayout(int style, int curves, bool guessLayout)
 	} else if (style == StackBar || style == StackColumn){
 		cl.filledArea = 1;
 		cl.lCol = Qt::black;
-		cl.aCol = ColorBox::color(i + 1);
+		if (i >= 0 && i < colorsCount)
+			cl.aCol = indexedColors[i];
 		cl.sType = 0;
 	} else if (style == Histogram){
 		cl.filledArea = 1;
-		cl.lCol = ColorBox::color(i + 1);//start with red color pen
-		cl.aCol = cl.lCol; //start with red fill color
+		if (i >= 0 && i < colorsCount)
+			cl.lCol = indexedColors[i];
+		cl.aCol = cl.lCol;
 		cl.aStyle = 4;
 		cl.sType = 0;
 	} else if (style == Area){
@@ -4770,6 +4783,14 @@ void Graph::guessUniqueCurveLayout(int& colorIndex, int& symbolIndex)
 	colorIndex = 0;
 	symbolIndex = 0;
 
+	QList<QColor> indexedColors = ColorBox::colorList();
+	MultiLayer *ml = multiLayer();
+	if (ml){
+		ApplicationWindow *app = ml->applicationWindow();
+		if (app)
+			indexedColors = app->indexedColors();
+	}
+
 	int curve_index = d_curves.size() - 1;
 	if (curve_index >= 0){// find out the pen color of the master curve
 		PlotCurve *c = (PlotCurve *)curve(curve_index);
@@ -4777,7 +4798,7 @@ void Graph::guessUniqueCurveLayout(int& colorIndex, int& symbolIndex)
 			QwtErrorPlotCurve *er = (QwtErrorPlotCurve *)c;
 			DataCurve *master_curve = er->masterCurve();
 			if (master_curve){
-				colorIndex = ColorBox::colorIndex(master_curve->pen().color());
+				colorIndex = indexedColors.indexOf(master_curve->pen().color());
 				return;
 			}
 		}
@@ -4786,7 +4807,7 @@ void Graph::guessUniqueCurveLayout(int& colorIndex, int& symbolIndex)
 	foreach (QwtPlotItem *it, d_curves){
 		if (it->rtti() == QwtPlotItem::Rtti_PlotCurve){
 			const QwtPlotCurve *c = (QwtPlotCurve *)it;
-			int index = ColorBox::colorIndex(c->pen().color());
+			int index = indexedColors.indexOf(c->pen().color());
 			if (index > colorIndex)
 				colorIndex = index;
 

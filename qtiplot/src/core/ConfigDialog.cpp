@@ -68,6 +68,7 @@
 #include <QCompleter>
 #include <QDirModel>
 #include <QTableWidget>
+#include <QColorDialog>
 
 ConfigDialog::ConfigDialog( QWidget* parent, Qt::WFlags fl )
     : QDialog( parent, fl )
@@ -932,8 +933,8 @@ void ConfigDialog::initFittingPage()
 
 	lblPeaksColor = new QLabel();
 	multiPeakLayout->addWidget(lblPeaksColor);
-	boxPeaksColor = new ColorBox(0);
-	boxPeaksColor->setCurrentItem(app->peakCurvesColor);
+	boxPeaksColor = new ColorButton();
+	boxPeaksColor->setColor(app->peakCurvesColor);
 	multiPeakLayout->addWidget(boxPeaksColor);
 
 	groupBoxFitParameters = new QGroupBox();
@@ -1060,7 +1061,7 @@ void ConfigDialog::initCurvesPage()
 	QVBoxLayout *curvesPageLayout = new QVBoxLayout(curves);
 	curvesPageLayout->addWidget(curvesGroupBox);
 
-	/*colorsList = new QTableWidget();
+	colorsList = new QTableWidget();
 	colorsList->setColumnCount(2);
 	colorsList->horizontalHeader()->setClickable(false);
 	colorsList->horizontalHeader()->setResizeMode (0, QHeaderView::ResizeToContents);
@@ -1070,26 +1071,150 @@ void ConfigDialog::initCurvesPage()
 	colorsList->setHorizontalHeaderLabels(header);
 	colorsList->verticalHeader()->setResizeMode(QHeaderView::ResizeToContents);
 
-	int colors = ColorBox::numPredefinedColors();
-	QStringList colNames = ColorBox::colorNames();
+	connect(colorsList, SIGNAL(cellClicked(int, int)), this, SLOT(showColorDialog(int, int)));
+	connect(colorsList, SIGNAL(cellChanged(int, int)), this, SLOT(changeColorName(int, int)));
+
+	d_indexed_colors = app->indexedColors();
+	d_indexed_color_names = app->indexedColorNames();
+	setColorsList(d_indexed_colors, d_indexed_color_names);
+
+	groupIndexedColors = new QGroupBox();
+	QHBoxLayout *hl = new QHBoxLayout(groupIndexedColors);
+	hl->addWidget(colorsList);
+
+	QHBoxLayout *hl2 = new QHBoxLayout();
+	hl2->setSpacing(0);
+	btnNewColor = new QPushButton(QIcon(":/plus.png"), QString::null);
+	connect(btnNewColor, SIGNAL(clicked()), this, SLOT(newColor()));
+	hl2->addWidget(btnNewColor);
+
+	btnRemoveColor = new QPushButton(QIcon(":/delete.png"), QString::null);
+	connect(btnRemoveColor, SIGNAL(clicked()), this, SLOT(removeColor()));
+	hl2->addWidget(btnRemoveColor);
+
+	btnColorUp = new QPushButton(QIcon(":/arrow_up.png"), QString::null);
+	connect(btnColorUp, SIGNAL(clicked()), this, SLOT(moveColor()));
+	hl2->addWidget(btnColorUp);
+
+	btnColorDown = new QPushButton(QIcon(":/arrow_down.png"), QString::null);
+	connect(btnColorDown, SIGNAL(clicked()), this, SLOT(moveColorDown()));
+	hl2->addWidget(btnColorDown);
+
+	btnLoadDefaultColors = new QPushButton();
+	connect(btnLoadDefaultColors, SIGNAL(clicked()), this, SLOT(loadDefaultColors()));
+
+	hl2->addStretch();
+
+	QHBoxLayout *hl1 = new QHBoxLayout();
+	hl1->addWidget(btnLoadDefaultColors);
+	hl1->addStretch();
+
+	QVBoxLayout *vl = new QVBoxLayout();
+	vl->addLayout(hl2);
+	vl->addLayout(hl1);
+	vl->addStretch();
+
+	hl->addLayout(vl);
+
+	curvesPageLayout->addWidget(groupIndexedColors);
+}
+
+void ConfigDialog::setColorsList(const QList<QColor>& colList, const QStringList& colNames)
+{
+	colorsList->clearContents();
+
+	int colors = colList.size();
 	colorsList->setRowCount(colors);
 	for (int i = 0; i < colors; i++){
 		QTableWidgetItem *it = new QTableWidgetItem();
 		it->setFlags(!Qt::ItemIsEditable);
-		it->setBackground(QBrush(ColorBox::color(i)));
+		it->setBackground(QBrush(colList[i]));
 		colorsList->setItem(i, 0, it);
 
 		it = new QTableWidgetItem(colNames[i]);
-		it->setFlags(!Qt::ItemIsEditable);
 		it->setForeground(Qt::black);
 		colorsList->setItem(i, 1, it);
 	}
+}
 
-	groupIndexedColors = new QGroupBox(tr("Indexed Colors"));
-	QHBoxLayout *hl = new QHBoxLayout(groupIndexedColors);
-	hl->addWidget(colorsList);
+void ConfigDialog::moveColor(bool up)
+{
+	int row = colorsList->currentRow();
+	if (row < 0 || row >= d_indexed_colors.size())
+		return;
 
-	curvesPageLayout->addWidget(groupIndexedColors);*/
+	int destRow = up ? row - 1 : row + 1;
+	if (destRow < 0 || destRow >= d_indexed_colors.size())
+		return;
+
+	d_indexed_colors.swap(row, destRow);
+	d_indexed_color_names.swap(row, destRow);
+	setColorsList(d_indexed_colors, d_indexed_color_names);
+
+	colorsList->selectRow(destRow);
+}
+
+void ConfigDialog::moveColorDown()
+{
+	moveColor(false);
+}
+
+void ConfigDialog::removeColor()
+{
+	int row = colorsList->currentRow();
+	if (row < 0 || row >= d_indexed_colors.size())
+		return;
+
+	d_indexed_colors.removeAt(row);
+	d_indexed_color_names.removeAt(row);
+	setColorsList(d_indexed_colors, d_indexed_color_names);
+
+	colorsList->selectRow(row);
+}
+
+void ConfigDialog::newColor()
+{
+	d_indexed_colors << Qt::black;
+	d_indexed_color_names << tr("New Color");
+	setColorsList(d_indexed_colors, d_indexed_color_names);
+
+	int row = colorsList->rowCount() - 1;
+	colorsList->selectRow(row);
+	showColorDialog(row, 0);
+}
+
+void ConfigDialog::loadDefaultColors()
+{
+	d_indexed_colors = ColorBox::colorList();
+	d_indexed_color_names = ColorBox::colorNames();
+	setColorsList(d_indexed_colors, d_indexed_color_names);
+	colorsList->selectRow(0);
+}
+
+void ConfigDialog::showColorDialog(int row, int col)
+{
+	if (col)
+		return;
+
+	QColor c = QColor(d_indexed_colors[row]);
+	QColor color = QColorDialog::getColor(c, this);
+	if (!color.isValid() || color == c)
+		return;
+
+	d_indexed_colors[row] = color;
+	setColorsList(d_indexed_colors, d_indexed_color_names);
+}
+
+void ConfigDialog::changeColorName(int row, int col)
+{
+	if (col != 1)
+		return;
+
+	QTableWidgetItem *it = colorsList->item(row, 1);
+	if (!it)
+		return;
+
+	d_indexed_color_names[row] = it->text();
 }
 
 void ConfigDialog::initAxesPage()
@@ -1544,6 +1669,12 @@ void ConfigDialog::languageChange()
 	lblCurveStyle->setText(tr( "Default curve style" ));
 	lblLineWidth->setText(tr( "Line width" ));
 	lblSymbSize->setText(tr( "Symbol size" ));
+	btnLoadDefaultColors->setText(tr("&Load Default"));
+	btnNewColor->setToolTip(tr("New Color"));
+	btnRemoveColor->setToolTip(tr("Delete Color"));
+	btnColorUp->setToolTip(tr("Move Color Up"));
+	btnColorDown->setToolTip(tr("Move Color Down"));
+	groupIndexedColors->setTitle(tr("Indexed Colors"));
 
 	boxCurveStyle->clear();
 	boxCurveStyle->addItem( QPixmap(":/lPlot.png"), tr( " Line" ) );
@@ -1749,6 +1880,9 @@ void ConfigDialog::apply()
 	app->defaultCurveStyle = curveStyle();
 	app->defaultCurveLineWidth = boxCurveLineWidth->value();
 	app->defaultSymbolSize = 2*boxSymbolSize->value() + 1;
+	app->setIndexedColors(d_indexed_colors);
+	app->setIndexedColorNames(d_indexed_color_names);
+
 	// 2D plots page: axes tab
 	if (generalDialog->currentWidget() == plotsTabWidget &&
 		plotsTabWidget->currentWidget() == axesPage){
@@ -1944,7 +2078,7 @@ void ConfigDialog::apply()
 	app->fitPoints = generatePointsBox->value();
 	app->generateUniformFitPoints = generatePointsBtn->isChecked();
 	app->generatePeakCurves = groupBoxMultiPeak->isChecked();
-	app->peakCurvesColor = boxPeaksColor->currentIndex();
+	app->peakCurvesColor = boxPeaksColor->color();
 	app->fit_scale_errors = scaleErrorsBox->isChecked();
 	app->d_2_linear_fit_points = linearFit2PointsBox->isChecked();
 	app->d_multi_peak_messages = boxMultiPeakMsgs->isChecked();

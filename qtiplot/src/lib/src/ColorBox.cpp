@@ -158,3 +158,12 @@ QStringList ColorBox::colorNames ()
 	color_names << tr( "dark gray" );
 	return color_names;
 }
+
+QList<QColor> ColorBox::colorList()
+{
+	QList<QColor> lst;
+	for (int i = 0; i < colors_count; i++)
+		lst << colors[i];
+
+	return lst;
+}
