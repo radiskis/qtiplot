@@ -4007,6 +4007,11 @@ QString Graph::saveToString(bool saveAsTemplate)
 void Graph::updateMarkersBoundingRect(bool rescaleEvent)
 {
 	foreach(FrameWidget *f, d_enrichments){
+		if (!rescaleEvent && qobject_cast<LegendWidget *>(f)){
+			f->resetOrigin();
+			continue;
+		}
+
 		if (f->attachPolicy() == FrameWidget::Scales)
 			f->resetCoordinates();
 		else if (rescaleEvent)
@@ -5990,7 +5995,7 @@ void Graph::setCanvasGeometry(const QRect &cr)
 	rect.adjust(cr.x() - ocr.x(), cr.y() - ocr.y(), cr.right() - ocr.right(), cr.bottom() - ocr.bottom());
 	setGeometry(rect);
 
-	updateMarkersBoundingRect();
+	updateMarkersBoundingRect(false);
 	autoScaleFonts = scaleFonts;
 }
 
@@ -6009,7 +6014,7 @@ void Graph::setCanvasSize(const QSize &size)
 	rect.adjust(0, 0, size.width() - ocr.width(), size.height() - ocr.height());
 	setGeometry(rect);
 
-	updateMarkersBoundingRect();
+	updateMarkersBoundingRect(false);
 	autoScaleFonts = scaleFonts;
 }
 

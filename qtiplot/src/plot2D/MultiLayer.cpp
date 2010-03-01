@@ -579,12 +579,25 @@ QSize MultiLayer::arrangeLayers(bool userSize)
 		int x = left_margin;
 		int y = top_margin;
 
-		Graph *lg = graphsList.at(i - 1);//left neighbour
-		if (col && lg)
-			x = lg->x() + lg->width() + colsSpace;
-		Graph *tg = graphsList.at(i - d_cols);//top neighbour
-		if (row && tg)
-			y = tg->y() + tg->height() + rowsSpace;
+		Graph *lg = 0;
+		if (col){
+			int index = i - 1;
+			if (index >= 0){
+				lg = graphsList.at(index);//left neighbour
+				if (lg)
+					x = lg->x() + lg->width() + colsSpace;
+			}
+		}
+
+		Graph *tg = 0;
+		if (row){
+			int index = i - d_cols;
+			if (index >= 0){
+				tg = graphsList.at(index);//top neighbour
+				if (tg)
+					y = tg->y() + tg->height() + rowsSpace;
+			}
+		}
 
 		//resizes and moves layers
 		Graph *g = (Graph *)graphsList.at(i);
@@ -686,10 +699,8 @@ void MultiLayer::setCommonLayerAxes(bool verticalAxis, bool horizontalAxis)
 			if (scale){
 				scale->setTitle(QString::null);
 				QwtScaleDraw *sd = g->axisScaleDraw(QwtPlot::yLeft);
-				if (sd){
+				if (sd)
 					sd->enableComponent(QwtAbstractScaleDraw::Labels, false);
-					sd->enableComponent(QwtAbstractScaleDraw::Backbone, false);
-				}
 			}
 		}
 
@@ -698,10 +709,8 @@ void MultiLayer::setCommonLayerAxes(bool verticalAxis, bool horizontalAxis)
 			if (scale){
 				scale->setTitle(QString::null);
 				QwtScaleDraw *sd = g->axisScaleDraw(QwtPlot::xTop);
-				if (sd){
+				if (sd)
 					sd->enableComponent(QwtAbstractScaleDraw::Labels, false);
-					sd->enableComponent(QwtAbstractScaleDraw::Backbone, false);
-				}
 			}
 		}
 		g->updateLayout();
@@ -1506,6 +1515,7 @@ void MultiLayer::save(const QString &fn, const QString &geometry, bool saveAsTem
 	t << "Spacing\t"+QString::number(rowsSpace)+"\t"+QString::number(colsSpace)+"\n";
 	t << "LayerCanvasSize\t"+QString::number(l_canvas_width)+"\t"+QString::number(l_canvas_height)+"\n";
 	t << "Alignement\t"+QString::number(hor_align)+"\t"+QString::number(vert_align)+"\n";
+	t << "<AlignPolicy>" + QString::number(d_align_policy) + "</AlignPolicy>\n";
 
 	foreach (Graph *g, graphsList)
 		t << g->saveToString(saveAsTemplate);

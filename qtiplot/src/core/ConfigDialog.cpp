@@ -67,6 +67,7 @@
 #include <QNetworkProxy>
 #include <QCompleter>
 #include <QDirModel>
+#include <QTableWidget>
 
 ConfigDialog::ConfigDialog( QWidget* parent, Qt::WFlags fl )
     : QDialog( parent, fl )
@@ -1056,8 +1057,39 @@ void ConfigDialog::initCurvesPage()
 
 	curvesBoxLayout->setRowStretch( 3, 1 );
 
-	QHBoxLayout * curvesPageLayout = new QHBoxLayout( curves );
-	curvesPageLayout->addWidget( curvesGroupBox );
+	QVBoxLayout *curvesPageLayout = new QVBoxLayout(curves);
+	curvesPageLayout->addWidget(curvesGroupBox);
+
+	/*colorsList = new QTableWidget();
+	colorsList->setColumnCount(2);
+	colorsList->horizontalHeader()->setClickable(false);
+	colorsList->horizontalHeader()->setResizeMode (0, QHeaderView::ResizeToContents);
+	colorsList->horizontalHeader()->setResizeMode (1, QHeaderView::Stretch);
+
+	QStringList header = QStringList() << tr("Color") << tr("Name");
+	colorsList->setHorizontalHeaderLabels(header);
+	colorsList->verticalHeader()->setResizeMode(QHeaderView::ResizeToContents);
+
+	int colors = ColorBox::numPredefinedColors();
+	QStringList colNames = ColorBox::colorNames();
+	colorsList->setRowCount(colors);
+	for (int i = 0; i < colors; i++){
+		QTableWidgetItem *it = new QTableWidgetItem();
+		it->setFlags(!Qt::ItemIsEditable);
+		it->setBackground(QBrush(ColorBox::color(i)));
+		colorsList->setItem(i, 0, it);
+
+		it = new QTableWidgetItem(colNames[i]);
+		it->setFlags(!Qt::ItemIsEditable);
+		it->setForeground(Qt::black);
+		colorsList->setItem(i, 1, it);
+	}
+
+	groupIndexedColors = new QGroupBox(tr("Indexed Colors"));
+	QHBoxLayout *hl = new QHBoxLayout(groupIndexedColors);
+	hl->addWidget(colorsList);
+
+	curvesPageLayout->addWidget(groupIndexedColors);*/
 }
 
 void ConfigDialog::initAxesPage()

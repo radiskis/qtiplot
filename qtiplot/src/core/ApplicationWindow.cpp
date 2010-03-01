@@ -4774,6 +4774,8 @@ ApplicationWindow* ApplicationWindow::openProject(const QString& fn, bool factor
 
 				if (s.contains("<LinkXAxes>"))
 					plot->linkXLayerAxes(s.trimmed().remove("<LinkXAxes>").remove("</LinkXAxes>").toInt());
+				else if (s.contains("<AlignPolicy>"))
+					plot->setAlignPolicy((MultiLayer::AlignPolicy)s.trimmed().remove("<AlignPolicy>").remove("</AlignPolicy>").toInt());
 			}
 			plot->blockSignals(false);
 			progress.setValue(aux);
@@ -4999,6 +5001,8 @@ MdiSubWindow* ApplicationWindow::openTemplate(const QString& fn)
 					}
 					if (s.contains("<LinkXAxes>"))
 						ml->linkXLayerAxes(s.trimmed().remove("<LinkXAxes>").remove("</LinkXAxes>").toInt());
+					else if (s.contains("<AlignPolicy>"))
+						ml->setAlignPolicy((MultiLayer::AlignPolicy)s.trimmed().remove("<AlignPolicy>").remove("</AlignPolicy>").toInt());
 				}
 			}
 		} else {
@@ -15467,6 +15471,8 @@ Folder* ApplicationWindow::appendProject(const QString& fn, Folder* parentFolder
 					}
 					if (s.contains("<LinkXAxes>"))
 						plot->linkXLayerAxes(s.trimmed().remove("<LinkXAxes>").remove("</LinkXAxes>").toInt());
+					else if (s.contains("<AlignPolicy>"))
+						plot->setAlignPolicy((MultiLayer::AlignPolicy)s.trimmed().remove("<AlignPolicy>").remove("</AlignPolicy>").toInt());
 				}
 				plot->blockSignals(false);
 			}else if  (s == "<SurfacePlot>"){//process 3D plots information

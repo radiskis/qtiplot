@@ -52,6 +52,7 @@ class ColorBox;
 class DoubleSpinBox;
 class QFontComboBox;
 class ColorMapEditor;
+class QTableWidget;
 
 //! Preferences dialog
 class ConfigDialog : public QDialog
@@ -244,6 +245,9 @@ private:
 	QCheckBox *keepRatioBox, *boxMultiPeakMsgs;
 
 	double aspect_ratio;
+
+	QGroupBox *groupIndexedColors;
+	QTableWidget *colorsList;
 };
 
 #endif // CONFIGDIALOG_H
