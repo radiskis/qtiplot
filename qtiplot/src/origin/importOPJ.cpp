@@ -175,7 +175,7 @@ inline uint qHash(const tree<Origin::ProjectNode>::iterator &key)
 
 QColor originToQtColor(const Origin::Color& color)
 {
-	return (color.type == Origin::Color::Regular ? ColorBox::color(color.regular) : QColor(color.custom[0], color.custom[1], color.custom[2]));
+	return (color.type == Origin::Color::Regular ? ColorBox::defaultColor(color.regular) : QColor(color.custom[0], color.custom[1], color.custom[2]));
 }
 
 bool ImportOPJ::createProjectTree(const OriginFile& opj)
@@ -940,7 +940,7 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 				color=_curve.symbolColor.regular;
 				if((style==Graph::Scatter || style==Graph::LineSymbols || style==Graph::Area)&&_curve.symbolColor.type == Origin::Color::Automatic)//0xF7 -Automatic color
 					color=++auto_color;
-				cl.symCol = ColorBox::color(color);
+				cl.symCol = ColorBox::defaultColor(color);
 				switch(_curve.symbolType&0xFF)
 				{
 				case 0: //NoSymbol
@@ -997,7 +997,7 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 				switch(_curve.symbolType>>8)
 				{
 				case 0:
-					cl.fillCol = ColorBox::color(color);
+					cl.fillCol = ColorBox::defaultColor(color);
 					break;
 				case 1:
 				case 2:
@@ -1008,7 +1008,7 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 					color=_curve.symbolFillColor.regular;
 					if((style==Graph::Scatter || style==Graph::LineSymbols || style==Graph::Area)&&_curve.symbolFillColor.type==Origin::Color::Automatic)//0xF7 -Automatic color
 						color=17;// depend on Origin settings - not stored in file
-					cl.fillCol = ColorBox::color(color);
+					cl.fillCol = ColorBox::defaultColor(color);
 					break;
 				default:
 					cl.fillCol = QColor();
@@ -1016,7 +1016,7 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 
 				cl.lWidth = ceil(_curve.lineWidth);
 				color=_curve.lineColor.regular;
-				cl.lCol = ColorBox::color(_curve.lineColor.type==Origin::Color::Automatic?0:color); //0xF7 -Automatic color
+				cl.lCol = ColorBox::defaultColor(_curve.lineColor.type==Origin::Color::Automatic?0:color); //0xF7 -Automatic color
 				int linestyle=_curve.lineStyle;
 				cl.filledArea=(_curve.fillArea || style==Graph::VerticalBars || style==Graph::HorizontalBars || style==Graph::Histogram || style == Graph::Pie) ? 1 : 0;
 				if(cl.filledArea)
@@ -1028,9 +1028,9 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 					if(style == Graph::VerticalBars || style == Graph::HorizontalBars || style == Graph::Histogram || style == Graph::Pie)
 					{
 						color = _curve.fillAreaPatternBorderColor;
-						cl.lCol = ColorBox::color(color.type == Origin::Color::Automatic ? 0 : color.regular); //0xF7 -Automatic color
+						cl.lCol = ColorBox::defaultColor(color.type == Origin::Color::Automatic ? 0 : color.regular); //0xF7 -Automatic color
 						color = (cl.aStyle == 0 ? _curve.fillAreaColor : _curve.fillAreaPatternColor);
-						cl.aCol = (color.type == Origin::Color::Automatic ? cl.lCol : ColorBox::color(color.regular)); //0xF7 -Automatic color
+						cl.aCol = (color.type == Origin::Color::Automatic ? cl.lCol : ColorBox::defaultColor(color.regular)); //0xF7 -Automatic color
 						cl.lWidth = ceil(_curve.fillAreaPatternBorderWidth);
 						linestyle = _curve.fillAreaPatternBorderStyle;
 					}
@@ -1150,13 +1150,13 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 			grid->enableY(!layer.yAxis.majorGrid.hidden);
 			grid->enableYMin(!layer.yAxis.minorGrid.hidden);
 
-			grid->setMajPenX(QPen(ColorBox::color(layer.xAxis.majorGrid.color), ceil(layer.xAxis.majorGrid.width),
+			grid->setMajPenX(QPen(ColorBox::defaultColor(layer.xAxis.majorGrid.color), ceil(layer.xAxis.majorGrid.width),
 							lineStyles[(Origin::GraphCurve::LineStyle)layer.xAxis.majorGrid.style]));
-			grid->setMinPenX(QPen(ColorBox::color(layer.xAxis.minorGrid.color), ceil(layer.xAxis.minorGrid.width),
+			grid->setMinPenX(QPen(ColorBox::defaultColor(layer.xAxis.minorGrid.color), ceil(layer.xAxis.minorGrid.width),
 							lineStyles[(Origin::GraphCurve::LineStyle)layer.xAxis.minorGrid.style]));
-			grid->setMajPenY(QPen(ColorBox::color(layer.yAxis.majorGrid.color), ceil(layer.yAxis.majorGrid.width),
+			grid->setMajPenY(QPen(ColorBox::defaultColor(layer.yAxis.majorGrid.color), ceil(layer.yAxis.majorGrid.width),
 							lineStyles[(Origin::GraphCurve::LineStyle)layer.yAxis.majorGrid.style]));
-			grid->setMinPenY(QPen(ColorBox::color(layer.yAxis.minorGrid.color), ceil(layer.yAxis.minorGrid.width),
+			grid->setMinPenY(QPen(ColorBox::defaultColor(layer.yAxis.minorGrid.color), ceil(layer.yAxis.minorGrid.width),
 							lineStyles[(Origin::GraphCurve::LineStyle)layer.yAxis.minorGrid.style]));
 
 			grid->setAxis(2, 0);
@@ -1261,8 +1261,8 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 
 				graph->showAxis(i, type, tableName, mw->table(tableName), !(formats[i].hidden),
 					tickTypeMap[formats[i].majorTicksType], tickTypeMap[formats[i].minorTicksType],
-					!(ticks[i].hidden),	ColorBox::color(formats[i].color), format, prec,
-					-ticks[i].rotation, 0, "", (ticks[i].color==0xF7 ? ColorBox::color(formats[i].color) : ColorBox::color(ticks[i].color)));
+					!(ticks[i].hidden),	ColorBox::defaultColor(formats[i].color), format, prec,
+					-ticks[i].rotation, 0, "", (ticks[i].color==0xF7 ? ColorBox::defaultColor(formats[i].color) : ColorBox::defaultColor(ticks[i].color)));
 
 				QFont fnt = graph->axisTitleFont(i);
 				int fontSize = 0;
@@ -1499,11 +1499,11 @@ bool ImportOPJ::importGraph3D(const OriginFile& opj, unsigned int g, unsigned in
 
 		plot->coordinateSystem()->setGridLines(true, true, Qwt3D::LEFT | Qwt3D::FLOOR | Qwt3D::BACK);
 
-		RGBA axisColor = Qt2GL(ColorBox::color(layer.xAxis.formatAxis[(layer.xAxis.position == Origin::GraphAxis::Bottom ? 0 : 1)].color));
-		RGBA numberColor = layer.xAxis.tickAxis[(layer.xAxis.position == Origin::GraphAxis::Bottom ? 0 : 1)].color == 0xF7 ? axisColor : Qt2GL(ColorBox::color(layer.xAxis.tickAxis[(layer.xAxis.position == Origin::GraphAxis::Bottom ? 0 : 1)].color));
+		RGBA axisColor = Qt2GL(ColorBox::defaultColor(layer.xAxis.formatAxis[(layer.xAxis.position == Origin::GraphAxis::Bottom ? 0 : 1)].color));
+		RGBA numberColor = layer.xAxis.tickAxis[(layer.xAxis.position == Origin::GraphAxis::Bottom ? 0 : 1)].color == 0xF7 ? axisColor : Qt2GL(ColorBox::defaultColor(layer.xAxis.tickAxis[(layer.xAxis.position == Origin::GraphAxis::Bottom ? 0 : 1)].color));
 		RGBA labelColor = Qt2GL(originToQtColor(layer.xAxis.label.color));
-		Qwt3D::GridLine majorGrid(!layer.xAxis.majorGrid.hidden, Qt2GL(ColorBox::color(layer.xAxis.majorGrid.color)), line3DStyles[(Origin::GraphCurve::LineStyle)layer.xAxis.majorGrid.style], layer.xAxis.majorGrid.width);
-		Qwt3D::GridLine minorGrid(!layer.xAxis.majorGrid.hidden, Qt2GL(ColorBox::color(layer.xAxis.majorGrid.color)), line3DStyles[(Origin::GraphCurve::LineStyle)layer.xAxis.majorGrid.style], layer.xAxis.majorGrid.width);
+		Qwt3D::GridLine majorGrid(!layer.xAxis.majorGrid.hidden, Qt2GL(ColorBox::defaultColor(layer.xAxis.majorGrid.color)), line3DStyles[(Origin::GraphCurve::LineStyle)layer.xAxis.majorGrid.style], layer.xAxis.majorGrid.width);
+		Qwt3D::GridLine minorGrid(!layer.xAxis.majorGrid.hidden, Qt2GL(ColorBox::defaultColor(layer.xAxis.majorGrid.color)), line3DStyles[(Origin::GraphCurve::LineStyle)layer.xAxis.majorGrid.style], layer.xAxis.majorGrid.width);
 		double width = layer.xAxis.formatAxis[(layer.xAxis.position == Origin::GraphAxis::Bottom ? 0 : 1)].thickness;
 		font = plot->numbersFont();
 		font.setBold(layer.xAxis.tickAxis[(layer.xAxis.position == Origin::GraphAxis::Bottom ? 0 : 1)].fontBold);
@@ -1519,11 +1519,11 @@ bool ImportOPJ::importGraph3D(const OriginFile& opj, unsigned int g, unsigned in
 			plot->setNumbersFont(font);
 		}
 
-		axisColor = Qt2GL(ColorBox::color(layer.yAxis.formatAxis[(layer.yAxis.position == Origin::GraphAxis::Left ? 0 : 1)].color));
-		numberColor = layer.yAxis.tickAxis[(layer.yAxis.position == Origin::GraphAxis::Left ? 0 : 1)].color == 0xF7 ? axisColor : Qt2GL(ColorBox::color(layer.yAxis.tickAxis[(layer.yAxis.position == Origin::GraphAxis::Left ? 0 : 1)].color));
+		axisColor = Qt2GL(ColorBox::defaultColor(layer.yAxis.formatAxis[(layer.yAxis.position == Origin::GraphAxis::Left ? 0 : 1)].color));
+		numberColor = layer.yAxis.tickAxis[(layer.yAxis.position == Origin::GraphAxis::Left ? 0 : 1)].color == 0xF7 ? axisColor : Qt2GL(ColorBox::defaultColor(layer.yAxis.tickAxis[(layer.yAxis.position == Origin::GraphAxis::Left ? 0 : 1)].color));
 		labelColor = Qt2GL(originToQtColor(layer.yAxis.label.color));
-		majorGrid = Qwt3D::GridLine(!layer.yAxis.majorGrid.hidden, Qt2GL(ColorBox::color(layer.yAxis.majorGrid.color)), line3DStyles[(Origin::GraphCurve::LineStyle)layer.yAxis.majorGrid.style], layer.yAxis.majorGrid.width);
-		minorGrid = Qwt3D::GridLine(!layer.yAxis.minorGrid.hidden, Qt2GL(ColorBox::color(layer.yAxis.minorGrid.color)), line3DStyles[(Origin::GraphCurve::LineStyle)layer.yAxis.minorGrid.style], layer.yAxis.minorGrid.width);
+		majorGrid = Qwt3D::GridLine(!layer.yAxis.majorGrid.hidden, Qt2GL(ColorBox::defaultColor(layer.yAxis.majorGrid.color)), line3DStyles[(Origin::GraphCurve::LineStyle)layer.yAxis.majorGrid.style], layer.yAxis.majorGrid.width);
+		minorGrid = Qwt3D::GridLine(!layer.yAxis.minorGrid.hidden, Qt2GL(ColorBox::defaultColor(layer.yAxis.minorGrid.color)), line3DStyles[(Origin::GraphCurve::LineStyle)layer.yAxis.minorGrid.style], layer.yAxis.minorGrid.width);
 		width = layer.yAxis.formatAxis[(layer.yAxis.position == Origin::GraphAxis::Left ? 0 : 1)].thickness;
 		font.setBold(layer.yAxis.tickAxis[(layer.yAxis.position == Origin::GraphAxis::Left ? 0 : 1)].fontBold);
 		font.setPointSize(floor(layer.yAxis.tickAxis[(layer.yAxis.position == Origin::GraphAxis::Left ? 0 : 1)].fontSize*fFontScaleFactor + 0.5));
@@ -1538,11 +1538,11 @@ bool ImportOPJ::importGraph3D(const OriginFile& opj, unsigned int g, unsigned in
 			plot->setNumbersFont(font);
 		}
 
-		axisColor = Qt2GL(ColorBox::color(layer.zAxis.formatAxis[(layer.zAxis.position == Origin::GraphAxis::Front ? 0 : 1)].color));
-		numberColor = layer.zAxis.tickAxis[(layer.zAxis.position == Origin::GraphAxis::Front ? 0 : 1)].color == 0xF7 ? axisColor : Qt2GL(ColorBox::color(layer.zAxis.tickAxis[(layer.zAxis.position == Origin::GraphAxis::Front ? 0 : 1)].color));
+		axisColor = Qt2GL(ColorBox::defaultColor(layer.zAxis.formatAxis[(layer.zAxis.position == Origin::GraphAxis::Front ? 0 : 1)].color));
+		numberColor = layer.zAxis.tickAxis[(layer.zAxis.position == Origin::GraphAxis::Front ? 0 : 1)].color == 0xF7 ? axisColor : Qt2GL(ColorBox::defaultColor(layer.zAxis.tickAxis[(layer.zAxis.position == Origin::GraphAxis::Front ? 0 : 1)].color));
 		labelColor = Qt2GL(originToQtColor(layer.zAxis.label.color));
-		majorGrid = Qwt3D::GridLine(!layer.zAxis.majorGrid.hidden, Qt2GL(ColorBox::color(layer.zAxis.majorGrid.color)), line3DStyles[(Origin::GraphCurve::LineStyle)layer.zAxis.majorGrid.style], layer.zAxis.majorGrid.width);
-		minorGrid = Qwt3D::GridLine(!layer.zAxis.minorGrid.hidden, Qt2GL(ColorBox::color(layer.zAxis.minorGrid.color)), line3DStyles[(Origin::GraphCurve::LineStyle)layer.zAxis.minorGrid.style], layer.zAxis.minorGrid.width);
+		majorGrid = Qwt3D::GridLine(!layer.zAxis.majorGrid.hidden, Qt2GL(ColorBox::defaultColor(layer.zAxis.majorGrid.color)), line3DStyles[(Origin::GraphCurve::LineStyle)layer.zAxis.majorGrid.style], layer.zAxis.majorGrid.width);
+		minorGrid = Qwt3D::GridLine(!layer.zAxis.minorGrid.hidden, Qt2GL(ColorBox::defaultColor(layer.zAxis.minorGrid.color)), line3DStyles[(Origin::GraphCurve::LineStyle)layer.zAxis.minorGrid.style], layer.zAxis.minorGrid.width);
 		width = layer.zAxis.formatAxis[(layer.zAxis.position == Origin::GraphAxis::Front ? 0 : 1)].thickness;
 		font.setBold(layer.zAxis.tickAxis[(layer.zAxis.position == Origin::GraphAxis::Front ? 0 : 1)].fontBold);
 		font.setPointSize(floor(layer.zAxis.tickAxis[(layer.zAxis.position == Origin::GraphAxis::Front ? 0 : 1)].fontSize*fFontScaleFactor + 0.5));
@@ -1563,7 +1563,7 @@ bool ImportOPJ::importGraph3D(const OriginFile& opj, unsigned int g, unsigned in
 		plot->showColorLegend(false);
 		plot->setFramed();
 
-		QColor clr = (_curve.symbolColor.type == Origin::Color::Automatic ? ColorBox::color(++auto_color) : originToQtColor(_curve.symbolColor));
+		QColor clr = (_curve.symbolColor.type == Origin::Color::Automatic ? ColorBox::defaultColor(++auto_color) : originToQtColor(_curve.symbolColor));
 		plot->setDataColors(clr, clr);
 
 		bool smooth;
@@ -1577,7 +1577,7 @@ bool ImportOPJ::importGraph3D(const OriginFile& opj, unsigned int g, unsigned in
 			smooth = false;
 		}
 		plot->setDotOptions(ceil(_curve.symbolSize), smooth);
-		plot->setMeshColor(_curve.lineColor.type == Origin::Color::Automatic ? ColorBox::color(0) : originToQtColor(_curve.lineColor));
+		plot->setMeshColor(_curve.lineColor.type == Origin::Color::Automatic ? ColorBox::defaultColor(0) : originToQtColor(_curve.lineColor));
 		plot->setMeshLineWidth(_curve.lineWidth);
 
 		switch(data[0].toAscii())

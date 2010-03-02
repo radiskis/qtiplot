@@ -1185,8 +1185,8 @@ void ConfigDialog::newColor()
 
 void ConfigDialog::loadDefaultColors()
 {
-	d_indexed_colors = ColorBox::colorList();
-	d_indexed_color_names = ColorBox::colorNames();
+	d_indexed_colors = ColorBox::defaultColors();
+	d_indexed_color_names = ColorBox::defaultColorNames();
 	setColorsList(d_indexed_colors, d_indexed_color_names);
 	colorsList->selectRow(0);
 }

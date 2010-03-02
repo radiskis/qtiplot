@@ -2769,7 +2769,7 @@ CurveLayout Graph::initCurveLayout(int style, int curves, bool guessLayout)
 	if (guessLayout)
 		guessUniqueCurveLayout(color, cl.sType);
 
-	QList<QColor> indexedColors = ColorBox::colorList();
+	QList<QColor> indexedColors = ColorBox::defaultColors();
 	MultiLayer *ml = multiLayer();
 	if (ml){
 		ApplicationWindow *app = ml->applicationWindow();
@@ -3862,7 +3862,7 @@ FunctionCurve* Graph::addFunction(const QStringList &formulas, double start, dou
 
 	int colorIndex = 0, symbolIndex;
 	guessUniqueCurveLayout(colorIndex, symbolIndex);
-	c->setPen(QPen(ColorBox::color(colorIndex), 1.0));
+	c->setPen(QPen(ColorBox::defaultColor(colorIndex), 1.0));
 
 	addLegendItem();
 	updatePlot();
@@ -4612,14 +4612,25 @@ void Graph::plotBoxDiagram(Table *w, const QStringList& names, int startRow, int
 	if (endRow < 0)
 		endRow = w->numRows() - 1;
 
+	QList<QColor> indexedColors = ColorBox::defaultColors();
+	MultiLayer *ml = multiLayer();
+	if (ml){
+		ApplicationWindow *app = ml->applicationWindow();
+		if (app)
+			indexedColors = app->indexedColors();
+	}
+
+	QColor color = Qt::black;
 	for (int j = 0; j <(int)names.count(); j++){
         BoxCurve *c = new BoxCurve(w, names[j], startRow, endRow);
 		insertCurve(c);
 
+		if (j < indexedColors.size())
+			color = indexedColors[j];
         c->setData(QwtSingleArrayData(double(j+1), QwtArray<double>(), 0));
         c->loadData();
-        c->setPen(QPen(ColorBox::color(j), 1));
-        c->setSymbol(QwtSymbol(QwtSymbol::NoSymbol, QBrush(), QPen(ColorBox::color(j), 1), QSize(7,7)));
+		c->setPen(QPen(color, 1));
+		c->setSymbol(QwtSymbol(QwtSymbol::NoSymbol, QBrush(), QPen(color, 1), QSize(7,7)));
 	}
 
 	foreach(FrameWidget *fw, d_enrichments){
@@ -4783,7 +4794,7 @@ void Graph::guessUniqueCurveLayout(int& colorIndex, int& symbolIndex)
 	colorIndex = 0;
 	symbolIndex = 0;
 
-	QList<QColor> indexedColors = ColorBox::colorList();
+	QList<QColor> indexedColors = ColorBox::defaultColors();
 	MultiLayer *ml = multiLayer();
 	if (ml){
 		ApplicationWindow *app = ml->applicationWindow();
@@ -5199,7 +5210,7 @@ void Graph::setCurveLineColor(int curveIndex, int colorIndex)
 	QwtPlotCurve *c = curve(curveIndex);
 	if (c){
 		QPen pen = c->pen();
-		pen.setColor(ColorBox::color(colorIndex));
+		pen.setColor(ColorBox::defaultColor(colorIndex));
 		c->setPen(pen);
 		replot();
 		emit modifiedGraph();
@@ -5317,7 +5328,7 @@ void Graph::setIndexedColors()
 			continue;
 
 		QPen pen = c->pen();
-		QColor color = ColorBox::color(i);
+		QColor color = ColorBox::defaultColor(i);
 		pen.setColor(color);
 		c->setPen(pen);
 

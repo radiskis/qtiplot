@@ -440,7 +440,7 @@ QString MultiPeakFit::logFitInfo(int iterations, int status)
 
 void MultiPeakFit::setPeakCurvesColor(int colorIndex)
 {
-	d_peaks_color = ColorBox::color(colorIndex);
+	d_peaks_color = ColorBox::defaultColor(colorIndex);
 }
 
 /*****************************************************************************

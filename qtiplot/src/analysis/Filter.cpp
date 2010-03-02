@@ -214,7 +214,7 @@ bool Filter::setDataFromCurve(const QString& curveTitle, double from, double to,
 
 void Filter::setColor(int colorId)
 {
-	d_curveColor = ColorBox::color(colorId);
+	d_curveColor = ColorBox::defaultColor(colorId);
 }
 
 void Filter::setColor(const QString& colorName)

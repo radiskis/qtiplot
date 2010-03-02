@@ -427,7 +427,9 @@ bool CurvesDialog::addCurve(const QString& name)
 	int color, symbol;
 	d_graph->guessUniqueCurveLayout(color, symbol);
 
-	cl.lCol = ColorBox::color(color);
+	QList<QColor> indexedColors = app->indexedColors();
+	if (color >= 0 && color < indexedColors.size())
+		cl.lCol = indexedColors[color];
 	cl.symCol = cl.lCol;
 	cl.fillCol = cl.lCol;
 	cl.lWidth = app->defaultCurveLineWidth;
