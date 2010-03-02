@@ -2,7 +2,7 @@
     File                 : ColorBox.cpp
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2006-2009 by Ion Vasilief, Alex Kargovsky
+	Copyright            : (C) 2006-2010 by Ion Vasilief, Alex Kargovsky
     Email (use @ for *)  : ion_vasilief*yahoo.fr, kargovsky*yumr.phys.msu.su
     Description          : A combo box to select a standard color
 
@@ -28,6 +28,7 @@
  ***************************************************************************/
 #include "ColorBox.h"
 
+#include <QSettings>
 #include <QPixmap>
 #include <QPainter>
 #include <algorithm>
@@ -67,14 +68,17 @@ ColorBox::ColorBox(QWidget *parent) : QComboBox(parent)
 
 void ColorBox::init()
 {
+	QList<QColor> indexedColors = colorList();
+	QStringList color_names = colorNames();
+
 	QPixmap icon = QPixmap(28, 16);
 	QRect r = QRect(0, 0, 27, 15);
 
 	QPainter p;
 	p.begin(&icon);
-	QStringList color_names = colorNames();
-	for (int i = 0; i < colors_count; i++){
-		p.setBrush(QBrush(colors[i]));
+
+	for (int i = 0; i < indexedColors.size(); i++){
+		p.setBrush(QBrush(indexedColors[i]));
 		p.drawRect(r);
 		this->addItem(icon, color_names[i]);
 	}
@@ -83,20 +87,12 @@ void ColorBox::init()
 
 void ColorBox::setColor(const QColor& c)
 {
-	const QColor *ite = std::find(colors, colors + sizeof(colors), c);
-	if (ite == colors + sizeof(colors))
-		this->setCurrentIndex(0); // default color is black.
-	else
-		this->setCurrentIndex(ite - colors);
+	setCurrentIndex(colorIndex(c));
 }
 
 QColor ColorBox::color() const
 {
-        int i = this->currentIndex();
-        if (i >= 0 && i < (int)sizeof(colors))
-		return colors[this->currentIndex()];
-
-	return QColor(Qt::black); // default color is black.
+	return color(this->currentIndex());
 }
 
 int ColorBox::colorIndex(const QColor& c)
@@ -104,25 +100,65 @@ int ColorBox::colorIndex(const QColor& c)
 	if (!isValidColor(c))
 		return 0;
 
-	const QColor *ite = std::find(colors, colors + sizeof(colors), c);
-	return (ite - colors);
+	return colorList().indexOf(c);
 }
 
 QColor ColorBox::color(int colorIndex)
 {
+	QList<QColor> colorsList = colorList();
+	if (colorIndex >= 0 && colorIndex < colorsList.size())
+		return colorsList[colorIndex];
+
+	return Qt::black; // default color is black.
+}
+
+QList<QColor> ColorBox::colorList()
+{
+#ifdef Q_OS_MAC
+	QSettings settings(QSettings::IniFormat,QSettings::UserScope, "ProIndependent", "QtiPlot");
+#else
+	QSettings settings(QSettings::NativeFormat,QSettings::UserScope, "ProIndependent", "QtiPlot");
+#endif
+	settings.beginGroup("/General");
+
+	QList<QColor> indexedColors;
+	QStringList lst = settings.value("/IndexedColors").toStringList();
+	if (!lst.isEmpty()){
+		for (int i = 0; i < lst.size(); i++)
+			indexedColors << QColor(lst[i]);
+	} else {
+		for (int i = 0; i < colors_count; i++)
+			indexedColors << colors[i];
+	}
+	settings.endGroup();
+
+	return indexedColors;
+}
+
+QStringList ColorBox::colorNames()
+{
+#ifdef Q_OS_MAC
+	QSettings settings(QSettings::IniFormat,QSettings::UserScope, "ProIndependent", "QtiPlot");
+#else
+	QSettings settings(QSettings::NativeFormat,QSettings::UserScope, "ProIndependent", "QtiPlot");
+#endif
+	settings.beginGroup("/General");
+	QStringList color_names = settings.value("/IndexedColorNames", defaultColorNames()).toStringList();
+	settings.endGroup();
+	return color_names;
+}
+
+QColor ColorBox::defaultColor(int colorIndex)
+{
 	if (colorIndex >= 0 && colorIndex < (int)sizeof(colors))
 		return colors[colorIndex];
 
-	return QColor(Qt::black); // default color is black.
+	return Qt::black; // default color is black.
 }
 
 bool ColorBox::isValidColor(const QColor& color)
 {
-	for (int i = 0; i < colors_count; i++){
-        if (color == colors[i])
-            return true;
-    }
-    return false;
+	return colorList().contains(color);
 }
 
 int ColorBox::numPredefinedColors()
@@ -130,7 +166,7 @@ int ColorBox::numPredefinedColors()
 	return colors_count;
 }
 
-QStringList ColorBox::colorNames ()
+QStringList ColorBox::defaultColorNames()
 {
 	QStringList color_names = QStringList() << tr( "black" );
 	color_names << tr( "red" );
@@ -159,7 +195,7 @@ QStringList ColorBox::colorNames ()
 	return color_names;
 }
 
-QList<QColor> ColorBox::colorList()
+QList<QColor> ColorBox::defaultColors()
 {
 	QList<QColor> lst;
 	for (int i = 0; i < colors_count; i++)

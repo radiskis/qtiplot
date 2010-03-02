@@ -425,8 +425,8 @@ void ApplicationWindow::initWindow()
 
 void ApplicationWindow::initGlobalConstants()
 {
-	d_indexed_colors = ColorBox::colorList();
-	d_indexed_color_names = ColorBox::colorNames();
+	d_indexed_colors = ColorBox::defaultColors();
+	d_indexed_color_names = ColorBox::defaultColorNames();
 
 	d_latex_compiler = MathTran;
 	d_latex_compiler_path = QString::null;
@@ -2738,7 +2738,7 @@ MultiLayer* ApplicationWindow::waterfallPlot(Table *t, const QStringList& list)
 	foreach(Graph *g, layersList){
 		DataCurve *cv = g->insertCurve(t, list[i], Graph::Line);
 		if (cv)
-			cv->setPen(QPen(ColorBox::color(i), defaultCurveLineWidth));
+			cv->setPen(QPen(d_indexed_colors[i], defaultCurveLineWidth));
 		i++;
 	}
 	QString legend = QString();
@@ -11886,7 +11886,7 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot, co
 
 					if (d_file_version <= 77){
 						int temp_index = convertOldToNewColorIndex(curve[15].toInt());
-						ag->updateVectorsLayout(curveID, ColorBox::color(temp_index), curve[16].toDouble(), curve[17].toInt(),
+						ag->updateVectorsLayout(curveID, ColorBox::defaultColor(temp_index), curve[16].toDouble(), curve[17].toInt(),
 								curve[18].toInt(), curve[19].toInt(), 0, curve[20], curve[21]);
 					} else {
 						if(plotType == Graph::VectXYXY)
@@ -12541,7 +12541,7 @@ void ApplicationWindow::differentiate()
 			QwtPlotCurve *c = g->curve(aux);
 			if (c){
 				QPen pen = c->pen();
-				pen.setColor(ColorBox::color(aux));
+				pen.setColor(d_indexed_colors[aux]);
 				c->setPen(pen);
 				aux++;
 			}
@@ -17916,7 +17916,7 @@ QColor ApplicationWindow::readColorFromProject(const QString& name)
 			return c;
 		if (d_file_version <= 89)
 			fillColIndex = convertOldToNewColorIndex(fillColIndex);
-		c = ColorBox::color(fillColIndex);
+		c = ColorBox::defaultColor(fillColIndex);
 	} else
 		c = QColor(name);
 

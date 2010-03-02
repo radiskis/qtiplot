@@ -164,8 +164,8 @@ void Grid::load(const QStringList& grid)
             setRenderHint(QwtPlotItem::RenderAntialiased, grid[21].toInt());
 
 	} else { // older versions of QtiPlot (<= 0.9rc3)
-		majPenX = QPen(ColorBox::color(grid[5].toInt()), grid[7].toDouble(), Graph::getPenStyle(grid[6].toInt()));
-		minPenX = QPen(ColorBox::color(grid[8].toInt()), grid[10].toDouble(), Graph::getPenStyle(grid[9].toInt()));
+		majPenX = QPen(ColorBox::defaultColor(grid[5].toInt()), grid[7].toDouble(), Graph::getPenStyle(grid[6].toInt()));
+		minPenX = QPen(ColorBox::defaultColor(grid[8].toInt()), grid[10].toDouble(), Graph::getPenStyle(grid[9].toInt()));
 		majPenY = majPenX;
 		minPenY = minPenX;
 

@@ -601,7 +601,7 @@ void PlotDialog::initPiePage()
 	QGridLayout *gl2 = new QGridLayout();
 	gl2->addWidget(new QLabel( tr( "First color" )), 0, 0);
 
-	boxFirstColor = new ColorBox(false);
+	boxFirstColor = new ColorBox();
 	gl2->addWidget(boxFirstColor, 0, 1);
 
 	gl2->addWidget(new QLabel( tr( "Pattern" )), 1, 0);

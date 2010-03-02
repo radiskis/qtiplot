@@ -2,7 +2,7 @@
     File                 : ColorButton.cpp
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2009 by Ion Vasilief
+	Copyright            : (C) 2009 - 2010 by Ion Vasilief
     Email (use @ for *)  : ion_vasilief*yahoo.fr
     Description          : A wrapper around QtColorPicker from QtSolutions
 
@@ -32,12 +32,18 @@
 
 ColorButton::ColorButton(QWidget *parent) : QtColorPicker(parent)
 {
-	QStringList color_names = ColorBox::colorNames();
+	QStringList color_names = ColorBox::defaultColorNames();
+	QList<QColor> defaultColors = ColorBox::defaultColors();
 	for (int i = 0; i < ColorBox::numPredefinedColors(); i++)
-		insertColor(ColorBox::color(i), color_names[i]);
+		insertColor(defaultColors[i], color_names[i]);
 
-	for (int i = 0; i < QColorDialog::customCount(); i++)
-		insertColor(QColorDialog::customColor(i), tr("Custom"));
+	QList<QColor> colors = ColorBox::colorList();
+	color_names = ColorBox::colorNames();
+	for (int i = 0; i < colors.count(); i++){
+		QColor c = colors[i];
+		if (!defaultColors.contains(c))
+			insertColor(c, color_names[i]);
+	}
 
 	connect(this, SIGNAL(colorChanged(const QColor & )), this, SIGNAL(colorChanged()));
 }
