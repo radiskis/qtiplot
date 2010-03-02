@@ -51,12 +51,12 @@ const QwtSymbol::Style SymbolBox::symbols[] = {
   QwtSymbol::Hexagon
 };
 
-SymbolBox::SymbolBox(QWidget *parent) : QComboBox(parent)
+SymbolBox::SymbolBox(bool showNoSymbol, QWidget *parent) : QComboBox(parent)
 {
-  init();
+	init(showNoSymbol);
 }
 
-void SymbolBox::init()
+void SymbolBox::init(bool showNoSymbol)
 {
 	QPixmap icon = QPixmap(15, 15);
 	QColor c = QColor (Qt::gray);
@@ -67,7 +67,8 @@ void SymbolBox::init()
 	QwtSymbol symb;
 	p.setBrush(QBrush(QColor(Qt::white)));
 
-	this->addItem(tr("No Symbol" ));
+	if (showNoSymbol)
+		this->addItem(tr("No Symbol" ));
 
 	symb.setStyle (QwtSymbol::Ellipse);
 	symb.draw(&p, r);
@@ -76,107 +77,122 @@ void SymbolBox::init()
 	symb.setStyle (QwtSymbol::Rect);
 	icon.fill(c);
 	symb.draw(&p, r.adjusted(0, 0, -1, -1));
-    this->addItem(icon,tr("Rectangle"));
+	this->addItem(icon,tr("Rectangle"));
 
 	symb.setStyle (QwtSymbol::Diamond);
 	icon.fill(c);
 	symb.draw(&p, r);
-    this->addItem(icon,tr("Diamond"));
+	this->addItem(icon,tr("Diamond"));
 
 	symb.setStyle (QwtSymbol::Triangle);
 	icon.fill(c);
 	symb.draw(&p, r);
-    this->addItem(icon,tr("Triangle"));
+	this->addItem(icon,tr("Triangle"));
 
 	symb.setStyle (QwtSymbol::DTriangle);
 	icon.fill(c);
 	symb.draw(&p, r);
-    this->addItem(icon,tr("Down Triangle"));
+	this->addItem(icon,tr("Down Triangle"));
 
 	symb.setStyle (QwtSymbol::UTriangle);
 	icon.fill(c);
 	symb.draw(&p, r);
-    this->addItem(icon,tr("Up Triangle"));
+	this->addItem(icon,tr("Up Triangle"));
 
 	symb.setStyle (QwtSymbol::LTriangle);
 	icon.fill(c);
 	symb.draw(&p, r);
-    this->addItem(icon,tr("Left Triangle"));
+	this->addItem(icon,tr("Left Triangle"));
 
 	symb.setStyle (QwtSymbol::RTriangle);
 	icon.fill(c);
 	symb.draw(&p, r);
-    this->addItem(icon,tr("Right Triangle"));
+	this->addItem(icon,tr("Right Triangle"));
 
 	symb.setStyle (QwtSymbol::Cross);
 	icon.fill(c);
 	symb.draw(&p, r);
-    this->addItem(icon,tr("Cross"));
+	this->addItem(icon,tr("Cross"));
 
 	symb.setStyle (QwtSymbol::XCross);
 	icon.fill(c);
 	symb.draw(&p, r);
-    this->addItem(icon,tr("Diagonal Cross"));
+	this->addItem(icon,tr("Diagonal Cross"));
 
 	symb.setStyle (QwtSymbol::HLine);
 	icon.fill(c);
 	symb.draw(&p, r);
-    this->addItem(icon,tr("Horizontal Line"));
+	this->addItem(icon,tr("Horizontal Line"));
 
 	symb.setStyle (QwtSymbol::VLine);
 	p.eraseRect ( r );
 	symb.draw(&p, r);
-    this->addItem(icon,tr("Vertical Line"));
+	this->addItem(icon,tr("Vertical Line"));
 
 	symb.setStyle (QwtSymbol::Star1);
 	icon.fill(c);
 	symb.draw(&p, r);
-    this->addItem(icon,tr("Star 1"));
+	this->addItem(icon,tr("Star 1"));
 
 	symb.setStyle (QwtSymbol::Star2);
 	icon.fill(c);
 	symb.draw(&p, r);
-    this->addItem(icon,tr("Star 2"));
+	this->addItem(icon,tr("Star 2"));
 
 	symb.setStyle (QwtSymbol::Hexagon);
 	icon.fill(c);
 	symb.draw(&p, r);
-    this->addItem(icon,tr("Hexagon"));
+	this->addItem(icon,tr("Hexagon"));
 
 	p.end();
 }
 
 void SymbolBox::setStyle(const QwtSymbol::Style& style)
 {
-  const QwtSymbol::Style*ite = std::find(symbols, symbols + sizeof(symbols), style);
-  if (ite == symbols + sizeof(symbols))
-    this->setCurrentIndex(0);
-  else
-    this->setCurrentIndex(ite - symbols);
+	const QwtSymbol::Style*ite = std::find(symbols, symbols + sizeof(symbols), style);
+	if (ite == symbols + sizeof(symbols))
+		this->setCurrentIndex(0);
+	else
+		this->setCurrentIndex(ite - symbols);
 }
 
 QwtSymbol::Style SymbolBox::selectedSymbol() const
 {
-  size_t i = this->currentIndex();
-  if (i < sizeof(symbols))
-    return symbols[this->currentIndex()];
-  else
-    return QwtSymbol::NoSymbol;
+	size_t i = this->currentIndex();
+	if (i < sizeof(symbols))
+		return symbols[this->currentIndex()];
+
+	return QwtSymbol::NoSymbol;
 }
 
 int SymbolBox::symbolIndex(const QwtSymbol::Style& style)
 {
-  const QwtSymbol::Style*ite = std::find(symbols, symbols + sizeof(symbols), style);
-  if (ite == symbols + sizeof(symbols))
-    return 0;
-  else
-    return (ite - symbols);
+	const QwtSymbol::Style*ite = std::find(symbols, symbols + sizeof(symbols), style);
+	if (ite == symbols + sizeof(symbols))
+		return 0;
+
+	return (ite - symbols);
 }
 
 QwtSymbol::Style SymbolBox::style(int index)
 {
-  if (index < (int)sizeof(symbols))
-    return symbols[index];
-  else
-    return QwtSymbol::NoSymbol;
+	if (index >= 0 && index < (int)sizeof(symbols))
+		return symbols[index];
+
+	return QwtSymbol::NoSymbol;
+}
+
+QList<int> SymbolBox::defaultSymbols()
+{
+	QList<int> lst;
+	for (int i = 0; i < QwtSymbol::StyleCnt; i++)
+		lst << i;
+
+	return lst;
+}
+
+void SymbolBox::focusInEvent(QFocusEvent * e)
+{
+	emit activated(this);
+	return QComboBox::focusInEvent(e);
 }

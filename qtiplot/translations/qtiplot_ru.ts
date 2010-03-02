@@ -3767,6 +3767,18 @@ Autocompletion will not be available!</source>
         <source>Set optimal column width</source>
         <translation>Установить оптимальную ширину столбцов</translation>
     </message>
+    <message>
+        <source>Shared A&amp;xes Panel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source> </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Custom Layout...</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ArrowMarker</name>
@@ -4293,6 +4305,22 @@ Autocompletion will not be available!</source>
         <source>Reciprocal</source>
         <translation>обратная величина</translation>
     </message>
+    <message>
+        <source>Hide Ticks</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>At Axis Begin</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>At Axis End</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>At Axis Begin &amp; End</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ColorBox</name>
@@ -4397,7 +4425,7 @@ Autocompletion will not be available!</source>
     <name>ColorButton</name>
     <message>
         <source>Custom</source>
-        <translation>По выбору</translation>
+        <translation type="obsolete">По выбору</translation>
     </message>
 </context>
 <context>
@@ -5357,6 +5385,58 @@ The following special codes can be used:
     <message>
         <source>You don&apos;t have read access rights to file %1.&lt;br&gt;Please choose another file!</source>
         <translation>Нет прав для чтения файла &apos;%1&apos;.&lt;br&gt;Пожалуйста, выберите другой файл!</translation>
+    </message>
+    <message>
+        <source>New Color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Load Default</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete Color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Move Color Up</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Move Color Down</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Indexed Colors</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Default Symbol</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edge width</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Fill</source>
+        <translation type="obsolete">Заполнение</translation>
+    </message>
+    <message>
+        <source>Name</source>
+        <translation type="unfinished">Имя</translation>
+    </message>
+    <message>
+        <source>Symbol</source>
+        <translation type="unfinished">Символ</translation>
+    </message>
+    <message>
+        <source>Inde&amp;xed Symbols</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Fill Symbol</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -8928,6 +9008,26 @@ have the same number of rows.</source>
         <source>You are about to delete %1 existing layers.</source>
         <translation>Вы собираетесь удалить %1 существующих слоёв.</translation>
     </message>
+    <message>
+        <source>Link &amp;X axes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Fixed size</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Align</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Canvases</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Common a&amp;xes</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>LineDialog</name>
@@ -10966,7 +11066,7 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Tolerance (Douglas Peuker algorithm)</source>
-        <translation>Допуск (алгоритм Douglas-Peuker)</translation>
+        <translation type="obsolete">Допуск (алгоритм Douglas-Peuker)</translation>
     </message>
     <message>
         <source>Speed</source>
@@ -11131,6 +11231,22 @@ have the same number of rows.</source>
     <message>
         <source>Use &amp;Table Custom Pen</source>
         <translation>&amp;Набор перьев по выбору</translation>
+    </message>
+    <message>
+        <source>Link &amp;X axes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Miscellaneous</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>0 (all data points)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Tolerance (Douglas-Peucker algorithm)</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

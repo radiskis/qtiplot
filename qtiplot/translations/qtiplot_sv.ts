@@ -8335,6 +8335,18 @@ Automatisk komplettering ej tillgängligt!</translation>
         <source>Move Row</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Shared A&amp;xes Panel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source> </source>
+        <translation type="unfinished"> </translation>
+    </message>
+    <message>
+        <source>&amp;Custom Layout...</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ArrowMarker</name>
@@ -8933,6 +8945,22 @@ Automatisk komplettering ej tillgängligt!</translation>
         <source>Reciprocal</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Hide Ticks</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>At Axis Begin</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>At Axis End</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>At Axis Begin &amp; End</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>CanvasPicker</name>
@@ -9038,13 +9066,6 @@ Automatisk komplettering ej tillgängligt!</translation>
     <message>
         <source>light magenta</source>
         <translation>ljusmagenta</translation>
-    </message>
-</context>
-<context>
-    <name>ColorButton</name>
-    <message>
-        <source>Custom</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -10059,6 +10080,58 @@ Följande specialkoder kan användas:
     </message>
     <message>
         <source>You don&apos;t have read access rights to file %1.&lt;br&gt;Please choose another file!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>New Color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Load Default</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete Color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Move Color Up</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Move Color Down</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Indexed Colors</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Default Symbol</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edge width</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Fill</source>
+        <translation type="obsolete">Fyllnad</translation>
+    </message>
+    <message>
+        <source>Name</source>
+        <translation type="unfinished">Namn</translation>
+    </message>
+    <message>
+        <source>Symbol</source>
+        <translation type="unfinished">Symbol</translation>
+    </message>
+    <message>
+        <source>Inde&amp;xed Symbols</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Fill Symbol</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -14837,6 +14910,26 @@ Gränserna måste vara inom definitionsområdet för x; om du inte vet maximum- 
         <source>Please enter different indexes for the source and destination layers!</source>
         <translation>Skriv in olika index för käll- och mållager!</translation>
     </message>
+    <message>
+        <source>Link &amp;X axes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Fixed size</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Align</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Canvases</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Common a&amp;xes</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>LineDialog</name>
@@ -16645,10 +16738,6 @@ Vill du skjuta in celler?</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Tolerance (Douglas Peuker algorithm)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Speed</source>
         <translation type="unfinished"></translation>
     </message>
@@ -17438,6 +17527,22 @@ Vill du skjuta in celler?</translation>
     </message>
     <message>
         <source>Use &amp;Table Custom Pen</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Link &amp;X axes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Miscellaneous</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>0 (all data points)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Tolerance (Douglas-Peucker algorithm)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

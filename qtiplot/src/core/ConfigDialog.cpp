@@ -36,6 +36,7 @@
 #include <ColorBox.h>
 #include <DoubleSpinBox.h>
 #include <ColorMapEditor.h>
+#include <SymbolBox.h>
 
 #include <QLocale>
 #include <QPushButton>
@@ -1049,26 +1050,49 @@ void ConfigDialog::initCurvesPage()
 	boxCurveLineWidth->setValue(app->defaultCurveLineWidth);
 	curvesBoxLayout->addWidget( boxCurveLineWidth, 1, 1 );
 
+	symbolGroupBox = new QGroupBox();
+	QGridLayout * symbLayout = new QGridLayout(symbolGroupBox);
+
+	lblSymbBox = new QLabel();
+	symbLayout->addWidget(lblSymbBox, 0, 0);
+
+	symbolBox = new SymbolBox();
+	symbolBox->setCurrentIndex(app->d_symbol_style);
+	symbolBox->setDisabled(app->d_indexed_symbols);
+	symbLayout->addWidget(symbolBox, 0, 1);
+
 	lblSymbSize = new QLabel();
-	curvesBoxLayout->addWidget( lblSymbSize, 2, 0 );
+	symbLayout->addWidget( lblSymbSize, 1, 0 );
 	boxSymbolSize = new QSpinBox();
 	boxSymbolSize->setRange(1,100);
 	boxSymbolSize->setValue(app->defaultSymbolSize/2);
-	curvesBoxLayout->addWidget( boxSymbolSize, 2, 1 );
+	symbLayout->addWidget( boxSymbolSize, 1, 1 );
 
-	curvesBoxLayout->setRowStretch( 3, 1 );
+	lblSymbEdge = new QLabel();
+	symbLayout->addWidget(lblSymbEdge, 2, 0);
+
+	symbolEdgeBox = new DoubleSpinBox('f');
+	symbolEdgeBox->setLocale(app->locale());
+	symbolEdgeBox->setSingleStep(0.1);
+	symbolEdgeBox->setRange(0.1, 100);
+	symbolEdgeBox->setValue(app->defaultSymbolEdge);
+	symbLayout->addWidget(symbolEdgeBox, 2, 1);
+
+	fillSymbolsBox = new QCheckBox();
+	fillSymbolsBox->setChecked(app->d_fill_symbols);
+	symbLayout->addWidget(fillSymbolsBox, 3, 1);
+
+	symbLayout->setRowStretch(4, 1);
 
 	QVBoxLayout *curvesPageLayout = new QVBoxLayout(curves);
 	curvesPageLayout->addWidget(curvesGroupBox);
+	curvesPageLayout->addWidget(symbolGroupBox);
 
 	colorsList = new QTableWidget();
 	colorsList->setColumnCount(2);
 	colorsList->horizontalHeader()->setClickable(false);
 	colorsList->horizontalHeader()->setResizeMode (0, QHeaderView::ResizeToContents);
 	colorsList->horizontalHeader()->setResizeMode (1, QHeaderView::Stretch);
-
-	QStringList header = QStringList() << tr("Color") << tr("Name");
-	colorsList->setHorizontalHeaderLabels(header);
 	colorsList->verticalHeader()->setResizeMode(QHeaderView::ResizeToContents);
 
 	connect(colorsList, SIGNAL(cellClicked(int, int)), this, SLOT(showColorDialog(int, int)));
@@ -1078,12 +1102,9 @@ void ConfigDialog::initCurvesPage()
 	d_indexed_color_names = app->indexedColorNames();
 	setColorsList(d_indexed_colors, d_indexed_color_names);
 
-	groupIndexedColors = new QGroupBox();
-	QHBoxLayout *hl = new QHBoxLayout(groupIndexedColors);
-	hl->addWidget(colorsList);
-
 	QHBoxLayout *hl2 = new QHBoxLayout();
 	hl2->setSpacing(0);
+	hl2->addStretch();
 	btnNewColor = new QPushButton(QIcon(":/plus.png"), QString::null);
 	connect(btnNewColor, SIGNAL(clicked()), this, SLOT(newColor()));
 	hl2->addWidget(btnNewColor);
@@ -1102,21 +1123,88 @@ void ConfigDialog::initCurvesPage()
 
 	btnLoadDefaultColors = new QPushButton();
 	connect(btnLoadDefaultColors, SIGNAL(clicked()), this, SLOT(loadDefaultColors()));
+	hl2->addWidget(btnLoadDefaultColors);
 
 	hl2->addStretch();
 
-	QHBoxLayout *hl1 = new QHBoxLayout();
-	hl1->addWidget(btnLoadDefaultColors);
-	hl1->addStretch();
-
-	QVBoxLayout *vl = new QVBoxLayout();
+	groupIndexedColors = new QGroupBox();
+	QVBoxLayout *vl = new QVBoxLayout(groupIndexedColors);
+	vl->addWidget(colorsList);
 	vl->addLayout(hl2);
-	vl->addLayout(hl1);
-	vl->addStretch();
 
-	hl->addLayout(vl);
+	symbolsList = new QTableWidget();
+	symbolsList->setColumnCount(1);
+	symbolsList->horizontalHeader()->setClickable(false);
+	symbolsList->horizontalHeader()->setResizeMode (0, QHeaderView::Stretch);
+	symbolsList->verticalHeader()->setResizeMode(QHeaderView::ResizeToContents);
 
-	curvesPageLayout->addWidget(groupIndexedColors);
+	d_indexed_symbols = app->indexedSymbols();
+	setSymbolsList(d_indexed_symbols);
+
+	groupIndexedSymbols = new QGroupBox();
+	groupIndexedSymbols->setCheckable(true);
+	groupIndexedSymbols->setChecked(app->d_indexed_symbols);
+	connect(groupIndexedSymbols, SIGNAL(clicked(bool)), symbolBox, SLOT(setDisabled(bool)));
+
+	QVBoxLayout *vl2 = new QVBoxLayout(groupIndexedSymbols);
+	vl2->addWidget(symbolsList);
+
+	btnLoadDefaultSymbols = new QPushButton();
+	connect(btnLoadDefaultSymbols, SIGNAL(clicked()), this, SLOT(loadDefaultSymbols()));
+
+	QHBoxLayout *hl4 = new QHBoxLayout();
+	hl4->addStretch();
+	hl4->addWidget(btnLoadDefaultSymbols);
+	hl4->addStretch();
+	vl2->addLayout(hl4);
+
+	QHBoxLayout *hl3 = new QHBoxLayout();
+	hl3->addWidget(groupIndexedColors);
+	hl3->addWidget(groupIndexedSymbols);
+
+	curvesPageLayout->addLayout(hl3);
+}
+
+void ConfigDialog::setSymbolsList(const QList<int>& symbList)
+{
+	symbolsList->clearContents();
+	int rows = symbList.size();
+	symbolsList->setRowCount(rows);
+	for (int i = 0; i < rows; i++){
+		SymbolBox *sb = new SymbolBox(false);
+		sb->setCurrentIndex(symbList[i]);
+		connect(sb, SIGNAL(activated(SymbolBox *)), this, SLOT(setCurrentSymbol(SymbolBox *)));
+		connect(sb, SIGNAL(activated(int)), this, SLOT(updateSymbolsList(int)));
+		symbolsList->setCellWidget(i, 0, sb);
+	}
+}
+
+void ConfigDialog::loadDefaultSymbols()
+{
+	d_indexed_symbols = SymbolBox::defaultSymbols();
+	setSymbolsList(d_indexed_symbols);
+}
+
+void ConfigDialog::setCurrentSymbol(SymbolBox *sb)
+{
+	if (!sb)
+		return;
+
+	int rows = symbolsList->rowCount();
+	for (int i = 0; i < rows; i++){
+		SymbolBox *b = (SymbolBox*)symbolsList->cellWidget(i, 0);
+		if (b && sb == b){
+			symbolsList->setCurrentCell(i, 0);
+			break;
+		}
+	}
+}
+
+void ConfigDialog::updateSymbolsList(int style)
+{
+	int row = symbolsList->currentRow();
+	if (row >= 0 && row < d_indexed_symbols.size())
+		d_indexed_symbols[row] = style;
 }
 
 void ConfigDialog::setColorsList(const QList<QColor>& colList, const QStringList& colNames)
@@ -1675,6 +1763,18 @@ void ConfigDialog::languageChange()
 	btnColorUp->setToolTip(tr("Move Color Up"));
 	btnColorDown->setToolTip(tr("Move Color Down"));
 	groupIndexedColors->setTitle(tr("Indexed Colors"));
+	groupIndexedSymbols->setTitle(tr("Inde&xed Symbols"));
+	btnLoadDefaultSymbols->setText(tr("&Load Default"));
+
+	symbolGroupBox->setTitle(tr("Default Symbol"));
+	lblSymbBox->setText(tr("Style"));
+	lblSymbEdge->setText(tr("Edge width"));
+	fillSymbolsBox->setText(tr("&Fill Symbol"));
+
+	QStringList header = QStringList() << tr("Color") << tr("Name");
+	colorsList->setHorizontalHeaderLabels(header);
+	header = QStringList() << tr("Symbol");
+	symbolsList->setHorizontalHeaderLabels(header);
 
 	boxCurveStyle->clear();
 	boxCurveStyle->addItem( QPixmap(":/lPlot.png"), tr( " Line" ) );
@@ -1882,6 +1982,11 @@ void ConfigDialog::apply()
 	app->defaultSymbolSize = 2*boxSymbolSize->value() + 1;
 	app->setIndexedColors(d_indexed_colors);
 	app->setIndexedColorNames(d_indexed_color_names);
+	app->d_indexed_symbols = groupIndexedSymbols->isChecked();
+	app->d_fill_symbols = fillSymbolsBox->isChecked();
+	app->defaultSymbolEdge = symbolEdgeBox->value();
+	app->d_symbol_style = symbolBox->currentIndex();
+	app->setIndexedSymbols(d_indexed_symbols);
 
 	// 2D plots page: axes tab
 	if (generalDialog->currentWidget() == plotsTabWidget &&

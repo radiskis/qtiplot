@@ -5625,6 +5625,18 @@ L&apos;autocomplétion ne sera pas disponible!</translation>
         <source>Set optimal column width</source>
         <translation>Largeur de colonne optimale</translation>
     </message>
+    <message>
+        <source>Shared A&amp;xes Panel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source> </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Custom Layout...</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ArrowMarker</name>
@@ -6205,6 +6217,22 @@ L&apos;autocomplétion ne sera pas disponible!</translation>
         <source>Reciprocal</source>
         <translation>Réciproque</translation>
     </message>
+    <message>
+        <source>Hide Ticks</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>At Axis Begin</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>At Axis End</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>At Axis Begin &amp; End</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>CanvasPicker</name>
@@ -6316,7 +6344,7 @@ L&apos;autocomplétion ne sera pas disponible!</translation>
     <name>ColorButton</name>
     <message>
         <source>Custom</source>
-        <translation>Personnalisée</translation>
+        <translation type="obsolete">Personnalisée</translation>
     </message>
 </context>
 <context>
@@ -7321,6 +7349,58 @@ Les codes spéciaux suivant peuvent être utilisés :
     <message>
         <source>You don&apos;t have read access rights to file %1.&lt;br&gt;Please choose another file!</source>
         <translation>Vous n&apos;avez pas les droits d&apos;accès en lecture sur le fichier %1.&lt;br&gt;Choisissez un autre fichier !</translation>
+    </message>
+    <message>
+        <source>New Color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Load Default</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete Color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Move Color Up</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Move Color Down</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Indexed Colors</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Default Symbol</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edge width</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Fill</source>
+        <translation type="obsolete">Palette</translation>
+    </message>
+    <message>
+        <source>Name</source>
+        <translation type="unfinished">Nom</translation>
+    </message>
+    <message>
+        <source>Symbol</source>
+        <translation type="unfinished">Symbole</translation>
+    </message>
+    <message>
+        <source>Inde&amp;xed Symbols</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Fill Symbol</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -11945,6 +12025,26 @@ Les limites doivent être dans la gamme de x ; Si vous ne connaissez pas la vale
         <source>Please enter different indexes for the source and destination layers!</source>
         <translation>Veuillez donner des indices de source et de destination différents !</translation>
     </message>
+    <message>
+        <source>Link &amp;X axes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Fixed size</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Align</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Canvases</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Common a&amp;xes</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>LineDialog</name>
@@ -13733,7 +13833,7 @@ Voulez-vous insérer des cellules?</translation>
     </message>
     <message>
         <source>Tolerance (Douglas Peuker algorithm)</source>
-        <translation>Tolérance (Algorithme de Douglas Peuker)</translation>
+        <translation type="obsolete">Tolérance (Algorithme de Douglas Peuker)</translation>
     </message>
     <message>
         <source>Speed</source>
@@ -14527,6 +14627,22 @@ Voulez-vous insérer des cellules?</translation>
     <message>
         <source>Use &amp;Table Custom Pen</source>
         <translation>Utiliser la &amp;table des stylos personnalisée</translation>
+    </message>
+    <message>
+        <source>Link &amp;X axes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Miscellaneous</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>0 (all data points)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Tolerance (Douglas-Peucker algorithm)</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

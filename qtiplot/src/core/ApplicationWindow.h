@@ -224,6 +224,9 @@ public:
 	QList<QColor> indexedColors(){return d_indexed_colors;};
 	void setIndexedColors(const QList<QColor>& lst){d_indexed_colors = lst;};
 
+	QList<int> indexedSymbols(){return d_symbols_list;};
+	void setIndexedSymbols(const QList<int>& lst){d_symbols_list = lst;};
+
 	QStringList indexedColorNames(){return d_indexed_color_names;};
 	void setIndexedColorNames(const QStringList& lst){d_indexed_color_names = lst;};
 
@@ -1260,9 +1263,9 @@ public:
 	//@}
 	int majTicksStyle, minTicksStyle, legendFrameStyle, autoSaveTime, canvasFrameWidth;
 	QColor legendBackground, legendTextColor, defaultArrowColor;
-	int defaultArrowHeadLength, defaultArrowHeadAngle, d_legend_default_angle;
-	double defaultArrowLineWidth, defaultCurveLineWidth;
-	bool defaultArrowHeadFill;
+	int defaultArrowHeadLength, defaultArrowHeadAngle, d_legend_default_angle, d_symbol_style;
+	double defaultArrowLineWidth, defaultCurveLineWidth, defaultSymbolEdge;
+	bool defaultArrowHeadFill, d_fill_symbols, d_indexed_symbols;
 	Qt::PenStyle defaultArrowLineStyle;
 	QPen d_frame_widget_pen;
 	int majTicksLength, minTicksLength, defaultPlotMargin;
@@ -1462,5 +1465,6 @@ private:
 
 	QList<QColor> d_indexed_colors;
 	QStringList d_indexed_color_names;
+	QList<int> d_symbols_list;
 };
 #endif

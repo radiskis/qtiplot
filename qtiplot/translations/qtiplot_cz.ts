@@ -3777,6 +3777,18 @@ Různé části tohoto souboru se nemusí zobrazovat tak, jak se očekává.</tr
         <comment>delete key</comment>
         <translation>Klávesa Delete</translation>
     </message>
+    <message>
+        <source>Shared A&amp;xes Panel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source> </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Custom Layout...</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ArrowMarker</name>
@@ -4307,6 +4319,22 @@ Různé části tohoto souboru se nemusí zobrazovat tak, jak se očekává.</tr
         <source>Scientific: 1·10^4</source>
         <translation>Vědecký: 1·10^4</translation>
     </message>
+    <message>
+        <source>Hide Ticks</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>At Axis Begin</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>At Axis End</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>At Axis Begin &amp; End</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ColorBox</name>
@@ -4411,7 +4439,7 @@ Různé části tohoto souboru se nemusí zobrazovat tak, jak se očekává.</tr
     <name>ColorButton</name>
     <message>
         <source>Custom</source>
-        <translation>Vlastní</translation>
+        <translation type="obsolete">Vlastní</translation>
     </message>
 </context>
 <context>
@@ -5367,6 +5395,58 @@ The following special codes can be used:
     <message>
         <source>Display Confirmation &amp;Messages for Multi-peak Fits</source>
         <translation>Zobrazovat potvrzovací zp&amp;rávy pro umístění s více vrcholy</translation>
+    </message>
+    <message>
+        <source>New Color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Load Default</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete Color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Move Color Up</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Move Color Down</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Indexed Colors</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Default Symbol</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edge width</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Fill</source>
+        <translation type="obsolete">Výplň</translation>
+    </message>
+    <message>
+        <source>Name</source>
+        <translation type="unfinished">Název</translation>
+    </message>
+    <message>
+        <source>Symbol</source>
+        <translation type="unfinished">Symbol</translation>
+    </message>
+    <message>
+        <source>Inde&amp;xed Symbols</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Fill Symbol</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -8882,6 +8962,26 @@ jednoduchou mezerou.</translation>
         <source>Margins</source>
         <translation>Okraje</translation>
     </message>
+    <message>
+        <source>Link &amp;X axes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Fixed size</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Align</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Canvases</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Common a&amp;xes</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>LineDialog</name>
@@ -10584,7 +10684,7 @@ jednoduchou mezerou.</translation>
     </message>
     <message>
         <source>Tolerance (Douglas Peuker algorithm)</source>
-        <translation>Povolená odchylka (algoritmus Douglas Peukerův)</translation>
+        <translation type="obsolete">Povolená odchylka (algoritmus Douglas Peukerův)</translation>
     </message>
     <message>
         <source>No line</source>
@@ -11081,6 +11181,22 @@ jednoduchou mezerou.</translation>
     <message>
         <source>Categories/&amp;Rows</source>
         <translation>Skupiny/&amp;Řádky</translation>
+    </message>
+    <message>
+        <source>Link &amp;X axes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Miscellaneous</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>0 (all data points)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Tolerance (Douglas-Peucker algorithm)</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
