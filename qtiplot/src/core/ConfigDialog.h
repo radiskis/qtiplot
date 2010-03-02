@@ -52,6 +52,7 @@ class DoubleSpinBox;
 class QFontComboBox;
 class ColorMapEditor;
 class QTableWidget;
+class SymbolBox;
 
 //! Preferences dialog
 class ConfigDialog : public QDialog
@@ -126,8 +127,12 @@ private slots:
 	void loadDefaultColors();
 	void showColorDialog(int, int);
 	void changeColorName(int, int);
+	void updateSymbolsList(int);
+	void setCurrentSymbol(SymbolBox *);
+	void loadDefaultSymbols();
 
 private:
+	void setSymbolsList(const QList<int>& symbList);
 	void setColorsList(const QList<QColor>& colList, const QStringList& colNames);
 	void initPlotsPage();
 	void initAppPage();
@@ -254,11 +259,17 @@ private:
 
 	double aspect_ratio;
 
-	QGroupBox *groupIndexedColors;
-	QTableWidget *colorsList;
+	QGroupBox *groupIndexedColors, *symbolGroupBox, *groupIndexedSymbols;
+	QTableWidget *colorsList, *symbolsList;
 	QPushButton *btnColorUp, *btnColorDown, *btnRemoveColor, *btnNewColor, *btnLoadDefaultColors;
 	QList<QColor> d_indexed_colors;
 	QStringList d_indexed_color_names;
+	QCheckBox *fillSymbolsBox;
+	DoubleSpinBox *symbolEdgeBox;
+	QLabel *lblSymbEdge, *lblSymbBox;
+	SymbolBox *symbolBox;
+	QList<int> d_indexed_symbols;
+	QPushButton *btnLoadDefaultSymbols;
 };
 
 #endif // CONFIGDIALOG_H

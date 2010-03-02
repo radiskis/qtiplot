@@ -2761,27 +2761,36 @@ CurveLayout Graph::initCurveLayout()
 
 CurveLayout Graph::initCurveLayout(int style, int curves, bool guessLayout)
 {
-    int i = d_curves.size() - 1;
+	int i = d_curves.size() - 1;
 
 	CurveLayout cl = initCurveLayout();
-	cl.sType = 1;
-	int color = 0;
+	int color = 0, sIndex = 0;
 	if (guessLayout)
-		guessUniqueCurveLayout(color, cl.sType);
+		guessUniqueCurveLayout(color, sIndex);
 
 	QList<QColor> indexedColors = ColorBox::defaultColors();
 	MultiLayer *ml = multiLayer();
+	ApplicationWindow *app = 0;
 	if (ml){
-		ApplicationWindow *app = ml->applicationWindow();
-		if (app)
+		app = ml->applicationWindow();
+		if (app){
 			indexedColors = app->indexedColors();
+			if (app->d_indexed_symbols){
+				QList<int> indexedSymbols = app->indexedSymbols();
+				if (sIndex >= 0 && sIndex < indexedSymbols.size())
+					cl.sType = indexedSymbols[sIndex] + 1;
+			} else
+				cl.sType = app->d_symbol_style;
+		}
 	}
 	int colorsCount = indexedColors.size();
 
 	if (color >= 0 && color < colorsCount)
 		cl.lCol = indexedColors[color];
   	cl.symCol = cl.lCol;
-  	cl.fillCol = cl.lCol;
+	cl.fillCol = (app && app->d_fill_symbols) ? cl.lCol : QColor();
+	if (app)
+		cl.penWidth = app->defaultSymbolEdge;
 
 	if (style == Line)
 		cl.sType = 0;
@@ -4795,11 +4804,14 @@ void Graph::guessUniqueCurveLayout(int& colorIndex, int& symbolIndex)
 	symbolIndex = 0;
 
 	QList<QColor> indexedColors = ColorBox::defaultColors();
+	QList<int> indexedSymbols = SymbolBox::defaultSymbols();
 	MultiLayer *ml = multiLayer();
 	if (ml){
 		ApplicationWindow *app = ml->applicationWindow();
-		if (app)
+		if (app){
 			indexedColors = app->indexedColors();
+			indexedSymbols = app->indexedSymbols();
+		}
 	}
 
 	int curve_index = d_curves.size() - 1;
@@ -4823,8 +4835,10 @@ void Graph::guessUniqueCurveLayout(int& colorIndex, int& symbolIndex)
 				colorIndex = index;
 
 			QwtSymbol symb = c->symbol();
-			index = SymbolBox::symbolIndex(symb.style());
-			if (index > symbolIndex)
+			index = indexedSymbols.indexOf(int(symb.style()));
+			if (index < 0)
+				symbolIndex = 0;
+			else if (index > symbolIndex)
 				symbolIndex = index;
 		}
 	}
@@ -4832,12 +4846,10 @@ void Graph::guessUniqueCurveLayout(int& colorIndex, int& symbolIndex)
 		colorIndex = (++colorIndex)%16;
 		symbolIndex = (++symbolIndex)%15;
 	} else
-		symbolIndex = symbolIndex%15;
+		symbolIndex = 0;
+
 	if (colorIndex == 13) //avoid white invisible curves
 		colorIndex = 0;
-
-	if (!symbolIndex)
-		symbolIndex = 1;
 }
 
 void Graph::addFitCurve(QwtPlotCurve *c)

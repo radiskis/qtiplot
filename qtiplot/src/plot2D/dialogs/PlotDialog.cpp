@@ -920,7 +920,7 @@ void PlotDialog::initSymbolsPage()
 	QGroupBox *gb = new QGroupBox();
     QGridLayout *gl = new QGridLayout(gb);
     gl->addWidget(new QLabel(tr( "Style" )), 0, 0);
-	boxSymbolStyle = new SymbolBox(false);
+	boxSymbolStyle = new SymbolBox();
     gl->addWidget(boxSymbolStyle, 0, 1);
     gl->addWidget(new QLabel(tr( "Size" )), 1, 0);
 	boxSymbolSize = new QSpinBox();
@@ -1082,23 +1082,23 @@ void PlotDialog::initPercentilePage()
     QGridLayout *gl1 = new QGridLayout(gb1);
     gl1->addWidget(new QLabel(tr( "Max" )), 0, 0);
 
-	boxMaxStyle = new SymbolBox(false);
+	boxMaxStyle = new SymbolBox();
     gl1->addWidget(boxMaxStyle, 0, 1);
 
     gl1->addWidget(new QLabel(tr( "99%" )), 1, 0);
-	box99Style = new SymbolBox(false);
+	box99Style = new SymbolBox();
     gl1->addWidget(box99Style, 1, 1);
 
     gl1->addWidget(new QLabel(tr( "Mean" )), 2, 0);
-	boxMeanStyle = new SymbolBox( false);
+	boxMeanStyle = new SymbolBox();
     gl1->addWidget(boxMeanStyle, 2, 1);
 
     gl1->addWidget(new QLabel(tr( "1%" )), 3, 0);
-	box1Style = new SymbolBox(false);
+	box1Style = new SymbolBox();
     gl1->addWidget(box1Style, 3, 1);
 
     gl1->addWidget(new QLabel(tr( "Min" )), 4, 0);
-	boxMinStyle = new SymbolBox(false);
+	boxMinStyle = new SymbolBox();
     gl1->addWidget(boxMinStyle, 4, 1);
     gl1->setRowStretch(5, 1);
 

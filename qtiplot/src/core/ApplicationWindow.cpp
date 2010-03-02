@@ -42,6 +42,7 @@
 #include "CustomActionDialog.h"
 #include "MdiSubWindow.h"
 
+#include <SymbolBox.h>
 #include <ColorBox.h>
 #include <PenStyleBox.h>
 #include <PatternBox.h>
@@ -135,6 +136,7 @@ using namespace std;
 #include <qwt_scale_engine.h>
 #include <qwt_scale_widget.h>
 #include <qwt_plot_magnifier.h>
+#include <qwt_symbol.h>
 
 #include <QFileDialog>
 #include <QInputDialog>
@@ -428,6 +430,8 @@ void ApplicationWindow::initGlobalConstants()
 	d_indexed_colors = ColorBox::defaultColors();
 	d_indexed_color_names = ColorBox::defaultColorNames();
 
+	d_symbols_list = SymbolBox::defaultSymbols();
+
 	d_latex_compiler = MathTran;
 	d_latex_compiler_path = QString::null;
 	d_mdi_windows_area = true;
@@ -592,6 +596,10 @@ void ApplicationWindow::initGlobalConstants()
 	defaultCurveStyle = int(Graph::LineSymbols);
 	defaultCurveLineWidth = 1;
 	defaultSymbolSize = 7;
+	defaultSymbolEdge = 1.0;
+	d_fill_symbols = true;
+	d_symbol_style = 0;
+	d_indexed_symbols = true;
 
 	majTicksStyle = int(ScaleDraw::Out);
 	minTicksStyle = int(ScaleDraw::Out);
@@ -5113,6 +5121,13 @@ void ApplicationWindow::readSettings()
 	}
 	d_indexed_color_names = settings.value("/IndexedColorNames", d_indexed_color_names).toStringList();
 
+	QStringList symbols = settings.value("/IndexedSymbolsList").toStringList();
+	if (!symbols.isEmpty()){
+		d_symbols_list.clear();
+		for (int i = 0; i < symbols.size(); i++)
+			d_symbols_list << symbols[i].toInt();
+	}
+
 	settings.beginGroup("/Dialogs");
 	d_extended_open_dialog = settings.value("/ExtendedOpenDialog", true).toBool();
 	d_extended_export_dialog = settings.value("/ExtendedExportDialog", true).toBool();
@@ -5120,8 +5135,7 @@ void ApplicationWindow::readSettings()
 	d_extended_plot_dialog = settings.value("/ExtendedPlotDialog", true).toBool();//used by PlotDialog
 
 	settings.beginGroup("/AddRemoveCurves");
-	d_add_curves_dialog_size = QSize(settings.value("/Width", 700).toInt(),
-									settings.value("/Height", 400).toInt());
+	d_add_curves_dialog_size = QSize(settings.value("/Width", 700).toInt(), settings.value("/Height", 400).toInt());
 	d_show_current_folder = settings.value("/ShowCurrentFolder", false).toBool();
 	settings.endGroup(); // AddRemoveCurves Dialog
 	settings.endGroup(); // Dialogs
@@ -5258,6 +5272,10 @@ void ApplicationWindow::readSettings()
 	defaultCurveStyle = settings.value("/Style", Graph::LineSymbols).toInt();
 	defaultCurveLineWidth = settings.value("/LineWidth", 1).toDouble();
 	defaultSymbolSize = settings.value("/SymbolSize", 7).toInt();
+	defaultSymbolEdge = settings.value("/SymbolEdge", defaultSymbolEdge).toDouble();
+	d_fill_symbols = settings.value("/FillSymbols", d_fill_symbols).toBool();
+	d_symbol_style = settings.value("/SymbolStyle", d_symbol_style).toInt();
+	d_indexed_symbols = settings.value("/IndexedSymbols", d_indexed_symbols).toBool();
 	settings.endGroup(); // Curves
 
 	settings.beginGroup("/Ticks");
@@ -5515,6 +5533,11 @@ void ApplicationWindow::saveSettings()
 	settings.setValue("/IndexedColors", indexedColors);
 	settings.setValue("/IndexedColorNames", d_indexed_color_names);
 
+	QStringList indexedSymbols;
+	for (int i = 0; i < d_symbols_list.size(); i++)
+		indexedSymbols << QString::number(d_symbols_list[i]);
+	settings.setValue("/IndexedSymbolsList", indexedSymbols);
+
 	settings.beginGroup("/Dialogs");
 	settings.setValue("/ExtendedOpenDialog", d_extended_open_dialog);
 	settings.setValue("/ExtendedExportDialog", d_extended_export_dialog);
@@ -5661,6 +5684,10 @@ void ApplicationWindow::saveSettings()
 	settings.setValue("/Style", defaultCurveStyle);
 	settings.setValue("/LineWidth", defaultCurveLineWidth);
 	settings.setValue("/SymbolSize", defaultSymbolSize);
+	settings.setValue("/SymbolEdge", defaultSymbolEdge);
+	settings.setValue("/FillSymbols", d_fill_symbols);
+	settings.setValue("/SymbolStyle", d_symbol_style);
+	settings.setValue("/IndexedSymbols", d_indexed_symbols);
 	settings.endGroup(); // Curves
 
 	settings.beginGroup("/Ticks");

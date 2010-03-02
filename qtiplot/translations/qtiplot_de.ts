@@ -9753,6 +9753,18 @@ Autocompletion will not be available!</source>
         <source>show standalone scripting window</source>
         <translation>Zeige separates Scriptfenster</translation>
     </message>
+    <message>
+        <source>Shared A&amp;xes Panel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source> </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Custom Layout...</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ArrowMarker</name>
@@ -10388,6 +10400,22 @@ Autocompletion will not be available!</source>
         <source>Reciprocal</source>
         <translation>Reziprok</translation>
     </message>
+    <message>
+        <source>Hide Ticks</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>At Axis Begin</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>At Axis End</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>At Axis Begin &amp; End</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>CanvasPicker</name>
@@ -10499,7 +10527,7 @@ Autocompletion will not be available!</source>
     <name>ColorButton</name>
     <message>
         <source>Custom</source>
-        <translation>Benutzerdefiniert</translation>
+        <translation type="obsolete">Benutzerdefiniert</translation>
     </message>
 </context>
 <context>
@@ -11611,6 +11639,58 @@ Die folgenden Spezialcodes können benutzt werden:
     <message>
         <source>You don&apos;t have read access rights to file %1.&lt;br&gt;Please choose another file!</source>
         <translation>Sie haben keine Leserechte für die Datei %1.&lt;br&gt;Bitte wählen Sie eine andere Datei aus!</translation>
+    </message>
+    <message>
+        <source>New Color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Load Default</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete Color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Move Color Up</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Move Color Down</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Indexed Colors</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Default Symbol</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edge width</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Fill</source>
+        <translation type="obsolete">Füllung</translation>
+    </message>
+    <message>
+        <source>Name</source>
+        <translation type="unfinished">Name</translation>
+    </message>
+    <message>
+        <source>Symbol</source>
+        <translation type="unfinished">Symbol</translation>
+    </message>
+    <message>
+        <source>Inde&amp;xed Symbols</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Fill Symbol</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -17108,6 +17188,26 @@ Die Grenzen müssen innerhalb des X-Bereichs sein. Fall diese Werte nicht bekann
         <source>Please enter different indexes for the source and destination layers!</source>
         <translation>Bitte geben Sie unterschiedliche Indizes für die Quell- und Zielebene an!</translation>
     </message>
+    <message>
+        <source>Link &amp;X axes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Fixed size</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Align</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Canvases</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Common a&amp;xes</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>LineDialog</name>
@@ -19499,10 +19599,6 @@ Wollen sie Zellen einfügen?</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Tolerance (Douglas Peuker algorithm)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Speed</source>
         <translation type="unfinished"></translation>
     </message>
@@ -20080,6 +20176,22 @@ Wollen sie Zellen einfügen?</translation>
     </message>
     <message>
         <source>Use &amp;Table Custom Pen</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Link &amp;X axes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Miscellaneous</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>0 (all data points)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Tolerance (Douglas-Peucker algorithm)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

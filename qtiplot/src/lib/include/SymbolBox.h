@@ -45,16 +45,22 @@ public:
 		/**
 		 * \param parent parent widget (only affects placement of the widget)
 		 */
-  		SymbolBox(QWidget *parent);
+		SymbolBox(bool showNoSymbol = true, QWidget *parent = 0);
 
   		void setStyle(const QwtSymbol::Style& c);
  		QwtSymbol::Style selectedSymbol() const;
 
   		static QwtSymbol::Style style(int index);
   		static int symbolIndex(const QwtSymbol::Style& style);
+		static QList<int> defaultSymbols();
+
+signals:
+		//! Signal emitted when the box gains focus
+		void activated(SymbolBox *);
 
 protected:
-  		void init();
+		void init(bool showNoSymbol);
+		void focusInEvent(QFocusEvent *);
 
 private:
 		static const QwtSymbol::Style symbols[];

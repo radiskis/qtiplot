@@ -424,17 +424,26 @@ bool CurvesDialog::addCurve(const QString& name)
 		return false;
 
 	CurveLayout cl = Graph::initCurveLayout();
-	int color, symbol;
-	d_graph->guessUniqueCurveLayout(color, symbol);
+	int cIndex, sIndex;
+	d_graph->guessUniqueCurveLayout(cIndex, sIndex);
 
 	QList<QColor> indexedColors = app->indexedColors();
-	if (color >= 0 && color < indexedColors.size())
-		cl.lCol = indexedColors[color];
+	if (cIndex >= 0 && cIndex < indexedColors.size())
+		cl.lCol = indexedColors[cIndex];
 	cl.symCol = cl.lCol;
-	cl.fillCol = cl.lCol;
+
+	cl.fillCol = app->d_fill_symbols ? cl.lCol : QColor();
+	cl.penWidth = app->defaultSymbolEdge;
+
 	cl.lWidth = app->defaultCurveLineWidth;
 	cl.sSize = app->defaultSymbolSize;
-	cl.sType = symbol;
+
+	if (app->d_indexed_symbols){
+		QList<int> indexedSymbols = app->indexedSymbols();
+		if (sIndex >= 0 && sIndex < indexedSymbols.size())
+			cl.sType = indexedSymbols[sIndex] + 1;
+	} else
+		cl.sType = app->d_symbol_style;
 
 	if (style == Graph::Line)
 		cl.sType = 0;

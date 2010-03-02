@@ -7245,6 +7245,18 @@ Autocompletion will not be available!</source>
         <source>Set optimal column width</source>
         <translation>Lăţimea optimă a coloanei</translation>
     </message>
+    <message>
+        <source>Shared A&amp;xes Panel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source> </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Custom Layout...</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ArrowMarker</name>
@@ -7791,6 +7803,22 @@ Autocompletion will not be available!</source>
         <source>Reciprocal</source>
         <translation>Reciprocă</translation>
     </message>
+    <message>
+        <source>Hide Ticks</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>At Axis Begin</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>At Axis End</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>At Axis Begin &amp; End</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ColorBox</name>
@@ -7895,7 +7923,7 @@ Autocompletion will not be available!</source>
     <name>ColorButton</name>
     <message>
         <source>Custom</source>
-        <translation>Personalizată</translation>
+        <translation type="obsolete">Personalizată</translation>
     </message>
 </context>
 <context>
@@ -8857,6 +8885,58 @@ The following special codes can be used:
     <message>
         <source>You don&apos;t have read access rights to file %1.&lt;br&gt;Please choose another file!</source>
         <translation>Nu aveţi drepturi de citire pentru fişierul %1.&lt;br&gt;Vă rugăm să alegeţi un alt fişier!</translation>
+    </message>
+    <message>
+        <source>New Color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Load Default</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete Color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Move Color Up</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Move Color Down</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Indexed Colors</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Default Symbol</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edge width</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Fill</source>
+        <translation type="obsolete">Umple</translation>
+    </message>
+    <message>
+        <source>Name</source>
+        <translation type="unfinished">Nume</translation>
+    </message>
+    <message>
+        <source>Symbol</source>
+        <translation type="unfinished">Simbol</translation>
+    </message>
+    <message>
+        <source>Inde&amp;xed Symbols</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Fill Symbol</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -12471,6 +12551,26 @@ have the same number of rows.</source>
         <source>Please enter different indexes for the source and destination layers!</source>
         <translation>Vă rugăm să introduceţi indici diferiţi pentru graficele sursă şi destinaţie!</translation>
     </message>
+    <message>
+        <source>Link &amp;X axes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Fixed size</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Align</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Canvases</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Common a&amp;xes</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>LineDialog</name>
@@ -13953,7 +14053,7 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Tolerance (Douglas Peuker algorithm)</source>
-        <translation>Toleranţa pentru algoritmul Douglas Peuker</translation>
+        <translation type="obsolete">Toleranţa pentru algoritmul Douglas Peuker</translation>
     </message>
     <message>
         <source>Speed</source>
@@ -14690,6 +14790,22 @@ have the same number of rows.</source>
     <message>
         <source>Use &amp;Table Custom Pen</source>
         <translation>Foloseşte &amp;valorile din tabel</translation>
+    </message>
+    <message>
+        <source>Link &amp;X axes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Miscellaneous</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>0 (all data points)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Tolerance (Douglas-Peucker algorithm)</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
