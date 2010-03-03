@@ -53,6 +53,7 @@ class QFontComboBox;
 class ColorMapEditor;
 class QTableWidget;
 class SymbolBox;
+class PatternBox;
 
 //! Preferences dialog
 class ConfigDialog : public QDialog
@@ -130,6 +131,8 @@ private slots:
 	void updateSymbolsList(int);
 	void setCurrentSymbol(SymbolBox *);
 	void loadDefaultSymbols();
+	void moveSymbol(bool up = true);
+	void moveSymbolDown(){moveSymbol(false);};
 
 private:
 	void setSymbolsList(const QList<int>& symbList);
@@ -269,7 +272,9 @@ private:
 	QLabel *lblSymbEdge, *lblSymbBox;
 	SymbolBox *symbolBox;
 	QList<int> d_indexed_symbols;
-	QPushButton *btnLoadDefaultSymbols;
+	QPushButton *btnLoadDefaultSymbols, *btnSymbolUp, *btnSymbolDown;
+	PatternBox *patternBox;
+	QLabel *lblPattern;
 };
 
 #endif // CONFIGDIALOG_H

@@ -37,6 +37,7 @@
 #include <DoubleSpinBox.h>
 #include <ColorMapEditor.h>
 #include <SymbolBox.h>
+#include <PatternBox.h>
 
 #include <QLocale>
 #include <QPushButton>
@@ -1050,6 +1051,12 @@ void ConfigDialog::initCurvesPage()
 	boxCurveLineWidth->setValue(app->defaultCurveLineWidth);
 	curvesBoxLayout->addWidget( boxCurveLineWidth, 1, 1 );
 
+	lblPattern = new QLabel();
+	curvesBoxLayout->addWidget(lblPattern, 2, 0);
+	patternBox = new PatternBox();
+	patternBox->setCurrentIndex(app->defaultCurveBrush);
+	curvesBoxLayout->addWidget(patternBox, 2, 1);
+
 	symbolGroupBox = new QGroupBox();
 	QGridLayout * symbLayout = new QGridLayout(symbolGroupBox);
 
@@ -1149,11 +1156,20 @@ void ConfigDialog::initCurvesPage()
 	QVBoxLayout *vl2 = new QVBoxLayout(groupIndexedSymbols);
 	vl2->addWidget(symbolsList);
 
+	btnSymbolUp = new QPushButton(QIcon(":/arrow_up.png"), QString::null);
+	connect(btnSymbolUp, SIGNAL(clicked()), this, SLOT(moveSymbol()));
+
+	btnSymbolDown = new QPushButton(QIcon(":/arrow_down.png"), QString::null);
+	connect(btnSymbolDown, SIGNAL(clicked()), this, SLOT(moveSymbolDown()));
+
 	btnLoadDefaultSymbols = new QPushButton();
 	connect(btnLoadDefaultSymbols, SIGNAL(clicked()), this, SLOT(loadDefaultSymbols()));
 
 	QHBoxLayout *hl4 = new QHBoxLayout();
+	hl4->setSpacing(0);
 	hl4->addStretch();
+	hl4->addWidget(btnSymbolUp);
+	hl4->addWidget(btnSymbolDown);
 	hl4->addWidget(btnLoadDefaultSymbols);
 	hl4->addStretch();
 	vl2->addLayout(hl4);
@@ -1205,6 +1221,22 @@ void ConfigDialog::updateSymbolsList(int style)
 	int row = symbolsList->currentRow();
 	if (row >= 0 && row < d_indexed_symbols.size())
 		d_indexed_symbols[row] = style;
+}
+
+void ConfigDialog::moveSymbol(bool up)
+{
+	int row = symbolsList->currentRow();
+	if (row < 0 || row >= d_indexed_symbols.size())
+		return;
+
+	int destRow = up ? row - 1 : row + 1;
+	if (destRow < 0 || destRow >= d_indexed_symbols.size())
+		return;
+
+	d_indexed_symbols.swap(row, destRow);
+	setSymbolsList(d_indexed_symbols);
+
+	symbolsList->selectRow(destRow);
 }
 
 void ConfigDialog::setColorsList(const QList<QColor>& colList, const QStringList& colNames)
@@ -1765,6 +1797,9 @@ void ConfigDialog::languageChange()
 	groupIndexedColors->setTitle(tr("Indexed Colors"));
 	groupIndexedSymbols->setTitle(tr("Inde&xed Symbols"));
 	btnLoadDefaultSymbols->setText(tr("&Load Default"));
+	btnSymbolUp->setToolTip(tr("Move Symbol Up"));
+	btnSymbolDown->setToolTip(tr("Move Symbol Down"));
+	lblPattern->setText(tr("Pattern"));
 
 	symbolGroupBox->setTitle(tr("Default Symbol"));
 	lblSymbBox->setText(tr("Style"));
@@ -1987,6 +2022,7 @@ void ConfigDialog::apply()
 	app->defaultSymbolEdge = symbolEdgeBox->value();
 	app->d_symbol_style = symbolBox->currentIndex();
 	app->setIndexedSymbols(d_indexed_symbols);
+	app->defaultCurveBrush = patternBox->currentIndex();
 
 	// 2D plots page: axes tab
 	if (generalDialog->currentWidget() == plotsTabWidget &&

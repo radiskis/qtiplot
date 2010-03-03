@@ -595,6 +595,7 @@ void ApplicationWindow::initGlobalConstants()
 
 	defaultCurveStyle = int(Graph::LineSymbols);
 	defaultCurveLineWidth = 1;
+	defaultCurveBrush = 0;
 	defaultSymbolSize = 7;
 	defaultSymbolEdge = 1.0;
 	d_fill_symbols = true;
@@ -5276,6 +5277,7 @@ void ApplicationWindow::readSettings()
 	d_fill_symbols = settings.value("/FillSymbols", d_fill_symbols).toBool();
 	d_symbol_style = settings.value("/SymbolStyle", d_symbol_style).toInt();
 	d_indexed_symbols = settings.value("/IndexedSymbols", d_indexed_symbols).toBool();
+	defaultCurveBrush = settings.value("/BrushStyle", defaultCurveBrush).toInt();
 	settings.endGroup(); // Curves
 
 	settings.beginGroup("/Ticks");
@@ -5688,6 +5690,7 @@ void ApplicationWindow::saveSettings()
 	settings.setValue("/FillSymbols", d_fill_symbols);
 	settings.setValue("/SymbolStyle", d_symbol_style);
 	settings.setValue("/IndexedSymbols", d_indexed_symbols);
+	settings.setValue("/BrushStyle", defaultCurveBrush);
 	settings.endGroup(); // Curves
 
 	settings.beginGroup("/Ticks");

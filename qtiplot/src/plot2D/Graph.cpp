@@ -2781,6 +2781,8 @@ CurveLayout Graph::initCurveLayout(int style, int curves, bool guessLayout)
 					cl.sType = indexedSymbols[sIndex] + 1;
 			} else
 				cl.sType = app->d_symbol_style;
+
+			cl.aStyle = app->defaultCurveBrush;
 		}
 	}
 	int colorsCount = indexedColors.size();
@@ -2825,7 +2827,6 @@ CurveLayout Graph::initCurveLayout(int style, int curves, bool guessLayout)
 		if (i >= 0 && i < colorsCount)
 			cl.lCol = indexedColors[i];
 		cl.aCol = cl.lCol;
-		cl.aStyle = 4;
 		cl.sType = 0;
 	} else if (style == Area){
 		cl.filledArea = 1;

@@ -437,6 +437,7 @@ bool CurvesDialog::addCurve(const QString& name)
 
 	cl.lWidth = app->defaultCurveLineWidth;
 	cl.sSize = app->defaultSymbolSize;
+	cl.aStyle = app->defaultCurveBrush;
 
 	if (app->d_indexed_symbols){
 		QList<int> indexedSymbols = app->indexedSymbols();
@@ -450,7 +451,6 @@ bool CurvesDialog::addCurve(const QString& name)
 	else if (style == Graph::Histogram){
 		cl.filledArea = 1;
 		cl.aCol = cl.lCol;
-		cl.aStyle = 4;
 		cl.sType = 0;
 	} else if (style == Graph::VerticalBars || style == Graph::HorizontalBars){
 		cl.filledArea = 1;
