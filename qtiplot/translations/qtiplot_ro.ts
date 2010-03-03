@@ -8938,6 +8938,18 @@ The following special codes can be used:
         <source>&amp;Fill Symbol</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Move Symbol Up</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Move Symbol Down</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Pattern</source>
+        <translation type="unfinished">Model</translation>
+    </message>
 </context>
 <context>
     <name>ContourLinesEditor</name>
