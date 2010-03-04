@@ -2292,7 +2292,6 @@ QString Graph::saveCurveLayout(int index)
 			s += QString::number(-1) + "\t";
 
 		bool filled = c->brush().style() == Qt::NoBrush ? false : true;
-		//s += QString::number(filled) + "\t";
 		if (filled)
 			s += QString::number(c->brush().color().alphaF()) + "\t";
 		else
@@ -2789,6 +2788,8 @@ CurveLayout Graph::initCurveLayout(int style, int curves, bool guessLayout)
 				cl.aStyle = app->defaultCurveBrush;
 				cl.filledArea = (double)app->defaultCurveAlpha/255.0;
 			}
+
+			cl.lStyle = app->d_curve_line_style;
 		}
 	}
 	int colorsCount = indexedColors.size();

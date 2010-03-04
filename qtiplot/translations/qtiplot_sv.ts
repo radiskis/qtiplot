@@ -10146,6 +10146,18 @@ Följande specialkoder kan användas:
         <source>Pattern</source>
         <translation type="unfinished">Mönster</translation>
     </message>
+    <message>
+        <source>Line style</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Fill area under curve</source>
+        <translation type="unfinished">Fyll yta under kurva</translation>
+    </message>
+    <message>
+        <source>Default Line Style</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ContourLinesEditor</name>

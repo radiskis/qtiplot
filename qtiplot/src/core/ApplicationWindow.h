@@ -1266,7 +1266,7 @@ public:
 	int defaultArrowHeadLength, defaultArrowHeadAngle, d_legend_default_angle, d_symbol_style;
 	double defaultArrowLineWidth, defaultCurveLineWidth, defaultSymbolEdge;
 	bool defaultArrowHeadFill, d_fill_symbols, d_indexed_symbols;
-	int defaultCurveBrush, defaultCurveAlpha;
+	int defaultCurveBrush, defaultCurveAlpha, d_curve_line_style;
 	Qt::PenStyle defaultArrowLineStyle;
 	QPen d_frame_widget_pen;
 	int majTicksLength, minTicksLength, defaultPlotMargin;
