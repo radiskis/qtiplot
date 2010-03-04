@@ -11704,6 +11704,18 @@ Die folgenden Spezialcodes können benutzt werden:
         <source>Pattern</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Line style</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Fill area under curve</source>
+        <translation type="unfinished">Fläche unter der Kurve füllen</translation>
+    </message>
+    <message>
+        <source>Default Line Style</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ContourLinesEditor</name>

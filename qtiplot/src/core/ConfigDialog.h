@@ -54,6 +54,7 @@ class ColorMapEditor;
 class QTableWidget;
 class SymbolBox;
 class PatternBox;
+class PenStyleBox;
 
 //! Preferences dialog
 class ConfigDialog : public QDialog
@@ -262,7 +263,7 @@ private:
 
 	double aspect_ratio;
 
-	QGroupBox *groupIndexedColors, *symbolGroupBox, *groupIndexedSymbols;
+	QGroupBox *groupIndexedColors, *symbolGroupBox, *groupIndexedSymbols, *fillCurvesGroupBox;
 	QTableWidget *colorsList, *symbolsList;
 	QPushButton *btnColorUp, *btnColorDown, *btnRemoveColor, *btnNewColor, *btnLoadDefaultColors;
 	QList<QColor> d_indexed_colors;
@@ -274,8 +275,10 @@ private:
 	QList<int> d_indexed_symbols;
 	QPushButton *btnLoadDefaultSymbols, *btnSymbolUp, *btnSymbolDown;
 	PatternBox *patternBox;
-	QLabel *lblPattern, *lblCurveAlpha;
+	QLabel *lblPattern, *lblCurveAlpha, *lblLineStyle;
 	QSpinBox *curveAlphaBox;
+	PenStyleBox *lineStyleBox;
+	QGroupBox * curvesGroupBox;
 };
 
 #endif // CONFIGDIALOG_H

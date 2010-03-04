@@ -436,6 +436,7 @@ bool CurvesDialog::addCurve(const QString& name)
 	cl.penWidth = app->defaultSymbolEdge;
 
 	cl.lWidth = app->defaultCurveLineWidth;
+	cl.lStyle = app->d_curve_line_style;
 	cl.sSize = app->defaultSymbolSize;
 	if (style == Graph::Area || style == Graph::VerticalBars || style == Graph::HorizontalBars ||
 		style == Graph::StackBar || style == Graph::StackColumn || style == Graph::Histogram){

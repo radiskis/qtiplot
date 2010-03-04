@@ -38,6 +38,7 @@
 #include <ColorMapEditor.h>
 #include <SymbolBox.h>
 #include <PatternBox.h>
+#include <PenStyleBox.h>
 
 #include <QLocale>
 #include <QPushButton>
@@ -1034,7 +1035,7 @@ void ConfigDialog::initCurvesPage()
 
 	curves = new QWidget();
 
-	QGroupBox * curvesGroupBox = new QGroupBox();
+	curvesGroupBox = new QGroupBox();
 	QGridLayout * curvesBoxLayout = new QGridLayout( curvesGroupBox );
 
 	lblCurveStyle = new QLabel();
@@ -1051,21 +1052,34 @@ void ConfigDialog::initCurvesPage()
 	boxCurveLineWidth->setValue(app->defaultCurveLineWidth);
 	curvesBoxLayout->addWidget( boxCurveLineWidth, 1, 1 );
 
+	lblLineStyle = new QLabel();
+	curvesBoxLayout->addWidget(lblLineStyle, 2, 0);
+	lineStyleBox = new PenStyleBox();
+	lineStyleBox->setCurrentIndex(app->d_curve_line_style);
+	curvesBoxLayout->addWidget(lineStyleBox, 2, 1);
+
+	fillCurvesGroupBox = new QGroupBox();
+	QGridLayout * fillCurvesBoxLayout = new QGridLayout( fillCurvesGroupBox );
+
 	lblPattern = new QLabel();
-	curvesBoxLayout->addWidget(lblPattern, 2, 0);
+	fillCurvesBoxLayout->addWidget(lblPattern, 0, 0);
 	patternBox = new PatternBox();
 	patternBox->setCurrentIndex(app->defaultCurveBrush);
-	curvesBoxLayout->addWidget(patternBox, 2, 1);
+	fillCurvesBoxLayout->addWidget(patternBox, 0, 1);
 
 	lblCurveAlpha = new QLabel();
-	curvesBoxLayout->addWidget(lblCurveAlpha, 3, 0);
+	fillCurvesBoxLayout->addWidget(lblCurveAlpha, 1, 0);
 	curveAlphaBox = new QSpinBox();
 	curveAlphaBox->setRange(0, 255);
 	curveAlphaBox->setSingleStep(5);
 	curveAlphaBox->setWrapping(true);
 	curveAlphaBox->setSpecialValueText(tr("Transparent"));
 	curveAlphaBox->setValue(app->defaultCurveAlpha);
-	curvesBoxLayout->addWidget(curveAlphaBox, 3, 1);
+	fillCurvesBoxLayout->addWidget(curveAlphaBox, 1, 1);
+
+	QHBoxLayout *hl0 = new QHBoxLayout();
+	hl0->addWidget(curvesGroupBox);
+	hl0->addWidget(fillCurvesGroupBox);
 
 	symbolGroupBox = new QGroupBox();
 	QGridLayout * symbLayout = new QGridLayout(symbolGroupBox);
@@ -1086,23 +1100,21 @@ void ConfigDialog::initCurvesPage()
 	symbLayout->addWidget( boxSymbolSize, 1, 1 );
 
 	lblSymbEdge = new QLabel();
-	symbLayout->addWidget(lblSymbEdge, 2, 0);
+	symbLayout->addWidget(lblSymbEdge, 0, 2);
 
 	symbolEdgeBox = new DoubleSpinBox('f');
 	symbolEdgeBox->setLocale(app->locale());
 	symbolEdgeBox->setSingleStep(0.1);
 	symbolEdgeBox->setRange(0.1, 100);
 	symbolEdgeBox->setValue(app->defaultSymbolEdge);
-	symbLayout->addWidget(symbolEdgeBox, 2, 1);
+	symbLayout->addWidget(symbolEdgeBox, 0, 3);
 
 	fillSymbolsBox = new QCheckBox();
 	fillSymbolsBox->setChecked(app->d_fill_symbols);
-	symbLayout->addWidget(fillSymbolsBox, 3, 1);
-
-	symbLayout->setRowStretch(4, 1);
+	symbLayout->addWidget(fillSymbolsBox, 1, 3);
 
 	QVBoxLayout *curvesPageLayout = new QVBoxLayout(curves);
-	curvesPageLayout->addWidget(curvesGroupBox);
+	curvesPageLayout->addLayout(hl0);
 	curvesPageLayout->addWidget(symbolGroupBox);
 
 	colorsList = new QTableWidget();
@@ -1811,6 +1823,9 @@ void ConfigDialog::languageChange()
 	btnSymbolDown->setToolTip(tr("Move Symbol Down"));
 	lblPattern->setText(tr("Pattern"));
 	lblCurveAlpha->setText(tr("Opacity"));
+	lblLineStyle->setText(tr("Line style"));
+	fillCurvesGroupBox->setTitle(tr("Fill area under curve"));
+	curvesGroupBox->setTitle(tr("Default Line Style"));
 
 	symbolGroupBox->setTitle(tr("Default Symbol"));
 	lblSymbBox->setText(tr("Style"));
@@ -2035,6 +2050,7 @@ void ConfigDialog::apply()
 	app->setIndexedSymbols(d_indexed_symbols);
 	app->defaultCurveBrush = patternBox->currentIndex();
 	app->defaultCurveAlpha = curveAlphaBox->value();
+	app->d_curve_line_style = lineStyleBox->currentIndex();
 
 	// 2D plots page: axes tab
 	if (generalDialog->currentWidget() == plotsTabWidget &&

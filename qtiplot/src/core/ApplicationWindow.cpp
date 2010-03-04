@@ -595,6 +595,7 @@ void ApplicationWindow::initGlobalConstants()
 
 	defaultCurveStyle = int(Graph::LineSymbols);
 	defaultCurveLineWidth = 1;
+	d_curve_line_style = (int)Qt::SolidLine;
 	defaultCurveBrush = 0;
 	defaultCurveAlpha = 255;
 	defaultSymbolSize = 7;
@@ -5273,6 +5274,7 @@ void ApplicationWindow::readSettings()
 	settings.beginGroup("/Curves");
 	defaultCurveStyle = settings.value("/Style", Graph::LineSymbols).toInt();
 	defaultCurveLineWidth = settings.value("/LineWidth", 1).toDouble();
+	d_curve_line_style = settings.value("/LineType", d_curve_line_style).toInt();
 	defaultSymbolSize = settings.value("/SymbolSize", 7).toInt();
 	defaultSymbolEdge = settings.value("/SymbolEdge", defaultSymbolEdge).toDouble();
 	d_fill_symbols = settings.value("/FillSymbols", d_fill_symbols).toBool();
@@ -5687,6 +5689,7 @@ void ApplicationWindow::saveSettings()
 	settings.beginGroup("/Curves");
 	settings.setValue("/Style", defaultCurveStyle);
 	settings.setValue("/LineWidth", defaultCurveLineWidth);
+	settings.setValue("/LineType", d_curve_line_style);
 	settings.setValue("/SymbolSize", defaultSymbolSize);
 	settings.setValue("/SymbolEdge", defaultSymbolEdge);
 	settings.setValue("/FillSymbols", d_fill_symbols);

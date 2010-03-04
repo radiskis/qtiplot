@@ -8950,6 +8950,18 @@ The following special codes can be used:
         <source>Pattern</source>
         <translation type="unfinished">Model</translation>
     </message>
+    <message>
+        <source>Line style</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Fill area under curve</source>
+        <translation type="unfinished">Umple suprafaţa de sub curbă</translation>
+    </message>
+    <message>
+        <source>Default Line Style</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ContourLinesEditor</name>
