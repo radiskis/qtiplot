@@ -93,6 +93,7 @@ QString PlotCurve::saveCurveLayout()
 	if (brush.style() != Qt::NoBrush){
 		s += "<Brush>\n";
 		s += "\t<Color>" + brush.color().name() + "</Color>\n";
+		s += "\t<Alpha>" + QString::number(brush.color().alpha()) + "</Alpha>\n";
 		s += "\t<Style>" + QString::number(PatternBox::patternIndex(brush.style())) + "</Style>\n";
 		s += "</Brush>\n";
 	}
@@ -148,7 +149,11 @@ void PlotCurve::restoreCurveLayout(const QStringList& lst)
 				s = (*(++line)).stripWhiteSpace();
 				if (s.contains("<Color>"))
 					brush.setColor(QColor(s.remove("<Color>").remove("</Color>")));
-				else if (s.contains("<Style>"))
+				else if (s.contains("<Alpha>")){
+					QColor c = brush.color();
+					c.setAlpha(s.remove("<Alpha>").remove("</Alpha>").toInt());
+					brush.setColor(c);
+				} else if (s.contains("<Style>"))
 					brush.setStyle(PatternBox::brushStyle(s.remove("<Style>").remove("</Style>").toInt()));
 			}
 			setBrush(brush);
