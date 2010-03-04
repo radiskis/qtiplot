@@ -1057,6 +1057,16 @@ void ConfigDialog::initCurvesPage()
 	patternBox->setCurrentIndex(app->defaultCurveBrush);
 	curvesBoxLayout->addWidget(patternBox, 2, 1);
 
+	lblCurveAlpha = new QLabel();
+	curvesBoxLayout->addWidget(lblCurveAlpha, 3, 0);
+	curveAlphaBox = new QSpinBox();
+	curveAlphaBox->setRange(0, 255);
+	curveAlphaBox->setSingleStep(5);
+	curveAlphaBox->setWrapping(true);
+	curveAlphaBox->setSpecialValueText(tr("Transparent"));
+	curveAlphaBox->setValue(app->defaultCurveAlpha);
+	curvesBoxLayout->addWidget(curveAlphaBox, 3, 1);
+
 	symbolGroupBox = new QGroupBox();
 	QGridLayout * symbLayout = new QGridLayout(symbolGroupBox);
 
@@ -1800,6 +1810,7 @@ void ConfigDialog::languageChange()
 	btnSymbolUp->setToolTip(tr("Move Symbol Up"));
 	btnSymbolDown->setToolTip(tr("Move Symbol Down"));
 	lblPattern->setText(tr("Pattern"));
+	lblCurveAlpha->setText(tr("Opacity"));
 
 	symbolGroupBox->setTitle(tr("Default Symbol"));
 	lblSymbBox->setText(tr("Style"));
@@ -2023,6 +2034,7 @@ void ConfigDialog::apply()
 	app->d_symbol_style = symbolBox->currentIndex();
 	app->setIndexedSymbols(d_indexed_symbols);
 	app->defaultCurveBrush = patternBox->currentIndex();
+	app->defaultCurveAlpha = curveAlphaBox->value();
 
 	// 2D plots page: axes tab
 	if (generalDialog->currentWidget() == plotsTabWidget &&

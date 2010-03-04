@@ -584,7 +584,7 @@
     </message>
     <message>
         <source>Linear Regression of %1</source>
-        <translation>Přímočarý pokles %1</translation>
+        <translation>Lineární regrese %1</translation>
     </message>
     <message>
         <source>Mi&amp;nimize Window</source>
@@ -2734,7 +2734,7 @@ Různé části tohoto souboru se nemusí zobrazovat tak, jak se očekává.</tr
     </message>
     <message>
         <source>Fit &amp;Linear</source>
-        <translation>&amp;Přímočaré umístění</translation>
+        <translation>&amp;Lineární umístění</translation>
     </message>
     <message>
         <source>&amp;Copy Graph</source>
@@ -4157,7 +4157,7 @@ Různé části tohoto souboru se nemusí zobrazovat tak, jak se očekává.</tr
     </message>
     <message>
         <source>Linear</source>
-        <translation>Přímočarý</translation>
+        <translation>Lineární</translation>
     </message>
     <message>
         <source>QtiPlot - Formula input error</source>
@@ -4825,11 +4825,6 @@ Různé části tohoto souboru se nemusí zobrazovat tak, jak se očekává.</tr
         <translation>Vybrat &amp;písmo</translation>
     </message>
     <message>
-        <source>The separator must not contain the following characters: 
-0-9eE.+-</source>
-        <translation></translation>
-    </message>
-    <message>
         <source> minutes</source>
         <translation>minuty</translation>
     </message>
@@ -5191,7 +5186,7 @@ Různé části tohoto souboru se nemusí zobrazovat tak, jak se očekává.</tr
     </message>
     <message>
         <source>2 points for linear fits</source>
-        <translation>Dva body pro přímočaré umístění</translation>
+        <translation>Dva body pro lineární umístění</translation>
     </message>
     <message>
         <source>Empty Graph</source>
@@ -5268,13 +5263,6 @@ Různé části tohoto souboru se nemusí zobrazovat tak, jak se očekává.</tr
     <message>
         <source>Axes &amp;Numbers</source>
         <translation>Čísla &amp;os</translation>
-    </message>
-    <message>
-        <source>The column separator can be customized. 
-The following special codes can be used:
-\t for a TAB character 
-\s for a SPACE</source>
-        <translation></translation>
     </message>
     <message>
         <source>Autosca&amp;ling</source>
@@ -5397,6 +5385,18 @@ The following special codes can be used:
         <translation>Zobrazovat potvrzovací zp&amp;rávy pro umístění s více vrcholy</translation>
     </message>
     <message>
+        <source>The column separator can be customized. 
+The following special codes can be used:
+\t for a TAB character 
+\s for a SPACE</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The separator must not contain the following characters: 
+0-9eE.+-</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>New Color</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5421,31 +5421,7 @@ The following special codes can be used:
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Default Symbol</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Edge width</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Fill</source>
-        <translation type="obsolete">Výplň</translation>
-    </message>
-    <message>
-        <source>Name</source>
-        <translation type="unfinished">Název</translation>
-    </message>
-    <message>
-        <source>Symbol</source>
-        <translation type="unfinished">Symbol</translation>
-    </message>
-    <message>
         <source>Inde&amp;xed Symbols</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Fill Symbol</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -5459,6 +5435,26 @@ The following special codes can be used:
     <message>
         <source>Pattern</source>
         <translation type="unfinished">Vzor</translation>
+    </message>
+    <message>
+        <source>Default Symbol</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edge width</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Fill Symbol</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Name</source>
+        <translation type="unfinished">Název</translation>
+    </message>
+    <message>
+        <source>Symbol</source>
+        <translation type="unfinished">Symbol</translation>
     </message>
 </context>
 <context>
@@ -6534,12 +6530,6 @@ The following special codes can be used:
         <translation>QtiPlot - Vyvést jako soubor ASCII</translation>
     </message>
     <message>
-        <source>The column separator can be customized. The following special codes can be used:
-\t for a TAB character 
-\s for a SPACE</source>
-        <translation></translation>
-    </message>
-    <message>
         <source>Separator</source>
         <translation>Oddělovač sloupců</translation>
     </message>
@@ -6574,6 +6564,12 @@ The following special codes can be used:
     <message>
         <source>Overwrite file?</source>
         <translation></translation>
+    </message>
+    <message>
+        <source>The column separator can be customized. The following special codes can be used:
+\t for a TAB character 
+\s for a SPACE</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -8355,11 +8351,6 @@ The following special codes can be used:
         <translation>Nová matice</translation>
     </message>
     <message>
-        <source>The separator must not contain the following characters: 
-0-9eE.+-</source>
-        <translation></translation>
-    </message>
-    <message>
         <source>&amp;Simplify white spaces</source>
         <translation>&amp;Zjednodušit mezery</translation>
     </message>
@@ -8368,21 +8359,8 @@ The following special codes can be used:
         <translation>Zjednodušit mezery</translation>
     </message>
     <message>
-        <source>Warning: checking this option leads to column 
-overlaping if the columns in the ASCII file don&apos;t 
-have the same number of rows.</source>
-        <comment>when translating this check the what&apos;s this functions and tool tips to place the &apos;\n&apos;s correctly</comment>
-        <translation></translation>
-    </message>
-    <message>
         <source>CR (Mac)</source>
         <translation>CR (Mac)</translation>
-    </message>
-    <message>
-        <source>Warning: checking this option leads to column 
-overlaping if the columns in the ASCII file don&apos;t 
-have the same number of rows.</source>
-        <translation></translation>
     </message>
     <message>
         <source>Column Names</source>
@@ -8399,12 +8377,6 @@ have the same number of rows.</source>
     <message>
         <source>Text files</source>
         <translation>Textové soubory</translation>
-    </message>
-    <message>
-        <source>The column separator can be customized. The following special codes can be used:
-\t for a TAB character 
-\s for a SPACE</source>
-        <translation></translation>
     </message>
     <message>
         <source>System Locale Setting</source>
@@ -8471,13 +8443,6 @@ have the same number of rows.</source>
         <translation>QtiPlot - Zavést ASCII soubor(y)</translation>
     </message>
     <message>
-        <source>The column separator can be customized. 
-The following special codes can be used:
-\t for a TAB character 
-\s for a SPACE</source>
-        <translation></translation>
-    </message>
-    <message>
         <source>All files</source>
         <translation>Všechny soubory</translation>
     </message>
@@ -8502,22 +8467,67 @@ The following special codes can be used:
         <translation>Z konců řádků &amp;odstranit mezery</translation>
     </message>
     <message>
+        <source>By checking this option all white spaces will be
+removed from the beginning and the end of
+the lines in the ASCII file.</source>
+        <comment>when translating this check the what&apos;s this functions and tool tips to place the &apos;\n&apos;s correctly</comment>
+        <translation type="obsolete">Zaškrtnutím této volby, budou všechny
+mezery odstraněny ze začátků a konců řádků
+v ASCII souboru.</translation>
+    </message>
+    <message>
+        <source>To avoid this problem you should precisely
+define the column separator using TAB and
+SPACE characters.</source>
+        <comment>when translating this check the what&apos;s this functions and tool tips to place the &apos;\n&apos;s correctly</comment>
+        <translation type="obsolete">Abyste se vyhnul tomuto problému, měl byste
+přesně určit oddělovač sloupců s pomocí znaků
+pro TAB(ULÁTOR) a MEZERU.</translation>
+    </message>
+    <message>
+        <source>By checking this option all white spaces will be
+removed from the beginning and the end of the
+lines and each sequence of internal
+whitespaces (including the TAB character) will
+be replaced with a single space.</source>
+        <comment>when translating this check the what&apos;s this functions and tool tips to place the &apos;\n&apos;s correctly</comment>
+        <translation type="obsolete">Zaškrtnutím této volby, budou všechny mezery
+odstraněny ze začátků a konců řádků
+a každá posloupnost vnitřních prázdných míst
+(včetně znaku pro TABULÁTOR) bude nahrazena
+jednoduchou mezerou.</translation>
+    </message>
+    <message>
+        <source>The column separator can be customized. 
+The following special codes can be used:
+\t for a TAB character 
+\s for a SPACE</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The separator must not contain the following characters: 
+0-9eE.+-</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>By checking this option all white spaces will be 
 removed from the beginning and the end of 
 the lines in the ASCII file.</source>
         <comment>when translating this check the what&apos;s this functions and tool tips to place the &apos;\n&apos;s correctly</comment>
-        <translation>Zaškrtnutím této volby, budou všechny 
-mezery odstraněny ze začátků a konců řádků 
-v ASCII souboru.</translation>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Warning: checking this option leads to column 
+overlaping if the columns in the ASCII file don&apos;t 
+have the same number of rows.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>To avoid this problem you should precisely 
 define the column separator using TAB and 
 SPACE characters.</source>
         <comment>when translating this check the what&apos;s this functions and tool tips to place the &apos;\n&apos;s correctly</comment>
-        <translation>Abyste se vyhnul tomuto problému, měl byste 
-přesně určit oddělovač sloupců s pomocí znaků 
-pro TAB(ULÁTOR) a MEZERU.</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>By checking this option all white spaces will be 
@@ -8526,11 +8536,20 @@ lines and each sequence of internal
 whitespaces (including the TAB character) will 
 be replaced with a single space.</source>
         <comment>when translating this check the what&apos;s this functions and tool tips to place the &apos;\n&apos;s correctly</comment>
-        <translation>Zaškrtnutím této volby, budou všechny mezery 
-odstraněny ze začátků a konců řádků 
-a každá posloupnost vnitřních prázdných míst 
-(včetně znaku pro TABULÁTOR) bude nahrazena 
-jednoduchou mezerou.</translation>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Warning: checking this option leads to column 
+overlaping if the columns in the ASCII file don&apos;t 
+have the same number of rows.</source>
+        <comment>when translating this check the what&apos;s this functions and tool tips to place the &apos;\n&apos;s correctly</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The column separator can be customized. The following special codes can be used:
+\t for a TAB character 
+\s for a SPACE</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -8671,7 +8690,7 @@ jednoduchou mezerou.</translation>
     </message>
     <message>
         <source>Linear</source>
-        <translation>Přímočará</translation>
+        <translation>Lineární</translation>
     </message>
     <message>
         <source>Interpolation</source>
@@ -8683,11 +8702,11 @@ jednoduchou mezerou.</translation>
     </message>
     <message>
         <source>Unknown interpolation method. Valid values are: 0 - Linear, 1 - Cubic, 2 - Akima.</source>
-        <translation>Neznámý způsob interpolace. Platné hodnoty jsou: 0 - přímočará, 1 - trojrozměrná, 2 - Akima.</translation>
+        <translation>Neznámý způsob interpolace. Platné hodnoty jsou: 0 - lineární, 1 - trojrozměrná, 2 - Akima.</translation>
     </message>
     <message>
         <source>Unknown interpolation method, valid values are: 0 - Linear, 1 - Cubic, 2 - Akima.</source>
-        <translation>Neznámý způsob interpolace. Platné hodnoty jsou: 0 - přímočará, 1 - trojrozměrná, 2 - Akima.</translation>
+        <translation>Neznámý způsob interpolace. Platné hodnoty jsou: 0 - lineární, 1 - trojrozměrná, 2 - Akima.</translation>
     </message>
     <message>
         <source>You need at least %1 points in order to perform this operation!</source>
@@ -8718,7 +8737,7 @@ jednoduchou mezerou.</translation>
     </message>
     <message>
         <source>Linear</source>
-        <translation>Přímočará</translation>
+        <translation>Lineární</translation>
     </message>
     <message>
         <source>Points</source>
@@ -9141,11 +9160,11 @@ jednoduchou mezerou.</translation>
     <name>LinearFit</name>
     <message>
         <source>Linear Regression</source>
-        <translation>Přímočarý pokles</translation>
+        <translation>Lineární regrese</translation>
     </message>
     <message>
         <source>Linear</source>
-        <translation>Přímočarý</translation>
+        <translation>Lineární</translation>
     </message>
     <message>
         <source>QtiPlot - Fit Error</source>
@@ -9160,7 +9179,7 @@ jednoduchou mezerou.</translation>
     <name>LinearSlopeFit</name>
     <message>
         <source>Linear Regression</source>
-        <translation>Přímočarý pokles</translation>
+        <translation>Lineární regrese</translation>
     </message>
     <message>
         <source>LinearSlope</source>
@@ -9813,7 +9832,7 @@ jednoduchou mezerou.</translation>
     </message>
     <message>
         <source>NonLinear</source>
-        <translation>Nepřímočaré</translation>
+        <translation>Nelineární</translation>
     </message>
     <message>
         <source>constant</source>
@@ -9833,7 +9852,7 @@ jednoduchou mezerou.</translation>
     </message>
     <message>
         <source>Non-linear Fit</source>
-        <translation>Nepřímočaré umístění</translation>
+        <translation>Nelineární umístění</translation>
     </message>
     <message>
         <source>QtiPlot - Input function error</source>
@@ -10117,7 +10136,7 @@ jednoduchou mezerou.</translation>
     </message>
     <message>
         <source>Linea&amp;r color map</source>
-        <translation>&amp;Přímočará mapa barev</translation>
+        <translation>&amp;Přímá mapa barev</translation>
     </message>
     <message>
         <source>Major Ticks</source>
@@ -10185,7 +10204,7 @@ jednoduchou mezerou.</translation>
     </message>
     <message>
         <source>linear</source>
-        <translation>přímočarý</translation>
+        <translation>lineární</translation>
     </message>
     <message>
         <source>Line Width</source>
@@ -11349,7 +11368,7 @@ jednoduchou mezerou.</translation>
     </message>
     <message>
         <source>Order (1 - 9, 1 = linear)</source>
-        <translation>Řád (1 - 9, 1 = přímočaré)</translation>
+        <translation>Řád (1 - 9, 1 = lineární)</translation>
     </message>
     <message>
         <source>Polynomial Fit of</source>

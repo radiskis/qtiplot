@@ -596,6 +596,7 @@ void ApplicationWindow::initGlobalConstants()
 	defaultCurveStyle = int(Graph::LineSymbols);
 	defaultCurveLineWidth = 1;
 	defaultCurveBrush = 0;
+	defaultCurveAlpha = 255;
 	defaultSymbolSize = 7;
 	defaultSymbolEdge = 1.0;
 	d_fill_symbols = true;
@@ -5278,6 +5279,7 @@ void ApplicationWindow::readSettings()
 	d_symbol_style = settings.value("/SymbolStyle", d_symbol_style).toInt();
 	d_indexed_symbols = settings.value("/IndexedSymbols", d_indexed_symbols).toBool();
 	defaultCurveBrush = settings.value("/BrushStyle", defaultCurveBrush).toInt();
+	defaultCurveAlpha = settings.value("/BrushAlpha", defaultCurveAlpha).toInt();
 	settings.endGroup(); // Curves
 
 	settings.beginGroup("/Ticks");
@@ -5691,6 +5693,7 @@ void ApplicationWindow::saveSettings()
 	settings.setValue("/SymbolStyle", d_symbol_style);
 	settings.setValue("/IndexedSymbols", d_indexed_symbols);
 	settings.setValue("/BrushStyle", defaultCurveBrush);
+	settings.setValue("/BrushAlpha", defaultCurveAlpha);
 	settings.endGroup(); // Curves
 
 	settings.beginGroup("/Ticks");
@@ -11881,7 +11884,7 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot, co
 
 			cl.symCol = readColorFromProject(curve[10]);
 			cl.fillCol = readColorFromProject(curve[11]);
-			cl.filledArea = curve[12].toInt();
+			cl.filledArea = curve[12].toDouble();
 			cl.aCol = readColorFromProject(curve[13]);
 			cl.aStyle = curve[14].toInt();
 			if(curve.count() < 16)
@@ -12009,7 +12012,7 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot, co
 			cl.sType=curve[11].toInt();
 			cl.symCol = readColorFromProject(curve[12]);
 			cl.fillCol = readColorFromProject(curve[13]);
-			cl.filledArea=curve[14].toInt();
+			cl.filledArea = curve[14].toDouble();
 			cl.aCol = readColorFromProject(curve[15]);
 			cl.aStyle=curve[16].toInt();
 			int current_index = 17;

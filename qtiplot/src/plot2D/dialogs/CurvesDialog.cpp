@@ -437,7 +437,11 @@ bool CurvesDialog::addCurve(const QString& name)
 
 	cl.lWidth = app->defaultCurveLineWidth;
 	cl.sSize = app->defaultSymbolSize;
-	cl.aStyle = app->defaultCurveBrush;
+	if (style == Graph::Area || style == Graph::VerticalBars || style == Graph::HorizontalBars ||
+		style == Graph::StackBar || style == Graph::StackColumn || style == Graph::Histogram){
+		cl.aStyle = app->defaultCurveBrush;
+		cl.filledArea = (double)app->defaultCurveAlpha/255.0;
+	}
 
 	if (app->d_indexed_symbols){
 		QList<int> indexedSymbols = app->indexedSymbols();
@@ -449,16 +453,17 @@ bool CurvesDialog::addCurve(const QString& name)
 	if (style == Graph::Line)
 		cl.sType = 0;
 	else if (style == Graph::Histogram){
-		cl.filledArea = 1;
 		cl.aCol = cl.lCol;
 		cl.sType = 0;
 	} else if (style == Graph::VerticalBars || style == Graph::HorizontalBars){
-		cl.filledArea = 1;
 		cl.aCol = cl.lCol;
 		cl.lCol = Qt::black;
+		int i = d_graph->curveCount() - 1;
+		if (i >= 0 && i < indexedColors.size())
+			cl.aCol = indexedColors[i];
+
 		cl.sType = 0;
 	} else if (style == Graph::Area){
-		cl.filledArea = 1;
 		cl.aCol = cl.lCol;
 		cl.sType = 0;
 	} else if (style == Graph::VerticalDropLines)

@@ -2292,12 +2292,15 @@ QString Graph::saveCurveLayout(int index)
 			s += QString::number(-1) + "\t";
 
 		bool filled = c->brush().style() == Qt::NoBrush ? false : true;
-		s+=QString::number(filled)+"\t";
-
+		//s += QString::number(filled) + "\t";
+		if (filled)
+			s += QString::number(c->brush().color().alphaF()) + "\t";
+		else
+			s += "0\t";
 		s += c->brush().color().name() + "\t";
-		s+=QString::number(PatternBox::patternIndex(c->brush().style()))+"\t";
+		s += QString::number(PatternBox::patternIndex(c->brush().style()))+"\t";
 		if (style <= LineSymbols || style == Box)
-			s+=QString::number(symbol.pen().widthF())+"\t";
+			s += QString::number(symbol.pen().widthF())+"\t";
 	}
 
 	if(style == VerticalBars || style == HorizontalBars || style == Histogram){
@@ -2782,7 +2785,10 @@ CurveLayout Graph::initCurveLayout(int style, int curves, bool guessLayout)
 			} else
 				cl.sType = app->d_symbol_style;
 
-			cl.aStyle = app->defaultCurveBrush;
+			if (style == Area || style == VerticalBars || style == HorizontalBars || style == StackBar || style == StackColumn || style == Histogram){
+				cl.aStyle = app->defaultCurveBrush;
+				cl.filledArea = (double)app->defaultCurveAlpha/255.0;
+			}
 		}
 	}
 	int colorsCount = indexedColors.size();
@@ -2806,7 +2812,6 @@ CurveLayout Graph::initCurveLayout(int style, int curves, bool guessLayout)
 	} else if (style == Spline)
 		cl.connectType = 5;
 	else if (curves && (style == VerticalBars || style == HorizontalBars)){
-		cl.filledArea = 1;
 		cl.lCol = Qt::black;
 		if (i >= 0 && i < colorsCount)
 			cl.aCol = indexedColors[i];
@@ -2817,19 +2822,16 @@ CurveLayout Graph::initCurveLayout(int style, int curves, bool guessLayout)
 			b->setOffset(-50*(curves-1) + i*100);
 		}
 	} else if (style == StackBar || style == StackColumn){
-		cl.filledArea = 1;
 		cl.lCol = Qt::black;
 		if (i >= 0 && i < colorsCount)
 			cl.aCol = indexedColors[i];
 		cl.sType = 0;
 	} else if (style == Histogram){
-		cl.filledArea = 1;
 		if (i >= 0 && i < colorsCount)
 			cl.lCol = indexedColors[i];
 		cl.aCol = cl.lCol;
 		cl.sType = 0;
 	} else if (style == Area){
-		cl.filledArea = 1;
 		cl.aCol = cl.lCol;
 		cl.sType = 0;
 		cl.connectType = 1;
@@ -2875,10 +2877,14 @@ void Graph::updateCurveLayout(PlotCurve* c, const CurveLayout *cL)
 	}
 
 	QBrush brush = QBrush(cL->aCol);
-	if (cL->filledArea)
+	if (cL->filledArea){
 		brush.setStyle(PatternBox::brushStyle(cL->aStyle));
-	else
+		QColor color = brush.color();
+		color.setAlphaF(cL->filledArea);
+		brush.setColor(color);
+	}else
 		brush.setStyle(Qt::NoBrush);
+
 	c->setBrush(brush);
 }
 

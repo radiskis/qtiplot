@@ -68,6 +68,7 @@
 #include <QDoubleSpinBox>
 #include <QMenu>
 #include <QDateTime>
+#include <QSlider>
 
 #include <qwt_plot_canvas.h>
 
@@ -894,10 +895,24 @@ void PlotDialog::initLinePage()
     gl2->addWidget(new QLabel(tr( "Fill color" )), 0, 0);
 	boxAreaColor = new ColorButton();
 	gl2->addWidget(boxAreaColor, 0, 1);
-	gl2->addWidget(new QLabel(tr( "Pattern" )), 1, 0);
+
+	gl2->addWidget(new QLabel(tr( "Opacity" )), 1, 0);
+	boxCurveOpacity = new QSpinBox();
+	boxCurveOpacity->setRange(0, 255);
+	boxCurveOpacity->setSingleStep(5);
+	boxCurveOpacity->setWrapping(true);
+	boxCurveOpacity->setSpecialValueText(tr("Transparent"));
+	gl2->addWidget(boxCurveOpacity, 1, 1);
+
+	curveOpacitySlider = new QSlider();
+	curveOpacitySlider->setOrientation(Qt::Horizontal);
+	curveOpacitySlider->setRange(0, 255);
+	gl2->addWidget(curveOpacitySlider, 1, 2);
+
+	gl2->addWidget(new QLabel(tr( "Pattern" )), 2, 0);
 	boxPattern = new PatternBox(false);
-	gl2->addWidget(boxPattern, 1, 1);
-	gl2->setRowStretch (2, 1);
+	gl2->addWidget(boxPattern, 2, 1);
+	gl2->setRowStretch (3, 1);
 
 	linePage = new QWidget();
 	QHBoxLayout* hlayout = new QHBoxLayout(linePage);
@@ -913,6 +928,9 @@ void PlotDialog::initLinePage()
 	connect(boxPattern, SIGNAL(activated(int)), this, SLOT(acceptParams()));
 	connect(fillGroupBox, SIGNAL(toggled(bool)), this, SLOT(showAreaColor(bool)));
 	connect(fillGroupBox, SIGNAL(clicked()), this, SLOT(acceptParams()));
+	connect(boxCurveOpacity, SIGNAL(valueChanged(int)), this, SLOT(acceptParams()));
+	connect(curveOpacitySlider, SIGNAL(valueChanged(int)), boxCurveOpacity, SLOT(setValue(int)));
+	connect(boxCurveOpacity, SIGNAL(valueChanged(int)), curveOpacitySlider, SLOT(setValue(int)));
 }
 
 void PlotDialog::initSymbolsPage()
@@ -2177,10 +2195,20 @@ void PlotDialog::setActiveCurve(CurveTreeItem *item)
     fillGroupBox->blockSignals(true);
     fillGroupBox->setChecked(c->brush().style() != Qt::NoBrush );
     fillGroupBox->blockSignals(false);
-    boxAreaColor->blockSignals(true);
-    boxAreaColor->setColor(c->brush().color());
-    boxAreaColor->blockSignals(false);
-    boxPattern->setPattern(c->brush().style());
+
+	QColor ac = c->brush().color();
+	boxCurveOpacity->blockSignals(true);
+	boxCurveOpacity->setValue(ac.alpha());
+	curveOpacitySlider->setValue(ac.alpha());
+	boxCurveOpacity->blockSignals(false);
+
+	ac.setAlpha(255);
+
+	boxAreaColor->blockSignals(true);
+	boxAreaColor->setColor(ac);
+	boxAreaColor->blockSignals(false);
+
+	boxPattern->setPattern(c->brush().style());
 
     //symbol page
     const QwtSymbol s = c->symbol();
@@ -2624,11 +2652,13 @@ bool PlotDialog::acceptParams()
 		sp->showContourLineLabels(levelsGroupBox->isChecked());
   	} else if (privateTabWidget->currentPage() == linePage){
 		graph->setCurveStyle(item->plotItemIndex(), boxConnect->currentIndex());
-		QBrush br = QBrush(boxAreaColor->color(), boxPattern->getSelectedPattern());
+
+		QColor col = boxAreaColor->color();
+		col.setAlpha(boxCurveOpacity->value());
+		QBrush br = QBrush(col, boxPattern->getSelectedPattern());
 		if (!fillGroupBox->isChecked())
 			br = QBrush();
-		QPen pen = QPen(boxLineColor->color(), boxLineWidth->value(),
-						boxLineStyle->style(), Qt::SquareCap, Qt::MiterJoin);
+		QPen pen = QPen(boxLineColor->color(), boxLineWidth->value(), boxLineStyle->style(), Qt::SquareCap, Qt::MiterJoin);
 		pen.setCosmetic(true);
 		QwtPlotCurve *curve = (QwtPlotCurve *)plotItem;
 		curve->setPen(pen);

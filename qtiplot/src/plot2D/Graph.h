@@ -80,7 +80,7 @@ typedef struct{
   QColor lCol;     //!< line color
   float lWidth;    //!< line width
   int lStyle;      //!< line style
-  int filledArea;  //!< flag: toggles area filling under curve
+  double filledArea;  //!< flag: toggles area filling under curve; if > 0 it containts the alphaF value of the brush color
   QColor aCol;     //!< curve area color
   int aStyle;      //!< area filling style
   QColor symCol;   //!< symbol outline color

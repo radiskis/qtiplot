@@ -47,6 +47,7 @@ class QGroupBox;
 class QDoubleSpinBox;
 class QRadioButton;
 class QTreeWidget;
+class QSlider;
 
 class LayerItem;
 class CurveTreeItem;
@@ -301,6 +302,8 @@ private:
 	QComboBox *boxLinkAllXAxes;
 
 	FunctionDialog *functionEdit;
+	QSpinBox *boxCurveOpacity;
+	QSlider *curveOpacitySlider;
 };
 
 /*****************************************************************************

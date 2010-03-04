@@ -274,7 +274,8 @@ private:
 	QList<int> d_indexed_symbols;
 	QPushButton *btnLoadDefaultSymbols, *btnSymbolUp, *btnSymbolDown;
 	PatternBox *patternBox;
-	QLabel *lblPattern;
+	QLabel *lblPattern, *lblCurveAlpha;
+	QSpinBox *curveAlphaBox;
 };
 
 #endif // CONFIGDIALOG_H
