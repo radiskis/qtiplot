@@ -595,7 +595,7 @@ void ApplicationWindow::initGlobalConstants()
 
 	defaultCurveStyle = int(Graph::LineSymbols);
 	defaultCurveLineWidth = 1;
-	d_curve_line_style = (int)Qt::SolidLine;
+	d_curve_line_style = 0;//Qt::SolidLine;
 	defaultCurveBrush = 0;
 	defaultCurveAlpha = 255;
 	defaultSymbolSize = 7;

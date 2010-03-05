@@ -487,7 +487,7 @@ void LayerDialog::updateSizes(int unit)
 	if (!multi_layer)
 		return;
 
-	aspect_ratio = multi_layer->layerCanvasSize().width()/multi_layer->layerCanvasSize().height();
+	aspect_ratio = (double)multi_layer->layerCanvasSize().width()/(double)multi_layer->layerCanvasSize().height();
 
 	boxCanvasWidth->setValue(convertFromPixels(multi_layer->layerCanvasSize().width(), (FrameWidget::Unit)unit, 0));
 	boxCanvasHeight->setValue(convertFromPixels(multi_layer->layerCanvasSize().height(), (FrameWidget::Unit)unit, 1));
