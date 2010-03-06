@@ -4278,7 +4278,7 @@ Quelques parties de ce fichier peuvent ne pas être affichés comme attendu.</tr
     </message>
     <message>
         <source>&amp;Random Values</source>
-        <translation>Valeu&amp;rs Aléatoires</translation>
+        <translation>Valeu&amp;rs aléatoires</translation>
     </message>
     <message>
         <source>QtiPlot &amp;Forums</source>
@@ -4831,7 +4831,7 @@ Quelques parties de ce fichier peuvent ne pas être affichés comme attendu.</tr
     </message>
     <message>
         <source>&amp;Read-only</source>
-        <translation>Lectu&amp;Re Seule</translation>
+        <translation type="unfinished">Lectu&amp;re seule</translation>
     </message>
     <message>
         <source>Read/&amp;Write</source>
@@ -4851,19 +4851,19 @@ Quelques parties de ce fichier peuvent ne pas être affichés comme attendu.</tr
     </message>
     <message>
         <source>Move &amp;Right</source>
-        <translation>Se déplacer à d&amp;roite</translation>
+        <translation>Colonne de d&amp;roite</translation>
     </message>
     <message>
         <source>Move &amp;Left</source>
-        <translation>Se dép&amp;lacer à gauche</translation>
+        <translation>Co&amp;lonne de gauche</translation>
     </message>
     <message>
         <source>Move to F&amp;irst</source>
-        <translation>Se déplacer au prem&amp;ier</translation>
+        <translation>Prem&amp;iere colonne</translation>
     </message>
     <message>
         <source>Move to Las&amp;t</source>
-        <translation>Se déplacer au dernier</translation>
+        <translation>Dernière colonne</translation>
     </message>
     <message>
         <source>&amp;Image Plot</source>
@@ -4960,7 +4960,7 @@ Quelques parties de ce fichier peuvent ne pas être affichés comme attendu.</tr
     </message>
     <message>
         <source>&amp;Disregard</source>
-        <translation></translation>
+        <translation>Rien</translation>
     </message>
     <message>
         <source>Ctrl+Shift+T</source>
@@ -5627,7 +5627,7 @@ L&apos;autocomplétion ne sera pas disponible!</translation>
     </message>
     <message>
         <source>Shared A&amp;xes Panel</source>
-        <translation type="unfinished"></translation>
+        <translation>A&amp;xes communs</translation>
     </message>
     <message>
         <source> </source>
@@ -5635,7 +5635,7 @@ L&apos;autocomplétion ne sera pas disponible!</translation>
     </message>
     <message>
         <source>&amp;Custom Layout...</source>
-        <translation type="unfinished"></translation>
+        <translation>Personnalisé...</translation>
     </message>
 </context>
 <context>
@@ -6174,11 +6174,11 @@ L&apos;autocomplétion ne sera pas disponible!</translation>
     </message>
     <message>
         <source>Scientific: 1e4</source>
-        <translation>Scientifique: 1e4</translation>
+        <translation>Scientifique : 1e4</translation>
     </message>
     <message>
         <source>Scientific: 1x10^4</source>
-        <translation>Scientifique: 1x10^4</translation>
+        <translation>Scientifique : 1x10^4</translation>
     </message>
     <message>
         <source>Engineering: 10k</source>
@@ -6206,8 +6206,7 @@ L&apos;autocomplétion ne sera pas disponible!</translation>
     </message>
     <message>
         <source>ln</source>
-        <translatorcomment>RC : LN ou IN ?</translatorcomment>
-        <translation>ln</translation>
+        <translation>Ln</translation>
     </message>
     <message>
         <source>Log2</source>
@@ -6219,19 +6218,19 @@ L&apos;autocomplétion ne sera pas disponible!</translation>
     </message>
     <message>
         <source>Hide Ticks</source>
-        <translation type="unfinished"></translation>
+        <translation>Cacher les graduations</translation>
     </message>
     <message>
         <source>At Axis Begin</source>
-        <translation type="unfinished"></translation>
+        <translation>Du début</translation>
     </message>
     <message>
         <source>At Axis End</source>
-        <translation type="unfinished"></translation>
+        <translation>De la fin</translation>
     </message>
     <message>
         <source>At Axis Begin &amp; End</source>
-        <translation type="unfinished"></translation>
+        <translation>Du déut et de la fin</translation>
     </message>
 </context>
 <context>
@@ -6471,7 +6470,7 @@ Les codes spéciaux suivant peuvent être utilisés :
     </message>
     <message>
         <source>&amp;Keep aspect ratio</source>
-        <translation type="unfinished">Proportionnelle</translation>
+        <translation>Proportionnelle</translation>
     </message>
     <message>
         <source>QtiPlot - Choose default settings</source>
@@ -6691,7 +6690,7 @@ Les codes spéciaux suivant peuvent être utilisés :
     </message>
     <message>
         <source>Prompt on closing</source>
-        <translation>Confirmer les fermetures de</translation>
+        <translation>Confirmer les fermetures pour les</translation>
     </message>
     <message>
         <source>Folders</source>
@@ -6831,11 +6830,11 @@ Les codes spéciaux suivant peuvent être utilisés :
     </message>
     <message>
         <source>Line width</source>
-        <translation>Épaisseur de ligne</translation>
+        <translation>Épaisseur</translation>
     </message>
     <message>
         <source>Symbol size</source>
-        <translation>Taille des symboles</translation>
+        <translation>Taille</translation>
     </message>
     <message>
         <source> Line</source>
@@ -7352,35 +7351,35 @@ Les codes spéciaux suivant peuvent être utilisés :
     </message>
     <message>
         <source>New Color</source>
-        <translation type="unfinished"></translation>
+        <translation>Nouvelle couleur</translation>
     </message>
     <message>
         <source>&amp;Load Default</source>
-        <translation type="unfinished"></translation>
+        <translation>Défaut</translation>
     </message>
     <message>
         <source>Delete Color</source>
-        <translation type="unfinished"></translation>
+        <translation>Supprimer la couleur</translation>
     </message>
     <message>
         <source>Move Color Up</source>
-        <translation type="unfinished"></translation>
+        <translation>Déplacer vers le haut</translation>
     </message>
     <message>
         <source>Move Color Down</source>
-        <translation type="unfinished"></translation>
+        <translation>Déplacer vers le bas</translation>
     </message>
     <message>
         <source>Indexed Colors</source>
-        <translation type="unfinished"></translation>
+        <translation>Couleurs indéxées</translation>
     </message>
     <message>
         <source>Default Symbol</source>
-        <translation type="unfinished"></translation>
+        <translation>Symbole par défaut</translation>
     </message>
     <message>
         <source>Edge width</source>
-        <translation type="unfinished"></translation>
+        <translation>Largeur</translation>
     </message>
     <message>
         <source>Fill</source>
@@ -7388,43 +7387,43 @@ Les codes spéciaux suivant peuvent être utilisés :
     </message>
     <message>
         <source>Name</source>
-        <translation type="unfinished">Nom</translation>
+        <translation>Nom</translation>
     </message>
     <message>
         <source>Symbol</source>
-        <translation type="unfinished">Symbole</translation>
+        <translation>Symbole</translation>
     </message>
     <message>
         <source>Inde&amp;xed Symbols</source>
-        <translation type="unfinished"></translation>
+        <translation>Symboles indé&amp;xés</translation>
     </message>
     <message>
         <source>&amp;Fill Symbol</source>
-        <translation type="unfinished"></translation>
+        <translation>Remplir</translation>
     </message>
     <message>
         <source>Move Symbol Up</source>
-        <translation type="unfinished"></translation>
+        <translation>Déplacer vers le haut</translation>
     </message>
     <message>
         <source>Move Symbol Down</source>
-        <translation type="unfinished"></translation>
+        <translation>Déplacer vers le bas</translation>
     </message>
     <message>
         <source>Pattern</source>
-        <translation type="unfinished"></translation>
+        <translation>Motif</translation>
     </message>
     <message>
         <source>Line style</source>
-        <translation type="unfinished"></translation>
+        <translation>Style</translation>
     </message>
     <message>
         <source>Fill area under curve</source>
-        <translation type="unfinished">Remplir l&apos;aire sous la courbe</translation>
+        <translation>Remplir l&apos;aire sous la courbe</translation>
     </message>
     <message>
         <source>Default Line Style</source>
-        <translation type="unfinished"></translation>
+        <translation>Ligne par défaut</translation>
     </message>
 </context>
 <context>
@@ -11600,7 +11599,7 @@ Les limites doivent être dans la gamme de x ; Si vous ne connaissez pas la vale
     </message>
     <message>
         <source>Order (1 - 5, 1 = Trapezoidal Rule)</source>
-        <translation>ordre (1 - 5, 1 = règle du Trapezoïde)</translation>
+        <translation>Ordre (1 - 5, 1 = règle du Trapezoïde)</translation>
     </message>
     <message>
         <source>Number of iterations (Max=20)</source>
@@ -12051,23 +12050,23 @@ Les limites doivent être dans la gamme de x ; Si vous ne connaissez pas la vale
     </message>
     <message>
         <source>Link &amp;X axes</source>
-        <translation type="unfinished"></translation>
+        <translation>Lier les axes &amp;X</translation>
     </message>
     <message>
         <source>&amp;Fixed size</source>
-        <translation type="unfinished"></translation>
+        <translation>Taille &amp;fixe</translation>
     </message>
     <message>
         <source>Align</source>
-        <translation type="unfinished"></translation>
+        <translation>Aligné</translation>
     </message>
     <message>
         <source>Canvases</source>
-        <translation type="unfinished"></translation>
+        <translation>Cadres</translation>
     </message>
     <message>
         <source>Common a&amp;xes</source>
-        <translation type="unfinished"></translation>
+        <translation>A&amp;xes communs</translation>
     </message>
 </context>
 <context>
@@ -13277,7 +13276,7 @@ Voulez-vous insérer des cellules?</translation>
     </message>
     <message>
         <source>None</source>
-        <translation>Aucun</translation>
+        <translation>Aucune</translation>
     </message>
 </context>
 <context>
@@ -14654,19 +14653,19 @@ Voulez-vous insérer des cellules?</translation>
     </message>
     <message>
         <source>Link &amp;X axes</source>
-        <translation type="unfinished"></translation>
+        <translation>Lier les axes &amp;X</translation>
     </message>
     <message>
         <source>Miscellaneous</source>
-        <translation type="unfinished"></translation>
+        <translation>Divers</translation>
     </message>
     <message>
         <source>0 (all data points)</source>
-        <translation type="unfinished"></translation>
+        <translation>0 (tous les points)</translation>
     </message>
     <message>
         <source>Tolerance (Douglas-Peucker algorithm)</source>
-        <translation type="unfinished"></translation>
+        <translation>Tolérance (Algorithme de Douglas Peucker)</translation>
     </message>
 </context>
 <context>
@@ -15262,12 +15261,14 @@ Calcule le sinus de x.</translation>
     <message>
         <source>AVG(&quot;colName&quot;, i, j):
  The average of all cells from row i to j in column colName.</source>
-        <translation type="unfinished"></translation>
+        <translation>AVG(&quot;colName&quot;,i,j) :
+ La moyenne de toutes les celulles de la colonne colName pour les rangées de i à j.</translation>
     </message>
     <message>
         <source>SUM(&quot;colName&quot;, i, j):
  The sum of all cells from row i to j in column colName.</source>
-        <translation type="unfinished"></translation>
+        <translation>SUM(&quot;colName&quot;,i,j) :
+ La somme de toutes les celulles de la colonne colName pour les rangées de i à j.</translation>
     </message>
     <message>
         <source>AVG(&quot;colName&quot;):
