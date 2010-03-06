@@ -9606,29 +9606,31 @@ void ApplicationWindow::windowsMenuAboutToShow()
 
 	windowsMenu->addAction(actionResizeActiveWindow);
 	windowsMenu->addAction(actionHideActiveWindow);
-	windowsMenu->insertItem(QPixmap(":/close.png"), tr("Close &Window"),
-			this, SLOT(closeActiveWindow()), Qt::CTRL+Qt::Key_W );
+	windowsMenu->insertItem(QPixmap(":/close.png"), tr("Close &Window"), this, SLOT(closeActiveWindow()), Qt::CTRL + Qt::Key_W);
 
-	if (n>0 && n<10){
+	if (n > 0)
 		windowsMenu->insertSeparator();
-		for (int i = 0; i<n; ++i ){
-			int id = windowsMenu->insertItem(windows.at(i)->objectName(),
-					this, SLOT( windowsMenuActivated( int ) ) );
-			windowsMenu->setItemParameter( id, i );
-			windowsMenu->setItemChecked( id, current_folder->activeWindow() == windows.at(i));
-		}
-	} else if (n>=10) {
-		windowsMenu->insertSeparator();
-		for ( int i = 0; i<9; ++i ){
-			int id = windowsMenu->insertItem(windows.at(i)->objectName(),
-					this, SLOT( windowsMenuActivated( int ) ) );
-			windowsMenu->setItemParameter( id, i );
-			windowsMenu->setItemChecked( id, activeWindow() == windows.at(i) );
-		}
-		windowsMenu->insertSeparator();
-		windowsMenu->insertItem(tr("More windows..."),this, SLOT(showMoreWindows()));
+
+	bool moreWindows = (n >= 10);
+	if (moreWindows)
+		n = 9;
+
+	for (int i = 0; i < n; ++i){
+		MdiSubWindow *w = windows.at(i);
+		if (!w)
+			continue;
+
+		int id = windowsMenu->insertItem("&" + QString::number(i + 1) + " " + w->windowTitle(), this, SLOT(windowsMenuActivated(int)));
+		windowsMenu->setItemParameter(id, i);
+		windowsMenu->setItemChecked(id, current_folder->activeWindow() == w);
 	}
-    reloadCustomActions();
+
+	if (moreWindows){
+		windowsMenu->insertSeparator();
+		windowsMenu->insertItem(tr("More windows..."), this, SLOT(showMoreWindows()));
+	}
+
+	reloadCustomActions();
 }
 
 void ApplicationWindow::showMarkerPopupMenu()
