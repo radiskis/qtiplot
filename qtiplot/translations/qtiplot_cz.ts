@@ -3789,6 +3789,10 @@ Různé části tohoto souboru se nemusí zobrazovat tak, jak se očekává.</tr
         <source>&amp;Custom Layout...</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Execute Selected Lines</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ArrowMarker</name>
@@ -10329,6 +10333,34 @@ have the same number of rows.</source>
     <message>
         <source>&amp;Print</source>
         <translation>&amp;Tisk</translation>
+    </message>
+    <message>
+        <source>Tick Labels</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Format</source>
+        <translation type="unfinished">Formát</translation>
+    </message>
+    <message>
+        <source>Automatic</source>
+        <translation type="unfinished">Automaticky</translation>
+    </message>
+    <message>
+        <source>Decimal: 10000.0</source>
+        <translation type="unfinished">Desetinný: 10000.0</translation>
+    </message>
+    <message>
+        <source>Scientific: 1e4</source>
+        <translation type="unfinished">Vědecký: 1e4</translation>
+    </message>
+    <message>
+        <source>Engineering: 10k</source>
+        <translation type="unfinished">Technický: 10k</translation>
+    </message>
+    <message>
+        <source>Precision</source>
+        <translation type="unfinished">Přesnost</translation>
     </message>
 </context>
 <context>

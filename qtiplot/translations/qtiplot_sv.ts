@@ -8347,6 +8347,10 @@ Automatisk komplettering ej tillgängligt!</translation>
         <source>&amp;Custom Layout...</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Execute Selected Lines</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ArrowMarker</name>
@@ -16617,6 +16621,34 @@ Vill du skjuta in celler?</translation>
     <message>
         <source>Filled bars</source>
         <translation>Fyllda staplar</translation>
+    </message>
+    <message>
+        <source>Tick Labels</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Format</source>
+        <translation type="unfinished">Format</translation>
+    </message>
+    <message>
+        <source>Automatic</source>
+        <translation type="unfinished">Automatiskt</translation>
+    </message>
+    <message>
+        <source>Decimal: 10000.0</source>
+        <translation type="unfinished">Decimal: 10000.0</translation>
+    </message>
+    <message>
+        <source>Scientific: 1e4</source>
+        <translation type="unfinished">Vetenskapligt: 1E4 {1e?}</translation>
+    </message>
+    <message>
+        <source>Engineering: 10k</source>
+        <translation type="unfinished">Tekniskt: 10k</translation>
+    </message>
+    <message>
+        <source>Precision</source>
+        <translation type="unfinished">Precision</translation>
     </message>
 </context>
 <context>

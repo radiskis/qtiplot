@@ -271,7 +271,7 @@ void Axis::drawTicLabel(Triple pos, int mtic)
 {
 	if (!drawNumbers_ || (mtic < 0))
 		return;
-	
+
 	markerLabel_[mtic].setFont(numberfont_.family(), numberfont_.pointSize(), numberfont_.weight(), numberfont_.italic());
 	markerLabel_[mtic].setColor(numbercolor_);
 	markerLabel_[mtic].setString(scale_->ticLabel(mtic));

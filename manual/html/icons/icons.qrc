@@ -1,5 +1,6 @@
 <!DOCTYPE RCC><RCC version="1.0">
 <qresource>
+	<file>execute_selection.png</file>
 	<file>magnifier_hor.png</file>
 	<file>magnifier_vert.png</file>
 	<file>open_excel.png</file>

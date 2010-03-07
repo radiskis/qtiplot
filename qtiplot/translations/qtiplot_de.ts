@@ -9765,6 +9765,10 @@ Autocompletion will not be available!</source>
         <source>&amp;Custom Layout...</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Execute Selected Lines</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ArrowMarker</name>
@@ -19246,6 +19250,34 @@ Wollen sie Zellen einfügen?</translation>
     <message>
         <source>Filled bars</source>
         <translation>Gefüllte Balken</translation>
+    </message>
+    <message>
+        <source>Tick Labels</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Format</source>
+        <translation type="unfinished">Format</translation>
+    </message>
+    <message>
+        <source>Automatic</source>
+        <translation type="unfinished">Automatisch</translation>
+    </message>
+    <message>
+        <source>Decimal: 10000.0</source>
+        <translation type="unfinished">Dezimal: 10000.0</translation>
+    </message>
+    <message>
+        <source>Scientific: 1e4</source>
+        <translation type="unfinished">Wissenschaftlich: 1e4</translation>
+    </message>
+    <message>
+        <source>Engineering: 10k</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Precision</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

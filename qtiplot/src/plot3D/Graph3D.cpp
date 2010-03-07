@@ -1241,6 +1241,41 @@ QStringList Graph3D::scaleTicks()
 	return limits;
 }
 
+int Graph3D::axisNumericFormat(int axis)
+{
+	return (int)sp->coordinates()->axes[axis].numericFormat();
+}
+
+int Graph3D::axisNumericPrecision(int axis)
+{
+	return sp->coordinates()->axes[axis].numericPrecision();
+}
+
+void Graph3D::setAxisNumericFormat(int axis, int format, int precision)
+{
+	int axis1 = X1, axis2 = X2, axis3 = X3, axis4 = X4;
+
+	sp->makeCurrent();
+	switch(axis){
+		case 0:
+		break;
+		case 1:
+			axis1 = Y1, axis2 = Y2, axis3 = Y3, axis4 = Y4;
+		break;
+		case 2:
+			axis1 = Z1, axis2 = Z2, axis3 = Z3, axis4 = Z4;
+		break;
+	}
+
+	sp->coordinates()->axes[axis1].setNumericFormat((Qwt3D::Scale::NumericFormat)format, precision);
+	sp->coordinates()->axes[axis2].setNumericFormat((Qwt3D::Scale::NumericFormat)format, precision);
+	sp->coordinates()->axes[axis3].setNumericFormat((Qwt3D::Scale::NumericFormat)format, precision);
+	sp->coordinates()->axes[axis4].setNumericFormat((Qwt3D::Scale::NumericFormat)format, precision);
+
+	update();
+	emit modified();
+}
+
 void Graph3D::setScale(int axis, double start, double end, int majorTicks, int minorTicks, Qwt3D::SCALETYPE type)
 {
 	double left, right;
@@ -2640,6 +2675,12 @@ void Graph3D::save(const QString &fn, const QString &geometry, bool)
 	t << QString::number(gridLine.style_) + "\t" + QString::number(gridLine.width_) + "</Minor>\n";
 	t << "</Grid>\n";
 
+	t << "<AxesNumberFormat>";
+	for (int i = 0; i < 3; i++){
+		t << QString::number(axisNumericFormat(i)) + "\t";
+		t << QString::number(axisNumericPrecision(i)) + "\t";
+	}
+	t << "</AxesNumberFormat>\n";
 	t << "</SurfacePlot>\n";
 }
 
@@ -3033,6 +3074,7 @@ void Graph3D::copy(Graph3D* g)
 	for (int i = 0; i < 12; i++){
 		coord->axes[i].setMajors(gcoord->axes[i].majors());
 		coord->axes[i].setMinors(gcoord->axes[i].minors());
+		coord->axes[i].setNumericFormat(gcoord->axes[i].numericFormat(), gcoord->axes[i].numericPrecision());
 
 		Qwt3D::AXIS axis = (Qwt3D::AXIS)i;
 		coord->setMajorGridLines(axis, gcoord->majorGridLine(axis));
@@ -3287,6 +3329,19 @@ Graph3D* Graph3D::restore(ApplicationWindow* app, const QStringList &lst, int fi
 					for (int i = 0; i < 12; i++)
 						plot->coordinateSystem()->setMinorGridLines((Qwt3D::AXIS)i, line);
 				}
+			}
+			line.next();
+		}
+	}
+
+	if (line.hasNext()){
+		s = line.next();
+		if (s.contains("<AxesNumberFormat>")){
+			fList = s.remove("<AxesNumberFormat>").remove("</AxesNumberFormat>").split("\t");
+			for (int i = 0; i < 3; i++){
+				int aux = 2*i + 1;
+				if (aux < fList.size())
+					plot->setAxisNumericFormat(i, fList[2*i].toInt(), fList[aux].toInt());
 			}
 		}
 	}
