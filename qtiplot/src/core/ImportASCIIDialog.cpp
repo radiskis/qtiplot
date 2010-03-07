@@ -58,6 +58,7 @@ ImportASCIIDialog::ImportASCIIDialog(bool new_windows_only, QWidget * parent, bo
 	filters << tr("Data files") + " (*.DAT *.dat)";
 	filters << tr("Comma Separated Values") + " (*.CSV *.csv)";
 	setFilters( filters );
+	setEditableFilter();
 
 	setFileMode( QFileDialog::ExistingFiles );
 
