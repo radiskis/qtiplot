@@ -173,6 +173,10 @@ public slots:
 	int axisType(int axis){return scaleType[axis];};
 	void setAxisType(int axis, int type);
 
+	int axisNumericFormat(int axis);
+	int axisNumericPrecision(int axis);
+	void setAxisNumericFormat(int axis, int format, int precision);
+
 	void setScales(double xl, double xr, double yl, double yr, double zl, double zr);
 	void updateScales(double xl, double xr, double yl, double yr,
 				  		double zl, double zr, int xcol, int ycol);

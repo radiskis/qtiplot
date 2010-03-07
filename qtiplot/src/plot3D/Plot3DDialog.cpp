@@ -122,49 +122,69 @@ void Plot3DDialog::initScalesPage()
 
 	ApplicationWindow *app = (ApplicationWindow *)parent();
 
-    QGridLayout *gl1 = new QGridLayout();
-    gl1->addWidget(new QLabel(tr("From")), 0, 0);
+	QGridLayout *gl1 = new QGridLayout();
+	gl1->addWidget(new QLabel(tr("From")), 0, 0);
 	boxFrom = new DoubleSpinBox();
 	boxFrom->setLocale(app->locale());
-    boxFrom->setDecimals(app->d_decimal_digits);
-    gl1->addWidget(boxFrom, 0, 1);
+	boxFrom->setDecimals(app->d_decimal_digits);
+	gl1->addWidget(boxFrom, 0, 1);
 
-    gl1->addWidget(new QLabel(tr("To")), 1, 0);
+	gl1->addWidget(new QLabel(tr("To")), 1, 0);
 	boxTo = new DoubleSpinBox();
 	boxTo->setLocale(app->locale());
-    boxTo->setDecimals(app->d_decimal_digits);
-    gl1->addWidget(boxTo, 1, 1);
+	boxTo->setDecimals(app->d_decimal_digits);
+	gl1->addWidget(boxTo, 1, 1);
 
-    gl1->addWidget(new QLabel(tr("Type")), 2, 0);
+	gl1->addWidget(new QLabel(tr("Type")), 2, 0);
 	boxType=new QComboBox();
 	boxType->addItem(tr("linear"));
 	boxType->addItem(tr("logarithmic"));
 	boxType->setMaximumWidth(150);
-    gl1->addWidget(boxType, 2, 1);
-    gl1->setRowStretch(3, 1);
+	gl1->addWidget(boxType, 2, 1);
+	gl1->setRowStretch(3, 1);
 
-    QGroupBox *gb1 = new QGroupBox();
-    gb1->setLayout(gl1);
+	QGroupBox *gb1 = new QGroupBox();
+	gb1->setLayout(gl1);
 
-    QGridLayout *gl2 = new QGridLayout();
-    gl2->addWidget(new QLabel(tr("Major Ticks")), 0, 0);
+	QGridLayout *gl2 = new QGridLayout();
+	gl2->addWidget(new QLabel(tr("Major Ticks")), 0, 0);
 	boxMajors = new QSpinBox();
-    gl2->addWidget(boxMajors, 0, 1);
-    gl2->addWidget(new QLabel(tr("Minor Ticks")), 1, 0);
+	gl2->addWidget(boxMajors, 0, 1);
+	gl2->addWidget(new QLabel(tr("Minor Ticks")), 1, 0);
 	boxMinors = new QSpinBox();
-    gl2->addWidget(boxMinors, 1, 1);
-    gl2->setRowStretch(2, 1);
+	gl2->addWidget(boxMinors, 1, 1);
+	gl2->setRowStretch(2, 1);
 
-    TicksGroupBox = new QGroupBox();
-    TicksGroupBox->setLayout(gl2);
+	TicksGroupBox = new QGroupBox();
+	TicksGroupBox->setLayout(gl2);
+
+	QGroupBox *tickLabelsGroupBox = new QGroupBox(tr("Tick Labels"));
+	QGridLayout *gl3 = new QGridLayout(tickLabelsGroupBox);
+	gl3->addWidget(new QLabel(tr("Format")), 0, 0);
+	boxTickLabelsFormat = new QComboBox();
+	boxTickLabelsFormat->insertItem(tr("Automatic"));
+	boxTickLabelsFormat->insertItem(tr("Decimal: 10000.0"));
+	boxTickLabelsFormat->insertItem(tr("Scientific: 1e4"));
+	boxTickLabelsFormat->insertItem(tr("Engineering: 10k"));
+
+	gl3->addWidget(boxTickLabelsFormat, 0, 1);
+	gl3->addWidget(new QLabel(tr("Precision")), 1, 0);
+	boxPrecision = new QSpinBox();
+	boxPrecision->setMaximum(14);
+	gl3->addWidget(boxPrecision, 1, 1);
+	gl3->setRowStretch(2, 1);
+
+	QVBoxLayout* vb = new QVBoxLayout();
+	vb->addWidget(TicksGroupBox);
+	vb->addWidget(tickLabelsGroupBox);
 
 	QHBoxLayout* hb = new QHBoxLayout();
 	hb->addWidget(axesList);
 	hb->addWidget(gb1, 1);
-    hb->addWidget(TicksGroupBox, 1);
+	hb->addLayout(vb, 1);
 
-    scale = new QWidget();
-    scale->setLayout(hb);
+	scale = new QWidget();
+	scale->setLayout(hb);
 	generalDialog->insertTab(scale, tr( "&Scale" ) );
 }
 
@@ -683,6 +703,7 @@ void Plot3DDialog::setPlot(Graph3D *g)
 	zAxisFont = g->zAxisLabelFont();
 
 	viewScaleLimits(0);
+	viewAxisOptions(0);
 
 	boxDistance->setValue(g->labelsDistance());
 	numbersFont = g->numbersFont();
@@ -756,6 +777,8 @@ void Plot3DDialog::initConnections()
     connect(boxTo, SIGNAL(valueChanged(double)), this, SLOT(updatePlot()));
 	connect(boxMajors, SIGNAL(valueChanged(int)), this, SLOT(updatePlot()));
 	connect(boxMinors, SIGNAL(valueChanged(int)), this, SLOT(updatePlot()));
+	connect(boxPrecision, SIGNAL(valueChanged(int)), this, SLOT(updatePlot()));
+	connect(boxTickLabelsFormat, SIGNAL(activated(int)), this, SLOT(updatePlot()));
 	connect(axesList, SIGNAL(currentRowChanged(int)), this, SLOT(viewScaleLimits(int)));
 
 	// axes page connections
@@ -936,6 +959,13 @@ void Plot3DDialog::viewAxisOptions(int axis)
 	boxMinorLength->blockSignals(false);
 
 	axesList->setCurrentRow(axis);
+
+	boxTickLabelsFormat->blockSignals(true);
+	boxTickLabelsFormat->setCurrentIndex(d_plot->axisNumericFormat(axis));
+	boxTickLabelsFormat->blockSignals(false);
+	boxPrecision->blockSignals(true);
+	boxPrecision->setValue(d_plot->axisNumericPrecision(axis));
+	boxPrecision->blockSignals(false);
 }
 
 void Plot3DDialog::viewScaleLimits(int axis)
@@ -1056,6 +1086,8 @@ bool Plot3DDialog::updatePlot()
 		double end = qMax(boxFrom->value(), boxTo->value());
 		d_plot->setScale(axesList->currentRow(), start, end, boxMajors->value(),
 						 boxMinors->value(), (Qwt3D::SCALETYPE)boxType->currentIndex());
+
+		d_plot->setAxisNumericFormat(axesList->currentRow(), boxTickLabelsFormat->currentIndex(), boxPrecision->value());
 	} else if (generalDialog->currentPage() == axes){
 		int axis = axesList2->currentRow();
 		labels[axis] = boxLabel->text();

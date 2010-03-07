@@ -5637,6 +5637,10 @@ L&apos;autocomplétion ne sera pas disponible!</translation>
         <source>&amp;Custom Layout...</source>
         <translation>Personnalisé...</translation>
     </message>
+    <message>
+        <source>Execute Selected Lines</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ArrowMarker</name>
@@ -13714,6 +13718,34 @@ Voulez-vous insérer des cellules?</translation>
     <message>
         <source>Filled bars</source>
         <translation>Barres remplies</translation>
+    </message>
+    <message>
+        <source>Tick Labels</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Format</source>
+        <translation type="unfinished">Format</translation>
+    </message>
+    <message>
+        <source>Automatic</source>
+        <translation type="unfinished">Automatique</translation>
+    </message>
+    <message>
+        <source>Decimal: 10000.0</source>
+        <translation type="unfinished">Décimal : 10000.0</translation>
+    </message>
+    <message>
+        <source>Scientific: 1e4</source>
+        <translation type="unfinished">Scientifique: 1e4</translation>
+    </message>
+    <message>
+        <source>Engineering: 10k</source>
+        <translation type="unfinished">Notation ingénieur : 10k</translation>
+    </message>
+    <message>
+        <source>Precision</source>
+        <translation type="unfinished">Précision</translation>
     </message>
 </context>
 <context>

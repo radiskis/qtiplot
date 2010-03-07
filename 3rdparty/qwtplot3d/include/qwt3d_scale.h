@@ -23,6 +23,13 @@ class QWT3D_EXPORT Scale
   friend class Axis;
   friend class qwt3d_ptr<Scale>;
 
+public:
+  enum NumericFormat{Default, Decimal, Scientific, Engineering};
+
+  int numericPrecision(){return d_numeric_precision;};//!< Returns numeric precision for tick labels
+  NumericFormat numericFormat(){return d_numeric_format;};//!< Returns numeric format for tick labels
+  void setNumericFormat(const NumericFormat& fmt, int prec){d_numeric_format = fmt; d_numeric_precision = prec;};//!< Set numeric format and precision for tick labels
+
   protected:
     Scale();
     virtual ~Scale(){}
@@ -49,7 +56,9 @@ class QWT3D_EXPORT Scale
     double mstart_p, mstop_p;
   
   private:
-    void destroy() const {delete this;} //!< Used by qwt3d_ptr   
+	void destroy() const {delete this;} //!< Used by qwt3d_ptr
+	int d_numeric_precision;
+	NumericFormat d_numeric_format;
 };
 
 //! The standard (1:1) mapping class for axis numbering

@@ -60,6 +60,7 @@ public:
 	bool scaling() const					{ return drawTics_; }				//!< Returns, if scale drawing is on or off
 	void setScale(Qwt3D::SCALETYPE);
 	void setScale(Scale* item);
+
 	void setNumbers(bool d)					{ drawNumbers_ = d; }				//!< Turns number drawing on or off
 	bool numbers() const					{ return drawNumbers_; }			//!< Returns, if number drawing is on or off
 	void setNumberColor(Qwt3D::RGBA col);										//!< Sets the color for axes numbers
@@ -90,6 +91,10 @@ public:
 	void setLimits(double start, double stop) {start_=start; stop_=stop;}		//!< Sets interval
 	void limits(double& start, double& stop) const {start = start_; stop = stop_;} //!< Returns axis interval
 	void recalculateTics();					//!< Enforces recalculation of ticmark positions
+
+	int numericPrecision(){return scale_->numericPrecision();};//!< Returns numeric precision for tick labels
+	Qwt3D::Scale::NumericFormat numericFormat(){return scale_->numericFormat();};//!< Returns numeric format for tick labels
+	void setNumericFormat(const Qwt3D::Scale::NumericFormat& fmt, int prec){scale_->setNumericFormat(fmt, prec);};
 
 private:
 

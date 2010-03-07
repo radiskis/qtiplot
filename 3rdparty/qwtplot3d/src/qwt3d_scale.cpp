@@ -1,11 +1,14 @@
 #include "qwt3d_scale.h"
+#include <QLocale>
 
 using namespace Qwt3D;
 
 Scale::Scale() 
 : start_p(0.), stop_p(0.), 
   majorintervals_p(0), minorintervals_p(0),
-  mstart_p(0.), mstop_p(0.) 
+  mstart_p(0.), mstop_p(0.),
+  d_numeric_precision(6),
+  d_numeric_format(Default)
 {
 }
 
@@ -19,11 +22,77 @@ an empty QString else.
 */
 QString Scale::ticLabel(unsigned int idx) const
 {
-  if (idx<majors_p.size())
-  {
-    return QString::number(majors_p[idx]);
-  }
-  return QString("");
+	if (idx < 0 || idx >= majors_p.size())
+		return QString::null;
+
+	QLocale locale = QLocale();
+	switch (d_numeric_format){
+		case Default:
+			return locale.toString(majors_p[idx], 'g', d_numeric_precision);
+		break;
+
+		case Decimal:
+			return locale.toString(majors_p[idx], 'f', d_numeric_precision);
+		break;
+
+		case Scientific:
+			return locale.toString(majors_p[idx], 'e', d_numeric_precision);
+		break;
+
+		case Engineering:{
+			QString eng_suff;
+			double new_value = majors_p[idx];
+
+			if(fabs(new_value) >= 1e18){
+				eng_suff = 'E';
+				new_value /= 1e18;
+			} else if(fabs(new_value) >= 1e15){
+				eng_suff = 'P';
+				new_value /= 1e15;
+			} else if(fabs(new_value) >= 1e12){
+				eng_suff = 'T';
+				new_value /= 1e12;
+			} else if(fabs(new_value) >= 1e9){
+				eng_suff = 'G';
+				new_value /= 1e9;
+			} else if(fabs(new_value) >= 1e6){
+				eng_suff = 'M';
+				new_value /= 1e6;
+			} else if(fabs(new_value) >= 1e3){
+				eng_suff = 'k';
+				new_value /= 1e3;
+			} else if(fabs(new_value) >= 1){
+				eng_suff = "";
+				new_value /= 1.0;
+			} else if(fabs(new_value) >= 1e-3){
+				eng_suff = 'm';
+				new_value /= 1e-3;
+			} else if(fabs(new_value) >= 1e-6){
+				eng_suff = 'µ';
+				new_value /= 1e-6;
+			} else if(fabs(new_value) >= 1e-9){
+				eng_suff = 'n';
+				new_value /= 1e-9;
+			} else if(fabs(new_value) >= 1e-12){
+				eng_suff = 'p';
+				new_value /= 1e-12;
+			} else if(fabs(new_value) >= 1e-15){
+				eng_suff = 'f';
+				new_value /= 1e-15;
+			} else {
+				eng_suff = 'a';
+				new_value /= 1e-18;
+			}
+
+			QString txt = locale.toString((new_value), 'f', d_numeric_precision);
+			if(txt.contains(QRegExp("^0[\\.,]?0*$")))
+				return "0";
+
+			return txt + eng_suff;
+		}
+		break;
+	}
+	return QString::null;
 }
 
 double Scale::ticValue(unsigned int idx) const

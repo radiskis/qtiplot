@@ -1190,6 +1190,7 @@ public:
 	bool d_ASCII_import_comments, d_ASCII_import_read_only, d_ASCII_import_preview;
 	int d_ASCII_import_mode, d_preview_lines;
 	int d_ASCII_import_first_row_role;
+	QSize d_import_ASCII_dialog_size;
 	//! Specifies if only the Tables/Matrices in the current folder should be displayed in the Add/remove curve dialog.
 	bool d_show_current_folder;
 	bool d_scale_plots_on_print, d_print_cropmarks;

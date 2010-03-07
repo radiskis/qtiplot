@@ -389,6 +389,7 @@ void ImportASCIIDialog::closeEvent(QCloseEvent* e)
 		app->d_ASCII_import_preview = d_preview_button->isChecked();
 		app->d_preview_lines = d_preview_lines_box->value();
 		app->d_ASCII_import_first_row_role = d_first_line_role->currentIndex();
+		app->d_import_ASCII_dialog_size = size();
 	}
 
 	e->accept();

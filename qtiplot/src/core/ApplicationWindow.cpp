@@ -679,6 +679,7 @@ void ApplicationWindow::initGlobalConstants()
 	d_ASCII_import_read_only = false;
 	d_ASCII_import_preview = true;
 	d_preview_lines = 100;
+	d_import_ASCII_dialog_size = QSize();
     d_ASCII_end_line = LF;
 	d_eol = LF;
 #ifdef Q_OS_MAC
@@ -769,6 +770,7 @@ void ApplicationWindow::initToolBars()
 	noteTools->setObjectName("noteTools"); // this is needed for QMainWindow::restoreState()
 	noteTools->setIconSize( QSize(18,20) );
 	noteTools->addAction(actionNoteExecuteAll);
+	noteTools->addAction(actionNoteExecute);
 	noteTools->addAction(actionDecreaseIndent);
 	noteTools->addAction(actionIncreaseIndent);
 	noteTools->addAction(actionFind);
@@ -4255,6 +4257,8 @@ void ApplicationWindow::importASCII()
 	ImportASCIIDialog *import_dialog = new ImportASCIIDialog(!activeWindow(TableWindow) && !activeWindow(MatrixWindow), this, d_extended_import_ASCII_dialog);
 	import_dialog->setDir(asciiDirPath);
 	import_dialog->selectFilter(d_ASCII_file_filter);
+	if (d_import_ASCII_dialog_size.isValid())
+		import_dialog->resize(d_import_ASCII_dialog_size);
 	if (import_dialog->exec() != QDialog::Accepted)
 		return;
 
@@ -5405,6 +5409,7 @@ void ApplicationWindow::readSettings()
 	d_preview_lines = settings.value("/PreviewLines", 100).toInt();
     d_ASCII_end_line = (EndLineChar)settings.value("/EndLineCharacter", d_ASCII_end_line).toInt();
 	d_ASCII_import_first_row_role = settings.value("/FirstLineRole", 0).toInt();
+	d_import_ASCII_dialog_size = settings.value("/DialogSize", d_import_ASCII_dialog_size).toSize();
 	settings.endGroup(); // Import ASCII
 
 	settings.beginGroup("/ExportASCII");
@@ -5830,6 +5835,7 @@ void ApplicationWindow::saveSettings()
 	settings.setValue("/PreviewLines", d_preview_lines);
 	settings.setValue("/EndLineCharacter", (int)d_ASCII_end_line);
 	settings.setValue("/FirstLineRole", d_ASCII_import_first_row_role);
+	settings.setValue("/DialogSize", d_import_ASCII_dialog_size);
 	settings.endGroup(); // ImportASCII
 
 	settings.beginGroup("/ExportASCII");
@@ -13760,7 +13766,7 @@ void ApplicationWindow::createActions()
 	actionRestartScripting = new QAction(tr("&Restart scripting"), this);
 	connect(actionRestartScripting, SIGNAL(activated()), this, SLOT(restartScriptingEnv()));
 
-	actionNoteExecute = new QAction(tr("E&xecute"), this);
+	actionNoteExecute = new QAction(QIcon(":/execute_selection.png"), tr("E&xecute"), this);
 	actionNoteExecute->setShortcut(tr("Ctrl+J"));
 	connect(actionNoteExecute, SIGNAL(activated()), this, SLOT(execute()));
 
@@ -14412,6 +14418,7 @@ void ApplicationWindow::translateActionsStrings()
 	actionRestartScripting->setMenuText(tr("&Restart scripting"));
 
 	actionNoteExecute->setMenuText(tr("E&xecute"));
+	actionNoteExecute->setToolTip(tr("Execute Selected Lines"));
 	actionNoteExecute->setShortcut(tr("Ctrl+J"));
 
 	actionNoteExecuteAll->setMenuText(tr("Execute &All"));

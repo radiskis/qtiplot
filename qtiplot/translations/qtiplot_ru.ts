@@ -3779,6 +3779,10 @@ Autocompletion will not be available!</source>
         <source>&amp;Custom Layout...</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Execute Selected Lines</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ArrowMarker</name>
@@ -10356,6 +10360,34 @@ have the same number of rows.</source>
     <message>
         <source>Filled bars</source>
         <translation>Заполненные блоки</translation>
+    </message>
+    <message>
+        <source>Tick Labels</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Format</source>
+        <translation type="unfinished">Формат</translation>
+    </message>
+    <message>
+        <source>Automatic</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Decimal: 10000.0</source>
+        <translation type="unfinished">Десятичный: 10000.0</translation>
+    </message>
+    <message>
+        <source>Scientific: 1e4</source>
+        <translation type="unfinished">Научный: 1e4</translation>
+    </message>
+    <message>
+        <source>Engineering: 10k</source>
+        <translation type="unfinished">Инжнерный: 10k</translation>
+    </message>
+    <message>
+        <source>Precision</source>
+        <translation type="unfinished">Точность</translation>
     </message>
 </context>
 <context>

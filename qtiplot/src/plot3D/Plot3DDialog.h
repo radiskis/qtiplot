@@ -129,7 +129,7 @@ private:
 	QListWidget *axesList, *axesList2;
 	QComboBox *boxType, *boxPointStyle;
 	DoubleSpinBox *boxMajorLength, *boxMinorLength, *boxConesRad;
-	QSpinBox *boxZoom, *boxXScale, *boxYScale, *boxZScale, *boxQuality;
+	QSpinBox *boxZoom, *boxXScale, *boxYScale, *boxZScale, *boxQuality, *boxPrecision;
 	DoubleSpinBox *boxSize, *boxBarsRad, *boxCrossRad, *boxCrossLinewidth;
 	QStackedWidget *optionStack;
 	QWidget *dotsPage, *conesPage, *crossPage;
@@ -138,7 +138,7 @@ private:
     double zoom, xScale, yScale, zScale;
 	QString d_color_map_file;
 	DoubleSpinBox *boxMajorGridWidth, *boxMinorGridWidth;
-	QComboBox *boxMajorGridStyle, *boxMinorGridStyle;
+	QComboBox *boxMajorGridStyle, *boxMinorGridStyle, *boxTickLabelsFormat;
 	QCheckBox *boxMajorGrids, *boxMinorGrids;
 };
 
