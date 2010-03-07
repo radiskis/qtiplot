@@ -63,6 +63,8 @@ class ExtensibleFileDialog : public QFileDialog
 		void setExtended(bool extended){if (extended) d_extension_toggle->toggle();};
 		//! Sets the text to be displayed in the toggle button
 		void setExtentionToggleButtonText(const QString& text){d_extension_toggle->setText(text);};
+		//! Enables/Disables editing of the file type filter
+		void setEditableFilter(bool on = true);
 		
 	protected:
 		//! Button for toggling display of extension on/off.
