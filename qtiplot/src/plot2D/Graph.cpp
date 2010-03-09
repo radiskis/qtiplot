@@ -1134,27 +1134,27 @@ if (scaleDiv)
 
 QwtDoubleInterval Graph::axisBoundingInterval(int axis)
 {
-    // Find bounding interval of the plot data
+	// Find bounding interval of the plot data
 
-    QwtDoubleInterval intv;
-    const QwtPlotItemList& itmList = itemList();
-    QwtPlotItemIterator it;
-    for ( it = itmList.begin(); it != itmList.end(); ++it ){
-        const QwtPlotItem *item = *it;
-        if (item->rtti() != QwtPlotItem::Rtti_PlotCurve)
-            continue;
+	QwtDoubleInterval intv;
+	const QwtPlotItemList& itmList = itemList();
+	QwtPlotItemIterator it;
+	for ( it = itmList.begin(); it != itmList.end(); ++it ){
+		const QwtPlotItem *item = *it;
+		if (item->rtti() != QwtPlotItem::Rtti_PlotCurve)
+			continue;
 
 		if(axis != item->xAxis() && axis != item->yAxis())
-            continue;
+			continue;
 
-        const QwtDoubleRect rect = item->boundingRect();
+		const QwtDoubleRect rect = item->boundingRect();
 
-        if (axis == QwtPlot::xBottom || axis == QwtPlot::xTop)
-            intv |= QwtDoubleInterval(rect.left(), rect.right());
-        else
-            intv |= QwtDoubleInterval(rect.top(), rect.bottom());
-    }
-    return intv;
+		if (axis == QwtPlot::xBottom || axis == QwtPlot::xTop)
+			intv |= QwtDoubleInterval(rect.left(), rect.right());
+		else
+			intv |= QwtDoubleInterval(rect.top(), rect.bottom());
+	}
+	return intv;
 }
 
 void Graph::setScale(int axis, double start, double end, double step,
@@ -1197,6 +1197,11 @@ void Graph::setScale(int axis, double start, double end, double step,
 			start = intv.minValue();
 		else
 			end = intv.minValue();
+
+		if (start <= 0.0)
+			start = 1e-4;
+		if (end <= 0.0)
+			end = 1e-3;
 	}
 
 	int max_min_intervals = minorTicks;

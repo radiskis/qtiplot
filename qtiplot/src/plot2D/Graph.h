@@ -761,9 +761,9 @@ signals:
 
 	private:
 		QList<FrameWidget*> stackingOrderEnrichmentsList();
-        //! Finds bounding interval of the plot data.
-        QwtDoubleInterval axisBoundingInterval(int axis);
-        void deselectCurves();
+		//! Finds bounding interval of the plot data.
+		QwtDoubleInterval axisBoundingInterval(int axis);
+		void deselectCurves();
 
 		void dropEvent(QDropEvent*);
 		void dragEnterEvent(QDragEnterEvent*);
