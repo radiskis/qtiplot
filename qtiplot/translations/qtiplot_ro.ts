@@ -7247,19 +7247,19 @@ Autocompletion will not be available!</source>
     </message>
     <message>
         <source>Shared A&amp;xes Panel</source>
-        <translation type="unfinished"></translation>
+        <translation>Panel cu a&amp;xe comune</translation>
     </message>
     <message>
         <source> </source>
-        <translation type="unfinished"></translation>
+        <translation>.</translation>
     </message>
     <message>
         <source>&amp;Custom Layout...</source>
-        <translation type="unfinished"></translation>
+        <translation>Aranjare personaliza&amp;tă...</translation>
     </message>
     <message>
         <source>Execute Selected Lines</source>
-        <translation type="unfinished"></translation>
+        <translation>Executaă rândurile selectate</translation>
     </message>
 </context>
 <context>
@@ -7809,19 +7809,19 @@ Autocompletion will not be available!</source>
     </message>
     <message>
         <source>Hide Ticks</source>
-        <translation type="unfinished"></translation>
+        <translation>Ascunde diviziuni</translation>
     </message>
     <message>
         <source>At Axis Begin</source>
-        <translation type="unfinished"></translation>
+        <translation>La începutul axei</translation>
     </message>
     <message>
         <source>At Axis End</source>
-        <translation type="unfinished"></translation>
+        <translation>La sfârşitul axei</translation>
     </message>
     <message>
         <source>At Axis Begin &amp; End</source>
-        <translation type="unfinished"></translation>
+        <translation>La capetele axei</translation>
     </message>
 </context>
 <context>
@@ -8892,35 +8892,35 @@ The following special codes can be used:
     </message>
     <message>
         <source>New Color</source>
-        <translation type="unfinished"></translation>
+        <translation>Culoare nouă</translation>
     </message>
     <message>
         <source>&amp;Load Default</source>
-        <translation type="unfinished"></translation>
+        <translation>Setări imp&amp;licite</translation>
     </message>
     <message>
         <source>Delete Color</source>
-        <translation type="unfinished"></translation>
+        <translation>Şterge culoare</translation>
     </message>
     <message>
         <source>Move Color Up</source>
-        <translation type="unfinished"></translation>
+        <translation>Mută culoarea mai sus</translation>
     </message>
     <message>
         <source>Move Color Down</source>
-        <translation type="unfinished"></translation>
+        <translation>Mută culoarea mai jos</translation>
     </message>
     <message>
         <source>Indexed Colors</source>
-        <translation type="unfinished"></translation>
+        <translation>Culori indexate</translation>
     </message>
     <message>
         <source>Default Symbol</source>
-        <translation type="unfinished"></translation>
+        <translation>Simbol implicit</translation>
     </message>
     <message>
         <source>Edge width</source>
-        <translation type="unfinished"></translation>
+        <translation>Grosimea marginii</translation>
     </message>
     <message>
         <source>Fill</source>
@@ -8928,43 +8928,43 @@ The following special codes can be used:
     </message>
     <message>
         <source>Name</source>
-        <translation type="unfinished">Nume</translation>
+        <translation>Nume</translation>
     </message>
     <message>
         <source>Symbol</source>
-        <translation type="unfinished">Simbol</translation>
+        <translation>Simbol</translation>
     </message>
     <message>
         <source>Inde&amp;xed Symbols</source>
-        <translation type="unfinished"></translation>
+        <translation>Simboluri inde&amp;xate</translation>
     </message>
     <message>
         <source>&amp;Fill Symbol</source>
-        <translation type="unfinished"></translation>
+        <translation>Simbol &amp;plin</translation>
     </message>
     <message>
         <source>Move Symbol Up</source>
-        <translation type="unfinished"></translation>
+        <translation>Mută simbolul mai sus</translation>
     </message>
     <message>
         <source>Move Symbol Down</source>
-        <translation type="unfinished"></translation>
+        <translation>Mută simbolul mai sus</translation>
     </message>
     <message>
         <source>Pattern</source>
-        <translation type="unfinished">Model</translation>
+        <translation>Model</translation>
     </message>
     <message>
         <source>Line style</source>
-        <translation type="unfinished"></translation>
+        <translation>Stil linie</translation>
     </message>
     <message>
         <source>Fill area under curve</source>
-        <translation type="unfinished">Umple suprafaţa de sub curbă</translation>
+        <translation>Umple suprafaţa de sub curbă</translation>
     </message>
     <message>
         <source>Default Line Style</source>
-        <translation type="unfinished"></translation>
+        <translation>Stil de linie implicit</translation>
     </message>
 </context>
 <context>
@@ -12381,7 +12381,7 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Layers</source>
-        <translation>Grafice</translation>
+        <translation>Graficele</translation>
     </message>
     <message>
         <source>Number</source>
@@ -12581,23 +12581,23 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Link &amp;X axes</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Conectează axele X</translation>
     </message>
     <message>
         <source>&amp;Fixed size</source>
-        <translation type="unfinished"></translation>
+        <translation>Dimensiuni &amp;fixe</translation>
     </message>
     <message>
         <source>Align</source>
-        <translation type="unfinished"></translation>
+        <translation>Aliniază</translation>
     </message>
     <message>
         <source>Canvases</source>
-        <translation type="unfinished"></translation>
+        <translation>Axele</translation>
     </message>
     <message>
         <source>Common a&amp;xes</source>
-        <translation type="unfinished"></translation>
+        <translation>A&amp;xe comune</translation>
     </message>
 </context>
 <context>
@@ -13910,31 +13910,31 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Tick Labels</source>
-        <translation type="unfinished"></translation>
+        <translation>Etichetele diviziunilor</translation>
     </message>
     <message>
         <source>Format</source>
-        <translation type="unfinished">Format</translation>
+        <translation>Format</translation>
     </message>
     <message>
         <source>Automatic</source>
-        <translation type="unfinished">Automat</translation>
+        <translation>Automat</translation>
     </message>
     <message>
         <source>Decimal: 10000.0</source>
-        <translation type="unfinished">Zecimal: 10000.0</translation>
+        <translation>Zecimal: 10000.0</translation>
     </message>
     <message>
         <source>Scientific: 1e4</source>
-        <translation type="unfinished">Ştiinţific: 1e4</translation>
+        <translation>Ştiinţific: 1e4</translation>
     </message>
     <message>
         <source>Engineering: 10k</source>
-        <translation type="unfinished">Ingineresc: 10k</translation>
+        <translation>Ingineresc: 10k</translation>
     </message>
     <message>
         <source>Precision</source>
-        <translation type="unfinished">Precizie</translation>
+        <translation>Precizie</translation>
     </message>
 </context>
 <context>
@@ -14849,19 +14849,19 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Link &amp;X axes</source>
-        <translation type="unfinished"></translation>
+        <translation>Conectează axele &amp;X</translation>
     </message>
     <message>
         <source>Miscellaneous</source>
-        <translation type="unfinished"></translation>
+        <translation>Diverse</translation>
     </message>
     <message>
         <source>0 (all data points)</source>
-        <translation type="unfinished"></translation>
+        <translation>0 (afişază toate datele)</translation>
     </message>
     <message>
         <source>Tolerance (Douglas-Peucker algorithm)</source>
-        <translation type="unfinished"></translation>
+        <translation>Toleranţa pentru algoritmul Douglas-Peucker</translation>
     </message>
 </context>
 <context>
@@ -15202,7 +15202,7 @@ have the same number of rows.</source>
     <message>
         <source>bessel_j0(x):
   Regular cylindrical Bessel function of zeroth order, J_0(x).</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>bessel_j1(x):
