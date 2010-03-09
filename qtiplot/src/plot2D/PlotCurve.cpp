@@ -60,12 +60,30 @@ QwtDoubleRect PlotCurve::boundingRect() const
 	double percent = 0.01;
 
 	double dw = percent*fabs(r.right() - r.left());
-	r.setLeft(r.left() - dw);
+	double left = r.left() - dw;
+	if (left <= 0.0){
+		ScaleEngine *sc_engine = (ScaleEngine *)this->plot()->axisScaleEngine(xAxis());
+		if (sc_engine && (sc_engine->type() == ScaleTransformation::Log10 ||
+			sc_engine->type() == ScaleTransformation::Log2 ||
+			sc_engine->type() == ScaleTransformation::Ln))
+			left = r.left();
+	}
+
+	r.setLeft(left);
 	r.setRight(r.right() + dw);
 
 	double dh = percent*fabs(r.top() - r.bottom());
 	r.setBottom(r.bottom() + dh);
-	r.setTop(r.top() - dh);
+
+	double top = r.top() - dh;
+	if (top <= 0.0){
+		ScaleEngine *sc_engine = (ScaleEngine *)this->plot()->axisScaleEngine(yAxis());
+		if (sc_engine && (sc_engine->type() == ScaleTransformation::Log10 ||
+			sc_engine->type() == ScaleTransformation::Log2 ||
+			sc_engine->type() == ScaleTransformation::Ln))
+			top = r.top();
+	}
+	r.setTop(top);
 
 	return r;
 }

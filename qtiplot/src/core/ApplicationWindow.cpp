@@ -7472,12 +7472,12 @@ void ApplicationWindow::zoomRectanglePlot()
 
 void ApplicationWindow::plotDoubleYAxis()
 {
-    Table *t = (Table *)activeWindow(TableWindow);
+	Table *t = (Table *)activeWindow(TableWindow);
 	if (!t)
 		return;
 
-    QStringList lst = t->selectedYColumns();
-    int cols = lst.size();
+	QStringList lst = t->selectedYColumns();
+	int cols = lst.size();
 	if (cols < 2){
 		QMessageBox::critical(this, tr("QtiPlot - Error"),
 		tr("You need at least two columns for this operation!"));
@@ -7485,18 +7485,18 @@ void ApplicationWindow::plotDoubleYAxis()
 	}
 
 	Q3TableSelection sel = t->getSelection();
-    MultiLayer *ml = multilayerPlot(t, lst, Graph::LineSymbols, sel.topRow(), sel.bottomRow());
-    if (ml){
-        Graph *g = ml->activeLayer();
-        g->enableAxis(QwtPlot::yRight);
-        g->setAxisTitle(QwtPlot::yRight, tr("Y2 Axis Title"));
+	MultiLayer *ml = multilayerPlot(t, lst, Graph::LineSymbols, sel.topRow(), sel.bottomRow());
+	if (ml){
+		Graph *g = ml->activeLayer();
+		g->enableAxis(QwtPlot::yRight);
+		g->setAxisTitle(QwtPlot::yRight, tr("Y2 Axis Title"));
 
-        QwtPlotCurve *c = g->curve(cols - 1);
-        if (c){
-            c->setYAxis(QwtPlot::yRight);
-            g->setAutoScale();
-        }
-    }
+		QwtPlotCurve *c = g->curve(cols - 1);
+		if (c){
+			c->setYAxis(QwtPlot::yRight);
+			g->setAutoScale();
+		}
+	}
 }
 
 void ApplicationWindow::showMatrixDialog()

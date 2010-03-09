@@ -296,19 +296,19 @@ bool ScaleEngine::hasBreakDecoration() const
 
 void ScaleEngine::clone(const ScaleEngine *engine)
 {
-    d_type = engine->type();
+	d_type = engine->type();
 	d_break_left = engine->axisBreakLeft();
 	d_break_right = engine->axisBreakRight();
-    d_break_pos = engine->breakPosition();
+	d_break_pos = engine->breakPosition();
 	d_step_before = engine->stepBeforeBreak();
 	d_step_after = engine->stepAfterBreak();
 	d_minor_ticks_before = engine->minTicksBeforeBreak();
 	d_minor_ticks_after = engine->minTicksAfterBreak();
-    d_log10_scale_after = engine->log10ScaleAfterBreak();
-    d_break_width = engine->breakWidth();
+	d_log10_scale_after = engine->log10ScaleAfterBreak();
+	d_break_width = engine->breakWidth();
 	d_break_decoration = engine->hasBreakDecoration();
 	setAttributes(engine->attributes());
-    setMargins(engine->lowerMargin(), engine->upperMargin());
+	setMargins(engine->lowerMargin(), engine->upperMargin());
 }
 
 QwtScaleDiv ScaleEngine::divideScale(double x1, double x2, int maxMajSteps,
@@ -376,8 +376,16 @@ void ScaleEngine::autoScale (int maxNumSteps, double &x1, double &x2, double &st
 	if (!hasBreak() || testAttribute(QwtScaleEngine::Inverted)){
 		QwtScaleEngine *engine = newScaleEngine();
 		engine->setAttributes(attributes());
-    	engine->setReference(reference());
-    	engine->setMargins(lowerMargin(), upperMargin());
+		engine->setReference(reference());
+		engine->setMargins(lowerMargin(), upperMargin());
+
+		if (type() == ScaleTransformation::Log10 || type() == ScaleTransformation::Ln || ScaleTransformation::Log2){
+			if (x1 <= 0.0)
+				x1 = 1e-4;
+			if (x2 <= 0.0)
+				x2 = 1e-3;
+		}
+
 		engine->autoScale(maxNumSteps, x1, x2, stepSize);
 		delete engine;
 	} else {
