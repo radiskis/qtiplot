@@ -4317,6 +4317,11 @@ void ApplicationWindow::importASCII(const QStringList& files, int import_mode, c
 					if (!w) continue;
 					w->setWindowLabel(sorted_files[i]);
 					w->setCaptionPolicy(MdiSubWindow::Both);
+
+					QString name = QFileInfo(sorted_files[i]).baseName();
+					if (!alreadyUsedName(name) && !name.contains(QRegExp("\\W")))
+						setWindowName(w, name);
+
 					if (i == 0){
 						dx = w->verticalHeaderWidth();
 						dy = w->frameGeometry().height() - w->widget()->height();
@@ -4342,6 +4347,11 @@ void ApplicationWindow::importASCII(const QStringList& files, int import_mode, c
 								Matrix::Overwrite, local_separators, endLineChar);
 					w->setWindowLabel(sorted_files[i]);
 					w->setCaptionPolicy(MdiSubWindow::Both);
+
+					QString name = QFileInfo(sorted_files[i]).baseName();
+					if (!alreadyUsedName(name) && !name.contains(QRegExp("\\W")))
+						setWindowName(w, name);
+
 					if (i == 0){
 						dx = w->verticalHeaderWidth();
 						dy = w->frameGeometry().height() - w->widget()->height();
@@ -4402,6 +4412,11 @@ void ApplicationWindow::importASCII(const QStringList& files, int import_mode, c
 
                 w->setWindowLabel(files[0]);
 				w->setCaptionPolicy(MdiSubWindow::Both);
+
+				QString name = QFileInfo(files[0]).baseName();
+				if (!alreadyUsedName(name) && !name.contains(QRegExp("\\W")))
+					setWindowName(w, name);
+
                 modifiedProject();
 				break;
 			}
@@ -6627,7 +6642,6 @@ bool ApplicationWindow::setWindowName(MdiSubWindow *w, const QString &text)
 	else if (w->isA("Matrix"))
 		changeMatrixName(name, newName);
 
-	w->setCaptionPolicy(w->captionPolicy());
 	w->setName(newName);
 	renameListViewItem(name, newName);
 	updateCompleter(name, false, newName);
