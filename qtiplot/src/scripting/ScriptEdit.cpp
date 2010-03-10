@@ -178,7 +178,7 @@ void ScriptEdit::focusInEvent(QFocusEvent *e)
 
 void ScriptEdit::keyPressEvent(QKeyEvent *e)
 {
-    if (d_completer && d_completer->popup()->isVisible()) {
+	if (d_completer && d_completer->popup()->isVisible()){
          // The following keys are forwarded by the completer to the widget
         switch (e->key()) {
         case Qt::Key_Enter:
@@ -186,8 +186,8 @@ void ScriptEdit::keyPressEvent(QKeyEvent *e)
         case Qt::Key_Escape:
         case Qt::Key_Tab:
         case Qt::Key_Backtab:
-             e->ignore();
-             return; // let the completer do default behavior
+			e->ignore();
+			return; // let the completer do default behavior
         default:
             break;
         }
@@ -599,22 +599,21 @@ void ScriptEdit::setDirPath(const QString& path)
 
  void ScriptEdit::setCompleter(QCompleter *completer)
  {
-     if (d_completer)
-         QObject::disconnect(d_completer, 0, this, 0);
+	 if (d_completer)
+		QObject::disconnect(d_completer, 0, this, 0);
 
-     d_completer = completer;
+	 d_completer = completer;
 
-     if (!d_completer)
-         return;
+	 if (!d_completer)
+		 return;
 
-     d_completer->setWidget(this);
-     QObject::connect(d_completer, SIGNAL(activated(const QString&)),
-                      this, SLOT(insertCompletion(const QString&)));
- }
+	 d_completer->setWidget(this);
+	 QObject::connect(d_completer, SIGNAL(activated(const QString&)), this, SLOT(insertCompletion(const QString&)));
+}
 
  void ScriptEdit::insertCompletion(const QString& completion)
  {
-	if (d_completer->widget() != this)
+	if (!d_completer || d_completer->widget() != this)
 		return;
 
 	QTextCursor tc = textCursor();
@@ -865,5 +864,9 @@ ScriptEdit::~ScriptEdit()
 {
 	if (d_highlighter)
 		delete d_highlighter;
+	if (d_completer){
+		d_completer->popup()->close();
+		QObject::disconnect(d_completer, 0, this, 0);
+	}
 }
 
