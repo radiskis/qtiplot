@@ -29,8 +29,8 @@
 #ifndef VALUESDIALOG_H
 #define VALUESDIALOG_H
 
-#include "../scripting/ScriptingEnv.h"
-#include "../scripting/Script.h"
+#include <ScriptingEnv.h>
+#include <Script.h>
 #include <QDialog>
 
 class QComboBox;
