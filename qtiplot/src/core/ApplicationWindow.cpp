@@ -318,6 +318,7 @@ void ApplicationWindow::init(bool factorySettings)
 	d_workspace->setOption(QMdiArea::DontMaximizeSubWindowOnActivation);
 	d_workspace->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
 	d_workspace->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+	d_workspace->setActivationOrder(QMdiArea::ActivationHistoryOrder);
 	setCentralWidget(d_workspace);
 
 	setAcceptDrops(true);
@@ -3649,7 +3650,7 @@ void ApplicationWindow::windowActivated(QMdiSubWindow *w)
 
 	Folder *f = window->folder();
 	if (f)
-        f->setActiveWindow(window);
+		f->setActiveWindow(window);
 
 	emit modified();
 }
@@ -9231,18 +9232,10 @@ void ApplicationWindow::closeWindow(MdiSubWindow* window)
 
 	window->close();
 
-	QList<MdiSubWindow *> windows = f->windowsList();
-	if (!windows.isEmpty()){
-		MdiSubWindow *w = windows.first();
-		d_workspace->setActiveSubWindow(w);
-		d_active_window = w;
-		f->setActiveWindow(w);
-	}
-
-    if (show_windows_policy == ActiveFolder && !f->windowsList().count()){
-        customMenu(0);
-        customToolBars(0);
-    } else if (show_windows_policy == SubFolders && !(current_folder->children()).isEmpty()){
+	if (show_windows_policy == ActiveFolder && !f->windowsList().count()){
+		customMenu(0);
+		customToolBars(0);
+	} else if (show_windows_policy == SubFolders && !(current_folder->children()).isEmpty()){
 		FolderListItem *fi = current_folder->folderListItem();
 		FolderListItem *item = (FolderListItem *)fi->firstChild();
 		int initial_depth = item->depth();
@@ -9250,16 +9243,16 @@ void ApplicationWindow::closeWindow(MdiSubWindow* window)
 		while (item && item->depth() >= initial_depth){
 			QList<MdiSubWindow *> lst = item->folder()->windowsList();
 			if (lst.count() > 0){
-			    emptyFolder = false;
-                break;
+				emptyFolder = false;
+				break;
 			}
 			item = (FolderListItem *)item->itemBelow();
 		}
 		if (emptyFolder){
-            customMenu(0);
-            customToolBars(0);
+			customMenu(0);
+			customToolBars(0);
 		}
-    }
+	}
 	emit modified();
 }
 
