@@ -379,7 +379,7 @@ void ScaleEngine::autoScale (int maxNumSteps, double &x1, double &x2, double &st
 		engine->setReference(reference());
 		engine->setMargins(lowerMargin(), upperMargin());
 
-		if (type() == ScaleTransformation::Log10 || type() == ScaleTransformation::Ln || ScaleTransformation::Log2){
+		if (type() == ScaleTransformation::Log10 || type() == ScaleTransformation::Ln || type() == ScaleTransformation::Log2){
 			if (x1 <= 0.0)
 				x1 = 1e-4;
 			if (x2 <= 0.0)
