@@ -2,7 +2,8 @@
     File                 : SetColValuesDialog.cpp
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2006 by Ion Vasilief, Knut Franke
+	Copyright            : (C) 2004 - 2010 by Ion Vasilief,
+						   (C) 2006 - June 2007 by Knut Franke
     Email (use @ for *)  : ion_vasilief*yahoo.fr, knut.franke*gmx.de
     Description          : Set column values dialog
 
@@ -72,7 +73,7 @@ SetColValuesDialog::SetColValuesDialog( ScriptingEnv *env, QWidget* parent, Qt::
 
 	QGridLayout *gl1 = new QGridLayout();
 	functions = new QComboBox(false);
-	functions->addItems(scriptEnv->mathFunctions());
+	functions->addItems(muParserScripting::functionsList(true));
 	gl1->addWidget(functions, 0, 0);
 	btnAddFunction = new QPushButton(tr( "Add function" ));
 	gl1->addWidget(btnAddFunction, 0, 1);

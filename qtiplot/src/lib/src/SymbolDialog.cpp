@@ -2,7 +2,8 @@
     File                 : SymbolDialog.cpp
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2006 by Ion Vasilief, Tilman Hoener zu Siederdissen
+	Copyright            : (C) 2004 - 2010 by Ion Vasilief,
+						   (C) 2006 - June 2007 by Tilman Hoener zu Siederdissen
     Email (use @ for *)  : ion_vasilief*yahoo.fr, thzs*gmx.net
     Description          : Tool window to select special text characters
 
@@ -245,6 +246,7 @@ void SymbolDialog::initMathSymbols()
 		buttons->addButton(btn,counter+1);
 		gridLayout->addWidget(btn,counter/8,counter%8);
 	}
+
 	for ( i=0 ; i <= (0x2245-0x2245) ; i++,counter++ )
 	{
 		QPushButton *btn = new QPushButton(QString(QChar(i+0x2245)));
@@ -272,6 +274,7 @@ void SymbolDialog::initMathSymbols()
 		buttons->addButton(btn,counter+1);
 		gridLayout->addWidget(btn,counter/8,counter%8);
 	}
+
 	for ( i=0 ; i <= (0x2255-0x2254) ; i++,counter++ )
 	{
 		QPushButton *btn = new QPushButton(QString(QChar(i+0x2254)));
@@ -281,6 +284,7 @@ void SymbolDialog::initMathSymbols()
 		buttons->addButton(btn,counter+1);
 		gridLayout->addWidget(btn,counter/8,counter%8);
 	}
+
 	for ( i=0 ; i <= (0x2267-0x225F) ; i++,counter++ )
 	{
 		QPushButton *btn = new QPushButton(QString(QChar(i+0x225F)));
@@ -290,6 +294,17 @@ void SymbolDialog::initMathSymbols()
 		buttons->addButton(btn,counter+1);
 		gridLayout->addWidget(btn,counter/8,counter%8);
 	}
+
+	// < SIGN
+	for ( i=0; i < 1 ; i++,counter++ ){
+		QPushButton *btn = new QPushButton(QString("<"));
+		btn->setMaximumWidth(40);
+		btn->setFlat ( true );
+		btn->setAutoDefault (false);
+		buttons->addButton(btn,counter+1);
+		gridLayout->addWidget(btn,counter/8,counter%8);
+	}
+
 	for ( i=0 ; i <= (0x226B-0x226A) ; i++,counter++ )
 	{
 		QPushButton *btn = new QPushButton(QString(QChar(i+0x226A)));
@@ -299,6 +314,7 @@ void SymbolDialog::initMathSymbols()
 		buttons->addButton(btn,counter+1);
 		gridLayout->addWidget(btn,counter/8,counter%8);
 	}
+
 	for ( i=0 ; i <= (0x2289-0x2282) ; i++,counter++ )
 	{
 		QPushButton *btn = new QPushButton(QString(QChar(i+0x2282)));
@@ -660,7 +676,7 @@ void SymbolDialog::getChar(int btnIndex)
 {
 	QPushButton * btn = (QPushButton *)buttons->button( btnIndex );
 	if(btn)
-		emit addLetter(btn->text());
+		emit addLetter(btn->text().replace("<", "&lt;"));
 }
 
 
