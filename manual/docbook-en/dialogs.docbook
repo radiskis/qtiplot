@@ -191,14 +191,26 @@ which opens a dialog allowing to edit the plot range.</para>
   This dialog is activated by selecting the command &arrange-layers-cmd; from the <link linkend="sec-graph-menu">Graph Menu</link>
   or by the key code &arrange-layers-key;.
 
-  <para>It allows to modify the geometrical arrangement of the plots which are already present
-  in the active window. You can add new layers or remove existing ones using the <emphasis>Number</emphasis> of layers control.
-  You can specify the numbers of rows and columns which will define a grid of plots.
-With the default settings, &appname; computes the size of the layers from the size of the window. If you check the <emphasis>Layer Canvas Size</emphasis>,
-  you can set the size of the layers and &appname; will modify the size of the window.</para>
-  <para>The controls in the two right group boxes, <emphasis>Alignment</emphasis> and <emphasis>Spacing</emphasis>, allow to set the alignment
-  of the layers in the window, and the margins between the layer borders and the window limits.
-Finally you have the possibility to swap two layers using the <emphasis>Swap Layers</emphasis> box.</para>
+<para>It allows to modify the geometrical arrangement of the plots which are already present
+in the active window. You can add new layers or remove existing ones using the <emphasis>Number</emphasis> of layers control.
+By checking the <emphasis>Link X axes</emphasis> option, the layers will be interconnected,
+meaning that if you manually set the abscissae scale limits for one plot layer, the same limits will be automatically set
+for all other layers in the plot window.</para>
+
+<para>You can specify the numbers of rows and columns which will define a grid of plots.
+With the default settings, &appname; computes the size of the layers from the size of the window.
+If you check the <emphasis>Layer Canvas Size</emphasis>,
+you can set the size of drawing area of the layers and &appname; will modify the size of the window.
+By checking the <emphasis>Fixed size</emphasis> box, the size of the layers will be kept unchanged when you manually
+resize the plot window.</para>
+
+<para>The controls in the two right group boxes, <emphasis>Alignment</emphasis> and <emphasis>Spacing</emphasis>,
+allow to set the alignment of the layers in the window, and the margins between the layer borders and the window limits.
+By choosing, the option <emphasis>Canvases</emphasis> for the <emphasis>Spacing | Align</emphasis> field,
+the spacing defines the distance between the axes of the layers, whereas with the <emphasis>Layers</emphasis>
+ option it defines the distance between the borders of the layers.</para>
+
+<para>Finally you have the possibility to swap two layers using the <emphasis>Swap Layers</emphasis> box.</para>
   <figure id="fig-define-layer-1">
     <title>The &arrange-layers-cmd; dialog: the geometry tab</title>
     <mediaobject>

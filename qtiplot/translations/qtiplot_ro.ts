@@ -12597,7 +12597,11 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Common a&amp;xes</source>
-        <translation>A&amp;xe comune</translation>
+        <translation type="obsolete">A&amp;xe comune</translation>
+    </message>
+    <message>
+        <source>Co&amp;mmon axes</source>
+        <translation>Axe co&amp;mune</translation>
     </message>
 </context>
 <context>

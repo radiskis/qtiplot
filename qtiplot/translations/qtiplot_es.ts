@@ -14489,7 +14489,7 @@ Los límites deben estar dentro del rango de x; si no conoce el máximo (mínimo
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Common a&amp;xes</source>
+        <source>Co&amp;mmon axes</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

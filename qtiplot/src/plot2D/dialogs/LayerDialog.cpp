@@ -155,7 +155,7 @@ multi_layer(NULL)
 	boxRowsGap->setSuffix(tr(" pixels"));
 	gl4->addWidget(boxRowsGap, 2, 1);
 
-	commonAxesBox = new QCheckBox(tr("Common a&xes"));
+	commonAxesBox = new QCheckBox(tr("Co&mmon axes"));
 	commonAxesBox->hide();
 	gl4->addWidget(commonAxesBox, 3, 1);
 

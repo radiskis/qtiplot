@@ -12070,7 +12070,11 @@ Les limites doivent être dans la gamme de x ; Si vous ne connaissez pas la vale
     </message>
     <message>
         <source>Common a&amp;xes</source>
-        <translation>A&amp;xes communs</translation>
+        <translation type="obsolete">A&amp;xes communs</translation>
+    </message>
+    <message>
+        <source>Co&amp;mmon axes</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

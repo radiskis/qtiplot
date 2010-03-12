@@ -17233,7 +17233,7 @@ Die Grenzen müssen innerhalb des X-Bereichs sein. Fall diese Werte nicht bekann
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Common a&amp;xes</source>
+        <source>Co&amp;mmon axes</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
