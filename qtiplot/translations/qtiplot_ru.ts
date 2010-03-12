@@ -9053,7 +9053,7 @@ have the same number of rows.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Common a&amp;xes</source>
+        <source>Co&amp;mmon axes</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

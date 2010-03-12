@@ -14955,7 +14955,7 @@ Gränserna måste vara inom definitionsområdet för x; om du inte vet maximum- 
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Common a&amp;xes</source>
+        <source>Co&amp;mmon axes</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
