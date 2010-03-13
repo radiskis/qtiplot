@@ -2410,7 +2410,7 @@ void Table::importASCII(const QString &fname, const QString &sep, int ignoredLin
 	if (importComments)
 		rows--;
 
-	QStringList oldHeader;
+	QStringList oldHeader = col_label;
 	int startRow = 0, startCol = 0;
 	int c = d_table->numCols();
 	int r = d_table->numRows();
@@ -2419,7 +2419,6 @@ void Table::importASCII(const QString &fname, const QString &sep, int ignoredLin
 			if (d_table->numRows() != rows)
 				d_table->setNumRows(rows);
 
-			oldHeader = col_label;
 			if (c != cols){
 				if (c < cols)
 					addColumns(cols - c);
@@ -2564,10 +2563,11 @@ void Table::importASCII(const QString &fname, const QString &sep, int ignoredLin
 	if (importAs == Overwrite || importAs == NewRows){
 		if (cols > c)
 			cols = c;
-		for (int i=0; i<cols; i++){
+
+		for (int i = 0; i < cols; i++){
 			emit modifiedData(this, colName(i));
 			if (colLabel(i) != oldHeader[i])
-				emit changedColHeader(QString(objectName()) + "_" + oldHeader[i], QString(objectName())+"_"+colLabel(i));
+				emit changedColHeader(QString(objectName()) + "_" + oldHeader[i], QString(objectName()) + "_" + colLabel(i));
 		}
 	}
 }
