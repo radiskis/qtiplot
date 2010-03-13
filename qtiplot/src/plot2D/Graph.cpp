@@ -260,18 +260,19 @@ void Graph::activateGraph()
 
 void Graph::deselectMarker()
 {
-	if (d_selected_arrow && d_lines.contains(d_selected_arrow)){
-		ArrowMarker *a = d_selected_arrow;
-		a->setEditable(false);
-	}
+	if (d_selected_arrow && d_lines.contains(d_selected_arrow))
+		d_selected_arrow->setEditable(false);
 
-    deselect(d_active_enrichment);
+	deselect(d_active_enrichment);
 	d_active_enrichment = NULL;
 	d_selected_arrow = NULL;
-	if (d_markers_selector)
-        delete d_markers_selector;
 
-    emit enableTextEditor(NULL);
+	if (d_markers_selector){
+		delete d_markers_selector;
+		d_markers_selector = NULL;
+	}
+
+	emit enableTextEditor(NULL);
 
 	cp->disableEditing();
 	setFocus();
@@ -302,6 +303,11 @@ QList <LegendWidget *> Graph::textsList()
 	return texts;
 }
 
+void Graph::selectorDeleted()
+{
+	d_markers_selector = NULL;
+}
+
 void Graph::select(QWidget *l, bool add)
 {
     if (!l){
@@ -327,7 +333,8 @@ void Graph::select(QWidget *l, bool add)
             d_markers_selector->add(l);
         else {
             d_markers_selector = new SelectionMoveResizer(l);
-            connect(d_markers_selector, SIGNAL(targetsChanged()), this, SIGNAL(modifiedGraph()));
+			connect(d_markers_selector, SIGNAL(targetsChanged()), this, SIGNAL(modifiedGraph()));
+			connect(d_markers_selector, SIGNAL(destroyed(QObject*)), this, SLOT(selectorDeleted()));
         }
     } else {
         if (d_markers_selector)
@@ -335,6 +342,7 @@ void Graph::select(QWidget *l, bool add)
 
         d_markers_selector = new SelectionMoveResizer(l);
         connect(d_markers_selector, SIGNAL(targetsChanged()), this, SIGNAL(modifiedGraph()));
+		connect(d_markers_selector, SIGNAL(destroyed(QObject*)), this, SLOT(selectorDeleted()));
     }
 }
 
@@ -347,11 +355,11 @@ bool Graph::hasSeletedItems()
 
 void Graph::deselect(QWidget *l)
 {
-    if(!l)
-        return;
+	if(!l)
+		return;
 
-    if (d_markers_selector && d_markers_selector->contains(l))
-        d_markers_selector->removeAll(l);
+	if (d_markers_selector && d_markers_selector->contains(l))
+		d_markers_selector->removeAll(l);
 }
 
 void Graph::setSelectedArrow(ArrowMarker *mrk, bool add)
@@ -1714,7 +1722,7 @@ bool Graph::imageMarkerSelected()
 void Graph::deselect()
 {
 	deselectMarker();
-    scalePicker->deselect();
+	scalePicker->deselect();
 	titlePicker->setSelected(false);
 	deselectCurves();
 }
@@ -6110,8 +6118,7 @@ void Graph::print(QPainter *painter, const QRect &plotRect,
 {
     int axisId;
 
-    if ( painter == 0 || !painter->isActive() ||
-            !plotRect.isValid() || size().isNull() )
+	if (painter == 0 || !painter->isActive() || !plotRect.isValid() || size().isNull())
        return;
 
 	deselect();

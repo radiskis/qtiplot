@@ -84,8 +84,8 @@ SelectionMoveResizer::~SelectionMoveResizer()
 		}
 	}
 
-    if (parentWidget())
-        parentWidget()->removeEventFilter(this);
+	if (parentWidget())
+		parentWidget()->removeEventFilter(this);
 }
 
 void SelectionMoveResizer::add(ArrowMarker *target)
