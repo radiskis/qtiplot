@@ -759,6 +759,9 @@ signals:
         void axisDivChanged(Graph *, int);
 		void updatedLayout(Graph *);
 
+	private slots:
+		void selectorDeleted();
+
 	private:
 		QList<FrameWidget*> stackingOrderEnrichmentsList();
 		//! Finds bounding interval of the plot data.

@@ -802,6 +802,18 @@ void MultiLayer::setRows(int r)
 		d_rows = r;
 }
 
+QList<Graph*> MultiLayer::stackOrderedLayersList()
+{
+	QList<Graph*> gLst;
+	QObjectList lst = d_canvas->children();//! this list is sorted according to the stack order
+	foreach (QObject *o, lst){
+		Graph *g = qobject_cast<Graph *>(o);
+		if (g)
+			gLst << g;
+	}
+	return gLst;
+}
+
 QPixmap MultiLayer::canvasPixmap(const QSize& size, double scaleFontsFactor, bool transparent)
 {
 	if (!size.isValid()){
@@ -811,12 +823,11 @@ QPixmap MultiLayer::canvasPixmap(const QSize& size, double scaleFontsFactor, boo
 		else
 			pic.fill();
 		QPainter p(&pic);
-		QObjectList lst = d_canvas->children();//! this list is sorted according to the stack order
-		foreach (QObject *o, lst){
-			Graph *g = qobject_cast<Graph *>(o);
-			if (g)
-				g->print(&p, g->geometry());
-		}
+
+		QList<Graph*> lst = stackOrderedLayersList();
+		foreach (Graph *g, lst)
+			g->print(&p, g->geometry());
+
 		p.end();
 		return pic;
 	}
@@ -833,12 +844,9 @@ QPixmap MultiLayer::canvasPixmap(const QSize& size, double scaleFontsFactor, boo
 	else
 		pic.fill();
 	QPainter p(&pic);
-	QObjectList lst = d_canvas->children();
-	foreach (QObject *o, lst){
-		Graph *g = qobject_cast<Graph *>(o);
-		if (!g)
-			continue;
 
+	QList<Graph*> lst = stackOrderedLayersList();
+	foreach (Graph *g, lst){
 		QPoint pos = g->pos();
 		pos = QPoint(int(pos.x()*scaleFactorX), int(pos.y()*scaleFactorY));
 
@@ -1002,11 +1010,8 @@ void MultiLayer::exportVector(const QString& fileName, int res, bool color,
 			printer.setResolution(res);
 		printer.setPaperSize (QSizeF(size), QPrinter::DevicePixel);
 		QPainter paint(&printer);
-		QObjectList lst = d_canvas->children();
-		foreach (QObject *o, lst){
-			Graph *g = qobject_cast<Graph *>(o);
-			if (!g)
-				continue;
+		QList<Graph*> lst = stackOrderedLayersList();
+		foreach (Graph *g, lst){
 			QRect r = g->geometry();
 			double wfactor = (double)size.width()/(double)d_canvas->width();
 			double hfactor = (double)size.height()/(double)d_canvas->height();
@@ -1026,11 +1031,8 @@ void MultiLayer::exportVector(const QString& fileName, int res, bool color,
 		printer.setResolution(res);
 		printer.setPaperSize (QSizeF(d_canvas->width()*wfactor*1.05, d_canvas->height()*hfactor), QPrinter::DevicePixel);
 		QPainter paint(&printer);
-		QObjectList lst = d_canvas->children();
-		foreach (QObject *o, lst){
-			Graph *g = qobject_cast<Graph *>(o);
-			if (!g)
-				continue;
+		QList<Graph*> lst = stackOrderedLayersList();
+		foreach (Graph *g, lst){
 			QRect r = g->geometry();
 			r.setSize(QSize(int(r.width()*wfactor), int(r.height()*hfactor)));
 			r.moveTo(int(r.x()*wfactor), int(r.y()*hfactor));
@@ -1039,12 +1041,9 @@ void MultiLayer::exportVector(const QString& fileName, int res, bool color,
 	} else {
     	printer.setPaperSize(QSizeF(d_canvas->width(), d_canvas->height()), QPrinter::DevicePixel);
 		QPainter paint(&printer);
-    	QObjectList lst = d_canvas->children();
-		foreach (QObject *o, lst){
-			Graph *g = qobject_cast<Graph *>(o);
-			if (g)
-				g->print(&paint, g->geometry());
-		}
+		QList<Graph*> lst = stackOrderedLayersList();
+		foreach (Graph *g, lst)
+			g->print(&paint, g->geometry());
 	}
 }
 
@@ -1056,11 +1055,8 @@ void MultiLayer::draw(QPaintDevice *device, const QSizeF& customSize, int unit, 
 
 	if (customSize.isValid()){
 		QSize size = Graph::customPrintSize(customSize, unit, res);
-		QObjectList lst = d_canvas->children();
-		foreach (QObject *o, lst){
-			Graph *g = qobject_cast<Graph *>(o);
-			if (!g)
-				continue;
+		QList<Graph*> lst = stackOrderedLayersList();
+		foreach (Graph *g, lst){
 			QRect r = g->geometry();
 			double wfactor = (double)size.width()/(double)d_canvas->width();
 			double hfactor = (double)size.height()/(double)d_canvas->height();
@@ -1075,12 +1071,9 @@ void MultiLayer::draw(QPaintDevice *device, const QSizeF& customSize, int unit, 
         	g->scaleFonts(1.0/fontsFactor);
 		}
 	} else {
-    	QObjectList lst = d_canvas->children();
-		foreach (QObject *o, lst){
-			Graph *g = qobject_cast<Graph *>(o);
-			if (g)
-				g->print(&paint, g->geometry());
-		}
+		QList<Graph*> lst = stackOrderedLayersList();
+		foreach (Graph *g, lst)
+			g->print(&paint, g->geometry());
 	}
 	paint.end();
 	QApplication::restoreOverrideCursor();
@@ -1627,11 +1620,8 @@ void MultiLayer::copy(MultiLayer* ml)
 	d_scale_on_print = ml->scaleLayersOnPrint();
 	d_print_cropmarks = ml->printCropmarksEnabled();
 
-	QObjectList lst = ml->canvas()->children();
-	foreach (QObject *o, lst){
-		Graph *g = qobject_cast<Graph *>(o);
-		if (!g)
-			continue;
+	QList<Graph*> lst = ml->stackOrderedLayersList();
+	foreach (Graph *g, lst){
 		Graph* g2 = addLayer(g->pos().x(), g->pos().y(), g->width(), g->height());
 		g2->setAutoscaleFonts(false);
 		g2->copy(g);
@@ -1909,11 +1899,22 @@ void MultiLayer::reverseWaterfallOrder()
 
 	QList<QwtPlotItem *> lst;
 	foreach(Graph *g, graphsList){
+		QList <LegendWidget *> texts = g->textsList();
+		QList<bool> autoUpdateLegends;
+		foreach (LegendWidget *l, texts){
+			autoUpdateLegends << l->isAutoUpdateEnabled();
+			l->setAutoUpdate(false);
+		}
+
 		QwtPlotItem *c = g->curve(0);
 		if (c){
 			lst << c;
 			g->removeCurve(c);
 		}
+
+		texts = g->textsList();
+		foreach (LegendWidget *l, texts)
+			l->setAutoUpdate(autoUpdateLegends[texts.indexOf(l)]);
 	}
 
 	if (lst.isEmpty())
@@ -1985,11 +1986,8 @@ void MultiLayer::setWaterfallSideLines(bool on)
 
 	d_side_lines = on;
 
-	QObjectList lst = d_canvas->children();
-	foreach (QObject *o, lst){
-		Graph *g = qobject_cast<Graph *>(o);
-		if (!g)
-			continue;
+	QList<Graph*> lst = stackOrderedLayersList();
+	foreach (Graph *g, lst){
 		PlotCurve *cv = (PlotCurve *)g->curve(0);
 		if (cv){
 			cv->enableSideLines(on);
@@ -2006,11 +2004,8 @@ void MultiLayer::setWaterfallFillColor(const QColor& c)
 
 	d_waterfall_fill_color = c;
 
-	QObjectList lst = d_canvas->children();
-	foreach (QObject *o, lst){
-		Graph *g = qobject_cast<Graph *>(o);
-		if (!g)
-			continue;
+	QList<Graph*> lst = stackOrderedLayersList();
+	foreach (Graph *g, lst){
 		QwtPlotCurve *cv = (QwtPlotCurve *)g->curve(0);
 		if (cv){
 			cv->setBrush(QBrush(c));
@@ -2022,11 +2017,8 @@ void MultiLayer::setWaterfallFillColor(const QColor& c)
 
 void MultiLayer::updateWaterfallFill(bool on)
 {
-	QObjectList lst = d_canvas->children();
-	foreach (QObject *o, lst){
-		Graph *g = qobject_cast<Graph *>(o);
-		if (!g)
-			continue;
+	QList<Graph*> lst = stackOrderedLayersList();
+	foreach (Graph *g, lst){
 		PlotCurve *cv = (PlotCurve *)g->curve(0);
 		if (cv){
 			if (on)

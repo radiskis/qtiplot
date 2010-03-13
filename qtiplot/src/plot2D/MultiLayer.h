@@ -70,6 +70,7 @@ public:
 	~MultiLayer();
 
 	QList<Graph *> layersList(){return graphsList;};
+	QList<Graph*> stackOrderedLayersList();
 	Graph *layer(int num);
 	int layerIndex(Graph *g){return graphsList.indexOf(g);};
 
