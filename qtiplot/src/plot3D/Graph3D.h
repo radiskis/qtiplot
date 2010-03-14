@@ -68,6 +68,8 @@ public:
 
 	enum PlotType{NoTable = -1, Scatter = 0, Trajectory = 1, Bars = 2, Ribbon =  3};
 	enum PointStyle{None = 0, Dots = 1, VerticalBars = 2, HairCross = 3, Cones = 4};
+	enum AxisNumericFormat{Default = 0, Decimal = 1, Scientific = 2, Engineering = 3};
+
 	static Graph3D* restore(ApplicationWindow* app, const QStringList &lst, int fileVersion);
 
 	Qwt3D::Plot3D* surface(){return sp;};

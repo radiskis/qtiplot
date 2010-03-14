@@ -679,6 +679,7 @@ setColDayFormat
 Default
 Decimal
 Scientific
+Engineering
 skipSymbolsCount
 setSkipSymbolsCount
 changeCurveIndex
@@ -697,3 +698,9 @@ setGeometry
 setCanvasSize
 setCanvasGeometry
 range
+axisNumericFormat
+axisNumericPrecision
+setAxisNumericFormat
+setXAxisNumericFormat
+setYAxisNumericFormat
+setZAxisNumericFormat
