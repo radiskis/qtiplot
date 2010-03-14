@@ -1759,6 +1759,7 @@ class Graph3D: MdiSubWindow
 %End
 public:
 	enum PlotType{Scatter = 0, Trajectory = 1, Bars = 2, Ribbon = 3};
+	enum AxisNumericFormat{Default = 0, Decimal = 1, Scientific = 2, Engineering = 3};
 
     void exportToFile(const QString& fileName) /PyName=export/;
     void exportVector(const QString& fileName, int = 0, int = 1,
@@ -1841,6 +1842,24 @@ public:
 	void setZAxisTickLength(double majorLength, double minorLength);
 
     void setScales(double xl, double xr, double yl, double yr, double zl, double zr);
+
+	int axisNumericFormat(int axis);
+	int axisNumericPrecision(int axis);
+	void setAxisNumericFormat(int axis, int format, int precision);
+	void setXAxisNumericFormat(int format, int precision);
+%MethodCode
+	sipCpp->setAxisNumericFormat(0, a0, a1);
+%End
+
+ void setYAxisNumericFormat(int format, int precision);
+%MethodCode
+	sipCpp->setAxisNumericFormat(1, a0, a1);
+%End
+
+ void setZAxisNumericFormat(int format, int precision);
+%MethodCode
+	sipCpp->setAxisNumericFormat(2, a0, a1);
+%End
 
 private:
   Graph3D(const Graph3D&);

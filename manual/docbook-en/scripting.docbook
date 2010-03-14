@@ -3287,6 +3287,47 @@ g.setZAxisLabel("Z axis legend")
 g.setLabelsDistance(30)
 </programlisting>
 
+It is possible to set the numerical format and precision of the axes using the function bellow:
+<programlisting>
+g.setAxisNumericFormat(axis, format, precision)
+</programlisting>
+where the first parameter is the index of the axis: 0 for X, 1 for Y and 2 for Z, the second one is the numerical format:
+<variablelist spacing="compact">
+<varlistentry>
+  <term>0.</term>
+  <listitem>
+	<para>Graph3D.Default: decimal or scientific, depending which is most compact</para>
+  </listitem>
+</varlistentry>
+<varlistentry>
+  <term>1.</term>
+  <listitem>
+	<para>Graph3D.Decimal: 10000.0</para>
+  </listitem>
+</varlistentry>
+<varlistentry>
+  <term>2.</term>
+  <listitem>
+	<para>Graph3D.Scientific: 1e4</para>
+  </listitem>
+</varlistentry>
+<varlistentry>
+  <term>3.</term>
+  <listitem>
+	<para>Graph3D.Engineering: 10k</para>
+  </listitem>
+</varlistentry>
+</variablelist>
+
+and the last parameter is the precision (the number of significant digits).
+
+The following convenience functions are also provided, where you don't have to specify the index of the axis anymore:
+<programlisting>
+g.setXAxisNumericFormat(1, 3)
+g.setYAxisNumericFormat(1, 3)
+g.setZAxisNumericFormat(1, 3)
+</programlisting>
+
 Also, you can fix the length of the major and minor ticks of an axis:
 <programlisting>
 g.setXAxisTickLength(2.5, 1.5)

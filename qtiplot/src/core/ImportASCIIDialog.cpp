@@ -2,7 +2,8 @@
     File                 : ImportASCIIDialog.cpp
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2006,2007 by Ion Vasilief, Knut Franke
+	Copyright            : (C) 2004 - 2010 by Ion Vasilief,
+						   (C) 2006 - June 2007 by Knut Franke
     Email (use @ for *)  : ion_vasilief*yahoo.fr, knut.franke*gmx.de
     Description          : Import ASCII file(s) dialog
 
@@ -492,6 +493,11 @@ void ImportASCIIDialog::changePreviewFile(const QString& path)
 {
 	if (path.isEmpty())
 		return;
+
+	if (d_current_path.isEmpty()){//avoid importing the first file which is by default selected in the file dialog
+		d_current_path = path;
+		return;
+	}
 
 	QFileInfo fi(path);
 	if (!fi.exists() || fi.isDir() || !fi.isFile())

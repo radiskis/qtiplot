@@ -4256,7 +4256,7 @@ Table * ApplicationWindow::importWaveFile()
 void ApplicationWindow::importASCII()
 {
 	ImportASCIIDialog *import_dialog = new ImportASCIIDialog(!activeWindow(TableWindow) && !activeWindow(MatrixWindow), this, d_extended_import_ASCII_dialog);
-	import_dialog->setDir(asciiDirPath);
+	import_dialog->setDirectory(asciiDirPath);
 	import_dialog->selectFilter(d_ASCII_file_filter);
 	if (d_import_ASCII_dialog_size.isValid())
 		import_dialog->resize(d_import_ASCII_dialog_size);
