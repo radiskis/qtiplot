@@ -88,6 +88,8 @@ class ScriptEdit: public QTextEdit, public scripted
 	bool find(const QString& searchString, QTextDocument::FindFlags flags, bool previous = false);
 	void findNext();
 	void findPrevious();
+	void commentSelection();
+	void uncommentSelection();
 
   signals:
 	void dirPathChanged(const QString& path);

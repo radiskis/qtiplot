@@ -770,8 +770,12 @@ void ApplicationWindow::initToolBars()
 	noteTools = new QToolBar(tr("Notes"), this);
 	noteTools->setObjectName("noteTools"); // this is needed for QMainWindow::restoreState()
 	noteTools->setIconSize( QSize(18,20) );
+#ifdef SCRIPTING_PYTHON
 	noteTools->addAction(actionNoteExecuteAll);
 	noteTools->addAction(actionNoteExecute);
+	noteTools->addAction(actionCommentSelection);
+	noteTools->addAction(actionUncommentSelection);
+#endif
 	noteTools->addAction(actionDecreaseIndent);
 	noteTools->addAction(actionIncreaseIndent);
 	noteTools->addAction(actionFind);
@@ -3040,6 +3044,20 @@ Note* ApplicationWindow::newNote(const QString& caption)
 	m->showNormal();
 	return m;
 }
+
+void ApplicationWindow::connectScriptEditor(ScriptEdit *editor)
+{
+	if (!editor)
+		return;
+
+	QTextDocument *doc = editor->document();
+	actionUndo->setEnabled(doc->isUndoAvailable());
+	actionRedo->setEnabled(doc->isRedoAvailable());
+
+	connect(doc, SIGNAL(undoAvailable(bool)), actionUndo, SLOT(setEnabled(bool)));
+	connect(doc, SIGNAL(redoAvailable(bool)), actionRedo, SLOT(setEnabled(bool)));
+}
+
 /*
  * return the current Matrix (used for the Python interface)
  */
@@ -4918,6 +4936,12 @@ bool ApplicationWindow::setScriptingLanguage(const QString &lang, bool force)
 	if (scriptWindow)
 		foreach(QObject *i, scriptWindow->findChildren<QObject*>())
 			QApplication::postEvent(i, new ScriptingChangeEvent(newEnv));
+
+#ifdef SCRIPTING_PYTHON
+	bool python = (lang == QString("Python"));
+	actionCommentSelection->setEnabled(python);
+	actionUncommentSelection->setEnabled(python);
+#endif
 
 	return true;
 }
@@ -9302,6 +9326,15 @@ void ApplicationWindow::scriptingMenuAboutToShow()
 				scriptingMenu->addAction(actionNoteExecuteAll);
 			}
 			scriptingMenu->addAction(actionNoteEvaluate);
+
+			#ifdef SCRIPTING_PYTHON
+			if (scriptEnv->name() == QString("Python") && note->currentEditor() && note->currentEditor()->textCursor().hasSelection()){
+				scriptingMenu->insertSeparator();
+				scriptingMenu->addAction(actionCommentSelection);
+				scriptingMenu->addAction(actionUncommentSelection);
+			}
+			#endif
+
 			scriptingMenu->insertSeparator();
 			scriptingMenu->addAction(actionIncreaseIndent);
 			scriptingMenu->addAction(actionDecreaseIndent);
@@ -13768,6 +13801,14 @@ void ApplicationWindow::createActions()
 #ifdef SCRIPTING_PYTHON
 	actionScriptingLang = new QAction(tr("Scripting &language"), this);
 	connect(actionScriptingLang, SIGNAL(activated()), this, SLOT(showScriptingLangDialog()));
+
+	actionCommentSelection = new QAction(QIcon(":/comment.png"), tr("Commen&t Selection"), this);
+	actionCommentSelection->setEnabled(false);
+	connect(actionCommentSelection, SIGNAL(activated()), this, SLOT(commentSelection()));
+
+	actionUncommentSelection = new QAction(QIcon(":/uncomment.png"), tr("&Uncomment Selection"), this);
+	actionUncommentSelection->setEnabled(false);
+	connect(actionUncommentSelection, SIGNAL(activated()), this, SLOT(uncommentSelection()));
 #endif
 
 	actionRestartScripting = new QAction(tr("&Restart scripting"), this);
@@ -14421,6 +14462,13 @@ void ApplicationWindow::translateActionsStrings()
 
 #ifdef SCRIPTING_PYTHON
 	actionScriptingLang->setMenuText(tr("Scripting &language"));
+	actionCommentSelection->setMenuText(tr("Commen&t Selection"));
+	actionCommentSelection->setToolTip(tr("Comment Selection"));
+	actionCommentSelection->setShortcut(tr("Ctrl+Shift+O"));
+
+	actionUncommentSelection->setMenuText(tr("&Uncomment Selection"));
+	actionUncommentSelection->setToolTip(tr("Uncomment Selection"));
+	actionUncommentSelection->setShortcut(tr("Ctrl+Shift+U"));
 #endif
 	actionRestartScripting->setMenuText(tr("&Restart scripting"));
 
@@ -18033,6 +18081,24 @@ void ApplicationWindow::decreasePrecision()
 	m->undoStack()->push(new MatrixSetPrecisionCommand(m, format, format,
 					oldPrec, prec, tr("Set Precision %1 digits").arg(prec)));
 	m->setNumericPrecision(prec);
+}
+
+void ApplicationWindow::commentSelection()
+{
+	Note *note = (Note *)activeWindow(NoteWindow);
+	if (!note || !note->currentEditor())
+		return;
+
+	note->currentEditor()->commentSelection();
+}
+
+void ApplicationWindow::uncommentSelection()
+{
+	Note *note = (Note *)activeWindow(NoteWindow);
+	if (!note || !note->currentEditor())
+		return;
+
+	note->currentEditor()->uncommentSelection();
 }
 
 void ApplicationWindow::execute()

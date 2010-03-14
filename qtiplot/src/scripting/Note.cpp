@@ -143,6 +143,8 @@ void Note::addTab()
 	editor->setCompleter(app->completer());
 	editor->setDirPath(app->scriptsDirPath);
 
+	app->connectScriptEditor(editor);
+
 	d_tab_widget->setFocusProxy(editor);
 
 	LineNumberDisplay *ln = new LineNumberDisplay(editor, this);

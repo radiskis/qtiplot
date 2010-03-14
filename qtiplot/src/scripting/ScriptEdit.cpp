@@ -359,6 +359,27 @@ void ScriptEdit::insertFunction(const QString &fname)
 	}
 }
 
+void ScriptEdit::commentSelection()
+{
+	QTextCursor cursor = textCursor();
+	QString markedText = cursor.selectedText();
+	if (markedText.isEmpty())
+		return;
+
+	markedText.replace(QChar::ParagraphSeparator, "\n#");
+	cursor.insertText("#" + markedText);
+}
+
+void ScriptEdit::uncommentSelection()
+{
+	QTextCursor cursor = textCursor();
+	QString markedText = cursor.selectedText();
+	if (markedText.isEmpty())
+		return;
+
+	cursor.insertText(markedText.remove("#"));
+}
+
 void ScriptEdit::insertFunction(QAction *action)
 {
 	insertFunction(scriptEnv->mathFunctions()[action->data().toInt()]);

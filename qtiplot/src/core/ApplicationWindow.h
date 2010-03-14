@@ -96,6 +96,7 @@ class LegendWidget;
 class ArrowMarker;
 class TextEditor;
 class AssociationsDialog;
+class ScriptEdit;
 
 /**
  * \brief QtiPlot's main window.
@@ -229,6 +230,8 @@ public:
 
 	QStringList indexedColorNames(){return d_indexed_color_names;};
 	void setIndexedColorNames(const QStringList& lst){d_indexed_color_names = lst;};
+
+	void connectScriptEditor(ScriptEdit *);
 
 public slots:
 	//! \name Projects and Project Files
@@ -917,6 +920,8 @@ public slots:
 	void execute();
 	void executeAll();
 	void evaluate();
+	void commentSelection();
+	void uncommentSelection();
 	//@}
 
 	//! \name Folders
@@ -1389,7 +1394,7 @@ private:
     QAction *actionShowConsole;
 #endif
 #ifdef SCRIPTING_PYTHON
-    QAction *actionOpenQtDesignerUi;
+	QAction *actionOpenQtDesignerUi, *actionCommentSelection, *actionUncommentSelection;
 #endif
     QAction *actionSwapColumns, *actionMoveColRight, *actionMoveColLeft, *actionMoveColFirst, *actionMoveColLast, *actionShowScriptWindow;
     QAction *actionExportGraph, *actionExportAllGraphs, *actionPrint, *actionPrintAllPlots, *actionShowExportASCIIDialog;

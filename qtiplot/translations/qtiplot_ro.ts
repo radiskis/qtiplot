@@ -7261,6 +7261,30 @@ Autocompletion will not be available!</source>
         <source>Execute Selected Lines</source>
         <translation>Executaă rândurile selectate</translation>
     </message>
+    <message>
+        <source>Commen&amp;t Selection</source>
+        <translation>Comentează &amp;selecţia</translation>
+    </message>
+    <message>
+        <source>&amp;Uncomment Selection</source>
+        <translation>Decomentea&amp;ză selecţia</translation>
+    </message>
+    <message>
+        <source>Comment Selection</source>
+        <translation>Comentează selecţia</translation>
+    </message>
+    <message>
+        <source>Uncomment Selection</source>
+        <translation>Decomentează selecţia</translation>
+    </message>
+    <message>
+        <source>Ctrl+Shift+O</source>
+        <translation>Ctrl+Shift+O</translation>
+    </message>
+    <message>
+        <source>Ctrl+Shift+U</source>
+        <translation>Ctrl+Shift+U</translation>
+    </message>
 </context>
 <context>
     <name>ArrowMarker</name>

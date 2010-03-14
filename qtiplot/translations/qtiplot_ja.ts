@@ -4316,6 +4316,30 @@ Autocompletion will not be available!</source>
         <source>Execute Selected Lines</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Commen&amp;t Selection</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Uncomment Selection</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Comment Selection</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Uncomment Selection</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ctrl+Shift+O</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ctrl+Shift+U</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ArrowMarker</name>
