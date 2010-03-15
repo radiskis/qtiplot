@@ -3054,8 +3054,8 @@ void ApplicationWindow::connectScriptEditor(ScriptEdit *editor)
 	actionUndo->setEnabled(doc->isUndoAvailable());
 	actionRedo->setEnabled(doc->isRedoAvailable());
 
-	connect(doc, SIGNAL(undoAvailable(bool)), actionUndo, SLOT(setEnabled(bool)));
-	connect(doc, SIGNAL(redoAvailable(bool)), actionRedo, SLOT(setEnabled(bool)));
+	connect(editor, SIGNAL(undoAvailable(bool)), actionUndo, SLOT(setEnabled(bool)));
+	connect(editor, SIGNAL(redoAvailable(bool)), actionRedo, SLOT(setEnabled(bool)));
 }
 
 /*

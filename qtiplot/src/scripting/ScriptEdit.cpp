@@ -368,16 +368,19 @@ void ScriptEdit::commentSelection()
 
 	markedText.replace(QChar::ParagraphSeparator, "\n#");
 	cursor.insertText("#" + markedText);
+
+	undoAvailable(true);
 }
 
 void ScriptEdit::uncommentSelection()
 {
 	QTextCursor cursor = textCursor();
 	QString markedText = cursor.selectedText();
-	if (markedText.isEmpty())
+	if (markedText.isEmpty() || !markedText.contains("#"))
 		return;
 
 	cursor.insertText(markedText.remove("#"));
+	undoAvailable(true);
 }
 
 void ScriptEdit::insertFunction(QAction *action)
