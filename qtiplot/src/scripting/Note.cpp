@@ -336,8 +336,10 @@ void Note::restore(const QStringList& data)
 			if (*line == "<content>")
 				line++;
 
+			currentEditor()->setUndoRedoEnabled(false);
 			while (line != data.end() && *line != "</content>")
 				currentEditor()->insertPlainText((*line++)+"\n");
+			currentEditor()->setUndoRedoEnabled(true);
 
 			line++;
 			if (*line == "</content>")
@@ -348,8 +350,10 @@ void Note::restore(const QStringList& data)
 			addTab();
 			line++;
 
+			currentEditor()->setUndoRedoEnabled(false);
 			while (line != data.end() && *line != "</content>")
 				currentEditor()->insertPlainText((*line++)+"\n");
+			currentEditor()->setUndoRedoEnabled(true);
 
 			if (*line == "</content>")
 				line++;
