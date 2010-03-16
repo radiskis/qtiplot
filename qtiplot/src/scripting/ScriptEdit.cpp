@@ -376,10 +376,10 @@ void ScriptEdit::uncommentSelection()
 {
 	QTextCursor cursor = textCursor();
 	QString markedText = cursor.selectedText();
-	if (markedText.isEmpty() || !markedText.contains("#"))
+	if (markedText.isEmpty() || !(markedText.contains("#") || markedText.contains("\"\"\"")))
 		return;
 
-	cursor.insertText(markedText.remove("#"));
+	cursor.insertText(markedText.remove("#").remove("\"\"\""));
 	undoAvailable(true);
 }
 
