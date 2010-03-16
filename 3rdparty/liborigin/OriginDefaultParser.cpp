@@ -406,7 +406,7 @@ bool OriginDefaultParser::parse()
 
 		/////////////// COLUMN Types ///////////////////////////////////////////
 		fprintf(debug,"			Spreadsheet has %d columns\n",speadSheets[spread].columns.size());
-		for (unsigned int j=0;j<speadSheets[spread].columns.size();j++) {
+		for (unsigned int j=0; j<speadSheets[spread].columns.size(); j++) {
 			fprintf(debug,"			reading	COLUMN %d/%zd type\n",j+1,speadSheets[spread].columns.size());
 			fflush(debug);
 			fseek(f,LAYER+ATYPE+j*COL_JUMP, SEEK_SET);
@@ -414,6 +414,7 @@ bool OriginDefaultParser::parse()
 
 			fseek(f,LAYER+ATYPE+j*COL_JUMP-1, SEEK_SET);
 			fread(&c, 1, 1, f);
+
 			SpreadColumn::ColumnType type;
 			switch(c) {
 			case 3:

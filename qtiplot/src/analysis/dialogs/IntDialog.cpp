@@ -46,20 +46,19 @@ IntDialog::IntDialog(QWidget* parent, Graph *g, Qt::WFlags fl )
     : QDialog( parent, fl),
 	d_graph(g)
 {
-    setName( "IntegrationDialog" );
+	setName( "IntegrationDialog" );
 	setAttribute(Qt::WA_DeleteOnClose);
 	setWindowTitle(tr("QtiPlot - Integration Options"));
 	setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed));
 
-    QGroupBox *gb1 = new QGroupBox();
-    QGridLayout *gl1 = new QGridLayout(gb1);
+	QGroupBox *gb1 = new QGroupBox();
+	QGridLayout *gl1 = new QGridLayout(gb1);
 	gl1->addWidget(new QLabel(tr("Function")), 0, 0);
 	boxName = new ScriptEdit(((ApplicationWindow *)parent)->scriptingEnv());
 	boxName->enableShortcuts();
-	boxName->setMaximumHeight(60);
 	gl1->addWidget(boxName, 0, 1);
 
-    gl1->addWidget(new QLabel(tr("Variable")), 1, 0);
+	gl1->addWidget(new QLabel(tr("Variable")), 1, 0);
 	boxVariable = new QLineEdit();
 	boxVariable->setText("x");
 	gl1->addWidget(boxVariable, 1, 1);
@@ -95,37 +94,37 @@ IntDialog::IntDialog(QWidget* parent, Graph *g, Qt::WFlags fl )
 	boxEnd->setValue(1.0);
 	gl1->addWidget(boxEnd, 6, 1);
 
-    boxPlot = new QCheckBox(tr("&Plot area"));
+	boxPlot = new QCheckBox(tr("&Plot area"));
 	boxPlot->setChecked(true);
-    gl1->addWidget(boxPlot, 7, 1);
-    gl1->setRowStretch(8, 1);
+	gl1->addWidget(boxPlot, 7, 1);
+	gl1->setRowStretch(0, 1);
 
 	buttonOk = new QPushButton(tr( "&Integrate" ));
-    buttonOk->setDefault( true );
-    buttonCancel = new QPushButton(tr("&Close" ));
+	buttonOk->setDefault( true );
+	buttonCancel = new QPushButton(tr("&Close" ));
 
 	QVBoxLayout *vl = new QVBoxLayout();
- 	vl->addWidget(buttonOk);
+	vl->addWidget(buttonOk);
 	vl->addWidget(buttonCancel);
-    vl->addStretch();
+	vl->addStretch();
 
-    QHBoxLayout *hb = new QHBoxLayout(this);
-    hb->addWidget(gb1);
-    hb->addLayout(vl);
+	QHBoxLayout *hb = new QHBoxLayout(this);
+	hb->addWidget(gb1);
+	hb->addLayout(vl);
 
-    connect( buttonOk, SIGNAL( clicked() ), this, SLOT( accept() ) );
-    connect( buttonCancel, SIGNAL( clicked() ), this, SLOT( reject() ) );
+	connect( buttonOk, SIGNAL( clicked() ), this, SLOT( accept() ) );
+	connect( buttonCancel, SIGNAL( clicked() ), this, SLOT( reject() ) );
 }
 
 void IntDialog::accept()
 {
 	Integration *i = new Integration(boxName->text().simplified(), boxVariable->text(),
-                    (ApplicationWindow *)this->parent(), d_graph, boxStart->value(), boxEnd->value());
+					(ApplicationWindow *)this->parent(), d_graph, boxStart->value(), boxEnd->value());
 	i->setTolerance(boxTol->text().toDouble());
 	i->setMaximumIterations(boxSteps->value());
 	i->setMethodOrder(boxOrder->value());
 	if (d_graph && boxPlot->isChecked())
-	    i->enableGraphicsDisplay(true, d_graph);
-    i->run();
-    delete i;
+		i->enableGraphicsDisplay(true, d_graph);
+	i->run();
+	delete i;
 }

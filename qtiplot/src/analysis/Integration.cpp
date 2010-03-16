@@ -2,7 +2,7 @@
     File                 : Integration.cpp
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2007 by Ion Vasilief
+	Copyright            : (C) 2007 - 2010 by Ion Vasilief
     Email (use @ for *)  : ion_vasilief*yahoo.fr
     Description          : Numerical integration of data sets
 
@@ -32,6 +32,7 @@
 #include <MultiLayer.h>
 #include <FunctionCurve.h>
 #include <LegendWidget.h>
+#include <PatternBox.h>
 
 #include <QMessageBox>
 #include <QDateTime>
@@ -254,16 +255,23 @@ void Integration::setMethodOrder(int n)
 
 void Integration::output()
 {
-    if(d_integrand != AnalyticalFunction || d_init_err)
-        return;
+	if(d_integrand != AnalyticalFunction || d_init_err)
+		return;
 
-    if (!d_output_graph)
-        return;
+	if (!d_output_graph)
+		return;
 
-    FunctionCurve* c = d_output_graph->addFunction(QStringList(d_formula), d_from, d_to, d_points,
-                    d_variable, FunctionCurve::Normal);
-    if (c){
-        c->setBrush(QBrush(c->pen().color(), Qt::BDiagPattern));
-        d_output_graph->replot();
-    }
+	FunctionCurve* c = d_output_graph->addFunction(QStringList(d_formula), d_from, d_to, d_points, d_variable, FunctionCurve::Normal);
+	if (c){
+		QColor color = c->pen().color();
+		Qt::BrushStyle brushStyle = Qt::BDiagPattern;
+		ApplicationWindow *app = (ApplicationWindow *)parent();
+		if (app){
+			color.setAlpha(app->defaultCurveAlpha);
+			brushStyle = PatternBox::brushStyle(app->defaultCurveBrush);
+		}
+
+		c->setBrush(QBrush(color, brushStyle));
+		d_output_graph->replot();
+	}
 }
