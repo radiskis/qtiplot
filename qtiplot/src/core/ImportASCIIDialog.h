@@ -147,6 +147,8 @@ public:
 	//! Returns the convention used for the end line character!
 	inline int endLineChar(){return boxEndLine->currentIndex();};
 
+	void selectFilter(const QString & filter);
+
 private slots:
 	//! Display help for advanced options.
 	void displayHelp();

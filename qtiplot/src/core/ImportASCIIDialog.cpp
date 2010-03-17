@@ -52,15 +52,6 @@ ImportASCIIDialog::ImportASCIIDialog(bool new_windows_only, QWidget * parent, bo
 : ExtensibleFileDialog(parent, extended, flags )
 {
 	setWindowTitle(tr("QtiPlot - Import ASCII File(s)"));
-
-	QStringList filters;
-	filters << tr("All files") + " (*)";
-	filters << tr("Text files") + " (*.TXT *.txt)";
-	filters << tr("Data files") + " (*.DAT *.dat)";
-	filters << tr("Comma Separated Values") + " (*.CSV *.csv)";
-	setFilters( filters );
-	setEditableFilter();
-
 	setFileMode( QFileDialog::ExistingFiles );
 
 	d_current_path = QString::null;
@@ -538,6 +529,23 @@ void ImportASCIIDialog::enableComments()
 {
 	d_import_comments->setEnabled(d_rename_columns->isChecked() &&
 								!d_first_line_role->currentIndex());
+}
+
+void ImportASCIIDialog::selectFilter(const QString & filter)
+{
+	QStringList filters;
+	filters << tr("All files") + " (*)";
+	filters << tr("Text files") + " (*.TXT *.txt)";
+	filters << tr("Data files") + " (*.DAT *.dat)";
+	filters << tr("Comma Separated Values") + " (*.CSV *.csv)";
+
+	if (!filters.contains(filter))
+		filters << filter;
+
+	setFilters(filters);
+	setEditableFilter();
+
+	QFileDialog::selectFilter(filter);
 }
 
 /*****************************************************************************
