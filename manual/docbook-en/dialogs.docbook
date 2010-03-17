@@ -1230,8 +1230,8 @@ All your changes to the default import parameters will be saved.
     </mediaobject>
   </figure>
 
-<para>If you want to import several data files, the first parameter <emphasis>Import each file as</emphasis>
-must be set to "New Table".</para>
+<para>You can define a custom file filter in the <emphasis>Files of type:</emphasis> field in order to preselect files
+ (e.g. typing *.mydata then "Enter" so that only files XXX.mydata are listed in the directory view).</para>
 
 <para>Concerning the separator which is used between the columns, you must bear in mind that there
 is no grouping of separators, so if you use "SPACE", you must use only <emphasis>one</emphasis>
