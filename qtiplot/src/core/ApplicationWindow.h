@@ -530,6 +530,7 @@ public slots:
 	void exportPDF();
 	void print();
 	void printPreview();
+	void setPrintPreviewOptions(QPrinter *);
 	void printAllPlots();
 	//@}
 
@@ -1136,6 +1137,8 @@ private slots:
 
 // TODO: a lot of this stuff should be private
 public:
+	QPrinter::PaperSize d_print_paper_size;
+	QPrinter::Orientation d_printer_orientation;
 	bool d_muparser_c_locale;
 	Graph::LegendDisplayMode d_graph_legend_display;
 	int d_latex_compiler;
