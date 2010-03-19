@@ -4110,7 +4110,7 @@ Table * ApplicationWindow::importExcel(const QString& fileName, int sheet)
 	if (!pWB)
 		return NULL;
 
-	if (sheet > pWB->sheets.count){
+	if (sheet > 0 && sheet > pWB->sheets.count){
 		QMessageBox::critical(this, tr("QtiPlot"), tr("File %1 contains only %2 sheets, operation aborted!").arg(fn).arg(pWB->sheets.count));
 		return NULL;
 	}
@@ -4135,6 +4135,9 @@ Table * ApplicationWindow::importExcel(const QString& fileName, int sheet)
 		}
 
 		table = newTable(rows, cols, QString::null, fn + ", " + tr("sheet") + ": " + QString(pWB->sheets.sheet[i].name));
+		QDate d1(1899, 12, 30);//start date in Excel files see(http://sc.openoffice.org/excelfileformat.pdf)
+		QTime t1(0, 0);
+		double daySeconds = 24*60*60;
 		for (int t = 0; t <= pWS->rows.lastrow; t++){// process all rows of the sheet
 			struct st_row::st_row_data* row = &pWS->rows.row[t];
 			for (int tt = 0; tt <= pWS->rows.lastcol; tt++){
@@ -4146,9 +4149,24 @@ Table * ApplicationWindow::importExcel(const QString& fileName, int sheet)
 						continue;
 					}
 					// display the value of the cell (either numeric or string)
-					if (cell.id == 0x27e || cell.id == 0x0BD || cell.id == 0x203)
-						table->setCell(t, tt, cell.d);
-					else if (cell.id == 0x06 && cell.l == 0)//formula
+					if (cell.id == 0x0BD){ // number
+						if (table->columnType(tt) == Table::Date){
+							QDate d2 = d1.addDays(cell.d);
+							table->setText(t, tt, d2.toString("dd.MM.yyyy"));
+						} else if (table->columnType(tt) == Table::Time){
+							QTime t2 = t1.addSecs(qRound(cell.d*daySeconds));
+							table->setText(t, tt, t2.toString("hh:mm:ss"));
+						} else
+							table->setCell(t, tt, cell.d);
+					} else if (cell.id == 0x27e){//date
+						QDate d2 = d1.addDays(cell.d);
+						table->setDateFormat("dd.MM.yyyy", tt, false);
+						table->setText(t, tt, d2.toString("dd.MM.yyyy"));
+					} else if (cell.id == 0x203){//time
+						table->setTimeFormat("hh:mm:ss", tt, false);
+						QTime t2 = t1.addSecs(qRound(cell.d*daySeconds));
+						table->setText(t, tt, t2.toString("hh:mm:ss"));
+					} else if (cell.id == 0x06 && cell.l == 0)//formula
 						table->setCell(t, tt, cell.d);
 					else if (cell.str != NULL)
 						table->setText(t, tt, QString(cell.str));

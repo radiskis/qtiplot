@@ -9,9 +9,11 @@ HEADERS += ../3rdparty/liborigin/OriginFile.h
 HEADERS += ../3rdparty/liborigin/OriginParser.h
 HEADERS += ../3rdparty/liborigin/OriginDefaultParser.h
 HEADERS += ../3rdparty/liborigin/Origin750Parser.h
+HEADERS += ../3rdparty/liborigin/Origin800Parser.h
 
 SOURCES += src/origin/importOPJ.cpp
 SOURCES += ../3rdparty/liborigin/OriginFile.cpp
 SOURCES += ../3rdparty/liborigin/OriginParser.cpp
 SOURCES += ../3rdparty/liborigin/OriginDefaultParser.cpp
 SOURCES += ../3rdparty/liborigin/Origin750Parser.cpp
+SOURCES += ../3rdparty/liborigin/Origin800Parser.cpp

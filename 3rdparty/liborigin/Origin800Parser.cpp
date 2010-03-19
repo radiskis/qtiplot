@@ -1,10 +1,9 @@
 /***************************************************************************
-    File                 : Origin750Parser.cpp
+	File                 : Origin800Parser.cpp
     --------------------------------------------------------------------
-    Copyright            : (C) 2007-2008 Alex Kargovsky, Stefan Gerlach, 
-						   Ion Vasilief
+	Copyright            : (C) 2010 Alex Kargovsky, Ion Vasilief
     Email (use @ for *)  : kargovsky*yumr.phys.msu.su, ion_vasilief*yahoo.fr
-    Description          : Origin 7.5 file parser class
+	Description          : Origin 8.0 file parser class
 
  ***************************************************************************/
 
@@ -27,7 +26,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "Origin750Parser.h"
+#include "Origin800Parser.h"
 #include <cstring>
 #include <sstream>
 #include <boost/format.hpp>
@@ -37,20 +36,20 @@
 
 using namespace boost;
 
-const char* colTypeNames[] = {"X", "Y", "Z", "XErr", "YErr", "Label", "None"};
+//const char* colTypeNames[] = {"X", "Y", "Z", "XErr", "YErr", "Label", "None"};
 
 inline boost::posix_time::ptime doubleToPosixTime(double jdt)
 {
 	return boost::posix_time::ptime(boost::gregorian::date(boost::gregorian::gregorian_calendar::from_julian_day_number(jdt+1)), boost::posix_time::seconds((jdt-(int)jdt)*86400));
 }
 
-Origin750Parser::Origin750Parser(const string& fileName)
+Origin800Parser::Origin800Parser(const string& fileName)
 :	file(fileName.c_str(), ios::binary)
 {
 	objectIndex = 0;
 }
 
-bool Origin750Parser::parse()
+bool Origin800Parser::parse()
 {
 	unsigned int dataIndex = 0;
 
@@ -70,8 +69,9 @@ bool Origin750Parser::parse()
 	unsigned int colpos = file.tellg();
 	unsigned int current_col = 1, nr = 0, nbytes = 0;
 	
-	while(size > 0 && size < 0x84) {	// should be 0x72, 0x73 or 0x83
+	while(size > 0 && size <= 0x8C) {	// should be 0x72, 0x73 or 0x83 ?
 		//////////////////////////////// COLUMN HEADER /////////////////////////////////////////////
+
 		short data_type;
 		char data_type_u;
 		unsigned int oldpos = file.tellg();
@@ -429,6 +429,7 @@ bool Origin750Parser::parse()
 		POS = file.tellg();
 
 		file >> size;
+		BOOST_LOG_(1, format("size = %d") % size);
 		if(size == 0)
 			break;
 
@@ -579,7 +580,7 @@ bool Origin750Parser::parse()
 	return true;
 }
 
-void Origin750Parser::readSpreadInfo()
+void Origin800Parser::readSpreadInfo()
 {
 	unsigned int POS = file.tellg();
 
@@ -609,7 +610,7 @@ void Origin750Parser::readSpreadInfo()
 		//now structure is next : section_header_size=0x6F(4 bytes) + '\n' + section_header(0x6F bytes) + section_body_1_size(4 bytes) + '\n' + section_body_1 + section_body_2_size(maybe=0)(4 bytes) + '\n' + section_body_2 + '\n'
 		//possible sections: column formulas, __WIPR, __WIOTN, __LayerInfoStorage etc
 		//section name(column name in formula case) starts with 0x46 position
-		while(1)
+		//while(1)
 		{
 			//section_header_size=0x6F(4 bytes) + '\n'
 			LAYER += 0x5;
@@ -647,8 +648,8 @@ void Origin750Parser::readSpreadInfo()
 			//close section 00 00 00 00 0A
 			LAYER += size + (size > 0 ? 0x1 : 0) + 0x5;
 
-			if(sec_name == "__LayerInfoStorage")
-				break;
+			//if(sec_name == "__LayerInfoStorage")
+				//break;
 
 		}
 		LAYER += 0x5;
@@ -757,7 +758,7 @@ void Origin750Parser::readSpreadInfo()
 				speadSheets[spread].columns[col_index].valueType = Text;
 				break;
 			}
-			BOOST_LOG_(1, format("				COLUMN \"%s\" type = %s(%d) (@ 0x%X)") % speadSheets[spread].columns[col_index].name.c_str() % colTypeNames[type] % (int)c % (LAYER + 0x11));
+			//BOOST_LOG_(1, format("				COLUMN \"%s\" type = %s(%d) (@ 0x%X)") % speadSheets[spread].columns[col_index].name.c_str() % colTypeNames[type] % (int)c % (LAYER + 0x11));
 		}
 		LAYER += 0x1E7 + 0x1;
 
@@ -786,7 +787,7 @@ void Origin750Parser::readSpreadInfo()
 	file.seekg(LAYER + 0x5*0x6 + 0x1ED*0x12, ios_base::beg);
 }
 
-void Origin750Parser::readExcelInfo()
+void Origin800Parser::readExcelInfo()
 {
 	unsigned int POS = file.tellg();
 
@@ -1007,7 +1008,7 @@ void Origin750Parser::readExcelInfo()
 	file.seekg(LAYER + 0x5, ios_base::beg);
 }
 
-void Origin750Parser::readMatrixInfo()
+void Origin800Parser::readMatrixInfo()
 {
 	unsigned int POS = file.tellg();
 
@@ -1150,7 +1151,7 @@ void Origin750Parser::readMatrixInfo()
 	file.seekg(LAYER + 0x5*0x5 + 0x1ED*0x12 + 0x5, ios_base::beg);
 }
 
-void Origin750Parser::readGraphInfo()
+void Origin800Parser::readGraphInfo()
 {
 	unsigned int POS = file.tellg();
 
@@ -1934,7 +1935,7 @@ void Origin750Parser::readGraphInfo()
 	file.seekg(LAYER + 0x5, ios_base::beg);
 }
 
-void Origin750Parser::skipObjectInfo()
+void Origin800Parser::skipObjectInfo()
 {
 	unsigned int POS = file.tellg();
 
@@ -2024,7 +2025,7 @@ void Origin750Parser::skipObjectInfo()
 	file.seekg(LAYER + 0x50, ios_base::beg);
 }
 
-void Origin750Parser::readGraphGridInfo(GraphGrid& grid)
+void Origin800Parser::readGraphGridInfo(GraphGrid& grid)
 {
 	unsigned int POS = file.tellg();
 	
@@ -2046,7 +2047,7 @@ void Origin750Parser::readGraphGridInfo(GraphGrid& grid)
 	grid.width = (double)w/500.0;
 }
 
-void Origin750Parser::readGraphAxisBreakInfo(GraphAxisBreak& axis_break)
+void Origin800Parser::readGraphAxisBreakInfo(GraphAxisBreak& axis_break)
 {
 	unsigned int POS = file.tellg();
 
@@ -2068,7 +2069,7 @@ void Origin750Parser::readGraphAxisBreakInfo(GraphAxisBreak& axis_break)
 	file >> axis_break.minorTicksAfter;
 }
 
-void Origin750Parser::readGraphAxisFormatInfo(GraphAxisFormat& format)
+void Origin800Parser::readGraphAxisFormatInfo(GraphAxisFormat& format)
 {
 	unsigned int POS = file.tellg();
 
@@ -2110,7 +2111,7 @@ void Origin750Parser::readGraphAxisFormatInfo(GraphAxisFormat& format)
 	}
 }
 
-void Origin750Parser::readGraphAxisTickLabelsInfo(GraphAxisTick& tick)
+void Origin800Parser::readGraphAxisTickLabelsInfo(GraphAxisTick& tick)
 {
 	unsigned int POS = file.tellg();
 
@@ -2196,7 +2197,7 @@ void Origin750Parser::readGraphAxisTickLabelsInfo(GraphAxisTick& tick)
 	}
 }
 
-void Origin750Parser::readGraphAxisInfo(GraphAxis& axis)
+void Origin800Parser::readGraphAxisInfo(GraphAxis& axis)
 {
 	unsigned int POS = file.tellg();
 	POS += 0x5;
@@ -2229,7 +2230,7 @@ void Origin750Parser::readGraphAxisInfo(GraphAxis& axis)
 	readGraphAxisFormatInfo(axis.formatAxis[1]);
 }
 
-void Origin750Parser::readProjectTree()
+void Origin800Parser::readProjectTree()
 {
 	readProjectTreeFolder(projectTree.begin());
 
@@ -2240,7 +2241,7 @@ void Origin750Parser::readProjectTree()
 	}
 }
 
-void Origin750Parser::readProjectTreeFolder(tree<ProjectNode>::iterator parent)
+void Origin800Parser::readProjectTreeFolder(tree<ProjectNode>::iterator parent)
 {
 	unsigned int POS = file.tellg();
 
@@ -2305,7 +2306,7 @@ void Origin750Parser::readProjectTreeFolder(tree<ProjectNode>::iterator parent)
 		readProjectTreeFolder(current_folder);
 }
 
-void Origin750Parser::readWindowProperties(Window& window, unsigned int size)
+void Origin800Parser::readWindowProperties(Window& window, unsigned int size)
 {
 	unsigned int POS = file.tellg();
 
@@ -2367,7 +2368,7 @@ void Origin750Parser::readWindowProperties(Window& window, unsigned int size)
 	}
 }
 
-void Origin750Parser::readColorMap(ColorMap& colorMap)
+void Origin800Parser::readColorMap(ColorMap& colorMap)
 {
 	unsigned char h;
 	short w;
@@ -2407,7 +2408,7 @@ void Origin750Parser::readColorMap(ColorMap& colorMap)
 	}
 }
 
-OriginParser* createOrigin750Parser(const string& fileName)
+OriginParser* createOrigin800Parser(const string& fileName)
 {
-	return new Origin750Parser(fileName);
+	return new Origin800Parser(fileName);
 }
