@@ -2012,28 +2012,28 @@ bool Table::setDateFormat(const QString& format, int col, bool updateCells)
 		return true;
 
 	bool first_time = false;
-    if (updateCells){
-	for (int i=0; i<d_table->numRows(); i++){
-		QString s = d_table->text(i,col);
-		if (!s.isEmpty()){
-		    QDateTime d = QDateTime::fromString (s, format);
-			if (colTypes[col] != Date && d.isValid()){
-			//This might be the first time the user assigns a date format.
-            //If Qt understands the format we break the loop, assign it to the column and return true!
-				first_time = true;
-                break;
-			}
+	if (updateCells){
+		for (int i=0; i<d_table->numRows(); i++){
+			QString s = d_table->text(i,col);
+			if (!s.isEmpty()){
+				QDateTime d = QDateTime::fromString (s, format);
+				if (colTypes[col] != Date && d.isValid()){
+				//This might be the first time the user assigns a date format.
+				//If Qt understands the format we break the loop, assign it to the column and return true!
+					first_time = true;
+					break;
+				}
 
-		    if (d_saved_cells){
-                d = QDateTime(QDate::fromJulianDay((int)d_saved_cells[col][i] + 1));
-                double msecs = (d_saved_cells[col][i] - floor(d_saved_cells[col][i]))*864e5;
-                d.setTime(d.time().addMSecs(qRound(msecs)));
-				if (d.isValid())
-					d_table->setText(i, col, d.toString(format));
-		    }
+				if (d_saved_cells){
+					d = QDateTime(QDate::fromJulianDay((int)d_saved_cells[col][i] + 1));
+					double msecs = (d_saved_cells[col][i] - floor(d_saved_cells[col][i]))*864e5;
+					d.setTime(d.time().addMSecs(qRound(msecs)));
+					if (d.isValid())
+						d_table->setText(i, col, d.toString(format));
+				}
+			}
 		}
 	}
-    }
 	colTypes[col] = Date;
 	col_format[col] = format;
 	QTime ref = QTime(0, 0);
