@@ -593,7 +593,8 @@ void ApplicationWindow::initGlobalConstants()
 	d_scale_plots_on_print = false;
 	d_print_cropmarks = false;
 	d_graph_legend_display = Graph::ColumnName;
-
+	d_print_paper_size = QPrinter::A4;
+	d_printer_orientation = QPrinter::Landscape;
 	defaultCurveStyle = int(Graph::LineSymbols);
 	defaultCurveLineWidth = 1;
 	d_curve_line_style = 0;//Qt::SolidLine;
@@ -5532,6 +5533,11 @@ void ApplicationWindow::readSettings()
 	settings.endGroup(); //end group SyntaxHighlighting
 	settings.endGroup(); // end group Notes
 
+	settings.beginGroup("/PrintPreview");
+	d_print_paper_size = (QPrinter::PaperSize)settings.value("/PaperSize", (int)d_print_paper_size).toInt();
+	d_printer_orientation = (QPrinter::Orientation)settings.value("/Orientation", (int)d_printer_orientation).toInt();
+	settings.endGroup();//PrintPreview
+
 	settings.beginGroup("/Proxy");
 	QNetworkProxy proxy;
 	proxy.setType(QNetworkProxy::NoProxy);
@@ -5958,6 +5964,11 @@ void ApplicationWindow::saveSettings()
 	settings.setValue("/QtClasses", d_class_highlight_color.name());
 	settings.endGroup();//SyntaxHighlighting
 	settings.endGroup();//Notes
+
+	settings.beginGroup("/PrintPreview");
+	settings.setValue("/PaperSize", (int)d_print_paper_size);
+	settings.setValue("/Orientation", (int)d_printer_orientation);
+	settings.endGroup();//PrintPreview
 
 	QNetworkProxy proxy = QNetworkProxy::applicationProxy();
 	if (!proxy.hostName().isEmpty()){
@@ -8152,15 +8163,32 @@ void ApplicationWindow::printPreview()
 	if (!w)
 		return;
 
-    if (w->isA("MultiLayer") && ((MultiLayer *)w)->isEmpty()){
+	if (w->isA("MultiLayer") && ((MultiLayer *)w)->isEmpty()){
 		QMessageBox::warning(this,tr("QtiPlot - Warning"),
 				tr("<h4>There are no plot layers available in this window.</h4>"));
 		return;
 	}
-	QPrintPreviewDialog *preview = new QPrintPreviewDialog(this, Qt::Window);
+
+	QPrinter p;
+	p.setPaperSize(d_print_paper_size);
+	p.setOrientation(d_printer_orientation);
+
+	QPrintPreviewDialog *preview = new QPrintPreviewDialog(&p, this, Qt::Window);
 	preview->setWindowTitle(tr("QtiPlot") + " - " + tr("Print preview of window: ") + w->objectName());
 	connect(preview, SIGNAL(paintRequested(QPrinter *)), w, SLOT(print(QPrinter *)));
+	connect(preview, SIGNAL(paintRequested(QPrinter *)), this, SLOT(setPrintPreviewOptions(QPrinter *)));
+
 	preview->exec();
+}
+
+
+void ApplicationWindow::setPrintPreviewOptions(QPrinter *printer)
+{
+	if (!printer)
+		return;
+
+	d_print_paper_size = printer->paperSize();
+	d_printer_orientation = printer->orientation();
 }
 
 void ApplicationWindow::printAllPlots()
