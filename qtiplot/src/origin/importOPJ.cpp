@@ -524,21 +524,20 @@ bool ImportOPJ::importTables(const OriginFile& opj)
 			return false;
 
 		Origin::Rect windowRect;
-		if(opj.version() == 7.5)
-		{
+		if(opj.version() == 7.5){
 			windowRect = matrix.frameRect;
 			Matrix->resize(windowRect.width() - (Matrix->frameGeometry().width() - Matrix->width()),
 				windowRect.height() - (Matrix->frameGeometry().height() - Matrix->height()));
 		}
 
+		Matrix->setCoordinates(matrix.coordinates[3], matrix.coordinates[1], matrix.coordinates[2], matrix.coordinates[0]);
 		Matrix->setCaptionPolicy((MdiSubWindow::CaptionPolicy)matrix.title);
 		Matrix->setBirthDate(posixTimeToString(matrix.creationDate));
 
 		Matrix->setWindowLabel(matrix.label.c_str());
 		Matrix->setFormula(matrix.command.c_str());
 		Matrix->setColumnsWidth(matrix.width * QtiPlot_scaling_factor);
-		if(matrix.view == Origin::Matrix::ImageView)
-		{
+		if(matrix.view == Origin::Matrix::ImageView){
 			Matrix->setViewType(Matrix::ImageView);
 			Origin::ColorMap colorMap = matrix.colorMap;
 			colorMap.levels.pop_back();

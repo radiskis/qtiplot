@@ -57,8 +57,13 @@ private:
 	void readWindowProperties(Window& window, unsigned int size);
 	void readColorMap(ColorMap& colorMap);
 
+	bool findSection(const string& name, int length);
+	void findObjectInfoSectionByName(int start, const string& name);
+
 	unsigned int objectIndex;
 	iendianfstream file;
+
+	int d_file_size;
 };
 
 #endif // ORIGIN_800_PARSER_H
