@@ -33,6 +33,7 @@
 #include <boost/lexical_cast.hpp>
 #include <boost/date_time/posix_time/posix_time.hpp>
 #include <logging.hpp>
+#include <QString>
 
 using namespace boost;
 
@@ -53,6 +54,10 @@ bool Origin800Parser::parse()
 {
 	unsigned int dataIndex = 0;
 
+	// get length of file:
+	file.seekg (0, ios::end);
+	d_file_size = file.tellg();
+
 	stringstream out;
 	unsigned char c;
 	/////////////////// find column ///////////////////////////////////////////////////////////
@@ -69,7 +74,7 @@ bool Origin800Parser::parse()
 	unsigned int colpos = file.tellg();
 	unsigned int current_col = 1, nr = 0, nbytes = 0;
 	
-	while(size > 0 && size <= 0x8C) {	// should be 0x72, 0x73 or 0x83 ?
+	while(size > 0 && size <= 0x8C){// should be 0x72, 0x73 or 0x83 ?
 		//////////////////////////////// COLUMN HEADER /////////////////////////////////////////////
 
 		short data_type;
@@ -127,10 +132,6 @@ bool Origin800Parser::parse()
 			size /= valuesize;
 			BOOST_LOG_(1, format("	SIZE = %d") % size);
 
-			// catch exception
-			/*if(size>10000)
-			size=1000;*/
-
 			switch(signature)
 			{
 			case 0x50CA:
@@ -145,6 +146,7 @@ bool Origin800Parser::parse()
 
 				BOOST_LOG_(1, "VALUES :");
 				out.str(size > 100 ? "matrix too big..." : string());
+
 				switch(data_type)
 				{
 				case 0x6001://double
@@ -153,10 +155,10 @@ bool Origin800Parser::parse()
 						double value;				
 						file >> value;
 						matrixes.back().data.push_back((double)value);
-						if(size < 100)
-							out << format("%g ") % matrixes.back().data.back();
+						//if(size < 100)
+							//out << format("%g ") % matrixes.back().data.back();
 					}
-					BOOST_LOG_(1, out.str());
+					//BOOST_LOG_(1, out.str());
 					break;
 				case 0x6003://float
 					for(unsigned int i = 0; i < size; ++i)
@@ -253,6 +255,7 @@ bool Origin800Parser::parse()
 					matrixes.pop_back();
 				}
 				break;
+
 			case 0x10C8:
 				BOOST_LOG_(1, "NEW FUNCTION");
 				functions.push_back(Function(name, dataIndex));
@@ -281,6 +284,7 @@ bool Origin800Parser::parse()
 
 				file.seekg(oldpos, ios_base::beg);
 				break;
+
 			default:
 				BOOST_LOG_(1, format("UNKNOWN SIGNATURE: %.2X SKIP DATA") % signature);
 				file.seekg(valuesize*size, ios_base::cur);
@@ -303,7 +307,7 @@ bool Origin800Parser::parse()
 			}
 			else
 			{
-				spread = findSpreadByName(/*sname*/name);
+				spread = findSpreadByName(name);
 
 				current_col = speadSheets[spread].columns.size();
 
@@ -419,23 +423,37 @@ bool Origin800Parser::parse()
 	BOOST_LOG_(1, format("	[position @ 0x%X]") % POS);
 
 	//////////////////////// OBJECT INFOS //////////////////////////////////////
+	for (int i= 0; i < speadSheets.size(); i++){
+		unsigned int columns = speadSheets[i].columns.size();
+		if (columns > 0)
+			speadSheets[i].columns[0].type = SpreadColumn::X;
+		for (int j = 1; j < columns; j++)
+			speadSheets[i].columns[j].type = SpreadColumn::Y;
+	}
+
 	POS += 0xB;
 	file.seekg(POS, ios_base::beg);
-	while(1)
-	{
-		BOOST_LOG_(1, "			reading	Header");
+
+	for (int i = 0; i < matrixes.size(); i++){
+		BOOST_LOG_(1, format("Reading header for matrix: %s") % matrixes[i].name);
+		findObjectInfoSectionByName(POS, matrixes[i].name);
+		readMatrixInfo();
+	}
+
+	/*while(POS < d_file_size){
 		// HEADER
 		// check header
 		POS = file.tellg();
+		BOOST_LOG_(1, format("POS = 0x%X") % POS);
 
 		file >> size;
-		BOOST_LOG_(1, format("size = %d") % size);
 		if(size == 0)
 			break;
 
 		file.seekg(POS + 0x7, ios_base::beg);
 		string name(25, 0);
 		file >> name;
+		BOOST_LOG_(1, format("Reading header for: %s") % name);
 
 		file.seekg(POS, ios_base::beg);
 
@@ -447,18 +465,16 @@ bool Origin800Parser::parse()
 			readExcelInfo();
 		else
 			readGraphInfo();
-	}
+	}*/
 
 	file.seekg(1, ios_base::cur);
 	BOOST_LOG_(1, format("Some Origin params @ 0x%X:") % (unsigned int)file.tellg());
 
 	file >> c;
-	while(c != 0)
-	{
+	while(c != 0){
 		out.str(string());
 		out << "		";
-		while(c != '\n')
-		{
+		while(c != '\n'){
 			out << c;
 			file >> c;
 		}
@@ -471,8 +487,7 @@ bool Origin800Parser::parse()
 		file >> c;
 	}
 	file.seekg(1 + 5, ios_base::cur);
-	while(1)
-	{
+	while(1){
 		//fseek(f,5+0x40+1,SEEK_CUR);
 		int size;
 		file >> size;
@@ -515,8 +530,7 @@ bool Origin800Parser::parse()
 		string name(size, 0);
 		file >> name;
 
-		if(name == "ResultsLog")
-		{
+		if(name == "ResultsLog"){
 			file.seekg(1, ios_base::cur);
 			file >> size;
 
@@ -526,9 +540,7 @@ bool Origin800Parser::parse()
 
 			BOOST_LOG_(1, format("Results Log: %s") % resultsLog);
 			break;
-		}
-		else
-		{
+		} else {
 			notes.push_back(Note(name));
 			notes.back().objectID = objectIndex;
 			notes.back().frameRect = rect;
@@ -551,8 +563,7 @@ bool Origin800Parser::parse()
 
 			file.seekg(1, ios_base::cur);
 
-			if(labellen > 1)
-			{
+			if(labellen > 1){
 				file >> notes.back().label.assign(labellen-1, 0);
 				file.seekg(1, ios_base::cur);
 			}
@@ -595,6 +606,7 @@ void Origin800Parser::readSpreadInfo()
 	file.seekg(POS + 0x2, ios_base::beg);
 	string name(25, 0);
 	file >> name;
+	BOOST_LOG_(1, format("Spreadsheet name: %s") % name);
 
 	int spread = findSpreadByName(name);
 	speadSheets[spread].name = name;
@@ -610,20 +622,20 @@ void Origin800Parser::readSpreadInfo()
 		//now structure is next : section_header_size=0x6F(4 bytes) + '\n' + section_header(0x6F bytes) + section_body_1_size(4 bytes) + '\n' + section_body_1 + section_body_2_size(maybe=0)(4 bytes) + '\n' + section_body_2 + '\n'
 		//possible sections: column formulas, __WIPR, __WIOTN, __LayerInfoStorage etc
 		//section name(column name in formula case) starts with 0x46 position
-		//while(1)
-		{
+
+		while(LAYER < d_file_size){
 			//section_header_size=0x6F(4 bytes) + '\n'
 			LAYER += 0x5;
 
 			//section_header
-			file.seekg(LAYER + 0x46, ios_base::beg);
+			file.seekg(LAYER + 0x6e, ios_base::beg);
 			string sec_name(41, 0);
 			file >> sec_name;
 
-			BOOST_LOG_(1, format("				SECTION NAME: %s (@ 0x%X)") % sec_name % (LAYER + 0x46));
+			BOOST_LOG_(1, format("SECTION NAME: %s (@ 0x%X)") % sec_name % (LAYER + 0x6e));
 
 			//section_body_1_size
-			LAYER += 0x6F + 0x1;
+			LAYER += 0x2A;
 			file.seekg(LAYER, ios_base::beg);
 			file >> size;
 
@@ -632,8 +644,7 @@ void Origin800Parser::readSpreadInfo()
 			file.seekg(LAYER, ios_base::beg);
 			//check if it is a formula
 			int col_index = findSpreadColumnByName(spread, sec_name);
-			if(col_index != -1)
-			{
+			if(col_index != -1){
 				file >> speadSheets[spread].columns[col_index].command.assign(size, 0);
 			}
 
@@ -648,22 +659,57 @@ void Origin800Parser::readSpreadInfo()
 			//close section 00 00 00 00 0A
 			LAYER += size + (size > 0 ? 0x1 : 0) + 0x5;
 
-			//if(sec_name == "__LayerInfoStorage")
-				//break;
-
+			if(sec_name == "__LayerInfoStorage")
+				break;
 		}
+
+		/*for (int i = 0; i < speadSheets[spread].columns.size(); i++)
+		{
+			//section_header_size=0x6F(4 bytes) + '\n'
+			unsigned int offset = 0x5 + 0x6e;
+			LAYER += offset;
+			file.seekg(LAYER, ios_base::beg);
+
+			//string sec_name(speadSheets[spread].columns[i].name.size(), 0);
+			string sec_name(41, 0);
+			file >> sec_name;
+
+			BOOST_LOG_(1, format("sec_name: %s POS: 0x%X") % sec_name % file.tellg());
+
+			file.seekg(LAYER + 0x2A, ios_base::beg);
+			file >> size;
+			BOOST_LOG_(1, format("section_body_1_size: %d POS: 0x%X") % size % file.tellg());
+
+			//section_body_1
+			LAYER += 0x2f;
+			file.seekg(LAYER, ios_base::beg);
+			//check if it is a formula
+			int col_index = findSpreadColumnByName(spread, sec_name);
+			if(col_index != -1){
+				file >> speadSheets[spread].columns[col_index].command.assign(size, 0);
+				BOOST_LOG_(1, format("formula: %s pos: 0x%X") % speadSheets[spread].columns[col_index].command % file.tellg());
+			}
+
+			LAYER += 106 - offset;
+
+			if(sec_name == "__LayerInfoStorage")
+				break;
+		}*/
 		LAYER += 0x5;
 	}
 
 	/////////////// COLUMN Types ///////////////////////////////////////////
 	BOOST_LOG_(1, format("			Spreadsheet has %d columns") % speadSheets[spread].columns.size());
 
-	while(1)
+	while(file.tellg() < d_file_size)
 	{
 		LAYER += 0x5;
 		file.seekg(LAYER + 0x12, ios_base::beg);
+		BOOST_LOG_(1, format("pos: 0x%X") % file.tellg());
+
 		name.resize(12);
 		file >> name;
+		BOOST_LOG_(1, format("name: %s") % name);
 
 		file.seekg(LAYER + 0x11, ios_base::beg);
 		file >> c;
@@ -783,8 +829,57 @@ void Origin800Parser::readSpreadInfo()
 			break;
 	}
 	BOOST_LOG_(1, format("		Done with spreadsheet %d") % spread);
+}
 
-	file.seekg(LAYER + 0x5*0x6 + 0x1ED*0x12, ios_base::beg);
+bool Origin800Parser::findSection(const string& name, int length)
+{
+	char c = 0;
+	unsigned int pos = file.tellg();
+	while(pos < d_file_size){
+		file >> c;
+		if (c == name[0]){
+			unsigned int pos = file.tellg();
+			file.seekg(pos - 0x1, ios_base::beg);
+
+			string s = string(name.size(), 0);
+			file >> s;
+
+			if (name.compare(s) == 0){
+				pos -= 0x1;
+				file.seekg(pos + length, ios_base::beg);
+				BOOST_LOG_(1, format("Found section %s at: 0x%X") % name % pos);
+				return true;
+			}
+		} else
+			pos++;
+	}
+	file.seekg(pos, ios_base::beg);
+	return false;
+}
+
+void Origin800Parser::findObjectInfoSectionByName(int start, const string& name)
+{
+	file.seekg(start, ios_base::beg);
+	char c = 0;
+	unsigned int pos = start;
+	while(pos != ios_base::end){
+		file >> c;
+		if (c == name[0]){
+			unsigned int pos = file.tellg();
+
+			file.seekg(pos - 0x1, ios_base::beg);
+
+			string s = string(name.size(), 0);
+			file >> s;
+
+			if (name.compare(s) == 0){
+				pos -= 0x8;
+				file.seekg(pos, ios_base::beg);
+				BOOST_LOG_(1, format("	Object info section starts at: 0x%X") % pos);
+				return;
+			}
+		}
+	}
 }
 
 void Origin800Parser::readExcelInfo()
@@ -813,14 +908,14 @@ void Origin800Parser::readExcelInfo()
 	unsigned int LAYER = POS;
 	LAYER += size + 0x1;
 	int isheet = 0;
-	while(1)// multisheet loop
+	while(LAYER < d_file_size)// multisheet loop
 	{
 		// LAYER section
 		LAYER += 0x5/* length of block = 0x12D + '\n'*/ + 0x12D + 0x1;
 		//now structure is next : section_header_size=0x6F(4 bytes) + '\n' + section_header(0x6F bytes) + section_body_1_size(4 bytes) + '\n' + section_body_1 + section_body_2_size(maybe=0)(4 bytes) + '\n' + section_body_2 + '\n'
 		//possible sections: column formulas, __WIPR, __WIOTN, __LayerInfoStorage etc
 		//section name(column name in formula case) starts with 0x46 position
-		while(1)
+		while(LAYER < d_file_size)
 		{
 			//section_header_size=0x6F(4 bytes) + '\n'
 			LAYER += 0x5;
@@ -868,7 +963,7 @@ void Origin800Parser::readExcelInfo()
 		/////////////// COLUMN Types ///////////////////////////////////////////
 		BOOST_LOG_(1, format("			Excel sheet %d has %d columns") % isheet % excels[iexcel].sheets[isheet].columns.size());
 
-		while(1)
+		while(LAYER < d_file_size)
 		{
 			LAYER += 0x5;
 			file.seekg(LAYER + 0x12, ios_base::beg);
@@ -1015,9 +1110,9 @@ void Origin800Parser::readMatrixInfo()
 	unsigned int size;
 	file >> size;
 
-	POS+=5;
+	POS += 5;
 
-	BOOST_LOG_(1, format("			[Matrix SECTION (@ 0x%X)]") % POS);
+	BOOST_LOG_(1, format("[Matrix SECTION (@ 0x%X)]") % POS);
 
 	string name(25, 0);
 	file.seekg(POS + 0x2, ios_base::beg);
@@ -1028,19 +1123,11 @@ void Origin800Parser::readMatrixInfo()
 	file.seekg(POS, ios_base::beg);
 	readWindowProperties(matrixes[idx], size);
 
-	unsigned char h;
+	unsigned int h;
 	file.seekg(POS + 0x87, ios_base::beg);
 	file >> h;
-
-	switch(h)
-	{
-	case 1:
-		matrixes[idx].view = Matrix::ImageView;
-		break;
-	case 2:
-		matrixes[idx].header = Matrix::XY;
-		break;
-	}
+	BOOST_LOG_(1, format("		HeaderViewType: %d (@ 0x%X)") % h % (POS + 0x87));
+	matrixes[idx].header = (h == 194) ? Matrix::XY : Matrix::ColumnRow;
 
 	unsigned int LAYER = POS;
 	LAYER += size + 0x1;
@@ -1050,105 +1137,43 @@ void Origin800Parser::readMatrixInfo()
 	
 	file.seekg(LAYER + 0x2B, ios_base::beg);
 	file >> matrixes[idx].columnCount;
+	BOOST_LOG_(1, format("		Columns: %d (@ 0x%X)") % matrixes[idx].columnCount % (LAYER + 0x2B));
 
 	file.seekg(LAYER + 0x52, ios_base::beg);
 	file >> matrixes[idx].rowCount;
+	BOOST_LOG_(1, format("		Rows: %d (@ 0x%X)") % matrixes[idx].rowCount % (LAYER + 0x52));
+
+	/*file.seekg(LAYER + 0x52 + 0x1F, ios_base::beg);
+	unsigned short view;
+	file >> view;
+	//if (view == 3)
+		//matrixes[idx].view = Matrix::ImageView;
+	BOOST_LOG_(1, format("		View: %d (@ 0x%X)") % view % (LAYER + 0x52 + 0x1F));*/
 
 	LAYER += 0x12D + 0x1;
-	//now structure is next : section_header_size=0x6F(4 bytes) + '\n' + section_header(0x6F bytes) + section_body_1_size(4 bytes) + '\n' + section_body_1 + section_body_2_size(maybe=0)(4 bytes) + '\n' + section_body_2 + '\n'
+	LAYER += 0x5;
+	LAYER += 0x6e;
+	file.seekg(LAYER, ios_base::beg);
+	string sec_name(47, 0);
+	file >> sec_name;
+	if (sec_name == "1"){
+		file >> matrixes[idx].command.assign(32, 0);
+		BOOST_LOG_(1, format("		Formula: %s cursor pos: 0x%X") % matrixes[idx].command % file.tellg());
+	}
+
+	/*const char* sectionNames[] = {"Y2", "X2", "Y1", "X1"};
+	for (int i = 0; i < 4; i++){
+		if (findSection(sectionNames[i], 47)){
+			string s(32, 0);
+			file >> s;
+			BOOST_LOG_(1, format("		%s: %s cursor pos: 0x%X") % sectionNames[i] % s % file.tellg());
+			matrixes[idx].coordinates[i] = QString(s.c_str()).replace(",", ".").toDouble();
+		}
+	}*/
+
+	//In 7.5 projects structure was : section_header_size=0x6F(4 bytes) + '\n' + section_header(0x6F bytes) + section_body_1_size(4 bytes) + '\n' + section_body_1 + section_body_2_size(maybe=0)(4 bytes) + '\n' + section_body_2 + '\n'
 	//possible sections: column formulas, __WIPR, __WIOTN, __LayerInfoStorage
 	//section name(column name in formula case) starts with 0x46 position
-	while(1)
-	{
-		//section_header_size=0x6F(4 bytes) + '\n'
-		LAYER += 0x5;
-
-		//section_header
-		string sec_name(41, 0);
-		file.seekg(LAYER + 0x46, ios_base::beg);
-		file >> sec_name;
-
-		//section_body_1_size
-		LAYER += 0x6F+0x1;
-		file.seekg(LAYER, ios_base::beg);
-		file >> size;
-
-		//section_body_1
-		LAYER += 0x5;
-		//check if it is a formula
-		if(sec_name == "MV")
-		{
-			file.seekg(LAYER, ios_base::beg);
-			file >> matrixes[idx].command.assign(size, 0);
-		}
-
-		//section_body_2_size
-		LAYER += size + 0x1;
-		file.seekg(LAYER, ios_base::beg);
-		file >> size;
-
-		//section_body_2
-		LAYER += 0x5;
-		if(sec_name == "COLORMAP")
-		{
-			file.seekg(LAYER + 0x14, ios_base::beg);
-			readColorMap(matrixes[idx].colorMap);
-		}
-
-		//close section 00 00 00 00 0A
-		LAYER += size + (size > 0 ? 0x1 : 0) + 0x5;
-
-		if(sec_name == "__LayerInfoStorage")
-			break;
-
-	}
-	LAYER += 0x5;
-
-	while(1)
-	{
-		LAYER+=0x5;
-
-		unsigned short width;
-		file.seekg(LAYER + 0x2B, ios_base::beg);
-		file >> width;
-
-		width = (width-55)/0xA;
-		if(width == 0)
-			width = 8;
-		matrixes[idx].width = width;
-
-		unsigned char c1,c2;
-		file.seekg(LAYER + 0x1E, ios_base::beg);
-		file >> c1;
-		file >> c2;
-
-		matrixes[idx].valueTypeSpecification = c1/0x10;
-		if(c2 >= 0x80)
-		{
-			matrixes[idx].significantDigits = c2-0x80;
-			matrixes[idx].numericDisplayType = SignificantDigits;
-		}
-		else if(c2 > 0)
-		{
-			matrixes[idx].decimalPlaces = c2-0x03;
-			matrixes[idx].numericDisplayType = DecimalPlaces;
-		}
-
-		LAYER += 0x1E7 + 0x1;
-		
-		file.seekg(LAYER, ios_base::beg);
-		file >> size;
-
-		LAYER += size + (size > 0 ? 0x1 : 0) + 0x5;
-
-		file.seekg(LAYER, ios_base::beg);
-		file >> size;
-
-		if(size != 0x1E7)
-			break;
-	}
-
-	file.seekg(LAYER + 0x5*0x5 + 0x1ED*0x12 + 0x5, ios_base::beg);
 }
 
 void Origin800Parser::readGraphInfo()
@@ -1176,7 +1201,7 @@ void Origin800Parser::readGraphInfo()
 	unsigned int LAYER = POS;
 	LAYER += size + 0x1;
 
-	while(1)// multilayer loop
+	while(LAYER < d_file_size)// multilayer loop
 	{
 		graphs.back().layers.push_back(GraphLayer());
 		GraphLayer& layer(graphs.back().layers.back());
@@ -1222,7 +1247,7 @@ void Origin800Parser::readGraphInfo()
 		//now structure is next : section_header_size=0x6F(4 bytes) + '\n' + section_header(0x6F bytes) + section_body_1_size(4 bytes) + '\n' + section_body_1 + section_body_2_size(maybe=0)(4 bytes) + '\n' + section_body_2 + '\n'
 		//possible sections: axes, legend, __BC02, _202, _231, _232, __LayerInfoStorage etc
 		//section name starts with 0x46 position
-		while(1)
+		while(LAYER < d_file_size)
 		{
 			//section_header_size=0x6F(4 bytes) + '\n'
 			LAYER += 0x5;
@@ -1525,7 +1550,7 @@ void Origin800Parser::readGraphInfo()
 
 		if(size == 0x1E7)//check layer is not empty
 		{
-			while(1)
+			while(LAYER < d_file_size)
 			{
 				LAYER += 0x5;
 
@@ -1873,7 +1898,7 @@ void Origin800Parser::readGraphInfo()
 
 		LAYER += 0x5;
 		//read axis breaks
-		while(1)
+		while(LAYER < d_file_size)
 		{
 			file.seekg(LAYER, ios_base::beg);
 			file >> size;
@@ -1946,14 +1971,14 @@ void Origin800Parser::skipObjectInfo()
 
 	unsigned int LAYER = POS;
 	LAYER += size + 0x1;
-	while(1)// multilayer loop
+	while(LAYER < d_file_size)// multilayer loop
 	{
 		// LAYER section
 		LAYER +=0x5/* length of block = 0x12D + '\n'*/ + 0x12D + 0x1;
 		//now structure is next : section_header_size=0x6F(4 bytes) + '\n' + section_header(0x6F bytes) + section_body_1_size(4 bytes) + '\n' + section_body_1 + section_body_2_size(maybe=0)(4 bytes) + '\n' + section_body_2 + '\n'
 		//possible sections: column formulas, __WIPR, __WIOTN, __LayerInfoStorage
 		//section name(column name in formula case) starts with 0x46 position
-		while(1)
+		while(LAYER < d_file_size)
 		{
 			//section_header_size=0x6F(4 bytes) + '\n'
 			LAYER += 0x5;
@@ -1998,7 +2023,7 @@ void Origin800Parser::skipObjectInfo()
 		}
 		LAYER += 0x5;
 
-		while(1)
+		while(LAYER < d_file_size)
 		{
 			LAYER += 0x5;
 

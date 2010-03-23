@@ -79,12 +79,11 @@ OriginFile::OriginFile(const string& fileName)
 		fileVersion = 703;
 	else if(fileVersion >= 2766 && fileVersion <= 2769)	// 7.5
 		fileVersion = 750;
-	else if(fileVersion == 2891)						// 8.0
+	else if(fileVersion >= 2878 && fileVersion <= 2891)	// 8.0
 		fileVersion = 800;
 	else if(fileVersion == 2919)						// 8.1
 		fileVersion = 810;
-	else
-	{
+	else {
 		BOOST_LOG_(1, format("Found unknown project version %d") % fileVersion);
 		BOOST_LOG_(1, "Please contact the authors of liborigin2");
 		BOOST_LOG_FINALIZE();

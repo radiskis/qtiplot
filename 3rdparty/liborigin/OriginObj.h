@@ -225,6 +225,7 @@ namespace Origin
 		HeaderViewType header;
 		ColorMap colorMap;
 		vector<double> data;
+		vector<double> coordinates;
 
 		Matrix(const string& _name = "", unsigned int _index = 0)
 		:	Window(_name)
@@ -237,7 +238,7 @@ namespace Origin
 		,	numericDisplayType(DefaultDecimalDigits)
 		,	view(DataView)
 		,	header(ColumnRow)
-		{};
+		{coordinates.push_back(10.0);coordinates.push_back(1.0);coordinates.push_back(10.0);coordinates.push_back(1.0);};
 	};
 
 	struct Function

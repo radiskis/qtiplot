@@ -1266,14 +1266,14 @@ void Matrix::setViewType(ViewType type, bool renderImage)
 	if (d_view_type == ImageView){
 		delete d_table_view;
 		delete d_select_all_shortcut;
-	    initImageView();
+		initImageView();
 		if (renderImage)
 			displayImage(d_matrix_model->renderImage());
 		d_stack->setCurrentWidget(imageLabel);
 	} else if (d_view_type == TableView){
 		delete imageLabel;
-	    initTableView();
-	    d_stack->setCurrentWidget(d_table_view);
+		initTableView();
+		d_stack->setCurrentWidget(d_table_view);
 	}
 	emit modifiedWindow(this);
 }

@@ -1030,7 +1030,6 @@ void Origin750Parser::readMatrixInfo()
 	unsigned char h;
 	file.seekg(POS + 0x87, ios_base::beg);
 	file >> h;
-
 	switch(h)
 	{
 	case 1:
