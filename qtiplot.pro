@@ -1,7 +1,7 @@
 TEMPLATE = subdirs
 
 SUBDIRS = fitPlugins \
-#	    manual \
+	    manual \
 	    3rdparty/qwt \
 		3rdparty/qwtplot3d \
         qtiplot
