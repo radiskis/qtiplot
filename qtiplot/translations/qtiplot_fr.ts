@@ -4410,7 +4410,7 @@ Quelques parties de ce fichier peuvent ne pas être affichés comme attendu.</tr
     </message>
     <message>
         <source>Print preview</source>
-        <translation>Prévisualisation</translation>
+        <translation>Aperçu avant impression</translation>
     </message>
     <message>
         <source>Date &amp; time </source>
@@ -4831,7 +4831,7 @@ Quelques parties de ce fichier peuvent ne pas être affichés comme attendu.</tr
     </message>
     <message>
         <source>&amp;Read-only</source>
-        <translation type="unfinished">Lectu&amp;re seule</translation>
+        <translation>Lectu&amp;re seule</translation>
     </message>
     <message>
         <source>Read/&amp;Write</source>
@@ -5112,7 +5112,7 @@ Quelques parties de ce fichier peuvent ne pas être affichés comme attendu.</tr
     </message>
     <message>
         <source>Integr&amp;ate Function...</source>
-        <translation>intégrer l&amp;a fonction...</translation>
+        <translation>Intégrer l&amp;a fonction...</translation>
     </message>
     <message>
         <source>Ctrl+D</source>
@@ -5120,7 +5120,7 @@ Quelques parties de ce fichier peuvent ne pas être affichés comme attendu.</tr
     </message>
     <message>
         <source>&amp;Toolbars...</source>
-        <translation>Barre d&apos;ou&amp;Tils...</translation>
+        <translation>Barre d&apos;ou&amp;tils...</translation>
     </message>
     <message>
         <source>&amp;Undo/Redo Stack</source>
@@ -5301,7 +5301,7 @@ Quelques parties de ce fichier peuvent ne pas être affichés comme attendu.</tr
     </message>
     <message>
         <source>Add Inset Layer</source>
-        <translation></translation>
+        <translation>Ajouter un encart</translation>
     </message>
     <message>
         <source>Double Y Axis</source>
@@ -5591,7 +5591,7 @@ L&apos;autocomplétion ne sera pas disponible!</translation>
     </message>
     <message>
         <source>Print Pre&amp;view</source>
-        <translation>Pré&amp;visualisation</translation>
+        <translation>Aperçu a&amp;vant impression</translation>
     </message>
     <message>
         <source>Ad&amp;just Column Width</source>
@@ -5631,7 +5631,7 @@ L&apos;autocomplétion ne sera pas disponible!</translation>
     </message>
     <message>
         <source> </source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>&amp;Custom Layout...</source>
@@ -5639,31 +5639,31 @@ L&apos;autocomplétion ne sera pas disponible!</translation>
     </message>
     <message>
         <source>Execute Selected Lines</source>
-        <translation type="unfinished"></translation>
+        <translation>Exécuter les lignes sélectionnées</translation>
     </message>
     <message>
         <source>Commen&amp;t Selection</source>
-        <translation type="unfinished"></translation>
+        <translation>Commen&amp;ter la sélection</translation>
     </message>
     <message>
         <source>&amp;Uncomment Selection</source>
-        <translation type="unfinished"></translation>
+        <translation>Décommenter la sélection</translation>
     </message>
     <message>
         <source>Comment Selection</source>
-        <translation type="unfinished"></translation>
+        <translation>Commenter la sélection</translation>
     </message>
     <message>
         <source>Uncomment Selection</source>
-        <translation type="unfinished"></translation>
+        <translation>Décommenter la sélection</translation>
     </message>
     <message>
         <source>Ctrl+Shift+O</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+Shift+O</translation>
     </message>
     <message>
         <source>Ctrl+Shift+U</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+Shift+O</translation>
     </message>
 </context>
 <context>
@@ -6670,7 +6670,7 @@ Les codes spéciaux suivant peuvent être utilisés :
     </message>
     <message>
         <source>Scale &amp;Fonts</source>
-        <translation>Taille de la Police</translation>
+        <translation>Taille de la police</translation>
     </message>
     <message>
         <source>Auto&amp;scaling</source>
@@ -6718,7 +6718,7 @@ Les codes spéciaux suivant peuvent être utilisés :
     </message>
     <message>
         <source>Prompt on closing</source>
-        <translation>Confirmer les fermetures pour les</translation>
+        <translation>Confirmer les fermetures des</translation>
     </message>
     <message>
         <source>Folders</source>
@@ -6830,7 +6830,8 @@ Les codes spéciaux suivant peuvent être utilisés :
     </message>
     <message>
         <source>Default Column Separator</source>
-        <translation>Séparateur de colonnes par défaut</translation>
+        <translatorcomment>Séparateur de colonnes par défaut</translatorcomment>
+        <translation>Séparateur de colonnes</translation>
     </message>
     <message>
         <source>TAB</source>
@@ -6854,7 +6855,7 @@ Les codes spéciaux suivant peuvent être utilisés :
     </message>
     <message>
         <source>Default curve style</source>
-        <translation>Style de courbe par défaut</translation>
+        <translation>Style</translation>
     </message>
     <message>
         <source>Line width</source>
@@ -7002,7 +7003,7 @@ Les codes spéciaux suivant peuvent être utilisés :
     </message>
     <message>
         <source>Write Parameters to Result Log</source>
-        <translation>Ecrire les paramètres sur la fenêtre de résultats</translation>
+        <translation>Écrire les paramètres sur la fenêtre de résultats</translation>
     </message>
     <message>
         <source>Paste Parameters to Plot</source>
@@ -7215,7 +7216,7 @@ Les codes spéciaux suivant peuvent être utilisés :
     </message>
     <message>
         <source>Axes title space</source>
-        <translation>Espace du Titre des axes</translation>
+        <translation>Espace du titre des axes</translation>
     </message>
     <message>
         <source>&amp;Resolution</source>
@@ -9178,7 +9179,7 @@ Les codes spéciaux suivant peuvent être utilisés :
     </message>
     <message>
         <source>Arbitrary Dataset</source>
-        <translation>Données aléatoires</translation>
+        <translation>Aléatoires</translation>
     </message>
     <message>
         <source>Nelder-Mead Simplex</source>
@@ -9214,7 +9215,7 @@ Les codes spéciaux suivant peuvent être utilisés :
     </message>
     <message>
         <source>Status</source>
-        <translation>Etat</translation>
+        <translation type="unfinished">État</translation>
     </message>
     <message>
         <source>Dataset</source>
@@ -9483,11 +9484,11 @@ Les codes spéciaux suivant peuvent être utilisés :
     </message>
     <message>
         <source>No weighting</source>
-        <translation>Aucun poids</translation>
+        <translation>Aucun</translation>
     </message>
     <message>
         <source>Instrumental</source>
-        <translation>Instrumentale</translation>
+        <translation>Instrumental</translation>
     </message>
     <message>
         <source>Statistical</source>
@@ -9931,7 +9932,7 @@ Les codes spéciaux suivant peuvent être utilisés :
     </message>
     <message>
         <source>Standard Deviation</source>
-        <translation>Déviation standard</translation>
+        <translation>Écart type</translation>
     </message>
     <message>
         <source>Median</source>
@@ -11122,7 +11123,7 @@ Les codes spéciaux suivant peuvent être utilisés :
     </message>
     <message>
         <source>Import each file as: </source>
-        <translation>Importer comme : </translation>
+        <translation>Importer comme</translation>
     </message>
     <message>
         <source>New Table</source>
@@ -11142,7 +11143,7 @@ Les codes spéciaux suivant peuvent être utilisés :
     </message>
     <message>
         <source>Separator:</source>
-        <translation>Séparateur : </translation>
+        <translation>Séparateur</translation>
     </message>
     <message>
         <source>TAB</source>
@@ -11310,7 +11311,8 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>&amp;Preview Lines</source>
-        <translation>A&amp;perçu des lignes</translation>
+        <translatorcomment>A&amp;perçu des lignes</translatorcomment>
+        <translation>A&amp;perçu</translation>
     </message>
     <message>
         <source>New Matrice</source>
@@ -12098,7 +12100,7 @@ Les limites doivent être dans la gamme de x ; Si vous ne connaissez pas la vale
     </message>
     <message>
         <source>Co&amp;mmon axes</source>
-        <translation type="unfinished"></translation>
+        <translation>Axes co&amp;mmuns</translation>
     </message>
 </context>
 <context>
@@ -13749,31 +13751,31 @@ Voulez-vous insérer des cellules?</translation>
     </message>
     <message>
         <source>Tick Labels</source>
-        <translation type="unfinished"></translation>
+        <translation>Labels des étiquettes</translation>
     </message>
     <message>
         <source>Format</source>
-        <translation type="unfinished">Format</translation>
+        <translation>Format</translation>
     </message>
     <message>
         <source>Automatic</source>
-        <translation type="unfinished">Automatique</translation>
+        <translation>Automatique</translation>
     </message>
     <message>
         <source>Decimal: 10000.0</source>
-        <translation type="unfinished">Décimal : 10000.0</translation>
+        <translation>Décimal : 10000.0</translation>
     </message>
     <message>
         <source>Scientific: 1e4</source>
-        <translation type="unfinished">Scientifique: 1e4</translation>
+        <translation>Scientifique: 1e4</translation>
     </message>
     <message>
         <source>Engineering: 10k</source>
-        <translation type="unfinished">Notation ingénieur : 10k</translation>
+        <translation>Ingénieur : 10k</translation>
     </message>
     <message>
         <source>Precision</source>
-        <translation type="unfinished">Précision</translation>
+        <translation>Précision</translation>
     </message>
 </context>
 <context>
@@ -13912,7 +13914,7 @@ Voulez-vous insérer des cellules?</translation>
     </message>
     <message>
         <source>Apply to curves with more than:</source>
-        <translation>Appliquer aux courbes avec plus de :</translation>
+        <translation type="unfinished">Appliquer aux courbes de plus de</translation>
     </message>
     <message>
         <source>Tolerance (Douglas Peuker algorithm)</source>
