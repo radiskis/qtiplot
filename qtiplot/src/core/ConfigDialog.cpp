@@ -1876,6 +1876,7 @@ void ConfigDialog::languageChange()
 	boxResolution->setSpecialValueText( "1 " + tr("(all data shown)") );
 	boxShowLegend->setText(tr( "&Show Legend" ));
 	lblFloorStyle->setText(tr( "&Floor style" ));
+	boxProjection->clear();
 	boxProjection->addItem(tr( "Empty" ));
 	boxProjection->addItem(tr( "Isolines" ));
 	boxProjection->addItem(tr( "Projection" ));
