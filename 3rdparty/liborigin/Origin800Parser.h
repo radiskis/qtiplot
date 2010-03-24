@@ -57,8 +57,9 @@ private:
 	void readWindowProperties(Window& window, unsigned int size);
 	void readColorMap(ColorMap& colorMap);
 
-	bool findSection(const string& name, int length);
-	void findObjectInfoSectionByName(int start, const string& name);
+	bool findSection(const string& name, int length, int maxLength = 0);
+	int findObjectInfoSectionByName(int start, const string& name);
+	int findStringPos(const string& name);
 
 	unsigned int objectIndex;
 	iendianfstream file;
