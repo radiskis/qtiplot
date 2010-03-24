@@ -251,7 +251,7 @@ class Fit : public Filter
 		bool d_scale_errors;
 
 		//! Table window used for the output of fit parameters
-		Table *d_param_table;
+		QPointer <Table> d_param_table;
 
 		//! Matrix window used for the output of covariance matrix
 		Matrix *d_cov_matrix;

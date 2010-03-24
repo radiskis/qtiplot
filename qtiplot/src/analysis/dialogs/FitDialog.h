@@ -132,7 +132,7 @@ private:
 
     Fit *d_current_fit;
 	Graph *d_graph;
-	Table *d_param_table;
+	QPointer <Table> d_param_table;
 	QList <Fit*> d_user_functions, d_built_in_functions, d_plugins;
 	QList <MdiSubWindow*> srcTables;
 	FunctionCurve *d_preview_curve;

@@ -639,10 +639,10 @@ void Origin800Parser::readSpreadInfo()
 
 	/*speadSheets[spread].loose = false;
 	char c = 0;
-
 	unsigned int LAYER = POS;
-	while(file.tellg() < d_file_size)
-	{
+	LAYER += maxSearchPos;
+
+	while(LAYER < d_file_size){
 		LAYER += 0x5;
 		file.seekg(LAYER + 0x12, ios_base::beg);
 		BOOST_LOG_(1, format("pos: 0x%X") % file.tellg());
