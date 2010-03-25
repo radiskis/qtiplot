@@ -5563,23 +5563,20 @@ L&apos;autocomplétion ne sera pas disponible!</translation>
     </message>
     <message>
         <source>Stack &amp;Bar</source>
-        <translatorcomment>RC : Bof...</translatorcomment>
-        <translation>&amp;Barres en piles</translation>
+        <translation>&amp;Barres empilées</translation>
     </message>
     <message>
         <source>Stack &amp;Column</source>
         <translatorcomment>RC : Bof...</translatorcomment>
-        <translation>&amp;Colonne en piles</translation>
+        <translation>&amp;Colonnes empilées</translation>
     </message>
     <message>
         <source>Plot stack bar</source>
-        <translatorcomment>Rémy : A voir</translatorcomment>
-        <translation type="unfinished"></translation>
+        <translation>Tracé en barres empilées</translation>
     </message>
     <message>
         <source>Plot stack column</source>
-        <translatorcomment>Rémy : A voir</translatorcomment>
-        <translation type="unfinished"></translation>
+        <translation>Tracé en colonnes empilées</translation>
     </message>
     <message>
         <source>Move Row</source>
@@ -5729,7 +5726,7 @@ L&apos;autocomplétion ne sera pas disponible!</translation>
     </message>
     <message>
         <source>&amp;Update curves</source>
-        <translation>Modifier la co&amp;urbe</translation>
+        <translation>Appliq&amp;uer</translation>
     </message>
     <message>
         <source>&amp;OK</source>
@@ -6101,7 +6098,7 @@ L&apos;autocomplétion ne sera pas disponible!</translation>
     </message>
     <message>
         <source>Show Axis &amp;Break</source>
-        <translation>Casser l&apos;axe</translation>
+        <translation>&amp;Briser l&apos;axe</translation>
     </message>
     <message>
         <source>Probability</source>
@@ -6130,7 +6127,7 @@ L&apos;autocomplétion ne sera pas disponible!</translation>
     </message>
     <message>
         <source>&amp;Log10 Scale After Break</source>
-        <translation>Échelle en &amp;Log10 après la cassure</translation>
+        <translation>Échelle en &amp;Log10 après la brisure</translation>
     </message>
     <message>
         <source>Step Before Break</source>
@@ -6190,7 +6187,7 @@ L&apos;autocomplétion ne sera pas disponible!</translation>
     </message>
     <message>
         <source>Distance to axis</source>
-        <translation></translation>
+        <translation>Distance à l&apos;axe</translation>
     </message>
     <message>
         <source>Apply &amp;to</source>
@@ -8443,7 +8440,7 @@ Les codes spéciaux suivant peuvent être utilisés :
     </message>
     <message>
         <source>Percent of data (%)</source>
-        <translation>Pourcentage sur les données (%)</translation>
+        <translation>Pourcentage (%)</translation>
     </message>
     <message>
         <source>5</source>
@@ -9215,7 +9212,7 @@ Les codes spéciaux suivant peuvent être utilisés :
     </message>
     <message>
         <source>Status</source>
-        <translation type="unfinished">État</translation>
+        <translation>État</translation>
     </message>
     <message>
         <source>Dataset</source>
@@ -9580,11 +9577,11 @@ Les codes spéciaux suivant peuvent être utilisés :
     </message>
     <message>
         <source>Add &amp;expression</source>
-        <translation>Ajouter une &amp;expression</translation>
+        <translation>Ajouter l&apos;&amp;expression</translation>
     </message>
     <message>
         <source>Add &amp;name</source>
-        <translation>Ajouter un &amp;nom</translation>
+        <translation>Ajouter le &amp;nom</translation>
     </message>
     <message>
         <source>Rese&amp;t</source>
@@ -13914,7 +13911,7 @@ Voulez-vous insérer des cellules?</translation>
     </message>
     <message>
         <source>Apply to curves with more than:</source>
-        <translation type="unfinished">Appliquer aux courbes de plus de</translation>
+        <translation>Appliquer aux courbes de plus de</translation>
     </message>
     <message>
         <source>Tolerance (Douglas Peuker algorithm)</source>
@@ -15297,8 +15294,7 @@ Calcule le sinus de x.</translation>
     <message>
         <source>ttable(x, n):
  Student&apos;s t-distribution with n degrees of freedom.</source>
-        <translatorcomment>Rémy : A voir</translatorcomment>
-        <translation type="unfinished"></translation>
+        <translation>ttable(x, n) : Loi de Student avec n degrées de liberté.</translation>
     </message>
     <message>
         <source>w0(x):
