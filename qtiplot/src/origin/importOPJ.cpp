@@ -242,7 +242,7 @@ bool ImportOPJ::importTables(const OriginFile& opj)
 			return false;
 
 		Origin::Rect windowRect;
-		if(opj.version() == 7.5)
+		if(opj.version() >= 7.5)
 		{
 			windowRect = spread.frameRect;
 			table->resize(windowRect.width() - (table->frameGeometry().width() - table->width()),
@@ -498,12 +498,9 @@ bool ImportOPJ::importTables(const OriginFile& opj)
 			}
 
 			//cascade the tables
-			if(opj.version() == 7.5)
-			{
+			if (opj.version() >= 7.5)
 				table->move(QPoint(windowRect.left, windowRect.top));
-			}
-			else
-			{
+			else {
 				int dx = table->verticalHeaderWidth();
 				int dy = table->frameGeometry().height() - table->height();
 				table->move(QPoint(visible_count*dx + xoffset*OBJECTXOFFSET, visible_count*dy));
@@ -524,7 +521,7 @@ bool ImportOPJ::importTables(const OriginFile& opj)
 			return false;
 
 		Origin::Rect windowRect;
-		if(opj.version() == 7.5){
+		if(opj.version() >= 7.5){
 			windowRect = matrix.frameRect;
 			Matrix->resize(windowRect.width() - (Matrix->frameGeometry().width() - Matrix->width()),
 				windowRect.height() - (Matrix->frameGeometry().height() - Matrix->height()));
@@ -586,12 +583,9 @@ bool ImportOPJ::importTables(const OriginFile& opj)
 			}
 
 			//cascade the matrices
-			if(opj.version() == 7.5)
-			{
+			if(opj.version() >= 7.5)
 				Matrix->move(QPoint(windowRect.left, windowRect.top));
-			}
-			else
-			{
+			else {
 				int dx = Matrix->verticalHeaderWidth();
 				int dy = Matrix->frameGeometry().height() - Matrix->height();
 				Matrix->move(QPoint(visible_count*dx + xoffset*OBJECTXOFFSET, visible_count*dy));

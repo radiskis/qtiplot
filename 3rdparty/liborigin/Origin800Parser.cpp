@@ -37,8 +37,6 @@
 
 using namespace boost;
 
-//const char* colTypeNames[] = {"X", "Y", "Z", "XErr", "YErr", "Label", "None"};
-
 inline boost::posix_time::ptime doubleToPosixTime(double jdt)
 {
 	return boost::posix_time::ptime(boost::gregorian::date(boost::gregorian::gregorian_calendar::from_julian_day_number(jdt+1)), boost::posix_time::seconds((jdt-(int)jdt)*86400));
@@ -424,12 +422,6 @@ bool Origin800Parser::parse()
 
 	//////////////////////// OBJECT INFOS //////////////////////////////////////
 	for (int i= 0; i < speadSheets.size(); i++){
-		unsigned int columns = speadSheets[i].columns.size();
-		if (columns > 0)
-			speadSheets[i].columns[0].type = SpreadColumn::X;
-		for (int j = 1; j < columns; j++)
-			speadSheets[i].columns[j].type = SpreadColumn::Y;
-
 		BOOST_LOG_(1, format("Reading header for table: %s") % speadSheets[i].name);
 		findObjectInfoSectionByName(POS, speadSheets[i].name);
 		readSpreadInfo();
@@ -628,76 +620,60 @@ void Origin800Parser::readSpreadInfo()
 			BOOST_LOG_(1, format("		Column %s has formula: %s cursor pos: 0x%X") % colName % speadSheets[spread].columns[col].command % file.tellg());
 		}
 	}
-
-	//LAYER += size + 0x1 + 0x5/* length of block = 0x12D + '\n'*/ + 0x12D + 0x1;
-	//In 7.5 files structure is next : section_header_size=0x6F(4 bytes) + '\n' + section_header(0x6F bytes) + section_body_1_size(4 bytes) + '\n' + section_body_1 + section_body_2_size(maybe=0)(4 bytes) + '\n' + section_body_2 + '\n'
-	//possible sections: column formulas, __WIPR, __WIOTN, __LayerInfoStorage etc
-	//section name(column name in formula case) starts with 0x46 position
-
 	/////////////// COLUMN Types ///////////////////////////////////////////
-	BOOST_LOG_(1, format("			Spreadsheet has %d columns") % speadSheets[spread].columns.size());
 
-	/*speadSheets[spread].loose = false;
-	char c = 0;
-	unsigned int LAYER = POS;
-	LAYER += maxSearchPos;
+	const char* colTypes[] = {"X", "Y", "Z", "XErr", "YErr", "Label", "None"};
+	for (unsigned int i = 0; i < columns; i++){
+		string colName = speadSheets[spread].columns[i].name;
+		BOOST_LOG_(1, format("		Column %s") % colName);
 
-	while(LAYER < d_file_size){
-		LAYER += 0x5;
-		file.seekg(LAYER + 0x12, ios_base::beg);
-		BOOST_LOG_(1, format("pos: 0x%X") % file.tellg());
-
-		name.resize(12);
-		file >> name;
-		BOOST_LOG_(1, format("name: %s") % name);
-
-		file.seekg(LAYER + 0x11, ios_base::beg);
+		unsigned int pos = findStringPos(colName);
+		file.seekg(pos - 1, ios_base::beg);
+		char c = 0;
 		file >> c;
 
-		short width=0;
-		file.seekg(LAYER + 0x4A, ios_base::beg);
+		SpreadColumn::ColumnType type;
+		switch(c){
+			case 3:
+				type = SpreadColumn::X;
+				break;
+			case 0:
+				type = SpreadColumn::Y;
+				break;
+			case 5:
+				type = SpreadColumn::Z;
+				break;
+			case 6:
+				type = SpreadColumn::XErr;
+				break;
+			case 2:
+				type = SpreadColumn::YErr;
+				break;
+			case 4:
+				type = SpreadColumn::Label;
+				break;
+			default:
+				type = SpreadColumn::NONE;
+				break;
+		}
+		speadSheets[spread].columns[i].type = type;
+		BOOST_LOG_(1, format("			type: %s (@ 0x%X)") % colTypes[type] % (pos - 1));
+
+		short width = 0;
+		file.seekg(pos + 0x38, ios_base::beg);
 		file >> width;
-		int col_index = findSpreadColumnByName(spread, name);
-		if(col_index != -1)
-		{
-			SpreadColumn::ColumnType type;
-			switch(c)
-			{
-				case 3:
-					type = SpreadColumn::X;
-					break;
-				case 0:
-					type = SpreadColumn::Y;
-					break;
-				case 5:
-					type = SpreadColumn::Z;
-					break;
-				case 6:
-					type = SpreadColumn::XErr;
-					break;
-				case 2:
-					type = SpreadColumn::YErr;
-					break;
-				case 4:
-					type = SpreadColumn::Label;
-					break;
-				default:
-					type = SpreadColumn::NONE;
-					break;
-			}
-			speadSheets[spread].columns[col_index].type = type;
-			width/=0xA;
-			if(width == 0)
-				width = 8;
-			speadSheets[spread].columns[col_index].width = width;
+		width /= 0xA;
+		if(width == 0)
+			width = 8;
+		speadSheets[spread].columns[i].width = width;
+		BOOST_LOG_(1, format("			width: %d (@ 0x%X)") % width % (pos + 0x38));
 
-			unsigned char c1,c2;
-			file.seekg(LAYER + 0x1E, ios_base::beg);
-			file >> c1;
-			file >> c2;
+		unsigned char c1, c2;
+		file.seekg(pos + 0xC, ios_base::beg);
+		file >> c1;
+		file >> c2;
 
-			switch(c1)
-			{
+		switch(c1){
 			case 0x00: // Numeric	   - Dec1000
 			case 0x09: // Text&Numeric - Dec1000
 			case 0x10: // Numeric	   - Scientific
@@ -706,68 +682,60 @@ void Origin800Parser::readSpreadInfo()
 			case 0x29: // Text&Numeric - Engeneering
 			case 0x30: // Numeric	   - Dec1,000
 			case 0x39: // Text&Numeric - Dec1,000
-				speadSheets[spread].columns[col_index].valueType = (c1%0x10 == 0x9) ? TextNumeric : Numeric;
-				speadSheets[spread].columns[col_index].valueTypeSpecification = c1 / 0x10;
-				if(c2 >= 0x80)
-				{
-					speadSheets[spread].columns[col_index].significantDigits = c2 - 0x80;
-					speadSheets[spread].columns[col_index].numericDisplayType = SignificantDigits;
-				}
-				else if(c2 > 0)
-				{
-					speadSheets[spread].columns[col_index].decimalPlaces = c2 - 0x03;
-					speadSheets[spread].columns[col_index].numericDisplayType = DecimalPlaces;
+				speadSheets[spread].columns[i].valueType = (c1%0x10 == 0x9) ? TextNumeric : Numeric;
+				speadSheets[spread].columns[i].valueTypeSpecification = c1 / 0x10;
+				if(c2 >= 0x80){
+					speadSheets[spread].columns[i].significantDigits = c2 - 0x80;
+					speadSheets[spread].columns[i].numericDisplayType = SignificantDigits;
+				} else if(c2 > 0){
+					speadSheets[spread].columns[i].decimalPlaces = c2 - 0x03;
+					speadSheets[spread].columns[i].numericDisplayType = DecimalPlaces;
 				}
 				break;
 			case 0x02: // Time
-				speadSheets[spread].columns[col_index].valueType = Time;
-				speadSheets[spread].columns[col_index].valueTypeSpecification = c2 - 0x80;
+				speadSheets[spread].columns[i].valueType = Time;
+				speadSheets[spread].columns[i].valueTypeSpecification = c2 - 0x80;
 				break;
 			case 0x03: // Date
-				speadSheets[spread].columns[col_index].valueType = Date;
-				speadSheets[spread].columns[col_index].valueTypeSpecification= c2 - 0x80;
+				speadSheets[spread].columns[i].valueType = Date;
+				speadSheets[spread].columns[i].valueTypeSpecification= c2 - 0x80;
 				break;
 			case 0x31: // Text
-				speadSheets[spread].columns[col_index].valueType = Text;
+				speadSheets[spread].columns[i].valueType = Text;
 				break;
 			case 0x4: // Month
 			case 0x34:
-				speadSheets[spread].columns[col_index].valueType = Month;
-				speadSheets[spread].columns[col_index].valueTypeSpecification = c2;
+				speadSheets[spread].columns[i].valueType = Month;
+				speadSheets[spread].columns[i].valueTypeSpecification = c2;
 				break;
 			case 0x5: // Day
 			case 0x35:
-				speadSheets[spread].columns[col_index].valueType = Day;
-				speadSheets[spread].columns[col_index].valueTypeSpecification = c2;
+				speadSheets[spread].columns[i].valueType = Day;
+				speadSheets[spread].columns[i].valueTypeSpecification = c2;
 				break;
 			default: // Text
-				speadSheets[spread].columns[col_index].valueType = Text;
+				speadSheets[spread].columns[i].valueType = Text;
 				break;
-			}
-			//BOOST_LOG_(1, format("				COLUMN \"%s\" type = %s(%d) (@ 0x%X)") % speadSheets[spread].columns[col_index].name.c_str() % colTypeNames[type] % (int)c % (LAYER + 0x11));
 		}
-		LAYER += 0x1E7 + 0x1;
+
+		pos += 0x1D8;
+		file.seekg(pos, ios_base::beg);
 
 		int size;
-		file.seekg(LAYER, ios_base::beg);
 		file >> size;
+		if(size > 0){
+			file.seekg(pos + 0x9, ios_base::beg);
+			string comment(size, 0);
+			file >> comment;
 
-		LAYER += 0x5;
-		if(size > 0)
-		{
-			if(col_index != -1)
-			{
-				file.seekg(LAYER, ios_base::beg);
-				file >> speadSheets[spread].columns[col_index].comment.assign(size, 0);
-			}
-			LAYER += size + 0x1;
+			string::size_type spos = comment.find_first_of("@");
+			if (spos != string::npos)
+				comment.resize(spos);
+
+			speadSheets[spread].columns[i].comment = comment;
+			BOOST_LOG_(1, format("			comment: %s (@ 0x%X)") % comment % (pos + 0x9));
 		}
-
-		file.seekg(LAYER, ios_base::beg);
-		file >> size;
-		if(size != 0x1E7)
-			break;
-	}*/
+	}
 	BOOST_LOG_(1, format("		Done with spreadsheet %d") % spread);
 }
 
@@ -2331,23 +2299,24 @@ int Origin800Parser::findStringPos(const string& name)
 	unsigned int pos = startPos;
 	while(pos < d_file_size){
 		file >> c;
+
 		if (c == name[0]){
 			pos = file.tellg();
-			file.seekg(pos - 0x2, ios_base::beg);
-			file >> c;
 
+			file.seekg(pos - 0x1, ios_base::beg);
 			string s = string(name.size(), 0);
 			file >> s;
 
 			char end;
 			file >> end;
 
-			if (!c && !end && name == s){
+			if (!end && name == s){
 				pos -= 0x1;
 				file.seekg(startPos, ios_base::beg);
 				return pos;
 			}
 		}
+		pos++;
 	}
 	return -1;
 }
