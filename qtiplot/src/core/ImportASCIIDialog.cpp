@@ -365,12 +365,17 @@ void ImportASCIIDialog::displayHelp()
 
 void ImportASCIIDialog::updateImportMode(int mode)
 {
+	setUpdatesEnabled(false);
+
 	if (mode == Overwrite)
 		setFileMode( QFileDialog::ExistingFile );
 	else
 		setFileMode( QFileDialog::ExistingFiles );
 
 	initPreview(mode);
+
+	setUpdatesEnabled(true);
+	repaint();
 }
 
 void ImportASCIIDialog::closeEvent(QCloseEvent* e)
