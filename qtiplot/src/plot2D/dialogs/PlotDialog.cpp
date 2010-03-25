@@ -503,7 +503,7 @@ void PlotDialog::initLayerGeometryPage()
 	gl2->addWidget(boxLayerHeight, 2, 1);
 
 	keepRatioBox = new QCheckBox(tr("Keep aspect ratio"));
-	keepRatioBox->setChecked(true);
+	keepRatioBox->setChecked(app->d_keep_aspect_ration);
 	gl2->addWidget(keepRatioBox, 3, 1);
 
 	QLabel *l = new QLabel(tr("Apply &to..."));
@@ -3134,9 +3134,11 @@ void PlotDialog::adjustLayerWidth(double height)
 
 void PlotDialog::closeEvent(QCloseEvent* e)
 {
-	ApplicationWindow *app = (ApplicationWindow *)this->parent();
-	if (app)
+	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(this->parent());
+	if (app){
 		app->d_extended_plot_dialog = btnMore->isChecked ();
+		app->d_keep_aspect_ration = keepRatioBox->isChecked();
+	}
 
 	e->accept();
 }

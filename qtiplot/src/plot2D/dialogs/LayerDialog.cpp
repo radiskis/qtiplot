@@ -127,7 +127,7 @@ multi_layer(NULL)
 	gl5->addWidget(boxCanvasHeight, 2, 1);
 
 	keepRatioBox = new QCheckBox(tr("&Keep aspect ratio"));
-	keepRatioBox->setChecked(true);
+	keepRatioBox->setChecked(((ApplicationWindow*)parent)->d_keep_aspect_ration);
 	gl5->addWidget(keepRatioBox, 3, 1);
 
 	fixedSizeBox = new QCheckBox(tr("&Fixed size"));
@@ -156,7 +156,7 @@ multi_layer(NULL)
 	gl4->addWidget(boxRowsGap, 2, 1);
 
 	commonAxesBox = new QCheckBox(tr("Co&mmon axes"));
-	commonAxesBox->hide();
+	commonAxesBox->setDisabled(true);
 	gl4->addWidget(commonAxesBox, 3, 1);
 
 	QGroupBox *gb7 = new QGroupBox(tr("Margins"));
@@ -354,7 +354,7 @@ void LayerDialog::update()
 		multi_layer->setLayerCanvasSize(convertToPixels(boxCanvasWidth->value(), unit, 0), convertToPixels(boxCanvasHeight->value(), unit, 1));
 	}
 
-	if (commonAxesBox->isVisible() && commonAxesBox->isChecked())
+	if (commonAxesBox->isEnabled() && commonAxesBox->isChecked())
 		multi_layer->setCommonLayerAxes(boxColsGap->value() == 0, boxRowsGap->value() == 0);
 
 	multi_layer->setAlignement(alignHorBox->currentItem(), alignVertBox->currentItem());
@@ -515,7 +515,7 @@ void LayerDialog::adjustCanvasWidth(double height)
 
 void LayerDialog::showCommonAxesBox()
 {
-	commonAxesBox->setVisible(alignPolicyBox->currentIndex() == MultiLayer::AlignCanvases &&
+	commonAxesBox->setEnabled(alignPolicyBox->currentIndex() == MultiLayer::AlignCanvases &&
 							  (boxColsGap->value() == 0 || boxRowsGap->value() == 0));
 }
 
@@ -561,7 +561,16 @@ void LayerDialog::setSharedAxes(bool on)
 {
 	alignPolicyBox->setCurrentIndex(MultiLayer::AlignCanvases);
 	commonAxesBox->setChecked(on);
-	commonAxesBox->setVisible(true);
+	commonAxesBox->setEnabled(true);
 	boxColsGap->setValue(0);
 	boxRowsGap->setValue(0);
+}
+
+void LayerDialog::closeEvent(QCloseEvent* e)
+{
+	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(this->parent());
+	if (app)
+		app->d_keep_aspect_ration = keepRatioBox->isChecked();
+
+	e->accept();
 }

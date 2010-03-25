@@ -605,6 +605,7 @@ void ApplicationWindow::initGlobalConstants()
 	d_fill_symbols = true;
 	d_symbol_style = 0;
 	d_indexed_symbols = true;
+	d_keep_aspect_ration = true;
 
 	majTicksStyle = int(ScaleDraw::Out);
 	minTicksStyle = int(ScaleDraw::Out);
@@ -5332,6 +5333,7 @@ void ApplicationWindow::readSettings()
 	}
 	settings.endArray();
 	d_graph_legend_display = (Graph::LegendDisplayMode)settings.value("/LegendDisplayMode", d_graph_legend_display).toInt();
+	d_keep_aspect_ration = settings.value("/KeepAspectRatio", d_keep_aspect_ration).toBool();
 	settings.endGroup(); // General
 
 	settings.beginGroup("/Curves");
@@ -5753,6 +5755,7 @@ void ApplicationWindow::saveSettings()
 	settings.endArray();
 
 	settings.setValue("/LegendDisplayMode", d_graph_legend_display);
+	settings.setValue("/KeepAspectRatio", d_keep_aspect_ration);
 	settings.endGroup(); // General
 
 	settings.beginGroup("/Curves");

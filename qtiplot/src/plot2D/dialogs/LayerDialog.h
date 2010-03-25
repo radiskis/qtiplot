@@ -66,6 +66,7 @@ protected slots:
 	void showCommonAxesBox();
 
 private:
+	void closeEvent(QCloseEvent*);
 	int convertToPixels(double w, FrameWidget::Unit unit, int dimension);
 	double convertFromPixels(int w, FrameWidget::Unit unit, int dimension);
 
