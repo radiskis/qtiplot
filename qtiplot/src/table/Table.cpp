@@ -897,7 +897,7 @@ QString Table::colName(int col)
 	return QString(this->objectName())+"_"+col_label[col];
 }
 
-void Table::setColName(int col, const QString& text, bool enumerateRight)
+void Table::setColName(int col, const QString& text, bool enumerateRight, bool warn)
 {
     if (text.isEmpty() || col<0 || col >= d_table->numCols())
 		return;
@@ -917,10 +917,12 @@ void Table::setColName(int col, const QString& text, bool enumerateRight)
 		if (enumerateRight)
             newLabel += QString::number(n);
 
-        if (col_label.contains(newLabel) > 0){
-            QMessageBox::critical(0,tr("QtiPlot - Error"),
-            tr("There is already a column called : <b>"+newLabel+"</b> in table <b>"+caption+"</b>!<p>Please choose another name!"));
-            return;
+		if (col_label.contains(newLabel) > 0){
+			if (warn){
+				QMessageBox::critical(0, tr("QtiPlot - Error"),
+				tr("There is already a column called : <b>"+newLabel+"</b> in table <b>"+caption+"</b>!<p>Please choose another name!"));
+			}
+			return;
         }
 		n++;
 	}

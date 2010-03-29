@@ -236,7 +236,7 @@ bool ImportOPJ::importTables(const OriginFile& opj)
 		if(!columnCount) //remove tables without cols
 			continue;
 
-		Table *table = (spread.hidden || spread.loose) && opj.version() == 7.5 ? mw->newHiddenTable(spread.name.c_str(), spread.label.c_str(), maxrows, columnCount)
+		Table *table = (spread.hidden || spread.loose) && opj.version() >= 7.5 ? mw->newHiddenTable(spread.name.c_str(), spread.label.c_str(), maxrows, columnCount)
 										: mw->newTable(spread.name.c_str(), maxrows, columnCount);
 		if (!table)
 			return false;
@@ -258,7 +258,7 @@ bool ImportOPJ::importTables(const OriginFile& opj)
 		{
 			Origin::SpreadColumn column = spread.columns[j];
 			QString name(column.name.c_str());
-			table->setColName(j, name.replace(QRegExp(".*_"),""));
+			table->setColName(j, name.replace(QRegExp(".*_"), ""), false, false);
 			table->setCommand(j, QString(column.command.c_str()));
 			table->setColComment(j, QString(column.comment.c_str()));
 			table->setColumnWidth(j, column.width * QtiPlot_scaling_factor);
@@ -300,7 +300,7 @@ bool ImportOPJ::importTables(const OriginFile& opj)
 				if(column.type != Origin::SpreadColumn::Label && column.valueType != Origin::Text)
 				{// number
 					if(value.type() == typeid(string)){//Origin::TextNumeric column should be set to Text
-						set_text_column = true;
+						//set_text_column = true;
 						table->setText(i, j, QString(boost::get<string>(value).c_str()));
 					}
 
