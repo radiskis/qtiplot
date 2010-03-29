@@ -163,6 +163,7 @@ namespace Origin
 		string comment;
 		int width;
 		unsigned int index;
+		unsigned int sheet;
 		vector<variant> data;
 
 		SpreadColumn(const string& _name = "", unsigned int _index = 0)
@@ -176,6 +177,7 @@ namespace Origin
 		,	decimalPlaces(6)
 		,	width(8)
 		,	numericDisplayType(DefaultDecimalDigits)
+		,	sheet(0)
 		{};
 	};
 
@@ -184,12 +186,14 @@ namespace Origin
 		unsigned int maxRows;
 		bool loose;
 		bool multisheet;
+		unsigned int sheets;
 		vector<SpreadColumn> columns;
 
 		SpreadSheet(const string& _name = "")
 		:	Window(_name)
 		,	loose(true)
 		,	multisheet(false)
+		,	sheets(1)
 		{};
 	};
 

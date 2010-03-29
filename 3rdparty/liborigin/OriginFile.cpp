@@ -79,7 +79,7 @@ OriginFile::OriginFile(const string& fileName)
 		fileVersion = 703;
 	else if(fileVersion >= 2766 && fileVersion <= 2769)	// 7.5
 		fileVersion = 750;
-	else if(fileVersion >= 2878 && fileVersion <= 2891)	// 8.0
+	else if(fileVersion >= 2878 && fileVersion <= 2896)	// 8.0
 		fileVersion = 800;
 	else if(fileVersion == 2919)						// 8.1
 		fileVersion = 810;

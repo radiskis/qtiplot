@@ -104,11 +104,15 @@ bool Origin800Parser::parse()
 
 		string::size_type pos = name.find_last_of("_");
 		string columnname;
-		if(pos != string::npos)
-		{
+		if(pos != string::npos){
 			columnname = name.substr(pos + 1);
 			name.resize(pos);
 		}
+
+		pos = name.find_first_of("@");
+		if(pos != string::npos)
+			name.resize(pos);
+
 		BOOST_LOG_(1, format("	NAME: %s") % name.c_str());
 
 		unsigned int spread = 0;
@@ -313,17 +317,23 @@ bool Origin800Parser::parse()
 					current_col = 1;
 				++current_col;
 			}
-			BOOST_LOG_(1, format("SPREADSHEET = %s COLUMN NAME = %s (%d) (@0x%X)") % name % columnname % current_col % (unsigned int)file.tellg());
 			speadSheets[spread].columns.push_back(SpreadColumn(columnname, dataIndex));
 			string::size_type sheetpos = speadSheets[spread].columns.back().name.find_last_of("@");
-			if(!speadSheets[spread].multisheet && sheetpos != string::npos)
-			{
-				if(lexical_cast<int>(columnname.substr(sheetpos + 1).c_str()) > 1)
-				{
+			if(sheetpos != string::npos){
+				unsigned int sheet = lexical_cast<int>(columnname.substr(sheetpos + 1).c_str());
+				if( sheet > 1){
 					speadSheets[spread].multisheet = true;
-					BOOST_LOG_(1, format("SPREADSHEET \"%s\" IS MULTISHEET") % name);
+
+					columnname.resize(sheetpos);
+					speadSheets[spread].columns.back().name = columnname;
+					speadSheets[spread].columns.back().sheet = sheet - 1;
+
+					if (speadSheets[spread].sheets < sheet)
+						speadSheets[spread].sheets = sheet;
 				}
 			}
+			BOOST_LOG_(1, format("SPREADSHEET = %s SHEET = %d COLUMN NAME = %s (%d) (@0x%X)") % name % speadSheets[spread].columns.back().sheet % columnname % current_col % (unsigned int)file.tellg());
+
 			++dataIndex;
 
 			////////////////////////////// SIZE of column /////////////////////////////////////////////
@@ -403,15 +413,13 @@ bool Origin800Parser::parse()
 	}
 
 	////////////////////////////////////////////////////////////////////////////
-	for(unsigned int i = 0; i < speadSheets.size(); ++i)
-	{
-		if(speadSheets[i].multisheet)
-		{
+	/*for(unsigned int i = 0; i < speadSheets.size(); ++i){
+		if(speadSheets[i].multisheet){
 			BOOST_LOG_(1, format("		CONVERT SPREADSHEET \"%s\" to EXCEL") % speadSheets[i].name.c_str());
 			convertSpreadToExcel(i);
 			--i;
 		}
-	}
+	}*/
 	////////////////////////////////////////////////////////////////////////////
 	////////////////////// HEADER SECTION //////////////////////////////////////
 
@@ -421,7 +429,7 @@ bool Origin800Parser::parse()
 	BOOST_LOG_(1, format("	[position @ 0x%X]") % POS);
 
 	//////////////////////// OBJECT INFOS //////////////////////////////////////
-	for (int i= 0; i < speadSheets.size(); i++){
+	for (int i = 0; i < speadSheets.size(); i++){
 		BOOST_LOG_(1, format("Reading header for table: %s") % speadSheets[i].name);
 		findObjectInfoSectionByName(POS, speadSheets[i].name);
 		readSpreadInfo();
@@ -463,7 +471,7 @@ bool Origin800Parser::parse()
 			readGraphInfo();
 	}*/
 
-	file.seekg(1, ios_base::cur);
+	/*file.seekg(1, ios_base::cur);
 	BOOST_LOG_(1, format("Some Origin params @ 0x%X:") % (unsigned int)file.tellg());
 
 	file >> c;
@@ -581,6 +589,7 @@ bool Origin800Parser::parse()
 	}
 	catch(...)
 	{}
+	*/
 	BOOST_LOG_(1, "Done parsing");
 	BOOST_LOG_FINALIZE();
 
@@ -609,7 +618,7 @@ void Origin800Parser::readSpreadInfo()
 	file.seekg(POS, ios_base::beg);
 	readWindowProperties(speadSheets[spread], size);
 
-	unsigned int maxSearchPos = findStringPos("__LayerInfoStorage");
+	unsigned int maxSearchPos = findStringPos("__WIOTN");
 	unsigned int stringSize = 47;
 	unsigned int columns = speadSheets[spread].columns.size();
 	for (unsigned int i = 0; i < columns; i++){
@@ -620,14 +629,28 @@ void Origin800Parser::readSpreadInfo()
 			BOOST_LOG_(1, format("		Column %s has formula: %s cursor pos: 0x%X") % colName % speadSheets[spread].columns[col].command % file.tellg());
 		}
 	}
+
 	/////////////// COLUMN Types ///////////////////////////////////////////
 
+	findStringPos("__LayerInfoStorage");
+
 	const char* colTypes[] = {"X", "Y", "Z", "XErr", "YErr", "Label", "None"};
+	unsigned int sheet = 0;
 	for (unsigned int i = 0; i < columns; i++){
 		string colName = speadSheets[spread].columns[i].name;
 		BOOST_LOG_(1, format("		Column %s") % colName);
 
+		unsigned int colSheet = speadSheets[spread].columns[i].sheet;
+		if (colSheet > sheet){
+			for (unsigned int j = 0; j < colSheet - sheet; j++)
+				findSection("__LayerInfoStorage", 19);
+			sheet = colSheet;
+		}
+
 		unsigned int pos = findStringPos(colName);
+		if (pos >= d_file_size)
+			continue;
+
 		file.seekg(pos - 1, ios_base::beg);
 		char c = 0;
 		file >> c;
@@ -683,6 +706,7 @@ void Origin800Parser::readSpreadInfo()
 			case 0x30: // Numeric	   - Dec1,000
 			case 0x39: // Text&Numeric - Dec1,000
 				speadSheets[spread].columns[i].valueType = (c1%0x10 == 0x9) ? TextNumeric : Numeric;
+				speadSheets[spread].columns[i].valueType = Numeric;
 				speadSheets[spread].columns[i].valueTypeSpecification = c1 / 0x10;
 				if(c2 >= 0x80){
 					speadSheets[spread].columns[i].significantDigits = c2 - 0x80;
@@ -723,8 +747,16 @@ void Origin800Parser::readSpreadInfo()
 
 		int size;
 		file >> size;
+		if (size > 1000){
+			pos += 0x4;
+			file.seekg(pos, ios_base::beg);
+			file >> size;
+		}
+
+		BOOST_LOG_(1, format("			comment size: %d (@ 0x%X)") % size % (pos));
+
 		if(size > 0){
-			file.seekg(pos + 0x9, ios_base::beg);
+			file.seekg(pos + 0x5, ios_base::beg);
 			string comment(size, 0);
 			file >> comment;
 
@@ -1007,7 +1039,7 @@ void Origin800Parser::readMatrixInfo()
 		matrixes[idx].view = Matrix::ImageView;
 	BOOST_LOG_(1, format("		View: %d (@ 0x%X)") % view % (LAYER + 0x52 + 0x1F));*/
 
-	unsigned int maxSearchPos = findStringPos("__LayerInfoStorage");
+	unsigned int maxSearchPos = findStringPos("__WIOTN");
 	unsigned int stringSize = 47;
 
 	const char* sectionNames[] = {"Y2", "X2", "Y1", "X1"};
@@ -2303,6 +2335,9 @@ int Origin800Parser::findStringPos(const string& name)
 		if (c == name[0]){
 			pos = file.tellg();
 
+			file.seekg(pos - 0x3, ios_base::beg);
+			file >> c;
+
 			file.seekg(pos - 0x1, ios_base::beg);
 			string s = string(name.size(), 0);
 			file >> s;
@@ -2310,9 +2345,10 @@ int Origin800Parser::findStringPos(const string& name)
 			char end;
 			file >> end;
 
-			if (!end && name == s){
+			if (!c && !end && name == s){
 				pos -= 0x1;
 				file.seekg(startPos, ios_base::beg);
+				//BOOST_LOG_(1, format("Found string: %s (@ 0x%X)") % name % pos);
 				return pos;
 			}
 		}
