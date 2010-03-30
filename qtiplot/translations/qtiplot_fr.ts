@@ -965,7 +965,7 @@ Voulez-vous l&apos;écraser ?</translation>
     </message>
     <message>
         <source>&amp;Edit</source>
-        <translation>&amp;Edition</translation>
+        <translation>&amp;Édition</translation>
     </message>
     <message>
         <source>&amp;View</source>
@@ -1660,7 +1660,7 @@ Do you want to overwrite it?</source>
     </message>
     <message>
         <source>Best fit</source>
-        <translation>Meilleur ajustement</translation>
+        <translation>Afficher toutes les données</translation>
     </message>
     <message>
         <source>New &amp;Legend</source>
@@ -2791,7 +2791,7 @@ Operation aborted!</source>
         <source>This will modify the data in the worksheets!
 Are you sure you want to continue?</source>
         <translation>Ceci modifiera les données dans les tables !
-Etes vous sûr de vouloir continuer ?</translation>
+Êtes vous sûr de vouloir continuer ?</translation>
     </message>
     <message>
         <source>Continue</source>
@@ -2851,7 +2851,7 @@ Etes vous sûr de vouloir continuer ?</translation>
     </message>
     <message>
         <source>Edit</source>
-        <translation>Edition</translation>
+        <translation>Édition</translation>
     </message>
     <message>
         <source>Ctrl+ALT+M</source>
@@ -3657,7 +3657,7 @@ Quelques parties de ce fichier peuvent ne pas être affichés comme attendu.</tr
     </message>
     <message>
         <source>&amp;Restart scripting</source>
-        <translation>&amp;Redémarrer</translation>
+        <translation>Lan&amp;cer</translation>
     </message>
     <message>
         <source>E&amp;xecute</source>
@@ -4202,7 +4202,7 @@ Quelques parties de ce fichier peuvent ne pas être affichés comme attendu.</tr
     </message>
     <message>
         <source>Presentation Preview</source>
-        <translation>Prévisualisation de la présentation</translation>
+        <translation>Aperçu de la présentation</translation>
     </message>
     <message>
         <source>&amp;Save</source>
@@ -4795,7 +4795,7 @@ Quelques parties de ce fichier peuvent ne pas être affichés comme attendu.</tr
     </message>
     <message>
         <source>QtiPlot will try to download necessary information about the last available updates. Please modify your firewall settings in order to allow QtiPlot to connect to the internet!</source>
-        <translation>QtiPlot va essayer de télécharger les informations necessaires des mises à jour disponibles. Veuillez modifier les paramètres du firewall afin d&apos;autoriser QtiPlot à se connecter à Internet !</translation>
+        <translation>QtiPlot va essayer de télécharger les informations nécessaires des mises à jour disponibles. Vous devez modifier les paramètres du firewall afin d&apos;autoriser QtiPlot à se connecter à Internet !</translation>
     </message>
     <message>
         <source>Do you wish to continue?</source>
@@ -5527,7 +5527,7 @@ L&apos;autocomplétion ne sera pas disponible!</translation>
     </message>
     <message>
         <source>Zoom In (Shift++) or Out (-) and Drag Canvas</source>
-        <translation>Zoom + (Shift++) ou - (Shift+-) and déplacer le cadre</translation>
+        <translation>Zoom + (Shift++) ou - (Shift+-) et déplacer le cadre</translation>
     </message>
     <message>
         <source>Fit Slop&amp;e</source>
@@ -5584,7 +5584,7 @@ L&apos;autocomplétion ne sera pas disponible!</translation>
     </message>
     <message>
         <source>Print preview of window: </source>
-        <translation>Prévisualisation de la fenêtre :</translation>
+        <translation>Aperçu avant impression de la fenêtre :</translation>
     </message>
     <message>
         <source>Print Pre&amp;view</source>
@@ -6445,7 +6445,7 @@ L&apos;autocomplétion ne sera pas disponible!</translation>
     </message>
     <message>
         <source>&lt;&lt; &amp;Preview</source>
-        <translation>&lt;&lt; &amp;Prévisualisation</translation>
+        <translation>&lt;&lt; A&amp;perçu</translation>
     </message>
     <message>
         <source>None</source>
@@ -8081,7 +8081,7 @@ Les codes spéciaux suivant peuvent être utilisés :
     </message>
     <message>
         <source>Preview:</source>
-        <translation>Prévisualisation :</translation>
+        <translation>Aperçu :</translation>
     </message>
     <message>
         <source>&amp;Text</source>
@@ -9101,7 +9101,7 @@ Les codes spéciaux suivant peuvent être utilisés :
     </message>
     <message>
         <source>&amp;Previous</source>
-        <translation>&amp;Précédente</translation>
+        <translation>&amp;Précédent</translation>
     </message>
     <message>
         <source>&amp;Replace</source>
@@ -9781,7 +9781,7 @@ Les codes spéciaux suivant peuvent être utilisés :
     </message>
     <message>
         <source>&amp;Preview</source>
-        <translation>&amp;Prévisualisation</translation>
+        <translation>A&amp;perçu</translation>
     </message>
     <message>
         <source>From</source>
@@ -11066,7 +11066,7 @@ Les codes spéciaux suivant peuvent être utilisés :
     <name>ImageProfilesTool</name>
     <message>
         <source>Position</source>
-        <translation>Position</translation>
+        <translation>Position </translation>
     </message>
     <message>
         <source>x</source>
@@ -11078,7 +11078,7 @@ Les codes spéciaux suivant peuvent être utilisés :
     </message>
     <message>
         <source>Z-Value</source>
-        <translation>Valeur de Z</translation>
+        <translation>z</translation>
     </message>
 </context>
 <context>
@@ -11925,11 +11925,11 @@ Les limites doivent être dans la gamme de x ; Si vous ne connaissez pas la vale
     </message>
     <message>
         <source>Columns gap</source>
-        <translation>Entre les colonnes</translation>
+        <translation>Entre colonnes</translation>
     </message>
     <message>
         <source>Rows gap</source>
-        <translation>Entre les rangées</translation>
+        <translation>Entre rangées</translation>
     </message>
     <message>
         <source>Left margin</source>
@@ -15669,7 +15669,7 @@ Do you want to overwrite it?</source>
     </message>
     <message>
         <source>&amp;Edit</source>
-        <translation>&amp;Edition</translation>
+        <translation>&amp;Édition</translation>
     </message>
     <message>
         <source>E&amp;xecute</source>
@@ -15876,7 +15876,7 @@ Do you want to overwrite it?</source>
     </message>
     <message>
         <source>Script print preview</source>
-        <translation>Prévisualisation du script</translation>
+        <translation>Aperçu avant impression du script</translation>
     </message>
     <message>
         <source>&amp;Close</source>
