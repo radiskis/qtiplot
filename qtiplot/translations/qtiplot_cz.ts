@@ -456,7 +456,7 @@
     </message>
     <message>
         <source>&amp;Indexed Colors</source>
-        <translation>&amp;Indexované barvy</translation>
+        <translation>&amp;Rejstříkované barvy</translation>
     </message>
     <message>
         <source>Error</source>
@@ -532,7 +532,7 @@
     </message>
     <message>
         <source>Add &amp;Error Bars...</source>
-        <translation>Přidat &amp;pruhy s chybami...</translation>
+        <translation>Přidat &amp;chybové úsečky...</translation>
     </message>
     <message>
         <source>means</source>
@@ -1214,7 +1214,7 @@ Automatické dokončení nebude dostupné!</translation>
     </message>
     <message>
         <source>Add Error Bars...</source>
-        <translation>Přidat pruhy s chybami...</translation>
+        <translation>Přidat chybové úsečky...</translation>
     </message>
     <message>
         <source>X E&amp;rror</source>
@@ -2470,7 +2470,7 @@ Různé části tohoto souboru se nemusí zobrazovat tak, jak se očekává.</tr
     </message>
     <message>
         <source>Set as Y Error Bars</source>
-        <translation>Nastavit jako pruhy s chybami Y</translation>
+        <translation>Nastavit jako chybové úsečky Y</translation>
     </message>
     <message>
         <source>Please select a &apos;Y&apos; column first!</source>
@@ -2702,7 +2702,7 @@ Různé části tohoto souboru se nemusí zobrazovat tak, jak se očekává.</tr
     </message>
     <message>
         <source>QtiPlot - Error bars error</source>
-        <translation>QtiPlot - Chyba pruhu s chybami</translation>
+        <translation>QtiPlot - Chyba chybových úseček</translation>
     </message>
     <message>
         <source>Save changes to project: &lt;p&gt;&lt;b&gt; %1 &lt;/b&gt; ?</source>
@@ -3779,43 +3779,43 @@ Různé části tohoto souboru se nemusí zobrazovat tak, jak se očekává.</tr
     </message>
     <message>
         <source>Shared A&amp;xes Panel</source>
-        <translation type="unfinished"></translation>
+        <translation>Sdílený panel &amp;os</translation>
     </message>
     <message>
         <source> </source>
-        <translation type="unfinished"></translation>
+        <translation> </translation>
     </message>
     <message>
         <source>&amp;Custom Layout...</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Vlastní rozvržení...</translation>
     </message>
     <message>
         <source>Execute Selected Lines</source>
-        <translation type="unfinished"></translation>
+        <translation>Provést vybrané řádky</translation>
     </message>
     <message>
         <source>Commen&amp;t Selection</source>
-        <translation type="unfinished"></translation>
+        <translation>Opatřit výběr &amp;poznámkou</translation>
     </message>
     <message>
         <source>&amp;Uncomment Selection</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Odebrat poznámku k výběru</translation>
     </message>
     <message>
         <source>Comment Selection</source>
-        <translation type="unfinished"></translation>
+        <translation>Opatřit výběr poznámkou</translation>
     </message>
     <message>
         <source>Uncomment Selection</source>
-        <translation type="unfinished"></translation>
+        <translation>Odebrat poznámku k výběru</translation>
     </message>
     <message>
         <source>Ctrl+Shift+O</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+Shift+O</translation>
     </message>
     <message>
         <source>Ctrl+Shift+U</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+Shift+U</translation>
     </message>
 </context>
 <context>
@@ -4093,7 +4093,7 @@ Různé části tohoto souboru se nemusí zobrazovat tak, jak se očekává.</tr
     </message>
     <message>
         <source>Minor Ticks After</source>
-        <translation>Menší fajfky po</translation>
+        <translation>Vedlejší označení os po</translation>
     </message>
     <message>
         <source>Distance to axis</source>
@@ -4137,11 +4137,11 @@ Různé části tohoto souboru se nemusí zobrazovat tak, jak se očekává.</tr
     </message>
     <message>
         <source>Major Ticks</source>
-        <translation>Větší fajfky</translation>
+        <translation>Hlavní označení os</translation>
     </message>
     <message>
         <source>Minor Ticks</source>
-        <translation>Menší fajfky</translation>
+        <translation>Vedlejší označení os</translation>
     </message>
     <message>
         <source>Minor Grids</source>
@@ -4153,7 +4153,7 @@ Různé části tohoto souboru se nemusí zobrazovat tak, jak se očekává.</tr
     </message>
     <message>
         <source>Minor Ticks Before</source>
-        <translation>Menší fajfky před</translation>
+        <translation>Vedlejší označení os před</translation>
     </message>
     <message>
         <source>Line Type</source>
@@ -4209,7 +4209,7 @@ Různé části tohoto souboru se nemusí zobrazovat tak, jak se očekává.</tr
     </message>
     <message>
         <source>Major ticks length</source>
-        <translation>Délka větších fajfek</translation>
+        <translation>Délka hlavního označení os</translation>
     </message>
     <message>
         <source>Numeric</source>
@@ -4217,7 +4217,7 @@ Různé části tohoto souboru se nemusí zobrazovat tak, jak se očekává.</tr
     </message>
     <message>
         <source>Minor ticks length</source>
-        <translation>Délka menších fajfek</translation>
+        <translation>Délka vedlejšího označení os</translation>
     </message>
     <message>
         <source>Inverted</source>
@@ -4349,19 +4349,19 @@ Různé části tohoto souboru se nemusí zobrazovat tak, jak se očekává.</tr
     </message>
     <message>
         <source>Hide Ticks</source>
-        <translation type="unfinished"></translation>
+        <translation>Skrýt značení os</translation>
     </message>
     <message>
         <source>At Axis Begin</source>
-        <translation type="unfinished"></translation>
+        <translation>Na začátku osy</translation>
     </message>
     <message>
         <source>At Axis End</source>
-        <translation type="unfinished"></translation>
+        <translation>Na konci osy</translation>
     </message>
     <message>
         <source>At Axis Begin &amp; End</source>
-        <translation type="unfinished"></translation>
+        <translation>Na začátku &amp; konci osy</translation>
     </message>
 </context>
 <context>
@@ -5370,7 +5370,7 @@ Různé části tohoto souboru se nemusí zobrazovat tak, jak se očekává.</tr
     </message>
     <message>
         <source>Ticks - Labels space</source>
-        <translation>Značení os - prostor štítků</translation>
+        <translation>Značení os - prostor popisků</translation>
     </message>
     <message>
         <source>pixels</source>
@@ -5417,84 +5417,88 @@ Různé části tohoto souboru se nemusí zobrazovat tak, jak se očekává.</tr
 The following special codes can be used:
 \t for a TAB character 
 \s for a SPACE</source>
-        <translation type="unfinished"></translation>
+        <translation>Oddělovač sloupců lze uživatelsky nastavit.
+K tomu lze použít následujících zvláštních kódů:
+\t pro znak zarážky (TABULÁTOR)
+\s pro mezeru (MEZERNÍK)</translation>
     </message>
     <message>
         <source>The separator must not contain the following characters: 
 0-9eE.+-</source>
-        <translation type="unfinished"></translation>
+        <translation>Oddělovač nesmí obsahovat následující znaky:
+0-9eE.+-</translation>
     </message>
     <message>
         <source>New Color</source>
-        <translation type="unfinished"></translation>
+        <translation>Nová barva</translation>
     </message>
     <message>
         <source>&amp;Load Default</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Nahrát výchozí</translation>
     </message>
     <message>
         <source>Delete Color</source>
-        <translation type="unfinished"></translation>
+        <translation>Smazat barvu</translation>
     </message>
     <message>
         <source>Move Color Up</source>
-        <translation type="unfinished"></translation>
+        <translation>Posunout barvu nahoru</translation>
     </message>
     <message>
         <source>Move Color Down</source>
-        <translation type="unfinished"></translation>
+        <translation>Posunout barvu dolů</translation>
     </message>
     <message>
         <source>Indexed Colors</source>
-        <translation type="unfinished"></translation>
+        <translation>Rejstříkované barvy</translation>
     </message>
     <message>
         <source>Inde&amp;xed Symbols</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Rejstříkované symboly</translation>
     </message>
     <message>
         <source>Move Symbol Up</source>
-        <translation type="unfinished"></translation>
+        <translation>Posunout symbol nahoru</translation>
     </message>
     <message>
         <source>Move Symbol Down</source>
-        <translation type="unfinished"></translation>
+        <translation>Posunout symbol dolů</translation>
     </message>
     <message>
         <source>Pattern</source>
-        <translation type="unfinished">Vzor</translation>
+        <translation>Vzor</translation>
     </message>
     <message>
         <source>Default Symbol</source>
-        <translation type="unfinished"></translation>
+        <translation>Výchozí symbol</translation>
     </message>
     <message>
         <source>Edge width</source>
-        <translation type="unfinished"></translation>
+        <translation>Šířka okraje</translation>
     </message>
     <message>
         <source>&amp;Fill Symbol</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Vyplnit symbolem</translation>
     </message>
     <message>
         <source>Name</source>
-        <translation type="unfinished">Název</translation>
+        <translation>Název</translation>
     </message>
     <message>
         <source>Symbol</source>
-        <translation type="unfinished">Symbol</translation>
+        <translation>Symbol</translation>
     </message>
     <message>
         <source>Line style</source>
-        <translation type="unfinished"></translation>
+        <translation>Styl čáry</translation>
     </message>
     <message>
         <source>Fill area under curve</source>
-        <translation type="unfinished">Vyplnit oblast pod křivkou</translation>
+        <translation>Vyplnit oblast pod křivkou</translation>
     </message>
     <message>
         <source>Default Line Style</source>
-        <translation type="unfinished"></translation>
+        <translation>Výchozí styl čáry</translation>
     </message>
 </context>
 <context>
@@ -6402,7 +6406,7 @@ The following special codes can be used:
     </message>
     <message>
         <source>Add Error Bars to</source>
-        <translation>Pruhy s chybami přidat k</translation>
+        <translation>Chybové úsečky přidat k</translation>
     </message>
     <message>
         <source>Existing column</source>
@@ -6414,15 +6418,15 @@ The following special codes can be used:
     </message>
     <message>
         <source>&amp;X Error Bars</source>
-        <translation>Pruhy s chybami pro &amp;X</translation>
+        <translation>Chybové úsečky pro &amp;X</translation>
     </message>
     <message>
         <source>&amp;Y Error Bars</source>
-        <translation>Pruhy s chybami pro &amp;Y</translation>
+        <translation>Chybové úsečky pro &amp;Y</translation>
     </message>
     <message>
         <source>QtiPlot - Error Bars</source>
-        <translation>QtiPlot - Pruhy s chybami</translation>
+        <translation>QtiPlot - Chybové úsečky</translation>
     </message>
     <message>
         <source>Source of errors</source>
@@ -6609,7 +6613,7 @@ The following special codes can be used:
         <source>The column separator can be customized. The following special codes can be used:
 \t for a TAB character 
 \s for a SPACE</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
 </context>
 <context>
@@ -7132,7 +7136,7 @@ The following special codes can be used:
     </message>
     <message>
         <source>The curve %1 has no associated Y error bars. You cannot use instrumental weighting method.</source>
-        <translation>Křivka %1 není spojena s žádnými Y chybovými pruhy. Nemůžete použít nástrojový způsob statistického zvážení.</translation>
+        <translation>Křivka %1 není spojena s žádnými Y chybovými úsečkam. Nemůžete použít nástrojový způsob statistického zvážení.</translation>
     </message>
     <message>
         <source>graphics display disabled</source>
@@ -7258,7 +7262,7 @@ The following special codes can be used:
     </message>
     <message>
         <source>using error bars dataset</source>
-        <translation>za použití souboru dat chybových pruhů</translation>
+        <translation>za použití souboru dat chybových úseček</translation>
     </message>
     <message>
         <source>QtiPlot - Memory Allocation Error</source>
@@ -8542,32 +8546,42 @@ jednoduchou mezerou.</translation>
 The following special codes can be used:
 \t for a TAB character 
 \s for a SPACE</source>
-        <translation type="unfinished"></translation>
+        <translation>Oddělovač sloupců lze uživatelsky nastavit.
+K tomu lze použít následujících zvláštních kódů:
+\t pro znak zarážky (TAB)
+\s pro mezeru (MEZERNÍK)</translation>
     </message>
     <message>
         <source>The separator must not contain the following characters: 
 0-9eE.+-</source>
-        <translation type="unfinished"></translation>
+        <translation>Oddělovač nesmí obsahovat následující znaky:
+0-9eE.+-</translation>
     </message>
     <message>
         <source>By checking this option all white spaces will be 
 removed from the beginning and the end of 
 the lines in the ASCII file.</source>
         <comment>when translating this check the what&apos;s this functions and tool tips to place the &apos;\n&apos;s correctly</comment>
-        <translation type="unfinished"></translation>
+        <translation>Zaškrtnutím této volby budou všechny mezery 
+odstraněny ze začátků a konců řádků 
+souboru ASCII.</translation>
     </message>
     <message>
         <source>Warning: checking this option leads to column 
 overlaping if the columns in the ASCII file don&apos;t 
 have the same number of rows.</source>
-        <translation type="unfinished"></translation>
+        <translation>Varování: zaškrtnutí této volby vede k překrývání 
+sloupců, pokud sloupce v souboru ASCII nemají 
+stejný počet řádků.</translation>
     </message>
     <message>
         <source>To avoid this problem you should precisely 
 define the column separator using TAB and 
 SPACE characters.</source>
         <comment>when translating this check the what&apos;s this functions and tool tips to place the &apos;\n&apos;s correctly</comment>
-        <translation type="unfinished"></translation>
+        <translation>Abyste se vyhnul těmto potížím, měl byste 
+přesně určit oddělovač sloupce pomocí znáků
+pro zarážku (TAB) a mezeru (MEZERNÍK).</translation>
     </message>
     <message>
         <source>By checking this option all white spaces will be 
@@ -8576,20 +8590,29 @@ lines and each sequence of internal
 whitespaces (including the TAB character) will 
 be replaced with a single space.</source>
         <comment>when translating this check the what&apos;s this functions and tool tips to place the &apos;\n&apos;s correctly</comment>
-        <translation type="unfinished"></translation>
+        <translation>Zaškrtnutím této volby budou všechny mezery 
+odstraněny ze začátků a konců řádků a každá 
+posloupnost vnitřních prázdných míst (včetně 
+znaku zarážky (TAB)) bude nahrazena jednoduchou 
+mezerou.</translation>
     </message>
     <message>
         <source>Warning: checking this option leads to column 
 overlaping if the columns in the ASCII file don&apos;t 
 have the same number of rows.</source>
         <comment>when translating this check the what&apos;s this functions and tool tips to place the &apos;\n&apos;s correctly</comment>
-        <translation type="unfinished"></translation>
+        <translation>Varování: zaškrtnutí této volby vede k překrývání 
+sloupců, pokud sloupce v souboru ASCII nemají 
+stejný počet řádků.</translation>
     </message>
     <message>
         <source>The column separator can be customized. The following special codes can be used:
 \t for a TAB character 
 \s for a SPACE</source>
-        <translation type="unfinished"></translation>
+        <translation>Oddělovač sloupců lze uživatelsky nastavit.
+K tomu lze použít následujících zvláštních kódů:
+\t pro znak zarážky (TAB)
+\s pro mezeru (MEZERNÍK)</translation>
     </message>
 </context>
 <context>
@@ -9035,23 +9058,23 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Link &amp;X axes</source>
-        <translation type="unfinished"></translation>
+        <translation>Spojit osy &amp;x</translation>
     </message>
     <message>
         <source>&amp;Fixed size</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Pevná velikost</translation>
     </message>
     <message>
         <source>Align</source>
-        <translation type="unfinished"></translation>
+        <translation>Zarovnání</translation>
     </message>
     <message>
         <source>Canvases</source>
-        <translation type="unfinished"></translation>
+        <translation>Plátna</translation>
     </message>
     <message>
         <source>Co&amp;mmon axes</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Společné osy</translation>
     </message>
 </context>
 <context>
@@ -10180,11 +10203,11 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Major Ticks</source>
-        <translation>Větší fajfky</translation>
+        <translation>Hlavní označení os</translation>
     </message>
     <message>
         <source>Minor Ticks</source>
-        <translation>Menší fajfky</translation>
+        <translation>Vedlejší označení os</translation>
     </message>
     <message>
         <source>Co&amp;lor</source>
@@ -10360,31 +10383,31 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Tick Labels</source>
-        <translation type="unfinished"></translation>
+        <translation>Popisy čárek</translation>
     </message>
     <message>
         <source>Format</source>
-        <translation type="unfinished">Formát</translation>
+        <translation>Formát</translation>
     </message>
     <message>
         <source>Automatic</source>
-        <translation type="unfinished">Automaticky</translation>
+        <translation>Automaticky</translation>
     </message>
     <message>
         <source>Decimal: 10000.0</source>
-        <translation type="unfinished">Desetinný: 10000.0</translation>
+        <translation>Desetinný: 10000.0</translation>
     </message>
     <message>
         <source>Scientific: 1e4</source>
-        <translation type="unfinished">Vědecký: 1e4</translation>
+        <translation>Vědecký: 1e4</translation>
     </message>
     <message>
         <source>Engineering: 10k</source>
-        <translation type="unfinished">Technický: 10k</translation>
+        <translation>Technický: 10k</translation>
     </message>
     <message>
         <source>Precision</source>
-        <translation type="unfinished">Přesnost</translation>
+        <translation>Přesnost</translation>
     </message>
 </context>
 <context>
@@ -10903,7 +10926,7 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Error Bars</source>
-        <translation>Pruhy s chybami</translation>
+        <translation>Chybové úsečky</translation>
     </message>
     <message>
         <source>End Point</source>
@@ -11159,7 +11182,7 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>&amp;X Error Bar</source>
-        <translation>Pruh s chybami u &amp;x</translation>
+        <translation>Chybová úsečka u &amp;X</translation>
     </message>
     <message>
         <source>Radius/Center</source>
@@ -11283,19 +11306,19 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Link &amp;X axes</source>
-        <translation type="unfinished"></translation>
+        <translation>Spojit osy &amp;x</translation>
     </message>
     <message>
         <source>Miscellaneous</source>
-        <translation type="unfinished"></translation>
+        <translation>Různé</translation>
     </message>
     <message>
         <source>0 (all data points)</source>
-        <translation type="unfinished"></translation>
+        <translation>0 (všechny datové body)</translation>
     </message>
     <message>
         <source>Tolerance (Douglas-Peucker algorithm)</source>
-        <translation type="unfinished"></translation>
+        <translation>Dovolená úchylka (algoritmus Douglas-Peucker)</translation>
     </message>
 </context>
 <context>
