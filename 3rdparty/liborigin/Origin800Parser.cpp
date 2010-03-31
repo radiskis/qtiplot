@@ -44,9 +44,7 @@ inline boost::posix_time::ptime doubleToPosixTime(double jdt)
 
 Origin800Parser::Origin800Parser(const string& fileName)
 :	file(fileName.c_str(), ios::binary)
-{
-	objectIndex = 0;
-}
+{}
 
 bool Origin800Parser::parse()
 {
@@ -109,10 +107,6 @@ bool Origin800Parser::parse()
 			name.resize(pos);
 		}
 
-		pos = name.find_first_of("@");
-		if(pos != string::npos)
-			name.resize(pos);
-
 		BOOST_LOG_(1, format("	NAME: %s") % name.c_str());
 
 		unsigned int spread = 0;
@@ -142,8 +136,17 @@ bool Origin800Parser::parse()
 			case 0x50E2:
 			case 0x50C8:
 			case 0x50E7:
+
+				pos = name.find_first_of("@");
+				if(pos != string::npos){
+					name.resize(pos);
+					BOOST_LOG_(1, format("MATRIX %s is multisheet, only first shit will be imported!") % name.c_str());
+					break;
+				}
+
 				BOOST_LOG_(1, "NEW MATRIX");
 				matrixes.push_back(Matrix(name, dataIndex));
+
 				++dataIndex;
 
 				BOOST_LOG_(1, "VALUES :");
@@ -413,14 +416,6 @@ bool Origin800Parser::parse()
 	}
 
 	////////////////////////////////////////////////////////////////////////////
-	/*for(unsigned int i = 0; i < speadSheets.size(); ++i){
-		if(speadSheets[i].multisheet){
-			BOOST_LOG_(1, format("		CONVERT SPREADSHEET \"%s\" to EXCEL") % speadSheets[i].name.c_str());
-			convertSpreadToExcel(i);
-			--i;
-		}
-	}*/
-	////////////////////////////////////////////////////////////////////////////
 	////////////////////// HEADER SECTION //////////////////////////////////////
 
 	unsigned int POS = (unsigned int)file.tellg()-11;
@@ -431,18 +426,25 @@ bool Origin800Parser::parse()
 	//////////////////////// OBJECT INFOS //////////////////////////////////////
 	for (int i = 0; i < speadSheets.size(); i++){
 		BOOST_LOG_(1, format("Reading header for table: %s") % speadSheets[i].name);
-		findObjectInfoSectionByName(POS, speadSheets[i].name);
+
+		unsigned int pos = findObjectInfoSectionByName(POS, speadSheets[i].name);
+		speadSheets[i].objectID = pos;
+		object_info_positions.push_back(pos);
+
 		readSpreadInfo();
 	}
 
-	POS += 0xB;
-	file.seekg(POS, ios_base::beg);
-
 	for (int i = 0; i < matrixes.size(); i++){
 		BOOST_LOG_(1, format("Reading header for matrix: %s") % matrixes[i].name);
-		findObjectInfoSectionByName(POS, matrixes[i].name);
+
+		unsigned int pos = findObjectInfoSectionByName(POS, matrixes[i].name);
+		matrixes[i].objectID = pos;
+		object_info_positions.push_back(pos);
+
 		readMatrixInfo();
 	}
+
+	sort(object_info_positions.begin(), object_info_positions.end());
 
 	/*while(POS < d_file_size){
 		// HEADER
@@ -461,135 +463,28 @@ bool Origin800Parser::parse()
 
 		file.seekg(POS, ios_base::beg);
 
-		if(findSpreadByName(name) != -1)
-			readSpreadInfo();
-		else if(findMatrixByName(name) != -1)
-			readMatrixInfo();
-		else if(findExcelByName(name) != -1)
-			readExcelInfo();
-		else
+		//if(findExcelByName(name) != -1)
+			//readExcelInfo();
+		//else
 			readGraphInfo();
+
+		POS = file.tellg();
 	}*/
 
-	/*file.seekg(1, ios_base::cur);
-	BOOST_LOG_(1, format("Some Origin params @ 0x%X:") % (unsigned int)file.tellg());
+	POS = findStringPos("ResultsLog");
+	file.seekg(POS + 12, ios_base::beg);
+	file >> size;
 
-	file >> c;
-	while(c != 0){
-		out.str(string());
-		out << "		";
-		while(c != '\n'){
-			out << c;
-			file >> c;
-		}
-		double parvalue;
-		file >> parvalue;
-		out << format(": %g") % parvalue;
-		BOOST_LOG_(1, out.str());
-
-		file.seekg(1, ios_base::cur);
-		file >> c;
-	}
-	file.seekg(1 + 5, ios_base::cur);
-	while(1){
-		//fseek(f,5+0x40+1,SEEK_CUR);
-		int size;
-		file >> size;
-		if(size != 0x40)
-			break;
-
-		file.seekg(1, ios_base::cur);
-		Rect rect;
-		unsigned int coord;
-		file >> coord;
-		rect.left = coord;
-		file >> coord;
-		rect.top = coord;
-		file >> coord;
-		rect.right = coord;
-		file >> coord;
-		rect.bottom = coord;
-
-		unsigned char state;
-		file.seekg(0x8, ios_base::cur);
-		file >> state;
-
-		double creationDate, modificationDate;
-		file.seekg(0x7, ios_base::cur);
-		file >> creationDate;
-		file >> modificationDate;
-
-		file.seekg(0x8, ios_base::cur);
-		file >> c;
-
-		unsigned char labellen;
-		file.seekg(0x3, ios_base::cur);
-		file >> labellen;
-
-		file.seekg(4, ios_base::cur);
-		file >> size;
-
-		file.seekg(1, ios_base::cur);
-
-		string name(size, 0);
-		file >> name;
-
-		if(name == "ResultsLog"){
-			file.seekg(1, ios_base::cur);
-			file >> size;
-
-			file.seekg(1, ios_base::cur);
-			resultsLog.resize(size);
-			file >> resultsLog;
-
-			BOOST_LOG_(1, format("Results Log: %s") % resultsLog);
-			break;
-		} else {
-			notes.push_back(Note(name));
-			notes.back().objectID = objectIndex;
-			notes.back().frameRect = rect;
-			notes.back().creationDate = doubleToPosixTime(creationDate);
-			notes.back().modificationDate = doubleToPosixTime(modificationDate);
-			
-			if(c & 0x01)
-				notes.back().title = Window::Label;
-			else if(c & 0x02)
-				notes.back().title = Window::Name;
-			else
-				notes.back().title = Window::Both;
-
-			notes.back().hidden = (state & 0x40);
-
-			++objectIndex;
-
-			file.seekg(1, ios_base::cur);
-			file >> size;
-
-			file.seekg(1, ios_base::cur);
-
-			if(labellen > 1){
-				file >> notes.back().label.assign(labellen-1, 0);
-				file.seekg(1, ios_base::cur);
-			}
-
-			file >> notes.back().text.assign(size - labellen, 0);
-
-			BOOST_LOG_(1, format("NOTE %d NAME: %s") % notes.size() % notes.back().name);
-			BOOST_LOG_(1, format("NOTE %d LABEL: %s") % notes.size() % notes.back().label);
-			BOOST_LOG_(1, format("NOTE %d TEXT: %s") % notes.size() % notes.back().text);
-
-			file.seekg(1, ios_base::cur);
-		}
-	}
+	file.seekg(1, ios_base::cur);
+	resultsLog.resize(size);
+	file >> resultsLog;
+	BOOST_LOG_(1, format("Results Log: %s") % resultsLog);
 
 	file.seekg(1 + 4*5 + 0x10 + 1, ios_base::cur);
-	try
-	{
+	try {
 		readProjectTree();
-	}
-	catch(...)
-	{}
-	*/
+	} catch(...) {}
+
 	BOOST_LOG_(1, "Done parsing");
 	BOOST_LOG_FINALIZE();
 
@@ -617,6 +512,7 @@ void Origin800Parser::readSpreadInfo()
 	speadSheets[spread].name = name;
 	file.seekg(POS, ios_base::beg);
 	readWindowProperties(speadSheets[spread], size);
+	speadSheets[spread].loose = false;
 
 	unsigned int maxSearchPos = findStringPos("__WIOTN");
 	unsigned int stringSize = 47;
@@ -636,6 +532,7 @@ void Origin800Parser::readSpreadInfo()
 
 	const char* colTypes[] = {"X", "Y", "Z", "XErr", "YErr", "Label", "None"};
 	unsigned int sheet = 0;
+	unsigned int pos;
 	for (unsigned int i = 0; i < columns; i++){
 		string colName = speadSheets[spread].columns[i].name;
 		BOOST_LOG_(1, format("		Column %s") % colName);
@@ -647,7 +544,7 @@ void Origin800Parser::readSpreadInfo()
 			sheet = colSheet;
 		}
 
-		unsigned int pos = findStringPos(colName);
+		pos = findStringPos(colName);
 		if (pos >= d_file_size)
 			continue;
 
@@ -753,10 +650,12 @@ void Origin800Parser::readSpreadInfo()
 			file >> size;
 		}
 
-		BOOST_LOG_(1, format("			comment size: %d (@ 0x%X)") % size % (pos));
-
 		if(size > 0){
 			file.seekg(pos + 0x5, ios_base::beg);
+
+			if (size > 200)
+				size /= 2;//otherwise -> crash (why????)
+
 			string comment(size, 0);
 			file >> comment;
 
@@ -765,7 +664,7 @@ void Origin800Parser::readSpreadInfo()
 				comment.resize(spos);
 
 			speadSheets[spread].columns[i].comment = comment;
-			BOOST_LOG_(1, format("			comment: %s (@ 0x%X)") % comment % (pos + 0x9));
+			BOOST_LOG_(1, format("			comment: %s (@ 0x%X)") % comment % (pos + 0x5));
 		}
 	}
 	BOOST_LOG_(1, format("		Done with spreadsheet %d") % spread);
@@ -1056,10 +955,6 @@ void Origin800Parser::readMatrixInfo()
 		file >> matrixes[idx].command.assign(32, 0);
 		BOOST_LOG_(1, format("		Formula: %s cursor pos: 0x%X") % matrixes[idx].command % file.tellg());
 	}
-
-	//In 7.5 projects structure was : section_header_size=0x6F(4 bytes) + '\n' + section_header(0x6F bytes) + section_body_1_size(4 bytes) + '\n' + section_body_1 + section_body_2_size(maybe=0)(4 bytes) + '\n' + section_body_2 + '\n'
-	//possible sections: column formulas, __WIPR, __WIOTN, __LayerInfoStorage
-	//section name(column name in formula case) starts with 0x46 position
 }
 
 void Origin800Parser::readGraphInfo()
@@ -1078,7 +973,7 @@ void Origin800Parser::readGraphInfo()
 
 	graphs.push_back(Graph(name));
 	file.seekg(POS, ios_base::beg);
-	readWindowProperties(graphs.back(), size);
+	//readWindowProperties(graphs.back(), size);
 
 	file.seekg(POS + 0x23, ios_base::beg);
 	file >> graphs.back().width;
@@ -2196,13 +2091,13 @@ void Origin800Parser::readProjectTreeFolder(tree<ProjectNode>::iterator parent)
 		file.seekg(POS + 0x4, ios_base::beg);
 		file >> objectID;
 
-		if(c == 0x10)
+		/*if(c == 0x10)
 		{
 			projectTree.append_child(current_folder, ProjectNode(notes[objectID].name, ProjectNode::Note));
 		}
-		else
-		{
-			pair<ProjectNode::NodeType, string> object = findObjectByIndex(objectID);
+		else*/
+		if (c != 0x10){
+			pair<ProjectNode::NodeType, string> object = findObjectByInfoPosition(objectID);
 			projectTree.append_child(current_folder, ProjectNode(object.second, object.first));
 		}
 
@@ -2220,9 +2115,6 @@ void Origin800Parser::readProjectTreeFolder(tree<ProjectNode>::iterator parent)
 void Origin800Parser::readWindowProperties(Window& window, unsigned int size)
 {
 	unsigned int POS = file.tellg();
-
-	window.objectID = objectIndex;
-	++objectIndex;
 
 	file.seekg(POS + 0x1B, ios_base::beg);
 	file.read(reinterpret_cast<char*>(&window.frameRect), sizeof(window.frameRect));
@@ -2249,7 +2141,7 @@ void Origin800Parser::readWindowProperties(Window& window, unsigned int size)
 	window.hidden = (c & 0x08);
 	if(window.hidden)
 	{
-		BOOST_LOG_(1, format("			WINDOW %d NAME : %s	is hidden") % objectIndex % window.name.c_str());
+		BOOST_LOG_(1, format("			WINDOW : %s	is hidden") % window.name.c_str());
 	}
 	
 	double creationDate, modificationDate;
@@ -2275,7 +2167,7 @@ void Origin800Parser::readWindowProperties(Window& window, unsigned int size)
 			file >> window.label.assign(labellen, 0);
 		}
 
-		BOOST_LOG_(1, format("			WINDOW %d LABEL: %s") % objectIndex % window.label);
+		BOOST_LOG_(1, format("			WINDOW LABEL: %s") % window.label);
 	}
 }
 
@@ -2418,4 +2310,23 @@ int Origin800Parser::findObjectInfoSectionByName(int start, const string& name)
 		}
 	}
 	return 0;
+}
+
+pair<ProjectNode::NodeType, string> Origin800Parser::findObjectByInfoPosition(unsigned int index) const
+{
+	unsigned int pos = object_info_positions[index];
+
+	for(vector<SpreadSheet>::const_iterator it = speadSheets.begin(); it != speadSheets.end(); ++it)
+	{
+		if(it->objectID == pos)
+			return make_pair(ProjectNode::SpreadSheet, it->name);
+	}
+
+	for(vector<Matrix>::const_iterator it = matrixes.begin(); it != matrixes.end(); ++it)
+	{
+		if(it->objectID == pos)
+			return make_pair(ProjectNode::Matrix, it->name);
+	}
+
+	return pair<ProjectNode::NodeType, string>();
 }

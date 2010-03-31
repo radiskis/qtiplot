@@ -101,7 +101,7 @@ OriginFile::OriginFile(const string& fileName)
 		break;
 	default:
 		parser.reset(createOriginDefaultParser(fileName));
-	    break;
+		break;
 	}
 }
 

@@ -192,25 +192,20 @@ bool ImportOPJ::createProjectTree(const OriginFile& opj)
 	parent[root] = projectFolder;
 	for(tree<Origin::ProjectNode>::iterator sib = projectTree->begin(root); sib != projectTree->end(root); ++sib)
 	{
-		if(sib->type == Origin::ProjectNode::Folder)
-		{
+		if(sib->type == Origin::ProjectNode::Folder){
 			parent[sib] = mw->addFolder(sib->name.c_str(), parent.value(projectTree->parent(sib)));
 			parent[sib]->setBirthDate(posixTimeToString(sib->creationDate));
 			parent[sib]->setModificationDate(posixTimeToString(sib->modificationDate));
-		}
-		else
-		{
+		} else {
 			QString name = sib->name.c_str();
-			if(sib->type == Origin::ProjectNode::Note)
-			{
+			if(sib->type == Origin::ProjectNode::Note){
 				QRegExp rx("^@\\((\\S+)\\)$");
 				if(rx.indexIn(name) == 0)
 					name = rx.cap(1);
 			}
 
 			MdiSubWindow* w = projectFolder->window(name, classes[sib->type]);
-			if(w)
-			{
+			if(w){
 				Folder *f = parent.value(projectTree->parent(sib));
 				if (f){
 					f->addWindow(w);
@@ -483,18 +478,16 @@ bool ImportOPJ::importTables(const OriginFile& opj)
 		}
 
 
-		if(!(spread.hidden || spread.loose) || opj.version() != 7.5)
-		{
-			switch(spread.state)
-			{
-			case Origin::Window::Minimized:
-				mw->minimizeWindow(table);
-				break;
-			case Origin::Window::Maximized:
-				mw->maximizeWindow(table);
-				break;
-			default:
-				table->showNormal();
+		if(!(spread.hidden || spread.loose) || opj.version() != 7.5){
+			switch(spread.state){
+				case Origin::Window::Minimized:
+					mw->minimizeWindow(table);
+					break;
+				case Origin::Window::Maximized:
+					mw->maximizeWindow(table);
+					break;
+				default:
+					table->showNormal();
 			}
 
 			//cascade the tables

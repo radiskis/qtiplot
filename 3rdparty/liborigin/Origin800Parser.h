@@ -60,11 +60,12 @@ private:
 	bool findSection(const string& name, int length, int maxLength = 0);
 	int findObjectInfoSectionByName(int start, const string& name);
 	int findStringPos(const string& name);
+	pair<ProjectNode::NodeType, string> findObjectByInfoPosition(unsigned int index) const;
 
-	unsigned int objectIndex;
 	iendianfstream file;
 
 	int d_file_size;
+	vector<unsigned int> object_info_positions;
 };
 
 #endif // ORIGIN_800_PARSER_H
