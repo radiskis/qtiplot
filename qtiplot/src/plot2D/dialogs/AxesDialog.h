@@ -123,8 +123,7 @@ private slots:
     void setFrameDefaultValues();
 	void applyAxisFormat();
 	void setDisplayDateTimeFormat( const QString &);
-	void updateShowBackbone();
-	void updateSpacing();
+	void updateCurrentAxis();
 
 protected:
     void applyCanvasFormatTo(Graph *g);

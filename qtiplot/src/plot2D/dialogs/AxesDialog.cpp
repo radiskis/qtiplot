@@ -673,8 +673,7 @@ void AxesDialog::initAxesPage()
 	connect(axesTitlesList,SIGNAL(currentRowChanged(int)), this, SLOT(setAxisType(int)));
 	connect(axesTitlesList,SIGNAL(currentRowChanged(int)), this, SLOT(setBaselineDist(int)));
 	connect(axesTitlesList,SIGNAL(currentRowChanged(int)), this, SLOT(updateLabelsFormat(int)));
-	connect(axesTitlesList,SIGNAL(currentRowChanged(int)), this, SLOT(updateShowBackbone()));
-	connect(axesTitlesList,SIGNAL(currentRowChanged(int)), this, SLOT(updateSpacing()));
+	connect(axesTitlesList,SIGNAL(currentRowChanged(int)), this, SLOT(updateCurrentAxis()));
 
 	connect(boxShowLabels,SIGNAL(clicked(bool)), this, SLOT(updateTickLabelsList(bool)));
 
@@ -1667,11 +1666,13 @@ void AxesDialog::setBaselineDist(int)
 	boxBaseline->setValue(axesBaseline[mapToQwtAxisId()]);
 }
 
-void AxesDialog::updateSpacing()
+void AxesDialog::updateCurrentAxis()
 {
 	int axis = mapToQwtAxisId();
 	ScaleDraw *sd = (ScaleDraw *)d_graph->axisScaleDraw (axis);
 	if (sd){
+		boxAxisBackbone->setChecked(sd->hasComponent(QwtAbstractScaleDraw::Backbone));
+
 		boxTickLabelDistance->blockSignals(true);
 		boxTickLabelDistance->setValue(sd->spacing());
 		boxTickLabelDistance->blockSignals(false);
@@ -1680,14 +1681,6 @@ void AxesDialog::updateSpacing()
 		showTicksPolicyBox->setCurrentIndex(sd->showTicksPolicy());
 		showTicksPolicyBox->blockSignals(false);
 	}
-}
-
-void AxesDialog::updateShowBackbone()
-{
-	int axis = mapToQwtAxisId();
-	ScaleDraw *sd = (ScaleDraw *)d_graph->axisScaleDraw (axis);
-	if (sd)
-		boxAxisBackbone->setChecked(sd->hasComponent(QwtAbstractScaleDraw::Backbone));
 }
 
 void AxesDialog::setTicksType(int)
@@ -1876,6 +1869,9 @@ void AxesDialog::pageChanged ( QWidget *page )
 		axesList->setCurrentRow(axesTitlesList->currentRow());
 		updateScale();
 	}
+
+	if (page == axesPage)
+		updateCurrentAxis();
 
 	lastPage = page;
 }

@@ -47,6 +47,7 @@ private:
 	void readMatrixInfo();
 	void readGraphInfo();
 	void skipObjectInfo();
+	void skipLine();
 	void readGraphAxisInfo(GraphAxis& axis);
 	void readGraphGridInfo(GraphGrid& grid);
 	void readGraphAxisBreakInfo(GraphAxisBreak& axis_break);
@@ -56,12 +57,15 @@ private:
 	void readProjectTreeFolder(tree<ProjectNode>::iterator parent);
 	void readWindowProperties(Window& window, unsigned int size);
 	void readColorMap(ColorMap& colorMap);
+	void readResultsLog();
+	void readNotes();
 
 	bool findSection(const string& name, int length, int maxLength = 0);
 	int findObjectInfoSectionByName(int start, const string& name);
 	int findStringPos(const string& name);
 	pair<ProjectNode::NodeType, string> findObjectByInfoPosition(unsigned int index) const;
 
+	unsigned int objectIndex;
 	iendianfstream file;
 
 	int d_file_size;
