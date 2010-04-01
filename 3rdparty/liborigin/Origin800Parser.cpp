@@ -44,7 +44,9 @@ inline boost::posix_time::ptime doubleToPosixTime(double jdt)
 
 Origin800Parser::Origin800Parser(const string& fileName)
 :	file(fileName.c_str(), ios::binary)
-{}
+{
+	objectIndex = 0;
+}
 
 bool Origin800Parser::parse()
 {
@@ -446,11 +448,12 @@ bool Origin800Parser::parse()
 
 	sort(object_info_positions.begin(), object_info_positions.end());
 
-	/*while(POS < d_file_size){
+	/*POS += 0xB;
+	file.seekg(POS, ios_base::beg);
+	while(POS < d_file_size){
+		BOOST_LOG_(1, "			reading	Header");
 		// HEADER
-		// check header
 		POS = file.tellg();
-		BOOST_LOG_(1, format("POS = 0x%X") % POS);
 
 		file >> size;
 		if(size == 0)
@@ -459,26 +462,27 @@ bool Origin800Parser::parse()
 		file.seekg(POS + 0x7, ios_base::beg);
 		string name(25, 0);
 		file >> name;
-		BOOST_LOG_(1, format("Reading header for: %s") % name);
 
 		file.seekg(POS, ios_base::beg);
 
-		//if(findExcelByName(name) != -1)
-			//readExcelInfo();
-		//else
-			readGraphInfo();
+		if(findSpreadByName(name) != -1)
+			readSpreadInfo();
+		else if(findMatrixByName(name) != -1)
+			readMatrixInfo();
 
-		POS = file.tellg();
+		POS += 0x1;
+		file.seekg(1, ios_base::cur);
 	}*/
 
-	POS = findStringPos("ResultsLog");
-	file.seekg(POS + 12, ios_base::beg);
-	file >> size;
+	pair<ProjectNode::NodeType, string> object = findObjectByInfoPosition(object_info_positions.size() - 1);
+	findObjectInfoSectionByName(POS, object.second);
+	if (object.first == ProjectNode::SpreadSheet)
+		readSpreadInfo();
+	else
+		readMatrixInfo();
 
-	file.seekg(1, ios_base::cur);
-	resultsLog.resize(size);
-	file >> resultsLog;
-	BOOST_LOG_(1, format("Results Log: %s") % resultsLog);
+	readNotes();
+	readResultsLog();
 
 	file.seekg(1 + 4*5 + 0x10 + 1, ios_base::cur);
 	try {
@@ -489,6 +493,110 @@ bool Origin800Parser::parse()
 	BOOST_LOG_FINALIZE();
 
 	return true;
+}
+
+void Origin800Parser::readNotes()
+{
+	file.seekg(1 + 5 + 7, ios_base::cur);
+	while(1){
+		int size;
+		file >> size;
+
+		if(size != 0x48)
+			break;
+
+		file.seekg(1, ios_base::cur);
+
+		Rect rect;
+		unsigned int coord;
+		file >> coord;
+		rect.left = coord;
+		file >> coord;
+		rect.top = coord;
+		file >> coord;
+		rect.right = coord;
+		file >> coord;
+		rect.bottom = coord;
+
+		if (!rect.bottom || !rect.right)
+			break;
+
+		unsigned char state;
+		file.seekg(0x8, ios_base::cur);
+		file >> state;
+
+		double creationDate, modificationDate;
+		file.seekg(0x7, ios_base::cur);
+		file >> creationDate;
+		file >> modificationDate;
+
+		file.seekg(0x8, ios_base::cur);
+		unsigned char c;
+		file >> c;
+
+		unsigned int labellen;
+		file.seekg(0x3, ios_base::cur);
+		file >> labellen;
+
+		skipLine();
+
+		file >> size;
+		file.seekg(1, ios_base::cur);
+
+		string name(size, 0);
+		file >> name;
+
+		notes.push_back(Note(name));
+		notes.back().objectID = objectIndex;
+		++objectIndex;
+
+		notes.back().frameRect = rect;
+		notes.back().creationDate = doubleToPosixTime(creationDate);
+		notes.back().modificationDate = doubleToPosixTime(modificationDate);
+
+		if(c == 0x01)
+			notes.back().title = Window::Label;
+		else if(c == 0x02)
+			notes.back().title = Window::Name;
+		else
+			notes.back().title = Window::Both;
+
+		notes.back().hidden = (state & 0x40);
+
+		file.seekg(1, ios_base::cur);
+		file >> size;
+
+		file.seekg(1, ios_base::cur);
+
+		if(labellen > 1){
+			file >> notes.back().label.assign(labellen - 1, 0);
+			file.seekg(1, ios_base::cur);
+		}
+
+		file >> notes.back().text.assign(size - labellen, 0);
+
+		BOOST_LOG_(1, format("NOTE %d NAME: %s") % notes.size() % notes.back().name);
+		BOOST_LOG_(1, format("NOTE %d LABEL: %s") % notes.size() % notes.back().label);
+		BOOST_LOG_(1, format("NOTE %d TEXT: %s") % notes.size() % notes.back().text);
+
+		file.seekg(1, ios_base::cur);
+	}
+}
+
+void Origin800Parser::readResultsLog()
+{
+	int pos = findStringPos("ResultsLog");
+	if (pos < 0)
+		return;
+
+	file.seekg(pos + 12, ios_base::beg);
+	unsigned int size;
+	file >> size;
+
+	file.seekg(1, ios_base::cur);
+	resultsLog.resize(size);
+	file >> resultsLog;
+	BOOST_LOG_(1, format("Results Log: %s") % resultsLog);
 }
 
 void Origin800Parser::readSpreadInfo()
@@ -585,6 +693,9 @@ void Origin800Parser::readSpreadInfo()
 		width /= 0xA;
 		if(width == 0)
 			width = 8;
+		if (width > 1000)
+			break;
+
 		speadSheets[spread].columns[i].width = width;
 		BOOST_LOG_(1, format("			width: %d (@ 0x%X)") % width % (pos + 0x38));
 
@@ -642,7 +753,7 @@ void Origin800Parser::readSpreadInfo()
 		pos += 0x1D8;
 		file.seekg(pos, ios_base::beg);
 
-		int size;
+		unsigned int size;
 		file >> size;
 		if (size > 1000){
 			pos += 0x4;
@@ -653,20 +764,28 @@ void Origin800Parser::readSpreadInfo()
 		if(size > 0){
 			file.seekg(pos + 0x5, ios_base::beg);
 
-			if (size > 200)
-				size /= 2;//otherwise -> crash (why????)
+			unsigned char c;
+			file >> c;
+			unsigned int n = 1;
+			while (n < size && c != '@'){
+				file >> c;
+				n++;
+			}
 
+			size = file.tellg();
+			size -= pos + 0x6;
+
+			file.seekg(pos + 0x5, ios_base::beg);
 			string comment(size, 0);
 			file >> comment;
-
-			string::size_type spos = comment.find_first_of("@");
-			if (spos != string::npos)
-				comment.resize(spos);
 
 			speadSheets[spread].columns[i].comment = comment;
 			BOOST_LOG_(1, format("			comment: %s (@ 0x%X)") % comment % (pos + 0x5));
 		}
 	}
+
+	skipObjectInfo();
+
 	BOOST_LOG_(1, format("		Done with spreadsheet %d") % spread);
 }
 
@@ -955,6 +1074,13 @@ void Origin800Parser::readMatrixInfo()
 		file >> matrixes[idx].command.assign(32, 0);
 		BOOST_LOG_(1, format("		Formula: %s cursor pos: 0x%X") % matrixes[idx].command % file.tellg());
 	}
+
+	findSection("__LayerInfoStorage", 20);
+	for (int i = 0; i < 7; i++)
+		skipLine();
+
+	skipObjectInfo();
+	skipObjectInfo();
 }
 
 void Origin800Parser::readGraphInfo()
@@ -1743,92 +1869,41 @@ void Origin800Parser::readGraphInfo()
 
 void Origin800Parser::skipObjectInfo()
 {
-	unsigned int POS = file.tellg();
+	for (int i = 0; i < 3; i++)
+		skipLine();
 
+	unsigned int POS = file.tellg();
 	unsigned int size;
 	file >> size;
-	
-	POS += 5;
 
-	unsigned int LAYER = POS;
-	LAYER += size + 0x1;
-	while(LAYER < d_file_size)// multilayer loop
-	{
-		// LAYER section
-		LAYER +=0x5/* length of block = 0x12D + '\n'*/ + 0x12D + 0x1;
-		//now structure is next : section_header_size=0x6F(4 bytes) + '\n' + section_header(0x6F bytes) + section_body_1_size(4 bytes) + '\n' + section_body_1 + section_body_2_size(maybe=0)(4 bytes) + '\n' + section_body_2 + '\n'
-		//possible sections: column formulas, __WIPR, __WIOTN, __LayerInfoStorage
-		//section name(column name in formula case) starts with 0x46 position
-		while(LAYER < d_file_size)
-		{
-			//section_header_size=0x6F(4 bytes) + '\n'
-			LAYER += 0x5;
+	while (POS < d_file_size && size == 0x1E9){
+		POS += size + 0x5 + 0x1;
+		file.seekg(POS, ios_base::beg);
 
-			//section_header
-			string sec_name(41, 0);
-			file.seekg(LAYER + 0x46, ios_base::beg);
-			file >> sec_name;
-
-			//section_body_1_size
-			LAYER += 0x6F + 0x1;
-			file.seekg(LAYER, ios_base::beg);
-			file >> size;
-
-			//section_body_1
-			LAYER += 0x5;
-
-			//section_body_2_size
-			LAYER += size + 0x1;
-			file.seekg(LAYER, ios_base::beg);
-			file >> size;
-
-			//section_body_2
-			LAYER += 0x5;
-
-			//close section 00 00 00 00 0A
-			LAYER += size + (size > 0 ? 0x1 : 0);
-
-			//section_body_3_size
-			file.seekg(LAYER, ios_base::beg);
-			file >> size;
-
-			//section_body_3
-			LAYER += 0x5;
-
-			//close section 00 00 00 00 0A
-			LAYER += size + (size > 0 ? 0x1 : 0);
-
-			if(sec_name == "__LayerInfoStorage")
-				break;
-
-		}
-		LAYER += 0x5;
-
-		while(LAYER < d_file_size)
-		{
-			LAYER += 0x5;
-
-			LAYER += 0x1E7 + 0x1;
-			file.seekg(LAYER, ios_base::beg);
-			file >> size;
-
-			LAYER += 0x5 + size + (size > 0 ? 0x1 : 0);
-
-			file.seekg(LAYER, ios_base::beg);
-			file >> size;
-
-			if(size != 0x1E7)
-				break;
-		}
-
-		LAYER += 0x5*0x5 + 0x1ED*0x12;
-		file.seekg(LAYER, ios_base::beg);
 		file >> size;
+		if (!size){
+			POS += 0x1;
+			file.seekg(1, ios_base::cur);
+			file >> size;
+			if (size == 0x1E9)
+				POS += 0x4;
+		}
+	}
+	//BOOST_LOG_(1, format("	skipObjectInfo() pos:  0x%X") % file.tellg());
+}
 
-		if(size == 0)
+void Origin800Parser::skipLine()
+{
+	unsigned char c;
+	file >> c;
+	unsigned int POS = file.tellg();
+
+	while(c != '\n'){
+		file >> c;
+		POS++;
+		if (POS >= d_file_size)
 			break;
 	}
-	file.seekg(LAYER + 0x50, ios_base::beg);
 }
 
 void Origin800Parser::readGraphGridInfo(GraphGrid& grid)
@@ -2080,8 +2155,7 @@ void Origin800Parser::readProjectTreeFolder(tree<ProjectNode>::iterator parent)
 
 	POS += 5 + 5;
 
-	for(unsigned int i = 0; i < objectcount; ++i)
-	{
+	for (unsigned int i = 0; i < objectcount; ++i){
 		POS += 5;
 		char c;
 		file.seekg(POS + 0x2, ios_base::beg);
@@ -2091,12 +2165,10 @@ void Origin800Parser::readProjectTreeFolder(tree<ProjectNode>::iterator parent)
 		file.seekg(POS + 0x4, ios_base::beg);
 		file >> objectID;
 
-		/*if(c == 0x10)
-		{
+		if(c == 0x10)
 			projectTree.append_child(current_folder, ProjectNode(notes[objectID].name, ProjectNode::Note));
-		}
-		else*/
-		if (c != 0x10){
+		else {
+		//if (c != 0x10){
 			pair<ProjectNode::NodeType, string> object = findObjectByInfoPosition(objectID);
 			projectTree.append_child(current_folder, ProjectNode(object.second, object.first));
 		}
