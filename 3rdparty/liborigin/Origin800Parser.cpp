@@ -498,7 +498,8 @@ bool Origin800Parser::parse()
 void Origin800Parser::readNotes()
 {
 	file.seekg(1 + 5 + 7, ios_base::cur);
-	while(1){
+	unsigned int pos = file.tellg();
+	while(pos < d_file_size){
 		int size;
 		file >> size;
 
@@ -580,6 +581,7 @@ void Origin800Parser::readNotes()
 		BOOST_LOG_(1, format("NOTE %d TEXT: %s") % notes.size() % notes.back().text);
 
 		file.seekg(1, ios_base::cur);
+		pos = file.tellg();
 	}
 }
 
@@ -2168,7 +2170,6 @@ void Origin800Parser::readProjectTreeFolder(tree<ProjectNode>::iterator parent)
 		if(c == 0x10)
 			projectTree.append_child(current_folder, ProjectNode(notes[objectID].name, ProjectNode::Note));
 		else {
-		//if (c != 0x10){
 			pair<ProjectNode::NodeType, string> object = findObjectByInfoPosition(objectID);
 			projectTree.append_child(current_folder, ProjectNode(object.second, object.first));
 		}
