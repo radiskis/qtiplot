@@ -427,59 +427,54 @@ bool Origin800Parser::parse()
 
 	//////////////////////// OBJECT INFOS //////////////////////////////////////
 	for (int i = 0; i < speadSheets.size(); i++){
-		BOOST_LOG_(1, format("Reading header for table: %s") % speadSheets[i].name);
-
 		unsigned int pos = findObjectInfoSectionByName(POS, speadSheets[i].name);
 		speadSheets[i].objectID = pos;
 		object_info_positions.push_back(pos);
-
-		readSpreadInfo();
 	}
 
 	for (int i = 0; i < matrixes.size(); i++){
-		BOOST_LOG_(1, format("Reading header for matrix: %s") % matrixes[i].name);
-
 		unsigned int pos = findObjectInfoSectionByName(POS, matrixes[i].name);
 		matrixes[i].objectID = pos;
 		object_info_positions.push_back(pos);
-
-		readMatrixInfo();
 	}
 
 	sort(object_info_positions.begin(), object_info_positions.end());
 
-	/*POS += 0xB;
-	file.seekg(POS, ios_base::beg);
+	for (int i = 0; i < object_info_positions.size(); i++){
+		pair<ProjectNode::NodeType, string> object = findObjectByInfoPosition(i);
+		findObjectInfoSectionByName(POS, object.second);
+		if (object.first == ProjectNode::SpreadSheet)
+			readSpreadInfo();
+		else
+			readMatrixInfo();
+	}
+
+	file.seekg(1, ios_base::cur);
 	while(POS < d_file_size){
-		BOOST_LOG_(1, "			reading	Header");
-		// HEADER
 		POS = file.tellg();
 
 		file >> size;
-		if(size == 0)
+		BOOST_LOG_(1, format("POS @ 0x%X") % file.tellg());
+
+		if(size == 0){
+			file.seekg(POS - 1, ios_base::beg);
 			break;
+		}
 
 		file.seekg(POS + 0x7, ios_base::beg);
 		string name(25, 0);
 		file >> name;
+		BOOST_LOG_(1, format("Reading header for GRAPH: %s @ 0x%X]") % name % file.tellg());
 
 		file.seekg(POS, ios_base::beg);
+		readGraphInfo();
 
-		if(findSpreadByName(name) != -1)
-			readSpreadInfo();
-		else if(findMatrixByName(name) != -1)
-			readMatrixInfo();
+		graphs.back().objectID = POS;
+		object_info_positions.push_back(POS);
 
-		POS += 0x1;
-		file.seekg(1, ios_base::cur);
-	}*/
-
-	pair<ProjectNode::NodeType, string> object = findObjectByInfoPosition(object_info_positions.size() - 1);
-	findObjectInfoSectionByName(POS, object.second);
-	if (object.first == ProjectNode::SpreadSheet)
-		readSpreadInfo();
-	else
-		readMatrixInfo();
+		POS = file.tellg();
+	}
+	sort(object_info_positions.begin(), object_info_positions.end());
 
 	readNotes();
 	readResultsLog();
@@ -502,7 +497,6 @@ void Origin800Parser::readNotes()
 	while(pos < d_file_size){
 		int size;
 		file >> size;
-
 		if(size != 0x48)
 			break;
 
@@ -1082,7 +1076,6 @@ void Origin800Parser::readMatrixInfo()
 		skipLine();
 
 	skipObjectInfo();
-	skipObjectInfo();
 }
 
 void Origin800Parser::readGraphInfo()
@@ -1098,10 +1091,11 @@ void Origin800Parser::readGraphInfo()
 	string name(25, 0);
 	file.seekg(POS + 0x02, ios_base::beg);
 	file >> name;
+	BOOST_LOG_(1, format("readGraphInfo name: %s @ 0x%X]") % name % file.tellg());
 
 	graphs.push_back(Graph(name));
 	file.seekg(POS, ios_base::beg);
-	//readWindowProperties(graphs.back(), size);
+	readWindowProperties(graphs.back(), size);
 
 	file.seekg(POS + 0x23, ios_base::beg);
 	file >> graphs.back().width;
@@ -1152,7 +1146,7 @@ void Origin800Parser::readGraphInfo()
 		file.seekg(LAYER + 0x105, ios_base::beg);
 		file >> layer.backgroundColor;
 
-		LAYER += 0x12D + 0x1;
+		LAYER += 0x12D + 0x1 + 40;
 		//now structure is next : section_header_size=0x6F(4 bytes) + '\n' + section_header(0x6F bytes) + section_body_1_size(4 bytes) + '\n' + section_body_1 + section_body_2_size(maybe=0)(4 bytes) + '\n' + section_body_2 + '\n'
 		//possible sections: axes, legend, __BC02, _202, _231, _232, __LayerInfoStorage etc
 		//section name starts with 0x46 position
@@ -1456,8 +1450,7 @@ void Origin800Parser::readGraphInfo()
 
 		file.seekg(LAYER, ios_base::beg);
 		file >> size;
-
-		if(size == 0x1E7)//check layer is not empty
+		if(size)//check layer is not empty
 		{
 			while(LAYER < d_file_size)
 			{
@@ -1786,21 +1779,21 @@ void Origin800Parser::readGraphInfo()
 				file >> h;
 				curve.connectSymbols = (h&0x8);
 
-				LAYER += 0x1E7 + 0x1;
+				//LAYER += 0x1E7 + 0x1;
+				LAYER += size + 0x1;
 
-				int size;
+				int newSize;
 				file.seekg(LAYER, ios_base::beg);
-				file >> size;
+				file >> newSize;
 
-				LAYER += size + (size > 0 ? 0x1 : 0) + 0x5;
+				LAYER += newSize + (newSize > 0 ? 0x1 : 0) + 0x5;
 	
 				file.seekg(LAYER, ios_base::beg);
-				file >> size;
+				file >> newSize;
 
-				if(size != 0x1E7)
+				if(newSize != size)
 					break;
 			}
-
 		}
 		//LAYER+=0x5*0x5+0x1ED*0x12;
 		//LAYER+=2*0x5;
@@ -1811,7 +1804,6 @@ void Origin800Parser::readGraphInfo()
 		{
 			file.seekg(LAYER, ios_base::beg);
 			file >> size;
-
 			if(size == 0x2D)
 			{
 				LAYER += 0x5;
@@ -1837,23 +1829,24 @@ void Origin800Parser::readGraphInfo()
 			else
 				break;
 		}
+
 		LAYER += 0x5;
 
 		file.seekg(LAYER, ios_base::beg);
-		readGraphAxisInfo(layer.xAxis);
-		LAYER += 0x1ED*0x6;
+		size = readGraphAxisInfo(layer.xAxis);
+		LAYER += size*0x6;
 
 		LAYER += 0x5;
 
 		file.seekg(LAYER, ios_base::beg);
 		readGraphAxisInfo(layer.yAxis);
-		LAYER += 0x1ED*0x6;
+		LAYER += size*0x6;
 
 		LAYER += 0x5;
 
 		file.seekg(LAYER, ios_base::beg);
 		readGraphAxisInfo(layer.zAxis);
-		LAYER += 0x1ED*0x6;
+		LAYER += size*0x6;
 
 		LAYER += 0x5;
 
@@ -1877,17 +1870,31 @@ void Origin800Parser::skipObjectInfo()
 	unsigned int POS = file.tellg();
 	unsigned int size;
 	file >> size;
-
-	while (POS < d_file_size && size == 0x1E9){
-		POS += size + 0x5 + 0x1;
+	while (POS < d_file_size && !size){
+		skipLine();
+		file >> size;
+		POS = file.tellg();
+	}
+	
+	unsigned int nextSize = size;
+	//BOOST_LOG_(1, format("	skipObjectInfo() size: %d (0x%X) @ 0x%X") % size % size % POS);
+	while (POS < d_file_size && nextSize == size){
+		POS += nextSize + 0x2;
 		file.seekg(POS, ios_base::beg);
 
-		file >> size;
-		if (!size){
+		file >> nextSize;
+		POS +=  0x4;
+		//BOOST_LOG_(1, format("	next size: %d (0x%X) @ 0x%X") % nextSize % nextSize % POS);
+
+		if (!nextSize){
 			POS += 0x1;
 			file.seekg(1, ios_base::cur);
-			file >> size;
-			if (size == 0x1E9)
+			file >> nextSize;
+			if (nextSize == size)
+				POS += 0x4;
+		} else if (nextSize > 1e6){
+			file >> nextSize;
+			if (nextSize == size)
 				POS += 0x4;
 		}
 	}
@@ -1955,12 +1962,13 @@ void Origin800Parser::readGraphAxisBreakInfo(GraphAxisBreak& axis_break)
 void Origin800Parser::readGraphAxisFormatInfo(GraphAxisFormat& format)
 {
 	unsigned int POS = file.tellg();
-
 	unsigned char h;
 	short w;
 
 	file.seekg(POS + 0x26, ios_base::beg);
 	file >> h;
+	BOOST_LOG_(1, boost::format("h: %d @ 0x%X") % h % (POS + 0x26));
+
 	format.hidden = (h == 0);
 
 	file.seekg(POS + 0x0F, ios_base::beg);
@@ -2080,37 +2088,42 @@ void Origin800Parser::readGraphAxisTickLabelsInfo(GraphAxisTick& tick)
 	}
 }
 
-void Origin800Parser::readGraphAxisInfo(GraphAxis& axis)
+unsigned int Origin800Parser::readGraphAxisInfo(GraphAxis& axis)
 {
 	unsigned int POS = file.tellg();
+	unsigned int size;
+	file >> size;
+
 	POS += 0x5;
 	file.seekg(POS, ios_base::beg);
 	readGraphGridInfo(axis.minorGrid);
-	POS += 0x1E7 + 1;
+	POS += size + 1;
 
 	POS += 0x5;
 	file.seekg(POS, ios_base::beg);
 	readGraphGridInfo(axis.majorGrid);
-	POS += 0x1E7 + 1;
+	POS += size + 1;
 
 	POS += 0x5;
 	file.seekg(POS, ios_base::beg);
 	readGraphAxisTickLabelsInfo(axis.tickAxis[0]);
-	POS += 0x1E7 + 1;
+	POS += size + 1;
 
 	POS += 0x5;
 	file.seekg(POS, ios_base::beg);
 	readGraphAxisFormatInfo(axis.formatAxis[0]);
-	POS += 0x1E7 + 1;
+	POS += size + 1;
 
 	POS += 0x5;
 	file.seekg(POS, ios_base::beg);
 	readGraphAxisTickLabelsInfo(axis.tickAxis[1]);
-	POS += 0x1E7 + 1;
+	POS += size + 1;
 
 	POS += 0x5;
 	file.seekg(POS, ios_base::beg);
 	readGraphAxisFormatInfo(axis.formatAxis[1]);
+
+	return (size + 1 + 0x5);
 }
 
 void Origin800Parser::readProjectTree()
@@ -2213,15 +2226,18 @@ void Origin800Parser::readWindowProperties(Window& window, unsigned int size)
 
 	window.hidden = (c & 0x08);
 	if(window.hidden)
-	{
 		BOOST_LOG_(1, format("			WINDOW : %s	is hidden") % window.name.c_str());
-	}
 	
 	double creationDate, modificationDate;
 	file.seekg(POS + 0x73, ios_base::beg);
 	file >> creationDate;
-	file >> modificationDate;
+	if (creationDate >= 1e10)
+		return;
 	window.creationDate = doubleToPosixTime(creationDate);
+
+	file >> modificationDate;
+	if (modificationDate >= 1e10)
+		return;
 	window.modificationDate = doubleToPosixTime(modificationDate);
 
 	if(size > 0xC3)
@@ -2399,6 +2415,12 @@ pair<ProjectNode::NodeType, string> Origin800Parser::findObjectByInfoPosition(un
 	{
 		if(it->objectID == pos)
 			return make_pair(ProjectNode::Matrix, it->name);
+	}
+
+	for(vector<Graph>::const_iterator it = graphs.begin(); it != graphs.end(); ++it)
+	{
+		if(it->objectID == pos)
+			return make_pair(ProjectNode::Graph, it->name);
 	}
 
 	return pair<ProjectNode::NodeType, string>();

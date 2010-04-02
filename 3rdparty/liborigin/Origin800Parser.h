@@ -48,7 +48,7 @@ private:
 	void readGraphInfo();
 	void skipObjectInfo();
 	void skipLine();
-	void readGraphAxisInfo(GraphAxis& axis);
+	unsigned int readGraphAxisInfo(GraphAxis& axis);
 	void readGraphGridInfo(GraphGrid& grid);
 	void readGraphAxisBreakInfo(GraphAxisBreak& axis_break);
 	void readGraphAxisFormatInfo(GraphAxisFormat& format);

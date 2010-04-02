@@ -2635,8 +2635,7 @@ void ApplicationWindow::loadImage(const QString& fn)
 MultiLayer* ApplicationWindow::multilayerPlot(const QString& caption, int layers, int rows, int cols)
 {
 	MultiLayer* ml = new MultiLayer(this, layers, rows, cols);
-	QString label = caption;
-	initMultilayerPlot(ml, label.replace(QRegExp("_"), "-"));
+	initMultilayerPlot(ml, caption);
 	return ml;
 }
 
@@ -6685,7 +6684,8 @@ bool ApplicationWindow::setWindowName(MdiSubWindow *w, const QString &text)
 		return false;
 	}
 
-	newName.replace("_", "-");
+	if (w->inherits("Table"))
+		newName.replace("_", "-");
 
 	while(alreadyUsedName(newName)){
 		QMessageBox::critical(this, tr("QtiPlot - Error"), tr("Name <b>%1</b> already exists!").arg(newName)+
