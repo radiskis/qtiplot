@@ -5543,6 +5543,7 @@ L&apos;autocomplétion ne sera pas disponible!</translation>
     </message>
     <message>
         <source>&amp;Waterfall Plot</source>
+        <translatorcomment>N&apos;apparait pas traduit !!</translatorcomment>
         <translation>Courbes en cascade</translation>
     </message>
     <message>
@@ -6699,7 +6700,7 @@ Les codes spéciaux suivant peuvent être utilisés :
     </message>
     <message>
         <source>None</source>
-        <translation>Aucun</translation>
+        <translation>Aucune</translation>
     </message>
     <message>
         <source>Out</source>
@@ -6707,7 +6708,7 @@ Les codes spéciaux suivant peuvent être utilisés :
     </message>
     <message>
         <source>In &amp; Out</source>
-        <translation>Au dessus et en dessous</translation>
+        <translation>Au dessus &amp; en dessous</translation>
     </message>
     <message>
         <source>In</source>
@@ -7032,7 +7033,7 @@ Les codes spéciaux suivant peuvent être utilisés :
     </message>
     <message>
         <source>Print</source>
-        <translation>Imprimer</translation>
+        <translation>Impression</translation>
     </message>
     <message>
         <source>Print Crop&amp;marks</source>
