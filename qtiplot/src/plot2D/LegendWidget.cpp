@@ -219,7 +219,7 @@ void LegendWidget::drawSymbol(PlotCurve *c, int point, QPainter *p, int x, int y
 
 	p->save();
 	if (c->style() != 0){
-		QPen  pen = c->pen();
+		QPen pen = c->pen();
 		pen.setCosmetic(false);
 		p->setPen (QwtPainter::scaledPen(pen));
 		if (c->type() == Graph::VerticalBars || c->type() == Graph::HorizontalBars ||
@@ -227,6 +227,9 @@ void LegendWidget::drawSymbol(PlotCurve *c, int point, QPainter *p, int x, int y
 			QRect lr = QRect(x, y - l/4, l, l/2);
 			p->setBrush(c->brush());
 			QwtPainter::drawRect(p, lr);
+
+			p->restore();
+			return;
 		} else
 			QwtPainter::drawLine(p, x, y, x + l, y);
 	}

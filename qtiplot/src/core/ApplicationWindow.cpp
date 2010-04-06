@@ -14284,6 +14284,9 @@ void ApplicationWindow::translateActionsStrings()
     actionAddZoomPlot->setMenuText(tr("&Zoom"));
     actionAddZoomPlot->setToolTip(tr("Zoom"));
 
+	actionWaterfallPlot->setMenuText(tr("&Waterfall Plot"));
+	actionWaterfallPlot->setToolTip(tr("Waterfall Plot"));
+
     actionExtractGraphs->setMenuText(tr("E&xtract to Graphs"));
     actionExtractGraphs->setToolTip(tr("Extract to Graphs"));
 

@@ -50,6 +50,8 @@ protected:
 	pair<Origin::ProjectNode::NodeType, string> findObjectByIndex(unsigned int index) const;
 	void convertSpreadToExcel(vector<Origin::SpreadSheet>::size_type spread);
 
+	int findColumnByName(int spread, const string& name);
+
 public:
 	vector<Origin::SpreadSheet> speadSheets;
 	vector<Origin::Matrix> matrixes;
@@ -64,5 +66,6 @@ public:
 OriginParser* createOriginDefaultParser(const string& fileName);
 OriginParser* createOrigin750Parser(const string& fileName);
 OriginParser* createOrigin800Parser(const string& fileName);
+OriginParser* createOrigin810Parser(const string& fileName);
 
 #endif // ORIGIN_PARSER_H

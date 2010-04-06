@@ -8375,6 +8375,10 @@ Automatisk komplettering ej tillgängligt!</translation>
         <source>Ctrl+Shift+U</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Waterfall Plot</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ArrowMarker</name>
