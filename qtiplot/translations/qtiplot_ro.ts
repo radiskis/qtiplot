@@ -7285,6 +7285,10 @@ Autocompletion will not be available!</source>
         <source>Ctrl+Shift+U</source>
         <translation>Ctrl+Shift+U</translation>
     </message>
+    <message>
+        <source>Waterfall Plot</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ArrowMarker</name>

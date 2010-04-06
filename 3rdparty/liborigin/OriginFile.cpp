@@ -81,7 +81,7 @@ OriginFile::OriginFile(const string& fileName)
 		fileVersion = 750;
 	else if(fileVersion >= 2878 && fileVersion <= 2896)	// 8.0
 		fileVersion = 800;
-	else if(fileVersion == 2919)						// 8.1
+	else if(fileVersion >= 2919)						// 8.1
 		fileVersion = 810;
 	else {
 		BOOST_LOG_(1, format("Found unknown project version %d") % fileVersion);
@@ -91,17 +91,19 @@ OriginFile::OriginFile(const string& fileName)
 	}
 	BOOST_LOG_(1, format("Found project version %.2f") % (fileVersion/100.0));
 
-	switch(fileVersion)
-	{
-	case 800:
-		parser.reset(createOrigin800Parser(fileName));
-		break;
-	case 750:
-		parser.reset(createOrigin750Parser(fileName));
-		break;
-	default:
-		parser.reset(createOriginDefaultParser(fileName));
-		break;
+	switch(fileVersion){
+		case 810:
+			 parser.reset(createOrigin810Parser(fileName));
+			 break;
+		case 800:
+			parser.reset(createOrigin800Parser(fileName));
+			break;
+		case 750:
+			parser.reset(createOrigin750Parser(fileName));
+			break;
+		default:
+			parser.reset(createOriginDefaultParser(fileName));
+			break;
 	}
 }
 

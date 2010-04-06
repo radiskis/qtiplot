@@ -1,9 +1,9 @@
 /***************************************************************************
-	File                 : Origin800Parser.h
+	File                 : Origin810Parser.h
     --------------------------------------------------------------------
 	Copyright            : (C) 2010 Ion Vasilief
 	Email (use @ for *)  : ion_vasilief*yahoo.fr
-	Description          : Origin 8.0 file parser class
+	Description          : Origin 8.1 file parser class
 
  ***************************************************************************/
 
@@ -27,18 +27,18 @@
  ***************************************************************************/
 
 
-#ifndef ORIGIN_800_PARSER_H
-#define ORIGIN_800_PARSER_H
+#ifndef ORIGIN_810_PARSER_H
+#define ORIGIN_810_PARSER_H
 
 #include "OriginParser.h"
 #include "endianfstream.hh"
 
 using namespace Origin;
 
-class Origin800Parser : public OriginParser
+class Origin810Parser : public OriginParser
 {
 public:
-	Origin800Parser(const string& fileName);
+	Origin810Parser(const string& fileName);
 	bool parse();
 
 private:
@@ -70,4 +70,4 @@ private:
 	int d_file_size;
 };
 
-#endif // ORIGIN_800_PARSER_H
+#endif // ORIGIN_810_PARSER_H

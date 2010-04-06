@@ -5663,6 +5663,10 @@ L&apos;autocomplétion ne sera pas disponible!</translation>
         <source>Ctrl+Shift+U</source>
         <translation>Ctrl+Shift+O</translation>
     </message>
+    <message>
+        <source>Waterfall Plot</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ArrowMarker</name>

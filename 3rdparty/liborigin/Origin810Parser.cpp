@@ -1,9 +1,9 @@
 /***************************************************************************
-	File                 : Origin800Parser.cpp
+	File                 : Origin810Parser.cpp
     --------------------------------------------------------------------
 	Copyright            : (C) 2010 Alex Kargovsky, Ion Vasilief
     Email (use @ for *)  : kargovsky*yumr.phys.msu.su, ion_vasilief*yahoo.fr
-	Description          : Origin 8.0 file parser class
+	Description          : Origin 8.1 file parser class
 
  ***************************************************************************/
 
@@ -26,7 +26,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "Origin800Parser.h"
+#include "Origin810Parser.h"
 #include <cstring>
 #include <sstream>
 #include <boost/format.hpp>
@@ -42,13 +42,13 @@ inline boost::posix_time::ptime doubleToPosixTime(double jdt)
 	return boost::posix_time::ptime(boost::gregorian::date(boost::gregorian::gregorian_calendar::from_julian_day_number(jdt+1)), boost::posix_time::seconds((jdt-(int)jdt)*86400));
 }
 
-Origin800Parser::Origin800Parser(const string& fileName)
+Origin810Parser::Origin810Parser(const string& fileName)
 :	file(fileName.c_str(), ios::binary)
 {
 	objectIndex = 0;
 }
 
-bool Origin800Parser::parse()
+bool Origin810Parser::parse()
 {
 	unsigned int dataIndex = 0;
 
@@ -59,11 +59,11 @@ bool Origin800Parser::parse()
 	stringstream out;
 	unsigned char c;
 	/////////////////// find column ///////////////////////////////////////////////////////////
-	file.seekg(0x10 + 1, ios_base::beg);
+	file.seekg(0x10, ios_base::beg);
 	unsigned int size;
 	file >> size;
-	file.seekg(1 + size + 1 + 5, ios_base::cur);
 
+	file.seekg(1 + size + 1 + 5, ios_base::cur);
 	file >> size;
 
 	file.seekg(1, ios_base::cur);
@@ -425,6 +425,7 @@ bool Origin800Parser::parse()
 	BOOST_LOG_(1, format("	nr_spreads = %d") % speadSheets.size());
 	BOOST_LOG_(1, format("	[position @ 0x%X]") % POS);
 
+	//////////////////////// OBJECT INFOS //////////////////////////////////////
 	POS += 0xB;
 	file.seekg(POS, ios_base::beg);
 	while(POS < d_file_size){
@@ -466,14 +467,16 @@ bool Origin800Parser::parse()
 	return true;
 }
 
-void Origin800Parser::readNotes()
+void Origin810Parser::readNotes()
 {
-	unsigned int pos = findStringPos("H");
+	file.seekg(1 + 5 + 7, ios_base::cur);
+	unsigned int pos = findStringPos("P");
 	file.seekg(pos, ios_base::beg);
+
 	while(pos < d_file_size){
-		int size;
+		unsigned int size;
 		file >> size;
-		if(size != 0x48)
+		if(size != 0x50)
 			break;
 
 		file.seekg(1, ios_base::cur);
@@ -522,11 +525,7 @@ void Origin800Parser::readNotes()
 		++objectIndex;
 
 		notes.back().frameRect = rect;
-		if (creationDate >= 1e10)
-			return;
 		notes.back().creationDate = doubleToPosixTime(creationDate);
-		if (modificationDate >= 1e10)
-			return;
 		notes.back().modificationDate = doubleToPosixTime(modificationDate);
 
 		if(c == 0x01)
@@ -559,7 +558,7 @@ void Origin800Parser::readNotes()
 	}
 }
 
-void Origin800Parser::readResultsLog()
+void Origin810Parser::readResultsLog()
 {
 	int pos = findStringPos("ResultsLog");
 	if (pos < 0)
@@ -575,7 +574,7 @@ void Origin800Parser::readResultsLog()
 	BOOST_LOG_(1, format("Results Log: %s") % resultsLog);
 }
 
-void Origin800Parser::readSpreadInfo()
+void Origin810Parser::readSpreadInfo()
 {
 	unsigned int POS = file.tellg();
 
@@ -771,7 +770,7 @@ void Origin800Parser::readSpreadInfo()
 	BOOST_LOG_(1, format("		Done with spreadsheet %d") % spread);
 }
 
-void Origin800Parser::readColumnInfo(int spread, int i)
+void Origin810Parser::readColumnInfo(int spread, int i)
 {
 	string colName = speadSheets[spread].columns[i].name;
 	if (colName.size() >= 11)
@@ -910,7 +909,7 @@ void Origin800Parser::readColumnInfo(int spread, int i)
 	}
 }
 
-void Origin800Parser::readExcelInfo()
+void Origin810Parser::readExcelInfo()
 {
 	unsigned int POS = file.tellg();
 
@@ -1131,7 +1130,7 @@ void Origin800Parser::readExcelInfo()
 	file.seekg(LAYER + 0x5, ios_base::beg);
 }
 
-void Origin800Parser::readMatrixInfo()
+void Origin810Parser::readMatrixInfo()
 {
 	unsigned int POS = file.tellg();
 
@@ -1203,7 +1202,7 @@ void Origin800Parser::readMatrixInfo()
 	skipObjectInfo();
 }
 
-void Origin800Parser::readGraphInfo()
+void Origin810Parser::readGraphInfo()
 {
 	unsigned int POS = file.tellg();
 
@@ -1986,7 +1985,7 @@ void Origin800Parser::readGraphInfo()
 	file.seekg(LAYER + 0x5, ios_base::beg);
 }
 
-void Origin800Parser::skipObjectInfo()
+void Origin810Parser::skipObjectInfo()
 {
 	for (int i = 0; i < 3; i++)
 		skipLine();
@@ -2026,7 +2025,7 @@ void Origin800Parser::skipObjectInfo()
 	//BOOST_LOG_(1, format("	skipObjectInfo() pos:  0x%X") % file.tellg());
 }
 
-void Origin800Parser::skipLine()
+void Origin810Parser::skipLine()
 {
 	unsigned char c;
 	file >> c;
@@ -2040,7 +2039,7 @@ void Origin800Parser::skipLine()
 	}
 }
 
-void Origin800Parser::readGraphGridInfo(GraphGrid& grid)
+void Origin810Parser::readGraphGridInfo(GraphGrid& grid)
 {
 	unsigned int POS = file.tellg();
 	
@@ -2062,7 +2061,7 @@ void Origin800Parser::readGraphGridInfo(GraphGrid& grid)
 	grid.width = (double)w/500.0;
 }
 
-void Origin800Parser::readGraphAxisBreakInfo(GraphAxisBreak& axis_break)
+void Origin810Parser::readGraphAxisBreakInfo(GraphAxisBreak& axis_break)
 {
 	unsigned int POS = file.tellg();
 
@@ -2084,7 +2083,7 @@ void Origin800Parser::readGraphAxisBreakInfo(GraphAxisBreak& axis_break)
 	file >> axis_break.minorTicksAfter;
 }
 
-void Origin800Parser::readGraphAxisFormatInfo(GraphAxisFormat& format)
+void Origin810Parser::readGraphAxisFormatInfo(GraphAxisFormat& format)
 {
 	unsigned int POS = file.tellg();
 	unsigned char h;
@@ -2125,7 +2124,7 @@ void Origin800Parser::readGraphAxisFormatInfo(GraphAxisFormat& format)
 	}
 }
 
-void Origin800Parser::readGraphAxisTickLabelsInfo(GraphAxisTick& tick)
+void Origin810Parser::readGraphAxisTickLabelsInfo(GraphAxisTick& tick)
 {
 	unsigned int POS = file.tellg();
 
@@ -2211,7 +2210,7 @@ void Origin800Parser::readGraphAxisTickLabelsInfo(GraphAxisTick& tick)
 	}
 }
 
-unsigned int Origin800Parser::readGraphAxisInfo(GraphAxis& axis)
+unsigned int Origin810Parser::readGraphAxisInfo(GraphAxis& axis)
 {
 	unsigned int POS = file.tellg();
 	unsigned int size;
@@ -2249,7 +2248,7 @@ unsigned int Origin800Parser::readGraphAxisInfo(GraphAxis& axis)
 	return (size + 1 + 0x5);
 }
 
-void Origin800Parser::readProjectTree()
+void Origin810Parser::readProjectTree()
 {
 	readProjectTreeFolder(projectTree.begin());
 
@@ -2260,7 +2259,7 @@ void Origin800Parser::readProjectTree()
 	}
 }
 
-void Origin800Parser::readProjectTreeFolder(tree<ProjectNode>::iterator parent)
+void Origin810Parser::readProjectTreeFolder(tree<ProjectNode>::iterator parent)
 {
 	unsigned int POS = file.tellg();
 
@@ -2269,12 +2268,8 @@ void Origin800Parser::readProjectTreeFolder(tree<ProjectNode>::iterator parent)
 
 	file.seekg(POS + 0x10, ios_base::beg);
 	file >> creationDate;
-	if (creationDate >= 1e10)
-		return;
 
 	file >> modificationDate;
-	if (modificationDate >= 1e10)
-		return;
 
 	POS += 0x20 + 1 + 5;
 	unsigned int size;
@@ -2289,10 +2284,14 @@ void Origin800Parser::readProjectTreeFolder(tree<ProjectNode>::iterator parent)
 	file >> name;
 
 	tree<ProjectNode>::iterator current_folder = projectTree.append_child(parent, ProjectNode(name, ProjectNode::Folder, doubleToPosixTime(creationDate), doubleToPosixTime(modificationDate)));
-	POS += size + 1 + 5 + 5;
+
+	file.seekg(1, ios_base::cur);
+	for (int i = 0; i < 6; i++)
+		skipLine();
+
+	POS = file.tellg();
 
 	unsigned int objectcount;
-	file.seekg(POS, ios_base::beg);
 	file >> objectcount;
 
 	POS += 5 + 5;
@@ -2302,6 +2301,7 @@ void Origin800Parser::readProjectTreeFolder(tree<ProjectNode>::iterator parent)
 		char c;
 		file.seekg(POS + 0x2, ios_base::beg);
 		file >> c;
+		BOOST_LOG_(1, format("c %s ID: %d") % c % (POS + 0x2));
 
 		unsigned int objectID;
 		file.seekg(POS + 0x4, ios_base::beg);
@@ -2325,7 +2325,7 @@ void Origin800Parser::readProjectTreeFolder(tree<ProjectNode>::iterator parent)
 		readProjectTreeFolder(current_folder);
 }
 
-void Origin800Parser::readWindowProperties(Window& window, unsigned int size)
+void Origin810Parser::readWindowProperties(Window& window, unsigned int size)
 {
 	unsigned int POS = file.tellg();
 
@@ -2361,16 +2361,14 @@ void Origin800Parser::readWindowProperties(Window& window, unsigned int size)
 	double creationDate, modificationDate;
 	file.seekg(POS + 0x73, ios_base::beg);
 	file >> creationDate;
-	if (creationDate > 1e4 && creationDate < 1e8)
-		window.creationDate = doubleToPosixTime(creationDate);
-	else
+	if (creationDate >= 1e10)
 		return;
+	window.creationDate = doubleToPosixTime(creationDate);
 
 	file >> modificationDate;
-	if (modificationDate > 1e4 && modificationDate < 1e8)
-		window.modificationDate = doubleToPosixTime(modificationDate);
-	else
+	if (modificationDate >= 1e10)
 		return;
+	window.modificationDate = doubleToPosixTime(modificationDate);
 
 	if(size > 0xC3)
 	{
@@ -2392,7 +2390,7 @@ void Origin800Parser::readWindowProperties(Window& window, unsigned int size)
 	}
 }
 
-void Origin800Parser::readColorMap(ColorMap& colorMap)
+void Origin810Parser::readColorMap(ColorMap& colorMap)
 {
 	unsigned char h;
 	short w;
@@ -2432,12 +2430,12 @@ void Origin800Parser::readColorMap(ColorMap& colorMap)
 	}
 }
 
-OriginParser* createOrigin800Parser(const string& fileName)
+OriginParser* createOrigin810Parser(const string& fileName)
 {
-	return new Origin800Parser(fileName);
+	return new Origin810Parser(fileName);
 }
 
-unsigned int Origin800Parser::findStringPos(const string& name)
+unsigned int Origin810Parser::findStringPos(const string& name)
 {
 	char c = 0;
 	unsigned int startPos = file.tellg();
@@ -2470,7 +2468,7 @@ unsigned int Origin800Parser::findStringPos(const string& name)
 	return pos;
 }
 
-bool Origin800Parser::findSection(const string& name, int length, int maxLength)
+bool Origin810Parser::findSection(const string& name, int length, int maxLength)
 {
 	if (!maxLength)
 		maxLength = d_file_size - 16;

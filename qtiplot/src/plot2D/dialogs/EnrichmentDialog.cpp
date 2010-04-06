@@ -402,8 +402,12 @@ void EnrichmentDialog::initGeometryPage()
 	attachToBox->insertItem(tr("Layer Scales"));
 	//attachToBox->setCurrentIndex((int)lm->attachPolicy());
 
-	bl1->addWidget(new QLabel(tr( "Attach to" )), 0, 0);
+	if (d_widget_type != MDIWindow)
+		bl1->addWidget(new QLabel(tr( "Attach to" )), 0, 0);
+
 	bl1->addWidget(attachToBox, 0, 1);
+	if (d_widget_type == MDIWindow)
+		attachToBox->hide();
 
 	unitBox = new QComboBox();
 	unitBox->insertItem(tr("inch"));
