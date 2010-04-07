@@ -730,7 +730,6 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 				try
 				{
 				QString data(_curve.dataName.c_str());
-				//QMessageBox::about(0, "", QString(_curve.dataName.c_str()));
 				int color = 0;
 				switch(_curve.type)
 				{
@@ -881,39 +880,33 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 				case 'M':
 				{
 					QString matrixName = data.right(data.length()-2);
-					Matrix* matrix = mw->matrix(matrixName);
-					if (!matrix)
+					Matrix* m = mw->matrix(matrixName);
+					if (!m)
 						break;
 
-					//QMessageBox::about(0, "", QString::number(_curve.type));
-
 					if(_curve.type == Origin::GraphCurve::Contour){
-						curve = (PlotCurve*)graph->plotSpectrogram(matrix, Graph::Contour);
-
-						/*curve = (PlotCurve*)graph->plotSpectrogram(matrix, Graph::ColorMap);
+						curve = (PlotCurve*)graph->plotSpectrogram(m, Graph::ColorMap);
 						Spectrogram* sp = (Spectrogram*) curve;
 						sp->setCustomColorMap(qwtColorMap(_curve.colorMap));
 						QwtValueList levels;
-						QPen pen;
-						for(Origin::ColorMapVector::const_iterator it = _curve.colorMap.levels.begin() + 1; it != _curve.colorMap.levels.end(); ++it)
-						{
-							if(it->second.lineVisible)
-							{
+						QList<QPen> penList;
+						for(Origin::ColorMapVector::const_iterator it = _curve.colorMap.levels.begin() + 1; it != _curve.colorMap.levels.end(); ++it){
+							if(it->second.lineVisible){
 								levels.push_back(it->first);
-								pen = QPen(originToQtColor(it->second.lineColor), ceil(it->second.lineWidth), lineStyles[(Origin::GraphCurve::LineStyle)it->second.lineStyle]);
+								penList << QPen(originToQtColor(it->second.lineColor), it->second.lineWidth, lineStyles[(Origin::GraphCurve::LineStyle)it->second.lineStyle]);
 								sp->setDisplayMode(QwtPlotSpectrogram::ContourMode, true);
 							}
 						}
 						sp->setDisplayMode(QwtPlotSpectrogram::ImageMode, _curve.colorMap.fillEnabled);
 						sp->setContourLevels(levels);
-						sp->setDefaultContourPen(pen);*/
+						sp->setContourPenList(penList);
 					} else if(style == Origin::GraphCurve::MatrixImage){
-						//QMessageBox::about(0, "", QString::number(_curve.type));
-						/*curve = (PlotCurve*)graph->plotSpectrogram(matrix, Graph::GrayScale);
-						Spectrogram* sp = (Spectrogram*) curve;
-						sp->setGrayScale();*/
+						Spectrogram* sp = graph->plotSpectrogram(m, Graph::GrayScale);
+						if (!sp)
+							break;
+						sp->setGrayScale();
 					} else if (style == Graph::Histogram)
-						curve = (PlotCurve*)graph->addHistogram(matrix);
+						curve = (PlotCurve*)graph->addHistogram(m);
 
 					break;
 				}
@@ -1124,7 +1117,7 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 				{
 				}
 			}
-			if(style == Graph::HorizontalBars)
+			if (style == Graph::HorizontalBars)
 			{
 				graph->setScale(0,layer.xAxis.min,layer.xAxis.max,layer.xAxis.step,layer.xAxis.majorTicks,layer.xAxis.minorTicks,layer.xAxis.scale);
 				graph->setScale(2,layer.yAxis.min,layer.yAxis.max,layer.yAxis.step,layer.yAxis.majorTicks,layer.yAxis.minorTicks,layer.yAxis.scale);
