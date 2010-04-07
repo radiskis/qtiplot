@@ -2104,7 +2104,7 @@ l.setGrayScale()
 l.setIndexedColors() # uses the colors in the default QtiPlot color list: 0 = black, 1 = red, 2 = green, etc...
 </programlisting>
 
-You can display labels showing the y values for each data point in a plot curve:
+You can display labels showing the y values for each data point in a DataCurve:
 <programlisting>
 c.setLabelsColumnName("Table1_2")
 c.setLabelsOffset(50, 50)
@@ -2120,7 +2120,7 @@ c.clearLabels()
 l.replot() # redraw the plot layer object
 </programlisting>
 
-If you need to change the range of data points displayed in a curve you can use
+If you need to change the range of data points displayed in a DataCurve you can use
 the following methods:
 <programlisting>
 c.setRowRange(int startRow, int endRow)

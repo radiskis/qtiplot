@@ -529,9 +529,13 @@ bool ImportOPJ::importTables(const OriginFile& opj)
 		Matrix->setColumnsWidth(matrix.width * QtiPlot_scaling_factor);
 		if(matrix.view == Origin::Matrix::ImageView){
 			Matrix->setViewType(Matrix::ImageView);
-			Origin::ColorMap colorMap = matrix.colorMap;
-			colorMap.levels.pop_back();
-			Matrix->setColorMap(qwtColorMap(colorMap));
+			if(opj.version() > 7.5)
+				Matrix->setGrayScale();
+			else {
+				Origin::ColorMap colorMap = matrix.colorMap;
+				colorMap.levels.pop_back();
+				Matrix->setColorMap(qwtColorMap(colorMap));
+			}
 		}
 
 		if(matrix.header == Origin::Matrix::XY)
@@ -726,6 +730,7 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 				try
 				{
 				QString data(_curve.dataName.c_str());
+				//QMessageBox::about(0, "", QString(_curve.dataName.c_str()));
 				int color = 0;
 				switch(_curve.type)
 				{
@@ -773,6 +778,9 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 				case Origin::GraphCurve::Contour:
 					style = Origin::GraphCurve::Contour;
 					break;
+				case Origin::GraphCurve::MatrixImage:
+					style = Origin::GraphCurve::MatrixImage;
+					break;
 				default:
 					continue;
 				}
@@ -783,6 +791,7 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 				int s;
 				PlotCurve* curve = NULL;
 				Origin::Function function;
+
 				switch(data[0].toAscii())
 				{
 				case 'T':
@@ -870,11 +879,18 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 						curve = (PlotCurve *)graph->insertCurve(mw->table(tableName), QString("%1_%2").arg(tableName, _curve.xColumnName.c_str()), QString("%1_%2").arg(tableName, _curve.yColumnName.c_str()), style);
 					break;
 				case 'M':
-					if(style == Origin::GraphCurve::Contour)
-					{
-						QString matrixName = data.right(data.length()-2);
-						Matrix* matrix = mw->matrix(matrixName);
-						curve = (PlotCurve*)graph->plotSpectrogram(matrix, Graph::ColorMap);
+				{
+					QString matrixName = data.right(data.length()-2);
+					Matrix* matrix = mw->matrix(matrixName);
+					if (!matrix)
+						break;
+
+					//QMessageBox::about(0, "", QString::number(_curve.type));
+
+					if(_curve.type == Origin::GraphCurve::Contour){
+						curve = (PlotCurve*)graph->plotSpectrogram(matrix, Graph::Contour);
+
+						/*curve = (PlotCurve*)graph->plotSpectrogram(matrix, Graph::ColorMap);
 						Spectrogram* sp = (Spectrogram*) curve;
 						sp->setCustomColorMap(qwtColorMap(_curve.colorMap));
 						QwtValueList levels;
@@ -890,9 +906,18 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 						}
 						sp->setDisplayMode(QwtPlotSpectrogram::ImageMode, _curve.colorMap.fillEnabled);
 						sp->setContourLevels(levels);
-						sp->setDefaultContourPen(pen);
-					}
+						sp->setDefaultContourPen(pen);*/
+					} else if(style == Origin::GraphCurve::MatrixImage){
+						//QMessageBox::about(0, "", QString::number(_curve.type));
+						/*curve = (PlotCurve*)graph->plotSpectrogram(matrix, Graph::GrayScale);
+						Spectrogram* sp = (Spectrogram*) curve;
+						sp->setGrayScale();*/
+					} else if (style == Graph::Histogram)
+						curve = (PlotCurve*)graph->addHistogram(matrix);
+
 					break;
+				}
+
 				case 'F':
 					s = opj.functionIndex(data.right(data.length()-2).toStdString());
 					function = opj.function(s);
