@@ -1539,8 +1539,6 @@ void Origin800Parser::readGraphInfo()
 				file.seekg(LAYER + 0x20, ios_base::beg);
 				file >> layer.histogramEnd;
 				file >> layer.histogramBegin;
-
-				//BOOST_LOG_(1, format("	bin: %d begin: %d end: %d") % layer.histogramBin % layer.histogramBegin % layer.histogramEnd);
 			}
 			else if(osize == 0x3E) // text
 			{
@@ -1920,7 +1918,8 @@ void Origin800Parser::readGraphInfo()
 					file.seekg(LAYER + 0x13, ios_base::beg);
 					file >> h;
 					colorMap.fillEnabled = (h & 0x82);
-					file.seekg(LAYER + 0x259, ios_base::beg);
+
+					file.seekg(LAYER + 0x259 + 0x2, ios_base::beg);
 					readColorMap(colorMap);
 				}
 
@@ -2452,7 +2451,6 @@ void Origin800Parser::readColorMap(ColorMap& colorMap)
 	short w;
 	unsigned int colorMapSize;
 	file >> colorMapSize;
-	BOOST_LOG_(1, format("	colorMapSize: %d @ 0x%X") % colorMapSize % file.tellg());
 
 	file.seekg(0x110, ios_base::cur);
 	for(unsigned int i = 0; i < colorMapSize + 2; ++i)
