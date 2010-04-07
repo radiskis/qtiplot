@@ -112,8 +112,7 @@ bool Origin800Parser::parse()
 		BOOST_LOG_(1, format("	NAME: %s") % name.c_str());
 
 		unsigned int spread = 0;
-		if(columnname.empty())
-		{
+		if(columnname.empty()){
 			BOOST_LOG_(1, "NO COLUMN NAME FOUND! Must be a Matrix or Function.");
 			////////////////////////////// READ matrixes or functions ////////////////////////////////////
 
@@ -138,16 +137,24 @@ bool Origin800Parser::parse()
 			case 0x50E2:
 			case 0x50C8:
 			case 0x50E7:
+			case 0x50DB:
+			case 0x50DC:
 
 				pos = name.find_first_of("@");
 				if(pos != string::npos){
 					name.resize(pos);
-					BOOST_LOG_(1, format("MATRIX %s is multisheet, only first shit will be imported!") % name.c_str());
+					file.seekg(valuesize*size, ios_base::cur);
+					//BOOST_LOG_(1, format("MATRIX %s is multisheet, only first shit will be imported!") % name.c_str());
+					unsigned int sheets = matrixes.back().sheets;
+					sheets++;
+					matrixes.back().sheets = sheets;
+					dataIndex++;
 					break;
 				}
 
 				BOOST_LOG_(1, "NEW MATRIX");
 				matrixes.push_back(Matrix(name, dataIndex));
+				//BOOST_LOG_(1, format("MATRIX %s has dataIndex: %d") % name.c_str() % dataIndex);
 
 				++dataIndex;
 
@@ -295,6 +302,7 @@ bool Origin800Parser::parse()
 			default:
 				BOOST_LOG_(1, format("UNKNOWN SIGNATURE: %.2X SKIP DATA") % signature);
 				file.seekg(valuesize*size, ios_base::cur);
+				++dataIndex;
 
 				if(valuesize != 8 && valuesize <= 16)
 				{
@@ -1150,6 +1158,7 @@ void Origin800Parser::readMatrixInfo()
 	matrixes[idx].name = name;
 	file.seekg(POS, ios_base::beg);
 	readWindowProperties(matrixes[idx], size);
+	BOOST_LOG_(1, format("	MATRIX %s has %d sheets") % name % matrixes[idx].sheets);
 
 	unsigned int h;
 	file.seekg(POS + 0x87, ios_base::beg);
@@ -1171,12 +1180,11 @@ void Origin800Parser::readMatrixInfo()
 	file >> matrixes[idx].rowCount;
 	BOOST_LOG_(1, format("		Rows: %d (@ 0x%X)") % matrixes[idx].rowCount % (LAYER + 0x52));
 
-	/*file.seekg(LAYER + 0x52 + 0x1F, ios_base::beg);
+	file.seekg(LAYER + 0x52 + 0x1F, ios_base::beg);
 	unsigned short view;
 	file >> view;
 	if (view == 3)
 		matrixes[idx].view = Matrix::ImageView;
-	BOOST_LOG_(1, format("		View: %d (@ 0x%X)") % view % (LAYER + 0x52 + 0x1F));*/
 
 	unsigned int maxSearchPos = findStringPos("__WIOTN");
 	unsigned int stringSize = 47;
@@ -1196,9 +1204,52 @@ void Origin800Parser::readMatrixInfo()
 		BOOST_LOG_(1, format("		Formula: %s cursor pos: 0x%X") % matrixes[idx].command % file.tellg());
 	}
 
-	findSection("__LayerInfoStorage", 20);
+	for (int i = 0; i < matrixes[idx].sheets; i++)
+		findSection("__LayerInfoStorage", 20);
+
 	for (int i = 0; i < 7; i++)
 		skipLine();
+
+	file.seekg(0x5, ios_base::cur);
+	file >> size;
+	POS = file.tellg();
+	if (size){
+		file.seekg(0x1, ios_base::cur);
+		LAYER = file.tellg();
+
+		unsigned short width;
+		file.seekg(LAYER + 0x2B + 31, ios_base::beg);
+		file >> width;
+
+		width /= 0xA;
+		if (width == 0)
+			width = 8;
+		matrixes[idx].width = width;
+
+		unsigned char c1, c2;
+		file.seekg(LAYER + 0x1E, ios_base::beg);
+		file >> c1;
+		file >> c2;
+		matrixes[idx].valueTypeSpecification = c1/0x10;
+		if(c2 >= 0x80){
+			matrixes[idx].significantDigits = c2-0x80;
+			matrixes[idx].numericDisplayType = SignificantDigits;
+		} else if(c2 > 0){
+			matrixes[idx].decimalPlaces = c2-0x03;
+			matrixes[idx].numericDisplayType = DecimalPlaces;
+		}
+	}
+
+	POS += size + 0x2;
+	file.seekg(POS, ios_base::beg);
+	//BOOST_LOG_(1, format("Cursor pos: 0x%X") % POS);
+
+	file >> size;
+	//BOOST_LOG_(1, format("		size: %d @ 0x%X") % size % file.tellg());
+	POS += size + 0x2;
+
+	file.seekg(size, ios_base::cur);
+	//BOOST_LOG_(1, format("Cursor pos: 0x%X") % POS);
 
 	skipObjectInfo();
 }
@@ -1216,6 +1267,7 @@ void Origin800Parser::readGraphInfo()
 	string name(25, 0);
 	file.seekg(POS + 0x02, ios_base::beg);
 	file >> name;
+	BOOST_LOG_(1, format("		GRAPH name: %s cursor pos: 0x%X") % name % file.tellg());
 
 	graphs.push_back(Graph(name));
 	file.seekg(POS, ios_base::beg);
@@ -1487,6 +1539,8 @@ void Origin800Parser::readGraphInfo()
 				file.seekg(LAYER + 0x20, ios_base::beg);
 				file >> layer.histogramEnd;
 				file >> layer.histogramBegin;
+
+				//BOOST_LOG_(1, format("	bin: %d begin: %d end: %d") % layer.histogramBin % layer.histogramBegin % layer.histogramEnd);
 			}
 			else if(osize == 0x3E) // text
 			{
@@ -2398,6 +2452,8 @@ void Origin800Parser::readColorMap(ColorMap& colorMap)
 	short w;
 	unsigned int colorMapSize;
 	file >> colorMapSize;
+	BOOST_LOG_(1, format("	colorMapSize: %d @ 0x%X") % colorMapSize % file.tellg());
+
 	file.seekg(0x110, ios_base::cur);
 	for(unsigned int i = 0; i < colorMapSize + 2; ++i)
 	{

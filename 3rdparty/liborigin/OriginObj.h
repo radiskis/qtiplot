@@ -225,6 +225,7 @@ namespace Origin
 		string command;
 		int width;
 		unsigned int index;
+		unsigned int sheets;
 		ViewType view;
 		HeaderViewType header;
 		ColorMap colorMap;
@@ -234,6 +235,7 @@ namespace Origin
 		Matrix(const string& _name = "", unsigned int _index = 0)
 		:	Window(_name)
 		,	index(_index)
+		,	sheets(1)
 		,	command("")
 		,	valueTypeSpecification(0)
 		,	significantDigits(6)
@@ -242,7 +244,7 @@ namespace Origin
 		,	numericDisplayType(DefaultDecimalDigits)
 		,	view(DataView)
 		,	header(ColumnRow)
-		{coordinates.push_back(10.0);coordinates.push_back(1.0);coordinates.push_back(10.0);coordinates.push_back(1.0);};
+		{coordinates.push_back(10.0);coordinates.push_back(10.0);coordinates.push_back(1.0);coordinates.push_back(1.0);};
 	};
 
 	struct Function
