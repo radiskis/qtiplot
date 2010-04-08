@@ -293,11 +293,7 @@ void TableDialog::apply()
 		QMessageBox::warning(this, tr("QtiPlot - Warning"),
 		tr("For internal consistency reasons the underscore character is replaced with a minus sign."));}
 
-	QString name=colName->text().replace("-", "_");
-	if (name.contains(QRegExp("\\W"))){
-		QMessageBox::warning(this,tr("QtiPlot - Error"), tr("The column names must only contain letters and digits!"));
-		name.remove(QRegExp("\\W"));
-	}
+	QString name = colName->text().replace("-", "_");
 
 	int sc = d_table->selectedColumn();
 	d_table->setColumnWidth(colWidth->value(), applyToAllBox->isChecked());

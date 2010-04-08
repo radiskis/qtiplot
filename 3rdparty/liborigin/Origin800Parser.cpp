@@ -337,7 +337,6 @@ bool Origin800Parser::parse()
 				if( sheet > 1){
 					speadSheets[spread].multisheet = true;
 
-					columnname.resize(sheetpos);
 					speadSheets[spread].columns.back().name = columnname;
 					speadSheets[spread].columns.back().sheet = sheet - 1;
 
@@ -756,9 +755,12 @@ void Origin800Parser::readSpreadInfo()
 			}
 			BOOST_LOG_(1, format("			comment: %s") % comment);
 
-			pos += commentSize + 2 + 5;
+			pos += commentSize + 1;
 		}
-
+		pos += 1;
+		file.seekg(pos, ios_base::beg);
+		file >> size;
+		pos += 0x5;
 		header.push_back(speadSheets[spread].columns[col_index]);
 	}
 
@@ -782,6 +784,11 @@ void Origin800Parser::readSpreadInfo()
 void Origin800Parser::readColumnInfo(int spread, int i)
 {
 	string colName = speadSheets[spread].columns[i].name;
+
+	string::size_type sheetpos = colName.find_last_of("@");
+	if(sheetpos != string::npos)
+		colName.resize(sheetpos);
+
 	if (colName.size() >= 11)
 		colName.resize(11);
 	BOOST_LOG_(1, format("		Column %s") % colName);
@@ -1337,6 +1344,7 @@ void Origin800Parser::readGraphInfo()
 			file.seekg(LAYER + 0x46, ios_base::beg);
 			file >> sec_name;
 
+			unsigned int sectionNamePos = LAYER + 0x46;
 			BOOST_LOG_(1, format("				SECTION NAME: %s (@ 0x%X)") % sec_name % (LAYER + 0x46));
 
 			Rect r;
@@ -1539,6 +1547,30 @@ void Origin800Parser::readGraphInfo()
 				file.seekg(LAYER + 0x20, ios_base::beg);
 				file >> layer.histogramEnd;
 				file >> layer.histogramBegin;
+			}
+			else if(sec_name == "vline") // Image profiles vertical cursor
+			{
+				file.seekg(sectionNamePos, ios_base::beg);
+				for (int i = 0; i < 2; i++)
+					skipLine();
+
+				file.seekg(0x20, ios_base::cur);
+				file >> layer.vLine;
+				BOOST_LOG_(1, format("vLine: %g") % layer.vLine);
+
+				layer.imageProfileTool = true;
+			}
+			else if(sec_name == "hline") // Image profiles horizontal cursor
+			{
+				file.seekg(sectionNamePos, ios_base::beg);
+				for (int i = 0; i < 2; i++)
+					skipLine();
+
+				file.seekg(0x40, ios_base::cur);
+				file >> layer.hLine;
+				BOOST_LOG_(1, format("hLine: %g @ 0x%X") % layer.hLine % file.tellg());
+
+				layer.imageProfileTool = true;
 			}
 			else if(osize == 0x3E) // text
 			{
@@ -2164,6 +2196,7 @@ void Origin800Parser::readGraphAxisFormatInfo(GraphAxisFormat& format)
 	format.minorTicksType = (h>>6);
 	format.majorTicksType = ((h>>4) & 3);
 	format.axisPosition = (h & 0x0F);
+
 	switch(format.axisPosition) // need for testing
 	{
 	case 1:

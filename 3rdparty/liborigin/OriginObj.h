@@ -646,6 +646,14 @@ namespace Origin
 		float yLength;
 		float zLength;
 
+		bool imageProfileTool;
+		double vLine;
+		double hLine;
+
+		GraphLayer()
+		:	imageProfileTool(false)
+		{};
+
 		//bool threeDimensional;
 		bool is3D() const
 		{
