@@ -53,7 +53,7 @@
 #include <RectangleWidget.h>
 #include <EllipseWidget.h>
 #include <Spectrogram.h>
-
+#include <ScreenPickerTool.h>
 #include <Graph3D.h>
 
 #include "qwt_plot_canvas.h"
@@ -289,11 +289,9 @@ bool ImportOPJ::importTables(const OriginFile& opj)
                 d_cells[i] = new double [table->numRows()];
 
 			bool set_text_column = false;
-			for(unsigned int i = 0; i < column.data.size(); ++i)
-			{
+			for(unsigned int i = 0; i < column.data.size(); ++i){
 				Origin::variant value = column.data[i];
-				if(column.type != Origin::SpreadColumn::Label && column.valueType != Origin::Text)
-				{// number
+				if(column.valueType != Origin::Text){// number
 					if(value.type() == typeid(string)){//Origin::TextNumeric column should be set to Text
 						//set_text_column = true;
 						table->setText(i, j, QString(boost::get<string>(value).c_str()));
@@ -308,9 +306,7 @@ bool ImportOPJ::importTables(const OriginFile& opj)
 
                     table->setText(i, j, locale.toString(val, 'g', 16));
                     d_cells[j][i] = val;
-				}
-				else// label? doesn't seem to work
-				{
+				} else {// label? doesn't seem to work
 					table->setText(i, j, QString(value.type() == typeid(string) ? boost::get<string>(value).c_str() : ""));
 				}
 			}
@@ -701,6 +697,7 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 		double fFontScaleFactor = 300*fScale/72;//0.37*fWindowFactor;
 		double fVectorArrowScaleFactor = 0.08*fWindowFactor;
 
+		bool imageProfileTool = false;
 		for(unsigned int l = 0; l < _graph.layers.size(); ++l)
 		{
 			Origin::GraphLayer& layer = _graph.layers[l];
@@ -724,6 +721,7 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 
 			int auto_color = -1;
 			int style = 0;
+			bool matrixImage = false;
 			for(unsigned int c = 0; c < layer.curves.size(); ++c)
 			{
 				Origin::GraphCurve& _curve = layer.curves[c];
@@ -905,6 +903,7 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 						if (!sp)
 							break;
 						sp->setGrayScale();
+						matrixImage = true;
 					} else if (style == Graph::Histogram)
 						curve = (PlotCurve*)graph->addHistogram(m);
 
@@ -1126,25 +1125,27 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 			{
 				Origin::GraphAxisBreak breakX = layer.xAxisBreak;
 				Origin::GraphAxisBreak breakY = layer.yAxisBreak;
+				bool invert = (layer.xAxis.min > layer.xAxis.max);
 				if(breakX.show)
 					graph->setScale(2,layer.xAxis.min,layer.xAxis.max,layer.xAxis.step,layer.xAxis.majorTicks,layer.xAxis.minorTicks,layer.xAxis.scale,
-									false,
+									invert,
 									breakX.from, breakX.to,
 									breakX.position,
 									breakX.scaleIncrementBefore, breakX.scaleIncrementAfter,
 									breakX.minorTicksBefore, breakX.minorTicksAfter, breakX.log10);
 				else
-					graph->setScale(2,layer.xAxis.min,layer.xAxis.max,layer.xAxis.step,layer.xAxis.majorTicks,layer.xAxis.minorTicks,layer.xAxis.scale);
+					graph->setScale(2,layer.xAxis.min,layer.xAxis.max,layer.xAxis.step,layer.xAxis.majorTicks,layer.xAxis.minorTicks,layer.xAxis.scale, invert);
 
+				invert = (layer.yAxis.min > layer.yAxis.max) || matrixImage;
 				if(breakY.show)
 					graph->setScale(0,layer.yAxis.min,layer.yAxis.max,layer.yAxis.step,layer.yAxis.majorTicks,layer.yAxis.minorTicks,layer.xAxis.scale, //??xAxis??
-					false,
+					invert,
 					breakY.from, breakY.to,
 					breakY.position,
 					breakY.scaleIncrementBefore, breakY.scaleIncrementAfter,
 					breakY.minorTicksBefore, breakY.minorTicksAfter, breakY.log10);
 				else
-					graph->setScale(0,layer.yAxis.min,layer.yAxis.max,layer.yAxis.step,layer.yAxis.majorTicks,layer.yAxis.minorTicks,layer.yAxis.scale);
+					graph->setScale(0,layer.yAxis.min,layer.yAxis.max,layer.yAxis.step,layer.yAxis.majorTicks,layer.yAxis.minorTicks,layer.yAxis.scale, invert);
 			}
 
 			//grid
@@ -1178,6 +1179,20 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 			ticks.push_back(layer.yAxis.tickAxis[1]); //top
 			ticks.push_back(layer.xAxis.tickAxis[0]); //left
 			ticks.push_back(layer.xAxis.tickAxis[1]); //right
+
+			if (matrixImage){
+				formats.clear();
+				formats.push_back(layer.yAxis.formatAxis[0]); //bottom
+				formats.push_back(layer.yAxis.formatAxis[1]); //top
+				formats.push_back(layer.xAxis.formatAxis[1]); //left
+				formats.push_back(layer.xAxis.formatAxis[0]); //right
+
+				ticks.clear();
+				ticks.push_back(layer.yAxis.tickAxis[0]); //bottom
+				ticks.push_back(layer.yAxis.tickAxis[1]); //top
+				ticks.push_back(layer.xAxis.tickAxis[1]); //left
+				ticks.push_back(layer.xAxis.tickAxis[0]); //right
+			}
 
 			for(int i = 0; i < 4; ++i)
 			{
@@ -1370,6 +1385,40 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 					bmp.save(file.fileName(), "BMP");
 					ImageWidget* mrk = graph->addImage(file.fileName());
 					mrk->setRect(layer.bitmaps[i].clientRect.left*fScale, layer.bitmaps[i].clientRect.top*fScale - yOffset, layer.bitmaps[i].clientRect.width()*fScale, layer.bitmaps[i].clientRect.height()*fScale);
+				}
+			}
+
+			if (layer.imageProfileTool)
+				imageProfileTool = true;
+		}
+
+		if (imageProfileTool){
+			Graph *graph = ml->layer(1);
+			if (graph){
+				Spectrogram *sp = (Spectrogram *) graph->plotItem(0);
+				if (sp){
+					Table *vt = NULL;
+					Table *ht = NULL;
+					Graph *g = ml->layer(2);
+					if (g){
+						DataCurve *c = g->dataCurve(0);
+						if (c)
+							ht = c->table();
+					}
+					g = ml->layer(3);
+					if (g){
+						DataCurve *c = g->dataCurve(0);
+						if (c)
+							vt = c->table();
+					}
+
+					ImageProfilesTool *tool = new ImageProfilesTool(mw, graph, sp->matrix(), ht, vt, mw->displayInfoLineEdit(), SLOT(setText(const QString&)));
+					graph->setActiveTool(tool);
+
+					Origin::GraphLayer& layer = _graph.layers[0];
+					double x = layer.vLine * (layer.xAxis.max - layer.xAxis.min) + layer.xAxis.min;
+					double y = layer.hLine * (layer.yAxis.max - layer.yAxis.min) + layer.yAxis.min;
+					tool->append(QwtDoublePoint(x, y));
 				}
 			}
 		}
