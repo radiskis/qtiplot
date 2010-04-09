@@ -157,8 +157,12 @@ pair<ProjectNode::NodeType, string> OriginParser::findObjectByIndex(unsigned int
 
 	for(vector<Graph>::const_iterator it = graphs.begin(); it != graphs.end(); ++it)
 	{
-		if(it->objectID == index)
-			return make_pair(ProjectNode::Graph, it->name);
+		if(it->objectID == index){
+			if (it->is3D)
+				return make_pair(ProjectNode::Graph3D, it->name);
+			else
+				return make_pair(ProjectNode::Graph, it->name);
+		}
 	}
 
 	return pair<ProjectNode::NodeType, string>();

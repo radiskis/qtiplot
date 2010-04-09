@@ -2081,9 +2081,11 @@ void ApplicationWindow::renameListViewItem(const QString& oldName,const QString&
 
 void ApplicationWindow::setListViewLabel(const QString& caption,const QString& label)
 {
-	Q3ListViewItem *it=lv->findItem ( caption, 0, Q3ListView::ExactMatch | Qt::CaseSensitive );
-	if (it)
-		it->setText(5,label);
+	Q3ListViewItem *it = lv->findItem ( caption, 0, Q3ListView::ExactMatch | Qt::CaseSensitive );
+	if (it){
+		QString s = label;
+		it->setText(5, s.replace("\n", " "));
+	}
 }
 
 void ApplicationWindow::setListViewDate(const QString& caption,const QString& date)
@@ -16443,7 +16445,7 @@ void ApplicationWindow::addListViewItem(MdiSubWindow *w)
     it->setText(2, w->aspect());
 	it->setText(3, w->sizeToString());
 	it->setText(4, w->birthDate());
-	it->setText(5, w->windowLabel());
+	it->setText(5, w->windowLabel().replace("\n", " "));
 
 	updateCompleter(w->objectName());
 }

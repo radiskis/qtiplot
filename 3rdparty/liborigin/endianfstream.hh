@@ -202,6 +202,12 @@ namespace std
 					value.type = Origin::Color::Automatic;
 
 				break;
+
+			default:
+				value.type = Origin::Color::Regular;
+				value.regular = color[0];
+				break;
+
 			}
 
 			return *this;
