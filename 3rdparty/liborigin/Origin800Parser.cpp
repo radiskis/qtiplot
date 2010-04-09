@@ -1468,15 +1468,16 @@ void Origin800Parser::readGraphInfo()
 				file >> text;
 
 				layer.xAxis.position = GraphAxis::Bottom;
-				layer.xAxis.label = TextBox(text, r, color, fontSize, rotation/10, tab, (BorderType)(border >= 0x80 ? border-0x80 : None), (Attach)attach);
+				layer.xAxis.formatAxis[0].label = TextBox(text, r, color, fontSize, rotation/10, tab, (BorderType)(border >= 0x80 ? border-0x80 : None), (Attach)attach);
 			}
 			else if(sec_name == "XT")
 			{
 				string text(size, 0);
 				file >> text;
+				BOOST_LOG_(1, format("				Text: %s (@ 0x%X)") % text % file.tellg());
 
 				layer.xAxis.position = GraphAxis::Top;
-				layer.xAxis.label = TextBox(text, r, color, fontSize, rotation/10, tab, (BorderType)(border >= 0x80 ? border-0x80 : None), (Attach)attach);
+				layer.xAxis.formatAxis[1].label = TextBox(text, r, color, fontSize, rotation/10, tab, (BorderType)(border >= 0x80 ? border-0x80 : None), (Attach)attach);
 			}
 			else if(sec_name == "YL")
 			{
@@ -1484,7 +1485,7 @@ void Origin800Parser::readGraphInfo()
 				file >> text;
 
 				layer.yAxis.position = GraphAxis::Left;
-				layer.yAxis.label = TextBox(text, r, color, fontSize, rotation/10, tab, (BorderType)(border >= 0x80 ? border-0x80 : None), (Attach)attach);
+				layer.yAxis.formatAxis[0].label = TextBox(text, r, color, fontSize, rotation/10, tab, (BorderType)(border >= 0x80 ? border-0x80 : None), (Attach)attach);
 			}
 			else if(sec_name == "YR")
 			{
@@ -1492,7 +1493,7 @@ void Origin800Parser::readGraphInfo()
 				file >> text;
 
 				layer.yAxis.position = GraphAxis::Right;
-				layer.yAxis.label = TextBox(text, r, color, fontSize, rotation/10, tab, (BorderType)(border >= 0x80 ? border-0x80 : None), (Attach)attach);
+				layer.yAxis.formatAxis[1].label = TextBox(text, r, color, fontSize, rotation/10, tab, (BorderType)(border >= 0x80 ? border-0x80 : None), (Attach)attach);
 			}
 			else if(sec_name == "ZF")
 			{
@@ -1500,7 +1501,7 @@ void Origin800Parser::readGraphInfo()
 				file >> text;
 
 				layer.zAxis.position = GraphAxis::Front;
-				layer.zAxis.label = TextBox(text, r, color, fontSize, rotation/10, tab, (BorderType)(border >= 0x80 ? border-0x80 : None), (Attach)attach);
+				layer.zAxis.formatAxis[0].label = TextBox(text, r, color, fontSize, rotation/10, tab, (BorderType)(border >= 0x80 ? border-0x80 : None), (Attach)attach);
 			}
 			else if(sec_name == "ZB")
 			{
@@ -1508,7 +1509,7 @@ void Origin800Parser::readGraphInfo()
 				file >> text;
 
 				layer.zAxis.position = GraphAxis::Back;
-				layer.zAxis.label = TextBox(text, r, color, fontSize, rotation/10, tab, (BorderType)(border >= 0x80 ? border-0x80 : None), (Attach)attach);
+				layer.zAxis.formatAxis[1].label = TextBox(text, r, color, fontSize, rotation/10, tab, (BorderType)(border >= 0x80 ? border-0x80 : None), (Attach)attach);
 			}
 			else if(sec_name == "3D")
 			{
@@ -1577,8 +1578,7 @@ void Origin800Parser::readGraphInfo()
 				string text(size, 0);
 				file >> text;
 
-				layer.texts.push_back(
-								TextBox(text, r, color, fontSize, rotation/10, tab, (BorderType)(border >= 0x80 ? border-0x80 : None), (Attach)attach));
+				layer.texts.push_back(TextBox(text, r, color, fontSize, rotation/10, tab, (BorderType)(border >= 0x80 ? border-0x80 : None), (Attach)attach));
 			}
 			else if(osize == 0x5E) // rectangle & circle
 			{
@@ -1723,6 +1723,9 @@ void Origin800Parser::readGraphInfo()
 						BOOST_LOG_(1, format("			graph %d X and Y from different tables") % graphs.size());
 					}
 				}
+
+				if(layer.is3D())
+					graphs.back().is3D = true;
 
 				file.seekg(LAYER + 0x11, ios_base::beg);
 				file >> curve.lineConnect;

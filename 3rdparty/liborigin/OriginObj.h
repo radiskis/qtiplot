@@ -500,6 +500,7 @@ namespace Origin
 		int minorTicksType;
 		int axisPosition;
 		double axisPositionValue;
+		TextBox label;
 	};
 
 	struct GraphAxisTick
@@ -522,7 +523,6 @@ namespace Origin
 		enum Scale {Linear = 0, Log10 = 1, Probability = 2, Probit = 3, Reciprocal = 4, OffsetReciprocal = 5, Logit = 6, Ln = 7, Log2 = 8};
 
 		AxisPosition position;
-		TextBox label;
 		double min;
 		double max;
 		double step;
@@ -681,9 +681,11 @@ namespace Origin
 		vector<GraphLayer> layers;
 		unsigned short width;
 		unsigned short height;
+		bool is3D;
 
 		Graph(const string& _name = "")
 		:	Window(_name)
+		,	is3D(false)
 		{};
 	};
 
@@ -697,7 +699,7 @@ namespace Origin
 
 	struct ProjectNode
 	{
-		enum NodeType {SpreadSheet, Matrix, Excel, Graph, Note, Folder};
+		enum NodeType {SpreadSheet, Matrix, Excel, Graph, Graph3D, Note, Folder};
 
 		NodeType type;
 		string name;
