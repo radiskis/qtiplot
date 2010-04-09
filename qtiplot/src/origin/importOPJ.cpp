@@ -698,7 +698,7 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 		bool imageProfileTool = false;
 		for(unsigned int l = 0; l < _graph.layers.size(); ++l){
 			Origin::GraphLayer& layer = _graph.layers[l];
-			if(layer.is3D()){
+			if(layer.is3D() || layer.isXYY3D){
 				importGraph3D(opj, g, l);
 				continue;
 			}
@@ -1405,20 +1405,20 @@ bool ImportOPJ::importGraph3D(const OriginFile& opj, unsigned int g, unsigned in
 		Origin::GraphCurve& _curve = layer.curves[c];
 		QString data(_curve.dataName.c_str());
 		int color = 0;
-		double fFontScaleFactor = 1.0;
-		switch(_curve.type)
-		{
-		case Origin::GraphCurve::Line3D:
-			type = _curve.connectSymbols ? Graph3D::Trajectory : Graph3D::Scatter;
-			break;
-		/*case Origin::GraphCurve::Column:
-			type = Graph3D::Bars;
-			break;*/
-		case Origin::GraphCurve::Mesh3D:
-			fFontScaleFactor = 2.0;
-			break;
-		default:
-			continue;
+		double fFontScaleFactor = 2.0;
+		switch(_curve.type){
+			case Origin::GraphCurve::Line3D:
+				type = _curve.connectSymbols ? Graph3D::Trajectory : Graph3D::Scatter;
+				break;
+			case Origin::GraphCurve::LineSymbol:
+			case Origin::GraphCurve::Area:
+				type = Graph3D::Ribbon;
+				break;
+			case Origin::GraphCurve::Column:
+				type = Graph3D::Bars;
+				break;
+			default:
+				continue;
 		}
 
 		Graph3D *plot = mw->newPlot3D();
@@ -1445,7 +1445,7 @@ bool ImportOPJ::importGraph3D(const OriginFile& opj, unsigned int g, unsigned in
 			//plot->resize(graphWindowRect.width(), graphWindowRect.height());
 
 			double fScale = (double)(graphWindowRect.width() - frameWidth)/(double)width;
-			fFontScaleFactor *= 180.0*fScale/72*1.3; //Ion: empirically decresed if from 300*...
+			fFontScaleFactor *= 170.0*fScale/72.0*1.3; //Ion: empirically decreased if from 300*...
 		}
 
 		Origin::Rect layerRect = layer.clientRect;
@@ -1508,6 +1508,7 @@ bool ImportOPJ::importGraph3D(const OriginFile& opj, unsigned int g, unsigned in
 			plot->coordinateSystem()->axes[axis].setLabelColor(xLabelColor);
 			plot->coordinateSystem()->setMajorGridLines(axis, majorGrid);
 			plot->coordinateSystem()->setMinorGridLines(axis, minorGrid);
+			plot->coordinateSystem()->axes[axis].setMinors(layer.xAxis.minorTicks + 1);
 			plot->coordinateSystem()->axes[axis].setLineWidth(width);
 			plot->setNumbersFont(font);
 		}
@@ -1525,6 +1526,7 @@ bool ImportOPJ::importGraph3D(const OriginFile& opj, unsigned int g, unsigned in
 			plot->coordinateSystem()->axes[axis].setLabelColor(yLabelColor);
 			plot->coordinateSystem()->setMajorGridLines(axis, majorGrid);
 			plot->coordinateSystem()->setMinorGridLines(axis, minorGrid);
+			plot->coordinateSystem()->axes[axis].setMinors(layer.yAxis.minorTicks + 1);
 			plot->coordinateSystem()->axes[axis].setLineWidth(width);
 			plot->setNumbersFont(font);
 		}
@@ -1542,6 +1544,7 @@ bool ImportOPJ::importGraph3D(const OriginFile& opj, unsigned int g, unsigned in
 			plot->coordinateSystem()->axes[axis].setLabelColor(zLabelColor);
 			plot->coordinateSystem()->setMajorGridLines(axis, majorGrid);
 			plot->coordinateSystem()->setMinorGridLines(axis, minorGrid);
+			plot->coordinateSystem()->axes[axis].setMinors(layer.zAxis.minorTicks + 1);
 			plot->coordinateSystem()->axes[axis].setLineWidth(width);
 			plot->setNumbersFont(font);
 		}
@@ -1556,35 +1559,37 @@ bool ImportOPJ::importGraph3D(const OriginFile& opj, unsigned int g, unsigned in
 		plot->setDataColors(clr, clr);
 
 		bool smooth;
-		switch(_curve.symbolType&0xFF)
-		{
-		case 2: //Ellipse
-		case 20://Sphere
-			smooth = true;
-			break;
-		default:
-			smooth = false;
+		switch(_curve.symbolType&0xFF){
+			case 2: //Ellipse
+			case 20://Sphere
+				smooth = true;
+				break;
+			default:
+				smooth = false;
 		}
 		plot->setDotOptions(ceil(_curve.symbolSize), smooth);
-		plot->setMeshColor(_curve.lineColor.type == Origin::Color::Automatic ? ColorBox::defaultColor(0) : originToQtColor(_curve.lineColor));
-		plot->setMeshLineWidth(_curve.lineWidth);
 
-		switch(data[0].toAscii())
-		{
-		case 'T':
-			{
-				Table* table = mw->table(data.right(data.length()-2));
-				plot->addData(table, table->colIndex(_curve.xColumnName.c_str()), table->colIndex(_curve.yColumnName.c_str()), table->colIndex(_curve.zColumnName.c_str()), type);
+		switch(data[0].toAscii()){
+			case 'T':{
+				Table* t = mw->table(data.right(data.length()-2));
+				if (_curve.zColumnName.empty()){
+					plot->addRibbon(t, t->objectName() + "_" + _curve.xColumnName.c_str(), t->objectName() + "_" + _curve.yColumnName.c_str());
+					QColor color = originToQtColor(_curve.surface.frontColor);
+					plot->setDataColorMap(QwtLinearColorMap(color, color));
+					plot->setMeshColor(_curve.lineColor.type == Origin::Color::Automatic ? ColorBox::defaultColor(0) : originToQtColor(_curve.fillAreaPatternBorderColor));
+				} else {
+					plot->addData(t, t->colIndex(_curve.xColumnName.c_str()), t->colIndex(_curve.yColumnName.c_str()), t->colIndex(_curve.zColumnName.c_str()), type);
+					plot->setMeshColor(_curve.lineColor.type == Origin::Color::Automatic ? ColorBox::defaultColor(0) : originToQtColor(_curve.lineColor));
+				}
+
+				plot->setMeshLineWidth(_curve.lineWidth);
 			}
 			break;
-		case 'M':
-			{
+			case 'M':{
 				Matrix* matrix = mw->matrix(data.right(data.length()-2));
 				plot->addMatrixData(matrix);
-				switch(_curve.surface.type)
-				{
-				case Origin::SurfaceProperties::ColorMap3D:
-					{
+				switch(_curve.surface.type){
+					case Origin::SurfaceProperties::ColorMap3D:{
 						if(_curve.surface.surface.fill && _curve.surface.grids != Origin::SurfaceProperties::None)
 							plot->customPlotStyle(Qwt3D::FILLEDMESH);
 						else if(_curve.surface.surface.fill)
@@ -1594,55 +1599,47 @@ bool ImportOPJ::importGraph3D(const OriginFile& opj, unsigned int g, unsigned in
 
 						ColorVector colors;
 						for(Origin::ColorMapVector::const_iterator it = _curve.surface.colorMap.levels.begin() + 1; it != _curve.surface.colorMap.levels.end(); ++it)
-						{
 							colors.push_back(Qt2GL(originToQtColor(it->second.fillColor)));
-						}
 						plot->setDataColorMap(colors, qwtColorMap(_curve.surface.colorMap));
 
 						if(_curve.surface.bottomContour.fill)
 							plot->setFloorData();
 						else if(_curve.surface.bottomContour.contour)
 							plot->setFloorIsolines();
-					}
+						}
 					break;
-				case Origin::SurfaceProperties::ColorFill:
-					{
+					case Origin::SurfaceProperties::ColorFill:{
 						if(_curve.surface.grids != Origin::SurfaceProperties::None)
 							plot->customPlotStyle(Qwt3D::FILLEDMESH);
-						else
+						 else
 							plot->customPlotStyle(Qwt3D::FILLED);
 
 						QColor color = originToQtColor(_curve.surface.frontColor);
 						plot->setDataColorMap(QwtLinearColorMap(color, color));
-					}
+					 }
 					break;
-				case Origin::SurfaceProperties::WireFrame:
-					{
+					case Origin::SurfaceProperties::WireFrame:{
 						if(_curve.surface.grids != Origin::SurfaceProperties::None)
 							plot->customPlotStyle(Qwt3D::WIREFRAME);
 						else
 							plot->customPlotStyle(Qwt3D::HIDDENLINE);
-					}
-				    break;
-				case Origin::SurfaceProperties::Bars:
-					{
+					 }
+					break;
+					case Origin::SurfaceProperties::Bars:{
 						plot->customPlotStyle(Qwt3D::USER);
 						ColorVector colors;
 						for(Origin::ColorMapVector::const_iterator it = _curve.surface.colorMap.levels.begin() + 1; it != _curve.surface.colorMap.levels.end(); ++it)
-						{
-							colors.push_back(Qt2GL(originToQtColor(it->second.fillColor)));
-						}
+								colors.push_back(Qt2GL(originToQtColor(it->second.fillColor)));
 						plot->setDataColorMap(colors, qwtColorMap(_curve.surface.colorMap));
 					}
-				    break;
-				default:
-				    break;
-				}
-
+					break;
+					default:
+						break;
+				 }
 				plot->setMeshColor(originToQtColor(_curve.surface.gridColor));
 				plot->setMeshLineWidth(_curve.surface.gridLineWidth);
 			}
-			break;
+		break;
 		default:
 			continue;
 		}
@@ -1653,29 +1650,31 @@ bool ImportOPJ::importGraph3D(const OriginFile& opj, unsigned int g, unsigned in
 			plot->setDotStyle();*/
 		//plot->setScales(layer.xAxis.min, layer.xAxis.max, layer.yAxis.min, layer.yAxis.max, layer.zAxis.min, layer.zAxis.max);
 
-		int majorTicks = ceil((layer.xAxis.max - layer.xAxis.min)/layer.xAxis.step);
-		plot->setScale(0, layer.xAxis.min, layer.xAxis.max, majorTicks, layer.xAxis.minorTicks, scaleTypes[(Origin::GraphAxis::Scale)layer.xAxis.scale]);
+		if (!layer.isXYY3D){
+			int majorTicks = ceil((layer.xAxis.max - layer.xAxis.min)/layer.xAxis.step);
+			plot->setScale(0, layer.xAxis.min, layer.xAxis.max, majorTicks, layer.xAxis.minorTicks, scaleTypes[(Origin::GraphAxis::Scale)layer.xAxis.scale]);
 
-		majorTicks = ceil((layer.yAxis.max - layer.yAxis.min)/layer.yAxis.step);
-		plot->setScale(1, layer.yAxis.min, layer.yAxis.max, majorTicks, layer.yAxis.minorTicks, scaleTypes[(Origin::GraphAxis::Scale)layer.yAxis.scale]);
+			majorTicks = ceil((layer.yAxis.max - layer.yAxis.min)/layer.yAxis.step);
+			plot->setScale(1, layer.yAxis.min, layer.yAxis.max, majorTicks, layer.yAxis.minorTicks, scaleTypes[(Origin::GraphAxis::Scale)layer.yAxis.scale]);
 
-		majorTicks = ceil((layer.zAxis.max - layer.zAxis.min)/layer.zAxis.step);
-		plot->setScale(2, layer.zAxis.min, layer.zAxis.max, majorTicks, layer.zAxis.minorTicks, scaleTypes[(Origin::GraphAxis::Scale)layer.zAxis.scale]);
+			majorTicks = ceil((layer.zAxis.max - layer.zAxis.min)/layer.zAxis.step);
+			plot->setScale(2, layer.zAxis.min, layer.zAxis.max, majorTicks, layer.zAxis.minorTicks, scaleTypes[(Origin::GraphAxis::Scale)layer.zAxis.scale]);
+		}
+		plot->resetAxesLabels();
 
 		if(!_graph.hidden){
 			plot->move(QPoint(graphWindowRect.left, graphWindowRect.top));
 
-			switch(_graph.state)
-			{
-			case Origin::Window::Minimized:
-				mw->minimizeWindow(plot);
-				break;
-			case Origin::Window::Maximized:
-				plot->show(); // to correct scaling with maximize
-				mw->maximizeWindow(plot);
-				break;
-			default:
-				plot->show();
+			switch(_graph.state){
+				case Origin::Window::Minimized:
+					mw->minimizeWindow(plot);
+					break;
+				case Origin::Window::Maximized:
+					plot->show(); // to correct scaling with maximize
+					mw->maximizeWindow(plot);
+					break;
+				default:
+					plot->show();
 			}
 		} else {
 			plot->show();
@@ -1723,11 +1722,10 @@ void ImportOPJ::addText(const Origin::TextBox& text, Graph* graph, double fFontS
 
 QString ImportOPJ::parseOriginText(const QString &str)
 {
-	QStringList lines=str.split("\n");
-	QString text="";
-	for(int i=0; i<lines.size(); ++i)
-	{
-		if(i>0)
+	QStringList lines = str.trimmed().split("\n");
+	QString text = "";
+	for(int i = 0; i < lines.size(); ++i){
+		if(i > 0)
 			text.append("\n");
 		text.append(parseOriginTags(lines[i]));
 	}

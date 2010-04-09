@@ -650,16 +650,19 @@ namespace Origin
 		double vLine;
 		double hLine;
 
+		bool isXYY3D;
+
 		GraphLayer()
 		:	imageProfileTool(false)
+		,	isXYY3D(false)
 		{};
 
 		//bool threeDimensional;
 		bool is3D() const
 		{
-			return curves.end() != find_if(curves.begin(), curves.end(), 
+			return curves.end() != find_if(curves.begin(), curves.end(),
 											boost::bind(logical_or<bool>(), boost::bind(&GraphCurve::type, _1) == GraphCurve::Line3D,  
-																			boost::bind(&GraphCurve::type, _1) == GraphCurve::Mesh3D));
+											boost::bind(&GraphCurve::type, _1) == GraphCurve::Mesh3D));
 		}
 	};
 

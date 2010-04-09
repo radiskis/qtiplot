@@ -387,7 +387,7 @@ void Graph3D::addRibbon(Table* table,const QString& xColName, const QString& yCo
 	if (xcol < 0 || ycol < 0)
 		return;
 
-    bool empty = !sp->hasData();
+	bool empty = !sp->hasData();
 
 	plotAssociation = xColName + "(X)," + yColName + "(Y)";
 	d_table = table;
@@ -427,6 +427,7 @@ void Graph3D::addRibbon(Table* table,const QString& xColName, const QString& yCo
 		d_active_curve = addCurve();
 	d_active_curve->showColorLegend(legendOn);
 	d_active_curve->legend()->setLimits(gsl_vector_min(y), maxy);
+	d_active_curve->legend()->setMajors(legendMajorTicks);
 	d_active_curve->loadFromData(data, xmesh, ymesh, gsl_vector_min(x), gsl_vector_max(x), 0, maxz);
 
 	if (empty || d_autoscale)
@@ -801,7 +802,6 @@ void Graph3D::updateMatrixData(Matrix* m)
 
 void Graph3D::resetNonEmptyStyle()
 {
-
 	if (!d_active_curve || d_active_curve->plotStyle() != Qwt3D::NOPLOT )
 		return; // the plot was not previousely emptied
 

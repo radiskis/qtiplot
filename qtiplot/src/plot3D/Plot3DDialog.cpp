@@ -385,7 +385,7 @@ void Plot3DDialog::initGeneralPage()
 	boxMeshLineWidth = new QDoubleSpinBox();
 	boxMeshLineWidth->setDecimals(1);
 	boxMeshLineWidth->setSingleStep(0.1);
-    boxMeshLineWidth->setRange(1, 100);
+	boxMeshLineWidth->setRange(0, 100);
     gl1->addWidget(boxMeshLineWidth, 1, 1);
 
     gl1->addWidget(new QLabel( tr( "Resolution" )), 2, 0);

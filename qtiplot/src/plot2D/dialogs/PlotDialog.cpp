@@ -2647,9 +2647,13 @@ bool PlotDialog::acceptParams()
 		contourLinesEditor->updateContourLevels();
 
 		sp->setDisplayMode(QwtPlotSpectrogram::ContourMode, levelsGroupBox->isChecked());
-		labelsGroupBox->setChecked(levelsGroupBox->isChecked());
+
 		labelsGroupBox->setEnabled(levelsGroupBox->isChecked());
-		sp->showContourLineLabels(levelsGroupBox->isChecked());
+
+		if (!levelsGroupBox->isChecked()){
+			labelsGroupBox->setChecked(false);
+			sp->showContourLineLabels(false);
+		}
   	} else if (privateTabWidget->currentPage() == linePage){
 		graph->setCurveStyle(item->plotItemIndex(), boxConnect->currentIndex());
 

@@ -39,6 +39,7 @@
 #include <gsl/gsl_sf.h>
 #include <gsl/gsl_cdf.h>
 #include <gsl/gsl_randist.h>
+#include <gsl/gsl_rng.h>
 
 //! TODO
 class muParserScripting: public ScriptingEnv
@@ -74,7 +75,7 @@ class muParserScripting: public ScriptingEnv
     {
       char *name;
       int numargs;
-      double (*fun1)(double);
+	  double (*fun1)(double);
       double (*fun2)(double,double);
       double (*fun3)(double,double,double);
       QString description;
@@ -82,6 +83,15 @@ class muParserScripting: public ScriptingEnv
     static const mathFunction math_functions[];
 
   private:
+	static double rnd(double x){
+		gsl_rng_default_seed = (unsigned int)x*time(NULL);
+		const gsl_rng_type * T = gsl_rng_default;
+		gsl_rng * r = gsl_rng_alloc (T);
+		double u = gsl_rng_uniform (r);
+		gsl_rng_free (r);
+		return u;
+	}
+
     static double mod(double x, double y)
       { return fmod(x,y); }
     static double bessel_J0(double x)

@@ -18189,6 +18189,11 @@ Vill du skjuta in celler?</translation>
         <source>The function %1 is not defined in the specified interval!</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>rnd(seed):
+ Returns a pseudo-random number in the range 0 to 1. Calling this function several times with the same seed will return the same value.</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>QtColorPicker</name>
@@ -19631,7 +19636,7 @@ den första representerar signalen och den andra svarsfunktionen!</translation>
     </message>
     <message>
         <source>The column names must only contain letters and digits!</source>
-        <translation>Kolumnnamnen får bara innehålla bokstäver och siffror!</translation>
+        <translation type="obsolete">Kolumnnamnen får bara innehålla bokstäver och siffror!</translation>
     </message>
     <message>
         <source>Default</source>

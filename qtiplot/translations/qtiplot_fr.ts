@@ -15357,6 +15357,11 @@ La somme de toutes les celulles de la colonne colName.</translation>
         <source>The function %1 is not defined in the specified interval!</source>
         <translation>La fonction %1 n&apos;est pas définie dans l&apos;intervalle spécifié !</translation>
     </message>
+    <message>
+        <source>rnd(seed):
+ Returns a pseudo-random number in the range 0 to 1. Calling this function several times with the same seed will return the same value.</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>QtColorPicker</name>
@@ -16784,7 +16789,7 @@ La première représente le signal et la seconde la réponse de la fonction !</t
     </message>
     <message>
         <source>The column names must only contain letters and digits!</source>
-        <translation>Les noms de colonnes doivent seulement contenir des lettres et des chiffres !</translation>
+        <translation type="obsolete">Les noms de colonnes doivent seulement contenir des lettres et des chiffres !</translation>
     </message>
     <message>
         <source>Default</source>
