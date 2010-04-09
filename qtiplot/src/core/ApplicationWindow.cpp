@@ -639,9 +639,9 @@ void ApplicationWindow::initGlobalConstants()
 	d_3D_resolution = 1;
 	d_3D_orthogonal = false;
 	d_3D_autoscale = true;
-    d_3D_axes_font = QFont(family, pointSize, QFont::Bold, false);
+	d_3D_axes_font = QFont(family, pointSize, QFont::Normal, false);
 	d_3D_numbers_font = QFont(family, pointSize);
-	d_3D_title_font = QFont(family, pointSize + 2, QFont::Bold, false);
+	d_3D_title_font = QFont(family, pointSize + 2, QFont::Normal, false);
     d_3D_color_map = QwtLinearColorMap(Qt::blue, Qt::red);
 	d_3D_mesh_color = Qt::black;
 	d_3D_axes_color = Qt::black;

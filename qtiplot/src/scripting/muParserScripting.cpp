@@ -79,6 +79,7 @@ const muParserScripting::mathFunction muParserScripting::math_functions[] = {
   { "mod", 2, NULL,mod,NULL, QObject::tr("mod(x,y):\n Calculate rest of integer division x/y,\n x modulo y.") },
   { "pow", 2, NULL,pow,NULL, QObject::tr("pow(x,y):\n Raise x to the power of y, x^y.") },
   { "rint", 1, NULL,NULL,NULL, QObject::tr("rint(x):\n Round to nearest integer.") },
+  { "rnd", 1,rnd,NULL,NULL, QObject::tr("rnd(seed):\n Returns a pseudo-random number in the range 0 to 1. Calling this function several times with the same seed will return the same value.") },
   { "sign", 1, NULL,NULL,NULL, QObject::tr("sign(x):\n Sign function: -1 if x<0; 1 if x>0.") },
   { "sin", 1, NULL,NULL,NULL, QObject::tr("sin(x):\n Calculate sine.") },
   { "sinh", 1, NULL,NULL,NULL, QObject::tr("sinh(x):\n Hyperbolic sin function.") },

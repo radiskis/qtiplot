@@ -12313,6 +12313,11 @@ have the same number of rows.</source>
         <source>The function %1 is not defined in the specified interval!</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>rnd(seed):
+ Returns a pseudo-random number in the range 0 to 1. Calling this function several times with the same seed will return the same value.</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>QtColorPicker</name>
@@ -13501,10 +13506,6 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>QtiPlot - Error</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>The column names must only contain letters and digits!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

@@ -1450,7 +1450,6 @@ void Origin800Parser::readGraphInfo()
 			file >> h;
 			figure.useBorderColor = (h == 0x10);
 
-
 			//section_body_2_size
 			LAYER += size + 0x1;
 
@@ -1474,7 +1473,6 @@ void Origin800Parser::readGraphInfo()
 			{
 				string text(size, 0);
 				file >> text;
-				BOOST_LOG_(1, format("				Text: %s (@ 0x%X)") % text % file.tellg());
 
 				layer.xAxis.position = GraphAxis::Top;
 				layer.xAxis.formatAxis[1].label = TextBox(text, r, color, fontSize, rotation/10, tab, (BorderType)(border >= 0x80 ? border-0x80 : None), (Attach)attach);
@@ -1483,6 +1481,7 @@ void Origin800Parser::readGraphInfo()
 			{
 				string text(size, 0);
 				file >> text;
+				BOOST_LOG_(1, format("				Text: %s (@ 0x%X)") % text % file.tellg());
 
 				layer.yAxis.position = GraphAxis::Left;
 				layer.yAxis.formatAxis[0].label = TextBox(text, r, color, fontSize, rotation/10, tab, (BorderType)(border >= 0x80 ? border-0x80 : None), (Attach)attach);
@@ -1491,6 +1490,7 @@ void Origin800Parser::readGraphInfo()
 			{
 				string text(size, 0);
 				file >> text;
+				BOOST_LOG_(1, format("				Text: %s (@ 0x%X)") % text % file.tellg());
 
 				layer.yAxis.position = GraphAxis::Right;
 				layer.yAxis.formatAxis[1].label = TextBox(text, r, color, fontSize, rotation/10, tab, (BorderType)(border >= 0x80 ? border-0x80 : None), (Attach)attach);
@@ -1572,6 +1572,10 @@ void Origin800Parser::readGraphInfo()
 				BOOST_LOG_(1, format("hLine: %g @ 0x%X") % layer.hLine % file.tellg());
 
 				layer.imageProfileTool = true;
+			}
+			else if(sec_name == "ZCOLORS")
+			{
+				layer.isXYY3D = true;
 			}
 			else if(osize == 0x3E) // text
 			{
@@ -1660,8 +1664,7 @@ void Origin800Parser::readGraphInfo()
 		file >> size;
 		if(size)//check layer is not empty
 		{
-			while(LAYER < d_file_size)
-			{
+			while(LAYER < d_file_size){
 				LAYER += 0x5;
 
 				layer.curves.push_back(GraphCurve());
@@ -1674,16 +1677,12 @@ void Origin800Parser::readGraphInfo()
 				file >> w;
 				pair<string, string> column = findDataByIndex(w-1);
 				short nColY = w;
-				if(column.first.size() > 0)
-				{
+				if(column.first.size() > 0){
 					curve.dataName = column.first;
-					if(layer.is3D())
-					{
+					if(layer.is3D()){
 						BOOST_LOG_(1, format("			graph %d layer %d curve %d Z : %s.%s") % graphs.size() % graphs.back().layers.size() % layer.curves.size() % column.first.c_str() % column.second.c_str());
 						curve.zColumnName = column.second;
-					}
-					else
-					{
+					} else {
 						BOOST_LOG_(1, format("			graph %d layer %d curve %d Y : %s.%s") % graphs.size() % graphs.back().layers.size() % layer.curves.size() % column.first.c_str() % column.second.c_str());
 						curve.yColumnName = column.second;
 					}
@@ -1692,20 +1691,17 @@ void Origin800Parser::readGraphInfo()
 				file.seekg(LAYER + 0x23, ios_base::beg);
 				file >> w;
 				column = findDataByIndex(w-1);
-				if(column.first.size() > 0)
-				{
+				if(column.first.size() > 0){
 					if(curve.dataName != column.first)
-					{
 						BOOST_LOG_(1, format("			graph %d X and Y from different tables") % graphs.size());
-					}
 
-					if(layer.is3D())
-					{
+					if(layer.is3D()){
 						BOOST_LOG_(1, format("			graph %d layer %d curve %d Y : %s.%s") % graphs.size() % graphs.back().layers.size() % layer.curves.size() % column.first.c_str() % column.second.c_str());
 						curve.yColumnName = column.second;
-					}
-					else
-					{
+					} else if (layer.isXYY3D){
+						BOOST_LOG_(1, format("			graph %d layer %d curve %d X : %s.%s") % graphs.size() % graphs.back().layers.size() % layer.curves.size() % column.first.c_str() % column.second.c_str());
+						curve.xColumnName = column.second;
+					} else {
 						BOOST_LOG_(1, format("			graph %d layer %d curve %d X : %s.%s") % graphs.size() % graphs.back().layers.size() % layer.curves.size() % column.first.c_str() % column.second.c_str());
 						curve.xColumnName = column.second;
 					}
@@ -1714,17 +1710,14 @@ void Origin800Parser::readGraphInfo()
 				file.seekg(LAYER + 0x4D, ios_base::beg);
 				file >> w;
 				column = findDataByIndex(w-1);
-				if(column.first.size() > 0 && layer.is3D())
-				{
+				if(column.first.size() > 0 && layer.is3D()){
 					BOOST_LOG_(1, format("			graph %d layer %d curve %d X : %s.%s") % graphs.size() % graphs.back().layers.size() % layer.curves.size() % column.first.c_str() % column.second.c_str());
 					curve.xColumnName = column.second;
 					if(curve.dataName != column.first)
-					{
 						BOOST_LOG_(1, format("			graph %d X and Y from different tables") % graphs.size());
-					}
 				}
 
-				if(layer.is3D())
+				if(layer.is3D() || layer.isXYY3D)
 					graphs.back().is3D = true;
 
 				file.seekg(LAYER + 0x11, ios_base::beg);
@@ -1747,8 +1740,7 @@ void Origin800Parser::readGraphInfo()
 				file >> curve.fillAreaType;
 
 				//text
-				if(curve.type == GraphCurve::TextPlot)
-				{
+				if(curve.type == GraphCurve::TextPlot){
 					file.seekg(LAYER + 0x13, ios_base::beg);
 					file >> curve.text.rotation;
 					curve.text.rotation /= 10;
@@ -1756,17 +1748,16 @@ void Origin800Parser::readGraphInfo()
 
 					file.seekg(LAYER + 0x19, ios_base::beg);
 					file >> h;
-					switch(h)
-					{
-					case 26:
-						curve.text.justify = TextProperties::Center;
-						break;
-					case 2:
-						curve.text.justify = TextProperties::Right;
-					    break;
-					default:
-						curve.text.justify = TextProperties::Left;
-					    break;
+					switch(h){
+						case 26:
+							curve.text.justify = TextProperties::Center;
+							break;
+						case 2:
+							curve.text.justify = TextProperties::Right;
+							break;
+						default:
+							curve.text.justify = TextProperties::Left;
+							break;
 					}
 
 					file >> h;
@@ -1784,8 +1775,7 @@ void Origin800Parser::readGraphInfo()
 				}
 
 				//vector
-				if(curve.type == GraphCurve::FlowVector || curve.type == GraphCurve::Vector)
-				{
+				if(curve.type == GraphCurve::FlowVector || curve.type == GraphCurve::Vector){
 					file.seekg(LAYER + 0x56, ios_base::beg);
 					file >> curve.vector.multiplier;
 
@@ -1794,45 +1784,33 @@ void Origin800Parser::readGraphInfo()
 
 					column = findDataByIndex(nColY - 1 + h - 0x64);
 					if(column.first.size() > 0)
-					{
 						curve.vector.endXColumnName = column.second;
-					}
 
 					file.seekg(LAYER + 0x62, ios_base::beg);
 					file >> h;
 
 					column = findDataByIndex(nColY - 1 + h - 0x64);
 					if(column.first.size() > 0)
-					{
 						curve.vector.endYColumnName = column.second;
-					}
 
 					file.seekg(LAYER + 0x18, ios_base::beg);
 					file >> h;
 
-					if(h >= 0x64)
-					{
+					if(h >= 0x64){
 						column = findDataByIndex(nColY - 1 + h - 0x64);
 						if(column.first.size() > 0)
 							curve.vector.angleColumnName = column.second;
-					}
-					else if(h <= 0x08)
-					{
+					} else if(h <= 0x08)
 						curve.vector.constAngle = 45*h;
-					}
 
 					file >> h;
 
-					if(h >= 0x64 && h < 0x1F4)
-					{
+					if(h >= 0x64 && h < 0x1F4){
 						column = findDataByIndex(nColY - 1 + h - 0x64);
 						if(column.first.size() > 0)
 							curve.vector.magnitudeColumnName = column.second;
-					}
-					else
-					{
+					} else
 						curve.vector.constMagnitude = (int)curve.symbolSize;
-					}
 
 					file.seekg(LAYER + 0x66, ios_base::beg);
 					file >> curve.vector.arrowLenght;
@@ -1846,24 +1824,21 @@ void Origin800Parser::readGraphInfo()
 
 					file.seekg(LAYER + 0x142, ios_base::beg);
 					file >> h;
-					switch(h)
-					{
-					case 2:
-						curve.vector.position = VectorProperties::Midpoint;
-						break;
-					case 4:
-						curve.vector.position = VectorProperties::Head;
-						break;
-					default:
-						curve.vector.position = VectorProperties::Tail;
-						break;
+					switch(h){
+						case 2:
+							curve.vector.position = VectorProperties::Midpoint;
+							break;
+						case 4:
+							curve.vector.position = VectorProperties::Head;
+							break;
+						default:
+							curve.vector.position = VectorProperties::Tail;
+							break;
 					}
-
 				}
 
 				//pie
-				if(curve.type == GraphCurve::Pie)
-				{
+				if (curve.type == GraphCurve::Pie){
 					file.seekg(LAYER + 0x92, ios_base::beg);
 					file >> h;
 
@@ -1894,8 +1869,7 @@ void Origin800Parser::readGraphInfo()
 					file >> curve.pie.displacedSectionCount;
 				}
 				//surface
-				if(curve.type == GraphCurve::Mesh3D)
-				{
+				if (layer.isXYY3D || curve.type == GraphCurve::Mesh3D){
 					file.seekg(LAYER + 0x17, ios_base::beg);
 					file >> curve.surface.type;
 					file.seekg(LAYER + 0x1C, ios_base::beg);
@@ -1947,8 +1921,7 @@ void Origin800Parser::readGraphInfo()
 					file >> curve.surface.bottomContour.lineColor;
 				}
 
-				if(curve.type == GraphCurve::Mesh3D || curve.type == GraphCurve::Contour)
-				{
+				if (curve.type == GraphCurve::Mesh3D || curve.type == GraphCurve::Contour){
 					ColorMap& colorMap = (curve.type == GraphCurve::Mesh3D ? curve.surface.colorMap : curve.colorMap);
 					file.seekg(LAYER + 0x13, ios_base::beg);
 					file >> h;

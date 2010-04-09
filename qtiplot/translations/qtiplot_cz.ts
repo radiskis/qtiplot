@@ -11926,6 +11926,11 @@ pokud e1 pak e2 jinak e3.</translation>
         <translation>SUM(&quot;colName&quot;, i, j):
  Součet všech buněk od řádku i po j ve sloupci colName.</translation>
     </message>
+    <message>
+        <source>rnd(seed):
+ Returns a pseudo-random number in the range 0 to 1. Calling this function several times with the same seed will return the same value.</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>QtColorPicker</name>
@@ -13258,7 +13263,7 @@ pokud e1 pak e2 jinak e3.</translation>
     </message>
     <message>
         <source>The column names must only contain letters and digits!</source>
-        <translation>Názvy sloupců musí obsahovat pouze písmena a číslice!</translation>
+        <translation type="obsolete">Názvy sloupců musí obsahovat pouze písmena a číslice!</translation>
     </message>
     <message>
         <source>Enumerate all to the right</source>
