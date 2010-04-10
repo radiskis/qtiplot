@@ -73,7 +73,7 @@ public:
 
 	double whiskersRange(){return w_coeff;};
 	int whiskersRangeType(){return w_range;};
-	void setWhiskersRange(int type, double coeff);
+	void setWhiskersRange(int type, double coeff = 0.0);
 
     void loadData();
 

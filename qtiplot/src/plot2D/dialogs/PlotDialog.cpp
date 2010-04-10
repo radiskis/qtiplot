@@ -2322,8 +2322,8 @@ void PlotDialog::setActiveCurve(CurveTreeItem *item)
             setBoxType(boxType->currentIndex());
             if (b->boxRangeType() == BoxCurve::SD || b->boxRangeType() == BoxCurve::SE)
                 boxCnt->setValue(b->boxRange());
-            else
-                boxCoef->setValue((int)b->boxRange());
+			else
+				boxCoef->setValue((int)b->boxRange());
 
             boxWhiskersRange->setCurrentIndex (b->whiskersRangeType());
             setWhiskersRange(boxWhiskersRange->currentIndex());

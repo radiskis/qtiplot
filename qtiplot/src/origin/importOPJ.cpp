@@ -55,6 +55,8 @@
 #include <Spectrogram.h>
 #include <ScreenPickerTool.h>
 #include <Graph3D.h>
+#include <BoxCurve.h>
+#include <SymbolBox.h>
 
 #include "qwt_plot_canvas.h"
 #include "qwt_plot_layout.h"
@@ -71,7 +73,7 @@ QMap<Origin::GraphCurve::LineStyle, Qt::PenStyle> ImportOPJ::lineStyles;
 QMap<Origin::GraphCurve::LineStyle, Qwt3D::LINESTYLE> ImportOPJ::line3DStyles;
 QMap<Origin::FillPattern, int> ImportOPJ::patternStyles;
 QMap<Origin::ProjectNode::NodeType, QString> ImportOPJ::classes;
-QMap<Origin::GraphAxis::Scale, Qwt3D::SCALETYPE> ImportOPJ::scaleTypes;
+QMap<Origin::GraphAxis::Scale, ScaleTransformation::Type> ImportOPJ::scaleTypes;
 
 QString strreverse(const QString &str) //QString reversing
 {
@@ -119,15 +121,15 @@ ImportOPJ::ImportOPJ(ApplicationWindow *app, const QString& filename) :
 	line3DStyles[Origin::GraphCurve::ShortDashDot] = Qwt3D::SHORTDASHDOT;
 	line3DStyles[Origin::GraphCurve::DashDotDot] = Qwt3D::DASHDOTDOT;
 
-	scaleTypes[Origin::GraphAxis::Linear] = Qwt3D::LINEARSCALE;
-	scaleTypes[Origin::GraphAxis::Log10] = Qwt3D::LOG10SCALE;
-	scaleTypes[Origin::GraphAxis::Probability] = Qwt3D::LINEARSCALE;
-	scaleTypes[Origin::GraphAxis::Probit] = Qwt3D::LINEARSCALE;
-	scaleTypes[Origin::GraphAxis::Reciprocal] = Qwt3D::LINEARSCALE;
-	scaleTypes[Origin::GraphAxis::OffsetReciprocal] = Qwt3D::LINEARSCALE;
-	scaleTypes[Origin::GraphAxis::Logit] = Qwt3D::LINEARSCALE;
-	scaleTypes[Origin::GraphAxis::Ln] = Qwt3D::LOG10SCALE;
-	scaleTypes[Origin::GraphAxis::Log2] = Qwt3D::LOG10SCALE;
+	scaleTypes[Origin::GraphAxis::Linear] = ScaleTransformation::Linear;
+	scaleTypes[Origin::GraphAxis::Log10] = ScaleTransformation::Log10;
+	scaleTypes[Origin::GraphAxis::Probability] = ScaleTransformation::Probability;
+	scaleTypes[Origin::GraphAxis::Probit] = ScaleTransformation::Probability;
+	scaleTypes[Origin::GraphAxis::Reciprocal] = ScaleTransformation::Reciprocal;
+	scaleTypes[Origin::GraphAxis::OffsetReciprocal] = ScaleTransformation::Reciprocal;
+	scaleTypes[Origin::GraphAxis::Logit] = ScaleTransformation::Logit;
+	scaleTypes[Origin::GraphAxis::Ln] = ScaleTransformation::Ln;
+	scaleTypes[Origin::GraphAxis::Log2] = ScaleTransformation::Log2;
 
 	patternStyles[Origin::NoFill] = 255;
 	patternStyles[Origin::BDiagDense] = 4;
@@ -176,6 +178,9 @@ inline uint qHash(const tree<Origin::ProjectNode>::iterator &key)
 
 QColor originToQtColor(const Origin::Color& color)
 {
+	if (color.type == Origin::Color::None)
+		return QColor();
+
 	return (color.type == Origin::Color::Regular ? ColorBox::defaultColor(color.regular) : QColor(color.custom[0], color.custom[1], color.custom[2]));
 }
 
@@ -677,11 +682,10 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 
 		int width = _graph.width;
 		int height = _graph.height;
-		if((double)(_graph.width)/(double)(_graph.height) < ratio){
+		if((double)(_graph.width)/(double)(_graph.height) < ratio)
 			width = height * ratio;
-		} else {
+		else
 			height = width / ratio;
-		}
 
 		//ml->resize(width, height);
 
@@ -696,6 +700,7 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 		double fVectorArrowScaleFactor = 0.08*fWindowFactor;
 
 		bool imageProfileTool = false;
+		bool boxWhiskersPlot = false;
 		for(unsigned int l = 0; l < _graph.layers.size(); ++l){
 			Origin::GraphLayer& layer = _graph.layers[l];
 			if(layer.is3D() || layer.isXYY3D){
@@ -793,6 +798,12 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 						QStringList names;
 						names << QString("%1_%2").arg(tableName, _curve.yColumnName.c_str());
 						graph->addCurves(mw->table(tableName), names, style);
+
+						if(style == Graph::Box){
+							curve = graph->curve(c);
+							((BoxCurve *)curve)->setBoxWidth(_curve.boxWidth);
+							boxWhiskersPlot = true;
+						}
 					} else if(style==Graph::VectXYXY){
 						QStringList names;
 						Origin::VectorProperties vector = _curve.vector;
@@ -915,7 +926,7 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 				cl.sSize = ceil(_curve.symbolSize);
 				cl.penWidth=_curve.symbolThickness;
 				color=_curve.symbolColor.regular;
-				if((style==Graph::Scatter || style==Graph::LineSymbols || style==Graph::Area)&&_curve.symbolColor.type == Origin::Color::Automatic)//0xF7 -Automatic color
+				if((style==Graph::Scatter || style==Graph::LineSymbols || style==Graph::Area || style==Graph::Box)&&_curve.symbolColor.type == Origin::Color::Automatic)//0xF7 -Automatic color
 					color=++auto_color;
 				cl.symCol = ColorBox::defaultColor(color);
 				switch(_curve.symbolType&0xFF){
@@ -980,8 +991,8 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 					case 9:
 					case 10:
 					case 11:
-						color=_curve.symbolFillColor.regular;
-						if((style==Graph::Scatter || style==Graph::LineSymbols || style==Graph::Area)&&_curve.symbolFillColor.type==Origin::Color::Automatic)//0xF7 -Automatic color
+						color =_curve.symbolFillColor.regular;
+						if((style==Graph::Scatter || style==Graph::LineSymbols || style==Graph::Area || style==Graph::Box)&&_curve.symbolFillColor.type==Origin::Color::Automatic)//0xF7 -Automatic color
 							color=17;// depend on Origin settings - not stored in file
 						cl.fillCol = ColorBox::defaultColor(color);
 						break;
@@ -989,22 +1000,25 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 						cl.fillCol = QColor();
 				}
 
-				cl.lWidth = ceil(_curve.lineWidth);
+				cl.lWidth = _curve.lineWidth;
 				color=_curve.lineColor.regular;
 				cl.lCol = ColorBox::defaultColor(_curve.lineColor.type==Origin::Color::Automatic?0:color); //0xF7 -Automatic color
 				int linestyle=_curve.lineStyle;
-				cl.filledArea=(_curve.fillArea || style==Graph::VerticalBars || style==Graph::HorizontalBars || style==Graph::Histogram || style == Graph::Pie) ? 1 : 0;
+				cl.filledArea=(_curve.fillArea || style==Graph::VerticalBars || style==Graph::HorizontalBars || style==Graph::Histogram || style == Graph::Pie || style == Graph::Box) ? 1 : 0;
 				if(cl.filledArea){
 					Origin::Color color;
 					cl.aStyle = _curve.fillAreaPattern == Origin::NoFill ? 0 : patternStyles[(Origin::FillPattern)_curve.fillAreaPattern];
 					color = (cl.aStyle == 0 ? _curve.fillAreaColor : _curve.fillAreaPatternColor);
 					cl.aCol = (color.type == Origin::Color::Automatic ? 0 : color.regular); //0xF7 -Automatic color
-					if(style == Graph::VerticalBars || style == Graph::HorizontalBars || style == Graph::Histogram || style == Graph::Pie){
+					if(style == Graph::VerticalBars || style == Graph::HorizontalBars || style == Graph::Histogram || style == Graph::Pie || style == Graph::Box){
 						color = _curve.fillAreaPatternBorderColor;
 						cl.lCol = ColorBox::defaultColor(color.type == Origin::Color::Automatic ? 0 : color.regular); //0xF7 -Automatic color
 						color = (cl.aStyle == 0 ? _curve.fillAreaColor : _curve.fillAreaPatternColor);
+						if (!originToQtColor(_curve.fillAreaColor).isValid() && !cl.aStyle)
+							cl.filledArea = 0;
+
 						cl.aCol = (color.type == Origin::Color::Automatic ? cl.lCol : ColorBox::defaultColor(color.regular)); //0xF7 -Automatic color
-						cl.lWidth = ceil(_curve.fillAreaPatternBorderWidth);
+						cl.lWidth = _curve.fillAreaPatternBorderWidth;
 						linestyle = _curve.fillAreaPatternBorderStyle;
 					}
 				}
@@ -1047,7 +1061,7 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 
                     graph->setFrame(0);
 				} else if(style == Graph::VectXYXY || style == Graph::VectXYAM){
-					graph->updateVectorsLayout(c, cl.symCol, ceil(_curve.vector.width),
+					graph->updateVectorsLayout(c, cl.symCol, _curve.vector.width,
 						floor(_curve.vector.arrowLenght*fVectorArrowScaleFactor + 0.5), _curve.vector.arrowAngle, _curve.vector.arrowClosed, _curve.vector.position);
 				}
 
@@ -1080,30 +1094,32 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 			if (style == Graph::HorizontalBars){
 				graph->setScale(0,layer.xAxis.min,layer.xAxis.max,layer.xAxis.step,layer.xAxis.majorTicks,layer.xAxis.minorTicks,layer.xAxis.scale);
 				graph->setScale(2,layer.yAxis.min,layer.yAxis.max,layer.yAxis.step,layer.yAxis.majorTicks,layer.yAxis.minorTicks,layer.yAxis.scale);
-			} else if(style != Graph::Box){
+			} else {
 				Origin::GraphAxisBreak breakX = layer.xAxisBreak;
 				Origin::GraphAxisBreak breakY = layer.yAxisBreak;
 				bool invert = (layer.xAxis.min > layer.xAxis.max);
-				if(breakX.show)
-					graph->setScale(2,layer.xAxis.min,layer.xAxis.max,layer.xAxis.step,layer.xAxis.majorTicks,layer.xAxis.minorTicks,layer.xAxis.scale,
+				if(style != Graph::Box){
+					if(breakX.show)
+						graph->setScale(2,layer.xAxis.min,layer.xAxis.max,layer.xAxis.step,layer.xAxis.majorTicks,layer.xAxis.minorTicks,scaleTypes[(Origin::GraphAxis::Scale)layer.xAxis.scale],
 									invert,
 									breakX.from, breakX.to,
 									breakX.position,
 									breakX.scaleIncrementBefore, breakX.scaleIncrementAfter,
 									breakX.minorTicksBefore, breakX.minorTicksAfter, breakX.log10);
-				else
-					graph->setScale(2,layer.xAxis.min,layer.xAxis.max,layer.xAxis.step,layer.xAxis.majorTicks,layer.xAxis.minorTicks,layer.xAxis.scale, invert);
+					else
+						graph->setScale(2,layer.xAxis.min,layer.xAxis.max,layer.xAxis.step,layer.xAxis.majorTicks,layer.xAxis.minorTicks,scaleTypes[(Origin::GraphAxis::Scale)layer.xAxis.scale], invert);
+				}
 
 				invert = (layer.yAxis.min > layer.yAxis.max) || matrixImage;
 				if(breakY.show)
-					graph->setScale(0,layer.yAxis.min,layer.yAxis.max,layer.yAxis.step,layer.yAxis.majorTicks,layer.yAxis.minorTicks,layer.xAxis.scale, //??xAxis??
+					graph->setScale(0,layer.yAxis.min,layer.yAxis.max,layer.yAxis.step,layer.yAxis.majorTicks,layer.yAxis.minorTicks,scaleTypes[(Origin::GraphAxis::Scale)layer.xAxis.scale], //??xAxis??
 					invert,
 					breakY.from, breakY.to,
 					breakY.position,
 					breakY.scaleIncrementBefore, breakY.scaleIncrementAfter,
 					breakY.minorTicksBefore, breakY.minorTicksAfter, breakY.log10);
 				else
-					graph->setScale(0,layer.yAxis.min,layer.yAxis.max,layer.yAxis.step,layer.yAxis.majorTicks,layer.yAxis.minorTicks,layer.yAxis.scale, invert);
+					graph->setScale(0,layer.yAxis.min,layer.yAxis.max,layer.yAxis.step,layer.yAxis.majorTicks,layer.yAxis.minorTicks,scaleTypes[(Origin::GraphAxis::Scale)layer.yAxis.scale], invert);
 			}
 
 			//grid
@@ -1237,7 +1253,7 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 				QFont fnt = graph->axisTitleFont(i);
 				int fontSize = formats[i].label.fontSize;
 				if (fontSize > 0){
-					fnt.setPointSize(floor(fontSize*fFontScaleFactor + 0.5));
+					fnt.setPointSize(fontSize*fFontScaleFactor + 0.5);
 					fnt.setBold(false);
 					graph->setAxisTitleFont(i, fnt);
 				}
@@ -1284,7 +1300,7 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 				mrk.setHeadLength(layer.lines[i].end.shapeLength);
                 mrk.setHeadAngle(arrowAngle(layer.lines[i].end.shapeLength, layer.lines[i].end.shapeWidth));
 				mrk.setColor(originToQtColor(layer.lines[i].color));
-				mrk.setWidth((int)layer.lines[i].width);
+				mrk.setWidth(layer.lines[i].width);
 				mrk.setStyle(lineStyles[(Origin::GraphCurve::LineStyle)layer.lines[i].style]);
 				graph->addArrow(&mrk);
 			}
@@ -1324,6 +1340,124 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 
 			if (layer.imageProfileTool)
 				imageProfileTool = true;
+
+			if (boxWhiskersPlot){
+				QStringList curveNames;
+				for (unsigned int i = 0; i < graph->curveCount(); i++){
+					BoxCurve *box = (BoxCurve *)graph->curve(i);
+					if (!box)
+						continue;
+					Table *t = box->table();
+					if (t)
+						curveNames << box->title().text().remove(t->objectName() + "_");
+					box->setData(QwtSingleArrayData(double(i + 1), QwtArray<double>(), 0));
+
+					int b_style = 0;
+					if (layer.percentile.diamondBox)
+						b_style = BoxCurve::Diamond;
+					else {
+						switch(layer.percentile.boxRange){
+							case 0:
+								b_style = BoxCurve::NoBox;
+							break;
+							case 4:
+								b_style = BoxCurve::WindBox;
+							break;
+							case 6:
+								b_style = BoxCurve::Notch;
+							break;
+							default:
+								b_style = BoxCurve::Rect;
+								break;
+						}
+					}
+					box->setBoxStyle(b_style);
+
+					int b_range = 0;
+					switch(layer.percentile.boxRange){
+						case 1:
+							b_range = BoxCurve::SE;
+						break;
+						case 2:
+							b_range = BoxCurve::SD;
+						break;
+						case 3:
+							b_range = BoxCurve::r25_75;
+						break;
+						case 4:
+							b_range = BoxCurve::r10_90;
+						break;
+						case 6:
+							b_range = BoxCurve::r25_75;
+						break;
+						default:
+							b_range = BoxCurve::UserDef;
+						break;
+					}
+					box->setBoxRange(b_range, layer.percentile.boxCoeff);
+
+					int w_range = 0;
+					switch(layer.percentile.whiskersRange){
+						case 0:
+							w_range = BoxCurve::None;
+						break;
+						case 1:
+							w_range = BoxCurve::r10_90;
+						break;
+						case 2:
+							w_range = BoxCurve::r5_95;
+						break;
+						case 3:
+							w_range = BoxCurve::r1_99;
+						break;
+						case 4:
+							w_range = BoxCurve::SD;
+						break;
+						case 5:
+							w_range = BoxCurve::SE;
+						break;
+						case 7:
+							w_range = BoxCurve::MinMax;
+						break;
+						case 8:
+							w_range = BoxCurve::UserDef;
+						break;
+						default:
+							w_range = BoxCurve::UserDef;
+							break;
+					}
+					box->setWhiskersRange(w_range, layer.percentile.whiskersCoeff);
+
+					box->loadData();
+
+					unsigned short size = layer.percentile.symbolSize;
+					QColor fillColor = originToQtColor(layer.percentile.symbolFillColor);
+					QBrush brush = QBrush();
+					if (fillColor.isValid())
+						brush = QBrush(fillColor);
+
+					QPen pen = box->pen();
+					QColor color = originToQtColor(layer.percentile.symbolColor);
+					if (color.isValid() && layer.percentile.symbolColor.type != Origin::Color::Automatic)
+						pen = QPen(color, 1);
+
+					box->setSymbol(QwtSymbol(QwtSymbol::NoSymbol, brush, pen, QSize(size, size)));
+					box->setP99Style(originToQwtSymbolStyle(layer.percentile.p99SymbolType));
+					box->setMeanStyle(originToQwtSymbolStyle(layer.percentile.meanSymbolType));
+					box->setMaxStyle(originToQwtSymbolStyle(layer.percentile.maxSymbolType));
+					box->setMinStyle(originToQwtSymbolStyle(layer.percentile.minSymbolType));
+					box->setP1Style(originToQwtSymbolStyle(layer.percentile.p1SymbolType));
+				}
+				ScaleDraw *sd = (ScaleDraw *)graph->axisScaleDraw(QwtPlot::xBottom);
+				sd->setLabelsList(curveNames);
+				sd->setShowTicksPolicy(ScaleDraw::HideBeginEnd);
+				graph->setAxisScaleDraw(QwtPlot::xBottom, sd);
+
+				sd = (ScaleDraw *)graph->axisScaleDraw(QwtPlot::xTop);
+				sd->setShowTicksPolicy(ScaleDraw::HideBeginEnd);
+				graph->setAxisScaleDraw(QwtPlot::xTop, sd);
+				graph->replot();
+			}
 		}
 
 		if (imageProfileTool){
@@ -1652,13 +1786,13 @@ bool ImportOPJ::importGraph3D(const OriginFile& opj, unsigned int g, unsigned in
 
 		if (!layer.isXYY3D){
 			int majorTicks = ceil((layer.xAxis.max - layer.xAxis.min)/layer.xAxis.step);
-			plot->setScale(0, layer.xAxis.min, layer.xAxis.max, majorTicks, layer.xAxis.minorTicks, scaleTypes[(Origin::GraphAxis::Scale)layer.xAxis.scale]);
+			plot->setScale(0, layer.xAxis.min, layer.xAxis.max, majorTicks, layer.xAxis.minorTicks, (Qwt3D::SCALETYPE)scaleTypes[(Origin::GraphAxis::Scale)layer.xAxis.scale]);
 
 			majorTicks = ceil((layer.yAxis.max - layer.yAxis.min)/layer.yAxis.step);
-			plot->setScale(1, layer.yAxis.min, layer.yAxis.max, majorTicks, layer.yAxis.minorTicks, scaleTypes[(Origin::GraphAxis::Scale)layer.yAxis.scale]);
+			plot->setScale(1, layer.yAxis.min, layer.yAxis.max, majorTicks, layer.yAxis.minorTicks, (Qwt3D::SCALETYPE)scaleTypes[(Origin::GraphAxis::Scale)layer.yAxis.scale]);
 
 			majorTicks = ceil((layer.zAxis.max - layer.zAxis.min)/layer.zAxis.step);
-			plot->setScale(2, layer.zAxis.min, layer.zAxis.max, majorTicks, layer.zAxis.minorTicks, scaleTypes[(Origin::GraphAxis::Scale)layer.zAxis.scale]);
+			plot->setScale(2, layer.zAxis.min, layer.zAxis.max, majorTicks, layer.zAxis.minorTicks, (Qwt3D::SCALETYPE)scaleTypes[(Origin::GraphAxis::Scale)layer.zAxis.scale]);
 		}
 		plot->resetAxesLabels();
 
@@ -1689,18 +1823,17 @@ bool ImportOPJ::importGraph3D(const OriginFile& opj, unsigned int g, unsigned in
 void ImportOPJ::addText(const Origin::TextBox& text, Graph* graph, double fFontScaleFactor, double fScale)
 {
 	int bkg;
-	switch(text.borderType)
-	{
-	case Origin::BlackLine:
-		bkg = 1;
-		break;
-	case Origin::Shadow:
-	case Origin::DarkMarble:
-		bkg = 2;
-		break;
-	default:
-		bkg = 0;
-		break;
+	switch(text.borderType){
+		case Origin::BlackLine:
+			bkg = 1;
+			break;
+		case Origin::Shadow:
+		case Origin::DarkMarble:
+			bkg = 2;
+			break;
+		default:
+			bkg = 0;
+			break;
 	}
 
 	LegendWidget* txt=graph->newLegend(parseOriginText(QString::fromLocal8Bit(text.text.c_str())));
@@ -1717,6 +1850,7 @@ void ImportOPJ::addText(const Origin::TextBox& text, Graph* graph, double fFontS
 	//int y=(txtRect.top>layerRect.top ? txtRect.top-layerRect.top : 0);
 	//txt->move(QPoint((_text.clientRect.left+_text.clientRect.width()/2)*fScale - txt->width()/2, (_text.clientRect.top+_text.clientRect.height()/2)*fScale - LayerButton::btnSize() - txt->height()/2));
 	//txt->setRect(_text.clientRect.left*fScale, _text.clientRect.top*fScale - LayerButton::btnSize(), _text.clientRect.width()*fScale, _text.clientRect.height()*fScale);
+
 	txt->move(QPoint(text.clientRect.left*fScale, text.clientRect.top*fScale - LayerButton::btnSize()));
 }
 
@@ -1863,6 +1997,62 @@ QwtLinearColorMap ImportOPJ::qwtColorMap(const Origin::ColorMap& colorMap)
 	return qwt_color_map;
 }
 
+QwtSymbol::Style ImportOPJ::originToQwtSymbolStyle(unsigned char type)
+{
+	int sType = 0;
+	switch(type){
+		case 0: //NoSymbol
+			sType=0;
+			break;
+		case 1: //Rect
+			sType=2;
+			break;
+		case 2: //Ellipse
+		case 20://Sphere
+			sType=1;
+			break;
+		case 3: //UTriangle
+			sType=6;
+			break;
+		case 4: //DTriangle
+			sType=5;
+			break;
+		case 5: //Diamond
+			sType=3;
+			break;
+		case 6: //Cross +
+			sType=9;
+			break;
+		case 7: //Cross x
+			sType=10;
+			break;
+		case 8: //Snow
+			sType=13;
+			break;
+		case 9: //Horizontal -
+			sType=11;
+			break;
+		case 10: //Vertical |
+			sType=12;
+			break;
+		case 15: //LTriangle
+			sType=7;
+			break;
+		case 16: //RTriangle
+			sType=8;
+			break;
+		case 17: //Hexagon
+		case 19: //Pentagon
+			sType=15;
+			break;
+		case 18: //Star
+			sType=14;
+			break;
+		default:
+			sType=0;
+	}
+	return SymbolBox::style(sType);
+}
 //TODO: bug in grid dialog
 //		scale/minor ticks checkbox
 //		histogram: autobin export

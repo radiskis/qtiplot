@@ -4669,12 +4669,14 @@ void Graph::plotBoxDiagram(Table *w, const QStringList& names, int startRow, int
 			l->setText(legendText());
 	}
 
-	setAxisScaleDraw (QwtPlot::xBottom, new ScaleDraw(this, w->selectedYLabels(), w->objectName(), ScaleDraw::ColHeader));
-	setAxisMaxMajor(QwtPlot::xBottom, names.count()+1);
+	ScaleDraw *sd = new ScaleDraw(this, w->selectedYLabels(), w->objectName(), ScaleDraw::ColHeader);
+	sd->setShowTicksPolicy(ScaleDraw::HideBeginEnd);
+	setAxisScaleDraw (QwtPlot::xBottom, sd);
+	setAxisMaxMajor(QwtPlot::xBottom, names.count() + 1);
 	setAxisMaxMinor(QwtPlot::xBottom, 0);
 
 	setAxisScaleDraw (QwtPlot::xTop, new ScaleDraw(this, w->selectedYLabels(), w->objectName(), ScaleDraw::ColHeader));
-	setAxisMaxMajor(QwtPlot::xTop, names.count()+1);
+	setAxisMaxMajor(QwtPlot::xTop, names.count() + 1);
 	setAxisMaxMinor(QwtPlot::xTop, 0);
 }
 

@@ -1481,7 +1481,6 @@ void Origin800Parser::readGraphInfo()
 			{
 				string text(size, 0);
 				file >> text;
-				BOOST_LOG_(1, format("				Text: %s (@ 0x%X)") % text % file.tellg());
 
 				layer.yAxis.position = GraphAxis::Left;
 				layer.yAxis.formatAxis[0].label = TextBox(text, r, color, fontSize, rotation/10, tab, (BorderType)(border >= 0x80 ? border-0x80 : None), (Attach)attach);
@@ -1490,7 +1489,6 @@ void Origin800Parser::readGraphInfo()
 			{
 				string text(size, 0);
 				file >> text;
-				BOOST_LOG_(1, format("				Text: %s (@ 0x%X)") % text % file.tellg());
 
 				layer.yAxis.position = GraphAxis::Right;
 				layer.yAxis.formatAxis[1].label = TextBox(text, r, color, fontSize, rotation/10, tab, (BorderType)(border >= 0x80 ? border-0x80 : None), (Attach)attach);
@@ -1548,6 +1546,37 @@ void Origin800Parser::readGraphInfo()
 				file.seekg(LAYER + 0x20, ios_base::beg);
 				file >> layer.histogramEnd;
 				file >> layer.histogramBegin;
+
+				unsigned int p = sectionNamePos + 93;
+				file.seekg(p, ios_base::beg);
+
+				file >> layer.percentile.p1SymbolType;
+				file >> layer.percentile.p99SymbolType;
+				file >> layer.percentile.meanSymbolType;
+				file >> layer.percentile.maxSymbolType;
+				file >> layer.percentile.minSymbolType;
+
+				file.seekg(sectionNamePos + 106, ios_base::beg);
+				file >> layer.percentile.whiskersRange;
+				file >> layer.percentile.boxRange;
+
+				file.seekg(sectionNamePos + 141, ios_base::beg);
+				file >> layer.percentile.whiskersCoeff;
+				file >> layer.percentile.boxCoeff;
+
+				unsigned char h;
+				file >> h;
+				layer.percentile.diamondBox = (h == 0x82) ? true : false;
+
+				p += 109;
+				file.seekg(p, ios_base::beg);
+				file >> layer.percentile.symbolSize;
+				layer.percentile.symbolSize = layer.percentile.symbolSize/2 + 1;
+
+				p += 163;
+				file.seekg(p, ios_base::beg);
+				file >> layer.percentile.symbolColor;
+				file >> layer.percentile.symbolFillColor;
 			}
 			else if(sec_name == "vline") // Image profiles vertical cursor
 			{
@@ -1724,7 +1753,9 @@ void Origin800Parser::readGraphInfo()
 				file >> curve.lineConnect;
 				file >> curve.lineStyle;
 
-				file.seekg(LAYER + 0x15, ios_base::beg);
+				file.seekg(1, ios_base::cur);
+				file >> curve.boxWidth;
+
 				file >> w;
 				curve.lineWidth=(double)w/500.0;
 
@@ -1933,11 +1964,14 @@ void Origin800Parser::readGraphInfo()
 
 				file.seekg(LAYER + 0xC2, ios_base::beg);
 				file >> curve.fillAreaColor;
+				BOOST_LOG_(1, format("			fillAreaColor: %d %d") % curve.fillAreaColor.type % curve.fillAreaColor.regular);
+
 				file >> w;
 				curve.fillAreaPatternWidth=(double)w/500.0;
 
 				file.seekg(LAYER + 0xCA, ios_base::beg);
 				file >> curve.fillAreaPatternColor;
+
 				file >> curve.fillAreaPattern;
 				file >> curve.fillAreaPatternBorderStyle;
 				file >> w;

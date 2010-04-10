@@ -100,9 +100,9 @@ void BoxCurve::drawBox(QPainter *painter, const QwtScaleMap &xMap,
 		const QwtScaleMap &yMap, double *dat, int size) const
 {
 	const int px = xMap.transform(x(0));
-	const int px_min = xMap.transform(x(0) - 0.5);
-	const int px_max = xMap.transform(x(0) + 0.5);
-	const int box_width = 1+(px_max - px_min)*b_width/100;
+	const int px_min = xMap.transform(x(0) - 0.4);
+	const int px_max = xMap.transform(x(0) + 0.4);
+	const int box_width = 1 + (px_max - px_min)*b_width/100;
 	const int hbw = box_width/2;
 	const int median = yMap.transform(gsl_stats_median_from_sorted_data (dat, 1, size));
 	int b_lowerq, b_upperq;

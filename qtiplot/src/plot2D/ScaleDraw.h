@@ -94,6 +94,7 @@ public:
     void setDateTimeOrigin(const QDateTime& d){d_date_time_origin = d;};
 
 	QStringList labelsList(){return d_text_labels;};
+	void setLabelsList(const QStringList& list){d_text_labels = list;};
 
 	NameFormat nameFormat(){return d_name_format;};
 
