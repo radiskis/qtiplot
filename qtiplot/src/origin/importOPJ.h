@@ -31,8 +31,10 @@
 
 #include "ApplicationWindow.h"
 #include <OriginFile.h>
+#include <ScaleEngine.h>
 #include "qwt3d_types.h"
 #include "qwt3d_coordsys.h"
+#include <qwt_symbol.h>
 
 //! Origin project import class
 class ImportOPJ
@@ -48,6 +50,7 @@ public:
 	int error(){return parse_error;};
 
 private:
+	QwtSymbol::Style originToQwtSymbolStyle(unsigned char type);
 	QwtLinearColorMap qwtColorMap(const Origin::ColorMap& colorMap);
     int arrowAngle(double length, double width){return ceil(45*atan(0.5*width/length)/atan(1.0));};
 	QString parseOriginText(const QString &str);
@@ -61,7 +64,7 @@ private:
 
 	static QMap<Origin::GraphCurve::LineStyle, Qt::PenStyle> lineStyles;
 	static QMap<Origin::GraphCurve::LineStyle, Qwt3D::LINESTYLE> line3DStyles;
-	static QMap<Origin::GraphAxis::Scale, Qwt3D::SCALETYPE> scaleTypes;
+	static QMap<Origin::GraphAxis::Scale, ScaleTransformation::Type>scaleTypes;
 	static QMap<Origin::FillPattern, int> patternStyles;
 	static QMap<Origin::ProjectNode::NodeType, QString> classes;
 };

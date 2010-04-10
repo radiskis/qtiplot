@@ -405,6 +405,23 @@ namespace Origin
 		ColorMap colorMap;
 	};
 
+	struct PercentileProperties
+	{
+		unsigned char maxSymbolType;
+		unsigned char p99SymbolType;
+		unsigned char meanSymbolType;
+		unsigned char p1SymbolType;
+		unsigned char minSymbolType;
+		Color symbolColor;
+		Color symbolFillColor;
+		unsigned short symbolSize;
+		unsigned char boxRange;
+		unsigned char whiskersRange;
+		double boxCoeff;
+		double whiskersCoeff;
+		bool diamondBox;
+	};
+
 	struct GraphCurve
 	{
 		enum Plot {Line = 200, Scatter=201, LineSymbol=202, Column = 203, Area = 204, HiLoClose = 205, Box = 206,
@@ -425,6 +442,7 @@ namespace Origin
 		Color lineColor;
 		unsigned char lineStyle;
 		unsigned char lineConnect;
+		unsigned char boxWidth;
 		double lineWidth;
 
 		bool fillArea;
@@ -635,6 +653,8 @@ namespace Origin
 		double histogramBin;
 		double histogramBegin;
 		double histogramEnd;
+
+		PercentileProperties percentile;
 
 		vector<TextBox> texts;
 		vector<Line> lines;
