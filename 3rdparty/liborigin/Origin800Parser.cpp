@@ -543,6 +543,11 @@ void Origin800Parser::readNotes()
 		else
 			notes.back().title = Window::Both;
 
+		if(state == 0x07)
+			notes.back().state = Window::Minimized;
+		else if(state == 0x0b)
+			notes.back().state = Window::Maximized;
+
 		notes.back().hidden = (state & 0x40);
 
 		file.seekg(1, ios_base::cur);
@@ -1964,7 +1969,6 @@ void Origin800Parser::readGraphInfo()
 
 				file.seekg(LAYER + 0xC2, ios_base::beg);
 				file >> curve.fillAreaColor;
-				BOOST_LOG_(1, format("			fillAreaColor: %d %d") % curve.fillAreaColor.type % curve.fillAreaColor.regular);
 
 				file >> w;
 				curve.fillAreaPatternWidth=(double)w/500.0;

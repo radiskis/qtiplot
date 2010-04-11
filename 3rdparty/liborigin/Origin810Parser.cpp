@@ -535,6 +535,11 @@ void Origin810Parser::readNotes()
 		else
 			notes.back().title = Window::Both;
 
+		if(state == 5)
+			notes.back().state = Window::Minimized;
+		else if(state == 0x0b)
+			notes.back().state = Window::Maximized;
+
 		notes.back().hidden = (state & 0x40);
 
 		file.seekg(1, ios_base::cur);
