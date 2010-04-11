@@ -601,8 +601,7 @@ bool ImportOPJ::importTables(const OriginFile& opj)
 
 bool ImportOPJ::importNotes(const OriginFile& opj)
 {
-	for(unsigned int n = 0; n < opj.noteCount(); ++n)
-	{
+	for(unsigned int n = 0; n < opj.noteCount(); ++n){
 		Origin::Note _note = opj.note(n);
 		QString name = _note.name.c_str();
 		QRegExp rx("^@\\((\\S+)\\)$");
@@ -627,17 +626,16 @@ bool ImportOPJ::importNotes(const OriginFile& opj)
 
 		note->move(QPoint(windowRect.left, windowRect.top));
 
-		/*switch(_note.state)
-		{
-		case Origin::Window::Minimized:
-			mw->minimizeWindow(note);
-			break;
-		case Origin::Window::Maximized:
-			mw->maximizeWindow(note);
-			break;
-		default:
-			note->showNormal();
-		}*/
+		switch(_note.state){
+			case Origin::Window::Minimized:
+				mw->minimizeWindow(note);
+				break;
+			case Origin::Window::Maximized:
+				mw->maximizeWindow(note);
+				break;
+			default:
+				note->showNormal();
+		}
 
 		if(_note.hidden)
 			mw->hideWindow(note);
@@ -664,8 +662,7 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 		fake->close();
 	}
 
-	for(unsigned int g = 0; g < opj.graphCount(); ++g)
-	{
+	for(unsigned int g = 0; g < opj.graphCount(); ++g){
 		Origin::Graph _graph = opj.graph(g);
 		MultiLayer *ml = mw->multilayerPlot(_graph.name.c_str(), 0);
 		if (!ml)
@@ -694,9 +691,8 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 		ml->resize(graphWindowRect.width(), graphWindowRect.height());
 
 		double fScale = (double)(graphWindowRect.width() - frameWidth)/(double)width;
-
 		double fWindowFactor =  QMIN((double)graphWindowRect.width()/500.0, (double)graphWindowRect.height()/350.0);
-		double fFontScaleFactor = 300*fScale/72;//0.37*fWindowFactor;
+		double fFontScaleFactor = 400.0*fScale/72.0;//0.37*fWindowFactor;
 		double fVectorArrowScaleFactor = 0.08*fWindowFactor;
 
 		bool imageProfileTool = false;
@@ -1279,16 +1275,16 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 			//int newXGraphPos = layerRect.left*fScale - posCanvas.x() - ml->x();
 			//int newYGraphPos = layerRect.top*fScale - posCanvas.y() - yOffset - ml->y();
 			//graph->move((newXGraphPos > 0 ? newXGraphPos : 0), (newYGraphPos > 0 ? newYGraphPos : 0));
+
 			graph->move(layerRect.left*fScale - posCanvas.x(), layerRect.top*fScale - posCanvas.y() - yOffset);
 
-			if(!layer.legend.text.empty()){
+			if(!layer.legend.text.empty())
 				addText(layer.legend, graph, fFontScaleFactor, fScale);
-			}
+
 			//add texts
 			if(style != Graph::Pie){
-				for(unsigned int i = 0; i < layer.texts.size(); ++i){
+				for(unsigned int i = 0; i < layer.texts.size(); ++i)
 					addText(layer.texts[i], graph, fFontScaleFactor, fScale);
-				}
 			}
 
 			for(unsigned int i = 0; i < layer.lines.size(); ++i){
@@ -1316,10 +1312,11 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 						break;
 				}
 
-				fw->setSize(layer.figures[i].clientRect.width()*fScale, layer.figures[i].clientRect.height()*fScale);
+				double lw = layer.figures[i].width;
+				fw->setSize(layer.figures[i].clientRect.width()*fScale + 2*lw, layer.figures[i].clientRect.height()*fScale + 2*lw);
 				fw->move(QPoint(layer.figures[i].clientRect.left*fScale, layer.figures[i].clientRect.top*fScale - yOffset));
 				fw->setFrameColor(originToQtColor(layer.figures[i].color));
-				fw->setFrameWidth(layer.figures[i].width);
+				fw->setFrameWidth(lw);
 				fw->setFrameLineStyle(lineStyles[(Origin::GraphCurve::LineStyle)layer.figures[i].style]);
 				fw->setBackgroundColor(originToQtColor(layer.figures[i].fillAreaColor));
 				fw->setBrush(QBrush(originToQtColor(layer.figures[i].useBorderColor ? layer.figures[i].color : layer.figures[i].fillAreaPatternColor), PatternBox::brushStyle(patternStyles[(Origin::FillPattern)layer.figures[i].fillAreaPattern])));
@@ -1345,7 +1342,7 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 				QStringList curveNames;
 				for (unsigned int i = 0; i < graph->curveCount(); i++){
 					BoxCurve *box = (BoxCurve *)graph->curve(i);
-					if (!box)
+					if (!box || box->type() != Graph::Box)
 						continue;
 					Table *t = box->table();
 					if (t)
@@ -1819,39 +1816,52 @@ bool ImportOPJ::importGraph3D(const OriginFile& opj, unsigned int g, unsigned in
 	return true;
 }
 
-
 void ImportOPJ::addText(const Origin::TextBox& text, Graph* graph, double fFontScaleFactor, double fScale)
 {
 	int bkg;
+	QColor bkgColor = Qt::white;
 	switch(text.borderType){
 		case Origin::BlackLine:
 			bkg = 1;
 			break;
 		case Origin::Shadow:
-		case Origin::DarkMarble:
 			bkg = 2;
+			break;
+		case Origin::DarkMarble:
+			bkg = 1;
+			bkgColor = Qt::darkGray;
+			break;
+		case Origin::BlackOut:
+			bkg = 0;
+			bkgColor = Qt::black;
 			break;
 		default:
 			bkg = 0;
+			bkgColor.setAlpha(0);
 			break;
 	}
 
-	LegendWidget* txt=graph->newLegend(parseOriginText(QString::fromLocal8Bit(text.text.c_str())));
+	QString s = parseOriginText(QString::fromLocal8Bit(text.text.c_str()));
+	LegendWidget* txt = graph->newLegend(s);
 
 	QFont font(mw->plotLegendFont);
-	font.setPointSize(floor(text.fontSize*fFontScaleFactor + 0.5));
+	font.setPointSizeF(text.fontSize*fFontScaleFactor);
+	txt->setFont(font);
 	txt->setAngle(text.rotation);
 	txt->setTextColor(originToQtColor(text.color));
-	txt->setFont(font);
 	txt->setFrameStyle(bkg);
+	txt->setBackgroundColor(bkgColor);
 
-	//Origin::Rect txtRect=_text.clientRect;
-	//int x=(txtRect.left>layerRect.left ? txtRect.left-layerRect.left : 0);
-	//int y=(txtRect.top>layerRect.top ? txtRect.top-layerRect.top : 0);
-	//txt->move(QPoint((_text.clientRect.left+_text.clientRect.width()/2)*fScale - txt->width()/2, (_text.clientRect.top+_text.clientRect.height()/2)*fScale - LayerButton::btnSize() - txt->height()/2));
-	//txt->setRect(_text.clientRect.left*fScale, _text.clientRect.top*fScale - LayerButton::btnSize(), _text.clientRect.width()*fScale, _text.clientRect.height()*fScale);
+	QFont font2(mw->plotLegendFont);
+	font2.setPointSize(text.fontSize);
+	QFontMetrics fm(font2, graph);
+	txt->move(QPoint(qRound(text.clientRect.left*fScale - fm.averageCharWidth()*fFontScaleFactor - txt->framePen().width()),
+					 qRound((text.clientRect.top - fm.lineSpacing())*fScale) - LayerButton::btnSize() - txt->framePen().width()));
 
-	txt->move(QPoint(text.clientRect.left*fScale, text.clientRect.top*fScale - LayerButton::btnSize()));
+	if (text.rotation == 90)//TODO: better take into account the rotation
+		txt->move(QPoint(txt->x(), txt->y() - txt->width()));
+
+	txt->setAttachPolicy(FrameWidget::Scales);
 }
 
 QString ImportOPJ::parseOriginText(const QString &str)

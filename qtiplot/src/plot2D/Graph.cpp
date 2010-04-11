@@ -1087,7 +1087,42 @@ void Graph::setScaleTitle(int axis, const QString& text)
 
 void Graph::setAxisTitle(int axis, const QString& text)
 {
-	((QwtPlot *)this)->setAxisTitle(axis, text);
+	QString s = text;
+	if (s == "%(?Y)"){// parse Origin tag
+		PlotCurve *c = curve(0);
+		if (c){
+			s = c->title().text();
+			int pos = s.lastIndexOf("_");
+			if (pos > 0)
+				s = s.right(s.length() - pos - 1);
+		}
+		DataCurve *dc = dataCurve(0);
+		if (dc){
+			Table *t = dc->table();
+			if (t){
+				QString comment = t->comment(t->colIndex(s)).trimmed().replace("\n", " ");
+				if (!comment.isEmpty())
+					s += " (" + comment + ")";
+			}
+		}
+	} else if (s == "%(?X)"){
+		DataCurve *c = dataCurve(0);
+		if (c){
+			s = c->xColumnName();
+			int pos = s.lastIndexOf("_");
+			if (pos > 0)
+				s = s.right(s.length() - pos - 1);
+
+			Table *t = c->table();
+			if (t){
+				QString comment = t->comment(t->colIndex(c->xColumnName())).trimmed().replace("\n", " ");
+				if (!comment.isEmpty())
+					s += " (" + comment + ")";
+			}
+		}
+	}
+
+	((QwtPlot *)this)->setAxisTitle(axis, s);
 	replot();
 	emit modifiedGraph();
 }
