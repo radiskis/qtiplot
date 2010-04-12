@@ -26,48 +26,27 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef ORIGIN_810_PARSER_H
 #define ORIGIN_810_PARSER_H
 
-#include "OriginParser.h"
-#include "endianfstream.hh"
+#include "Origin800Parser.h"
 
 using namespace Origin;
 
-class Origin810Parser : public OriginParser
+class Origin810Parser : public Origin800Parser
 {
 public:
 	Origin810Parser(const string& fileName);
 	bool parse();
 
 private:
-	void readSpreadInfo();
-	void readExcelInfo();
-	void readMatrixInfo();
 	void readGraphInfo();
-	void readColumnInfo(int spread, int);
-	void skipObjectInfo();
-	void skipLine();
-	unsigned int readGraphAxisInfo(GraphAxis& axis);
-	void readGraphGridInfo(GraphGrid& grid);
-	void readGraphAxisBreakInfo(GraphAxisBreak& axis_break);
-	void readGraphAxisFormatInfo(GraphAxisFormat& format);
-	void readGraphAxisTickLabelsInfo(GraphAxisTick& tick);
+
 	void readProjectTree();
 	void readProjectTreeFolder(tree<ProjectNode>::iterator parent);
-	void readWindowProperties(Window& window, unsigned int size);
 	void readColorMap(ColorMap& colorMap);
-	void readResultsLog();
+
 	void readNotes();
-
-	bool findSection(const string& name, int length, int maxLength = 0);
-	unsigned int findStringPos(const string& name);
-
-	unsigned int objectIndex;
-	iendianfstream file;
-
-	int d_file_size;
 };
 
 #endif // ORIGIN_810_PARSER_H

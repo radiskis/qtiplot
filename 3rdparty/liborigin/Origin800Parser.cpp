@@ -1,10 +1,10 @@
 /***************************************************************************
 	File                 : Origin800Parser.cpp
     --------------------------------------------------------------------
-	Copyright            : (C) 2010 Alex Kargovsky, Ion Vasilief
-    Email (use @ for *)  : kargovsky*yumr.phys.msu.su, ion_vasilief*yahoo.fr
-	Description          : Origin 8.0 file parser class
-
+	Copyright            : (C) 2010 Ion Vasilief
+	Email (use @ for *)  : ion_vasilief*yahoo.fr
+	Description          : Origin 8.0 file parser class (uses code from file
+							Origin750Parser.cpp written by Alex Kargovsky)
  ***************************************************************************/
 
 /***************************************************************************
