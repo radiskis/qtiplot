@@ -118,12 +118,14 @@ void ColorMapEditor::setColorMap(const QwtLinearColorMap& map)
 		sb->setLocale(d_locale);
 		sb->setDecimals(d_precision);
 		sb->setValue(min_val + colors[i] * range.width());
+
 		if (i == 0)
 			sb->setRange(min_val, min_val);
 		else if (i == rows -1)
 			sb->setRange(max_val, max_val);
 		else
 			sb->setRange(min_val, max_val);
+
 		connect(sb, SIGNAL(valueChanged(double)), this, SLOT(updateColorMap()));
 		connect(sb, SIGNAL(activated(DoubleSpinBox *)), this, SLOT(spinBoxActivated(DoubleSpinBox *)));
     	table->setCellWidget(i, 0, sb);

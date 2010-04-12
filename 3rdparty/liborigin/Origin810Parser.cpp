@@ -112,8 +112,7 @@ bool Origin810Parser::parse()
 		BOOST_LOG_(1, format("	NAME: %s") % name.c_str());
 
 		unsigned int spread = 0;
-		if(columnname.empty())
-		{
+		if(columnname.empty()){
 			BOOST_LOG_(1, "NO COLUMN NAME FOUND! Must be a Matrix or Function.");
 			////////////////////////////// READ matrixes or functions ////////////////////////////////////
 
@@ -138,11 +137,18 @@ bool Origin810Parser::parse()
 			case 0x50E2:
 			case 0x50C8:
 			case 0x50E7:
+			case 0x50DB:
+			case 0x50DC:
 
 				pos = name.find_first_of("@");
 				if(pos != string::npos){
 					name.resize(pos);
-					BOOST_LOG_(1, format("MATRIX %s is multisheet, only first shit will be imported!") % name.c_str());
+					file.seekg(valuesize*size, ios_base::cur);
+					//BOOST_LOG_(1, format("MATRIX %s is multisheet, only first shit will be imported!") % name.c_str());
+					unsigned int sheets = matrixes.back().sheets;
+					sheets++;
+					matrixes.back().sheets = sheets;
+					dataIndex++;
 					break;
 				}
 
@@ -295,6 +301,7 @@ bool Origin810Parser::parse()
 			default:
 				BOOST_LOG_(1, format("UNKNOWN SIGNATURE: %.2X SKIP DATA") % signature);
 				file.seekg(valuesize*size, ios_base::cur);
+				++dataIndex;
 
 				if(valuesize != 8 && valuesize <= 16)
 				{
@@ -329,7 +336,6 @@ bool Origin810Parser::parse()
 				if( sheet > 1){
 					speadSheets[spread].multisheet = true;
 
-					columnname.resize(sheetpos);
 					speadSheets[spread].columns.back().name = columnname;
 					speadSheets[spread].columns.back().sheet = sheet - 1;
 
@@ -425,7 +431,6 @@ bool Origin810Parser::parse()
 	BOOST_LOG_(1, format("	nr_spreads = %d") % speadSheets.size());
 	BOOST_LOG_(1, format("	[position @ 0x%X]") % POS);
 
-	//////////////////////// OBJECT INFOS //////////////////////////////////////
 	POS += 0xB;
 	file.seekg(POS, ios_base::beg);
 	while(POS < d_file_size){
@@ -525,7 +530,11 @@ void Origin810Parser::readNotes()
 		++objectIndex;
 
 		notes.back().frameRect = rect;
+		if (creationDate >= 1e10)
+			return;
 		notes.back().creationDate = doubleToPosixTime(creationDate);
+		if (modificationDate >= 1e10)
+			return;
 		notes.back().modificationDate = doubleToPosixTime(modificationDate);
 
 		if(c == 0x01)
@@ -535,7 +544,7 @@ void Origin810Parser::readNotes()
 		else
 			notes.back().title = Window::Both;
 
-		if(state == 5)
+		if(state == 0x07)
 			notes.back().state = Window::Minimized;
 		else if(state == 0x0b)
 			notes.back().state = Window::Maximized;
@@ -752,9 +761,12 @@ void Origin810Parser::readSpreadInfo()
 			}
 			BOOST_LOG_(1, format("			comment: %s") % comment);
 
-			pos += commentSize + 2 + 5;
+			pos += commentSize + 1;
 		}
-
+		pos += 1;
+		file.seekg(pos, ios_base::beg);
+		file >> size;
+		pos += 0x5;
 		header.push_back(speadSheets[spread].columns[col_index]);
 	}
 
@@ -778,6 +790,11 @@ void Origin810Parser::readSpreadInfo()
 void Origin810Parser::readColumnInfo(int spread, int i)
 {
 	string colName = speadSheets[spread].columns[i].name;
+
+	string::size_type sheetpos = colName.find_last_of("@");
+	if(sheetpos != string::npos)
+		colName.resize(sheetpos);
+
 	if (colName.size() >= 11)
 		colName.resize(11);
 	BOOST_LOG_(1, format("		Column %s") % colName);
@@ -1154,6 +1171,7 @@ void Origin810Parser::readMatrixInfo()
 	matrixes[idx].name = name;
 	file.seekg(POS, ios_base::beg);
 	readWindowProperties(matrixes[idx], size);
+	BOOST_LOG_(1, format("	MATRIX %s has %d sheets") % name % matrixes[idx].sheets);
 
 	unsigned int h;
 	file.seekg(POS + 0x87, ios_base::beg);
@@ -1166,7 +1184,7 @@ void Origin810Parser::readMatrixInfo()
 
 	// LAYER section
 	LAYER += 0x5;
-	
+
 	file.seekg(LAYER + 0x2B, ios_base::beg);
 	file >> matrixes[idx].columnCount;
 	BOOST_LOG_(1, format("		Columns: %d (@ 0x%X)") % matrixes[idx].columnCount % (LAYER + 0x2B));
@@ -1175,12 +1193,11 @@ void Origin810Parser::readMatrixInfo()
 	file >> matrixes[idx].rowCount;
 	BOOST_LOG_(1, format("		Rows: %d (@ 0x%X)") % matrixes[idx].rowCount % (LAYER + 0x52));
 
-	/*file.seekg(LAYER + 0x52 + 0x1F, ios_base::beg);
+	file.seekg(LAYER + 0x52 + 0x1F, ios_base::beg);
 	unsigned short view;
 	file >> view;
 	if (view == 3)
 		matrixes[idx].view = Matrix::ImageView;
-	BOOST_LOG_(1, format("		View: %d (@ 0x%X)") % view % (LAYER + 0x52 + 0x1F));*/
 
 	unsigned int maxSearchPos = findStringPos("__WIOTN");
 	unsigned int stringSize = 47;
@@ -1200,9 +1217,52 @@ void Origin810Parser::readMatrixInfo()
 		BOOST_LOG_(1, format("		Formula: %s cursor pos: 0x%X") % matrixes[idx].command % file.tellg());
 	}
 
-	findSection("__LayerInfoStorage", 20);
+	for (int i = 0; i < matrixes[idx].sheets; i++)
+		findSection("__LayerInfoStorage", 20);
+
 	for (int i = 0; i < 7; i++)
 		skipLine();
+
+	file.seekg(0x5, ios_base::cur);
+	file >> size;
+	POS = file.tellg();
+	if (size){
+		file.seekg(0x1, ios_base::cur);
+		LAYER = file.tellg();
+
+		unsigned short width;
+		file.seekg(LAYER + 0x2B + 31, ios_base::beg);
+		file >> width;
+
+		width /= 0xA;
+		if (width == 0)
+			width = 8;
+		matrixes[idx].width = width;
+
+		unsigned char c1, c2;
+		file.seekg(LAYER + 0x1E, ios_base::beg);
+		file >> c1;
+		file >> c2;
+		matrixes[idx].valueTypeSpecification = c1/0x10;
+		if(c2 >= 0x80){
+			matrixes[idx].significantDigits = c2-0x80;
+			matrixes[idx].numericDisplayType = SignificantDigits;
+		} else if(c2 > 0){
+			matrixes[idx].decimalPlaces = c2-0x03;
+			matrixes[idx].numericDisplayType = DecimalPlaces;
+		}
+	}
+
+	POS += size + 0x2;
+	file.seekg(POS, ios_base::beg);
+	//BOOST_LOG_(1, format("Cursor pos: 0x%X") % POS);
+
+	file >> size;
+	//BOOST_LOG_(1, format("		size: %d @ 0x%X") % size % file.tellg());
+	POS += size + 0x2;
+
+	file.seekg(size, ios_base::cur);
+	//BOOST_LOG_(1, format("Cursor pos: 0x%X") % POS);
 
 	skipObjectInfo();
 }
@@ -1220,6 +1280,7 @@ void Origin810Parser::readGraphInfo()
 	string name(25, 0);
 	file.seekg(POS + 0x02, ios_base::beg);
 	file >> name;
+	BOOST_LOG_(1, format("		GRAPH name: %s cursor pos: 0x%X") % name % file.tellg());
 
 	graphs.push_back(Graph(name));
 	file.seekg(POS, ios_base::beg);
@@ -1289,6 +1350,7 @@ void Origin810Parser::readGraphInfo()
 			file.seekg(LAYER + 0x46, ios_base::beg);
 			file >> sec_name;
 
+			unsigned int sectionNamePos = LAYER + 0x46;
 			BOOST_LOG_(1, format("				SECTION NAME: %s (@ 0x%X)") % sec_name % (LAYER + 0x46));
 
 			Rect r;
@@ -1491,14 +1553,76 @@ void Origin810Parser::readGraphInfo()
 				file.seekg(LAYER + 0x20, ios_base::beg);
 				file >> layer.histogramEnd;
 				file >> layer.histogramBegin;
+
+				unsigned int p = sectionNamePos + 93;
+				file.seekg(p, ios_base::beg);
+
+				file >> layer.percentile.p1SymbolType;
+				file >> layer.percentile.p99SymbolType;
+				file >> layer.percentile.meanSymbolType;
+				file >> layer.percentile.maxSymbolType;
+				file >> layer.percentile.minSymbolType;
+
+				file.seekg(sectionNamePos + 106, ios_base::beg);
+				file >> layer.percentile.whiskersRange;
+				file >> layer.percentile.boxRange;
+
+				file.seekg(sectionNamePos + 141, ios_base::beg);
+				file >> layer.percentile.whiskersCoeff;
+				file >> layer.percentile.boxCoeff;
+
+				unsigned char h;
+				file >> h;
+				layer.percentile.diamondBox = (h == 0x82) ? true : false;
+
+				p += 109;
+				file.seekg(p, ios_base::beg);
+				file >> layer.percentile.symbolSize;
+				layer.percentile.symbolSize = layer.percentile.symbolSize/2 + 1;
+
+				p += 163;
+				file.seekg(p, ios_base::beg);
+				file >> layer.percentile.symbolColor;
+				file >> layer.percentile.symbolFillColor;
+			}
+			else if(sec_name == "vline") // Image profiles vertical cursor
+			{
+				file.seekg(sectionNamePos, ios_base::beg);
+				for (int i = 0; i < 2; i++)
+					skipLine();
+
+				file.seekg(0x20, ios_base::cur);
+				file >> layer.vLine;
+				BOOST_LOG_(1, format("vLine: %g") % layer.vLine);
+
+				layer.imageProfileTool = true;
+			}
+			else if(sec_name == "hline") // Image profiles horizontal cursor
+			{
+				file.seekg(sectionNamePos, ios_base::beg);
+				for (int i = 0; i < 2; i++)
+					skipLine();
+
+				file.seekg(0x40, ios_base::cur);
+				file >> layer.hLine;
+				BOOST_LOG_(1, format("hLine: %g @ 0x%X") % layer.hLine % file.tellg());
+
+				layer.imageProfileTool = true;
+			}
+			else if(sec_name == "ZCOLORS")
+			{
+				layer.isXYY3D = true;
+			}
+			else if(sec_name == "SPECTRUM1")
+			{
+				layer.isXYY3D = false;
 			}
 			else if(osize == 0x3E) // text
 			{
 				string text(size, 0);
 				file >> text;
 
-				layer.texts.push_back(
-								TextBox(text, r, color, fontSize, rotation/10, tab, (BorderType)(border >= 0x80 ? border-0x80 : None), (Attach)attach));
+				layer.texts.push_back(TextBox(text, r, color, fontSize, rotation/10, tab, (BorderType)(border >= 0x80 ? border-0x80 : None), (Attach)attach));
 			}
 			else if(osize == 0x5E) // rectangle & circle
 			{
@@ -1570,7 +1694,6 @@ void Origin810Parser::readGraphInfo()
 
 			if(sec_name == "__LayerInfoStorage")
 				break;
-
 		}
 		LAYER += 0x5;
 		unsigned char h;
@@ -1580,8 +1703,7 @@ void Origin810Parser::readGraphInfo()
 		file >> size;
 		if(size)//check layer is not empty
 		{
-			while(LAYER < d_file_size)
-			{
+			while(LAYER < d_file_size){
 				LAYER += 0x5;
 
 				layer.curves.push_back(GraphCurve());
@@ -1594,16 +1716,12 @@ void Origin810Parser::readGraphInfo()
 				file >> w;
 				pair<string, string> column = findDataByIndex(w-1);
 				short nColY = w;
-				if(column.first.size() > 0)
-				{
+				if(column.first.size() > 0){
 					curve.dataName = column.first;
-					if(layer.is3D())
-					{
+					if(layer.is3D()){
 						BOOST_LOG_(1, format("			graph %d layer %d curve %d Z : %s.%s") % graphs.size() % graphs.back().layers.size() % layer.curves.size() % column.first.c_str() % column.second.c_str());
 						curve.zColumnName = column.second;
-					}
-					else
-					{
+					} else {
 						BOOST_LOG_(1, format("			graph %d layer %d curve %d Y : %s.%s") % graphs.size() % graphs.back().layers.size() % layer.curves.size() % column.first.c_str() % column.second.c_str());
 						curve.yColumnName = column.second;
 					}
@@ -1612,20 +1730,17 @@ void Origin810Parser::readGraphInfo()
 				file.seekg(LAYER + 0x23, ios_base::beg);
 				file >> w;
 				column = findDataByIndex(w-1);
-				if(column.first.size() > 0)
-				{
+				if(column.first.size() > 0){
 					if(curve.dataName != column.first)
-					{
 						BOOST_LOG_(1, format("			graph %d X and Y from different tables") % graphs.size());
-					}
 
-					if(layer.is3D())
-					{
+					if(layer.is3D()){
 						BOOST_LOG_(1, format("			graph %d layer %d curve %d Y : %s.%s") % graphs.size() % graphs.back().layers.size() % layer.curves.size() % column.first.c_str() % column.second.c_str());
 						curve.yColumnName = column.second;
-					}
-					else
-					{
+					} else if (layer.isXYY3D){
+						BOOST_LOG_(1, format("			graph %d layer %d curve %d X : %s.%s") % graphs.size() % graphs.back().layers.size() % layer.curves.size() % column.first.c_str() % column.second.c_str());
+						curve.xColumnName = column.second;
+					} else {
 						BOOST_LOG_(1, format("			graph %d layer %d curve %d X : %s.%s") % graphs.size() % graphs.back().layers.size() % layer.curves.size() % column.first.c_str() % column.second.c_str());
 						curve.xColumnName = column.second;
 					}
@@ -1634,21 +1749,23 @@ void Origin810Parser::readGraphInfo()
 				file.seekg(LAYER + 0x4D, ios_base::beg);
 				file >> w;
 				column = findDataByIndex(w-1);
-				if(column.first.size() > 0 && layer.is3D())
-				{
+				if(column.first.size() > 0 && layer.is3D()){
 					BOOST_LOG_(1, format("			graph %d layer %d curve %d X : %s.%s") % graphs.size() % graphs.back().layers.size() % layer.curves.size() % column.first.c_str() % column.second.c_str());
 					curve.xColumnName = column.second;
 					if(curve.dataName != column.first)
-					{
 						BOOST_LOG_(1, format("			graph %d X and Y from different tables") % graphs.size());
-					}
 				}
+
+				if(layer.is3D() || layer.isXYY3D)
+					graphs.back().is3D = true;
 
 				file.seekg(LAYER + 0x11, ios_base::beg);
 				file >> curve.lineConnect;
 				file >> curve.lineStyle;
 
-				file.seekg(LAYER + 0x15, ios_base::beg);
+				file.seekg(1, ios_base::cur);
+				file >> curve.boxWidth;
+
 				file >> w;
 				curve.lineWidth=(double)w/500.0;
 
@@ -1664,8 +1781,7 @@ void Origin810Parser::readGraphInfo()
 				file >> curve.fillAreaType;
 
 				//text
-				if(curve.type == GraphCurve::TextPlot)
-				{
+				if(curve.type == GraphCurve::TextPlot){
 					file.seekg(LAYER + 0x13, ios_base::beg);
 					file >> curve.text.rotation;
 					curve.text.rotation /= 10;
@@ -1673,17 +1789,16 @@ void Origin810Parser::readGraphInfo()
 
 					file.seekg(LAYER + 0x19, ios_base::beg);
 					file >> h;
-					switch(h)
-					{
-					case 26:
-						curve.text.justify = TextProperties::Center;
-						break;
-					case 2:
-						curve.text.justify = TextProperties::Right;
-					    break;
-					default:
-						curve.text.justify = TextProperties::Left;
-					    break;
+					switch(h){
+						case 26:
+							curve.text.justify = TextProperties::Center;
+							break;
+						case 2:
+							curve.text.justify = TextProperties::Right;
+							break;
+						default:
+							curve.text.justify = TextProperties::Left;
+							break;
 					}
 
 					file >> h;
@@ -1701,8 +1816,7 @@ void Origin810Parser::readGraphInfo()
 				}
 
 				//vector
-				if(curve.type == GraphCurve::FlowVector || curve.type == GraphCurve::Vector)
-				{
+				if(curve.type == GraphCurve::FlowVector || curve.type == GraphCurve::Vector){
 					file.seekg(LAYER + 0x56, ios_base::beg);
 					file >> curve.vector.multiplier;
 
@@ -1711,45 +1825,33 @@ void Origin810Parser::readGraphInfo()
 
 					column = findDataByIndex(nColY - 1 + h - 0x64);
 					if(column.first.size() > 0)
-					{
 						curve.vector.endXColumnName = column.second;
-					}
 
 					file.seekg(LAYER + 0x62, ios_base::beg);
 					file >> h;
 
 					column = findDataByIndex(nColY - 1 + h - 0x64);
 					if(column.first.size() > 0)
-					{
 						curve.vector.endYColumnName = column.second;
-					}
 
 					file.seekg(LAYER + 0x18, ios_base::beg);
 					file >> h;
 
-					if(h >= 0x64)
-					{
+					if(h >= 0x64){
 						column = findDataByIndex(nColY - 1 + h - 0x64);
 						if(column.first.size() > 0)
 							curve.vector.angleColumnName = column.second;
-					}
-					else if(h <= 0x08)
-					{
+					} else if(h <= 0x08)
 						curve.vector.constAngle = 45*h;
-					}
 
 					file >> h;
 
-					if(h >= 0x64 && h < 0x1F4)
-					{
+					if(h >= 0x64 && h < 0x1F4){
 						column = findDataByIndex(nColY - 1 + h - 0x64);
 						if(column.first.size() > 0)
 							curve.vector.magnitudeColumnName = column.second;
-					}
-					else
-					{
+					} else
 						curve.vector.constMagnitude = (int)curve.symbolSize;
-					}
 
 					file.seekg(LAYER + 0x66, ios_base::beg);
 					file >> curve.vector.arrowLenght;
@@ -1763,24 +1865,21 @@ void Origin810Parser::readGraphInfo()
 
 					file.seekg(LAYER + 0x142, ios_base::beg);
 					file >> h;
-					switch(h)
-					{
-					case 2:
-						curve.vector.position = VectorProperties::Midpoint;
-						break;
-					case 4:
-						curve.vector.position = VectorProperties::Head;
-						break;
-					default:
-						curve.vector.position = VectorProperties::Tail;
-						break;
+					switch(h){
+						case 2:
+							curve.vector.position = VectorProperties::Midpoint;
+							break;
+						case 4:
+							curve.vector.position = VectorProperties::Head;
+							break;
+						default:
+							curve.vector.position = VectorProperties::Tail;
+							break;
 					}
-
 				}
 
 				//pie
-				if(curve.type == GraphCurve::Pie)
-				{
+				if (curve.type == GraphCurve::Pie){
 					file.seekg(LAYER + 0x92, ios_base::beg);
 					file >> h;
 
@@ -1811,8 +1910,7 @@ void Origin810Parser::readGraphInfo()
 					file >> curve.pie.displacedSectionCount;
 				}
 				//surface
-				if(curve.type == GraphCurve::Mesh3D)
-				{
+				if (layer.isXYY3D || curve.type == GraphCurve::Mesh3D){
 					file.seekg(LAYER + 0x17, ios_base::beg);
 					file >> curve.surface.type;
 					file.seekg(LAYER + 0x1C, ios_base::beg);
@@ -1864,13 +1962,28 @@ void Origin810Parser::readGraphInfo()
 					file >> curve.surface.bottomContour.lineColor;
 				}
 
-				if(curve.type == GraphCurve::Mesh3D || curve.type == GraphCurve::Contour)
-				{
+				if (curve.type == GraphCurve::Mesh3D || curve.type == GraphCurve::Contour){
 					ColorMap& colorMap = (curve.type == GraphCurve::Mesh3D ? curve.surface.colorMap : curve.colorMap);
 					file.seekg(LAYER + 0x13, ios_base::beg);
 					file >> h;
 					colorMap.fillEnabled = (h & 0x82);
-					file.seekg(LAYER + 0x259, ios_base::beg);
+
+					if (curve.type == GraphCurve::Contour){
+						file.seekg(102, ios_base::cur);
+						file >> curve.text.fontSize;
+
+						file.seekg(7, ios_base::cur);
+						file >> h;
+						curve.text.fontUnderline = (h & 0x1);
+						curve.text.fontItalic = (h & 0x2);
+						curve.text.fontBold = (h & 0x8);
+						curve.text.whiteOut = (h & 0x20);
+
+						file.seekg(2, ios_base::cur);
+						file >> curve.text.color;
+					}
+
+					file.seekg(LAYER + 0x25F, ios_base::beg);
 					readColorMap(colorMap);
 				}
 
@@ -1889,7 +2002,8 @@ void Origin810Parser::readGraphInfo()
 
 				file.seekg(LAYER + 0x16A, ios_base::beg);
 				file >> curve.lineColor;
-				curve.text.color = curve.lineColor;
+				if (curve.type != GraphCurve::Contour)
+					curve.text.color = curve.lineColor;
 
 				file.seekg(LAYER + 0x17, ios_base::beg);
 				file >> curve.symbolType;
@@ -2273,8 +2387,12 @@ void Origin810Parser::readProjectTreeFolder(tree<ProjectNode>::iterator parent)
 
 	file.seekg(POS + 0x10, ios_base::beg);
 	file >> creationDate;
+	if (creationDate >= 1e10)
+		return;
 
 	file >> modificationDate;
+	if (modificationDate >= 1e10)
+		return;
 
 	POS += 0x20 + 1 + 5;
 	unsigned int size;
@@ -2306,7 +2424,6 @@ void Origin810Parser::readProjectTreeFolder(tree<ProjectNode>::iterator parent)
 		char c;
 		file.seekg(POS + 0x2, ios_base::beg);
 		file >> c;
-		BOOST_LOG_(1, format("c %s ID: %d") % c % (POS + 0x2));
 
 		unsigned int objectID;
 		file.seekg(POS + 0x4, ios_base::beg);
@@ -2366,27 +2483,26 @@ void Origin810Parser::readWindowProperties(Window& window, unsigned int size)
 	double creationDate, modificationDate;
 	file.seekg(POS + 0x73, ios_base::beg);
 	file >> creationDate;
-	if (creationDate >= 1e10)
+	if (creationDate > 1e4 && creationDate < 1e8)
+		window.creationDate = doubleToPosixTime(creationDate);
+	else
 		return;
-	window.creationDate = doubleToPosixTime(creationDate);
 
 	file >> modificationDate;
-	if (modificationDate >= 1e10)
+	if (modificationDate > 1e4 && modificationDate < 1e8)
+		window.modificationDate = doubleToPosixTime(modificationDate);
+	else
 		return;
-	window.modificationDate = doubleToPosixTime(modificationDate);
 
-	if(size > 0xC3)
-	{
+	if(size > 0xC3){
 		unsigned int labellen = 0;
 		file.seekg(POS + 0xC3, ios_base::beg);
 		file >> c;
-		while(c != '@')
-		{
+		while(c != '@'){
 			file >> c;
 			++labellen;
 		}
-		if(labellen > 0)
-		{
+		if(labellen > 0){
 			file.seekg(POS + 0xC3, ios_base::beg);
 			file >> window.label.assign(labellen, 0);
 		}
@@ -2401,9 +2517,9 @@ void Origin810Parser::readColorMap(ColorMap& colorMap)
 	short w;
 	unsigned int colorMapSize;
 	file >> colorMapSize;
-	file.seekg(0x110, ios_base::cur);
-	for(unsigned int i = 0; i < colorMapSize + 2; ++i)
-	{
+
+	file.seekg(0x140, ios_base::cur);
+	for(unsigned int i = 0; i < colorMapSize + 3; ++i){
 		ColorMapLevel level;
 		file >> level.fillPattern;
 
