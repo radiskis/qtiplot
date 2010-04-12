@@ -2087,7 +2087,8 @@ void PlotDialog::setActiveCurve(CurveTreeItem *item)
         defaultScaleBox->setChecked(sp->colorMapPolicy() == Spectrogram::Default);
         customScaleBox->setChecked(sp->colorMapPolicy() == Spectrogram::Custom);
 
-        colorMapEditor->setRange(sp->data().range().minValue(), sp->data().range().maxValue());
+		//colorMapEditor->setRange(sp->data().range().minValue(), sp->data().range().maxValue());
+		colorMapEditor->setRange(0, sp->data().range().maxValue());
         colorMapEditor->setColorMap((const QwtLinearColorMap &)sp->colorMap());
 
         levelsGroupBox->setChecked(sp->testDisplayMode(QwtPlotSpectrogram::ContourMode));

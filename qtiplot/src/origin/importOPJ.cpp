@@ -872,16 +872,39 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 						sp->setCustomColorMap(qwtColorMap(_curve.colorMap));
 						QwtValueList levels;
 						QList<QPen> penList;
+						bool labelsOn = false;
 						for(Origin::ColorMapVector::const_iterator it = _curve.colorMap.levels.begin() + 1; it != _curve.colorMap.levels.end(); ++it){
 							if(it->second.lineVisible){
-								levels.push_back(it->first);
-								penList << QPen(originToQtColor(it->second.lineColor), it->second.lineWidth, lineStyles[(Origin::GraphCurve::LineStyle)it->second.lineStyle]);
+								Origin::ColorMapVector::const_iterator next = it;
+								++next;
+								if (next != _curve.colorMap.levels.end()){
+									levels.push_back(it->first);
+									penList << QPen(originToQtColor(next->second.lineColor), next->second.lineWidth, lineStyles[(Origin::GraphCurve::LineStyle)next->second.lineStyle]);
+									if(next->second.labelVisible)
+										labelsOn = true;
+								}
+
 								sp->setDisplayMode(QwtPlotSpectrogram::ContourMode, true);
 							}
 						}
+						
+						Origin::ColorMapVector::const_iterator it = _curve.colorMap.levels.begin() + 1;
+						penList << QPen(originToQtColor(it->second.lineColor), it->second.lineWidth, lineStyles[(Origin::GraphCurve::LineStyle)it->second.lineStyle]);
+
 						sp->setDisplayMode(QwtPlotSpectrogram::ImageMode, _curve.colorMap.fillEnabled);
 						sp->setContourLevels(levels);
 						sp->setContourPenList(penList);
+						sp->showContourLineLabels(labelsOn);
+						if (labelsOn){
+							sp->setLabelsWhiteOut(_curve.text.whiteOut);
+							sp->setLabelsColor(originToQtColor(_curve.text.color));
+							QFont fnt = sp->labelsFont();
+							fnt.setBold(_curve.text.fontBold);
+							fnt.setItalic(_curve.text.fontItalic);
+							fnt.setUnderline(_curve.text.fontUnderline);
+							fnt.setPointSize(floor(_curve.text.fontSize*fFontScaleFactor + 0.5));
+							sp->setLabelsFont(fnt);
+						}
 					} else if(style == Origin::GraphCurve::MatrixImage){
 						Spectrogram* sp = graph->plotSpectrogram(m, Graph::GrayScale);
 						if (!sp)
@@ -1548,6 +1571,8 @@ bool ImportOPJ::importGraph3D(const OriginFile& opj, unsigned int g, unsigned in
 			case Origin::GraphCurve::Column:
 				type = Graph3D::Bars;
 				break;
+			case  Origin::GraphCurve::Mesh3D:
+				break;
 			default:
 				continue;
 		}
@@ -1581,36 +1606,38 @@ bool ImportOPJ::importGraph3D(const OriginFile& opj, unsigned int g, unsigned in
 
 		Origin::Rect layerRect = layer.clientRect;
 
+		QFont font = plot->xAxisLabelFont();
+		font.setPointSize(floor(layer.xAxis.formatAxis[0].label.fontSize*fFontScaleFactor + 0.5));
 		QString label = parseOriginText(QString::fromLocal8Bit(layer.xAxis.formatAxis[0].label.text.c_str()));
 		RGBA xLabelColor = Qt2GL(originToQtColor(layer.xAxis.formatAxis[0].label.color));
 		if (label.isEmpty()){
 			label = parseOriginText(QString::fromLocal8Bit(layer.xAxis.formatAxis[1].label.text.c_str()));
 			xLabelColor = Qt2GL(originToQtColor(layer.xAxis.formatAxis[1].label.color));
+			font.setPointSize(floor(layer.xAxis.formatAxis[1].label.fontSize*fFontScaleFactor + 0.5));
 		}
 		plot->setXAxisLabel(label);
+		plot->setXAxisLabelFont(font);
 
 		label = parseOriginText(QString::fromLocal8Bit(layer.yAxis.formatAxis[0].label.text.c_str()));
+		font.setPointSize(floor(layer.yAxis.formatAxis[0].label.fontSize*fFontScaleFactor + 0.5));
 		RGBA yLabelColor = Qt2GL(originToQtColor(layer.yAxis.formatAxis[0].label.color));
 		if (label.isEmpty()){
 			label = parseOriginText(QString::fromLocal8Bit(layer.yAxis.formatAxis[1].label.text.c_str()));
 			yLabelColor = Qt2GL(originToQtColor(layer.yAxis.formatAxis[1].label.color));
+			font.setPointSize(floor(layer.yAxis.formatAxis[1].label.fontSize*fFontScaleFactor + 0.5));
 		}
 		plot->setYAxisLabel(label);
+		plot->setYAxisLabelFont(font);
 
 		label = parseOriginText(QString::fromLocal8Bit(layer.zAxis.formatAxis[0].label.text.c_str()));
+		font.setPointSize(floor(layer.zAxis.formatAxis[0].label.fontSize*fFontScaleFactor + 0.5));
 		RGBA zLabelColor = Qt2GL(originToQtColor(layer.zAxis.formatAxis[0].label.color));
 		if (label.isEmpty()){
 			label = parseOriginText(QString::fromLocal8Bit(layer.zAxis.formatAxis[1].label.text.c_str()));
 			zLabelColor = Qt2GL(originToQtColor(layer.zAxis.formatAxis[1].label.color));
+			font.setPointSize(floor(layer.zAxis.formatAxis[1].label.fontSize*fFontScaleFactor + 0.5));
 		}
 		plot->setZAxisLabel(label);
-
-		QFont font = plot->xAxisLabelFont();
-		font.setPointSize(floor(layer.xAxis.formatAxis[0].label.fontSize*fFontScaleFactor + 0.5));
-		plot->setXAxisLabelFont(font);
-		font.setPointSize(floor(layer.yAxis.formatAxis[0].label.fontSize*fFontScaleFactor + 0.5));
-		plot->setYAxisLabelFont(font);
-		font.setPointSize(floor(layer.zAxis.formatAxis[0].label.fontSize*fFontScaleFactor + 0.5));
 		plot->setZAxisLabelFont(font);
 
 		double majorTickLength =  layer.xAxis.formatAxis[(layer.xAxis.position == Origin::GraphAxis::Bottom ? 0 : 1)].majorTickLength;
@@ -1729,7 +1756,7 @@ bool ImportOPJ::importGraph3D(const OriginFile& opj, unsigned int g, unsigned in
 							plot->customPlotStyle(Qwt3D::WIREFRAME);
 
 						ColorVector colors;
-						for(Origin::ColorMapVector::const_iterator it = _curve.surface.colorMap.levels.begin() + 1; it != _curve.surface.colorMap.levels.end(); ++it)
+						for(Origin::ColorMapVector::const_iterator it = _curve.surface.colorMap.levels.begin() + 1; it != _curve.surface.colorMap.levels.end() - 1; ++it)
 							colors.push_back(Qt2GL(originToQtColor(it->second.fillColor)));
 						plot->setDataColorMap(colors, qwtColorMap(_curve.surface.colorMap));
 
@@ -1990,11 +2017,11 @@ QString ImportOPJ::parseOriginTags(const QString &str)
 
 QwtLinearColorMap ImportOPJ::qwtColorMap(const Origin::ColorMap& colorMap)
 {
-	Origin::ColorMapVector::const_iterator it = colorMap.levels.begin() + 1;
+	Origin::ColorMapVector::const_iterator it = colorMap.levels.begin();
 	QColor color1 = originToQtColor(it->second.fillColor);
 	double level1 = it->first;
 
-	it = colorMap.levels.end() - 1;
+	it = colorMap.levels.end() - 2;
 	QColor color2 = originToQtColor(it->second.fillColor);
 	double level2 = it->first;
 
@@ -2002,8 +2029,9 @@ QwtLinearColorMap ImportOPJ::qwtColorMap(const Origin::ColorMap& colorMap)
 	qwt_color_map.setMode(QwtLinearColorMap::FixedColors);
 
 	double dl = fabs(level2 - level1);
-	for(it = colorMap.levels.begin() + 2; it != colorMap.levels.end() - 1; ++it)
-		qwt_color_map.addColorStop((it->first - level1)/dl, originToQtColor(it->second.fillColor));
+	for(it = colorMap.levels.begin() + 1; it != colorMap.levels.end() - 2; ++it)
+		qwt_color_map.addColorStop(it->first/dl, originToQtColor(it->second.fillColor));
+
 	return qwt_color_map;
 }
 

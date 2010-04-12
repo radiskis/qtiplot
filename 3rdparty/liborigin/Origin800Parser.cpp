@@ -1611,6 +1611,10 @@ void Origin800Parser::readGraphInfo()
 			{
 				layer.isXYY3D = true;
 			}
+			else if(sec_name == "SPECTRUM1")
+			{
+				layer.isXYY3D = false;
+			}
 			else if(osize == 0x3E) // text
 			{
 				string text(size, 0);
@@ -1779,6 +1783,7 @@ void Origin800Parser::readGraphInfo()
 				if(curve.type == GraphCurve::TextPlot){
 					file.seekg(LAYER + 0x13, ios_base::beg);
 					file >> curve.text.rotation;
+
 					curve.text.rotation /= 10;
 					file >> curve.text.fontSize;
 
@@ -1963,6 +1968,21 @@ void Origin800Parser::readGraphInfo()
 					file >> h;
 					colorMap.fillEnabled = (h & 0x82);
 
+					if (curve.type == GraphCurve::Contour){
+						file.seekg(102, ios_base::cur);
+						file >> curve.text.fontSize;
+
+						file.seekg(7, ios_base::cur);
+						file >> h;
+						curve.text.fontUnderline = (h & 0x1);
+						curve.text.fontItalic = (h & 0x2);
+						curve.text.fontBold = (h & 0x8);
+						curve.text.whiteOut = (h & 0x20);
+
+						file.seekg(2, ios_base::cur);
+						file >> curve.text.color;
+					}
+
 					file.seekg(LAYER + 0x259 + 0x2, ios_base::beg);
 					readColorMap(colorMap);
 				}
@@ -1984,7 +2004,8 @@ void Origin800Parser::readGraphInfo()
 
 				file.seekg(LAYER + 0x16A, ios_base::beg);
 				file >> curve.lineColor;
-				curve.text.color = curve.lineColor;
+				if (curve.type != GraphCurve::Contour)
+					curve.text.color = curve.lineColor;
 
 				file.seekg(LAYER + 0x17, ios_base::beg);
 				file >> curve.symbolType;
@@ -2500,8 +2521,7 @@ void Origin800Parser::readColorMap(ColorMap& colorMap)
 	file >> colorMapSize;
 
 	file.seekg(0x110, ios_base::cur);
-	for(unsigned int i = 0; i < colorMapSize + 2; ++i)
-	{
+	for(unsigned int i = 0; i < colorMapSize + 3; ++i){
 		ColorMapLevel level;
 		file >> level.fillPattern;
 
@@ -2516,6 +2536,7 @@ void Origin800Parser::readColorMap(ColorMap& colorMap)
 		file.seekg(0x01, ios_base::cur);
 		file >> w;
 		level.lineWidth = (double)w/500.0;
+
 		file >> level.lineColor;
 
 		file.seekg(0x02, ios_base::cur);

@@ -222,9 +222,6 @@ void Graph3D::initPlot()
 	sp->coordinates()->setLineSmooth(app->d_3D_smooth_mesh);
 
 	setNumbersFont(app->d_3D_numbers_font);
-	setXAxisLabelFont(app->d_3D_axes_font);
-	setYAxisLabelFont(app->d_3D_axes_font);
-	setZAxisLabelFont(app->d_3D_axes_font);
 
 	setMeshColor(app->d_3D_mesh_color);
 	setAxesColor(app->d_3D_axes_color);
@@ -237,6 +234,7 @@ void Graph3D::initPlot()
 	for (int i = 0; i < 12; i++){
 		sp->coordinates()->setMajorGridLines((Qwt3D::AXIS)i, majorGrid);
 		sp->coordinates()->setMinorGridLines((Qwt3D::AXIS)i, minorGrid);
+		sp->coordinates()->axes[i].setLabelFont(app->d_3D_axes_font);
 	}
 
 	connect(sp,SIGNAL(rotationChanged(double, double, double)),this,SLOT(rotationChanged(double, double, double)));
