@@ -41,7 +41,7 @@ public:
 	Origin800Parser(const string& fileName);
 	bool parse();
 
-private:
+protected:
 	void readSpreadInfo();
 	void readExcelInfo();
 	void readMatrixInfo();
