@@ -1594,8 +1594,7 @@ void Origin750Parser::readGraphInfo()
 
 		if(size == 0x1E7)//check layer is not empty
 		{
-			while(1)
-			{
+			while(1){
 				LAYER += 0x5;
 
 				layer.curves.push_back(GraphCurve());
@@ -1608,16 +1607,12 @@ void Origin750Parser::readGraphInfo()
 				file >> w;
 				pair<string, string> column = findDataByIndex(w-1);
 				short nColY = w;
-				if(column.first.size() > 0)
-				{
+				if (column.first.size() > 0){
 					curve.dataName = column.first;
-					if(layer.is3D())
-					{
+					if(layer.is3D()){
 						BOOST_LOG_(1, format("			graph %d layer %d curve %d Z : %s.%s") % graphs.size() % graphs.back().layers.size() % layer.curves.size() % column.first.c_str() % column.second.c_str());
 						curve.zColumnName = column.second;
-					}
-					else
-					{
+					} else {
 						BOOST_LOG_(1, format("			graph %d layer %d curve %d Y : %s.%s") % graphs.size() % graphs.back().layers.size() % layer.curves.size() % column.first.c_str() % column.second.c_str());
 						curve.yColumnName = column.second;
 					}
@@ -1626,12 +1621,9 @@ void Origin750Parser::readGraphInfo()
 				file.seekg(LAYER + 0x23, ios_base::beg);
 				file >> w;
 				column = findDataByIndex(w-1);
-				if(column.first.size() > 0)
-				{
+				if (column.first.size() > 0){
 					if(curve.dataName != column.first)
-					{
 						BOOST_LOG_(1, format("			graph %d X and Y from different tables") % graphs.size());
-					}
 
 					if(layer.is3D()){
 						BOOST_LOG_(1, format("			graph %d layer %d curve %d Y : %s.%s") % graphs.size() % graphs.back().layers.size() % layer.curves.size() % column.first.c_str() % column.second.c_str());
@@ -1648,14 +1640,11 @@ void Origin750Parser::readGraphInfo()
 				file.seekg(LAYER + 0x4D, ios_base::beg);
 				file >> w;
 				column = findDataByIndex(w-1);
-				if(column.first.size() > 0 && layer.is3D())
-				{
+				if (column.first.size() > 0 && layer.is3D()){
 					BOOST_LOG_(1, format("			graph %d layer %d curve %d X : %s.%s") % graphs.size() % graphs.back().layers.size() % layer.curves.size() % column.first.c_str() % column.second.c_str());
 					curve.xColumnName = column.second;
 					if(curve.dataName != column.first)
-					{
 						BOOST_LOG_(1, format("			graph %d X and Y from different tables") % graphs.size());
-					}
 				}
 
 				if(layer.is3D() || layer.isXYY3D)
@@ -1683,8 +1672,7 @@ void Origin750Parser::readGraphInfo()
 				file >> curve.fillAreaType;
 
 				//text
-				if(curve.type == GraphCurve::TextPlot)
-				{
+				if(curve.type == GraphCurve::TextPlot){
 					file.seekg(LAYER + 0x13, ios_base::beg);
 					file >> curve.text.rotation;
 					curve.text.rotation /= 10;
@@ -1692,17 +1680,16 @@ void Origin750Parser::readGraphInfo()
 
 					file.seekg(LAYER + 0x19, ios_base::beg);
 					file >> h;
-					switch(h)
-					{
-					case 26:
-						curve.text.justify = TextProperties::Center;
-						break;
-					case 2:
-						curve.text.justify = TextProperties::Right;
-					    break;
-					default:
-						curve.text.justify = TextProperties::Left;
-					    break;
+					switch(h){
+						case 26:
+							curve.text.justify = TextProperties::Center;
+							break;
+						case 2:
+							curve.text.justify = TextProperties::Right;
+							break;
+						default:
+							curve.text.justify = TextProperties::Left;
+							break;
 					}
 
 					file >> h;
@@ -1720,8 +1707,7 @@ void Origin750Parser::readGraphInfo()
 				}
 
 				//vector
-				if(curve.type == GraphCurve::FlowVector || curve.type == GraphCurve::Vector)
-				{
+				if(curve.type == GraphCurve::FlowVector || curve.type == GraphCurve::Vector){
 					file.seekg(LAYER + 0x56, ios_base::beg);
 					file >> curve.vector.multiplier;
 
@@ -1730,45 +1716,33 @@ void Origin750Parser::readGraphInfo()
 
 					column = findDataByIndex(nColY - 1 + h - 0x64);
 					if(column.first.size() > 0)
-					{
 						curve.vector.endXColumnName = column.second;
-					}
 
 					file.seekg(LAYER + 0x62, ios_base::beg);
 					file >> h;
 
 					column = findDataByIndex(nColY - 1 + h - 0x64);
 					if(column.first.size() > 0)
-					{
 						curve.vector.endYColumnName = column.second;
-					}
 
 					file.seekg(LAYER + 0x18, ios_base::beg);
 					file >> h;
 
-					if(h >= 0x64)
-					{
+					if(h >= 0x64){
 						column = findDataByIndex(nColY - 1 + h - 0x64);
 						if(column.first.size() > 0)
 							curve.vector.angleColumnName = column.second;
-					}
-					else if(h <= 0x08)
-					{
+					} else if(h <= 0x08)
 						curve.vector.constAngle = 45*h;
-					}
 
 					file >> h;
 
-					if(h >= 0x64 && h < 0x1F4)
-					{
+					if(h >= 0x64 && h < 0x1F4){
 						column = findDataByIndex(nColY - 1 + h - 0x64);
 						if(column.first.size() > 0)
 							curve.vector.magnitudeColumnName = column.second;
-					}
-					else
-					{
+					} else
 						curve.vector.constMagnitude = (int)curve.symbolSize;
-					}
 
 					file.seekg(LAYER + 0x66, ios_base::beg);
 					file >> curve.vector.arrowLenght;
@@ -1782,24 +1756,21 @@ void Origin750Parser::readGraphInfo()
 
 					file.seekg(LAYER + 0x142, ios_base::beg);
 					file >> h;
-					switch(h)
-					{
-					case 2:
-						curve.vector.position = VectorProperties::Midpoint;
-						break;
-					case 4:
-						curve.vector.position = VectorProperties::Head;
-						break;
-					default:
-						curve.vector.position = VectorProperties::Tail;
-						break;
+					switch(h){
+						case 2:
+							curve.vector.position = VectorProperties::Midpoint;
+							break;
+						case 4:
+							curve.vector.position = VectorProperties::Head;
+							break;
+						default:
+							curve.vector.position = VectorProperties::Tail;
+							break;
 					}
-
 				}
 
 				//pie
-				if(curve.type == GraphCurve::Pie)
-				{
+				if (curve.type == GraphCurve::Pie){
 					file.seekg(LAYER + 0x92, ios_base::beg);
 					file >> h;
 
@@ -1830,8 +1801,7 @@ void Origin750Parser::readGraphInfo()
 					file >> curve.pie.displacedSectionCount;
 				}
 				//surface
-				if(curve.type == GraphCurve::Mesh3D)
-				{
+				if (layer.isXYY3D || curve.type == GraphCurve::Mesh3D){
 					file.seekg(LAYER + 0x17, ios_base::beg);
 					file >> curve.surface.type;
 					file.seekg(LAYER + 0x1C, ios_base::beg);
@@ -1883,8 +1853,7 @@ void Origin750Parser::readGraphInfo()
 					file >> curve.surface.bottomContour.lineColor;
 				}
 
-				if(curve.type == GraphCurve::Mesh3D || curve.type == GraphCurve::Contour)
-				{
+				if (curve.type == GraphCurve::Mesh3D || curve.type == GraphCurve::Contour){
 					ColorMap& colorMap = (curve.type == GraphCurve::Mesh3D ? curve.surface.colorMap : curve.colorMap);
 					file.seekg(LAYER + 0x13, ios_base::beg);
 					file >> h;
@@ -1957,33 +1926,27 @@ void Origin750Parser::readGraphInfo()
 				if(size != 0x1E7)
 					break;
 			}
-
 		}
 		//LAYER+=0x5*0x5+0x1ED*0x12;
 		//LAYER+=2*0x5;
 
 		LAYER += 0x5;
 		//read axis breaks
-		while(1)
-		{
+		while(1){
 			file.seekg(LAYER, ios_base::beg);
 			file >> size;
 
-			if(size == 0x2D)
-			{
+			if(size == 0x2D){
 				LAYER += 0x5;
 				file.seekg(LAYER + 2, ios_base::beg);
 				file >> h;
 
-				if(h == 2)
-				{
+				if (h == 2) {
 					layer.xAxisBreak.minorTicksBefore = layer.xAxis.minorTicks;
 					layer.xAxisBreak.scaleIncrementBefore = layer.xAxis.step;
 					file.seekg(LAYER, ios_base::beg);
 					readGraphAxisBreakInfo(layer.xAxisBreak);
-				}
-				else if(h == 4)
-				{
+				} else if(h == 4){
 					layer.yAxisBreak.minorTicksBefore = layer.yAxis.minorTicks;
 					layer.yAxisBreak.scaleIncrementBefore = layer.yAxis.step;
 					file.seekg(LAYER, ios_base::beg);
@@ -2341,8 +2304,12 @@ void Origin750Parser::readProjectTreeFolder(tree<ProjectNode>::iterator parent)
 
 	file.seekg(POS + 0x10, ios_base::beg);
 	file >> creationDate;
+	if (creationDate >= 1e10)
+		return;
 
 	file >> modificationDate;
+	if (modificationDate >= 1e10)
+		return;
 
 	POS += 0x20 + 1 + 5;
 	unsigned int size;
@@ -2365,8 +2332,7 @@ void Origin750Parser::readProjectTreeFolder(tree<ProjectNode>::iterator parent)
 
 	POS += 5 + 5;
 
-	for(unsigned int i = 0; i < objectcount; ++i)
-	{
+	for(unsigned int i = 0; i < objectcount; ++i){
 		POS += 5;
 		char c;
 		file.seekg(POS + 0x2, ios_base::beg);
@@ -2376,12 +2342,9 @@ void Origin750Parser::readProjectTreeFolder(tree<ProjectNode>::iterator parent)
 		file.seekg(POS + 0x4, ios_base::beg);
 		file >> objectID;
 
-		if(c == 0x10)
-		{
+		if (c == 0x10)
 			projectTree.append_child(current_folder, ProjectNode(notes[objectID].name, ProjectNode::Note));
-		}
-		else
-		{
+		else {
 			pair<ProjectNode::NodeType, string> object = findObjectByIndex(objectID);
 			projectTree.append_child(current_folder, ProjectNode(object.second, object.first));
 		}

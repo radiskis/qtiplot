@@ -1323,7 +1323,6 @@ void Origin810Parser::readGraphInfo()
 				file >> h;
 				curve.connectSymbols = (h&0x8);
 
-				//LAYER += 0x1E7 + 0x1;
 				LAYER += size + 0x1;
 
 				int newSize;

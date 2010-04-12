@@ -31,8 +31,6 @@
 
 #include "Origin800Parser.h"
 
-using namespace Origin;
-
 class Origin810Parser : public Origin800Parser
 {
 public:
@@ -41,11 +39,9 @@ public:
 
 private:
 	void readGraphInfo();
-
 	void readProjectTree();
 	void readProjectTreeFolder(tree<ProjectNode>::iterator parent);
 	void readColorMap(ColorMap& colorMap);
-
 	void readNotes();
 };
 
