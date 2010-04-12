@@ -57,9 +57,12 @@ private:
 	void readProjectTreeFolder(tree<ProjectNode>::iterator parent);
 	void readWindowProperties(Window& window, unsigned int size);
 	void readColorMap(ColorMap& colorMap);
+	void skipLine();
 
 	unsigned int objectIndex;
 	iendianfstream file;
+
+	int d_file_size;
 };
 
 #endif // ORIGIN_750_PARSER_H

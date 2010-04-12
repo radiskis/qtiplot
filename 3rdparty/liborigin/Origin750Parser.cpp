@@ -54,6 +54,10 @@ bool Origin750Parser::parse()
 {
 	unsigned int dataIndex = 0;
 
+	// get length of file:
+	file.seekg (0, ios::end);
+	d_file_size = file.tellg();
+
 	stringstream out;
 	unsigned char c;
 	/////////////////// find column ///////////////////////////////////////////////////////////
@@ -139,6 +143,9 @@ bool Origin750Parser::parse()
 			case 0x50E2:
 			case 0x50C8:
 			case 0x50E7:
+			case 0x50DB:
+			case 0x50DC:
+
 				BOOST_LOG_(1, "NEW MATRIX");
 				matrixes.push_back(Matrix(name, dataIndex));
 				++dataIndex;
@@ -284,6 +291,7 @@ bool Origin750Parser::parse()
 			default:
 				BOOST_LOG_(1, format("UNKNOWN SIGNATURE: %.2X SKIP DATA") % signature);
 				file.seekg(valuesize*size, ios_base::cur);
+				++dataIndex;
 
 				if(valuesize != 8 && valuesize <= 16)
 				{
@@ -1231,6 +1239,7 @@ void Origin750Parser::readGraphInfo()
 			file.seekg(LAYER + 0x46, ios_base::beg);
 			file >> sec_name;
 
+			unsigned int sectionNamePos = LAYER + 0x46;
 			BOOST_LOG_(1, format("				SECTION NAME: %s (@ 0x%X)") % sec_name % (LAYER + 0x46));
 
 			Rect r;
@@ -1433,14 +1442,76 @@ void Origin750Parser::readGraphInfo()
 				file.seekg(LAYER + 0x20, ios_base::beg);
 				file >> layer.histogramEnd;
 				file >> layer.histogramBegin;
+
+				unsigned int p = sectionNamePos + 93;
+				file.seekg(p, ios_base::beg);
+
+				file >> layer.percentile.p1SymbolType;
+				file >> layer.percentile.p99SymbolType;
+				file >> layer.percentile.meanSymbolType;
+				file >> layer.percentile.maxSymbolType;
+				file >> layer.percentile.minSymbolType;
+
+				file.seekg(sectionNamePos + 106, ios_base::beg);
+				file >> layer.percentile.whiskersRange;
+				file >> layer.percentile.boxRange;
+
+				file.seekg(sectionNamePos + 141, ios_base::beg);
+				file >> layer.percentile.whiskersCoeff;
+				file >> layer.percentile.boxCoeff;
+
+				unsigned char h;
+				file >> h;
+				layer.percentile.diamondBox = (h == 0x82) ? true : false;
+
+				p += 109;
+				file.seekg(p, ios_base::beg);
+				file >> layer.percentile.symbolSize;
+				layer.percentile.symbolSize = layer.percentile.symbolSize/2 + 1;
+
+				p += 163;
+				file.seekg(p, ios_base::beg);
+				file >> layer.percentile.symbolColor;
+				file >> layer.percentile.symbolFillColor;
+			}
+			else if(sec_name == "vline") // Image profiles vertical cursor
+			{
+				file.seekg(sectionNamePos, ios_base::beg);
+				for (int i = 0; i < 2; i++)
+					skipLine();
+
+				file.seekg(0x20, ios_base::cur);
+				file >> layer.vLine;
+				BOOST_LOG_(1, format("vLine: %g") % layer.vLine);
+
+				layer.imageProfileTool = true;
+			}
+			else if(sec_name == "hline") // Image profiles horizontal cursor
+			{
+				file.seekg(sectionNamePos, ios_base::beg);
+				for (int i = 0; i < 2; i++)
+					skipLine();
+
+				file.seekg(0x40, ios_base::cur);
+				file >> layer.hLine;
+				BOOST_LOG_(1, format("hLine: %g @ 0x%X") % layer.hLine % file.tellg());
+
+				layer.imageProfileTool = true;
+			}
+			else if(sec_name == "ZCOLORS")
+			{
+				layer.isXYY3D = true;
+			}
+			else if(sec_name == "SPECTRUM1")
+			{
+				layer.isXYY3D = false;
 			}
 			else if(osize == 0x3E) // text
 			{
 				string text(size, 0);
 				file >> text;
 
-				layer.texts.push_back(
-								TextBox(text, r, color, fontSize, rotation/10, tab, (BorderType)(border >= 0x80 ? border-0x80 : None), (Attach)attach));
+				layer.texts.push_back(TextBox(text, r, color, fontSize, rotation/10, tab, (BorderType)(border >= 0x80 ? border-0x80 : None), (Attach)attach));
 			}
 			else if(osize == 0x5E) // rectangle & circle
 			{
@@ -1562,13 +1633,13 @@ void Origin750Parser::readGraphInfo()
 						BOOST_LOG_(1, format("			graph %d X and Y from different tables") % graphs.size());
 					}
 
-					if(layer.is3D())
-					{
+					if(layer.is3D()){
 						BOOST_LOG_(1, format("			graph %d layer %d curve %d Y : %s.%s") % graphs.size() % graphs.back().layers.size() % layer.curves.size() % column.first.c_str() % column.second.c_str());
 						curve.yColumnName = column.second;
-					}
-					else
-					{
+					} else if (layer.isXYY3D){
+						BOOST_LOG_(1, format("			graph %d layer %d curve %d X : %s.%s") % graphs.size() % graphs.back().layers.size() % layer.curves.size() % column.first.c_str() % column.second.c_str());
+						curve.xColumnName = column.second;
+					} else {
 						BOOST_LOG_(1, format("			graph %d layer %d curve %d X : %s.%s") % graphs.size() % graphs.back().layers.size() % layer.curves.size() % column.first.c_str() % column.second.c_str());
 						curve.xColumnName = column.second;
 					}
@@ -1587,11 +1658,16 @@ void Origin750Parser::readGraphInfo()
 					}
 				}
 
+				if(layer.is3D() || layer.isXYY3D)
+					graphs.back().is3D = true;
+
 				file.seekg(LAYER + 0x11, ios_base::beg);
 				file >> curve.lineConnect;
 				file >> curve.lineStyle;
 
-				file.seekg(LAYER + 0x15, ios_base::beg);
+				file.seekg(1, ios_base::cur);
+				file >> curve.boxWidth;
+
 				file >> w;
 				curve.lineWidth=(double)w/500.0;
 
@@ -1813,6 +1889,22 @@ void Origin750Parser::readGraphInfo()
 					file.seekg(LAYER + 0x13, ios_base::beg);
 					file >> h;
 					colorMap.fillEnabled = (h & 0x82);
+
+					if (curve.type == GraphCurve::Contour){
+						file.seekg(102, ios_base::cur);
+						file >> curve.text.fontSize;
+
+						file.seekg(7, ios_base::cur);
+						file >> h;
+						curve.text.fontUnderline = (h & 0x1);
+						curve.text.fontItalic = (h & 0x2);
+						curve.text.fontBold = (h & 0x8);
+						curve.text.whiteOut = (h & 0x20);
+
+						file.seekg(2, ios_base::cur);
+						file >> curve.text.color;
+					}
+
 					file.seekg(LAYER + 0x259, ios_base::beg);
 					readColorMap(colorMap);
 				}
@@ -1832,7 +1924,8 @@ void Origin750Parser::readGraphInfo()
 
 				file.seekg(LAYER + 0x16A, ios_base::beg);
 				file >> curve.lineColor;
-				curve.text.color = curve.lineColor;
+				if (curve.type != GraphCurve::Contour)
+					curve.text.color = curve.lineColor;
 
 				file.seekg(LAYER + 0x17, ios_base::beg);
 				file >> curve.symbolType;
@@ -2342,9 +2435,16 @@ void Origin750Parser::readWindowProperties(Window& window, unsigned int size)
 	double creationDate, modificationDate;
 	file.seekg(POS + 0x73, ios_base::beg);
 	file >> creationDate;
+	if (creationDate > 1e4 && creationDate < 1e8)
+		window.creationDate = doubleToPosixTime(creationDate);
+	else
+		return;
+
 	file >> modificationDate;
-	window.creationDate = doubleToPosixTime(creationDate);
-	window.modificationDate = doubleToPosixTime(modificationDate);
+	if (modificationDate > 1e4 && modificationDate < 1e8)
+		window.modificationDate = doubleToPosixTime(modificationDate);
+	else
+		return;
 
 	if(size > 0xC3)
 	{
@@ -2373,7 +2473,7 @@ void Origin750Parser::readColorMap(ColorMap& colorMap)
 	unsigned int colorMapSize;
 	file >> colorMapSize;
 	file.seekg(0x110, ios_base::cur);
-	for(unsigned int i = 0; i < colorMapSize + 2; ++i)
+	for(unsigned int i = 0; i < colorMapSize + 3; ++i)
 	{
 		ColorMapLevel level;
 		file >> level.fillPattern;
@@ -2403,6 +2503,20 @@ void Origin750Parser::readColorMap(ColorMap& colorMap)
 		file >> value;
 
 		colorMap.levels.push_back(make_pair(value, level));
+	}
+}
+
+void Origin750Parser::skipLine()
+{
+	unsigned char c;
+	file >> c;
+	unsigned int POS = file.tellg();
+
+	while(c != '\n'){
+		file >> c;
+		POS++;
+		if (POS >= d_file_size)
+			break;
 	}
 }
 
