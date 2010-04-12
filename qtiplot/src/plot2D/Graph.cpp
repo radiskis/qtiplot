@@ -5622,16 +5622,16 @@ void Graph::printCanvas(QPainter *painter, const QRect &canvasRect,
 void Graph::drawItems (QPainter *painter, const QRect &rect,
 			const QwtScaleMap map[axisCnt], const QwtPlotPrintFilter &pfilter) const
 {
-    painter->save();
-    painter->setRenderHint(QPainter::Antialiasing);
-    for (int i=0; i<QwtPlot::axisCnt; i++){
+	painter->save();
+	painter->setRenderHint(QPainter::Antialiasing);
+	for (int i=0; i<QwtPlot::axisCnt; i++){
 		if (!axisEnabled(i))
 			continue;
-        drawBreak(painter, rect, map[i], i);
-    }
-    painter->restore();
+		drawBreak(painter, rect, map[i], i);
+	}
+	painter->restore();
 
-    for (int i=0; i<QwtPlot::axisCnt; i++){
+	for (int i=0; i < QwtPlot::axisCnt; i++){
 		if (!axisEnabled(i))
 			continue;
 
@@ -5655,6 +5655,16 @@ void Graph::drawItems (QPainter *painter, const QRect &rect,
 	}
 
 	painter->setRenderHint(QPainter::TextAntialiasing);
+
+	double minz = -1.0;
+	foreach (QwtPlotItem *it, d_curves){
+		double z = it->z();
+		if (minz < z)
+			minz = z;
+	}
+	if (d_grid->z() >= minz)
+		d_grid->setZ(minz - 10.0);
+
 	QwtPlot::drawItems(painter, rect, map, pfilter);
 
 	for (int i=0; i<QwtPlot::axisCnt; i++){
