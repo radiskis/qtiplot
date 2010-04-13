@@ -5665,7 +5665,7 @@ L&apos;autocomplétion ne sera pas disponible!</translation>
     </message>
     <message>
         <source>Waterfall Plot</source>
-        <translation type="unfinished"></translation>
+        <translation>Courbes en cascade</translation>
     </message>
 </context>
 <context>
@@ -15360,7 +15360,8 @@ La somme de toutes les celulles de la colonne colName.</translation>
     <message>
         <source>rnd(seed):
  Returns a pseudo-random number in the range 0 to 1. Calling this function several times with the same seed will return the same value.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">rnd(arg) :
+ Retourne un nombre pseudo aléatoire compris entre 0 et 1. L&apos;appel de cette fonction à plusieurs reprises et avec le même argument, retournera la même valeur.</translation>
     </message>
 </context>
 <context>
