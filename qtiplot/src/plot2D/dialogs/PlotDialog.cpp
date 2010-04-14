@@ -549,7 +549,7 @@ void PlotDialog::initLayerSpeedPage()
 	boxMaxPoints->setValue(3000);
 
     QGridLayout *gl1 = new QGridLayout(speedModeBox);
-	gl1->addWidget(new QLabel(tr("Apply to curves with more than:")), 0, 0);
+	gl1->addWidget(new QLabel(tr("Apply to curves with more than")), 0, 0);
     gl1->addWidget(boxMaxPoints, 0, 1);
 
 	ApplicationWindow *app = (ApplicationWindow *)parent();
