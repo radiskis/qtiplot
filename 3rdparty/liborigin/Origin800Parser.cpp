@@ -31,16 +31,10 @@
 #include <sstream>
 #include <boost/format.hpp>
 #include <boost/lexical_cast.hpp>
-#include <boost/date_time/posix_time/posix_time.hpp>
 #include <logging.hpp>
 #include <QString>
 
 using namespace boost;
-
-inline boost::posix_time::ptime doubleToPosixTime(double jdt)
-{
-	return boost::posix_time::ptime(boost::gregorian::date(boost::gregorian::gregorian_calendar::from_julian_day_number(jdt+1)), boost::posix_time::seconds((jdt-(int)jdt)*86400));
-}
 
 Origin800Parser::Origin800Parser(const string& fileName)
 :	Origin750Parser(fileName)
@@ -1815,8 +1809,6 @@ void Origin800Parser::readGraphInfo()
 					break;
 			}
 		}
-		//LAYER+=0x5*0x5+0x1ED*0x12;
-		//LAYER+=2*0x5;
 
 		LAYER += 0x5;
 		//read axis breaks

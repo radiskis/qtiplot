@@ -32,17 +32,11 @@
 #include <sstream>
 #include <boost/format.hpp>
 #include <boost/lexical_cast.hpp>
-#include <boost/date_time/posix_time/posix_time.hpp>
 #include <logging.hpp>
 
 using namespace boost;
 
 const char* colTypeNames[] = {"X", "Y", "Z", "XErr", "YErr", "Label", "None"};
-
-inline boost::posix_time::ptime doubleToPosixTime(double jdt)
-{
-	return boost::posix_time::ptime(boost::gregorian::date(boost::gregorian::gregorian_calendar::from_julian_day_number(jdt+1)), boost::posix_time::seconds((jdt-(int)jdt)*86400));
-}
 
 Origin750Parser::Origin750Parser(const string& fileName)
 :	file(fileName.c_str(), ios::binary)
@@ -1987,96 +1981,6 @@ void Origin750Parser::readGraphInfo()
 	}
 
 	file.seekg(LAYER + 0x5, ios_base::beg);
-}
-
-void Origin750Parser::skipObjectInfo()
-{
-	unsigned int POS = file.tellg();
-
-	unsigned int size;
-	file >> size;
-	
-	POS += 5;
-
-	unsigned int LAYER = POS;
-	LAYER += size + 0x1;
-	while(1)// multilayer loop
-	{
-		// LAYER section
-		LAYER +=0x5/* length of block = 0x12D + '\n'*/ + 0x12D + 0x1;
-		//now structure is next : section_header_size=0x6F(4 bytes) + '\n' + section_header(0x6F bytes) + section_body_1_size(4 bytes) + '\n' + section_body_1 + section_body_2_size(maybe=0)(4 bytes) + '\n' + section_body_2 + '\n'
-		//possible sections: column formulas, __WIPR, __WIOTN, __LayerInfoStorage
-		//section name(column name in formula case) starts with 0x46 position
-		while(1)
-		{
-			//section_header_size=0x6F(4 bytes) + '\n'
-			LAYER += 0x5;
-
-			//section_header
-			string sec_name(41, 0);
-			file.seekg(LAYER + 0x46, ios_base::beg);
-			file >> sec_name;
-
-			//section_body_1_size
-			LAYER += 0x6F + 0x1;
-			file.seekg(LAYER, ios_base::beg);
-			file >> size;
-
-			//section_body_1
-			LAYER += 0x5;
-
-			//section_body_2_size
-			LAYER += size + 0x1;
-			file.seekg(LAYER, ios_base::beg);
-			file >> size;
-
-			//section_body_2
-			LAYER += 0x5;
-
-			//close section 00 00 00 00 0A
-			LAYER += size + (size > 0 ? 0x1 : 0);
-
-			//section_body_3_size
-			file.seekg(LAYER, ios_base::beg);
-			file >> size;
-
-			//section_body_3
-			LAYER += 0x5;
-
-			//close section 00 00 00 00 0A
-			LAYER += size + (size > 0 ? 0x1 : 0);
-
-			if(sec_name == "__LayerInfoStorage")
-				break;
-
-		}
-		LAYER += 0x5;
-
-		while(1)
-		{
-			LAYER += 0x5;
-
-			LAYER += 0x1E7 + 0x1;
-			file.seekg(LAYER, ios_base::beg);
-			file >> size;
-
-			LAYER += 0x5 + size + (size > 0 ? 0x1 : 0);
-
-			file.seekg(LAYER, ios_base::beg);
-			file >> size;
-
-			if(size != 0x1E7)
-				break;
-		}
-
-		LAYER += 0x5*0x5 + 0x1ED*0x12;
-		file.seekg(LAYER, ios_base::beg);
-		file >> size;
-
-		if(size == 0)
-			break;
-	}
-	file.seekg(LAYER + 0x50, ios_base::beg);
 }
 
 void Origin750Parser::readGraphGridInfo(GraphGrid& grid)

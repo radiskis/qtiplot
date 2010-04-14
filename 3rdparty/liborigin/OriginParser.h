@@ -64,10 +64,11 @@ public:
 };
 
 OriginParser* createOriginDefaultParser(const string& fileName);
+OriginParser* createOrigin600Parser(const string& fileName);
+OriginParser* createOrigin610Parser(const string& fileName);
+OriginParser* createOrigin700Parser(const string& fileName);
 OriginParser* createOrigin750Parser(const string& fileName);
 OriginParser* createOrigin800Parser(const string& fileName);
 OriginParser* createOrigin810Parser(const string& fileName);
-OriginParser* createOrigin610Parser(const string& fileName);
-OriginParser* createOrigin600Parser(const string& fileName);
 
 #endif // ORIGIN_PARSER_H
