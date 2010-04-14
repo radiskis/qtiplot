@@ -52,7 +52,7 @@ TableDialog::TableDialog(Table *t, QWidget* parent, Qt::WFlags fl )
     setSizeGripEnabled(true);
 
 	QHBoxLayout *hboxa = new QHBoxLayout();
-	hboxa->addWidget(new QLabel(tr( "Column Name:" )));
+	hboxa->addWidget(new QLabel(tr( "Column Name" )));
     colName = new QLineEdit();
     hboxa->addWidget(colName);
 
@@ -98,7 +98,7 @@ TableDialog::TableDialog(Table *t, QWidget* parent, Qt::WFlags fl )
 	hbox1->addLayout(vbox2);
 
 	QGridLayout *gl1 = new QGridLayout();
-    gl1->addWidget(new QLabel( tr("Plot Designation:")), 0, 0);
+    gl1->addWidget(new QLabel( tr("Plot Designation")), 0, 0);
 
    	columnsBox = new QComboBox();
 	columnsBox->addItem(tr("None"));
@@ -121,13 +121,13 @@ TableDialog::TableDialog(Table *t, QWidget* parent, Qt::WFlags fl )
 	displayBox->addItem(tr("Day of Week"));
     gl1->addWidget(displayBox, 1, 1);
 
-    labelFormat = new QLabel(tr( "Format:" ));
+    labelFormat = new QLabel(tr( "Format" ));
  	gl1->addWidget(labelFormat, 2, 0);
 
     formatBox = new QComboBox(false);
     gl1->addWidget(formatBox, 2, 1);
 
-	labelNumeric = new QLabel(tr( "Precision:" ));
+	labelNumeric = new QLabel(tr( "Precision" ));
 	gl1->addWidget(labelNumeric, 3, 0);
 
     precisionBox = new QSpinBox();
@@ -150,7 +150,7 @@ TableDialog::TableDialog(Table *t, QWidget* parent, Qt::WFlags fl )
     gb->setLayout(vbox3);
 
     QHBoxLayout  *hbox2 = new QHBoxLayout();
-    hbox2->addWidget(new QLabel(tr( "Column Width:" )));
+    hbox2->addWidget(new QLabel(tr( "Column Width" )));
 
 	colWidth = new QSpinBox();
     colWidth->setRange(0, 1000);
@@ -169,7 +169,7 @@ TableDialog::TableDialog(Table *t, QWidget* parent, Qt::WFlags fl )
     vbox4->addLayout(hbox1);
 	vbox4->addWidget(gb);
 	vbox4->addLayout(hbox2);
-	vbox4->addWidget(new QLabel(tr( "Comment:" )));
+	vbox4->addWidget(new QLabel(tr( "Comment" )));
 	vbox4->addWidget(comments);
 	vbox4->addWidget(boxShowTableComments);
 
