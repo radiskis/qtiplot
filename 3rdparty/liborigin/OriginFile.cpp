@@ -73,7 +73,7 @@ OriginFile::OriginFile(const string& fileName)
 		fileVersion = 604;
 	else if(fileVersion == 2635)						// 6.1
 		fileVersion = 610;
-	else if(fileVersion == 2656)						// 7.0
+	else if(fileVersion >= 2656 && fileVersion <= 2664)	// 7.0
 		fileVersion = 700;
 	else if(fileVersion == 2672)						// 7.0 SR3
 		fileVersion = 703;
@@ -102,6 +102,11 @@ OriginFile::OriginFile(const string& fileName)
 			break;
 		case 750:
 			parser.reset(createOrigin750Parser(fileName));
+			break;
+		case 700:
+		case 703:
+		case 704:
+			parser.reset(createOrigin700Parser(fileName));
 			break;
 		case 610:
 			parser.reset(createOrigin610Parser(fileName));

@@ -1,10 +1,10 @@
 /***************************************************************************
-    File                 : Origin750Parser.h
+	File                 : Origin700Parser.h
     --------------------------------------------------------------------
-	Copyright            : (C) 2007-2008 Alex Kargovsky, Stefan Gerlach, 
-						   Ion Vasilief
-    Email (use @ for *)  : kargovsky*yumr.phys.msu.su, ion_vasilief*yahoo.fr
-    Description          : Origin 7.5 file parser class
+	Copyright            : (C) 2010 Ion Vasilief
+	Email (use @ for *)  : ion_vasilief*yahoo.fr
+	Description          : Origin 7.0 file parser class (uses code from file
+							Origin750Parser.cpp written by Alex Kargovsky)
 
  ***************************************************************************/
 
@@ -26,48 +26,21 @@
  *   Boston, MA  02110-1301  USA                                           *
  *                                                                         *
  ***************************************************************************/
+#ifndef ORIGIN_700_PARSER_H
+#define ORIGIN_700_PARSER_H
 
+#include "Origin610Parser.h"
 
-#ifndef ORIGIN_750_PARSER_H
-#define ORIGIN_750_PARSER_H
-
-#include "OriginParser.h"
-#include "endianfstream.hh"
-#include <boost/date_time/posix_time/posix_time.hpp>
-
-using namespace Origin;
-
-class Origin750Parser : public OriginParser
+class Origin700Parser : public Origin610Parser
 {
 public:
-	Origin750Parser(const string& fileName);
+	Origin700Parser(const string& fileName);
 	bool parse();
 
 protected:
 	void readSpreadInfo();
-	void readExcelInfo();
 	void readMatrixInfo();
 	void readGraphInfo();
-	void readGraphAxisInfo(GraphAxis& axis);
-	void readGraphGridInfo(GraphGrid& grid);
-	void readGraphAxisBreakInfo(GraphAxisBreak& axis_break);
-	void readGraphAxisFormatInfo(GraphAxisFormat& format);
-	void readGraphAxisTickLabelsInfo(GraphAxisTick& tick);
-	void readProjectTree();
-	void readProjectTreeFolder(tree<ProjectNode>::iterator parent);
-	void readWindowProperties(Window& window, unsigned int size);
-	void readColorMap(ColorMap& colorMap);
-	void skipLine();
-
-	inline boost::posix_time::ptime doubleToPosixTime(double jdt)
-	{
-		return boost::posix_time::ptime(boost::gregorian::date(boost::gregorian::gregorian_calendar::from_julian_day_number(jdt+1)), boost::posix_time::seconds((jdt-(int)jdt)*86400));
-	}
-
-	unsigned int objectIndex;
-	iendianfstream file;
-
-	int d_file_size;
 };
 
-#endif // ORIGIN_750_PARSER_H
+#endif // ORIGIN_700_PARSER_H

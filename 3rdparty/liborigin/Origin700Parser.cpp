@@ -1,10 +1,11 @@
 /***************************************************************************
-	File                 : Origin610Parser.cpp
+	File                 : Origin700Parser.cpp
     --------------------------------------------------------------------
 	Copyright            : (C) 2010 Ion Vasilief
 	Email (use @ for *)  : ion_vasilief*yahoo.fr
-	Description          : Origin 6.1 file parser class (uses code from file
+	Description          : Origin 7.0 file parser class (uses code from file
 							Origin750Parser.cpp written by Alex Kargovsky)
+
  ***************************************************************************/
 
 /***************************************************************************
@@ -26,21 +27,21 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "Origin610Parser.h"
+#include "Origin700Parser.h"
 #include <cstring>
 #include <sstream>
 #include <boost/format.hpp>
 #include <boost/lexical_cast.hpp>
+#include <boost/date_time/posix_time/posix_time.hpp>
 #include <logging.hpp>
-#include <QString>
 
 using namespace boost;
 
-Origin610Parser::Origin610Parser(const string& fileName)
-:	Origin800Parser(fileName)
+Origin700Parser::Origin700Parser(const string& fileName)
+:	Origin610Parser(fileName)
 {}
 
-bool Origin610Parser::parse()
+bool Origin700Parser::parse()
 {
 	unsigned int dataIndex = 0;
 
@@ -63,10 +64,9 @@ bool Origin610Parser::parse()
 
 	unsigned int colpos = file.tellg();
 	unsigned int current_col = 1, nr = 0, nbytes = 0;
-	
-	while(size > 0 && size <= 0x8C){// should be 0x72, 0x73 or 0x83 ?
-		//////////////////////////////// COLUMN HEADER /////////////////////////////////////////////
 
+	while(size > 0 && size < 0x84) {	// should be 0x72, 0x73 or 0x83
+		//////////////////////////////// COLUMN HEADER /////////////////////////////////////////////
 		short data_type;
 		char data_type_u;
 		unsigned int oldpos = file.tellg();
@@ -76,7 +76,7 @@ bool Origin610Parser::parse()
 
 		file.seekg(oldpos + 0x3F, ios_base::beg);
 		file >> data_type_u;
-		
+
 		char valuesize;
 		file.seekg(oldpos + 0x3D, ios_base::beg);
 		file >> valuesize;
@@ -96,15 +96,16 @@ bool Origin610Parser::parse()
 
 		string::size_type pos = name.find_last_of("_");
 		string columnname;
-		if(pos != string::npos){
+		if(pos != string::npos)
+		{
 			columnname = name.substr(pos + 1);
 			name.resize(pos);
 		}
-
 		BOOST_LOG_(1, format("	NAME: %s") % name.c_str());
 
 		unsigned int spread = 0;
-		if(columnname.empty()){
+		if(columnname.empty())
+		{
 			BOOST_LOG_(1, "NO COLUMN NAME FOUND! Must be a Matrix or Function.");
 			////////////////////////////// READ matrixes or functions ////////////////////////////////////
 
@@ -121,6 +122,10 @@ bool Origin610Parser::parse()
 			size /= valuesize;
 			BOOST_LOG_(1, format("	SIZE = %d") % size);
 
+			// catch exception
+			/*if(size>10000)
+			size=1000;*/
+
 			switch(signature)
 			{
 			case 0x50CA:
@@ -131,36 +136,30 @@ bool Origin610Parser::parse()
 			case 0x50E7:
 			case 0x50DB:
 			case 0x50DC:
-			case 0xAE2:
-			case 0xAF2:
-			case 0xACA:
 
 				BOOST_LOG_(1, "NEW MATRIX");
 				matrixes.push_back(Matrix(name, dataIndex));
-				//BOOST_LOG_(1, format("MATRIX %s has dataIndex: %d") % name.c_str() % dataIndex);
-
 				++dataIndex;
 
 				BOOST_LOG_(1, "VALUES :");
 				out.str(size > 100 ? "matrix too big..." : string());
-
 				switch(data_type)
 				{
 				case 0x6001://double
 					for(unsigned int i = 0; i < size; ++i)
 					{
-						double value;				
+						double value;
 						file >> value;
 						matrixes.back().data.push_back((double)value);
-						//if(size < 100)
-							//out << format("%g ") % matrixes.back().data.back();
+						if(size < 100)
+							out << format("%g ") % matrixes.back().data.back();
 					}
-					//BOOST_LOG_(1, out.str());
+					BOOST_LOG_(1, out.str());
 					break;
 				case 0x6003://float
 					for(unsigned int i = 0; i < size; ++i)
 					{
-						float value;						
+						float value;
 						file >> value;
 						matrixes.back().data.push_back((double)value);
 						if(size < 100)
@@ -173,7 +172,7 @@ bool Origin610Parser::parse()
 					{
 						for(unsigned int i = 0; i < size; ++i)
 						{
-							unsigned int value;						
+							unsigned int value;
 							file >> value;
 							matrixes.back().data.push_back((double)value);
 							if(size < 100)
@@ -185,7 +184,7 @@ bool Origin610Parser::parse()
 					{
 						for(unsigned int i = 0; i < size; ++i)
 						{
-							int value;							
+							int value;
 							file >> value;
 							matrixes.back().data.push_back((double)value);
 							if(size < 100)
@@ -199,7 +198,7 @@ bool Origin610Parser::parse()
 					{
 						for(unsigned int i = 0; i < size; ++i)
 						{
-							unsigned short value;						
+							unsigned short value;
 							file >> value;
 							matrixes.back().data.push_back((double)value);
 							if(size < 100)
@@ -211,7 +210,7 @@ bool Origin610Parser::parse()
 					{
 						for(unsigned int i = 0; i < size; ++i)
 						{
-							short value;							
+							short value;
 							file >> value;
 							matrixes.back().data.push_back((double)value);
 							if(size < 100)
@@ -225,7 +224,7 @@ bool Origin610Parser::parse()
 					{
 						for(unsigned int i = 0; i < size; ++i)
 						{
-							unsigned char value;						
+							unsigned char value;
 							file >> value;
 							matrixes.back().data.push_back((double)value);
 							if(size < 100)
@@ -237,7 +236,7 @@ bool Origin610Parser::parse()
 					{
 						for(unsigned int i = 0; i < size; ++i)
 						{
-							char value;							
+							char value;
 							file >> value;
 							matrixes.back().data.push_back((double)value);
 							if(size < 100)
@@ -252,7 +251,6 @@ bool Origin610Parser::parse()
 					matrixes.pop_back();
 				}
 				break;
-
 			case 0x10C8:
 				BOOST_LOG_(1, "NEW FUNCTION");
 				functions.push_back(Function(name, dataIndex));
@@ -281,14 +279,15 @@ bool Origin610Parser::parse()
 
 				file.seekg(oldpos, ios_base::beg);
 				break;
-
 			default:
 				BOOST_LOG_(1, format("UNKNOWN SIGNATURE: %.2X SKIP DATA") % signature);
 				file.seekg(valuesize*size, ios_base::cur);
 				++dataIndex;
 
 				if(valuesize != 8 && valuesize <= 16)
+				{
 					file.seekg(2, ios_base::cur);
+				}
 			}
 		}
 		else
@@ -303,7 +302,7 @@ bool Origin610Parser::parse()
 			}
 			else
 			{
-				spread = findSpreadByName(name);
+				spread = findSpreadByName(/*sname*/name);
 
 				current_col = speadSheets[spread].columns.size();
 
@@ -311,22 +310,17 @@ bool Origin610Parser::parse()
 					current_col = 1;
 				++current_col;
 			}
+			BOOST_LOG_(1, format("SPREADSHEET = %s COLUMN NAME = %s (%d) (@0x%X)") % name % columnname % current_col % (unsigned int)file.tellg());
 			speadSheets[spread].columns.push_back(SpreadColumn(columnname, dataIndex));
 			string::size_type sheetpos = speadSheets[spread].columns.back().name.find_last_of("@");
-			if(sheetpos != string::npos){
-				unsigned int sheet = lexical_cast<int>(columnname.substr(sheetpos + 1).c_str());
-				if( sheet > 1){
+			if(!speadSheets[spread].multisheet && sheetpos != string::npos)
+			{
+				if(lexical_cast<int>(columnname.substr(sheetpos + 1).c_str()) > 1)
+				{
 					speadSheets[spread].multisheet = true;
-
-					speadSheets[spread].columns.back().name = columnname;
-					speadSheets[spread].columns.back().sheet = sheet - 1;
-
-					if (speadSheets[spread].sheets < sheet)
-						speadSheets[spread].sheets = sheet;
+					BOOST_LOG_(1, format("SPREADSHEET \"%s\" IS MULTISHEET") % name);
 				}
 			}
-			BOOST_LOG_(1, format("SPREADSHEET = %s SHEET = %d COLUMN NAME = %s (%d) (@0x%X)") % name % speadSheets[spread].columns.back().sheet % columnname % current_col % (unsigned int)file.tellg());
-
 			++dataIndex;
 
 			////////////////////////////// SIZE of column /////////////////////////////////////////////
@@ -406,15 +400,26 @@ bool Origin610Parser::parse()
 	}
 
 	////////////////////////////////////////////////////////////////////////////
+	for(unsigned int i = 0; i < speadSheets.size(); ++i)
+	{
+		if(speadSheets[i].multisheet)
+		{
+			BOOST_LOG_(1, format("		CONVERT SPREADSHEET \"%s\" to EXCEL") % speadSheets[i].name.c_str());
+			convertSpreadToExcel(i);
+			--i;
+		}
+	}
+	////////////////////////////////////////////////////////////////////////////
 	////////////////////// HEADER SECTION //////////////////////////////////////
 
 	unsigned int POS = (unsigned int)file.tellg()-11;
 	BOOST_LOG_(1, "\nHEADER SECTION");
+	BOOST_LOG_(1, format("	nr_spreads = %d") % speadSheets.size());
 	BOOST_LOG_(1, format("	[position @ 0x%X]") % POS);
 
+	//////////////////////// OBJECT INFOS //////////////////////////////////////
 	POS += 0xB;
 	file.seekg(POS, ios_base::beg);
-	unsigned int tableId = 0;
 	while(POS < d_file_size){
 		POS = file.tellg();
 
@@ -428,19 +433,15 @@ bool Origin610Parser::parse()
 
 		file.seekg(POS, ios_base::beg);
 
-		if(findSpreadByName(name) != -1){
+		if(findSpreadByName(name) != -1)
 			readSpreadInfo();
-			tableId++;
-		} else if(findMatrixByName(name) != -1)
+		/*else if(findMatrixByName(name) != -1)
 			readMatrixInfo();
 		else if(findExcelByName(name) != -1)
-			readExcelInfo();
-		else if (!readGraphInfo()){
-			BOOST_LOG_(1, format("		%s is NOT A GRAPH, trying to read next SPREADSHEET...") % name);
-			findObjectInfoSectionByName(POS, speadSheets[tableId].name);
-			readSpreadInfo();
-			tableId++;
-		}
+			readExcelInfo();*/
+		else
+			readGraphInfo();
+
 		POS = file.tellg();
 	}
 
@@ -450,7 +451,7 @@ bool Origin610Parser::parse()
 	file.seekg(1 + 4*5 + 0x10 + 1, ios_base::cur);
 	try {
 		readProjectTree();
-	} catch(...) {}
+	} catch(...){}
 
 	BOOST_LOG_(1, "Done parsing");
 	BOOST_LOG_FINALIZE();
@@ -458,123 +459,7 @@ bool Origin610Parser::parse()
 	return true;
 }
 
-void Origin610Parser::readNotes()
-{
-	unsigned int pos = findStringPos("@");
-	file.seekg(pos, ios_base::beg);
-
-	unsigned int sectionSize;
-	file >> sectionSize;
-
-	while(pos < d_file_size){
-		file.seekg(1, ios_base::cur);
-
-		Rect rect;
-		unsigned int coord;
-		file >> coord;
-		rect.left = coord;
-		file >> coord;
-		rect.top = coord;
-		file >> coord;
-		rect.right = coord;
-		file >> coord;
-		rect.bottom = coord;
-
-		if (!rect.bottom || !rect.right)
-			break;
-
-		unsigned char state;
-		file.seekg(0x8, ios_base::cur);
-		file >> state;
-
-		double creationDate, modificationDate;
-		file.seekg(0x7, ios_base::cur);
-		file >> creationDate;
-		file >> modificationDate;
-
-		file.seekg(0x8, ios_base::cur);
-		unsigned char c;
-		file >> c;
-
-		unsigned int labellen;
-		file.seekg(0x3, ios_base::cur);
-		file >> labellen;
-
-		skipLine();
-
-		unsigned int size;
-		file >> size;
-		file.seekg(1, ios_base::cur);
-
-		string name(size, 0);
-		file >> name;
-
-		notes.push_back(Note(name));
-		notes.back().objectID = objectIndex;
-		++objectIndex;
-
-		notes.back().frameRect = rect;
-		if (creationDate >= 1e10)
-			return;
-		notes.back().creationDate = doubleToPosixTime(creationDate);
-		if (modificationDate >= 1e10)
-			return;
-		notes.back().modificationDate = doubleToPosixTime(modificationDate);
-
-		if (c == 0x01)
-			notes.back().title = Window::Label;
-		else if (c == 0x02)
-			notes.back().title = Window::Name;
-		else
-			notes.back().title = Window::Both;
-
-		if(state == 0x04)
-			notes.back().state = Window::Minimized;
-
-		notes.back().hidden = (state & 0x40);
-
-		file.seekg(1, ios_base::cur);
-		file >> size;
-
-		file.seekg(1, ios_base::cur);
-
-		if(labellen > 1){
-			file >> notes.back().label.assign(labellen - 1, 0);
-			file.seekg(1, ios_base::cur);
-		}
-
-		file >> notes.back().text.assign(size - labellen, 0);
-
-		BOOST_LOG_(1, format("NOTE %d NAME: %s") % notes.size() % notes.back().name);
-		BOOST_LOG_(1, format("NOTE %d LABEL: %s") % notes.size() % notes.back().label);
-		BOOST_LOG_(1, format("NOTE %d TEXT: %s") % notes.size() % notes.back().text);
-
-		file.seekg(1, ios_base::cur);
-		pos = file.tellg();
-
-		file >> size;
-		if(size != sectionSize)
-			break;
-	}
-}
-
-void Origin610Parser::readResultsLog()
-{
-	int pos = findStringPos("ResultsLog");
-	if (pos < 0)
-		return;
-
-	file.seekg(pos + 12, ios_base::beg);
-	unsigned int size;
-	file >> size;
-
-	file.seekg(1, ios_base::cur);
-	resultsLog.resize(size);
-	file >> resultsLog;
-	BOOST_LOG_(1, format("Results Log: %s") % resultsLog);
-}
-
-void Origin610Parser::readSpreadInfo()
+void Origin700Parser::readSpreadInfo()
 {
 	unsigned int POS = file.tellg();
 	unsigned int size;
@@ -596,28 +481,32 @@ void Origin610Parser::readSpreadInfo()
 	speadSheets[spread].loose = false;
 	char c = 0;
 
-	for (int i = 0; i < 5; i++)
-		skipLine();
-
+	unsigned int LAYER = POS + size + 0x1;
+	file.seekg(LAYER, ios_base::beg);
 	file >> size;
-	unsigned int LAYER = file.tellg();
+
+	LAYER += size + 0x6;
+	file.seekg(LAYER, ios_base::beg);
+	file >> size;
 
 	// LAYER section
 	unsigned int sectionSize = size;
 	while(LAYER < d_file_size){
 		//section_header_size=0x6F(4 bytes) + '\n'
-		LAYER += 0x1;
+		LAYER += 0x5;
 
 		//section_header
 		file.seekg(LAYER + 0x46, ios_base::beg);
-		string sec_name(30, 0);
+		string sec_name(41, 0);
 		file >> sec_name;
 
 		BOOST_LOG_(1, format("				SECTION NAME: %s (@ 0x%X)") % sec_name % (LAYER + 0x46));
-		LAYER = file.tellg();
 
 		//section_body_1_size
+		LAYER += size + 0x1;
+		file.seekg(LAYER, ios_base::beg);
 		file >> size;
+
 		//section_body_1
 		LAYER += 0x5;
 		file.seekg(LAYER, ios_base::beg);
@@ -633,15 +522,11 @@ void Origin610Parser::readSpreadInfo()
 			LAYER = pos - 0x47;
 			continue;
 		}
-		LAYER = file.tellg();
 
 		//section_body_2_size
-
-		LAYER += 0x1;
-		file.seekg(0x1, ios_base::cur);
+		LAYER += size + 0x1;
+		file.seekg(LAYER, ios_base::beg);
 		file >> size;
-		if (size > sectionSize)
-			break;
 
 		//section_body_2
 		LAYER += 0x5;
@@ -651,29 +536,25 @@ void Origin610Parser::readSpreadInfo()
 		file.seekg(LAYER, ios_base::beg);
 
 		file >> size;
-		LAYER += 0x4;
 		if(size != sectionSize)
 			break;
 	}
 
-	for (int i = 0; i < 5; i++)
-		skipLine();
-
-	LAYER = file.tellg();
+	file.seekg(1, ios_base::cur);
 	file >> size;
+	LAYER += 0x5;
 	sectionSize = size;
-
 	while(LAYER < d_file_size){
 		LAYER += 0x5;
 		file.seekg(LAYER + 0x12, ios_base::beg);
 		name.resize(12);
 		file >> name;
-		BOOST_LOG_(1, format("				Column: %s") % name);
+		BOOST_LOG_(1, format("				Column: %s (@ 0x%X)") % name % (LAYER + 0x12));
 
 		file.seekg(LAYER + 0x11, ios_base::beg);
 		file >> c;
 
-		short width=0;
+		short width = 0;
 		file.seekg(LAYER + 0x4A, ios_base::beg);
 		file >> width;
 		int col_index = findSpreadColumnByName(spread, name);
@@ -703,6 +584,7 @@ void Origin610Parser::readSpreadInfo()
 					break;
 			}
 			speadSheets[spread].columns[col_index].type = type;
+
 			width/=0xA;
 			if(width == 0)
 				width = 8;
@@ -759,8 +641,6 @@ void Origin610Parser::readSpreadInfo()
 			}
 		}
 		LAYER += sectionSize + 0x1;
-
-		int size;
 		file.seekg(LAYER, ios_base::beg);
 		file >> size;
 
@@ -783,7 +663,7 @@ void Origin610Parser::readSpreadInfo()
 	BOOST_LOG_(1, format("		Done with spreadsheet %d POS (@ 0x%X)") % spread % file.tellg());
 }
 
-void Origin610Parser::readMatrixInfo()
+void Origin700Parser::readMatrixInfo()
 {
 	unsigned int POS = file.tellg();
 
@@ -797,111 +677,137 @@ void Origin610Parser::readMatrixInfo()
 	string name(25, 0);
 	file.seekg(POS + 0x2, ios_base::beg);
 	file >> name;
-	BOOST_LOG_(1, format("			MATRIX %s (@ 0x%X)]") % name % POS);
 
 	int idx = findMatrixByName(name);
 	matrixes[idx].name = name;
 	file.seekg(POS, ios_base::beg);
 	readWindowProperties(matrixes[idx], size);
 
+	unsigned char h;
+	file.seekg(POS + 0x87, ios_base::beg);
+	file >> h;
+	switch(h)
+	{
+	case 1:
+		matrixes[idx].view = Matrix::ImageView;
+		break;
+	case 2:
+		matrixes[idx].header = Matrix::XY;
+		break;
+	}
+
 	unsigned int LAYER = POS;
 	LAYER += size + 0x1;
 
 	// LAYER section
 	LAYER += 0x5;
-
-	unsigned short width;
-	file.seekg(LAYER + 0x27, ios_base::beg);
-	file >> width;
-	if (width == 0)
-		width = 8;
-	matrixes[idx].width = width;
-	BOOST_LOG_(1, format("		Width: %d (@ 0x%X)") % matrixes[idx].width % (LAYER + 0x27));
-
+	
 	file.seekg(LAYER + 0x2B, ios_base::beg);
 	file >> matrixes[idx].columnCount;
-	BOOST_LOG_(1, format("		Columns: %d (@ 0x%X)") % matrixes[idx].columnCount % (LAYER + 0x2B));
 
 	file.seekg(LAYER + 0x52, ios_base::beg);
 	file >> matrixes[idx].rowCount;
-	BOOST_LOG_(1, format("		Rows: %d (@ 0x%X)") % matrixes[idx].rowCount % (LAYER + 0x52));
 
-	for (int i = 0; i < 3; i++)
-		skipLine();
-
-	LAYER = file.tellg();
-	file >> size;
-	unsigned int sectionSize = size;
-	while(LAYER < d_file_size){
+	LAYER += 0x12D + 0x1;
+	//now structure is next : section_header_size=0x6F(4 bytes) + '\n' + section_header(0x6F bytes) + section_body_1_size(4 bytes) + '\n' + section_body_1 + section_body_2_size(maybe=0)(4 bytes) + '\n' + section_body_2 + '\n'
+	//possible sections: column formulas, __WIPR, __WIOTN, __LayerInfoStorage
+	//section name(column name in formula case) starts with 0x46 position
+	while(LAYER < d_file_size)
+	{
 		//section_header_size=0x6F(4 bytes) + '\n'
 		LAYER += 0x5;
 
 		//section_header
-		string sec_name(30, 0);
+		string sec_name(41, 0);
 		file.seekg(LAYER + 0x46, ios_base::beg);
 		file >> sec_name;
-		BOOST_LOG_(1, format("				SECTION NAME: %s (@ 0x%X)") % sec_name % (LAYER + 0x46));
 
 		//section_body_1_size
+		LAYER += 0x6F+0x1;
+		file.seekg(LAYER, ios_base::beg);
 		file >> size;
 
 		//section_body_1
-		LAYER = file.tellg();
-		file.seekg(1, ios_base::cur);
-
-		if (sec_name == "MV"){//check if it is a formula
+		LAYER += 0x5;
+		//check if it is a formula
+		if(sec_name == "MV")
+		{
+			file.seekg(LAYER, ios_base::beg);
 			file >> matrixes[idx].command.assign(size, 0);
-			BOOST_LOG_(1, format("				FORMULA: %s") % matrixes[idx].command);
-		} else if (sec_name == "Y2"){
-			string s(size, 0);
-			file >> s;
-			matrixes[idx].coordinates[0] = QString(s.c_str()).replace(",", ".").toDouble();
-			BOOST_LOG_(1, format("				Y2: %s") % s);
-		} else if (sec_name == "X2"){
-			string s(size, 0);
-			file >> s;
-			matrixes[idx].coordinates[1] = QString(s.c_str()).replace(",", ".").toDouble();
-			BOOST_LOG_(1, format("				X2: %s") % s);
-		} else if (sec_name == "Y1"){
-			string s(size, 0);
-			file >> s;
-			matrixes[idx].coordinates[2] = QString(s.c_str()).replace(",", ".").toDouble();
-			BOOST_LOG_(1, format("				Y1: %s") % s);
-		} else if (sec_name == "X1"){
-			string s(size, 0);
-			file >> s;
-			matrixes[idx].coordinates[3] = QString(s.c_str()).replace(",", ".").toDouble();
-			BOOST_LOG_(1, format("				X1: %s") % s);
 		}
 
 		//section_body_2_size
-		LAYER += size + 0x2;
+		LAYER += size + 0x1;
 		file.seekg(LAYER, ios_base::beg);
 		file >> size;
 
 		//section_body_2
 		LAYER += 0x5;
+		if(sec_name == "COLORMAP")
+		{
+			file.seekg(LAYER + 0x14, ios_base::beg);
+			readColorMap(matrixes[idx].colorMap);
+		}
 
 		//close section 00 00 00 00 0A
 		LAYER += size + (size > 0 ? 0x1 : 0) + 0x5;
 
+		if(sec_name == "__LayerInfoStorage")
+			break;
+
+	}
+	LAYER += 0x5;
+
+	while(1)
+	{
+		LAYER+=0x5;
+
+		unsigned short width;
+		file.seekg(LAYER + 0x2B, ios_base::beg);
+		file >> width;
+
+		width = (width-55)/0xA;
+		if(width == 0)
+			width = 8;
+		matrixes[idx].width = width;
+
+		unsigned char c1,c2;
+		file.seekg(LAYER + 0x1E, ios_base::beg);
+		file >> c1;
+		file >> c2;
+
+		matrixes[idx].valueTypeSpecification = c1/0x10;
+		if(c2 >= 0x80)
+		{
+			matrixes[idx].significantDigits = c2-0x80;
+			matrixes[idx].numericDisplayType = SignificantDigits;
+		}
+		else if(c2 > 0)
+		{
+			matrixes[idx].decimalPlaces = c2-0x03;
+			matrixes[idx].numericDisplayType = DecimalPlaces;
+		}
+
+		LAYER += 0x1E7 + 0x1;
+		
 		file.seekg(LAYER, ios_base::beg);
 		file >> size;
-		if(size != sectionSize)
+
+		LAYER += size + (size > 0 ? 0x1 : 0) + 0x5;
+
+		file.seekg(LAYER, ios_base::beg);
+		file >> size;
+
+		if(size != 0x1E7)
 			break;
 	}
-	file.seekg(1, ios_base::cur);
 
-	for (int i = 0; i < 5; i++)
-		skipLine();
-	skipObjectInfo();
-	BOOST_LOG_(1, format("		Done with matrix, pos @ 0x%X") % file.tellg());
+	file.seekg(LAYER + 0x5*0x5 + 0x1ED*0x12 + 0x5, ios_base::beg);
 }
 
-bool Origin610Parser::readGraphInfo()
+void Origin700Parser::readGraphInfo()
 {
 	unsigned int POS = file.tellg();
-
 	unsigned int size;
 	file >> size;
 
@@ -923,7 +829,6 @@ bool Origin610Parser::readGraphInfo()
 	unsigned int LAYER = POS;
 	LAYER += size + 0x1;
 
-	vector <string> sectionNames;
 	while(LAYER < d_file_size){// multilayer loop
 		graphs.back().layers.push_back(GraphLayer());
 		GraphLayer& layer(graphs.back().layers.back());
@@ -977,24 +882,16 @@ bool Origin610Parser::readGraphInfo()
 		file.seekg(LAYER, ios_base::beg);
 
 		unsigned int sectionSize;
-		file >> sectionSize;
-
-		//now structure is next : section_header_size=0x6F(4 bytes) + '\n' + section_header(0x6F bytes) + section_body_1_size(4 bytes) + '\n' + section_body_1 + section_body_2_size(maybe=0)(4 bytes) + '\n' + section_body_2 + '\n'
-		//possible sections: axes, legend, __BC02, _202, _231, _232, etc
-		//section name starts with 0x46 position
+		file >> size;
+		sectionSize = size;
 		while(LAYER < d_file_size){
-			//section_header_size=0x6F(4 bytes) + '\n'
 			LAYER += 0x5;
 
 			//section_header
 
-			string sec_name(41, 0);
+			string sec_name(40, 0);
 			file.seekg(LAYER + 0x46, ios_base::beg);
 			file >> sec_name;
-			if (!QString(sec_name.c_str()).trimmed().isEmpty())
-				sectionNames.push_back(sec_name);
-			else
-				break;
 
 			unsigned int sectionNamePos = LAYER + 0x46;
 			BOOST_LOG_(1, format("				SECTION NAME: %s (@ 0x%X)") % sec_name % (LAYER + 0x46));
@@ -1014,7 +911,7 @@ bool Origin610Parser::readGraphInfo()
 			file.seekg(LAYER + 0x33, ios_base::beg);
 			file >> color;
 
-			LAYER += 0x64;
+			LAYER += size + 0x1;
 			file.seekg(LAYER, ios_base::beg);
 			file >> size;
 
@@ -1103,16 +1000,14 @@ bool Origin610Parser::readGraphInfo()
 
 			//section_body_2_size
 			LAYER += size + 0x1 + 0x5;
-
 			file.seekg(LAYER, ios_base::beg);
 			file >> size;
 
 			//section_body_2
 			LAYER += 0x5;
-			//check if it is an axis or a legend
 
 			file.seekg(1, ios_base::cur);
-			if (size){
+			if (size){//check if it is an axis or a legend
 				if(sec_name == "XB")
 				{
 					string text(size, 0);
@@ -1330,21 +1225,10 @@ bool Origin610Parser::readGraphInfo()
 			//section_body_3
 			LAYER += 0x5;
 
-			//close section 00 00 00 00 0A
-			LAYER += size + (size > 0 ? 0x1 : 0);
-
 			file.seekg(1, ios_base::cur);
 			file >> size;
-
 			if (!size || size != sectionSize)
 				break;
-		}
-
-		if (sectionNames.empty()){
-			objectIndex--;
-			graphs.pop_back();
-			file.seekg(POS, ios_base::beg);
-			return false;
 		}
 
 		LAYER += 0x5;
@@ -1589,7 +1473,7 @@ bool Origin610Parser::readGraphInfo()
 
 					file.seekg(LAYER + 0x13, ios_base::beg);
 					file >> h;
-					curve.surface.backColorEnabled = (h & 0x08);				
+					curve.surface.backColorEnabled = (h & 0x08);
 					file.seekg(LAYER + 0x15A, ios_base::beg);
 					file >> curve.surface.backColor;
 					file >> curve.surface.xSideWallColor;
@@ -1684,7 +1568,7 @@ bool Origin610Parser::readGraphInfo()
 				file >> newSize;
 
 				LAYER += newSize + (newSize > 0 ? 0x1 : 0) + 0x5;
-	
+
 				file.seekg(LAYER, ios_base::beg);
 				file >> newSize;
 
@@ -1747,125 +1631,9 @@ bool Origin610Parser::readGraphInfo()
 	}
 
 	file.seekg(LAYER + 0x5, ios_base::beg);
-	return true;
 }
 
-void Origin610Parser::skipObjectInfo()
+OriginParser* createOrigin700Parser(const string& fileName)
 {
-	unsigned int POS = file.tellg();
-	unsigned int size;
-	file >> size;
-	while (POS < d_file_size && !size){
-		skipLine();
-		file >> size;
-		POS = file.tellg();
-	}
-	
-	unsigned int nextSize = size;
-	//BOOST_LOG_(1, format("	skipObjectInfo() size: %d (0x%X) @ 0x%X") % size % size % POS);
-	while (POS < d_file_size && nextSize == size){
-		POS += nextSize + 0x2;
-		file.seekg(POS, ios_base::beg);
-
-		file >> nextSize;
-		POS +=  0x4;
-		//BOOST_LOG_(1, format("	next size: %d (0x%X) @ 0x%X") % nextSize % nextSize % POS);
-
-		if (!nextSize){
-			POS += 0x1;
-			file.seekg(1, ios_base::cur);
-			file >> nextSize;
-			if (nextSize == size)
-				POS += 0x4;
-		} else if (nextSize > 1e6){
-			file >> nextSize;
-			if (nextSize == size)
-				POS += 0x4;
-		}
-	}
-	file.seekg(1, ios_base::cur);
-	//BOOST_LOG_(1, format("	skipObjectInfo() pos:  0x%X") % file.tellg());
-}
-
-unsigned int Origin610Parser::readGraphAxisInfo(GraphAxis& axis)
-{
-	unsigned int POS = file.tellg();
-	unsigned int size;
-	file >> size;
-
-	POS += 0x5;
-	file.seekg(POS, ios_base::beg);
-	readGraphGridInfo(axis.minorGrid);
-	POS += size + 1;
-
-	POS += 0x5;
-	file.seekg(POS, ios_base::beg);
-	readGraphGridInfo(axis.majorGrid);
-	POS += size + 1;
-
-	POS += 0x5;
-	file.seekg(POS, ios_base::beg);
-	readGraphAxisTickLabelsInfo(axis.tickAxis[0]);
-	POS += size + 1;
-
-	POS += 0x5;
-	file.seekg(POS, ios_base::beg);
-	readGraphAxisFormatInfo(axis.formatAxis[0]);
-	POS += size + 1;
-
-	POS += 0x5;
-	file.seekg(POS, ios_base::beg);
-	readGraphAxisTickLabelsInfo(axis.tickAxis[1]);
-	POS += size + 1;
-
-	POS += 0x5;
-	file.seekg(POS, ios_base::beg);
-	readGraphAxisFormatInfo(axis.formatAxis[1]);
-
-	return (size + 1 + 0x5);
-}
-
-void Origin610Parser::readProjectTree()
-{
-	readProjectTreeFolder(projectTree.begin());
-
-	BOOST_LOG_(1, "Origin project Tree");
-	for(tree<ProjectNode>::iterator it = projectTree.begin(projectTree.begin()); it != projectTree.end(projectTree.begin()); ++it)
-	{
-		BOOST_LOG_(1, string(projectTree.depth(it) - 1, ' ') + (*it).name);
-	}
-}
-
-OriginParser* createOrigin610Parser(const string& fileName)
-{
-	return new Origin610Parser(fileName);
-}
-
-int Origin610Parser::findObjectInfoSectionByName(unsigned int start, const string& name)
-{
-	file.seekg(start, ios_base::beg);
-	char c = 0;
-	unsigned int pos = start;
-	while(pos != ios_base::end){
-		file >> c;
-		if (c == name[0]){
-			pos = file.tellg();
-			file.seekg(pos - 0x2, ios_base::beg);
-			file >> c;
-
-			string s = string(name.size(), 0);
-			file >> s;
-
-			char end;
-			file >> end;
-
-			if (!c && !end && name == s){
-				pos -= 0x8;
-				file.seekg(pos, ios_base::beg);
-				//BOOST_LOG_(1, format("        Object info section starts at: 0x%X") % pos);
-				return pos;
-			}
-		}
-	}
-	return 0;
+	return new Origin700Parser(fileName);
 }
