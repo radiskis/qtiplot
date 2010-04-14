@@ -106,6 +106,11 @@ OriginFile::OriginFile(const string& fileName)
 		case 610:
 			parser.reset(createOrigin610Parser(fileName));
 			break;
+		case 600:
+		case 601:
+		case 604:
+			parser.reset(createOrigin600Parser(fileName));
+			break;
 		default:
 			parser.reset(createOriginDefaultParser(fileName));
 			break;
