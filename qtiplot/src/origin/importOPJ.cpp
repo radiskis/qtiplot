@@ -237,13 +237,13 @@ bool ImportOPJ::importTables(const OriginFile& opj)
 		if(!columnCount) //remove tables without cols
 			continue;
 
-		Table *table = (spread.hidden || spread.loose) && opj.version() >= 7.5 ? mw->newHiddenTable(spread.name.c_str(), spread.label.c_str(), maxrows, columnCount)
+		Table *table = (spread.hidden || spread.loose) && opj.version() >= 6.1 ? mw->newHiddenTable(spread.name.c_str(), spread.label.c_str(), maxrows, columnCount)
 										: mw->newTable(spread.name.c_str(), maxrows, columnCount);
 		if (!table)
 			return false;
 
 		Origin::Rect windowRect;
-		if(opj.version() >= 7.5)
+		if(opj.version() >= 6.1)
 		{
 			windowRect = spread.frameRect;
 			table->resize(windowRect.width() - (table->frameGeometry().width() - table->width()),
@@ -493,7 +493,7 @@ bool ImportOPJ::importTables(const OriginFile& opj)
 			}
 
 			//cascade the tables
-			if (opj.version() >= 7.5)
+			if (opj.version() >= 6.1)
 				table->move(QPoint(windowRect.left, windowRect.top));
 			else {
 				int dx = table->verticalHeaderWidth();
@@ -505,8 +505,7 @@ bool ImportOPJ::importTables(const OriginFile& opj)
 	}
 
 //Import matrices
-	for(unsigned int s = 0; s < opj.matrixCount(); ++s)
-	{
+	for(unsigned int s = 0; s < opj.matrixCount(); ++s){
 		Origin::Matrix matrix = opj.matrix(s);
 		int columnCount = matrix.columnCount;
 		int rowCount = matrix.rowCount;
@@ -516,7 +515,7 @@ bool ImportOPJ::importTables(const OriginFile& opj)
 			return false;
 
 		Origin::Rect windowRect;
-		if(opj.version() >= 7.5){
+		if(opj.version() >= 6.1){
 			windowRect = matrix.frameRect;
 			Matrix->resize(windowRect.width() - (Matrix->frameGeometry().width() - Matrix->width()),
 				windowRect.height() - (Matrix->frameGeometry().height() - Matrix->height()));
@@ -582,7 +581,7 @@ bool ImportOPJ::importTables(const OriginFile& opj)
 			}
 
 			//cascade the matrices
-			if(opj.version() >= 7.5)
+			if(opj.version() >= 6.1)
 				Matrix->move(QPoint(windowRect.left, windowRect.top));
 			else {
 				int dx = Matrix->verticalHeaderWidth();
