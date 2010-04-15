@@ -120,7 +120,6 @@ void ImportASCIIDialog::initAdvancedOptions()
 
 	advanced_layout->addWidget(new QLabel(tr("Import each file as: ")), 0, 0);
 	d_import_mode = new QComboBox();
-	// Important: Keep this in sync with the ImportMode enum.
 	d_import_mode->addItem(tr("New Table"));
 	d_import_mode->addItem(tr("New Matrix"));
 	d_import_mode->addItem(tr("New Columns"));
@@ -128,7 +127,7 @@ void ImportASCIIDialog::initAdvancedOptions()
 	d_import_mode->addItem(tr("Overwrite Current Window"));
 	advanced_layout->addWidget(d_import_mode, 0, 1);
 
-	QLabel *label_column_separator = new QLabel(tr("Separator: "));
+	QLabel *label_column_separator = new QLabel(tr("Separator:"));
 	advanced_layout->addWidget(label_column_separator, 1, 0);
 	d_column_separator = new QComboBox();
 	d_column_separator->addItem(tr("TAB"));

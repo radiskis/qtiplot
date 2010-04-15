@@ -1189,28 +1189,39 @@ void Origin700Parser::readGraphInfo()
 				line.begin = begin;
 				line.end = end;
 			}
-			else if(osize == 0x28 && type == 4) // bitmap
+			else if(osize == 0x28) // bitmap
 			{
-				unsigned long filesize = size + 14;
-				layer.bitmaps.push_back(Bitmap());
-				Bitmap& bitmap(layer.bitmaps.back());
-				bitmap.clientRect = r;
-				bitmap.attach = (Attach)attach;
-				bitmap.size = filesize;
-				bitmap.data = new unsigned char[filesize];
-				unsigned char* data = bitmap.data;
-				//add Bitmap header
-				memcpy(data, "BM", 2);
-				data += 2;
-				memcpy(data, &filesize, 4);
-				data += 4;
-				unsigned int d = 0;
-				memcpy(data, &d, 4);
-				data += 4;
-				d = 0x36;
-				memcpy(data, &d, 4);
-				data += 4;
-				file.read(reinterpret_cast<char*>(data), size);
+				if (type == 4){
+					unsigned long filesize = size + 14;
+					layer.bitmaps.push_back(Bitmap());
+					Bitmap& bitmap(layer.bitmaps.back());
+					bitmap.clientRect = r;
+					bitmap.attach = (Attach)attach;
+					bitmap.size = filesize;
+					bitmap.data = new unsigned char[filesize];
+					unsigned char* data = bitmap.data;
+					//add Bitmap header
+					memcpy(data, "BM", 2);
+					data += 2;
+					memcpy(data, &filesize, 4);
+					data += 4;
+					unsigned int d = 0;
+					memcpy(data, &d, 4);
+					data += 4;
+					d = 0x36;
+					memcpy(data, &d, 4);
+					data += 4;
+					file.read(reinterpret_cast<char*>(data), size);
+				} else if (type == 6){
+					string gname(30, 0);
+					file.seekg(sectionNamePos + 93, ios_base::beg);
+					file >> gname;
+					layer.bitmaps.push_back(Bitmap(gname));
+					Bitmap& bitmap(layer.bitmaps.back());
+					bitmap.clientRect = r;
+					bitmap.attach = (Attach)attach;
+					bitmap.size = 0;
+				}
 			}
 
 			//close section 00 00 00 00 0A
