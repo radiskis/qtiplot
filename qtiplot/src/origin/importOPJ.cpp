@@ -709,8 +709,10 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 
 			Origin::Rect layerRect = layer.clientRect;
 
-			if(layer.backgroundColor.type != Origin::Color::None)
-				graph->setCanvasBackground(originToQtColor(layer.backgroundColor));
+			QColor bkg = originToQtColor(layer.backgroundColor);
+			if(layer.backgroundColor.type == Origin::Color::None)
+				bkg.setAlpha(0);
+			graph->setCanvasBackground(bkg);
 
 			int auto_color = -1;
 			int style = 0;
@@ -1008,8 +1010,9 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 				switch(_curve.symbolType>>8){
 					case 0:
 						cl.fillCol = ColorBox::defaultColor(_curve.symbolFillColor.regular);
-						if((style==Graph::Scatter || style==Graph::LineSymbols || style==Graph::Area || style==Graph::Box)&&_curve.symbolFillColor.type == Origin::Color::Automatic)
-							cl.fillCol = cl.lCol;
+						if((style==Graph::Scatter || style==Graph::LineSymbols || style==Graph::Area || style==Graph::Box)&&
+						   (_curve.symbolFillColor.type == Origin::Color::Automatic || _curve.symbolFillColor.type == Origin::Color::None))
+							cl.fillCol = cl.symCol;
 							break;
 					case 1:
 					case 2:
@@ -1290,6 +1293,9 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 				fnt = graph->axisFont(i);
 				fnt.setPointSize(floor(ticks[i].fontSize*fFontScaleFactor + 0.5));
 				graph->setAxisFont(i, fnt);
+
+				if (_graph.isLayout)
+					graph->enableAxis(i, false);
 			}
 
 			graph->setAutoscaleFonts(true);
@@ -1359,12 +1365,25 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 
 			for(unsigned int i = 0; i < layer.bitmaps.size(); ++i){
 				QPixmap bmp;
-				bmp.loadFromData(layer.bitmaps[i].data, layer.bitmaps[i].size, "BMP");
+				if (layer.bitmaps[i].size > 0)
+					bmp.loadFromData(layer.bitmaps[i].data, layer.bitmaps[i].size, "BMP");
+				else {
+					MdiSubWindow *w = mw->window(QString(layer.bitmaps[i].graphName.c_str()));
+					MultiLayer *ml = qobject_cast<MultiLayer *> (w);
+					if (ml)
+						bmp = ml->canvasPixmap(QSize(layer.bitmaps[i].clientRect.width()*fScale, layer.bitmaps[i].clientRect.height()*fScale));
+
+					Table *t = qobject_cast<Table *> (w);
+					if (t)
+						bmp = QPixmap::grabWidget(t->table());
+				}
+
 				QTemporaryFile file;
 				file.setFileTemplate(QDir::tempPath() + "/XXXXXX.bmp");
 				if(file.open()){
 					bmp.save(file.fileName(), "BMP");
 					ImageWidget* mrk = graph->addImage(file.fileName());
+					mrk->setSaveInternally();
 					mrk->setRect(layer.bitmaps[i].clientRect.left*fScale, layer.bitmaps[i].clientRect.top*fScale - yOffset, layer.bitmaps[i].clientRect.width()*fScale, layer.bitmaps[i].clientRect.height()*fScale);
 				}
 			}
@@ -1525,14 +1544,6 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 		//ml->resize(graphWindowRect.width() - frameWidth, graphWindowRect.height() - frameWidth);
 		//cascade the graphs
 		if(ml->numLayers() > 0){
-			if (_graph.isLayout){
-				Graph *g = ml->layer(1);
-				if (g){
-					g->enableAxis(QwtPlot::xBottom, false);
-					g->enableAxis(QwtPlot::yLeft, false);
-				}
-			}
-
 			if(!_graph.hidden){
 				ml->move(QPoint(graphWindowRect.left, graphWindowRect.top));
 

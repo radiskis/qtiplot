@@ -2,7 +2,7 @@
     File                 : TableDialog.cpp
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2006 - 2009 by Ion Vasilief
+	Copyright            : (C) 2006 - 2010 by Ion Vasilief
     Email (use @ for *)  : ion_vasilief*yahoo.fr
     Description          : Column options dialog
 
@@ -52,7 +52,7 @@ TableDialog::TableDialog(Table *t, QWidget* parent, Qt::WFlags fl )
     setSizeGripEnabled(true);
 
 	QHBoxLayout *hboxa = new QHBoxLayout();
-	hboxa->addWidget(new QLabel(tr( "Column Name" )));
+	hboxa->addWidget(new QLabel(tr( "Column Name:" )));
     colName = new QLineEdit();
     hboxa->addWidget(colName);
 
