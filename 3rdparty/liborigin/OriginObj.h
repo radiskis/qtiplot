@@ -607,14 +607,16 @@ namespace Origin
 	{
 		Rect clientRect;
 		Attach attach;
-		string graphName;
 		unsigned long size;
+		string windowName;
+		BorderType borderType;
 		unsigned char* data;
 
 		Bitmap(const string& _name = "")
 		:	size(0)
 		,	data(0)
-		,	graphName(_name)
+		,	windowName(_name)
+		,	borderType(Origin::None)
 		{
 		};
 
@@ -622,7 +624,8 @@ namespace Origin
 		:	clientRect(bitmap.clientRect)
 		,	attach(bitmap.attach)
 		,	size(bitmap.size)
-		,	graphName(bitmap.graphName)
+		,	windowName(bitmap.windowName)
+		,	borderType(bitmap.borderType)
 		{
 			if(size > 0)
 			{

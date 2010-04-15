@@ -34,6 +34,7 @@
 #include <boost/lexical_cast.hpp>
 #include <boost/date_time/posix_time/posix_time.hpp>
 #include <logging.hpp>
+#include <QString>
 
 using namespace boost;
 
@@ -435,10 +436,10 @@ bool Origin700Parser::parse()
 
 		if(findSpreadByName(name) != -1)
 			readSpreadInfo();
-		/*else if(findMatrixByName(name) != -1)
+		else if(findMatrixByName(name) != -1)
 			readMatrixInfo();
 		else if(findExcelByName(name) != -1)
-			readExcelInfo();*/
+			readExcelInfo();
 		else
 			readGraphInfo();
 
@@ -663,6 +664,7 @@ void Origin700Parser::readSpreadInfo()
 	BOOST_LOG_(1, format("		Done with spreadsheet %d POS (@ 0x%X)") % spread % file.tellg());
 }
 
+/*
 void Origin700Parser::readMatrixInfo()
 {
 	unsigned int POS = file.tellg();
@@ -804,6 +806,123 @@ void Origin700Parser::readMatrixInfo()
 
 	file.seekg(LAYER + 0x5*0x5 + 0x1ED*0x12 + 0x5, ios_base::beg);
 }
+*/
+
+void Origin700Parser::readMatrixInfo()
+{
+	unsigned int POS = file.tellg();
+
+	unsigned int size;
+	file >> size;
+
+	POS+=5;
+
+	BOOST_LOG_(1, format("			[Matrix SECTION (@ 0x%X)]") % POS);
+
+	string name(25, 0);
+	file.seekg(POS + 0x2, ios_base::beg);
+	file >> name;
+	BOOST_LOG_(1, format("			MATRIX %s (@ 0x%X)]") % name % POS);
+
+	int idx = findMatrixByName(name);
+	matrixes[idx].name = name;
+	file.seekg(POS, ios_base::beg);
+	readWindowProperties(matrixes[idx], size);
+
+	unsigned int LAYER = POS;
+	LAYER += size + 0x1;
+
+	// LAYER section
+	LAYER += 0x5;
+
+	unsigned short width;
+	file.seekg(LAYER + 0x27, ios_base::beg);
+	file >> width;
+	if (width == 0)
+		width = 8;
+	matrixes[idx].width = width;
+	BOOST_LOG_(1, format("		Width: %d (@ 0x%X)") % matrixes[idx].width % (LAYER + 0x27));
+
+	file.seekg(LAYER + 0x2B, ios_base::beg);
+	file >> matrixes[idx].columnCount;
+	BOOST_LOG_(1, format("		Columns: %d (@ 0x%X)") % matrixes[idx].columnCount % (LAYER + 0x2B));
+
+	file.seekg(LAYER + 0x52, ios_base::beg);
+	file >> matrixes[idx].rowCount;
+	BOOST_LOG_(1, format("		Rows: %d (@ 0x%X)") % matrixes[idx].rowCount % (LAYER + 0x52));
+
+	for (int i = 0; i < 3; i++)
+		skipLine();
+
+	LAYER = file.tellg();
+	file >> size;
+	unsigned int sectionSize = size;
+	while(LAYER < d_file_size){
+		//section_header_size=0x6F(4 bytes) + '\n'
+		LAYER += 0x5;
+
+		//section_header
+		string sec_name(30, 0);
+		file.seekg(LAYER + 0x46, ios_base::beg);
+		file >> sec_name;
+		BOOST_LOG_(1, format("				SECTION NAME: %s (@ 0x%X)") % sec_name % (LAYER + 0x46));
+
+		//section_body_1_size
+		file >> size;
+
+		//section_body_1
+		LAYER = file.tellg();
+		file.seekg(1, ios_base::cur);
+
+		if (sec_name == "MV"){//check if it is a formula
+			file >> matrixes[idx].command.assign(size, 0);
+			BOOST_LOG_(1, format("				FORMULA: %s") % matrixes[idx].command);
+		} else if (sec_name == "Y2"){
+			string s(size, 0);
+			file >> s;
+			matrixes[idx].coordinates[0] = QString(s.c_str()).replace(",", ".").toDouble();
+			BOOST_LOG_(1, format("				Y2: %s") % s);
+		} else if (sec_name == "X2"){
+			string s(size, 0);
+			file >> s;
+			matrixes[idx].coordinates[1] = QString(s.c_str()).replace(",", ".").toDouble();
+			BOOST_LOG_(1, format("				X2: %s") % s);
+		} else if (sec_name == "Y1"){
+			string s(size, 0);
+			file >> s;
+			matrixes[idx].coordinates[2] = QString(s.c_str()).replace(",", ".").toDouble();
+			BOOST_LOG_(1, format("				Y1: %s") % s);
+		} else if (sec_name == "X1"){
+			string s(size, 0);
+			file >> s;
+			matrixes[idx].coordinates[3] = QString(s.c_str()).replace(",", ".").toDouble();
+			BOOST_LOG_(1, format("				X1: %s") % s);
+		}
+
+		//section_body_2_size
+		LAYER += size + 0x2;
+		file.seekg(LAYER, ios_base::beg);
+		file >> size;
+
+		//section_body_2
+		LAYER += 0x5;
+
+		//close section 00 00 00 00 0A
+		LAYER += size + (size > 0 ? 0x1 : 0) + 0x5;
+
+		file.seekg(LAYER, ios_base::beg);
+		file >> size;
+		if(size != sectionSize)
+			break;
+	}
+	file.seekg(1, ios_base::cur);
+
+	for (int i = 0; i < 5; i++)
+		skipLine();
+	skipObjectInfo();
+	BOOST_LOG_(1, format("		Done with matrix, pos @ 0x%X") % file.tellg());
+}
+
 
 void Origin700Parser::readGraphInfo()
 {
@@ -1198,6 +1317,7 @@ void Origin700Parser::readGraphInfo()
 					bitmap.clientRect = r;
 					bitmap.attach = (Attach)attach;
 					bitmap.size = filesize;
+					bitmap.borderType = (BorderType)(border >= 0x80 ? border-0x80 : None);
 					bitmap.data = new unsigned char[filesize];
 					unsigned char* data = bitmap.data;
 					//add Bitmap header
@@ -1221,6 +1341,7 @@ void Origin700Parser::readGraphInfo()
 					bitmap.clientRect = r;
 					bitmap.attach = (Attach)attach;
 					bitmap.size = 0;
+					bitmap.borderType = (BorderType)(border >= 0x80 ? border-0x80 : None);
 				}
 			}
 
