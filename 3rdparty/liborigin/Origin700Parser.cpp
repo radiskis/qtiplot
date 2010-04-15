@@ -916,6 +916,7 @@ void Origin700Parser::readGraphInfo()
 			file >> size;
 
 			//section_body_1
+			LAYER += 0x5;
 			unsigned int osize = size;
 
 			unsigned char type;
@@ -927,7 +928,6 @@ void Origin700Parser::readGraphInfo()
 			file.seekg(LAYER + 0x02, ios_base::beg);
 			file >> rotation;
 
-			file.seekg(0x05, ios_base::cur);
 			unsigned char fontSize;
 			file >> fontSize;
 
@@ -999,7 +999,7 @@ void Origin700Parser::readGraphInfo()
 			figure.useBorderColor = (h == 0x10);
 
 			//section_body_2_size
-			LAYER += size + 0x1 + 0x5;
+			LAYER += size + 0x1;
 			file.seekg(LAYER, ios_base::beg);
 			file >> size;
 
@@ -1007,212 +1007,210 @@ void Origin700Parser::readGraphInfo()
 			LAYER += 0x5;
 
 			file.seekg(1, ios_base::cur);
-			if (size){//check if it is an axis or a legend
-				if(sec_name == "XB")
-				{
-					string text(size, 0);
-					file >> text;
+			if(sec_name == "XB")
+			{
+				string text(size, 0);
+				file >> text;
 
-					layer.xAxis.position = GraphAxis::Bottom;
-					layer.xAxis.formatAxis[0].label = TextBox(text, r, color, fontSize, rotation/10, tab, (BorderType)(border >= 0x80 ? border-0x80 : None), (Attach)attach);
+				layer.xAxis.position = GraphAxis::Bottom;
+				layer.xAxis.formatAxis[0].label = TextBox(text, r, color, fontSize, rotation/10, tab, (BorderType)(border >= 0x80 ? border-0x80 : None), (Attach)attach);
+			}
+			else if(sec_name == "XT")
+			{
+				string text(size, 0);
+				file >> text;
+
+				layer.xAxis.position = GraphAxis::Top;
+				layer.xAxis.formatAxis[1].label = TextBox(text, r, color, fontSize, rotation/10, tab, (BorderType)(border >= 0x80 ? border-0x80 : None), (Attach)attach);
+			}
+			else if(sec_name == "YL")
+			{
+				string text(size, 0);
+				file >> text;
+
+				layer.yAxis.position = GraphAxis::Left;
+				layer.yAxis.formatAxis[0].label = TextBox(text, r, color, fontSize, rotation/10, tab, (BorderType)(border >= 0x80 ? border-0x80 : None), (Attach)attach);
+			}
+			else if(sec_name == "YR")
+			{
+				string text(size, 0);
+				file >> text;
+
+				layer.yAxis.position = GraphAxis::Right;
+				layer.yAxis.formatAxis[1].label = TextBox(text, r, color, fontSize, rotation/10, tab, (BorderType)(border >= 0x80 ? border-0x80 : None), (Attach)attach);
+			}
+			else if(sec_name == "ZF")
+			{
+				string text(size, 0);
+				file >> text;
+
+				layer.zAxis.position = GraphAxis::Front;
+				layer.zAxis.formatAxis[0].label = TextBox(text, r, color, fontSize, rotation/10, tab, (BorderType)(border >= 0x80 ? border-0x80 : None), (Attach)attach);
+			}
+			else if(sec_name == "ZB")
+			{
+				string text(size, 0);
+				file >> text;
+
+				layer.zAxis.position = GraphAxis::Back;
+				layer.zAxis.formatAxis[1].label = TextBox(text, r, color, fontSize, rotation/10, tab, (BorderType)(border >= 0x80 ? border-0x80 : None), (Attach)attach);
+			}
+			else if(sec_name == "3D")
+			{
+				file >> layer.zAxis.min;
+				file >> layer.zAxis.max;
+				file >> layer.zAxis.step;
+
+				file.seekg(LAYER + 0x1C, ios_base::beg);
+				file >> layer.zAxis.majorTicks;
+
+				file.seekg(LAYER + 0x28, ios_base::beg);
+				file >> layer.zAxis.minorTicks;
+				file >> layer.zAxis.scale;
+
+				file.seekg(LAYER + 0x218, ios_base::beg);
+				file >> layer.xLength;
+				file >> layer.yLength;
+				file >> layer.zLength;
+
+				layer.xLength /= 23.0;
+				layer.yLength /= 23.0;
+				layer.zLength /= 23.0;
+			}
+			else if(sec_name == "Legend")
+			{
+				string text(size, 0);
+				file >> text;
+
+				layer.legend = TextBox(text, r, color, fontSize, rotation/10, tab, (BorderType)(border >= 0x80 ? border-0x80 : None), (Attach)attach);
+			}
+			else if(sec_name == "__BCO2") // histogram
+			{
+				file.seekg(LAYER + 0x10, ios_base::beg);
+				file >> layer.histogramBin;
+
+				file.seekg(LAYER + 0x20, ios_base::beg);
+				file >> layer.histogramEnd;
+				file >> layer.histogramBegin;
+
+				unsigned int p = sectionNamePos + 81;
+				file.seekg(p, ios_base::beg);
+
+				file >> layer.percentile.p1SymbolType;
+				file >> layer.percentile.p99SymbolType;
+				file >> layer.percentile.meanSymbolType;
+				file >> layer.percentile.maxSymbolType;
+				file >> layer.percentile.minSymbolType;
+
+				file.seekg(sectionNamePos + 94, ios_base::beg);
+				file >> layer.percentile.whiskersRange;
+				file >> layer.percentile.boxRange;
+
+				file.seekg(sectionNamePos + 129, ios_base::beg);
+				file >> layer.percentile.whiskersCoeff;
+				file >> layer.percentile.boxCoeff;
+
+				unsigned char h;
+				file >> h;
+				layer.percentile.diamondBox = (h == 0x82) ? true : false;
+
+				p += 109;
+				file.seekg(p, ios_base::beg);
+				file >> layer.percentile.symbolSize;
+				layer.percentile.symbolSize = layer.percentile.symbolSize/2 + 1;
+
+				p += 163;
+				file.seekg(p, ios_base::beg);
+				file >> layer.percentile.symbolColor;
+				file >> layer.percentile.symbolFillColor;
+			}
+			else if(sec_name == "vline") // Image profiles vertical cursor
+			{
+				file.seekg(sectionNamePos, ios_base::beg);
+				for (int i = 0; i < 2; i++)
+					skipLine();
+
+				file.seekg(0x20, ios_base::cur);
+				file >> layer.vLine;
+				BOOST_LOG_(1, format("vLine: %g") % layer.vLine);
+
+				layer.imageProfileTool = true;
+			}
+			else if(sec_name == "hline") // Image profiles horizontal cursor
+			{
+				file.seekg(sectionNamePos, ios_base::beg);
+				for (int i = 0; i < 2; i++)
+					skipLine();
+
+				file.seekg(0x40, ios_base::cur);
+				file >> layer.hLine;
+				BOOST_LOG_(1, format("hLine: %g @ 0x%X") % layer.hLine % file.tellg());
+
+				layer.imageProfileTool = true;
+			}
+			else if(sec_name == "ZCOLORS")
+			{
+				layer.isXYY3D = true;
+			}
+			else if(size && osize == 0x3E) // text
+			{
+				string text(size, 0);
+				file >> text;
+
+				layer.texts.push_back(TextBox(text, r, color, fontSize, rotation/10, tab, (BorderType)(border >= 0x80 ? border-0x80 : None), (Attach)attach));
+			}
+			else if(osize == 0x5E) // rectangle & circle
+			{
+				switch(type){
+					case 0:
+					case 1:
+						figure.type = Figure::Rectangle;
+						break;
+					case 2:
+					case 3:
+						figure.type = Figure::Circle;
+						break;
 				}
-				else if(sec_name == "XT")
-				{
-					string text(size, 0);
-					file >> text;
+				figure.clientRect = r;
+				figure.attach = (Attach)attach;
+				figure.color = color;
 
-					layer.xAxis.position = GraphAxis::Top;
-					layer.xAxis.formatAxis[1].label = TextBox(text, r, color, fontSize, rotation/10, tab, (BorderType)(border >= 0x80 ? border-0x80 : None), (Attach)attach);
-				}
-				else if(sec_name == "YL")
-				{
-					string text(size, 0);
-					file >> text;
-
-					layer.yAxis.position = GraphAxis::Left;
-					layer.yAxis.formatAxis[0].label = TextBox(text, r, color, fontSize, rotation/10, tab, (BorderType)(border >= 0x80 ? border-0x80 : None), (Attach)attach);
-				}
-				else if(sec_name == "YR")
-				{
-					string text(size, 0);
-					file >> text;
-
-					layer.yAxis.position = GraphAxis::Right;
-					layer.yAxis.formatAxis[1].label = TextBox(text, r, color, fontSize, rotation/10, tab, (BorderType)(border >= 0x80 ? border-0x80 : None), (Attach)attach);
-				}
-				else if(sec_name == "ZF")
-				{
-					string text(size, 0);
-					file >> text;
-
-					layer.zAxis.position = GraphAxis::Front;
-					layer.zAxis.formatAxis[0].label = TextBox(text, r, color, fontSize, rotation/10, tab, (BorderType)(border >= 0x80 ? border-0x80 : None), (Attach)attach);
-				}
-				else if(sec_name == "ZB")
-				{
-					string text(size, 0);
-					file >> text;
-
-					layer.zAxis.position = GraphAxis::Back;
-					layer.zAxis.formatAxis[1].label = TextBox(text, r, color, fontSize, rotation/10, tab, (BorderType)(border >= 0x80 ? border-0x80 : None), (Attach)attach);
-				}
-				else if(sec_name == "3D")
-				{
-					file >> layer.zAxis.min;
-					file >> layer.zAxis.max;
-					file >> layer.zAxis.step;
-
-					file.seekg(LAYER + 0x1C, ios_base::beg);
-					file >> layer.zAxis.majorTicks;
-
-					file.seekg(LAYER + 0x28, ios_base::beg);
-					file >> layer.zAxis.minorTicks;
-					file >> layer.zAxis.scale;
-
-					file.seekg(LAYER + 0x218, ios_base::beg);
-					file >> layer.xLength;
-					file >> layer.yLength;
-					file >> layer.zLength;
-
-					layer.xLength /= 23.0;
-					layer.yLength /= 23.0;
-					layer.zLength /= 23.0;
-				}
-				else if(sec_name == "Legend")
-				{
-					string text(size, 0);
-					file >> text;
-
-					layer.legend = TextBox(text, r, color, fontSize, rotation/10, tab, (BorderType)(border >= 0x80 ? border-0x80 : None), (Attach)attach);
-				}
-				else if(sec_name == "__BCO2") // histogram
-				{
-					file.seekg(LAYER + 0x10, ios_base::beg);
-					file >> layer.histogramBin;
-
-					file.seekg(LAYER + 0x20, ios_base::beg);
-					file >> layer.histogramEnd;
-					file >> layer.histogramBegin;
-
-					unsigned int p = sectionNamePos + 81;
-					file.seekg(p, ios_base::beg);
-
-					file >> layer.percentile.p1SymbolType;
-					file >> layer.percentile.p99SymbolType;
-					file >> layer.percentile.meanSymbolType;
-					file >> layer.percentile.maxSymbolType;
-					file >> layer.percentile.minSymbolType;
-
-					file.seekg(sectionNamePos + 94, ios_base::beg);
-					file >> layer.percentile.whiskersRange;
-					file >> layer.percentile.boxRange;
-
-					file.seekg(sectionNamePos + 129, ios_base::beg);
-					file >> layer.percentile.whiskersCoeff;
-					file >> layer.percentile.boxCoeff;
-
-					unsigned char h;
-					file >> h;
-					layer.percentile.diamondBox = (h == 0x82) ? true : false;
-
-					p += 109;
-					file.seekg(p, ios_base::beg);
-					file >> layer.percentile.symbolSize;
-					layer.percentile.symbolSize = layer.percentile.symbolSize/2 + 1;
-
-					p += 163;
-					file.seekg(p, ios_base::beg);
-					file >> layer.percentile.symbolColor;
-					file >> layer.percentile.symbolFillColor;
-				}
-				else if(sec_name == "vline") // Image profiles vertical cursor
-				{
-					file.seekg(sectionNamePos, ios_base::beg);
-					for (int i = 0; i < 2; i++)
-						skipLine();
-
-					file.seekg(0x20, ios_base::cur);
-					file >> layer.vLine;
-					BOOST_LOG_(1, format("vLine: %g") % layer.vLine);
-
-					layer.imageProfileTool = true;
-				}
-				else if(sec_name == "hline") // Image profiles horizontal cursor
-				{
-					file.seekg(sectionNamePos, ios_base::beg);
-					for (int i = 0; i < 2; i++)
-						skipLine();
-
-					file.seekg(0x40, ios_base::cur);
-					file >> layer.hLine;
-					BOOST_LOG_(1, format("hLine: %g @ 0x%X") % layer.hLine % file.tellg());
-
-					layer.imageProfileTool = true;
-				}
-				else if(sec_name == "ZCOLORS")
-				{
-					layer.isXYY3D = true;
-				}
-				else if(osize == 0x3E) // text
-				{
-					string text(size, 0);
-					file >> text;
-
-					layer.texts.push_back(TextBox(text, r, color, fontSize, rotation/10, tab, (BorderType)(border >= 0x80 ? border-0x80 : None), (Attach)attach));
-				}
-				else if(osize == 0x5E) // rectangle & circle
-				{
-					switch(type){
-						case 0:
-						case 1:
-							figure.type = Figure::Rectangle;
-							break;
-						case 2:
-						case 3:
-							figure.type = Figure::Circle;
-							break;
-					}
-					figure.clientRect = r;
-					figure.attach = (Attach)attach;
-					figure.color = color;
-
-					layer.figures.push_back(figure);
-				}
-				else if(osize == 0x78 && type == 2) // line
-				{
-					layer.lines.push_back(Line());
-					Line& line(layer.lines.back());
-					line.color = color;
-					line.clientRect = r;
-					line.attach = (Attach)attach;
-					line.width = width;
-					line.style = lineStyle;
-					line.begin = begin;
-					line.end = end;
-				}
-				else if(osize == 0x28 && type == 4) // bitmap
-				{
-					unsigned long filesize = size + 14;
-					layer.bitmaps.push_back(Bitmap());
-					Bitmap& bitmap(layer.bitmaps.back());
-					bitmap.clientRect = r;
-					bitmap.attach = (Attach)attach;
-					bitmap.size = filesize;
-					bitmap.data = new unsigned char[filesize];
-					unsigned char* data = bitmap.data;
-					//add Bitmap header
-					memcpy(data, "BM", 2);
-					data += 2;
-					memcpy(data, &filesize, 4);
-					data += 4;
-					unsigned int d = 0;
-					memcpy(data, &d, 4);
-					data += 4;
-					d = 0x36;
-					memcpy(data, &d, 4);
-					data += 4;
-					file.read(reinterpret_cast<char*>(data), size);
-				}
+				layer.figures.push_back(figure);
+			}
+			else if(osize == 0x78 && type == 2) // line
+			{
+				layer.lines.push_back(Line());
+				Line& line(layer.lines.back());
+				line.color = color;
+				line.clientRect = r;
+				line.attach = (Attach)attach;
+				line.width = width;
+				line.style = lineStyle;
+				line.begin = begin;
+				line.end = end;
+			}
+			else if(osize == 0x28 && type == 4) // bitmap
+			{
+				unsigned long filesize = size + 14;
+				layer.bitmaps.push_back(Bitmap());
+				Bitmap& bitmap(layer.bitmaps.back());
+				bitmap.clientRect = r;
+				bitmap.attach = (Attach)attach;
+				bitmap.size = filesize;
+				bitmap.data = new unsigned char[filesize];
+				unsigned char* data = bitmap.data;
+				//add Bitmap header
+				memcpy(data, "BM", 2);
+				data += 2;
+				memcpy(data, &filesize, 4);
+				data += 4;
+				unsigned int d = 0;
+				memcpy(data, &d, 4);
+				data += 4;
+				d = 0x36;
+				memcpy(data, &d, 4);
+				data += 4;
+				file.read(reinterpret_cast<char*>(data), size);
 			}
 
 			//close section 00 00 00 00 0A

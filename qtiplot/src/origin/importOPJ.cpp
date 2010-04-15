@@ -941,12 +941,18 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 				}
 
 				CurveLayout cl = graph->initCurveLayout(style, layer.curves.size());
-				cl.sSize = ceil(_curve.symbolSize);
+
+				color=_curve.lineColor.regular;
+				cl.lCol = ColorBox::defaultColor(_curve.lineColor.type==Origin::Color::Automatic?0:color); //0xF7 -Automatic color
+
+				cl.sSize = ceil(_curve.symbolSize*0.5);
 				cl.penWidth=_curve.symbolThickness;
 				color=_curve.symbolColor.regular;
+
+				cl.symCol = ColorBox::defaultColor(_curve.symbolColor.regular);
 				if((style==Graph::Scatter || style==Graph::LineSymbols || style==Graph::Area || style==Graph::Box)&&_curve.symbolColor.type == Origin::Color::Automatic)//0xF7 -Automatic color
-					color=++auto_color;
-				cl.symCol = ColorBox::defaultColor(color);
+					cl.symCol = cl.lCol;
+
 				switch(_curve.symbolType&0xFF){
 					case 0: //NoSymbol
 						cl.sType=0;
@@ -1001,8 +1007,10 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 
 				switch(_curve.symbolType>>8){
 					case 0:
-						cl.fillCol = ColorBox::defaultColor(color);
-						break;
+						cl.fillCol = ColorBox::defaultColor(_curve.symbolFillColor.regular);
+						if((style==Graph::Scatter || style==Graph::LineSymbols || style==Graph::Area || style==Graph::Box)&&_curve.symbolFillColor.type == Origin::Color::Automatic)
+							cl.fillCol = cl.lCol;
+							break;
 					case 1:
 					case 2:
 					case 8:
@@ -1013,14 +1021,14 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 						if((style==Graph::Scatter || style==Graph::LineSymbols || style==Graph::Area || style==Graph::Box)&&_curve.symbolFillColor.type==Origin::Color::Automatic)//0xF7 -Automatic color
 							color=17;// depend on Origin settings - not stored in file
 						cl.fillCol = ColorBox::defaultColor(color);
+						if (_curve.symbolFillColor.type==Origin::Color::None)
+							cl.fillCol = QColor();
 						break;
 					default:
 						cl.fillCol = QColor();
 				}
 
 				cl.lWidth = _curve.lineWidth;
-				color=_curve.lineColor.regular;
-				cl.lCol = ColorBox::defaultColor(_curve.lineColor.type==Origin::Color::Automatic?0:color); //0xF7 -Automatic color
 				int linestyle=_curve.lineStyle;
 				cl.filledArea=(_curve.fillArea || style==Graph::VerticalBars || style==Graph::HorizontalBars || style==Graph::Histogram || style == Graph::Pie || style == Graph::Box) ? 1 : 0;
 				if(cl.filledArea){
@@ -1340,7 +1348,11 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 				fw->setFrameColor(originToQtColor(layer.figures[i].color));
 				fw->setFrameWidth(lw);
 				fw->setFrameLineStyle(lineStyles[(Origin::GraphCurve::LineStyle)layer.figures[i].style]);
-				fw->setBackgroundColor(originToQtColor(layer.figures[i].fillAreaColor));
+
+				QColor bkg = originToQtColor(layer.figures[i].fillAreaColor);
+				if (!bkg.isValid())
+					bkg.setAlpha(0);
+				fw->setBackgroundColor(bkg);
 				fw->setBrush(QBrush(originToQtColor(layer.figures[i].useBorderColor ? layer.figures[i].color : layer.figures[i].fillAreaPatternColor), PatternBox::brushStyle(patternStyles[(Origin::FillPattern)layer.figures[i].fillAreaPattern])));
 				graph->add(fw, false);
 			}
@@ -1513,6 +1525,14 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 		//ml->resize(graphWindowRect.width() - frameWidth, graphWindowRect.height() - frameWidth);
 		//cascade the graphs
 		if(ml->numLayers() > 0){
+			if (_graph.isLayout){
+				Graph *g = ml->layer(1);
+				if (g){
+					g->enableAxis(QwtPlot::xBottom, false);
+					g->enableAxis(QwtPlot::yLeft, false);
+				}
+			}
+
 			if(!_graph.hidden){
 				ml->move(QPoint(graphWindowRect.left, graphWindowRect.top));
 

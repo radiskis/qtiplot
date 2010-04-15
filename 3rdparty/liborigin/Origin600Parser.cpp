@@ -457,17 +457,6 @@ bool Origin600Parser::parse()
 	return true;
 }
 
-void Origin600Parser::readProjectTree()
-{
-	readProjectTreeFolder(projectTree.begin());
-
-	BOOST_LOG_(1, "Origin project Tree");
-	for(tree<ProjectNode>::iterator it = projectTree.begin(projectTree.begin()); it != projectTree.end(projectTree.begin()); ++it)
-	{
-		BOOST_LOG_(1, string(projectTree.depth(it) - 1, ' ') + (*it).name);
-	}
-}
-
 OriginParser* createOrigin600Parser(const string& fileName)
 {
 	return new Origin600Parser(fileName);
