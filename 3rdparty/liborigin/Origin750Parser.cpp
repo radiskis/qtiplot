@@ -1547,6 +1547,7 @@ void Origin750Parser::readGraphInfo()
 					bitmap.clientRect = r;
 					bitmap.attach = (Attach)attach;
 					bitmap.size = filesize;
+					bitmap.borderType = (BorderType)(border >= 0x80 ? border-0x80 : None);
 					bitmap.data = new unsigned char[filesize];
 					unsigned char* data = bitmap.data;
 					//add Bitmap header
@@ -1570,6 +1571,7 @@ void Origin750Parser::readGraphInfo()
 					bitmap.clientRect = r;
 					bitmap.attach = (Attach)attach;
 					bitmap.size = 0;
+					bitmap.borderType = (BorderType)(border >= 0x80 ? border-0x80 : None);
 				}
 			}
 

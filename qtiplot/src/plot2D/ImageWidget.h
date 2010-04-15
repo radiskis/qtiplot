@@ -2,7 +2,7 @@
     File                 : ImageWidget.h
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2008 by Ion Vasilief
+	Copyright            : (C) 2008 - 2010 by Ion Vasilief
     Email (use @ for *)  : ion_vasilief*yahoo.fr
     Description          : A widget displaying images in 2D plots
 
@@ -32,6 +32,8 @@
 #include <QWidget>
 #include "FrameWidget.h"
 
+class ApplicationWindow;
+
 class ImageWidget: public FrameWidget
 {
 	Q_OBJECT
@@ -60,6 +62,12 @@ public:
 	void clone(ImageWidget* t);
 	static void restore(Graph *g, const QStringList& lst);
 
+	//! Return d_window_name.
+	QString windowName(){return d_window_name;};
+	void setWindowName(const QString& name){d_window_name = name;};
+
+	static QPixmap windowPixmap(ApplicationWindow *mw, const QString& name, const QSize& size);
+
 private:
 	void draw(QPainter *painter, const QRect& r);
 	void paintEvent(QPaintEvent *e);
@@ -68,6 +76,8 @@ private:
 	QString d_file_name;
 	//! Flag telling if the pixmap must be saved in the .qti project as XPM
 	bool d_save_xpm;
+	//! The window whos image is drawn.
+	QString d_window_name;
 };
 
 #endif

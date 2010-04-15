@@ -1365,26 +1365,38 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 
 			for(unsigned int i = 0; i < layer.bitmaps.size(); ++i){
 				QPixmap bmp;
+				QString windowName = QString::null;
 				if (layer.bitmaps[i].size > 0)
 					bmp.loadFromData(layer.bitmaps[i].data, layer.bitmaps[i].size, "BMP");
 				else {
-					MdiSubWindow *w = mw->window(QString(layer.bitmaps[i].graphName.c_str()));
-					MultiLayer *ml = qobject_cast<MultiLayer *> (w);
-					if (ml)
-						bmp = ml->canvasPixmap(QSize(layer.bitmaps[i].clientRect.width()*fScale, layer.bitmaps[i].clientRect.height()*fScale));
-
-					Table *t = qobject_cast<Table *> (w);
-					if (t)
-						bmp = QPixmap::grabWidget(t->table());
+					windowName = QString(layer.bitmaps[i].windowName.c_str());
+					bmp = ImageWidget::windowPixmap(mw, windowName, QSize(layer.bitmaps[i].clientRect.width()*fScale, layer.bitmaps[i].clientRect.height()*fScale));
 				}
 
 				QTemporaryFile file;
 				file.setFileTemplate(QDir::tempPath() + "/XXXXXX.bmp");
 				if(file.open()){
 					bmp.save(file.fileName(), "BMP");
-					ImageWidget* mrk = graph->addImage(file.fileName());
-					mrk->setSaveInternally();
-					mrk->setRect(layer.bitmaps[i].clientRect.left*fScale, layer.bitmaps[i].clientRect.top*fScale - yOffset, layer.bitmaps[i].clientRect.width()*fScale, layer.bitmaps[i].clientRect.height()*fScale);
+					ImageWidget* img = graph->addImage(file.fileName());
+					img->setSaveInternally();
+					if (!windowName.isEmpty())
+						img->setWindowName(windowName);
+					img->setRect(layer.bitmaps[i].clientRect.left*fScale, layer.bitmaps[i].clientRect.top*fScale - yOffset, layer.bitmaps[i].clientRect.width()*fScale, layer.bitmaps[i].clientRect.height()*fScale);
+
+					int bkg = 0;
+					switch(layer.bitmaps[i].borderType){
+						case Origin::BlackLine:
+						case Origin::DarkMarble:
+							bkg = 1;
+							break;
+						case Origin::Shadow:
+							bkg = 2;
+							break;
+						default:
+							bkg = 0;
+							break;
+					}
+					img->setFrameStyle(bkg);
 				}
 			}
 

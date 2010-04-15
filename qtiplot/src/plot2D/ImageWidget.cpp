@@ -2,7 +2,7 @@
     File                 : ImageWidget.cpp
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2008 by Ion Vasilief
+	Copyright            : (C) 2008 - 2010 by Ion Vasilief
     Email (use @ for *)  : ion_vasilief*yahoo.fr
     Description          : A widget displaying images in 2D plots
 
@@ -29,6 +29,9 @@
 #include "ImageWidget.h"
 #include "MultiLayer.h"
 #include <Graph.h>
+#include <Graph3D.h>
+#include <ApplicationWindow.h>
+#include <Table.h>
 #include <PenStyleBox.h>
 
 #include <QPainter>
@@ -41,7 +44,8 @@
 #include <qwt_plot_canvas.h>
 
 ImageWidget::ImageWidget(Graph *plot, const QString& fn):FrameWidget(plot),
-d_save_xpm(false)
+d_save_xpm(false),
+d_window_name(QString::null)
 {
 	if (load(fn, false)){
 		QSize picSize = d_pix.size();
@@ -59,7 +63,8 @@ d_save_xpm(false)
 }
 
 ImageWidget::ImageWidget(Graph *plot, const QImage& image):FrameWidget(plot),
-d_save_xpm(true)
+d_save_xpm(true),
+d_window_name(QString::null)
 {
 	d_pix = QPixmap::fromImage(image);
 
@@ -108,10 +113,39 @@ bool ImageWidget::load(const QString& fn, bool update)
 	return false;
 }
 
+QPixmap ImageWidget::windowPixmap(ApplicationWindow *mw, const QString& name, const QSize& size)
+{
+	if (!mw || name.isEmpty())
+		return QPixmap();
+
+	MdiSubWindow *w = mw->window(name);
+	MultiLayer *ml = qobject_cast<MultiLayer *> (w);
+	if (ml)
+		return ml->canvasPixmap(size);
+
+	Graph3D *g = qobject_cast<Graph3D *> (w);
+	if (g)
+		return g->surface()->renderPixmap(size.width(), size.height());
+
+	Table *t = qobject_cast<Table *> (w);
+	if (t)
+		return QPixmap::grabWidget(t->table());
+
+	return QPixmap();
+}
+
 void ImageWidget::paintEvent(QPaintEvent *e)
 {
-	if (d_pix.isNull())
-		return;
+	if (d_pix.isNull()){
+		if (!d_window_name.isEmpty()){
+			ApplicationWindow *mw = plot()->multiLayer()->applicationWindow();
+			if (!mw)
+				return;
+
+			d_pix = windowPixmap(mw, d_window_name, size());
+		} else
+			return;
+	}
 
 	QPainter p(this);
 	draw(&p, rect());
