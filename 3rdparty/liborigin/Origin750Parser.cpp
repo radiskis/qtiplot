@@ -2352,6 +2352,7 @@ void Origin750Parser::readColorMap(ColorMap& colorMap)
 	short w;
 	unsigned int colorMapSize;
 	file >> colorMapSize;
+
 	file.seekg(0x110, ios_base::cur);
 	for(unsigned int i = 0; i < colorMapSize + 3; ++i)
 	{
