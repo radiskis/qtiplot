@@ -586,11 +586,17 @@ void Origin810Parser::readGraphInfo()
 	file >> graphs.back().width;
 	file >> graphs.back().height;
 
+	file.seekg(POS + 0x45, ios_base::beg);
+	string templateName(20, 0);
+	file >> templateName;
+	BOOST_LOG_(1, format("			TEMPLATE: %s pos: 0x%X") % templateName % (POS + 0x45));
+	if (templateName == "LAYOUT")
+		graphs.back().isLayout = true;
+
 	unsigned int LAYER = POS;
 	LAYER += size + 0x1;
 
-	while(LAYER < d_file_size)// multilayer loop
-	{
+	while(LAYER < d_file_size){// multilayer loop
 		graphs.back().layers.push_back(GraphLayer());
 		GraphLayer& layer(graphs.back().layers.back());
 		// LAYER section
@@ -635,8 +641,7 @@ void Origin810Parser::readGraphInfo()
 		//now structure is next : section_header_size=0x6F(4 bytes) + '\n' + section_header(0x6F bytes) + section_body_1_size(4 bytes) + '\n' + section_body_1 + section_body_2_size(maybe=0)(4 bytes) + '\n' + section_body_2 + '\n'
 		//possible sections: axes, legend, __BC02, _202, _231, _232, __LayerInfoStorage etc
 		//section name starts with 0x46 position
-		while(LAYER < d_file_size)
-		{
+		while(LAYER < d_file_size){
 			//section_header_size=0x6F(4 bytes) + '\n'
 			LAYER += 0x5;
 

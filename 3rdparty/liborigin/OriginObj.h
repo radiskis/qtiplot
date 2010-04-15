@@ -705,10 +705,12 @@ namespace Origin
 		unsigned short width;
 		unsigned short height;
 		bool is3D;
+		bool isLayout;
 
 		Graph(const string& _name = "")
 		:	Window(_name)
 		,	is3D(false)
+		,	isLayout(false)
 		{};
 	};
 

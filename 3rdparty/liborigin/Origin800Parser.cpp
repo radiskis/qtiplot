@@ -1060,6 +1060,13 @@ void Origin800Parser::readGraphInfo()
 	file >> graphs.back().width;
 	file >> graphs.back().height;
 
+	file.seekg(POS + 0x45, ios_base::beg);
+	string templateName(20, 0);
+	file >> templateName;
+	BOOST_LOG_(1, format("			TEMPLATE: %s pos: 0x%X") % templateName % (POS + 0x45));
+	if (templateName == "LAYOUT")
+		graphs.back().isLayout = true;
+
 	unsigned int LAYER = POS;
 	LAYER += size + 0x1;
 

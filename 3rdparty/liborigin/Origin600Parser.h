@@ -36,9 +36,6 @@ class Origin600Parser : public Origin610Parser
 public:
 	Origin600Parser(const string& fileName);
 	bool parse();
-
-protected:
-	void readProjectTree();
 };
 
 #endif // ORIGIN_600_PARSER_H

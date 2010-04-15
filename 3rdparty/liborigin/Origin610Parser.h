@@ -43,7 +43,6 @@ protected:
 	bool readGraphInfo();
 	void skipObjectInfo();
 	unsigned int readGraphAxisInfo(GraphAxis& axis);
-	void readProjectTree();
 	void readResultsLog();
 	void readNotes();
 
