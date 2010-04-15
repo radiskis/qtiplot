@@ -34,6 +34,7 @@
 #include "OriginParser.h"
 #include "endianfstream.hh"
 #include <boost/date_time/posix_time/posix_time.hpp>
+#include <QString>
 
 using namespace Origin;
 
@@ -58,6 +59,7 @@ protected:
 	void readWindowProperties(Window& window, unsigned int size);
 	void readColorMap(ColorMap& colorMap);
 	void skipLine();
+	inline double stringToDouble(const string& s){return QString(s.c_str()).replace(",", ".").toDouble();};
 
 	inline boost::posix_time::ptime doubleToPosixTime(double jdt)
 	{

@@ -32,7 +32,6 @@
 #include <boost/format.hpp>
 #include <boost/lexical_cast.hpp>
 #include <logging.hpp>
-#include <QString>
 
 using namespace boost;
 
@@ -977,8 +976,8 @@ void Origin800Parser::readMatrixInfo()
 		if (findSection(sectionNames[i], stringSize, maxSearchPos)){
 			string s(32, 0);
 			file >> s;
-			BOOST_LOG_(1, format("		%s: %s cursor pos: 0x%X") % sectionNames[i] % s % file.tellg());
-			matrixes[idx].coordinates[i] = QString(s.c_str()).replace(",", ".").toDouble();
+			matrixes[idx].coordinates[i] = stringToDouble(s);
+			BOOST_LOG_(1, format("		%s: %g cursor pos: 0x%X") % sectionNames[i] % matrixes[idx].coordinates[i] % file.tellg());
 		}
 	}
 

@@ -34,7 +34,6 @@
 #include <boost/lexical_cast.hpp>
 #include <boost/date_time/posix_time/posix_time.hpp>
 #include <logging.hpp>
-#include <QString>
 
 using namespace boost;
 
@@ -664,7 +663,6 @@ void Origin700Parser::readSpreadInfo()
 	BOOST_LOG_(1, format("		Done with spreadsheet %d POS (@ 0x%X)") % spread % file.tellg());
 }
 
-/*
 void Origin700Parser::readMatrixInfo()
 {
 	unsigned int POS = file.tellg();
@@ -672,152 +670,7 @@ void Origin700Parser::readMatrixInfo()
 	unsigned int size;
 	file >> size;
 
-	POS+=5;
-
-	BOOST_LOG_(1, format("			[Matrix SECTION (@ 0x%X)]") % POS);
-
-	string name(25, 0);
-	file.seekg(POS + 0x2, ios_base::beg);
-	file >> name;
-
-	int idx = findMatrixByName(name);
-	matrixes[idx].name = name;
-	file.seekg(POS, ios_base::beg);
-	readWindowProperties(matrixes[idx], size);
-
-	unsigned char h;
-	file.seekg(POS + 0x87, ios_base::beg);
-	file >> h;
-	switch(h)
-	{
-	case 1:
-		matrixes[idx].view = Matrix::ImageView;
-		break;
-	case 2:
-		matrixes[idx].header = Matrix::XY;
-		break;
-	}
-
-	unsigned int LAYER = POS;
-	LAYER += size + 0x1;
-
-	// LAYER section
-	LAYER += 0x5;
-	
-	file.seekg(LAYER + 0x2B, ios_base::beg);
-	file >> matrixes[idx].columnCount;
-
-	file.seekg(LAYER + 0x52, ios_base::beg);
-	file >> matrixes[idx].rowCount;
-
-	LAYER += 0x12D + 0x1;
-	//now structure is next : section_header_size=0x6F(4 bytes) + '\n' + section_header(0x6F bytes) + section_body_1_size(4 bytes) + '\n' + section_body_1 + section_body_2_size(maybe=0)(4 bytes) + '\n' + section_body_2 + '\n'
-	//possible sections: column formulas, __WIPR, __WIOTN, __LayerInfoStorage
-	//section name(column name in formula case) starts with 0x46 position
-	while(LAYER < d_file_size)
-	{
-		//section_header_size=0x6F(4 bytes) + '\n'
-		LAYER += 0x5;
-
-		//section_header
-		string sec_name(41, 0);
-		file.seekg(LAYER + 0x46, ios_base::beg);
-		file >> sec_name;
-
-		//section_body_1_size
-		LAYER += 0x6F+0x1;
-		file.seekg(LAYER, ios_base::beg);
-		file >> size;
-
-		//section_body_1
-		LAYER += 0x5;
-		//check if it is a formula
-		if(sec_name == "MV")
-		{
-			file.seekg(LAYER, ios_base::beg);
-			file >> matrixes[idx].command.assign(size, 0);
-		}
-
-		//section_body_2_size
-		LAYER += size + 0x1;
-		file.seekg(LAYER, ios_base::beg);
-		file >> size;
-
-		//section_body_2
-		LAYER += 0x5;
-		if(sec_name == "COLORMAP")
-		{
-			file.seekg(LAYER + 0x14, ios_base::beg);
-			readColorMap(matrixes[idx].colorMap);
-		}
-
-		//close section 00 00 00 00 0A
-		LAYER += size + (size > 0 ? 0x1 : 0) + 0x5;
-
-		if(sec_name == "__LayerInfoStorage")
-			break;
-
-	}
-	LAYER += 0x5;
-
-	while(1)
-	{
-		LAYER+=0x5;
-
-		unsigned short width;
-		file.seekg(LAYER + 0x2B, ios_base::beg);
-		file >> width;
-
-		width = (width-55)/0xA;
-		if(width == 0)
-			width = 8;
-		matrixes[idx].width = width;
-
-		unsigned char c1,c2;
-		file.seekg(LAYER + 0x1E, ios_base::beg);
-		file >> c1;
-		file >> c2;
-
-		matrixes[idx].valueTypeSpecification = c1/0x10;
-		if(c2 >= 0x80)
-		{
-			matrixes[idx].significantDigits = c2-0x80;
-			matrixes[idx].numericDisplayType = SignificantDigits;
-		}
-		else if(c2 > 0)
-		{
-			matrixes[idx].decimalPlaces = c2-0x03;
-			matrixes[idx].numericDisplayType = DecimalPlaces;
-		}
-
-		LAYER += 0x1E7 + 0x1;
-		
-		file.seekg(LAYER, ios_base::beg);
-		file >> size;
-
-		LAYER += size + (size > 0 ? 0x1 : 0) + 0x5;
-
-		file.seekg(LAYER, ios_base::beg);
-		file >> size;
-
-		if(size != 0x1E7)
-			break;
-	}
-
-	file.seekg(LAYER + 0x5*0x5 + 0x1ED*0x12 + 0x5, ios_base::beg);
-}
-*/
-
-void Origin700Parser::readMatrixInfo()
-{
-	unsigned int POS = file.tellg();
-
-	unsigned int size;
-	file >> size;
-
-	POS+=5;
-
-	BOOST_LOG_(1, format("			[Matrix SECTION (@ 0x%X)]") % POS);
+	POS += 5;
 
 	string name(25, 0);
 	file.seekg(POS + 0x2, ios_base::beg);
@@ -829,100 +682,131 @@ void Origin700Parser::readMatrixInfo()
 	file.seekg(POS, ios_base::beg);
 	readWindowProperties(matrixes[idx], size);
 
+	unsigned char h;
+	file.seekg(POS + 0x87, ios_base::beg);
+	file >> h;
+	switch(h){
+		case 1:
+			matrixes[idx].view = Matrix::ImageView;
+			break;
+		case 2:
+			matrixes[idx].header = Matrix::XY;
+			break;
+	}
+
 	unsigned int LAYER = POS;
 	LAYER += size + 0x1;
+	file.seekg(LAYER, ios_base::beg);
+	file >> size;
 
 	// LAYER section
 	LAYER += 0x5;
-
-	unsigned short width;
-	file.seekg(LAYER + 0x27, ios_base::beg);
-	file >> width;
-	if (width == 0)
-		width = 8;
-	matrixes[idx].width = width;
-	BOOST_LOG_(1, format("		Width: %d (@ 0x%X)") % matrixes[idx].width % (LAYER + 0x27));
-
+	
 	file.seekg(LAYER + 0x2B, ios_base::beg);
 	file >> matrixes[idx].columnCount;
-	BOOST_LOG_(1, format("		Columns: %d (@ 0x%X)") % matrixes[idx].columnCount % (LAYER + 0x2B));
 
 	file.seekg(LAYER + 0x52, ios_base::beg);
 	file >> matrixes[idx].rowCount;
-	BOOST_LOG_(1, format("		Rows: %d (@ 0x%X)") % matrixes[idx].rowCount % (LAYER + 0x52));
 
-	for (int i = 0; i < 3; i++)
-		skipLine();
-
-	LAYER = file.tellg();
+	LAYER += size + 0x1;
+	file.seekg(LAYER, ios_base::beg);
 	file >> size;
 	unsigned int sectionSize = size;
 	while(LAYER < d_file_size){
-		//section_header_size=0x6F(4 bytes) + '\n'
 		LAYER += 0x5;
 
 		//section_header
-		string sec_name(30, 0);
+		string sec_name(41, 0);
 		file.seekg(LAYER + 0x46, ios_base::beg);
 		file >> sec_name;
-		BOOST_LOG_(1, format("				SECTION NAME: %s (@ 0x%X)") % sec_name % (LAYER + 0x46));
+		//BOOST_LOG_(1, format("				SECTION NAME: %s (@ 0x%X)") % sec_name % (LAYER + 0x46));
 
 		//section_body_1_size
+		LAYER += size + 0x1;
+		file.seekg(LAYER, ios_base::beg);
 		file >> size;
 
 		//section_body_1
-		LAYER = file.tellg();
-		file.seekg(1, ios_base::cur);
-
-		if (sec_name == "MV"){//check if it is a formula
+		LAYER += 0x5;
+		//check if it is a formula
+		if(sec_name == "MV"){
+			file.seekg(LAYER, ios_base::beg);
 			file >> matrixes[idx].command.assign(size, 0);
-			BOOST_LOG_(1, format("				FORMULA: %s") % matrixes[idx].command);
+			BOOST_LOG_(1, format("				Formula: %s (@ 0x%X)") % matrixes[idx].command % LAYER);
 		} else if (sec_name == "Y2"){
 			string s(size, 0);
 			file >> s;
-			matrixes[idx].coordinates[0] = QString(s.c_str()).replace(",", ".").toDouble();
-			BOOST_LOG_(1, format("				Y2: %s") % s);
+			matrixes[idx].coordinates[0] = stringToDouble(s);
+			BOOST_LOG_(1, format("				Y2: %g") % matrixes[idx].coordinates[0]);
 		} else if (sec_name == "X2"){
 			string s(size, 0);
 			file >> s;
-			matrixes[idx].coordinates[1] = QString(s.c_str()).replace(",", ".").toDouble();
-			BOOST_LOG_(1, format("				X2: %s") % s);
+			matrixes[idx].coordinates[1] = stringToDouble(s);
+			BOOST_LOG_(1, format("				X2: %g") % matrixes[idx].coordinates[1]);
 		} else if (sec_name == "Y1"){
 			string s(size, 0);
 			file >> s;
-			matrixes[idx].coordinates[2] = QString(s.c_str()).replace(",", ".").toDouble();
-			BOOST_LOG_(1, format("				Y1: %s") % s);
+			matrixes[idx].coordinates[2] = stringToDouble(s);
+			BOOST_LOG_(1, format("				Y1: %g") % matrixes[idx].coordinates[2]);
 		} else if (sec_name == "X1"){
 			string s(size, 0);
 			file >> s;
-			matrixes[idx].coordinates[3] = QString(s.c_str()).replace(",", ".").toDouble();
-			BOOST_LOG_(1, format("				X1: %s") % s);
+			matrixes[idx].coordinates[3] = stringToDouble(s);
+			BOOST_LOG_(1, format("				X1: %g") % matrixes[idx].coordinates[3]);
 		}
 
 		//section_body_2_size
-		LAYER += size + 0x2;
+		LAYER += size + 0x1;
 		file.seekg(LAYER, ios_base::beg);
 		file >> size;
 
 		//section_body_2
 		LAYER += 0x5;
+		if (sec_name == "COLORMAP"){
+			file.seekg(LAYER + 0x14, ios_base::beg);
+			readColorMap(matrixes[idx].colorMap);
+		}
 
 		//close section 00 00 00 00 0A
 		LAYER += size + (size > 0 ? 0x1 : 0) + 0x5;
-
 		file.seekg(LAYER, ios_base::beg);
 		file >> size;
 		if(size != sectionSize)
 			break;
 	}
 	file.seekg(1, ios_base::cur);
-
 	for (int i = 0; i < 5; i++)
 		skipLine();
 	skipObjectInfo();
-	BOOST_LOG_(1, format("		Done with matrix, pos @ 0x%X") % file.tellg());
-}
 
+
+	/*LAYER += 0x5;
+	LAYER += 0x5;
+
+	unsigned short width;
+	file.seekg(LAYER + 0x2B, ios_base::beg);
+	file >> width;
+
+	width = (width-55)/0xA;
+	if(width == 0)
+		width = 8;
+	matrixes[idx].width = width;
+
+	unsigned char c1,c2;
+	file.seekg(LAYER + 0x1E, ios_base::beg);
+	file >> c1;
+	file >> c2;
+
+	matrixes[idx].valueTypeSpecification = c1/0x10;
+	if(c2 >= 0x80){
+		matrixes[idx].significantDigits = c2-0x80;
+		matrixes[idx].numericDisplayType = SignificantDigits;
+	} else if(c2 > 0) {
+		matrixes[idx].decimalPlaces = c2-0x03;
+		matrixes[idx].numericDisplayType = DecimalPlaces;
+	}
+	*/
+}
 
 void Origin700Parser::readGraphInfo()
 {
@@ -1355,8 +1239,11 @@ void Origin700Parser::readGraphInfo()
 			//section_body_3
 			LAYER += 0x5;
 
-			file.seekg(1, ios_base::cur);
+			//close section 00 00 00 00 0A
+			LAYER += size + (size > 0 ? 0x1 : 0);
+			file.seekg(LAYER, ios_base::beg);
 			file >> size;
+
 			if (!size || size != sectionSize)
 				break;
 		}
@@ -1367,8 +1254,7 @@ void Origin700Parser::readGraphInfo()
 
 		file.seekg(LAYER, ios_base::beg);
 		file >> size;
-		if(size)//check layer is not empty
-		{
+		if(size){//check layer is not empty
 			while(LAYER < d_file_size){
 				LAYER += 0x5;
 
@@ -1651,7 +1537,7 @@ void Origin700Parser::readGraphInfo()
 						file.seekg(2, ios_base::cur);
 						file >> curve.text.color;
 					}
-					file.seekg(LAYER + 0x254, ios_base::beg);
+					file.seekg(LAYER + 0x258, ios_base::beg);
 					readColorMap(colorMap);
 				}
 

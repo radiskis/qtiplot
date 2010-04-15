@@ -32,7 +32,6 @@
 #include <boost/format.hpp>
 #include <boost/lexical_cast.hpp>
 #include <logging.hpp>
-#include <QString>
 
 using namespace boost;
 
@@ -855,23 +854,23 @@ void Origin610Parser::readMatrixInfo()
 		} else if (sec_name == "Y2"){
 			string s(size, 0);
 			file >> s;
-			matrixes[idx].coordinates[0] = QString(s.c_str()).replace(",", ".").toDouble();
-			BOOST_LOG_(1, format("				Y2: %s") % s);
+			matrixes[idx].coordinates[0] = stringToDouble(s);
+			BOOST_LOG_(1, format("				Y2: %g") % matrixes[idx].coordinates[0]);
 		} else if (sec_name == "X2"){
 			string s(size, 0);
 			file >> s;
-			matrixes[idx].coordinates[1] = QString(s.c_str()).replace(",", ".").toDouble();
-			BOOST_LOG_(1, format("				X2: %s") % s);
+			matrixes[idx].coordinates[1] = stringToDouble(s);
+			BOOST_LOG_(1, format("				X2: %g") % matrixes[idx].coordinates[1]);
 		} else if (sec_name == "Y1"){
 			string s(size, 0);
 			file >> s;
-			matrixes[idx].coordinates[2] = QString(s.c_str()).replace(",", ".").toDouble();
-			BOOST_LOG_(1, format("				Y1: %s") % s);
+			matrixes[idx].coordinates[2] = stringToDouble(s);
+			BOOST_LOG_(1, format("				Y1: %g") % matrixes[idx].coordinates[2]);
 		} else if (sec_name == "X1"){
 			string s(size, 0);
 			file >> s;
-			matrixes[idx].coordinates[3] = QString(s.c_str()).replace(",", ".").toDouble();
-			BOOST_LOG_(1, format("				X1: %s") % s);
+			matrixes[idx].coordinates[3] = stringToDouble(s);
+			BOOST_LOG_(1, format("				X1: %g") % matrixes[idx].coordinates[3]);
 		}
 
 		//section_body_2_size
