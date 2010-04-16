@@ -42,6 +42,7 @@ Origin750Parser::Origin750Parser(const string& fileName)
 :	file(fileName.c_str(), ios::binary)
 {
 	objectIndex = 0;
+	d_colormap_offset = 0x258;
 }
 
 bool Origin750Parser::parse()
@@ -1934,8 +1935,6 @@ void Origin750Parser::readGraphInfo()
 					break;
 			}
 		}
-		//LAYER+=0x5*0x5+0x1ED*0x12;
-		//LAYER+=2*0x5;
 
 		LAYER += 0x5;
 		//read axis breaks
@@ -1967,24 +1966,22 @@ void Origin750Parser::readGraphInfo()
 		LAYER += 0x5;
 
 		file.seekg(LAYER, ios_base::beg);
-		readGraphAxisInfo(layer.xAxis);
-		LAYER += 0x1ED*0x6;
+		size = readGraphAxisInfo(layer.xAxis);
+		LAYER += size*0x6;
 
 		LAYER += 0x5;
 
 		file.seekg(LAYER, ios_base::beg);
 		readGraphAxisInfo(layer.yAxis);
-		LAYER += 0x1ED*0x6;
+		LAYER += size*0x6;
 
 		LAYER += 0x5;
 
 		file.seekg(LAYER, ios_base::beg);
 		readGraphAxisInfo(layer.zAxis);
-		LAYER += 0x1ED*0x6;
+		LAYER += size*0x6;
 
 		LAYER += 0x5;
-
-		//LAYER += 0x2*0x5 + 0x1ED*0x6;
 
 		file.seekg(LAYER, ios_base::beg);
 		file >> size;
@@ -2168,37 +2165,42 @@ void Origin750Parser::readGraphAxisTickLabelsInfo(GraphAxisTick& tick)
 	}
 }
 
-void Origin750Parser::readGraphAxisInfo(GraphAxis& axis)
+unsigned int Origin750Parser::readGraphAxisInfo(GraphAxis& axis)
 {
 	unsigned int POS = file.tellg();
+	unsigned int size;
+	file >> size;
+
 	POS += 0x5;
 	file.seekg(POS, ios_base::beg);
 	readGraphGridInfo(axis.minorGrid);
-	POS += 0x1E7 + 1;
+	POS += size + 1;
 
 	POS += 0x5;
 	file.seekg(POS, ios_base::beg);
 	readGraphGridInfo(axis.majorGrid);
-	POS += 0x1E7 + 1;
+	POS += size + 1;
 
 	POS += 0x5;
 	file.seekg(POS, ios_base::beg);
 	readGraphAxisTickLabelsInfo(axis.tickAxis[0]);
-	POS += 0x1E7 + 1;
+	POS += size + 1;
 
 	POS += 0x5;
 	file.seekg(POS, ios_base::beg);
 	readGraphAxisFormatInfo(axis.formatAxis[0]);
-	POS += 0x1E7 + 1;
+	POS += size + 1;
 
 	POS += 0x5;
 	file.seekg(POS, ios_base::beg);
 	readGraphAxisTickLabelsInfo(axis.tickAxis[1]);
-	POS += 0x1E7 + 1;
+	POS += size + 1;
 
 	POS += 0x5;
 	file.seekg(POS, ios_base::beg);
 	readGraphAxisFormatInfo(axis.formatAxis[1]);
+
+	return (size + 1 + 0x5);
 }
 
 void Origin750Parser::readProjectTree()

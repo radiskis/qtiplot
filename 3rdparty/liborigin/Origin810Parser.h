@@ -35,14 +35,10 @@ class Origin810Parser : public Origin800Parser
 {
 public:
 	Origin810Parser(const string& fileName);
-	bool parse();
 
 private:
-	void readGraphInfo();
-	void readProjectTree();
 	void readProjectTreeFolder(tree<ProjectNode>::iterator parent);
 	void readColorMap(ColorMap& colorMap);
-	void readNotes();
 };
 
 #endif // ORIGIN_810_PARSER_H

@@ -42,7 +42,6 @@ protected:
 	void readMatrixInfo();
 	bool readGraphInfo();
 	void skipObjectInfo();
-	unsigned int readGraphAxisInfo(GraphAxis& axis);
 	void readResultsLog();
 	void readNotes();
 

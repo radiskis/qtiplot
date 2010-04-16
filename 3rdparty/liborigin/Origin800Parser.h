@@ -43,13 +43,13 @@ protected:
 	void readGraphInfo();
 	void readColumnInfo(int spread, int);
 	void skipObjectInfo();
-	unsigned int readGraphAxisInfo(GraphAxis& axis);
-	void readProjectTree();
 	void readResultsLog();
-	void readNotes();
+	virtual void readNotes();
 
 	bool findSection(const string& name, int length, int maxLength = 0);
 	unsigned int findStringPos(const string& name);
+
+	string notes_pos_mark;
 };
 
 #endif // ORIGIN_800_PARSER_H

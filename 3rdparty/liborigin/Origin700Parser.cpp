@@ -779,7 +779,6 @@ void Origin700Parser::readMatrixInfo()
 		skipLine();
 	skipObjectInfo();
 
-
 	/*LAYER += 0x5;
 	LAYER += 0x5;
 
@@ -892,7 +891,7 @@ void Origin700Parser::readGraphInfo()
 
 			//section_header
 
-			string sec_name(40, 0);
+			string sec_name(41, 0);
 			file.seekg(LAYER + 0x46, ios_base::beg);
 			file >> sec_name;
 

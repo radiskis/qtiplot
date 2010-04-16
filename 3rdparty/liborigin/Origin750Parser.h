@@ -49,15 +49,15 @@ protected:
 	void readExcelInfo();
 	void readMatrixInfo();
 	void readGraphInfo();
-	void readGraphAxisInfo(GraphAxis& axis);
+	unsigned int readGraphAxisInfo(GraphAxis& axis);
 	void readGraphGridInfo(GraphGrid& grid);
 	void readGraphAxisBreakInfo(GraphAxisBreak& axis_break);
 	void readGraphAxisFormatInfo(GraphAxisFormat& format);
 	void readGraphAxisTickLabelsInfo(GraphAxisTick& tick);
 	void readProjectTree();
-	void readProjectTreeFolder(tree<ProjectNode>::iterator parent);
+	virtual void readProjectTreeFolder(tree<ProjectNode>::iterator parent);
 	void readWindowProperties(Window& window, unsigned int size);
-	void readColorMap(ColorMap& colorMap);
+	virtual void readColorMap(ColorMap& colorMap);
 	void skipLine();
 	inline double stringToDouble(const string& s){return QString(s.c_str()).replace(",", ".").toDouble();};
 
@@ -69,7 +69,9 @@ protected:
 	unsigned int objectIndex;
 	iendianfstream file;
 
-	int d_file_size;
+	unsigned int d_file_size;
+	unsigned int d_colormap_offset;
+	unsigned int d_start_offset;
 };
 
 #endif // ORIGIN_750_PARSER_H
