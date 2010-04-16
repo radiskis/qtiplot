@@ -1842,44 +1842,6 @@ void Origin610Parser::skipObjectInfo()
 	//BOOST_LOG_(1, format("	skipObjectInfo() pos:  0x%X") % file.tellg());
 }
 
-unsigned int Origin610Parser::readGraphAxisInfo(GraphAxis& axis)
-{
-	unsigned int POS = file.tellg();
-	unsigned int size;
-	file >> size;
-
-	POS += 0x5;
-	file.seekg(POS, ios_base::beg);
-	readGraphGridInfo(axis.minorGrid);
-	POS += size + 1;
-
-	POS += 0x5;
-	file.seekg(POS, ios_base::beg);
-	readGraphGridInfo(axis.majorGrid);
-	POS += size + 1;
-
-	POS += 0x5;
-	file.seekg(POS, ios_base::beg);
-	readGraphAxisTickLabelsInfo(axis.tickAxis[0]);
-	POS += size + 1;
-
-	POS += 0x5;
-	file.seekg(POS, ios_base::beg);
-	readGraphAxisFormatInfo(axis.formatAxis[0]);
-	POS += size + 1;
-
-	POS += 0x5;
-	file.seekg(POS, ios_base::beg);
-	readGraphAxisTickLabelsInfo(axis.tickAxis[1]);
-	POS += size + 1;
-
-	POS += 0x5;
-	file.seekg(POS, ios_base::beg);
-	readGraphAxisFormatInfo(axis.formatAxis[1]);
-
-	return (size + 1 + 0x5);
-}
-
 OriginParser* createOrigin610Parser(const string& fileName)
 {
 	return new Origin610Parser(fileName);

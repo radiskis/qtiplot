@@ -37,7 +37,11 @@ using namespace boost;
 
 Origin800Parser::Origin800Parser(const string& fileName)
 :	Origin750Parser(fileName)
-{}
+{
+	d_colormap_offset = 0x25B;
+	d_start_offset = 0x10 + 1;
+	notes_pos_mark = "H";
+}
 
 bool Origin800Parser::parse()
 {
@@ -50,7 +54,7 @@ bool Origin800Parser::parse()
 	stringstream out;
 	unsigned char c;
 	/////////////////// find column ///////////////////////////////////////////////////////////
-	file.seekg(0x10 + 1, ios_base::beg);
+	file.seekg(d_start_offset, ios_base::beg);
 	unsigned int size;
 	file >> size;
 	file.seekg(1 + size + 1 + 5, ios_base::cur);
@@ -466,14 +470,12 @@ bool Origin800Parser::parse()
 
 void Origin800Parser::readNotes()
 {
-	unsigned int pos = findStringPos("H");
+	unsigned int pos = findStringPos(notes_pos_mark);
 	file.seekg(pos, ios_base::beg);
-	while(pos < d_file_size){
-		int size;
-		file >> size;
-		if(size != 0x48)
-			break;
 
+	unsigned int sectionSize;
+	file >> sectionSize;
+	while(pos < d_file_size){
 		file.seekg(1, ios_base::cur);
 
 		Rect rect;
@@ -509,6 +511,7 @@ void Origin800Parser::readNotes()
 
 		skipLine();
 
+		unsigned int size;
 		file >> size;
 		file.seekg(1, ios_base::cur);
 
@@ -559,6 +562,10 @@ void Origin800Parser::readNotes()
 
 		file.seekg(1, ios_base::cur);
 		pos = file.tellg();
+
+		file >> size;
+		if(size != sectionSize)
+			break;
 	}
 }
 
@@ -1773,7 +1780,7 @@ void Origin800Parser::readGraphInfo()
 						file >> curve.text.color;
 					}
 
-					file.seekg(LAYER + 0x259 + 0x2, ios_base::beg);
+					file.seekg(LAYER + d_colormap_offset, ios_base::beg);
 					readColorMap(colorMap);
 				}
 
@@ -1931,55 +1938,6 @@ void Origin800Parser::skipObjectInfo()
 	}
 	file.seekg(1, ios_base::cur);
 	//BOOST_LOG_(1, format("	skipObjectInfo() pos:  0x%X") % file.tellg());
-}
-
-unsigned int Origin800Parser::readGraphAxisInfo(GraphAxis& axis)
-{
-	unsigned int POS = file.tellg();
-	unsigned int size;
-	file >> size;
-
-	POS += 0x5;
-	file.seekg(POS, ios_base::beg);
-	readGraphGridInfo(axis.minorGrid);
-	POS += size + 1;
-
-	POS += 0x5;
-	file.seekg(POS, ios_base::beg);
-	readGraphGridInfo(axis.majorGrid);
-	POS += size + 1;
-
-	POS += 0x5;
-	file.seekg(POS, ios_base::beg);
-	readGraphAxisTickLabelsInfo(axis.tickAxis[0]);
-	POS += size + 1;
-
-	POS += 0x5;
-	file.seekg(POS, ios_base::beg);
-	readGraphAxisFormatInfo(axis.formatAxis[0]);
-	POS += size + 1;
-
-	POS += 0x5;
-	file.seekg(POS, ios_base::beg);
-	readGraphAxisTickLabelsInfo(axis.tickAxis[1]);
-	POS += size + 1;
-
-	POS += 0x5;
-	file.seekg(POS, ios_base::beg);
-	readGraphAxisFormatInfo(axis.formatAxis[1]);
-
-	return (size + 1 + 0x5);
-}
-
-void Origin800Parser::readProjectTree()
-{
-	readProjectTreeFolder(projectTree.begin());
-
-	BOOST_LOG_(1, "Origin project Tree");
-	for(tree<ProjectNode>::iterator it = projectTree.begin(projectTree.begin()); it != projectTree.end(projectTree.begin()); ++it)
-	{
-		BOOST_LOG_(1, string(projectTree.depth(it) - 1, ' ') + (*it).name);
-	}
 }
 
 OriginParser* createOrigin800Parser(const string& fileName)
