@@ -9,7 +9,6 @@ QTI_ROOT = ..
 #############################################################################
 
 # local copy included
-INCLUDEPATH       += ../3rdparty/liborigin
 INCLUDEPATH       += ../3rdparty/zlib
 INCLUDEPATH 	  += ../3rdparty/QTeXEngine/src
 
@@ -18,14 +17,12 @@ INCLUDEPATH       += $$MUPARSER_INCLUDEPATH
 INCLUDEPATH       += $$QWT_INCLUDEPATH
 INCLUDEPATH       += $$QWT3D_INCLUDEPATH
 INCLUDEPATH       += $$GSL_INCLUDEPATH
-INCLUDEPATH       += $$BOOST_INCLUDEPATH
 
 # configurable libs
 LIBS         += $$MUPARSER_LIBS
 LIBS         += $$QWT_LIBS
 LIBS         += $$QWT3D_LIBS
 LIBS         += $$GSL_LIBS
-LIBS         += $$BOOST_LIBS
 
 #############################################################################
 ###################### BASIC PROJECT PROPERTIES #############################
@@ -139,7 +136,6 @@ include(src/lib/libqti.pri)
 include(src/plot2D/plot2D.pri)
 include(src/plot3D/plot3D.pri)
 include(src/matrix/matrix.pri)
-include(src/origin/origin.pri)
 include(src/table/table.pri)
 include(src/scripting/scripting.pri)
 
@@ -216,6 +212,15 @@ contains(SCRIPTING_LANGS, Python) {
 	DEFINES += ODS_IMPORT
 	INCLUDEPATH += $$QUAZIP_INCLUDEPATH
 	LIBS        += $$QUAZIP_LIBS
+}
+
+# check if we have liborigin2
+!isEmpty(BOOST_LIBS) {
+	DEFINES += OPJ_IMPORT
+	INCLUDEPATH += $$BOOST_INCLUDEPATH
+	INCLUDEPATH += ../3rdparty/liborigin
+	LIBS        += $$BOOST_LIBS
+	include(src/origin/origin.pri)
 }
 
 ###############################################################

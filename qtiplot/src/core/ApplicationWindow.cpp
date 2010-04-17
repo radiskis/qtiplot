@@ -33,7 +33,6 @@
 
 #include "PlotWizard.h"
 #include "ConfigDialog.h"
-#include "importOPJ.h"
 #include "RenameWindowDialog.h"
 #include "ImportASCIIDialog.h"
 #include "Folder.h"
@@ -193,6 +192,10 @@ extern "C" {
 	#include <OdsFileHandler.h>
 	#include <quazip.h>
 	#include <quazipfile.h>
+#endif
+
+#ifdef OPJ_IMPORT
+	#include "importOPJ.h"
 #endif
 
 using namespace Qwt3D;
@@ -4531,17 +4534,20 @@ bool ApplicationWindow::isProjectFile(const QString& fn)
 
 ApplicationWindow* ApplicationWindow::open(const QString& fn, bool factorySettings, bool newProject)
 {
-    QFileInfo fi(fn);
-    if (!fi.isReadable()){
-        QMessageBox::critical(this, tr("QtiPlot - File openning error"),
-        tr("You don't have the permission to open this file: <b>%1</b>").arg(fn));
-        return NULL;
-    }
+	QFileInfo fi(fn);
+	if (!fi.isReadable()){
+		QMessageBox::critical(this, tr("QtiPlot - File openning error"),
+		tr("You don't have the permission to open this file: <b>%1</b>").arg(fn));
+		return NULL;
+	}
 
+#ifdef OPJ_IMPORT
 	if (fn.endsWith(".opj", Qt::CaseInsensitive) || fn.endsWith(".ogm", Qt::CaseInsensitive) ||
 		fn.endsWith(".ogw", Qt::CaseInsensitive) || fn.endsWith(".ogg", Qt::CaseInsensitive))
 		return importOPJ(fn, factorySettings, newProject);
-	else if (fn.endsWith(".py", Qt::CaseInsensitive))
+	else
+#endif
+	if (fn.endsWith(".py", Qt::CaseInsensitive))
 		return loadScript(fn);
 	else if (fn.endsWith(".xls", Qt::CaseInsensitive)){
 		importExcel(fn);
@@ -14873,6 +14879,7 @@ MultiLayer* ApplicationWindow::plotImageProfiles(Matrix *m)
 	return g;
 }
 
+#ifdef OPJ_IMPORT
 ApplicationWindow* ApplicationWindow::importOPJ(const QString& filename, bool factorySettings, bool newProject)
 {
     if (filename.endsWith(".opj", Qt::CaseInsensitive) || filename.endsWith(".ogg", Qt::CaseInsensitive))
@@ -14901,6 +14908,7 @@ ApplicationWindow* ApplicationWindow::importOPJ(const QString& filename, bool fa
     }
 	return 0;
 }
+#endif
 
 void ApplicationWindow::deleteFitTables()
 {
@@ -15509,10 +15517,13 @@ Folder* ApplicationWindow::appendProject(const QString& fn, Folder* parentFolder
 	FolderListItem *fli = new FolderListItem(item, current_folder);
 	current_folder->setFolderListItem(fli);
 
+#ifdef OPJ_IMPORT
 	if (fn.contains(".opj", Qt::CaseInsensitive) || fn.contains(".ogm", Qt::CaseInsensitive) ||
-        fn.contains(".ogw", Qt::CaseInsensitive) || fn.contains(".ogg", Qt::CaseInsensitive))
+		fn.contains(".ogw", Qt::CaseInsensitive) || fn.contains(".ogg", Qt::CaseInsensitive))
 		ImportOPJ(this, fn);
-	else if (fn.endsWith(".xls", Qt::CaseInsensitive))
+	else
+#endif
+	if (fn.endsWith(".xls", Qt::CaseInsensitive))
 		importExcel(fn);
 	else if (fn.endsWith(".ods", Qt::CaseInsensitive))
 		importOdfSpreadsheet(fn);
