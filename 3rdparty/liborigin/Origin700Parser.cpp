@@ -122,10 +122,6 @@ bool Origin700Parser::parse()
 			size /= valuesize;
 			BOOST_LOG_(1, format("	SIZE = %d") % size);
 
-			// catch exception
-			/*if(size>10000)
-			size=1000;*/
-
 			switch(signature)
 			{
 			case 0x50CA:
@@ -302,7 +298,7 @@ bool Origin700Parser::parse()
 			}
 			else
 			{
-				spread = findSpreadByName(/*sname*/name);
+				spread = findSpreadByName(name);
 
 				current_col = speadSheets[spread].columns.size();
 
@@ -399,16 +395,6 @@ bool Origin700Parser::parse()
 		colpos = file.tellg();
 	}
 
-	////////////////////////////////////////////////////////////////////////////
-	for(unsigned int i = 0; i < speadSheets.size(); ++i)
-	{
-		if(speadSheets[i].multisheet)
-		{
-			BOOST_LOG_(1, format("		CONVERT SPREADSHEET \"%s\" to EXCEL") % speadSheets[i].name.c_str());
-			convertSpreadToExcel(i);
-			--i;
-		}
-	}
 	////////////////////////////////////////////////////////////////////////////
 	////////////////////// HEADER SECTION //////////////////////////////////////
 
@@ -778,33 +764,6 @@ void Origin700Parser::readMatrixInfo()
 	for (int i = 0; i < 5; i++)
 		skipLine();
 	skipObjectInfo();
-
-	/*LAYER += 0x5;
-	LAYER += 0x5;
-
-	unsigned short width;
-	file.seekg(LAYER + 0x2B, ios_base::beg);
-	file >> width;
-
-	width = (width-55)/0xA;
-	if(width == 0)
-		width = 8;
-	matrixes[idx].width = width;
-
-	unsigned char c1,c2;
-	file.seekg(LAYER + 0x1E, ios_base::beg);
-	file >> c1;
-	file >> c2;
-
-	matrixes[idx].valueTypeSpecification = c1/0x10;
-	if(c2 >= 0x80){
-		matrixes[idx].significantDigits = c2-0x80;
-		matrixes[idx].numericDisplayType = SignificantDigits;
-	} else if(c2 > 0) {
-		matrixes[idx].decimalPlaces = c2-0x03;
-		matrixes[idx].numericDisplayType = DecimalPlaces;
-	}
-	*/
 }
 
 void Origin700Parser::readGraphInfo()

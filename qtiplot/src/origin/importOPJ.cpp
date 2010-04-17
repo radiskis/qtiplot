@@ -691,7 +691,7 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 
 		double fScale = (double)(graphWindowRect.width() - frameWidth)/(double)width;
 		double fWindowFactor =  QMIN((double)graphWindowRect.width()/500.0, (double)graphWindowRect.height()/350.0);
-		double fFontScaleFactor = 400.0*fScale/72.0;//0.37*fWindowFactor;
+		double fFontScaleFactor = 0.4;
 		double fVectorArrowScaleFactor = 0.08*fWindowFactor;
 
 		bool imageProfileTool = false;
@@ -706,6 +706,8 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 			Graph *graph = ml->addLayer();
 			if(!graph)
 				return false;
+
+			graph->setAutoscaleFonts(false);
 
 			Origin::Rect layerRect = layer.clientRect;
 
@@ -854,7 +856,7 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 							fnt.setBold(_curve.text.fontBold);
 							fnt.setItalic(_curve.text.fontItalic);
 							fnt.setUnderline(_curve.text.fontUnderline);
-							fnt.setPointSize(floor(_curve.text.fontSize*fFontScaleFactor + 0.5));
+							fnt.setPointSizeF(_curve.text.fontSize*fFontScaleFactor);
 							mc->setLabelsFont(fnt);
 						}
 					}
@@ -903,7 +905,7 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 							fnt.setBold(_curve.text.fontBold);
 							fnt.setItalic(_curve.text.fontItalic);
 							fnt.setUnderline(_curve.text.fontUnderline);
-							fnt.setPointSize(floor(_curve.text.fontSize*fFontScaleFactor + 0.5));
+							fnt.setPointSizeF(_curve.text.fontSize*fFontScaleFactor);
 							sp->setLabelsFont(fnt);
 						}
 					} else if(style == Origin::GraphCurve::MatrixImage){
@@ -1282,7 +1284,7 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 				QFont fnt = graph->axisTitleFont(i);
 				int fontSize = formats[i].label.fontSize;
 				if (fontSize > 0){
-					fnt.setPointSize(fontSize*fFontScaleFactor + 0.5);
+					fnt.setPointSizeF(fontSize*fFontScaleFactor);
 					fnt.setBold(false);
 					graph->setAxisTitleFont(i, fnt);
 				}
@@ -1291,28 +1293,17 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 				graph->setAxisTitleColor(i, originToQtColor(formats[i].label.color));
 
 				fnt = graph->axisFont(i);
-				fnt.setPointSize(floor(ticks[i].fontSize*fFontScaleFactor + 0.5));
+				fnt.setPointSizeF(ticks[i].fontSize*fFontScaleFactor);
 				graph->setAxisFont(i, fnt);
 
 				if (_graph.isLayout)
 					graph->enableAxis(i, false);
 			}
 
-			graph->setAutoscaleFonts(true);
-
-			int nXDelta = graph->width() - graph->canvas()->width();
-			int nYDelta = graph->height() - graph->canvas()->height();
-			QPoint posCanvas =  graph->canvas()->pos();
-
-			graph->resize(layerRect.width()*fScale + nXDelta, layerRect.height()*fScale + nYDelta);
+			graph->setCanvasGeometry(QRect(layerRect.left*fScale, layerRect.top*fScale - yOffset,
+										   layerRect.width()*fScale, layerRect.height()*fScale));
 			graph->updateLayout();
 			graph->updateCurveLabels();
-
-			//int newXGraphPos = layerRect.left*fScale - posCanvas.x() - ml->x();
-			//int newYGraphPos = layerRect.top*fScale - posCanvas.y() - yOffset - ml->y();
-			//graph->move((newXGraphPos > 0 ? newXGraphPos : 0), (newYGraphPos > 0 ? newYGraphPos : 0));
-
-			graph->move(layerRect.left*fScale - posCanvas.x(), layerRect.top*fScale - posCanvas.y() - yOffset);
 
 			if(!layer.legend.text.empty())
 				addText(layer.legend, graph, fFontScaleFactor, fScale);
@@ -1565,18 +1556,21 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 						break;
 					case Origin::Window::Maximized:
 						ml->show(); // to correct scaling with maximize
-						mw->maximizeWindow(ml);
+						ml->setScaleLayersOnResize(true);
+						ml->setMaximized();
 						break;
 					default:
 						ml->setScaleLayersOnResize(false);
 						ml->show();
-						ml->setScaleLayersOnResize(true);
+						ml->setScaleLayersOnResize(mw->autoResizeLayers);
 				}
 			} else {
 				ml->show();
-				//ml->arrangeLayers(true,true);
 				mw->hideWindow(ml);
 			}
+
+			foreach (Graph *g, ml->layersList())
+				g->setAutoscaleFonts(mw->autoScaleFonts && _graph.state != Origin::Window::Maximized);
 		} else {
 			ml->askOnCloseEvent(false);
 			ml->close();
