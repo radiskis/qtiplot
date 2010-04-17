@@ -240,8 +240,9 @@ public slots:
 	void open();
 	ApplicationWindow* open(const QString& fn, bool factorySettings = false, bool newProject = true);
 	ApplicationWindow* openProject(const QString& fn, bool factorySettings = false, bool newProject = true);
+#ifdef OPJ_IMPORT
 	ApplicationWindow* importOPJ(const QString& fn, bool factorySettings = false, bool newProject = true);
-
+#endif
 	void closeProject();
 
 	/**
