@@ -1072,20 +1072,53 @@ void Graph3D::zoomChanged(double)
 
 void Graph3D::resetAxesLabels()
 {
-	sp->coordinates()->axes[X1].setLabelString(labels[0]);
-	sp->coordinates()->axes[X2].setLabelString(labels[0]);
-	sp->coordinates()->axes[X3].setLabelString(labels[0]);
-	sp->coordinates()->axes[X4].setLabelString(labels[0]);
+	QString s = labels[0];
+	if (s == "%(?X)"){
+		QStringList lst = plotAssociation.split(",");
+		if (!lst.isEmpty()){
+			s = lst[0].remove("(X)");
+			int pos = s.lastIndexOf("_");
+			if (pos > 0)
+				s = s.right(s.length() - pos - 1);
+		}
+	}
 
-	sp->coordinates()->axes[Y1].setLabelString(labels[1]);
-	sp->coordinates()->axes[Y2].setLabelString(labels[1]);
-	sp->coordinates()->axes[Y3].setLabelString(labels[1]);
-	sp->coordinates()->axes[Y4].setLabelString(labels[1]);
+	sp->coordinates()->axes[X1].setLabelString(s);
+	sp->coordinates()->axes[X2].setLabelString(s);
+	sp->coordinates()->axes[X3].setLabelString(s);
+	sp->coordinates()->axes[X4].setLabelString(s);
 
-	sp->coordinates()->axes[Z1].setLabelString(labels[2]);
-	sp->coordinates()->axes[Z2].setLabelString(labels[2]);
-	sp->coordinates()->axes[Z3].setLabelString(labels[2]);
-	sp->coordinates()->axes[Z4].setLabelString(labels[2]);
+	s = labels[1];
+	if (s == "%(?Y)"){
+		QStringList lst = plotAssociation.split(",");
+		if (!lst.isEmpty()){
+			s = lst[1].remove("(Y)");
+			int pos = s.lastIndexOf("_");
+			if (pos > 0)
+				s = s.right(s.length() - pos - 1);
+		}
+	}
+
+	sp->coordinates()->axes[Y1].setLabelString(s);
+	sp->coordinates()->axes[Y2].setLabelString(s);
+	sp->coordinates()->axes[Y3].setLabelString(s);
+	sp->coordinates()->axes[Y4].setLabelString(s);
+
+	s = labels[2];
+	if (s == "%(?Z)"){
+		QStringList lst = plotAssociation.split(",");
+		if (!lst.isEmpty()){
+			s = lst[2].remove("(Z)");
+			int pos = s.lastIndexOf("_");
+			if (pos > 0)
+				s = s.right(s.length() - pos - 1);
+		}
+	}
+
+	sp->coordinates()->axes[Z1].setLabelString(s);
+	sp->coordinates()->axes[Z2].setLabelString(s);
+	sp->coordinates()->axes[Z3].setLabelString(s);
+	sp->coordinates()->axes[Z4].setLabelString(s);
 }
 
 void Graph3D::setAxesLabels(const QStringList& l)
@@ -1116,12 +1149,12 @@ void Graph3D::setAxesLabels(const QStringList& l)
 
 void Graph3D::setXAxisLabel(const QString& label)
 {
-    if (labels[0] != label){
-        sp->coordinates()->axes[X1].setLabelString(label);
-        sp->coordinates()->axes[X2].setLabelString(label);
-        sp->coordinates()->axes[X3].setLabelString(label);
-        sp->coordinates()->axes[X4].setLabelString(label);
-        labels[0]=label;
+	if (labels[0] != label){
+		sp->coordinates()->axes[X1].setLabelString(label);
+		sp->coordinates()->axes[X2].setLabelString(label);
+		sp->coordinates()->axes[X3].setLabelString(label);
+		sp->coordinates()->axes[X4].setLabelString(label);
+		labels[0] = label;
     }
 
 	sp->makeCurrent();

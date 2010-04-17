@@ -37,7 +37,9 @@ using namespace boost;
 
 Origin610Parser::Origin610Parser(const string& fileName)
 :	Origin800Parser(fileName)
-{}
+{
+	d_start_offset = 0x10 + 1;
+}
 
 bool Origin610Parser::parse()
 {
@@ -50,7 +52,7 @@ bool Origin610Parser::parse()
 	stringstream out;
 	unsigned char c;
 	/////////////////// find column ///////////////////////////////////////////////////////////
-	file.seekg(0x10 + 1, ios_base::beg);
+	file.seekg(d_start_offset, ios_base::beg);
 	unsigned int size;
 	file >> size;
 	file.seekg(1 + size + 1 + 5, ios_base::cur);
