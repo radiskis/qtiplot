@@ -7289,6 +7289,10 @@ Autocompletion will not be available!</source>
         <source>Waterfall Plot</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>&amp;Extract Data...</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ArrowMarker</name>
@@ -10148,6 +10152,61 @@ The following special codes can be used:
     <message>
         <source>&lt;&lt; &amp;Advanced</source>
         <translation>&lt;&lt; Opţiuni &amp;Avansate</translation>
+    </message>
+</context>
+<context>
+    <name>ExtractDataDialog</name>
+    <message>
+        <source>QtiPlot</source>
+        <translation type="unfinished">QtiPlot</translation>
+    </message>
+    <message>
+        <source>Extract Data</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>For row (i)</source>
+        <translation type="unfinished">De la linia (i)</translation>
+    </message>
+    <message>
+        <source>to</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add function</source>
+        <translation type="unfinished">Adaugă funcţie</translation>
+    </message>
+    <message>
+        <source>Add column</source>
+        <translation type="unfinished">Adaugă coloană</translation>
+    </message>
+    <message>
+        <source>Add operator</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Apply</source>
+        <translation type="unfinished">&amp;Aplică</translation>
+    </message>
+    <message>
+        <source>Clear &amp;Formulas</source>
+        <translation type="unfinished">Şterge &amp;formulele</translation>
+    </message>
+    <message>
+        <source>&amp;Close</source>
+        <translation type="unfinished">În&amp;chide</translation>
+    </message>
+    <message>
+        <source>&amp;Put into table</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Table</source>
+        <translation type="unfinished">Tabel</translation>
+    </message>
+    <message>
+        <source>Cond&amp;ition:</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -14894,6 +14953,18 @@ have the same number of rows.</source>
     <message>
         <source>Tolerance (Douglas-Peucker algorithm)</source>
         <translation>Toleranţa pentru algoritmul Douglas-Peucker</translation>
+    </message>
+    <message>
+        <source>Scale &amp;Fonts</source>
+        <translation type="unfinished">Redimensionare &amp;fonturi</translation>
+    </message>
+    <message>
+        <source>Do not &amp;resize layers when window size changes</source>
+        <translation type="unfinished">Nu &amp;redimensiona graficele când dimeniunea ferestrei se schimbă</translation>
+    </message>
+    <message>
+        <source>Dimensions</source>
+        <translation type="unfinished">Dimensiuni</translation>
     </message>
 </context>
 <context>

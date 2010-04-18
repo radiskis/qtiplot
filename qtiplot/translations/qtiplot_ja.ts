@@ -4344,6 +4344,10 @@ Autocompletion will not be available!</source>
         <source>Waterfall Plot</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>&amp;Extract Data...</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ArrowMarker</name>
@@ -7128,6 +7132,61 @@ The following special codes can be used:
     <name>ExtensibleFileDialog</name>
     <message>
         <source>&lt;&lt; &amp;Advanced</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ExtractDataDialog</name>
+    <message>
+        <source>QtiPlot</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Extract Data</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>For row (i)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>to</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add function</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add column</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add operator</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Apply</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Clear &amp;Formulas</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Close</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Put into table</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Table</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cond&amp;ition:</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -11777,6 +11836,18 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Tolerance (Douglas-Peucker algorithm)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Scale &amp;Fonts</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Do not &amp;resize layers when window size changes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Dimensions</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

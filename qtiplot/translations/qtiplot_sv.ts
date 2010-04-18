@@ -8379,6 +8379,10 @@ Automatisk komplettering ej tillgängligt!</translation>
         <source>Waterfall Plot</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>&amp;Extract Data...</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ArrowMarker</name>
@@ -11427,6 +11431,61 @@ Följande specialkoder kan användas:
     <message>
         <source>&lt;&lt; &amp;Advanced</source>
         <translation>&lt;&lt; &amp;Avancerat&lt;&lt;&amp;Avancerat</translation>
+    </message>
+</context>
+<context>
+    <name>ExtractDataDialog</name>
+    <message>
+        <source>QtiPlot</source>
+        <translation type="unfinished">QtiPlot</translation>
+    </message>
+    <message>
+        <source>Extract Data</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>For row (i)</source>
+        <translation type="unfinished">För rad (i)</translation>
+    </message>
+    <message>
+        <source>to</source>
+        <translation type="unfinished">till</translation>
+    </message>
+    <message>
+        <source>Add function</source>
+        <translation type="unfinished">Lägg till funktion</translation>
+    </message>
+    <message>
+        <source>Add column</source>
+        <translation type="unfinished">Lägg till kolumn</translation>
+    </message>
+    <message>
+        <source>Add operator</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Apply</source>
+        <translation type="unfinished">&amp;Tillämpa</translation>
+    </message>
+    <message>
+        <source>Clear &amp;Formulas</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Close</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Put into table</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Table</source>
+        <translation type="unfinished">Tabell</translation>
+    </message>
+    <message>
+        <source>Cond&amp;ition:</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -17628,6 +17687,18 @@ Vill du skjuta in celler?</translation>
     <message>
         <source>Tolerance (Douglas-Peucker algorithm)</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Scale &amp;Fonts</source>
+        <translation type="unfinished">Skala &amp;teckensnitt</translation>
+    </message>
+    <message>
+        <source>Do not &amp;resize layers when window size changes</source>
+        <translation type="unfinished">Förändra inte sto&amp;rlek på lager när fönsterstorlek ändras</translation>
+    </message>
+    <message>
+        <source>Dimensions</source>
+        <translation type="unfinished">Dimensioner</translation>
     </message>
 </context>
 <context>

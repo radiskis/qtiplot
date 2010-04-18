@@ -82,10 +82,11 @@ public:
 
 	double avg(int col, int startRow = 0, int endRow = -1);
 	double sum(int col, int startRow = 0, int endRow = -1);
+	Table* extractData(const QString& name, const QString& condition, int startRow = 0, int endRow = -1);
 
 public slots:
 	MyTable* table(){return d_table;};
-	void copy(Table *m);
+	void copy(Table *m, bool values = true);
 	int numRows();
 	int numCols();
 	void setNumRows(int rows);

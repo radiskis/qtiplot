@@ -3805,6 +3805,10 @@ L&apos;autocomplétion ne sera pas disponible!</translation>
         <source>Waterfall Plot</source>
         <translation>Courbes en cascade</translation>
     </message>
+    <message>
+        <source>&amp;Extract Data...</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ArrowMarker</name>
@@ -6603,6 +6607,61 @@ Les codes spéciaux suivant peuvent être utilisés :
     </message>
 </context>
 <context>
+    <name>ExtractDataDialog</name>
+    <message>
+        <source>QtiPlot</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Extract Data</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>For row (i)</source>
+        <translation type="unfinished">Pour la rangée (i)</translation>
+    </message>
+    <message>
+        <source>to</source>
+        <translation type="unfinished">à</translation>
+    </message>
+    <message>
+        <source>Add function</source>
+        <translation type="unfinished">Ajouter une fonction</translation>
+    </message>
+    <message>
+        <source>Add column</source>
+        <translation type="unfinished">Ajouter une colonne</translation>
+    </message>
+    <message>
+        <source>Add operator</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Apply</source>
+        <translation type="unfinished">&amp;Appliquer</translation>
+    </message>
+    <message>
+        <source>Clear &amp;Formulas</source>
+        <translation type="unfinished">Effacer les &amp;formules</translation>
+    </message>
+    <message>
+        <source>&amp;Close</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Put into table</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Table</source>
+        <translation type="unfinished">Table</translation>
+    </message>
+    <message>
+        <source>Cond&amp;ition:</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>FFT</name>
     <message>
         <source>FFT</source>
@@ -8553,7 +8612,11 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Separator: </source>
-        <translation>Séparateur :</translation>
+        <translation type="obsolete">Séparateur :</translation>
+    </message>
+    <message>
+        <source>Separator:</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -11258,6 +11321,18 @@ have the same number of rows.</source>
         <source>Apply to curves with more than</source>
         <translation type="obsolete">Appliquer aux courbes de plus de</translation>
     </message>
+    <message>
+        <source>Scale &amp;Fonts</source>
+        <translation type="unfinished">&amp;Taille de la police</translation>
+    </message>
+    <message>
+        <source>Do not &amp;resize layers when window size changes</source>
+        <translation type="unfinished">Ne pas &amp;redimensionner les planches lorsque la taille de la fenêtre change</translation>
+    </message>
+    <message>
+        <source>Dimensions</source>
+        <translation type="unfinished">Dimensions</translation>
+    </message>
 </context>
 <context>
     <name>PlotWizard</name>
@@ -13176,7 +13251,7 @@ Calcule le sinus de x.</translation>
     </message>
     <message>
         <source>Column Name</source>
-        <translation>Nom de la colonne</translation>
+        <translation type="obsolete">Nom de la colonne</translation>
     </message>
     <message>
         <source>Plot Designation</source>
@@ -13217,6 +13292,10 @@ Calcule le sinus de x.</translation>
     <message>
         <source>Comment:</source>
         <translation>Commentaire :</translation>
+    </message>
+    <message>
+        <source>Column Name:</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
