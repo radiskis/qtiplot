@@ -650,6 +650,73 @@ bool Table::calculate(int col, int startRow, int endRow, bool forceMuParser, boo
 	return true;
 }
 
+Table* Table::extractData(const QString& name, const QString& condition, int startRow, int endRow)
+{
+	if (startRow < 0)
+		startRow = 0;
+
+	if (endRow < 0 || endRow >= numRows())
+		endRow = numRows();
+
+	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+
+	muParserScript *mup = new muParserScript(scriptEnv, condition, this,  QString("<%1>").arg(this->objectName()));
+	double *r = mup->defineVariable("i");
+	mup->defineVariable("sr", startRow + 1.0);
+	mup->defineVariable("er", endRow + 1.0);
+
+	if (!mup->compile()){
+		QApplication::restoreOverrideCursor();
+		return 0;
+	}
+
+	ApplicationWindow *app = applicationWindow();
+	if (!app)
+		return 0;
+
+	int cols = d_table->numCols();
+	Table *dest = app->table(name);
+	if (dest){
+		dest->setNumCols(cols);
+		dest->setNumRows(numRows());
+	} else
+		dest = app->newTable(numRows(), cols, name);
+
+	if (!dest)
+		return 0;
+
+	int aux = 0;
+	if (mup->codeLines() == 1){
+		for (int i = startRow; i <= endRow; i++){
+			*r = i + 1.0;
+			if (mup->evalSingleLine()){
+				for (int j = 0; j < cols; j++)
+					dest->setText(aux, j, this->text(i, j));
+
+				aux++;
+			}
+		}
+	} else {
+		QVariant ret;
+		for (int i = startRow; i <= endRow; i++){
+			*r = i + 1.0;
+			ret = mup->eval();
+			if (ret.type() == QVariant::Double && ret.toDouble()){
+				for (int j = 0; j < cols; j++)
+					dest->setText(aux, j, this->text(i, j));
+
+				aux++;
+			}
+		}
+	}
+
+	if (aux)
+		dest->setNumRows(aux);
+	dest->copy(this, false);
+	QApplication::restoreOverrideCursor();
+	return dest;
+}
+
 void Table::updateValues(Table* t, const QString& columnName)
 {
     if (!t || t != this)
@@ -3101,13 +3168,16 @@ void Table::resizeCols(int c)
 	emit modifiedWindow(this);
 }
 
-void Table::copy(Table *m)
+void Table::copy(Table *m, bool values)
 {
 	int rows = d_table->numRows();
 	int cols = d_table->numCols();
-	for (int i=0; i<rows; i++){
-		for (int j=0; j<cols; j++)
-			d_table->setText(i, j, m->text(i, j));
+
+	if (values){
+		for (int i=0; i<rows; i++){
+			for (int j=0; j<cols; j++)
+				d_table->setText(i, j, m->text(i, j));
+		}
 	}
 
 	for (int i=0; i<cols; i++){

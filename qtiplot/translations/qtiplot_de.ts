@@ -9801,6 +9801,10 @@ Autocompletion will not be available!</source>
         <source>Waterfall Plot</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>&amp;Extract Data...</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ArrowMarker</name>
@@ -13058,6 +13062,61 @@ Die folgenden Spezialcodes können benutzt werden:
     <message>
         <source>&lt;&lt; &amp;Advanced</source>
         <translation>&lt;&lt; &amp;Erweitert</translation>
+    </message>
+</context>
+<context>
+    <name>ExtractDataDialog</name>
+    <message>
+        <source>QtiPlot</source>
+        <translation type="unfinished">QtiPlot</translation>
+    </message>
+    <message>
+        <source>Extract Data</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>For row (i)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>to</source>
+        <translation type="unfinished">bis</translation>
+    </message>
+    <message>
+        <source>Add function</source>
+        <translation type="unfinished">Funktion hinzufügen</translation>
+    </message>
+    <message>
+        <source>Add column</source>
+        <translation type="unfinished">Spalte hinzufügen</translation>
+    </message>
+    <message>
+        <source>Add operator</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Apply</source>
+        <translation type="unfinished">&amp;Anwenden</translation>
+    </message>
+    <message>
+        <source>Clear &amp;Formulas</source>
+        <translation type="unfinished">&amp;Formeln löschen</translation>
+    </message>
+    <message>
+        <source>&amp;Close</source>
+        <translation type="unfinished">S&amp;chließen</translation>
+    </message>
+    <message>
+        <source>&amp;Put into table</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Table</source>
+        <translation type="unfinished">Tabelle</translation>
+    </message>
+    <message>
+        <source>Cond&amp;ition:</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -20283,6 +20342,18 @@ Wollen sie Zellen einfügen?</translation>
     <message>
         <source>Tolerance (Douglas-Peucker algorithm)</source>
         <translation>Toleranz (Douglas-Peucker-Algorithmus)</translation>
+    </message>
+    <message>
+        <source>Scale &amp;Fonts</source>
+        <translation type="unfinished">Schri&amp;ftarten skalieren</translation>
+    </message>
+    <message>
+        <source>Do not &amp;resize layers when window size changes</source>
+        <translation type="unfinished">Ebenen nicht &amp;reskalieren, wenn sich die Fenstergröße ändert</translation>
+    </message>
+    <message>
+        <source>Dimensions</source>
+        <translation type="unfinished">Dimensionen</translation>
     </message>
 </context>
 <context>

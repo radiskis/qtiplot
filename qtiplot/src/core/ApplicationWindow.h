@@ -741,6 +741,7 @@ public slots:
 	void showColsDialog();
 	void showColMenu(int c);
 	void showColumnValuesDialog();
+	void showExtractDataDialog();
 
 	void showGraphContextMenu();
 	void showTableContextMenu(bool selection);
@@ -1470,7 +1471,7 @@ private:
     QAction *actionIncreaseIndent, *actionDecreaseIndent, *actionFind, *actionFindNext, *actionFindPrev, *actionReplace;
     QAction *actionIncreasePrecision, *actionDecreasePrecision, *actionPrintPreview;
 	QAction *actionVertSharedAxisLayers, *actionHorSharedAxisLayers, *actionSharedAxesLayers, *actionStackSharedAxisLayers;
-	QAction *actionCustomSharedAxisLayers, *actionCustomLayout;
+	QAction *actionCustomSharedAxisLayers, *actionCustomLayout, *actionExtractTableData;
 
     QList<QAction *> d_user_actions;
     QUndoView *d_undo_view;

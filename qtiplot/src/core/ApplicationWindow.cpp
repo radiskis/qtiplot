@@ -48,6 +48,7 @@
 #include <SymbolDialog.h>
 #include <ExportDialog.h>
 #include <SetColValuesDialog.h>
+#include <ExtractDataDialog.h>
 #include <TableDialog.h>
 #include <TableStatistics.h>
 #include <Fit.h>
@@ -1512,6 +1513,7 @@ void ApplicationWindow::tableMenuAboutToShow()
 	tableMenu->insertSeparator();
 	tableMenu->addAction(actionGoToRow);
 	tableMenu->addAction(actionGoToColumn);
+	tableMenu->addAction(actionExtractTableData);
 	tableMenu->insertSeparator();
 
 	QMenu *convertToMatrixMenu = tableMenu->addMenu(tr("Convert to &Matrix"));
@@ -6979,6 +6981,19 @@ void ApplicationWindow::showColumnValuesDialog()
         vd->exec();
     } else
         QMessageBox::warning(this, tr("QtiPlot - Column selection error"), tr("Please select a column first!"));
+}
+
+void ApplicationWindow::showExtractDataDialog()
+{
+	Table *w = (Table*)activeWindow(TableWindow);
+	if (!w)
+		return;
+
+	ExtractDataDialog* edd = new ExtractDataDialog(scriptEnv, this);
+	edd->setTable(w);
+	if (d_completion)
+		edd->setCompleter(d_completer);
+	edd->exec();
 }
 
 void ApplicationWindow::recalculateTable()
@@ -13510,6 +13525,9 @@ void ApplicationWindow::createActions()
 	connect(actionShowColumnValuesDialog, SIGNAL(activated()), this, SLOT(showColumnValuesDialog()));
 	actionShowColumnValuesDialog->setShortcut(tr("Alt+Q"));
 
+	actionExtractTableData = new QAction(tr("&Extract Data..."), this);
+	connect(actionExtractTableData, SIGNAL(activated()), this, SLOT(showExtractDataDialog()));
+
 	actionTableRecalculate = new QAction(tr("Recalculate"), this);
 	actionTableRecalculate->setShortcut(tr("Ctrl+Return"));
 	connect(actionTableRecalculate, SIGNAL(activated()), this, SLOT(recalculateTable()));
@@ -14388,6 +14406,8 @@ void ApplicationWindow::translateActionsStrings()
 	actionMoveRowDown->setToolTip(tr("Move current row downward"));
 	actionAdjustColumnWidth->setMenuText(tr("Ad&just Column Width"));
 	actionAdjustColumnWidth->setToolTip(tr("Set optimal column width"));
+
+	actionExtractTableData->setMenuText(tr("&Extract Data..."));
 
 	actionAbout->setMenuText(tr("&About QtiPlot"));
 	actionAbout->setShortcut(tr("F1"));

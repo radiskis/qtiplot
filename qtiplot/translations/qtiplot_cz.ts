@@ -3821,6 +3821,10 @@ Různé části tohoto souboru se nemusí zobrazovat tak, jak se očekává.</tr
         <source>Waterfall Plot</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>&amp;Extract Data...</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ArrowMarker</name>
@@ -6625,6 +6629,61 @@ K tomu lze použít následujících zvláštních kódů:
     <message>
         <source>&lt;&lt; &amp;Advanced</source>
         <translation>&lt;&lt; &amp;Rozšířené volby</translation>
+    </message>
+</context>
+<context>
+    <name>ExtractDataDialog</name>
+    <message>
+        <source>QtiPlot</source>
+        <translation type="unfinished">QtiPlot</translation>
+    </message>
+    <message>
+        <source>Extract Data</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>For row (i)</source>
+        <translation type="unfinished">Pro řádek (i)</translation>
+    </message>
+    <message>
+        <source>to</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add function</source>
+        <translation type="unfinished">Přidat funkci</translation>
+    </message>
+    <message>
+        <source>Add column</source>
+        <translation type="unfinished">Přidat sloupec</translation>
+    </message>
+    <message>
+        <source>Add operator</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Apply</source>
+        <translation type="unfinished">&amp;Použít</translation>
+    </message>
+    <message>
+        <source>Clear &amp;Formulas</source>
+        <translation type="unfinished">Smazat &amp;vzorce</translation>
+    </message>
+    <message>
+        <source>&amp;Close</source>
+        <translation type="unfinished">&amp;Zavřít</translation>
+    </message>
+    <message>
+        <source>&amp;Put into table</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Table</source>
+        <translation type="unfinished">Tabulka</translation>
+    </message>
+    <message>
+        <source>Cond&amp;ition:</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -11323,6 +11382,18 @@ K tomu lze použít následujících zvláštních kódů:
     <message>
         <source>Tolerance (Douglas-Peucker algorithm)</source>
         <translation>Dovolená úchylka (algoritmus Douglas-Peucker)</translation>
+    </message>
+    <message>
+        <source>Scale &amp;Fonts</source>
+        <translation type="unfinished">Velikost &amp;písma</translation>
+    </message>
+    <message>
+        <source>Do not &amp;resize layers when window size changes</source>
+        <translation type="unfinished">Neměnit &amp;velikost vrstev při změně velikosti okna</translation>
+    </message>
+    <message>
+        <source>Dimensions</source>
+        <translation type="unfinished">Rozměry</translation>
     </message>
 </context>
 <context>
