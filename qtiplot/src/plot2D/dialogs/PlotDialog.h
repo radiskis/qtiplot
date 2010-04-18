@@ -120,6 +120,10 @@ private slots:
 	void adjustLayerHeight(double width);
 	void adjustLayerWidth(double height);
 	void displayCoordinates(int unit, Graph *g = 0);
+	//plot window geometry
+	void displayPlotCoordinates(int unit);
+	void adjustPlotWidth(double height);
+	void adjustPlotHeight(double width);
 
 protected slots:
     void setActiveLayer(LayerItem *item);
@@ -170,6 +174,7 @@ private:
 	void initContourLinesPage();
 	void initLayerPage();
 	void initLayerGeometryPage();
+	void initPlotGeometryPage();
 	void initLayerSpeedPage();
 	void initFontsPage();
 	void initMiscPage();
@@ -184,7 +189,7 @@ private:
     void updateContourLevelsDisplay(Spectrogram *sp);
     QRect layerCanvasRect(QWidget *widget, double x, double y, double w, double h, FrameWidget::Unit unit);
 
-	double aspect_ratio;
+	double aspect_ratio, plot_aspect_ratio;
 
     QFont titleFont, legendFont, axesFont, numbersFont;
 
@@ -297,13 +302,17 @@ private:
 	DoubleSpinBox *boxDouglasPeukerTolerance;
 	QGroupBox *speedModeBox;
 
-	QWidget *miscPage;
+	QWidget *miscPage, *plotGeometryPage;
 	QCheckBox *boxLinkXAxes;
 	QComboBox *boxLinkAllXAxes;
 
 	FunctionDialog *functionEdit;
 	QSpinBox *boxCurveOpacity;
 	QSlider *curveOpacitySlider;
+
+	DoubleSpinBox *boxPlotX, *boxPlotY, *boxPlotWidth, *boxPlotHeight;
+	QComboBox *plotUnitBox;
+	QCheckBox *boxResizeLayers, *keepPlotRatioBox, *layerScaleFonts;
 };
 
 /*****************************************************************************
