@@ -124,6 +124,7 @@ PlotDialog::PlotDialog(bool showExtended, QWidget* parent, Qt::WFlags fl )
 	initMiscPage();
 	initLabelsPage();
 	initFunctionPage();
+	initPlotGeometryPage();
 	clearTabWidget();
 
     QHBoxLayout* hb2 = new QHBoxLayout();
@@ -412,7 +413,10 @@ void PlotDialog::initLayerPage()
     boxMargin->setSingleStep(5);
     boxBkgLayout->addWidget( boxMargin, 3, 3);
 
-	boxBkgLayout->setRowStretch(4, 1);
+	layerScaleFonts = new QCheckBox(tr("Scale &Fonts"));
+	boxBkgLayout->addWidget(layerScaleFonts, 4, 0);
+
+	boxBkgLayout->setRowStretch(5, 1);
 
     QVBoxLayout *vl = new QVBoxLayout();
 
@@ -446,6 +450,85 @@ void PlotDialog::initLayerPage()
 	connect(boxBackgroundColor, SIGNAL(colorChanged()), this, SLOT(applyLayerFormat()));
 	connect(boxCanvasColor, SIGNAL(colorChanged()), this, SLOT(applyLayerFormat()));
 	connect(boxBorderWidth, SIGNAL(valueChanged (int)), this, SLOT(applyLayerFormat()));
+}
+
+
+void PlotDialog::initPlotGeometryPage()
+{
+	ApplicationWindow *app = (ApplicationWindow *)parent();
+	QLocale locale = QLocale();
+	if (app)
+		locale = app->locale();
+
+	plotUnitBox = new QComboBox();
+	plotUnitBox->insertItem(tr("inch"));
+	plotUnitBox->insertItem(tr("mm"));
+	plotUnitBox->insertItem(tr("cm"));
+	plotUnitBox->insertItem(tr("point"));
+	plotUnitBox->insertItem(tr("pixel"));
+	plotUnitBox->setCurrentIndex(app->d_layer_geometry_unit);
+
+	QHBoxLayout *bl1 = new QHBoxLayout();
+	bl1->addWidget(new QLabel(tr( "Unit" )));
+	bl1->addWidget(plotUnitBox);
+
+	QGroupBox *gb1 = new QGroupBox(tr("Origin"));
+	boxPlotX = new DoubleSpinBox();
+	boxPlotX->setLocale(locale);
+	boxPlotX->setDecimals(6);
+
+	boxPlotY = new DoubleSpinBox();
+	boxPlotY->setLocale(locale);
+	boxPlotY->setDecimals(6);
+
+	QGridLayout *gl1 = new QGridLayout(gb1);
+	gl1->addWidget(new QLabel( tr("X= ")), 0, 0);
+	gl1->addWidget(boxPlotX, 0, 1);
+	gl1->addWidget(new QLabel(tr("Y= ")), 1, 0);
+	gl1->addWidget(boxPlotY, 1, 1);
+	gl1->setRowStretch(2, 1);
+
+	QGroupBox *gb2 = new QGroupBox(tr("Size"));
+	boxPlotWidth = new DoubleSpinBox();
+	boxPlotWidth->setMinimum(0);
+	boxPlotWidth->setLocale(locale);
+	boxPlotWidth->setDecimals(6);
+
+	boxPlotHeight = new DoubleSpinBox();
+	boxPlotHeight->setMinimum(0);
+	boxPlotHeight->setLocale(locale);
+	boxPlotHeight->setDecimals(6);
+
+	QGridLayout *gl2 = new QGridLayout(gb2);
+	gl2->addWidget(new QLabel( tr("width= ")), 0, 0);
+	gl2->addWidget(boxPlotWidth, 0, 1);
+
+	gl2->addWidget(new QLabel(tr("height= ")), 2, 0);
+	gl2->addWidget(boxPlotHeight, 2, 1);
+
+	keepPlotRatioBox = new QCheckBox(tr("Keep aspect ratio"));
+	keepPlotRatioBox->setChecked(app->d_keep_aspect_ration);
+	gl2->addWidget(keepRatioBox, 3, 1);
+
+	gl2->setRowStretch(4, 1);
+
+	QHBoxLayout *bl2 = new QHBoxLayout();
+	bl2->addWidget(gb1);
+	bl2->addWidget(gb2);
+
+	plotGeometryPage = new QWidget();
+	QVBoxLayout * vl = new QVBoxLayout(plotGeometryPage);
+	vl->addLayout(bl1);
+	vl->addLayout(bl2);
+
+	boxResizeLayers = new QCheckBox(tr("Do not &resize layers when window size changes"));
+	vl->addWidget(boxResizeLayers);
+
+	privateTabWidget->addTab(plotGeometryPage, tr("Dimensions"));
+
+	connect(boxPlotWidth, SIGNAL(valueChanged (double)), this, SLOT(adjustPlotHeight(double)));
+	connect(boxPlotHeight, SIGNAL(valueChanged (double)), this, SLOT(adjustPlotWidth(double)));
+	connect(plotUnitBox, SIGNAL(activated(int)), this, SLOT(displayPlotCoordinates(int)));
 }
 
 void PlotDialog::initLayerGeometryPage()
@@ -1550,6 +1633,8 @@ void PlotDialog::setMultiLayer(MultiLayer *ml)
         return;
 
     d_ml = ml;
+	displayPlotCoordinates(ml->applicationWindow()->d_layer_geometry_unit);
+	boxResizeLayers->setChecked(!ml->scaleLayersOnResize());
 
 	boxLinkXAxes->setChecked(d_ml->hasLinkedXLayerAxes());
 
@@ -1779,10 +1864,11 @@ void PlotDialog::updateTabWindow(QTreeWidgetItem *currentItem, QTreeWidgetItem *
         setActiveLayer((LayerItem *)currentItem);
     } else {
         clearTabWidget();
+		privateTabWidget->addTab(plotGeometryPage, tr("Dimensions"));
 		privateTabWidget->addTab(printPage, tr("Print"));
         privateTabWidget->addTab(fontsPage, tr("Fonts"));
 		privateTabWidget->addTab(miscPage, tr("Miscellaneous"));
-        privateTabWidget->showPage(printPage);
+		privateTabWidget->showPage(plotGeometryPage);
 
         curvePlotTypeBox->hide();
         btnWorksheet->hide();
@@ -1899,6 +1985,7 @@ void PlotDialog::clearTabWidget()
 	privateTabWidget->removeTab(privateTabWidget->indexOf(printPage));
 	privateTabWidget->removeTab(privateTabWidget->indexOf(miscPage));
 	privateTabWidget->removeTab(privateTabWidget->indexOf(functionPage));
+	privateTabWidget->removeTab(privateTabWidget->indexOf(plotGeometryPage));
 }
 
 void PlotDialog::quit()
@@ -2013,6 +2100,7 @@ void PlotDialog::setActiveLayer(LayerItem *item)
 	boxCanvasColor->setColor(c);
 
 	boxAntialiasing->setChecked(g->antialiasing());
+	layerScaleFonts->setChecked(g->autoscaleFonts());
 
 	boxLayerWidth->blockSignals(true);
 	boxLayerHeight->blockSignals(true);
@@ -2517,11 +2605,17 @@ void PlotDialog::applyFormatToLayer(Graph *g)
 	g->setCanvasBackground(c);
 
 	g->setAntialiasing(boxAntialiasing->isChecked());
+	g->setAutoscaleFonts(layerScaleFonts->isChecked());
 }
 
 bool PlotDialog::acceptParams()
 {
-    if (privateTabWidget->currentWidget() == fontsPage){
+	if (privateTabWidget->currentWidget() == plotGeometryPage){
+		FrameWidget::setRect(d_ml, boxPlotX->value(), boxPlotY->value(), boxPlotWidth->value(),
+		boxPlotHeight->value(), (FrameWidget::Unit)plotUnitBox->currentIndex());
+		d_ml->setScaleLayersOnResize(!boxResizeLayers->isChecked());
+		return true;
+	} else if (privateTabWidget->currentWidget() == fontsPage){
 		d_ml->setFonts(titleFont, axesFont, numbersFont, legendFont);
 		return true;
     } else if (privateTabWidget->currentWidget() == printPage){
@@ -3137,12 +3231,32 @@ void PlotDialog::adjustLayerWidth(double height)
 		aspect_ratio = boxLayerWidth->value()/height;
 }
 
+void PlotDialog::adjustPlotHeight(double width)
+{
+	if (keepPlotRatioBox->isChecked()){
+		boxPlotHeight->blockSignals(true);
+		boxPlotHeight->setValue(width/plot_aspect_ratio);
+		boxPlotHeight->blockSignals(false);
+	} else
+		plot_aspect_ratio = width/boxPlotHeight->value();
+}
+
+void PlotDialog::adjustPlotWidth(double height)
+{
+	if (keepPlotRatioBox->isChecked()){
+		boxPlotWidth->blockSignals(true);
+		boxPlotWidth->setValue(height*plot_aspect_ratio);
+		boxPlotWidth->blockSignals(false);
+	} else
+		plot_aspect_ratio = boxPlotWidth->value()/height;
+}
+
 void PlotDialog::closeEvent(QCloseEvent* e)
 {
 	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(this->parent());
 	if (app){
 		app->d_extended_plot_dialog = btnMore->isChecked ();
-		app->d_keep_aspect_ration = keepRatioBox->isChecked();
+		app->d_keep_aspect_ration = keepRatioBox->isChecked() || keepPlotRatioBox->isChecked();
 	}
 
 	e->accept();
@@ -3198,6 +3312,38 @@ int PlotDialog::labelsAlignment()
 			break;
 	}
 	return align;
+}
+
+void PlotDialog::displayPlotCoordinates(int unit)
+{
+	if (unit == FrameWidget::Pixel || unit == FrameWidget::Point){
+		boxPlotX->setFormat('f', 0);
+		boxPlotY->setFormat('f', 0);
+		boxPlotWidth->setFormat('f', 0);
+		boxPlotHeight->setFormat('f', 0);
+
+		boxPlotX->setSingleStep(1.0);
+		boxPlotY->setSingleStep(1.0);
+		boxPlotWidth->setSingleStep(1.0);
+		boxPlotHeight->setSingleStep(1.0);
+	} else {
+		boxPlotX->setFormat('g', 6);
+		boxPlotY->setFormat('g', 6);
+		boxPlotWidth->setFormat('g', 6);
+		boxPlotHeight->setFormat('g', 6);
+
+		boxPlotX->setSingleStep(0.1);
+		boxPlotY->setSingleStep(0.1);
+		boxPlotWidth->setSingleStep(0.1);
+		boxPlotHeight->setSingleStep(0.1);
+	}
+
+	plot_aspect_ratio = (double)d_ml->width()/(double)d_ml->height();
+
+	boxPlotX->setValue(FrameWidget::xIn(d_ml, (FrameWidget::Unit)unit) + FrameWidget::xIn(d_ml, (FrameWidget::Unit)unit));
+	boxPlotY->setValue(FrameWidget::yIn(d_ml, (FrameWidget::Unit)unit) + FrameWidget::yIn(d_ml, (FrameWidget::Unit)unit));
+	boxPlotWidth->setValue(FrameWidget::widthIn(d_ml, (FrameWidget::Unit)unit));
+	boxPlotHeight->setValue(FrameWidget::heightIn(d_ml, (FrameWidget::Unit)unit));
 }
 
 void PlotDialog::displayCoordinates(int unit, Graph *g)
