@@ -8170,6 +8170,18 @@ Autocompletion will not be available!</source>
         <source>&amp;Extract Data...</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>S&amp;ubtract</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Straight Line...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Reference Data...</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ArrowMarker</name>
@@ -11186,23 +11198,15 @@ The following special codes can be used:
     </message>
     <message>
         <source>Add function</source>
-        <translation type="unfinished">Añadir función</translation>
+        <translation type="obsolete">Añadir función</translation>
     </message>
     <message>
         <source>Add column</source>
-        <translation type="unfinished">Añadir columna</translation>
-    </message>
-    <message>
-        <source>Add operator</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">Añadir columna</translation>
     </message>
     <message>
         <source>&amp;Apply</source>
         <translation type="unfinished">&amp;Aplicar</translation>
-    </message>
-    <message>
-        <source>Clear &amp;Formulas</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>&amp;Close</source>
@@ -11219,6 +11223,22 @@ The following special codes can be used:
     <message>
         <source>Cond&amp;ition:</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add &amp;function</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add co&amp;lumn</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add &amp;operator</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Clea&amp;r</source>
+        <translation type="unfinished">Limpia&amp;r</translation>
     </message>
 </context>
 <context>
@@ -18569,6 +18589,64 @@ Do you want to overwrite it?</source>
     <message>
         <source>Descending</source>
         <translation type="unfinished">Descendente</translation>
+    </message>
+</context>
+<context>
+    <name>SubtractDataDialog</name>
+    <message>
+        <source>QtiPlot</source>
+        <translation type="unfinished">QtiPlot</translation>
+    </message>
+    <message>
+        <source>Math on Data Sets</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cu&amp;rve</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Operator</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Data set</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Current &amp;folder</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Value</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Apply</source>
+        <translation type="unfinished">&amp;Aplicar</translation>
+    </message>
+    <message>
+        <source>&amp;Close</source>
+        <translation type="unfinished">&amp;Cerrar</translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation type="unfinished">Error</translation>
+    </message>
+    <message>
+        <source>Data set %1 must containt at least two valid data points in order to perform this operation!</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>SubtractLineTool</name>
+    <message>
+        <source>Move cursor and click to select and double-click/press &apos;Enter&apos; to set the position of the first point!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>First point selected! Click to select and double-click/press &apos;Enter&apos; to set the position of the 2nd point!</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

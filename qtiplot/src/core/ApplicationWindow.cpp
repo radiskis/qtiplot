@@ -72,6 +72,7 @@
 #include <FilterDialog.h>
 #include <FFTDialog.h>
 #include <FrequencyCountDialog.h>
+#include <SubtractDataDialog.h>
 #include <QwtErrorPlotCurve.h>
 #include <LegendWidget.h>
 #include <TexWidget.h>
@@ -9441,7 +9442,11 @@ void ApplicationWindow::analysisMenuAboutToShow()
         QMenu *translateMenu = analysisMenu->addMenu (tr("&Translate"));
         translateMenu->addAction(actionTranslateVert);
         translateMenu->addAction(actionTranslateHor);
-		analysisMenu->addAction(actionSubtractLine);
+
+		QMenu *subtractMenu = analysisMenu->addMenu(tr("S&ubtract"));
+		subtractMenu->addAction(actionSubtractReference);
+		subtractMenu->addAction(actionSubtractLine);
+
         analysisMenu->insertSeparator();
         analysisMenu->addAction(actionDifferentiate);
 		analysisMenu->addAction(actionIntegrate);
@@ -13851,8 +13856,11 @@ void ApplicationWindow::createActions()
 	actionMultiPeakLorentz = new QAction(tr("&Lorentzian..."), this);
 	connect(actionMultiPeakLorentz, SIGNAL(activated()), this, SLOT(fitMultiPeakLorentz()));
 
-	actionSubtractLine = new QAction(tr("Subtract Straight &Line..."), this);
+	actionSubtractLine = new QAction(tr("&Straight Line..."), this);
 	connect(actionSubtractLine, SIGNAL(activated()), this, SLOT(subtractStraightLine()));
+
+	actionSubtractReference = new QAction(tr("&Reference Data..."), this);
+	connect(actionSubtractReference, SIGNAL(activated()), this, SLOT(subtractReferenceData()));
 
 	actionCheckUpdates = new QAction(tr("Search for &Updates"), this);
 	connect(actionCheckUpdates, SIGNAL(activated()), this, SLOT(searchForUpdates()));
@@ -14534,7 +14542,8 @@ void ApplicationWindow::translateActionsStrings()
 	actionBoxPlot->setMenuText(tr("&Box Plot"));
 	actionBoxPlot->setToolTip(tr("Box and whiskers plot"));
 
-	actionSubtractLine->setMenuText(tr("Subtract Straight &Line..."));
+	actionSubtractReference->setMenuText(tr("&Reference Data..."));
+	actionSubtractLine->setMenuText(tr("&Straight Line..."));
 	actionMultiPeakGauss->setMenuText(tr("&Gaussian..."));
 	actionMultiPeakLorentz->setMenuText(tr("&Lorentzian..."));
 	actionHomePage->setMenuText(tr("&QtiPlot Homepage"));
@@ -15213,6 +15222,21 @@ void ApplicationWindow::subtractStraightLine()
 		g->setActiveTool(new SubtractLineTool(g, this, info, SLOT(setText(const QString&))));
 		displayBar->show();
 	}
+}
+
+void ApplicationWindow::subtractReferenceData()
+{
+	MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
+	if (!plot)
+		return;
+
+	Graph* g = plot->activeLayer();
+	if (!g || !g->validCurvesDataSize())
+		return;
+
+	SubtractDataDialog *sdd = new SubtractDataDialog(this);
+	sdd->setGraph(g);
+	sdd->exec();
 }
 
 void ApplicationWindow::showSupportPage()

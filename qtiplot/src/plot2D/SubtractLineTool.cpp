@@ -118,6 +118,5 @@ void SubtractLineTool::finalize()
 		}
 		t->notifyChanges(c->title().text());
 	}
-	d_graph->replot();
 	d_graph->setActiveTool(NULL);
 }

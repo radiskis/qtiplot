@@ -3809,6 +3809,18 @@ L&apos;autocomplétion ne sera pas disponible!</translation>
         <source>&amp;Extract Data...</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>S&amp;ubtract</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Straight Line...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Reference Data...</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ArrowMarker</name>
@@ -6626,15 +6638,11 @@ Les codes spéciaux suivant peuvent être utilisés :
     </message>
     <message>
         <source>Add function</source>
-        <translation type="unfinished">Ajouter une fonction</translation>
+        <translation type="obsolete">Ajouter une fonction</translation>
     </message>
     <message>
         <source>Add column</source>
-        <translation type="unfinished">Ajouter une colonne</translation>
-    </message>
-    <message>
-        <source>Add operator</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">Ajouter une colonne</translation>
     </message>
     <message>
         <source>&amp;Apply</source>
@@ -6642,7 +6650,7 @@ Les codes spéciaux suivant peuvent être utilisés :
     </message>
     <message>
         <source>Clear &amp;Formulas</source>
-        <translation type="unfinished">Effacer les &amp;formules</translation>
+        <translation type="obsolete">Effacer les &amp;formules</translation>
     </message>
     <message>
         <source>&amp;Close</source>
@@ -6659,6 +6667,22 @@ Les codes spéciaux suivant peuvent être utilisés :
     <message>
         <source>Cond&amp;ition:</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add &amp;function</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add co&amp;lumn</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add &amp;operator</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Clea&amp;r</source>
+        <translation type="unfinished">Efface&amp;r</translation>
     </message>
 </context>
 <context>
@@ -12673,6 +12697,64 @@ Calcule le sinus de x.</translation>
     <message>
         <source>Descending</source>
         <translation>Décroissant</translation>
+    </message>
+</context>
+<context>
+    <name>SubtractDataDialog</name>
+    <message>
+        <source>QtiPlot</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Math on Data Sets</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cu&amp;rve</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Operator</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Data set</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Current &amp;folder</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Value</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Apply</source>
+        <translation type="unfinished">&amp;Appliquer</translation>
+    </message>
+    <message>
+        <source>&amp;Close</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation type="unfinished">Erreur</translation>
+    </message>
+    <message>
+        <source>Data set %1 must containt at least two valid data points in order to perform this operation!</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>SubtractLineTool</name>
+    <message>
+        <source>Move cursor and click to select and double-click/press &apos;Enter&apos; to set the position of the first point!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>First point selected! Click to select and double-click/press &apos;Enter&apos; to set the position of the 2nd point!</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
