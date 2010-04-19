@@ -3248,6 +3248,12 @@ void Table::notifyChanges()
 	emit modifiedWindow(this);
 }
 
+void Table::notifyChanges(const QString& colName)
+{
+	emit modifiedData(this, colName);
+	emit modifiedWindow(this);
+}
+
 void Table::clear()
 {
 	for (int i=0; i<d_table->numCols(); i++)

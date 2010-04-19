@@ -106,6 +106,7 @@
 #include <LineProfileTool.h>
 #include <RangeSelectorTool.h>
 #include <PlotToolInterface.h>
+#include <SubtractLineTool.h>
 #include <AddWidgetTool.h>
 #include <SurfaceDialog.h>
 #include <Graph3D.h>
@@ -9440,6 +9441,7 @@ void ApplicationWindow::analysisMenuAboutToShow()
         QMenu *translateMenu = analysisMenu->addMenu (tr("&Translate"));
         translateMenu->addAction(actionTranslateVert);
         translateMenu->addAction(actionTranslateHor);
+		analysisMenu->addAction(actionSubtractLine);
         analysisMenu->insertSeparator();
         analysisMenu->addAction(actionDifferentiate);
 		analysisMenu->addAction(actionIntegrate);
@@ -13849,6 +13851,9 @@ void ApplicationWindow::createActions()
 	actionMultiPeakLorentz = new QAction(tr("&Lorentzian..."), this);
 	connect(actionMultiPeakLorentz, SIGNAL(activated()), this, SLOT(fitMultiPeakLorentz()));
 
+	actionSubtractLine = new QAction(tr("Subtract Straight &Line..."), this);
+	connect(actionSubtractLine, SIGNAL(activated()), this, SLOT(subtractStraightLine()));
+
 	actionCheckUpdates = new QAction(tr("Search for &Updates"), this);
 	connect(actionCheckUpdates, SIGNAL(activated()), this, SLOT(searchForUpdates()));
 
@@ -14529,6 +14534,7 @@ void ApplicationWindow::translateActionsStrings()
 	actionBoxPlot->setMenuText(tr("&Box Plot"));
 	actionBoxPlot->setToolTip(tr("Box and whiskers plot"));
 
+	actionSubtractLine->setMenuText(tr("Subtract Straight &Line..."));
 	actionMultiPeakGauss->setMenuText(tr("&Gaussian..."));
 	actionMultiPeakLorentz->setMenuText(tr("&Lorentzian..."));
 	actionHomePage->setMenuText(tr("&QtiPlot Homepage"));
@@ -15179,6 +15185,33 @@ void ApplicationWindow::fitMultiPeak(int profile)
 			g->setActiveTool(new MultiPeakFitTool(g, this, (MultiPeakFit::PeakProfile)profile, peaks, info, SLOT(setText(const QString&))));
 			displayBar->show();
 		}
+	}
+}
+
+void ApplicationWindow::subtractStraightLine()
+{
+	MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
+	if (!plot)
+		return;
+	if (plot->isEmpty()){
+		QMessageBox::warning(this,tr("QtiPlot - Warning"),
+				tr("<h4>There are no plot layers available in this window.</h4>"
+					"<p><h4>Please add a layer and try again!</h4>"));
+		btnPointer->setChecked(true);
+		return;
+	}
+
+	Graph* g = (Graph*)plot->activeLayer();
+	if (!g || !g->validCurvesDataSize())
+		return;
+
+	if (g->isPiePlot()){
+		QMessageBox::warning(this,tr("QtiPlot - Warning"),
+				tr("This functionality is not available for pie plots!"));
+		return;
+	} else {
+		g->setActiveTool(new SubtractLineTool(g, this, info, SLOT(setText(const QString&))));
+		displayBar->show();
 	}
 }
 

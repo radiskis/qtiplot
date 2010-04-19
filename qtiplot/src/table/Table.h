@@ -336,6 +336,7 @@ public slots:
 
 	//! This slot notifies the main application that the table has been modified. Triggers the update of 2D plots.
 	void notifyChanges();
+	void notifyChanges(const QString& colName);
 
 	//! Notifies the main application that the width of a table column has been modified by the user.
 	void colWidthModified(int, int, int);

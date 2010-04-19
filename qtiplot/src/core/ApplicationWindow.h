@@ -797,6 +797,7 @@ public slots:
 	void showColorMapDialog();
 	//@}
 
+	void subtractStraightLine();
 	void translateCurveHor();
 	void translateCurve(TranslateCurveTool::Direction direction = TranslateCurveTool::Vertical);
 
@@ -1471,7 +1472,7 @@ private:
     QAction *actionIncreaseIndent, *actionDecreaseIndent, *actionFind, *actionFindNext, *actionFindPrev, *actionReplace;
     QAction *actionIncreasePrecision, *actionDecreasePrecision, *actionPrintPreview;
 	QAction *actionVertSharedAxisLayers, *actionHorSharedAxisLayers, *actionSharedAxesLayers, *actionStackSharedAxisLayers;
-	QAction *actionCustomSharedAxisLayers, *actionCustomLayout, *actionExtractTableData;
+	QAction *actionCustomSharedAxisLayers, *actionCustomLayout, *actionExtractTableData, *actionSubtractLine;
 
     QList<QAction *> d_user_actions;
     QUndoView *d_undo_view;
