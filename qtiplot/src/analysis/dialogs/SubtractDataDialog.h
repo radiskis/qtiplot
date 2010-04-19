@@ -1,10 +1,10 @@
 /***************************************************************************
-    File                 : globals.h
+	File                 : SubtractDataDialog.h
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2006 by Ion Vasilief, Tilman Hoener zu Siederdissen
-    Email (use @ for *)  : ion_vasilief*yahoo.fr, thzs*gmx.net
-    Description          : Definition of global constants
+	Copyright            : (C) 2010 by Ion Vasilief
+    Email (use @ for *)  : ion_vasilief*yahoo.fr
+	Description          : Subtract reference data dialog
 
  ***************************************************************************/
 
@@ -26,16 +26,48 @@
  *   Boston, MA  02110-1301  USA                                           *
  *                                                                         *
  ***************************************************************************/
-//  Don't forget to change the Doxyfile when changing these!
-//! Major version number
-const int maj_version = 0;
-//! Minor version number (0..9)
-const int min_version = 9;
-//! Patch version number (0..9)
-const int patch_version = 7;
-//! Extra version information string (like "alpha", "-2", etc...)
-const char * extra_version = ".14";
-//! Copyright string containing the author names
-const char * copyright_string = "Copyright (C) 2004-2010 Ion Vasilief";
-//! Release date as a string
-const char * release_date = " 2010/04/22";
+#ifndef SUBTRACT_DATA_DIALOG_H
+#define SUBTRACT_DATA_DIALOG_H
+
+#include <QDialog>
+
+class QPushButton;
+class QRadioButton;
+class QComboBox;
+class QCheckBox;
+class QSpinBox;
+class Graph;
+class ColorButton;
+class DoubleSpinBox;
+
+//! Subtract reference data dialog
+class SubtractDataDialog : public QDialog
+{
+	Q_OBJECT
+
+public:
+	SubtractDataDialog( QWidget* parent = 0, Qt::WFlags fl = 0 );
+	void setGraph(Graph *g);
+
+private slots:
+	void interpolate();
+	void updateTableColumns(int tabnr);
+	void setCurrentFolder(bool);
+
+private:
+	double combineValues(double v1, double v2);
+
+	Graph *graph;
+	QPushButton* buttonApply;
+	QPushButton* buttonCancel;
+	QComboBox* boxInputName;
+	QComboBox* boxReferenceName;
+	QComboBox* boxColumnName;
+	QComboBox* boxOperation;
+	QRadioButton *btnDataset;
+	QRadioButton *btnValue;
+	QCheckBox *boxCurrentFolder;
+	DoubleSpinBox* boxOffset;
+};
+
+#endif

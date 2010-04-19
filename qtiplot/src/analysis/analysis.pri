@@ -24,7 +24,7 @@ INCLUDEPATH += src/analysis/dialogs/
 			   src/analysis/SigmoidalFit.h \
 			   src/analysis/SmoothFilter.h \
 			   src/analysis/fft2D.h \
-               src/analysis/fit_gsl.h \
+			   src/analysis/fit_gsl.h \
 			   src/analysis/nrutil.h \
 
 	SOURCES += src/analysis/Convolution.cpp \
@@ -46,7 +46,7 @@ INCLUDEPATH += src/analysis/dialogs/
 			   src/analysis/SigmoidalFit.cpp \
 			   src/analysis/SmoothFilter.cpp \
 			   src/analysis/fft2D.cpp \
-               src/analysis/fit_gsl.cpp \
+				src/analysis/fit_gsl.cpp \
 			   src/analysis/nrutil.cpp \
 
     HEADERS += src/analysis/dialogs/ExpDecayDialog.h \
@@ -58,6 +58,7 @@ INCLUDEPATH += src/analysis/dialogs/
 			   src/analysis/dialogs/InterpolationDialog.h \
 			   src/analysis/dialogs/PolynomFitDialog.h \
 			   src/analysis/dialogs/SmoothCurveDialog.h \
+			   src/analysis/dialogs/SubtractDataDialog.h \
 
 	SOURCES += src/analysis/dialogs/ExpDecayDialog.cpp \
 			   src/analysis/dialogs/FFTDialog.cpp \
@@ -68,3 +69,4 @@ INCLUDEPATH += src/analysis/dialogs/
 			   src/analysis/dialogs/InterpolationDialog.cpp \
 			   src/analysis/dialogs/PolynomFitDialog.cpp \
 			   src/analysis/dialogs/SmoothCurveDialog.cpp \
+			   src/analysis/dialogs/SubtractDataDialog.cpp \

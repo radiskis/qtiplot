@@ -72,16 +72,16 @@ ExtractDataDialog::ExtractDataDialog( ScriptingEnv *env, QWidget* parent, Qt::WF
 	functions = new QComboBox();
 	functions->addItems(muParserScripting::functionsList(true));
 	gl1->addWidget(functions, 0, 0);
-	btnAddFunction = new QPushButton(tr( "Add function" ));
+	btnAddFunction = new QPushButton(tr( "Add &function" ));
 	gl1->addWidget(btnAddFunction, 0, 1);
 	boxColumn = new QComboBox();
 	gl1->addWidget(boxColumn, 1, 0);
-	btnAddCol = new QPushButton(tr( "Add column" ));
+	btnAddCol = new QPushButton(tr( "Add co&lumn" ));
 	gl1->addWidget(btnAddCol, 1, 1);
 	boxOperators = new QComboBox();
 	boxOperators->addItems(QStringList() << ">" << ">=" << "<" << "<=" << "==" << "!=");
 	gl1->addWidget(boxOperators, 2, 0);
-	btnAddOp = new QPushButton(tr( "Add operator" ));
+	btnAddOp = new QPushButton(tr( "Add &operator" ));
 	gl1->addWidget(btnAddOp, 2, 1);
 
 	QGroupBox *gb = new QGroupBox();
@@ -109,7 +109,7 @@ ExtractDataDialog::ExtractDataDialog( ScriptingEnv *env, QWidget* parent, Qt::WF
 	QVBoxLayout *vbox2 = new QVBoxLayout();
 	btnApply = new QPushButton(tr( "&Apply" ));
 	vbox2->addWidget(btnApply);
-	buttonClearFormulas = new QPushButton(tr("Clear &Formulas" ));
+	buttonClearFormulas = new QPushButton(tr("Clea&r" ));
 	vbox2->addWidget(buttonClearFormulas);
 	btnCancel = new QPushButton(tr( "&Close" ));
 	vbox2->addWidget(btnCancel);
