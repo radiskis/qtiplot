@@ -73,6 +73,7 @@ class PlotToolInterface
 		Rtti_AddWidgetTool,
 		Rtti_DrawDataPoints,
 		Rtti_ImageProfilesTool,
+		Rtti_SubtractLineTool,
         Rtti_PlotUserTool = 1000
     };
 

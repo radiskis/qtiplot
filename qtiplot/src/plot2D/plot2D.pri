@@ -39,6 +39,7 @@
 			   src/plot2D/ScreenPickerTool.h \
 			   src/plot2D/SelectionMoveResizer.h \
 			   src/plot2D/Spectrogram.h \
+			   src/plot2D/SubtractLineTool.h \
 			   src/plot2D/TexWidget.h \
 			   src/plot2D/TitlePicker.h \
 			   src/plot2D/TranslateCurveTool.h \
@@ -77,6 +78,7 @@
 			   src/plot2D/ScreenPickerTool.cpp \
 			   src/plot2D/SelectionMoveResizer.cpp \
 			   src/plot2D/Spectrogram.cpp \
+			   src/plot2D/SubtractLineTool.cpp \
 			   src/plot2D/TexWidget.cpp \
 			   src/plot2D/TitlePicker.cpp \
 			   src/plot2D/TranslateCurveTool.cpp \
