@@ -9799,23 +9799,23 @@ Autocompletion will not be available!</source>
     </message>
     <message>
         <source>Waterfall Plot</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Wasserfall Diagramm</translation>
     </message>
     <message>
         <source>&amp;Extract Data...</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Daten &amp;extrahieren...</translation>
     </message>
     <message>
         <source>S&amp;ubtract</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">S&amp;ubtrahieren</translation>
     </message>
     <message>
         <source>&amp;Straight Line...</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&amp;Gerade...</translation>
     </message>
     <message>
         <source>&amp;Reference Data...</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&amp;Referenzdaten...</translation>
     </message>
 </context>
 <context>
@@ -11769,6 +11769,14 @@ Die folgenden Spezialcodes können benutzt werden:
         <source>Default Line Style</source>
         <translation>Stnadart Linenart</translation>
     </message>
+    <message>
+        <source>Axis title</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Default</source>
+        <translation type="unfinished">Standard</translation>
+    </message>
 </context>
 <context>
     <name>ContourLinesEditor</name>
@@ -12395,7 +12403,7 @@ Die folgenden Spezialcodes können benutzt werden:
     </message>
     <message>
         <source>Clea&amp;r</source>
-        <translation>Lee&amp;ren</translation>
+        <translation type="unfinished">&amp;Leeren</translation>
     </message>
     <message>
         <source>Window Geometry</source>
@@ -13084,11 +13092,11 @@ Die folgenden Spezialcodes können benutzt werden:
     </message>
     <message>
         <source>Extract Data</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Daten Extrahieren</translation>
     </message>
     <message>
         <source>For row (i)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Von Zeine (i)</translation>
     </message>
     <message>
         <source>to</source>
@@ -13116,7 +13124,7 @@ Die folgenden Spezialcodes können benutzt werden:
     </message>
     <message>
         <source>&amp;Put into table</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">In &amp;Tabelle schreiben</translation>
     </message>
     <message>
         <source>Table</source>
@@ -13124,23 +13132,23 @@ Die folgenden Spezialcodes können benutzt werden:
     </message>
     <message>
         <source>Cond&amp;ition:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Bed&amp;ingung:</translation>
     </message>
     <message>
         <source>Add &amp;function</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&amp;Funktion hinzufügen</translation>
     </message>
     <message>
         <source>Add co&amp;lumn</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&amp;Spalte hinzufügen</translation>
     </message>
     <message>
         <source>Add &amp;operator</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&amp;Operator hinzufügen</translation>
     </message>
     <message>
         <source>Clea&amp;r</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Lee&amp;ren</translation>
     </message>
 </context>
 <context>
@@ -18018,7 +18026,7 @@ Wollen sie Zellen einfügen?</translation>
     </message>
     <message>
         <source>For row (i)</source>
-        <translation>Für Zeile (i)</translation>
+        <translation type="unfinished">Von Zeile (i)</translation>
     </message>
     <message>
         <source>to</source>
@@ -18026,7 +18034,7 @@ Wollen sie Zellen einfügen?</translation>
     </message>
     <message>
         <source>For col (j)</source>
-        <translation>Für Spalte (j)</translation>
+        <translation type="unfinished">Von Spalte (j)</translation>
     </message>
     <message>
         <source>Add function</source>
@@ -20377,7 +20385,7 @@ Wollen sie Zellen einfügen?</translation>
     </message>
     <message>
         <source>Dimensions</source>
-        <translation type="unfinished">Dimensionen</translation>
+        <translation type="unfinished">Größe</translation>
     </message>
 </context>
 <context>
@@ -21939,27 +21947,27 @@ Wollen Sie sie überschreiben?</translation>
     </message>
     <message>
         <source>Math on Data Sets</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Berechnungen auf Datensatz anwenden</translation>
     </message>
     <message>
         <source>Cu&amp;rve</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Kur&amp;ve</translation>
     </message>
     <message>
         <source>&amp;Operator</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&amp;Operator</translation>
     </message>
     <message>
         <source>&amp;Data set</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&amp;Datensatz</translation>
     </message>
     <message>
         <source>Current &amp;folder</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Aktueller &amp;Ordner</translation>
     </message>
     <message>
         <source>&amp;Value</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&amp;Wert</translation>
     </message>
     <message>
         <source>&amp;Apply</source>
@@ -21975,18 +21983,18 @@ Wollen Sie sie überschreiben?</translation>
     </message>
     <message>
         <source>Data set %1 must containt at least two valid data points in order to perform this operation!</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Datansatz %1 muss mindestens zwei gültige Datenpunkte enthalten, um diese Operation durchfüheren zu können!</translation>
     </message>
 </context>
 <context>
     <name>SubtractLineTool</name>
     <message>
         <source>Move cursor and click to select and double-click/press &apos;Enter&apos; to set the position of the first point!</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Bewege Mauszeiger, zum Auswählen anklicken und Doppelklick/&apos;Return&apos;-Taste drücken, um die Position des ersten Punktes zu bestimmen!</translation>
     </message>
     <message>
         <source>First point selected! Click to select and double-click/press &apos;Enter&apos; to set the position of the 2nd point!</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Erster Punkt wurde ausgewählt! Zum Auswählen anklicken und Doppelklick/&apos;Return&apos;-Taste drücken, um die Position des zweiten Punktes zu bestimmen!</translation>
     </message>
 </context>
 <context>

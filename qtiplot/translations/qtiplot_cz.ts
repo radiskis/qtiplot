@@ -5520,6 +5520,14 @@ K tomu lze použít následujících zvláštních kódů:
         <source>Default Line Style</source>
         <translation>Výchozí styl čáry</translation>
     </message>
+    <message>
+        <source>Axis title</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Default</source>
+        <translation type="unfinished">Výchozí</translation>
+    </message>
 </context>
 <context>
     <name>ContourLinesEditor</name>

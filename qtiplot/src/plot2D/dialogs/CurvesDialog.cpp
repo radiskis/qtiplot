@@ -367,6 +367,7 @@ void CurvesDialog::addCurves()
 		}
     }
 
+	d_graph->updateAxesTitles();
 	d_graph->updatePlot();
 	Graph::showPlotErrorMessage(this, emptyColumns);
 

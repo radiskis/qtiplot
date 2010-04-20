@@ -599,6 +599,7 @@ void ApplicationWindow::initGlobalConstants()
 	d_scale_plots_on_print = false;
 	d_print_cropmarks = false;
 	d_graph_legend_display = Graph::ColumnName;
+	d_graph_axis_labeling = Graph::Default;
 	d_print_paper_size = QPrinter::A4;
 	d_printer_orientation = QPrinter::Landscape;
 	defaultCurveStyle = int(Graph::LineSymbols);
@@ -2880,6 +2881,7 @@ void ApplicationWindow::setPreferences(Graph* g)
 			g->setAxisTitleDistance(i, d_graph_axes_labels_dist);
 	}
 
+	g->setAxisTitlePolicy(d_graph_axis_labeling);
 	g->initFonts(plotAxesFont, plotNumbersFont);
 	g->initTitle(titleOn, plotTitleFont);
 
@@ -5344,6 +5346,7 @@ void ApplicationWindow::readSettings()
 	}
 	settings.endArray();
 	d_graph_legend_display = (Graph::LegendDisplayMode)settings.value("/LegendDisplayMode", d_graph_legend_display).toInt();
+	d_graph_axis_labeling = (Graph::AxisTitlePolicy)settings.value("/AxisTitlePolicy", d_graph_axis_labeling).toInt();
 	d_keep_aspect_ration = settings.value("/KeepAspectRatio", d_keep_aspect_ration).toBool();
 	settings.endGroup(); // General
 
@@ -5766,6 +5769,7 @@ void ApplicationWindow::saveSettings()
 	settings.endArray();
 
 	settings.setValue("/LegendDisplayMode", d_graph_legend_display);
+	settings.setValue("/AxisTitlePolicy", d_graph_axis_labeling);
 	settings.setValue("/KeepAspectRatio", d_keep_aspect_ration);
 	settings.endGroup(); // General
 

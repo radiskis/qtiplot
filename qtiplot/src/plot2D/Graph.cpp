@@ -125,6 +125,7 @@ Graph::Graph(int x, int y, int width, int height, QWidget* parent, Qt::WFlags f)
 	d_is_printing = false;
 	d_is_exporting_tex = false;
 	d_tex_escape_strings = true;
+	d_axis_title_policy = Default;
 	d_Douglas_Peuker_tolerance = 0;
 	d_speed_mode_points = 3000;
 
@@ -1085,44 +1086,67 @@ void Graph::setScaleTitle(int axis, const QString& text)
 	setAxisTitle(a, text);
 }
 
-void Graph::setAxisTitle(int axis, const QString& text)
+QString Graph::parseAxisTitle(const QString& text)
 {
 	QString s = text;
+	QString name = QString::null;
+	QString comment = QString::null;
 	if (s == "%(?Y)"){// parse Origin tag
 		PlotCurve *c = curve(0);
 		if (c){
-			s = c->title().text();
-			int pos = s.lastIndexOf("_");
+			name = c->title().text();
+			int pos = name.lastIndexOf("_");
 			if (pos > 0)
-				s = s.right(s.length() - pos - 1);
-		}
-		DataCurve *dc = dataCurve(0);
-		if (dc){
-			Table *t = dc->table();
-			if (t){
-				QString comment = t->comment(t->colIndex(s)).trimmed().replace("\n", " ");
-				if (!comment.isEmpty())
-					s += " (" + comment + ")";
+				name = name.right(name.length() - pos - 1);
+
+			if (d_axis_title_policy > 1){
+				DataCurve *dc = dataCurve(0);
+				if (dc){
+					Table *t = dc->table();
+					if (t)
+						comment = t->comment(t->colIndex(name)).trimmed().replace("\n", " ");
+				}
 			}
-		}
+		} else
+			s = tr("Y Axis Title");
 	} else if (s == "%(?X)"){
 		DataCurve *c = dataCurve(0);
 		if (c){
-			s = c->xColumnName();
-			int pos = s.lastIndexOf("_");
+			name = c->xColumnName();
+			int pos = name.lastIndexOf("_");
 			if (pos > 0)
-				s = s.right(s.length() - pos - 1);
+				name = name.right(name.length() - pos - 1);
 
-			Table *t = c->table();
-			if (t){
-				QString comment = t->comment(t->colIndex(c->xColumnName())).trimmed().replace("\n", " ");
-				if (!comment.isEmpty())
-					s += " (" + comment + ")";
+			if (d_axis_title_policy > 1){
+				Table *t = c->table();
+				if (t)
+					comment = t->comment(t->colIndex(c->xColumnName())).trimmed().replace("\n", " ");
 			}
-		}
+		} else
+			s = tr("X Axis Title");
 	}
 
-	((QwtPlot *)this)->setAxisTitle(axis, s);
+	switch(d_axis_title_policy){
+		case ColName:
+			return name;
+		break;
+		case ColComment:
+			if (!comment.isEmpty())
+				return comment;
+		break;
+		case NameAndComment:
+			if (!comment.isEmpty())
+				return name + " (" + comment + ")";
+		break;
+		default:
+			break;
+	}
+	return s;
+}
+
+void Graph::setAxisTitle(int axis, const QString& text)
+{
+	((QwtPlot *)this)->setAxisTitle(axis, parseAxisTitle(text));
 	replot();
 	emit modifiedGraph();
 }
@@ -3173,6 +3197,8 @@ bool Graph::addCurves(Table* w, const QStringList& names, int style, double lWid
 	updateSecondaryAxis(QwtPlot::xTop, true);
 	updateSecondaryAxis(QwtPlot::yRight, true);
 
+	updateAxesTitles();
+
 	replot();
 
 	d_zoomer[0]->setZoomBase();
@@ -3435,6 +3461,14 @@ void Graph::setAutoScale()
 
 	updateScale();
 	emit modifiedGraph();
+}
+
+void Graph::updateAxesTitles()
+{
+	if (d_axis_title_policy != Default){
+		((QwtPlot *)this)->setAxisTitle(QwtPlot::xBottom, parseAxisTitle("%(?X)"));
+		((QwtPlot *)this)->setAxisTitle(QwtPlot::yLeft, parseAxisTitle("%(?Y)"));
+	}
 }
 
 void Graph::updatePlot()

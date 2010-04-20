@@ -298,7 +298,12 @@ void ConfigDialog::initPlotsPage()
 	legendDisplayBox = new QComboBox;
 	optionsLayout->addWidget(legendDisplayBox, 6, 1);
 
-	optionsLayout->setRowStretch(7, 1);
+	lblAxisLabeling = new QLabel;
+	optionsLayout->addWidget(lblAxisLabeling, 7, 0);
+	axisLabelingBox = new QComboBox;
+	optionsLayout->addWidget(axisLabelingBox, 7, 1);
+
+	optionsLayout->setRowStretch(8, 1);
 
 	groupBackgroundOptions = new QGroupBox(tr("Background"));
 	optionsTabLayout->addWidget( groupBackgroundOptions );
@@ -1633,6 +1638,14 @@ void ConfigDialog::languageChange()
 	legendDisplayBox->addItem(tr("Table legend"));
 	legendDisplayBox->setCurrentIndex(app->d_graph_legend_display);
 
+	lblAxisLabeling->setText(tr("Axis title" ));
+	axisLabelingBox->clear();
+	axisLabelingBox->addItem(tr("Default"));
+	axisLabelingBox->addItem(tr("Column name"));
+	axisLabelingBox->addItem(tr("Column comment"));
+	axisLabelingBox->addItem(tr("Column name") + " (" + tr("Column comment") + ")");
+	axisLabelingBox->setCurrentIndex(app->d_graph_axis_labeling);
+
 	groupBackgroundOptions->setTitle(tr("Background"));
 	labelGraphBkgColor->setText(tr("Background Color"));
 	labelGraphBkgOpacity->setText(tr( "Opacity" ));
@@ -2036,6 +2049,7 @@ void ConfigDialog::apply()
 	app->d_graph_axes_labels_dist = boxAxesLabelsDist->value();
 	app->d_graph_tick_labels_dist = boxTickLabelsDist->value();
 	app->d_graph_legend_display = (Graph::LegendDisplayMode)legendDisplayBox->currentIndex();
+	app->d_graph_axis_labeling = (Graph::AxisTitlePolicy)axisLabelingBox->currentIndex();
 	app->setGraphDefaultSettings(boxAutoscaling->isChecked(), boxScaleFonts->isChecked(),
 		boxResize->isChecked(), boxAntialiasing->isChecked());
 	// 2D plots page: curves tab
