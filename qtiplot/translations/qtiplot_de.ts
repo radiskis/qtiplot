@@ -9799,23 +9799,23 @@ Autocompletion will not be available!</source>
     </message>
     <message>
         <source>Waterfall Plot</source>
-        <translation type="unfinished">Wasserfall Diagramm</translation>
+        <translation>Wasserfall-Diagramm</translation>
     </message>
     <message>
         <source>&amp;Extract Data...</source>
-        <translation type="unfinished">Daten &amp;extrahieren...</translation>
+        <translation>Daten &amp;extrahieren...</translation>
     </message>
     <message>
         <source>S&amp;ubtract</source>
-        <translation type="unfinished">S&amp;ubtrahieren</translation>
+        <translation>S&amp;ubtrahieren</translation>
     </message>
     <message>
         <source>&amp;Straight Line...</source>
-        <translation type="unfinished">&amp;Gerade...</translation>
+        <translation>&amp;Gerade...</translation>
     </message>
     <message>
         <source>&amp;Reference Data...</source>
-        <translation type="unfinished">&amp;Referenzdaten...</translation>
+        <translation>&amp;Referenzdaten...</translation>
     </message>
 </context>
 <context>
@@ -11771,11 +11771,11 @@ Die folgenden Spezialcodes können benutzt werden:
     </message>
     <message>
         <source>Axis title</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Achsenbeschriftung</translation>
     </message>
     <message>
         <source>Default</source>
-        <translation type="unfinished">Standard</translation>
+        <translation>Standard</translation>
     </message>
 </context>
 <context>
@@ -12403,7 +12403,7 @@ Die folgenden Spezialcodes können benutzt werden:
     </message>
     <message>
         <source>Clea&amp;r</source>
-        <translation type="unfinished">&amp;Leeren</translation>
+        <translation>&amp;Leeren</translation>
     </message>
     <message>
         <source>Window Geometry</source>
@@ -13088,19 +13088,19 @@ Die folgenden Spezialcodes können benutzt werden:
     <name>ExtractDataDialog</name>
     <message>
         <source>QtiPlot</source>
-        <translation type="unfinished">QtiPlot</translation>
+        <translation>QtiPlot</translation>
     </message>
     <message>
         <source>Extract Data</source>
-        <translation type="unfinished">Daten Extrahieren</translation>
+        <translation>Daten Extrahieren</translation>
     </message>
     <message>
         <source>For row (i)</source>
-        <translation type="unfinished">Von Zeine (i)</translation>
+        <translation>Von Zeile (i)</translation>
     </message>
     <message>
         <source>to</source>
-        <translation type="unfinished">bis</translation>
+        <translation>bis</translation>
     </message>
     <message>
         <source>Add function</source>
@@ -13112,7 +13112,7 @@ Die folgenden Spezialcodes können benutzt werden:
     </message>
     <message>
         <source>&amp;Apply</source>
-        <translation type="unfinished">&amp;Anwenden</translation>
+        <translation>&amp;Anwenden</translation>
     </message>
     <message>
         <source>Clear &amp;Formulas</source>
@@ -13120,35 +13120,35 @@ Die folgenden Spezialcodes können benutzt werden:
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation type="unfinished">S&amp;chließen</translation>
+        <translation>S&amp;chließen</translation>
     </message>
     <message>
         <source>&amp;Put into table</source>
-        <translation type="unfinished">In &amp;Tabelle schreiben</translation>
+        <translation>In &amp;Tabelle schreiben</translation>
     </message>
     <message>
         <source>Table</source>
-        <translation type="unfinished">Tabelle</translation>
+        <translation>Tabelle</translation>
     </message>
     <message>
         <source>Cond&amp;ition:</source>
-        <translation type="unfinished">Bed&amp;ingung:</translation>
+        <translation>Bed&amp;ingung:</translation>
     </message>
     <message>
         <source>Add &amp;function</source>
-        <translation type="unfinished">&amp;Funktion hinzufügen</translation>
+        <translation>&amp;Funktion hinzufügen</translation>
     </message>
     <message>
         <source>Add co&amp;lumn</source>
-        <translation type="unfinished">&amp;Spalte hinzufügen</translation>
+        <translation>&amp;Spalte hinzufügen</translation>
     </message>
     <message>
         <source>Add &amp;operator</source>
-        <translation type="unfinished">&amp;Operator hinzufügen</translation>
+        <translation>&amp;Operator hinzufügen</translation>
     </message>
     <message>
         <source>Clea&amp;r</source>
-        <translation type="unfinished">Lee&amp;ren</translation>
+        <translation>Lee&amp;ren</translation>
     </message>
 </context>
 <context>
@@ -18026,7 +18026,7 @@ Wollen sie Zellen einfügen?</translation>
     </message>
     <message>
         <source>For row (i)</source>
-        <translation type="unfinished">Von Zeile (i)</translation>
+        <translation>Von Zeile (i)</translation>
     </message>
     <message>
         <source>to</source>
@@ -18034,7 +18034,7 @@ Wollen sie Zellen einfügen?</translation>
     </message>
     <message>
         <source>For col (j)</source>
-        <translation type="unfinished">Von Spalte (j)</translation>
+        <translation>Von Spalte (j)</translation>
     </message>
     <message>
         <source>Add function</source>
@@ -20377,15 +20377,15 @@ Wollen sie Zellen einfügen?</translation>
     </message>
     <message>
         <source>Scale &amp;Fonts</source>
-        <translation type="unfinished">Schri&amp;ftarten skalieren</translation>
+        <translation>Schri&amp;ftarten skalieren</translation>
     </message>
     <message>
         <source>Do not &amp;resize layers when window size changes</source>
-        <translation type="unfinished">Ebenen nicht &amp;reskalieren, wenn sich die Fenstergröße ändert</translation>
+        <translation>Ebenen nicht &amp;reskalieren, wenn sich die Fenstergröße ändert</translation>
     </message>
     <message>
         <source>Dimensions</source>
-        <translation type="unfinished">Größe</translation>
+        <translation>Größe</translation>
     </message>
 </context>
 <context>
@@ -21061,7 +21061,7 @@ Wollen sie Zellen einfügen?</translation>
     <message>
         <source>rnd(seed):
  Returns a pseudo-random number in the range 0 to 1. Calling this function several times with the same seed will return the same value.</source>
-        <translation type="unfinished">rnd(seed):
+        <translation>rnd(seed):
  Pseudozufallszahl zwischen 0 und 1. Der mehrfache Aufruf mit mit gleichm seed-Wert führt zur Ausgabe eines gleichbleibenden Wertes.</translation>
     </message>
 </context>
@@ -21943,58 +21943,58 @@ Wollen Sie sie überschreiben?</translation>
     <name>SubtractDataDialog</name>
     <message>
         <source>QtiPlot</source>
-        <translation type="unfinished">QtiPlot</translation>
+        <translation>QtiPlot</translation>
     </message>
     <message>
         <source>Math on Data Sets</source>
-        <translation type="unfinished">Berechnungen auf Datensatz anwenden</translation>
+        <translation>Berechnungen auf Datensatz anwenden</translation>
     </message>
     <message>
         <source>Cu&amp;rve</source>
-        <translation type="unfinished">Kur&amp;ve</translation>
+        <translation>Kur&amp;ve</translation>
     </message>
     <message>
         <source>&amp;Operator</source>
-        <translation type="unfinished">&amp;Operator</translation>
+        <translation>&amp;Operator</translation>
     </message>
     <message>
         <source>&amp;Data set</source>
-        <translation type="unfinished">&amp;Datensatz</translation>
+        <translation>&amp;Datensatz</translation>
     </message>
     <message>
         <source>Current &amp;folder</source>
-        <translation type="unfinished">Aktueller &amp;Ordner</translation>
+        <translation>Aktueller &amp;Ordner</translation>
     </message>
     <message>
         <source>&amp;Value</source>
-        <translation type="unfinished">&amp;Wert</translation>
+        <translation>&amp;Wert</translation>
     </message>
     <message>
         <source>&amp;Apply</source>
-        <translation type="unfinished">&amp;Anwenden</translation>
+        <translation>&amp;Anwenden</translation>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation type="unfinished">S&amp;chließen</translation>
+        <translation>S&amp;chließen</translation>
     </message>
     <message>
         <source>Error</source>
-        <translation type="unfinished">Fehler</translation>
+        <translation>Fehler</translation>
     </message>
     <message>
         <source>Data set %1 must containt at least two valid data points in order to perform this operation!</source>
-        <translation type="unfinished">Datansatz %1 muss mindestens zwei gültige Datenpunkte enthalten, um diese Operation durchfüheren zu können!</translation>
+        <translation>Datansatz %1 muss mindestens zwei gültige Datenpunkte enthalten, um diese Operation durchführen zu können!</translation>
     </message>
 </context>
 <context>
     <name>SubtractLineTool</name>
     <message>
         <source>Move cursor and click to select and double-click/press &apos;Enter&apos; to set the position of the first point!</source>
-        <translation type="unfinished">Bewege Mauszeiger, zum Auswählen anklicken und Doppelklick/&apos;Return&apos;-Taste drücken, um die Position des ersten Punktes zu bestimmen!</translation>
+        <translation>Bewege Mauszeiger, zum Auswählen anklicken und Doppelklick/&apos;Return&apos;-Taste drücken, um die Position des ersten Punktes zu bestimmen!</translation>
     </message>
     <message>
         <source>First point selected! Click to select and double-click/press &apos;Enter&apos; to set the position of the 2nd point!</source>
-        <translation type="unfinished">Erster Punkt wurde ausgewählt! Zum Auswählen anklicken und Doppelklick/&apos;Return&apos;-Taste drücken, um die Position des zweiten Punktes zu bestimmen!</translation>
+        <translation>Erster Punkt wurde ausgewählt! Zum Auswählen anklicken und Doppelklick/&apos;Return&apos;-Taste drücken, um die Position des zweiten Punktes zu bestimmen!</translation>
     </message>
 </context>
 <context>
