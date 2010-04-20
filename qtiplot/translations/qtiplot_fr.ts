@@ -3807,19 +3807,19 @@ L&apos;autocomplétion ne sera pas disponible!</translation>
     </message>
     <message>
         <source>&amp;Extract Data...</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Extraire les données...</translation>
     </message>
     <message>
         <source>S&amp;ubtract</source>
-        <translation type="unfinished"></translation>
+        <translation>So&amp;ustraire</translation>
     </message>
     <message>
         <source>&amp;Straight Line...</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Ligne de référence...</translation>
     </message>
     <message>
         <source>&amp;Reference Data...</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Donnée de référence...</translation>
     </message>
 </context>
 <context>
@@ -5498,11 +5498,11 @@ Les codes spéciaux suivant peuvent être utilisés :
     </message>
     <message>
         <source>Axis title</source>
-        <translation type="unfinished"></translation>
+        <translation>Légende d&apos;axe</translation>
     </message>
     <message>
         <source>Default</source>
-        <translation type="unfinished">Par défaut</translation>
+        <translation>Sans</translation>
     </message>
 </context>
 <context>
@@ -6630,19 +6630,19 @@ Les codes spéciaux suivant peuvent être utilisés :
     <name>ExtractDataDialog</name>
     <message>
         <source>QtiPlot</source>
-        <translation type="unfinished"></translation>
+        <translation>QtiPlot</translation>
     </message>
     <message>
         <source>Extract Data</source>
-        <translation type="unfinished"></translation>
+        <translation>Extraire les données</translation>
     </message>
     <message>
         <source>For row (i)</source>
-        <translation type="unfinished">Pour la rangée (i)</translation>
+        <translation>Pour la rangée (i)</translation>
     </message>
     <message>
         <source>to</source>
-        <translation type="unfinished">à</translation>
+        <translation>à</translation>
     </message>
     <message>
         <source>Add function</source>
@@ -6654,7 +6654,7 @@ Les codes spéciaux suivant peuvent être utilisés :
     </message>
     <message>
         <source>&amp;Apply</source>
-        <translation type="unfinished">&amp;Appliquer</translation>
+        <translation>&amp;Appliquer</translation>
     </message>
     <message>
         <source>Clear &amp;Formulas</source>
@@ -6662,35 +6662,35 @@ Les codes spéciaux suivant peuvent être utilisés :
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Fermer</translation>
     </message>
     <message>
         <source>&amp;Put into table</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Destination</translation>
     </message>
     <message>
         <source>Table</source>
-        <translation type="unfinished">Table</translation>
+        <translation>Table</translation>
     </message>
     <message>
         <source>Cond&amp;ition:</source>
-        <translation type="unfinished"></translation>
+        <translation>Cond&amp;ition :</translation>
     </message>
     <message>
         <source>Add &amp;function</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Ajouter</translation>
     </message>
     <message>
         <source>Add co&amp;lumn</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Ajouter</translation>
     </message>
     <message>
         <source>Add &amp;operator</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Ajouter</translation>
     </message>
     <message>
         <source>Clea&amp;r</source>
-        <translation type="unfinished">Efface&amp;r</translation>
+        <translation>Efface&amp;r</translation>
     </message>
 </context>
 <context>
@@ -8648,7 +8648,7 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Separator:</source>
-        <translation type="unfinished"></translation>
+        <translation>Separator :</translation>
     </message>
 </context>
 <context>
@@ -11355,15 +11355,15 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Scale &amp;Fonts</source>
-        <translation type="unfinished">&amp;Taille de la police</translation>
+        <translation>&amp;Taille de la police</translation>
     </message>
     <message>
         <source>Do not &amp;resize layers when window size changes</source>
-        <translation type="unfinished">Ne pas &amp;redimensionner les planches lorsque la taille de la fenêtre change</translation>
+        <translation>Ne pas &amp;redimensionner les planches lorsque la taille de la fenêtre change</translation>
     </message>
     <message>
         <source>Dimensions</source>
-        <translation type="unfinished">Dimensions</translation>
+        <translation>Dimensions</translation>
     </message>
 </context>
 <context>
@@ -12711,58 +12711,58 @@ Calcule le sinus de x.</translation>
     <name>SubtractDataDialog</name>
     <message>
         <source>QtiPlot</source>
-        <translation type="unfinished"></translation>
+        <translation>QtiPlot</translation>
     </message>
     <message>
         <source>Math on Data Sets</source>
-        <translation type="unfinished"></translation>
+        <translation>Opération sur données</translation>
     </message>
     <message>
         <source>Cu&amp;rve</source>
-        <translation type="unfinished"></translation>
+        <translation>Cou&amp;rbe</translation>
     </message>
     <message>
         <source>&amp;Operator</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Opérateur</translation>
     </message>
     <message>
         <source>&amp;Data set</source>
-        <translation type="unfinished"></translation>
+        <translation>Jeu de &amp;données</translation>
     </message>
     <message>
         <source>Current &amp;folder</source>
-        <translation type="unfinished"></translation>
+        <translation>Dossier a&amp;ctuel</translation>
     </message>
     <message>
         <source>&amp;Value</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Valeur</translation>
     </message>
     <message>
         <source>&amp;Apply</source>
-        <translation type="unfinished">&amp;Appliquer</translation>
+        <translation>&amp;Appliquer</translation>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Fermer</translation>
     </message>
     <message>
         <source>Error</source>
-        <translation type="unfinished">Erreur</translation>
+        <translation>Erreur</translation>
     </message>
     <message>
         <source>Data set %1 must containt at least two valid data points in order to perform this operation!</source>
-        <translation type="unfinished"></translation>
+        <translation>Le jeu de donnée %1 doit contenir au minimum 2 données valides pour ce type d&apos;opération !</translation>
     </message>
 </context>
 <context>
     <name>SubtractLineTool</name>
     <message>
         <source>Move cursor and click to select and double-click/press &apos;Enter&apos; to set the position of the first point!</source>
-        <translation type="unfinished"></translation>
+        <translation>Déplacer le curseur et cliquez pour sélectionner un point et double-cliquez (ou tapez &apos;Entrée&apos;) pour fixer la position du premier point !</translation>
     </message>
     <message>
         <source>First point selected! Click to select and double-click/press &apos;Enter&apos; to set the position of the 2nd point!</source>
-        <translation type="unfinished"></translation>
+        <translation>Premier point sélectionné ! Cliquez pour sélectionner un point et double-cliquez (ou pressez &apos;Entrée&apos;) pour fixer la position du deuxième pic !</translation>
     </message>
 </context>
 <context>
@@ -13385,7 +13385,7 @@ Calcule le sinus de x.</translation>
     </message>
     <message>
         <source>Column Name:</source>
-        <translation type="unfinished"></translation>
+        <translation>Nom :</translation>
     </message>
 </context>
 <context>
