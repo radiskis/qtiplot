@@ -2,7 +2,7 @@
     File                 : importOPJ.cpp
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2006-2008 by Ion Vasilief, Alex Kargovsky
+	Copyright            : (C) 2006-2010 by Ion Vasilief, Alex Kargovsky
     Email (use @ for *)  : ion_vasilief*yahoo.fr, kargovsky*yumr.phys.msu.su
     Description          : Origin project import class
 
@@ -673,7 +673,6 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 
 		ml->setCaptionPolicy((MdiSubWindow::CaptionPolicy)_graph.title);
 		ml->setBirthDate(posixTimeToString(_graph.creationDate));
-		ml->hide();//!hack used in order to avoid resize and repaint events
 		ml->setWindowLabel(_graph.label.c_str());
 
 		Origin::Rect graphRect(_graph.width, _graph.height);
@@ -1556,7 +1555,7 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 
 				switch(_graph.state){
 					case Origin::Window::Minimized:
-						mw->minimizeWindow(ml);
+						ml->setMinimized();
 						break;
 					case Origin::Window::Maximized:
 						ml->show(); // to correct scaling with maximize
