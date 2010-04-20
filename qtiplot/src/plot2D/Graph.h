@@ -136,6 +136,7 @@ class Graph: public QwtPlot
 			Box, VectXYAM, VerticalSteps, ColorMap, GrayScale, Contour, Function, ImagePlot,
 			StackBar, StackColumn};
 		enum LegendDisplayMode{ColumnName, ColumnComment, TableName, TableLegend};
+		enum AxisTitlePolicy{Default, ColName, ColComment, NameAndComment};
 
 		//! Returns a pointer to the parent MultiLayer object.
 		MultiLayer *multiLayer();
@@ -224,6 +225,8 @@ class Graph: public QwtPlot
 
 		int speedModeMaxPoints(){return d_speed_mode_points;};
 		double getDouglasPeukerTolerance(){return d_Douglas_Peuker_tolerance;};
+
+		void setAxisTitlePolicy(const AxisTitlePolicy& policy){d_axis_title_policy = policy;};
 
 	public slots:
 		void copy(Graph* g);
@@ -508,6 +511,7 @@ class Graph: public QwtPlot
 
 		QString axisTitleString(int axis){return axisTitle(axis).text();};
 		void setAxisTitle(int axis, const QString& text);
+		void updateAxesTitles();
 		//! TODO: eliminate this function in version 0.9.1 (used only when restoring project files)
 		void setScaleTitle(int axis, const QString& text);
 
@@ -763,6 +767,7 @@ signals:
 		void selectorDeleted();
 
 	private:
+		QString parseAxisTitle(const QString& text);
 		QList<FrameWidget*> stackingOrderEnrichmentsList();
 		//! Finds bounding interval of the plot data.
 		QwtDoubleInterval axisBoundingInterval(int axis);
@@ -825,5 +830,6 @@ signals:
 
 		double d_Douglas_Peuker_tolerance;
 		int d_speed_mode_points;
+		AxisTitlePolicy d_axis_title_policy;
 };
 #endif // GRAPH_H

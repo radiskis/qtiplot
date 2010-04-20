@@ -5496,6 +5496,14 @@ Les codes spéciaux suivant peuvent être utilisés :
         <source>Default Line Style</source>
         <translation>Ligne par défaut</translation>
     </message>
+    <message>
+        <source>Axis title</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Default</source>
+        <translation type="unfinished">Par défaut</translation>
+    </message>
 </context>
 <context>
     <name>ContourLinesEditor</name>

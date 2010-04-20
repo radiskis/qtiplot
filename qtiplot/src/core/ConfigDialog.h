@@ -279,6 +279,8 @@ private:
 	QSpinBox *curveAlphaBox;
 	PenStyleBox *lineStyleBox;
 	QGroupBox * curvesGroupBox;
+	QLabel *lblAxisLabeling;
+	QComboBox *axisLabelingBox;
 };
 
 #endif // CONFIGDIALOG_H

@@ -10206,6 +10206,14 @@ Följande specialkoder kan användas:
         <source>Default Line Style</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Axis title</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Default</source>
+        <translation type="unfinished">Standard</translation>
+    </message>
 </context>
 <context>
     <name>ContourLinesEditor</name>

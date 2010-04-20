@@ -9010,6 +9010,14 @@ The following special codes can be used:
         <source>Default Line Style</source>
         <translation>Stil de linie implicit</translation>
     </message>
+    <message>
+        <source>Axis title</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Default</source>
+        <translation type="unfinished">Implicit</translation>
+    </message>
 </context>
 <context>
     <name>ContourLinesEditor</name>
