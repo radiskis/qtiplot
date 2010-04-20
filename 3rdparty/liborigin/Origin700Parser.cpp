@@ -649,6 +649,7 @@ void Origin700Parser::readSpreadInfo()
 	BOOST_LOG_(1, format("		Done with spreadsheet %d POS (@ 0x%X)") % spread % file.tellg());
 }
 
+
 void Origin700Parser::readMatrixInfo()
 {
 	unsigned int POS = file.tellg();
@@ -661,7 +662,7 @@ void Origin700Parser::readMatrixInfo()
 	string name(25, 0);
 	file.seekg(POS + 0x2, ios_base::beg);
 	file >> name;
-	BOOST_LOG_(1, format("			MATRIX %s (@ 0x%X)]") % name % POS);
+	BOOST_LOG_(1, format("		MATRIX %s (@ 0x%X)]") % name % POS);
 
 	int idx = findMatrixByName(name);
 	matrixes[idx].name = name;
@@ -688,11 +689,21 @@ void Origin700Parser::readMatrixInfo()
 	// LAYER section
 	LAYER += 0x5;
 	
+	unsigned short width;
+	file.seekg(LAYER + 0x27, ios_base::beg);
+	file >> width;
+	if (width == 0)
+		width = 8;
+	matrixes[idx].width = width;
+	BOOST_LOG_(1, format("			Width: %d (@ 0x%X)") % matrixes[idx].width % (LAYER + 0x27));
+
 	file.seekg(LAYER + 0x2B, ios_base::beg);
 	file >> matrixes[idx].columnCount;
+	BOOST_LOG_(1, format("			Columns: %d (@ 0x%X)") % matrixes[idx].columnCount % (LAYER + 0x2B));
 
 	file.seekg(LAYER + 0x52, ios_base::beg);
 	file >> matrixes[idx].rowCount;
+	BOOST_LOG_(1, format("			Rows: %d (@ 0x%X)") % matrixes[idx].rowCount % (LAYER + 0x52));
 
 	LAYER += size + 0x1;
 	file.seekg(LAYER, ios_base::beg);
@@ -761,10 +772,29 @@ void Origin700Parser::readMatrixInfo()
 			break;
 	}
 	file.seekg(1, ios_base::cur);
-	for (int i = 0; i < 5; i++)
-		skipLine();
+	LAYER = file.tellg();
+	file >> size;
+
+	unsigned char c1, c2;
+	file.seekg(LAYER + 0x23, ios_base::beg);
+	file >> c1;
+	file >> c2;
+
+	matrixes[idx].valueTypeSpecification = c1/0x10;
+	if(c2 >= 0x80){
+		matrixes[idx].significantDigits = c2 - 0x80;
+		matrixes[idx].numericDisplayType = SignificantDigits;
+	} else if(c2 > 0){
+		matrixes[idx].decimalPlaces = c2 - 0x03;
+		matrixes[idx].numericDisplayType = DecimalPlaces;
+	}
+
+	LAYER += size + 0x06;
+	file.seekg(LAYER, ios_base::beg);
 	skipObjectInfo();
+	BOOST_LOG_(1, format("		Done with matrix, pos @ 0x%X") % file.tellg());
 }
+
 
 void Origin700Parser::readGraphInfo()
 {

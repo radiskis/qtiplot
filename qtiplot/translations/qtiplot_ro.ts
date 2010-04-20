@@ -7287,23 +7287,23 @@ Autocompletion will not be available!</source>
     </message>
     <message>
         <source>Waterfall Plot</source>
-        <translation type="unfinished"></translation>
+        <translation>Grafic cascadă</translation>
     </message>
     <message>
         <source>&amp;Extract Data...</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Extrage date...</translation>
     </message>
     <message>
         <source>S&amp;ubtract</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Scădere</translation>
     </message>
     <message>
         <source>&amp;Straight Line...</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Dreaptă...</translation>
     </message>
     <message>
         <source>&amp;Reference Data...</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Set de date...</translation>
     </message>
 </context>
 <context>
@@ -10170,19 +10170,19 @@ The following special codes can be used:
     <name>ExtractDataDialog</name>
     <message>
         <source>QtiPlot</source>
-        <translation type="unfinished">QtiPlot</translation>
+        <translation>QtiPlot</translation>
     </message>
     <message>
         <source>Extract Data</source>
-        <translation type="unfinished"></translation>
+        <translation>Extrage date</translation>
     </message>
     <message>
         <source>For row (i)</source>
-        <translation type="unfinished">De la linia (i)</translation>
+        <translation>De la linia (i)</translation>
     </message>
     <message>
         <source>to</source>
-        <translation type="unfinished"></translation>
+        <translation>la</translation>
     </message>
     <message>
         <source>Add function</source>
@@ -10194,7 +10194,7 @@ The following special codes can be used:
     </message>
     <message>
         <source>&amp;Apply</source>
-        <translation type="unfinished">&amp;Aplică</translation>
+        <translation>&amp;Aplică</translation>
     </message>
     <message>
         <source>Clear &amp;Formulas</source>
@@ -10202,35 +10202,35 @@ The following special codes can be used:
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation type="unfinished">În&amp;chide</translation>
+        <translation>În&amp;chide</translation>
     </message>
     <message>
         <source>&amp;Put into table</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Pune in tabelul</translation>
     </message>
     <message>
         <source>Table</source>
-        <translation type="unfinished">Tabel</translation>
+        <translation>Tabel</translation>
     </message>
     <message>
         <source>Cond&amp;ition:</source>
-        <translation type="unfinished"></translation>
+        <translation>Cond&amp;iţie:</translation>
     </message>
     <message>
         <source>Add &amp;function</source>
-        <translation type="unfinished"></translation>
+        <translation>Adaugă &amp;funcţie</translation>
     </message>
     <message>
         <source>Add co&amp;lumn</source>
-        <translation type="unfinished"></translation>
+        <translation>Adaugă coloa&amp;nă</translation>
     </message>
     <message>
         <source>Add &amp;operator</source>
-        <translation type="unfinished"></translation>
+        <translation>Adăugare &amp;operator</translation>
     </message>
     <message>
         <source>Clea&amp;r</source>
-        <translation type="unfinished">Go&amp;leşte</translation>
+        <translation>Go&amp;leşte</translation>
     </message>
 </context>
 <context>
@@ -14980,15 +14980,15 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Scale &amp;Fonts</source>
-        <translation type="unfinished">Redimensionare &amp;fonturi</translation>
+        <translation>Redimensionare &amp;fonturi</translation>
     </message>
     <message>
         <source>Do not &amp;resize layers when window size changes</source>
-        <translation type="unfinished">Nu &amp;redimensiona graficele când dimeniunea ferestrei se schimbă</translation>
+        <translation>Nu &amp;redimensiona graficele când dimeniunea ferestrei se schimbă</translation>
     </message>
     <message>
         <source>Dimensions</source>
-        <translation type="unfinished">Dimensiuni</translation>
+        <translation>Dimensiuni</translation>
     </message>
 </context>
 <context>
@@ -16344,58 +16344,58 @@ have the same number of rows.</source>
     <name>SubtractDataDialog</name>
     <message>
         <source>QtiPlot</source>
-        <translation type="unfinished">QtiPlot</translation>
+        <translation>QtiPlot</translation>
     </message>
     <message>
         <source>Math on Data Sets</source>
-        <translation type="unfinished"></translation>
+        <translation>Operaţii cu seturi de date</translation>
     </message>
     <message>
         <source>Cu&amp;rve</source>
-        <translation type="unfinished"></translation>
+        <translation>Cu&amp;rbă</translation>
     </message>
     <message>
         <source>&amp;Operator</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Operator</translation>
     </message>
     <message>
         <source>&amp;Data set</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Set de date</translation>
     </message>
     <message>
         <source>Current &amp;folder</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Dosarul curent</translation>
     </message>
     <message>
         <source>&amp;Value</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Valoare</translation>
     </message>
     <message>
         <source>&amp;Apply</source>
-        <translation type="unfinished">&amp;Aplică</translation>
+        <translation>&amp;Aplică</translation>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation type="unfinished">În&amp;chide</translation>
+        <translation>În&amp;chide</translation>
     </message>
     <message>
         <source>Error</source>
-        <translation type="unfinished">Eroare</translation>
+        <translation>Eroare</translation>
     </message>
     <message>
         <source>Data set %1 must containt at least two valid data points in order to perform this operation!</source>
-        <translation type="unfinished"></translation>
+        <translation>Setul de date %1 trebuie să conţină cel puţin două puncte pentru a efectua această operaţie!</translation>
     </message>
 </context>
 <context>
     <name>SubtractLineTool</name>
     <message>
         <source>Move cursor and click to select and double-click/press &apos;Enter&apos; to set the position of the first point!</source>
-        <translation type="unfinished"></translation>
+        <translation>Mişcaţi cursorul şi efectuaţi un click pentru a alege un punct şi efectuaţi un click dublu sau apăsaţi tasta &apos;Enter&apos; pentru a defini poziţia primului capăt al dreptei!</translation>
     </message>
     <message>
         <source>First point selected! Click to select and double-click/press &apos;Enter&apos; to set the position of the 2nd point!</source>
-        <translation type="unfinished"></translation>
+        <translation>Primul punct a fost selecţionat! Efectuaţi un click simplu pentru a alege şi efectuaţi un click dublu sau apăsaţi tasta &apos;Enter&apos; pentru a defini poziţia punctului următor!</translation>
     </message>
 </context>
 <context>
