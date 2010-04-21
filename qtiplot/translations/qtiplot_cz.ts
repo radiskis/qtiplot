@@ -5528,6 +5528,10 @@ K tomu lze použít následujících zvláštních kódů:
         <source>Default</source>
         <translation type="unfinished">Výchozí</translation>
     </message>
+    <message>
+        <source>Synchronize scale &amp;divisions</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ContourLinesEditor</name>
@@ -11614,6 +11618,41 @@ K tomu lze použít následujících zvláštních kódů:
     <message>
         <source>You need at least %1 data points for this fit operation. Operation aborted!</source>
         <translation>Pro tuto operaci umístění potřebujete alespoň %1 datových bodů! Operace zrušena!</translation>
+    </message>
+</context>
+<context>
+    <name>PreviewTable</name>
+    <message>
+        <source>Numeric</source>
+        <translation type="unfinished">Číselný</translation>
+    </message>
+    <message>
+        <source>Text</source>
+        <translation type="unfinished">Text</translation>
+    </message>
+    <message>
+        <source>Date</source>
+        <translation type="unfinished">Datum</translation>
+    </message>
+    <message>
+        <source>Time</source>
+        <translation type="unfinished">Čas</translation>
+    </message>
+    <message>
+        <source>Month</source>
+        <translation type="unfinished">Měsíc</translation>
+    </message>
+    <message>
+        <source>Day</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Choose column type</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Column type:</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

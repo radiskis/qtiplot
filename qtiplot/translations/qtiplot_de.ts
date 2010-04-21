@@ -11777,6 +11777,10 @@ Die folgenden Spezialcodes können benutzt werden:
         <source>Default</source>
         <translation>Standard</translation>
     </message>
+    <message>
+        <source>Synchronize scale &amp;divisions</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ContourLinesEditor</name>
@@ -20634,6 +20638,41 @@ Wollen sie Zellen einfügen?</translation>
     <message>
         <source>Polynomial Fit</source>
         <translation>Polynom-Fit</translation>
+    </message>
+</context>
+<context>
+    <name>PreviewTable</name>
+    <message>
+        <source>Numeric</source>
+        <translation type="unfinished">Numerisch</translation>
+    </message>
+    <message>
+        <source>Text</source>
+        <translation type="unfinished">Text</translation>
+    </message>
+    <message>
+        <source>Date</source>
+        <translation type="unfinished">Datum</translation>
+    </message>
+    <message>
+        <source>Time</source>
+        <translation type="unfinished">Zeit</translation>
+    </message>
+    <message>
+        <source>Month</source>
+        <translation type="unfinished">Monat</translation>
+    </message>
+    <message>
+        <source>Day</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Choose column type</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Column type:</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

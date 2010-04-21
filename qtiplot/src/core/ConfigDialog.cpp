@@ -1375,9 +1375,13 @@ void ConfigDialog::initAxesPage()
 	QGroupBox * axisOptions = new QGroupBox();
 	QGridLayout * axisOptionsLayout = new QGridLayout( axisOptions );
 
-	boxBackbones= new QCheckBox();
+	boxBackbones = new QCheckBox();
 	boxBackbones->setChecked(app->drawBackbones);
 	axisOptionsLayout->addWidget(boxBackbones, 0, 0);
+
+	boxSynchronizeScales = new QCheckBox();
+	boxSynchronizeScales->setChecked(app->d_synchronize_graph_scales);
+	axisOptionsLayout->addWidget(boxSynchronizeScales, 0, 1);
 
 	lblAxesLineWidth = new QLabel();
 	axisOptionsLayout->addWidget(lblAxesLineWidth, 1, 0);
@@ -1671,6 +1675,7 @@ void ConfigDialog::languageChange()
 
 	// axes page
 	boxBackbones->setText(tr("Axes &backbones"));
+	boxSynchronizeScales->setText(tr("Synchronize scale &divisions"));
 	lblAxesLineWidth->setText(tr("Axes linewidth" ));
 
 	yLeftLabel->setText(tr("Left"));
@@ -2072,6 +2077,7 @@ void ConfigDialog::apply()
 		plotsTabWidget->currentWidget() == axesPage){
 		app->drawBackbones = boxBackbones->isChecked();
 		app->axesLineWidth = boxLineWidth->value();
+		app->d_synchronize_graph_scales = boxSynchronizeScales->isChecked();
 
 		for (int i = 0; i < QwtPlot::axisCnt; i++){
 			int row = i + 1;

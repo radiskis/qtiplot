@@ -1247,12 +1247,15 @@ starting with a comment character/string. The comment string can be customized v
 to be displayed in the table header, you must use the same separator between the column names
 and between the data columns.</para>
 
-<para>Finally, assuming that the data files you want to import were created
+<para>Assuming that the data files you want to import were created
 using different decimal separator conventions than the ones you're using, like for example
 a comma character for the decimal point instead of a dot character, you have the possibility
 to convert the data to your current settings, by specifying the
 <emphasis>Decimal Separators</emphasis> convention used in the ASCII files
 in conjunction with the <emphasis>Omit thousands separator</emphasis> option.</para>
+
+<para>Finally, you can specify the kind of data to be imported in each column by clicking on the column header of the preview table.
+ A dialog will pop-up allowing you to choose a data type (the default data type for each column is <emphasis>Numeric</emphasis>).</para>
 </sect1>
 
 <!-- ************************************************** -->

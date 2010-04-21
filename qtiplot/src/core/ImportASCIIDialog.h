@@ -60,14 +60,22 @@ public:
 	void resetHeader();
 	void clear();
 	void setNumericPrecision(int prec) {d_numeric_precision = prec;};
+	QList<int> columnTypes(){return colTypes;};
+
+signals:
+	void modifiedColumnType();
 
 private slots:
 	void setHeader();
+	bool eventFilter(QObject *object, QEvent *e);
 
 private:
+	void showColTypeDialog();
 	void addColumns(int c);
 	QStringList comments, col_label;
 	int d_numeric_precision, d_start_col;
+	QList<int> colTypes;
+	int d_selected_column;
 };
 
 class PreviewMatrix : public QTableView
@@ -148,6 +156,8 @@ public:
 	inline int endLineChar(){return boxEndLine->currentIndex();};
 
 	void selectFilter(const QString & filter);
+
+	QList<int> columnTypes(){return d_preview_table->columnTypes();};
 
 private slots:
 	//! Display help for advanced options.

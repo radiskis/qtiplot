@@ -9012,11 +9012,15 @@ The following special codes can be used:
     </message>
     <message>
         <source>Axis title</source>
-        <translation type="unfinished"></translation>
+        <translation>Titlu axe</translation>
     </message>
     <message>
         <source>Default</source>
-        <translation type="unfinished">Implicit</translation>
+        <translation>Implicit</translation>
+    </message>
+    <message>
+        <source>Synchronize scale &amp;divisions</source>
+        <translation>Sincronizează &amp;diviziunile axelor</translation>
     </message>
 </context>
 <context>
@@ -15185,6 +15189,41 @@ have the same number of rows.</source>
     <message>
         <source>You need at least %1 data points for this fit operation. Operation aborted!</source>
         <translation>Aveţi nevoie de cel puţin %1 puncte pentru a efectua operaţia de ajustare. Operaţia fost abandonată!</translation>
+    </message>
+</context>
+<context>
+    <name>PreviewTable</name>
+    <message>
+        <source>Numeric</source>
+        <translation>Numeric</translation>
+    </message>
+    <message>
+        <source>Text</source>
+        <translation>Text</translation>
+    </message>
+    <message>
+        <source>Date</source>
+        <translation>Dată</translation>
+    </message>
+    <message>
+        <source>Time</source>
+        <translation>Timp</translation>
+    </message>
+    <message>
+        <source>Month</source>
+        <translation>Lună</translation>
+    </message>
+    <message>
+        <source>Day</source>
+        <translation>Zi</translation>
+    </message>
+    <message>
+        <source>Choose column type</source>
+        <translation>Alege tipul coloanei</translation>
+    </message>
+    <message>
+        <source>Column type:</source>
+        <translation>Tipul coloanei:</translation>
     </message>
 </context>
 <context>

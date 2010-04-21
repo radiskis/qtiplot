@@ -9973,6 +9973,10 @@ The following special codes can be used:
         <source>Default</source>
         <translation type="unfinished">Por defecto</translation>
     </message>
+    <message>
+        <source>Synchronize scale &amp;divisions</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ContourLinesEditor</name>
@@ -17436,6 +17440,41 @@ Do you want to insert cells?</source>
     </message>
     <message>
         <source>Polynomial Fit</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>PreviewTable</name>
+    <message>
+        <source>Numeric</source>
+        <translation type="unfinished">Numérico</translation>
+    </message>
+    <message>
+        <source>Text</source>
+        <translation type="unfinished">Texto</translation>
+    </message>
+    <message>
+        <source>Date</source>
+        <translation type="unfinished">Fecha</translation>
+    </message>
+    <message>
+        <source>Time</source>
+        <translation type="unfinished">Tiempo</translation>
+    </message>
+    <message>
+        <source>Month</source>
+        <translation type="unfinished">Mes</translation>
+    </message>
+    <message>
+        <source>Day</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Choose column type</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Column type:</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

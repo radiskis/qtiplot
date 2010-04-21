@@ -2441,7 +2441,7 @@ bool Table::noYColumn()
 
 void Table::importASCII(const QString &fname, const QString &sep, int ignoredLines, bool renameCols,
     bool stripSpaces, bool simplifySpaces, bool importComments, const QString& commentString,
-    bool readOnly, ImportMode importAs, const QLocale& importLocale, int endLine, int maxRows)
+	bool readOnly, ImportMode importAs, const QLocale& importLocale, int endLine, int maxRows, const QList<int>& newColTypes)
 {
 	int rows;
 	QString name = MdiSubWindow::parseAsciiFile(fname, commentString, endLine, ignoredLines, maxRows, rows);
@@ -2519,6 +2519,20 @@ void Table::importASCII(const QString &fname, const QString &sep, int ignoredLin
 		break;
 	}
 
+	if (!newColTypes.isEmpty()){
+		switch(importAs){
+			case NewColumns:
+				for (int i = c; i < c + newColTypes.size(); i++)
+					if (i < colTypes.size())
+						colTypes[i] = newColTypes[i];
+			break;
+			default:
+				for (int i = 0; i < newColTypes.size(); i++)
+					colTypes[i] = newColTypes[i];
+			break;
+		}
+	}
+
 	if (renameCols && !allNumbers){//use first line to set the table header
 		for (int i = 0; i<cols; i++){
 			int aux = i + startCol;
@@ -2555,10 +2569,10 @@ void Table::importASCII(const QString &fname, const QString &sep, int ignoredLin
 
 	if ((!renameCols || allNumbers) && !importComments && rows > 0){
 		//put values in the first line of the table
-		for (int i = 0; i<cols; i++){
+		for (int i = 0; i < cols; i++){
 			bool ok;
 			double val = importLocale.toDouble(line[i], &ok);
-			if (ok && updateDecimalSeparators){
+			if (colTypes[i] == Table::Numeric && ok && updateDecimalSeparators){
 				char format;
 				int prec;
 				columnNumericFormat(startCol + i, &format, &prec);
@@ -2606,7 +2620,7 @@ void Table::importASCII(const QString &fname, const QString &sep, int ignoredLin
 		for (int j = 0; j<cols && j<lc; j++){
 			bool ok;
 			double val = importLocale.toDouble(line[j], &ok);
-			if (ok && updateDecimalSeparators){
+			if (colTypes[j] == Table::Numeric && ok && updateDecimalSeparators){
 				char format;
 				int prec;
 				columnNumericFormat(startCol + j, &format, &prec);

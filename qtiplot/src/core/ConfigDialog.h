@@ -281,6 +281,7 @@ private:
 	QGroupBox * curvesGroupBox;
 	QLabel *lblAxisLabeling;
 	QComboBox *axisLabelingBox;
+	QCheckBox *boxSynchronizeScales;
 };
 
 #endif // CONFIGDIALOG_H

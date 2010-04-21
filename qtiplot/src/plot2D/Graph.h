@@ -227,6 +227,7 @@ class Graph: public QwtPlot
 		double getDouglasPeukerTolerance(){return d_Douglas_Peuker_tolerance;};
 
 		void setAxisTitlePolicy(const AxisTitlePolicy& policy){d_axis_title_policy = policy;};
+		void setSynchronizedScaleDivisions(bool on){d_synchronize_scales = on;};
 
 	public slots:
 		void copy(Graph* g);
@@ -831,5 +832,6 @@ signals:
 		double d_Douglas_Peuker_tolerance;
 		int d_speed_mode_points;
 		AxisTitlePolicy d_axis_title_policy;
+		bool d_synchronize_scales;
 };
 #endif // GRAPH_H

@@ -6036,6 +6036,10 @@ The following special codes can be used:
         <source>Default</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Synchronize scale &amp;divisions</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ContourLinesEditor</name>
@@ -12056,6 +12060,41 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Polynomial</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>PreviewTable</name>
+    <message>
+        <source>Numeric</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Text</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Date</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Time</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Month</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Day</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Choose column type</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Column type:</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
