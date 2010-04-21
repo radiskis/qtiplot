@@ -4090,7 +4090,7 @@ Do you want to overwrite it?</source>
     </message>
     <message>
         <source>&amp;Open</source>
-        <translation type="unfinished">Abrir</translation>
+        <translation type="obsolete">Abrir</translation>
     </message>
     <message>
         <source>Ctrl+O</source>
@@ -4258,7 +4258,7 @@ Do you want to overwrite it?</source>
     </message>
     <message>
         <source>E&amp;xport ASCII</source>
-        <translation type="unfinished">E&amp;xportar ASCII</translation>
+        <translation type="obsolete">E&amp;xportar ASCII</translation>
     </message>
     <message>
         <source>Set import &amp;options</source>
@@ -6369,10 +6369,6 @@ Varias partes de este archivo pueden no mostrarse como se esperaba.</translation
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Open Image &amp;File</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Import I&amp;mage...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6426,10 +6422,6 @@ Varias partes de este archivo pueden no mostrarse como se esperaba.</translation
     </message>
     <message>
         <source>Ctrl+Alt+P</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Print Pre&amp;view</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -8181,6 +8173,26 @@ Autocompletion will not be available!</source>
     <message>
         <source>&amp;Reference Data...</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Open...</source>
+        <translation>&amp;Abrir...</translation>
+    </message>
+    <message>
+        <source>Open Image &amp;File...</source>
+        <translation>Abrir archivo de &amp;imagen...</translation>
+    </message>
+    <message>
+        <source>&amp;Print...</source>
+        <translation>Im&amp;primir...</translation>
+    </message>
+    <message>
+        <source>Print Pre&amp;view...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>E&amp;xport ASCII...</source>
+        <translation>E&amp;xportar ASCII...</translation>
     </message>
 </context>
 <context>

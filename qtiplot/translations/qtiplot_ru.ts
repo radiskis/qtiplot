@@ -911,7 +911,7 @@
     </message>
     <message>
         <source>E&amp;xport ASCII</source>
-        <translation>Э&amp;кспортировать в ASCII</translation>
+        <translation type="obsolete">Э&amp;кспортировать в ASCII</translation>
     </message>
     <message>
         <source>&amp;Export Graph</source>
@@ -1422,11 +1422,11 @@
     </message>
     <message>
         <source>&amp;Open</source>
-        <translation>&amp;Открыть</translation>
+        <translation type="obsolete">&amp;Открыть</translation>
     </message>
     <message>
         <source>Open Image &amp;File</source>
-        <translation>Открыть &amp;файл изображения</translation>
+        <translation type="obsolete">Открыть &amp;файл изображения</translation>
     </message>
     <message>
         <source>Open Te&amp;mplate...</source>
@@ -3733,7 +3733,7 @@ Autocompletion will not be available!</source>
     </message>
     <message>
         <source>Print Pre&amp;view</source>
-        <translation>Предварительный &amp;просмотр</translation>
+        <translation type="obsolete">Предварительный &amp;просмотр</translation>
     </message>
     <message>
         <source>Ad&amp;just Column Width</source>
@@ -3825,6 +3825,26 @@ Autocompletion will not be available!</source>
     </message>
     <message>
         <source>&amp;Reference Data...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Open...</source>
+        <translation type="unfinished">&amp;Открыть...</translation>
+    </message>
+    <message>
+        <source>Open Image &amp;File...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Print...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Print Pre&amp;view...</source>
+        <translation type="unfinished">Предварительный &amp;просмотр...</translation>
+    </message>
+    <message>
+        <source>E&amp;xport ASCII...</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

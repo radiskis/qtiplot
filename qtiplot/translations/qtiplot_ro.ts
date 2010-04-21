@@ -4876,7 +4876,7 @@ Are you sure you want to continue?</source>
     </message>
     <message>
         <source>&amp;Open</source>
-        <translation>&amp;Deschide</translation>
+        <translation type="obsolete">&amp;Deschide</translation>
     </message>
     <message>
         <source>Ctrl+O</source>
@@ -4896,7 +4896,7 @@ Are you sure you want to continue?</source>
     </message>
     <message>
         <source>Open Image &amp;File</source>
-        <translation>Deschide &amp;fişier imagine...</translation>
+        <translation type="obsolete">Deschide &amp;fişier imagine...</translation>
     </message>
     <message>
         <source>Ctrl+I</source>
@@ -5033,7 +5033,7 @@ Are you sure you want to continue?</source>
     </message>
     <message>
         <source>E&amp;xport ASCII</source>
-        <translation>E&amp;xportă fişier ASCII</translation>
+        <translation type="obsolete">E&amp;xportă fişier ASCII</translation>
     </message>
     <message>
         <source>&amp;Quit</source>
@@ -7211,7 +7211,7 @@ Autocompletion will not be available!</source>
     </message>
     <message>
         <source>Print Pre&amp;view</source>
-        <translation>&amp;Previzualizare tipărire</translation>
+        <translation type="obsolete">&amp;Previzualizare tipărire</translation>
     </message>
     <message>
         <source>Ad&amp;just Column Width</source>
@@ -7304,6 +7304,26 @@ Autocompletion will not be available!</source>
     <message>
         <source>&amp;Reference Data...</source>
         <translation>&amp;Set de date...</translation>
+    </message>
+    <message>
+        <source>&amp;Open...</source>
+        <translation>&amp;Deschide...</translation>
+    </message>
+    <message>
+        <source>Open Image &amp;File...</source>
+        <translation>Deschide &amp;fişier imagine...</translation>
+    </message>
+    <message>
+        <source>&amp;Print...</source>
+        <translation>Im&amp;primă...</translation>
+    </message>
+    <message>
+        <source>Print Pre&amp;view...</source>
+        <translation>&amp;Previzualizare tipărire...</translation>
+    </message>
+    <message>
+        <source>E&amp;xport ASCII...</source>
+        <translation>E&amp;xportă fişier ASCII...</translation>
     </message>
 </context>
 <context>

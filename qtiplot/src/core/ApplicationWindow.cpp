@@ -13135,7 +13135,7 @@ void ApplicationWindow::createActions()
 	actionNewSurfacePlot->setShortcut( tr("Ctrl+ALT+Z") );
 	connect(actionNewSurfacePlot, SIGNAL(activated()), this, SLOT(newSurfacePlot()));
 
-	actionOpen = new QAction(QIcon(":/fileopen.png"), tr("&Open"), this);
+	actionOpen = new QAction(QIcon(":/fileopen.png"), tr("&Open..."), this);
 	actionOpen->setShortcut( tr("Ctrl+O") );
 	connect(actionOpen, SIGNAL(activated()), this, SLOT(open()));
 
@@ -13151,7 +13151,7 @@ void ApplicationWindow::createActions()
 	connect(actionOpenOds, SIGNAL(activated()), this, SLOT(importOdfSpreadsheet()));
 #endif
 
-	actionLoadImage = new QAction(tr("Open Image &File"), this);
+	actionLoadImage = new QAction(tr("Open Image &File..."), this);
 	actionLoadImage->setShortcut( tr("Ctrl+I") );
 	connect(actionLoadImage, SIGNAL(activated()), this, SLOT(loadImage()));
 
@@ -13252,17 +13252,17 @@ void ApplicationWindow::createActions()
 	actionExportPDF->setShortcut( tr("Ctrl+Alt+P") );
 	connect(actionExportPDF, SIGNAL(activated()), this, SLOT(exportPDF()));
 
-	actionPrint = new QAction(QIcon(":/fileprint.png"), tr("&Print"), this);
+	actionPrint = new QAction(QIcon(":/fileprint.png"), tr("&Print..."), this);
 	actionPrint->setShortcut( tr("Ctrl+P") );
 	connect(actionPrint, SIGNAL(activated()), this, SLOT(print()));
 
-	actionPrintPreview = new QAction(QPixmap(":/preview.png"), tr("Print Pre&view"), this);
+	actionPrintPreview = new QAction(QPixmap(":/preview.png"), tr("Print Pre&view..."), this);
 	connect(actionPrintPreview, SIGNAL(activated()), this, SLOT(printPreview()));
 
 	actionPrintAllPlots = new QAction(tr("Print All Plo&ts"), this);
 	connect(actionPrintAllPlots, SIGNAL(activated()), this, SLOT(printAllPlots()));
 
-	actionShowExportASCIIDialog = new QAction(tr("E&xport ASCII"), this);
+	actionShowExportASCIIDialog = new QAction(tr("E&xport ASCII..."), this);
 	connect(actionShowExportASCIIDialog, SIGNAL(activated()), this, SLOT(showExportASCIIDialog()));
 
 	actionCloseAllWindows = new QAction(QIcon(":/quit.png"), tr("&Quit"), this);
@@ -14103,7 +14103,7 @@ void ApplicationWindow::translateActionsStrings()
 	actionNewSurfacePlot->setToolTip(tr("Create a new 3D surface plot"));
 	actionNewSurfacePlot->setShortcut(tr("Ctrl+ALT+Z"));
 
-	actionOpen->setMenuText(tr("&Open"));
+	actionOpen->setMenuText(tr("&Open..."));
 	actionOpen->setShortcut(tr("Ctrl+O"));
 	actionOpen->setToolTip(tr("Open project"));
 
@@ -14117,7 +14117,7 @@ void ApplicationWindow::translateActionsStrings()
 	actionOpenOds->setShortcut( tr("Ctrl+Alt+S") );
 	actionOpenOds->setToolTip(tr("Open ODF Spreadsheet"));
 #endif
-	actionLoadImage->setMenuText(tr("Open Image &File"));
+	actionLoadImage->setMenuText(tr("Open Image &File..."));
 	actionLoadImage->setShortcut(tr("Ctrl+I"));
 
 	actionImportSound->setMenuText(tr("&Sound (WAV)..."));
@@ -14217,15 +14217,15 @@ void ApplicationWindow::translateActionsStrings()
 	actionExportPDF->setShortcut(tr("Ctrl+Alt+P"));
 	actionExportPDF->setToolTip(tr("Export to PDF"));
 
-	actionPrint->setMenuText(tr("&Print"));
+	actionPrint->setMenuText(tr("&Print..."));
 	actionPrint->setShortcut(tr("Ctrl+P"));
 	actionPrint->setToolTip(tr("Print window"));
 
-	actionPrintPreview->setMenuText(tr("Print Pre&view"));
+	actionPrintPreview->setMenuText(tr("Print Pre&view..."));
 	actionPrintPreview->setToolTip(tr("Print preview"));
 
 	actionPrintAllPlots->setMenuText(tr("Print All Plo&ts"));
-	actionShowExportASCIIDialog->setMenuText(tr("E&xport ASCII"));
+	actionShowExportASCIIDialog->setMenuText(tr("E&xport ASCII..."));
 
 	actionCloseAllWindows->setMenuText(tr("&Quit"));
 	actionCloseAllWindows->setShortcut(tr("Ctrl+Q"));

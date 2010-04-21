@@ -3057,7 +3057,7 @@ Autocompletion will not be available!</source>
     </message>
     <message>
         <source>&amp;Open</source>
-        <translation type="unfinished">開く(&amp;O)</translation>
+        <translation type="obsolete">開く(&amp;O)</translation>
     </message>
     <message>
         <source>Open image &amp;file</source>
@@ -3272,10 +3272,6 @@ Autocompletion will not be available!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Open Image &amp;File</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Ctrl+I</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3405,15 +3401,7 @@ Autocompletion will not be available!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Print Pre&amp;view</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Print All Plo&amp;ts</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>E&amp;xport ASCII</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4358,6 +4346,26 @@ Autocompletion will not be available!</source>
     </message>
     <message>
         <source>&amp;Reference Data...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Open...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open Image &amp;File...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Print...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Print Pre&amp;view...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>E&amp;xport ASCII...</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

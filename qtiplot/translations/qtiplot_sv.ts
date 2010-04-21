@@ -5048,7 +5048,7 @@ Varning: detta kommer att arrangera om befintliga lager!</translation>
     </message>
     <message>
         <source>&amp;Open</source>
-        <translation type="unfinished">&amp;Öppna</translation>
+        <translation type="obsolete">&amp;Öppna</translation>
     </message>
     <message>
         <source>Ctrl+O</source>
@@ -5200,7 +5200,7 @@ Varning: detta kommer att arrangera om befintliga lager!</translation>
     </message>
     <message>
         <source>E&amp;xport ASCII</source>
-        <translation type="unfinished">Ex&amp;portera ASCII</translation>
+        <translation type="obsolete">Ex&amp;portera ASCII</translation>
     </message>
     <message>
         <source>Set import &amp;options</source>
@@ -6850,7 +6850,7 @@ den första representerar signalen och den andra svarsfunktionen!</translation>
     </message>
     <message>
         <source>Open Image &amp;File</source>
-        <translation type="unfinished">Öppna bild&amp;fil</translation>
+        <translation type="obsolete">Öppna bild&amp;fil</translation>
     </message>
     <message>
         <source>Import I&amp;mage...</source>
@@ -6904,10 +6904,6 @@ den första representerar signalen och den andra svarsfunktionen!</translation>
     <message>
         <source>Ctrl+Alt+P</source>
         <translation type="unfinished">Ctrl+Alt+P</translation>
-    </message>
-    <message>
-        <source>Print Pre&amp;view</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>&amp;Close</source>
@@ -8394,6 +8390,26 @@ Automatisk komplettering ej tillgängligt!</translation>
     <message>
         <source>&amp;Reference Data...</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Open...</source>
+        <translation>&amp;Öppna...</translation>
+    </message>
+    <message>
+        <source>Open Image &amp;File...</source>
+        <translation>Öppna bild&amp;fil...</translation>
+    </message>
+    <message>
+        <source>&amp;Print...</source>
+        <translation>&amp;Skriv ut...</translation>
+    </message>
+    <message>
+        <source>Print Pre&amp;view...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>E&amp;xport ASCII...</source>
+        <translation>Ex&amp;portera ASCII...</translation>
     </message>
 </context>
 <context>

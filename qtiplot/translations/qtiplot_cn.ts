@@ -4981,8 +4981,6 @@ Are you sure you want to continue?</source>
     </message>
     <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="10424"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="13255"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="14220"/>
         <source>&amp;Print</source>
         <translation>打印(&amp;P)</translation>
     </message>
@@ -5432,10 +5430,8 @@ Are you sure you want to continue?</source>
         <translation>Ctrl+ALT+Z</translation>
     </message>
     <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="13138"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="14106"/>
         <source>&amp;Open</source>
-        <translation>打开(&amp;O)</translation>
+        <translation type="obsolete">打开(&amp;O)</translation>
     </message>
     <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="13139"/>
@@ -5456,10 +5452,8 @@ Are you sure you want to continue?</source>
         <translation>打开ODF工作表(&amp;h)...</translation>
     </message>
     <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="13154"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="14120"/>
         <source>Open Image &amp;File</source>
-        <translation>打开图象文件(&amp;F)</translation>
+        <translation type="obsolete">打开图象文件(&amp;F)</translation>
     </message>
     <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="13155"/>
@@ -5680,10 +5674,8 @@ Are you sure you want to continue?</source>
         <translation>Ctrl+P</translation>
     </message>
     <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="13259"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="14224"/>
         <source>Print Pre&amp;view</source>
-        <translation>打印预览(&amp;v)</translation>
+        <translation type="obsolete">打印预览(&amp;v)</translation>
     </message>
     <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="13262"/>
@@ -5692,16 +5684,44 @@ Are you sure you want to continue?</source>
         <translation>打印所有绘图(&amp;t)</translation>
     </message>
     <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="13265"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="14228"/>
         <source>E&amp;xport ASCII</source>
-        <translation>导出ASCII文件(&amp;x)</translation>
+        <translation type="obsolete">导出ASCII文件(&amp;x)</translation>
     </message>
     <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="13268"/>
         <location filename="../src/core/ApplicationWindow.cpp" line="14230"/>
         <source>&amp;Quit</source>
         <translation>退出(&amp;Q)</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="13138"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="14106"/>
+        <source>&amp;Open...</source>
+        <translation type="unfinished">打开(&amp;O)...</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="13154"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="14120"/>
+        <source>Open Image &amp;File...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="13255"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="14220"/>
+        <source>&amp;Print...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="13259"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="14224"/>
+        <source>Print Pre&amp;view...</source>
+        <translation type="unfinished">打印预览(&amp;v)...</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ApplicationWindow.cpp" line="13265"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="14228"/>
+        <source>E&amp;xport ASCII...</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="13269"/>
