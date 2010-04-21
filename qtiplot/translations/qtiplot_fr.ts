@@ -370,7 +370,7 @@
     </message>
     <message>
         <source>&amp;Open</source>
-        <translation>&amp;Ouvrir</translation>
+        <translation type="obsolete">&amp;Ouvrir</translation>
     </message>
     <message>
         <source>Ctrl+O</source>
@@ -474,7 +474,7 @@
     </message>
     <message>
         <source>E&amp;xport ASCII</source>
-        <translation>E&amp;xporter en ASCII</translation>
+        <translation type="obsolete">E&amp;xporter en ASCII</translation>
     </message>
     <message>
         <source>&amp;Quit</source>
@@ -2211,7 +2211,7 @@ Quelques parties de ce fichier peuvent ne pas être affichés comme attendu.</tr
     </message>
     <message>
         <source>Open Image &amp;File</source>
-        <translation>Ouvrir un &amp;fichier image</translation>
+        <translation type="obsolete">Ouvrir un &amp;fichier image</translation>
     </message>
     <message>
         <source>Import I&amp;mage...</source>
@@ -3727,7 +3727,7 @@ L&apos;autocomplétion ne sera pas disponible!</translation>
     </message>
     <message>
         <source>Print Pre&amp;view</source>
-        <translation>Aperçu a&amp;vant impression</translation>
+        <translation type="obsolete">Aperçu a&amp;vant impression</translation>
     </message>
     <message>
         <source>Ad&amp;just Column Width</source>
@@ -3820,6 +3820,26 @@ L&apos;autocomplétion ne sera pas disponible!</translation>
     <message>
         <source>&amp;Reference Data...</source>
         <translation>&amp;Donnée de référence...</translation>
+    </message>
+    <message>
+        <source>&amp;Open...</source>
+        <translation>&amp;Ouvrir...</translation>
+    </message>
+    <message>
+        <source>Open Image &amp;File...</source>
+        <translation>Ouvrir un &amp;fichier image...</translation>
+    </message>
+    <message>
+        <source>&amp;Print...</source>
+        <translation>Im&amp;primer...</translation>
+    </message>
+    <message>
+        <source>Print Pre&amp;view...</source>
+        <translation>Aperçu a&amp;vant impression...</translation>
+    </message>
+    <message>
+        <source>E&amp;xport ASCII...</source>
+        <translation>E&amp;xporter en ASCII...</translation>
     </message>
 </context>
 <context>

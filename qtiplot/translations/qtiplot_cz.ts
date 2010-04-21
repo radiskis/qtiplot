@@ -312,7 +312,7 @@
     </message>
     <message>
         <source>&amp;Open</source>
-        <translation>&amp;Otevřít</translation>
+        <translation type="obsolete">&amp;Otevřít</translation>
     </message>
     <message>
         <source>&amp;Plot</source>
@@ -716,7 +716,7 @@
     </message>
     <message>
         <source>Print Pre&amp;view</source>
-        <translation>Tisk &amp;náhledu</translation>
+        <translation type="obsolete">Tisk &amp;náhledu</translation>
     </message>
     <message>
         <source>Plot stack column</source>
@@ -732,7 +732,7 @@
     </message>
     <message>
         <source>E&amp;xport ASCII</source>
-        <translation>&amp;Vyvést jako ASCII</translation>
+        <translation type="obsolete">&amp;Vyvést jako ASCII</translation>
     </message>
     <message>
         <source>&amp;Intensity Table</source>
@@ -1958,7 +1958,7 @@ Jste si jist, že chcete pokračovat?</translation>
     </message>
     <message>
         <source>Open Image &amp;File</source>
-        <translation>Otevřít soubor s &amp;obrázkem</translation>
+        <translation type="obsolete">Otevřít soubor s &amp;obrázkem</translation>
     </message>
     <message>
         <source>&amp;Read Only</source>
@@ -3835,6 +3835,26 @@ Různé části tohoto souboru se nemusí zobrazovat tak, jak se očekává.</tr
     </message>
     <message>
         <source>&amp;Reference Data...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Open...</source>
+        <translation type="unfinished">&amp;Otevřít...</translation>
+    </message>
+    <message>
+        <source>Open Image &amp;File...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Print...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Print Pre&amp;view...</source>
+        <translation type="unfinished">Náhled &amp;tisku...</translation>
+    </message>
+    <message>
+        <source>E&amp;xport ASCII...</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -5544,7 +5544,7 @@ Wollen Sie sie überschreiben?</translation>
     </message>
     <message>
         <source>&amp;Open</source>
-        <translation>Ö&amp;ffnen</translation>
+        <translation type="obsolete">Ö&amp;ffnen</translation>
     </message>
     <message>
         <source>Ctrl+O</source>
@@ -5716,7 +5716,7 @@ Wollen Sie sie überschreiben?</translation>
     </message>
     <message>
         <source>E&amp;xport ASCII</source>
-        <translation>ASCII-E&amp;xport</translation>
+        <translation type="obsolete">ASCII-E&amp;xport</translation>
     </message>
     <message>
         <source>Set import &amp;options</source>
@@ -8103,7 +8103,7 @@ Einige Teile der Datei werden eventuell nicht wie erwartet dargestellt.</transla
     </message>
     <message>
         <source>Open Image &amp;File</source>
-        <translation>Bilddatei ö&amp;ffnen</translation>
+        <translation type="obsolete">Bilddatei ö&amp;ffnen</translation>
     </message>
     <message>
         <source>Import I&amp;mage...</source>
@@ -9719,7 +9719,7 @@ Autocompletion will not be available!</source>
     </message>
     <message>
         <source>Print Pre&amp;view</source>
-        <translation>Druck&amp;vorschau</translation>
+        <translation type="obsolete">Druck&amp;vorschau</translation>
     </message>
     <message>
         <source>Ad&amp;just Column Width</source>
@@ -9816,6 +9816,26 @@ Autocompletion will not be available!</source>
     <message>
         <source>&amp;Reference Data...</source>
         <translation>&amp;Referenzdaten...</translation>
+    </message>
+    <message>
+        <source>&amp;Open...</source>
+        <translation>Ö&amp;ffnen...</translation>
+    </message>
+    <message>
+        <source>Open Image &amp;File...</source>
+        <translation>Bilddatei ö&amp;ffnen...</translation>
+    </message>
+    <message>
+        <source>&amp;Print...</source>
+        <translation>&amp;Drucken...</translation>
+    </message>
+    <message>
+        <source>Print Pre&amp;view...</source>
+        <translation>Druck&amp;vorschau...</translation>
+    </message>
+    <message>
+        <source>E&amp;xport ASCII...</source>
+        <translation>ASCII-E&amp;xport...</translation>
     </message>
 </context>
 <context>
@@ -11779,7 +11799,7 @@ Die folgenden Spezialcodes können benutzt werden:
     </message>
     <message>
         <source>Synchronize scale &amp;divisions</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Gleiche Skalenabstände bei doppelten Achsen</translation>
     </message>
 </context>
 <context>
@@ -20668,11 +20688,11 @@ Wollen sie Zellen einfügen?</translation>
     </message>
     <message>
         <source>Choose column type</source>
-        <translation type="unfinished"></translation>
+        <translation>Spaltentyp wählen</translation>
     </message>
     <message>
         <source>Column type:</source>
-        <translation type="unfinished"></translation>
+        <translation>Spaltentyp:</translation>
     </message>
 </context>
 <context>
