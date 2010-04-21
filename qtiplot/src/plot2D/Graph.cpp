@@ -128,6 +128,7 @@ Graph::Graph(int x, int y, int width, int height, QWidget* parent, Qt::WFlags f)
 	d_axis_title_policy = Default;
 	d_Douglas_Peuker_tolerance = 0;
 	d_speed_mode_points = 3000;
+	d_synchronize_scales = true;
 
 	d_user_step = QVector<double>(QwtPlot::axisCnt);
 	for (int i=0; i<QwtPlot::axisCnt; i++)
@@ -757,7 +758,7 @@ void Graph::showAxis(int axis, int type, const QString& formatInfo, Table *table
 	setAxisTicksLength(axis, majTicksType, minTicksType,
 			minorTickLength(), majorTickLength());
 
-	if (axisOn && (axis == QwtPlot::xTop || axis == QwtPlot::yRight))
+	if (d_synchronize_scales && axisOn && (axis == QwtPlot::xTop || axis == QwtPlot::yRight))
 		updateSecondaryAxis(axis);//synchronize scale divisions
 
 	scalePicker->refresh();
@@ -1136,7 +1137,8 @@ QString Graph::parseAxisTitle(const QString& text)
 		break;
 		case NameAndComment:
 			if (!comment.isEmpty())
-				return name + " (" + comment + ")";
+				name += " (" + comment + ")";
+			return name;
 		break;
 		default:
 			break;
@@ -1290,10 +1292,10 @@ void Graph::setScale(int axis, double start, double end, double step,
 
 	d_user_step[axis] = step;
 
-	if (axis == QwtPlot::xBottom || axis == QwtPlot::yLeft){
-  		updateSecondaryAxis(QwtPlot::xTop);
-  	    updateSecondaryAxis(QwtPlot::yRight);
-  	}
+	if (d_synchronize_scales && (axis == QwtPlot::xBottom || axis == QwtPlot::yLeft)){
+		updateSecondaryAxis(QwtPlot::xTop);
+		updateSecondaryAxis(QwtPlot::yRight);
+	}
 
 	replot();
 
@@ -3495,8 +3497,11 @@ void Graph::updateScale()
     replot();
 
 	updateMarkersBoundingRect();
-	updateSecondaryAxis(QwtPlot::xTop);
-	updateSecondaryAxis(QwtPlot::yRight);
+
+	if (d_synchronize_scales){
+		updateSecondaryAxis(QwtPlot::xTop);
+		updateSecondaryAxis(QwtPlot::yRight);
+	}
 
 	replot();//TODO: avoid 2nd replot!
 	d_zoomer[0]->setZoomBase();
@@ -3741,8 +3746,10 @@ void Graph::zoomOut()
 	d_zoomer[0]->zoom(-1);
 	d_zoomer[1]->zoom(-1);
 
-	updateSecondaryAxis(QwtPlot::xTop);
-  	updateSecondaryAxis(QwtPlot::yRight);
+	if (d_synchronize_scales){
+		updateSecondaryAxis(QwtPlot::xTop);
+		updateSecondaryAxis(QwtPlot::yRight);
+	}
 }
 
 void Graph::enablePanningMagnifier(bool on, int mode)

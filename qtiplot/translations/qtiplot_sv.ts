@@ -10214,6 +10214,10 @@ Följande specialkoder kan användas:
         <source>Default</source>
         <translation type="unfinished">Standard</translation>
     </message>
+    <message>
+        <source>Synchronize scale &amp;divisions</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ContourLinesEditor</name>
@@ -17927,6 +17931,41 @@ Vill du skjuta in celler?</translation>
     <message>
         <source>Polynomial Fit</source>
         <translation>Polynomanpasssning</translation>
+    </message>
+</context>
+<context>
+    <name>PreviewTable</name>
+    <message>
+        <source>Numeric</source>
+        <translation type="unfinished">Numerisk</translation>
+    </message>
+    <message>
+        <source>Text</source>
+        <translation type="unfinished">Text</translation>
+    </message>
+    <message>
+        <source>Date</source>
+        <translation type="unfinished">Datum</translation>
+    </message>
+    <message>
+        <source>Time</source>
+        <translation type="unfinished">Tid</translation>
+    </message>
+    <message>
+        <source>Month</source>
+        <translation type="unfinished">Månad</translation>
+    </message>
+    <message>
+        <source>Day</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Choose column type</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Column type:</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

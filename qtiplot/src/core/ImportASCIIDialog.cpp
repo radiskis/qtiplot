@@ -45,6 +45,7 @@
 #include <QProgressDialog>
 #include <QStackedWidget>
 #include <QHeaderView>
+#include <QInputDialog>
 
 #include <gsl/gsl_math.h>
 
@@ -262,6 +263,7 @@ void ImportASCIIDialog::initPreview(int previewMode)
 			d_preview_table = new PreviewTable(30, 2, this);
 			d_preview_table->setNumericPrecision(app->d_decimal_digits);
 			d_preview_stack->addWidget(d_preview_table);
+			connect(d_preview_table, SIGNAL(modifiedColumnType()), this, SLOT(preview()));
 			enableTableOptions(true);
 		break;
 
@@ -282,6 +284,7 @@ void ImportASCIIDialog::initPreview(int previewMode)
 				d_preview_table = new PreviewTable(30, ((Table*)w)->numCols(), this);
 				d_preview_table->setNumericPrecision(app->d_decimal_digits);
 				d_preview_stack->addWidget(d_preview_table);
+				connect(d_preview_table, SIGNAL(modifiedColumnType()), this, SLOT(preview()));
 				enableTableOptions(true);
 			} else if (w->isA("Matrix")){
 				d_preview_matrix = new PreviewMatrix(app, (Matrix *)w);
@@ -441,8 +444,8 @@ void ImportASCIIDialog::previewTable()
 	if (d_current_path.trimmed().isEmpty()){
 		d_preview_table->clear();
 		d_preview_table->resetHeader();
-        return;
-    }
+		return;
+	}
 
 	int importMode = d_import_mode->currentIndex();
 	if (importMode == NewTables)
@@ -451,11 +454,12 @@ void ImportASCIIDialog::previewTable()
 		importMode -= 2;
 
 	d_preview_table->resetHeader();
+
 	d_preview_table->importASCII(d_current_path, columnSeparator(), d_ignored_lines->value(),
-							renameColumns(), d_strip_spaces->isChecked(),
-							d_simplify_spaces->isChecked(), importComments(),
-                            d_comment_string->text(), (Table::ImportMode)importMode, decimalSeparators(),
-                            boxEndLine->currentIndex(), d_preview_lines_box->value());
+						renameColumns(), d_strip_spaces->isChecked(),
+						d_simplify_spaces->isChecked(), importComments(),
+						d_comment_string->text(), (Table::ImportMode)importMode, decimalSeparators(),
+						boxEndLine->currentIndex(), d_preview_lines_box->value());
 
     if (!d_preview_table->isVisible())
         d_preview_table->show();
@@ -567,11 +571,16 @@ PreviewTable::PreviewTable(int numRows, int numCols, QWidget * parent, const cha
 	setRowMovingEnabled(false);
 	setColumnMovingEnabled(false);
 	verticalHeader()->setResizeEnabled(false);
+	horizontalHeader()->installEventFilter(this);
+	horizontalHeader()->setResizeEnabled(true);
+	horizontalHeader()->setMovingEnabled (false);
 
-	for (int i=0; i<numCols; i++){
+	for (int i = 0; i < numCols; i++){
 		comments << "";
-		col_label << QString::number(i+1);
+		col_label << QString::number(i + 1);
+		colTypes << Table::Numeric;
 	}
+
 	d_start_col = numCols;
 	setHeader();
 	setMinimumHeight(2*horizontalHeader()->height());
@@ -636,7 +645,8 @@ void PreviewTable::importASCII(const QString &fname, const QString &sep, int ign
 		break;
 		case Table::NewColumns:
 			startCol = d_start_col;
-			if (abs(c - d_start_col) < cols)
+			d_start_col += cols;
+			//if (abs(c - d_start_col) < cols)
 				addColumns(cols);
 			if (r < rows)
 				setNumRows(rows);
@@ -688,7 +698,7 @@ void PreviewTable::importASCII(const QString &fname, const QString &sep, int ign
 		for (int i = 0; i<cols; i++){
 			bool ok;
 			double val = importLocale.toDouble(line[i], &ok);
-			if (ok && updateDecimalSeparators)
+			if (colTypes[i] == Table::Numeric && ok && updateDecimalSeparators)
 				setText(startRow, startCol + i, locale.toString(val, 'g', d_numeric_precision));
 			else
 				setText(startRow, startCol + i, line[i]);
@@ -718,7 +728,7 @@ void PreviewTable::importASCII(const QString &fname, const QString &sep, int ign
 		for (int j = 0; j < cols && j < lc; j++){
 			bool ok;
 			double val = importLocale.toDouble(line[j], &ok);
-			if (ok && updateDecimalSeparators)
+			if (colTypes[j] == Table::Numeric && ok && updateDecimalSeparators)
 				setText(row, startCol + j, locale.toString(val, 'g', d_numeric_precision));
 			else
 				setText(row, startCol + j, line[j]);
@@ -734,7 +744,7 @@ void PreviewTable::importASCII(const QString &fname, const QString &sep, int ign
 void PreviewTable::resetHeader()
 {
 	for (int i=0; i<numCols(); i++){
-	    comments[i] = QString::null;
+		comments[i] = QString::null;
 		col_label[i] = QString::number(i+1);
 	}
 }
@@ -769,12 +779,47 @@ void PreviewTable::addColumns(int c)
 	}
 	max++;
 	insertColumns(cols, c);
-	for (int i=0; i<c; i++){
+	for (int i = 0; i < c; i++){
 		comments << QString();
-		col_label<< QString::number(max+i);
+		col_label << QString::number(max+i);
+		colTypes << Table::Numeric;
 	}
 }
 
+bool PreviewTable::eventFilter(QObject *object, QEvent *e)
+{
+	Q3Header *hheader = horizontalHeader();
+	if (e->type() == QEvent::MouseButtonPress && object == (QObject*)hheader) {
+		const QMouseEvent *me = (const QMouseEvent *)e;
+		clearSelection();
+		int col = hheader->sectionAt (me->pos().x() + hheader->offset());
+		if (col >= 0 && col < numCols()){
+			QRect rect = hheader->sectionRect(col);
+			rect.setLeft(rect.left() + 2);
+			rect.setRight(rect.right() - 2);
+			if (rect.contains (me->pos())){
+				selectColumn(col);
+				d_selected_column = col;
+				showColTypeDialog();
+				return true;
+			}
+		}
+	}
+	return Q3Table::eventFilter(object, e);
+}
+
+void PreviewTable::showColTypeDialog()
+{
+	QStringList items;
+	items << tr("Numeric") << tr("Text") << tr("Date") << tr("Time") << tr("Month") << tr("Day");
+
+	bool ok;
+	QString item = QInputDialog::getItem(this, tr("Choose column type"), tr("Column type:"), items, colTypes[d_selected_column], false, &ok);
+	if (ok && !item.isEmpty()){
+		colTypes[d_selected_column] = (Table::ColType)items.indexOf(item);
+		modifiedColumnType();
+	}
+}
 /*****************************************************************************
  *
  * Class PreviewMatrix

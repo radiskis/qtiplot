@@ -31,7 +31,6 @@
 
 #include <q3table.h>
 #include <q3header.h>
-#include <Q3ValueList>
 #include <QVarLengthArray>
 #include <QLocale>
 
@@ -109,7 +108,7 @@ public slots:
 	int colPlotDesignation(int col){return col_plot_type[col];};
 	void setColPlotDesignation(int col, PlotDesignation pd);
 	void setPlotDesignation(PlotDesignation pd, bool rightColumns = false);
-	Q3ValueList<int> plotDesignations(){return col_plot_type;};
+	QList<int> plotDesignations(){return col_plot_type;};
 
 	void setHeader(QStringList header);
 	void loadHeader(QStringList header);
@@ -275,8 +274,8 @@ public slots:
 	void columnNumericFormat(int col, int *f, int *precision);
 	int columnType(int col){return colTypes[col];};
 
-	Q3ValueList<int> columnTypes(){return colTypes;};
-	void setColumnTypes(Q3ValueList<int> ctl){colTypes = ctl;};
+	QList<int> columnTypes(){return colTypes;};
+	void setColumnTypes(QList<int> ctl){colTypes = ctl;};
 	void setColumnTypes(const QStringList& ctl);
 	void setColumnType(int col, ColType val) { colTypes[col] = val; }
 
@@ -304,7 +303,8 @@ public slots:
 	void importASCII(const QString &fname, const QString &sep, int ignoredLines, bool renameCols,
                     bool stripSpaces, bool simplifySpaces, bool importComments,
                     const QString& commentString, bool readOnly = false,
-					ImportMode importAs = Overwrite, const QLocale& importLocale = QLocale(), int endLine = 0, int maxRows = -1);
+					ImportMode importAs = Overwrite, const QLocale& importLocale = QLocale(), int endLine = 0, int maxRows = -1,
+					const QList<int>& newColTypes = QList<int>());
 
 	//! \name Saving and Restoring
 	//@{
