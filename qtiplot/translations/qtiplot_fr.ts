@@ -5506,7 +5506,7 @@ Les codes spéciaux suivant peuvent être utilisés :
     </message>
     <message>
         <source>Synchronize scale &amp;divisions</source>
-        <translation type="unfinished"></translation>
+        <translation>Synchroni&amp;zer les échelles opposées</translation>
     </message>
 </context>
 <context>
@@ -11562,35 +11562,35 @@ have the same number of rows.</source>
     <name>PreviewTable</name>
     <message>
         <source>Numeric</source>
-        <translation type="unfinished">Numérique</translation>
+        <translation>Numérique</translation>
     </message>
     <message>
         <source>Text</source>
-        <translation type="unfinished">Texte</translation>
+        <translation>Texte</translation>
     </message>
     <message>
         <source>Date</source>
-        <translation type="unfinished">Date</translation>
+        <translation>Date</translation>
     </message>
     <message>
         <source>Time</source>
-        <translation type="unfinished"></translation>
+        <translation>Temps</translation>
     </message>
     <message>
         <source>Month</source>
-        <translation type="unfinished">Mois</translation>
+        <translation>Mois</translation>
     </message>
     <message>
         <source>Day</source>
-        <translation type="unfinished"></translation>
+        <translation>Jour</translation>
     </message>
     <message>
         <source>Choose column type</source>
-        <translation type="unfinished"></translation>
+        <translation>Choisir le type de données</translation>
     </message>
     <message>
         <source>Column type:</source>
-        <translation type="unfinished"></translation>
+        <translation>Format:</translation>
     </message>
 </context>
 <context>
