@@ -11771,7 +11771,7 @@ Die folgenden Spezialcodes können benutzt werden:
     </message>
     <message>
         <source>Axis title</source>
-        <translation type="unfinished">Achsenbeschriftung</translation>
+        <translation>Achsenbeschriftung</translation>
     </message>
     <message>
         <source>Default</source>
@@ -13652,11 +13652,11 @@ Die folgenden Spezialcodes können benutzt werden:
     </message>
     <message>
         <source>No weighting</source>
-        <translation>Keine Gewichtung</translation>
+        <translation>Keine Gewichtung (alle w_i = 1)</translation>
     </message>
     <message>
         <source>Instrumental</source>
-        <translation>Instrumentell</translation>
+        <translation>Instrumentell: unter Benutzung der Fehlerbalken (w_i = 1/er_i**2)</translation>
     </message>
     <message>
         <source>using error bars dataset</source>
@@ -13664,11 +13664,11 @@ Die folgenden Spezialcodes können benutzt werden:
     </message>
     <message>
         <source>Statistical</source>
-        <translation>Statistisch</translation>
+        <translation>Statistisch (w_i = 1/y_i)</translation>
     </message>
     <message>
         <source>Arbitrary Dataset</source>
-        <translation>Beliebiger Datensatz</translation>
+        <translation>Beliebigen Datensatz als Fehler verwenden (w_i = 1/c_i**2)</translation>
     </message>
     <message>
         <source>Nelder-Mead Simplex</source>
@@ -20644,27 +20644,27 @@ Wollen sie Zellen einfügen?</translation>
     <name>PreviewTable</name>
     <message>
         <source>Numeric</source>
-        <translation type="unfinished">Numerisch</translation>
+        <translation>Numerisch</translation>
     </message>
     <message>
         <source>Text</source>
-        <translation type="unfinished">Text</translation>
+        <translation>Text</translation>
     </message>
     <message>
         <source>Date</source>
-        <translation type="unfinished">Datum</translation>
+        <translation>Datum</translation>
     </message>
     <message>
         <source>Time</source>
-        <translation type="unfinished">Zeit</translation>
+        <translation>Zeit</translation>
     </message>
     <message>
         <source>Month</source>
-        <translation type="unfinished">Monat</translation>
+        <translation>Monat</translation>
     </message>
     <message>
         <source>Day</source>
-        <translation type="unfinished"></translation>
+        <translation>Tag</translation>
     </message>
     <message>
         <source>Choose column type</source>
