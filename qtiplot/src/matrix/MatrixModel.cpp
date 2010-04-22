@@ -169,9 +169,9 @@ void MatrixModel::setDimensions(int rows, int cols)
 
 double MatrixModel::cell(int row, int col)
 {
-    int i = d_cols*row + col;
-    if (i < 0 || i >= d_rows*d_cols)
-        return GSL_NAN;
+	int i = d_cols*row + col;
+	if (i < 0 || i >= d_rows*d_cols)
+		return GSL_NAN;
 
 	return d_data[i];
 }

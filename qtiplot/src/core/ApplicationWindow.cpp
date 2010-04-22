@@ -11882,7 +11882,6 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot, co
 			QStringList fList = s.split("\t");
 			ag = (Graph*)plot->addLayer(fList[1].toInt(), fList[2].toInt(), fList[3].toInt(), fList[4].toInt());
 			ag->blockSignals(true);
-			ag->enableAutoscaling(autoscale2DPlots);
 		}
 		else if (s.left(10) == "Background"){
 			QStringList fList = s.split("\t");
@@ -12508,10 +12507,13 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot, co
 				((ImageProfilesTool *)ag->activeTool())->append(QwtDoublePoint(lst[0].toDouble(), lst[1].toDouble()));
 		}
 	}
-	ag->updateLayout();
-
-    ag->blockSignals(false);
-    ag->setAutoscaleFonts(app->autoScaleFonts);
+	if (ag){
+		ag->updateLayout();
+		ag->enableAutoscaling(autoscale2DPlots);
+		ag->setSynchronizedScaleDivisions(d_synchronize_graph_scales);
+		ag->blockSignals(false);
+		ag->setAutoscaleFonts(app->autoScaleFonts);
+	}
     return ag;
 }
 

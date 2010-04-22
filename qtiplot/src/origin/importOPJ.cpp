@@ -229,8 +229,7 @@ bool ImportOPJ::importTables(const OriginFile& opj)
 {
 	int visible_count = 0;
 	int QtiPlot_scaling_factor = 10; //in Origin width is measured in characters while in QtiPlot - pixels --- need to be accurate
-	for(unsigned int s = 0; s < opj.spreadCount(); ++s)
-	{
+	for(unsigned int s = 0; s < opj.spreadCount(); ++s){
 		Origin::SpreadSheet spread = opj.spread(s);
 		int columnCount = spread.columns.size();
 		int maxrows = spread.maxRows;
@@ -255,8 +254,7 @@ bool ImportOPJ::importTables(const OriginFile& opj)
 
         QLocale locale = mw->locale();
 		table->setWindowLabel(spread.label.c_str());
-		for(int j = 0; j < columnCount; ++j)
-		{
+		for(int j = 0; j < columnCount; ++j){
 			Origin::SpreadColumn column = spread.columns[j];
 			QString name(column.name.c_str());
 			table->setColName(j, name.replace(QRegExp(".*_"), ""), false, false);
@@ -264,28 +262,27 @@ bool ImportOPJ::importTables(const OriginFile& opj)
 			table->setColComment(j, QString(column.comment.c_str()));
 			table->setColumnWidth(j, column.width * QtiPlot_scaling_factor);
 
-			switch(column.type)
-			{
-			case Origin::SpreadColumn::X:
-				table->setColPlotDesignation(j, Table::X);
-				break;
-			case Origin::SpreadColumn::Y:
-				table->setColPlotDesignation(j, Table::Y);
-				break;
-			case Origin::SpreadColumn::Z:
-				table->setColPlotDesignation(j, Table::Z);
-				break;
-			case Origin::SpreadColumn::XErr:
-				table->setColPlotDesignation(j, Table::xErr);
-				break;
-			case Origin::SpreadColumn::YErr:
-				table->setColPlotDesignation(j, Table::yErr);
-				break;
-			case Origin::SpreadColumn::Label:
-				table->setColPlotDesignation(j, Table::Label);
-				break;
-			default:
-				table->setColPlotDesignation(j, Table::None);
+			switch(column.type){
+				case Origin::SpreadColumn::X:
+					table->setColPlotDesignation(j, Table::X);
+					break;
+				case Origin::SpreadColumn::Y:
+					table->setColPlotDesignation(j, Table::Y);
+					break;
+				case Origin::SpreadColumn::Z:
+					table->setColPlotDesignation(j, Table::Z);
+					break;
+				case Origin::SpreadColumn::XErr:
+					table->setColPlotDesignation(j, Table::xErr);
+					break;
+				case Origin::SpreadColumn::YErr:
+					table->setColPlotDesignation(j, Table::yErr);
+					break;
+				case Origin::SpreadColumn::Label:
+					table->setColPlotDesignation(j, Table::Label);
+					break;
+				default:
+					table->setColPlotDesignation(j, Table::None);
 			}
 
             table->setHeaderColType();//update header
@@ -545,28 +542,29 @@ bool ImportOPJ::importTables(const OriginFile& opj)
 		vector<double>* data = &matrix.data;
 		double* matrix_data = Matrix->matrixModel()->dataVector();
 		int size = Matrix->numRows()*Matrix->numCols();
-		for(int i=0; i < size; ++i)
-		{
-			matrix_data[i] = fabs(data->at(i)) < 2.0e-300 && fabs(data->at(i)) > 0 ? GSL_NAN : data->at(i);
+		for(int i = 0; i < size; ++i){
+			double val = data->at(i);
+			double fval = fabs(val);
+			if (!(fval < 2.0e-300 && fval > 0))
+				matrix_data[i] = val;
 		}
 
 		QChar format;
 		int prec = 6;
-		switch(matrix.valueTypeSpecification)
-		{
-		case 0: //Decimal 1000
-			format='f';
-			prec = matrix.decimalPlaces;
-			break;
-		case 1: //Scientific
-			format='e';
-			prec = matrix.decimalPlaces;
-			break;
-		case 2: //Engineering
-		case 3: //Decimal 1,000
-			format='g';
-			prec = matrix.significantDigits;
-			break;
+		switch(matrix.valueTypeSpecification){
+			case 0: //Decimal 1000
+				format='f';
+				prec = matrix.decimalPlaces;
+				break;
+			case 1: //Scientific
+				format='e';
+				prec = matrix.decimalPlaces;
+				break;
+			case 2: //Engineering
+			case 3: //Decimal 1,000
+				format='g';
+				prec = matrix.significantDigits;
+				break;
 		}
 		Matrix->setNumericFormat(format, prec);
 
