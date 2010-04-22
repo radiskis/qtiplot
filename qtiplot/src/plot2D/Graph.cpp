@@ -1292,9 +1292,11 @@ void Graph::setScale(int axis, double start, double end, double step,
 
 	d_user_step[axis] = step;
 
-	if (d_synchronize_scales && (axis == QwtPlot::xBottom || axis == QwtPlot::yLeft)){
-		updateSecondaryAxis(QwtPlot::xTop);
-		updateSecondaryAxis(QwtPlot::yRight);
+	if (d_synchronize_scales){
+		if (axis == QwtPlot::xBottom)
+			updateSecondaryAxis(QwtPlot::xTop);
+		else if (axis == QwtPlot::yLeft)
+			updateSecondaryAxis(QwtPlot::yRight);
 	}
 
 	replot();
