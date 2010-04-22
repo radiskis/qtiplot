@@ -2116,7 +2116,11 @@ void ConfigDialog::apply()
 		MultiLayer *ml = qobject_cast<MultiLayer *>(w);
 		if (ml){
 			ml->setScaleLayersOnPrint(boxScaleLayersOnPrint->isChecked());
-			ml->printCropmarks(boxPrintCropmarks->isChecked());
+			ml->printCropmarks(boxPrintCropmarks->isChecked()); 
+			foreach(Graph *g, ml->layersList()){
+				g->setSynchronizedScaleDivisions(app->d_synchronize_graph_scales);
+				g->setAxisTitlePolicy(app->d_graph_axis_labeling);
+			}
 		}
 	}
 	// general page: application tab

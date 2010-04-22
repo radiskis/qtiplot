@@ -67,20 +67,6 @@ void free_vector(double *v, long nl, long nh)
 free((FREE_ARG) (v+nl-NR_END));
 }
 
-size_t *ivector(long nl, long nh)
-{
-size_t *v;
-v=(size_t *)malloc((size_t) ((nh-nl+1+NR_END)*sizeof(size_t)));
-if (!v) nrerror("allocation failure in ivector()");
-return v-nl+NR_END;
-}
-
-void free_ivector(size_t *v, long nl, long nh)
-{
-(void)nh;
-free((FREE_ARG) (v+nl-NR_END));
-}
-
 int *intvector(long nl, long nh)
 {
 int *v;
