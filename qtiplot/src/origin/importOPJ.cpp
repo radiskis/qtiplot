@@ -1318,8 +1318,18 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 
 			for(unsigned int i = 0; i < layer.lines.size(); ++i){
 				ArrowMarker mrk;
-				mrk.setStartPoint(layer.lines[i].begin.x, layer.lines[i].begin.y);
-				mrk.setEndPoint(layer.lines[i].end.x, layer.lines[i].end.y);
+
+				if (layer.lines[i].attach == Origin::Page){
+					mrk.setAttachPolicy(ArrowMarker::Page);
+					QPoint pos = graph->canvas()->mapFrom(ml->canvas(), QPoint(layer.lines[i].clientRect.left*fScale + 2*layer.lines[i].width, layer.lines[i].clientRect.top*fScale - yOffset));
+					mrk.setEndPoint(graph->invTransform(QwtPlot::xBottom, pos.x()), graph->invTransform(QwtPlot::yLeft, pos.y()));
+					pos = graph->canvas()->mapFrom(ml->canvas(), QPoint(layer.lines[i].clientRect.right*fScale, layer.lines[i].clientRect.bottom*fScale - yOffset));
+					mrk.setStartPoint(graph->invTransform(QwtPlot::xBottom, pos.x()), graph->invTransform(QwtPlot::yLeft, pos.y()));
+				} else {
+					mrk.setStartPoint(layer.lines[i].begin.x, layer.lines[i].begin.y);
+					mrk.setEndPoint(layer.lines[i].end.x, layer.lines[i].end.y);
+				}
+
 				mrk.drawStartArrow(layer.lines[i].begin.shapeType > 0);
 				mrk.drawEndArrow(layer.lines[i].end.shapeType > 0);
 				mrk.setHeadLength(layer.lines[i].end.shapeLength);
@@ -1943,7 +1953,7 @@ QString ImportOPJ::parseOriginText(const QString &str)
 
 QString ImportOPJ::parseOriginTags(const QString &str)
 {
-	QString line=str;
+	QString line = str;
 	//Lookbehind conditions are not supported - so need to reverse string
 	QRegExp rx("\\)[^\\)\\(]*\\((?!\\s*[buig\\+\\-]\\s*\\\\)");
 	QRegExp rxfont("\\)[^\\)\\(]*\\((?![^\\:]*\\:f\\s*\\\\)");
@@ -2049,6 +2059,13 @@ QString ImportOPJ::parseOriginTags(const QString &str)
 
 	line.replace("&lbracket;", "(");
 	line.replace("&rbracket;", ")");
+
+	while (line.contains("\\p")){
+		int pos1 = line.indexOf("\p");
+		pos1 = line.indexOf("(", pos1 + 2) + 1;
+		int pos2 = line.indexOf(")", pos1);
+		line = line.mid(pos1, pos2 - pos1);
+	}
 
 	return line;
 }

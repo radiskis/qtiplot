@@ -1143,7 +1143,7 @@ void Origin700Parser::readGraphInfo()
 			{
 				layer.isXYY3D = true;
 			}
-			else if(size && osize == 0x3E) // text
+			else if(size && type == 0xE9) // text
 			{
 				string text(size, 0);
 				file >> text;

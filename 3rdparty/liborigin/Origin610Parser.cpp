@@ -1321,7 +1321,7 @@ bool Origin610Parser::readGraphInfo()
 			{
 				layer.isXYY3D = true;
 			}
-			else if(sec_name == "Text")
+			else if(size && !type)
 			{
 				string text(size, 0);
 				file >> text;
