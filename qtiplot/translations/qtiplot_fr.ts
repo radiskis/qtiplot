@@ -5,7 +5,7 @@
     <name>AddWidgetTool</name>
     <message>
         <source>Click on plot to choose the position of the new object!</source>
-        <translation>Cliquer sur le graphique pour choisir la position du nouvel objet !</translation>
+        <translation>Cliquer sur le graphe pour choisir la position du nouvel objet !</translation>
     </message>
     <message>
         <source>enter your text here</source>
@@ -17,7 +17,7 @@
     </message>
     <message>
         <source>Move cursor in order to resize the new ellipse!</source>
-        <translation>Bouger le curseur afin de redimensionner la nouvelle ellipse !</translation>
+        <translation>Bouger le curseur afin de redimensionner la nouvelle éllipse !</translation>
     </message>
 </context>
 <context>
@@ -44,11 +44,11 @@
     </message>
     <message>
         <source>Move data points</source>
-        <translation>Déplacer une valeur</translation>
+        <translation>Déplacer un point</translation>
     </message>
     <message>
         <source>Remove data points</source>
-        <translation>Supprimer une valeur</translation>
+        <translation>Supprimer un point</translation>
     </message>
     <message>
         <source>Draw line</source>
@@ -84,7 +84,7 @@
     </message>
     <message>
         <source>&amp;Graph</source>
-        <translation>&amp;Graphique</translation>
+        <translation>&amp;Graphe</translation>
     </message>
     <message>
         <source>&amp;Matrix</source>
@@ -152,7 +152,7 @@
     </message>
     <message>
         <source>&lt;h4&gt;There are no plot layers available in this window.&lt;/h4&gt;&lt;p&gt;&lt;h4&gt;Please add a layer and try again!&lt;/h4&gt;</source>
-        <translation>&lt;h4&gt;Il n&apos;y a pas de planche disponible dans cette fenêtre.&lt;/h4&gt;&lt;p&gt;&lt;h4&gt;Veuillez ajouter une planche et réessayer !&lt;/h4&gt;</translation>
+        <translation>&lt;h4&gt;Il n&apos;y a pas de planche disponible dans cette fenêtre.&lt;/h4&gt;&lt;p&gt;&lt;h4&gt;Veuillez ajouter une planche et ré-essayer !&lt;/h4&gt;</translation>
     </message>
     <message>
         <source>QtiPlot - Error bars error</source>
@@ -172,7 +172,7 @@
     </message>
     <message>
         <source>A file called: &lt;p&gt;&lt;b&gt;%1&lt;/b&gt;&lt;p&gt;already exists. Do you want to overwrite it?</source>
-        <translation>Un fichier nommé : &lt;p&gt;&lt;b&gt;%1&lt;/b&gt;&lt;p&gt;existe déjà. Voulez vous écraser ce fichier ?</translation>
+        <translation>Un fichier nommé : &lt;p&gt;&lt;b&gt;%1&lt;/b&gt;&lt;p&gt;existe déjà. Voulez vous l&apos;écraser ?</translation>
     </message>
     <message>
         <source>&amp;Yes</source>
@@ -204,7 +204,7 @@
     </message>
     <message>
         <source>Not available for empty 3D surface plots!</source>
-        <translation>Non disponible pour un graphique de surface 3D vide !</translation>
+        <translation>Non disponible pour un graphe de surface 3D vide !</translation>
     </message>
     <message>
         <source>&lt;h4&gt;There are no plot layers available in this window.&lt;/h4&gt;</source>
@@ -224,7 +224,7 @@
     </message>
     <message>
         <source>About QtiPlot</source>
-        <translation>A propos de QtiPlot</translation>
+        <translation>À propos de QtiPlot</translation>
     </message>
     <message>
         <source>&amp;Intensity Matrix</source>
@@ -358,7 +358,7 @@
     </message>
     <message>
         <source>New &amp;Function Plot</source>
-        <translation>Graphe de &amp;Fonction</translation>
+        <translation>Graphe de &amp;fonction</translation>
     </message>
     <message>
         <source>Ctrl+F</source>
@@ -446,7 +446,7 @@
     </message>
     <message>
         <source>&amp;Current</source>
-        <translation>Ce &amp;graphe</translation>
+        <translation>&amp;Ce graphe</translation>
     </message>
     <message>
         <source>Ctrl+G</source>
@@ -454,7 +454,7 @@
     </message>
     <message>
         <source>Export current graph</source>
-        <translation>Exporter le graphe actif</translation>
+        <translation>Exporter le graphe actuel</translation>
     </message>
     <message>
         <source>Alt+X</source>
@@ -574,7 +574,7 @@
     </message>
     <message>
         <source>Plot area</source>
-        <translation>Graphe </translation>
+        <translation>Graphe</translation>
     </message>
     <message>
         <source>&amp;Pie</source>
@@ -606,11 +606,11 @@
     </message>
     <message>
         <source>&amp;4 Layers</source>
-        <translation>Tableau de &amp;4 planches</translation>
+        <translation>&amp;4 planches</translation>
     </message>
     <message>
         <source>&amp;Stacked Layers</source>
-        <translation>Planche&amp;s empilés</translation>
+        <translation>Planche&amp;s empilées</translation>
     </message>
     <message>
         <source>&amp;Ribbon</source>
@@ -658,7 +658,7 @@
     </message>
     <message>
         <source>Fit &amp;Polynomial ...</source>
-        <translation>Ajustement &amp;Polynomial...</translation>
+        <translation>Ajustement &amp;polynomial...</translation>
     </message>
     <message>
         <source>&amp;First Order ...</source>
@@ -686,7 +686,7 @@
     </message>
     <message>
         <source>&amp;Plot ...</source>
-        <translation>&amp;Graphique...</translation>
+        <translation>&amp;Graphe...</translation>
     </message>
     <message>
         <source>&amp;Title ...</source>
@@ -714,7 +714,7 @@
     </message>
     <message>
         <source>Close &amp;Window</source>
-        <translation>&amp;Fermer la fenêtre</translation>
+        <translation>&amp;Fermer</translation>
     </message>
     <message>
         <source>Ctrl+W</source>
@@ -778,7 +778,7 @@
     </message>
     <message>
         <source>3D &amp;Wire Frame</source>
-        <translation>&amp;Fil de fer 3D</translation>
+        <translation>&amp;Grillage 3D</translation>
     </message>
     <message>
         <source>3D &amp;Hidden Line</source>
@@ -822,11 +822,11 @@
     </message>
     <message>
         <source>&amp;Move Data Points...</source>
-        <translation>&amp;Déplacer une valeur...</translation>
+        <translation>&amp;Déplacer un point...</translation>
     </message>
     <message>
         <source>Remove &amp;Bad Data Points...</source>
-        <translation>&amp;Supprimer une valeur...</translation>
+        <translation>&amp;Supprimer un point...</translation>
     </message>
     <message>
         <source>Alt+B</source>
@@ -858,7 +858,7 @@
     </message>
     <message>
         <source>This functionality is not available for pie plots!</source>
-        <translation>Cette fonctionnalité n&apos;est pas disponible pour des graphiques à secteurs !</translation>
+        <translation>Cette fonctionnalité n&apos;est pas disponible pour des graphes à secteurs !</translation>
     </message>
     <message>
         <source>There are no plot layers available in this window.</source>
@@ -886,7 +886,7 @@
     </message>
     <message>
         <source>Add &amp;Function...</source>
-        <translation>Ajouter une &amp;Fonction...</translation>
+        <translation>Ajouter une &amp;fonction...</translation>
     </message>
     <message>
         <source>ALT+I</source>
@@ -1082,7 +1082,7 @@
     </message>
     <message>
         <source>&amp;Delete Window</source>
-        <translation>Effacer la &amp;fenêtre</translation>
+        <translation>&amp;Supprimer</translation>
     </message>
     <message>
         <source>D&amp;epends on</source>
@@ -1194,7 +1194,7 @@
     </message>
     <message>
         <source>&amp;Surface...</source>
-        <translation>&amp;Surface...</translation>
+        <translation>Propriété&amp;s...</translation>
     </message>
     <message>
         <source>&amp;Data Set...</source>
@@ -1416,7 +1416,7 @@ Are you sure you want to continue?</source>
     </message>
     <message>
         <source>&amp;Delete Selection</source>
-        <translation>E&amp;ffacer la sélection</translation>
+        <translation>&amp;Supprimer la sélection</translation>
     </message>
     <message>
         <source>New &amp;Window</source>
@@ -2449,7 +2449,7 @@ Quelques parties de ce fichier peuvent ne pas être affichés comme attendu.</tr
     </message>
     <message>
         <source>&amp;Lowess...</source>
-        <translation>&amp;Lowess...</translation>
+        <translation>&amp;Loess...</translation>
     </message>
     <message>
         <source>&amp;Image Profiles</source>
@@ -2726,15 +2726,15 @@ Quelques parties de ce fichier peuvent ne pas être affichés comme attendu.</tr
     </message>
     <message>
         <source>Floor data projection</source>
-        <translation>Projection des données sur le planché</translation>
+        <translation>Projection sur le plancher</translation>
     </message>
     <message>
         <source>Floor isolines</source>
-        <translation>Isolignes sur le planché</translation>
+        <translation>Isolignes sur le plancher</translation>
     </message>
     <message>
         <source>Empty floor</source>
-        <translation>Planché vide</translation>
+        <translation>Plancher vide</translation>
     </message>
     <message>
         <source>Memory Allocation Error</source>
@@ -2982,7 +2982,7 @@ Quelques parties de ce fichier peuvent ne pas être affichés comme attendu.</tr
     </message>
     <message>
         <source>&amp;Draw Data Points</source>
-        <translation>&amp;Dessiner les points</translation>
+        <translation>Ajouter &amp;des points</translation>
     </message>
     <message>
         <source>&amp;Read-only</source>
@@ -3147,7 +3147,7 @@ Quelques parties de ce fichier peuvent ne pas être affichés comme attendu.</tr
     </message>
     <message>
         <source>Draw Data Points</source>
-        <translation>Dessiner les points</translation>
+        <translation>Ajouter des points</translation>
     </message>
     <message>
         <source>Format</source>
@@ -3291,7 +3291,7 @@ Quelques parties de ce fichier peuvent ne pas être affichés comme attendu.</tr
     </message>
     <message>
         <source>Image Plot</source>
-        <translation>Image du graphique</translation>
+        <translation>Image du graphe</translation>
     </message>
     <message>
         <source>Flip Vertically</source>
@@ -3387,7 +3387,7 @@ Quelques parties de ce fichier peuvent ne pas être affichés comme attendu.</tr
     </message>
     <message>
         <source>Add &amp;Rectangle</source>
-        <translation>Ajouter un &amp;Rectangle</translation>
+        <translation>Ajouter un &amp;rectangle</translation>
     </message>
     <message>
         <source>CTRL+ALT+R</source>
@@ -3395,7 +3395,7 @@ Quelques parties de ce fichier peuvent ne pas être affichés comme attendu.</tr
     </message>
     <message>
         <source>There are no layers available on this plot. Operation aborted!</source>
-        <translation>il n&apos;y a pas de planches disponibles sur ce graphique. Opération interrompue !</translation>
+        <translation>il n&apos;y a pas de planches disponibles sur ce graphe. Opération interrompue !</translation>
     </message>
     <message>
         <source>&amp;Paste Tex Formula</source>
@@ -3420,7 +3420,7 @@ Quelques parties de ce fichier peuvent ne pas être affichés comme attendu.</tr
     </message>
     <message>
         <source>Y2 Axis Title</source>
-        <translation>Titre de l&apos;axe Y2 </translation>
+        <translation>Axe Y2 </translation>
     </message>
     <message>
         <source>You must have more than one layer in the active window!</source>
@@ -3436,11 +3436,11 @@ Quelques parties de ce fichier peuvent ne pas être affichés comme attendu.</tr
     </message>
     <message>
         <source>E&amp;xtract to Graphs</source>
-        <translation>E&amp;xtraire vers mes graphiques</translation>
+        <translation>Scinder en &amp;graphes</translation>
     </message>
     <message>
         <source>Extract to &amp;Layers</source>
-        <translation>Extraire vers une p&amp;lanche</translation>
+        <translation>Scinder en p&amp;lanche</translation>
     </message>
     <message>
         <source>Add Inset Layer</source>
@@ -3448,23 +3448,23 @@ Quelques parties de ce fichier peuvent ne pas être affichés comme attendu.</tr
     </message>
     <message>
         <source>Double Y Axis</source>
-        <translation>Double Axe en Y </translation>
+        <translation>Deux axes Y </translation>
     </message>
     <message>
         <source>Extract to Graphs</source>
-        <translation>Extraire vers les graphiques</translation>
+        <translation>Scinder en graphes</translation>
     </message>
     <message>
         <source>Extract to Layer&amp;s</source>
-        <translation>Extraire vers les planche&amp;s</translation>
+        <translation>&amp;Scinder en planches</translation>
     </message>
     <message>
         <source>Extract to Layers</source>
-        <translation>Extraire vers les planches</translation>
+        <translation>Scinder en planches</translation>
     </message>
     <message>
         <source>Add &amp;Ellipse</source>
-        <translation>Ajouter une &amp;Ellipse</translation>
+        <translation>Ajouter une &amp;éllipse</translation>
     </message>
     <message>
         <source>CTRL+ALT+E</source>
@@ -3480,7 +3480,7 @@ Quelques parties de ce fichier peuvent ne pas être affichés comme attendu.</tr
     </message>
     <message>
         <source>Add Ellipse/Circle</source>
-        <translation>Ajouter une Ellipse/un cercle</translation>
+        <translation>Ajouter une éllipse/un cercle</translation>
     </message>
     <message>
         <source>Set Default Palette</source>
@@ -3670,7 +3670,7 @@ L&apos;autocomplétion ne sera pas disponible!</translation>
     </message>
     <message>
         <source>Fit Slop&amp;e</source>
-        <translation>Ajuster la pent&amp;e</translation>
+        <translation>Ajuster la parti&amp;e linéaire</translation>
     </message>
     <message>
         <source>&amp;Add</source>
@@ -4129,7 +4129,7 @@ L&apos;autocomplétion ne sera pas disponible!</translation>
     </message>
     <message>
         <source>Show &amp;backbone</source>
-        <translation>Mon&amp;trer le renfort</translation>
+        <translation>Mon&amp;trer la ligne d&apos;axe</translation>
     </message>
     <message>
         <source>Column</source>
@@ -4169,7 +4169,7 @@ L&apos;autocomplétion ne sera pas disponible!</translation>
     </message>
     <message>
         <source>Draw backbones</source>
-        <translation>Axes visibles</translation>
+        <translation>Montrer les lignes</translation>
     </message>
     <message>
         <source>Line Width</source>
@@ -4234,7 +4234,7 @@ L&apos;autocomplétion ne sera pas disponible!</translation>
     <message>
         <source>Logit</source>
         <translatorcomment>RC : Ca veut dire quoi ?</translatorcomment>
-        <translation></translation>
+        <translation>Logit</translation>
     </message>
     <message>
         <source>Draw Break &amp;Decoration</source>
@@ -4527,14 +4527,14 @@ L&apos;autocomplétion ne sera pas disponible!</translation>
     </message>
     <message>
         <source>&amp;Scale Colors</source>
-        <translation>Échelle des couleur&amp;s</translation>
+        <translation>Couleur&amp;s dégradées</translation>
     </message>
 </context>
 <context>
     <name>ColorMapPreviewDialog</name>
     <message>
         <source>QtiPlot - Color Map Preview Dialog</source>
-        <translation>Qtiplot - dialogue de prévisualisation des cartes de couleur</translation>
+        <translation>Qtiplot - Dialogue d&apos;aperçu des cartes de couleur</translation>
     </message>
     <message>
         <source>Colormap files</source>
@@ -4636,7 +4636,7 @@ Les codes spéciaux suivant peuvent être utilisés :
     </message>
     <message>
         <source>Geometry</source>
-        <translation>Géometrie</translation>
+        <translation>Géométrie</translation>
     </message>
     <message>
         <source>Fonts</source>
@@ -4764,7 +4764,7 @@ Les codes spéciaux suivant peuvent être utilisés :
     </message>
     <message>
         <source>Scale &amp;Fonts</source>
-        <translation>&amp;Taille de la police</translation>
+        <translation>&amp;Échelle automatique de la police</translation>
     </message>
     <message>
         <source>Auto&amp;scaling</source>
@@ -4776,7 +4776,7 @@ Les codes spéciaux suivant peuvent être utilisés :
     </message>
     <message>
         <source>Legend display</source>
-        <translation>Légende d&apos;affichage</translation>
+        <translation>Légende</translation>
     </message>
     <message>
         <source>Column name</source>
@@ -5005,7 +5005,7 @@ Les codes spéciaux suivant peuvent être utilisés :
     </message>
     <message>
         <source>&amp;Show Legend</source>
-        <translation>&amp;Afficher la légende</translation>
+        <translation>&amp;Afficher l&apos;échelle</translation>
     </message>
     <message>
         <source>Smoot&amp;h Line</source>
@@ -5222,7 +5222,7 @@ Les codes spéciaux suivant peuvent être utilisés :
     </message>
     <message>
         <source>Background Color</source>
-        <translation>Couleur d&apos;arrière plan</translation>
+        <translation>Extérieur</translation>
     </message>
     <message>
         <source>Opacity</source>
@@ -5230,11 +5230,11 @@ Les codes spéciaux suivant peuvent être utilisés :
     </message>
     <message>
         <source>Canvas Color</source>
-        <translation>Couleur du cadre</translation>
+        <translation>Fond</translation>
     </message>
     <message>
         <source>Border Color</source>
-        <translation>Couleur de la bordure</translation>
+        <translation>Bordure</translation>
     </message>
     <message>
         <source>Width</source>
@@ -5466,7 +5466,7 @@ Les codes spéciaux suivant peuvent être utilisés :
     </message>
     <message>
         <source>Indexed Colors</source>
-        <translation>Couleurs indéxées</translation>
+        <translation>Ordre des couleurs</translation>
     </message>
     <message>
         <source>Default Symbol</source>
@@ -5486,7 +5486,7 @@ Les codes spéciaux suivant peuvent être utilisés :
     </message>
     <message>
         <source>Inde&amp;xed Symbols</source>
-        <translation>Symboles indé&amp;xés</translation>
+        <translation>Ordre des s&amp;ymboles</translation>
     </message>
     <message>
         <source>&amp;Fill Symbol</source>
@@ -5518,7 +5518,7 @@ Les codes spéciaux suivant peuvent être utilisés :
     </message>
     <message>
         <source>Axis title</source>
-        <translation>Légende d&apos;axe</translation>
+        <translation>Titre d&apos;axe</translation>
     </message>
     <message>
         <source>Default</source>
@@ -5526,7 +5526,7 @@ Les codes spéciaux suivant peuvent être utilisés :
     </message>
     <message>
         <source>Synchronize scale &amp;divisions</source>
-        <translation>Synchroni&amp;zer les échelles opposées</translation>
+        <translation>S&amp;ynchroniser les échelles opposées</translation>
     </message>
 </context>
 <context>
@@ -5820,7 +5820,7 @@ Les codes spéciaux suivant peuvent être utilisés :
     </message>
     <message>
         <source>&amp;Plot Selection</source>
-        <translation>Sélection du &amp;graphe</translation>
+        <translation>&amp;Tracer la sélection</translation>
     </message>
     <message>
         <source>&amp;Plot</source>
@@ -6088,7 +6088,7 @@ Les codes spéciaux suivant peuvent être utilisés :
     <name>DrawPointTool</name>
     <message>
         <source>Draw</source>
-        <translation>Dessiner</translation>
+        <translation>Points</translation>
     </message>
 </context>
 <context>
@@ -6127,7 +6127,7 @@ Les codes spéciaux suivant peuvent être utilisés :
     </message>
     <message>
         <source>&amp;Text</source>
-        <translation></translation>
+        <translation>&amp;Texte</translation>
     </message>
     <message>
         <source>Color</source>
@@ -6143,7 +6143,7 @@ Les codes spéciaux suivant peuvent être utilisés :
     </message>
     <message>
         <source>Auto-&amp;update</source>
-        <translation>Mise-à-jo&amp;ur automatique</translation>
+        <translation>Mise-à-jo&amp;ur auto</translation>
     </message>
     <message>
         <source>Opacity</source>
@@ -6195,7 +6195,7 @@ Les codes spéciaux suivant peuvent être utilisés :
     </message>
     <message>
         <source>&amp;Frame</source>
-        <translation>&amp;Cadre</translation>
+        <translation>&amp;Contour</translation>
     </message>
     <message>
         <source>Fill Color</source>
@@ -6211,11 +6211,11 @@ Les codes spéciaux suivant peuvent être utilisés :
     </message>
     <message>
         <source>Use &amp;Frame Color</source>
-        <translation>Utiliser la couleur du ca&amp;dre</translation>
+        <translation>Utiliser la couleur du con&amp;tour</translation>
     </message>
     <message>
         <source>Fill &amp;Pattern</source>
-        <translation>Rem&amp;plir le motif</translation>
+        <translation>&amp;Motif</translation>
     </message>
     <message>
         <source>Page</source>
@@ -6227,7 +6227,7 @@ Les codes spéciaux suivant peuvent être utilisés :
     </message>
     <message>
         <source>Attach to</source>
-        <translation>Associer à</translation>
+        <translation>Association</translation>
     </message>
     <message>
         <source>inch</source>
@@ -6283,11 +6283,11 @@ Les codes spéciaux suivant peuvent être utilisés :
     </message>
     <message>
         <source>&amp;Best size</source>
-        <translation>Auto&amp;matique</translation>
+        <translation>&amp;Auto</translation>
     </message>
     <message>
         <source>&amp;Geometry</source>
-        <translation>&amp;Géometrie</translation>
+        <translation>&amp;Géométrie</translation>
     </message>
     <message>
         <source>Network connection error</source>
@@ -6359,8 +6359,7 @@ Les codes spéciaux suivant peuvent être utilisés :
     </message>
     <message>
         <source>TeX &amp;Output</source>
-        <translatorcomment>Rémy : Ca ne serait pas LaTeX plutot ?</translatorcomment>
-        <translation>S&amp;ortie TeX</translation>
+        <translation>S&amp;yntaxe LaTeX</translation>
     </message>
     <message>
         <source>Compile process ended</source>
@@ -7286,7 +7285,7 @@ Les codes spéciaux suivant peuvent être utilisés :
     </message>
     <message>
         <source>QtiPlot Fit Model</source>
-        <translation>Qtiplot modèle de Régression</translation>
+        <translation>Qtiplot - Régression</translation>
     </message>
     <message>
         <source>Cannot read file %1:
@@ -7475,7 +7474,7 @@ Les codes spéciaux suivant peuvent être utilisés :
     </message>
     <message>
         <source>&amp;Fit</source>
-        <translation>&amp;Calculer</translation>
+        <translation>&amp;Ajuster</translation>
     </message>
     <message>
         <source>&amp;Close</source>
@@ -8043,7 +8042,7 @@ Les codes spéciaux suivant peuvent être utilisés :
     </message>
     <message>
         <source>&amp;Add Function</source>
-        <translation>&amp;Ajouter une fonction</translation>
+        <translation>&amp;Ajouter la fonction</translation>
     </message>
 </context>
 <context>
@@ -8204,11 +8203,11 @@ Les codes spéciaux suivant peuvent être utilisés :
     </message>
     <message>
         <source>Y Axis Title</source>
-        <translation>Étiquette de l&apos;axe Y</translation>
+        <translation>Axe Y</translation>
     </message>
     <message>
         <source>X Axis Title</source>
-        <translation>Étiquette de l&apos;axe X</translation>
+        <translation>Axe X</translation>
     </message>
     <message>
         <source>Cu&amp;t</source>
@@ -8231,7 +8230,7 @@ Les codes spéciaux suivant peuvent être utilisés :
     </message>
     <message>
         <source>Z axis</source>
-        <translation>Axes Z</translation>
+        <translation>Axe Z</translation>
     </message>
     <message>
         <source>QtiPlot - Error</source>
@@ -8672,7 +8671,7 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Separator:</source>
-        <translation>Separator :</translation>
+        <translation>Séparateur :</translation>
     </message>
 </context>
 <context>
@@ -8719,7 +8718,7 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>&amp;Plot area</source>
-        <translation>Aire du &amp;graphique</translation>
+        <translation>Aire du &amp;graphe</translation>
     </message>
 </context>
 <context>
@@ -8986,19 +8985,19 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Left margin</source>
-        <translation>Marge de gauche</translation>
+        <translation>Gauche</translation>
     </message>
     <message>
         <source>Right margin</source>
-        <translation>Marge de droite</translation>
+        <translation>Droite</translation>
     </message>
     <message>
         <source>Top margin</source>
-        <translation>Marge supérieure</translation>
+        <translation>Supérieure</translation>
     </message>
     <message>
         <source>Bottom margin</source>
-        <translation>Marge inférieure</translation>
+        <translation>Inférieure</translation>
     </message>
     <message>
         <source>Spacing</source>
@@ -9193,7 +9192,7 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Attach to</source>
-        <translation>Associer à</translation>
+        <translation>Association</translation>
     </message>
     <message>
         <source>Scale Coordinates</source>
@@ -9221,7 +9220,7 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>&amp;Geometry</source>
-        <translation>&amp;Géometrie</translation>
+        <translation>&amp;Géométrie</translation>
     </message>
     <message>
         <source>Y</source>
@@ -9842,7 +9841,7 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Enable Fill</source>
-        <translation>Remplissage autorisé</translation>
+        <translation>Activé</translation>
     </message>
     <message>
         <source>Fill with Color</source>
@@ -9857,11 +9856,11 @@ have the same number of rows.</source>
     <name>MultiPeakFit</name>
     <message>
         <source>Gauss</source>
-        <translation>Gauss</translation>
+        <translation>Gauss_</translation>
     </message>
     <message>
         <source>Lorentz</source>
-        <translation>Lorentz</translation>
+        <translation>Lorentz_</translation>
     </message>
     <message>
         <source>multi-peak</source>
@@ -9881,7 +9880,7 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Fit</source>
-        <translation>Ajuster</translation>
+        <translation>Ajustement</translation>
     </message>
     <message>
         <source>fit of</source>
@@ -9955,7 +9954,7 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Please enter a valid non-empty expression! Operation aborted!</source>
-        <translation>Veuillez entrer une expression valide no ive ! Opération annulée !</translation>
+        <translation>Veuillez entrer une expression valide non vide ! Opération annulée !</translation>
     </message>
     <message>
         <source>QtiPlot - Fit Error</source>
@@ -9995,7 +9994,7 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Title</source>
-        <translation>TitreTitre</translation>
+        <translation>Titre</translation>
     </message>
     <message>
         <source>untitled</source>
@@ -10121,7 +10120,7 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>None</source>
-        <translation>Aucune</translation>
+        <translation>Aucun</translation>
     </message>
 </context>
 <context>
@@ -10168,11 +10167,11 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>linear</source>
-        <translation>linéaire</translation>
+        <translation>Linéaire</translation>
     </message>
     <message>
         <source>logarithmic</source>
-        <translation>logarithmique</translation>
+        <translation>Logarithmique</translation>
     </message>
     <message>
         <source>Major Ticks</source>
@@ -10256,7 +10255,7 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>&amp;Print</source>
-        <translation>Im&amp;primer</translation>
+        <translation>Im&amp;pression</translation>
     </message>
     <message>
         <source>&amp;Colors</source>
@@ -10396,7 +10395,7 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Points</source>
-        <translation>Points</translation>
+        <translation>Symboles</translation>
     </message>
     <message>
         <source>Bars</source>
@@ -10420,7 +10419,7 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Linea&amp;r color map</source>
-        <translation>Ca&amp;rte de couleurs linéaires</translation>
+        <translation>Ca&amp;rte linéaire de couleurs</translation>
     </message>
     <message>
         <source>Color map &amp;file</source>
@@ -10575,7 +10574,7 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Fill color</source>
-        <translation>Couleur de remplissage</translation>
+        <translation>Couleur</translation>
     </message>
     <message>
         <source>Pattern</source>
@@ -10603,7 +10602,7 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Speed</source>
-        <translation>Vitesse</translation>
+        <translation>Accélération</translation>
     </message>
     <message>
         <source>Apply Format &amp;to</source>
@@ -11143,7 +11142,7 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Geometry</source>
-        <translation>Géometrie</translation>
+        <translation>Géométrie</translation>
     </message>
     <message>
         <source>Border</source>
@@ -11171,7 +11170,7 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Print</source>
-        <translation>Imprimer</translation>
+        <translation>Impression</translation>
     </message>
     <message>
         <source>&amp;Show</source>
@@ -11211,7 +11210,7 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Labels</source>
-        <translation>Etiquettes</translation>
+        <translation>Étiquettes</translation>
     </message>
     <message>
         <source>3D View</source>
@@ -11223,7 +11222,7 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Thickness (% of radius)</source>
-        <translation>Finesse (% of radius)</translation>
+        <translation>Épaisseur (% du rayon)</translation>
     </message>
     <message>
         <source>Rotation</source>
@@ -11231,7 +11230,7 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Starting Azimuth (deg)</source>
-        <translation>Azimtuh de départ (deg)</translation>
+        <translation>Azimuth de départ (deg)</translation>
     </message>
     <message>
         <source>Radius/Center</source>
@@ -11247,7 +11246,7 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Pie Geometry</source>
-        <translation>Géometrie du graphe à secteur</translation>
+        <translation>Géométrie du graphe</translation>
     </message>
     <message>
         <source>Automatic &amp;Format</source>
@@ -11275,7 +11274,7 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Counter cloc&amp;kwise</source>
-        <translation>Dans le sens des &amp;aiguilles d&apos;une montre</translation>
+        <translation>Dans le sens anti-&amp;horaire</translation>
     </message>
     <message>
         <source>inch</source>
@@ -11379,7 +11378,7 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Scale &amp;Fonts</source>
-        <translation>&amp;Taille de la police</translation>
+        <translation>&amp;Échelle automatique de la police</translation>
     </message>
     <message>
         <source>Do not &amp;resize layers when window size changes</source>
@@ -11714,7 +11713,7 @@ have the same number of rows.</source>
         <source>atanh(x):
   Hyperbolic inverse tan function.</source>
         <translation>atanh(x) :
-  Fontion tangente hyperbolique inverse.</translation>
+  Fonction tangente hyperbolique inverse.</translation>
     </message>
     <message>
         <source>avg(x,y,...):
@@ -11744,7 +11743,7 @@ have the same number of rows.</source>
         <source>bessel_jn_zero(double n, unsigned int s):
  s-th positive zero x_s of regular cylindrical Bessel function of order n, J_n(x_s)=0</source>
         <translation>bessel_jn_zero(double n, unsigned int s) :
-s-ème zéro positif x-s de la fonction de Bessel cylindrique régulaire d&apos;ordre n, J_n(x_s) = 0</translation>
+s-ème zéro positif x-s de la fonction de Bessel cylindrique réguliaire d&apos;ordre n, J_n(x_s) = 0</translation>
     </message>
     <message>
         <source>bessel_y0(x):
@@ -11838,7 +11837,7 @@ Partie supérieure de la fonction de probalité Gaussienne Q(x).</translation>
         <source>gammaln(x):
  Computes the logarithm of the Gamma function, subject to x not a being negative integer. For x&lt;0, log(|Gamma(x)|) is returned.</source>
         <translation>gammaln(x) :
- Calcule le logarithme de la fonction Gamme, x n&apos;est pas un entier négatif. Pour x&lt;0, log(|Gamma(x)|) est retourné.</translation>
+ Calcule le logarithme de la fonction Gamma, x n&apos;est pas un entier négatif. Pour x&lt;0, log(|Gamma(x)|) est retourné.</translation>
     </message>
     <message>
         <source>gauss_cdf(x, sigma):
@@ -11971,7 +11970,7 @@ Calcule le sinus de x.</translation>
     <message>
         <source>ttable(x, n):
  Student&apos;s t-distribution with n degrees of freedom.</source>
-        <translation>ttable(x, n) : Loi de Student avec n degrées de liberté.</translation>
+        <translation>ttable(x, n) : Loi de Student avec n degrés de liberté.</translation>
     </message>
     <message>
         <source>w0(x):
@@ -12111,7 +12110,7 @@ Calcule le sinus de x.</translation>
     </message>
     <message>
         <source>Click or use Ctrl+arrow key to select range (arrows select active cursor)!</source>
-        <translation>Cliquez ou utilisez Ctr+Flêche pour sélectionner la gamme (??) !</translation>
+        <translation>Cliquez ou utilisez Ctr+Flêche pour sélectionner la gamme (point par point sur le graphe) !</translation>
     </message>
     <message>
         <source>Right</source>
@@ -12427,11 +12426,11 @@ Calcule le sinus de x.</translation>
     </message>
     <message>
         <source>Increase Indent</source>
-        <translation>Incrémenter</translation>
+        <translation>Indenter</translation>
     </message>
     <message>
         <source>Decrease Indent</source>
-        <translation>Décrémenter</translation>
+        <translation>Désindenter</translation>
     </message>
     <message>
         <source>&amp;Find...</source>
@@ -12475,17 +12474,15 @@ Calcule le sinus de x.</translation>
     </message>
     <message>
         <source>Show &amp;Line Numbers</source>
-        <translation>Montrer les &amp;Numéros des lignes</translation>
+        <translation>Montrer les &amp;numéros des lignes</translation>
     </message>
     <message>
         <source>Script Output Panel</source>
-        <translatorcomment>Rémy : Bof !</translatorcomment>
-        <translation>Sortie du script</translation>
+        <translation>Résultat</translation>
     </message>
     <message>
         <source>Show Script &amp;Output Panel</source>
-        <translatorcomment>Rémy : Bof !</translatorcomment>
-        <translation>M&amp;ontrer le panneau des scripts</translation>
+        <translation>M&amp;ontrer les résultats</translation>
     </message>
     <message>
         <source>Ouput on Next &amp;Line</source>
@@ -12494,11 +12491,11 @@ Calcule le sinus de x.</translation>
     </message>
     <message>
         <source>Show Script Output Panel</source>
-        <translation>Montret le panneau des script</translation>
+        <translation>Montrer le panneau des scripts</translation>
     </message>
     <message>
         <source>Print Pre&amp;view...</source>
-        <translation>Pré&amp;visualisation...</translation>
+        <translation>Aperçu a&amp;vant impression...</translation>
     </message>
     <message>
         <source>Script print preview</source>
@@ -12676,7 +12673,7 @@ Calcule le sinus de x.</translation>
     </message>
     <message>
         <source>Unknown smooth filter. Valid values are: 1 - Savitky-Golay, 2 - FFT, 3 - Moving Window Average, 4 - Lowess.</source>
-        <translation>Filtre de lissage inconnu. Les valeurs correctes sont : 1 - Savitsky-Golay, 2 - FFT, 3 - Moyenne glissante, 4 - Lowess.</translation>
+        <translation>Filtre de lissage inconnu. Les valeurs correctes sont : 1 - Savitsky-Golay, 2 - FFT, 3 - Moyenne glissante, 4 - Loess.</translation>
     </message>
     <message>
         <source>points</source>
@@ -12696,7 +12693,7 @@ Calcule le sinus de x.</translation>
     </message>
     <message>
         <source>Lowess smoothing with f=%1 and %2 iterations</source>
-        <translation>Lissage de type Lowess avec f = %1 et %2 itérations</translation>
+        <translation>Lissage de type Loess avec f = %1 et %2 itérations</translation>
     </message>
     <message>
         <source>The number of points must be positive!</source>
@@ -12712,7 +12709,7 @@ Calcule le sinus de x.</translation>
     </message>
     <message>
         <source>Setting Lowess parameter is only available for Lowess smooth filters! Ignored option!</source>
-        <translation>Les paramètres Lowess ne sont accéssibles que pour les filtres de lissage Lowess ! Option ignorée !</translation>
+        <translation>Les paramètres Loess ne sont accéssibles que pour les filtres de lissage Loess ! Option ignorée !</translation>
     </message>
     <message>
         <source>The parameter f must be between 0 and 1!</source>
@@ -12900,7 +12897,7 @@ Calcule le sinus de x.</translation>
     </message>
     <message>
         <source>Mesh</source>
-        <translation></translation>
+        <translation>Maillage</translation>
     </message>
     <message>
         <source>Columns</source>
@@ -12975,7 +12972,7 @@ Calcule le sinus de x.</translation>
     </message>
     <message>
         <source>Ellipse</source>
-        <translation>Ellipse</translation>
+        <translation>Éllipse</translation>
     </message>
     <message>
         <source>Rectangle</source>
@@ -13023,11 +13020,11 @@ Calcule le sinus de x.</translation>
     </message>
     <message>
         <source>Star 1</source>
-        <translation>Etoile 1</translation>
+        <translation>Étoile 1</translation>
     </message>
     <message>
         <source>Star 2</source>
-        <translation>Etoile 2</translation>
+        <translation>Étoile 2</translation>
     </message>
     <message>
         <source>Hexagon</source>
@@ -13550,7 +13547,7 @@ Calcule le sinus de x.</translation>
     </message>
     <message>
         <source>Text Color</source>
-        <translation>Couleur du texte</translation>
+        <translation>Couleur</translation>
     </message>
     <message>
         <source>Alignment</source>
@@ -13562,19 +13559,19 @@ Calcule le sinus de x.</translation>
     </message>
     <message>
         <source>X Axis Title</source>
-        <translation>Titre de l&apos;axe X</translation>
+        <translation>Axe X</translation>
     </message>
     <message>
         <source>Y Axis Title</source>
-        <translation>Titre de l&apos;axe Y</translation>
+        <translation>Axe Y</translation>
     </message>
     <message>
         <source>Top Axis Title</source>
-        <translation>Titre de l&apos;axe supérieur</translation>
+        <translation>Axe supérieur</translation>
     </message>
     <message>
         <source>Right Axis Title</source>
-        <translation>Titre de l&apos;axe de droite</translation>
+        <translation>Axe de droite</translation>
     </message>
     <message>
         <source>&amp;Apply to...</source>
@@ -13602,7 +13599,7 @@ Calcule le sinus de x.</translation>
     </message>
     <message>
         <source>Distance to axis</source>
-        <translation>Distance aux axes</translation>
+        <translation>Distance à l&apos;axe</translation>
     </message>
     <message>
         <source>&amp;Inverted</source>
