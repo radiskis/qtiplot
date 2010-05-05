@@ -2690,7 +2690,8 @@ bool PlotDialog::acceptParams()
 
 	if (privateTabWidget->currentPage() == axesPage){
 		plotItem->setAxis(boxXAxis->currentIndex() + 2, boxYAxis->currentIndex());
-		graph->setAutoScale();
+		if (graph->isAutoscalingEnabled())
+			graph->setAutoScale();
 		return true;
 	} else if (privateTabWidget->currentPage() == spectroValuesPage){
   		Spectrogram *sp = (Spectrogram *)plotItem;

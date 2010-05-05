@@ -133,9 +133,9 @@ SetColValuesDialog::SetColValuesDialog( ScriptingEnv *env, QWidget* parent, Qt::
 	boxMuParser = NULL;
 	if (env->name() != QString("muParser")){
 		boxMuParser = new QCheckBox(tr("Use built-in muParser (much faster)"));
-		boxMuParser->setChecked(true);
+		boxMuParser->setChecked(((ApplicationWindow *)parent)->d_force_muParser);
 		connect(boxMuParser, SIGNAL(toggled(bool)), this, SLOT(updateFunctionsList(bool)));
-		updateFunctionsList(true);
+		updateFunctionsList(boxMuParser->isChecked());
 		vbox3->addWidget(boxMuParser);
 	}
 #endif
@@ -299,6 +299,18 @@ void SetColValuesDialog::clearFormulas()
 
 	table->clearCommands();
 	commands->clear();
+}
+
+void SetColValuesDialog::closeEvent(QCloseEvent* e)
+{
+#ifdef SCRIPTING_PYTHON
+	if (boxMuParser){
+		ApplicationWindow *app = (ApplicationWindow *)this->parent();
+		if (app)
+			app->d_force_muParser = boxMuParser->isChecked();
+	}
+#endif
+	e->accept();
 }
 
 #ifdef SCRIPTING_PYTHON

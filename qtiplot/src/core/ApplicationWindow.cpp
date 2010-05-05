@@ -185,9 +185,9 @@ using namespace std;
 #include <gsl/gsl_sort.h>
 
 #ifdef XLS_IMPORT
-extern "C" {
-	#include <libxls/xls.h>
-}
+	#include <ExcelFormat.h>
+	#include <BasicExcel.hpp>
+	using namespace ExcelFormat;
 #endif
 
 #ifdef ODS_IMPORT
@@ -434,6 +434,7 @@ void ApplicationWindow::initWindow()
 
 void ApplicationWindow::initGlobalConstants()
 {
+	d_force_muParser = true;
 	d_indexed_colors = ColorBox::defaultColors();
 	d_indexed_color_names = ColorBox::defaultColorNames();
 
@@ -4084,6 +4085,7 @@ Table * ApplicationWindow::importOdfSpreadsheet(const QString& fileName, int she
 
 	QXmlInputSource xmlInputSource(&out);
 	if (reader.parse(xmlInputSource)){
+		updateRecentProjectsList(fn);
 		int sheets = handler.sheetsCount();
 		if (sheet > sheets){
 			QMessageBox::critical(this, tr("QtiPlot"), tr("File %1 contains only %2 sheets!").arg(fn).arg(sheets));
@@ -4119,27 +4121,28 @@ Table * ApplicationWindow::importExcel(const QString& fileName, int sheet)
 			return NULL;
 	}
 
-	// open workbook, choose standard conversion
-	xlsWorkBook* pWB = xls_open(fn.toAscii().data(), "iso-8859-15//TRANSLIT");
-	if (!pWB)
-		return NULL;
-
-	if (sheet > 0 && sheet > pWB->sheets.count){
-		QMessageBox::critical(this, tr("QtiPlot"), tr("File %1 contains only %2 sheets, operation aborted!").arg(fn).arg(pWB->sheets.count));
-		return NULL;
+	BasicExcel xls;
+	if (!xls.Load(fn)){
+		QMessageBox::critical(this, tr("QtiPlot"), tr("Couldn't open file %1").arg(fn));
+		return 0;
 	}
 
+	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+
+	XLSFormatManager fmt_mgr(xls);
+
 	Table *table = NULL;
-	for (int i = 0; i < pWB->sheets.count; i++){// process all sheets
-		int currentSheet = i + 1;
+	for (size_t s = 0; s < xls.GetTotalWorkSheets(); s++){// process all sheets
+		int currentSheet = s + 1;
 		if (sheet > 0 && sheet != currentSheet)
 			continue;
 
-		xlsWorkSheet* pWS = xls_getWorkSheet(pWB, i);// open and parse the sheet
-		xls_parseWorkSheet(pWS);
+		BasicExcelWorksheet* sh = xls.GetWorksheet(s);
+		if (!sh)
+			continue;
 
-		int rows = pWS->rows.lastrow + 1;
-		int cols = pWS->rows.lastcol;
+		int rows = sh->GetTotalRows();
+		int cols = sh->GetTotalCols();
 		if (rows == 1 && !cols){
 			if (sheet > 0 && sheet == currentSheet){
 				QMessageBox::critical(this, tr("QtiPlot"), tr("Sheet %1 is empty, operation aborted!").arg(sheet));
@@ -4148,42 +4151,54 @@ Table * ApplicationWindow::importExcel(const QString& fileName, int sheet)
 				continue;
 		}
 
-		table = newTable(rows, cols, QString::null, fn + ", " + tr("sheet") + ": " + QString(pWB->sheets.sheet[i].name));
-		QDate d1(1899, 12, 30);//start date in Excel files see(http://sc.openoffice.org/excelfileformat.pdf)
+		table = newTable(rows, cols, QString::null, fn + ", " + tr("sheet") + ": " + QString(sh->GetAnsiSheetName()));
 		QTime t1(0, 0);
+		QDate d1(1899, 12, 30);//start date in Excel files see(http://sc.openoffice.org/excelfileformat.pdf)
 		double daySeconds = 24*60*60;
-		for (int t = 0; t <= pWS->rows.lastrow; t++){// process all rows of the sheet
-			struct st_row::st_row_data* row = &pWS->rows.row[t];
-			for (int tt = 0; tt <= pWS->rows.lastcol; tt++){
-				st_cell::st_cell_data cell = row->cells.cell[tt];
-				if (!cell.ishiden){
-					// display the colspan as only one cell, but reject rowspans (they can't be converted to CSV)
-					if (cell.rowspan > 1){
-						printf("%d,%d: rowspan=%i", tt, t, cell.rowspan);
+		for(size_t i = 0; i < rows; i++){
+			for(size_t j = 0; j < cols; j++){
+				BasicExcelCell* cell = sh->Cell(i, j);
+				if (!cell)
+					continue;
+
+				CellFormat fmt(fmt_mgr, cell);
+				const wstring& fmt_string = fmt.get_format_string();
+				QString fmtString = QString::fromStdWString(fmt_string);
+
+				switch(cell->Type()){
+					case BasicExcelCell::UNDEFINED:
 						continue;
-					}
-					// display the value of the cell (either numeric or string)
-					if (cell.id == 0x0BD){ // number
-						if (table->columnType(tt) == Table::Date){
-							QDate d2 = d1.addDays(cell.d);
-							table->setText(t, tt, d2.toString("dd.MM.yyyy"));
-						} else if (table->columnType(tt) == Table::Time){
-							QTime t2 = t1.addSecs(qRound(cell.d*daySeconds));
-							table->setText(t, tt, t2.toString("hh:mm:ss"));
+					break;
+					case BasicExcelCell::STRING:
+						table->setText(i, j, cell->GetString());
+					break;
+					case BasicExcelCell::INT:
+					case BasicExcelCell::DOUBLE:
+					case BasicExcelCell::FORMULA:
+						if (fmt_string == XLS_FORMAT_DATE || fmt_string == XLS_FORMAT_DATETIME ||
+							fmt_string == L"D-MMM-YY" || fmt_string == L"D-MMM" || fmt_string == L"MMM-YY"){// date
+
+							if (fmt_string == XLS_FORMAT_DATE || fmt_string == XLS_FORMAT_DATETIME)
+								fmtString = "dd.MM.yyyy";
+							else
+								fmtString = fmtString.replace("D", "d").replace("Y", "y");
+
+							if (table->columnType(j) != Table::Date)
+								table->setDateFormat(fmtString, j, false);
+
+							QDate d2 = d1.addDays(cell->GetDouble());
+							table->setText(i, j, d2.toString(fmtString));
+						} else if (fmt_string == XLS_FORMAT_TIME || fmt_string == L"h:mm AM/PM" ||
+								fmt_string == L"h:mm:ss AM/PM" || fmt_string == L"h:mm" ||
+								fmt_string == L"mm:ss" || fmt_string == L"[h]:mm:ss" || fmt_string == L"mm:ss.0"){
+							if (table->columnType(j) != Table::Time)
+								table->setTimeFormat(fmtString, j, false);
+
+							QTime t2 = t1.addSecs(qRound(cell->GetDouble()*daySeconds));
+							table->setText(i, j, t2.toString(fmtString));
 						} else
-							table->setCell(t, tt, cell.d);
-					} else if (cell.id == 0x27e){//date
-						QDate d2 = d1.addDays(cell.d);
-						table->setDateFormat("dd.MM.yyyy", tt, false);
-						table->setText(t, tt, d2.toString("dd.MM.yyyy"));
-					} else if (cell.id == 0x203){//time
-						table->setTimeFormat("hh:mm:ss", tt, false);
-						QTime t2 = t1.addSecs(qRound(cell.d*daySeconds));
-						table->setText(t, tt, t2.toString("hh:mm:ss"));
-					} else if (cell.id == 0x06 && cell.l == 0)//formula
-						table->setCell(t, tt, cell.d);
-					else if (cell.str != NULL)
-						table->setText(t, tt, QString(cell.str));
+							table->setCell(i, j, cell->GetDouble());
+					break;
 				}
 			}
 		}
@@ -4192,9 +4207,9 @@ Table * ApplicationWindow::importExcel(const QString& fileName, int sheet)
 		if (sheet > 0 && sheet == currentSheet)
 			break;
 	}
-	xls_close(pWB);
-
+	xls.Close();
 	updateRecentProjectsList(fn);
+	QApplication::restoreOverrideCursor();
 	return table;
 #else
 	QMessageBox::critical(this, tr("QtiPlot"), tr("QtiPlot was built without libxls support!"));
@@ -5179,6 +5194,8 @@ void ApplicationWindow::readSettings()
 	d_clipboard_locale = QLocale(settings.value("/ClipboardLocale", QLocale::system().name()).toString());
 	d_muparser_c_locale = settings.value("/MuParserCLocale", true).toBool();
 
+	d_force_muParser = settings.value("/ForceMuParser", d_force_muParser).toBool();
+
     d_matrix_undo_stack_size = settings.value("/MatrixUndoStackSize", 10).toInt();
 	d_eol = (EndLineChar)settings.value("/EndOfLine", d_eol).toInt();
 
@@ -5610,7 +5627,7 @@ void ApplicationWindow::saveSettings()
 	settings.setValue("/DecimalDigits", d_decimal_digits);
 	settings.setValue("/ClipboardLocale", d_clipboard_locale.name());
 	settings.setValue("/MuParserCLocale", d_muparser_c_locale);
-
+	settings.setValue("/ForceMuParser", d_force_muParser);
     settings.setValue("/MatrixUndoStackSize", d_matrix_undo_stack_size);
 	settings.setValue("/EndOfLine", (int)d_eol);
 	settings.setValue("/DockWindows", saveState());

@@ -131,8 +131,16 @@ bool OdsFileHandler::endElement(const QString & /* namespaceURI */,
 				cell_data cell = cells[i];
 				if (cell.type == Float)
 					t->setCell(cell.row, cell.col, cell.d);
-				else
+				else {
+					if (cell.type == Date)
+						t->setDateFormat("dd.MM.yyyy", cell.col, false);
+					else if (cell.type == Time)
+						t->setTimeFormat("h:mm:ss", cell.col, false);
+					else if (cell.type == String)
+						t->setTextFormat(cell.col);
+
 					t->setText(cell.row, cell.col, cell.str);
+				}
 			}
 			t->showNormal();
 			d_tables << t;

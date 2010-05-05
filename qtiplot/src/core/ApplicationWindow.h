@@ -1142,6 +1142,7 @@ private slots:
 
 // TODO: a lot of this stuff should be private
 public:
+	bool d_force_muParser;
 	bool d_keep_aspect_ration;
 	QPrinter::PaperSize d_print_paper_size;
 	QPrinter::Orientation d_printer_orientation;

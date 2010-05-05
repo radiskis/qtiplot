@@ -76,6 +76,7 @@ private:
 
 	QSize sizeHint() const ;
 	void customEvent( QEvent *e );
+	void closeEvent(QCloseEvent*);
 
     QComboBox* functions;
     QComboBox* boxColumn;
