@@ -507,7 +507,7 @@ bool Table::calculate()
 {
 	Q3TableSelection sel = getSelection();
 	bool success = true;
-	for (int col=sel.leftCol(); col<=sel.rightCol(); col++)
+	for (int col = sel.leftCol(); col <= sel.rightCol(); col++)
 		if (!calculate(col, sel.topRow(), sel.bottomRow()))
 			success = false;
 	return success;
@@ -1798,6 +1798,8 @@ void Table::sortColumns(const QStringList&s, int type, int order, const QString&
 		else
 			gsl_sort_index(p, data_double.data(), 1, non_empty_cells);
 
+		blockSignals(true);
+
 		for(int i = 0; i < cols; i++){// Since we have the permutation index, sort all the columns
             int col = colIndex(s[i]);
             if (d_table->isColumnReadOnly(col))
@@ -1825,10 +1827,19 @@ void Table::sortColumns(const QStringList&s, int type, int order, const QString&
                     for (int j=0; j<non_empty_cells; j++)
                         d_table->setText(valid_cell[j], col, locale().toString(data_double[p[non_empty_cells-j-1]], f, prec));
             }
-            emit modifiedData(this, colName(col));
         }
         delete[] p;
     }
+
+	blockSignals(false);
+
+	for(int i = 0; i < cols; i++){// notify changes
+		int col = colIndex(s[i]);
+		if (d_table->isColumnReadOnly(col))
+			continue;
+
+		emit modifiedData(this, colName(col));
+	}
 	emit modifiedWindow(this);
 }
 
@@ -1868,6 +1879,8 @@ void Table::sortColumn(int col, int order)
         gsl_sort(r.data(), 1, non_empty_cells);
     }
 
+	blockSignals(true);
+
     if (columnType(col) == Table::Text){
         if (!order){
             for (int i=0; i<non_empty_cells; i++)
@@ -1888,18 +1901,21 @@ void Table::sortColumn(int col, int order)
                 d_table->setText(valid_cell[i], col, locale().toString(r[non_empty_cells-i-1], f, prec));
         }
     }
+
+	blockSignals(false);
+
 	emit modifiedData(this, colName(col));
 	emit modifiedWindow(this);
 }
 
 void Table::sortColAsc()
 {
-sortColumn(d_table->currentColumn ());
+	sortColumn(d_table->currentColumn ());
 }
 
 void Table::sortColDesc()
 {
-sortColumn(d_table->currentColumn(), 1);
+	sortColumn(d_table->currentColumn(), 1);
 }
 
 int Table::numRows()

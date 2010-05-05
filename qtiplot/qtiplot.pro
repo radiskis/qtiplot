@@ -238,4 +238,4 @@ contains(CONFIG, BrowserPlugin){
 	win32: CONFIG  += qaxserver
 	RC_FILE	= qtiplot.rc
 	include(../3rdparty/QtSolutions/qtbrowserplugin/src/qtbrowserplugin.pri)
-}  
+}

@@ -593,25 +593,39 @@ void DataCurve::loadData()
 
 	QStringList xLabels, yLabels;// store text labels
 
+	int xAxis = QwtPlot::xBottom;
+	if (d_type == Graph::HorizontalBars)
+		xAxis = QwtPlot::yLeft;
+
 	QTime time0;
 	QDateTime date0;
 	QString date_time_fmt = d_table->columnFormat(xcol);
 	if (xColType == Table::Time){
-		for (int i = d_start_row; i <= d_end_row; i++ ){
-			QString xval=d_table->text(i,xcol);
-			if (!xval.isEmpty()){
-				time0 = QTime::fromString (xval, date_time_fmt);
-				if (time0.isValid())
-					break;
+		ScaleDraw *sd = (ScaleDraw *)g->axisScaleDraw(xAxis);
+		if (sd && sd->scaleType() == ScaleDraw::Time)
+			time0 = sd->dateTimeOrigin().time();
+		else {
+			for (int i = d_start_row; i <= d_end_row; i++ ){
+				QString xval=d_table->text(i,xcol);
+				if (!xval.isEmpty()){
+					time0 = QTime::fromString (xval, date_time_fmt);
+					if (time0.isValid())
+						break;
+				}
 			}
 		}
 	} else if (xColType == Table::Date){
-		for (int i = d_start_row; i <= d_end_row; i++ ){
-			QString xval=d_table->text(i,xcol);
-			if (!xval.isEmpty()){
-				date0 = QDateTime::fromString (xval, date_time_fmt);
-				if (date0.isValid())
-					break;
+		ScaleDraw *sd = (ScaleDraw *)g->axisScaleDraw(xAxis);
+		if (sd && sd->scaleType() == ScaleDraw::Date)
+			date0 = sd->dateTimeOrigin();
+		else {
+			for (int i = d_start_row; i <= d_end_row; i++ ){
+				QString xval=d_table->text(i,xcol);
+				if (!xval.isEmpty()){
+					date0 = QDateTime::fromString (xval, date_time_fmt);
+					if (date0.isValid())
+						break;
+				}
 			}
 		}
 	}
@@ -665,33 +679,27 @@ void DataCurve::loadData()
 		}
 
 		if (xColType == Table::Text){
-			if (d_type == Graph::HorizontalBars)
-				g->setLabelsTextFormat(QwtPlot::yLeft, ScaleDraw::Text, d_x_column, xLabels);
-			else
-                g->setLabelsTextFormat(QwtPlot::xBottom, ScaleDraw::Text, d_x_column, xLabels);
+			g->setLabelsTextFormat(xAxis, ScaleDraw::Text, d_x_column, xLabels);
 		} else if (xColType == Table::Time || xColType == Table::Date){
-			int axis = QwtPlot::xBottom;
-			if (d_type == Graph::HorizontalBars)
-                axis = QwtPlot::yLeft;
-            ScaleDraw *old_sd = (ScaleDraw *)g->axisScaleDraw(axis);
-            ScaleDraw *sd = new ScaleDraw(g, old_sd);
-            if (xColType == Table::Date)
-                sd->setDateTimeOrigin(date0);
-            else
-                sd->setDateTimeOrigin(QDateTime(QDate::currentDate(), time0));
-            g->setAxisScaleDraw(axis, sd);
+			ScaleDraw *old_sd = (ScaleDraw *)g->axisScaleDraw(xAxis);
+			ScaleDraw *sd = new ScaleDraw(g, old_sd);
+			if (xColType == Table::Date)
+				sd->setDateTimeOrigin(date0);
+			else
+				sd->setDateTimeOrigin(QDateTime(QDate::currentDate(), time0));
+			g->setAxisScaleDraw(xAxis, sd);
 		}
 
 		if (yColType == Table::Text)
-            g->setLabelsTextFormat(QwtPlot::yLeft, ScaleDraw::Text, title().text(), yLabels);
+			g->setLabelsTextFormat(QwtPlot::yLeft, ScaleDraw::Text, title().text(), yLabels);
 	}
 
 	enableSpeedMode();
 
-    if (!d_labels_list.isEmpty()){
-        ((Graph*)plot())->updatePlot();
-        loadLabels();
-    }
+	if (!d_labels_list.isEmpty()){
+		((Graph*)plot())->updatePlot();
+		loadLabels();
+	}
 }
 
 void DataCurve::removeErrorBars(DataCurve *c)

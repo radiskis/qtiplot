@@ -447,15 +447,18 @@ bool ArrowMarker::eventFilter(QObject *, QEvent *e)
 					case MoveStart:
 						setStartPoint(me->pos());
 						plot()->replot();
+						displayInfo();
 						return true;
 					case MoveEnd:
 						setEndPoint(me->pos());
 						plot()->replot();
+						displayInfo();
 						return true;
 					case MoveBoth:
 						setEndPoint(endPoint()+me->pos()-d_op_startat-startPoint());
 						setStartPoint(me->pos()-d_op_startat);
 						plot()->replot();
+						displayInfo();
 						return true;
 					default:
 						return false;

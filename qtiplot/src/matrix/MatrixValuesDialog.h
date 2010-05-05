@@ -30,9 +30,9 @@
 #define MVALUESDIALOG_H
 
 #include <QDialog>
-#include "../scripting/ScriptingEnv.h"
-#include "../scripting/Script.h"
-#include "../scripting/ScriptEdit.h"
+#include <ScriptingEnv.h>
+#include <Script.h>
+#include <ScriptEdit.h>
 #include "Matrix.h"
 
 #ifdef SCRIPTING_PYTHON
@@ -70,6 +70,7 @@ private:
 
 	QSize sizeHint() const ;
 	void customEvent( QEvent *e);
+	void closeEvent(QCloseEvent*);
 
 	ScriptEdit* commands;
     QComboBox* functions;
