@@ -157,7 +157,7 @@ public:
 
 	void selectFilter(const QString & filter);
 
-	QList<int> columnTypes(){return d_preview_table->columnTypes();};
+	QList<int> columnTypes(){if (d_preview_table) return d_preview_table->columnTypes(); return QList<int>();};
 
 private slots:
 	//! Display help for advanced options.
