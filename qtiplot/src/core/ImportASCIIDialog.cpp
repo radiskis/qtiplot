@@ -453,6 +453,7 @@ void ImportASCIIDialog::previewTable()
 	else
 		importMode -= 2;
 
+	d_preview_table->clear();
 	d_preview_table->resetHeader();
 
 	d_preview_table->importASCII(d_current_path, columnSeparator(), d_ignored_lines->value(),
@@ -645,9 +646,10 @@ void PreviewTable::importASCII(const QString &fname, const QString &sep, int ign
 		break;
 		case Table::NewColumns:
 			startCol = d_start_col;
-			d_start_col += cols;
-			//if (abs(c - d_start_col) < cols)
+			//d_start_col += cols;
+			if (abs(c - d_start_col) < cols)
 				addColumns(cols);
+
 			if (r < rows)
 				setNumRows(rows);
 		break;
@@ -698,7 +700,7 @@ void PreviewTable::importASCII(const QString &fname, const QString &sep, int ign
 		for (int i = 0; i<cols; i++){
 			bool ok;
 			double val = importLocale.toDouble(line[i], &ok);
-			if (colTypes[i] == Table::Numeric && ok && updateDecimalSeparators)
+			if (colTypes[startCol + i] == Table::Numeric && (ok || updateDecimalSeparators))
 				setText(startRow, startCol + i, locale.toString(val, 'g', d_numeric_precision));
 			else
 				setText(startRow, startCol + i, line[i]);
@@ -728,7 +730,7 @@ void PreviewTable::importASCII(const QString &fname, const QString &sep, int ign
 		for (int j = 0; j < cols && j < lc; j++){
 			bool ok;
 			double val = importLocale.toDouble(line[j], &ok);
-			if (colTypes[j] == Table::Numeric && ok && updateDecimalSeparators)
+			if (colTypes[startCol + j] == Table::Numeric && (ok || updateDecimalSeparators))
 				setText(row, startCol + j, locale.toString(val, 'g', d_numeric_precision));
 			else
 				setText(row, startCol + j, line[j]);
@@ -743,9 +745,16 @@ void PreviewTable::importASCII(const QString &fname, const QString &sep, int ign
 
 void PreviewTable::resetHeader()
 {
-	for (int i=0; i<numCols(); i++){
+	int cols = numCols();
+	for (int i = 0; i < cols; i++){
 		comments[i] = QString::null;
 		col_label[i] = QString::number(i+1);
+	}
+
+	int size = colTypes.size();
+	if (size > cols){
+		for (int i = 0; i < (size - cols); i++)
+			colTypes.pop_back();
 	}
 }
 
