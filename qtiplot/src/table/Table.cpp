@@ -2536,14 +2536,14 @@ void Table::importASCII(const QString &fname, const QString &sep, int ignoredLin
 	}
 
 	if (!newColTypes.isEmpty()){
+		int ncols = newColTypes.size();
 		switch(importAs){
 			case NewColumns:
-				for (int i = c; i < c + newColTypes.size(); i++)
-					if (i < colTypes.size())
-						colTypes[i] = newColTypes[i];
+				for (int i = c; i < c + cols && i < ncols && i < colTypes.size(); i++)
+					colTypes[i] = newColTypes[i];
 			break;
 			default:
-				for (int i = 0; i < newColTypes.size(); i++)
+				for (int i = 0; i < cols && i < ncols; i++)
 					colTypes[i] = newColTypes[i];
 			break;
 		}
