@@ -866,6 +866,7 @@ void PreviewMatrix::importASCII(const QString &fname, const QString &sep, int ig
 {
 	d_matrix_model->importASCII(fname, sep, ignoredLines, stripSpaces,
 		simplifySpaces, commentString, importAs, locale, endLine, maxRows);
+	reset();
 }
 
 void PreviewMatrix::clear()

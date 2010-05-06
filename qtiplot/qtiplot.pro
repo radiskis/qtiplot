@@ -202,6 +202,7 @@ contains(SCRIPTING_LANGS, Python) {
 
 # check if we have libxls
 !isEmpty(XLS_LIBS) {
+	CONFIG += qaxcontainer
 	DEFINES += XLS_IMPORT
 	INCLUDEPATH += $$XLS_INCLUDEPATH
 	LIBS        += $$XLS_LIBS

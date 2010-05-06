@@ -2061,7 +2061,7 @@ QString ImportOPJ::parseOriginTags(const QString &str)
 	line.replace("&rbracket;", ")");
 
 	while (line.contains("\\p")){
-		int pos1 = line.indexOf("\p");
+		int pos1 = line.indexOf("\\p");
 		pos1 = line.indexOf("(", pos1 + 2) + 1;
 		int pos2 = line.indexOf(")", pos1);
 		line = line.mid(pos1, pos2 - pos1);
