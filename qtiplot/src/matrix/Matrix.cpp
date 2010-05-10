@@ -70,6 +70,11 @@
 #include <EmfEngine.h>
 #endif
 
+#ifdef XLS_IMPORT
+    #include <ExcelFormat.h>
+    using namespace ExcelFormat;
+#endif
+
 Matrix::Matrix(ScriptingEnv *env, int r, int c, const QString& label, ApplicationWindow* parent, const QString& name, Qt::WFlags f)
 : MdiSubWindow(label, parent, name, f), scripted(env)
 {
@@ -1566,6 +1571,57 @@ bool Matrix::exportODF(const QString& fname, bool exportSelection)
 	return true;
 }
 
+#ifdef XLS_IMPORT
+bool Matrix::exportExcel(const QString& fname, bool exportSelection)
+{
+        QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+
+        int topRow = 0;
+        int bottomRow = numRows() - 1;
+        int leftCol = 0;
+        int rightCol = numCols() - 1;
+
+        if (exportSelection && d_view_type == TableView){
+            QModelIndexList selectedIndexes = d_table_view->selectionModel()->selectedIndexes();
+            topRow = selectedIndexes[0].row();
+            bottomRow = topRow;
+            leftCol = selectedIndexes[0].column();
+            rightCol = leftCol;
+            foreach(QModelIndex index, selectedIndexes){
+                int row = index.row();
+                if (row < topRow)
+                    topRow = row;
+                if (row > bottomRow)
+                    bottomRow = row;
+        
+                int col = index.column();
+                if (col < leftCol)
+                    leftCol = col;
+                if (col > rightCol)
+                    rightCol = col;
+            }
+        }
+
+        BasicExcel xls;
+        xls.New(1);
+        BasicExcelWorksheet* sheet = xls.GetWorksheet((size_t)0);
+
+        rightCol = QMIN(rightCol, 256);
+        bottomRow = QMIN(bottomRow, 65536);
+        for (int i = topRow; i <= bottomRow; i++){
+                for (int j = leftCol; j <= rightCol; j++){
+                    BasicExcelCell* cell = sheet->Cell(i, j);
+                    cell->Set(d_matrix_model->cell(i, j));
+                }
+        }
+
+        xls.SaveAs(fname);
+
+        QApplication::restoreOverrideCursor();
+        return true;
+}
+#endif
+
 bool Matrix::exportASCII(const QString& fname, const QString& separator, bool exportSelection)
 {
 	QFile f(fname);
@@ -1578,7 +1634,13 @@ bool Matrix::exportASCII(const QString& fname, const QString& separator, bool ex
 	if (fname.endsWith(".odf") || fname.endsWith(".html")){
 		f.close();
 		return exportODF(fname, exportSelection);
-	}
+        }
+#ifdef XLS_IMPORT
+        else if (fname.endsWith(".xls")){
+            f.close();
+            return exportExcel(fname, exportSelection);
+        }
+#endif
 
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 

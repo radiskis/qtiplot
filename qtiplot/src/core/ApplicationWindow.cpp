@@ -2515,7 +2515,7 @@ void ApplicationWindow::initPlot3D(Graph3D *plot)
 
 	plot->setIcon(QPixmap(":/trajectory.png"));
 	plot->show();
-	plot->setFocus();
+        //plot->setFocus();
 
 	addListViewItem(plot);
 

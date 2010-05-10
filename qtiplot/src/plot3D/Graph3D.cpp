@@ -181,9 +181,6 @@ void Graph3D::initPlot()
 	sp->setLocale(app->locale());
 	setWidget(sp);
 
-#ifdef Q_OS_MAC
-	show();
-#endif
 	resize(500, 400);
 
 	d_autoscale = app->d_3D_autoscale;
