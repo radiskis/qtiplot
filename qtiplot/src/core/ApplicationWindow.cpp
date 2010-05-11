@@ -3555,6 +3555,16 @@ Matrix* ApplicationWindow::tableToMatrix(Table* t)
 
 	int rows = t->numRows();
 	int cols = t->numCols();
+        for (int i = cols - 1; i >= 0; i--){
+                if (t->isEmptyColumn(i))
+                    cols--;
+        }
+
+        if (!cols){
+            QApplication::restoreOverrideCursor();
+            QMessageBox::critical(this, tr("QtiPlot - Error"), tr("The selected table is empty, operation aborted!"));
+            return 0;
+        }
 
 	Matrix* m = newMatrix(rows, cols);
 	for (int i = 0; i<rows; i++){
