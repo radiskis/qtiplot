@@ -175,39 +175,40 @@ double QwtBarCurve::dataOffset()
 	{
 		const QwtScaleMap &xMap = plot()->canvasMap(xAxis());
 		int dx = abs(xMap.transform(x(1))-xMap.transform(x(0)));
-		double bar_width = dx*(1-bar_gap*0.01);
+
 		if (plot()->isVisible())
 		{
 			for (int i = 2; i < dataSize(); i++)
 			{
 				int min = abs(xMap.transform(x(i))-xMap.transform(x(i - 1)));
 				if (min <= dx)
-					dx=min;
+                                        dx = min;
 			}
+                        double bar_width = dx*(1-bar_gap*0.01);
 			int x1 = xMap.transform(minXValue()) + int(bar_offset*0.01*bar_width);
 			return xMap.invTransform(x1) - minXValue();
 		}
 		else
-			return 0.5*bar_offset*0.01*bar_width;
+                        return 0.5*bar_offset*0.01*dx*(1-bar_gap*0.01);
 	}
 	else
 	{
 		const QwtScaleMap &yMap = plot()->canvasMap(yAxis());
 		int dy = abs(yMap.transform(y(1))-yMap.transform(y(0)));
-		double bar_width = dy*(1-bar_gap*0.01);
 		if (plot()->isVisible())
 		{
 			for (int i = 2; i < dataSize(); i++)
 			{
 				int min = abs(yMap.transform(y(i))-yMap.transform(y(i - 1)));
 				if (min <= dy)
-					dy=min;
+                                        dy = min;
 			}
+                        double bar_width = dy*(1-bar_gap*0.01);
 			int y1 = yMap.transform(minYValue()) + int(bar_offset*0.01*bar_width);
 			return yMap.invTransform(y1) - minYValue();
 		}
 		else
-			return 0.5*bar_offset*0.01*bar_width;
+                        return 0.5*bar_offset*0.01*dy*(1-bar_gap*0.01);
 	}
 return 0;
 }
