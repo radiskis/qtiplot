@@ -110,8 +110,11 @@ QwtText ScaleDraw::label(double value) const
 			if ((d_numeric_format == Superscripts)||(d_numeric_format == SuperscriptsGER)){
 				QString txt = locale.toString(transformValue(value), 'e', d_prec);
 				QStringList list = txt.split("e", QString::SkipEmptyParts);
+				if (list.isEmpty())
+					return QwtText();
+
 				if (list[0].toDouble() == 0.0)
-					return QString("0");
+					return QwtText("0");
 
 				QString s = list[1];
 				int l = s.length();
@@ -299,6 +302,9 @@ QwtText ScaleDraw::label(double value) const
                     }
 			    }
 			}
+
+			if (ticks.size() < 2)
+				return QwtText();
 
         	double step = ticks[1] - ticks[0];
         	int index = int(ticks[0] + step*ticks.indexOf(value) - 1);

@@ -470,7 +470,7 @@ void Graph::setLabelsNumericFormat(const QStringList& l)
 QString Graph::saveAxesLabelsType()
 {
 	QString s = "AxisType\t";
-	for (int i=0; i<4; i++){
+	for (int i = 0; i < 4; i++){
 		if (!axisEnabled(i)){
 			s += QString::number((int)ScaleDraw::Numeric) + "\t";
 			continue;
