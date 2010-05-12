@@ -3501,19 +3501,11 @@ Do you want to overwrite it?</source>
 <context>
     <name>ApplicationWindow</name>
     <message>
-        <source>File %1 contains only %2 sheets, operation aborted!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Sheet %1 is empty, operation aborted!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>sheet</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>QtiPlot was built without libxls support!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -8193,6 +8185,18 @@ Autocompletion will not be available!</source>
     <message>
         <source>E&amp;xport ASCII...</source>
         <translation>E&amp;xportar ASCII...</translation>
+    </message>
+    <message>
+        <source>The selected table is empty, operation aborted!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export Exce&amp;l ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export Excel</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -13892,6 +13896,10 @@ have the same number of rows.</source>
         <source>Omit &amp;thousands separator</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Column T&amp;ypes...</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ImportDialog</name>
@@ -17475,19 +17483,143 @@ Do you want to insert cells?</source>
     </message>
     <message>
         <source>Month</source>
-        <translation type="unfinished">Mes</translation>
-    </message>
-    <message>
-        <source>Day</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">Mes</translation>
     </message>
     <message>
         <source>Choose column type</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Column type:</source>
+        <source>dd/MM/yyyy</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>dd/MM/yyyy HH:mm</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>dd/MM/yyyy HH:mm:ss</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>dd.MM.yyyy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>dd.MM.yyyy HH:mm</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>dd.MM.yyyy HH:mm:ss</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>dd MM yyyy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>dd MM yyyy HH:mm</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>dd MM yyyy HH:mm:ss</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>yyyy-MM-dd</source>
+        <translation type="unfinished">aaaa-MM-dd</translation>
+    </message>
+    <message>
+        <source>yyyy-MM-dd HH:mm</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>yyyy-MM-dd HH:mm:ss</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>yyyyMMdd</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>yyyyMMdd HH:mm</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>yyyyMMdd HH:mm:ss</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>h</source>
+        <translation type="unfinished">h</translation>
+    </message>
+    <message>
+        <source>h ap</source>
+        <translation type="unfinished">h ap</translation>
+    </message>
+    <message>
+        <source>h AP</source>
+        <translation type="unfinished">h AP</translation>
+    </message>
+    <message>
+        <source>h:mm</source>
+        <translation type="unfinished">h:mm</translation>
+    </message>
+    <message>
+        <source>h:mm ap</source>
+        <translation type="unfinished">h:mm ap</translation>
+    </message>
+    <message>
+        <source>hh:mm</source>
+        <translation type="unfinished">hh:mm</translation>
+    </message>
+    <message>
+        <source>h:mm:ss</source>
+        <translation type="unfinished">h:mm:ss</translation>
+    </message>
+    <message>
+        <source>h:mm:ss.zzz</source>
+        <translation type="unfinished">h:mm:ss.zzz</translation>
+    </message>
+    <message>
+        <source>mm:ss</source>
+        <translation type="unfinished">mm:ss</translation>
+    </message>
+    <message>
+        <source>mm:ss.zzz</source>
+        <translation type="unfinished">mm:ss.zzz</translation>
+    </message>
+    <message>
+        <source>hmm</source>
+        <translation type="unfinished">hmm</translation>
+    </message>
+    <message>
+        <source>hmmss</source>
+        <translation type="unfinished">hmmss</translation>
+    </message>
+    <message>
+        <source>hhmmss</source>
+        <translation type="unfinished">hhmmss</translation>
+    </message>
+    <message>
+        <source>Format:</source>
+        <translation type="obsolete">Formato:</translation>
+    </message>
+    <message>
+        <source>&amp;Close</source>
+        <translation type="unfinished">&amp;Cerrar</translation>
+    </message>
+    <message>
+        <source>Column</source>
+        <translation type="unfinished">Columna</translation>
+    </message>
+    <message>
+        <source>Type</source>
+        <translation type="unfinished">Tipo</translation>
+    </message>
+    <message>
+        <source>Format</source>
+        <translation type="unfinished">Formato</translation>
     </message>
 </context>
 <context>

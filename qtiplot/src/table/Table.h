@@ -307,7 +307,7 @@ public slots:
                     bool stripSpaces, bool simplifySpaces, bool importComments,
                     const QString& commentString, bool readOnly = false,
 					ImportMode importAs = Overwrite, const QLocale& importLocale = QLocale(), int endLine = 0, int maxRows = -1,
-					const QList<int>& newColTypes = QList<int>());
+					const QList<int>& newColTypes = QList<int>(), const QStringList& colFormats = QStringList());
 
 	//! \name Saving and Restoring
 	//@{

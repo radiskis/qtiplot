@@ -40,6 +40,7 @@
 class QGroupBox;
 class QPushButton;
 class QStackedWidget;
+class QLabel;
 class Matrix;
 class MatrixModel;
 
@@ -61,21 +62,34 @@ public:
 	void clear();
 	void setNumericPrecision(int prec) {d_numeric_precision = prec;};
 	QList<int> columnTypes(){return colTypes;};
+	QStringList columnFormats(){return d_col_format;};
+	void showColTypeDialog();
+	void setSelectedColumn(int col);
 
 signals:
 	void modifiedColumnType();
 
 private slots:
+	void setColumnType(int);
+	void setColumnFormat(const QString&);
 	void setHeader();
+	void prevColumn();
+	void nextColumn();
+	void updateColumn(int sc);
 	bool eventFilter(QObject *object, QEvent *e);
 
 private:
-	void showColTypeDialog();
 	void addColumns(int c);
 	QStringList comments, col_label;
 	int d_numeric_precision, d_start_col;
 	QList<int> colTypes;
+	QStringList d_col_format;
 	int d_selected_column;
+
+	QComboBox *formatBox, *typesBox;
+	QLabel *formatLabel;
+	QPushButton *buttonNext, *buttonPrev;
+	QGroupBox *gb1;
 };
 
 class PreviewMatrix : public QTableView
@@ -158,10 +172,12 @@ public:
 	void selectFilter(const QString & filter);
 
 	QList<int> columnTypes(){if (d_preview_table) return d_preview_table->columnTypes(); return QList<int>();};
+	QStringList columnFormats(){if (d_preview_table) return d_preview_table->columnFormats(); return QStringList();};
 
 private slots:
 	//! Display help for advanced options.
 	void displayHelp();
+	void showColTypeDialog();
 	//! For #Overwrite mode, allow only one file to be selected.
 	void updateImportMode(int mode);
 	void preview();
@@ -183,7 +199,7 @@ private:
 	//! Container widget for all advanced options.
 	QGroupBox *d_advanced_options;
 	QCheckBox *d_read_only, *d_omit_thousands_sep;
-	QPushButton *d_help_button;
+	QPushButton *d_help_button, *d_col_types_button;
 	// the actual options
 	QComboBox *d_import_mode, *d_column_separator, *boxDecimalSeparator, *boxEndLine;
 	QSpinBox *d_ignored_lines, *d_preview_lines_box;

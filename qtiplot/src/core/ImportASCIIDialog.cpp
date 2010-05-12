@@ -229,14 +229,29 @@ void ImportASCIIDialog::initAdvancedOptions()
 	d_preview_lines_box->setSpecialValueText(tr("All"));
 	advanced_layout->addWidget(d_preview_lines_box, 6, 1);
 
+	QHBoxLayout *btnsLayout = new QHBoxLayout();
+	d_col_types_button = new QPushButton(tr("Column T&ypes..."));
+	connect(d_col_types_button, SIGNAL(clicked()), this, SLOT(showColTypeDialog()));
+	d_col_types_button->hide();
+	btnsLayout->addWidget(d_col_types_button);
+
 	d_help_button = new QPushButton(tr("&Help"));
 	connect(d_help_button, SIGNAL(clicked()), this, SLOT(displayHelp()));
-	advanced_layout->addWidget(d_help_button, 6, 2);
+	btnsLayout->addWidget(d_help_button);
+	advanced_layout->addLayout(btnsLayout, 6, 2);
 
 	d_preview_table = NULL;
 	d_preview_matrix = NULL;
 	d_preview_stack = new QStackedWidget();
 	main_layout->addWidget(d_preview_stack);
+}
+
+void ImportASCIIDialog::showColTypeDialog()
+{
+	if (d_preview_table){
+		d_preview_table->setSelectedColumn(0);
+		d_preview_table->showColTypeDialog();
+	}
 }
 
 void ImportASCIIDialog::initPreview(int previewMode)
@@ -301,6 +316,7 @@ void ImportASCIIDialog::enableTableOptions(bool on)
 	d_rename_columns->setEnabled(on);
 	d_import_comments->setEnabled(on && d_rename_columns->isChecked());
 	d_read_only->setEnabled(on);
+	d_col_types_button->setVisible(on);
 }
 
 void ImportASCIIDialog::setColumnSeparator(const QString& sep)
@@ -580,6 +596,7 @@ PreviewTable::PreviewTable(int numRows, int numCols, QWidget * parent, const cha
 		comments << "";
 		col_label << QString::number(i + 1);
 		colTypes << Table::Numeric;
+		d_col_format << QString();
 	}
 
 	d_start_col = numCols;
@@ -756,6 +773,12 @@ void PreviewTable::resetHeader()
 		for (int i = 0; i < (size - cols); i++)
 			colTypes.pop_back();
 	}
+
+	size = d_col_format.size();
+	if (size > cols){
+		for (int i = 0; i < (size - cols); i++)
+			d_col_format.pop_back();
+	}
 }
 
 void PreviewTable::clear()
@@ -792,6 +815,7 @@ void PreviewTable::addColumns(int c)
 		comments << QString();
 		col_label << QString::number(max+i);
 		colTypes << Table::Numeric;
+		d_col_format << QString();
 	}
 }
 
@@ -817,17 +841,168 @@ bool PreviewTable::eventFilter(QObject *object, QEvent *e)
 	return Q3Table::eventFilter(object, e);
 }
 
+void PreviewTable::setSelectedColumn(int col)
+{
+	selectColumn(col);
+	d_selected_column = col;
+}
+
+void PreviewTable::setColumnFormat(const QString& format)
+{
+	d_col_format[d_selected_column] = format;
+}
+
+void PreviewTable::setColumnType(int type)
+{
+	bool vis = type > Table::Text;
+	formatBox->setVisible(vis);
+	formatLabel->setVisible(vis);
+
+	formatBox->blockSignals(true);
+	formatBox->clear();
+	formatBox->setEditable(false);
+	switch (type){
+		case Table::Date:
+			formatBox->addItem(tr("dd/MM/yyyy"));
+			formatBox->addItem(tr("dd/MM/yyyy HH:mm"));
+			formatBox->addItem(tr("dd/MM/yyyy HH:mm:ss"));
+
+			formatBox->addItem(tr("dd.MM.yyyy"));
+			formatBox->addItem(tr("dd.MM.yyyy HH:mm"));
+			formatBox->addItem(tr("dd.MM.yyyy HH:mm:ss"));
+
+			formatBox->addItem(tr("dd MM yyyy"));
+			formatBox->addItem(tr("dd MM yyyy HH:mm"));
+			formatBox->addItem(tr("dd MM yyyy HH:mm:ss"));
+
+			formatBox->addItem(tr("yyyy-MM-dd"));
+			formatBox->addItem(tr("yyyy-MM-dd HH:mm"));
+			formatBox->addItem(tr("yyyy-MM-dd HH:mm:ss"));
+
+			formatBox->addItem(tr("yyyyMMdd"));
+			formatBox->addItem(tr("yyyyMMdd HH:mm"));
+			formatBox->addItem(tr("yyyyMMdd HH:mm:ss"));
+
+			formatBox->setEditable(true);
+			formatBox->setEditText(d_col_format[d_selected_column]);
+		break;
+
+		case Table::Time:
+			formatBox->addItem(tr("h") );
+			formatBox->addItem(tr("h ap") );
+			formatBox->addItem(tr("h AP") );
+			formatBox->addItem(tr("h:mm"));
+			formatBox->addItem(tr("h:mm ap") );
+			formatBox->addItem(tr("hh:mm"));
+			formatBox->addItem(tr("h:mm:ss") );
+			formatBox->addItem(tr("h:mm:ss.zzz") );
+			formatBox->addItem(tr("mm:ss") );
+			formatBox->addItem(tr("mm:ss.zzz") );
+			formatBox->addItem(tr("hmm") );
+			formatBox->addItem(tr("hmmss") );
+			formatBox->addItem(tr("hhmmss") );
+
+			formatBox->setEditable(true);
+			formatBox->setEditText(d_col_format[d_selected_column]);
+		break;
+
+		default:
+		break;
+	}
+
+	colTypes[d_selected_column] = type;
+	formatBox->blockSignals(false);
+	modifiedColumnType();
+}
+
 void PreviewTable::showColTypeDialog()
 {
-	QStringList items;
-	items << tr("Numeric") << tr("Text") << tr("Date") << tr("Time") << tr("Month") << tr("Day");
+	QDialog *colTypeDialog = new QDialog(this);
+	colTypeDialog->setAttribute(Qt::WA_DeleteOnClose);
+	colTypeDialog->setSizeGripEnabled(true);
+	colTypeDialog->setMinimumWidth(300);
+	colTypeDialog->setWindowTitle(tr("Choose column type"));
 
-	bool ok;
-	QString item = QInputDialog::getItem(this, tr("Choose column type"), tr("Column type:"), items, colTypes[d_selected_column], false, &ok);
-	if (ok && !item.isEmpty()){
-		colTypes[d_selected_column] = (Table::ColType)items.indexOf(item);
-		modifiedColumnType();
-	}
+	gb1 = new QGroupBox();
+	QGridLayout *hl1 = new QGridLayout(gb1);
+	hl1->addWidget(new QLabel(tr("Type")), 0, 0);
+	typesBox = new QComboBox();
+	typesBox->addItems(QStringList() << tr("Numeric") << tr("Text") << tr("Date") << tr("Time"));
+	hl1->addWidget(typesBox, 0, 1);
+
+	formatLabel = new QLabel(tr("Format"));
+	hl1->addWidget(formatLabel, 1, 0);
+	formatLabel->hide();
+
+	formatBox = new QComboBox();
+	hl1->addWidget(formatBox, 1, 1);
+	formatBox->hide();
+	hl1->setColumnStretch(1, 1);
+	hl1->setRowStretch(2, 1);
+
+	buttonPrev = new QPushButton("&<<");
+	buttonPrev->setAutoDefault(false);
+	buttonPrev->setMaximumWidth(40);
+
+	buttonNext = new QPushButton("&>>");
+	buttonNext->setAutoDefault(false);
+	buttonNext->setMaximumWidth(40);
+
+	QPushButton *closeBtn = new QPushButton(tr("&Close"));
+	connect(closeBtn, SIGNAL(clicked()), colTypeDialog, SLOT(reject()));
+
+	QHBoxLayout *hl2 = new QHBoxLayout();
+	hl2->addStretch();
+	hl2->addWidget(buttonPrev);
+	hl2->addWidget(buttonNext);
+	hl2->addWidget(closeBtn);
+
+	QVBoxLayout *vl = new QVBoxLayout(colTypeDialog);
+	vl->addWidget(gb1);
+	vl->addLayout(hl2);
+
+	updateColumn(d_selected_column);
+
+	connect(typesBox, SIGNAL(currentIndexChanged (int)), this, SLOT(setColumnType(int)));
+	connect(formatBox, SIGNAL(currentIndexChanged(const QString&)), this, SLOT(setColumnFormat(const QString&)));
+	connect(formatBox, SIGNAL(editTextChanged(const QString&)), this, SLOT(setColumnFormat(const QString&)));
+	connect(buttonPrev, SIGNAL(clicked()), this, SLOT(prevColumn()));
+	connect(buttonNext, SIGNAL(clicked()), this, SLOT(nextColumn()));
+	colTypeDialog->exec();
+}
+
+void PreviewTable::prevColumn()
+{
+	updateColumn(--d_selected_column);
+}
+
+void PreviewTable::nextColumn()
+{
+	updateColumn(++d_selected_column);
+}
+
+void PreviewTable::updateColumn(int sc)
+{
+	if (sc < 0 || sc >= numCols())
+		return;
+
+	typesBox->setCurrentIndex(colTypes[sc]);
+	setColumnType(typesBox->currentIndex());
+
+	gb1->setTitle(tr("Column") + " " + QString::number(sc + 1));
+
+	if (!sc)
+		buttonPrev->setEnabled(false);
+	else
+		buttonPrev->setEnabled(true);
+
+	if (sc >= numCols() - 1)
+		buttonNext->setEnabled(false);
+	else
+		buttonNext->setEnabled(true);
+
+	clearSelection();
+	selectColumn(sc);
 }
 /*****************************************************************************
  *

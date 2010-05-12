@@ -1081,10 +1081,6 @@ Automatické dokončení nebude dostupné!</translation>
         <translation>Nakreslit koláčový nákres</translation>
     </message>
     <message>
-        <source>QtiPlot was built without libxls support!</source>
-        <translation></translation>
-    </message>
-    <message>
         <source>&amp;Frequency Count ...</source>
         <translation>&amp;Počítání kmitočtu...</translation>
     </message>
@@ -2431,10 +2427,6 @@ Různé části tohoto souboru se nemusí zobrazovat tak, jak se očekává.</tr
     <message>
         <source>The table &apos;%1&apos; already exists. It has been renamed &apos;%2&apos;.</source>
         <translation>Tabulka &apos;%1&apos; již existuje. Byla přejmenována na &apos;%2&apos;.</translation>
-    </message>
-    <message>
-        <source>File %1 contains only %2 sheets, operation aborted!</source>
-        <translation></translation>
     </message>
     <message>
         <source>&amp;Forward FFT</source>
@@ -3855,6 +3847,18 @@ Různé části tohoto souboru se nemusí zobrazovat tak, jak se očekává.</tr
     </message>
     <message>
         <source>E&amp;xport ASCII...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The selected table is empty, operation aborted!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export Exce&amp;l ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export Excel</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -8733,6 +8737,10 @@ K tomu lze použít následujících zvláštních kódů:
 \t pro znak zarážky (TAB)
 \s pro mezeru (MEZERNÍK)</translation>
     </message>
+    <message>
+        <source>Column T&amp;ypes...</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>IntDialog</name>
@@ -11660,19 +11668,143 @@ K tomu lze použít následujících zvláštních kódů:
     </message>
     <message>
         <source>Month</source>
-        <translation type="unfinished">Měsíc</translation>
-    </message>
-    <message>
-        <source>Day</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">Měsíc</translation>
     </message>
     <message>
         <source>Choose column type</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Column type:</source>
+        <source>dd/MM/yyyy</source>
+        <translation type="unfinished">dd/mm/rrrr</translation>
+    </message>
+    <message>
+        <source>dd/MM/yyyy HH:mm</source>
+        <translation type="unfinished">dd/mm/rrrr hh:mm</translation>
+    </message>
+    <message>
+        <source>dd/MM/yyyy HH:mm:ss</source>
+        <translation type="unfinished">dd/mm/rrrr hh:mm:ss</translation>
+    </message>
+    <message>
+        <source>dd.MM.yyyy</source>
+        <translation type="unfinished">dd.mm.rrrr</translation>
+    </message>
+    <message>
+        <source>dd.MM.yyyy HH:mm</source>
+        <translation type="unfinished">dd.mm.rrrr hh:mm</translation>
+    </message>
+    <message>
+        <source>dd.MM.yyyy HH:mm:ss</source>
+        <translation type="unfinished">dd.mm.rrrr hh:mm:ss</translation>
+    </message>
+    <message>
+        <source>dd MM yyyy</source>
+        <translation type="unfinished">dd mm rrrr</translation>
+    </message>
+    <message>
+        <source>dd MM yyyy HH:mm</source>
+        <translation type="unfinished">dd mm rrrr hh:mm</translation>
+    </message>
+    <message>
+        <source>dd MM yyyy HH:mm:ss</source>
+        <translation type="unfinished">dd.mm.rrrr hh:mm:ss</translation>
+    </message>
+    <message>
+        <source>yyyy-MM-dd</source>
+        <translation type="unfinished">rrrr mm dd</translation>
+    </message>
+    <message>
+        <source>yyyy-MM-dd HH:mm</source>
+        <translation type="unfinished">rrrr mm dd hh:mm</translation>
+    </message>
+    <message>
+        <source>yyyy-MM-dd HH:mm:ss</source>
+        <translation type="unfinished">dd mm rrrr hh:mm:ss</translation>
+    </message>
+    <message>
+        <source>yyyyMMdd</source>
+        <translation type="unfinished">rrrrmmdd</translation>
+    </message>
+    <message>
+        <source>yyyyMMdd HH:mm</source>
+        <translation type="unfinished">rrrrmmdd hh:mm</translation>
+    </message>
+    <message>
+        <source>yyyyMMdd HH:mm:ss</source>
+        <translation type="unfinished">rrrrmmdd hh:mm:ss</translation>
+    </message>
+    <message>
+        <source>h</source>
+        <translation type="unfinished">h</translation>
+    </message>
+    <message>
+        <source>h ap</source>
+        <translation type="unfinished">h ap</translation>
+    </message>
+    <message>
+        <source>h AP</source>
+        <translation type="unfinished">h ap</translation>
+    </message>
+    <message>
+        <source>h:mm</source>
+        <translation type="unfinished">h:mm</translation>
+    </message>
+    <message>
+        <source>h:mm ap</source>
+        <translation type="unfinished">h:mm ap</translation>
+    </message>
+    <message>
+        <source>hh:mm</source>
+        <translation type="unfinished">hh:mm</translation>
+    </message>
+    <message>
+        <source>h:mm:ss</source>
+        <translation type="unfinished">h:mm:ss</translation>
+    </message>
+    <message>
+        <source>h:mm:ss.zzz</source>
+        <translation type="unfinished">h:mm:ss.zzz</translation>
+    </message>
+    <message>
+        <source>mm:ss</source>
+        <translation type="unfinished">mm:ss</translation>
+    </message>
+    <message>
+        <source>mm:ss.zzz</source>
+        <translation type="unfinished">mm:ss.zzz</translation>
+    </message>
+    <message>
+        <source>hmm</source>
+        <translation type="unfinished">hmm</translation>
+    </message>
+    <message>
+        <source>hmmss</source>
+        <translation type="unfinished">hmmss</translation>
+    </message>
+    <message>
+        <source>hhmmss</source>
+        <translation type="unfinished">hhmmss</translation>
+    </message>
+    <message>
+        <source>Format:</source>
+        <translation type="obsolete">Formát:</translation>
+    </message>
+    <message>
+        <source>&amp;Close</source>
+        <translation type="unfinished">&amp;Zavřít</translation>
+    </message>
+    <message>
+        <source>Column</source>
+        <translation type="unfinished">Sloupec</translation>
+    </message>
+    <message>
+        <source>Type</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Format</source>
+        <translation type="unfinished">Formát</translation>
     </message>
 </context>
 <context>
