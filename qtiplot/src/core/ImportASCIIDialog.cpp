@@ -385,7 +385,7 @@ void ImportASCIIDialog::closeEvent(QCloseEvent* e)
 	ApplicationWindow *app = (ApplicationWindow *)this->parent();
 	if (app){
 		app->d_extended_import_ASCII_dialog = this->isExtended();
-		app->d_ASCII_file_filter = this->selectedFilter();
+		app->d_ASCII_file_filter = this->selectedNameFilter();
 		app->d_ASCII_import_preview = d_preview_button->isChecked();
 		app->d_preview_lines = d_preview_lines_box->value();
 		app->d_ASCII_import_first_row_role = d_first_line_role->currentIndex();

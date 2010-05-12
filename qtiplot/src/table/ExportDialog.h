@@ -78,6 +78,8 @@ public slots:
 	void setColumnSeparator(const QString& sep);
 	//! Enable/disable export options depending if the selected window is a Table or a Matrix.
 	void updateOptions(const QString & name);
+	//! Update which options are visible and enabled based on the output format.
+	void updateAdvancedOptions (const QString &filter);
 
 private slots:
 	//! Enable/disable the tables combox box
@@ -86,9 +88,6 @@ private slots:
 	 * the checkbox "all" is selected.
 	 */
 	void enableTableName(bool ok);
-
-	//! Update which options are visible and enabled based on the output format.
-	void updateAdvancedOptions (const QString &filter);
 
 protected slots:
 	//! Accept changes

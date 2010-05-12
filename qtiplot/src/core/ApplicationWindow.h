@@ -97,6 +97,7 @@ class ArrowMarker;
 class TextEditor;
 class AssociationsDialog;
 class ScriptEdit;
+class ExportDialog;
 
 /**
  * \brief QtiPlot's main window.
@@ -461,7 +462,10 @@ public slots:
 	void initTable(Table* w, const QString& caption);
 	void customTable(Table* w);
 	Table* importOdfSpreadsheet(const QString& = QString::null, int sheet = -1);
+#ifdef XLS_IMPORT
+	void exportExcel();
 	Table* importExcel(const QString& = QString::null, int sheet = -1);
+#endif
 	Table* importWaveFile();
 	void importASCII();
 	void importASCII(const QStringList& files, int import_mode, const QString& local_column_separator, int local_ignored_lines, bool local_rename_columns,
@@ -728,7 +732,7 @@ public slots:
 	void showEnrichementDialog();
 	void showLineDialog();
 	void showTitleDialog();
-	void showExportASCIIDialog();
+	ExportDialog* showExportASCIIDialog();
 	void showCurvesDialog();
 	void showCurveRangeDialog();
 	CurveRangeDialog* showCurveRangeDialog(Graph *g, int curve);
@@ -1397,7 +1401,7 @@ private:
 	QAction *actionOpenOds;
 #endif
 #ifdef XLS_IMPORT
-	QAction *actionOpenExcel;
+	QAction *actionOpenExcel, *actionExportExcel;
 #endif
     QAction *actionCopyWindow, *actionShowAllColumns, *actionHideSelectedColumns;
     QAction *actionCutSelection, *actionCopySelection, *actionPasteSelection, *actionClearSelection;

@@ -4121,9 +4121,18 @@ Table * ApplicationWindow::importOdfSpreadsheet(const QString& fileName, int she
 #endif
 }
 
+#ifdef XLS_IMPORT
+void ApplicationWindow::exportExcel()
+{
+	ExportDialog *ed = showExportASCIIDialog();
+	if (ed){
+		ed->setNameFilters(QStringList() << "*.xls");
+		ed->updateAdvancedOptions(".xls");
+	}
+}
+
 Table * ApplicationWindow::importExcel(const QString& fileName, int sheet)
 {
-#ifdef XLS_IMPORT
 	QString fn = fileName;
 	if (fn.isEmpty()){
 		fn = getFileName(this, tr("Open Excel File"), QString::null, "*.xls", 0, false);
@@ -4221,11 +4230,8 @@ Table * ApplicationWindow::importExcel(const QString& fileName, int sheet)
 	updateRecentProjectsList(fn);
 	QApplication::restoreOverrideCursor();
 	return table;
-#else
-	QMessageBox::critical(this, tr("QtiPlot"), tr("QtiPlot was built without libxls support!"));
-	return NULL;
-#endif
 }
+#endif
 
 Table * ApplicationWindow::importWaveFile()
 {
@@ -6899,16 +6905,17 @@ void ApplicationWindow::showAxisTitleDialog()
 	td->exec();
 }
 
-void ApplicationWindow::showExportASCIIDialog()
+ExportDialog* ApplicationWindow::showExportASCIIDialog()
 {
     MdiSubWindow* t = activeWindow();
     if (!t)
-        return;
+		return 0;
 	if (!qobject_cast<Matrix*>(t) && !t->inherits("Table"))
-        return;
+		return 0;
 
     ExportDialog* ed = new ExportDialog(t, this, true);
-	ed->exec();
+	ed->open();
+	return ed;
 }
 
 void ApplicationWindow::exportAllTables(const QString& dir, const QString& filter, const QString& sep, bool colNames, bool colComments, bool expSelection)
@@ -9675,11 +9682,17 @@ void ApplicationWindow::fileMenuAboutToShow()
 			exportPlotMenu->addAction(actionExportGraph);
 			exportPlotMenu->addAction(actionExportAllGraphs);
 			exportPlotMenu->addAction(actionPresentationODF);
-		} else if (w->inherits("Table"))
+		} else if (w->inherits("Table")){
 			fileMenu->addAction(actionShowExportASCIIDialog);
-		else if (w->isA("Matrix")){
+		#ifdef XLS_IMPORT
+			fileMenu->addAction(actionExportExcel);
+		#endif
+		} else if (w->isA("Matrix")){
 			QMenu *exportMatrixMenu = fileMenu->addMenu(tr("Export"));
 			exportMatrixMenu->addAction(actionShowExportASCIIDialog);
+		#ifdef XLS_IMPORT
+			exportMatrixMenu->addAction(actionExportExcel);
+		#endif
 			exportMatrixMenu->addAction(actionExportMatrix);
 		}
 	}
@@ -13172,6 +13185,9 @@ void ApplicationWindow::createActions()
 	actionOpenExcel = new QAction(QIcon(":/open_excel.png"), tr("Open Exce&l ..."), this);
 	actionOpenExcel->setShortcut( tr("Ctrl+Shift+E") );
 	connect(actionOpenExcel, SIGNAL(activated()), this, SLOT(importExcel()));
+
+	actionExportExcel = new QAction(QIcon(":/new_excel.png"), tr("Export Exce&l ..."), this);
+	connect(actionExportExcel, SIGNAL(activated()), this, SLOT(exportExcel()));
 #endif
 
 #ifdef ODS_IMPORT
@@ -13775,7 +13791,7 @@ void ApplicationWindow::createActions()
 	connect(actionMatrixCustomScale, SIGNAL(activated()), this, SLOT(showColorMapDialog()));
 	actionMatrixCustomScale->setCheckable(true);
 
-	actionExportMatrix = new QAction(tr("&Export Image ..."), this);
+	actionExportMatrix = new QAction(QPixmap(":/monalisa.png"), tr("&Export Image ..."), this);
 	connect(actionExportMatrix, SIGNAL(activated()), this, SLOT(exportMatrix()));
 
 	actionConvertMatrixDirect = new QAction(tr("&Direct"), this);
@@ -14140,6 +14156,9 @@ void ApplicationWindow::translateActionsStrings()
 	actionOpenExcel->setMenuText(tr("Open Exce&l ..."));
 	actionOpenExcel->setShortcut( tr("Ctrl+Shift+E") );
 	actionOpenExcel->setToolTip(tr("Open Excel"));
+
+	actionExportExcel->setMenuText(tr("Export Exce&l ..."));
+	actionExportExcel->setToolTip(tr("Export Excel"));
 #endif
 #ifdef ODS_IMPORT
 	actionOpenOds->setMenuText(tr("Open ODF Spreads&heet..."));

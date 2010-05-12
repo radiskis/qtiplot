@@ -2720,7 +2720,7 @@ bool Table::exportExcel(const QString& fname, bool withLabels, bool exportCommen
 	if (!selectedCols)
 		aux = cols;
 
-        aux = QMIN(aux, 256);
+	aux = QMIN(aux, 256);
 
 	int headerRows = 0;
 	if (withLabels)
@@ -2728,89 +2728,98 @@ bool Table::exportExcel(const QString& fname, bool withLabels, bool exportCommen
 	if (exportComments)
 		headerRows++;
 
-        BasicExcel xls;
-        xls.New(1);
-        BasicExcelWorksheet* sheet = xls.GetWorksheet((size_t)0);
+	BasicExcel xls;
+	xls.New(1);
+	BasicExcelWorksheet* sheet = xls.GetWorksheet((size_t)0);
 
-        XLSFormatManager fmt_mgr(xls);
-        ExcelFont font_bold;
-        font_bold._weight = 700;
-        CellFormat fmt_bold(fmt_mgr, font_bold);
+	XLSFormatManager fmt_mgr(xls);
+	ExcelFont font_bold;
+	font_bold._weight = 700;
+	CellFormat fmt_bold(fmt_mgr, font_bold);
 	for (int i = 0; i < aux; i++){
 		for (int j = 0; j < headerRows; j++){
-                    BasicExcelCell* cell = sheet->Cell(j, i);
-                    cell->SetFormat(fmt_bold);
+			BasicExcelCell* cell = sheet->Cell(j, i);
+			cell->SetFormat(fmt_bold);
 		}
-        }
+	}
 
-        int startRow = 0;
+	int startRow = 0;
 	if (withLabels){
-                startRow++;
+		startRow++;
+
 		QStringList header = colNames();
 		QStringList ls = header.grep ( QRegExp ("\\D"));
-                if (exportSelection && selectedCols){
+		if (exportSelection && selectedCols){
 			for (int i = 0; i < aux; i++){
-                                BasicExcelCell* cell = sheet->Cell(0, i);
+				BasicExcelCell* cell = sheet->Cell(0, i);
 				if (ls.count()>0)
-                                        cell->Set(header[sCols[i]].toStdString().c_str());
+					cell->Set(header[sCols[i]].toStdString().c_str());
 				else
-                                        cell->Set(("C" + header[sCols[i]]).toStdString().c_str());
+					cell->Set(("C" + header[sCols[i]]).toStdString().c_str());
 			}
-                } else {
+		} else {
 			if (ls.count() > 0){
 				for (int j = 0; j < aux; j++){
-                                     BasicExcelCell* cell = sheet->Cell(0, j);
-                                     cell->Set(header[j].toStdString().c_str());
+					BasicExcelCell* cell = sheet->Cell(0, j);
+					cell->Set(header[j].toStdString().c_str());
 				}
 			} else {
 				for (int j = 0; j < aux; j++){
-                                    BasicExcelCell* cell = sheet->Cell(0, j);
-                                    cell->Set(("C" + header[j]).toStdString().c_str());
+					BasicExcelCell* cell = sheet->Cell(0, j);
+					cell->Set(("C" + header[j]).toStdString().c_str());
 				}
 			}
-                }
+		}
 	}// finished writting labels
 
-        if (exportComments){
-                if (exportSelection && selectedCols){
+	if (exportComments){
+		if (exportSelection && selectedCols){
 			for (int i = 0; i < aux; i++){
-                            BasicExcelCell* cell = sheet->Cell(startRow, i);
-                            cell->Set(comments[sCols[i]].toStdString().c_str());
+				QString s = comments[sCols[i]];
+				if (s.isEmpty())
+					continue;
+				sheet->Cell(startRow, i)->Set(s.toStdString().c_str());
 			}
 		} else {
-                    for (int i = 0; i < aux; i++){
-                        BasicExcelCell* cell = sheet->Cell(startRow, i);
-                        cell->Set(comments[i].toStdString().c_str());
-                    }
-                }
-                startRow++;
+			for (int i = 0; i < aux; i++){
+				QString s = comments[i];
+				if (s.isEmpty())
+					continue;
+				sheet->Cell(startRow, i)->Set(s.toStdString().c_str());
+			}
+		}
+		startRow++;
 	}
 
 
-        if (exportSelection && selectedCols){
+	if (exportSelection && selectedCols){
 		for (int i = topRow; i <= bottomRow; i++){
 			for (int j = 0; j < aux; j++){
-                                BasicExcelCell* cell = sheet->Cell(startRow, j);
-                                cell->Set(d_table->text(i, sCols[j]).toStdString().c_str());
+				QString s = d_table->text(i, sCols[j]);
+				if (s.isEmpty())
+					continue;
+				sheet->Cell(startRow, j)->Set(s.toStdString().c_str());
 			}
-                        startRow++;
-                        if (startRow > 65536)
-                            break;
+			startRow++;
+			if (startRow > 65536)
+				break;
 		}
-                delete [] sCols;
+		delete [] sCols;
 	} else {
-                for (int i = 0; i < rows; i++) {
+		for (int i = 0; i < rows; i++){
 			for (int j = 0; j < aux; j++){
-                                BasicExcelCell* cell = sheet->Cell(startRow, j);
-                                cell->Set(d_table->text(i, j).toStdString().c_str());
+				QString s = d_table->text(i, j);
+				if (s.isEmpty())
+					continue;
+				sheet->Cell(startRow, j)->Set(s.toStdString().c_str());
 			}
-                        startRow++;
-                        if (startRow > 65536)
-                            break;
+			startRow++;
+			if (startRow > 65536)
+				break;
 		}
 	}
 
-        xls.SaveAs(fname);
+	xls.SaveAs(fname);
 
 	QApplication::restoreOverrideCursor();
 	return true;
@@ -2971,12 +2980,12 @@ bool Table::exportASCII(const QString& fname, const QString& separator,
 	if (fname.endsWith(".odf") || fname.endsWith(".html")){
 		f.close();
 		return exportODF(fname, withLabels, exportComments, exportSelection);
-        }
+	}
 #ifdef XLS_IMPORT
-        else if (fname.endsWith(".xls")){
-            f.close();
-            return exportExcel(fname, withLabels, exportComments, exportSelection);
-        }
+	else if (fname.endsWith(".xls")){
+		f.close();
+		return exportExcel(fname, withLabels, exportComments, exportSelection);
+	}
 #endif
 
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
