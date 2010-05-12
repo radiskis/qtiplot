@@ -68,7 +68,7 @@ ExportDialog::ExportDialog(MdiSubWindow *window, QWidget * parent, bool extended
 #endif
 
 	selectNameFilter(((ApplicationWindow *)parent)->d_export_ASCII_file_filter);
-	updateAdvancedOptions(selectedFilter());
+	updateAdvancedOptions(selectedNameFilter());
 }
 
 void ExportDialog::initAdvancedOptions()
@@ -142,7 +142,7 @@ void ExportDialog::initAdvancedOptions()
 
 void ExportDialog::updateAdvancedOptions (const QString & filter)
 {
-        bool on = !filter.contains("*.tex") && !filter.contains("*.odf") && !filter.contains("*.html") && !filter.contains("*.xls");
+	bool on = !filter.contains(".tex") && !filter.contains(".odf") && !filter.contains(".html") && !filter.contains(".xls");
 	separatorLbl->setVisible(on);
 	boxSeparator->setVisible(on);
 	buttonHelp->setVisible(on);
@@ -157,7 +157,7 @@ void ExportDialog::help()
 
 void ExportDialog::enableTableName(bool ok)
 {
-	QString selected_filter = selectedFilter();
+	QString selected_filter = selectedNameFilter();
 	boxTable->setEnabled(!ok);
 	if (!ok){
 		setFileMode(QFileDialog::AnyFile);
@@ -181,7 +181,9 @@ void ExportDialog::setFileTypeFilters()
 	list << "HTML";
 	list << "TXT";
 	list << "TEX";
-        list << "XLS";
+#ifdef XLS_IMPORT
+	list << "XLS";
+#endif
 
 	QStringList filters;
 	for(int i = 0 ; i < list.count() ; i++)
@@ -213,7 +215,7 @@ void ExportDialog::accept()
 	if (selectedFiles().isEmpty())
 		return;
 
-	QString selected_filter = selectedFilter().remove("*");
+	QString selected_filter = selectedNameFilter().remove("*");
 	if (boxAllTables->isChecked())
 		app->exportAllTables(directory().absolutePath(), selected_filter, sep, boxNames->isChecked(), boxComments->isChecked(), boxSelection->isChecked());
 	else {
@@ -276,7 +278,7 @@ void ExportDialog::closeEvent(QCloseEvent* e)
 		app->d_export_col_names = boxNames->isChecked();
 		app->d_export_table_selection = boxSelection->isChecked();
 		app->d_export_col_comment = boxComments->isChecked();
-		app->d_export_ASCII_file_filter = selectedFilter();
+		app->d_export_ASCII_file_filter = selectedNameFilter();
 
 		QString sep = boxSeparator->currentText();
 		sep.replace(tr("TAB"), "\t", Qt::CaseInsensitive);

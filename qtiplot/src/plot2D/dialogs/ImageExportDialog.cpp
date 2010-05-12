@@ -86,7 +86,7 @@ ImageExportDialog::ImageExportDialog(MdiSubWindow *window, QWidget * parent, boo
 		connect(combo_boxes[1], SIGNAL(currentIndexChanged ( const QString & )),
 				this, SLOT(updateAdvancedOptions ( const QString & )));
 #endif
-	updateAdvancedOptions(selectedFilter());
+	updateAdvancedOptions(selectedNameFilter());
 }
 
 void ImageExportDialog::initAdvancedOptions()
@@ -326,7 +326,7 @@ void ImageExportDialog::closeEvent(QCloseEvent* e)
 	ApplicationWindow *app = (ApplicationWindow *)this->parent();
 	if (app){
 		app->d_extended_export_dialog = this->isExtended();
-		app->d_image_export_filter = this->selectedFilter();
+		app->d_image_export_filter = this->selectedNameFilter();
 		app->d_export_transparency = d_transparency->isChecked();
         app->d_export_quality = d_quality->value();
         app->d_export_bitmap_resolution = d_bitmap_resolution->value();
@@ -410,7 +410,7 @@ void ImageExportDialog::accept()
 		return QFileDialog::accept();
 
 	QString file_name = selectedFiles()[0];
-	QString selected_filter = selectedFilter().remove("*");
+	QString selected_filter = selectedNameFilter().remove("*");
 	if(!file_name.endsWith(selected_filter, Qt::CaseInsensitive))
 		file_name.append(selected_filter);
 

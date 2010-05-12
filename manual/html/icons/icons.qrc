@@ -221,5 +221,6 @@
         <file>param_range_btn.png</file>
         <file>notes_32.png</file>
         <file>uncomment.png</file>
+        <file>new_excel.png</file>
     </qresource>
 </RCC>
