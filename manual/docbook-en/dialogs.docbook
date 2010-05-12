@@ -1254,8 +1254,10 @@ to convert the data to your current settings, by specifying the
 <emphasis>Decimal Separators</emphasis> convention used in the ASCII files
 in conjunction with the <emphasis>Omit thousands separator</emphasis> option.</para>
 
-<para>Finally, you can specify the kind of data to be imported in each column by clicking on the column header of the preview table.
- A dialog will pop-up allowing you to choose a data type (the default data type for each column is <emphasis>Numeric</emphasis>).</para>
+<para>Finally, you can specify the kind of data to be imported in each column by pressing the
+ <emphasis>Column Types...</emphasis> button or by clicking on the column header in the preview table.
+ A dialog will pop-up allowing you to choose a data type (the default data type for each column is <emphasis>Numeric</emphasis>)
+ and a column format for date/time columns.</para>
 </sect1>
 
 <!-- ************************************************** -->

@@ -2727,7 +2727,7 @@ Are you sure you want to continue?</source>
     </message>
     <message>
         <source>File %1 contains only %2 sheets, operation aborted!</source>
-        <translation>Файл &apos;%1&apos; содержит только %2 листов, операция прервана!</translation>
+        <translation type="obsolete">Файл &apos;%1&apos; содержит только %2 листов, операция прервана!</translation>
     </message>
     <message>
         <source>Sheet %1 is empty, operation aborted!</source>
@@ -2739,7 +2739,7 @@ Are you sure you want to continue?</source>
     </message>
     <message>
         <source>QtiPlot was built without libxls support!</source>
-        <translation>QtiPlot скомпилирован без поддержки библиотеки libxls!</translation>
+        <translation type="obsolete">QtiPlot скомпилирован без поддержки библиотеки libxls!</translation>
     </message>
     <message>
         <source>Open File</source>
@@ -3845,6 +3845,18 @@ Autocompletion will not be available!</source>
     </message>
     <message>
         <source>E&amp;xport ASCII...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The selected table is empty, operation aborted!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export Exce&amp;l ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export Excel</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -8737,6 +8749,10 @@ have the same number of rows.</source>
         <source>Omit &amp;thousands separator</source>
         <translation>Опускать разделитель &amp;тысячных разрядов</translation>
     </message>
+    <message>
+        <source>Column T&amp;ypes...</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>IntDialog</name>
@@ -11668,19 +11684,143 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Month</source>
-        <translation type="unfinished">Месяц</translation>
-    </message>
-    <message>
-        <source>Day</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">Месяц</translation>
     </message>
     <message>
         <source>Choose column type</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Column type:</source>
-        <translation type="unfinished"></translation>
+        <source>dd/MM/yyyy</source>
+        <translation type="unfinished">дд/ММ/гггг</translation>
+    </message>
+    <message>
+        <source>dd/MM/yyyy HH:mm</source>
+        <translation type="unfinished">дд/ММ/гггг ЧЧ:мм</translation>
+    </message>
+    <message>
+        <source>dd/MM/yyyy HH:mm:ss</source>
+        <translation type="unfinished">дд/ММ/гггг ЧЧ:мм:cc</translation>
+    </message>
+    <message>
+        <source>dd.MM.yyyy</source>
+        <translation type="unfinished">дд.ММ.гггг</translation>
+    </message>
+    <message>
+        <source>dd.MM.yyyy HH:mm</source>
+        <translation type="unfinished">дд.ММ.гггг ЧЧ:мм</translation>
+    </message>
+    <message>
+        <source>dd.MM.yyyy HH:mm:ss</source>
+        <translation type="unfinished">дд.ММ.гггг ЧЧ:мм:cc</translation>
+    </message>
+    <message>
+        <source>dd MM yyyy</source>
+        <translation type="unfinished">дд ММ гггг</translation>
+    </message>
+    <message>
+        <source>dd MM yyyy HH:mm</source>
+        <translation type="unfinished">дд ММ гггг ЧЧ:мм</translation>
+    </message>
+    <message>
+        <source>dd MM yyyy HH:mm:ss</source>
+        <translation type="unfinished">дд ММ гггг ЧЧ:мм:cc</translation>
+    </message>
+    <message>
+        <source>yyyy-MM-dd</source>
+        <translation type="unfinished">гггг-ММ-дд</translation>
+    </message>
+    <message>
+        <source>yyyy-MM-dd HH:mm</source>
+        <translation type="unfinished">гггг-ММ-дд ЧЧ:мм</translation>
+    </message>
+    <message>
+        <source>yyyy-MM-dd HH:mm:ss</source>
+        <translation type="unfinished">гггг-ММ-дд ЧЧ:мм:cc</translation>
+    </message>
+    <message>
+        <source>yyyyMMdd</source>
+        <translation type="unfinished">ггггММдд</translation>
+    </message>
+    <message>
+        <source>yyyyMMdd HH:mm</source>
+        <translation type="unfinished">ггггММдд ЧЧ:мм</translation>
+    </message>
+    <message>
+        <source>yyyyMMdd HH:mm:ss</source>
+        <translation type="unfinished">ггггММдд ЧЧ:мм:сс</translation>
+    </message>
+    <message>
+        <source>h</source>
+        <translation type="unfinished">ч</translation>
+    </message>
+    <message>
+        <source>h ap</source>
+        <translation type="unfinished">ч 12</translation>
+    </message>
+    <message>
+        <source>h AP</source>
+        <translation type="unfinished">Ч 12</translation>
+    </message>
+    <message>
+        <source>h:mm</source>
+        <translation type="unfinished">ч:мм</translation>
+    </message>
+    <message>
+        <source>h:mm ap</source>
+        <translation type="unfinished">ч:мм 12</translation>
+    </message>
+    <message>
+        <source>hh:mm</source>
+        <translation type="unfinished">чч:мм</translation>
+    </message>
+    <message>
+        <source>h:mm:ss</source>
+        <translation type="unfinished">ч:мм:сс</translation>
+    </message>
+    <message>
+        <source>h:mm:ss.zzz</source>
+        <translation type="unfinished">ч:мм:сс.ххх</translation>
+    </message>
+    <message>
+        <source>mm:ss</source>
+        <translation type="unfinished">мм:сс</translation>
+    </message>
+    <message>
+        <source>mm:ss.zzz</source>
+        <translation type="unfinished">мм:сс.ххх</translation>
+    </message>
+    <message>
+        <source>hmm</source>
+        <translation type="unfinished">чмм</translation>
+    </message>
+    <message>
+        <source>hmmss</source>
+        <translation type="unfinished">чммсс</translation>
+    </message>
+    <message>
+        <source>hhmmss</source>
+        <translation type="unfinished">ччммсс</translation>
+    </message>
+    <message>
+        <source>Format:</source>
+        <translation type="obsolete">Формат:</translation>
+    </message>
+    <message>
+        <source>&amp;Close</source>
+        <translation type="unfinished">&amp;Закрыть</translation>
+    </message>
+    <message>
+        <source>Column</source>
+        <translation type="unfinished">Столбец</translation>
+    </message>
+    <message>
+        <source>Type</source>
+        <translation type="unfinished">Тип</translation>
+    </message>
+    <message>
+        <source>Format</source>
+        <translation type="unfinished">Формат</translation>
     </message>
 </context>
 <context>

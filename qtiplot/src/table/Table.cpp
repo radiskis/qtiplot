@@ -2462,7 +2462,8 @@ bool Table::noYColumn()
 
 void Table::importASCII(const QString &fname, const QString &sep, int ignoredLines, bool renameCols,
     bool stripSpaces, bool simplifySpaces, bool importComments, const QString& commentString,
-	bool readOnly, ImportMode importAs, const QLocale& importLocale, int endLine, int maxRows, const QList<int>& newColTypes)
+	bool readOnly, ImportMode importAs, const QLocale& importLocale, int endLine, int maxRows,
+	const QList<int>& newColTypes, const QStringList& colFormats)
 {
 	int rows;
 	QString name = MdiSubWindow::parseAsciiFile(fname, commentString, endLine, ignoredLines, maxRows, rows);
@@ -2542,14 +2543,24 @@ void Table::importASCII(const QString &fname, const QString &sep, int ignoredLin
 
 	if (!newColTypes.isEmpty()){
 		int ncols = newColTypes.size();
+		int fSize = colFormats.size();
 		switch(importAs){
 			case NewColumns:
-				for (int i = c; i < c + cols && i < ncols && i < colTypes.size(); i++)
-					colTypes[i] = newColTypes[i];
+				for (int i = c; i < c + cols && i < ncols && i < colTypes.size(); i++){
+					int type = newColTypes[i];
+					colTypes[i] = type;
+					if (type != Numeric && type != Text && i < fSize)
+						col_format[i] = colFormats[i];
+				}
 			break;
 			default:
-				for (int i = 0; i < cols && i < ncols; i++)
-					colTypes[i] = newColTypes[i];
+				for (int i = 0; i < cols && i < ncols; i++){
+					int type = newColTypes[i];
+					colTypes[i] = type;
+					if (type != Numeric && type != Text && i < fSize){
+						col_format[i] = colFormats[i];
+					}
+				}
 			break;
 		}
 	}
@@ -2593,7 +2604,7 @@ void Table::importASCII(const QString &fname, const QString &sep, int ignoredLin
 		for (int i = 0; i < cols; i++){
 			bool ok;
 			double val = importLocale.toDouble(line[i], &ok);
-			if (colTypes[i] == Table::Numeric && ok && updateDecimalSeparators){
+			if (colTypes[startCol + i] == Table::Numeric && (ok || updateDecimalSeparators)){
 				char format;
 				int prec;
 				columnNumericFormat(startCol + i, &format, &prec);
@@ -2641,7 +2652,7 @@ void Table::importASCII(const QString &fname, const QString &sep, int ignoredLin
 		for (int j = 0; j<cols && j<lc; j++){
 			bool ok;
 			double val = importLocale.toDouble(line[j], &ok);
-			if (colTypes[j] == Table::Numeric && ok && updateDecimalSeparators){
+			if (colTypes[startCol + j] == Table::Numeric && (ok || updateDecimalSeparators)){
 				char format;
 				int prec;
 				columnNumericFormat(startCol + j, &format, &prec);

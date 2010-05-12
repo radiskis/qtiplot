@@ -3431,7 +3431,7 @@ Are you sure you want to continue?</source>
     <name>ApplicationWindow</name>
     <message>
         <source>File %1 contains only %2 sheets, operation aborted!</source>
-        <translation>Fișierul %1 conține doar %2 foi de calcul, operația a fost abandonată!</translation>
+        <translation type="obsolete">Fișierul %1 conține doar %2 foi de calcul, operația a fost abandonată!</translation>
     </message>
     <message>
         <source>Sheet %1 is empty, operation aborted!</source>
@@ -3443,7 +3443,7 @@ Are you sure you want to continue?</source>
     </message>
     <message>
         <source>QtiPlot was built without libxls support!</source>
-        <translation>QtiPlot a fost compilat fara suport pentru libxls!</translation>
+        <translation type="obsolete">QtiPlot a fost compilat fara suport pentru libxls!</translation>
     </message>
     <message>
         <source>QtiPlot - untitled</source>
@@ -7324,6 +7324,18 @@ Autocompletion will not be available!</source>
     <message>
         <source>E&amp;xport ASCII...</source>
         <translation>E&amp;xportă fişier ASCII...</translation>
+    </message>
+    <message>
+        <source>The selected table is empty, operation aborted!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export Exce&amp;l ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export Excel</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -12280,6 +12292,10 @@ have the same number of rows.</source>
         <source>You don&apos;t have the permission to open this file: &lt;b&gt;%1&lt;/b&gt;</source>
         <translation>Nu aveţi permisiunea să deschideţi fişierul: &lt;b&gt;%1&lt;/b&gt;</translation>
     </message>
+    <message>
+        <source>Column T&amp;ypes...</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>IntDialog</name>
@@ -15231,11 +15247,11 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Month</source>
-        <translation>Lună</translation>
+        <translation type="obsolete">Lună</translation>
     </message>
     <message>
         <source>Day</source>
-        <translation>Zi</translation>
+        <translation type="obsolete">Zi</translation>
     </message>
     <message>
         <source>Choose column type</source>
@@ -15243,7 +15259,139 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Column type:</source>
-        <translation>Tipul coloanei:</translation>
+        <translation type="obsolete">Tipul coloanei:</translation>
+    </message>
+    <message>
+        <source>dd/MM/yyyy</source>
+        <translation type="unfinished">zz/LL/aaaa</translation>
+    </message>
+    <message>
+        <source>dd/MM/yyyy HH:mm</source>
+        <translation type="unfinished">zz/LL/aaaa  OO:mm</translation>
+    </message>
+    <message>
+        <source>dd/MM/yyyy HH:mm:ss</source>
+        <translation type="unfinished">zz/LL/aaaa  OO:mm:ss</translation>
+    </message>
+    <message>
+        <source>dd.MM.yyyy</source>
+        <translation type="unfinished">zz.LL.aaaa</translation>
+    </message>
+    <message>
+        <source>dd.MM.yyyy HH:mm</source>
+        <translation type="unfinished">zz.LL.aaaa OO:mm</translation>
+    </message>
+    <message>
+        <source>dd.MM.yyyy HH:mm:ss</source>
+        <translation type="unfinished">zz.LL.aaaa OO:mm:ss</translation>
+    </message>
+    <message>
+        <source>dd MM yyyy</source>
+        <translation type="unfinished">zz LL aaaa</translation>
+    </message>
+    <message>
+        <source>dd MM yyyy HH:mm</source>
+        <translation type="unfinished">zz LL aaaa  OO:mm</translation>
+    </message>
+    <message>
+        <source>dd MM yyyy HH:mm:ss</source>
+        <translation type="unfinished">zz LL aaaa  OO:mm:ss</translation>
+    </message>
+    <message>
+        <source>yyyy-MM-dd</source>
+        <translation type="unfinished">aaaa-LL-zz</translation>
+    </message>
+    <message>
+        <source>yyyy-MM-dd HH:mm</source>
+        <translation type="unfinished">aaaa-LL-zz OO:mm</translation>
+    </message>
+    <message>
+        <source>yyyy-MM-dd HH:mm:ss</source>
+        <translation type="unfinished">aaaa-LL-zz OO:mm:ss</translation>
+    </message>
+    <message>
+        <source>yyyyMMdd</source>
+        <translation type="unfinished">aaaaLLzz</translation>
+    </message>
+    <message>
+        <source>yyyyMMdd HH:mm</source>
+        <translation type="unfinished">aaaaLLzz OO:mm</translation>
+    </message>
+    <message>
+        <source>yyyyMMdd HH:mm:ss</source>
+        <translation type="unfinished">aaaaLLzz OO:mm:ss</translation>
+    </message>
+    <message>
+        <source>h</source>
+        <translation type="unfinished">o</translation>
+    </message>
+    <message>
+        <source>h ap</source>
+        <translation type="unfinished">o ap</translation>
+    </message>
+    <message>
+        <source>h AP</source>
+        <translation type="unfinished">o AP</translation>
+    </message>
+    <message>
+        <source>h:mm</source>
+        <translation type="unfinished">o:mm</translation>
+    </message>
+    <message>
+        <source>h:mm ap</source>
+        <translation type="unfinished">o:mm ap</translation>
+    </message>
+    <message>
+        <source>hh:mm</source>
+        <translation type="unfinished">oo:mm</translation>
+    </message>
+    <message>
+        <source>h:mm:ss</source>
+        <translation type="unfinished">o:mm:ss</translation>
+    </message>
+    <message>
+        <source>h:mm:ss.zzz</source>
+        <translation type="unfinished">o:mm:ss.zzz</translation>
+    </message>
+    <message>
+        <source>mm:ss</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>mm:ss.zzz</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>hmm</source>
+        <translation type="unfinished">omm</translation>
+    </message>
+    <message>
+        <source>hmmss</source>
+        <translation type="unfinished">ommss</translation>
+    </message>
+    <message>
+        <source>hhmmss</source>
+        <translation type="unfinished">oommss</translation>
+    </message>
+    <message>
+        <source>Format:</source>
+        <translation type="obsolete">Format:</translation>
+    </message>
+    <message>
+        <source>&amp;Close</source>
+        <translation type="unfinished">În&amp;chide</translation>
+    </message>
+    <message>
+        <source>Column</source>
+        <translation type="unfinished">Coloană</translation>
+    </message>
+    <message>
+        <source>Type</source>
+        <translation type="unfinished">Tip</translation>
+    </message>
+    <message>
+        <source>Format</source>
+        <translation type="unfinished">Format</translation>
     </message>
 </context>
 <context>

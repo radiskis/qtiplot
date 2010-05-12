@@ -470,7 +470,8 @@ public slots:
 	void importASCII();
 	void importASCII(const QStringList& files, int import_mode, const QString& local_column_separator, int local_ignored_lines, bool local_rename_columns,
         bool local_strip_spaces, bool local_simplify_spaces, bool local_import_comments,
-		QLocale local_separators, const QString& local_comment_string, bool import_read_only, int endLineChar, const QList<int>& colTypes = QList<int>());
+		QLocale local_separators, const QString& local_comment_string, bool import_read_only, int endLineChar,
+		const QList<int>& colTypes = QList<int>(), const QStringList& colFormats = QStringList());
 	void exportAllTables(const QString& dir, const QString& filter, const QString& sep, bool colNames, bool colComments, bool expSelection);
 
 	//! recalculate selected cells of current table

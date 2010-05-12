@@ -4370,13 +4370,14 @@ void ApplicationWindow::importASCII()
 			import_dialog->commentString(),
 			import_dialog->readOnly(),
 			import_dialog->endLineChar(),
-			import_dialog->columnTypes());
+			import_dialog->columnTypes(),
+			import_dialog->columnFormats());
 }
 
 void ApplicationWindow::importASCII(const QStringList& files, int import_mode, const QString& local_column_separator,
         int local_ignored_lines, bool local_rename_columns, bool local_strip_spaces, bool local_simplify_spaces,
         bool local_import_comments, QLocale local_separators, const QString& local_comment_string,
-		bool import_read_only, int endLineChar, const QList<int>& colTypes)
+		bool import_read_only, int endLineChar, const QList<int>& colTypes, const QStringList& colFormats)
 {
 	if (files.isEmpty())
 		return;
@@ -4396,7 +4397,7 @@ void ApplicationWindow::importASCII(const QStringList& files, int import_mode, c
 					w->importASCII(sorted_files[i], local_column_separator, local_ignored_lines,
                                    local_rename_columns, local_strip_spaces, local_simplify_spaces,
                                    local_import_comments, local_comment_string, import_read_only,
-								   Table::Overwrite, local_separators, endLineChar, -1, colTypes);
+								   Table::Overwrite, local_separators, endLineChar, -1, colTypes, colFormats);
 					if (!w) continue;
 					w->setWindowLabel(sorted_files[i]);
 					w->setCaptionPolicy(MdiSubWindow::Both);
@@ -4459,7 +4460,7 @@ void ApplicationWindow::importASCII(const QStringList& files, int import_mode, c
                         t->importASCII(files[i], local_column_separator, local_ignored_lines, local_rename_columns,
 							local_strip_spaces, local_simplify_spaces, local_import_comments,
 							local_comment_string, import_read_only, (Table::ImportMode)(import_mode - 2),
-							local_separators, endLineChar, -1, colTypes);
+							local_separators, endLineChar, -1, colTypes, colFormats);
 					}
 					t->notifyChanges();
 					emit modifiedProject(t);
@@ -4485,7 +4486,8 @@ void ApplicationWindow::importASCII(const QStringList& files, int import_mode, c
 				    Table *t = (Table *)w;
 					t->importASCII(files[0], local_column_separator, local_ignored_lines, local_rename_columns,
                                     local_strip_spaces, local_simplify_spaces, local_import_comments,
-									local_comment_string, import_read_only, Table::Overwrite, local_separators, endLineChar, -1, colTypes);
+									local_comment_string, import_read_only, Table::Overwrite, local_separators, endLineChar, -1,
+									colTypes, colFormats);
 					t->notifyChanges();
 				} else if (w->isA("Matrix")){
 				    Matrix *m = (Matrix *)w;
