@@ -150,6 +150,11 @@ int SelectionMoveResizer::removeAll(ArrowMarker *target)
 int SelectionMoveResizer::removeAll(QWidget *target)
 {
 	int result = d_widgets.removeAll(target);
+
+	FrameWidget *fw = qobject_cast<FrameWidget *>(target);
+	if (fw && !fw->isOnTop())
+		fw->lower();
+
 	if (d_line_markers.isEmpty() && d_widgets.isEmpty())
 		delete this;
 	else
@@ -352,9 +357,9 @@ void SelectionMoveResizer::mousePressEvent(QMouseEvent *me)
 	if (me->button() == Qt::LeftButton && !d_widgets.isEmpty()){
 		FrameWidget *fw = qobject_cast<FrameWidget *>(d_widgets[0]);
 		if (fw && fw->plot()){
-			QList <FrameWidget *> lst = fw->plot()->enrichmentsList();
+			QList <FrameWidget *> lst = fw->plot()->increasingAreaEnrichmentsList();
 			foreach(FrameWidget *f, lst){
-				if(!d_widgets.contains(f) && f->geometry().contains(me->pos()))
+				if(!d_widgets.contains(f) && f->geometry().contains(me->pos()) && !fw->geometry().contains(me->pos()))
 					return fw->plot()->select(f, me->modifiers() & Qt::ShiftModifier);
 			}
 		}
@@ -453,6 +458,11 @@ void SelectionMoveResizer::keyPressEvent(QKeyEvent *ke)
 			ke->accept();
 			break;
 		case Qt::Key_Escape:
+			foreach(QWidget *w, d_widgets){
+				FrameWidget *l = qobject_cast<FrameWidget *>(w);
+				if (l && !l->isOnTop())
+					l->lower();
+			}
 			delete this;
 			ke->accept();
 			return;

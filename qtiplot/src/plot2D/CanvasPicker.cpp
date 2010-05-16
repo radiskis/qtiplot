@@ -56,11 +56,11 @@ bool CanvasPicker::eventFilter(QObject *object, QEvent *e)
 
 	Graph *g = plot();
 	QList<ArrowMarker *> lines = g->arrowsList();
-	switch(e->type())
-	{
+	switch(e->type()){
 		case QEvent::MouseButtonPress:
 			{
-                const QMouseEvent *me = (const QMouseEvent *)e;
+				const QMouseEvent *me = (const QMouseEvent *)e;
+
 				if (!(me->modifiers() & Qt::ShiftModifier))
                     g->deselect();
 
@@ -86,6 +86,20 @@ bool CanvasPicker::eventFilter(QObject *object, QEvent *e)
 					if (me->button() == Qt::RightButton)
 						emit showMarkerPopupMenu();
 					return true;
+				}
+
+				if (!g->zoomOn()){
+					QList<FrameWidget *> eLst = g->increasingAreaEnrichmentsList();
+					foreach(FrameWidget *fw, eLst){
+						QPoint p = plot()->canvas()->mapTo(plot()->multiLayer()->canvas(), me->pos());
+						if (fw->frameGeometry().contains(p)){
+							fw->mousePressEvent((QMouseEvent *)e);
+							if (me->button() == Qt::RightButton)
+								emit showMarkerPopupMenu();
+
+							return true;
+						}
+					}
 				}
 
 				if (me->button() == Qt::LeftButton && !g->zoomOn() &&

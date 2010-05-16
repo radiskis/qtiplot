@@ -95,6 +95,8 @@ void RectangleWidget::restore(Graph *g, const QStringList& lst)
 			bottom = s.remove("<bottom>").remove("</bottom>").toDouble();
 		else if (s.contains("<attachTo>"))
 			r->setAttachPolicy((FrameWidget::AttachPolicy)s.remove("<attachTo>").remove("</attachTo>").toInt());
+		else if (s.contains("<onTop>"))
+			r->setOnTop(s.remove("<onTop>").remove("</onTop>").toInt());
 		else if (s.contains("<Background>"))
 			backgroundColor = QColor(s.remove("<Background>").remove("</Background>"));
 		else if (s.contains("<Alpha>"))

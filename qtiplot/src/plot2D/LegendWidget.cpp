@@ -783,6 +783,8 @@ void LegendWidget::restore(Graph *g, const QStringList& lst)
 			y = s.remove("<y>").remove("</y>").toDouble();
 		else if (s.contains("<attachTo>"))
 			l->setAttachPolicy((FrameWidget::AttachPolicy)s.remove("<attachTo>").remove("</attachTo>").toInt());
+		else if (s.contains("<onTop>"))
+			l->setOnTop(s.remove("<onTop>").remove("</onTop>").toInt());
 		else if (s.contains("<Text>")){
 			QStringList txt;
 			while ( s != "</Text>" ){

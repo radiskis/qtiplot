@@ -46,7 +46,8 @@ FrameWidget::FrameWidget(Graph *plot):QWidget(plot->multiLayer()->canvas()),
 	d_brush(QBrush()),
 	d_angle(0),
 	d_shadow_width(5),
-	d_attach_policy(Scales)
+	d_attach_policy(Scales),
+	d_on_top(true)
 {
 	setAttribute(Qt::WA_DeleteOnClose);
 
@@ -269,6 +270,7 @@ QString FrameWidget::saveToString()
 	s += "<right>" + QString::number(d_x_right, 'g', 15) + "</right>\n";
     s += "<bottom>" + QString::number(d_y_bottom, 'g', 15) + "</bottom>\n";
     s += "<attachTo>" + QString::number(d_attach_policy) + "</attachTo>\n";
+	s += "<onTop>" + QString::number(d_on_top) + "</onTop>\n";
 	return s;
 }
 
@@ -446,4 +448,18 @@ void FrameWidget::setAttachPolicy(AttachPolicy attachTo)
 {
 	if (attachTo != d_attach_policy)
 		d_attach_policy = attachTo;
+}
+
+void FrameWidget::setOnTop(bool on)
+{
+	if (d_on_top == on)
+		return;
+
+	d_on_top = on;
+	if (on)
+		raise();
+	else
+		lower();
+
+	plot()->notifyChanges();
 }
