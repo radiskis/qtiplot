@@ -655,6 +655,8 @@ public slots:
 
 	//! \name Plot Tools
 	//@{
+	void lowerActiveEnrichment();
+	void raiseActiveEnrichment(bool = true);
 	void newLegend();
 	void addTimeStamp();
 	void drawLine();

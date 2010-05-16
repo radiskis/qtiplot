@@ -155,10 +155,13 @@ class Graph: public QwtPlot
 
 		FrameWidget *activeEnrichment(){return d_active_enrichment;};
 		QList <FrameWidget *> enrichmentsList(){return d_enrichments;};
+		QList <FrameWidget *> increasingAreaEnrichmentsList();
 
 		bool hasSeletedItems();
 		void deselect();
 		void deselect(QWidget *);
+
+		QPointer<SelectionMoveResizer> selectionMoveResizer(){return d_markers_selector;};
 
 		QwtPlotItem* selectedCurveLabels();
         //! Used when restoring DataCurve curveID from a project file

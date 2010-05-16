@@ -305,6 +305,26 @@ QList <LegendWidget *> Graph::textsList()
 	return texts;
 }
 
+bool areaLessThan(FrameWidget* fw1, FrameWidget* fw2)
+{
+	return fw1->width()*fw1->height() < fw2->width()*fw2->height();
+}
+
+QList <FrameWidget *> Graph::increasingAreaEnrichmentsList()
+{
+	int size = d_enrichments.size();
+	if (size < 2)
+		return d_enrichments;
+
+	QList <FrameWidget *> lst;
+	foreach(FrameWidget *f, d_enrichments)
+		lst << f;
+
+	qSort(lst.begin(), lst.end(), areaLessThan);
+
+	return lst;
+}
+
 void Graph::selectorDeleted()
 {
 	d_markers_selector = NULL;
@@ -320,7 +340,6 @@ void Graph::select(QWidget *l, bool add)
     selectTitle(false);
     scalePicker->deselect();
     deselectCurves();
-	l->raise();
 
     d_active_enrichment = qobject_cast<LegendWidget *>(l);
     if (d_active_enrichment)
@@ -6208,8 +6227,7 @@ void Graph::showEvent (QShowEvent * event)
   \param plotRect Bounding rectangle
   \param pfilter Print filter
 */
-void Graph::print(QPainter *painter, const QRect &plotRect,
-        const QwtPlotPrintFilter &pfilter)
+void Graph::print(QPainter *painter, const QRect &plotRect, const QwtPlotPrintFilter &pfilter)
 {
     int axisId;
 
@@ -6263,36 +6281,7 @@ void Graph::print(QPainter *painter, const QRect &plotRect,
 
 	int bw = lineWidth();
     ((QwtPlot *)this)->plotLayout()->activate(this,
-        QwtPainter::metricsMap().deviceToLayout(plotRect.adjusted(bw, bw, -bw, -bw)),
-        layoutOptions);
-
-    if ((pfilter.options() & QwtPlotPrintFilter::PrintTitle)
-        && (!titleLabel()->text().isEmpty())){
-
-		QwtTextLabel *title = titleLabel();
-		QString old_title = t.text();
-		if (d_is_exporting_tex){
-			QString s = old_title;
-			if (d_tex_escape_strings)
-				s = escapeTeXSpecialCharacters(s);
-			s = texSuperscripts(s);
-			title->setText(s);
-
-			int flags = title->text().renderFlags();
-			if (flags & Qt::AlignLeft)
-				((QTeXPaintDevice *)painter->device())->setTextHorizontalAlignment(Qt::AlignLeft);
-			else if (flags & Qt::AlignRight)
-				((QTeXPaintDevice *)painter->device())->setTextHorizontalAlignment(Qt::AlignRight);
-
-		}
-
-        printTitle(painter, plotLayout()->titleRect());
-
-        if (d_is_exporting_tex){
-        	title->setText(old_title);
-			((QTeXPaintDevice *)painter->device())->setTextHorizontalAlignment(Qt::AlignHCenter);
-        }
-    }
+		QwtPainter::metricsMap().deviceToLayout(plotRect.adjusted(bw, bw, -bw, -bw)), layoutOptions);
 
 	QRect canvasRect = plotLayout()->canvasRect();
 
@@ -6312,7 +6301,7 @@ void Graph::print(QPainter *painter, const QRect &plotRect,
     // the precision to screen resolution. A much better solution
     // is to scale the maps and print in unlimited resolution.
 
-    QwtScaleMap map[axisCnt];
+	QwtScaleMap map[axisCnt];
     for (axisId = 0; axisId < axisCnt; axisId++){
         map[axisId].setTransformation(axisScaleEngine(axisId)->transformation());
 
@@ -6374,10 +6363,15 @@ void Graph::print(QPainter *painter, const QRect &plotRect,
 		}
 	}
 
-    // The canvas maps are already scaled.
-    QwtPainter::setMetricsMap(painter->device(), painter->device());
-    printCanvas(painter, canvasRect, map, pfilter);
-    QwtPainter::resetMetricsMap();
+	// The canvas maps are already scaled.
+	QwtPainter::setMetricsMap(painter->device(), painter->device());
+	QList<FrameWidget*> enrichments = stackingOrderEnrichmentsList();
+	foreach(FrameWidget *f, enrichments){
+		if (!f->isOnTop())
+			f->print(painter, map);
+	}
+	printCanvas(painter, canvasRect, map, pfilter);
+	QwtPainter::resetMetricsMap();
 
 	foreach (QwtPlotItem *item, d_curves){
 		if(item->rtti() == QwtPlotItem::Rtti_PlotSpectrogram){
@@ -6406,6 +6400,32 @@ void Graph::print(QPainter *painter, const QRect &plotRect,
 	}
 
 	QwtPainter::setMetricsMap(this, painter->device());
+
+	if ((pfilter.options() & QwtPlotPrintFilter::PrintTitle) && (!titleLabel()->text().isEmpty())){
+		QwtTextLabel *title = titleLabel();
+		QString old_title = t.text();
+		if (d_is_exporting_tex){
+			QString s = old_title;
+			if (d_tex_escape_strings)
+				s = escapeTeXSpecialCharacters(s);
+			s = texSuperscripts(s);
+			title->setText(s);
+
+			int flags = title->text().renderFlags();
+			if (flags & Qt::AlignLeft)
+				((QTeXPaintDevice *)painter->device())->setTextHorizontalAlignment(Qt::AlignLeft);
+			else if (flags & Qt::AlignRight)
+				((QTeXPaintDevice *)painter->device())->setTextHorizontalAlignment(Qt::AlignRight);
+
+		}
+
+		printTitle(painter, plotLayout()->titleRect());
+
+		if (d_is_exporting_tex){
+			title->setText(old_title);
+			((QTeXPaintDevice *)painter->device())->setTextHorizontalAlignment(Qt::AlignHCenter);
+		}
+	}
 
 	canvasRect = plotLayout()->canvasRect();
 
@@ -6452,9 +6472,11 @@ void Graph::print(QPainter *painter, const QRect &plotRect,
     }
 
 	QwtPainter::setMetricsMap(painter->device(), painter->device());
-	QList<FrameWidget*> enrichments = stackingOrderEnrichmentsList();
-	foreach(FrameWidget *f, enrichments)
-		f->print(painter, map);
+	//QList<FrameWidget*> enrichments = stackingOrderEnrichmentsList();
+	foreach(FrameWidget *f, enrichments){
+		if (f->isOnTop())
+			f->print(painter, map);
+	}
 	QwtPainter::resetMetricsMap();
 
 	painter->restore();
@@ -6514,6 +6536,7 @@ FrameWidget* Graph::add(FrameWidget* fw, bool copy)
 	}
 
 	aux->setAttachPolicy(fw->attachPolicy());
+	aux->setOnTop(fw->isOnTop());
 
 	d_enrichments << aux;
 	d_active_enrichment = aux;
@@ -6533,12 +6556,20 @@ void Graph::raiseEnrichements()
 			continue;
 
 		QList<FrameWidget *> eLst = g->enrichmentsList();
-		foreach(FrameWidget *fw, eLst)
-			fw->raise();
+		foreach(FrameWidget *fw, eLst){
+			if (fw->isOnTop())
+				fw->raise();
+			else
+				fw->lower();
+		}
 	}
 
-	foreach(FrameWidget *fw, d_enrichments)
-		fw->raise();
+	foreach(FrameWidget *fw, d_enrichments){
+		if (fw->isOnTop())
+			fw->raise();
+		else
+			fw->lower();
+	}
 }
 
 QRect Graph::boundingRect()
@@ -6846,7 +6877,7 @@ QList<FrameWidget*> Graph::stackingOrderEnrichmentsList()
 		return d_enrichments;
 
 	QList<FrameWidget*> enrichements;
-	QObjectList lst =  ml->canvas()->children();
+	QObjectList lst = ml->canvas()->children();
 	foreach(QObject *o, lst){
 		FrameWidget *fw = qobject_cast<FrameWidget *>(o);
 		if (fw && fw->plot() == this)

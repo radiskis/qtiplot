@@ -41,6 +41,7 @@
 #include "CustomActionDialog.h"
 #include "MdiSubWindow.h"
 
+#include <SelectionMoveResizer.h>
 #include <SymbolBox.h>
 #include <ColorBox.h>
 #include <PenStyleBox.h>
@@ -1628,6 +1629,9 @@ void ApplicationWindow::customMenu(QMdiSubWindow* w)
 	scriptingMenu->menuAction()->setVisible(false);
 #endif
 
+	fileMenuAboutToShow();
+	windowsMenuAboutToShow();
+
 	// these use the same keyboard shortcut (Ctrl+Return) and should not be enabled at the same time
 	actionNoteEvaluate->setEnabled(false);
 	actionTableRecalculate->setEnabled(false);
@@ -1641,6 +1645,9 @@ void ApplicationWindow::customMenu(QMdiSubWindow* w)
 	// these use the same keyboard shortcut (Ctrl+Alt+F) and should not be enabled at the same time
 	actionAddFunctionCurve->setEnabled(false);
 	actionFind->setEnabled(false);
+	// these use the same keyboard shortcut (Ctrl+Alt+G) and should not be enabled at the same time
+	actionExportGraph->setEnabled(false);
+	actionGoToRow->setEnabled(false);
 
 	// clear undo stack view (in case window is not a matrix)
 	d_undo_view->setStack(0);
@@ -1653,6 +1660,8 @@ void ApplicationWindow::customMenu(QMdiSubWindow* w)
 	actionExportPDF->setEnabled(w);
 
 	if(w){
+		analysisMenuAboutToShow();
+
 		actionPrintAllPlots->setEnabled(projectHas2DPlots());
 		actionPrint->setEnabled(true);
 		actionCutSelection->setEnabled(true);
@@ -1670,6 +1679,7 @@ void ApplicationWindow::customMenu(QMdiSubWindow* w)
 			actionAddFunctionCurve->setEnabled(true);
 			actionShowCurvesDialog->setEnabled(true);
 			actionAddFormula->setEnabled(true);
+			actionExportGraph->setEnabled(true);
 
 			graphMenu->menuAction()->setVisible(true);
 			plotDataMenu->menuAction()->setVisible(true);
@@ -1689,6 +1699,7 @@ void ApplicationWindow::customMenu(QMdiSubWindow* w)
 
 			actionPrint->setEnabled(true);
 			actionSaveTemplate->setEnabled(true);
+			actionExportGraph->setEnabled(true);
 
 			format->menuAction()->setVisible(true);
 			format->clear();
@@ -1699,6 +1710,8 @@ void ApplicationWindow::customMenu(QMdiSubWindow* w)
 			if (((Graph3D*)w)->coordStyle() == Qwt3D::NOCOORD)
 				actionShowAxisDialog->setEnabled(false);
 		} else if (w->inherits("Table")) {
+			tableMenuAboutToShow();
+
 			plot2DMenu->menuAction()->setVisible(true);
 			analysisMenu->menuAction()->setVisible(true);
 			tableMenu->menuAction()->setVisible(true);
@@ -1706,9 +1719,13 @@ void ApplicationWindow::customMenu(QMdiSubWindow* w)
 			actionTableRecalculate->setEnabled(true);
 			actionAddColToTable->setEnabled(true);
 			actionShowColumnValuesDialog->setEnabled(true);
-		} else if (w->isA("Matrix")){
+			actionGoToRow->setEnabled(true);
+		} else if (qobject_cast<Matrix*>(w)){
+			matrixMenuAboutToShow();
+
 			actionTableRecalculate->setEnabled(true);
 			actionSetMatrixValues->setEnabled(true);
+			actionGoToRow->setEnabled(true);
 
 			plot3DMenu->menuAction()->setVisible(true);
 			analysisMenu->menuAction()->setVisible(true);
@@ -4590,12 +4607,16 @@ ApplicationWindow* ApplicationWindow::open(const QString& fn, bool factorySettin
 		return importOPJ(fn, factorySettings, newProject);
 	else
 #endif
-	if (fn.endsWith(".py", Qt::CaseInsensitive))
-		return loadScript(fn);
-	else if (fn.endsWith(".xls", Qt::CaseInsensitive)){
+#ifdef XLS_IMPORT
+	if (fn.endsWith(".xls", Qt::CaseInsensitive)){
 		importExcel(fn);
 		return this;
-	} else if (fn.endsWith(".ods", Qt::CaseInsensitive)){
+	}
+	else
+#endif
+	if (fn.endsWith(".py", Qt::CaseInsensitive))
+		return loadScript(fn);
+	else if (fn.endsWith(".ods", Qt::CaseInsensitive)){
 		importOdfSpreadsheet(fn);
 		return this;
 	}
@@ -9829,12 +9850,42 @@ void ApplicationWindow::showMarkerPopupMenu()
 	markerMenu.insertItem(QPixmap(":/copy.png"), tr("&Copy"),this, SLOT(copySelection()));
 	markerMenu.insertItem(QPixmap(":/delete.png"), tr("&Delete"),this, SLOT(clearSelection()));
 	markerMenu.insertSeparator();
+
+	if (g->activeEnrichment()){
+		markerMenu.insertItem(tr("&Front"), this, SLOT(raiseActiveEnrichment()));
+		markerMenu.insertItem(tr("&Back"), this, SLOT(lowerActiveEnrichment()));
+		markerMenu.insertSeparator();
+	}
+
 	if (g->arrowMarkerSelected())
 		markerMenu.insertItem(tr("&Properties..."),this, SLOT(showLineDialog()));
 	else
-		markerMenu.insertItem(tr("&Properties..."),this, SLOT(showEnrichementDialog()));
+		markerMenu.insertItem(tr("&Properties..."), this, SLOT(showEnrichementDialog()));
 
 	markerMenu.exec(QCursor::pos());
+}
+
+void ApplicationWindow::lowerActiveEnrichment()
+{
+	raiseActiveEnrichment(false);
+}
+
+void ApplicationWindow::raiseActiveEnrichment(bool on)
+{
+	MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
+	if (!plot)
+		return;
+
+	Graph* g = plot->activeLayer();
+	if (!g)
+		return;
+
+	FrameWidget *fw = g->activeEnrichment();
+	if (fw)
+		fw->setOnTop(on);
+
+	if (on && g->selectionMoveResizer())
+		g->selectionMoveResizer()->raise();
 }
 
 void ApplicationWindow::showMoreWindows()
@@ -15660,9 +15711,12 @@ Folder* ApplicationWindow::appendProject(const QString& fn, Folder* parentFolder
 		ImportOPJ(this, fn);
 	else
 #endif
+#ifdef XLS_IMPORT
 	if (fn.endsWith(".xls", Qt::CaseInsensitive))
 		importExcel(fn);
-	else if (fn.endsWith(".ods", Qt::CaseInsensitive))
+	else
+#endif
+	if (fn.endsWith(".ods", Qt::CaseInsensitive))
 		importOdfSpreadsheet(fn);
 	else {
 		QFile f(fname);

@@ -120,6 +120,11 @@ public:
 	void setAttachPolicy(AttachPolicy attachTo);
 	AttachPolicy attachPolicy(){return d_attach_policy;};
 
+	bool isOnTop(){return d_on_top;};
+	void setOnTop(bool on = true);
+
+	void mousePressEvent(QMouseEvent *);
+
 signals:
 	void showDialog();
 	void showMenu();
@@ -137,7 +142,6 @@ protected:
 
 	virtual void drawFrame(QPainter *p, const QRect& rect);
 	virtual void paintEvent(QPaintEvent *e);
-	void mousePressEvent(QMouseEvent *);
 	void contextMenuEvent(QContextMenuEvent * ){emit showMenu();};
 
 	//! Parent plot
@@ -165,6 +169,7 @@ protected:
 	int d_shadow_width;
 	//! The attach to policy
 	AttachPolicy d_attach_policy;
+	bool d_on_top;
 };
 
 #endif
