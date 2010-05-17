@@ -162,6 +162,18 @@ int SelectionMoveResizer::removeAll(QWidget *target)
 	return result;
 }
 
+void SelectionMoveResizer::raiseTargets(bool on)
+{
+	foreach(QWidget *w, d_widgets){
+		FrameWidget *fw = qobject_cast<FrameWidget *>(w);
+		if (fw)
+			fw->setOnTop(on);
+	}
+
+	if (on)
+		this->raise();
+}
+
 void SelectionMoveResizer::recalcBoundingRect()
 {
 	d_bounding_rect = QRect(0, 0, -1, -1);

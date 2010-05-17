@@ -655,6 +655,7 @@ public slots:
 
 	//! \name Plot Tools
 	//@{
+	void graphSelectionChanged(SelectionMoveResizer *);
 	void lowerActiveEnrichment();
 	void raiseActiveEnrichment(bool = true);
 	void newLegend();
@@ -1484,6 +1485,7 @@ private:
     QAction *actionIncreasePrecision, *actionDecreasePrecision, *actionPrintPreview;
 	QAction *actionVertSharedAxisLayers, *actionHorSharedAxisLayers, *actionSharedAxesLayers, *actionStackSharedAxisLayers;
 	QAction *actionCustomSharedAxisLayers, *actionCustomLayout, *actionExtractTableData, *actionSubtractLine, *actionSubtractReference;
+	QAction *actionRaiseEnrichment, *actionLowerEnrichment;
 
     QList<QAction *> d_user_actions;
     QUndoView *d_undo_view;

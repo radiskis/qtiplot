@@ -968,6 +968,11 @@ void ApplicationWindow::initToolBars()
 
 	plotTools->addAction(actionTimeStamp);
 	plotTools->addAction(actionAddImage);
+
+	plotTools->addSeparator();
+	plotTools->addAction(actionRaiseEnrichment);
+	plotTools->addAction(actionLowerEnrichment);
+
 	plotTools->hide();
 
 	tableTools = new QToolBar(tr("Table"), this);
@@ -9705,18 +9710,15 @@ void ApplicationWindow::fileMenuAboutToShow()
 			exportPlotMenu->addAction(actionExportGraph);
 			exportPlotMenu->addAction(actionExportAllGraphs);
 			exportPlotMenu->addAction(actionPresentationODF);
-		} else if (w->inherits("Table")){
-			fileMenu->addAction(actionShowExportASCIIDialog);
+		} else if (w->inherits("Table") || w->isA("Matrix")){
+			QMenu *exportMenu = fileMenu->addMenu(tr("Export"));
+			exportMenu->addAction(actionShowExportASCIIDialog);
 		#ifdef XLS_IMPORT
-			fileMenu->addAction(actionExportExcel);
+			exportMenu->addAction(actionExportExcel);
 		#endif
-		} else if (w->isA("Matrix")){
-			QMenu *exportMatrixMenu = fileMenu->addMenu(tr("Export"));
-			exportMatrixMenu->addAction(actionShowExportASCIIDialog);
-		#ifdef XLS_IMPORT
-			exportMatrixMenu->addAction(actionExportExcel);
-		#endif
-			exportMatrixMenu->addAction(actionExportMatrix);
+			exportMenu->addAction(actionExportPDF);
+			if (w->isA("Matrix"))
+				exportMenu->addAction(actionExportMatrix);
 		}
 	}
 
@@ -9852,8 +9854,8 @@ void ApplicationWindow::showMarkerPopupMenu()
 	markerMenu.insertSeparator();
 
 	if (g->activeEnrichment()){
-		markerMenu.insertItem(tr("&Front"), this, SLOT(raiseActiveEnrichment()));
-		markerMenu.insertItem(tr("&Back"), this, SLOT(lowerActiveEnrichment()));
+		markerMenu.addAction(actionRaiseEnrichment);
+		markerMenu.addAction(actionLowerEnrichment);
 		markerMenu.insertSeparator();
 	}
 
@@ -9880,12 +9882,19 @@ void ApplicationWindow::raiseActiveEnrichment(bool on)
 	if (!g)
 		return;
 
-	FrameWidget *fw = g->activeEnrichment();
-	if (fw)
-		fw->setOnTop(on);
+	if (g->selectionMoveResizer())
+		g->selectionMoveResizer()->raiseTargets(on);
+}
 
-	if (on && g->selectionMoveResizer())
-		g->selectionMoveResizer()->raise();
+void ApplicationWindow::graphSelectionChanged(SelectionMoveResizer *s)
+{
+	if (s){
+		actionRaiseEnrichment->setEnabled(true);
+		actionLowerEnrichment->setEnabled(true);
+	} else {
+		actionRaiseEnrichment->setEnabled(false);
+		actionLowerEnrichment->setEnabled(false);
+	}
 }
 
 void ApplicationWindow::showMoreWindows()
@@ -13021,6 +13030,8 @@ void ApplicationWindow::custom2DPlotTools(MultiLayer *plot)
 	actionAddRectangle->setChecked(false);
 	actionAddEllipse->setChecked(false);
 
+	this->graphSelectionChanged(plot->activeLayer()->selectionMoveResizer());
+
 	QList<Graph *> layers = plot->layersList();
     foreach(Graph *g, layers){
     	PlotToolInterface *active_tool = g->activeTool();
@@ -13307,6 +13318,14 @@ void ApplicationWindow::createActions()
 	actionClearSelection = new QAction(QIcon(":/erase.png"), tr("&Delete Selection"), this);
 	actionClearSelection->setShortcut( tr("Del","delete key") );
 	connect(actionClearSelection, SIGNAL(activated()), this, SLOT(clearSelection()));
+
+	actionRaiseEnrichment = new QAction(QIcon(":/raise.png"), tr("&Front"), this);
+	connect(actionRaiseEnrichment, SIGNAL(activated()), this, SLOT(raiseActiveEnrichment()));
+	actionRaiseEnrichment->setEnabled(false);
+
+	actionLowerEnrichment = new QAction(QIcon(":/lower.png"), tr("&Back"), this);
+	connect(actionLowerEnrichment, SIGNAL(activated()), this, SLOT(lowerActiveEnrichment()));
+	actionLowerEnrichment->setEnabled(false);
 
 	actionShowExplorer = explorerWindow->toggleViewAction();
 	actionShowExplorer->setIcon(QIcon(":/folder.png"));
@@ -14267,6 +14286,12 @@ void ApplicationWindow::translateActionsStrings()
 	actionClearSelection->setMenuText(tr("&Delete Selection"));
 	actionClearSelection->setToolTip(tr("Delete selection"));
 	actionClearSelection->setShortcut(tr("Del","delete key"));
+
+	actionRaiseEnrichment->setMenuText(tr("&Front"));
+	actionRaiseEnrichment->setToolTip(tr("Raise object on top"));
+
+	actionLowerEnrichment->setMenuText(tr("&Back"));
+	actionLowerEnrichment->setToolTip(tr("Lower object to the bottom"));
 
 	actionShowExplorer->setMenuText(tr("Project &Explorer"));
 	actionShowExplorer->setShortcut(tr("Ctrl+E"));

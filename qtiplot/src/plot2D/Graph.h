@@ -766,6 +766,7 @@ signals:
         void enableTextEditor(Graph *);
         void axisDivChanged(Graph *, int);
 		void updatedLayout(Graph *);
+		void selectionChanged(SelectionMoveResizer *);
 
 	private slots:
 		void selectorDeleted();

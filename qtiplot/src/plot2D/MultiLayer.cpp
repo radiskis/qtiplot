@@ -1328,6 +1328,8 @@ void MultiLayer::connectLayer(Graph *g)
 	connect (g,SIGNAL(enableTextEditor(Graph *)), this, SIGNAL(enableTextEditor(Graph *)));
 	if (d_link_x_axes)
 		connect(g, SIGNAL(axisDivChanged(Graph *, int)), this, SLOT(updateLayerAxes(Graph *, int)));
+
+	connect(g, SIGNAL(selectionChanged(SelectionMoveResizer *)), applicationWindow(), SLOT(graphSelectionChanged(SelectionMoveResizer *)));
 }
 
 bool MultiLayer::eventFilter(QObject *object, QEvent *e)
