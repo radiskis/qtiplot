@@ -328,12 +328,14 @@ QList <FrameWidget *> Graph::increasingAreaEnrichmentsList()
 void Graph::selectorDeleted()
 {
 	d_markers_selector = NULL;
+	selectionChanged(NULL);
 }
 
 void Graph::select(QWidget *l, bool add)
 {
     if (!l){
         d_active_enrichment = NULL;
+		selectionChanged(NULL);
         return;
     }
 
@@ -365,6 +367,8 @@ void Graph::select(QWidget *l, bool add)
         connect(d_markers_selector, SIGNAL(targetsChanged()), this, SIGNAL(modifiedGraph()));
 		connect(d_markers_selector, SIGNAL(destroyed(QObject*)), this, SLOT(selectorDeleted()));
     }
+
+	selectionChanged(d_markers_selector);
 }
 
 bool Graph::hasSeletedItems()

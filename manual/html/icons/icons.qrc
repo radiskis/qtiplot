@@ -222,5 +222,7 @@
         <file>notes_32.png</file>
         <file>uncomment.png</file>
         <file>new_excel.png</file>
+        <file>raise.png</file>
+        <file>lower.png</file>
     </qresource>
 </RCC>

@@ -3861,6 +3861,22 @@ Různé části tohoto souboru se nemusí zobrazovat tak, jak se očekává.</tr
         <source>Export Excel</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>&amp;Front</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Back</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Raise object on top</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Lower object to the bottom</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ArrowMarker</name>

@@ -104,6 +104,7 @@ class SelectionMoveResizer : public QWidget
 		bool contains(QWidget *w) const { return d_widgets.contains(w); };
 		//! Returns true if m is one of targets, false else.
 		bool contains(ArrowMarker *m) const { return d_line_markers.contains(m); };
+		void raiseTargets(bool on = true);
 
 	public slots:
 		//! Add target to the list of items to be moved/resized together.
