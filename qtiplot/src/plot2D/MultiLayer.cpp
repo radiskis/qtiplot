@@ -1310,26 +1310,28 @@ void MultiLayer::setFonts(const QFont& titleFnt, const QFont& scaleFnt,
 
 void MultiLayer::connectLayer(Graph *g)
 {
+	ApplicationWindow *app = applicationWindow();
+	if (app){
+		connect(g, SIGNAL(selectionChanged(SelectionMoveResizer *)), app, SLOT(graphSelectionChanged(SelectionMoveResizer *)));
+		connect(g, SIGNAL(showPlotDialog(int)), app, SLOT(showPlotDialog(int)));
+		connect(g, SIGNAL(showContextMenu()), app, SLOT(showGraphContextMenu()));
+		connect(g, SIGNAL(showMarkerPopupMenu()), app, SLOT(showMarkerPopupMenu()));
+		connect(g, SIGNAL(viewTitleDialog()), app, SLOT(showTitleDialog()));
+		connect(g, SIGNAL(showAxisTitleDialog()), app, SLOT(showAxisTitleDialog()));
+		connect(g, SIGNAL(axisDblClicked(int)), app, SLOT(showScalePageFromAxisDialog(int)));
+		connect(g, SIGNAL(showAxisDialog(int)), app, SLOT(showAxisPageFromAxisDialog(int)));
+		connect(g, SIGNAL(enableTextEditor(Graph *)), app, SLOT(enableTextEditor(Graph *)));
+		connect(g, SIGNAL(showCurveContextMenu(QwtPlotItem *)), app, SLOT(showCurveContextMenu(QwtPlotItem *)));
+	}
 	connect (g,SIGNAL(drawLineEnded(bool)), this, SIGNAL(drawLineEnded(bool)));
-	connect (g,SIGNAL(showPlotDialog(int)),this,SIGNAL(showPlotDialog(int)));
 	connect (g,SIGNAL(viewLineDialog()),this,SIGNAL(showLineDialog()));
-	connect (g,SIGNAL(showContextMenu()),this,SIGNAL(showGraphContextMenu()));
-	connect (g,SIGNAL(showAxisDialog(int)),this,SIGNAL(showAxisDialog(int)));
-	connect (g,SIGNAL(axisDblClicked(int)),this,SIGNAL(showScaleDialog(int)));
-	connect (g,SIGNAL(showAxisTitleDialog()),this,SIGNAL(showAxisTitleDialog()));
-		connect (g,SIGNAL(showMarkerPopupMenu()),this,SIGNAL(showMarkerPopupMenu()));
-	connect (g,SIGNAL(showCurveContextMenu(QwtPlotItem *)),this,SIGNAL(showCurveContextMenu(QwtPlotItem *)));
 	connect (g,SIGNAL(cursorInfo(const QString&)),this,SIGNAL(cursorInfo(const QString&)));
-	connect (g,SIGNAL(viewTitleDialog()),this,SIGNAL(viewTitleDialog()));
 	connect (g,SIGNAL(modifiedGraph()),this,SIGNAL(modifiedPlot()));
 	connect (g,SIGNAL(modifiedGraph()),this,SLOT(notifyChanges()));
 	connect (g,SIGNAL(selectedGraph(Graph*)),this, SLOT(setActiveLayer(Graph*)));
 	connect (g,SIGNAL(currentFontChanged(const QFont&)), this, SIGNAL(currentFontChanged(const QFont&)));
-	connect (g,SIGNAL(enableTextEditor(Graph *)), this, SIGNAL(enableTextEditor(Graph *)));
 	if (d_link_x_axes)
 		connect(g, SIGNAL(axisDivChanged(Graph *, int)), this, SLOT(updateLayerAxes(Graph *, int)));
-
-	connect(g, SIGNAL(selectionChanged(SelectionMoveResizer *)), applicationWindow(), SLOT(graphSelectionChanged(SelectionMoveResizer *)));
 }
 
 bool MultiLayer::eventFilter(QObject *object, QEvent *e)

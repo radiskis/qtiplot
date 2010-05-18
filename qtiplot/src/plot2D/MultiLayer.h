@@ -224,23 +224,15 @@ public slots:
 
 signals:
 	void showEnrichementDialog();
-	void showPlotDialog(int);
-	void showAxisDialog(int);
-	void showScaleDialog(int);
-	void showGraphContextMenu();
-	void showCurveContextMenu(QwtPlotItem *);
 	void showCurvesDialog();
 	void drawLineEnded(bool);
-	void showAxisTitleDialog();
 	void showMarkerPopupMenu();
 	void modifiedPlot();
 	void cursorInfo(const QString&);
 	void showLineDialog();
-	void viewTitleDialog();
 	void pasteMarker();
 	void setPointerCursor();
 	void currentFontChanged(const QFont&);
-    void enableTextEditor(Graph *);
 
 private:
 	//! \name Event Handlers

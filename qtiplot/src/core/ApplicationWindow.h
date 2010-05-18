@@ -464,8 +464,9 @@ public slots:
 	Table* importOdfSpreadsheet(const QString& = QString::null, int sheet = -1);
 #ifdef XLS_IMPORT
 	void exportExcel();
-	Table* importExcel(const QString& = QString::null, int sheet = -1);
 #endif
+	Table* importExcel(const QString& = QString::null, int sheet = -1);
+
 	Table* importWaveFile();
 	void importASCII();
 	void importASCII(const QStringList& files, int import_mode, const QString& local_column_separator, int local_ignored_lines, bool local_rename_columns,

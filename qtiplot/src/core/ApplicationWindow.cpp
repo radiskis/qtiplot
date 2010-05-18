@@ -4152,9 +4152,11 @@ void ApplicationWindow::exportExcel()
 		ed->updateAdvancedOptions(".xls");
 	}
 }
+#endif
 
 Table * ApplicationWindow::importExcel(const QString& fileName, int sheet)
 {
+#ifdef XLS_IMPORT
 	QString fn = fileName;
 	if (fn.isEmpty()){
 		fn = getFileName(this, tr("Open Excel File"), QString::null, "*.xls", 0, false);
@@ -4252,8 +4254,10 @@ Table * ApplicationWindow::importExcel(const QString& fileName, int sheet)
 	updateRecentProjectsList(fn);
 	QApplication::restoreOverrideCursor();
 	return table;
-}
+#else
+	return NULL;
 #endif
+}
 
 Table * ApplicationWindow::importWaveFile()
 {
@@ -7828,7 +7832,6 @@ void ApplicationWindow::showPlotDialog(int curveIndex)
     pd->initFonts(plotTitleFont, plotAxesFont, plotNumbersFont, plotLegendFont);
 	pd->showAll(d_extended_plot_dialog);
 	pd->show();
-
 }
 
 void ApplicationWindow::showCurvePlotDialog()
@@ -13030,7 +13033,8 @@ void ApplicationWindow::custom2DPlotTools(MultiLayer *plot)
 	actionAddRectangle->setChecked(false);
 	actionAddEllipse->setChecked(false);
 
-	this->graphSelectionChanged(plot->activeLayer()->selectionMoveResizer());
+	if (plot->activeLayer())
+		graphSelectionChanged(plot->activeLayer()->selectionMoveResizer());
 
 	QList<Graph *> layers = plot->layersList();
     foreach(Graph *g, layers){
@@ -13118,29 +13122,24 @@ void ApplicationWindow::connectSurfacePlot(Graph3D *plot)
 void ApplicationWindow::connectMultilayerPlot(MultiLayer *g)
 {
 	connect (g,SIGNAL(showEnrichementDialog()),this,SLOT(showEnrichementDialog()));
-	connect (g,SIGNAL(showPlotDialog(int)),this,SLOT(showPlotDialog(int)));
-	connect (g,SIGNAL(showScaleDialog(int)), this, SLOT(showScalePageFromAxisDialog(int)));
-	connect (g,SIGNAL(showAxisDialog(int)), this, SLOT(showAxisPageFromAxisDialog(int)));
-	connect (g,SIGNAL(showCurveContextMenu(QwtPlotItem *)), this, SLOT(showCurveContextMenu(QwtPlotItem *)));
+
 	connect (g,SIGNAL(showContextMenu()),this,SLOT(showWindowContextMenu()));
 	connect (g,SIGNAL(showCurvesDialog()),this,SLOT(showCurvesDialog()));
 	connect (g,SIGNAL(drawLineEnded(bool)), btnPointer, SLOT(setOn(bool)));
-	connect (g, SIGNAL(showAxisTitleDialog()), this, SLOT(showAxisTitleDialog()));
 
 	connect (g,SIGNAL(showMarkerPopupMenu()),this,SLOT(showMarkerPopupMenu()));
 	connect (g,SIGNAL(closedWindow(MdiSubWindow*)),this, SLOT(closeWindow(MdiSubWindow*)));
 	connect (g,SIGNAL(hiddenWindow(MdiSubWindow*)),this, SLOT(hideWindow(MdiSubWindow*)));
 	connect (g,SIGNAL(statusChanged(MdiSubWindow*)),this, SLOT(updateWindowStatus(MdiSubWindow*)));
 	connect (g,SIGNAL(cursorInfo(const QString&)),info,SLOT(setText(const QString&)));
-	connect (g,SIGNAL(viewTitleDialog()),this,SLOT(showTitleDialog()));
+
 	connect (g,SIGNAL(modifiedWindow(MdiSubWindow*)),this,SLOT(modifiedProject(MdiSubWindow*)));
 	connect (g,SIGNAL(modifiedPlot()), this, SLOT(modifiedProject()));
 	connect (g,SIGNAL(showLineDialog()),this, SLOT(showLineDialog()));
 	connect (g,SIGNAL(pasteMarker()),this,SLOT(pasteSelection()));
-	connect (g,SIGNAL(showGraphContextMenu()),this,SLOT(showGraphContextMenu()));
+
 	connect (g,SIGNAL(setPointerCursor()),this, SLOT(pickPointerCursor()));
 	connect (g,SIGNAL(currentFontChanged(const QFont&)), this, SLOT(setFormatBarFont(const QFont&)));
-    connect (g,SIGNAL(enableTextEditor(Graph *)), this, SLOT(enableTextEditor(Graph *)));
 
 	g->askOnCloseEvent(confirmClosePlot2D);
 }

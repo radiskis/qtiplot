@@ -81,9 +81,9 @@ OriginFile::OriginFile(const string& fileName)
 		fileVersion = 704;
 	else if(fileVersion >= 2766 && fileVersion <= 2769)	// 7.5
 		fileVersion = 750;
-	else if(fileVersion >= 2878 && fileVersion <= 2896)	// 8.0
+	else if(fileVersion >= 2876 && fileVersion <= 2906)	// 8.0
 		fileVersion = 800;
-	else if(fileVersion >= 2919)						// 8.1
+	else if(fileVersion >= 2907)						// 8.1
 		fileVersion = 810;
 	else {
 		BOOST_LOG_(1, format("Found unknown project version %d") % fileVersion);
