@@ -3843,31 +3843,31 @@ L&apos;autocomplétion ne sera pas disponible!</translation>
     </message>
     <message>
         <source>The selected table is empty, operation aborted!</source>
-        <translation type="unfinished"></translation>
+        <translation>La table sélectionnée est vide. Opération annulée !</translation>
     </message>
     <message>
         <source>Export Exce&amp;l ...</source>
-        <translation type="unfinished"></translation>
+        <translation>Exportation Exce&amp;l...</translation>
     </message>
     <message>
         <source>Export Excel</source>
-        <translation type="unfinished"></translation>
+        <translation>Exportation Excel</translation>
     </message>
     <message>
         <source>&amp;Front</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;À l&apos;avant</translation>
     </message>
     <message>
         <source>&amp;Back</source>
-        <translation type="unfinished"></translation>
+        <translation>À &amp;l&apos;arrière</translation>
     </message>
     <message>
         <source>Raise object on top</source>
-        <translation type="unfinished"></translation>
+        <translation>Positionner l&apos;objet au premier plan</translation>
     </message>
     <message>
         <source>Lower object to the bottom</source>
-        <translation type="unfinished"></translation>
+        <translation>Positionner l&apos;objet à l&apos;arrière plan</translation>
     </message>
 </context>
 <context>
@@ -6251,7 +6251,7 @@ Les codes spéciaux suivant peuvent être utilisés :
     </message>
     <message>
         <source>Layer Scales</source>
-        <translation>Échelles des planches</translation>
+        <translation>Planche</translation>
     </message>
     <message>
         <source>Attach to</source>
@@ -6311,7 +6311,7 @@ Les codes spéciaux suivant peuvent être utilisés :
     </message>
     <message>
         <source>&amp;Best size</source>
-        <translation>&amp;Auto</translation>
+        <translation>&amp;Optimum</translation>
     </message>
     <message>
         <source>&amp;Geometry</source>
@@ -8703,7 +8703,7 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Column T&amp;ypes...</source>
-        <translation type="unfinished"></translation>
+        <translation>T&amp;ypes de colonnes...</translation>
     </message>
 </context>
 <context>
@@ -9220,7 +9220,7 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Layer Scales</source>
-        <translation>Échelles des planches</translation>
+        <translation>Planche</translation>
     </message>
     <message>
         <source>Attach to</source>
@@ -11645,115 +11645,115 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>dd/MM/yyyy</source>
-        <translation type="unfinished">jj/MM/aaaa</translation>
+        <translation>jj/MM/aaaa</translation>
     </message>
     <message>
         <source>dd/MM/yyyy HH:mm</source>
-        <translation type="unfinished">jj/MM/aaaa HH:mm</translation>
+        <translation>jj/MM/aaaa HH:mm</translation>
     </message>
     <message>
         <source>dd/MM/yyyy HH:mm:ss</source>
-        <translation type="unfinished">jj/MM/aaaa HH:mm:ss</translation>
+        <translation>jj/MM/aaaa HH:mm:ss</translation>
     </message>
     <message>
         <source>dd.MM.yyyy</source>
-        <translation type="unfinished">jj.MM.aaaa</translation>
+        <translation>jj.MM.aaaa</translation>
     </message>
     <message>
         <source>dd.MM.yyyy HH:mm</source>
-        <translation type="unfinished">j.M.aaaa HH:mm</translation>
+        <translation>jj.MM.aaaa HH:mm</translation>
     </message>
     <message>
         <source>dd.MM.yyyy HH:mm:ss</source>
-        <translation type="unfinished">jj.MM.aaaa HH:mm:ss</translation>
+        <translation>jj.MM.aaaa HH:mm:ss</translation>
     </message>
     <message>
         <source>dd MM yyyy</source>
-        <translation type="unfinished">jj MM aaaa</translation>
+        <translation>jj MM aaaa</translation>
     </message>
     <message>
         <source>dd MM yyyy HH:mm</source>
-        <translation type="unfinished">jj MM aaaa HH:mm</translation>
+        <translation>jj MM aaaa HH:mm</translation>
     </message>
     <message>
         <source>dd MM yyyy HH:mm:ss</source>
-        <translation type="unfinished">jj MM aaaa HH:mm:ss</translation>
+        <translation>jj MM aaaa HH:mm:ss</translation>
     </message>
     <message>
         <source>yyyy-MM-dd</source>
-        <translation type="unfinished">aaaa-MM-jj</translation>
+        <translation>aaaa-MM-jj</translation>
     </message>
     <message>
         <source>yyyy-MM-dd HH:mm</source>
-        <translation type="unfinished">aaaa-MM-jj HH:mm</translation>
+        <translation>aaaa-MM-jj HH:mm</translation>
     </message>
     <message>
         <source>yyyy-MM-dd HH:mm:ss</source>
-        <translation type="unfinished">aaaa-MM-jj HH:mm:ss</translation>
+        <translation>aaaa-MM-jj HH:mm:ss</translation>
     </message>
     <message>
         <source>yyyyMMdd</source>
-        <translation type="unfinished">aaaaMMjj</translation>
+        <translation>aaaaMMjj</translation>
     </message>
     <message>
         <source>yyyyMMdd HH:mm</source>
-        <translation type="unfinished">aaaaMMjj HH:mm</translation>
+        <translation>aaaaMMjj HH:mm</translation>
     </message>
     <message>
         <source>yyyyMMdd HH:mm:ss</source>
-        <translation type="unfinished">aaaaMMjj HH:mm:ss</translation>
+        <translation>aaaaMMjj HH:mm:ss</translation>
     </message>
     <message>
         <source>h</source>
-        <translation type="unfinished">h</translation>
+        <translation>h</translation>
     </message>
     <message>
         <source>h ap</source>
-        <translation type="unfinished">h ap</translation>
+        <translation>h ap</translation>
     </message>
     <message>
         <source>h AP</source>
-        <translation type="unfinished">h AP</translation>
+        <translation>h AP</translation>
     </message>
     <message>
         <source>h:mm</source>
-        <translation type="unfinished">h:mm</translation>
+        <translation>h:mm</translation>
     </message>
     <message>
         <source>h:mm ap</source>
-        <translation type="unfinished">h:mm ap</translation>
+        <translation>h:mm ap</translation>
     </message>
     <message>
         <source>hh:mm</source>
-        <translation type="unfinished">hh:mm</translation>
+        <translation>hh:mm</translation>
     </message>
     <message>
         <source>h:mm:ss</source>
-        <translation type="unfinished">h:mm:ss</translation>
+        <translation>h:mm:ss</translation>
     </message>
     <message>
         <source>h:mm:ss.zzz</source>
-        <translation type="unfinished">h:mm:ss.zzz</translation>
+        <translation>h:mm:ss.zzz</translation>
     </message>
     <message>
         <source>mm:ss</source>
-        <translation type="unfinished">mm:ss</translation>
+        <translation>mm:ss</translation>
     </message>
     <message>
         <source>mm:ss.zzz</source>
-        <translation type="unfinished">mm:ss.zzz</translation>
+        <translation>mm:ss.zzz</translation>
     </message>
     <message>
         <source>hmm</source>
-        <translation type="unfinished">hmm</translation>
+        <translation>hmm</translation>
     </message>
     <message>
         <source>hmmss</source>
-        <translation type="unfinished">hmmss</translation>
+        <translation>hmmss</translation>
     </message>
     <message>
         <source>hhmmss</source>
-        <translation type="unfinished">hhmmss</translation>
+        <translation>hhmmss</translation>
     </message>
     <message>
         <source>Format:</source>
@@ -11761,19 +11761,19 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Fermer</translation>
     </message>
     <message>
         <source>Column</source>
-        <translation type="unfinished">Colonne</translation>
+        <translation>Colonne</translation>
     </message>
     <message>
         <source>Type</source>
-        <translation type="unfinished">Type</translation>
+        <translation>Type</translation>
     </message>
     <message>
         <source>Format</source>
-        <translation type="unfinished">Format</translation>
+        <translation>Format</translation>
     </message>
 </context>
 <context>
@@ -13073,7 +13073,7 @@ Calcule le sinus de x.</translation>
     </message>
     <message>
         <source>Equations</source>
-        <translation></translation>
+        <translation>Équations</translation>
     </message>
     <message>
         <source>X(u,v)=</source>
