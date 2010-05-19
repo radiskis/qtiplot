@@ -221,7 +221,7 @@ If you want to build &appname; from sources, you need the following libraries:
   <varlistentry>
         <term>libxls</term>
 	<listitem>
-	  <para>For the import of Excel .xls files &appname; also uses the <ulink url="http://libxls.sourceforge.net/">libxls</ulink> library.</para>
+	  <para>For the import/export of Excel .xls files &appname; also uses the <ulink url="http://www.codeproject.com/KB/office/ExcelFormat.aspx">ExcelFormat</ulink> library.</para>
 	</listitem>
   </varlistentry>
 	<varlistentry>

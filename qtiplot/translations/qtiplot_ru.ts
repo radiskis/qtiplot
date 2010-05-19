@@ -3879,32 +3879,16 @@ Autocompletion will not be available!</source>
 <context>
     <name>ArrowMarker</name>
     <message>
-        <source>dx</source>
-        <translation></translation>
-    </message>
-    <message>
-        <source>dy</source>
-        <translation></translation>
-    </message>
-    <message>
         <source>angle</source>
-        <translation>угол</translation>
+        <translation type="obsolete">угол</translation>
     </message>
     <message>
         <source>length</source>
-        <translation>длина</translation>
+        <translation type="obsolete">длина</translation>
     </message>
     <message>
         <source>eqn</source>
-        <translation>уравнение</translation>
-    </message>
-    <message>
-        <source>y</source>
-        <translation></translation>
-    </message>
-    <message>
-        <source>x</source>
-        <translation></translation>
+        <translation type="obsolete">уравнение</translation>
     </message>
 </context>
 <context>
@@ -12246,6 +12230,34 @@ have the same number of rows.</source>
         <source>rnd(seed):
  Returns a pseudo-random number in the range 0 to 1. Calling this function several times with the same seed will return the same value.</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>angle</source>
+        <translation type="unfinished">угол</translation>
+    </message>
+    <message>
+        <source>length</source>
+        <translation type="unfinished">длина</translation>
+    </message>
+    <message>
+        <source>dx</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>dy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>eqn</source>
+        <translation type="unfinished">уравнение</translation>
+    </message>
+    <message>
+        <source>y</source>
+        <translation type="unfinished">y</translation>
+    </message>
+    <message>
+        <source>x</source>
+        <translation type="unfinished">x</translation>
     </message>
 </context>
 <context>

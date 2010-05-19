@@ -3882,31 +3882,31 @@ Různé části tohoto souboru se nemusí zobrazovat tak, jak se očekává.</tr
     <name>ArrowMarker</name>
     <message>
         <source>x</source>
-        <translation>x</translation>
+        <translation type="obsolete">x</translation>
     </message>
     <message>
         <source>y</source>
-        <translation>y</translation>
+        <translation type="obsolete">y</translation>
     </message>
     <message>
         <source>dx</source>
-        <translation>dx</translation>
+        <translation type="obsolete">dx</translation>
     </message>
     <message>
         <source>dy</source>
-        <translation>dy</translation>
+        <translation type="obsolete">dy</translation>
     </message>
     <message>
         <source>eqn</source>
-        <translation>rovnice</translation>
+        <translation type="obsolete">rovnice</translation>
     </message>
     <message>
         <source>angle</source>
-        <translation>úhel</translation>
+        <translation type="obsolete">úhel</translation>
     </message>
     <message>
         <source>length</source>
-        <translation>délka</translation>
+        <translation type="obsolete">délka</translation>
     </message>
 </context>
 <context>
@@ -12240,6 +12240,34 @@ pokud e1 pak e2 jinak e3.</translation>
         <source>rnd(seed):
  Returns a pseudo-random number in the range 0 to 1. Calling this function several times with the same seed will return the same value.</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>angle</source>
+        <translation type="unfinished">úhel</translation>
+    </message>
+    <message>
+        <source>length</source>
+        <translation type="unfinished">délka</translation>
+    </message>
+    <message>
+        <source>dx</source>
+        <translation type="unfinished">dx</translation>
+    </message>
+    <message>
+        <source>dy</source>
+        <translation type="unfinished">dy</translation>
+    </message>
+    <message>
+        <source>eqn</source>
+        <translation type="unfinished">rovnice</translation>
+    </message>
+    <message>
+        <source>y</source>
+        <translation type="unfinished">y</translation>
+    </message>
+    <message>
+        <source>x</source>
+        <translation type="unfinished">x</translation>
     </message>
 </context>
 <context>
