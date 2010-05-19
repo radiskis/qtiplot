@@ -1576,57 +1576,55 @@ bool Matrix::exportODF(const QString& fname, bool exportSelection)
 #ifdef XLS_IMPORT
 bool Matrix::exportExcel(const QString& fname, bool exportSelection)
 {
-        QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
-        int topRow = 0;
-        int bottomRow = numRows() - 1;
-        int leftCol = 0;
-        int rightCol = numCols() - 1;
+	int topRow = 0;
+	int bottomRow = numRows() - 1;
+	int leftCol = 0;
+	int rightCol = numCols() - 1;
 
-        if (exportSelection && d_view_type == TableView){
-            QModelIndexList selectedIndexes = d_table_view->selectionModel()->selectedIndexes();
-            if (!selectedIndexes.isEmpty()){
-                topRow = selectedIndexes[0].row();
-                bottomRow = topRow;
-                leftCol = selectedIndexes[0].column();
-                rightCol = leftCol;
-            }
+	if (exportSelection && d_view_type == TableView){
+		QModelIndexList selectedIndexes = d_table_view->selectionModel()->selectedIndexes();
+		if (!selectedIndexes.isEmpty()){
+			topRow = selectedIndexes[0].row();
+			bottomRow = topRow;
+			leftCol = selectedIndexes[0].column();
+			rightCol = leftCol;
+		}
 
-            foreach(QModelIndex index, selectedIndexes){
-                int row = index.row();
-                if (row < topRow)
-                    topRow = row;
-                if (row > bottomRow)
-                    bottomRow = row;
-        
-                int col = index.column();
-                if (col < leftCol)
-                    leftCol = col;
-                if (col > rightCol)
-                    rightCol = col;
-            }
-        }
+		foreach(QModelIndex index, selectedIndexes){
+			int row = index.row();
+			if (row < topRow)
+				topRow = row;
+			if (row > bottomRow)
+				bottomRow = row;
 
-        BasicExcel xls;
-        xls.New(1);
-        BasicExcelWorksheet* sheet = xls.GetWorksheet((size_t)0);
+			int col = index.column();
+			if (col < leftCol)
+				leftCol = col;
+			if (col > rightCol)
+				rightCol = col;
+		}
+	}
 
-        rightCol = QMIN(rightCol, 256);
-        bottomRow = QMIN(bottomRow, 65536);
-        for (int i = topRow; i <= bottomRow; i++){
-                for (int j = leftCol; j <= rightCol; j++){
-                    QString s = d_matrix_model->text(i, j);
-                    if (s.isEmpty())
-                        continue;
+	BasicExcel xls;
+	xls.New(1);
+	BasicExcelWorksheet* sheet = xls.GetWorksheet((size_t)0);
 
-                    sheet->Cell(i, j)->Set(s.toStdString().c_str());
-                }
-        }
+	rightCol = QMIN(rightCol, 256);
+	bottomRow = QMIN(bottomRow, 65536);
+	for (int i = topRow; i <= bottomRow; i++){
+		for (int j = leftCol; j <= rightCol; j++){
+			if (d_matrix_model->text(i, j).isEmpty())
+				continue;
+			sheet->Cell(i, j)->Set(d_matrix_model->cell(i, j));
+		}
+	}
 
-        xls.SaveAs(fname);
+	xls.SaveAs(fname);
 
-        QApplication::restoreOverrideCursor();
-        return true;
+	QApplication::restoreOverrideCursor();
+	return true;
 }
 #endif
 

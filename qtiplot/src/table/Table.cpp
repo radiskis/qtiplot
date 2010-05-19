@@ -2802,14 +2802,17 @@ bool Table::exportExcel(const QString& fname, bool withLabels, bool exportCommen
 		startRow++;
 	}
 
-
 	if (exportSelection && selectedCols){
 		for (int i = topRow; i <= bottomRow; i++){
 			for (int j = 0; j < aux; j++){
-				QString s = d_table->text(i, sCols[j]);
+				int col = sCols[j];
+				QString s = d_table->text(i, col);
 				if (s.isEmpty())
 					continue;
-				sheet->Cell(startRow, j)->Set(s.toStdString().c_str());
+				if (columnType(col) == Numeric)
+					sheet->Cell(startRow, j)->Set(cell(i, col));
+				else
+					sheet->Cell(startRow, j)->Set(s.toStdString().c_str());
 			}
 			startRow++;
 			if (startRow > 65536)
@@ -2822,7 +2825,10 @@ bool Table::exportExcel(const QString& fname, bool withLabels, bool exportCommen
 				QString s = d_table->text(i, j);
 				if (s.isEmpty())
 					continue;
-				sheet->Cell(startRow, j)->Set(s.toStdString().c_str());
+				if (columnType(j) == Numeric)
+					sheet->Cell(startRow, j)->Set(cell(i, j));
+				else
+					sheet->Cell(startRow, j)->Set(s.toStdString().c_str());
 			}
 			startRow++;
 			if (startRow > 65536)
