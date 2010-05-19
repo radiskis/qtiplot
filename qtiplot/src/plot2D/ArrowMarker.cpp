@@ -541,19 +541,19 @@ void ArrowMarker::displayInfo(bool clear)
 	int prec = app->d_decimal_digits;
 
 	QLineF line(d_rect.topLeft(), d_rect.bottomRight());
-	QString s = tr("dx") + ": " + locale.toString(line.dx(), 'g', prec) + ";";
-	s += " " + tr("dy") + ": " + locale.toString(line.dy(), 'g', prec) + ";";
-	s += " " + tr("angle") + ": " + locale.toString(line.angle(), 'g', prec) + ";";
-	s += " " + tr("length") + ": " + locale.toString(line.length(), 'g', prec) + ";";
+	QString s = QObject::tr("dx") + ": " + locale.toString(line.dx(), 'g', prec) + ";";
+	s += " " + QObject::tr("dy") + ": " + locale.toString(line.dy(), 'g', prec) + ";";
+	s += " " + QObject::tr("angle") + ": " + locale.toString(line.angle(), 'g', prec) + ";";
+	s += " " + QObject::tr("length") + ": " + locale.toString(line.length(), 'g', prec) + ";";
 
 	double den = line.x2() - line.x1();
 	if (den != 0.0){
 		double slope = (line.y2() - line.y1())/den;
-		s += " " + tr("eqn") + ": " + tr("y") + "=";
+		s += " " + QObject::tr("eqn") + ": " + QObject::tr("y") + "=";
 		if (slope != 0.0){
 			if (slope != 1.0)
 				s += locale.toString(slope, 'g', prec) + "*";
-			s += tr("x");
+			s += QObject::tr("x");
 		}
 
 		double intercept = line.y1() - slope*line.x1();
@@ -564,7 +564,7 @@ void ArrowMarker::displayInfo(bool clear)
 		} else if (intercept < 0)
 			s += locale.toString(intercept, 'g', prec);
 	} else
-		s += " " + tr("eqn") + ": " + tr("x") + "=" + locale.toString(line.x1(), 'g', prec);
+		s += " " + QObject::tr("eqn") + ": " + QObject::tr("x") + "=" + locale.toString(line.x1(), 'g', prec);
 	app->displayInfo(s);
 	g->setToolTip(s.split("; ").join("\n"));
 }

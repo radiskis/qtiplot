@@ -69,15 +69,15 @@ QWT3D_INCLUDEPATH = $$QTI_ROOT/3rdparty/qwtplot3d/include
 win32:QWT3D_LIBS = $$QTI_ROOT/3rdparty/qwtplot3d/lib/qwtplot3d.dll
 unix:QWT3D_LIBS = $$QTI_ROOT/3rdparty/qwtplot3d/lib/libqwtplot3d.a
 
-###########################################################
-## libxls - optional. you don't have to set these variables
-# http://libxls.sourceforge.net/
-###########################################################
+##########################################################
+## ExcelFormat - optional. you don't have to set these variables
+##(http://www.codeproject.com/KB/office/ExcelFormat.aspx)
+##########################################################
 
 # include path.
-XLS_INCLUDEPATH = $$QTI_ROOT/3rdparty/libxls/include/
+ XLS_INCLUDEPATH = $$QTI_ROOT/3rdparty/ExcelFormat/
 # link locally against a copy in 3rdparty/
-XLS_LIBS = $$QTI_ROOT/3rdparty/libxls/lib/libxlsreader.a
+ XLS_LIBS = $$QTI_ROOT/3rdparty/ExcelFormat/lib/libExcelFormat.a
 
 ###########################################################
 ## QuaZIP - optional. you don't have to set these variables

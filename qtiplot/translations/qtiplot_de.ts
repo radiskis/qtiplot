@@ -9870,31 +9870,31 @@ Autocompletion will not be available!</source>
     <name>ArrowMarker</name>
     <message>
         <source>dx</source>
-        <translation>dx</translation>
+        <translation type="obsolete">dx</translation>
     </message>
     <message>
         <source>dy</source>
-        <translation>dy</translation>
+        <translation type="obsolete">dy</translation>
     </message>
     <message>
         <source>angle</source>
-        <translation>Winkel</translation>
+        <translation type="obsolete">Winkel</translation>
     </message>
     <message>
         <source>length</source>
-        <translation>Länge</translation>
+        <translation type="obsolete">Länge</translation>
     </message>
     <message>
         <source>eqn</source>
-        <translation>Gleichung</translation>
+        <translation type="obsolete">Gleichung</translation>
     </message>
     <message>
         <source>y</source>
-        <translation>y</translation>
+        <translation type="obsolete">y</translation>
     </message>
     <message>
         <source>x</source>
-        <translation>x</translation>
+        <translation type="obsolete">x</translation>
     </message>
 </context>
 <context>
@@ -21286,6 +21286,34 @@ Wollen sie Zellen einfügen?</translation>
  Returns a pseudo-random number in the range 0 to 1. Calling this function several times with the same seed will return the same value.</source>
         <translation>rnd(seed):
  Pseudozufallszahl zwischen 0 und 1. Der mehrfache Aufruf mit mit gleichm seed-Wert führt zur Ausgabe eines gleichbleibenden Wertes.</translation>
+    </message>
+    <message>
+        <source>angle</source>
+        <translation type="unfinished">Winkel</translation>
+    </message>
+    <message>
+        <source>length</source>
+        <translation type="unfinished">Länge</translation>
+    </message>
+    <message>
+        <source>dx</source>
+        <translation type="unfinished">dx</translation>
+    </message>
+    <message>
+        <source>dy</source>
+        <translation type="unfinished">dy</translation>
+    </message>
+    <message>
+        <source>eqn</source>
+        <translation type="unfinished">Gleichung</translation>
+    </message>
+    <message>
+        <source>y</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>x</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

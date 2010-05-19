@@ -4390,37 +4390,6 @@ Autocompletion will not be available!</source>
     </message>
 </context>
 <context>
-    <name>ArrowMarker</name>
-    <message>
-        <source>dx</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>dy</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>angle</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>length</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>eqn</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>y</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>x</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>AssociationsDialog</name>
     <message>
         <source>QtiPlot - Plot Associations</source>
@@ -12594,6 +12563,34 @@ have the same number of rows.</source>
     <message>
         <source>rnd(seed):
  Returns a pseudo-random number in the range 0 to 1. Calling this function several times with the same seed will return the same value.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>angle</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>length</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>dx</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>dy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>eqn</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>y</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>x</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

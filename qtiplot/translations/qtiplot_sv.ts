@@ -8444,31 +8444,31 @@ Automatisk komplettering ej tillgängligt!</translation>
     <name>ArrowMarker</name>
     <message>
         <source>dx</source>
-        <translation>dx</translation>
+        <translation type="obsolete">dx</translation>
     </message>
     <message>
         <source>dy</source>
-        <translation>dy</translation>
+        <translation type="obsolete">dy</translation>
     </message>
     <message>
         <source>angle</source>
-        <translation>vinkel</translation>
+        <translation type="obsolete">vinkel</translation>
     </message>
     <message>
         <source>length</source>
-        <translation>längd</translation>
+        <translation type="obsolete">längd</translation>
     </message>
     <message>
         <source>eqn</source>
-        <translation>ekv</translation>
+        <translation type="obsolete">ekv</translation>
     </message>
     <message>
         <source>y</source>
-        <translation>y</translation>
+        <translation type="obsolete">y</translation>
     </message>
     <message>
         <source>x</source>
-        <translation>x</translation>
+        <translation type="obsolete">x</translation>
     </message>
 </context>
 <context>
@@ -18565,6 +18565,34 @@ Vill du skjuta in celler?</translation>
  Returns a pseudo-random number in the range 0 to 1. Calling this function several times with the same seed will return the same value.</source>
         <translation>rnd(seed):
  Returnerar ett slumptalr i intervallet 0 till 1. Vid upprepade anrop med samma seed kommer att retirnera samma värde.</translation>
+    </message>
+    <message>
+        <source>angle</source>
+        <translation type="unfinished">vinkel</translation>
+    </message>
+    <message>
+        <source>length</source>
+        <translation type="unfinished">längd</translation>
+    </message>
+    <message>
+        <source>dx</source>
+        <translation type="unfinished">dx</translation>
+    </message>
+    <message>
+        <source>dy</source>
+        <translation type="unfinished">dy</translation>
+    </message>
+    <message>
+        <source>eqn</source>
+        <translation type="unfinished">ekv</translation>
+    </message>
+    <message>
+        <source>y</source>
+        <translation type="unfinished">y</translation>
+    </message>
+    <message>
+        <source>x</source>
+        <translation type="unfinished">x</translation>
     </message>
 </context>
 <context>

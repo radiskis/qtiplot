@@ -7358,31 +7358,31 @@ Autocompletion will not be available!</source>
     <name>ArrowMarker</name>
     <message>
         <source>dx</source>
-        <translation>dx</translation>
+        <translation type="obsolete">dx</translation>
     </message>
     <message>
         <source>dy</source>
-        <translation>dy</translation>
+        <translation type="obsolete">dy</translation>
     </message>
     <message>
         <source>angle</source>
-        <translation>unghi</translation>
+        <translation type="obsolete">unghi</translation>
     </message>
     <message>
         <source>length</source>
-        <translation>lungime</translation>
+        <translation type="obsolete">lungime</translation>
     </message>
     <message>
         <source>eqn</source>
-        <translation>ecuaţie</translation>
+        <translation type="obsolete">ecuaţie</translation>
     </message>
     <message>
         <source>y</source>
-        <translation>y</translation>
+        <translation type="obsolete">y</translation>
     </message>
     <message>
         <source>x</source>
-        <translation>x</translation>
+        <translation type="obsolete">x</translation>
     </message>
 </context>
 <context>
@@ -15822,6 +15822,34 @@ have the same number of rows.</source>
         <source>rnd(seed):
  Returns a pseudo-random number in the range 0 to 1. Calling this function several times with the same seed will return the same value.</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>angle</source>
+        <translation type="unfinished">unghi</translation>
+    </message>
+    <message>
+        <source>length</source>
+        <translation type="unfinished">lungime</translation>
+    </message>
+    <message>
+        <source>dx</source>
+        <translation type="unfinished">dx</translation>
+    </message>
+    <message>
+        <source>dy</source>
+        <translation type="unfinished">dy</translation>
+    </message>
+    <message>
+        <source>eqn</source>
+        <translation type="unfinished">ecuaţie</translation>
+    </message>
+    <message>
+        <source>y</source>
+        <translation type="unfinished">y</translation>
+    </message>
+    <message>
+        <source>x</source>
+        <translation type="unfinished">x</translation>
     </message>
 </context>
 <context>

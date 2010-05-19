@@ -3874,31 +3874,31 @@ L&apos;autocomplétion ne sera pas disponible!</translation>
     <name>ArrowMarker</name>
     <message>
         <source>dx</source>
-        <translation>dx</translation>
+        <translation type="obsolete">dx</translation>
     </message>
     <message>
         <source>dy</source>
-        <translation>dy</translation>
+        <translation type="obsolete">dy</translation>
     </message>
     <message>
         <source>angle</source>
-        <translation>angle</translation>
+        <translation type="obsolete">angle</translation>
     </message>
     <message>
         <source>length</source>
-        <translation>longueur</translation>
+        <translation type="obsolete">longueur</translation>
     </message>
     <message>
         <source>eqn</source>
-        <translation>eqn</translation>
+        <translation type="obsolete">eqn</translation>
     </message>
     <message>
         <source>y</source>
-        <translation>y</translation>
+        <translation type="obsolete">y</translation>
     </message>
     <message>
         <source>x</source>
-        <translation>x</translation>
+        <translation type="obsolete">x</translation>
     </message>
 </context>
 <context>
@@ -12185,6 +12185,34 @@ Calcule le sinus de x.</translation>
  Returns a pseudo-random number in the range 0 to 1. Calling this function several times with the same seed will return the same value.</source>
         <translation>rnd(arg) :
  Retourne un nombre pseudo aléatoire compris entre 0 et 1. L&apos;appel de cette fonction à plusieurs reprises et avec le même argument, retournera la même valeur.</translation>
+    </message>
+    <message>
+        <source>angle</source>
+        <translation type="unfinished">angle</translation>
+    </message>
+    <message>
+        <source>length</source>
+        <translation type="unfinished">longueur</translation>
+    </message>
+    <message>
+        <source>dx</source>
+        <translation type="unfinished">dx</translation>
+    </message>
+    <message>
+        <source>dy</source>
+        <translation type="unfinished">dy</translation>
+    </message>
+    <message>
+        <source>eqn</source>
+        <translation type="unfinished">eqn</translation>
+    </message>
+    <message>
+        <source>y</source>
+        <translation type="unfinished">y</translation>
+    </message>
+    <message>
+        <source>x</source>
+        <translation type="unfinished">x</translation>
     </message>
 </context>
 <context>
