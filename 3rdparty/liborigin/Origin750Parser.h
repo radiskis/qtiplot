@@ -34,8 +34,8 @@
 #include "OriginParser.h"
 #include "endianfstream.hh"
 #include <boost/date_time/posix_time/posix_time.hpp>
-#include <QString>
-
+#include <string>
+using namespace std;
 using namespace Origin;
 
 class Origin750Parser : public OriginParser
@@ -59,7 +59,14 @@ protected:
 	void readWindowProperties(Window& window, unsigned int size);
 	virtual void readColorMap(ColorMap& colorMap);
 	void skipLine();
-	inline double stringToDouble(const string& s){return QString(s.c_str()).replace(",", ".").toDouble();};
+	inline double stringToDouble(const string& s)
+	{
+		string s1 = s;
+		size_t pos = s.find(",");
+		if (pos != string::npos)
+			s1.replace(pos, 1, ".");
+		return strtod(s1.c_str(), NULL);
+	}
 
 	inline boost::posix_time::ptime doubleToPosixTime(double jdt)
 	{
