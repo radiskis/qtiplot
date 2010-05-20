@@ -1011,7 +1011,8 @@ bool Origin610Parser::readGraphInfo()
 			string sec_name(41, 0);
 			file.seekg(LAYER + 0x46, ios_base::beg);
 			file >> sec_name;
-			if (!QString(sec_name.c_str()).trimmed().isEmpty())
+			//if (!QString(sec_name.c_str()).trimmed().isEmpty())
+			if (!sec_name.empty())
 				sectionNames.push_back(sec_name);
 			else
 				break;
