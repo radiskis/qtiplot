@@ -129,7 +129,7 @@ namespace Origin
 
 		string name;
 		string label;
-		unsigned int objectID;
+		int objectID;
 		bool hidden;
 		State state;
 		Title title;
@@ -140,6 +140,7 @@ namespace Origin
 		Window(const string& _name= "", const string& _label = "", bool _hidden = false)
 		:	name(_name)
 		,	label(_label)
+		,	objectID(-1)
 		,	hidden(_hidden)
 		,	state(Normal)
 		,	title(Both)

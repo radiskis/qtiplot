@@ -1826,43 +1826,6 @@ bool Origin610Parser::readGraphInfo()
 	return true;
 }
 
-void Origin610Parser::skipObjectInfo()
-{
-	unsigned int POS = file.tellg();
-	unsigned int size;
-	file >> size;
-	while (POS < d_file_size && !size){
-		skipLine();
-		file >> size;
-		POS = file.tellg();
-	}
-	
-	unsigned int nextSize = size;
-	//BOOST_LOG_(1, format("	skipObjectInfo() size: %d (0x%X) @ 0x%X") % size % size % POS);
-	while (POS < d_file_size && nextSize == size){
-		POS += nextSize + 0x2;
-		file.seekg(POS, ios_base::beg);
-
-		file >> nextSize;
-		POS +=  0x4;
-		//BOOST_LOG_(1, format("	next size: %d (0x%X) @ 0x%X") % nextSize % nextSize % POS);
-
-		if (!nextSize){
-			POS += 0x1;
-			file.seekg(1, ios_base::cur);
-			file >> nextSize;
-			if (nextSize == size)
-				POS += 0x4;
-		} else if (nextSize > 1e6){
-			file >> nextSize;
-			if (nextSize == size)
-				POS += 0x4;
-		}
-	}
-	file.seekg(1, ios_base::cur);
-	//BOOST_LOG_(1, format("	skipObjectInfo() pos:  0x%X") % file.tellg());
-}
-
 OriginParser* createOrigin610Parser(const string& fileName)
 {
 	return new Origin610Parser(fileName);
