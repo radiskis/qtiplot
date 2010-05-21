@@ -43,6 +43,7 @@ Origin750Parser::Origin750Parser(const string& fileName)
 {
 	objectIndex = 0;
 	d_colormap_offset = 0x258;
+	windowsCount = 0;
 }
 
 bool Origin750Parser::parse()
@@ -1077,10 +1078,29 @@ void Origin750Parser::readMatrixInfo()
 		//section_body_1
 		LAYER += 0x5;
 		//check if it is a formula
-		if(sec_name == "MV")
-		{
+		if (sec_name == "MV"){
 			file.seekg(LAYER, ios_base::beg);
 			file >> matrixes[idx].command.assign(size, 0);
+		} else if (sec_name == "Y2"){
+			string s(size, 0);
+			file >> s;
+			matrixes[idx].coordinates[0] = stringToDouble(s);
+			BOOST_LOG_(1, format("				Y2: %g") % matrixes[idx].coordinates[0]);
+		} else if (sec_name == "X2"){
+			string s(size, 0);
+			file >> s;
+			matrixes[idx].coordinates[1] = stringToDouble(s);
+			BOOST_LOG_(1, format("				X2: %g") % matrixes[idx].coordinates[1]);
+		} else if (sec_name == "Y1"){
+			string s(size, 0);
+			file >> s;
+			matrixes[idx].coordinates[2] = stringToDouble(s);
+			BOOST_LOG_(1, format("				Y1: %g") % matrixes[idx].coordinates[2]);
+		} else if (sec_name == "X1"){
+			string s(size, 0);
+			file >> s;
+			matrixes[idx].coordinates[3] = stringToDouble(s);
+			BOOST_LOG_(1, format("				X1: %g") % matrixes[idx].coordinates[3]);
 		}
 
 		//section_body_2_size
@@ -2206,12 +2226,22 @@ unsigned int Origin750Parser::readGraphAxisInfo(GraphAxis& axis)
 void Origin750Parser::readProjectTree()
 {
 	readProjectTreeFolder(projectTree.begin());
-
+	BOOST_LOG_(1, format("Project has %d windows") % windowsCount);
 	BOOST_LOG_(1, "Origin project Tree");
+
 	for(tree<ProjectNode>::iterator it = projectTree.begin(projectTree.begin()); it != projectTree.end(projectTree.begin()); ++it)
 	{
 		BOOST_LOG_(1, string(projectTree.depth(it) - 1, ' ') + (*it).name);
 	}
+
+	vector<Origin::Matrix> validMatrices;
+	for(unsigned int i = 0; i < matrixes.size(); ++i){
+		Matrix m = matrixes[i];
+		if (m.objectID >= 0)
+			validMatrices.push_back(m);
+	}
+	matrixes.clear();
+	matrixes = validMatrices;
 }
 
 void Origin750Parser::readProjectTreeFolder(tree<ProjectNode>::iterator parent)
@@ -2248,6 +2278,8 @@ void Origin750Parser::readProjectTreeFolder(tree<ProjectNode>::iterator parent)
 	unsigned int objectcount;
 	file.seekg(POS, ios_base::beg);
 	file >> objectcount;
+
+	windowsCount += objectcount;
 
 	POS += 5 + 5;
 

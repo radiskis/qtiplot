@@ -41,7 +41,6 @@ protected:
 	void readSpreadInfo();
 	void readMatrixInfo();
 	bool readGraphInfo();
-	void skipObjectInfo();
 	void readResultsLog();
 	void readNotes();
 

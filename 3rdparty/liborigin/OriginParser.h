@@ -61,6 +61,7 @@ public:
 	vector<Origin::Note> notes;
 	tree<Origin::ProjectNode> projectTree;
 	string resultsLog;
+	unsigned int windowsCount;
 };
 
 OriginParser* createOriginDefaultParser(const string& fileName);
