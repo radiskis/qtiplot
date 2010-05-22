@@ -697,6 +697,7 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 
 		bool imageProfileTool = false;
 		bool boxWhiskersPlot = false;
+		bool showColorScale = false;
 		for(unsigned int l = 0; l < _graph.layers.size(); ++l){
 			Origin::GraphLayer& layer = _graph.layers[l];
 			if(layer.is3D() || layer.isXYY3D){
@@ -872,9 +873,36 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 						break;
 
 					if(_curve.type == Origin::GraphCurve::Contour){
+						showColorScale = true;
 						curve = (PlotCurve*)graph->plotSpectrogram(m, Graph::ColorMap);
 						Spectrogram* sp = (Spectrogram*) curve;
+						if (_curve.colorMap.levels.size() > 2){
+							Origin::ColorMapVector::const_iterator it = _curve.colorMap.levels.begin();
+							double vmin = it->first;
+							it = _curve.colorMap.levels.end() - 2;
+							double vmax = it->first;
+							sp->setRange(vmin, vmax);
+							graph->enableAxis(QwtPlot::yRight);
+
+							QwtValueList ticksList;
+							for(Origin::ColorMapVector::const_iterator it = _curve.colorMap.levels.begin(); it != _curve.colorMap.levels.end(); ++it)
+								ticksList << it->first;
+							if (ticksList.size() >= 2){
+								vmax += (ticksList[1] - ticksList[0]);
+								ticksList << vmax;
+							}
+							QwtValueList ticks[QwtScaleDiv::NTickTypes];
+							ticks[QwtScaleDiv::MajorTick] = ticksList;
+							ticks[QwtScaleDiv::MediumTick] = QwtValueList();
+							ticks[QwtScaleDiv::MinorTick] = QwtValueList();
+
+							QwtScaleDiv div(vmin, vmax, ticks);
+							if (!layer.colorScale.reverseOrder)
+								div.invert();
+							graph->setAxisScaleDiv(QwtPlot::yRight, div);
+						}
 						sp->setCustomColorMap(qwtColorMap(_curve.colorMap));
+
 						QwtValueList levels;
 						QList<QPen> penList;
 						bool labelsOn = false;
@@ -1278,10 +1306,29 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 					prec=2;
 				}
 
-				graph->showAxis(i, type, tableName, mw->table(tableName), !(formats[i].hidden),
-					tickTypeMap[formats[i].majorTicksType], tickTypeMap[formats[i].minorTicksType],
-					!(ticks[i].hidden),	ColorBox::defaultColor(formats[i].color), format, prec,
-					-ticks[i].rotation, 0, "", (ticks[i].color == 0xF7 ? ColorBox::defaultColor(formats[i].color) : ColorBox::defaultColor(ticks[i].color)));
+				if (i == QwtPlot::yRight && showColorScale){
+					QwtScaleWidget *scale = graph->axisWidget(i);
+					if (scale){
+						scale->setColorBarEnabled(true);
+						scale->setColorBarWidth(qRound(layer.colorScale.colorBarThickness*0.01*scale->font().pointSize()));
+						ScaleDraw *sd = (ScaleDraw *)scale->scaleDraw();
+						if (sd){
+							sd->enableComponent(QwtAbstractScaleDraw::Labels);
+							sd->enableComponent(QwtAbstractScaleDraw::Backbone, false);
+							sd->enableComponent(QwtAbstractScaleDraw::Ticks, false);
+							sd->setSpacing(qRound(layer.colorScale.labelGap*0.01*scale->font().pointSize()));
+							if (opj.version() >= 7.0)
+								sd->setShowTicksPolicy(ScaleDraw::HideBeginEnd);
+						}
+						graph->setAxisLabelsColor(i, originToQtColor(layer.colorScale.labelsColor));
+						if (!layer.colorScale.reverseOrder)
+							graph->axisScaleEngine(i)->setAttribute(QwtScaleEngine::Inverted, true);
+					}
+				} else
+					graph->showAxis(i, type, tableName, mw->table(tableName), !(formats[i].hidden),
+						tickTypeMap[formats[i].majorTicksType], tickTypeMap[formats[i].minorTicksType],
+						!(ticks[i].hidden),	ColorBox::defaultColor(formats[i].color), format, prec,
+						-ticks[i].rotation, 0, "", (ticks[i].color == 0xF7 ? ColorBox::defaultColor(formats[i].color) : ColorBox::defaultColor(ticks[i].color)));
 
 				QFont fnt = graph->axisTitleFont(i);
 				int fontSize = formats[i].label.fontSize;

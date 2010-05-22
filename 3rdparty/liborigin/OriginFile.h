@@ -68,7 +68,7 @@ public:
 	string resultsLogString() const;													//!< get Results Log
 
 private:
-	int fileVersion;
+	unsigned int fileVersion, buildVersion;
 	auto_ptr<OriginParser> parser;
 };
 

@@ -45,6 +45,9 @@ Origin800Parser::Origin800Parser(const string& fileName)
 
 bool Origin800Parser::parse()
 {
+	if (fileVersion >= 2882)
+		d_colormap_offset = 0x25F;
+
 	unsigned int dataIndex = 0;
 
 	// get length of file:
@@ -1446,6 +1449,14 @@ void Origin800Parser::readGraphInfo()
 			else if(sec_name == "SPECTRUM1")
 			{
 				layer.isXYY3D = false;
+
+				unsigned char h;
+				file.seekg(24, ios_base::cur);
+				file >> h;
+				layer.colorScale.reverseOrder = h;
+				file.seekg(7, ios_base::cur);
+				file >> layer.colorScale.colorBarThickness;
+				file >> layer.colorScale.labelGap;
 			}
 			else if(osize == 0x3E) // text
 			{

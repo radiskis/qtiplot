@@ -37,6 +37,7 @@ class OriginParser
 public:
 	virtual ~OriginParser() {};
 	virtual bool parse() = 0;
+	void setFileVersion(unsigned int version){fileVersion = version;};
 
 	vector<Origin::SpreadSheet>::size_type findSpreadByName(const string& name) const;
 	vector<Origin::Matrix>::size_type findMatrixByName(const string& name) const;
@@ -62,6 +63,7 @@ public:
 	tree<Origin::ProjectNode> projectTree;
 	string resultsLog;
 	unsigned int windowsCount;
+	unsigned int fileVersion;
 };
 
 OriginParser* createOriginDefaultParser(const string& fileName);
