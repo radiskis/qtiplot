@@ -1360,7 +1360,6 @@ void Origin750Parser::readGraphInfo()
 			file >> h;
 			figure.useBorderColor = (h == 0x10);
 
-
 			//section_body_2_size
 			LAYER += size + 0x1;
 
@@ -1520,6 +1519,16 @@ void Origin750Parser::readGraphInfo()
 			else if(sec_name == "SPECTRUM1")
 			{
 				layer.isXYY3D = false;
+
+				unsigned char h;
+				file.seekg(24, ios_base::cur);
+				file >> h;
+				layer.colorScale.reverseOrder = h;
+				file.seekg(7, ios_base::cur);
+				file >> layer.colorScale.colorBarThickness;
+				file >> layer.colorScale.labelGap;
+				file.seekg(56, ios_base::cur);
+				file >> layer.colorScale.labelsColor;
 			}
 			else if(osize == 0x3E) // text
 			{
@@ -2388,8 +2397,7 @@ void Origin750Parser::readColorMap(ColorMap& colorMap)
 	file >> colorMapSize;
 
 	file.seekg(0x110, ios_base::cur);
-	for(unsigned int i = 0; i < colorMapSize + 3; ++i)
-	{
+	for(unsigned int i = 0; i < colorMapSize + 3; ++i){
 		ColorMapLevel level;
 		file >> level.fillPattern;
 

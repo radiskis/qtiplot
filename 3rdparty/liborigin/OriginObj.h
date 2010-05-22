@@ -642,6 +642,14 @@ namespace Origin
 		};
 	};
 
+	struct ColorScale
+	{
+		bool reverseOrder;
+		unsigned short labelGap;
+		unsigned short colorBarThickness;
+		Color labelsColor;
+	};
+
 	struct GraphLayer
 	{
 		Rect clientRect;
@@ -662,6 +670,7 @@ namespace Origin
 		double histogramEnd;
 
 		PercentileProperties percentile;
+		ColorScale colorScale;
 
 		vector<TextBox> texts;
 		vector<Line> lines;

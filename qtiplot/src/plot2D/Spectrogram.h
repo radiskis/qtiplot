@@ -122,6 +122,8 @@ public:
     bool setUseMatrixFormula(bool on = true);
 
     void updateData();
+	QwtDoubleInterval range();
+	void setRange(double vmin, double vmax);
 
 protected:
 	virtual void drawContourLines (QPainter *p, const QwtScaleMap &xMap, const QwtScaleMap &yMap, const QwtRasterData::ContourLines &lines) const;
@@ -164,6 +166,9 @@ protected:
 	bool d_color_map_pen;
 
 	QList<QPen> d_pen_list;
+
+	bool d_impose_range;
+	double d_min_value, d_max_value;
 };
 
 class MatrixData: public QwtRasterData

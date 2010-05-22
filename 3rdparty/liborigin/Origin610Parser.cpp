@@ -1322,6 +1322,20 @@ bool Origin610Parser::readGraphInfo()
 			{
 				layer.isXYY3D = true;
 			}
+			else if(sec_name == "SPECTRUM1")
+			{
+				layer.isXYY3D = false;
+
+				unsigned char h;
+				file.seekg(24, ios_base::cur);
+				file >> h;
+				layer.colorScale.reverseOrder = h;
+				file.seekg(7, ios_base::cur);
+				file >> layer.colorScale.colorBarThickness;
+				file >> layer.colorScale.labelGap;
+				file.seekg(56, ios_base::cur);
+				file >> layer.colorScale.labelsColor;
+			}
 			else if(size && !type)
 			{
 				string text(size, 0);

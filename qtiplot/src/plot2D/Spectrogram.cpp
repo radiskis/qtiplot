@@ -55,7 +55,8 @@ Spectrogram::Spectrogram(Graph *graph, Matrix *m):
 	d_labels_y_offset(0),
 	d_selected_label(NULL),
 	d_use_matrix_formula(false),
-	d_color_map_pen(false)
+	d_color_map_pen(false),
+	d_impose_range(false)
 {
 	setData(MatrixData(m));
 
@@ -80,10 +81,25 @@ void Spectrogram::updateData()
 
 	QwtScaleWidget *colorAxis = d_graph->axisWidget(color_axis);
 	if (colorAxis)
-		colorAxis->setColorMap(data().range(), colorMap());
+		colorAxis->setColorMap(range(), colorMap());
 
-	d_graph->setAxisScale(color_axis, data().range().minValue(), data().range().maxValue());
+	d_graph->setAxisScale(color_axis, range().minValue(), range().maxValue());
 	d_graph->replot();
+}
+
+QwtDoubleInterval Spectrogram::range()
+{
+	if (d_impose_range)
+		return QwtDoubleInterval(d_min_value, d_max_value);
+
+	return data().range();
+}
+
+void Spectrogram::setRange(double vmin, double vmax)
+{
+	d_impose_range = true;
+	d_min_value = vmin;
+	d_max_value = vmax;
 }
 
 bool Spectrogram::setMatrix(Matrix *m, bool useFormula)
@@ -126,11 +142,11 @@ void Spectrogram::setLevelsNumber(int levels)
 	if (levels <= 0)
 		return;
 
-	double step = fabs(data().range().maxValue() - data().range().minValue())/(double)levels;
+	double step = fabs(range().maxValue() - range().minValue())/(double)levels;
 
 	QwtValueList contourLevels;
-	for ( double level = data().range().minValue() + 0.5*step;
-		level < data().range().maxValue(); level += step )
+	for ( double level = range().minValue() + 0.5*step;
+		level < range().maxValue(); level += step )
 		contourLevels += level;
 
 	setContourLevels(contourLevels);
@@ -193,9 +209,9 @@ else if (axis == QwtPlot::yLeft || color_axis == QwtPlot::yRight)
 	d_graph->setAxisScale(yAxis, scDiv->lowerBound(), scDiv->upperBound());
 
 colorAxis = d_graph->axisWidget(color_axis);
-d_graph->setAxisScale(color_axis, data().range().minValue(), data().range().maxValue());
+d_graph->setAxisScale(color_axis, range().minValue(), range().maxValue());
 colorAxis->setColorBarEnabled(on);
-colorAxis->setColorMap(data().range(), colorMap());
+colorAxis->setColorMap(range(), colorMap());
 if (!d_graph->axisEnabled(color_axis))
 	d_graph->enableAxis(color_axis);
 colorAxis->show();
@@ -237,6 +253,9 @@ Spectrogram* Spectrogram::copy(Graph *g)
 	new_s->d_labels_x_offset = d_labels_x_offset;
 	new_s->d_labels_y_offset = d_labels_y_offset;
 	new_s->setContourLevels(contourLevels());
+	new_s->d_impose_range = d_impose_range;
+	new_s->d_min_value = d_min_value;
+	new_s->d_max_value = d_max_value;
 
 	if (defaultContourPen().style() == Qt::NoPen && !d_color_map_pen)
 		new_s->setContourPenList(d_pen_list);
@@ -262,44 +281,44 @@ Spectrogram* Spectrogram::copy(Graph *g)
 
 void Spectrogram::setGrayScale()
 {
-color_map = QwtLinearColorMap(Qt::black, Qt::white);
-setColorMap(color_map);
-color_map_policy = GrayScale;
+	color_map = QwtLinearColorMap(Qt::black, Qt::white);
+	setColorMap(color_map);
+	color_map_policy = GrayScale;
 
-if (!d_graph)
-	return;
+	if (!d_graph)
+		return;
 
-QwtScaleWidget *colorAxis = d_graph->axisWidget(color_axis);
-if (colorAxis)
-	colorAxis->setColorMap(data().range(), colorMap());
+	QwtScaleWidget *colorAxis = d_graph->axisWidget(color_axis);
+	if (colorAxis)
+		colorAxis->setColorMap(range(), colorMap());
 }
 
 void Spectrogram::setDefaultColorMap()
 {
-if (!d_graph)
-	return;
+	if (!d_graph)
+		return;
 
-color_map = d_graph->multiLayer()->applicationWindow()->d_3D_color_map;
-setColorMap(color_map);
-color_map_policy = Default;
+	color_map = d_graph->multiLayer()->applicationWindow()->d_3D_color_map;
+	setColorMap(color_map);
+	color_map_policy = Default;
 
-QwtScaleWidget *colorAxis = d_graph->axisWidget(color_axis);
-if (colorAxis)
-	colorAxis->setColorMap(this->data().range(), this->colorMap());
+	QwtScaleWidget *colorAxis = d_graph->axisWidget(color_axis);
+	if (colorAxis)
+		colorAxis->setColorMap(range(), colorMap());
 }
 
 void Spectrogram::setCustomColorMap(const QwtLinearColorMap& map)
 {
-setColorMap(map);
-color_map = map;
-color_map_policy = Custom;
+	setColorMap(map);
+	color_map = map;
+	color_map_policy = Custom;
 
-if (!d_graph)
-	return;
+	if (!d_graph)
+		return;
 
-QwtScaleWidget *colorAxis = d_graph->axisWidget(color_axis);
-if (colorAxis)
-	colorAxis->setColorMap(this->data().range(), this->colorMap());
+	QwtScaleWidget *colorAxis = d_graph->axisWidget(color_axis);
+	if (colorAxis)
+		colorAxis->setColorMap(range(), colorMap());
 }
 
 QString Spectrogram::saveToString()

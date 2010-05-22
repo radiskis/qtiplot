@@ -55,11 +55,12 @@ OriginFile::OriginFile(const string& fileName)
 	string vers(4, 0);
 	file.seekg(0x7, ios_base::beg);
 	file >> vers;
-	fileVersion = lexical_cast<int>(vers);
+	fileVersion = lexical_cast<unsigned int>(vers);
 	file.close();
 
 	BOOST_LOG_(1, format("	[version = %d]") % fileVersion);
 
+	buildVersion = fileVersion;
 	// translate version
 	if(fileVersion >= 130 && fileVersion <= 140)		// 4.1
 		fileVersion = 410;
@@ -124,6 +125,7 @@ OriginFile::OriginFile(const string& fileName)
 
 bool OriginFile::parse()
 {
+	parser->setFileVersion(buildVersion);
 	return parser->parse();
 }
 
