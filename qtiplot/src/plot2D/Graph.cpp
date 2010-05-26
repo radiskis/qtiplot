@@ -3281,8 +3281,6 @@ DataCurve* Graph::insertCurve(Table* w, const QString& xColName, const QString& 
 	if (style == HorizontalBars)
 		xAxis = QwtPlot::yLeft;
 
-	int r = abs(endRow - startRow) + 1;
-    QVector<double> X(r), Y(r);
 	if (xColType == Table::Time){
 		ScaleDraw *sd = (ScaleDraw *)axisScaleDraw(xAxis);
 		if (sd && sd->scaleType() == ScaleDraw::Time)
@@ -3316,41 +3314,11 @@ DataCurve* Graph::insertCurve(Table* w, const QString& xColName, const QString& 
 	for (int i = startRow; i<=endRow; i++ ){
 		QString xval=w->text(i,xcol);
 		QString yval=w->text(i,ycol);
-		if (!xval.isEmpty() && !yval.isEmpty()){
-		    bool valid_data = true;
-			if (xColType == Table::Text){
-				if (xLabels.contains(xval) == 0)
-					xLabels << xval;
-				X[size] = (double)(xLabels.findIndex(xval)+1);
-			} else if (xColType == Table::Time){
-				QTime time = QTime::fromString (xval, date_time_fmt);
-				if (time.isValid())
-					X[size] = time0.msecsTo (time);
-				else
-					X[size] = 0;
-			} else if (xColType == Table::Date){
-				QDateTime d = QDateTime::fromString (xval, date_time_fmt);
-				if (d.isValid())
-					X[size] = (double) date0.secsTo(d);
-			} else
-                X[size] = locale().toDouble(xval, &valid_data);
-
-			if (yColType == Table::Text){
-				yLabels << yval;
-				Y[size] = (double) (size + 1);
-			} else
-                Y[size] = locale().toDouble(yval, &valid_data);
-
-            if (valid_data)
-                size++;
-		}
+		if (!xval.isEmpty() && !yval.isEmpty())
+			size++;
 	}
-
 	if (!size)
 		return NULL;
-
-	X.resize(size);
-	Y.resize(size);
 
 	DataCurve *c = 0;
 	if (style == VerticalBars || style == StackColumn){
@@ -3375,11 +3343,7 @@ DataCurve* Graph::insertCurve(Table* w, const QString& xColName, const QString& 
 	CurveLayout cl = initCurveLayout(style, 0, false);
 	updateCurveLayout(c, &cl);
 
-	if (style == HorizontalBars)
-		c->setData(Y.data(), X.data(), size);
-	else
-		c->setData(X.data(), Y.data(), size);
-
+	c->loadData();
 	c->enableSpeedMode();
 
 	if (xColType == Table::Text){

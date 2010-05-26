@@ -453,7 +453,6 @@ PieLabel* QwtPieCurve::addLabel(PieLabel *l, bool clone)
 
 void QwtPieCurve::initLabels()
 {
-	int size = abs(d_end_row - d_start_row) + 1;
 	int dataPoints = dataSize();
 	double sum = 0.0;
 	for (int i = 0; i < dataPoints; i++)
@@ -461,13 +460,16 @@ void QwtPieCurve::initLabels()
 
     Graph *d_plot = (Graph *)plot();
 	QLocale locale = d_plot->multiLayer()->locale();
-	for (int i = 0; i <size; i++ ){
-		PieLabel* l = new PieLabel(d_plot, this);
-		d_texts_list << l;
-		if (i < dataPoints)
-            l->setText(locale.toString(y(i)/sum*100, 'g', 4) + "%");
-		else
-			l->hide();
+	int ycol = d_table->colIndex(title().text());
+	int aux = 0;
+	for (int i = d_start_row; i <= d_end_row; i++){
+		QString xval = d_table->text(i, ycol);
+		if (!xval.isEmpty() && aux < dataPoints){
+			PieLabel* l = new PieLabel(d_plot, this);
+			d_texts_list << l;
+			l->setText(locale.toString(d_table->cell(i, ycol)/sum*100, 'g', 4) + "%");
+			aux++;
+		}
 	}
 }
 
