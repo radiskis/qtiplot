@@ -33,6 +33,8 @@
 #include <qwt_plot_marker.h>
 #include <Table.h>
 
+using namespace std;
+
 class PlotMarker;
 class Table;
 
@@ -93,7 +95,15 @@ protected:
 
 class DataCurve: public PlotCurve
 {
+
 public:
+
+    struct DataRange
+    {
+            unsigned int from;
+            unsigned int to;
+    };
+
 	DataCurve(Table *t, const QString& xColName, const QString& name, int startRow = 0, int endRow = -1);
     void clone(DataCurve* c);
 
@@ -180,6 +190,8 @@ public:
     void updateLabelsPosition();
 
 protected:
+        virtual void drawCurve(QPainter *p, int style, const QwtScaleMap &xMap, const QwtScaleMap &yMap, int from, int to) const;
+
 	bool validCurveType();
     void loadLabels();
 
@@ -211,6 +223,7 @@ protected:
 	int d_labels_align, d_labels_x_offset, d_labels_y_offset;
 	//! Keeps track of the plot marker on which the user clicked when selecting the labels.
 	PlotMarker *d_selected_label;
+        vector <DataRange> d_data_ranges;
 };
 
 class PlotMarker: public QwtPlotMarker

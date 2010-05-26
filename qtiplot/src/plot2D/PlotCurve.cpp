@@ -572,6 +572,18 @@ void DataCurve::enableSpeedMode()
 	//g->replot();
 }
 
+void DataCurve::drawCurve(QPainter *p, int style, const QwtScaleMap &xMap, const QwtScaleMap &yMap, int from, int to) const
+{
+	if (d_data_ranges.empty())
+		return PlotCurve::drawCurve(p, style, xMap, yMap, from, to);
+
+	if(d_side_lines)
+		drawSideLines(p, xMap, yMap, from, to);
+
+	for (unsigned int i = 0; i < d_data_ranges.size(); i++)
+		QwtPlotCurve::drawCurve(p, style, xMap, yMap, d_data_ranges[i].from, d_data_ranges[i].to);
+}
+
 void DataCurve::loadData()
 {
 	Graph *g = (Graph *)plot();
@@ -630,12 +642,13 @@ void DataCurve::loadData()
 		}
 	}
 
-	int size = 0;
+	int size = 0, from = 0;
+	d_data_ranges.clear();
 	for (int i = d_start_row; i <= d_end_row; i++ ){
 		QString xval = d_table->text(i,xcol);
 		QString yval = d_table->text(i,ycol);
 		if (!xval.isEmpty() && !yval.isEmpty()){
-		    bool valid_data = true;
+			bool valid_data = true;
 			if (xColType == Table::Text){
 				xLabels << xval;
 				X[size] = (double)(size + 1);
@@ -656,13 +669,20 @@ void DataCurve::loadData()
 			} else
 				Y[size] = g->locale().toDouble(yval, &valid_data);
 
-            if (valid_data)
-                size++;
+			if (valid_data)
+				size++;
+		} else if (from < size){
+			DataRange range;
+			range.from = from;
+			range.to = size - 1;
+			d_data_ranges.push_back(range);
+
+			from = size;
 		}
 	}
 
-    X.resize(size);
-    Y.resize(size);
+	X.resize(size);
+	Y.resize(size);
 
 	if (!size){
 		remove();
@@ -744,6 +764,15 @@ int DataCurve::tableRow(int point)
     if (!d_table)
         return -1;
 
+	if (d_type == Graph::Pie){
+		double y_val = y(point);
+		int ycol = d_table->colIndex(title().text());
+		for (int i = d_start_row; i <= d_end_row; i++ ){
+			if (d_table->cell(i, ycol) == y_val)
+				return i;
+		}
+	}
+
 	int xcol = d_table->colIndex(d_x_column);
 	int ycol = d_table->colIndex(title().text());
 
@@ -789,6 +818,7 @@ int DataCurve::tableRow(int point)
 		if (d_table->cell(i, xcol) == x_val && d_table->cell(i, ycol) == y_val)
 			return i;
 	}
+
 	return point;
 }
 

@@ -651,7 +651,7 @@ QString LegendWidget::parse(const QString& str)
 								{
 									int col = t->colIndex(c->title().text()); //use y column
 									int row = lst[2].toInt() - 1;
-									s = s.replace(pos, pos2-pos+1, t->text(row, col));
+									s = s.replace(pos, pos2-pos+1, t->text(((DataCurve *)c)->tableRow(row), col));
 									break;
 								}
 								case 4:  //4 arguments, display cell contents
