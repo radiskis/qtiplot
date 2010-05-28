@@ -2228,7 +2228,7 @@ void PlotDialog::setActiveCurve(CurveTreeItem *item)
 
 	int curveType = item->plotItemStyle();
     if (curveType == Graph::Pie){
-        QwtPieCurve *pie = (QwtPieCurve*)i;
+		QwtPieCurve *pie = (QwtPieCurve*)i;
         boxPiePattern->setPattern(pie->pattern());
         boxPieLineWidth->setValue(pie->pen().widthF());
         boxPieLineColor->setColor(pie->pen().color());

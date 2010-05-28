@@ -141,6 +141,7 @@ bool Origin750Parser::parse()
 			case 0x50E7:
 			case 0x50DB:
 			case 0x50DC:
+			case 0x70E2:
 
 				BOOST_LOG_(1, "NEW MATRIX");
 				matrixes.push_back(Matrix(name, dataIndex));
@@ -661,6 +662,7 @@ void Origin750Parser::readSpreadInfo()
 	/////////////// COLUMN Types ///////////////////////////////////////////
 	BOOST_LOG_(1, format("			Spreadsheet has %d columns") % speadSheets[spread].columns.size());
 
+	vector<SpreadColumn> header;
 	while(1)
 	{
 		LAYER += 0x5;
@@ -674,7 +676,7 @@ void Origin750Parser::readSpreadInfo()
 		short width=0;
 		file.seekg(LAYER + 0x4A, ios_base::beg);
 		file >> width;
-		int col_index = findSpreadColumnByName(spread, name);
+		int col_index = findColumnByName(spread, name);
 		if(col_index != -1)
 		{
 			SpreadColumn::ColumnType type;
@@ -780,11 +782,18 @@ void Origin750Parser::readSpreadInfo()
 			LAYER += size + 0x1;
 		}
 
+		if(col_index != -1)
+			header.push_back(speadSheets[spread].columns[col_index]);
+
 		file.seekg(LAYER, ios_base::beg);
 		file >> size;
 		if(size != 0x1E7)
 			break;
 	}
+
+	for (unsigned int i = 0; i < header.size(); i++)
+		speadSheets[spread].columns[i] = header[i];
+
 	BOOST_LOG_(1, format("		Done with spreadsheet %d") % spread);
 
 	file.seekg(LAYER + 0x5*0x6 + 0x1ED*0x12, ios_base::beg);

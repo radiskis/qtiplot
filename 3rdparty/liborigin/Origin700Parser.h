@@ -38,7 +38,6 @@ public:
 	bool parse();
 
 protected:
-	void readSpreadInfo();
 	void readMatrixInfo();
 	void readGraphInfo();
 };
