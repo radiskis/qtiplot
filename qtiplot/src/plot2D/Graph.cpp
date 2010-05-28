@@ -5660,7 +5660,7 @@ void Graph::drawItems (QPainter *painter, const QRect &rect,
 	painter->save();
 	painter->setRenderHint(QPainter::Antialiasing);
 	for (int i=0; i<QwtPlot::axisCnt; i++){
-		if (!axisEnabled(i))
+		if (!axisEnabled(i) || d_is_printing)
 			continue;
 		drawBreak(painter, rect, map[i], i);
 	}
@@ -5677,6 +5677,21 @@ void Graph::drawItems (QPainter *painter, const QRect &rect,
 		QwtScaleMap m = map[i];
 		int lb = m.transform(sc_engine->axisBreakLeft());
 		int rb = m.transform(sc_engine->axisBreakRight());
+
+		if (d_is_printing){
+			if (i == QwtPlot::yLeft || i == QwtPlot::yRight){
+				double yfactor = (double)painter->device()->logicalDpiY()/(double)this->logicalDpiY();
+				int dy = qRound(abs(lb - rb)*yfactor*0.5);
+				rb -= dy;
+				lb += dy;
+			} else {
+				double xfactor = (double)painter->device()->logicalDpiX()/(double)this->logicalDpiX();
+				int dx = qRound(abs(lb - rb)*xfactor*0.5);
+				lb -= dx;
+				rb += dx;
+			}
+		}
+
 		int start = lb, end = rb;
 		if (sc_engine->testAttribute(QwtScaleEngine::Inverted)){
 			end = lb;
@@ -5732,8 +5747,8 @@ void Graph::drawInwardTicks(QPainter *painter, const QRect &rect,
 	QColor color = pal.color(QPalette::Active, QColorGroup::Foreground);
 
 	painter->save();
-	if (painter->hasClipping())
-		painter->setClipping(false);
+	//if (painter->hasClipping())
+		//painter->setClipping(false);
 
 	painter->setPen(QPen(color, factor*axesLinewidth(), Qt::SolidLine));
 
@@ -5880,9 +5895,9 @@ void Graph::drawBreak(QPainter *painter, const QRect &rect, const QwtScaleMap &m
 	QColor color = axisWidget(axis)->palette().color(QPalette::Active, QColorGroup::Foreground);
 	painter->setPen(QPen(color, axesLinewidth(), Qt::SolidLine));
 
-    int left = map.transform(sc_engine->axisBreakLeft());
-    int right = map.transform(sc_engine->axisBreakRight());
-    int x, y;
+	int left = map.transform(sc_engine->axisBreakLeft());
+	int right = map.transform(sc_engine->axisBreakRight());
+	int x, y;
 	int len = d_maj_tick_length;
     switch (axis){
         case QwtPlot::yLeft:
@@ -5892,7 +5907,7 @@ void Graph::drawBreak(QPainter *painter, const QRect &rect, const QwtScaleMap &m
         break;
 
         case QwtPlot::yRight:
-            x = rect.right() + 1;
+			x = rect.right() + 1;
             QwtPainter::drawLine(painter, x - len, left + len, x, left);
             QwtPainter::drawLine(painter, x - len, right + len, x, right);
         break;
@@ -6694,8 +6709,8 @@ void Graph::printScale(QPainter *painter,
     painter->setFont(scaleWidget->font());
 
     QPen pen = painter->pen();
-    pen.setWidthF(scaleWidget->penWidth()*(double)painter->device()->logicalDpiX()/(double)logicalDpiX());
-    painter->setPen(QwtPainter::scaledPen(pen));
+	pen.setWidthF(scaleWidget->penWidth()*(double)painter->device()->logicalDpiX()/(double)logicalDpiX());
+	painter->setPen(pen);
 
     QwtScaleDraw *sd = (QwtScaleDraw *)scaleWidget->scaleDraw();
     const QPoint sdPos = sd->pos();

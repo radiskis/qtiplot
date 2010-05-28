@@ -33,8 +33,6 @@
 #include <qwt_plot_marker.h>
 #include <Table.h>
 
-using namespace std;
-
 class PlotMarker;
 class Table;
 
@@ -223,7 +221,7 @@ protected:
 	int d_labels_align, d_labels_x_offset, d_labels_y_offset;
 	//! Keeps track of the plot marker on which the user clicked when selecting the labels.
 	PlotMarker *d_selected_label;
-        vector <DataRange> d_data_ranges;
+	std::vector<DataRange> d_data_ranges;
 };
 
 class PlotMarker: public QwtPlotMarker

@@ -136,9 +136,11 @@ bool Origin610Parser::parse()
 			case 0xAF2:
 			case 0xACA:
 
-				BOOST_LOG_(1, "NEW MATRIX");
-				matrixes.push_back(Matrix(name, dataIndex));
-				//BOOST_LOG_(1, format("MATRIX %s has dataIndex: %d") % name.c_str() % dataIndex);
+				if (size){
+					BOOST_LOG_(1, "NEW MATRIX");
+					matrixes.push_back(Matrix(name, dataIndex));
+					//BOOST_LOG_(1, format("MATRIX %s has dataIndex: %d") % name.c_str() % dataIndex);
+				}
 
 				++dataIndex;
 
@@ -391,7 +393,7 @@ bool Origin610Parser::parse()
 			BOOST_LOG_(1, out.str());
 		}
 
-		if(nbytes > 0 || columnname.empty())
+		if(nbytes > 0 || (columnname.empty() && size))
 		{
 			file.seekg(1, ios_base::cur);
 		}
@@ -400,7 +402,6 @@ bool Origin610Parser::parse()
 		file.seekg(1 + size + (size > 0 ? 1 : 0), ios_base::cur);
 
 		file >> size;
-
 		file.seekg(1, ios_base::cur);
 		BOOST_LOG_(1, format("	[column found = %d/0x%X (@ 0x%X)]") % size % size %((unsigned int) file.tellg()-5));
 		colpos = file.tellg();
@@ -597,28 +598,32 @@ void Origin610Parser::readSpreadInfo()
 	speadSheets[spread].loose = false;
 	char c = 0;
 
-	for (int i = 0; i < 5; i++)
-		skipLine();
-
+	unsigned int LAYER = POS + size + 0x1;
+	file.seekg(LAYER, ios_base::beg);
 	file >> size;
-	unsigned int LAYER = file.tellg();
+
+	LAYER += size + 0x6;
+	file.seekg(LAYER, ios_base::beg);
+	file >> size;
 
 	// LAYER section
 	unsigned int sectionSize = size;
 	while(LAYER < d_file_size){
 		//section_header_size=0x6F(4 bytes) + '\n'
-		LAYER += 0x1;
+		LAYER += 0x5;
 
 		//section_header
 		file.seekg(LAYER + 0x46, ios_base::beg);
-		string sec_name(30, 0);
+		string sec_name(41, 0);
 		file >> sec_name;
 
 		BOOST_LOG_(1, format("				SECTION NAME: %s (@ 0x%X)") % sec_name % (LAYER + 0x46));
-		LAYER = file.tellg();
 
 		//section_body_1_size
+		LAYER += size + 0x1;
+		file.seekg(LAYER, ios_base::beg);
 		file >> size;
+
 		//section_body_1
 		LAYER += 0x5;
 		file.seekg(LAYER, ios_base::beg);
@@ -629,20 +634,10 @@ void Origin610Parser::readSpreadInfo()
 			BOOST_LOG_(1, format("				Column: %s has formula: %s") % sec_name % speadSheets[spread].columns[col_index].command);
 		}
 
-		if (sec_name == "__BCO2"){
-			unsigned int pos = findStringPos("__WIOTN");
-			LAYER = pos - 0x47;
-			continue;
-		}
-		LAYER = file.tellg();
-
 		//section_body_2_size
-
-		LAYER += 0x1;
-		file.seekg(0x1, ios_base::cur);
+		LAYER += size + 0x1;
+		file.seekg(LAYER, ios_base::beg);
 		file >> size;
-		if (size > sectionSize)
-			break;
 
 		//section_body_2
 		LAYER += 0x5;
@@ -652,32 +647,31 @@ void Origin610Parser::readSpreadInfo()
 		file.seekg(LAYER, ios_base::beg);
 
 		file >> size;
-		LAYER += 0x4;
 		if(size != sectionSize)
 			break;
 	}
 
-	for (int i = 0; i < 5; i++)
-		skipLine();
-
-	LAYER = file.tellg();
+	file.seekg(1, ios_base::cur);
 	file >> size;
+	LAYER += 0x5;
 	sectionSize = size;
 
+	vector<SpreadColumn> header;
 	while(LAYER < d_file_size){
 		LAYER += 0x5;
 		file.seekg(LAYER + 0x12, ios_base::beg);
+
 		name.resize(12);
 		file >> name;
-		BOOST_LOG_(1, format("				Column: %s") % name);
+		BOOST_LOG_(1, format("				Column: %s (@ 0x%X)") % name % (LAYER + 0x12));
 
 		file.seekg(LAYER + 0x11, ios_base::beg);
 		file >> c;
 
-		short width=0;
+		short width = 0;
 		file.seekg(LAYER + 0x4A, ios_base::beg);
 		file >> width;
-		int col_index = findSpreadColumnByName(spread, name);
+		int col_index = findColumnByName(spread, name);
 		if(col_index != -1){
 			SpreadColumn::ColumnType type;
 			switch(c){
@@ -704,6 +698,7 @@ void Origin610Parser::readSpreadInfo()
 					break;
 			}
 			speadSheets[spread].columns[col_index].type = type;
+
 			width/=0xA;
 			if(width == 0)
 				width = 8;
@@ -760,8 +755,6 @@ void Origin610Parser::readSpreadInfo()
 			}
 		}
 		LAYER += sectionSize + 0x1;
-
-		int size;
 		file.seekg(LAYER, ios_base::beg);
 		file >> size;
 
@@ -774,11 +767,18 @@ void Origin610Parser::readSpreadInfo()
 			LAYER += size + 0x1;
 		}
 
+		if(col_index != -1)
+			header.push_back(speadSheets[spread].columns[col_index]);
+
 		file.seekg(LAYER, ios_base::beg);
 		file >> size;
 		if(size != sectionSize)
 			break;
 	}
+
+	for (unsigned int i = 0; i < header.size(); i++)
+		speadSheets[spread].columns[i] = header[i];
+
 	file.seekg(1, ios_base::cur);
 	skipObjectInfo();
 	BOOST_LOG_(1, format("		Done with spreadsheet %d POS (@ 0x%X)") % spread % file.tellg());

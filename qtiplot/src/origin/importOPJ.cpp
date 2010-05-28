@@ -1429,8 +1429,10 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 					bmp.save(file.fileName(), "BMP");
 					ImageWidget* img = graph->addImage(file.fileName());
 					img->setSaveInternally();
-					if (!windowName.isEmpty())
+					if (!windowName.isEmpty()){
 						img->setWindowName(windowName);
+						img->setOnTop(false);
+					}
 					img->setRect(layer.bitmaps[i].clientRect.left*fScale, layer.bitmaps[i].clientRect.top*fScale - yOffset, layer.bitmaps[i].clientRect.width()*fScale, layer.bitmaps[i].clientRect.height()*fScale);
 
 					int bkg = 0;

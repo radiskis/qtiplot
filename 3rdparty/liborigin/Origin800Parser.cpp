@@ -137,6 +137,7 @@ bool Origin800Parser::parse()
 			case 0x50E7:
 			case 0x50DB:
 			case 0x50DC:
+			case 0x70E2:
 
 				pos = name.find_first_of("@");
 				if(pos != string::npos){
@@ -693,7 +694,7 @@ void Origin800Parser::readSpreadInfo()
 		short width = 0;
 		file.seekg(LAYER + 0x4A, ios_base::beg);
 		file >> width;
-		int col_index = findSpreadColumnByName(spread, name);
+		int col_index = findColumnByName(spread, name);
 		if(col_index != -1){
 			if (speadSheets[spread].columns[col_index].sheet)//read only column info for first sheet
 				break;

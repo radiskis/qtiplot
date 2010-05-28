@@ -38,6 +38,7 @@
 
 #include <qwt_painter.h>
 #include <qwt_text.h>
+#include <qwt_scale_widget.h>
 
 /*****************************************************************************
  *
@@ -485,21 +486,8 @@ int ScaleDraw::axis() const
 void ScaleDraw::drawTick(QPainter *p, double value, int len) const
 {
 	ScaleEngine *sc_engine = (ScaleEngine *)d_plot->axisScaleEngine(axis());
-    if (sc_engine->hasBreak()){
-		int align = alignment();
-		bool invertedScale = sc_engine->testAttribute(QwtScaleEngine::Inverted);
-		if (align == BottomScale || align == LeftScale){
-			if (invertedScale && sc_engine->axisBreakRight() == value)
-            	return;
-			if (!invertedScale && sc_engine->axisBreakLeft() == value)
-				return;
-		} else {
-			if (!invertedScale && sc_engine->axisBreakRight() == value)
-				return;
-			if (invertedScale && sc_engine->axisBreakLeft() == value)
-            	return;
-		}
-    }
+	if (sc_engine->hasBreak() && (sc_engine->axisBreakLeft() == value || sc_engine->axisBreakRight() == value))
+		return;
 
 	QwtScaleDiv scDiv = scaleDiv();
 	QwtValueList majTicks = scDiv.ticks(QwtScaleDiv::MajorTick);
@@ -552,52 +540,51 @@ void ScaleDraw::drawBreak(QPainter *painter) const
     painter->save();
     painter->setRenderHint(QPainter::Antialiasing);
 
+	QPen pen = painter->pen();
+	pen.setColor(d_plot->axisWidget(axis())->palette().color(QPalette::Active, QColorGroup::Foreground));
+	painter->setPen(pen);
+
 	int len = majTickLength();
 
     QwtScaleMap scaleMap = map();
     const QwtMetricsMap metricsMap = QwtPainter::metricsMap();
     QPoint pos = this->pos();
 
-    if ( !metricsMap.isIdentity() ){
-        QwtPainter::resetMetricsMap();
-        pos = metricsMap.layoutToDevice(pos);
+	if (!d_plot->isPrinting()){
+		QwtPainter::resetMetricsMap();
+		pos = metricsMap.layoutToDevice(pos);
 
-        if ( orientation() == Qt::Vertical ){
-            scaleMap.setPaintInterval(
-                metricsMap.layoutToDeviceY((int)scaleMap.p1()),
-                metricsMap.layoutToDeviceY((int)scaleMap.p2()));
-            len = metricsMap.layoutToDeviceX(len);
-        } else {
-            scaleMap.setPaintInterval(
-                metricsMap.layoutToDeviceX((int)scaleMap.p1()),
-                metricsMap.layoutToDeviceX((int)scaleMap.p2()));
-            len = metricsMap.layoutToDeviceY(len);
-        }
-    }
+		if ( orientation() == Qt::Vertical ){
+			scaleMap.setPaintInterval(
+				metricsMap.layoutToDeviceY((int)scaleMap.p1()),
+				metricsMap.layoutToDeviceY((int)scaleMap.p2()));
+			len = metricsMap.layoutToDeviceX(len);
+		} else {
+			scaleMap.setPaintInterval(
+				metricsMap.layoutToDeviceX((int)scaleMap.p1()),
+				metricsMap.layoutToDeviceX((int)scaleMap.p2()));
+			len = metricsMap.layoutToDeviceY(len);
+		}
+	}
 
-    int lval = scaleMap.transform(sc_engine->axisBreakLeft());
+	int lval = scaleMap.transform(sc_engine->axisBreakLeft());
 	int rval = scaleMap.transform(sc_engine->axisBreakRight());
 	switch(alignment()){
-        case LeftScale:
-            QwtPainter::drawLine(painter, pos.x(), lval, pos.x() - len, lval + len);
-			QwtPainter::drawLine(painter, pos.x(), rval, pos.x() - len, rval + len);
-        break;
-        case RightScale:
-            QwtPainter::drawLine(painter, pos.x(), lval, pos.x() + len, lval - len);
-			QwtPainter::drawLine(painter, pos.x(), rval, pos.x() + len, rval - len);
-        break;
-        case BottomScale:
-            QwtPainter::drawLine(painter, lval, pos.y(), lval - len, pos.y() + len);
-			QwtPainter::drawLine(painter, rval, pos.y(), rval - len, pos.y() + len);
-        break;
-        case TopScale:
-            QwtPainter::drawLine(painter, lval, pos.y(), lval + len, pos.y() - len);
-			QwtPainter::drawLine(painter, rval, pos.y(), rval + len, pos.y() - len);
-        break;
-    }
+		case LeftScale:
+		case RightScale:
+			QwtPainter::drawLine(painter, pos.x() + len, lval - len, pos.x() - len, lval + len);
+			QwtPainter::drawLine(painter, pos.x() + len, rval - len, pos.x() - len, rval + len);
+		break;
+		case TopScale:
+		case BottomScale:
+			QwtPainter::drawLine(painter, lval + len, pos.y() - len, lval - len, pos.y() + len);
+			QwtPainter::drawLine(painter, rval + len, pos.y() - len, rval - len, pos.y() + len);
+		break;
+	}
 
-    QwtPainter::setMetricsMap(metricsMap); // restore metrics map
-    painter->restore();
+	if (!d_plot->isPrinting())
+		QwtPainter::setMetricsMap(metricsMap); // restore metrics map
+	painter->restore();
 }
 
 void ScaleDraw::drawBackbone(QPainter *painter) const
@@ -627,24 +614,7 @@ void ScaleDraw::drawBackbone(QPainter *painter) const
     }
 
     QwtScaleMap scaleMap = map();
-    const QwtMetricsMap metricsMap = QwtPainter::metricsMap();
     QPoint pos = this->pos();
-
-    if ( !metricsMap.isIdentity() ){
-        QwtPainter::resetMetricsMap();
-        pos = metricsMap.layoutToDevice(pos);
-
-        if ( orientation() == Qt::Vertical ){
-            scaleMap.setPaintInterval(
-                metricsMap.layoutToDeviceY((int)scaleMap.p1()),
-                metricsMap.layoutToDeviceY((int)scaleMap.p2()));
-        } else {
-            scaleMap.setPaintInterval(
-                metricsMap.layoutToDeviceX((int)scaleMap.p1()),
-                metricsMap.layoutToDeviceX((int)scaleMap.p2()));
-        }
-    }
-
 	const int start = scaleMap.transform(sc_engine->axisBreakLeft());
 	const int end = scaleMap.transform(sc_engine->axisBreakRight());
     int lb = start, rb = end;
@@ -653,33 +623,49 @@ void ScaleDraw::drawBackbone(QPainter *painter) const
 		rb = start;
 	}
 
-	const int bw = painter->pen().width();
-    const int bw2 = bw / 2;
-    const int len = length() - 1;
-    int aux;
-	switch(alignment())
-    {
-        case LeftScale:
-            aux = pos.x() - bw2;
-            QwtPainter::drawLine(painter, aux, pos.y(), aux, rb);
-            QwtPainter::drawLine(painter, aux, lb + bw, aux, pos.y() + len);
-            break;
-        case RightScale:
-            aux = pos.x() + bw2;
-            QwtPainter::drawLine(painter, aux, pos.y(), aux, rb - bw - 1);
-            QwtPainter::drawLine(painter, aux, lb - bw2, aux, pos.y() + len);
-            break;
-        case TopScale:
-            aux = pos.y() - bw2;
-            QwtPainter::drawLine(painter, pos.x(), aux, lb - bw2, aux);
-            QwtPainter::drawLine(painter, rb + bw, aux, pos.x() + len, aux);
-            break;
-        case BottomScale:
-            aux = pos.y() + bw2;
-            QwtPainter::drawLine(painter, pos.x(), aux, lb - bw, aux);
-            QwtPainter::drawLine(painter, rb, aux, pos.x() + len, aux);
-            break;
-    }
+	if (d_plot->isPrinting()){
+		const int len = length();
+		switch(alignment()){
+			case LeftScale:
+			case RightScale:
+				QwtPainter::drawLine(painter, pos.x(), pos.y(), pos.x(), rb - 1);
+				QwtPainter::drawLine(painter, pos.x(), lb + 1, pos.x(), pos.y() + len);
+			break;
+			case TopScale:
+			case BottomScale:
+				QwtPainter::drawLine(painter, pos.x(), pos.y(), lb - 1, pos.y());
+				QwtPainter::drawLine(painter, rb + 1, pos.y(), pos.x() + len, pos.y());
+			break;
+		}
+	} else {
+		const int bw = painter->pen().width();
+		const int bw2 = bw / 2;
+		const int len = length() - 1;
+		int aux;
+		switch(alignment())
+		{
+			case LeftScale:
+				aux = pos.x() - bw2;
+				QwtPainter::drawLine(painter, aux, pos.y(), aux, rb);
+				QwtPainter::drawLine(painter, aux, lb + bw, aux, pos.y() + len);
+				break;
+			case RightScale:
+				aux = pos.x() + bw2;
+				QwtPainter::drawLine(painter, aux, pos.y(), aux, rb - bw - 1);
+				QwtPainter::drawLine(painter, aux, lb - bw2, aux, pos.y() + len);
+				break;
+			case TopScale:
+				aux = pos.y() - bw2;
+				QwtPainter::drawLine(painter, pos.x(), aux, lb - bw2, aux);
+				QwtPainter::drawLine(painter, rb + bw, aux, pos.x() + len, aux);
+				break;
+			case BottomScale:
+				aux = pos.y() + bw2;
+				QwtPainter::drawLine(painter, pos.x(), aux, lb - bw, aux);
+				QwtPainter::drawLine(painter, rb, aux, pos.x() + len, aux);
+				break;
+		}
+	}
 }
 
 void ScaleDraw::setDayFormat(NameFormat format)

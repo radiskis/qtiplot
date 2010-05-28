@@ -656,7 +656,7 @@ QString LegendWidget::parse(const QString& str)
 								}
 								case 4:  //4 arguments, display cell contents
 								{
-									int col = lst[0].toInt() - 1;
+									int col = lst[3].toInt() - 1;
 									int row = lst[2].toInt() - 1;
 									s = s.replace(pos, pos2-pos+1, t->text(row, col));
 									break;
