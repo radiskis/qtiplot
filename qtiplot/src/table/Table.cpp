@@ -83,10 +83,8 @@ void Table::init(int rows, int cols)
 	d_table->setColumnMovingEnabled(true);
 	d_table->setCurrentCell(-1, -1);
 
-	connect(d_table->verticalHeader(), SIGNAL(indexChange(int, int, int)),
-			this, SLOT(notifyChanges()));
-    connect(d_table->horizontalHeader(), SIGNAL(indexChange(int, int, int)),
-			this, SLOT(moveColumn(int, int, int)));
+	connect(d_table->verticalHeader(), SIGNAL(indexChange(int, int, int)), this, SLOT(notifyChanges()));
+	connect(d_table->horizontalHeader(), SIGNAL(indexChange(int, int, int)), this, SLOT(moveColumn(int, int, int)));
 
 	setFocusPolicy(Qt::StrongFocus);
 	setFocus();
@@ -1644,6 +1642,7 @@ void Table::removeCol(const QStringList& list)
 
 			d_table->removeColumn(id);
 			emit removedCol(name);
+			emit removedCol(id);
 		}
 	}
 	emit modifiedWindow(this);
@@ -3608,6 +3607,7 @@ void Table::swapColumns(int col1, int col2)
     d_table->setColumnWidth(col2, width1);
     setHeaderColType();
 	emit modifiedWindow(this);
+	emit colIndexChanged(col1, col2);
 }
 
 void Table::moveColumnBy(int cols)
@@ -3636,6 +3636,7 @@ void Table::moveColumnBy(int cols)
 		colTypes.move(oldPos, newPos);
 		col_format.move(oldPos, newPos);
 		col_plot_type.move(oldPos, newPos);
+		emit colIndexChanged(oldPos, newPos);
 	} else
 		swapColumns(oldPos, newPos);
 
