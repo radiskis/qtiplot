@@ -1023,7 +1023,7 @@ void ConfigDialog::initLayerGeometryPage()
 	gl->addWidget(boxCanvasHeight, 2, 1);
 
 	keepRatioBox = new QCheckBox(tr("&Keep aspect ratio"));
-	keepRatioBox->setChecked(true);
+	keepRatioBox->setChecked(app->d_keep_aspect_ration);
 	gl->addWidget(keepRatioBox, 3, 1);
 
 	gl->setRowStretch(4, 1);
@@ -2097,6 +2097,7 @@ void ConfigDialog::apply()
 		FrameWidget::Unit unit = (FrameWidget::Unit)unitBox->currentIndex();
 		app->d_layer_canvas_width = convertToPixels(boxCanvasWidth->value(), unit, 0);
 		app->d_layer_canvas_height = convertToPixels(boxCanvasHeight->value(), unit, 1);
+		app->d_keep_aspect_ration = keepRatioBox->isChecked();
 	}
 
 	// 2D plots page: ticks tab
