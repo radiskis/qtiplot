@@ -11928,13 +11928,18 @@ TableStatistics* ApplicationWindow::openTableStatistics(const QStringList &flist
 	TableStatistics* w = newTableStatistics(table(list[1]),
 			list[2]=="row" ? TableStatistics::row : TableStatistics::column, targets, caption);
 
-	setListViewDate(caption,list[3]);
+	setListViewDate(caption, list[3]);
 	w->setBirthDate(list[3]);
 
 	for (line++; line!=flist.end(); line++){
 		QStringList fields = (*line).split("\t");
-		if (fields[0] == "geometry"){
-			restoreWindowGeometry(this, w, *line);}
+		if (fields[0] == "ColStatType"){
+			QList <int> colStatTypes;
+			for (int i = 1; i < fields.size(); i++)
+				colStatTypes << fields[i].toInt();
+			w->setColumnStatsTypes(colStatTypes);
+		} else if (fields[0] == "geometry")
+			restoreWindowGeometry(this, w, *line);
 		else if (fields[0] == "header"){
 			fields.pop_front();
 

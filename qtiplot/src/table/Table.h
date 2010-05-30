@@ -140,10 +140,10 @@ public slots:
 	void removeCol();
 	void removeCol(const QStringList& list);
 	void insertCol();
-	void insertCols(int start, int count);
-	void addCol(PlotDesignation pd = Y);
+	virtual void insertCols(int start, int count);
+	virtual void addCol(PlotDesignation pd = Y);
 	void addColumns(int c);
-	void moveColumn(int, int, int);
+	virtual void moveColumn(int, int, int);
 	void swapColumns(int, int);
 	void moveColumnBy(int cols);
 	void hideSelectedColumns();
@@ -347,6 +347,8 @@ public slots:
 signals:
 	void changedColHeader(const QString&, const QString&);
 	void removedCol(const QString&);
+	void removedCol(int);
+	void colIndexChanged(int, int);
 	void modifiedData(Table *, const QString&);
 	void optionsDialog();
 	void colValuesDialog();
