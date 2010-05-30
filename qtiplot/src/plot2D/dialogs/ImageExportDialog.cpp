@@ -240,7 +240,7 @@ void ImageExportDialog::initAdvancedOptions()
 	size_layout->addWidget(scaleFontsBox, 3, 1);
 
 	keepRatioBox = new QCheckBox(tr("&Keep aspect ratio"));
-	keepRatioBox->setChecked(true);
+	keepRatioBox->setChecked(app->d_keep_aspect_ration);
     size_layout->addWidget(keepRatioBox, 4, 1);
 
 	vert_layout->addWidget(d_custom_size_box);
@@ -340,6 +340,7 @@ void ImageExportDialog::closeEvent(QCloseEvent* e)
 
 		app->d_3D_export_text_mode = d_3D_text_export_mode->currentIndex();
 		app->d_3D_export_sort = d_3D_export_sort->currentIndex();
+		app->d_keep_aspect_ration = keepRatioBox->isChecked();
 	}
 
 	e->accept();

@@ -460,6 +460,7 @@ void EnrichmentDialog::initGeometryPage()
     gl2->addWidget(heightBox, 1, 1);
 
 	keepAspectBox = new QCheckBox(tr("&Keep aspect ratio"));
+	keepAspectBox->setChecked(app->d_keep_aspect_ration);
 	gl2->addWidget(keepAspectBox, 2, 1);
 
 	bestSizeButton = new QPushButton(tr("&Best size"));
@@ -646,6 +647,10 @@ void EnrichmentDialog::apply()
 		FrameWidget *fw = qobject_cast<FrameWidget *>(d_widget);
         if (fw)
             fw->setAttachPolicy((FrameWidget::AttachPolicy)attachToBox->currentIndex());
+
+		ApplicationWindow *app = (ApplicationWindow *)this->parent();
+		if (app)
+			app->d_keep_aspect_ration = keepAspectBox->isChecked();
 	} else if (patternPage && tabWidget->currentPage() == patternPage)
 		patternApplyTo();
 	else if (textPage && tabWidget->currentPage() == textPage){

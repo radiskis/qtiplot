@@ -503,14 +503,18 @@ void PlotDialog::initPlotGeometryPage()
 	gl2->addWidget(new QLabel( tr("width= ")), 0, 0);
 	gl2->addWidget(boxPlotWidth, 0, 1);
 
-	gl2->addWidget(new QLabel(tr("height= ")), 2, 0);
-	gl2->addWidget(boxPlotHeight, 2, 1);
+	gl2->addWidget(new QLabel(tr("height= ")), 1, 0);
+	gl2->addWidget(boxPlotHeight, 1, 1);
 
 	keepPlotRatioBox = new QCheckBox(tr("Keep aspect ratio"));
 	keepPlotRatioBox->setChecked(app->d_keep_aspect_ration);
-	gl2->addWidget(keepRatioBox, 3, 1);
 
-	gl2->setRowStretch(4, 1);
+	connect(keepPlotRatioBox, SIGNAL(clicked (bool)), keepRatioBox, SLOT(setChecked(bool)));
+	connect(keepRatioBox, SIGNAL(clicked (bool)), keepPlotRatioBox, SLOT(setChecked(bool)));
+
+	gl2->addWidget(keepPlotRatioBox, 2, 1);
+
+	gl2->setRowStretch(3, 1);
 
 	QHBoxLayout *bl2 = new QHBoxLayout();
 	bl2->addWidget(gb1);
@@ -582,25 +586,25 @@ void PlotDialog::initLayerGeometryPage()
 	gl2->addWidget(new QLabel( tr("width= ")), 0, 0);
 	gl2->addWidget(boxLayerWidth, 0, 1);
 
-	gl2->addWidget(new QLabel(tr("height= ")), 2, 0);
-	gl2->addWidget(boxLayerHeight, 2, 1);
+	gl2->addWidget(new QLabel(tr("height= ")), 1, 0);
+	gl2->addWidget(boxLayerHeight, 1, 1);
 
 	keepRatioBox = new QCheckBox(tr("Keep aspect ratio"));
 	keepRatioBox->setChecked(app->d_keep_aspect_ration);
-	gl2->addWidget(keepRatioBox, 3, 1);
+	gl2->addWidget(keepRatioBox, 2, 1);
 
 	QLabel *l = new QLabel(tr("Apply &to..."));
-	gl2->addWidget(l, 4, 0);
+	gl2->addWidget(l, 3, 0);
 
 	sizeApplyToBox = new QComboBox();
 	sizeApplyToBox->insertItem(tr("Layer"));
 	sizeApplyToBox->insertItem(tr("Window"));
 	sizeApplyToBox->insertItem(tr("All Windows"));
-	gl2->addWidget(sizeApplyToBox, 4, 1);
+	gl2->addWidget(sizeApplyToBox, 3, 1);
 
 	l->setBuddy(sizeApplyToBox);
 
-	gl2->setRowStretch(5, 1);
+	gl2->setRowStretch(4, 1);
 
 	QBoxLayout *bl2 = new QBoxLayout (QBoxLayout::LeftToRight);
 	bl2->addWidget(gb1);
