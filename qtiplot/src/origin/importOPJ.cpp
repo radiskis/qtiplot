@@ -1329,7 +1329,8 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 					graph->showAxis(i, type, tableName, mw->table(tableName), !(formats[i].hidden),
 						tickTypeMap[formats[i].majorTicksType], tickTypeMap[formats[i].minorTicksType],
 						!(ticks[i].hidden),	ColorBox::defaultColor(formats[i].color), format, prec,
-						-ticks[i].rotation, 0, "", (ticks[i].color == 0xF7 ? ColorBox::defaultColor(formats[i].color) : ColorBox::defaultColor(ticks[i].color)));
+						-ticks[i].rotation, 0, "", (ticks[i].color == 0xF7 ? ColorBox::defaultColor(formats[i].color) : ColorBox::defaultColor(ticks[i].color)),
+						4, true, ScaleDraw::ShowAll, QString(formats[i].prefix.c_str()), QString(formats[i].suffix.c_str()));
 
 				QFont fnt = graph->axisTitleFont(i);
 				int fontSize = formats[i].label.fontSize;

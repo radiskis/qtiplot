@@ -1290,8 +1290,10 @@ void Origin750Parser::readGraphInfo()
 			LAYER += 0x5;
 			unsigned int osize = size;
 
-			unsigned char type;
 			file.seekg(LAYER, ios_base::beg);
+			readGraphAxisPrefixSuffixInfo(sec_name, size, layer);
+
+			unsigned char type;
 			file >> type;
 
 			//text properties
@@ -2439,6 +2441,43 @@ void Origin750Parser::readColorMap(ColorMap& colorMap)
 		file >> value;
 
 		colorMap.levels.push_back(make_pair(value, level));
+	}
+}
+
+void Origin750Parser::readGraphAxisPrefixSuffixInfo(const string& sec_name, unsigned int size, GraphLayer& layer)
+{
+	if(sec_name == "PL"){
+		string text(size, 0);
+		file >> text;
+		layer.yAxis.formatAxis[0].prefix = text;
+	} else if(sec_name == "PR"){
+		string text(size, 0);
+		file >> text;
+		layer.yAxis.formatAxis[1].prefix = text;
+	} else if(sec_name == "PB"){
+		string text(size, 0);
+		file >> text;
+		layer.xAxis.formatAxis[0].prefix = text;
+	} else if(sec_name == "PT"){
+		string text(size, 0);
+		file >> text;
+		layer.xAxis.formatAxis[1].prefix = text;
+	} if(sec_name == "SL"){
+		string text(size, 0);
+		file >> text;
+		layer.yAxis.formatAxis[0].suffix = text;
+	} else if(sec_name == "SR"){
+		string text(size, 0);
+		file >> text;
+		layer.yAxis.formatAxis[1].suffix = text;
+	} else if(sec_name == "SB"){
+		string text(size, 0);
+		file >> text;
+		layer.xAxis.formatAxis[0].suffix = text;
+	} else if(sec_name == "ST"){
+		string text(size, 0);
+		file >> text;
+		layer.xAxis.formatAxis[1].suffix = text;
 	}
 }
 
