@@ -12471,6 +12471,33 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot, co
 					sd->setShowTicksPolicy((ScaleDraw::ShowTicksPolicy)lst[i].toInt());
 			}
 		}
+		else if (s.contains ("LabelsPrefix")){
+			QStringList lst = s.split("\t");
+			lst.removeFirst();
+			for (int i = 0; i < QwtPlot::axisCnt && i < lst.size(); i++){
+				QString prefix = lst[i];
+				if (prefix.isEmpty())
+					continue;
+				ScaleDraw *sd = (ScaleDraw *)ag->axisScaleDraw(i);
+				if (sd){
+					sd->setPrefix(prefix);
+					ag->axisWidget(i)->setScaleDraw(new ScaleDraw(ag, sd));
+				}
+			}
+		} else if (s.contains ("LabelsSuffix")){
+			QStringList lst = s.split("\t");
+			lst.removeFirst();
+			for (int i = 0; i < QwtPlot::axisCnt && i < lst.size(); i++){
+				QString s = lst[i];
+				if (s.isEmpty())
+					continue;
+				ScaleDraw *sd = (ScaleDraw *)ag->axisScaleDraw(i);
+				if (sd){
+					sd->setSuffix(s);
+					ag->axisWidget(i)->setScaleDraw(new ScaleDraw(ag, sd));
+				}
+			}
+		}
 		else if (s.contains ("CanvasFrame")){
 			QStringList lst = s.split("\t");
 			ag->setCanvasFrame(lst[1].toInt(), QColor(lst[2]));

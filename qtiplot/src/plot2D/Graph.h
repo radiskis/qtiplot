@@ -429,6 +429,7 @@ class Graph: public QwtPlot
 		QString saveAxesFormulas();
 		QString saveAxesBackbones();
 		QString saveTickLabelsSpace();
+		QString saveLabelsPrefixAndSuffix();
 		//@}
 
 		//! \name Texts
@@ -543,7 +544,8 @@ class Graph: public QwtPlot
 		void showAxis(int axis, int type, const QString& formatInfo, Table *table, bool axisOn,
 				int majTicksType, int minTicksType, bool labelsOn, const QColor& c, int format,
 				int prec, int rotation, int baselineDist, const QString& formula, const QColor& labelsColor,
-				int spacing = 4, bool backbone = true, const ScaleDraw::ShowTicksPolicy& showTicks = ScaleDraw::ShowAll);
+				int spacing = 4, bool backbone = true, const ScaleDraw::ShowTicksPolicy& showTicks = ScaleDraw::ShowAll,
+				const QString& prefix = QString::null, const QString& suffix = QString::null);
 
 		void enableAxis(int axis, bool on = true);
 		void enableAxisLabels(int axis, bool on = true);

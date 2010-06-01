@@ -60,7 +60,9 @@ ScaleDraw::ScaleDraw(Graph *plot, const QString& formula):
 	d_date_time_origin(QDateTime::currentDateTime()),
 	d_format_info("YYYY-MM-DDTHH:MM:SS"),
 	d_text_labels(QStringList()),
-	d_show_ticks_policy(ShowAll)
+	d_show_ticks_policy(ShowAll),
+	d_prefix(""),
+	d_suffix("")
 {}
 
 ScaleDraw::ScaleDraw(Graph *plot, const QStringList& labels, const QString& format, ScaleType type):
@@ -76,7 +78,9 @@ ScaleDraw::ScaleDraw(Graph *plot, const QStringList& labels, const QString& form
 	d_name_format(ShortName),
 	d_date_time_origin(QDateTime::currentDateTime()),
 	d_format_info(format),
-	d_text_labels(labels)
+	d_text_labels(labels),
+	d_prefix(""),
+	d_suffix("")
 {}
 
 ScaleDraw::ScaleDraw(Graph *plot, ScaleDraw* sd):
@@ -95,12 +99,23 @@ ScaleDraw::ScaleDraw(Graph *plot, ScaleDraw* sd):
 	d_format_info = sd->d_format_info;
 	d_text_labels = sd->d_text_labels;
 	d_show_ticks_policy = sd->showTicksPolicy();
+	d_prefix = sd->prefix();
+	d_suffix = sd->suffix();
 
 	setLabelAlignment(sd->labelAlignment());
 	setLabelRotation(sd->labelRotation());
 }
 
 QwtText ScaleDraw::label(double value) const
+{
+	QString s = labelString(value);
+	if (s.isEmpty())
+		return QwtText();
+
+	return QwtText(d_prefix + s + d_suffix);
+}
+
+QString ScaleDraw::labelString(double value) const
 {
 	switch (d_type){
 		case Numeric:
@@ -112,10 +127,10 @@ QwtText ScaleDraw::label(double value) const
 				QString txt = locale.toString(transformValue(value), 'e', d_prec);
 				QStringList list = txt.split("e", QString::SkipEmptyParts);
 				if (list.isEmpty())
-					return QwtText();
+					return QString::null;
 
 				if (list[0].toDouble() == 0.0)
-					return QwtText("0");
+					return "0";
 
 				QString s = list[1];
 				int l = s.length();
@@ -131,12 +146,12 @@ QwtText ScaleDraw::label(double value) const
 					s.prepend(sign);
 
 				if (list[0] == "1")
-					return QwtText("10<sup>" + s + "</sup>");
+					return "10<sup>" + s + "</sup>";
 				else{
 					if (d_numeric_format == SuperscriptsGER)
-						return QwtText(list[0] + "·10<sup>" + s + "</sup>");
+						return list[0] + "·10<sup>" + s + "</sup>";
 					else
-						return QwtText(list[0] + "x10<sup>" + s + "</sup>");
+						return list[0] + "x10<sup>" + s + "</sup>";
 				}
 			} else if (d_numeric_format == Engineering){
 				QString eng_suff;
@@ -186,11 +201,11 @@ QwtText ScaleDraw::label(double value) const
 				QString txt = locale.toString((new_value), 'f', d_prec);
 
 				if(txt.contains(QRegExp("^0[\\.,]?0*$")))
-					return QwtText("0");
+					return "0";
 
-				return QwtText(txt + eng_suff);
+				return txt + eng_suff;
 			} else
-				return QwtText(locale.toString(transformValue(value), d_fmt, d_prec));
+				return locale.toString(transformValue(value), d_fmt, d_prec);
 		break;
 		}
 
@@ -214,7 +229,7 @@ QwtText ScaleDraw::label(double value) const
 					day = (QDate::shortDayName (val)).left(1);
 				break;
 			}
-			return QwtText(day);
+			return day;
 		break;
 		}
 
@@ -238,7 +253,7 @@ QwtText ScaleDraw::label(double value) const
 					day = (QDate::shortMonthName (val)).left(1);
 				break;
 			}
-			return QwtText(day);
+			return day;
 		break;
 		}
 
@@ -246,24 +261,24 @@ QwtText ScaleDraw::label(double value) const
 		{
 			QTime time = d_date_time_origin.time().addMSecs((int)value);
 			if (d_format_info == "M")
-				return QwtText(QString::number(60*time.hour() + time.minute()));
+				return QString::number(60*time.hour() + time.minute());
 			else if (d_format_info == "S")
-				return QwtText(QString::number(3600*time.hour() + 60*time.minute() + time.second()));
+				return QString::number(3600*time.hour() + 60*time.minute() + time.second());
 
-			return QwtText(time.toString(d_format_info));
+			return time.toString(d_format_info);
 		break;
 		}
 
 		case Date:
-            return QwtText(d_date_time_origin.addSecs((int)value).toString(d_format_info));
+			return d_date_time_origin.addSecs((int)value).toString(d_format_info);
 		break;
 
 		case ColHeader:
 		case Text:
 		{
 			const QwtScaleDiv scDiv = scaleDiv();
-			if (!scDiv.contains (value))
-				return QwtText();
+			if (!scDiv.contains (value) || floor(value) < value)
+				return QString::null;
 
 			QwtValueList ticks = scDiv.ticks (QwtScaleDiv::MajorTick);
 
@@ -305,7 +320,7 @@ QwtText ScaleDraw::label(double value) const
 			}
 
 			if (ticks.size() < 2)
-				return QwtText();
+				return QString::null;
 
         	double step = ticks[1] - ticks[0];
         	int index = int(ticks[0] + step*ticks.indexOf(value) - 1);
@@ -317,13 +332,13 @@ QwtText ScaleDraw::label(double value) const
             else
                 index -= offset;
 			if (index >= 0 && index < (int)d_text_labels.count())
-        		return QwtText(d_text_labels[index]);
+				return d_text_labels[index];
 			else
-				return QwtText();
+				return QString::null;
 		break;
 		}
 	}
-	return QwtText();
+	return QString::null;
 }
 
 void ScaleDraw::drawLabel(QPainter *painter, double value) const

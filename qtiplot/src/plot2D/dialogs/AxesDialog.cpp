@@ -643,15 +643,22 @@ void AxesDialog::initAxesPage()
 	boxAxisNumColor = new ColorButton();
 	rightBoxLayout->addWidget( boxAxisNumColor, 5, 1 );
 
+	rightBoxLayout->addWidget(new QLabel(tr( "Prefix" )), 6, 0);
+	boxPrefix = new QLineEdit();
+	rightBoxLayout->addWidget( boxPrefix, 6, 1 );
+	rightBoxLayout->addWidget(new QLabel(tr( "Suffix" )), 7, 0);
+	boxSuffix = new QLineEdit();
+	rightBoxLayout->addWidget( boxSuffix, 7, 1 );
+
 	boxShowFormula = new QCheckBox(tr( "For&mula" ));
-	rightBoxLayout->addWidget( boxShowFormula, 6, 0 );
+	rightBoxLayout->addWidget( boxShowFormula, 8, 0 );
 
 	boxFormula = new QTextEdit();
 	boxFormula->setTextFormat(Qt::PlainText);
 	boxFormula->setMaximumHeight(3*metrics.height());
 	boxFormula->hide();
-	rightBoxLayout->addWidget( boxFormula, 6, 1 );
-	rightBoxLayout->setRowStretch(7, 1);
+	rightBoxLayout->addWidget( boxFormula, 8, 1 );
+	rightBoxLayout->setRowStretch(9, 1);
 
 	QVBoxLayout * rightLayout = new QVBoxLayout();
 	rightLayout->addLayout( topLayout );
@@ -1680,7 +1687,11 @@ void AxesDialog::updateCurrentAxis()
 		showTicksPolicyBox->blockSignals(true);
 		showTicksPolicyBox->setCurrentIndex(sd->showTicksPolicy());
 		showTicksPolicyBox->blockSignals(false);
+
+		boxPrefix->setText(sd->prefix());
+		boxSuffix->setText(sd->suffix());
 	}
+	boxShowLabels->repaint();
 }
 
 void AxesDialog::setTicksType(int)
@@ -1935,7 +1946,8 @@ void AxesDialog::showAxis(int axis, int type, const QString& labelsColName, bool
 	if (!d_graph)
 		return;
 	d_graph->showAxis(axis, type, labelsColName, w, axisOn, majTicksType, minTicksType, labelsOn,
-			c, format, prec, rotation, baselineDist, formula, labelsColor, spacing, backbone, (ScaleDraw::ShowTicksPolicy)showTicks);
+			c, format, prec, rotation, baselineDist, formula, labelsColor, spacing, backbone,
+			(ScaleDraw::ShowTicksPolicy)showTicks, boxPrefix->text(), boxSuffix->text());
 }
 
 void AxesDialog::applyCanvasFormatTo(Graph *g)
