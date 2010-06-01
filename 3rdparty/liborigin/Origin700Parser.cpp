@@ -705,8 +705,10 @@ void Origin700Parser::readGraphInfo()
 			LAYER += 0x5;
 			unsigned int osize = size;
 
-			unsigned char type;
 			file.seekg(LAYER, ios_base::beg);
+			readGraphAxisPrefixSuffixInfo(sec_name, size, layer);
+
+			unsigned char type;
 			file >> type;
 
 			//text properties

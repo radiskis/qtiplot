@@ -520,6 +520,8 @@ namespace Origin
 		int axisPosition;
 		double axisPositionValue;
 		TextBox label;
+		string prefix;
+		string suffix;
 	};
 
 	struct GraphAxisTick

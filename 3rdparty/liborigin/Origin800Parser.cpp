@@ -1300,7 +1300,6 @@ void Origin800Parser::readGraphInfo()
 			//section_body_2
 			LAYER += 0x5;
 			//check if it is a axis or legend
-
 			file.seekg(1, ios_base::cur);
 			if(sec_name == "XB")
 			{
@@ -1458,6 +1457,8 @@ void Origin800Parser::readGraphInfo()
 				file.seekg(7, ios_base::cur);
 				file >> layer.colorScale.colorBarThickness;
 				file >> layer.colorScale.labelGap;
+				file.seekg(56, ios_base::cur);
+				file >> layer.colorScale.labelsColor;
 			}
 			else if(osize == 0x3E) // text
 			{

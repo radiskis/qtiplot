@@ -54,6 +54,7 @@ protected:
 	void readGraphAxisBreakInfo(GraphAxisBreak& axis_break);
 	void readGraphAxisFormatInfo(GraphAxisFormat& format);
 	void readGraphAxisTickLabelsInfo(GraphAxisTick& tick);
+	void readGraphAxisPrefixSuffixInfo(const string& sec_name, unsigned int size, GraphLayer& layer);
 	void readProjectTree();
 	virtual void readProjectTreeFolder(tree<ProjectNode>::iterator parent);
 	void readWindowProperties(Window& window, unsigned int size);
