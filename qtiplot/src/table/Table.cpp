@@ -2,7 +2,8 @@
     File                 : Table.cpp
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2006 by Ion Vasilief, Knut Franke
+	Copyright            : (C) 2004 - 2010 by Ion Vasilief
+						   (C) 2006 - june 2007 byKnut Franke
     Email (use @ for *)  : ion_vasilief*yahoo.fr, knut.franke*gmx.de
     Description          : Table worksheet class
 

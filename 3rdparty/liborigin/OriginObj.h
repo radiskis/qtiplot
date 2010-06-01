@@ -673,6 +673,7 @@ namespace Origin
 		ColorScale colorScale;
 
 		vector<TextBox> texts;
+		vector<TextBox> pieTexts;
 		vector<Line> lines;
 		vector<Figure> figures;
 		vector<Bitmap> bitmaps;

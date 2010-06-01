@@ -242,8 +242,7 @@ bool ImportOPJ::importTables(const OriginFile& opj)
 			return false;
 
 		Origin::Rect windowRect;
-		if(opj.version() >= 6.0)
-		{
+		if(opj.version() >= 6.0){
 			windowRect = spread.frameRect;
 			table->resize(windowRect.width() - (table->frameGeometry().width() - table->width()),
 				windowRect.height() - (table->frameGeometry().height() - table->height()));
@@ -291,12 +290,13 @@ bool ImportOPJ::importTables(const OriginFile& opj)
             for(int i = 0; i < columnCount; ++i)
                 d_cells[i] = new double [table->numRows()];
 
-			bool set_text_column = false;
+			bool set_text_column = true;
+			bool has_texts = false;
 			for(unsigned int i = 0; i < column.data.size(); ++i){
 				Origin::variant value = column.data[i];
 				if(column.valueType != Origin::Text){// number
 					if(value.type() == typeid(string)){//Origin::TextNumeric column should be set to Text
-						//set_text_column = true;
+						has_texts = true;
 						table->setText(i, j, QString(boost::get<string>(value).c_str()));
 					}
 
@@ -307,6 +307,7 @@ bool ImportOPJ::importTables(const OriginFile& opj)
 					if(fabs(val)>0 && fabs(val)<2.0e-300)// empty entry
 						continue;
 
+					set_text_column = false;
                     table->setText(i, j, locale.toString(val, 'g', 16));
                     d_cells[j][i] = val;
 				} else {// label? doesn't seem to work
@@ -343,7 +344,7 @@ bool ImportOPJ::importTables(const OriginFile& opj)
 						f=0;
 						break;
 					}
-				table->setColNumericFormat(f, column.decimalPlaces, j);
+				table->setColNumericFormat(f, column.decimalPlaces, j, !has_texts);
 				break;
 			case Origin::Text:
 				table->setTextFormat(j);
@@ -1106,21 +1107,21 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 					if(_curve.fillAreaColor.type == Origin::Color::Increment)
 						p->setFirstColor(_curve.fillAreaColor.starting);
 					//geometry
-                    p->setRadius(_curve.pie.radius);
-                    p->setThickness(_curve.pie.thickness);
+					p->setRadius(_curve.pie.radius);
+					p->setThickness(_curve.pie.thickness);
 					p->setViewAngle(_curve.pie.viewAngle);
 					p->setStartAzimuth(_curve.pie.rotation);
 					p->setCounterClockwise(_curve.pie.clockwiseRotation);
-                    p->setHorizontalOffset(_curve.pie.horizontalOffset);
+					p->setHorizontalOffset(_curve.pie.horizontalOffset);
 					//labels
 					p->setLabelsEdgeDistance(_curve.pie.distance);
-					p->setLabelsAutoFormat(_curve.pie.formatAutomatic);
+					p->setLabelsAutoFormat(false);
 					p->setLabelPercentagesFormat(_curve.pie.formatPercentages);
-                    p->setLabelValuesFormat(_curve.pie.formatValues);
-                    p->setLabelCategories(_curve.pie.formatCategories);
-                    p->setFixedLabelsPosition(_curve.pie.positionAssociate);
+					p->setLabelValuesFormat(_curve.pie.formatValues);
+					p->setLabelCategories(_curve.pie.formatCategories);
+					p->setFixedLabelsPosition(_curve.pie.positionAssociate);
 
-                    graph->setFrame(0);
+					graph->setFrame(0);
 				} else if(style == Graph::VectXYXY || style == Graph::VectXYAM){
 					graph->updateVectorsLayout(c, cl.symCol, _curve.vector.width,
 						floor(_curve.vector.arrowLenght*fVectorArrowScaleFactor + 0.5), _curve.vector.arrowAngle, _curve.vector.arrowClosed, _curve.vector.position);
@@ -1358,16 +1359,18 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 				addText(layer.legend, graph, fFontScaleFactor, fScale);
 
 			//add texts
-			if(style != Graph::Pie){
-				for(unsigned int i = 0; i < layer.texts.size(); ++i)
-					addText(layer.texts[i], graph, fFontScaleFactor, fScale);
-			}
+			for(unsigned int i = 0; i < layer.texts.size(); ++i)
+				addText(layer.texts[i], graph, fFontScaleFactor, fScale);
+
+			if (style == Graph::Pie)
+				setPieTexts((QwtPieCurve *)graph->curve(0), graph, layer, fFontScaleFactor, fScale);
 
 			for(unsigned int i = 0; i < layer.lines.size(); ++i){
 				ArrowMarker mrk;
 
-				if (layer.lines[i].attach == Origin::Page){
+				if (layer.lines[i].attach == Origin::Page || style == Graph::Pie){
 					mrk.setAttachPolicy(ArrowMarker::Page);
+
 					QPoint pos = graph->canvas()->mapFrom(ml->canvas(), QPoint(layer.lines[i].clientRect.left*fScale + 2*layer.lines[i].width, layer.lines[i].clientRect.top*fScale - yOffset));
 					mrk.setEndPoint(graph->invTransform(QwtPlot::xBottom, pos.x()), graph->invTransform(QwtPlot::yLeft, pos.y()));
 					pos = graph->canvas()->mapFrom(ml->canvas(), QPoint(layer.lines[i].clientRect.right*fScale, layer.lines[i].clientRect.bottom*fScale - yOffset));
@@ -1940,6 +1943,53 @@ bool ImportOPJ::importGraph3D(const OriginFile& opj, unsigned int g, unsigned in
 	return true;
 }
 
+void ImportOPJ::setPieTexts(QwtPieCurve *p, Graph* graph, const Origin::GraphLayer& layer, double fFontScaleFactor, double fScale)
+{
+	if (!p || !graph)
+		return;
+
+	QList <PieLabel *> pieTexts = p->labelsList();
+	QFont font(mw->plotLegendFont);
+	unsigned int lsize = layer.pieTexts.size();
+	for(unsigned int i = 0; i < lsize && i < pieTexts.size(); ++i){
+		Origin::TextBox text = layer.pieTexts[lsize - i - 1];
+		font.setPointSizeF(text.fontSize*fFontScaleFactor);
+		QFontMetrics fm(font, graph);
+		PieLabel *l = pieTexts[i];
+		l->setFont(font);
+		l->setTextColor(originToQtColor(text.color));
+
+		int bkg;
+		QColor bkgColor = Qt::white;
+		switch(text.borderType){
+			case Origin::BlackLine:
+				bkg = 1;
+				break;
+			case Origin::Shadow:
+				bkg = 2;
+				break;
+			case Origin::DarkMarble:
+				bkg = 1;
+				bkgColor = Qt::darkGray;
+				break;
+			case Origin::BlackOut:
+				bkg = 0;
+				bkgColor = Qt::black;
+				break;
+			default:
+				bkg = 0;
+				bkgColor.setAlpha(0);
+				break;
+		}
+		l->setFrameStyle(bkg);
+		l->setBackgroundColor(bkgColor);
+		l->setCustomText(QString(text.text.c_str()));
+		l->move(QPoint(qRound(text.clientRect.left*fScale - fm.averageCharWidth()*fFontScaleFactor - l->framePen().width()),
+				qRound((text.clientRect.top - fm.lineSpacing())*fScale) - LayerButton::btnSize() - l->framePen().width()));
+		l->setAttachPolicy(FrameWidget::Page);
+	}
+}
+
 void ImportOPJ::addText(const Origin::TextBox& text, Graph* graph, double fFontScaleFactor, double fScale)
 {
 	int bkg;
@@ -1965,8 +2015,7 @@ void ImportOPJ::addText(const Origin::TextBox& text, Graph* graph, double fFontS
 			break;
 	}
 
-	QString s = parseOriginText(QString::fromLocal8Bit(text.text.c_str()));
-	LegendWidget* txt = graph->newLegend(s);
+	LegendWidget* txt = graph->newLegend(parseOriginText(QString::fromLocal8Bit(text.text.c_str())));
 
 	QFont font(mw->plotLegendFont);
 	font.setPointSizeF(text.fontSize*fFontScaleFactor);
@@ -1985,7 +2034,7 @@ void ImportOPJ::addText(const Origin::TextBox& text, Graph* graph, double fFontS
 	if (text.rotation == 90)//TODO: better take into account the rotation
 		txt->move(QPoint(txt->x(), txt->y() - txt->width()));
 
-	txt->setAttachPolicy(FrameWidget::Scales);
+	txt->setAttachPolicy(FrameWidget::Page);
 }
 
 QString ImportOPJ::parseOriginText(const QString &str)

@@ -577,33 +577,20 @@ QString LegendWidget::parse(const QString& str)
 		QString spec = str.mid(pos + 2, pos2 - pos - 2);
 		QStringList lst = spec.split(",");
 		if (!lst.isEmpty()){
-		    int lcmd=0;
-			if (lst.count()>=2)
-			{
+			int lcmd = -1;
+			if (lst.count() >= 2){
 				if (lst[1].contains("@d",Qt::CaseInsensitive)) //look for d cmd (use curve name), default
-				{
-					  lcmd=0;
-				}
-				if (lst[1].contains("@c",Qt::CaseInsensitive)) //look for c cmd (use column name)
-				{
-					  lcmd=1;
-				}
-				if (lst[1].contains("@w",Qt::CaseInsensitive)) //look for w cmd (use table name)
-				{
-					  lcmd=2;
-				}
-				if (lst[1].contains("@wl",Qt::CaseInsensitive)) //look for wl cmd (use table label)
-				{
-					  lcmd=3;
-				}
-				if (lst[1].contains("@l",Qt::CaseInsensitive)) //look for l cmd (use column comment)
-				{
-					  lcmd=4;
-				}
-				if (lst[1].contains("@u",Qt::CaseInsensitive)) //look for c cmd (use column comment)
-				{
-					  lcmd=5;
-				}
+					lcmd=0;
+				else if (lst[1].contains("@c",Qt::CaseInsensitive)) //look for c cmd (use column name)
+					lcmd=1;
+				else if (lst[1].contains("@w",Qt::CaseInsensitive)) //look for w cmd (use table name)
+					lcmd=2;
+				else if (lst[1].contains("@wl",Qt::CaseInsensitive)) //look for wl cmd (use table label)
+					lcmd=3;
+				else if (lst[1].contains("@l",Qt::CaseInsensitive)) //look for l cmd (use column comment)
+					lcmd=4;
+				else if (lst[1].contains("@u",Qt::CaseInsensitive)) //look for c cmd (use column comment)
+					lcmd=5;
 			}
 
 			int point = 0;
@@ -616,8 +603,16 @@ QString LegendWidget::parse(const QString& str)
 					t = ((DataCurve *)c)->table();
 
 				if (t){
-					switch(lcmd)
+					switch(lcmd){
+						case -1: //use table comment if not empty else use curve title
 						{
+							QString comment = t->comment(t->colIndex(c->title().text()));
+							if (!comment.isEmpty())
+								s = s.replace(pos, pos2-pos+1, comment.replace("\n", " "));
+							else
+								s = s.replace(pos, pos2-pos+1, c->title().text());
+							break;
+						}
 						case 0: //use curve title
 						{
 							s = s.replace(pos, pos2-pos+1, c->title().text());
@@ -666,7 +661,13 @@ QString LegendWidget::parse(const QString& str)
 						}
 					}
 				}
-
+			} else {
+				Table *t = d_plot->multiLayer()->applicationWindow()->table(lst[0]);
+				if (t && lst.size() >= 3){
+					int col = lst[1].toInt() - 1;
+					int row = lst[2].toInt() - 1;
+					s = s.replace(pos, pos2-pos+1, t->text(row, col));
+				}
 			}
 			aux = aux.right(aux.length() - pos2 - 1);
 		}
