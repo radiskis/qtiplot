@@ -1341,7 +1341,11 @@ bool Origin610Parser::readGraphInfo()
 				string text(size, 0);
 				file >> text;
 
-				layer.texts.push_back(TextBox(text, r, color, fontSize, rotation/10, tab, (BorderType)(border >= 0x80 ? border-0x80 : None), (Attach)attach));
+				sec_name.resize(3);
+				if (sec_name == "PIE")
+					layer.pieTexts.push_back(TextBox(text, r, color, fontSize, rotation/10, tab, (BorderType)(border >= 0x80 ? border-0x80 : None), (Attach)attach));
+				else
+					layer.texts.push_back(TextBox(text, r, color, fontSize, rotation/10, tab, (BorderType)(border >= 0x80 ? border-0x80 : None), (Attach)attach));
 			}
 			else if(osize == 0xA) // rectangle & circle
 			{
