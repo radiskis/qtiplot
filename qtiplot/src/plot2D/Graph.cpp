@@ -586,6 +586,23 @@ QString Graph::saveTickLabelsSpace()
 	return s + "\n";
 }
 
+QString Graph::saveLabelsPrefixAndSuffix()
+{
+	QString s = "LabelsPrefix";
+	for (int i = 0; i < QwtPlot::axisCnt; i++){
+		ScaleDraw *sd = (ScaleDraw *)axisScaleDraw (i);
+		s += "\t" + sd->prefix();
+	}
+	s += "\n";
+
+	s += "LabelsSuffix";
+	for (int axis = 0; axis < QwtPlot::axisCnt; axis++){
+		ScaleDraw *sd = (ScaleDraw *)axisScaleDraw (axis);
+		s += "\t" + sd->suffix();
+	}
+	return s + "\n";
+}
+
 QString Graph::saveLabelsRotation()
 {
 	QString s = "LabelsRotation\t";
@@ -708,7 +725,8 @@ void Graph::changeTicksLength(int minLength, int majLength)
 void Graph::showAxis(int axis, int type, const QString& formatInfo, Table *table,
 		bool axisOn, int majTicksType, int minTicksType, bool labelsOn,
 		const QColor& c,  int format, int prec, int rotation, int baselineDist,
-		const QString& formula, const QColor& labelsColor, int  spacing, bool backbone, const ScaleDraw::ShowTicksPolicy& showTicks)
+		const QString& formula, const QColor& labelsColor, int  spacing, bool backbone,
+		const ScaleDraw::ShowTicksPolicy& showTicks, const QString& prefix, const QString& suffix)
 {
 	enableAxis(axis, axisOn);
 	if (!axisOn)
@@ -735,7 +753,8 @@ void Graph::showAxis(int axis, int type, const QString& formatInfo, Table *table
 		sd->hasComponent(QwtAbstractScaleDraw::Labels) == labelsOn &&
 		sd->spacing() == spacing &&
 		sd->hasComponent(QwtAbstractScaleDraw::Backbone) == backbone &&
-		sd->showTicksPolicy() == showTicks)
+		sd->showTicksPolicy() == showTicks &&
+		sd->prefix() == prefix && sd->suffix() == suffix)
 		return;
 
 	scale->setMargin(baselineDist);
@@ -777,6 +796,8 @@ void Graph::showAxis(int axis, int type, const QString& formatInfo, Table *table
 	sd->enableComponent(QwtAbstractScaleDraw::Backbone, backbone);
 	sd->setSpacing(spacing);
 	sd->setShowTicksPolicy(showTicks);
+	sd->setPrefix(prefix);
+	sd->setSuffix(suffix);
 
 	setAxisTicksLength(axis, majTicksType, minTicksType,
 			minorTickLength(), majorTickLength());
@@ -3270,7 +3291,6 @@ DataCurve* Graph::insertCurve(Table* w, const QString& xColName, const QString& 
 	int yColType = w->columnType(ycol);
 	int size = 0;
 	QString date_time_fmt = w->columnFormat(xcol);
-	QStringList xLabels, yLabels;// store text labels
 	QTime time0;
 	QDateTime date0;
 
@@ -3346,18 +3366,13 @@ DataCurve* Graph::insertCurve(Table* w, const QString& xColName, const QString& 
 	c->loadData();
 	c->enableSpeedMode();
 
-	if (xColType == Table::Text){
-		setAxisScaleDraw(xAxis, new ScaleDraw(this, xLabels, xColName));
-	} else if (xColType == Table::Time){
+	if (xColType == Table::Time){
 		QString fmtInfo = time0.toString() + ";" + date_time_fmt;
 		setLabelsDateTimeFormat(xAxis, ScaleDraw::Time, fmtInfo);
 	} else if (xColType == Table::Date ){
 		QString fmtInfo = date0.toString(Qt::ISODate) + ";" + date_time_fmt;
 		setLabelsDateTimeFormat(xAxis, ScaleDraw::Date, fmtInfo);
 	}
-
-	if (yColType == Table::Text)
-		setAxisScaleDraw (QwtPlot::yLeft, new ScaleDraw(this, yLabels, yColName));
 
 	addLegendItem();
 	return c;
@@ -4092,6 +4107,7 @@ QString Graph::saveToString(bool saveAsTemplate)
 	s+=saveAxesBackbones();
 	s+="AxesLineWidth\t"+QString::number(axesLinewidth())+"\n";
 	s+=saveLabelsRotation();
+	s+=saveLabelsPrefixAndSuffix();
 	s+=saveTickLabelsSpace();
 	s+=saveMarkers();
 	if (d_Douglas_Peuker_tolerance > 0.0){
@@ -4565,6 +4581,8 @@ void Graph::copy(Graph* g)
 		sd->enableComponent (QwtAbstractScaleDraw::Backbone, sdg->hasComponent(QwtAbstractScaleDraw::Backbone));
 		sd->setSpacing(sdg->spacing());
 		sd->setShowTicksPolicy(sdg->showTicksPolicy());
+		sd->setPrefix(sdg->prefix());
+		sd->setSuffix(sdg->suffix());
 	}
 
 	setAxisLabelRotation(QwtPlot::xBottom, g->labelsRotation(QwtPlot::xBottom));

@@ -34,6 +34,7 @@
 #include <QList>
 #include <QTextEdit>
 
+class QLineEdit;
 class QTimeEdit;
 class QDateTimeEdit;
 class QListWidget;
@@ -213,6 +214,7 @@ protected:
 	QCheckBox *invertTitleBox;
 	QCheckBox* boxAxisBackbone;
 	QSpinBox *boxTickLabelDistance;
+	QLineEdit *boxPrefix, *boxSuffix;
 
 	QComboBox *showTicksPolicyBox;
 };

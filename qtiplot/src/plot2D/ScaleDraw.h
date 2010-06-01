@@ -60,6 +60,7 @@ public:
 
 	double transformValue(double value) const;
 	virtual QwtText label(double value) const;
+	QString labelString(double value) const;
 
 	int labelNumericPrecision()const {return d_prec;};
 	void setNumericPrecision(int prec){d_prec = prec;};
@@ -97,6 +98,11 @@ public:
 	void setLabelsList(const QStringList& list){d_text_labels = list;};
 
 	NameFormat nameFormat(){return d_name_format;};
+
+	QString prefix(){return d_prefix;};
+	void setPrefix(const QString& s){d_prefix = s;};
+	QString suffix(){return d_suffix;};
+	void setSuffix(const QString& s){d_suffix = s;};
 
 protected:
 	virtual void draw (QPainter *, const QPalette &) const;
@@ -137,5 +143,6 @@ private:
 	QStringList d_text_labels;
 
 	ShowTicksPolicy d_show_ticks_policy;
+	QString d_prefix, d_suffix;
 };
 #endif
