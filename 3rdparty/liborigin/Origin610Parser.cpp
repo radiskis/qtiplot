@@ -1429,9 +1429,8 @@ bool Origin610Parser::readGraphInfo()
 			//close section 00 00 00 00 0A
 			LAYER += size + (size > 0 ? 0x1 : 0);
 
-			file.seekg(1, ios_base::cur);
+			file.seekg(LAYER, ios_base::beg);
 			file >> size;
-
 			if (!size || size != sectionSize)
 				break;
 		}

@@ -408,18 +408,18 @@ QString Fit::legendInfo()
 	else
 		dataSet = d_y_col_name;
 
-	QString info = tr("Dataset") + ": " + dataSet + "\n";
-	info += tr("Function") + ": " + d_formula + "\n\n";
+	QString info = "<b>" + tr("Dataset") + "</b>: " + dataSet + "\n";
+	info += "<b>" + tr("Function") + "</b>: " + d_formula + "\n";
 
 	ApplicationWindow *app = (ApplicationWindow *)parent();
 	QLocale locale = app->locale();
 
 	double chi_2_dof = chi_2/(d_n - d_p);
-	info += "Chi^2/doF = " + locale.toString(chi_2_dof, 'e', d_prec) + "\n";
-	info += tr("R^2") + " = " + locale.toString(rSquare(), 'g', d_prec) + "\n";
+	info += "<b>" + tr("Chi^2/doF") + "</b> = " + locale.toString(chi_2_dof, 'e', d_prec) + "\n";
+	info += "<b>" + tr("R^2") + "</b> = " + locale.toString(rSquare(), 'g', d_prec) + "\n";
 
 	for (int i = 0; i < d_p; i++){
-		info += d_param_names[i] + " = " + locale.toString(d_results[i], 'e', d_prec) + " +/- ";
+		info += "<b>" + d_param_names[i] + "</b> = " + locale.toString(d_results[i], 'e', d_prec) + " +/- ";
 		if (d_scale_errors)
 			info += locale.toString(sqrt(chi_2_dof*gsl_matrix_get(covar, i, i)), 'e', d_prec);
 		else

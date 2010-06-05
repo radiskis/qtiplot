@@ -1946,6 +1946,9 @@ bool Table::isEmptyRow(int row)
 
 bool Table::isEmptyColumn(int col)
 {
+	if (col < 0 || col >= d_table->numCols())
+		return true;
+
 	for (int i=0; i<d_table->numRows(); i++)
 	{
 		QString text=d_table->text(i,col);
