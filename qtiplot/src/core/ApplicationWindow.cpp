@@ -3425,6 +3425,15 @@ void ApplicationWindow::showBinMatrixDialog()
 		return;
 	}
 
+	int ycol = t->colIndex(t->selectedYColumns()[0]);
+	if (t->isEmptyColumn(ycol)){
+		QMessageBox::critical(this, tr("QtiPlot - Error"), tr("The selected Y column is empty, operation aborted!"));
+		return;
+	} else if (t->isEmptyColumn(t->colX(ycol))){
+		QMessageBox::critical(this, tr("QtiPlot - Error"), tr("The associated X column is empty, operation aborted!"));
+		return;
+	}
+
 	CreateBinMatrixDialog *cbmd = new CreateBinMatrixDialog(t, sel.topRow(), sel.bottomRow(), this);
 	cbmd->exec();
 }
@@ -15411,7 +15420,6 @@ void ApplicationWindow::showSupportPage()
 	QDesktopServices::openUrl(QUrl("http://soft.proindependent.com/contracts.html"));
 }
 
-
 void ApplicationWindow::showDonationsPage()
 {
 	QDesktopServices::openUrl(QUrl("http://soft.proindependent.com/why_donate.html"));
@@ -16954,7 +16962,7 @@ void ApplicationWindow::searchForUpdates()
 			http->setProxy(proxy.hostName(), proxy.port(), proxy.user(), proxy.password());
 
         http->setHost("soft.proindependent.com");
-        http->get("/version.txt", &version_buffer);
+		http->get("/version.txt", &version_buffer);
     }
 }
 

@@ -279,18 +279,19 @@ void FitDialog::initFitPage()
 	gl3->setColumnStretch(4, 1);
 
     QHBoxLayout *hbox3 = new QHBoxLayout();
-	buttonCancel1 = new QPushButton(tr( "&Close" ));
-	buttonCancel1->setPixmap(QPixmap(":/delete.png"));
-    hbox3->addWidget(buttonCancel1);
-	hbox3->addStretch();
 	previewBox = new QCheckBox(tr("&Preview"));
 	previewBox->setChecked(false);
     connect(previewBox, SIGNAL(clicked(bool)), this, SLOT(showPreview(bool)));
     hbox3->addWidget(previewBox);
-
+	hbox3->addStretch();
 	btnDeleteFitCurves = new QPushButton(tr( "&Delete Fit Curves" ));
     hbox3->addWidget(btnDeleteFitCurves);
 	btnDeleteFitCurves->setPixmap(QPixmap(":/close.png"));
+
+	buttonCancel1 = new QPushButton(tr( "&Close" ));
+	buttonCancel1->setPixmap(QPixmap(":/delete.png"));
+	hbox3->addWidget(buttonCancel1);
+
     buttonOk = new QPushButton(tr( "&Fit" ) );
 	buttonOk->setPixmap(QPixmap(":/play.png"));
 	buttonOk->setDefault( true );
@@ -315,6 +316,7 @@ void FitDialog::initFitPage()
 
 	buttonEdit = new QPushButton();
 	buttonEdit->setIcon(QIcon(":/prev.png"));
+	buttonEdit->setIconSize(QSize(16, 17));
 	buttonEdit->setToolTip(tr("Select Function"));
 
 	QFrame *frame2 = new QFrame();
@@ -337,6 +339,7 @@ void FitDialog::initFitPage()
 
 	buttonAdvanced = new QPushButton();
 	buttonAdvanced->setIcon(QIcon(":/next.png"));
+	buttonAdvanced->setIconSize(QSize(16, 17));
 	buttonAdvanced->setToolTip(tr("Custom Output"));
 
 	QFrame *frame3 = new QFrame();
@@ -355,7 +358,8 @@ void FitDialog::initFitPage()
 	frameLayout->addWidget(advancedLbl);
 	frameLayout->addSpacing (space);
 
-	QHBoxLayout *hbox4 = new QHBoxLayout();
+	QGroupBox *g = new QGroupBox();
+	QHBoxLayout *hbox4 = new QHBoxLayout(g);
 	hbox4->addStretch();
 	hbox4->addWidget(frame1);
 	hbox4->addWidget(buttonEdit);
@@ -372,17 +376,8 @@ void FitDialog::initFitPage()
     vbox1->addWidget(gb3);
     vbox1->addSpacing(10);
     vbox1->addLayout(hbox3);
-    vbox1->addSpacing(10);
-
-    QFrame *frame4 = new QFrame();
-	frame4->setFrameShape(QFrame::HLine);
-	frame4->setLineWidth(10);
-	palette = this->palette();
-	palette.setColor(QPalette::WindowText, Qt::darkGray);
-	frame4->setPalette(palette);
-	vbox1->addWidget(frame4);
 	vbox1->addSpacing(10);
-    vbox1->addLayout(hbox4);
+	vbox1->addWidget(g);
 
     fitPage = new QWidget();
     fitPage->setLayout(vbox1);
@@ -530,6 +525,7 @@ void FitDialog::initEditPage()
 
 	btnContinue = new QPushButton();
 	btnContinue->setIcon(QIcon(":/next.png"));
+	btnContinue->setIconSize(QSize(16, 17));
 	btnContinue->setToolTip(tr("Start Fitting Session"));
 
 	QFrame *frame2 = new QFrame();
@@ -548,7 +544,8 @@ void FitDialog::initEditPage()
 	frameLayout->addWidget(fittingSessionLbl);
 	frameLayout->addSpacing (space);
 
-	QHBoxLayout *hbox3 = new QHBoxLayout();
+	QGroupBox *g = new QGroupBox();
+	QHBoxLayout *hbox3 = new QHBoxLayout(g);
 	hbox3->addStretch();
 	hbox3->addWidget(frame1);
     hbox3->addWidget(btnContinue);
@@ -560,17 +557,7 @@ void FitDialog::initEditPage()
     vbox2->addWidget(gb);
     vbox2->addLayout(hbox2);
 	vbox2->addSpacing (10);
-
-    QFrame *frame3 = new QFrame();
-	frame3->setFrameShape(QFrame::HLine);
-	frame3->setLineWidth(5);
-	palette = this->palette();
-	palette.setColor(QPalette::WindowText, Qt::darkGray);
-	frame3->setPalette(palette);
-	vbox2->addWidget(frame3);
-
-	vbox2->addSpacing (10);
-    vbox2->addLayout(hbox3);
+	vbox2->addWidget(g);
 
     editPage = new QWidget();
     editPage->setLayout(vbox2);
@@ -681,10 +668,10 @@ void FitDialog::initAdvancedPage()
 	connect( plotLabelBox, SIGNAL(stateChanged (int)), this, SLOT(enableApplyChanges(int)));
 
     QHBoxLayout *hbox1 = new QHBoxLayout();
+	hbox1->addStretch();
 	buttonCancel3 = new QPushButton(tr( "&Close" ));
 	buttonCancel3->setPixmap(QPixmap(":/delete.png"));
     hbox1->addWidget(buttonCancel3);
-    hbox1->addStretch();
 	btnApply = new QPushButton(tr( "&Apply" ));
 	btnApply->setEnabled(false);
 	connect( btnApply, SIGNAL(clicked()), this, SLOT(applyChanges()));
@@ -724,6 +711,7 @@ void FitDialog::initAdvancedPage()
 	btnBack = new QPushButton();
 	connect( btnBack, SIGNAL(clicked()), this, SLOT(returnToFitPage()));
 	btnBack->setIcon(QIcon(":/prev.png"));
+	btnBack->setIconSize(QSize(16, 17));
 	btnBack->setToolTip(tr("Fitting Session"));
 
 	QFrame *frame2 = new QFrame();
@@ -744,24 +732,15 @@ void FitDialog::initAdvancedPage()
 	frameLayout->addWidget(fittingSessionLbl);
 	frameLayout->addSpacing (space);
 
-	QHBoxLayout *hbox2 = new QHBoxLayout();
+	QGroupBox *g = new QGroupBox();
+	QHBoxLayout *hbox2 = new QHBoxLayout(g);
 	hbox2->addWidget(frame1);
 	hbox2->addWidget(btnBack);
 	hbox2->addWidget(frame2);
 	hbox2->addStretch();
 
 	vbox1->addSpacing (10);
-
-	QFrame *frame3 = new QFrame();
-	frame3->setFrameShape(QFrame::HLine);
-	frame3->setLineWidth(10);
-	palette = this->palette();
-	palette.setColor(QPalette::WindowText, Qt::darkGray);
-	frame3->setPalette(palette);
-	vbox1->addWidget(frame3);
-
-	vbox1->addSpacing (10);
-	vbox1->addLayout(hbox2);
+	vbox1->addWidget(g);
 
     advancedPage = new QWidget();
 	advancedPage->setLayout(vbox1);
