@@ -303,9 +303,9 @@ public slots:
 	bool exportODF(const QString& fname, bool withLabels, bool exportComments, bool exportSelection);
 	bool exportASCII(const QString& fname, const QString& separator, bool withLabels = false,
                      bool exportComments = false, bool exportSelection = false);
-	void importASCII(const QString &fname, const QString &sep, int ignoredLines, bool renameCols,
-                    bool stripSpaces, bool simplifySpaces, bool importComments,
-                    const QString& commentString, bool readOnly = false,
+	void importASCII(const QString &fname, const QString &sep = "\t", int ignoredLines = 0, bool renameCols = false,
+					bool stripSpaces = false, bool simplifySpaces = false, bool importComments = false,
+					const QString& commentString = "", bool readOnly = false,
 					ImportMode importAs = Overwrite, const QLocale& importLocale = QLocale(), int endLine = 0, int maxRows = -1,
 					const QList<int>& newColTypes = QList<int>(), const QStringList& colFormats = QStringList());
 
