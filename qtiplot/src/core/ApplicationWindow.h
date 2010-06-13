@@ -462,10 +462,15 @@ public slots:
 	void initTable(Table* w, const QString& caption);
 	void customTable(Table* w);
 	Table* importOdfSpreadsheet(const QString& = QString::null, int sheet = -1);
+
+	Table* importExcel(const QString& = QString::null, int sheet = -1);
+#ifdef HAS_EXCEL
+	Table* importUsingExcel(const QString& = QString::null, int sheet = -1);
+#endif
 #ifdef XLS_IMPORT
+	Table* importExcelCrossplatform(const QString& = QString::null, int sheet = -1);
 	void exportExcel();
 #endif
-	Table* importExcel(const QString& = QString::null, int sheet = -1);
 
 	Table* importWaveFile();
 	void importASCII();

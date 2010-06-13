@@ -202,7 +202,6 @@ contains(SCRIPTING_LANGS, Python) {
 
 # check if we have libxls
 !isEmpty(XLS_LIBS) {
-	CONFIG += qaxcontainer
 	DEFINES += XLS_IMPORT
 	INCLUDEPATH += $$XLS_INCLUDEPATH
 	LIBS        += $$XLS_LIBS
@@ -222,6 +221,12 @@ contains(SCRIPTING_LANGS, Python) {
 	INCLUDEPATH += ../3rdparty/liborigin
 	LIBS        += $$BOOST_LIBS
 	include(src/origin/origin.pri)
+}
+
+# check if support for Microsoft Excel should be enabled
+win32: contains(CONFIG, Excel) {
+	CONFIG += qaxcontainer
+	DEFINES += HAS_EXCEL
 }
 
 ###############################################################

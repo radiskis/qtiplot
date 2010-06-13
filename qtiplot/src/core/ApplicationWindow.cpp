@@ -191,6 +191,10 @@ using namespace std;
 	using namespace ExcelFormat;
 #endif
 
+#ifdef HAS_EXCEL
+	#include <QAxObject>
+#endif
+
 #ifdef ODS_IMPORT
 	#include <QTemporaryFile>
 	#include <OdsFileHandler.h>
@@ -4165,14 +4169,104 @@ void ApplicationWindow::exportExcel()
 
 Table * ApplicationWindow::importExcel(const QString& fileName, int sheet)
 {
-#ifdef XLS_IMPORT
 	QString fn = fileName;
 	if (fn.isEmpty()){
-		fn = getFileName(this, tr("Open Excel File"), QString::null, "*.xls", 0, false);
+		QString filter = "*.xls";
+	#ifdef HAS_EXCEL
+		filter = tr("Excel files") + " (*.xl *.xlsx *.xlsm *.xlsb *.xlam *.xltx *.xltm *.xls *.xla *.xlt *.xlm *.xlw)";
+	#endif
+		fn = getFileName(this, tr("Open Excel File"), QString::null, filter, 0, false);
 		if (fn.isEmpty())
 			return NULL;
 	}
 
+#ifdef HAS_EXCEL
+	Table *t = importUsingExcel(fn, sheet);
+	if (t)
+		return t;
+#endif
+
+#ifdef XLS_IMPORT
+	return importExcelCrossplatform(fn, sheet);
+#endif
+	return NULL;
+}
+
+#ifdef HAS_EXCEL
+Table * ApplicationWindow::importUsingExcel(const QString& fn, int sheet)
+{
+	QAxObject *excel = new QAxObject(this);
+	if (!excel->setControl("Excel.Application"))
+		return NULL;
+
+	QAxObject* workbooks = excel->querySubObject( "Workbooks" );
+	if (!workbooks)
+		return NULL;
+
+	QAxObject* workbook = workbooks->querySubObject( "Open(const QString&)", fn);
+	if (!workbook)
+		return NULL;
+
+	QAxObject* sheets = workbook->querySubObject("Worksheets");
+	if (!sheets)
+		return NULL;
+
+	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+
+	Table *t = NULL;
+	QString dir = QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation);
+	int count = sheets->dynamicCall("Count()").toInt();
+	for (int i = 1; i <= count; i++){
+		if (sheet > 0 && sheet != i)
+			continue;
+
+		QAxObject* ws = sheets->querySubObject( "Item( int )", i);
+		if (!ws)
+			continue;
+
+		QString tfn = "qtiplot_tmp_sheet" + QString::number(i) + ".txt";
+		QString path = dir + "\\" + tfn;
+
+		if (QFile::exists(path))
+			QFile::remove(path);
+
+		t = newTable();
+		t->setWindowLabel(fn + ", " + tr("sheet") + ": " + ws->dynamicCall("Name()").toString());
+		t->setCaptionPolicy(MdiSubWindow::Both);
+
+		ws->dynamicCall("SaveAs(QVariant,QVariant)", QVariant(tfn), QVariant(20));
+		t->importASCII(path);
+
+		if (t->numCols() == 1 && t->numRows() == 1 && t->text(0, 0).isEmpty()){
+			t->askOnCloseEvent(false);
+			t->close();
+			continue;
+		} else
+			t->showNormal();
+
+		if (sheet > 0 && sheet == i)
+			break;
+	}
+
+	workbook->dynamicCall("SetSaved(bool)", true);
+	workbook->dynamicCall("Close()");
+	excel->dynamicCall("Quit()");
+
+	delete excel;
+
+	for (int i = 1; i <= count; i++){
+		QString tfn = "qtiplot_tmp_sheet" + QString::number(i) + ".txt";
+		QFile::remove(dir + "\\" + tfn);
+	}
+
+	QApplication::restoreOverrideCursor();
+	return t;
+}
+#endif
+
+#ifdef XLS_IMPORT
+Table * ApplicationWindow::importExcelCrossplatform(const QString& fn, int sheet)
+{
 	BasicExcel xls;
 	if (!xls.Load(fn)){
 		QMessageBox::critical(this, tr("QtiPlot"), tr("Couldn't open file %1").arg(fn));
@@ -4263,10 +4357,8 @@ Table * ApplicationWindow::importExcel(const QString& fileName, int sheet)
 	updateRecentProjectsList(fn);
 	QApplication::restoreOverrideCursor();
 	return table;
-#else
-	return NULL;
-#endif
 }
+#endif
 
 Table * ApplicationWindow::importWaveFile()
 {
