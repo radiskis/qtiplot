@@ -85,6 +85,7 @@ public:
 
 	void loadData();
 	void initLabels();
+	void clearLabels();
 
 	PieLabel* addLabel(PieLabel *l, bool clone = false);
 

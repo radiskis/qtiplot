@@ -473,6 +473,13 @@ void QwtPieCurve::initLabels()
 	}
 }
 
+void QwtPieCurve::clearLabels()
+{
+	d_auto_labeling = false;
+	foreach(PieLabel * l, d_texts_list)
+		l->setText("");
+}
+
 PieLabel::PieLabel(Graph *plot, QwtPieCurve *pie):LegendWidget(plot),
 	d_pie_curve(pie),
 	d_custom_text(QString::null)

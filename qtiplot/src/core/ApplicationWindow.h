@@ -59,6 +59,10 @@
 #include <qt_windows.h>
 #endif
 
+#ifdef HAS_EXCEL
+	#include <QAxObject>
+#endif
+
 class QPixmap;
 class QCloseEvent;
 class QDropEvent;
@@ -466,6 +470,8 @@ public slots:
 	Table* importExcel(const QString& = QString::null, int sheet = -1);
 #ifdef HAS_EXCEL
 	Table* importUsingExcel(const QString& = QString::null, int sheet = -1);
+	void importExcelCharts(QAxObject* ws, const QString& fn = QString::null);
+	MultiLayer *importExcelChart(QAxObject* chart, const QString& fn = QString::null, const QString& name = QString::null);
 #endif
 #ifdef XLS_IMPORT
 	Table* importExcelCrossplatform(const QString& = QString::null, int sheet = -1);
@@ -618,7 +624,7 @@ public slots:
 	void changeMatrixName(const QString& oldName, const QString& newName);
 	void updateCurves(Table *t, const QString& name);
 
-	void showTable(const QString& curve);
+	void showTable(Table *, const QString& curve);
 	void showTable(int i);
 
 	void addColToTable();
