@@ -191,10 +191,6 @@ using namespace std;
 	using namespace ExcelFormat;
 #endif
 
-#ifdef HAS_EXCEL
-	#include <QAxObject>
-#endif
-
 #ifdef ODS_IMPORT
 	#include <QTemporaryFile>
 	#include <OdsFileHandler.h>
@@ -4189,80 +4185,9 @@ Table * ApplicationWindow::importExcel(const QString& fileName, int sheet)
 #ifdef XLS_IMPORT
 	return importExcelCrossplatform(fn, sheet);
 #endif
+
 	return NULL;
 }
-
-#ifdef HAS_EXCEL
-Table * ApplicationWindow::importUsingExcel(const QString& fn, int sheet)
-{
-	QAxObject *excel = new QAxObject(this);
-	if (!excel->setControl("Excel.Application"))
-		return NULL;
-
-	QAxObject* workbooks = excel->querySubObject( "Workbooks" );
-	if (!workbooks)
-		return NULL;
-
-	QAxObject* workbook = workbooks->querySubObject( "Open(const QString&)", fn);
-	if (!workbook)
-		return NULL;
-
-	QAxObject* sheets = workbook->querySubObject("Worksheets");
-	if (!sheets)
-		return NULL;
-
-	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-
-	Table *t = NULL;
-	QString dir = QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation);
-	int count = sheets->dynamicCall("Count()").toInt();
-	for (int i = 1; i <= count; i++){
-		if (sheet > 0 && sheet != i)
-			continue;
-
-		QAxObject* ws = sheets->querySubObject( "Item( int )", i);
-		if (!ws)
-			continue;
-
-		QString tfn = "qtiplot_tmp_sheet" + QString::number(i) + ".txt";
-		QString path = dir + "\\" + tfn;
-
-		if (QFile::exists(path))
-			QFile::remove(path);
-
-		t = newTable();
-		t->setWindowLabel(fn + ", " + tr("sheet") + ": " + ws->dynamicCall("Name()").toString());
-		t->setCaptionPolicy(MdiSubWindow::Both);
-
-		ws->dynamicCall("SaveAs(QVariant,QVariant)", QVariant(tfn), QVariant(20));
-		t->importASCII(path);
-
-		if (t->numCols() == 1 && t->numRows() == 1 && t->text(0, 0).isEmpty()){
-			t->askOnCloseEvent(false);
-			t->close();
-			continue;
-		} else
-			t->showNormal();
-
-		if (sheet > 0 && sheet == i)
-			break;
-	}
-
-	workbook->dynamicCall("SetSaved(bool)", true);
-	workbook->dynamicCall("Close()");
-	excel->dynamicCall("Quit()");
-
-	delete excel;
-
-	for (int i = 1; i <= count; i++){
-		QString tfn = "qtiplot_tmp_sheet" + QString::number(i) + ".txt";
-		QFile::remove(dir + "\\" + tfn);
-	}
-
-	QApplication::restoreOverrideCursor();
-	return t;
-}
-#endif
 
 #ifdef XLS_IMPORT
 Table * ApplicationWindow::importExcelCrossplatform(const QString& fn, int sheet)
@@ -8111,7 +8036,7 @@ void ApplicationWindow::showCurveWorksheet(Graph *g, int curveIndex)
 	} else if (((PlotCurve *)it)->type() == Graph::Function)
 		g->createTable((PlotCurve *)it);
     else {
-		showTable(it->title().text());
+		showTable(((DataCurve *)it)->table(), it->title().text());
 		if (g->activeTool() && g->activeTool()->rtti() == PlotToolInterface::Rtti_DataPicker)
             ((DataPickerTool *)g->activeTool())->selectTableRow();
     }
@@ -10476,9 +10401,8 @@ void ApplicationWindow::showTable(int i)
 		it->setText(2,tr("Maximized"));
 }
 
-void ApplicationWindow::showTable(const QString& curve)
+void ApplicationWindow::showTable(Table *w, const QString& curve)
 {
-	Table* w=table(curve);
 	if (!w)
 		return;
 
@@ -10488,9 +10412,9 @@ void ApplicationWindow::showTable(const QString& curve)
 	w->table()->clearSelection();
 	w->table()->selectColumn(colIndex);
 	w->showMaximized();
-	Q3ListViewItem *it=lv->findItem (w->objectName(), 0, Q3ListView::ExactMatch | Qt::CaseSensitive );
+	Q3ListViewItem *it = lv->findItem (w->objectName(), 0, Q3ListView::ExactMatch | Qt::CaseSensitive );
 	if (it)
-		it->setText(2,tr("Maximized"));
+		it->setText(2, tr("Maximized"));
 	emit modified();
 }
 

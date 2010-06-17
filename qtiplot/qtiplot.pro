@@ -227,6 +227,7 @@ contains(SCRIPTING_LANGS, Python) {
 win32: contains(CONFIG, Excel) {
 	CONFIG += qaxcontainer
 	DEFINES += HAS_EXCEL
+	SOURCES += src/core/ExcelImport.cpp
 }
 
 ###############################################################
