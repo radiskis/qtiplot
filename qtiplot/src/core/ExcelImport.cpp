@@ -9,6 +9,7 @@
 #include "ImageWidget.h"
 #include "QwtPieCurve.h"
 #include "ArrowMarker.h"
+#include "QwtErrorPlotCurve.h"
 
 #include <qwt_plot_canvas.h>
 #include <qwt_scale_widget.h>
@@ -104,7 +105,9 @@ QPen borderPen(QAxObject *o)
 		return QPen();
 
 	QPen pen = QPen(colorToQColor(border->property("Color").toInt()));
-	pen.setWidth(border->property("Weight").toInt() - 1);
+	int lw = border->property("Weight").toInt() - 1;
+	if (lw >= 1)
+		pen.setWidth(lw);
 
 	int dashStyle = border->property("LineStyle").toInt();
 	Qt::PenStyle penStyle = Qt::SolidLine;
@@ -330,8 +333,15 @@ void setCurveMarkersFormat(DataCurve *c, QAxObject *curve)
 		return;
 
 	int size = curve->property("MarkerSize").toInt();
-	QColor bc = colorToQColor(curve->property("MarkerBackgroundColor").toInt());
-	QColor lc = colorToQColor(curve->property("MarkerForegroundColor").toInt());
+	int fillRgb = curve->property("MarkerBackgroundColor").toInt();
+	int lRgb = curve->property("MarkerForegroundColor").toInt();
+
+	QColor bc = Qt::black;
+	if (fillRgb >= 0)
+		bc = colorToQColor(fillRgb);
+	QColor lc = Qt::black;
+	if (lRgb >= 0)
+		lc = colorToQColor(lRgb);
 
 	int style = curve->dynamicCall("MarkerStyle()").toInt();
 	QwtSymbol::Style symbStyle = QwtSymbol::Ellipse;
@@ -363,6 +373,30 @@ void setCurveMarkersFormat(DataCurve *c, QAxObject *curve)
 		break;
 	}
 	c->setSymbol(QwtSymbol(symbStyle, QBrush(bc), QPen(lc), QSize(size, size)));
+}
+
+void setCurveErrorBars(DataCurve *c, QAxObject *curve)
+{
+	if (!c || !curve)
+		return;
+
+	QAxObject* errors = curve->querySubObject("ErrorBars");
+	if (!errors)
+		return;
+
+	Table *t = c->table();
+	t->addCol(Table::yErr);
+	int points = t->numRows();
+	for (int i = 0; i < points; i++)
+		t->setCell(i, 2, 0.2*t->cell(i, 1));
+
+	int cap = 0;
+	if (errors->dynamicCall("EndStyle()").toInt() == 1)
+		cap = 8;
+
+	QPen pen = qPen(errors);
+	((Graph *)c->plot())->addErrorBars(curve->property("Name").toString(), t, t->colName(2),
+						QwtErrorPlotCurve::Vertical, pen.widthF(), cap, pen.color(), false, true, true);
 }
 
 void importText(QAxObject* text, Graph *g)
@@ -752,6 +786,9 @@ MultiLayer * ApplicationWindow::importExcelChart(QAxObject* chart, const QString
 
 					if (hasMarkers)
 						setCurveMarkersFormat(c, curve);
+
+					if (curve->property("HasErrorBars").toBool())
+						setCurveErrorBars(c, curve);
 				}
 			}
 		}
@@ -922,6 +959,7 @@ Table * ApplicationWindow::importUsingExcel(const QString& fn, int sheet)
 		QFile::remove(dir + "\\" + tfn);
 	}
 
+	updateRecentProjectsList(fn);
 	QApplication::restoreOverrideCursor();
 	return t;
 }

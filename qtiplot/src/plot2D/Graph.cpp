@@ -4090,7 +4090,6 @@ QString Graph::saveToString(bool saveAsTemplate)
 	s+=saveAxesTitleColors();
 	s+=saveAxesTitleAlignement();
 	s+=saveFonts();
-	s+=saveEnabledTickLabels();
 	s+=saveAxesColors();
 	s+=saveAxesBaseline();
 	s+=saveCanvas();
@@ -4109,6 +4108,7 @@ QString Graph::saveToString(bool saveAsTemplate)
 	s+=saveLabelsRotation();
 	s+=saveLabelsPrefixAndSuffix();
 	s+=saveTickLabelsSpace();
+	s+=saveEnabledTickLabels();
 	s+=saveMarkers();
 	if (d_Douglas_Peuker_tolerance > 0.0){
 		s += "<SpeedMode>" + QString::number(d_Douglas_Peuker_tolerance) + "\t";
