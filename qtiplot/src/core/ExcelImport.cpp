@@ -6,6 +6,7 @@
 #include "QwtBarCurve.h"
 #include "LegendWidget.h"
 #include "RectangleWidget.h"
+#include "EllipseWidget.h"
 #include "ImageWidget.h"
 #include "QwtPieCurve.h"
 #include "ArrowMarker.h"
@@ -19,7 +20,7 @@
 #include <QClipboard>
 
 #define xOffset 100
-#define yOffset 10
+#define yOffset 15
 
 QColor colorToQColor(int rgb)
 {
@@ -399,12 +400,13 @@ void setCurveErrorBars(DataCurve *c, QAxObject *curve)
 						QwtErrorPlotCurve::Vertical, pen.widthF(), cap, pen.color(), false, true, true);
 }
 
-void importText(QAxObject* text, Graph *g)
+void importText(int left, int top, QAxObject* text, Graph *g, LegendWidget *l)
 {
 	if (!text)
 		return;
 
-	LegendWidget *l = g->newLegend(text->property("Text").toString());
+	if (!l)
+		l = g->newLegend(text->property("Text").toString());
 
 	QBrush brush = interiorBrush(text);
 	l->setBrush(brush);
@@ -426,16 +428,20 @@ void importText(QAxObject* text, Graph *g)
 
 	int x = qRound(text->property("Left").toDouble()*g->physicalDpiX()/72.0);
 	int y = qRound(text->property("Top").toDouble()*g->physicalDpiY()/72.0);
-	l->move(QPoint(x + xOffset, y + yOffset));
+	l->move(QPoint(x + left, y + top));
 	l->setOnTop();
 }
 
-void importRectangle(QAxObject* r, Graph *g)
+void importRectangle(int left, int top, QAxObject* r, Graph *g, int type)
 {
 	if (!r)
 		return;
 
-	RectangleWidget *fw = new RectangleWidget(g);
+	FrameWidget* fw;
+	if (type == 9)
+		fw = new EllipseWidget(g);
+	else
+		fw = new RectangleWidget(g);
 
 	int dpiX = g->physicalDpiX();
 	int dpiY = g->physicalDpiY();
@@ -444,7 +450,8 @@ void importRectangle(QAxObject* r, Graph *g)
 	int w = qRound(r->property("Width").toDouble()*dpiX/72.0);
 	int h = qRound(r->property("Height").toDouble()*dpiY/72.0);
 
-	fw->move(QPoint(x + xOffset, y + yOffset));
+	fw->move(QPoint(x + left, y + top));
+
 	fw->setSize(w, h);
 	fw->setFramePen(borderPen(r));
 	fw->setFrameStyle(1);
@@ -460,7 +467,7 @@ void importRectangle(QAxObject* r, Graph *g)
 	g->add(fw, false);
 }
 
-void importPicture(QAxObject* r, Graph *g)
+void importPicture(int left, int top, QAxObject* r, Graph *g)
 {
 	if (!r)
 		return;
@@ -478,14 +485,14 @@ void importPicture(QAxObject* r, Graph *g)
 	int w = qRound(r->property("Width").toDouble()*dpiX/72.0);
 	int h = qRound(r->property("Height").toDouble()*dpiY/72.0);
 
-	i->move(QPoint(x + xOffset, y + yOffset));
+	i->move(QPoint(x + left, y + top));
 	i->setSize(w, h);
 	i->setFrameStyle(0);
 
 	g->add(i, false);
 }
 
-void importLine(QAxObject* l, Graph *g)
+void importLine(int left, int top, QAxObject* l, Graph *g)
 {
 	if (!l)
 		return;
@@ -510,11 +517,14 @@ void importLine(QAxObject* l, Graph *g)
 	int w = qRound(o->property("Width").toDouble()*dpiX/72.0);
 	int h = qRound(o->property("Height").toDouble()*dpiY/72.0);
 
+	x += left;
+	y += top;
+
 	QWidget *canvas = g->multiLayer()->canvas();
-	QPoint pos = g->canvas()->mapFrom(canvas, QPoint(x + xOffset, y + yOffset + h));
+	QPoint pos = g->canvas()->mapFrom(canvas, QPoint(x, y + h));
 	mrk.setStartPoint(g->invTransform(QwtPlot::xBottom, pos.x()), g->invTransform(QwtPlot::yLeft, pos.y()));
 
-	pos = g->canvas()->mapFrom(canvas, QPoint(x + xOffset + w, y + yOffset));
+	pos = g->canvas()->mapFrom(canvas, QPoint(x + w, y));
 	mrk.setEndPoint(g->invTransform(QwtPlot::xBottom, pos.x()), g->invTransform(QwtPlot::yLeft, pos.y()));
 
 	mrk.setLinePen(linePen(l));
@@ -522,7 +532,7 @@ void importLine(QAxObject* l, Graph *g)
 	g->addArrow(&mrk);
 }
 
-void importShape(QAxObject* shape, Graph *g)
+void importShape(int left, int top, QAxObject* shape, Graph *g)
 {
 	if (!shape)
 		return;
@@ -533,21 +543,21 @@ void importShape(QAxObject* shape, Graph *g)
 
 	int type = shape->dynamicCall("Type").toInt();
 	if (type == 17)
-		importText(o, g);
+		importText(left, top, o, g, NULL);
 	else if (type == 13)
-		importPicture(o, g);
+		importPicture(left, top, o, g);
 	else if (type == 9)
-		importLine(shape, g);
-	else if (type == 1){
+		importLine(left, top, shape, g);
+	else if (type == 1){// auto shape
 		QAxObject* fill = o->querySubObject("Interior");
 		if (fill)
-			importRectangle(o, g);
+			importRectangle(left, top, o, g, shape->dynamicCall("AutoShapeType()").toInt());
 		else
-			importLine(shape, g);
+			importLine(left, top, shape, g);
 	}
 }
 
-void importShapes(QAxObject* chart, Graph *g)
+void importShapes(int left, int top, QAxObject* chart, Graph *g)
 {
 	QAxObject* shapes = chart->querySubObject( "Shapes()");
 	if (!shapes)
@@ -555,10 +565,10 @@ void importShapes(QAxObject* chart, Graph *g)
 
 	int count = shapes->property("Count").toInt();
 	for (int i = 1; i <= count; i++)
-		importShape(chart->querySubObject( "Shapes(const QVariant&)", QVariant(i)), g);
+		importShape(left, top, chart->querySubObject( "Shapes(const QVariant&)", QVariant(i)), g);
 }
 
-void importGroupBoxes(QAxObject* chart, Graph *g)
+void importGroupBoxes(int left, int top, QAxObject* chart, Graph *g)
 {
 	QAxObject* groups = chart->querySubObject("GroupObjects()");
 	if (!groups)
@@ -580,7 +590,7 @@ void importGroupBoxes(QAxObject* chart, Graph *g)
 
 		int n = shapes->property("Count").toInt();
 		for (int j = 1; j <= n; j++)
-			importShape(shapes->querySubObject("Item(const QVariant&)", QVariant(j)), g);
+			importShape(left, top, shapes->querySubObject("Item(const QVariant&)", QVariant(j)), g);
 	}
 }
 
@@ -600,42 +610,15 @@ MultiLayer * ApplicationWindow::importExcelChart(QAxObject* chart, const QString
 	ml->setCaptionPolicy(MdiSubWindow::Both);
 
 	Graph *g = ml->activeLayer();
+	g->setAntialiasing(true);
 	Grid *grid = g->grid();
 
 	int dpiX = g->physicalDpiX();
 	int dpiY = g->physicalDpiY();
 
-	QAxObject* area = chart->querySubObject( "ChartArea");
-	if (area){
-		QAxObject* fill = area->querySubObject( "Interior");
-		if (fill)
-			g->setBackgroundColor(colorToQColor(fill->property("Color").toInt()));
-		QAxObject* border = area->querySubObject( "Border");
-		if (border)
-			g->setFrame(border->property("Weight").toInt(), colorToQColor(border->property("Color").toInt()));
-
-		int w = qRound(area->property("Width").toDouble()*dpiX/72.0);
-		int h = qRound(area->property("Height").toDouble()*dpiY/72.0);
-
-		g->setMargin(10);
-		g->setGeometry(5, 5 + yOffset, w, h);
-		ml->resize(w + 2*xOffset, h + LayerButton::btnSize() + yOffset + 100);
-	}
-
-	QAxObject* plotArea = chart->querySubObject( "PlotArea");
-	if (plotArea){
-		QAxObject* fill = plotArea->querySubObject( "Interior");
-		if (fill)
-			g->setCanvasBackground(colorToQColor(fill->property("Color").toInt()));
-		QAxObject* border = plotArea->querySubObject( "Border");
-		if (border)
-			g->setCanvasFrame(border->property("Weight").toInt(), colorToQColor(border->property("Color").toInt()));
-
-		int x = qRound(plotArea->property("Left").toDouble()*dpiX/72.0);
-		int y = qRound(plotArea->property("Top").toDouble()*dpiY/72.0);
-		int w = qRound(plotArea->property("Width").toDouble()*dpiX/72.0);
-		int h = qRound(plotArea->property("Height").toDouble()*dpiY/72.0);
-		g->setCanvasGeometry(x + xOffset, g->y() + y + yOffset, w, h);
+	if (!chart->dynamicCall("RightAngleAxes()").toBool()){
+		g->enableAxis(QwtPlot::yRight, false);
+		g->enableAxis(QwtPlot::xTop, false);
 	}
 
 	bool hasTitle = chart->dynamicCall("HasTitle()").toBool();
@@ -651,11 +634,42 @@ MultiLayer * ApplicationWindow::importExcelChart(QAxObject* chart, const QString
 				g->setTitleColor(colorToQColor(font->property("Color").toInt()));
 		}
 	} else
-		g->setTitle(" ");
+		g->removeTitle();
 
-	if (!chart->dynamicCall("RightAngleAxes()").toBool()){
-		g->enableAxis(QwtPlot::yRight, false);
-		g->enableAxis(QwtPlot::xTop, false);
+	QAxObject* area = chart->querySubObject( "ChartArea");
+	if (area){
+		QAxObject* fill = area->querySubObject( "Interior");
+		if (fill)
+			g->setBackgroundColor(colorToQColor(fill->property("Color").toInt()));
+		QAxObject* border = area->querySubObject( "Border");
+		if (border)
+			g->setFrame(border->property("Weight").toInt(), colorToQColor(border->property("Color").toInt()));
+
+		int w = qRound(area->property("Width").toDouble()*dpiX/72.0);
+		int h = qRound(area->property("Height").toDouble()*dpiY/72.0);
+
+		g->setMargin(20);
+		ml->resize(w + 2*xOffset, h + LayerButton::btnSize() + yOffset + 100);
+	}
+
+	int left = 0, top = 0;
+	QAxObject* plotArea = chart->querySubObject( "PlotArea");
+	if (plotArea){
+		QAxObject* fill = plotArea->querySubObject( "Interior");
+		if (fill)
+			g->setCanvasBackground(colorToQColor(fill->property("Color").toInt()));
+		QAxObject* border = plotArea->querySubObject( "Border");
+		if (border)
+			g->setCanvasFrame(border->property("Weight").toInt(), colorToQColor(border->property("Color").toInt()));
+
+		int x = qRound(plotArea->property("InsideLeft").toDouble()*dpiX/72.0);
+		int y = qRound(plotArea->property("InsideTop").toDouble()*dpiY/72.0);
+		int w = qRound(plotArea->property("InsideWidth").toDouble()*dpiX/72.0);
+		int h = qRound(plotArea->property("InsideHeight").toDouble()*dpiY/72.0);
+		g->setCanvasGeometry(x + xOffset, g->y() + y + yOffset, w, h);
+
+		left = x;
+		top = y;
 	}
 
 	QAxObject* curves = chart->querySubObject( "SeriesCollection()");
@@ -690,8 +704,11 @@ MultiLayer * ApplicationWindow::importExcelChart(QAxObject* chart, const QString
 				int curveType = curve->property("ChartType").toInt();
 				QString tName = t->objectName();
 				int style = Graph::Line;
-				bool hasMarkers = false;
 				switch(curveType){
+					case -4169:
+						style = Graph::Scatter;
+					break;
+
 					case 5:
 					case 69:
 					case 70:
@@ -732,8 +749,9 @@ MultiLayer * ApplicationWindow::importExcelChart(QAxObject* chart, const QString
 					case 65:
 					case 66:
 					case 67:
-					case -4169:
-						hasMarkers = true;
+					case 72:
+					case 74:
+						style = Graph::LineSymbols;
 					break;
 
 					case 1:
@@ -770,7 +788,8 @@ MultiLayer * ApplicationWindow::importExcelChart(QAxObject* chart, const QString
 					c->setPen( qPen(curve));
 
 					if (style == Graph::Area ||style == Graph::VerticalBars || style==Graph::HorizontalBars ||
-						style == Graph::Histogram || style == Graph::Pie || style == Graph::Box)
+						style == Graph::Histogram || style == Graph::Pie || style == Graph::Box ||
+						style == Graph::StackBar || style == Graph::StackColumn)
 						c->setBrush(curveBrush(curve));
 
 					if (style == Graph::VerticalBars || style==Graph::HorizontalBars || style==Graph::Histogram){
@@ -784,7 +803,7 @@ MultiLayer * ApplicationWindow::importExcelChart(QAxObject* chart, const QString
 					if (style == Graph::Area)
 						c->setZ(n - l);
 
-					if (hasMarkers)
+					if (style == Graph::Scatter || style == Graph::LineSymbols)
 						setCurveMarkersFormat(c, curve);
 
 					if (curve->property("HasErrorBars").toBool())
@@ -824,34 +843,16 @@ MultiLayer * ApplicationWindow::importExcelChart(QAxObject* chart, const QString
 		setAxisFormat(g, QwtPlot::xBottom, axis);
 	}
 
-	if (!chart->dynamicCall("HasLegend()").toBool())
+	left = g->x() + g->canvas()->x() - left;
+	top = g->y() + g->canvas()->y() - top;
+
+	if (chart->property("HasLegend").toBool())
+		importText(left, top, chart->querySubObject("Legend"), g, g->legend());
+	else
 		g->removeLegend();
-	else {
-		LegendWidget *l = g->legend();
-		QAxObject* legend = chart->querySubObject( "Legend()");
-		if (l && legend){
-			QAxObject* fill = legend->querySubObject( "Interior");
-			if (fill)
-				l->setBackgroundColor(colorToQColor(fill->property("Color").toInt()));
-			QAxObject* border = legend->querySubObject( "Border");
-			if (border){
-				QPen pen(colorToQColor(border->property("Color").toInt()), border->property("Weight").toInt(),
-						 Qt::SolidLine, Qt::SquareCap, Qt::MiterJoin);
-				l->setFramePen(pen);
-			}
-			l->setFont(qFont(legend));
-			QAxObject* font = legend->querySubObject("Font");
-			if (font)
-				l->setTextColor(colorToQColor(font->property("Color").toInt()));
 
-			int x = qRound(legend->property("Left").toDouble()*dpiX/72.0);
-			int y = qRound(legend->property("Top").toDouble()*dpiY/72.0);
-			l->move(QPoint(x + xOffset, y + yOffset));
-		}
-	}
-
-	importShapes(chart, g);
-	importGroupBoxes(chart, g);
+	importShapes(left, top, chart, g);
+	importGroupBoxes(left, top, chart, g);
 
 	return ml;
 }
@@ -962,4 +963,15 @@ Table * ApplicationWindow::importUsingExcel(const QString& fn, int sheet)
 	updateRecentProjectsList(fn);
 	QApplication::restoreOverrideCursor();
 	return t;
+}
+
+bool ApplicationWindow::isExcelInstalled()
+{
+	QAxObject *excel = new QAxObject();
+	if (!excel->setControl("Excel.Application"))
+		return false;
+
+	excel->dynamicCall("Quit()");
+	delete excel;
+	return true;
 }

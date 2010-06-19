@@ -4642,6 +4642,19 @@ ApplicationWindow* ApplicationWindow::open(const QString& fn, bool factorySettin
 		return importOPJ(fn, factorySettings, newProject);
 	else
 #endif
+#ifdef HAS_EXCEL
+	if (isExcelInstalled()){
+		if (fn.endsWith(".xl", Qt::CaseInsensitive) || fn.endsWith(".xlsx", Qt::CaseInsensitive) ||
+			fn.endsWith(".xlsm", Qt::CaseInsensitive) || fn.endsWith(".xlsb", Qt::CaseInsensitive) ||
+			fn.endsWith(".xlam", Qt::CaseInsensitive) || fn.endsWith(".xltx", Qt::CaseInsensitive) ||
+			fn.endsWith(".xltm", Qt::CaseInsensitive) || fn.endsWith(".xls", Qt::CaseInsensitive) ||
+			fn.endsWith(".xla", Qt::CaseInsensitive) || fn.endsWith(".xlt", Qt::CaseInsensitive) ||
+			fn.endsWith(".xlm", Qt::CaseInsensitive) || fn.endsWith(".xlw", Qt::CaseInsensitive)){
+			importExcel(fn);
+			return this;
+		}
+	} else
+#endif
 #ifdef XLS_IMPORT
 	if (fn.endsWith(".xls", Qt::CaseInsensitive)){
 		importExcel(fn);
