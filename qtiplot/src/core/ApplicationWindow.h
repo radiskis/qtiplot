@@ -469,6 +469,7 @@ public slots:
 
 	Table* importExcel(const QString& = QString::null, int sheet = -1);
 #ifdef HAS_EXCEL
+	static bool isExcelInstalled();
 	Table* importUsingExcel(const QString& = QString::null, int sheet = -1);
 	void importExcelCharts(QAxObject* ws, const QString& fn = QString::null);
 	MultiLayer *importExcelChart(QAxObject* chart, const QString& fn = QString::null, const QString& name = QString::null);
