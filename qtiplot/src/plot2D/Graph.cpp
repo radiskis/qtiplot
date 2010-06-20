@@ -141,8 +141,9 @@ Graph::Graph(int x, int y, int width, int height, QWidget* parent, Qt::WFlags f)
 	d_min_tick_length = 5;
 	d_maj_tick_length = 9;
 
-	setAxisTitle(QwtPlot::yLeft, tr("Y Axis Title"));
-	setAxisTitle(QwtPlot::xBottom, tr("X Axis Title"));
+	d_axis_titles << "%(?Y)" << "" << "%(?X)" << "";
+	updateAxesTitles();
+
 	// grid
 	d_grid = new Grid();
 	d_grid->attach(this);
@@ -1113,8 +1114,7 @@ void Graph::setAxisTitleDistance(int axis, int dist)
 void Graph::setScaleTitle(int axis, const QString& text)
 {
 	int a = 0;
-	switch (axis)
-	{
+	switch (axis){
 		case 0:
 			a=2;
         break;
@@ -1131,12 +1131,18 @@ void Graph::setScaleTitle(int axis, const QString& text)
 	setAxisTitle(a, text);
 }
 
-QString Graph::parseAxisTitle(const QString& text)
+QString Graph::parseAxisTitle(int axis)
 {
-	QString s = text;
+	if (axis < 0 || axis >= QwtPlot::axisCnt)
+		return QString::null;
+
+	QString s = d_axis_titles[axis];
+	if (s.trimmed().isEmpty())
+		return s;
+
 	QString name = QString::null;
 	QString comment = QString::null;
-	if (s == "%(?Y)"){// parse Origin tag
+	if (s.contains("%(?Y)", Qt::CaseInsensitive)){// parse Origin tag
 		PlotCurve *c = curve(0);
 		if (c){
 			name = c->title().text();
@@ -1152,9 +1158,31 @@ QString Graph::parseAxisTitle(const QString& text)
 						comment = t->comment(t->colIndex(name)).trimmed().replace("\n", " ");
 				}
 			}
+
+			switch(d_axis_title_policy){
+				case Default:
+					s.replace("%(?Y)", tr("Y Axis Title"), Qt::CaseInsensitive);
+				break;
+				case ColName:
+					s.replace("%(?Y)", name, Qt::CaseInsensitive);
+				break;
+				case ColComment:
+					if (!comment.isEmpty())
+						s.replace("%(?Y)", comment, Qt::CaseInsensitive);;
+				break;
+				case NameAndComment:
+					if (!comment.isEmpty())
+						name += " (" + comment + ")";
+					s.replace("%(?Y)", name, Qt::CaseInsensitive);
+				break;
+				default:
+					break;
+			}
 		} else
-			s = tr("Y Axis Title");
-	} else if (s == "%(?X)"){
+			s.replace("%(?Y)", tr("Y Axis Title"), Qt::CaseInsensitive);
+	}
+
+	if (s.contains("%(?X)", Qt::CaseInsensitive)){
 		DataCurve *c = dataCurve(0);
 		if (c){
 			name = c->xColumnName();
@@ -1167,32 +1195,47 @@ QString Graph::parseAxisTitle(const QString& text)
 				if (t)
 					comment = t->comment(t->colIndex(c->xColumnName())).trimmed().replace("\n", " ");
 			}
-		} else
-			s = tr("X Axis Title");
-	}
 
-	switch(d_axis_title_policy){
-		case ColName:
-			return name;
-		break;
-		case ColComment:
-			if (!comment.isEmpty())
-				return comment;
-		break;
-		case NameAndComment:
-			if (!comment.isEmpty())
-				name += " (" + comment + ")";
-			return name;
-		break;
-		default:
-			break;
+			switch(d_axis_title_policy){
+				case Default:
+					s.replace("%(?X)", tr("X Axis Title"), Qt::CaseInsensitive);
+				break;
+				case ColName:
+				  s.replace("%(?X)", name, Qt::CaseInsensitive);
+				break;
+				case ColComment:
+				  if (!comment.isEmpty())
+					  s.replace("%(?X)", comment, Qt::CaseInsensitive);;
+				break;
+				case NameAndComment:
+				  if (!comment.isEmpty())
+					  name += " (" + comment + ")";
+				  s.replace("%(?X)", name, Qt::CaseInsensitive);
+				break;
+				default:
+				  break;
+			}
+		} else
+			s.replace("%(?X)", tr("X Axis Title"), Qt::CaseInsensitive);
 	}
 	return s;
 }
 
+QString Graph::axisTitleString(int axis)
+{
+	if (axis >= 0 && axis < d_axis_titles.size())
+		return d_axis_titles[axis];
+
+	return QString::null;
+}
+
 void Graph::setAxisTitle(int axis, const QString& text)
 {
-	((QwtPlot *)this)->setAxisTitle(axis, parseAxisTitle(text));
+	if (axis >= 0 && axis < d_axis_titles.size())
+		d_axis_titles[axis] = text;
+
+	((QwtPlot *)this)->setAxisTitle(axis, parseAxisTitle(axis));
+
 	replot();
 	emit modifiedGraph();
 }
@@ -2297,31 +2340,29 @@ QString Graph::saveTitle()
 QString Graph::saveScaleTitles()
 {
 	int a = 0;
-	QString s="";
-	for (int i=0; i<4; i++)
-	{
-		switch (i)
-		{
+	QString s = "";
+	for (int i = 0; i < 4; i++){
+		switch (i){
 			case 0:
-				a=2;
+				a = 2;
             break;
 			case 1:
-				a=0;
+				a = 0;
             break;
 			case 2:
-				a=3;
+				a = 3;
             break;
 			case 3:
-				a=1;
+				a = 1;
             break;
 		}
-		QString title = axisTitle(a).text();
+		QString title = axisTitleString(a);//axisTitle(a).text();
 		if (!title.isEmpty())
-            s += title.replace("\n", "<br>")+"\t";
+			s += title.replace("\n", "<br>") + "\t";
         else
             s += "\t";
 	}
-	return s+"\n";
+	return s + "\n";
 }
 
 QString Graph::saveAxesTitleAlignement()
@@ -3476,10 +3517,8 @@ void Graph::setAutoScale()
 
 void Graph::updateAxesTitles()
 {
-	if (d_axis_title_policy != Default){
-		((QwtPlot *)this)->setAxisTitle(QwtPlot::xBottom, parseAxisTitle("%(?X)"));
-		((QwtPlot *)this)->setAxisTitle(QwtPlot::yLeft, parseAxisTitle("%(?Y)"));
-	}
+	for (int i = 0; i < QwtPlot::axisCnt; i++)
+		((QwtPlot *)this)->setAxisTitle(i, parseAxisTitle(i));
 }
 
 void Graph::updatePlot()

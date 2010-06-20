@@ -71,7 +71,24 @@ TextEditor::TextEditor(Graph *g): QTextEdit(g), d_graph(g)
 		d_target = g->selectedScale();
 		QwtScaleWidget *scale = (QwtScaleWidget*)d_target;
 		QwtText t = scale->title();
-		text = t.text();
+
+		int axis = -1;
+		switch(scale->alignment()){
+			case QwtScaleDraw::BottomScale:
+				axis = QwtPlot::xBottom;
+			break;
+			case QwtScaleDraw::LeftScale:
+				axis = QwtPlot::yLeft;
+			break;
+			case QwtScaleDraw::TopScale:
+				axis = QwtPlot::xTop;
+			break;
+			case QwtScaleDraw::RightScale:
+				axis = QwtPlot::yRight;
+			break;
+		}
+		text = g->axisTitleString(axis);
+
 		setAlignment((Qt::Alignment)t.renderFlags());
 		setFont(t.font());
 
@@ -137,12 +154,26 @@ void TextEditor::closeEvent(QCloseEvent *e)
 		title.setText(s);
 		d_graph->setTitle(title);
 	} else if (d_target->isA("QwtScaleWidget")){
-		QwtScaleWidget *scale = (QwtScaleWidget*)d_target;
-		QwtText title = scale->title();
 		if(s.isEmpty())
 			s = " ";
-		title.setText(s);
-		scale->setTitle(title);
+
+		int axis = -1;
+		QwtScaleWidget *scale = (QwtScaleWidget*)d_target;
+		switch(scale->alignment()){
+			case QwtScaleDraw::BottomScale:
+				axis = QwtPlot::xBottom;
+			break;
+			case QwtScaleDraw::LeftScale:
+				axis = QwtPlot::yLeft;
+			break;
+			case QwtScaleDraw::TopScale:
+				axis = QwtPlot::xTop;
+			break;
+			case QwtScaleDraw::RightScale:
+				axis = QwtPlot::yRight;
+			break;
+		}
+		d_graph->setAxisTitle(axis, s);
 	}
 
 	if (d_initial_text != s)

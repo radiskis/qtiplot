@@ -514,7 +514,7 @@ class Graph: public QwtPlot
 		void setRightAxisTitle(const QString& text);
 		void setTopAxisTitle(const QString& text);
 
-		QString axisTitleString(int axis){return axisTitle(axis).text();};
+		QString axisTitleString(int axis);
 		void setAxisTitle(int axis, const QString& text);
 		void updateAxesTitles();
 		//! TODO: eliminate this function in version 0.9.1 (used only when restoring project files)
@@ -774,7 +774,7 @@ signals:
 		void selectorDeleted();
 
 	private:
-		QString parseAxisTitle(const QString& text);
+		QString parseAxisTitle(int axis);
 		QList<FrameWidget*> stackingOrderEnrichmentsList();
 		//! Finds bounding interval of the plot data.
 		QwtDoubleInterval axisBoundingInterval(int axis);
@@ -839,5 +839,6 @@ signals:
 		int d_speed_mode_points;
 		AxisTitlePolicy d_axis_title_policy;
 		bool d_synchronize_scales;
+		QStringList d_axis_titles;
 };
 #endif // GRAPH_H
