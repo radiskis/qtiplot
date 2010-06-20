@@ -12030,6 +12030,7 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot, co
 			QStringList fList = s.split("\t");
 			ag = (Graph*)plot->addLayer(fList[1].toInt(), fList[2].toInt(), fList[3].toInt(), fList[4].toInt());
 			ag->blockSignals(true);
+			ag->setAxisTitlePolicy(d_graph_axis_labeling);
 		}
 		else if (s.left(10) == "Background"){
 			QStringList fList = s.split("\t");
@@ -12683,6 +12684,7 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot, co
 		}
 	}
 	if (ag){
+		ag->updateAxesTitles();
 		ag->updateLayout();
 		ag->enableAutoscaling(autoscale2DPlots);
 		ag->setSynchronizedScaleDivisions(d_synchronize_graph_scales);

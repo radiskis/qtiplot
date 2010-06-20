@@ -140,6 +140,7 @@ void TextDialog::setGraph(Graph *g)
 
 	d_graph = g;
 	QwtText l;
+	int axis = -1;
 	if (d_text_type == LayerTitle)
 		l = d_graph->title();
 	else if (d_text_type == AxisTitle){
@@ -151,12 +152,15 @@ void TextDialog::setGraph(Graph *g)
 		switch(d_scale->alignment()){
 			case QwtScaleDraw::BottomScale:
 				setWindowTitle(tr("QtiPlot") + " - " + tr("X Axis Title"));
+				axis = QwtPlot::xBottom;
 			break;
 			case QwtScaleDraw::LeftScale:
 				setWindowTitle(tr("QtiPlot") + " - " + tr("Y Axis Title"));
+				axis = QwtPlot::yLeft;
 			break;
 			case QwtScaleDraw::TopScale:
 				setWindowTitle(tr("QtiPlot") + " - " + tr("Top Axis Title"));
+				axis = QwtPlot::xTop;
 			break;
 			case QwtScaleDraw::RightScale:
 				setWindowTitle(tr("QtiPlot") + " - " + tr("Right Axis Title"));
@@ -164,6 +168,7 @@ void TextDialog::setGraph(Graph *g)
 				invertTitleBox->setChecked(d_scale->testLayoutFlag(QwtScaleWidget::TitleInverted));
 				invertTitleBox->show();
 				invertTitleBox->blockSignals(false);
+				axis = QwtPlot::yRight;
 			break;
 		}
 
@@ -171,7 +176,10 @@ void TextDialog::setGraph(Graph *g)
 	}
 
 	setAlignment(l.renderFlags());
-	setText(l.text());
+	if (axis >= 0)
+		setText(g->axisTitleString(axis));
+	else
+		setText(l.text());
 	selectedFont = l.font();
 	colorBtn->setColor(l.color());
 
@@ -182,8 +190,8 @@ void TextDialog::setGraph(Graph *g)
 
 void TextDialog::apply()
 {
-    if (!d_graph)
-        return;
+	if (!d_graph)
+		return;
 
 	if (d_text_type == AxisTitle){
 		if (!d_scale)
@@ -196,10 +204,25 @@ void TextDialog::apply()
 		t.setColor(colorBtn->color());
 		d_scale->setTitle(t);
 		d_scale->setSpacing(distanceBox->value());
-		if (d_scale->alignment() == QwtScaleDraw::RightScale){
-			d_scale->setLayoutFlag(QwtScaleWidget::TitleInverted, invertTitleBox->isChecked());
-			d_scale->repaint();
+
+		int axis = -1;
+		switch(d_scale->alignment()){
+			case QwtScaleDraw::BottomScale:
+				axis = QwtPlot::xBottom;
+			break;
+			case QwtScaleDraw::LeftScale:
+				axis = QwtPlot::yLeft;
+			break;
+			case QwtScaleDraw::TopScale:
+				axis = QwtPlot::xTop;
+			break;
+			case QwtScaleDraw::RightScale:
+				d_scale->setLayoutFlag(QwtScaleWidget::TitleInverted, invertTitleBox->isChecked());
+				d_scale->repaint();
+				axis = QwtPlot::yRight;
+			break;
 		}
+		d_graph->setAxisTitle(axis, t.text());
 	} else if (d_text_type == LayerTitle){
 		QwtText t =	d_graph->title();
 		t.setRenderFlags(alignment());
