@@ -1747,7 +1747,13 @@ void MultiLayer::createWaterfallBox()
 
 void MultiLayer::updateWaterfallScales(Graph *g, int axis)
 {
+	if (!g)
+		return;
+
 	QwtScaleDiv *scDiv = g->axisScaleDiv(axis);
+	if (!scDiv)
+		return;
+
 	foreach(Graph *l, graphsList){
 		if (l == g)
 			continue;
