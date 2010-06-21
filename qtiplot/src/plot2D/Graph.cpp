@@ -3767,6 +3767,9 @@ void Graph::zoomed (const QwtDoubleRect &)
 {
 	updateMarkersBoundingRect();
 	emit modifiedGraph();
+
+	for (int i = 0; i < QwtPlot::axisCnt; i++)
+		axisDivChanged(this, i);
 }
 
 void Graph::zoom(bool on)
@@ -3816,7 +3819,7 @@ void Graph::enablePanningMagnifier(bool on, int mode)
 		for (int i = 0; i < QwtPlot::axisCnt; i++){
 			QwtScaleWidget *scale = axisWidget(i);
 			if (scale)
-                connect(scale, SIGNAL(scaleDivChanged()), this, SLOT(updateMarkersBoundingRect()));
+				connect(scale, SIGNAL(scaleDivChanged()), this, SLOT(updateMarkersBoundingRect()));
 		}
 
 		d_panner = new QwtPlotPanner(cnvs);
@@ -4186,6 +4189,13 @@ void Graph::updateMarkersBoundingRect(bool rescaleEvent)
 			f->updateCoordinates();
 	}
 	replot();
+
+	if (d_panner && this->multiLayer()->isWaterfallPlot()){
+		if (d_panner->isAxisEnabled(QwtPlot::xBottom))
+			axisDivChanged(this, QwtPlot::xBottom);
+		if (d_panner->isAxisEnabled(QwtPlot::yLeft))
+			axisDivChanged(this, QwtPlot::yLeft);
+	}
 
 	if (!d_lines.size())
 		return;
