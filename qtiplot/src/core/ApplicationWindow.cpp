@@ -74,6 +74,7 @@
 #include <FFTDialog.h>
 #include <FrequencyCountDialog.h>
 #include <SubtractDataDialog.h>
+#include <BaselineDialog.h>
 #include <QwtErrorPlotCurve.h>
 #include <LegendWidget.h>
 #include <TexWidget.h>
@@ -9558,6 +9559,7 @@ void ApplicationWindow::analysisMenuAboutToShow()
         translateMenu->addAction(actionTranslateHor);
 
 		QMenu *subtractMenu = analysisMenu->addMenu(tr("S&ubtract"));
+		//subtractMenu->addAction(actionBaseline);
 		subtractMenu->addAction(actionSubtractReference);
 		subtractMenu->addAction(actionSubtractLine);
 
@@ -14060,6 +14062,9 @@ void ApplicationWindow::createActions()
 	actionSubtractReference = new QAction(tr("&Reference Data..."), this);
 	connect(actionSubtractReference, SIGNAL(activated()), this, SLOT(subtractReferenceData()));
 
+	actionBaseline = new QAction(tr("&Baseline..."), this);
+	connect(actionBaseline, SIGNAL(activated()), this, SLOT(baselineDialog()));
+
 	actionCheckUpdates = new QAction(tr("Search for &Updates"), this);
 	connect(actionCheckUpdates, SIGNAL(activated()), this, SLOT(searchForUpdates()));
 
@@ -15444,6 +15449,21 @@ void ApplicationWindow::subtractReferenceData()
 	SubtractDataDialog *sdd = new SubtractDataDialog(this);
 	sdd->setGraph(g);
 	sdd->exec();
+}
+
+void ApplicationWindow::baselineDialog()
+{
+	MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
+	if (!plot)
+		return;
+
+	Graph* g = plot->activeLayer();
+	if (!g || !g->validCurvesDataSize())
+		return;
+
+	BaselineDialog *bd = new BaselineDialog(this);
+	bd->setGraph(g);
+	bd->exec();
 }
 
 void ApplicationWindow::showSupportPage()

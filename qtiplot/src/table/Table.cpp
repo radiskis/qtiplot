@@ -3760,6 +3760,59 @@ double Table::avg(int col, int startRow, int endRow)
 	return 0.0;
 }
 
+double Table::min(int col, int startRow, int endRow)
+{
+	if (col < 0 || col >= d_table->numCols())
+		return 0.0;
+
+	if (colTypes[col] != Numeric)
+		return 0.0;
+
+	int rows = d_table->numRows();
+	if (startRow < 0 || startRow >= rows)
+		startRow = 0;
+	if (endRow < 0 || endRow >= rows)
+		endRow = d_table->numRows() - 1;
+
+	QLocale l = locale();
+	double min = this->cell(startRow, col);
+	for (int i = startRow + 1; i <= endRow; i++){
+		QString s = d_table->text(i, col);
+		if (!s.isEmpty()){
+			double val = l.toDouble(s);
+			if (val < min)
+				min = val;
+		}
+	}
+	return min;
+}
+
+double Table::max(int col, int startRow, int endRow)
+{
+	if (col < 0 || col >= d_table->numCols())
+		return 0.0;
+
+	if (colTypes[col] != Numeric)
+		return 0.0;
+
+	int rows = d_table->numRows();
+	if (startRow < 0 || startRow >= rows)
+		startRow = 0;
+	if (endRow < 0 || endRow >= rows)
+		endRow = d_table->numRows() - 1;
+
+	QLocale l = locale();
+	double max = this->cell(startRow, col);
+	for (int i = startRow + 1; i <= endRow; i++){
+		QString s = d_table->text(i, col);
+		if (!s.isEmpty()){
+			double val = l.toDouble(s);
+			if (val > max)
+				max = val;
+		}
+	}
+	return max;
+}
 /*****************************************************************************
  *
  * Class MyTable

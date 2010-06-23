@@ -61,6 +61,8 @@ class muParserScript: public Script
   private:
 	double avg(const QString &arg, int start = 0, int end = -1);
 	double sum(const QString &arg, int start = 0, int end = -1);
+	double min(const QString &arg, int start = 0, int end = -1);
+	double max(const QString &arg, int start = 0, int end = -1);
 	double col(const QString &arg);
     double tablecol(const QString &arg);
     double cell(int row, int col);
@@ -70,7 +72,9 @@ class muParserScript: public Script
     static double *mu_addVariableR(const char *name) { return current->addVariableR(name); }
 	static double mu_avg(const char *arg, double start = 1, double end = -1) {return current->avg(arg, qRound(start - 1), qRound(end - 1));}
 	static double mu_sum(const char *arg, double start = 1, double end = -1) {return current->sum(arg, qRound(start - 1), qRound(end - 1));}
-    static double mu_col(const char *arg) { return current->col(arg); }
+	static double mu_min(const char *arg, double start = 1, double end = -1) {return current->min(arg, qRound(start - 1), qRound(end - 1));}
+	static double mu_max(const char *arg, double start = 1, double end = -1) {return current->max(arg, qRound(start - 1), qRound(end - 1));}
+	static double mu_col(const char *arg) { return current->col(arg); }
     static double mu_cell(double row, double col) { return current->cell(qRound(row), qRound(col)); }
     static double mu_tableCell(double col, double row) { return current->tableCell(qRound(col), qRound(row)); }
     static double mu_tablecol(const char *arg) { return current->tablecol(arg); }
