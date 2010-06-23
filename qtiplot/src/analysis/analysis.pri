@@ -49,7 +49,8 @@ INCLUDEPATH += src/analysis/dialogs/
 				src/analysis/fit_gsl.cpp \
 			   src/analysis/nrutil.cpp \
 
-    HEADERS += src/analysis/dialogs/ExpDecayDialog.h \
+	HEADERS += src/analysis/dialogs/BaselineDialog.h \
+			   src/analysis/dialogs/ExpDecayDialog.h \
 			   src/analysis/dialogs/FFTDialog.h \
 			   src/analysis/dialogs/FitDialog.h \
 			   src/analysis/dialogs/FilterDialog.h \
@@ -60,7 +61,8 @@ INCLUDEPATH += src/analysis/dialogs/
 			   src/analysis/dialogs/SmoothCurveDialog.h \
 			   src/analysis/dialogs/SubtractDataDialog.h \
 
-	SOURCES += src/analysis/dialogs/ExpDecayDialog.cpp \
+	SOURCES += src/analysis/dialogs/BaselineDialog.cpp \
+			   src/analysis/dialogs/ExpDecayDialog.cpp \
 			   src/analysis/dialogs/FFTDialog.cpp \
 			   src/analysis/dialogs/FitDialog.cpp \
 			   src/analysis/dialogs/FilterDialog.cpp \

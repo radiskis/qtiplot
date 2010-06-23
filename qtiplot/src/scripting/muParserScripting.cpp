@@ -108,6 +108,8 @@ const QStringList muParserScripting::functionsList(bool tableContext)
 	QStringList l;
 	if (tableContext){
 		l << "AVG";
+		l << "MAX";
+		l << "MIN";
 		l << "SUM";
 	}
 
@@ -121,6 +123,10 @@ const QString muParserScripting::explainFunction(const QString &name)
 {
 	if (name == "AVG")
 		return QObject::tr("AVG(\"colName\", i, j):\n The average of all cells from row i to j in column colName.");
+	if (name == "MIN")
+		return QObject::tr("MIN(\"colName\", i, j):\n The minimum of all cells from row i to j in column colName.");
+	if (name == "MAX")
+		return QObject::tr("MAX(\"colName\", i, j):\n The maximum of all cells from row i to j in column colName.");
 	if (name == "SUM")
 		return QObject::tr("SUM(\"colName\", i, j):\n The sum of all cells from row i to j in column colName.");
 

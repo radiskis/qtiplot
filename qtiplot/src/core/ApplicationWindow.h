@@ -818,6 +818,7 @@ public slots:
 	void showColorMapDialog();
 	//@}
 
+	void baselineDialog();
 	void subtractReferenceData();
 	void subtractStraightLine();
 	void translateCurveHor();
@@ -1498,7 +1499,7 @@ private:
     QAction *actionIncreasePrecision, *actionDecreasePrecision, *actionPrintPreview;
 	QAction *actionVertSharedAxisLayers, *actionHorSharedAxisLayers, *actionSharedAxesLayers, *actionStackSharedAxisLayers;
 	QAction *actionCustomSharedAxisLayers, *actionCustomLayout, *actionExtractTableData, *actionSubtractLine, *actionSubtractReference;
-	QAction *actionRaiseEnrichment, *actionLowerEnrichment;
+	QAction *actionRaiseEnrichment, *actionLowerEnrichment, *actionBaseline;
 
     QList<QAction *> d_user_actions;
     QUndoView *d_undo_view;

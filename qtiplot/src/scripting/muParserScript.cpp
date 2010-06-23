@@ -52,6 +52,8 @@ muParserScript::muParserScript(ScriptingEnv *env, const QString &code, QObject *
 	  parser.DefineFun("tablecol", mu_tablecol, false);
 	  parser.DefineFun("AVG", mu_avg, false);
 	  parser.DefineFun("SUM", mu_sum, false);
+	  parser.DefineFun("MIN", mu_min, false);
+	  parser.DefineFun("MAX", mu_max, false);
   } else if (Context->isA("Matrix"))
 	  parser.DefineFun("cell", mu_cell);
 
@@ -501,4 +503,32 @@ double muParserScript::avg(const QString &arg, int start, int end)
 
 	rvariables.clear();
 	return table->avg(col, start, end);
+}
+
+double muParserScript::min(const QString &arg, int start, int end)
+{
+	if (!Context->isA("Table"))
+		throw Parser::exception_type(tr("MIN() works only on tables!").ascii());
+
+	Table *table = (Table*) Context;
+	int col = table->colNames().findIndex(arg);
+	if (col < 0)
+		throw Parser::exception_type(tr("There's no column named %1 in table %2!").arg(arg).arg(Context->name()).ascii());
+
+	rvariables.clear();
+	return table->min(col, start, end);
+}
+
+double muParserScript::max(const QString &arg, int start, int end)
+{
+	if (!Context->isA("Table"))
+		throw Parser::exception_type(tr("MAX() works only on tables!").ascii());
+
+	Table *table = (Table*) Context;
+	int col = table->colNames().findIndex(arg);
+	if (col < 0)
+		throw Parser::exception_type(tr("There's no column named %1 in table %2!").arg(arg).arg(Context->name()).ascii());
+
+	rvariables.clear();
+	return table->max(col, start, end);
 }
