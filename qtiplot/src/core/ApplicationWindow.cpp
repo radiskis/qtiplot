@@ -9559,7 +9559,7 @@ void ApplicationWindow::analysisMenuAboutToShow()
         translateMenu->addAction(actionTranslateHor);
 
 		QMenu *subtractMenu = analysisMenu->addMenu(tr("S&ubtract"));
-		//subtractMenu->addAction(actionBaseline);
+		subtractMenu->addAction(actionBaseline);
 		subtractMenu->addAction(actionSubtractReference);
 		subtractMenu->addAction(actionSubtractLine);
 
@@ -15463,7 +15463,7 @@ void ApplicationWindow::baselineDialog()
 
 	BaselineDialog *bd = new BaselineDialog(this);
 	bd->setGraph(g);
-	bd->exec();
+	bd->show();
 }
 
 void ApplicationWindow::showSupportPage()

@@ -42,13 +42,14 @@ class DataPickerTool : public QwtPlotPicker, public PlotToolInterface
 {
 	Q_OBJECT
 	public:
-		enum Mode { Display, Move, Remove, MoveCurve };
+		enum Mode { Display, Move, Remove, MoveCurve};
 		enum MoveMode {Free, Vertical, Horizontal};
 		DataPickerTool(Graph *graph, ApplicationWindow *app, Mode mode, const QObject *status_target=NULL, const char *status_slot="");
 		virtual ~DataPickerTool();
 		virtual bool eventFilter(QObject *obj, QEvent *event);
 		bool keyEventFilter(QKeyEvent *ke);
 		QwtPlotCurve *selectedCurve() const { return d_selected_curve; }
+		void setSelectedCurve(QwtPlotCurve *c){if (c) setSelection(c, 0);};
 		int selectedPointIndex(){return d_selected_point;};
 
         void copySelection();
@@ -85,9 +86,9 @@ class DataPickerTool : public QwtPlotPicker, public PlotToolInterface
 		virtual void append(const QPoint &point);
 		virtual void move(const QPoint &point);
 		virtual bool end(bool ok);
-		void setSelection(QwtPlotCurve *curve, int point_index);
+		virtual void setSelection(QwtPlotCurve *curve, int point_index);
 		void moveBy(int dx, int dy);
-	private:
+
 		ApplicationWindow *d_app;
 		QwtPlotMarker d_selection_marker;
 		Mode d_mode;
@@ -95,6 +96,18 @@ class DataPickerTool : public QwtPlotPicker, public PlotToolInterface
 		int d_selected_point;
 		MoveMode d_move_mode;
 		QPoint d_restricted_move_pos;
+};
+
+//! Plot tool for selecting and moving individual points of a baseline curve.
+class BaselineTool : public DataPickerTool
+{
+	Q_OBJECT
+
+	public:
+		BaselineTool(QwtPlotCurve *curve, Graph *graph, ApplicationWindow *app);
+
+	protected:
+		void setSelection(QwtPlotCurve *curve, int point_index);
 };
 
 #endif // ifndef DATA_PICKER_TOOL_H
