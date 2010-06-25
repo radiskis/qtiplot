@@ -30,13 +30,11 @@
 #include <ApplicationWindow.h>
 #include <Folder.h>
 #include <Graph.h>
-#include <ColorButton.h>
 #include <DoubleSpinBox.h>
 #include <PlotCurve.h>
 
 #include <QGroupBox>
 #include <QCheckBox>
-#include <QSpinBox>
 #include <QMessageBox>
 #include <QPushButton>
 #include <QRadioButton>

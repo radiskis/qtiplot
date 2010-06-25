@@ -118,6 +118,7 @@ BaselineDialog::BaselineDialog( QWidget* parent, Qt::WFlags fl )
 	buttonSubtract = new QPushButton(tr( "&Subtract" ));
 	buttonUndo = new QPushButton(tr( "&Undo Subtraction" ));
 	buttonModify = new QPushButton(tr( "&Modify" ));
+	buttonModify->setCheckable(true);
 	buttonCancel = new QPushButton(tr( "&Close" ));
 
 	QVBoxLayout *vl = new QVBoxLayout();
@@ -168,13 +169,14 @@ void BaselineDialog::disableBaselineTool()
 	if (d_picker_tool){
 		graph->setActiveTool(NULL);
 		d_picker_tool = NULL;
+		buttonModify->setChecked(false);
 	}
 }
 
 void BaselineDialog::modifyBaseline()
 {
 	if (!d_baseline)
-		return;
+		createBaseline();
 
 	disableBaselineTool();
 
@@ -271,6 +273,9 @@ void BaselineDialog::undo()
 
 void BaselineDialog::subtractBaseline(bool add)
 {
+	if (!d_baseline)
+		return;
+
 	disableBaselineTool();
 
 	if (!graph)
