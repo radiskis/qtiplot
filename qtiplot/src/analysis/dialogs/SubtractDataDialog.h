@@ -35,9 +35,7 @@ class QPushButton;
 class QRadioButton;
 class QComboBox;
 class QCheckBox;
-class QSpinBox;
 class Graph;
-class ColorButton;
 class DoubleSpinBox;
 
 //! Subtract reference data dialog

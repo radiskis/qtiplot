@@ -151,7 +151,7 @@ QString ScaleDraw::labelString(double value) const
 					if (d_numeric_format == SuperscriptsGER)
 						return list[0] + "·10<sup>" + s + "</sup>";
 					else
-						return list[0] + "x10<sup>" + s + "</sup>";
+						return list[0] + QString(QChar(0x00D7)) + "10<sup>" + s + "</sup>";
 				}
 			} else if (d_numeric_format == Engineering){
 				QString eng_suff;
