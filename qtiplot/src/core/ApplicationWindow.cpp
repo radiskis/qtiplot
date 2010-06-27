@@ -10474,24 +10474,20 @@ void ApplicationWindow::showWindowPopupMenu(Q3ListViewItem *it, const QPoint &p,
 
 				cm.insertItem(tr("D&epends on"), tablesDepend);
 			}
-		} else if (w->isA("Graph3D")) {
-			Graph3D *sp=(Graph3D*)w;
+		} else if (w->isA("Graph3D")){
+			cm.insertSeparator();
+			Graph3D *sp = qobject_cast<Graph3D*>(w);
 			Matrix *m = sp->matrix();
-			QString formula = sp->formula();
-			if (!formula.isEmpty()){
-				cm.insertSeparator();
-				if (formula.contains("_")){
-					QStringList tl = formula.split("_", QString::SkipEmptyParts);
-					tablesDepend->clear();
-					tablesDepend->insertItem(tl[0], 0, -1);
-					cm.insertItem(tr("D&epends on"), tablesDepend);
-				} else if (m) {
-					plots.insertItem(m->objectName(), m, SLOT(showNormal()));
-					cm.insertItem(tr("D&epends on"),&plots);
-				} else {
-					plots.insertItem(formula, w, SLOT(showNormal()));
-					cm.insertItem(tr("Function"), &plots);
-				}
+			if (m){
+				plots.insertItem(m->objectName(), m, SLOT(showMaximized()));
+				cm.insertItem(tr("D&epends on"), &plots);
+			} else if (sp->table()){
+				tablesDepend->clear();
+				tablesDepend->insertItem(sp->table()->objectName(), 0, -1);
+				cm.insertItem(tr("D&epends on"), tablesDepend);
+			} else if (!sp->formula().isEmpty()){
+				plots.insertItem(sp->formula());
+				cm.insertItem(tr("Function"), &plots);
 			}
 		}
 		cm.exec(p);
