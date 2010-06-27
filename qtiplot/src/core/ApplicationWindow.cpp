@@ -1675,6 +1675,7 @@ void ApplicationWindow::customMenu(QMdiSubWindow* w)
 		actionPasteSelection->setEnabled(true);
 		actionClearSelection->setEnabled(true);
 		actionSaveTemplate->setEnabled(true);
+		actionSaveWindow->setEnabled(true);
 		QStringList tables = tableNames() + matrixNames();
 		if (!tables.isEmpty())
 			actionShowExportASCIIDialog->setEnabled(true);
@@ -1705,6 +1706,7 @@ void ApplicationWindow::customMenu(QMdiSubWindow* w)
 
 			actionPrint->setEnabled(true);
 			actionSaveTemplate->setEnabled(true);
+			actionSaveWindow->setEnabled(true);
 			actionExportGraph->setEnabled(true);
 
 			format->menuAction()->setVisible(true);
@@ -1758,6 +1760,7 @@ void ApplicationWindow::customMenu(QMdiSubWindow* w)
 void ApplicationWindow::disableActions()
 {
 	actionSaveTemplate->setEnabled(false);
+	actionSaveWindow->setEnabled(false);
 	actionPrintAllPlots->setEnabled(false);
 	actionPrint->setEnabled(false);
 
@@ -6600,6 +6603,98 @@ void ApplicationWindow::saveProjectAs(const QString& fileName, bool compress)
 	}
 }
 
+void ApplicationWindow::saveWindowAs(const QString& fileName, bool compress)
+{
+#ifdef QTIPLOT_DEMO
+	showDemoVersionMessage();
+	return;
+#endif
+
+	MdiSubWindow *w = this->activeWindow();
+	if (!w)
+		return;
+
+	QString fn = fileName;
+	if (fileName.isEmpty()){
+		QString filter = tr("QtiPlot project") + " (*.qti);;";
+		filter += tr("Compressed QtiPlot project") + " (*.qti.gz)";
+
+		QString selectedFilter;
+		fn = getFileName(this, tr("Save Window As"), workingDir, filter, &selectedFilter, true, d_confirm_overwrite);
+		if (selectedFilter.contains(".gz"))
+			compress = true;
+	}
+
+	if (!fn.isEmpty()){
+		QFileInfo fi(fn);
+		workingDir = fi.dirPath(true);
+		if (!fn.endsWith(".qti", Qt::CaseInsensitive))
+			fn.append(".qti");
+
+		if (saveWindow(w, fn, compress))
+			updateRecentProjectsList(fn);
+	}
+}
+
+bool ApplicationWindow::saveWindow(MdiSubWindow *w, const QString& fn, bool compress)
+{
+	if (!w)
+		return false;
+
+	QFile f(fn);
+	if ( !f.open( QIODevice::WriteOnly ) ){
+		QMessageBox::about(this, tr("QtiPlot - File save error"), tr("The file: <br><b>%1</b> is opened in read-only mode").arg(fn));
+		return false;
+	}
+	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+
+	QTextStream t( &f );
+	t.setEncoding(QTextStream::UnicodeUTF8);
+	t << "QtiPlot " + QString::number(maj_version) + "." + QString::number(min_version) + "." + QString::number(patch_version) + " project file\n";
+	t << "<scripting-lang>\t" + QString(scriptEnv->name()) + "\n";
+
+	int windows = 1;
+	QStringList tbls;
+	if (qobject_cast<MultiLayer *>(w)){
+		tbls = multilayerDependencies(w);
+		windows = tbls.size() + 1;
+	}
+
+	Graph3D *g = qobject_cast<Graph3D *>(w);
+	if (g && (g->table() || g->matrix()))
+		windows++;
+
+	t << "<windows>\t" + QString::number(windows) + "\n";
+	f.close();
+
+	if (!f.isOpen())
+		f.open(QIODevice::Append);
+
+	foreach(QString s, tbls){
+		Table *t = table(s);
+		if (t)
+			t->save(fn, windowGeometryInfo(t));
+	}
+
+	if (g){
+		Matrix *m = g->matrix();
+		if (m)
+			m->save(fn, windowGeometryInfo(m));
+		Table *t = g->table();
+		if (t)
+			t->save(fn, windowGeometryInfo(t));
+	}
+
+	w->save(fn, windowGeometryInfo(w));
+	f.close();
+
+	if (compress)
+		file_compress((char *)fn.ascii(), "wb9");
+
+	QApplication::restoreOverrideCursor();
+	return true;
+}
+
 void ApplicationWindow::saveNoteAs()
 {
 	Note* w = (Note*)activeWindow(NoteWindow);
@@ -9739,6 +9834,7 @@ void ApplicationWindow::fileMenuAboutToShow()
 	fileMenu->addAction(actionSaveProject);
 	fileMenu->addAction(actionSaveProjectAs);
 	fileMenu->insertSeparator();
+	fileMenu->addAction(actionSaveWindow);
 	fileMenu->addAction(actionOpenTemplate);
 	fileMenu->addAction(actionSaveTemplate);
 	fileMenu->insertSeparator();
@@ -10369,7 +10465,7 @@ void ApplicationWindow::showWindowPopupMenu(Q3ListViewItem *it, const QPoint &p,
 			}
 		} else if (w->isA("MultiLayer")) {
 			tablesDepend->clear();
-			QStringList tbls=multilayerDependencies(w);
+			QStringList tbls = multilayerDependencies(w);
 			int n = int(tbls.count());
 			if (n > 0){
 				cm.insertSeparator();
@@ -10680,8 +10776,15 @@ void ApplicationWindow::showWindowContextMenu()
 
 void ApplicationWindow::customWindowTitleBarMenu(MdiSubWindow *w, QMenu *menu)
 {
-    menu->addAction(actionHideActiveWindow);
-    menu->addSeparator();
+	menu->addSeparator();
+
+	menu->addAction(actionSaveWindow);
+	menu->addAction(actionPrint);
+	menu->addSeparator();
+	menu->addAction(actionCopyWindow);
+	menu->addAction(actionRename);
+	menu->addSeparator();
+
 	if (w->inherits("Table") || w->isA("Matrix")){
 	    menu->addAction(actionLoad);
 		menu->addAction(actionShowExportASCIIDialog);
@@ -10692,11 +10795,8 @@ void ApplicationWindow::customWindowTitleBarMenu(MdiSubWindow *w, QMenu *menu)
 		menu->addAction(actionSaveNote);
 	else
 		menu->addAction(actionSaveTemplate);
-	menu->addAction(actionPrint);
 	menu->addSeparator();
-	menu->addAction(actionRename);
-	menu->addAction(actionCopyWindow);
-	menu->addSeparator();
+	menu->addAction(actionHideActiveWindow);
 }
 
 void ApplicationWindow::showTableContextMenu(bool selection)
@@ -13355,6 +13455,9 @@ void ApplicationWindow::createActions()
 	actionSaveTemplate = new QAction(QIcon(":/save_template.png"), tr("Save As &Template..."), this);
 	connect(actionSaveTemplate, SIGNAL(activated()), this, SLOT(saveAsTemplate()));
 
+	actionSaveWindow = new QAction(tr("Save &Window As..."), this);
+	connect(actionSaveWindow, SIGNAL(activated()), this, SLOT(saveWindowAs()));
+
 	actionSaveNote = new QAction(QIcon(":/filesaveas.png"), tr("Save Note As..."), this);
 	connect(actionSaveNote, SIGNAL(activated()), this, SLOT(saveNoteAs()));
 
@@ -14331,6 +14434,8 @@ void ApplicationWindow::translateActionsStrings()
 
 	actionSaveTemplate->setMenuText(tr("Save As &Template..."));
 	actionSaveTemplate->setToolTip(tr("Save window as template"));
+
+	actionSaveWindow->setMenuText(tr("Save &Window As..."));
 
 	actionLoad->setMenuText(tr("&Import ASCII..."));
 	actionLoad->setToolTip(tr("Import data file(s)"));

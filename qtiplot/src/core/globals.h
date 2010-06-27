@@ -32,10 +32,10 @@ const int maj_version = 0;
 //! Minor version number (0..9)
 const int min_version = 9;
 //! Patch version number (0..9)
-const int patch_version = 7;
+const int patch_version = 8;
 //! Extra version information string (like "alpha", "-2", etc...)
-const char * extra_version = ".14";
+const char * extra_version = "";
 //! Copyright string containing the author names
 const char * copyright_string = "Copyright (C) 2004-2010 Ion Vasilief";
 //! Release date as a string
-const char * release_date = " 2010/04/22";
+const char * release_date = " 2010/06/29";
