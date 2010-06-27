@@ -1549,13 +1549,20 @@ void Table::pasteSelection()
 
 	if (pasteComments || pasteHeader){
 		for (int j = left; j < left + cols; j++){
-			if (d_table->isColumnReadOnly(j) || firstLine.size() <= j)
+			if (d_table->isColumnReadOnly(j))
+				continue;
+
+			int colIndex = j - left;
+			if (colIndex < 0 || colIndex >= firstLine.count())
 				continue;
 
 			if (pasteComments)
-				comments[j] = firstLine[j];
-			else if (pasteHeader)
-				col_label[j] = firstLine[j].replace("-","_").remove(QRegExp("\\W")).replace("_","-");
+				comments[j] = firstLine[colIndex];
+			else if (pasteHeader){
+				QString colName = firstLine[colIndex].replace("-", "_").remove(QRegExp("\\W")).replace("_", "-");
+				if (!col_label.contains(colName))
+					col_label[j] = colName;
+			}
 		}
 		if (pasteComments)
 			showComments();
