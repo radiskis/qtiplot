@@ -27,8 +27,8 @@
  *                                                                         *
  ***************************************************************************/
 #include "FFT.h"
-#include "../plot2D/MultiLayer.h"
-#include "../plot2D/PlotCurve.h"
+#include "MultiLayer.h"
+#include "PlotCurve.h"
 #include <ColorBox.h>
 
 #include <QMessageBox>
@@ -271,16 +271,57 @@ void FFT::output(const QString &text)
 	    if (!d_output_graph)
             createOutputGraph();
 
-		d_output_graph->setTitle(QString());
-		if (!d_inverse)
-			d_output_graph->setXAxisTitle(tr("Frequency") + " (" + tr("Hz") + ")");
-		else
-			d_output_graph->setXAxisTitle(tr("Time") + + " (" + tr("s") + ")");
-		d_output_graph->setYAxisTitle(tr("Amplitude"));
+		MultiLayer *ml = d_output_graph->multiLayer();
 
-        PlotCurve *c = d_output_graph->insertCurve(d_result_table, 0, tableName + "_" + tr("Amplitude"), 0);
+		d_output_graph->setTitle(QString::null);
+		d_output_graph->setYAxisTitle(tr("Angle (deg)"));
+		d_output_graph->enableAxis(QwtPlot::xTop, true);
+		if (!d_inverse)
+			d_output_graph->setAxisTitle(QwtPlot::xTop, tr("Frequency") + " (" + tr("Hz") + ")");
+		else
+			d_output_graph->setAxisTitle(QwtPlot::xTop, tr("Time") + + " (" + tr("s") + ")");
+
+		ScaleDraw *sd = (ScaleDraw *)d_output_graph->axisScaleDraw(QwtPlot::yLeft);
+		if (sd)
+			sd->setShowTicksPolicy(ScaleDraw::HideBegin);
+		sd = (ScaleDraw *)d_output_graph->axisScaleDraw(QwtPlot::yRight);
+		if (sd)
+			sd->setShowTicksPolicy(ScaleDraw::HideBegin);
+		sd = (ScaleDraw *)d_output_graph->axisScaleDraw(QwtPlot::xBottom);
+		if (sd){
+			sd->setShowTicksPolicy(ScaleDraw::HideBeginEnd);
+			sd->enableComponent(QwtAbstractScaleDraw::Backbone, false);
+		}
+
+		PlotCurve *pc = d_output_graph->insertCurve(d_result_table, 0, tableName + "_" + tr("Angle"), 0);
+		pc->setPen(QPen(d_curveColor, 1));
+		d_output_graph->removeLegend();
+		d_output_graph->updatePlot();
+
+		Graph *g = ml->addLayer();
+		app->setPreferences(g);
+		g->setTitle(QString::null);
+		if (!d_inverse)
+			g->setXAxisTitle(tr("Frequency") + " (" + tr("Hz") + ")");
+		else
+			g->setXAxisTitle(tr("Time") + + " (" + tr("s") + ")");
+		g->setYAxisTitle(tr("Amplitude"));
+		g->removeLegend();
+
+		sd = (ScaleDraw *)g->axisScaleDraw(QwtPlot::xTop);
+		if (sd)
+			sd->setShowTicksPolicy(ScaleDraw::HideBeginEnd);
+
+		PlotCurve *c = g->insertCurve(d_result_table, 0, tableName + "_" + tr("Amplitude"), 0);
 		c->setPen(QPen(d_curveColor, 1));
-        d_output_graph->updatePlot();
+		g->updatePlot();
+
+		ml->setAlignPolicy(MultiLayer::AlignCanvases);
+		ml->setRows(2);
+		ml->setCols(1);
+		ml->setSpacing(0, 0);
+		ml->setCommonLayerAxes(false, true);
+		ml->arrangeLayers(false, false);
 	}
 }
 
