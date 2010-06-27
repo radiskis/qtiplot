@@ -276,6 +276,8 @@ public slots:
 
 	void saveProjectAs(const QString& fileName = QString(), bool compress = false);
 	bool saveProject(bool compress = false);
+	void saveWindowAs(const QString& fileName = QString(), bool compress = false);
+	bool saveWindow(MdiSubWindow *w, const QString& fileName = QString(), bool compress = false);
 
 	//! Set the project status to modifed
 	void modifiedProject();
@@ -1471,7 +1473,7 @@ private:
 	QAction *actionBoxPlot, *actionMultiPeakGauss, *actionMultiPeakLorentz, *actionCheckUpdates;
 	QAction *actionDonate, *actionHomePage, *actionDownloadManual, *actionTechnicalSupport, *actionTranslations;
 	QAction *actionHelpForums, *actionHelpBugReports;
-	QAction *actionShowPlotDialog, *actionShowScaleDialog, *actionOpenTemplate, *actionSaveTemplate;
+	QAction *actionShowPlotDialog, *actionShowScaleDialog, *actionOpenTemplate, *actionSaveTemplate, *actionSaveWindow;
 	QAction *actionNextWindow, *actionPrevWindow;
 	QAction *actionScriptingLang, *actionRestartScripting, *actionClearTable, *actionGoToRow, *actionGoToColumn;
 	QAction *actionNoteExecute, *actionNoteExecuteAll, *actionNoteEvaluate, *actionSaveNote, *actionFrequencyCount;
