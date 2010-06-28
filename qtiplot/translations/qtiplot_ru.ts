@@ -3875,6 +3875,30 @@ Autocompletion will not be available!</source>
         <source>Lower object to the bottom</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>The selected Y column is empty, operation aborted!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The associated X column is empty, operation aborted!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Excel files</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save Window As</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save &amp;Window As...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Baseline...</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ArrowMarker</name>
@@ -4355,7 +4379,7 @@ Autocompletion will not be available!</source>
     </message>
     <message>
         <source>Scientific: 1·10^4</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Научный: 1E4 {1·10^?}</translation>
     </message>
     <message>
         <source>Origin</source>
@@ -4400,6 +4424,81 @@ Autocompletion will not be available!</source>
     <message>
         <source>At Axis Begin &amp; End</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Prefix</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Suffix</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>BaselineDialog</name>
+    <message>
+        <source>QtiPlot</source>
+        <translation type="unfinished">QtiPlot</translation>
+    </message>
+    <message>
+        <source>Baseline</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Create Baseline</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Curve</source>
+        <translation type="unfinished">График функции</translation>
+    </message>
+    <message>
+        <source>Points</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Interpolation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Linear</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cubic</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Non-rounded Akima</source>
+        <translation type="unfinished">Акима без округления</translation>
+    </message>
+    <message>
+        <source>User Defined &amp;Equation Y =</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Existing &amp;Dataset</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Create &amp;Baseline</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Subtract</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Undo Subtraction</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Modify</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Close</source>
+        <translation type="unfinished">&amp;Закрыть</translation>
     </message>
 </context>
 <context>
@@ -6792,6 +6891,10 @@ The following special codes can be used:
         <source>s</source>
         <translation>с</translation>
     </message>
+    <message>
+        <source>Angle (deg)</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>FFTDialog</name>
@@ -7418,6 +7521,10 @@ The following special codes can be used:
     <message>
         <source>Not enough memory!</source>
         <translation>Недостаточно памяти!</translation>
+    </message>
+    <message>
+        <source>Chi^2/doF</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -11692,115 +11799,115 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>dd/MM/yyyy</source>
-        <translation type="unfinished">дд/ММ/гггг</translation>
+        <translation type="obsolete">дд/ММ/гггг</translation>
     </message>
     <message>
         <source>dd/MM/yyyy HH:mm</source>
-        <translation type="unfinished">дд/ММ/гггг ЧЧ:мм</translation>
+        <translation type="obsolete">дд/ММ/гггг ЧЧ:мм</translation>
     </message>
     <message>
         <source>dd/MM/yyyy HH:mm:ss</source>
-        <translation type="unfinished">дд/ММ/гггг ЧЧ:мм:cc</translation>
+        <translation type="obsolete">дд/ММ/гггг ЧЧ:мм:cc</translation>
     </message>
     <message>
         <source>dd.MM.yyyy</source>
-        <translation type="unfinished">дд.ММ.гггг</translation>
+        <translation type="obsolete">дд.ММ.гггг</translation>
     </message>
     <message>
         <source>dd.MM.yyyy HH:mm</source>
-        <translation type="unfinished">дд.ММ.гггг ЧЧ:мм</translation>
+        <translation type="obsolete">дд.ММ.гггг ЧЧ:мм</translation>
     </message>
     <message>
         <source>dd.MM.yyyy HH:mm:ss</source>
-        <translation type="unfinished">дд.ММ.гггг ЧЧ:мм:cc</translation>
+        <translation type="obsolete">дд.ММ.гггг ЧЧ:мм:cc</translation>
     </message>
     <message>
         <source>dd MM yyyy</source>
-        <translation type="unfinished">дд ММ гггг</translation>
+        <translation type="obsolete">дд ММ гггг</translation>
     </message>
     <message>
         <source>dd MM yyyy HH:mm</source>
-        <translation type="unfinished">дд ММ гггг ЧЧ:мм</translation>
+        <translation type="obsolete">дд ММ гггг ЧЧ:мм</translation>
     </message>
     <message>
         <source>dd MM yyyy HH:mm:ss</source>
-        <translation type="unfinished">дд ММ гггг ЧЧ:мм:cc</translation>
+        <translation type="obsolete">дд ММ гггг ЧЧ:мм:cc</translation>
     </message>
     <message>
         <source>yyyy-MM-dd</source>
-        <translation type="unfinished">гггг-ММ-дд</translation>
+        <translation type="obsolete">гггг-ММ-дд</translation>
     </message>
     <message>
         <source>yyyy-MM-dd HH:mm</source>
-        <translation type="unfinished">гггг-ММ-дд ЧЧ:мм</translation>
+        <translation type="obsolete">гггг-ММ-дд ЧЧ:мм</translation>
     </message>
     <message>
         <source>yyyy-MM-dd HH:mm:ss</source>
-        <translation type="unfinished">гггг-ММ-дд ЧЧ:мм:cc</translation>
+        <translation type="obsolete">гггг-ММ-дд ЧЧ:мм:cc</translation>
     </message>
     <message>
         <source>yyyyMMdd</source>
-        <translation type="unfinished">ггггММдд</translation>
+        <translation type="obsolete">ггггММдд</translation>
     </message>
     <message>
         <source>yyyyMMdd HH:mm</source>
-        <translation type="unfinished">ггггММдд ЧЧ:мм</translation>
+        <translation type="obsolete">ггггММдд ЧЧ:мм</translation>
     </message>
     <message>
         <source>yyyyMMdd HH:mm:ss</source>
-        <translation type="unfinished">ггггММдд ЧЧ:мм:сс</translation>
+        <translation type="obsolete">ггггММдд ЧЧ:мм:сс</translation>
     </message>
     <message>
         <source>h</source>
-        <translation type="unfinished">ч</translation>
+        <translation type="obsolete">ч</translation>
     </message>
     <message>
         <source>h ap</source>
-        <translation type="unfinished">ч 12</translation>
+        <translation type="obsolete">ч 12</translation>
     </message>
     <message>
         <source>h AP</source>
-        <translation type="unfinished">Ч 12</translation>
+        <translation type="obsolete">Ч 12</translation>
     </message>
     <message>
         <source>h:mm</source>
-        <translation type="unfinished">ч:мм</translation>
+        <translation type="obsolete">ч:мм</translation>
     </message>
     <message>
         <source>h:mm ap</source>
-        <translation type="unfinished">ч:мм 12</translation>
+        <translation type="obsolete">ч:мм 12</translation>
     </message>
     <message>
         <source>hh:mm</source>
-        <translation type="unfinished">чч:мм</translation>
+        <translation type="obsolete">чч:мм</translation>
     </message>
     <message>
         <source>h:mm:ss</source>
-        <translation type="unfinished">ч:мм:сс</translation>
+        <translation type="obsolete">ч:мм:сс</translation>
     </message>
     <message>
         <source>h:mm:ss.zzz</source>
-        <translation type="unfinished">ч:мм:сс.ххх</translation>
+        <translation type="obsolete">ч:мм:сс.ххх</translation>
     </message>
     <message>
         <source>mm:ss</source>
-        <translation type="unfinished">мм:сс</translation>
+        <translation type="obsolete">мм:сс</translation>
     </message>
     <message>
         <source>mm:ss.zzz</source>
-        <translation type="unfinished">мм:сс.ххх</translation>
+        <translation type="obsolete">мм:сс.ххх</translation>
     </message>
     <message>
         <source>hmm</source>
-        <translation type="unfinished">чмм</translation>
+        <translation type="obsolete">чмм</translation>
     </message>
     <message>
         <source>hmmss</source>
-        <translation type="unfinished">чммсс</translation>
+        <translation type="obsolete">чммсс</translation>
     </message>
     <message>
         <source>hhmmss</source>
-        <translation type="unfinished">ччммсс</translation>
+        <translation type="obsolete">ччммсс</translation>
     </message>
     <message>
         <source>Format:</source>
@@ -12258,6 +12365,16 @@ have the same number of rows.</source>
     <message>
         <source>x</source>
         <translation type="unfinished">x</translation>
+    </message>
+    <message>
+        <source>MIN(&quot;colName&quot;, i, j):
+ The minimum of all cells from row i to j in column colName.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>MAX(&quot;colName&quot;, i, j):
+ The maximum of all cells from row i to j in column colName.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -14029,6 +14146,14 @@ have the same number of rows.</source>
     <message>
         <source>tablecol: wrong number of arguments (need 2, got %1)</source>
         <translation>tablecol: неверное число аргументов (требуется 2, получили %1)</translation>
+    </message>
+    <message>
+        <source>MIN() works only on tables!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>MAX() works only on tables!</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

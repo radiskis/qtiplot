@@ -7327,31 +7327,55 @@ Autocompletion will not be available!</source>
     </message>
     <message>
         <source>The selected table is empty, operation aborted!</source>
-        <translation type="unfinished"></translation>
+        <translation>Tabelul selecţionat este gol, operaţie abandonată!</translation>
     </message>
     <message>
         <source>Export Exce&amp;l ...</source>
-        <translation type="unfinished"></translation>
+        <translation>Exportă in format Exce&amp;l...</translation>
     </message>
     <message>
         <source>Export Excel</source>
-        <translation type="unfinished"></translation>
+        <translation>Exportă in format Excel</translation>
     </message>
     <message>
         <source>&amp;Front</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Faţa</translation>
     </message>
     <message>
         <source>&amp;Back</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Spate</translation>
     </message>
     <message>
         <source>Raise object on top</source>
-        <translation type="unfinished"></translation>
+        <translation>Adu obiectul in faţa</translation>
     </message>
     <message>
         <source>Lower object to the bottom</source>
-        <translation type="unfinished"></translation>
+        <translation>Mută obiectul in spate</translation>
+    </message>
+    <message>
+        <source>The selected Y column is empty, operation aborted!</source>
+        <translation>Coloana Y selecţionată este goală, operaţie abandonată!</translation>
+    </message>
+    <message>
+        <source>The associated X column is empty, operation aborted!</source>
+        <translation>Coloana X asociată este goală, operaţie abandonată!</translation>
+    </message>
+    <message>
+        <source>Excel files</source>
+        <translation>Fişiere Excel</translation>
+    </message>
+    <message>
+        <source>Save Window As</source>
+        <translation>Salvează fereastra ca</translation>
+    </message>
+    <message>
+        <source>Save &amp;Window As...</source>
+        <translation>Sal&amp;vează fereastra ca...</translation>
+    </message>
+    <message>
+        <source>&amp;Baseline...</source>
+        <translation>Cur&amp;bă de referinţă...</translation>
     </message>
 </context>
 <context>
@@ -7914,6 +7938,81 @@ Autocompletion will not be available!</source>
     <message>
         <source>At Axis Begin &amp; End</source>
         <translation>La capetele axei</translation>
+    </message>
+    <message>
+        <source>Prefix</source>
+        <translation>Prefix</translation>
+    </message>
+    <message>
+        <source>Suffix</source>
+        <translation>Sufix</translation>
+    </message>
+</context>
+<context>
+    <name>BaselineDialog</name>
+    <message>
+        <source>QtiPlot</source>
+        <translation>QtiPlot</translation>
+    </message>
+    <message>
+        <source>Baseline</source>
+        <translation>Curbă de referinţă</translation>
+    </message>
+    <message>
+        <source>Create Baseline</source>
+        <translation>Curbă de referinţă</translation>
+    </message>
+    <message>
+        <source>Curve</source>
+        <translation>Curbă</translation>
+    </message>
+    <message>
+        <source>Points</source>
+        <translation>Puncte</translation>
+    </message>
+    <message>
+        <source>&amp;Interpolation</source>
+        <translation>&amp;Interpolare</translation>
+    </message>
+    <message>
+        <source>Linear</source>
+        <translation>Liniară</translation>
+    </message>
+    <message>
+        <source>Cubic</source>
+        <translation>Cubică</translation>
+    </message>
+    <message>
+        <source>Non-rounded Akima</source>
+        <translation>Akima</translation>
+    </message>
+    <message>
+        <source>User Defined &amp;Equation Y =</source>
+        <translation>&amp;Funcţie utilizator Y =</translation>
+    </message>
+    <message>
+        <source>Existing &amp;Dataset</source>
+        <translation>Set de &amp;date</translation>
+    </message>
+    <message>
+        <source>Create &amp;Baseline</source>
+        <translation>Crează cur&amp;bă</translation>
+    </message>
+    <message>
+        <source>&amp;Subtract</source>
+        <translation>&amp;Scădere</translation>
+    </message>
+    <message>
+        <source>&amp;Undo Subtraction</source>
+        <translation>An&amp;ulează Scădere</translation>
+    </message>
+    <message>
+        <source>&amp;Modify</source>
+        <translation>&amp;Modifică</translation>
+    </message>
+    <message>
+        <source>&amp;Close</source>
+        <translation>În&amp;chide</translation>
     </message>
 </context>
 <context>
@@ -10355,6 +10454,10 @@ The following special codes can be used:
         <source>s</source>
         <translation>s</translation>
     </message>
+    <message>
+        <source>Angle (deg)</source>
+        <translation>Unghi (grade)</translation>
+    </message>
 </context>
 <context>
     <name>FFTDialog</name>
@@ -10980,6 +11083,10 @@ The following special codes can be used:
         <source>Cannot read file %1:
 %2.</source>
         <translation>Nu a fost posibilă citirea fişierului %1:%2.</translation>
+    </message>
+    <message>
+        <source>Chi^2/doF</source>
+        <translation>Chi^2/doF</translation>
     </message>
 </context>
 <context>
@@ -12310,7 +12417,7 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Column T&amp;ypes...</source>
-        <translation type="unfinished"></translation>
+        <translation>T&amp;ipul coloanei...</translation>
     </message>
 </context>
 <context>
@@ -15279,115 +15386,107 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>dd/MM/yyyy</source>
-        <translation type="unfinished">zz/LL/aaaa</translation>
+        <translation type="obsolete">zz/LL/aaaa</translation>
     </message>
     <message>
         <source>dd/MM/yyyy HH:mm</source>
-        <translation type="unfinished">zz/LL/aaaa  OO:mm</translation>
+        <translation type="obsolete">zz/LL/aaaa  OO:mm</translation>
     </message>
     <message>
         <source>dd/MM/yyyy HH:mm:ss</source>
-        <translation type="unfinished">zz/LL/aaaa  OO:mm:ss</translation>
+        <translation type="obsolete">zz/LL/aaaa  OO:mm:ss</translation>
     </message>
     <message>
         <source>dd.MM.yyyy</source>
-        <translation type="unfinished">zz.LL.aaaa</translation>
+        <translation type="obsolete">zz.LL.aaaa</translation>
     </message>
     <message>
         <source>dd.MM.yyyy HH:mm</source>
-        <translation type="unfinished">zz.LL.aaaa OO:mm</translation>
+        <translation type="obsolete">zz.LL.aaaa OO:mm</translation>
     </message>
     <message>
         <source>dd.MM.yyyy HH:mm:ss</source>
-        <translation type="unfinished">zz.LL.aaaa OO:mm:ss</translation>
+        <translation type="obsolete">zz.LL.aaaa OO:mm:ss</translation>
     </message>
     <message>
         <source>dd MM yyyy</source>
-        <translation type="unfinished">zz LL aaaa</translation>
+        <translation type="obsolete">zz LL aaaa</translation>
     </message>
     <message>
         <source>dd MM yyyy HH:mm</source>
-        <translation type="unfinished">zz LL aaaa  OO:mm</translation>
+        <translation type="obsolete">zz LL aaaa  OO:mm</translation>
     </message>
     <message>
         <source>dd MM yyyy HH:mm:ss</source>
-        <translation type="unfinished">zz LL aaaa  OO:mm:ss</translation>
+        <translation type="obsolete">zz LL aaaa  OO:mm:ss</translation>
     </message>
     <message>
         <source>yyyy-MM-dd</source>
-        <translation type="unfinished">aaaa-LL-zz</translation>
+        <translation type="obsolete">aaaa-LL-zz</translation>
     </message>
     <message>
         <source>yyyy-MM-dd HH:mm</source>
-        <translation type="unfinished">aaaa-LL-zz OO:mm</translation>
+        <translation type="obsolete">aaaa-LL-zz OO:mm</translation>
     </message>
     <message>
         <source>yyyy-MM-dd HH:mm:ss</source>
-        <translation type="unfinished">aaaa-LL-zz OO:mm:ss</translation>
+        <translation type="obsolete">aaaa-LL-zz OO:mm:ss</translation>
     </message>
     <message>
         <source>yyyyMMdd</source>
-        <translation type="unfinished">aaaaLLzz</translation>
+        <translation type="obsolete">aaaaLLzz</translation>
     </message>
     <message>
         <source>yyyyMMdd HH:mm</source>
-        <translation type="unfinished">aaaaLLzz OO:mm</translation>
+        <translation type="obsolete">aaaaLLzz OO:mm</translation>
     </message>
     <message>
         <source>yyyyMMdd HH:mm:ss</source>
-        <translation type="unfinished">aaaaLLzz OO:mm:ss</translation>
+        <translation type="obsolete">aaaaLLzz OO:mm:ss</translation>
     </message>
     <message>
         <source>h</source>
-        <translation type="unfinished">o</translation>
+        <translation type="obsolete">o</translation>
     </message>
     <message>
         <source>h ap</source>
-        <translation type="unfinished">o ap</translation>
+        <translation type="obsolete">o ap</translation>
     </message>
     <message>
         <source>h AP</source>
-        <translation type="unfinished">o AP</translation>
+        <translation type="obsolete">o AP</translation>
     </message>
     <message>
         <source>h:mm</source>
-        <translation type="unfinished">o:mm</translation>
+        <translation type="obsolete">o:mm</translation>
     </message>
     <message>
         <source>h:mm ap</source>
-        <translation type="unfinished">o:mm ap</translation>
+        <translation type="obsolete">o:mm ap</translation>
     </message>
     <message>
         <source>hh:mm</source>
-        <translation type="unfinished">oo:mm</translation>
+        <translation type="obsolete">oo:mm</translation>
     </message>
     <message>
         <source>h:mm:ss</source>
-        <translation type="unfinished">o:mm:ss</translation>
+        <translation type="obsolete">o:mm:ss</translation>
     </message>
     <message>
         <source>h:mm:ss.zzz</source>
-        <translation type="unfinished">o:mm:ss.zzz</translation>
-    </message>
-    <message>
-        <source>mm:ss</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>mm:ss.zzz</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">o:mm:ss.zzz</translation>
     </message>
     <message>
         <source>hmm</source>
-        <translation type="unfinished">omm</translation>
+        <translation type="obsolete">omm</translation>
     </message>
     <message>
         <source>hmmss</source>
-        <translation type="unfinished">ommss</translation>
+        <translation type="obsolete">ommss</translation>
     </message>
     <message>
         <source>hhmmss</source>
-        <translation type="unfinished">oommss</translation>
+        <translation type="obsolete">oommss</translation>
     </message>
     <message>
         <source>Format:</source>
@@ -15395,19 +15494,19 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation type="unfinished">În&amp;chide</translation>
+        <translation>În&amp;chide</translation>
     </message>
     <message>
         <source>Column</source>
-        <translation type="unfinished">Coloană</translation>
+        <translation>Coloană</translation>
     </message>
     <message>
         <source>Type</source>
-        <translation type="unfinished">Tip</translation>
+        <translation>Tip</translation>
     </message>
     <message>
         <source>Format</source>
-        <translation type="unfinished">Format</translation>
+        <translation>Format</translation>
     </message>
 </context>
 <context>
@@ -15825,31 +15924,43 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>angle</source>
-        <translation type="unfinished">unghi</translation>
+        <translation>unghi</translation>
     </message>
     <message>
         <source>length</source>
-        <translation type="unfinished">lungime</translation>
+        <translation>lungime</translation>
     </message>
     <message>
         <source>dx</source>
-        <translation type="unfinished">dx</translation>
+        <translation>dx</translation>
     </message>
     <message>
         <source>dy</source>
-        <translation type="unfinished">dy</translation>
+        <translation>dy</translation>
     </message>
     <message>
         <source>eqn</source>
-        <translation type="unfinished">ecuaţie</translation>
+        <translation>ecuaţie</translation>
     </message>
     <message>
         <source>y</source>
-        <translation type="unfinished">y</translation>
+        <translation>y</translation>
     </message>
     <message>
         <source>x</source>
-        <translation type="unfinished">x</translation>
+        <translation>x</translation>
+    </message>
+    <message>
+        <source>MIN(&quot;colName&quot;, i, j):
+ The minimum of all cells from row i to j in column colName.</source>
+        <translation>MIN(&quot;colName&quot;):
+ Minimul celulelor de la linia i la linia j din coloana colName.</translation>
+    </message>
+    <message>
+        <source>MAX(&quot;colName&quot;, i, j):
+ The maximum of all cells from row i to j in column colName.</source>
+        <translation>MAX(&quot;colName&quot;):
+ Maximul celulelor de la linia i la linia j din coloana colName.</translation>
     </message>
 </context>
 <context>
@@ -17661,6 +17772,14 @@ have the same number of rows.</source>
     <message>
         <source>AVG() works only on tables!</source>
         <translation>Funcţia AVG() poate fi folosită doar pentru tabele!</translation>
+    </message>
+    <message>
+        <source>MIN() works only on tables!</source>
+        <translation>Funcţia MIN() poate fi folosită doar pentru tabele!</translation>
+    </message>
+    <message>
+        <source>MAX() works only on tables!</source>
+        <translation>Funcţia MAX() poate fi folosită doar pentru tabele!</translation>
     </message>
 </context>
 <context>

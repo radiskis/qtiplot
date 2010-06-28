@@ -1547,6 +1547,12 @@ void Table::pasteSelection()
 
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
+	QStringList colLabels;
+	for (int i = 0; i < left & i < col_label.size(); i++)
+		colLabels << col_label[i];
+	for (int i = left + cols; i < col_label.size(); i++)
+		colLabels << col_label[i];
+
 	if (pasteComments || pasteHeader){
 		for (int j = left; j < left + cols; j++){
 			if (d_table->isColumnReadOnly(j))
@@ -1560,8 +1566,12 @@ void Table::pasteSelection()
 				comments[j] = firstLine[colIndex];
 			else if (pasteHeader){
 				QString colName = firstLine[colIndex].replace("-", "_").remove(QRegExp("\\W")).replace("_", "-");
-				if (!col_label.contains(colName))
+				while(colLabels.contains(colName))
+					colName += "2";
+				if (!colLabels.contains(colName)){
 					col_label[j] = colName;
+					colLabels << colName;
+				}
 			}
 		}
 		if (pasteComments)

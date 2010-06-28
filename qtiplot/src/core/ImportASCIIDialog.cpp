@@ -863,44 +863,44 @@ void PreviewTable::setColumnType(int type)
 	formatBox->setEditable(false);
 	switch (type){
 		case Table::Date:
-			formatBox->addItem(tr("dd/MM/yyyy"));
-			formatBox->addItem(tr("dd/MM/yyyy HH:mm"));
-			formatBox->addItem(tr("dd/MM/yyyy HH:mm:ss"));
+			formatBox->addItem("dd/MM/yyyy");
+			formatBox->addItem("dd/MM/yyyy HH:mm");
+			formatBox->addItem("dd/MM/yyyy HH:mm:ss");
 
-			formatBox->addItem(tr("dd.MM.yyyy"));
-			formatBox->addItem(tr("dd.MM.yyyy HH:mm"));
-			formatBox->addItem(tr("dd.MM.yyyy HH:mm:ss"));
+			formatBox->addItem("dd.MM.yyyy");
+			formatBox->addItem("dd.MM.yyyy HH:mm");
+			formatBox->addItem("dd.MM.yyyy HH:mm:ss");
 
-			formatBox->addItem(tr("dd MM yyyy"));
-			formatBox->addItem(tr("dd MM yyyy HH:mm"));
-			formatBox->addItem(tr("dd MM yyyy HH:mm:ss"));
+			formatBox->addItem("dd MM yyyy");
+			formatBox->addItem("dd MM yyyy HH:mm");
+			formatBox->addItem("dd MM yyyy HH:mm:ss");
 
-			formatBox->addItem(tr("yyyy-MM-dd"));
-			formatBox->addItem(tr("yyyy-MM-dd HH:mm"));
-			formatBox->addItem(tr("yyyy-MM-dd HH:mm:ss"));
+			formatBox->addItem("yyyy-MM-dd");
+			formatBox->addItem("yyyy-MM-dd HH:mm");
+			formatBox->addItem("yyyy-MM-dd HH:mm:ss");
 
-			formatBox->addItem(tr("yyyyMMdd"));
-			formatBox->addItem(tr("yyyyMMdd HH:mm"));
-			formatBox->addItem(tr("yyyyMMdd HH:mm:ss"));
+			formatBox->addItem("yyyyMMdd");
+			formatBox->addItem("yyyyMMdd HH:mm");
+			formatBox->addItem("yyyyMMdd HH:mm:ss");
 
 			formatBox->setEditable(true);
 			formatBox->setEditText(d_col_format[d_selected_column]);
 		break;
 
 		case Table::Time:
-			formatBox->addItem(tr("h") );
-			formatBox->addItem(tr("h ap") );
-			formatBox->addItem(tr("h AP") );
-			formatBox->addItem(tr("h:mm"));
-			formatBox->addItem(tr("h:mm ap") );
-			formatBox->addItem(tr("hh:mm"));
-			formatBox->addItem(tr("h:mm:ss") );
-			formatBox->addItem(tr("h:mm:ss.zzz") );
-			formatBox->addItem(tr("mm:ss") );
-			formatBox->addItem(tr("mm:ss.zzz") );
-			formatBox->addItem(tr("hmm") );
-			formatBox->addItem(tr("hmmss") );
-			formatBox->addItem(tr("hhmmss") );
+			formatBox->addItem("h");
+			formatBox->addItem("h ap");
+			formatBox->addItem("h AP");
+			formatBox->addItem("h:mm");
+			formatBox->addItem("h:mm ap");
+			formatBox->addItem("hh:mm");
+			formatBox->addItem("h:mm:ss");
+			formatBox->addItem("h:mm:ss.zzz");
+			formatBox->addItem("mm:ss");
+			formatBox->addItem("mm:ss.zzz");
+			formatBox->addItem("hmm");
+			formatBox->addItem("hmmss");
+			formatBox->addItem("hhmmss");
 
 			formatBox->setEditable(true);
 			formatBox->setEditText(d_col_format[d_selected_column]);

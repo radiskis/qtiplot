@@ -3869,6 +3869,30 @@ L&apos;autocomplétion ne sera pas disponible!</translation>
         <source>Lower object to the bottom</source>
         <translation>Positionner l&apos;objet à l&apos;arrière plan</translation>
     </message>
+    <message>
+        <source>The selected Y column is empty, operation aborted!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The associated X column is empty, operation aborted!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Excel files</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save Window As</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save &amp;Window As...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Baseline...</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ArrowMarker</name>
@@ -4411,6 +4435,81 @@ L&apos;autocomplétion ne sera pas disponible!</translation>
     <message>
         <source>At Axis Begin &amp; End</source>
         <translation>Du début et de la fin</translation>
+    </message>
+    <message>
+        <source>Prefix</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Suffix</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>BaselineDialog</name>
+    <message>
+        <source>QtiPlot</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Baseline</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Create Baseline</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Curve</source>
+        <translation type="unfinished">Courbe</translation>
+    </message>
+    <message>
+        <source>Points</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Interpolation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Linear</source>
+        <translation type="unfinished">Linéaire</translation>
+    </message>
+    <message>
+        <source>Cubic</source>
+        <translation type="unfinished">Cubique</translation>
+    </message>
+    <message>
+        <source>Non-rounded Akima</source>
+        <translation type="unfinished">Akima non arrondie</translation>
+    </message>
+    <message>
+        <source>User Defined &amp;Equation Y =</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Existing &amp;Dataset</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Create &amp;Baseline</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Subtract</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Undo Subtraction</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Modify</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Close</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -6794,6 +6893,10 @@ Les codes spéciaux suivant peuvent être utilisés :
         <source>s</source>
         <translation>s</translation>
     </message>
+    <message>
+        <source>Angle (deg)</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>FFTDialog</name>
@@ -7416,6 +7519,10 @@ Les codes spéciaux suivant peuvent être utilisés :
     <message>
         <source>Not enough memory!</source>
         <translation>Pas assez de mémoire !</translation>
+    </message>
+    <message>
+        <source>Chi^2/doF</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -11645,115 +11752,115 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>dd/MM/yyyy</source>
-        <translation>jj/MM/aaaa</translation>
+        <translation type="obsolete">jj/MM/aaaa</translation>
     </message>
     <message>
         <source>dd/MM/yyyy HH:mm</source>
-        <translation>jj/MM/aaaa HH:mm</translation>
+        <translation type="obsolete">jj/MM/aaaa HH:mm</translation>
     </message>
     <message>
         <source>dd/MM/yyyy HH:mm:ss</source>
-        <translation>jj/MM/aaaa HH:mm:ss</translation>
+        <translation type="obsolete">jj/MM/aaaa HH:mm:ss</translation>
     </message>
     <message>
         <source>dd.MM.yyyy</source>
-        <translation>jj.MM.aaaa</translation>
+        <translation type="obsolete">jj.MM.aaaa</translation>
     </message>
     <message>
         <source>dd.MM.yyyy HH:mm</source>
-        <translation>jj.MM.aaaa HH:mm</translation>
+        <translation type="obsolete">jj.MM.aaaa HH:mm</translation>
     </message>
     <message>
         <source>dd.MM.yyyy HH:mm:ss</source>
-        <translation>jj.MM.aaaa HH:mm:ss</translation>
+        <translation type="obsolete">jj.MM.aaaa HH:mm:ss</translation>
     </message>
     <message>
         <source>dd MM yyyy</source>
-        <translation>jj MM aaaa</translation>
+        <translation type="obsolete">jj MM aaaa</translation>
     </message>
     <message>
         <source>dd MM yyyy HH:mm</source>
-        <translation>jj MM aaaa HH:mm</translation>
+        <translation type="obsolete">jj MM aaaa HH:mm</translation>
     </message>
     <message>
         <source>dd MM yyyy HH:mm:ss</source>
-        <translation>jj MM aaaa HH:mm:ss</translation>
+        <translation type="obsolete">jj MM aaaa HH:mm:ss</translation>
     </message>
     <message>
         <source>yyyy-MM-dd</source>
-        <translation>aaaa-MM-jj</translation>
+        <translation type="obsolete">aaaa-MM-jj</translation>
     </message>
     <message>
         <source>yyyy-MM-dd HH:mm</source>
-        <translation>aaaa-MM-jj HH:mm</translation>
+        <translation type="obsolete">aaaa-MM-jj HH:mm</translation>
     </message>
     <message>
         <source>yyyy-MM-dd HH:mm:ss</source>
-        <translation>aaaa-MM-jj HH:mm:ss</translation>
+        <translation type="obsolete">aaaa-MM-jj HH:mm:ss</translation>
     </message>
     <message>
         <source>yyyyMMdd</source>
-        <translation>aaaaMMjj</translation>
+        <translation type="obsolete">aaaaMMjj</translation>
     </message>
     <message>
         <source>yyyyMMdd HH:mm</source>
-        <translation>aaaaMMjj HH:mm</translation>
+        <translation type="obsolete">aaaaMMjj HH:mm</translation>
     </message>
     <message>
         <source>yyyyMMdd HH:mm:ss</source>
-        <translation>aaaaMMjj HH:mm:ss</translation>
+        <translation type="obsolete">aaaaMMjj HH:mm:ss</translation>
     </message>
     <message>
         <source>h</source>
-        <translation>h</translation>
+        <translation type="obsolete">h</translation>
     </message>
     <message>
         <source>h ap</source>
-        <translation>h ap</translation>
+        <translation type="obsolete">h ap</translation>
     </message>
     <message>
         <source>h AP</source>
-        <translation>h AP</translation>
+        <translation type="obsolete">h AP</translation>
     </message>
     <message>
         <source>h:mm</source>
-        <translation>h:mm</translation>
+        <translation type="obsolete">h:mm</translation>
     </message>
     <message>
         <source>h:mm ap</source>
-        <translation>h:mm ap</translation>
+        <translation type="obsolete">h:mm ap</translation>
     </message>
     <message>
         <source>hh:mm</source>
-        <translation>hh:mm</translation>
+        <translation type="obsolete">hh:mm</translation>
     </message>
     <message>
         <source>h:mm:ss</source>
-        <translation>h:mm:ss</translation>
+        <translation type="obsolete">h:mm:ss</translation>
     </message>
     <message>
         <source>h:mm:ss.zzz</source>
-        <translation>h:mm:ss.zzz</translation>
+        <translation type="obsolete">h:mm:ss.zzz</translation>
     </message>
     <message>
         <source>mm:ss</source>
-        <translation>mm:ss</translation>
+        <translation type="obsolete">mm:ss</translation>
     </message>
     <message>
         <source>mm:ss.zzz</source>
-        <translation>mm:ss.zzz</translation>
+        <translation type="obsolete">mm:ss.zzz</translation>
     </message>
     <message>
         <source>hmm</source>
-        <translation>hmm</translation>
+        <translation type="obsolete">hmm</translation>
     </message>
     <message>
         <source>hmmss</source>
-        <translation>hmmss</translation>
+        <translation type="obsolete">hmmss</translation>
     </message>
     <message>
         <source>hhmmss</source>
-        <translation>hhmmss</translation>
+        <translation type="obsolete">hhmmss</translation>
     </message>
     <message>
         <source>Format:</source>
@@ -12213,6 +12320,16 @@ Calcule le sinus de x.</translation>
     <message>
         <source>x</source>
         <translation type="unfinished">x</translation>
+    </message>
+    <message>
+        <source>MIN(&quot;colName&quot;, i, j):
+ The minimum of all cells from row i to j in column colName.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>MAX(&quot;colName&quot;, i, j):
+ The maximum of all cells from row i to j in column colName.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -13985,6 +14102,14 @@ Calcule le sinus de x.</translation>
     <message>
         <source>AVG() works only on tables!</source>
         <translation>AVG() ne fonctionne qu&apos;avec des tables !</translation>
+    </message>
+    <message>
+        <source>MIN() works only on tables!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>MAX() works only on tables!</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

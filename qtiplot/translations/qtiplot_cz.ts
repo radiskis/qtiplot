@@ -3877,6 +3877,30 @@ Různé části tohoto souboru se nemusí zobrazovat tak, jak se očekává.</tr
         <source>Lower object to the bottom</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>The selected Y column is empty, operation aborted!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The associated X column is empty, operation aborted!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Excel files</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save Window As</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save &amp;Window As...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Baseline...</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ArrowMarker</name>
@@ -4422,6 +4446,81 @@ Různé části tohoto souboru se nemusí zobrazovat tak, jak se očekává.</tr
     <message>
         <source>At Axis Begin &amp; End</source>
         <translation>Na začátku &amp; konci osy</translation>
+    </message>
+    <message>
+        <source>Prefix</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Suffix</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>BaselineDialog</name>
+    <message>
+        <source>QtiPlot</source>
+        <translation type="unfinished">QtiPlot</translation>
+    </message>
+    <message>
+        <source>Baseline</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Create Baseline</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Curve</source>
+        <translation type="unfinished">Křivka</translation>
+    </message>
+    <message>
+        <source>Points</source>
+        <translation type="unfinished">Body</translation>
+    </message>
+    <message>
+        <source>&amp;Interpolation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Linear</source>
+        <translation type="unfinished">Lineární</translation>
+    </message>
+    <message>
+        <source>Cubic</source>
+        <translation type="unfinished">Trojrozměrná</translation>
+    </message>
+    <message>
+        <source>Non-rounded Akima</source>
+        <translation type="unfinished">Ne-kulatá Akima</translation>
+    </message>
+    <message>
+        <source>User Defined &amp;Equation Y =</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Existing &amp;Dataset</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Create &amp;Baseline</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Subtract</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Undo Subtraction</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Modify</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Close</source>
+        <translation type="unfinished">&amp;Zavřít</translation>
     </message>
 </context>
 <context>
@@ -6812,6 +6911,10 @@ K tomu lze použít následujících zvláštních kódů:
         <source>Forward</source>
         <translation>Dopředu</translation>
     </message>
+    <message>
+        <source>Angle (deg)</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>FFTDialog</name>
@@ -7434,6 +7537,10 @@ K tomu lze použít následujících zvláštních kódů:
     <message>
         <source>Instrumental</source>
         <translation>Nástrojový</translation>
+    </message>
+    <message>
+        <source>Chi^2/doF</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -11692,115 +11799,115 @@ K tomu lze použít následujících zvláštních kódů:
     </message>
     <message>
         <source>dd/MM/yyyy</source>
-        <translation type="unfinished">dd/mm/rrrr</translation>
+        <translation type="obsolete">dd/mm/rrrr</translation>
     </message>
     <message>
         <source>dd/MM/yyyy HH:mm</source>
-        <translation type="unfinished">dd/mm/rrrr hh:mm</translation>
+        <translation type="obsolete">dd/mm/rrrr hh:mm</translation>
     </message>
     <message>
         <source>dd/MM/yyyy HH:mm:ss</source>
-        <translation type="unfinished">dd/mm/rrrr hh:mm:ss</translation>
+        <translation type="obsolete">dd/mm/rrrr hh:mm:ss</translation>
     </message>
     <message>
         <source>dd.MM.yyyy</source>
-        <translation type="unfinished">dd.mm.rrrr</translation>
+        <translation type="obsolete">dd.mm.rrrr</translation>
     </message>
     <message>
         <source>dd.MM.yyyy HH:mm</source>
-        <translation type="unfinished">dd.mm.rrrr hh:mm</translation>
+        <translation type="obsolete">dd.mm.rrrr hh:mm</translation>
     </message>
     <message>
         <source>dd.MM.yyyy HH:mm:ss</source>
-        <translation type="unfinished">dd.mm.rrrr hh:mm:ss</translation>
+        <translation type="obsolete">dd.mm.rrrr hh:mm:ss</translation>
     </message>
     <message>
         <source>dd MM yyyy</source>
-        <translation type="unfinished">dd mm rrrr</translation>
+        <translation type="obsolete">dd mm rrrr</translation>
     </message>
     <message>
         <source>dd MM yyyy HH:mm</source>
-        <translation type="unfinished">dd mm rrrr hh:mm</translation>
+        <translation type="obsolete">dd mm rrrr hh:mm</translation>
     </message>
     <message>
         <source>dd MM yyyy HH:mm:ss</source>
-        <translation type="unfinished">dd.mm.rrrr hh:mm:ss</translation>
+        <translation type="obsolete">dd.mm.rrrr hh:mm:ss</translation>
     </message>
     <message>
         <source>yyyy-MM-dd</source>
-        <translation type="unfinished">rrrr mm dd</translation>
+        <translation type="obsolete">rrrr mm dd</translation>
     </message>
     <message>
         <source>yyyy-MM-dd HH:mm</source>
-        <translation type="unfinished">rrrr mm dd hh:mm</translation>
+        <translation type="obsolete">rrrr mm dd hh:mm</translation>
     </message>
     <message>
         <source>yyyy-MM-dd HH:mm:ss</source>
-        <translation type="unfinished">dd mm rrrr hh:mm:ss</translation>
+        <translation type="obsolete">dd mm rrrr hh:mm:ss</translation>
     </message>
     <message>
         <source>yyyyMMdd</source>
-        <translation type="unfinished">rrrrmmdd</translation>
+        <translation type="obsolete">rrrrmmdd</translation>
     </message>
     <message>
         <source>yyyyMMdd HH:mm</source>
-        <translation type="unfinished">rrrrmmdd hh:mm</translation>
+        <translation type="obsolete">rrrrmmdd hh:mm</translation>
     </message>
     <message>
         <source>yyyyMMdd HH:mm:ss</source>
-        <translation type="unfinished">rrrrmmdd hh:mm:ss</translation>
+        <translation type="obsolete">rrrrmmdd hh:mm:ss</translation>
     </message>
     <message>
         <source>h</source>
-        <translation type="unfinished">h</translation>
+        <translation type="obsolete">h</translation>
     </message>
     <message>
         <source>h ap</source>
-        <translation type="unfinished">h ap</translation>
+        <translation type="obsolete">h ap</translation>
     </message>
     <message>
         <source>h AP</source>
-        <translation type="unfinished">h ap</translation>
+        <translation type="obsolete">h ap</translation>
     </message>
     <message>
         <source>h:mm</source>
-        <translation type="unfinished">h:mm</translation>
+        <translation type="obsolete">h:mm</translation>
     </message>
     <message>
         <source>h:mm ap</source>
-        <translation type="unfinished">h:mm ap</translation>
+        <translation type="obsolete">h:mm ap</translation>
     </message>
     <message>
         <source>hh:mm</source>
-        <translation type="unfinished">hh:mm</translation>
+        <translation type="obsolete">hh:mm</translation>
     </message>
     <message>
         <source>h:mm:ss</source>
-        <translation type="unfinished">h:mm:ss</translation>
+        <translation type="obsolete">h:mm:ss</translation>
     </message>
     <message>
         <source>h:mm:ss.zzz</source>
-        <translation type="unfinished">h:mm:ss.zzz</translation>
+        <translation type="obsolete">h:mm:ss.zzz</translation>
     </message>
     <message>
         <source>mm:ss</source>
-        <translation type="unfinished">mm:ss</translation>
+        <translation type="obsolete">mm:ss</translation>
     </message>
     <message>
         <source>mm:ss.zzz</source>
-        <translation type="unfinished">mm:ss.zzz</translation>
+        <translation type="obsolete">mm:ss.zzz</translation>
     </message>
     <message>
         <source>hmm</source>
-        <translation type="unfinished">hmm</translation>
+        <translation type="obsolete">hmm</translation>
     </message>
     <message>
         <source>hmmss</source>
-        <translation type="unfinished">hmmss</translation>
+        <translation type="obsolete">hmmss</translation>
     </message>
     <message>
         <source>hhmmss</source>
-        <translation type="unfinished">hhmmss</translation>
+        <translation type="obsolete">hhmmss</translation>
     </message>
     <message>
         <source>Format:</source>
@@ -12268,6 +12375,16 @@ pokud e1 pak e2 jinak e3.</translation>
     <message>
         <source>x</source>
         <translation type="unfinished">x</translation>
+    </message>
+    <message>
+        <source>MIN(&quot;colName&quot;, i, j):
+ The minimum of all cells from row i to j in column colName.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>MAX(&quot;colName&quot;, i, j):
+ The maximum of all cells from row i to j in column colName.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -14031,6 +14148,14 @@ pokud e1 pak e2 jinak e3.</translation>
     <message>
         <source>AVG() works only on tables!</source>
         <translation>AVG() pracuje pouze u tabulek!</translation>
+    </message>
+    <message>
+        <source>MIN() works only on tables!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>MAX() works only on tables!</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>
