@@ -4388,6 +4388,30 @@ Autocompletion will not be available!</source>
         <source>Lower object to the bottom</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>The selected Y column is empty, operation aborted!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The associated X column is empty, operation aborted!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Excel files</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save Window As</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save &amp;Window As...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Baseline...</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>AssociationsDialog</name>
@@ -4897,6 +4921,81 @@ Autocompletion will not be available!</source>
     </message>
     <message>
         <source>At Axis Begin &amp; End</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Prefix</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Suffix</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>BaselineDialog</name>
+    <message>
+        <source>QtiPlot</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Baseline</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Create Baseline</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Curve</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Points</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Interpolation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Linear</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cubic</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Non-rounded Akima</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>User Defined &amp;Equation Y =</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Existing &amp;Dataset</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Create &amp;Baseline</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Subtract</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Undo Subtraction</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Modify</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Close</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -7261,6 +7360,10 @@ The following special codes can be used:
         <source>s</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Angle (deg)</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>FFTDialog</name>
@@ -7881,6 +7984,10 @@ The following special codes can be used:
     </message>
     <message>
         <source>Not enough memory!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Chi^2/doF</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -12087,118 +12194,6 @@ have the same number of rows.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>dd/MM/yyyy</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>dd/MM/yyyy HH:mm</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>dd/MM/yyyy HH:mm:ss</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>dd.MM.yyyy</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>dd.MM.yyyy HH:mm</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>dd.MM.yyyy HH:mm:ss</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>dd MM yyyy</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>dd MM yyyy HH:mm</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>dd MM yyyy HH:mm:ss</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>yyyy-MM-dd</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>yyyy-MM-dd HH:mm</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>yyyy-MM-dd HH:mm:ss</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>yyyyMMdd</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>yyyyMMdd HH:mm</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>yyyyMMdd HH:mm:ss</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>h</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>h ap</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>h AP</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>h:mm</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>h:mm ap</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>hh:mm</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>h:mm:ss</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>h:mm:ss.zzz</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>mm:ss</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>mm:ss.zzz</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>hmm</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>hmmss</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>hhmmss</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>&amp;Close</source>
         <translation type="unfinished"></translation>
     </message>
@@ -12591,6 +12586,16 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>x</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>MIN(&quot;colName&quot;, i, j):
+ The minimum of all cells from row i to j in column colName.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>MAX(&quot;colName&quot;, i, j):
+ The maximum of all cells from row i to j in column colName.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -14338,6 +14343,14 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>cell() works only on tables and matrices!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>MIN() works only on tables!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>MAX() works only on tables!</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

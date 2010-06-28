@@ -229,6 +229,7 @@ class Graph: public QwtPlot
 		int speedModeMaxPoints(){return d_speed_mode_points;};
 		double getDouglasPeukerTolerance(){return d_Douglas_Peuker_tolerance;};
 
+		AxisTitlePolicy axisTitlePolicy(){return d_axis_title_policy;};
 		void setAxisTitlePolicy(const AxisTitlePolicy& policy){d_axis_title_policy = policy;};
 		void setSynchronizedScaleDivisions(bool on){d_synchronize_scales = on;};
 

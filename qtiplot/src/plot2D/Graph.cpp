@@ -4530,8 +4530,9 @@ void Graph::copy(Graph* g)
 	setBackgroundColor(g->paletteBackgroundColor());
 	setFrame(g->lineWidth(), g->frameColor());
 	setCanvasBackground(g->canvasBackground());
+	setAxisTitlePolicy(g->axisTitlePolicy());
 
-	for (int i = 0; i<QwtPlot::axisCnt; i++){
+	for (int i = 0; i < QwtPlot::axisCnt; i++){
 		if (g->axisEnabled (i)){
 			enableAxis(i);
 			QwtScaleWidget *scale = (QwtScaleWidget *)axisWidget(i);
@@ -4544,13 +4545,8 @@ void Graph::copy(Graph* g)
 				scale->setPalette(pal);
 				setAxisFont (i, g->axisFont(i));
 
-				QwtText src_axis_title = g->axisTitle(i);
-				QwtText title = scale->title();
-				title.setText(src_axis_title.text());
-				title.setColor(src_axis_title.color());
-				title.setFont (src_axis_title.font());
-				title.setRenderFlags(src_axis_title.renderFlags());
- 				scale->setTitle(title);
+				d_axis_titles[i] = g->axisTitleString(i);
+				scale->setTitle(g->axisTitle(i));
 
  				if (i == yRight)
 					scale->setLayoutFlag(QwtScaleWidget::TitleInverted, g->axisWidget(i)->testLayoutFlag(QwtScaleWidget::TitleInverted));
@@ -4560,7 +4556,7 @@ void Graph::copy(Graph* g)
 	}
 
 	grid()->copy(g->grid());
-	setTitle (g->title());
+	setTitle(g->title());
 	setCanvasFrame(g->canvasFrameWidth(), g->canvasFrameColor());
 	setAxesLinewidth(g->axesLinewidth());
 
@@ -4637,6 +4633,7 @@ void Graph::copy(Graph* g)
 	setAxisLabelRotation(QwtPlot::xBottom, g->labelsRotation(QwtPlot::xBottom));
   	setAxisLabelRotation(QwtPlot::xTop, g->labelsRotation(QwtPlot::xTop));
 
+	updateAxesTitles();
     updateLayout();
 	d_auto_scale = g->isAutoscalingEnabled();
 
