@@ -704,3 +704,16 @@ setAxisNumericFormat
 setXAxisNumericFormat
 setYAxisNumericFormat
 setZAxisNumericFormat
+FunctionCurve
+startRange
+endRange
+setRange
+formulas
+setFormulas
+variable
+setVariable
+functionType
+setFunctionType
+Normal
+Parametric
+Polar

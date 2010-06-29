@@ -1574,9 +1574,12 @@ void Table::pasteSelection()
 				}
 			}
 		}
-		if (pasteComments)
-			showComments();
-		else if (pasteHeader)
+		if (pasteComments){
+			if (d_show_comments)
+				setHeaderColType();
+			else
+				showComments();
+		} else if (pasteHeader)
 			setHeaderColType();
 	}
 

@@ -1209,6 +1209,8 @@ class QwtPlotCurve
 		void setVisible(bool on);
 		bool isVisible();
 
+		void setTitle (const QString &title);
+
 	private:
 		QwtPlotCurve(const QwtPlotCurve&);
 };
@@ -1226,6 +1228,42 @@ public:
 
 private:
 	PlotCurve(const PlotCurve&);
+};
+
+class FunctionCurve : PlotCurve
+{
+%TypeHeaderCode
+#include "../src/plot2D/FunctionCurve.h"
+%End
+public:
+	enum FunctionType{Normal = 0, Parametric = 1, Polar = 2};
+
+	FunctionCurve(const QString& name = QString());
+
+	double startRange();
+	double endRange();
+	void setRange(double, double);
+
+	QStringList formulas();
+	void setFormula(const QString& s);
+	void setFormulas(const QString&, const QString&);
+%MethodCode
+		QStringList l;
+		l << *a0;
+		l << *a1;
+		sipCpp->setFormulas(l);
+%End
+
+	QString variable();
+	void setVariable(const QString& s);
+
+	FunctionType functionType();
+	void setFunctionType(const FunctionType& t);
+
+	bool loadData(int points = 0, bool xLog10Scale = false);
+
+private:
+	FunctionCurve(const FunctionCurve&);
 };
 
 class DataCurve : PlotCurve
@@ -1523,25 +1561,25 @@ public:
   void setGrayScale();
   void setIndexedColors();
 
-	void addFunction(const QString&, double, double, int=100);
+	FunctionCurve* addFunction(const QString&, double, double, int=100);
 %MethodCode
   QStringList l;
   l << *a0;
-  sipCpp->addFunction(l, a1, a2, a3);
+  sipRes = sipCpp->addFunction(l, a1, a2, a3);
 %End
-	void addPolarFunction(const QString&, const QString&, double, double, int=100, const QString & = "t");
+	FunctionCurve* addPolarFunction(const QString&, const QString&, double, double, int=100, const QString & = "t");
 %MethodCode
   QStringList l;
   l << *a0;
   l << *a1;
-  sipCpp->addFunction(l, a2, a3, a4, *a5, 2);
+  sipRes = sipCpp->addFunction(l, a2, a3, a4, *a5, 2);
 %End
-	void addParametricFunction(const QString&, const QString&, double, double, int=100, const QString & = "m");
+	FunctionCurve* addParametricFunction(const QString&, const QString&, double, double, int=100, const QString & = "m");
 %MethodCode
   QStringList l;
   l << *a0;
   l << *a1;
-  sipCpp->addFunction(l, a2, a3, a4, *a5, 1);
+  sipRes = sipCpp->addFunction(l, a2, a3, a4, *a5, 1);
 %End
 
   void addErrorBars(const QString&, Table *, const QString&,

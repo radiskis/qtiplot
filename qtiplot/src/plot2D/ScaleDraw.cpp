@@ -415,13 +415,13 @@ double ScaleDraw::transformValue(double value) const
 		double lbl=0.0;
 		try{
 			MyParser parser;
-			if (d_formula.contains("x"))
+			if (d_formula.contains("x", Qt::CaseInsensitive))
 				parser.DefineVar("x", &value);
-			else if (d_formula.contains("y"))
+			else if (d_formula.contains("y", Qt::CaseInsensitive))
 				parser.DefineVar("y", &value);
 
-			parser.SetExpr(d_formula.ascii());
-			lbl=parser.Eval();
+			parser.SetExpr(d_formula.lower().ascii());
+			lbl = parser.Eval();
         }
         catch(mu::ParserError &){
 			return 0;
