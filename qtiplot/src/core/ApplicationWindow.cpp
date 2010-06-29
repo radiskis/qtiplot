@@ -8845,6 +8845,7 @@ void ApplicationWindow::addRectangle()
 	if (!g){
 		QMessageBox::critical(this, tr("QtiPlot - Error"),
 		tr("There are no layers available on this plot. Operation aborted!"));
+		actionAddRectangle->setChecked(false);
 		return;
 	}
 
@@ -8862,6 +8863,7 @@ void ApplicationWindow::addEllipse()
 	if (!g){
 		QMessageBox::critical(this, tr("QtiPlot - Error"),
 		tr("There are no layers available on this plot. Operation aborted!"));
+		actionAddEllipse->setChecked(false);
 		return;
 	}
 
@@ -8879,6 +8881,7 @@ void ApplicationWindow::addTexFormula()
 	if (!g){
 		QMessageBox::critical(this, tr("QtiPlot - Error"),
 		tr("There are no layers available on this plot. Operation aborted!"));
+		actionAddFormula->setChecked(false);
 		return;
 	}
 
@@ -8891,11 +8894,17 @@ void ApplicationWindow::addText()
 	MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
 	if (!plot)
 		return;
+
 	Graph *g = (Graph*)plot->activeLayer();
-	if (g){
-		g->setActiveTool(new AddWidgetTool(AddWidgetTool::Text, g, actionAddText, info, SLOT(setText(const QString&))));
-		btnPointer->setOn(false);
+	if (!g){
+		QMessageBox::critical(this, tr("QtiPlot - Error"),
+		tr("There are no layers available on this plot. Operation aborted!"));
+		actionAddText->setChecked(false);
+		return;
 	}
+
+	g->setActiveTool(new AddWidgetTool(AddWidgetTool::Text, g, actionAddText, info, SLOT(setText(const QString&))));
+	btnPointer->setOn(false);
 }
 
 void ApplicationWindow::addImage()
@@ -9043,7 +9052,10 @@ void ApplicationWindow::addColToTable()
 
 void ApplicationWindow::clearSelection()
 {
-	if(lv->hasFocus()){
+	if (results->hasFocus()){
+		clearLogInfo();
+		return;
+	} else if(lv->hasFocus()){
 		deleteSelectedItems();
 		return;
 	}
