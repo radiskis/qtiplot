@@ -1497,7 +1497,7 @@ class Graph : QwtPlot /PyName=Layer/
 #include "../src/plot2D/LegendWidget.h"
 %End
 public:
-  enum Scale{Linear, Log10};
+  enum Scale{Linear, Log10, Ln, Log2, Reciprocal, Probability, Logit};
   enum Axis{Left, Right, Bottom, Top};
   enum TicksStyle{NoTicks = 0, Out = 1, InOut = 2, In = 3};
   enum CurveType{Line, Scatter, LineSymbols, VerticalBars, Area, Pie, VerticalDropLines,
@@ -1641,6 +1641,9 @@ public:
   void setAxesLinewidth(int width);
   void drawAxesBackbones(bool yes);
   void setTicksLength(int minLength, int majLength);
+
+  void setMajorTicksType(int axis, int type);
+  void setMinorTicksType(int axis, int type);
 
   void enableAxisLabels(int axis, bool on);
   void setAxisLabelsColor(int axis, const QColor& color);

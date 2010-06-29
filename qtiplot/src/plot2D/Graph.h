@@ -128,7 +128,7 @@ class Graph: public QwtPlot
 		~Graph();
 
 		enum Axis{Left, Right, Bottom, Top};
-		enum Scale{Linear, Log10};
+		enum Scale{Linear, Log10, Ln, Log2, Reciprocal, Probability, Logit};
 		enum Ticks{NoTicks = 0, Out = 1, InOut = 2, In = 3};
 		enum MarkerType{None = -1, Text = 0, Arrow = 1, Image = 2};
 		enum CurveType{Line, Scatter, LineSymbols, VerticalBars, Area, Pie, VerticalDropLines,
