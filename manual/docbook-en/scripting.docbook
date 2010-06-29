@@ -2065,10 +2065,28 @@ l.setCurveAxes(number, x-axis, y-axis)
 <para>where number is the curve's number, x-axis is either 0 or 1 (bottom or top) and y-axis is either 0 or 1 (left or right).</para>
 You can also add analytical function curves to a plot layer:
 <programlisting>
-l.addFunction("x*sin(x)", 0, 3*pi, points = 100)
+c = l.addFunction("x*sin(x)", 0, 3*pi, points = 100)
+c.setTitle("x*sin(x)")
+c.setPen(Qt.green)
+c.setBrush(QtGui.QColor(0, 255, 0, 100))
+
 l.addParametricFunction("cos(m)", "sin(m)", 0, 2*pi, points = 100, variableName = "m")
 l.addPolarFunction("t", "t", 0, 2*pi, points = 100, variableName = "t")
 </programlisting>
+
+When dealing with analytical function curves, you can customize them using the following methods:
+<programlisting>
+c.setRange(0, 2*pi)
+c.setVariable("t")
+c.setFormulas("sin(t)", "cos(t)")
+c.setFunctionType(FunctionCurve.Polar) # or c.setFunctionType(FunctionCurve.Parametric)
+c.loadData(1000, xLog10Scale = False)
+
+c.setFunctionType(FunctionCurve.Normal)
+c.setFormula("cos(x)")
+c.loadData()
+</programlisting>
+
 In case you need the number of curves on a layer, you can get it with <programlisting>
 l.numCurves()
 </programlisting>
