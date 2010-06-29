@@ -3603,7 +3603,7 @@ Are you sure you want to continue?</source>
     </message>
     <message>
         <source>ALT+T</source>
-        <translation>ALT+T</translation>
+        <translation type="obsolete">ALT+T</translation>
     </message>
     <message>
         <source>Draw &amp;Arrow</source>
@@ -7376,6 +7376,10 @@ Autocompletion will not be available!</source>
     <message>
         <source>&amp;Baseline...</source>
         <translation>Cur&amp;bă de referinţă...</translation>
+    </message>
+    <message>
+        <source>Shift+T</source>
+        <translation>Shift+T</translation>
     </message>
 </context>
 <context>

@@ -3894,7 +3894,7 @@ den första representerar signalen och den andra svarsfunktionen!</translation>
     </message>
     <message>
         <source>ALT+T</source>
-        <translation>ALT+T</translation>
+        <translation type="obsolete">ALT+T</translation>
     </message>
     <message>
         <source>Draw &amp;Arrow</source>
@@ -7759,6 +7759,7 @@ den första representerar signalen och den andra svarsfunktionen!</translation>
     </message>
     <message>
         <source>Ctrl+Shift+T</source>
+        <translatorcomment>Shift+T</translatorcomment>
         <translation>Ctrl+Shift+T</translation>
     </message>
     <message>
@@ -8463,6 +8464,10 @@ Automatisk komplettering ej tillgängligt!</translation>
         <source>&amp;Baseline...</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Shift+T</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ArrowMarker</name>
@@ -9090,7 +9095,7 @@ Automatisk komplettering ej tillgängligt!</translation>
     <name>BaselineDialog</name>
     <message>
         <source>QtiPlot</source>
-        <translation type="unfinished">QtiPlot</translation>
+        <translation>QtiPlot</translation>
     </message>
     <message>
         <source>Baseline</source>
@@ -9102,27 +9107,27 @@ Automatisk komplettering ej tillgängligt!</translation>
     </message>
     <message>
         <source>Curve</source>
-        <translation type="unfinished">Kurva</translation>
+        <translation>Kurva</translation>
     </message>
     <message>
         <source>Points</source>
-        <translation type="unfinished">Punkter</translation>
+        <translation>Punkter</translation>
     </message>
     <message>
         <source>&amp;Interpolation</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Interpolation</translation>
     </message>
     <message>
         <source>Linear</source>
-        <translation type="unfinished">Linjär</translation>
+        <translation>Linjär</translation>
     </message>
     <message>
         <source>Cubic</source>
-        <translation type="unfinished">Kubisk</translation>
+        <translation>Kubisk</translation>
     </message>
     <message>
         <source>Non-rounded Akima</source>
-        <translation type="unfinished">Icke-avrundad Akima</translation>
+        <translation>Icke-avrundad Akima</translation>
     </message>
     <message>
         <source>User Defined &amp;Equation Y =</source>
@@ -9130,7 +9135,7 @@ Automatisk komplettering ej tillgängligt!</translation>
     </message>
     <message>
         <source>Existing &amp;Dataset</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Datamängd</translation>
     </message>
     <message>
         <source>Create &amp;Baseline</source>
@@ -9138,7 +9143,7 @@ Automatisk komplettering ej tillgängligt!</translation>
     </message>
     <message>
         <source>&amp;Subtract</source>
-        <translation type="unfinished"></translation>
+        <translation>Drag b&amp;ort</translation>
     </message>
     <message>
         <source>&amp;Undo Subtraction</source>
@@ -9150,7 +9155,7 @@ Automatisk komplettering ej tillgängligt!</translation>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Stäng</translation>
     </message>
 </context>
 <context>

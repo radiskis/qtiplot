@@ -116,7 +116,7 @@
     </message>
     <message>
         <source>ALT+T</source>
-        <translation>ALT+T</translation>
+        <translation type="obsolete">ALT+T</translation>
     </message>
     <message>
         <source>&amp;About QtiPlot</source>
@@ -3897,6 +3897,10 @@ Autocompletion will not be available!</source>
     </message>
     <message>
         <source>&amp;Baseline...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Shift+T</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

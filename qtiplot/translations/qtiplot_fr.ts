@@ -894,7 +894,7 @@
     </message>
     <message>
         <source>ALT+T</source>
-        <translation>Alt+T</translation>
+        <translation type="obsolete">Alt+T</translation>
     </message>
     <message>
         <source>Fit Exponential Gro&amp;wth ...</source>
@@ -3892,6 +3892,10 @@ L&apos;autocomplétion ne sera pas disponible!</translation>
     <message>
         <source>&amp;Baseline...</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Shift+T</source>
+        <translation>Shift+T</translation>
     </message>
 </context>
 <context>
