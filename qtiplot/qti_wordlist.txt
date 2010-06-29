@@ -181,6 +181,11 @@ QwtPlot
 QFrame
 Linear
 Log10
+Ln
+Log2
+Reciprocal
+Probability
+Logit
 Left
 Right
 Bottom
@@ -717,3 +722,5 @@ setFunctionType
 Normal
 Parametric
 Polar
+setMinorTicksType
+setMajorTicksType
