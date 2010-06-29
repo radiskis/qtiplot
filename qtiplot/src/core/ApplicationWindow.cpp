@@ -922,7 +922,7 @@ void ApplicationWindow::initToolBars()
 	plotTools->addAction(actionAddFormula);
 
 	actionAddText = new QAction(tr("Add &Text"), this);
-	actionAddText->setShortcut( tr("ALT+T") );
+	actionAddText->setShortcut(QKeySequence(tr("Shift+T")));
 	actionAddText->setIcon(QIcon(":/text.png"));
 	actionAddText->setCheckable(true);
 	connect(actionAddText, SIGNAL(triggered()), this, SLOT(addText()));
@@ -14973,7 +14973,7 @@ void ApplicationWindow::translateActionsStrings()
 
 	actionAddText->setMenuText(tr("Add &Text"));
 	actionAddText->setToolTip(tr("Add Text"));
-	actionAddText->setShortcut(tr("ALT+T"));
+	actionAddText->setShortcut(QKeySequence(tr("Shift+T")));
 
 	actionAddFormula->setMenuText(tr("Add E&quation"));
 	actionAddFormula->setToolTip(tr("Add Equation"));

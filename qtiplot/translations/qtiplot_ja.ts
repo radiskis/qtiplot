@@ -3993,10 +3993,6 @@ Autocompletion will not be available!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>ALT+T</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Draw &amp;Arrow</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4410,6 +4406,10 @@ Autocompletion will not be available!</source>
     </message>
     <message>
         <source>&amp;Baseline...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Shift+T</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

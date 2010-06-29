@@ -6253,7 +6253,7 @@ Operation aborted!</source>
     </message>
     <message>
         <source>ALT+T</source>
-        <translation>ALT+T</translation>
+        <translation type="obsolete">ALT+T</translation>
     </message>
     <message>
         <source>Draw &amp;Arrow/Line</source>
@@ -9889,6 +9889,10 @@ Autocompletion will not be available!</source>
         <source>&amp;Baseline...</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Shift+T</source>
+        <translation>Umschalt+T</translation>
+    </message>
 </context>
 <context>
     <name>ArrowMarker</name>
@@ -10554,7 +10558,7 @@ Autocompletion will not be available!</source>
     <name>BaselineDialog</name>
     <message>
         <source>QtiPlot</source>
-        <translation type="unfinished">QtiPlot</translation>
+        <translation>QtiPlot</translation>
     </message>
     <message>
         <source>Baseline</source>
@@ -10566,27 +10570,27 @@ Autocompletion will not be available!</source>
     </message>
     <message>
         <source>Curve</source>
-        <translation type="unfinished">Kurve</translation>
+        <translation>Kurve</translation>
     </message>
     <message>
         <source>Points</source>
-        <translation type="unfinished"></translation>
+        <translation>Punkte</translation>
     </message>
     <message>
         <source>&amp;Interpolation</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Interpolation</translation>
     </message>
     <message>
         <source>Linear</source>
-        <translation type="unfinished">Linear</translation>
+        <translation>Linear</translation>
     </message>
     <message>
         <source>Cubic</source>
-        <translation type="unfinished">Kubisch</translation>
+        <translation>Kubisch</translation>
     </message>
     <message>
         <source>Non-rounded Akima</source>
-        <translation type="unfinished">ungerundete Akima</translation>
+        <translation>ungerundete Akima</translation>
     </message>
     <message>
         <source>User Defined &amp;Equation Y =</source>
@@ -10594,7 +10598,7 @@ Autocompletion will not be available!</source>
     </message>
     <message>
         <source>Existing &amp;Dataset</source>
-        <translation type="unfinished"></translation>
+        <translation>Existierende &amp;Datensatz </translation>
     </message>
     <message>
         <source>Create &amp;Baseline</source>
@@ -10602,7 +10606,7 @@ Autocompletion will not be available!</source>
     </message>
     <message>
         <source>&amp;Subtract</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Subtrahieren</translation>
     </message>
     <message>
         <source>&amp;Undo Subtraction</source>
@@ -10614,7 +10618,7 @@ Autocompletion will not be available!</source>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation type="unfinished">S&amp;chließen</translation>
+        <translation>S&amp;chließen</translation>
     </message>
 </context>
 <context>
@@ -13366,7 +13370,7 @@ Die folgenden Spezialcodes können benutzt werden:
     </message>
     <message>
         <source>Angle (deg)</source>
-        <translation type="unfinished"></translation>
+        <translation>Winkel (Grad)</translation>
     </message>
 </context>
 <context>
@@ -14057,7 +14061,7 @@ Die folgenden Spezialcodes können benutzt werden:
     </message>
     <message>
         <source>Chi^2/doF</source>
-        <translation type="unfinished"></translation>
+        <translation>Chi^2/doF</translation>
     </message>
 </context>
 <context>
@@ -20935,19 +20939,19 @@ Wollen sie Zellen einfügen?</translation>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation type="unfinished">S&amp;chließen</translation>
+        <translation>S&amp;chließen</translation>
     </message>
     <message>
         <source>Column</source>
-        <translation type="unfinished">Spalte</translation>
+        <translation>Spalte</translation>
     </message>
     <message>
         <source>Type</source>
-        <translation type="unfinished"></translation>
+        <translation>Typ</translation>
     </message>
     <message>
         <source>Format</source>
-        <translation type="unfinished">Format</translation>
+        <translation>Format</translation>
     </message>
 </context>
 <context>
