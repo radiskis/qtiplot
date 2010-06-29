@@ -3871,27 +3871,27 @@ L&apos;autocomplétion ne sera pas disponible!</translation>
     </message>
     <message>
         <source>The selected Y column is empty, operation aborted!</source>
-        <translation type="unfinished"></translation>
+        <translation>La colonne Y est vide, opération annulée !</translation>
     </message>
     <message>
         <source>The associated X column is empty, operation aborted!</source>
-        <translation type="unfinished"></translation>
+        <translation>La colonne X associée est vide, opération annulée !</translation>
     </message>
     <message>
         <source>Excel files</source>
-        <translation type="unfinished"></translation>
+        <translation>Fichiers Excel</translation>
     </message>
     <message>
         <source>Save Window As</source>
-        <translation type="unfinished"></translation>
+        <translation>Sauvegarder la fenêtre comme</translation>
     </message>
     <message>
         <source>Save &amp;Window As...</source>
-        <translation type="unfinished"></translation>
+        <translation>Sauve&amp;garder la fenêtre comme...</translation>
     </message>
     <message>
         <source>&amp;Baseline...</source>
-        <translation type="unfinished"></translation>
+        <translation>Ligne de &amp;base...</translation>
     </message>
     <message>
         <source>Shift+T</source>
@@ -4442,78 +4442,78 @@ L&apos;autocomplétion ne sera pas disponible!</translation>
     </message>
     <message>
         <source>Prefix</source>
-        <translation type="unfinished"></translation>
+        <translation>Préfixe</translation>
     </message>
     <message>
         <source>Suffix</source>
-        <translation type="unfinished"></translation>
+        <translation>Suffixe</translation>
     </message>
 </context>
 <context>
     <name>BaselineDialog</name>
     <message>
         <source>QtiPlot</source>
-        <translation type="unfinished"></translation>
+        <translation>QtiPlot</translation>
     </message>
     <message>
         <source>Baseline</source>
-        <translation type="unfinished"></translation>
+        <translation>Ligne de base</translation>
     </message>
     <message>
         <source>Create Baseline</source>
-        <translation type="unfinished"></translation>
+        <translation>Créer la ligne de base</translation>
     </message>
     <message>
         <source>Curve</source>
-        <translation type="unfinished">Courbe</translation>
+        <translation>Courbe</translation>
     </message>
     <message>
         <source>Points</source>
-        <translation type="unfinished"></translation>
+        <translation>Points</translation>
     </message>
     <message>
         <source>&amp;Interpolation</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Interpolation</translation>
     </message>
     <message>
         <source>Linear</source>
-        <translation type="unfinished">Linéaire</translation>
+        <translation>Linéaire</translation>
     </message>
     <message>
         <source>Cubic</source>
-        <translation type="unfinished">Cubique</translation>
+        <translation>Cubique</translation>
     </message>
     <message>
         <source>Non-rounded Akima</source>
-        <translation type="unfinished">Akima non arrondie</translation>
+        <translation>Akima non arrondie</translation>
     </message>
     <message>
         <source>User Defined &amp;Equation Y =</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Equation définie Y = </translation>
     </message>
     <message>
         <source>Existing &amp;Dataset</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Données existantes</translation>
     </message>
     <message>
         <source>Create &amp;Baseline</source>
-        <translation type="unfinished"></translation>
+        <translation>Créer la ligne de &amp;base</translation>
     </message>
     <message>
         <source>&amp;Subtract</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Soustraire</translation>
     </message>
     <message>
         <source>&amp;Undo Subtraction</source>
-        <translation type="unfinished"></translation>
+        <translation>Ann&amp;uler la soustraction</translation>
     </message>
     <message>
         <source>&amp;Modify</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Modifier</translation>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Fermer</translation>
     </message>
 </context>
 <context>
@@ -6899,7 +6899,7 @@ Les codes spéciaux suivant peuvent être utilisés :
     </message>
     <message>
         <source>Angle (deg)</source>
-        <translation type="unfinished"></translation>
+        <translation>Angle (deg)</translation>
     </message>
 </context>
 <context>
@@ -7526,7 +7526,7 @@ Les codes spéciaux suivant peuvent être utilisés :
     </message>
     <message>
         <source>Chi^2/doF</source>
-        <translation type="unfinished"></translation>
+        <translation>Chi^2/doF</translation>
     </message>
 </context>
 <context>
@@ -12299,41 +12299,43 @@ Calcule le sinus de x.</translation>
     </message>
     <message>
         <source>angle</source>
-        <translation type="unfinished">angle</translation>
+        <translation>angle </translation>
     </message>
     <message>
         <source>length</source>
-        <translation type="unfinished">longueur</translation>
+        <translation>longueur </translation>
     </message>
     <message>
         <source>dx</source>
-        <translation type="unfinished">dx</translation>
+        <translation>dx </translation>
     </message>
     <message>
         <source>dy</source>
-        <translation type="unfinished">dy</translation>
+        <translation>dy </translation>
     </message>
     <message>
         <source>eqn</source>
-        <translation type="unfinished">eqn</translation>
+        <translation>eq </translation>
     </message>
     <message>
         <source>y</source>
-        <translation type="unfinished">y</translation>
+        <translation>y </translation>
     </message>
     <message>
         <source>x</source>
-        <translation type="unfinished">x</translation>
+        <translation>x </translation>
     </message>
     <message>
         <source>MIN(&quot;colName&quot;, i, j):
  The minimum of all cells from row i to j in column colName.</source>
-        <translation type="unfinished"></translation>
+        <translation>MIN(&quot;colName&quot;, i, j) :
+ Le minimum de toutes les cellules des lignes i à j dans la colonne colName.</translation>
     </message>
     <message>
         <source>MAX(&quot;colName&quot;, i, j):
  The maximum of all cells from row i to j in column colName.</source>
-        <translation type="unfinished"></translation>
+        <translation>MAX(&quot;colName&quot;, i, j) :
+ Le maximum de toutes les cellules des lignes i à j dans la colonne colName.</translation>
     </message>
 </context>
 <context>
@@ -14109,11 +14111,11 @@ Calcule le sinus de x.</translation>
     </message>
     <message>
         <source>MIN() works only on tables!</source>
-        <translation type="unfinished"></translation>
+        <translation>MIN() ne fonctionne que sur les tables !</translation>
     </message>
     <message>
         <source>MAX() works only on tables!</source>
-        <translation type="unfinished"></translation>
+        <translation>MAX() ne fonctionne que sur les tables !</translation>
     </message>
 </context>
 </TS>
