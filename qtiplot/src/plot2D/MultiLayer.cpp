@@ -126,7 +126,8 @@ d_waterfall_fill_color(QColor()),
 d_canvas_size(QSize()),
 d_align_policy(AlignLayers),
 d_size_policy(UserSize),
-d_link_x_axes(false)
+d_link_x_axes(false),
+d_common_axes_layout(false)
 {
 	layerButtonsBox = new QHBoxLayout();
 	waterfallBox = new QHBoxLayout();
@@ -330,13 +331,19 @@ void MultiLayer::resizeLayers (QResizeEvent *re)
 	double w_ratio = (double)size.width()/(double)oldSize.width();
 	double h_ratio = (double)(size.height())/(double)(oldSize.height());
 
-	foreach (Graph *g, graphsList){
-		int gx = qRound(g->x()*w_ratio);
-		int gy = qRound(g->y()*h_ratio);
-		int gw = qRound(g->width()*w_ratio);
-		int gh = qRound(g->height()*h_ratio);
-		g->setGeometry(gx, gy, gw, gh);
+	if (d_common_axes_layout)
+		arrangeLayers(false, false);
+	else {
+		foreach (Graph *g, graphsList){
+			int gx = qRound(g->x()*w_ratio);
+			int gy = qRound(g->y()*h_ratio);
+			int gw = qRound(g->width()*w_ratio);
+			int gh = qRound(g->height()*h_ratio);
+			g->setGeometry(gx, gy, gw, gh);
+		}
+	}
 
+	foreach (Graph *g, graphsList){
 		if (g->autoscaleFonts())
 			g->scaleFonts(h_ratio);
 	}
@@ -660,7 +667,7 @@ void MultiLayer::setCommonLayerAxes(bool verticalAxis, bool horizontalAxis)
 			if (aux){
 				QwtScaleWidget *scale = aux->axisWidget(QwtPlot::yRight);
 				if (scale){
-					scale->setTitle(QString::null);
+					aux->setAxisTitleString(QwtPlot::yRight, QString::null);
 					QwtScaleDraw *sd = aux->axisScaleDraw(QwtPlot::yRight);
 					if (sd)
 						sd->enableComponent(QwtAbstractScaleDraw::Labels, false);
@@ -674,7 +681,7 @@ void MultiLayer::setCommonLayerAxes(bool verticalAxis, bool horizontalAxis)
 			if (aux){
 				QwtScaleWidget *scale = aux->axisWidget(QwtPlot::xBottom);
 				if (scale){
-					scale->setTitle(QString::null);
+					aux->setAxisTitleString(QwtPlot::xBottom, QString::null);
 					QwtScaleDraw *sd = aux->axisScaleDraw(QwtPlot::xBottom);
 					if (sd)
 						sd->enableComponent(QwtAbstractScaleDraw::Labels, false);
@@ -697,7 +704,7 @@ void MultiLayer::setCommonLayerAxes(bool verticalAxis, bool horizontalAxis)
 		if (verticalAxis && col){
 			QwtScaleWidget *scale = g->axisWidget(QwtPlot::yLeft);
 			if (scale){
-				scale->setTitle(QString::null);
+				g->setAxisTitleString(QwtPlot::yLeft, QString::null);
 				QwtScaleDraw *sd = g->axisScaleDraw(QwtPlot::yLeft);
 				if (sd)
 					sd->enableComponent(QwtAbstractScaleDraw::Labels, false);
@@ -707,7 +714,7 @@ void MultiLayer::setCommonLayerAxes(bool verticalAxis, bool horizontalAxis)
 		if (horizontalAxis && row){
 			QwtScaleWidget *scale = g->axisWidget(QwtPlot::xTop);
 			if (scale){
-				scale->setTitle(QString::null);
+				g->setAxisTitleString(QwtPlot::xTop, QString::null);
 				QwtScaleDraw *sd = g->axisScaleDraw(QwtPlot::xTop);
 				if (sd)
 					sd->enableComponent(QwtAbstractScaleDraw::Labels, false);
@@ -1513,6 +1520,7 @@ void MultiLayer::save(const QString &fn, const QString &geometry, bool saveAsTem
 	t << "LayerCanvasSize\t"+QString::number(l_canvas_width)+"\t"+QString::number(l_canvas_height)+"\n";
 	t << "Alignement\t"+QString::number(hor_align)+"\t"+QString::number(vert_align)+"\n";
 	t << "<AlignPolicy>" + QString::number(d_align_policy) + "</AlignPolicy>\n";
+	t << "<CommonAxes>" + QString::number(d_common_axes_layout) + "</CommonAxes>\n";
 
 	foreach (Graph *g, graphsList)
 		t << g->saveToString(saveAsTemplate);

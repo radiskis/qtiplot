@@ -1229,13 +1229,17 @@ QString Graph::axisTitleString(int axis)
 	return QString::null;
 }
 
-void Graph::setAxisTitle(int axis, const QString& text)
+void Graph::setAxisTitleString(int axis, const QString& text)
 {
 	if (axis >= 0 && axis < d_axis_titles.size())
 		d_axis_titles[axis] = text;
 
 	((QwtPlot *)this)->setAxisTitle(axis, parseAxisTitle(axis));
+}
 
+void Graph::setAxisTitle(int axis, const QString& text)
+{
+	setAxisTitleString(axis, text);
 	replot();
 	emit modifiedGraph();
 }

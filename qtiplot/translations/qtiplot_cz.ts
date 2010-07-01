@@ -3811,99 +3811,99 @@ Různé části tohoto souboru se nemusí zobrazovat tak, jak se očekává.</tr
     </message>
     <message>
         <source>Waterfall Plot</source>
-        <translation type="unfinished"></translation>
+        <translation>Vodopádový nákres</translation>
     </message>
     <message>
         <source>&amp;Extract Data...</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Vytáhnout data...</translation>
     </message>
     <message>
         <source>S&amp;ubtract</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Odečíst</translation>
     </message>
     <message>
         <source>&amp;Straight Line...</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Přímka...</translation>
     </message>
     <message>
         <source>&amp;Reference Data...</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Srovnávací data...</translation>
     </message>
     <message>
         <source>&amp;Open...</source>
-        <translation type="unfinished">&amp;Otevřít...</translation>
+        <translation>&amp;Otevřít...</translation>
     </message>
     <message>
         <source>Open Image &amp;File...</source>
-        <translation type="unfinished"></translation>
+        <translation>Otevřít &amp;soubor s obrázkem...</translation>
     </message>
     <message>
         <source>&amp;Print...</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Tisk...</translation>
     </message>
     <message>
         <source>Print Pre&amp;view...</source>
-        <translation type="unfinished">Náhled &amp;tisku...</translation>
+        <translation>Ná&amp;hled tisku...</translation>
     </message>
     <message>
         <source>E&amp;xport ASCII...</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Vyvést jako ASCII...</translation>
     </message>
     <message>
         <source>The selected table is empty, operation aborted!</source>
-        <translation type="unfinished"></translation>
+        <translation>Vybraná tabulka je prázdná. Operace byla zrušena!</translation>
     </message>
     <message>
         <source>Export Exce&amp;l ...</source>
-        <translation type="unfinished"></translation>
+        <translation>Vyvést Exce&amp;l...</translation>
     </message>
     <message>
         <source>Export Excel</source>
-        <translation type="unfinished"></translation>
+        <translation>Vyvést Excel</translation>
     </message>
     <message>
         <source>&amp;Front</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Přední část</translation>
     </message>
     <message>
         <source>&amp;Back</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Zadní část</translation>
     </message>
     <message>
         <source>Raise object on top</source>
-        <translation type="unfinished"></translation>
+        <translation>Dát předmět nahoru</translation>
     </message>
     <message>
         <source>Lower object to the bottom</source>
-        <translation type="unfinished"></translation>
+        <translation>Dát předmět dolů</translation>
     </message>
     <message>
         <source>The selected Y column is empty, operation aborted!</source>
-        <translation type="unfinished"></translation>
+        <translation>Vybraný sloupec Y je prázdný. Operace byla zrušena!</translation>
     </message>
     <message>
         <source>The associated X column is empty, operation aborted!</source>
-        <translation type="unfinished"></translation>
+        <translation>Související sloupec X je prázdný. Operace byla zrušena!</translation>
     </message>
     <message>
         <source>Excel files</source>
-        <translation type="unfinished"></translation>
+        <translation>Soubory programu Excel</translation>
     </message>
     <message>
         <source>Save Window As</source>
-        <translation type="unfinished"></translation>
+        <translation>Uložit okno jako</translation>
     </message>
     <message>
         <source>Save &amp;Window As...</source>
-        <translation type="unfinished"></translation>
+        <translation>Uložit &amp;okno jako...</translation>
     </message>
     <message>
         <source>&amp;Baseline...</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Základní čára...</translation>
     </message>
     <message>
         <source>Shift+T</source>
-        <translation type="unfinished"></translation>
+        <translation>Shift+T</translation>
     </message>
 </context>
 <context>
@@ -4453,78 +4453,78 @@ Různé části tohoto souboru se nemusí zobrazovat tak, jak se očekává.</tr
     </message>
     <message>
         <source>Prefix</source>
-        <translation type="unfinished"></translation>
+        <translation>Předpona</translation>
     </message>
     <message>
         <source>Suffix</source>
-        <translation type="unfinished"></translation>
+        <translation>Přípona</translation>
     </message>
 </context>
 <context>
     <name>BaselineDialog</name>
     <message>
         <source>QtiPlot</source>
-        <translation type="unfinished">QtiPlot</translation>
+        <translation>QtiPlot</translation>
     </message>
     <message>
         <source>Baseline</source>
-        <translation type="unfinished"></translation>
+        <translation>Základní čára</translation>
     </message>
     <message>
         <source>Create Baseline</source>
-        <translation type="unfinished"></translation>
+        <translation>Vytvořit základní čáru</translation>
     </message>
     <message>
         <source>Curve</source>
-        <translation type="unfinished">Křivka</translation>
+        <translation>Křivka</translation>
     </message>
     <message>
         <source>Points</source>
-        <translation type="unfinished">Body</translation>
+        <translation>Body</translation>
     </message>
     <message>
         <source>&amp;Interpolation</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Interpolace</translation>
     </message>
     <message>
         <source>Linear</source>
-        <translation type="unfinished">Lineární</translation>
+        <translation>Přímočará</translation>
     </message>
     <message>
         <source>Cubic</source>
-        <translation type="unfinished">Trojrozměrná</translation>
+        <translation>Trojrozměrná</translation>
     </message>
     <message>
         <source>Non-rounded Akima</source>
-        <translation type="unfinished">Ne-kulatá Akima</translation>
+        <translation>Ne-kulatá Akima</translation>
     </message>
     <message>
         <source>User Defined &amp;Equation Y =</source>
-        <translation type="unfinished"></translation>
+        <translation>Uživatelsky stanovená &amp;rovnice Y =</translation>
     </message>
     <message>
         <source>Existing &amp;Dataset</source>
-        <translation type="unfinished"></translation>
+        <translation>Stávající &amp;soubor dat</translation>
     </message>
     <message>
         <source>Create &amp;Baseline</source>
-        <translation type="unfinished"></translation>
+        <translation>Vytvořit &amp;základní čáru</translation>
     </message>
     <message>
         <source>&amp;Subtract</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Odečíst</translation>
     </message>
     <message>
         <source>&amp;Undo Subtraction</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Vrátit zpět odečtení</translation>
     </message>
     <message>
         <source>&amp;Modify</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Upravit</translation>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation type="unfinished">&amp;Zavřít</translation>
+        <translation>&amp;Zavřít</translation>
     </message>
 </context>
 <context>
@@ -5665,15 +5665,15 @@ K tomu lze použít následujících zvláštních kódů:
     </message>
     <message>
         <source>Axis title</source>
-        <translation type="unfinished"></translation>
+        <translation>Název osy</translation>
     </message>
     <message>
         <source>Default</source>
-        <translation type="unfinished">Výchozí</translation>
+        <translation>Výchozí</translation>
     </message>
     <message>
         <source>Synchronize scale &amp;divisions</source>
-        <translation type="unfinished"></translation>
+        <translation>Seřídit &amp;rozdělení stupnice</translation>
     </message>
 </context>
 <context>
@@ -5755,11 +5755,11 @@ K tomu lze použít následujících zvláštních kódů:
     </message>
     <message>
         <source>The response dataset &apos;%1&apos; must contain an odd number of points!</source>
-        <translation>Záznam s údaji o odpovědi &apos;%1&apos; musí obsahovat lichý počet bodů!</translation>
+        <translation>Soubor dat odpovědi &apos;%1&apos; musí obsahovat lichý počet bodů!</translation>
     </message>
     <message>
         <source>The response dataset &apos;%1&apos; must be less then half the size of the signal dataset &apos;%2&apos;!</source>
-        <translation>Záznam s údaji o odpovědi &apos;%1&apos; musí být menší než poloviční oproti záznamu s údaji o  signálu &apos;%2&apos;!</translation>
+        <translation>Soubor dat odpovědi &apos;%1&apos; musí být menší než poloviční oproti záznamu s údaji o  signálu &apos;%2&apos;!</translation>
     </message>
 </context>
 <context>
@@ -6802,19 +6802,19 @@ K tomu lze použít následujících zvláštních kódů:
     <name>ExtractDataDialog</name>
     <message>
         <source>QtiPlot</source>
-        <translation type="unfinished">QtiPlot</translation>
+        <translation>QtiPlot</translation>
     </message>
     <message>
         <source>Extract Data</source>
-        <translation type="unfinished"></translation>
+        <translation>Vytáhnout data</translation>
     </message>
     <message>
         <source>For row (i)</source>
-        <translation type="unfinished">Pro řádek (i)</translation>
+        <translation>Pro řádek (i)</translation>
     </message>
     <message>
         <source>to</source>
-        <translation type="unfinished"></translation>
+        <translation>do</translation>
     </message>
     <message>
         <source>Add function</source>
@@ -6826,7 +6826,7 @@ K tomu lze použít následujících zvláštních kódů:
     </message>
     <message>
         <source>&amp;Apply</source>
-        <translation type="unfinished">&amp;Použít</translation>
+        <translation>&amp;Použít</translation>
     </message>
     <message>
         <source>Clear &amp;Formulas</source>
@@ -6834,35 +6834,35 @@ K tomu lze použít následujících zvláštních kódů:
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation type="unfinished">&amp;Zavřít</translation>
+        <translation>&amp;Zavřít</translation>
     </message>
     <message>
         <source>&amp;Put into table</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Dát do tabulky</translation>
     </message>
     <message>
         <source>Table</source>
-        <translation type="unfinished">Tabulka</translation>
+        <translation>Tabulka</translation>
     </message>
     <message>
         <source>Cond&amp;ition:</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Podmínka:</translation>
     </message>
     <message>
         <source>Add &amp;function</source>
-        <translation type="unfinished"></translation>
+        <translation>Přidat &amp;funkci</translation>
     </message>
     <message>
         <source>Add co&amp;lumn</source>
-        <translation type="unfinished"></translation>
+        <translation>Přidat s&amp;loupec</translation>
     </message>
     <message>
         <source>Add &amp;operator</source>
-        <translation type="unfinished"></translation>
+        <translation>Přidat &amp;operátor</translation>
     </message>
     <message>
         <source>Clea&amp;r</source>
-        <translation type="unfinished">Vypráz&amp;dnit</translation>
+        <translation>Vypráz&amp;dnit</translation>
     </message>
 </context>
 <context>
@@ -6917,7 +6917,7 @@ K tomu lze použít následujících zvláštních kódů:
     </message>
     <message>
         <source>Angle (deg)</source>
-        <translation type="unfinished"></translation>
+        <translation>Úhel (stupně)</translation>
     </message>
 </context>
 <context>
@@ -7354,7 +7354,7 @@ K tomu lze použít následujících zvláštních kódů:
     </message>
     <message>
         <source>Arbitrary Dataset</source>
-        <translation>Libovolný záznam s údaji</translation>
+        <translation>Libovolný soubor dat</translation>
     </message>
     <message>
         <source>RSS (Residual Sum of Squares)</source>
@@ -7474,11 +7474,11 @@ K tomu lze použít následujících zvláštních kódů:
     </message>
     <message>
         <source>Dataset</source>
-        <translation>Záznam s údaji</translation>
+        <translation>Soubor dat</translation>
     </message>
     <message>
         <source>of dataset</source>
-        <translation>záznamu s údaji</translation>
+        <translation>souboru dat</translation>
     </message>
     <message>
         <source>No weighting</source>
@@ -7490,7 +7490,7 @@ K tomu lze použít následujících zvláštních kódů:
     </message>
     <message>
         <source>Direct Weighting using Dataset</source>
-        <translation>Přímé zvážení za použití záznamu s údaji</translation>
+        <translation>Přímé zvážení za použití souboru dat</translation>
     </message>
     <message>
         <source>Function</source>
@@ -7544,7 +7544,7 @@ K tomu lze použít následujících zvláštních kódů:
     </message>
     <message>
         <source>Chi^2/doF</source>
-        <translation type="unfinished"></translation>
+        <translation>Chí^2/doF</translation>
     </message>
 </context>
 <context>
@@ -7651,7 +7651,7 @@ K tomu lze použít následujících zvláštních kódů:
     </message>
     <message>
         <source>Arbitrary Dataset</source>
-        <translation>Libovolný záznam s údaji</translation>
+        <translation>Libovolný soubor dat</translation>
     </message>
     <message>
         <source>Please perform a fit first and try again.</source>
@@ -8866,7 +8866,7 @@ K tomu lze použít následujících zvláštních kódů:
     </message>
     <message>
         <source>Column T&amp;ypes...</source>
-        <translation type="unfinished"></translation>
+        <translation>T&amp;ypy sloupců...</translation>
     </message>
 </context>
 <context>
@@ -11576,15 +11576,15 @@ K tomu lze použít následujících zvláštních kódů:
     </message>
     <message>
         <source>Scale &amp;Fonts</source>
-        <translation type="unfinished">Velikost &amp;písma</translation>
+        <translation>Velikost &amp;písma</translation>
     </message>
     <message>
         <source>Do not &amp;resize layers when window size changes</source>
-        <translation type="unfinished">Neměnit &amp;velikost vrstev při změně velikosti okna</translation>
+        <translation>Neměnit &amp;velikost vrstev při změně velikosti okna</translation>
     </message>
     <message>
         <source>Dimensions</source>
-        <translation type="unfinished">Rozměry</translation>
+        <translation>Rozměry</translation>
     </message>
 </context>
 <context>
@@ -11779,19 +11779,19 @@ K tomu lze použít následujících zvláštních kódů:
     <name>PreviewTable</name>
     <message>
         <source>Numeric</source>
-        <translation type="unfinished">Číselný</translation>
+        <translation>Číselný</translation>
     </message>
     <message>
         <source>Text</source>
-        <translation type="unfinished">Text</translation>
+        <translation>Text</translation>
     </message>
     <message>
         <source>Date</source>
-        <translation type="unfinished">Datum</translation>
+        <translation>Datum</translation>
     </message>
     <message>
         <source>Time</source>
-        <translation type="unfinished">Čas</translation>
+        <translation>Čas</translation>
     </message>
     <message>
         <source>Month</source>
@@ -11799,7 +11799,7 @@ K tomu lze použít následujících zvláštních kódů:
     </message>
     <message>
         <source>Choose column type</source>
-        <translation type="unfinished"></translation>
+        <translation>Vybrat typ sloupce</translation>
     </message>
     <message>
         <source>dd/MM/yyyy</source>
@@ -11919,19 +11919,19 @@ K tomu lze použít následujících zvláštních kódů:
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation type="unfinished">&amp;Zavřít</translation>
+        <translation>&amp;Zavřít</translation>
     </message>
     <message>
         <source>Column</source>
-        <translation type="unfinished">Sloupec</translation>
+        <translation>Sloupec</translation>
     </message>
     <message>
         <source>Type</source>
-        <translation type="unfinished"></translation>
+        <translation>Typ</translation>
     </message>
     <message>
         <source>Format</source>
-        <translation type="unfinished">Formát</translation>
+        <translation>Formát</translation>
     </message>
 </context>
 <context>
@@ -12350,45 +12350,48 @@ pokud e1 pak e2 jinak e3.</translation>
     <message>
         <source>rnd(seed):
  Returns a pseudo-random number in the range 0 to 1. Calling this function several times with the same seed will return the same value.</source>
-        <translation type="unfinished"></translation>
+        <translation>rnd(semeno):
+ Vrátí falešné náhodné číslo v rozsahu 0 až 1. Volání této funkce poněkolikáté s tím samým základem (semenem) vrátí tutéž hodnotu.</translation>
     </message>
     <message>
         <source>angle</source>
-        <translation type="unfinished">úhel</translation>
+        <translation>úhel</translation>
     </message>
     <message>
         <source>length</source>
-        <translation type="unfinished">délka</translation>
+        <translation>délka</translation>
     </message>
     <message>
         <source>dx</source>
-        <translation type="unfinished">dx</translation>
+        <translation>dx</translation>
     </message>
     <message>
         <source>dy</source>
-        <translation type="unfinished">dy</translation>
+        <translation>dy</translation>
     </message>
     <message>
         <source>eqn</source>
-        <translation type="unfinished">rovnice</translation>
+        <translation>rovnice</translation>
     </message>
     <message>
         <source>y</source>
-        <translation type="unfinished">y</translation>
+        <translation>y</translation>
     </message>
     <message>
         <source>x</source>
-        <translation type="unfinished">x</translation>
+        <translation>x</translation>
     </message>
     <message>
         <source>MIN(&quot;colName&quot;, i, j):
  The minimum of all cells from row i to j in column colName.</source>
-        <translation type="unfinished"></translation>
+        <translation>MIN(&quot;colName&quot;, i, j):
+ Minimum všech buněk od řádku i po j ve sloupci colName.</translation>
     </message>
     <message>
         <source>MAX(&quot;colName&quot;, i, j):
  The maximum of all cells from row i to j in column colName.</source>
-        <translation type="unfinished"></translation>
+        <translation>MAX(&quot;colName&quot;, i, j):
+ Maximum všech buněk od řádku i po j ve sloupci colName.</translation>
     </message>
 </context>
 <context>
@@ -13134,58 +13137,58 @@ pokud e1 pak e2 jinak e3.</translation>
     <name>SubtractDataDialog</name>
     <message>
         <source>QtiPlot</source>
-        <translation type="unfinished">QtiPlot</translation>
+        <translation>QtiPlot</translation>
     </message>
     <message>
         <source>Math on Data Sets</source>
-        <translation type="unfinished"></translation>
+        <translation>Matematika na soubory dat</translation>
     </message>
     <message>
         <source>Cu&amp;rve</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Křivka</translation>
     </message>
     <message>
         <source>&amp;Operator</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Operátor</translation>
     </message>
     <message>
         <source>&amp;Data set</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Soubor dat</translation>
     </message>
     <message>
         <source>Current &amp;folder</source>
-        <translation type="unfinished"></translation>
+        <translation>Nynější &amp;složka</translation>
     </message>
     <message>
         <source>&amp;Value</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Hodnota</translation>
     </message>
     <message>
         <source>&amp;Apply</source>
-        <translation type="unfinished">&amp;Použít</translation>
+        <translation>&amp;Použít</translation>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation type="unfinished">&amp;Zavřít</translation>
+        <translation>&amp;Zavřít</translation>
     </message>
     <message>
         <source>Error</source>
-        <translation type="unfinished">Chyba</translation>
+        <translation>Chyba</translation>
     </message>
     <message>
         <source>Data set %1 must containt at least two valid data points in order to perform this operation!</source>
-        <translation type="unfinished"></translation>
+        <translation>Soubor dat %1 musí obsahovat alespoň dva platné datové body, aby tato operace mohla být provedena!</translation>
     </message>
 </context>
 <context>
     <name>SubtractLineTool</name>
     <message>
         <source>Move cursor and click to select and double-click/press &apos;Enter&apos; to set the position of the first point!</source>
-        <translation type="unfinished"></translation>
+        <translation>Posuňte ukazovátko a klepněte pro výběr a dvakrát klepněte/stiskněte &apos;Enter&apos; pro stanovení polohy prvního bodu!</translation>
     </message>
     <message>
         <source>First point selected! Click to select and double-click/press &apos;Enter&apos; to set the position of the 2nd point!</source>
-        <translation type="unfinished"></translation>
+        <translation>První bod byl vybrán! Klepněte pro výběr a dvakrát klepněte/stiskněte &apos;Enter&apos; pro stanovení polohy druhého bodu!</translation>
     </message>
 </context>
 <context>
@@ -14155,11 +14158,11 @@ pokud e1 pak e2 jinak e3.</translation>
     </message>
     <message>
         <source>MIN() works only on tables!</source>
-        <translation type="unfinished"></translation>
+        <translation>MIN() pracuje pouze u tabulek!</translation>
     </message>
     <message>
         <source>MAX() works only on tables!</source>
-        <translation type="unfinished"></translation>
+        <translation>MAX() pracuje pouze u tabulek!</translation>
     </message>
 </context>
 </TS>
