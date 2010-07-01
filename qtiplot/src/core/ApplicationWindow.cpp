@@ -4971,6 +4971,8 @@ ApplicationWindow* ApplicationWindow::openProject(const QString& fn, bool factor
 					plot->linkXLayerAxes(s.trimmed().remove("<LinkXAxes>").remove("</LinkXAxes>").toInt());
 				else if (s.contains("<AlignPolicy>"))
 					plot->setAlignPolicy((MultiLayer::AlignPolicy)s.trimmed().remove("<AlignPolicy>").remove("</AlignPolicy>").toInt());
+				else if (s.contains("<CommonAxes>"))
+					plot->setCommonAxesLayout(s.trimmed().remove("<CommonAxes>").remove("</CommonAxes>").toInt());
 			}
 			plot->blockSignals(false);
 			progress.setValue(aux);

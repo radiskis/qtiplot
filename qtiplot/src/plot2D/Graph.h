@@ -516,6 +516,7 @@ class Graph: public QwtPlot
 		void setTopAxisTitle(const QString& text);
 
 		QString axisTitleString(int axis);
+		void setAxisTitleString(int axis, const QString& text);
 		void setAxisTitle(int axis, const QString& text);
 		void updateAxesTitles();
 		//! TODO: eliminate this function in version 0.9.1 (used only when restoring project files)

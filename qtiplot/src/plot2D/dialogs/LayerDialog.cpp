@@ -264,6 +264,7 @@ void LayerDialog::setMultiLayer(MultiLayer *g)
 	boxY->setValue(g->getRows());
 
 	linkXAxesBox->setChecked(g->hasLinkedXLayerAxes());
+	commonAxesBox->setChecked(g->hasCommonAxes());
 
 	alignPolicyBox->setCurrentIndex(g->alignPolicy());
 	boxColsGap->setValue(g->colsSpacing());
@@ -354,6 +355,7 @@ void LayerDialog::update()
 		multi_layer->setLayerCanvasSize(convertToPixels(boxCanvasWidth->value(), unit, 0), convertToPixels(boxCanvasHeight->value(), unit, 1));
 	}
 
+	multi_layer->setCommonAxesLayout(commonAxesBox->isEnabled() && commonAxesBox->isChecked());
 	if (commonAxesBox->isEnabled() && commonAxesBox->isChecked())
 		multi_layer->setCommonLayerAxes(boxColsGap->value() == 0, boxRowsGap->value() == 0);
 
