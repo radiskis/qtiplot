@@ -2715,7 +2715,7 @@ Are you sure you want to continue?</source>
     </message>
     <message>
         <source>File %1 contains only %2 sheets!</source>
-        <translation type="unfinished"></translation>
+        <translation>Файл &apos;%1&apos; содержит только %2 листов!</translation>
     </message>
     <message>
         <source>QtiPlot was built without ODF spreadsheet support!</source>
@@ -2803,7 +2803,7 @@ Are you sure you want to continue?</source>
     </message>
     <message>
         <source>Paste Selection as Te&amp;xt</source>
-        <translation type="unfinished"></translation>
+        <translation>Вставить выделенное как &amp;текст</translation>
     </message>
     <message>
         <source>There are no windows available in this folder!</source>
@@ -3709,19 +3709,19 @@ Autocompletion will not be available!</source>
     </message>
     <message>
         <source>Stack &amp;Bar</source>
-        <translation type="unfinished"></translation>
+        <translation>Совмещённые &amp;блоки</translation>
     </message>
     <message>
         <source>Stack &amp;Column</source>
-        <translation type="unfinished"></translation>
+        <translation>Совмещённые &amp;столбцы</translation>
     </message>
     <message>
         <source>Plot stack bar</source>
-        <translation type="unfinished"></translation>
+        <translation>Построить совмещённые блоки</translation>
     </message>
     <message>
         <source>Plot stack column</source>
-        <translation type="unfinished"></translation>
+        <translation>Построить совмещённые столбцы</translation>
     </message>
     <message>
         <source>Move Row</source>
@@ -3769,139 +3769,143 @@ Autocompletion will not be available!</source>
     </message>
     <message>
         <source>Shared A&amp;xes Panel</source>
-        <translation type="unfinished"></translation>
+        <translation>Панель с общей о&amp;сью</translation>
     </message>
     <message>
         <source> </source>
-        <translation type="unfinished"></translation>
+        <translation> </translation>
     </message>
     <message>
         <source>&amp;Custom Layout...</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Пользовательская компоновка...</translation>
     </message>
     <message>
         <source>Execute Selected Lines</source>
-        <translation type="unfinished"></translation>
+        <translation>Выполнить выделенные строки</translation>
     </message>
     <message>
         <source>Commen&amp;t Selection</source>
-        <translation type="unfinished"></translation>
+        <translation>Закоммен&amp;тировать выделенное</translation>
     </message>
     <message>
         <source>&amp;Uncomment Selection</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Раскомментировать выделенное</translation>
     </message>
     <message>
         <source>Comment Selection</source>
-        <translation type="unfinished"></translation>
+        <translation>Закомментировать выделенное</translation>
     </message>
     <message>
         <source>Uncomment Selection</source>
-        <translation type="unfinished"></translation>
+        <translation>Раскомментировать выделенное</translation>
     </message>
     <message>
         <source>Ctrl+Shift+O</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+Shift+O</translation>
     </message>
     <message>
         <source>Ctrl+Shift+U</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+Shift+U</translation>
     </message>
     <message>
         <source>Waterfall Plot</source>
-        <translation type="unfinished"></translation>
+        <translation>Каскадный график</translation>
     </message>
     <message>
         <source>&amp;Extract Data...</source>
-        <translation type="unfinished"></translation>
+        <translation>Извл&amp;ечь данные...</translation>
     </message>
     <message>
         <source>S&amp;ubtract</source>
-        <translation type="unfinished"></translation>
+        <translation>В&amp;ычесть</translation>
     </message>
     <message>
         <source>&amp;Straight Line...</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Прямая линия...</translation>
     </message>
     <message>
         <source>&amp;Reference Data...</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Базисные данные...</translation>
     </message>
     <message>
         <source>&amp;Open...</source>
-        <translation type="unfinished">&amp;Открыть...</translation>
+        <translation>&amp;Открыть...</translation>
     </message>
     <message>
         <source>Open Image &amp;File...</source>
-        <translation type="unfinished"></translation>
+        <translation>Открыть &amp;файл изображения...</translation>
     </message>
     <message>
         <source>&amp;Print...</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Печать...</translation>
     </message>
     <message>
         <source>Print Pre&amp;view...</source>
-        <translation type="unfinished">Предварительный &amp;просмотр...</translation>
+        <translation>Предварительный &amp;просмотр...</translation>
     </message>
     <message>
         <source>E&amp;xport ASCII...</source>
-        <translation type="unfinished"></translation>
+        <translation>Э&amp;кспортировать в ASCII...</translation>
     </message>
     <message>
         <source>The selected table is empty, operation aborted!</source>
-        <translation type="unfinished"></translation>
+        <translation>Выбранная таблица пуста, операция отменена!</translation>
     </message>
     <message>
         <source>Export Exce&amp;l ...</source>
-        <translation type="unfinished"></translation>
+        <translation>Экспортировать в Exc&amp;el...</translation>
     </message>
     <message>
         <source>Export Excel</source>
-        <translation type="unfinished"></translation>
+        <translation>Экспортировать в Excel</translation>
     </message>
     <message>
         <source>&amp;Front</source>
-        <translation type="unfinished"></translation>
+        <translation>На &amp;передний план</translation>
     </message>
     <message>
         <source>&amp;Back</source>
-        <translation type="unfinished"></translation>
+        <translation>На &amp;задний план</translation>
     </message>
     <message>
         <source>Raise object on top</source>
-        <translation type="unfinished"></translation>
+        <translation>На передний план</translation>
     </message>
     <message>
         <source>Lower object to the bottom</source>
-        <translation type="unfinished"></translation>
+        <translation>На задний план</translation>
     </message>
     <message>
         <source>The selected Y column is empty, operation aborted!</source>
-        <translation type="unfinished"></translation>
+        <translation>Выбранный столбец Y пуст, операция отменена!</translation>
     </message>
     <message>
         <source>The associated X column is empty, operation aborted!</source>
-        <translation type="unfinished"></translation>
+        <translation>Соответвующий столбец X пуст, операция отменена!</translation>
     </message>
     <message>
         <source>Excel files</source>
-        <translation type="unfinished"></translation>
+        <translation>файлы Excel</translation>
     </message>
     <message>
         <source>Save Window As</source>
-        <translation type="unfinished"></translation>
+        <translation>Сохранить окно как</translation>
     </message>
     <message>
         <source>Save &amp;Window As...</source>
-        <translation type="unfinished"></translation>
+        <translation>Сохранить &amp;окно как...</translation>
     </message>
     <message>
         <source>&amp;Baseline...</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Базисная линия...</translation>
     </message>
     <message>
         <source>Shift+T</source>
-        <translation type="unfinished"></translation>
+        <translation>Shift+T</translation>
+    </message>
+    <message>
+        <source>chart</source>
+        <translation>диаграмма</translation>
     </message>
 </context>
 <context>
@@ -4335,11 +4339,11 @@ Autocompletion will not be available!</source>
     </message>
     <message>
         <source>Labels space</source>
-        <translation type="unfinished"></translation>
+        <translation>Расстояние до меток</translation>
     </message>
     <message>
         <source>Show &amp;backbone</source>
-        <translation type="unfinished"></translation>
+        <translation>Показать &amp;каркас осей</translation>
     </message>
     <message>
         <source>Set As &amp;Default</source>
@@ -4383,7 +4387,7 @@ Autocompletion will not be available!</source>
     </message>
     <message>
         <source>Scientific: 1·10^4</source>
-        <translation type="unfinished">Научный: 1E4 {1·10^?}</translation>
+        <translation>Научный: 1E4 {1·10^4}</translation>
     </message>
     <message>
         <source>Origin</source>
@@ -4415,94 +4419,94 @@ Autocompletion will not be available!</source>
     </message>
     <message>
         <source>Hide Ticks</source>
-        <translation type="unfinished"></translation>
+        <translation>Скрыть деления</translation>
     </message>
     <message>
         <source>At Axis Begin</source>
-        <translation type="unfinished"></translation>
+        <translation>В начале</translation>
     </message>
     <message>
         <source>At Axis End</source>
-        <translation type="unfinished"></translation>
+        <translation>В конце</translation>
     </message>
     <message>
         <source>At Axis Begin &amp; End</source>
-        <translation type="unfinished"></translation>
+        <translation>В начале и конце</translation>
     </message>
     <message>
         <source>Prefix</source>
-        <translation type="unfinished"></translation>
+        <translation>Префикс</translation>
     </message>
     <message>
         <source>Suffix</source>
-        <translation type="unfinished"></translation>
+        <translation>Суффикс</translation>
     </message>
 </context>
 <context>
     <name>BaselineDialog</name>
     <message>
         <source>QtiPlot</source>
-        <translation type="unfinished">QtiPlot</translation>
+        <translation>QtiPlot</translation>
     </message>
     <message>
         <source>Baseline</source>
-        <translation type="unfinished"></translation>
+        <translation>Базисная линия</translation>
     </message>
     <message>
         <source>Create Baseline</source>
-        <translation type="unfinished"></translation>
+        <translation>Создать базисную линию</translation>
     </message>
     <message>
         <source>Curve</source>
-        <translation type="unfinished">График функции</translation>
+        <translation>Кривая</translation>
     </message>
     <message>
         <source>Points</source>
-        <translation type="unfinished"></translation>
+        <translation>Точек</translation>
     </message>
     <message>
         <source>&amp;Interpolation</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Интерполяция</translation>
     </message>
     <message>
         <source>Linear</source>
-        <translation type="unfinished"></translation>
+        <translation>Линейная</translation>
     </message>
     <message>
         <source>Cubic</source>
-        <translation type="unfinished"></translation>
+        <translation>Кубическая</translation>
     </message>
     <message>
         <source>Non-rounded Akima</source>
-        <translation type="unfinished">Акима без округления</translation>
+        <translation>Акима без округления</translation>
     </message>
     <message>
         <source>User Defined &amp;Equation Y =</source>
-        <translation type="unfinished"></translation>
+        <translation>Уравн&amp;ение Y =</translation>
     </message>
     <message>
         <source>Existing &amp;Dataset</source>
-        <translation type="unfinished"></translation>
+        <translation>Существующий &amp;набор</translation>
     </message>
     <message>
         <source>Create &amp;Baseline</source>
-        <translation type="unfinished"></translation>
+        <translation>Создать &amp;базисную линию</translation>
     </message>
     <message>
         <source>&amp;Subtract</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Вычесть</translation>
     </message>
     <message>
         <source>&amp;Undo Subtraction</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Отменить вычитание</translation>
     </message>
     <message>
         <source>&amp;Modify</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Изменить</translation>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation type="unfinished">&amp;Закрыть</translation>
+        <translation>&amp;Закрыть</translation>
     </message>
 </context>
 <context>
@@ -5347,7 +5351,7 @@ The following special codes can be used:
     </message>
     <message>
         <source>&amp;Keep aspect ratio</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Сохранять пропорции</translation>
     </message>
     <message>
         <source>Axes</source>
@@ -5355,15 +5359,15 @@ The following special codes can be used:
     </message>
     <message>
         <source>Geometry</source>
-        <translation type="unfinished">Геометрия</translation>
+        <translation>Геометрия</translation>
     </message>
     <message>
         <source>Ticks - Labels space</source>
-        <translation type="unfinished"></translation>
+        <translation>Расстояние от делений до меток</translation>
     </message>
     <message>
         <source>pixels</source>
-        <translation type="unfinished"></translation>
+        <translation>точек</translation>
     </message>
     <message>
         <source>Legend display</source>
@@ -5387,35 +5391,35 @@ The following special codes can be used:
     </message>
     <message>
         <source>Unit</source>
-        <translation type="unfinished">Размеры в</translation>
+        <translation>Единица измерения</translation>
     </message>
     <message>
         <source>inch</source>
-        <translation type="unfinished">дюйм</translation>
+        <translation>дюйм</translation>
     </message>
     <message>
         <source>mm</source>
-        <translation type="unfinished">мм</translation>
+        <translation>мм</translation>
     </message>
     <message>
         <source>cm</source>
-        <translation type="unfinished">см</translation>
+        <translation>см</translation>
     </message>
     <message>
         <source>point</source>
-        <translation type="unfinished">точка</translation>
+        <translation>точка</translation>
     </message>
     <message>
         <source>pixel</source>
-        <translation type="unfinished"></translation>
+        <translation>точка растра</translation>
     </message>
     <message>
         <source>Canvas Width</source>
-        <translation type="unfinished"></translation>
+        <translation>Ширина холста</translation>
     </message>
     <message>
         <source>Canvas Height</source>
-        <translation type="unfinished"></translation>
+        <translation>Высота холста</translation>
     </message>
     <message>
         <source>Left</source>
@@ -5483,7 +5487,7 @@ The following special codes can be used:
     </message>
     <message>
         <source>Display Confirmation &amp;Messages for Multi-peak Fits</source>
-        <translation type="unfinished"></translation>
+        <translation>Запрашивать &amp;подтвеждения для многопиковой аппроксимации</translation>
     </message>
     <message>
         <source>QtiPlot - index.html File Not Found!</source>
@@ -5571,35 +5575,35 @@ The following special codes can be used:
     </message>
     <message>
         <source>New Color</source>
-        <translation type="unfinished"></translation>
+        <translation>Новый цвет</translation>
     </message>
     <message>
         <source>&amp;Load Default</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Вернуть установки по умолчанию</translation>
     </message>
     <message>
         <source>Delete Color</source>
-        <translation type="unfinished"></translation>
+        <translation>Удалить цвет</translation>
     </message>
     <message>
         <source>Move Color Up</source>
-        <translation type="unfinished"></translation>
+        <translation>Переместить вверх</translation>
     </message>
     <message>
         <source>Move Color Down</source>
-        <translation type="unfinished"></translation>
+        <translation>Переместить вниз</translation>
     </message>
     <message>
         <source>Indexed Colors</source>
-        <translation type="unfinished"></translation>
+        <translation>Индексированные цвета</translation>
     </message>
     <message>
         <source>Default Symbol</source>
-        <translation type="unfinished"></translation>
+        <translation>Символ по умолчанию</translation>
     </message>
     <message>
         <source>Edge width</source>
-        <translation type="unfinished"></translation>
+        <translation>Толщина кромки</translation>
     </message>
     <message>
         <source>Fill</source>
@@ -5607,55 +5611,55 @@ The following special codes can be used:
     </message>
     <message>
         <source>Name</source>
-        <translation type="unfinished">Имя</translation>
+        <translation>Название</translation>
     </message>
     <message>
         <source>Symbol</source>
-        <translation type="unfinished">Символ</translation>
+        <translation>Символ</translation>
     </message>
     <message>
         <source>Inde&amp;xed Symbols</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Индексированные символы</translation>
     </message>
     <message>
         <source>&amp;Fill Symbol</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Заполнить символ</translation>
     </message>
     <message>
         <source>Move Symbol Up</source>
-        <translation type="unfinished"></translation>
+        <translation>Переместить вверх</translation>
     </message>
     <message>
         <source>Move Symbol Down</source>
-        <translation type="unfinished"></translation>
+        <translation>Переместить вниз</translation>
     </message>
     <message>
         <source>Pattern</source>
-        <translation type="unfinished">Шаблон</translation>
+        <translation>Шаблон</translation>
     </message>
     <message>
         <source>Line style</source>
-        <translation type="unfinished"></translation>
+        <translation>Тип линии</translation>
     </message>
     <message>
         <source>Fill area under curve</source>
-        <translation type="unfinished">Заполнить область под кривой</translation>
+        <translation>Заполнить область под кривой</translation>
     </message>
     <message>
         <source>Default Line Style</source>
-        <translation type="unfinished"></translation>
+        <translation>Стиль кривой по умолчанию</translation>
     </message>
     <message>
         <source>Axis title</source>
-        <translation type="unfinished"></translation>
+        <translation>Подпись оси</translation>
     </message>
     <message>
         <source>Default</source>
-        <translation type="unfinished">По умолчанию</translation>
+        <translation>По умолчанию</translation>
     </message>
     <message>
         <source>Synchronize scale &amp;divisions</source>
-        <translation type="unfinished"></translation>
+        <translation>Синхронизировать &amp;деления шкал</translation>
     </message>
 </context>
 <context>
@@ -6782,19 +6786,19 @@ The following special codes can be used:
     <name>ExtractDataDialog</name>
     <message>
         <source>QtiPlot</source>
-        <translation type="unfinished">QtiPlot</translation>
+        <translation>QtiPlot</translation>
     </message>
     <message>
         <source>Extract Data</source>
-        <translation type="unfinished"></translation>
+        <translation>Извлечь данные</translation>
     </message>
     <message>
         <source>For row (i)</source>
-        <translation type="unfinished">Строки (i) от</translation>
+        <translation>Строки (i) от</translation>
     </message>
     <message>
         <source>to</source>
-        <translation type="unfinished">до</translation>
+        <translation>до</translation>
     </message>
     <message>
         <source>Add function</source>
@@ -6806,7 +6810,7 @@ The following special codes can be used:
     </message>
     <message>
         <source>&amp;Apply</source>
-        <translation type="unfinished">&amp;Применить</translation>
+        <translation>&amp;Применить</translation>
     </message>
     <message>
         <source>Clear &amp;Formulas</source>
@@ -6814,35 +6818,35 @@ The following special codes can be used:
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation type="unfinished">&amp;Закрыть</translation>
+        <translation>&amp;Закрыть</translation>
     </message>
     <message>
         <source>&amp;Put into table</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Поместить в таблицу</translation>
     </message>
     <message>
         <source>Table</source>
-        <translation type="unfinished">Таблица</translation>
+        <translation>Таблица</translation>
     </message>
     <message>
         <source>Cond&amp;ition:</source>
-        <translation type="unfinished"></translation>
+        <translation>Услов&amp;ие:</translation>
     </message>
     <message>
         <source>Add &amp;function</source>
-        <translation type="unfinished"></translation>
+        <translation>Добавить &amp;функцию</translation>
     </message>
     <message>
         <source>Add co&amp;lumn</source>
-        <translation type="unfinished"></translation>
+        <translation>Добавить сто&amp;лбец</translation>
     </message>
     <message>
         <source>Add &amp;operator</source>
-        <translation type="unfinished"></translation>
+        <translation>Добавить &amp;оператор</translation>
     </message>
     <message>
         <source>Clea&amp;r</source>
-        <translation type="unfinished">&amp;Очистить</translation>
+        <translation>&amp;Очистить</translation>
     </message>
 </context>
 <context>
@@ -6897,7 +6901,7 @@ The following special codes can be used:
     </message>
     <message>
         <source>Angle (deg)</source>
-        <translation type="unfinished"></translation>
+        <translation>Угол (градусы)</translation>
     </message>
 </context>
 <context>
@@ -7334,7 +7338,7 @@ The following special codes can be used:
     </message>
     <message>
         <source>Scaled Levenberg-Marquardt</source>
-        <translation>Масштабированный Левенберг-Макуардт</translation>
+        <translation>Масштабированный Левенберг-Марквардт</translation>
     </message>
     <message>
         <source>Statistical</source>
@@ -7358,7 +7362,7 @@ The following special codes can be used:
     </message>
     <message>
         <source>Unscaled Levenberg-Marquardt</source>
-        <translation>Немасштабированный Левенберг-Макуардт</translation>
+        <translation>Немасштабированный Левенберг-Марквардт</translation>
     </message>
     <message>
         <source>Value</source>
@@ -7528,7 +7532,7 @@ The following special codes can be used:
     </message>
     <message>
         <source>Chi^2/doF</source>
-        <translation type="unfinished"></translation>
+        <translation>Chi^2/doF</translation>
     </message>
 </context>
 <context>
@@ -7803,7 +7807,7 @@ The following special codes can be used:
     </message>
     <message>
         <source>Scaled Levenberg-Marquardt</source>
-        <translation>Масштабированный Левенберг-Макуардт</translation>
+        <translation>Масштабированный Левенберг-Марквардт</translation>
     </message>
     <message>
         <source>Significant Digits</source>
@@ -7831,7 +7835,7 @@ The following special codes can be used:
     </message>
     <message>
         <source>Unscaled Levenberg-Marquardt</source>
-        <translation>Немасштабированный Левенберг-Макуардт</translation>
+        <translation>Немасштабированный Левенберг-Марквардт</translation>
     </message>
     <message>
         <source>User defined</source>
@@ -8862,7 +8866,7 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Column T&amp;ypes...</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Тип столбцов...</translation>
     </message>
 </context>
 <context>
@@ -9128,35 +9132,35 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Unit</source>
-        <translation type="unfinished">Размеры в</translation>
+        <translation>Единица измерения</translation>
     </message>
     <message>
         <source>inch</source>
-        <translation type="unfinished">дюйм</translation>
+        <translation>дюйм</translation>
     </message>
     <message>
         <source>mm</source>
-        <translation type="unfinished">мм</translation>
+        <translation>мм</translation>
     </message>
     <message>
         <source>cm</source>
-        <translation type="unfinished">см</translation>
+        <translation>см</translation>
     </message>
     <message>
         <source>point</source>
-        <translation type="unfinished">точка</translation>
+        <translation>точка</translation>
     </message>
     <message>
         <source>pixel</source>
-        <translation type="unfinished"></translation>
+        <translation>точка растра</translation>
     </message>
     <message>
         <source>&amp;Keep aspect ratio</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Сохранять пропорции</translation>
     </message>
     <message>
         <source>Margins</source>
-        <translation type="unfinished"></translation>
+        <translation>Поля</translation>
     </message>
     <message>
         <source>Bottom margin</source>
@@ -9308,23 +9312,23 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Link &amp;X axes</source>
-        <translation type="unfinished"></translation>
+        <translation>Связать &amp;X оси</translation>
     </message>
     <message>
         <source>&amp;Fixed size</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Фиксированный размер</translation>
     </message>
     <message>
         <source>Align</source>
-        <translation type="unfinished"></translation>
+        <translation>Выравнять</translation>
     </message>
     <message>
         <source>Canvases</source>
-        <translation type="unfinished"></translation>
+        <translation>Холсты</translation>
     </message>
     <message>
         <source>Co&amp;mmon axes</source>
-        <translation type="unfinished"></translation>
+        <translation>О&amp;бщие оси</translation>
     </message>
 </context>
 <context>
@@ -10173,7 +10177,7 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Ignore</source>
-        <translation type="unfinished"></translation>
+        <translation>Игнорировать</translation>
     </message>
 </context>
 <context>
@@ -10561,15 +10565,15 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Scale to paper si&amp;ze</source>
-        <translation type="unfinished"></translation>
+        <translation>Масштабировать по ра&amp;змеру бумаги</translation>
     </message>
     <message>
         <source>Print Crop&amp;marks</source>
-        <translation type="unfinished"></translation>
+        <translation>Печатать &amp;метки обреза</translation>
     </message>
     <message>
         <source>&amp;Print</source>
-        <translation type="unfinished">&amp;Печать</translation>
+        <translation>&amp;Печать</translation>
     </message>
     <message>
         <source>Color map &amp;file</source>
@@ -10601,23 +10605,23 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Dash Dot</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>Dash Dot Dot</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>Short Dash</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>Short Dot</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>Short Dash Dot</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>G&amp;rid</source>
@@ -10633,31 +10637,31 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Tick Labels</source>
-        <translation type="unfinished"></translation>
+        <translation>Метки делений</translation>
     </message>
     <message>
         <source>Format</source>
-        <translation type="unfinished">Формат</translation>
+        <translation>Формат</translation>
     </message>
     <message>
         <source>Automatic</source>
-        <translation type="unfinished"></translation>
+        <translation>Автоматически</translation>
     </message>
     <message>
         <source>Decimal: 10000.0</source>
-        <translation type="unfinished">Десятичный: 10000.0</translation>
+        <translation>Десятичный: 10000.0</translation>
     </message>
     <message>
         <source>Scientific: 1e4</source>
-        <translation type="unfinished">Научный: 1e4</translation>
+        <translation>Научный: 1e4</translation>
     </message>
     <message>
         <source>Engineering: 10k</source>
-        <translation type="unfinished">Инжнерный: 10k</translation>
+        <translation>Инжнерный: 10k</translation>
     </message>
     <message>
         <source>Precision</source>
-        <translation type="unfinished">Точность</translation>
+        <translation>Точность</translation>
     </message>
 </context>
 <context>
@@ -11560,31 +11564,31 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Link &amp;X axes</source>
-        <translation type="unfinished"></translation>
+        <translation>Связать &amp;X оси</translation>
     </message>
     <message>
         <source>Miscellaneous</source>
-        <translation type="unfinished"></translation>
+        <translation>Разное</translation>
     </message>
     <message>
         <source>0 (all data points)</source>
-        <translation type="unfinished"></translation>
+        <translation>0 (все точки)</translation>
     </message>
     <message>
         <source>Tolerance (Douglas-Peucker algorithm)</source>
-        <translation type="unfinished"></translation>
+        <translation>Допуск (алгоритм Douglas-Peuker)</translation>
     </message>
     <message>
         <source>Scale &amp;Fonts</source>
-        <translation type="unfinished">Масштабировать &amp;шрифты</translation>
+        <translation>Масштабировать &amp;шрифты</translation>
     </message>
     <message>
         <source>Do not &amp;resize layers when window size changes</source>
-        <translation type="unfinished">Не &amp;изменять размеры слоёв при изменении размера окна</translation>
+        <translation>Не &amp;изменять размеры слоёв при изменении размера окна</translation>
     </message>
     <message>
         <source>Dimensions</source>
-        <translation type="unfinished">Размерность</translation>
+        <translation>Размерность</translation>
     </message>
 </context>
 <context>
@@ -11779,19 +11783,19 @@ have the same number of rows.</source>
     <name>PreviewTable</name>
     <message>
         <source>Numeric</source>
-        <translation type="unfinished"></translation>
+        <translation>Числовой</translation>
     </message>
     <message>
         <source>Text</source>
-        <translation type="unfinished">Текст</translation>
+        <translation>Текст</translation>
     </message>
     <message>
         <source>Date</source>
-        <translation type="unfinished">Дата</translation>
+        <translation>Дата</translation>
     </message>
     <message>
         <source>Time</source>
-        <translation type="unfinished">Время</translation>
+        <translation>Время</translation>
     </message>
     <message>
         <source>Month</source>
@@ -11799,7 +11803,7 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Choose column type</source>
-        <translation type="unfinished"></translation>
+        <translation>Выбрать тип столбца</translation>
     </message>
     <message>
         <source>dd/MM/yyyy</source>
@@ -11919,19 +11923,19 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation type="unfinished">&amp;Закрыть</translation>
+        <translation>&amp;Закрыть</translation>
     </message>
     <message>
         <source>Column</source>
-        <translation type="unfinished">Столбец</translation>
+        <translation>Столбец</translation>
     </message>
     <message>
         <source>Type</source>
-        <translation type="unfinished">Тип</translation>
+        <translation>Тип</translation>
     </message>
     <message>
         <source>Format</source>
-        <translation type="unfinished">Формат</translation>
+        <translation>Формат</translation>
     </message>
 </context>
 <context>
@@ -12318,67 +12322,72 @@ have the same number of rows.</source>
     <message>
         <source>AVG(&quot;colName&quot;, i, j):
  The average of all cells from row i to j in column colName.</source>
-        <translation type="unfinished"></translation>
+        <translation>AVG(&quot;colName&quot;, i, j):
+ Среднее всех ячеек в строках от i до j в столбце colName.</translation>
     </message>
     <message>
         <source>SUM(&quot;colName&quot;, i, j):
  The sum of all cells from row i to j in column colName.</source>
-        <translation type="unfinished"></translation>
+        <translation>SUM(&quot;colName&quot;, i, j):
+ Сумма всех ячеек в строках от i до j в столбце colName.</translation>
     </message>
     <message>
         <source>QtiPlot - Memory Allocation Error</source>
-        <translation type="unfinished">QtiPlot - Ошибка выделения памяти</translation>
+        <translation>QtiPlot - Ошибка выделения памяти</translation>
     </message>
     <message>
         <source>Not enough memory, operation aborted!</source>
-        <translation type="unfinished">Недостаточно памяти, операция отменена!</translation>
+        <translation>Недостаточно памяти, операция отменена!</translation>
     </message>
     <message>
         <source>The function %1 is not defined in the specified interval!</source>
-        <translation type="unfinished"></translation>
+        <translation>Функция %1 не определена в указанном интервале!</translation>
     </message>
     <message>
         <source>rnd(seed):
  Returns a pseudo-random number in the range 0 to 1. Calling this function several times with the same seed will return the same value.</source>
-        <translation type="unfinished"></translation>
+        <translation>rnd(seed):
+ Возвращает псевдослучайное число в диапазоне от 0 до 1. Вызов этой функции несколько раз с тем же самым затравочным значением возращает одно и то же число.</translation>
     </message>
     <message>
         <source>angle</source>
-        <translation type="unfinished">угол</translation>
+        <translation>угол</translation>
     </message>
     <message>
         <source>length</source>
-        <translation type="unfinished">длина</translation>
+        <translation>длина</translation>
     </message>
     <message>
         <source>dx</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>dy</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>eqn</source>
-        <translation type="unfinished">уравнение</translation>
+        <translation>уравнение</translation>
     </message>
     <message>
         <source>y</source>
-        <translation type="unfinished">y</translation>
+        <translation>y</translation>
     </message>
     <message>
         <source>x</source>
-        <translation type="unfinished">x</translation>
+        <translation>x</translation>
     </message>
     <message>
         <source>MIN(&quot;colName&quot;, i, j):
  The minimum of all cells from row i to j in column colName.</source>
-        <translation type="unfinished"></translation>
+        <translation>MIN(&quot;colName&quot;, i, j):
+ Минимум всех ячеек в строках от i до j в столбце colName.</translation>
     </message>
     <message>
         <source>MAX(&quot;colName&quot;, i, j):
  The maximum of all cells from row i to j in column colName.</source>
-        <translation type="unfinished"></translation>
+        <translation>MAX(&quot;colName&quot;, i, j):
+ Миксимум всех ячеек в строках от i до j в столбце colName.</translation>
     </message>
 </context>
 <context>
@@ -13128,58 +13137,58 @@ have the same number of rows.</source>
     <name>SubtractDataDialog</name>
     <message>
         <source>QtiPlot</source>
-        <translation type="unfinished">QtiPlot</translation>
+        <translation>QtiPlot</translation>
     </message>
     <message>
         <source>Math on Data Sets</source>
-        <translation type="unfinished"></translation>
+        <translation>Математические операции над наборами данных</translation>
     </message>
     <message>
         <source>Cu&amp;rve</source>
-        <translation type="unfinished"></translation>
+        <translation>К&amp;ривые</translation>
     </message>
     <message>
         <source>&amp;Operator</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Оператор</translation>
     </message>
     <message>
         <source>&amp;Data set</source>
-        <translation type="unfinished"></translation>
+        <translation>Набор &amp;данных</translation>
     </message>
     <message>
         <source>Current &amp;folder</source>
-        <translation type="unfinished"></translation>
+        <translation>Текущая &amp;папка</translation>
     </message>
     <message>
         <source>&amp;Value</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Значение</translation>
     </message>
     <message>
         <source>&amp;Apply</source>
-        <translation type="unfinished">&amp;Применить</translation>
+        <translation>&amp;Применить</translation>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation type="unfinished">&amp;Закрыть</translation>
+        <translation>&amp;Закрыть</translation>
     </message>
     <message>
         <source>Error</source>
-        <translation type="unfinished">Ошибка</translation>
+        <translation>Ошибка</translation>
     </message>
     <message>
         <source>Data set %1 must containt at least two valid data points in order to perform this operation!</source>
-        <translation type="unfinished"></translation>
+        <translation>Для выполнения этой операции набор данных %1 должен содержать по крайней мере две точки!</translation>
     </message>
 </context>
 <context>
     <name>SubtractLineTool</name>
     <message>
         <source>Move cursor and click to select and double-click/press &apos;Enter&apos; to set the position of the first point!</source>
-        <translation type="unfinished"></translation>
+        <translation>Для выделения точки подведите к ней указатель и щёлкните, двойной щелчок или &apos;Enter&apos; для установки положения первой точки!</translation>
     </message>
     <message>
         <source>First point selected! Click to select and double-click/press &apos;Enter&apos; to set the position of the 2nd point!</source>
-        <translation type="unfinished"></translation>
+        <translation>Первая точка выбрана! Один щелчок для выбора точки и двойной щелчок или &apos;Enter&apos;, для указания положения второй точки!</translation>
     </message>
 </context>
 <context>
@@ -14141,11 +14150,11 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>SUM() works only on tables!</source>
-        <translation type="unfinished"></translation>
+        <translation>SUM() работает только с таблицами!</translation>
     </message>
     <message>
         <source>AVG() works only on tables!</source>
-        <translation type="unfinished"></translation>
+        <translation>AVG() работает только с таблицами!</translation>
     </message>
     <message>
         <source>tablecol: wrong number of arguments (need 2, got %1)</source>
@@ -14153,11 +14162,11 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>MIN() works only on tables!</source>
-        <translation type="unfinished"></translation>
+        <translation>MIN() работает только с таблицами!</translation>
     </message>
     <message>
         <source>MAX() works only on tables!</source>
-        <translation type="unfinished"></translation>
+        <translation>MAX() работает только с таблицами!</translation>
     </message>
 </context>
 </TS>
