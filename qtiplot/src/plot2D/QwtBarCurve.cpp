@@ -30,12 +30,13 @@
 #include "Graph.h"
 #include <QPainter>
 #include <qwt_painter.h>
+#include <stdio.h>
 
 QwtBarCurve::QwtBarCurve(BarStyle style, Table *t, const QString& xColName, const QString& name, int startRow, int endRow):
     DataCurve(t, xColName, name, startRow, endRow),
     bar_offset(0),
     bar_gap(20),
-    d_white_out(false)
+	d_is_stacked(false)
 {
 	bar_style = style;
 
@@ -78,9 +79,9 @@ void QwtBarCurve::draw(QPainter *painter,
 	double bar_width = 0;
 
     if (bar_style == Vertical)
-       ref= yMap.transform(1e-100); //smalest positive value for log scales
+	   ref = yMap.transform(1e-100); //smalest positive value for log scales
     else
-       ref= xMap.transform(1e-100);
+	   ref = xMap.transform(1e-100);
 
 	if (bar_style == Vertical)
 	{
@@ -105,19 +106,34 @@ void QwtBarCurve::draw(QPainter *painter,
 		bar_width = dy*(1-bar_gap*0.01);
 	}
 
+	QList <QwtBarCurve *> stack = stackedCurvesList();
+
 	const int half_width = int((0.5-bar_offset*0.01)*bar_width);
 	int bw1 = int(bar_width) + 1;
 	for (int i = from; i <= to; i++)
 	{
+		double stackOffset = 0.0;
+		foreach(QwtBarCurve *bc, stack)
+			stackOffset += bc->y(i);
+
 		const int px = xMap.transform(x(i));
-        const int py = yMap.transform(y(i));
+		const int py = yMap.transform(y(i));
 
 		QRect rect = QRect();
 		if (bar_style == Vertical){
+			const int py0 = yMap.transform(y(i) + stackOffset);
+			const int poffset = yMap.transform(stackOffset);
+
 			if (y(i) < 0)
-				rect = QRect(px-half_width, ref, bw1, (py-ref));
-			else
-				rect = QRect(px-half_width, py, bw1, (ref-py+1));
+				rect = QRect(px - half_width, ref, bw1, (py - ref));
+			else {
+				if (stack.isEmpty())
+					rect = QRect(px - half_width, py, bw1, (ref - py + 1));
+				else {
+					rect = QRect(px - half_width, py0, bw1, 1);
+					rect.setBottom(poffset);
+				}
+			}
 		} else {
 			if (x(i) < 0)
 				rect = QRect(px, py-half_width, (ref-px), bw1);
@@ -125,32 +141,75 @@ void QwtBarCurve::draw(QPainter *painter,
 				rect = QRect(ref, py-half_width, (px-ref), bw1);
 		}
 
-		if (d_white_out)
+		if (d_is_stacked)
 			painter->fillRect(rect, Qt::white);
 		painter->drawRect(rect);
 	}
 	painter->restore();
 }
 
+QList <QwtBarCurve *> QwtBarCurve::stackedCurvesList() const
+{
+	QList <QwtBarCurve *> stack;
+	Graph *g = (Graph *)plot();
+	if (!g)
+		return stack;
+
+	for (int i = 0; i < g->curveCount(); i++){
+		DataCurve *c = g->dataCurve(i);
+		if (!c || c == this)
+			continue;
+
+		if (c->type() != Graph::VerticalBars && c->type() != Graph::HorizontalBars)
+			continue;
+
+		QwtBarCurve *bc = (QwtBarCurve *)c;
+		if (bc->isStacked() && bc->orientation() == bar_style &&
+			g->curveIndex((QwtPlotItem *)bc) < g->curveIndex((QwtPlotItem *)this))
+			stack << bc;
+	}
+	return stack;
+}
+
 QwtDoubleRect QwtBarCurve::boundingRect() const
 {
-QwtDoubleRect rect = QwtPlotCurve::boundingRect();
-double n= (double)dataSize();
+	QwtDoubleRect rect = QwtPlotCurve::boundingRect();
 
-if (bar_style == Vertical)
-	{
-	double dx=(rect.right()-rect.left())/n;
-	rect.setLeft(rect.left()-dx);
-	rect.setRight(rect.right()+dx);
-	}
-else
-	{
-	double dy=(rect.bottom()-rect.top())/n;
-	rect.setTop(rect.top()-dy);
-	rect.setBottom(rect.bottom()+dy);
+	double n = (double)dataSize();
+
+	if (bar_style == Vertical){
+		double dx = (rect.right() - rect.left())/n;
+		rect.setLeft(rect.left() - dx);
+		rect.setRight(rect.right() + dx);
+	} else {
+		double dy = (rect.bottom() - rect.top())/n;
+		rect.setTop(rect.top() - dy);
+		rect.setBottom(rect.bottom() + dy);
 	}
 
-return rect;
+	if (!d_is_stacked)
+		return rect;
+
+	QList <QwtBarCurve *> stack = stackedCurvesList();
+
+	if (!stack.isEmpty()){
+		double maxStackOffset = 0.0;
+		for (int i = 0; i < n; i++){
+			double stackOffset = 0.0;
+			foreach(QwtBarCurve *bc, stack)
+				stackOffset += bc->y(i);
+
+			if (stackOffset > maxStackOffset)
+				maxStackOffset = stackOffset;
+		}
+
+		if (bar_style == Vertical){
+			rect.setTop(rect.top() + maxStackOffset);
+		} else {
+			rect.setRight(rect.right() + maxStackOffset);
+		}
+	}
+	return rect;
 }
 
 void QwtBarCurve::setGap (int gap)
@@ -215,7 +274,7 @@ return 0;
 
 QString QwtBarCurve::saveToString()
 {
-	if (d_white_out)
+	if (d_is_stacked)
 		return "<StackWhiteOut>1</StackWhiteOut>\n";
 	return QString::null;
 }

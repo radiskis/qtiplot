@@ -73,30 +73,27 @@ BaselineDialog::BaselineDialog( QWidget* parent, Qt::WFlags fl )
 	boxPoints->setMinimum(2);
 	boxPoints->setMaximum(INT_MAX);
 
-	QHBoxLayout *hb1 = new QHBoxLayout();
-	hb1->addStretch();
-	hb1->addWidget(new QLabel(tr("Points")));
-	hb1->addWidget(boxPoints);
-	gl1->addLayout(hb1, 0, 2);
+	gl1->addWidget(new QLabel(tr("Points")), 1, 0);
+	gl1->addWidget(boxPoints, 1, 1);
 
 	btnAutomatic = new QRadioButton(tr("&Interpolation"));
 	btnAutomatic->setChecked(true);
-	gl1->addWidget(btnAutomatic, 1, 0);
+	gl1->addWidget(btnAutomatic, 2, 0);
 
 	boxInterpolationMethod = new QComboBox();
 	boxInterpolationMethod->addItems(QStringList() << tr("Linear") << tr("Cubic") << tr("Non-rounded Akima"));
-	gl1->addWidget(boxInterpolationMethod, 1, 1);
+	gl1->addWidget(boxInterpolationMethod, 2, 1);
 
 	btnEquation = new QRadioButton(tr("User Defined &Equation Y ="));
 	btnEquation->setChecked(false);
-	gl1->addWidget(btnEquation, 2, 0);
+	gl1->addWidget(btnEquation, 3, 0);
 
 	boxEquation = new QLineEdit();
-	gl1->addWidget(boxEquation, 2, 1);
+	gl1->addWidget(boxEquation, 3, 1);
 
 	btnDataset = new QRadioButton(tr("Existing &Dataset"));
 	btnDataset->setChecked(false);
-	gl1->addWidget(btnDataset, 3, 0);
+	gl1->addWidget(btnDataset, 4, 0);
 
 	boxTableName = new QComboBox();
 	boxColumnName = new QComboBox();
@@ -104,10 +101,10 @@ BaselineDialog::BaselineDialog( QWidget* parent, Qt::WFlags fl )
 	QHBoxLayout *hb0 = new QHBoxLayout();
 	hb0->addWidget(boxTableName);
 	hb0->addWidget(boxColumnName);
-	gl1->addLayout(hb0, 3, 1);
+	gl1->addLayout(hb0, 4, 1);
 
 	gl1->setColumnStretch(1, 1);
-	gl1->setRowStretch(4, 1);
+	gl1->setRowStretch(5, 1);
 
 	ApplicationWindow *app = (ApplicationWindow *)parent;
 	boxTableName->addItems(app->tableNames());
