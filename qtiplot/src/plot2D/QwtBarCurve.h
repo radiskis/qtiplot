@@ -52,7 +52,9 @@ public:
 	int offset() const {return bar_offset;};
 
 	double dataOffset();
-	void setWhiteOut(bool on = true){d_white_out = on;};
+
+	bool isStacked(){return d_is_stacked;};
+	void setStacked(bool on = true){d_is_stacked = on;};
 
 	virtual QString saveToString();
 
@@ -60,9 +62,11 @@ private:
 	virtual void draw(QPainter *painter,const QwtScaleMap &xMap,
 		const QwtScaleMap &yMap, int from, int to) const;
 
+	QList <QwtBarCurve *> stackedCurvesList() const;
+
 	int bar_offset;
 	int bar_gap;
-	bool d_white_out;
+	bool d_is_stacked;
 	BarStyle bar_style;
 };
 

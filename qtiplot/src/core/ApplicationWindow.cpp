@@ -12391,7 +12391,7 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot, co
 		} else if (s.contains("<StackWhiteOut>")){
 			QwtBarCurve *b = (QwtBarCurve *)ag->curve(curveID - 1);
 			if (b)
-				b->setWhiteOut();
+				b->setStacked();
 		} else if (s == "<Function>"){//version 0.9.5
 			curveID++;
 			QStringList lst;

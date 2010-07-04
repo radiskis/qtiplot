@@ -3239,7 +3239,7 @@ bool Graph::addCurves(Table* w, const QStringList& names, int style, double lWid
 				lst.prepend(names[i]);
         }
 
-		for (int i = 0; i < curves; i++){
+		for (int i = 0; i < curves; i++){			
             int j = w->colIndex(names[i]);
             PlotCurve *c = NULL;
             if (w->colPlotDesignation(j) == Table::xErr || w->colPlotDesignation(j) == Table::yErr){
@@ -3390,13 +3390,13 @@ DataCurve* Graph::insertCurve(Table* w, const QString& xColName, const QString& 
 		c = new QwtBarCurve(QwtBarCurve::Vertical, w, xColName, yColName, startRow, endRow);
 		if (style == StackColumn){
 			style = VerticalBars;
-			((QwtBarCurve*)c)->setWhiteOut();
+			((QwtBarCurve*)c)->setStacked();
 		}
 	} else if (style == HorizontalBars || style == StackBar){
 		c = new QwtBarCurve(QwtBarCurve::Horizontal, w, xColName, yColName, startRow, endRow);
 		if (style == StackBar){
 			style = HorizontalBars;
-			((QwtBarCurve*)c)->setWhiteOut();
+			((QwtBarCurve*)c)->setStacked();
 		}
 	} else
 		c = new DataCurve(w, xColName, yColName, startRow, endRow);
