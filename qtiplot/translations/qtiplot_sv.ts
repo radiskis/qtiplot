@@ -7047,11 +7047,11 @@ den första representerar signalen och den andra svarsfunktionen!</translation>
     </message>
     <message>
         <source>Plot stack bar</source>
-        <translation type="unfinished"></translation>
+        <translation>Rita stalpad stapel</translation>
     </message>
     <message>
         <source>Plot stack column</source>
-        <translation type="unfinished"></translation>
+        <translation>Rita staplad kolumn</translation>
     </message>
     <message>
         <source>Move current row upward</source>
@@ -8326,7 +8326,7 @@ Automatisk komplettering ej tillgängligt!</translation>
     </message>
     <message>
         <source>Spec&amp;ial Bar/Column</source>
-        <translation type="unfinished"></translation>
+        <translation>Spec&amp;ial stapel/kolumn</translation>
     </message>
     <message>
         <source>Move Row</source>
@@ -8414,23 +8414,23 @@ Automatisk komplettering ej tillgängligt!</translation>
     </message>
     <message>
         <source>The selected table is empty, operation aborted!</source>
-        <translation type="unfinished"></translation>
+        <translation>Den valda tabellen är tom, åtgärden avbryts!</translation>
     </message>
     <message>
         <source>Export Exce&amp;l ...</source>
-        <translation type="unfinished"></translation>
+        <translation>Exportera Exce&amp;l...</translation>
     </message>
     <message>
         <source>&amp;Front</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Förgrund</translation>
     </message>
     <message>
         <source>&amp;Back</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Bakgrund</translation>
     </message>
     <message>
         <source>Export Excel</source>
-        <translation type="unfinished"></translation>
+        <translation>Exportera Excel</translation>
     </message>
     <message>
         <source>Raise object on top</source>
@@ -8442,31 +8442,31 @@ Automatisk komplettering ej tillgängligt!</translation>
     </message>
     <message>
         <source>The selected Y column is empty, operation aborted!</source>
-        <translation type="unfinished"></translation>
+        <translation>Den valda Y-kolumnen är tom, åtgärden avbryts!</translation>
     </message>
     <message>
         <source>The associated X column is empty, operation aborted!</source>
-        <translation type="unfinished"></translation>
+        <translation>Den valda X-kolumnen är tom, åtgärden avbryts!</translation>
     </message>
     <message>
         <source>Excel files</source>
-        <translation type="unfinished"></translation>
+        <translation>Excel-filer</translation>
     </message>
     <message>
         <source>Save Window As</source>
-        <translation type="unfinished"></translation>
+        <translation>Spara fönster som</translation>
     </message>
     <message>
         <source>Save &amp;Window As...</source>
-        <translation type="unfinished"></translation>
+        <translation>Spara &amp;fönster som...</translation>
     </message>
     <message>
         <source>&amp;Baseline...</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Baslinje...</translation>
     </message>
     <message>
         <source>Shift+T</source>
-        <translation type="unfinished"></translation>
+        <translation>Shift-T</translation>
     </message>
 </context>
 <context>
@@ -9084,11 +9084,11 @@ Automatisk komplettering ej tillgängligt!</translation>
     </message>
     <message>
         <source>Prefix</source>
-        <translation type="unfinished"></translation>
+        <translation>Prefix</translation>
     </message>
     <message>
         <source>Suffix</source>
-        <translation type="unfinished"></translation>
+        <translation>Suffix</translation>
     </message>
 </context>
 <context>
@@ -9099,11 +9099,11 @@ Automatisk komplettering ej tillgängligt!</translation>
     </message>
     <message>
         <source>Baseline</source>
-        <translation type="unfinished"></translation>
+        <translation>Baslinje</translation>
     </message>
     <message>
         <source>Create Baseline</source>
-        <translation type="unfinished"></translation>
+        <translation>Skapa baslinje</translation>
     </message>
     <message>
         <source>Curve</source>
@@ -9131,7 +9131,7 @@ Automatisk komplettering ej tillgängligt!</translation>
     </message>
     <message>
         <source>User Defined &amp;Equation Y =</source>
-        <translation type="unfinished"></translation>
+        <translation>Användardefinierad &amp;ekvation Y =</translation>
     </message>
     <message>
         <source>Existing &amp;Dataset</source>
@@ -9139,7 +9139,7 @@ Automatisk komplettering ej tillgängligt!</translation>
     </message>
     <message>
         <source>Create &amp;Baseline</source>
-        <translation type="unfinished"></translation>
+        <translation>Skapa &amp;baslinje</translation>
     </message>
     <message>
         <source>&amp;Subtract</source>
@@ -9147,11 +9147,11 @@ Automatisk komplettering ej tillgängligt!</translation>
     </message>
     <message>
         <source>&amp;Undo Subtraction</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Ångra subtraktion</translation>
     </message>
     <message>
         <source>&amp;Modify</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Ändra</translation>
     </message>
     <message>
         <source>&amp;Close</source>
@@ -11733,7 +11733,7 @@ Följande specialkoder kan användas:
     </message>
     <message>
         <source>Angle (deg)</source>
-        <translation type="unfinished"></translation>
+        <translation>Vinkel (grader)</translation>
     </message>
 </context>
 <context>
@@ -12420,7 +12420,7 @@ Följande specialkoder kan användas:
     </message>
     <message>
         <source>Chi^2/doF</source>
-        <translation type="unfinished"></translation>
+        <translation>Chi²/doF</translation>
     </message>
 </context>
 <context>
@@ -14397,7 +14397,7 @@ har samma antal rader.</translation>
     </message>
     <message>
         <source>Column T&amp;ypes...</source>
-        <translation type="unfinished"></translation>
+        <translation>Kolumn&amp;typer...</translation>
     </message>
 </context>
 <context>
@@ -18238,19 +18238,19 @@ Vill du skjuta in celler?</translation>
     </message>
     <message>
         <source>Type</source>
-        <translation type="unfinished">Typ</translation>
+        <translation>Typ</translation>
     </message>
     <message>
         <source>Format</source>
-        <translation type="unfinished">Format</translation>
+        <translation>Format</translation>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Stäng</translation>
     </message>
     <message>
         <source>Column</source>
-        <translation type="unfinished">Kolumn</translation>
+        <translation>Kolumn</translation>
     </message>
 </context>
 <context>
@@ -18680,41 +18680,43 @@ Vill du skjuta in celler?</translation>
     </message>
     <message>
         <source>angle</source>
-        <translation type="unfinished">vinkel</translation>
+        <translation>vinkel</translation>
     </message>
     <message>
         <source>length</source>
-        <translation type="unfinished">längd</translation>
+        <translation>längd</translation>
     </message>
     <message>
         <source>dx</source>
-        <translation type="unfinished">dx</translation>
+        <translation>dx</translation>
     </message>
     <message>
         <source>dy</source>
-        <translation type="unfinished">dy</translation>
+        <translation>dy</translation>
     </message>
     <message>
         <source>eqn</source>
-        <translation type="unfinished">ekv</translation>
+        <translation>ekv</translation>
     </message>
     <message>
         <source>y</source>
-        <translation type="unfinished">y</translation>
+        <translation>y</translation>
     </message>
     <message>
         <source>x</source>
-        <translation type="unfinished">x</translation>
+        <translation>x</translation>
     </message>
     <message>
         <source>MIN(&quot;colName&quot;, i, j):
  The minimum of all cells from row i to j in column colName.</source>
-        <translation type="unfinished"></translation>
+        <translation>MIN(&quot;colName&quot;, i, j):
+ Minsta av alla celler från rad i till j i kolumn colName.</translation>
     </message>
     <message>
         <source>MAX(&quot;colName&quot;, i, j):
  The maximum of all cells from row i to j in column colName.</source>
-        <translation type="unfinished"></translation>
+        <translation>MAX(&quot;colName&quot;, i, j):
+ Maximum av alla celler från rad i till j i kolumn colName.</translation>
     </message>
 </context>
 <context>
@@ -23413,11 +23415,11 @@ Gränserna måste vara inom definitionsområdet för x; om du inte vet maximum- 
     </message>
     <message>
         <source>MIN() works only on tables!</source>
-        <translation type="unfinished"></translation>
+        <translation>MIN() fungerar bara på tabeller!</translation>
     </message>
     <message>
         <source>MAX() works only on tables!</source>
-        <translation type="unfinished"></translation>
+        <translation>MAX() fungerar bara på tabeller!</translation>
     </message>
 </context>
 <context>
