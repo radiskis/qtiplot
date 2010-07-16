@@ -5705,7 +5705,7 @@ void Graph::printCanvas(QPainter *painter, const QRect &canvasRect,
 	else
 		rect = rect.adjusted(-lw2, -lw2, lw2, lw2);
 
-	QRect fillRect = rect.adjusted(1, 1, -1, -1);
+	QRect fillRect = rect.adjusted(0, 0, -1, -1);
 	QwtPainter::fillRect(painter, fillRect, canvasBackground());
 
 	painter->setClipping(true);
@@ -5717,7 +5717,7 @@ void Graph::printCanvas(QPainter *painter, const QRect &canvasRect,
 		painter->save();
 		QColor color = plotCanvas->palette().color(QPalette::Active, QColorGroup::Foreground);
 		painter->setPen (QPen(color, lw, Qt::SolidLine, Qt::SquareCap, Qt::MiterJoin));
-		painter->drawRect(rect.adjusted(1, 1, -2, -2));
+		painter->drawRect(rect.adjusted(0, 0, -2, -2));
 		painter->restore();
 	}
 }

@@ -555,14 +555,11 @@ Table* Fit::parametersTable(const QString& tableName)
 	d_param_table = app->table(tableName);
 	if (!d_param_table || d_param_table->objectName() != tableName){
 		d_param_table = app->newTable(app->generateUniqueName(tableName, false), d_p, 3);
+		d_param_table->setHeader(QStringList() << tr("Parameter") << tr("Value") << tr ("Error"));
+		d_param_table->setColumnType(0, Table::Text);
+		d_param_table->setColPlotDesignation(0, Table::None);
+		d_param_table->setColPlotDesignation(2, Table::yErr);
 	}
-
-	d_param_table->setHeader(QStringList() << tr("Parameter") << tr("Value") << tr ("Error"));
-	
-	d_param_table->setColumnType(0, Table::Text);
-	d_param_table->setColPlotDesignation(0, Table::None);
-	d_param_table->setColPlotDesignation(2, Table::yErr);
-	d_param_table->setHeaderColType();
 
 	writeParametersToTable(d_param_table);
 
