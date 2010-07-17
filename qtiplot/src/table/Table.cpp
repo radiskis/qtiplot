@@ -1796,10 +1796,16 @@ void Table::sortColumns(const QStringList&s, int type, int order, const QString&
 		QVarLengthArray<int> valid_cell(rows);
 		QVarLengthArray<double> data_double(rows);
 		QVarLengthArray<QString> strings(rows);
+		QString format = col_format[leadcol];
 		for (int j = 0; j <rows; j++){
 			if (!d_table->text(j, leadcol).isEmpty()){
-				strings[non_empty_cells] = d_table->text(j, leadcol);
-				data_double[non_empty_cells] = cell(j, leadcol);
+				strings[non_empty_cells] = d_table->text(j, leadcol);				
+
+				if (columnType(leadcol) == Table::Date)
+					data_double[non_empty_cells] = (double)QDate::fromString (d_table->text(j, leadcol), format).toJulianDay();
+				else if (columnType(leadcol) == Table::Numeric)
+					data_double[non_empty_cells] = cell(j, leadcol);
+
 				valid_cell[non_empty_cells] = j;
 				non_empty_cells++;
 			}
@@ -1830,7 +1836,7 @@ void Table::sortColumns(const QStringList&s, int type, int order, const QString&
             if (d_table->isColumnReadOnly(col))
                 continue;
 
-            if (columnType(col) == Text){
+			if (columnType(col) == Text){
                 for (int j = 0; j<non_empty_cells; j++)
                     strings[j] = text(valid_cell[j], col);
                 if(!order)
@@ -1839,7 +1845,17 @@ void Table::sortColumns(const QStringList&s, int type, int order, const QString&
                 else
                     for (int j = 0; j < non_empty_cells; j++)
 						d_table->setText(valid_cell[j], col, strings[p[non_empty_cells - j - 1]]);
-            } else {
+			} else if (columnType(col) == Date) {
+				QString format = col_format[col];
+				for (int j = 0; j<non_empty_cells; j++)
+					data_double[j] = (double)QDate::fromString (d_table->text(valid_cell[j], col), format).toJulianDay();
+				if(!order)
+					for (int j=0; j<non_empty_cells; j++)
+						d_table->setText(valid_cell[j], col, QDate::fromJulianDay(data_double[p[j]]).toString(format));
+				else
+					for (int j=0; j<non_empty_cells; j++)
+						d_table->setText(valid_cell[j], col, QDate::fromJulianDay(data_double[p[non_empty_cells-j-1]]).toString(format));
+			} else if (columnType(col) == Numeric) {
                 for (int j = 0; j<non_empty_cells; j++)
                     data_double[j] = cell(valid_cell[j], col);
                 int prec;
@@ -1881,12 +1897,16 @@ void Table::sortColumn(int col, int order)
 	QVarLengthArray<int> valid_cell(rows);
 	QVarLengthArray<double> r(rows);
     QStringList text_cells;
+	QString format = col_format[col];
 	for (int i = 0; i <rows; i++){
 		if (!d_table->text(i, col).isEmpty()){
             if (columnType(col) == Table::Text)
                 text_cells << d_table->text(i, col);
-            else
+			else if (columnType(col) == Table::Date)
+				r[non_empty_cells] = (double)QDate::fromString (d_table->text(i, col), format).toJulianDay();
+			else if (columnType(col) == Table::Numeric)
 			    r[non_empty_cells] = cell(i, col);
+
 			valid_cell[non_empty_cells] = i;
 			non_empty_cells++;
 		}
@@ -1914,17 +1934,25 @@ void Table::sortColumn(int col, int order)
             for (int i=0; i<non_empty_cells; i++)
                 d_table->setText(valid_cell[i], col, text_cells[non_empty_cells-i-1]);
         }
-    } else {
+	} else if (columnType(col) == Table::Date){
+		if (!order) {
+			for (int i=0; i<non_empty_cells; i++)
+				 d_table->setText(valid_cell[i], col, QDate::fromJulianDay(r[i]).toString(format));
+		 } else {
+			 for (int i=0; i<non_empty_cells; i++)
+				 d_table->setText(valid_cell[i], col, QDate::fromJulianDay(r[non_empty_cells-i-1]).toString(format));
+		 }
+	} else if (columnType(col) == Table::Numeric){
 	   int prec;
 	   char f;
 	   columnNumericFormat(col, &f, &prec);
-       if (!order) {
-	       for (int i=0; i<non_empty_cells; i++)
-                d_table->setText(valid_cell[i], col, locale().toString(r[i], f, prec));
-        } else {
-            for (int i=0; i<non_empty_cells; i++)
-                d_table->setText(valid_cell[i], col, locale().toString(r[non_empty_cells-i-1], f, prec));
-        }
+	   if (!order) {
+		   for (int i=0; i<non_empty_cells; i++)
+				d_table->setText(valid_cell[i], col, locale().toString(r[i], f, prec));
+		} else {
+			for (int i=0; i<non_empty_cells; i++)
+				d_table->setText(valid_cell[i], col, locale().toString(r[non_empty_cells-i-1], f, prec));
+		}
     }
 
 	blockSignals(false);
