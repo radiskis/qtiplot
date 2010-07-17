@@ -3333,7 +3333,6 @@ DataCurve* Graph::insertCurve(Table* w, const QString& xColName, const QString& 
 		return NULL;
 
 	int xColType = w->columnType(xcol);
-	int yColType = w->columnType(ycol);
 	int size = 0;
 	QString date_time_fmt = w->columnFormat(xcol);
 	QTime time0;
@@ -5717,7 +5716,7 @@ void Graph::printCanvas(QPainter *painter, const QRect &canvasRect,
 		painter->save();
 		QColor color = plotCanvas->palette().color(QPalette::Active, QColorGroup::Foreground);
 		painter->setPen (QPen(color, lw, Qt::SolidLine, Qt::SquareCap, Qt::MiterJoin));
-		painter->drawRect(rect.adjusted(0, 0, -2, -2));
+		painter->drawRect(fillRect);
 		painter->restore();
 	}
 }
