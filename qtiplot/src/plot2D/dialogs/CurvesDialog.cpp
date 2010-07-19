@@ -48,7 +48,6 @@
 #include <QShortcut>
 #include <QKeySequence>
 #include <QMenu>
-#include <QTreeWidget>
 
 #include <QMessageBox>
 
@@ -605,20 +604,25 @@ void CurvesDialog::showCurrentFolder(bool currentFolder)
 		addFolderItems(f);
 
 		f = f->folderBelow();
-		QTreeWidgetItem *folderItem = NULL;
-		int depth = 0;
+		TreeWidgetFolderItem *folderItem = NULL;
 		while (f){
-			if (folderItem && f->depth() > depth)
-				folderItem = new QTreeWidgetItem(folderItem, QStringList(f->objectName()), FolderItem);
-			else
-				folderItem = new QTreeWidgetItem(available, QStringList(f->objectName()), FolderItem);
+			if (f->depth() > 1){
+				Folder *parentFolder = (Folder *)f->parent();
+				QTreeWidgetItemIterator it(available);
+				 while (*it) {
+					 TreeWidgetFolderItem *fi = (TreeWidgetFolderItem *)(*it);
+					 if (fi->folder() == parentFolder){
+						 folderItem = new TreeWidgetFolderItem(fi, f);
+						 break;
+					 }
+					 ++it;
+				 }
+			} else
+				folderItem = new TreeWidgetFolderItem(available, f);
 
-			folderItem->setIcon(0, QIcon(":/folder_open.png"));
-			folderItem->setExpanded(true);
 			available->addTopLevelItem(folderItem);
-
 			addFolderItems(f, folderItem);
-			depth = f->depth();
+
 			f = f->folderBelow();
 		}
     }
@@ -688,4 +692,22 @@ void CurvesDialog::shiftCurveBy(int offset)
 	contents->clear();
 	contents->addItems(d_graph->plotItemsList());
 	contents->setCurrentRow(row + offset);
+}
+
+TreeWidgetFolderItem::TreeWidgetFolderItem( QTreeWidget *parent, Folder *f )
+	: QTreeWidgetItem( parent, QStringList(f->objectName()), CurvesDialog::FolderItem)
+{
+	myFolder = f;
+
+	setIcon(0, QIcon(":/folder_open.png"));
+	setExpanded(true);
+}
+
+TreeWidgetFolderItem::TreeWidgetFolderItem( QTreeWidgetItem *parent, Folder *f )
+	: QTreeWidgetItem ( parent, QStringList(f->objectName()), CurvesDialog::FolderItem)
+{
+	myFolder = f;
+
+	setIcon(0, QIcon(":/folder_open.png"));
+	setExpanded(true);
 }
