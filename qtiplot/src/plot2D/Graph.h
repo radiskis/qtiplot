@@ -139,7 +139,7 @@ class Graph: public QwtPlot
 		enum AxisTitlePolicy{Default, ColName, ColComment, NameAndComment};
 
 		//! Returns a pointer to the parent MultiLayer object.
-		MultiLayer *multiLayer();
+		MultiLayer *multiLayer() const;
 
 		//! Change the active tool, deleting the old one if it exists.
 		void setActiveTool(PlotToolInterface *tool);
@@ -195,7 +195,7 @@ class Graph: public QwtPlot
 		QColor frameColor();
 		const QColor & paletteBackgroundColor() const;
 
-    	void print(QPainter *, const QRect &rect, const QwtPlotPrintFilter & = QwtPlotPrintFilter());
+		void print(QPainter *, const QRect &rect, const QwtPlotPrintFilter & = QwtPlotPrintFilter());
 		void updateLayout();
 		void setCanvasGeometry(const QRect &canvasRect);
 		//!Convenience function for scripts
@@ -777,7 +777,7 @@ signals:
 
 	private:
 		QString parseAxisTitle(int axis);
-		QList<FrameWidget*> stackingOrderEnrichmentsList();
+		QList<FrameWidget*> stackingOrderEnrichmentsList() const;
 		//! Finds bounding interval of the plot data.
 		QwtDoubleInterval axisBoundingInterval(int axis);
 		void deselectCurves();

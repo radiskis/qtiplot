@@ -1043,7 +1043,7 @@ void MultiLayer::exportVector(const QString& fileName, int res, bool color,
 			QRect r = g->geometry();
 			r.setSize(QSize(int(r.width()*wfactor), int(r.height()*hfactor)));
 			r.moveTo(int(r.x()*wfactor), int(r.y()*hfactor));
-        	g->print(&paint, r);
+			g->print(&paint, r);
 		}
 	} else {
     	printer.setPaperSize(QSizeF(d_canvas->width(), d_canvas->height()), QPrinter::DevicePixel);
