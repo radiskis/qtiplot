@@ -242,7 +242,7 @@ Graph::Graph(int x, int y, int width, int height, QWidget* parent, Qt::WFlags f)
 	connect (d_zoomer[0],SIGNAL(zoomed (const QwtDoubleRect &)),this,SLOT(zoomed (const QwtDoubleRect &)));
 }
 
-MultiLayer* Graph::multiLayer()
+MultiLayer* Graph::multiLayer() const
 {
 	if (!parent())
 		return NULL;
@@ -5695,16 +5695,10 @@ void Graph::printCanvas(QPainter *painter, const QRect &canvasRect,
 {
 	painter->save();
 
-	QRect rect = canvasRect;
 	const QwtPlotCanvas* plotCanvas = canvas();
 	int lw = qRound((double)painter->device()->logicalDpiX()/(double)logicalDpiX()*plotCanvas->lineWidth());
-	int lw2 = lw/2;
-	if (lw % 2)
-		rect = rect.adjusted(-lw2, -lw2, (lw2 + 1), (lw2 + 1));
-	else
-		rect = rect.adjusted(-lw2, -lw2, lw2, lw2);
 
-	QRect fillRect = rect.adjusted(0, 0, -1, -1);
+	QRect fillRect = canvasRect.adjusted(0, 0, -1, -1);
 	QwtPainter::fillRect(painter, fillRect, canvasBackground());
 
 	painter->setClipping(true);
@@ -6306,8 +6300,6 @@ void Graph::print(QPainter *painter, const QRect &plotRect, const QwtPlotPrintFi
     // reset the widget attributes again. This way we produce a lot of
     // useless layout events ...
 
-    pfilter.apply((QwtPlot *)this);
-
     int baseLineDists[QwtPlot::axisCnt];
     if (pfilter.options() & QwtPlotPrintFilter::PrintFrameWithScales){
         // In case of no background we set the backbone of
@@ -6321,6 +6313,7 @@ void Graph::print(QPainter *painter, const QRect &plotRect, const QwtPlotPrintFi
             }
         }
     }
+
     // Calculate the layout for the print.
 
     int layoutOptions = QwtPlotLayout::IgnoreScrollbars;
@@ -6330,7 +6323,7 @@ void Graph::print(QPainter *painter, const QRect &plotRect, const QwtPlotPrintFi
         layoutOptions |= QwtPlotLayout::IgnoreLegend;
 
 	int bw = lineWidth();
-    ((QwtPlot *)this)->plotLayout()->activate(this,
+	plotLayout()->activate(this,
 		QwtPainter::metricsMap().deviceToLayout(plotRect.adjusted(bw, bw, -bw, -bw)), layoutOptions);
 
 	QRect canvasRect = plotLayout()->canvasRect();
@@ -6504,25 +6497,24 @@ void Graph::print(QPainter *painter, const QRect &plotRect, const QwtPlotPrintFi
                     break;
                 }
             }
-            printScale(painter, axisId, startDist, endDist, baseDist, scaleRect);
+			printScale(painter, axisId, startDist, endDist, baseDist, scaleRect);
         }
     }
 	QwtPainter::resetMetricsMap();
 
-    ((QwtPlot *)this)->plotLayout()->invalidate();
+	plotLayout()->invalidate();
 
     // reset all widgets with their original attributes.
-    if ( pfilter.options() & QwtPlotPrintFilter::PrintFrameWithScales ){
+	if ( pfilter.options() & QwtPlotPrintFilter::PrintFrameWithScales ){
         // restore the previous base line dists
         for (axisId = 0; axisId < QwtPlot::axisCnt; axisId++ ){
             QwtScaleWidget *scaleWidget = (QwtScaleWidget *)axisWidget(axisId);
             if ( scaleWidget  )
                 scaleWidget->setMargin(baseLineDists[axisId]);
         }
-    }
+	}
 
 	QwtPainter::setMetricsMap(painter->device(), painter->device());
-	//QList<FrameWidget*> enrichments = stackingOrderEnrichmentsList();
 	foreach(FrameWidget *f, enrichments){
 		if (f->isOnTop())
 			f->print(painter, map);
@@ -6532,7 +6524,7 @@ void Graph::print(QPainter *painter, const QRect &plotRect, const QwtPlotPrintFi
 	painter->restore();
 
 	d_is_printing = false;
-    setTitle(t);//hack used to avoid bug in Qwt::printTitle(): the title attributes are overwritten
+	setTitle(t);//hack used to avoid bug in Qwt::printTitle(): the title attributes are overwritten
 }
 
 TexWidget* Graph::addTexFormula(const QString& s, const QPixmap& pix)
@@ -6789,7 +6781,7 @@ void Graph::printScale(QPainter *painter,
     QPalette palette = scaleWidget->palette();
     palette.setCurrentColorGroup(QPalette::Active);
 
-    sd->draw(painter, palette);
+	sd->draw(painter, palette);
 
     // reset previous values
     sd->move(sdPos);
@@ -6920,7 +6912,7 @@ void Graph::enableDouglasPeukerSpeedMode(double tolerance, int maxPoints)
 	replot();
 }
 
-QList<FrameWidget*> Graph::stackingOrderEnrichmentsList()
+QList<FrameWidget*> Graph::stackingOrderEnrichmentsList() const
 {
 	MultiLayer *ml = multiLayer();
 	if (!ml)
