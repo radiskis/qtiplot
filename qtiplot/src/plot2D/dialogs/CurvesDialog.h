@@ -30,13 +30,14 @@
 #define CURVESDIALOG_H
 
 #include <QDialog>
+#include <QTreeWidget>
 
 class QComboBox;
 class QListWidget;
 class QPushButton;
 class QCheckBox;
 class QTreeWidget;
-class QTreeWidgetItem;
+class TreeWidgetFolderItem;
 class Graph;
 class Folder;
 
@@ -46,6 +47,7 @@ class CurvesDialog : public QDialog
     Q_OBJECT
 
 public:
+	enum TreeItemType{FolderItem, ColumnItem, TableItem, MatrixItem};
     CurvesDialog( QWidget* parent = 0, Qt::WFlags fl = 0 );
 
 	void setGraph(Graph *graph);
@@ -67,8 +69,6 @@ private slots:
 	void shiftCurveBy(int offset = 1);
 
 private:
-	enum TreeItemType{FolderItem, ColumnItem, TableItem, MatrixItem};
-
 	void closeEvent(QCloseEvent*);
 	void addFolderItems(Folder *f, QTreeWidgetItem* parent = 0);
 
@@ -94,6 +94,24 @@ private:
 	QCheckBox* boxShowCurrentFolder;
 	QPushButton* btnUp;
 	QPushButton* btnDown;
+};
+
+/*****************************************************************************
+ *
+ * Class TreeWidgetFolderItem
+ *
+ *****************************************************************************/
+//! Folders list item class
+class TreeWidgetFolderItem : public QTreeWidgetItem
+{
+public:
+	TreeWidgetFolderItem( QTreeWidget *parent, Folder *f );
+	TreeWidgetFolderItem( QTreeWidgetItem *parent, Folder *f );
+
+	Folder *folder() { return myFolder; };
+
+protected:
+	Folder *myFolder;
 };
 
 #endif // CurvesDialog_H
