@@ -4991,7 +4991,7 @@ ApplicationWindow* ApplicationWindow::openProject(const QString& fn, bool factor
 		else if (s == "<log>"){//process analysis information
 			s = t.readLine();
 			QString log = s + "\n";
-			while(s != "</log>"){
+			while(!s.contains("</log>")){
 				s = t.readLine();
 				log += s + "\n";
 			}
