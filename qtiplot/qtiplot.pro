@@ -23,7 +23,6 @@ LIBS         += $$MUPARSER_LIBS
 LIBS         += $$QWT_LIBS
 LIBS         += $$QWT3D_LIBS
 LIBS         += $$GSL_LIBS
-LIBS         += -lz
 
 #############################################################################
 ###################### BASIC PROJECT PROPERTIES #############################
@@ -37,7 +36,6 @@ QMAKE_PROJECT_DEPTH = 0
 
 CONFIG        += qt warn_on exceptions opengl thread
 CONFIG        += assistant
-#macx:CONFIG += x86 ppc
 
 DEFINES       += QT_PLUGIN
 contains(CONFIG, CustomInstall){

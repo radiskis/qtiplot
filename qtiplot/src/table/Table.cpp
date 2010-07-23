@@ -3721,7 +3721,10 @@ void Table::showAllColumns()
 	for(int i = 0; i<d_table->numCols(); i++){
 		if (d_table->isColumnHidden(i))
 			d_table->showColumn(i);
+		if (!d_table->columnWidth(i))
+			d_table->adjustColumn(i);
 	}
+	emit modifiedWindow(this);
 }
 
 QString Table::sizeToString()
