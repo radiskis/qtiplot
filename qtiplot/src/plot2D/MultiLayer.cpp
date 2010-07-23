@@ -932,7 +932,7 @@ void MultiLayer::exportImage(const QString& fileName, int quality, bool transpar
 		image.save(fileName, 0, quality);
 }
 
-void MultiLayer::exportImage(QTextDocument *document, int quality, bool transparent,
+void MultiLayer::exportImage(QTextDocument *document, int, bool transparent,
 				int dpi, const QSizeF& customSize, int unit, double fontsFactor)
 {
 	if (!document)
