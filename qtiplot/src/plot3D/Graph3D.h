@@ -101,7 +101,7 @@ public slots:
                 double xl, double xr, double yl, double yr, double zl, double zr);
 	void addData(Table* table, int xCol, int yCol, int zCol, int type = 0);
 	void loadData(Table* table, int xCol, int yCol, int zCol,
-                double xl=0.0, double xr=0.0, double yl=0.0, double yr=0.0, double zl=0.0, double zr=0.0);
+				double xl=0.0, double xr=0.0, double yl=0.0, double yr=0.0, double zl=0.0, double zr=0.0, int axis = -1);
 
     PlotType tablePlotType(){return d_table_plot_type;};
 
@@ -179,7 +179,7 @@ public slots:
 	int axisNumericPrecision(int axis);
 	void setAxisNumericFormat(int axis, int format, int precision);
 
-	void setScales(double xl, double xr, double yl, double yr, double zl, double zr);
+	void setScales(double xl, double xr, double yl, double yr, double zl, double zr, int axis = -1);
 	void updateScales(double xl, double xr, double yl, double yr,
 				  		double zl, double zr, int xcol, int ycol);
 	void updateScalesFromMatrix(double xl,double xr,double yl,double yr,double zl,double zr);
