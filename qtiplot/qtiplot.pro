@@ -195,9 +195,11 @@ contains(SCRIPTING_LANGS, Python) {
 !isEmpty(EMF_ENGINE_LIBS) {
 	DEFINES += EMF_OUTPUT
 	INCLUDEPATH += $$EMF_ENGINE_INCLUDEPATH
+        INCLUDEPATH += /usr/local/include/libEMF
+
 	LIBS        += $$EMF_ENGINE_LIBS
-  win32:LIBS += -lgdiplus
-  unix:LIBS += -lEMF
+        win32:LIBS  += -lgdiplus
+        unix:LIBS   += /usr/local/lib/libEMF.a
 }
 
 # check if we have libxls

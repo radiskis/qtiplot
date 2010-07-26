@@ -1157,25 +1157,27 @@ void MultiLayer::copyAllLayers()
 	foreach (Graph* g, graphsList)
 		g->deselectMarker();
 
-#ifdef EMF_OUTPUT
-	if (OpenClipboard(0)){
-		EmptyClipboard();
+#ifdef Q_OS_WIN
+	#ifdef EMF_OUTPUT
+		if (OpenClipboard(0)){
+			EmptyClipboard();
 
-		QString path = QDir::tempPath();
-		QString name = path + "/" + "qtiplot_clipboard.emf";
-		name = QDir::cleanPath(name);
+			QString path = QDir::tempPath();
+			QString name = path + "/" + "qtiplot_clipboard.emf";
+			name = QDir::cleanPath(name);
 
-		exportEMF(name);
-		HENHMETAFILE handle = GetEnhMetaFile(name.toStdWString().c_str());
+			exportEMF(name);
+			HENHMETAFILE handle = GetEnhMetaFile(name.toStdWString().c_str());
 
-		SetClipboardData(CF_ENHMETAFILE, handle);
-		CloseClipboard();
-		QFile::remove(name);
-	}
+			SetClipboardData(CF_ENHMETAFILE, handle);
+			CloseClipboard();
+			QFile::remove(name);
+		}
+	#else
+		QApplication::clipboard()->setImage(canvasPixmap().convertToImage());
+	#endif
 #else
-	QPixmap pic = canvasPixmap();
-	QImage image = pic.convertToImage();
-	QApplication::clipboard()->setImage(image);
+	QApplication::clipboard()->setImage(canvasPixmap().convertToImage());
 #endif
 
 	if (selectionOn)
