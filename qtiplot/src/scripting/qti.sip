@@ -1882,7 +1882,7 @@ public:
     void setYAxisTickLength(double majorLength, double minorLength);
 	void setZAxisTickLength(double majorLength, double minorLength);
 
-    void setScales(double xl, double xr, double yl, double yr, double zl, double zr);
+	void setScales(double xl, double xr, double yl, double yr, double zl, double zr, int axis = -1);
 
 	int axisNumericFormat(int axis);
 	int axisNumericPrecision(int axis);

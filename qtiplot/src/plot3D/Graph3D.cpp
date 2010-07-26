@@ -607,7 +607,7 @@ void Graph3D::addData(Table* table, int xCol, int yCol, int zCol, int type)
 }
 
 void Graph3D::loadData(Table* table, int xCol, int yCol, int zCol,
-		double xl, double xr, double yl, double yr, double zl, double zr)
+		double xl, double xr, double yl, double yr, double zl, double zr, int axis)
 {
 	if (!table || xCol < 0 || yCol < 0 || zCol < 0)
 		return;
@@ -632,14 +632,16 @@ void Graph3D::loadData(Table* table, int xCol, int yCol, int zCol,
 			double y = table->cell(i, yCol);
 			double z = table->cell(i, zCol);
 
-			if (check_limits && (x < xl || x > xr || y < yl || y > yr || z < zl || z > zr))
+			if (check_limits &&
+			   ((axis < 0 && (x < xl || x > xr || y < yl || y > yr || z < zl || z > zr)) ||
+			   (axis == 0 && (x < xl || x > xr)) || (axis == 1 && (y < yl || y > yr)) || (axis == 2 && (z < zl || z > zr))))
 				continue;
 
 			data.push_back (Triple(x, y, z));
 			Qwt3D::Cell cell;
 			cell.push_back(index);
 			if (index > 0)
-				cell.push_back(index-1);
+				cell.push_back(index - 1);
 			cells.push_back (cell);
 			index ++;
 		}
@@ -1325,30 +1327,26 @@ void Graph3D::setScale(int axis, double start, double end, int majorTicks, int m
 	double majorTicLength, minorTicLength;
 	sp->coordinates()->axes[axis].ticLength(majorTicLength, minorTicLength);
 
-	switch(axis)
-	{
-	case 0:
-		if (xMin != start || xMax != end)
-		{
-			xMin = start;
-			xMax = end;
-		}
+	switch(axis){
+		case 0:
+			if (xMin != start || xMax != end){
+				xMin = start;
+				xMax = end;
+			}
 		break;
-	case 1:
-		if (yMin != start || yMax != end)
-		{
-			yMin = start;
-			yMax = end;
-		}
-		axis1 = Y1, axis2 = Y2, axis3 = Y3, axis4 = Y4;
+		case 1:
+			if (yMin != start || yMax != end){
+				yMin = start;
+				yMax = end;
+			}
+			axis1 = Y1, axis2 = Y2, axis3 = Y3, axis4 = Y4;
 		break;
-	case 2:
-		if (zMin != start || zMax != end)
-		{
-			zMin = start;
-			zMax = end;
-		}
-		axis1 = Z1, axis2 = Z2, axis3 = Z3, axis4 = Z4;
+		case 2:
+			if (zMin != start || zMax != end){
+				zMin = start;
+				zMax = end;
+			}
+			axis1 = Z1, axis2 = Z2, axis3 = Z3, axis4 = Z4;
 		break;
 	}
 
@@ -1361,7 +1359,7 @@ void Graph3D::setScale(int axis, double start, double end, int majorTicks, int m
 		d_surface->restrictRange(ParallelEpiped(Triple(xMin, yMin, zMin), Triple(xMax, yMax, zMax)));
 		d_surface->create();
 	} else
-		setScales(xMin, xMax, yMin, yMax, zMin, zMax);
+		setScales(xMin, xMax, yMin, yMax, zMin, zMax, axis);
 
 	sp->coordinates()->axes[axis1].setLimits(start, end);
 	sp->coordinates()->axes[axis2].setLimits(start, end);
@@ -1400,7 +1398,7 @@ void Graph3D::setScale(int axis, double start, double end, int majorTicks, int m
 	emit modified();
 }
 
-void Graph3D::setScales(double xl, double xr, double yl, double yr, double zl, double zr)
+void Graph3D::setScales(double xl, double xr, double yl, double yr, double zl, double zr, int axis)
 {
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
@@ -1434,10 +1432,10 @@ void Graph3D::setScales(double xl, double xr, double yl, double yr, double zl, d
 		if (name.endsWith("(Z)",true)){
 			pos = name.find(",",posX);
 			posX = name.find("(",pos);
-			QString zColName = name.mid(pos+1,posX-pos-1);
+			QString zColName = name.mid(pos + 1, posX - pos - 1);
 			int zCol = d_table->colIndex(zColName);
 
-			loadData(d_table, xCol, yCol, zCol, xl, xr, yl, yr, zl, zr);
+			loadData(d_table, xCol, yCol, zCol, xl, xr, yl, yr, zl, zr, axis);
 		} else if (name.endsWith("(Y)",true))
 			updateScales(xl, xr, yl, yr, zl, zr, xCol, yCol);
 	}
