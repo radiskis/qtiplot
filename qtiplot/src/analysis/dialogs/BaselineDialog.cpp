@@ -61,7 +61,7 @@ BaselineDialog::BaselineDialog( QWidget* parent, Qt::WFlags fl )
 	setAttribute(Qt::WA_DeleteOnClose);
 	setSizeGripEnabled( true );
 
-	QGroupBox *gb1 = new QGroupBox(tr("Create Baseline"));
+	QGroupBox *gb1 = new QGroupBox();
 	QGridLayout *gl1 = new QGridLayout(gb1);
 
 	gl1->addWidget(new QLabel(tr("Curve")), 0, 0);
@@ -405,6 +405,18 @@ void BaselineDialog::setGraph(Graph *g)
 		boxInputName->setCurrentIndex(boxInputName->findText(selectedCurve));
 
 	connect (graph, SIGNAL(destroyed()), this, SLOT(close()));
+	connect (graph, SIGNAL(modifiedGraph()), this, SLOT(updateGraphCurves()));
+}
+
+void BaselineDialog::updateGraphCurves()
+{
+	QStringList lst = graph->analysableCurvesList();
+	if (lst.isEmpty()){
+		close();
+		return;
+	}
+
+	boxInputName->addItems(lst);
 }
 
 void BaselineDialog::closeEvent(QCloseEvent* e)

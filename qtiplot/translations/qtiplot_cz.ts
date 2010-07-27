@@ -4472,7 +4472,7 @@ Různé části tohoto souboru se nemusí zobrazovat tak, jak se očekává.</tr
     </message>
     <message>
         <source>Create Baseline</source>
-        <translation>Vytvořit základní čáru</translation>
+        <translation type="obsolete">Vytvořit základní čáru</translation>
     </message>
     <message>
         <source>Curve</source>
@@ -5674,6 +5674,42 @@ K tomu lze použít následujících zvláštních kódů:
     <message>
         <source>Synchronize scale &amp;divisions</source>
         <translation>Seřídit &amp;rozdělení stupnice</translation>
+    </message>
+    <message>
+        <source>Line Color</source>
+        <translation type="unfinished">Barva čáry</translation>
+    </message>
+    <message>
+        <source>Line Type</source>
+        <translation type="unfinished">Druh čáry</translation>
+    </message>
+    <message>
+        <source>Thickness</source>
+        <translation type="unfinished">Síla v průřezu</translation>
+    </message>
+    <message>
+        <source>Grid</source>
+        <translation type="unfinished">Mřížka</translation>
+    </message>
+    <message>
+        <source>Major Grids</source>
+        <translation type="unfinished">Hlavní mřížka</translation>
+    </message>
+    <message>
+        <source>Minor Grids</source>
+        <translation type="unfinished">Podmřížka</translation>
+    </message>
+    <message>
+        <source>An&amp;tialised</source>
+        <translation type="unfinished">Vyhla&amp;zeno</translation>
+    </message>
+    <message>
+        <source>Horizontal</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Vertical</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

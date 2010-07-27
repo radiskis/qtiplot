@@ -102,6 +102,7 @@ class TextEditor;
 class AssociationsDialog;
 class ScriptEdit;
 class ExportDialog;
+class Grid;
 
 /**
  * \brief QtiPlot's main window.
@@ -1274,6 +1275,8 @@ public:
 	enum {MaxRecentProjects = 10};
 	//! File version code used when opening project files (= maj * 100 + min * 10 + patch)
 	int d_file_version;
+
+	Grid *d_default_2D_grid;
 
 	QColor d_rect_default_background;
 	QBrush d_rect_default_brush;

@@ -336,6 +336,8 @@ void ApplicationWindow::init(bool factorySettings)
 	scriptWindow = 0;
     d_text_editor = NULL;
 
+	d_default_2D_grid = new Grid();
+
 	renamedTables = QStringList();
 	if (!factorySettings)
 		readSettings();
@@ -2891,6 +2893,8 @@ void ApplicationWindow::setPreferences(Graph* g)
 			}
 		}
 
+		g->grid()->copy(this->d_default_2D_grid);
+
 		g->updateSecondaryAxis(QwtPlot::xTop);
 		g->updateSecondaryAxis(QwtPlot::yRight);
 
@@ -4230,8 +4234,8 @@ Table * ApplicationWindow::importExcelCrossplatform(const QString& fn, int sheet
 		QTime t1(0, 0);
 		QDate d1(1899, 12, 30);//start date in Excel files see(http://sc.openoffice.org/excelfileformat.pdf)
 		double daySeconds = 24*60*60;
-		for(size_t i = 0; i < rows; i++){
-			for(size_t j = 0; j < cols; j++){
+		for(int i = 0; i < rows; i++){
+			for(int j = 0; j < cols; j++){
 				BasicExcelCell* cell = sh->Cell(i, j);
 				if (!cell)
 					continue;
@@ -5514,6 +5518,39 @@ void ApplicationWindow::readSettings()
 	d_rect_default_brush.setColor(settings.value("/BrushColor", d_rect_default_brush).value<QColor>());
 	d_rect_default_brush.setStyle(PatternBox::brushStyle(settings.value("/Pattern", 0).toInt()));
 	settings.endGroup(); // Rectangle
+
+	settings.beginGroup("/Grid");
+	d_default_2D_grid->setRenderHint(QwtPlotItem::RenderAntialiased, settings.value("/Antialiased", false).toBool());
+
+	d_default_2D_grid->enableX(settings.value("/MajorX", d_default_2D_grid->xEnabled()).toBool());
+	QPen pen = d_default_2D_grid->majPenX();
+	pen.setColor(settings.value("/MajorXColor", pen.color()).value<QColor>());
+	pen.setStyle(PenStyleBox::penStyle(settings.value("/MajorXStyle", PenStyleBox::styleIndex(pen.style())).toInt()));
+	pen.setWidthF(settings.value("/MajorXThickness", pen.widthF()).toDouble());
+	d_default_2D_grid->setMajPenX(pen);
+
+	d_default_2D_grid->enableXMin(settings.value("/MinorX", d_default_2D_grid->xMinEnabled()).toBool());
+	pen = d_default_2D_grid->minPenX();
+	pen.setColor(settings.value("/MinorXColor", pen.color()).value<QColor>());
+	pen.setStyle(PenStyleBox::penStyle(settings.value("/MinorXStyle", PenStyleBox::styleIndex(pen.style())).toInt()));
+	pen.setWidthF(settings.value("/MinorXThickness", pen.widthF()).toDouble());
+	d_default_2D_grid->setMinPenX(pen);
+
+	pen = d_default_2D_grid->majPenY();
+	d_default_2D_grid->enableY(settings.value("/MajorY", d_default_2D_grid->yEnabled()).toBool());
+	pen.setColor(settings.value("/MajorYColor", pen.color()).value<QColor>());
+	pen.setStyle(PenStyleBox::penStyle(settings.value("/MajorYStyle", PenStyleBox::styleIndex(pen.style())).toInt()));
+	pen.setWidthF(settings.value("/MajorYThickness", pen.widthF()).toDouble());
+	d_default_2D_grid->setMajPenY(pen);
+
+	d_default_2D_grid->enableYMin(settings.value("/MinorY", d_default_2D_grid->yMinEnabled()).toBool());
+	pen = d_default_2D_grid->minPenY();
+	pen.setColor(settings.value("/MinorYColor", pen.color()).value<QColor>());
+	pen.setStyle(PenStyleBox::penStyle(settings.value("/MinorYStyle", PenStyleBox::styleIndex(pen.style())).toInt()));
+	pen.setWidthF(settings.value("/MinorYThickness", pen.widthF()).toDouble());
+	d_default_2D_grid->setMinPenY(pen);
+	settings.endGroup(); // Grid
+
 	settings.endGroup();
 	/* ----------------- end group 2D Plots --------------------------- */
 
@@ -5936,6 +5973,26 @@ void ApplicationWindow::saveSettings()
 	settings.setValue("/BrushColor", d_rect_default_brush.color());
 	settings.setValue("/Pattern", PatternBox::patternIndex(d_rect_default_brush.style()));
 	settings.endGroup(); // Rectangle
+
+	settings.beginGroup("/Grid");
+	settings.setValue("/Antialiased", d_default_2D_grid->testRenderHint(QwtPlotItem::RenderAntialiased));
+	settings.setValue("/MajorX", d_default_2D_grid->xEnabled());
+	settings.setValue("/MajorXColor", d_default_2D_grid->majPenX().color());
+	settings.setValue("/MajorXStyle", PenStyleBox::styleIndex(d_default_2D_grid->majPenX().style()));
+	settings.setValue("/MajorXThickness", d_default_2D_grid->majPenX().widthF());
+	settings.setValue("/MinorX", d_default_2D_grid->xMinEnabled());
+	settings.setValue("/MinorXColor", d_default_2D_grid->minPenX().color());
+	settings.setValue("/MinorXStyle", PenStyleBox::styleIndex(d_default_2D_grid->minPenX().style()));
+	settings.setValue("/MinorXThickness", d_default_2D_grid->minPenX().widthF());
+	settings.setValue("/MajorY", d_default_2D_grid->yEnabled());
+	settings.setValue("/MajorYColor", d_default_2D_grid->majPenY().color());
+	settings.setValue("/MajorYStyle", PenStyleBox::styleIndex(d_default_2D_grid->majPenY().style()));
+	settings.setValue("/MajorYThickness", d_default_2D_grid->majPenY().widthF());
+	settings.setValue("/MinorY", d_default_2D_grid->yMinEnabled());
+	settings.setValue("/MinorYColor", d_default_2D_grid->minPenY().color());
+	settings.setValue("/MinorYStyle", PenStyleBox::styleIndex(d_default_2D_grid->minPenY().style()));
+	settings.setValue("/MinorYThickness", d_default_2D_grid->minPenY().widthF());
+	settings.endGroup(); // Grid
 	settings.endGroup();
 	/* ----------------- end group 2D Plots -------- */
 
