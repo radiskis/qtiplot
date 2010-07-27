@@ -411,11 +411,15 @@ void BaselineDialog::setGraph(Graph *g)
 void BaselineDialog::updateGraphCurves()
 {
 	QStringList lst = graph->analysableCurvesList();
+	if (d_baseline)
+		lst.removeAll(d_baseline->title().text());
+
 	if (lst.isEmpty()){
 		close();
 		return;
 	}
 
+	boxInputName->clear();
 	boxInputName->addItems(lst);
 }
 
