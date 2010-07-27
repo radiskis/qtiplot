@@ -9103,7 +9103,7 @@ Automatisk komplettering ej tillgängligt!</translation>
     </message>
     <message>
         <source>Create Baseline</source>
-        <translation>Skapa baslinje</translation>
+        <translation type="obsolete">Skapa baslinje</translation>
     </message>
     <message>
         <source>Curve</source>
@@ -10366,6 +10366,42 @@ Följande specialkoder kan användas:
     <message>
         <source>Synchronize scale &amp;divisions</source>
         <translation>Synkronisera skalin&amp;delningar</translation>
+    </message>
+    <message>
+        <source>Line Color</source>
+        <translation type="unfinished">Linjefärg</translation>
+    </message>
+    <message>
+        <source>Line Type</source>
+        <translation type="unfinished">Linjetyp</translation>
+    </message>
+    <message>
+        <source>Thickness</source>
+        <translation type="unfinished">Tjocklek</translation>
+    </message>
+    <message>
+        <source>Grid</source>
+        <translation type="unfinished">Rutnät</translation>
+    </message>
+    <message>
+        <source>Major Grids</source>
+        <translation type="unfinished">Huvudrutnät</translation>
+    </message>
+    <message>
+        <source>Minor Grids</source>
+        <translation type="unfinished">Delrutnät</translation>
+    </message>
+    <message>
+        <source>An&amp;tialised</source>
+        <translation type="unfinished">An&amp;tialiased</translation>
+    </message>
+    <message>
+        <source>Horizontal</source>
+        <translation type="unfinished">Horisontell</translation>
+    </message>
+    <message>
+        <source>Vertical</source>
+        <translation type="unfinished">Vertikal</translation>
     </message>
 </context>
 <context>

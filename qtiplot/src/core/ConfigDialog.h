@@ -134,6 +134,10 @@ private slots:
 	void loadDefaultSymbols();
 	void moveSymbol(bool up = true);
 	void moveSymbolDown(){moveSymbol(false);};
+	void showGridOptions(int axis);
+	void updateGrid();
+	void majorGridEnabled(bool);
+	void minorGridEnabled(bool);
 
 private:
 	void setSymbolsList(const QList<int>& symbList);
@@ -142,6 +146,7 @@ private:
 	void initAppPage();
 	void initCurvesPage();
 	void initAxesPage();
+	void initGridPage();
 	void initPlots3DPage();
 	void initTablesPage();
 	void initConfirmationsPage();
@@ -282,6 +287,16 @@ private:
 	QLabel *lblAxisLabeling;
 	QComboBox *axisLabelingBox;
 	QCheckBox *boxSynchronizeScales;
+
+	QWidget *gridPage;
+	QCheckBox *boxMinorGrid, *boxMajorGrid;
+	ColorButton *boxColorMinor, *boxColorMajor;
+	PenStyleBox *boxTypeMinor, *boxTypeMajor;
+	DoubleSpinBox *boxWidthMinor, *boxWidthMajor;
+	QComboBox *boxGridYAxis, *boxGridXAxis;
+	QCheckBox *boxAntialiseGrid;
+	QListWidget *axesGridList;
+	QLabel *gridLineColorLbl, *gridLineWidthLbl, *gridLineTypeLbl, *gridAxesLbl;
 };
 
 #endif // CONFIGDIALOG_H

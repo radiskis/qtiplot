@@ -52,6 +52,7 @@ public:
 	void setGraph(Graph *g);
 
 private slots:
+	void updateGraphCurves();
 	void updateTableColumns(int tabnr);
 	void createBaseline();
 	void subtractBaseline(bool add = false);

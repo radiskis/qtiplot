@@ -3905,7 +3905,7 @@ Autocompletion will not be available!</source>
     </message>
     <message>
         <source>chart</source>
-        <translation>диаграмма</translation>
+        <translation type="obsolete">диаграмма</translation>
     </message>
 </context>
 <context>
@@ -4454,7 +4454,7 @@ Autocompletion will not be available!</source>
     </message>
     <message>
         <source>Create Baseline</source>
-        <translation>Создать базисную линию</translation>
+        <translation type="obsolete">Создать базисную линию</translation>
     </message>
     <message>
         <source>Curve</source>
@@ -5660,6 +5660,42 @@ The following special codes can be used:
     <message>
         <source>Synchronize scale &amp;divisions</source>
         <translation>Синхронизировать &amp;деления шкал</translation>
+    </message>
+    <message>
+        <source>Line Color</source>
+        <translation type="unfinished">Цвет линии</translation>
+    </message>
+    <message>
+        <source>Line Type</source>
+        <translation type="unfinished">Тип линии</translation>
+    </message>
+    <message>
+        <source>Thickness</source>
+        <translation type="unfinished">Толщина</translation>
+    </message>
+    <message>
+        <source>Grid</source>
+        <translation type="unfinished">Сетка</translation>
+    </message>
+    <message>
+        <source>Major Grids</source>
+        <translation type="unfinished">Основная сетка</translation>
+    </message>
+    <message>
+        <source>Minor Grids</source>
+        <translation type="unfinished">Дополнительная сетка</translation>
+    </message>
+    <message>
+        <source>An&amp;tialised</source>
+        <translation type="unfinished">Сгла&amp;живание</translation>
+    </message>
+    <message>
+        <source>Horizontal</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Vertical</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

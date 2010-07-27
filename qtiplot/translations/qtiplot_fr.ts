@@ -4461,7 +4461,7 @@ L&apos;autocomplétion ne sera pas disponible!</translation>
     </message>
     <message>
         <source>Create Baseline</source>
-        <translation>Créer la ligne de base</translation>
+        <translation type="obsolete">Créer la ligne de base</translation>
     </message>
     <message>
         <source>Curve</source>
@@ -5658,6 +5658,42 @@ Les codes spéciaux suivant peuvent être utilisés :
     <message>
         <source>Synchronize scale &amp;divisions</source>
         <translation>S&amp;ynchroniser les échelles opposées</translation>
+    </message>
+    <message>
+        <source>Line Color</source>
+        <translation type="unfinished">Couleur des lignes</translation>
+    </message>
+    <message>
+        <source>Line Type</source>
+        <translation type="unfinished">Type de lignes</translation>
+    </message>
+    <message>
+        <source>Thickness</source>
+        <translation type="unfinished">Épaisseur</translation>
+    </message>
+    <message>
+        <source>Grid</source>
+        <translation type="unfinished">Grille</translation>
+    </message>
+    <message>
+        <source>Major Grids</source>
+        <translation type="unfinished">Grille principale</translation>
+    </message>
+    <message>
+        <source>Minor Grids</source>
+        <translation type="unfinished">Grille secondaire</translation>
+    </message>
+    <message>
+        <source>An&amp;tialised</source>
+        <translation type="unfinished">An&amp;tialiasé</translation>
+    </message>
+    <message>
+        <source>Horizontal</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Vertical</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

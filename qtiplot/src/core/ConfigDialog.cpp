@@ -31,6 +31,7 @@
 #include <Note.h>
 #include <MultiLayer.h>
 #include <Graph.h>
+#include <Grid.h>
 #include <Matrix.h>
 #include <ColorButton.h>
 #include <ColorBox.h>
@@ -403,6 +404,9 @@ void ConfigDialog::initPlotsPage()
 	ticksLayout->setRowStretch( 4, 1 );
 
 	plotsTabWidget->addTab( plotTicks, QString() );
+
+	initGridPage();
+	plotsTabWidget->addTab(gridPage, QString());
 
 	initLayerGeometryPage();
 	plotsTabWidget->addTab(plotGeometryPage, QString());
@@ -1461,6 +1465,94 @@ void ConfigDialog::initAxesPage()
 	axesPageLayout->addWidget(enabledAxesGroupBox);
 }
 
+void ConfigDialog::initGridPage()
+{
+	gridPage = new QWidget();
+
+	QGroupBox * rightBox = new QGroupBox(QString());
+	QGridLayout * rightLayout = new QGridLayout(rightBox);
+
+	boxMajorGrid = new QCheckBox();
+	boxMajorGrid->setChecked(true);
+	rightLayout->addWidget( boxMajorGrid, 0, 1);
+
+	boxMinorGrid = new QCheckBox();
+	boxMinorGrid->setChecked(false);
+	rightLayout->addWidget( boxMinorGrid, 0, 2);
+
+	gridLineColorLbl = new QLabel();
+	rightLayout->addWidget(gridLineColorLbl, 1, 0 );
+
+	boxColorMajor = new ColorButton();
+	rightLayout->addWidget( boxColorMajor, 1, 1);
+
+	boxColorMinor = new ColorButton();
+	boxColorMinor->setDisabled(true);
+	rightLayout->addWidget( boxColorMinor, 1, 2);
+
+	gridLineTypeLbl = new QLabel();
+	rightLayout->addWidget(gridLineTypeLbl, 2, 0 );
+
+	boxTypeMajor = new PenStyleBox();
+	rightLayout->addWidget( boxTypeMajor, 2, 1);
+
+	boxTypeMinor = new PenStyleBox();
+	rightLayout->addWidget( boxTypeMinor, 2, 2);
+
+	gridLineWidthLbl = new QLabel();
+	rightLayout->addWidget(gridLineWidthLbl, 3, 0);
+
+	boxWidthMajor = new DoubleSpinBox('f');
+	boxWidthMajor->setLocale(((ApplicationWindow *)parent())->locale());
+	boxWidthMajor->setSingleStep(0.1);
+	boxWidthMajor->setRange(0.1, 20);
+	boxWidthMajor->setValue(1);
+	rightLayout->addWidget( boxWidthMajor, 3, 1);
+
+	boxWidthMinor = new DoubleSpinBox('f');
+	boxWidthMinor->setLocale(((ApplicationWindow *)parent())->locale());
+	boxWidthMinor->setSingleStep(0.1);
+	boxWidthMinor->setRange(0.1, 20);
+	boxWidthMinor->setValue(1);
+	boxWidthMinor->setDisabled(true);
+	rightLayout->addWidget( boxWidthMinor, 3, 2);
+
+	gridAxesLbl = new QLabel();
+	rightLayout->addWidget(gridAxesLbl, 4, 0 );
+
+	boxGridXAxis = new QComboBox();
+	rightLayout->addWidget( boxGridXAxis, 4, 1);
+
+	boxGridYAxis = new QComboBox();
+	rightLayout->addWidget(boxGridYAxis, 4, 2);
+
+	boxAntialiseGrid = new QCheckBox();
+	rightLayout->addWidget(boxAntialiseGrid, 5, 0);
+
+	rightLayout->setRowStretch(6, 1);
+	rightLayout->setColumnStretch(4, 1);
+
+	axesGridList = new QListWidget();
+
+	QHBoxLayout* mainLayout2 = new QHBoxLayout(gridPage);
+	mainLayout2->addWidget(axesGridList);
+	mainLayout2->addWidget(rightBox);
+
+	showGridOptions(0);
+
+	//grid page slot connections
+	connect(axesGridList, SIGNAL(currentRowChanged(int)), this, SLOT(showGridOptions(int)));
+	connect(boxMajorGrid,SIGNAL(toggled(bool)), this, SLOT(majorGridEnabled(bool)));
+	connect(boxMinorGrid,SIGNAL(toggled(bool)), this, SLOT(minorGridEnabled(bool)));
+	connect(boxAntialiseGrid,SIGNAL(toggled(bool)), this, SLOT(updateGrid()));
+	connect(boxColorMajor, SIGNAL(colorChanged(const QColor &)),this, SLOT(updateGrid()));
+	connect(boxColorMinor, SIGNAL(colorChanged(const QColor &)),this, SLOT(updateGrid()));
+	connect(boxTypeMajor,SIGNAL(activated(int)),this, SLOT(updateGrid()));
+	connect(boxTypeMinor,SIGNAL(activated(int)),this, SLOT(updateGrid()));
+	connect(boxWidthMajor,SIGNAL(valueChanged(double)),this, SLOT(updateGrid()));
+	connect(boxWidthMinor,SIGNAL(valueChanged(double)),this, SLOT(updateGrid()));
+}
+
 void ConfigDialog::initConfirmationsPage()
 {
 	ApplicationWindow *app = (ApplicationWindow *)parentWidget();
@@ -1611,6 +1703,7 @@ void ConfigDialog::languageChange()
 	plotsTabWidget->setTabText(plotsTabWidget->indexOf(curves), tr("Curves"));
 	plotsTabWidget->setTabText(plotsTabWidget->indexOf(axesPage), tr("Axes"));
 	plotsTabWidget->setTabText(plotsTabWidget->indexOf(plotTicks), tr("Ticks"));
+	plotsTabWidget->setTabText(plotsTabWidget->indexOf(gridPage), tr("Grid"));
 	plotsTabWidget->setTabText(plotsTabWidget->indexOf(plotGeometryPage), tr("Geometry"));
 	plotsTabWidget->setTabText(plotsTabWidget->indexOf(plotFonts), tr("Fonts"));
 
@@ -1705,6 +1798,43 @@ void ConfigDialog::languageChange()
 	plotsTabWidget->setTabText(plotsTabWidget->indexOf(plotPrint), tr("Print"));
 	boxPrintCropmarks->setText(tr("Print Crop&marks"));
 	boxScaleLayersOnPrint->setText(tr("&Scale layers to paper size"));
+
+	//grid page
+	boxMajorGrid->setText( tr( "Major Grids" ) );
+	boxMinorGrid->setText( tr( "Minor Grids" ) );
+	boxAntialiseGrid->setText(tr("An&tialised"));
+
+	gridLineColorLbl->setText(tr( "Line Color" ));
+	gridLineWidthLbl->setText(tr( "Thickness" ));
+	gridAxesLbl->setText(tr( "Axes" ));
+	gridLineTypeLbl->setText(tr( "Line Type" ));
+
+	boxGridXAxis->clear();
+	boxGridXAxis->insertItem(tr("Bottom"));
+	boxGridXAxis->insertItem(tr("Top"));
+
+	boxGridYAxis->clear();
+	boxGridYAxis->insertItem(tr("Left"));
+	boxGridYAxis->insertItem(tr("Right"));
+
+	QPixmap image2(":/vertical_grid.png");
+	QPixmap image3(":/horizontal_grid.png");
+	axesGridList->clear();
+	axesGridList->addItem( new QListWidgetItem(image3, tr( "Horizontal" )) );
+	axesGridList->addItem( new QListWidgetItem(image2, tr( "Vertical" )) );
+	axesGridList->setIconSize(image3.size());
+	// calculate a sensible width for the items list
+	// (default QListWidget size is 256 which looks too big)
+	QFontMetrics fm(axesGridList->font());
+	int width = 32,i;
+	for(i=0 ; i<axesGridList->count() ; i++)
+		if( fm.width(axesGridList->item(i)->text()) > width)
+			width = fm.width(axesGridList->item(i)->text());
+
+	axesGridList->setMaximumWidth( axesGridList->iconSize().width() + width + 50 );
+	// resize the list to the maximum width
+	axesGridList->resize(axesGridList->maximumWidth(),axesGridList->height());
+	axesGridList->setCurrentRow(0);
 
 	//confirmations page
 	groupBoxConfirm->setTitle(tr("Prompt on closing"));
@@ -2886,4 +3016,130 @@ void ConfigDialog::adjustCanvasWidth(double height)
 		boxCanvasWidth->blockSignals(false);
 	} else
 		aspect_ratio = boxCanvasWidth->value()/height;
+}
+
+void ConfigDialog::showGridOptions(int axis)
+{
+	ApplicationWindow *app = (ApplicationWindow *)parentWidget();
+	if (!app)
+		return;
+
+	Grid *grd = app->d_default_2D_grid;
+	if (!grd)
+		return;
+
+	boxMajorGrid->blockSignals(true);
+	boxMinorGrid->blockSignals(true);
+	boxWidthMajor->blockSignals(true);
+	boxWidthMinor->blockSignals(true);
+	boxColorMajor->blockSignals(true);
+	boxColorMinor->blockSignals(true);
+	boxTypeMajor->blockSignals(true);
+	boxTypeMinor->blockSignals(true);
+	boxAntialiseGrid->blockSignals(true);
+
+	if (axis == 1) {
+		boxMajorGrid->setChecked(grd->xEnabled());
+		boxMinorGrid->setChecked(grd->xMinEnabled());
+
+		boxGridXAxis->setEnabled(true);
+		boxGridYAxis->setDisabled(true);
+
+		QPen majPenX = grd->majPenX();
+		boxTypeMajor->setStyle(majPenX.style());
+		boxColorMajor->setColor(majPenX.color());
+		boxWidthMajor->setValue(majPenX.widthF());
+
+		QPen minPenX = grd->minPenX();
+		boxTypeMinor->setStyle(minPenX.style());
+		boxColorMinor->setColor(minPenX.color());
+		boxWidthMinor->setValue(minPenX.widthF());
+	} else if (axis == 0) {
+		boxMajorGrid->setChecked(grd->yEnabled());
+		boxMinorGrid->setChecked(grd->yMinEnabled());
+
+		boxGridXAxis->setDisabled(true);
+		boxGridYAxis->setEnabled(true);
+
+		QPen majPenY = grd->majPenY();
+		boxTypeMajor->setCurrentIndex(majPenY.style() - 1);
+		boxColorMajor->setColor(majPenY.color());
+		boxWidthMajor->setValue(majPenY.widthF());
+
+		QPen minPenY = grd->minPenY();
+		boxTypeMinor->setCurrentItem(minPenY.style() - 1);
+		boxColorMinor->setColor(minPenY.color());
+		boxWidthMinor->setValue(minPenY.widthF());
+	}
+
+	bool majorOn = boxMajorGrid->isChecked();
+	boxTypeMajor->setEnabled(majorOn);
+	boxColorMajor->setEnabled(majorOn);
+	boxWidthMajor->setEnabled(majorOn);
+
+	bool minorOn = boxMinorGrid->isChecked();
+	boxTypeMinor->setEnabled(minorOn);
+	boxColorMinor->setEnabled(minorOn);
+	boxWidthMinor->setEnabled(minorOn);
+
+	boxGridXAxis->setCurrentIndex(grd->xAxis() - 2);
+	boxGridYAxis->setCurrentIndex(grd->yAxis());
+
+	boxAntialiseGrid->setChecked(grd->testRenderHint(QwtPlotItem::RenderAntialiased));
+
+	boxAntialiseGrid->blockSignals(false);
+	boxWidthMajor->blockSignals(false);
+	boxWidthMinor->blockSignals(false);
+	boxColorMajor->blockSignals(false);
+	boxColorMinor->blockSignals(false);
+	boxTypeMajor->blockSignals(false);
+	boxTypeMinor->blockSignals(false);
+	boxMajorGrid->blockSignals(false);
+	boxMinorGrid->blockSignals(false);
+}
+
+void ConfigDialog::majorGridEnabled(bool on)
+{
+	boxTypeMajor->setEnabled(on);
+	boxColorMajor->setEnabled(on);
+	boxWidthMajor->setEnabled(on);
+
+	updateGrid();
+}
+
+void ConfigDialog::minorGridEnabled(bool on)
+{
+	boxTypeMinor->setEnabled(on);
+	boxColorMinor->setEnabled(on);
+	boxWidthMinor->setEnabled(on);
+
+	updateGrid();
+}
+
+void ConfigDialog::updateGrid()
+{
+	ApplicationWindow *app = (ApplicationWindow *)parentWidget();
+	if (!app)
+		return;
+
+	Grid *grid = app->d_default_2D_grid;
+	if (!grid)
+		return;
+
+	if (axesGridList->currentRow() == 1){
+		grid->enableX(boxMajorGrid->isChecked());
+		grid->enableXMin(boxMinorGrid->isChecked());
+
+		grid->setMajPenX(QPen(boxColorMajor->color(), boxWidthMajor->value(), boxTypeMajor->style()));
+		grid->setMinPenX(QPen(boxColorMinor->color(), boxWidthMinor->value(), boxTypeMinor->style()));
+	} else {
+		grid->enableY(boxMajorGrid->isChecked());
+		grid->enableYMin(boxMinorGrid->isChecked());
+
+		grid->setMajPenY(QPen(boxColorMajor->color(), boxWidthMajor->value(), boxTypeMajor->style()));
+		grid->setMinPenY(QPen(boxColorMinor->color(), boxWidthMinor->value(), boxTypeMinor->style()));
+	}
+
+	grid->setAxis(boxGridXAxis->currentIndex() + 2, boxGridYAxis->currentIndex());
+	grid->setRenderHint(QwtPlotItem::RenderAntialiased, boxAntialiseGrid->isChecked());
 }

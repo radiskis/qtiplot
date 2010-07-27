@@ -7964,7 +7964,7 @@ Autocompletion will not be available!</source>
     </message>
     <message>
         <source>Create Baseline</source>
-        <translation>Curbă de referinţă</translation>
+        <translation type="obsolete">Curbă de referinţă</translation>
     </message>
     <message>
         <source>Curve</source>
@@ -9172,6 +9172,42 @@ The following special codes can be used:
     <message>
         <source>Synchronize scale &amp;divisions</source>
         <translation>Sincronizează &amp;diviziunile axelor</translation>
+    </message>
+    <message>
+        <source>Line Color</source>
+        <translation type="unfinished">Culoare</translation>
+    </message>
+    <message>
+        <source>Line Type</source>
+        <translation type="unfinished">Tip de linie</translation>
+    </message>
+    <message>
+        <source>Thickness</source>
+        <translation type="unfinished">Grosime</translation>
+    </message>
+    <message>
+        <source>Grid</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Major Grids</source>
+        <translation type="unfinished">Grilaj principal</translation>
+    </message>
+    <message>
+        <source>Minor Grids</source>
+        <translation type="unfinished">Grilaj secundar</translation>
+    </message>
+    <message>
+        <source>An&amp;tialised</source>
+        <translation type="unfinished">Linie ne&amp;tă</translation>
+    </message>
+    <message>
+        <source>Horizontal</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Vertical</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

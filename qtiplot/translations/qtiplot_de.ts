@@ -10565,10 +10565,6 @@ Autocompletion will not be available!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Create Baseline</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Curve</source>
         <translation>Kurve</translation>
     </message>
@@ -11931,6 +11927,42 @@ Die folgenden Spezialcodes können benutzt werden:
     <message>
         <source>Synchronize scale &amp;divisions</source>
         <translation>&amp;Gleiche Skalenabstände bei doppelten Achsen</translation>
+    </message>
+    <message>
+        <source>Line Color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Line Type</source>
+        <translation type="unfinished">Linientyp</translation>
+    </message>
+    <message>
+        <source>Thickness</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Grid</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Major Grids</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Minor Grids</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>An&amp;tialised</source>
+        <translation type="unfinished">Kanteng&amp;lättung</translation>
+    </message>
+    <message>
+        <source>Horizontal</source>
+        <translation type="unfinished">Horizontal</translation>
+    </message>
+    <message>
+        <source>Vertical</source>
+        <translation type="unfinished">Vertikal</translation>
     </message>
 </context>
 <context>
