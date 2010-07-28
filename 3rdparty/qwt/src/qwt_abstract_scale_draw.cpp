@@ -182,7 +182,7 @@ void QwtAbstractScaleDraw::draw(QPainter *painter,
         for (int i = 0; i < (int)majorTicks.count(); i++)
         {
             const double v = majorTicks[i];
-			//if ( d_data->scldiv.contains(v) )
+			if ( d_data->scldiv.contains(v) )
 				drawLabel(painter, v);
         }
 
@@ -208,7 +208,7 @@ void QwtAbstractScaleDraw::draw(QPainter *painter,
             for (int i = 0; i < (int)ticks.count(); i++)
             {
                 const double v = ticks[i];
-				//if ( d_data->scldiv.contains(v) )
+				if ( d_data->scldiv.contains(v) )
                     drawTick(painter, v, d_data->tickLength[tickType]);
             }
         }
