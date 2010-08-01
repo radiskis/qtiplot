@@ -483,7 +483,7 @@ public slots:
 #endif
 
 	Table* importWaveFile();
-	void importASCII();
+	void importASCII(const QString& fileName = QString::null);
 	void importASCII(const QStringList& files, int import_mode, const QString& local_column_separator, int local_ignored_lines, bool local_rename_columns,
         bool local_strip_spaces, bool local_simplify_spaces, bool local_import_comments,
 		QLocale local_separators, const QString& local_comment_string, bool import_read_only, int endLineChar,

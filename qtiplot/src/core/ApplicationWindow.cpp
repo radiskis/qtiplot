@@ -4394,11 +4394,15 @@ Table * ApplicationWindow::importWaveFile()
 	return t;
 }
 
-void ApplicationWindow::importASCII()
+void ApplicationWindow::importASCII(const QString& fileName)
 {
 	ImportASCIIDialog *import_dialog = new ImportASCIIDialog(!activeWindow(TableWindow) && !activeWindow(MatrixWindow), this, d_extended_import_ASCII_dialog);
 	import_dialog->setDirectory(asciiDirPath);
 	import_dialog->selectFilter(d_ASCII_file_filter);
+	if (!fileName.isEmpty()){
+		import_dialog->selectFile(fileName);
+		import_dialog->setCurrentPath(fileName);
+	}
 	if (d_import_ASCII_dialog_size.isValid())
 		import_dialog->resize(d_import_ASCII_dialog_size);
 	if (import_dialog->exec() != QDialog::Accepted)
@@ -10296,9 +10300,12 @@ void ApplicationWindow::dropEvent( QDropEvent* e )
 				asciiFiles << fn;
 		}
 
-		importASCII(asciiFiles, ImportASCIIDialog::NewTables, columnSeparator, ignoredLines,
-                    renameColumns, strip_spaces, simplify_spaces, d_ASCII_import_comments,
-                    d_ASCII_import_locale, d_ASCII_comment_string, d_ASCII_import_read_only, d_ASCII_end_line);
+		if (asciiFiles.count() == 1)
+			return importASCII(asciiFiles[0]);
+		else
+			importASCII(asciiFiles, ImportASCIIDialog::NewTables, columnSeparator, ignoredLines,
+					renameColumns, strip_spaces, simplify_spaces, d_ASCII_import_comments,
+					d_ASCII_import_locale, d_ASCII_comment_string, d_ASCII_import_read_only, d_ASCII_end_line);
 	}
 }
 

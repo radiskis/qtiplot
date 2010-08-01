@@ -505,6 +505,12 @@ void ImportASCIIDialog::previewMatrix()
 	d_preview_matrix->resizeColumnsToContents();
 }
 
+void ImportASCIIDialog::setCurrentPath(const QString& path)
+{
+	d_current_path = path;
+	changePreviewFile(path);
+}
+
 void ImportASCIIDialog::changePreviewFile(const QString& path)
 {
 	if (path.isEmpty())
