@@ -1829,7 +1829,7 @@ void Table::sortColumns(const QStringList&s, int type, int order, const QString&
 		else
 			gsl_sort_index(p, data_double.data(), 1, non_empty_cells);
 
-		blockSignals(true);
+		setAutoUpdateValues(false);
 
 		for(int i = 0; i < cols; i++){// Since we have the permutation index, sort all the columns
             int col = colIndex(s[i]);
@@ -1872,8 +1872,6 @@ void Table::sortColumns(const QStringList&s, int type, int order, const QString&
         delete[] p;
     }
 
-	blockSignals(false);
-
 	for(int i = 0; i < cols; i++){// notify changes
 		int col = colIndex(s[i]);
 		if (d_table->isColumnReadOnly(col))
@@ -1882,6 +1880,7 @@ void Table::sortColumns(const QStringList&s, int type, int order, const QString&
 		emit modifiedData(this, colName(col));
 	}
 	emit modifiedWindow(this);
+	setAutoUpdateValues(applicationWindow()->autoUpdateTableValues());
 }
 
 void Table::sortColumn(int col, int order)
