@@ -4860,7 +4860,7 @@ ApplicationWindow* ApplicationWindow::openProject(const QString& fn, bool factor
 			title = titleBase + QString::number(++aux)+"/"+QString::number(widgets);
 			progress.setLabelText(title);
 			QStringList lst;
-			while ( s!="</table>" ){
+			while ( !t.atEnd() && s!="</table>" ){
 				s=t.readLine();
 				lst<<s;
 			}

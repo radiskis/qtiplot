@@ -837,11 +837,16 @@ void LegendWidget::setAngle(int angle)
 */
 QSize LegendWidget::textSize(QPainter *p, const QwtText& text)
 {
-	QSize size = text.textSize();
-	QString s = text.text();
-	if (s.contains("<sub>") || s.contains("<sup>")){
-		int width = size.width() + QFontMetrics(text.font(), p->device()).boundingRect(" ").width();
-		size =  QSize(width, size.height());
+	QSize size = text.textSize(text.font());
+	QwtMetricsMap map;
+	map.setMetrics(this, p->device());
+	if (!map.isIdentity()){
+		QString s = text.text();
+		if (s.contains("<sub>") || s.contains("<sup>")){
+			int width = size.width() + QFontMetrics(text.font(), p->device()).boundingRect(" ").width();
+			size =  QSize(width, size.height());
+		} else
+			size = QFontMetrics(text.font(), p->device()).boundingRect(s + " ").size();
 	}
 	return size;
 }
