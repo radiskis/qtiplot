@@ -1387,13 +1387,16 @@ void Table::clearSelection()
 
 		if (sel.isEmpty ()){
 			int col = d_table->currentColumn();
+			if (col < 0 || d_table->currentRow() < 0)
+				return;
+
 			QString name = colName(col);
 			if (d_table->isColumnReadOnly(col)){
 				QMessageBox::warning(this, tr("QtiPlot - Error"),
        			tr("Column '%1' is read only!").arg(name));
 				return;
     		}
-			d_table->setText(d_table->currentRow (), col, "");
+			d_table->setText(d_table->currentRow(), col, "");
 			emit modifiedData(this, name);
 		} else {
 			QStringList lstReadOnly;
@@ -3501,10 +3504,20 @@ void Table::restore(const QStringList& lst)
 
 void Table::notifyChanges()
 {
-	for (int i=0; i<d_table->numCols(); i++)
-		emit modifiedData(this, colName(i));
+	bool updateValues = applicationWindow()->autoUpdateTableValues();
+	if (updateValues)
+		setAutoUpdateValues(false);
 
+	for(int i = 0; i < d_table->numCols(); i++){
+		if (d_table->isColumnReadOnly(i))
+			continue;
+
+		emit modifiedData(this, colName(i));
+	}
 	emit modifiedWindow(this);
+
+	if (updateValues)
+		setAutoUpdateValues(true);
 }
 
 void Table::notifyChanges(const QString& colName)
