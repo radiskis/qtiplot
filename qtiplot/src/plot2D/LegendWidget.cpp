@@ -62,6 +62,7 @@ d_auto_update(false),
 d_tex_output(false)
 {
 	setAttribute(Qt::WA_DeleteOnClose);
+	setObjectName(tr("Legend"));
 
 	d_text = new QwtText(QString::null);
 	d_text->setFont(QFont("Arial", 12, QFont::Normal, false));

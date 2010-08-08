@@ -40,6 +40,7 @@ d_pix(pix),
 d_formula(s),
 d_margin(5)
 {
+	setObjectName(tr("Equation"));
 	if (!d_pix.isNull())
 		setSize(QSize(pix.width() + 2*d_margin, pix.height() + 2*d_margin));
 }

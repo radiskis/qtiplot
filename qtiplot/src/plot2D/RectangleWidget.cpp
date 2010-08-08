@@ -41,6 +41,7 @@ d_linked_layer(-1)
 {
 	setFrameStyle(Line);
 	setSize(100, 50);
+	setObjectName(tr("Rectangle"));
 }
 
 void RectangleWidget::clone(RectangleWidget* r)

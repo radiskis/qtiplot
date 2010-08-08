@@ -56,6 +56,7 @@ class PatternBox;
 class PenStyleBox;
 class RectangleWidget;
 class TextFormatButtons;
+class ApplicationWindow;
 
 class EnrichmentDialog : public QDialog
 {
@@ -64,10 +65,11 @@ class EnrichmentDialog : public QDialog
 public:
 	enum WidgetType{Frame, Text, Image, Tex, MDIWindow, Ellipse};
 
-    EnrichmentDialog(WidgetType wt, Graph *g, QWidget *parent = 0);
+	EnrichmentDialog(WidgetType wt, Graph *g, ApplicationWindow *app, QWidget *parent = 0);
 	~EnrichmentDialog();
 
 	void setWidget(QWidget *w);
+	void accept (){return apply();};
 
 private slots:
     void clearForm();
@@ -109,6 +111,7 @@ private:
 	void setText(QTextEdit *editor, const QString & t);
 	QString createTempTexFile();
 
+	ApplicationWindow *d_app;
     QHttp *http;
     QProcess *compileProcess, *dvipngProcess;
 

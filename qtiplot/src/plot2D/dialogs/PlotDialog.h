@@ -64,6 +64,7 @@ class Spectrogram;
 class QwtErrorPlotCurve;
 class ContourLinesEditor;
 class FunctionDialog;
+class EnrichmentDialog;
 
 //! Custom plot/curves dialog
 class PlotDialog : public QDialog
@@ -99,7 +100,7 @@ private slots:
 	void updateTabWindow(QTreeWidgetItem *currentItem, QTreeWidgetItem *previousItem);
 	void showAreaColor(bool show);
 
-	void removeSelectedCurve();
+	void removeSelectedObject();
 
 	void pickErrorBarsColor();
 
@@ -313,6 +314,7 @@ private:
 	DoubleSpinBox *boxPlotX, *boxPlotY, *boxPlotWidth, *boxPlotHeight;
 	QComboBox *plotUnitBox;
 	QCheckBox *boxResizeLayers, *keepPlotRatioBox, *layerScaleFonts;
+	EnrichmentDialog *enrichmentDialog;
 };
 
 /*****************************************************************************
@@ -332,6 +334,7 @@ public:
 
 protected:
     void insertCurvesList();
+	void insertEnrichmentsList();
     Graph *d_graph;
 };
 
@@ -359,4 +362,26 @@ protected:
     QwtPlotItem *d_curve;
 };
 
+/*****************************************************************************
+ *
+ * Class FrameWidgetTreeItem
+ *
+ *****************************************************************************/
+//! FrameWidgetTreeItem tree widget item class
+class FrameWidgetTreeItem : public QTreeWidgetItem
+{
+public:
+	enum {FrameWidgetItem = 1003};
+	FrameWidgetTreeItem(FrameWidget *w, LayerItem *parent, const QString& s);
+
+	Graph* graph(){return ((LayerItem *)parent())->graph();};
+	FrameWidget *frameWidget(){return d_widget;};
+
+	 void setActive(bool on);
+
+protected:
+	QPixmap frameWidgetPixmap();
+
+	FrameWidget *d_widget;
+};
 #endif

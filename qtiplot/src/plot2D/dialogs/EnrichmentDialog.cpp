@@ -49,10 +49,13 @@
 #include <PatternBox.h>
 #include <PenStyleBox.h>
 
-EnrichmentDialog::EnrichmentDialog(WidgetType wt, Graph *g, QWidget *parent)
-    : QDialog(parent), d_plot(g), d_widget(NULL), d_widget_type(wt)
+EnrichmentDialog::EnrichmentDialog(WidgetType wt, Graph *g, ApplicationWindow *app, QWidget *parent)
+	: QDialog(parent), d_plot(g), d_widget(NULL), d_widget_type(wt), d_app(app)
 {
-	setSizeGripEnabled( true );
+	bool standAlone = qobject_cast<ApplicationWindow*>(parent);
+	if (standAlone)
+		setSizeGripEnabled(true);
+
 	setAttribute(Qt::WA_DeleteOnClose);
 
     QDialogButtonBox *buttonBox = new QDialogButtonBox;
@@ -94,7 +97,8 @@ EnrichmentDialog::EnrichmentDialog(WidgetType wt, Graph *g, QWidget *parent)
 
     QVBoxLayout *layout = new QVBoxLayout;
 	layout->addWidget(tabWidget);
-    layout->addWidget(buttonBox);
+	if (standAlone)
+		layout->addWidget(buttonBox);
     setLayout(layout);
 
 	connect(tabWidget, SIGNAL(currentChanged (QWidget *)), this, SLOT(customButtons(QWidget *)));
@@ -121,7 +125,8 @@ void EnrichmentDialog::initEditorPage()
 	texCompilerBox = new QComboBox;
 	texCompilerBox->addItem(tr("MathTran (http://www.mathtran.org/)"));
 	texCompilerBox->addItem(tr("locally installed"));
-	texCompilerBox->setCurrentIndex(((ApplicationWindow *)parentWidget())->d_latex_compiler);
+	if (d_app)
+		texCompilerBox->setCurrentIndex(d_app->d_latex_compiler);
 	connect(texCompilerBox, SIGNAL(activated(int)), this, SLOT(updateCompilerInterface(int)));
 
 	QHBoxLayout *hl = new QHBoxLayout;
@@ -290,7 +295,8 @@ void EnrichmentDialog::initFramePage()
 	boxFrameWidth = new DoubleSpinBox();
 	if(d_widget_type == Ellipse){
 		boxFrameWidth->setDecimals(2);
-		boxFrameWidth->setLocale(((ApplicationWindow *)parent())->locale());
+		if (d_app)
+			boxFrameWidth->setLocale(d_app->locale());
 		boxFrameWidth->setSingleStep(0.1);
 		boxFrameWidth->setRange(0.1, 100);
 	} else {
@@ -421,10 +427,9 @@ void EnrichmentDialog::initGeometryPage()
 	bl1->addWidget(new QLabel(tr( "Unit" )), 1, 0);
 	bl1->addWidget(unitBox, 1, 1);
 
-	ApplicationWindow *app = (ApplicationWindow *)parent();
 	QLocale locale = QLocale();
-	if (app)
-		locale = app->locale();
+	if (d_app)
+		locale = d_app->locale();
 
     QGroupBox *gb1 = new QGroupBox(tr("Position"));
 	xBox = new DoubleSpinBox();
@@ -460,7 +465,8 @@ void EnrichmentDialog::initGeometryPage()
     gl2->addWidget(heightBox, 1, 1);
 
 	keepAspectBox = new QCheckBox(tr("&Keep aspect ratio"));
-	keepAspectBox->setChecked(app->d_keep_aspect_ration);
+	if (d_app)
+		keepAspectBox->setChecked(d_app->d_keep_aspect_ration);
 	gl2->addWidget(keepAspectBox, 2, 1);
 
 	bestSizeButton = new QPushButton(tr("&Best size"));
@@ -507,8 +513,7 @@ void EnrichmentDialog::setWidget(QWidget *w)
 	if (!w)
 		return;
 
-	ApplicationWindow *app = (ApplicationWindow *)parent();
-	if (!app)
+	if (!d_app)
 		return;
 
 	d_widget = w;
@@ -534,9 +539,9 @@ void EnrichmentDialog::setWidget(QWidget *w)
 			boxFrameWidth->setValue(fw->framePen().width());
 		boxFrameWidth->blockSignals(false);
 
-		unitBox->setCurrentIndex(app->d_frame_geometry_unit);
+		unitBox->setCurrentIndex(d_app->d_frame_geometry_unit);
 		attachToBox->setCurrentIndex((int)fw->attachPolicy());
-		displayCoordinates(app->d_frame_geometry_unit);
+		displayCoordinates(d_app->d_frame_geometry_unit);
     } else {
 		unitBox->setCurrentIndex(FrameWidget::Pixel);
 		displayCoordinates(FrameWidget::Pixel);
@@ -648,9 +653,8 @@ void EnrichmentDialog::apply()
         if (fw)
             fw->setAttachPolicy((FrameWidget::AttachPolicy)attachToBox->currentIndex());
 
-		ApplicationWindow *app = (ApplicationWindow *)this->parent();
-		if (app)
-			app->d_keep_aspect_ration = keepAspectBox->isChecked();
+		if (d_app)
+			d_app->d_keep_aspect_ration = keepAspectBox->isChecked();
 	} else if (patternPage && tabWidget->currentPage() == patternPage)
 		patternApplyTo();
 	else if (textPage && tabWidget->currentPage() == textPage){
@@ -659,9 +663,8 @@ void EnrichmentDialog::apply()
 			l->setText(textEditBox->text());
 
 		textFormatApplyTo();
-		ApplicationWindow *app = (ApplicationWindow *)this->parent();
-		if (app)
-			app->setFormatBarFont(textFont);
+		if (d_app)
+			d_app->setFormatBarFont(textFont);
 	}
 }
 
@@ -713,7 +716,9 @@ void EnrichmentDialog::fetchImage()
 
 		QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
-		QString program = ((ApplicationWindow *)parentWidget())->d_latex_compiler_path;
+		QString program;
+		if (d_app)
+			program = d_app->d_latex_compiler_path;
 		QStringList arguments;
 		arguments << createTempTexFile();
 
@@ -762,8 +767,7 @@ void EnrichmentDialog::updateForm(bool error)
 
 void EnrichmentDialog::chooseImageFile(const QString& fn)
 {
-	ApplicationWindow *app = (ApplicationWindow *)parentWidget();
-	if (!app)
+	if (!d_app)
 		return;
 
 	ImageWidget *i = qobject_cast<ImageWidget *>(d_widget);
@@ -779,8 +783,8 @@ void EnrichmentDialog::chooseImageFile(const QString& fn)
 		if (i->load(path)){
 			imagePathBox->setText(path);
 			QFileInfo fi(path);
-			app->imagesDirPath = fi.dirPath(true);
-			app->modifiedProject();
+			d_app->imagesDirPath = fi.dirPath(true);
+			d_app->modifiedProject();
 		}
 	}
 }
@@ -798,7 +802,7 @@ void EnrichmentDialog::saveImagesInternally(bool save)
 
 	QString fn = imagePathBox->text();
 	if (fn.isEmpty() || !QFile::exists(fn)){
-		QMessageBox::warning((ApplicationWindow *)parentWidget(), tr("QtiPlot - Warning"),
+		QMessageBox::warning(d_app, tr("QtiPlot - Warning"),
 		tr("The file %1 doesn't exist. The image cannot be restored when reloading the project file!").arg(fn));
 		chooseImageFile();
 	}
@@ -822,9 +826,8 @@ void EnrichmentDialog::setCoordinates(int unit)
 	if (d_plot)
 		d_plot->multiLayer()->notifyChanges();
 
-	ApplicationWindow *app = (ApplicationWindow *)parentWidget();
-	if (app)
-		app->d_frame_geometry_unit = unit;
+	if (d_app)
+		d_app->d_frame_geometry_unit = unit;
 }
 
 void EnrichmentDialog::displayCoordinates(int unit)
@@ -894,7 +897,9 @@ void EnrichmentDialog::setBestSize()
 
 void EnrichmentDialog::frameApplyTo()
 {
-	ApplicationWindow *app = (ApplicationWindow *)this->parent();
+	if (!d_app)
+		return;
+
 	switch(frameApplyToBox->currentIndex()){
 		case 0://this layer
 		{
@@ -925,7 +930,7 @@ void EnrichmentDialog::frameApplyTo()
 
 		case 3://all windows
 		{
-			QList<MdiSubWindow *> windows = app->windowsList();
+			QList<MdiSubWindow *> windows = d_app->windowsList();
 			foreach(MdiSubWindow *w, windows){
 				MultiLayer *ml = qobject_cast<MultiLayer *>(w);
 				if (!ml)
@@ -943,7 +948,7 @@ void EnrichmentDialog::frameApplyTo()
 		default:
 			break;
 	}
-	app->modifiedProject();
+	d_app->modifiedProject();
 }
 
 void EnrichmentDialog::setFrameTo(FrameWidget *fw)
@@ -957,7 +962,9 @@ void EnrichmentDialog::setFrameTo(FrameWidget *fw)
 
 void EnrichmentDialog::patternApplyTo()
 {
-	ApplicationWindow *app = (ApplicationWindow *)this->parent();
+	if (!d_app)
+		return;
+
 	switch(patternApplyToBox->currentIndex()){
 		case 0://this object
 		{
@@ -988,7 +995,7 @@ void EnrichmentDialog::patternApplyTo()
 
 		case 3://all windows
 		{
-			QList<MdiSubWindow *> windows = app->windowsList();
+			QList<MdiSubWindow *> windows = d_app->windowsList();
 			foreach(MdiSubWindow *w, windows){
 				MultiLayer *ml = qobject_cast<MultiLayer *>(w);
 				if (!ml)
@@ -1006,7 +1013,7 @@ void EnrichmentDialog::patternApplyTo()
 		default:
 			break;
 	}
-	app->modifiedProject();
+	d_app->modifiedProject();
 }
 
 void EnrichmentDialog::setPatternTo(FrameWidget *r)
@@ -1066,7 +1073,9 @@ void EnrichmentDialog::updateTransparency(int alpha)
 
 void EnrichmentDialog::textFormatApplyTo()
 {
-	ApplicationWindow *app = (ApplicationWindow *)this->parent();
+	if (!d_app)
+		return;
+
 	switch(textApplyToBox->currentIndex()){
 		case 0://this object
 		{
@@ -1103,7 +1112,7 @@ void EnrichmentDialog::textFormatApplyTo()
 
 		case 3://all windows
 		{
-			QList<MdiSubWindow *> windows = app->windowsList();
+			QList<MdiSubWindow *> windows = d_app->windowsList();
 			foreach(MdiSubWindow *w, windows){
 				MultiLayer *ml = qobject_cast<MultiLayer *>(w);
 				if (!ml)
@@ -1124,7 +1133,7 @@ void EnrichmentDialog::textFormatApplyTo()
 		default:
 			break;
 	}
-	app->modifiedProject();
+	d_app->modifiedProject();
 }
 
 void EnrichmentDialog::setTextFormatTo(LegendWidget *l)
@@ -1142,47 +1151,44 @@ void EnrichmentDialog::setTextFormatTo(LegendWidget *l)
 
 void EnrichmentDialog::setTextDefaultValues()
 {
-	ApplicationWindow *app = (ApplicationWindow *)this->parent();
-	if (!app)
+	if (!d_app)
 		return;
 
-	app->legendTextColor = textColorBtn->color();
-	app->plotLegendFont = textFont;
+	d_app->legendTextColor = textColorBtn->color();
+	d_app->plotLegendFont = textFont;
 
 	QColor c = textBackgroundBtn->color();
 	c.setAlpha(boxBackgroundTransparency->value());
-	app->legendBackground = c;
-	app->d_legend_default_angle = boxTextAngle->value();
-	app->saveSettings();
+	d_app->legendBackground = c;
+	d_app->d_legend_default_angle = boxTextAngle->value();
+	d_app->saveSettings();
 }
 
 void EnrichmentDialog::setFrameDefaultValues()
 {
-	ApplicationWindow *app = (ApplicationWindow *)this->parent();
-	if (!app)
+	if (!d_app)
 		return;
 
-	app->legendFrameStyle = frameBox->currentIndex();
-	app->d_frame_widget_pen = QPen(frameColorBtn->color(), boxFrameWidth->value(), boxFrameLineStyle->style());
-	app->saveSettings();
+	d_app->legendFrameStyle = frameBox->currentIndex();
+	d_app->d_frame_widget_pen = QPen(frameColorBtn->color(), boxFrameWidth->value(), boxFrameLineStyle->style());
+	d_app->saveSettings();
 }
 
 void EnrichmentDialog::setRectangleDefaultValues()
 {
-	ApplicationWindow *app = (ApplicationWindow *)this->parent();
-	if (!app)
+	if (!d_app)
 		return;
 
 	QColor c = backgroundColorBtn->color();
 	c.setAlpha(boxTransparency->value());
-	app->d_rect_default_background = c;
+	d_app->d_rect_default_background = c;
 
 	QColor patternColor = patternColorBtn->color();
 	if (useFrameColorBox->isChecked())
 		patternColor = frameColorBtn->color();
 
-	app->d_rect_default_brush = QBrush(patternColor, patternBox->getSelectedPattern());
-	app->saveSettings();
+	d_app->d_rect_default_brush = QBrush(patternColor, patternBox->getSelectedPattern());
+	d_app->saveSettings();
 }
 
 void EnrichmentDialog::createImage()
@@ -1226,7 +1232,9 @@ void EnrichmentDialog::finishedCompiling(int exitCode, QProcess::ExitStatus exit
 		return;
 	}
 
-	QString compiler = ((ApplicationWindow *)parentWidget())->d_latex_compiler_path;
+	QString compiler;
+	if (d_app)
+		compiler = d_app->d_latex_compiler_path;
 	QFileInfo fi(compiler);
 
 	QString dir = fi.dir().absolutePath();
@@ -1313,7 +1321,8 @@ void EnrichmentDialog::displayCompileError(QProcess::ProcessError error)
 
 void EnrichmentDialog::updateCompilerInterface(int compiler)
 {
-	((ApplicationWindow *)parentWidget())->d_latex_compiler = compiler;
+	if (d_app)
+		d_app->d_latex_compiler = compiler;
 }
 
 void EnrichmentDialog::updateButtons()
