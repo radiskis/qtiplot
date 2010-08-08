@@ -47,6 +47,11 @@
 #include <SymbolBox.h>
 #include <ContourLinesEditor.h>
 #include <FunctionDialog.h>
+#include <RectangleWidget.h>
+#include <EllipseWidget.h>
+#include <ImageWidget.h>
+#include <TexWidget.h>
+#include <EnrichmentDialog.h>
 
 #include <QTreeWidget>
 #include <QLineEdit>
@@ -69,6 +74,7 @@
 #include <QMenu>
 #include <QDateTime>
 #include <QSlider>
+#include <QPainter>
 
 #include <qwt_plot_canvas.h>
 
@@ -125,6 +131,8 @@ PlotDialog::PlotDialog(bool showExtended, QWidget* parent, Qt::WFlags fl )
 	initLabelsPage();
 	initFunctionPage();
 	initPlotGeometryPage();
+
+	enrichmentDialog = NULL;
 	clearTabWidget();
 
     QHBoxLayout* hb2 = new QHBoxLayout();
@@ -164,7 +172,7 @@ PlotDialog::PlotDialog(bool showExtended, QWidget* parent, Qt::WFlags fl )
 	connect(boxPlotType, SIGNAL(currentIndexChanged(int)), this, SLOT(changePlotType(int)));
 
 	QShortcut *shortcut = new QShortcut(QKeySequence(Qt::Key_Delete), this);
-    connect(shortcut, SIGNAL(activated()), this, SLOT(removeSelectedCurve()));
+	connect(shortcut, SIGNAL(activated()), this, SLOT(removeSelectedObject()));
 }
 
 void PlotDialog::showAll(bool all)
@@ -1741,65 +1749,88 @@ void PlotDialog::contextMenuEvent(QContextMenuEvent *e)
     QTreeWidgetItem *item = listBox->currentItem();
     if (!item)
         return;
-    if (item->type() != CurveTreeItem::PlotCurveTreeItem)
-        return;
-    QwtPlotItem *it = (QwtPlotItem *)((CurveTreeItem *)item)->plotItem();
-	if (!it)
+
+	if (item->type() != CurveTreeItem::PlotCurveTreeItem &&
+		item->type() != FrameWidgetTreeItem::FrameWidgetItem)
 		return;
 
 	QPoint pos = listBox->viewport()->mapFromGlobal(QCursor::pos());
 	QRect rect = listBox->visualItemRect(listBox->currentItem());
 	if (rect.contains(pos)){
-	   QMenu contextMenu(this);
-	   contextMenu.insertItem(tr("&Delete"), this, SLOT(removeSelectedCurve()));
-	   if (it->rtti() == QwtPlotItem::Rtti_PlotCurve && ((PlotCurve *)it)->type() != Graph::Function)
-			contextMenu.insertItem(tr("&Plot Associations..."), this, SLOT(editCurve()));
-	   contextMenu.exec(QCursor::pos());
-    }
-    e->accept();
+		QMenu contextMenu(this);
+		contextMenu.insertItem(tr("&Delete"), this, SLOT(removeSelectedObject()));
+		if (item->type() == CurveTreeItem::PlotCurveTreeItem){
+			QwtPlotItem *it = (QwtPlotItem *)((CurveTreeItem *)item)->plotItem();
+			if (it && it->rtti() == QwtPlotItem::Rtti_PlotCurve && ((PlotCurve *)it)->type() != Graph::Function)
+				contextMenu.insertItem(tr("&Plot Associations..."), this, SLOT(editCurve()));
+		}
+		contextMenu.exec(QCursor::pos());
+	}
+	e->accept();
 }
 
-void PlotDialog::removeSelectedCurve()
+void PlotDialog::removeSelectedObject()
 {
-    CurveTreeItem *item = (CurveTreeItem *)listBox->currentItem();
-    if (!item)
-        return;
-    if (item->type() != CurveTreeItem::PlotCurveTreeItem)
-        return;
+	QTreeWidgetItem *item = listBox->currentItem();
+	if (!item)
+		return;
 
-    Graph *graph = item->graph();
-    if (graph){
-        graph->removeCurve(item->plotItemIndex());
-        graph->updatePlot();
+	Graph *graph = NULL;
+	switch (item->type()){
+		case FrameWidgetTreeItem::FrameWidgetItem:
+			enrichmentDialog->close();
+			enrichmentDialog = NULL;
+			graph = ((FrameWidgetTreeItem *)item)->graph();
+			if (graph)
+				graph->remove(((FrameWidgetTreeItem *)item)->frameWidget());
+		break;
+		case CurveTreeItem::PlotCurveTreeItem:
+			graph = ((CurveTreeItem *)item)->graph();
+			if (graph)
+				graph->removeCurve(((CurveTreeItem *)item)->plotItemIndex());
+		break;
+		default:
+			return;
+	}
 
-		LayerItem *layerItem = (LayerItem *)item->parent();
-		QTreeWidgetItem *rootItem = layerItem->parent();
+	if (!graph)
+		return;
 
-		int index = rootItem->indexOfChild (layerItem);
-		rootItem->takeChild(index);
-        delete layerItem;
+	graph->updatePlot();
 
-		layerItem = new LayerItem(graph, rootItem, tr("Layer") + QString::number(d_ml->layerIndex(graph) + 1));
-        rootItem->addChild(layerItem);
-		if (graph->curveCount() > 0){
-        	layerItem->setExpanded(true);
-			CurveTreeItem *it = (CurveTreeItem *)layerItem->child(0);
-			if (it){
-        		listBox->setCurrentItem(it);
-				setActiveCurve(it);
-			}
-		} else {
-        	listBox->setCurrentItem(layerItem);
+	LayerItem *layerItem = (LayerItem *)item->parent();
+	QTreeWidgetItem *rootItem = layerItem->parent();
 
-			clearTabWidget();
-            privateTabWidget->addTab (layerPage, tr("Layer"));
-			privateTabWidget->addTab (layerGeometryPage, tr("Geometry"));
-			privateTabWidget->addTab (speedPage, tr("Speed"));
-            privateTabWidget->showPage(layerPage);
+	int index = rootItem->indexOfChild (layerItem);
+	rootItem->takeChild(index);
+	delete layerItem;
 
-			setActiveLayer(layerItem);
+	layerItem = new LayerItem(graph, rootItem, tr("Layer") + QString::number(d_ml->layerIndex(graph) + 1));
+	rootItem->addChild(layerItem);
+
+	if (graph->curveCount() > 0){
+		layerItem->setExpanded(true);
+		CurveTreeItem *it = (CurveTreeItem *)layerItem->child(0);
+		if (it){
+			listBox->setCurrentItem(it);
+			setActiveCurve(it);
 		}
-    }
+	} else if (!graph->enrichmentsList().isEmpty()){
+		layerItem->setExpanded(true);
+		FrameWidgetTreeItem *it = (FrameWidgetTreeItem *)layerItem->child(0);
+		if (it)
+			listBox->setCurrentItem(it);
+	} else {
+		listBox->setCurrentItem(layerItem);
+
+		clearTabWidget();
+		privateTabWidget->addTab (layerPage, tr("Layer"));
+		privateTabWidget->addTab (layerGeometryPage, tr("Geometry"));
+		privateTabWidget->addTab (speedPage, tr("Speed"));
+		privateTabWidget->showPage(layerPage);
+
+		setActiveLayer(layerItem);
+	}
 }
 
 void PlotDialog::pickErrorBarsColor()
@@ -1840,6 +1871,8 @@ void PlotDialog::updateTabWindow(QTreeWidgetItem *currentItem, QTreeWidgetItem *
         ((CurveTreeItem *)previousItem)->setActive(false);
     else if (previousItem->type() == LayerItem::LayerTreeItem)
         ((LayerItem *)previousItem)->setActive(false);
+	else if (previousItem->type() == FrameWidgetTreeItem::FrameWidgetItem)
+		((FrameWidgetTreeItem *)previousItem)->setActive(false);
 
     boxPlotType->blockSignals(true);
 
@@ -1866,7 +1899,34 @@ void PlotDialog::updateTabWindow(QTreeWidgetItem *currentItem, QTreeWidgetItem *
             privateTabWidget->showPage(layerPage);
         }
         setActiveLayer((LayerItem *)currentItem);
-    } else {
+	} else if (currentItem->type() == FrameWidgetTreeItem::FrameWidgetItem){
+		clearTabWidget();
+
+		FrameWidgetTreeItem *it = (FrameWidgetTreeItem *)currentItem;
+		it->setActive(true);
+		FrameWidget *w = it->frameWidget();
+
+		EnrichmentDialog::WidgetType wt = EnrichmentDialog::Text;
+		if (qobject_cast<RectangleWidget *>(w))
+			wt = EnrichmentDialog::Frame;
+		else if (qobject_cast<EllipseWidget *>(w))
+			wt = EnrichmentDialog::Ellipse;
+		else if (qobject_cast<ImageWidget *>(w))
+			wt = EnrichmentDialog::Image;
+		else if (qobject_cast<TexWidget *>(w))
+			wt = EnrichmentDialog::Tex;
+
+		if (!enrichmentDialog)
+			enrichmentDialog = new EnrichmentDialog(wt, it->graph(), (ApplicationWindow *)this->parent(), privateTabWidget);
+		enrichmentDialog->setWidget(w);
+
+		privateTabWidget->hide();
+		((QGridLayout*)this->layout())->addWidget(enrichmentDialog, 0, 1);
+
+		curvePlotTypeBox->hide();
+		btnWorksheet->hide();
+		btnEditCurve->hide();
+	} else {
         clearTabWidget();
 		privateTabWidget->addTab(plotGeometryPage, tr("Dimensions"));
 		privateTabWidget->addTab(printPage, tr("Print"));
@@ -1966,7 +2026,7 @@ void PlotDialog::insertTabs(int plot_type)
 
 void PlotDialog::clearTabWidget()
 {
-    privateTabWidget->removeTab(privateTabWidget->indexOf(labelsPage));
+	privateTabWidget->removeTab(privateTabWidget->indexOf(labelsPage));
     privateTabWidget->removeTab(privateTabWidget->indexOf(axesPage));
 	privateTabWidget->removeTab(privateTabWidget->indexOf(linePage));
 	privateTabWidget->removeTab(privateTabWidget->indexOf(symbolPage));
@@ -1990,6 +2050,13 @@ void PlotDialog::clearTabWidget()
 	privateTabWidget->removeTab(privateTabWidget->indexOf(miscPage));
 	privateTabWidget->removeTab(privateTabWidget->indexOf(functionPage));
 	privateTabWidget->removeTab(privateTabWidget->indexOf(plotGeometryPage));
+
+	if (enrichmentDialog){
+		enrichmentDialog->close();
+		enrichmentDialog = NULL;
+	}
+
+	privateTabWidget->show();
 }
 
 void PlotDialog::quit()
@@ -2613,6 +2680,11 @@ void PlotDialog::applyFormatToLayer(Graph *g)
 
 bool PlotDialog::acceptParams()
 {
+	if (enrichmentDialog && privateTabWidget->isHidden()){
+		enrichmentDialog->accept();
+		return true;
+	}
+
 	if (privateTabWidget->currentWidget() == plotGeometryPage){
 		FrameWidget::setRect(d_ml, boxPlotX->value(), boxPlotY->value(), boxPlotWidth->value(),
 		boxPlotHeight->value(), (FrameWidget::Unit)plotUnitBox->currentIndex());
@@ -3722,8 +3794,10 @@ LayerItem::LayerItem(Graph *g, QTreeWidgetItem *parent, const QString& s)
       d_graph(g)
 {
 	setIcon(0, QPixmap(":/layer_disabled.png"));
-    if (g)
+	if (g){
         insertCurvesList();
+		insertEnrichmentsList();
+	}
 }
 
 void LayerItem::setActive(bool on)
@@ -3754,6 +3828,14 @@ void LayerItem::insertCurvesList()
             plotAssociation = it->title().text();
 
         addChild(new CurveTreeItem(it, this, plotAssociation));
+	}
+}
+
+void LayerItem::insertEnrichmentsList()
+{
+	QList <FrameWidget *> lst = d_graph->enrichmentsList();
+	foreach (FrameWidget *w, lst){
+		addChild(new FrameWidgetTreeItem(w, this, w->objectName()));
 	}
 }
 
@@ -3806,4 +3888,58 @@ int CurveTreeItem::plotItemType()
 		return Graph::ColorMap;
 
 	return -1;
+}
+
+/*****************************************************************************
+ *
+ * Class FrameWidgetTreeItem
+ *
+ *****************************************************************************/
+FrameWidgetTreeItem::FrameWidgetTreeItem(FrameWidget *w, LayerItem *parent, const QString& s)
+	: QTreeWidgetItem(parent, QStringList(s), FrameWidgetItem),
+	d_widget(w)
+{
+	setActive(false);
+}
+
+void FrameWidgetTreeItem::setActive(bool on)
+{
+	QPixmap pix = frameWidgetPixmap();
+	if (on)
+		setIcon(0, pix);
+	else
+		setIcon(0, QIcon(pix).pixmap(pix.size(), QIcon::Disabled));
+}
+
+QPixmap FrameWidgetTreeItem::frameWidgetPixmap()
+{
+	if (!d_widget)
+		return QPixmap();
+
+	if (qobject_cast<LegendWidget *>(d_widget))
+		return QPixmap(":/legend.png");
+	else if (qobject_cast<RectangleWidget *>(d_widget)){
+		QPixmap pix = QPixmap(16, 16);
+		pix.fill(Qt::transparent);
+		QPainter p;
+		p.begin(&pix);
+		p.setPen(QPen(Qt::blue));
+		p.setBrush(Qt::lightGray);
+		p.drawRect(QRect(1, 2, 12, 10));
+		return pix;
+	} else if (qobject_cast<EllipseWidget *>(d_widget)){
+		QPixmap pix = QPixmap(16, 16);
+		pix.fill(Qt::transparent);
+		QPainter p;
+		p.begin(&pix);
+		p.setPen(QPen(Qt::blue));
+		p.setBrush(Qt::lightGray);
+		p.drawEllipse(QRect(0, 2, 15, 12));
+		return pix;
+	} else if (qobject_cast<ImageWidget *>(d_widget))
+		return QPixmap(":/monalisa.png");
+	else if (qobject_cast<TexWidget *>(d_widget))
+		return QPixmap(":/equation.png");
+
+	return QPixmap();
 }

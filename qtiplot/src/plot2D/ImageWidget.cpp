@@ -60,6 +60,7 @@ d_window_name(QString::null)
 		setSize(picSize);
 	}
 	move(plot->mapToParent(plot->canvas()->pos()));
+	setObjectName(tr("Image"));
 }
 
 ImageWidget::ImageWidget(Graph *plot, const QImage& image):FrameWidget(plot),
@@ -79,6 +80,7 @@ d_window_name(QString::null)
 
 	setSize(picSize);
 	move(plot->mapToParent(plot->canvas()->pos()));
+	setObjectName(tr("Image"));
 }
 
 bool ImageWidget::load(const QString& fn, bool update)

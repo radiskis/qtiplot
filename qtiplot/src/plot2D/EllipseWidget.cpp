@@ -40,6 +40,7 @@
 EllipseWidget::EllipseWidget(Graph *plot):FrameWidget(plot)
 {
 	setFrameStyle(Line);
+	setObjectName(tr("Ellipse"));
 }
 
 void EllipseWidget::clone(EllipseWidget* r)

@@ -9080,7 +9080,7 @@ void ApplicationWindow::showEnrichementDialog()
 	else if (qobject_cast<EllipseWidget *>(g->activeEnrichment()))
 		wt = EnrichmentDialog::Ellipse;
 
-	EnrichmentDialog *ed = new EnrichmentDialog(wt, g, this);
+	EnrichmentDialog *ed = new EnrichmentDialog(wt, g, this, this);
 	ed->setWidget(g->activeEnrichment());
 	ed->exec();
 
@@ -9474,7 +9474,7 @@ void ApplicationWindow::resizeActiveWindow()
 	if (!w)
 		return;
 
-	EnrichmentDialog *ed = new EnrichmentDialog(EnrichmentDialog::MDIWindow, NULL, this);
+	EnrichmentDialog *ed = new EnrichmentDialog(EnrichmentDialog::MDIWindow, NULL, this, this);
     ed->setWidget(w);
     ed->exec();
 }
@@ -9488,7 +9488,7 @@ void ApplicationWindow::resizeWindow()
 
 	d_workspace->setActiveSubWindow(w);
 
-	EnrichmentDialog *ed = new EnrichmentDialog(EnrichmentDialog::MDIWindow, NULL, this);
+	EnrichmentDialog *ed = new EnrichmentDialog(EnrichmentDialog::MDIWindow, NULL, this, this);
     ed->setWidget(w);
     ed->exec();
 }
