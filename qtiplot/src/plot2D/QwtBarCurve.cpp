@@ -112,33 +112,34 @@ void QwtBarCurve::draw(QPainter *painter,
 	int bw1 = int(bar_width) + 1;
 	for (int i = from; i <= to; i++)
 	{
-		double stackOffset = 0.0;
-		foreach(QwtBarCurve *bc, stack)
-			stackOffset += bc->y(i);
-
 		const int px = xMap.transform(x(i));
 		const int py = yMap.transform(y(i));
 
 		QRect rect = QRect();
 		if (bar_style == Vertical){
-			const int py0 = yMap.transform(y(i) + stackOffset);
-			const int poffset = yMap.transform(stackOffset);
-
 			if (y(i) < 0)
 				rect = QRect(px - half_width, ref, bw1, (py - ref));
 			else {
 				if (stack.isEmpty())
 					rect = QRect(px - half_width, py, bw1, (ref - py + 1));
 				else {
-					rect = QRect(px - half_width, py0, bw1, 1);
-					rect.setBottom(poffset);
+					double sOffset = stackOffset(i, stack);
+					rect = QRect(px - half_width, yMap.transform(y(i) + sOffset), bw1, 1);
+					rect.setBottom(yMap.transform(sOffset));
 				}
 			}
 		} else {
 			if (x(i) < 0)
-				rect = QRect(px, py-half_width, (ref-px), bw1);
-			else
-				rect = QRect(ref, py-half_width, (px-ref), bw1);
+				rect = QRect(px, py - half_width, (ref - px), bw1);
+			else {
+				if (stack.isEmpty())
+					rect = QRect(ref, py - half_width, (px - ref), bw1);
+				else {
+					double sOffset = stackOffset(i, stack);
+					rect = QRect(xMap.transform(sOffset), py - half_width, 1, bw1);
+					rect.setRight(xMap.transform(x(i) + sOffset));
+				}
+			}
 		}
 
 		if (d_is_stacked)
@@ -171,6 +172,23 @@ QList <QwtBarCurve *> QwtBarCurve::stackedCurvesList() const
 	return stack;
 }
 
+double QwtBarCurve::stackOffset(int i, QList <QwtBarCurve *> stack) const
+{
+	double n = (double)dataSize();
+	if (i < 0 || i >= n)
+		return 0.0;
+
+	double stackOffset = 0.0;
+	if (bar_style == Vertical){
+		foreach(QwtBarCurve *bc, stack)
+			stackOffset += bc->y(i);
+	} else {
+		foreach(QwtBarCurve *bc, stack)
+			stackOffset += bc->x(i);
+	}
+	return stackOffset;
+}
+
 QwtDoubleRect QwtBarCurve::boundingRect() const
 {
 	QwtDoubleRect rect = QwtPlotCurve::boundingRect();
@@ -191,23 +209,17 @@ QwtDoubleRect QwtBarCurve::boundingRect() const
 		return rect;
 
 	QList <QwtBarCurve *> stack = stackedCurvesList();
-
 	if (!stack.isEmpty()){
 		double maxStackOffset = 0.0;
 		for (int i = 0; i < n; i++){
-			double stackOffset = 0.0;
-			foreach(QwtBarCurve *bc, stack)
-				stackOffset += bc->y(i);
-
-			if (stackOffset > maxStackOffset)
-				maxStackOffset = stackOffset;
+			const double soffset = stackOffset(i, stack);
+			if (soffset > maxStackOffset)
+				maxStackOffset = soffset;
 		}
-
-		if (bar_style == Vertical){
-			rect.setTop(rect.top() + maxStackOffset);
-		} else {
+		if (bar_style == Vertical)
+			rect.setBottom(rect.bottom() + maxStackOffset);
+		else
 			rect.setRight(rect.right() + maxStackOffset);
-		}
 	}
 	return rect;
 }
