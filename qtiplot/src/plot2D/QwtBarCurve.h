@@ -63,6 +63,7 @@ private:
 		const QwtScaleMap &yMap, int from, int to) const;
 
 	QList <QwtBarCurve *> stackedCurvesList() const;
+	double stackOffset(int i, QList <QwtBarCurve *> stack) const;
 
 	int bar_offset;
 	int bar_gap;

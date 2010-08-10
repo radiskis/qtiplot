@@ -4804,8 +4804,7 @@ ApplicationWindow* ApplicationWindow::openProject(const QString& fn, bool factor
 
 	QString s = t.readLine();
 	QStringList list=s.split("\t", QString::SkipEmptyParts);
-	if (list[0] == "<scripting-lang>")
-	{
+	if (list[0] == "<scripting-lang>"){
 		if (!app->setScriptingLanguage(list[1]))
 			QMessageBox::warning(app, tr("QtiPlot - File opening error"),
 					tr("The file \"%1\" was created using \"%2\" as scripting language.\n\n"\
@@ -4838,7 +4837,7 @@ ApplicationWindow* ApplicationWindow::openProject(const QString& fn, bool factor
 	item->folder()->setObjectName(fi.baseName());
 
 	//process tables and matrix information
-	while ( !t.atEnd() && !progress.wasCanceled()){
+	while (!t.atEnd() && !progress.wasCanceled()){
 		s = t.readLine();
 		list.clear();
 		if  (s.left(8) == "<folder>"){
@@ -4860,8 +4859,8 @@ ApplicationWindow* ApplicationWindow::openProject(const QString& fn, bool factor
 			title = titleBase + QString::number(++aux)+"/"+QString::number(widgets);
 			progress.setLabelText(title);
 			QStringList lst;
-			while ( !t.atEnd() && s!="</table>" ){
-				s=t.readLine();
+			while (!t.atEnd() && s!="</table>"){
+				s = t.readLine();
 				lst<<s;
 			}
 			lst.pop_back();
@@ -4917,8 +4916,8 @@ ApplicationWindow* ApplicationWindow::openProject(const QString& fn, bool factor
 	f.open(QIODevice::ReadOnly);
 
 	MultiLayer *plot=0;
-	while ( !t.atEnd() && !progress.wasCanceled()){
-		s=t.readLine();
+	while (!t.atEnd() && !progress.wasCanceled()){
+		s = t.readLine();
 		if  (s.left(8) == "<folder>"){
 			list = s.split("\t");
 			if (app->current_folder && list.size() >= 2)
@@ -12099,8 +12098,7 @@ Table* ApplicationWindow::openTable(ApplicationWindow* app, const QStringList &f
 
 	QApplication::setOverrideCursor(Qt::WaitCursor);
 	w->table()->blockSignals(true);
-	for (line++; line!=flist.end() && *line != "</data>"; line++)
-	{//read and set table values
+	for (line++; line!=flist.end() && *line != "</data>"; line++){//read and set table values
 		QStringList fields = (*line).split("\t");
 		int row = fields[0].toInt();
 		for (int col=0; col<cols; col++){
