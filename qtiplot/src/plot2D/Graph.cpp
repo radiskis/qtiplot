@@ -1467,20 +1467,28 @@ void Graph::copyImage()
 
 QPixmap Graph::graphPixmap(const QSize& size, double scaleFontsFactor, bool transparent)
 {
+	QRect r = rect();
+	QRect br = boundingRect();
 	if (!size.isValid()){
-		QPixmap pixmap(boundingRect().size());
+		QPixmap pixmap(br.size());
 		if (transparent)
 			pixmap.fill(Qt::transparent);
 		else
 			pixmap.fill();
 		QPainter p(&pixmap);
-		print(&p, rect());
+		r.setTopLeft(br.topLeft());//hack arround bug in Qwt: last axis labels are partially cut-off
+		print(&p, r);
 		p.end();
 		return pixmap;
 	}
 
-	QRect r = rect();
-	QRect br = boundingRect();
+	QSize sz = size;
+	if (r.topLeft() != br.topLeft()){//hack arround bug in Qwt: last axis labels are partially cut-off
+		r.setTopLeft(br.topLeft());
+		sz.setWidth(sz.width() + r.x());
+		sz.setHeight(sz.height() + r.y());
+	}
+
 	if (br.width() != width() || br.height() != height()){
 		double wfactor = (double)br.width()/(double)width();
 		double hfactor = (double)br.height()/(double)height();
@@ -1493,7 +1501,7 @@ QPixmap Graph::graphPixmap(const QSize& size, double scaleFontsFactor, bool tran
 
 	scaleFonts(scaleFontsFactor);
 
-	QPixmap pixmap(size);
+	QPixmap pixmap(sz);
 	if (transparent)
 		pixmap.fill(Qt::transparent);
 	else
@@ -1605,8 +1613,7 @@ void Graph::exportVector(const QString& fileName, int res, bool color,
 		if (br.width() != width() || br.height() != height()){
 			double wfactor = (double)br.width()/(double)width();
 			double hfactor = (double)br.height()/(double)height();
-			r.setSize(QSize(qRound(size.width()/(wfactor*1.3)),
-						qRound(size.height()/hfactor)));
+			r.setSize(QSize(qRound(size.width()/wfactor), qRound(size.height()/hfactor)));
 		} else
 			r.setSize(size);
 	} else if (res && res != printer.resolution()){
@@ -1621,6 +1628,9 @@ void Graph::exportVector(const QString& fileName, int res, bool color,
 		r.setSize(QSize(qRound(width()*wfactor), qRound(height()*hfactor)));
 	} else
 		printer.setPaperSize (QSizeF(br.size()), QPrinter::DevicePixel);
+
+	if (r.topLeft() != br.topLeft())//hack arround bug in Qwt: last axis labels are partially cut-off
+		r.setTopLeft(br.topLeft());
 
 	printer.setOutputFileName(fileName);
 	if (fileName.contains(".eps"))
@@ -1743,6 +1753,9 @@ void Graph::draw(QPaintDevice *device, const QSize& size, double fontsFactor)
 	}
 
 	scaleFonts(fontsFactor);
+
+	if (r.topLeft() != br.topLeft())//hack arround bug in Qwt: last axis labels are partially cut-off
+		r.setTopLeft(br.topLeft());
 
 	QPainter p(device);
 	print(&p, r);
@@ -6616,6 +6629,55 @@ void Graph::raiseEnrichements()
 QRect Graph::boundingRect()
 {
 	QRect r = this->geometry();
+
+	for (int axis = 0; axis < QwtPlot::axisCnt; axis++){//hack arround bug in Qwt: last axis labels are partially cut-off
+		if (!axisEnabled(axis))
+			continue;
+		QwtScaleWidget *sw = (QwtScaleWidget *)axisWidget(axis);
+		if(!sw)
+			continue;
+		const QwtScaleDraw *scDraw = sw->scaleDraw();
+		if(!scDraw)
+			continue;
+
+		if (sw->title().text().isEmpty() && !scDraw->hasComponent(QwtAbstractScaleDraw::Labels)){
+			int offset1 = 0, offset2 = 0;
+			if (axis == xBottom || axis == xTop){
+				sw = (QwtScaleWidget *)axisWidget(yLeft);
+				if(sw && sw->scaleDraw())
+					offset1 = sw->scaleDraw()->maxLabelHeight(sw->font())/2;
+				sw = (QwtScaleWidget *)axisWidget(yRight);
+				if(sw && sw->scaleDraw())
+					offset2 = sw->scaleDraw()->maxLabelHeight(sw->font())/2;
+			} else {
+				sw = (QwtScaleWidget *)axisWidget(xTop);
+				if(sw && sw->scaleDraw())
+					offset1 = sw->scaleDraw()->maxLabelWidth(sw->font())/2;
+				sw = (QwtScaleWidget *)axisWidget(xBottom);
+				if(sw && sw->scaleDraw())
+					offset2 = sw->scaleDraw()->maxLabelWidth(sw->font())/2;
+			}
+
+			int offset = QMAX(offset1, offset2);
+			switch(axis){
+				case xBottom:
+					r.setHeight(r.height() + offset);
+				break;
+				case xTop:
+					r.setY(r.y() + offset);
+					r.setHeight(r.height() + offset);
+				break;
+				case yLeft:
+					r.setX(r.x() + offset);
+					r.setWidth(r.width() + offset);
+				break;
+				case yRight:
+					r.setWidth(r.width() + offset);
+				break;
+			}
+		}
+	}
+
 	foreach(FrameWidget *fw, d_enrichments){
 		if (fw->isHidden())//pie labels can be hidden
 			continue;
