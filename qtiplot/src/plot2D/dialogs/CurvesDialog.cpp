@@ -36,6 +36,7 @@
 #include <ApplicationWindow.h>
 #include <Folder.h>
 #include <ColorBox.h>
+#include <CurveRangeDialog.h>
 
 #include <QPushButton>
 #include <QLabel>
@@ -209,16 +210,16 @@ void CurvesDialog::showCurveBtn(int)
 
 void CurvesDialog::showCurveRangeDialog()
 {
-	int curve = contents->currentRow();
-	if (curve < 0)
-		curve = 0;
+	QList<QListWidgetItem *> lst = contents->selectedItems();
+	QList<int> indexes;
+	foreach(QListWidgetItem *it, lst)
+		indexes << contents->row(it);
 
-    ApplicationWindow *app = (ApplicationWindow *)this->parent();
-    if (app)
-    {
-        app->showCurveRangeDialog(d_graph, curve);
-		updateCurveRange();
-    }
+	CurveRangeDialog* crd = new CurveRangeDialog(this);
+	crd->setCurvesToModify(d_graph, indexes);
+	crd->exec();
+
+	updateCurveRange();
 }
 
 void CurvesDialog::showPlotAssociations()
@@ -557,28 +558,36 @@ int CurvesDialog::curveStyle()
 
 void CurvesDialog::showCurveRange(bool on )
 {
-    int row = contents->currentRow();
-    contents->clear();
-    if (on){
-        QStringList lst = QStringList();
-        for (int i=0; i<d_graph->curveCount(); i++){
-            QwtPlotItem *it = d_graph->plotItem(i);
-            if (!it)
-                continue;
+	QList<int> selectedRows;
+	foreach(QListWidgetItem *it, contents->selectedItems())
+		selectedRows << contents->row(it);
 
-            if (it->rtti() == QwtPlotItem::Rtti_PlotCurve && ((PlotCurve *)it)->type() != Graph::Function){
-                DataCurve *c = (DataCurve *)it;
-                lst << c->title().text() + "[" + QString::number(c->startRow()+1) + ":" + QString::number(c->endRow()+1) + "]";
-            } else
-                lst << it->title().text();
-        }
-        contents->addItems(lst);
-    }
-    else
-        contents->addItems(d_graph->plotItemsList());
+	contents->clear();
+	if (on){
+		QStringList lst = QStringList();
+		for (int i=0; i<d_graph->curveCount(); i++){
+			QwtPlotItem *it = d_graph->plotItem(i);
+			if (!it)
+				continue;
 
-    contents->setCurrentRow(row);
-    enableContentsBtns();
+			if (it->rtti() == QwtPlotItem::Rtti_PlotCurve && ((PlotCurve *)it)->type() != Graph::Function){
+				DataCurve *c = (DataCurve *)it;
+				lst << c->title().text() + "[" + QString::number(c->startRow()+1) + ":" + QString::number(c->endRow()+1) + "]";
+			} else
+				lst << it->title().text();
+		}
+		contents->addItems(lst);
+	}
+	else
+		contents->addItems(d_graph->plotItemsList());
+
+	foreach(int row, selectedRows){//restore selection
+		QListWidgetItem *it = contents->item(row);
+		if (it)
+			it->setSelected(true);
+	}
+
+	enableContentsBtns();
 }
 
 void CurvesDialog::updateCurveRange()

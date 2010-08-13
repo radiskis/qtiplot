@@ -33,6 +33,7 @@
 
 class QPushButton;
 class QLabel;
+class QCheckBox;
 class QSpinBox;
 class Graph;
 class DataCurve;
@@ -47,10 +48,11 @@ public:
 
 public slots:
 	void setCurveToModify(Graph *g, int curve);
+	void setCurvesToModify(Graph *g, const QList<int>& indexes);
 	void accept();
 
 private:
-	DataCurve *d_curve;
+	QList<DataCurve *> d_curves;
 	Graph *d_graph;
 
     QPushButton* buttonOK;
@@ -58,6 +60,7 @@ private:
 	QLabel* boxName;
 	QSpinBox* boxStart;
 	QSpinBox* boxEnd;
+	QCheckBox* boxApplyToAll;
 };
 
 #endif
