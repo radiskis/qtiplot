@@ -11069,7 +11069,6 @@ CurveRangeDialog* ApplicationWindow::showCurveRangeDialog(Graph *g, int curve)
 		return 0;
 
 	CurveRangeDialog* crd = new CurveRangeDialog(this);
-	crd->setAttribute(Qt::WA_DeleteOnClose);
 	crd->setCurveToModify(g, curve);
 	crd->exec();
 	return crd;

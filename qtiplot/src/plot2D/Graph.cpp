@@ -6628,7 +6628,7 @@ void Graph::raiseEnrichements()
 
 QRect Graph::boundingRect()
 {
-	QRect r = this->geometry();
+	QRect r = rect();
 
 	for (int axis = 0; axis < QwtPlot::axisCnt; axis++){//hack arround bug in Qwt: last axis labels are partially cut-off
 		if (!axisEnabled(axis))
