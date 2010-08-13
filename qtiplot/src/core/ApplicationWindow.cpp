@@ -4374,6 +4374,7 @@ Table * ApplicationWindow::importWaveFile()
 				t->setText(i, j, QString::number(ch));
 			}
 			aux++;
+			if (aux>rows) break;
 		}
 	} else if (bitsPerSample == 16){
 		int size = sizeof(short);
@@ -4386,6 +4387,7 @@ Table * ApplicationWindow::importWaveFile()
 				t->setText(i, j, QString::number(ch));
 			}
 			aux++;
+			if (aux>rows) break;
 		}
 	}
 
