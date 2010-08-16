@@ -6630,13 +6630,8 @@ QString ApplicationWindow::getFileName(QWidget *parent, const QString & caption,
 	return fd.selectedFiles()[0];
 }
 
-void ApplicationWindow::saveProjectAs(const QString& fileName, bool compress)
+QString ApplicationWindow::getSaveProjectName(const QString& fileName, bool *compress)
 {
-#ifdef QTIPLOT_DEMO
-	showDemoVersionMessage();
-	return;
-#endif
-
 	QString fn = fileName;
 	if (fileName.isEmpty()){
 		QString filter = tr("QtiPlot project") + " (*.qti);;";
@@ -6645,21 +6640,34 @@ void ApplicationWindow::saveProjectAs(const QString& fileName, bool compress)
 		QString selectedFilter;
 		fn = getFileName(this, tr("Save Project As"), workingDir, filter, &selectedFilter, true, d_confirm_overwrite);
 		if (selectedFilter.contains(".gz"))
-			compress = true;
+			*compress = true;
 	}
 
-	if ( !fn.isEmpty() ){
+	if (!fn.isEmpty()){
 		QFileInfo fi(fn);
 		workingDir = fi.dirPath(true);
+		if (fn.endsWith(".qti.gz", Qt::CaseInsensitive))
+			fn.remove(".gz");
 		if (!fn.endsWith(".qti", Qt::CaseInsensitive))
 			fn.append(".qti");
+	}
+	return fn;
+}
 
+void ApplicationWindow::saveProjectAs(const QString& fileName, bool compress)
+{
+#ifdef QTIPLOT_DEMO
+	showDemoVersionMessage();
+	return;
+#endif
+
+	QString fn = getSaveProjectName(fileName, &compress);
+	if (!fn.isEmpty()){
 		projectname = fn;
 		if (saveProject(compress)){
 			updateRecentProjectsList(projectname);
 
-			QFileInfo fi(fn);
-			QString baseName = fi.baseName();
+			QString baseName = QFileInfo(fn).baseName();
 			FolderListItem *item = (FolderListItem *)folders->firstChild();
 			item->setText(0, baseName);
 			item->folder()->setObjectName(baseName);
@@ -6678,23 +6686,8 @@ void ApplicationWindow::saveWindowAs(const QString& fileName, bool compress)
 	if (!w)
 		return;
 
-	QString fn = fileName;
-	if (fileName.isEmpty()){
-		QString filter = tr("QtiPlot project") + " (*.qti);;";
-		filter += tr("Compressed QtiPlot project") + " (*.qti.gz)";
-
-		QString selectedFilter;
-		fn = getFileName(this, tr("Save Window As"), workingDir, filter, &selectedFilter, true, d_confirm_overwrite);
-		if (selectedFilter.contains(".gz"))
-			compress = true;
-	}
-
+	QString fn = getSaveProjectName(fileName, &compress);
 	if (!fn.isEmpty()){
-		QFileInfo fi(fn);
-		workingDir = fi.dirPath(true);
-		if (!fn.endsWith(".qti", Qt::CaseInsensitive))
-			fn.append(".qti");
-
 		if (saveWindow(w, fn, compress))
 			updateRecentProjectsList(fn);
 	}
@@ -6753,7 +6746,7 @@ bool ApplicationWindow::saveWindow(MdiSubWindow *w, const QString& fn, bool comp
 	f.close();
 
 	if (compress)
-		file_compress((char *)fn.ascii(), "wb9");
+		file_compress(fn.toAscii().data(), "wb9");
 
 	QApplication::restoreOverrideCursor();
 	return true;
@@ -16289,7 +16282,7 @@ void ApplicationWindow::saveFolder(Folder *folder, const QString& fn, bool compr
 	f.close();
 
 	if (compress)
-		file_compress((char *)fn.ascii(), "wb9");
+		file_compress(fn.toAscii().data(), "wb9");
 
 	QApplication::restoreOverrideCursor();
 }
@@ -16305,20 +16298,11 @@ void ApplicationWindow::saveFolderAsProject(Folder *f)
 	showDemoVersionMessage();
 	return;
 #endif
-	QString filter = tr("QtiPlot project")+" (*.qti);;";
-	filter += tr("Compressed QtiPlot project")+" (*.qti.gz)";
 
-	QString selectedFilter;
-	QString fn = getFileName(this, tr("Save project as"), workingDir, filter, &selectedFilter, true, d_confirm_overwrite);
-	if ( !fn.isEmpty() ){
-		QFileInfo fi(fn);
-		workingDir = fi.dirPath(true);
-		QString baseName = fi.fileName();
-		if (!baseName.contains("."))
-			fn.append(".qti");
-
-		saveFolder(f, fn, selectedFilter.contains(".gz"));
-	}
+	bool compress = false;
+	QString fn = getSaveProjectName("", &compress);
+	if (!fn.isEmpty())
+		saveFolder(f, fn, compress);
 }
 
 void ApplicationWindow::showFolderPopupMenu(Q3ListViewItem *it, const QPoint &p, int)
