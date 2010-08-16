@@ -965,7 +965,7 @@ QString Table::colName(int col)
 	if (col<0 || col >= col_label.count())
 		return QString();
 
-	return QString(this->objectName())+"_"+col_label[col];
+	return QString(this->objectName()) + "_" + col_label[col];
 }
 
 void Table::setColName(int col, const QString& text, bool enumerateRight, bool warn)
@@ -1619,14 +1619,13 @@ void Table::pasteSelection()
 
 void Table::removeCol()
 {
-	QStringList list=selectedColumns();
-	removeCol(list);
+	removeCol(selectedColumns());
 }
 
 void Table::removeCol(const QStringList& list)
 {
 	QStringList lstReadOnly;
-	for (int i=0; i<list.count(); i++){
+	for (int i = 0; i < list.count(); i++){
 		QString name = list[i];
 		int col = colIndex(name);
 		if (d_table->isColumnReadOnly(col))
@@ -1635,11 +1634,11 @@ void Table::removeCol(const QStringList& list)
 
 	if (lstReadOnly.count() > 0){
 		QMessageBox::warning(this, tr("QtiPlot - Error"),
-        tr("The folowing columns")+":\n"+ lstReadOnly.join("\n") + "\n"+ tr("are read only!"));
+		tr("The folowing columns") + ":\n"+ lstReadOnly.join("\n") + "\n"+ tr("are read only!"));
     }
 
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-	for (int i=0; i<list.count(); i++){
+	for (int i = 0; i < list.count(); i++){
 		QString name = list[i];
 		int id = colIndex(name);
 		if (id >= 0){

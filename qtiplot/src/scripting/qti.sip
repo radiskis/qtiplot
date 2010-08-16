@@ -355,10 +355,9 @@ public:
 %MethodCode
     sipIsErr=0;
     CHECK_TABLE_COL(a0);
-    if (sipIsErr==0)
-    {
+	if (sipIsErr == 0){
         QStringList list;
-        list <<  "_" + sipCpp->colLabel(col);
+		list << sipCpp->colName(col);
         sipCpp->removeCol(list);
     }
 %End
