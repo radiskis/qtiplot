@@ -724,3 +724,4 @@ Parametric
 Polar
 setMinorTicksType
 setMajorTicksType
+displayInfo
