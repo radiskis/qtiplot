@@ -853,6 +853,8 @@ p = plot3D("Graph2")
 n = note("Notes1")
 # get a pointer to the QTextEdit object used to display information in the results log window:
 log = resultsLog()
+# display some information in the data display toolbar:
+displayInfo(text)
 	  </programlisting> as is creating new objects: <programlisting>
 # create an empty table named "tony" with 5 rows and 2 columns:
 t = newTable("tony", 5, 2)

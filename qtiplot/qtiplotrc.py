@@ -163,7 +163,7 @@ appImports = (
 	"addFolder", "deleteFolder", "changeFolder", "copyFolder",
 	"saveFolder", "appendProject", "saveProjectAs",
 	"currentTable","currentMatrix","currentGraph","currentNote",
-	"resultsLog", "workspace"
+	"resultsLog", "workspace", "displayInfo"
 	)
 for name in appImports:
 	setattr(__main__,name,getattr(qti.app,name))

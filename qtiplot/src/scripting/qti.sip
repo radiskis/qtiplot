@@ -2066,6 +2066,7 @@ public:
   Table* matrixToTable(Matrix* m, MatrixToTableConversion = Direct);
 
   QTextEdit *resultsLog();
+  void displayInfo(const QString& text);
   QString stemPlot(Table *t, const QString& colName, int power = 1001, int startRow = 0, int endRow = -1);
 
   QMdiArea* workspace();
