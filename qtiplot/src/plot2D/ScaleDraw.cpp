@@ -147,7 +147,7 @@ QString ScaleDraw::labelString(double value) const
 
 				if (list[0] == "1")
 					return "10<sup>" + s + "</sup>";
-				else{
+				else {
 					if (d_numeric_format == SuperscriptsGER)
 						return list[0] + "·10<sup>" + s + "</sup>";
 					else
