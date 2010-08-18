@@ -2739,10 +2739,6 @@ Are you sure you want to continue?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Save project as</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Save &amp;As Project...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4394,10 +4390,6 @@ Autocompletion will not be available!</source>
     </message>
     <message>
         <source>Excel files</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Save Window As</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -6168,6 +6160,18 @@ The following special codes can be used:
         <source>Vertical</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Speed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Disable for curves with more than</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>data points</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ContourLinesEditor</name>
@@ -6361,6 +6365,10 @@ The following special codes can be used:
     </message>
     <message>
         <source>&amp;Close</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Apply to &amp;all layer curves</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -6728,6 +6736,13 @@ The following special codes can be used:
     <name>DrawPointTool</name>
     <message>
         <source>Draw</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>EllipseWidget</name>
+    <message>
+        <source>Ellipse</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -9048,6 +9063,10 @@ The following special codes can be used:
         <source>You don&apos;t have the permission to open this file: &lt;b&gt;%1&lt;/b&gt;</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Image</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ImportASCIIDialog</name>
@@ -9764,6 +9783,13 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Co&amp;mmon axes</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>LegendWidget</name>
+    <message>
+        <source>Legend</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -12742,6 +12768,13 @@ have the same number of rows.</source>
     </message>
 </context>
 <context>
+    <name>RectangleWidget</name>
+    <message>
+        <source>Rectangle</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>RenameWindowDialog</name>
     <message>
         <source>Window Title</source>
@@ -14099,6 +14132,13 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Median</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>TexWidget</name>
+    <message>
+        <source>Equation</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

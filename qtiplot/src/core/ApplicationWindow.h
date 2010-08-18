@@ -1168,6 +1168,8 @@ private slots:
 
 // TODO: a lot of this stuff should be private
 public:
+	int d_curve_max_antialising_size;
+	bool d_disable_curve_antialiasing;
 	bool d_force_muParser;
 	bool d_keep_aspect_ration;
 	QPrinter::PaperSize d_print_paper_size;

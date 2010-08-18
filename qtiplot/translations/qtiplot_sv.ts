@@ -7539,7 +7539,7 @@ den första representerar signalen och den andra svarsfunktionen!</translation>
     </message>
     <message>
         <source>Save project as</source>
-        <translation>Spara projekt som</translation>
+        <translation type="obsolete">Spara projekt som</translation>
     </message>
     <message>
         <source>windows</source>
@@ -8454,7 +8454,7 @@ Automatisk komplettering ej tillgängligt!</translation>
     </message>
     <message>
         <source>Save Window As</source>
-        <translation>Spara fönster som</translation>
+        <translation type="obsolete">Spara fönster som</translation>
     </message>
     <message>
         <source>Save &amp;Window As...</source>
@@ -10403,6 +10403,18 @@ Följande specialkoder kan användas:
         <source>Vertical</source>
         <translation type="unfinished">Vertikal</translation>
     </message>
+    <message>
+        <source>Speed</source>
+        <translation type="unfinished">Snabb</translation>
+    </message>
+    <message>
+        <source>&amp;Disable for curves with more than</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>data points</source>
+        <translation type="unfinished">datapunkter</translation>
+    </message>
 </context>
 <context>
     <name>ContourLinesEditor</name>
@@ -10609,6 +10621,10 @@ Följande specialkoder kan användas:
     <message>
         <source>&amp;Close</source>
         <translation>&amp;Stäng</translation>
+    </message>
+    <message>
+        <source>Apply to &amp;all layer curves</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -11003,6 +11019,13 @@ Följande specialkoder kan användas:
     <message>
         <source>Draw</source>
         <translation>Rita</translation>
+    </message>
+</context>
+<context>
+    <name>EllipseWidget</name>
+    <message>
+        <source>Ellipse</source>
+        <translation type="unfinished">Ellips</translation>
     </message>
 </context>
 <context>
@@ -14133,6 +14156,10 @@ Följande specialkoder kan användas:
         <source>You don&apos;t have the permission to open this file: &lt;b&gt;%1&lt;/b&gt;</source>
         <translation>Du har inte tillåtelse att öppna denna fil: &lt;b&gt;%1&lt;/b&gt;</translation>
     </message>
+    <message>
+        <source>Image</source>
+        <translation type="unfinished">Bild</translation>
+    </message>
 </context>
 <context>
     <name>ImportASCIIDialog</name>
@@ -15273,6 +15300,13 @@ Gränserna måste vara inom definitionsområdet för x; om du inte vet maximum- 
     <message>
         <source>Co&amp;mmon axes</source>
         <translation>Ge&amp;mensamma axlar</translation>
+    </message>
+</context>
+<context>
+    <name>LegendWidget</name>
+    <message>
+        <source>Legend</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -18876,6 +18910,13 @@ Vill du skjuta in celler?</translation>
     </message>
 </context>
 <context>
+    <name>RectangleWidget</name>
+    <message>
+        <source>Rectangle</source>
+        <translation type="unfinished">Rektangel</translation>
+    </message>
+</context>
+<context>
     <name>RenameWindowDialog</name>
     <message>
         <source>Window Title</source>
@@ -20482,6 +20523,13 @@ den första representerar signalen och den andra svarsfunktionen!</translation>
     <message>
         <source>Median</source>
         <translation>Median</translation>
+    </message>
+</context>
+<context>
+    <name>TexWidget</name>
+    <message>
+        <source>Equation</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
