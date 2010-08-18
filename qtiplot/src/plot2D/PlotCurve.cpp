@@ -716,6 +716,8 @@ void DataCurve::loadData()
 
 	enableSpeedMode();
 
+	setRenderHint(QwtPlotItem::RenderAntialiased, g->isCurveAntialiasingEnabled(this));
+
 	if (!d_labels_list.isEmpty()){
 		((Graph*)plot())->updatePlot();
 		loadLabels();

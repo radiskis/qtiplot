@@ -263,17 +263,13 @@ void ConfigDialog::initPlotsPage()
 	boxScaleFonts->setChecked(app->autoScaleFonts);
 	optionsLayout->addWidget( boxScaleFonts, 0, 1);
 
-	boxAntialiasing = new QCheckBox();
-	boxAntialiasing->setChecked(app->antialiasing2DPlots);
-	optionsLayout->addWidget( boxAntialiasing, 1, 1);
-
 	boxTitle = new QCheckBox();
 	boxTitle->setChecked(app->titleOn);
 	optionsLayout->addWidget(boxTitle, 1, 0);
 
 	boxFrame = new QCheckBox();
 	boxFrame->setChecked(app->canvasFrameWidth > 0);
-	optionsLayout->addWidget(boxFrame, 3, 0 );
+	optionsLayout->addWidget(boxFrame, 1, 1);
 
 	labelFrameWidth = new QLabel();
 	optionsLayout->addWidget(labelFrameWidth, 4, 0);
@@ -410,6 +406,9 @@ void ConfigDialog::initPlotsPage()
 
 	initLayerGeometryPage();
 	plotsTabWidget->addTab(plotGeometryPage, QString());
+
+	initLayerSpeedPage();
+	plotsTabWidget->addTab(plotSpeedPage, QString());
 
 	plotFonts = new QWidget();
 	QVBoxLayout * plotFontsLayout = new QVBoxLayout( plotFonts );
@@ -982,6 +981,35 @@ void ConfigDialog::initFittingPage()
 
 	connect(samePointsBtn, SIGNAL(toggled(bool)), this, SLOT(showPointsBox(bool)));
 	connect(generatePointsBtn, SIGNAL(toggled(bool)), this, SLOT(showPointsBox(bool)));
+}
+
+void ConfigDialog::initLayerSpeedPage()
+{
+	ApplicationWindow *app = (ApplicationWindow *)parentWidget();
+
+	plotSpeedPage = new QWidget();
+
+	antialiasingGroupBox = new QGroupBox();
+	antialiasingGroupBox->setCheckable(true);
+	antialiasingGroupBox->setChecked(app->antialiasing2DPlots);
+
+	disableAntialiasingBox = new QCheckBox();
+	disableAntialiasingBox->setChecked(app->d_disable_curve_antialiasing);
+
+	curveSizeBox = new QSpinBox();
+	curveSizeBox->setMinimum(2);
+	curveSizeBox->setMaximum(INT_MAX);
+	curveSizeBox->setValue(app->d_curve_max_antialising_size);
+	curveSizeBox->setEnabled(antialiasingGroupBox->isChecked() && disableAntialiasingBox->isChecked());
+	connect(disableAntialiasingBox, SIGNAL(toggled(bool)), curveSizeBox, SLOT(setEnabled(bool)));
+
+	QGridLayout * gl = new QGridLayout(antialiasingGroupBox);
+	gl->addWidget(disableAntialiasingBox, 0, 0);
+	gl->addWidget(curveSizeBox, 0, 1);
+	gl->setRowStretch(1, 1);
+
+	QHBoxLayout * hl = new QHBoxLayout(plotSpeedPage);
+	hl->addWidget(antialiasingGroupBox);
 }
 
 void ConfigDialog::initLayerGeometryPage()
@@ -1705,6 +1733,7 @@ void ConfigDialog::languageChange()
 	plotsTabWidget->setTabText(plotsTabWidget->indexOf(plotTicks), tr("Ticks"));
 	plotsTabWidget->setTabText(plotsTabWidget->indexOf(gridPage), tr("Grid"));
 	plotsTabWidget->setTabText(plotsTabWidget->indexOf(plotGeometryPage), tr("Geometry"));
+	plotsTabWidget->setTabText(plotsTabWidget->indexOf(plotSpeedPage), tr("Speed"));
 	plotsTabWidget->setTabText(plotsTabWidget->indexOf(plotFonts), tr("Fonts"));
 
 	boxResize->setText(tr("Do not &resize layers when window size changes"));
@@ -1725,7 +1754,6 @@ void ConfigDialog::languageChange()
 	boxTitle->setText(tr("Show &Title"));
 	boxScaleFonts->setText(tr("Scale &Fonts"));
 	boxAutoscaling->setText(tr("Auto&scaling"));
-	boxAntialiasing->setText(tr("Antia&liasing"));
 
 	legendDisplayLabel->setText(tr("Legend display" ));
 	legendDisplayBox->clear();
@@ -1835,6 +1863,11 @@ void ConfigDialog::languageChange()
 	// resize the list to the maximum width
 	axesGridList->resize(axesGridList->maximumWidth(),axesGridList->height());
 	axesGridList->setCurrentRow(0);
+
+	//speed page
+	antialiasingGroupBox->setTitle(tr("Antia&liasing"));
+	disableAntialiasingBox->setText(tr("&Disable for curves with more than"));
+	curveSizeBox->setSuffix(" " + tr("data points"));
 
 	//confirmations page
 	groupBoxConfirm->setTitle(tr("Prompt on closing"));
@@ -2186,7 +2219,7 @@ void ConfigDialog::apply()
 	app->d_graph_legend_display = (Graph::LegendDisplayMode)legendDisplayBox->currentIndex();
 	app->d_graph_axis_labeling = (Graph::AxisTitlePolicy)axisLabelingBox->currentIndex();
 	app->setGraphDefaultSettings(boxAutoscaling->isChecked(), boxScaleFonts->isChecked(),
-		boxResize->isChecked(), boxAntialiasing->isChecked());
+		boxResize->isChecked(), antialiasingGroupBox->isChecked());
 	// 2D plots page: curves tab
 	app->defaultCurveStyle = curveStyle();
 	app->defaultCurveLineWidth = boxCurveLineWidth->value();
@@ -2243,6 +2276,10 @@ void ConfigDialog::apply()
 	// 2D plots page: print tab
 	app->d_print_cropmarks = boxPrintCropmarks->isChecked();
 	app->d_scale_plots_on_print = boxScaleLayersOnPrint->isChecked();
+	//2D plots page: speed tab
+	app->d_curve_max_antialising_size = curveSizeBox->value();
+	app->d_disable_curve_antialiasing = disableAntialiasingBox->isChecked();
+
 	foreach(MdiSubWindow *w, windows){
 		MultiLayer *ml = qobject_cast<MultiLayer *>(w);
 		if (ml){
@@ -2251,6 +2288,7 @@ void ConfigDialog::apply()
 			foreach(Graph *g, ml->layersList()){
 				g->setSynchronizedScaleDivisions(app->d_synchronize_graph_scales);
 				g->setAxisTitlePolicy(app->d_graph_axis_labeling);
+				g->disableCurveAntialiasing(app->d_disable_curve_antialiasing, app->d_curve_max_antialising_size);
 			}
 		}
 	}

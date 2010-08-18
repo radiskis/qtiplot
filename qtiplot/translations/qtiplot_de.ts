@@ -8594,7 +8594,7 @@ Die erste repräsentiert die Signal- und die zweite die Antwortfunktion!</transl
     </message>
     <message>
         <source>Save project as</source>
-        <translation>Projekt speichern als</translation>
+        <translation type="obsolete">Projekt speichern als</translation>
     </message>
     <message>
         <source>windows</source>
@@ -9875,10 +9875,6 @@ Autocompletion will not be available!</source>
     </message>
     <message>
         <source>Excel files</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Save Window As</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -11964,6 +11960,18 @@ Die folgenden Spezialcodes können benutzt werden:
         <source>Vertical</source>
         <translation type="unfinished">Vertikal</translation>
     </message>
+    <message>
+        <source>Speed</source>
+        <translation type="unfinished">Beschleunigung</translation>
+    </message>
+    <message>
+        <source>&amp;Disable for curves with more than</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>data points</source>
+        <translation type="unfinished">Datenpunkten</translation>
+    </message>
 </context>
 <context>
     <name>ContourLinesEditor</name>
@@ -12170,6 +12178,10 @@ Die folgenden Spezialcodes können benutzt werden:
     <message>
         <source>&amp;Close</source>
         <translation>S&amp;chließen</translation>
+    </message>
+    <message>
+        <source>Apply to &amp;all layer curves</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -12576,6 +12588,13 @@ Die folgenden Spezialcodes können benutzt werden:
     <message>
         <source>Draw</source>
         <translation>Zeichnen</translation>
+    </message>
+</context>
+<context>
+    <name>EllipseWidget</name>
+    <message>
+        <source>Ellipse</source>
+        <translation type="unfinished">Ellipse</translation>
     </message>
 </context>
 <context>
@@ -16306,6 +16325,10 @@ die Reihenfolge der Parameter ist wichtig!</translation>
         <source>You don&apos;t have the permission to open this file: &lt;b&gt;%1&lt;/b&gt;</source>
         <translation>Sie haben nicht die Rechte um die Datei &lt;b&gt;%1&lt;/b&gt; zu öffnen.</translation>
     </message>
+    <message>
+        <source>Image</source>
+        <translation type="unfinished">Farbbild</translation>
+    </message>
 </context>
 <context>
     <name>ImportASCIIDialog</name>
@@ -17558,6 +17581,13 @@ Die Grenzen müssen innerhalb des X-Bereichs sein. Fall diese Werte nicht bekann
     <message>
         <source>Co&amp;mmon axes</source>
         <translation>ge&amp;meinsame Achse</translation>
+    </message>
+</context>
+<context>
+    <name>LegendWidget</name>
+    <message>
+        <source>Legend</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -21593,6 +21623,13 @@ Wollen sie Zellen einfügen?</translation>
     </message>
 </context>
 <context>
+    <name>RectangleWidget</name>
+    <message>
+        <source>Rectangle</source>
+        <translation type="unfinished">Rechteck</translation>
+    </message>
+</context>
+<context>
     <name>RenameWindowDialog</name>
     <message>
         <source>QtiPlot - Rename Window</source>
@@ -23255,6 +23292,13 @@ Wollen sie Zellen einfügen?</translation>
     <message>
         <source>Median</source>
         <translation>Mittelwert</translation>
+    </message>
+</context>
+<context>
+    <name>TexWidget</name>
+    <message>
+        <source>Equation</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

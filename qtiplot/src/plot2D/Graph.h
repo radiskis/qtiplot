@@ -739,6 +739,9 @@ class Graph: public QwtPlot
 		//! Enables/Disables antialiasing of plot items.
 		void setAntialiasing(bool on = true, bool update = true);
 
+		void disableCurveAntialiasing(bool disable, int maxPoints);
+		bool isCurveAntialiasingEnabled(QwtPlotItem *it);
+
 		void setCurrentFont(const QFont& f);
 		void notifyFontChange(const QFont& f){emit currentFontChanged(f);};
         void enableTextEditor();
@@ -809,6 +812,8 @@ signals:
 		QList<QwtPlotCurve *>d_fit_curves;
 		//! Render hint for plot items.
 		bool d_antialiasing;
+		bool d_disable_curve_antialiasing;
+		int d_max_antialising_size;
 		bool autoScaleFonts;
 		bool drawLineOn, drawArrowOn, drawAxesBackbone;
 		//! Flag telling if we are performing a print operation

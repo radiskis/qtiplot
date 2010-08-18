@@ -3066,7 +3066,7 @@ Různé části tohoto souboru se nemusí zobrazovat tak, jak se očekává.</tr
     </message>
     <message>
         <source>Save project as</source>
-        <translation>Uložit projekt jako</translation>
+        <translation type="obsolete">Uložit projekt jako</translation>
     </message>
     <message>
         <source>Save Project As</source>
@@ -3891,7 +3891,7 @@ Různé části tohoto souboru se nemusí zobrazovat tak, jak se očekává.</tr
     </message>
     <message>
         <source>Save Window As</source>
-        <translation>Uložit okno jako</translation>
+        <translation type="obsolete">Uložit okno jako</translation>
     </message>
     <message>
         <source>Save &amp;Window As...</source>
@@ -5711,6 +5711,18 @@ K tomu lze použít následujících zvláštních kódů:
         <source>Vertical</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Speed</source>
+        <translation type="unfinished">Rychlost</translation>
+    </message>
+    <message>
+        <source>&amp;Disable for curves with more than</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>data points</source>
+        <translation type="unfinished">datové body</translation>
+    </message>
 </context>
 <context>
     <name>ContourLinesEditor</name>
@@ -5905,6 +5917,10 @@ K tomu lze použít následujících zvláštních kódů:
     <message>
         <source>QtiPlot - Plot range</source>
         <translation>QtiPlot - Rozsah nákresu</translation>
+    </message>
+    <message>
+        <source>Apply to &amp;all layer curves</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -6276,6 +6292,13 @@ K tomu lze použít následujících zvláštních kódů:
     <message>
         <source>Draw</source>
         <translation>Nakreslit</translation>
+    </message>
+</context>
+<context>
+    <name>EllipseWidget</name>
+    <message>
+        <source>Ellipse</source>
+        <translation type="unfinished">Elipsa</translation>
     </message>
 </context>
 <context>
@@ -8609,6 +8632,10 @@ K tomu lze použít následujících zvláštních kódů:
         <source>The file: &lt;b&gt;%1&lt;/b&gt; doesn&apos;t exist!</source>
         <translation>Soubor: &lt;b&gt;%1&lt;/b&gt; neexistuje!</translation>
     </message>
+    <message>
+        <source>Image</source>
+        <translation type="unfinished">Obrázek</translation>
+    </message>
 </context>
 <context>
     <name>ImportASCIIDialog</name>
@@ -9365,6 +9392,13 @@ K tomu lze použít následujících zvláštních kódů:
     <message>
         <source>Co&amp;mmon axes</source>
         <translation>&amp;Společné osy</translation>
+    </message>
+</context>
+<context>
+    <name>LegendWidget</name>
+    <message>
+        <source>Legend</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -12541,6 +12575,13 @@ pokud e1 pak e2 jinak e3.</translation>
     </message>
 </context>
 <context>
+    <name>RectangleWidget</name>
+    <message>
+        <source>Rectangle</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>RenameWindowDialog</name>
     <message>
         <source>&amp;OK</source>
@@ -13903,6 +13944,13 @@ pokud e1 pak e2 jinak e3.</translation>
     <message>
         <source>StandardDev</source>
         <translation>Obvyklá odchylka</translation>
+    </message>
+</context>
+<context>
+    <name>TexWidget</name>
+    <message>
+        <source>Equation</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

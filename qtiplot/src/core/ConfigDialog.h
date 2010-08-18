@@ -155,6 +155,7 @@ private:
 	void initNotesPage();
 	void initProxyPage();
 	void initLayerGeometryPage();
+	void initLayerSpeedPage();
 	//! Calculates a sensible width for the items list
 	void updateMenuList();
 	bool validFolderPath(const QString& path);
@@ -176,7 +177,7 @@ private:
 	QPushButton* buttonTextFont, *buttonHeaderFont;
 	QStackedWidget * generalDialog;
 	QWidget *appColors, *tables, *plotOptions, *plotTicks, *plotFonts, *confirm, *plotPrint;
-	QWidget *application, *curves, *axesPage, *plots3D, *fitPage, *numericFormatPage, *notesPage, *plotGeometryPage;
+	QWidget *application, *curves, *axesPage, *plots3D, *fitPage, *numericFormatPage, *notesPage, *plotGeometryPage, *plotSpeedPage;
 	QPushButton* buttonAxesFont, *buttonNumbersFont, *buttonLegendFont, *buttonTitleFont, *fontsBtn;
 	QCheckBox *boxSearchUpdates, *boxOrthogonal, *logBox, *plotLabelBox, *scaleErrorsBox;
 	QCheckBox *boxTitle, *boxFrame, *boxPlots3D, *boxPlots2D, *boxTables, *boxNotes, *boxFolders;
@@ -204,7 +205,7 @@ private:
 	ColorButton *boxPeaksColor;
 	QLabel *lblScriptingLanguage, *lblInitWindow;
 	QComboBox *boxScriptingLanguage, *boxInitWindow;
-	QCheckBox *boxAntialiasing, *boxAutoscale3DPlots, *boxTableComments, *boxThousandsSeparator;
+	QCheckBox *boxAutoscale3DPlots, *boxTableComments, *boxThousandsSeparator;
 	QCheckBox *boxPromptRenameTables, *boxBackupProject, *boxLabelsEditing;
 	QWidget *fileLocationsPage;
 	QLabel *lblTranslationsPath, *lblHelpPath, *lblUndoStackSize, *lblEndOfLine;
@@ -297,6 +298,9 @@ private:
 	QCheckBox *boxAntialiseGrid;
 	QListWidget *axesGridList;
 	QLabel *gridLineColorLbl, *gridLineWidthLbl, *gridLineTypeLbl, *gridAxesLbl;
+	QGroupBox * antialiasingGroupBox;
+	QCheckBox *disableAntialiasingBox;
+	QSpinBox *curveSizeBox;
 };
 
 #endif // CONFIGDIALOG_H

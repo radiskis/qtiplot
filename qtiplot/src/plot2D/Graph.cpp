@@ -5299,11 +5299,44 @@ void Graph::setAntialiasing(bool on, bool update)
 
 	if (update){
 		foreach(QwtPlotItem *it, d_curves)
-			it->setRenderHint(QwtPlotItem::RenderAntialiased, d_antialiasing);
+			it->setRenderHint(QwtPlotItem::RenderAntialiased, isCurveAntialiasingEnabled(it));
 		foreach (QwtPlotMarker *i, d_lines)
 			i->setRenderHint(QwtPlotItem::RenderAntialiased, d_antialiasing);
 		replot();
 	}
+}
+
+bool Graph::isCurveAntialiasingEnabled(QwtPlotItem *it)
+{
+	if (!it || it->rtti() == QwtPlotItem::Rtti_PlotSpectrogram)
+		return false;
+
+	if (!d_antialiasing)
+		return false;
+
+	if (d_disable_curve_antialiasing && ((PlotCurve *)it)->dataSize() > d_max_antialising_size)
+		return false;
+
+	return true;
+}
+
+void Graph::disableCurveAntialiasing(bool disable, int maxPoints)
+{
+	if (!d_antialiasing)
+		return;
+
+	if (d_disable_curve_antialiasing == disable && d_max_antialising_size == maxPoints)
+		return;
+
+	d_disable_curve_antialiasing = disable;
+	d_max_antialising_size = maxPoints;
+
+	if (d_curves.isEmpty())
+		return;
+
+	foreach(QwtPlotItem *it, d_curves)
+		it->setRenderHint(QwtPlotItem::RenderAntialiased, isCurveAntialiasingEnabled(it));
+	replot();
 }
 
 bool Graph::focusNextPrevChild ( bool )

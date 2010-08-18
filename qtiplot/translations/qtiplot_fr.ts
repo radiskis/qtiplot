@@ -2926,7 +2926,7 @@ Quelques parties de ce fichier peuvent ne pas être affichés comme attendu.</tr
     </message>
     <message>
         <source>Save project as</source>
-        <translation>Enregistrer le projet sous</translation>
+        <translation type="obsolete">Enregistrer le projet sous</translation>
     </message>
     <message>
         <source>bytes</source>
@@ -3883,7 +3883,7 @@ L&apos;autocomplétion ne sera pas disponible!</translation>
     </message>
     <message>
         <source>Save Window As</source>
-        <translation>Sauvegarder la fenêtre comme</translation>
+        <translation type="obsolete">Sauvegarder la fenêtre comme</translation>
     </message>
     <message>
         <source>Save &amp;Window As...</source>
@@ -5695,6 +5695,18 @@ Les codes spéciaux suivant peuvent être utilisés :
         <source>Vertical</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Speed</source>
+        <translation type="unfinished">Accélération</translation>
+    </message>
+    <message>
+        <source>&amp;Disable for curves with more than</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>data points</source>
+        <translation type="unfinished">Données</translation>
+    </message>
 </context>
 <context>
     <name>ContourLinesEditor</name>
@@ -5889,6 +5901,10 @@ Les codes spéciaux suivant peuvent être utilisés :
     <message>
         <source>&amp;Close</source>
         <translation>&amp;Fermer</translation>
+    </message>
+    <message>
+        <source>Apply to &amp;all layer curves</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -6256,6 +6272,13 @@ Les codes spéciaux suivant peuvent être utilisés :
     <message>
         <source>Draw</source>
         <translation>Points</translation>
+    </message>
+</context>
+<context>
+    <name>EllipseWidget</name>
+    <message>
+        <source>Ellipse</source>
+        <translation type="unfinished">Éllipse</translation>
     </message>
 </context>
 <context>
@@ -8592,6 +8615,10 @@ Les codes spéciaux suivant peuvent être utilisés :
         <source>You don&apos;t have the permission to open this file: &lt;b&gt;%1&lt;/b&gt;</source>
         <translation>Vous n&apos;avez pas les droits pour ouvrir le fichier &lt;b&gt;%1&lt;/b&gt;</translation>
     </message>
+    <message>
+        <source>Image</source>
+        <translation type="unfinished">Image</translation>
+    </message>
 </context>
 <context>
     <name>ImportASCIIDialog</name>
@@ -9313,6 +9340,13 @@ have the same number of rows.</source>
     <message>
         <source>Co&amp;mmon axes</source>
         <translation>Axes co&amp;mmuns</translation>
+    </message>
+</context>
+<context>
+    <name>LegendWidget</name>
+    <message>
+        <source>Legend</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -12485,6 +12519,13 @@ Calcule le sinus de x.</translation>
     </message>
 </context>
 <context>
+    <name>RectangleWidget</name>
+    <message>
+        <source>Rectangle</source>
+        <translation type="unfinished">Rectangle</translation>
+    </message>
+</context>
+<context>
     <name>RenameWindowDialog</name>
     <message>
         <source>Window Title</source>
@@ -13868,6 +13909,13 @@ Calcule le sinus de x.</translation>
     <message>
         <source>Median</source>
         <translation>Médiane</translation>
+    </message>
+</context>
+<context>
+    <name>TexWidget</name>
+    <message>
+        <source>Equation</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

@@ -620,6 +620,9 @@ void ApplicationWindow::initGlobalConstants()
 	d_indexed_symbols = true;
 	d_keep_aspect_ration = true;
 
+	d_disable_curve_antialiasing = true;
+	d_curve_max_antialising_size = 1000;
+
 	majTicksStyle = int(ScaleDraw::Out);
 	minTicksStyle = int(ScaleDraw::Out);
 	minTicksLength = 5;
@@ -2922,6 +2925,7 @@ void ApplicationWindow::setPreferences(Graph* g)
 	g->enableAutoscaling(autoscale2DPlots);
 	g->setAutoscaleFonts(autoScaleFonts);
 	g->setAntialiasing(antialiasing2DPlots);
+	g->disableCurveAntialiasing(d_disable_curve_antialiasing, d_curve_max_antialising_size);
 	g->setFrame(d_graph_border_width, d_graph_border_color);
 
 	QColor c = d_graph_background_color;
@@ -5485,6 +5489,8 @@ void ApplicationWindow::readSettings()
 	d_indexed_symbols = settings.value("/IndexedSymbols", d_indexed_symbols).toBool();
 	defaultCurveBrush = settings.value("/BrushStyle", defaultCurveBrush).toInt();
 	defaultCurveAlpha = settings.value("/BrushAlpha", defaultCurveAlpha).toInt();
+	d_disable_curve_antialiasing = settings.value("/DisableAntialiasing", d_disable_curve_antialiasing).toBool();
+	d_curve_max_antialising_size = settings.value("/MaxCurveAntialisingSize", d_curve_max_antialising_size).toInt();
 	settings.endGroup(); // Curves
 
 	settings.beginGroup("/Ticks");
@@ -5942,6 +5948,8 @@ void ApplicationWindow::saveSettings()
 	settings.setValue("/IndexedSymbols", d_indexed_symbols);
 	settings.setValue("/BrushStyle", defaultCurveBrush);
 	settings.setValue("/BrushAlpha", defaultCurveAlpha);
+	settings.setValue("/DisableAntialiasing", d_disable_curve_antialiasing);
+	settings.setValue("/MaxCurveAntialisingSize", d_curve_max_antialising_size);
 	settings.endGroup(); // Curves
 
 	settings.beginGroup("/Ticks");
@@ -12852,6 +12860,7 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot, co
 		}
 	}
 	if (ag){
+		ag->disableCurveAntialiasing(app->d_disable_curve_antialiasing, app->d_curve_max_antialising_size);
 		ag->updateAxesTitles();
 		ag->updateLayout();
 		ag->enableAutoscaling(autoscale2DPlots);
