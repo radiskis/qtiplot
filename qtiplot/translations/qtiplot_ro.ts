@@ -9175,51 +9175,51 @@ The following special codes can be used:
     </message>
     <message>
         <source>Line Color</source>
-        <translation type="unfinished">Culoare</translation>
+        <translation>Culoare</translation>
     </message>
     <message>
         <source>Line Type</source>
-        <translation type="unfinished">Tip de linie</translation>
+        <translation>Tip de linie</translation>
     </message>
     <message>
         <source>Thickness</source>
-        <translation type="unfinished">Grosime</translation>
+        <translation>Grosime</translation>
     </message>
     <message>
         <source>Grid</source>
-        <translation type="unfinished"></translation>
+        <translation>Grilaj</translation>
     </message>
     <message>
         <source>Major Grids</source>
-        <translation type="unfinished">Grilaj principal</translation>
+        <translation>Grilaj principal</translation>
     </message>
     <message>
         <source>Minor Grids</source>
-        <translation type="unfinished">Grilaj secundar</translation>
+        <translation>Grilaj secundar</translation>
     </message>
     <message>
         <source>An&amp;tialised</source>
-        <translation type="unfinished">Linie ne&amp;tă</translation>
+        <translation>Linie ne&amp;tă</translation>
     </message>
     <message>
         <source>Horizontal</source>
-        <translation type="unfinished"></translation>
+        <translation>Orizontal</translation>
     </message>
     <message>
         <source>Vertical</source>
-        <translation type="unfinished"></translation>
+        <translation>Vertical</translation>
     </message>
     <message>
         <source>Speed</source>
-        <translation type="unfinished">Viteză</translation>
+        <translation>Viteză</translation>
     </message>
     <message>
         <source>&amp;Disable for curves with more than</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Dezactivează pentru curbe cu mai mult de</translation>
     </message>
     <message>
         <source>data points</source>
-        <translation type="unfinished">puncte</translation>
+        <translation>puncte</translation>
     </message>
 </context>
 <context>
@@ -9418,7 +9418,7 @@ The following special codes can be used:
     </message>
     <message>
         <source>Apply to &amp;all layer curves</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Aplică tuturor curbelor din grafic</translation>
     </message>
 </context>
 <context>
@@ -9819,7 +9819,7 @@ The following special codes can be used:
     <name>EllipseWidget</name>
     <message>
         <source>Ellipse</source>
-        <translation type="unfinished">Elipsă</translation>
+        <translation>Elipsă</translation>
     </message>
 </context>
 <context>
@@ -12231,7 +12231,7 @@ The following special codes can be used:
     </message>
     <message>
         <source>Image</source>
-        <translation type="unfinished">Imagine</translation>
+        <translation>Imagine</translation>
     </message>
 </context>
 <context>
@@ -12957,7 +12957,7 @@ have the same number of rows.</source>
     <name>LegendWidget</name>
     <message>
         <source>Legend</source>
-        <translation type="unfinished"></translation>
+        <translation>Legendă</translation>
     </message>
 </context>
 <context>
@@ -16151,7 +16151,7 @@ have the same number of rows.</source>
     <name>RectangleWidget</name>
     <message>
         <source>Rectangle</source>
-        <translation type="unfinished">Dreptunghi</translation>
+        <translation>Dreptunghi</translation>
     </message>
 </context>
 <context>
@@ -17583,7 +17583,7 @@ have the same number of rows.</source>
     <name>TexWidget</name>
     <message>
         <source>Equation</source>
-        <translation type="unfinished"></translation>
+        <translation>Ecuaţie</translation>
     </message>
 </context>
 <context>
