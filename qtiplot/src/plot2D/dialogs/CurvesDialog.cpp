@@ -28,6 +28,7 @@
  ***************************************************************************/
 #include "CurvesDialog.h"
 #include "QwtHistogram.h"
+#include "Spectrogram.h"
 #include <Graph.h>
 #include <Table.h>
 #include <Matrix.h>
@@ -60,9 +61,9 @@ CurvesDialog::CurvesDialog( QWidget* parent, Qt::WFlags fl )
     setSizeGripEnabled(true);
 	setFocus();
 
-    QHBoxLayout *hl = new QHBoxLayout();
+	QGridLayout *hl = new QGridLayout();
 
-	hl->addWidget(new QLabel(tr("New curves style")));
+	hl->addWidget(new QLabel(tr("New curves style")), 0, 0);
 	boxStyle = new QComboBox();
 	boxStyle->addItem( QPixmap(":/lPlot.png"), tr( " Line" ) );
 	boxStyle->addItem( QPixmap(":/pPlot.png"), tr( " Scatter" ) );
@@ -75,15 +76,26 @@ CurvesDialog::CurvesDialog( QWidget* parent, Qt::WFlags fl )
 	boxStyle->addItem( QPixmap(":/vertBars.png"), tr( " Vertical Bars" ) );
 	boxStyle->addItem( QPixmap(":/hBars.png"), tr( " Horizontal Bars" ) );
 	boxStyle->addItem( QPixmap(":/histogram.png"), tr( " Histogram" ) );
-    hl->addWidget(boxStyle);
+	hl->addWidget(boxStyle, 0, 1);
 
     boxMatrixStyle = new QComboBox();
 	boxMatrixStyle->addItem( QPixmap(":/color_map.png"), tr("Contour - Color Fill"));
 	boxMatrixStyle->addItem( QPixmap(":/contour_map.png"), tr("Contour Lines"));
 	boxMatrixStyle->addItem( QPixmap(":/gray_map.png"), tr("Gray Scale Map"));
 	boxMatrixStyle->addItem( QPixmap(":/histogram.png"), tr("Histogram"));
-    hl->addWidget(boxMatrixStyle);
-    hl->addStretch();
+	hl->addWidget(boxMatrixStyle, 0, 2);
+	hl->setColumnStretch(3, 1);
+
+	hl->addWidget(new QLabel(tr("Axes")), 1, 0);
+	boxXAxis = new QComboBox();
+	boxXAxis->addItem(tr("Bottom"));
+	boxXAxis->addItem(tr("Top"));
+	hl->addWidget(boxXAxis, 1, 1);
+
+	boxYAxis = new QComboBox();
+	boxYAxis->addItem(tr("Left"));
+	boxYAxis->addItem(tr("Right"));
+	hl->addWidget(boxYAxis, 1, 2);
 
     QGridLayout *gl = new QGridLayout();
     gl->addWidget(new QLabel( tr( "Available data" )), 0, 0);
@@ -386,20 +398,24 @@ bool CurvesDialog::addCurve(const QString& name)
         if (!m)
             return false;
 
+		QwtPlotItem* it = NULL;
         switch (boxMatrixStyle->currentIndex()){
             case 0:
-                d_graph->plotSpectrogram(m, Graph::ColorMap);
+				it = d_graph->plotSpectrogram(m, Graph::ColorMap);
             break;
             case 1:
-                d_graph->plotSpectrogram(m, Graph::Contour);
+				it = d_graph->plotSpectrogram(m, Graph::Contour);
             break;
             case 2:
-                d_graph->plotSpectrogram(m, Graph::GrayScale);
+				it = d_graph->plotSpectrogram(m, Graph::GrayScale);
             break;
 			case 3:
-                d_graph->addHistogram(m);
+				it = d_graph->addHistogram(m);
             break;
         }
+
+		if (it)
+			it->setAxis(boxXAxis->currentIndex() + 2, boxYAxis->currentIndex());
 
         contents->addItem(name);
 		return true;
@@ -423,6 +439,8 @@ bool CurvesDialog::addCurve(const QString& name)
 
 	if (!c)
 		return false;
+
+	c->setAxis(boxXAxis->currentIndex() + 2, boxYAxis->currentIndex());
 
 	CurveLayout cl = Graph::initCurveLayout();
 	int cIndex, sIndex;
