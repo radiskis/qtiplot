@@ -94,6 +94,8 @@ private:
 	QCheckBox* boxShowCurrentFolder;
 	QPushButton* btnUp;
 	QPushButton* btnDown;
+	QComboBox* boxXAxis;
+	QComboBox* boxYAxis;
 };
 
 /*****************************************************************************
