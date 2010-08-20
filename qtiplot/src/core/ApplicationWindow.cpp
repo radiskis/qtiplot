@@ -6619,12 +6619,12 @@ QString ApplicationWindow::getFileName(QWidget *parent, const QString & caption,
 									   QString * selectedFilter, bool save, bool confirmOverwrite)
 {
 	QFileDialog fd(parent, caption, dir, filter);
-	if (save){
+	if (save)
 		fd.setAcceptMode(QFileDialog::AcceptSave);
-		fd.setConfirmOverwrite(confirmOverwrite);
-	} else
+	else
 		fd.setAcceptMode(QFileDialog::AcceptOpen);
 
+	fd.setConfirmOverwrite(false);
 	fd.setFileMode(QFileDialog::AnyFile);
 
 	if (fd.exec() != QDialog::Accepted )
@@ -6635,6 +6635,31 @@ QString ApplicationWindow::getFileName(QWidget *parent, const QString & caption,
 
 	if (selectedFilter)
 		*selectedFilter = fd.selectedNameFilter();
+
+	if (save){
+		QString file_name = fd.selectedFiles()[0];
+		QString selected_filter = fd.selectedNameFilter();
+		int pos1 = selected_filter.indexOf("*");
+		selected_filter = selected_filter.mid(pos1 + 1, selected_filter.length() - pos1 - 2);
+		if(!file_name.endsWith(selected_filter, Qt::CaseInsensitive))
+			file_name.append(selected_filter);
+
+		if (confirmOverwrite && QFileInfo(file_name).exists() &&
+			QMessageBox::warning(parent, tr("QtiPlot") + " - " + tr("Overwrite file?"),
+			tr("%1 already exists.").arg(file_name) + "\n" + tr("Do you want to replace it?"),
+			QMessageBox::Yes|QMessageBox::No) == QMessageBox::No)
+			return QString();
+
+		QFile file(file_name);
+		if(!file.open(QIODevice::WriteOnly)){
+			QMessageBox::critical(parent, tr("QtiPlot - Export error"),
+			tr("Could not write to file: <br><h4> %1 </h4><p>Please verify that you have the right to write to this location!").arg(file_name));
+			return QString();
+		}
+		file.close();
+		file.remove();
+	}
+
 	return fd.selectedFiles()[0];
 }
 

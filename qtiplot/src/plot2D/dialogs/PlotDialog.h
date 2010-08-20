@@ -96,6 +96,9 @@ private slots:
 	void changePlotType(int plotType);
 	void setActiveCurve(CurveTreeItem *item);
 
+	void raiseCurve();
+	void shiftCurveBy(int offset = 1);
+
 	void insertTabs(int plot_type);
 	void updateTabWindow(QTreeWidgetItem *currentItem, QTreeWidgetItem *previousItem);
 	void showAreaColor(bool show);
@@ -315,6 +318,7 @@ private:
 	QComboBox *plotUnitBox;
 	QCheckBox *boxResizeLayers, *keepPlotRatioBox, *layerScaleFonts;
 	EnrichmentDialog *enrichmentDialog;
+	QPushButton *btnUp, *btnDown;
 };
 
 /*****************************************************************************
