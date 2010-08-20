@@ -105,6 +105,22 @@ PlotDialog::PlotDialog(bool showExtended, QWidget* parent, Qt::WFlags fl )
     boxPlotType = new QComboBox();
     boxPlotType->setEditable(false);
     hb1->addWidget(boxPlotType);
+
+	btnUp = new QPushButton();
+	btnUp->setIcon(QPixmap(":/arrow_up.png"));
+	btnUp->setToolTip(tr("Move upward"));
+	btnUp->setMaximumWidth(20);
+	btnUp->setEnabled(false);
+	hb1->addWidget(btnUp);
+
+	btnDown = new QPushButton();
+	btnDown->setIcon(QPixmap(":/arrow_down.png"));
+	btnDown->setToolTip(tr("Move downward"));
+	btnDown->setMaximumWidth(20);
+	btnDown->setEnabled(false);
+	hb1->addWidget(btnDown);
+	hb1->addStretch();
+
     gl->addWidget(curvePlotTypeBox, 1, 0);
 
 	initAxesPage();
@@ -157,6 +173,8 @@ PlotDialog::PlotDialog(bool showExtended, QWidget* parent, Qt::WFlags fl )
     gl->addLayout(hb2, 1, 1);
 
 	connect(btnMore, SIGNAL(toggled(bool)), this, SLOT(showAll(bool)));
+	connect(btnUp, SIGNAL(clicked()), this, SLOT(raiseCurve()));
+	connect(btnDown, SIGNAL(clicked()), this, SLOT(shiftCurveBy()));
 
 	connect( buttonOk, SIGNAL(clicked()), this, SLOT(quit()));
 	connect( buttonCancel, SIGNAL(clicked()), this, SLOT(close()));
@@ -1758,12 +1776,25 @@ void PlotDialog::contextMenuEvent(QContextMenuEvent *e)
 	QRect rect = listBox->visualItemRect(listBox->currentItem());
 	if (rect.contains(pos)){
 		QMenu contextMenu(this);
-		contextMenu.insertItem(tr("&Delete"), this, SLOT(removeSelectedObject()));
 		if (item->type() == CurveTreeItem::PlotCurveTreeItem){
 			QwtPlotItem *it = (QwtPlotItem *)((CurveTreeItem *)item)->plotItem();
-			if (it && it->rtti() == QwtPlotItem::Rtti_PlotCurve && ((PlotCurve *)it)->type() != Graph::Function)
+			if (it){
+				int index = ((CurveTreeItem *)item)->plotItemIndex();
+				if (index)
+					contextMenu.insertItem(QPixmap(":/arrow_up.png"), tr("Move &upward"), this, SLOT(raiseCurve()));
+
+				Graph *graph = ((CurveTreeItem *)item)->graph();
+				if (graph && index < graph->curveCount() - 1)
+					contextMenu.insertItem(QPixmap(":/arrow_down.png"), tr("Move do&wnward"), this, SLOT(shiftCurveBy()));
+				contextMenu.insertSeparator();
+			}
+
+			if (it && it->rtti() == QwtPlotItem::Rtti_PlotCurve && ((PlotCurve *)it)->type() != Graph::Function){
 				contextMenu.insertItem(tr("&Plot Associations..."), this, SLOT(editCurve()));
+				contextMenu.insertSeparator();
+			}
 		}
+		contextMenu.insertItem(QPixmap(":/delete.png"), tr("&Delete"), this, SLOT(removeSelectedObject()));
 		contextMenu.exec(QCursor::pos());
 	}
 	e->accept();
@@ -2223,6 +2254,13 @@ void PlotDialog::setActiveCurve(CurveTreeItem *item)
     const QwtPlotItem *i = item->plotItem();
     if (!i)
         return;
+
+	Graph *g = item->graph();
+	if (g){
+		int index = item->plotItemIndex();
+		btnUp->setEnabled(index > 0);
+		btnDown->setEnabled(index < g->curveCount() - 1);
+	}
 
 	item->setActive(true);
 	listBox->scrollToItem(item);
@@ -3781,6 +3819,45 @@ QRect PlotDialog::layerCanvasRect(QWidget *widget, double x, double y, double w,
 		break;
 	}
 	return QRect(qRound(x), qRound(y), qRound(w), qRound(h));
+}
+
+void PlotDialog::raiseCurve()
+{
+	shiftCurveBy(-1);
+}
+
+void PlotDialog::shiftCurveBy(int offset)
+{
+	QTreeWidgetItem *item = listBox->currentItem();
+	if (!item || item->type() != CurveTreeItem::PlotCurveTreeItem)
+		return;
+
+	Graph *graph = ((CurveTreeItem *)item)->graph();
+	if (!graph)
+		return;
+
+	int index = ((CurveTreeItem *)item)->plotItemIndex();
+	int newIndex = index + offset;
+	graph->changeCurveIndex(index, newIndex);
+
+	LayerItem *layerItem = (LayerItem *)item->parent();
+	QTreeWidgetItem *rootItem = layerItem->parent();
+
+	rootItem->takeChild(rootItem->indexOfChild (layerItem));
+	delete layerItem;
+
+	layerItem = new LayerItem(graph, rootItem, tr("Layer") + QString::number(d_ml->layerIndex(graph) + 1));
+	rootItem->addChild(layerItem);
+
+	layerItem->setExpanded(true);
+	CurveTreeItem *it = (CurveTreeItem *)layerItem->child(newIndex);
+	if (it){
+		listBox->setCurrentItem(it);
+		setActiveCurve(it);
+	}
+
+	btnUp->setEnabled(newIndex > 0);
+	btnDown->setEnabled(newIndex < graph->curveCount() - 1);
 }
 
 /*****************************************************************************
