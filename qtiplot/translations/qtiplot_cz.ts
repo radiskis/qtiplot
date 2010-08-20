@@ -3905,6 +3905,18 @@ Různé části tohoto souboru se nemusí zobrazovat tak, jak se očekává.</tr
         <source>Shift+T</source>
         <translation>Shift+T</translation>
     </message>
+    <message>
+        <source>Overwrite file?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 already exists.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Do you want to replace it?</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ArrowMarker</name>
@@ -6044,6 +6056,26 @@ K tomu lze použít následujících zvláštních kódů:
     <message>
         <source> Horizontal steps</source>
         <translation> Vodorovné kroky</translation>
+    </message>
+    <message>
+        <source>Axes</source>
+        <translation type="unfinished">Osy</translation>
+    </message>
+    <message>
+        <source>Bottom</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Top</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Left</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Right</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -11655,6 +11687,22 @@ K tomu lze použít následujících zvláštních kódů:
     <message>
         <source>Dimensions</source>
         <translation>Rozměry</translation>
+    </message>
+    <message>
+        <source>Move upward</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Move downward</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Move &amp;upward</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Move do&amp;wnward</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

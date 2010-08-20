@@ -7381,6 +7381,18 @@ Autocompletion will not be available!</source>
         <source>Shift+T</source>
         <translation>Shift+T</translation>
     </message>
+    <message>
+        <source>Overwrite file?</source>
+        <translation>Rescriere fişier?</translation>
+    </message>
+    <message>
+        <source>%1 already exists.</source>
+        <translation>%1 există deja.</translation>
+    </message>
+    <message>
+        <source>Do you want to replace it?</source>
+        <translation>Doriţi să-l înlocuiţi?</translation>
+    </message>
 </context>
 <context>
     <name>ArrowMarker</name>
@@ -9542,6 +9554,26 @@ The following special codes can be used:
     <message>
         <source>&amp;Delete Curve</source>
         <translation>Şterge cur&amp;ba</translation>
+    </message>
+    <message>
+        <source>Axes</source>
+        <translation>Axe</translation>
+    </message>
+    <message>
+        <source>Bottom</source>
+        <translation>Jos</translation>
+    </message>
+    <message>
+        <source>Top</source>
+        <translation>Sus</translation>
+    </message>
+    <message>
+        <source>Left</source>
+        <translation>Stânga</translation>
+    </message>
+    <message>
+        <source>Right</source>
+        <translation>Dreapta</translation>
     </message>
 </context>
 <context>
@@ -15234,6 +15266,22 @@ have the same number of rows.</source>
     <message>
         <source>Dimensions</source>
         <translation>Dimensiuni</translation>
+    </message>
+    <message>
+        <source>Move upward</source>
+        <translation>Mută mai sus</translation>
+    </message>
+    <message>
+        <source>Move downward</source>
+        <translation>Mută mai jos</translation>
+    </message>
+    <message>
+        <source>Move &amp;upward</source>
+        <translation>Mută mai s&amp;us</translation>
+    </message>
+    <message>
+        <source>Move do&amp;wnward</source>
+        <translation>Mută mai &amp;jos</translation>
     </message>
 </context>
 <context>

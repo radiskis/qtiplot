@@ -8468,6 +8468,18 @@ Automatisk komplettering ej tillgängligt!</translation>
         <source>Shift+T</source>
         <translation>Shift-T</translation>
     </message>
+    <message>
+        <source>Overwrite file?</source>
+        <translation type="unfinished">Skriva över fil?</translation>
+    </message>
+    <message>
+        <source>%1 already exists.</source>
+        <translation type="unfinished">%1 finns redan.</translation>
+    </message>
+    <message>
+        <source>Do you want to replace it?</source>
+        <translation type="unfinished">Vill du byta ut den?</translation>
+    </message>
 </context>
 <context>
     <name>ArrowMarker</name>
@@ -10748,6 +10760,26 @@ Följande specialkoder kan användas:
     <message>
         <source> Histogram</source>
         <translation>Histogram</translation>
+    </message>
+    <message>
+        <source>Axes</source>
+        <translation type="unfinished">Axlar</translation>
+    </message>
+    <message>
+        <source>Bottom</source>
+        <translation type="unfinished">Botten</translation>
+    </message>
+    <message>
+        <source>Top</source>
+        <translation type="unfinished">Topp</translation>
+    </message>
+    <message>
+        <source>Left</source>
+        <translation type="unfinished">Vänster</translation>
+    </message>
+    <message>
+        <source>Right</source>
+        <translation type="unfinished">Höger</translation>
     </message>
 </context>
 <context>
@@ -17962,6 +17994,22 @@ Vill du skjuta in celler?</translation>
     <message>
         <source>Dimensions</source>
         <translation>Dimensioner</translation>
+    </message>
+    <message>
+        <source>Move upward</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Move downward</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Move &amp;upward</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Move do&amp;wnward</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

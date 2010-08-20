@@ -1066,7 +1066,16 @@ via a proxy.</para>
     </mediaobject>
   </informalfigure>
 
-  <para>The fifth tab named <emphasis>Geometry</emphasis> defines the default size for the drawing area of a plot layer.</para>
+  <para>The <emphasis>Grid</emphasis> tab defines the default aspect of plot layer grids.</para>
+  <informalfigure id="fig-preferences-dialog-18">
+	<mediaobject>
+	  <imageobject>
+		<imagedata  format="PNG" fileref="pics/preferences-dialog18.png"/>
+	  </imageobject>
+	</mediaobject>
+  </informalfigure>
+
+  <para>The sixth tab named <emphasis>Geometry</emphasis> defines the default size for the drawing area of a plot layer.</para>
   <informalfigure id="fig-preferences-dialog-17">
 	<mediaobject>
 	  <imageobject>
@@ -1075,7 +1084,19 @@ via a proxy.</para>
 	</mediaobject>
   </informalfigure>
 
-  <para>The sixth tab named <emphasis>Fonts</emphasis> defines the default fonts used when you create a new plot.</para>
+  <para>The seventh tab named <emphasis>Speed</emphasis> lets the user enable/disable antialiasing for 2D plots.
+   Since antialiasing is a major source of slow-down in rendering 2D plots,
+   here you have the possibility to disable it for curves displaying large data sets.
+   This is essential in order to keep the application responsive.</para>
+  <informalfigure id="fig-preferences-dialog-19">
+	<mediaobject>
+	  <imageobject>
+		<imagedata  format="PNG" fileref="pics/preferences-dialog19.png"/>
+	  </imageobject>
+	</mediaobject>
+  </informalfigure>
+
+  <para>The eighth tab named <emphasis>Fonts</emphasis> defines the default fonts used when you create a new plot.</para>
   <informalfigure id="fig-preferences-dialog-8">
     <mediaobject>
       <imageobject>
