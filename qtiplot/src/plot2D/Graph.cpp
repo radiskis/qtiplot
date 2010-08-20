@@ -3693,7 +3693,7 @@ void Graph::removeLegendItem(int index)
 			if (index >= (int) items.count())
 				continue;
 
-			QStringList lst = items.grep( "\\l(" + QString::number(index+1) + ")" );
+			QStringList lst = items.grep( "\\l(" + QString::number(index + 1) + ")" );
 			if (lst.isEmpty())
 				continue;
 
@@ -3713,7 +3713,10 @@ void Graph::removeLegendItem(int index)
 					item.replace(pos, n, QString::number(id));
 				}
 				pos1 = item.indexOf("%(", pos2);
-				pos2 = item.indexOf(")", pos1);
+				if (item.contains(","))
+					pos2 = item.indexOf(",", pos1);
+				else
+					pos2 = item.indexOf(")", pos1);
 				pos = pos1 + 2;
 				n = pos2 - pos;
 				cv = item.mid(pos, n).toInt();
@@ -3721,7 +3724,7 @@ void Graph::removeLegendItem(int index)
 					int id = cv - 1;
 					if (!id)
 						id = 1;
-				item.replace(pos, n, QString::number(id));
+					item.replace(pos, n, QString::number(id));
 				}
 				items[i] = item;
 			}
