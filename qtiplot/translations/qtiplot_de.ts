@@ -9889,6 +9889,18 @@ Autocompletion will not be available!</source>
         <source>Shift+T</source>
         <translation>Umschalt+T</translation>
     </message>
+    <message>
+        <source>Overwrite file?</source>
+        <translation type="unfinished">Datei überschreiben?</translation>
+    </message>
+    <message>
+        <source>%1 already exists.</source>
+        <translation type="unfinished">%1 existiert bereits.</translation>
+    </message>
+    <message>
+        <source>Do you want to replace it?</source>
+        <translation type="unfinished">Möchten Sie ersetzen?</translation>
+    </message>
 </context>
 <context>
     <name>ArrowMarker</name>
@@ -12317,6 +12329,26 @@ Die folgenden Spezialcodes können benutzt werden:
     <message>
         <source> Histogram</source>
         <translation>Histogramm</translation>
+    </message>
+    <message>
+        <source>Axes</source>
+        <translation type="unfinished">Achsen</translation>
+    </message>
+    <message>
+        <source>Bottom</source>
+        <translation type="unfinished">Unten</translation>
+    </message>
+    <message>
+        <source>Top</source>
+        <translation type="unfinished">Oben</translation>
+    </message>
+    <message>
+        <source>Left</source>
+        <translation type="unfinished">Links</translation>
+    </message>
+    <message>
+        <source>Right</source>
+        <translation type="unfinished">Rechts</translation>
     </message>
 </context>
 <context>
@@ -20615,6 +20647,22 @@ Wollen sie Zellen einfügen?</translation>
     <message>
         <source>Dimensions</source>
         <translation>Größe</translation>
+    </message>
+    <message>
+        <source>Move upward</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Move downward</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Move &amp;upward</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Move do&amp;wnward</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

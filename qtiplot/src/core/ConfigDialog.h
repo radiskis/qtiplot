@@ -138,6 +138,7 @@ private slots:
 	void updateGrid();
 	void majorGridEnabled(bool);
 	void minorGridEnabled(bool);
+	void enableCurveAntialiasingSizeBox(bool);
 
 private:
 	void setSymbolsList(const QList<int>& symbList);

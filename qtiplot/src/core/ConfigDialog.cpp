@@ -1000,8 +1000,9 @@ void ConfigDialog::initLayerSpeedPage()
 	curveSizeBox->setMinimum(2);
 	curveSizeBox->setMaximum(INT_MAX);
 	curveSizeBox->setValue(app->d_curve_max_antialising_size);
-	curveSizeBox->setEnabled(antialiasingGroupBox->isChecked() && disableAntialiasingBox->isChecked());
+
 	connect(disableAntialiasingBox, SIGNAL(toggled(bool)), curveSizeBox, SLOT(setEnabled(bool)));
+	connect(antialiasingGroupBox, SIGNAL(toggled(bool)), curveSizeBox, SLOT(enableCurveAntialiasingSizeBox(bool)));
 
 	QGridLayout * gl = new QGridLayout(antialiasingGroupBox);
 	gl->addWidget(disableAntialiasingBox, 0, 0);
@@ -1010,6 +1011,11 @@ void ConfigDialog::initLayerSpeedPage()
 
 	QHBoxLayout * hl = new QHBoxLayout(plotSpeedPage);
 	hl->addWidget(antialiasingGroupBox);
+}
+
+void ConfigDialog::enableCurveAntialiasingSizeBox(bool on)
+{
+	curveSizeBox->setEnabled(on && disableAntialiasingBox->isChecked());
 }
 
 void ConfigDialog::initLayerGeometryPage()

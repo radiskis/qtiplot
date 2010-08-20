@@ -3907,6 +3907,18 @@ Autocompletion will not be available!</source>
         <source>chart</source>
         <translation type="obsolete">диаграмма</translation>
     </message>
+    <message>
+        <source>Overwrite file?</source>
+        <translation type="unfinished">Перезаписать файл?</translation>
+    </message>
+    <message>
+        <source>%1 already exists.</source>
+        <translation type="unfinished">%1 уже существует.</translation>
+    </message>
+    <message>
+        <source>Do you want to replace it?</source>
+        <translation type="unfinished">Заменить?</translation>
+    </message>
 </context>
 <context>
     <name>ArrowMarker</name>
@@ -6030,6 +6042,26 @@ The following special codes can be used:
     <message>
         <source> Histogram</source>
         <translation>Гистограмма</translation>
+    </message>
+    <message>
+        <source>Axes</source>
+        <translation type="unfinished">Оси</translation>
+    </message>
+    <message>
+        <source>Bottom</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Top</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Left</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Right</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -11659,6 +11691,22 @@ have the same number of rows.</source>
     <message>
         <source>Dimensions</source>
         <translation>Размерность</translation>
+    </message>
+    <message>
+        <source>Move upward</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Move downward</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Move &amp;upward</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Move do&amp;wnward</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
