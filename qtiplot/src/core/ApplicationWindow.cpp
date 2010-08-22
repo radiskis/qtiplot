@@ -10152,13 +10152,18 @@ void ApplicationWindow::windowsMenuActivated( int id )
 	QList<MdiSubWindow *> windows = current_folder->windowsList();
 	MdiSubWindow* w = windows.at( id );
 	if ( w ){
-		w->showNormal();
-		w->setFocus();
-		if(hidden(w)){
-			hiddenWindows->takeAt(hiddenWindows->indexOf(w));
-			setListView(w->objectName(), tr("Normal"));
-		}
+		MdiSubWindow* aw = (MdiSubWindow*)d_workspace->activeSubWindow();
+		bool maximize = aw && aw->isMaximized();
+
 		d_workspace->setActiveSubWindow(w);
+		if (maximize)
+			w->showMaximized();
+		else
+			w->showNormal();
+		w->setFocus();
+
+		if(hidden(w))
+			hiddenWindows->takeAt(hiddenWindows->indexOf(w));
 	}
 }
 
