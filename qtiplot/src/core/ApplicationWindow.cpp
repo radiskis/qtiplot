@@ -10623,6 +10623,7 @@ void ApplicationWindow::showTable(Table *w, const QString& curve)
 	w->setSelectedCol(colIndex);
 	w->table()->clearSelection();
 	w->table()->selectColumn(colIndex);
+	w->table()->ensureCellVisible(0, colIndex);
 	w->showMaximized();
 	Q3ListViewItem *it = lv->findItem (w->objectName(), 0, Q3ListView::ExactMatch | Qt::CaseSensitive );
 	if (it)
