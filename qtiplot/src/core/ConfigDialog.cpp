@@ -1002,7 +1002,7 @@ void ConfigDialog::initLayerSpeedPage()
 	curveSizeBox->setValue(app->d_curve_max_antialising_size);
 
 	connect(disableAntialiasingBox, SIGNAL(toggled(bool)), curveSizeBox, SLOT(setEnabled(bool)));
-	connect(antialiasingGroupBox, SIGNAL(toggled(bool)), curveSizeBox, SLOT(enableCurveAntialiasingSizeBox(bool)));
+	connect(antialiasingGroupBox, SIGNAL(toggled(bool)), this, SLOT(enableCurveAntialiasingSizeBox(bool)));
 
 	QGridLayout * gl = new QGridLayout(antialiasingGroupBox);
 	gl->addWidget(disableAntialiasingBox, 0, 0);

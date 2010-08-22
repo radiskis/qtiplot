@@ -6102,7 +6102,6 @@ QwtPlotItem* Graph::closestCurve(int xpos, int ypos, int &dist, int &point)
 			if (f < dmin){
 				dmin = f;
 				curve = c;
-				point = i;
 			}
 		}
 	}
