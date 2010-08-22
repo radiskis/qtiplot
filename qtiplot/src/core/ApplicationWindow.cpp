@@ -2711,9 +2711,10 @@ MultiLayer* ApplicationWindow::multilayerPlot(Table* w, const QStringList& colLi
 
 	setPreferences(ag);
 	ag->addCurves(w, colList, style, defaultCurveLineWidth, defaultSymbolSize, startRow, endRow);
-	ag->newLegend();
 
 	g->arrangeLayers(false, true);
+	ag->newLegend();
+
 	QApplication::restoreOverrideCursor();
 	return g;
 }
