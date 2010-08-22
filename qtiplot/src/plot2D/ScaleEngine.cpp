@@ -41,12 +41,8 @@ QwtScaleTransformation* ScaleEngine::transformation() const
 
 double ScaleTransformation::invXForm(double p, double p1, double p2, double s1, double s2) const
 {
-    if (!d_engine->hasBreak()){
-    	QwtScaleTransformation *tr = newScaleTransformation();
-        double res = tr->invXForm(p, p1, p2, s1, s2);
-        delete tr;
-        return res;
-    }
+	if (!d_engine->hasBreak())
+		return QwtScaleTransformation::invXForm(p, p1, p2, s1, s2);
 
     const int d_break_space = d_engine->breakWidth();
 	const double lb = d_engine->axisBreakLeft();
@@ -116,12 +112,8 @@ double ScaleTransformation::xForm(double s, double s1, double s2, double p1, dou
 		return INT_MAX;
 	}
 
-	if (!d_engine->hasBreak()){
-		QwtScaleTransformation *tr = newScaleTransformation();
-		double res = tr->xForm(s, s1, s2, p1, p2);
-		delete tr;
-		return res;
-	}
+	if (!d_engine->hasBreak())
+		return QwtScaleTransformation::xForm(s, s1, s2, p1, p2);
 
     const int d_break_space = d_engine->breakWidth();
 	const double lb = d_engine->axisBreakLeft();

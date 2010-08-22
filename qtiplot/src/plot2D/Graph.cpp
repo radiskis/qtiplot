@@ -6069,49 +6069,63 @@ void Graph::setTickLength (int minLength, int majLength)
 QwtPlotItem* Graph::closestCurve(int xpos, int ypos, int &dist, int &point)
 {
 	QwtScaleMap map[QwtPlot::axisCnt];
-	for ( int axis = 0; axis < QwtPlot::axisCnt; axis++ )
+	for (int axis = 0; axis < QwtPlot::axisCnt; axis++)
 		map[axis] = canvasMap(axis);
 
-	double dmin = 1.0e10;
+	double dmin = DBL_MAX;
+	double dxpos = double(xpos);
+	double dypos = double(ypos);
+	QPoint p = QPoint(xpos, ypos);
 	QwtPlotItem *curve = NULL;
 	foreach (QwtPlotItem *item, d_curves){
 		if(item->rtti() == QwtPlotItem::Rtti_PlotSpectrogram)
 			continue;
 
 		PlotCurve *c = (PlotCurve *)item;
-		if (c->type() != Graph::Function && ((DataCurve *)c)->hasLabels() &&
-			((DataCurve *)c)->selectedLabels(QPoint(xpos, ypos))){
-			dist = 0;
-			return item;
-		} else
-			((DataCurve *)c)->setLabelsSelected(false);
+		if (c->type() == Graph::ErrorBars)
+			continue;
 
-		for (int i=0; i<c->dataSize(); i++){
-			double cx = map[c->xAxis()].xTransform(c->x(i)) - double(xpos);
-			double cy = map[c->yAxis()].xTransform(c->y(i)) - double(ypos);
+		if (c->type() != Graph::Function){
+			DataCurve *dc = (DataCurve *)c;
+			if (dc->hasLabels() && dc->selectedLabels(p)){
+				dist = 0;
+				return item;
+			}
+		}
+
+		double dx = map[c->xAxis()].invTransform(dxpos);
+		double dy = map[c->yAxis()].invTransform(dypos);
+		for (int i = 0; i < c->dataSize(); i++){
+			double cx = c->x(i) - dx;
+			double cy = c->y(i) - dy;
 			double f = qwtSqr(cx) + qwtSqr(cy);
-			if (f < dmin && c->type() != Graph::ErrorBars){
+			if (f < dmin){
 				dmin = f;
 				curve = c;
 				point = i;
 			}
 		}
 	}
-	dist = qRound(sqrt(dmin));
-	if (curve && dist <= 10)
-		return curve;
+
+	if (curve){
+		point = ((PlotCurve *)curve)->closestPoint(p, &dmin);
+		if (dmin <= 10){
+			dist = qRound(dmin);
+			return curve;
+		}
+	}
 
 	foreach (QwtPlotItem *item, d_curves){
 		if(item->rtti() != QwtPlotItem::Rtti_PlotSpectrogram)
 			continue;
 
 		Spectrogram *c = (Spectrogram *)item;
-		if (c->selectedLabels(QPoint(xpos, ypos))){
+		if (c->selectedLabels(p)){
 			dist = 0;
 			return item;
 		} else {
 			c->selectLabel(false);
-			if (c->transform(map[c->xAxis()], map[c->yAxis()], c->boundingRect()).contains(QPoint(xpos, ypos))){
+			if (c->transform(map[c->xAxis()], map[c->yAxis()], c->boundingRect()).contains(p)){
 				dist = 0;
 				return item;
 			}
