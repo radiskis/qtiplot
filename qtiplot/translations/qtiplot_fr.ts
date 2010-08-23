@@ -906,7 +906,7 @@
     </message>
     <message>
         <source>Set Column &amp;Values ...</source>
-        <translation>Fixer les &amp;Valeurs de la Colonne...</translation>
+        <translation>Fixer les &amp;valeurs de la Colonne...</translation>
     </message>
     <message>
         <source>&amp;Remove Layer</source>
@@ -1283,7 +1283,7 @@
     <message>
         <source>This will modify the data in the worksheets!
 Are you sure you want to continue?</source>
-        <translation>Ceci modifiera les données dans les tables !
+        <translation>Cette action modifiera les données dans les tables !
 Êtes vous sûr de vouloir continuer ?</translation>
     </message>
     <message>
@@ -1500,19 +1500,19 @@ Are you sure you want to continue?</source>
     </message>
     <message>
         <source>Create an empty 2D plot</source>
-        <translation>Créer un graphe 2D vide</translation>
+        <translation>Nouveau graphe 2D</translation>
     </message>
     <message>
         <source>Create an empty note window</source>
-        <translation>Créer une fenêtre de commentaires vide</translation>
+        <translation>Nouvelle fenêtre de commentaires</translation>
     </message>
     <message>
         <source>Create a new 2D function plot</source>
-        <translation>Créer un nouveau graphe de fonction 2D</translation>
+        <translation>Nouveau graphe de fonction 2D</translation>
     </message>
     <message>
         <source>Create a new 3D surface plot</source>
-        <translation>Créer un nouveau graphe 3D</translation>
+        <translation>Nouveau graphe 3D</translation>
     </message>
     <message>
         <source>Open Te&amp;mplate...</source>
@@ -1800,7 +1800,7 @@ Are you sure you want to continue?</source>
     </message>
     <message>
         <source>Draw arrow</source>
-        <translation>Désiner une flèche</translation>
+        <translation>Déssiner une flèche</translation>
     </message>
     <message>
         <source>Graph</source>
@@ -2569,7 +2569,7 @@ Quelques parties de ce fichier peuvent ne pas être affichés comme attendu.</tr
     </message>
     <message>
         <source>Open Excel</source>
-        <translation>Ouvrir Excel</translation>
+        <translation>Ouvrir un fichier Excel</translation>
     </message>
     <message>
         <source>Open ODF Spreadsheet</source>
@@ -3002,7 +3002,7 @@ Quelques parties de ce fichier peuvent ne pas être affichés comme attendu.</tr
     </message>
     <message>
         <source>&amp;Swap columns</source>
-        <translation>Echanger les Colonne&amp;s</translation>
+        <translation>Intervertirr les Colonne&amp;s</translation>
     </message>
     <message>
         <source>Move &amp;Right</source>
@@ -3123,7 +3123,7 @@ Quelques parties de ce fichier peuvent ne pas être affichés comme attendu.</tr
     </message>
     <message>
         <source>Create a new folder</source>
-        <translation>Créer un nouveau dossier</translation>
+        <translation>Nouveau dossier</translation>
     </message>
     <message>
         <source>Swap selected columns</source>
@@ -3331,7 +3331,7 @@ Quelques parties de ce fichier peuvent ne pas être affichés comme attendu.</tr
     </message>
     <message>
         <source>Disregard Columns</source>
-        <translation></translation>
+        <translation>Ignorer les colonnes</translation>
     </message>
     <message>
         <source>Mathematical Symbols</source>
@@ -3899,15 +3899,15 @@ L&apos;autocomplétion ne sera pas disponible!</translation>
     </message>
     <message>
         <source>Overwrite file?</source>
-        <translation type="unfinished">Écraser le fichier ?</translation>
+        <translation>Écraser le fichier ?</translation>
     </message>
     <message>
         <source>%1 already exists.</source>
-        <translation type="unfinished">%1 existe déjà.</translation>
+        <translation>%1 existe déjà.</translation>
     </message>
     <message>
         <source>Do you want to replace it?</source>
-        <translation type="unfinished">Voulez-vous le remplacer ?</translation>
+        <translation>Voulez-vous le remplacer ?</translation>
     </message>
 </context>
 <context>
@@ -5673,51 +5673,51 @@ Les codes spéciaux suivant peuvent être utilisés :
     </message>
     <message>
         <source>Line Color</source>
-        <translation type="unfinished">Couleur des lignes</translation>
+        <translation>Couleur de ligne</translation>
     </message>
     <message>
         <source>Line Type</source>
-        <translation type="unfinished">Type de lignes</translation>
+        <translation>Type de ligne</translation>
     </message>
     <message>
         <source>Thickness</source>
-        <translation type="unfinished">Épaisseur</translation>
+        <translation>Épaisseur</translation>
     </message>
     <message>
         <source>Grid</source>
-        <translation type="unfinished">Grille</translation>
+        <translation>Grille</translation>
     </message>
     <message>
         <source>Major Grids</source>
-        <translation type="unfinished">Grille principale</translation>
+        <translation>Grille principale</translation>
     </message>
     <message>
         <source>Minor Grids</source>
-        <translation type="unfinished">Grille secondaire</translation>
+        <translation>Grille secondaire</translation>
     </message>
     <message>
         <source>An&amp;tialised</source>
-        <translation type="unfinished">An&amp;tialiasé</translation>
+        <translation>An&amp;tialiasé</translation>
     </message>
     <message>
         <source>Horizontal</source>
-        <translation type="unfinished"></translation>
+        <translation>Horizontal</translation>
     </message>
     <message>
         <source>Vertical</source>
-        <translation type="unfinished"></translation>
+        <translation>Vertical</translation>
     </message>
     <message>
         <source>Speed</source>
-        <translation type="unfinished">Accélération</translation>
+        <translation>Accélération</translation>
     </message>
     <message>
         <source>&amp;Disable for curves with more than</source>
-        <translation type="unfinished"></translation>
+        <translation>In&amp;disponible pour les courbes de plus de </translation>
     </message>
     <message>
         <source>data points</source>
-        <translation type="unfinished">Données</translation>
+        <translation>Données</translation>
     </message>
 </context>
 <context>
@@ -5916,7 +5916,7 @@ Les codes spéciaux suivant peuvent être utilisés :
     </message>
     <message>
         <source>Apply to &amp;all layer curves</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Appliquer à toutes les planches des courbes</translation>
     </message>
 </context>
 <context>
@@ -6043,23 +6043,23 @@ Les codes spéciaux suivant peuvent être utilisés :
     </message>
     <message>
         <source>Axes</source>
-        <translation type="unfinished">Axes</translation>
+        <translation>Axes</translation>
     </message>
     <message>
         <source>Bottom</source>
-        <translation type="unfinished">Inférieur</translation>
+        <translation>Inférieur</translation>
     </message>
     <message>
         <source>Top</source>
-        <translation type="unfinished">Supérieur</translation>
+        <translation>Supérieur</translation>
     </message>
     <message>
         <source>Left</source>
-        <translation type="unfinished">Gauche</translation>
+        <translation>Gauche</translation>
     </message>
     <message>
         <source>Right</source>
-        <translation type="unfinished">Droite</translation>
+        <translation>Droite</translation>
     </message>
 </context>
 <context>
@@ -6310,7 +6310,7 @@ Les codes spéciaux suivant peuvent être utilisés :
     <name>EllipseWidget</name>
     <message>
         <source>Ellipse</source>
-        <translation type="unfinished">Éllipse</translation>
+        <translation>Éllipse</translation>
     </message>
 </context>
 <context>
@@ -8649,7 +8649,7 @@ Les codes spéciaux suivant peuvent être utilisés :
     </message>
     <message>
         <source>Image</source>
-        <translation type="unfinished">Image</translation>
+        <translation>Image</translation>
     </message>
 </context>
 <context>
@@ -9331,7 +9331,7 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Swap Layers</source>
-        <translation>Échanger les planches</translation>
+        <translation>Intervertir les planches</translation>
     </message>
     <message>
         <source>Source Layer</source>
@@ -9378,7 +9378,7 @@ have the same number of rows.</source>
     <name>LegendWidget</name>
     <message>
         <source>Legend</source>
-        <translation type="unfinished"></translation>
+        <translation>Légende</translation>
     </message>
 </context>
 <context>
@@ -11635,19 +11635,19 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Move upward</source>
-        <translation type="unfinished"></translation>
+        <translation>Déplacer vers le haut</translation>
     </message>
     <message>
         <source>Move downward</source>
-        <translation type="unfinished"></translation>
+        <translation>Déplacer vers le bas</translation>
     </message>
     <message>
         <source>Move &amp;upward</source>
-        <translation type="unfinished"></translation>
+        <translation>Déplacer vers le ha&amp;ut</translation>
     </message>
     <message>
         <source>Move do&amp;wnward</source>
-        <translation type="unfinished"></translation>
+        <translation>D&amp;éplacer vers le ba&amp;s</translation>
     </message>
 </context>
 <context>
@@ -12570,7 +12570,7 @@ Calcule le sinus de x.</translation>
     <name>RectangleWidget</name>
     <message>
         <source>Rectangle</source>
-        <translation type="unfinished">Rectangle</translation>
+        <translation>Rectangle</translation>
     </message>
 </context>
 <context>
@@ -13637,7 +13637,7 @@ Calcule le sinus de x.</translation>
     </message>
     <message>
         <source>Display</source>
-        <translation>Affichage</translation>
+        <translation>Affichage :</translation>
     </message>
     <message>
         <source>Numeric</source>
@@ -13963,7 +13963,7 @@ Calcule le sinus de x.</translation>
     <name>TexWidget</name>
     <message>
         <source>Equation</source>
-        <translation type="unfinished"></translation>
+        <translation>Équation</translation>
     </message>
 </context>
 <context>
