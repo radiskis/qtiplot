@@ -103,6 +103,8 @@ class Filter : public QObject
 
 		virtual void enableGraphicsDisplay(bool on = true, Graph *g = 0);
 
+		void setUpdateOutputGraph(bool update = true) {d_update_output_graph = update;};
+
 	protected:
         void init();
         void memoryErrorMessage();
@@ -190,6 +192,9 @@ class Filter : public QObject
 
 		//! Specifies if the filter should display a result curve
 		bool d_graphics_display;
+
+		//! Specifies if the filter should update the output graph
+		bool d_update_output_graph;
 
 		QString d_y_col_name;
 };

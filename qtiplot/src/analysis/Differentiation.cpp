@@ -119,6 +119,7 @@ void Differentiation::output()
 		if (!d_output_graph)
 			createOutputGraph();
     	d_output_graph->insertCurve(d_result_table, tableName + "_2", 0);
-		d_output_graph->updatePlot();
+		if (d_update_output_graph)
+			d_output_graph->updatePlot();
 	}
 }
