@@ -85,6 +85,7 @@ void Filter::init()
     d_result_table = 0;
 	d_output_graph = 0;
 	d_graphics_display = true;
+	d_update_output_graph = true;
 	d_y_col_name = QString::null;
 }
 
@@ -461,7 +462,8 @@ QwtPlotCurve* Filter::addResultCurve(double *x, double *y)
 			createOutputGraph();
 
 		d_output_graph->insertPlotItem(c, Graph::Line);
-		d_output_graph->updatePlot();
+		if (d_update_output_graph)
+			d_output_graph->updatePlot();
 	}
 	return (QwtPlotCurve*)c;
 }

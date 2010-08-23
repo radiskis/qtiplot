@@ -1009,7 +1009,8 @@ void Fit::generateFitCurve()
 
 		if (d_gen_function){
 			insertFitFunctionCurve(QString(objectName()) + tr("Fit"));
-			d_output_graph->replot();
+			if (d_update_output_graph)
+				d_output_graph->replot();
 		} else {
         	d_output_graph->addFitCurve(addResultCurve(X, Y));
 			free(X);

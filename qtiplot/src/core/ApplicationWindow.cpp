@@ -13090,6 +13090,7 @@ void ApplicationWindow::differentiate()
 		}
 
 		Differentiation *diff = new Differentiation(this, NULL, "", "");
+		diff->setUpdateOutputGraph(false);
 		int aux = 0;
 		foreach (QString yCol, lst){
 			int xCol = t->colX(t->colIndex(yCol));
@@ -13101,12 +13102,19 @@ void ApplicationWindow::differentiate()
 
 			QwtPlotCurve *c = g->curve(aux);
 			if (c){
-				QPen pen = c->pen();
-				pen.setColor(d_indexed_colors[aux]);
-				c->setPen(pen);
+				if (aux < d_indexed_colors.size()){
+					QPen pen = c->pen();
+					pen.setColor(d_indexed_colors[aux]);
+					c->setPen(pen);
+				}
 				aux++;
 			}
 		}
+
+		Graph *g = diff->outputGraph();
+		if (g)
+			g->updatePlot();
+
 		delete diff;
 	}
 }
@@ -13135,6 +13143,8 @@ void ApplicationWindow::fitLinear()
 		QString legend = tr("Linear Regression of %1").arg(t->objectName());
 		g->setWindowLabel(legend);
 
+		QApplication::setOverrideCursor(Qt::WaitCursor);
+
 		Table *result = newTable(cols, 5, "", legend);
 		result->setColName(0, tr("Column"));
 		result->setColName(1, tr("Slope"));
@@ -13143,6 +13153,7 @@ void ApplicationWindow::fitLinear()
 		result->setColName(4, tr("R^2"));
 
 		LinearFit *lf = new LinearFit (this, g->activeLayer());
+		lf->setUpdateOutputGraph(false);
 		if (d_2_linear_fit_points)
 			lf->generateFunction(generateUniformFitPoints, 2);
 		lf->setOutputPrecision(fit_output_precision);
@@ -13165,7 +13176,13 @@ void ApplicationWindow::fitLinear()
 		for (int i = 0; i < result->numCols(); i++)
 			result->table()->adjustColumn(i);
 		result->show();
+
+		Graph *og = lf->outputGraph();
+		if (og)
+			og->updatePlot();
 		delete lf;
+
+		QApplication::restoreOverrideCursor();
 	}
 }
 
@@ -13190,6 +13207,8 @@ void ApplicationWindow::fitSlope()
 		if (!g)
 			return;
 
+		QApplication::setOverrideCursor(Qt::WaitCursor);
+
 		QString legend = tr("Linear Regression of %1").arg(t->objectName());
 		g->setWindowLabel(legend);
 
@@ -13200,6 +13219,7 @@ void ApplicationWindow::fitSlope()
 		result->setColName(3, tr("R^2"));
 
 		LinearSlopeFit *lf = new LinearSlopeFit (this, g->activeLayer());
+		lf->setUpdateOutputGraph(false);
 		if (d_2_linear_fit_points)
 			lf->generateFunction(generateUniformFitPoints, 2);
 		lf->setOutputPrecision(fit_output_precision);
@@ -13221,7 +13241,13 @@ void ApplicationWindow::fitSlope()
 		for (int i = 0; i < result->numCols(); i++)
 			result->table()->adjustColumn(i);
 		result->show();
+
+		Graph *og = lf->outputGraph();
+		if (og)
+			og->updatePlot();
 		delete lf;
+
+		QApplication::restoreOverrideCursor();
 	}
 }
 
