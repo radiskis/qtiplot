@@ -13112,8 +13112,10 @@ void ApplicationWindow::differentiate()
 		}
 
 		Graph *g = diff->outputGraph();
-		if (g)
+		if (g){
+			g->newLegend();
 			g->updatePlot();
+		}
 
 		delete diff;
 	}
