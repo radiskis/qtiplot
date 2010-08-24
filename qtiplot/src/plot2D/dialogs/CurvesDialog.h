@@ -40,6 +40,9 @@ class QTreeWidget;
 class TreeWidgetFolderItem;
 class Graph;
 class Folder;
+class Matrix;
+class Table;
+class ApplicationWindow;
 
 //! Add/remove curves dialog
 class CurvesDialog : public QDialog
@@ -73,7 +76,10 @@ private:
 	void addFolderItems(Folder *f, QTreeWidgetItem* parent = 0);
 
     void init();
-    bool addCurve(const QString& name);
+
+	bool addCurveFromMatrix(Matrix *m, const QString& name);
+	bool addCurveFromTable(ApplicationWindow *app, Table *t, const QString& name);
+
     QSize sizeHint() const;
     void contextMenuEvent(QContextMenuEvent *);
 

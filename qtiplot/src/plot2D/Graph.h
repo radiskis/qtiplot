@@ -445,7 +445,7 @@ class Graph: public QwtPlot
 
 		LegendWidget* newLegend(const QString& text = QString());
 		//! Creates a new legend text using the curves titles
-		QString legendText(bool layerSpec = false);
+		QString legendText(bool layerSpec = false, int fromIndex = 0);
 		//@}
 
 		//! \name Obsolete functions provided to keep existing Python scripts working

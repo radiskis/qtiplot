@@ -1964,10 +1964,9 @@ void Graph::initTitle(bool on, const QFont& fnt)
 	}
 }
 
-QString Graph::legendText(bool layerSpec)
+QString Graph::legendText(bool layerSpec, int fromIndex)
 {
 	QString text = QString();
-	int i = 0;
 
 	if (layerSpec){
 		int layerIndex = 1;
@@ -1975,11 +1974,12 @@ QString Graph::legendText(bool layerSpec)
 		if (ml)
 			layerIndex = ml->layerIndex(this);
 
-		foreach (QwtPlotItem *it, d_curves){
-			if (it->rtti() == QwtPlotItem::Rtti_PlotSpectrogram)
+		for (int i = fromIndex; i < d_curves.size(); i++){
+			PlotCurve* c = curve(i);
+			if (!c)
 				continue;
 
-			if (((PlotCurve *)it)->type() != ErrorBars ){
+			if (c->type() != ErrorBars){
 				text += "\\l(";
 				text += QString::number(layerIndex + 1);
 				text += ".";
@@ -1993,21 +1993,22 @@ QString Graph::legendText(bool layerSpec)
 			}
 		}
 	} else {
-		foreach (QwtPlotItem *it, d_curves){
-			if (it->rtti() == QwtPlotItem::Rtti_PlotSpectrogram)
+		for (int i = fromIndex; i < d_curves.size(); i++){
+			PlotCurve* c = curve(i);
+			if (!c)
 				continue;
 
-			if (((PlotCurve *)it)->type() == Function){
+			int type = c->type();
+			if (type == Function){
 				text += "\\l(";
 				text += QString::number(i + 1);
 				text += ")%(";
 				text += QString::number(i + 1);
 				text += ")\n";
-				i++;
 				continue;
 			}
 
-			if (((PlotCurve *)it)->type() != ErrorBars ){
+			if (type != ErrorBars){
 				text += "\\l(";
 				text += QString::number(i + 1);
 				text += ")%(";
@@ -2033,7 +2034,6 @@ QString Graph::legendText(bool layerSpec)
 				}
 
 				text += ")\n";
-				i++;
 			}
 		}
 	}
@@ -3212,8 +3212,7 @@ void Graph::insertPlotItem(QwtPlotItem *i, int type)
 	}
 }
 
-bool Graph::addCurves(Table* w, const QStringList& names, int style, double lWidth,
-							int sSize, int startRow, int endRow)
+bool Graph::addCurves(Table* w, const QStringList& names, int style, double lWidth, int sSize, int startRow, int endRow)
 {
 	if (!w)
 		return false;
@@ -3345,7 +3344,6 @@ DataCurve* Graph::insertCurve(Table* w, const QString& xColName, const QString& 
 		return NULL;
 
 	int xColType = w->columnType(xcol);
-	int size = 0;
 	QString date_time_fmt = w->columnFormat(xcol);
 	QTime time0;
 	QDateTime date0;
@@ -3387,11 +3385,12 @@ DataCurve* Graph::insertCurve(Table* w, const QString& xColName, const QString& 
 		}
 	}
 
-	for (int i = startRow; i<=endRow; i++ ){
-		QString xval=w->text(i,xcol);
-		QString yval=w->text(i,ycol);
-		if (!xval.isEmpty() && !yval.isEmpty())
+	int size = 0;
+	for (int i = startRow; i <= endRow; i++ ){
+		if (!w->text(i, xcol).isEmpty() && !w->text(i, ycol).isEmpty()){
 			size++;
+			break;
+		}
 	}
 	if (!size)
 		return NULL;
@@ -3414,7 +3413,6 @@ DataCurve* Graph::insertCurve(Table* w, const QString& xColName, const QString& 
 
 	insertCurve(c);
 	c->setPlotStyle(style);
-	c->setPen(QPen(Qt::black, 1.0));
 
 	CurveLayout cl = initCurveLayout(style, 0, false);
 	updateCurveLayout(c, &cl);
