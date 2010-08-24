@@ -676,9 +676,15 @@ void DataCurve::loadData()
 			range.from = from;
 			range.to = size - 1;
 			d_data_ranges.push_back(range);
-
 			from = size;
 		}
+	}
+
+	if (d_data_ranges.size() && from < size){
+		DataRange range;
+		range.from = from;
+		range.to = size - 1;
+		d_data_ranges.push_back(range);
 	}
 
 	X.resize(size);
