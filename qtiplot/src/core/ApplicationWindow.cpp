@@ -10049,7 +10049,7 @@ void ApplicationWindow::windowsMenuAboutToShow()
 
 	windowsMenu->addAction(actionResizeActiveWindow);
 	windowsMenu->addAction(actionHideActiveWindow);
-	windowsMenu->insertItem(QPixmap(":/close.png"), tr("Close &Window"), this, SLOT(closeActiveWindow()), Qt::CTRL + Qt::Key_W);
+	windowsMenu->addAction(actionCloseWindow);
 
 	if (n > 0)
 		windowsMenu->insertSeparator();
@@ -14029,7 +14029,6 @@ void ApplicationWindow::createActions()
 	connect(actionRename, SIGNAL(activated()), this, SLOT(rename()));
 
 	actionCloseWindow = new QAction(QIcon(":/close.png"), tr("Close &Window"), this);
-	actionCloseWindow->setShortcut( tr("Ctrl+W") );
 	connect(actionCloseWindow, SIGNAL(activated()), this, SLOT(closeActiveWindow()));
 
 	actionAddColToTable = new QAction(QIcon(":/addCol.png"), tr("Add Column"), this);
@@ -14882,7 +14881,6 @@ void ApplicationWindow::translateActionsStrings()
 	actionRename->setMenuText(tr("&Rename Window"));
 
 	actionCloseWindow->setMenuText(tr("Close &Window"));
-	actionCloseWindow->setShortcut(tr("Ctrl+W"));
 
 	actionAddColToTable->setMenuText(tr("Add Column"));
 	actionAddColToTable->setToolTip(tr("Add Column"));

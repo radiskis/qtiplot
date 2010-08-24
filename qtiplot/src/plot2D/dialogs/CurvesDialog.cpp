@@ -38,6 +38,7 @@
 #include <Folder.h>
 #include <ColorBox.h>
 #include <CurveRangeDialog.h>
+#include <LegendWidget.h>
 
 #include <QPushButton>
 #include <QLabel>
@@ -50,8 +51,6 @@
 #include <QShortcut>
 #include <QKeySequence>
 #include <QMenu>
-
-#include <QMessageBox>
 
 CurvesDialog::CurvesDialog( QWidget* parent, Qt::WFlags fl )
 : QDialog( parent, fl )
@@ -349,82 +348,108 @@ void CurvesDialog::setGraph(Graph *graph)
 
 void CurvesDialog::addCurves()
 {
+	ApplicationWindow *app = (ApplicationWindow *)this->parent();
+	if (!app)
+		return;
+
+	QApplication::setOverrideCursor(Qt::WaitCursor);
+
+	int curves = d_graph->curveCount();
+	bool updateLegend = false;
+	LegendWidget *legend = d_graph->legend();
+	if (legend){
+		updateLegend = legend->isAutoUpdateEnabled();
+		legend->setAutoUpdate(false);
+	}
+
 	QStringList emptyColumns;
-    QList<QTreeWidgetItem *> lst = available->selectedItems ();
-    foreach (QTreeWidgetItem *item, lst){
-		if (item->type() == FolderItem)
-			continue;
-
+	QList<QTreeWidgetItem *> lst = available->selectedItems();
+	foreach (QTreeWidgetItem *item, lst){
 		QString text = item->text(0);
-		if (item->type() == TableItem){
-			ApplicationWindow *app = (ApplicationWindow *)this->parent();
-			Table *t = app->table(text);
-			if (!t)
-				continue;
+		switch(item->type()){
+			case ColumnItem:
+				if (contents->findItems(text, Qt::MatchExactly).isEmpty()){
+					Table *t = app->table(text);
+					if (t && !addCurveFromTable(app, t, text))
+						emptyColumns << text;
+				}
+			break;
 
-			QStringList lst = t->YColumns();
-			for(int i = 0; i < lst.size(); i++){
-				QString s = lst[i];
-				if (contents->findItems(s, Qt::MatchExactly ).isEmpty ()){
-					if (!addCurve(s))
-						emptyColumns << s;
+			case TableItem:{
+				Table *t = app->table(text);
+				if (!t)
+					continue;
+
+				QStringList lst = t->YColumns();
+				for(int i = 0; i < lst.size(); i++){
+					QString s = lst[i];
+					if (contents->findItems(s, Qt::MatchExactly ).isEmpty ()){
+						if (!addCurveFromTable(app, t, s))
+							emptyColumns << s;
+					}
 				}
 			}
-			continue;
-		}
+			break;
 
-        if (contents->findItems(text, Qt::MatchExactly ).isEmpty ()){
-			if (!addCurve(text))
-				emptyColumns << text;
+			case MatrixItem:
+				if (contents->findItems(text, Qt::MatchExactly).isEmpty()){
+					if (!addCurveFromMatrix(app->matrix(text), text))
+						emptyColumns << text;
+				}
+			break;
+
+			case FolderItem:
+			break;
 		}
-    }
+	}
 
 	d_graph->updateAxesTitles();
+
+	if (legend){
+		QString s = legend->text().trimmed();
+		if (!s.isEmpty())
+			s.append("\n");
+		legend->setText(s + d_graph->legendText(false, curves));
+		legend->setAutoUpdate(updateLegend);
+	}
+
 	d_graph->updatePlot();
 	Graph::showPlotErrorMessage(this, emptyColumns);
 
 	showCurveRange(boxShowRange->isChecked());
+
+	QApplication::restoreOverrideCursor();
 }
 
-bool CurvesDialog::addCurve(const QString& name)
+bool CurvesDialog::addCurveFromMatrix(Matrix *m, const QString& name)
 {
-    ApplicationWindow *app = (ApplicationWindow *)this->parent();
-    if (!app)
-        return false;
-
-    QStringList matrices = app->matrixNames();
-    if (matrices.contains(name)){
-        Matrix *m = app->matrix(name);
-        if (!m)
-            return false;
-
-		QwtPlotItem* it = NULL;
-        switch (boxMatrixStyle->currentIndex()){
-            case 0:
-				it = d_graph->plotSpectrogram(m, Graph::ColorMap);
-            break;
-            case 1:
-				it = d_graph->plotSpectrogram(m, Graph::Contour);
-            break;
-            case 2:
-				it = d_graph->plotSpectrogram(m, Graph::GrayScale);
-            break;
-			case 3:
-				it = d_graph->addHistogram(m);
-            break;
-        }
-
-		if (it)
-			it->setAxis(boxXAxis->currentIndex() + 2, boxYAxis->currentIndex());
-
-        contents->addItem(name);
-		return true;
-    }
-
-	Table* t = app->table(name);
-	if (!t)
+	if (!m)
 		return false;
 
+	QwtPlotItem* it = NULL;
+	switch (boxMatrixStyle->currentIndex()){
+		case 0:
+			it = d_graph->plotSpectrogram(m, Graph::ColorMap);
+		break;
+		case 1:
+			it = d_graph->plotSpectrogram(m, Graph::Contour);
+		break;
+		case 2:
+			it = d_graph->plotSpectrogram(m, Graph::GrayScale);
+		break;
+		case 3:
+			it = d_graph->addHistogram(m);
+		break;
+	}
+
+	if (it)
+		it->setAxis(boxXAxis->currentIndex() + 2, boxYAxis->currentIndex());
+
+	return true;
+}
+
+bool CurvesDialog::addCurveFromTable(ApplicationWindow *app, Table *t, const QString& name)
+{
 	int style = curveStyle();
 	DataCurve *c = NULL;
 	if (style == Graph::Histogram){
@@ -495,7 +520,6 @@ bool CurvesDialog::addCurve(const QString& name)
 		cl.connectType = 5;
 
 	d_graph->updateCurveLayout(c, &cl);
-	contents->addItem(name);
 	return true;
 }
 
@@ -574,7 +598,7 @@ int CurvesDialog::curveStyle()
 	return style;
 }
 
-void CurvesDialog::showCurveRange(bool on )
+void CurvesDialog::showCurveRange(bool on)
 {
 	QList<int> selectedRows;
 	foreach(QListWidgetItem *it, contents->selectedItems())
@@ -583,20 +607,19 @@ void CurvesDialog::showCurveRange(bool on )
 	contents->clear();
 	if (on){
 		QStringList lst = QStringList();
-		for (int i=0; i<d_graph->curveCount(); i++){
+		for (int  i= 0; i < d_graph->curveCount(); i++){
 			QwtPlotItem *it = d_graph->plotItem(i);
 			if (!it)
 				continue;
 
 			if (it->rtti() == QwtPlotItem::Rtti_PlotCurve && ((PlotCurve *)it)->type() != Graph::Function){
 				DataCurve *c = (DataCurve *)it;
-				lst << c->title().text() + "[" + QString::number(c->startRow()+1) + ":" + QString::number(c->endRow()+1) + "]";
+				lst << c->title().text() + "[" + QString::number(c->startRow() + 1) + ":" + QString::number(c->endRow() + 1) + "]";
 			} else
 				lst << it->title().text();
 		}
 		contents->addItems(lst);
-	}
-	else
+	} else
 		contents->addItems(d_graph->plotItemsList());
 
 	foreach(int row, selectedRows){//restore selection
