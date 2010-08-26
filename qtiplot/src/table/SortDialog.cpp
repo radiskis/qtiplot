@@ -54,8 +54,8 @@ SortDialog::SortDialog( QWidget* parent, Qt::WFlags fl )
 
 	topLayout->addWidget( new QLabel( tr("Order")), 1, 0 );
 	boxOrder = new QComboBox();
-    boxOrder->addItem(tr("Ascending"));
-	boxOrder->addItem(tr("Descending"));
+	boxOrder->addItem(QIcon(":/sort_ascending.png"), tr("Ascending"));
+	boxOrder->addItem(QIcon(":/sort_descending.png"), tr("Descending"));
 	topLayout->addWidget(boxOrder, 1, 1 );
 
 	topLayout->addWidget( new QLabel(tr("Leading column")), 2, 0 );

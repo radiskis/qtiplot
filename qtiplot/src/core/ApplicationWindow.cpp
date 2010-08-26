@@ -8339,8 +8339,7 @@ void ApplicationWindow::removePoints()
 	MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
 	if (!plot)
 		return;
-	if (plot->isEmpty())
-	{
+	if (plot->isEmpty()){
 		QMessageBox::warning(this,tr("QtiPlot - Warning"),
 				tr("<h4>There are no plot layers available in this window.</h4>"
 					"<p><h4>Please add a layer and try again!</h4>"));
@@ -8349,25 +8348,20 @@ void ApplicationWindow::removePoints()
 	}
 
 	Graph* g = (Graph*)plot->activeLayer();
-	if (!g || !g->validCurvesDataSize())
-	{
+	if (!g || !g->validCurvesDataSize()){
 		btnPointer->setChecked(true);
 		return;
 	}
 
-	if (g->isPiePlot())
-	{
+	if (g->isPiePlot()){
 		QMessageBox::warning(this,tr("QtiPlot - Warning"),
 				tr("This functionality is not available for pie plots!"));
 		btnPointer->setChecked(true);
 		return;
-	}
-	else
-	{
+	} else {
 		switch(QMessageBox::warning (this,tr("QtiPlot"),
 					tr("This will modify the data in the worksheets!\nAre you sure you want to continue?"),
-					tr("Continue"),tr("Cancel"),0,1))
-		{
+					tr("Continue"), tr("Cancel"), 0, 1)){
 			case 0:
 				g->setActiveTool(new DataPickerTool(g, this, DataPickerTool::Remove, info, SLOT(setText(const QString&))));
 				displayBar->show();
