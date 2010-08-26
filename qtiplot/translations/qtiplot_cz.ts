@@ -3907,15 +3907,15 @@ Různé části tohoto souboru se nemusí zobrazovat tak, jak se očekává.</tr
     </message>
     <message>
         <source>Overwrite file?</source>
-        <translation type="unfinished"></translation>
+        <translation>Přepsat soubor?</translation>
     </message>
     <message>
         <source>%1 already exists.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 již existuje.</translation>
     </message>
     <message>
         <source>Do you want to replace it?</source>
-        <translation type="unfinished"></translation>
+        <translation>Chcete jej nahradit?</translation>
     </message>
 </context>
 <context>
@@ -5689,51 +5689,51 @@ K tomu lze použít následujících zvláštních kódů:
     </message>
     <message>
         <source>Line Color</source>
-        <translation type="unfinished">Barva čáry</translation>
+        <translation>Barva čáry</translation>
     </message>
     <message>
         <source>Line Type</source>
-        <translation type="unfinished">Druh čáry</translation>
+        <translation>Druh čáry</translation>
     </message>
     <message>
         <source>Thickness</source>
-        <translation type="unfinished">Síla v průřezu</translation>
+        <translation>Síla v průřezu</translation>
     </message>
     <message>
         <source>Grid</source>
-        <translation type="unfinished">Mřížka</translation>
+        <translation>Mřížka</translation>
     </message>
     <message>
         <source>Major Grids</source>
-        <translation type="unfinished">Hlavní mřížka</translation>
+        <translation>Hlavní mřížka</translation>
     </message>
     <message>
         <source>Minor Grids</source>
-        <translation type="unfinished">Podmřížka</translation>
+        <translation>Podmřížka</translation>
     </message>
     <message>
         <source>An&amp;tialised</source>
-        <translation type="unfinished">Vyhla&amp;zeno</translation>
+        <translation>Vyhla&amp;zeno</translation>
     </message>
     <message>
         <source>Horizontal</source>
-        <translation type="unfinished"></translation>
+        <translation>Vodorovně</translation>
     </message>
     <message>
         <source>Vertical</source>
-        <translation type="unfinished"></translation>
+        <translation>Svisle</translation>
     </message>
     <message>
         <source>Speed</source>
-        <translation type="unfinished">Rychlost</translation>
+        <translation>Rychlost</translation>
     </message>
     <message>
         <source>&amp;Disable for curves with more than</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Zakázat pro mřížky s více než</translation>
     </message>
     <message>
         <source>data points</source>
-        <translation type="unfinished">datové body</translation>
+        <translation>datové body</translation>
     </message>
 </context>
 <context>
@@ -5932,7 +5932,7 @@ K tomu lze použít následujících zvláštních kódů:
     </message>
     <message>
         <source>Apply to &amp;all layer curves</source>
-        <translation type="unfinished"></translation>
+        <translation>Použít na křivky &amp;všech vrstev</translation>
     </message>
 </context>
 <context>
@@ -6059,23 +6059,23 @@ K tomu lze použít následujících zvláštních kódů:
     </message>
     <message>
         <source>Axes</source>
-        <translation type="unfinished">Osy</translation>
+        <translation>Osy</translation>
     </message>
     <message>
         <source>Bottom</source>
-        <translation type="unfinished"></translation>
+        <translation>Dole</translation>
     </message>
     <message>
         <source>Top</source>
-        <translation type="unfinished"></translation>
+        <translation>Nahoře</translation>
     </message>
     <message>
         <source>Left</source>
-        <translation type="unfinished"></translation>
+        <translation>Vlevo</translation>
     </message>
     <message>
         <source>Right</source>
-        <translation type="unfinished"></translation>
+        <translation>Vpravo</translation>
     </message>
 </context>
 <context>
@@ -6330,7 +6330,7 @@ K tomu lze použít následujících zvláštních kódů:
     <name>EllipseWidget</name>
     <message>
         <source>Ellipse</source>
-        <translation type="unfinished">Elipsa</translation>
+        <translation>Elipsa</translation>
     </message>
 </context>
 <context>
@@ -8666,7 +8666,7 @@ K tomu lze použít následujících zvláštních kódů:
     </message>
     <message>
         <source>Image</source>
-        <translation type="unfinished">Obrázek</translation>
+        <translation>Obrázek</translation>
     </message>
 </context>
 <context>
@@ -9430,7 +9430,7 @@ K tomu lze použít následujících zvláštních kódů:
     <name>LegendWidget</name>
     <message>
         <source>Legend</source>
-        <translation type="unfinished"></translation>
+        <translation>Vysvětlivka</translation>
     </message>
 </context>
 <context>
@@ -11690,19 +11690,19 @@ K tomu lze použít následujících zvláštních kódů:
     </message>
     <message>
         <source>Move upward</source>
-        <translation type="unfinished"></translation>
+        <translation>Posunout nahoru</translation>
     </message>
     <message>
         <source>Move downward</source>
-        <translation type="unfinished"></translation>
+        <translation>Posunout dolů</translation>
     </message>
     <message>
         <source>Move &amp;upward</source>
-        <translation type="unfinished"></translation>
+        <translation>Posunout &amp;nahoru</translation>
     </message>
     <message>
         <source>Move do&amp;wnward</source>
-        <translation type="unfinished"></translation>
+        <translation>Posunout &amp;dolů</translation>
     </message>
 </context>
 <context>
@@ -12626,7 +12626,7 @@ pokud e1 pak e2 jinak e3.</translation>
     <name>RectangleWidget</name>
     <message>
         <source>Rectangle</source>
-        <translation type="unfinished"></translation>
+        <translation>Obdélník</translation>
     </message>
 </context>
 <context>
@@ -13998,7 +13998,7 @@ pokud e1 pak e2 jinak e3.</translation>
     <name>TexWidget</name>
     <message>
         <source>Equation</source>
-        <translation type="unfinished"></translation>
+        <translation>Rovnice</translation>
     </message>
 </context>
 <context>
