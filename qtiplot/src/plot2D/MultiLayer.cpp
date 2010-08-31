@@ -1352,7 +1352,7 @@ bool MultiLayer::eventFilter(QObject *object, QEvent *e)
 		d_canvas_size = d_canvas->size();
 	} else if (e->type() == QEvent::MouseButtonPress && object == (QObject *)d_canvas){
 	    const QMouseEvent *me = (const QMouseEvent *)e;
-	    if (me->button() == Qt::RightButton)
+		if (me->button() == Qt::RightButton || me->button() == Qt::MidButton)
             return QMdiSubWindow::eventFilter(object, e);
 
 		if (d_is_waterfall_plot)
