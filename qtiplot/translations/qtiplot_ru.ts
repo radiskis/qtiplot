@@ -648,7 +648,7 @@
     </message>
     <message>
         <source>Ctrl+W</source>
-        <translation>Ctrl+W</translation>
+        <translation type="obsolete">Ctrl+W</translation>
     </message>
     <message>
         <source>Ctrl+X</source>
@@ -1398,7 +1398,7 @@
     </message>
     <message>
         <source>Normal</source>
-        <translation>Нормальный</translation>
+        <translation type="obsolete">Нормальный</translation>
     </message>
     <message>
         <source>&amp;Normalize</source>
@@ -5720,6 +5720,14 @@ The following special codes can be used:
     <message>
         <source>data points</source>
         <translation type="unfinished">точек</translation>
+    </message>
+    <message>
+        <source>&amp;Default options</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You need to restart QtiPlot before your changes become effective, would you like to do it now?</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

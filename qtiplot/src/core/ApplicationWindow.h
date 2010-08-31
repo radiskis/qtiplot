@@ -290,6 +290,7 @@ public slots:
 
 	//! \name Settings
 	//@{
+	void setDefaultOptions();
 	void readSettings();
 	void saveSettings();
 	void setSaveSettings(bool autoSaving, int min);
@@ -1100,7 +1101,6 @@ private:
 	//@{
 	void init(bool factorySettings = false);
 	void initCompleter();
-	void initGlobalConstants();
 	void createActions();
 	void initMainMenu();
 	void initToolBars();

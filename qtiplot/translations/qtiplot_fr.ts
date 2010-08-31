@@ -148,7 +148,7 @@
     </message>
     <message>
         <source>Normal</source>
-        <translation>Normal</translation>
+        <translation type="obsolete">Normal</translation>
     </message>
     <message>
         <source>&lt;h4&gt;There are no plot layers available in this window.&lt;/h4&gt;&lt;p&gt;&lt;h4&gt;Please add a layer and try again!&lt;/h4&gt;</source>
@@ -718,7 +718,7 @@
     </message>
     <message>
         <source>Ctrl+W</source>
-        <translation>Ctrl+W</translation>
+        <translation type="obsolete">Ctrl+W</translation>
     </message>
     <message>
         <source>Window &amp;Geometry...</source>
@@ -5718,6 +5718,14 @@ Les codes spéciaux suivant peuvent être utilisés :
     <message>
         <source>data points</source>
         <translation>Données</translation>
+    </message>
+    <message>
+        <source>&amp;Default options</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You need to restart QtiPlot before your changes become effective, would you like to do it now?</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

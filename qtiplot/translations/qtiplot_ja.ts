@@ -974,10 +974,6 @@ Are you sure you want to continue?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Normal</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Save changes to project: &lt;p&gt;&lt;b&gt; %1 &lt;/b&gt; ?</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1428,10 +1424,6 @@ Are you sure you want to continue?</source>
     </message>
     <message>
         <source>&amp;Choose Help Folder...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Ctrl+W</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -6182,6 +6174,14 @@ The following special codes can be used:
     </message>
     <message>
         <source>data points</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Default options</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You need to restart QtiPlot before your changes become effective, would you like to do it now?</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -137,6 +137,11 @@ ConfigDialog::ConfigDialog( QWidget* parent, Qt::WFlags fl )
 
 	QHBoxLayout * bottomButtons = new QHBoxLayout();
 	bottomButtons->addStretch();
+
+	btnDefaultSettings = new QPushButton();
+	btnDefaultSettings->setAutoDefault( false );
+	bottomButtons->addWidget( btnDefaultSettings );
+
 	buttonApply = new QPushButton();
 	buttonApply->setAutoDefault( true );
 	bottomButtons->addWidget( buttonApply );
@@ -161,6 +166,7 @@ ConfigDialog::ConfigDialog( QWidget* parent, Qt::WFlags fl )
 	connect( buttonOk, SIGNAL( clicked() ), this, SLOT( accept() ) );
 	connect( buttonApply, SIGNAL( clicked() ), this, SLOT( apply() ) );
 	connect( buttonCancel, SIGNAL( clicked() ), this, SLOT( reject() ) );
+	connect( btnDefaultSettings, SIGNAL( clicked() ), this, SLOT( resetDefaultSettings() ) );
 	connect( buttonTextFont, SIGNAL( clicked() ), this, SLOT( pickTextFont() ) );
 	connect( buttonHeaderFont, SIGNAL( clicked() ), this, SLOT( pickHeaderFont() ) );
 
@@ -1715,6 +1721,7 @@ void ConfigDialog::languageChange()
 {
 	setWindowTitle( tr( "QtiPlot - Choose default settings" ) );
 	ApplicationWindow *app = (ApplicationWindow *)parentWidget();
+	btnDefaultSettings->setText(tr("&Default options"));
 
 	// pages list
 	itemsList->clear();
@@ -3186,4 +3193,234 @@ void ConfigDialog::updateGrid()
 
 	grid->setAxis(boxGridXAxis->currentIndex() + 2, boxGridYAxis->currentIndex());
 	grid->setRenderHint(QwtPlotItem::RenderAntialiased, boxAntialiseGrid->isChecked());
+}
+
+void ConfigDialog::resetDefaultSettings()
+{
+	ApplicationWindow *app = (ApplicationWindow *)parentWidget();
+	if (!app)
+		return;
+
+	app->setDefaultOptions();
+	setApplication(app);
+
+	QString msg = tr("You need to restart QtiPlot before your changes become effective, would you like to do it now?");
+	if (QMessageBox::question(this, tr("QtiPlot"), msg, QMessageBox::Ok, QMessageBox::No) == QMessageBox::Ok)
+		app->newProject();
+}
+
+void ConfigDialog::setApplication(ApplicationWindow *app)
+{
+	if (!app)
+		return;
+
+	blockSignals(true);
+
+	d_3D_title_font = app->d_3D_title_font;
+	d_3D_numbers_font = app->d_3D_numbers_font;
+	d_3D_axes_font = app->d_3D_axes_font;
+	textFont = app->tableTextFont;
+	headerFont = app->tableHeaderFont;
+	appFont = app->appFont;
+	axesFont = app->plotAxesFont;
+	numbersFont = app->plotNumbersFont;
+	legendFont = app->plotLegendFont;
+	titleFont = app->plotTitleFont;
+
+	//app page
+	QStringList styles = QStyleFactory::keys();
+	styles.sort();
+	boxStyle->clear();
+	boxStyle->addItems(styles);
+	boxStyle->setCurrentIndex(boxStyle->findText(app->appStyle,Qt::MatchWildcard));
+
+	QStringList llist = ScriptingLangManager::languages();
+	boxScriptingLanguage->clear();
+	boxScriptingLanguage->insertStringList(llist);
+	boxScriptingLanguage->setCurrentItem(llist.findIndex(app->defaultScriptingLang));
+
+	undoStackSizeBox->setValue(app->matrixUndoStackSize());
+	boxEndLine->setCurrentIndex((int)app->d_eol);
+	boxSave->setChecked(app->autoSave);
+	boxMinutes->setValue(app->autoSaveTime);
+	boxMinutes->setEnabled(app->autoSave);
+	boxBackupProject->setChecked(app->d_backup_files);
+	boxSearchUpdates->setChecked(app->autoSearchUpdates);
+	completionBox->setChecked(app->d_completion);
+
+	//confirmations page
+	boxFolders->setChecked(app->confirmCloseFolder);
+	boxTables->setChecked(app->confirmCloseTable);
+	boxMatrices->setChecked(app->confirmCloseMatrix);
+	boxPlots2D->setChecked(app->confirmClosePlot2D);
+	boxPlots3D->setChecked(app->confirmClosePlot3D);
+	boxNotes->setChecked(app->confirmCloseNotes);
+	boxPromptRenameTables->setChecked(app->d_inform_rename_table);
+	boxConfirmOverwrite->setChecked(app->d_confirm_overwrite);
+
+	btnWorkspace->setColor(app->workspaceColor);
+	btnPanels->setColor(app->panelsColor);
+	btnPanelsText->setColor(app->panelsTextColor);
+	boxAppPrecision->setValue(app->d_decimal_digits);
+	boxThousandsSeparator->setChecked(app->locale().numberOptions() & QLocale::OmitGroupSeparator);
+	boxMuParserCLocale->setChecked(app->d_muparser_c_locale);
+
+	//file locations page
+	translationsPathLine->setText(QDir::toNativeSeparators(app->d_translations_folder));
+	helpPathLine->setText(QDir::toNativeSeparators(QFileInfo(app->helpFilePath).dir().absolutePath()));
+	texCompilerPathBox->setText(QDir::toNativeSeparators(app->d_latex_compiler_path));
+#ifdef SCRIPTING_PYTHON
+	pythonConfigDirLine->setText(QDir::toNativeSeparators(app->d_python_config_folder));
+#endif
+
+	//proxy page
+	QNetworkProxy proxy = QNetworkProxy::applicationProxy();
+	proxyGroupBox->setChecked(!proxy.hostName().isEmpty());
+	proxyHostLine->setText(proxy.hostName ());
+	proxyPortBox->setValue(proxy.port());
+	proxyUserNameLine->setText(proxy.user());
+
+	//tables page
+	buttonBackground->setColor(app->tableBkgdColor);
+	buttonText->setColor(app->tableTextColor);
+	buttonHeader->setColor(app->tableHeaderColor);
+	boxTableComments->setChecked(app->d_show_table_comments);
+	boxUpdateTableValues->setChecked(app->autoUpdateTableValues());
+
+	//plots page
+	boxAutoscaling->setChecked(app->autoscale2DPlots);
+	boxScaleFonts->setChecked(app->autoScaleFonts);
+	boxTitle->setChecked(app->titleOn);
+	boxFrame->setChecked(app->canvasFrameWidth > 0);
+	boxFrameWidth->setValue(app->canvasFrameWidth);
+	if (!app->canvasFrameWidth){
+		labelFrameWidth->hide();
+		boxFrameWidth->hide();
+	}
+
+	boxMargin->setValue(app->defaultPlotMargin);
+	boxBackgroundColor->setColor(app->d_graph_background_color);
+	boxBackgroundTransparency->setValue(app->d_graph_background_opacity);
+	boxCanvasColor->setColor(app->d_graph_canvas_color);
+	boxCanvasTransparency->setValue(app->d_graph_canvas_opacity);
+	boxBorderColor->setColor(app->d_graph_border_color);
+	boxBorderWidth->setValue(app->d_graph_border_width);
+	boxResize->setChecked(!app->autoResizeLayers);
+	boxLabelsEditing->setChecked(!app->d_in_place_editing);
+
+	//curves page
+	boxCurveLineWidth->setLocale(app->locale());
+	boxCurveLineWidth->setValue(app->defaultCurveLineWidth);
+	lineStyleBox->setCurrentIndex(app->d_curve_line_style);
+	patternBox->setCurrentIndex(app->defaultCurveBrush);
+	curveAlphaBox->setValue(app->defaultCurveAlpha);
+	symbolBox->setCurrentIndex(app->d_symbol_style);
+	symbolBox->setDisabled(app->d_indexed_symbols);
+	boxSymbolSize->setValue(app->defaultSymbolSize/2);
+	symbolEdgeBox->setValue(app->defaultSymbolEdge);
+	fillSymbolsBox->setChecked(app->d_fill_symbols);
+
+	d_indexed_colors = app->indexedColors();
+	d_indexed_color_names = app->indexedColorNames();
+	setColorsList(d_indexed_colors, d_indexed_color_names);
+
+	d_indexed_symbols = app->indexedSymbols();
+	setSymbolsList(d_indexed_symbols);
+	groupIndexedSymbols->setChecked(app->d_indexed_symbols);
+
+	//axes page
+	boxBackbones->setChecked(app->drawBackbones);
+	boxSynchronizeScales->setChecked(app->d_synchronize_graph_scales);
+	boxLineWidth->setValue(app->axesLineWidth);
+	boxAxesLabelsDist->setValue(app->d_graph_axes_labels_dist);
+	boxTickLabelsDist->setValue(app->d_graph_tick_labels_dist);
+
+	for (int i = 0; i < QwtPlot::axisCnt; i++){
+		int row = i + 1;
+		bool enabledAxis = app->d_show_axes[i];
+
+		QLayoutItem *item = enabledAxesGrid->itemAtPosition(row, 2);
+		if (item && item->widget())
+			((QCheckBox *)item->widget())->setChecked(enabledAxis);
+
+		item = enabledAxesGrid->itemAtPosition(row, 3);
+		if (item && item->widget()){
+			QCheckBox *box = qobject_cast<QCheckBox *>(item->widget());
+			box->setChecked(app->d_show_axes_labels[i]);
+			box->setEnabled(enabledAxis);
+		}
+	}
+
+	showGridOptions(0);
+
+	//layer speed page
+	antialiasingGroupBox->setChecked(app->antialiasing2DPlots);
+	disableAntialiasingBox->setChecked(app->d_disable_curve_antialiasing);
+	curveSizeBox->setValue(app->d_curve_max_antialising_size);
+
+	//layer geometry page
+	keepRatioBox->setChecked(app->d_keep_aspect_ration);
+	updateCanvasSize((FrameWidget::Unit)app->d_layer_geometry_unit);
+
+	boxMajTicksLength->setValue(app->majTicksLength);
+	boxMinTicksLength->setValue(app->minTicksLength);
+	boxScaleLayersOnPrint->setChecked(app->d_scale_plots_on_print);
+	boxPrintCropmarks->setChecked(app->d_print_cropmarks);
+
+	//3D plots page
+	boxResolution->setValue(app->d_3D_resolution);
+	boxProjection->setCurrentIndex(app->d_3D_projection);
+	boxShowLegend->setChecked(app->d_3D_legend);
+	boxSmoothMesh->setChecked(app->d_3D_smooth_mesh);
+	boxOrthogonal->setChecked(app->d_3D_orthogonal);
+	boxAutoscale3DPlots->setChecked(app->d_3D_autoscale);
+	colorMapEditor = new ColorMapEditor(app->locale());
+	colorMapEditor->setColorMap(app->d_3D_color_map);
+	btnAxes->setColor(app->d_3D_axes_color);
+	btnLabels->setColor(app->d_3D_labels_color);
+	btnNumbers->setColor(app->d_3D_numbers_color);
+	btnMesh->setColor(app->d_3D_mesh_color);
+	btnBackground3D->setColor(app->d_3D_background_color);
+	boxMajorGrids->setChecked(app->d_3D_major_grids);
+	boxMinorGrids->setChecked(app->d_3D_minor_grids);
+	btnGrid->setColor(app->d_3D_grid_color);
+	btnGridMinor->setColor(app->d_3D_minor_grid_color);
+	boxMajorGridWidth->setLocale(app->locale());
+	boxMajorGridWidth->setValue(app->d_3D_major_width);
+	boxMinorGridWidth->setLocale(app->locale());
+	boxMinorGridWidth->setValue(app->d_3D_minor_width);
+	enableMajorGrids(app->d_3D_major_grids);
+	enableMinorGrids(app->d_3D_minor_grids);
+
+	//notes page
+	boxTabLength->setValue(app->d_notes_tab_length);
+	boxFontFamily->setCurrentFont(app->d_notes_font);
+	boxFontSize->setValue(app->d_notes_font.pointSize());
+	buttonBoldFont->setChecked(app->d_notes_font.bold());
+	buttonItalicFont->setChecked(app->d_notes_font.italic());
+	lineNumbersBox->setChecked(app->d_note_line_numbers);
+	buttonCommentColor->setColor(app->d_comment_highlight_color);
+	buttonKeywordColor->setColor(app->d_keyword_highlight_color);
+	buttonQuotationColor->setColor(app->d_quotation_highlight_color);
+	buttonNumericColor->setColor(app->d_numeric_highlight_color);
+	buttonFunctionColor->setColor(app->d_function_highlight_color);
+	buttonClassColor->setColor(app->d_class_highlight_color);
+
+	//fits page
+	generatePointsBtn->setChecked(app->generateUniformFitPoints);
+	generatePointsBox->setValue(app->fitPoints);
+	linearFit2PointsBox->setChecked(app->d_2_linear_fit_points);
+	showPointsBox(!app->generateUniformFitPoints);
+	samePointsBtn->setChecked(!app->generateUniformFitPoints);
+	groupBoxMultiPeak->setChecked(app->generatePeakCurves);
+	boxPeaksColor->setColor(app->peakCurvesColor);
+	boxPrecision->setValue(app->fit_output_precision);
+	logBox->setChecked(app->writeFitResultsToLog);
+	plotLabelBox->setChecked(app->pasteFitResultsToPlot);
+	scaleErrorsBox->setChecked(app->fit_scale_errors);
+	boxMultiPeakMsgs->setChecked(app->d_multi_peak_messages);
+
+	languageChange();
+
+	blockSignals(false);
 }
