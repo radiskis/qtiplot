@@ -4738,7 +4738,7 @@ Are you sure you want to continue?</source>
     </message>
     <message>
         <source>Normal</source>
-        <translation>Normal</translation>
+        <translation type="obsolete">Normal</translation>
     </message>
     <message>
         <source>Save changes to project: &lt;p&gt;&lt;b&gt; %1 &lt;/b&gt; ?</source>
@@ -5472,7 +5472,7 @@ Varning: detta kommer att arrangera om befintliga lager!</translation>
     </message>
     <message>
         <source>Ctrl+W</source>
-        <translation>Ctrl+W</translation>
+        <translation type="obsolete">Ctrl+W</translation>
     </message>
     <message>
         <source>Add column</source>
@@ -10426,6 +10426,14 @@ Följande specialkoder kan användas:
     <message>
         <source>data points</source>
         <translation type="unfinished">datapunkter</translation>
+    </message>
+    <message>
+        <source>&amp;Default options</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You need to restart QtiPlot before your changes become effective, would you like to do it now?</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

@@ -4511,7 +4511,7 @@ Are you sure you want to continue?</source>
     </message>
     <message>
         <source>Normal</source>
-        <translation>Normal</translation>
+        <translation type="obsolete">Normal</translation>
     </message>
     <message>
         <source>Save changes to project: &lt;p&gt;&lt;b&gt; %1 &lt;/b&gt; ?</source>
@@ -5377,7 +5377,7 @@ Are you sure you want to continue?</source>
     </message>
     <message>
         <source>Ctrl+W</source>
-        <translation>Ctrl+W</translation>
+        <translation type="obsolete">Ctrl+W</translation>
     </message>
     <message>
         <source>Add Column</source>
@@ -9232,6 +9232,14 @@ The following special codes can be used:
     <message>
         <source>data points</source>
         <translation>puncte</translation>
+    </message>
+    <message>
+        <source>&amp;Default options</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You need to restart QtiPlot before your changes become effective, would you like to do it now?</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

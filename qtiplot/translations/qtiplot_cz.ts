@@ -1358,7 +1358,7 @@ Automatické dokončení nebude dostupné!</translation>
     </message>
     <message>
         <source>Ctrl+W</source>
-        <translation>Ctrl+W</translation>
+        <translation type="obsolete">Ctrl+W</translation>
     </message>
     <message>
         <source>Ctrl+X</source>
@@ -1522,7 +1522,7 @@ Automatické dokončení nebude dostupné!</translation>
     </message>
     <message>
         <source>Normal</source>
-        <translation>Obvyklá</translation>
+        <translation type="obsolete">Obvyklá</translation>
     </message>
     <message>
         <source>Front grid</source>
@@ -5734,6 +5734,14 @@ K tomu lze použít následujících zvláštních kódů:
     <message>
         <source>data points</source>
         <translation>datové body</translation>
+    </message>
+    <message>
+        <source>&amp;Default options</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You need to restart QtiPlot before your changes become effective, would you like to do it now?</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

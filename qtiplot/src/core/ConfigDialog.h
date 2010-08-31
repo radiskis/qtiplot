@@ -55,6 +55,7 @@ class QTableWidget;
 class SymbolBox;
 class PatternBox;
 class PenStyleBox;
+class ApplicationWindow;
 
 //! Preferences dialog
 class ConfigDialog : public QDialog
@@ -76,6 +77,7 @@ private slots:
 
 	void accept();
 	void apply();
+	void resetDefaultSettings();
 
 	void setCurrentPage(int index);
 
@@ -141,6 +143,7 @@ private slots:
 	void enableCurveAntialiasingSizeBox(bool);
 
 private:
+	void setApplication(ApplicationWindow *app);
 	void setSymbolsList(const QList<int>& symbList);
 	void setColorsList(const QList<QColor>& colList, const QStringList& colNames);
 	void initPlotsPage();
@@ -302,6 +305,7 @@ private:
 	QGroupBox * antialiasingGroupBox;
 	QCheckBox *disableAntialiasingBox;
 	QSpinBox *curveSizeBox;
+	QPushButton *btnDefaultSettings;
 };
 
 #endif // CONFIGDIALOG_H

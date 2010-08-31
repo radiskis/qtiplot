@@ -223,7 +223,7 @@ void ApplicationWindow::init(bool factorySettings)
 {
 	setWindowTitle(tr("QtiPlot - untitled"));
 	setObjectName(tr("QtiPlot"));
-	initGlobalConstants();
+	setDefaultOptions();
 	QPixmapCache::setCacheLimit(20*QPixmapCache::cacheLimit ());
 
 	tablesDepend = new QMenu(this);
@@ -436,7 +436,7 @@ void ApplicationWindow::initWindow()
 	savedProject();
 }
 
-void ApplicationWindow::initGlobalConstants()
+void ApplicationWindow::setDefaultOptions()
 {
 	d_force_muParser = true;
 	d_indexed_colors = ColorBox::defaultColors();
