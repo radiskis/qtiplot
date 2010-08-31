@@ -3252,7 +3252,9 @@ bool Table::eventFilter(QObject *object, QEvent *e)
 
 			if (me->modifiers() == Qt::ShiftModifier){
 				int col = hheader->sectionAt (me->pos().x() + hheader->offset());
-				for (int i = selectedCol; i <= col; i++)
+				int start = QMIN(col, selectedCol);
+				int end = QMAX(col, selectedCol);
+				for (int i = start; i <= end; i++)
 					d_table->selectColumn(i);
 				return true;
 			}
