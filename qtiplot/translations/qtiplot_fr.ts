@@ -3911,7 +3911,7 @@ L&apos;autocomplétion ne sera pas disponible!</translation>
     </message>
     <message>
         <source>chart</source>
-        <translation type="unfinished"></translation>
+        <translation>Diagramme</translation>
     </message>
 </context>
 <context>
@@ -5725,15 +5725,15 @@ Les codes spéciaux suivant peuvent être utilisés :
     </message>
     <message>
         <source>&amp;Default options</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Réinitialiser</translation>
     </message>
     <message>
         <source>You need to restart QtiPlot before your changes become effective, would you like to do it now?</source>
-        <translation type="unfinished"></translation>
+        <translation>Vous avez besoin de redémarrer QtiPlot pour que les changements soient éffectifs, voulez-vous le faire maintenant ?</translation>
     </message>
     <message>
         <source>Open &amp;last project at startup</source>
-        <translation type="unfinished"></translation>
+        <translation>Ouvirir &amp;le dernier projet au démarrage</translation>
     </message>
 </context>
 <context>
