@@ -1065,7 +1065,6 @@ bool Origin610Parser::readGraphInfo()
 			unsigned char lineStyle = 0;
 			double width = 0.0;
 			LineVertex begin, end;
-			unsigned int w = 0;
 
 			file.seekg(LAYER + 0x12, ios_base::beg);
 			file >> lineStyle;

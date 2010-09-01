@@ -8480,6 +8480,10 @@ Automatisk komplettering ej tillgängligt!</translation>
         <source>Do you want to replace it?</source>
         <translation type="unfinished">Vill du byta ut den?</translation>
     </message>
+    <message>
+        <source>chart</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ArrowMarker</name>
@@ -10433,6 +10437,10 @@ Följande specialkoder kan användas:
     </message>
     <message>
         <source>You need to restart QtiPlot before your changes become effective, would you like to do it now?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open &amp;last project at startup</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

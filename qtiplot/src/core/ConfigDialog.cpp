@@ -701,7 +701,11 @@ void ConfigDialog::initAppPage()
 	completionBox->setChecked(app->d_completion);
 	topBoxLayout->addWidget(completionBox, 10, 0);
 
-	topBoxLayout->setRowStretch(11, 1);
+	openLastProjectBox = new QCheckBox();
+	openLastProjectBox->setChecked(app->d_open_last_project);
+	topBoxLayout->addWidget(openLastProjectBox, 11, 0);
+
+	topBoxLayout->setRowStretch(12, 1);
 
 	appTabWidget->addTab(application, QString());
 
@@ -1934,6 +1938,7 @@ void ConfigDialog::languageChange()
 	boxInitWindow->addItem(tr("Note"));
 	boxInitWindow->setCurrentIndex((int)app->d_init_window_type);
     completionBox->setText(tr("&Enable autocompletion (Ctrl+U)"));
+	openLastProjectBox->setText(tr("Open &last project at startup"));
 
 	lblAppPrecision->setText(tr("Number of Decimal Digits"));
 	lblDecimalSeparator->setText(tr("Decimal Separators"));
@@ -2317,6 +2322,7 @@ void ConfigDialog::apply()
 	app->setMatrixUndoStackSize(undoStackSizeBox->value());
 	app->d_eol = (ApplicationWindow::EndLineChar)boxEndLine->currentIndex();
     app->enableCompletion(completionBox->isChecked());
+	app->d_open_last_project = openLastProjectBox->isChecked();
 
 	// general page: numeric format tab
 	app->d_decimal_digits = boxAppPrecision->value();
@@ -3247,6 +3253,7 @@ void ConfigDialog::setApplication(ApplicationWindow *app)
 	boxBackupProject->setChecked(app->d_backup_files);
 	boxSearchUpdates->setChecked(app->autoSearchUpdates);
 	completionBox->setChecked(app->d_completion);
+	openLastProjectBox->setChecked(app->d_open_last_project);
 
 	//confirmations page
 	boxFolders->setChecked(app->confirmCloseFolder);

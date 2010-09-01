@@ -73,7 +73,7 @@ bool OriginDefaultParser::parse()
 	int i;
 	FILE *f, *debug;
 	if((f=fopen(fileName.c_str(),"rb")) == NULL ) {
-		printf("Could not open %s!\n",fileName);
+		printf("Could not open %s!\n", fileName.c_str());
 		return false;
 	}
 

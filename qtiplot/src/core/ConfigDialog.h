@@ -303,7 +303,7 @@ private:
 	QListWidget *axesGridList;
 	QLabel *gridLineColorLbl, *gridLineWidthLbl, *gridLineTypeLbl, *gridAxesLbl;
 	QGroupBox * antialiasingGroupBox;
-	QCheckBox *disableAntialiasingBox;
+	QCheckBox *disableAntialiasingBox, *openLastProjectBox;
 	QSpinBox *curveSizeBox;
 	QPushButton *btnDefaultSettings;
 };

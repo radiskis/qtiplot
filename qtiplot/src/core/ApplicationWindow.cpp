@@ -438,6 +438,7 @@ void ApplicationWindow::initWindow()
 
 void ApplicationWindow::setDefaultOptions()
 {
+	d_open_last_project = true;
 	d_force_muParser = true;
 	d_indexed_colors = ColorBox::defaultColors();
 	d_indexed_color_names = ColorBox::defaultColorNames();
@@ -5288,6 +5289,7 @@ void ApplicationWindow::readSettings()
     d_backup_files = settings.value("/BackupProjects", true).toBool();
 	d_init_window_type = (WindowType)settings.value("/InitWindow", TableWindow).toInt();
     d_completion = settings.value("/Completion", true).toBool();
+	d_open_last_project = settings.value("/OpenLastProject", d_open_last_project).toBool();
 	defaultScriptingLang = settings.value("/ScriptingLang","muParser").toString();
 
 	bool thousandsSep = settings.value("/ThousandsSeparator", true).toBool();
@@ -5760,6 +5762,7 @@ void ApplicationWindow::saveSettings()
 	settings.setValue("/BackupProjects", d_backup_files);
 	settings.setValue("/InitWindow", int(d_init_window_type));
     settings.setValue("/Completion", d_completion);
+	settings.setValue("/OpenLastProject", d_open_last_project);
 	settings.setValue("/ScriptingLang", defaultScriptingLang);
 
 	bool thousandsSep = (locale().numberOptions() & QLocale::OmitGroupSeparator) ? false : true;
@@ -15755,7 +15758,10 @@ void ApplicationWindow::parseCommandLineArguments(const QStringList& args)
 {
 	int num_args = args.count();
 	if(num_args == 0){
-		initWindow();
+		if (d_open_last_project && !recentProjects.isEmpty())
+			open(recentProjects[0], false, false);
+		else
+			initWindow();
 		return;
 	}
 
@@ -15836,7 +15842,10 @@ void ApplicationWindow::parseCommandLineArguments(const QStringList& args)
 		if (console)
 			return;
 
-		initWindow();
+		if (d_open_last_project && !recentProjects.isEmpty())
+			open(recentProjects[0], default_settings, false);
+		else
+			initWindow();
 		return;
 	}
 
@@ -15867,11 +15876,8 @@ void ApplicationWindow::parseCommandLineArguments(const QStringList& args)
 				scriptWindow->executeAll();
 		} else if (exec || noGui)
 			loadScript(file_name, exec, noGui);
-		else {
-			ApplicationWindow *app = open(file_name, default_settings);
-			if (app && app != this)
-				close();
-		}
+		else
+			open(file_name, default_settings, false);
 	}
 }
 

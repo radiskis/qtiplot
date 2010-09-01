@@ -9901,6 +9901,10 @@ Autocompletion will not be available!</source>
         <source>Do you want to replace it?</source>
         <translation type="unfinished">Möchten Sie ersetzen?</translation>
     </message>
+    <message>
+        <source>chart</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ArrowMarker</name>
@@ -11990,6 +11994,10 @@ Die folgenden Spezialcodes können benutzt werden:
     </message>
     <message>
         <source>You need to restart QtiPlot before your changes become effective, would you like to do it now?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open &amp;last project at startup</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
