@@ -3918,7 +3918,7 @@ Různé části tohoto souboru se nemusí zobrazovat tak, jak se očekává.</tr
         <translation>Chcete jej nahradit?</translation>
     </message>
     <message>
-        <source>chart</source>
+        <source>Yes, don&apos;t ask me again</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

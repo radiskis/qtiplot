@@ -3905,7 +3905,7 @@ Autocompletion will not be available!</source>
     </message>
     <message>
         <source>chart</source>
-        <translation type="unfinished">диаграмма</translation>
+        <translation type="obsolete">диаграмма</translation>
     </message>
     <message>
         <source>Overwrite file?</source>
@@ -3918,6 +3918,10 @@ Autocompletion will not be available!</source>
     <message>
         <source>Do you want to replace it?</source>
         <translation type="unfinished">Заменить?</translation>
+    </message>
+    <message>
+        <source>Yes, don&apos;t ask me again</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

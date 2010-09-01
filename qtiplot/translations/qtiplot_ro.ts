@@ -7394,8 +7394,8 @@ Autocompletion will not be available!</source>
         <translation>Doriţi să-l înlocuiţi?</translation>
     </message>
     <message>
-        <source>chart</source>
-        <translation type="unfinished"></translation>
+        <source>Yes, don&apos;t ask me again</source>
+        <translation>Da, nu mă mai întreba</translation>
     </message>
 </context>
 <context>

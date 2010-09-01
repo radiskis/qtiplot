@@ -438,6 +438,7 @@ void ApplicationWindow::initWindow()
 
 void ApplicationWindow::setDefaultOptions()
 {
+	d_ask_web_connection = true;
 	d_open_last_project = true;
 	d_force_muParser = true;
 	d_indexed_colors = ColorBox::defaultColors();
@@ -5410,6 +5411,7 @@ void ApplicationWindow::readSettings()
 	confirmCloseNotes = settings.value("/Note", true).toBool();
 	d_inform_rename_table = settings.value("/RenameTable", true).toBool();
 	d_confirm_overwrite = settings.value("/Overwrite", true).toBool();
+	d_ask_web_connection = settings.value("/WebConnection", d_ask_web_connection).toBool();
 	settings.endGroup(); // Confirmations
 
 
@@ -5853,6 +5855,7 @@ void ApplicationWindow::saveSettings()
 	settings.setValue("/Note", confirmCloseNotes);
 	settings.setValue("/RenameTable", d_inform_rename_table);
 	settings.setValue("/Overwrite", d_confirm_overwrite);
+	settings.setValue("/WebConnection", d_ask_web_connection);
 	settings.endGroup(); // Confirmations
 
 	/* ----------------- group Tables -------------- */
@@ -17239,23 +17242,36 @@ bool ApplicationWindow::copyFolder(Folder *src, Folder *dest)
 
 void ApplicationWindow::searchForUpdates()
 {
-    int choice = QMessageBox::question(this, tr("QtiPlot"),
-					tr("QtiPlot will try to download necessary information about the last available updates. Please modify your firewall settings in order to allow QtiPlot to connect to the internet!") + "\n" +
-					tr("Do you wish to continue?"),
-					QMessageBox::Yes|QMessageBox::Default, QMessageBox::No|QMessageBox::Escape);
+	if (d_ask_web_connection){
+		QMessageBox msgBox(QMessageBox::Question, tr("QtiPlot"),
+		tr("QtiPlot will try to download necessary information about the last available updates. Please modify your firewall settings in order to allow QtiPlot to connect to the internet!"));
+		msgBox.setInformativeText(tr("Do you wish to continue?"));
+		QPushButton *yesButton = msgBox.addButton(tr("Yes, don't ask me again"), QMessageBox::YesRole);
+		msgBox.addButton(QMessageBox::Cancel);
+		msgBox.setDefaultButton(yesButton);
+		msgBox.setEscapeButton(QMessageBox::Cancel);
+		msgBox.setWindowIcon(this->windowIcon());
+		msgBox.exec();
+		if (msgBox.clickedButton() == yesButton){
+			initSearchForUpdates();
+			d_ask_web_connection = false;
+		}
+	} else
+		initSearchForUpdates();
+}
 
-    if (choice == QMessageBox::Yes){
-        version_buffer.open(IO_WriteOnly);
-		http = new QHttp(this);
-		connect(http, SIGNAL(done(bool)), this, SLOT(receivedVersionFile(bool)));
+void ApplicationWindow::initSearchForUpdates()
+{
+	version_buffer.open(IO_WriteOnly);
+	http = new QHttp(this);
+	connect(http, SIGNAL(done(bool)), this, SLOT(receivedVersionFile(bool)));
 
-        QNetworkProxy proxy = QNetworkProxy::applicationProxy();
-        if (!proxy.hostName().isEmpty())
-			http->setProxy(proxy.hostName(), proxy.port(), proxy.user(), proxy.password());
+	QNetworkProxy proxy = QNetworkProxy::applicationProxy();
+	if (!proxy.hostName().isEmpty())
+		http->setProxy(proxy.hostName(), proxy.port(), proxy.user(), proxy.password());
 
-        http->setHost("soft.proindependent.com");
-		http->get("/version.txt", &version_buffer);
-    }
+	http->setHost("soft.proindependent.com");
+	http->get("/version.txt", &version_buffer);
 }
 
 void ApplicationWindow::receivedVersionFile(bool error)
