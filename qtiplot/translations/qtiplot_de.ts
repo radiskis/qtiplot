@@ -9902,7 +9902,7 @@ Autocompletion will not be available!</source>
         <translation type="unfinished">Möchten Sie ersetzen?</translation>
     </message>
     <message>
-        <source>chart</source>
+        <source>Yes, don&apos;t ask me again</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

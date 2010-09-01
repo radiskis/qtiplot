@@ -1115,6 +1115,7 @@ private:
 	QString getSaveProjectName(const QString& fileName, bool *compress = 0);
 	void goToParentFolder();
 	bool isProjectFile(const QString& fn);
+	void initSearchForUpdates();
 
 private slots:
 	void disableActions();
@@ -1168,6 +1169,7 @@ private slots:
 
 // TODO: a lot of this stuff should be private
 public:
+	bool d_ask_web_connection;
 	bool d_open_last_project;
 	int d_curve_max_antialising_size;
 	bool d_disable_curve_antialiasing;

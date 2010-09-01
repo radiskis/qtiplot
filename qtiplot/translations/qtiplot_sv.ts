@@ -8481,7 +8481,7 @@ Automatisk komplettering ej tillgängligt!</translation>
         <translation type="unfinished">Vill du byta ut den?</translation>
     </message>
     <message>
-        <source>chart</source>
+        <source>Yes, don&apos;t ask me again</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
