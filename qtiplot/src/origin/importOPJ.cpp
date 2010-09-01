@@ -2159,11 +2159,13 @@ QString ImportOPJ::parseOriginTags(const QString &str)
 	line.replace("&lbracket;", "(");
 	line.replace("&rbracket;", ")");
 
-	while (line.contains("\\p")){
-		int pos1 = line.indexOf("\\p");
-		pos1 = line.indexOf("(", pos1 + 2) + 1;
-		int pos2 = line.indexOf(")", pos1);
-		line = line.mid(pos1, pos2 - pos1);
+	QRegExp fontModifier("\p(\\d)+\\(.*\\)");//remove \p163(...) like tags
+	int index = line.indexOf(fontModifier);
+	while (index >= 0){
+		int pos1 = line.indexOf("(", index + 2) + 1;
+		int length = fontModifier.matchedLength();
+		line = line.mid(pos1, length - pos1);
+		index = line.indexOf(fontModifier, index + length);
 	}
 
 	return line;

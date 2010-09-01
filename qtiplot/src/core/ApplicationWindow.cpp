@@ -15758,9 +15758,13 @@ void ApplicationWindow::parseCommandLineArguments(const QStringList& args)
 {
 	int num_args = args.count();
 	if(num_args == 0){
-		if (d_open_last_project && !recentProjects.isEmpty())
-			open(recentProjects[0], false, false);
-		else
+		if (d_open_last_project && !recentProjects.isEmpty()){
+			ApplicationWindow *app = open(recentProjects[0]);
+			if (app && app != this){
+				savedProject();
+				close();
+			}
+		} else
 			initWindow();
 		return;
 	}
@@ -15842,8 +15846,13 @@ void ApplicationWindow::parseCommandLineArguments(const QStringList& args)
 		if (console)
 			return;
 
-		if (d_open_last_project && !recentProjects.isEmpty())
-			open(recentProjects[0], default_settings, false);
+		if (d_open_last_project && !recentProjects.isEmpty()){
+			ApplicationWindow *app = open(recentProjects[0], default_settings);
+			if (app && app != this){
+				savedProject();
+				close();
+			}
+		}
 		else
 			initWindow();
 		return;
@@ -15876,8 +15885,11 @@ void ApplicationWindow::parseCommandLineArguments(const QStringList& args)
 				scriptWindow->executeAll();
 		} else if (exec || noGui)
 			loadScript(file_name, exec, noGui);
-		else
-			open(file_name, default_settings, false);
+		else {
+			ApplicationWindow *app = open(file_name, default_settings);
+			if (app && app != this)
+				close();
+		}
 	}
 }
 
