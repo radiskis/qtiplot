@@ -3917,6 +3917,10 @@ Různé části tohoto souboru se nemusí zobrazovat tak, jak se očekává.</tr
         <source>Do you want to replace it?</source>
         <translation>Chcete jej nahradit?</translation>
     </message>
+    <message>
+        <source>chart</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ArrowMarker</name>
@@ -5741,6 +5745,10 @@ K tomu lze použít následujících zvláštních kódů:
     </message>
     <message>
         <source>You need to restart QtiPlot before your changes become effective, would you like to do it now?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open &amp;last project at startup</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -1168,6 +1168,7 @@ private slots:
 
 // TODO: a lot of this stuff should be private
 public:
+	bool d_open_last_project;
 	int d_curve_max_antialising_size;
 	bool d_disable_curve_antialiasing;
 	bool d_force_muParser;

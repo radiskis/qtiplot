@@ -4408,6 +4408,10 @@ Autocompletion will not be available!</source>
         <source>Do you want to replace it?</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>chart</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>AssociationsDialog</name>
@@ -6182,6 +6186,10 @@ The following special codes can be used:
     </message>
     <message>
         <source>You need to restart QtiPlot before your changes become effective, would you like to do it now?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open &amp;last project at startup</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

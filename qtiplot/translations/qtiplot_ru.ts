@@ -3905,7 +3905,7 @@ Autocompletion will not be available!</source>
     </message>
     <message>
         <source>chart</source>
-        <translation type="obsolete">диаграмма</translation>
+        <translation type="unfinished">диаграмма</translation>
     </message>
     <message>
         <source>Overwrite file?</source>
@@ -5727,6 +5727,10 @@ The following special codes can be used:
     </message>
     <message>
         <source>You need to restart QtiPlot before your changes become effective, would you like to do it now?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open &amp;last project at startup</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -7393,6 +7393,10 @@ Autocompletion will not be available!</source>
         <source>Do you want to replace it?</source>
         <translation>Doriţi să-l înlocuiţi?</translation>
     </message>
+    <message>
+        <source>chart</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ArrowMarker</name>
@@ -9235,11 +9239,15 @@ The following special codes can be used:
     </message>
     <message>
         <source>&amp;Default options</source>
-        <translation type="unfinished"></translation>
+        <translation>Valori &amp;prestabilite</translation>
     </message>
     <message>
         <source>You need to restart QtiPlot before your changes become effective, would you like to do it now?</source>
-        <translation type="unfinished"></translation>
+        <translation>Trebuie să reporniţi QtiPlot pentru ca noile setări să funcţioneze, vreţi să reporniţi acum?</translation>
+    </message>
+    <message>
+        <source>Open &amp;last project at startup</source>
+        <translation>Deschide u&amp;ltimul proiect la pornire</translation>
     </message>
 </context>
 <context>
