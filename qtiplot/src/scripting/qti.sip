@@ -303,8 +303,8 @@ public:
   sipRes = sipCpp->numRows();
 %End
   int numCols();
-  void resizeRows(int) /PyName=setNumRows/;
-  void resizeCols(int) /PyName=setNumCols/;
+  void setNumRows(int);
+  void setNumCols(int);
 
   void deleteRows(int, int);
   void __delitem__(int);
