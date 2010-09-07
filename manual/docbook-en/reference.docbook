@@ -1,7 +1,7 @@
 <title>Command Reference</title>
 
 <para>
-The active items in the menus depend on the active window in the project. If the active window is a spreadsheet, then all the items linked to table functions are enabled and the others are automatically disabled.
+The active items appearing in a menu depends upon which project window is active. For example, if the active window is a table, then all the items related to table functions are enabled and the others are automatically disabled.
 </para>
 
 <!--  **************  MENU FILE  ******************  -->
@@ -10,7 +10,7 @@ The active items in the menus depend on the active window in the project. If the
 <sect1 id="sec-file-menu">
 <title>The File Menu</title>
 
-<para>These commands can also be done by clicking on the <emphasis>New Project</emphasis> icon from the <link linkend="sec-file-toolbar">File Toolbar</link></para>
+<para>Many of the commands from the File Menu are also linked to corresponding icons in the <link linkend="sec-file-toolbar">File Toolbar</link>. Clicking one of these icons will directly execute the linked command.</para>
 
 <variablelist>
 <varlistentry>
@@ -20,7 +20,7 @@ The active items in the menus depend on the active window in the project. If the
        <varlistentry id="new-project-cmd">
           <term>&new-project-cmd; (&new-project-key;)</term>
           <listitem>
-             <para>Creates a new QtiPlot project file. If a project is open and saved, it will be closed. If a project is open is not saved, a dialog will be open to ask if the current project has to be saved.</para>
+             <para>Creates a new QtiPlot project file. If another project is already open and has been saved at least once, it will be closed before the new project is created. If another project is open but has never been saved, a dialog will be opened to ask if the current project should be saved.</para>
           </listitem>
        </varlistentry>
 
@@ -34,7 +34,7 @@ The active items in the menus depend on the active window in the project. If the
        <varlistentry id="new-table-cmd">
           <term>&new-table-cmd; (&new-table-key;)</term>
           <listitem>
-             <para>Creates a new spreadsheet into the project. This empty table will have 30 rows and 2 columns. This number of rows and columns can be changed with the &rows-lnk; and &columns-lnk; of the &table-menu-lnk;.</para>
+             <para>Creates a new (empty) table and adds it to the project. The empty table will have 30 rows and 2 columns. The number of rows and columns can be changed with the &rows-lnk; and &columns-lnk; of the &table-menu-lnk;.</para>
              <informalfigure id="fig-new-table">
                <mediaobject>
                  <imageobject>
@@ -42,13 +42,13 @@ The active items in the menus depend on the active window in the project. If the
                  </imageobject>
                </mediaobject>
              </informalfigure>
-             <para>The properties of each column (format of numbers, width, etc) can be modified by the &column-options-lnk; of the &table-menu-lnk;. See the <link linkend="sec-intro-table">table section</link> for more details.</para>
+             <para>The properties of each column (numeric format, column width, etc) can be modified using the &column-options-lnk; of the &table-menu-lnk;. See the <link linkend="sec-intro-table">table section</link> for more details.</para>
           </listitem>
        </varlistentry>
        <varlistentry id="new-matrix-cmd">
           <term>&new-matrix-cmd;</term>
           <listitem>
-             <para>Creates a new Matrix into the project. The empty matrix will have 32x32 cells, these dimensions can be changed by the &set-dimensions-lnk; of the &matrix-menu-lnk;</para>
+             <para>Creates a new (empty) Matrix and adds it to the project. The empty matrix will have 32x32 cells. These dimensions can be changed using the &set-dimensions-lnk; of the &matrix-menu-lnk;</para>
              <informalfigure id="fig-new-matrix">
                <mediaobject>
                  <imageobject>
@@ -62,7 +62,7 @@ The active items in the menus depend on the active window in the project. If the
        <varlistentry id="new-note-cmd">
           <term>&new-note-cmd;</term>
           <listitem>
-             <para>Creates a new note window in the project. A note is a simple text window which can be used to add comments to the current project.</para>
+             <para>Creates a new note window and adds it to the project. A note is a simple text window which can be used to add comments to the current project.</para>
              <informalfigure id="fig-new-note">
                <mediaobject>
                  <imageobject>
@@ -75,7 +75,7 @@ The active items in the menus depend on the active window in the project. If the
        <varlistentry id="new-graph-cmd">
           <term>&new-graph-cmd;</term>
           <listitem>
-             <para>Creates a new empty 2D plot in the project. This default graph is just a framework in which you can add curves with the &add-remove-curve-lnk;.</para>
+             <para>Creates a new 2D plot, that is, a graph window with a single, empty layer, and adds it to the project. Current defaults are used to create the layer, which is just a framework into which you add curves with the &add-remove-curve-lnk;.</para>
              <informalfigure id="fig-new-graph">
                <mediaobject>
                  <imageobject>
@@ -88,14 +88,14 @@ The active items in the menus depend on the active window in the project. If the
        <varlistentry id="new-function-plot-cmd">
           <term>&new-function-plot-cmd; (&new-function-plot-key;)</term>
           <listitem>
-             <para>Opens a <link linkend="add-function-dialog">dialog</link> allowing to create a plot by specifying an analytical function. See the <link linkend="sec-2d-plot-from-function">2D plot section</link> of the tutorial for a general overview of this function.</para>
-             <para>This function can be defined in cartesian, parametric or polar coordinates, see the &add-function-lnk; for more details. </para>
+             <para>Opens a <link linkend="add-function-dialog">dialog</link> which is used to create a 2D plot by specifying an analytical function. See the <link linkend="sec-2d-plot-from-function">2D plot section</link> of the tutorial for a general overview of this function.</para>
+             <para>The function can be defined in cartesian, parametric or polar coordinates, see the &add-function-lnk; for more details. </para>
           </listitem>
        </varlistentry>
         <varlistentry id="new-surface-3d-plot-cmd">
           <term>&new-surface-3d-plot-cmd; (&new-surface-3d-plot-key;)</term>
           <listitem>
-             <para>Opens a <link linkend="define-surface-plot-dialog">dialog</link> allowing to create a 3D plot by specifying an analytical function. Only cartesian coordinates are availables. See the <link linkend="sec-3d-plot-function">3D plot section</link> of the tutorial for more detail on this function.</para>
+             <para>Opens a <link linkend="define-surface-plot-dialog">dialog</link> which is used to create a 3D plot by specifying an analytical function. Only cartesian coordinates are available. See the <link linkend="sec-3d-plot-function">3D plot section</link> of the tutorial for more detail on this function.</para>
           </listitem>
        </varlistentry>
     </variablelist>
@@ -104,8 +104,8 @@ The active items in the menus depend on the active window in the project. If the
 <varlistentry id="open-cmd">
   <term>File -> &open-cmd; (&open-key;)</term>
   <listitem>
-     <para>Opens an existing QtiPlot project file (.qti). If your project has been save in a compressed format, you must select the <emphasis>.qti.gz</emphasis> file format.</para>
-     <para>This command can also be used to open projects which have been built with the <emphasis>Origin</emphasis> software.</para>
+     <para>Opens an existing QtiPlot project file (.qti). If your project has been saved in a compressed format, you must select the <emphasis>.qti.gz</emphasis> file format.</para>
+     <para>This command can also be used to open projects which have been built with <emphasis>Origin</emphasis> software.</para>
   </listitem>
 </varlistentry>
 
@@ -113,14 +113,14 @@ The active items in the menus depend on the active window in the project. If the
   <term>File -> &append-cmd; (&append-key;)</term>
   <listitem>
      <para>Appends an existing QtiPlot project file (.qti) to the current project as a new folder.</para>
-     <para>This command can also be used to open projects which have been built with the <emphasis>Origin</emphasis> software.</para>
+     <para>This command can also be used to append projects which have been built with <emphasis>Origin</emphasis> software.</para>
   </listitem>
 </varlistentry>
 
 <varlistentry id="recent-projects-cmd">
   <term>File-> &recent-projects-cmd;</term>
   <listitem>
-     <para>Opens a list of the most recently used QtiPlot project files. You can open one of these files by selecting it from the list. If the file doesn't exist anymore an error message will pop-out and the file will be automatically deleted from the list.</para>
+     <para>Opens a list of the most recently used QtiPlot project files. You can open one of these files by selecting it from the list. If the file no longer exists or has been moved, an error message will pop-up and the filename will be deleted from the list.</para>
   </listitem>
 </varlistentry>
 
@@ -137,13 +137,13 @@ The active items in the menus depend on the active window in the project. If the
 <varlistentry id="open-image-file-cmd">
   <term>File-> &open-image-file-cmd;</term>
   <listitem>
-     <para>This command loads an image file in a &appname; project. This image can be resized and then inserted in another 2D plot. It is in this case similar to the &add-image-lnk;. This image can also be used to generate an intensity matrix (see the &import-image-lnk;).</para>
+     <para>This command adds a new graph window to the &appname; project and loads an image file into it. The image can be resized and moved around in the graph window if desired. It can also be copied and inserted into another 2D plot with a result similar to that obtained using the &add-image-lnk;. An image can also be used to generate an intensity matrix (see the &import-image-lnk;).</para>
   </listitem>
 </varlistentry>
 <varlistentry id="import-image-cmd">
   <term>File-> &import-image-cmd;</term>
   <listitem>
-    <para>With this command, an image is loaded in the &appname; project and converted to an intensity matrix. For each pixel, an intensity between 0 and 255 is computed from the intensities of the three colors red, green and blue.</para>
+    <para>Using this command, an image may be loaded into a &appname; project and converted into an intensity matrix. For each pixel, an intensity between 0 and 255 is computed from the intensities of the three colors red, green and blue.</para>
     <informalfigure id="fig-plot-intensity-matrix">
       <mediaobject>
         <imageobject>
@@ -151,7 +151,7 @@ The active items in the menus depend on the active window in the project. If the
         </imageobject>
       </mediaobject>
     </informalfigure>
-	 <para>This example shows the 3D plot which has been drawn from the matrix obtained with the &appname; logo.</para>
+	 <para>This example shows the 3D plot drawn from the intensity matrix obtained from the &appname; logo.</para>
   </listitem>
 </varlistentry>
 <!--
@@ -160,23 +160,23 @@ The active items in the menus depend on the active window in the project. If the
 <varlistentry id="save-project-cmd">
   <term>File-> &save-project-cmd; (&save-project-key;)</term>
   <listitem>
-     <para>Saves the actual project. If the project hasn't been saved yet ("untitled" project), a dialog will open, allowing to save the project to a specific location.In a project file all settings and all plots are stored in ASCII format.</para>
-     <para>If the project include large tables, it may be usefull to save the project in a compressed file format. The free zlib library is used to build files in gzip formats ( .qti.gz ).</para>
+     <para>Saves the current project. If the project hasn't been saved yet ("untitled" project), a dialog will open, allowing you to save the project to a specific location. In a project file, all settings and all plots are stored in ASCII format.</para>
+     <para>If the project includes large tables, it may be useful to save the project in a compressed file format. The free zlib library is used to save files in gzip format ( .qti.gz ).</para>
   </listitem>
 </varlistentry>
 <varlistentry id="save-project-as-cmd">
   <term>File-> &save-project-as-cmd;</term>
   <listitem>
-     <para>Saves the actual project under a file name different from the current one.</para>
+     <para>Saves the current project under a file name different than the current name.</para>
   </listitem>
 </varlistentry>
 <varlistentry id="open-template-cmd">
   <term>File -> &open-template-cmd;</term>
   <listitem>
-     <para>Opens an existing template &appname; plot file (.qpt). This command will create a new empty plot with the same graphical parameters (window geometry, fonts, colors, etc).</para>
+     <para>Opens an existing &appname; template file (.qpt). This command will create a new graph window with one or more empty layers created using the same graphical parameters (window geometry, fonts, colors, etc). as the layers in the saved template.</para>
      <informalfigure id="fig-open-template">
        <informalexample>
-          <para>The first figure is the initial plot saved as a template, and the second one is the empty plot created by the &open-template-cmd;.</para>
+          <para>The first figure below is a graph which was saved as a template. The second figure is the graph with a new, empty layer created using the &open-template-cmd; to load the saved template file.</para>
        </informalexample>
        <mediaobject>
          <imageobject>
@@ -189,22 +189,22 @@ The active items in the menus depend on the active window in the project. If the
          </imageobject>
        </mediaobject>
      </informalfigure>
-     <para>You just have to add curves with the &add-remove-curve-lnk;, but the style used to draw the curves is not kept in the template.</para>
+     <para>You just have to add curves with the &add-remove-curve-lnk;, but note that the style used to draw these curves is not kept in the template.</para>
   </listitem>
 </varlistentry>
 <varlistentry id="save-as-template-cmd">
   <term>File -> &save-as-template-cmd;</term>
   <listitem>
-     <para>Save the active plot as a &appname; template file (.qpt). In this template, the graphical parameters of the plot, together with the text labels (axis, etc) are restored, but the style used to draw the curves and the scales are not saved.</para>
+     <para>Save the active graph as a &appname; template file (.qpt). The resulting template will contain all of the layers from the graph, including images, text labels (axes, etc), and any graphical parameters, including the positions and sizes of the layers. Plotted data, the style used to draw curves, and any associated scales are not saved in the template.</para>
   </listitem>
 </varlistentry>
 <varlistentry id="export-graph-cmd">
   <term>File -> &export-graph-cmd;</term>
   <listitem>
 <!--		beginning of Export Graph			-->
-  <para>The plot can be exported into several different image formats. You can define some parameters to customize your image file by checking the <emphasis>show options</emphasis> check box. Depending on the chosen image format, the available options are not the same.</para>
-  <para>For <emphasis>bmp, pbm, jpeg, xbm, pgm, ppm</emphasis> image formats, the only option is the quality of the image, this parameter between 0 and 100% defines the compression ratio. The higher it is, the best the quality is but the larger the file is.
-   For <emphasis>png</emphasis>, <emphasis>tiff</emphasis> and <emphasis>xpm</emphasis>, you can choose to use a transparent background.</para>
+  <para>All graphs, or one graph at a time, can be exported in any of several different image formats. Since all export options have the same image formats available, these will be described first. Depending upon the image format chosen, you may be able to customize some image file parameters by checking the <emphasis>show options</emphasis> check box. Available options vary according to the format chosen.</para>
+  <para>For the <emphasis>bmp, pbm, jpeg, xbm, pgm, ppm</emphasis> image formats, the only available option is the quality of the image. This parameter defines the image compression ratio, and may be set to any value between 0 and 100%. Higher values produce a better quality image and a larger file, while lower values result in increasingly lossy compression, degraded image quality, but smaller file size.
+   For <emphasis>png</emphasis>, <emphasis>tiff</emphasis> and <emphasis>xpm</emphasis>, there is an option to choose a transparent background.</para>
     <informalfigure id="fig-export-graph-png">
       <mediaobject>
         <imageobject>
@@ -212,17 +212,10 @@ The active items in the menus depend on the active window in the project. If the
         </imageobject>
       </mediaobject>
     </informalfigure>
-  <para>For <emphasis>eps</emphasis>, <emphasis>pdf</emphasis>, <emphasis>ps</emphasis>file formats, the option dialog
-  is different. The main parameters availables are: the resolution and the size of the paper which is used to draw the plot.
-  of the paper sheet. The default value for the resolution is the screen resolution.
-  If you increase this parameter, the quality of the graphic elements will be better
-  (but the overall size of the plot will be unchanged).</para>
+  <para>For <emphasis>eps</emphasis>, <emphasis>pdf</emphasis>, and <emphasis>ps</emphasis> file formats, the option dialog is different again. The main parameters available are the desired resolution and the size of the sheet of paper for which the image will be formatted. The default value for the resolution is the screen resolution. If you increase the resolution, the overall size of the plot will be unchanged but the quality of the graphic elements will be better.</para>
 
-  <para>By default the plot is exported to its real size on screen, but if you want
-  you can choose a different size, by checking the <emphasis>Custom print size</emphasis> box.
-  In addition, you have the option to <emphasis>Keep aspect ratio</emphasis> of the plot.
-  If you check this box and you modify one dimension of the plot, the other dimension will be automatically modified
-  so that the plot aspect remains the same.</para>
+  <para>By default the plot is exported to its real size on screen, but if you wish, you can choose a different size  by checking the <emphasis>Custom print size</emphasis> box.
+  In addition, there is a <emphasis>Keep aspect ratio</emphasis> option. If you check this box and modify one dimension of a plot, the other dimension will automatically be modified to keep the plot's aspect ratio the same.</para>
     <informalfigure id="fig-export-graph-eps">
       <mediaobject>
         <imageobject>
@@ -231,12 +224,9 @@ The active items in the menus depend on the active window in the project. If the
       </mediaobject>
     </informalfigure>
 
-	<para>When exporting the plot to LaTeX (.tex) you have two very useful options: <emphasis>Export font sizes</emphasis> and
-	<emphasis>Escape special characters in title/axis labels</emphasis>. If checked, the first option allows you to keep the
-	original font sizes. If not, the font size specified in the preamble of the TeX document will be used for all text strings in the plot.
-    The second option specifies if LaTeX special characters should be escaped or not when exporting. If the title or the axis labels contain
-	LaTeX syntax (like superscripts, subscripts, etc...) and you want them to be interpreted by the LaTeX compiler,
-	you should uncheck this option.</para>
+	<para>When exporting the plot to LaTeX (.tex) there are two very useful options: <emphasis>Export font sizes</emphasis> and
+	<emphasis>Escape special characters in title/axis labels</emphasis>. If checked, the first option will include LaTeX commands in the output which keep the original font sizes. If not checked, the font size specified in the preamble of the TeX document will be used for all text strings in the plot.
+    The second option specifies whether LaTeX special characters should be escaped or not when exporting. If the title or the axis labels contain	LaTeX syntax (like superscripts, subscripts, etc...) and you want them to be interpreted by the LaTeX compiler,	you must uncheck this option.</para>
 
 	<informalfigure id="fig-export-graph-tex">
       <mediaobject>
@@ -250,21 +240,20 @@ The active items in the menus depend on the active window in the project. If the
        <varlistentry id="export-graph-current-cmd">
          <term>&export-graph-current-cmd; (&export-graph-current-key;)</term>
          <listitem>
-           <para>Here you have the possibility to save the active plot under different image formats.</para>
+           <para>This selection will save the active graph using one of the image formats described above.</para>
          </listitem>
        </varlistentry>
        <varlistentry id="export-graph-all-cmd">
          <term> &export-graph-all-cmd; (&export-graph-all-key;)</term>
          <listitem>
-           <para>Here you have the possibility to save all plots of the project under different image formats.</para>
+           <para>This selection will save all graphs in the project using one of the image formats described above.</para>
          </listitem>
        </varlistentry>
 
        <varlistentry id="odf-presentation-cmd">
          <term> &odf-presentation-cmd;</term>
          <listitem>
-           <para>Here you have the possibility to save all plots of the project to an Open Document Format file (.odf)
-           that can be opened and edited with OpenOffice.</para>
+           <para>This selection will save all the graphs in the project in an Open Document Format file (.odf) that can be opened and edited with OpenOffice.</para>
          </listitem>
        </varlistentry>
 
@@ -290,7 +279,7 @@ The active items in the menus depend on the active window in the project. If the
 <varlistentry id="print-all-plots-cmd">
   <term>File-> &print-all-plots-cmd;</term>
   <listitem>
-     <para>Prints all plots of the projects. A print dialog is opened where you can select the printer, different paper sizes, etc.</para>
+     <para>Prints all plots in the projects. A print dialog is opened where you can select the printer, different paper sizes, etc.</para>
   </listitem>
 </varlistentry>
 <!--
@@ -299,20 +288,20 @@ The active items in the menus depend on the active window in the project. If the
 <varlistentry id="export-ascii-cmd">
   <term>File -> &export-ascii-cmd;</term>
   <listitem>
-     <para>Opens the <link linkend="export-ascii-dialog">&export-ascii-cmd; dialog</link> allowing to save the data from the active spreadsheet to an ASCII file.</para>
+     <para>Opens the <link linkend="export-ascii-dialog">&export-ascii-cmd; dialog</link> allowing to save the data from the active table to an ASCII file.</para>
   </listitem>
 </varlistentry>
 <varlistentry id="import-ascii-cmd">
   <term>File -> &import-ascii-cmd; (&import-ascii-key;)</term>
   <listitem>
-    <para>The options for the importation of ASCII data files are set by the <link linkend="set-import-options-dialog">Import dialog</link>.</para>
+    <para>The options for importation of ASCII data files are set by the <link linkend="set-import-options-dialog">Import dialog</link>.</para>
   </listitem>
 </varlistentry>
 
 <varlistentry id="import-sound-cmd">
   <term>File -> &import-sound-cmd; </term>
   <listitem>
-    <para>This allows you to import an uncompressed sound .wav file (PCM format).</para>
+    <para>This allows you to import an uncompressed sound (.wav) file (PCM format).</para>
   </listitem>
 </varlistentry>
 
@@ -336,25 +325,25 @@ The active items in the menus depend on the active window in the project. If the
 <varlistentry id="undo-cmd">
   <term>Edit -> &undo-cmd; (&undo-key;)</term>
   <listitem>
-     <para>Restores the last modified table at the state it had after the last "Save Project" operation. Not available for plot windows.</para>
+     <para>Restores the last modified table to the state it had after the last "Save Project" operation. Not available for plot windows.</para>
   </listitem>
 </varlistentry>
 <varlistentry id="redo-cmd">
   <term>Edit -> &redo-cmd; (&redo-key;)</term>
   <listitem>
-     <para>Restores the modifications in a table after a "Undo" operation. Function not available for plot windows.</para>
+     <para>Restores modifications to a table after a "Undo" operation. Function not available for plot windows.</para>
   </listitem>
 </varlistentry>
 <varlistentry id="cut-cmd">
   <term>Edit -> &cut-cmd; (&cut-key;)</term>
   <listitem>
-     <para>Copies the current selection to the clipboard and deletes the selection. It currently works for spreadsheets and for 2D plots objects.</para>
+     <para>Copies the current selection to the clipboard and deletes the selection. It currently works for tables and for 2D plots objects.</para>
   </listitem>
 </varlistentry>
 <varlistentry id="copy-cmd">
   <term>Edit -> &copy-cmd; (&copy-key;)</term>
   <listitem>
-     <para>Copies the current selection to the clipboard. It currently works for spreadsheets and for 2D plots objects.</para>
+     <para>Copies the current selection to the clipboard. It currently works for tables and for 2D plots objects.</para>
   </listitem>
 </varlistentry>
 <varlistentry id="paste-cmd">
@@ -366,20 +355,20 @@ The active items in the menus depend on the active window in the project. If the
 <varlistentry id="delete-cmd">
   <term>Edit -> &delete-cmd; (&delete-key;)</term>
   <listitem>
-     <para>Cleares the current selection. It currently works for spreadsheets and for 2D plots objects.</para>
+     <para>Cleares the current selection. It currently works for tables and for 2D plots objects.</para>
   </listitem>
 </varlistentry>
 <varlistentry id="delete-fit-tables">
   <term>Edit -> &delete-fit-cmd;</term>
   <listitem>
-    <para>Each time yo do a fit of your data with some mathematical model, a new table is created to put the results of the fit (i.e. the values computed by the model). These tables can be used to plot comparisons of experimental and fitted values.</para>
-    <para>If you have done several fitting tentatives, a number of unused table may be present in your project. This command allows to remove the results of all the differents fits that you have tested.</para>
+    <para>Each time you fit your data to some mathematical model, a new table is created in which to put the results of the fit (i.e. the values computed by the model). These tables can be used to plot comparisons of experimental and fitted values.</para>
+    <para>If you have completed several tentative fits, a number of fit result tables may be present in your project. This command allows you to remove the results of all the different fits that you have tested.</para>
   </listitem>
 </varlistentry>
 <varlistentry id="clear-log-cmd">
   <term>Edit -> &clear-log-cmd;</term>
   <listitem>
-     <para>Deletes from the project file all the history information about the analysis operations performed by the user. The <link linkend="sec-intro-log-window">log panel</link> is then empty.</para>
+     <para>Deletes all history information about analyses performed by the user from the project file. The <link linkend="sec-intro-log-window">log panel</link> will then be empty.</para>
   </listitem>
 </varlistentry>
 <varlistentry id="preferences-cmd">
@@ -401,7 +390,7 @@ The active items in the menus depend on the active window in the project. If the
 <varlistentry id="toolbars-cmd">
   <term>View -> &toolbars-cmd; (&toolbars-key;)</term>
   <listitem>
-     <para>Opens a pop-up menu allowing to enable/disable tool bars.</para>
+     <para>Opens a pop-up menu allowing you to enable/disable tool bars.</para>
   </listitem>
 </varlistentry>
 <varlistentry id="plot-wizard-cmd">
@@ -419,7 +408,7 @@ The active items in the menus depend on the active window in the project. If the
 <varlistentry id="results-log-cmd">
   <term>View -> &results-log-cmd;</term>
   <listitem>
-     <para>Opens/Close a <link linkend="sec-intro-log-window">panel</link> displaying the historic of the data analysis operations performed by the user.</para>
+     <para>Opens/Closes a <link linkend="sec-intro-log-window">panel</link> displaying a history of all data analysis operations performed by the user.</para>
   </listitem>
 </varlistentry>
 </variablelist>
@@ -438,7 +427,7 @@ The active items in the menus depend on the active window in the project. If the
 <varlistentry id="add-remove-curve-cmd">
   <term>Graph -> &add-remove-curve-cmd; (&add-remove-curve-key;)</term>
   <listitem>
-     <para>Opens the <link linkend="add-remove-curve-dialog">&add-remove-curve-cmd; dialog</link>, allowing to easily add or remove curves from the active plot layer. This dialog can also be used to modify a curve which is already plotted by changing the columns which are used as X or Y values.</para>
+     <para>Opens the <link linkend="add-remove-curve-dialog">&add-remove-curve-cmd; dialog</link>, allowing easy addition or removal of curves from the active plot layer. This dialog can also be used to modify a curve which is already plotted by changing the columns which are used as X or Y values.</para>
   </listitem>
 </varlistentry>
 <varlistentry id="add-error-bars-cmd">
@@ -450,19 +439,19 @@ The active items in the menus depend on the active window in the project. If the
 <varlistentry id="add-function-cmd">
   <term>Graph -> &add-function-cmd; (&add-function-key;)</term>
   <listitem>
-     <para>Opens the <link linkend="add-function-dialog">&add-function-cmd; dialog</link>. This command allows to add a a new curve on an existing plot.</para>
+     <para>Opens the <link linkend="add-function-dialog">&add-function-cmd; dialog</link>. This command is used to add new curves to an existing plot.</para>
   </listitem>
 </varlistentry>
 <varlistentry id="new-legend-cmd">
   <term>Graph -> &new-legend-cmd; (&new-legend-key;)</term>
   <listitem>
-     <para>Adds a new legend object to the active plot layer. You can have more than one legend on a plot. These legends can then be customized by double clicking on a given legend.</para>
+     <para>Adds a new legend object to the active layer. You can have more than one legend on a plot. These legends can later be customized by double clicking on a given legend.</para>
   </listitem>
 </varlistentry>
 <varlistentry id="add-text-cmd">
   <term>Graph -> &add-text-cmd; (&add-text-key;)</term>
   <listitem>
-     <para>The cursor changes to an edit text cursor. Next, you must click in the plot window to specify the position of the new text box. A text dialog will pop-up allowing you to type the new text to be displayed and all its properties (color, font, etc...)</para>
+     <para>This command is used to add text items on a layer. When selected, the cursor changes to an edit text cursor. You must then click in the plot area to specify the position of the new text box. A text dialog will pop-up allowing you to type the text to be displayed and set all its properties (color, font, etc...)</para>
   </listitem>
 </varlistentry>
 <varlistentry id="draw-arrow-cmd">
