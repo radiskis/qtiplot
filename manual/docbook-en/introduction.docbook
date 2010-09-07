@@ -19,7 +19,7 @@ revision history. (see installation appendix comment) -->
 <para>Data analysis operations (integration, interpolation, FFT, curve fitting, etc.) can be performed on the curves in a 2D plot via the Analysis menu. The results of all these operations are also stored in the project file. They can be visualized at any time using the &results-log-lnk; and can be deleted from the project file via the &clear-log-lnk;.</para>
 
 <para>When the application is launched, a new untitled project file is created consisting of a grey main window
-(the workspace) which may contain an empty child window, depending on your preferences. The type of this initial
+(the workspace) which may initially contain an empty child window, depending on your preferences. The type of this initial
 child window can be customized using the <link linkend="preferences-dialog">Preferences dialog</link>. It may be a table, a matrix,
 a note or an empty 2D graph window. In order to be operational, the workspace must be populated with at least one data container. Either empty tables or matrices may be created manually (&new-table-lnk;) and then filled with data, or they may created by importing ASCII files (&import-ascii-lnk;), which automatically creates new tables.</para>
 
@@ -119,9 +119,9 @@ Warning: 2D plots are not correctly handled in this mode!</para></listitem>
       <indexterm>
         <primary>graph</primary>
       </indexterm>
-      <para>A graph can contain one or several plots. Each of these plots is contained in a different <emphasis>layer</emphasis>. These layers can be arranged in many ways to build matrix of plots.</para>
-      <para>A new layer can be added to an existing graph with the &add-layer-lnk; from the &graph-menu-lnk;. you can also remove an existing layer with the &remove-layer-lnk;, but if you remove a layer, any plots on that layer will also be deleted. You can also copy a layer from one graph to another or copy an existing graph into another (the window will be added as a new layer - see the section on <link linkend="sec-multilayer-plots">Multilayer Plots</link> for more details).</para>
-      <para>Plots can be created in several ways. You can select data in tables or matrices, and build a plot, or create new plots from functions of one or two variables (see sections <link linkend="sec-2d-plots">2D plots</link> and <link linkend="sec-3d-plots">3D plots</link>).</para>
+      <para>A graph can contain one or several <emphasis>layers</emphasis>. A layer consists of axes, text items, graphics, and a single <emphasis>plotting area</emphasis> bounded by the axes lines. One or more <emphasis>curves</emphasis>, generated from data or functions, are placed into the plotting area to create a <emphasis>plot</emphasis>. Layers and their contained plots can be arranged in many ways to build matrix of plots. Throughout this document, the term <emphasis>plot window</emphasis> is used as a synonym for a graph.</para>
+      <para>A new layer can be added to an existing graph with the &add-layer-lnk; from the &graph-menu-lnk;. you can also remove an existing layer with the &remove-layer-lnk;, but if you remove a layer, the plot on that layer will also be deleted. You can also copy a layer from one graph to another, or copy an existing graph into another (the window will be added as a new layer - see the section on <link linkend="sec-multilayer-plots">Multilayer Plots</link> for more details).</para>
+      <para>Curves can be added to a plot in several ways. You can select data from tables or matrices to generate the curve, or, create a curve from a function of one or two variables (see sections <link linkend="sec-2d-plots">2D plots</link> and <link linkend="sec-3d-plots">3D plots</link>).</para>
     </listitem>
   </varlistentry>
   <varlistentry>
@@ -169,17 +169,17 @@ When working with data, tables become the main focus of QtiPlot. Fundamentally, 
   </mediaobject>
 </figure>
 
-<para> Every column of a table has a label, and can be assigned a format: numeric, text, date or time. Each column can also have one of the following flags set: X, Y, Z, X-error, Y-error, label, or none (i.e., a simple column without any special flag). X flagged columns are the abscissae while Y flagged columns are the ordinates used when creating a 2D plot from data. A column must have either the X or Y flag set to be available for use in a 2D plot. The X-error and Y-error columns can be used to add error bars to 2D plots. Flags can be changed using the <link linkend="column-options-dialog">Column options dialog</link>. To reach this dialog, simply double-click on the column label or use the  &column-options-lnk; from the &table-menu-lnk;.</para>
+<para> Every column of a table has a label, and can be assigned a format: numeric, text, date or time. Each column can also have one of the following flags set: X, Y, Z, X-error, Y-error, label, or none (i.e., a simple column without any special flag). X flagged columns are the abscissae while Y flagged columns are the ordinates used when creating a 2D plot from data. A column must have either the X or Y flag set to be available for use in a 2D plot. The X-error and Y-error columns can be used to add error bars to a curve in a 2D plot. Flags can be changed using the <link linkend="column-options-dialog">Column options dialog</link>. To reach this dialog, simply double-click on the column label or use the  &column-options-lnk; from the &table-menu-lnk;.</para>
 
 <para> A table column is selected by left clicking on it's label. Multiple columns are selected in one of 2 ways. First, if the columns are adjacent, it is most convenient to left click on the first desired column's label and, while holding the left mouse button down, drag the mouse pointer over the labels of the column you wish to select. Second, in the case where desired columns are not adjacent, you can select additional columns by keeping the <keycode>Ctrl</keycode> key pressed while left clicking on the desired column's label. This also allows you to deselect specific columns. You can select all the columns of a selected table by pressing (<keycode>Ctrl+A</keycode>).</para>
 
-<para> You can perform various operations on selected columns : fill with data, normalize, sort, view statistics and finally, make plots out of your data. All these functions can be reached by right clicking on the column label or by using the &table-menu-lnk;.</para>
+<para> You can perform various operations on selected columns : fill with data, normalize, sort, view statistics and finally, generate curves from your data. All these functions can be reached by right clicking on the column label or by using the &table-menu-lnk;.</para>
 
-<para> All other table functions: rename, duplicate, export, print, close can be reached via the context menu (right click anywhere in the table outside the column labels area). </para>
+<para> All other table functions: rename, duplicate, export, print, and close can be reached via the context menu (right click anywhere in the table outside the column labels area). </para>
 
 <para> You can cut, copy and paste data between tables or between a table and another application (Excel, Gnumeric, etc.).</para>
 
-<para> You can import single or multiple ASCII files using the &import-ascii-lnk; from the &file-menu-lnk;. Of course you can export the data from the table to a text file using the &export-ascii-lnk;.</para>
+<para> You can import single or multiple ASCII files using the &import-ascii-lnk; from the &file-menu-lnk;. Of course you can also export the data from a table to a text file using the &export-ascii-lnk;.</para>
 
 </sect2>
 
@@ -195,14 +195,11 @@ When working with data, tables become the main focus of QtiPlot. Fundamentally, 
 This special table can be used to create 3D plots as well as 2D image/contour plots
 via the &plot3d-menu-lnk; and the &plot3d-toolbar-lnk;.
 
-The difference between a table and a matrix is that matrices have a dual functioning mode:
-they can display data in a table form or they can display an image. Therefore matrices can be
-used as a basic image viewer and also as an image editor,
-since they implement some image manipulation functions like: 90 degrees rotation, horizontal
-and vertical mirroring, etc.</para>
+One difference between a table and a matrix is that matrices may function in one of two modes:
+they can display data in table form or they can display an image. Therefore matrices can be
+used as a basic image viewer and also as an image editor, since they implement some image manipulation functions like: 90 degrees rotation, horizontal and vertical mirroring, etc.</para>
 
-<para>In a matrix there is no special column
-nor special row for X or Y labels or values. Nevertheless,
+<para>In a matrix there is no special column nor special row for X or Y labels or values. Nevertheless,
 you can specify an X-scale and a Y-scale with the &set-dimensions-lnk;.</para>
 
 <figure id="fig-matrix">
@@ -214,7 +211,7 @@ you can specify an X-scale and a Y-scale with the &set-dimensions-lnk;.</para>
   </mediaobject>
 </figure>
 
-<para>The values which are stored in a matrix can be obtained from a function of the form
+<para>The values which are stored in a matrix can be generated from a function of the form
 z=f(i, j, x, y) with the &set-values-lnk;,
 i and j being the column and row numbers and x and y the corresponding coordinates.
 
@@ -223,13 +220,13 @@ They can also be read directly from an ASCII file with the &import-ascii-lnk; or
 </sect2>
 
 <!--
-		General description of a plot window
+		General description of a plot window (aka graph)
 		====================================
 -->
 <sect2 id="sec-intro-plot-window">
 <title>Plot Window</title>
 
-<para>The plot window provides a container for plotting graphs. It contains at least one layer, which is the main container of the plot window. Each new plot is inserted in a new layer of the plot window. Each layer has its own geometry and graphic properties (background color, frame, etc). The example presented below shows a graph with two layers which have different geometries.</para>
+<para>The plot window (that is, a graph), provides a container for plotting data. It contains one or more layers, which are the main containers of a graph. Each layer contains a plotting area into which curves are placed when creating a plot. Each layer has its own geometry and graphic properties (background color, frame, etc). The example presented below shows a graph with two layers which have different geometries.</para>
 
 <figure id="fig-plot-window">
   <title>An example of &appname; 2D graph</title>
@@ -240,7 +237,7 @@ They can also be read directly from an ASCII file with the &import-ascii-lnk; or
   </mediaobject>
 </figure>
 
-<para>Each layer can be activated by clicking on the corresponding gray button  <inlinemediaobject><imageobject><imagedata format="PNG" fileref="pics/layer-button.png"/></imageobject></inlinemediaobject> in the top-left corner of the window.</para>
+<para>Each layer can be activated by clicking on its corresponding gray button  <inlinemediaobject><imageobject><imagedata format="PNG" fileref="pics/layer-button.png"/></imageobject></inlinemediaobject> in the top-left corner of the window.</para>
 
 <para>Some graph elements can be accessed by a double click on an element in a layer. These are:</para>
 
@@ -252,19 +249,19 @@ They can also be read directly from an ASCII file with the &import-ascii-lnk; or
 <para>The axes or the axes labels: this will open the <link linkend="plot-options-dialog">General Plot Options Dialog</link>. It is used to customize the axes, the numbers and labels of the axes, and the grid.</para>
 </listitem>
 <listitem>
-<para>Text items, including the legend of the plot: this will open the <link linkend="text-options-dialog">Text Options Dialog</link> which allows customizing the font of the label and the frame in which it is drawn.</para>
+<para>Text items, including the legend: this will open the <link linkend="text-options-dialog">Text Options Dialog</link> which allows customizing the font of the label and the frame in which it is drawn.</para>
 </listitem>
 <listitem>
 <para>Arrow/Line items: this will open the <link linkend="arrow-dialog">Line Options Dialog</link>.</para>
 </listitem>
 <listitem>
-<para>Image items: this will open a dialog allowing to customize the geometry and the position of the image.</para>
+<para>Image items: this will open a dialog allowing you to customize the geometry and the position of the image.</para>
 </listitem>
 </itemizedlist>
 
-<para>A left click on a plot element selects it. You can deselect any element by pressing the <emphasis>Escape</emphasis> key.
-A right click on a plot element pops-up a context menu allowing fast access to its properties dialog.
-Last but not least, you should know that QtiPlot provides multiple selection for objects in a plot layer.
+<para>A left click on a layer element selects it. You can deselect any element by pressing the <emphasis>Escape</emphasis> key.
+A right click on a layer element pops-up a context menu allowing quick access to its properties dialog.
+Last but not least, you should know that QtiPlot provides multiple selection for objects in a layer.
 In order to add an object to an existing selection keep the <emphasis>Shift</emphasis>
 key pressed and click on the element you want to add to the selection.
 Elements in a multiple selection can be moved and resized together with the mouse.</para>
@@ -339,7 +336,7 @@ via the <emphasis>Notes</emphasis> tab in the <link linkend="fig-preferences-dia
   </mediaobject>
 </figure>
 
-<para>It gives an overview of the structure of a project and allows the user to perform various operations on the windows (tables and plots) in the workspace: hiding, minimizing, closing, renaming, printing, etc. These functions can be reached via the context menu, obtained by right-clicking on an item in the explorer.</para>
+<para>It gives an overview of the structure of a project and allows the user to perform various operations on the windows (tables, graphs, and notes) in the workspace: hiding, minimizing, closing, renaming, printing, etc. These functions can be reached via the context menu, obtained by right-clicking on an item in the explorer.</para>
 <para>By double-clicking on an item, the corresponding window is shown maximized in the workspace, even if it was hidden before.</para>
 <para>From the project explorer window, different objects can be organized into folders. When selecting a folder, the default policy is that only the objects contained in it will be shown in the workspace window. You can also display all the objects in subfolders if you change this policy with the "View Windows" command to "Windows in Active Folder and Subfolders".</para>
 
