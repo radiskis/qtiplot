@@ -140,9 +140,6 @@ contains( TARGET, qtiplot ) {
 
   #DEFINES         += QTIPLOT_DEMO
 
-  # Comment the following lines to disable donations start-up message.
-  #DEFINES         += QTIPLOT_SUPPORT
-
   # Uncomment the following line if you want to perform a custom installation using the *.path variables defined in ./qtiplot.pro.
   #CONFIG          += CustomInstall
 

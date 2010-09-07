@@ -15739,7 +15739,6 @@ void ApplicationWindow::showBugTracker()
 	QDesktopServices::openUrl(QUrl("https://developer.berlios.de/bugs/?group_id=6626"));
 }
 
-#ifdef QTIPLOT_SUPPORT
 void ApplicationWindow::showDonationDialog()
 {
 	QString s = tr("<font size=+2, color = darkBlue><b>QtiPlot is open-source software and its development required hundreds of hours of work.<br><br>\
@@ -15755,7 +15754,6 @@ void ApplicationWindow::showDonationDialog()
 	if (msg->clickedButton() == btn)
 		showDonationsPage();
 }
-#endif
 
 void ApplicationWindow::parseCommandLineArguments(const QStringList& args)
 {

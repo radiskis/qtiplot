@@ -897,9 +897,7 @@ public slots:
 	void receivedVersionFile(bool error);
 	//!  called when the user presses the actionCheckUpdates
 	void searchForUpdates();
-#ifdef QTIPLOT_SUPPORT
 	void showDonationDialog();
-#endif
 	//! Open support page in external browser
 	void showSupportPage();
 	//! Open donation page in external browser
