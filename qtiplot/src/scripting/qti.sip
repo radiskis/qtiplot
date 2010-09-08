@@ -81,7 +81,6 @@ class Table: MdiSubWindow
 {
 %TypeHeaderCode
 #include "../src/table/Table.h"
-#include <QMessageBox>
 #include <QDate>
 #include <QTime>
 #include <QDateTime>

@@ -4208,6 +4208,11 @@ saveProjectAs(dirPath + "/" + "StRD_NIST.qti")
 sys.stdout = saveout
 fsock.close()
 </programlisting>
+</sect2>
 
+<sect2 id="QtiPlot-Python-API">
+<title>QtiPlot/Python API</title>
+The complete QtiPlot/Python API can be consulted
+<ulink url="http://soft.proindependent.com/doc/manual-en/Python-API/html/index.html">here</ulink>.
 </sect2>
 </sect1>

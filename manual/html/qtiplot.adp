@@ -404,9 +404,11 @@
 </section>
 <section ref="x5312.html#Python-AutomatizationExample" title="Task automatization example">
 </section>
+<section ref="x5312.html#QtiPlot-Python-API" title="QtiPlot/Python API">
 </section>
 </section>
-<section ref="c6568.html" title="Credits and License">
+</section>
+<section ref="c6571.html" title="Credits and License">
 <keyword ref="x81.html#AEN85">Command line parameters</keyword>
 <keyword ref="x81.html#AEN114">Command line options</keyword>
 <keyword ref="x138.html#AEN158">table</keyword>
@@ -419,32 +421,32 @@
 <keyword ref="x4560.html#AEN4562">matrix</keyword>
 <keyword ref="x4575.html#AEN4577">table</keyword>
 <keyword ref="x4612.html#AEN4614">matrix</keyword>
-<section ref="c6568.html#fdl" title="GNU Free Documentation License">
-<section ref="c6568.html#AEN6589" title="Preamble">
+<section ref="c6571.html#fdl" title="GNU Free Documentation License">
+<section ref="c6571.html#AEN6592" title="Preamble">
 </section>
-<section ref="c6568.html#AEN6594" title="Applicability And Definitions">
+<section ref="c6571.html#AEN6597" title="Applicability And Definitions">
 </section>
-<section ref="c6568.html#AEN6603" title="Verbatim Copying">
+<section ref="c6571.html#AEN6606" title="Verbatim Copying">
 </section>
-<section ref="c6568.html#AEN6607" title="Copying In Quantity">
+<section ref="c6571.html#AEN6610" title="Copying In Quantity">
 </section>
-<section ref="c6568.html#AEN6613" title="Modifications">
+<section ref="c6571.html#AEN6616" title="Modifications">
 </section>
-<section ref="c6568.html#AEN6631" title="Combining Documents">
+<section ref="c6571.html#AEN6634" title="Combining Documents">
 </section>
-<section ref="c6568.html#AEN6636" title="Collections Of Documents">
+<section ref="c6571.html#AEN6639" title="Collections Of Documents">
 </section>
-<section ref="c6568.html#AEN6640" title="Aggregation With Independent Works">
+<section ref="c6571.html#AEN6643" title="Aggregation With Independent Works">
 </section>
-<section ref="c6568.html#AEN6644" title="Translation">
+<section ref="c6571.html#AEN6647" title="Translation">
 </section>
-<section ref="c6568.html#AEN6647" title="Termination">
+<section ref="c6571.html#AEN6650" title="Termination">
 </section>
-<section ref="c6568.html#AEN6650" title="Future Revisions Of This License">
+<section ref="c6571.html#AEN6653" title="Future Revisions Of This License">
 </section>
 </section>
 </section>
-<section ref="a6653.html" title="Installation">
+<section ref="a6656.html" title="Installation">
 <keyword ref="x81.html#AEN85">Command line parameters</keyword>
 <keyword ref="x81.html#AEN114">Command line options</keyword>
 <keyword ref="x138.html#AEN158">table</keyword>
@@ -457,20 +459,20 @@
 <keyword ref="x4560.html#AEN4562">matrix</keyword>
 <keyword ref="x4575.html#AEN4577">table</keyword>
 <keyword ref="x4612.html#AEN4614">matrix</keyword>
-<section ref="a6653.html#getting-qtiplot" title="How to obtain QtiPlot">
+<section ref="a6656.html#getting-qtiplot" title="How to obtain QtiPlot">
 </section>
-<section ref="x6659.html" title="Installation from binary packages">
+<section ref="x6662.html" title="Installation from binary packages">
 </section>
-<section ref="x6673.html" title="Compilation and Installation from sources">
-<section ref="x6673.html#requirements" title="Requirements">
+<section ref="x6676.html" title="Compilation and Installation from sources">
+<section ref="x6676.html#requirements" title="Requirements">
 </section>
-<section ref="x6673.html#compilation-linux" title="Linux and Mac OS X">
+<section ref="x6676.html#compilation-linux" title="Linux and Mac OS X">
 </section>
-<section ref="x6673.html#compilation-windows" title="Windows">
+<section ref="x6676.html#compilation-windows" title="Windows">
 </section>
 </section>
 </section>
-<section ref="c6751.html" title="Frequently asked questions">
+<section ref="c6754.html" title="Frequently asked questions">
 </section>
 </DCF>
 </assistantconfig>
