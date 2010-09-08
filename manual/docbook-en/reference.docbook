@@ -160,7 +160,7 @@ The active items appearing in a menu depends upon which project window is active
 <varlistentry id="save-project-cmd">
   <term>File-> &save-project-cmd; (&save-project-key;)</term>
   <listitem>
-     <para>Saves the current project. If the project hasn't been saved yet ("untitled" project), a dialog will open, allowing you to save the project to a specific location. In a project file, all settings and all plots are stored in ASCII format.</para>
+     <para>Saves the current project. If the project hasn't been saved yet (an "untitled" project), a dialog will open, allowing you to save the project to a specific location. In a project file, all settings and all plots are stored in ASCII format.</para>
      <para>If the project includes large tables, it may be useful to save the project in a compressed file format. The free zlib library is used to save files in gzip format ( .qti.gz ).</para>
   </listitem>
 </varlistentry>
@@ -176,7 +176,7 @@ The active items appearing in a menu depends upon which project window is active
      <para>Opens an existing &appname; template file (.qpt). This command will create a new graph window with one or more empty layers created using the same graphical parameters (window geometry, fonts, colors, etc). as the layers in the saved template.</para>
      <informalfigure id="fig-open-template">
        <informalexample>
-          <para>The first figure below is a graph which was saved as a template. The second figure is the graph with a new, empty layer created using the &open-template-cmd; to load the saved template file.</para>
+          <para>The first figure below is a graph which was saved as a template. The second figure is the graph with a new, empty layer created using the &open-template-cmd; command to load the saved template file.</para>
        </informalexample>
        <mediaobject>
          <imageobject>
@@ -202,8 +202,8 @@ The active items appearing in a menu depends upon which project window is active
   <term>File -> &export-graph-cmd;</term>
   <listitem>
 <!--		beginning of Export Graph			-->
-  <para>All graphs, or one graph at a time, can be exported in any of several different image formats. Since all export options have the same image formats available, these will be described first. Depending upon the image format chosen, you may be able to customize some image file parameters by checking the <emphasis>show options</emphasis> check box. Available options vary according to the format chosen.</para>
-  <para>For the <emphasis>bmp, pbm, jpeg, xbm, pgm, ppm</emphasis> image formats, the only available option is the quality of the image. This parameter defines the image compression ratio, and may be set to any value between 0 and 100%. Higher values produce a better quality image and a larger file, while lower values result in increasingly lossy compression, degraded image quality, but smaller file size.
+  <para>All graphs, or one graph at a time, can be exported in any of the available image formats. Since all export options have the same image formats available, these will be described first. Depending upon the image format chosen, you may be able to customize some image file parameters by checking the <emphasis>show options</emphasis> check box. Available options vary according to the format chosen.</para>
+  <para>For the <emphasis>bmp, pbm, jpeg, xbm, pgm, ppm</emphasis> image formats, the only available option is the quality of the image. This parameter defines the image compression ratio, and may be set to any value between 0 and 100%. Higher values produce a better quality image and a larger file, while lower values result in increasingly lossy compression, degraded image quality, and smaller file size.
    For <emphasis>png</emphasis>, <emphasis>tiff</emphasis> and <emphasis>xpm</emphasis>, there is an option to choose a transparent background.</para>
     <informalfigure id="fig-export-graph-png">
       <mediaobject>
@@ -226,7 +226,7 @@ The active items appearing in a menu depends upon which project window is active
 
 	<para>When exporting the plot to LaTeX (.tex) there are two very useful options: <emphasis>Export font sizes</emphasis> and
 	<emphasis>Escape special characters in title/axis labels</emphasis>. If checked, the first option will include LaTeX commands in the output which keep the original font sizes. If not checked, the font size specified in the preamble of the TeX document will be used for all text strings in the plot.
-    The second option specifies whether LaTeX special characters should be escaped or not when exporting. If the title or the axis labels contain	LaTeX syntax (like superscripts, subscripts, etc...) and you want them to be interpreted by the LaTeX compiler,	you must uncheck this option.</para>
+    The second option specifies whether LaTeX special characters should be escaped or not when exporting. If the title or the axis labels contain	LaTeX syntax (like superscripts, subscripts, etc...), and you want them to be interpreted by the LaTeX compiler, you must uncheck this option.</para>
 
 	<informalfigure id="fig-export-graph-tex">
       <mediaobject>
@@ -272,14 +272,14 @@ The active items appearing in a menu depends upon which project window is active
   <term>File-> &print-preview-cmd;</term>
   <listitem>
      <para>Displays a print preview for the active window.
-     You can also use this dialog in order to actually print the window.</para>
+     You can use this dialog to print the previewed window.</para>
   </listitem>
 </varlistentry>
 
 <varlistentry id="print-all-plots-cmd">
   <term>File-> &print-all-plots-cmd;</term>
   <listitem>
-     <para>Prints all plots in the projects. A print dialog is opened where you can select the printer, different paper sizes, etc.</para>
+     <para>Prints all plots in the project. A print <link linkend="printer-setup-dialog">dialog</link> is opened where you can select the printer, different paper sizes, etc.</para>
   </listitem>
 </varlistentry>
 <!--
@@ -288,27 +288,27 @@ The active items appearing in a menu depends upon which project window is active
 <varlistentry id="export-ascii-cmd">
   <term>File -> &export-ascii-cmd;</term>
   <listitem>
-     <para>Opens the <link linkend="export-ascii-dialog">&export-ascii-cmd; dialog</link> allowing to save the data from the active table to an ASCII file.</para>
+     <para>Opens the <link linkend="export-ascii-dialog">&export-ascii-cmd; dialog</link> to allow saving data from the active table to an ASCII file.</para>
   </listitem>
 </varlistentry>
 <varlistentry id="import-ascii-cmd">
   <term>File -> &import-ascii-cmd; (&import-ascii-key;)</term>
   <listitem>
-    <para>The options for importation of ASCII data files are set by the <link linkend="set-import-options-dialog">Import dialog</link>.</para>
+    <para> Opens the <link linkend="set-import-options-dialog">Import dialog</link> used to import ASCII data files. The file to import, and the options for importation are set in this dialog.</para>
   </listitem>
 </varlistentry>
 
 <varlistentry id="import-sound-cmd">
   <term>File -> &import-sound-cmd; </term>
   <listitem>
-    <para>This allows you to import an uncompressed sound (.wav) file (PCM format).</para>
+    <para>This option allows you to import an uncompressed sound (.wav) file (PCM format).</para>
   </listitem>
 </varlistentry>
 
 <varlistentry id="quit-cmd">
   <term>File -> &quit-cmd; (&quit-key;)</term>
   <listitem>
-     <para>Closes the application. You will be asked wether you want to save your last changes or not.</para>
+     <para>Closes the application. You will be asked whether or not you want to save any changes.</para>
   </listitem>
 </varlistentry>
 </variablelist>
@@ -325,50 +325,49 @@ The active items appearing in a menu depends upon which project window is active
 <varlistentry id="undo-cmd">
   <term>Edit -> &undo-cmd; (&undo-key;)</term>
   <listitem>
-     <para>Restores the last modified table to the state it had after the last "Save Project" operation. Not available for plot windows.</para>
+     <para>Undo the last change to a note or matrix. Currently this function does not work for anything other than notes and matrices.</para>
   </listitem>
 </varlistentry>
 <varlistentry id="redo-cmd">
   <term>Edit -> &redo-cmd; (&redo-key;)</term>
   <listitem>
-     <para>Restores modifications to a table after a "Undo" operation. Function not available for plot windows.</para>
+     <para>Reverse the effect of the last "Undo" operation on a note or a matrix. Currently this function does not work for anything other than notes and matrices.</para>
   </listitem>
 </varlistentry>
-<varlistentry id="cut-cmd">
+<!-- <varlistentry id="cut-cmd">
   <term>Edit -> &cut-cmd; (&cut-key;)</term>
   <listitem>
      <para>Copies the current selection to the clipboard and deletes the selection. It currently works for tables and for 2D plots objects.</para>
   </listitem>
-</varlistentry>
+</varlistentry> -->
 <varlistentry id="copy-cmd">
   <term>Edit -> &copy-cmd; (&copy-key;)</term>
   <listitem>
-     <para>Copies the current selection to the clipboard. It currently works for tables and for 2D plots objects.</para>
+     <para>Copies the current selection to the clipboard. It currently works only for layers.</para>
   </listitem>
 </varlistentry>
 <varlistentry id="paste-cmd">
   <term>Edit -> &paste-cmd; (&paste-key;)</term>
   <listitem>
-     <para>Pastes the content of the clipboard to the active window.</para>
+     <para>Pastes the content of the clipboard to the active window. It currently works only for layers.</para>
   </listitem>
 </varlistentry>
 <varlistentry id="delete-cmd">
   <term>Edit -> &delete-cmd; (&delete-key;)</term>
   <listitem>
-     <para>Cleares the current selection. It currently works for tables and for 2D plots objects.</para>
+     <para>Removes the current selection from the project. It currently works only for layers.</para>
   </listitem>
 </varlistentry>
 <varlistentry id="delete-fit-tables">
   <term>Edit -> &delete-fit-cmd;</term>
   <listitem>
-    <para>Each time you fit your data to some mathematical model, a new table is created in which to put the results of the fit (i.e. the values computed by the model). These tables can be used to plot comparisons of experimental and fitted values.</para>
-    <para>If you have completed several tentative fits, a number of fit result tables may be present in your project. This command allows you to remove the results of all the different fits that you have tested.</para>
+    <para>Each time you fit your data to some mathematical model, a new table is created in which to put the results of the fit (i.e. the values computed by the model). These tables can be used to plot comparisons of experimental and fitted values. If you have completed several tentative fits, a number of fit result tables may be present in your project. This command allows you to remove the results of all the different fits that you have tested.</para>
   </listitem>
 </varlistentry>
 <varlistentry id="clear-log-cmd">
   <term>Edit -> &clear-log-cmd;</term>
   <listitem>
-     <para>Deletes all history information about analyses performed by the user from the project file. The <link linkend="sec-intro-log-window">log panel</link> will then be empty.</para>
+     <para>Allows the user to clear the log panel. All history information about analyses performed by the user will be deleted from the project file. The <link linkend="sec-intro-log-window">log panel</link> will then be empty.</para>
   </listitem>
 </varlistentry>
 <varlistentry id="preferences-cmd">
@@ -411,6 +410,13 @@ The active items appearing in a menu depends upon which project window is active
      <para>Opens/Closes a <link linkend="sec-intro-log-window">panel</link> displaying a history of all data analysis operations performed by the user.</para>
   </listitem>
 </varlistentry>
+<varlistentry id="undo-stack-cmd">
+  <term>View -> &undo-stack-cmd;</term>
+  <listitem>
+     <para>Shows/Hides the matrix Undo/Redo Stack window. The Undo/Redo stack contains the history of editing changes for a selected matrix. When any matrix is selected, its Undo/Redo information will be copied into this window. If another matrix is selected, the data for that matrix will be swapped into the list. Only one matrix can have it's Undo/Redo information showing at a time. The depth of the stack (i.e., number of possible undo steps) is set in the "Applications" tab in the "General" section of the <link linkend="preferences-dialog">Preferences dialog</link>. Each list entry consists of the name of the matrix followed by the identity of the cell that was edited. Each edit pushes another entry onto the list. The current position in the Undo/Redo history is highlighted. Undo (&undo-key; or &undo-icon;) or Redo (&redo-key; or &redo-icon;) will move the highlight as appropriate. The history can be rapidly traversed by clicking on a stack entry, which will move the highlignt to the clicked entry and revert the matrix to that point in the history. Each time the project is saved, the save-project icon ( &save-project-icon; ) is placed next to the stack entry that was highlighted at the time of the file save operation. This serves as a reminder to the user of exactly what version of the matrix resides on disk.</para>
+  </listitem>
+</varlistentry>
+
 </variablelist>
 
 </sect1>
@@ -422,24 +428,24 @@ The active items appearing in a menu depends upon which project window is active
 <sect1 id="sec-graph-menu">
 <title>The Graph Menu</title>
 
-<para>This menu is only active when a plot window is selected.</para>
+<para>This menu is only active when a graph window is selected.</para>
 <variablelist>
 <varlistentry id="add-remove-curve-cmd">
   <term>Graph -> &add-remove-curve-cmd; (&add-remove-curve-key;)</term>
   <listitem>
-     <para>Opens the <link linkend="add-remove-curve-dialog">&add-remove-curve-cmd; dialog</link>, allowing easy addition or removal of curves from the active plot layer. This dialog can also be used to modify a curve which is already plotted by changing the columns which are used as X or Y values.</para>
+     <para>Opens the <link linkend="add-remove-curve-dialog">&add-remove-curve-cmd; dialog</link>, allowing easy addition or removal of curves from the active plot layer. This dialog can also be used to modify a curve which is already plotted by changing the columns which are used as X or Y values. The curve is added to the currently active layer. If there is no layer on the graph, an error message will pop-up.</para>
   </listitem>
 </varlistentry>
 <varlistentry id="add-error-bars-cmd">
   <term>Graph -> &add-error-bars-cmd; (&add-error-bars-key;)</term>
   <listitem>
-     <para>Opens the <link linkend="add-error-bars-dialog">&add-error-bars-cmd; dialog</link>. You can add error bars on X and/or on Y values on an existing plot.</para>
+     <para>Opens the <link linkend="add-error-bars-dialog">&add-error-bars-cmd; dialog</link>. You can add error bars to X and/or Y values on an existing plot. Error bars are added to the currently active layer.</para>
   </listitem>
 </varlistentry>
 <varlistentry id="add-function-cmd">
   <term>Graph -> &add-function-cmd; (&add-function-key;)</term>
   <listitem>
-     <para>Opens the <link linkend="add-function-dialog">&add-function-cmd; dialog</link>. This command is used to add new curves to an existing plot.</para>
+     <para>Opens the <link linkend="add-function-dialog">&add-function-cmd; dialog</link>. This command is used to add new function curves to an existing layer. New curves are added to the currently active layer.</para>
   </listitem>
 </varlistentry>
 <varlistentry id="new-legend-cmd">
@@ -457,44 +463,44 @@ The active items appearing in a menu depends upon which project window is active
 <varlistentry id="draw-arrow-cmd">
   <term>Graph -> &draw-arrow-cmd; (&draw-arrow-key;)</term>
   <listitem>
-     <para>Changes the active layer operation mode to the drawing mode. You must click on the layer canvas in order to specify the starting point for the new arrow, and then click once more to specify its ending point. You can edit the new arrow using the Arrow dialog. You can swith back to the normal operating mode by clicking the "Pointer" icon in the Plot toolbar.</para>
+     <para>Changes the active layer's operational mode to drawing mode. You must click on the layer canvas in order to specify the starting point for the new arrow, and then click once more to specify its ending point. You can edit the new arrow using the Arrow dialog. Switch back to the normal operating mode by clicking the "Pointer" icon in the Plot toolbar.</para>
   </listitem>
 </varlistentry>
 <varlistentry id="draw-line-cmd">
   <term>Graph -> &draw-line-cmd; (&draw-line-key;)</term>
   <listitem>
-     <para>Changes the active layer operation mode to the drawing mode. You must click on the layer canvas in order to specify the starting point for the new arrow, and then click once more to specify its ending point. You can edit the new arrow using the line dialog. You can swith back to the normal operating mode by clicking the "Pointer" icon in the Plot toolbar.</para>
+     <para>Changes the active layer's operational mode to drawing mode. You must click on the layer canvas in order to specify the starting point for the new line, and then click once more to specify its ending point. You can edit the new line using the line dialog. Switch back to  normal operating mode by clicking the "Pointer" icon in the Plot toolbar.</para>
   </listitem>
 </varlistentry>
 <varlistentry id="add-time-stamp-cmd">
   <term>Graph -> &add-time-stamp-cmd; (&add-time-stamp-key;)</term>
   <listitem>
-     <para>This command is used to add a special label in the current plot which contains the current date and time. The properties of this label can be customized like any other label that is added by the &add-text-lnk;.</para>
-     <para>A timestamp label is not modified if the plot is modified, saved, etc.</para>
+     <para>This command is used to add a special label in the active layer which contains the current date and time. The properties of this label can be customized like any other label added by the &add-text-lnk;.</para>
+     <para>The date and time copied into a timestamp label is not modified later if the plot is modified, saved, etc.</para>
   </listitem>
 </varlistentry>
 <varlistentry id="add-image-cmd">
   <term>Graph -> &add-image-cmd; (&add-image-key;)</term>
   <listitem>
-     <para>Opens a file dialog allowing you to select an image to be added to the active plot layer. Only a link to the image file will be saved into the project file and not the image itself. The new image is added to the left-top corner of the layer and can be moved by drag-and-drop.</para>
+     <para>Opens a file dialog allowing you to select an image to be added to the active plot layer. Only a link to the image file will be saved into the project file and not the image itself. The new image is added to the left-top corner of the layer and can be moved with the mouse using drag-and-drop.</para>
   </listitem>
 </varlistentry>
 <varlistentry id="add-layer-cmd">
   <term>Graph -> &add-layer-cmd; (&add-layer-key;)</term>
   <listitem>
-     <para>Opens a <link linkend="add-layer-dialog">dialog</link> allowing you to select whether the new layer is to be added to the left-top corner of the plot window or to a best-guess position (based on a layer positioning algorithm in columns and rows).</para>
+     <para>Adds a new layer to a graph window. The command opens a <link linkend="add-layer-dialog">dialog</link> which allows you to select whether the new layer is to be added to the left-top corner of the plot window or to a best-guess position (based on a layer positioning algorithm in columns and rows).</para>
   </listitem>
 </varlistentry>
 <varlistentry id="remove-layer-cmd">
   <term>Graph -> &remove-layer-cmd; (&remove-layer-key;)</term>
   <listitem>
-     <para>Deletes the active layer and prompts out a question dialog allowing you to choose whether the remaining layers should be automatically re-arranged or not.</para>
+     <para>Deletes the active layer and pops-up a question dialog allowing you to choose whether the remaining layers should be automatically re-arranged or not.</para>
   </listitem>
 </varlistentry>
 <varlistentry id="arrange-layers-cmd">
   <term>Graph -> &arrange-layers-cmd; (&arrange-layers-key;)</term>
   <listitem>
-     <para>Opens the <link linkend="arrange-layers-dialog">Arrange layers dialog</link>, allowing you to custom the layout of the active 2D plot window.</para>
+     <para>Opens the <link linkend="arrange-layers-dialog">Arrange layers dialog</link>. This dialog allows you to customize the layout of the layers in the active graph window.</para>
   </listitem>
 </varlistentry>
 </variablelist>
@@ -503,7 +509,7 @@ The active items appearing in a menu depends upon which project window is active
 
 <sect1 id="sec-plot-menu">
 <title>The Plot Menu</title>
-<para>This menu is active only when a table is selected. These commands allow to plot the data selected in the active table.</para>
+<para>This menu is active only when a table is selected. These commands allow plotting data selected from the selected table.</para>
 
 <!--  ************************************************  -->
 <!--  		Beginning of Plot Menu			-->
@@ -514,7 +520,7 @@ The active items appearing in a menu depends upon which project window is active
 <varlistentry id="line-cmd">
   <term>&line-cmd;</term>
   <listitem>
-    <para>Plots the selected data columns in the active table window using the "Line" style. This command can also be activated by clinking on the &line-icon; icon of the &table-toolbar-lnk;. Once the plot is created, the drawing of the data series can be customized with the <link linkend="custom-curves-dialog-lines">Custom curves dialog</link>.</para>
+    <para>Plots the selected data columns in a new graph window. A new layer is created to contain the plot which is drawn using "Line" style. The command can also be activated by clicking on the &line-icon; icon of the &table-toolbar-lnk;. Once the plot is created, the drawing of the data series can be customized with the <link linkend="custom-curves-dialog-lines">Custom curves dialog</link>.</para>
       <informalfigure id="fig-plot-line">
         <mediaobject>
           <imageobject>
@@ -527,7 +533,7 @@ The active items appearing in a menu depends upon which project window is active
 <varlistentry id="scatter-cmd">
   <term>&scatter-cmd;</term>
   <listitem>
-    <para>Plots the selected data columns in the active table window using the "Scatter" style. This command can also be activated by clinking on the &scatter-icon; icon of the &table-toolbar-lnk;. Once the plot is created, the drawing of the data series can be customized with the <link linkend="custom-curves-dialog-lines">Custom curves dialog</link>.</para>
+    <para>Identical to the &line-cmd; except that the plot is drawn using "Scatter" style. The command can also be activated by clicking on the &scatter-icon; icon of the &table-toolbar-lnk;. Once the plot is created, the drawing of the data series can be customized with the <link linkend="custom-curves-dialog-lines">Custom curves dialog</link>.</para>
       <informalfigure id="fig-plot-scatter">
         <mediaobject>
           <imageobject>
@@ -540,7 +546,7 @@ The active items appearing in a menu depends upon which project window is active
 <varlistentry id="line-symbol-cmd">
   <term>&line-symbol-cmd;</term>
   <listitem>
-    <para>Plots the selected data columns in the active table window using the "Line + Symbol" style.This command can also be activated by clinking on the &line-symbol-icon; icon of the &table-toolbar-lnk;. Once the plot is created, the drawing of the data series can be customized with the <link linkend="custom-curves-dialog-lines">Custom curves dialog</link>.</para>
+    <para>Identical to the &line-cmd; except that the plot is drawn using "Line + Symbol" style. This command can also be activated by clicking on the &line-symbol-icon; icon of the &table-toolbar-lnk;. Once the plot is created, the drawing of the data series can be customized with the <link linkend="custom-curves-dialog-lines">Custom curves dialog</link>.</para>
       <informalfigure id="fig-plot-linesymbols">
         <mediaobject>
           <imageobject>
@@ -559,7 +565,7 @@ The active items appearing in a menu depends upon which project window is active
       <varlistentry id="vertical-drop-line-cmd">
 	<term>&vertical-drop-lines-cmd;</term>
 	<listitem>
-	  <para>Plots the selected data columns in the active table window using the "Vertical drop lines" style. Once the plot is created, the drawing of the data series can be customized with the <link linkend="custom-curves-dialog-lines">Custom curves dialog</link>.</para>
+	  <para>Plots the selected data columns in a new graph window. A new layer is created to contain the plot which is drawn using "Vertical drop lines" style. Once the plot is created, the drawing of the data series can be customized with the <link linkend="custom-curves-dialog-lines">Custom curves dialog</link>.</para>
       <informalfigure id="fig-plot-droplines">
         <mediaobject>
           <imageobject>
@@ -572,7 +578,7 @@ The active items appearing in a menu depends upon which project window is active
       <varlistentry id="spline-cmd">
 	<term>&spline-cmd;</term>
 	<listitem>
-	  <para>Plots the selected data columns in the active table window using the "Spline" style. Once the plot is created, the drawing of the data series can be customized with the <link linkend="custom-curves-dialog-lines">Custom curves dialog</link>.</para>
+	  <para>Like the &vertical-drop-lines-cmd; except that the plot is drawn using"Spline" style. Once the plot is created, the drawing of the data series can be customized with the <link linkend="custom-curves-dialog-lines">Custom curves dialog</link>.</para>
       <informalfigure id="fig-plot-spline">
         <mediaobject>
           <imageobject>
@@ -585,7 +591,7 @@ The active items appearing in a menu depends upon which project window is active
       <varlistentry id="vertical-steps-cmd">
 	<term>&vertical-steps-cmd;</term>
 	<listitem>
-	  <para>Plots the selected data columns in the active table window using the "Vertical Steps" style. Once the plot is created, the drawing of the data series can be customized with the <link linkend="custom-curves-dialog-lines">Custom curves dialog</link>.</para>
+	  <para>Like the &vertical-drop-lines-cmd; except that the plot is drawn using "Vertical Steps" style. Once the plot is created, the drawing of the data series can be customized with the <link linkend="custom-curves-dialog-lines">Custom curves dialog</link>.</para>
       <informalfigure id="fig-plot-vert-step">
         <mediaobject>
           <imageobject>
@@ -598,7 +604,7 @@ The active items appearing in a menu depends upon which project window is active
       <varlistentry id="horizontal-steps-cmd">
 	<term>&horizontal-steps-cmd;</term>
 	<listitem>
-	  <para>Plots the selected data columns in the active table window using the "Horizontal Steps" style. Once the plot is created, the drawing of the data series can be customized with the <link linkend="custom-curves-dialog-lines">Custom curves dialog</link>.</para>
+	  <para>Like the &vertical-drop-lines-cmd; except that the plot is drawn using "Horizontal Steps" style. Once the plot is created, the drawing of the data series can be customized with the <link linkend="custom-curves-dialog-lines">Custom curves dialog</link>.</para>
       <informalfigure id="fig-plot-hor-step">
         <mediaobject>
           <imageobject>
@@ -612,8 +618,7 @@ The active items appearing in a menu depends upon which project window is active
       <varlistentry id="double-y-cmd">
 	<term>&double-y-cmd;</term>
 	<listitem>
-	  <para>Creates a double Y axis graph.
-	  Requires a selection of at least two Y columns (or a range from at least two columns).</para>
+	  <para>Creates a double Y axis graph. Requires a selection of at least two Y columns (or a range from at least two columns) As with other plots from this menu, the plot is drawn in a new layer in a new graph window.</para>
 	</listitem>
       </varlistentry>
 
@@ -624,7 +629,7 @@ The active items appearing in a menu depends upon which project window is active
 <varlistentry id="columns-cmd">
   <term>&columns-cmd;</term>
   <listitem>
-     <para>Plots the selected data columns in the active table window using the "Columns" style, that is vertical bars.</para>
+     <para>Plots the selected data columns in a new graph window. A new layer is created to contain the plot which is drawn using "Columns" style, that is vertical bars.</para>
       <informalfigure id="fig-plot-bars">
         <mediaobject>
           <imageobject>
@@ -637,7 +642,7 @@ The active items appearing in a menu depends upon which project window is active
 <varlistentry id="rows-cmd">
   <term>&rows-cmd;</term>
   <listitem>
-    <para>Plots the selected data columns in the active table window using the "Rows" style.</para>
+    <para>Like the &columns-cmd;, except that the plot is drawn using "Rows" style.</para>
       <informalfigure id="fig-plot-rows">
         <mediaobject>
           <imageobject>
@@ -650,7 +655,7 @@ The active items appearing in a menu depends upon which project window is active
 <varlistentry id="area-cmd">
   <term>&area-cmd;</term>
   <listitem>
-    <para>Plots the selected data columns in the active table window using the "Area" style.</para>
+    <para>Like the &columns-cmd;, except that the plot is drawn using "Area" style.</para>
       <informalfigure id="fig-plot-area">
         <mediaobject>
           <imageobject>

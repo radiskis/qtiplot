@@ -393,8 +393,8 @@ Z levels.</para>
 <sect1 id="custom-curves-dialog">
   <title>Plot Details</title>
   <para>This dialog is activated by selecting the command <link linkend="format-plot-cmd">&format-plot-cmd;</link> from the <link linkend="sec-format-menu">Format Menu</link>.
-  It is also activated by a double click on the plot. If there are more than one layer in the window,
-  &appname; will select the layer which contain the plot under the mouse pointer.</para>
+  It is also activated by a double click on the plot. If there is more than one layer in the window,
+  &appname; will select the layer which contains the plot under the mouse pointer.</para>
   <figure id="fig-custom-curves-1">
     <title>The Plot Details Dialog: Layer properties.</title>
     <mediaobject>
