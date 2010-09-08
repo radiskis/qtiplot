@@ -179,13 +179,15 @@
   <!ENTITY paste-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/paste.png"/></imageobject></inlinemediaobject>'>
 <!ENTITY delete-cmd "<command>Delete Selection</command>">
 <!ENTITY delete-lnk '<link linkend="delete-cmd"><command>Delete Selection</command> command</link>'>
-  <!ENTITY delete-key "">
+  <!ENTITY delete-key "Del">
   <!ENTITY delete-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/erase.png"/></imageobject></inlinemediaobject>'>
 <!ENTITY delete-fit-cmd "<command>Delete Fit Tables</command>">
 <!ENTITY delete-fit-lnk '<link linkend="delete-fit-cmd"><command>Delete Fit Tables</command> command</link>'>
   <!ENTITY delete-fit-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/close.png"/></imageobject></inlinemediaobject>'>
-<!ENTITY clear-log-cmd "<command>Clear Log Informations</command>">
-<!ENTITY clear-log-lnk '<link linkend="clear-log-cmd"><command>Clear Log Informations</command> command</link>'>
+<!ENTITY clear-log-cmd "<command>Clear Log Information</command>">
+<!ENTITY clear-log-lnk '<link linkend="clear-log-cmd"><command>Clear Log Information</command> command</link>'>
+<!ENTITY preferences-cmd "<command>Preferences...</command>">
+<!ENTITY preferences-lnk '<link linkend="preferences-cmd"><command>Preferences...</command> command</link>'>
 <!--
               menu: View
 -->
@@ -203,8 +205,7 @@
 <!ENTITY results-log-cmd "<command>Results log</command>">
 <!ENTITY results-log-lnk '<link linkend="results-log-cmd"><command>Results log</command> command</link>'>
   <!ENTITY results-log-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/log.png"/></imageobject></inlinemediaobject>'>
-<!ENTITY preferences-cmd "<command>Preferences...</command>">
-<!ENTITY preferences-lnk '<link linkend="preferences-cmd"><command>Preferences...</command> command</link>'>
+<!ENTITY undo-stack-cmd "<command>Undo/Redo Stack...</command>">
 <!--
               menu: Scripting
 -->
@@ -907,7 +908,7 @@
 <abstract>
   <para>This document is a handbook for using &appname;, a program for two- and three-dimensional graphical presentation of data sets and for data analysis.</para>
   <para>This manual is organized in several chapters:</para>
-  <para>-The <link linkend="introduction">first one</link> describe the main concepts and terms which are used in &appname;.</para>
+  <para>-The <link linkend="introduction">first</link> describes the main concepts and terms which are used in &appname;.</para>
   <para>- The <link linkend="using">second</link> is a tutorial on how to obtain plots from different data sets. It is the one you need to read first to understand the basics of &appname; and to be able to draw plots.</para>
   <para>- The three following chapters are descriptions of all the <link linkend="reference">commands</link>, <link linkend="toolbars">buttons</link> and <link linkend="dialogs">dialogs</link> used in &appname;. These chapters are the reference manual of &appname;.</para>
   <para>- The two following chapters describe more deeply some specific possibilities of &appname;, that is the <link linkend="analysis">statistical and mathematical analysis</link> of data, and the <link linkend="scripting">scripting</link>.</para>
