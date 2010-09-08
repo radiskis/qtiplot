@@ -1,9 +1,9 @@
 #---------------------------------------------------------------------------
 # Project related configuration options
 #---------------------------------------------------------------------------
-PROJECT_NAME           = QtiPlot
+PROJECT_NAME           = QtiPlot_Python_API
 PROJECT_NUMBER         = 0.9.8.2
-OUTPUT_DIRECTORY       = API
+OUTPUT_DIRECTORY       = Python-API
 CREATE_SUBDIRS         = NO
 OUTPUT_LANGUAGE        = English
 USE_WINDOWS_ENCODING   = NO
@@ -69,22 +69,7 @@ WARN_LOGFILE           =
 # configuration options related to the input files
 #---------------------------------------------------------------------------
 INPUT                  = qtiplot/src
-FILE_PATTERNS          = *.c \
-                         *.cc \
-                         *.cxx \
-                         *.cpp \
-                         *.c++ \
-                         *.h \
-                         *.hh \
-                         *.hxx \
-                         *.hpp \
-                         *.h++ \
-                         *.CC \
-                         *.C++ \
-                         *.HH \
-                         *.H++ \
-                         *.C \
-                         *.H
+FILE_PATTERNS          = *.sip
 RECURSIVE              = yes
 EXCLUDE                =
 EXCLUDE_SYMLINKS       = NO
