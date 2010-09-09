@@ -8,11 +8,11 @@
 <keyword ref="x138.html#AEN193">graph</keyword>
 <keyword ref="x138.html#AEN234">table</keyword>
 <keyword ref="x138.html#AEN270">matrix</keyword>
-<keyword ref="x4152.html#AEN4154">table</keyword>
-<keyword ref="x4527.html#AEN4529">table</keyword>
-<keyword ref="x4560.html#AEN4562">matrix</keyword>
-<keyword ref="x4575.html#AEN4577">table</keyword>
-<keyword ref="x4612.html#AEN4614">matrix</keyword>
+<keyword ref="x4196.html#AEN4198">table</keyword>
+<keyword ref="x4571.html#AEN4573">table</keyword>
+<keyword ref="x4604.html#AEN4606">matrix</keyword>
+<keyword ref="x4619.html#AEN4621">table</keyword>
+<keyword ref="x4656.html#AEN4658">matrix</keyword>
 <section ref="c55.html#sec-qtiplot-intro" title="What QtiPlot does">
 </section>
 <section ref="x81.html" title="Command Line Parameters">
@@ -44,11 +44,11 @@
 <keyword ref="x138.html#AEN193">graph</keyword>
 <keyword ref="x138.html#AEN234">table</keyword>
 <keyword ref="x138.html#AEN270">matrix</keyword>
-<keyword ref="x4152.html#AEN4154">table</keyword>
-<keyword ref="x4527.html#AEN4529">table</keyword>
-<keyword ref="x4560.html#AEN4562">matrix</keyword>
-<keyword ref="x4575.html#AEN4577">table</keyword>
-<keyword ref="x4612.html#AEN4614">matrix</keyword>
+<keyword ref="x4196.html#AEN4198">table</keyword>
+<keyword ref="x4571.html#AEN4573">table</keyword>
+<keyword ref="x4604.html#AEN4606">matrix</keyword>
+<keyword ref="x4619.html#AEN4621">table</keyword>
+<keyword ref="x4656.html#AEN4658">matrix</keyword>
 <section ref="c357.html#sec-2d-plots" title="2D plots">
 <section ref="c357.html#sec-2d-plot-from-data" title="2D plot from data.">
 </section>
@@ -72,7 +72,7 @@
 </section>
 </section>
 </section>
-<section ref="c684.html" title="Command Reference">
+<section ref="c688.html" title="Command Reference">
 <keyword ref="x81.html#AEN85">Command line parameters</keyword>
 <keyword ref="x81.html#AEN114">Command line options</keyword>
 <keyword ref="x138.html#AEN158">table</keyword>
@@ -80,45 +80,45 @@
 <keyword ref="x138.html#AEN193">graph</keyword>
 <keyword ref="x138.html#AEN234">table</keyword>
 <keyword ref="x138.html#AEN270">matrix</keyword>
-<keyword ref="x4152.html#AEN4154">table</keyword>
-<keyword ref="x4527.html#AEN4529">table</keyword>
-<keyword ref="x4560.html#AEN4562">matrix</keyword>
-<keyword ref="x4575.html#AEN4577">table</keyword>
-<keyword ref="x4612.html#AEN4614">matrix</keyword>
-<section ref="c684.html#sec-file-menu" title="The File Menu">
+<keyword ref="x4196.html#AEN4198">table</keyword>
+<keyword ref="x4571.html#AEN4573">table</keyword>
+<keyword ref="x4604.html#AEN4606">matrix</keyword>
+<keyword ref="x4619.html#AEN4621">table</keyword>
+<keyword ref="x4656.html#AEN4658">matrix</keyword>
+<section ref="c688.html#sec-file-menu" title="The File Menu">
 </section>
-<section ref="x955.html" title="The Edit Menu">
+<section ref="x960.html" title="The Edit Menu">
 </section>
-<section ref="x1011.html" title="The View Menu">
+<section ref="x1009.html" title="The View Menu">
 </section>
-<section ref="x1040.html" title="The Graph Menu">
+<section ref="x1055.html" title="The Graph Menu">
 </section>
-<section ref="x1127.html" title="The Plot Menu">
+<section ref="x1142.html" title="The Plot Menu">
 </section>
-<section ref="x1386.html" title="The Plot 3D menu">
+<section ref="x1404.html" title="The Plot 3D menu">
 </section>
-<section ref="x1475.html" title="The Data Menu">
+<section ref="x1493.html" title="The Data Menu">
 </section>
-<section ref="x1532.html" title="The Analysis Menu">
-<section ref="x1532.html#sec-analysis-menu-table" title="Commands for the analysis of data in tables">
+<section ref="x1576.html" title="The Analysis Menu">
+<section ref="x1576.html#sec-analysis-menu-table" title="Commands for the analysis of data in tables">
 </section>
-<section ref="x1532.html#sec-analysis-menu-plot" title="Commands for the analysis of curves in plots">
-</section>
-</section>
-<section ref="x1863.html" title="The Table Menu">
-</section>
-<section ref="x2001.html" title="The Matrix Menu">
-</section>
-<section ref="x2128.html" title="The Format Menu">
-</section>
-<section ref="x2178.html" title="The Scripting Menu">
-</section>
-<section ref="x2216.html" title="The Window Menu">
-</section>
-<section ref="x2268.html" title="Customization of 3D plots">
+<section ref="x1576.html#sec-analysis-menu-plot" title="Commands for the analysis of curves in plots">
 </section>
 </section>
-<section ref="c2499.html" title="The Toolbars">
+<section ref="x1907.html" title="The Table Menu">
+</section>
+<section ref="x2045.html" title="The Matrix Menu">
+</section>
+<section ref="x2172.html" title="The Format Menu">
+</section>
+<section ref="x2222.html" title="The Scripting Menu">
+</section>
+<section ref="x2260.html" title="The Window Menu">
+</section>
+<section ref="x2312.html" title="Customization of 3D plots">
+</section>
+</section>
+<section ref="c2543.html" title="The Toolbars">
 <keyword ref="x81.html#AEN85">Command line parameters</keyword>
 <keyword ref="x81.html#AEN114">Command line options</keyword>
 <keyword ref="x138.html#AEN158">table</keyword>
@@ -126,25 +126,25 @@
 <keyword ref="x138.html#AEN193">graph</keyword>
 <keyword ref="x138.html#AEN234">table</keyword>
 <keyword ref="x138.html#AEN270">matrix</keyword>
-<keyword ref="x4152.html#AEN4154">table</keyword>
-<keyword ref="x4527.html#AEN4529">table</keyword>
-<keyword ref="x4560.html#AEN4562">matrix</keyword>
-<keyword ref="x4575.html#AEN4577">table</keyword>
-<keyword ref="x4612.html#AEN4614">matrix</keyword>
-<section ref="c2499.html#sec-edit-toolbar" title="The Edit Toolbar">
+<keyword ref="x4196.html#AEN4198">table</keyword>
+<keyword ref="x4571.html#AEN4573">table</keyword>
+<keyword ref="x4604.html#AEN4606">matrix</keyword>
+<keyword ref="x4619.html#AEN4621">table</keyword>
+<keyword ref="x4656.html#AEN4658">matrix</keyword>
+<section ref="c2543.html#sec-edit-toolbar" title="The Edit Toolbar">
 </section>
-<section ref="x2589.html" title="The File Toolbar">
+<section ref="x2633.html" title="The File Toolbar">
 </section>
-<section ref="x2823.html" title="The Plot Toolbar.">
+<section ref="x2867.html" title="The Plot Toolbar.">
 </section>
-<section ref="x3140.html" title="The Table Toolbar">
+<section ref="x3184.html" title="The Table Toolbar">
 </section>
-<section ref="x3343.html" title="The Column Toolbar">
+<section ref="x3387.html" title="The Column Toolbar">
 </section>
-<section ref="x3454.html" title="The Plot 3D Toolbar">
+<section ref="x3498.html" title="The Plot 3D Toolbar">
 </section>
 </section>
-<section ref="c3726.html" title="The Dialogs">
+<section ref="c3770.html" title="The Dialogs">
 <keyword ref="x81.html#AEN85">Command line parameters</keyword>
 <keyword ref="x81.html#AEN114">Command line options</keyword>
 <keyword ref="x138.html#AEN158">table</keyword>
@@ -152,77 +152,77 @@
 <keyword ref="x138.html#AEN193">graph</keyword>
 <keyword ref="x138.html#AEN234">table</keyword>
 <keyword ref="x138.html#AEN270">matrix</keyword>
-<keyword ref="x4152.html#AEN4154">table</keyword>
-<keyword ref="x4527.html#AEN4529">table</keyword>
-<keyword ref="x4560.html#AEN4562">matrix</keyword>
-<keyword ref="x4575.html#AEN4577">table</keyword>
-<keyword ref="x4612.html#AEN4614">matrix</keyword>
-<section ref="c3726.html#custom-action-dialog" title="Add Custom Action">
+<keyword ref="x4196.html#AEN4198">table</keyword>
+<keyword ref="x4571.html#AEN4573">table</keyword>
+<keyword ref="x4604.html#AEN4606">matrix</keyword>
+<keyword ref="x4619.html#AEN4621">table</keyword>
+<keyword ref="x4656.html#AEN4658">matrix</keyword>
+<section ref="c3770.html#custom-action-dialog" title="Add Custom Action">
 </section>
-<section ref="x3742.html" title="Add Error bars">
+<section ref="x3786.html" title="Add Error bars">
 </section>
-<section ref="x3775.html" title="Add Function">
+<section ref="x3819.html" title="Add Function">
 </section>
-<section ref="x3816.html" title="Add Layer">
+<section ref="x3860.html" title="Add Layer">
 </section>
-<section ref="x3831.html" title="Add/Remove curves">
+<section ref="x3875.html" title="Add/Remove curves">
 </section>
-<section ref="x3855.html" title="Arrange Layers">
+<section ref="x3899.html" title="Arrange Layers">
 </section>
-<section ref="x3888.html" title="Line Options">
+<section ref="x3932.html" title="Line Options">
 </section>
-<section ref="x3923.html" title="Column Options">
+<section ref="x3967.html" title="Column Options">
 </section>
-<section ref="x3943.html" title="Contour Curves Options">
+<section ref="x3987.html" title="Contour Curves Options">
 </section>
-<section ref="x4007.html" title="Plot Details">
-<section ref="x4007.html#custom-curves-dialog-lines" title="Custom curves for lines and scatter plots">
+<section ref="x4051.html" title="Plot Details">
+<section ref="x4051.html#custom-curves-dialog-lines" title="Custom curves for lines and scatter plots">
 </section>
-<section ref="x4007.html#custom-error-bars-box" title="Custom error bars">
+<section ref="x4051.html#custom-error-bars-box" title="Custom error bars">
 </section>
-<section ref="x4007.html#custom-curves-dialog-pie" title="Plot Details for pie plots">
+<section ref="x4051.html#custom-curves-dialog-pie" title="Plot Details for pie plots">
 </section>
-<section ref="x4007.html#custom-curves-dialog-box" title="Custom curves for box plots">
+<section ref="x4051.html#custom-curves-dialog-box" title="Custom curves for box plots">
 </section>
-<section ref="x4007.html#custom-curves-dialog-histogram" title="Custom curves for pie histogram">
-</section>
-</section>
-<section ref="x4129.html" title="Define surface plot">
-</section>
-<section ref="x4152.html" title="Export ASCII">
-</section>
-<section ref="x4169.html" title="Fast Fourier Transform">
-</section>
-<section ref="x4194.html" title="Integrate dialog">
-</section>
-<section ref="x4209.html" title="The Fit Wizard">
-</section>
-<section ref="x4309.html" title="General Plot Options">
-</section>
-<section ref="x4342.html" title="Plot Wizard">
-</section>
-<section ref="x4359.html" title="Project Explorer">
-</section>
-<section ref="x4367.html" title="Preferences Dialog">
-</section>
-<section ref="x4515.html" title="Printer-setup">
-</section>
-<section ref="x4527.html" title="Set Column Values">
-</section>
-<section ref="x4560.html" title="Set Matrix Dimensions">
-</section>
-<section ref="x4575.html" title="Import ASCII files">
-</section>
-<section ref="x4602.html" title="Matrix Properties">
-</section>
-<section ref="x4612.html" title="Set Matrix Values">
-</section>
-<section ref="x4635.html" title="Surface plot options">
-</section>
-<section ref="x4688.html" title="Text options">
+<section ref="x4051.html#custom-curves-dialog-histogram" title="Custom curves for pie histogram">
 </section>
 </section>
-<section ref="c4780.html" title="Analysis of data and curves">
+<section ref="x4173.html" title="Define surface plot">
+</section>
+<section ref="x4196.html" title="Export ASCII">
+</section>
+<section ref="x4213.html" title="Fast Fourier Transform">
+</section>
+<section ref="x4238.html" title="Integrate dialog">
+</section>
+<section ref="x4253.html" title="The Fit Wizard">
+</section>
+<section ref="x4353.html" title="General Plot Options">
+</section>
+<section ref="x4386.html" title="Plot Wizard">
+</section>
+<section ref="x4403.html" title="Project Explorer">
+</section>
+<section ref="x4411.html" title="Preferences Dialog">
+</section>
+<section ref="x4559.html" title="Printer-setup">
+</section>
+<section ref="x4571.html" title="Set Column Values">
+</section>
+<section ref="x4604.html" title="Set Matrix Dimensions">
+</section>
+<section ref="x4619.html" title="Import ASCII files">
+</section>
+<section ref="x4646.html" title="Matrix Properties">
+</section>
+<section ref="x4656.html" title="Set Matrix Values">
+</section>
+<section ref="x4679.html" title="Surface plot options">
+</section>
+<section ref="x4732.html" title="Text options">
+</section>
+</section>
+<section ref="c4824.html" title="Analysis of data and curves">
 <keyword ref="x81.html#AEN85">Command line parameters</keyword>
 <keyword ref="x81.html#AEN114">Command line options</keyword>
 <keyword ref="x138.html#AEN158">table</keyword>
@@ -230,49 +230,49 @@
 <keyword ref="x138.html#AEN193">graph</keyword>
 <keyword ref="x138.html#AEN234">table</keyword>
 <keyword ref="x138.html#AEN270">matrix</keyword>
-<keyword ref="x4152.html#AEN4154">table</keyword>
-<keyword ref="x4527.html#AEN4529">table</keyword>
-<keyword ref="x4560.html#AEN4562">matrix</keyword>
-<keyword ref="x4575.html#AEN4577">table</keyword>
-<keyword ref="x4612.html#AEN4614">matrix</keyword>
-<section ref="c4780.html#sec-fft" title="Fast Fourier Transform">
+<keyword ref="x4196.html#AEN4198">table</keyword>
+<keyword ref="x4571.html#AEN4573">table</keyword>
+<keyword ref="x4604.html#AEN4606">matrix</keyword>
+<keyword ref="x4619.html#AEN4621">table</keyword>
+<keyword ref="x4656.html#AEN4658">matrix</keyword>
+<section ref="c4824.html#sec-fft" title="Fast Fourier Transform">
 </section>
-<section ref="x4810.html" title="Correlation">
+<section ref="x4854.html" title="Correlation">
 </section>
-<section ref="x4845.html" title="Convolution">
+<section ref="x4889.html" title="Convolution">
 </section>
-<section ref="x4848.html" title="Deconvolution">
+<section ref="x4892.html" title="Deconvolution">
 </section>
-<section ref="x4851.html" title="The Fit Wizard">
+<section ref="x4895.html" title="The Fit Wizard">
 </section>
-<section ref="x4865.html" title="Fitting to specific curves">
-<section ref="x4865.html#sec-fit-linear" title="Fitting to a line">
+<section ref="x4909.html" title="Fitting to specific curves">
+<section ref="x4909.html#sec-fit-linear" title="Fitting to a line">
 </section>
-<section ref="x4865.html#sec-fit-polynomial" title="Fitting to a polynome">
+<section ref="x4909.html#sec-fit-polynomial" title="Fitting to a polynome">
 </section>
-<section ref="x4865.html#sec-fit-bolzmann" title="Fitting to a Bolzmann function">
+<section ref="x4909.html#sec-fit-bolzmann" title="Fitting to a Bolzmann function">
 </section>
-<section ref="x4865.html#sec-fit-gaussian" title="Fitting to a Gauss function">
+<section ref="x4909.html#sec-fit-gaussian" title="Fitting to a Gauss function">
 </section>
-<section ref="x4865.html#sec-fit-lorentzian" title="Fitting to a Lorentz function">
-</section>
-</section>
-<section ref="x4960.html" title="Multi-Peaks fitting">
-</section>
-<section ref="x4971.html" title="Filtering of data curves">
-<section ref="x4971.html#sec-fft-filter-low" title="FFT low pass filter">
-</section>
-<section ref="x4971.html#sec-fft-filter-high" title="FFT high pass filter">
-</section>
-<section ref="x4971.html#sec-fft-filter-band" title="FFT band pass filter">
-</section>
-<section ref="x4971.html#sec-fft-filter-block" title="FFT block band filter">
+<section ref="x4909.html#sec-fit-lorentzian" title="Fitting to a Lorentz function">
 </section>
 </section>
-<section ref="x5036.html" title="Interpolation">
+<section ref="x5004.html" title="Multi-Peaks fitting">
+</section>
+<section ref="x5015.html" title="Filtering of data curves">
+<section ref="x5015.html#sec-fft-filter-low" title="FFT low pass filter">
+</section>
+<section ref="x5015.html#sec-fft-filter-high" title="FFT high pass filter">
+</section>
+<section ref="x5015.html#sec-fft-filter-band" title="FFT band pass filter">
+</section>
+<section ref="x5015.html#sec-fft-filter-block" title="FFT block band filter">
 </section>
 </section>
-<section ref="c5051.html" title="Mathematical Expressions and Scripting">
+<section ref="x5080.html" title="Interpolation">
+</section>
+</section>
+<section ref="c5095.html" title="Mathematical Expressions and Scripting">
 <keyword ref="x81.html#AEN85">Command line parameters</keyword>
 <keyword ref="x81.html#AEN114">Command line options</keyword>
 <keyword ref="x138.html#AEN158">table</keyword>
@@ -280,135 +280,135 @@
 <keyword ref="x138.html#AEN193">graph</keyword>
 <keyword ref="x138.html#AEN234">table</keyword>
 <keyword ref="x138.html#AEN270">matrix</keyword>
-<keyword ref="x4152.html#AEN4154">table</keyword>
-<keyword ref="x4527.html#AEN4529">table</keyword>
-<keyword ref="x4560.html#AEN4562">matrix</keyword>
-<keyword ref="x4575.html#AEN4577">table</keyword>
-<keyword ref="x4612.html#AEN4614">matrix</keyword>
-<section ref="c5051.html#sec-muParser" title="muParser">
+<keyword ref="x4196.html#AEN4198">table</keyword>
+<keyword ref="x4571.html#AEN4573">table</keyword>
+<keyword ref="x4604.html#AEN4606">matrix</keyword>
+<keyword ref="x4619.html#AEN4621">table</keyword>
+<keyword ref="x4656.html#AEN4658">matrix</keyword>
+<section ref="c5095.html#sec-muParser" title="muParser">
 </section>
-<section ref="x5312.html" title="Python">
-<section ref="x5312.html#Python-init" title="The Initialization File">
+<section ref="x5356.html" title="Python">
+<section ref="x5356.html#Python-init" title="The Initialization File">
 </section>
-<section ref="x5312.html#AEN5331" title="Python Basics">
+<section ref="x5356.html#AEN5375" title="Python Basics">
 </section>
-<section ref="x5312.html#Python-def" title="Defining Functions and Control Flow">
+<section ref="x5356.html#Python-def" title="Defining Functions and Control Flow">
 </section>
-<section ref="x5312.html#Python-functions" title="Mathematical Functions">
+<section ref="x5356.html#Python-functions" title="Mathematical Functions">
 </section>
-<section ref="x5312.html#Python-API" title="Accessing QtiPlot's objects from Python">
+<section ref="x5356.html#Python-API" title="Accessing QtiPlot's objects from Python">
 </section>
-<section ref="x5312.html#Python-Folders" title="Project Folders">
+<section ref="x5356.html#Python-Folders" title="Project Folders">
 </section>
-<section ref="x5312.html#Python-Tables" title="Working with Tables">
-<section ref="x5312.html#Python-ImportASCII" title="Import ASCII files">
+<section ref="x5356.html#Python-Tables" title="Working with Tables">
+<section ref="x5356.html#Python-ImportASCII" title="Import ASCII files">
 </section>
-<section ref="x5312.html#Python-ImportExcel" title="Importing Excel sheets">
+<section ref="x5356.html#Python-ImportExcel" title="Importing Excel sheets">
 </section>
-<section ref="x5312.html#Python-ImportODF" title="Importing ODF spreadsheets">
+<section ref="x5356.html#Python-ImportODF" title="Importing ODF spreadsheets">
 </section>
-<section ref="x5312.html#Python-ExportTables" title="Export Tables">
+<section ref="x5356.html#Python-ExportTables" title="Export Tables">
 </section>
-<section ref="x5312.html#Python-R" title="R interface">
-</section>
-</section>
-<section ref="x5312.html#Python-Matrix" title="Working with Matrices">
-</section>
-<section ref="x5312.html#Python-Stem-and-Leaf-Plot" title="Stem Plots">
-</section>
-<section ref="x5312.html#Python-Plots2D" title="2D Plots">
-<section ref="x5312.html#Python-Curves" title="Working with curves">
-</section>
-<section ref="x5312.html#Python-PlotSymbols" title="Plot symbols">
-</section>
-<section ref="x5312.html#Python-Spectrograms" title="Image and Contour Line Plots (Spectrograms)">
-</section>
-<section ref="x5312.html#Python-Histograms" title="Histograms">
-</section>
-<section ref="x5312.html#Python-Title" title="The plot title">
-</section>
-<section ref="x5312.html#Python-Axes" title="Customizing the axes">
-</section>
-<section ref="x5312.html#Python-Canvas" title="The canvas">
-</section>
-<section ref="x5312.html#Python-Frame" title="The layer frame">
-</section>
-<section ref="x5312.html#Python-Grid-2D" title="Customizing the grid">
-</section>
-<section ref="x5312.html#Python-Legends" title="The plot legend">
-</section>
-<section ref="x5312.html#Python-Arrows" title="Adding arrows/lines to a plot layer">
-</section>
-<section ref="x5312.html#Python-Images" title="Adding images to a layer">
-</section>
-<section ref="x5312.html#Python-Rectangles" title="Rectangles">
-</section>
-<section ref="x5312.html#Python-Ellipses" title="Circles/Ellipses">
-</section>
-<section ref="x5312.html#Python-Antialiasing" title="Antialiasing">
-</section>
-<section ref="x5312.html#Python-ResizingLayers" title="Resizing layers">
-</section>
-<section ref="x5312.html#Python-Resizing" title="Resizing the drawing area">
-</section>
-<section ref="x5312.html#Python-Exporting-2DPlots" title="Exporting plots/layers to different image formats">
+<section ref="x5356.html#Python-R" title="R interface">
 </section>
 </section>
-<section ref="x5312.html#Python-MultiLayer" title="Arranging Layers">
+<section ref="x5356.html#Python-Matrix" title="Working with Matrices">
 </section>
-<section ref="x5312.html#Python-WaterfallPlots" title="Waterfall Plots">
+<section ref="x5356.html#Python-Stem-and-Leaf-Plot" title="Stem Plots">
 </section>
-<section ref="x5312.html#Python-Plots3D" title="3D Plots">
-<section ref="x5312.html#AEN6276" title="Creating a 3D plot">
+<section ref="x5356.html#Python-Plots2D" title="2D Plots">
+<section ref="x5356.html#Python-Curves" title="Working with curves">
 </section>
-<section ref="x5312.html#Python-3D-View" title="Customizing the view">
+<section ref="x5356.html#Python-PlotSymbols" title="Plot symbols">
 </section>
-<section ref="x5312.html#Python-3D-Style" title="Plot Styles">
+<section ref="x5356.html#Python-Spectrograms" title="Image and Contour Line Plots (Spectrograms)">
 </section>
-<section ref="x5312.html#Python-3D-Projection" title="The 2D Projection">
+<section ref="x5356.html#Python-Histograms" title="Histograms">
 </section>
-<section ref="x5312.html#Python-3D-Coordinates" title="Customizing the Coordinates System">
+<section ref="x5356.html#Python-Title" title="The plot title">
 </section>
-<section ref="x5312.html#Python-3D-Grid" title="Grid">
+<section ref="x5356.html#Python-Axes" title="Customizing the axes">
 </section>
-<section ref="x5312.html#Python-3D-Colors" title="Customizing the Plot Colors">
+<section ref="x5356.html#Python-Canvas" title="The canvas">
 </section>
-<section ref="x5312.html#Python-3D-Export" title="Exporting">
+<section ref="x5356.html#Python-Frame" title="The layer frame">
 </section>
+<section ref="x5356.html#Python-Grid-2D" title="Customizing the grid">
 </section>
-<section ref="x5312.html#Python-DataAnalysis" title="Data Analysis">
-<section ref="x5312.html#Python-GeneralFunctions" title="General Functions">
+<section ref="x5356.html#Python-Legends" title="The plot legend">
 </section>
-<section ref="x5312.html#Python-Correlation" title="Correlation, Convolution/Deconvolution">
+<section ref="x5356.html#Python-Arrows" title="Adding arrows/lines to a plot layer">
 </section>
-<section ref="x5312.html#Python-Differentiation" title="Differentiation">
+<section ref="x5356.html#Python-Images" title="Adding images to a layer">
 </section>
-<section ref="x5312.html#Python-FFT" title="FFT">
+<section ref="x5356.html#Python-Rectangles" title="Rectangles">
 </section>
-<section ref="x5312.html#Python-Filtering" title="FFT Filters">
+<section ref="x5356.html#Python-Ellipses" title="Circles/Ellipses">
 </section>
-<section ref="x5312.html#Python-Fitting" title="Fitting">
+<section ref="x5356.html#Python-Antialiasing" title="Antialiasing">
 </section>
-<section ref="x5312.html#Python-Integration" title="Integration">
+<section ref="x5356.html#Python-ResizingLayers" title="Resizing layers">
 </section>
-<section ref="x5312.html#Python-Interpolation" title="Interpolation">
+<section ref="x5356.html#Python-Resizing" title="Resizing the drawing area">
 </section>
-<section ref="x5312.html#Python-Smooth" title="Smoothing">
-</section>
-</section>
-<section ref="x5312.html#Python-Notes" title="Working with Notes">
-</section>
-<section ref="x5312.html#Python-QtDialogs" title="Using Qt's dialogs and classes">
-</section>
-<section ref="x5312.html#Python-QtDesigner" title="Using Qt Designer for easy creation of custom user dialogs">
-</section>
-<section ref="x5312.html#Python-AutomatizationExample" title="Task automatization example">
-</section>
-<section ref="x5312.html#QtiPlot-Python-API" title="QtiPlot/Python API">
+<section ref="x5356.html#Python-Exporting-2DPlots" title="Exporting plots/layers to different image formats">
 </section>
 </section>
+<section ref="x5356.html#Python-MultiLayer" title="Arranging Layers">
 </section>
-<section ref="c6571.html" title="Credits and License">
+<section ref="x5356.html#Python-WaterfallPlots" title="Waterfall Plots">
+</section>
+<section ref="x5356.html#Python-Plots3D" title="3D Plots">
+<section ref="x5356.html#AEN6320" title="Creating a 3D plot">
+</section>
+<section ref="x5356.html#Python-3D-View" title="Customizing the view">
+</section>
+<section ref="x5356.html#Python-3D-Style" title="Plot Styles">
+</section>
+<section ref="x5356.html#Python-3D-Projection" title="The 2D Projection">
+</section>
+<section ref="x5356.html#Python-3D-Coordinates" title="Customizing the Coordinates System">
+</section>
+<section ref="x5356.html#Python-3D-Grid" title="Grid">
+</section>
+<section ref="x5356.html#Python-3D-Colors" title="Customizing the Plot Colors">
+</section>
+<section ref="x5356.html#Python-3D-Export" title="Exporting">
+</section>
+</section>
+<section ref="x5356.html#Python-DataAnalysis" title="Data Analysis">
+<section ref="x5356.html#Python-GeneralFunctions" title="General Functions">
+</section>
+<section ref="x5356.html#Python-Correlation" title="Correlation, Convolution/Deconvolution">
+</section>
+<section ref="x5356.html#Python-Differentiation" title="Differentiation">
+</section>
+<section ref="x5356.html#Python-FFT" title="FFT">
+</section>
+<section ref="x5356.html#Python-Filtering" title="FFT Filters">
+</section>
+<section ref="x5356.html#Python-Fitting" title="Fitting">
+</section>
+<section ref="x5356.html#Python-Integration" title="Integration">
+</section>
+<section ref="x5356.html#Python-Interpolation" title="Interpolation">
+</section>
+<section ref="x5356.html#Python-Smooth" title="Smoothing">
+</section>
+</section>
+<section ref="x5356.html#Python-Notes" title="Working with Notes">
+</section>
+<section ref="x5356.html#Python-QtDialogs" title="Using Qt's dialogs and classes">
+</section>
+<section ref="x5356.html#Python-QtDesigner" title="Using Qt Designer for easy creation of custom user dialogs">
+</section>
+<section ref="x5356.html#Python-AutomatizationExample" title="Task automatization example">
+</section>
+<section ref="x5356.html#QtiPlot-Python-API" title="QtiPlot/Python API">
+</section>
+</section>
+</section>
+<section ref="c6615.html" title="Credits and License">
 <keyword ref="x81.html#AEN85">Command line parameters</keyword>
 <keyword ref="x81.html#AEN114">Command line options</keyword>
 <keyword ref="x138.html#AEN158">table</keyword>
@@ -416,37 +416,37 @@
 <keyword ref="x138.html#AEN193">graph</keyword>
 <keyword ref="x138.html#AEN234">table</keyword>
 <keyword ref="x138.html#AEN270">matrix</keyword>
-<keyword ref="x4152.html#AEN4154">table</keyword>
-<keyword ref="x4527.html#AEN4529">table</keyword>
-<keyword ref="x4560.html#AEN4562">matrix</keyword>
-<keyword ref="x4575.html#AEN4577">table</keyword>
-<keyword ref="x4612.html#AEN4614">matrix</keyword>
-<section ref="c6571.html#fdl" title="GNU Free Documentation License">
-<section ref="c6571.html#AEN6592" title="Preamble">
+<keyword ref="x4196.html#AEN4198">table</keyword>
+<keyword ref="x4571.html#AEN4573">table</keyword>
+<keyword ref="x4604.html#AEN4606">matrix</keyword>
+<keyword ref="x4619.html#AEN4621">table</keyword>
+<keyword ref="x4656.html#AEN4658">matrix</keyword>
+<section ref="c6615.html#fdl" title="GNU Free Documentation License">
+<section ref="c6615.html#AEN6636" title="Preamble">
 </section>
-<section ref="c6571.html#AEN6597" title="Applicability And Definitions">
+<section ref="c6615.html#AEN6641" title="Applicability And Definitions">
 </section>
-<section ref="c6571.html#AEN6606" title="Verbatim Copying">
+<section ref="c6615.html#AEN6650" title="Verbatim Copying">
 </section>
-<section ref="c6571.html#AEN6610" title="Copying In Quantity">
+<section ref="c6615.html#AEN6654" title="Copying In Quantity">
 </section>
-<section ref="c6571.html#AEN6616" title="Modifications">
+<section ref="c6615.html#AEN6660" title="Modifications">
 </section>
-<section ref="c6571.html#AEN6634" title="Combining Documents">
+<section ref="c6615.html#AEN6678" title="Combining Documents">
 </section>
-<section ref="c6571.html#AEN6639" title="Collections Of Documents">
+<section ref="c6615.html#AEN6683" title="Collections Of Documents">
 </section>
-<section ref="c6571.html#AEN6643" title="Aggregation With Independent Works">
+<section ref="c6615.html#AEN6687" title="Aggregation With Independent Works">
 </section>
-<section ref="c6571.html#AEN6647" title="Translation">
+<section ref="c6615.html#AEN6691" title="Translation">
 </section>
-<section ref="c6571.html#AEN6650" title="Termination">
+<section ref="c6615.html#AEN6694" title="Termination">
 </section>
-<section ref="c6571.html#AEN6653" title="Future Revisions Of This License">
+<section ref="c6615.html#AEN6697" title="Future Revisions Of This License">
 </section>
 </section>
 </section>
-<section ref="a6656.html" title="Installation">
+<section ref="a6700.html" title="Installation">
 <keyword ref="x81.html#AEN85">Command line parameters</keyword>
 <keyword ref="x81.html#AEN114">Command line options</keyword>
 <keyword ref="x138.html#AEN158">table</keyword>
@@ -454,25 +454,25 @@
 <keyword ref="x138.html#AEN193">graph</keyword>
 <keyword ref="x138.html#AEN234">table</keyword>
 <keyword ref="x138.html#AEN270">matrix</keyword>
-<keyword ref="x4152.html#AEN4154">table</keyword>
-<keyword ref="x4527.html#AEN4529">table</keyword>
-<keyword ref="x4560.html#AEN4562">matrix</keyword>
-<keyword ref="x4575.html#AEN4577">table</keyword>
-<keyword ref="x4612.html#AEN4614">matrix</keyword>
-<section ref="a6656.html#getting-qtiplot" title="How to obtain QtiPlot">
+<keyword ref="x4196.html#AEN4198">table</keyword>
+<keyword ref="x4571.html#AEN4573">table</keyword>
+<keyword ref="x4604.html#AEN4606">matrix</keyword>
+<keyword ref="x4619.html#AEN4621">table</keyword>
+<keyword ref="x4656.html#AEN4658">matrix</keyword>
+<section ref="a6700.html#getting-qtiplot" title="How to obtain QtiPlot">
 </section>
-<section ref="x6662.html" title="Installation from binary packages">
+<section ref="x6706.html" title="Installation from binary packages">
 </section>
-<section ref="x6676.html" title="Compilation and Installation from sources">
-<section ref="x6676.html#requirements" title="Requirements">
+<section ref="x6720.html" title="Compilation and Installation from sources">
+<section ref="x6720.html#requirements" title="Requirements">
 </section>
-<section ref="x6676.html#compilation-linux" title="Linux and Mac OS X">
+<section ref="x6720.html#compilation-linux" title="Linux and Mac OS X">
 </section>
-<section ref="x6676.html#compilation-windows" title="Windows">
+<section ref="x6720.html#compilation-windows" title="Windows">
 </section>
 </section>
 </section>
-<section ref="c6754.html" title="Frequently asked questions">
+<section ref="c6798.html" title="Frequently asked questions">
 </section>
 </DCF>
 </assistantconfig>
