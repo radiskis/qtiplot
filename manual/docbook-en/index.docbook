@@ -661,6 +661,19 @@
 <!ENTITY pointer-cmd "<command>Disable tools</command>">
 <!ENTITY pointer-lnk '<link linkend="pointer-cmd"><command>Disable tools</command> command</link>'>
   <!ENTITY pointer-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/pointer.png"/></imageobject></inlinemediaobject>'>
+
+<!ENTITY zoom-inoutdrag-cmd "<command>Zoom In/Out and Drag Canvas</command>">
+<!ENTITY zoom-inoutdrag-lnk '<link linkend="zoom-inoutdrag-cmd">&zoom-inoutdrag-cmd; command</link>'>
+  <!ENTITY zoom-inoutdrag-key "">
+
+<!ENTITY zoom-draghoriz-cmd "<command>Zoom/Drag Canvas Horizontally</command>">
+<!ENTITY zoom-draghoriz-lnk '<link linkend="zoom-draghoriz-cmd">&zoom-draghoriz-cmd; command</link>'>
+  <!ENTITY zoom-draghoriz-key "">
+
+<!ENTITY zoom-dragvert-cmd "<command>Zoom/Drag Canvas Vertically</command>">
+<!ENTITY zoom-dragvert-lnk '<link linkend="zoom-dragvert-cmd">&zoom-dragvert-cmd; command</link>'>
+  <!ENTITY zoom-dragvert-key "">
+
 <!ENTITY zoom-in-cmd "<command>Zoom in</command>">
 <!ENTITY zoom-in-lnk '<link linkend="zoom-in-cmd"><command>Zoom in</command> command</link>'>
   <!ENTITY zoom-in-key "<keycode>Ctrl-+</keycode>">
@@ -684,6 +697,10 @@
 <!ENTITY screen-reader-cmd "<command>Screen Reader</command>">
 <!ENTITY screen-reader-lnk '<link linkend="screen-reader-cmd"><command>Screen Reader</command> command</link>'>
   <!ENTITY screen-reader-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/cursor.png"/></imageobject></inlinemediaobject>'>
+
+<!ENTITY draw-datapoints-cmd "<command>Draw Data Points</command>">
+<!ENTITY draw-datapoints-lnk '<link linkend="draw-datapoints-cmd">&draw-datapoints-cmd; command</link>'>
+
 <!ENTITY move-data-points-cmd "<command>Move Data points</command>">
 <!ENTITY move-data-points-lnk '<link linkend="move-data-points-cmd"><command>Move Data points</command> command</link>'>
   <!ENTITY move-data-points-key "<keycode>Ctrl-Alt-M</keycode>">
