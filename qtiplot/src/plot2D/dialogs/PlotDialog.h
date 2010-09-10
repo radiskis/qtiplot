@@ -61,7 +61,7 @@ class QwtPlotItem;
 class DoubleSpinBox;
 class PenStyleBox;
 class Spectrogram;
-class QwtErrorPlotCurve;
+class ErrorBarsCurve;
 class ContourLinesEditor;
 class FunctionDialog;
 class EnrichmentDialog;
@@ -156,9 +156,9 @@ private:
 	void applyLineFormatToLayer(Graph *g);
 	void applyLineFormat(QwtPlotCurve *c);
 
-	void applyErrorBarFormatToCurve(QwtErrorPlotCurve *err, bool color = true);
+	void applyErrorBarFormatToCurve(ErrorBarsCurve *err, bool color = true);
 	void applyErrorBarFormatToLayer(Graph *g);
-	void applyErrorBarFormat(QwtErrorPlotCurve *c);
+	void applyErrorBarFormat(ErrorBarsCurve *c);
 
     int labelsAlignment();
 	void closeEvent(QCloseEvent* e);

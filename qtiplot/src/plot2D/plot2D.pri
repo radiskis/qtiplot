@@ -11,6 +11,7 @@
 			   src/plot2D/CanvasPicker.h \
 			   src/plot2D/DataPickerTool.h \
 			   src/plot2D/EllipseWidget.h \
+			   src/plot2D/ErrorBarsCurve.h \
 			   src/plot2D/FrameWidget.h \
 			   src/plot2D/FunctionCurve.h \
 			   src/plot2D/Graph.h \
@@ -27,9 +28,8 @@
 			   src/plot2D/PlotToolInterface.h \
 			   src/plot2D/ProbabilityScaleEngine.h \
 			   src/plot2D/QwtBarCurve.h \
-               src/plot2D/QwtErrorPlotCurve.h \
 			   src/plot2D/QwtHistogram.h \
-               src/plot2D/QwtPieCurve.h \
+			   src/plot2D/QwtPieCurve.h \
 			   src/plot2D/RangeSelectorTool.h \
 			   src/plot2D/ReciprocalScaleEngine.h \
 			   src/plot2D/RectangleWidget.h \
@@ -51,6 +51,7 @@
 			   src/plot2D/CanvasPicker.cpp \
 			   src/plot2D/DataPickerTool.cpp \
 			   src/plot2D/EllipseWidget.cpp \
+			   src/plot2D/ErrorBarsCurve.cpp \
 			   src/plot2D/FrameWidget.cpp \
 			   src/plot2D/FunctionCurve.cpp \
 			   src/plot2D/Graph.cpp \
@@ -66,9 +67,8 @@
 			   src/plot2D/PlotCurve.cpp \
 			   src/plot2D/ProbabilityScaleEngine.cpp \
 			   src/plot2D/QwtBarCurve.cpp \
-               src/plot2D/QwtErrorPlotCurve.cpp \
 			   src/plot2D/QwtHistogram.cpp \
-               src/plot2D/QwtPieCurve.cpp \
+			   src/plot2D/QwtPieCurve.cpp \
 			   src/plot2D/RangeSelectorTool.cpp \
 			   src/plot2D/ReciprocalScaleEngine.cpp \
 			   src/plot2D/RectangleWidget.cpp \

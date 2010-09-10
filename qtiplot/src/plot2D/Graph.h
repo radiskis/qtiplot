@@ -64,7 +64,7 @@ class SelectionMoveResizer;
 class RangeSelectorTool;
 class DataCurve;
 class PlotCurve;
-class QwtErrorPlotCurve;
+class ErrorBarsCurve;
 class MultiLayer;
 class Spectrogram;
 class FunctionCurve;
@@ -353,18 +353,18 @@ class Graph: public QwtPlot
 
 		//! \name Error Bars
 		//@{
-		QwtErrorPlotCurve* addErrorBars(const QString& xColName, const QString& yColName, Table *errTable,
+		ErrorBarsCurve* addErrorBars(const QString& xColName, const QString& yColName, Table *errTable,
 				const QString& errColName, int type = 1, double width = 1, int cap = 8, const QColor& color = QColor(Qt::black),
 				bool through = true, bool minus = true, bool plus = true);
 
-		QwtErrorPlotCurve* addErrorBars(const QString& yColName, Table *errTable, const QString& errColName,
+		ErrorBarsCurve* addErrorBars(const QString& yColName, Table *errTable, const QString& errColName,
 				int type = 1, double width = 1, int cap = 8, const QColor& color = QColor(Qt::black),
 				bool through = true, bool minus = true, bool plus = true);
 
-		void updateErrorBars(QwtErrorPlotCurve *er, bool xErr, double width, int cap, const QColor& c, bool plus, bool minus, bool through);
+		void updateErrorBars(ErrorBarsCurve *er, bool xErr, double width, int cap, const QColor& c, bool plus, bool minus, bool through);
 
 		//! Returns a valid master curve for the error bars curve.
-		DataCurve* masterCurve(QwtErrorPlotCurve *er);
+		DataCurve* masterCurve(ErrorBarsCurve *er);
 		//! Returns a valid master curve for a plot association.
 		DataCurve* masterCurve(const QString& xColName, const QString& yColName);
 		//@}

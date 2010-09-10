@@ -30,7 +30,7 @@
 #include "Graph.h"
 #include "PlotCurve.h"
 #include "MultiLayer.h"
-#include <QwtErrorPlotCurve.h>
+#include <ErrorBarsCurve.h>
 #include <ApplicationWindow.h>
 
 #include <qwt_symbol.h>
@@ -176,7 +176,7 @@ void RangeSelectorTool::emitStatusText()
 			.arg(d_active_point + 1)
 			.arg(locale.toString(d_selected_curve->x(d_active_point), 'G', 16))
 			.arg(locale.toString(d_selected_curve->y(d_active_point), 'G', 16))
-			.arg(locale.toString(((QwtErrorPlotCurve*)d_selected_curve)->errorValue(d_active_point), 'G', 16)));
+			.arg(locale.toString(((ErrorBarsCurve*)d_selected_curve)->errorValue(d_active_point), 'G', 16)));
     } else {
         Table *t = ((DataCurve*)d_selected_curve)->table();
         if (!t)
@@ -393,7 +393,7 @@ void RangeSelectorTool::copyMultipleSelection()
 		for (int j = 0; j < curves; j++){
 			PlotCurve *curve = cvs[j];
 			if (curve->type() == Graph::ErrorBars)
-				text += "\t" + locale.toString(((QwtErrorPlotCurve*)curve)->errorValue(i), 'G', 16);
+				text += "\t" + locale.toString(((ErrorBarsCurve*)curve)->errorValue(i), 'G', 16);
 			else
 				text += "\t" + locale.toString(curve->y(i), 'G', 16);
 		}
@@ -478,8 +478,8 @@ void RangeSelectorTool::showSelectionDialog(RangeEditOperation op)
 			vb->addWidget(box);
 			d_selection_lst << box;
 
-			QList<DataCurve *> errorBars = ((DataCurve *)curve)->errorBarsList();
-			foreach(DataCurve *err, errorBars){
+			QList<ErrorBarsCurve *> errorBars = ((DataCurve *)curve)->errorBarsList();
+			foreach(ErrorBarsCurve *err, errorBars){
 				box = new QCheckBox(err->title().text());
 				box->setChecked(true);
 				vb->addWidget(box);

@@ -32,7 +32,7 @@
 #include <MyParser.h>
 #include <QwtHistogram.h>
 #include <VectorCurve.h>
-#include <QwtErrorPlotCurve.h>
+#include <ErrorBarsCurve.h>
 #include <BoxCurve.h>
 #include <FunctionCurve.h>
 #include <Spectrogram.h>
@@ -1876,7 +1876,7 @@ void PlotDialog::pickErrorBarsColor()
     if (!graph)
         return;
 
-	graph->updateErrorBars((QwtErrorPlotCurve *)item->plotItem(), xBox->isChecked(), widthBox->value(),
+	graph->updateErrorBars((ErrorBarsCurve *)item->plotItem(), xBox->isChecked(), widthBox->value(),
 			capBox->currentText().toInt(), colorBox->color(), plusBox->isChecked(), minusBox->isChecked(),
 			throughBox->isChecked());
 }
@@ -2464,7 +2464,7 @@ void PlotDialog::setActiveCurve(CurveTreeItem *item)
     }
 
     if (curveType == Graph::ErrorBars){
-        QwtErrorPlotCurve *err = (QwtErrorPlotCurve*)i;
+        ErrorBarsCurve *err = (ErrorBarsCurve*)i;
         if (err){
 			widthBox->blockSignals(true);
             widthBox->setValue(err->width());
@@ -2920,7 +2920,7 @@ bool PlotDialog::acceptParams()
 		item->setText(0, table + ": " + v->plotAssociation().remove(table + "_"));
 		return true;
 	} else if (privateTabWidget->currentPage() == errorsPage){
-		QwtErrorPlotCurve *err = (QwtErrorPlotCurve *)item->plotItem();
+		ErrorBarsCurve *err = (ErrorBarsCurve *)item->plotItem();
 		if (!err)
 			return false;
 
@@ -3710,7 +3710,7 @@ void PlotDialog::applySymbolsFormat(QwtPlotCurve *c)
 	app->modifiedProject();
 }
 
-void PlotDialog::applyErrorBarFormatToCurve(QwtErrorPlotCurve *err, bool color)
+void PlotDialog::applyErrorBarFormatToCurve(ErrorBarsCurve *err, bool color)
 {
 	if (!err)
 		return;
@@ -3741,14 +3741,14 @@ void PlotDialog::applyErrorBarFormatToLayer(Graph *g)
 		if (it->rtti() == QwtPlotItem::Rtti_PlotSpectrogram)
 			continue;
 
-		PlotCurve *c = (QwtErrorPlotCurve *)it;
+		PlotCurve *c = (ErrorBarsCurve *)it;
 		if (c->type() == Graph::ErrorBars)
-			applyErrorBarFormatToCurve((QwtErrorPlotCurve *)it, false);
+			applyErrorBarFormatToCurve((ErrorBarsCurve *)it, false);
 	}
 	g->replot();
 }
 
-void PlotDialog::applyErrorBarFormat(QwtErrorPlotCurve *c)
+void PlotDialog::applyErrorBarFormat(ErrorBarsCurve *c)
 {
 	if (!c || privateTabWidget->currentPage() != errorsPage)
 		return;

@@ -35,7 +35,7 @@
 #include "MultiLayer.h"
 #include "Grid.h"
 #include "CanvasPicker.h"
-#include "QwtErrorPlotCurve.h"
+#include "ErrorBarsCurve.h"
 #include "TexWidget.h"
 #include "LegendWidget.h"
 #include "ArrowMarker.h"
@@ -2554,7 +2554,7 @@ QString Graph::saveCurves()
 				s += QString::number(c->isVisible())+"\n";
 				s += c->saveToString();
 			} else if (c->type() == ErrorBars){
-  	        	QwtErrorPlotCurve *er = (QwtErrorPlotCurve *)it;
+  	        	ErrorBarsCurve *er = (ErrorBarsCurve *)it;
   	            s += "ErrorBars\t";
   	            s += QString::number(er->direction())+"\t";
   	            s += er->masterCurve()->xColumnName() + "\t";
@@ -3066,7 +3066,7 @@ void Graph::updateCurveLayout(PlotCurve* c, const CurveLayout *cL)
 	c->setBrush(brush);
 }
 
-void Graph::updateErrorBars(QwtErrorPlotCurve *er, bool xErr, double width, int cap, const QColor& c,
+void Graph::updateErrorBars(ErrorBarsCurve *er, bool xErr, double width, int cap, const QColor& c,
 		bool plus, bool minus, bool through)
 {
 	if (!er)
@@ -3090,7 +3090,7 @@ void Graph::updateErrorBars(QwtErrorPlotCurve *er, bool xErr, double width, int 
 	emit modifiedGraph();
 }
 
-QwtErrorPlotCurve* Graph::addErrorBars(const QString& yColName, Table *errTable, const QString& errColName,
+ErrorBarsCurve* Graph::addErrorBars(const QString& yColName, Table *errTable, const QString& errColName,
 		int type, double width, int cap, const QColor& color, bool through, bool minus, bool plus)
 {
 	foreach(QwtPlotItem *it, d_curves){
@@ -3107,7 +3107,7 @@ QwtErrorPlotCurve* Graph::addErrorBars(const QString& yColName, Table *errTable,
 	return NULL;
 }
 
-QwtErrorPlotCurve* Graph::addErrorBars(const QString& xColName, const QString& yColName,
+ErrorBarsCurve* Graph::addErrorBars(const QString& xColName, const QString& yColName,
 		Table *errTable, const QString& errColName, int type, double width, int cap,
 		const QColor& color, bool through, bool minus, bool plus)
 {
@@ -3115,7 +3115,7 @@ QwtErrorPlotCurve* Graph::addErrorBars(const QString& xColName, const QString& y
 	if (!master_curve)
 		return NULL;
 
-	QwtErrorPlotCurve *er = new QwtErrorPlotCurve(type, errTable, errColName);
+	ErrorBarsCurve *er = new ErrorBarsCurve(type, errTable, errColName);
 	insertCurve(er);
 
 	er->setMasterCurve(master_curve);
@@ -3259,9 +3259,9 @@ bool Graph::addCurves(Table* w, const QStringList& names, int style, double lWid
 				if (xcol < 0 || ycol < 0)
                     return false;
 
-				QwtErrorPlotCurve *er = NULL;
+				ErrorBarsCurve *er = NULL;
                 if (w->colPlotDesignation(j) == Table::xErr)
-					er = addErrorBars(w->colName(xcol), w->colName(ycol), w, names[i], (int)QwtErrorPlotCurve::Horizontal);
+					er = addErrorBars(w->colName(xcol), w->colName(ycol), w, names[i], (int)ErrorBarsCurve::Horizontal);
                 else
 					er = addErrorBars(w->colName(xcol), w->colName(ycol), w, names[i]);
 
@@ -3636,7 +3636,7 @@ void Graph::removeCurve(QwtPlotItem *it)
 
 	if (it->rtti() != QwtPlotItem::Rtti_PlotSpectrogram){
         if (((PlotCurve *)it)->type() == ErrorBars)
-            ((QwtErrorPlotCurve *)it)->detachFromMasterCurve();
+            ((ErrorBarsCurve *)it)->detachFromMasterCurve();
 		else if (((PlotCurve *)it)->type() != Function){
 			((DataCurve *)it)->clearErrorBars();
 			((DataCurve *)it)->clearLabels();
@@ -4710,13 +4710,13 @@ void Graph::copyCurves(Graph* g)
                 insertCurve(c);
 				((QwtBarCurve*)c)->copy((const QwtBarCurve*)cv);
 			} else if (style == ErrorBars) {
-				QwtErrorPlotCurve *er = (QwtErrorPlotCurve*)cv;
+				ErrorBarsCurve *er = (ErrorBarsCurve*)cv;
 				DataCurve *master_curve = masterCurve(er);
 				if (master_curve) {
-					c = new QwtErrorPlotCurve(cv->table(), cv->title().text());
+					c = new ErrorBarsCurve(cv->table(), cv->title().text());
 					insertCurve(c);
-					((QwtErrorPlotCurve*)c)->copy(er);
-					((QwtErrorPlotCurve*)c)->setMasterCurve(master_curve);
+					((ErrorBarsCurve*)c)->copy(er);
+					((ErrorBarsCurve*)c)->setMasterCurve(master_curve);
 				}
 			} else if (style == Histogram) {
 			    QwtHistogram *h = (QwtHistogram*)cv;
@@ -4991,7 +4991,7 @@ void Graph::guessUniqueCurveLayout(int& colorIndex, int& symbolIndex)
 	if (curve_index >= 0){// find out the pen color of the master curve
 		PlotCurve *c = (PlotCurve *)curve(curve_index);
 		if (c && c->type() == ErrorBars){
-			QwtErrorPlotCurve *er = (QwtErrorPlotCurve *)c;
+			ErrorBarsCurve *er = (ErrorBarsCurve *)c;
 			DataCurve *master_curve = er->masterCurve();
 			if (master_curve){
 				colorIndex = indexedColors.indexOf(master_curve->pen().color());
@@ -5523,7 +5523,7 @@ void Graph::setGrayScale()
 
 		PlotCurve *c = (PlotCurve *)it;
 		if (c->type() == ErrorBars){
-			QwtErrorPlotCurve *er = (QwtErrorPlotCurve *)it;
+			ErrorBarsCurve *er = (ErrorBarsCurve *)it;
 			DataCurve* mc = er->masterCurve();
 			if (mc)
 				er->setColor(mc->pen().color());
@@ -5572,7 +5572,7 @@ void Graph::setIndexedColors()
 
 		PlotCurve *c = (PlotCurve *)it;
 		if (c->type() == ErrorBars){
-			QwtErrorPlotCurve *er = (QwtErrorPlotCurve *)it;
+			ErrorBarsCurve *er = (ErrorBarsCurve *)it;
 			DataCurve* mc = er->masterCurve();
 			if (mc)
 				er->setColor(mc->pen().color());
@@ -5583,7 +5583,7 @@ void Graph::setIndexedColors()
 	emit modifiedGraph();
 }
 
-DataCurve* Graph::masterCurve(QwtErrorPlotCurve *er)
+DataCurve* Graph::masterCurve(ErrorBarsCurve *er)
 {
 	foreach(QwtPlotItem *it, d_curves){
         if (it->rtti() == QwtPlotItem::Rtti_PlotSpectrogram)

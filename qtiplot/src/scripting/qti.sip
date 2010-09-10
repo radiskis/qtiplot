@@ -1307,13 +1307,70 @@ public:
 	bool updateData(Table *t, const QString& colName);
 	void loadData();
 
+	//! The list of attached error bars.
+	QList<ErrorBarsCurve *> errorBarsList();
+	//! Remove a single error bars curve from the list of attached error bars.
+	void removeErrorBars(ErrorBarsCurve *);
+	//! Clears the list of attached error bars.
+	void clearErrorBars();
+
 	void clearLabels();
 
 private:
 	DataCurve(const DataCurve&);
 };
 
-class QwtHistogram : QwtPlotCurve /PyName=Histogram/
+class ErrorBarsCurve : DataCurve
+{
+%TypeHeaderCode
+#include "../src/plot2D/ErrorBarsCurve.h"
+%End
+public:
+	enum Orientation{Horizontal = 0, Vertical = 1};
+
+	ErrorBarsCurve(int orientation, Table *t, const QString& name);
+	ErrorBarsCurve(Table *t, const QString& name);
+
+	double errorValue(int i);
+
+	int capLength();
+	void setCapLength(int t);
+
+	double width();
+	void setWidth(double w);
+
+	QColor color();
+	void setColor(const QColor& c);
+
+	int direction();
+	void setDirection(int);
+
+	bool xErrors();
+	void setXErrors(bool);
+
+	bool throughSymbol();
+	void drawThroughSymbol(bool);
+
+	bool plusSide();
+	void drawPlusSide(bool);
+
+	bool minusSide();
+	void drawMinusSide(bool);
+
+	//! Returns the master curve to which this error bars curve is attached.
+	DataCurve* masterCurve();
+	void setMasterCurve(DataCurve *);
+
+	//! Causes the master curve to delete this curve from its managed error bars list.
+	void detachFromMasterCurve();
+
+	void loadData();
+
+private:
+	ErrorBarsCurve(const ErrorBarsCurve&);
+};
+
+class QwtHistogram : DataCurve /PyName=Histogram/
 {
 %TypeHeaderCode
 #include "../src/plot2D/QwtHistogram.h"

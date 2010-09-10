@@ -2166,6 +2166,51 @@ print c.maxYValue()
 </programlisting>
 </sect3>
 
+<sect3 id = "Python-ErrorBars">
+<title>Error Bars</title>
+
+Each data curve, <emphasis>c</emphasis>, can have attached a list of error bars:
+<programlisting>
+errors = c.errorBarsList()
+</programlisting>
+
+The properties of an error bar curve can be accesses, via the following methods:
+<programlisting>
+err = c.errorBarsList()[0]
+for i in range(0, err.dataSize()):
+	print err.errorValue(i)
+
+err.capLength()
+err.width()
+err.color()
+err.direction()
+err.xErrors()
+err.throughSymbol()
+err.plusSide()
+err.minusSide()
+c = err.masterCurve() # reference to the master curve to which the error bars curve is attached.
+err.detachFromMasterCurve() # equivalent to c.removeErrorBars(err)
+</programlisting>
+
+... and can be modified, via the following methods:
+<programlisting>
+err.setCapLength(12)
+err.setWidth(3)
+err.setColor(Qt.red)
+err.setDirection(ErrorBarsCurve.Vertical)
+err.setXErrors(True) # equivalent to err.setDirection(ErrorBarsCurve.Horizontal)
+err.drawThroughSymbol(True)
+err.drawPlusSide(True)
+err.drawMinusSide(False)
+err.setMasterCurve(c)
+</programlisting>
+
+You can remove all error bars attached to a curve using:
+<programlisting>
+c.clearErrorBars()
+</programlisting>
+</sect3>
+
 <sect3 id = "Python-PlotSymbols">
 <title>Plot symbols</title>
 

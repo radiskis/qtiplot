@@ -75,7 +75,7 @@
 #include <FrequencyCountDialog.h>
 #include <SubtractDataDialog.h>
 #include <BaselineDialog.h>
-#include <QwtErrorPlotCurve.h>
+#include <ErrorBarsCurve.h>
 #include <LegendWidget.h>
 #include <TexWidget.h>
 #include <ArrowMarker.h>
@@ -3803,7 +3803,7 @@ void ApplicationWindow::defineErrorBars(const QString& name, int type, double pe
 	if (xColName.isEmpty())
 		return;
 
-	if (direction == QwtErrorPlotCurve::Horizontal)
+	if (direction == ErrorBarsCurve::Horizontal)
 		t->addCol(Table::xErr);
 	else
 		t->addCol(Table::yErr);
@@ -3816,7 +3816,7 @@ void ApplicationWindow::defineErrorBars(const QString& name, int type, double pe
 		ycol = t->colIndex(xColName);
 
 	QVarLengthArray<double> Y(r);
-	if (direction == QwtErrorPlotCurve::Horizontal){
+	if (direction == ErrorBarsCurve::Horizontal){
 		for (int i = 0; i < r; i++)
 			Y[i] = master_curve->x(i);
 	} else {
@@ -3842,7 +3842,7 @@ void ApplicationWindow::defineErrorBars(const QString& name, int type, double pe
 				t->setCell(i, c, sd);
 		}
 	}
-	QwtErrorPlotCurve *er = g->addErrorBars(xColName, name, t, errColName, direction);
+	ErrorBarsCurve *er = g->addErrorBars(xColName, name, t, errColName, direction);
 	if (er){
 		er->setColor(master_curve->pen().color());
 		g->replot();
@@ -3881,7 +3881,7 @@ void ApplicationWindow::defineErrorBars(const QString& curveName, const QString&
 	if (!g)
 		return;
 
-	QwtErrorPlotCurve *er = g->addErrorBars(curveName, errTable, errColumnName, direction);
+	ErrorBarsCurve *er = g->addErrorBars(curveName, errTable, errColumnName, direction);
 	if (er){
 		DataCurve *mc = er->masterCurve();
 		if (mc){

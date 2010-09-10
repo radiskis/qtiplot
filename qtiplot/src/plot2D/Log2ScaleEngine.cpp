@@ -176,7 +176,7 @@ QwtValueList Log2ScaleEngine::buildMajorTicks(
 }
 
 QwtValueList Log2ScaleEngine::buildMinorTicks(const QwtValueList &majorTicks,
-    int maxMinSteps, double stepSize) const
+	int maxMinSteps, double) const
 {
 	if ( maxMinSteps < 1 )
 		return QwtValueList();
