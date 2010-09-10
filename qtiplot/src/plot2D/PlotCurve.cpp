@@ -27,6 +27,7 @@
  *                                                                         *
  ***************************************************************************/
 #include "PlotCurve.h"
+#include "ErrorBarsCurve.h"
 #include "Graph.h"
 #include "ScaleDraw.h"
 #include "ScaleEngine.h"
@@ -489,7 +490,7 @@ void DataCurve::setRowRange(int startRow, int endRow)
 
 	loadData();
 
-	foreach(DataCurve *c, d_error_bars)
+	foreach(ErrorBarsCurve *c, d_error_bars)
 		c->loadData();
 }
 
@@ -500,7 +501,7 @@ void DataCurve::setFullRange()
 
 	loadData();
 
-	foreach(DataCurve *c, d_error_bars)
+	foreach(ErrorBarsCurve *c, d_error_bars)
 		c->loadData();
 }
 
@@ -696,11 +697,11 @@ void DataCurve::loadData()
 	} else {
 		if (d_type == Graph::HorizontalBars){
 			setData(Y.data(), X.data(), size);
-			foreach(DataCurve *c, d_error_bars)
+			foreach(ErrorBarsCurve *c, d_error_bars)
                 c->setData(Y.data(), X.data(), size);
 		} else {
 			setData(X.data(), Y.data(), size);
-			foreach(DataCurve *c, d_error_bars)
+			foreach(ErrorBarsCurve *c, d_error_bars)
                 c->setData(X.data(), Y.data(), size);
 		}
 
@@ -730,7 +731,7 @@ void DataCurve::loadData()
 	}
 }
 
-void DataCurve::removeErrorBars(DataCurve *c)
+void DataCurve::removeErrorBars(ErrorBarsCurve *c)
 {
 	if (!c || d_error_bars.isEmpty())
 		return;
@@ -745,7 +746,7 @@ void DataCurve::clearErrorBars()
 	if (d_error_bars.isEmpty())
 		return;
 
-	foreach(DataCurve *c, d_error_bars)
+	foreach(ErrorBarsCurve *c, d_error_bars)
 		c->remove();
 }
 
@@ -761,7 +762,7 @@ void DataCurve::remove()
 void DataCurve::setVisible(bool on)
 {
 	QwtPlotCurve::setVisible(on);
-	foreach(DataCurve *c, d_error_bars)
+	foreach(ErrorBarsCurve *c, d_error_bars)
 		c->setVisible(on);
 	foreach(PlotMarker *m, d_labels_list)
 		m->setVisible(on);

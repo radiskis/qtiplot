@@ -470,7 +470,7 @@ void Spectrogram::drawContourLines (QPainter *p, const QwtScaleMap &xMap, const 
 		updateLabels(p, xMap, yMap, contourLines);
 }
 
-void Spectrogram::updateLabels(QPainter *p, const QwtScaleMap &xMap, const QwtScaleMap &yMap,
+void Spectrogram::updateLabels(QPainter *p, const QwtScaleMap &, const QwtScaleMap &,
 		const QwtRasterData::ContourLines &contourLines) const
 {
 	QwtValueList levels = contourLevels();

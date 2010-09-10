@@ -27,6 +27,7 @@
  *                                                                         *
  ***************************************************************************/
 #include "VectorCurve.h"
+#include "ErrorBarsCurve.h"
 #include "Graph.h"
 #include "MultiLayer.h"
 
@@ -378,7 +379,7 @@ void VectorCurve::loadData()
 
     X.resize(size); Y.resize(size); X2.resize(size); Y2.resize(size);
 	setData(X.data(), Y.data(), size);
-	foreach(DataCurve *c, d_error_bars)
+	foreach(ErrorBarsCurve *c, d_error_bars)
         c->setData(X.data(), Y.data(), size);
 	setVectorEnd(X2, Y2);
 }

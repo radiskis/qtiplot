@@ -115,7 +115,7 @@ void LogitScaleEngine::buildTicks(
 }
 
 QwtValueList LogitScaleEngine::buildMajorTicks(
-    const QwtDoubleInterval &interval, int stepSize) const
+	const QwtDoubleInterval &, int stepSize) const
 {
 	QwtValueList baseTicks;
 

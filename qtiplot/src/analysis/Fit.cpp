@@ -31,7 +31,7 @@
 #include "fit_gsl.h"
 #include <Table.h>
 #include <Matrix.h>
-#include <QwtErrorPlotCurve.h>
+#include <ErrorBarsCurve.h>
 #include <FunctionCurve.h>
 #include <MultiLayer.h>
 #include <ColorBox.h>
@@ -258,9 +258,8 @@ void Fit::setDataCurve(QwtPlotCurve *curve, double start, double end)
 
     if (d_graph && d_curve && ((PlotCurve *)d_curve)->type() != Graph::Function)
     {
-        QList<DataCurve *> lst = ((DataCurve *)d_curve)->errorBarsList();
-        foreach (DataCurve *c, lst){
-            QwtErrorPlotCurve *er = (QwtErrorPlotCurve *)c;
+		QList<ErrorBarsCurve *> lst = ((DataCurve *)d_curve)->errorBarsList();
+		foreach (ErrorBarsCurve *er, lst){
             if (!er->xErrors()){
                 d_weighting = Instrumental;
                 for (int i=0; i<d_n; i++){
@@ -460,11 +459,10 @@ bool Fit::setWeightingData(WeightingMethod w, const QString& colName)
 				}
 
 				bool error = true;
-				QwtErrorPlotCurve *er = 0;
+				ErrorBarsCurve *er = 0;
 				if (((PlotCurve *)d_curve)->type() != Graph::Function){
-					QList<DataCurve *> lst = ((DataCurve *)d_curve)->errorBarsList();
-                	foreach (DataCurve *c, lst){
-                    	er = (QwtErrorPlotCurve *)c;
+					QList<ErrorBarsCurve *> lst = ((DataCurve *)d_curve)->errorBarsList();
+					foreach (ErrorBarsCurve *er, lst){
                     	if (!er->xErrors()){
                         	weighting_dataset = er->title().text();
                         	error = false;

@@ -68,6 +68,7 @@ contains(SCRIPTING_LANGS, Python) {
 			 $${SIP_DIR}/sipqtiPlotCurve.cpp\
 			 $${SIP_DIR}/sipqtiFunctionCurve.cpp\
 			 $${SIP_DIR}/sipqtiDataCurve.cpp\
+			 $${SIP_DIR}/sipqtiErrorBarsCurve.cpp\
 			 $${SIP_DIR}/sipqtiQwtHistogram.cpp\
 			 $${SIP_DIR}/sipqtiQwtPlotSpectrogram.cpp\
 			 $${SIP_DIR}/sipqtiSpectrogram.cpp\
@@ -111,6 +112,7 @@ exists(../../$${SIP_DIR}/sipqtiQList.cpp) {
   SOURCES += $${SIP_DIR}/sipqtiQList.cpp
 } else {
   SOURCES += \
+			 $${SIP_DIR}/sipqtiQList0101ErrorBarsCurve.cpp\
 			 $${SIP_DIR}/sipqtiQList0101Folder.cpp\
 			 $${SIP_DIR}/sipqtiQList0101Graph.cpp\
 			 $${SIP_DIR}/sipqtiQList0101MdiSubWindow.cpp\

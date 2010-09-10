@@ -33,7 +33,7 @@
 #include <MultiLayer.h>
 #include <Graph.h>
 #include <Table.h>
-#include <QwtErrorPlotCurve.h>
+#include <ErrorBarsCurve.h>
 
 #include <QApplication>
 #include <QHBoxLayout>
@@ -442,10 +442,10 @@ void PlotWizard::plot2D(const QStringList& colList)
 			posY = s.find(",", posY);
 			int posErr, errType;
 			if (s.contains("(yErr)")){
-				errType = QwtErrorPlotCurve::Vertical;
+				errType = ErrorBarsCurve::Vertical;
 				posErr = s.find("(yErr)", posY);
 			} else {
-				errType = QwtErrorPlotCurve::Horizontal;
+				errType = ErrorBarsCurve::Horizontal;
 				posErr = s.find("(xErr)",posY);
 			}
 

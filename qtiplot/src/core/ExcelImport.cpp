@@ -10,7 +10,7 @@
 #include "ImageWidget.h"
 #include "QwtPieCurve.h"
 #include "ArrowMarker.h"
-#include "QwtErrorPlotCurve.h"
+#include "ErrorBarsCurve.h"
 
 #include <qwt_plot_canvas.h>
 #include <qwt_scale_widget.h>
@@ -397,7 +397,7 @@ void setCurveErrorBars(DataCurve *c, QAxObject *curve)
 
 	QPen pen = qPen(errors);
 	((Graph *)c->plot())->addErrorBars(curve->property("Name").toString(), t, t->colName(2),
-						QwtErrorPlotCurve::Vertical, pen.widthF(), cap, pen.color(), false, true, true);
+						ErrorBarsCurve::Vertical, pen.widthF(), cap, pen.color(), false, true, true);
 }
 
 void importText(int left, int top, QAxObject* text, Graph *g, LegendWidget *l)

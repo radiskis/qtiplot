@@ -393,7 +393,7 @@ void CurvesDialog::addCurves()
 
 			case MatrixItem:
 				if (contents->findItems(text, Qt::MatchExactly).isEmpty()){
-					if (!addCurveFromMatrix(app->matrix(text), text))
+					if (!addCurveFromMatrix(app->matrix(text)))
 						emptyColumns << text;
 				}
 			break;
@@ -421,7 +421,7 @@ void CurvesDialog::addCurves()
 	QApplication::restoreOverrideCursor();
 }
 
-bool CurvesDialog::addCurveFromMatrix(Matrix *m, const QString& name)
+bool CurvesDialog::addCurveFromMatrix(Matrix *m)
 {
 	if (!m)
 		return false;

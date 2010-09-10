@@ -30,7 +30,7 @@
 #include "Graph.h"
 #include "FunctionCurve.h"
 #include "PlotCurve.h"
-#include "QwtErrorPlotCurve.h"
+#include "ErrorBarsCurve.h"
 #include <ApplicationWindow.h>
 #include <MultiLayer.h>
 #include <LegendWidget.h>

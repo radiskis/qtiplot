@@ -31,7 +31,7 @@
 #include "../FunctionCurve.h"
 #include "../PlotCurve.h"
 #include "../BoxCurve.h"
-#include "../QwtErrorPlotCurve.h"
+#include "../ErrorBarsCurve.h"
 #include "../QwtPieCurve.h"
 #include "../QwtHistogram.h"
 #include "../VectorCurve.h"
@@ -142,7 +142,7 @@ void AssociationsDialog::changePlotAssociation(int curve, const QString& text)
 		c->setTitle(lst[1].remove("(Y)"));
 		c->loadData();
 	} else if (lst.count() == 3){//curve with error bars
-		QwtErrorPlotCurve *er = (QwtErrorPlotCurve *)c;
+		ErrorBarsCurve *er = (ErrorBarsCurve *)c;
 		QString xColName = lst[0].remove("(X)");
 		QString yColName = lst[1].remove("(Y)");
 		QString erColName = lst[2].remove("(xErr)").remove("(yErr)");
@@ -150,9 +150,9 @@ void AssociationsDialog::changePlotAssociation(int curve, const QString& text)
 		if (!master_curve)
 			return;
 
-		int type = QwtErrorPlotCurve::Vertical;
+		int type = ErrorBarsCurve::Vertical;
 		if (text.contains("(xErr)"))
-			type = QwtErrorPlotCurve::Horizontal;
+			type = ErrorBarsCurve::Horizontal;
 		er->setDirection(type);
 		er->setTitle(erColName);
 		if (master_curve != er->masterCurve())

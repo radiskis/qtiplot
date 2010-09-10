@@ -35,6 +35,7 @@
 
 class PlotMarker;
 class Table;
+class ErrorBarsCurve;
 
 //! Abstract 2D plot curve class
 class PlotCurve: public QwtPlotCurve
@@ -168,11 +169,11 @@ public:
 	virtual void updateColumnNames(const QString& oldName, const QString& newName, bool updateTableName);
 
 	//! The list of attached error bars.
-	QList<DataCurve *> errorBarsList(){return d_error_bars;};
+	QList<ErrorBarsCurve *> errorBarsList(){return d_error_bars;};
 	//! Adds a single error bars curve to the list of attached error bars.
-	void addErrorBars(DataCurve *c){if (c) d_error_bars << c;};
+	void addErrorBars(ErrorBarsCurve *c){if (c) d_error_bars << c;};
 	//! Remove a single error bars curve from the list of attached error bars.
-	void removeErrorBars(DataCurve *c);
+	void removeErrorBars(ErrorBarsCurve *c);
 	//! Clears the list of attached error bars.
 	void clearErrorBars();
 	//! Clears the list of attached text labels.
@@ -194,7 +195,7 @@ protected:
     void loadLabels();
 
 	//! List of the error bar curves associated to this curve.
-	QList <DataCurve *> d_error_bars;
+	QList <ErrorBarsCurve *> d_error_bars;
 	//! The data source table.
 	Table *d_table;
 	//!\brief The name of the column used for abscissae values.

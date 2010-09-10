@@ -77,7 +77,7 @@ private:
 
     void init();
 
-	bool addCurveFromMatrix(Matrix *m, const QString& name);
+	bool addCurveFromMatrix(Matrix *m);
 	bool addCurveFromTable(ApplicationWindow *app, Table *t, const QString& name);
 
     QSize sizeHint() const;
