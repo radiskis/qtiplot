@@ -217,10 +217,11 @@ contains(SCRIPTING_LANGS, Python) {
 }
 
 # check if we have liborigin2
-!isEmpty(BOOST_LIBS) {
+!isEmpty(LIBORIGIN_LIBS) {
 	DEFINES += OPJ_IMPORT
+	INCLUDEPATH += $$LIBORIGIN_INCLUDEPATH
 	INCLUDEPATH += $$BOOST_INCLUDEPATH
-	INCLUDEPATH += ../3rdparty/liborigin
+	LIBS        += $$LIBORIGIN_LIBS
 	LIBS        += $$BOOST_LIBS
 	include(src/origin/origin.pri)
 }
