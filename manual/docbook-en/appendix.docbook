@@ -190,8 +190,7 @@ If you want to build &appname; from sources, you need the following libraries:
   <term>liborigin2</term>
   <listitem>
     <para>The last version of <ulink url="http://soft.proindependent.com/liborigin2/index.html">liborigin2</ulink>
-	 allows to read OriginLab 7.5 project files. It is included in &appname; ("3rdparty/liborigin" folder),
-	 so you don't need to download and install it.</para>
+	 allows to read OriginLab project files.</para>
   </listitem>
 </varlistentry>
 <varlistentry>
