@@ -41,7 +41,7 @@
 #include "ArrowMarker.h"
 #include "ScalePicker.h"
 #include "TitlePicker.h"
-#include "QwtPieCurve.h"
+#include "PieCurve.h"
 #include "ImageWidget.h"
 #include "QwtBarCurve.h"
 #include "BoxCurve.h"
@@ -2415,7 +2415,7 @@ QString Graph::savePieCurveLayout()
 {
 	QString s="PieCurve\t";
 
-	QwtPieCurve *pie = (QwtPieCurve*)curve(0);
+	PieCurve *pie = (PieCurve*)curve(0);
 	s+= pie->title().text()+"\t";
 	QPen pen = pie->pen();
 	s+=QString::number(pen.widthF())+"\t";
@@ -2719,7 +2719,7 @@ LegendWidget* Graph::insertText(const QStringList& list, int fileVersion)
 
     l->setText(text);
 	if (pieLabel){
-		QwtPieCurve *pie = (QwtPieCurve *)curve(0);
+		PieCurve *pie = (PieCurve *)curve(0);
 		if(pie)
 			pie->addLabel((PieLabel *)l);
 	}
@@ -3145,7 +3145,7 @@ bool Graph::isPiePlot()
 	return false;
 }
 
-QwtPieCurve* Graph::plotPie(Table* w, const QString& name, const QPen& pen, int brush,
+PieCurve* Graph::plotPie(Table* w, const QString& name, const QPen& pen, int brush,
 					int size, int firstColor, int startRow, int endRow, bool visible,
 					double d_start_azimuth, double d_view_angle, double d_thickness,
 					double d_horizontal_offset, double d_edge_dist, bool d_counter_clockwise,
@@ -3155,7 +3155,7 @@ QwtPieCurve* Graph::plotPie(Table* w, const QString& name, const QPen& pen, int 
 	if (endRow < 0)
 		endRow = w->numRows() - 1;
 
-	QwtPieCurve *pie = new QwtPieCurve(w, name, startRow, endRow);
+	PieCurve *pie = new PieCurve(w, name, startRow, endRow);
 	insertCurve(pie);
 
 	pie->loadData();
@@ -3181,7 +3181,7 @@ QwtPieCurve* Graph::plotPie(Table* w, const QString& name, const QPen& pen, int 
 	return pie;
 }
 
-QwtPieCurve* Graph::plotPie(Table* w, const QString& name, int startRow, int endRow)
+PieCurve* Graph::plotPie(Table* w, const QString& name, int startRow, int endRow)
 {
 	for (int i=0; i<QwtPlot::axisCnt; i++)
 		enableAxis(i, false);
@@ -3193,7 +3193,7 @@ QwtPieCurve* Graph::plotPie(Table* w, const QString& name, int startRow, int end
 	canvas->setLineWidth(0);
 	setFrame(1, Qt::black);
 
-	QwtPieCurve *pie = new QwtPieCurve(w, name, startRow, endRow);
+	PieCurve *pie = new PieCurve(w, name, startRow, endRow);
     insertCurve(pie);
 	pie->loadData();
 	pie->initLabels();
@@ -3584,7 +3584,7 @@ void Graph::setBarsGap(int curve, int gapPercent, int offset)
 
 void Graph::removePie()
 {
-	QList <PieLabel *> labels = ((QwtPieCurve *)curve(0))->labelsList();
+	QList <PieLabel *> labels = ((PieCurve *)curve(0))->labelsList();
 	foreach(PieLabel *l, labels)
 		l->setPieCurve(0);
 
@@ -4698,7 +4698,7 @@ void Graph::copyCurves(Graph* g)
 
 			PlotCurve *c = 0;
 			if (style == Pie){
-				c = new QwtPieCurve(cv->table(), cv->title().text(), cv->startRow(), cv->endRow());
+				c = new PieCurve(cv->table(), cv->title().text(), cv->startRow(), cv->endRow());
 				insertCurve(c);
 			} else if (style == Function) {
 				c = new FunctionCurve(cv->title().text());
@@ -4751,7 +4751,7 @@ void Graph::copyCurves(Graph* g)
 				if (c->type() != Function && c->type() != Pie)
                     ((DataCurve *)c)->clone(cv);
                 else if (c->type() == Pie)
-                    ((QwtPieCurve*)c)->clone((QwtPieCurve*)cv);
+                    ((PieCurve*)c)->clone((PieCurve*)cv);
 			}
 
 			c->setPen(cv->pen());

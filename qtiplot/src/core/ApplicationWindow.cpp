@@ -85,7 +85,7 @@
 #include <ScaleEngine.h>
 #include <QwtHistogram.h>
 #include <FunctionCurve.h>
-#include <QwtPieCurve.h>
+#include <PieCurve.h>
 #include <EllipseWidget.h>
 #include <RectangleWidget.h>
 #include <Spectrogram.h>

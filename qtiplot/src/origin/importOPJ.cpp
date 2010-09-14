@@ -44,7 +44,7 @@
 #include <Note.h>
 #include <MultiLayer.h>
 #include <QwtHistogram.h>
-#include <QwtPieCurve.h>
+#include <PieCurve.h>
 #include <VectorCurve.h>
 #include <LegendWidget.h>
 #include <Grid.h>
@@ -1101,7 +1101,7 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 						h->loadData();
 					}
 				} else if(style == Graph::Pie){
-					QwtPieCurve *p = (QwtPieCurve *)graph->curve(c);
+					PieCurve *p = (PieCurve *)graph->curve(c);
 					cl.lStyle = lineStyles[(Origin::GraphCurve::LineStyle)linestyle];
 					p->setPen(QPen(cl.lCol, cl.lWidth, (Qt::PenStyle)cl.lStyle));
 					p->setBrushStyle(PatternBox::brushStyle(cl.aStyle));
@@ -1365,7 +1365,7 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 				addText(layer.texts[i], graph, fFontScaleFactor, fScale);
 
 			if (style == Graph::Pie)
-				setPieTexts((QwtPieCurve *)graph->curve(0), graph, layer, fFontScaleFactor, fScale);
+				setPieTexts((PieCurve *)graph->curve(0), graph, layer, fFontScaleFactor, fScale);
 
 			for(unsigned int i = 0; i < layer.lines.size(); ++i){
 				ArrowMarker mrk;
@@ -1943,7 +1943,7 @@ bool ImportOPJ::importGraph3D(const OriginFile& opj, unsigned int g, unsigned in
 	return true;
 }
 
-void ImportOPJ::setPieTexts(QwtPieCurve *p, Graph* graph, const Origin::GraphLayer& layer, double fFontScaleFactor, double fScale)
+void ImportOPJ::setPieTexts(PieCurve *p, Graph* graph, const Origin::GraphLayer& layer, double fFontScaleFactor, double fScale)
 {
 	if (!p || !graph)
 		return;

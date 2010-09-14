@@ -28,7 +28,7 @@
  ***************************************************************************/
 #include "LegendWidget.h"
 #include "PlotCurve.h"
-#include "QwtPieCurve.h"
+#include "PieCurve.h"
 #include "VectorCurve.h"
 #include "SelectionMoveResizer.h"
 #include "MultiLayer.h"
@@ -203,7 +203,7 @@ void LegendWidget::drawSymbol(PlotCurve *c, int point, QPainter *p, int x, int y
 	}
 
 	if (c->type() == Graph::Pie){
-		QwtPieCurve *pie = (QwtPieCurve *)c;
+		PieCurve *pie = (PieCurve *)c;
 		const QBrush br = QBrush(pie->color(point), pie->pattern());
 		QPen pen = pie->pen();
 		pen.setCosmetic(false);

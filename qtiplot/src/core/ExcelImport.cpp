@@ -8,7 +8,7 @@
 #include "RectangleWidget.h"
 #include "EllipseWidget.h"
 #include "ImageWidget.h"
-#include "QwtPieCurve.h"
+#include "PieCurve.h"
 #include "ArrowMarker.h"
 #include "ErrorBarsCurve.h"
 
@@ -771,7 +771,7 @@ MultiLayer * ApplicationWindow::importExcelChart(QAxObject* chart, const QString
 				if(style == Graph::Pie){
 					g->addCurves(t, QStringList() << QString("%1_%2").arg(tName, curveName), style);
 					c = g->dataCurve(l - 1);
-					QwtPieCurve *pc = (QwtPieCurve *)c;
+					PieCurve *pc = (PieCurve *)c;
 					if (curveType == 5 || curveType == 69){
 						pc->setViewAngle(90);
 						pc->setRadius(75);

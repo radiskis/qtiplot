@@ -51,7 +51,7 @@ class QwtPlotPanner;
 class QwtPlotMagnifier;
 class QwtPlotCurve;
 class QwtPlotZoomer;
-class QwtPieCurve;
+class PieCurve;
 class Table;
 class ArrowMarker;
 class ImageWidget;
@@ -242,9 +242,9 @@ class Graph: public QwtPlot
 		//! Returns true if this Graph is a pie plot, false otherwise.
 		bool isPiePlot();
 		//! Used when creating a pie plot.
-		QwtPieCurve* plotPie(Table* w,const QString& name, int startRow = 0, int endRow = -1);
+		PieCurve* plotPie(Table* w,const QString& name, int startRow = 0, int endRow = -1);
 		//! Used when restoring a pie plot from a project file.
-		QwtPieCurve* plotPie(Table* w, const QString& name, const QPen& pen, int brush, int size,
+		PieCurve* plotPie(Table* w, const QString& name, const QPen& pen, int brush, int size,
 			int firstColor, int startRow = 0, int endRow = -1, bool visible = true,
 			double d_start_azimuth = 270, double d_view_angle = 90, double d_thickness = 33,
 			double d_horizontal_offset = 0.0, double d_edge_dist = 25, bool d_counter_clockwise = false,
