@@ -12411,7 +12411,7 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot, co
 						endRow = curve[curve.count()-2].toInt();
 					}
 
-					c = (PlotCurve *)ag->plotVectorCurve(w, colsList, plotType, startRow, endRow);
+					c = (PlotCurve *)ag->plotVectors(w, colsList, plotType, startRow, endRow);
 
 					if (d_file_version <= 77){
 						int temp_index = convertOldToNewColorIndex(curve[15].toInt());

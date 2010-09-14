@@ -1430,6 +1430,52 @@ public:
 		PieCurve(const PieCurve&);
 };
 
+class VectorCurve : DataCurve
+{
+%TypeHeaderCode
+#include "../src/plot2D/VectorCurve.h"
+%End
+public:
+	enum VectorStyle{XYXY, XYAM};
+	enum Position{Tail, Middle, Head};
+
+	VectorCurve(VectorStyle style, Table *t, const QString& xColName, const char *name,
+				const QString& endCol1, const QString& endCol2, int startRow, int endRow);
+
+	QString vectorEndXAColName();
+	QString vectorEndYMColName();
+	void setVectorEnd(const QString& xColName, const QString& yColName);
+
+	double width();
+	void setWidth(double);
+
+	QColor color();
+	void setColor(const QColor&);
+
+	int headLength();
+	void setHeadLength(int);
+
+	int headAngle();
+	void setHeadAngle(int);
+
+	bool filledArrowHead();
+	void fillArrowHead(bool);
+
+	int position();
+	void setPosition(int);
+
+	int vectorStyle();
+	void setVectorStyle(int);
+
+	void loadData();
+
+	QPen vectorPen();
+	void setVectorPen(const QPen&);
+
+	private:
+		VectorCurve(const VectorCurve&);
+};
+
 class QwtHistogram : DataCurve /PyName=Histogram/
 {
 %TypeHeaderCode
@@ -1697,7 +1743,7 @@ public:
   sipRes = sipCpp->addFunction(l, a2, a3, a4, *a5, 1);
 %End
 
-  void addErrorBars(const QString&, Table *, const QString&,
+  ErrorBarsCurve* addErrorBars(const QString&, Table *, const QString&,
 		  int type = 1, double width = 1, int cap = 8, const QColor& color = QColor(Qt::black),
 		  bool through = true, bool minus = true, bool plus = true);
 
@@ -1706,6 +1752,7 @@ public:
   Spectrogram* spectrogram(Matrix *m);
 
   PieCurve* plotPie(Table*,const QString&, int startRow = 0, int endRow = -1);
+  VectorCurve* plotVectors(Table*, const QStringList& colList, int style, int startRow = 0, int endRow = -1);
 
   ArrowMarker* addArrow(ArrowMarker*);
   void remove(ArrowMarker*);

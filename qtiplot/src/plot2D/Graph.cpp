@@ -3222,7 +3222,7 @@ bool Graph::addCurves(Table* w, const QStringList& names, int style, double lWid
 	else if (style == Box)
 		plotBoxDiagram(w, names, startRow, endRow);
 	else if (style == VectXYXY || style == VectXYAM)
-		plotVectorCurve(w, names, style, startRow, endRow);
+		plotVectors(w, names, style, startRow, endRow);
 	else if (style == Histogram){
 		int curves = names.count();
 		for (int i=0; i<curves; i++){
@@ -3466,7 +3466,7 @@ QwtHistogram* Graph::restoreHistogram(Matrix *m, const QStringList& l)
 	return h;
 }
 
-VectorCurve* Graph::plotVectorCurve(Table* w, const QStringList& colList, int style, int startRow, int endRow)
+VectorCurve* Graph::plotVectors(Table* w, const QStringList& colList, int style, int startRow, int endRow)
 {
 	if (colList.count() != 4)
 		return NULL;
