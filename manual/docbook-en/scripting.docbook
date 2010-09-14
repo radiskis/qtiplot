@@ -2493,6 +2493,30 @@ For an exhaustive review of the methods giving access to the properties of a vec
 <ulink url="http://soft.proindependent.com/doc/manual-en/Python-API/html/index.html">QtiPlot/Python API</ulink>.
 </sect3>
 
+<sect3 id = "Python-BoxWhiskersPlos">
+<title>Box and whiskers plots</title>
+The following script shows how to create and customize a box and whiskers plot:
+<programlisting>
+g = newGraph().activeLayer()
+g.plotBox(table("Table1"), ["2", "3", "4"])
+for i in range (0, g.numCurves()):
+		box = g.boxCurve(i)
+		if (box):
+			box.setBrush(QtGui.QBrush(Qt.red, Qt.BDiagPattern))
+			s = PlotSymbol()
+			s.setPen(QtGui.QPen(Qt.blue, 2))
+			s.setSize(QtCore.QSize(10, 10))
+			box.setSymbol(s)
+			box.setMeanStyle(PlotSymbol.Cross)
+			box.setBoxStyle(BoxCurve.WindBox)
+			box.setBoxWidth(80)
+			box.setWhiskersRange(BoxCurve.SD) # standard deviation
+</programlisting>
+
+For an exhaustive review of the methods giving access to the properties of a box plot, please consult the
+<ulink url="http://soft.proindependent.com/doc/manual-en/Python-API/html/index.html">QtiPlot/Python API</ulink>.
+</sect3>
+
 <sect3 id="Python-Title">
 <title>The plot title</title>
 <programlisting>

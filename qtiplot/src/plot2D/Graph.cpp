@@ -2868,6 +2868,15 @@ DataCurve * Graph::dataCurve(int index)
 	return 0;
 }
 
+BoxCurve * Graph::boxCurve(int index)
+{
+	DataCurve *c = dataCurve(index);
+	if (c && c->type() == Box)
+		return (BoxCurve*)c;
+
+	return 0;
+}
+
 //! get curve title string by inde (convenience function for scripts)
 QString Graph::curveTitle(int index)
 {
@@ -3220,7 +3229,7 @@ bool Graph::addCurves(Table* w, const QStringList& names, int style, double lWid
 	if (style == Pie)
 		plotPie(w, names[0], startRow, endRow);
 	else if (style == Box)
-		plotBoxDiagram(w, names, startRow, endRow);
+		plotBox(w, names, startRow, endRow);
 	else if (style == VectXYXY || style == VectXYAM)
 		plotVectors(w, names, style, startRow, endRow);
 	else if (style == Histogram){
@@ -4787,7 +4796,7 @@ void Graph::copyCurves(Graph* g)
 }
 
 
-void Graph::plotBoxDiagram(Table *w, const QStringList& names, int startRow, int endRow)
+void Graph::plotBox(Table *w, const QStringList& names, int startRow, int endRow)
 {
 	if (endRow < 0)
 		endRow = w->numRows() - 1;

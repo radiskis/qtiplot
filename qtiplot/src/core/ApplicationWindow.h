@@ -522,7 +522,7 @@ public slots:
 	MultiLayer* plotHistogram(Matrix *m);
 	void plotVectXYXY();
 	void plotVectXYAM();
-	void plotBoxDiagram();
+	void plotBox();
 	void plotDoubleYAxis();
 	void zoomRectanglePlot();
 	QString stemPlot(Table *t = 0, const QString& colName = QString(), int power = 0, int startRow = 0, int endRow = -1);

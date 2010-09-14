@@ -65,6 +65,7 @@ contains(SCRIPTING_LANGS, Python) {
 			 $${SIP_DIR}/sipqtiGrid.cpp\
 			 $${SIP_DIR}/sipqtiQwtSymbol.cpp\
 			 $${SIP_DIR}/sipqtiQwtPlotCurve.cpp\
+			 $${SIP_DIR}/sipqtiBoxCurve.cpp\
 			 $${SIP_DIR}/sipqtiPieCurve.cpp\
 			 $${SIP_DIR}/sipqtiPlotCurve.cpp\
 			 $${SIP_DIR}/sipqtiFunctionCurve.cpp\

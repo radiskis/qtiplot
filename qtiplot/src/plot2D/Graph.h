@@ -678,7 +678,8 @@ class Graph: public QwtPlot
 		//! \name Box Plots
 		//@{
 		BoxCurve* openBoxDiagram(Table *w, const QStringList& l, int fileVersion);
-		void plotBoxDiagram(Table *w, const QStringList& names, int startRow = 0, int endRow = -1);
+		void plotBox(Table *w, const QStringList& names, int startRow = 0, int endRow = -1);
+		BoxCurve * boxCurve(int index);
 		//@}
 
 		//! \name Resizing

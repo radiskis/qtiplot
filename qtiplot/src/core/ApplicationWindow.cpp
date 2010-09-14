@@ -1977,7 +1977,7 @@ void ApplicationWindow::plot3DTrajectory()
         QMessageBox::warning(this, tr("QtiPlot - Plot error"), tr("You must select exactly one column for plotting!"));
 }
 
-void ApplicationWindow::plotBoxDiagram()
+void ApplicationWindow::plotBox()
 {
     generate2DGraph(Graph::Box);
 }
@@ -14285,7 +14285,7 @@ void ApplicationWindow::createActions()
 	connect(actionSetLabelCol, SIGNAL(activated()), this, SLOT(setLabelCol()));
 
 	actionBoxPlot = new QAction(QIcon(":/boxPlot.png"),tr("&Box Plot"), this);
-	connect(actionBoxPlot, SIGNAL(activated()), this, SLOT(plotBoxDiagram()));
+	connect(actionBoxPlot, SIGNAL(activated()), this, SLOT(plotBox()));
 
 	actionMultiPeakGauss = new QAction(tr("&Gaussian..."), this);
 	connect(actionMultiPeakGauss, SIGNAL(activated()), this, SLOT(fitMultiPeakGauss()));
