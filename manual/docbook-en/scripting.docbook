@@ -2476,6 +2476,23 @@ For an exhaustive review of the methods giving access to the properties of a pie
 <ulink url="http://soft.proindependent.com/doc/manual-en/Python-API/html/index.html">QtiPlot/Python API</ulink>.
 </sect3>
 
+<sect3 id = "Python-VectorsCurve">
+<title>Vector Curves</title>
+The following script shows how to create and customize a vector curve:
+<programlisting>
+g = newGraph().activeLayer()
+v = g.plotVectors(table("Table1"), ["1", "2", "3", "4"], Layer.VectXYAM)
+v.setVectorPen(Qt.red)
+v.fillArrowHead(False)
+v.setHeadAngle(15)
+v.setHeadLength(20)
+v.setPosition(VectorCurve.Middle)
+</programlisting>
+
+For an exhaustive review of the methods giving access to the properties of a vector curve, please consult the
+<ulink url="http://soft.proindependent.com/doc/manual-en/Python-API/html/index.html">QtiPlot/Python API</ulink>.
+</sect3>
+
 <sect3 id="Python-Title">
 <title>The plot title</title>
 <programlisting>

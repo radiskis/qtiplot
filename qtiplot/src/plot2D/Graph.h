@@ -670,7 +670,7 @@ class Graph: public QwtPlot
 
 		//! \name Vector Curves
 		//@{
-		VectorCurve* plotVectorCurve(Table* w, const QStringList& colList, int style, int startRow = 0, int endRow = -1);
+		VectorCurve* plotVectors(Table* w, const QStringList& colList, int style, int startRow = 0, int endRow = -1);
 		void updateVectorsLayout(int curve, const QColor& color, double width, int arrowLength, int arrowAngle, bool filled, int position,
 				const QString& xEndColName = QString(), const QString& yEndColName = QString());
 		//@}

@@ -70,6 +70,7 @@ contains(SCRIPTING_LANGS, Python) {
 			 $${SIP_DIR}/sipqtiFunctionCurve.cpp\
 			 $${SIP_DIR}/sipqtiDataCurve.cpp\
 			 $${SIP_DIR}/sipqtiErrorBarsCurve.cpp\
+			 $${SIP_DIR}/sipqtiVectorCurve.cpp\
 			 $${SIP_DIR}/sipqtiQwtHistogram.cpp\
 			 $${SIP_DIR}/sipqtiQwtPlotSpectrogram.cpp\
 			 $${SIP_DIR}/sipqtiSpectrogram.cpp\
