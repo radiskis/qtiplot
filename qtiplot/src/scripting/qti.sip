@@ -1504,6 +1504,52 @@ private:
 	QwtHistogram(const QwtHistogram&);
 };
 
+class BoxCurve : DataCurve
+{
+%TypeHeaderCode
+#include "../src/plot2D/BoxCurve.h"
+%End
+public:
+	enum BoxStyle{NoBox, Rect, Diamond, WindBox, Notch};
+	enum Range{None, SD, SE, r25_75, r10_90, r5_95, r1_99, MinMax, UserDef};
+
+	BoxCurve(Table *t, const QString& name, int startRow = 0, int endRow = -1);
+
+	QwtSymbol::Style minStyle();
+	void setMinStyle(QwtSymbol::Style s);
+
+	QwtSymbol::Style maxStyle();
+	void setMaxStyle(QwtSymbol::Style s);
+
+	void setMeanStyle(QwtSymbol::Style s);
+	QwtSymbol::Style meanStyle();
+
+	void setP99Style(QwtSymbol::Style s);
+	QwtSymbol::Style p99Style();
+
+	void setP1Style(QwtSymbol::Style s);
+	QwtSymbol::Style p1Style();
+
+	int boxStyle();
+	void setBoxStyle(int);
+
+	int boxWidth();
+	void setBoxWidth(int);
+
+	double boxRange();
+	int boxRangeType();
+	void setBoxRange(int type, double coeff);
+
+	double whiskersRange();
+	int whiskersRangeType();
+	void setWhiskersRange(int type, double coeff = 0.0);
+
+	void loadData();
+
+private:
+	BoxCurve(const BoxCurve&);
+};
+
 class QwtPlotSpectrogram // : QwtPlotItem
 {
 %TypeHeaderCode
@@ -1711,6 +1757,9 @@ public:
   PlotCurve* curve(const QString &title);
   QString curveTitle(int);
   DataCurve* dataCurve(int index);
+
+  void plotBox(Table *, const QStringList& names, int startRow = 0, int endRow = -1);
+  BoxCurve * boxCurve(int index);
 
   void changeCurveIndex(int fromIndex, int toIndex);
 
