@@ -2454,6 +2454,28 @@ You can also enable autobinning (a default number of ten bins will be used):
  </programlisting>
 </sect3>
 
+<sect3 id = "Python-PieCurve">
+<title>Pie Plots</title>
+The following script shows how to create and customize a pie plot:
+<programlisting>
+g = newGraph().activeLayer()
+pie = g.plotPie(table("Table1"), "2")
+pie.setRadius(70)
+pie.setViewAngle(40)
+pie.setThickness(20)
+pie.setStartAzimuth(45)
+pie.setLabelsEdgeDistance(50)
+pie.setCounterClockwise(True)
+pie.setBrushStyle(Qt.Dense3Pattern)
+pie.setFirstColor(3)
+pie.setPen(QtGui.QPen(Qt.red, 2))
+pie.setLabelValuesFormat(True)
+</programlisting>
+
+For an exhaustive review of the methods giving access to the properties of a pie plot, please consult the
+<ulink url="http://soft.proindependent.com/doc/manual-en/Python-API/html/index.html">QtiPlot/Python API</ulink>.
+</sect3>
+
 <sect3 id="Python-Title">
 <title>The plot title</title>
 <programlisting>

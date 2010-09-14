@@ -327,6 +327,8 @@
 </section>
 <section ref="x5358.html#Python-Histograms" title="Histograms">
 </section>
+<section ref="x5358.html#Python-PieCurve" title="Pie Plots">
+</section>
 <section ref="x5358.html#Python-Title" title="The plot title">
 </section>
 <section ref="x5358.html#Python-Axes" title="Customizing the axes">
@@ -361,7 +363,7 @@
 <section ref="x5358.html#Python-WaterfallPlots" title="Waterfall Plots">
 </section>
 <section ref="x5358.html#Python-Plots3D" title="3D Plots">
-<section ref="x5358.html#AEN6329" title="Creating a 3D plot">
+<section ref="x5358.html#AEN6333" title="Creating a 3D plot">
 </section>
 <section ref="x5358.html#Python-3D-View" title="Customizing the view">
 </section>
@@ -410,7 +412,7 @@
 </section>
 </section>
 </section>
-<section ref="c6624.html" title="Credits and License">
+<section ref="c6628.html" title="Credits and License">
 <keyword ref="x81.html#AEN85">Command line parameters</keyword>
 <keyword ref="x81.html#AEN114">Command line options</keyword>
 <keyword ref="x138.html#AEN158">table</keyword>
@@ -423,32 +425,32 @@
 <keyword ref="x4606.html#AEN4608">matrix</keyword>
 <keyword ref="x4621.html#AEN4623">table</keyword>
 <keyword ref="x4658.html#AEN4660">matrix</keyword>
-<section ref="c6624.html#fdl" title="GNU Free Documentation License">
-<section ref="c6624.html#AEN6645" title="Preamble">
+<section ref="c6628.html#fdl" title="GNU Free Documentation License">
+<section ref="c6628.html#AEN6649" title="Preamble">
 </section>
-<section ref="c6624.html#AEN6650" title="Applicability And Definitions">
+<section ref="c6628.html#AEN6654" title="Applicability And Definitions">
 </section>
-<section ref="c6624.html#AEN6659" title="Verbatim Copying">
+<section ref="c6628.html#AEN6663" title="Verbatim Copying">
 </section>
-<section ref="c6624.html#AEN6663" title="Copying In Quantity">
+<section ref="c6628.html#AEN6667" title="Copying In Quantity">
 </section>
-<section ref="c6624.html#AEN6669" title="Modifications">
+<section ref="c6628.html#AEN6673" title="Modifications">
 </section>
-<section ref="c6624.html#AEN6687" title="Combining Documents">
+<section ref="c6628.html#AEN6691" title="Combining Documents">
 </section>
-<section ref="c6624.html#AEN6692" title="Collections Of Documents">
+<section ref="c6628.html#AEN6696" title="Collections Of Documents">
 </section>
-<section ref="c6624.html#AEN6696" title="Aggregation With Independent Works">
+<section ref="c6628.html#AEN6700" title="Aggregation With Independent Works">
 </section>
-<section ref="c6624.html#AEN6700" title="Translation">
+<section ref="c6628.html#AEN6704" title="Translation">
 </section>
-<section ref="c6624.html#AEN6703" title="Termination">
+<section ref="c6628.html#AEN6707" title="Termination">
 </section>
-<section ref="c6624.html#AEN6706" title="Future Revisions Of This License">
+<section ref="c6628.html#AEN6710" title="Future Revisions Of This License">
 </section>
 </section>
 </section>
-<section ref="a6709.html" title="Installation">
+<section ref="a6713.html" title="Installation">
 <keyword ref="x81.html#AEN85">Command line parameters</keyword>
 <keyword ref="x81.html#AEN114">Command line options</keyword>
 <keyword ref="x138.html#AEN158">table</keyword>
@@ -461,20 +463,20 @@
 <keyword ref="x4606.html#AEN4608">matrix</keyword>
 <keyword ref="x4621.html#AEN4623">table</keyword>
 <keyword ref="x4658.html#AEN4660">matrix</keyword>
-<section ref="a6709.html#getting-qtiplot" title="How to obtain QtiPlot">
+<section ref="a6713.html#getting-qtiplot" title="How to obtain QtiPlot">
 </section>
-<section ref="x6715.html" title="Installation from binary packages">
+<section ref="x6719.html" title="Installation from binary packages">
 </section>
-<section ref="x6729.html" title="Compilation and Installation from sources">
-<section ref="x6729.html#requirements" title="Requirements">
+<section ref="x6733.html" title="Compilation and Installation from sources">
+<section ref="x6733.html#requirements" title="Requirements">
 </section>
-<section ref="x6729.html#compilation-linux" title="Linux and Mac OS X">
+<section ref="x6733.html#compilation-linux" title="Linux and Mac OS X">
 </section>
-<section ref="x6729.html#compilation-windows" title="Windows">
+<section ref="x6733.html#compilation-windows" title="Windows">
 </section>
 </section>
 </section>
-<section ref="c6807.html" title="Frequently asked questions">
+<section ref="c6811.html" title="Frequently asked questions">
 </section>
 </DCF>
 </assistantconfig>
