@@ -2,7 +2,7 @@
     File                 : VectorCurve.h
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2006 by Ion Vasilief
+	Copyright            : (C) 2006 - 2010 by Ion Vasilief
     Email (use @ for *)  : ion_vasilief*yahoo.fr
     Description          : Vector curve class
 
@@ -50,15 +50,6 @@ public:
 
 	QwtDoubleRect boundingRect() const;
 
-	void draw(QPainter *painter,const QwtScaleMap &xMap,
-		const QwtScaleMap &yMap, int from, int to) const;
-
-	void drawVector(QPainter *painter, const QwtScaleMap &xMap,
-		const QwtScaleMap &yMap, int from, int to) const;
-
-	void drawArrowHead(QPainter *p, int xs, int ys, int xe, int ye) const;
-	double theta(int x0, int y0, int x1, int y1) const;
-
 	QString vectorEndXAColName(){return d_end_x_a;};
 	QString vectorEndYMColName(){return d_end_y_m;};
 	void setVectorEnd(const QString& xColName, const QString& yColName);
@@ -93,6 +84,16 @@ public:
 
 	QPen vectorPen(){return d_pen;};
 	void setVectorPen(const QPen& pen){d_pen = pen;};
+
+private:
+	void draw(QPainter *painter,const QwtScaleMap &xMap,
+		const QwtScaleMap &yMap, int from, int to) const;
+
+	void drawVector(QPainter *painter, const QwtScaleMap &xMap,
+		const QwtScaleMap &yMap, int from, int to) const;
+
+	void drawArrowHead(QPainter *p, int xs, int ys, int xe, int ye) const;
+		double theta(int x0, int y0, int x1, int y1) const;
 
 protected:
 	QwtArrayData *vectorEnd;

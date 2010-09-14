@@ -1370,6 +1370,66 @@ private:
 	ErrorBarsCurve(const ErrorBarsCurve&);
 };
 
+class PieCurve : DataCurve
+{
+%TypeHeaderCode
+#include "../src/plot2D/PieCurve.h"
+%End
+public:
+	PieCurve(Table *t, const QString& name, int startRow, int endRow);
+	void clone(PieCurve* c);
+
+	double viewAngle();
+	void setViewAngle(double);
+
+	double thickness();
+	void setThickness(double);
+
+	double horizontalOffset();
+	void setHorizontalOffset(double);
+
+	bool counterClockwise();
+	void setCounterClockwise(bool);
+
+	double startAzimuth();
+	void setStartAzimuth(double);
+
+	double labelsEdgeDistance();
+	void setLabelsEdgeDistance(double);
+
+	bool labelsAutoFormat();
+	void setLabelsAutoFormat(bool);
+
+	bool labelsValuesFormat();
+	void setLabelValuesFormat(bool);
+
+	bool labelsPercentagesFormat();
+	void setLabelPercentagesFormat(bool);
+
+	bool labelCategories();
+	void setLabelCategories(bool);
+
+	bool fixedLabelsPosition();
+	void setFixedLabelsPosition(bool);
+
+	QColor color(int i) const;
+
+	int radius();
+	void setRadius(int);
+
+	Qt::BrushStyle pattern();
+	void setBrushStyle(const Qt::BrushStyle&);
+
+	void setFirstColor(int);
+	int firstColor();
+
+	void loadData();
+	void clearLabels();
+
+	private:
+		PieCurve(const PieCurve&);
+};
+
 class QwtHistogram : DataCurve /PyName=Histogram/
 {
 %TypeHeaderCode
@@ -1644,6 +1704,8 @@ public:
   QwtHistogram* addHistogram(Matrix*);
   Spectrogram* plotSpectrogram(Matrix *m, CurveType type);
   Spectrogram* spectrogram(Matrix *m);
+
+  PieCurve* plotPie(Table*,const QString&, int startRow = 0, int endRow = -1);
 
   ArrowMarker* addArrow(ArrowMarker*);
   void remove(ArrowMarker*);
