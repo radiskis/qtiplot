@@ -1,8 +1,8 @@
 /***************************************************************************
-    File                 : QwtPieCurve.cpp
+	File                 : PieCurve.cpp
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2004 - 2008 by Ion Vasilie
+	Copyright            : (C) 2004 - 2010 by Ion Vasilie
     Email (use @ for *)  : ion_vasilief*yahoo.fr
     Description          : Pie plot class
 
@@ -26,7 +26,7 @@
  *   Boston, MA  02110-1301  USA                                           *
  *                                                                         *
  ***************************************************************************/
-#include "QwtPieCurve.h"
+#include "PieCurve.h"
 #include "MultiLayer.h"
 #include <Table.h>
 
@@ -41,7 +41,7 @@
 #include <qwt_plot_canvas.h>
 #include <qwt_painter.h>
 
-QwtPieCurve::QwtPieCurve(Table *t, const QString& name, int startRow, int endRow):
+PieCurve::PieCurve(Table *t, const QString& name, int startRow, int endRow):
 	DataCurve(t, QString(), name, startRow, endRow),
 	d_pie_ray(50),
 	d_first_color(0),
@@ -65,7 +65,7 @@ QwtPieCurve::QwtPieCurve(Table *t, const QString& name, int startRow, int endRow
 	d_table_rows = QVarLengthArray<int>(0);
 }
 
-void QwtPieCurve::clone(QwtPieCurve* c)
+void PieCurve::clone(PieCurve* c)
 {
     if (!c)
         return;
@@ -94,7 +94,7 @@ void QwtPieCurve::clone(QwtPieCurve* c)
 	}
 }
 
-void QwtPieCurve::draw(QPainter *painter, const QwtScaleMap &xMap, const QwtScaleMap &yMap, int from, int to) const
+void PieCurve::draw(QPainter *painter, const QwtScaleMap &xMap, const QwtScaleMap &yMap, int from, int to) const
 {
     int size = dataSize();
 	if ( !painter ||  size <= 0 )
@@ -109,7 +109,7 @@ void QwtPieCurve::draw(QPainter *painter, const QwtScaleMap &xMap, const QwtScal
         drawDisk(painter, xMap, yMap);
 }
 
-void QwtPieCurve::drawDisk(QPainter *painter, const QwtScaleMap &xMap, const QwtScaleMap &yMap) const
+void PieCurve::drawDisk(QPainter *painter, const QwtScaleMap &xMap, const QwtScaleMap &yMap) const
 {
 	QwtPlotCanvas* canvas = plot()->canvas();
 	QPoint center = QPoint(canvas->x() + canvas->width()/2, canvas->y() + canvas->height()/2);
@@ -194,7 +194,7 @@ void QwtPieCurve::drawDisk(QPainter *painter, const QwtScaleMap &xMap, const Qwt
     painter->restore();
 }
 
-void QwtPieCurve::drawSlices(QPainter *painter, const QwtScaleMap &xMap, const QwtScaleMap &yMap, int from, int to) const
+void PieCurve::drawSlices(QPainter *painter, const QwtScaleMap &xMap, const QwtScaleMap &yMap, int from, int to) const
 {
 	QwtPlotCanvas* canvas = plot()->canvas();
 	QPoint center = QPoint(canvas->x() + canvas->width()/2, canvas->y() + canvas->height()/2);
@@ -376,12 +376,12 @@ void QwtPieCurve::drawSlices(QPainter *painter, const QwtScaleMap &xMap, const Q
 	delete [] end_angle;
 }
 
-QColor QwtPieCurve::color(int i) const
+QColor PieCurve::color(int i) const
 {
 	return ColorBox::color((d_first_color + i) % ColorBox::numPredefinedColors());
 }
 
-void QwtPieCurve::setBrushStyle(const Qt::BrushStyle& style)
+void PieCurve::setBrushStyle(const Qt::BrushStyle& style)
 {
 	QBrush br = QwtPlotCurve::brush();
 	if (br.style() == style)
@@ -391,7 +391,7 @@ void QwtPieCurve::setBrushStyle(const Qt::BrushStyle& style)
 	setBrush(br);
 }
 
-void QwtPieCurve::loadData()
+void PieCurve::loadData()
 {
 	Graph *d_plot = (Graph *)plot();
 	QLocale locale = d_plot->multiLayer()->locale();
@@ -428,7 +428,7 @@ void QwtPieCurve::loadData()
 	}
 }
 
-PieLabel* QwtPieCurve::addLabel(PieLabel *l, bool clone)
+PieLabel* PieCurve::addLabel(PieLabel *l, bool clone)
 {
 	if (!l)
 		return 0;
@@ -451,7 +451,7 @@ PieLabel* QwtPieCurve::addLabel(PieLabel *l, bool clone)
 	return l;
 }
 
-void QwtPieCurve::initLabels()
+void PieCurve::initLabels()
 {
 	int dataPoints = dataSize();
 	double sum = 0.0;
@@ -473,14 +473,14 @@ void QwtPieCurve::initLabels()
 	}
 }
 
-void QwtPieCurve::clearLabels()
+void PieCurve::clearLabels()
 {
 	d_auto_labeling = false;
 	foreach(PieLabel * l, d_texts_list)
 		l->setText("");
 }
 
-PieLabel::PieLabel(Graph *plot, QwtPieCurve *pie):LegendWidget(plot),
+PieLabel::PieLabel(Graph *plot, PieCurve *pie):LegendWidget(plot),
 	d_pie_curve(pie),
 	d_custom_text(QString::null)
 {
@@ -547,7 +547,7 @@ void PieLabel::restore(Graph *g, const QStringList& lst)
         QString s = *line;
 		if (s.contains("<index>")){
 			int index = s.remove("<index>").remove("</index>").toInt();
-			QwtPieCurve *pie = (QwtPieCurve *)g->curve(0);
+			PieCurve *pie = (PieCurve *)g->curve(0);
 			if(pie){
 				QList<PieLabel *> labels = pie->labelsList();
 				if (index >= 0 && index < labels.size())

@@ -28,7 +28,7 @@
  ***************************************************************************/
 #include "TextEditor.h"
 #include <LegendWidget.h>
-#include <QwtPieCurve.h>
+#include <PieCurve.h>
 #include <MultiLayer.h>
 
 #include <QTextCursor>

@@ -32,7 +32,7 @@
 #include "../PlotCurve.h"
 #include "../BoxCurve.h"
 #include "../ErrorBarsCurve.h"
-#include "../QwtPieCurve.h"
+#include "../PieCurve.h"
 #include "../QwtHistogram.h"
 #include "../VectorCurve.h"
 
@@ -134,7 +134,7 @@ void AssociationsDialog::changePlotAssociation(int curve, const QString& text)
 		if (c->type() == Graph::Box)
 			((BoxCurve*)c)->loadData();
 		else if (c->type() == Graph::Pie)
-			((QwtPieCurve*)c)->loadData();
+			((PieCurve*)c)->loadData();
 		else if (c->type() == Graph::Histogram)
 			((QwtHistogram*)c)->loadData();
 	} else if (lst.count() == 2){

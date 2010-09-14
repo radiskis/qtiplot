@@ -36,7 +36,7 @@
 #include <BoxCurve.h>
 #include <FunctionCurve.h>
 #include <Spectrogram.h>
-#include <QwtPieCurve.h>
+#include <PieCurve.h>
 #include <Folder.h>
 #include <ColorMapEditor.h>
 #include <DoubleSpinBox.h>
@@ -2337,7 +2337,7 @@ void PlotDialog::setActiveCurve(CurveTreeItem *item)
 
 	int curveType = item->plotItemStyle();
     if (curveType == Graph::Pie){
-		QwtPieCurve *pie = (QwtPieCurve*)i;
+		PieCurve *pie = (PieCurve*)i;
         boxPiePattern->setPattern(pie->pattern());
         boxPieLineWidth->setValue(pie->pen().widthF());
         boxPieLineColor->setColor(pie->pen().color());
@@ -2927,12 +2927,12 @@ bool PlotDialog::acceptParams()
 		applyErrorBarFormat(err);
 
 	} else if (privateTabWidget->currentPage() == piePage){
-		QwtPieCurve *pie = (QwtPieCurve*)plotItem;
+		PieCurve *pie = (PieCurve*)plotItem;
 		pie->setPen(QPen(boxPieLineColor->color(), boxPieLineWidth->value(), boxPieLineStyle->style()));
         pie->setBrushStyle(boxPiePattern->getSelectedPattern());
         pie->setFirstColor(boxFirstColor->currentIndex());
 	} else if (privateTabWidget->currentPage() == pieGeometryPage){
-		QwtPieCurve *pie = (QwtPieCurve*)plotItem;
+		PieCurve *pie = (PieCurve*)plotItem;
 		pie->setViewAngle(boxPieViewAngle->value());
 		pie->setThickness(boxPieThickness->value());
 		pie->setRadius(boxRadius->value());
@@ -2940,7 +2940,7 @@ bool PlotDialog::acceptParams()
         pie->setStartAzimuth(boxPieStartAzimuth->value());
 		pie->setCounterClockwise(boxPieConterClockwise->isChecked());
 	} else if (privateTabWidget->currentPage() == pieLabelsPage){
-		QwtPieCurve *pie = (QwtPieCurve*)plotItem;
+		PieCurve *pie = (PieCurve*)plotItem;
 		pie->setLabelsAutoFormat(pieAutoLabelsBox->isChecked());
         pie->setLabelValuesFormat(boxPieValues->isChecked());
         pie->setLabelPercentagesFormat(boxPiePercentages->isChecked());

@@ -1,8 +1,8 @@
 /***************************************************************************
-    File                 : QwtPieCurve.h
+    File                 : PieCurve.h
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2004 - 2008 by Ion Vasilief
+	Copyright            : (C) 2004 - 2010 by Ion Vasilief
     Email (use @ for *)  : ion_vasilief*yahoo.fr
     Description          : Pie plot class
 
@@ -33,11 +33,11 @@
 class PieLabel;
 
 //! Pie plot class
-class QwtPieCurve: public DataCurve
+class PieCurve: public DataCurve
 {
 public:
-	QwtPieCurve(Table *t, const QString& name, int startRow, int endRow);
-    void clone(QwtPieCurve* c);
+	PieCurve(Table *t, const QString& name, int startRow, int endRow);
+    void clone(PieCurve* c);
 
     double viewAngle(){return d_view_angle;};
     void setViewAngle(double a){d_view_angle = a;};
@@ -121,12 +121,12 @@ class PieLabel: public LegendWidget
 	Q_OBJECT
 
 public:
-    PieLabel(Graph *, QwtPieCurve *pie = 0);
+    PieLabel(Graph *, PieCurve *pie = 0);
 
 	QString customText();
 	void setCustomText(const QString& s){d_custom_text = s;};
 
-	void setPieCurve(QwtPieCurve *pie){d_pie_curve = pie;};
+	void setPieCurve(PieCurve *pie){d_pie_curve = pie;};
 
 	QString saveToString();
 	static void restore(Graph *g, const QStringList& lst);
@@ -134,6 +134,6 @@ public:
 private:
 	void closeEvent(QCloseEvent* e);
 
-	QwtPieCurve *d_pie_curve;
+	PieCurve *d_pie_curve;
 	QString d_custom_text;
 };
