@@ -1163,6 +1163,7 @@ private slots:
 
 #ifdef SCRIPTING_PYTHON
     void openQtDesignerUi();
+	void executeStartupScripts();
 #endif
 
 // TODO: a lot of this stuff should be private
@@ -1199,6 +1200,8 @@ public:
     //! Flag telling if line numbers are displayed in note windows
     bool d_note_line_numbers;
 	QString d_python_config_folder;
+	//! Scripts in this folder are executed at startup if default script language is Python
+	QString d_startup_scripts_folder;
 	QString d_translations_folder;
 	//! Flag telling if the application is opening a project file or not
 	bool d_opening_file;

@@ -111,6 +111,8 @@ private slots:
 	void chooseHelpFolder();
 #ifdef SCRIPTING_PYTHON
 	void choosePythonConfigFolder();
+	void chooseStartupScriptsFolder();
+	void showStartupScriptsFolder(const QString &);
 #endif
 	void rehighlight();
     void customizeNotes();
@@ -219,6 +221,9 @@ private:
 #ifdef SCRIPTING_PYTHON
 	QLabel *lblPythonConfigDir;
 	QLineEdit *pythonConfigDirLine;
+	QPushButton *browsePythonScriptsBtn;
+	QLabel *lblPythonScriptsDir;
+	QLineEdit *pythonScriptsDirLine;
 #endif
 	QCheckBox *boxUpdateTableValues;
 	QGroupBox *groupBackgroundOptions;

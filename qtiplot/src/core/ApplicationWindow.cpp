@@ -394,6 +394,11 @@ void ApplicationWindow::init(bool factorySettings)
 
     loadCustomActions();
     initCompleter();
+
+#ifdef SCRIPTING_PYTHON
+	if (defaultScriptingLang == QString("Python"))
+		executeStartupScripts();
+#endif
 }
 
 void ApplicationWindow::updateExplorerWindowLayout(Qt::DockWidgetArea area)
@@ -519,6 +524,8 @@ void ApplicationWindow::setDefaultOptions()
 #else
 	d_python_config_folder = aux;
 #endif
+
+	d_startup_scripts_folder = aux + "/scripts";
 
 	fitPluginsPath = aux + "fitPlugins";
 	fitModelsPath = QString::null;
@@ -5380,6 +5387,7 @@ void ApplicationWindow::readSettings()
 	d_translations_folder = settings.value("/Translations", d_translations_folder).toString();
 	d_python_config_folder = settings.value("/PythonConfigDir", d_python_config_folder).toString();
 	d_latex_compiler_path = settings.value("/LaTeXCompiler", d_latex_compiler_path).toString();
+	d_startup_scripts_folder = settings.value("/StartupScripts", d_startup_scripts_folder).toString();
 	settings.endGroup(); // Paths
 
 	d_open_project_filter = settings.value("/OpenProjectFilter", d_open_project_filter).toString();
@@ -5829,6 +5837,7 @@ void ApplicationWindow::saveSettings()
 	settings.setValue("/Translations", d_translations_folder);
 	settings.setValue("/PythonConfigDir", d_python_config_folder);
 	settings.setValue("/LaTeXCompiler", d_latex_compiler_path);
+	settings.setValue("/StartupScripts", d_startup_scripts_folder);
 	settings.endGroup(); // Paths
 
 	settings.setValue("/OpenProjectFilter", d_open_project_filter);
@@ -18838,6 +18847,23 @@ void ApplicationWindow::openQtDesignerUi()
 
 		QApplication::restoreOverrideCursor();
 	}
+}
+
+void ApplicationWindow::executeStartupScripts()
+{
+	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+
+	QString path = d_startup_scripts_folder;
+	QDir dir(path);
+	QFileInfoList lst = dir.entryInfoList(QStringList("*.py"), QDir::Files|QDir::NoSymLinks|QDir::Readable);
+	ScriptEdit *se = new ScriptEdit(scriptEnv, this);
+	for (int i = 0; i < lst.count(); i++){
+		se->importASCII(lst[i].absoluteFilePath());
+		se->executeAll();
+	}
+	delete se;
+
+	QApplication::restoreOverrideCursor();
 }
 #endif
 
