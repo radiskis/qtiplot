@@ -1708,9 +1708,26 @@ void ConfigDialog::initFileLocationsPage()
 	browsePythonConfigBtn->setIcon(QIcon(":/folder_open.png"));
 	connect(browsePythonConfigBtn, SIGNAL(clicked()), this, SLOT(choosePythonConfigFolder()));
 	gl->addWidget(browsePythonConfigBtn, 3, 2);
-	gl->setRowStretch(4, 1);
-#endif
 
+	bool showScriptsFolder = (app->defaultScriptingLang == QString("Python"));
+	lblPythonScriptsDir = new QLabel(tr("Startup Scripts"));
+	lblPythonScriptsDir->setVisible(showScriptsFolder);
+	gl->addWidget(lblPythonScriptsDir, 4, 0);
+
+	pythonScriptsDirLine = new QLineEdit(QDir::toNativeSeparators(app->d_startup_scripts_folder));
+	pythonScriptsDirLine->setCompleter(completer);
+	pythonScriptsDirLine->setVisible(showScriptsFolder);
+	gl->addWidget(pythonScriptsDirLine, 4, 1);
+
+	browsePythonScriptsBtn = new QPushButton();
+	browsePythonScriptsBtn->setIcon(QIcon(":/folder_open.png"));
+	browsePythonScriptsBtn->setVisible(showScriptsFolder);
+	connect(browsePythonScriptsBtn, SIGNAL(clicked()), this, SLOT(chooseStartupScriptsFolder()));
+	gl->addWidget(browsePythonScriptsBtn, 4, 2);
+	gl->setRowStretch(5, 1);
+
+	connect(boxScriptingLanguage, SIGNAL(activated(const QString &)), this, SLOT(showStartupScriptsFolder(const QString &)));
+#endif
 
 	QVBoxLayout *vl = new QVBoxLayout(fileLocationsPage);
 	vl->addWidget(gb);
@@ -1976,6 +1993,7 @@ void ConfigDialog::languageChange()
 	lblHelpPath->setText(tr("Help"));
 #ifdef SCRIPTING_PYTHON
 	lblPythonConfigDir->setText(tr("Python Configuration Files"));
+	lblPythonScriptsDir->setText(tr("Startup Scripts"));
 #endif
 
 	//proxy tab
@@ -2408,6 +2426,10 @@ void ConfigDialog::apply()
 		path = pythonConfigDirLine->text();
 		if (path != app->d_python_config_folder && validFolderPath(path))
 			app->d_python_config_folder = QFileInfo(path).absoluteFilePath();
+
+		path = pythonScriptsDirLine->text();
+		if (path != app->d_startup_scripts_folder && validFolderPath(path))
+			app->d_startup_scripts_folder = QFileInfo(path).absoluteFilePath();
 #endif
 	}
 
@@ -2751,6 +2773,29 @@ void ConfigDialog::choosePythonConfigFolder()
 		if (app->scriptingEnv()->name() == QString("Python"))
 			app->setScriptingLanguage(QString("Python"), true);
 	}
+}
+
+void ConfigDialog::chooseStartupScriptsFolder()
+{
+	ApplicationWindow *app = (ApplicationWindow *)parentWidget();
+	if (!app)
+		return;
+
+	QFileInfo tfi(app->d_startup_scripts_folder);
+	QString dir = QFileDialog::getExistingDirectory(this, tr("Choose the location of the startup scripts folder!"),
+		tfi.absoluteFilePath(), QFileDialog::ShowDirsOnly);
+	if (!dir.isEmpty()){
+		app->d_startup_scripts_folder = QDir::toNativeSeparators(dir);
+		pythonScriptsDirLine->setText(app->d_startup_scripts_folder);
+	}
+}
+
+void ConfigDialog::showStartupScriptsFolder(const QString & s)
+{
+	bool showScriptsFolder = (s == QString("Python"));
+	lblPythonScriptsDir->setVisible(showScriptsFolder);
+	pythonScriptsDirLine->setVisible(showScriptsFolder);
+	browsePythonScriptsBtn->setVisible(showScriptsFolder);
 }
 #endif
 
@@ -3278,6 +3323,7 @@ void ConfigDialog::setApplication(ApplicationWindow *app)
 	texCompilerPathBox->setText(QDir::toNativeSeparators(app->d_latex_compiler_path));
 #ifdef SCRIPTING_PYTHON
 	pythonConfigDirLine->setText(QDir::toNativeSeparators(app->d_python_config_folder));
+	pythonScriptsDirLine->setText(QDir::toNativeSeparators(app->d_startup_scripts_folder));
 #endif
 
 	//proxy page
