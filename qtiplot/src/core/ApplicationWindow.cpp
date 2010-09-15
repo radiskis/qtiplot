@@ -3510,7 +3510,6 @@ Matrix* ApplicationWindow::convertTableToMatrixRegularXYZ()
 			xstart = x0;
 			ystart = y0;
 			firstValidRow = i;
-
 			for (int j = i + 1; j <= endRow; j++){
 				xs = t->text(j, xcol);
 				ys = t->text(j, ycol);
@@ -3518,7 +3517,7 @@ Matrix* ApplicationWindow::convertTableToMatrixRegularXYZ()
 				if (!xs.isEmpty() && !ys.isEmpty() && !zs.isEmpty()){
 					double x = locale.toDouble(xs);
 					double y = locale.toDouble(ys);
-					if (fabs(x - x0) > tolerance*x0 && fabs(y - y0) <= tolerance*y0)
+					if (fabs(x - x0) > fabs(tolerance*x0) && fabs(y - y0) <= fabs(tolerance*y0))
 						xVariesFirst = true;
 					break;
 				}
@@ -3537,13 +3536,13 @@ Matrix* ApplicationWindow::convertTableToMatrixRegularXYZ()
 			double x = locale.toDouble(xs);
 			double y = locale.toDouble(ys);
 			if (xVariesFirst){
-				if (fabs(y - y0) <= tolerance*y0){
+				if (fabs(y - y0) <= tolerance){
 					cols++;
 					y0 = y;
 				} else
 					break;
 			} else {
-				if (fabs(x - x0) <= tolerance*x0){
+				if (fabs(x - x0) <= tolerance){
 					rows++;
 					x0 = x;
 				} else
