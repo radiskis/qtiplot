@@ -18851,11 +18851,16 @@ void ApplicationWindow::openQtDesignerUi()
 
 void ApplicationWindow::executeStartupScripts()
 {
+	QDir dir(d_startup_scripts_folder);
+	if (!dir.exists() || !dir.isReadable())
+		return;
+
+	QFileInfoList lst = dir.entryInfoList(QStringList("*.py"), QDir::Files|QDir::NoSymLinks|QDir::Readable);
+	if (lst.isEmpty())
+		return;
+
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
-	QString path = d_startup_scripts_folder;
-	QDir dir(path);
-	QFileInfoList lst = dir.entryInfoList(QStringList("*.py"), QDir::Files|QDir::NoSymLinks|QDir::Readable);
 	ScriptEdit *se = new ScriptEdit(scriptEnv, this);
 	for (int i = 0; i < lst.count(); i++){
 		se->importASCII(lst[i].absoluteFilePath());
