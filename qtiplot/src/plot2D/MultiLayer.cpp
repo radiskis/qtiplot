@@ -319,6 +319,7 @@ void MultiLayer::resizeLayers (QResizeEvent *re)
 	if (size.height() <= 0)
 		size.setHeight(oldSize.height());
 
+	bool invalidOldSize = !oldSize.isValid();
 	if(!oldSize.isValid()){// The old size is invalid when maximizing a window (why?)
 		if (d_canvas_size.isValid())
 			oldSize = d_canvas_size;
@@ -331,7 +332,7 @@ void MultiLayer::resizeLayers (QResizeEvent *re)
 	double w_ratio = (double)size.width()/(double)oldSize.width();
 	double h_ratio = (double)(size.height())/(double)(oldSize.height());
 
-	if (d_common_axes_layout)
+	if (d_common_axes_layout && !invalidOldSize)
 		arrangeLayers(false, false);
 	else {
 		foreach (Graph *g, graphsList){
@@ -347,7 +348,6 @@ void MultiLayer::resizeLayers (QResizeEvent *re)
 		if (g->autoscaleFonts())
 			g->scaleFonts(h_ratio);
 	}
-
 	emit modifiedPlot();
 }
 

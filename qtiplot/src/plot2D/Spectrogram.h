@@ -51,6 +51,8 @@ public:
 	enum ColorMapPolicy{GrayScale, Default, Custom};
 
 	Spectrogram* copy(Graph *g);
+	Graph * graph(){return d_graph;};
+
 	Matrix * matrix(){return d_matrix;};
 	bool setMatrix(Matrix *m, bool useFormula = false);
 
