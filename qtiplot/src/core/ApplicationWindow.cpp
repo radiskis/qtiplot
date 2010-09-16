@@ -3460,28 +3460,38 @@ void ApplicationWindow::showBinMatrixDialog()
 	cbmd->exec();
 }
 
-Matrix* ApplicationWindow::convertTableToMatrixRegularXYZ()
+Matrix* ApplicationWindow::convertTableToMatrixRegularXYZ(Table* t, const QString& colName)
 {
-	Table* t = (Table*)activeWindow(TableWindow);
+	if (!t)
+		t = (Table*)activeWindow(TableWindow);
 	if (!t)
 		return 0;
 
-	Q3TableSelection sel = t->getSelection();
-	if (t->selectedColumns().size() != 1 ||
-		t->colPlotDesignation(t->colIndex(t->selectedColumns()[0])) != Table::Z ||
-		fabs(sel.topRow() - sel.bottomRow()) < 2){
-        QMessageBox::warning(this, tr("QtiPlot - Column selection error"),
-			tr("You must select exactly one Z column!"));
-		return 0;
-	}
+	int startRow = 0;
+	int endRow = t->numRows() - 1;
 
-	int zcol = t->colIndex(t->selectedColumns()[0]);
+	int zcol = -1;
+	if (colName.isEmpty()){
+		Q3TableSelection sel = t->getSelection();
+		if (t->selectedColumns().size() != 1 ||
+			t->colPlotDesignation(t->colIndex(t->selectedColumns()[0])) != Table::Z ||
+			fabs(sel.topRow() - sel.bottomRow()) < 2){
+			QMessageBox::warning(this, tr("QtiPlot - Column selection error"), tr("You must select exactly one Z column!"));
+			return 0;
+		}
+		zcol = t->colIndex(t->selectedColumns()[0]);
+		startRow = sel.topRow();
+		endRow = sel.bottomRow();
+	} else
+		zcol = t->colIndex(colName);
+
+	if (zcol < 0 || zcol >= t->numCols())
+		return 0;
+
 	int ycol = t->colY(zcol);
 	int xcol = t->colX(ycol);
 
 	int cells = 0;
-	int startRow = sel.topRow();
-	int endRow = sel.bottomRow();
 	for (int i = startRow; i <= endRow; i++){
 		QString xs = t->text(i, xcol);
 		QString ys = t->text(i, ycol);
@@ -3497,7 +3507,7 @@ Matrix* ApplicationWindow::convertTableToMatrixRegularXYZ()
 
 	QLocale locale = this->locale();
 	bool xVariesFirst = false;
-	int firstValidRow = sel.topRow();
+	int firstValidRow = startRow;
 	double x0 = 0.0, y0 = 0.0, xstart = 0.0, ystart = 0.0;
 	double tolerance = 0.15;
 	for (int i = startRow; i <= endRow; i++){

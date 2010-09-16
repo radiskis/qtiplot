@@ -153,8 +153,7 @@ ImportOPJ::ImportOPJ(ApplicationWindow *app, const QString& filename) :
 
 	//////////////////////////////////////////////////////////////////////////
 	xoffset=0;
-	try
-	{
+	try {
 		OriginFile opj((const char *)filename.toLocal8Bit());
 		parse_error = opj.parse();
 		importTables(opj);
@@ -163,9 +162,7 @@ ImportOPJ::ImportOPJ(ApplicationWindow *app, const QString& filename) :
 		if(filename.endsWith(".opj", Qt::CaseInsensitive))
 			createProjectTree(opj);
 		mw->showResults(opj.resultsLogString().c_str(), mw->logWindow->isVisible());
-	}
-	catch(const std::logic_error& er)
-	{
+	} catch(const std::logic_error& er){
 		QApplication::restoreOverrideCursor();
 		QMessageBox::critical(mw, "Origin Project Import Error", QString(er.what()));
 	}
@@ -701,8 +698,11 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 		bool imageProfileTool = false;
 		bool boxWhiskersPlot = false;
 		bool showColorScale = false;
-		for(unsigned int l = 0; l < _graph.layers.size(); ++l){
+		int layers = _graph.layers.size();
+		bool commonYAxes = false;
+		for(unsigned int l = 0; l < layers; ++l){
 			Origin::GraphLayer& layer = _graph.layers[l];
+
 			if(layer.is3D() || layer.isXYY3D){
 				importGraph3D(opj, g, l);
 				continue;
@@ -716,6 +716,11 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 			graph->setAutoscaleFonts(false);
 
 			Origin::Rect layerRect = layer.clientRect;
+			if (l > 1){
+				Origin::GraphLayer& prevLayer = _graph.layers[l - 1];
+				if (prevLayer.clientRect.left + prevLayer.clientRect.width() == layerRect.left)
+					commonYAxes = true;
+			}
 
 			QColor bkg = originToQtColor(layer.backgroundColor);
 			if(layer.backgroundColor.type == Origin::Color::None)
@@ -724,6 +729,9 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 
 			int style = 0;
 			bool matrixImage = false;
+			Origin::GraphCurve XYZContourCurve;
+			Table *XYZContourTable = 0;
+
 			for(unsigned int c = 0; c < layer.curves.size(); ++c){
 				Origin::GraphCurve& _curve = layer.curves[c];
 				try {
@@ -771,6 +779,7 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 					case Origin::GraphCurve::TextPlot:
 						style = Origin::GraphCurve::TextPlot;
 						break;
+					case Origin::GraphCurve::XYZContour:
 					case Origin::GraphCurve::Contour:
 						style = Origin::GraphCurve::Contour;
 						break;
@@ -789,15 +798,19 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 				Origin::Function function;
 
 				switch(data[0].toAscii()){
-				case 'T':
+				case 'T':{
 					tableName = data.right(data.length()-2);
+					Table* table = mw->table(tableName);
+					if (!table)
+						break;
+
 					if(style==Graph::ErrorBars){
 						int flags=_curve.symbolType;
-						curve = (PlotCurve*)graph->addErrorBars(QString("%1_%2").arg(tableName, _curve.xColumnName.c_str()), mw->table(tableName), QString("%1_%2").arg(tableName, _curve.yColumnName.c_str()),
+						curve = (PlotCurve*)graph->addErrorBars(QString("%1_%2").arg(tableName, _curve.xColumnName.c_str()), table, QString("%1_%2").arg(tableName, _curve.yColumnName.c_str()),
 							((flags&0x10)==0x10?0:1), ceil(_curve.lineWidth), ceil(_curve.symbolSize), QColor(Qt::black),
 							(flags&0x40)==0x40, (flags&2)==2, (flags&1)==1);
 					} else if(style==Graph::Histogram)
-						curve = (PlotCurve*)graph->insertCurve(mw->table(tableName), QString("%1_%2").arg(tableName, _curve.yColumnName.c_str()), style);
+						curve = (PlotCurve*)graph->insertCurve(table, QString("%1_%2").arg(tableName, _curve.yColumnName.c_str()), style);
 					else if(style==Graph::Pie || style==Graph::Box){
 						QStringList names;
 						names << QString("%1_%2").arg(tableName, _curve.yColumnName.c_str());
@@ -816,7 +829,7 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 							<< (tableName + "_" + QString(vector.endXColumnName.c_str()))
 							<< (tableName + "_" + QString(vector.endYColumnName.c_str()));
 
-						graph->addCurves(mw->table(tableName), names, style);
+						graph->addCurves(table, names, style);
 					} else if(style==Graph::VectXYAM){
 						QStringList names;
 						Origin::VectorProperties vector = _curve.vector;
@@ -825,9 +838,8 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 							<< (tableName + "_" + QString(vector.angleColumnName.c_str()))
 							<< (tableName + "_" + QString(vector.magnitudeColumnName.c_str()));
 
-						graph->addCurves(mw->table(tableName), names, style);
+						graph->addCurves(table, names, style);
 					} else if(style == Origin::GraphCurve::TextPlot){
-						Table* table = mw->table(tableName);
 						QString labelsCol(_curve.yColumnName.c_str());
 						int xcol = table->colX(table->colIndex(labelsCol));
 						int ycol = table->colY(table->colIndex(labelsCol));
@@ -864,10 +876,31 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 							fnt.setPointSizeF(_curve.text.fontSize*fFontScaleFactor);
 							mc->setLabelsFont(fnt);
 						}
-					}
-					else
-						curve = (PlotCurve *)graph->insertCurve(mw->table(tableName), QString("%1_%2").arg(tableName, _curve.xColumnName.c_str()), QString("%1_%2").arg(tableName, _curve.yColumnName.c_str()), style);
+					} else if (style == Origin::GraphCurve::Contour){
+						Matrix* m = mw->convertTableToMatrixRegularXYZ(table, tableName + "_" + _curve.zColumnName.c_str());
+						if (!m)
+							break;
+						m->setHidden();
+
+						curve = (PlotCurve*)graph->plotSpectrogram(m, Graph::ColorMap);
+						_curve.colorMap.levels.pop_back();
+						importSpectrogram(graph, (Spectrogram*)curve, layer, _curve, fFontScaleFactor);
+
+						XYZContourCurve = _curve;
+						XYZContourTable = table;
+
+						if (layers > 1 && (l + 1 < layers)){//if multilayers only last layer has color scale bar enabled
+							QwtScaleWidget *scale = graph->axisWidget(QwtPlot::yRight);
+							if (scale)
+								scale->setColorBarEnabled(false);
+						} else
+							showColorScale = true;
+					} else
+						curve = (PlotCurve *)graph->insertCurve(table, QString("%1_%2").arg(tableName, _curve.xColumnName.c_str()), QString("%1_%2").arg(tableName, _curve.yColumnName.c_str()), style);
+
 					break;
+				}
+
 				case 'M':{
 					QString matrixName = data.right(data.length()-2);
 					Matrix* m = mw->matrix(matrixName);
@@ -877,69 +910,7 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 					if(_curve.type == Origin::GraphCurve::Contour){
 						showColorScale = true;
 						curve = (PlotCurve*)graph->plotSpectrogram(m, Graph::ColorMap);
-						Spectrogram* sp = (Spectrogram*) curve;
-						if (_curve.colorMap.levels.size() > 2){
-							Origin::ColorMapVector::const_iterator it = _curve.colorMap.levels.begin();
-							double vmin = it->first;
-							it = _curve.colorMap.levels.end() - 2;
-							double vmax = it->first;
-							sp->setRange(vmin, vmax);
-							graph->enableAxis(QwtPlot::yRight);
-
-							QwtValueList ticksList;
-							for(Origin::ColorMapVector::const_iterator it = _curve.colorMap.levels.begin(); it != _curve.colorMap.levels.end(); ++it)
-								ticksList << it->first;
-							if (ticksList.size() >= 2){
-								vmax += (ticksList[1] - ticksList[0]);
-								ticksList << vmax;
-							}
-							QwtValueList ticks[QwtScaleDiv::NTickTypes];
-							ticks[QwtScaleDiv::MajorTick] = ticksList;
-							ticks[QwtScaleDiv::MediumTick] = QwtValueList();
-							ticks[QwtScaleDiv::MinorTick] = QwtValueList();
-
-							QwtScaleDiv div(vmin, vmax, ticks);
-							if (!layer.colorScale.reverseOrder)
-								div.invert();
-							graph->setAxisScaleDiv(QwtPlot::yRight, div);
-						}
-						sp->setCustomColorMap(qwtColorMap(_curve.colorMap));
-
-						QwtValueList levels;
-						QList<QPen> penList;
-						bool labelsOn = false;
-						for(Origin::ColorMapVector::const_iterator it = _curve.colorMap.levels.begin() + 1; it != _curve.colorMap.levels.end(); ++it){
-							if(it->second.lineVisible){
-								Origin::ColorMapVector::const_iterator next = it;
-								++next;
-								if (next != _curve.colorMap.levels.end()){
-									levels.push_back(it->first);
-									penList << QPen(originToQtColor(next->second.lineColor), next->second.lineWidth, lineStyles[(Origin::GraphCurve::LineStyle)next->second.lineStyle]);
-									if(next->second.labelVisible)
-										labelsOn = true;
-								}
-
-								sp->setDisplayMode(QwtPlotSpectrogram::ContourMode, true);
-							}
-						}
-						
-						Origin::ColorMapVector::const_iterator it = _curve.colorMap.levels.begin() + 1;
-						penList << QPen(originToQtColor(it->second.lineColor), it->second.lineWidth, lineStyles[(Origin::GraphCurve::LineStyle)it->second.lineStyle]);
-
-						sp->setDisplayMode(QwtPlotSpectrogram::ImageMode, _curve.colorMap.fillEnabled);
-						sp->setContourLevels(levels);
-						sp->setContourPenList(penList);
-						sp->showContourLineLabels(labelsOn);
-						if (labelsOn){
-							sp->setLabelsWhiteOut(_curve.text.whiteOut);
-							sp->setLabelsColor(originToQtColor(_curve.text.color));
-							QFont fnt = sp->labelsFont();
-							fnt.setBold(_curve.text.fontBold);
-							fnt.setItalic(_curve.text.fontItalic);
-							fnt.setUnderline(_curve.text.fontUnderline);
-							fnt.setPointSizeF(_curve.text.fontSize*fFontScaleFactor);
-							sp->setLabelsFont(fnt);
-						}
+						importSpectrogram(graph, (Spectrogram*)curve, layer, _curve, fFontScaleFactor);
 					} else if(style == Origin::GraphCurve::MatrixImage){
 						Spectrogram* sp = graph->plotSpectrogram(m, Graph::GrayScale);
 						if (!sp)
@@ -1353,6 +1324,9 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 					graph->enableAxis(i, false);
 			}
 
+			if (XYZContourTable)
+				this->parseXYZContourPlotAxisTitles(graph, XYZContourTable, XYZContourCurve);
+
 			graph->setCanvasGeometry(QRect(layerRect.left*fScale, layerRect.top*fScale - yOffset,
 										   layerRect.width()*fScale, layerRect.height()*fScale));
 			graph->updateLayout();
@@ -1580,6 +1554,15 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 			}
 		}
 
+		if (commonYAxes){
+			ml->setSpacing(5, 0);
+			ml->setCols(ml->numLayers());
+			ml->setAlignPolicy(MultiLayer::AlignCanvases);
+			ml->setCommonLayerAxes(true, false);
+			ml->arrangeLayers(false, false);
+			ml->setCommonAxesLayout(true);
+		}
+
 		if (imageProfileTool){
 			Graph *graph = ml->layer(1);
 			if (graph){
@@ -1645,6 +1628,75 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 	}
 
 	return true;
+}
+
+void ImportOPJ::importSpectrogram(Graph *graph, Spectrogram *sp, const Origin::GraphLayer& layer, const Origin::GraphCurve& _curve, double fFontScaleFactor)
+{
+	if (!graph || !sp)
+		return;
+
+	if (_curve.colorMap.levels.size() > 2){
+		Origin::ColorMapVector::const_iterator it = _curve.colorMap.levels.begin();
+		double vmin = it->first;
+		it = _curve.colorMap.levels.end() - 2;
+		double vmax = it->first;
+		sp->setRange(vmin, vmax);
+		graph->enableAxis(QwtPlot::yRight);
+
+		QwtValueList ticksList;
+		for(Origin::ColorMapVector::const_iterator it = _curve.colorMap.levels.begin(); it != _curve.colorMap.levels.end(); ++it)
+			ticksList << it->first;
+		if (ticksList.size() >= 2){
+			vmax += (ticksList[1] - ticksList[0]);
+			ticksList << vmax;
+		}
+		QwtValueList ticks[QwtScaleDiv::NTickTypes];
+		ticks[QwtScaleDiv::MajorTick] = ticksList;
+		ticks[QwtScaleDiv::MediumTick] = QwtValueList();
+		ticks[QwtScaleDiv::MinorTick] = QwtValueList();
+
+		QwtScaleDiv div(vmin, vmax, ticks);
+		if (!layer.colorScale.reverseOrder)
+			div.invert();
+		graph->setAxisScaleDiv(QwtPlot::yRight, div);
+	}
+	sp->setCustomColorMap(qwtColorMap(_curve.colorMap));
+
+	QwtValueList levels;
+	QList<QPen> penList;
+	bool labelsOn = false;
+	for(Origin::ColorMapVector::const_iterator it = _curve.colorMap.levels.begin() + 1; it != _curve.colorMap.levels.end(); ++it){
+		if(it->second.lineVisible){
+			Origin::ColorMapVector::const_iterator next = it;
+			++next;
+			if (next != _curve.colorMap.levels.end()){
+				levels.push_back(it->first);
+				penList << QPen(originToQtColor(next->second.lineColor), next->second.lineWidth, lineStyles[(Origin::GraphCurve::LineStyle)next->second.lineStyle]);
+				if(next->second.labelVisible)
+					labelsOn = true;
+			}
+
+			sp->setDisplayMode(QwtPlotSpectrogram::ContourMode, true);
+		}
+	}
+
+	Origin::ColorMapVector::const_iterator it = _curve.colorMap.levels.begin() + 1;
+	penList << QPen(originToQtColor(it->second.lineColor), it->second.lineWidth, lineStyles[(Origin::GraphCurve::LineStyle)it->second.lineStyle]);
+
+	sp->setDisplayMode(QwtPlotSpectrogram::ImageMode, _curve.colorMap.fillEnabled);
+	sp->setContourLevels(levels);
+	sp->setContourPenList(penList);
+	sp->showContourLineLabels(labelsOn);
+	if (labelsOn){
+		sp->setLabelsWhiteOut(_curve.text.whiteOut);
+		sp->setLabelsColor(originToQtColor(_curve.text.color));
+		QFont fnt = sp->labelsFont();
+		fnt.setBold(_curve.text.fontBold);
+		fnt.setItalic(_curve.text.fontItalic);
+		fnt.setUnderline(_curve.text.fontUnderline);
+		fnt.setPointSizeF(_curve.text.fontSize*fFontScaleFactor);
+		sp->setLabelsFont(fnt);
+	}
 }
 
 bool ImportOPJ::importGraph3D(const OriginFile& opj, unsigned int g, unsigned int l)
@@ -2036,6 +2088,69 @@ void ImportOPJ::addText(const Origin::TextBox& text, Graph* graph, double fFontS
 		txt->move(QPoint(txt->x(), txt->y() - txt->width()));
 
 	txt->setAttachPolicy(FrameWidget::Page);
+}
+
+void ImportOPJ::parseXYZContourPlotAxisTitles(Graph *g, Table *t, const Origin::GraphCurve& curve)
+{
+	if (!g || !t)
+		return;
+
+	Graph::AxisTitlePolicy d_axis_title_policy = g->axisTitlePolicy();
+
+	for (int axis = 0; axis < QwtPlot::axisCnt; axis++){
+		QString s = g->axisTitleString(axis);
+		if (s.trimmed().isEmpty())
+			continue;
+
+		QString comment = QString::null;
+		if (s.contains("%(?Y)", Qt::CaseInsensitive)){
+			QString name = QString(curve.yColumnName.c_str());
+			if (d_axis_title_policy > 1)
+				comment = t->comment(t->colIndex(name)).trimmed().replace("\n", " ");
+
+			switch(d_axis_title_policy){
+				case Graph::ColName:
+					s.replace("%(?Y)", name, Qt::CaseInsensitive);
+				break;
+				case Graph::ColComment:
+					if (!comment.isEmpty())
+						s.replace("%(?Y)", comment, Qt::CaseInsensitive);;
+				break;
+				case Graph::NameAndComment:
+					if (!comment.isEmpty())
+						name += " (" + comment + ")";
+					s.replace("%(?Y)", name, Qt::CaseInsensitive);
+				break;
+				default:
+					break;
+			}
+		}
+
+		if (s.contains("%(?X)", Qt::CaseInsensitive)){
+			QString name = QString(curve.xColumnName.c_str());
+			if (d_axis_title_policy > 1)
+					comment = t->comment(t->colIndex(name)).trimmed().replace("\n", " ");
+
+			switch(d_axis_title_policy){
+				case Graph::ColName:
+				  s.replace("%(?X)", name, Qt::CaseInsensitive);
+				break;
+				case Graph::ColComment:
+				  if (!comment.isEmpty())
+					  s.replace("%(?X)", comment, Qt::CaseInsensitive);;
+				break;
+				case Graph::NameAndComment:
+				  if (!comment.isEmpty())
+					  name += " (" + comment + ")";
+				  s.replace("%(?X)", name, Qt::CaseInsensitive);
+				break;
+				default:
+				  break;
+			}
+		}
+
+		g->setAxisTitleString(axis, s);
+	}
 }
 
 QString ImportOPJ::parseOriginText(const QString &str)

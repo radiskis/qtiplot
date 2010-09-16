@@ -50,6 +50,9 @@ public:
 	int error(){return parse_error;};
 
 private:
+	void importSpectrogram(Graph *graph, Spectrogram *sp, const Origin::GraphLayer& layer, const Origin::GraphCurve& _curve, double fFontScaleFactor);
+	void parseXYZContourPlotAxisTitles(Graph *g, Table *t, const Origin::GraphCurve& curve);
+
 	QwtSymbol::Style originToQwtSymbolStyle(unsigned char type);
 	QwtLinearColorMap qwtColorMap(const Origin::ColorMap& colorMap);
     int arrowAngle(double length, double width){return ceil(45*atan(0.5*width/length)/atan(1.0));};

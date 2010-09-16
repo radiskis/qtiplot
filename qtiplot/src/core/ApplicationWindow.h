@@ -409,7 +409,7 @@ public slots:
 	Matrix* matrix(const QString& name);
 	Matrix* convertTableToMatrix();
 	Matrix* tableToMatrix(Table* t);
-	Matrix* convertTableToMatrixRegularXYZ();
+	Matrix* convertTableToMatrixRegularXYZ(Table* t = 0, const QString& colName = QString::null);
 	void showBinMatrixDialog();
 	void initMatrix(Matrix* m, const QString& caption);
 	void transposeMatrix();
