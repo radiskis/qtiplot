@@ -122,7 +122,7 @@ public:
 	void linkXLayerAxes(bool link = true);
 	bool hasLinkedXLayerAxes(){return d_link_x_axes;};
 	bool hasCommonAxes(){return d_common_axes_layout;};
-	void setCommonAxesLayout(bool on){d_common_axes_layout = on;};
+	void setCommonAxesLayout(bool on = true){d_common_axes_layout = on;};
 
 public slots:
 	Graph* addLayer(int x = 0, int y = 0, int width = 0, int height = 0, bool = false);

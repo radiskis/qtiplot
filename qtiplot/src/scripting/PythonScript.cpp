@@ -43,15 +43,19 @@
 PythonScript::PythonScript(PythonScripting *env, const QString &code, QObject *context, const QString &name)
 : Script(env, code, context, name)
 {
+	PyGILState_STATE state = PyGILState_Ensure();
 	PyCode = NULL;
 	localDict = PyDict_New();
+	PyGILState_Release(state);
 	setQObject(Context, "self");
 }
 
 PythonScript::~PythonScript()
 {
+	PyGILState_STATE state = PyGILState_Ensure();
 	Py_DECREF(localDict);
 	Py_XDECREF(PyCode);
+	PyGILState_Release(state);
 }
 
 void PythonScript::setContext(QObject *context)
@@ -65,6 +69,7 @@ bool PythonScript::compile(bool for_eval)
 	// Support for the convenient col() and cell() functions.
 	// This can't be done anywhere else, because we need access to the local
 	// variables self, i and j.
+	PyGILState_STATE state = PyGILState_Ensure();
 	if(Context->inherits("Table")) {
 		// A bit of a hack, but we need either IndexError or len() from __builtins__.
 		PyDict_SetItemString(localDict, "__builtins__",
@@ -150,6 +155,7 @@ bool PythonScript::compile(bool for_eval)
 		emit_error(env()->errorMsg(), 0);
 	} else
 		compiled = isCompiled;
+	PyGILState_Release(state);
 	return success;
 }
 
@@ -159,6 +165,7 @@ QVariant PythonScript::eval()
 	if (compiled != isCompiled && !compile(true))
 		return QVariant();
 
+	PyGILState_STATE state = PyGILState_Ensure();
 	PyObject *pyret;
 	beginStdoutRedirect();
 	if (PyCallable_Check(PyCode)){
@@ -171,10 +178,12 @@ QVariant PythonScript::eval()
 	if (!pyret){
 		if (PyErr_ExceptionMatches(PyExc_ValueError) ||
 			PyErr_ExceptionMatches(PyExc_ZeroDivisionError)){
-            PyErr_Clear(); // silently ignore errors
+			PyErr_Clear(); // silently ignore errors
+			PyGILState_Release(state);
 			return  QVariant("");
 		} else {
 			emit_error(env()->errorMsg(), 0);
+			PyGILState_Release(state);
 			return QVariant();
 		}
 	}
@@ -209,7 +218,7 @@ QVariant PythonScript::eval()
 			if (asUTF8) {
 				qret = QVariant(QString::fromUtf8(PyString_AS_STRING(asUTF8)));
 				Py_DECREF(asUTF8);
-			} else if (pystring = PyObject_Str(pyret)) {
+			} else if (pystring == PyObject_Str(pyret)) {
 				qret = QVariant(QString(PyString_AS_STRING(pystring)));
 				Py_DECREF(pystring);
 			}
@@ -221,14 +230,18 @@ QVariant PythonScript::eval()
 	if (PyErr_Occurred()){
 		if (PyErr_ExceptionMatches(PyExc_ValueError) ||
 			PyErr_ExceptionMatches(PyExc_ZeroDivisionError)){
-            PyErr_Clear(); // silently ignore errors
+			PyErr_Clear(); // silently ignore errors
+			PyGILState_Release(state);
 			return  QVariant("");
 		} else {
 			emit_error(env()->errorMsg(), 0);
+			PyGILState_Release(state);
 			return QVariant();
 		}
-	} else
+	} else {
+		PyGILState_Release(state);
 		return qret;
+	}
 }
 
 bool PythonScript::exec()
@@ -236,12 +249,14 @@ bool PythonScript::exec()
 	if (isFunction) compiled = notCompiled;
 	if (compiled != Script::isCompiled && !compile(false))
 		return false;
+	PyGILState_STATE state = PyGILState_Ensure();
 	PyObject *pyret;
 	beginStdoutRedirect();
 	if (PyCallable_Check(PyCode)){
 		PyObject *empty_tuple = PyTuple_New(0);
 		if (!empty_tuple) {
 			emit_error(env()->errorMsg(), 0);
+			PyGILState_Release(state);
 			return false;
 		}
 		pyret = PyObject_Call(PyCode,empty_tuple,localDict);
@@ -254,47 +269,59 @@ bool PythonScript::exec()
 	endStdoutRedirect();
 	if (pyret) {
 		Py_DECREF(pyret);
+		PyGILState_Release(state);
 		return true;
 	}
 	emit_error(env()->errorMsg(), 0);
+	PyGILState_Release(state);
 	return false;
 }
 
 void PythonScript::beginStdoutRedirect()
 {
+	PyGILState_STATE state = PyGILState_Ensure();
 	stdoutSave = PyDict_GetItemString(env()->sysDict(), "stdout");
 	Py_XINCREF(stdoutSave);
 	stderrSave = PyDict_GetItemString(env()->sysDict(), "stderr");
 	Py_XINCREF(stderrSave);
 	env()->setQObject(this, "stdout", env()->sysDict());
 	env()->setQObject(this, "stderr", env()->sysDict());
+	PyGILState_Release(state);
 }
 
 void PythonScript::endStdoutRedirect()
 {
+	PyGILState_STATE state = PyGILState_Ensure();
 	PyDict_SetItemString(env()->sysDict(), "stdout", stdoutSave);
 	Py_XDECREF(stdoutSave);
 	PyDict_SetItemString(env()->sysDict(), "stderr", stderrSave);
 	Py_XDECREF(stderrSave);
+	PyGILState_Release(state);
 }
 
 bool PythonScript::setQObject(QObject *val, const char *name)
 {
+	PyGILState_STATE state = PyGILState_Ensure();
 	if (!PyDict_Contains(localDict, PyString_FromString(name)))
 		compiled = notCompiled;
+	PyGILState_Release(state);
 	return env()->setQObject(val, name, localDict);
 }
 
 bool PythonScript::setInt(int val, const char *name)
 {
+	PyGILState_STATE state = PyGILState_Ensure();
 	if (!PyDict_Contains(localDict, PyString_FromString(name)))
 		compiled = notCompiled;
+	PyGILState_Release(state);
 	return env()->setInt(val, name, localDict);
 }
 
 bool PythonScript::setDouble(double val, const char *name)
 {
+	PyGILState_STATE state = PyGILState_Ensure();
 	if (!PyDict_Contains(localDict, PyString_FromString(name)))
 		compiled = notCompiled;
+	PyGILState_Release(state);
 	return env()->setDouble(val, name, localDict);
 }
