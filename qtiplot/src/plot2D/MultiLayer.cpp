@@ -653,6 +653,8 @@ QSize MultiLayer::arrangeLayers(bool userSize)
 
 void MultiLayer::setCommonLayerAxes(bool verticalAxis, bool horizontalAxis)
 {
+	d_common_axes_layout = true;
+
 	int layers = graphsList.size();
 	for (int i=0; i<layers; i++){
 		int row = i / d_cols;

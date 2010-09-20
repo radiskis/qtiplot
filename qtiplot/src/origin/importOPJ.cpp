@@ -1560,7 +1560,6 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 			ml->setAlignPolicy(MultiLayer::AlignCanvases);
 			ml->setCommonLayerAxes(true, false);
 			ml->arrangeLayers(false, false);
-			ml->setCommonAxesLayout(true);
 		}
 
 		if (imageProfileTool){

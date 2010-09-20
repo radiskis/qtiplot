@@ -65,25 +65,30 @@ const char* PythonScripting::langName = "Python";
 
 QString PythonScripting::toString(PyObject *object, bool decref)
 {
-	QString ret;
-	if (!object) return "";
-	PyObject *repr = PyObject_Str(object);
-	if (decref) Py_DECREF(object);
-	if (!repr) return "";
-	ret = PyString_AsString(repr);
-	Py_DECREF(repr);
+	PyGILState_STATE state = PyGILState_Ensure();
+	QString ret("");
+	if (object)
+	{
+		PyObject *repr = PyObject_Str(object);
+		if (decref) Py_DECREF(object);
+		if (repr)
+		{
+			ret = PyString_AsString(repr);
+			Py_DECREF(repr);
+		}
+	}
+	PyGILState_Release(state);
 	return ret;
 }
 
 PyObject *PythonScripting::eval(const QString &code, PyObject *argDict, const char *name)
 {
+	PyGILState_STATE state = PyGILState_Ensure();
 	PyObject *args;
 	if (argDict)
-	{
-		Py_INCREF(argDict);
 		args = argDict;
-	} else
-		args = PyDict_New();
+	else
+		args = globals;
 	PyObject *ret=NULL;
 	PyObject *co = Py_CompileString(code.ascii(), name, Py_eval_input);
 	if (co)
@@ -91,19 +96,19 @@ PyObject *PythonScripting::eval(const QString &code, PyObject *argDict, const ch
 		ret = PyEval_EvalCode((PyCodeObject*)co, globals, args);
 		Py_DECREF(co);
 	}
-	Py_DECREF(args);
+	PyGILState_Release(state);
 	return ret;
 }
 
 bool PythonScripting::exec (const QString &code, PyObject *argDict, const char *name)
 {
+	PyGILState_STATE state = PyGILState_Ensure();
 	PyObject *args;
 	if (argDict)
-	{
-		Py_INCREF(argDict);
 		args = argDict;
-	} else
-		args = PyDict_New();
+	else
+		// "local" variable assignments automatically become global:
+		args = globals;
 	PyObject *tmp = NULL;
 	PyObject *co = Py_CompileString(code.ascii(), name, Py_file_input);
 	if (co)
@@ -111,21 +116,24 @@ bool PythonScripting::exec (const QString &code, PyObject *argDict, const char *
 		tmp = PyEval_EvalCode((PyCodeObject*)co, globals, args);
 		Py_DECREF(co);
 	}
-	Py_DECREF(args);
-	if (!tmp) return false;
-	Py_DECREF(tmp);
-	return true;
+	if (tmp) Py_DECREF(tmp);
+	PyGILState_Release(state);
+	return (bool) tmp;
 }
 
 QString PythonScripting::errorMsg()
 {
+	PyGILState_STATE state = PyGILState_Ensure();
 	PyObject *exception=0, *value=0, *traceback=0;
 	PyTracebackObject *excit=0;
 	PyFrameObject *frame;
 	char *fname;
 	QString msg;
-	if (!PyErr_Occurred()) return "";
-
+	if (!PyErr_Occurred())
+	{
+		PyGILState_Release(state);
+		return "";
+	}
 	PyErr_Fetch(&exception, &value, &traceback);
 	PyErr_NormalizeException(&exception, &value, &traceback);
 	if(PyErr_GivenExceptionMatches(exception, PyExc_SyntaxError))
@@ -168,30 +176,33 @@ QString PythonScripting::errorMsg()
 		Py_DECREF(traceback);
 	}
 
+	PyGILState_Release(state);
 	return msg;
 }
 
 PythonScripting::PythonScripting(ApplicationWindow *parent)
 	: ScriptingEnv(parent, langName)
 {
+	PyGILState_STATE state;
 	PyObject *mainmod=NULL, *qtimod=NULL, *sysmod=NULL;
 	math = NULL;
 	sys = NULL;
 	d_initialized = false;
 	if (Py_IsInitialized())
 	{
-//		PyEval_AcquireLock();
+		state = PyGILState_Ensure();
 		mainmod = PyImport_ImportModule("__main__");
 		if (!mainmod)
 		{
 			PyErr_Print();
-//			PyEval_ReleaseLock();
+			PyGILState_Release(state);
 			return;
 		}
 		globals = PyModule_GetDict(mainmod);
 		Py_DECREF(mainmod);
+		PyGILState_Release(state);
 	} else {
-//		PyEval_InitThreads ();
+		PyEval_InitThreads ();
 		Py_Initialize ();
 		if (!Py_IsInitialized ())
 			return;
@@ -200,17 +211,22 @@ PythonScripting::PythonScripting(ApplicationWindow *parent)
 		mainmod = PyImport_AddModule("__main__");
 		if (!mainmod)
 		{
-//			PyEval_ReleaseLock();
 			PyErr_Print();
+			PyEval_SaveThread();
 			return;
 		}
 		globals = PyModule_GetDict(mainmod);
+
+		/* Swap out and return current thread state and release the GIL */
+		/*PyThreadState *tstate =*/
+		PyEval_SaveThread();
 	}
 
+	state = PyGILState_Ensure();
 	if (!globals)
 	{
 		PyErr_Print();
-//		PyEval_ReleaseLock();
+		PyGILState_Release(state);
 		return;
 	}
 	Py_INCREF(globals);
@@ -242,14 +258,13 @@ PythonScripting::PythonScripting(ApplicationWindow *parent)
 	} else
 		PyErr_Print();
 
-//	PyEval_ReleaseLock();
+	PyGILState_Release(state);
 	d_initialized = true;
 }
 
 bool PythonScripting::initialize()
 {
 	if (!d_initialized) return false;
-//	PyEval_AcquireLock();
 
 	// Redirect output to the print(const QString&) signal.
 	// Also see method write(const QString&) and Python documentation on
@@ -267,19 +282,20 @@ bool PythonScripting::initialize()
 	}
 
 	return initialized;
-
-//	PyEval_ReleaseLock();
 }
 
 PythonScripting::~PythonScripting()
 {
+	PyGILState_STATE state = PyGILState_Ensure();
 	Py_XDECREF(globals);
 	Py_XDECREF(math);
 	Py_XDECREF(sys);
+	PyGILState_Release(state);
 }
 
 bool PythonScripting::loadInitFile(const QString &path)
 {
+	PyGILState_STATE state = PyGILState_Ensure();
 	QFileInfo pyFile(path+".py"), pycFile(path+".pyc");
 	bool success = false;
 	if (pycFile.isReadable() && (pycFile.lastModified() >= pyFile.lastModified())) {
@@ -289,7 +305,7 @@ bool PythonScripting::loadInitFile(const QString &path)
 		fclose(f);
 	} else if (pyFile.isReadable() && pyFile.exists()) {
 		// try to compile pyFile to pycFile
-		PyObject *compileModule = PyImport_ImportModule("py_compile");
+		PyObject *compileModule = PyImport_ImportModuleNoBlock("py_compile");
 		if (compileModule) {
 			PyObject *compile = PyDict_GetItemString(PyModule_GetDict(compileModule), "compile");
 			if (compile) {
@@ -326,12 +342,16 @@ bool PythonScripting::loadInitFile(const QString &path)
 			}
 		}
 	}
+	PyGILState_Release(state);
 	return success;
 }
 
 bool PythonScripting::isRunning() const
 {
-	return Py_IsInitialized();
+	PyGILState_STATE state = PyGILState_Ensure();
+	bool isinit = Py_IsInitialized();
+	PyGILState_Release(state);
+	return isinit;
 }
 
 bool PythonScripting::setQObject(QObject *val, const char *name, PyObject *dict)
@@ -342,47 +362,53 @@ bool PythonScripting::setQObject(QObject *val, const char *name, PyObject *dict)
 	PyGILState_STATE state = PyGILState_Ensure();
 
 	sipWrapperType * klass = sipFindClass(val->className());
-	if (!klass) return false;
-		pyobj = sipConvertFromInstance(val, klass, NULL);
+	if (klass) pyobj = sipConvertFromInstance(val, klass, NULL);
 
-	if (!pyobj) return false;
-
-	if (dict)
-		PyDict_SetItemString(dict,name,pyobj);
-	else
-		PyDict_SetItemString(globals,name,pyobj);
-	Py_DECREF(pyobj);
+	if (pyobj) {
+		if (dict)
+			PyDict_SetItemString(dict,name,pyobj);
+		else
+			PyDict_SetItemString(globals,name,pyobj);
+		Py_DECREF(pyobj);
+	}
 
 	PyGILState_Release(state);
-	return true;
+	return (bool) pyobj;
 }
 
 bool PythonScripting::setInt(int val, const char *name, PyObject *dict)
 {
+	PyGILState_STATE state = PyGILState_Ensure();
 	PyObject *pyobj = Py_BuildValue("i",val);
-	if (!pyobj) return false;
-	if (dict)
-		PyDict_SetItemString(dict,name,pyobj);
-	else
-		PyDict_SetItemString(globals,name,pyobj);
-	Py_DECREF(pyobj);
-	return true;
+	if (pyobj) {
+		if (dict)
+			PyDict_SetItemString(dict,name,pyobj);
+		else
+			PyDict_SetItemString(globals,name,pyobj);
+		Py_DECREF(pyobj);
+	}
+	PyGILState_Release(state);
+	return (bool) pyobj;
 }
 
 bool PythonScripting::setDouble(double val, const char *name, PyObject *dict)
 {
+	PyGILState_STATE state = PyGILState_Ensure();
 	PyObject *pyobj = Py_BuildValue("d",val);
-	if (!pyobj) return false;
-	if (dict)
-		PyDict_SetItemString(dict,name,pyobj);
-	else
-		PyDict_SetItemString(globals,name,pyobj);
-	Py_DECREF(pyobj);
-	return true;
+	if (pyobj) {
+		if (dict)
+			PyDict_SetItemString(dict,name,pyobj);
+		else
+			PyDict_SetItemString(globals,name,pyobj);
+		Py_DECREF(pyobj);
+	}
+	PyGILState_Release(state);
+	return (bool) pyobj;
 }
 
 const QStringList PythonScripting::mathFunctions() const
 {
+	PyGILState_STATE state = PyGILState_Ensure();
 	QStringList flist;
 	PyObject *key, *value;
 #if PY_VERSION_HEX >= 0x02050000
@@ -393,17 +419,22 @@ const QStringList PythonScripting::mathFunctions() const
 	while(PyDict_Next(math, &i, &key, &value))
 		if (PyCallable_Check(value))
 			flist << PyString_AsString(key);
+	PyGILState_Release(state);
 	flist.sort();
 	return flist;
 }
 
 const QString PythonScripting::mathFunctionDoc(const QString &name) const
 {
+	PyGILState_STATE state = PyGILState_Ensure();
 	PyObject *mathf = PyDict_GetItemString(math,name); // borrowed
-	if (!mathf) return "";
-	PyObject *pydocstr = PyObject_GetAttrString(mathf, "__doc__"); // new
-	QString qdocstr = PyString_AsString(pydocstr);
-	Py_XDECREF(pydocstr);
+	QString qdocstr("");
+	if (mathf) {
+		PyObject *pydocstr = PyObject_GetAttrString(mathf, "__doc__"); // new
+		qdocstr = PyString_AsString(pydocstr);
+		Py_XDECREF(pydocstr);
+	}
+	PyGILState_Release(state);
 	return qdocstr;
 }
 
