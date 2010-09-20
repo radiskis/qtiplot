@@ -192,6 +192,21 @@ The active items appearing in a menu depends upon which project window is active
      <para>You just have to add curves with the &add-remove-curve-lnk;, but note that the style used to draw these curves is not kept in the template.</para>
   </listitem>
 </varlistentry>
+
+<!-- Added entries for Open Excel and Open ODF Spreadsheet (SRB)-->
+<varlistentry id="open-excel-cmd">
+  <term>File -> &open-excel-cmd;</term>
+  <listitem>
+    <para>Opens a file dialog permitting you to select an Excel spreadsheet file. When a file is selected and opened, &appname; creates a new table for each sheet in the file and reads the spreadsheets into the tables. The first row of the spreadsheet will be used as column titles.</para>
+  </listitem>
+</varlistentry>
+<varlistentry id="open-odf-cmd">
+  <term>File -> &open-odf-cmd;</term>
+  <listitem>
+    <para>Opens a file dialog permitting you to select an OpenOffice spreadsheet file. When a file is selected and opened, &appname; creates a new table for each sheet in the file and reads the spreadsheets into the tables. The first row of the spreadsheet will be used as column titles.</para>
+  </listitem>
+</varlistentry>
+
 <varlistentry id="save-as-template-cmd">
   <term>File -> &save-as-template-cmd;</term>
   <listitem>
@@ -202,7 +217,7 @@ The active items appearing in a menu depends upon which project window is active
   <term>File -> &export-graph-cmd;</term>
   <listitem>
 <!--		beginning of Export Graph			-->
-  <para>All graphs, or one graph at a time, can be exported in any of the available image formats. Since all export options have the same image formats available, these will be described first. Depending upon the image format chosen, you may be able to customize some image file parameters by checking the <emphasis>show options</emphasis> check box. Available options vary according to the format chosen.</para>
+  <para>The &export-graph-cmd; command appears in the file menu whenever a graph window is selected. All graphs, or one graph at a time, can be exported in any of the available image formats. Since all export options have the same image formats available, these will be described first. Depending upon the image format chosen, you may be able to customize some image file parameters by checking the <emphasis>show options</emphasis> check box. Available options vary according to the format chosen.</para>
   <para>For the <emphasis>bmp, pbm, jpeg, xbm, pgm, ppm</emphasis> image formats, the only available option is the quality of the image. This parameter defines the image compression ratio, and may be set to any value between 0 and 100%. Higher values produce a better quality image and a larger file, while lower values result in increasingly lossy compression, degraded image quality, and smaller file size.
    For <emphasis>png</emphasis>, <emphasis>tiff</emphasis> and <emphasis>xpm</emphasis>, there is an option to choose a transparent background.</para>
     <informalfigure id="fig-export-graph-png">
@@ -256,11 +271,42 @@ The active items appearing in a menu depends upon which project window is active
            <para>This selection will save all the graphs in the project in an Open Document Format file (.odf) that can be opened and edited with OpenOffice.</para>
          </listitem>
        </varlistentry>
-
      </variablelist>
 <!--		end of Export Graph				-->
   </listitem>
 </varlistentry>
+
+<!--Need entry for Export item (SRB) -->
+<varlistentry id="export-cmd">
+  <term>File -> &export-cmd;</term>
+  <listitem>
+  <para>The &export-cmd; command appears in the file menu whenever a non-graph window is selected.</para>
+     <variablelist>
+       <varlistentry id="export-ascii-cmd">
+         <term>&export-ascii-cmd;</term>
+         <listitem>
+           <para>This selection will save the active table or matrix in ASCII format.</para>
+         </listitem>
+       </varlistentry>
+       <varlistentry id="export-excel-cmd">
+         <term> &export-excel-cmd;</term>
+         <listitem>
+           <para>This selection will save the active table or matrix as an Excel spreadsheet.</para>
+         </listitem>
+       </varlistentry>
+
+       <varlistentry id="export-pdf-cmd">
+         <term> &export-pdf-cmd; (&export-pdf-key;)</term>
+         <listitem>
+           <para>This selection will save the active window as a PDF document.</para>
+         </listitem>
+       </varlistentry>
+     </variablelist>
+<!--		end of Export	(SRB)-->
+
+  </listitem>
+</varlistentry>
+
 <varlistentry id="print-cmd">
   <term>File-> &print-cmd; (&print-key;)</term>
   <listitem>

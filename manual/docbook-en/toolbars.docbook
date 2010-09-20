@@ -1,13 +1,11 @@
 <title>The Toolbars</title>
 
 <para>
-All toolbars can be moved and docked to a more convenient location (left, right or bottom sides of the application window) or on the desktop (outside the main window) by drag-and-drop, using their left side handle. The toolbars are automatically enabled/disabled depending on the currently active window: for example if the current window is a table, the Table toolbar will be enabled and all the other toolbars will be automatically disabled.
-</para>
-<para>
-The same approach is used for showing/hidding the toolbars: if there are no more visible tables in the workspace, the Table toolbar will be automatically hidden and will be shown again when the users adds a new table into the project. A toolbar can be manually shown/hidden by the user, at any time, by right-clicking on the main window menu area and checking/unchecking the corresponding box in the pop-up menu.
-</para>
+Groups of related commands are collected together in a number of toolbars. All toolbars can be moved and docked in a more convenient location (left, right or bottom sides of the application window) or moved onto the desktop (outside the main window) using drag-and-drop, using their left side handle. Toolbars are automatically enabled/disabled depending on the currently active window. For example, if the current window is a table, the Table toolbar will be enabled and all the other toolbars will be automatically disabled.</para>
 
+<para>The same approach is used for showing/hiding toolbars: if there are no visible tables in the workspace, the Table toolbar will be automatically hidden. It will be shown again when the user adds a new table into the project. Toolbars can also be manually shown/hidden at any time by right-clicking on the &toolbars-cmd; command from the &view-menu-lnk; or entering &toolbars-key; and then checking/unchecking the corresponding item in the pop-up menu.</para>
 
+<para>Visible toolbars will be shown in one of two possible formats depending upon the space available at the docking location. By default, when there is sufficient room, all tool icons will be shown in a single row or column. If there is not sufficient room to show all icons in one row, the toolbar will be collapsed to the extent necessary to fit the toolbar into the available space. In this case, the ">>" symbol will be shown to indicate that there are hidden command icons. As long as the toolbar is not disabled, left clicking on the ">>" symbol will temporarily expand the toolbar and show the hidden commands, which may then be left clicked to execute them. Moving the mouse pointer off of the toolbar will automatically collapse it. Note that toolbars located on the desktop are always shown expanded.</para>
 <sect1 id="sec-edit-toolbar">
 <title>The Edit Toolbar</title>
 
@@ -40,13 +38,13 @@ The same approach is used for showing/hidding the toolbars: if there are no more
    <entry>&undo-icon;</entry>
    <entry>&undo-lnk;</entry>
    <entry>&undo-key;</entry>
-   <entry>Undo the last command, this feature doesn't work for plot modifications.</entry>
+   <entry>Undo the last command, this feature doesn't work for plot modifications. See the &undo-lnk; command for mode details.</entry>
   </row>
   <row>
    <entry>&redo-icon;</entry>
    <entry>&redo-lnk;</entry>
    <entry>&redo-key;</entry>
-   <entry>Redo the last command, this feature doesn't work for plot modifications.</entry>
+   <entry>Redo the last command, this feature doesn't work for plot modifications. See the &redo-lnk; command for mode details.</entry>
   </row>
   <row>
    <entry>&cut-icon;</entry>
@@ -131,7 +129,7 @@ The <emphasis>File Toolbar</emphasis> allows to access commands mainly from the 
   <row>
    <entry>&new-matrix-icon;</entry>
    <entry>&new-matrix-lnk;</entry>
-   <entry></entry>
+   <entry>&new-matrix-key;</entry>
    <entry>Create a new matrix.</entry>
   </row>
   <row>
@@ -144,7 +142,7 @@ The <emphasis>File Toolbar</emphasis> allows to access commands mainly from the 
    <entry>&new-graph-icon;</entry>
    <entry>&new-graph-lnk;</entry>
    <entry>&new-graph-key;</entry>
-   <entry>Create a new empty 2D plot.</entry>
+   <entry>Creates a new, empty graph window (2D plot).</entry>
   </row>
   <row>
    <entry>&new-function-plot-icon;</entry>
@@ -165,16 +163,29 @@ The <emphasis>File Toolbar</emphasis> allows to access commands mainly from the 
    <entry>Opens an existing QtiPlot project file.</entry>
   </row>
   <row>
-   <entry>&append-icon;</entry>
-   <entry>&append-lnk;</entry>
-   <entry>&append-key;</entry>
-   <entry>Appends an existing QtiPlot project file as a new folder to the currend project.</entry>
-  </row>
-  <row>
    <entry>&open-template-icon;</entry>
    <entry>&open-template-lnk;</entry>
    <entry></entry>
    <entry>Opens an existing template QtiPlot project file.</entry>
+  </row>
+<!--open-excel and open-odf added. (SRB) -->
+  <row>
+   <entry>&open-excel-icon;</entry>
+   <entry>&open-excel-lnk;</entry>
+   <entry>&open-excel-key;</entry>
+   <entry>Imports an Excel spreadsheet into new tables.</entry>
+  </row>
+  <row>
+   <entry>&open-odf-icon;</entry>
+   <entry>&open-odf-lnk;</entry>
+   <entry>&open-odf-key;</entry>
+   <entry>Imports an ODF spreadsheet into new tables.</entry>
+  </row>
+  <row>
+   <entry>&append-icon;</entry>
+   <entry>&append-lnk;</entry>
+   <entry>&append-key;</entry>
+   <entry>Appends an existing QtiPlot project file as a new folder to the current project.</entry>
   </row>
    <row>
    <entry>&save-project-icon;</entry>
@@ -186,49 +197,58 @@ The <emphasis>File Toolbar</emphasis> allows to access commands mainly from the 
    <entry>&save-as-template-icon;</entry>
    <entry>&save-as-template-lnk;</entry>
    <entry></entry>
-   <entry>Saves the current project as a template.</entry>
+   <entry>Saves the current graph window as a template.</entry>
   </row>
   <row>
    <entry>&import-ascii-icon;</entry>
    <entry>&import-ascii-lnk;</entry>
-   <entry></entry>
-   <entry>Import ASCII files.</entry>
+   <entry>&import-ascii-key;</entry>
+   <entry>Imports ASCII files.</entry>
   </row>
   <row>
    <entry>&duplicate-window-icon;</entry>
    <entry>&duplicate-window-lnk;</entry>
    <entry></entry>
-   <entry>Clonates the active window.</entry>
+   <entry>Clones the active window.</entry>
   </row>
   <row>
    <entry>&print-icon;</entry>
    <entry>&print-lnk;</entry>
    <entry>&print-key;</entry>
-   <entry>Print the active window.</entry>
+   <entry>Prints the active window.</entry>
   </row>
+
+<!--Added print preview entry (SRB) -->
+  <row>
+   <entry>&print-preview-icon;</entry>
+   <entry>&print-preview-lnk;</entry>
+   <entry>&print-preview-key;</entry>
+   <entry>Previews the active window for printing.</entry>
+  </row>
+
    <row>
    <entry>&export-pdf-icon;</entry>
-   <entry>Export to PDF command</entry>
-   <entry></entry>
-   <entry>Export the active window to the PDF file format.</entry>
+   <entry>&export-pdf-lnk;</entry>
+   <entry>&export-pdf-key;</entry>
+   <entry>Exports the active window formatted as a PDF file.</entry>
   </row>
   <row>
    <entry>&project-explorer-icon;</entry>
    <entry>&project-explorer-lnk;</entry>
    <entry>&project-explorer-key;</entry>
-   <entry>Show or hide the project explorer.</entry>
+   <entry>Shows or hides the project explorer.</entry>
   </row>
   <row>
    <entry>&results-log-icon;</entry>
    <entry>&results-log-lnk;</entry>
    <entry></entry>
-   <entry>Show or hide the results window.</entry>
+   <entry>Shows or hides the results window.</entry>
   </row>
   <row>
    <entry>&script-window-icon;</entry>
    <entry>&script-window-lnk;</entry>
    <entry>&script-window-key;</entry>
-   <entry>Show the script window.</entry>
+   <entry>Shows the script window.</entry>
   </row>
 </tbody>
 </tgroup>
