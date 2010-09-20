@@ -197,13 +197,13 @@ The active items appearing in a menu depends upon which project window is active
 <varlistentry id="open-excel-cmd">
   <term>File -> &open-excel-cmd;</term>
   <listitem>
-    <para>Opens a file dialog permitting you to select an Excel spreadsheet file. When a file is selected and opened, &appname; creates a new table for each sheet in the file and reads the spreadsheets into the tables. The first row of the spreadsheet will be used as column titles.</para>
+    <para>Opens a file dialog permitting you to select an Excel file. When a file is selected and opened, &appname; creates a new table for each sheet in the file and reads the spreadsheets into the tables. If the file contains graphs, &appname; will also import them, but only if you have Excel installed on your machine.</para>
   </listitem>
 </varlistentry>
 <varlistentry id="open-odf-cmd">
   <term>File -> &open-odf-cmd;</term>
   <listitem>
-    <para>Opens a file dialog permitting you to select an OpenOffice spreadsheet file. When a file is selected and opened, &appname; creates a new table for each sheet in the file and reads the spreadsheets into the tables. The first row of the spreadsheet will be used as column titles.</para>
+    <para>Opens a file dialog permitting you to select an OpenOffice spreadsheet file. When a file is selected and opened, &appname; creates a new table for each sheet in the file and reads the spreadsheets into the tables.</para>
   </listitem>
 </varlistentry>
 
