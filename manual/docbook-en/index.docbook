@@ -102,6 +102,19 @@
   <!ENTITY save-project-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/filesave.png"/></imageobject></inlinemediaobject>'>
 <!ENTITY save-project-as-cmd "<command>Save Project as...</command>">
 <!ENTITY save-project-as-lnk '<link linkend="save-project-as-cmd"><command>Save Project as...</command> command</link>'>
+
+<!--Open Excel and Open ODF spreadsheet commands added by SRB -->
+
+<!ENTITY open-excel-cmd "<command>Open Excel</command>">
+<!ENTITY open-excel-lnk '<link linkend="open-excel-cmd">&open-excel-cmd; command</link>'>
+  <!ENTITY open-excel-key "<keycode>Ctrl-Shift-E</keycode>">
+  <!ENTITY open-excel-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/open_excel.png"/></imageobject></inlinemediaobject>'>
+
+<!ENTITY open-odf-cmd "<command>Open ODF Spreadsheet</command>">
+<!ENTITY open-odf-lnk '<link linkend="open-odf-cmd">&open-odf-cmd; command</link>'>
+  <!ENTITY open-odf-key "<keycode>Ctrl-Alt-S</keycode>">
+  <!ENTITY open-odf-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/ods_spreadsheet.png"/></imageobject></inlinemediaobject>'>
+
 <!ENTITY open-template-cmd "<command>Open Template</command>">
 <!ENTITY open-template-lnk '<link linkend="open-template-cmd"><command>Open Template</command> command</link>'>
   <!ENTITY open-template-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/open_template.png"/></imageobject></inlinemediaobject>'>
@@ -116,6 +129,10 @@
 <!ENTITY export-graph-all-cmd "<command>Export Graph -> All</command>">
 <!ENTITY export-graph-all-lnk '<link linkend="export-graph-all-cmd"><command>Export Graph -> All</command> command</link>'>
   <!ENTITY export-graph-all-key "<keycode>Alt-X</keycode>">
+<!--export-cmd added SRB -->
+<!ENTITY export-cmd "<command>Export</command>">
+<!ENTITY export-lnk '<link linkend="export-cmd"><command>Export</command> command</link>'>
+
 
 <!ENTITY odf-presentation-cmd "<command>File -> Create Open Document Presentation...</command>">
 <!ENTITY odf-presentation-lnk '<link linkend="odf-presentation-cmd"><command>File -> Create Open Document Presentation...</command> command</link>'>
@@ -127,6 +144,8 @@
 
 <!ENTITY print-preview-cmd "<command>Print Preview</command>">
 <!ENTITY print-preview-lnk '<link linkend="print-preview-cmd"><command>Print Preview</command> command</link>'>
+  <!ENTITY print-preview-key "<keycode></keycode>">
+  <!ENTITY print-preview-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/preview.png"/></imageobject></inlinemediaobject>'>
 
 <!ENTITY script-window-cmd "<command>Script Window</command>">
 <!ENTITY script-window-lnk '<link linkend="script-window-cmd"><command>Script Window</command> command</link>'>
@@ -134,12 +153,21 @@
 <!ENTITY script-window-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/python.png"/></imageobject></inlinemediaobject>'>
 
 <!ENTITY export-pdf-cmd "<command>Export to PDF</command>">
+<!ENTITY export-pdf-lnk '<link linkend="export-pdf-cmd">&export-pdf-cmd; command</link>'>
+<!ENTITY export-pdf-key "<keycode>Ctrl-Alt-P</keycode>">
 <!ENTITY export-pdf-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/pdf.png"/></imageobject></inlinemediaobject>'>
 
 <!ENTITY print-all-plots-cmd "<command>Print All Plots</command>">
 <!ENTITY print-all-plots-lnk '<link linkend="print-all-plots-cmd"><command>Print All Plots</command> command</link>'>
+<!--export-ascii-cmd and export-excel-cmd added by SRB-->
 <!ENTITY export-ascii-cmd "<command>Export ASCII</command>">
 <!ENTITY export-ascii-lnk '<link linkend="export-ascii-cmd"><command>Export ASCII</command> command</link>'>
+<!ENTITY export-ascii-key "<keycode></keycode>">
+
+<!ENTITY export-excel-cmd "<command>Export Excel</command>">
+<!ENTITY export-excel-lnk '<link linkend="export-excel-cmd"><command>Export Excel</command> command</link>'>
+<!ENTITY export-excel-key "<keycode></keycode>">
+
 
 <!ENTITY import-ascii-cmd "<command>Import -> Import ASCII...</command>">
 <!ENTITY import-ascii-lnk '<link linkend="import-ascii-cmd"><command>Import -> Import ASCII...</command> command</link>'>
@@ -926,8 +954,8 @@
   <para>This document is a handbook for using &appname;, a program for two- and three-dimensional graphical presentation of data sets and for data analysis.</para>
   <para>This manual is organized in several chapters:</para>
   <para>-The <link linkend="introduction">first</link> describes the main concepts and terms which are used in &appname;.</para>
-  <para>- The <link linkend="using">second</link> is a tutorial on how to obtain plots from different data sets. It is the one you need to read first to understand the basics of &appname; and to be able to draw plots.</para>
-  <para>- The three following chapters are descriptions of all the <link linkend="reference">commands</link>, <link linkend="toolbars">buttons</link> and <link linkend="dialogs">dialogs</link> used in &appname;. These chapters are the reference manual of &appname;.</para>
+  <para>-The <link linkend="using">second</link> is a tutorial on how to obtain plots from different data sets. It is the one you need to read first to understand the basics of &appname; and to be able to draw plots. </para>
+  <para>-The three following chapters are descriptions of all the <link linkend="reference">commands</link>, <link linkend="toolbars">buttons</link> and <link linkend="dialogs">dialogs</link> used in &appname;. These chapters are the reference manual of &appname;.</para>
   <para>- The two following chapters describe more deeply some specific possibilities of &appname;, that is the <link linkend="analysis">statistical and mathematical analysis</link> of data, and the <link linkend="scripting">scripting</link>.</para>
 </abstract>
 
