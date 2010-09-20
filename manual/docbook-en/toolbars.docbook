@@ -173,7 +173,7 @@ The <emphasis>File Toolbar</emphasis> allows to access commands mainly from the 
    <entry>&open-excel-icon;</entry>
    <entry>&open-excel-lnk;</entry>
    <entry>&open-excel-key;</entry>
-   <entry>Imports an Excel spreadsheet into new tables.</entry>
+   <entry>Imports an Excel workbook into new tables (and plots if Excel is installed).</entry>
   </row>
   <row>
    <entry>&open-odf-icon;</entry>
