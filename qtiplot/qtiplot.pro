@@ -233,6 +233,13 @@ win32: contains(CONFIG, Excel) {
 	SOURCES += src/core/ExcelImport.cpp
 }
 
+# check if we have ALGLIB
+!isEmpty(ALGLIB_LIBS) {
+	DEFINES += HAVE_ALGLIB
+	INCLUDEPATH += $$ALGLIB_INCLUDEPATH
+	LIBS        += $$ALGLIB_LIBS
+}
+
 ###############################################################
 
 # At the very end: add global include- and lib path
