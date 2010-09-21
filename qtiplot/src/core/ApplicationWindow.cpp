@@ -203,6 +203,10 @@ using namespace std;
 	#include "importOPJ.h"
 #endif
 
+#ifdef HAVE_ALGLIB
+	#include "GriddingDialog.h"
+#endif
+
 using namespace Qwt3D;
 
 extern "C"
@@ -1546,6 +1550,9 @@ void ApplicationWindow::tableMenuAboutToShow()
 	convertToMatrixMenu->addAction(actionConvertTableDirect);
 	convertToMatrixMenu->addAction(actionConvertTableBinning);
 	convertToMatrixMenu->addAction(actionConvertTableRegularXYZ);
+#ifdef HAVE_ALGLIB
+	convertToMatrixMenu->addAction(actionConvertTableRandomXYZ);
+#endif
 
     reloadCustomActions();
 }
@@ -3459,6 +3466,46 @@ void ApplicationWindow::showBinMatrixDialog()
 	CreateBinMatrixDialog *cbmd = new CreateBinMatrixDialog(t, sel.topRow(), sel.bottomRow(), this);
 	cbmd->exec();
 }
+
+#ifdef HAVE_ALGLIB
+void ApplicationWindow::convertTableToMatrixRandomXYZ()
+{
+	Table *t = (Table*)activeWindow(TableWindow);
+	if (!t)
+		return;
+
+	QStringList selection = t->selectedColumns();
+	Q3TableSelection sel = t->getSelection();
+	if (selection.size() != 1 || t->colPlotDesignation(t->colIndex(selection[0])) != Table::Z ||
+		fabs(sel.topRow() - sel.bottomRow()) < 2){
+		QMessageBox::warning(this, tr("QtiPlot - Column selection error"), tr("You must select exactly one Z column!"));
+		return;
+	}
+
+	int startRow = sel.topRow();
+	int endRow = sel.bottomRow();
+	int zcol = t->colIndex(selection[0]);
+	if (zcol < 0 || zcol >= t->numCols())
+		return;
+
+	int ycol = t->colY(zcol);
+	int xcol = t->colX(ycol);
+
+	int cells = 0;
+	for (int i = startRow; i <= endRow; i++){
+		QString xs = t->text(i, xcol);
+		QString ys = t->text(i, ycol);
+		QString zs = t->text(i, zcol);
+		if (!xs.isEmpty() && !ys.isEmpty() && !zs.isEmpty())
+			cells++;
+	}
+	if (!cells)
+		return;
+
+	GriddingDialog *gd = new GriddingDialog(t, selection[0], cells, this);
+	gd->exec();
+}
+#endif
 
 Matrix* ApplicationWindow::convertTableToMatrixRegularXYZ(Table* t, const QString& colName)
 {
@@ -14218,6 +14265,11 @@ void ApplicationWindow::createActions()
 	actionConvertTableRegularXYZ = new QAction(tr("&Regular XYZ"), this);
 	connect(actionConvertTableRegularXYZ, SIGNAL(activated()), this, SLOT(convertTableToMatrixRegularXYZ()));
 
+#ifdef HAVE_ALGLIB
+	actionConvertTableRandomXYZ = new QAction(tr("Random &XYZ..."), this);
+	connect(actionConvertTableRandomXYZ, SIGNAL(activated()), this, SLOT(convertTableToMatrixRandomXYZ()));
+#endif
+
 	actionPlot3DWireFrame = new QAction(QIcon(":/lineMesh.png"), tr("3D &Wire Frame"), this);
 	connect(actionPlot3DWireFrame, SIGNAL(activated()), this, SLOT(plot3DWireframe()));
 
@@ -14972,7 +15024,9 @@ void ApplicationWindow::translateActionsStrings()
 	actionConvertTableDirect->setMenuText(tr("&Direct"));
 	actionConvertTableBinning->setMenuText(tr("2D &Binning"));
 	actionConvertTableRegularXYZ->setMenuText(tr("&Regular XYZ"));
-
+#ifdef HAVE_ALGLIB
+	actionConvertTableRandomXYZ->setMenuText(tr("Random &XYZ..."));
+#endif
 	actionPlot3DWireFrame->setMenuText(tr("3D &Wire Frame"));
 	actionPlot3DHiddenLine->setMenuText(tr("3D &Hidden Line"));
 	actionPlot3DPolygons->setMenuText(tr("3D &Polygons"));

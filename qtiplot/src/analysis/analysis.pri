@@ -72,3 +72,8 @@ INCLUDEPATH += src/analysis/dialogs/
 			   src/analysis/dialogs/PolynomFitDialog.cpp \
 			   src/analysis/dialogs/SmoothCurveDialog.cpp \
 			   src/analysis/dialogs/SubtractDataDialog.cpp \
+
+!isEmpty(ALGLIB_LIBS) {
+	HEADERS += src/analysis/dialogs/GriddingDialog.h
+	SOURCES += src/analysis/dialogs/GriddingDialog.cpp
+}
