@@ -594,20 +594,19 @@ for i in (1,4,5):
 print(x)
 	</programlisting> will print out only one number - no, not 23, but rather 25. This
       example was designed to also teach you something about variable scoping:
-      There are no block-local variables in Python.</para>
-
-      <para>There are two different variable scopes to be aware of: local and
-      global variables. Unless specified otherwise, variables are local to the
-      context in which they were defined. Thus, the variable
-      <varname>x</varname> can have three different values in, say, two
-      different Note windows and a column formula. Global variables on the
-      other hand can be accessed from everywhere within your project. A
-      variable <varname>x</varname> is declared global by executing the
-      statement <userinput>global x</userinput>. You have to do this before
-      assigning a value to <varname>x</varname>, but you have to do it only
-      once within the project (no need to "import" the variable before using
-      it). Note that there is a slight twist to these rules when you <link
-      linkend="Python-def">define your own functions</link>.</para>
+      There are no block-local variables in Python.  All statements outside of any function
+      use module scope; that is, variables attached to one column script or script window.
+      All statements inside a function use that function's "local" scope, but they can also
+      read module variables.  System-wide globals are stored in the special variable
+      <varname>globals</varname>.  To store your own:<programlisting
+      width="40">
+globals.mydata = 5
+print globals.mydata
+      </programlisting><link linkend="Python-Scope-Changes">Global scope rules recently changed</link>  In older versions, write this instead:<programlisting>
+global mydata
+mydata = 5
+print mydata
+      </programlisting></para>
     </sect2>
 
     <sect2 id="Python-def">
@@ -617,8 +616,14 @@ print(x)
       particular note, for example) is <programlisting>
 def answer():
 	return 42
-	</programlisting> If you want your function to be accessible from the rest of your
-      project, you have to declare it global before the definition: <programlisting
+	</programlisting> If you want your function to be accessible from other modules,
+      you have to add it to the <varname>globals</varname>: <programlisting
+      width="40">
+def answer():
+	return 42
+globals.answer = answer
+	</programlisting> If you have an older versions of QtiPlot, you have to
+      declare it global before the definition: <programlisting
       width="40">
 global answer
 def answer():
@@ -626,7 +631,6 @@ def answer():
 	</programlisting> You can add your own function to QtiPlot's function list. We'll
       also provide a documentation string that will show up, for example, in
       the "set column values" dialog: <programlisting>
-global answer
 def answer():
 	"Return the answer to the ultimate question about life, the universe and everything."
 	return 42
@@ -636,10 +640,11 @@ qti.mathFunctions["answer"] = answer
 del qti.mathFunctions["answer"]
 	</programlisting></para>
 
-      <para>Note that functions have their own local scope. That means that if
-      you enter a function definition in a Note, you will not be able to
+      <para><link linkend="Python-Scope-Changes">Global scope rules recently changed</link>
+      In older versions, a function's local scope hid the module scope. That means that if
+      you entered a function definition in a Note, you would not be able to
       access (neither reading nor writing) Note-local variables from within
-      the function. However, you can access global variables as usual.</para>
+      the function. However, you could access global variables as usual.</para>
 
       <para>If-then-else decisions are entered as follows: <programlisting>
 if x&gt;23:
@@ -4157,8 +4162,6 @@ A minimalistic approach is shown in the small script bellow:
 <programlisting>
 from PyQt4 import uic
 
-global ui, createTable
-
 def createTable():
 	t = newTable()
 	t.setCell(1, 1, ui.valueBox.value())
@@ -4316,6 +4319,37 @@ saveProjectAs(dirPath + "/" + "StRD_NIST.qti")
 sys.stdout = saveout
 fsock.close()
 </programlisting>
+</sect2>
+
+<sect2 id="Python-Scope-Changes">
+<title>Scope Changes</title>
+<para>In recent versions the scope rules were changed to match standard Python:
+  <itemizedlist>
+    <listitem>The keyword "global" refers to the module, e.g. a particular script window or column script.
+    Outside of any function, this is the default namespace, so "global x" has no effect.  Inside a function,
+    "global x" refers to <varname>x</varname> in the module namespace.
+    Previously, "global" referred to QtiPlot's global variables, and module-level variables were inaccessible
+    from inside a function, unless marked global.</listitem>
+    <listitem>To read and write QtiPlot's global variables, use the new special variable <varname>globals</varname>:<programlisting
+      width="40">
+globals.myvar = 5
+print globals.myvar
+      </programlisting><varname>globals</varname> is shared among all modules.</listitem>
+  </itemizedlist>
+</para><para>If a script has any "global" declaration outside of a function, QtiPlot uses the old scope rules.
+Existing scripts should keep working, but for best results, update your scripts:
+  <itemizedlist>
+    <listitem>If a "global" variable <varname>x</varname> is used only within one script, delete any "global x"
+   that is outside of a function.</listitem>
+    <listitem>If a "global" variable needs to be accessed outside the script that defined it, change<programlisting
+      width="40"
+global x
+x = 5
+      </programlisting>to<programlisting>
+globals.x = 5
+   </programlisting>and replace all references to <varname>x</varname> with <varname>globals.x</varname></listitem>
+  </itemizedlist>
+</para>
 </sect2>
 
 <sect2 id="QtiPlot-Python-API">
