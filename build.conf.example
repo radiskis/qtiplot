@@ -123,7 +123,7 @@ EMF_ENGINE_INCLUDEPATH = $$QTI_ROOT/3rdparty/EmfEngine/src
 EMF_ENGINE_LIBS = $$QTI_ROOT/3rdparty/EmfEngine/libEmfEngine.a
 
 ##########################################################
-## ALGLIB - optional. you don't have to set these variables
+## ALGLIB (2.6) - optional. you don't have to set these variables
 # http://www.alglib.net/
 ##########################################################
 
