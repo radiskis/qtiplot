@@ -38,13 +38,13 @@ Groups of related commands are collected together in a number of toolbars. All t
    <entry>&undo-icon;</entry>
    <entry>&undo-lnk;</entry>
    <entry>&undo-key;</entry>
-   <entry>Undo the last command, this feature doesn't work for plot modifications. See the &undo-lnk; command for mode details.</entry>
+   <entry>Undo the last command, this feature doesn't work for plot modifications. See the &undo-lnk; command for more details.</entry>
   </row>
   <row>
    <entry>&redo-icon;</entry>
    <entry>&redo-lnk;</entry>
    <entry>&redo-key;</entry>
-   <entry>Redo the last command, this feature doesn't work for plot modifications. See the &redo-lnk; command for mode details.</entry>
+   <entry>Redo the last command, this feature doesn't work for plot modifications. See the &redo-lnk; command for more details.</entry>
   </row>
   <row>
    <entry>&cut-icon;</entry>
@@ -80,7 +80,7 @@ Groups of related commands are collected together in a number of toolbars. All t
 <title>The File Toolbar</title>
 
 <para>
-The <emphasis>File Toolbar</emphasis> allows to access commands mainly from the &file-menu-lnk;. Refer to this section for a more complete description of these commands.
+The <emphasis>File Toolbar</emphasis> provides single-click access to commands from the &file-menu-lnk;. Refer to this section for a more complete description of these commands.
 </para>
 
 <figure id="fig-file-toolbar">
@@ -166,7 +166,7 @@ The <emphasis>File Toolbar</emphasis> allows to access commands mainly from the 
    <entry>&open-template-icon;</entry>
    <entry>&open-template-lnk;</entry>
    <entry></entry>
-   <entry>Opens an existing template QtiPlot project file.</entry>
+   <entry>Opens an existing QtiPlot template file.</entry>
   </row>
 <!--open-excel and open-odf added. (SRB) -->
   <row>
@@ -258,7 +258,7 @@ The <emphasis>File Toolbar</emphasis> allows to access commands mainly from the 
 <sect1 id="sec-plot-toolbar">
 <title>The Plot Toolbar.</title>
 
-<para>This toolbar is only active when a plot window is selected. It allows the quick access to the commands of the &graph-menu-lnk; and of the &data-menu-lnk; which are used for the modification of the plots and of the data points of the plots.</para>
+<para>This toolbar is only active when a plot window is selected. It provides single click access to the commands of the &graph-menu-lnk; and of the &data-menu-lnk; which are used for the modification of plots and the data points of the plots.</para>
 <figure id="plot-file-toolbar">
   <title>The &appname; Plot Toolbar</title>
   <mediaobject>
@@ -295,35 +295,35 @@ The <emphasis>File Toolbar</emphasis> allows to access commands mainly from the 
    <entry>&add-inset-layer-icon;</entry>
    <entry><link linkend="add-inset-layer-cmd">&add-inset-layer-cmd;</link></entry>
    <entry></entry>
-   <entry>Adds an empty inset layer to the active plot window.</entry>
+   <entry>Adds an empty inset layer to the active graph window.</entry>
   </row>
 
   <row>
    <entry>&add-inset-curve-layer-icon;</entry>
    <entry><link linkend="add-inset-curve-layer-cmd">&add-inset-curve-layer-cmd;</link></entry>
    <entry></entry>
-   <entry>Adds an inset layer containing the curves in the active plot layer.</entry>
+   <entry>Adds an inset layer to the active graph window that contains copies of any curves in the active plot layer.</entry>
   </row>
 
   <row>
    <entry>&arrange-layers-icon;</entry>
    <entry><link linkend="arrange-layers-cmd">&arrange-layers-cmd;</link></entry>
    <entry>&arrange-layers-key;</entry>
-   <entry>Arranges the different layers of the active plot window.</entry>
+   <entry>Opens a dialog for rearranging all layers of the active graph window.</entry>
   </row>
 
   <row>
    <entry>&auto-arrange-layers-icon;</entry>
    <entry><link linkend="auto-arrange-layers-cmd">&auto-arrange-layers-cmd;</link></entry>
    <entry></entry>
-   <entry>Automatically arranges the different layers of the active plot window.</entry>
+   <entry>Automatically rearranges all layers of the active graph window.</entry>
   </row>
 
   <row>
    <entry>&extract-layers-icon;</entry>
    <entry><link linkend="extract-layers-cmd">&extract-layers-cmd;</link></entry>
    <entry></entry>
-   <entry>Extracts datasets in the active layer to separate layers.</entry>
+   <entry>Extracts datasets (curves) from the active layer onto separate layers.</entry>
   </row>
 
   <row>
@@ -337,25 +337,25 @@ The <emphasis>File Toolbar</emphasis> allows to access commands mainly from the 
    <entry>&add-remove-curve-icon;</entry>
    <entry><link linkend="add-remove-curve-cmd">&add-remove-curve-cmd;</link></entry>
    <entry>&add-remove-curve-key;</entry>
-   <entry>Adds or removes curves to the active plot window.</entry>
+   <entry>Adds curves to, or removes curves from, the active plot window.</entry>
   </row>
   <row>
    <entry>&add-error-bars-icon;</entry>
    <entry><link linkend="add-error-bars-cmd">&add-error-bars-cmd;</link></entry>
    <entry>&add-error-bars-key;</entry>
-   <entry>Adds error bars to a curve of the active plot window.</entry>
+   <entry>Adds error bars to a curve on the active plot layer.</entry>
   </row>
   <row>
    <entry>&add-function-icon;</entry>
    <entry><link linkend="add-function-cmd">&add-function-cmd;</link></entry>
    <entry>&add-function-key;</entry>
-   <entry>Adds a curve based on a function to the active plot window.</entry>
+   <entry>Adds a curve based on a function to the active plot layer.</entry>
   </row>
   <row>
    <entry>&new-legend-icon;</entry>
    <entry><link linkend="new-legend-cmd">&new-legend-cmd;</link></entry>
    <entry>&new-legend-key;</entry>
-   <entry>Adds a new legend to the active plot window.</entry>
+   <entry>Adds a new legend to the active plot layer.</entry>
   </row>
 
   <row>
@@ -369,95 +369,95 @@ The <emphasis>File Toolbar</emphasis> allows to access commands mainly from the 
    <entry>&pointer-icon;</entry>
    <entry><link linkend="pointer-cmd">&pointer-cmd;</link></entry>
    <entry></entry>
-   <entry>Comes back to the normal pointer mode, this is useful when you have select other modes of the plot window such as the <link linkend="data-reader-cmd">data reader</link>.</entry>
+   <entry>Reverts to normal pointer mode. Useful when you have selected another pointer mode on a plot layer, such as the <link linkend="data-reader-cmd">data reader</link>.</entry>
   </row>
   <row>
    <entry>&zoom-in-icon;</entry>
    <entry><link linkend="zoom-in-cmd">&zoom-in-cmd;</link></entry>
    <entry>&zoom-in-key;</entry>
-   <entry>Switches the active plot layer to the zoom mode.</entry>
+   <entry>Switches the active plot layer into zoom mode.</entry>
   </row>
   <row>
    <entry>&zoom-out-icon;</entry>
    <entry><link linkend="zoom-out-cmd">&zoom-out-cmd;</link></entry>
    <entry>&zoom-out-key;</entry>
-   <entry>Switches the active plot layer to the zoom mode.</entry>
+   <entry>Zooms the active plot layers out one step in the zoom history.</entry>
   </row>
   <row>
    <entry>&data-reader-icon;</entry>
    <entry><link linkend="data-reader-cmd">&data-reader-cmd;</link></entry>
    <entry>&data-reader-key;</entry>
-   <entry>Switches the data display mode.</entry>
+   <entry>Switches the data display into Data Reader mode.</entry>
   </row>
   <row>
    <entry>&select-data-range-icon;</entry>
    <entry><link linkend="select-data-range-cmd">&select-data-range-cmd;</link></entry>
    <entry>&select-data-range-key;</entry>
-   <entry>Switches the active plot to the &select-data-range-cmd; mode.</entry>
+   <entry>Switches the active plot layer into &select-data-range-cmd; mode.</entry>
   </row>
   <row>
    <entry>&screen-reader-icon;</entry>
    <entry><link linkend="screen-reader-cmd">&screen-reader-cmd;</link></entry>
    <entry></entry>
-   <entry>Switches the active plot layer to the &screen-reader-cmd; mode.</entry>
+   <entry>Switches the active plot layer into &screen-reader-cmd; mode.</entry>
   </row>
   <row>
    <entry>&move-data-points-icon;</entry>
    <entry><link linkend="move-data-points-cmd">&move-data-points-cmd;</link></entry>
    <entry>&move-data-points-key;</entry>
-   <entry>Allows to move data points on the active plot.</entry>
+   <entry>Allows drag-mode moving of data points on the active plot layer.</entry>
   </row>
   <row>
    <entry>&remove-data-points-icon;</entry>
    <entry><link linkend="remove-data-points-cmd">&remove-data-points-cmd;</link></entry>
    <entry>&remove-data-points-key;</entry>
-   <entry>Allows to remove data points on the active plot.</entry>
+   <entry>Allows removal of data points from the active plot layer.</entry>
   </row>
 
   <row>
    <entry>&add-eq-icon;</entry>
    <entry>&add-eq-lnk;</entry>
    <entry>&add-eq-key;</entry>
-   <entry>Adds a new Tex equation to the active plot.</entry>
+   <entry>Adds a new Tex equation to the active plot layer.</entry>
   </row>
 
   <row>
    <entry>&add-text-icon;</entry>
    <entry>&add-text-lnk;</entry>
    <entry>&add-text-key;</entry>
-   <entry>Adds a new text element in the active plot.</entry>
+   <entry>Adds a new text element on the active plot layer.</entry>
   </row>
   <row>
    <entry>&draw-line-icon;</entry>
    <entry>&draw-line-lnk;</entry>
    <entry>&draw-line-key;</entry>
-   <entry>Adds a new line on the active plot.</entry>
+   <entry>Adds a new line on the active plot layer.</entry>
   </row>
   <row>
    <entry>&draw-arrow-icon;</entry>
    <entry>&draw-arrow-lnk;</entry>
    <entry>&draw-arrow-key;</entry>
-   <entry>Adds a new arrow on the active plot.</entry>
+   <entry>Adds a new arrow on the active plot layer.</entry>
   </row>
 
    <row>
    <entry>&draw-rectangle-icon;</entry>
    <entry>&draw-rectangle-lnk;</entry>
    <entry>&draw-rectangle-key;</entry>
-   <entry>Adds a new rectangle to the active plot.</entry>
+   <entry>Adds a new rectangle on the active plot layer.</entry>
   </row>
 
   <row>
    <entry>&add-time-stamp-icon;</entry>
    <entry>&add-time-stamp-lnk;</entry>
    <entry>&add-time-stamp-key;</entry>
-   <entry>Adds a time/date label on the active plot.</entry>
+   <entry>Adds a time/date label on the active plot layer.</entry>
   </row>
   <row>
    <entry>&add-image-icon;</entry>
    <entry>&add-image-lnk;</entry>
    <entry>&add-image-key;</entry>
-   <entry>Inserts a new image in the active plot.</entry>
+   <entry>Inserts a new image into the active plot layer.</entry>
   </row>
 </tbody>
 </tgroup>
@@ -469,7 +469,7 @@ The <emphasis>File Toolbar</emphasis> allows to access commands mainly from the 
 <sect1 id="sec-table-toolbar">
 <title>The Table Toolbar</title>
 
-<para>This toolbar allows a quick access to the commands of the <link linkend="sec-plot-menu">Plot Menu</link> used to plot the datas of the table.</para>
+<para>This toolbar provides single-click access to the <link linkend="sec-plot-menu">Plot Menu</link> commands. These are used to plot data from tables.</para>
 
 <figure id="plot-table-toolbar">
   <title>The &appname; Table Toolbar</title>
@@ -500,118 +500,118 @@ The <emphasis>File Toolbar</emphasis> allows to access commands mainly from the 
    <entry>&line-icon;</entry>
    <entry><link linkend="line-cmd">plot -> &line-cmd;</link></entry>
    <entry></entry>
-   <entry>plot with the line style.</entry>
+   <entry>Plots selected data using line style.</entry>
   </row>
   <row>
    <entry>&scatter-icon;</entry>
    <entry><link linkend="scatter-cmd">plot -> &scatter-cmd;</link></entry>
    <entry></entry>
-   <entry>plot with the scatter style.</entry>
+   <entry>Plots selected data using scatter style.</entry>
   </row>
   <row>
    <entry>&line-symbol-icon;</entry>
    <entry><link linkend="line-symbol-cmd">plot -> &line-symbol-cmd;</link></entry>
    <entry></entry>
-   <entry>plot with the line+symbol style.</entry>
+   <entry>Plots selected data using line+symbol style.</entry>
   </row>
   <row>
    <entry>&columns-icon;</entry>
    <entry><link linkend="columns-cmd">plot -> &columns-cmd;</link></entry>
    <entry></entry>
-   <entry>plot with the columns style.</entry>
+   <entry>Plots selected data using columns style.</entry>
   </row>
   <row>
    <entry>&rows-icon;</entry>
    <entry><link linkend="rows-cmd">plot -> &rows-cmd;</link></entry>
    <entry></entry>
-   <entry>plot with the rows style.</entry>
+   <entry>Plots selected data using rows style.</entry>
   </row>
   <row>
    <entry>&area-icon;</entry>
    <entry><link linkend="area-cmd">plot -> &area-cmd;</link></entry>
    <entry></entry>
-   <entry>plot with the area style.</entry>
+   <entry>Plots selected data using area style.</entry>
   </row>
   <row>
    <entry>&pie-icon;</entry>
    <entry><link linkend="pie-cmd">plot -> &pie-cmd;</link></entry>
    <entry></entry>
-   <entry>plot with the pie style.</entry>
+   <entry>Plots selected data using pie style.</entry>
   </row>
   <row>
    <entry>&histogram-icon;</entry>
    <entry><link linkend="histogram-cmd">plot -> &histogram-cmd;</link></entry>
    <entry></entry>
-   <entry>plot with the histogram style.</entry>
+   <entry>Plots selected data using histogram style.</entry>
   </row>
   <row>
    <entry>&vectors-xyxy-icon;</entry>
    <entry><link linkend="vectors-xyxy-cmd">plot -> &vectors-xyxy-cmd;</link></entry>
    <entry></entry>
-   <entry>plot with the vector style.</entry>
+   <entry>Plots selected data using vector style.</entry>
   </row>
 
   <row>
    <entry>&double-y-icon;</entry>
    <entry><link linkend="double-y-cmd">plot -> &double-y-cmd;</link></entry>
    <entry></entry>
-   <entry>plot with two different y axes.</entry>
+   <entry>Plots selected data using two different y axes.</entry>
   </row>
-
+<!--Next Item Needs Clarification (SRB) -->
  <row>
    <entry>&zoom-plot-icon;</entry>
    <entry><link linkend="zoom-plot-cmd">plot -> &zoom-plot-cmd;</link></entry>
    <entry></entry>
-   <entry>plots a magnified region of data in the same graph window (along with the full range of data).</entry>
+   <entry>Plots a magnified region of data in the same graph window (along with the full range of data).</entry>
   </row>
 
   <row>
    <entry>&ribbons-icon;</entry>
    <entry><link linkend="ribbons-cmd">plot -> &ribbons-cmd;</link></entry>
    <entry></entry>
-   <entry>plot with the 3D ribbons style.</entry>
+   <entry>Plots selected data using 3D ribbons style.</entry>
   </row>
   <row>
    <entry>&bars-icon;</entry>
    <entry><link linkend="bars-cmd">plot -> &bars-cmd;</link></entry>
    <entry></entry>
-   <entry>plot with the 3D bars style.</entry>
+   <entry>Plots selected data using 3D bars style.</entry>
   </row>
   <row>
    <entry>&scatter3d-icon;</entry>
    <entry><link linkend="scatter3d-cmd">plot -> &scatter3d-cmd;</link></entry>
    <entry></entry>
-   <entry>plot with the 3D scatter style.</entry>
+   <entry>Plots selected data using 3D scatter style.</entry>
   </row>
   <row>
    <entry>&trajectory-icon;</entry>
    <entry><link linkend="trajectory-cmd">plot -> &trajectory-cmd;</link></entry>
    <entry></entry>
-   <entry>plot with the trajectory style.</entry>
+   <entry>Plots selected data using trajectory style.</entry>
   </row>
   <row>
    <entry>&add-column-icon;</entry>
    <entry><link linkend="add-column-cmd">plot -> &add-column-cmd;</link></entry>
    <entry>Alt + C</entry>
-   <entry>add a new column to the table</entry>
+   <entry>Adds a new column to the selected table.</entry>
   </row>
   <row>
    <entry>&statistics-on-columns-icon;</entry>
    <entry><link linkend="statistics-on-columns-cmd">plot -> &statistics-on-columns-cmd;</link></entry>
    <entry></entry>
-   <entry>compute statistical parameters on selected columns</entry>
+   <entry>Computes statistical parameters on selected columns.</entry>
   </row>
   <row>
    <entry>&statistics-on-rows-icon;</entry>
    <entry><link linkend="statistics-on-rows-cmd">plot -> &statistics-on-rows-cmd;</link></entry>
    <entry></entry>
-   <entry>compute statistical parameters on selected row</entry>
+   <entry>Computes statistical parameters on the selected row.</entry>
   </row>
 </tbody>
 </tgroup>
 </table>
 </sect1>
-
+<!--HERE!!!! -->
 <sect1 id="column-toolbar">
 <title>The Column Toolbar</title>
 <para>This toolbar allows a quick access to the commands of the <link linkend="sec-table-menu">Table Menu</link> used to rearrange columns in the table
