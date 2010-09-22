@@ -4342,7 +4342,7 @@ Existing scripts should keep working, but for best results, update your scripts:
     <listitem>If a "global" variable <varname>x</varname> is used only within one script, delete any "global x"
    that is outside of a function.</listitem>
     <listitem>If a "global" variable needs to be accessed outside the script that defined it, change<programlisting
-      width="40"
+      width="40">
 global x
 x = 5
       </programlisting>to<programlisting>
