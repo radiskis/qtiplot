@@ -59,6 +59,7 @@ private slots:
 	void accept();
 	void preview();
 	void setPlotStyle(int);
+	void showMethodParameters(int);
 
 private:
 	void loadDataFromTable();
@@ -84,6 +85,11 @@ private:
 	QComboBox* boxPlotStyle;
 	QCheckBox *showPlotBox;
 	QGroupBox *previewBox;
+	QGroupBox *gbRadius;
+	QGroupBox *gbModel;
+	QComboBox* boxModel;
+	QSpinBox* boxNQ;
+	QSpinBox* boxNW;
 };
 
 #endif

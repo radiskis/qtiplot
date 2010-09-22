@@ -59,24 +59,56 @@ GriddingDialog::GriddingDialog(Table* t, const QString& colName, int nodes, QWid
 	gl1->addWidget(new QLabel(tr("Selected Z Dataset")), 0, 0);
 
 	boxName = new QLabel(colName);
+	boxName->setFrameStyle(QFrame::Panel | QFrame::Sunken);
 	gl1->addWidget(boxName, 0, 1);
 
-	gl1->addWidget(new QLabel(tr("Gridding Method")), 1, 0);
+	QLabel *methodLabel = new QLabel("<a href=\"http://www.alglib.net/interpolation/inversedistanceweighting.php\">" + tr("Gridding Method") + "</a>");
+	methodLabel->setOpenExternalLinks(true);
+	gl1->addWidget(methodLabel, 1, 0);
 	boxMethod = new QComboBox();
-	boxMethod->insertItem(tr("Modified Shepard"));
+	boxMethod->addItem(tr("Shepard (non-uniform data)"));
+	boxMethod->addItem(tr("Shepard (uniform data)"));
+	boxMethod->addItem(tr("Quick (noisy data)"));
 	gl1->addWidget(boxMethod, 1, 1);
+	gl1->setRowStretch(2, 1);
 
 	ApplicationWindow *app = (ApplicationWindow *)parent;
 	QLocale locale = app->locale();
 
-	gl1->addWidget(new QLabel(tr("Search Radius")), 2, 0);
+	gbRadius = new QGroupBox(tr("Parameters"));
+	QGridLayout *glRadius = new QGridLayout(gbRadius);
+
+	glRadius->addWidget(new QLabel(tr("Search Radius")), 0, 0);
 	boxRadius = new DoubleSpinBox();
 	boxRadius->setDecimals(app->d_decimal_digits);
 	boxRadius->setLocale(locale);
 	boxRadius->setValue(2.0);
 	boxRadius->setMinimum(0.1);
-	gl1->addWidget(boxRadius, 2, 1);
-	gl1->setRowStretch(3, 1);
+	glRadius->addWidget(boxRadius, 0, 1);
+	glRadius->setRowStretch(1, 1);
+
+	gbModel = new QGroupBox(tr("Parameters"));
+	QGridLayout *glModel = new QGridLayout(gbModel);
+
+	glModel->addWidget(new QLabel(tr("Model")), 0, 0);
+	boxModel = new QComboBox();
+	boxModel->addItem(tr("Linear"));
+	boxModel->addItem(tr("Quadratic"));
+	glModel->addWidget(boxModel, 0, 1);
+
+	glModel->addWidget(new QLabel(tr("N<sub>q</sub>")), 1, 0);
+	boxNQ = new QSpinBox();
+	boxNQ->setMaximum(INT_MAX);
+	boxNQ->setValue(15);
+	glModel->addWidget(boxNQ, 1, 1);
+
+	glModel->addWidget(new QLabel(tr("N<sub>w</sub>")), 2, 0);
+	boxNW = new QSpinBox();
+	boxNW->setMaximum(INT_MAX);
+	boxNW->setValue(25);
+	glModel->addWidget(boxNW, 2, 1);
+	glModel->setRowStretch(3, 1);
+	gbModel->hide();
 
 	QGroupBox *gb2 = new QGroupBox(tr("Matrix Dimensions"));
 	QGridLayout *gl2 = new QGridLayout(gb2);
@@ -127,7 +159,7 @@ GriddingDialog::GriddingDialog(Table* t, const QString& colName, int nodes, QWid
 	previewBox->setChecked(true);
 
 	QGridLayout *gl4 = new QGridLayout(previewBox);
-	gl4->addWidget(new QLabel(tr("PlotStyle")), 0, 0);
+	gl4->addWidget(new QLabel(tr("Plot Type")), 0, 0);
 
 	boxPlotStyle = new QComboBox();
 	boxPlotStyle->insertItem(tr("Wireframe"));
@@ -149,6 +181,8 @@ GriddingDialog::GriddingDialog(Table* t, const QString& colName, int nodes, QWid
 
 	QVBoxLayout *hb = new QVBoxLayout();
     hb->addWidget(gb1, 1);
+	hb->addWidget(gbRadius, 1);
+	hb->addWidget(gbModel, 1);
 	hb->addWidget(gb2, 1);
 	hb->addWidget(gb3, 1);
 	hb->addWidget(previewBox);
@@ -179,9 +213,12 @@ GriddingDialog::GriddingDialog(Table* t, const QString& colName, int nodes, QWid
 
 	connect(previewBox, SIGNAL(toggled(bool)), this, SLOT(preview()));
 	connect(boxPlotStyle, SIGNAL(activated(int)), this, SLOT(setPlotStyle(int)));
-
+	connect(boxMethod, SIGNAL(activated(int)), this, SLOT(showMethodParameters(int)));
 	connect(boxRows, SIGNAL(valueChanged(int)), this, SLOT(preview()));
 	connect(boxCols, SIGNAL(valueChanged(int)), this, SLOT(preview()));
+	connect(boxNQ, SIGNAL(valueChanged(int)), this, SLOT(preview()));
+	connect(boxNW, SIGNAL(valueChanged(int)), this, SLOT(preview()));
+	connect(boxModel, SIGNAL(activated(int)), this, SLOT(preview()));
 	connect(boxRadius, SIGNAL(valueChanged(double)), this, SLOT(preview()));
 	connect(boxXStart, SIGNAL(valueChanged(double)), this, SLOT(preview()));
 	connect(boxXEnd, SIGNAL(valueChanged(double)), this, SLOT(preview()));
@@ -190,6 +227,18 @@ GriddingDialog::GriddingDialog(Table* t, const QString& colName, int nodes, QWid
 
 	connect( buttonFit, SIGNAL( clicked() ), this, SLOT( accept() ) );
 	connect( buttonCancel, SIGNAL( clicked() ), this, SLOT( close() ) );
+}
+
+void GriddingDialog::showMethodParameters(int method)
+{
+	if (method){
+		gbRadius->hide();
+		gbModel->show();
+	} else {
+		gbRadius->show();
+		gbModel->hide();
+	}
+	preview();
 }
 
 void GriddingDialog::loadDataFromTable()
@@ -314,7 +363,17 @@ void GriddingDialog::accept()
 	m->setCoordinates(xmin, xmax, ymin, ymax);
 
 	idwinterpolant z;
-	idwbuildmodifiedshepardr(xy, d_nodes, 2, boxRadius->value(), z);
+	switch (boxMethod->currentIndex()){
+		case 0:
+			idwbuildmodifiedshepardr(xy, d_nodes, 2, boxRadius->value(), z);
+		break;
+		case 1:
+			idwbuildmodifiedshepard(xy, d_nodes, 2, boxModel->currentIndex() + 1, boxNQ->value(), boxNW->value(), z);
+		break;
+		case 2:
+			idwbuildnoisy(xy, d_nodes, 2, boxModel->currentIndex() + 1, boxNQ->value(), boxNW->value(), z);
+		break;
+	}
 
 	ap::real_1d_array p;
 	p.setlength(2);
@@ -374,7 +433,17 @@ void GriddingDialog::preview()
 	double ystep = fabs(ymax - ymin)/(rows - 1);
 
 	idwinterpolant z;
-	idwbuildmodifiedshepardr(xy, d_nodes, 2, boxRadius->value(), z);
+	switch (boxMethod->currentIndex()){
+		case 0:
+			idwbuildmodifiedshepardr(xy, d_nodes, 2, boxRadius->value(), z);
+		break;
+		case 1:
+			idwbuildmodifiedshepard(xy, d_nodes, 2, boxModel->currentIndex() + 1, boxNQ->value(), boxNW->value(), z);
+		break;
+		case 2:
+			idwbuildnoisy(xy, d_nodes, 2, boxModel->currentIndex() + 1, boxNQ->value(), boxNW->value(), z);
+		break;
+	}
 
 	ap::real_1d_array p;
 	p.setlength(2);

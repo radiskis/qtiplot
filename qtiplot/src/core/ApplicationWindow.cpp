@@ -7086,6 +7086,7 @@ bool ApplicationWindow::setWindowName(MdiSubWindow *w, const QString &text)
 	w->setName(newName);
 	renameListViewItem(name, newName);
 	updateCompleter(name, false, newName);
+	emit modified();
 	return true;
 }
 
