@@ -29,9 +29,13 @@
 #ifndef GRIDDINGDIALOG_H
 #define GRIDDINGDIALOG_H
 
+#include <qwt3d_curve.h>
+#include <qwt3d_surfaceplot.h>
+
 #include <QDialog>
 #include <ap.h>
 
+class QGroupBox;
 class QLabel;
 class QPushButton;
 class QComboBox;
@@ -40,6 +44,8 @@ class QSpinBox;
 class Table;
 class DoubleSpinBox;
 
+using namespace Qwt3D;
+
 //! Random XYZ gridding options dialog
 class GriddingDialog : public QDialog
 {
@@ -47,14 +53,20 @@ class GriddingDialog : public QDialog
 
 public:
 	GriddingDialog(Table* t, const QString& colName, int nodes, QWidget* parent = 0, Qt::WFlags fl = 0 );
+	~GriddingDialog();
 
-public slots:
+private slots:
 	void accept();
+	void preview();
+	void setPlotStyle(int);
 
 private:
 	void loadDataFromTable();
+	void resetAxesLabels();
 
 	Table *d_table;
+	Qwt3D::Plot3D* sp;
+
 	QString d_col_name;
 	int d_nodes;
 	ap::real_2d_array xy;
@@ -69,8 +81,9 @@ private:
 	DoubleSpinBox* boxYStart;
 	DoubleSpinBox* boxYEnd;
 	DoubleSpinBox* boxRadius;
-
+	QComboBox* boxPlotStyle;
 	QCheckBox *showPlotBox;
+	QGroupBox *previewBox;
 };
 
 #endif
