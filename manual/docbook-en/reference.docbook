@@ -276,7 +276,7 @@ The active items appearing in a menu depends upon which project window is active
   </listitem>
 </varlistentry>
 
-<!--Need entry for Export item (SRB) -->
+<!--Added entry for Export item. SRB (09/19/2010 ) -->
 <varlistentry id="export-cmd">
   <term>File -> &export-cmd;</term>
   <listitem>
@@ -500,6 +500,14 @@ The active items appearing in a menu depends upon which project window is active
      <para>Adds a new legend object to the active layer. You can have more than one legend on a plot. These legends can later be customized by double clicking on a given legend.</para>
   </listitem>
 </varlistentry>
+
+<varlistentry id="add-eq-cmd">
+  <term>Graph -> &add-eq-cmd; (&add-eq-key;)</term>
+  <listitem>
+     <para>This command is used to add a <emphasis>Tex</emphasis> formatted equation on a layer. When selected, the cursor changes to an edit text cursor. You must then click in the plot area to specify the position of the new Tex equation. A Tex equation editor will pop-up allowing you to enter the equation to be displayed and set all its properties (color, font, etc...)</para>
+  </listitem>
+</varlistentry>
+
 <varlistentry id="add-text-cmd">
   <term>Graph -> &add-text-cmd; (&add-text-key;)</term>
   <listitem>
@@ -518,6 +526,21 @@ The active items appearing in a menu depends upon which project window is active
      <para>Changes the active layer's operational mode to drawing mode. You must click on the layer canvas in order to specify the starting point for the new line, and then click once more to specify its ending point. You can edit the new line using the line dialog. Switch back to  normal operating mode by clicking the "Pointer" icon in the Plot toolbar.</para>
   </listitem>
 </varlistentry>
+
+<varlistentry id="add-rectangle-cmd">
+  <term>Graph -> &add-rectangle-cmd; (&add-rectangle-key;)</term>
+  <listitem>
+     <para>Draws a rectangular box on the active plot layer. After selecting this command, the pointer changes to a crosshair target. Click and hold the left mouse button on the active layer to incicate the first corner of the rectangle, then drag the cursor to the opposite corner of the rectangle. Once the second point is specified, release the left mouse button to draw the rectangle. The pointer automatically changes back to normal mode.</para>
+  </listitem>
+</varlistentry>
+
+<varlistentry id="add-ellipse-cmd">
+  <term>Graph -> &add-ellipse-cmd; (&add-ellipse-key;)</term>
+  <listitem>
+     <para>Draws a elliptical shape on the active plot layer. After selecting this command, the pointer changes to a crosshair target. Click and hold the left mouse button on the active layer to incicate the first corner of the ellipse's bounding rectangle, then drag the cursor to the opposite corner of the bounding rectangle. Once the second point is specified, release the left mouse button to draw the ellipse. The pointer automatically changes back to normal mode. Circles may be drawn using this command by setting the height and width equal. (The object properties dialog can be used to set height and width to excactly the same value.)</para>
+  </listitem>
+</varlistentry>
+
 <varlistentry id="add-time-stamp-cmd">
   <term>Graph -> &add-time-stamp-cmd; (&add-time-stamp-key;)</term>
   <listitem>
@@ -537,18 +560,58 @@ The active items appearing in a menu depends upon which project window is active
      <para>Adds a new layer to a graph window. The command opens a <link linkend="add-layer-dialog">dialog</link> which allows you to select whether the new layer is to be added to the left-top corner of the plot window or to a best-guess position (based on a layer positioning algorithm in columns and rows).</para>
   </listitem>
 </varlistentry>
-<varlistentry id="remove-layer-cmd">
-  <term>Graph -> &remove-layer-cmd; (&remove-layer-key;)</term>
+
+<!--Add empty inset layer and add inset curve layer SRB (09/23/2010 ) -->
+<varlistentry id="add-inset-layer-cmd">
+  <term>Graph -> &add-inset-layer-cmd;</term>
   <listitem>
-     <para>Deletes the active layer and pops-up a question dialog allowing you to choose whether the remaining layers should be automatically re-arranged or not.</para>
+     <para>This is a convenience command that creates a new, small sized, empty layer located on top of the currently selected layer. Once this layer is created, you can further resize, move, set it's properties and add curves to it as needed. Inset layers are not linked to another layer in any way. They just happen to be located in the same place on the graph window. In fact the inset layer can be moved anywhere on the graph window and is treated like a normal layer in every way. When the inset layer is completely contained inside another layer, it will disappear under that layer when it is selected. The new inset layer has it's own layer select button in the upper left of the graph window. Clicking on this button will bring the inset back to the front, rendering it visible again.</para>
   </listitem>
 </varlistentry>
+<varlistentry id="add-inset-curve-layer-cmd">
+  <term>Graph -> &add-inset-curve-layer-cmd;</term>
+  <listitem>
+     <para>This command is essentially identical to the &add-inset-layer-cmd; command, with the single exception that any curves contained in the currently active layer are duplicated in the new inset layer.</para>
+  </listitem>
+</varlistentry>
+
 <varlistentry id="arrange-layers-cmd">
   <term>Graph -> &arrange-layers-cmd; (&arrange-layers-key;)</term>
   <listitem>
      <para>Opens the <link linkend="arrange-layers-dialog">Arrange layers dialog</link>. This dialog allows you to customize the layout of the layers in the active graph window.</para>
   </listitem>
 </varlistentry>
+
+<varlistentry id="auto-arrange-layers-cmd">
+  <term>Graph -> &auto-arrange-layers-cmd; command</term>
+  <listitem>
+     <para>Automatically arranges all the layers in the active graph window. There must be at least 2 layers on the graph. Layers are packed into the smallest dimensioned array possible. All layers are scaled to fit into the existing graph window. Rows are added until a the smallest square array is filled, at which point an additional column is added. Rows are then filled and additional rows added until the array is again square. For example, 2 layers results in a 1x2 array. 3 layers produces a 2x2 array with an empth space in the second row. 4 layers produces a full 2x2 array. Adding another layer will produce a 2x3 array, with one empty space in the second row. Additional layers result in more rows and columns being added to contain all the layers.</para>
+  </listitem>
+</varlistentry>
+
+<!--Add extract to graph and extract layer SRB (09/23/2010 ) -->
+
+<varlistentry id="extract-graphs-cmd">
+  <term>Graph -> &extract-graphs-cmd; command</term>
+  <listitem>
+     <para>Each layer in the currently active graph window is copied into its own, newly created, graph window. The scale and size of the new layer is the same as the original layer. The original graph window remains unchanged.</para>
+  </listitem>
+</varlistentry>
+
+<varlistentry id="extract-layers-cmd">
+  <term>Graph -> &extract-layers-cmd; command</term>
+  <listitem>
+     <para>Each curve in the currently active layer is moved onto a newly created layer. The original layer is destroyed. The newly created layers are then auto arranged (see the &auto-arrange-layers-lnk; command). </para>
+  </listitem>
+</varlistentry>
+
+<varlistentry id="remove-layer-cmd">
+  <term>Graph -> &remove-layer-cmd; (&remove-layer-key;)</term>
+  <listitem>
+     <para>Deletes the active layer and pops-up a question dialog allowing you to choose whether the remaining layers should be automatically re-arranged or not.</para>
+  </listitem>
+</varlistentry>
+
 </variablelist>
 
 </sect1>
@@ -1071,7 +1134,7 @@ The active items appearing in a menu depends upon which project window is active
     <para>This command cancels a previous zoom operation. A zoom history is kept so that you can do multiple zoom out commands to step backwards through the zoom history. A separate zoom history is maintained for each plot layer. Executing this command does not set any special mode of its own but it will cancel any other special mode that is currently in effect (i.e., it performs an implicit &pointer-cmd; command).</para>
   </listitem>
 </varlistentry>
-<varlistentry>
+<varlistentry id="rescale-cmd">
   <term>Data -> &rescale-cmd;  (&rescale-key;)</term>
   <listitem>
     <para>Rescales the active plot layer after a zoom operation so that all data on the graph is visible. This command does not set any special mode of its own, but unlike the &zoom-out-cmd; command, it does not alter any other mode that may be in effect. Nevertheless, it does delete the zoom history of the rescaled plot.</para>
@@ -1120,6 +1183,14 @@ The active items appearing in a menu depends upon which project window is active
     <para>Allows removal of data points from the active plot layer by double-clicking on them.  When selecting this command, you will be asked to confirm that you understand that any changes you make will also modify the data in the corresponding tables (as well as all plots depending on that data). The coordinates of the cursor with respect to the axes of the plot layer are displayed in a text field that floats along with the mouse cursor. The coordinates of all points selected for removal are shown in the Data Display toolbar.</para>
   </listitem>
 </varlistentry>
+<!--Added drag-curve command. SRB (09/22/2010 ) -->
+<varlistentry id="drag-curve-cmd">
+  <term>Data -> &drag-curve-cmd;</term>
+  <listitem>
+    <para>Allows dragging an entire curve on the selected plot layer. Left Click and hold down the mouse button on any point on a curve to select the curve for dragging. A red cross-hair will be drawn at the point to indicate that the curve is selected. The curve may then be dragged around on the plot layer with the mouse as long as the left mouse button is held down. Releasing the mouse button will drop the curve at the new location. This process moves all the data points and changes the coordinates in the associated table. When selecting this command, you will be asked to confirm that you understand that dragging curves will modify the data in the corresponding tables (as well as all other plots depending on that data). The coordinates of the cursor with respect to the axes of the plot layer are displayed in a text field that floats along with the mouse cursor.</para>
+  </listitem>
+</varlistentry>
+
 </variablelist>
 <!-- ************************************************** -->
 <!--		End of menu Data			-->

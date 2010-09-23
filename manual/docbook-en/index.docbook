@@ -260,69 +260,86 @@
 <!ENTITY new-legend-lnk '<link linkend="new-legend-cmd"><command>New Legend</command> command</link>'>
   <!ENTITY new-legend-key "<keycode>Ctrl-L</keycode>">
   <!ENTITY new-legend-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/legend.png"/></imageobject></inlinemediaobject>'>
+
 <!ENTITY add-text-cmd "<command>Add Text</command>">
-<!ENTITY add-text-lnk '<link linkend="add-text-cmd"><command>Add Text</command> command</link>'>
+<!ENTITY add-text-lnk '<link linkend="add-text-cmd"><command>Add Text</command></link>'>
   <!ENTITY add-text-key "<keycode>Alt-T</keycode>">
   <!ENTITY add-text-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/text.png"/></imageobject></inlinemediaobject>'>
 <!ENTITY draw-arrow-cmd "<command>Draw Arrow</command>">
-<!ENTITY draw-arrow-lnk '<link linkend="draw-arrow-cmd"><command>Draw Arrow</command> command</link>'>
+<!ENTITY draw-arrow-lnk '<link linkend="draw-arrow-cmd"><command>Draw Arrow</command></link>'>
   <!ENTITY draw-arrow-key "<keycode>Ctrl-Alt-A</keycode>">
   <!ENTITY draw-arrow-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/arrow.png"/></imageobject></inlinemediaobject>'>
 <!ENTITY draw-line-cmd "<command>Draw Line</command>">
-<!ENTITY draw-line-lnk '<link linkend="draw-line-cmd"><command>Draw Line</command> command</link>'>
+<!ENTITY draw-line-lnk '<link linkend="draw-line-cmd"><command>Draw Line</command></link>'>
   <!ENTITY draw-line-key "<keycode>Ctrl-Alt-L</keycode>">
   <!ENTITY draw-line-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/lPlot.png"/></imageobject></inlinemediaobject>'>
+
+<!ENTITY add-ellipse-cmd "<command>Add Ellipse</command>">
+<!ENTITY add-ellipse-lnk '<link linkend="add-ellipse-cmd">&add-ellipse-cmd;</link>'>
+  <!ENTITY add-ellipse-key "<keycode>Ctrl-Alt-E</keycode>">
+  <!ENTITY add-ellipse-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/ellipse.png"/></imageobject></inlinemediaobject>'>
+
 <!ENTITY add-time-stamp-cmd "<command>Add Time Stamp</command>">
-<!ENTITY add-time-stamp-lnk '<link linkend="add-time-stamp-cmd"><command>Add Time Stamp</command> command</link>'>
+<!ENTITY add-time-stamp-lnk '<link linkend="add-time-stamp-cmd"><command>Add Time Stamp</command></link>'>
   <!ENTITY add-time-stamp-key "<keycode>Ctrl-Alt-T</keycode>">
   <!ENTITY add-time-stamp-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/clock.png"/></imageobject></inlinemediaobject>'>
 <!ENTITY add-image-cmd "<command>Add Image</command>">
-<!ENTITY add-image-lnk '<link linkend="add-image-cmd"><command>Add Image</command> command</link>'>
+<!ENTITY add-image-lnk '<link linkend="add-image-cmd"><command>Add Image</command></link>'>
   <!ENTITY add-image-key "<keycode>Alt-I</keycode>">
   <!ENTITY add-image-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/monalisa.png"/></imageobject></inlinemediaobject>'>
+<!-- Added Hooks for Raise to Top and Lower to bottom (SRB) 09/22/2010 -->
+<!ENTITY zorder-top-cmd "<command>Move to Top</command>">
+<!ENTITY zorder-top-lnk '<link linkend="zorder-top-cmd">&zorder-top-cmd;</link>'>
+  <!ENTITY zorder-top-key "<keycode></keycode>">
+  <!ENTITY zorder-top-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/raise.png"/></imageobject></inlinemediaobject>'>
+
+<!ENTITY zorder-bottom-cmd "<command>Move to Bottom</command>">
+<!ENTITY zorder-bottom-lnk '<link linkend="zorder-bottom-cmd">&zorder-bottom-cmd;</link>'>
+  <!ENTITY zorder-bottom-key "<keycode></keycode>">
+  <!ENTITY zorder-bottom-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/lower.png"/></imageobject></inlinemediaobject>'>
 
 <!ENTITY add-layer-cmd "<command>Add Layer</command>">
-<!ENTITY add-layer-lnk '<link linkend="add-layer-cmd"><command>Add Layer</command> command</link>'>
+<!ENTITY add-layer-lnk '<link linkend="add-layer-cmd"><command>Add Layer</command></link>'>
   <!ENTITY add-layer-key "<keycode>Alt-L</keycode>">
   <!ENTITY add-layer-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/newLayer.png"/></imageobject></inlinemediaobject>'>
 
-<!ENTITY add-inset-layer-cmd "<command>Add Inset Layer</command>">
-<!ENTITY add-inset-layer-lnk '<link linkend="add-inset-layer-cmd"><command>Add Inset Layer</command> command</link>'>
+<!ENTITY add-inset-layer-cmd "<command>Add Empty Inset Layer</command>">
+<!ENTITY add-inset-layer-lnk '<link linkend="add-inset-layer-cmd">&add-inset-layer-cmd;</link>'>
+<!ENTITY add-inset-layer-key "<keycode></keycode>">
 <!ENTITY add-inset-layer-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/add_inset_layer.png"/></imageobject></inlinemediaobject>'>
 
-<!ENTITY add-inset-curve-layer-cmd "<command>Add Inset Layer</command>">
-<!ENTITY add-inset-curve-layer-lnk '<link linkend="add-inset-curve-layer-cmd"><command>Add Inset Layer</command> command</link>'>
+<!ENTITY add-inset-curve-layer-cmd "<command>Add Inset Layer With Curves</command>">
+<!ENTITY add-inset-curve-layer-lnk '<link linkend="add-inset-curve-layer-cmd">&add-inset-curve-layer-cmd;</link>'>
+<!ENTITY add-inset-curve-layer-key "<keycode></keycode>">
 <!ENTITY add-inset-curve-layer-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/add_inset_curve_layer.png"/></imageobject></inlinemediaobject>'>
 
 <!ENTITY auto-arrange-layers-cmd "<command>Automatic Layout</command>">
-<!ENTITY auto-arrange-layers-lnk '<link linkend="auto-arrange-layers-cmd"><command>Automatic Layout</command> command</link>'>
+<!ENTITY auto-arrange-layers-lnk '<link linkend="auto-arrange-layers-cmd">&auto-arrange-layers-cmd;</link>'>
+<!ENTITY auto-arrange-layers-key "<keycode></keycode>">
 <!ENTITY auto-arrange-layers-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/auto_layout.png"/></imageobject></inlinemediaobject>'>
 
 <!ENTITY extract-layers-cmd "<command>Extract to Layers</command>">
-<!ENTITY extract-layers-lnk '<link linkend="extract-layers-cmd"><command>Extract to Layers</command> command</link>'>
+<!ENTITY extract-layers-lnk '<link linkend="extract-layers-cmd">&extract-layers-cmd;</link>'>
+<!ENTITY extract-layers-key "<keycode></keycode>">
 <!ENTITY extract-layers-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/extract_layers.png"/></imageobject></inlinemediaobject>'>
 
 <!ENTITY extract-graphs-cmd "<command>Extract to Graphs</command>">
-<!ENTITY extract-graphs-lnk '<link linkend="extract-graphs-cmd"><command>Extract to Graphs</command> command</link>'>
+<!ENTITY extract-graphs-lnk '<link linkend="extract-graphs-cmd">&extract-graphs-cmd;</link>'>
+<!ENTITY extract-graphs-key "<keycode></keycode>">
 <!ENTITY extract-graphs-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/extract_graphs.png"/></imageobject></inlinemediaobject>'>
 
-<!ENTITY draw-rectangle-cmd "<command>Add Rectangle</command>">
-<!ENTITY draw-rectangle-lnk '<link linkend="draw-rectangle-cmd"><command>Add Rectangle</command> command</link>'>
-<!ENTITY draw-rectangle-key "<keycode>Ctrl-Alt-R</keycode>">
-<!ENTITY draw-rectangle-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/rectangle.png"/></imageobject></inlinemediaobject>'>
+<!ENTITY add-rectangle-cmd "<command>Add Rectangle</command>">
+<!ENTITY add-rectangle-lnk '<link linkend="add-rectangle-cmd"><command>Add Rectangle</command></link>'>
+<!ENTITY add-rectangle-key "<keycode>Ctrl-Alt-R</keycode>">
+<!ENTITY add-rectangle-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/rectangle.png"/></imageobject></inlinemediaobject>'>
 
 <!ENTITY add-eq-cmd "<command>Add Equation</command>">
-<!ENTITY add-eq-lnk '<link linkend="add-eq-cmd"><command>Add Equation</command> command</link>'>
+<!ENTITY add-eq-lnk '<link linkend="add-eq-cmd"><command>Add Equation</command></link>'>
 <!ENTITY add-eq-key "<keycode>Alt-Q</keycode>">
 <!ENTITY add-eq-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/equation.png"/></imageobject></inlinemediaobject>'>
 
-<!ENTITY rescale-cmd "<command>Rescale to Show All</command>">
-<!ENTITY rescale-lnk '<link linkend="rescale-cmd"><command>Rescale to Show All</command> command</link>'>
-<!ENTITY rescale-key "<keycode>Ctrl-Shift-R</keycode>">
-<!ENTITY rescale-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/unzoom.png"/></imageobject></inlinemediaobject>'>
-
 <!ENTITY remove-layer-cmd "<command>Remove Layer</command>">
-<!ENTITY remove-layer-lnk '<link linkend="remove-layer-cmd"><command>Remove Layer</command> command</link>'>
+<!ENTITY remove-layer-lnk '<link linkend="remove-layer-cmd">&remove-layer-cmd;</link>'>
   <!ENTITY remove-layer-key "<keycode>Alt-R</keycode>">
   <!ENTITY remove-layer-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/erase.png"/></imageobject></inlinemediaobject>'>
 
@@ -690,30 +707,39 @@
 <!ENTITY pointer-lnk '<link linkend="pointer-cmd"><command>Disable tools</command> command</link>'>
   <!ENTITY pointer-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/pointer.png"/></imageobject></inlinemediaobject>'>
 
+<!--Entry added for use in linking to zoom commands sub-table in toolbars.docbook. SRB (09/23/2010 ) -->
+<!ENTITY zoom-commands-lnk '<link linkend="zoom-commands-table">Zoom Commands</link>'>
+<!ENTITY zoom-commands-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/zoom-cmds.png"/></imageobject></inlinemediaobject>'>
+
 <!ENTITY zoom-inoutdrag-cmd "<command>Zoom In/Out and Drag Canvas</command>">
-<!ENTITY zoom-inoutdrag-lnk '<link linkend="zoom-inoutdrag-cmd">&zoom-inoutdrag-cmd; command</link>'>
-  <!ENTITY zoom-inoutdrag-key "">
+<!ENTITY zoom-inoutdrag-lnk '<link linkend="zoom-inoutdrag-cmd">&zoom-inoutdrag-cmd;</link>'>
+<!ENTITY zoom-inoutdrag-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/magnifier.png"/></imageobject></inlinemediaobject>'>
+<!ENTITY zoom-inoutdrag-key "">
 
 <!ENTITY zoom-draghoriz-cmd "<command>Zoom/Drag Canvas Horizontally</command>">
-<!ENTITY zoom-draghoriz-lnk '<link linkend="zoom-draghoriz-cmd">&zoom-draghoriz-cmd; command</link>'>
-  <!ENTITY zoom-draghoriz-key "">
+<!ENTITY zoom-draghoriz-lnk '<link linkend="zoom-draghoriz-cmd">&zoom-draghoriz-cmd;</link>'>
+<!ENTITY zoom-draghoriz-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/magnifier_hor.png"/></imageobject></inlinemediaobject>'>
+<!ENTITY zoom-draghoriz-key "">
 
 <!ENTITY zoom-dragvert-cmd "<command>Zoom/Drag Canvas Vertically</command>">
-<!ENTITY zoom-dragvert-lnk '<link linkend="zoom-dragvert-cmd">&zoom-dragvert-cmd; command</link>'>
-  <!ENTITY zoom-dragvert-key "">
+<!ENTITY zoom-dragvert-lnk '<link linkend="zoom-dragvert-cmd">&zoom-dragvert-cmd;</link>'>
+<!ENTITY zoom-dragvert-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/magnifier_vert.png"/></imageobject></inlinemediaobject>'>
+<!ENTITY zoom-dragvert-key "">
 
 <!ENTITY zoom-in-cmd "<command>Zoom in</command>">
-<!ENTITY zoom-in-lnk '<link linkend="zoom-in-cmd"><command>Zoom in</command> command</link>'>
+<!ENTITY zoom-in-lnk '<link linkend="zoom-in-cmd"><command>Zoom in</command></link>'>
   <!ENTITY zoom-in-key "<keycode>Ctrl-+</keycode>">
   <!ENTITY zoom-in-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/zoom.png"/></imageobject></inlinemediaobject>'>
 <!ENTITY zoom-out-cmd "<command>Zoom out</command>">
-<!ENTITY zoom-out-lnk '<link linkend="zoom-out-cmd"><command>Zoom out</command> command</link>'>
+<!ENTITY zoom-out-lnk '<link linkend="zoom-out-cmd"><command>Zoom out</command></link>'>
   <!ENTITY zoom-out-key "<keycode>Ctrl--</keycode>">
   <!ENTITY zoom-out-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/zoomOut.png"/></imageobject></inlinemediaobject>'>
+
 <!ENTITY rescale-cmd "<command>Rescale To Show All</command>">
-<!ENTITY rescale-lnk '<link linkend="rescale-cmd"><command>Rescale To Show All</command> command</link>'>
+<!ENTITY rescale-lnk '<link linkend="rescale-cmd"><command>Rescale To Show All</command></link>'>
   <!ENTITY rescale-key "<keycode>Ctrl-Shift-R</keycode>">
   <!ENTITY rescale-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/unzoom.png"/></imageobject></inlinemediaobject>'>
+
 <!ENTITY data-reader-cmd "<command>Data Reader</command>">
 <!ENTITY data-reader-lnk '<link linkend="data-reader-cmd"><command>Data Reader</command> command</link>'>
   <!ENTITY data-reader-key "<keycode>Ctrl-D</keycode>">
@@ -728,6 +754,8 @@
 
 <!ENTITY draw-datapoints-cmd "<command>Draw Data Points</command>">
 <!ENTITY draw-datapoints-lnk '<link linkend="draw-datapoints-cmd">&draw-datapoints-cmd; command</link>'>
+  <!ENTITY draw-datapoints-key "<keycode></keycode>">
+  <!ENTITY draw-datapoints-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/draw_points.png"/></imageobject></inlinemediaobject>'>
 
 <!ENTITY move-data-points-cmd "<command>Move Data points</command>">
 <!ENTITY move-data-points-lnk '<link linkend="move-data-points-cmd"><command>Move Data points</command> command</link>'>
@@ -737,6 +765,14 @@
 <!ENTITY remove-data-points-lnk '<link linkend="remove-data-points-cmd"><command>Remove Bad Data Points</command> command</link>'>
   <!ENTITY remove-data-points-key "<keycode>Alt-B</keycode>">
   <!ENTITY remove-data-points-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/delete.png"/></imageobject></inlinemediaobject>'>
+
+<!--Added Drag Curve command SRB (09/22/2010 )-->
+
+<!ENTITY drag-curve-cmd "<command>Remove Bad Data Points</command>">
+<!ENTITY drag-curve-lnk '<link linkend="remove-data-points-cmd">&drag-curve-cmd; command</link>'>
+  <!ENTITY drag-curve-key "<keycode></keycode>">
+  <!ENTITY drag-curve-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/drag_curve.png"/></imageobject></inlinemediaobject>'>
+
 <!--
               menu: Format
 -->
