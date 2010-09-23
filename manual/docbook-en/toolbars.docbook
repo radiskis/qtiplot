@@ -258,7 +258,7 @@ The <emphasis>File Toolbar</emphasis> provides single-click access to commands f
 <sect1 id="sec-plot-toolbar">
 <title>The Plot Toolbar.</title>
 
-<para>This toolbar is only active when a plot window is selected. It provides single click access to the commands of the &graph-menu-lnk; and of the &data-menu-lnk; which are used for the modification of plots and the data points of the plots.</para>
+<para>This toolbar is only active when a graph window is selected. It provides single-click access to the commands of the &graph-menu-lnk; and of the &data-menu-lnk; which are used for the modification of plots and the data points of the plots.</para>
 <figure id="plot-file-toolbar">
   <title>The &appname; Plot Toolbar</title>
   <mediaobject>
@@ -293,15 +293,15 @@ The <emphasis>File Toolbar</emphasis> provides single-click access to commands f
 
   <row>
    <entry>&add-inset-layer-icon;</entry>
-   <entry><link linkend="add-inset-layer-cmd">&add-inset-layer-cmd;</link></entry>
-   <entry></entry>
+   <entry>&add-inset-layer-lnk;</entry>
+   <entry>&add-inset-layer-key;</entry>
    <entry>Adds an empty inset layer to the active graph window.</entry>
   </row>
 
   <row>
    <entry>&add-inset-curve-layer-icon;</entry>
-   <entry><link linkend="add-inset-curve-layer-cmd">&add-inset-curve-layer-cmd;</link></entry>
-   <entry></entry>
+   <entry>&add-inset-curve-layer-lnk;</entry>
+   <entry>&add-inset-curve-layer-key;</entry>
    <entry>Adds an inset layer to the active graph window that contains copies of any curves in the active plot layer.</entry>
   </row>
 
@@ -314,23 +314,29 @@ The <emphasis>File Toolbar</emphasis> provides single-click access to commands f
 
   <row>
    <entry>&auto-arrange-layers-icon;</entry>
-   <entry><link linkend="auto-arrange-layers-cmd">&auto-arrange-layers-cmd;</link></entry>
-   <entry></entry>
+   <entry>&auto-arrange-layers-lnk;</entry>
+   <entry>&auto-arrange-layers-key;</entry>
    <entry>Automatically rearranges all layers of the active graph window.</entry>
   </row>
 
   <row>
    <entry>&extract-layers-icon;</entry>
-   <entry><link linkend="extract-layers-cmd">&extract-layers-cmd;</link></entry>
-   <entry></entry>
+   <entry>&extract-layers-lnk;</entry>
+   <entry>&extract-layers-key;</entry>
    <entry>Extracts datasets (curves) from the active layer onto separate layers.</entry>
   </row>
 
   <row>
    <entry>&extract-graphs-icon;</entry>
-   <entry><link linkend="extract-graphs-cmd">&extract-graphs-cmd;</link></entry>
-   <entry></entry>
+   <entry>&extract-graphs-lnk;</entry>
+   <entry>&extract-graphs-key;</entry>
    <entry>Extracts all layers in the active graph window to separate graphs.</entry>
+  </row>
+  <row>
+   <entry>&add-error-bars-icon;</entry>
+   <entry><link linkend="add-error-bars-cmd">&add-error-bars-cmd;</link></entry>
+   <entry>&add-error-bars-key;</entry>
+   <entry>Adds error bars to a curve on the active plot layer.</entry>
   </row>
 
   <row>
@@ -338,12 +344,6 @@ The <emphasis>File Toolbar</emphasis> provides single-click access to commands f
    <entry><link linkend="add-remove-curve-cmd">&add-remove-curve-cmd;</link></entry>
    <entry>&add-remove-curve-key;</entry>
    <entry>Adds curves to, or removes curves from, the active plot window.</entry>
-  </row>
-  <row>
-   <entry>&add-error-bars-icon;</entry>
-   <entry><link linkend="add-error-bars-cmd">&add-error-bars-cmd;</link></entry>
-   <entry>&add-error-bars-key;</entry>
-   <entry>Adds error bars to a curve on the active plot layer.</entry>
   </row>
   <row>
    <entry>&add-function-icon;</entry>
@@ -360,7 +360,7 @@ The <emphasis>File Toolbar</emphasis> provides single-click access to commands f
 
   <row>
    <entry>&rescale-icon;</entry>
-   <entry><link linkend="rescale-cmd">&rescale-cmd;</link></entry>
+   <entry>&rescale-lnk;</entry>
    <entry>&rescale-key;</entry>
    <entry>Rescales the axes to show all data points.</entry>
   </row>
@@ -372,18 +372,12 @@ The <emphasis>File Toolbar</emphasis> provides single-click access to commands f
    <entry>Reverts to normal pointer mode. Useful when you have selected another pointer mode on a plot layer, such as the <link linkend="data-reader-cmd">data reader</link>.</entry>
   </row>
   <row>
-   <entry>&zoom-in-icon;</entry>
-   <entry><link linkend="zoom-in-cmd">&zoom-in-cmd;</link></entry>
-   <entry>&zoom-in-key;</entry>
-   <entry>Switches the active plot layer into zoom mode.</entry>
+   <entry>&zoom-commands-icon;</entry>
+   <entry>&zoom-commands-lnk;</entry>
+   <entry></entry>
+   <entry>Selects the last used zoom tool or selects a new one from a drop down list.</entry>
   </row>
-  <row>
-   <entry>&zoom-out-icon;</entry>
-   <entry><link linkend="zoom-out-cmd">&zoom-out-cmd;</link></entry>
-   <entry>&zoom-out-key;</entry>
-   <entry>Zooms the active plot layers out one step in the zoom history.</entry>
-  </row>
-  <row>
+ <row>
    <entry>&data-reader-icon;</entry>
    <entry><link linkend="data-reader-cmd">&data-reader-cmd;</link></entry>
    <entry>&data-reader-key;</entry>
@@ -401,6 +395,13 @@ The <emphasis>File Toolbar</emphasis> provides single-click access to commands f
    <entry></entry>
    <entry>Switches the active plot layer into &screen-reader-cmd; mode.</entry>
   </row>
+<!-- Added Draw Data Points (SRB) 09/22/2010 -->
+  <row>
+   <entry>&draw-datapoints-icon;</entry>
+   <entry><link linkend="draw-datapoints-cmd">&draw-datapoints-cmd;</link></entry>
+   <entry>&draw-datapoints-key;</entry>
+   <entry>Adds new data points on the active plot layer.</entry>
+  </row>
   <row>
    <entry>&move-data-points-icon;</entry>
    <entry><link linkend="move-data-points-cmd">&move-data-points-cmd;</link></entry>
@@ -413,14 +414,19 @@ The <emphasis>File Toolbar</emphasis> provides single-click access to commands f
    <entry>&remove-data-points-key;</entry>
    <entry>Allows removal of data points from the active plot layer.</entry>
   </row>
-
+<!-- Added Drag Curve (SRB) 09/22/2010 -->
+  <row>
+   <entry>&drag-curve-icon;</entry>
+   <entry><link linkend="drag-curve-cmd">&drag-curve-cmd;</link></entry>
+   <entry>&drag-curve-key;</entry>
+   <entry>Drags a selected curve around on plot layer.</entry>
+  </row>
   <row>
    <entry>&add-eq-icon;</entry>
    <entry>&add-eq-lnk;</entry>
    <entry>&add-eq-key;</entry>
-   <entry>Adds a new Tex equation to the active plot layer.</entry>
+   <entry>Adds a new <emphasis>Tex</emphasis> formatted equation on the active plot layer.</entry>
   </row>
-
   <row>
    <entry>&add-text-icon;</entry>
    <entry>&add-text-lnk;</entry>
@@ -428,25 +434,30 @@ The <emphasis>File Toolbar</emphasis> provides single-click access to commands f
    <entry>Adds a new text element on the active plot layer.</entry>
   </row>
   <row>
-   <entry>&draw-line-icon;</entry>
-   <entry>&draw-line-lnk;</entry>
-   <entry>&draw-line-key;</entry>
-   <entry>Adds a new line on the active plot layer.</entry>
-  </row>
-  <row>
    <entry>&draw-arrow-icon;</entry>
    <entry>&draw-arrow-lnk;</entry>
    <entry>&draw-arrow-key;</entry>
    <entry>Adds a new arrow on the active plot layer.</entry>
   </row>
-
+  <row>
+   <entry>&draw-line-icon;</entry>
+   <entry>&draw-line-lnk;</entry>
+   <entry>&draw-line-key;</entry>
+   <entry>Adds a new line on the active plot layer.</entry>
+  </row>
    <row>
-   <entry>&draw-rectangle-icon;</entry>
-   <entry>&draw-rectangle-lnk;</entry>
-   <entry>&draw-rectangle-key;</entry>
+   <entry>&add-rectangle-icon;</entry>
+   <entry>&add-rectangle-lnk;</entry>
+   <entry>&add-rectangle-key;</entry>
    <entry>Adds a new rectangle on the active plot layer.</entry>
   </row>
-
+<!-- Added Add Ellipse/Circle (SRB) 09/22/2010 -->
+   <row>
+   <entry>&add-ellipse-icon;</entry>
+   <entry>&add-ellipse-lnk;</entry>
+   <entry>&add-ellipse-key;</entry>
+   <entry>Adds a new ellipse (circle) on the active plot layer.</entry>
+  </row>
   <row>
    <entry>&add-time-stamp-icon;</entry>
    <entry>&add-time-stamp-lnk;</entry>
@@ -459,9 +470,74 @@ The <emphasis>File Toolbar</emphasis> provides single-click access to commands f
    <entry>&add-image-key;</entry>
    <entry>Inserts a new image into the active plot layer.</entry>
   </row>
+<!-- Added Hooks for Raise to Top and Lower to bottom (SRB) 09/22/2010 -->
+  <row>
+   <entry>&zorder-top-icon;</entry>
+   <entry>&zorder-top-lnk;</entry>
+   <entry>&zorder-top-key;</entry>
+   <entry>Moves the selected item to the top of the layer's z-order.</entry>
+  </row>
+  <row>
+   <entry>&zorder-bottom-icon;</entry>
+   <entry>&zorder-bottom-lnk;</entry>
+   <entry>&zorder-bottom-key;</entry>
+   <entry>Moves the selected item to the bottom of the layer's z-order.</entry>
+  </row>
+
 </tbody>
 </tgroup>
 </table>
+
+<table tocentry="1" pgwide="1" frame="sides" id="zoom-commands-table">
+<title>Plot Toolbar Zoom Commands</title>
+<tgroup cols="4">
+  <colspec colname="icon" colwidth="1*" align="center"/>
+  <colspec colname="command" colwidth="5*" align="left"/>
+  <colspec colname="key" colwidth="2*" align="center"/>
+  <colspec colname="description" colwidth="10*" align="justify"/>
+  <thead>
+    <row>
+      <entry>Icon</entry>
+      <entry>Command</entry>
+      <entry>Key</entry>
+      <entry>Description</entry>
+    </row>
+  </thead>
+ <tbody>
+  <row>
+   <entry>&zoom-inoutdrag-icon;</entry>
+   <entry>&zoom-inoutdrag-lnk;</entry>
+   <entry>&zoom-inoutdrag-key;</entry>
+   <entry>Switches the active plot layer into dynamic zoom/drag mode.</entry>
+  </row>
+  <row>
+   <entry>&zoom-draghoriz-icon;</entry>
+   <entry>&zoom-draghoriz-lnk;</entry>
+   <entry>&zoom-draghoriz-key;</entry>
+   <entry>Switches the active plot layer into dynamic horizontal zoom/drag mode.</entry>
+  </row>
+  <row>
+   <entry>&zoom-dragvert-icon;</entry>
+   <entry>&zoom-dragvert-lnk;</entry>
+   <entry>&zoom-dragvert-key;</entry>
+   <entry>Switches the active plot layer into dynamic vertical zoom/drag mode.</entry>
+  </row>
+   <row>
+   <entry>&zoom-in-icon;</entry>
+   <entry><link linkend="zoom-in-cmd">&zoom-in-cmd;</link></entry>
+   <entry>&zoom-in-key;</entry>
+   <entry>Switches the active plot layer into zoom mode.</entry>
+  </row>
+  <row>
+   <entry>&zoom-out-icon;</entry>
+   <entry><link linkend="zoom-out-cmd">&zoom-out-cmd;</link></entry>
+   <entry>&zoom-out-key;</entry>
+   <entry>Zooms the active plot layer out one step in the zoom history.</entry>
+  </row>
+</tbody>
+</tgroup>
+</table>
+
 
 
 </sect1>
