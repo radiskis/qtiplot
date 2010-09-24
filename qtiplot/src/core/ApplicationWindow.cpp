@@ -18431,6 +18431,19 @@ QString ApplicationWindow::endOfLine()
 	return "\n";
 }
 
+QStringList ApplicationWindow::windowsNameList()
+{
+	QStringList names;
+	Folder *f = projectFolder();
+	while (f){
+		QList<MdiSubWindow *> folderWindows = f->windowsList();
+		foreach(MdiSubWindow *w, folderWindows)
+			names << w->objectName();
+		f = f->folderBelow();
+	}
+	return names;
+}
+
 void ApplicationWindow::initCompleter()
 {
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
@@ -18456,14 +18469,7 @@ void ApplicationWindow::initCompleter()
 		}
 
 		words.append(PythonSyntaxHighlighter::keywordsList());
-
-		Folder *f = projectFolder();
-		while (f){
-			QList<MdiSubWindow *> folderWindows = f->windowsList();
-			foreach(MdiSubWindow *w, folderWindows)
-				words << w->objectName();
-			f = f->folderBelow();
-		}
+		words.append(windowsNameList());
 	}
 #endif
 

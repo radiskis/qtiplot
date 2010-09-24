@@ -6,6 +6,8 @@ SIGNAL
 SLOT
 connect
 emit
+hide
+show
 QtCore
 QtGui
 QDialog
