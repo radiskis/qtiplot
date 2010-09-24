@@ -1131,11 +1131,17 @@ void Graph3D::setAxesLabels(const QStringList& l)
 	sp->coordinates()->axes[X3].setLabelString(label);
 	sp->coordinates()->axes[X4].setLabelString(label);
 
+	if (l.size() < 2)
+		return;
+
 	label = l[1];
 	sp->coordinates()->axes[Y1].setLabelString(label);
 	sp->coordinates()->axes[Y2].setLabelString(label);
 	sp->coordinates()->axes[Y3].setLabelString(label);
 	sp->coordinates()->axes[Y4].setLabelString(label);
+
+	if (l.size() < 3)
+		return;
 
 	label = l[2];
 	sp->coordinates()->axes[Z1].setLabelString(label);
