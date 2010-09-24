@@ -4677,7 +4677,10 @@ void Graph::copy(Graph* g)
 	foreach (ArrowMarker *a, lines)
 		addArrow(a);
 
-	setAntialiasing(g->antialiasing(), true);
+	d_disable_curve_antialiasing = g->isCurveAntialiasingDisabled();
+	d_max_antialising_size = g->maxAntialisingSize();
+	setAntialiasing(g->antialiasing(), false);
+
 	autoScaleFonts = g->autoscaleFonts();
 
 	if (g->activeTool() && g->activeTool()->rtti() == PlotToolInterface::Rtti_ImageProfilesTool){
@@ -4777,6 +4780,7 @@ void Graph::copyCurves(Graph* g)
 			} else if (cv->testCurveAttribute (QwtPlotCurve::Inverted))
 				c->setCurveAttribute(QwtPlotCurve::Inverted, true);
 
+			c->setRenderHint(QwtPlotItem::RenderAntialiased, cv->testRenderHint(QwtPlotItem::RenderAntialiased));
 			c->setAxis(cv->xAxis(), cv->yAxis());
 			c->setVisible(cv->isVisible());
 			c->setPlotStyle(((PlotCurve *)it)->plotStyle());
@@ -5302,7 +5306,7 @@ Graph::~Graph()
 
 void Graph::setAntialiasing(bool on, bool update)
 {
-	if (d_antialiasing == on)
+	if (d_antialiasing == on && !update)
 		return;
 
 	d_antialiasing = on;

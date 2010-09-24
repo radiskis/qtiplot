@@ -742,6 +742,8 @@ class Graph: public QwtPlot
 
 		void disableCurveAntialiasing(bool disable, int maxPoints);
 		bool isCurveAntialiasingEnabled(QwtPlotItem *it);
+		bool isCurveAntialiasingDisabled(){return d_disable_curve_antialiasing;};
+		int maxAntialisingSize(){return d_max_antialising_size;};
 
 		void setCurrentFont(const QFont& f);
 		void notifyFontChange(const QFont& f){emit currentFontChanged(f);};
