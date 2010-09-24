@@ -3915,7 +3915,7 @@ L&apos;autocomplétion ne sera pas disponible!</translation>
     </message>
     <message>
         <source>Yes, don&apos;t ask me again</source>
-        <translation type="unfinished"></translation>
+        <translation>Oui, ne plus me demander</translation>
     </message>
 </context>
 <context>
@@ -5737,7 +5737,7 @@ Les codes spéciaux suivant peuvent être utilisés :
     </message>
     <message>
         <source>Open &amp;last project at startup</source>
-        <translation>Ouvirir &amp;le dernier projet au démarrage</translation>
+        <translation>Ouvrir &amp;le dernier projet au démarrage</translation>
     </message>
 </context>
 <context>
