@@ -1653,6 +1653,7 @@ void MultiLayer::copy(MultiLayer* ml)
 
 	d_scale_layers = ml->scaleLayersOnResize();
 	linkXLayerAxes(ml->hasLinkedXLayerAxes());
+	d_common_axes_layout = ml->hasCommonAxes();
 }
 
 bool MultiLayer::swapLayers(int src, int dest)
