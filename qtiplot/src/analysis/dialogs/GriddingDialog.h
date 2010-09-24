@@ -64,6 +64,7 @@ private slots:
 private:
 	void loadDataFromTable();
 	void resetAxesLabels();
+	void findBestLayout();
 
 	Table *d_table;
 	Qwt3D::Plot3D* sp;
