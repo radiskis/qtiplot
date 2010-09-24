@@ -270,6 +270,7 @@ public slots:
 	ApplicationWindow * loadScript(const QString& fn, bool execute = false, bool noGui = false);
 
 	QList<MdiSubWindow *> windowsList();
+	QStringList windowsNameList();
 	void updateWindowLists(MdiSubWindow *w);
 	/*!
     Arranges all the visible project windows in a cascade pattern.

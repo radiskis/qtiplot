@@ -202,7 +202,7 @@ void ScriptEdit::keyPressEvent(QKeyEvent *e)
      if (!d_completer || (ctrlOrShift && e->text().isEmpty()))
          return;
 
-     static QString eow("~!@#$%^&*()_+{}|:\"<>?,./;'[]\\-="); // end of word
+	 static QString eow("~!@#$%^&*()_+{}|:\"<>?,./;'[]\\-="); // end of word
      bool hasModifier = (e->modifiers() != Qt::NoModifier) && !ctrlOrShift;
      QString completionPrefix = textUnderCursor();
 
@@ -654,8 +654,13 @@ void ScriptEdit::setDirPath(const QString& path)
 		tc.movePosition(QTextCursor::PreviousCharacter, QTextCursor::MoveAnchor, 1);
 	} else if (specialWord)
 		tc.insertText(completion.right(extra) + ".");
-	else
-		tc.insertText(completion.right(extra));
+	else {
+		ApplicationWindow *app = qobject_cast<ApplicationWindow *>(scriptEnv->application());
+		if (app && app->windowsNameList().contains(completion))//window name?
+			tc.insertText(completion.right(extra) + "\"");
+		else
+			tc.insertText(completion.right(extra));
+	}
 
 	setTextCursor(tc);
  }
@@ -664,7 +669,16 @@ void ScriptEdit::setDirPath(const QString& path)
  {
      QTextCursor tc = textCursor();
      tc.select(QTextCursor::WordUnderCursor);
-     return tc.selectedText();
+
+	 QString s = tc.selectedText();
+	 if (s.contains(")")){
+		 tc.select(QTextCursor::LineUnderCursor);
+		 s = tc.selectedText();
+		 s.remove(")");
+		 return s.right(2);
+	 }
+
+	return s;
  }
 
 
