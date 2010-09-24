@@ -193,10 +193,12 @@
 <!ENTITY redo-lnk '<link linkend="redo-cmd"><command>Redo</command> command</link>'>
   <!ENTITY redo-key "<keycode>Ctrl-R</keycode>">
   <!ENTITY redo-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/redo.png"/></imageobject></inlinemediaobject>'>
+
 <!ENTITY cut-cmd "<command>Cut Selection</command>">
-<!ENTITY cut-lnk '<link linkend="cut-cmd"><command>Cut Selection</command> command</link>'>
+<!ENTITY cut-lnk '<link linkend="cut-cmd">&cut-cmd;</link>'>
   <!ENTITY cut-key "<keycode>Ctrl-X</keycode>">
   <!ENTITY cut-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/cut.png"/></imageobject></inlinemediaobject>'>
+
 <!ENTITY copy-cmd "<command>Copy Selection</command>">
 <!ENTITY copy-lnk '<link linkend="copy-cmd"><command>Copy Selection</command> command</link>'>
   <!ENTITY copy-key "<keycode>Ctrl-C</keycode>">
@@ -233,7 +235,14 @@
 <!ENTITY results-log-cmd "<command>Results log</command>">
 <!ENTITY results-log-lnk '<link linkend="results-log-cmd"><command>Results log</command> command</link>'>
   <!ENTITY results-log-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/log.png"/></imageobject></inlinemediaobject>'>
+
 <!ENTITY undo-stack-cmd "<command>Undo/Redo Stack...</command>">
+<!ENTITY undo-stack-lnk '<link linkend="undo-stack-cmd">&undo-stack-cmd;</link>'>
+
+<!ENTITY console-cmd "<command>Show/Hide Scripting Console</command>">
+<!ENTITY console-lnk '<link linkend="console-cmd">&console-cmd;</link>'>
+
+
 <!--
               menu: Scripting
 -->
@@ -429,9 +438,16 @@
 <!ENTITY double-y-lnk '<link linkend="double-y-cmd"><command>Double-Y</command> command</link>'>
 <!ENTITY double-y-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/plot_double_y.png"/></imageobject></inlinemediaobject>'>
 
+<!ENTITY waterfall-plot-cmd "<command>Waterfall</command>">
+<!ENTITY waterfall-plot-lnk '<link linkend="waterfall-plot-cmd">&waterfall-plot-cmd;</link>'>
+<!ENTITY waterfall-plot-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/waterfall_plot.png"/></imageobject></inlinemediaobject>'>
+
 <!ENTITY zoom-plot-cmd "<command>Zoom</command>">
-<!ENTITY zoom-plot-lnk '<link linkend="double-y-cmd"><command>Zoom</command> command</link>'>
+<!ENTITY zoom-plot-lnk '<link linkend="double-y-cmd">&zoom-plot-cmd;</link>'>
 <!ENTITY zoom-plot-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/add_zoom_plot.png"/></imageobject></inlinemediaobject>'>
+
+
+
 
 <!ENTITY statistical-graphs-cmd "<command>Statistical Graphs</command>">
 <!ENTITY statistical-graphs-lnk '<link linkend="statistical-graphs-cmd"><command>Statistical Graphs</command> command</link>'>
