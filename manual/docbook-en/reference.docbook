@@ -193,7 +193,7 @@ The active items appearing in a menu depends upon which project window is active
   </listitem>
 </varlistentry>
 
-<!-- Added entries for Open Excel and Open ODF Spreadsheet (SRB)-->
+<!-- Added entries for Open Excel and Open ODF Spreadsheet SRB (09/18/2010 )-->
 <varlistentry id="open-excel-cmd">
   <term>File -> &open-excel-cmd;</term>
   <listitem>
@@ -380,12 +380,14 @@ The active items appearing in a menu depends upon which project window is active
      <para>Reverse the effect of the last "Undo" operation on a note or a matrix. Currently this function does not work for anything other than notes and matrices.</para>
   </listitem>
 </varlistentry>
-<!-- <varlistentry id="cut-cmd">
+
+<varlistentry id="cut-cmd">
   <term>Edit -> &cut-cmd; (&cut-key;)</term>
   <listitem>
-     <para>Copies the current selection to the clipboard and deletes the selection. It currently works for tables and for 2D plots objects.</para>
+     <para>While this command does not currently appear in the Edit Menu, the functionality is provided with the &cut-key; key. The command copies the current selection to the clipboard and deletes the selection. It currently works for tables and for 2D plots objects.</para>
   </listitem>
-</varlistentry> -->
+</varlistentry>
+
 <varlistentry id="copy-cmd">
   <term>Edit -> &copy-cmd; (&copy-key;)</term>
   <listitem>
@@ -463,6 +465,14 @@ The active items appearing in a menu depends upon which project window is active
   </listitem>
 </varlistentry>
 
+<varlistentry id="console-cmd">
+  <term>View -> &console-cmd;</term>
+  <listitem>
+     <para>Shows/Hides the scripting console window.</para>
+  </listitem>
+</varlistentry>
+
+
 </variablelist>
 
 </sect1>
@@ -482,16 +492,16 @@ The active items appearing in a menu depends upon which project window is active
      <para>Opens the <link linkend="add-remove-curve-dialog">&add-remove-curve-cmd; dialog</link>, allowing easy addition or removal of curves from the active plot layer. This dialog can also be used to modify a curve which is already plotted by changing the columns which are used as X or Y values. The curve is added to the currently active layer. If there is no layer on the graph, an error message will pop-up.</para>
   </listitem>
 </varlistentry>
-<varlistentry id="add-error-bars-cmd">
-  <term>Graph -> &add-error-bars-cmd; (&add-error-bars-key;)</term>
-  <listitem>
-     <para>Opens the <link linkend="add-error-bars-dialog">&add-error-bars-cmd; dialog</link>. You can add error bars to X and/or Y values on an existing plot. Error bars are added to the currently active layer.</para>
-  </listitem>
-</varlistentry>
 <varlistentry id="add-function-cmd">
   <term>Graph -> &add-function-cmd; (&add-function-key;)</term>
   <listitem>
      <para>Opens the <link linkend="add-function-dialog">&add-function-cmd; dialog</link>. This command is used to add new function curves to an existing layer. New curves are added to the currently active layer.</para>
+  </listitem>
+</varlistentry>
+<varlistentry id="add-error-bars-cmd">
+  <term>Graph -> &add-error-bars-cmd; (&add-error-bars-key;)</term>
+  <listitem>
+     <para>Opens the <link linkend="add-error-bars-dialog">&add-error-bars-cmd; dialog</link>. You can add error bars to X and/or Y values on an existing plot. Error bars are added to the currently active layer.</para>
   </listitem>
 </varlistentry>
 <varlistentry id="new-legend-cmd">
@@ -554,6 +564,23 @@ The active items appearing in a menu depends upon which project window is active
      <para>Opens a file dialog allowing you to select an image to be added to the active plot layer. Only a link to the image file will be saved into the project file and not the image itself. The new image is added to the left-top corner of the layer and can be moved with the mouse using drag-and-drop.</para>
   </listitem>
 </varlistentry>
+
+<!--The zorder commands act upon the last few items. Even though they do not appear in the graph menu, they are in the plot toolbar and they appear in the object drop down lists when right clicking a selected object. SRB (09/23/2010 ) -->
+
+<varlistentry id="zorder-top-cmd">
+  <term>&zorder-top-cmd;</term>
+  <listitem>
+     <para>Although this command does <emphasis>not</emphasis> appear in the Graph menu, it does act upon the objects created using the last few commands (specifically legend, equation, text, timestamp, ellipse, rectangle and image objects). When a suitable object is selected, this command will be available, either from the &plot-toolbar-lnk; or from the drop-down list that appears when right-clicking on a selected object. When the command is used, the object will be made visible by being promoted to the front of the plot layer. It does not affect the z-order relative to other objects. Their relative z-order depends only upon their order of creation.</para>
+  </listitem>
+</varlistentry>
+
+<varlistentry id="zorder-bottom-cmd">
+  <term>&zorder-bottom-cmd;</term>
+  <listitem>
+     <para>Although this command does <emphasis>not</emphasis> appear in the Graph menu, it does act upon the objects created using the last few commands (specifically legend, equation, text, timestamp, ellipse, rectangle and image objects). When a suitable object is selected, this command will be available, either from the &plot-toolbar-lnk; or from the drop-down list that appears when right-clicking on a selected object. When the command is used, the object will be made invisible by being demoted to the back of the plot layer. It does not affect the z-order relative to other objects. Their relative z-order depends only upon their order of creation.</para>
+  </listitem>
+</varlistentry>
+
 <varlistentry id="add-layer-cmd">
   <term>Graph -> &add-layer-cmd; (&add-layer-key;)</term>
   <listitem>
@@ -728,6 +755,34 @@ The active items appearing in a menu depends upon which project window is active
 	<term>&double-y-cmd;</term>
 	<listitem>
 	  <para>Creates a double Y axis graph. Requires a selection of at least two Y columns (or a range from at least two columns).</para>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry id="waterfall-plot-cmd">
+	<term>&waterfall-plot-cmd;</term>
+	<listitem>
+	  <para>Creates a new graph window containing a waterfall plot generated from data in the selected columns. Each column is drawn as a separate curve which is offset from the previous one in both <emphasis>X</emphasis> and <emphasis>Y</emphasis>, creating the so-called waterfall effect. The figure shown below is a simple example of a waterfall plot where each column is simply an attenuated version of the previous colum.</para>
+      <informalfigure id="fig-waterfall-plot">
+        <mediaobject>
+          <imageobject>
+            <imagedata  format="PNG" fileref="pics/plot-gallery-waterfall.png"/>
+          </imageobject>
+        </mediaobject>
+      </informalfigure>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry id="zoom-plot-cmd">
+	<term>&zoom-plot-cmd;</term>
+	<listitem>
+	  <para>Creates a new graph with 2 layers. The first is a standard plot layer which contains a curve for each selected <emphasis>Y</emphasis> column. The second is a special layer which has 2 components: 1) There is a standard plot layer that shows a portion of the first layer's surface in a magnified view; 2) There is a separate graphical window that can be sized and dragged around the first layer to specify the portion of that layer which is shown in the magnified view. The figure below shows a typical <emphasis>zoom</emphasis> plot.</para>
+      <informalfigure id="fig-zoom-plot">
+        <mediaobject>
+          <imageobject>
+            <imagedata  format="PNG" fileref="pics/plot-gallery-zoom.png"/>
+          </imageobject>
+        </mediaobject>
+      </informalfigure>
 	</listitem>
       </varlistentry>
 

@@ -256,7 +256,7 @@ The <emphasis>File Toolbar</emphasis> provides single-click access to commands f
 </sect1>
 
 <sect1 id="sec-plot-toolbar">
-<title>The Plot Toolbar.</title>
+<title>The Plot Toolbar</title>
 
 <para>This toolbar is only active when a graph window is selected. It provides single-click access to the commands of the &graph-menu-lnk; and of the &data-menu-lnk; which are used for the modification of plots and the data points of the plots.</para>
 <figure id="plot-file-toolbar">
@@ -633,12 +633,19 @@ The <emphasis>File Toolbar</emphasis> provides single-click access to commands f
    <entry></entry>
    <entry>Plots selected data using two different y axes.</entry>
   </row>
-<!--Next Item Needs Clarification (SRB) -->
+
  <row>
+   <entry>&waterfall-plot-icon;</entry>
+   <entry><link linkend="waterfall-plot-cmd">plot -> &waterfall-plot-cmd;</link></entry>
+   <entry></entry>
+   <entry>Creates a Waterfall plot from a series of selected columns.</entry>
+  </row>
+ <row>
+
    <entry>&zoom-plot-icon;</entry>
    <entry><link linkend="zoom-plot-cmd">plot -> &zoom-plot-cmd;</link></entry>
    <entry></entry>
-   <entry>Plots a magnified region of data in the same graph window (along with the full range of data).</entry>
+   <entry>Plots selected data in one plot layer along with a magnified region of that data in another plot layer on the same graph window.</entry>
   </row>
 
   <row>
