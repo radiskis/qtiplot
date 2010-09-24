@@ -310,6 +310,9 @@ void GriddingDialog::loadDataFromTable()
 	sp->makeCurrent();
 	data_curve->loadFromData (data, cells);
 	sp->updateData();
+
+	findBestLayout();
+
 	sp->updateGL();
 
 	data.clear();
@@ -494,6 +497,47 @@ void GriddingDialog::resetAxesLabels()
 	sp->coordinates()->axes[Y2].setLabelString(s);
 	sp->coordinates()->axes[Y3].setLabelString(s);
 	sp->coordinates()->axes[Y4].setLabelString(s);
+}
+
+void GriddingDialog::findBestLayout()
+{
+	double start, end;
+	sp->coordinates()->axes[X1].limits (start, end);
+	double xScale = 1/fabs(end - start);
+
+	sp->coordinates()->axes[Y1].limits (start, end);
+	double yScale = 1/fabs(end - start);
+
+	sp->coordinates()->axes[Z1].limits (start, end);
+	double zScale = 1/fabs(end - start);
+
+	double d = (sp->hull().maxVertex - sp->hull().minVertex).length();
+	sp->setScale(xScale, yScale, zScale);
+
+	sp->setZoom(d/sqrt(3.));
+
+	sp->setShift(0, 0, 0);
+
+	double majl = 0.1/yScale;
+	double minl = 0.6*majl;
+
+	sp->coordinates()->axes[X1].setTicLength (majl, minl);
+	sp->coordinates()->axes[X2].setTicLength (majl, minl);
+	sp->coordinates()->axes[X3].setTicLength (majl, minl);
+	sp->coordinates()->axes[X4].setTicLength (majl, minl);
+
+	majl = 0.1/xScale;
+	minl = 0.6*majl;
+
+	sp->coordinates()->axes[Y1].setTicLength (majl, minl);
+	sp->coordinates()->axes[Y2].setTicLength (majl, minl);
+	sp->coordinates()->axes[Y3].setTicLength (majl, minl);
+	sp->coordinates()->axes[Y4].setTicLength (majl, minl);
+	sp->coordinates()->axes[Z1].setTicLength (majl, minl);
+	sp->coordinates()->axes[Z2].setTicLength (majl, minl);
+	sp->coordinates()->axes[Z3].setTicLength (majl, minl);
+	sp->coordinates()->axes[Z4].setTicLength (majl, minl);
+
 }
 
 GriddingDialog::~GriddingDialog()

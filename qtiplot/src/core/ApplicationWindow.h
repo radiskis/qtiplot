@@ -82,6 +82,7 @@ class QLocale;
 class QMdiArea;
 class QUndoView;
 class QCompleter;
+class QFileInfo;
 
 class Matrix;
 class Table;
@@ -1117,6 +1118,7 @@ private:
 	void goToParentFolder();
 	bool isProjectFile(const QString& fn);
 	void initSearchForUpdates();
+	bool isFileReadable(const QString&);
 
 private slots:
 	void disableActions();

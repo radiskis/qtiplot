@@ -4711,14 +4711,29 @@ bool ApplicationWindow::isProjectFile(const QString& fn)
 	return false;
 }
 
+bool ApplicationWindow::isFileReadable(const QString& file_name)
+{
+	QFileInfo fi(file_name);
+	if (fi.isDir()){
+		QMessageBox::critical(this, tr("QtiPlot - File openning error"),
+				tr("<b>%1</b> is a directory, please specify a file name!").arg(file_name));
+		return false;
+	} else if (!fi.exists()){
+		QMessageBox::critical(this, tr("QtiPlot - File openning error"),
+				tr("The file: <b>%1</b> doesn't exist!").arg(file_name));
+		return false;
+	} else if (fi.exists() && !fi.isReadable()){
+		QMessageBox::critical(this, tr("QtiPlot - File openning error"),
+				tr("You don't have the permission to open this file: <b>%1</b>").arg(file_name));
+		return false;
+	}
+	return true;
+}
+
 ApplicationWindow* ApplicationWindow::open(const QString& fn, bool factorySettings, bool newProject)
 {
-	QFileInfo fi(fn);
-	if (!fi.isReadable()){
-		QMessageBox::critical(this, tr("QtiPlot - File openning error"),
-		tr("You don't have the permission to open this file: <b>%1</b>").arg(fn));
+	if (!this->isFileReadable(fn))
 		return NULL;
-	}
 
 #ifdef OPJ_IMPORT
 	if (fn.endsWith(".opj", Qt::CaseInsensitive) || fn.endsWith(".ogm", Qt::CaseInsensitive) ||
@@ -15837,7 +15852,8 @@ void ApplicationWindow::parseCommandLineArguments(const QStringList& args)
 			if (app && app != this){
 				savedProject();
 				close();
-			}
+			} else
+				savedProject();
 		} else
 			initWindow();
 		return;
@@ -15935,22 +15951,10 @@ void ApplicationWindow::parseCommandLineArguments(const QStringList& args)
 	savedProject();
 
 	if (!file_name.isEmpty()){
-		QFileInfo fi(file_name);
-		if (fi.isDir()){
-			QMessageBox::critical(this, tr("QtiPlot - File openning error"),
-					tr("<b>%1</b> is a directory, please specify a file name!").arg(file_name));
+		if (!this->isFileReadable(file_name))
 			return;
-		} else if (!fi.exists()){
-			QMessageBox::critical(this, tr("QtiPlot - File openning error"),
-					tr("The file: <b>%1</b> doesn't exist!").arg(file_name));
-			return;
-		} else if (fi.exists() && !fi.isReadable()){
-			QMessageBox::critical(this, tr("QtiPlot - File openning error"),
-					tr("You don't have the permission to open this file: <b>%1</b>").arg(file_name));
-			return;
-		}
 
-		workingDir = fi.dirPath(true);
+		workingDir = QFileInfo(file_name).dirPath(true);
 		saveSettings();//the recent projects must be saved
 
 		if (console){
