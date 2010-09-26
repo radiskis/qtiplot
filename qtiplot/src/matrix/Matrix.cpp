@@ -1516,9 +1516,9 @@ void Matrix::fft(bool inverse)
 	}
 }
 
-#if QT_VERSION >= 0x040500
 bool Matrix::exportODF(const QString& fname, bool exportSelection)
 {
+#if QT_VERSION >= 0x040500
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
 	int topRow = 0;
@@ -1576,8 +1576,9 @@ bool Matrix::exportODF(const QString& fname, bool exportSelection)
 
 	QApplication::restoreOverrideCursor();
 	return true;
-}
 #endif
+	return false;
+}
 
 #ifdef XLS_IMPORT
 bool Matrix::exportExcel(const QString& fname, bool exportSelection)
@@ -1646,7 +1647,7 @@ bool Matrix::exportASCII(const QString& fname, const QString& separator, bool ex
 	if (fname.endsWith(".odf") || fname.endsWith(".html")){
 		f.close();
 		return exportODF(fname, exportSelection);
-        }
+	}
 #ifdef XLS_IMPORT
         else if (fname.endsWith(".xls")){
             f.close();

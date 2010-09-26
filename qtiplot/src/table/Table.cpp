@@ -2897,9 +2897,9 @@ bool Table::exportExcel(const QString& fname, bool withLabels, bool exportCommen
 }
 #endif
 
-#if QT_VERSION >= 0x040500
 bool Table::exportODF(const QString& fname, bool withLabels, bool exportComments, bool exportSelection)
 {
+#if QT_VERSION >= 0x040500
         QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
         int rows = d_table->numRows();
@@ -3036,8 +3036,9 @@ bool Table::exportODF(const QString& fname, bool withLabels, bool exportComments
 
         QApplication::restoreOverrideCursor();
         return true;
-}
 #endif
+	return false;
+}
 
 bool Table::exportASCII(const QString& fname, const QString& separator,
 		bool withLabels, bool exportComments, bool exportSelection)
