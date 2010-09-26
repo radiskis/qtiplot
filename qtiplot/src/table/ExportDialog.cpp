@@ -177,8 +177,10 @@ void ExportDialog::setFileTypeFilters()
 {
 	QList<QByteArray> list;
 	list << "DAT";
+#if QT_VERSION >= 0x040500
 	list << "ODF";
 	list << "HTML";
+#endif
 	list << "TXT";
 	list << "TEX";
 #ifdef XLS_IMPORT

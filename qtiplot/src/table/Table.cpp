@@ -47,7 +47,9 @@
 #include <QProgressDialog>
 #include <QFile>
 #include <QRegion>
+#if QT_VERSION >= 0x040500
 #include <QTextDocumentWriter>
+#endif
 #include <QTextTable>
 
 #include <q3paintdevicemetrics.h>
@@ -2895,6 +2897,7 @@ bool Table::exportExcel(const QString& fname, bool withLabels, bool exportCommen
 }
 #endif
 
+#if QT_VERSION >= 0x040500
 bool Table::exportODF(const QString& fname, bool withLabels, bool exportComments, bool exportSelection)
 {
         QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
@@ -3034,7 +3037,7 @@ bool Table::exportODF(const QString& fname, bool withLabels, bool exportComments
         QApplication::restoreOverrideCursor();
         return true;
 }
-
+#endif
 
 bool Table::exportASCII(const QString& fname, const QString& separator,
 		bool withLabels, bool exportComments, bool exportSelection)

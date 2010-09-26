@@ -159,7 +159,9 @@ public:
 	//! Calculate matrix values using the #formula_str (optimization for muParser).
 	bool muParserCalculate(int startRow = 0, int endRow = -1, int startCol = 0, int endCol = -1);
 
+#if QT_VERSION >= 0x040500
 	bool exportODF(const QString& fname, bool exportSelection);
+#endif
 #ifdef XLS_IMPORT
         bool exportExcel(const QString& fname, bool exportSelection);
 #endif
