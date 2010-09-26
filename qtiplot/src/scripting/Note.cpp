@@ -51,8 +51,9 @@ void Note::init(ScriptingEnv *env)
 #if QT_VERSION >= 0x040500
 	d_tab_widget->setTabsClosable(true);
 	d_tab_widget->setDocumentMode(true);
-#endif
+
 	connect(d_tab_widget, SIGNAL(tabCloseRequested(int)), this, SLOT(removeTab(int)));
+#endif
 	connect(d_tab_widget, SIGNAL(currentChanged(int)), this, SLOT(notifyChanges()));
 	connect(d_tab_widget, SIGNAL(currentChanged(int)), this, SIGNAL(currentEditorChanged()));
 
@@ -189,6 +190,8 @@ int Note::indexOf(ScriptEdit* editor)
 			}
 		}
 	}
+
+	return -1;
 }
 
 ScriptEdit* Note::editor(int index)
