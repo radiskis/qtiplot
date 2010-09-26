@@ -57,7 +57,9 @@
 #include <QSvgGenerator>
 #include <QFile>
 #include <QUndoStack>
+#if QT_VERSION >= 0x040500
 #include <QTextDocumentWriter>
+#endif
 #include <QTextTable>
 
 #include <stdlib.h>
@@ -885,6 +887,7 @@ void Matrix::exportRasterImage(const QString& fileName, int quality, int dpi)
 	int dpm = (int)ceil(100.0/2.54*dpi);
 	image.setDotsPerMeterX(dpm);
 	image.setDotsPerMeterY(dpm);
+#if QT_VERSION >= 0x040500
 	if (fileName.endsWith(".odf")){
 		QTextDocument *document = new QTextDocument();
 		QTextCursor cursor = QTextCursor(document);
@@ -896,6 +899,7 @@ void Matrix::exportRasterImage(const QString& fileName, int quality, int dpi)
 		QTextDocumentWriter writer(fileName);
 		writer.write(document);
 	} else
+#endif
 		image.save(fileName, 0, quality);
 }
 
@@ -1512,6 +1516,7 @@ void Matrix::fft(bool inverse)
 	}
 }
 
+#if QT_VERSION >= 0x040500
 bool Matrix::exportODF(const QString& fname, bool exportSelection)
 {
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
@@ -1572,6 +1577,7 @@ bool Matrix::exportODF(const QString& fname, bool exportSelection)
 	QApplication::restoreOverrideCursor();
 	return true;
 }
+#endif
 
 #ifdef XLS_IMPORT
 bool Matrix::exportExcel(const QString& fname, bool exportSelection)

@@ -125,7 +125,9 @@
 #include <ScriptWindow.h>
 #include <PythonSyntaxHighlighter.h>
 #include <CreateBinMatrixDialog.h>
+#if QT_VERSION >= 0x040500
 #include <QTextDocumentWriter>
+#endif
 #include <QToolButton>
 
 #include <stdio.h>
@@ -6407,6 +6409,7 @@ void ApplicationWindow::exportLayer()
 	}
 }
 
+#if QT_VERSION >= 0x040500
 void ApplicationWindow::exportPresentationODF()
 {
 	ImageExportDialog *ied = new ImageExportDialog(NULL, this, d_extended_export_dialog);
@@ -6462,6 +6465,7 @@ void ApplicationWindow::exportPresentationODF()
 		writer.write(document);
 	}
 }
+#endif
 
 void ApplicationWindow::exportAllGraphs()
 {
@@ -10033,7 +10037,9 @@ void ApplicationWindow::fileMenuAboutToShow()
 			fileMenu->addMenu (exportPlotMenu);
 			exportPlotMenu->addAction(actionExportGraph);
 			exportPlotMenu->addAction(actionExportAllGraphs);
+		#if QT_VERSION >= 0x040500
 			exportPlotMenu->addAction(actionPresentationODF);
+		#endif
 		} else if (w->inherits("Table") || w->isA("Matrix")){
 			QMenu *exportMenu = fileMenu->addMenu(tr("Export"));
 			exportMenu->addAction(actionShowExportASCIIDialog);
@@ -13753,10 +13759,10 @@ void ApplicationWindow::createActions()
 	actionExportAllGraphs = new QAction(tr("&All"), this);
 	actionExportAllGraphs->setShortcut( tr("Alt+X") );
 	connect(actionExportAllGraphs, SIGNAL(activated()), this, SLOT(exportAllGraphs()));
-
+#if QT_VERSION >= 0x040500
 	actionPresentationODF = new QAction(tr("Create Open &Document Presentation..."), this);
 	connect(actionPresentationODF, SIGNAL(activated()), this, SLOT(exportPresentationODF()));
-
+#endif
 	actionExportPDF = new QAction(QIcon(":/pdf.png"), tr("&Export PDF"), this);
 	actionExportPDF->setShortcut( tr("Ctrl+Alt+P") );
 	connect(actionExportPDF, SIGNAL(activated()), this, SLOT(exportPDF()));
@@ -14737,9 +14743,9 @@ void ApplicationWindow::translateActionsStrings()
 	actionExportAllGraphs->setMenuText(tr("&All"));
 	actionExportAllGraphs->setShortcut(tr("Alt+X"));
 	actionExportAllGraphs->setToolTip(tr("Export all graphs"));
-
+#if QT_VERSION >= 0x040500
 	actionPresentationODF->setMenuText(tr("Create Open &Document Presentation..."));
-
+#endif
     actionExportPDF->setMenuText(tr("&Export PDF"));
 	actionExportPDF->setShortcut(tr("Ctrl+Alt+P"));
 	actionExportPDF->setToolTip(tr("Export to PDF"));

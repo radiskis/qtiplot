@@ -47,7 +47,9 @@
 #include <QLabel>
 #include <QGroupBox>
 #include <QSpinBox>
+#if QT_VERSION >= 0x040500
 #include <QTextDocumentWriter>
+#endif
 
 #ifdef EMF_OUTPUT
 	#include <EmfEngine.h>
@@ -920,6 +922,7 @@ void MultiLayer::exportImage(const QString& fileName, int quality, bool transpar
 	int dpm = (int)ceil(100.0/2.54*dpi);
 	image.setDotsPerMeterX(dpm);
 	image.setDotsPerMeterY(dpm);
+#if QT_VERSION >= 0x040500
 	if (fileName.endsWith(".odf")){
 		QTextDocument *document = new QTextDocument();
 		QTextCursor cursor = QTextCursor(document);
@@ -931,6 +934,7 @@ void MultiLayer::exportImage(const QString& fileName, int quality, bool transpar
 		QTextDocumentWriter writer(fileName);
 		writer.write(document);
 	} else
+#endif
 		image.save(fileName, 0, quality);
 }
 

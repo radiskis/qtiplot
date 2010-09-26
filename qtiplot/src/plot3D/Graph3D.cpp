@@ -44,7 +44,9 @@
 #include <QCursor>
 #include <QImageWriter>
 #include <QTextStream>
+#if QT_VERSION >= 0x040500
 #include <QTextDocumentWriter>
+#endif
 
 #include <qwt3d_io_gl2ps.h>
 #include <qwt3d_coordsys.h>
@@ -2113,6 +2115,7 @@ void Graph3D::exportImage(const QString& fileName, int quality, bool transparent
 	int dpm = (int)ceil(100.0/2.54*dpi);
 	image.setDotsPerMeterX(dpm);
 	image.setDotsPerMeterY(dpm);
+#if QT_VERSION >= 0x040500
 	if (fileName.endsWith(".odf")){
 		QTextDocument *document = new QTextDocument();
 		QTextCursor cursor = QTextCursor(document);
@@ -2124,6 +2127,7 @@ void Graph3D::exportImage(const QString& fileName, int quality, bool transparent
 		QTextDocumentWriter writer(fileName);
 		writer.write(document);
 	} else
+#endif
 		image.save(fileName, 0, quality);
 }
 

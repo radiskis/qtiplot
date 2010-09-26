@@ -85,7 +85,9 @@
 #include <QFileInfo>
 #include <QSvgGenerator>
 #include <QDir>
+#if QT_VERSION >= 0x040500
 #include <QTextDocumentWriter>
+#endif
 
 #include <qwt_painter.h>
 #include <qwt_plot_canvas.h>
@@ -1565,6 +1567,7 @@ void Graph::exportImage(const QString& fileName, int quality, bool transparent, 
 	image.setDotsPerMeterX(dpm);
 	image.setDotsPerMeterY(dpm);
 
+#if QT_VERSION >= 0x040500
 	if (fileName.endsWith(".odf")){
 		QTextDocument *document = new QTextDocument();
 		QTextCursor cursor = QTextCursor(document);
@@ -1578,6 +1581,7 @@ void Graph::exportImage(const QString& fileName, int quality, bool transparent, 
 		QTextDocumentWriter writer(fileName);
 		writer.write(document);
 	} else
+#endif
 		image.save(fileName, 0, quality);
 }
 

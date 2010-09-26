@@ -555,7 +555,9 @@ public slots:
 	void exportLayer();
 	void exportGraph(const QString& exportFilter = QString::null);
 	void exportAllGraphs();
+#if QT_VERSION >= 0x040500
 	void exportPresentationODF();
+#endif
 	void exportPDF();
 	void print();
 	void printPreview();
@@ -1515,7 +1517,10 @@ private:
     QActionGroup *coord, *floorstyle, *grids, *plotstyle, *dataTools;
 	QAction *actionMagnify, *actionFindWindow, *actionWaterfallPlot, *actionMagnifyHor, *actionMagnifyVert;
     QAction *actionMoveRowUp, *actionMoveRowDown, *actionAdjustColumnWidth;
-    QAction *actionPresentationODF, *actionRenameNoteTab, *actionAddNoteTab, *actionCloseNoteTab;
+#if QT_VERSION >= 0x040500
+	QAction *actionPresentationODF;
+#endif
+	QAction *actionRenameNoteTab, *actionAddNoteTab, *actionCloseNoteTab;
     QAction *actionIncreaseIndent, *actionDecreaseIndent, *actionFind, *actionFindNext, *actionFindPrev, *actionReplace;
     QAction *actionIncreasePrecision, *actionDecreasePrecision, *actionPrintPreview;
 	QAction *actionVertSharedAxisLayers, *actionHorSharedAxisLayers, *actionSharedAxesLayers, *actionStackSharedAxisLayers;
