@@ -938,6 +938,7 @@ void MultiLayer::exportImage(const QString& fileName, int quality, bool transpar
 		image.save(fileName, 0, quality);
 }
 
+#if QT_VERSION >= 0x040500
 void MultiLayer::exportImage(QTextDocument *document, int, bool transparent,
 				int dpi, const QSizeF& customSize, int unit, double fontsFactor)
 {
@@ -984,6 +985,7 @@ void MultiLayer::exportImage(QTextDocument *document, int, bool transparent,
 	cursor.insertBlock();
 	cursor.insertImage(image);
 }
+#endif
 
 void MultiLayer::exportPDF(const QString& fname)
 {

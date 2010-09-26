@@ -2131,7 +2131,7 @@ void Graph3D::exportImage(const QString& fileName, int quality, bool transparent
 		image.save(fileName, 0, quality);
 }
 
-
+#if QT_VERSION >= 0x040500
 void Graph3D::exportImage(QTextDocument *document, int, bool transparent,
 						int dpi, const QSizeF& customSize, int unit, double fontsFactor)
 {
@@ -2174,6 +2174,7 @@ void Graph3D::exportImage(QTextDocument *document, int, bool transparent,
 	cursor.insertBlock();
 	cursor.insertImage(image);
 }
+#endif
 
 void Graph3D::exportPDF(const QString& fileName)
 {
