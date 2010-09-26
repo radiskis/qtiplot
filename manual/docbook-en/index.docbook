@@ -3,8 +3,8 @@
 
   <!ENTITY appname "QtiPlot">
   <!ENTITY kappname "&appname;">
-  <!ENTITY kappversion "0.9.7.8">
-  <!ENTITY version "0.9.7.8">
+  <!ENTITY kappversion "0.9.8">
+  <!ENTITY version "0.9.8">
   <!ENTITY kappdirectory "qtiplot">
   <!ENTITY kappdownload "http://soft.proindependent.com/download.html" >
   <!ENTITY pic-dir "pics/" >
@@ -34,7 +34,6 @@
   <!ENTITY dialogs-chapter SYSTEM "dialogs.docbook">
   <!ENTITY analysis-chapter SYSTEM "analysis.docbook">
   <!ENTITY scripting-chapter SYSTEM "scripting.docbook">
-  <!ENTITY appendix-chapter SYSTEM "appendix.docbook">
   <!ENTITY faq-chapter SYSTEM "faq.docbook">
 
 <!--
@@ -1040,6 +1039,5 @@
 <chapter id="scripting">
   &scripting-chapter;
 </chapter>
-&appendix-chapter;
 &faq-chapter;
 </book>
