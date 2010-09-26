@@ -584,7 +584,7 @@ public:
   SIP_PYTUPLE colNames();
 %MethodCode
   QStringList l = sipCpp->colNames();
-  int size = l.length();
+  int size = l.count();
   sipRes = PyTuple_New(size);
   if(sipRes) {
     for(int i=0; i<size; i++)
