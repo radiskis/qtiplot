@@ -7263,7 +7263,11 @@ ExportDialog* ApplicationWindow::showExportASCIIDialog()
 		return 0;
 
     ExportDialog* ed = new ExportDialog(t, this, true);
+#if QT_VERSION >= 0x040500
 	ed->open();
+#else
+	ed->exec();
+#endif
 	return ed;
 }
 
@@ -17482,7 +17486,7 @@ void ApplicationWindow::goToColumn()
 		columns = ((Matrix *)w)->numCols();
 
 	bool ok;
-	int col = QInputDialog::getInt (this, tr("QtiPlot - Enter column number"), tr("Column"),
+	int col = QInputDialog::getInteger(this, tr("QtiPlot - Enter column number"), tr("Column"),
 			1, 1, columns, 1, &ok, windowFlags() & ~Qt::WindowContextHelpButtonHint & ~Qt::WindowMinMaxButtonsHint );
 	if ( !ok )
 		return;
@@ -18473,9 +18477,17 @@ void ApplicationWindow::initCompleter()
 			}
 			file.close();
 		}
-
+	#if QT_VERSION >= 0x040500
 		words.append(PythonSyntaxHighlighter::keywordsList());
 		words.append(windowsNameList());
+	#else
+		QStringList lst = PythonSyntaxHighlighter::keywordsList();
+		foreach (QString s, lst)
+			words << s;
+		lst = windowsNameList();
+		foreach (QString s, lst)
+			words << s;
+	#endif
 	}
 #endif
 
