@@ -167,7 +167,6 @@
 <!ENTITY export-excel-lnk '<link linkend="export-excel-cmd"><command>Export Excel</command> command</link>'>
 <!ENTITY export-excel-key "<keycode></keycode>">
 
-
 <!ENTITY import-ascii-cmd "<command>Import -> Import ASCII...</command>">
 <!ENTITY import-ascii-lnk '<link linkend="import-ascii-cmd"><command>Import -> Import ASCII...</command> command</link>'>
 <!ENTITY import-ascii-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/import.png"/></imageobject></inlinemediaobject>'>
@@ -352,7 +351,7 @@
   <!ENTITY remove-layer-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/erase.png"/></imageobject></inlinemediaobject>'>
 
 <!ENTITY arrange-layers-cmd "<command>Arrange Layers</command>">
-<!ENTITY arrange-layers-lnk '<link linkend="arrange-layers-cmd"><command>Arrange Layers</command> command</link>'>
+<!ENTITY arrange-layers-lnk '<link linkend="arrange-layers-cmd"><command>Arrange Layers</command></link>'>
   <!ENTITY arrange-layers-key "<keycode>Shift-A</keycode>">
   <!ENTITY arrange-layers-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/arrangeLayers.png"/></imageobject></inlinemediaobject>'>
 <!--
@@ -408,10 +407,10 @@
 <!ENTITY spline-lnk '<link linkend="spline-cmd"><command>Spline</command> command</link>'>
   <!ENTITY spline-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/spline.png"/></imageobject></inlinemediaobject>'>
 <!ENTITY horizontal-steps-cmd "<command>Horizontal Steps</command>">
-<!ENTITY horizontal-steps-lnk '<link linkend="horizontal-steps-cmd"><command>Horizontal Steps</command> command</link>'>
+<!ENTITY horizontal-steps-lnk '<link linkend="horizontal-steps-cmd">&horizontal-steps-cmd;</link>'>
   <!ENTITY horizontal-steps-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/hor_steps.png"/></imageobject></inlinemediaobject>'>
 <!ENTITY vertical-steps-cmd "<command>Vertical Steps</command>">
-<!ENTITY vertical-steps-lnk '<link linkend="vertical-steps-cmd"><command>Vertical Steps</command> command</link>'>
+<!ENTITY vertical-steps-lnk '<link linkend="vertical-steps-cmd">&vertical-steps-cmd;</link>'>
   <!ENTITY vertical-steps-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/vert_steps.png"/></imageobject></inlinemediaobject>'>
 <!ENTITY columns-cmd "<command>Columns</command>">
 <!ENTITY columns-lnk '<link linkend="columns-cmd"><command>Columns</command> command</link>'>
@@ -445,20 +444,32 @@
 <!ENTITY zoom-plot-lnk '<link linkend="double-y-cmd">&zoom-plot-cmd;</link>'>
 <!ENTITY zoom-plot-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/add_zoom_plot.png"/></imageobject></inlinemediaobject>'>
 
+<!ENTITY stack-column-cmd "<command>Stack Column</command>">
+<!ENTITY stack-column-lnk '<link linkend="columns-cmd">&stack-column-cmd;</link>'>
+<!ENTITY stack-column-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/stack_column.png"/></imageobject></inlinemediaobject>'>
 
-
+<!ENTITY stack-row-cmd "<command>Stack Row</command>">
+<!ENTITY stack-row-lnk '<link linkend="stack-row-cmd">&stack-row-cmd;</link>'>
+<!ENTITY stack-row-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/stack_bar.png"/></imageobject></inlinemediaobject>'>
 
 <!ENTITY statistical-graphs-cmd "<command>Statistical Graphs</command>">
 <!ENTITY statistical-graphs-lnk '<link linkend="statistical-graphs-cmd"><command>Statistical Graphs</command> command</link>'>
 <!ENTITY box-plot-cmd "<command>Statistical Graphs -> Box Plot</command>">
 <!ENTITY box-plot-lnk '<link linkend="box-plot-cmd"><command>Statistical Graphs -> Box Plot</command> command</link>'>
   <!ENTITY box-plot-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/boxPlot.png"/></imageobject></inlinemediaobject>'>
+
 <!ENTITY histogram-cmd "<command>Statistical Graphs -> Histogram</command>">
 <!ENTITY histogram-lnk '<link linkend="histogram-cmd"><command>Statistical Graphs -> Histogram</command> command</link>'>
   <!ENTITY histogram-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/histogram.png"/></imageobject></inlinemediaobject>'>
+
 <!ENTITY stacked-histogram-cmd "<command>Statistical Graphs -> Stacked Histogram</command>">
 <!ENTITY stacked-histogram-lnk '<link linkend="stacked-histogram-cmd"><command>Statistical Graphs -> Stacked Histogram</command> command</link>'>
   <!ENTITY stacked-histogram-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/stacked_hist.png"/></imageobject></inlinemediaobject>'>
+
+<!ENTITY stem-and-leaf-cmd "<command>Statistical Graphs -> Stem and Leaf</command>">
+<!ENTITY stem-and-leaf-lnk '<link linkend="stem-and-leaf-cmd">&stem-and-leaf-cmd; command</link>'>
+  <!ENTITY stem-and-leaf-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/leaf.png"/></imageobject></inlinemediaobject>'>
+
 <!ENTITY panel-cmd "<command>Panel</command>">
 <!ENTITY panel-lnk '<link linkend="panel-cmd"><command>Panel</command> command</link>'>
 <!ENTITY vertical-2-layers-cmd "<command>Panel -> Vertical 2 Layers</command>">
@@ -472,6 +483,11 @@
   <!ENTITY four-layers-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/panel_4.png"/></imageobject></inlinemediaobject>'>
 <!ENTITY stacked-layers-cmd "<command>Panel -> Stacked Layers</command>">
 <!ENTITY stacked-layers-lnk '<link linkend="stacked-layers-cmd"><command>Panel -> Stacked Layers</command> command</link>'>
+
+<!ENTITY custom-panel-cmd "<command>Panel -> Custom Layout...</command>">
+<!ENTITY custom-panel-lnk '<link linkend="custom-panel-cmd">&custom-panel-cmd; command</link>'>
+<!ENTITY custom-panel-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/arrangeLayers.png"/></imageobject></inlinemediaobject>'>
+
   <!ENTITY stacked-layers-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/stacked.png"/></imageobject></inlinemediaobject>'>
 <!ENTITY plot-3d-cmd "<command>Plot 3D</command>">
 <!ENTITY plot-3d-lnk '<link linkend="plot-3d-cmd"><command>Plot 3D</command> command</link>'>
@@ -604,10 +620,12 @@
 <!ENTITY add-column-cmd "<command>Add Column</command>">
 <!ENTITY add-column-lnk '<link linkend="add-column-cmd"><command>Add Column</command> command</link>'>
 <!ENTITY add-column-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/addCol.png"/></imageobject></inlinemediaobject>'>
+
 <!ENTITY columns-cmd "<command>Columns...</command>">
 <!ENTITY columns-lnk '<link linkend="columns-cmd"><command>Columns...</command> command</link>'>
 <!ENTITY rows-cmd "<command>Rows...</command>">
 <!ENTITY rows-lnk '<link linkend="rows-cmd"><command>Rows...</command> command</link>'>
+
 <!ENTITY go-to-row-cmd "<command>Go to Row...</command>">
 <!ENTITY go-to-row-lnk '<link linkend="go-to-row-cmd"><command>Go to Row...</command> command</link>'>
 <!ENTITY go-to-row-key "<keycode>Ctrl-Alt-G</keycode>">
@@ -721,10 +739,6 @@
 <!ENTITY pointer-cmd "<command>Disable tools</command>">
 <!ENTITY pointer-lnk '<link linkend="pointer-cmd"><command>Disable tools</command> command</link>'>
   <!ENTITY pointer-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/pointer.png"/></imageobject></inlinemediaobject>'>
-
-<!--Entry added for use in linking to zoom commands sub-table in toolbars.docbook. SRB (09/23/2010 ) -->
-<!ENTITY zoom-commands-lnk '<link linkend="zoom-commands-table">Zoom Commands</link>'>
-<!ENTITY zoom-commands-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/zoom-cmds.png"/></imageobject></inlinemediaobject>'>
 
 <!ENTITY zoom-inoutdrag-cmd "<command>Zoom In/Out and Drag Canvas</command>">
 <!ENTITY zoom-inoutdrag-lnk '<link linkend="zoom-inoutdrag-cmd">&zoom-inoutdrag-cmd;</link>'>
@@ -872,6 +886,7 @@
 <!ENTITY about-cmd "<command>About Qtiplot</command>">
 <!ENTITY about-lnk '<link linkend="about-cmd"><command>About Qtiplot</command> command</link>'>
   <!ENTITY about-key "<keycode>F1</keycode>">
+
 <!--
               toolbar: 3D plot
 -->
@@ -948,6 +963,38 @@
               toolbar: Table
 -->
 <!ENTITY table-toolbar-lnk '<link linkend="sec-table-toolbar">Table toolbar</link>'>
+
+<!--
+      Toolbar Sub-table Entries. Used to link sub-tables to tables in toolbars.docbook. SRB (09/25/2010 )
+-->
+
+<!ENTITY zoom-commands-lnk '<link linkend="zoom-commands-table">Zoom Commands</link>'>
+<!ENTITY zoom-commands-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/zoom-cmds.png"/></imageobject></inlinemediaobject>'>
+
+<!ENTITY tablecommands-group1-lnk '<link linkend="tablecommands-group1-table">Group1 Commands</link>'>
+<!ENTITY tablecommands-group1-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/table-toolbar-group1.png"/></imageobject></inlinemediaobject>'>
+
+<!ENTITY tablecommands-group2-lnk '<link linkend="tablecommands-group2-table">Group2 Commands</link>'>
+<!ENTITY tablecommands-group2-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/table-toolbar-group2.png"/></imageobject></inlinemediaobject>'>
+
+<!ENTITY tablecommands-group3-lnk '<link linkend="tablecommands-group3-table">Group3 Commands</link>'>
+<!ENTITY tablecommands-group3-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/table-toolbar-group3.png"/></imageobject></inlinemediaobject>'>
+
+<!ENTITY tablecommands-group4-lnk '<link linkend="tablecommands-group4-table">Group4 Commands</link>'>
+<!ENTITY tablecommands-group4-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/table-toolbar-group4.png"/></imageobject></inlinemediaobject>'>
+
+<!ENTITY tablecommands-group5-lnk '<link linkend="tablecommands-group5-table">Group5 Commands</link>'>
+<!ENTITY tablecommands-group5-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/table-toolbar-group5.png"/></imageobject></inlinemediaobject>'>
+
+<!ENTITY tablecommands-group6-lnk '<link linkend="tablecommands-group6-table">Group6 Commands</link>'>
+<!ENTITY tablecommands-group6-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/table-toolbar-group6.png"/></imageobject></inlinemediaobject>'>
+
+<!ENTITY tablecommands-group7-lnk '<link linkend="tablecommands-group7-table">Group7 Commands</link>'>
+<!ENTITY tablecommands-group7-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/table-toolbar-group7.png"/></imageobject></inlinemediaobject>'>
+
+<!ENTITY tablecommands-group8-lnk '<link linkend="tablecommands-group8-table">Group8 Commands</link>'>
+<!ENTITY tablecommands-group8-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/table-toolbar-group8.png"/></imageobject></inlinemediaobject>'>
+
 <!--
 ======================= END OF COMMANDS ENTITIES =========================
 -->
@@ -1004,8 +1051,8 @@
 <abstract>
   <para>This document is a handbook for using &appname;, a program for two- and three-dimensional graphical presentation of data sets and for data analysis.</para>
   <para>This manual is organized in several chapters:</para>
-  <para>-The <link linkend="introduction">first</link> describes the main concepts and terms which are used in &appname;.</para>
-  <para>-The <link linkend="using">second</link> is a tutorial on how to obtain plots from different data sets. It is the one you need to read first to understand the basics of &appname; and to be able to draw plots. </para>
+  <para>-The <link linkend="introduction">first chapter</link> describes the main concepts and terms which are used in &appname;.</para>
+  <para>-The <link linkend="using">second chapter</link> is a tutorial on how to obtain plots from different data sets. It is the one you need to read first to understand the basics of &appname; and to be able to draw plots. </para>
   <para>-The three following chapters are descriptions of all the <link linkend="reference">commands</link>, <link linkend="toolbars">buttons</link> and <link linkend="dialogs">dialogs</link> used in &appname;. These chapters are the reference manual of &appname;.</para>
   <para>- The two following chapters describe more deeply some specific possibilities of &appname;, that is the <link linkend="analysis">statistical and mathematical analysis</link> of data, and the <link linkend="scripting">scripting</link>.</para>
 </abstract>

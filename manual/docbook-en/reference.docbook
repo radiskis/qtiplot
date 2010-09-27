@@ -698,7 +698,7 @@ The active items appearing in a menu depends upon which project window is active
     <para></para>
 <!--		beginning of Special Line/Symbol	-->
     <variablelist>
-      <varlistentry id="vertical-drop-line-cmd">
+      <varlistentry id="vertical-drop-lines-cmd">
 	<term>&vertical-drop-lines-cmd;</term>
 	<listitem>
 	  <para>Plots the selected data columns using "Vertical drop lines" style. Once the plot is created, the drawing style of the data series can be customized with the <link linkend="custom-curves-dialog-lines">Custom curves dialog</link>.</para>
@@ -937,6 +937,13 @@ The active items appearing in a menu depends upon which project window is active
 	  <para>Creates a group of vertically stacked layers, one layer per Y-Coordinate column selected. Data columns selected in the active table window (one curve per layer) are plotted on these layers.</para>
         </listitem>
       </varlistentry>
+<varlistentry id="custom-panel-cmd">
+	<term>&custom-panel-cmd;</term>
+	<listitem>
+	  <para>Opens the <emphasis>Arrange Layers</emphasis> dialog which allows complete customization of the layer layout.</para>
+        </listitem>
+      </varlistentry>
+
     </variablelist>
   </listitem>
 </varlistentry>

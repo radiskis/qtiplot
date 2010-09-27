@@ -75,7 +75,6 @@ Groups of related commands are collected together in a number of toolbars. All t
 </table>
 </sect1>
 
-
 <sect1 id="sec-file-toolbar">
 <title>The File Toolbar</title>
 
@@ -538,8 +537,6 @@ The <emphasis>File Toolbar</emphasis> provides single-click access to commands f
 </tgroup>
 </table>
 
-
-
 </sect1>
 
 <sect1 id="sec-table-toolbar">
@@ -573,34 +570,28 @@ The <emphasis>File Toolbar</emphasis> provides single-click access to commands f
   </thead>
  <tbody>
   <row>
-   <entry>&line-icon;</entry>
-   <entry><link linkend="line-cmd">plot -> &line-cmd;</link></entry>
+   <entry>&tablecommands-group1-icon;</entry>
+   <entry>&tablecommands-group1-lnk;</entry>
    <entry></entry>
-   <entry>Plots selected data using line style.</entry>
+   <entry>Line, Horizontal Steps, Vertical Steps</entry>
   </row>
   <row>
-   <entry>&scatter-icon;</entry>
-   <entry><link linkend="scatter-cmd">plot -> &scatter-cmd;</link></entry>
+   <entry>&tablecommands-group2-icon;</entry>
+   <entry>&tablecommands-group2-lnk;</entry>
    <entry></entry>
-   <entry>Plots selected data using scatter style.</entry>
+   <entry>Scatter, Vertical Drop Lines</entry>
   </row>
   <row>
-   <entry>&line-symbol-icon;</entry>
-   <entry><link linkend="line-symbol-cmd">plot -> &line-symbol-cmd;</link></entry>
+   <entry>&tablecommands-group3-icon;</entry>
+   <entry>&tablecommands-group3-lnk;</entry>
    <entry></entry>
-   <entry>Plots selected data using line+symbol style.</entry>
+   <entry>Line+Symbol, Spline</entry>
   </row>
   <row>
-   <entry>&columns-icon;</entry>
-   <entry><link linkend="columns-cmd">plot -> &columns-cmd;</link></entry>
+   <entry>&tablecommands-group4-icon;</entry>
+   <entry>&tablecommands-group4-lnk;</entry>
    <entry></entry>
-   <entry>Plots selected data using columns style.</entry>
-  </row>
-  <row>
-   <entry>&rows-icon;</entry>
-   <entry><link linkend="rows-cmd">plot -> &rows-cmd;</link></entry>
-   <entry></entry>
-   <entry>Plots selected data using rows style.</entry>
+   <entry>Columns, Rows, Stack Column, Stack Bar</entry>
   </row>
   <row>
    <entry>&area-icon;</entry>
@@ -615,50 +606,351 @@ The <emphasis>File Toolbar</emphasis> provides single-click access to commands f
    <entry>Plots selected data using pie style.</entry>
   </row>
   <row>
+   <entry>&tablecommands-group5-icon;</entry>
+   <entry>&tablecommands-group5-lnk;</entry>
+   <entry></entry>
+   <entry>Box, Histogram, Stacked Histogram, Stem-Leaf</entry>
+  </row>
+  <row>
+   <entry>&tablecommands-group6-icon;</entry>
+   <entry>&tablecommands-group6-lnk;</entry>
+   <entry></entry>
+   <entry>Vectors XYXY. Vectors XYAM</entry>
+  </row>
+  <row>
+   <entry>&tablecommands-group7-icon;</entry>
+   <entry>&tablecommands-group7-lnk;</entry>
+   <entry></entry>
+   <entry>Double-Y, Waterfall, Zoom, Vert. 2 Layer, Horiz. 2-Layer, 4 Layer, Stacked Layer, Custom</entry>
+  </row>
+  <row>
+   <entry>&tablecommands-group8-icon;</entry>
+   <entry>&tablecommands-group8-lnk;</entry>
+   <entry></entry>
+   <entry>Bars, Ribbons, Scatter, Trajectory</entry>
+  </row>
+</tbody>
+</tgroup>
+</table>
+
+<table tocentry="1" pgwide="1" frame="sides" id="tablecommands-group1-table">
+<title>Table Toolbar Group1 Commands</title>
+<tgroup cols="4">
+  <colspec colname="icon" colwidth="1*" align="center"/>
+  <colspec colname="command" colwidth="5*" align="left"/>
+  <colspec colname="key" colwidth="2*" align="center"/>
+  <colspec colname="description" colwidth="10*" align="justify"/>
+  <thead>
+    <row>
+      <entry>Icon</entry>
+      <entry>Command</entry>
+      <entry>Key</entry>
+      <entry>Description</entry>
+    </row>
+  </thead>
+ <tbody>
+  <row>
+   <entry>&line-icon;</entry>
+   <entry><link linkend="line-cmd">plot -> &line-cmd;</link></entry>
+   <entry></entry>
+   <entry>Plots selected data using line style.</entry>
+  </row>
+  <row>
+   <entry>&horizontal-steps-icon;</entry>
+   <entry>&horizontal-steps-lnk;</entry>
+   <entry></entry>
+   <entry>Plots selected data using horizontal steps style.</entry>
+  </row>
+  <row>
+   <entry>&vertical-steps-icon;</entry>
+   <entry>&vertical-steps-lnk;</entry>
+   <entry></entry>
+   <entry>Plots selected data using vertical steps style.</entry>
+  </row>
+</tbody>
+</tgroup>
+</table>
+
+<table tocentry="1" pgwide="1" frame="sides" id="tablecommands-group2-table">
+<title>Table Toolbar Group2 Commands</title>
+<tgroup cols="4">
+  <colspec colname="icon" colwidth="1*" align="center"/>
+  <colspec colname="command" colwidth="5*" align="left"/>
+  <colspec colname="key" colwidth="2*" align="center"/>
+  <colspec colname="description" colwidth="10*" align="justify"/>
+  <thead>
+    <row>
+      <entry>Icon</entry>
+      <entry>Command</entry>
+      <entry>Key</entry>
+      <entry>Description</entry>
+    </row>
+  </thead>
+ <tbody>
+  <row>
+   <entry>&scatter-icon;</entry>
+   <entry><link linkend="scatter-cmd">plot -> &scatter-cmd;</link></entry>
+   <entry></entry>
+   <entry>Plots selected data using scatter style.</entry>
+  </row>
+  <row>
+   <entry>&vertical-drop-lines-icon;</entry>
+   <entry><link linkend="vertical-drop-lines-cmd">plot -> &vertical-drop-lines-cmd;</link></entry>
+   <entry></entry>
+   <entry>Plots selected data using vertical drop lines style.</entry>
+  </row>
+</tbody>
+</tgroup>
+</table>
+
+<table tocentry="1" pgwide="1" frame="sides" id="tablecommands-group3-table">
+<title>Table Toolbar Group3 Commands</title>
+<tgroup cols="4">
+  <colspec colname="icon" colwidth="1*" align="center"/>
+  <colspec colname="command" colwidth="5*" align="left"/>
+  <colspec colname="key" colwidth="2*" align="center"/>
+  <colspec colname="description" colwidth="10*" align="justify"/>
+  <thead>
+    <row>
+      <entry>Icon</entry>
+      <entry>Command</entry>
+      <entry>Key</entry>
+      <entry>Description</entry>
+    </row>
+  </thead>
+ <tbody>
+  <row>
+   <entry>&line-symbol-icon;</entry>
+   <entry><link linkend="line-symbol-cmd">plot -> &line-symbol-cmd;</link></entry>
+   <entry></entry>
+   <entry>Plots selected data using line+symbol style.</entry>
+  </row>
+  <row>
+   <entry>&spline-icon;</entry>
+   <entry><link linkend="spline-cmd">plot -> &spline-cmd;</link></entry>
+   <entry></entry>
+   <entry>Plots the selected data columns using spline style.</entry>
+  </row>
+</tbody>
+</tgroup>
+</table>
+
+<table tocentry="1" pgwide="1" frame="sides" id="tablecommands-group4-table">
+<title>Table Toolbar Group4 Commands</title>
+<tgroup cols="4">
+  <colspec colname="icon" colwidth="1*" align="center"/>
+  <colspec colname="command" colwidth="5*" align="left"/>
+  <colspec colname="key" colwidth="2*" align="center"/>
+  <colspec colname="description" colwidth="10*" align="justify"/>
+  <thead>
+    <row>
+      <entry>Icon</entry>
+      <entry>Command</entry>
+      <entry>Key</entry>
+      <entry>Description</entry>
+    </row>
+  </thead>
+ <tbody>
+  <row>
+   <entry>&columns-icon;</entry>
+   <entry><link linkend="columns-cmd">plot -> &columns-cmd;</link></entry>
+   <entry></entry>
+   <entry>Plots selected data using columns style.</entry>
+  </row>
+  <row>
+   <entry>&rows-icon;</entry>
+   <entry><link linkend="rows-cmd">plot -> &rows-cmd;</link></entry>
+   <entry></entry>
+   <entry>Plots selected data using rows style.</entry>
+  </row>
+  <row>
+   <entry>&stack-column-icon;</entry>
+   <entry><link linkend="stack-column-cmd">plot -> &stack-column-cmd;</link></entry>
+   <entry></entry>
+   <entry>Plots selected data using stack column style.</entry>
+  </row>
+  <row>
+   <entry>&stack-row-icon;</entry>
+   <entry><link linkend="stack-row-cmd">plot -> &stack-row-cmd;</link></entry>
+   <entry></entry>
+   <entry>Plots selected data using stack row style.</entry>
+  </row>
+</tbody>
+</tgroup>
+</table>
+
+<table tocentry="1" pgwide="1" frame="sides" id="tablecommands-group5-table">
+<title>Table Toolbar Group5 Commands</title>
+<tgroup cols="4">
+  <colspec colname="icon" colwidth="1*" align="center"/>
+  <colspec colname="command" colwidth="5*" align="left"/>
+  <colspec colname="key" colwidth="2*" align="center"/>
+  <colspec colname="description" colwidth="10*" align="justify"/>
+  <thead>
+    <row>
+      <entry>Icon</entry>
+      <entry>Command</entry>
+      <entry>Key</entry>
+      <entry>Description</entry>
+    </row>
+  </thead>
+ <tbody>
+  <row>
+   <entry>&box-plot-icon;</entry>
+   <entry><link linkend="box-plot-cmd">plot -> &box-plot-cmd;</link></entry>
+   <entry></entry>
+   <entry>Plots selected data using Box style.</entry>
+  </row>
+  <row>
    <entry>&histogram-icon;</entry>
    <entry><link linkend="histogram-cmd">plot -> &histogram-cmd;</link></entry>
    <entry></entry>
    <entry>Plots selected data using histogram style.</entry>
   </row>
   <row>
+   <entry>&stacked-histogram-icon;</entry>
+   <entry><link linkend="stacked-histogram-cmd">plot -> &stacked-histogram-cmd;</link></entry>
+   <entry></entry>
+   <entry>Plots selected data using stacked histogram style.</entry>
+  </row>
+  <row>
+   <entry>&stem-and-leaf-icon;</entry>
+   <entry><link linkend="stem-and-leaf-cmd">plot -> &stem-and-leaf-cmd;</link></entry>
+   <entry></entry>
+   <entry>Plots selected data using Stem and Leaf style.</entry>
+  </row>
+
+</tbody>
+</tgroup>
+</table>
+
+<table tocentry="1" pgwide="1" frame="sides" id="tablecommands-group6-table">
+<title>Table Toolbar Group6 Commands</title>
+<tgroup cols="4">
+  <colspec colname="icon" colwidth="1*" align="center"/>
+  <colspec colname="command" colwidth="5*" align="left"/>
+  <colspec colname="key" colwidth="2*" align="center"/>
+  <colspec colname="description" colwidth="10*" align="justify"/>
+  <thead>
+    <row>
+      <entry>Icon</entry>
+      <entry>Command</entry>
+      <entry>Key</entry>
+      <entry>Description</entry>
+    </row>
+  </thead>
+ <tbody>
+  <row>
    <entry>&vectors-xyxy-icon;</entry>
    <entry><link linkend="vectors-xyxy-cmd">plot -> &vectors-xyxy-cmd;</link></entry>
    <entry></entry>
-   <entry>Plots selected data using vector style.</entry>
+   <entry>Plots selected data using xyxy vector style.</entry>
   </row>
+  <row>
+   <entry>&vectors-xyam-icon;</entry>
+   <entry><link linkend="vectors-xyam-cmd">plot -> &vectors-xyam-cmd;</link></entry>
+   <entry></entry>
+   <entry>Plots selected data using xyam vector style.</entry>
+  </row>
+</tbody>
+</tgroup>
+</table>
 
+<table tocentry="1" pgwide="1" frame="sides" id="tablecommands-group7-table">
+<title>Table Toolbar Group7 Commands</title>
+<tgroup cols="4">
+  <colspec colname="icon" colwidth="1*" align="center"/>
+  <colspec colname="command" colwidth="5*" align="left"/>
+  <colspec colname="key" colwidth="2*" align="center"/>
+  <colspec colname="description" colwidth="10*" align="justify"/>
+  <thead>
+    <row>
+      <entry>Icon</entry>
+      <entry>Command</entry>
+      <entry>Key</entry>
+      <entry>Description</entry>
+    </row>
+  </thead>
+ <tbody>
   <row>
    <entry>&double-y-icon;</entry>
    <entry><link linkend="double-y-cmd">plot -> &double-y-cmd;</link></entry>
    <entry></entry>
    <entry>Plots selected data using two different y axes.</entry>
   </row>
-
- <row>
+  <row>
    <entry>&waterfall-plot-icon;</entry>
    <entry><link linkend="waterfall-plot-cmd">plot -> &waterfall-plot-cmd;</link></entry>
    <entry></entry>
    <entry>Creates a Waterfall plot from a series of selected columns.</entry>
   </row>
- <row>
-
+  <row>
    <entry>&zoom-plot-icon;</entry>
    <entry><link linkend="zoom-plot-cmd">plot -> &zoom-plot-cmd;</link></entry>
    <entry></entry>
    <entry>Plots selected data in one plot layer along with a magnified region of that data in another plot layer on the same graph window.</entry>
   </row>
-
   <row>
-   <entry>&ribbons-icon;</entry>
-   <entry><link linkend="ribbons-cmd">plot -> &ribbons-cmd;</link></entry>
+   <entry>&vertical-2-layers-icon;</entry>
+   <entry><link linkend="vertical-2-layers-cmd">plot -> &vertical-2-layers-cmd;</link></entry>
    <entry></entry>
-   <entry>Plots selected data using 3D ribbons style.</entry>
+   <entry>Plot 2 vertically arranged layers on the same graph window.</entry>
   </row>
+  <row>
+   <entry>&horizontal-2-layers-icon;</entry>
+   <entry><link linkend="horizontal-2-layers-cmd">plot -> &horizontal-2-layers-cmd;</link></entry>
+   <entry></entry>
+   <entry>Plot 2 horizontally arranged layers on the same graph window.</entry>
+  </row>
+  <row>
+   <entry>&four-layers-icon;</entry>
+   <entry><link linkend="four-layers-cmd">plot -> &four-layers-cmd;</link></entry>
+   <entry></entry>
+   <entry>Plot 4 layers on the same graph window.</entry>
+  </row>
+  <row>
+   <entry>&stacked-layers-icon;</entry>
+   <entry><link linkend="stacked-layers-cmd">plot -> &stacked-layers-cmd;</link></entry>
+   <entry></entry>
+   <entry>Plot a stacked layer for each selected column, all on the same graph window.</entry>
+  </row>
+  <row>
+   <entry>&custom-panel-icon;</entry>
+   <entry><link linkend="custom-panel-cmd">plot -> &custom-panel-cmd;</link></entry>
+   <entry></entry>
+   <entry>Opens the <link linkend="arrange-layers-dialog">Arrange Layers dialog</link> to set up custom layouts.</entry>
+  </row>
+</tbody>
+</tgroup>
+</table>
+
+<table tocentry="1" pgwide="1" frame="sides" id="tablecommands-group8-table">
+<title>Table Toolbar Group8 Commands</title>
+<tgroup cols="4">
+  <colspec colname="icon" colwidth="1*" align="center"/>
+  <colspec colname="command" colwidth="5*" align="left"/>
+  <colspec colname="key" colwidth="2*" align="center"/>
+  <colspec colname="description" colwidth="10*" align="justify"/>
+  <thead>
+    <row>
+      <entry>Icon</entry>
+      <entry>Command</entry>
+      <entry>Key</entry>
+      <entry>Description</entry>
+    </row>
+  </thead>
+ <tbody>
   <row>
    <entry>&bars-icon;</entry>
    <entry><link linkend="bars-cmd">plot -> &bars-cmd;</link></entry>
    <entry></entry>
    <entry>Plots selected data using 3D bars style.</entry>
+  </row>
+  <row>
+   <entry>&ribbons-icon;</entry>
+   <entry><link linkend="ribbons-cmd">plot -> &ribbons-cmd;</link></entry>
+   <entry></entry>
+   <entry>Plots selected data using 3D ribbons style.</entry>
   </row>
   <row>
    <entry>&scatter3d-icon;</entry>
@@ -672,28 +964,11 @@ The <emphasis>File Toolbar</emphasis> provides single-click access to commands f
    <entry></entry>
    <entry>Plots selected data using trajectory style.</entry>
   </row>
-  <row>
-   <entry>&add-column-icon;</entry>
-   <entry><link linkend="add-column-cmd">plot -> &add-column-cmd;</link></entry>
-   <entry>Alt + C</entry>
-   <entry>Adds a new column to the selected table.</entry>
-  </row>
-  <row>
-   <entry>&statistics-on-columns-icon;</entry>
-   <entry><link linkend="statistics-on-columns-cmd">plot -> &statistics-on-columns-cmd;</link></entry>
-   <entry></entry>
-   <entry>Computes statistical parameters on selected columns.</entry>
-  </row>
-  <row>
-   <entry>&statistics-on-rows-icon;</entry>
-   <entry><link linkend="statistics-on-rows-cmd">plot -> &statistics-on-rows-cmd;</link></entry>
-   <entry></entry>
-   <entry>Computes statistical parameters on the selected row.</entry>
-  </row>
 </tbody>
 </tgroup>
 </table>
 </sect1>
+
 <!--HERE!!!! -->
 <sect1 id="column-toolbar">
 <title>The Column Toolbar</title>
@@ -723,6 +998,18 @@ or to define the plot role of the selected columns.</para>
     </row>
   </thead>
  <tbody>
+  <row>
+   <entry>&statistics-on-columns-icon;</entry>
+   <entry><link linkend="statistics-on-columns-cmd">plot -> &statistics-on-columns-cmd;</link></entry>
+   <entry></entry>
+   <entry>Computes statistical parameters on selected columns.</entry>
+  </row>
+  <row>
+   <entry>&statistics-on-rows-icon;</entry>
+   <entry><link linkend="statistics-on-rows-cmd">plot -> &statistics-on-rows-cmd;</link></entry>
+   <entry></entry>
+   <entry>Computes statistical parameters on the selected row.</entry>
+  </row>
  <row>
    <entry>&set-column-as-x-icon;</entry>
    <entry><link linkend="set-column-as-x-cmd">table -> &set-column-as-x-cmd;</link></entry>
@@ -772,6 +1059,12 @@ or to define the plot role of the selected columns.</para>
    <entry>&swap-columns-icon;</entry>
    <entry><link linkend="swap-columns-cmd">table -> &swap-columns-cmd;</link></entry>
    <entry>Swap the selected columns.</entry>
+  </row>
+  <row>
+   <entry>&add-column-icon;</entry>
+   <entry><link linkend="add-column-cmd">plot -> &add-column-cmd;</link></entry>
+   <entry>Alt + C</entry>
+   <entry>Adds a new column to the selected table.</entry>
   </row>
 </tbody>
 </tgroup>
