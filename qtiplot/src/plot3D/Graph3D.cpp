@@ -339,7 +339,8 @@ void Graph3D::addFunction(const QString& s, double xl, double xr, double yl,
 		pointStyle = None;
 	}
   	sp->createCoordinateSystem(Triple(xl, yl, zl), Triple(xr, yr, zr));
-	findBestLayout();
+	if (d_autoscale)
+		findBestLayout();
 	update();
 }
 
