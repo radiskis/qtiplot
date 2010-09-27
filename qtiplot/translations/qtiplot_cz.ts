@@ -3921,6 +3921,10 @@ Různé části tohoto souboru se nemusí zobrazovat tak, jak se očekává.</tr
         <source>Yes, don&apos;t ask me again</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Random &amp;XYZ...</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ArrowMarker</name>
@@ -5749,6 +5753,14 @@ K tomu lze použít následujících zvláštních kódů:
     </message>
     <message>
         <source>Open &amp;last project at startup</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Startup Scripts</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Choose the location of the startup scripts folder!</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -8506,6 +8518,129 @@ K tomu lze použít následujících zvláštních kódů:
     <message>
         <source>Please provide a valid file name!</source>
         <translation>Poskytněte, prosím, platný název souboru!</translation>
+    </message>
+</context>
+<context>
+    <name>GriddingDialog</name>
+    <message>
+        <source>QtiPlot - Random XYZ Gridding</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Selected Z Dataset</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Gridding Method</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Shepard (non-uniform data)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Shepard (uniform data)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Quick (noisy data)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Parameters</source>
+        <translation type="unfinished">Parametry</translation>
+    </message>
+    <message>
+        <source>Search Radius</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Model</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Linear</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Quadratic</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>N&lt;sub&gt;q&lt;/sub&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>N&lt;sub&gt;w&lt;/sub&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Matrix Dimensions</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Columns</source>
+        <translation type="unfinished">Sloupce</translation>
+    </message>
+    <message>
+        <source>Rows</source>
+        <translation type="unfinished">Řádky</translation>
+    </message>
+    <message>
+        <source>Matrix Coordinates</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>X Minimum</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>X Maximum</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Y Minimum</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Y Maximum</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Preview</source>
+        <translation type="unfinished">&amp;Náhled</translation>
+    </message>
+    <message>
+        <source>Plot Type</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Wireframe</source>
+        <translation type="unfinished">Drátěná mříž</translation>
+    </message>
+    <message>
+        <source>Hidden Line</source>
+        <translation type="unfinished">Skryté čáry</translation>
+    </message>
+    <message>
+        <source>Crea&amp;te Plot</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Ok</source>
+        <translation type="unfinished">&amp;OK</translation>
+    </message>
+    <message>
+        <source>&amp;Close</source>
+        <translation type="unfinished">&amp;Zavřít</translation>
+    </message>
+    <message>
+        <source>X axis</source>
+        <translation type="unfinished">Osa x</translation>
+    </message>
+    <message>
+        <source>Y axis</source>
+        <translation type="unfinished">Osa y</translation>
     </message>
 </context>
 <context>
