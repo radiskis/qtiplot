@@ -7397,6 +7397,10 @@ Autocompletion will not be available!</source>
         <source>Yes, don&apos;t ask me again</source>
         <translation>Da, nu mă mai întreba</translation>
     </message>
+    <message>
+        <source>Random &amp;XYZ...</source>
+        <translation>Rețea aleatorie &amp;XYZ...</translation>
+    </message>
 </context>
 <context>
     <name>ArrowMarker</name>
@@ -9248,6 +9252,14 @@ The following special codes can be used:
     <message>
         <source>Open &amp;last project at startup</source>
         <translation>Deschide u&amp;ltimul proiect la pornire</translation>
+    </message>
+    <message>
+        <source>Startup Scripts</source>
+        <translation>Programele executate la pornire</translation>
+    </message>
+    <message>
+        <source>Choose the location of the startup scripts folder!</source>
+        <translation>Alegeţi dosarul conţinand programele executate la pornire!</translation>
     </message>
 </context>
 <context>
@@ -12091,6 +12103,129 @@ The following special codes can be used:
     <message>
         <source>File format not handled, operation aborted!</source>
         <translation>Format de fişier necunoscut, operaţiunea a fost abandonată!</translation>
+    </message>
+</context>
+<context>
+    <name>GriddingDialog</name>
+    <message>
+        <source>QtiPlot - Random XYZ Gridding</source>
+        <translation>QtiPlot - Rețea aleatorie XYZ</translation>
+    </message>
+    <message>
+        <source>Selected Z Dataset</source>
+        <translation>Setul de date Z selectat</translation>
+    </message>
+    <message>
+        <source>Gridding Method</source>
+        <translation>Metodă</translation>
+    </message>
+    <message>
+        <source>Shepard (non-uniform data)</source>
+        <translation>Shepard (date neuniforme)</translation>
+    </message>
+    <message>
+        <source>Shepard (uniform data)</source>
+        <translation>Shepard (date uniforme)</translation>
+    </message>
+    <message>
+        <source>Quick (noisy data)</source>
+        <translation>Rapidă</translation>
+    </message>
+    <message>
+        <source>Parameters</source>
+        <translation>Parametri</translation>
+    </message>
+    <message>
+        <source>Search Radius</source>
+        <translation>Rază de căutare</translation>
+    </message>
+    <message>
+        <source>Model</source>
+        <translation>Model</translation>
+    </message>
+    <message>
+        <source>Linear</source>
+        <translation type="unfinished">Liniar</translation>
+    </message>
+    <message>
+        <source>Quadratic</source>
+        <translation>Pătratic</translation>
+    </message>
+    <message>
+        <source>N&lt;sub&gt;q&lt;/sub&gt;</source>
+        <translation>N&lt;sub&gt;q&lt;/sub&gt;</translation>
+    </message>
+    <message>
+        <source>N&lt;sub&gt;w&lt;/sub&gt;</source>
+        <translation>N&lt;sub&gt;w&lt;/sub&gt;</translation>
+    </message>
+    <message>
+        <source>Matrix Dimensions</source>
+        <translation>Dimensiuni matrice</translation>
+    </message>
+    <message>
+        <source>Columns</source>
+        <translation>Coloane</translation>
+    </message>
+    <message>
+        <source>Rows</source>
+        <translation>Linii</translation>
+    </message>
+    <message>
+        <source>Matrix Coordinates</source>
+        <translation>Coordonate matrice</translation>
+    </message>
+    <message>
+        <source>X Minimum</source>
+        <translation>X Minim</translation>
+    </message>
+    <message>
+        <source>X Maximum</source>
+        <translation>X Maxim</translation>
+    </message>
+    <message>
+        <source>Y Minimum</source>
+        <translation>Y Minim</translation>
+    </message>
+    <message>
+        <source>Y Maximum</source>
+        <translation>Y Maxim</translation>
+    </message>
+    <message>
+        <source>&amp;Preview</source>
+        <translation>&amp;Previzualizare</translation>
+    </message>
+    <message>
+        <source>Plot Type</source>
+        <translation>Tip de grafic</translation>
+    </message>
+    <message>
+        <source>Wireframe</source>
+        <translation>Sârmă</translation>
+    </message>
+    <message>
+        <source>Hidden Line</source>
+        <translation>Linie ascunsă</translation>
+    </message>
+    <message>
+        <source>Crea&amp;te Plot</source>
+        <translation>Crează &amp;grafic</translation>
+    </message>
+    <message>
+        <source>&amp;Ok</source>
+        <translation>&amp;OK</translation>
+    </message>
+    <message>
+        <source>&amp;Close</source>
+        <translation>În&amp;chide</translation>
+    </message>
+    <message>
+        <source>X axis</source>
+        <translation>Axă X</translation>
+    </message>
+    <message>
+        <source>Y axis</source>
+        <translation>Axă Y</translation>
     </message>
 </context>
 <context>

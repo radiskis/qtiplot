@@ -8484,6 +8484,10 @@ Automatisk komplettering ej tillgängligt!</translation>
         <source>Yes, don&apos;t ask me again</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Random &amp;XYZ...</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ArrowMarker</name>
@@ -10441,6 +10445,14 @@ Följande specialkoder kan användas:
     </message>
     <message>
         <source>Open &amp;last project at startup</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Startup Scripts</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Choose the location of the startup scripts folder!</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -13936,6 +13948,129 @@ Följande specialkoder kan användas:
     <message>
         <source>File format not handled, operation aborted!</source>
         <translation>Filformatet hanteras ej, avbryts!</translation>
+    </message>
+</context>
+<context>
+    <name>GriddingDialog</name>
+    <message>
+        <source>QtiPlot - Random XYZ Gridding</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Selected Z Dataset</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Gridding Method</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Shepard (non-uniform data)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Shepard (uniform data)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Quick (noisy data)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Parameters</source>
+        <translation type="unfinished">Parametrar</translation>
+    </message>
+    <message>
+        <source>Search Radius</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Model</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Linear</source>
+        <translation type="unfinished">Linjär</translation>
+    </message>
+    <message>
+        <source>Quadratic</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>N&lt;sub&gt;q&lt;/sub&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>N&lt;sub&gt;w&lt;/sub&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Matrix Dimensions</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Columns</source>
+        <translation type="unfinished">Kolumner</translation>
+    </message>
+    <message>
+        <source>Rows</source>
+        <translation type="unfinished">Rader</translation>
+    </message>
+    <message>
+        <source>Matrix Coordinates</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>X Minimum</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>X Maximum</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Y Minimum</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Y Maximum</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Preview</source>
+        <translation type="unfinished">&amp;Förhandsgranskning</translation>
+    </message>
+    <message>
+        <source>Plot Type</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Wireframe</source>
+        <translation type="unfinished">Trådram</translation>
+    </message>
+    <message>
+        <source>Hidden Line</source>
+        <translation type="unfinished">Dold linje</translation>
+    </message>
+    <message>
+        <source>Crea&amp;te Plot</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Ok</source>
+        <translation type="unfinished">&amp;Ok</translation>
+    </message>
+    <message>
+        <source>&amp;Close</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>X axis</source>
+        <translation type="unfinished">X-axel</translation>
+    </message>
+    <message>
+        <source>Y axis</source>
+        <translation type="unfinished">Y-axel</translation>
     </message>
 </context>
 <context>
