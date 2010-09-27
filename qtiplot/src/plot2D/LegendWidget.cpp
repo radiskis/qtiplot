@@ -120,16 +120,20 @@ void LegendWidget::print(QPainter *painter, const QwtScaleMap map[QwtPlot::axisC
 	int dfx = qRound(d_frame_pen.width()*xfactor);
 	int dfy = qRound(d_frame_pen.width()*yfactor);
 
+#ifdef TEX_OUTPUT
 	if (plot()->isExportingTeX()){
 		drawFrame(painter, QRect(x, y, qRound(this->width()*xfactor), height).adjusted(-dfx, -dfy, dfx, dfy));
 		((QTeXPaintDevice *)painter->device())->setTextHorizontalAlignment(Qt::AlignLeft);
 	} else
+#endif
 		drawFrame(painter, QRect(x, y, width, height).adjusted(-dfx, -dfy, dfx, dfy));
 
 	drawText(painter, QRect(x, y, textWidth, textHeight), heights, symbolLineLength);
 
+#ifdef TEX_OUTPUT
 	if (plot()->isExportingTeX())
 		((QTeXPaintDevice *)painter->device())->setTextHorizontalAlignment(Qt::AlignHCenter);
+#endif
 
 	// restore screen geometry parameters
 	h_space = space;
@@ -674,12 +678,14 @@ QString LegendWidget::parse(const QString& str)
 		}
     }
 
+#ifdef TEX_OUTPUT
 	if (plot()->isExportingTeX()){
 		if (!d_tex_output && plot()->escapeTeXStrings())
 			s = Graph::escapeTeXSpecialCharacters(s);
 
 		s = Graph::texSuperscripts(s);
 	}
+#endif
 
     return s;
 }
