@@ -220,9 +220,10 @@ class Graph: public QwtPlot
 		bool hasPanningMagnifierEnabled(){if (d_magnifier && d_panner) return true; return false;};
 		QwtPlotMagnifier* magnifyTool(){return d_magnifier;};
 
+#ifdef TEX_OUTPUT
 		static QString escapeTeXSpecialCharacters(const QString &);
 		static QString texSuperscripts(const QString &);
-
+#endif
 		void changeCurveIndex(int fromIndex, int toIndex);
 		void enableDouglasPeukerSpeedMode(double tolerance, int maxPoints);
 
@@ -332,8 +333,15 @@ class Graph: public QwtPlot
 #ifdef EMF_OUTPUT
 		void exportEMF(const QString& fname, const QSizeF& customSize = QSizeF(), int unit = FrameWidget::Pixel, double fontsFactor = 1.0);
 #endif
+
 		void exportTeX(const QString& fname, bool color = true, bool escapeStrings = true, bool fontSizes = true,
 						const QSizeF& customSize = QSizeF(), int unit = FrameWidget::Pixel, double fontsFactor = 1.0);
+#ifdef TEX_OUTPUT
+		bool isExportingTeX(){return d_is_exporting_tex;};
+		void setTeXExportingMode(bool on = true){d_is_exporting_tex = on;};
+		bool escapeTeXStrings(){return d_tex_escape_strings;};
+		void setEscapeTeXStringsMode(bool on = true){d_tex_escape_strings = on;};
+#endif
 		void exportVector(const QString& fileName, int res = 0, bool color = true,
 						const QSizeF& customSize = QSizeF (), int unit = FrameWidget::Pixel, double fontsFactor = 1.0);
 		void exportImage(const QString& fileName, int quality = 100, bool transparent = false,
@@ -342,11 +350,6 @@ class Graph: public QwtPlot
 
 		void draw(QPaintDevice *, const QSize& size, double fontsFactor = 1.0);
 		static QSize customPrintSize(const QSizeF& customSize, int unit, int dpi);
-
-		bool isExportingTeX(){return d_is_exporting_tex;};
-		void setTeXExportingMode(bool on = true){d_is_exporting_tex = on;};
-		bool escapeTeXStrings(){return d_tex_escape_strings;};
-		void setEscapeTeXStringsMode(bool on = true){d_tex_escape_strings = on;};
 		//@}
 
 		void updatePlot();
@@ -839,8 +842,10 @@ signals:
 		bool d_auto_scale;
 		//! Axes tick lengths
 		int d_min_tick_length, d_maj_tick_length;
+#ifdef TEX_OUTPUT
 		bool d_is_exporting_tex;
 		bool d_tex_escape_strings;
+#endif
 		QList<FrameWidget*> d_enrichments;
 		QwtPlotMagnifier *d_magnifier;
 		QwtPlotPanner *d_panner;

@@ -6320,10 +6320,12 @@ void ApplicationWindow::exportGraph(const QString& exportFilter)
     }
 #endif
 
-    if (plot2D && selected_filter.contains(".tex")){
+#ifdef TEX_OUTPUT
+	if (plot2D && selected_filter.contains(".tex")){
 		plot2D->exportTeX(file_name, ied->color(), ied->escapeStrings(), ied->exportFontSizes(), ied->customExportSize(), ied->sizeUnit(), ied->scaleFontsFactor());
 		return;
-    }
+	}
+#endif
 
 	if (selected_filter.contains(".eps") || selected_filter.contains(".pdf") ||
 		selected_filter.contains(".ps") || selected_filter.contains(".svg")) {
@@ -6394,8 +6396,10 @@ void ApplicationWindow::exportLayer()
     else if (selected_filter.contains(".emf"))
 		g->exportEMF(file_name, ied->customExportSize(), ied->sizeUnit(), ied->scaleFontsFactor());
 #endif
+#ifdef TEX_OUTPUT
     else if (selected_filter.contains(".tex"))
 		g->exportTeX(file_name, ied->color(), ied->escapeStrings(), ied->exportFontSizes(), ied->customExportSize(), ied->sizeUnit(), ied->scaleFontsFactor());
+#endif
     else if (selected_filter.contains(".odf"))
 		g->exportImage(file_name, ied->quality(), ied->transparency(), ied->bitmapResolution(),
 						ied->customExportSize(), ied->sizeUnit(), ied->scaleFontsFactor());
@@ -6558,10 +6562,13 @@ void ApplicationWindow::exportAllGraphs()
 		return;
 	}
 #endif
-    if (plot2D && file_suffix.contains(".tex")){
+
+#ifdef TEX_OUTPUT
+	if (plot2D && file_suffix.contains(".tex")){
 		plot2D->exportTeX(file_name, ied->color(), ied->escapeStrings(), ied->exportFontSizes(), ied->customExportSize(), ied->sizeUnit(), ied->scaleFontsFactor());
 		return;
-    }
+	}
+#endif
 
 		if (file_suffix.contains(".eps") || file_suffix.contains(".pdf") ||
 			file_suffix.contains(".ps") || file_suffix.contains(".svg")) {

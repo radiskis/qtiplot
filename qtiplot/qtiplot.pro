@@ -202,6 +202,17 @@ contains(SCRIPTING_LANGS, Python) {
         unix:LIBS   += /usr/local/lib/libEMF.a
 }
 
+###############################################################
+
+# check if we have QTeXEngine
+!isEmpty(TEX_ENGINE_LIBS) {
+	DEFINES += TEX_OUTPUT
+	INCLUDEPATH += $$TEX_ENGINE_INCLUDEPATH
+	LIBS        += $$TEX_ENGINE_LIBS
+}
+
+###############################################################
+
 # check if we have libxls
 !isEmpty(XLS_LIBS) {
 	DEFINES += XLS_IMPORT
@@ -209,12 +220,16 @@ contains(SCRIPTING_LANGS, Python) {
 	LIBS        += $$XLS_LIBS
 }
 
+###############################################################
+
 # check if we have QuaZIP
 !isEmpty(QUAZIP_LIBS) {
 	DEFINES += ODS_IMPORT
 	INCLUDEPATH += $$QUAZIP_INCLUDEPATH
 	LIBS        += $$QUAZIP_LIBS
 }
+
+###############################################################
 
 # check if we have liborigin2
 !isEmpty(LIBORIGIN_LIBS) {
@@ -226,12 +241,16 @@ contains(SCRIPTING_LANGS, Python) {
 	include(src/origin/origin.pri)
 }
 
+###############################################################
+
 # check if support for Microsoft Excel should be enabled
 win32: contains(CONFIG, Excel) {
 	CONFIG += qaxcontainer
 	DEFINES += HAS_EXCEL
 	SOURCES += src/core/ExcelImport.cpp
 }
+
+###############################################################
 
 # check if we have ALGLIB
 !isEmpty(ALGLIB_LIBS) {

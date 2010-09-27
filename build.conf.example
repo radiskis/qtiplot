@@ -123,6 +123,16 @@ EMF_ENGINE_INCLUDEPATH = $$QTI_ROOT/3rdparty/EmfEngine/src
 EMF_ENGINE_LIBS = $$QTI_ROOT/3rdparty/EmfEngine/libEmfEngine.a
 
 ##########################################################
+## QTeXEngine - optional. you don't have to set these variables
+# http://soft.proindependent.com/qtexengine/
+##########################################################
+
+# include path.
+TEX_ENGINE_INCLUDEPATH = $$QTI_ROOT/3rdparty/QTeXEngine/src
+# link locally against a copy in 3rdparty/
+TEX_ENGINE_LIBS = $$QTI_ROOT/3rdparty/QTeXEngine/libQTeXEngine.a
+
+##########################################################
 ## ALGLIB (2.6) - optional. you don't have to set these variables
 # http://www.alglib.net/
 ##########################################################
