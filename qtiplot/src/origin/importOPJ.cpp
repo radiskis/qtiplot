@@ -290,6 +290,9 @@ bool ImportOPJ::importTables(const OriginFile& opj)
 			bool set_text_column = true;
 			bool has_texts = false;
 			for(unsigned int i = 0; i < column.data.size(); ++i){
+				if (i >= maxrows)
+					break;
+
 				Origin::variant value = column.data[i];
 				if(column.valueType != Origin::Text){// number
 					if(value.type() == typeid(string)){//Origin::TextNumeric column should be set to Text
@@ -684,11 +687,10 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 		else
 			height = width / ratio;
 
-		//ml->resize(width, height);
 
 		int yOffset = LayerButton::btnSize();
 
-		ml->resize(graphWindowRect.width(), graphWindowRect.height());
+		ml->resize(graphWindowRect.width(), graphWindowRect.height() + yOffset);
 
 		double fScale = (double)(graphWindowRect.width() - frameWidth)/(double)width;
 		double fWindowFactor =  QMIN((double)graphWindowRect.width()/500.0, (double)graphWindowRect.height()/350.0);
@@ -712,7 +714,8 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 			if(!graph)
 				return false;
 
-			graph->setAxisTitlePolicy(mw->d_graph_axis_labeling);
+			graph->setAxisTitlePolicy(Graph::NameAndComment);
+			//graph->setAxisTitlePolicy(mw->d_graph_axis_labeling);
 			graph->setAutoscaleFonts(false);
 
 			Origin::Rect layerRect = layer.clientRect;
@@ -1593,7 +1596,6 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 			}
 		}
 
-		//ml->resize(graphWindowRect.width() - frameWidth, graphWindowRect.height() - frameWidth);
 		//cascade the graphs
 		if(ml->numLayers() > 0){
 			if(!_graph.hidden){
