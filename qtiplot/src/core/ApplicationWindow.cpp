@@ -450,7 +450,7 @@ void ApplicationWindow::initWindow()
 void ApplicationWindow::setDefaultOptions()
 {
 	d_ask_web_connection = true;
-	d_open_last_project = true;
+	d_open_last_project = false;
 	d_force_muParser = true;
 	d_indexed_colors = ColorBox::defaultColors();
 	d_indexed_color_names = ColorBox::defaultColorNames();

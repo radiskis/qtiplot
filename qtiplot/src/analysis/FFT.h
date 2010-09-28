@@ -2,7 +2,7 @@
     File                 : FFT.h
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2007 by Ion Vasilief
+	Copyright            : (C) 2007 - 2010 by Ion Vasilief
     Email (use @ for *)  : ion_vasilief*yahoo.fr
     Description          : Numerical FFT of data sets
 
@@ -50,10 +50,9 @@ public:
 private:
     void init();
     void output();
-    void output(const QString &text);
-
-    QString fftCurve();
-    QString fftTable();
+	void outputGraphs();
+	void fftCurve();
+	void fftTable();
 
     bool setDataFromTable(Table *t, const QString& realColName, const QString& imagColName = QString(), int from = 0, int to = -1);
 

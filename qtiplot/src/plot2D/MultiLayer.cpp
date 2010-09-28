@@ -2187,6 +2187,14 @@ void MultiLayer::updateLayerAxes(Graph *g, int axis)
 	int minorTicks = g->axisMaxMinor(axis);
 	double step = g->axisStep(axis);
 
+	int oppositeAxis = Graph::xTop;
+	if (axis == Graph::xTop)
+		oppositeAxis = Graph::xBottom;
+
+	bool synchronizeScales = true;
+	if (this->applicationWindow())
+		synchronizeScales = this->applicationWindow()->d_synchronize_graph_scales;
+
 	foreach(Graph *l, graphsList){
 		if (l == g)
 			continue;
@@ -2197,8 +2205,27 @@ void MultiLayer::updateLayerAxes(Graph *g, int axis)
 					se->axisBreakLeft(), se->axisBreakRight(), se->breakPosition(),
 					se->stepBeforeBreak(), se->stepAfterBreak(), se->minTicksBeforeBreak(),
 					se->minTicksAfterBreak(), se->log10ScaleAfterBreak(), se->breakWidth(), se->hasBreakDecoration());
+		if (synchronizeScales){
+			l->setScale(oppositeAxis, sd->lowerBound(), sd->upperBound(), step, majorTicks, minorTicks,
+					se->type(), se->testAttribute(QwtScaleEngine::Inverted),
+					se->axisBreakLeft(), se->axisBreakRight(), se->breakPosition(),
+					se->stepBeforeBreak(), se->stepAfterBreak(), se->minTicksBeforeBreak(),
+					se->minTicksAfterBreak(), se->log10ScaleAfterBreak(), se->breakWidth(), se->hasBreakDecoration());
+		}
+
 		l->replot();
 		l->blockSignals(false);
+	}
+
+	if (synchronizeScales){
+		g->blockSignals(true);
+		g->setScale(oppositeAxis, sd->lowerBound(), sd->upperBound(), step, majorTicks, minorTicks,
+				se->type(), se->testAttribute(QwtScaleEngine::Inverted),
+				se->axisBreakLeft(), se->axisBreakRight(), se->breakPosition(),
+				se->stepBeforeBreak(), se->stepAfterBreak(), se->minTicksBeforeBreak(),
+				se->minTicksAfterBreak(), se->log10ScaleAfterBreak(), se->breakWidth(), se->hasBreakDecoration());
+		g->blockSignals(false);
+		g->replot();
 	}
 }
 
