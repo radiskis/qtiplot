@@ -2,7 +2,7 @@
     File                 : FFT.cpp
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2007 by Ion Vasilief
+	Copyright            : (C) 2007 - 2010 by Ion Vasilief
     Email (use @ for *)  : ion_vasilief*yahoo.fr
     Description          : Numerical FFT of data sets
 
@@ -31,7 +31,6 @@
 #include "PlotCurve.h"
 #include <ColorBox.h>
 
-#include <QMessageBox>
 #include <QLocale>
 
 #include <gsl/gsl_fft_complex.h>
@@ -84,31 +83,25 @@ void FFT::init ()
 	d_output_graph = 0;
 }
 
-QString FFT::fftCurve()
+void FFT::fftCurve()
 {
-    int i, i2;
 	int n2 = d_n/2;
-	double *amp = new double[d_n];
-	double *result = new double[2*d_n];
-
+	double *amp = (double *)malloc(d_n*sizeof(double));
+	double *result = (double *)malloc(2*d_n*sizeof(double));
 	if(!amp || !result){
-        memoryErrorMessage();
-        return "";
+		memoryErrorMessage();
+		return;
 	}
 
 	double df = 1.0/(double)(d_n*d_sampling);//frequency sampling
 	double aMax = 0.0;//max amplitude
-	QString text;
 	if(!d_inverse){
-        d_explanation = tr("Forward") + " " + tr("FFT") + " " + tr("of") + " " + d_curve->title().text();
-		text = tr("Frequency");
-
 		gsl_fft_real_workspace *work = gsl_fft_real_workspace_alloc(d_n);
 		gsl_fft_real_wavetable *real = gsl_fft_real_wavetable_alloc(d_n);
 
 		if(!work || !real){
-            memoryErrorMessage();
-			return "";
+			memoryErrorMessage();
+			return;
 		}
 
 		gsl_fft_real_transform(d_y, 1, d_n, real, work);
@@ -117,16 +110,13 @@ QString FFT::fftCurve()
 		gsl_fft_real_wavetable_free(real);
 		gsl_fft_real_workspace_free(work);
 	} else {
-        d_explanation = tr("Inverse") + " " + tr("FFT") + " " + tr("of") + " " + d_curve->title().text();
-		text = tr("Time");
-
 		gsl_fft_real_unpack (d_y, result, 1, d_n);
 		gsl_fft_complex_wavetable *wavetable = gsl_fft_complex_wavetable_alloc (d_n);
 		gsl_fft_complex_workspace *workspace = gsl_fft_complex_workspace_alloc (d_n);
 
 		if(!workspace || !wavetable){
-            memoryErrorMessage();
-			return "";
+			memoryErrorMessage();
+			return;
 		}
 
 		gsl_fft_complex_inverse (result, 1, d_n, wavetable, workspace);
@@ -135,20 +125,20 @@ QString FFT::fftCurve()
 	}
 
 	if (d_shift_order){
-		for(i=0; i<d_n; i++){
-			d_x[i] = (i-n2)*df;
+		for(int i = 0; i < d_n; i++){
+			d_x[i] = (i - n2)*df;
 			int j = i + d_n;
 			double aux = result[i];
 			result[i] = result[j];
 			result[j] = aux;
 		}
 	} else {
-		for(i=0; i<d_n; i++)
+		for(int i = 0; i < d_n; i++)
 			d_x[i] = i*df;
 	}
 
-	for(i=0;i<d_n;i++) {
-		i2 = 2*i;
+	for(int i = 0; i < d_n; i++) {
+		int i2 = 2*i;
 		double real_part = result[i2];
 		double im_part = result[i2+1];
 		double a = sqrt(real_part*real_part + im_part*im_part);
@@ -160,68 +150,58 @@ QString FFT::fftCurve()
 	ApplicationWindow *app = (ApplicationWindow *)parent();
 	QLocale locale = app->locale();
 	int prec = app->d_decimal_digits;
-
-	text += "\t"+tr("Real")+"\t"+tr("Imaginary")+"\t"+ tr("Amplitude")+"\t"+tr("Angle")+"\n";
-	for (i=0; i<d_n; i++){
-		i2 = 2*i;
-		text += locale.toString(d_x[i], 'g', prec)+"\t";
-		text += locale.toString(result[i2], 'g', prec)+"\t";
-		text += locale.toString(result[i2+1], 'g', prec)+"\t";
+	for (int i = 0; i < d_n; i++){
+		int i2 = 2*i;
+		d_result_table->setText(i, 0, locale.toString(d_x[i], 'g', prec));
+		d_result_table->setText(i, 1, locale.toString(result[i2], 'g', prec));
+		d_result_table->setText(i, 2, locale.toString(result[i2 + 1], 'g', prec));
 		if (d_normalize)
-			text += locale.toString(amp[i]/aMax, 'g', prec)+"\t";
+			d_result_table->setText(i, 3, locale.toString(amp[i]/aMax, 'g', prec));
 		else
-			text += locale.toString(amp[i], 'g', prec)+"\t";
-		text += locale.toString(atan(result[i2+1]/result[i2]), 'g', prec)+"\n";
+			d_result_table->setText(i, 3, locale.toString(amp[i], 'g', prec));
+		d_result_table->setText(i, 4, locale.toString(atan(result[i2 + 1]/result[i2]), 'g', prec));
 	}
-	delete[] amp;
-	delete[] result;
-    return text;
+
+	free(amp);
+	free(result);
 }
 
-QString FFT::fftTable()
+void FFT::fftTable()
 {
-    int i;
-	double *amp = new double[d_n];
-
+	double *amp = (double *)malloc(d_n*sizeof(double));
 	gsl_fft_complex_wavetable *wavetable = gsl_fft_complex_wavetable_alloc (d_n);
 	gsl_fft_complex_workspace *workspace = gsl_fft_complex_workspace_alloc (d_n);
 
 	if(!amp || !wavetable || !workspace){
 		memoryErrorMessage();
-        return "";
+		return;
 	}
 
 	double df = 1.0/(double)(d_n*d_sampling);//frequency sampling
 	double aMax = 0.0;//max amplitude
-	QString text;
-	if(!d_inverse) {
-		d_explanation = tr("Forward") + " " + tr("FFT") + " " + tr("of") + " " + d_table->colName(d_real_col);
-		text = tr("Frequency");
-		gsl_fft_complex_forward (d_y, 1, d_n, wavetable, workspace);
-	} else {
-		d_explanation = tr("Inverse") + " " + tr("FFT") + " " + tr("of") + " " + d_table->colName(d_real_col);
-		text = tr("Time");
+	if(d_inverse)
 		gsl_fft_complex_inverse (d_y, 1, d_n, wavetable, workspace);
-	}
+	else
+		gsl_fft_complex_forward (d_y, 1, d_n, wavetable, workspace);
 
 	gsl_fft_complex_wavetable_free (wavetable);
 	gsl_fft_complex_workspace_free (workspace);
 
 	if (d_shift_order) {
 		int n2 = d_n/2;
-		for(i=0; i<d_n; i++) {
-			d_x[i] = (i-n2)*df;
+		for(int i = 0; i < d_n; i++) {
+			d_x[i] = (i - n2)*df;
 			int j = i + d_n;
 			double aux = d_y[i];
 			d_y[i] = d_y[j];
 			d_y[j] = aux;
 		}
 	} else {
-		for(i=0; i<d_n; i++)
+		for(int i = 0; i < d_n; i++)
 			d_x[i] = i*df;
 	}
 
-	for(i=0; i<d_n; i++) {
+	for(int i = 0; i < d_n; i++) {
 		int i2 = 2*i;
 		double a = sqrt(d_y[i2]*d_y[i2] + d_y[i2+1]*d_y[i2+1]);
 		amp[i]= a;
@@ -229,100 +209,116 @@ QString FFT::fftTable()
 			aMax = a;
 	}
 
-    ApplicationWindow *app = (ApplicationWindow *)parent();
-    QLocale locale = app->locale();
+	ApplicationWindow *app = (ApplicationWindow *)parent();
+	QLocale locale = app->locale();
 	int prec = app->d_decimal_digits;
-
-	text += "\t"+tr("Real")+"\t"+tr("Imaginary")+"\t"+tr("Amplitude")+"\t"+tr("Angle")+"\n";
-	for (i=0; i<d_n; i++) {
+	for (int i = 0; i < d_n; i++) {
 		int i2 = 2*i;
-		text += locale.toString(d_x[i], 'g', prec)+"\t";
-		text += locale.toString(d_y[i2], 'g', prec)+"\t";
-		text += locale.toString(d_y[i2+1], 'g', prec)+"\t";
+		d_result_table->setText(i, 0, locale.toString(d_x[i], 'g', prec));
+		d_result_table->setText(i, 1, locale.toString(d_y[i2], 'g', prec));
+		d_result_table->setText(i, 2, locale.toString(d_y[i2 + 1], 'g', prec));
 		if (d_normalize)
-			text += locale.toString(amp[i]/aMax, 'g', prec)+"\t";
+			d_result_table->setText(i, 3, locale.toString(amp[i]/aMax, 'g', prec));
 		else
-			text += locale.toString(amp[i], 'g', prec)+"\t";
-		text += locale.toString(atan(d_y[i2+1]/d_y[i2]), 'g', prec)+"\n";
+			d_result_table->setText(i, 3, locale.toString(amp[i], 'g', prec));
+		d_result_table->setText(i, 4, locale.toString(atan(d_y[i2 + 1]/d_y[i2]), 'g', prec));
 	}
-	delete[] amp;
-    return text;
+	free(amp);
 }
 
 void FFT::output()
 {
-    QString text;
-    if (d_graph && d_curve)
-        text = fftCurve();
-    else if (d_table)
-        text = fftTable();
+	ApplicationWindow *app = (ApplicationWindow *)parent();
+	QString tableName = app->generateUniqueName(QString(objectName()));
+	QStringList header = QStringList();
+	if(d_inverse){
+		d_explanation = tr("Inverse") + " " + tr("FFT") + " " + tr("of") + " ";
+		header << tr("Time");
+	} else {
+		d_explanation = tr("Forward") + " " + tr("FFT") + " " + tr("of") + " ";
+		header << tr("Frequency");
+	}
 
-    if (!text.isEmpty())
-        output(text);
+	if (d_curve)
+		 d_explanation += d_curve->title().text();
+	else if (d_table)
+		d_explanation += d_table->colName(d_real_col);
+
+	d_result_table = app->newHiddenTable(tableName, d_explanation, d_n, 5);
+	d_result_table->setHeader(header << tr("Real") << tr("Imaginary") << tr("Amplitude") << tr("Angle"));
+
+    if (d_graph && d_curve)
+		fftCurve();
+    else if (d_table)
+		fftTable();
+
+	if (d_graphics_display)
+		outputGraphs();
 }
 
-void FFT::output(const QString &text)
+void FFT::outputGraphs()
 {
-    ApplicationWindow *app = (ApplicationWindow *)parent();
-    QString tableName = app->generateUniqueName(QString(objectName()));
-    d_result_table = app->newHiddenTable(tableName, d_explanation, d_n, 5, text);
+	if (!d_output_graph)
+		createOutputGraph();
 
-	if (d_graphics_display){
-	    if (!d_output_graph)
-            createOutputGraph();
+	MultiLayer *ml = d_output_graph->multiLayer();
 
-		MultiLayer *ml = d_output_graph->multiLayer();
+	d_output_graph->setTitle(QString::null);
+	d_output_graph->setYAxisTitle(tr("Angle (deg)"));
+	d_output_graph->enableAxis(QwtPlot::xTop, true);
+	if (!d_inverse)
+		d_output_graph->setAxisTitle(QwtPlot::xTop, tr("Frequency") + " (" + tr("Hz") + ")");
+	else
+		d_output_graph->setAxisTitle(QwtPlot::xTop, tr("Time") + + " (" + tr("s") + ")");
 
-		d_output_graph->setTitle(QString::null);
-		d_output_graph->setYAxisTitle(tr("Angle (deg)"));
-		d_output_graph->enableAxis(QwtPlot::xTop, true);
-		if (!d_inverse)
-			d_output_graph->setAxisTitle(QwtPlot::xTop, tr("Frequency") + " (" + tr("Hz") + ")");
-		else
-			d_output_graph->setAxisTitle(QwtPlot::xTop, tr("Time") + + " (" + tr("s") + ")");
-
-		ScaleDraw *sd = (ScaleDraw *)d_output_graph->axisScaleDraw(QwtPlot::yLeft);
-		if (sd)
-			sd->setShowTicksPolicy(ScaleDraw::HideBegin);
-		sd = (ScaleDraw *)d_output_graph->axisScaleDraw(QwtPlot::yRight);
-		if (sd)
-			sd->setShowTicksPolicy(ScaleDraw::HideBegin);
-		sd = (ScaleDraw *)d_output_graph->axisScaleDraw(QwtPlot::xBottom);
-		if (sd){
-			sd->setShowTicksPolicy(ScaleDraw::HideBeginEnd);
-			sd->enableComponent(QwtAbstractScaleDraw::Backbone, false);
-		}
-
-		PlotCurve *pc = d_output_graph->insertCurve(d_result_table, 0, tableName + "_" + tr("Angle"), 0);
-		pc->setPen(QPen(d_curveColor, 1));
-		d_output_graph->removeLegend();
-		d_output_graph->updatePlot();
-
-		Graph *g = ml->addLayer();
-		app->setPreferences(g);
-		g->setTitle(QString::null);
-		if (!d_inverse)
-			g->setXAxisTitle(tr("Frequency") + " (" + tr("Hz") + ")");
-		else
-			g->setXAxisTitle(tr("Time") + + " (" + tr("s") + ")");
-		g->setYAxisTitle(tr("Amplitude"));
-		g->removeLegend();
-
-		sd = (ScaleDraw *)g->axisScaleDraw(QwtPlot::xTop);
-		if (sd)
-			sd->setShowTicksPolicy(ScaleDraw::HideBeginEnd);
-
-		PlotCurve *c = g->insertCurve(d_result_table, 0, tableName + "_" + tr("Amplitude"), 0);
-		c->setPen(QPen(d_curveColor, 1));
-		g->updatePlot();
-
-		ml->setAlignPolicy(MultiLayer::AlignCanvases);
-		ml->setRows(2);
-		ml->setCols(1);
-		ml->setSpacing(0, 0);
-		ml->setCommonLayerAxes(false, true);
-		ml->arrangeLayers(false, false);
+	ScaleDraw *sd = (ScaleDraw *)d_output_graph->axisScaleDraw(QwtPlot::yLeft);
+	if (sd)
+		sd->setShowTicksPolicy(ScaleDraw::HideBegin);
+	sd = (ScaleDraw *)d_output_graph->axisScaleDraw(QwtPlot::yRight);
+	if (sd)
+		sd->setShowTicksPolicy(ScaleDraw::HideBegin);
+	sd = (ScaleDraw *)d_output_graph->axisScaleDraw(QwtPlot::xBottom);
+	if (sd){
+		sd->setShowTicksPolicy(ScaleDraw::HideBeginEnd);
+		sd->enableComponent(QwtAbstractScaleDraw::Backbone, false);
 	}
+
+	QString tableName = d_result_table->objectName();
+	PlotCurve *pc = d_output_graph->insertCurve(d_result_table, 0, tableName + "_" + tr("Angle"), 0);
+	pc->setPen(QPen(d_curveColor, 1));
+	d_output_graph->removeLegend();
+	d_output_graph->updatePlot();
+
+	Graph *g = ml->addLayer(0, 0, 0, 0, true);
+	g->setTitle(QString::null);
+	if (!d_inverse)
+		g->setXAxisTitle(tr("Frequency") + " (" + tr("Hz") + ")");
+	else
+		g->setXAxisTitle(tr("Time") + + " (" + tr("s") + ")");
+	g->setYAxisTitle(tr("Amplitude"));
+	g->removeLegend();
+
+	sd = (ScaleDraw *)g->axisScaleDraw(QwtPlot::xTop);
+	if (sd)
+		sd->setShowTicksPolicy(ScaleDraw::HideBeginEnd);
+
+	PlotCurve *c = g->insertCurve(d_result_table, 0, tableName + "_" + tr("Amplitude"), 0);
+	c->setPen(QPen(d_curveColor, 1));
+	g->updatePlot();
+
+	double rb = g->axisScaleDiv(QwtPlot::xBottom)->upperBound();
+	d_output_graph->setAxisScale(QwtPlot::xBottom, 0, rb);
+	d_output_graph->setAxisScale(QwtPlot::xTop, 0, rb);
+	g->setAxisScale(QwtPlot::xBottom, 0, rb);
+	g->setAxisScale(QwtPlot::xTop, 0, rb);
+
+	ml->setAlignPolicy(MultiLayer::AlignCanvases);
+	ml->setRows(2);
+	ml->setCols(1);
+	ml->setSpacing(0, 0);
+	ml->linkXLayerAxes();
+	ml->setCommonLayerAxes(false, true);
+	ml->arrangeLayers(false, false);
 }
 
 bool FFT::setDataFromTable(Table *t, const QString& realColName, const QString& imagColName, int from, int to)
