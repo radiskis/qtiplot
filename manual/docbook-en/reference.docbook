@@ -902,6 +902,22 @@ The active items appearing in a menu depends upon which project window is active
 	  <para>Creates vertically stacked layers displaying the histograms of the selected data columns in the active table window (one histogram per layer) See the &vertical-2-layers-lnk; for more details.</para>
 	</listitem>
       </varlistentry>
+
+      <varlistentry id="stem-and-leaf-cmd">
+	<term>&stem-and-leaf-cmd;</term>
+	<listitem>
+	  <para>Generates a stem-and-leaf tabular plot from the selected column in a new <emphasis>note</emphasis> window. Stem-and-Leaf plots are similar to histograms but are represented using rows of decimal digits. Like a histogram, data is binned, usually by taking the most significant digits (MSDs) as "stem" values which are listed in a column on the left. The least significant digit(s) from all values having identical MSDs are then listed to the right of each stem value. From a statistical point of view, this gives the appearance of a histogram but preserves the actual data values in the plot. When this command is executed, you will be given the opportunity to select/confirm the binning increment, which is given as a power of 10 and defaults to a power of 1 (that is, a binning increment of 10).</para>
+      <informalfigure id="fig-stem-and-leaf">
+        <mediaobject>
+          <imageobject>
+            <imagedata  format="PNG" fileref="pics/stem-and-leaf.png"/>
+          </imageobject>
+        </mediaobject>
+      </informalfigure>
+    <para>This figure shows a typical stem-and-leaf representation of 48 random data points which are roughly gaussian (i.e., normally distributed) and uses the default binning increment of 10. </para>
+	</listitem>
+      </varlistentry>
+
     </variablelist>
   </listitem>
 </varlistentry>
