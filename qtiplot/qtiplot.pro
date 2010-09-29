@@ -236,7 +236,7 @@ contains(SCRIPTING_LANGS, Python) {
 	DEFINES += OPJ_IMPORT
 	INCLUDEPATH += $$LIBORIGIN_INCLUDEPATH
 	INCLUDEPATH += $$BOOST_INCLUDEPATH
-	LIBS        += $$LIBORIGIN_LIBS
+	#LIBS        += $$LIBORIGIN_LIBS
 	LIBS        += $$BOOST_LIBS
 	include(src/origin/origin.pri)
 }
