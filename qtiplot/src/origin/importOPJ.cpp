@@ -714,8 +714,10 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 			if(!graph)
 				return false;
 
-			graph->setAxisTitlePolicy(Graph::NameAndComment);
-			//graph->setAxisTitlePolicy(mw->d_graph_axis_labeling);
+			if (opj.version() >= 8.0)
+				graph->setAxisTitlePolicy(Graph::NameAndComment);
+			else
+				graph->setAxisTitlePolicy(mw->d_graph_axis_labeling);
 			graph->setAutoscaleFonts(false);
 
 			Origin::Rect layerRect = layer.clientRect;
