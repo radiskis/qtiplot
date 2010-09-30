@@ -305,7 +305,7 @@ bool PythonScripting::loadInitFile(const QString &path)
 		fclose(f);
 	} else if (pyFile.isReadable() && pyFile.exists()) {
 		// try to compile pyFile to pycFile
-		PyObject *compileModule = PyImport_ImportModuleNoBlock("py_compile");
+		PyObject *compileModule = PyImport_ImportModule("py_compile");
 		if (compileModule) {
 			PyObject *compile = PyDict_GetItemString(PyModule_GetDict(compileModule), "compile");
 			if (compile) {
