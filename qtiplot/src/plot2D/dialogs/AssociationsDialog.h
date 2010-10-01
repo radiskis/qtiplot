@@ -2,7 +2,7 @@
     File                 : AssociationsDialog.h
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2006 by Ion Vasilief
+	Copyright            : (C) 2006 - 2010 by Ion Vasilief
     Email (use @ for *)  : ion_vasilief*yahoo.fr
     Description          : Plot associations dialog
 
@@ -57,11 +57,11 @@ private slots:
     void accept();
 
 private:
-    void changePlotAssociation(int curve, const QString& text);
+	void changePlotAssociation(int curve, const QStringList& lst);
 	void updateColumnTypes();
 	void uncheckCol(int col);
 	void updatePlotAssociation(int row, int col);
-	QString plotAssociation(const QString& text);
+	QStringList plotAssociation(const QString& text);
     Table *findTable(int index);
     bool eventFilter(QObject *object, QEvent *e);
 

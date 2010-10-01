@@ -2916,8 +2916,8 @@ bool PlotDialog::acceptParams()
 				filledHeadBox->isChecked(), vectPosBox->currentIndex(), xEndCol, yEndCol);
 
 		VectorCurve *v = (VectorCurve*)item->plotItem();
-		QString table = v->table()->name();
-		item->setText(0, table + ": " + v->plotAssociation().remove(table + "_"));
+		QString tableName = v->table()->name();
+		item->setText(0, tableName + ": " + v->plotAssociation().replaceInStrings(tableName + "_", "").join(", "));
 		return true;
 	} else if (privateTabWidget->currentPage() == errorsPage){
 		ErrorBarsCurve *err = (ErrorBarsCurve *)item->plotItem();
@@ -3896,9 +3896,9 @@ void LayerItem::insertCurvesList()
         if (it->rtti() == QwtPlotItem::Rtti_PlotCurve){
             PlotCurve *c = (PlotCurve *)it;
             if (c->type() != Graph::Function && ((DataCurve *)it)->table()){
-                QString s = ((DataCurve *)it)->plotAssociation();
-                QString table = ((DataCurve *)it)->table()->name();
-                plotAssociation = table + ": " + s.remove(table + "_");
+				QStringList lst = ((DataCurve *)it)->plotAssociation();
+				QString tableName = ((DataCurve *)it)->table()->name();
+				plotAssociation = tableName + ": " + lst.replaceInStrings(tableName + "_", "").join(", ");
             } else
                 plotAssociation = it->title().text();
         } else

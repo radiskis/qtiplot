@@ -314,18 +314,18 @@ void VectorCurve::updateColumnNames(const QString& oldName, const QString& newNa
     }
 }
 
-QString VectorCurve::plotAssociation()
+QStringList VectorCurve::plotAssociation()
 {
-    QString base = d_x_column + "(X)," + title().text() + "(Y)," + d_end_x_a;
-    if (d_style == XYAM)
-        base += "(A)," + d_end_y_m + "(M)";
-    else
-        base += "(X)," + d_end_y_m + "(Y)";
+	QStringList lst = QStringList() << d_x_column + "(X)" << title().text() + "(Y)";
+	if (d_style == XYAM)
+		lst << d_end_x_a + "(A)" << d_end_y_m + "(M)";
+	else
+		lst << d_end_x_a + "(X)" << d_end_y_m + "(Y)";
 
-    if (!d_labels_column.isEmpty())
-        base += "," + d_labels_column + "(L)";
+	if (!d_labels_column.isEmpty())
+		lst << d_labels_column + "(L)";
 
-	return base;
+	return lst;
 }
 
 bool VectorCurve::updateData(Table *t, const QString& colName)

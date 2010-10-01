@@ -312,16 +312,18 @@ void ErrorBarsCurve::loadData()
 	setErrors(err);
 }
 
-QString ErrorBarsCurve::plotAssociation()
+QStringList ErrorBarsCurve::plotAssociation()
 {
-    if (!d_master_curve)
-		return QString();
+	if (!d_master_curve)
+		return QStringList();
 
-    QString base = d_master_curve->xColumnName() + "(X)," + d_master_curve->title().text() + "(Y)," + title().text();
-    if (type == Horizontal)
-        return base + "(xErr)";
-    else
-        return base + "(yErr)";
+	QStringList lst = QStringList() << d_master_curve->xColumnName() + "(X)" << d_master_curve->title().text() + "(Y)";
+	if (type == Horizontal)
+		lst << title().text() + "(xErr)";
+	else
+		lst << title().text() + "(yErr)";
+
+	return lst;
 }
 
 bool ErrorBarsCurve::updateData(Table *t, const QString& colName)

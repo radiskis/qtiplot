@@ -79,7 +79,7 @@ public:
 	bool updateData(Table *t, const QString& colName);
 	void loadData();
 
-    QString plotAssociation();
+	QStringList plotAssociation();
 	void updateColumnNames(const QString& oldName, const QString& newName, bool updateTableName);
 
 	QPen vectorPen(){return d_pen;};

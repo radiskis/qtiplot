@@ -1252,13 +1252,13 @@ void Graph::updateSecondaryAxis(int axis, bool changeFormat)
 {
 	foreach (QwtPlotItem *it, d_curves){
 		if (it->rtti() == QwtPlotItem::Rtti_PlotSpectrogram){
-            Spectrogram *sp = (Spectrogram *)it;
-            if (sp->colorScaleAxis() == axis)
-                return;
-        }
+			Spectrogram *sp = (Spectrogram *)it;
+			if (sp->colorScaleAxis() == axis)
+				return;
+		}
 
 		if ((axis == QwtPlot::yRight && it->yAxis() == QwtPlot::yRight) ||
-            (axis == QwtPlot::xTop && it->xAxis () == QwtPlot::xTop))
+			(axis == QwtPlot::xTop && it->xAxis () == QwtPlot::xTop))
 			return;
 	}
 
@@ -2510,7 +2510,7 @@ QString Graph::saveCurveLayout(int index)
 		s+=QString::number(v->headAngle())+"\t";
 		s+=QString::number(v->filledArrowHead())+"\t";
 
-		QStringList colsList = v->plotAssociation().split(",", QString::SkipEmptyParts);
+		QStringList colsList = v->plotAssociation();
 		s+=colsList[2].remove("(X)").remove("(A)")+"\t";
 		s+=colsList[3].remove("(Y)").remove("(M)");
 		if (style == VectXYAM)
@@ -3627,7 +3627,7 @@ void Graph::removeCurves(const QString& s)
         if (((PlotCurve *)it)->type() == Function)
             continue;
 
-        if(((DataCurve *)it)->plotAssociation().contains(s))
+		if(((DataCurve *)it)->plotAssociation().join(",").contains(s))
             removeCurve(d_curves.indexOf(it));
 	}
 	replot();
@@ -4586,8 +4586,7 @@ void Graph::copyScaleWidget(Graph* g, int i)
 
 void Graph::copyScaleDraw(Graph* g, int i)
 {
-	QwtScaleWidget *sc = g->axisWidget(i);
-	if (!sc)
+	if (!g->axisEnabled(i))
 		return;
 
 	ScaleDraw *sdg = (ScaleDraw *)g->axisScaleDraw (i);
@@ -4606,30 +4605,6 @@ void Graph::copyScaleDraw(Graph* g, int i)
 	} else
 		axisScaleDraw (i)->enableComponent (QwtAbstractScaleDraw::Labels, false);
 
-	//set same scale
-	const ScaleEngine *se = (ScaleEngine *)g->axisScaleEngine(i);
-	if (!se)
-		return;
-
-	ScaleEngine *sc_engine = (ScaleEngine *)axisScaleEngine(i);
-	sc_engine->clone(se);
-
-	int majorTicks = g->axisMaxMajor(i);
-	int minorTicks = g->axisMaxMinor(i);
-	setAxisMaxMajor (i, majorTicks);
-	setAxisMaxMinor (i, minorTicks);
-
-	double step = g->axisStep(i);
-	d_user_step[i] = step;
-
-	const QwtScaleDiv *gdiv = g->axisScaleDiv(i);
-	QwtScaleDiv div = sc_engine->divideScale (QMIN(gdiv->lowerBound(), gdiv->upperBound()),
-			QMAX(gdiv->lowerBound(), gdiv->upperBound()), majorTicks, minorTicks, step);
-
-	if (se->testAttribute(QwtScaleEngine::Inverted))
-		div.invert();
-	setAxisScaleDiv (i, div);
-
 	ScaleDraw *sd = (ScaleDraw *)axisScaleDraw(i);
 	sd->enableComponent (QwtAbstractScaleDraw::Backbone, sdg->hasComponent(QwtAbstractScaleDraw::Backbone));
 	sd->setSpacing(sdg->spacing());
@@ -4638,6 +4613,28 @@ void Graph::copyScaleDraw(Graph* g, int i)
 	sd->setSuffix(sdg->suffix());
 
 	setAxisTicksLength(i, sdg->majorTicksStyle(), sdg->minorTicksStyle(), g->minorTickLength(), g->majorTickLength());
+
+	//set same scale
+	const ScaleEngine *se = (ScaleEngine *)g->axisScaleEngine(i);
+	if (!se)
+		return;
+
+	ScaleEngine *sc_engine = (ScaleEngine *)axisScaleEngine(i);
+	sc_engine->clone(se);
+
+	setAxisMaxMajor (i, g->axisMaxMajor(i));
+	setAxisMaxMinor (i, g->axisMaxMinor(i));
+
+	double step = g->axisStep(i);
+	d_user_step[i] = step;
+
+	const QwtScaleDiv *gdiv = g->axisScaleDiv(i);
+	QwtScaleDiv div = sc_engine->divideScale (QMIN(gdiv->lowerBound(), gdiv->upperBound()),
+			QMAX(gdiv->lowerBound(), gdiv->upperBound()), g->axisMaxMajor(i), g->axisMaxMinor(i), step);
+
+	if (se->testAttribute(QwtScaleEngine::Inverted))
+		div.invert();
+	setAxisScaleDiv (i, div);
 }
 
 void Graph::copy(Graph* g)
@@ -5427,7 +5424,7 @@ void Graph::updateCurveNames(const QString& oldName, const QString& newName, boo
             continue;
 
         DataCurve *c = (DataCurve *)it;
-        if (c->type() != Function && c->plotAssociation().contains(oldName))
+		if (c->type() != Function && c->plotAssociation().join(",").contains(oldName))
             c->updateColumnNames(oldName, newName, updateTableName);
 	}
 
