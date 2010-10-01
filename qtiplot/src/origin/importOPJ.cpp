@@ -1144,27 +1144,27 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 				Origin::GraphAxisBreak breakY = layer.yAxisBreak;
 				bool invert = (layer.xAxis.min > layer.xAxis.max);
 				if(style != Graph::Box){
-					if(breakX.show)
-						graph->setScale(2,layer.xAxis.min,layer.xAxis.max,layer.xAxis.step,layer.xAxis.majorTicks,layer.xAxis.minorTicks,scaleTypes[(Origin::GraphAxis::Scale)layer.xAxis.scale],
-									invert,
-									breakX.from, breakX.to,
-									breakX.position,
-									breakX.scaleIncrementBefore, breakX.scaleIncrementAfter,
+					if(breakX.show){
+						for (int i = 2; i < QwtPlot::axisCnt; i++)
+							graph->setScale(i, layer.xAxis.min,layer.xAxis.max,layer.xAxis.step,layer.xAxis.majorTicks,layer.xAxis.minorTicks,scaleTypes[(Origin::GraphAxis::Scale)layer.xAxis.scale],
+									invert, breakX.from, breakX.to, breakX.position, breakX.scaleIncrementBefore, breakX.scaleIncrementAfter,
 									breakX.minorTicksBefore, breakX.minorTicksAfter, breakX.log10);
-					else
-						graph->setScale(2,layer.xAxis.min,layer.xAxis.max,layer.xAxis.step,layer.xAxis.majorTicks,layer.xAxis.minorTicks,scaleTypes[(Origin::GraphAxis::Scale)layer.xAxis.scale], invert);
+					} else {
+						for (int i = 2; i < QwtPlot::axisCnt; i++)
+							graph->setScale(i, layer.xAxis.min,layer.xAxis.max,layer.xAxis.step,layer.xAxis.majorTicks,layer.xAxis.minorTicks,scaleTypes[(Origin::GraphAxis::Scale)layer.xAxis.scale], invert);
+					}
 				}
 
 				invert = (layer.yAxis.min > layer.yAxis.max) || matrixImage;
-				if(breakY.show)
-					graph->setScale(0,layer.yAxis.min,layer.yAxis.max,layer.yAxis.step,layer.yAxis.majorTicks,layer.yAxis.minorTicks,scaleTypes[(Origin::GraphAxis::Scale)layer.xAxis.scale], //??xAxis??
-					invert,
-					breakY.from, breakY.to,
-					breakY.position,
-					breakY.scaleIncrementBefore, breakY.scaleIncrementAfter,
-					breakY.minorTicksBefore, breakY.minorTicksAfter, breakY.log10);
-				else
-					graph->setScale(0,layer.yAxis.min,layer.yAxis.max,layer.yAxis.step,layer.yAxis.majorTicks,layer.yAxis.minorTicks,scaleTypes[(Origin::GraphAxis::Scale)layer.yAxis.scale], invert);
+				if(breakY.show){
+					for (int i = 0; i <= 1; i++)
+						graph->setScale(i, layer.yAxis.min,layer.yAxis.max,layer.yAxis.step,layer.yAxis.majorTicks,layer.yAxis.minorTicks,scaleTypes[(Origin::GraphAxis::Scale)layer.xAxis.scale], //??xAxis??
+							invert, breakY.from, breakY.to, breakY.position, breakY.scaleIncrementBefore, breakY.scaleIncrementAfter,
+							breakY.minorTicksBefore, breakY.minorTicksAfter, breakY.log10);
+				} else {
+					for (int i = 0; i <= 1; i++)
+						graph->setScale(i, layer.yAxis.min,layer.yAxis.max,layer.yAxis.step,layer.yAxis.majorTicks,layer.yAxis.minorTicks,scaleTypes[(Origin::GraphAxis::Scale)layer.yAxis.scale], invert);
+				}
 			}
 
 			//grid
@@ -2394,7 +2394,10 @@ void ImportOPJ::convertDoubleAxesPlot(MultiLayer *ml)
 	l1->copyScaleDraw(l2, QwtPlot::yRight);
 	l1->setAxisLabelRotation(QwtPlot::xTop, l2->labelsRotation(QwtPlot::xTop));
 	l1->setCanvasSize(l2->canvas()->size());
+
+#ifndef Q_OS_WIN
 	l1->move(QPoint(pos.x(), pos.y() - LayerButton::btnSize()));
+#endif
 
 	foreach (FrameWidget *e, l2->enrichmentsList()){
 		PieLabel *l = qobject_cast<PieLabel *>(e);
@@ -2405,6 +2408,14 @@ void ImportOPJ::convertDoubleAxesPlot(MultiLayer *ml)
 
 	foreach (ArrowMarker *a, l2->arrowsList())
 		l1->addArrow(a);
+
+	foreach (FrameWidget *e, l1->enrichmentsList()){
+		LegendWidget *l = qobject_cast<LegendWidget *>(e);
+		if (!l || !l->text().contains("(2."))
+			continue;
+
+		l->setText(l->text().replace("(2.", "("));
+	}
 
 	ml->removeLayer(l2);
 	ml->resize(ml->width(), ml->height() + LayerButton::btnSize());

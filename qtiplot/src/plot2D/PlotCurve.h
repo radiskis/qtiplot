@@ -165,7 +165,7 @@ public:
 		 *
 		 * Column ids are of the form '&lt;name of table> "_" &lt;name of column>'.
 		 */
-    virtual QString plotAssociation();
+	virtual QStringList plotAssociation();
 	virtual void updateColumnNames(const QString& oldName, const QString& newName, bool updateTableName);
 
 	//! The list of attached error bars.

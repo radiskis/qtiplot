@@ -513,16 +513,16 @@ bool DataCurve::isFullRange()
 		return true;
 }
 
-QString DataCurve::plotAssociation()
+QStringList DataCurve::plotAssociation()
 {
-	QString s = title().text();
-    if (!d_x_column.isEmpty())
-        s = d_x_column + "(X)," + title().text() + "(Y)";
+	QStringList lst = QStringList() << title().text();
+	if (!d_x_column.isEmpty())
+		lst = QStringList() << d_x_column + "(X)" << title().text() + "(Y)";
 
-    if (!d_labels_column.isEmpty())
-        s += "," + d_labels_column + "(L)";
+	if (!d_labels_column.isEmpty())
+		lst << d_labels_column + "(L)";
 
-	return s;
+	return lst;
 }
 
 void DataCurve::updateColumnNames(const QString& oldName, const QString& newName, bool updateTableName)
