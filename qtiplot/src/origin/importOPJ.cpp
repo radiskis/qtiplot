@@ -700,8 +700,9 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 		bool imageProfileTool = false;
 		bool boxWhiskersPlot = false;
 		bool showColorScale = false;
-		int layers = _graph.layers.size();
+		unsigned int layers = _graph.layers.size();
 		bool commonYAxes = false;
+		bool doubleAxesLayout = false;
 		for(unsigned int l = 0; l < layers; ++l){
 			Origin::GraphLayer& layer = _graph.layers[l];
 
@@ -721,10 +722,15 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 			graph->setAutoscaleFonts(false);
 
 			Origin::Rect layerRect = layer.clientRect;
-			if (l > 1){
+			if (l){
 				Origin::GraphLayer& prevLayer = _graph.layers[l - 1];
 				if (prevLayer.clientRect.left + prevLayer.clientRect.width() == layerRect.left)
 					commonYAxes = true;
+				else if (layers == 2 && (prevLayer.clientRect.left == layerRect.left &&
+					prevLayer.clientRect.top == layerRect.top &&
+					prevLayer.clientRect.right == layerRect.right &&
+					prevLayer.clientRect.bottom == layerRect.bottom))
+					doubleAxesLayout = true;
 			}
 
 			QColor bkg = originToQtColor(layer.backgroundColor);
@@ -1565,7 +1571,8 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 			ml->setAlignPolicy(MultiLayer::AlignCanvases);
 			ml->setCommonLayerAxes(true, false);
 			ml->arrangeLayers(false, false);
-		}
+		} else if (doubleAxesLayout)
+			convertDoubleAxesPlot(ml);
 
 		if (imageProfileTool){
 			Graph *graph = ml->layer(1);
@@ -2365,6 +2372,44 @@ QwtSymbol::Style ImportOPJ::originToQwtSymbolStyle(unsigned char type)
 	}
 	return SymbolBox::style(sType);
 }
+
+void ImportOPJ::convertDoubleAxesPlot(MultiLayer *ml)
+{
+	if (!ml || ml->numLayers() != 2)
+		return;
+
+	ml->setScaleLayersOnResize(false);
+
+	Graph *l1 = ml->layer(1);
+	Graph *l2 = ml->layer(2);
+	if (!l1 || !l2)
+		return;
+
+	QPoint pos = l1->pos();
+
+	l1->copyScaleWidget(l2, QwtPlot::xTop);
+	l1->copyScaleWidget(l2, QwtPlot::yRight);
+	l1->copyCurves(l2);
+	l1->copyScaleDraw(l2, QwtPlot::xTop);
+	l1->copyScaleDraw(l2, QwtPlot::yRight);
+	l1->setAxisLabelRotation(QwtPlot::xTop, l2->labelsRotation(QwtPlot::xTop));
+	l1->setCanvasSize(l2->canvas()->size());
+	l1->move(QPoint(pos.x(), pos.y() - LayerButton::btnSize()));
+
+	foreach (FrameWidget *e, l2->enrichmentsList()){
+		PieLabel *l = qobject_cast<PieLabel *>(e);
+		if (l)
+			continue;
+		l1->add(e);
+	}
+
+	foreach (ArrowMarker *a, l2->arrowsList())
+		l1->addArrow(a);
+
+	ml->removeLayer(l2);
+	ml->resize(ml->width(), ml->height() + LayerButton::btnSize());
+}
+
 //TODO: bug in grid dialog
 //		scale/minor ticks checkbox
 //		histogram: autobin export

@@ -237,6 +237,8 @@ class Graph: public QwtPlot
 	public slots:
 		void copy(Graph* g);
 		void copyCurves(Graph* g);
+		void copyScaleWidget(Graph* g, int i);
+		void copyScaleDraw(Graph* g, int i);
 
 		//! \name Pie Curves
 		//@{

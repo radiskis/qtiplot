@@ -52,6 +52,7 @@ public:
 private:
 	void importSpectrogram(Graph *graph, Spectrogram *sp, const Origin::GraphLayer& layer, const Origin::GraphCurve& _curve, double fFontScaleFactor);
 	void parseXYZContourPlotAxisTitles(Graph *g, Table *t, const Origin::GraphCurve& curve);
+	void convertDoubleAxesPlot(MultiLayer *ml);
 
 	QwtSymbol::Style originToQwtSymbolStyle(unsigned char type);
 	QwtLinearColorMap qwtColorMap(const Origin::ColorMap& colorMap);
