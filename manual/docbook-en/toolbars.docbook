@@ -634,7 +634,7 @@ The <emphasis>File Toolbar</emphasis> provides single-click access to commands f
 </table>
 
 <table tocentry="1" pgwide="1" frame="sides" id="tablecommands-group1-table">
-<title>Table Toolbar Group1 Commands</title>
+<title>&tablecommands-group1-title;</title>
 <tgroup cols="4">
   <colspec colname="icon" colwidth="1*" align="center"/>
   <colspec colname="command" colwidth="5*" align="left"/>
@@ -657,13 +657,13 @@ The <emphasis>File Toolbar</emphasis> provides single-click access to commands f
   </row>
   <row>
    <entry>&horizontal-steps-icon;</entry>
-   <entry>&horizontal-steps-lnk;</entry>
+   <entry>plot -> &horizontal-steps-lnk;</entry>
    <entry></entry>
    <entry>Plots selected data using horizontal steps style.</entry>
   </row>
   <row>
    <entry>&vertical-steps-icon;</entry>
-   <entry>&vertical-steps-lnk;</entry>
+   <entry>plot -> &vertical-steps-lnk;</entry>
    <entry></entry>
    <entry>Plots selected data using vertical steps style.</entry>
   </row>
@@ -672,7 +672,7 @@ The <emphasis>File Toolbar</emphasis> provides single-click access to commands f
 </table>
 
 <table tocentry="1" pgwide="1" frame="sides" id="tablecommands-group2-table">
-<title>Table Toolbar Group2 Commands</title>
+<title>&tablecommands-group2-title;</title>
 <tgroup cols="4">
   <colspec colname="icon" colwidth="1*" align="center"/>
   <colspec colname="command" colwidth="5*" align="left"/>
@@ -704,7 +704,7 @@ The <emphasis>File Toolbar</emphasis> provides single-click access to commands f
 </table>
 
 <table tocentry="1" pgwide="1" frame="sides" id="tablecommands-group3-table">
-<title>Table Toolbar Group3 Commands</title>
+<title>&tablecommands-group3-title;</title>
 <tgroup cols="4">
   <colspec colname="icon" colwidth="1*" align="center"/>
   <colspec colname="command" colwidth="5*" align="left"/>
@@ -736,7 +736,7 @@ The <emphasis>File Toolbar</emphasis> provides single-click access to commands f
 </table>
 
 <table tocentry="1" pgwide="1" frame="sides" id="tablecommands-group4-table">
-<title>Table Toolbar Group4 Commands</title>
+<title>&tablecommands-group4-title;</title>
 <tgroup cols="4">
   <colspec colname="icon" colwidth="1*" align="center"/>
   <colspec colname="command" colwidth="5*" align="left"/>
@@ -780,7 +780,7 @@ The <emphasis>File Toolbar</emphasis> provides single-click access to commands f
 </table>
 
 <table tocentry="1" pgwide="1" frame="sides" id="tablecommands-group5-table">
-<title>Table Toolbar Group5 Commands</title>
+<title>&tablecommands-group5-title;</title>
 <tgroup cols="4">
   <colspec colname="icon" colwidth="1*" align="center"/>
   <colspec colname="command" colwidth="5*" align="left"/>
@@ -825,7 +825,7 @@ The <emphasis>File Toolbar</emphasis> provides single-click access to commands f
 </table>
 
 <table tocentry="1" pgwide="1" frame="sides" id="tablecommands-group6-table">
-<title>Table Toolbar Group6 Commands</title>
+<title>&tablecommands-group6-title;</title>
 <tgroup cols="4">
   <colspec colname="icon" colwidth="1*" align="center"/>
   <colspec colname="command" colwidth="5*" align="left"/>
@@ -857,7 +857,7 @@ The <emphasis>File Toolbar</emphasis> provides single-click access to commands f
 </table>
 
 <table tocentry="1" pgwide="1" frame="sides" id="tablecommands-group7-table">
-<title>Table Toolbar Group7 Commands</title>
+<title>&tablecommands-group7-title;</title>
 <tgroup cols="4">
   <colspec colname="icon" colwidth="1*" align="center"/>
   <colspec colname="command" colwidth="5*" align="left"/>
@@ -925,7 +925,7 @@ The <emphasis>File Toolbar</emphasis> provides single-click access to commands f
 </table>
 
 <table tocentry="1" pgwide="1" frame="sides" id="tablecommands-group8-table">
-<title>Table Toolbar Group8 Commands</title>
+<title>&tablecommands-group8-title;</title>
 <tgroup cols="4">
   <colspec colname="icon" colwidth="1*" align="center"/>
   <colspec colname="command" colwidth="5*" align="left"/>
@@ -969,11 +969,11 @@ The <emphasis>File Toolbar</emphasis> provides single-click access to commands f
 </table>
 </sect1>
 
-<!--HERE!!!! -->
+<!--Toolbar image updated and missing items added. SRB (09/30/2010 ) -->
+
 <sect1 id="column-toolbar">
 <title>The Column Toolbar</title>
-<para>This toolbar allows a quick access to the commands of the <link linkend="sec-table-menu">Table Menu</link> used to rearrange columns in the table
-or to define the plot role of the selected columns.</para>
+<para>This toolbar provides single-click access to the commands of the <link linkend="sec-table-menu">Table Menu</link> which are used to rearrange columns in the table, fill columns with values and define the plot role of selected columns. A few items from the Analysis menu are also included on this toolbar.</para>
 
 <figure id="column-table-toolbar">
   <title>The &appname; Column Toolbar</title>
@@ -986,84 +986,154 @@ or to define the plot role of the selected columns.</para>
 
 <table tocentry="1" pgwide="1" frame="sides">
 <title>Column toolbar commands.</title>
-<tgroup cols="3">
-  <colspec colname="icon" colwidth="1*" align="center"/>
+<tgroup cols="4">
+  <colspec colname="icon" colwidth="1*" align="center" valign="middle"/>
   <colspec colname="command" colwidth="5*" align="left"/>
+  <colspec colname="key" colwidth="2*" align="center"/>
   <colspec colname="description" colwidth="10*" align="justify"/>
   <thead>
     <row>
       <entry>Icon</entry>
       <entry>Command</entry>
+      <entry>Key</entry>
       <entry>Description</entry>
     </row>
   </thead>
  <tbody>
   <row>
+   <entry>&set-column-values-icon;</entry>
+   <entry><link linkend="set-column-values-cmd">Table -> &set-column-values-cmd;</link></entry>
+   <entry>&set-column-values-key;</entry>
+   <entry>Used for functional assignment of values in selected column.</entry>
+  </row>
+
+  <row>
+   <entry>&fill-column-with-row-number-icon;</entry>
+   <entry><link linkend="fill-column-with-row-number-cmd">Table -> &fill-column-with-row-number-cmd;</link></entry>
+   <entry>&fill-column-with-row-number-key;</entry>
+   <entry>Fills each row in the selected column with it's corresponding row number.</entry>
+  </row>
+  <row>
+
+   <entry>&fill-column-with-random-values-icon;</entry>
+   <entry><link linkend="fill-column-with-random-values-cmd">Table -> &fill-column-with-random-values-cmd;</link></entry>
+   <entry>&fill-column-with-random-values-key;</entry>
+   <entry>Fills each row in the selected column with a random value.</entry>
+  </row>
+
+  <row>
+   <entry>&sort-table-icon;</entry>
+   <entry><link linkend="sort-table-cmd">Analysis -> &sort-table-cmd;</link></entry>
+   <entry>&sort-table-key;</entry>
+   <entry>Sorts all columns in the selected table into ascending or descending order.</entry>
+  </row>
+
+  <row>
    <entry>&statistics-on-columns-icon;</entry>
-   <entry><link linkend="statistics-on-columns-cmd">plot -> &statistics-on-columns-cmd;</link></entry>
-   <entry></entry>
+   <entry><link linkend="statistics-on-columns-cmd">Analysis -> &statistics-on-columns-cmd;</link></entry>
+   <entry>&statistics-on-columns-key;</entry>
    <entry>Computes statistical parameters on selected columns.</entry>
   </row>
   <row>
    <entry>&statistics-on-rows-icon;</entry>
-   <entry><link linkend="statistics-on-rows-cmd">plot -> &statistics-on-rows-cmd;</link></entry>
-   <entry></entry>
-   <entry>Computes statistical parameters on the selected row.</entry>
+   <entry><link linkend="statistics-on-rows-cmd">Analysis -> &statistics-on-rows-cmd;</link></entry>
+   <entry>&statistics-on-rows-key;</entry>
+   <entry>Computes statistical parameters on the selected rows.</entry>
   </row>
  <row>
    <entry>&set-column-as-x-icon;</entry>
-   <entry><link linkend="set-column-as-x-cmd">table -> &set-column-as-x-cmd;</link></entry>
-   <entry>Define the selected column as abscissae for the plots.</entry>
+   <entry><link linkend="set-column-as-x-cmd">Table -> &set-column-as-x-cmd;</link></entry>
+   <entry>&set-column-as-x-key;</entry>
+   <entry>Define the selected column as abscissae for plotting.</entry>
   </row>
   <row>
    <entry>&set-column-as-y-icon;</entry>
-   <entry><link linkend="set-column-as-y-cmd">table -> &set-column-as-y-cmd;</link></entry>
-   <entry>This command defines the selected column as ordinates for the plots.</entry>
+   <entry><link linkend="set-column-as-y-cmd">Table -> &set-column-as-y-cmd;</link></entry>
+   <entry>&set-column-as-y-key;</entry>
+   <entry>Define the selected column as an ordinate for plotting.</entry>
   </row>
   <row>
    <entry>&set-column-as-z-icon;</entry>
-   <entry><link linkend="set-column-as-z-cmd">table -> &set-column-as-z-cmd;</link></entry>
-   <entry>In the case of 3D plots, Z columns will be used as height values.</entry>
+   <entry><link linkend="set-column-as-z-cmd">Table -> &set-column-as-z-cmd;</link></entry>
+   <entry>&set-column-as-z-key;</entry>
+   <entry>For 3D plots, Z columns will be used as height values.</entry>
   </row>
   <row>
    <entry>&set-column-as-y-error-icon;</entry>
-   <entry><link linkend="set-column-as-y-error-cmd">table -> &set-column-as-y-error-cmd;</link></entry>
+   <entry><link linkend="set-column-as-y-error-cmd">Table -> &set-column-as-y-error-cmd;</link></entry>
+   <entry>&set-column-as-y-error-key;</entry>
    <entry>Define the selected column for use as error bars for Y-values.</entry>
   </row>
+
+  <row>
+   <entry>&set-column-as-label-icon;</entry>
+   <entry><link linkend="set-column-as-label-cmd">Table -> &set-column-as-label-cmd;</link></entry>
+   <entry>&set-column-as-label-key;</entry>
+   <entry>Define the selected column as containing labels.</entry>
+  </row>
+
   <row>
    <entry>&set-column-as-none-icon;</entry>
-   <entry><link linkend="set-column-as-none-cmd">table -> &set-column-as-none-cmd;</link></entry>
-   <entry>This command removes any plot role from the selected columns.</entry>
+   <entry><link linkend="set-column-as-none-cmd">Table -> &set-column-as-none-cmd;</link></entry>
+   <entry>&set-column-as-none-key;</entry>
+   <entry>This command removes any plot role from selected columns.</entry>
   </row>
   <row>
    <entry>&move-column-first-icon;</entry>
-   <entry><link linkend="move-column-first-cmd">table -> &move-column-first-cmd;</link></entry>
+   <entry><link linkend="move-column-first-cmd">Table -> &move-column-first-cmd;</link></entry>
+   <entry>&move-column-first-key;</entry>
    <entry>Moves the selected column to the beginning of the table.</entry>
   </row>
   <row>
    <entry>&move-column-left-icon;</entry>
-   <entry><link linkend="move-column-left-cmd">table -> &move-column-left-cmd;</link></entry>
-   <entry>Moves the selected column to the left.</entry>
+   <entry><link linkend="move-column-left-cmd">Table -> &move-column-left-cmd;</link></entry>
+    <entry>&move-column-left-key;</entry>
+  <entry>Moves the selected column to the left.</entry>
   </row>
   <row>
    <entry>&move-column-right-icon;</entry>
-   <entry><link linkend="move-column-right-cmd">table -> &move-column-right-cmd;</link></entry>
+   <entry><link linkend="move-column-right-cmd">Table -> &move-column-right-cmd;</link></entry>
+   <entry>&move-column-right-key;</entry>
    <entry>Moves the selected column to the right.</entry>
   </row>
    <row>
    <entry>&move-column-last-icon;</entry>
-   <entry><link linkend="move-column-last-cmd">table -> &move-column-last-cmd;</link></entry>
+   <entry><link linkend="move-column-last-cmd">Table -> &move-column-last-cmd;</link></entry>
+   <entry>&move-column-last-key;</entry>
    <entry>Moves the selected column to the end of the table.</entry>
   </row>
    <row>
    <entry>&swap-columns-icon;</entry>
-   <entry><link linkend="swap-columns-cmd">table -> &swap-columns-cmd;</link></entry>
+   <entry><link linkend="swap-columns-cmd">Table -> &swap-columns-cmd;</link></entry>
+   <entry>&swap-columns-key;</entry>
    <entry>Swap the selected columns.</entry>
   </row>
+
+   <row>
+   <entry>&adjust-column-width-icon;</entry>
+   <entry><link linkend="adjust-column-width-cmd">Table -> &adjust-column-width-cmd;</link></entry>
+   <entry>&adjust-column-width-key;</entry>
+   <entry>Sets an optimal width on the selected columns.</entry>
+  </row>
+
+   <row>
+   <entry>&move-row-up-icon;</entry>
+   <entry><link linkend="move-row-up-cmd">Table -> &move-row-up-cmd;</link></entry>
+   <entry>&move-row-up-key;</entry>
+   <entry>Moves selected row UP one slot in table.</entry>
+  </row>
+
+   <row>
+   <entry>&move-row-down-icon;</entry>
+   <entry><link linkend="move-row-down-cmd">Table -> &move-row-down-cmd;</link></entry>
+   <entry>&move-row-down-key;</entry>
+   <entry>Moves selected row DOWN one slot in table.</entry>
+  </row>
+
   <row>
    <entry>&add-column-icon;</entry>
-   <entry><link linkend="add-column-cmd">plot -> &add-column-cmd;</link></entry>
-   <entry>Alt + C</entry>
+   <entry><link linkend="add-column-cmd">Table -> &add-column-cmd;</link></entry>
+   <entry>&add-column-key;</entry>
    <entry>Adds a new column to the selected table.</entry>
   </row>
 </tbody>

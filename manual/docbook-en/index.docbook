@@ -413,27 +413,28 @@
 <!ENTITY vertical-steps-lnk '<link linkend="vertical-steps-cmd">&vertical-steps-cmd;</link>'>
   <!ENTITY vertical-steps-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/vert_steps.png"/></imageobject></inlinemediaobject>'>
 <!ENTITY columns-cmd "<command>Columns</command>">
-<!ENTITY columns-lnk '<link linkend="columns-cmd"><command>Columns</command> command</link>'>
+<!ENTITY columns-lnk '<link linkend="columns-cmd">&columns-cmd;</link>'>
   <!ENTITY columns-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/vertBars.png"/></imageobject></inlinemediaobject>'>
+
 <!ENTITY rows-cmd "<command>Rows</command>">
-<!ENTITY rows-lnk '<link linkend="rows-cmd"><command>Rows</command> command</link>'>
+<!ENTITY rows-lnk '<link linkend="rows-cmd">&rows-cmd;</link>'>
   <!ENTITY rows-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/hBars.png"/></imageobject></inlinemediaobject>'>
 <!ENTITY area-cmd "<command>Area</command>">
-<!ENTITY area-lnk '<link linkend="area-cmd"><command>Area</command> command</link>'>
+<!ENTITY area-lnk '<link linkend="area-cmd"><command>Area</command></link>'>
   <!ENTITY area-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/area.png"/></imageobject></inlinemediaobject>'>
 <!ENTITY pie-cmd "<command>Pie</command>">
-<!ENTITY pie-lnk '<link linkend="pie-cmd"><command>Pie</command> command</link>'>
+<!ENTITY pie-lnk '<link linkend="pie-cmd"><command>Pie</command></link>'>
   <!ENTITY pie-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/pie.png"/></imageobject></inlinemediaobject>'>
 <!ENTITY vectors-xyxy-cmd "<command>Vectors XYXY</command>">
 <!ENTITY vectors-xyxy-lnk '<link linkend="vectors-xyxy-cmd"><command>Vectors XYXY</command> command</link>'>
   <!ENTITY vectors-xyxy-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/vectXYXY.png"/></imageobject></inlinemediaobject>'>
 
 <!ENTITY vectors-xyam-cmd "<command>Vectors XYAM</command>">
-<!ENTITY vectors-xyam-lnk '<link linkend="vectors-xyam-cmd"><command>Vectors XYAM</command> command</link>'>
+<!ENTITY vectors-xyam-lnk '<link linkend="vectors-xyam-cmd"><command>Vectors XYAM</command></link>'>
   <!ENTITY vectors-xyam-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/vectXYAM.png"/></imageobject></inlinemediaobject>'>
 
 <!ENTITY double-y-cmd "<command>Double-Y</command>">
-<!ENTITY double-y-lnk '<link linkend="double-y-cmd"><command>Double-Y</command> command</link>'>
+<!ENTITY double-y-lnk '<link linkend="double-y-cmd"><command>Double-Y</command></link>'>
 <!ENTITY double-y-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/plot_double_y.png"/></imageobject></inlinemediaobject>'>
 
 <!ENTITY waterfall-plot-cmd "<command>Waterfall</command>">
@@ -445,7 +446,7 @@
 <!ENTITY zoom-plot-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/add_zoom_plot.png"/></imageobject></inlinemediaobject>'>
 
 <!ENTITY stack-column-cmd "<command>Stack Column</command>">
-<!ENTITY stack-column-lnk '<link linkend="columns-cmd">&stack-column-cmd;</link>'>
+<!ENTITY stack-column-lnk '<link linkend="stack-column-cmd">&stack-column-cmd;</link>'>
 <!ENTITY stack-column-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/stack_column.png"/></imageobject></inlinemediaobject>'>
 
 <!ENTITY stack-row-cmd "<command>Stack Row</command>">
@@ -527,9 +528,7 @@
 <!ENTITY transpose-lnk '<link linkend="transpose-cmd"><command>Transpose</command> command</link>'>
 <!ENTITY invert-cmd "<command>Invert</command>">
 <!ENTITY invert-lnk '<link linkend="invert-cmd"><command>Invert</command> command</link>'>
-<!ENTITY go-to-row-cmd "<command>Go to Row...</command>">
-<!ENTITY go-to-row-lnk '<link linkend="go-to-row-cmd"><command>Go to Row...</command> command</link>'>
-<!ENTITY go-to-row-key "<keycode>Ctrl-Alt-G</keycode>">
+
 <!ENTITY image-view-cmd "<command>Image mode</command>">
 <!ENTITY image-view-key "<keycode>Ctrl-Shift-I</keycode>">
 <!ENTITY table-view-cmd "<command>Data mode</command>">
@@ -552,23 +551,29 @@
 <!ENTITY table-menu-lnk '<link linkend="sec-table-menu">Table menu</link>'>
 <!ENTITY set-column-as-cmd "<command>Set Column As</command>">
 <!ENTITY set-column-as-lnk '<link linkend="set-column-as-cmd"><command>Set Column As</command> command</link>'>
+
 <!ENTITY set-column-as-x-cmd "<command>Set Column As -> X</command>">
 <!ENTITY set-column-as-x-lnk '<link linkend="set-column-as-x-cmd"><command>Set Column As -> X</command> command</link>'>
+<!ENTITY set-column-as-x-key "">
 <!ENTITY set-column-as-x-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/x_col.png"/></imageobject></inlinemediaobject>'>
 
 <!ENTITY set-column-as-y-cmd "<command>Set Column As -> Y</command>">
 <!ENTITY set-column-as-y-lnk '<link linkend="set-column-as-y-cmd"><command>Set Column As -> Y</command> command</link>'>
+<!ENTITY set-column-as-y-key "">
 <!ENTITY set-column-as-y-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/y_col.png"/></imageobject></inlinemediaobject>'>
 
 <!ENTITY set-column-as-z-cmd "<command>Set Column As -> Z</command>">
 <!ENTITY set-column-as-z-lnk '<link linkend="set-column-as-z-cmd"><command>Set Column As -> Z</command> command</link>'>
+<!ENTITY set-column-as-z-key "">
 <!ENTITY set-column-as-z-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/z_col.png"/></imageobject></inlinemediaobject>'>
 
 <!ENTITY set-column-as-x-error-cmd "<command>Set Column As -> X error</command>">
 <!ENTITY set-column-as-x-error-lnk '<link linkend="set-column-as-x-error-cmd"><command>Set Column As -> X error</command> command</link>'>
+<!ENTITY set-column-as-x-error-key "">
 
 <!ENTITY set-column-as-y-error-cmd "<command>Set Column As -> Y error</command>">
 <!ENTITY set-column-as-y-error-lnk '<link linkend="set-column-as-y-error-cmd"><command>Set Column As -> Y error</command> command</link>'>
+<!ENTITY set-column-as-y-error-key "">
 <!ENTITY set-column-as-y-error-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/errors.png"/></imageobject></inlinemediaobject>'>
 
 <!ENTITY set-read-only-column-cmd "<command>Set Column As -> Read-only</command>">
@@ -576,75 +581,145 @@
 <!ENTITY set-read-write-column-cmd "<command>Set Column As -> Read/Write</command>">
 <!ENTITY set-read-write-column-lnk '<link linkend="set-read-only-column-cmd"><command>Set Column As -> Read/Write</command> command</link>'>
 
+<!ENTITY set-column-as-label-cmd "<command>Set Column As -> label</command>">
+<!ENTITY set-column-as-label-lnk '<link linkend="set-column-as-label-cmd">&set-column-as-label-cmd;</link>'>
+<!ENTITY set-column-as-label-key "">
+<!ENTITY set-column-as-label-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/set_label_col.png"/></imageobject></inlinemediaobject>'>
+
 <!ENTITY set-column-as-none-cmd "<command>Set Column As -> Disregard</command>">
 <!ENTITY set-column-as-none-lnk '<link linkend="set-column-as-none-cmd"><command>Set Column As -> Disregard</command> command</link>'>
+<!ENTITY set-column-as-none-key "">
 <!ENTITY set-column-as-none-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/disregard_col.png"/></imageobject></inlinemediaobject>'>
 
 <!ENTITY column-options-cmd "<command>Column Options...</command>">
 <!ENTITY column-options-lnk '<link linkend="column-options-cmd"><command>Column Options...</command> command</link>'>
 <!ENTITY column-options-key "<keycode>Ctrl-Alt-O</keycode>">
 
-<!ENTITY move-column-first-cmd "<command>Move to First</command>">
-<!ENTITY move-column-first-lnk '<link linkend="move-column-first-cmd"><command>Move to First</command> command</link>'>
-<!ENTITY move-column-first-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/move_col_first.png"/></imageobject></inlinemediaobject>'>
-<!ENTITY move-column-left-cmd "<command>Move Left</command>">
-<!ENTITY move-column-left-lnk '<link linkend="move-column-left-cmd"><command>Move Left</command> command</link>'>
-<!ENTITY move-column-left-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/move_col_left.png"/></imageobject></inlinemediaobject>'>
-<!ENTITY move-column-right-cmd "<command>Move Right</command>">
-<!ENTITY move-column-right-lnk '<link linkend="move-column-right-cmd"><command>Move Right</command> command</link>'>
-<!ENTITY move-column-right-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/move_col_right.png"/></imageobject></inlinemediaobject>'>
-<!ENTITY move-column-last-cmd "<command>Move to Last</command>">
-<!ENTITY move-column-last-lnk '<link linkend="move-column-last-cmd"><command>Move to Last</command> command</link>'>
-<!ENTITY move-column-last-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/move_col_last.png"/></imageobject></inlinemediaobject>'>
-<!ENTITY swap-columns-cmd "<command>Swap columns</command>">
-<!ENTITY swap-columns-lnk '<link linkend="swap-columns-cmd"><command>Swap columns</command> command</link>'>
-<!ENTITY swap-columns-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/swap_columns.png"/></imageobject></inlinemediaobject>'>
-
 <!ENTITY set-column-values-cmd "<command>Set Column Values...</command>">
 <!ENTITY set-column-values-lnk '<link linkend="set-column-values-cmd"><command>Set Column Values...</command> command</link>'>
 <!ENTITY set-column-values-key "<keycode>Ctrl-Q</keycode>">
+<!ENTITY set-column-values-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/sigma.png"/></imageobject></inlinemediaobject>'>
+
 <!ENTITY recalculate-cmd "<command>Recalculate</command>">
 <!ENTITY recalculate-lnk '<link linkend="recalculate-cmd"><command>Recalculate</command> command</link>'>
 <!ENTITY recalculate-key "<keycode>Ctrl-Return</keycode>">
+
 <!ENTITY fill-column-with-cmd "<command>Fill Column With</command>">
 <!ENTITY fill-column-with-lnk '<link linkend="fill-column-with-cmd"><command>Fill Column With</command> command</link>'>
+
 <!ENTITY fill-column-with-row-number-cmd "<command>Fill Column With -> Row Numbers</command>">
 <!ENTITY fill-column-with-row-number-lnk '<link linkend="fill-column-with-row-number-cmd"><command>Fill Column With -> Row Numbers</command> command</link>'>
+<!ENTITY fill-column-with-row-number-key "">
 <!ENTITY fill-column-with-row-number-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/rowNumbers.png"/></imageobject></inlinemediaobject>'>
+
 <!ENTITY fill-column-with-random-values-cmd "<command>Fill Column With -> Random Numbers</command>">
 <!ENTITY fill-column-with-random-values-lnk '<link linkend="fill-column-with-random-values-cmd"><command>Fill Column With -> Random Numbers</command> command</link>'>
+<!ENTITY fill-column-with-random-values-key "">
 <!ENTITY fill-column-with-random-values-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/randomNumbers.png"/></imageobject></inlinemediaobject>'>
+
 <!ENTITY clear-cmd "<command>Clear</command>">
 <!ENTITY clear-lnk '<link linkend="clear-cmd"><command>clear</command> command</link>'>
 <!ENTITY clear-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/erase.png"/></imageobject></inlinemediaobject>'>
+
 <!ENTITY add-column-cmd "<command>Add Column</command>">
 <!ENTITY add-column-lnk '<link linkend="add-column-cmd"><command>Add Column</command> command</link>'>
+<!ENTITY add-column-key "<keycode>Alt-C</keycode>">
 <!ENTITY add-column-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/addCol.png"/></imageobject></inlinemediaobject>'>
 
-<!ENTITY columns-cmd "<command>Columns...</command>">
-<!ENTITY columns-lnk '<link linkend="columns-cmd"><command>Columns...</command> command</link>'>
-<!ENTITY rows-cmd "<command>Rows...</command>">
-<!ENTITY rows-lnk '<link linkend="rows-cmd"><command>Rows...</command> command</link>'>
+<!ENTITY set-columns-cmd "<command>Set Columns...</command>">
+<!ENTITY set-columns-lnk '<link linkend="set-columns-cmd">&set-columns-cmd;</link>'>
+
+<!-- Missing:  Hide Selected, Show All Columns, Adjust Column Width -->
+
+<!ENTITY hide-columns-cmd "<command>Hide Selected Columns</command>">
+<!ENTITY hide-columns-lnk '<link linkend="hide-columns-cmd">&hide-columns-cmd;</link>'>
+<!ENTITY hide-columns-key "">
+
+<!ENTITY show-all-columns-cmd "<command>Show All Columns</command>">
+<!ENTITY show-all-columns-lnk '<link linkend="show-all-columns-cmd">&show-all-columns-cmd;</link>'>
+<!ENTITY show-all-columns-key "">
+
+<!ENTITY adjust-column-width-cmd "<command>Set Optimal Column Width</command>">
+<!ENTITY adjust-column-width-lnk '<link linkend="adjust-column-width-cmd">&adjust-column-width-cmd;</link>'>
+<!ENTITY adjust-column-width-key "">
+<!ENTITY adjust-column-width-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/adjust_col_width.png"/></imageobject></inlinemediaobject>'>
+
+
+<!ENTITY move-column-first-cmd "<command>Move to First</command>">
+<!ENTITY move-column-first-lnk '<link linkend="move-column-first-cmd"><command>Move to First</command> command</link>'>
+<!ENTITY move-column-first-key "">
+<!ENTITY move-column-first-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/move_col_first.png"/></imageobject></inlinemediaobject>'>
+<!ENTITY move-column-left-cmd "<command>Move Left</command>">
+<!ENTITY move-column-left-lnk '<link linkend="move-column-left-cmd"><command>Move Left</command> command</link>'>
+<!ENTITY move-column-left-key "">
+<!ENTITY move-column-left-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/move_col_left.png"/></imageobject></inlinemediaobject>'>
+<!ENTITY move-column-right-cmd "<command>Move Right</command>">
+<!ENTITY move-column-right-lnk '<link linkend="move-column-right-cmd"><command>Move Right</command> command</link>'>
+<!ENTITY move-column-right-key "">
+<!ENTITY move-column-right-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/move_col_right.png"/></imageobject></inlinemediaobject>'>
+<!ENTITY move-column-last-cmd "<command>Move to Last</command>">
+<!ENTITY move-column-last-lnk '<link linkend="move-column-last-cmd"><command>Move to Last</command> command</link>'>
+<!ENTITY move-column-last-key "">
+<!ENTITY move-column-last-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/move_col_last.png"/></imageobject></inlinemediaobject>'>
+
+<!ENTITY swap-columns-cmd "<command>Swap columns</command>">
+<!ENTITY swap-columns-lnk '<link linkend="swap-columns-cmd"><command>Swap columns</command> command</link>'>
+<!ENTITY swap-columns-key "">
+<!ENTITY swap-columns-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/swap_columns.png"/></imageobject></inlinemediaobject>'>
+
+<!ENTITY set-rows-cmd "<command>Set Rows...</command>">
+<!ENTITY rows-lnk '<link linkend="set-rows-cmd">&set-rows-cmd;</link>'>
+
+<!ENTITY delete-rows-interval-cmd "<command></command>">
+<!ENTITY delete-rows-interval-cmd-lnk '<link linkend="delete-rows-interval-cmd-cmd">&delete-rows-interval-cmd-cmd;</link>'>
+<!ENTITY delete-rows-interval-key "">
+
+<!ENTITY move-row-up-cmd "<command>Move Row -> UP</command>">
+<!ENTITY move-row-up-lnk '<link linkend="move-row-up-cmd">&move-row-up-cmd;</link>'>
+<!ENTITY move-row-up-key "">
+<!ENTITY move-row-up-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/move_row_up.png"/></imageobject></inlinemediaobject>'>
+
+<!ENTITY move-row-down-cmd "<command>Move Row -> DOWN</command>">
+<!ENTITY move-row-down-lnk '<link linkend="move-row-down-cmd">&move-row-down-cmd;</link>'>
+<!ENTITY move-row-down-key "">
+<!ENTITY move-row-down-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/move_row_down.png"/></imageobject></inlinemediaobject>'>
 
 <!ENTITY go-to-row-cmd "<command>Go to Row...</command>">
-<!ENTITY go-to-row-lnk '<link linkend="go-to-row-cmd"><command>Go to Row...</command> command</link>'>
+<!ENTITY go-to-row-lnk '<link linkend="go-to-row-cmd">&go-to-row-cmd;</link>'>
 <!ENTITY go-to-row-key "<keycode>Ctrl-Alt-G</keycode>">
+
+<!ENTITY go-to-column-cmd "<command>Go to Column...</command>">
+<!ENTITY go-to-column-lnk '<link linkend="go-to-column-cmd">&go-to-column-cmd;</link>'>
+<!ENTITY go-to-column-key "<keycode>Ctrl-Alt-C</keycode>">
+
+<!ENTITY extract-data-cmd "<command>Extract Data...</command>">
+<!ENTITY extract-data-lnk '<link linkend="go-to-column-cmd">&go-to-column-cmd;</link>'>
+<!ENTITY extract-data-key "<keycode></keycode>">
+
 <!ENTITY convert-to-matrix-cmd "<command>Convert to Matrix</command>">
 <!ENTITY convert-to-matrix-lnk '<link linkend="convert-to-matrix-cmd"><command>Convert to Matrix</command> command</link>'>
+<!-- Missing: Direct, 2D Binning, Regular XYZ-->
 <!--
               menu: Analysis
 -->
 <!ENTITY analysis-table-menu-lnk '<link linkend="sec-analysis-table-menu">Analysis menu</link>'>
 <!ENTITY statistics-on-columns-cmd "<command>Statistics on Columns</command>">
 <!ENTITY statistics-on-columns-lnk '<link linkend="statistics-on-columns-cmd"><command>Statistics on Columns</command> command</link>'>
+<!ENTITY statistics-on-columns-key "">
   <!ENTITY statistics-on-columns-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/col_stat.png"/></imageobject></inlinemediaobject>'>
 <!ENTITY statistics-on-rows-cmd "<command>Statistics on Rows</command>">
 <!ENTITY statistics-on-rows-lnk '<link linkend="statistics-on-rows-cmd"><command>Statistics on Rows</command> command</link>'>
+<!ENTITY statistics-on-rows-key "">
   <!ENTITY statistics-on-rows-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/stat_rows.png"/></imageobject></inlinemediaobject>'>
 <!ENTITY sort-column-cmd "<command>Sort Column</command>">
 <!ENTITY sort-column-lnk '<link linkend="sort-column-cmd"><command>Sort Column</command> command</link>'>
+<!ENTITY sort-column-key "">
+
 <!ENTITY sort-table-cmd "<command>Sort Table</command>">
 <!ENTITY sort-table-lnk '<link linkend="sort-table-cmd"><command>Sort Table</command> command</link>'>
+<!ENTITY sort-table-key "">
+<!ENTITY sort-table-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/sort.png"/></imageobject></inlinemediaobject>'>
+
 <!ENTITY normalize-cmd "<command>Normalize</command>">
 <!ENTITY normalize-lnk '<link linkend="normalize-cmd"><command>Normalize</command> command</link>'>
 <!ENTITY normalize-column-cmd "<command>Normalize -> Columns</command>">
@@ -971,28 +1046,36 @@
 <!ENTITY zoom-commands-lnk '<link linkend="zoom-commands-table">Zoom Commands</link>'>
 <!ENTITY zoom-commands-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/zoom-cmds.png"/></imageobject></inlinemediaobject>'>
 
-<!ENTITY tablecommands-group1-lnk '<link linkend="tablecommands-group1-table">Group1 Commands</link>'>
+<!ENTITY tablecommands-group1-title "Group1 Commands">
+<!ENTITY tablecommands-group1-lnk '<link linkend="tablecommands-group1-table"> &tablecommands-group1-title;</link>'>
 <!ENTITY tablecommands-group1-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/table-toolbar-group1.png"/></imageobject></inlinemediaobject>'>
 
-<!ENTITY tablecommands-group2-lnk '<link linkend="tablecommands-group2-table">Group2 Commands</link>'>
+<!ENTITY tablecommands-group2-title "Group2 Commands">
+<!ENTITY tablecommands-group2-lnk '<link linkend="tablecommands-group2-table"> &tablecommands-group2-title;</link>'>
 <!ENTITY tablecommands-group2-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/table-toolbar-group2.png"/></imageobject></inlinemediaobject>'>
 
-<!ENTITY tablecommands-group3-lnk '<link linkend="tablecommands-group3-table">Group3 Commands</link>'>
+<!ENTITY tablecommands-group3-title "Group3 Commands">
+<!ENTITY tablecommands-group3-lnk '<link linkend="tablecommands-group3-table"> &tablecommands-group3-title;</link>'>
 <!ENTITY tablecommands-group3-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/table-toolbar-group3.png"/></imageobject></inlinemediaobject>'>
 
-<!ENTITY tablecommands-group4-lnk '<link linkend="tablecommands-group4-table">Group4 Commands</link>'>
+<!ENTITY tablecommands-group4-title "Bar Chart Plots">
+<!ENTITY tablecommands-group4-lnk '<link linkend="tablecommands-group4-table"> &tablecommands-group4-title;</link>'>
 <!ENTITY tablecommands-group4-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/table-toolbar-group4.png"/></imageobject></inlinemediaobject>'>
 
-<!ENTITY tablecommands-group5-lnk '<link linkend="tablecommands-group5-table">Group5 Commands</link>'>
+<!ENTITY tablecommands-group5-title "Statistical Plots">
+<!ENTITY tablecommands-group5-lnk '<link linkend="tablecommands-group5-table"> &tablecommands-group5-title;</link>'>
 <!ENTITY tablecommands-group5-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/table-toolbar-group5.png"/></imageobject></inlinemediaobject>'>
 
-<!ENTITY tablecommands-group6-lnk '<link linkend="tablecommands-group6-table">Group6 Commands</link>'>
+<!ENTITY tablecommands-group6-title "Vector Plots">
+<!ENTITY tablecommands-group6-lnk '<link linkend="tablecommands-group6-table"> &tablecommands-group6-title;</link>'>
 <!ENTITY tablecommands-group6-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/table-toolbar-group6.png"/></imageobject></inlinemediaobject>'>
 
-<!ENTITY tablecommands-group7-lnk '<link linkend="tablecommands-group7-table">Group7 Commands</link>'>
+<!ENTITY tablecommands-group7-title "Special Line/Symbol Plots">
+<!ENTITY tablecommands-group7-lnk '<link linkend="tablecommands-group7-table"> &tablecommands-group7-title;</link>'>
 <!ENTITY tablecommands-group7-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/table-toolbar-group7.png"/></imageobject></inlinemediaobject>'>
 
-<!ENTITY tablecommands-group8-lnk '<link linkend="tablecommands-group8-table">Group8 Commands</link>'>
+<!ENTITY tablecommands-group8-title "3D Plots">
+<!ENTITY tablecommands-group8-lnk '<link linkend="tablecommands-group8-table"> &tablecommands-group8-title;</link>'>
 <!ENTITY tablecommands-group8-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/table-toolbar-group8.png"/></imageobject></inlinemediaobject>'>
 
 <!--
