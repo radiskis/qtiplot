@@ -690,7 +690,7 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 
 		int yOffset = LayerButton::btnSize();
 
-		ml->resize(graphWindowRect.width(), graphWindowRect.height() + yOffset);
+		ml->resize(graphWindowRect.width(), graphWindowRect.height() + 2*yOffset);
 
 		double fScale = (double)(graphWindowRect.width() - frameWidth)/(double)width;
 		double fWindowFactor =  QMIN((double)graphWindowRect.width()/500.0, (double)graphWindowRect.height()/350.0);
@@ -1075,7 +1075,7 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 				if(style == Graph::VerticalBars || style == Graph::HorizontalBars){
 					QwtBarCurve *b = (QwtBarCurve*)graph->curve(c);
 					if (b)
-						b->setGap(qRound(100-_curve.symbolSize*10));
+						b->setGap(qRound(100 -_curve.symbolSize*10));
 				} else if(style == Graph::Histogram){
 					QwtHistogram *h = (QwtHistogram*)graph->curve(c);
 					if(h){
@@ -1143,27 +1143,31 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 				Origin::GraphAxisBreak breakX = layer.xAxisBreak;
 				Origin::GraphAxisBreak breakY = layer.yAxisBreak;
 				bool invert = (layer.xAxis.min > layer.xAxis.max);
-				if(style != Graph::Box){
-					if(breakX.show){
+				if (style != Graph::Box){
+					if (breakX.show){
 						for (int i = 2; i < QwtPlot::axisCnt; i++)
 							graph->setScale(i, layer.xAxis.min,layer.xAxis.max,layer.xAxis.step,layer.xAxis.majorTicks,layer.xAxis.minorTicks,scaleTypes[(Origin::GraphAxis::Scale)layer.xAxis.scale],
 									invert, breakX.from, breakX.to, breakX.position, breakX.scaleIncrementBefore, breakX.scaleIncrementAfter,
 									breakX.minorTicksBefore, breakX.minorTicksAfter, breakX.log10);
 					} else {
-						for (int i = 2; i < QwtPlot::axisCnt; i++)
-							graph->setScale(i, layer.xAxis.min,layer.xAxis.max,layer.xAxis.step,layer.xAxis.majorTicks,layer.xAxis.minorTicks,scaleTypes[(Origin::GraphAxis::Scale)layer.xAxis.scale], invert);
+						for (int i = 2; i < QwtPlot::axisCnt; i++){
+							if (!graph->axisWidget(i)->isColorBarEnabled())
+								graph->setScale(i, layer.xAxis.min,layer.xAxis.max,layer.xAxis.step,layer.xAxis.majorTicks,layer.xAxis.minorTicks,scaleTypes[(Origin::GraphAxis::Scale)layer.xAxis.scale], invert);
+						}
 					}
 				}
 
 				invert = (layer.yAxis.min > layer.yAxis.max) || matrixImage;
-				if(breakY.show){
+				if (breakY.show){
 					for (int i = 0; i <= 1; i++)
 						graph->setScale(i, layer.yAxis.min,layer.yAxis.max,layer.yAxis.step,layer.yAxis.majorTicks,layer.yAxis.minorTicks,scaleTypes[(Origin::GraphAxis::Scale)layer.xAxis.scale], //??xAxis??
 							invert, breakY.from, breakY.to, breakY.position, breakY.scaleIncrementBefore, breakY.scaleIncrementAfter,
 							breakY.minorTicksBefore, breakY.minorTicksAfter, breakY.log10);
 				} else {
-					for (int i = 0; i <= 1; i++)
-						graph->setScale(i, layer.yAxis.min,layer.yAxis.max,layer.yAxis.step,layer.yAxis.majorTicks,layer.yAxis.minorTicks,scaleTypes[(Origin::GraphAxis::Scale)layer.yAxis.scale], invert);
+					for (int i = 0; i <= 1; i++){
+						if (!graph->axisWidget(i)->isColorBarEnabled())
+							graph->setScale(i, layer.yAxis.min,layer.yAxis.max,layer.yAxis.step,layer.yAxis.majorTicks,layer.yAxis.minorTicks,scaleTypes[(Origin::GraphAxis::Scale)layer.yAxis.scale], invert);
+					}
 				}
 			}
 
@@ -1338,7 +1342,7 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 			if (XYZContourTable)
 				this->parseXYZContourPlotAxisTitles(graph, XYZContourTable, XYZContourCurve);
 
-			graph->setCanvasGeometry(QRect(layerRect.left*fScale, layerRect.top*fScale - yOffset,
+			graph->setCanvasGeometry(QRect(layerRect.left*fScale, layerRect.top*fScale + yOffset,
 										   layerRect.width()*fScale, layerRect.height()*fScale));
 			graph->updateLayout();
 			graph->updateCurveLabels();
@@ -1359,9 +1363,9 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 				if (layer.lines[i].attach == Origin::Page || style == Graph::Pie){
 					mrk.setAttachPolicy(ArrowMarker::Page);
 
-					QPoint pos = graph->canvas()->mapFrom(ml->canvas(), QPoint(layer.lines[i].clientRect.left*fScale + 2*layer.lines[i].width, layer.lines[i].clientRect.top*fScale - yOffset));
+					QPoint pos = graph->canvas()->mapFrom(ml->canvas(), QPoint(layer.lines[i].clientRect.left*fScale + 2*layer.lines[i].width, layer.lines[i].clientRect.top*fScale + yOffset));
 					mrk.setEndPoint(graph->invTransform(QwtPlot::xBottom, pos.x()), graph->invTransform(QwtPlot::yLeft, pos.y()));
-					pos = graph->canvas()->mapFrom(ml->canvas(), QPoint(layer.lines[i].clientRect.right*fScale, layer.lines[i].clientRect.bottom*fScale - yOffset));
+					pos = graph->canvas()->mapFrom(ml->canvas(), QPoint(layer.lines[i].clientRect.right*fScale, layer.lines[i].clientRect.bottom*fScale + yOffset));
 					mrk.setStartPoint(graph->invTransform(QwtPlot::xBottom, pos.x()), graph->invTransform(QwtPlot::yLeft, pos.y()));
 				} else {
 					mrk.setStartPoint(layer.lines[i].begin.x, layer.lines[i].begin.y);
@@ -1391,7 +1395,7 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 
 				double lw = layer.figures[i].width;
 				fw->setSize(layer.figures[i].clientRect.width()*fScale + 2*lw, layer.figures[i].clientRect.height()*fScale + 2*lw);
-				fw->move(QPoint(layer.figures[i].clientRect.left*fScale, layer.figures[i].clientRect.top*fScale - yOffset));
+				fw->move(QPoint(layer.figures[i].clientRect.left*fScale, layer.figures[i].clientRect.top*fScale + yOffset));
 				fw->setFrameColor(originToQtColor(layer.figures[i].color));
 				fw->setFrameWidth(lw);
 				fw->setFrameLineStyle(lineStyles[(Origin::GraphCurve::LineStyle)layer.figures[i].style]);
@@ -1424,7 +1428,7 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 						img->setWindowName(windowName);
 						img->setOnTop(false);
 					}
-					img->setRect(layer.bitmaps[i].clientRect.left*fScale, layer.bitmaps[i].clientRect.top*fScale - yOffset, layer.bitmaps[i].clientRect.width()*fScale, layer.bitmaps[i].clientRect.height()*fScale);
+					img->setRect(layer.bitmaps[i].clientRect.left*fScale, layer.bitmaps[i].clientRect.top*fScale + yOffset, layer.bitmaps[i].clientRect.width()*fScale, layer.bitmaps[i].clientRect.height()*fScale);
 
 					int bkg = 0;
 					switch(layer.bitmaps[i].borderType){
@@ -2092,7 +2096,7 @@ void ImportOPJ::addText(const Origin::TextBox& text, Graph* graph, double fFontS
 	font2.setPointSize(text.fontSize);
 	QFontMetrics fm(font2, graph);
 	txt->move(QPoint(qRound(text.clientRect.left*fScale - fm.averageCharWidth()*fFontScaleFactor - txt->framePen().width()),
-					 qRound((text.clientRect.top - fm.lineSpacing())*fScale) - LayerButton::btnSize() - txt->framePen().width()));
+					 qRound((text.clientRect.top - fm.lineSpacing())*fScale) + LayerButton::btnSize() - txt->framePen().width()));
 
 	if (text.rotation == 90)//TODO: better take into account the rotation
 		txt->move(QPoint(txt->x(), txt->y() - txt->width()));
@@ -2393,16 +2397,12 @@ void ImportOPJ::convertDoubleAxesPlot(MultiLayer *ml)
 	l1->copyScaleDraw(l2, QwtPlot::xTop);
 	l1->copyScaleDraw(l2, QwtPlot::yRight);
 	l1->setAxisLabelRotation(QwtPlot::xTop, l2->labelsRotation(QwtPlot::xTop));
-	l1->setCanvasSize(l2->canvas()->size());
-
-#ifndef Q_OS_WIN
-	l1->move(QPoint(pos.x(), pos.y() - LayerButton::btnSize()));
-#endif
 
 	foreach (FrameWidget *e, l2->enrichmentsList()){
 		PieLabel *l = qobject_cast<PieLabel *>(e);
 		if (l)
 			continue;
+
 		l1->add(e);
 	}
 
@@ -2417,8 +2417,10 @@ void ImportOPJ::convertDoubleAxesPlot(MultiLayer *ml)
 		l->setText(l->text().replace("(2.", "("));
 	}
 
+	int yOffset = l2->axisWidget(QwtPlot::xTop)->height();
+	l1->setCanvasSize(l2->canvas()->size());
 	ml->removeLayer(l2);
-	ml->resize(ml->width(), ml->height() + LayerButton::btnSize());
+	ml->resize(ml->width(), ml->height() + yOffset);
 }
 
 //TODO: bug in grid dialog
