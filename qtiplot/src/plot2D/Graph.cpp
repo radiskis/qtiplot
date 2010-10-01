@@ -4560,6 +4560,86 @@ void Graph::showGrid(int axis)
 	emit modifiedGraph();
 }
 
+void Graph::copyScaleWidget(Graph* g, int i)
+{
+	if (g->axisEnabled (i)){
+		enableAxis(i);
+		QwtScaleWidget *scale = (QwtScaleWidget *)axisWidget(i);
+		if (scale){
+			scale->setSpacing(g->axisWidget(i)->spacing());
+			scale->setMargin(g->axisWidget(i)->margin());
+			QPalette pal = scale->palette();
+			pal.setColor(QColorGroup::Foreground, g->axisColor(i));
+			pal.setColor(QColorGroup::Text, g->axisLabelsColor(i));
+			scale->setPalette(pal);
+			setAxisFont (i, g->axisFont(i));
+
+			d_axis_titles[i] = g->axisTitleString(i);
+			scale->setTitle(g->axisTitle(i));
+
+			if (i == yRight)
+				scale->setLayoutFlag(QwtScaleWidget::TitleInverted, g->axisWidget(i)->testLayoutFlag(QwtScaleWidget::TitleInverted));
+		}
+	} else
+		enableAxis(i, false);
+}
+
+void Graph::copyScaleDraw(Graph* g, int i)
+{
+	QwtScaleWidget *sc = g->axisWidget(i);
+	if (!sc)
+		return;
+
+	ScaleDraw *sdg = (ScaleDraw *)g->axisScaleDraw (i);
+	if (sdg->hasComponent(QwtAbstractScaleDraw::Labels)){
+		ScaleDraw::ScaleType type = sdg->scaleType();
+		if (type == ScaleDraw::Numeric)
+			setLabelsNumericFormat(i, g->axisLabelFormat(i), g->axisLabelPrecision(i), sdg->formula());
+		else if (type == ScaleDraw::Day)
+			setLabelsDayFormat(i, sdg->nameFormat());
+		else if (type == ScaleDraw::Month)
+			setLabelsMonthFormat(i, sdg->nameFormat());
+		else if (type == ScaleDraw::Time || type == ScaleDraw::Date)
+			setLabelsDateTimeFormat(i, type, sdg->formatString());
+		else
+			setAxisScaleDraw(i, new ScaleDraw(this, sdg->labelsList(), sdg->formatString(), sdg->scaleType()));
+	} else
+		axisScaleDraw (i)->enableComponent (QwtAbstractScaleDraw::Labels, false);
+
+	//set same scale
+	const ScaleEngine *se = (ScaleEngine *)g->axisScaleEngine(i);
+	if (!se)
+		return;
+
+	ScaleEngine *sc_engine = (ScaleEngine *)axisScaleEngine(i);
+	sc_engine->clone(se);
+
+	int majorTicks = g->axisMaxMajor(i);
+	int minorTicks = g->axisMaxMinor(i);
+	setAxisMaxMajor (i, majorTicks);
+	setAxisMaxMinor (i, minorTicks);
+
+	double step = g->axisStep(i);
+	d_user_step[i] = step;
+
+	const QwtScaleDiv *gdiv = g->axisScaleDiv(i);
+	QwtScaleDiv div = sc_engine->divideScale (QMIN(gdiv->lowerBound(), gdiv->upperBound()),
+			QMAX(gdiv->lowerBound(), gdiv->upperBound()), majorTicks, minorTicks, step);
+
+	if (se->testAttribute(QwtScaleEngine::Inverted))
+		div.invert();
+	setAxisScaleDiv (i, div);
+
+	ScaleDraw *sd = (ScaleDraw *)axisScaleDraw(i);
+	sd->enableComponent (QwtAbstractScaleDraw::Backbone, sdg->hasComponent(QwtAbstractScaleDraw::Backbone));
+	sd->setSpacing(sdg->spacing());
+	sd->setShowTicksPolicy(sdg->showTicksPolicy());
+	sd->setPrefix(sdg->prefix());
+	sd->setSuffix(sdg->suffix());
+
+	setAxisTicksLength(i, sdg->majorTicksStyle(), sdg->minorTicksStyle(), g->minorTickLength(), g->majorTickLength());
+}
+
 void Graph::copy(Graph* g)
 {
 	setMargin(g->margin());
@@ -4568,28 +4648,8 @@ void Graph::copy(Graph* g)
 	setCanvasBackground(g->canvasBackground());
 	setAxisTitlePolicy(g->axisTitlePolicy());
 
-	for (int i = 0; i < QwtPlot::axisCnt; i++){
-		if (g->axisEnabled (i)){
-			enableAxis(i);
-			QwtScaleWidget *scale = (QwtScaleWidget *)axisWidget(i);
-			if (scale){
-				scale->setSpacing(g->axisWidget(i)->spacing());
-				scale->setMargin(g->axisWidget(i)->margin());
-				QPalette pal = scale->palette();
-				pal.setColor(QColorGroup::Foreground, g->axisColor(i));
-				pal.setColor(QColorGroup::Text, g->axisLabelsColor(i));
-				scale->setPalette(pal);
-				setAxisFont (i, g->axisFont(i));
-
-				d_axis_titles[i] = g->axisTitleString(i);
-				scale->setTitle(g->axisTitle(i));
-
- 				if (i == yRight)
-					scale->setLayoutFlag(QwtScaleWidget::TitleInverted, g->axisWidget(i)->testLayoutFlag(QwtScaleWidget::TitleInverted));
-			}
-		} else
-			enableAxis(i, false);
-	}
+	for (int i = 0; i < QwtPlot::axisCnt; i++)
+		copyScaleWidget(g, i);
 
 	grid()->copy(g->grid());
 	setTitle(g->title());
@@ -4600,71 +4660,8 @@ void Graph::copy(Graph* g)
 
 	copyCurves(g);
 
-	for (int i=0; i<QwtPlot::axisCnt; i++){
-		QwtScaleWidget *sc = g->axisWidget(i);
-		if (!sc)
-			continue;
-
-		ScaleDraw *sdg = (ScaleDraw *)g->axisScaleDraw (i);
-		if (sdg->hasComponent(QwtAbstractScaleDraw::Labels))
-		{
-			ScaleDraw::ScaleType type = sdg->scaleType();
-			if (type == ScaleDraw::Numeric)
-				setLabelsNumericFormat(i, g->axisLabelFormat(i), g->axisLabelPrecision(i), sdg->formula());
-			else if (type == ScaleDraw::Day)
-				setLabelsDayFormat(i, sdg->nameFormat());
-			else if (type == ScaleDraw::Month)
-				setLabelsMonthFormat(i, sdg->nameFormat());
-			else if (type == ScaleDraw::Time || type == ScaleDraw::Date)
-				setLabelsDateTimeFormat(i, type, sdg->formatString());
-			else{
-				ScaleDraw *sd = (ScaleDraw *)g->axisScaleDraw(i);
-				setAxisScaleDraw(i, new ScaleDraw(this, sd->labelsList(), sd->formatString(), sd->scaleType()));
-			}
-		} else
-			axisScaleDraw (i)->enableComponent (QwtAbstractScaleDraw::Labels, false);
-	}
-	for (int i=0; i<QwtPlot::axisCnt; i++){//set same scales
-		const ScaleEngine *se = (ScaleEngine *)g->axisScaleEngine(i);
-		if (!se)
-			continue;
-
-        ScaleEngine *sc_engine = (ScaleEngine *)axisScaleEngine(i);
-        sc_engine->clone(se);
-
-		int majorTicks = g->axisMaxMajor(i);
-  	    int minorTicks = g->axisMaxMinor(i);
-  	    setAxisMaxMajor (i, majorTicks);
-  	    setAxisMaxMinor (i, minorTicks);
-
-        double step = g->axisStep(i);
-		d_user_step[i] = step;
-		const QwtScaleDiv *sd = g->axisScaleDiv(i);
-		QwtScaleDiv div = sc_engine->divideScale (QMIN(sd->lowerBound(), sd->upperBound()),
-				QMAX(sd->lowerBound(), sd->upperBound()), majorTicks, minorTicks, step);
-
-		if (se->testAttribute(QwtScaleEngine::Inverted))
-			div.invert();
-		setAxisScaleDiv (i, div);
-	}
-
-	setMajorTicksType(g->getMajorTicksType());
-	setMinorTicksType(g->getMinorTicksType());
-	setTicksLength(g->minorTickLength(), g->majorTickLength());
-
-	for (int i = 0; i < QwtPlot::axisCnt; i++){
-		QwtScaleWidget *sc = g->axisWidget(i);
-		if (!sc)
-			continue;
-
-		ScaleDraw *sd = (ScaleDraw *)axisScaleDraw(i);
-		ScaleDraw *sdg = (ScaleDraw *)g->axisScaleDraw (i);
-		sd->enableComponent (QwtAbstractScaleDraw::Backbone, sdg->hasComponent(QwtAbstractScaleDraw::Backbone));
-		sd->setSpacing(sdg->spacing());
-		sd->setShowTicksPolicy(sdg->showTicksPolicy());
-		sd->setPrefix(sdg->prefix());
-		sd->setSuffix(sdg->suffix());
-	}
+	for (int i = 0; i < QwtPlot::axisCnt; i++)
+		copyScaleDraw(g, i);
 
 	setAxisLabelRotation(QwtPlot::xBottom, g->labelsRotation(QwtPlot::xBottom));
   	setAxisLabelRotation(QwtPlot::xTop, g->labelsRotation(QwtPlot::xTop));
