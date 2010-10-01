@@ -1734,12 +1734,21 @@ The active items appearing in a menu depends upon which project window is active
         <para>Restore write access to the selected columns.</para>
       </listitem>
     </varlistentry>
+
+    <varlistentry id="set-column-as-label-cmd">
+      <term>&set-column-as-label-cmd;</term>
+      <listitem>
+        <para>Sets the selected columns as <emphasis>label</emphasis> columns. Can be used cor comments and row descriptions.</para>
+      </listitem>
+    </varlistentry>
+
     <varlistentry id="set-column-as-none-cmd">
       <term>&set-column-as-none-cmd;</term>
       <listitem>
         <para>No special function is assigned. The selected column can be used in different ways in several plots (as X values, Y values, etc).</para>
       </listitem>
     </varlistentry>
+
     </variablelist>
   </listitem>
 </varlistentry>
@@ -1764,7 +1773,7 @@ The active items appearing in a menu depends upon which project window is active
 <varlistentry id="fill-column-with-cmd">
   <term>Fill column with</term>
   <listitem>
-    <para>This command is used to fill the selected column with special values:</para>
+    <para>These commands are used to fill selected columns with special values:</para>
     <variablelist>
     <varlistentry id="fill-column-with-row-number-cmd">
       <term>&fill-column-with-row-number-cmd;</term>
@@ -1787,16 +1796,39 @@ The active items appearing in a menu depends upon which project window is active
     <para>Removes all the values of the selected column</para>
   </listitem>
 </varlistentry>
+
 <varlistentry id="add-column-cmd">
   <term>&add-column-cmd;</term>
   <listitem>
     <para>Adds a new column to the table. Regardless the selected column, new columns are inserted to the right of the rightmost column in the table.</para>
   </listitem>
 </varlistentry>
-<varlistentry id="column-cmd">
-  <term>&columns-cmd;</term>
+
+<varlistentry id="set-columns-cmd">
+  <term>&set-columns-cmd;</term>
   <listitem>
-    <para>Allows to define the number of columns in the table. Columns are added/removed from the right hand side of the table. Be Careful! If you decrease the number of columns in a table, any data contained in the removed columns will be lost!</para>
+    <para>Used to define the number of columns in the table. Columns are added/removed from the right hand side of the table. Be Careful! If you decrease the number of columns in a table, any data contained in the removed columns will be lost!</para>
+  </listitem>
+</varlistentry>
+
+<varlistentry id="hide-columns-cmd">
+  <term>&hide-columns-cmd;</term>
+  <listitem>
+    <para>The &hide-columns-cmd; command hides all the selected columns. The remaining visible columns are grouped together into a single block. Hidden columns may be shown using the &show-all-columns-cmd; command.</para>
+  </listitem>
+</varlistentry>
+
+<varlistentry id="show-all-columns-cmd">
+  <term>&show-all-columns-cmd;</term>
+  <listitem>
+    <para>The &show-all-columns-cmd; command unhides any hidden columns in the selected table.</para>
+  </listitem>
+</varlistentry>
+
+<varlistentry id="adjust-column-width-cmd">
+  <term>&adjust-column-width-cmd;</term>
+  <listitem>
+    <para>The &adjust-column-width-cmd; command resets the width of all selected columns to a value that is optimal for the data that is contained in the column. Optimal width is considered to be just wide enough to show all digits.</para>
   </listitem>
 </varlistentry>
 
@@ -1835,18 +1867,64 @@ The active items appearing in a menu depends upon which project window is active
   </listitem>
 </varlistentry>
 
-<varlistentry id="row-cmd">
-  <term>&rows-cmd;</term>
+<varlistentry id="set-rows-cmd">
+  <term>&set-rows-cmd;</term>
   <listitem>
     <para>Allows direct definition of the number of rows in the table. Rows are added/removed from the end of the table. Be Careful! If you decrease the number of rows in a table, any data contained in removed rows will be lost.</para>
   </listitem>
 </varlistentry>
-<varlistentry id="go-to-row-cmd">
-  <term>&go-to-row-cmd;</term>
+
+<varlistentry id="delete-rows-interval-cmd">
+  <term>&delete-rows-interval-cmd;</term>
   <listitem>
-    <para>Defines the active line in the selected table.</para>
+    <para>A dialog is opened that permits selection, and subsequent deletion, of a range of rows selected by row index number.</para>
   </listitem>
 </varlistentry>
+
+<varlistentry id="move-row-cmd">
+  <term>Move Row ></term>
+  <listitem>
+    <para>These commands are used to move selected rows up or down in a table:</para>
+    <variablelist>
+
+    <varlistentry id="move-row-up-cmd">
+      <term>&move-row-up-cmd;</term>
+      <listitem>
+        <para>The selected row is moved up one place in the table.</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry id="move-row-down-cmd">
+      <term>&move-row-down-cmd;</term>
+      <listitem>
+        <para>The selected row is moved down one place in the table.</para>
+      </listitem>
+    </varlistentry>
+    </variablelist>
+  </listitem>
+</varlistentry>
+
+<varlistentry id="go-to-row-cmd">
+  <term>&go-to-row-cmd; (&go-to-row-key;)</term>
+  <listitem>
+    <para>This command opens a dialog which allows you to select the row index that will become the current row in the selected table or matrix.</para>
+  </listitem>
+</varlistentry>
+
+<varlistentry id="go-to-column-cmd">
+  <term>&go-to-column-cmd; (&go-to-column-key;)</term>
+  <listitem>
+    <para>This command opens a dialog which allows you to select the column index that will become the current column in the selected table or matrix.</para>
+  </listitem>
+</varlistentry>
+
+<varlistentry id="extract-data-cmd">
+  <term>&extract-data-cmd;</term>
+  <listitem>
+    <para>The &extract-data-cmd; command opens a dialog which allows you to define a set of conditions that are used to filter the data in the currently active table. When a condition has been defined,  <emphasis>Applying</emphasis> the condition will create a new table into which all rows that meet the condition will be copied. The original tabel is unchanged.For example, the condition <emphasis>col("1")>=.1</emphasis> will generate a new table that contains all the rows from the active table which have a value greater than 0.1 in column 1.</para>
+  </listitem>
+</varlistentry>
+
 <varlistentry id="convert-to-matrix-cmd">
   <term>&convert-to-matrix-cmd;</term>
   <listitem>
@@ -1933,12 +2011,14 @@ The active items appearing in a menu depends upon which project window is active
     <para>Compute the determinant of the selected matrix.</para>
   </listitem>
 </varlistentry>
-<varlistentry id="go-to-row-cmd">
-  <term>&go-to-row-cmd; (&go-to-row-key;)</term>
+
+<varlistentry>
+  <term>Go To Commands</term>
   <listitem>
-    <para>This command opens a dialog which allows you to select the row index that will become the current row in the selected matrix.</para>
+    <para>The &go-to-row-lnk; and &go-to-column-lnk; commands are the same as those described in the &table-menu-lnk;</para>
   </listitem>
 </varlistentry>
+
 
 <varlistentry>
   <term>View</term>
