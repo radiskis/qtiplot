@@ -597,8 +597,8 @@
 
 <!ENTITY set-column-values-cmd "<command>Set Column Values...</command>">
 <!ENTITY set-column-values-lnk '<link linkend="set-column-values-cmd"><command>Set Column Values...</command> command</link>'>
-<!ENTITY set-column-values-key "<keycode>Ctrl-Q</keycode>">
-<!ENTITY set-column-values-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/sigma.png"/></imageobject></inlinemediaobject>'>
+<!ENTITY set-column-values-key "<keycode>Alt-Q</keycode>">
+<!ENTITY set-column-values-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/formula.png"/></imageobject></inlinemediaobject>'>
 
 <!ENTITY recalculate-cmd "<command>Recalculate</command>">
 <!ENTITY recalculate-lnk '<link linkend="recalculate-cmd"><command>Recalculate</command> command</link>'>
