@@ -690,7 +690,7 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 
 		int yOffset = LayerButton::btnSize();
 
-		ml->resize(graphWindowRect.width(), graphWindowRect.height() + 2*yOffset);
+		ml->resize(graphWindowRect.width(), graphWindowRect.height() + 3*yOffset);
 
 		double fScale = (double)(graphWindowRect.width() - frameWidth)/(double)width;
 		double fWindowFactor =  QMIN((double)graphWindowRect.width()/500.0, (double)graphWindowRect.height()/350.0);

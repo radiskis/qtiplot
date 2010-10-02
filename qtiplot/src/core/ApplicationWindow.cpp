@@ -18466,6 +18466,7 @@ void ApplicationWindow::initCompleter()
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
 	QStringList words;
+	words.append("col");
 #ifdef SCRIPTING_PYTHON
 	if (scriptEnv->name() == QString("Python")){
 		QString fn = d_python_config_folder + "/qti_wordlist.txt";
@@ -18486,16 +18487,20 @@ void ApplicationWindow::initCompleter()
 		}
 	#if QT_VERSION >= 0x040500
 		words.append(PythonSyntaxHighlighter::keywordsList());
-		words.append(windowsNameList());
 	#else
 		QStringList lst = PythonSyntaxHighlighter::keywordsList();
 		foreach (QString s, lst)
 			words << s;
-		lst = windowsNameList();
-		foreach (QString s, lst)
-			words << s;
 	#endif
 	}
+#endif
+
+#if QT_VERSION >= 0x040500
+	words.append(windowsNameList());
+#else
+	QStringList lst = windowsNameList();
+	foreach (QString s, lst)
+		words << s;
 #endif
 
 	QStringList functions = scriptEnv->mathFunctions();
@@ -18890,10 +18895,6 @@ void ApplicationWindow::addWindowsListToCompleter()
 
 void ApplicationWindow::updateCompleter(const QString& windowName, bool remove, const QString& newName)
 {
-#ifdef SCRIPTING_PYTHON
-	if (scriptEnv->name() != QString("Python"))
-		return;
-
 	if (!d_completer || d_is_appending_file || d_opening_file)
 		return;
 
@@ -18916,7 +18917,6 @@ void ApplicationWindow::updateCompleter(const QString& windowName, bool remove, 
 
 	lst.sort();
 	model->setStringList(lst);
-#endif
 }
 
 #ifdef SCRIPTING_PYTHON
