@@ -206,11 +206,11 @@ void ScriptEdit::keyPressEvent(QKeyEvent *e)
      bool hasModifier = (e->modifiers() != Qt::NoModifier) && !ctrlOrShift;
      QString completionPrefix = textUnderCursor();
 
-     if (!isShortcut && (hasModifier || e->text().isEmpty()|| completionPrefix.length() < 2
+	 if (!isShortcut && (hasModifier || e->text().isEmpty()|| completionPrefix.length() < 2
 		 || eow.contains(e->text().right(1)))){
          d_completer->popup()->hide();
          return;
-     }
+	 }
 
      if (completionPrefix != d_completer->completionPrefix()){
          d_completer->setCompletionPrefix(completionPrefix);
@@ -656,7 +656,7 @@ void ScriptEdit::setDirPath(const QString& path)
 		tc.insertText(completion.right(extra) + ".");
 	else {
 		ApplicationWindow *app = qobject_cast<ApplicationWindow *>(scriptEnv->application());
-		if (app && app->windowsNameList().contains(completion))//window name?
+		if (app && (app->windowsNameList().contains(completion) || app->table(completion)))//window or table column name?
 			tc.insertText(completion.right(extra) + "\"");
 		else
 			tc.insertText(completion.right(extra));
@@ -675,7 +675,9 @@ void ScriptEdit::setDirPath(const QString& path)
 		 tc.select(QTextCursor::LineUnderCursor);
 		 s = tc.selectedText();
 		 s.remove(")");
-		 return s.right(2);
+		 int pos = s.lastIndexOf("\"") + 1;
+		 if (pos != -1)
+			return s.mid(pos, s.length() - pos);
 	 }
 
 	return s;

@@ -18467,6 +18467,7 @@ void ApplicationWindow::initCompleter()
 
 	QStringList words;
 	words.append("col");
+	words.append("cell");
 #ifdef SCRIPTING_PYTHON
 	if (scriptEnv->name() == QString("Python")){
 		QString fn = d_python_config_folder + "/qti_wordlist.txt";
@@ -18502,6 +18503,13 @@ void ApplicationWindow::initCompleter()
 	foreach (QString s, lst)
 		words << s;
 #endif
+
+	QList<MdiSubWindow*> lst = tableList();
+	foreach (MdiSubWindow* mw, lst){
+		Table *t = (Table*)mw;
+		for (int i = 0; i < t->numCols(); i++)
+			words.append(t->colName(i));
+	}
 
 	QStringList functions = scriptEnv->mathFunctions();
 	foreach(QString s, functions)
@@ -18905,14 +18913,33 @@ void ApplicationWindow::updateCompleter(const QString& windowName, bool remove, 
 	QStringList lst = model->stringList();
 
 	if (newName.isEmpty()){
-		if (remove)
+		Table *t = table(windowName);
+		if (remove){
 			lst.removeAll(windowName);
-		else
+			if (t){
+				for (int i = 0; i < t->numCols(); i++)
+					lst.removeAll(t->colName(i));
+			}
+		} else {
 			lst.append(windowName);
+			if (t){
+				for (int i = 0; i < t->numCols(); i++)
+					lst.append(t->colName(i));
+			}
+		}
 	} else {
 		int index = lst.indexOf(windowName);
 		if (index >= 0)
 			lst.replace(index, newName);
+
+		Table *t = table(newName);
+		if (t){
+			for (int i = 0; i < t->numCols(); i++){
+				int index = lst.indexOf(windowName + "_" + t->colLabel(i));
+				if (index >= 0)
+					lst.replace(index, t->colName(i));
+			}
+		}
 	}
 
 	lst.sort();
