@@ -1222,7 +1222,7 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 				QString tableName = data.right(data.length()-2) + "_" + ticks[i].columnName.c_str();
 
 				QString formatInfo;
-				int format = 0;
+				int format = ScaleDraw::Automatic;
 				int type = 0;
 				int prec = ticks[i].decimalPlaces;
 				int precisionNeeded = 0;
@@ -1236,63 +1236,68 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 						}
 					}
 				}
+
 				switch(ticks[i].valueType){
-				case Origin::Numeric:
-					type = ScaleDraw::Numeric;
-					switch(ticks[i].valueTypeSpecification){
-						case 0: //Decimal 1000 (Automatic)
-							break;
-						case 3: //Decimal 1,000
-							format = 1;
-							prec = (prec != -1 ? prec : precisionNeeded);
-							break;
-						case 1: //Scientific
-							format = 2;
-							break;
-						case 2: //Engeneering
-							format = 0;
-							break;
-					}
-					if(prec == -1)
-						prec = 6;
-					break;
-				case Origin::Text: //Text
-					type=ScaleDraw::Text;
-					break;
-				case 2: // Date
-					type=ScaleDraw::Date;
-					break;
-				case 3: // Time
-					type=ScaleDraw::Time;
-					break;
-				case Origin::Month: // Month
-					type=ScaleDraw::Month;
-					format=ticks[i].valueTypeSpecification;
-					break;
-				case Origin::Day: // Day
-					type=ScaleDraw::Day;
-					format=ticks[i].valueTypeSpecification;
-					break;
-				case Origin::ColumnHeading:
-					type=ScaleDraw::ColHeader;
-					switch(ticks[i].valueTypeSpecification){
-						case 0: //Decimal 1000
-							format=1;
-							break;
-						case 1: //Scientific
-							format=2;
-							break;
-						case 2: //Engeneering
-						case 3: //Decimal 1,000
-							format=0;
-							break;
-					}
-					prec=2;
-					break;
-				default:
-					type=ScaleDraw::Numeric;
-					format=0;
-					prec=2;
+					case Origin::Numeric:
+						type = ScaleDraw::Numeric;
+						switch(ticks[i].valueTypeSpecification){
+							case 0: //Decimal 1000 (Automatic)
+								if (prec == -1)
+									prec = 6;
+								break;
+							case 3: //Decimal 1,000
+								format = ScaleDraw::Decimal;
+								prec = (prec != -1 ? prec : precisionNeeded);
+								break;
+							case 1: //Scientific
+								if (prec == -1)
+									prec = 1;
+								format = ScaleDraw::Superscripts;
+								break;
+							case 2: //Engineering
+								if (prec == -1)
+									prec = 1;
+								format = ScaleDraw::Engineering;
+								break;
+						}
+						break;
+					case Origin::Text: //Text
+						type=ScaleDraw::Text;
+						break;
+					case 2: // Date
+						type=ScaleDraw::Date;
+						break;
+					case 3: // Time
+						type=ScaleDraw::Time;
+						break;
+					case Origin::Month: // Month
+						type=ScaleDraw::Month;
+						format=ticks[i].valueTypeSpecification;
+						break;
+					case Origin::Day: // Day
+						type=ScaleDraw::Day;
+						format=ticks[i].valueTypeSpecification;
+						break;
+					case Origin::ColumnHeading:
+						type=ScaleDraw::ColHeader;
+						switch(ticks[i].valueTypeSpecification){
+							case 0: //Decimal 1000
+								format=1;
+								break;
+							case 1: //Scientific
+								format=2;
+								break;
+							case 2: //Engineering
+							case 3: //Decimal 1,000
+								format=0;
+								break;
+						}
+						prec=2;
+						break;
+					default:
+						type=ScaleDraw::Numeric;
+						format=0;
+						prec=2;
 				}
 
 				if (i == QwtPlot::yRight && showColorScale){
