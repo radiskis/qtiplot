@@ -602,20 +602,25 @@ QString LegendWidget::parse(const QString& str)
 			PlotCurve *c = getCurve(lst[0], point);
 			if (c){
 				Table *t = 0;
+				QString colLabel;
+				int ycol = -1;
 				if (c->type() == Graph::Function || c->type() == Graph::Histogram)
 					s = s.replace(pos, pos2 - pos + 1, c->title().text());
-				else
+				else {
 					t = ((DataCurve *)c)->table();
+					ycol = t->colIndex(c->title().text());
+					colLabel = t->colLabel(ycol);
+				}
 
 				if (t){
 					switch(lcmd){
 						case -1: //use table comment if not empty else use curve title
 						{
-							QString comment = t->comment(t->colIndex(c->title().text()));
+							QString comment = t->comment(ycol);
 							if (!comment.isEmpty())
 								s = s.replace(pos, pos2-pos+1, comment.replace("\n", " "));
 							else
-								s = s.replace(pos, pos2-pos+1, c->title().text());
+								s = s.replace(pos, pos2-pos+1, colLabel);
 							break;
 						}
 						case 0: //use curve title
@@ -625,8 +630,8 @@ QString LegendWidget::parse(const QString& str)
 						}
 						case 1: //use col label
 						{
-							int ycol = t->colIndex(c->title().text());
-							if (ycol >= 0) s = s.replace(pos, pos2-pos+1, ((DataCurve *)c)->table()->colLabel(ycol));
+							if (ycol >= 0)
+								s = s.replace(pos, pos2-pos+1, colLabel);
 							break;
 						}
 						case 2: //use table name
@@ -643,15 +648,13 @@ QString LegendWidget::parse(const QString& str)
 							switch (lst.count()){
 								case 2: //2 arguments
 								{
-									int ycol = t->colIndex(c->title().text());
 									s = s.replace(pos, pos2-pos+1, t->comment(ycol));
 									break;
 								}
 								case 3:  //3 arguments, display cell contents
 								{
-									int col = t->colIndex(c->title().text()); //use y column
 									int row = lst[2].toInt() - 1;
-									s = s.replace(pos, pos2-pos+1, t->text(((DataCurve *)c)->tableRow(row), col));
+									s = s.replace(pos, pos2-pos+1, t->text(((DataCurve *)c)->tableRow(row), ycol));
 									break;
 								}
 								case 4:  //4 arguments, display cell contents

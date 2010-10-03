@@ -899,6 +899,14 @@ int Table::firstXCol()
 	return xcol;
 }
 
+QString Table::colLabel(int col)
+{
+	if (col < 0 || col >= d_table->numCols())
+		return QString::null;
+
+	return col_label[col];
+}
+
 QString Table::comment(int col)
 {
 	if (col < 0 || col >= d_table->numCols())
