@@ -8488,6 +8488,18 @@ Automatisk komplettering ej tillgängligt!</translation>
         <source>Random &amp;XYZ...</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>&amp;Expand...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Shrink...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>chart</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ArrowMarker</name>
@@ -15959,6 +15971,22 @@ Vill du skjuta in celler?</translation>
         <source>kB</source>
         <translation>kB</translation>
     </message>
+    <message>
+        <source>Resample</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>bilinear</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>bicubic</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>QtiPlot was built without support for ALGLIB, resampling is not possible!</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>MatrixDialog</name>
@@ -16064,6 +16092,53 @@ Vill du skjuta in celler?</translation>
     <message>
         <source>Warning</source>
         <translation>Varning</translation>
+    </message>
+</context>
+<context>
+    <name>MatrixResamplingDialog</name>
+    <message>
+        <source>Resample</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Expand for every cell</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Shrink into 1x1 for every</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Columns</source>
+        <translation type="unfinished">Kolumner</translation>
+    </message>
+    <message>
+        <source>Rows</source>
+        <translation type="unfinished">Rader</translation>
+    </message>
+    <message>
+        <source>Method</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Bilinear</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Bicubic</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;OK</source>
+        <translation type="unfinished">&amp;OK</translation>
+    </message>
+    <message>
+        <source>&amp;Apply</source>
+        <translation type="unfinished">&amp;Tillämpa</translation>
+    </message>
+    <message>
+        <source>&amp;Cancel</source>
+        <translation type="unfinished">&amp;Avbryt</translation>
     </message>
 </context>
 <context>

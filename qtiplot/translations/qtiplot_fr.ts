@@ -3911,7 +3911,7 @@ L&apos;autocomplétion ne sera pas disponible!</translation>
     </message>
     <message>
         <source>chart</source>
-        <translation type="obsolete">Diagramme</translation>
+        <translation type="unfinished">Diagramme</translation>
     </message>
     <message>
         <source>Yes, don&apos;t ask me again</source>
@@ -3919,6 +3919,14 @@ L&apos;autocomplétion ne sera pas disponible!</translation>
     </message>
     <message>
         <source>Random &amp;XYZ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Expand...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Shrink...</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -9905,6 +9913,22 @@ have the same number of rows.</source>
         <source>kB</source>
         <translation>kOctects</translation>
     </message>
+    <message>
+        <source>Resample</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>bilinear</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>bicubic</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>QtiPlot was built without support for ALGLIB, resampling is not possible!</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>MatrixDialog</name>
@@ -10010,6 +10034,53 @@ have the same number of rows.</source>
     <message>
         <source>Multiline expressions take much more time to evaluate! Do you want to continue anyways?</source>
         <translation>Les expressions multilignes sont plus lentes à évaluer! Voulez-vous continuer quand même ?</translation>
+    </message>
+</context>
+<context>
+    <name>MatrixResamplingDialog</name>
+    <message>
+        <source>Resample</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Expand for every cell</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Shrink into 1x1 for every</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Columns</source>
+        <translation type="unfinished">Colonnes</translation>
+    </message>
+    <message>
+        <source>Rows</source>
+        <translation type="unfinished">Rangées</translation>
+    </message>
+    <message>
+        <source>Method</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Bilinear</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Bicubic</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;OK</source>
+        <translation type="unfinished">&amp;OK</translation>
+    </message>
+    <message>
+        <source>&amp;Apply</source>
+        <translation type="unfinished">&amp;Appliquer</translation>
+    </message>
+    <message>
+        <source>&amp;Cancel</source>
+        <translation type="unfinished">&amp;Annuler</translation>
     </message>
 </context>
 <context>

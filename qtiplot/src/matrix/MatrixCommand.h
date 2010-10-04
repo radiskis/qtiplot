@@ -203,7 +203,7 @@ class MatrixSetSizeCommand: public QUndoCommand
 {
 public:
     MatrixSetSizeCommand(MatrixModel *model, const QSize& oldSize, const QSize& newSize, double *data, const QString& text);
-	~MatrixSetSizeCommand(){free(d_backup);};    
+	~MatrixSetSizeCommand(){if (d_backup) free(d_backup);};
 	virtual void redo();
     virtual void undo();
 
@@ -217,7 +217,6 @@ class MatrixResampleCommand: public MatrixSetSizeCommand
 {
 public:
 	MatrixResampleCommand(MatrixModel *model, const QSize& oldSize, const QSize& newSize, int method, double *data, const QString& text);
-	~MatrixResampleCommand(){free(d_backup);};
 	virtual void redo();
 
 private:

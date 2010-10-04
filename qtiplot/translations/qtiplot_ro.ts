@@ -7401,6 +7401,18 @@ Autocompletion will not be available!</source>
         <source>Random &amp;XYZ...</source>
         <translation>Rețea aleatorie &amp;XYZ...</translation>
     </message>
+    <message>
+        <source>&amp;Expand...</source>
+        <translation>Măr&amp;eşte...</translation>
+    </message>
+    <message>
+        <source>&amp;Shrink...</source>
+        <translation>&amp;Micşorează...</translation>
+    </message>
+    <message>
+        <source>chart</source>
+        <translation></translation>
+    </message>
 </context>
 <context>
     <name>ArrowMarker</name>
@@ -12145,7 +12157,7 @@ The following special codes can be used:
     </message>
     <message>
         <source>Linear</source>
-        <translation type="unfinished">Liniar</translation>
+        <translation>Liniar</translation>
     </message>
     <message>
         <source>Quadratic</source>
@@ -13516,6 +13528,22 @@ have the same number of rows.</source>
         <source>kB</source>
         <translation>kB</translation>
     </message>
+    <message>
+        <source>Resample</source>
+        <translation>Reeşantionare</translation>
+    </message>
+    <message>
+        <source>bilinear</source>
+        <translation>Interpolare biliniară</translation>
+    </message>
+    <message>
+        <source>bicubic</source>
+        <translation>Interpolare bicubică</translation>
+    </message>
+    <message>
+        <source>QtiPlot was built without support for ALGLIB, resampling is not possible!</source>
+        <translation>QtiPlot nu a fost compilat cu suport pentru ALGLIB, reeşantionarea este imposibilă!</translation>
+    </message>
 </context>
 <context>
     <name>MatrixDialog</name>
@@ -13621,6 +13649,53 @@ have the same number of rows.</source>
     <message>
         <source>Warning</source>
         <translation>Avertisment</translation>
+    </message>
+</context>
+<context>
+    <name>MatrixResamplingDialog</name>
+    <message>
+        <source>Resample</source>
+        <translation>Reeşantionare</translation>
+    </message>
+    <message>
+        <source>Expand for every cell</source>
+        <translation>Crează pentru fiecare celulă</translation>
+    </message>
+    <message>
+        <source>Shrink into 1x1 for every</source>
+        <translation>Comprimă in 1x1 fiecare</translation>
+    </message>
+    <message>
+        <source>Columns</source>
+        <translation>Coloane</translation>
+    </message>
+    <message>
+        <source>Rows</source>
+        <translation>Linii</translation>
+    </message>
+    <message>
+        <source>Method</source>
+        <translation>Metodă</translation>
+    </message>
+    <message>
+        <source>Bilinear</source>
+        <translation>Interpolare biliniară</translation>
+    </message>
+    <message>
+        <source>Bicubic</source>
+        <translation>Interpolare bicubică</translation>
+    </message>
+    <message>
+        <source>&amp;OK</source>
+        <translation>&amp;OK</translation>
+    </message>
+    <message>
+        <source>&amp;Apply</source>
+        <translation>&amp;Aplică</translation>
+    </message>
+    <message>
+        <source>&amp;Cancel</source>
+        <translation>A&amp;nulează</translation>
     </message>
 </context>
 <context>
