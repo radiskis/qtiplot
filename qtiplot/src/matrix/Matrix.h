@@ -86,6 +86,7 @@ public:
 		NewRows, //!< add file as new rows to the current matrix
 		Overwrite //!< replace content of current matrix with the imported file
 	};
+	enum ResamplingMethod{Bilinear, Bicubic};
 
 	void setViewType(ViewType, bool renderImage = true);
 	ViewType viewType(){return d_view_type;};
@@ -117,6 +118,8 @@ public:
 	//! Return the number of columns
 	int numCols(){return d_matrix_model->columnCount();};
 	void setNumCols(int cols){d_matrix_model->setColumnCount(cols);};
+
+	void resample(int rows, int cols, const ResamplingMethod& method = Bilinear);
 
 	//event handlers
 	//! Custom event handler

@@ -913,12 +913,14 @@ public:
   enum HeaderViewType{ColumnRow, XY};
   enum ViewType{TableView, ImageView};
   enum ImportMode{NewColumns, NewRows, Overwrite};
+  enum ResamplingMethod{Bilinear, Bicubic};
 
   int numRows();
   void setNumRows(int);
   int numCols();
   void setNumCols(int);
   void setDimensions(int rows, int cols);
+  void resample(int rows, int cols, const ResamplingMethod& method = Matrix::Bilinear);
 
   SIP_PYOBJECT text(int, int);
 %MethodCode

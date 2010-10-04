@@ -31,6 +31,10 @@
 #include <QApplication>
 #include <gsl/gsl_math.h>
 
+#ifdef HAVE_ALGLIB
+	#include <spline2d.h>
+#endif
+
 /*************************************************************************/
 /*           Class MatrixEditCellCommand                                 */
 /*************************************************************************/
@@ -508,6 +512,54 @@ void MatrixSetSizeCommand::undo()
     }
 	d_model->matrix()->resetView();
 	QApplication::restoreOverrideCursor();
+}
+
+/*************************************************************************/
+/*           Class MatrixResampleCommand                                */
+/*************************************************************************/
+MatrixResampleCommand::MatrixResampleCommand(MatrixModel *model, const QSize& oldSize, const QSize& newSize, int method, double *data, const QString& text):
+MatrixSetSizeCommand(model, oldSize, newSize, data, text),
+d_method(method)
+{
+	setText(model->matrix()->objectName() + ": " + text);
+}
+
+void MatrixResampleCommand::redo()
+{
+#ifdef HAVE_ALGLIB
+	if (!d_model)
+		return;
+
+	int rows = d_new_size.width();
+	int cols = d_new_size.height();
+	int oldRows = d_old_size.width();
+	int oldCols = d_old_size.height();
+
+	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+
+	ap::real_2d_array oldValues, newValues;
+	oldValues.setlength(oldRows, oldCols);
+	newValues.setlength(rows, cols);
+
+	for (int i = 0; i < oldRows; i++){
+		for (int j = 0; j < oldCols; j++)
+			oldValues(i, j) = d_model->cell(i, j);
+	}
+
+	if (d_method == Matrix::Bilinear)
+		spline2dresamplebilinear(oldValues, oldRows, oldCols, newValues, rows, cols);
+	else
+		spline2dresamplebicubic(oldValues, oldRows, oldCols, newValues, rows, cols);
+
+	d_model->setDimensions(rows, cols);
+	for (int i = 0; i < rows; i++){
+		for (int j = 0; j < cols; j++)
+			d_model->setCell(i, j, newValues(i, j));
+	}
+	d_model->matrix()->resetView();
+
+	QApplication::restoreOverrideCursor();
+#endif
 }
 
 /*************************************************************************/

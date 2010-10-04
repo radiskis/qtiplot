@@ -207,10 +207,21 @@ public:
 	virtual void redo();
     virtual void undo();
 
-private:
+protected:
     MatrixModel *d_model;
     QSize d_old_size, d_new_size;
 	double *d_backup;
+};
+
+class MatrixResampleCommand: public MatrixSetSizeCommand
+{
+public:
+	MatrixResampleCommand(MatrixModel *model, const QSize& oldSize, const QSize& newSize, int method, double *data, const QString& text);
+	~MatrixResampleCommand(){free(d_backup);};
+	virtual void redo();
+
+private:
+	int d_method;
 };
 
 class MatrixUndoCommand: public QUndoCommand
