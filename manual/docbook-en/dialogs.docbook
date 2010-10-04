@@ -12,10 +12,10 @@
 <sect1 id="custom-action-dialog">
   <title>Add Custom Action</title>
   This dialog helps you define new Python script launchers that will be added to menus or tool bars in QtiPlot.
-  You can fully customize the script launchers by defining: a textual description
-  that will be displayed in the destination menu, an icon, a shortcut key sequence and a tool tip.
-  The <emphasis>Tool Tip Text</emphasis> is a short description that will be displayed near the launcher button
-  when you hover the mouse over it. You can only assign unique shortcut key sequences to your custom launchers.
+  You can fully customize script launchers by defining: 1) a textual description
+  that will be displayed in the destination menu, (2) an icon, (3) a shortcut key sequence and (4) a tool tip.
+  The <emphasis>Tool Tip Text</emphasis>  is a short description that is displayed near the launcher button
+  when you hover the mouse over it. You must assign unique shortcut key sequences to your custom launchers.
 
   <figure id="fig-add-custom-action-dialog">
     <title>The &add-custom-action-cmd; dialog box.</title>
@@ -27,12 +27,12 @@
   </figure>
 
 <para>The <emphasis>Script File</emphasis> is the path to the Python script that will be executed when you click the launcher.
-When you click the <emphasis>Add</emphasis> button all the settings for the new launcher are saved to an XML file
-in the directory specified in the <emphasis>Folder</emphasis> box. On start-up QtiPlot parses all XML files in this
+When you click the <emphasis>Add</emphasis> button, all the settings for the new launcher are saved to an XML file
+in the directory specified in the <emphasis>Folder</emphasis> box. On start-up &appname; parses all XML files in this
 folder and creates the corresponding menu items or toolbar buttons.
 When you press the <emphasis>Remove</emphasis> button, the launcher selected in the left side list
 of the dialog is removed from QtiPlot menus/tool bars and the corresponding XML file is deleted from
-the hard disk.</para>
+the hard disk. Make sure that you have backed up the file if you will ever need it in the future!</para>
 </sect1>
 
 <!-- ************************************************** -->
@@ -41,8 +41,11 @@ the hard disk.</para>
 <sect1 id="add-error-bars-dialog">
   <title>Add Error bars</title>
   <para>This dialog is activated by selecting the &add-error-bars-lnk; from the &graph-menu-lnk;.</para>
-  <para>This command is used to plot X and/or Y error bars around the data points.</para>
-  <para>It must be taken care that the "add" button add the errors bars, and so do the "OK" button. Then, you should close the dialog with cancel if you have clicked on the "add" button.</para>
+  <para>This command is used to plot X and/or Y error bars at each data point.</para>
+<!--
+  <para>Note that both the "add" and "OK" buttons will add errors bars. For this reason, if you have used the "add" button already, then you should close the dialog with the "cancel" button (NOT the "OK" button).</para> -->
+
+<para>Note that clicking on the "Close" button will not add any error bars to the plot. You must set up the parameters for the error bars first and then click on the "Add" button. If you click on "Close" without clicking "Add", there will be no error bars drawn.</para>
   <figure id="fig-add-error-bars-1">
     <title>The &add-error-bars-cmd; dialog.</title>
     <mediaobject>
@@ -51,29 +54,29 @@ the hard disk.</para>
       </imageobject>
     </mediaobject>
   </figure>
-  <para>There are three ways to specify the size of the bar:</para>
+  <para>There are three ways to specify the sizes of the bars:</para>
   <variablelist>
     <varlistentry>
-      <term>A column of the table</term>
+      <term>1) From a column of the table:</term>
       <listitem>
-        <para>In this case, the values of the selected column are used to compute the error bars. if V is the value of the data point, and E the value of the errorbar column, the size of the bars will be V-E to V+E.</para>
+        <para>In this case, the values in the selected column are used to compute the error bars. Specifically, if V is the value of a data point, and E the value from the same row of the errorbar column, the size of the corresponding bar will be V-E to V+E.</para>
       </listitem>
     </varlistentry>
     <varlistentry>
-      <term>A percentage of the values</term>
+      <term>2) A percentage of the values:</term>
       <listitem>
-        <para>if E is the percentage selected, the size of the bars will be V(1-E/100) to V(1+E/100). It must be noticed that, in addition to the errorbars on the plot, this command will create a new column in the active table with can be used in the way as with the previous option. This column can be modified like any other one.</para>
+        <para>This command adds a new column to the table associated with the plot and fills it with result of calculating V*E/100 for each row in the table, where V is the plotted value and E is the selected percentage. This column is then used to plot the error bars in exactly the same manner as in the previous case. The new column can subsequently be edited like any other column. Any changes will be reflected in the size of the corresponding error bars.</para>
       </listitem>
     </varlistentry>
     <varlistentry>
-      <term>The standard deviation of the values</term>
+      <term>3) The standard deviation of the values:</term>
       <listitem>
-        <para>the standard deviation of the values. This has a meaning only of the data are centered around an average value. Like with the previous option, a new column will be created in the active table.</para>
+        <para>This command first calculates the standard deviation of the plotted values. This has a meaning only of the data are centered around an average value. As with the previous option, a new column will be created in the active table and each row will be filed with the computed standard deviation. The program does not know and cannot compute individual standard deviations at each point. If this is required, you will need to independently compute these values from multiple samples taken at each x or y value.</para>
       </listitem>
     </varlistentry>
   </variablelist>
   <figure id="fig-add-error-bars-2">
-    <title>A plot with X and Y Error Bars.</title>
+    <title>Example of a plot with both X and Y Error Bars.</title>
     <mediaobject>
       <imageobject>
         <imagedata  format="PNG" fileref="pics/add-error-bars-2.png"/>
@@ -87,8 +90,8 @@ the hard disk.</para>
 <!-- ************************************************** -->
 <sect1 id="add-function-dialog">
   <title>Add Function</title>
-  <para>This dialog box is used to add a function curve to the active plot. The function can be built with the common operators: * + / - and ^ for the power. The intrinsic functions available are listed in the <link linkend="sec-muParser">appendix</link>.</para>
-  <para>The most common way to define a function is the classical cartesian coordinate definition y=f(x), this is the defaut option. The two following parameters allow to select the x range used for the plot, and the last one is used for the number of data points that are computed in the X-range.</para>
+  <para>This dialog box is used to add a function curve to the active plot. The plotted function is built with the common operators: * + / - and ^ for multiplication, addition, division, subtraction and exponentiation, respectively. The intrinsic functions available are listed in the <link linkend="sec-muParser">muParser</link> section of the chapter on <emphasis>Mathematical Expressions and Scripting </emphasis>.</para>
+  <para>The most common way to define a function uses the classical cartesian coordinate definition, y=f(x), and this is the default option. The next two parameters allow selection the x range to be used for the plot. The last parameter sets the number of data points to be computed in the selected X-range.</para>
   <figure id="add-function-dialog-1">
     <title>The &add-function-cmd; dialog box: cartesian coordinates.</title>
     <mediaobject>
@@ -98,11 +101,10 @@ the hard disk.</para>
     </mediaobject>
   </figure>
 
-  <para>If the function expression contains constants, e.g.: f(x) = a*x + b, QtiPlot automatically detects them and displays a two column table
-   on the right side of the dialog, containing input spin boxes that allow to choose appropriate values for those constants:</para>
+  <para>If the function expression contains terms that are recognizable as constants, e.g.: f(x) = a*x + b, QtiPlot will detect them and display a two column table on the right side of the dialog which contains input spin boxes that simplify setting appropriate values for the detected constants.</para>
 
   <figure id="add-function-dialog-4">
-	<title>The &add-function-cmd; dialog box: automatic detection of constants.</title>
+	<title>The &add-function-cmd; Dialog Box: Automatic Detection of Constants.</title>
 	<mediaobject>
 	  <imageobject>
 		<imagedata  format="PNG" fileref="pics/add-function-dialog4.png"/>
@@ -110,20 +112,20 @@ the hard disk.</para>
 	</mediaobject>
   </figure>
 
-  <para>The functions can also be defined in a parametric definition: if <emphasis>t</emphasis> is the parameter, the (x,y) data points are computed by x=f(t) and y=g(t).</para>
-  <para>The first parameter is the name of the parametric variable (here <emphasis>t</emphasis>) followed by the range, the definition of the two functions and the number of data points.</para>
+  <para>A function can also be defined using a parametric definition. That is, given some variable, <emphasis>t</emphasis>, the (x,y) data points are computed using functions of that variable, x=f(t) and y=g(t).</para>
+  <para>The first parameter in the dialog box is the name of the parametric variable (here <emphasis>t</emphasis>) followed by the range, the definition of the two functions and the number of data points.</para>
   <figure id="add-function-dialog-2">
-    <title>The &add-function-cmd; dialog box: parametric coordinates.</title>
+    <title>The &add-function-cmd; dialog box: Parametric Coordinates.</title>
     <mediaobject>
       <imageobject>
         <imagedata  format="PNG" fileref="pics/add-function-dialog2.png"/>
       </imageobject>
     </mediaobject>
   </figure>
-  <para>The last way is the polar definition of the function: if <emphasis>t</emphasis> is the parameter, the radius <emphasis>r</emphasis> and the angle <emphasis>theta</emphasis> are computed by r=f(t) and theta=g(t). Then the (x,y) data points are computed by x=r*cos(theta) and y=r*sin(theta).</para>
-  <para>The first parameter is the name of the parametric variable (here <emphasis>t</emphasis>) followed by the range, the definition of the two functions and the number of data points.The angle is defined in radians, and the constant value <emphasis>pi</emphasis> can be used: it is possible to use 3*pi to define the parameter range.</para>
+  <para>Finally, a polar definition of the function may be used. Given some variable <emphasis>t</emphasis>, then the radius <emphasis>r</emphasis> and angle <emphasis>theta</emphasis> are computed using two functions of that variable, r=f(t) and theta=g(t) in a manner similar to the parametric function case. The (x,y) data points are then computed as x=r*cos(theta) and y=r*sin(theta).</para>
+  <para>The first parameter in the dialog box is the name of the parametric variable (here <emphasis>t</emphasis>) followed by the range, the definition of the two functions and the number of data points. Note that the angle is in radians. <emphasis>pi</emphasis> is an internally defined constant which can be used in any mathematical expression. For example, you can use <emphasis>3*pi</emphasis> to define the parameter range.</para>
   <figure id="add-function-dialog-3">
-    <title>The &add-function-cmd; dialog box: polar coordinates.</title>
+    <title>The &add-function-cmd; dialog box: Polar Coordinates.</title>
     <mediaobject>
       <imageobject>
         <imagedata  format="PNG" fileref="pics/add-function-dialog3.png"/>
@@ -137,9 +139,9 @@ the hard disk.</para>
 <!-- ************************************************** -->
 <sect1 id="add-layer-dialog">
   <title>Add Layer</title>
-  <para>This dialog is opened when you want to add a new layer on the active plot. If you select <emphasis>Guess</emphasis>, &appname; will divide the window in two columns and put the new layer on the right. If you choose <emphasis>Top-Left Corner</emphasis>, &appname; will create a new layer with the maximum possible size over the existing layer, this layer contains an empty plot. You can then modify the size and position of each layer by selecting it with the layer number buttons  <inlinemediaobject><imageobject><imagedata format="PNG" fileref="pics/layer-button.png"/></imageobject></inlinemediaobject> and selecting the <emphasis>Layer Geometry</emphasis> command from the context menu.</para>
+  <para>This dialog is opened when you want to add a new layer on the active plot. If you select <emphasis>Guess</emphasis>, &appname; will divide the window in two columns and put the new layer on the right. If you choose <emphasis>Top-Left Corner</emphasis>, &appname; will create a new layer with the maximum possible size on top of existing layers. This new layer contains an empty plot. You can then modify the size and position of each layer by selecting it with the layer number buttons  <inlinemediaobject><imageobject><imagedata format="PNG" fileref="pics/layer-button.png"/></imageobject></inlinemediaobject> and selecting the <emphasis>Layer Geometry</emphasis> command from the context menu.</para>
   <figure id="fig-add-layer-dialog">
-    <title>The &add-layer-cmd; dialog box.</title>
+    <title>The &add-layer-cmd; Dialog Box.</title>
     <mediaobject>
       <imageobject>
         <imagedata  format="PNG" fileref="pics/add-layer.png"/>
@@ -152,17 +154,13 @@ the hard disk.</para>
 <!--		Add / Remove curves			-->
 <!-- ************************************************** -->
 <sect1 id="add-remove-curve-dialog">
-  <title>Add/Remove curves</title>
+  <title>Add/Remove Curves</title>
   <para>This dialog is activated by selecting the command <link linkend="add-remove-curve-cmd">&add-remove-curve-cmd;</link> from the <link linkend="sec-graph-menu">Graph Menu</link>.</para>
-  <para>The left window shows the columns which are available for plotting in the different tables of the project.
-  If the <emphasis>Show current folder only</emphasis> option is checked, only the tables in the active folder of the
-  project will be listed in this window.
-  The right window gives the list of the curves already plotted.
-  In the case presented below, there are two tables from which the &add-remove-curve-cmd;
-  dialog box allows to select columns. If you use this dialog box to add a column,
-  the X column will be the one defined as X in the corresponding table.</para>
+  <para>The left window shows the columns available from the project's tables that may be used for plotting. If the <emphasis>Show current folder only</emphasis> option is checked, only tables from the active folder of the project will be listed in this window.
+  The right window lists the curves already plotted. In the case presented below, there are two tables that the &add-remove-curve-cmd;
+  dialog box lists for the selection of columns. You select a <emphasis>Y</emphasis> column to plot using this dialog. &appname; will use the column defined as X in the corresponding table for the <emphasis>X</emphasis> values.</para>
   <figure id="fig-add-remove-curve">
-    <title>The &add-remove-curve-cmd; dialog box.</title>
+    <title>The &add-remove-curve-cmd; Dialog Box.</title>
     <mediaobject>
       <imageobject>
         <imagedata  format="PNG" fileref="pics/add-remove-curve.png"/>
@@ -172,8 +170,8 @@ the hard disk.</para>
 
   <para>In this dialog box, if you select one curve of the plot in the right window,
   you can change the columns used for X and Y with the <emphasis>Plot Association</emphasis> button.
-  In any case, you can't mix the X values of one table with the Y values of another one.
-  If you want to do this, you have to copy the columns in the same table.</para>
+  In any case, you can't mix the X values from one table with the Y values from another one.
+  If you want to do this, you have to copy the columns into the same table.</para>
   <para>If the curve selected is a function, you can modify it by pressing the <emphasis>Edit Function...</emphasis> button.
   Refer to the <link linkend="add-function-dialog">&add-function-cmd; dialog box</link> for more details on functions editing.</para>
 <para>If the <emphasis>Show Range</emphasis> option is checked, the plot range of all the curves
@@ -182,7 +180,7 @@ The plot range is the interval of points which are visible in a curve. You can s
 a selected curve, without having to delete them, by pressing the <emphasis>Edit Range...</emphasis> button,
 which opens a dialog allowing to edit the plot range.</para>
 </sect1>
-
+<!-- HERE*** -->>
 <!-- ************************************************** -->
 <!--		Arrange Layers				-->
 <!-- ************************************************** -->
