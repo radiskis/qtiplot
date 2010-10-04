@@ -1224,12 +1224,7 @@ The <emphasis>File Toolbar</emphasis> provides single-click access to commands f
    <entry></entry>
    <entry>Draw a grid on the bottom panel.</entry>
   </row>
-  <row>
-   <entry>&floor-grid-icon;</entry>
-   <entry><link linkend="floor-grid-cmd">plot -> &floor-grid-cmd;</link></entry>
-   <entry></entry>
-   <entry>Draw a grid on the bottom panel.</entry>
-  </row>
+
   <row>
    <entry>&perspective-icon;</entry>
    <entry><link linkend="perspective-cmd">plot -> &perspective-cmd;</link></entry>
