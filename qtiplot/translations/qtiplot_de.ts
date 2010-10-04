@@ -9909,6 +9909,18 @@ Autocompletion will not be available!</source>
         <source>Random &amp;XYZ...</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>&amp;Expand...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Shrink...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>chart</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ArrowMarker</name>
@@ -18264,6 +18276,22 @@ Wollen sie Zellen einfügen?</translation>
         <source>kB</source>
         <translation>kB</translation>
     </message>
+    <message>
+        <source>Resample</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>bilinear</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>bicubic</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>QtiPlot was built without support for ALGLIB, resampling is not possible!</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>MatrixDialog</name>
@@ -18369,6 +18397,53 @@ Wollen sie Zellen einfügen?</translation>
     <message>
         <source>Warning</source>
         <translation>Warnung</translation>
+    </message>
+</context>
+<context>
+    <name>MatrixResamplingDialog</name>
+    <message>
+        <source>Resample</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Expand for every cell</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Shrink into 1x1 for every</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Columns</source>
+        <translation type="unfinished">Spalten</translation>
+    </message>
+    <message>
+        <source>Rows</source>
+        <translation type="unfinished">Zeilen</translation>
+    </message>
+    <message>
+        <source>Method</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Bilinear</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Bicubic</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;OK</source>
+        <translation type="unfinished">&amp;OK</translation>
+    </message>
+    <message>
+        <source>&amp;Apply</source>
+        <translation type="unfinished">&amp;Anwenden</translation>
+    </message>
+    <message>
+        <source>&amp;Cancel</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

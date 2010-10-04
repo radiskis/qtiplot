@@ -520,6 +520,7 @@ void Matrix::resample(int rows, int cols, const ResamplingMethod& method)
 		com->redo();
 		delete com;
 	}
+
 	emit modifiedWindow(this);
 	modifiedData(this);
 #else
