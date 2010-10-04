@@ -207,6 +207,7 @@ using namespace std;
 
 #ifdef HAVE_ALGLIB
 	#include "GriddingDialog.h"
+	#include "MatrixResamplingDialog.h"
 #endif
 
 using namespace Qwt3D;
@@ -3470,6 +3471,26 @@ void ApplicationWindow::showBinMatrixDialog()
 }
 
 #ifdef HAVE_ALGLIB
+void ApplicationWindow::expandMatrix()
+{
+	showMatrixResamplingDialog();
+}
+
+void ApplicationWindow::shrinkMatrix()
+{
+	showMatrixResamplingDialog(true);
+}
+
+void ApplicationWindow::showMatrixResamplingDialog(bool shrink)
+{
+	Matrix* m = (Matrix*)activeWindow(MatrixWindow);
+	if (!m)
+		return;
+
+	MatrixResamplingDialog *mrd = new MatrixResamplingDialog(m, shrink, this);
+	mrd->exec();
+}
+
 void ApplicationWindow::convertTableToMatrixRandomXYZ()
 {
 	Table *t = (Table*)activeWindow(TableWindow);
@@ -9955,6 +9976,11 @@ void ApplicationWindow::matrixMenuAboutToShow()
 	matrixMenu->addAction(actionFlipMatrixVertically);
 	matrixMenu->addAction(actionFlipMatrixHorizontally);
 	matrixMenu->insertSeparator();
+#ifdef HAVE_ALGLIB
+	matrixMenu->addAction(actionExpandMatrix);
+	matrixMenu->addAction(actionShrinkMatrix);
+	matrixMenu->insertSeparator();
+#endif
 	matrixMenu->addAction(actionTransposeMatrix);
 	matrixMenu->addAction(actionInvertMatrix);
 	matrixMenu->addAction(actionMatrixDeterminant);
@@ -10971,6 +10997,11 @@ void ApplicationWindow::showWindowContextMenu()
             cm.addAction(actionFlipMatrixVertically);
             cm.addAction(actionFlipMatrixHorizontally);
             cm.insertSeparator();
+		#ifdef HAVE_ALGLIB
+			cm.addAction(actionExpandMatrix);
+			cm.addAction(actionShrinkMatrix);
+			cm.insertSeparator();
+		#endif
             cm.addAction(actionTransposeMatrix);
             cm.addAction(actionInvertMatrix);
             cm.insertSeparator();
@@ -14301,6 +14332,12 @@ void ApplicationWindow::createActions()
 #ifdef HAVE_ALGLIB
 	actionConvertTableRandomXYZ = new QAction(tr("Random &XYZ..."), this);
 	connect(actionConvertTableRandomXYZ, SIGNAL(activated()), this, SLOT(convertTableToMatrixRandomXYZ()));
+
+	actionExpandMatrix = new QAction(tr("&Expand..."), this);
+	connect(actionExpandMatrix, SIGNAL(activated()), this, SLOT(expandMatrix()));
+
+	actionShrinkMatrix = new QAction(tr("&Shrink..."), this);
+	connect(actionShrinkMatrix, SIGNAL(activated()), this, SLOT(shrinkMatrix()));
 #endif
 
 	actionPlot3DWireFrame = new QAction(QIcon(":/lineMesh.png"), tr("3D &Wire Frame"), this);
@@ -15059,6 +15096,8 @@ void ApplicationWindow::translateActionsStrings()
 	actionConvertTableRegularXYZ->setMenuText(tr("&Regular XYZ"));
 #ifdef HAVE_ALGLIB
 	actionConvertTableRandomXYZ->setMenuText(tr("Random &XYZ..."));
+	actionExpandMatrix->setMenuText(tr("&Expand..."));
+	actionShrinkMatrix->setMenuText(tr("&Shrink..."));
 #endif
 	actionPlot3DWireFrame->setMenuText(tr("3D &Wire Frame"));
 	actionPlot3DHiddenLine->setMenuText(tr("3D &Hidden Line"));

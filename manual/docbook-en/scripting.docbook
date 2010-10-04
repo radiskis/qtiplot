@@ -1703,10 +1703,26 @@ that is the number of significant digits used for the computations:
 <programlisting>
 m.setNumericPrecision(prec)
 </programlisting>
+
+You can change the dimensions of a matrix:
+<programlisting>
+m.setDimensions(rows, columns)
+m.setNumRows(rows)
+m.setNumCols(columns)
+</programlisting>
+
 Also, like with tables, you can access the number of rows/columns in a matrix:
 <programlisting>
 rows = m.numRows()
 columns = m.numCols()
+</programlisting>
+
+If QtiPlot has been built with support for <ulink url="http://www.alglib.net/">ALGLIB</ulink>, you can also change the dimensions of a matrix by resampling it, using
+bilinear or bicubic interpolation:
+
+<programlisting>
+m.resample(rows, cols)# bilinear interpolation by default
+m.resample(rows, cols, 1) # bicubic interpolation
 </programlisting>
 
 Matrix objects allow you to define a system of x/y coordinates that will be used when plotting color/contour maps or 3D height maps.

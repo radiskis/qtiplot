@@ -495,6 +495,38 @@ void Matrix::rotate90(bool clockwise)
 		d_undo_stack->push(new MatrixSymmetryOperation(d_matrix_model, RotateCounterClockwise, tr("Rotate -90°")));
 }
 
+void Matrix::resample(int rows, int cols, const ResamplingMethod& method)
+{
+#ifdef HAVE_ALGLIB
+	int r = numRows();
+	int c = numCols();
+	if (rows == r && cols == c)
+		return;
+
+	if(rows*cols > r*c && !d_matrix_model->canResize(rows, cols))
+		return;
+
+	QString explain = tr("Resample") + " " + QString::number(rows) + "x" + QString::number(cols) + ", ";
+	if (method == Bilinear)
+		explain += tr("bilinear");
+	else
+		explain += tr("bicubic");
+
+	double *buffer = d_matrix_model->dataCopy();
+	MatrixResampleCommand *com = new MatrixResampleCommand(d_matrix_model, QSize(r, c), QSize(rows, cols), (int)method, buffer, explain);
+	if (buffer)
+		d_undo_stack->push(com);
+	else if (ignoreUndo()){
+		com->redo();
+		delete com;
+	}
+	emit modifiedWindow(this);
+	modifiedData(this);
+#else
+	QMessageBox::critical(this, tr("QtiPlot"), tr("QtiPlot was built without support for ALGLIB, resampling is not possible!"));
+#endif
+}
+
 bool Matrix::canCalculate(bool useMuParser)
 {
 	if (formula_str.isEmpty())
