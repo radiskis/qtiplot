@@ -28,6 +28,8 @@ LIBS         += $$GSL_LIBS
 ###################### BASIC PROJECT PROPERTIES #############################
 #############################################################################
 
+DEFINES       += SVN_REVISION="\"\\\"$$(QTIPLOT_SVN_REVISION)\\\"\""
+
 QMAKE_PROJECT_DEPTH = 0
 	
 !contains(CONFIG, BrowserPlugin){
@@ -147,6 +149,8 @@ INCLUDEPATH += ../3rdparty/QTeXEngine/src
 HEADERS 	+= ../3rdparty/QTeXEngine/src/QTeXEngine.h
 SOURCES     += ../3rdparty/QTeXEngine/src/QTeXPaintEngine.cpp
 SOURCES     += ../3rdparty/QTeXEngine/src/QTeXPaintDevice.cpp
+
+
 
 ###############################################################
 ##################### Scripting: PYTHON + SIP + PyQT ##########

@@ -17629,11 +17629,11 @@ ApplicationWindow::~ApplicationWindow()
 	QApplication::clipboard()->clear(QClipboard::Clipboard);
 	QApplication::restoreOverrideCursor();
 }
-
+//Added svn_revision number to end of version string. (SRB 10/01/2010 )
 QString ApplicationWindow::versionString()
 {
 	return "QtiPlot " + QString::number(maj_version) + "." +
-		QString::number(min_version) + "." + QString::number(patch_version) + extra_version;
+		QString::number(min_version) + "." + QString::number(patch_version) + extra_version + QString(svn_revision);
 }
 
 
