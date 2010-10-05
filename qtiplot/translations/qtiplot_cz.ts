@@ -10128,11 +10128,11 @@ K tomu lze použít následujících zvláštních kódů:
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation type="unfinished">&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Apply</source>
-        <translation type="unfinished">&amp;Použít</translation>
+        <translation type="obsolete">&amp;Použít</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
@@ -10140,7 +10140,7 @@ K tomu lze použít následujících zvláštních kódů:
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation type="unfinished">&amp;Zavřít</translation>
+        <translation type="obsolete">&amp;Zavřít</translation>
     </message>
 </context>
 <context>
