@@ -10124,11 +10124,11 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation type="unfinished">&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Apply</source>
-        <translation type="unfinished">&amp;Применить</translation>
+        <translation type="obsolete">&amp;Применить</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
@@ -10136,7 +10136,7 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation type="unfinished">&amp;Закрыть</translation>
+        <translation type="obsolete">&amp;Закрыть</translation>
     </message>
 </context>
 <context>

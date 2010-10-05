@@ -13687,11 +13687,11 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Apply</source>
-        <translation>&amp;Aplică</translation>
+        <translation type="obsolete">&amp;Aplică</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
@@ -13699,7 +13699,7 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation>În&amp;chide</translation>
+        <translation type="obsolete">În&amp;chide</translation>
     </message>
 </context>
 <context>

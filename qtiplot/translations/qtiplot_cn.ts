@@ -16942,19 +16942,16 @@ have the same number of rows.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/matrix/MatrixResamplingDialog.cpp" line="75"/>
         <source>&amp;OK</source>
-        <translation type="unfinished">确定(&amp;O)</translation>
+        <translation type="obsolete">确定(&amp;O)</translation>
     </message>
     <message>
-        <location filename="../src/matrix/MatrixResamplingDialog.cpp" line="83"/>
         <source>&amp;Apply</source>
-        <translation type="unfinished">应用(&amp;A)</translation>
+        <translation type="obsolete">应用(&amp;A)</translation>
     </message>
     <message>
-        <location filename="../src/matrix/MatrixResamplingDialog.cpp" line="87"/>
         <source>&amp;Close</source>
-        <translation type="unfinished">关闭(&amp;C)</translation>
+        <translation type="obsolete">关闭(&amp;C)</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>

@@ -29,7 +29,7 @@
 #include "MatrixResamplingDialog.h"
 #include "Matrix.h"
 
-#include <QPushButton>
+#include <QDialogButtonBox>
 #include <QLabel>
 #include <QComboBox>
 #include <QLayout>
@@ -72,31 +72,13 @@ MatrixResamplingDialog::MatrixResamplingDialog(Matrix *m, bool shrink, QWidget* 
 	topLayout->addWidget(boxMethod, 2, 1);
 	topLayout->setRowStretch(3, 1);
 
-	buttonOk = new QPushButton(tr( "&OK" ));
-	buttonOk->setAutoDefault( true );
-	buttonOk->setDefault( true );
-
-	QHBoxLayout * bottomLayout = new QHBoxLayout();
-	bottomLayout->addStretch();
-	bottomLayout->addWidget( buttonOk );
-
-	buttonApply = new QPushButton(tr( "&Apply" ));
-	buttonApply->setAutoDefault( true );
-	bottomLayout->addWidget( buttonApply );
-
-	buttonCancel = new QPushButton(tr( "&Close" ));
-	buttonCancel->setAutoDefault( true );
-	bottomLayout->addWidget( buttonCancel );
+	buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Apply | QDialogButtonBox::Close);
+	connect(buttonBox, SIGNAL(clicked(QAbstractButton *)), this, SLOT(buttonClicked(QAbstractButton *)));
 
 	QVBoxLayout * mainLayout = new QVBoxLayout(this);
 	mainLayout->addWidget(boxAction);
 	mainLayout->addWidget(gb1);
-	mainLayout->addLayout(bottomLayout);
-
-	// signals and slots connections
-	connect(buttonOk, SIGNAL(clicked()), this, SLOT(accept()));
-	connect(buttonApply, SIGNAL(clicked()), this, SLOT(apply()));
-	connect(buttonCancel, SIGNAL(clicked()), this, SLOT(close()));
+	mainLayout->addWidget(buttonBox);
 }
 
 void MatrixResamplingDialog::apply()
@@ -123,8 +105,20 @@ void MatrixResamplingDialog::apply()
 	d_matrix->resample(rows, cols, (Matrix::ResamplingMethod)boxMethod->currentIndex());
 }
 
-void MatrixResamplingDialog::accept()
+void MatrixResamplingDialog::buttonClicked(QAbstractButton *btn)
 {
-	apply();
-	close();
+	switch(buttonBox->standardButton(btn)){
+		case QDialogButtonBox::Ok:
+			apply();
+			close();
+		break;
+		case QDialogButtonBox::Apply:
+			apply();
+		break;
+		case QDialogButtonBox::Close:
+			close();
+		break;
+		default:
+			break;
+	}
 }

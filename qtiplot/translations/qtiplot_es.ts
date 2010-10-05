@@ -15595,11 +15595,11 @@ Do you want to insert cells?</source>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation type="unfinished">&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Apply</source>
-        <translation type="unfinished">&amp;Aplicar</translation>
+        <translation type="obsolete">&amp;Aplicar</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
@@ -15607,7 +15607,7 @@ Do you want to insert cells?</source>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation type="unfinished">&amp;Cerrar</translation>
+        <translation type="obsolete">&amp;Cerrar</translation>
     </message>
 </context>
 <context>

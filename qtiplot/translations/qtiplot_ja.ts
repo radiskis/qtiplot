@@ -10506,18 +10506,6 @@ have the same number of rows.</source>
         <source>Bicubic</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <source>&amp;OK</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Apply</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Close</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>MatrixSizeDialog</name>

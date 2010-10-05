@@ -18435,15 +18435,15 @@ Wollen sie Zellen einfügen?</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation type="unfinished">&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Apply</source>
-        <translation type="unfinished">&amp;Anwenden</translation>
+        <translation type="obsolete">&amp;Anwenden</translation>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation type="unfinished">S&amp;chließen</translation>
+        <translation type="obsolete">S&amp;chließen</translation>
     </message>
 </context>
 <context>
