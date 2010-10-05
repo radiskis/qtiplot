@@ -117,19 +117,36 @@ void Grid::drawLines(QPainter *painter, const QRect &rect,
 		Qt::Orientation orientation, const QwtScaleMap &map,
 		const QwtValueList &values) const
 {
+	if (values.isEmpty())
+		return;
+		
 	const int x1 = rect.left();
 	const int x2 = rect.right();
 	const int y1 = rect.top();
 	const int y2 = rect.bottom();
 
-	for (uint i = 0; i < (uint)values.count(); i++){
-		const int value = map.transform(values[i]);
-		if ( orientation == Qt::Horizontal ){
-			if ((value > y1) && (value < y2))
-				QwtPainter::drawLine(painter, x1, value, x2, value);
-		} else {
-			if ((value > x1) && (value < x2))
-				QwtPainter::drawLine(painter, value, y1, value, y2);
+	Graph *g = (Graph *)this->plot();
+	if (g && g->canvasFrameWidth()){
+		for (uint i = 0; i < (uint)values.count(); i++){
+			const int value = map.transform(values[i]);
+			if ( orientation == Qt::Horizontal ){
+				if ((value > y1 + 1) && (value < y2 - 1))
+					QwtPainter::drawLine(painter, x1, value, x2, value);
+			} else {
+				if ((value > x1 + 1) && (value < x2 - 1))
+					QwtPainter::drawLine(painter, value, y1, value, y2);
+			}
+		}
+	} else {
+		for (uint i = 0; i < (uint)values.count(); i++){
+			const int value = map.transform(values[i]);
+			if ( orientation == Qt::Horizontal ){
+				if ((value > y1) && (value < y2))
+					QwtPainter::drawLine(painter, x1, value, x2, value);
+			} else {
+				if ((value > x1) && (value < x2))
+					QwtPainter::drawLine(painter, value, y1, value, y2);
+			}
 		}
 	}
 }

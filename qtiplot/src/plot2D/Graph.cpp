@@ -5859,6 +5859,10 @@ void Graph::drawItems (QPainter *painter, const QRect &rect,
 void Graph::drawInwardTicks(QPainter *painter, const QRect &rect,
 		const QwtScaleMap &map, int axis, bool min, bool maj) const
 {
+	const QwtScaleWidget *scale = axisWidget(axis);
+	if (!scale)
+		return;
+
 	int x1 = rect.left();
 	int x2 = rect.right();
 	int y1 = rect.top();
@@ -5868,14 +5872,14 @@ void Graph::drawInwardTicks(QPainter *painter, const QRect &rect,
 	int maj_tick_length = qRound(d_maj_tick_length*factor);
 	int min_tick_length = qRound(d_min_tick_length*factor);
 
-	QPalette pal = axisWidget(axis)->palette();
+	QPalette pal = scale->palette();
 	QColor color = pal.color(QPalette::Active, QColorGroup::Foreground);
 
 	painter->save();
 	//if (painter->hasClipping())
 		//painter->setClipping(false);
 
-	painter->setPen(QPen(color, factor*axesLinewidth(), Qt::SolidLine));
+	painter->setPen(QPen(color, factor*scale->penWidth(), Qt::SolidLine));
 
 	QwtScaleDiv *scDiv = (QwtScaleDiv *)axisScaleDiv(axis);
 	const QwtValueList minTickList = scDiv->ticks(QwtScaleDiv::MinorTick);
