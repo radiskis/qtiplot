@@ -38,16 +38,19 @@
 
 MatrixResamplingDialog::MatrixResamplingDialog(Matrix *m, bool shrink, QWidget* parent, Qt::WFlags fl )
     : QDialog( parent, fl ),
-	d_matrix(m),
-	d_shrink(shrink)
+	d_matrix(m)
 {
 	setWindowTitle( tr( "Resample" ) );
     setAttribute(Qt::WA_DeleteOnClose);
 
-	QGroupBox *gb1 = new QGroupBox(tr("Expand for every cell"));
-	if (shrink)
-		gb1->setTitle(tr("Shrink into 1x1 for every"));
+	boxAction = new QComboBox();
+	boxAction->addItem(tr("Expand for every cell"));
+	boxAction->addItem(tr("Shrink into 1x1 for every"));
 
+	if (shrink)
+		boxAction->setCurrentIndex(1);
+
+	QGroupBox *gb1 = new QGroupBox();
 	QGridLayout *topLayout = new QGridLayout(gb1);
 	topLayout->addWidget(new QLabel(tr("Columns")), 0, 0);
 	boxColumns = new QSpinBox();
@@ -81,13 +84,13 @@ MatrixResamplingDialog::MatrixResamplingDialog(Matrix *m, bool shrink, QWidget* 
 	buttonApply->setAutoDefault( true );
 	bottomLayout->addWidget( buttonApply );
 
-	buttonCancel = new QPushButton(tr( "&Cancel" ));
+	buttonCancel = new QPushButton(tr( "&Close" ));
 	buttonCancel->setAutoDefault( true );
 	bottomLayout->addWidget( buttonCancel );
 
 	QVBoxLayout * mainLayout = new QVBoxLayout(this);
+	mainLayout->addWidget(boxAction);
 	mainLayout->addWidget(gb1);
-	mainLayout->addStretch();
 	mainLayout->addLayout(bottomLayout);
 
 	// signals and slots connections
@@ -105,7 +108,7 @@ void MatrixResamplingDialog::apply()
 
 	int rows = d_matrix->numRows();
 	int cols = d_matrix->numCols();
-	if (d_shrink){
+	if (boxAction->currentIndex()){
 		rows /= r;
 		cols /= c;
 		if (d_matrix->numRows() % r)

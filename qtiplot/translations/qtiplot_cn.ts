@@ -16902,7 +16902,7 @@ have the same number of rows.</source>
 <context>
     <name>MatrixResamplingDialog</name>
     <message>
-        <location filename="../src/matrix/MatrixResamplingDialog.cpp" line="44"/>
+        <location filename="../src/matrix/MatrixResamplingDialog.cpp" line="43"/>
         <source>Resample</source>
         <translation type="unfinished"></translation>
     </message>
@@ -16912,49 +16912,53 @@ have the same number of rows.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/matrix/MatrixResamplingDialog.cpp" line="49"/>
+        <location filename="../src/matrix/MatrixResamplingDialog.cpp" line="48"/>
         <source>Shrink into 1x1 for every</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/matrix/MatrixResamplingDialog.cpp" line="52"/>
+        <location filename="../src/matrix/MatrixResamplingDialog.cpp" line="55"/>
         <source>Columns</source>
         <translation type="unfinished">列</translation>
     </message>
     <message>
-        <location filename="../src/matrix/MatrixResamplingDialog.cpp" line="58"/>
+        <location filename="../src/matrix/MatrixResamplingDialog.cpp" line="61"/>
         <source>Rows</source>
         <translation type="unfinished">行</translation>
     </message>
     <message>
-        <location filename="../src/matrix/MatrixResamplingDialog.cpp" line="64"/>
+        <location filename="../src/matrix/MatrixResamplingDialog.cpp" line="67"/>
         <source>Method</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/matrix/MatrixResamplingDialog.cpp" line="66"/>
+        <location filename="../src/matrix/MatrixResamplingDialog.cpp" line="69"/>
         <source>Bilinear</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/matrix/MatrixResamplingDialog.cpp" line="67"/>
+        <location filename="../src/matrix/MatrixResamplingDialog.cpp" line="70"/>
         <source>Bicubic</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/matrix/MatrixResamplingDialog.cpp" line="72"/>
+        <location filename="../src/matrix/MatrixResamplingDialog.cpp" line="75"/>
         <source>&amp;OK</source>
         <translation type="unfinished">确定(&amp;O)</translation>
     </message>
     <message>
-        <location filename="../src/matrix/MatrixResamplingDialog.cpp" line="80"/>
+        <location filename="../src/matrix/MatrixResamplingDialog.cpp" line="83"/>
         <source>&amp;Apply</source>
         <translation type="unfinished">应用(&amp;A)</translation>
     </message>
     <message>
-        <location filename="../src/matrix/MatrixResamplingDialog.cpp" line="84"/>
+        <location filename="../src/matrix/MatrixResamplingDialog.cpp" line="87"/>
+        <source>&amp;Close</source>
+        <translation type="unfinished">关闭(&amp;C)</translation>
+    </message>
+    <message>
         <source>&amp;Cancel</source>
-        <translation type="unfinished">取消(&amp;C)</translation>
+        <translation type="obsolete">取消(&amp;C)</translation>
     </message>
 </context>
 <context>
