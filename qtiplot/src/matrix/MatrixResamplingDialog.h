@@ -57,13 +57,12 @@ private slots:
 
 private:
 	Matrix *d_matrix;
-	bool d_shrink;
 
     QPushButton* buttonOk;
 	QPushButton* buttonApply;
 	QPushButton* buttonCancel;
 	QSpinBox* boxColumns, *boxRows;
-	QComboBox *boxMethod;
+	QComboBox *boxMethod, *boxAction;
 };
 
 #endif // MATRIXRESAMPLINGDIALOG_H

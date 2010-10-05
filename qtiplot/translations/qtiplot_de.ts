@@ -18442,8 +18442,8 @@ Wollen sie Zellen einfügen?</translation>
         <translation type="unfinished">&amp;Anwenden</translation>
     </message>
     <message>
-        <source>&amp;Cancel</source>
-        <translation type="unfinished"></translation>
+        <source>&amp;Close</source>
+        <translation type="unfinished">S&amp;chließen</translation>
     </message>
 </context>
 <context>
