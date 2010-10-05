@@ -3911,7 +3911,7 @@ L&apos;autocomplétion ne sera pas disponible!</translation>
     </message>
     <message>
         <source>chart</source>
-        <translation type="unfinished">Diagramme</translation>
+        <translation>Diagramme</translation>
     </message>
     <message>
         <source>Yes, don&apos;t ask me again</source>
@@ -3919,15 +3919,15 @@ L&apos;autocomplétion ne sera pas disponible!</translation>
     </message>
     <message>
         <source>Random &amp;XYZ...</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;XYZ aléatoires...</translation>
     </message>
     <message>
         <source>&amp;Expand...</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Étendre...</translation>
     </message>
     <message>
         <source>&amp;Shrink...</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Réduire...</translation>
     </message>
 </context>
 <context>
@@ -5753,11 +5753,11 @@ Les codes spéciaux suivant peuvent être utilisés :
     </message>
     <message>
         <source>Startup Scripts</source>
-        <translation type="unfinished"></translation>
+        <translation>Scripts au démarrage</translation>
     </message>
     <message>
         <source>Choose the location of the startup scripts folder!</source>
-        <translation type="unfinished"></translation>
+        <translation>Choisissez l&apos;emplacement du répertoire des scripts au démarrage !</translation>
     </message>
 </context>
 <context>
@@ -8519,7 +8519,7 @@ Les codes spéciaux suivant peuvent être utilisés :
     <name>GriddingDialog</name>
     <message>
         <source>QtiPlot - Random XYZ Gridding</source>
-        <translation type="unfinished"></translation>
+        <translation>QtiPlot - Grille XYZ aléatoire</translation>
     </message>
     <message>
         <source>Selected Z Dataset</source>
@@ -8543,7 +8543,7 @@ Les codes spéciaux suivant peuvent être utilisés :
     </message>
     <message>
         <source>Parameters</source>
-        <translation type="unfinished">Paramètres</translation>
+        <translation>Paramètres</translation>
     </message>
     <message>
         <source>Search Radius</source>
@@ -8551,91 +8551,91 @@ Les codes spéciaux suivant peuvent être utilisés :
     </message>
     <message>
         <source>Model</source>
-        <translation type="unfinished"></translation>
+        <translation>Modèle</translation>
     </message>
     <message>
         <source>Linear</source>
-        <translation type="unfinished">Linéaire</translation>
+        <translation>Linéaire</translation>
     </message>
     <message>
         <source>Quadratic</source>
-        <translation type="unfinished"></translation>
+        <translation>Quadratique</translation>
     </message>
     <message>
         <source>N&lt;sub&gt;q&lt;/sub&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>N&lt;sub&gt;q&lt;/sub&gt;</translation>
     </message>
     <message>
         <source>N&lt;sub&gt;w&lt;/sub&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>N&lt;sub&gt;w&lt;/sub&gt;</translation>
     </message>
     <message>
         <source>Matrix Dimensions</source>
-        <translation type="unfinished"></translation>
+        <translation>Dimensions de la matrice</translation>
     </message>
     <message>
         <source>Columns</source>
-        <translation type="unfinished">Colonnes</translation>
+        <translation>Colonnes</translation>
     </message>
     <message>
         <source>Rows</source>
-        <translation type="unfinished">Rangées</translation>
+        <translation>Rangées</translation>
     </message>
     <message>
         <source>Matrix Coordinates</source>
-        <translation type="unfinished"></translation>
+        <translation>Coordonnées de la matrice</translation>
     </message>
     <message>
         <source>X Minimum</source>
-        <translation type="unfinished"></translation>
+        <translation>X minimum</translation>
     </message>
     <message>
         <source>X Maximum</source>
-        <translation type="unfinished"></translation>
+        <translation>X maximum</translation>
     </message>
     <message>
         <source>Y Minimum</source>
-        <translation type="unfinished"></translation>
+        <translation>Y minimum</translation>
     </message>
     <message>
         <source>Y Maximum</source>
-        <translation type="unfinished"></translation>
+        <translation>Y maximum</translation>
     </message>
     <message>
         <source>&amp;Preview</source>
-        <translation type="unfinished">A&amp;perçu</translation>
+        <translation>A&amp;perçu</translation>
     </message>
     <message>
         <source>Plot Type</source>
-        <translation type="unfinished"></translation>
+        <translation>Type de graphe</translation>
     </message>
     <message>
         <source>Wireframe</source>
-        <translation type="unfinished">Maillage transparent</translation>
+        <translation>Maillage transparent</translation>
     </message>
     <message>
         <source>Hidden Line</source>
-        <translation type="unfinished">Maillage</translation>
+        <translation>Maillage</translation>
     </message>
     <message>
         <source>Crea&amp;te Plot</source>
-        <translation type="unfinished"></translation>
+        <translation>Créer le grap&amp;he</translation>
     </message>
     <message>
         <source>&amp;Ok</source>
-        <translation type="unfinished">&amp;Ok</translation>
+        <translation>&amp;Ok</translation>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Fermer</translation>
     </message>
     <message>
         <source>X axis</source>
-        <translation type="unfinished">Axe X</translation>
+        <translation>Axe X</translation>
     </message>
     <message>
         <source>Y axis</source>
-        <translation type="unfinished">Axe Y</translation>
+        <translation>Axe Y</translation>
     </message>
 </context>
 <context>
@@ -9915,19 +9915,19 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Resample</source>
-        <translation type="unfinished"></translation>
+        <translation>Ré-échantilloné</translation>
     </message>
     <message>
         <source>bilinear</source>
-        <translation type="unfinished"></translation>
+        <translation>bilinéaire</translation>
     </message>
     <message>
         <source>bicubic</source>
-        <translation type="unfinished"></translation>
+        <translation>bicubique</translation>
     </message>
     <message>
         <source>QtiPlot was built without support for ALGLIB, resampling is not possible!</source>
-        <translation type="unfinished"></translation>
+        <translation>QtiPlot a été compilé sans le support pour AGLIB, le ré-échantillonnage est impossible !</translation>
     </message>
 </context>
 <context>
@@ -10040,47 +10040,47 @@ have the same number of rows.</source>
     <name>MatrixResamplingDialog</name>
     <message>
         <source>Resample</source>
-        <translation type="unfinished"></translation>
+        <translation>Ré-échantillonné</translation>
     </message>
     <message>
         <source>Expand for every cell</source>
-        <translation type="unfinished"></translation>
+        <translation>Étendre chaque cellule</translation>
     </message>
     <message>
         <source>Shrink into 1x1 for every</source>
-        <translation type="unfinished"></translation>
+        <translation>Réduire en 1x1 pour toutes</translation>
     </message>
     <message>
         <source>Columns</source>
-        <translation type="unfinished">Colonnes</translation>
+        <translation>Colonnes</translation>
     </message>
     <message>
         <source>Rows</source>
-        <translation type="unfinished">Rangées</translation>
+        <translation>Rangées</translation>
     </message>
     <message>
         <source>Method</source>
-        <translation type="unfinished"></translation>
+        <translation>Méthode</translation>
     </message>
     <message>
         <source>Bilinear</source>
-        <translation type="unfinished"></translation>
+        <translation>Bilinéaire</translation>
     </message>
     <message>
         <source>Bicubic</source>
-        <translation type="unfinished"></translation>
+        <translation>Bicubique</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation type="obsolete">&amp;OK</translation>
+        <translation>&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Apply</source>
-        <translation type="obsolete">&amp;Appliquer</translation>
+        <translation>&amp;Appliquer</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation type="obsolete">&amp;Annuler</translation>
+        <translation>&amp;Annuler</translation>
     </message>
 </context>
 <context>
