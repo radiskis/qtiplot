@@ -951,7 +951,7 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 						end = function.end;
 					}
 					curve = (PlotCurve*)graph->addFunction(formulas, start, end, function.totalPoints, "x", type, function.name.c_str());
-
+					graph->setCanvasFrame(1, Qt::black);
 					mw->updateFunctionLists(type, formulas);
 					break;
 				default:
@@ -1325,6 +1325,10 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 						-ticks[i].rotation, 0, "", (ticks[i].color == 0xF7 ? ColorBox::defaultColor(formats[i].color) : ColorBox::defaultColor(ticks[i].color)),
 						4, true, ScaleDraw::ShowAll, QString(formats[i].prefix.c_str()), QString(formats[i].suffix.c_str()));
 
+				QwtScaleWidget *scale = graph->axisWidget(i);
+				if (scale)
+					scale->setPenWidth((int)formats[i].thickness);
+
 				QFont fnt = graph->axisTitleFont(i);
 				int fontSize = formats[i].label.fontSize;
 				if (fontSize > 0){
@@ -1346,6 +1350,15 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 
 			if (XYZContourTable)
 				this->parseXYZContourPlotAxisTitles(graph, XYZContourTable, XYZContourCurve);
+
+			int cfw = graph->canvasFrameWidth();
+			if (cfw){
+				for(int i = 0; i < QwtPlot::axisCnt; ++i){
+					QwtScaleWidget *scale = graph->axisWidget(i);
+					if (scale)
+						scale->scaleDraw()->enableComponent(QwtAbstractScaleDraw::Backbone, (scale->penWidth() - cfw > 0));
+				}
+			}
 
 			graph->setCanvasGeometry(QRect(layerRect.left*fScale, layerRect.top*fScale + yOffset,
 										   layerRect.width()*fScale, layerRect.height()*fScale));
