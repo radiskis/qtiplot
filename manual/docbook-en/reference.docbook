@@ -20,7 +20,7 @@ The active items appearing in a menu depends upon which project window is active
        <varlistentry id="new-project-cmd">
           <term>&new-project-cmd; (&new-project-key;)</term>
           <listitem>
-             <para>Creates a new QtiPlot project file. If another project is already open and has been saved at least once, it will be closed before the new project is created. If another project is open but has never been saved, a dialog will be opened to ask if the current project should be saved.</para>
+             <para>Creates a new &appname; project file. If another project is already open and has been saved at least once, it will be closed before the new project is created. If another project is open but has never been saved, a dialog will be opened to ask if the current project should be saved.</para>
           </listitem>
        </varlistentry>
 
@@ -104,7 +104,7 @@ The active items appearing in a menu depends upon which project window is active
 <varlistentry id="open-cmd">
   <term>File -> &open-cmd; (&open-key;)</term>
   <listitem>
-     <para>Opens an existing QtiPlot project file (.qti). If your project has been saved in a compressed format, you must select the <emphasis>.qti.gz</emphasis> file format.</para>
+     <para>Opens an existing &appname; project file (.qti). If your project has been saved in a compressed format, you must select the <emphasis>.qti.gz</emphasis> file format.</para>
      <para>This command can also be used to open projects which have been built with <emphasis>Origin</emphasis> software.</para>
   </listitem>
 </varlistentry>
@@ -112,7 +112,7 @@ The active items appearing in a menu depends upon which project window is active
 <varlistentry id="append-cmd">
   <term>File -> &append-cmd; (&append-key;)</term>
   <listitem>
-     <para>Appends an existing QtiPlot project file (.qti) to the current project as a new folder.</para>
+     <para>Appends an existing &appname; project file (.qti) to the current project as a new folder.</para>
      <para>This command can also be used to append projects which have been built with <emphasis>Origin</emphasis> software.</para>
   </listitem>
 </varlistentry>
@@ -120,7 +120,7 @@ The active items appearing in a menu depends upon which project window is active
 <varlistentry id="recent-projects-cmd">
   <term>File-> &recent-projects-cmd;</term>
   <listitem>
-     <para>Opens a list of the most recently used QtiPlot project files. You can open one of these files by selecting it from the list. If the file no longer exists or has been moved, an error message will pop-up and the filename will be deleted from the list.</para>
+     <para>Opens a list of the most recently used &appname; project files. You can open one of these files by selecting it from the list. If the file no longer exists or has been moved, an error message will pop-up and the filename will be deleted from the list.</para>
   </listitem>
 </varlistentry>
 

@@ -90,7 +90,7 @@ Warning: 2D plots are not correctly handled in this mode!</para></listitem>
   </mediaobject>
 </figure>
 <para><emphasis>General note on MDI style windows.</emphasis> &appname; uses a Multiple Document Interface (MDI) style for its sub-windows (for example graph and table windows, etc.). This is a convenient mechanism for placing sub-windows on a single parent window (the project window). Such collections of windows are then handled as a group when dragging or minimizing the main window. However, the behavior of maximized sub-windows is one feature of the MDI interface that may cause some confusion at first. As would be expected, sub-windows maximize to the size of the main window's workspace rather than to the size of the screen, but the default for maximized sub-windows is to have no title bar. As a consequence, there are no control boxes attached to the window, leaving the (incorrect) impression that once maximized, control boxes can no longer be used to minimize, normalize or close the sub-window. However, control boxes for a maximized sub-window are still present, they have just been moved to the extreme right hand side of the main window's menu bar. Since only one sub-window can be maximized at a time, there is no ambiguity regarding which sub-window this set of control boxes will operate upon. Finally, as a reminder of which sub-window is maximized, the Name and label of the maximized sub-window are appended to main window's title as:</para>
-<para>    "QtiPlot - ProjectName - [WindowName - WindowLabel]"</para>
+<para>    "&appname; - ProjectName - [WindowName - WindowLabel]"</para>
 <para> </para>
 
 <para>There are numerous commands available in &appname;. The specific subset of commands available depends on the element which is selected. Therefore, the main menu bar changes when you select a particular element of the project. Moreover, you can access the set of commands relevant to a given element by activating the context menu with the right button of the mouse when the mouse pointer is floating over the chosen element.</para>
@@ -160,7 +160,7 @@ Warning: 2D plots are not correctly handled in this mode!</para></listitem>
 
       <indexterm><primary>table</primary></indexterm>
 <para>
-When working with data, tables become the main focus of QtiPlot. Fundamentally, a table is simplified spreadsheet contained in a Window which can be used to control, edit, and convert data. Tables are also highly customizable: all colors and font preferences can be set using the &preferences-lnk; of the &view-menu-lnk;, and you can resize a table in terms of rows and columns using the &table-menu-lnk; with &rows-lnk; or &columns-lnk;.
+When working with data, tables are the main focus of &appname;. Fundamentally, a table is simplified spreadsheet contained in a Window which can be used to control, edit, and convert data. Tables are also highly customizable: all colors and font preferences can be set using the &preferences-lnk; of the &view-menu-lnk;, and you can resize a table in terms of rows and columns using the &table-menu-lnk; with &rows-lnk; or &columns-lnk;.
 </para>
 
 <figure id="fig-the-table">
@@ -264,7 +264,7 @@ They can also be read directly from an ASCII file with the &import-ascii-lnk; or
 
 <para>A left click on a layer element selects it. You can deselect any element by pressing the <emphasis>Escape</emphasis> key.
 A right click on a layer element pops-up a context menu allowing quick access to its properties dialog.
-Last but not least, you should know that QtiPlot provides multiple selection for objects in a layer.
+Last but not least, you should know that &appname; provides multiple selection for objects in a layer.
 In order to add an object to an existing selection keep the <emphasis>Shift</emphasis>
 key pressed and click on the element you want to add to the selection.
 Elements in a multiple selection can be moved and resized together with the mouse.</para>
