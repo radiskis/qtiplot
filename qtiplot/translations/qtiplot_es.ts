@@ -8263,7 +8263,7 @@ Autocompletion will not be available!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>chart</source>
+        <source>S&amp;mooth</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -15451,6 +15451,10 @@ Do you want to insert cells?</source>
     <message>
         <source>QtiPlot was built without support for ALGLIB, resampling is not possible!</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Smoothed</source>
+        <translation type="unfinished">Suavizado</translation>
     </message>
 </context>
 <context>

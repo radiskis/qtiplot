@@ -4425,7 +4425,7 @@ Autocompletion will not be available!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>chart</source>
+        <source>S&amp;mooth</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -10363,6 +10363,10 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>QtiPlot was built without support for ALGLIB, resampling is not possible!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Smoothed</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

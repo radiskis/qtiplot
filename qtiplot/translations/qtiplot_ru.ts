@@ -3905,7 +3905,7 @@ Autocompletion will not be available!</source>
     </message>
     <message>
         <source>chart</source>
-        <translation type="unfinished">диаграмма</translation>
+        <translation type="obsolete">диаграмма</translation>
     </message>
     <message>
         <source>Overwrite file?</source>
@@ -3933,6 +3933,10 @@ Autocompletion will not be available!</source>
     </message>
     <message>
         <source>&amp;Shrink...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>S&amp;mooth</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -9980,6 +9984,10 @@ have the same number of rows.</source>
     <message>
         <source>QtiPlot was built without support for ALGLIB, resampling is not possible!</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Smoothed</source>
+        <translation type="unfinished">Сглаженный</translation>
     </message>
 </context>
 <context>

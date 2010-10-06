@@ -7410,8 +7410,8 @@ Autocompletion will not be available!</source>
         <translation>&amp;Micşorează...</translation>
     </message>
     <message>
-        <source>chart</source>
-        <translation></translation>
+        <source>S&amp;mooth</source>
+        <translation>&amp;Netezeşte</translation>
     </message>
 </context>
 <context>
@@ -13543,6 +13543,10 @@ have the same number of rows.</source>
     <message>
         <source>QtiPlot was built without support for ALGLIB, resampling is not possible!</source>
         <translation>QtiPlot nu a fost compilat cu suport pentru ALGLIB, reeşantionarea este imposibilă!</translation>
+    </message>
+    <message>
+        <source>Smoothed</source>
+        <translation>Netezire</translation>
     </message>
 </context>
 <context>

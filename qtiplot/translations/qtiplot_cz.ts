@@ -3934,7 +3934,7 @@ Různé části tohoto souboru se nemusí zobrazovat tak, jak se očekává.</tr
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>chart</source>
+        <source>S&amp;mooth</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -9984,6 +9984,10 @@ K tomu lze použít následujících zvláštních kódů:
     <message>
         <source>QtiPlot was built without support for ALGLIB, resampling is not possible!</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Smoothed</source>
+        <translation type="unfinished">Vyhlazeno</translation>
     </message>
 </context>
 <context>
