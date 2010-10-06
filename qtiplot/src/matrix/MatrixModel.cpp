@@ -44,6 +44,10 @@
 #include <qwt_color_map.h>
 #include <stdlib.h>
 
+#ifdef HAVE_ALGLIB
+	#include <spline2d.h>
+#endif
+
 MatrixModel::MatrixModel(int rows, int cols, QObject *parent)
      : QAbstractTableModel(parent),
 	 d_matrix((Matrix*)parent)
@@ -997,4 +1001,35 @@ void MatrixModel::pasteData(double *clipboardBuffer, int topRow, int leftCol, in
         for (int j = leftCol; j <= rightCol; j++)
             d_data[row++] = clipboardBuffer[cell++];
     }
+}
+
+void MatrixModel::resample(int rows, int cols, int method)
+{
+#ifdef HAVE_ALGLIB
+	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+
+	ap::real_2d_array oldValues, newValues;
+	oldValues.setlength(d_rows, d_cols);
+	newValues.setlength(rows, cols);
+
+	for (int i = 0; i < d_rows; i++){
+		for (int j = 0; j < d_cols; j++)
+			oldValues(i, j) = cell(i, j);
+	}
+
+	if (method == Matrix::Bilinear)
+		spline2dresamplebilinear(oldValues, d_rows, d_cols, newValues, rows, cols);
+	else
+		spline2dresamplebicubic(oldValues, d_rows, d_cols, newValues, rows, cols);
+
+	setDimensions(rows, cols);
+
+	for (int i = 0; i < rows; i++){
+		for (int j = 0; j < cols; j++)
+			setCell(i, j, newValues(i, j));
+	}
+	d_matrix->resetView();
+
+	QApplication::restoreOverrideCursor();
+#endif
 }

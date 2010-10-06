@@ -31,10 +31,6 @@
 #include <QApplication>
 #include <gsl/gsl_math.h>
 
-#ifdef HAVE_ALGLIB
-	#include <spline2d.h>
-#endif
-
 /*************************************************************************/
 /*           Class MatrixEditCellCommand                                 */
 /*************************************************************************/
@@ -515,7 +511,61 @@ void MatrixSetSizeCommand::undo()
 }
 
 /*************************************************************************/
-/*           Class MatrixResampleCommand                                */
+/*           Class MatrixSmoothCommand                                */
+/*************************************************************************/
+MatrixSmoothCommand::MatrixSmoothCommand(MatrixModel *model, double *data, const QString& text):
+QUndoCommand(text),
+d_model(model),
+d_backup(data)
+{
+	setText(model->matrix()->objectName() + ": " + text);
+}
+
+void MatrixSmoothCommand::redo()
+{
+	if (!d_model)
+		return;
+
+	int r = d_model->rowCount();
+	int c = d_model->columnCount();
+
+	if (r < 32 || c < 32){
+		if(!d_model->canResize(2*r, 2*c))
+			return;
+
+		for (int i = 0; i < 2; i++){
+			d_model->resample(2*r, 2*c);
+			d_model->resample(r, c);
+		}
+	} else {
+		d_model->resample(r/2, c/2);
+		d_model->resample(r, c);
+	}
+}
+
+void MatrixSmoothCommand::undo()
+{
+	if (!d_model)
+		return;
+
+	double *data = d_model->dataVector();
+	if (!data)
+		return;
+
+	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+	int cell = 0;
+	for (int i = 0; i < d_model->rowCount(); i++){
+		for (int j = 0; j < d_model->columnCount(); j++){
+			data[cell] = d_backup[cell];
+			cell++;
+		}
+	}
+	d_model->matrix()->resetView();
+	QApplication::restoreOverrideCursor();
+}
+
+/*************************************************************************/
+/*           Class MatrixResampleCommand                                 */
 /*************************************************************************/
 MatrixResampleCommand::MatrixResampleCommand(MatrixModel *model, const QSize& oldSize, const QSize& newSize, int method, double *data, const QString& text):
 MatrixSetSizeCommand(model, oldSize, newSize, data, text),
@@ -530,40 +580,12 @@ void MatrixResampleCommand::redo()
 	if (!d_model)
 		return;
 
-	int rows = d_new_size.width();
-	int cols = d_new_size.height();
-	int oldRows = d_old_size.width();
-	int oldCols = d_old_size.height();
-
-	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-
-	ap::real_2d_array oldValues, newValues;
-	oldValues.setlength(oldRows, oldCols);
-	newValues.setlength(rows, cols);
-
-	for (int i = 0; i < oldRows; i++){
-		for (int j = 0; j < oldCols; j++)
-			oldValues(i, j) = d_model->cell(i, j);
-	}
-
-	if (d_method == Matrix::Bilinear)
-		spline2dresamplebilinear(oldValues, oldRows, oldCols, newValues, rows, cols);
-	else
-		spline2dresamplebicubic(oldValues, oldRows, oldCols, newValues, rows, cols);
-
-	d_model->setDimensions(rows, cols);
-	for (int i = 0; i < rows; i++){
-		for (int j = 0; j < cols; j++)
-			d_model->setCell(i, j, newValues(i, j));
-	}
-	d_model->matrix()->resetView();
-
-	QApplication::restoreOverrideCursor();
+	d_model->resample(d_new_size.width(), d_new_size.height(), d_method);
 #endif
 }
 
 /*************************************************************************/
-/*           Class MatrixUndoCommand                           */
+/*           Class MatrixUndoCommand                                     */
 /*************************************************************************/
 MatrixUndoCommand::MatrixUndoCommand(MatrixModel *model, Matrix::Operation op, int startRow, int endRow, int startCol, int endCol,
 									double *data, const QString& text):

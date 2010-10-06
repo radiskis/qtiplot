@@ -55,6 +55,7 @@ public:
 
     bool canResize(int rows, int cols);
 	void setDimensions(int rows, int cols);
+	void resample(int rows, int cols, int method = 0);
 
     int rowCount(const QModelIndex &parent = QModelIndex()) const;
 	void setRowCount(int rows);

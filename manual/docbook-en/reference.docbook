@@ -1993,6 +1993,33 @@ The active items appearing in a menu depends upon which project window is active
     <para>Flips the selected matrix horizontally.</para>
   </listitem>
 </varlistentry>
+
+<varlistentry id="expand-cmd">
+  <term>&expand-cmd;</term>
+  <listitem>
+	<para>Opens the matrix resampling dialog. Expanding operation is preselected in the dialog.</para>
+  </listitem>
+</varlistentry>
+
+<varlistentry id="shrink-cmd">
+  <term>&shrink-cmd;</term>
+  <listitem>
+	<para>Opens the matrix resampling dialog. Shrinking operation is preselected in the dialog.</para>
+  </listitem>
+</varlistentry>
+
+<varlistentry id="smooth-cmd">
+  <term>&smooth-cmd;</term>
+  <listitem>
+	<para>Matrix smoothing is performed by shrinking and then expanding the matrix using bilinear interpolation.
+If the number of columns or rows is less than 32, the matrix is first expanded so that the row number and the column number are both twice of the original.
+Then the expanded matrix is shrunk to the original size.
+Through this process of expanding and shrinking, the size of the output matrix will be exactly the same as the original matrix. However, the data will be much smoother.
+If both the number of columns and the number of rows in the original matrix are greater than 31, the matrix is first shrunk and then expanded to obtain the smoothed matrix.
+</para>
+  </listitem>
+</varlistentry>
+
 <varlistentry id="transpose-cmd">
   <term>&transpose-cmd;</term>
   <listitem>

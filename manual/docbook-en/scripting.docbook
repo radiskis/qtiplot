@@ -1725,6 +1725,12 @@ m.resample(rows, cols)# bilinear interpolation by default
 m.resample(rows, cols, 1) # bicubic interpolation
 </programlisting>
 
+If ALGLIB is available you can also smooth the matrix data using:
+
+<programlisting>
+m.smooth()
+</programlisting>
+
 Matrix objects allow you to define a system of x/y coordinates that will be used when plotting color/contour maps or 3D height maps.
 You can manipulate these coordinates using the following functions:
 <programlisting>

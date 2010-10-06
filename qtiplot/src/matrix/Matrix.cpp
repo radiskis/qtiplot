@@ -528,6 +528,25 @@ void Matrix::resample(int rows, int cols, const ResamplingMethod& method)
 #endif
 }
 
+void Matrix::smooth()
+{
+#ifdef HAVE_ALGLIB
+	double *buffer = d_matrix_model->dataCopy();
+	MatrixSmoothCommand *com = new MatrixSmoothCommand(d_matrix_model, buffer, tr("Smoothed"));
+	if (buffer)
+		d_undo_stack->push(com);
+	else if (ignoreUndo()){
+		com->redo();
+		delete com;
+	}
+
+	emit modifiedWindow(this);
+	modifiedData(this);
+#else
+	QMessageBox::critical(this, tr("QtiPlot"), tr("QtiPlot was built without support for ALGLIB, resampling is not possible!"));
+#endif
+}
+
 bool Matrix::canCalculate(bool useMuParser)
 {
 	if (formula_str.isEmpty())

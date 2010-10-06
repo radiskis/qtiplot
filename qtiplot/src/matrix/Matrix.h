@@ -120,6 +120,7 @@ public:
 	void setNumCols(int cols){d_matrix_model->setColumnCount(cols);};
 
 	void resample(int rows, int cols, const ResamplingMethod& method = Bilinear);
+	void smooth();
 
 	//event handlers
 	//! Custom event handler
