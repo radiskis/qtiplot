@@ -540,10 +540,124 @@ void ScaleDraw::drawTick(QPainter *p, double value, int len) const
     QwtScaleDraw::drawTick(p, value, len);
 }
 
+void ScaleDraw::drawInwardTick(QPainter *painter, double value, int len) const
+{
+	int pw2 = qwtMin((int)painter->pen().width(), len) / 2;
+
+	QwtScaleMap scaleMap = map();
+	const QwtMetricsMap metricsMap = QwtPainter::metricsMap();
+	QPoint pos = this->pos();
+
+	int majLen = tickLength(QwtScaleDiv::MajorTick);
+
+	if ( !metricsMap.isIdentity() ){
+		/*
+		   The perfect position of the ticks is important.
+		   To avoid rounding errors we have to use
+		   device coordinates.
+		 */
+		QwtPainter::resetMetricsMap();
+
+		pos = metricsMap.layoutToDevice(pos);
+
+		if ( orientation() == Qt::Vertical ){
+			scaleMap.setPaintInterval(
+				metricsMap.layoutToDeviceY((int)scaleMap.p1()),
+				metricsMap.layoutToDeviceY((int)scaleMap.p2())
+			);
+			len = metricsMap.layoutToDeviceX(len);
+			majLen = metricsMap.layoutToDeviceX(majLen);
+		} else {
+			scaleMap.setPaintInterval(
+				metricsMap.layoutToDeviceX((int)scaleMap.p1()),
+				metricsMap.layoutToDeviceX((int)scaleMap.p2())
+			);
+			len = metricsMap.layoutToDeviceY(len);
+			majLen = metricsMap.layoutToDeviceY(majLen);
+		}
+	}
+
+	const int clw = d_plot->canvasLineWidth();
+	const int tval = scaleMap.transform(value);
+
+	bool draw = false;
+	if ( orientation() == Qt::Vertical ){
+		int low = (int)scaleMap.p2() + majLen;
+		int high = (int)scaleMap.p1() - majLen;
+		if ((tval > low && tval < high) ||
+			(tval > high && !d_plot->axisEnabled (QwtPlot::xBottom) && !clw) ||
+			(tval < low && !d_plot->axisEnabled(QwtPlot::xTop) && !clw)) draw = true;
+	} else {
+		int low = (int)scaleMap.p1() + majLen;
+		int high = (int)scaleMap.p2() - majLen;
+		if ((tval > low && tval < high) ||
+			(tval > high && !d_plot->axisEnabled(QwtPlot::yRight) && !clw) ||
+			(tval < low && !d_plot->axisEnabled(QwtPlot::yLeft) && !clw)) draw = true;
+	}
+
+	if (draw){
+		switch(alignment()){
+			case LeftScale:
+			{
+				QwtPainter::drawLine(painter, pos.x() + pw2, tval, pos.x() + len, tval);
+				break;
+			}
+			case RightScale:
+			{
+				QwtPainter::drawLine(painter, pos.x() - pw2, tval, pos.x() - len, tval);
+				break;
+			}
+			case BottomScale:
+			{
+				QwtPainter::drawLine(painter, tval, pos.y() - pw2, tval, pos.y() - len);
+				break;
+			}
+			case TopScale:
+			{
+				QwtPainter::drawLine(painter, tval, pos.y() + pw2, tval, pos.y() + len);
+				break;
+			}
+		}
+	}
+	QwtPainter::setMetricsMap(metricsMap); // restore metrics map
+}
+
 void ScaleDraw::draw(QPainter *painter, const QPalette& palette) const
 {
 	drawBreak(painter);
 	QwtScaleDraw::draw(painter, palette);
+
+	if (!d_plot->isPrinting())
+		return;
+
+	painter->save();
+
+	QPen pen = painter->pen();
+	pen.setColor(palette.color(QPalette::Foreground));
+	painter->setPen(pen);
+
+	int majLen = tickLength(QwtScaleDiv::MajorTick);
+	if (d_majTicks >= Both && majLen > 0){
+		const QwtValueList &ticks = this->scaleDiv().ticks(QwtScaleDiv::MajorTick);
+		for (int i = 0; i < (int)ticks.count(); i++){
+			const double v = ticks[i];
+			if ( this->scaleDiv().contains(v) )
+				drawInwardTick(painter, v, majLen);
+		}
+	}
+
+	int minLen = tickLength(QwtScaleDiv::MinorTick);
+	if (d_minTicks >= Both && majLen > 0){
+		for (int tickType = QwtScaleDiv::MinorTick; tickType < QwtScaleDiv::MajorTick; tickType++){
+			const QwtValueList &ticks = this->scaleDiv().ticks(tickType);
+			for (int i = 0; i < (int)ticks.count(); i++){
+				const double v = ticks[i];
+				if ( this->scaleDiv().contains(v) )
+					drawInwardTick(painter, v, minLen);
+			}
+		}
+	}
+	painter->restore();
 }
 
 void ScaleDraw::drawBreak(QPainter *painter) const
