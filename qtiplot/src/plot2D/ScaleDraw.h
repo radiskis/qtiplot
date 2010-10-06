@@ -108,6 +108,7 @@ protected:
 	virtual void draw (QPainter *, const QPalette &) const;
     virtual void drawLabel(QPainter *painter, double value) const;
 	virtual void drawTick(QPainter *p, double value, int len) const;
+	void drawInwardTick(QPainter *painter, double value, int len) const;
 	virtual void drawBackbone(QPainter *painter) const;
 	void drawBreak(QPainter *) const;
 
