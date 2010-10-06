@@ -11,7 +11,7 @@
 <!-- ************************************************** -->
 <sect1 id="custom-action-dialog">
   <title>Add Custom Action</title>
-  This dialog helps you define new Python script launchers that will be added to menus or tool bars in QtiPlot.
+  This dialog helps you define new Python script launchers that will be added to menus or tool bars in &appname;.
   You can fully customize script launchers by defining: 1) a textual description
   that will be displayed in the destination menu, (2) an icon, (3) a shortcut key sequence and (4) a tool tip.
   The <emphasis>Tool Tip Text</emphasis>  is a short description that is displayed near the launcher button
@@ -31,7 +31,7 @@ When you click the <emphasis>Add</emphasis> button, all the settings for the new
 in the directory specified in the <emphasis>Folder</emphasis> box. On start-up &appname; parses all XML files in this
 folder and creates the corresponding menu items or toolbar buttons.
 When you press the <emphasis>Remove</emphasis> button, the launcher selected in the left side list
-of the dialog is removed from QtiPlot menus/tool bars and the corresponding XML file is deleted from
+of the dialog is removed from &appname; menus/tool bars and the corresponding XML file is deleted from
 the hard disk. Make sure that you have backed up the file if you will ever need it in the future!</para>
 </sect1>
 
@@ -71,7 +71,7 @@ the hard disk. Make sure that you have backed up the file if you will ever need 
     <varlistentry>
       <term>3) The standard deviation of the values:</term>
       <listitem>
-        <para>This command first calculates the standard deviation of the plotted values. This has a meaning only of the data are centered around an average value. As with the previous option, a new column will be created in the active table and each row will be filed with the computed standard deviation. The program does not know and cannot compute individual standard deviations at each point. If this is required, you will need to independently compute these values from multiple samples taken at each x or y value.</para>
+        <para>This command first calculates the standard deviation of the plotted values. This has meaning only if the data are centered around an average value. As with the previous option, a new column will be created in the active table and each row will be filled with the computed standard deviation. The program does not know and cannot compute individual standard deviations at each point. If this is required, you will need to independently compute these values from multiple samples taken at each x or y value.</para>
       </listitem>
     </varlistentry>
   </variablelist>
@@ -90,8 +90,8 @@ the hard disk. Make sure that you have backed up the file if you will ever need 
 <!-- ************************************************** -->
 <sect1 id="add-function-dialog">
   <title>Add Function</title>
-  <para>This dialog box is used to add a function curve to the active plot. The plotted function is built with the common operators: * + / - and ^ for multiplication, addition, division, subtraction and exponentiation, respectively. The intrinsic functions available are listed in the <link linkend="sec-muParser">muParser</link> section of the chapter on <emphasis>Mathematical Expressions and Scripting </emphasis>.</para>
-  <para>The most common way to define a function uses the classical cartesian coordinate definition, y=f(x), and this is the default option. The next two parameters allow selection the x range to be used for the plot. The last parameter sets the number of data points to be computed in the selected X-range.</para>
+  <para>This dialog box is used to add a function curve to the active plot. The plotted function is built with the common operators *, +, /, -, and ^ (for multiplication, addition, division, subtraction and exponentiation, respectively). A complete set of intrinsic functions are available and these are listed in the <link linkend="sec-muParser">muParser</link> section of the chapter on <emphasis>Mathematical Expressions and Scripting</emphasis>.</para>
+  <para>The first item in the dialog box selects the form of the generator function. The simplest and most common function definition uses the classical cartesian coordinate definition, y=f(x). This is the default. The next two parameters are used to select the X-range to be used for the plot. The last parameter sets the number of data points to be computed in the selected X-range.</para>
   <figure id="add-function-dialog-1">
     <title>The &add-function-cmd; dialog box: cartesian coordinates.</title>
     <mediaobject>
@@ -101,7 +101,7 @@ the hard disk. Make sure that you have backed up the file if you will ever need 
     </mediaobject>
   </figure>
 
-  <para>If the function expression contains terms that are recognizable as constants, e.g.: f(x) = a*x + b, QtiPlot will detect them and display a two column table on the right side of the dialog which contains input spin boxes that simplify setting appropriate values for the detected constants.</para>
+  <para>If the function expression contains terms that are recognizable as constants, e.g.: f(x) = a*x + b, &appname; will detect them and display a two column table on the right side of the dialog which contains input spin boxes that simplify setting appropriate values for the detected constants.</para>
 
   <figure id="add-function-dialog-4">
 	<title>The &add-function-cmd; Dialog Box: Automatic Detection of Constants.</title>
@@ -122,7 +122,7 @@ the hard disk. Make sure that you have backed up the file if you will ever need 
       </imageobject>
     </mediaobject>
   </figure>
-  <para>Finally, a polar definition of the function may be used. Given some variable <emphasis>t</emphasis>, then the radius <emphasis>r</emphasis> and angle <emphasis>theta</emphasis> are computed using two functions of that variable, r=f(t) and theta=g(t) in a manner similar to the parametric function case. The (x,y) data points are then computed as x=r*cos(theta) and y=r*sin(theta).</para>
+  <para>Finally, a polar definition of the function may be used. Given some variable <emphasis>t</emphasis>, then the radius <emphasis>r</emphasis> and angle <emphasis>theta</emphasis> are computed using two functions of that variable, r=f(t) and theta=g(t), in a manner similar to the parametric function case. The (x,y) data points are then computed as x=r*cos(theta) and y=r*sin(theta).</para>
   <para>The first parameter in the dialog box is the name of the parametric variable (here <emphasis>t</emphasis>) followed by the range, the definition of the two functions and the number of data points. Note that the angle is in radians. <emphasis>pi</emphasis> is an internally defined constant which can be used in any mathematical expression. For example, you can use <emphasis>3*pi</emphasis> to define the parameter range.</para>
   <figure id="add-function-dialog-3">
     <title>The &add-function-cmd; dialog box: Polar Coordinates.</title>
@@ -180,35 +180,24 @@ The plot range is the interval of points which are visible in a curve. You can s
 a selected curve, without having to delete them, by pressing the <emphasis>Edit Range...</emphasis> button,
 which opens a dialog allowing to edit the plot range.</para>
 </sect1>
-<!-- HERE*** -->>
+
 <!-- ************************************************** -->
 <!--		Arrange Layers				-->
 <!-- ************************************************** -->
 <sect1 id="arrange-layers-dialog">
   <title>Arrange Layers</title>
-  This dialog is activated by selecting the command &arrange-layers-cmd; from the <link linkend="sec-graph-menu">Graph Menu</link>
-  or by the key code &arrange-layers-key;.
+  This dialog is activated by selecting the &arrange-layers-cmd; command from the <link linkend="sec-graph-menu">Graph Menu</link> or by entering the &arrange-layers-key; key.
 
-<para>It allows to modify the geometrical arrangement of the plots which are already present
-in the active window. You can add new layers or remove existing ones using the <emphasis>Number</emphasis> of layers control.
-By checking the <emphasis>Link X axes</emphasis> option, the layers will be interconnected,
-meaning that if you manually set the abscissae scale limits for one plot layer, the same limits will be automatically set
-for all other layers in the plot window.</para>
+<para>This dialog provides for modification of the geometrical arrangement of plots which are already present
+in the active window. You can add new layers or remove existing ones using the <emphasis>Number</emphasis> of layers control. Checking the <emphasis>Link X axes</emphasis> option makes all the X-axes interdependent, meaning that if you manually set abscissa scale limits on one plot layer, then the same limits will automatically be set on all other layers in the plot window.</para>
 
-<para>You can specify the numbers of rows and columns which will define a grid of plots.
-With the default settings, &appname; computes the size of the layers from the size of the window.
-If you check the <emphasis>Layer Canvas Size</emphasis>,
-you can set the size of drawing area of the layers and &appname; will modify the size of the window.
-By checking the <emphasis>Fixed size</emphasis> box, the size of the layers will be kept unchanged when you manually
-resize the plot window.</para>
+<para>You can specify the number of rows and columns that define a grid of plots. With the default settings, &appname; computes the size of the layers in the grid from the size of the graph window.
+If you check the <emphasis>Layer Canvas Size</emphasis> option, you can set the size of the drawing area for the layers. &appname; will then modify the size of the graph window to accomodate them.
+When the <emphasis>Fixed size</emphasis> box is checked, the size of the layers will be kept unchanged when you manually resize the graph window.</para>
 
-<para>The controls in the two right group boxes, <emphasis>Alignment</emphasis> and <emphasis>Spacing</emphasis>,
-allow to set the alignment of the layers in the window, and the margins between the layer borders and the window limits.
-By choosing, the option <emphasis>Canvases</emphasis> for the <emphasis>Spacing | Align</emphasis> field,
-the spacing defines the distance between the axes of the layers, whereas with the <emphasis>Layers</emphasis>
- option it defines the distance between the borders of the layers.</para>
+<para>The controls in the two group boxes on the right, <emphasis>Alignment</emphasis> and <emphasis>Spacing</emphasis>, are used to set the alignment of the layers in the window, and the margins between the layer borders and the graph window limits. The <emphasis>Spacing</emphasis> group includes an <emphasis>Align</emphasis> control with 2 options (<emphasis>Canvases</emphasis> and <emphasis>Layers</emphasis>) that control the meaning of the row and column spacing entries. If the <emphasis>Canvases</emphasis> alignment option is chosen, then the spacing fields define the distances between the axes of the layers. On the otherhand, if the <emphasis>Layers</emphasis> alignment option is chosen, then the spacing fields define the distances between the borders of the layers.</para>
 
-<para>Finally you have the possibility to swap two layers using the <emphasis>Swap Layers</emphasis> box.</para>
+<para>Finally, it is also possible swap two layers using the <emphasis>Swap Layers</emphasis> controls. Simply select the Source and Destination layers and click the <emphasis>Swap</emphasis> button.</para>
   <figure id="fig-define-layer-1">
     <title>The &arrange-layers-cmd; dialog: the geometry tab</title>
     <mediaobject>
@@ -218,16 +207,16 @@ the spacing defines the distance between the axes of the layers, whereas with th
     </mediaobject>
   </figure>
 
-  <para>The layers will be arranged in order to obtain a good alignment of the vertical and horizontal axis.</para>
+  <para>Once suitable choices have been made, clicking on either the <emphasis>Apply</emphasis> or <emphasis>OK</emphasis> buttons will arrange the layers to obtain a good alignment of the vertical and horizontal axis.</para>
   <figure id="fig-define-layer-3">
-    <title>Exemple of a vertical arrangement for two plots.</title>
+    <title>Example of a vertical arrangement for two plots.</title>
     <mediaobject>
       <imageobject>
         <imagedata  format="PNG" fileref="pics/define-layout-3.png"/>
       </imageobject>
     </mediaobject>
   </figure>
-  <para>If you do some modifications on your plot, the alignment of the different axis may not be conserved. You can exec again the &arrange-layers-cmd; to re-arrange your plot.</para>
+  <para>Note that if modifications are later made to an aligned plot, then the alignment of the different axes may be lost. Simply re-execute the &arrange-layers-cmd; to again re-arrange the plot.</para>
 </sect1>
 
 <!-- ************************************************** -->
@@ -235,28 +224,28 @@ the spacing defines the distance between the axes of the layers, whereas with th
 <!-- ************************************************** -->
 <sect1 id="arrow-dialog">
   <title>Line Options</title>
-  <para>This dialog allows to modify a line or an arrow which has been created by the command <emphasis>&draw-arrow-cmd;</emphasis> from the <link linkend="sec-graph-menu">Graph Menu</link> or with &draw-arrow-key;. One can also open it with a double click on an arrow or a line, or by selecting an arrow or a line and selecting <emphasis>Properties...</emphasis> with the right button of the mouse.</para>
-  <para>The first tab allows to change the color, the line type and the line width. This last parameter is set in pixels. It is possible to define a default style for all the new lines by pressing the <emphasis>Set Default</emphasis> button.</para>
+  <para>This dialog allows modification of lines or arroww which have been created with either the <emphasis>&draw-arrow-cmd;</emphasis> command from the <link linkend="sec-graph-menu">Graph Menu</link> or the &draw-arrow-key;. The dialog can also be opened by double clicking on an arrow or line, or by right clicking a selected arrow or line and then selecting <emphasis>Properties...</emphasis> from the resulting pop-up menu.</para>
+  <para>The first tab of the dialog allows changing the color, line type and line width. Line width is set in pixels. It is possible to define a default style for all new lines by clicking the <emphasis>Set Default</emphasis> button.</para>
   <figure id="fig-line-options-1">
-    <title>The <emphasis>Arrow options</emphasis> dialog: first tab</title>
+    <title>The <emphasis>Arrow Options</emphasis> Dialog: First Tab</title>
     <mediaobject>
       <imageobject>
         <imagedata  format="PNG" fileref="pics/line-options-1.png"/>
       </imageobject>
     </mediaobject>
   </figure>
-  <para>The <emphasis>Arrow head</emphasis> tab is used to modify the shape of the head of the arrow. The length is set in pixels and the angle is in degrees. It is also possible to define a default style for the arrow heads using the same <emphasis>Set Default</emphasis> button.</para>
+  <para>The <emphasis>Arrow Head</emphasis> tab is used to modify arrow head shape. Length is in pixels and the angle is in degrees. It is also possible to define a default style for arrow heads using the <emphasis>Set Default</emphasis> button.</para>
   <figure id="fig-line-options-2">
-    <title>The <emphasis>Arrow options</emphasis> dialog: second tab</title>
+    <title>The <emphasis>Arrow Options</emphasis> Dialog: Second Tab</title>
     <mediaobject>
       <imageobject>
         <imagedata  format="PNG" fileref="pics/line-options-2.png"/>
       </imageobject>
     </mediaobject>
   </figure>
-  <para>The <emphasis>Geometry</emphasis> tab allows to specify the start and end points of the line/arrow. The coordinates can be set as a function of the scales values displayed on the left axis (Y) and on the bottom axis (X) or in pixels, by choosing the desired method from the <emphasis>Unit</emphasis> pull-down list. The pixel coordinates are relative to the top-left corner of the layer which contains the line.</para>
+  <para>The <emphasis>Geometry</emphasis> tab is used to specify the starting and ending points of the selected line/arrow. The coordinates can be set as a function of the scale values displayed on the left (Y) and bottom (X) axes, or in pixels, by choosing the desired method from the <emphasis>Unit</emphasis> pull-down list. Pixel coordinates are relative to the top-left corner of the layer which contains the line.</para>
   <figure id="fig-line-options-3">
-    <title>The <emphasis>Geometry</emphasis> dialog: third tab</title>
+    <title>The <emphasis>Geometry</emphasis> Dialog: Third Tab</title>
     <mediaobject>
       <imageobject>
         <imagedata  format="PNG" fileref="pics/line-options-3.png"/>
@@ -272,20 +261,20 @@ the spacing defines the distance between the axes of the layers, whereas with th
 <!-- ************************************************** -->
 <sect1 id="column-options-dialog">
   <title>Column Options</title>
-  <para>This dialog is activated by selecting the command <link linkend="column-options-cmd">&column-options-cmd;</link> from the <link linkend="sec-table-menu">Table Menu</link>. At least one column must be selected.</para>
+  <para>This dialog is activated by selecting the <link linkend="column-options-cmd">&column-options-cmd;</link> command from the <link linkend="sec-table-menu">Table Menu</link>. At least one column must be selected before this command can be used.</para>
   <figure id="fig-column-options">
-    <title>The &column-options-cmd; dialog.</title>
+    <title>The &column-options-cmd; Dialog.</title>
     <mediaobject>
       <imageobject>
         <imagedata  format="PNG" fileref="pics/column-options.png"/>
       </imageobject>
     </mediaobject>
   </figure>
-  <para>The checkbox <emphasis>Enumerate all to the right</emphasis> can be used to build the name of all the columns which are at the right of the selected one. If the name of the selected column is "xyz", this column and the following ones will be renamed to "xyz1", "xyz2", and so on.</para>
-  <para>The buttons "&lt;&lt;" and "&gt;&gt;" are used to change the selected column. The highlighting of the column in the table behind the dialog box will change indicating that a new column was selected. The column to which the formatting commands are applied is the one whose name appear in the "Column Name" box.</para>
-  <para>The <emphasis>Plot Designation</emphasis> selector is used to define the columns which are used as X, Y or Z values or as error bars. In a table you can select several columns as X, in this case in the column label they will be indicated as [X1], [X2], etc... and their corresponding Y columns will be indicated as [Y1], [Y2], etc...</para>
-  <para>The <emphasis>Comment</emphasis> box allows to enter a text that can be displayed in the table header
-  under the column name, if the option <emphasis>Display Comments in Header</emphasis> is checked.</para>
+  <para>The checkbox <emphasis>Enumerate all to the right</emphasis> is used to rename of all the columns which lie to the right of the selected column. For example, if the name of the selected column is "xyz", then the selected column and all of the following columns will be renamed to "xyz1", "xyz2", and so on.</para>
+  <para>The "&lt;&lt;" and "&gt;&gt;" buttons change the selected column. The highlighting of the column in the table behind the dialog box will change indicating that a new column has been selected. The column to which the formatting commands are applied is the one whose name appears in the "Column Name" box.</para>
+  <para>The <emphasis>Plot Designation</emphasis> selector is used to define which columns are to be used as X, Y or Z values or as error bars. In a table you can select several columns as X, in which case the column labels will display as [X1], [X2], etc. The corresponding Y columns will display as [Y1], [Y2], etc.</para>
+ <para>The <emphasis>Comment</emphasis> box allows entering text that can be displayed in the table header
+  just below the column name when the <emphasis>Display Comments in Header</emphasis> option is checked.</para>
 </sect1>
 
 <!-- ************************************************** -->
@@ -293,7 +282,7 @@ the spacing defines the distance between the axes of the layers, whereas with th
 <!-- ************************************************** -->
 <sect1 id="contour-options-dialog">
   <title>Contour Curves Options</title>
-  <para>This dialog is activated by clicking on a contour curve (or on the plotting area) when a 3D plot has been created from a matrix with one of the following commands of the &plot3d-menu-lnk;: &contour-color-lnk;, &contour-lines-lnk; or &gray-scale-lnk;.</para>
+  <para>This dialog is activated by clicking on a contour curve (or on the plotting area) when a 3D plot has been created from a matrix with one of the following commands from the &plot3d-menu-lnk;: &contour-color-lnk;, &contour-lines-lnk; or &gray-scale-lnk;.</para>
 
   <figure id="fig-contour-options-9">
     <title>The Values tab.</title>
@@ -304,21 +293,18 @@ the spacing defines the distance between the axes of the layers, whereas with th
     </mediaobject>
   </figure>
 
-The <emphasis>Values</emphasis> tab allows you to choose the matrix which is the data source of the plot.
-It is possible to use the formula defined for the matrix in order to calculate the Z values to
-be displayed, by checking the box <emphasis>Use matrix formula to calculate values</emphasis>.
-This results in a higher accuracy, especially when drawing the contour lines, but it
-only works if the formula uses a muParser compatible syntax.
+The <emphasis>Values</emphasis> tab allows choosing the matrix that is to serve as the data source of the plot.
+It is possible to use a formula defined for the matrix to calculate the plotted Z values by checking the <emphasis>Use matrix formula to calculate values</emphasis> box. This results in higher accuracy, especially when drawing contour lines, but it only works if the formula uses muParser compatible syntax.
 
   <figure id="fig-contour-options-1">
-    <title>The Colors tab.</title>
+    <title>The Colors Tab.</title>
     <mediaobject>
       <imageobject>
         <imagedata  format="PNG" fileref="pics/contour-curve-dialog-1.png"/>
       </imageobject>
     </mediaobject>
   </figure>
-  <para>The first group of settings <emphasis>Image</emphasis> is checked if you want to have a color or gray level filling of the contour plot. The default gray and color maps are the following: </para>
+  <para>There are two groups of controls on this tab. Each group is activated by checking the box next to the group label. The first group of controls, labeled <emphasis>Image</emphasis>, are used to select the fill type of the contour plot. It is checked when filling of the contour plot is desired. If unchecked, no fill will be used. If filling is enabled, you may choose between gray-scale, a default color mapping and a custom color mapping with the 3 radio buttons. The default gray-scale and color maps are shown in the figure below.</para>
   <informalfigure id="fig-contour-options-5">
     <mediaobject>
       <imageobject>
@@ -333,7 +319,7 @@ only works if the formula uses a muParser compatible syntax.
       </imageobject>
     </mediaobject>
   </informalfigure>
-  <para>You can customize this colormap by checking the <emphasis>Custom Colors</emphasis> box. A table with a set of numbers (the Z levels) and the corresponding colors is presented. You can then add or delete new levels for the definition of the colormap, and modify the corresponding Z levels. You are not allowed to modify the first and last levels, which are set to the minimum and maximum Z values. Beware that this is only the definition of the colormap, it won't change the number of contour lines of your plot. An example of classical custom colormap is given here:</para>
+  <para>You can only customize the colormap when the <emphasis>Custom Colors</emphasis> option is selected. A table with a set of numbers (the Z levels), and the color corresponding to each Z level, is presented. You can then add or remove or modify levels from the definition of the colormap. The first and last levels cannot be changed. These are always set to the minimum and maximum Z values. Note that this is only the definition of the colormap - it won't change the number of contour lines in your plot. An example of classical custom colormap is given here:</para>
     <informalfigure id="fig-contour-options-3">
     <mediaobject>
       <imageobject>
@@ -341,7 +327,7 @@ only works if the formula uses a muParser compatible syntax.
       </imageobject>
     </mediaobject>
   </informalfigure>
-  <para>If you want to obtain discrete colors for each level,you must uncheck the <emphasis>Scale Colors</emphasis> checkbox. In this case you must define enough levels in your colormap.</para>
+  <para>As long as the <emphasis>Scale Colors</emphasis> checkbox remains checked, Z-values that fall between colormap levels will be displayed in colors that are interpolated between the colors defined for the bounding levels. It is also possible to define discrete colors for each level. To do this you must uncheck the <emphasis>Scale Colors</emphasis> checkbox. In this case, no interpolation will be done, and you must define enough levels in your colormap to produce a desirable result.</para>
     <informalfigure id="fig-contour-options-4">
     <mediaobject>
       <imageobject>
@@ -349,7 +335,7 @@ only works if the formula uses a muParser compatible syntax.
       </imageobject>
     </mediaobject>
   </informalfigure>
-  <para>The second group of settings must be checked if you want to have a bar scale on your plot. You can then define its position and width.</para>
+  <para>The second group of settings must be enabled if you want a bar scale on your plot. You can then define its position and width.</para>
 
 	<figure id="fig-contour-options-7">
     <title>The Contour Lines tab.</title>
@@ -941,13 +927,13 @@ reduced chi-squared value. You can choose to enable this option by checking the
   <emphasis>Line Feed (LF)</emphasis>, <emphasis>Carriage Return + Line Feed (CRLF)</emphasis> or
   <emphasis>Carriage Return (CR)</emphasis> only.</para>
 
-<para>Starting with version 0.9.6, autocompletion is enabled by default in all QtiPlot
+<para>Starting with version 0.9.6, autocompletion is enabled by default in all &appname;
 editors: in Notes, in the Script Window and in the values dialogs for matrices and tables.
 The autocompletion mechanism is based on a list of words provided by the
 <emphasis>qti_wordlist.txt</emphasis> file. This file, which is shipped with
 the source archive, must be placed in the same folder as the Python configuration files
 (see <emphasis>File Locations</emphasis> tab bellow), and is automatically loaded by
-QtiPlot on start-up. You can edit this file and add your own key words:
+&appname; on start-up. You can edit this file and add your own key words:
 one word per line.
 
 Completion suggestions are automatically poped-up for words that have more than two
@@ -1201,7 +1187,7 @@ Displaying the line numbers can be particularly helpful when debugging Python sc
 
   <para>Warning: If you make some changes in the table, the values are not computed again, unless you check the
    <emphasis>Automatically Recalculate Column Values</emphasis> option in the <emphasis>Tables</emphasis> tab of the <link linkend="fig-preferences-dialog-4">Preferences dialog</link>.
-	If this option is unchecked you have to explicitly tell QtiPlot to recalculate individual cells or whole columns or rows by selecting "Recalculate" from their context menu or by pressing Control+Return.
+	If this option is unchecked you have to explicitly tell &appname; to recalculate individual cells or whole columns or rows by selecting "Recalculate" from their context menu or by pressing Control+Return.
   </para>
 
 </sect1>
@@ -1319,7 +1305,7 @@ in conjunction with the <emphasis>Omit thousands separator</emphasis> option.</p
 <para>Using Python as scripting engine for the calculation of matrix values has the drawback
   that even if it allows a more powerfull synthax, it can be quite slow for large matrices.
   Therefore you have the possibility to use muParser instead, even if Python is
-  set as the default script engine for your QtiPlot project, by checking the box
+  set as the default script engine for your &appname; project, by checking the box
   <emphasis>Use built-in muParser</emphasis>. Warning: muParser is very fast for the
   evaluation of single line expressions only, therefore try to avoid a synthax like:
 <programlisting>
@@ -1402,7 +1388,7 @@ color defined as a linear interpolation between the adjacent values in the color
 <para>Another way to define colors is to read a colormap from a file.
 The format of the file is simple: each line defines a color by red, green and blue values as integers
  between 0 and 255. The numbers should be separated by spaces. You can find several examples of colormaps on the
- <ulink url="http://soft.proindependent.com/download.html">QtiPlot web site</ulink>.</para>
+ <ulink url="http://soft.proindependent.com/download.html">&appname; web site</ulink>.</para>
 
 <para>The <emphasis>General</emphasis> tab is used to define some global parameters and the aspect ratio of the plot. The default behaviour is to use the perspective to compute the 3D plot. If you choose to check the <emphasis>Orthogonal</emphasis> check box, the plot will use vertical Z axis whatever the view angle of the plot.</para>
 

@@ -159,13 +159,13 @@ The <emphasis>File Toolbar</emphasis> provides single-click access to commands f
    <entry>&open-icon;</entry>
    <entry>&open-lnk;</entry>
    <entry>&open-key;</entry>
-   <entry>Opens an existing QtiPlot project file.</entry>
+   <entry>Opens an existing &appname; project file.</entry>
   </row>
   <row>
    <entry>&open-template-icon;</entry>
    <entry>&open-template-lnk;</entry>
    <entry></entry>
-   <entry>Opens an existing QtiPlot template file.</entry>
+   <entry>Opens an existing &appname; template file.</entry>
   </row>
 <!--open-excel and open-odf added. (SRB) -->
   <row>
@@ -184,7 +184,7 @@ The <emphasis>File Toolbar</emphasis> provides single-click access to commands f
    <entry>&append-icon;</entry>
    <entry>&append-lnk;</entry>
    <entry>&append-key;</entry>
-   <entry>Appends an existing QtiPlot project file as a new folder to the current project.</entry>
+   <entry>Appends an existing &appname; project file as a new folder to the current project.</entry>
   </row>
    <row>
    <entry>&save-project-icon;</entry>

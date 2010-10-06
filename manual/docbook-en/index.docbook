@@ -240,13 +240,28 @@
 <!ENTITY console-cmd "<command>Show/Hide Scripting Console</command>">
 <!ENTITY console-lnk '<link linkend="console-cmd">&console-cmd;</link>'>
 
-
 <!--
               menu: Scripting
 -->
 <!ENTITY scripting-menu-lnk '<link linkend="sec-scripting-menu">Scripting menu</link>'>
-<!ENTITY restart-scripting-cmd "<command>Restart Scripting</command>">
+
+<!ENTITY script-language-cmd "<command>Scripting language</command>">
+
+<!ENTITY scripting-menu-lnk '<link linkend="sec-scripting-menu">Scripting menu</link>'>
+<!ENTITY restart-scripting-cmd "<command>Restart scripting</command>">
 <!ENTITY restart-scripting-lnk '<link linkend="restart-scripting-cmd"><command>Restart Scripting</command> command</link>'>
+
+<!ENTITY add-custom-action-cmd "<command>Add Custom Script Action...</command>">
+
+<!ENTITY execute-cmd "<command>Execute</command>">
+<!ENTITY execute-key "<keycode>Ctrl+J</keycode>">
+
+<!ENTITY execute-all-cmd "<command>Execute All</command>">
+<!ENTITY execute-all-key "<keycode>Ctrl+Shift+J</keycode>">
+
+<!ENTITY evaluate-cmd "<command>Evaluate</command>">
+<!ENTITY evaluate-key "<keycode>Ctrl+Return</keycode>">
+
 <!--
               menu: Graph
 -->
@@ -294,7 +309,7 @@
 <!ENTITY add-image-lnk '<link linkend="add-image-cmd"><command>Add Image</command></link>'>
   <!ENTITY add-image-key "<keycode>Alt-I</keycode>">
   <!ENTITY add-image-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/monalisa.png"/></imageobject></inlinemediaobject>'>
-<!-- Added Hooks for Raise to Top and Lower to bottom (SRB) 09/22/2010 -->
+<!-- Added Raise to Top and Lower to bottom (SRB) 09/22/2010 -->
 <!ENTITY zorder-top-cmd "<command>Move to Top</command>">
 <!ENTITY zorder-top-lnk '<link linkend="zorder-top-cmd">&zorder-top-cmd;</link>'>
   <!ENTITY zorder-top-key "<keycode></keycode>">
@@ -900,19 +915,6 @@
 <!ENTITY format-title-cmd "<command>Title...</command>">
 <!ENTITY format-title-lnk '<link linkend="format-title-cmd"><command>Title...</command> command</link>'>
 
-<!--
-              menu: Scripting
--->
-<!ENTITY scripting-menu-lnk '<link linkend="sec-scripting-menu">Scripting menu</link>'>
-<!ENTITY script-language-cmd "<command>Scripting language</command>">
-<!ENTITY restart-scripting-cmd "<command>Restart scripting</command>">
-<!ENTITY add-custom-action-cmd "<command>Add Custom Script Action...</command>">
-<!ENTITY execute-cmd "<command>Execute</command>">
-<!ENTITY execute-key "<keycode>Ctrl+J</keycode>">
-<!ENTITY execute-all-cmd "<command>Execute All</command>">
-<!ENTITY execute-all-key "<keycode>Ctrl+Shift+J</keycode>">
-<!ENTITY evaluate-cmd "<command>Evaluate</command>">
-<!ENTITY evaluate-key "<keycode>Ctrl+Return</keycode>">
 <!--
               menu: Windows
 -->
