@@ -3931,7 +3931,7 @@ L&apos;autocomplétion ne sera pas disponible!</translation>
     </message>
     <message>
         <source>S&amp;mooth</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Lisser</translation>
     </message>
 </context>
 <context>
@@ -8527,23 +8527,23 @@ Les codes spéciaux suivant peuvent être utilisés :
     </message>
     <message>
         <source>Selected Z Dataset</source>
-        <translation type="unfinished"></translation>
+        <translation>Données en Z sélectionnées</translation>
     </message>
     <message>
         <source>Gridding Method</source>
-        <translation type="unfinished"></translation>
+        <translation>Méthode de maillage</translation>
     </message>
     <message>
         <source>Shepard (non-uniform data)</source>
-        <translation type="unfinished"></translation>
+        <translation>Shepard (Données non uniformes)</translation>
     </message>
     <message>
         <source>Shepard (uniform data)</source>
-        <translation type="unfinished"></translation>
+        <translation>Shepard (Données uniformes)</translation>
     </message>
     <message>
         <source>Quick (noisy data)</source>
-        <translation type="unfinished"></translation>
+        <translation>Rapide (Données bruitées)</translation>
     </message>
     <message>
         <source>Parameters</source>
@@ -8551,7 +8551,7 @@ Les codes spéciaux suivant peuvent être utilisés :
     </message>
     <message>
         <source>Search Radius</source>
-        <translation type="unfinished"></translation>
+        <translation>Recherche du rayon</translation>
     </message>
     <message>
         <source>Model</source>
@@ -9935,7 +9935,7 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Smoothed</source>
-        <translation type="unfinished">Lissée</translation>
+        <translation>Lissée</translation>
     </message>
 </context>
 <context>
