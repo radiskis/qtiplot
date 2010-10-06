@@ -837,3 +837,4 @@ whiskersRange
 whiskersRangeType
 setWhiskersRange
 resample
+smooth

@@ -213,6 +213,19 @@ protected:
 	double *d_backup;
 };
 
+class MatrixSmoothCommand: public QUndoCommand
+{
+public:
+	MatrixSmoothCommand(MatrixModel *model, double *data, const QString& text);
+	~MatrixSmoothCommand(){if (d_backup) free(d_backup);};
+	virtual void redo();
+	virtual void undo();
+
+protected:
+	MatrixModel *d_model;
+	double *d_backup;
+};
+
 class MatrixResampleCommand: public MatrixSetSizeCommand
 {
 public:

@@ -921,6 +921,7 @@ public:
   void setNumCols(int);
   void setDimensions(int rows, int cols);
   void resample(int rows, int cols, const ResamplingMethod& method = Matrix::Bilinear);
+  void smooth();
 
   SIP_PYOBJECT text(int, int);
 %MethodCode

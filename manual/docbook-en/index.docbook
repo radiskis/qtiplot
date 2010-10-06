@@ -524,6 +524,12 @@
 <!ENTITY flipV-key "<keycode>Ctrl-Shift-V</keycode>">
 <!ENTITY flipH-cmd "<command>Flip H</command>">
 <!ENTITY flipH-key "<keycode>Ctrl-Shift-H</keycode>">
+<!ENTITY expand-cmd "<command>Expand...</command>">
+<!ENTITY expand-lnk '<link linkend="expand-cmd"><command>Expand...</command> command</link>'>
+<!ENTITY shrink-cmd "<command>Shrink...</command>">
+<!ENTITY shrink-lnk '<link linkend="shrink-cmd"><command>Shrink...</command> command</link>'>
+<!ENTITY smooth-cmd "<command>Smooth</command>">
+<!ENTITY smooth-lnk '<link linkend="smooth-cmd"><command>Smooth</command> command</link>'>
 <!ENTITY transpose-cmd "<command>Transpose</command>">
 <!ENTITY transpose-lnk '<link linkend="transpose-cmd"><command>Transpose</command> command</link>'>
 <!ENTITY invert-cmd "<command>Invert</command>">

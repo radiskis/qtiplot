@@ -3471,6 +3471,15 @@ void ApplicationWindow::showBinMatrixDialog()
 }
 
 #ifdef HAVE_ALGLIB
+void ApplicationWindow::smoothMatrix()
+{
+	Matrix* m = (Matrix*)activeWindow(MatrixWindow);
+	if (!m)
+		return;
+
+	m->smooth();
+}
+
 void ApplicationWindow::expandMatrix()
 {
 	showMatrixResamplingDialog();
@@ -9979,6 +9988,7 @@ void ApplicationWindow::matrixMenuAboutToShow()
 #ifdef HAVE_ALGLIB
 	matrixMenu->addAction(actionExpandMatrix);
 	matrixMenu->addAction(actionShrinkMatrix);
+	matrixMenu->addAction(actionSmoothMatrix);
 	matrixMenu->insertSeparator();
 #endif
 	matrixMenu->addAction(actionTransposeMatrix);
@@ -11000,6 +11010,7 @@ void ApplicationWindow::showWindowContextMenu()
 		#ifdef HAVE_ALGLIB
 			cm.addAction(actionExpandMatrix);
 			cm.addAction(actionShrinkMatrix);
+			cm.addAction(actionSmoothMatrix);
 			cm.insertSeparator();
 		#endif
             cm.addAction(actionTransposeMatrix);
@@ -14338,6 +14349,9 @@ void ApplicationWindow::createActions()
 
 	actionShrinkMatrix = new QAction(tr("&Shrink..."), this);
 	connect(actionShrinkMatrix, SIGNAL(activated()), this, SLOT(shrinkMatrix()));
+
+	actionSmoothMatrix = new QAction(tr("S&mooth"), this);
+	connect(actionSmoothMatrix, SIGNAL(activated()), this, SLOT(smoothMatrix()));
 #endif
 
 	actionPlot3DWireFrame = new QAction(QIcon(":/lineMesh.png"), tr("3D &Wire Frame"), this);
@@ -15098,6 +15112,7 @@ void ApplicationWindow::translateActionsStrings()
 	actionConvertTableRandomXYZ->setMenuText(tr("Random &XYZ..."));
 	actionExpandMatrix->setMenuText(tr("&Expand..."));
 	actionShrinkMatrix->setMenuText(tr("&Shrink..."));
+	actionSmoothMatrix->setMenuText(tr("S&mooth"));
 #endif
 	actionPlot3DWireFrame->setMenuText(tr("3D &Wire Frame"));
 	actionPlot3DHiddenLine->setMenuText(tr("3D &Hidden Line"));

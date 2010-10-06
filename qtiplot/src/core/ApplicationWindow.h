@@ -416,6 +416,7 @@ public slots:
 	void convertTableToMatrixRandomXYZ();
 	void expandMatrix();
 	void shrinkMatrix();
+	void smoothMatrix();
 	void showMatrixResamplingDialog(bool shrink = false);
 #endif
 	void showBinMatrixDialog();
@@ -1475,7 +1476,7 @@ private:
     QAction *actionRename, *actionCloseWindow;
 	QAction *actionConvertTableDirect, *actionConvertTableBinning, *actionConvertTableRegularXYZ;
 #ifdef HAVE_ALGLIB
-	QAction *actionConvertTableRandomXYZ, *actionExpandMatrix, *actionShrinkMatrix;
+	QAction *actionConvertTableRandomXYZ, *actionExpandMatrix, *actionShrinkMatrix, *actionSmoothMatrix;
 #endif
     QAction *actionAddColToTable, *actionDeleteLayer, *actionInterpolate;
     QAction *actionResizeActiveWindow, *actionHideActiveWindow;
