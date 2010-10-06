@@ -3911,7 +3911,7 @@ L&apos;autocomplétion ne sera pas disponible!</translation>
     </message>
     <message>
         <source>chart</source>
-        <translation>Diagramme</translation>
+        <translation type="obsolete">Diagramme</translation>
     </message>
     <message>
         <source>Yes, don&apos;t ask me again</source>
@@ -3928,6 +3928,10 @@ L&apos;autocomplétion ne sera pas disponible!</translation>
     <message>
         <source>&amp;Shrink...</source>
         <translation>&amp;Réduire...</translation>
+    </message>
+    <message>
+        <source>S&amp;mooth</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -9929,6 +9933,10 @@ have the same number of rows.</source>
         <source>QtiPlot was built without support for ALGLIB, resampling is not possible!</source>
         <translation>QtiPlot a été compilé sans le support pour AGLIB, le ré-échantillonnage est impossible !</translation>
     </message>
+    <message>
+        <source>Smoothed</source>
+        <translation type="unfinished">Lissée</translation>
+    </message>
 </context>
 <context>
     <name>MatrixDialog</name>
@@ -10072,15 +10080,15 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Apply</source>
-        <translation>&amp;Appliquer</translation>
+        <translation type="obsolete">&amp;Appliquer</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>&amp;Annuler</translation>
+        <translation type="obsolete">&amp;Annuler</translation>
     </message>
 </context>
 <context>

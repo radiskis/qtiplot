@@ -8497,7 +8497,7 @@ Automatisk komplettering ej tillgängligt!</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>chart</source>
+        <source>S&amp;mooth</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -15986,6 +15986,10 @@ Vill du skjuta in celler?</translation>
     <message>
         <source>QtiPlot was built without support for ALGLIB, resampling is not possible!</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Smoothed</source>
+        <translation type="unfinished">Utjämnad</translation>
     </message>
 </context>
 <context>
