@@ -1584,11 +1584,27 @@ void PlotDialog::initSpacingPage()
     gapBox->setRange(0, 100);
     gapBox->setSingleStep(10);
     gl->addWidget(gapBox, 0, 1);
-    gl->addWidget(new QLabel(tr( "Offset (in %)" )), 1, 0);
+	connect(gapBox, SIGNAL(valueChanged(int)), this, SLOT(acceptParams()));
+
+	QLabel *l = new QLabel(tr("Apply &to..."));
+	gl->addWidget(l, 0, 2);
+
+	gapApplyToBox = new QComboBox();
+	gapApplyToBox->insertItem(tr("Selected Curve"));
+	gapApplyToBox->insertItem(tr("Layer"));
+	gapApplyToBox->insertItem(tr("Window"));
+	gapApplyToBox->insertItem(tr("All Windows"));
+	gl->addWidget(gapApplyToBox, 0, 3);
+
+	l->setBuddy(gapApplyToBox);
+
+	barsOffsetLabel = new QLabel(tr( "Offset (in %)" ));
+	gl->addWidget(barsOffsetLabel, 1, 0);
 	offsetBox = new QSpinBox();
     offsetBox->setRange(-1000, 1000);
     offsetBox->setSingleStep(50);
     gl->addWidget(offsetBox, 1, 1);
+	connect(offsetBox, SIGNAL(valueChanged(int)), this, SLOT(acceptParams()));
     gl->setRowStretch (2, 1);
 
 	privateTabWidget->insertTab( spacingPage, tr( "Spacing" ));
@@ -2430,12 +2446,22 @@ void PlotDialog::setActiveCurve(CurveTreeItem *item)
         return;
     }
 
-    if (curveType == Graph::VerticalBars || curveType == Graph::HorizontalBars ||
-				curveType == Graph::Histogram){//spacing page
+	if (curveType == Graph::VerticalBars || curveType == Graph::HorizontalBars || curveType == Graph::Histogram){//spacing page
         QwtBarCurve *b = (QwtBarCurve*)i;
         if (b){
+			gapBox->blockSignals(true);
             gapBox->setValue(b->gap());
+			gapBox->blockSignals(false);
+
+			offsetBox->blockSignals(true);
             offsetBox->setValue(b->offset());
+			offsetBox->blockSignals(false);
+
+			bool stack = b->isStacked();
+			barsOffsetLabel->setHidden(stack);
+			offsetBox->setHidden(stack);
+			if (stack)
+				gapApplyToBox->setCurrentIndex(1);
         }
     }
 
@@ -2898,9 +2924,11 @@ bool PlotDialog::acceptParams()
 			graph->notifyChanges();
 			return true;
 		}
-	} else if (privateTabWidget->currentPage() == spacingPage)
+	} else if (privateTabWidget->currentPage() == spacingPage){
 		graph->setBarsGap(item->plotItemIndex(), gapBox->value(), offsetBox->value());
-	else if (privateTabWidget->currentPage() == vectPage){
+		if (gapApplyToBox->currentIndex())
+			applyGap(graph);
+	} else if (privateTabWidget->currentPage() == vectPage){
 		ApplicationWindow *app = (ApplicationWindow *)this->parent();
 		if (!app)
 			return false;
@@ -3858,6 +3886,67 @@ void PlotDialog::shiftCurveBy(int offset)
 
 	btnUp->setEnabled(newIndex > 0);
 	btnDown->setEnabled(newIndex < graph->curveCount() - 1);
+}
+
+void PlotDialog::applyGapToLayer(Graph *g)
+{
+	if (!g)
+		return;
+
+	int gap = gapBox->value();
+	for (int i = 0; i < g->curveCount(); i++){
+		QwtBarCurve *bars = (QwtBarCurve *)g->dataCurve(i);
+		if (!bars)
+			continue;
+
+		int type = bars->type();
+		if (type == Graph::VerticalBars || type == Graph::HorizontalBars || type == Graph::Histogram)
+			bars->setGap(gap);
+	}
+}
+
+void PlotDialog::applyGap(Graph *g)
+{
+	if (!g || privateTabWidget->currentWidget() != spacingPage)
+		return;
+
+	ApplicationWindow *app = (ApplicationWindow *)this->parent();
+	switch(gapApplyToBox->currentIndex()){
+		case 1://this layer
+			applyGapToLayer(g);
+		break;
+
+		case 2://this window
+		{
+			QList<Graph *> layersLst = d_ml->layersList();
+			foreach(Graph *g, layersLst){
+				applyGapToLayer(g);
+				g->replot();
+			}
+		}
+		break;
+
+		case 3://all windows
+		{
+			QList<MdiSubWindow *> windows = app->windowsList();
+			foreach(MdiSubWindow *w, windows){
+				MultiLayer *ml = qobject_cast<MultiLayer *>(w);
+				if (!ml)
+					continue;
+
+				QList<Graph *> layersLst = ml->layersList();
+				foreach(Graph *g, layersLst){
+					applyGapToLayer(g);
+					g->replot();
+				}
+			}
+		}
+		break;
+
+		default:
+			break;
+	}
+	app->modifiedProject();
 }
 
 /*****************************************************************************

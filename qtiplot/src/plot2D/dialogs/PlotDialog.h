@@ -160,6 +160,9 @@ private:
 	void applyErrorBarFormatToLayer(Graph *g);
 	void applyErrorBarFormat(ErrorBarsCurve *c);
 
+	void applyGapToLayer(Graph *g);
+	void applyGap(Graph *g);
+
     int labelsAlignment();
 	void closeEvent(QCloseEvent* e);
 
@@ -315,10 +318,11 @@ private:
 	QSlider *curveOpacitySlider;
 
 	DoubleSpinBox *boxPlotX, *boxPlotY, *boxPlotWidth, *boxPlotHeight;
-	QComboBox *plotUnitBox;
+	QComboBox *plotUnitBox, *gapApplyToBox;
 	QCheckBox *boxResizeLayers, *keepPlotRatioBox, *layerScaleFonts;
 	EnrichmentDialog *enrichmentDialog;
 	QPushButton *btnUp, *btnDown;
+	QLabel *barsOffsetLabel;
 };
 
 /*****************************************************************************
