@@ -6550,18 +6550,18 @@ void Graph::print(QPainter *painter, const QRect &plotRect, const QwtPlotPrintFi
             QRect scaleRect = plotLayout()->scaleRect(axisId);
             if (!scaleWidget->margin()){
                 switch(axisId){
-                    case xBottom:
-                        scaleRect.translate(0, canvasRect.bottom() - scaleRect.top());
-                    break;
-                    case xTop:
-                        scaleRect.translate(0, canvasRect.top() - scaleRect.bottom());
-                    break;
-                    case yLeft:
-                        scaleRect.translate(canvasRect.left() - scaleRect.right(), 0);
-                    break;
-                    case yRight:
-                        scaleRect.translate(canvasRect.right() - scaleRect.left(), 0);
-                    break;
+					case xBottom:
+						scaleRect.setTop(canvasRect.bottom());
+					break;
+					case xTop:
+						scaleRect.setBottom(canvasRect.top());
+					break;
+					case yLeft:
+						scaleRect.setRight(canvasRect.left());
+					break;
+					case yRight:
+						scaleRect.setLeft(canvasRect.right());
+					break;
                 }
             }
 			printScale(painter, axisId, startDist, endDist, baseDist, scaleRect);
