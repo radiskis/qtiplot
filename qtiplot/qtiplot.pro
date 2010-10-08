@@ -8,11 +8,8 @@ QTI_ROOT = ..
 #!!! Warning: You must set this up in $$QTIROOT/build.conf
 #############################################################################
 
-# local copy included
-INCLUDEPATH       += ../3rdparty/zlib
-INCLUDEPATH 	  += ../3rdparty/QTeXEngine/src
-
 # configurable
+INCLUDEPATH       += $$ZLIB_INCLUDEPATH
 INCLUDEPATH       += $$MUPARSER_INCLUDEPATH
 INCLUDEPATH       += $$QWT_INCLUDEPATH
 INCLUDEPATH       += $$QWT3D_INCLUDEPATH
@@ -140,17 +137,6 @@ include(src/plot3D/plot3D.pri)
 include(src/matrix/matrix.pri)
 include(src/table/table.pri)
 include(src/scripting/scripting.pri)
-
-###############################################################
-##################### TeX export: QTeXEngine ##################
-###############################################################
-
-INCLUDEPATH += ../3rdparty/QTeXEngine/src
-HEADERS 	+= ../3rdparty/QTeXEngine/src/QTeXEngine.h
-SOURCES     += ../3rdparty/QTeXEngine/src/QTeXPaintEngine.cpp
-SOURCES     += ../3rdparty/QTeXEngine/src/QTeXPaintDevice.cpp
-
-
 
 ###############################################################
 ##################### Scripting: PYTHON + SIP + PyQT ##########

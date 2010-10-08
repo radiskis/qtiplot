@@ -12,6 +12,13 @@ SYS_INCLUDEPATH = /opt/local/include
 SYS_LIBS = -L/opt/local/lib
 
 ##########################################################
+## zlib (http://www.zlib.net/)
+##########################################################
+
+# include path. leave it blank to use SYS_INCLUDE
+ZLIB_INCLUDEPATH = $$QTI_ROOT/3rdparty/zlib/
+
+##########################################################
 ## muParser (http://muparser.sourceforge.net/)
 ##########################################################
 
