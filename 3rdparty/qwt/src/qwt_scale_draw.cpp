@@ -149,29 +149,46 @@ void QwtScaleDraw::getBorderDistHint(const QFont &font,
     if ( ticks.count() == 0 ) 
         return;
 
-    QRect lr = labelRect(font, ticks[0]);
+    // Find the ticks, that are mapped to the borders.
+    // minTick is the tick, that is mapped to the top/left-most position
+    // in widget coordinates.
 
-    // find the distance between tick and border
-    int off = qwtAbs(map().transform(ticks[0]) - qRound(map().p1()));
+    double minTick = ticks[0];
+    int minPos = map().transform(minTick);
+    double maxTick = minTick;
+    int maxPos = minPos;
+
+    for (uint i = 1; i < (uint)ticks.count(); i++)
+    {
+        const int tickPos = map().transform(ticks[i]);
+        if ( tickPos < minPos )
+        {
+            minTick = ticks[i];
+            minPos = tickPos;
+        }
+        if ( tickPos > map().transform(maxTick) )
+        {
+            maxTick = ticks[i];
+            maxPos = tickPos;
+        }
+    }
 
     if ( orientation() == Qt::Vertical )
-        end = lr.bottom() + 1 - off;
+    {
+        start = -labelRect(font, minTick).top();
+        start -= qwtAbs(minPos - qRound(map().p2()));
+
+        end = labelRect(font, maxTick).bottom() + 1;
+        end -= qwtAbs(maxPos - qRound(map().p1()));
+    }
     else
-        start = -lr.left() - off;
+    {
+        start = -labelRect(font, minTick).left();
+        start -= qwtAbs(minPos - qRound(map().p1()));
 
-    const int lastTick = ticks.count() - 1;
-    lr = labelRect(font, ticks[lastTick]);
-
-    // find the distance between tick and border
-    off = qwtAbs(map().transform(ticks[lastTick]) - qRound(map().p2()));
-
-    if ( orientation() == Qt::Vertical )
-        start = -lr.top() - off;
-    else
-        end = lr.right() + 1 - off;
-
-    // if the distance between tick and border is larger
-    // than half of the label width/height, we set to 0
+        end = labelRect(font, maxTick).right() + 1;
+        end -= qwtAbs(maxPos - qRound(map().p2()));
+    }
 
     if ( start < 0 )
         start = 0;
@@ -623,8 +640,6 @@ void QwtScaleDraw::drawLabel(QPainter *painter, double value) const
     QPoint pos = labelPosition(value);
 
     QSize labelSize = lbl.textSize(painter->font());
-    if ( labelSize.height() % 2 )
-        labelSize.setHeight(labelSize.height() + 1);
 
     const QwtMetricsMap metricsMap = QwtPainter::metricsMap();
     QwtPainter::resetMetricsMap();
@@ -666,9 +681,6 @@ QRect QwtScaleDraw::boundingLabelRect(const QFont &font, double value) const
 
     const QPoint pos = labelPosition(value);
     QSize labelSize = lbl.textSize(font);
-    if ( labelSize.height() % 2 )
-        labelSize.setHeight(labelSize.height() + 1);
-
     const QwtMatrix m = labelMatrix( pos, labelSize);
     return m.mapRect(QRect(QPoint(0, 0), labelSize));
 }
@@ -727,14 +739,14 @@ QwtMatrix QwtScaleDraw::labelMatrix(
     int x, y;
     
     if ( flags & Qt::AlignLeft )
-        x = -w;
+        x = -w + 1;
     else if ( flags & Qt::AlignRight )
-        x = -(w % 2); 
+        x = -(w % 2) + 1; 
     else // Qt::AlignHCenter
         x = -(w / 2);
         
     if ( flags & Qt::AlignTop )
-        y =  -h ;
+        y = -h + 1;
     else if ( flags & Qt::AlignBottom )
         y = -(h % 2); 
     else // Qt::AlignVCenter
@@ -762,10 +774,6 @@ QRect QwtScaleDraw::labelRect(const QFont &font, double value) const
     const QPoint pos = labelPosition(value);
 
     QSize labelSize = lbl.textSize(font);
-    if ( labelSize.height() % 2 )
-    {
-        labelSize.setHeight(labelSize.height() + 1);
-    }
 
     const QwtMatrix m = labelMatrix(pos, labelSize);
 

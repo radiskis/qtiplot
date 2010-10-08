@@ -514,14 +514,10 @@ int QwtText::heightForWidth(int width, const QFont &defaultFont) const
 */
 QSize QwtText::textSize(const QFont &defaultFont) const
 {
-#if QT_VERSION < 0x040000
-    const QFont font(usedFont(defaultFont));
-#else
     // We want to calculate in screen metrics. So
     // we need a font that uses screen metrics
 
     const QFont font(usedFont(defaultFont), QApplication::desktop());
-#endif
 
     if ( !d_layoutCache->textSize.isValid() 
         || d_layoutCache->font != font )
@@ -541,20 +537,6 @@ QSize QwtText::textSize(const QFont &defaultFont) const
         d_data->textEngine->textMargins(font, d_data->text,
             left, right, top, bottom);
         sz -= QSize(left + right, top + bottom);
-
-#if QT_VERSION >= 0x040000
-        if ( !map.isIdentity() )
-        {
-#ifdef __GNUC__
-#endif
-            /*
-                When printing in high resolution, the tick labels
-                of are cut of. We need to find out why, but for
-                the moment we add a couple of pixels instead.
-             */
-            sz += QSize(3, 2);
-        }
-#endif
     }
 
     sz = map.screenToLayout(sz);
@@ -571,19 +553,14 @@ void QwtText::draw(QPainter *painter, const QRect &rect) const
 {
     if ( d_data->paintAttributes & PaintBackground )
     {
-        if ( d_data->backgroundPen != Qt::NoPen || 
-            d_data->backgroundBrush != Qt::NoBrush )
+        if ( d_data->backgroundPen != Qt::NoPen || d_data->backgroundBrush != Qt::NoBrush )
         {
             painter->save();
             painter->setPen(QwtPainter::scaledPen(d_data->backgroundPen));
             painter->setBrush(d_data->backgroundBrush);
-#if QT_VERSION < 0x040000
-            QwtPainter::drawRect(painter, rect);
-#else
-            const QRect r(rect.x(), rect.y(), 
-                rect.width() - 1, rect.height() - 1);
+
+			const QRect r(rect.x(), rect.y(), rect.width() - 1, rect.height() - 1);
             QwtPainter::drawRect(painter, r);
-#endif
             painter->restore();
         }
     }
@@ -604,14 +581,10 @@ void QwtText::draw(QPainter *painter, const QRect &rect) const
     QRect expandedRect = rect;
     if ( d_data->layoutAttributes & MinimumLayout )
     {
-#if QT_VERSION < 0x040000
-        const QFont font(painter->font());
-#else
         // We want to calculate in screen metrics. So
         // we need a font that uses screen metrics
 
         const QFont font(painter->font(), QApplication::desktop());
-#endif
 
         int left, right, top, bottom;
         d_data->textEngine->textMargins(
@@ -625,9 +598,9 @@ void QwtText::draw(QPainter *painter, const QRect &rect) const
         bottom = map.screenToLayoutY(bottom);
 
         expandedRect.setTop(rect.top() - top);
-        expandedRect.setBottom(rect.bottom() + bottom);
+		expandedRect.setBottom(rect.bottom() + bottom);
         expandedRect.setLeft(rect.left() - left);
-        expandedRect.setRight(rect.right() + right);
+		expandedRect.setRight(rect.right() + right);
     }
 
     d_data->textEngine->draw(painter, expandedRect, 
