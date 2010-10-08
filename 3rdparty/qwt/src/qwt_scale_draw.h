@@ -75,7 +75,7 @@ public:
     int maxLabelHeight(const QFont &) const;
     int maxLabelWidth(const QFont &) const;
 
-    QPoint labelPosition(double val) const;
+	QPoint labelPosition(double val) const;
 
     QRect labelRect(const QFont &, double val) const;
     QSize labelSize(const QFont &, double val) const;
