@@ -13681,11 +13681,11 @@ void ApplicationWindow::createActions()
 	actionNewMatrix->setShortcut( tr("Ctrl+M") );
 	connect(actionNewMatrix, SIGNAL(activated()), this, SLOT(newMatrix()));
 
-	actionNewFunctionPlot = new QAction(QIcon(":/newF.png"), tr("New &Function Plot"), this);
+	actionNewFunctionPlot = new QAction(QIcon(":/newF.png"), tr("New &Function Plot") + "...", this);
 	actionNewFunctionPlot->setShortcut( tr("Ctrl+F") );
 	connect(actionNewFunctionPlot, SIGNAL(activated()), this, SLOT(functionDialog()));
 
-	actionNewSurfacePlot = new QAction(QIcon(":/newFxy.png"), tr("New 3D &Surface Plot"), this);
+	actionNewSurfacePlot = new QAction(QIcon(":/newFxy.png"), tr("New 3D &Surface Plot") + "...", this);
 	actionNewSurfacePlot->setShortcut( tr("Ctrl+ALT+Z") );
 	connect(actionNewSurfacePlot, SIGNAL(activated()), this, SLOT(newSurfacePlot()));
 
@@ -13809,14 +13809,14 @@ void ApplicationWindow::createActions()
 	actionExportGraph->setShortcut( tr("Ctrl+Alt+G") );
 	connect(actionExportGraph, SIGNAL(activated()), this, SLOT(exportGraph()));
 
-	actionExportAllGraphs = new QAction(tr("&All"), this);
+	actionExportAllGraphs = new QAction(tr("&All") + "...", this);
 	actionExportAllGraphs->setShortcut( tr("Alt+X") );
 	connect(actionExportAllGraphs, SIGNAL(activated()), this, SLOT(exportAllGraphs()));
 #if QT_VERSION >= 0x040500
 	actionPresentationODF = new QAction(tr("Create Open &Document Presentation..."), this);
 	connect(actionPresentationODF, SIGNAL(activated()), this, SLOT(exportPresentationODF()));
 #endif
-	actionExportPDF = new QAction(QIcon(":/pdf.png"), tr("&Export PDF"), this);
+	actionExportPDF = new QAction(QIcon(":/pdf.png"), tr("&Export PDF") + "...", this);
 	actionExportPDF->setShortcut( tr("Ctrl+Alt+P") );
 	connect(actionExportPDF, SIGNAL(activated()), this, SLOT(exportPDF()));
 
@@ -14679,11 +14679,11 @@ void ApplicationWindow::translateActionsStrings()
 	actionNewMatrix->setShortcut(tr("Ctrl+M"));
 	actionNewMatrix->setToolTip(tr("New matrix"));
 
-	actionNewFunctionPlot->setMenuText(tr("New &Function Plot"));
+	actionNewFunctionPlot->setMenuText(tr("New &Function Plot") + "...");
 	actionNewFunctionPlot->setToolTip(tr("Create a new 2D function plot"));
 	actionNewFunctionPlot->setShortcut(tr("Ctrl+F"));
 
-	actionNewSurfacePlot->setMenuText(tr("New 3D &Surface Plot"));
+	actionNewSurfacePlot->setMenuText(tr("New 3D &Surface Plot") + "...");
 	actionNewSurfacePlot->setToolTip(tr("Create a new 3D surface plot"));
 	actionNewSurfacePlot->setShortcut(tr("Ctrl+ALT+Z"));
 
@@ -14791,24 +14791,24 @@ void ApplicationWindow::translateActionsStrings()
 	actionAddLayer->setToolTip(tr("Add Layer"));
 	actionAddLayer->setShortcut(tr("ALT+L"));
 
-	actionShowLayerDialog->setMenuText(tr("Arran&ge Layers"));
+	actionShowLayerDialog->setMenuText(tr("Arran&ge Layers") + "...");
 	actionShowLayerDialog->setToolTip(tr("Arrange Layers"));
 	actionShowLayerDialog->setShortcut(tr("Shift+A"));
 
 	actionAutomaticLayout->setMenuText(tr("Automatic Layout"));
 	actionAutomaticLayout->setToolTip(tr("Automatic Layout"));
 
-	actionExportGraph->setMenuText(tr("&Current"));
+	actionExportGraph->setMenuText(tr("&Current") + "...");
 	actionExportGraph->setShortcut(tr("Ctrl+Alt+G"));
 	actionExportGraph->setToolTip(tr("Export current graph"));
 
-	actionExportAllGraphs->setMenuText(tr("&All"));
+	actionExportAllGraphs->setMenuText(tr("&All") + "...");
 	actionExportAllGraphs->setShortcut(tr("Alt+X"));
 	actionExportAllGraphs->setToolTip(tr("Export all graphs"));
 #if QT_VERSION >= 0x040500
 	actionPresentationODF->setMenuText(tr("Create Open &Document Presentation..."));
 #endif
-    actionExportPDF->setMenuText(tr("&Export PDF"));
+	actionExportPDF->setMenuText(tr("&Export PDF") + "...");
 	actionExportPDF->setShortcut(tr("Ctrl+Alt+P"));
 	actionExportPDF->setToolTip(tr("Export to PDF"));
 
@@ -14819,7 +14819,7 @@ void ApplicationWindow::translateActionsStrings()
 	actionPrintPreview->setMenuText(tr("Print Pre&view..."));
 	actionPrintPreview->setToolTip(tr("Print preview"));
 
-	actionPrintAllPlots->setMenuText(tr("Print All Plo&ts"));
+	actionPrintAllPlots->setMenuText(tr("Print All Plo&ts") + "...");
 	actionShowExportASCIIDialog->setMenuText(tr("E&xport ASCII..."));
 
 	actionCloseAllWindows->setMenuText(tr("&Quit"));
