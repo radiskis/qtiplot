@@ -786,12 +786,44 @@ The active items appearing in a menu depends upon which project window is active
 	</listitem>
       </varlistentry>
 
+  <varlistentry id="stack-bar-cmd">
+	<term>Special Bar/Column -> &stack-bar-cmd;</term>
+	<listitem>
+	  <para>The &stack-bar-cmd; command plots a stack-bar for each selected row in the currently active table. They may be used to conveniently display cumulative data that changes over time, such as budgetary information. The stack-bars are drawn one above the other in a position determined by the X value of the corresponting row. Each stack-bar is composed of a set of joined segments. The widths of the segments are set by the Y values in the row and their relative positions correspond to the column order in the table. Each segment is plotted in a color corresponding to the column number of the Y value determining the segment's width. Colors, segment outlining, vertical separation of the stack-bars, and the axis values can all be customized. An example of a stack-bar plot is shown below, followed by the table that was used to generate the plot.</para>
+      <informalfigure id="stack-bar-plot">
+        <mediaobject>
+          <imageobject>
+            <imagedata  format="PNG" fileref="pics/plot-gallery-stack-bar.png"/>
+          </imageobject>
+        </mediaobject>
+      </informalfigure>
+     <para>A stack-bar plot showing a hypothetical budgetary breakdown for a 5 year period. The data in the table shown below was used to generate this plot.</para>
+      <informalfigure id="stack-row-data">
+        <mediaobject>
+          <imageobject>
+            <imagedata  format="PNG" fileref="pics/stack-bar-data.png"/>
+          </imageobject>
+        </mediaobject>
+      </informalfigure>
+	</listitem>
+  </varlistentry>
+
+  <varlistentry id="stack-column-cmd">
+	<term>&stack-column-cmd;</term>
+	<listitem>
+	  <para>The &stack-column-cmd; command plots a stack-column for each selected row in the currently active table. It is essentially the same as the &stack-bar-lnk; plot, but drawn as vertical stack-columns rather than horizontal stack-bars.</para>
+	</listitem>
+  </varlistentry>
+
+
+
+
     </variablelist>
 <!--		end of Special Line/Symbol		-->
   </listitem>
 </varlistentry>
 <varlistentry id="columns-cmd">
-  <term>&columns-cmd;</term>
+  <term>Special Bar/Column -> &columns-cmd;</term>
   <listitem>
      <para>Plots the selected data columns using "Columns" style, that is vertical bars.</para>
       <informalfigure id="fig-plot-bars">

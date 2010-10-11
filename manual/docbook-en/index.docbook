@@ -463,9 +463,9 @@
 <!ENTITY stack-column-lnk '<link linkend="stack-column-cmd">&stack-column-cmd;</link>'>
 <!ENTITY stack-column-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/stack_column.png"/></imageobject></inlinemediaobject>'>
 
-<!ENTITY stack-row-cmd "<command>Stack Row</command>">
-<!ENTITY stack-row-lnk '<link linkend="stack-row-cmd">&stack-row-cmd;</link>'>
-<!ENTITY stack-row-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/stack_bar.png"/></imageobject></inlinemediaobject>'>
+<!ENTITY stack-bar-cmd "<command>Stack Bar</command>">
+<!ENTITY stack-bar-lnk '<link linkend="stack-bar-cmd">&stack-bar-cmd;</link>'>
+<!ENTITY stack-bar-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/stack_bar.png"/></imageobject></inlinemediaobject>'>
 
 <!ENTITY statistical-graphs-cmd "<command>Statistical Graphs</command>">
 <!ENTITY statistical-graphs-lnk '<link linkend="statistical-graphs-cmd"><command>Statistical Graphs</command> command</link>'>

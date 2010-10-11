@@ -319,7 +319,7 @@ It is possible to use a formula defined for the matrix to calculate the plotted 
       </imageobject>
     </mediaobject>
   </informalfigure>
-  <para>You can only customize the colormap when the <emphasis>Custom Colors</emphasis> option is selected. A table with a set of numbers (the Z levels), and the color corresponding to each Z level, is presented. You can then add or remove or modify levels from the definition of the colormap. The first and last levels cannot be changed. These are always set to the minimum and maximum Z values. Note that this is only the definition of the colormap - it won't change the number of contour lines in your plot. An example of classical custom colormap is given here:</para>
+  <para>You can only customize the colormap when the <emphasis>Custom Colors</emphasis> option is selected. A table with a set of numbers (the Z levels), and the color corresponding to each Z level, is presented. You can then add, remove or modify levels from the definition of the colormap. The first and last levels cannot be changed. These are always set to the minimum and maximum Z values. Note that this is only the definition of the colormap - it won't change the number of contour lines in your plot. An example of classical custom colormap is given here:</para>
     <informalfigure id="fig-contour-options-3">
     <mediaobject>
       <imageobject>
@@ -346,15 +346,10 @@ It is possible to use a formula defined for the matrix to calculate the plotted 
     </mediaobject>
   </figure>
 
-<para>The <emphasis>Contour Lines</emphasis> tab is used to customize the settings of contour lines.
-You can select the number of lines and their color.
-If you check <emphasis>Use Default Pen</emphasis>, the color of the line will follow
-the settings defined in the group at the left of the checkbox.
+<para>The <emphasis>Contour Lines</emphasis> tab is used to customize settings applicable to the contour lines.
+You can select the number of lines and their color. If you check <emphasis>Use Default Pen</emphasis>, the color of the lines will be defined by the settings in the group of controls to the left of the checkbox.
 If you check <emphasis>Use Color Map</emphasis>, the lines will be colored as a function of the Z levels
-following the colormap defined in the <emphasis>Colors</emphasis> setting tab.
-If you check <emphasis>Use Table Custom Pen</emphasis>, the color of the line will follow
-the settings defined in the <emphasis>Pen</emphasis> column of the table displaying the
-Z levels.</para>
+from the colormap defined in the <emphasis>Colors</emphasis> setting tab. If you check <emphasis>Use Table Custom Pen</emphasis>, the color of the lines will be determined by the settings defined in the <emphasis>Pen</emphasis> column of the table displaying the Z levels.</para>
 
   <figure id="fig-contour-options-8">
     <title>The Labels tab.</title>
@@ -365,7 +360,7 @@ Z levels.</para>
     </mediaobject>
   </figure>
 
-  <para>The <emphasis>Labels</emphasis> tab is used to enable/disable the display of the Z value
+  <para>The <emphasis>Labels</emphasis> tab is used to enable/disable the display of a Z value
   for each of the contour lines. You can globally customize the color, background,
   font, rotation and position of the text labels. </para>
 
@@ -376,9 +371,7 @@ Z levels.</para>
 <!-- ************************************************** -->
 <sect1 id="custom-curves-dialog">
   <title>Plot Details</title>
-  <para>This dialog is activated by selecting the command <link linkend="format-plot-cmd">&format-plot-cmd;</link> from the <link linkend="sec-format-menu">Format Menu</link>.
-  It is also activated by a double click on the plot. If there is more than one layer in the window,
-  &appname; will select the layer which contains the plot under the mouse pointer.</para>
+  <para>This dialog is activated by selecting the command <link linkend="format-plot-cmd">&format-plot-cmd;</link> from the <link linkend="sec-format-menu">Format Menu</link>. It is also activated by a double click on the plot. If there is more than one layer in the window, &appname; will select the layer which contains the plot under the mouse pointer.</para>
   <figure id="fig-custom-curves-1">
     <title>The Plot Details Dialog: Layer properties.</title>
     <mediaobject>
@@ -398,16 +391,9 @@ Z levels.</para>
     </mediaobject>
   </figure>
 
-  <para>The third tab can be used to customize the speed mode for the layer. This can be very usefull when dealing with very large data sets.
-  The speed mode uses the Douglas and Peucker algorithm which purpose is that given a 'curve'
-  composed of line segments to find a curve not too dissimilar but that
-  has fewer points. The algorithm defines 'too dissimilar' based on the
-  maximum distance (tolerance) between the original curve and the smoothed curve.
-  The smoothed curve consists of a subset of the points that defined the
-  original curve.
+  <para>The third tab can be used to customize the speed mode for the layer. This can be very useful when dealing with very large data sets. Speed mode uses the Douglas and Peucker algorithm, the purpose of which is to take a 'curve' composed of line segments (or points) and find a new curve with fewer points that is not too dissimilar from the original curve. The algorithm defines 'not too dissimilar' as a function of the maximum distance (tolerance) between the original curve and the new curve. The new curve then consists of a subset of the line segments (or points) that defined the original curve.
 
-  If the speed mode is enabled, the filtering of the data points is activated only for the curves with more than the
-  maximum specified number of points.
+When the speed mode is enabled, filtering of the data is activated only for the curves with more than the specified maximum number of data points.
   </para>
   <figure id="fig-custom-curves-pie-2">
     <title>The Plot Details Dialog: Layer Speed Mode.</title>
@@ -418,10 +404,8 @@ Z levels.</para>
     </mediaobject>
   </figure>
 
-  <para>The right part of the dialog box contains several tabs which depend on the kind of plot that you are
-  using, they are described in the following subsections. The left part of the dialog window shows the
-  curves which are plotted in the active layer. All the modifications will be done on the selected curve.
-  You can change the columns which are used by clicking on the <emphasis>Plot Associations...</emphasis> button. This will open a dialog which can be used to select the columns of the table which are used as X and Y values.</para>
+  <para>The right part of the dialog box contains several tabs which depend on the kind of plot selected. They are described in the following subsections. The left part of the dialog window shows the curves which are plotted on the active layer. All modifications will be made to the selected curve.
+  You can change which columns are used by clicking on the <emphasis>Plot Associations...</emphasis> button. This will open a dialog which can be used to select the columns of the table to be used as X and Y values.</para>
 
   <figure id="fig-custom-curves-3">
     <title>The Plot Details Dialog: Plot Associations.</title>
@@ -431,13 +415,12 @@ Z levels.</para>
       </imageobject>
     </mediaobject>
   </figure>
- <para>The button <emphasis>Worksheet</emphasis> can be used to access to the table which contains the columns selected.</para>
+ <para>The <emphasis>Worksheet</emphasis> button is used to access to the table which contains the columns of the selected curve.</para>
 
 <sect2 id="custom-curves-dialog-lines">
 <title>Custom curves for lines and scatter plots</title>
 
-  <para>The first tab of the right part of the dialog window allows to define the pair of axes to which the curve is attached.
-  You can thus represent different curves having different x/y scales on the same plot layer.</para>
+  <para>The first tab of the right part of the dialog window allows to define the pair of axes to which the curve is attached. You can thus represent several curves having different x/y scales on the same plot layer.</para>
   <figure id="fig-custom-curves-line-1">
     <title>The Plot Details Dialog: assign axes.</title>
     <mediaobject>
@@ -447,7 +430,7 @@ Z levels.</para>
     </mediaobject>
   </figure>
 
- <para>The second tab of the right part of the dialog window allows to modify the style of the line (color, line style, thickness). The connect button allows to change the style which is used to draw the selected curve (steps, droplines, etc). See the &plot-menu-lnk; to see the different types of plot available.</para>
+ <para>The second tab on the right side of the dialog window allows customizing the style of the plot line (color, line style, thickness). The connect button allows changing the style which is used to draw the selected curve (steps, droplines, etc). See the &plot-menu-lnk; to see the different types of plots available.</para>
   <figure id="fig-custom-curves-line-1">
     <title>The Plot Details Dialog: Line formatting.</title>
     <mediaobject>
@@ -457,7 +440,7 @@ Z levels.</para>
     </mediaobject>
   </figure>
 
-  <para>A third tab can be activated to select the symbol, and to modify the size, the color and the filling color of the symbols.</para>
+  <para>The third tab is activated to select the symbol, and to modify the size, color and fill color of the selected symbol.</para>
   <figure id="fig-custom-curves-line-2">
     <title>The Plot Details Dialog: Symbol formatting.</title>
     <mediaobject>
@@ -467,8 +450,7 @@ Z levels.</para>
     </mediaobject>
   </figure>
 
-    <para>The <emphasis>Labels</emphasis> tab can be used to define labels to be plotted for each data point
-    in the plot and to modify the font, the color, the rotation angle and the position of the labels.</para>
+    <para>The <emphasis>Labels</emphasis> tab is used if you want labels plotted at each data point in the plot. Options are provided to control the font, color, rotation angle and position of these labels.</para>
   <figure id="fig-custom-curves-labels">
     <title>The Plot Details Dialog: Labels formatting.</title>
     <mediaobject>
@@ -478,7 +460,7 @@ Z levels.</para>
     </mediaobject>
   </figure>
 </sect2>
-
+<!-- Here* -->
 <sect2 id="custom-error-bars-box">
 <title>Custom error bars</title>
   <figure id="fig-custom-error-bars">
