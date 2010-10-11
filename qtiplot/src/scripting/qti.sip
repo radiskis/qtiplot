@@ -2286,6 +2286,7 @@ public:
   MdiSubWindow* clone(MdiSubWindow*);
 
   Matrix* tableToMatrix(Table* t);
+  Matrix* tableToMatrixRegularXYZ(Table* t, const QString& colName);
   Table* matrixToTable(Matrix* m, MatrixToTableConversion = Direct);
 
   QTextEdit *resultsLog();

@@ -398,6 +398,7 @@ setPreferences
 saveProjectAs
 clone
 tableToMatrix
+tableToMatrixRegularXYZ
 matrixToTable
 Fit
 ScaledLevenbergMarquardt

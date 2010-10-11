@@ -411,7 +411,7 @@ public slots:
 	Matrix* matrix(const QString& name);
 	Matrix* convertTableToMatrix();
 	Matrix* tableToMatrix(Table* t);
-	Matrix* convertTableToMatrixRegularXYZ(Table* t = 0, const QString& colName = QString::null);
+	Matrix* tableToMatrixRegularXYZ(Table* t = 0, const QString& colName = QString::null);
 #ifdef HAVE_ALGLIB
 	void convertTableToMatrixRandomXYZ();
 	void expandMatrix();
@@ -1128,6 +1128,9 @@ private:
 	bool isFileReadable(const QString&);
 
 private slots:
+	void addColumnNameToCompleter(const QString& colName, bool remove = false);
+	void removeColumnNameFromCompleter(const QString& colName){addColumnNameToCompleter(colName, true);};
+
 	void disableActions();
 	void customColumnActions();
 	void disableToolbars();

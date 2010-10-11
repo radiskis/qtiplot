@@ -153,7 +153,7 @@ appImports = (
 	"graph", "newGraph",
 	"note", "newNote",
 	"newPlot3D",
-	"tableToMatrix", "matrixToTable",
+	"tableToMatrix", "tableToMatrixRegularXYZ", "matrixToTable",
 	"openTemplate", "saveAsTemplate",
 	"clone", "setWindowName",
 	"importImage", "importExcel", "importOdfSpreadsheet", "importWaveFile",

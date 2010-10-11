@@ -349,6 +349,7 @@ public slots:
 signals:
 	void changedColHeader(const QString&, const QString&);
 	void removedCol(const QString&);
+	void addedCol(const QString&);
 	void removedCol(int);
 	void colIndexChanged(int, int);
 	void modifiedData(Table *, const QString&);

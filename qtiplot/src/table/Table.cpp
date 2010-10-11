@@ -1260,6 +1260,7 @@ void Table::addCol(PlotDesignation pd)
 	col_plot_type << pd;
 
 	setHeaderColType();
+	emit addedCol(objectName() + "_" + QString::number(max+1));
 	emit modifiedWindow(this);
 }
 
@@ -1280,8 +1281,10 @@ void Table::addColumns(int c)
 		commands << "";
 		colTypes << Numeric;
 		col_format << "0/" + QString::number(d_numeric_precision);
-		col_label << QString::number(max+i);
+		QString label = QString::number(max + i);
+		col_label << label;
 		col_plot_type << Y;
+		emit addedCol(objectName() + "_" + label);
 	}
 }
 
