@@ -3539,7 +3539,7 @@ void ApplicationWindow::convertTableToMatrixRandomXYZ()
 }
 #endif
 
-Matrix* ApplicationWindow::convertTableToMatrixRegularXYZ(Table* t, const QString& colName)
+Matrix* ApplicationWindow::tableToMatrixRegularXYZ(Table* t, const QString& colName)
 {
 	if (!t)
 		t = (Table*)activeWindow(TableWindow);
@@ -4002,6 +4002,8 @@ void ApplicationWindow::removeCurves(const QString& name)
 				((Graph3D*)w)->clearData();
 		}
 	}
+
+
 	QApplication::restoreOverrideCursor();
 }
 
@@ -13610,6 +13612,8 @@ void ApplicationWindow::connectTable(Table* w)
 	connect (w,SIGNAL(hiddenWindow(MdiSubWindow*)),this, SLOT(hideWindow(MdiSubWindow*)));
 	connect (w,SIGNAL(closedWindow(MdiSubWindow*)),this, SLOT(closeWindow(MdiSubWindow*)));
 	connect (w,SIGNAL(removedCol(const QString&)),this,SLOT(removeCurves(const QString&)));
+	connect (w,SIGNAL(removedCol(const QString&)),this,SLOT(removeColumnNameFromCompleter(const QString&)));
+	connect (w,SIGNAL(addedCol(const QString&)),this,SLOT(addColumnNameToCompleter(const QString&)));
 	connect (w,SIGNAL(modifiedData(Table *, const QString&)),
 			this, SLOT(updateCurves(Table *, const QString&)));
 	connect (w,SIGNAL(resizedWindow(MdiSubWindow*)),this,SLOT(modifiedProject(MdiSubWindow*)));
@@ -14348,7 +14352,7 @@ void ApplicationWindow::createActions()
 	connect(actionConvertTableBinning, SIGNAL(activated()), this, SLOT(showBinMatrixDialog()));
 
 	actionConvertTableRegularXYZ = new QAction(tr("&Regular XYZ"), this);
-	connect(actionConvertTableRegularXYZ, SIGNAL(activated()), this, SLOT(convertTableToMatrixRegularXYZ()));
+	connect(actionConvertTableRegularXYZ, SIGNAL(activated()), this, SLOT(tableToMatrixRegularXYZ()));
 
 #ifdef HAVE_ALGLIB
 	actionConvertTableRandomXYZ = new QAction(tr("Random &XYZ..."), this);
@@ -19005,6 +19009,26 @@ void ApplicationWindow::updateCompleter(const QString& windowName, bool remove, 
 			}
 		}
 	}
+
+	lst.sort();
+	model->setStringList(lst);
+}
+
+void ApplicationWindow::addColumnNameToCompleter(const QString& colName, bool remove)
+{
+	if (!d_completer || d_is_appending_file || d_opening_file)
+		return;
+
+	QStringListModel *model = qobject_cast<QStringListModel *> (d_completer->model());
+	if (!model)
+		return;
+
+	QStringList lst = model->stringList();
+
+	if (remove)
+		lst.removeAll(colName);
+	else
+		lst.append(colName);
 
 	lst.sort();
 	model->setStringList(lst);

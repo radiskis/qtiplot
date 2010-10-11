@@ -1780,6 +1780,12 @@ m = tableToMatrix(table("Table1"))
 t = matrixToTable(m)
 </programlisting>
 
+For the production of contour plots, you can convert a regular XYZ data table
+("regular", meaning that cells in the X and Y columns of the table define a regular 2D grid) into a matrix:
+<programlisting>
+m = tableToMatrixRegularXYZ(table("Table1"), "Table1_3")
+</programlisting>
+
 Also, it's worth knowing that you can easily import image files to matrices, that can be
 used afterwards for plotting (see the next section for more details about 2D plots):
 <programlisting>

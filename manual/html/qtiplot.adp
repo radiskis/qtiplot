@@ -367,7 +367,7 @@
 <section ref="x6197.html#Python-WaterfallPlots" title="Waterfall Plots">
 </section>
 <section ref="x6197.html#Python-Plots3D" title="3D Plots">
-<section ref="x6197.html#AEN7187" title="Creating a 3D plot">
+<section ref="x6197.html#AEN7188" title="Creating a 3D plot">
 </section>
 <section ref="x6197.html#Python-3D-View" title="Customizing the view">
 </section>
@@ -418,7 +418,7 @@
 </section>
 </section>
 </section>
-<section ref="c7501.html" title="Frequently asked questions">
+<section ref="c7502.html" title="Frequently asked questions">
 </section>
 </DCF>
 </assistantconfig>
