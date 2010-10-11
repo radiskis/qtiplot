@@ -10019,6 +10019,16 @@ void ApplicationWindow::matrixMenuAboutToShow()
 	if (!m)
 		return;
 
+	bool empty = m->isEmpty();
+	actionFlipMatrixVertically->setDisabled(empty);
+	actionFlipMatrixHorizontally->setDisabled(empty);
+#ifdef HAVE_ALGLIB
+	actionSmoothMatrix->setDisabled(empty);
+#endif
+	actionInvertMatrix->setDisabled(empty);
+	actionMatrixDeterminant->setDisabled(empty);
+	convertToTableMenu->setDisabled(empty);
+
 	actionViewMatrixImage->setChecked(m->viewType() == Matrix::ImageView);
 	actionViewMatrix->setChecked(m->viewType() == Matrix::TableView);
 	actionMatrixColumnRow->setChecked(m->headerViewType() == Matrix::ColumnRow);
