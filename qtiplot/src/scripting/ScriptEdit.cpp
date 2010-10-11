@@ -667,18 +667,28 @@ void ScriptEdit::setDirPath(const QString& path)
 
  QString ScriptEdit::textUnderCursor() const
  {
-     QTextCursor tc = textCursor();
-     tc.select(QTextCursor::WordUnderCursor);
+	QTextCursor tc = textCursor();
+	tc.select(QTextCursor::WordUnderCursor);
 
-	 QString s = tc.selectedText();
-	 if (s.contains(")")){
-		 tc.select(QTextCursor::LineUnderCursor);
-		 s = tc.selectedText();
-		 s.remove(")");
-		 int pos = s.lastIndexOf("\"") + 1;
-		 if (pos != -1)
-			return s.mid(pos, s.length() - pos);
-	 }
+	QString s = tc.selectedText();
+	if (s.contains(")")){
+		tc.select(QTextCursor::LineUnderCursor);
+		s = tc.selectedText();
+		s.remove(")");
+		int pos1 = s.lastIndexOf("\"") + 1;
+		int pos2 = s.lastIndexOf(".") + 1;
+		int pos3 = s.lastIndexOf("(") + 1;
+		int pos4 = s.lastIndexOf(",") + 1;
+
+		if (pos4 > pos3 && pos4 > pos2 && pos4 > pos1)
+			return s.mid(pos4, s.length() - pos4).trimmed();
+		else if (pos3 > pos2 && pos3 > pos1)
+			return s.mid(pos3, s.length() - pos3);
+		else if (pos2 > pos1)
+			return s.mid(pos2, s.length() - pos2);
+		else if (pos1 != -1)
+			return s.mid(pos1, s.length() - pos1);
+	}
 
 	return s;
  }
