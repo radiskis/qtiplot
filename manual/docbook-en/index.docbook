@@ -3,8 +3,8 @@
 
   <!ENTITY appname "QtiPlot">
   <!ENTITY kappname "&appname;">
-  <!ENTITY kappversion "0.9.8">
-  <!ENTITY version "0.9.8">
+  <!ENTITY kappversion "0.9.8.3">
+  <!ENTITY version "0.9.8.3">
   <!ENTITY kappdirectory "qtiplot">
   <!ENTITY kappdownload "http://soft.proindependent.com/download.html" >
   <!ENTITY pic-dir "pics/" >
@@ -15,8 +15,7 @@
   <!ENTITY email-ion "ion_vasilief@yahoo.fr">
   <!ENTITY roger "Roger Gadiou">
   <!ENTITY email-roger "Roger.Gadiou@uha.fr">
-  <!ENTITY tilman "Tilman Hoener zu Siederdissen">
-  <!ENTITY email-tilman "thzs@gmx.net">
+  <!ENTITY stephen "Stephen Besch">
   <!ENTITY knut "Knut Franke">
   <!ENTITY email-knut "Knut.Franke@gmx.de">
   <!ENTITY homepage "http://soft.proindependent.com">
@@ -1097,7 +1096,7 @@
 
 <bookinfo>
 
-<date>january 2007</date>
+<date>october 2010</date>
 <releaseinfo>Version updated for &appname; &version;</releaseinfo>
 
 <title>The &appname; Handbook</title>
@@ -1109,6 +1108,10 @@
     <affiliation>
       <address><email>&email-ion;</email></address>
     </affiliation>
+  </author>
+<author>
+    <firstname>Stephen</firstname>
+    <surname>Besch</surname>
   </author>
   <author>
     <firstname>Roger</firstname>
@@ -1127,8 +1130,12 @@
 </authorgroup>
 
 <copyright>
-  <year>2004 - 2009</year>
+  <year>2004 - 2010</year>
   <holder>&ion;</holder>
+</copyright>
+<copyright>
+  <year>2010</year>
+  <holder>&stephen;</holder>
 </copyright>
 <copyright>
   <year>2006 - june 2007</year>
