@@ -91,9 +91,9 @@ the hard disk. Make sure that you have backed up the file if you will ever need 
 <sect1 id="add-function-dialog">
   <title>Add Function</title>
   <para>This dialog box is used to add a function curve to the active plot. The plotted function is built with the common operators *, +, /, -, and ^ (for multiplication, addition, division, subtraction and exponentiation, respectively). A complete set of intrinsic functions are available and these are listed in the <link linkend="sec-muParser">muParser</link> section of the chapter on <emphasis>Mathematical Expressions and Scripting</emphasis>.</para>
-  <para>The first item in the dialog box selects the form of the generator function. The simplest and most common function definition uses the classical cartesian coordinate definition, y=f(x). This is the default. The next two parameters are used to select the X-range to be used for the plot. The last parameter sets the number of data points to be computed in the selected X-range.</para>
+  <para>The first item is the <emphasis>Curve Type</emphasis> and is used to select the form of the generator function. The simplest and most common function definition is the classical cartesian coordinate definition, y=f(x). This is the default option and is simply named "Function". Just below this is a text pane in which to enter the function definition, The next two parameters are used to select the X-range to be used for the plot. The last parameter sets the number of data points to be computed in the selected X-range. At the very bottom is a "Function Selector" which contains a dropdown list of intrinsic functions and brief description of the function. Clicking on the <emphasis>Add Function</emphasis> button will copy the selected function into the function definition pane. </para>
   <figure id="add-function-dialog-1">
-    <title>The &add-function-cmd; dialog box: cartesian coordinates.</title>
+    <title>The &add-function-cmd; dialog box: Cartesian Coordinates.</title>
     <mediaobject>
       <imageobject>
         <imagedata  format="PNG" fileref="pics/add-function-dialog1.png"/>
@@ -112,8 +112,8 @@ the hard disk. Make sure that you have backed up the file if you will ever need 
 	</mediaobject>
   </figure>
 
-  <para>A function can also be defined using a parametric definition. That is, given some variable, <emphasis>t</emphasis>, the (x,y) data points are computed using functions of that variable, x=f(t) and y=g(t).</para>
-  <para>The first parameter in the dialog box is the name of the parametric variable (here <emphasis>t</emphasis>) followed by the range, the definition of the two functions and the number of data points.</para>
+  <para>A function can also be defined using a parametric definition by selecting "Parametric plot" as the <emphasis>Curve type</emphasis>. That is, given some variable, <emphasis>m</emphasis>, the (x,y) data points are computed using functions of that variable, x=f(m) and y=g(m).</para>
+  <para>The first parameter is the name of the parametric variable (here <emphasis>m</emphasis>). It is followed by the definitions of the two functions, the range of the parametric variable, and the number of data points.</para>
   <figure id="add-function-dialog-2">
     <title>The &add-function-cmd; dialog box: Parametric Coordinates.</title>
     <mediaobject>
@@ -122,8 +122,8 @@ the hard disk. Make sure that you have backed up the file if you will ever need 
       </imageobject>
     </mediaobject>
   </figure>
-  <para>Finally, a polar definition of the function may be used. Given some variable <emphasis>t</emphasis>, then the radius <emphasis>r</emphasis> and angle <emphasis>theta</emphasis> are computed using two functions of that variable, r=f(t) and theta=g(t), in a manner similar to the parametric function case. The (x,y) data points are then computed as x=r*cos(theta) and y=r*sin(theta).</para>
-  <para>The first parameter in the dialog box is the name of the parametric variable (here <emphasis>t</emphasis>) followed by the range, the definition of the two functions and the number of data points. Note that the angle is in radians. <emphasis>pi</emphasis> is an internally defined constant which can be used in any mathematical expression. For example, you can use <emphasis>3*pi</emphasis> to define the parameter range.</para>
+  <para>Finally, a polar definition of the function may be used by selecting "Polar plot" as the <emphasis>Curve type</emphasis>. Given some variable <emphasis>t</emphasis>, then the radius (<emphasis>R</emphasis>) and angle (<emphasis>Theta</emphasis>) are computed using two functions of that variable, R=f(t) and Theta=g(t), in a manner similar to the parametric function case. The (x,y) data points are then computed as x=R*cos(Theta) and y=R*sin(Theta).</para>
+  <para>The first parameter is the name of the parametric variable (here <emphasis>t</emphasis>). It is followed by the definition of the two functions, the range of the parametric variable, and the number of data points. Note that the angle is in radians. <emphasis>pi</emphasis> is an internally defined constant which can be used in any mathematical expression. For example, you can use <emphasis>3*pi</emphasis> to define the parameter range.</para>
   <figure id="add-function-dialog-3">
     <title>The &add-function-cmd; dialog box: Polar Coordinates.</title>
     <mediaobject>
@@ -139,7 +139,7 @@ the hard disk. Make sure that you have backed up the file if you will ever need 
 <!-- ************************************************** -->
 <sect1 id="add-layer-dialog">
   <title>Add Layer</title>
-  <para>This dialog is opened when you want to add a new layer on the active plot. If you select <emphasis>Guess</emphasis>, &appname; will divide the window in two columns and put the new layer on the right. If you choose <emphasis>Top-Left Corner</emphasis>, &appname; will create a new layer with the maximum possible size on top of existing layers. This new layer contains an empty plot. You can then modify the size and position of each layer by selecting it with the layer number buttons  <inlinemediaobject><imageobject><imagedata format="PNG" fileref="pics/layer-button.png"/></imageobject></inlinemediaobject> and selecting the <emphasis>Layer Geometry</emphasis> command from the context menu.</para>
+  <para>This dialog is opened when you add a new layer on the active plot. If you select <emphasis>Guess</emphasis>, &appname; will divide the window in two columns and put the new layer on the right. If you choose <emphasis>Top-Left Corner</emphasis>, &appname; will create a new layer with the maximum possible size and locate it on top of existing layers. The new layer contains an empty plotting area. You can subsequently modify the size and position of each layer by selecting it with the layer number buttons  <inlinemediaobject><imageobject><imagedata format="PNG" fileref="pics/layer-button.png"/></imageobject></inlinemediaobject> and picking the <emphasis>Layer Geometry</emphasis> command from the context menu.</para>
   <figure id="fig-add-layer-dialog">
     <title>The &add-layer-cmd; Dialog Box.</title>
     <mediaobject>
@@ -186,20 +186,20 @@ which opens a dialog allowing to edit the plot range.</para>
 <!-- ************************************************** -->
 <sect1 id="arrange-layers-dialog">
   <title>Arrange Layers</title>
-  This dialog is activated by selecting the &arrange-layers-cmd; command from the <link linkend="sec-graph-menu">Graph Menu</link> or by entering the &arrange-layers-key; key.
+  This dialog is activated by selecting the &arrange-layers-cmd; command from the <link linkend="sec-graph-menu">Graph Menu </link>or by entering &arrange-layers-key;.
 
-<para>This dialog provides for modification of the geometrical arrangement of plots which are already present
-in the active window. You can add new layers or remove existing ones using the <emphasis>Number</emphasis> of layers control. Checking the <emphasis>Link X axes</emphasis> option makes all the X-axes interdependent, meaning that if you manually set abscissa scale limits on one plot layer, then the same limits will automatically be set on all other layers in the plot window.</para>
+<para>This dialog provides for modification of the geometrical arrangement of plot layers which are already present
+in the active graph window. You can add new layers or remove existing ones using the <emphasis>Number</emphasis> of layers control. Checking the <emphasis>Link X axes</emphasis> option makes all the X-axes interdependent, meaning that if you manually set abscissa scale limits on one plot layer, then the same limits will automatically be set on all other layers in the plot window.</para>
 
 <para>You can specify the number of rows and columns that define a grid of plots. With the default settings, &appname; computes the size of the layers in the grid from the size of the graph window.
 If you check the <emphasis>Layer Canvas Size</emphasis> option, you can set the size of the drawing area for the layers. &appname; will then modify the size of the graph window to accomodate them.
 When the <emphasis>Fixed size</emphasis> box is checked, the size of the layers will be kept unchanged when you manually resize the graph window.</para>
 
-<para>The controls in the two group boxes on the right, <emphasis>Alignment</emphasis> and <emphasis>Spacing</emphasis>, are used to set the alignment of the layers in the window, and the margins between the layer borders and the graph window limits. The <emphasis>Spacing</emphasis> group includes an <emphasis>Align</emphasis> control with 2 options (<emphasis>Canvases</emphasis> and <emphasis>Layers</emphasis>) that control the meaning of the row and column spacing entries. If the <emphasis>Canvases</emphasis> alignment option is chosen, then the spacing fields define the distances between the axes of the layers. On the otherhand, if the <emphasis>Layers</emphasis> alignment option is chosen, then the spacing fields define the distances between the borders of the layers.</para>
+<para>The controls in the two group boxes on the right, <emphasis>Alignment</emphasis> and <emphasis>Spacing</emphasis>, are used to set the alignment of the layers in the window and the margins between the layer borders and the graph window limits. The <emphasis>Spacing</emphasis> group includes an <emphasis>Align</emphasis> control with 2 options (<emphasis>Canvases</emphasis> and <emphasis>Layers</emphasis>) that control the meaning of the row and column spacing entries. If the <emphasis>Canvases</emphasis> alignment option is chosen, then the spacing fields define the distances between the axes of the layers. On the otherhand, if the <emphasis>Layers</emphasis> alignment option is chosen, then the spacing fields define the distances between the borders of the layers.</para>
 
 <para>Finally, it is also possible swap two layers using the <emphasis>Swap Layers</emphasis> controls. Simply select the Source and Destination layers and click the <emphasis>Swap</emphasis> button.</para>
   <figure id="fig-define-layer-1">
-    <title>The &arrange-layers-cmd; dialog: the geometry tab</title>
+    <title>The &arrange-layers-cmd; dialog: the Geometry Tab</title>
     <mediaobject>
       <imageobject>
         <imagedata  format="PNG" fileref="pics/arrange-layers-dialog.png"/>
@@ -207,7 +207,7 @@ When the <emphasis>Fixed size</emphasis> box is checked, the size of the layers 
     </mediaobject>
   </figure>
 
-  <para>Once suitable choices have been made, clicking on either the <emphasis>Apply</emphasis> or <emphasis>OK</emphasis> buttons will arrange the layers to obtain a good alignment of the vertical and horizontal axis.</para>
+  <para>Once suitable choices have been made, clicking on either the <emphasis>Apply</emphasis> or <emphasis>OK</emphasis> buttons will arrange the layers to obtain the desired alignment of the vertical and horizontal axis.</para>
   <figure id="fig-define-layer-3">
     <title>Example of a vertical arrangement for two plots.</title>
     <mediaobject>
@@ -216,7 +216,7 @@ When the <emphasis>Fixed size</emphasis> box is checked, the size of the layers 
       </imageobject>
     </mediaobject>
   </figure>
-  <para>Note that if modifications are later made to an aligned plot, then the alignment of the different axes may be lost. Simply re-execute the &arrange-layers-cmd; to again re-arrange the plot.</para>
+  <para>Note that if modifications are later made to an aligned plots, then alignment of the different axes may be lost. Simply re-execute &arrange-layers-cmd; to again re-arrange the plot.</para>
 </sect1>
 
 <!-- ************************************************** -->
@@ -224,8 +224,8 @@ When the <emphasis>Fixed size</emphasis> box is checked, the size of the layers 
 <!-- ************************************************** -->
 <sect1 id="arrow-dialog">
   <title>Line Options</title>
-  <para>This dialog allows modification of lines or arroww which have been created with either the <emphasis>&draw-arrow-cmd;</emphasis> command from the <link linkend="sec-graph-menu">Graph Menu</link> or the &draw-arrow-key;. The dialog can also be opened by double clicking on an arrow or line, or by right clicking a selected arrow or line and then selecting <emphasis>Properties...</emphasis> from the resulting pop-up menu.</para>
-  <para>The first tab of the dialog allows changing the color, line type and line width. Line width is set in pixels. It is possible to define a default style for all new lines by clicking the <emphasis>Set Default</emphasis> button.</para>
+  <para>This dialog allows modification of lines or arrows which have been created with either the <emphasis>&draw-arrow-cmd;</emphasis> command from the <link linkend="sec-graph-menu">Graph Menu</link> or by using &draw-arrow-key;. The dialog can also be opened by double clicking on an arrow or line, or by right clicking a selected arrow or line and then selecting <emphasis>Properties...</emphasis> from the resulting pop-up menu.</para>
+  <para>The <emphasis>Options</emphasis> tab of the dialog allows changing the color, line type, line width, and the presence or absence of arrow heads. Line width is set in pixels. It is possible to define a default style for all new lines by clicking the <emphasis>Set Default</emphasis> button.</para>
   <figure id="fig-line-options-1">
     <title>The <emphasis>Arrow Options</emphasis> Dialog: First Tab</title>
     <mediaobject>
@@ -272,8 +272,8 @@ When the <emphasis>Fixed size</emphasis> box is checked, the size of the layers 
   </figure>
   <para>The checkbox <emphasis>Enumerate all to the right</emphasis> is used to rename of all the columns which lie to the right of the selected column. For example, if the name of the selected column is "xyz", then the selected column and all of the following columns will be renamed to "xyz1", "xyz2", and so on.</para>
   <para>The "&lt;&lt;" and "&gt;&gt;" buttons change the selected column. The highlighting of the column in the table behind the dialog box will change indicating that a new column has been selected. The column to which the formatting commands are applied is the one whose name appears in the "Column Name" box.</para>
-  <para>The <emphasis>Plot Designation</emphasis> selector is used to define which columns are to be used as X, Y or Z values or as error bars. In a table you can select several columns as X, in which case the column labels will display as [X1], [X2], etc. The corresponding Y columns will display as [Y1], [Y2], etc.</para>
- <para>The <emphasis>Comment</emphasis> box allows entering text that can be displayed in the table header
+  <para>The <emphasis>Plot Designation</emphasis> selector is used to define which columns are to be used as X, Y or Z values or as error bars. In a table you can select several columns as X, in which case the column labels will display as [X1], [X2], etc. Multiple Y columns will display as [Y1], [Y2], etc. The same scheme is followed for multiple Z columns.</para>
+ <para>The <emphasis>Comment</emphasis> box allows entering text that will be displayed in the table header
   just below the column name when the <emphasis>Display Comments in Header</emphasis> option is checked.</para>
 </sect1>
 
@@ -293,8 +293,8 @@ When the <emphasis>Fixed size</emphasis> box is checked, the size of the layers 
     </mediaobject>
   </figure>
 
-The <emphasis>Values</emphasis> tab allows choosing the matrix that is to serve as the data source of the plot.
-It is possible to use a formula defined for the matrix to calculate the plotted Z values by checking the <emphasis>Use matrix formula to calculate values</emphasis> box. This results in higher accuracy, especially when drawing contour lines, but it only works if the formula uses muParser compatible syntax.
+The <emphasis>Values </emphasis>tab allows choosing the matrix that is to serve as the data source for the plot.
+It is possible to use a formula defined for the matrix to calculate the plotted Z values by checking the <emphasis>Use matrix formula to calculate values </emphasis>box. This results in higher accuracy, especially when drawing contour lines, but it only works if the formula uses muParser compatible syntax.
 
   <figure id="fig-contour-options-1">
     <title>The Colors Tab.</title>
@@ -371,7 +371,7 @@ from the colormap defined in the <emphasis>Colors</emphasis> setting tab. If you
 <!-- ************************************************** -->
 <sect1 id="custom-curves-dialog">
   <title>Plot Details</title>
-  <para>This dialog is activated by selecting the command <link linkend="format-plot-cmd">&format-plot-cmd;</link> from the <link linkend="sec-format-menu">Format Menu</link>. It is also activated by a double click on the plot. If there is more than one layer in the window, &appname; will select the layer which contains the plot under the mouse pointer.</para>
+  <para>This dialog is activated by selecting the <link linkend="format-plot-cmd">&format-plot-cmd;</link> from the <link linkend="sec-format-menu">Format Menu</link>. It may also be activated either by a double click on a plot or by right-clicking on a plot and selecting <emphasis>Plot Details...</emphasis>. If there is more than one layer in the window, &appname; will select the layer which contains the plot under the mouse pointer. The exact contents of the dialog will vary depending upon how the dialog was invoked and on the type of plot selected.</para>
   <figure id="fig-custom-curves-1">
     <title>The Plot Details Dialog: Layer properties.</title>
     <mediaobject>
@@ -404,8 +404,7 @@ When the speed mode is enabled, filtering of the data is activated only for the 
     </mediaobject>
   </figure>
 
-  <para>The right part of the dialog box contains several tabs which depend on the kind of plot selected. They are described in the following subsections. The left part of the dialog window shows the curves which are plotted on the active layer. All modifications will be made to the selected curve.
-  You can change which columns are used by clicking on the <emphasis>Plot Associations...</emphasis> button. This will open a dialog which can be used to select the columns of the table to be used as X and Y values.</para>
+  <para>The right part of the dialog box contains several tabs which depend on the kind of plot selected. They are described in the following subsections. The left part of the dialog window shows the curves which are plotted on the active layer. All modifications will be made to the selected curve. If the <emphasis>Plot Associations...</emphasis> button is visible, then you can change which columns are used by clicking it. This will open a dialog which can be used to select the columns of the table to be used as X and Y values.</para>
 
   <figure id="fig-custom-curves-3">
     <title>The Plot Details Dialog: Plot Associations.</title>
@@ -415,14 +414,14 @@ When the speed mode is enabled, filtering of the data is activated only for the 
       </imageobject>
     </mediaobject>
   </figure>
- <para>The <emphasis>Worksheet</emphasis> button is used to access to the table which contains the columns of the selected curve.</para>
+ <para>If the <emphasis>Worksheet</emphasis> button visible, it may be used to access to the table which contains the columns for the selected curve.</para>
 
 <sect2 id="custom-curves-dialog-lines">
 <title>Custom curves for lines and scatter plots</title>
 
-  <para>The first tab of the right part of the dialog window allows to define the pair of axes to which the curve is attached. You can thus represent several curves having different x/y scales on the same plot layer.</para>
+  <para>The first tab on the right side of the dialog window allows definition of the pair of axes to which a curve is attached. Attaching different curves on the layer to different X/Y axis pairs permits placing several curves with different x/y scales on the same plot layer.</para>
   <figure id="fig-custom-curves-line-1">
-    <title>The Plot Details Dialog: assign axes.</title>
+    <title>The Plot Details Dialog: Assign Axes.</title>
     <mediaobject>
       <imageobject>
         <imagedata  format="PNG" fileref="pics/custom-curves-axes.png"/>
@@ -464,7 +463,7 @@ When the speed mode is enabled, filtering of the data is activated only for the 
 <sect2 id="custom-error-bars-box">
 <title>Custom error bars</title>
   <figure id="fig-custom-error-bars">
-    <title>The Plot Details Dialog for error bars formatting.</title>
+    <title>The Plot Details Dialog for formatting error bars.</title>
     <mediaobject>
       <imageobject>
         <imagedata  format="PNG" fileref="pics/custom-error-bars.png"/>
@@ -475,11 +474,11 @@ When the speed mode is enabled, filtering of the data is activated only for the 
 
 <sect2 id="custom-curves-dialog-pie">
 <title>Plot Details for pie plots</title>
-  <para>These commands are available for <link linkend="pie-cmd">pie plots</link>. The first tab allows the customization of the pie segments. The left fields are used to modify the border which is drawn round each segment: color, type and width of line. The default is no border (line width = 0).</para>
-  <para>The right fields are used to define the filling of the plots. The color button defines the one used for the first segment, then the others segments will have colors which follow the order defined in the list. The default value for this field is black, so segment 2, 3, etc will be red, green, etc.</para>
-  <para>The pattern will be used for all segments of the pie, the default value is solid filling.</para>
+  <para>These commands are available for <link linkend="pie-cmd">pie plots</link>. The first tab is used to customize the pie segments. The fields on the left are used to modify the border drawn around each segment. The color, type and width of line may be customized. The default is no border (line width = 0).</para>
+  <para>The fields on the right are used to define the fill style used for pie segments. The <emphasis>First color </emphasis>combo-box defines which color is used for the first segment. The remaining segments will be filled with colors that follow the order defined in the combo-box's list. The default value for this field is black, so segments 2, 3, ... will be red, green, etc.</para>
+  <para>The <emphasis>Pattern </emphasis>combo-box defines the fill pattern that will be used for all segments of the pie. The default value is solid fill.</para>
   <figure id="fig-custom-curves-pie-1">
-    <title>The Plot Details Dialog for pies: pie segment formatting.</title>
+    <title>The Plot Details Dialog for pies: Pie Segment Formatting.</title>
     <mediaobject>
       <imageobject>
         <imagedata  format="PNG" fileref="pics/custom-curves-pie-1.png"/>
@@ -488,7 +487,7 @@ When the speed mode is enabled, filtering of the data is activated only for the 
   </figure>
 
   <figure id="fig-custom-curves-pie-2">
-    <title>The Plot Details Dialog for pies: pie geometry.</title>
+    <title>The Plot Details Dialog for pies: Pie Geometry.</title>
     <mediaobject>
       <imageobject>
         <imagedata  format="PNG" fileref="pics/custom-curves-pie-2.png"/>
@@ -497,7 +496,7 @@ When the speed mode is enabled, filtering of the data is activated only for the 
   </figure>
 
   <figure id="fig-custom-curves-pie-3">
-    <title>The Plot Details Dialog for pies: pie labels formatting.</title>
+    <title>The Plot Details Dialog for pies: Pie Labels Formatting.</title>
     <mediaobject>
       <imageobject>
         <imagedata  format="PNG" fileref="pics/custom-curves-pie-3.png"/>
@@ -509,7 +508,7 @@ When the speed mode is enabled, filtering of the data is activated only for the 
 <sect2 id="custom-curves-dialog-box">
 <title>Custom curves for box plots</title>
   <figure id="fig-custom-curves-box-1">
-    <title>The Plot Details Dialog for box: pattern formatting.</title>
+    <title>The Plot Details Dialog for box: Pattern Formatting.</title>
     <mediaobject>
       <imageobject>
         <imagedata  format="PNG" fileref="pics/custom-curves-box-1.png"/>
@@ -518,7 +517,7 @@ When the speed mode is enabled, filtering of the data is activated only for the 
   </figure>
 
   <figure id="fig-custom-curves-box-2">
-    <title>The Plot Details Dialog for box: whiskers formatting.</title>
+    <title>The Plot Details Dialog for box: Whiskers Formatting.</title>
     <mediaobject>
       <imageobject>
         <imagedata  format="PNG" fileref="pics/custom-curves-box-2.png"/>
@@ -527,7 +526,7 @@ When the speed mode is enabled, filtering of the data is activated only for the 
   </figure>
 
   <figure id="fig-custom-curves-box-3">
-    <title>The Plot Details Dialog for box: percentile formatting.</title>
+    <title>The Plot Details Dialog for box: Percentile Formatting.</title>
     <mediaobject>
       <imageobject>
         <imagedata  format="PNG" fileref="pics/custom-curves-box-3.png"/>
@@ -539,7 +538,7 @@ When the speed mode is enabled, filtering of the data is activated only for the 
 <sect2 id="custom-curves-dialog-histogram">
 <title>Custom curves for pie histogram</title>
   <figure id="fig-custom-curves-histogram-1">
-    <title>The Plot Details Dialog for histogram: pattern formatting.</title>
+    <title>The Plot Details Dialog for histogram: Pattern Formatting.</title>
     <mediaobject>
       <imageobject>
         <imagedata  format="PNG" fileref="pics/custom-curves-histogram-1.png"/>
@@ -547,7 +546,7 @@ When the speed mode is enabled, filtering of the data is activated only for the 
     </mediaobject>
   </figure>
   <figure id="fig-custom-curves-histogram-2">
-    <title>The Plot Details Dialog for histogram: spacing formatting.</title>
+    <title>The Plot Details Dialog for histogram: Spacing Formatting.</title>
     <mediaobject>
       <imageobject>
         <imagedata  format="PNG" fileref="pics/custom-curves-histogram-2.png"/>
@@ -555,7 +554,7 @@ When the speed mode is enabled, filtering of the data is activated only for the 
     </mediaobject>
   </figure>
   <figure id="fig-custom-curves-histogram-3">
-    <title>The Plot Details Dialog for histogram: data formatting.</title>
+    <title>The Plot Details Dialog for histogram: Data Formatting.</title>
     <mediaobject>
       <imageobject>
         <imagedata  format="PNG" fileref="pics/custom-curves-histogram-3.png"/>
@@ -571,9 +570,7 @@ When the speed mode is enabled, filtering of the data is activated only for the 
 <!-- ************************************************** -->
 <sect1 id="define-surface-plot-dialog">
   <title>Define surface plot</title>
-  <para>This dialog is used when you enter the &new-surface-3d-plot-cmd; command.
-  It allows to create a new function of two variables.
-  The only available coordinate system is the cartesian one: z = f(x,y).</para>
+  <para>This dialog is used when you enter the &new-surface-3d-plot-cmd; command. It allows for the creation of a new function of two variables. When the "Function" <emphasis>Surface type </emphasis>is selected the coordinate system will be cartesian and the function will be of the form: z = f(x,y).</para>
   <figure id="fig-define-surface-plot-dialog">
     <title>The &new-surface-3d-plot-cmd; dialog box.</title>
     <mediaobject>
@@ -582,11 +579,9 @@ When the speed mode is enabled, filtering of the data is activated only for the 
       </imageobject>
     </mediaobject>
   </figure>
-  <para>You can then enter the X, Y and Z scales and you can define the mesh parameters.</para>
+  <para>You may also define the X, Y and Z scales and the mesh parameters.</para>
 
-<para>You can also create parametric surfaces.
-The only parameters allowed are the latitude and the longitude: <varname>u</varname> and <varname>v</varname>.
-Here's, for example, how you can plot a sphere having a radius equal to one:</para>
+<para>You can create parametric surfaces when the "Parametric" <emphasis>Surface type </emphasis>is selected. The only parameters allowed are latitude and longitude: <varname>u</varname> and <varname>v</varname>. Here, for example, is how you might plot a sphere having a radius equal to one:</para>
   <figure id="fig-define-param-surface-plot-dialog">
     <title>The &new-surface-3d-plot-cmd; dialog box.</title>
     <mediaobject>
@@ -596,14 +591,9 @@ Here's, for example, how you can plot a sphere having a radius equal to one:</pa
     </mediaobject>
   </figure>
 
-<para>Like in the case of functions, you can supply the drawing domain for the
-two angle parameters and you can define the mesh parameters.
-The more rows/columns you request for, the better the resolution of the
-output image, but also the larger the memory consumption and the lower the speed of your computer.</para>
+<para>As in the case for functions, you can supply the drawing domain for the two angular parameters and you can define the mesh parameters. The more rows/columns you request, the better the resolution of the output image will be. However, this is at the cost of a larger memory consumption and an increased time of computation. A slow CPU and small amounts of memory will be limiting.</para>
 
-<para>Also, you can provide information about the rotational symmetry of the
-parametric surface to the drawing routines, using the two <varname>Periodic</varname> box options
-(one for each parameter).</para>
+<para>Finally, you can provide information to the drawing routines about the rotational symmetry of the parametric surface using the two <varname>Periodic</varname> check box options (one for each parameter).</para>
 </sect1>
 <!-- ************************************************** -->
 <!--		Export ASCII				-->
@@ -611,18 +601,18 @@ parametric surface to the drawing routines, using the two <varname>Periodic</var
 <sect1 id="export-ascii-dialog">
   <title>Export ASCII</title>
       <indexterm><primary>table</primary></indexterm>
-  <para>This dialog is activated by selecting the command <link linkend="export-ascii-cmd">&export-ascii-cmd;</link> from the <link linkend="sec-file-menu">File Menu</link>.
-  The command is active if there is at least a table window in the project.</para>
-  <para>This command is used to export all or a part of the data of a project to an ASCII file.
-  Alternatively you can also choose to export the tables/matrices to one of the following formats: TeX (.tex), Open Document Format (.odf)
-  or as web pages (.html).</para>
+  <para>This dialog is activated by selecting the  <link linkend="export-ascii-cmd">&export-ascii-cmd;</link> command from the <link linkend="sec-file-menu">File Menu</link>. It is active if there is at least one table window in the project.</para>
+  <para>This command is used to export all or a part of the data of a project to an ASCII file. Alternatively, you can also choose to export the tables/matrices to one of the following formats: TeX (.tex), Open Document Format (.odf) or as web pages (.html).</para>
   <figure id="fig-export-ascii">
-    <title>Export of a selection in a table to an ASCII file.</title>
+    <title>Export of a selection from a table to an ASCII file.</title>
     <informalexample>
-      <para>In this example of export of a table selection to an ASCII file, the names of the
-	  selected columns are exported as the first line of the file. The comments displayed in the table header are exported
-	  as the second line of the file and a TAB character is used as a separator between the columns.
-	  Only the two selected columns are exported.</para>
+      <para>In this example, the names of the selected columns will be
+  exported as the first line of the file. If the <emphasis>Include Column Comments </emphasis>option
+  were also checked then the comments displayed in the table header
+  would also be exported as the second line of the file. A TAB character
+  will be used as a separator between columns values. Since the
+  <emphasis>Export Selection </emphasis>option is checked, only the selected columns
+  will be exported.</para>
     </informalexample>
     <mediaobject>
       <imageobject>
@@ -630,9 +620,7 @@ parametric surface to the drawing routines, using the two <varname>Periodic</var
       </imageobject>
     </mediaobject>
   </figure>
-<para>If the "Include Column Names" option is not checked, the names of the columns will be set to C1, C2,... in the exported file.
-The formatting of the numbers is kept in the ASCII file, so you have to be careful to obtain a good enough precision in the ASCII
-file.</para>
+<para>When the "Include Column Names" option is not checked, any column names will be ignored and the names "C1", "C2",... will be used in the exported file. The formatting of the numbers in each table column is preserved during the export. Make sure that adequate precision has been set before exporting to insure that the ASCII representation of the numbers in the output file is sufficiently accurate.</para>
 </sect1>
 
 <!-- ************************************************** -->
@@ -640,7 +628,7 @@ file.</para>
 <!-- ************************************************** -->
 <sect1 id="fft-dialog">
   <title>Fast Fourier Transform</title>
-  <para>The &fft-cmd; dialog box can be used either on a table or on a plot. It is used to compute a direct or inverse FFT. See the <link linkend="sec-fft">FFT section</link> in the <link linkend="analysis">Analysis chapter</link> for an example.</para>
+  <para>The &fft-cmd; dialog box can be used either on a table or on a plot. It is used to compute either the direct or inverse FFT. See the <link linkend="sec-fft">FFT section</link> in the <link linkend="analysis">Analysis chapter</link> for an example.</para>
   <figure id="fig-fft-dialog-curve">
     <title>The &fft-cmd; dialog box for a curve.</title>
     <mediaobject>
@@ -649,7 +637,7 @@ file.</para>
       </imageobject>
     </mediaobject>
   </figure>
-  <para>&appname; will create a new plot window with the FFT amplitude curve, and a new table which contains the real part, the imaginary part, the amplitude, and the angle of the FFT.</para>
+  <para>&appname; will create a new plot window containing the FFT amplitude curve, along with a new table which contains the real part, the imaginary part, the amplitude, and the phase of the FFT.</para>
   <para>If the <emphasis>Normalize Amplitude</emphasis> check box is on, the amplitude curve is normalized to 1. If the <emphasis>Shift Results</emphasis> check box is on, the frequencies are shifted in order to obtain a centered x-scale.</para>
   <figure id="fig-fft-dialog-table">
     <title>The &fft-cmd; dialog box for a table.</title>
@@ -659,10 +647,8 @@ file.</para>
       </imageobject>
     </mediaobject>
   </figure>
-  <para>In the case of a table, you must select the sampling column (X-values) and two columns for Y-values. If they are complex numbers, the first column is the real part of Y-values and the second is the imaginary part.
-  If Y-values are simple reals, you don't have to select a column for the imaginary part, you can
-  leave the combo box empty.</para>
-  <para>By default, the <emphasis>Sampling Interval</emphasis> corresponds to the interval between X-values. Giving a smaller value makes no sense, but you can increase this value in order to sample less values</para>
+  <para>When performing an FFT on a table, you must select the sampling column (X-values) and one (for simple real values) or two (for complex values) columns of Y-values. Complex numbers have the real part of the Y-values in the first column and the imaginary part of the Y-values in the second column. If Y-values are simple reals, you don't have to select a column for the imaginary part. You can leave the combo box for the second column empty in this case.</para>
+  <para>By default, the <emphasis>Sampling Interval</emphasis> corresponds to the interval between X-values. Giving a smaller value makes no sense, but you can increase this value in order to sample fewer values.</para>
 </sect1>
 
 <!-- ************************************************** -->
