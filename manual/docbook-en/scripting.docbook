@@ -3191,12 +3191,31 @@ g.setSpacing (x, y)
 g.setMargins (left, right, top, bottom)
 </programlisting>
 
-Another aspect of the layout management is the alignement of the layers. There are three alignement
-flags that you can use for the horizontal alignement (HCenter, Left, Right) and another three for
-the vertical alignement (VCenter, Top, Bottom) of the layers. The following code line
-aligns the layers with the right edge of the window and centers them vertically in the available space:
+Another aspect of the layout management is the alignment of the layers. There are three alignment
+flags that you can use for the horizontal alignment (HCenter, Left, Right) and another three for
+the vertical alignment (VCenter, Top, Bottom) of the layers.
+The following code line aligns the layers with the right edge of the window and centers them vertically in
+the available space:
 <programlisting>
 g.setAlignement(Graph.Right, Graph.VCenter)
+</programlisting>
+
+The alignment of the layers can be done with respect to the drawing area between the axes (Graph.AlignCanvases) or with respect
+to the whole layer widget (Graph.AlignLayers) and you can specify the alignment policy to use via the following method:
+<programlisting>
+g.setAlignPolicy(Graph.AlignCanvases)
+</programlisting>
+
+A very often needed layout is the one with shared layer axes having linked abcissae
+(modifying the x scale for one layer will automatically adjust the scales for all plot layers).
+Here's how you can simply create such a 2x2 layers grid, with only a few lines of code:
+<programlisting>
+g = newGraph("", 4, 2, 2)
+g.setSpacing(0, 0)
+g.setAlignPolicy(Graph.AlignCanvases)
+g.setCommonLayerAxes()
+g.arrangeLayers()
+g.linkXLayerAxes(True)
 </programlisting>
 
 All the examples above suppose that the layers are aranged on a grid, but of course you can add layers

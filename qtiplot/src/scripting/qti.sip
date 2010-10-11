@@ -1934,6 +1934,7 @@ public:
 
   enum HorAlignement{HCenter, Left, Right};
   enum VertAlignement{VCenter, Top, Bottom};
+  enum AlignPolicy{AlignLayers = 0, AlignCanvases};
 
   Graph *activeLayer();
   void setActiveLayer(Graph*);
@@ -1956,6 +1957,11 @@ public:
   bool swapLayers(int, int);
 
   void setScaleLayersOnResize(bool = true);
+  void setEqualSizedLayers();
+
+  void setAlignPolicy(const AlignPolicy& policy);
+  void setCommonLayerAxes(bool verticalAxis = true, bool horizontalAxis = true);
+  void linkXLayerAxes(bool = true);
 
   void exportToFile(const QString& fileName) /PyName=export/;
   void exportImage(const QString& fileName, int quality = 100, bool transparent = false,

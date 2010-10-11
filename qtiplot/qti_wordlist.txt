@@ -838,3 +838,9 @@ whiskersRangeType
 setWhiskersRange
 resample
 smooth
+setAlignPolicy
+setEqualSizedLayers
+setCommonLayerAxes
+linkXLayerAxes
+AlignLayers
+AlignCanvases
