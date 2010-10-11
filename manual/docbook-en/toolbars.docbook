@@ -765,13 +765,13 @@ The <emphasis>File Toolbar</emphasis> provides single-click access to commands f
   </row>
   <row>
    <entry>&stack-column-icon;</entry>
-   <entry><link linkend="stack-column-cmd">plot -> &stack-column-cmd;</link></entry>
+   <entry><link linkend="stack-column-cmd">plot -> Special Bar/Column -> &stack-column-cmd;</link></entry>
    <entry></entry>
    <entry>Plots selected data using stack column style.</entry>
   </row>
   <row>
-   <entry>&stack-row-icon;</entry>
-   <entry><link linkend="stack-row-cmd">plot -> &stack-row-cmd;</link></entry>
+   <entry>&stack-bar-icon;</entry>
+   <entry><link linkend="stack-bar-cmd">plot -> Special Bar/Column -> &stack-bar-cmd;</link></entry>
    <entry></entry>
    <entry>Plots selected data using stack row style.</entry>
   </row>
