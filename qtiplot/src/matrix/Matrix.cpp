@@ -1168,12 +1168,13 @@ void Matrix::exportEMF(const QString& fileName)
 
 bool Matrix::isEmpty()
 {
-	double min, max;
-	range(&min, &max);
-	if (gsl_isnan(min) && gsl_isnan(max))
-		return true;
-
-	return false;
+	double *data = d_matrix_model->dataVector();
+	int size = numRows()*numCols();
+	for (int i = 0; i < size; i++){
+		if (gsl_finite(data[i]))
+			return false;
+	}
+	return true;
 }
 
 void Matrix::range(double *min, double *max)

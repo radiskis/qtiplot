@@ -888,7 +888,7 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 							mc->setLabelsFont(fnt);
 						}
 					} else if (style == Origin::GraphCurve::Contour){
-						Matrix* m = mw->convertTableToMatrixRegularXYZ(table, tableName + "_" + _curve.zColumnName.c_str());
+						Matrix* m = mw->tableToMatrixRegularXYZ(table, tableName + "_" + _curve.zColumnName.c_str());
 						if (!m)
 							break;
 						m->setHidden();
