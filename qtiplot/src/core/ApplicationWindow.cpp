@@ -18567,8 +18567,8 @@ void ApplicationWindow::initCompleter()
 #if QT_VERSION >= 0x040500
 	words.append(windowsNameList());
 #else
-	QStringList lst = windowsNameList();
-	foreach (QString s, lst)
+	QStringList list = windowsNameList();
+	foreach (QString s, list)
 		words << s;
 #endif
 
