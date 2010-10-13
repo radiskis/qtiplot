@@ -18,7 +18,5 @@ void lubksb(double **a, int n, int *indx, double b[]);
 void ludcmp(double **a, int n, int *indx, double *d);
 void savgol(double *c, int np, int nl, int nr, int ld, int m);
 
-void polint(double xa[], double ya[], int n, double x, double *y, double *dy);
-
 #endif // NRUTIL_H
 

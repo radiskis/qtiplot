@@ -473,7 +473,6 @@ resultTable
 Differentiation
 Integration
 enableGraphicsDisplay
-setMethodOrder
 area
 Cubic
 Akima

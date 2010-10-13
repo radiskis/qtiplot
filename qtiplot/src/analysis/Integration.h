@@ -44,13 +44,15 @@ public:
 	Integration(ApplicationWindow *parent, Graph *g, const QString& curveTitle);
 	Integration(ApplicationWindow *parent, Graph *g, const QString& curveTitle, double start, double end);
 	Integration(ApplicationWindow *parent, Table *t, const QString& xCol, const QString& yCol, int start = 0, int end = -1);
-	Integration(const QString& formula, const QString& var, ApplicationWindow *parent,
-                Graph *g, double start, double end);
+	Integration(const QString& formula, const QString& var, ApplicationWindow *parent, Graph *g, double start, double end);
 
-    int method(){return d_method;};
-    void setMethodOrder(int n);
+	void setWorkspaceSize(int size){d_workspace_size = size;};
 
     double area(){return d_area;};
+	double error(){return d_error;};
+
+	QString variable(){return d_variable;};
+	QString formula(){return d_formula;};
 
 private:
     void init();
@@ -59,15 +61,14 @@ private:
     void output();
 
 	double trapez();
-	double trapezf(int n);
-    //! Returns the number of iterations used to calculate the area if d_integrand = AnalyticalFunction.
-    int romberg();
-
-    //! the integration method: 1 = trapezoidal, max = 5!
-    int d_method;
+	double gslIntegration();
 
     //! the value of the integral
     double d_area;
+	//! the value of the estimated error in GSL integration
+	double d_error;
+	//! the value of the workspace size in GSL integration
+	int d_workspace_size;
 
 	//! the type of the integrand
 	Integrand d_integrand;

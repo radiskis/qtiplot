@@ -2,7 +2,7 @@
     File                 : IntDialog.cpp
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2004-2007 by Ion Vasilief, Vasileios Gkanis
+	Copyright            : (C) 2004-2010 by Ion Vasilief
     Email (use @ for *)  : ion_vasilief*yahoo.fr
     Description          : Integration options dialog
 
@@ -63,40 +63,36 @@ IntDialog::IntDialog(QWidget* parent, Graph *g, Qt::WFlags fl )
 	boxVariable->setText("x");
 	gl1->addWidget(boxVariable, 1, 1);
 
-	gl1->addWidget(new QLabel(tr("Order (1 - 5, 1 = Trapezoidal Rule)")), 2, 0);
-	boxOrder = new QSpinBox();
-	boxOrder->setRange(1, 5);
-	gl1->addWidget(boxOrder, 2, 1);
-
-	gl1->addWidget(new QLabel(tr("Number of iterations (Max=20)")), 3, 0);
+	gl1->addWidget(new QLabel(tr("Subintervals")), 2, 0);
 	boxSteps = new QSpinBox();
-	boxSteps->setRange(1, 20);
-	boxSteps->setValue(20);
-	gl1->addWidget(boxSteps, 3, 1);
+	boxSteps->setRange(1, INT_MAX);
+	boxSteps->setValue(1000);
+	boxSteps->setSingleStep(100);
+	gl1->addWidget(boxSteps, 2, 1);
 
 	QLocale locale = ((ApplicationWindow *)parent)->locale();
-	gl1->addWidget(new QLabel(tr("Tolerance")), 4, 0);
+	gl1->addWidget(new QLabel(tr("Tolerance")),3, 0);
 	boxTol = new DoubleSpinBox();
 	boxTol->setLocale(locale);
 	boxTol->setValue(0.01);
 	boxTol->setMinimum(0.0);
 	boxTol->setSingleStep(0.001);
-	gl1->addWidget(boxTol, 4, 1);
+	gl1->addWidget(boxTol, 3, 1);
 
-	gl1->addWidget(new QLabel(tr("Lower limit")), 5, 0);
+	gl1->addWidget(new QLabel(tr("Lower limit")), 4, 0);
 	boxStart = new DoubleSpinBox();
 	boxStart->setLocale(locale);
-	gl1->addWidget(boxStart, 5, 1);
+	gl1->addWidget(boxStart, 4, 1);
 
-	gl1->addWidget(new QLabel(tr("Upper limit")), 6, 0);
+	gl1->addWidget(new QLabel(tr("Upper limit")), 5, 0);
 	boxEnd = new DoubleSpinBox();
 	boxEnd->setLocale(locale);
 	boxEnd->setValue(1.0);
-	gl1->addWidget(boxEnd, 6, 1);
+	gl1->addWidget(boxEnd, 5, 1);
 
 	boxPlot = new QCheckBox(tr("&Plot area"));
 	boxPlot->setChecked(true);
-	gl1->addWidget(boxPlot, 7, 1);
+	gl1->addWidget(boxPlot, 6, 1);
 	gl1->setRowStretch(0, 1);
 
 	buttonOk = new QPushButton(tr( "&Integrate" ));
@@ -121,8 +117,7 @@ void IntDialog::accept()
 	Integration *i = new Integration(boxName->text().simplified(), boxVariable->text(),
 					(ApplicationWindow *)this->parent(), d_graph, boxStart->value(), boxEnd->value());
 	i->setTolerance(boxTol->text().toDouble());
-	i->setMaximumIterations(boxSteps->value());
-	i->setMethodOrder(boxOrder->value());
+	i->setWorkspaceSize(boxSteps->value());
 	if (d_graph && boxPlot->isChecked())
 		i->enableGraphicsDisplay(true, d_graph);
 	i->run();

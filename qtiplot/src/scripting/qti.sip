@@ -2995,7 +2995,6 @@ public:
 %End
 
   void enableGraphicsDisplay(bool on = true, Graph *g = 0);
-  void setMethodOrder(int n);
   bool run();
 
   double area();
