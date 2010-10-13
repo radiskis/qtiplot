@@ -39,6 +39,7 @@
 #include <QLocale>
 
 #include <gsl/gsl_vector.h>
+#include <gsl/gsl_integration.h>
 
 Integration::Integration(const QString& formula, const QString& var, ApplicationWindow *parent, Graph *g, double start, double end)
 : Filter(parent, g),
@@ -65,8 +66,7 @@ d_variable(var)
 
 	setObjectName(tr("Integration"));
 	d_integrand = AnalyticalFunction;
-	d_method = 1;
-    d_max_iterations = 20;
+	d_workspace_size = 1000;
     d_sort_data = false;
 }
 
@@ -115,8 +115,6 @@ void Integration::init()
 {
 	setObjectName(tr("Integration"));
 	d_integrand = DataSet;
-	d_method = 1;
-    d_max_iterations = 1;
     d_sort_data = true;
 }
 
@@ -142,59 +140,38 @@ double Integration::trapez()
     return sum;
 }
 
-double Integration::trapezf(int n)
+double evalFunction(double x, void *params)
 {
-    MyParser parser;
-	double x = d_from;
-	parser.DefineVar(d_variable.ascii(), &x);
-	parser.SetExpr(d_formula.ascii());
+	double result = 0.0;
 
-    static double s;
-    if (n == 1){
-		x = d_from;
-		double aux = parser.Eval();
-		x = d_to;
-        return (s = 0.5*(d_to - d_from)*(aux + parser.Eval()));
-    } else {
-        int it = 1;
-        for(int j=1; j < n-1; j++)
-            it<<=1;
+	QString var = ((Integration *)params)->variable();
+	QString formula = ((Integration *)params)->formula();
 
-        double tnm = it;
-        double del = (d_to - d_from)/tnm;
-        x = d_from + 0.5*del;
-        double sum = 0.0;
-        for(int j=1; j <= it; j++, x += del)
-            sum += parser.Eval();
+	MyParser parser;
+	parser.DefineVar(var.ascii(), &x);
+	parser.SetExpr(formula.ascii());
 
-        s = 0.5*(s + (d_to - d_from)*sum/tnm);
-        return s;
-    }
+	try {
+		result = parser.Eval();
+	} catch (mu::ParserError &e){
+		QMessageBox::critical(0, "QtiPlot - Input error", QString::fromStdString(e.GetMsg()));
+	}
+
+	return result;
 }
 
-// Using Numerical Recipes. This is Romberg Integration method.
-int Integration::romberg()
+double Integration::gslIntegration()
 {
-    d_area = 0.0;
-	double *s = new double[d_max_iterations + 1];
-	double *h = new double[d_max_iterations + 2];
-	h[1] = 1.0;
-	int j;
-	for(j = 1; j <= d_max_iterations; j++){
-        s[j] = trapezf(j);
-		if(j > d_method){
-		    double ss, dss;
-			polint(&h[j-d_method], &s[j-d_method], d_method, 0.0, &ss, &dss);
-			if (fabs(dss) <= d_tolerance * fabs(ss)){
-                d_area = ss;
-                break;
-			}
-		}
-		h[j+1] = 0.25*h[j];
-	}
-    delete[] s;
-    delete[] h;
-    return j;
+	gsl_integration_workspace * w = gsl_integration_workspace_alloc (d_workspace_size);
+
+	gsl_function F;
+	F.function = &evalFunction;
+	F.params = this;
+
+	gsl_integration_qags (&F, d_from, d_to, 0, d_tolerance, d_workspace_size, w, &d_area, &d_error);
+
+	gsl_integration_workspace_free (w);
+	return d_area;
 }
 
 QString Integration::logInfo()
@@ -205,12 +182,12 @@ QString Integration::logInfo()
 
 	QString logInfo = "[" + QDateTime::currentDateTime().toString(Qt::LocalDate);
 	if (d_integrand == AnalyticalFunction){
-		logInfo += "\n" + tr("Numerical integration of") + " f(" + d_variable + ") = " + d_formula + " ";
-		logInfo += tr("using a %1 order method").arg(d_method) + "\n";
+		logInfo += "\n" + tr("Numerical integration of") + " f(" + d_variable + ") = " + d_formula + "\n";
 		logInfo += tr("From") + " x = " + locale.toString(d_from, 'g', prec) + " ";
 		logInfo += tr("to") + " x = " + locale.toString(d_to, 'g', prec) + "\n";
 		logInfo += tr("Tolerance") + " = " + locale.toString(d_tolerance, 'g', prec) + "\n";
-		logInfo += tr("Iterations") + ": " + QString::number(romberg()) + "\n";
+		logInfo += tr("Area") + " = " + locale.toString(gslIntegration(), 'g', prec) + "\n";
+		logInfo += tr("Error") + " = " + locale.toString(d_error, 'g', prec);
 	} else if (d_integrand == DataSet){
 		if (d_graph)
 			logInfo += tr("\tPlot")+ ": ''" + d_graph->multiLayer()->objectName() + "'']\n";
@@ -236,21 +213,11 @@ QString Integration::logInfo()
     	logInfo += tr("Peak at") + " x = " + locale.toString(d_x[maxID], 'g', prec)+"\t";
 		logInfo += "y = " + locale.toString(d_y[maxID], 'g', prec)+"\n";
 		d_area = trapez();
+		logInfo += tr("Area") + " = " + locale.toString(d_area, 'g', prec);
 	}
 
-	logInfo += tr("Area") + "=" + locale.toString(d_area, 'g', prec);
 	logInfo += "\n-------------------------------------------------------------\n";
     return logInfo;
-}
-
-void Integration::setMethodOrder(int n)
-{
-    if (n < 1 || n > 5){
-        QMessageBox::critical((ApplicationWindow *)parent(), tr("QtiPlot - Error"),
-        tr("Unknown integration method. Valid values must be in the range: 1 (Trapezoidal Method) to 5."));
-        return;
-    }
-    d_method = n;
 }
 
 void Integration::output()

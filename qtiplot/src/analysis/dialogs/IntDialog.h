@@ -2,7 +2,7 @@
     File                 : IntDialog.h
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2004-2007 by Ion Vasilief, Vasileios Gkanis
+	Copyright            : (C) 2004-2010 by Ion Vasilief
     Email (use @ for *)  : ion_vasilief*yahoo.fr
     Description          : Integration options dialog
 
@@ -58,7 +58,6 @@ private:
     QCheckBox* boxPlot;
 	ScriptEdit* boxName;
 	QLineEdit* boxVariable;
-	QSpinBox* boxOrder;
 	QSpinBox* boxSteps;
 	DoubleSpinBox* boxStart;
 	DoubleSpinBox* boxEnd;
