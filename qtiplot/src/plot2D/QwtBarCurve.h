@@ -65,6 +65,7 @@ private:
 	QList <QwtBarCurve *> stackedCurvesList() const;
 	double stackOffset(int i, QList <QwtBarCurve *> stack) const;
 
+protected:
 	int bar_offset;
 	int bar_gap;
 	bool d_is_stacked;

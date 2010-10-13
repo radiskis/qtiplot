@@ -2350,6 +2350,7 @@ void PlotDialog::setActiveCurve(CurveTreeItem *item)
 
     PlotCurve *c = (PlotCurve*)i;
 	btnEditCurve->setVisible(c->type() != Graph::Function);
+	boxLabelsColumn->setEnabled(true);
 
 	int curveType = item->plotItemStyle();
     if (curveType == Graph::Pie){
@@ -2468,6 +2469,7 @@ void PlotDialog::setActiveCurve(CurveTreeItem *item)
     if (curveType == Graph::Histogram){//Histogram page
         QwtHistogram *h = (QwtHistogram*)i;
         if (h){
+			boxLabelsColumn->setEnabled(false);
             automaticBox->setChecked(h->autoBinning());
             binSizeBox->setText(QString::number(h->binSize()));
             histogramBeginBox->setText(QString::number(h->begin()));
@@ -2566,7 +2568,7 @@ void PlotDialog::setActiveCurve(CurveTreeItem *item)
 	showAllLabelControls();
 
     labelsGroupBox->blockSignals(true);
-    labelsGroupBox->setChecked(dc->hasLabels());
+	labelsGroupBox->setChecked(dc->hasVisibleLabels());
 
     QStringList cols = dc->table()->columnsList();
     boxLabelsColumn->blockSignals(true);
@@ -3026,7 +3028,7 @@ bool PlotDialog::acceptParams()
 			QString table = t[0];
 			QStringList cols = t[1].split(",", QString::SkipEmptyParts);
 
-			if (labelsGroupBox->isChecked()){
+			if (labelsGroupBox->isChecked() && boxLabelsColumn->isEnabled()){
 				c->setLabelsColumnName(boxLabelsColumn->currentText());
 
 				if (cols.count() == 3)
@@ -3037,9 +3039,16 @@ bool PlotDialog::acceptParams()
 					cols << boxLabelsColumn->currentText().remove(table + "_") + "(L)";
 				item->setText(0, table + ": " + cols.join(","));
 			} else {
-				c->setLabelsColumnName(QString());
-				cols.pop_back();
-				item->setText(0, table + ": " + cols.join(","));
+				if (c->type() == Graph::Histogram) {
+					if (!labelsGroupBox->isChecked())
+						c->clearLabels();
+					else
+						c->setLabelsColumnName(QString());
+				} else if (cols.size() > 1){
+					c->setLabelsColumnName(QString());
+					cols.pop_back();
+					item->setText(0, table + ": " + cols.join(","));
+				}
 			}
 
 			c->setLabelsRotation(boxLabelsAngle->value());
