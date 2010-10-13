@@ -3015,6 +3015,7 @@ CurveLayout Graph::initCurveLayout(int style, int curves, bool guessLayout)
 			cl.lCol = indexedColors[i];
 		cl.aCol = cl.lCol;
 		cl.sType = 0;
+		cl.aStyle = 4;
 	} else if (style == Area){
 		cl.aCol = cl.lCol;
 		cl.sType = 0;

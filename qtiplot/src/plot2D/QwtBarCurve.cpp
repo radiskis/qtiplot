@@ -286,7 +286,8 @@ return 0;
 
 QString QwtBarCurve::saveToString()
 {
+	QString s = DataCurve::saveToString();
 	if (d_is_stacked)
-		return "<StackWhiteOut>1</StackWhiteOut>\n";
-	return QString::null;
+		s += "<StackWhiteOut>1</StackWhiteOut>\n";
+	return s;
 }

@@ -38,22 +38,25 @@ QwtHistogram::QwtHistogram(Table *t, const QString& name, int startRow, int endR
 	QwtBarCurve(QwtBarCurve::Vertical, t, "", name, startRow, endRow),
 	d_autoBin(true)
 {
-    d_matrix = 0;
-    setType(Graph::Histogram);
-	setPlotStyle(Graph::Histogram);
-    setStyle(QwtPlotCurve::UserCurve);
+	init();
 }
 
 QwtHistogram::QwtHistogram(Matrix *m):
     QwtBarCurve(QwtBarCurve::Vertical, NULL, "matrix", m->objectName(), 0, 0)
 {
     if (m){
-        d_autoBin = true;
+		init();
         d_matrix = m;
-        setType(Graph::Histogram);
-		setPlotStyle(Graph::Histogram);
-        setStyle(QwtPlotCurve::UserCurve);
     }
+}
+
+void QwtHistogram::init()
+{
+	d_matrix = 0;
+	bar_gap = 0;
+	setType(Graph::Histogram);
+	setPlotStyle(Graph::Histogram);
+	setStyle(QwtPlotCurve::UserCurve);
 }
 
 void QwtHistogram::copy(QwtHistogram *h)
@@ -217,6 +220,8 @@ void QwtHistogram::loadData()
 	d_max = gsl_histogram_max_val(h);
 
 	gsl_histogram_free (h);
+	if (d_show_labels)
+		loadLabels();
 }
 
 void QwtHistogram::loadDataFromMatrix()
@@ -280,4 +285,61 @@ void QwtHistogram::loadDataFromMatrix()
 	d_max = gsl_histogram_max_val(h);
 
 	gsl_histogram_free (h);
+	if (d_show_labels)
+		loadLabels();
+}
+
+
+void QwtHistogram::loadLabels()
+{
+	clearLabels();
+
+	int size = this->dataSize();
+	if (!size)
+		return;
+
+	QwtPlot *d_plot = plot();
+	if (!d_plot)
+		return;
+
+	int index = 0;
+	for (int i = 0; i < size; i++){
+		PlotMarker *m = new PlotMarker(index, d_labels_angle);
+
+		QwtText t = QwtText(QString::number(y(i)));
+		t.setColor(d_labels_color);
+		t.setFont(d_labels_font);
+		if (d_white_out_labels)
+			t.setBackgroundBrush(QBrush(Qt::white));
+		else
+			t.setBackgroundBrush(QBrush(Qt::transparent));
+		m->setLabel(t);
+
+		int x_axis = xAxis();
+		int y_axis = yAxis();
+		m->setAxis(x_axis, y_axis);
+
+		QSize size = t.textSize();
+		int dx = int(d_labels_x_offset*0.01*size.height());
+		int dy = -int((d_labels_y_offset*0.01 + 0.5)*size.height());
+		int x2 = d_plot->transform(x_axis, x(index)) + dx;
+		int y2 = d_plot->transform(y_axis, y(index)) + dy;
+		switch(d_labels_align){
+			case Qt::AlignLeft:
+			break;
+			case Qt::AlignHCenter:
+				x2 -= size.width()/2;
+			break;
+			case Qt::AlignRight:
+				x2 -= size.width();
+			break;
+		}
+		m->setXValue(d_plot->invTransform(x_axis, x2));
+		m->setYValue(d_plot->invTransform(y_axis, y2));
+		m->attach(d_plot);
+		d_labels_list << m;
+		index++;
+	}
+
+	d_show_labels = true;
 }

@@ -181,6 +181,7 @@ public:
 
 	void setVisible(bool on);
 
+	bool hasVisibleLabels(){return d_show_labels;};
 	bool selectedLabels(const QPoint& pos);
 	bool hasSelectedLabels();
 	void setLabelsSelected(bool on = true);
@@ -192,7 +193,7 @@ protected:
         virtual void drawCurve(QPainter *p, int style, const QwtScaleMap &xMap, const QwtScaleMap &yMap, int from, int to) const;
 
 	bool validCurveType();
-    void loadLabels();
+	virtual void loadLabels();
 
 	//! List of the error bar curves associated to this curve.
 	QList <ErrorBarsCurve *> d_error_bars;
@@ -219,6 +220,7 @@ protected:
 	QFont d_labels_font;
 	double d_labels_angle;
 	bool d_white_out_labels;
+	bool d_show_labels;
 	int d_labels_align, d_labels_x_offset, d_labels_y_offset;
 	//! Keeps track of the plot marker on which the user clicked when selecting the labels.
 	PlotMarker *d_selected_label;

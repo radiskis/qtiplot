@@ -63,10 +63,13 @@ public:
 	Matrix* matrix(){return d_matrix;};
 
 private:
+	void init();
 	void draw(QPainter *painter,const QwtScaleMap &xMap,
 		const QwtScaleMap &yMap, int from, int to) const;
 
     void loadDataFromMatrix();
+	virtual void loadLabels();
+
     Matrix *d_matrix;
 
 	bool d_autoBin;
