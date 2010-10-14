@@ -1444,11 +1444,25 @@ The active items appearing in a menu depends upon which project window is active
   </listitem>
 </varlistentry>
 <!--************************************************************************** -->
-<varlistentry>
-  <term>Analysis -> Integrate...</term>
+<varlistentry id="integrate-curve-cmd">
+  <term>Analysis -> Integrate</term>
   <listitem>
-    <para>Opens the <link linkend="integrate-dialog">Integration dialog</link>, allowing to choose the curve to integrate and the integration method.</para>
-    <para>This command can't be used to obtain a cumulative curve from a selected curve, it can only compute the integral of the data between two limits. The result is given in the <link linkend="sec-intro-log-window">Log Panel</link>.</para>
+    <para>This command performs a piecewise numerical integration of a curve on the selected layer. Curves are integrated using the trapezoidal rule. There must be at least one curve on the layer. If there are multiple curves, a dialog will be opened asking you to select which curve to use for the integration:</para>
+    <informalfigure id="fig-integrate-curve">
+      <mediaobject>
+        <imageobject>
+          <imagedata  format="PNG" fileref="pics/integrate-curve.png"/>
+        </imageobject>
+      </mediaobject>
+    </informalfigure> 
+<para> After selecting a curve, you may either prodeed by clicking "OK" or abort with "Cancel". If there is only one curve on the layer, the integration is performed immediately upon selecting the &integrate-curve-cmd; command. A new Graph Window will be created containing a plot of the integrated curve, the data for which is stored in a new (hidden) table. </para>
+  </listitem>
+</varlistentry>
+<!--************************************************************************** -->
+<varlistentry>
+  <term>Analysis -> Integrate Function...</term>
+  <listitem>
+    <para>This command provides the capability of performing the numerical integration of a user defined function. The <link linkend="integrate-function-dialog">Function Integration dialog</link> is opened when this command is executed.  This dialog provides for the definition of the function, the variable of integration, and the parameters that control the integration. Integration is performed using the QAGS algorithm from the GNU Scientific Library. For many functions, all you need do is set the limits of integration and click the "Integrate" button. The default values for the other parameters will usually produce excellent results. For some functions, especially those containing singularities and discontinuities, you may need to experiment with the number of sub-intervals and the tolerance limit to obtain acceptable results. However, a detailed discussion of the use of these 2 parameters is beyond the scope of this manual. If the <emphasis>Plot Area </emphasis> option is checked, a curve of the integrated function will be added to the currently active layer. In any case, an entry is made in the <link linkend="sec-intro-log-window">Log Panel</link> which contains the numerical result of the computed definite integral over the specified interval.</para>
   </listitem>
 </varlistentry>
 <!--************************************************************************** -->

@@ -767,10 +767,13 @@
 <!ENTITY translate-horizontal-lnk '<link linkend="translate-horizontal-cmd"><command>Translate -> Horizontal</command> command</link>'>
 <!ENTITY differentiate-cmd "<command>Differentiate</command>">
 <!ENTITY differentiate-lnk '<link linkend="differentiate-cmd"><command>Differentiate</command> command</link>'>
-<!ENTITY integrate-cmd "<command>Integrate...</command>">
-<!ENTITY integrate-lnk '<link linkend="integrate-cmd"><command>Integrate...</command> command</link>'>
+
+<!ENTITY integrate-curve-cmd "<command>Integrate Curve</command>">
+<!ENTITY integrate-curve-lnk '<link linkend="integrate-curve-cmd">&integrate-curve-cmd;</link>'>
+
 <!ENTITY integrate-function-cmd "<command>Integrate Function...</command>">
-<!ENTITY integrate-function-lnk '<link linkend="integrate-function-cmd"><command>Integrate Function...</command> command</link>'>
+<!ENTITY integrate-function-lnk '<link linkend="integrate-function-cmd">&integrate-function-cmd;</link>'>
+
 <!ENTITY smooth-cmd "<command>Smooth</command>">
 <!ENTITY smooth-lnk '<link linkend="smooth-cmd"><command>Smooth</command> command</link>'>
 <!ENTITY savitsky-golay-cmd "<command>Smooth -> Savitsky-Golay...</command>">
