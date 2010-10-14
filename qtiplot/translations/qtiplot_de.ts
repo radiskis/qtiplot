@@ -17160,7 +17160,7 @@ die Spalten unterschiedlich viele Zeilen haben.</translation>
     </message>
     <message>
         <source>QtiPlot - Input error</source>
-        <translation type="obsolete">QtiPlot - Eingabefehler</translation>
+        <translation type="unfinished">QtiPlot - Eingabefehler</translation>
     </message>
     <message>
         <source>Please give a number larger or equal to the minimum value of X, for the lower limit.
@@ -17248,7 +17248,7 @@ Die Grenzen müssen innerhalb des X-Bereichs sein. Fall diese Werte nicht bekann
     </message>
     <message>
         <source>QtiPlot</source>
-        <translation type="obsolete">QtiPlot</translation>
+        <translation type="unfinished">QtiPlot</translation>
     </message>
     <message>
         <source>Warning</source>
@@ -17268,11 +17268,11 @@ Die Grenzen müssen innerhalb des X-Bereichs sein. Fall diese Werte nicht bekann
     </message>
     <message>
         <source>Order (1 - 5, 1 = Trapezoidal Rule)</source>
-        <translation>Ordnung (1-5, 1 = Trapez-Regel)</translation>
+        <translation type="obsolete">Ordnung (1-5, 1 = Trapez-Regel)</translation>
     </message>
     <message>
         <source>Number of iterations (Max=20)</source>
-        <translation>Anzahl der Iterationen (Max=20)</translation>
+        <translation type="obsolete">Anzahl der Iterationen (Max=20)</translation>
     </message>
     <message>
         <source>Plot area</source>
@@ -17281,6 +17281,38 @@ Die Grenzen müssen innerhalb des X-Bereichs sein. Fall diese Werte nicht bekann
     <message>
         <source>&amp;Plot area</source>
         <translation>&amp;Diagrammfläche</translation>
+    </message>
+    <message>
+        <source>&amp;Add</source>
+        <translation type="unfinished">&amp;Hinzufügen</translation>
+    </message>
+    <message>
+        <source>Clea&amp;r</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Rece&amp;nt</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Click here to select a recently typed expression</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Subintervals</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sorry, there are no recent expressions available!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Recent Functions</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Please, choose a function:</source>
+        <translation type="unfinished">Bitte eine Funktion auswählen:</translation>
     </message>
 </context>
 <context>
@@ -17299,11 +17331,11 @@ Die Grenzen müssen innerhalb des X-Bereichs sein. Fall diese Werte nicht bekann
     </message>
     <message>
         <source>using a %1 order method</source>
-        <translation>mit einer Methode %1. Ordnung</translation>
+        <translation type="obsolete">mit einer Methode %1. Ordnung</translation>
     </message>
     <message>
         <source>Iterations</source>
-        <translation>Iterationen</translation>
+        <translation type="obsolete">Iterationen</translation>
     </message>
     <message>
         <source>Tolerance</source>
@@ -17335,11 +17367,11 @@ Die Grenzen müssen innerhalb des X-Bereichs sein. Fall diese Werte nicht bekann
     </message>
     <message>
         <source>QtiPlot - Error</source>
-        <translation>QtiPlot - Fehler</translation>
+        <translation type="obsolete">QtiPlot - Fehler</translation>
     </message>
     <message>
         <source>Unknown integration method. Valid values must be in the range: 1 (Trapezoidal Method) to 5.</source>
-        <translation>Unbekannte Integrationsmethode. Gültige Werte müssen im Bereich 1 (Trapezoidalmethode) bis 5 liegen.</translation>
+        <translation type="obsolete">Unbekannte Integrationsmethode. Gültige Werte müssen im Bereich 1 (Trapezoidalmethode) bis 5 liegen.</translation>
     </message>
     <message>
         <source>	Plot</source>
@@ -17347,7 +17379,7 @@ Die Grenzen müssen innerhalb des X-Bereichs sein. Fall diese Werte nicht bekann
     </message>
     <message>
         <source>QtiPlot - Input error</source>
-        <translation>QtiPlot - Eingabefehler</translation>
+        <translation type="obsolete">QtiPlot - Eingabefehler</translation>
     </message>
     <message>
         <source>From</source>
@@ -17356,6 +17388,10 @@ Die Grenzen müssen innerhalb des X-Bereichs sein. Fall diese Werte nicht bekann
     <message>
         <source>using the Trapezoidal Rule</source>
         <translation>benutze die Trapez-Regel</translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation type="unfinished">Fehler</translation>
     </message>
 </context>
 <context>

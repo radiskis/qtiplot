@@ -100,6 +100,7 @@ class Filter : public QObject
 		Graph *outputGraph(){return d_output_graph;};
 
         bool error(){return d_init_err;};
+		void setError(bool on = true){d_init_err = on;};
 
 		virtual void enableGraphicsDisplay(bool on = true, Graph *g = 0);
 

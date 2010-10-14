@@ -9163,15 +9163,55 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Order (1 - 5, 1 = Trapezoidal Rule)</source>
-        <translation>Порядок (1 - 5, 1 = метод трапеций)</translation>
+        <translation type="obsolete">Порядок (1 - 5, 1 = метод трапеций)</translation>
     </message>
     <message>
         <source>Number of iterations (Max=20)</source>
-        <translation>Число итераций (максимум=20)</translation>
+        <translation type="obsolete">Число итераций (максимум=20)</translation>
     </message>
     <message>
         <source>&amp;Plot area</source>
         <translation>&amp;Построить область</translation>
+    </message>
+    <message>
+        <source>&amp;Add</source>
+        <translation type="unfinished">&amp;Добавить</translation>
+    </message>
+    <message>
+        <source>Clea&amp;r</source>
+        <translation type="unfinished">&amp;Очистить</translation>
+    </message>
+    <message>
+        <source>Rece&amp;nt</source>
+        <translation type="unfinished">По&amp;следние</translation>
+    </message>
+    <message>
+        <source>Click here to select a recently typed expression</source>
+        <translation type="unfinished">Выбрать одно из последних введённых выражений</translation>
+    </message>
+    <message>
+        <source>Subintervals</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>QtiPlot - Input error</source>
+        <translation type="unfinished">QtiPlot - Ошибка ввода</translation>
+    </message>
+    <message>
+        <source>QtiPlot</source>
+        <translation type="unfinished">QtiPlot</translation>
+    </message>
+    <message>
+        <source>Sorry, there are no recent expressions available!</source>
+        <translation type="unfinished">Нет доступных выражений!</translation>
+    </message>
+    <message>
+        <source>Recent Functions</source>
+        <translation type="unfinished">Последние функции</translation>
+    </message>
+    <message>
+        <source>Please, choose a function:</source>
+        <translation type="unfinished">Выбрать функцию:</translation>
     </message>
 </context>
 <context>
@@ -9186,7 +9226,7 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Iterations</source>
-        <translation>Итераций</translation>
+        <translation type="obsolete">Итераций</translation>
     </message>
     <message>
         <source>Numerical integration of</source>
@@ -9202,7 +9242,7 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>QtiPlot - Error</source>
-        <translation>QtiPlot - Ошибка</translation>
+        <translation type="obsolete">QtiPlot - Ошибка</translation>
     </message>
     <message>
         <source>Tolerance</source>
@@ -9210,7 +9250,7 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Unknown integration method. Valid values must be in the range: 1 (Trapezoidal Method) to 5.</source>
-        <translation>Неизвестный метод интегрирования. Допустимые значения находятся в диапазоне от 1 (метод трапеций) до 5.</translation>
+        <translation type="obsolete">Неизвестный метод интегрирования. Допустимые значения находятся в диапазоне от 1 (метод трапеций) до 5.</translation>
     </message>
     <message>
         <source>from</source>
@@ -9222,11 +9262,11 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>using a %1 order method</source>
-        <translation>используется метод %1 порядка</translation>
+        <translation type="obsolete">используется метод %1 порядка</translation>
     </message>
     <message>
         <source>QtiPlot - Input error</source>
-        <translation>QtiPlot - Ошибка ввода</translation>
+        <translation type="obsolete">QtiPlot - Ошибка ввода</translation>
     </message>
     <message>
         <source>From</source>
@@ -9239,6 +9279,10 @@ have the same number of rows.</source>
     <message>
         <source>	Plot</source>
         <translation>	График</translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation type="unfinished">Ошибка</translation>
     </message>
 </context>
 <context>

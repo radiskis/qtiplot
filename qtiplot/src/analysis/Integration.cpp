@@ -27,7 +27,6 @@
  *                                                                         *
  ***************************************************************************/
 #include "Integration.h"
-#include "nrutil.h"
 #include <MyParser.h>
 #include <MultiLayer.h>
 #include <FunctionCurve.h>
@@ -35,6 +34,7 @@
 #include <PatternBox.h>
 
 #include <QMessageBox>
+#include <QApplication>
 #include <QDateTime>
 #include <QLocale>
 
@@ -52,17 +52,6 @@ d_variable(var)
 	d_to = end;
 	if (d_to == d_from)
 		d_init_err = true;
-
-	MyParser parser;
-	double x = 0.0;
-	parser.DefineVar(d_variable.ascii(), &x);
-	parser.SetExpr(d_formula.ascii());
-	try {
-		parser.Eval();
-	} catch(mu::ParserError &e) {
-		QMessageBox::critical(parent, tr("QtiPlot - Input error"), QString::fromStdString(e.GetMsg()));
-		d_init_err = true;
-	}
 
 	setObjectName(tr("Integration"));
 	d_integrand = AnalyticalFunction;
@@ -142,8 +131,10 @@ double Integration::trapez()
 
 double evalFunction(double x, void *params)
 {
-	double result = 0.0;
+	if (((Integration *)params)->error())
+		return 0.0;
 
+	double result = 0.0;
 	QString var = ((Integration *)params)->variable();
 	QString formula = ((Integration *)params)->formula();
 
@@ -154,7 +145,9 @@ double evalFunction(double x, void *params)
 	try {
 		result = parser.Eval();
 	} catch (mu::ParserError &e){
+		QApplication::restoreOverrideCursor();
 		QMessageBox::critical(0, "QtiPlot - Input error", QString::fromStdString(e.GetMsg()));
+		((Integration *)params)->setError();
 	}
 
 	return result;
@@ -162,6 +155,9 @@ double evalFunction(double x, void *params)
 
 double Integration::gslIntegration()
 {
+	if (d_init_err)
+		return 0.0;
+
 	gsl_integration_workspace * w = gsl_integration_workspace_alloc (d_workspace_size);
 
 	gsl_function F;
@@ -176,6 +172,9 @@ double Integration::gslIntegration()
 
 QString Integration::logInfo()
 {
+	if (d_init_err)
+		return QString();
+
 	ApplicationWindow *app = (ApplicationWindow *)parent();
     QLocale locale = app->locale();
     int prec = app->d_decimal_digits;
@@ -222,13 +221,10 @@ QString Integration::logInfo()
 
 void Integration::output()
 {
-	if(d_integrand != AnalyticalFunction || d_init_err)
+	if (d_integrand != AnalyticalFunction || d_init_err || !d_graphics_display)
 		return;
 
-	if (!d_output_graph)
-		return;
-
-	FunctionCurve* c = d_output_graph->addFunction(QStringList(d_formula), d_from, d_to, d_points, d_variable, FunctionCurve::Normal);
+	FunctionCurve *c = d_output_graph->addFunction(QStringList(d_formula), d_from, d_to, d_points, d_variable, FunctionCurve::Normal);
 	if (c){
 		QColor color = c->pen().color();
 		Qt::BrushStyle brushStyle = Qt::BDiagPattern;
@@ -237,8 +233,7 @@ void Integration::output()
 			color.setAlpha(app->defaultCurveAlpha);
 			brushStyle = PatternBox::brushStyle(app->defaultCurveBrush);
 		}
-
 		c->setBrush(QBrush(color, brushStyle));
-		d_output_graph->replot();
 	}
+	d_output_graph->replot();
 }

@@ -15540,30 +15540,28 @@ MultiLayer* ApplicationWindow::plotImageProfiles(Matrix *m)
 #ifdef OPJ_IMPORT
 ApplicationWindow* ApplicationWindow::importOPJ(const QString& filename, bool factorySettings, bool newProject)
 {
-    if (filename.endsWith(".opj", Qt::CaseInsensitive) || filename.endsWith(".ogg", Qt::CaseInsensitive))
-    {
-        QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+	if (filename.endsWith(".opj", Qt::CaseInsensitive) || filename.endsWith(".ogg", Qt::CaseInsensitive)){
+		QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
 		ApplicationWindow *app = this;
 		if (newProject)
-        	app = new ApplicationWindow(factorySettings);
+			app = new ApplicationWindow(factorySettings);
 
 		app->setWindowTitle("QtiPlot - " + filename);
 		app->restoreApplicationGeometry();
 		app->projectname = filename;
 		app->updateRecentProjectsList(filename);
 
-        ImportOPJ(app, filename);
+		ImportOPJ(app, filename);
 
-        QApplication::restoreOverrideCursor();
-        return app;
-    }
-    else if (filename.endsWith(".ogm", Qt::CaseInsensitive) || filename.endsWith(".ogw", Qt::CaseInsensitive))
-    {
+		app->explorerWindow->setVisible(true);
+		QApplication::restoreOverrideCursor();
+		return app;
+	} else if (filename.endsWith(".ogm", Qt::CaseInsensitive) || filename.endsWith(".ogw", Qt::CaseInsensitive)){
 		ImportOPJ(this, filename);
 		updateRecentProjectsList(filename);
-        return this;
-    }
+		return this;
+	}
 	return 0;
 }
 #endif

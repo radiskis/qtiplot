@@ -14935,7 +14935,7 @@ har samma antal rader.</translation>
     </message>
     <message>
         <source>QtiPlot</source>
-        <translation type="obsolete">QtiPlot</translation>
+        <translation type="unfinished">QtiPlot</translation>
     </message>
     <message>
         <source>Warning</source>
@@ -14951,7 +14951,7 @@ har samma antal rader.</translation>
     </message>
     <message>
         <source>QtiPlot - Input error</source>
-        <translation type="obsolete">QtiPlot - Indatafel</translation>
+        <translation type="unfinished">QtiPlot - Indatafel</translation>
     </message>
     <message>
         <source>Please give a number larger or equal to the minimum value of X, for the lower limit.
@@ -15015,11 +15015,11 @@ Gränserna måste vara inom definitionsområdet för x; om du inte vet maximum- 
     </message>
     <message>
         <source>Order (1 - 5, 1 = Trapezoidal Rule)</source>
-        <translation>Ordning (1 - 5, 1 = trapetsregel)</translation>
+        <translation type="obsolete">Ordning (1 - 5, 1 = trapetsregel)</translation>
     </message>
     <message>
         <source>Number of iterations (Max=20)</source>
-        <translation>Antal iterationer (Max=20)</translation>
+        <translation type="obsolete">Antal iterationer (Max=20)</translation>
     </message>
     <message>
         <source>Plot area</source>
@@ -15028,6 +15028,38 @@ Gränserna måste vara inom definitionsområdet för x; om du inte vet maximum- 
     <message>
         <source>&amp;Plot area</source>
         <translation>&amp;Rityta</translation>
+    </message>
+    <message>
+        <source>&amp;Add</source>
+        <translation type="unfinished">&amp;Lägg till</translation>
+    </message>
+    <message>
+        <source>Clea&amp;r</source>
+        <translation type="unfinished">&amp;Rensa</translation>
+    </message>
+    <message>
+        <source>Rece&amp;nt</source>
+        <translation type="unfinished">&amp;Tidigare</translation>
+    </message>
+    <message>
+        <source>Click here to select a recently typed expression</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Subintervals</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sorry, there are no recent expressions available!</source>
+        <translation type="unfinished">Tyvärr, det finns inga tidigare uttryck tillgängliga!</translation>
+    </message>
+    <message>
+        <source>Recent Functions</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Please, choose a function:</source>
+        <translation type="unfinished">Välj en funktion:</translation>
     </message>
 </context>
 <context>
@@ -15046,11 +15078,11 @@ Gränserna måste vara inom definitionsområdet för x; om du inte vet maximum- 
     </message>
     <message>
         <source>using a %1 order method</source>
-        <translation>genom en %1-ordningens metod</translation>
+        <translation type="obsolete">genom en %1-ordningens metod</translation>
     </message>
     <message>
         <source>Iterations</source>
-        <translation>Iterationer</translation>
+        <translation type="obsolete">Iterationer</translation>
     </message>
     <message>
         <source>Tolerance</source>
@@ -15082,11 +15114,11 @@ Gränserna måste vara inom definitionsområdet för x; om du inte vet maximum- 
     </message>
     <message>
         <source>QtiPlot - Error</source>
-        <translation>QtiPlot - Fel</translation>
+        <translation type="obsolete">QtiPlot - Fel</translation>
     </message>
     <message>
         <source>Unknown integration method. Valid values must be in the range: 1 (Trapezoidal Method) to 5.</source>
-        <translation>Okänd integrationsmetod. Giltiga värden måste vara i området: 1 (Trapestmetod) till 5.</translation>
+        <translation type="obsolete">Okänd integrationsmetod. Giltiga värden måste vara i området: 1 (Trapestmetod) till 5.</translation>
     </message>
     <message>
         <source>	Plot</source>
@@ -15094,7 +15126,7 @@ Gränserna måste vara inom definitionsområdet för x; om du inte vet maximum- 
     </message>
     <message>
         <source>QtiPlot - Input error</source>
-        <translation>QtiPlot - Indatafel</translation>
+        <translation type="obsolete">QtiPlot - Indatafel</translation>
     </message>
     <message>
         <source>From</source>
@@ -15103,6 +15135,10 @@ Gränserna måste vara inom definitionsområdet för x; om du inte vet maximum- 
     <message>
         <source>using the Trapezoidal Rule</source>
         <translation>använder trapetsregel</translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation type="unfinished">Fel</translation>
     </message>
 </context>
 <context>

@@ -9115,15 +9115,55 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Order (1 - 5, 1 = Trapezoidal Rule)</source>
-        <translation>Ordre (1 - 5, 1 = règle du Trapezoïde)</translation>
+        <translation type="obsolete">Ordre (1 - 5, 1 = règle du Trapezoïde)</translation>
     </message>
     <message>
         <source>Number of iterations (Max=20)</source>
-        <translation>Nombre d&apos;itérations (Max = 20)</translation>
+        <translation type="obsolete">Nombre d&apos;itérations (Max = 20)</translation>
     </message>
     <message>
         <source>&amp;Plot area</source>
         <translation>Aire du &amp;graphe</translation>
+    </message>
+    <message>
+        <source>&amp;Add</source>
+        <translation type="unfinished">&amp;Ajouter</translation>
+    </message>
+    <message>
+        <source>Clea&amp;r</source>
+        <translation type="unfinished">Efface&amp;r</translation>
+    </message>
+    <message>
+        <source>Rece&amp;nt</source>
+        <translation type="unfinished">Réce&amp;nt</translation>
+    </message>
+    <message>
+        <source>Click here to select a recently typed expression</source>
+        <translation type="unfinished">Cliquez ici pour sélectionner une expression récente</translation>
+    </message>
+    <message>
+        <source>Subintervals</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>QtiPlot - Input error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>QtiPlot</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sorry, there are no recent expressions available!</source>
+        <translation type="unfinished">Désolé, il n&apos;y a pas d&apos;expressions récentes !</translation>
+    </message>
+    <message>
+        <source>Recent Functions</source>
+        <translation type="unfinished">Fonctions récentes</translation>
+    </message>
+    <message>
+        <source>Please, choose a function:</source>
+        <translation type="unfinished">Veuillez choisir une fonction :</translation>
     </message>
 </context>
 <context>
@@ -9138,11 +9178,11 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>using a %1 order method</source>
-        <translation>en utilisant  une méthode d&apos;ordre %1</translation>
+        <translation type="obsolete">en utilisant  une méthode d&apos;ordre %1</translation>
     </message>
     <message>
         <source>Iterations</source>
-        <translation>Nombre d&apos;itérations</translation>
+        <translation type="obsolete">Nombre d&apos;itérations</translation>
     </message>
     <message>
         <source>Tolerance</source>
@@ -9170,11 +9210,11 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>QtiPlot - Error</source>
-        <translation>QtiPlot - Erreur</translation>
+        <translation type="obsolete">QtiPlot - Erreur</translation>
     </message>
     <message>
         <source>Unknown integration method. Valid values must be in the range: 1 (Trapezoidal Method) to 5.</source>
-        <translation>Méthode d&apos;intégration inconnue. Les valeurs doivent être comprises entre 1 (Trapêze) et 5.</translation>
+        <translation type="obsolete">Méthode d&apos;intégration inconnue. Les valeurs doivent être comprises entre 1 (Trapêze) et 5.</translation>
     </message>
     <message>
         <source>	Plot</source>
@@ -9182,7 +9222,7 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>QtiPlot - Input error</source>
-        <translation>Qtiplot -Erreur d&apos;entrée-sortie-</translation>
+        <translation type="obsolete">Qtiplot -Erreur d&apos;entrée-sortie-</translation>
     </message>
     <message>
         <source>From</source>
@@ -9191,6 +9231,10 @@ have the same number of rows.</source>
     <message>
         <source>using the Trapezoidal Rule</source>
         <translation>utiliser les règles du trapèzoïde</translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation type="unfinished">Erreur</translation>
     </message>
 </context>
 <context>

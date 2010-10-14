@@ -9155,7 +9155,7 @@ K tomu lze použít následujících zvláštních kódů:
     </message>
     <message>
         <source>Number of iterations (Max=20)</source>
-        <translation>Počet opakování (iterací) (Max=20)</translation>
+        <translation type="obsolete">Počet opakování (iterací) (Max=20)</translation>
     </message>
     <message>
         <source>Variable</source>
@@ -9167,11 +9167,51 @@ K tomu lze použít následujících zvláštních kódů:
     </message>
     <message>
         <source>Order (1 - 5, 1 = Trapezoidal Rule)</source>
-        <translation>Řád (1 - 5, 1 = lichoběžníkové pravidlo)</translation>
+        <translation type="obsolete">Řád (1 - 5, 1 = lichoběžníkové pravidlo)</translation>
     </message>
     <message>
         <source>Function</source>
         <translation>Funkce</translation>
+    </message>
+    <message>
+        <source>&amp;Add</source>
+        <translation type="unfinished">&amp;Přidat</translation>
+    </message>
+    <message>
+        <source>Clea&amp;r</source>
+        <translation type="unfinished">Vypráz&amp;dnit</translation>
+    </message>
+    <message>
+        <source>Rece&amp;nt</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Click here to select a recently typed expression</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Subintervals</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>QtiPlot - Input error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>QtiPlot</source>
+        <translation type="unfinished">QtiPlot</translation>
+    </message>
+    <message>
+        <source>Sorry, there are no recent expressions available!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Recent Functions</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Please, choose a function:</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -9198,7 +9238,7 @@ K tomu lze použít následujících zvláštních kódů:
     </message>
     <message>
         <source>QtiPlot - Error</source>
-        <translation>QtiPlot - Chyba</translation>
+        <translation type="obsolete">QtiPlot - Chyba</translation>
     </message>
     <message>
         <source>Tolerance</source>
@@ -9218,7 +9258,7 @@ K tomu lze použít následujících zvláštních kódů:
     </message>
     <message>
         <source>Unknown integration method. Valid values must be in the range: 1 (Trapezoidal Method) to 5.</source>
-        <translation>Neznámý způsob začlenění. Platné hodnoty musí být v rozsahu: 1 (lichoběžníkový způsob) do 5.</translation>
+        <translation type="obsolete">Neznámý způsob začlenění. Platné hodnoty musí být v rozsahu: 1 (lichoběžníkový způsob) do 5.</translation>
     </message>
     <message>
         <source>Peak at</source>
@@ -9226,19 +9266,23 @@ K tomu lze použít následujících zvláštních kódů:
     </message>
     <message>
         <source>using a %1 order method</source>
-        <translation>s pomocí způsobu %1. Řád</translation>
+        <translation type="obsolete">s pomocí způsobu %1. Řád</translation>
     </message>
     <message>
         <source>QtiPlot - Input error</source>
-        <translation>QtiPlot - Chyba při zadání</translation>
+        <translation type="obsolete">QtiPlot - Chyba při zadání</translation>
     </message>
     <message>
         <source>Iterations</source>
-        <translation>Opakování (iterace)</translation>
+        <translation type="obsolete">Opakování (iterace)</translation>
     </message>
     <message>
         <source>Integration</source>
         <translation>Začlenění</translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation type="unfinished">Chyba</translation>
     </message>
 </context>
 <context>
