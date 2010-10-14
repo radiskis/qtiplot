@@ -48,9 +48,7 @@ public:
 
 	void setWorkspaceSize(int size){d_workspace_size = size;};
 
-    double area(){return d_area;};
-	double error(){return d_error;};
-
+	double area(){return d_area;};
 	QString variable(){return d_variable;};
 	QString formula(){return d_formula;};
 

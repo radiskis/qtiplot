@@ -12698,11 +12698,11 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Order (1 - 5, 1 = Trapezoidal Rule)</source>
-        <translation>Ordin (1 - 5, 1 = Metoda trapezelor)</translation>
+        <translation type="obsolete">Ordin (1 - 5, 1 = Metoda trapezelor)</translation>
     </message>
     <message>
         <source>Number of iterations (Max=20)</source>
-        <translation>Număr de iteraţii (Max=20)</translation>
+        <translation type="obsolete">Număr de iteraţii (Max=20)</translation>
     </message>
     <message>
         <source>Tolerance</source>
@@ -12728,12 +12728,52 @@ have the same number of rows.</source>
         <source>&amp;Close</source>
         <translation>În&amp;chide</translation>
     </message>
+    <message>
+        <source>&amp;Add</source>
+        <translation type="unfinished">&amp;Adaugă</translation>
+    </message>
+    <message>
+        <source>Clea&amp;r</source>
+        <translation type="unfinished">Go&amp;leşte</translation>
+    </message>
+    <message>
+        <source>Rece&amp;nt</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Click here to select a recently typed expression</source>
+        <translation type="unfinished">Apăsați aici pentru a alege o expresie recent introdusă</translation>
+    </message>
+    <message>
+        <source>Subintervals</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>QtiPlot - Input error</source>
+        <translation type="unfinished">QtiPlot - Eroare</translation>
+    </message>
+    <message>
+        <source>QtiPlot</source>
+        <translation type="unfinished">QtiPlot</translation>
+    </message>
+    <message>
+        <source>Sorry, there are no recent expressions available!</source>
+        <translation type="unfinished">Ne pare rău, nu există expresii recente disponibile!</translation>
+    </message>
+    <message>
+        <source>Recent Functions</source>
+        <translation type="unfinished">Funcții recente</translation>
+    </message>
+    <message>
+        <source>Please, choose a function:</source>
+        <translation type="unfinished">Vă rugăm să alegeţi o funcţie:</translation>
+    </message>
 </context>
 <context>
     <name>Integration</name>
     <message>
         <source>QtiPlot - Input error</source>
-        <translation>QtiPlot - Eroare</translation>
+        <translation type="obsolete">QtiPlot - Eroare</translation>
     </message>
     <message>
         <source>Integration</source>
@@ -12745,7 +12785,7 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>using a %1 order method</source>
-        <translation>folosind o metodă de ordinul %1 </translation>
+        <translation type="obsolete">folosind o metodă de ordinul %1 </translation>
     </message>
     <message>
         <source>From</source>
@@ -12761,7 +12801,7 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Iterations</source>
-        <translation>Iteraţii</translation>
+        <translation type="obsolete">Iteraţii</translation>
     </message>
     <message>
         <source>	Plot</source>
@@ -12789,11 +12829,15 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>QtiPlot - Error</source>
-        <translation>QtiPlot - Eroare</translation>
+        <translation type="obsolete">QtiPlot - Eroare</translation>
     </message>
     <message>
         <source>Unknown integration method. Valid values must be in the range: 1 (Trapezoidal Method) to 5.</source>
-        <translation>Metodă de integrare necunoscută. Valorile valide trebuie să se situeze în intervalul: 1 ( metoda trapezelor) - 5.</translation>
+        <translation type="obsolete">Metodă de integrare necunoscută. Valorile valide trebuie să se situeze în intervalul: 1 ( metoda trapezelor) - 5.</translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation type="unfinished">Eroare</translation>
     </message>
 </context>
 <context>

@@ -14429,7 +14429,7 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>QtiPlot</source>
-        <translation type="obsolete">QtiPlot</translation>
+        <translation type="unfinished">QtiPlot</translation>
     </message>
     <message>
         <source>The curve &lt;b&gt; %1 &lt;/b&gt; doesn&apos;t exist anymore! Operation aborted!</source>
@@ -14441,7 +14441,7 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>QtiPlot - Input error</source>
-        <translation type="obsolete">QtiPlot - Error de entrada</translation>
+        <translation type="unfinished">QtiPlot - Error de entrada</translation>
     </message>
     <message>
         <source>Please give a number larger or equal to the minimum value of X, for the lower limit.
@@ -14503,12 +14503,8 @@ Los límites deben estar dentro del rango de x; si no conoce el máximo (mínimo
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Order (1 - 5, 1 = Trapezoidal Rule)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Number of iterations (Max=20)</source>
-        <translation type="unfinished">Número de iteraciones (Max=40) {20)?}</translation>
+        <translation type="obsolete">Número de iteraciones (Max=40) {20)?}</translation>
     </message>
     <message>
         <source>Plot area</source>
@@ -14516,6 +14512,38 @@ Los límites deben estar dentro del rango de x; si no conoce el máximo (mínimo
     </message>
     <message>
         <source>&amp;Plot area</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Add</source>
+        <translation type="unfinished">&amp;Añadir</translation>
+    </message>
+    <message>
+        <source>Clea&amp;r</source>
+        <translation type="unfinished">Limpia&amp;r</translation>
+    </message>
+    <message>
+        <source>Rece&amp;nt</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Click here to select a recently typed expression</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Subintervals</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sorry, there are no recent expressions available!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Recent Functions</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Please, choose a function:</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -14534,12 +14562,8 @@ Los límites deben estar dentro del rango de x; si no conoce el máximo (mínimo
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>using a %1 order method</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Iterations</source>
-        <translation type="unfinished">Iteraciones</translation>
+        <translation type="obsolete">Iteraciones</translation>
     </message>
     <message>
         <source>Tolerance</source>
@@ -14567,11 +14591,7 @@ Los límites deben estar dentro del rango de x; si no conoce el máximo (mínimo
     </message>
     <message>
         <source>QtiPlot - Error</source>
-        <translation type="unfinished">QtiPlot - Error</translation>
-    </message>
-    <message>
-        <source>Unknown integration method. Valid values must be in the range: 1 (Trapezoidal Method) to 5.</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">QtiPlot - Error</translation>
     </message>
     <message>
         <source>	Plot</source>
@@ -14579,7 +14599,7 @@ Los límites deben estar dentro del rango de x; si no conoce el máximo (mínimo
     </message>
     <message>
         <source>QtiPlot - Input error</source>
-        <translation type="unfinished">QtiPlot - Error de entrada</translation>
+        <translation type="obsolete">QtiPlot - Error de entrada</translation>
     </message>
     <message>
         <source>From</source>
@@ -14588,6 +14608,10 @@ Los límites deben estar dentro del rango de x; si no conoce el máximo (mínimo
     <message>
         <source>using the Trapezoidal Rule</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation type="unfinished">Error</translation>
     </message>
 </context>
 <context>

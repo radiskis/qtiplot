@@ -31,6 +31,7 @@
 
 #include <QDialog>
 
+class QComboBox;
 class QPushButton;
 class QCheckBox;
 class QLineEdit;
@@ -47,21 +48,29 @@ class IntDialog : public QDialog
 public:
     IntDialog(QWidget* parent = 0, Graph *g = 0, Qt::WFlags fl = 0 );
 
-public slots:
+private slots:
 	void accept();
+	void showFunctionLog();
+	void insertFunction();
+	void clearFunction();
 
 private:
+	bool validInput(const QString& function);
+
 	Graph *d_graph;
 
     QPushButton* buttonOk;
 	QPushButton* buttonCancel;
     QCheckBox* boxPlot;
-	ScriptEdit* boxName;
+	ScriptEdit* boxFunction;
 	QLineEdit* boxVariable;
 	QSpinBox* boxSteps;
 	DoubleSpinBox* boxStart;
 	DoubleSpinBox* boxEnd;
 	DoubleSpinBox* boxTol;
+
+	QPushButton *buttonFunctionLog, *addFunctionBtn, *buttonClear;
+	QComboBox* boxMathFunctions;
 };
 
 #endif
