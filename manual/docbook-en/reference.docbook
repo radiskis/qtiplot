@@ -89,13 +89,13 @@ The active items appearing in a menu depends upon which project window is active
           <term>&new-function-plot-cmd; (&new-function-plot-key;)</term>
           <listitem>
              <para>Opens a <link linkend="add-function-dialog">dialog</link> which is used to create a 2D plot by specifying an analytical function. See the <link linkend="sec-2d-plot-from-function">2D plot section</link> of the tutorial for a general overview of this function.</para>
-             <para>The function can be defined in cartesian, parametric or polar coordinates, see the &add-function-lnk; for more details. </para>
+             <para>The function can be defined in Cartesian, parametric or polar coordinates, see the &add-function-lnk; for more details. </para>
           </listitem>
        </varlistentry>
         <varlistentry id="new-surface-3d-plot-cmd">
           <term>&new-surface-3d-plot-cmd; (&new-surface-3d-plot-key;)</term>
           <listitem>
-             <para>Opens a <link linkend="define-surface-plot-dialog">dialog</link> which is used to create a 3D plot by specifying an analytical function. Only cartesian coordinates are available. See the <link linkend="sec-3d-plot-function">3D plot section</link> of the tutorial for more detail on this function.</para>
+             <para>Opens a <link linkend="define-surface-plot-dialog">dialog</link> which is used to create a 3D plot by specifying an analytical function. Only Cartesian coordinates are available. See the <link linkend="sec-3d-plot-function">3D plot section</link> of the tutorial for more detail on this function.</para>
           </listitem>
        </varlistentry>
     </variablelist>
@@ -540,14 +540,14 @@ The active items appearing in a menu depends upon which project window is active
 <varlistentry id="add-rectangle-cmd">
   <term>Graph -> &add-rectangle-cmd; (&add-rectangle-key;)</term>
   <listitem>
-     <para>Draws a rectangular box on the active plot layer. After selecting this command, the pointer changes to a crosshair target. Click and hold the left mouse button on the active layer to incicate the first corner of the rectangle, then drag the cursor to the opposite corner of the rectangle. Once the second point is specified, release the left mouse button to draw the rectangle. The pointer automatically changes back to normal mode.</para>
+     <para>Draws a rectangular box on the active plot layer. After selecting this command, the pointer changes to a crosshair target. Click and hold the left mouse button on the active layer to indicate the first corner of the rectangle, then drag the cursor to the opposite corner of the rectangle. Once the second point is specified, release the left mouse button to draw the rectangle. The pointer automatically changes back to normal mode.</para>
   </listitem>
 </varlistentry>
 
 <varlistentry id="add-ellipse-cmd">
   <term>Graph -> &add-ellipse-cmd; (&add-ellipse-key;)</term>
   <listitem>
-     <para>Draws a elliptical shape on the active plot layer. After selecting this command, the pointer changes to a crosshair target. Click and hold the left mouse button on the active layer to incicate the first corner of the ellipse's bounding rectangle, then drag the cursor to the opposite corner of the bounding rectangle. Once the second point is specified, release the left mouse button to draw the ellipse. The pointer automatically changes back to normal mode. Circles may be drawn using this command by setting the height and width equal. (The object properties dialog can be used to set height and width to excactly the same value.)</para>
+     <para>Draws a elliptical shape on the active plot layer. After selecting this command, the pointer changes to a crosshair target. Click and hold the left mouse button on the active layer to indicate the first corner of the ellipse's bounding rectangle, then drag the cursor to the opposite corner of the bounding rectangle. Once the second point is specified, release the left mouse button to draw the ellipse. The pointer automatically changes back to normal mode. Circles may be drawn using this command by setting the height and width equal. (The object properties dialog can be used to set height and width to exactly the same value.)</para>
   </listitem>
 </varlistentry>
 
@@ -612,7 +612,7 @@ The active items appearing in a menu depends upon which project window is active
 <varlistentry id="auto-arrange-layers-cmd">
   <term>Graph -> &auto-arrange-layers-cmd; command</term>
   <listitem>
-     <para>Automatically arranges all the layers in the active graph window. There must be at least 2 layers on the graph. Layers are packed into the smallest dimensioned array possible. All layers are scaled to fit into the existing graph window. Rows are added until a the smallest square array is filled, at which point an additional column is added. Rows are then filled and additional rows added until the array is again square. For example, 2 layers results in a 1x2 array. 3 layers produces a 2x2 array with an empth space in the second row. 4 layers produces a full 2x2 array. Adding another layer will produce a 2x3 array, with one empty space in the second row. Additional layers result in more rows and columns being added to contain all the layers.</para>
+     <para>Automatically arranges all the layers in the active graph window. There must be at least 2 layers on the graph. Layers are packed into the smallest dimensioned array possible. All layers are scaled to fit into the existing graph window. Rows are added until a the smallest square array is filled, at which point an additional column is added. Rows are then filled and additional rows added until the array is again square. For example, 2 layers results in a 1x2 array. 3 layers produces a 2x2 array with an empty space in the second row. 4 layers produces a full 2x2 array. Adding another layer will produce a 2x3 array, with one empty space in the second row. Additional layers result in more rows and columns being added to contain all the layers.</para>
   </listitem>
 </varlistentry>
 
@@ -761,7 +761,7 @@ The active items appearing in a menu depends upon which project window is active
       <varlistentry id="waterfall-plot-cmd">
 	<term>&waterfall-plot-cmd;</term>
 	<listitem>
-	  <para>Creates a new graph window containing a waterfall plot generated from data in the selected columns. Each column is drawn as a separate curve which is offset from the previous one in both <emphasis>X</emphasis> and <emphasis>Y</emphasis>, creating the so-called waterfall effect. The figure shown below is a simple example of a waterfall plot where each column is simply an attenuated version of the previous colum.</para>
+	  <para>Creates a new graph window containing a waterfall plot generated from data in the selected columns. Each column is drawn as a separate curve which is offset from the previous one in both <emphasis>X</emphasis> and <emphasis>Y</emphasis>, creating the so-called waterfall effect. The figure shown below is a simple example of a waterfall plot where each column is simply an attenuated version of the previous column.</para>
       <informalfigure id="fig-waterfall-plot">
         <mediaobject>
           <imageobject>
@@ -789,7 +789,7 @@ The active items appearing in a menu depends upon which project window is active
   <varlistentry id="stack-bar-cmd">
 	<term>Special Bar/Column -> &stack-bar-cmd;</term>
 	<listitem>
-	  <para>The &stack-bar-cmd; command plots a stack-bar for each selected row in the currently active table. They may be used to conveniently display cumulative data that changes over time, such as budgetary information. The stack-bars are drawn one above the other in a position determined by the X value of the corresponting row. Each stack-bar is composed of a set of joined segments. The widths of the segments are set by the Y values in the row and their relative positions correspond to the column order in the table. Each segment is plotted in a color corresponding to the column number of the Y value determining the segment's width. Colors, segment outlining, vertical separation of the stack-bars, and the axis values can all be customized. An example of a stack-bar plot is shown below, followed by the table that was used to generate the plot.</para>
+	  <para>The &stack-bar-cmd; command plots a stack-bar for each selected row in the currently active table. They may be used to conveniently display cumulative data that changes over time, such as budgetary information. The stack-bars are drawn one above the other in a position determined by the X value of the corresponding row. Each stack-bar is composed of a set of joined segments. The widths of the segments are set by the Y values in the row and their relative positions correspond to the column order in the table. Each segment is plotted in a color corresponding to the column number of the Y value determining the segment's width. Colors, segment outlining, vertical separation of the stack-bars, and the axis values can all be customized. An example of a stack-bar plot is shown below, followed by the table that was used to generate the plot.</para>
       <informalfigure id="stack-bar-plot">
         <mediaobject>
           <imageobject>
@@ -946,7 +946,7 @@ The active items appearing in a menu depends upon which project window is active
           </imageobject>
         </mediaobject>
       </informalfigure>
-    <para>This figure shows a typical stem-and-leaf representation of 48 random data points which are roughly gaussian (i.e., normally distributed) and uses the default binning increment of 10. </para>
+    <para>This figure shows a typical stem-and-leaf representation of 48 random data points which are roughly Gaussian (i.e., normally distributed) and uses the default binning increment of 10. </para>
 	</listitem>
       </varlistentry>
 
@@ -1455,7 +1455,7 @@ The active items appearing in a menu depends upon which project window is active
         </imageobject>
       </mediaobject>
     </informalfigure> 
-<para> After selecting a curve, you may either prodeed by clicking "OK" or abort with "Cancel". If there is only one curve on the layer, the integration is performed immediately upon selecting the &integrate-curve-cmd; command. A new Graph Window will be created containing a plot of the integrated curve, the data for which is stored in a new (hidden) table. </para>
+<para> After selecting a curve, you may either proceed by clicking "OK" or abort with "Cancel". If there is only one curve on the layer, the integration is performed immediately upon selecting the &integrate-curve-cmd; command. A new Graph Window will be created containing a plot of the integrated curve, the data for which is stored in a new (hidden) table. </para>
   </listitem>
 </varlistentry>
 <!--************************************************************************** -->
@@ -1582,7 +1582,7 @@ The active items appearing in a menu depends upon which project window is active
 	      </imageobject>
 	    </mediaobject>
 	  </figure>
-	  <para>>This command creates a new table containing the filtered data, and adds a new curve to the current layer. The curve is a plot of the filtered data.</para>
+	  <para>This command creates a new table containing the filtered data, and adds a new curve to the current layer. The curve is a plot of the filtered data.</para>
 	</listitem>
       </varlistentry>
 <!--************************************************************************** -->
@@ -1598,7 +1598,7 @@ The active items appearing in a menu depends upon which project window is active
 	      </imageobject>
 	    </mediaobject>
 	  </figure>
-	  <para>>This command creates a new table containing the filtered data, and adds a new curve to the current layer. The curve is a plot of the filtered data.</para>
+	  <para>This command creates a new table containing the filtered data, and adds a new curve to the current layer. The curve is a plot of the filtered data.</para>
 	</listitem>
       </varlistentry>
 <!--************************************************************************** -->
@@ -1784,7 +1784,7 @@ The active items appearing in a menu depends upon which project window is active
     <varlistentry id="set-column-as-label-cmd">
       <term>&set-column-as-label-cmd;</term>
       <listitem>
-        <para>Sets the selected columns as <emphasis>label</emphasis> columns. Can be used cor comments and row descriptions.</para>
+        <para>Sets the selected columns as <emphasis>label</emphasis> columns. Can be used for comments and row descriptions.</para>
       </listitem>
     </varlistentry>
 
@@ -1967,7 +1967,7 @@ The active items appearing in a menu depends upon which project window is active
 <varlistentry id="extract-data-cmd">
   <term>&extract-data-cmd;</term>
   <listitem>
-    <para>The &extract-data-cmd; command opens a dialog which allows you to define a set of conditions that are used to filter the data in the currently active table. When a condition has been defined,  <emphasis>Applying</emphasis> the condition will create a new table into which all rows that meet the condition will be copied. The original tabel is unchanged.For example, the condition <emphasis>col("1")>=.1</emphasis> will generate a new table that contains all the rows from the active table which have a value greater than 0.1 in column 1.</para>
+    <para>The &extract-data-cmd; command opens a dialog which allows you to define a set of conditions that are used to filter the data in the currently active table. When a condition has been defined,  <emphasis>Applying</emphasis> the condition will create a new table into which all rows that meet the condition will be copied. The original table is unchanged. For example, the condition <emphasis>col("1")>=.1</emphasis> will generate a new table that contains all the rows from the active table which have a value greater than 0.1 in column 1.</para>
   </listitem>
 </varlistentry>
 
