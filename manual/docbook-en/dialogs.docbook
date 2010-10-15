@@ -680,13 +680,13 @@ When the speed mode is enabled, filtering of the data is activated only for the 
     <title>Note:</title>
     <para>If the data points are modified, the fit is not re-calculated. Then, you need to remove the old fitted curve and to redo the fit with the same function and the new points.</para>
   </sidebar>
-  <para>The top of the dialog box is used to choose a function among the one which are already define. Four types of functions are availables: the user defined functions which have been saved, the classical functions proposed by &appname; in the analysis menu, the simple elementary built-in functions, and external functions via pluggins.</para>
-  <para>To choose one of these functions, you just have to select it and to click on the checkbox under the selector.</para>
-  <para>If you want to define your own function, you can use the bottom half of the dialog box. You can write you own mathematical expression or add expressions obtained with the function selector.</para>
+  <para>The top of the dialog box is used to select one of 4 <emphasis>Categories </emphasis>of functions: 1) user defined functions which have been previously saved, 2) the classical functions provided by &appname; in the analysis menu, 3) simple elementary (basic) built-in functions, and 4) external functions provided via plugins.</para>
+  <para>To choose a function, first select a category and then the desired function from the displayed Function list. Clicking on the checkbox under the selector will clear the contents of the function entry text pane (see below) and copy the selected function into it. You can also click the <emphasis>Add expression </emphasis>button to copy the selected function, but this will not clear any previous contents. If you've selected one of the "basic" functions, there will be no checkbox and you will need to use the <emphasis>Add expression </emphasis>button.</para>
+  <para>The bottom half of the dialog box allows you to define your own function. You can either write you own mathematical expression from scratch or add expressions from the function selector with the <emphasis>Add expression </emphasis>button. Once a custom expression is completed, clicking on the <emphasis>Save </emphasis>button will add the function to the list of user defined functions. The <emphasis>Name </emphasis>field will be used as the name of the function. A copy of the function is saved on disk with the extension ".fit". You can define the folder where ".fit" files are saved using either the <emphasis>Choose models folder...</emphasis> button (shown only when "User defined" is selected) or by selecting a new folder in the Save file dialog. Functions can be removed from the User Defined list by selecting them and clicking on the <emphasis>Remove</emphasis> button. You will be asked to confirm the deletion.</para>
   <figure id="fig-non-linear-curve-fit-1">
     <title>The first step of the &non-linear-curve-fit-cmd; dialog box.</title>
     <informalexample>
-      <para>This first step is used to define the function which will be used for the fitting</para>
+      <para>This first step is used to define the function which will be used for fitting. When you are ready to perform the fit, click on the &next-icon; button to activate the <emphasis>Fitting Session</emphasis>.</para>
     </informalexample>
     <mediaobject>
       <imageobject>
@@ -694,11 +694,11 @@ When the speed mode is enabled, filtering of the data is activated only for the 
       </imageobject>
     </mediaobject>
   </figure>
-  <para>The second step is to define the parameters for the fit. You have to give initial guess for the fitting parameters.</para>
+  <para>The second step is to define the parameters for the fit. You have to give an initial guess for the fitting parameters.</para>
   <figure id="fig-non-linear-curve-fit-2">
     <title>The second step of the &non-linear-curve-fit-cmd; dialog box.</title>
     <informalexample>
-      <para>This second step is used to define the parameters of the fitting</para>
+      <para>This second step is used to define the parameters of the fit.</para>
     </informalexample>
     <mediaobject>
       <imageobject>
