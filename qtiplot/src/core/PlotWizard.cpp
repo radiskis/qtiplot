@@ -460,6 +460,7 @@ void PlotWizard::plot2D(const QStringList& colList)
 		ag->updateCurveLayout(c, &cl);
 	}
 	ag->updatePlot();
+	ag->updateAxesTitles();
 	ag->newLegend();
 	g->arrangeLayers(false, true);
 	QApplication::restoreOverrideCursor();
