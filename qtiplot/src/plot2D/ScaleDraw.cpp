@@ -636,7 +636,7 @@ void ScaleDraw::draw(QPainter *painter, const QPalette& palette) const
 	pen.setColor(palette.color(QPalette::Foreground));
 	painter->setPen(pen);
 
-	int majLen = tickLength(QwtScaleDiv::MajorTick);
+	int majLen = d_plot->majorTickLength();
 	if (d_majTicks >= Both && majLen > 0){
 		const QwtValueList &ticks = this->scaleDiv().ticks(QwtScaleDiv::MajorTick);
 		for (int i = 0; i < (int)ticks.count(); i++){
@@ -646,8 +646,8 @@ void ScaleDraw::draw(QPainter *painter, const QPalette& palette) const
 		}
 	}
 
-	int minLen = tickLength(QwtScaleDiv::MinorTick);
-	if (d_minTicks >= Both && majLen > 0){
+	int minLen = d_plot->minorTickLength();
+	if (d_minTicks >= Both && minLen > 0){
 		for (int tickType = QwtScaleDiv::MinorTick; tickType < QwtScaleDiv::MajorTick; tickType++){
 			const QwtValueList &ticks = this->scaleDiv().ticks(tickType);
 			for (int i = 0; i < (int)ticks.count(); i++){

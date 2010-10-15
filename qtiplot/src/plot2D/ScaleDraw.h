@@ -52,6 +52,8 @@ public:
 	ScaleDraw(Graph *plot, const QString& formula = QString::null);
 	ScaleDraw(Graph *plot, const QStringList& labels, const QString& format, ScaleType type = Text);
 
+	Graph *plot(){return d_plot;};
+
     QString formatString();
     QString format(){return d_format_info;};
 
