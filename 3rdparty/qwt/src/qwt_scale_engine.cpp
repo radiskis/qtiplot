@@ -286,13 +286,14 @@ QwtValueList QwtScaleEngine::strip(
         return QwtValueList();
 
     QwtValueList strippedTicks;
-    for ( int i = 0; i < (int)ticks.count(); i++ )
-    {
+	double intervalSize = interval.width();
+	double lastValue = ticks.last();
+	for ( int i = 0; i < (int)ticks.count() - 1; i++ ){
 		double v = ticks[i];
-		if ( contains(interval, v) && !strippedTicks.contains(v))
+		if (contains(interval, v) && QwtScaleArithmetic::compareEps(v, lastValue, intervalSize) != 0)
 			strippedTicks += v;
     }
-    return strippedTicks;
+	return strippedTicks << lastValue;
 }
 
 /*!
@@ -747,8 +748,9 @@ void QwtLog10ScaleEngine::buildTicks(
             ticks[QwtScaleDiv::MajorTick], maxMinSteps, stepSize);
     }
     
-    for ( int i = 0; i < QwtScaleDiv::NTickTypes; i++ )
-        ticks[i] = strip(ticks[i], interval);
+	for ( int i = 0; i < QwtScaleDiv::NTickTypes; i++ )
+		ticks[i] = strip(ticks[i], interval);
+
 }
 
 QwtValueList QwtLog10ScaleEngine::buildMajorTicks(
