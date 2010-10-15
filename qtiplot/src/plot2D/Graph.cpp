@@ -686,7 +686,7 @@ void Graph::setAxisTicksLength(int axis, int majTicksType, int minTicksType,
 		sd->enableComponent (QwtAbstractScaleDraw::Ticks);
 
 	if (majTicksType == ScaleDraw::None || majTicksType == ScaleDraw::In)
-		majLength = minLength;
+		majLength = 1;
 	if (minTicksType == ScaleDraw::None || minTicksType == ScaleDraw::In)
 		minLength = 0;
 
@@ -5832,7 +5832,7 @@ void Graph::drawItems (QPainter *painter, const QRect &rect,
 	if (d_is_printing)
 		return;
 
-	for (int i=0; i<QwtPlot::axisCnt; i++){
+	for (int i = 0; i<QwtPlot::axisCnt; i++){
 		if (!axisEnabled(i))
 			continue;
 
@@ -5983,7 +5983,7 @@ void Graph::drawInwardTicks(QPainter *painter, const QRect &rect,
 			}
 
 			if (maj && d_maj_tick_length){
-				for (j = 0; j <majTicks; j++){
+				for (j = 0; j < majTicks; j++){
 					x = map.transform(majTickList[j]);
 					if ((x > low && x < high) ||
 						(x > high && !axisEnabled(QwtPlot::yRight) && !clw) ||
