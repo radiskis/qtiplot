@@ -50,6 +50,7 @@ public:
 	MyParser();
 	void addGSLConstants();
 	void setLocale(const QLocale& locale);
+	static QLocale getLocale();
 
 	const static QStringList functionsList();
 	const static QStringList functionNamesList();
