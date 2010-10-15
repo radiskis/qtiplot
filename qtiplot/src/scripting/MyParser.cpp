@@ -55,6 +55,11 @@ MyParser::MyParser()
 	}
 	gsl_set_error_handler_off();
 
+	setLocale(getLocale());
+}
+
+QLocale MyParser::getLocale()
+{
 #ifdef Q_OS_MAC
 	QSettings settings(QSettings::IniFormat,QSettings::UserScope, "ProIndependent", "QtiPlot");
 #else
@@ -68,7 +73,7 @@ MyParser::MyParser()
 	if (!cLocale)
 		locale = QLocale();
 
-	setLocale(locale);
+	return locale;
 }
 
 void MyParser::setLocale(const QLocale& locale)
@@ -106,7 +111,7 @@ const QStringList MyParser::functionsList()
   QStringList l;
 
   QString argSeparator = ",";
-  if (QString(QLocale().decimalPoint()) == argSeparator)
+  if (QString(getLocale().decimalPoint()) == argSeparator)
 	argSeparator = ";";
 
   for (const muParserScripting::mathFunction *i = muParserScripting::math_functions; i->name; i++){
@@ -131,7 +136,7 @@ QString MyParser::explainFunction(int index)
 {
 	const muParserScripting::mathFunction i = muParserScripting::math_functions[index];
 	QString s = QObject::tr(i.description);
-	if (QLocale().decimalPoint() == ',')
+	if (getLocale().decimalPoint() == ',')
 		s.replace(",", ";");
 
 	return s;
