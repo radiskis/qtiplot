@@ -33,6 +33,7 @@
 #include <QPainter>
 #include <gsl/gsl_vector.h>
 #include <gsl/gsl_histogram.h>
+#include <qwt_painter.h>
 
 QwtHistogram::QwtHistogram(Table *t, const QString& name, int startRow, int endRow):
 	QwtBarCurve(QwtBarCurve::Vertical, t, "", name, startRow, endRow),
@@ -79,8 +80,8 @@ void QwtHistogram::draw(QPainter *painter,
 		to = dataSize() - 1;
 
 	painter->save();
-	painter->setPen(QwtPlotCurve::pen());
-	painter->setBrush(QwtPlotCurve::brush());
+	painter->setPen(QwtPainter::scaledPen(pen()));
+	painter->setBrush(brush());
 
 	const double ref = yMap.transform(baseline()) + 1;
 	const double dx = abs(xMap.transform(x(from + 1)) - xMap.transform(x(from)));

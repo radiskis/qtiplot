@@ -1554,16 +1554,22 @@ void PlotDialog::initHistogramPage()
 	buttonStatistics = new QPushButton(tr( "&Show statistics" ));
     hl->addWidget(buttonStatistics);
 
+	QLocale locale = ((ApplicationWindow *)parent())->locale();
 	GroupBoxH = new QGroupBox();
-    QGridLayout *gl = new QGridLayout(GroupBoxH);
+	QGridLayout *gl = new QGridLayout(GroupBoxH);
     gl->addWidget(new QLabel(tr( "Bin Size" )), 0, 0);
-	binSizeBox = new QLineEdit();
+	binSizeBox = new DoubleSpinBox();
+	binSizeBox->setMinimum(0.0);
+	binSizeBox->setLocale(locale);
+
     gl->addWidget(binSizeBox, 0, 1);
     gl->addWidget(new QLabel(tr( "Begin" )), 1, 0);
-	histogramBeginBox = new QLineEdit();
+	histogramBeginBox = new DoubleSpinBox();
+	histogramBeginBox->setLocale(locale);
     gl->addWidget(histogramBeginBox, 1, 1);
     gl->addWidget(new QLabel(tr( "End" )), 2, 0);
-	histogramEndBox = new QLineEdit();
+	histogramEndBox = new DoubleSpinBox();
+	histogramEndBox->setLocale(locale);
     gl->addWidget(histogramEndBox, 2, 1);
 
     histogramPage = new QWidget();
@@ -1574,8 +1580,12 @@ void PlotDialog::initHistogramPage()
 
     privateTabWidget->insertTab( histogramPage, tr( "Histogram Data" ) );
 
-	connect(automaticBox, SIGNAL(clicked()), this, SLOT(setAutomaticBinning()));
-	connect(buttonStatistics, SIGNAL(clicked()), this, SLOT(showStatistics() ) );
+	connect(binSizeBox, SIGNAL(valueChanged(double)), this, SLOT(acceptParams()));
+	connect(histogramBeginBox, SIGNAL(valueChanged(double)), this, SLOT(acceptParams()));
+	connect(histogramEndBox, SIGNAL(valueChanged(double)), this, SLOT(acceptParams()));
+
+	connect(automaticBox, SIGNAL(clicked(bool)), this, SLOT(setAutomaticBinning(bool)));
+	connect(buttonStatistics, SIGNAL(clicked()), this, SLOT(showStatistics()));
 }
 
 void PlotDialog::initSpacingPage()
@@ -2503,9 +2513,6 @@ void PlotDialog::setActiveCurve(CurveTreeItem *item)
         if (h){
 			boxLabelsColumn->setEnabled(false);
             automaticBox->setChecked(h->autoBinning());
-            binSizeBox->setText(QString::number(h->binSize()));
-            histogramBeginBox->setText(QString::number(h->begin()));
-            histogramEndBox->setText(QString::number(h->end()));
             setAutomaticBinning();
         }
     }
@@ -2945,19 +2952,18 @@ bool PlotDialog::acceptParams()
 		if (!h)
 			return false;
 
-		if (validInput()){
-            if (h->autoBinning() == automaticBox->isChecked() &&
-                h->binSize() == binSizeBox->text().toDouble() &&
-                h->begin() == histogramBeginBox->text().toDouble() &&
-                h->end() == histogramEndBox->text().toDouble()) return true;
+		if (h->autoBinning() == automaticBox->isChecked() &&
+			h->binSize() == binSizeBox->value() &&
+			h->begin() == histogramBeginBox->value() &&
+			h->end() == histogramEndBox->value()) return true;
 
-            h->setBinning(automaticBox->isChecked(), binSizeBox->text().toDouble(),
-                         histogramBeginBox->text().toDouble(), histogramEndBox->text().toDouble());
-            h->loadData();
-			graph->updateScale();
-			graph->notifyChanges();
-			return true;
-		}
+		h->setBinning(automaticBox->isChecked(), binSizeBox->value(), histogramBeginBox->value(), histogramEndBox->value());
+		h->loadData();
+		graph->updateScale();
+		graph->notifyChanges();
+
+		setAutomaticBinning(automaticBox->isChecked());
+		return true;
 	} else if (privateTabWidget->currentPage() == spacingPage){
 		graph->setBarsGap(item->plotItemIndex(), gapBox->value(), offsetBox->value());
 		if (gapApplyToBox->currentIndex())
@@ -3098,125 +3104,35 @@ bool PlotDialog::acceptParams()
 	return true;
 }
 
-void PlotDialog::setAutomaticBinning()
+void PlotDialog::setAutomaticBinning(bool on)
 {
-	GroupBoxH->setEnabled(!automaticBox->isChecked());
-}
+	GroupBoxH->setEnabled(!on);
+	if (on){
+		QTreeWidgetItem *it = listBox->currentItem();
+		if (!it)
+			return;
 
-bool PlotDialog::validInput()
-{
-	QString from = histogramBeginBox->text();
-	QString to = histogramEndBox->text();
-	QString step = binSizeBox->text();
-	QRegExp nonDigit("\\D");
+		CurveTreeItem *item = (CurveTreeItem *)it;
+		QwtPlotItem *plotItem = (QwtPlotItem *)item->plotItem();
+		if (!plotItem)
+			return;
 
-	if (histogramBeginBox->text().isEmpty())
-	{
-		QMessageBox::critical(this, tr("QtiPlot - Input error"), tr("Please enter a valid start limit!"));
-		histogramBeginBox->setFocus();
-		return false;
+		QwtHistogram *h = (QwtHistogram *)plotItem;
+		if (!h || h->type() != Graph::Histogram)
+			return;
+
+		binSizeBox->blockSignals(true);
+		binSizeBox->setValue(h->binSize());
+		binSizeBox->blockSignals(false);
+
+		histogramBeginBox->blockSignals(true);
+		histogramBeginBox->setValue(h->begin());
+		histogramBeginBox->blockSignals(false);
+
+		histogramEndBox->blockSignals(true);
+		histogramEndBox->setValue(h->end());
+		histogramEndBox->blockSignals(false);
 	}
-
-	if (histogramEndBox->text().isEmpty())
-	{
-		QMessageBox::critical(this, tr("QtiPlot - Input error"), tr("Please enter a valid end limit!"));
-		histogramEndBox->setFocus();
-		return false;
-	}
-
-	if (binSizeBox->text().isEmpty())
-	{
-		QMessageBox::critical(this, tr("QtiPlot - Input error"), tr("Please enter a valid bin size value!"));
-		binSizeBox->setFocus();
-		return false;
-	}
-
-	from = from.remove(".");
-	to = to.remove(".");
-	step = step.remove(".");
-
-	int pos=from.find("-",0);
-	if(pos==0)
-		from=from.replace(pos,1,"");
-
-	pos=to.find("-",0);
-	if(pos==0)
-		to=to.replace(pos,1,"");
-
-	double start,end, stp;
-	bool error = false;
-	if (from.contains(nonDigit))
-	{
-		try
-		{
-			MyParser parser;
-			parser.SetExpr((histogramBeginBox->text()).ascii());
-			start=parser.Eval();
-		}
-		catch(mu::ParserError &e)
-		{
-			QMessageBox::critical(this, tr("QtiPlot - Start limit error"), QString::fromStdString(e.GetMsg()));
-			histogramBeginBox->setFocus();
-			error = true;
-			return false;
-		}
-	}
-	else
-		start = histogramBeginBox->text().toDouble();
-
-	if (to.contains(nonDigit))
-	{
-		try
-		{
-			MyParser parser;
-			parser.SetExpr((histogramEndBox->text()).ascii());
-			end=parser.Eval();
-		}
-		catch(mu::ParserError &e)
-		{
-			QMessageBox::critical(this, tr("QtiPlot - End limit error"), QString::fromStdString(e.GetMsg()));
-			histogramEndBox->setFocus();
-			error=true;
-			return false;
-		}
-	}
-	else
-		end=histogramEndBox->text().toDouble();
-
-	if (start>=end)
-	{
-		QMessageBox::critical(this, tr("QtiPlot - Input error"), tr("Please enter limits that satisfy: begin < end!"));
-		histogramEndBox->setFocus();
-		return false;
-	}
-
-	if (step.contains(nonDigit))
-	{
-		try
-		{
-			MyParser parser;
-			parser.SetExpr((binSizeBox->text()).ascii());
-			stp=parser.Eval();
-		}
-		catch(mu::ParserError &e)
-		{
-			QMessageBox::critical(this, tr("QtiPlot - Bin size input error"),QString::fromStdString(e.GetMsg()));
-			binSizeBox->setFocus();
-			error=true;
-			return false;
-		}
-	}
-	else
-		stp=binSizeBox->text().toDouble();
-
-	if (stp <=0)
-	{
-		QMessageBox::critical(this, tr("QtiPlot - Bin size input error"), tr("Please enter a positive bin size value!"));
-		binSizeBox->setFocus();
-		return false;
-	}
-
-	return true;
 }
 
 void PlotDialog::setBoxType(int index)
