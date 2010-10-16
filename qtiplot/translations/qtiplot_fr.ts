@@ -3911,7 +3911,7 @@ L&apos;autocomplétion ne sera pas disponible!</translation>
     </message>
     <message>
         <source>chart</source>
-        <translation type="obsolete">Diagramme</translation>
+        <translation type="unfinished">Diagramme</translation>
     </message>
     <message>
         <source>Yes, don&apos;t ask me again</source>
@@ -11927,6 +11927,10 @@ have the same number of rows.</source>
         <source>Move do&amp;wnward</source>
         <translation>D&amp;éplacer vers le ba&amp;s</translation>
     </message>
+    <message>
+        <source>Statistics for</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>PlotWizard</name>
@@ -12732,6 +12736,34 @@ Calcule le sinus de x.</translation>
  The maximum of all cells from row i to j in column colName.</source>
         <translation>MAX(&quot;colName&quot;, i, j) :
  Le maximum de toutes les cellules des lignes i à j dans la colonne colName.</translation>
+    </message>
+    <message>
+        <source>Min</source>
+        <translation type="unfinished">Min</translation>
+    </message>
+    <message>
+        <source>D1 (1st decile)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Q1 (1st quartile)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Median</source>
+        <translation type="unfinished">Médiane</translation>
+    </message>
+    <message>
+        <source>Q3 (3rd quartile)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>D9 (9th decile)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Max</source>
+        <translation type="unfinished">Max</translation>
     </message>
 </context>
 <context>

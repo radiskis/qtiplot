@@ -327,11 +327,11 @@
 </section>
 <section ref="x6260.html#Python-Histograms" title="Histograms">
 </section>
+<section ref="x6260.html#Python-BoxWhiskersPlos" title="Box and whiskers plots">
+</section>
 <section ref="x6260.html#Python-PieCurve" title="Pie Plots">
 </section>
 <section ref="x6260.html#Python-VectorsCurve" title="Vector Curves">
-</section>
-<section ref="x6260.html#Python-BoxWhiskersPlos" title="Box and whiskers plots">
 </section>
 <section ref="x6260.html#Python-Title" title="The plot title">
 </section>
@@ -367,7 +367,7 @@
 <section ref="x6260.html#Python-WaterfallPlots" title="Waterfall Plots">
 </section>
 <section ref="x6260.html#Python-Plots3D" title="3D Plots">
-<section ref="x6260.html#AEN7251" title="Creating a 3D plot">
+<section ref="x6260.html#AEN7252" title="Creating a 3D plot">
 </section>
 <section ref="x6260.html#Python-3D-View" title="Customizing the view">
 </section>
@@ -418,7 +418,7 @@
 </section>
 </section>
 </section>
-<section ref="c7565.html" title="Frequently asked questions">
+<section ref="c7566.html" title="Frequently asked questions">
 </section>
 </DCF>
 </assistantconfig>

@@ -844,3 +844,6 @@ setCommonLayerAxes
 linkXLayerAxes
 AlignLayers
 AlignCanvases
+statistics
+median
+quantile

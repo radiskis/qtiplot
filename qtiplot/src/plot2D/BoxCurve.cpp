@@ -85,7 +85,10 @@ void BoxCurve::draw(QPainter *painter,
 	painter->save();
 	painter->setPen(QwtPainter::scaledPen(pen()));
 
-	double *dat = new double[size];
+	double *dat = (double *)malloc(size*sizeof(double));
+	if (!dat)
+		return;
+
 	for (int i = from; i<= to; i++)
 		dat[i] = y(i);
 
@@ -93,7 +96,7 @@ void BoxCurve::draw(QPainter *painter,
 	drawSymbols(painter, xMap, yMap, dat, size);
 
 	painter->restore();
-	delete[] dat;
+	free(dat);
 }
 
 void BoxCurve::drawBox(QPainter *painter, const QwtScaleMap &xMap,
@@ -355,4 +358,51 @@ void BoxCurve::loadData()
         setData(QwtSingleArrayData(this->x(0), Y, size));
 	} else
 		remove();
+}
+
+QString BoxCurve::statistics()
+{
+	int size = dataSize();
+	double *dat = (double *)malloc(size*sizeof(double));
+	if (!dat)
+		return QString();
+
+	for (int i = 0; i< size; i++)
+		dat[i] = y(i);
+
+	double median = gsl_stats_median_from_sorted_data (dat, 1, size);
+	double d1 = gsl_stats_quantile_from_sorted_data (dat, 1, size, 0.1);
+	double d9 = gsl_stats_quantile_from_sorted_data (dat, 1, size, 0.9);
+	double q1 = gsl_stats_quantile_from_sorted_data (dat, 1, size, 0.25);
+	double q3 = gsl_stats_quantile_from_sorted_data (dat, 1, size, 0.75);
+
+	QString s = QObject::tr("Min") + " = " + QString::number(dat[0]) + "\n";
+	s += QObject::tr("D1 (1st decile)") + " = " + QString::number(d1) + "\n";
+	s += QObject::tr("Q1 (1st quartile)") + " = " + QString::number(q1) + "\n";
+	s += QObject::tr("Median") + " = " + QString::number(median) + "\n";
+	s += QObject::tr("Q3 (3rd quartile)") + " = " + QString::number(q3) + "\n";
+	s += QObject::tr("D9 (9th decile)") + " = " + QString::number(d9) + "\n";
+	s += QObject::tr("Max") + " = " + QString::number(dat[size - 1]) + "\n";
+
+	free (dat);
+	return s;
+}
+
+double BoxCurve::quantile(double f)
+{
+	if (f < 0 || f > 1)
+		return 0.0;
+
+	int size = dataSize();
+	double *dat = (double *)malloc(size*sizeof(double));
+	if (!dat)
+		return 0.0;
+
+	for (int i = 0; i< size; i++)
+		dat[i] = y(i);
+
+	double q = gsl_stats_quantile_from_sorted_data (dat, 1, size, f);
+	free (dat);
+
+	return q;
 }

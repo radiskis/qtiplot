@@ -77,6 +77,11 @@ public:
 
     void loadData();
 
+	QString statistics();
+
+	double median(){return quantile(0.5);};
+	double quantile(double f);
+
 private:
 	void draw(QPainter *painter,const QwtScaleMap &xMap,
 		const QwtScaleMap &yMap, int from, int to) const;
