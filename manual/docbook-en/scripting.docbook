@@ -2487,6 +2487,37 @@ You can also enable autobinning (a default number of ten bins will be used):
  </programlisting>
 </sect3>
 
+<sect3 id = "Python-BoxWhiskersPlos">
+<title>Box and whiskers plots</title>
+The following script shows how to create and customize a box and whiskers plot:
+<programlisting>
+g = newGraph().activeLayer()
+g.plotBox(table("Table1"), ["2", "3", "4"])
+for i in range (0, g.numCurves()):
+		box = g.boxCurve(i)
+		if (box):
+			box.setBrush(QtGui.QBrush(Qt.red, Qt.BDiagPattern))
+			s = PlotSymbol()
+			s.setPen(QtGui.QPen(Qt.blue, 2))
+			s.setSize(QtCore.QSize(10, 10))
+			box.setSymbol(s)
+			box.setMeanStyle(PlotSymbol.Cross)
+			box.setBoxStyle(BoxCurve.WindBox)
+			box.setBoxWidth(80)
+			box.setWhiskersRange(BoxCurve.SD) # standard deviation
+</programlisting>
+
+The following functions give access to the statistics information for the data series displayed with a box and whiskers plot:
+<programlisting>
+s = box.statistics() # returns information as a string
+m = box.median()
+q = box.quantile(f) # f must be a fraction between 0 and 1
+</programlisting>
+
+For an exhaustive review of the methods giving access to the properties of a box plot, please consult the
+<ulink url="http://soft.proindependent.com/doc/manual-en/Python-API/html/index.html">QtiPlot/Python API</ulink>.
+</sect3>
+
 <sect3 id = "Python-PieCurve">
 <title>Pie Plots</title>
 The following script shows how to create and customize a pie plot:
@@ -2523,30 +2554,6 @@ v.setPosition(VectorCurve.Middle)
 </programlisting>
 
 For an exhaustive review of the methods giving access to the properties of a vector curve, please consult the
-<ulink url="http://soft.proindependent.com/doc/manual-en/Python-API/html/index.html">QtiPlot/Python API</ulink>.
-</sect3>
-
-<sect3 id = "Python-BoxWhiskersPlos">
-<title>Box and whiskers plots</title>
-The following script shows how to create and customize a box and whiskers plot:
-<programlisting>
-g = newGraph().activeLayer()
-g.plotBox(table("Table1"), ["2", "3", "4"])
-for i in range (0, g.numCurves()):
-		box = g.boxCurve(i)
-		if (box):
-			box.setBrush(QtGui.QBrush(Qt.red, Qt.BDiagPattern))
-			s = PlotSymbol()
-			s.setPen(QtGui.QPen(Qt.blue, 2))
-			s.setSize(QtCore.QSize(10, 10))
-			box.setSymbol(s)
-			box.setMeanStyle(PlotSymbol.Cross)
-			box.setBoxStyle(BoxCurve.WindBox)
-			box.setBoxWidth(80)
-			box.setWhiskersRange(BoxCurve.SD) # standard deviation
-</programlisting>
-
-For an exhaustive review of the methods giving access to the properties of a box plot, please consult the
 <ulink url="http://soft.proindependent.com/doc/manual-en/Python-API/html/index.html">QtiPlot/Python API</ulink>.
 </sect3>
 

@@ -1549,6 +1549,10 @@ public:
 
 	void loadData();
 
+	QString statistics();
+	double median();
+	double quantile(double);
+
 private:
 	BoxCurve(const BoxCurve&);
 };

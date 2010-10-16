@@ -1194,7 +1194,10 @@ void PlotDialog::initBoxPage()
 
     QVBoxLayout *vl2 = new QVBoxLayout();
     vl2->addWidget(gb2);
-    vl2->addStretch();
+
+	buttonBoxStatistics = new QPushButton(tr( "&Show statistics" ));
+	vl2->addWidget(buttonBoxStatistics);
+	vl2->addStretch();
 
     boxPage = new QWidget();
 	QHBoxLayout* hl = new QHBoxLayout(boxPage);
@@ -1205,6 +1208,7 @@ void PlotDialog::initBoxPage()
 	connect(boxType, SIGNAL(activated(int)), this, SLOT(setBoxType(int)));
 	connect(boxRange, SIGNAL(activated(int)), this, SLOT(setBoxRangeType(int)));
 	connect(boxWhiskersRange, SIGNAL(activated(int)), this, SLOT(setWhiskersRange(int)));
+	connect(buttonBoxStatistics, SIGNAL(clicked()), this, SLOT(showBoxStatistics()));
 }
 
 void PlotDialog::initPercentilePage()
@@ -1719,6 +1723,34 @@ void PlotDialog::selectCurve(int index)
 	    ((CurveTreeItem *)item)->setActive(true);
         listBox->setCurrentItem(item);
 	}
+}
+
+void PlotDialog::showBoxStatistics()
+{
+	ApplicationWindow *app = (ApplicationWindow *)this->parent();
+	if (!app)
+		return;
+
+	QTreeWidgetItem *it = listBox->currentItem();
+	if (!it)
+		return;
+	if (it->type() != CurveTreeItem::PlotCurveTreeItem)
+		return;
+
+	QwtPlotItem *plotItem = (QwtPlotItem *)((CurveTreeItem *)it)->plotItem();
+	if (!plotItem)
+		return;
+
+	BoxCurve *b = (BoxCurve *)plotItem;
+	if (!b || b->type() != Graph::Box)
+		return;
+
+	QDateTime dt = QDateTime::currentDateTime();
+	QString info = dt.toString(Qt::LocalDate)+"\t"+tr("Statistics for") + " " + b->title().text() + " :\n";
+	info += b->statistics();
+
+	app->current_folder->appendLogInfo(info);
+	app->showResults(true);
 }
 
 void PlotDialog::showStatistics()

@@ -4428,6 +4428,10 @@ Autocompletion will not be available!</source>
         <source>S&amp;mooth</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>chart</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>AssociationsDialog</name>
@@ -12314,6 +12318,10 @@ have the same number of rows.</source>
         <source>Move do&amp;wnward</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Statistics for</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>PlotWizard</name>
@@ -12928,6 +12936,34 @@ have the same number of rows.</source>
     <message>
         <source>MAX(&quot;colName&quot;, i, j):
  The maximum of all cells from row i to j in column colName.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Min</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>D1 (1st decile)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Q1 (1st quartile)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Median</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Q3 (3rd quartile)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>D9 (9th decile)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Max</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -3905,7 +3905,7 @@ Autocompletion will not be available!</source>
     </message>
     <message>
         <source>chart</source>
-        <translation type="obsolete">диаграмма</translation>
+        <translation type="unfinished">диаграмма</translation>
     </message>
     <message>
         <source>Overwrite file?</source>
@@ -11986,6 +11986,10 @@ have the same number of rows.</source>
         <source>Move do&amp;wnward</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Statistics for</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>PlotWizard</name>
@@ -12784,6 +12788,34 @@ have the same number of rows.</source>
  The maximum of all cells from row i to j in column colName.</source>
         <translation>MAX(&quot;colName&quot;, i, j):
  Миксимум всех ячеек в строках от i до j в столбце colName.</translation>
+    </message>
+    <message>
+        <source>Min</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>D1 (1st decile)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Q1 (1st quartile)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Median</source>
+        <translation type="unfinished">Медиана</translation>
+    </message>
+    <message>
+        <source>Q3 (3rd quartile)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>D9 (9th decile)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Max</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

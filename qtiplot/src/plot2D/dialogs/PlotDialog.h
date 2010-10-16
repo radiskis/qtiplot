@@ -82,6 +82,7 @@ public slots:
 	void selectCurve(int index);
 
 private slots:
+	void showBoxStatistics();
 	void showStatistics();
 	void customVectorsPage(bool angleMag);
 	void updateEndPointColumns(const QString& text);
@@ -249,7 +250,7 @@ private:
 	QWidget *histogramPage, *spacingPage;
 	QLineEdit *binSizeBox, *histogramBeginBox, *histogramEndBox;
 	QCheckBox *automaticBox;
-	QPushButton* buttonStatistics, *btnEditCurve;
+	QPushButton* buttonStatistics, *btnEditCurve, *buttonBoxStatistics;
 	QSpinBox* gapBox, *offsetBox, *boxWidth;
 	QWidget *vectPage, *boxPage, *percentilePage, *axesPage;
 	QComboBox *xEndBox, *yEndBox, *boxType, *boxWhiskersType, *boxWhiskersRange, *boxRange;
