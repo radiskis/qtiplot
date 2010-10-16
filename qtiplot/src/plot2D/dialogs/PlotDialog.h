@@ -108,8 +108,7 @@ private slots:
 
 	void pickErrorBarsColor();
 
-	void setAutomaticBinning();
-	bool validInput();
+	void setAutomaticBinning(bool on = true);
 	void showPlotAssociations(QTreeWidgetItem *item, int);
 
 	//box plots
@@ -248,7 +247,7 @@ private:
 	QLabel *labelPosition, *labelXEnd, *labelYEnd;
 	QGroupBox* GroupBoxH;
 	QWidget *histogramPage, *spacingPage;
-	QLineEdit *binSizeBox, *histogramBeginBox, *histogramEndBox;
+	DoubleSpinBox *binSizeBox, *histogramBeginBox, *histogramEndBox;
 	QCheckBox *automaticBox;
 	QPushButton* buttonStatistics, *btnEditCurve, *buttonBoxStatistics;
 	QSpinBox* gapBox, *offsetBox, *boxWidth;
