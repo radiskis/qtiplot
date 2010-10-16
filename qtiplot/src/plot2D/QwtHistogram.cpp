@@ -82,16 +82,24 @@ void QwtHistogram::draw(QPainter *painter,
 	painter->setPen(QwtPlotCurve::pen());
 	painter->setBrush(QwtPlotCurve::brush());
 
-	const int ref= yMap.transform(baseline());
-	const int dx=abs(xMap.transform(x(from+1)) - xMap.transform(x(from)));
-	const int bar_width=int(dx*(1-gap()*0.01));
-	const int half_width = int(0.5*(dx-bar_width));
-	const int xOffset = int(0.01*offset()*bar_width);
+	const double ref = yMap.transform(baseline()) + 1;
+	const double dx = abs(xMap.transform(x(from + 1)) - xMap.transform(x(from)));
+	const double bar_width = dx*(1 - gap()*0.01);
+	const double half_width = 0.5*(dx - bar_width);
+	const double xOffset = 0.01*offset()*bar_width + half_width;
 
-	for (int i=from; i<=to; i++){
-		const int px1 = xMap.transform(x(i));
-		const int py1 = yMap.transform(y(i));
-		painter->drawRect(px1+half_width+xOffset,py1,bar_width+1,(ref-py1+1));
+	if (gap()){
+		for (int i = from;  i <= to; i++){
+			const double py = yMap.transform(y(i));
+			painter->drawRect(QRectF(xMap.transform(x(i)) + xOffset, py, bar_width, (ref - py)));
+		}
+	} else {
+		for (int i = from;  i < to; i++){
+			painter->drawRect(QRectF(QPointF(xMap.transform(x(i)) + xOffset, yMap.transform(y(i))),
+									 QPointF(xMap.transform(x(i + 1)) + xOffset, ref)));
+		}
+		const double py = yMap.transform(y(to));
+		painter->drawRect(QRectF(xMap.transform(x(to)) + xOffset, py, bar_width, (ref - py)));
 	}
 
 	painter->restore();
