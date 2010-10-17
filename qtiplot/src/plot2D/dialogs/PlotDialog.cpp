@@ -989,7 +989,7 @@ void PlotDialog::initLinePage()
 	boxLineColor = new ColorButton();
 	gl1->addWidget(boxLineColor, 3, 1);
 
-	QLabel *l = new QLabel(tr("Apply Format &to"));
+	QLabel *l = new QLabel(tr("Apply &to..."));
 	gl1->addWidget(l, 4, 0);
 
 	lineFormatApplyToBox = new QComboBox();
@@ -1000,7 +1000,11 @@ void PlotDialog::initLinePage()
 	gl1->addWidget(lineFormatApplyToBox, 4, 1);
 	l->setBuddy(lineFormatApplyToBox);
 
-    gl1->setRowStretch (5, 1);
+	boxApplyColorTo = new QCheckBox(tr("Apply Co&lor"));
+	boxApplyColorTo->setDisabled(true);
+	gl1->addWidget(boxApplyColorTo, 4, 2);
+
+	gl1->setRowStretch (5, 1);
 
 	fillGroupBox = new QGroupBox(tr( "Fill area under curve" ));
 	fillGroupBox->setCheckable(true);
@@ -1028,11 +1032,12 @@ void PlotDialog::initLinePage()
 	gl2->setRowStretch (3, 1);
 
 	linePage = new QWidget();
-	QHBoxLayout* hlayout = new QHBoxLayout(linePage);
-	hlayout->addWidget(gb);
-	hlayout->addWidget(fillGroupBox);
+	QVBoxLayout* vlayout = new QVBoxLayout(linePage);
+	vlayout->addWidget(gb);
+	vlayout->addWidget(fillGroupBox);
 	privateTabWidget->addTab( linePage, tr( "Line" ) );
 
+	connect(lineFormatApplyToBox, SIGNAL(activated(int)), this, SLOT(enableBoxApplyColor(int)));
 	connect(boxLineWidth, SIGNAL(valueChanged(double)), this, SLOT(acceptParams()));
 	connect(boxLineColor, SIGNAL(colorChanged()), this, SLOT(acceptParams()));
 	connect(boxConnect, SIGNAL(activated(int)), this, SLOT(acceptParams()));
@@ -3563,6 +3568,8 @@ void PlotDialog::applyLineFormatToLayer(Graph *g)
 		QPen pen = QPen(c->pen().color(), boxLineWidth->value(),
 					boxLineStyle->style(), Qt::SquareCap, Qt::MiterJoin);
 		pen.setCosmetic(true);
+		if (boxApplyColorTo->isChecked())
+			pen.setColor(boxLineColor->color());
 		c->setPen(pen);
 
 		g->setCurveStyle(i, boxConnect->currentIndex());
@@ -3905,6 +3912,11 @@ void PlotDialog::applyGap(Graph *g)
 			break;
 	}
 	app->modifiedProject();
+}
+
+void PlotDialog::enableBoxApplyColor(int index)
+{
+	boxApplyColorTo->setEnabled(index);
 }
 
 /*****************************************************************************

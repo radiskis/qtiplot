@@ -8500,6 +8500,10 @@ Automatisk komplettering ej tillgängligt!</translation>
         <source>S&amp;mooth</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>chart</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ArrowMarker</name>
@@ -18279,6 +18283,10 @@ Vill du skjuta in celler?</translation>
     </message>
     <message>
         <source>Statistics for</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Apply Co&amp;lor</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -107,6 +107,7 @@ private slots:
 	void removeSelectedObject();
 
 	void pickErrorBarsColor();
+	void enableBoxApplyColor(int);
 
 	void setAutomaticBinning(bool on = true);
 	void showPlotAssociations(QTreeWidgetItem *item, int);
@@ -308,6 +309,7 @@ private:
 	QSpinBox *boxMaxPoints;
 	DoubleSpinBox *boxDouglasPeukerTolerance;
 	QGroupBox *speedModeBox;
+	QCheckBox *boxApplyColorTo;
 
 	QWidget *miscPage, *plotGeometryPage;
 	QCheckBox *boxLinkXAxes;
