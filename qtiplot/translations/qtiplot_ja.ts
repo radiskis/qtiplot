@@ -4428,10 +4428,6 @@ Autocompletion will not be available!</source>
         <source>S&amp;mooth</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <source>chart</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>AssociationsDialog</name>
@@ -11932,42 +11928,6 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Line + Symbol</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>QtiPlot - Input error</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Please enter a valid start limit!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Please enter a valid end limit!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Please enter a valid bin size value!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>QtiPlot - Start limit error</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>QtiPlot - End limit error</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Please enter limits that satisfy: begin &lt; end!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>QtiPlot - Bin size input error</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Please enter a positive bin size value!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

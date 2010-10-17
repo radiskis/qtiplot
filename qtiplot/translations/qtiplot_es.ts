@@ -8266,10 +8266,6 @@ Autocompletion will not be available!</source>
         <source>S&amp;mooth</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <source>chart</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>AssociationsDialog</name>
@@ -17336,39 +17332,39 @@ Do you want to insert cells?</source>
     </message>
     <message>
         <source>QtiPlot - Input error</source>
-        <translation type="unfinished">QtiPlot - Error de entrada</translation>
+        <translation type="obsolete">QtiPlot - Error de entrada</translation>
     </message>
     <message>
         <source>Please enter a valid start limit!</source>
-        <translation type="unfinished">¡Por favor, introduzca un límite inicial válido!</translation>
+        <translation type="obsolete">¡Por favor, introduzca un límite inicial válido!</translation>
     </message>
     <message>
         <source>Please enter a valid end limit!</source>
-        <translation type="unfinished">¡Por favor, introduzca un límite final válido!</translation>
+        <translation type="obsolete">¡Por favor, introduzca un límite final válido!</translation>
     </message>
     <message>
         <source>Please enter a valid bin size value!</source>
-        <translation type="unfinished">¡Por favor, introduzca un valor de bin válido!</translation>
+        <translation type="obsolete">¡Por favor, introduzca un valor de bin válido!</translation>
     </message>
     <message>
         <source>QtiPlot - Start limit error</source>
-        <translation type="unfinished">QtiPlot - Error en el límite inicial</translation>
+        <translation type="obsolete">QtiPlot - Error en el límite inicial</translation>
     </message>
     <message>
         <source>QtiPlot - End limit error</source>
-        <translation type="unfinished">QtiPlot - Error en el límite final</translation>
+        <translation type="obsolete">QtiPlot - Error en el límite final</translation>
     </message>
     <message>
         <source>Please enter limits that satisfy: begin &lt; end!</source>
-        <translation type="unfinished">¡Por favor, introduzca límites en tales que: inicio &lt; fin!</translation>
+        <translation type="obsolete">¡Por favor, introduzca límites en tales que: inicio &lt; fin!</translation>
     </message>
     <message>
         <source>QtiPlot - Bin size input error</source>
-        <translation type="unfinished">QtiPlot - Error en el tamaño del bin</translation>
+        <translation type="obsolete">QtiPlot - Error en el tamaño del bin</translation>
     </message>
     <message>
         <source>Please enter a positive bin size value!</source>
-        <translation type="unfinished">¡Por favor, introduzca un valor positivo de bin!</translation>
+        <translation type="obsolete">¡Por favor, introduzca un valor positivo de bin!</translation>
     </message>
     <message>
         <source>Vector Data</source>

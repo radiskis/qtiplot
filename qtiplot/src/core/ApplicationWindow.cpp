@@ -2565,7 +2565,6 @@ void ApplicationWindow::initPlot3D(Graph3D *plot)
 
 	plot->setIcon(QPixmap(":/trajectory.png"));
 	plot->show();
-        //plot->setFocus();
 
 	addListViewItem(plot);
 
@@ -2575,8 +2574,7 @@ void ApplicationWindow::initPlot3D(Graph3D *plot)
 	if (!plot3DTools->isEnabled())
 		plot3DTools->setEnabled(true);
 
-	customMenu(plot);
-	customToolBars(plot);
+	windowActivated(plot);
 }
 
 void ApplicationWindow::exportMatrix(const QString& exportFilter)
@@ -2864,6 +2862,7 @@ void ApplicationWindow::initMultilayerPlot(MultiLayer* g, const QString& name)
 	g->showNormal();
 
 	addListViewItem(g);
+	windowActivated(g);
 }
 
 void ApplicationWindow::setAutoUpdateTableValues(bool on)

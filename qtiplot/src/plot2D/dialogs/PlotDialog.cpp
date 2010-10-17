@@ -1758,6 +1758,7 @@ void PlotDialog::showBoxStatistics()
 	QDateTime dt = QDateTime::currentDateTime();
 	QString info = dt.toString(Qt::LocalDate)+"\t"+tr("Statistics for") + " " + b->title().text() + " :\n";
 	info += b->statistics();
+	info += "-------------------------------------------------------------\n";
 
 	app->current_folder->appendLogInfo(info);
 	app->showResults(true);

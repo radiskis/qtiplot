@@ -3911,7 +3911,7 @@ L&apos;autocomplétion ne sera pas disponible!</translation>
     </message>
     <message>
         <source>chart</source>
-        <translation type="unfinished">Diagramme</translation>
+        <translation type="obsolete">Diagramme</translation>
     </message>
     <message>
         <source>Yes, don&apos;t ask me again</source>
@@ -11541,39 +11541,39 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>QtiPlot - Input error</source>
-        <translation>Qtiplot - Erreur : entrée incorrecte</translation>
+        <translation type="obsolete">Qtiplot - Erreur : entrée incorrecte</translation>
     </message>
     <message>
         <source>Please enter a valid start limit!</source>
-        <translation>Donnez une valeur  de départ correcte !</translation>
+        <translation type="obsolete">Donnez une valeur  de départ correcte !</translation>
     </message>
     <message>
         <source>Please enter a valid end limit!</source>
-        <translation>Donnez une valeur d&apos;arrêt correcte !</translation>
+        <translation type="obsolete">Donnez une valeur d&apos;arrêt correcte !</translation>
     </message>
     <message>
         <source>Please enter a valid bin size value!</source>
-        <translation>Donnez une taille d&apos;échantillonnage valide !</translation>
+        <translation type="obsolete">Donnez une taille d&apos;échantillonnage valide !</translation>
     </message>
     <message>
         <source>QtiPlot - Start limit error</source>
-        <translation>QtiPlot - Erreur de la limite de départ</translation>
+        <translation type="obsolete">QtiPlot - Erreur de la limite de départ</translation>
     </message>
     <message>
         <source>QtiPlot - End limit error</source>
-        <translation>QtiPlot - Erreur de la limite d&apos;arrêt</translation>
+        <translation type="obsolete">QtiPlot - Erreur de la limite d&apos;arrêt</translation>
     </message>
     <message>
         <source>Please enter limits that satisfy: begin &lt; end!</source>
-        <translation>Veuillez entrer un domaine pour les abscisses tel que le début soit inférieur à la fin !</translation>
+        <translation type="obsolete">Veuillez entrer un domaine pour les abscisses tel que le début soit inférieur à la fin !</translation>
     </message>
     <message>
         <source>QtiPlot - Bin size input error</source>
-        <translation>QtiPlot - Erreur de taille des échantillons</translation>
+        <translation type="obsolete">QtiPlot - Erreur de taille des échantillons</translation>
     </message>
     <message>
         <source>Please enter a positive bin size value!</source>
-        <translation>Donnez une valeur positive de taille d&apos;échantillons !</translation>
+        <translation type="obsolete">Donnez une valeur positive de taille d&apos;échantillons !</translation>
     </message>
     <message>
         <source>Vector Data</source>

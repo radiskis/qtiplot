@@ -7413,10 +7413,6 @@ Autocompletion will not be available!</source>
         <source>S&amp;mooth</source>
         <translation>&amp;Netezeşte</translation>
     </message>
-    <message>
-        <source>chart</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>ArrowMarker</name>
@@ -15427,39 +15423,39 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>QtiPlot - Input error</source>
-        <translation>QtiPlot - Eroare</translation>
+        <translation type="obsolete">QtiPlot - Eroare</translation>
     </message>
     <message>
         <source>Please enter a valid start limit!</source>
-        <translation>Vă rugăm introduceţi o limita de început validă!</translation>
+        <translation type="obsolete">Vă rugăm introduceţi o limita de început validă!</translation>
     </message>
     <message>
         <source>Please enter a valid end limit!</source>
-        <translation>Vă rugăm introduceţi o limita de sfarşit validă!</translation>
+        <translation type="obsolete">Vă rugăm introduceţi o limita de sfarşit validă!</translation>
     </message>
     <message>
         <source>Please enter a valid bin size value!</source>
-        <translation>Vă rugăm introduceţi un pas de eşantionajului valid!</translation>
+        <translation type="obsolete">Vă rugăm introduceţi un pas de eşantionajului valid!</translation>
     </message>
     <message>
         <source>QtiPlot - Start limit error</source>
-        <translation>QtiPlot - Eroare detectată la valoarea de start</translation>
+        <translation type="obsolete">QtiPlot - Eroare detectată la valoarea de start</translation>
     </message>
     <message>
         <source>QtiPlot - End limit error</source>
-        <translation>QtiPlot - Eroare detectată la valoarea de sfarşit</translation>
+        <translation type="obsolete">QtiPlot - Eroare detectată la valoarea de sfarşit</translation>
     </message>
     <message>
         <source>Please enter limits that satisfy: begin &lt; end!</source>
-        <translation>Vă rugam să introduceţi limite care satisfac condiţia: început &lt; sfarşit !</translation>
+        <translation type="obsolete">Vă rugam să introduceţi limite care satisfac condiţia: început &lt; sfarşit !</translation>
     </message>
     <message>
         <source>QtiPlot - Bin size input error</source>
-        <translation>QtiPlot - Eroare detectată în pasul de eşantionaj</translation>
+        <translation type="obsolete">QtiPlot - Eroare detectată în pasul de eşantionaj</translation>
     </message>
     <message>
         <source>Please enter a positive bin size value!</source>
-        <translation>Vă rugăm introduceţi un pas de eşantionajului pozitiv!</translation>
+        <translation type="obsolete">Vă rugăm introduceţi un pas de eşantionajului pozitiv!</translation>
     </message>
     <message>
         <source>Vector Data</source>
