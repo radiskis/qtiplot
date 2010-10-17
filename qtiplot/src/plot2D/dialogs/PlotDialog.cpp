@@ -1004,8 +1004,6 @@ void PlotDialog::initLinePage()
 	boxApplyColorTo->setDisabled(true);
 	gl1->addWidget(boxApplyColorTo, 4, 2);
 
-	gl1->setRowStretch (5, 1);
-
 	fillGroupBox = new QGroupBox(tr( "Fill area under curve" ));
 	fillGroupBox->setCheckable(true);
 	QGridLayout *gl2 = new QGridLayout(fillGroupBox);
@@ -1029,12 +1027,12 @@ void PlotDialog::initLinePage()
 	gl2->addWidget(new QLabel(tr( "Pattern" )), 2, 0);
 	boxPattern = new PatternBox(false);
 	gl2->addWidget(boxPattern, 2, 1);
-	gl2->setRowStretch (3, 1);
 
 	linePage = new QWidget();
 	QVBoxLayout* vlayout = new QVBoxLayout(linePage);
 	vlayout->addWidget(gb);
 	vlayout->addWidget(fillGroupBox);
+	vlayout->addStretch();
 	privateTabWidget->addTab( linePage, tr( "Line" ) );
 
 	connect(lineFormatApplyToBox, SIGNAL(activated(int)), this, SLOT(enableBoxApplyColor(int)));
