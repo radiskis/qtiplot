@@ -3919,27 +3919,23 @@ Různé části tohoto souboru se nemusí zobrazovat tak, jak se očekává.</tr
     </message>
     <message>
         <source>Yes, don&apos;t ask me again</source>
-        <translation type="unfinished"></translation>
+        <translation>Ano. Znovu se neptat</translation>
     </message>
     <message>
         <source>Random &amp;XYZ...</source>
-        <translation type="unfinished"></translation>
+        <translation>Náhodné &amp;XYZ...</translation>
     </message>
     <message>
         <source>&amp;Expand...</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Zvětšit...</translation>
     </message>
     <message>
         <source>&amp;Shrink...</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Zmenšit...</translation>
     </message>
     <message>
         <source>S&amp;mooth</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>chart</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Jemné</translation>
     </message>
 </context>
 <context>
@@ -5761,23 +5757,23 @@ K tomu lze použít následujících zvláštních kódů:
     </message>
     <message>
         <source>&amp;Default options</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Výchozí volby</translation>
     </message>
     <message>
         <source>You need to restart QtiPlot before your changes become effective, would you like to do it now?</source>
-        <translation type="unfinished"></translation>
+        <translation>Musíte QtiPlot spustit znovu předtím, než se vaše změny projeví. Chcete to udělat nyní?</translation>
     </message>
     <message>
         <source>Open &amp;last project at startup</source>
-        <translation type="unfinished"></translation>
+        <translation>Otevřít &amp;poslední projekt při spuštění</translation>
     </message>
     <message>
         <source>Startup Scripts</source>
-        <translation type="unfinished"></translation>
+        <translation>Spouštěcí skripty</translation>
     </message>
     <message>
         <source>Choose the location of the startup scripts folder!</source>
-        <translation type="unfinished"></translation>
+        <translation>Vyberte umístění složky se spouštěcími skripty!</translation>
     </message>
 </context>
 <context>
@@ -8540,123 +8536,123 @@ K tomu lze použít následujících zvláštních kódů:
     <name>GriddingDialog</name>
     <message>
         <source>QtiPlot - Random XYZ Gridding</source>
-        <translation type="unfinished"></translation>
+        <translation>QtiPlot - Náhodné nanesení mřížky XYZ</translation>
     </message>
     <message>
         <source>Selected Z Dataset</source>
-        <translation type="unfinished"></translation>
+        <translation>Vybraný soubor dat Z</translation>
     </message>
     <message>
         <source>Gridding Method</source>
-        <translation type="unfinished"></translation>
+        <translation>Způsob nanesení mřížky</translation>
     </message>
     <message>
         <source>Shepard (non-uniform data)</source>
-        <translation type="unfinished"></translation>
+        <translation>Shepard (ne-stejnoměrná data)</translation>
     </message>
     <message>
         <source>Shepard (uniform data)</source>
-        <translation type="unfinished"></translation>
+        <translation>Shepard (stejnoměrná data)</translation>
     </message>
     <message>
         <source>Quick (noisy data)</source>
-        <translation type="unfinished"></translation>
+        <translation>Rychlý (křiklavá data)</translation>
     </message>
     <message>
         <source>Parameters</source>
-        <translation type="unfinished">Parametry</translation>
+        <translation>Parametry</translation>
     </message>
     <message>
         <source>Search Radius</source>
-        <translation type="unfinished"></translation>
+        <translation>Hledat poloměr</translation>
     </message>
     <message>
         <source>Model</source>
-        <translation type="unfinished"></translation>
+        <translation>Model</translation>
     </message>
     <message>
         <source>Linear</source>
-        <translation type="unfinished"></translation>
+        <translation>Lineární</translation>
     </message>
     <message>
         <source>Quadratic</source>
-        <translation type="unfinished"></translation>
+        <translation>Čtvercový</translation>
     </message>
     <message>
         <source>N&lt;sub&gt;q&lt;/sub&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>N&lt;sub&gt;q&lt;/sub&gt;</translation>
     </message>
     <message>
         <source>N&lt;sub&gt;w&lt;/sub&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>N&lt;sub&gt;w&lt;/sub&gt;</translation>
     </message>
     <message>
         <source>Matrix Dimensions</source>
-        <translation type="unfinished"></translation>
+        <translation>Rozměry matice</translation>
     </message>
     <message>
         <source>Columns</source>
-        <translation type="unfinished">Sloupce</translation>
+        <translation>Sloupce</translation>
     </message>
     <message>
         <source>Rows</source>
-        <translation type="unfinished">Řádky</translation>
+        <translation>Řádky</translation>
     </message>
     <message>
         <source>Matrix Coordinates</source>
-        <translation type="unfinished"></translation>
+        <translation>Souřadnice matice</translation>
     </message>
     <message>
         <source>X Minimum</source>
-        <translation type="unfinished"></translation>
+        <translation>Nejnižší hodnota pro x</translation>
     </message>
     <message>
         <source>X Maximum</source>
-        <translation type="unfinished"></translation>
+        <translation>Nejvyšší hodnota pro x</translation>
     </message>
     <message>
         <source>Y Minimum</source>
-        <translation type="unfinished"></translation>
+        <translation>Nejnižší hodnota pro y</translation>
     </message>
     <message>
         <source>Y Maximum</source>
-        <translation type="unfinished"></translation>
+        <translation>Nejvyšší hodnota pro y</translation>
     </message>
     <message>
         <source>&amp;Preview</source>
-        <translation type="unfinished">&amp;Náhled</translation>
+        <translation>&amp;Náhled</translation>
     </message>
     <message>
         <source>Plot Type</source>
-        <translation type="unfinished"></translation>
+        <translation>Typ nákresu</translation>
     </message>
     <message>
         <source>Wireframe</source>
-        <translation type="unfinished">Drátěná mříž</translation>
+        <translation>Drátěná mříž</translation>
     </message>
     <message>
         <source>Hidden Line</source>
-        <translation type="unfinished">Skryté čáry</translation>
+        <translation>Skryté čáry</translation>
     </message>
     <message>
         <source>Crea&amp;te Plot</source>
-        <translation type="unfinished"></translation>
+        <translation>Vytvoři&amp;t nákres</translation>
     </message>
     <message>
         <source>&amp;Ok</source>
-        <translation type="unfinished">&amp;OK</translation>
+        <translation>&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation type="unfinished">&amp;Zavřít</translation>
+        <translation>&amp;Zavřít</translation>
     </message>
     <message>
         <source>X axis</source>
-        <translation type="unfinished">Osa x</translation>
+        <translation>Osa x</translation>
     </message>
     <message>
         <source>Y axis</source>
-        <translation type="unfinished">Osa y</translation>
+        <translation>Osa y</translation>
     </message>
 </context>
 <context>
@@ -10019,23 +10015,23 @@ K tomu lze použít následujících zvláštních kódů:
     </message>
     <message>
         <source>Resample</source>
-        <translation type="unfinished"></translation>
+        <translation>Převzorkovat</translation>
     </message>
     <message>
         <source>bilinear</source>
-        <translation type="unfinished"></translation>
+        <translation>Dvojně lineární (bilineární)</translation>
     </message>
     <message>
         <source>bicubic</source>
-        <translation type="unfinished"></translation>
+        <translation>Dvojně trojrozměrný (bikubický)</translation>
     </message>
     <message>
         <source>QtiPlot was built without support for ALGLIB, resampling is not possible!</source>
-        <translation type="unfinished"></translation>
+        <translation>QtiPlot byl sestaven bez podpory pro ALGLIB, převzorkování není možné!</translation>
     </message>
     <message>
         <source>Smoothed</source>
-        <translation type="unfinished">Vyhlazeno</translation>
+        <translation>Vyhlazeno</translation>
     </message>
 </context>
 <context>
@@ -10148,35 +10144,35 @@ K tomu lze použít následujících zvláštních kódů:
     <name>MatrixResamplingDialog</name>
     <message>
         <source>Resample</source>
-        <translation type="unfinished"></translation>
+        <translation>Převzorkovat</translation>
     </message>
     <message>
         <source>Expand for every cell</source>
-        <translation type="unfinished"></translation>
+        <translation>Zvětšit u každé buňky</translation>
     </message>
     <message>
         <source>Shrink into 1x1 for every</source>
-        <translation type="unfinished"></translation>
+        <translation>Zmenšit na 1x1 u každé</translation>
     </message>
     <message>
         <source>Columns</source>
-        <translation type="unfinished">Sloupce</translation>
+        <translation>Sloupce</translation>
     </message>
     <message>
         <source>Rows</source>
-        <translation type="unfinished">Řádky</translation>
+        <translation>Řádky</translation>
     </message>
     <message>
         <source>Method</source>
-        <translation type="unfinished"></translation>
+        <translation>Způsob</translation>
     </message>
     <message>
         <source>Bilinear</source>
-        <translation type="unfinished"></translation>
+        <translation>Dvojně lineární (bilineární)</translation>
     </message>
     <message>
         <source>Bicubic</source>
-        <translation type="unfinished"></translation>
+        <translation>Dvojně trojrozměrný (bikubický)</translation>
     </message>
     <message>
         <source>&amp;OK</source>
@@ -11336,7 +11332,7 @@ K tomu lze použít následujících zvláštních kódů:
     </message>
     <message>
         <source>QtiPlot - Start limit error</source>
-        <translation>QtiPlot - Chyba počáteční hodnoty</translation>
+        <translation type="obsolete">QtiPlot - Chyba počáteční hodnoty</translation>
     </message>
     <message>
         <source>Set Equidistant Levels</source>
@@ -11380,7 +11376,7 @@ K tomu lze použít následujících zvláštních kódů:
     </message>
     <message>
         <source>Please enter limits that satisfy: begin &lt; end!</source>
-        <translation>Zadejte, prosím, mezní hodnoty, které vyhoví: Začátek &lt; Konec!</translation>
+        <translation type="obsolete">Zadejte, prosím, mezní hodnoty, které vyhoví: Začátek &lt; Konec!</translation>
     </message>
     <message>
         <source>Vertical Steps</source>
@@ -11404,7 +11400,7 @@ K tomu lze použít následujících zvláštních kódů:
     </message>
     <message>
         <source>Please enter a valid bin size value!</source>
-        <translation>Zadejte, prosím, platnou hodnotu pro šířku rozmezí!</translation>
+        <translation type="obsolete">Zadejte, prosím, platnou hodnotu pro šířku rozmezí!</translation>
     </message>
     <message>
         <source>Max-Min</source>
@@ -11632,7 +11628,7 @@ K tomu lze použít následujících zvláštních kódů:
     </message>
     <message>
         <source>QtiPlot - Input error</source>
-        <translation>QtiPlot - Chyba při zadání</translation>
+        <translation type="obsolete">QtiPlot - Chyba při zadání</translation>
     </message>
     <message>
         <source>Line Width</source>
@@ -11700,7 +11696,7 @@ K tomu lze použít následujících zvláštních kódů:
     </message>
     <message>
         <source>Please enter a valid start limit!</source>
-        <translation>Zadejte, prosím, platnou počáteční hodnotu!</translation>
+        <translation type="obsolete">Zadejte, prosím, platnou počáteční hodnotu!</translation>
     </message>
     <message>
         <source>Histogram and Probabilities for</source>
@@ -11856,7 +11852,7 @@ K tomu lze použít následujících zvláštních kódů:
     </message>
     <message>
         <source>QtiPlot - Bin size input error</source>
-        <translation>QtiPlot - Chyba ve velikosti rozmezí</translation>
+        <translation type="obsolete">QtiPlot - Chyba ve velikosti rozmezí</translation>
     </message>
     <message>
         <source>Set As &amp;Default</source>
@@ -11880,7 +11876,7 @@ K tomu lze použít následujících zvláštních kódů:
     </message>
     <message>
         <source>Please enter a positive bin size value!</source>
-        <translation>Zadejte, prosím, kladnou hodnotu pro velikost rozmezí!</translation>
+        <translation type="obsolete">Zadejte, prosím, kladnou hodnotu pro velikost rozmezí!</translation>
     </message>
     <message>
         <source>Contour Lines</source>
@@ -11904,7 +11900,7 @@ K tomu lze použít následujících zvláštních kódů:
     </message>
     <message>
         <source>QtiPlot - End limit error</source>
-        <translation>QtiPlot - Chyba koncové hodnoty</translation>
+        <translation type="obsolete">QtiPlot - Chyba koncové hodnoty</translation>
     </message>
     <message>
         <source>Horizontal Bars</source>
@@ -11936,7 +11932,7 @@ K tomu lze použít následujících zvláštních kódů:
     </message>
     <message>
         <source>Please enter a valid end limit!</source>
-        <translation>Zadejte, prosím, platnou koncovou hodnotu!</translation>
+        <translation type="obsolete">Zadejte, prosím, platnou koncovou hodnotu!</translation>
     </message>
     <message>
         <source>Categories/&amp;Rows</source>

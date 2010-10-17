@@ -8500,10 +8500,6 @@ Automatisk komplettering ej tillgängligt!</translation>
         <source>S&amp;mooth</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <source>chart</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>ArrowMarker</name>
@@ -17887,39 +17883,39 @@ Vill du skjuta in celler?</translation>
     </message>
     <message>
         <source>QtiPlot - Input error</source>
-        <translation>QtiPlot - Indatafel</translation>
+        <translation type="obsolete">QtiPlot - Indatafel</translation>
     </message>
     <message>
         <source>Please enter a valid start limit!</source>
-        <translation>Mata in en giltig startgräns!</translation>
+        <translation type="obsolete">Mata in en giltig startgräns!</translation>
     </message>
     <message>
         <source>Please enter a valid end limit!</source>
-        <translation>Mata in en giltig slutgräns!</translation>
+        <translation type="obsolete">Mata in en giltig slutgräns!</translation>
     </message>
     <message>
         <source>Please enter a valid bin size value!</source>
-        <translation>Mata in ett giltigt högvärde!</translation>
+        <translation type="obsolete">Mata in ett giltigt högvärde!</translation>
     </message>
     <message>
         <source>QtiPlot - Start limit error</source>
-        <translation>QtiPlot - Startgränsfel</translation>
+        <translation type="obsolete">QtiPlot - Startgränsfel</translation>
     </message>
     <message>
         <source>QtiPlot - End limit error</source>
-        <translation>QtiPlot - Slutgränsfel</translation>
+        <translation type="obsolete">QtiPlot - Slutgränsfel</translation>
     </message>
     <message>
         <source>Please enter limits that satisfy: begin &lt; end!</source>
-        <translation>Mata in gränser som tillfredställer villkoret: början &lt; slut!</translation>
+        <translation type="obsolete">Mata in gränser som tillfredställer villkoret: början &lt; slut!</translation>
     </message>
     <message>
         <source>QtiPlot - Bin size input error</source>
-        <translation>QtiPlot - Fel storlek för högar</translation>
+        <translation type="obsolete">QtiPlot - Fel storlek för högar</translation>
     </message>
     <message>
         <source>Please enter a positive bin size value!</source>
-        <translation>Mata in ett positivt högvärde!</translation>
+        <translation type="obsolete">Mata in ett positivt högvärde!</translation>
     </message>
     <message>
         <source>Vector Data</source>

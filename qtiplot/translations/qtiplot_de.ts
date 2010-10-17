@@ -9921,10 +9921,6 @@ Autocompletion will not be available!</source>
         <source>S&amp;mooth</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <source>chart</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>ArrowMarker</name>
@@ -20415,31 +20411,31 @@ Wollen sie Zellen einfügen?</translation>
     </message>
     <message>
         <source>QtiPlot - Input error</source>
-        <translation>QtiPlot - Eingabefehler</translation>
+        <translation type="obsolete">QtiPlot - Eingabefehler</translation>
     </message>
     <message>
         <source>Please enter a valid start limit!</source>
-        <translation>Bitte einen gültigen Startwert eingeben!</translation>
+        <translation type="obsolete">Bitte einen gültigen Startwert eingeben!</translation>
     </message>
     <message>
         <source>Please enter a valid end limit!</source>
-        <translation>Bitte einen gültigen Endwert eingeben!</translation>
+        <translation type="obsolete">Bitte einen gültigen Endwert eingeben!</translation>
     </message>
     <message>
         <source>Please enter a valid bin size value!</source>
-        <translation>Bitte eine gültige Intervallbreite eingeben!</translation>
+        <translation type="obsolete">Bitte eine gültige Intervallbreite eingeben!</translation>
     </message>
     <message>
         <source>Please enter limits that satisfy: begin &lt; end!</source>
-        <translation>Bitte Grenzen eingeben, so dass Anfang &lt; Ende!</translation>
+        <translation type="obsolete">Bitte Grenzen eingeben, so dass Anfang &lt; Ende!</translation>
     </message>
     <message>
         <source>QtiPlot - Bin size input error</source>
-        <translation>QtiPlot - Fehler bei der Intervallgröße</translation>
+        <translation type="obsolete">QtiPlot - Fehler bei der Intervallgröße</translation>
     </message>
     <message>
         <source>Please enter a positive bin size value!</source>
-        <translation>Bitte eine positive Intervallgröße eingeben!</translation>
+        <translation type="obsolete">Bitte eine positive Intervallgröße eingeben!</translation>
     </message>
     <message>
         <source>Vector Data</source>
@@ -20555,11 +20551,11 @@ Wollen sie Zellen einfügen?</translation>
     </message>
     <message>
         <source>QtiPlot - Start limit error</source>
-        <translation>Qtiplot - Startwertfehler</translation>
+        <translation type="obsolete">Qtiplot - Startwertfehler</translation>
     </message>
     <message>
         <source>QtiPlot - End limit error</source>
-        <translation>QtiPlot - Endwertfehler</translation>
+        <translation type="obsolete">QtiPlot - Endwertfehler</translation>
     </message>
     <message>
         <source>Bins</source>
