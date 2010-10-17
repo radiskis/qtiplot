@@ -3911,7 +3911,7 @@ L&apos;autocomplétion ne sera pas disponible!</translation>
     </message>
     <message>
         <source>chart</source>
-        <translation type="obsolete">Diagramme</translation>
+        <translation>Diagramme</translation>
     </message>
     <message>
         <source>Yes, don&apos;t ask me again</source>
@@ -9127,43 +9127,43 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>&amp;Add</source>
-        <translation type="unfinished">&amp;Ajouter</translation>
+        <translation>&amp;Ajouter</translation>
     </message>
     <message>
         <source>Clea&amp;r</source>
-        <translation type="unfinished">Efface&amp;r</translation>
+        <translation>Efface&amp;r</translation>
     </message>
     <message>
         <source>Rece&amp;nt</source>
-        <translation type="unfinished">Réce&amp;nt</translation>
+        <translation>Réce&amp;nt</translation>
     </message>
     <message>
         <source>Click here to select a recently typed expression</source>
-        <translation type="unfinished">Cliquez ici pour sélectionner une expression récente</translation>
+        <translation>Cliquez ici pour sélectionner une expression récente</translation>
     </message>
     <message>
         <source>Subintervals</source>
-        <translation type="unfinished"></translation>
+        <translation>intervalles secondaires</translation>
     </message>
     <message>
         <source>QtiPlot - Input error</source>
-        <translation type="unfinished"></translation>
+        <translation>QtiPlot - Erreur d&apos;entrée</translation>
     </message>
     <message>
         <source>QtiPlot</source>
-        <translation type="unfinished"></translation>
+        <translation>QtiPlot</translation>
     </message>
     <message>
         <source>Sorry, there are no recent expressions available!</source>
-        <translation type="unfinished">Désolé, il n&apos;y a pas d&apos;expressions récentes !</translation>
+        <translation>Désolé, il n&apos;y a pas d&apos;expressions récentes !</translation>
     </message>
     <message>
         <source>Recent Functions</source>
-        <translation type="unfinished">Fonctions récentes</translation>
+        <translation>Fonctions récentes</translation>
     </message>
     <message>
         <source>Please, choose a function:</source>
-        <translation type="unfinished">Veuillez choisir une fonction :</translation>
+        <translation>Veuillez choisir une fonction :</translation>
     </message>
 </context>
 <context>
@@ -9234,7 +9234,7 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Error</source>
-        <translation type="unfinished">Erreur</translation>
+        <translation>Erreur</translation>
     </message>
 </context>
 <context>
@@ -11929,7 +11929,7 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Statistics for</source>
-        <translation type="unfinished"></translation>
+        <translation>Statistiques pour</translation>
     </message>
 </context>
 <context>
@@ -12739,31 +12739,31 @@ Calcule le sinus de x.</translation>
     </message>
     <message>
         <source>Min</source>
-        <translation type="unfinished">Min</translation>
+        <translation>Min</translation>
     </message>
     <message>
         <source>D1 (1st decile)</source>
-        <translation type="unfinished"></translation>
+        <translation>D1 (1er décile)</translation>
     </message>
     <message>
         <source>Q1 (1st quartile)</source>
-        <translation type="unfinished"></translation>
+        <translation>Q1 (1er quartile)</translation>
     </message>
     <message>
         <source>Median</source>
-        <translation type="unfinished">Médiane</translation>
+        <translation>Médiane</translation>
     </message>
     <message>
         <source>Q3 (3rd quartile)</source>
-        <translation type="unfinished"></translation>
+        <translation>Q3 (3ème quatile)</translation>
     </message>
     <message>
         <source>D9 (9th decile)</source>
-        <translation type="unfinished"></translation>
+        <translation>D9 (9ème décile)</translation>
     </message>
     <message>
         <source>Max</source>
-        <translation type="unfinished">Max</translation>
+        <translation>Max</translation>
     </message>
 </context>
 <context>
