@@ -18821,6 +18821,16 @@ void ApplicationWindow::reloadCustomMenus()
 QColor ApplicationWindow::readColorFromProject(const QString& name)
 {
 	QColor c = QColor();
+
+	if (name.contains(",")){
+		QStringList lst = name.split(",");
+		if (lst.size() == 2){
+			c = QColor(lst[0]);
+			c.setAlphaF(lst[1].toDouble());
+		}
+		return c;
+	}
+
 	bool canConvertToInt = false;
 	int fillColIndex = name.toInt(&canConvertToInt);
 	if (canConvertToInt){

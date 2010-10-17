@@ -3937,6 +3937,10 @@ Různé části tohoto souboru se nemusí zobrazovat tak, jak se očekává.</tr
         <source>S&amp;mooth</source>
         <translation>&amp;Jemné</translation>
     </message>
+    <message>
+        <source>chart</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ArrowMarker</name>
@@ -11984,6 +11988,10 @@ K tomu lze použít následujících zvláštních kódů:
     </message>
     <message>
         <source>Statistics for</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Apply Co&amp;lor</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

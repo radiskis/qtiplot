@@ -9921,6 +9921,10 @@ Autocompletion will not be available!</source>
         <source>S&amp;mooth</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>chart</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ArrowMarker</name>
@@ -20932,6 +20936,10 @@ Wollen sie Zellen einfügen?</translation>
     </message>
     <message>
         <source>Statistics for</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Apply Co&amp;lor</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

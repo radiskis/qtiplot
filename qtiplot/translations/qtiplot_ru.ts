@@ -3905,7 +3905,7 @@ Autocompletion will not be available!</source>
     </message>
     <message>
         <source>chart</source>
-        <translation type="obsolete">диаграмма</translation>
+        <translation type="unfinished">диаграмма</translation>
     </message>
     <message>
         <source>Overwrite file?</source>
@@ -11988,6 +11988,10 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Statistics for</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Apply Co&amp;lor</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -7413,6 +7413,10 @@ Autocompletion will not be available!</source>
         <source>S&amp;mooth</source>
         <translation>&amp;Netezeşte</translation>
     </message>
+    <message>
+        <source>chart</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ArrowMarker</name>
@@ -15563,6 +15567,10 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Statistics for</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Apply Co&amp;lor</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

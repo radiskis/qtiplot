@@ -436,6 +436,7 @@ class Graph: public QwtPlot
 		QString saveAxesBackbones();
 		QString saveTickLabelsSpace();
 		QString saveLabelsPrefixAndSuffix();
+		static QString rgbaName(const QColor& color);
 		//@}
 
 		//! \name Texts

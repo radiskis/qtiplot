@@ -103,6 +103,8 @@ QString PlotCurve::saveCurveLayout()
 	if (pen.style() != Qt::NoPen){
 		s += "<Pen>\n";
 		s += "\t<Color>" + pen.color().name() + "</Color>\n";
+		if (pen.color().alpha() != 255)
+			s += "\t<Alpha>" + QString::number(pen.color().alpha()) + "</Alpha>\n";
 		s += "\t<Style>" + QString::number(pen.style()-1) + "</Style>\n";
 		s += "\t<Width>" + QString::number(pen.widthF()) + "</Width>\n";
 		s += "</Pen>\n";
@@ -112,7 +114,8 @@ QString PlotCurve::saveCurveLayout()
 	if (brush.style() != Qt::NoBrush){
 		s += "<Brush>\n";
 		s += "\t<Color>" + brush.color().name() + "</Color>\n";
-		s += "\t<Alpha>" + QString::number(brush.color().alpha()) + "</Alpha>\n";
+		if (brush.color().alpha() != 255)
+			s += "\t<Alpha>" + QString::number(brush.color().alpha()) + "</Alpha>\n";
 		s += "\t<Style>" + QString::number(PatternBox::patternIndex(brush.style())) + "</Style>\n";
 		s += "</Brush>\n";
 	}
@@ -125,6 +128,8 @@ QString PlotCurve::saveCurveLayout()
 
 		s += "\t<SymbolPen>\n";
 		s += "\t\t<Color>" + symbol.pen().color().name() + "</Color>\n";
+		if (symbol.pen().color().alpha() != 255)
+			s += "\t<Alpha>" + QString::number(symbol.pen().color().alpha()) + "</Alpha>\n";
 		s += "\t\t<Width>" + QString::number(symbol.pen().widthF()) + "</Width>\n";
 		s += "\t</SymbolPen>\n";
 
@@ -132,6 +137,8 @@ QString PlotCurve::saveCurveLayout()
 		if (brush.style() != Qt::NoBrush){
 			s += "\t<SymbolBrush>\n";
 			s += "\t\t<Color>" + symbol.brush().color().name() + "</Color>\n";
+			if (symbol.brush().color().alpha() != 255)
+				s += "\t<Alpha>" + QString::number(symbol.brush().color().alpha()) + "</Alpha>\n";
 			s += "\t\t<Style>" + QString::number(PatternBox::patternIndex(symbol.brush().style())) + "</Style>\n";
 			s += "\t</SymbolBrush>\n";
 		}
@@ -156,7 +163,11 @@ void PlotCurve::restoreCurveLayout(const QStringList& lst)
 				s = (*(++line)).stripWhiteSpace();
 				if (s.contains("<Color>"))
 					pen.setColor(QColor(s.remove("<Color>").remove("</Color>")));
-				else if (s.contains("<Style>"))
+				else if (s.contains("<Alpha>")){
+					QColor c = pen.color();
+					c.setAlpha(s.remove("<Alpha>").remove("</Alpha>").toInt());
+					pen.setColor(c);
+				} else if (s.contains("<Style>"))
 					pen.setStyle(Graph::getPenStyle(s.remove("<Style>").remove("</Style>").toInt()));
 				else if (s.contains("<Width>"))
 					pen.setWidthF(s.remove("<Width>").remove("</Width>").toDouble());
@@ -190,7 +201,11 @@ void PlotCurve::restoreCurveLayout(const QStringList& lst)
 						s = (*(++line)).stripWhiteSpace();
 						if (s.contains("<Color>"))
 							pen.setColor(QColor(s.remove("<Color>").remove("</Color>")));
-						else if (s.contains("<Style>"))
+						else if (s.contains("<Alpha>")){
+							QColor c = pen.color();
+							c.setAlpha(s.remove("<Alpha>").remove("</Alpha>").toInt());
+							pen.setColor(c);
+						} else if (s.contains("<Style>"))
 							pen.setStyle(Graph::getPenStyle(s.remove("<Style>").remove("</Style>").toInt()));
 						else if (s.contains("<Width>"))
 							pen.setWidthF(s.remove("<Width>").remove("</Width>").toDouble());
@@ -203,7 +218,11 @@ void PlotCurve::restoreCurveLayout(const QStringList& lst)
 						s = (*(++line)).stripWhiteSpace();
 						if (s.contains("<Color>"))
 							brush.setColor(QColor(s.remove("<Color>").remove("</Color>")));
-						else if (s.contains("<Style>"))
+						else if (s.contains("<Alpha>")){
+							QColor c = brush.color();
+							c.setAlpha(s.remove("<Alpha>").remove("</Alpha>").toInt());
+							brush.setColor(c);
+						} else if (s.contains("<Style>"))
 							brush.setStyle(PatternBox::brushStyle(s.remove("<Style>").remove("</Style>").toInt()));
 					}
 					symbol.setBrush(brush);

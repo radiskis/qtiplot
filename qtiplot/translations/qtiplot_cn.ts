@@ -3100,6 +3100,7 @@ Autocompletion will not be available!</source>
     </message>
     <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="4336"/>
+        <location filename="../src/core/ExcelImport.cpp" line="921"/>
         <source>sheet</source>
         <translation>表单</translation>
     </message>
@@ -4061,8 +4062,8 @@ Autocompletion will not be available!</source>
         <location filename="../src/core/ApplicationWindow.cpp" line="17729"/>
         <location filename="../src/core/ApplicationWindow.cpp" line="18015"/>
         <location filename="../src/core/ApplicationWindow.cpp" line="18371"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="18860"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="19037"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="18870"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="19047"/>
         <source>QtiPlot</source>
         <translation>QtiPlot</translation>
     </message>
@@ -6700,23 +6701,23 @@ Are you sure you want to continue?</source>
         <translation>可以为任何.qti, qti.gz, .ods, .opj, .ogm, .ogw, .ogg, .py, .xls 或者ASCII文件</translation>
     </message>
     <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="18877"/>
-        <location filename="../src/core/ApplicationWindow.cpp" line="18894"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="18887"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="18904"/>
         <source>Set Precision %1 digits</source>
         <translation>设置精度为%1小数</translation>
     </message>
     <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="19037"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="19047"/>
         <source>Choose custom user interface</source>
         <translation>选择自定义用户界面</translation>
     </message>
     <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="19045"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="19055"/>
         <source>Custom user interfaces can be created using the QtDesigner application provided by the Qt framework</source>
         <translation>自定义用户界面可以用Qt framework提供的QtDesigner创建</translation>
     </message>
     <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="19047"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="19057"/>
         <source>For more details about how to use .ui files in your Python scripts please read the PyQt4 documentation</source>
         <translation>关于如何在Python脚本里面使用.ui文件的更多详细资料请参阅PyQt4手册</translation>
     </message>
@@ -8122,12 +8123,12 @@ Are you sure you want to continue?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="18860"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="18870"/>
         <source>Memory Allocation Error</source>
         <translation>内存分配错误</translation>
     </message>
     <message>
-        <location filename="../src/core/ApplicationWindow.cpp" line="18861"/>
+        <location filename="../src/core/ApplicationWindow.cpp" line="18871"/>
         <source>Not enough memory, operation aborted!</source>
         <translation>内存不足，操作中止!</translation>
     </message>
@@ -8819,6 +8820,11 @@ Autocompletion will not be available!</source>
         <location filename="../src/core/ApplicationWindow.cpp" line="11083"/>
         <source>Move Row</source>
         <translation>移动行</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ExcelImport.cpp" line="609"/>
+        <source>chart</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -14758,7 +14764,7 @@ The following special codes can be used:
         <location filename="../src/plot2D/Graph.cpp" line="1516"/>
         <location filename="../src/plot2D/Graph.cpp" line="1547"/>
         <location filename="../src/plot2D/Graph.cpp" line="1589"/>
-        <location filename="../src/plot2D/Graph.cpp" line="5270"/>
+        <location filename="../src/plot2D/Graph.cpp" line="5278"/>
         <source>QtiPlot - Error</source>
         <translation>QtiPlot - 错误</translation>
     </message>
@@ -14790,17 +14796,17 @@ The following special codes can be used:
         <translation>标题</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.cpp" line="3926"/>
+        <location filename="../src/plot2D/Graph.cpp" line="3934"/>
         <source>QtiPlot - File open error</source>
         <translation>QtiPlot - 文件打开错误</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.cpp" line="3927"/>
+        <location filename="../src/plot2D/Graph.cpp" line="3935"/>
         <source>Image file: &lt;p&gt;&lt;b&gt; %1 &lt;/b&gt;&lt;p&gt;does not exist anymore!</source>
         <translation>图像文件&lt;p&gt;&lt;b&gt; %1 &lt;/b&gt;&lt;p&gt;不再存在!</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.cpp" line="4130"/>
+        <location filename="../src/plot2D/Graph.cpp" line="4138"/>
         <source>Data set generated from curve</source>
         <translation>从曲线生成数据集</translation>
     </message>
@@ -14809,100 +14815,100 @@ The following special codes can be used:
         <translation type="obsolete">表格</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.cpp" line="4399"/>
-        <location filename="../src/plot2D/Graph.cpp" line="4403"/>
-        <location filename="../src/plot2D/Graph.cpp" line="5260"/>
+        <location filename="../src/plot2D/Graph.cpp" line="4407"/>
+        <location filename="../src/plot2D/Graph.cpp" line="4411"/>
+        <location filename="../src/plot2D/Graph.cpp" line="5268"/>
         <source>QtiPlot - Warning</source>
         <translation>QtiPlot - 警告</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.cpp" line="4400"/>
+        <location filename="../src/plot2D/Graph.cpp" line="4408"/>
         <source>The columns</source>
         <translation>列</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.cpp" line="4400"/>
+        <location filename="../src/plot2D/Graph.cpp" line="4408"/>
         <source>are empty and will not be added to the plot!</source>
         <translation>是空的并且不会被添加到绘图中!</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.cpp" line="4404"/>
+        <location filename="../src/plot2D/Graph.cpp" line="4412"/>
         <source>The column</source>
         <translation>列</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.cpp" line="4404"/>
+        <location filename="../src/plot2D/Graph.cpp" line="4412"/>
         <source>is empty and will not be added to the plot!</source>
         <translation>是空的并且不会被添加到绘图中!</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.cpp" line="4410"/>
-        <location filename="../src/plot2D/Graph.cpp" line="4463"/>
+        <location filename="../src/plot2D/Graph.cpp" line="4418"/>
+        <location filename="../src/plot2D/Graph.cpp" line="4471"/>
         <source>Cu&amp;t</source>
         <translation>剪切(&amp;t)</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.cpp" line="4411"/>
-        <location filename="../src/plot2D/Graph.cpp" line="4464"/>
+        <location filename="../src/plot2D/Graph.cpp" line="4419"/>
+        <location filename="../src/plot2D/Graph.cpp" line="4472"/>
         <source>&amp;Copy</source>
         <translation>复制(&amp;C)</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.cpp" line="4412"/>
-        <location filename="../src/plot2D/Graph.cpp" line="4465"/>
+        <location filename="../src/plot2D/Graph.cpp" line="4420"/>
+        <location filename="../src/plot2D/Graph.cpp" line="4473"/>
         <source>C&amp;lear</source>
         <translation>清除(&amp;l)</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.cpp" line="4413"/>
-        <location filename="../src/plot2D/Graph.cpp" line="4466"/>
+        <location filename="../src/plot2D/Graph.cpp" line="4421"/>
+        <location filename="../src/plot2D/Graph.cpp" line="4474"/>
         <source>&amp;Delete</source>
         <translation>删除(&amp;D)</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.cpp" line="4415"/>
-        <location filename="../src/plot2D/Graph.cpp" line="4468"/>
-        <location filename="../src/plot2D/Graph.cpp" line="4491"/>
+        <location filename="../src/plot2D/Graph.cpp" line="4423"/>
+        <location filename="../src/plot2D/Graph.cpp" line="4476"/>
+        <location filename="../src/plot2D/Graph.cpp" line="4499"/>
         <source>&amp;Properties...</source>
         <translation>属性(&amp;P)...</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.cpp" line="4476"/>
+        <location filename="../src/plot2D/Graph.cpp" line="4484"/>
         <source>&amp;Rescale to show all</source>
         <translation>重缩放显示所有(&amp;R)</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.cpp" line="4476"/>
+        <location filename="../src/plot2D/Graph.cpp" line="4484"/>
         <source>Ctrl+Shift+R</source>
         <translation>Ctrl+Shift+R</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.cpp" line="4478"/>
+        <location filename="../src/plot2D/Graph.cpp" line="4486"/>
         <source>&amp;Hide axis</source>
         <translation>隐藏轴(&amp;H)</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.cpp" line="4480"/>
+        <location filename="../src/plot2D/Graph.cpp" line="4488"/>
         <source>&amp;Show grids</source>
         <translation>显示网格(&amp;S)</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.cpp" line="4490"/>
+        <location filename="../src/plot2D/Graph.cpp" line="4498"/>
         <source>&amp;Scale...</source>
         <translation>比例(&amp;S)...</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.cpp" line="5260"/>
+        <location filename="../src/plot2D/Graph.cpp" line="5268"/>
         <source>There are no curves available on this plot!</source>
         <translation>绘图中没有有效曲线!</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.cpp" line="5271"/>
+        <location filename="../src/plot2D/Graph.cpp" line="5279"/>
         <source>There are no curves with more than two points on this plot. Operation aborted!</source>
         <translation>绘图中没有包含多于两个点的曲线。操作中止!</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.h" line="668"/>
+        <location filename="../src/plot2D/Graph.h" line="669"/>
         <source>F</source>
         <translation>F</translation>
     </message>
@@ -18147,7 +18153,7 @@ have the same number of rows.</source>
     </message>
     <message>
         <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="170"/>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1852"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1857"/>
         <source>&amp;Plot Associations...</source>
         <translation>绘图关联(&amp;P)...</translation>
     </message>
@@ -18173,7 +18179,7 @@ have the same number of rows.</source>
     </message>
     <message>
         <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="388"/>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="2023"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="2028"/>
         <source>Fonts</source>
         <translation>字体</translation>
     </message>
@@ -18185,14 +18191,14 @@ have the same number of rows.</source>
     <message>
         <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="406"/>
         <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="417"/>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1012"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1016"/>
         <source>Opacity</source>
         <translation>不透明度</translation>
     </message>
     <message>
         <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="411"/>
         <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="422"/>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1017"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1021"/>
         <source>Transparent</source>
         <translation>透明</translation>
     </message>
@@ -18210,8 +18216,8 @@ have the same number of rows.</source>
         <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="429"/>
         <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="704"/>
         <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="980"/>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1344"/>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1426"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1349"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1431"/>
         <source>Width</source>
         <translation>宽度</translation>
     </message>
@@ -18234,7 +18240,8 @@ have the same number of rows.</source>
         <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="348"/>
         <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="453"/>
         <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="622"/>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1603"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="992"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1608"/>
         <source>Apply &amp;to...</source>
         <translation>应用到(&amp;t)...</translation>
     </message>
@@ -18243,14 +18250,14 @@ have the same number of rows.</source>
         <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="469"/>
         <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="626"/>
         <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="997"/>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1087"/>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1520"/>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1608"/>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1712"/>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1898"/>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1917"/>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1986"/>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="3835"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1092"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1525"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1613"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1717"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1903"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1922"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1991"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="3842"/>
         <source>Layer</source>
         <translation>图层</translation>
     </message>
@@ -18259,9 +18266,9 @@ have the same number of rows.</source>
         <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="458"/>
         <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="627"/>
         <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="998"/>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1088"/>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1521"/>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1609"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1093"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1526"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1614"/>
         <source>Window</source>
         <translation>窗口</translation>
     </message>
@@ -18270,9 +18277,9 @@ have the same number of rows.</source>
         <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="459"/>
         <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="628"/>
         <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="999"/>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1089"/>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1522"/>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1610"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1094"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1527"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1615"/>
         <source>All Windows</source>
         <translation>所有窗口</translation>
     </message>
@@ -18333,8 +18340,8 @@ have the same number of rows.</source>
     <message>
         <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="517"/>
         <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="600"/>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1056"/>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1242"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1061"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1247"/>
         <source>Size</source>
         <translation>大小</translation>
     </message>
@@ -18358,8 +18365,8 @@ have the same number of rows.</source>
     </message>
     <message>
         <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="643"/>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1918"/>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1987"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1923"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1992"/>
         <source>Geometry</source>
         <translation>布局</translation>
     </message>
@@ -18384,8 +18391,8 @@ have the same number of rows.</source>
     </message>
     <message>
         <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="685"/>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1919"/>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1988"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1924"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1993"/>
         <source>Speed</source>
         <translation>加速</translation>
     </message>
@@ -18393,18 +18400,18 @@ have the same number of rows.</source>
         <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="695"/>
         <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="881"/>
         <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="988"/>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1421"/>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1477"/>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1631"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1426"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1482"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1636"/>
         <source>Color</source>
         <translation>颜色</translation>
     </message>
     <message>
         <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="700"/>
         <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="976"/>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1053"/>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1433"/>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1475"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1058"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1438"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1480"/>
         <source>Style</source>
         <translation>样式</translation>
     </message>
@@ -18421,10 +18428,10 @@ have the same number of rows.</source>
     <message>
         <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="721"/>
         <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="734"/>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1025"/>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="2037"/>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="2062"/>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="2081"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1029"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="2042"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="2067"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="2086"/>
         <source>Pattern</source>
         <translation>图案</translation>
     </message>
@@ -18480,7 +18487,7 @@ have the same number of rows.</source>
     </message>
     <message>
         <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="791"/>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="2038"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="2043"/>
         <source>Pie Geometry</source>
         <translation>饼状图几何属性</translation>
     </message>
@@ -18517,9 +18524,9 @@ have the same number of rows.</source>
     <message>
         <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="835"/>
         <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="921"/>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="2039"/>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="2090"/>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="2110"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="2044"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="2095"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="2115"/>
         <source>Labels</source>
         <translation>标签</translation>
     </message>
@@ -18535,7 +18542,7 @@ have the same number of rows.</source>
     </message>
     <message>
         <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="853"/>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="2022"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="2027"/>
         <source>Print</source>
         <translation>打印</translation>
     </message>
@@ -18567,14 +18574,14 @@ have the same number of rows.</source>
     <message>
         <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="891"/>
         <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="948"/>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1338"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1343"/>
         <source>Left</source>
         <translation>左对齐</translation>
     </message>
     <message>
         <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="892"/>
         <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="949"/>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1339"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1344"/>
         <source>Right</source>
         <translation>右对齐</translation>
     </message>
@@ -18605,7 +18612,7 @@ have the same number of rows.</source>
     </message>
     <message>
         <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="364"/>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="2024"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="2029"/>
         <source>Miscellaneous</source>
         <translation type="unfinished"></translation>
     </message>
@@ -18621,7 +18628,7 @@ have the same number of rows.</source>
     </message>
     <message>
         <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="557"/>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="2021"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="2026"/>
         <source>Dimensions</source>
         <translation type="unfinished">维度</translation>
     </message>
@@ -18657,13 +18664,13 @@ have the same number of rows.</source>
     </message>
     <message>
         <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="941"/>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1340"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1345"/>
         <source>Bottom</source>
         <translation>底</translation>
     </message>
     <message>
         <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="942"/>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1341"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1346"/>
         <source>Top</source>
         <translation>顶</translation>
     </message>
@@ -18674,7 +18681,7 @@ have the same number of rows.</source>
     </message>
     <message>
         <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="956"/>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="2044"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="2049"/>
         <source>Axes</source>
         <translation>轴</translation>
     </message>
@@ -18719,546 +18726,550 @@ have the same number of rows.</source>
         <translation>垂直阶梯图</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="992"/>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1082"/>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1516"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1087"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1521"/>
         <source>Apply Format &amp;to</source>
         <translation>应用格式至(&amp;t)</translation>
     </message>
     <message>
         <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="996"/>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1086"/>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1519"/>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1607"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1091"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1524"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1612"/>
         <source>Selected Curve</source>
         <translation>选择曲线</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1005"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1003"/>
+        <source>Apply Co&amp;lor</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1009"/>
         <source>Fill area under curve</source>
         <translation>填充曲线下方区域</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1008"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1012"/>
         <source>Fill color</source>
         <translation>填充颜色</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1034"/>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="2047"/>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="2055"/>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="2200"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1038"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="2052"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="2060"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="2205"/>
         <source>Line</source>
         <translation>线</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1061"/>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1248"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1066"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1253"/>
         <source>Fill Color</source>
         <translation>填充颜色</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1065"/>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1253"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1070"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1258"/>
         <source>Edge Color</source>
         <translation>边缘颜色</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1068"/>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1257"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1073"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1262"/>
         <source>Edge Width</source>
         <translation>边缘宽度</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1075"/>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1507"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1080"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1512"/>
         <source>Skip Points</source>
         <translation>跳过点</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1079"/>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1511"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1084"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1516"/>
         <source>None</source>
         <translation>不选</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1099"/>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1240"/>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="2051"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1104"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1245"/>
         <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="2056"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="2061"/>
         <source>Symbol</source>
         <translation>符号</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1110"/>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="2196"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1115"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="2201"/>
         <source>Box</source>
         <translation>箱形框</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1112"/>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1216"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1117"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1221"/>
         <source>Type</source>
         <translation>类型</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1116"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1121"/>
         <source>No Box</source>
         <translation>无边框</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1117"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1122"/>
         <source>Rectangle</source>
         <translation>矩形</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1118"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1123"/>
         <source>Diamond</source>
         <translation>菱形</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1119"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1124"/>
         <source>Perc 10, 25, 75, 90</source>
         <translation>百分比 10, 25, 75, 90</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1120"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1125"/>
         <source>Notch</source>
         <translation>V型切口</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1123"/>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1160"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1128"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1165"/>
         <source>Range</source>
         <translation>范围</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1127"/>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1166"/>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1811"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1132"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1171"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1816"/>
         <source>Standard Deviation</source>
         <translation>标准差</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1128"/>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1167"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1133"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1172"/>
         <source>Standard Error</source>
         <translation>标准误差</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1129"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1134"/>
         <source>Perc 25, 75</source>
         <translation>百分比 25, 75</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1130"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1135"/>
         <source>Perc 10, 90</source>
         <translation>百分比 10, 90</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1131"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1136"/>
         <source>Perc 5, 95</source>
         <translation>百分比 5, 95</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1132"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1137"/>
         <source>Perc 1, 99</source>
         <translation>百分比 1, 99</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1133"/>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1172"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1138"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1177"/>
         <source>Max-Min</source>
         <translation>最大-最小</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1134"/>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1173"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1139"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1178"/>
         <source>Constant</source>
         <translation>常数</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1137"/>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1176"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1142"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1181"/>
         <source>Percentile (%)</source>
         <translation>百分比(%)</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1144"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1149"/>
         <source>Coefficient</source>
         <translation>系数</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1152"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1157"/>
         <source>Box Width</source>
         <translation>箱形宽度</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1158"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1163"/>
         <source>Whiskers</source>
         <translation>有须</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1165"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1170"/>
         <source>No Whiskers</source>
         <translation>无须</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1168"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1173"/>
         <source>75-25</source>
         <translation>75-25</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1169"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1174"/>
         <source>90-10</source>
         <translation>90-10</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1170"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1175"/>
         <source>95-5</source>
         <translation>95-5</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1171"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1176"/>
         <source>99-1</source>
         <translation>99-1</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1183"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1188"/>
         <source>Coef</source>
         <translation>系数</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1206"/>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="2082"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1211"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="2087"/>
         <source>Box/Whiskers</source>
         <translation>箱形图</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1218"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1223"/>
         <source>Max</source>
         <translation>最大值</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1223"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1228"/>
         <source>99%</source>
         <translation>99%</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1227"/>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1810"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1232"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1815"/>
         <source>Mean</source>
         <translation>平均值</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1231"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1236"/>
         <source>1%</source>
         <translation>1%</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1235"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1240"/>
         <source>Min</source>
         <translation>最小值</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1269"/>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="2083"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1274"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="2088"/>
         <source>Percentile</source>
         <translation>百分比</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1312"/>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="2198"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1317"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="2203"/>
         <source>Image</source>
         <translation>图像</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1316"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1321"/>
         <source>&amp;Gray Scale</source>
         <translation>灰阶(&amp;G)</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1319"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1324"/>
         <source>&amp;Default Color Map</source>
         <translation>默认颜色表(&amp;D)</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1322"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1327"/>
         <source>&amp;Custom Color Map</source>
         <translation>自定义颜色表(&amp;C)</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1446"/>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="2089"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1451"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="2094"/>
         <source>Contour Lines</source>
         <translation>等值线图</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1373"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1378"/>
         <source>Levels</source>
         <translation>级</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1405"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1410"/>
         <source>Use &amp;Color Map</source>
         <translation>使用颜色表(&amp;C)</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1409"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1414"/>
         <source>Use Default &amp;Pen</source>
         <translation>使用默认笔触(&amp;P)</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1331"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1336"/>
         <source>Color Bar Scale</source>
         <translation>颜色棒比例</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1335"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1340"/>
         <source>Axis</source>
         <translation>轴</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="2198"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="2203"/>
         <source>Contour</source>
         <translation>等值线</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1463"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1468"/>
         <source>Direction</source>
         <translation>方向</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1466"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1471"/>
         <source>Plus</source>
         <translation>加</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1468"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1473"/>
         <source>Minus</source>
         <translation>减</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1470"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1475"/>
         <source>&amp;X Error Bar</source>
         <translation>&amp;X误差棒</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1482"/>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1634"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1487"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1639"/>
         <source>Line Width</source>
         <translation>线宽</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1489"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1494"/>
         <source>Cap Width</source>
         <translation>冠宽度</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1491"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1496"/>
         <source>8</source>
         <translation>8</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1492"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1497"/>
         <source>10</source>
         <translation>10</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1493"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1498"/>
         <source>12</source>
         <translation>12</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1494"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1499"/>
         <source>16</source>
         <translation>16</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1495"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1500"/>
         <source>20</source>
         <translation>20</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1499"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1504"/>
         <source>Through Symbol</source>
         <translation>贯穿符号</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1536"/>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="2077"/>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="2181"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1541"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="2082"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="2186"/>
         <source>Error Bars</source>
         <translation>误差棒</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1551"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1556"/>
         <source>Automatic Binning</source>
         <translation>自动Binning</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1198"/>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1554"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1203"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1559"/>
         <source>&amp;Show statistics</source>
         <translation>显示统计信息(&amp;S)</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1560"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1565"/>
         <source>Bin Size</source>
         <translation>Bin尺寸</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1566"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1571"/>
         <source>Begin</source>
         <translation>开始</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1570"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1575"/>
         <source>End</source>
         <translation>结束</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1581"/>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="2066"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1586"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="2071"/>
         <source>Histogram Data</source>
         <translation>直方图数据</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1596"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1601"/>
         <source>Gap Between Bars (in %)</source>
         <translation>棒间间隔(%)</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1615"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1620"/>
         <source>Offset (in %)</source>
         <translation>偏移(%)</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1624"/>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="2063"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1629"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="2068"/>
         <source>Spacing</source>
         <translation>间距</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1641"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1646"/>
         <source>Arrowheads</source>
         <translation>箭头头部</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1643"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1648"/>
         <source>Length</source>
         <translation>长度</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1647"/>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="3210"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1652"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="3215"/>
         <source>Angle</source>
         <translation>角度</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1652"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1657"/>
         <source>&amp;Filled</source>
         <translation>填充(&amp;F)</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1656"/>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="3217"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1661"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="3222"/>
         <source>End Point</source>
         <translation>终点</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1658"/>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="3218"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1663"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="3223"/>
         <source>X End</source>
         <translation>X终点</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1663"/>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="3219"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1668"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="3224"/>
         <source>Y End</source>
         <translation>Y终点</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1668"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1673"/>
         <source>Position</source>
         <translation>位置</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1671"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1676"/>
         <source>Tail</source>
         <translation>尾部</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1672"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1677"/>
         <source>Middle</source>
         <translation>中部</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1673"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1678"/>
         <source>Head</source>
         <translation>头部</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1687"/>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="2073"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1692"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="2078"/>
         <source>Vector</source>
         <translation>矢量</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1759"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1764"/>
         <source>Statistics for</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1787"/>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1804"/>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1814"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1792"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1809"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1819"/>
         <source>Bins</source>
         <translation>Bins</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1788"/>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1809"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1793"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1814"/>
         <source>Histogram and Probabilities for</source>
         <translation>直方图和几率</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1804"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1809"/>
         <source>Quantity</source>
         <translation>数量</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1804"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1809"/>
         <source>Sum</source>
         <translation>和</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1804"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1809"/>
         <source>Percent</source>
         <translation>百分比</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1812"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1817"/>
         <source>Minimum</source>
         <translation>最小</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1813"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1818"/>
         <source>Maximum</source>
         <translation>最大</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1843"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1848"/>
         <source>Move &amp;upward</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1847"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1852"/>
         <source>Move do&amp;wnward</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1856"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1861"/>
         <source>&amp;Delete</source>
         <translation>删除(&amp;D)</translation>
     </message>
@@ -19267,53 +19278,53 @@ have the same number of rows.</source>
         <translation type="obsolete">编辑(&amp;E)...</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1354"/>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="2088"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1359"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="2093"/>
         <source>Colors</source>
         <translation>颜色</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="2101"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="2106"/>
         <source>&amp;Function</source>
         <translation>函数(&amp;F)</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="2183"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="2188"/>
         <source>Pie</source>
         <translation>饼状图</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="2185"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="2190"/>
         <source>Vertical Bars</source>
         <translation>垂直棒状图</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="2187"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="2192"/>
         <source>Horizontal Bars</source>
         <translation>水平棒状图</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="2189"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="2194"/>
         <source>Histogram</source>
         <translation>直方图</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="2191"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="2196"/>
         <source>Vector XYXY</source>
         <translation>矢量图XYXY</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="2192"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="2197"/>
         <source>Vector XYAM</source>
         <translation>矢量图XYAM</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="2201"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="2206"/>
         <source>Scatter</source>
         <translation>散点图</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="2202"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="2207"/>
         <source>Line + Symbol</source>
         <translation>线状图+符号</translation>
     </message>
@@ -19354,63 +19365,63 @@ have the same number of rows.</source>
         <translation type="obsolete">请输入一个正的bin尺寸值!</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="3209"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="3214"/>
         <source>Vector Data</source>
         <translation>矢量图数据</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="3211"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="3216"/>
         <source>Magnitude</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1290"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1295"/>
         <source>Matrix</source>
         <translation>矩阵</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1297"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1302"/>
         <source>Use matrix formula to calculate values</source>
         <translation>用矩阵式计算值</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1305"/>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="2087"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1310"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="2092"/>
         <source>Values</source>
         <translation>值</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1366"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1371"/>
         <source>&amp;Show Contour Lines</source>
         <translation>显示等值线图(&amp;S)</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1370"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1375"/>
         <source>Set Equidistant Levels</source>
         <translation>设置等距级数</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1378"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1383"/>
         <source>Start</source>
         <translation>开始</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1384"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1389"/>
         <source>Step</source>
         <translation>步长</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1390"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1395"/>
         <source>Set &amp;Levels</source>
         <translation>设置等级(&amp;L)</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1401"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1406"/>
         <source>Pen</source>
         <translation>笔触</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1413"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1418"/>
         <source>Use &amp;Table Custom Pen</source>
         <translation>使用表格自定义笔触(&amp;T)</translation>
     </message>

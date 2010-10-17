@@ -11931,6 +11931,10 @@ have the same number of rows.</source>
         <source>Statistics for</source>
         <translation>Statistiques pour</translation>
     </message>
+    <message>
+        <source>Apply Co&amp;lor</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>PlotWizard</name>

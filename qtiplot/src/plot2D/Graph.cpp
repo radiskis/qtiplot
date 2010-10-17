@@ -2439,6 +2439,14 @@ QString Graph::savePieCurveLayout()
 	return s;
 }
 
+QString Graph::rgbaName(const QColor& color)
+{
+	if (color.alpha() == 255)
+		return color.name();
+
+	return color.name() + "," + QString::number(color.alphaF());
+}
+
 QString Graph::saveCurveLayout(int index)
 {
 	QString s = QString::null;
@@ -2452,16 +2460,16 @@ QString Graph::saveCurveLayout(int index)
 			s+="6\t";
 		else
 			s+=QString::number(c->style())+"\t";
-		s += c->pen().color().name() + "\t";
-		s+=QString::number(c->pen().style()-1)+"\t";
-		s+=QString::number(c->pen().widthF())+"\t";
+		s += rgbaName(c->pen().color()) + "\t";
+		s += QString::number(c->pen().style()-1)+"\t";
+		s += QString::number(c->pen().widthF())+"\t";
 
 		const QwtSymbol symbol = c->symbol();
 		s += QString::number(symbol.size().width()) + "\t";
 		s += QString::number(SymbolBox::symbolIndex(symbol.style())) + "\t";
-		s += symbol.pen().color().name() + "\t";
+		s += rgbaName(symbol.pen().color()) + "\t";
 		if (symbol.brush().style() != Qt::NoBrush)
-			s += symbol.brush().color().name() + "\t";
+			s += rgbaName(symbol.brush().color()) + "\t";
 		else
 			s += QString::number(-1) + "\t";
 
