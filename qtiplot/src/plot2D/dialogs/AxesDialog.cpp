@@ -1355,13 +1355,10 @@ bool AxesDialog::updatePlot(QWidget *page)
 		axesBaseline[axis] = baseline;
 
         QString formatInfo = QString::null;
-		if (format == ScaleDraw::Numeric)
-		{
-			if (boxShowFormula->isChecked())
-			{
+		if (format == ScaleDraw::Numeric){
+			if (boxShowFormula->isChecked()){
 				QString formula = boxFormula->text().lower();
-				try
-				{
+				try {
 					double value = 1.0;
 					MyParser parser;
 					if (formula.contains("x"))
@@ -1370,9 +1367,7 @@ bool AxesDialog::updatePlot(QWidget *page)
 						parser.DefineVar("y", &value);
 					parser.SetExpr(formula.ascii());
 					parser.Eval();
-				}
-				catch(mu::ParserError &e)
-				{
+				} catch(mu::ParserError &e) {
 					QMessageBox::critical(this, tr("QtiPlot - Formula input error"), QString::fromStdString(e.GetMsg())+"\n"+
 							tr("Valid variables are 'x' for Top/Bottom axes and 'y' for Left/Right axes!"));
 					boxFormula->setFocus();
@@ -1380,7 +1375,7 @@ bool AxesDialog::updatePlot(QWidget *page)
 				}
 			}
 		} else if (format == ScaleDraw::Date)
-			formatInfo = originDateTimeBox->date().toString(Qt::ISODate) + ";" + boxFormat->currentText();
+			formatInfo = originDateTimeBox->dateTime().toString(Qt::ISODate) + ";" + boxFormat->currentText();
 		else if (format == ScaleDraw::Time)
 			formatInfo = originDateTimeBox->time().toString() + ";" + boxFormat->currentText();
 		else if (format == ScaleDraw::Day || format == ScaleDraw::Month)
