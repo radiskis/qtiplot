@@ -1208,7 +1208,9 @@ void PlotDialog::initBoxPage()
 	hl->addLayout(vl2);
     privateTabWidget->insertTab(boxPage, tr( "Box/Whiskers" ) );
 
+	connect(boxWidth, SIGNAL(valueChanged(int)), this, SLOT(acceptParams()));
 	connect(boxType, SIGNAL(activated(int)), this, SLOT(setBoxType(int)));
+	connect(boxType, SIGNAL(activated(int)), this, SLOT(acceptParams()));
 	connect(boxRange, SIGNAL(activated(int)), this, SLOT(setBoxRangeType(int)));
 	connect(boxWhiskersRange, SIGNAL(activated(int)), this, SLOT(setWhiskersRange(int)));
 	connect(buttonBoxStatistics, SIGNAL(clicked()), this, SLOT(showBoxStatistics()));
@@ -1271,6 +1273,8 @@ void PlotDialog::initPercentilePage()
 	hl->addWidget(gb2);
     privateTabWidget->insertTab(percentilePage, tr( "Percentile" ) );
 
+	connect(boxPercSize, SIGNAL(valueChanged(int)), this, SLOT(acceptParams()));
+	connect(boxEdgeWidth, SIGNAL(valueChanged(double)), this, SLOT(acceptParams()));
 	connect(boxMeanStyle, SIGNAL(activated(int)), this, SLOT(acceptParams()));
 	connect(boxMinStyle, SIGNAL(activated(int)), this, SLOT(acceptParams()));
 	connect(boxMaxStyle, SIGNAL(activated(int)), this, SLOT(acceptParams()));
@@ -2084,6 +2088,7 @@ void PlotDialog::insertTabs(int plot_type)
 		privateTabWidget->addTab (linePage, tr("Pattern"));
 		privateTabWidget->addTab (boxPage, tr("Box/Whiskers"));
 		privateTabWidget->addTab (percentilePage, tr("Percentile"));
+		privateTabWidget->addTab(labelsPage, tr("Labels"));
 		privateTabWidget->showPage(linePage);
 		return;
 	} else if (plot_type == Graph::ColorMap || plot_type == Graph::GrayScale || plot_type == Graph::Contour){
@@ -2396,7 +2401,6 @@ void PlotDialog::setActiveCurve(CurveTreeItem *item)
 
     PlotCurve *c = (PlotCurve*)i;
 	btnEditCurve->setVisible(c->type() != Graph::Function);
-	boxLabelsColumn->setEnabled(true);
 
 	int curveType = item->plotItemStyle();
     if (curveType == Graph::Pie){
@@ -2515,7 +2519,6 @@ void PlotDialog::setActiveCurve(CurveTreeItem *item)
     if (curveType == Graph::Histogram){//Histogram page
         QwtHistogram *h = (QwtHistogram*)i;
         if (h){
-			boxLabelsColumn->setEnabled(false);
             automaticBox->setChecked(h->autoBinning());
             setAutomaticBinning();
         }
@@ -2570,22 +2573,57 @@ void PlotDialog::setActiveCurve(CurveTreeItem *item)
     if (curveType == Graph::Box){
         BoxCurve *b = (BoxCurve*)i;
         if (b){
+			boxMaxStyle->blockSignals(true);
             boxMaxStyle->setStyle(b->maxStyle());
-            boxMinStyle->setStyle(b->minStyle());
-            boxMeanStyle->setStyle(b->meanStyle());
-            box99Style->setStyle(b->p99Style());
-            box1Style->setStyle(b->p1Style());
+			boxMaxStyle->blockSignals(false);
 
+			boxMinStyle->blockSignals(true);
+            boxMinStyle->setStyle(b->minStyle());
+			boxMinStyle->blockSignals(false);
+
+			boxMeanStyle->blockSignals(true);
+            boxMeanStyle->setStyle(b->meanStyle());
+			boxMeanStyle->blockSignals(false);
+
+			box99Style->blockSignals(true);
+            box99Style->setStyle(b->p99Style());
+			box99Style->blockSignals(false);
+
+			box1Style->blockSignals(true);
+            box1Style->setStyle(b->p1Style());
+			box1Style->blockSignals(false);
+
+			boxPercSize->blockSignals(true);
             boxPercSize->setValue(s.size().width()/2);
+			boxPercSize->blockSignals(false);
+
+			boxFillSymbols->blockSignals(true);
             boxFillSymbols->setChecked(s.brush() != Qt::NoBrush);
+			boxFillSymbols->blockSignals(false);
+
             boxPercFillColor->setEnabled(s.brush() != Qt::NoBrush);
+			boxPercFillColor->blockSignals(true);
             boxPercFillColor->setColor(s.brush().color());
+			boxPercFillColor->blockSignals(false);
+
+			boxEdgeColor->blockSignals(true);
             boxEdgeColor->setColor(s.pen().color());
+			boxEdgeColor->blockSignals(false);
+
+			boxEdgeWidth->blockSignals(true);
             boxEdgeWidth->setValue(s.pen().widthF());
+			boxEdgeWidth->blockSignals(false);
 
             boxRange->setCurrentIndex (b->boxRangeType()-1);
+
+			boxType->blockSignals(true);
             boxType->setCurrentIndex (b->boxStyle());
+			boxType->blockSignals(false);
+
+			boxWidth->blockSignals(true);
             boxWidth->setValue(b->boxWidth());
+			boxWidth->blockSignals(false);
+
             setBoxRangeType(boxRange->currentIndex());
             setBoxType(boxType->currentIndex());
             if (b->boxRangeType() == BoxCurve::SD || b->boxRangeType() == BoxCurve::SE)
@@ -2600,7 +2638,6 @@ void PlotDialog::setActiveCurve(CurveTreeItem *item)
             else
                 boxWhiskersCoef->setValue((int)b->whiskersRange());
         }
-		return;
     }
 
     DataCurve *dc = (DataCurve *)i;
@@ -2608,7 +2645,7 @@ void PlotDialog::setActiveCurve(CurveTreeItem *item)
 		privateTabWidget->removeTab(privateTabWidget->indexOf(labelsPage));
 		return;
 	}
-	showAllLabelControls();
+	showAllLabelControls(true, curveType);
 
     labelsGroupBox->blockSignals(true);
 	labelsGroupBox->setChecked(dc->hasVisibleLabels());
@@ -2622,10 +2659,14 @@ void PlotDialog::setActiveCurve(CurveTreeItem *item)
         boxLabelsColumn->setCurrentIndex(labelsColIndex);
     boxLabelsColumn->blockSignals(false);
 
+	boxLabelsAngle->blockSignals(true);
     boxLabelsAngle->setValue(dc->labelsRotation());
+	boxLabelsAngle->blockSignals(false);
+
     boxLabelsColor->blockSignals(true);
     boxLabelsColor->setColor(dc->labelsColor());
     boxLabelsColor->blockSignals(false);
+
 	boxLabelsXOffset->blockSignals(true);
     boxLabelsXOffset->setValue(dc->labelsXOffset());
 	boxLabelsXOffset->blockSignals(false);
@@ -2633,7 +2674,12 @@ void PlotDialog::setActiveCurve(CurveTreeItem *item)
 	boxLabelsYOffset->blockSignals(true);
     boxLabelsYOffset->setValue(dc->labelsYOffset());
 	boxLabelsYOffset->blockSignals(false);
+
+	boxLabelsWhiteOut->blockSignals(true);
     boxLabelsWhiteOut->setChecked(dc->labelsWhiteOut());
+	boxLabelsWhiteOut->blockSignals(false);
+
+	boxLabelsAlign->blockSignals(true);
     switch(dc->labelsAlignment()){
 		case Qt::AlignHCenter:
 			boxLabelsAlign->setCurrentIndex(0);
@@ -2645,6 +2691,8 @@ void PlotDialog::setActiveCurve(CurveTreeItem *item)
 			boxLabelsAlign->setCurrentIndex(2);
 			break;
 	}
+	boxLabelsAlign->blockSignals(false);
+
 	labelsGroupBox->blockSignals(false);
 }
 
@@ -3045,9 +3093,9 @@ bool PlotDialog::acceptParams()
 			b->setBoxWidth(boxWidth->value());
 			b->setBoxStyle(boxType->currentIndex());
 			if (boxCnt->isVisible())
-				b->setBoxRange(boxRange->currentIndex()+1, boxCnt->value());
+				b->setBoxRange(boxRange->currentIndex() + 1, boxCnt->value());
 			else
-				b->setBoxRange(boxRange->currentIndex()+1, (double)boxCoef->value());
+				b->setBoxRange(boxRange->currentIndex() + 1, (double)boxCoef->value());
 
 			if (whiskerCnt->isVisible())
 				b->setWhiskersRange(boxWhiskersRange->currentIndex(), whiskerCnt->value());
@@ -3070,7 +3118,8 @@ bool PlotDialog::acceptParams()
 			QString table = t[0];
 			QStringList cols = t[1].split(",", QString::SkipEmptyParts);
 
-			if (labelsGroupBox->isChecked() && boxLabelsColumn->isEnabled()){
+			bool specialCurve = (c->type() == Graph::Histogram || c->type() == Graph::Box);
+			if (labelsGroupBox->isChecked() && !specialCurve){
 				c->setLabelsColumnName(boxLabelsColumn->currentText());
 
 				if (cols.count() == 3)
@@ -3081,7 +3130,7 @@ bool PlotDialog::acceptParams()
 					cols << boxLabelsColumn->currentText().remove(table + "_") + "(L)";
 				item->setText(0, table + ": " + cols.join(","));
 			} else {
-				if (c->type() == Graph::Histogram) {
+				if (specialCurve){
 					if (!labelsGroupBox->isChecked())
 						c->clearLabels();
 					else
@@ -3508,19 +3557,14 @@ void PlotDialog::setLayerDefaultValues()
 	app->saveSettings();
 }
 
-void PlotDialog::showAllLabelControls(bool show)
+void PlotDialog::showAllLabelControls(bool show, int curveType)
 {
-	if (show){
-		boxLabelsColumn->show();
-		boxLabelsAlign->show();
-		justifyLabelsLbl->show();
-		labelsColumnLbl->show();
-	} else {
-		boxLabelsColumn->hide();
-		boxLabelsAlign->hide();
-		justifyLabelsLbl->hide();
-		labelsColumnLbl->hide();
-	}
+	bool on = (curveType != Graph::Box && curveType != Graph::Histogram);
+	boxLabelsColumn->setVisible(show && on);
+	labelsColumnLbl->setVisible(show && on);
+
+	boxLabelsAlign->setVisible(show);
+	justifyLabelsLbl->setVisible(show);
 }
 
 void PlotDialog::setEquidistantLevels()

@@ -187,7 +187,7 @@ public:
 	void setLabelsSelected(bool on = true);
 
 	void moveLabels(const QPoint& pos);
-    void updateLabelsPosition();
+	virtual void updateLabelsPosition();
 
 protected:
         virtual void drawCurve(QPainter *p, int style, const QwtScaleMap &xMap, const QwtScaleMap &yMap, int from, int to) const;

@@ -193,7 +193,7 @@ private:
 	void initLabelsPage();
 	void initFunctionPage();
     void contextMenuEvent(QContextMenuEvent *e);
-    void showAllLabelControls(bool show = true);
+	void showAllLabelControls(bool show = true, int curveType = 0);
     void updateContourLevelsDisplay(Spectrogram *sp);
     QRect layerCanvasRect(QWidget *widget, double x, double y, double w, double h, FrameWidget::Unit unit);
 

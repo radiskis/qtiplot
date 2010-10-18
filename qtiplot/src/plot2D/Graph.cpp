@@ -4751,9 +4751,9 @@ void Graph::copyCurves(Graph* g)
 			} else if (style == Box) {
 				c = new BoxCurve(cv->table(), cv->title().text(), cv->startRow(), cv->endRow());
 				insertCurve(c);
-				((BoxCurve*)c)->copy((const BoxCurve *)cv);
 				QwtSingleArrayData dat(x[0], y, n);
 				c->setData(dat);
+				((BoxCurve*)c)->copy((BoxCurve *)cv);
 			} else {
 				c = new DataCurve(cv->table(), cv->xColumnName(), cv->title().text(), cv->startRow(), cv->endRow());
                 insertCurve(c);
