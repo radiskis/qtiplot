@@ -51,13 +51,18 @@ BoxCurve::BoxCurve(Table *t, const QString& name, int startRow, int endRow):
 	w_coeff = 95.0;
 	b_width = 80;
 
+	d_labels_x_offset = 50;
+	d_labels_y_offset = 0;
+
 	setType(Graph::Box);
 	setPlotStyle(Graph::Box);
     setStyle(QwtPlotCurve::UserCurve);
 }
 
-void BoxCurve::copy(const BoxCurve *b)
+void BoxCurve::copy(BoxCurve *b)
 {
+	DataCurve::clone(b);
+
 	mean_style = b->mean_style;
 	max_style = b->max_style;
 	min_style = b->min_style;
@@ -70,6 +75,8 @@ void BoxCurve::copy(const BoxCurve *b)
 	w_range = b->w_range;
 	w_coeff = b->w_coeff;
 	b_width = b->b_width;
+
+	updateLabels();
 }
 
 void BoxCurve::draw(QPainter *painter,
@@ -278,7 +285,8 @@ void BoxCurve::setBoxStyle(int style)
 {
 	if (b_style == style)
 		return;
-	b_style=style;
+
+	b_style = style;
 }
 
 void BoxCurve::setBoxRange(int type, double coeff)
@@ -304,6 +312,8 @@ void BoxCurve::setBoxRange(int type, double coeff)
 		b_coeff = 100.0;
 	else
 		b_coeff = coeff;
+
+	updateLabels();
 }
 
 void BoxCurve::setWhiskersRange(int type, double coeff)
@@ -322,6 +332,8 @@ void BoxCurve::setWhiskersRange(int type, double coeff)
 		w_coeff = 100.0;
 	else
 		w_coeff = coeff;
+
+	updateLabels();
 }
 
 QwtDoubleRect BoxCurve::boundingRect() const
@@ -356,18 +368,23 @@ void BoxCurve::loadData()
 		Y.resize(size);
 		gsl_sort (Y.data(), 1, size);
         setData(QwtSingleArrayData(this->x(0), Y, size));
+		if (d_show_labels)
+			loadLabels();
 	} else
 		remove();
 }
 
 QString BoxCurve::statistics()
 {
+	if (!plot())
+		return QString();
+
 	int size = dataSize();
 	double *dat = (double *)malloc(size*sizeof(double));
 	if (!dat)
 		return QString();
 
-	for (int i = 0; i< size; i++)
+	for (int i = 0; i < size; i++)
 		dat[i] = y(i);
 
 	double median = gsl_stats_median_from_sorted_data (dat, 1, size);
@@ -376,13 +393,16 @@ QString BoxCurve::statistics()
 	double q1 = gsl_stats_quantile_from_sorted_data (dat, 1, size, 0.25);
 	double q3 = gsl_stats_quantile_from_sorted_data (dat, 1, size, 0.75);
 
-	QString s = QObject::tr("Min") + " = " + QString::number(dat[0]) + "\n";
-	s += QObject::tr("D1 (1st decile)") + " = " + QString::number(d1) + "\n";
-	s += QObject::tr("Q1 (1st quartile)") + " = " + QString::number(q1) + "\n";
-	s += QObject::tr("Median") + " = " + QString::number(median) + "\n";
-	s += QObject::tr("Q3 (3rd quartile)") + " = " + QString::number(q3) + "\n";
-	s += QObject::tr("D9 (9th decile)") + " = " + QString::number(d9) + "\n";
+	QLocale locale = plot()->locale();
+
+	QString s = QObject::tr("Min") + " = " + locale.toString(dat[0], 'f', 2) + "\n";
+	s += QObject::tr("D1 (1st decile)") + " = " + locale.toString(d1, 'f', 2) + "\n";
+	s += QObject::tr("Q1 (1st quartile)") + " = " + locale.toString(q1, 'f', 2) + "\n";
+	s += QObject::tr("Median") + " = " + locale.toString(median, 'f', 2) + "\n";
+	s += QObject::tr("Q3 (3rd quartile)") + " = " + locale.toString(q3, 'f', 2) + "\n";
+	s += QObject::tr("D9 (9th decile)") + " = " + locale.toString(d9, 'f', 2) + "\n";
 	s += QObject::tr("Max") + " = " + QString::number(dat[size - 1]) + "\n";
+	s += QObject::tr("Size") + " = " + QString::number(size) + "\n";
 
 	free (dat);
 	return s;
@@ -405,4 +425,213 @@ double BoxCurve::quantile(double f)
 	free (dat);
 
 	return q;
+}
+
+double * BoxCurve::statisticValues()
+{
+	int size = this->dataSize();
+	if (!size)
+		return 0;
+
+	double *dat = (double *)malloc(size*sizeof(double));
+	if (!dat)
+		return 0;
+
+	for (int i = 0; i < size; i++)
+		dat[i] = y(i);
+
+	double b_lowerq, b_upperq;
+	double sd = 0.0, se = 0.0, mean = 0.0;
+	if(w_range == SD || w_range == SE || b_range == SD || b_range == SE)
+	{
+		sd = gsl_stats_sd(dat, 1, size);
+		se = sd/sqrt((double)size);
+		mean = gsl_stats_mean(dat, 1, size);
+	}
+
+	if(b_range == SD)
+	{
+		b_lowerq = mean - sd*b_coeff;
+		b_upperq = mean + sd*b_coeff;
+	}
+	else if(b_range == SE)
+	{
+		b_lowerq = mean - se*b_coeff;
+		b_upperq = mean + se*b_coeff;
+	}
+	else
+	{
+		b_lowerq = gsl_stats_quantile_from_sorted_data (dat, 1, size, 1 - 0.01*b_coeff);
+		b_upperq = gsl_stats_quantile_from_sorted_data (dat, 1, size, 0.01*b_coeff);
+	}
+
+	double w_upperq, w_lowerq;
+	if(w_range == SD){
+		w_lowerq = mean - sd*w_coeff;
+		w_upperq = mean + sd*w_coeff;
+	} else if(w_range == SE){
+		w_lowerq = mean - se*w_coeff;
+		w_upperq = mean + se*w_coeff;
+	} else {
+		w_lowerq = gsl_stats_quantile_from_sorted_data (dat, 1, size, 1 - 0.01*w_coeff);
+		w_upperq = gsl_stats_quantile_from_sorted_data (dat, 1, size, 0.01*w_coeff);
+	}
+
+	double *v = new double[5];
+	v[0] = w_lowerq;
+	v[1] = b_lowerq;
+	v[2] = gsl_stats_median_from_sorted_data (dat, 1, size);
+	v[3] = b_upperq;
+	v[4] = w_upperq;
+
+	free (dat);
+	return v;
+}
+
+void BoxCurve::loadLabels()
+{
+	clearLabels();
+
+	double *v = statisticValues();
+	if (!v)
+		return;
+
+	createLabel(v[0], true);
+	for (int i = 1; i < 4; i++)
+		createLabel(v[i]);
+	createLabel(v[4], true);
+
+	delete[] v;
+	d_show_labels = true;
+}
+
+void BoxCurve::createLabel(double val, bool whisker)
+{
+	QwtPlot *d_plot = plot();
+	if (!d_plot)
+		return;
+
+	PlotMarker *m = new PlotMarker(d_labels_list.size(), d_labels_angle);
+
+	QwtText t = QwtText(d_plot->locale().toString(val, 'f', 2));
+	if (whisker && !w_range)
+		t.setText(QString());
+	t.setColor(d_labels_color);
+	t.setFont(d_labels_font);
+	if (d_white_out_labels)
+		t.setBackgroundBrush(QBrush(Qt::white));
+	else
+		t.setBackgroundBrush(QBrush(Qt::transparent));
+	m->setLabel(t);
+
+	int x_axis = xAxis();
+	int y_axis = yAxis();
+	m->setAxis(x_axis, y_axis);
+
+	const double px_min = d_plot->transform(x_axis, x(0) - 0.4);
+	const double px_max = d_plot->transform(x_axis, x(0) + 0.4);
+	const double box_width = 1 + (px_max - px_min)*b_width/100.0;
+	const double hbw = 0.5*box_width;
+	const double l = 0.1*box_width;
+
+	QSize size = t.textSize();
+	double dx = d_labels_x_offset*0.01*size.height();
+	double dy = -((d_labels_y_offset*0.01 + 0.5)*size.height());
+	double x2 = d_plot->transform(x_axis, x(0)) + 3*dx;
+	if (whisker)
+		x2 += l;
+	else
+		x2 += hbw;
+
+	int y2 = d_plot->transform(y_axis, val) + dy;
+	switch(d_labels_align){
+		case Qt::AlignLeft:
+		break;
+		case Qt::AlignHCenter:
+			x2 -= size.width()/2;
+		break;
+		case Qt::AlignRight:
+			x2 -= size.width();
+		break;
+	}
+	m->setXValue(d_plot->invTransform(x_axis, x2));
+	m->setYValue(d_plot->invTransform(y_axis, y2));
+	m->attach(d_plot);
+	d_labels_list << m;
+}
+
+void BoxCurve::updateLabels(bool updateText)
+{
+	if (!d_show_labels || d_labels_list.isEmpty())
+		return;
+
+	QwtPlot *d_plot = plot();
+	if (!d_plot)
+		return;
+
+	double *v = statisticValues();
+	if (!v)
+		return;
+
+	int x_axis = xAxis();
+	int y_axis = yAxis();
+	const double px_min = d_plot->transform(x_axis, x(0) - 0.4);
+	const double px_max = d_plot->transform(x_axis, x(0) + 0.4);
+	const double box_width = 1 + (px_max - px_min)*b_width/100.0;
+	const double hbw = 0.5*box_width;
+	const double l = 0.1*box_width;
+
+	QLocale locale = d_plot->locale();
+
+	foreach(PlotMarker *m, d_labels_list){
+		int index = m->index();
+		double val = v[index];
+		if (updateText){
+			QwtText t = m->label();
+			if (!w_range && (index == 0 || index == 4))
+				t.setText(QString());
+			else
+				t.setText(locale.toString(val, 'f', 2));
+
+			m->setLabel(t);
+		}
+		QSize size = m->label().textSize();
+		double dx = d_labels_x_offset*0.01*size.height();
+		double dy = -((d_labels_y_offset*0.01 + 0.5)*size.height());
+		double x2 = d_plot->transform(x_axis, x(0)) + 3*dx;
+		if (index > 0 && index < 4 && b_style != NoBox){
+			if (((index == 1 || index == 3) && b_style != Diamond))
+				x2 += hbw;
+			else if (index == 2){
+				switch(b_style){
+					case Notch:
+						x2 += 0.25*hbw;
+					break;
+					case WindBox:
+						x2 += 0.8*hbw;
+					break;
+					default:
+						x2 += hbw;
+					break;
+				}
+			}
+		} else
+			x2 += l;
+
+		int y2 = d_plot->transform(y_axis, val) + dy;
+		switch(d_labels_align){
+			case Qt::AlignLeft:
+			break;
+			case Qt::AlignHCenter:
+				x2 -= size.width()/2;
+			break;
+			case Qt::AlignRight:
+				x2 -= size.width();
+			break;
+		}
+		m->setXValue(d_plot->invTransform(x_axis, x2));
+		m->setYValue(d_plot->invTransform(y_axis, y2));
+	}
+
+	delete[] v;
 }

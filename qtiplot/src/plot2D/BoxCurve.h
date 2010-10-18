@@ -42,7 +42,7 @@ public:
 
 	BoxCurve(Table *t, const QString& name, int startRow = 0, int endRow = -1);
 
-	void copy(const BoxCurve *b);
+	void copy(BoxCurve *b);
 
 	virtual QwtDoubleRect boundingRect() const;
 
@@ -89,6 +89,12 @@ private:
 				const QwtScaleMap &yMap, double *dat, int size) const;
 	void drawSymbols(QPainter *painter, const QwtScaleMap &xMap,
 				const QwtScaleMap &yMap, double *dat, int size) const;
+
+	double* statisticValues();
+	void createLabel(double val, bool whisker = false);
+	virtual void loadLabels();
+	void updateLabels(bool updateText = true);
+	void updateLabelsPosition(){updateLabels(false);};
 
 	QwtSymbol::Style min_style, max_style, mean_style, p99_style, p1_style;
 	double b_coeff, w_coeff;

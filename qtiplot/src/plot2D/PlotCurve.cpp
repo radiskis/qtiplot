@@ -975,7 +975,7 @@ QString DataCurve::saveToString()
 	if (d_skip_symbols > 1)
 		s += "<SkipPoints>" + QString::number(d_skip_symbols) + "</SkipPoints>\n";
 
-    if (d_labels_list.isEmpty() || type() == Graph::Function || type() == Graph::Box)
+	if (d_labels_list.isEmpty() || type() == Graph::Function)
         return s;
 
     s += "<CurveLabels>\n";
@@ -1109,7 +1109,7 @@ void DataCurve::setLabelsSelected(bool on)
 bool DataCurve::validCurveType()
 {
 	int style = type();
-	if (style == Graph::Function || style == Graph::Box || style == Graph::Pie ||
+	if (style == Graph::Function || style == Graph::Pie ||
 		style == Graph::ColorMap || style == Graph::GrayScale ||
 		style == Graph::Contour || style == Graph::ImagePlot)
 		return false;
