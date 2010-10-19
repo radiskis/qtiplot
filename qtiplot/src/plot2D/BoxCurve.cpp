@@ -48,6 +48,8 @@ BoxCurve::BoxCurve(Table *t, const QString& name, int startRow, int endRow):
 	w_range(r5_95),
 	b_style(Rect),
 	b_width(80),
+	d_box_labels(false),
+	d_whiskers_labels(false),
 	d_labels_display(Percentage)
 {
 	d_labels_x_offset = 50;
@@ -75,6 +77,8 @@ void BoxCurve::copy(BoxCurve *b)
 	w_coeff = b->w_coeff;
 	b_width = b->b_width;
 
+	d_box_labels = b->hasBoxLabels();
+	d_whiskers_labels = b->hasWhiskerLabels();
 	d_labels_display = b->labelsDisplayPolicy();
 	updateLabels();
 }
@@ -436,9 +440,36 @@ void BoxCurve::setLabelsDisplayPolicy(const LabelsDisplayPolicy& policy)
 	updateLabels();
 }
 
+void BoxCurve::showBoxLabels(bool on)
+{
+	if (d_box_labels == on)
+		return;
+
+	d_box_labels = on;
+	if (!d_show_labels)
+		loadLabels();
+	else
+		updateLabels();
+}
+
+void BoxCurve::showWhiskerLabels(bool on)
+{
+	if (d_whiskers_labels == on)
+		return;
+
+	d_whiskers_labels = on;
+	if (!d_show_labels)
+		loadLabels();
+	else
+		updateLabels();
+}
+
 QString BoxCurve::labelText(int index, double val)
 {
-	if (!w_range && (index == 0 || index == 4))
+	if ((!w_range || !d_whiskers_labels) && (index == 0 || index == 4))
+		return QString();
+
+	if (!d_box_labels && index > 0 && index < 4)
 		return QString();
 
 	QString s;

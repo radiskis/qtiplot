@@ -3937,10 +3937,6 @@ Různé části tohoto souboru se nemusí zobrazovat tak, jak se očekává.</tr
         <source>S&amp;mooth</source>
         <translation>&amp;Jemné</translation>
     </message>
-    <message>
-        <source>chart</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>ArrowMarker</name>
@@ -11856,7 +11852,7 @@ K tomu lze použít následujících zvláštních kódů:
     </message>
     <message>
         <source>QtiPlot - Bin size input error</source>
-        <translation type="obsolete">QtiPlot - Chyba ve velikosti rozmezí</translation>
+        <translation type="unfinished">QtiPlot - Chyba ve velikosti rozmezí</translation>
     </message>
     <message>
         <source>Set As &amp;Default</source>
@@ -11880,7 +11876,7 @@ K tomu lze použít následujících zvláštních kódů:
     </message>
     <message>
         <source>Please enter a positive bin size value!</source>
-        <translation type="obsolete">Zadejte, prosím, kladnou hodnotu pro velikost rozmezí!</translation>
+        <translation type="unfinished">Zadejte, prosím, kladnou hodnotu pro velikost rozmezí!</translation>
     </message>
     <message>
         <source>Contour Lines</source>
@@ -11992,6 +11988,34 @@ K tomu lze použít následujících zvláštních kódů:
     </message>
     <message>
         <source>Apply Co&amp;lor</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Box &amp;Labels</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Whis&amp;ker Labels</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Display</source>
+        <translation type="unfinished">Zobrazení</translation>
+    </message>
+    <message>
+        <source>Percentage</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Value</source>
+        <translation type="unfinished">Hodnota</translation>
+    </message>
+    <message>
+        <source>Percentage (Value)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Value (Percentage)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -12828,6 +12852,10 @@ pokud e1 pak e2 jinak e3.</translation>
     <message>
         <source>Max</source>
         <translation type="unfinished">Maximum</translation>
+    </message>
+    <message>
+        <source>Size</source>
+        <translation type="unfinished">Velikost</translation>
     </message>
 </context>
 <context>

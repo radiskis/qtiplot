@@ -3911,7 +3911,7 @@ L&apos;autocomplétion ne sera pas disponible!</translation>
     </message>
     <message>
         <source>chart</source>
-        <translation>Diagramme</translation>
+        <translation type="obsolete">Diagramme</translation>
     </message>
     <message>
         <source>Yes, don&apos;t ask me again</source>
@@ -11569,11 +11569,11 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>QtiPlot - Bin size input error</source>
-        <translation type="obsolete">QtiPlot - Erreur de taille des échantillons</translation>
+        <translation type="unfinished">QtiPlot - Erreur de taille des échantillons</translation>
     </message>
     <message>
         <source>Please enter a positive bin size value!</source>
-        <translation type="obsolete">Donnez une valeur positive de taille d&apos;échantillons !</translation>
+        <translation type="unfinished">Donnez une valeur positive de taille d&apos;échantillons !</translation>
     </message>
     <message>
         <source>Vector Data</source>
@@ -11933,6 +11933,34 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Apply Co&amp;lor</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Box &amp;Labels</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Whis&amp;ker Labels</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Display</source>
+        <translation type="unfinished">Affichage :</translation>
+    </message>
+    <message>
+        <source>Percentage</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Value</source>
+        <translation type="unfinished">Valeur</translation>
+    </message>
+    <message>
+        <source>Percentage (Value)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Value (Percentage)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -12768,6 +12796,10 @@ Calcule le sinus de x.</translation>
     <message>
         <source>Max</source>
         <translation>Max</translation>
+    </message>
+    <message>
+        <source>Size</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

@@ -8500,10 +8500,6 @@ Automatisk komplettering ej tillgängligt!</translation>
         <source>S&amp;mooth</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <source>chart</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>ArrowMarker</name>
@@ -17915,11 +17911,11 @@ Vill du skjuta in celler?</translation>
     </message>
     <message>
         <source>QtiPlot - Bin size input error</source>
-        <translation type="obsolete">QtiPlot - Fel storlek för högar</translation>
+        <translation type="unfinished">QtiPlot - Fel storlek för högar</translation>
     </message>
     <message>
         <source>Please enter a positive bin size value!</source>
-        <translation type="obsolete">Mata in ett positivt högvärde!</translation>
+        <translation type="unfinished">Mata in ett positivt högvärde!</translation>
     </message>
     <message>
         <source>Vector Data</source>
@@ -18287,6 +18283,34 @@ Vill du skjuta in celler?</translation>
     </message>
     <message>
         <source>Apply Co&amp;lor</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Box &amp;Labels</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Whis&amp;ker Labels</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Display</source>
+        <translation type="unfinished">Visning</translation>
+    </message>
+    <message>
+        <source>Percentage</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Value</source>
+        <translation type="unfinished">Värde</translation>
+    </message>
+    <message>
+        <source>Percentage (Value)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Value (Percentage)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -19141,6 +19165,10 @@ Vill du skjuta in celler?</translation>
     <message>
         <source>Max</source>
         <translation type="unfinished">Max</translation>
+    </message>
+    <message>
+        <source>Size</source>
+        <translation type="unfinished">Storlek</translation>
     </message>
 </context>
 <context>

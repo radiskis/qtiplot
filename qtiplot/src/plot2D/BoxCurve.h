@@ -79,6 +79,12 @@ public:
 	LabelsDisplayPolicy labelsDisplayPolicy(){return d_labels_display;};
 	void setLabelsDisplayPolicy(const LabelsDisplayPolicy& policy);
 
+	bool hasBoxLabels(){return d_box_labels;};
+	void showBoxLabels(bool on = true);
+
+	bool hasWhiskerLabels(){return d_whiskers_labels;};
+	void showWhiskerLabels(bool on = true);
+
     void loadData();
 
 	QString statistics();
@@ -113,6 +119,8 @@ private:
 	int w_range;
 	int b_style;
 	int b_width;
+	bool d_box_labels;
+	bool d_whiskers_labels;
 	LabelsDisplayPolicy d_labels_display;
 };
 

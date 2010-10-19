@@ -991,8 +991,11 @@ QString DataCurve::saveToString()
     if (d_labels_y_offset != 0.0)
         s += "\t<yoffset>" + QString::number(d_labels_y_offset) + "</yoffset>\n";
 
-	if (type() == Graph::Box)
+	if (type() == Graph::Box){
+		s += "\t<boxLabels>" + QString::number(((BoxCurve *)this)->hasBoxLabels()) + "</boxLabels>\n";
+		s += "\t<whiskerLabels>" + QString::number(((BoxCurve *)this)->hasWhiskerLabels()) + "</whiskerLabels>\n";
 		s += "\t<display>" + QString::number(((BoxCurve *)this)->labelsDisplayPolicy()) + "</display>\n";
+	}
 
     return s + "</CurveLabels>\n";
 }
@@ -1035,6 +1038,10 @@ void DataCurve::restoreLabels(const QStringList& lst)
             xoffset = s.remove("<xoffset>").remove("</xoffset>").toInt();
         else if (s.contains("<yoffset>"))
             yoffset = s.remove("<yoffset>").remove("</yoffset>").toInt();
+		else if (s.contains("<boxLabels>"))
+			((BoxCurve *)this)->showBoxLabels(s.remove("<boxLabels>").remove("</boxLabels>").toInt());
+		else if (s.contains("<whiskerLabels>"))
+			((BoxCurve *)this)->showWhiskerLabels(s.remove("<whiskerLabels>").remove("</whiskerLabels>").toInt());
 		else if (s.contains("<display>"))
 			((BoxCurve *)this)->setLabelsDisplayPolicy((BoxCurve::LabelsDisplayPolicy)s.remove("<display>").remove("</display>").toInt());
     }

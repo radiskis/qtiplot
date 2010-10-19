@@ -7413,10 +7413,6 @@ Autocompletion will not be available!</source>
         <source>S&amp;mooth</source>
         <translation>&amp;Netezeşte</translation>
     </message>
-    <message>
-        <source>chart</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>ArrowMarker</name>
@@ -15455,11 +15451,11 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>QtiPlot - Bin size input error</source>
-        <translation type="obsolete">QtiPlot - Eroare detectată în pasul de eşantionaj</translation>
+        <translation type="unfinished">QtiPlot - Eroare detectată în pasul de eşantionaj</translation>
     </message>
     <message>
         <source>Please enter a positive bin size value!</source>
-        <translation type="obsolete">Vă rugăm introduceţi un pas de eşantionajului pozitiv!</translation>
+        <translation type="unfinished">Vă rugăm introduceţi un pas de eşantionajului pozitiv!</translation>
     </message>
     <message>
         <source>Vector Data</source>
@@ -15571,6 +15567,34 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Apply Co&amp;lor</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Box &amp;Labels</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Whis&amp;ker Labels</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Display</source>
+        <translation type="unfinished">Afişaj</translation>
+    </message>
+    <message>
+        <source>Percentage</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Value</source>
+        <translation type="unfinished">Valoare</translation>
+    </message>
+    <message>
+        <source>Percentage (Value)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Value (Percentage)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -16401,6 +16425,10 @@ have the same number of rows.</source>
     <message>
         <source>Max</source>
         <translation type="unfinished">Maxim</translation>
+    </message>
+    <message>
+        <source>Size</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
