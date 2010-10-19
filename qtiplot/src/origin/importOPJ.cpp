@@ -861,31 +861,7 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 						if(mc){
 							graph->replot();
 							mc->setLabelsColumnName(labelsCol);
-							mc->setLabelsRotation(_curve.text.rotation);
-							mc->setLabelsWhiteOut(_curve.text.whiteOut);
-							mc->setLabelsOffset(_curve.text.xOffset, _curve.text.yOffset);
-							mc->setLabelsColor(originToQtColor(_curve.text.color));
-							int align = -1;
-							switch(_curve.text.justify){
-								case Origin::TextProperties::Center:
-									align = Qt::AlignHCenter;
-									break;
-
-								case Origin::TextProperties::Left:
-									align = Qt::AlignLeft;
-									break;
-
-								case Origin::TextProperties::Right:
-									align = Qt::AlignRight;
-									break;
-							}
-							mc->setLabelsAlignment(align);
-							QFont fnt = mc->labelsFont();
-							fnt.setBold(_curve.text.fontBold);
-							fnt.setItalic(_curve.text.fontItalic);
-							fnt.setUnderline(_curve.text.fontUnderline);
-							fnt.setPointSizeF(_curve.text.fontSize*fFontScaleFactor);
-							mc->setLabelsFont(fnt);
+							setCurveLabelsProperties(mc, _curve, fFontScaleFactor);
 						}
 					} else if (style == Origin::GraphCurve::Contour){
 						Matrix* m = mw->tableToMatrixRegularXYZ(table, tableName + "_" + _curve.zColumnName.c_str());
@@ -1478,6 +1454,8 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 					if (t)
 						curveNames << box->title().text().remove(t->objectName() + "_");
 					box->setData(QwtSingleArrayData(double(i + 1), QwtArray<double>(), 0));
+
+					box->setVisibleLabels(layer.percentile.labels);
 
 					int b_style = 0;
 					if (layer.percentile.diamondBox)
@@ -2439,6 +2417,38 @@ void ImportOPJ::convertDoubleAxesPlot(MultiLayer *ml)
 	l1->setCanvasSize(l2->canvas()->size());
 	ml->removeLayer(l2);
 	ml->resize(ml->width(), ml->height() + yOffset);
+}
+
+void ImportOPJ::setCurveLabelsProperties(DataCurve *mc, const Origin::GraphCurve& _curve, double fFontScaleFactor)
+{
+	if (!mc)
+		return;
+
+	mc->setLabelsRotation(_curve.text.rotation);
+	mc->setLabelsWhiteOut(_curve.text.whiteOut);
+	mc->setLabelsOffset(_curve.text.xOffset, _curve.text.yOffset);
+	mc->setLabelsColor(originToQtColor(_curve.text.color));
+	int align = -1;
+	switch(_curve.text.justify){
+		case Origin::TextProperties::Center:
+			align = Qt::AlignHCenter;
+			break;
+
+		case Origin::TextProperties::Left:
+			align = Qt::AlignLeft;
+			break;
+
+		case Origin::TextProperties::Right:
+			align = Qt::AlignRight;
+			break;
+	}
+	mc->setLabelsAlignment(align);
+	QFont fnt = mc->labelsFont();
+	fnt.setBold(_curve.text.fontBold);
+	fnt.setItalic(_curve.text.fontItalic);
+	fnt.setUnderline(_curve.text.fontUnderline);
+	fnt.setPointSizeF(_curve.text.fontSize*fFontScaleFactor);
+	mc->setLabelsFont(fnt);
 }
 
 //TODO: bug in grid dialog

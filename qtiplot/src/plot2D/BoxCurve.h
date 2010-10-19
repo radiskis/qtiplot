@@ -39,6 +39,7 @@ class BoxCurve: public DataCurve
 public:
 	enum BoxStyle{NoBox, Rect, Diamond, WindBox, Notch};
 	enum Range{None, SD, SE, r25_75, r10_90, r5_95, r1_99, MinMax, UserDef};
+	enum LabelsDisplayPolicy{Percentage, Value, PercentageValue, ValuePercentage};
 
 	BoxCurve(Table *t, const QString& name, int startRow = 0, int endRow = -1);
 
@@ -75,6 +76,9 @@ public:
 	int whiskersRangeType(){return w_range;};
 	void setWhiskersRange(int type, double coeff = 0.0);
 
+	LabelsDisplayPolicy labelsDisplayPolicy(){return d_labels_display;};
+	void setLabelsDisplayPolicy(const LabelsDisplayPolicy& policy);
+
     void loadData();
 
 	QString statistics();
@@ -91,14 +95,25 @@ private:
 				const QwtScaleMap &yMap, double *dat, int size) const;
 
 	double* statisticValues();
-	void createLabel(double val, bool whisker = false);
+	QString labelText(int index, double val);
+	QString labelPercentage(int index);
+	void createLabel(double val);
 	virtual void loadLabels();
 	void updateLabels(bool updateText = true);
 	void updateLabelsPosition(){updateLabels(false);};
 
-	QwtSymbol::Style min_style, max_style, mean_style, p99_style, p1_style;
-	double b_coeff, w_coeff;
-	int b_style, b_width, b_range, w_range;
+	QwtSymbol::Style min_style;
+	QwtSymbol::Style max_style;
+	QwtSymbol::Style mean_style;
+	QwtSymbol::Style p99_style;
+	QwtSymbol::Style p1_style;
+	double b_coeff;
+	double w_coeff;
+	int b_range;
+	int w_range;
+	int b_style;
+	int b_width;
+	LabelsDisplayPolicy d_labels_display;
 };
 
 

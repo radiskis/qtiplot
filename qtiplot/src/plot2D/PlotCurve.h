@@ -181,6 +181,7 @@ public:
 
 	void setVisible(bool on);
 
+	void setVisibleLabels(bool on = true){d_show_labels = on;};
 	bool hasVisibleLabels(){return d_show_labels;};
 	bool selectedLabels(const QPoint& pos);
 	bool hasSelectedLabels();

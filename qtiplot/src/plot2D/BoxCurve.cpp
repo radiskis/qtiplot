@@ -36,21 +36,20 @@
 #include <qwt_painter.h>
 
 BoxCurve::BoxCurve(Table *t, const QString& name, int startRow, int endRow):
-	DataCurve(t, QString(), name, startRow, endRow)
+	DataCurve(t, QString(), name, startRow, endRow),
+	min_style(QwtSymbol::XCross),
+	max_style(QwtSymbol::XCross),
+	mean_style(QwtSymbol::Rect),
+	p99_style(QwtSymbol::NoSymbol),
+	p1_style(QwtSymbol::NoSymbol),
+	b_coeff(75.0),
+	w_coeff(95.0),
+	b_range(r25_75),
+	w_range(r5_95),
+	b_style(Rect),
+	b_width(80),
+	d_labels_display(Percentage)
 {
-	mean_style = QwtSymbol::Rect;
-	max_style = QwtSymbol::XCross;
-	min_style = QwtSymbol::XCross;
-	p99_style = QwtSymbol::NoSymbol;
-	p1_style = QwtSymbol::NoSymbol;
-
-	b_style = Rect;
-	b_coeff = 75.0;
-	b_range = r25_75;
-	w_range = r5_95;
-	w_coeff = 95.0;
-	b_width = 80;
-
 	d_labels_x_offset = 50;
 	d_labels_y_offset = 0;
 
@@ -76,6 +75,7 @@ void BoxCurve::copy(BoxCurve *b)
 	w_coeff = b->w_coeff;
 	b_width = b->b_width;
 
+	d_labels_display = b->labelsDisplayPolicy();
 	updateLabels();
 }
 
@@ -427,6 +427,88 @@ double BoxCurve::quantile(double f)
 	return q;
 }
 
+void BoxCurve::setLabelsDisplayPolicy(const LabelsDisplayPolicy& policy)
+{
+	if (d_labels_display == policy)
+		return;
+
+	d_labels_display = policy;
+	updateLabels();
+}
+
+QString BoxCurve::labelText(int index, double val)
+{
+	if (!w_range && (index == 0 || index == 4))
+		return QString();
+
+	QString s;
+	switch(d_labels_display){
+		case Percentage:
+			s = labelPercentage(index);
+		break;
+
+		case Value:
+			s = plot()->locale().toString(val, 'f', 2);
+		break;
+
+		case PercentageValue:
+			s = labelPercentage(index) + " (" + plot()->locale().toString(val, 'f', 2) + ")";
+		break;
+
+		case ValuePercentage:
+			s = plot()->locale().toString(val, 'f', 2) + " (" + labelPercentage(index) + ")";
+		break;
+	}
+	return s;
+}
+
+QString BoxCurve::labelPercentage(int index)
+{
+	QString s;
+	switch(index){
+		case 2:
+			s = "50%";
+		break;
+
+		case 0:
+			if (w_range == SD)
+				s = "-SD";
+			else if (w_range == SE)
+				s = "-SE";
+			else
+				s = QString::number(100 - w_coeff) + "%";
+		break;
+
+		case 1:
+			if (b_range == SD)
+				s = "-SD";
+			else if (b_range == SE)
+				s = "-SE";
+			else
+				s = QString::number(100 - b_coeff) + "%";
+		break;
+
+		case 4:
+			if (w_range == SD)
+				s = "SD";
+			else if (w_range == SE)
+				s = "SE";
+			else
+				s = QString::number(w_coeff) + "%";
+		break;
+
+		case 3:
+			if (b_range == SD)
+				s = "SD";
+			else if (b_range == SE)
+				s = "SE";
+			else
+				s = QString::number(b_coeff) + "%";
+		break;
+	}
+	return s;
+}
+
 double * BoxCurve::statisticValues()
 {
 	int size = this->dataSize();
@@ -496,26 +578,23 @@ void BoxCurve::loadLabels()
 	if (!v)
 		return;
 
-	createLabel(v[0], true);
-	for (int i = 1; i < 4; i++)
+	for (int i = 0; i < 5; i++)
 		createLabel(v[i]);
-	createLabel(v[4], true);
 
 	delete[] v;
 	d_show_labels = true;
 }
 
-void BoxCurve::createLabel(double val, bool whisker)
+void BoxCurve::createLabel(double val)
 {
 	QwtPlot *d_plot = plot();
 	if (!d_plot)
 		return;
 
-	PlotMarker *m = new PlotMarker(d_labels_list.size(), d_labels_angle);
+	int index = d_labels_list.size();
+	PlotMarker *m = new PlotMarker(index, d_labels_angle);
 
-	QwtText t = QwtText(d_plot->locale().toString(val, 'f', 2));
-	if (whisker && !w_range)
-		t.setText(QString());
+	QwtText t = labelText(index, val);
 	t.setColor(d_labels_color);
 	t.setFont(d_labels_font);
 	if (d_white_out_labels)
@@ -538,10 +617,24 @@ void BoxCurve::createLabel(double val, bool whisker)
 	double dx = d_labels_x_offset*0.01*size.height();
 	double dy = -((d_labels_y_offset*0.01 + 0.5)*size.height());
 	double x2 = d_plot->transform(x_axis, x(0)) + 3*dx;
-	if (whisker)
+	if (index > 0 && index < 4 && b_style != NoBox){
+		if (((index == 1 || index == 3) && b_style != Diamond))
+			x2 += hbw;
+		else if (index == 2){
+			switch(b_style){
+				case Notch:
+					x2 += 0.25*hbw;
+				break;
+				case WindBox:
+					x2 += 0.8*hbw;
+				break;
+				default:
+					x2 += hbw;
+				break;
+			}
+		}
+	} else
 		x2 += l;
-	else
-		x2 += hbw;
 
 	int y2 = d_plot->transform(y_axis, val) + dy;
 	switch(d_labels_align){
@@ -588,11 +681,7 @@ void BoxCurve::updateLabels(bool updateText)
 		double val = v[index];
 		if (updateText){
 			QwtText t = m->label();
-			if (!w_range && (index == 0 || index == 4))
-				t.setText(QString());
-			else
-				t.setText(locale.toString(val, 'f', 2));
-
+			t.setText(labelText(index, val));
 			m->setLabel(t);
 		}
 		QSize size = m->label().textSize();
