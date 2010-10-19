@@ -62,6 +62,8 @@ class DoubleSpinBox;
 class PenStyleBox;
 class Spectrogram;
 class ErrorBarsCurve;
+class BoxCurve;
+class DataCurve;
 class ContourLinesEditor;
 class FunctionDialog;
 class EnrichmentDialog;
@@ -116,6 +118,7 @@ private slots:
 	void setBoxType(int index);
 	void setBoxRangeType(int index);
 	void setWhiskersRange(int index);
+	void enableLabelsPage();
 
 	//spectrograms
   	void showDefaultContourLinesBox(bool show);
@@ -160,6 +163,18 @@ private:
 	void applyErrorBarFormatToCurve(ErrorBarsCurve *err, bool color = true);
 	void applyErrorBarFormatToLayer(Graph *g);
 	void applyErrorBarFormat(ErrorBarsCurve *c);
+
+	void applyBoxWhiskersFormatToCurve(BoxCurve *b);
+	void applyBoxWhiskersFormatToLayer(Graph *g);
+	void applyBoxWhiskersFormat(BoxCurve *c);
+
+	void applyPercentileFormatToCurve(BoxCurve *b);
+	void applyPercentileFormatToLayer(Graph *g);
+	void applyPercentileFormat(BoxCurve *c);
+
+	void applyLabelsFormatToItem(QwtPlotItem *);
+	void applyLabelsFormatToLayer(Graph *);
+	void applyLabelsFormat(QwtPlotItem *);
 
 	void applyGapToLayer(Graph *g);
 	void applyGap(Graph *g);
@@ -271,6 +286,8 @@ private:
   	QGroupBox *defaultPenBox;
   	QRadioButton *defaultScaleBox, *grayScaleBox, *customScaleBox, *defaultContourBox, *autoContourBox;
 
+	QCheckBox *boxWhiskerLabels, *boxBoxLabels;
+	QComboBox *boxWhiskersFormatApplyToBox, *boxLabelsFormatApplyToBox, *percentileFormatApplyToBox;
     SymbolBox *boxMaxStyle, *boxMinStyle, *boxMeanStyle, *box99Style, *box1Style;
     QDoubleSpinBox *whiskerCnt, *boxCnt;
     //!Labels page

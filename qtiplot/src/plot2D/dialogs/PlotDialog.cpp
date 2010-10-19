@@ -899,7 +899,7 @@ void PlotDialog::initLabelsPage()
     boxLabelsAngle->setRange(0, 180);
     gl->addWidget(boxLabelsAngle, 3, 1);
     btnLabelsFont = new QPushButton(tr("&Font"));
-    gl->addWidget(btnLabelsFont, 3, 2);
+	gl->addWidget(btnLabelsFont, 2, 2);
 
     gl->addWidget(new QLabel(tr("X Offset (font height %)")), 4, 0);
     boxLabelsXOffset = new QSpinBox();
@@ -912,7 +912,19 @@ void PlotDialog::initLabelsPage()
     boxLabelsYOffset->setRange(-INT_MAX, INT_MAX);
     boxLabelsYOffset->setSingleStep(10);
     gl->addWidget(boxLabelsYOffset, 5, 1);
-    gl->setRowStretch (6, 1);
+
+	QLabel *l = new QLabel(tr("Apply Format &to"));
+	gl->addWidget(l, 6, 0);
+
+	boxLabelsFormatApplyToBox = new QComboBox();
+	boxLabelsFormatApplyToBox->insertItem(tr("Selected Curve"));
+	boxLabelsFormatApplyToBox->insertItem(tr("Layer"));
+	boxLabelsFormatApplyToBox->insertItem(tr("Window"));
+	boxLabelsFormatApplyToBox->insertItem(tr("All Windows"));
+	l->setBuddy(boxLabelsFormatApplyToBox);
+	gl->addWidget(boxLabelsFormatApplyToBox, 6, 1);
+
+	gl->setRowStretch (7, 1);
     gl->setColumnStretch (3, 1);
 
 	labelsPage = new QWidget();
@@ -1158,6 +1170,10 @@ void PlotDialog::initBoxPage()
     boxWidth->setSingleStep(5);
     gl1->addWidget(boxWidth, 4, 1);
 
+	boxBoxLabels = new QCheckBox(tr("Box &Labels"));
+	gl1->addWidget(boxBoxLabels, 5, 1);
+	gl1->setRowStretch(6, 1);
+
 	QGroupBox *gb2 = new QGroupBox(tr( "Whiskers" ));
     QGridLayout *gl2 = new QGridLayout(gb2);
     whiskerRangeLabel = new QLabel(tr( "Range" ));
@@ -1191,23 +1207,39 @@ void PlotDialog::initBoxPage()
 	whiskerCnt->setValue(1.0);
     gl2->addWidget(whiskerCnt, 2, 1);
 
-    QVBoxLayout *vl1 = new QVBoxLayout();
-    vl1->addWidget(gb1);
-    vl1->addStretch();
+	boxWhiskerLabels = new QCheckBox(tr("Whis&ker Labels"));
+	gl2->addWidget(boxWhiskerLabels, 3, 1);
+	gl2->setRowStretch(4, 1);
 
-    QVBoxLayout *vl2 = new QVBoxLayout();
-    vl2->addWidget(gb2);
+	QHBoxLayout* hl1 = new QHBoxLayout();
+	QLabel *l = new QLabel(tr("Apply Format &to"));
+	hl1->addWidget(l);
+
+	boxWhiskersFormatApplyToBox = new QComboBox();
+	boxWhiskersFormatApplyToBox->insertItem(tr("Selected Curve"));
+	boxWhiskersFormatApplyToBox->insertItem(tr("Layer"));
+	boxWhiskersFormatApplyToBox->insertItem(tr("Window"));
+	boxWhiskersFormatApplyToBox->insertItem(tr("All Windows"));
+	hl1->addWidget(boxWhiskersFormatApplyToBox);
+	l->setBuddy(boxWhiskersFormatApplyToBox);
 
 	buttonBoxStatistics = new QPushButton(tr( "&Show statistics" ));
-	vl2->addWidget(buttonBoxStatistics);
-	vl2->addStretch();
+	buttonBoxStatistics->setIcon(QIcon(":/log.png"));
+	hl1->addStretch();
+	hl1->addWidget(buttonBoxStatistics);
+
+	QHBoxLayout* hl = new QHBoxLayout();
+	hl->addWidget(gb1);
+	hl->addWidget(gb2);
 
     boxPage = new QWidget();
-	QHBoxLayout* hl = new QHBoxLayout(boxPage);
-	hl->addLayout(vl1);
-	hl->addLayout(vl2);
+	QVBoxLayout* vl = new QVBoxLayout(boxPage);
+	vl->addLayout(hl);
+	vl->addLayout(hl1);
     privateTabWidget->insertTab(boxPage, tr( "Box/Whiskers" ) );
 
+	connect(boxBoxLabels, SIGNAL(toggled(bool)), this, SLOT(enableLabelsPage()));
+	connect(boxWhiskerLabels, SIGNAL(toggled(bool)), this, SLOT(enableLabelsPage()));
 	connect(boxWidth, SIGNAL(valueChanged(int)), this, SLOT(acceptParams()));
 	connect(boxType, SIGNAL(activated(int)), this, SLOT(setBoxType(int)));
 	connect(boxType, SIGNAL(activated(int)), this, SLOT(acceptParams()));
@@ -1267,10 +1299,28 @@ void PlotDialog::initPercentilePage()
     gl2->addWidget(boxEdgeWidth, 3, 1);
     gl2->setRowStretch(4, 1);
 
+	QHBoxLayout* hl1 = new QHBoxLayout();
+	QLabel *l = new QLabel(tr("Apply Format &to"));
+	hl1->addWidget(l);
+
+	percentileFormatApplyToBox = new QComboBox();
+	percentileFormatApplyToBox->insertItem(tr("Selected Curve"));
+	percentileFormatApplyToBox->insertItem(tr("Layer"));
+	percentileFormatApplyToBox->insertItem(tr("Window"));
+	percentileFormatApplyToBox->insertItem(tr("All Windows"));
+	hl1->addWidget(percentileFormatApplyToBox);
+	hl1->addStretch();
+	l->setBuddy(percentileFormatApplyToBox);
+
     percentilePage = new QWidget();
-	QHBoxLayout* hl = new QHBoxLayout(percentilePage);
+	QHBoxLayout* hl = new QHBoxLayout();
 	hl->addWidget(gb1);
 	hl->addWidget(gb2);
+
+	QVBoxLayout* vl = new QVBoxLayout(percentilePage);
+	vl->addLayout(hl);
+	vl->addLayout(hl1);
+
     privateTabWidget->insertTab(percentilePage, tr( "Percentile" ) );
 
 	connect(boxPercSize, SIGNAL(valueChanged(int)), this, SLOT(acceptParams()));
@@ -1529,7 +1579,6 @@ void PlotDialog::initErrorsPage()
 	errorBarsFormatApplyToBox->insertItem(tr("All Windows"));
 	gl3->addWidget(errorBarsFormatApplyToBox, 2, 1);
 	l->setBuddy(errorBarsFormatApplyToBox);
-
 
     errorsPage = new QWidget();
 	QHBoxLayout* hl = new QHBoxLayout();
@@ -2088,7 +2137,6 @@ void PlotDialog::insertTabs(int plot_type)
 		privateTabWidget->addTab (linePage, tr("Pattern"));
 		privateTabWidget->addTab (boxPage, tr("Box/Whiskers"));
 		privateTabWidget->addTab (percentilePage, tr("Percentile"));
-		privateTabWidget->addTab(labelsPage, tr("Labels"));
 		privateTabWidget->showPage(linePage);
 	} else if (plot_type == Graph::ColorMap || plot_type == Graph::GrayScale || plot_type == Graph::Contour){
   		privateTabWidget->addTab(spectroValuesPage, tr("Values"));
@@ -2115,8 +2163,10 @@ void PlotDialog::insertTabs(int plot_type)
 		DataCurve *c = (DataCurve *)((CurveTreeItem *)item)->plotItem();
 		if (c && c->type() != Graph::Function && c->type() != Graph::ErrorBars){
 			privateTabWidget->addTab (labelsPage, tr("Labels"));
-			if (c->hasSelectedLabels())
+			if (c->hasSelectedLabels()){
 				privateTabWidget->showPage(labelsPage);
+				c->setLabelsSelected(false);
+			}
 		}
 	}
 }
@@ -2636,6 +2686,16 @@ void PlotDialog::setActiveCurve(CurveTreeItem *item)
                 whiskerCnt->setValue(b->whiskersRange());
             else
                 boxWhiskersCoef->setValue((int)b->whiskersRange());
+
+			boxBoxLabels->blockSignals(true);
+			boxBoxLabels->setChecked(b->hasBoxLabels());
+			boxBoxLabels->blockSignals(false);
+
+			boxWhiskerLabels->blockSignals(true);
+			boxWhiskerLabels->setChecked(b->hasWhiskerLabels());
+			boxWhiskerLabels->blockSignals(false);
+
+			privateTabWidget->setTabEnabled(privateTabWidget->indexOf(labelsPage), b->hasBoxLabels() || b->hasWhiskerLabels());
         }
     }
 
@@ -3011,6 +3071,15 @@ bool PlotDialog::acceptParams()
 			h->begin() == histogramBeginBox->value() &&
 			h->end() == histogramEndBox->value()) return true;
 
+		if (binSizeBox->value() <= 0){
+			QMessageBox::critical(this, tr("QtiPlot - Bin size input error"), tr("Please enter a positive bin size value!"));
+			binSizeBox->blockSignals(true);
+			binSizeBox->setValue(h->binSize());
+			binSizeBox->blockSignals(false);
+			binSizeBox->setFocus();
+			return false;
+		}
+
 		h->setBinning(automaticBox->isChecked(), binSizeBox->value(), histogramBeginBox->value(), histogramEndBox->value());
 		h->loadData();
 		graph->updateScale();
@@ -3047,7 +3116,6 @@ bool PlotDialog::acceptParams()
 			return false;
 
 		applyErrorBarFormat(err);
-
 	} else if (privateTabWidget->currentPage() == piePage){
 		PieCurve *pie = (PieCurve*)plotItem;
 		pie->setPen(QPen(boxPieLineColor->color(), boxPieLineWidth->value(), boxPieLineStyle->style()));
@@ -3071,48 +3139,11 @@ bool PlotDialog::acceptParams()
         pie->setLabelsEdgeDistance(boxPieEdgeDist->value());
         graph->replot();
 	} else if (privateTabWidget->currentPage() == percentilePage){
-		BoxCurve *b = (BoxCurve*)plotItem;
-		if (b){
-			b->setMaxStyle(boxMaxStyle->selectedSymbol());
-			b->setP99Style(box99Style->selectedSymbol());
-			b->setMeanStyle(boxMeanStyle->selectedSymbol());
-			b->setP1Style(box1Style->selectedSymbol());
-			b->setMinStyle(boxMinStyle->selectedSymbol());
-
-            int size = 2*boxPercSize->value() + 1;
-            QBrush br = QBrush(boxPercFillColor->color(), Qt::SolidPattern);
-            if (!boxFillSymbols->isChecked())
-                br = QBrush();
-
-			QPen pen = QPen(boxEdgeColor->color(), boxEdgeWidth->value(),
-							Qt::SolidLine, Qt::FlatCap, Qt::MiterJoin);
-			pen.setCosmetic(true);
-			b->setSymbol(QwtSymbol(QwtSymbol::NoSymbol, br, pen, QSize(size, size)));
-		}
+		applyPercentileFormat((BoxCurve*)plotItem);
 	} else if (privateTabWidget->currentPage() == boxPage){
-		BoxCurve *b = (BoxCurve*)plotItem;
-		if (b){
-			b->setBoxWidth(boxWidth->value());
-			b->setBoxStyle(boxType->currentIndex());
-			if (boxCnt->isVisible())
-				b->setBoxRange(boxRange->currentIndex() + 1, boxCnt->value());
-			else
-				b->setBoxRange(boxRange->currentIndex() + 1, (double)boxCoef->value());
-
-			if (whiskerCnt->isVisible())
-				b->setWhiskersRange(boxWhiskersRange->currentIndex(), whiskerCnt->value());
-			else
-				b->setWhiskersRange(boxWhiskersRange->currentIndex(), (double)boxWhiskersCoef->value());
-		}
+		applyBoxWhiskersFormat((BoxCurve*)plotItem);
 	} else if (privateTabWidget->currentPage() == labelsPage){
-		Spectrogram *sp = (Spectrogram *)plotItem;
-  	    if (sp && sp->rtti() == QwtPlotItem::Rtti_PlotSpectrogram){
-  	    	sp->setLabelsRotation(boxLabelsAngle->value());
-  	    	sp->showContourLineLabels(labelsGroupBox->isChecked());
-			sp->setLabelsWhiteOut(boxLabelsWhiteOut->isChecked());
-			sp->setLabelsOffset((double)boxLabelsXOffset->value(), (double)boxLabelsYOffset->value());
-			sp->setLabelsColor(boxLabelsColor->color());
-  	    } else {
+		if (plotItem->rtti() == QwtPlotItem::Rtti_PlotCurve){
 			DataCurve *c = (DataCurve *)plotItem;
 
 			QString text = item->text(0);
@@ -3120,39 +3151,33 @@ bool PlotDialog::acceptParams()
 			QString table = t[0];
 			QStringList cols = t[1].split(",", QString::SkipEmptyParts);
 
-			bool specialCurve = (c->type() == Graph::Histogram || c->type() == Graph::Box);
-			if (labelsGroupBox->isChecked() && !specialCurve){
-				c->setLabelsColumnName(boxLabelsColumn->currentText());
+			if (c->type() != Graph::Box){
+				bool specialCurve = (c->type() == Graph::Histogram);
+				if (labelsGroupBox->isChecked() && !specialCurve){
+					c->setLabelsColumnName(boxLabelsColumn->currentText());
 
-				if (cols.count() == 3)
-					cols[2] = boxLabelsColumn->currentText().remove(table + "_") + "(L)";
-				else if (cols.count() == 5)//vector curves
-					cols[4] = boxLabelsColumn->currentText().remove(table + "_") + "(L)";
-				else
-					cols << boxLabelsColumn->currentText().remove(table + "_") + "(L)";
-				item->setText(0, table + ": " + cols.join(","));
-			} else {
-				if (specialCurve){
-					if (!labelsGroupBox->isChecked())
-						c->clearLabels();
-					else {
-						if (c->type() == Graph::Box)
-							((BoxCurve *)c)->setLabelsDisplayPolicy((BoxCurve::LabelsDisplayPolicy)boxLabelsColumn->currentIndex());
-						c->setLabelsColumnName(QString());
-					}
-				} else if (cols.size() > 1){
-					c->setLabelsColumnName(QString());
-					cols.pop_back();
+					if (cols.count() == 3)
+						cols[2] = boxLabelsColumn->currentText().remove(table + "_") + "(L)";
+					else if (cols.count() == 5)//vector curves
+						cols[4] = boxLabelsColumn->currentText().remove(table + "_") + "(L)";
+					else
+						cols << boxLabelsColumn->currentText().remove(table + "_") + "(L)";
 					item->setText(0, table + ": " + cols.join(","));
+				} else {
+					if (specialCurve){
+						if (!labelsGroupBox->isChecked())
+							c->clearLabels();
+						else
+							c->setLabelsColumnName(QString());
+					} else if (cols.size() > 1){
+						c->setLabelsColumnName(QString());
+						cols.pop_back();
+						item->setText(0, table + ": " + cols.join(","));
+					}
 				}
 			}
-
-			c->setLabelsRotation(boxLabelsAngle->value());
-			c->setLabelsWhiteOut(boxLabelsWhiteOut->isChecked());
-			c->setLabelsOffset(boxLabelsXOffset->value(), boxLabelsYOffset->value());
-			c->setLabelsColor(boxLabelsColor->color());
-			c->setLabelsAlignment(labelsAlignment());
   	    }
+		applyLabelsFormat(plotItem);
 	} else if (privateTabWidget->currentPage() == functionPage){
 		functionEdit->accept();
 	}
@@ -3575,8 +3600,12 @@ void PlotDialog::showAllLabelControls(bool show, int curveType)
 		boxLabelsColumn->addItem(tr("Value"));
 		boxLabelsColumn->addItem(tr("Percentage (Value)"));
 		boxLabelsColumn->addItem(tr("Value (Percentage)"));
+		labelsGroupBox->setCheckable(false);
+		labelsGroupBox->setTitle("");
 	} else {
 		labelsColumnLbl->setText(tr("Column"));
+		labelsGroupBox->setTitle(tr("&Show"));
+		labelsGroupBox->setCheckable(true);
 	}
 
 	boxLabelsAlign->setVisible(show);
@@ -3843,6 +3872,248 @@ void PlotDialog::applyErrorBarFormat(ErrorBarsCurve *c)
 	app->modifiedProject();
 }
 
+void PlotDialog::applyBoxWhiskersFormatToCurve(BoxCurve *b)
+{
+	if (!b)
+		return;
+
+	b->setBoxWidth(boxWidth->value());
+	b->setBoxStyle(boxType->currentIndex());
+	if (boxCnt->isVisible())
+		b->setBoxRange(boxRange->currentIndex() + 1, boxCnt->value());
+	else
+		b->setBoxRange(boxRange->currentIndex() + 1, (double)boxCoef->value());
+
+	if (whiskerCnt->isVisible())
+		b->setWhiskersRange(boxWhiskersRange->currentIndex(), whiskerCnt->value());
+	else
+		b->setWhiskersRange(boxWhiskersRange->currentIndex(), (double)boxWhiskersCoef->value());
+
+	b->showBoxLabels(boxBoxLabels->isChecked());
+	b->showWhiskerLabels(boxWhiskerLabels->isChecked());
+}
+
+void PlotDialog::applyBoxWhiskersFormatToLayer(Graph *g)
+{
+	if (!g)
+		return;
+
+	for (int i = 0; i < g->curveCount(); i++){
+		DataCurve *c = g->dataCurve(i);
+		if (!c || c->type() != Graph::Box)
+			continue;
+
+		applyBoxWhiskersFormatToCurve((BoxCurve *)c);
+	}
+	g->replot();
+}
+
+void PlotDialog::applyBoxWhiskersFormat(BoxCurve *c)
+{
+	if (!c || privateTabWidget->currentPage() != boxPage)
+		return;
+
+	Graph *layer = (Graph *)c->plot();
+	if (!layer)
+		return;
+
+	ApplicationWindow *app = (ApplicationWindow *)this->parent();
+	switch(boxWhiskersFormatApplyToBox->currentIndex()){
+		case 0://selected curve
+			applyBoxWhiskersFormatToCurve(c);
+		break;
+		case 1://this layer
+			applyBoxWhiskersFormatToLayer(layer);
+		break;
+		case 2://this window
+		{
+			QList<Graph *> layersLst = layer->multiLayer()->layersList();
+			foreach(Graph *g, layersLst)
+				applyBoxWhiskersFormatToLayer(g);
+		}
+		break;
+		case 3://all windows
+		{
+			QList<MdiSubWindow *> windows = app->windowsList();
+			foreach(MdiSubWindow *w, windows){
+				MultiLayer *ml = qobject_cast<MultiLayer *>(w);
+				if (!ml)
+					continue;
+
+				QList<Graph *> layersLst = ml->layersList();
+				foreach(Graph *g, layersLst)
+					applyBoxWhiskersFormatToLayer(g);
+			}
+		}
+		break;
+		default:
+			break;
+	}
+	app->modifiedProject();
+}
+
+void PlotDialog::applyPercentileFormatToCurve(BoxCurve *b)
+{
+	if (!b)
+		return;
+
+	b->setMaxStyle(boxMaxStyle->selectedSymbol());
+	b->setP99Style(box99Style->selectedSymbol());
+	b->setMeanStyle(boxMeanStyle->selectedSymbol());
+	b->setP1Style(box1Style->selectedSymbol());
+	b->setMinStyle(boxMinStyle->selectedSymbol());
+
+	int size = 2*boxPercSize->value() + 1;
+	QBrush br = QBrush(boxPercFillColor->color(), Qt::SolidPattern);
+	if (!boxFillSymbols->isChecked())
+		br = QBrush();
+
+	QPen pen = QPen(boxEdgeColor->color(), boxEdgeWidth->value(),
+					Qt::SolidLine, Qt::FlatCap, Qt::MiterJoin);
+	pen.setCosmetic(true);
+	b->setSymbol(QwtSymbol(QwtSymbol::NoSymbol, br, pen, QSize(size, size)));
+}
+
+void PlotDialog::applyPercentileFormatToLayer(Graph *g)
+{
+	if (!g)
+		return;
+
+	for (int i = 0; i < g->curveCount(); i++){
+		DataCurve *c = g->dataCurve(i);
+		if (!c || c->type() != Graph::Box)
+			continue;
+
+		applyPercentileFormatToCurve((BoxCurve *)c);
+	}
+	g->replot();
+}
+
+void PlotDialog::applyPercentileFormat(BoxCurve *c)
+{
+	if (!c || privateTabWidget->currentPage() != percentilePage)
+		return;
+
+	Graph *layer = (Graph *)c->plot();
+	if (!layer)
+		return;
+
+	ApplicationWindow *app = (ApplicationWindow *)this->parent();
+	switch(percentileFormatApplyToBox->currentIndex()){
+		case 0://selected curve
+			applyPercentileFormatToCurve(c);
+		break;
+		case 1://this layer
+			applyPercentileFormatToLayer(layer);
+		break;
+		case 2://this window
+		{
+			QList<Graph *> layersLst = layer->multiLayer()->layersList();
+			foreach(Graph *g, layersLst)
+				applyPercentileFormatToLayer(g);
+		}
+		break;
+		case 3://all windows
+		{
+			QList<MdiSubWindow *> windows = app->windowsList();
+			foreach(MdiSubWindow *w, windows){
+				MultiLayer *ml = qobject_cast<MultiLayer *>(w);
+				if (!ml)
+					continue;
+
+				QList<Graph *> layersLst = ml->layersList();
+				foreach(Graph *g, layersLst)
+					applyPercentileFormatToLayer(g);
+			}
+		}
+		break;
+		default:
+			break;
+	}
+	app->modifiedProject();
+}
+
+void PlotDialog::applyLabelsFormatToItem(QwtPlotItem *it)
+{
+	if (!it)
+		return;
+
+	Spectrogram *sp = (Spectrogram *)it;
+	if (sp && sp->rtti() == QwtPlotItem::Rtti_PlotSpectrogram){
+		sp->setLabelsRotation(boxLabelsAngle->value());
+		sp->showContourLineLabels(labelsGroupBox->isChecked());
+		sp->setLabelsWhiteOut(boxLabelsWhiteOut->isChecked());
+		sp->setLabelsOffset((double)boxLabelsXOffset->value(), (double)boxLabelsYOffset->value());
+		sp->setLabelsColor(boxLabelsColor->color());
+	} else if (it->rtti() == QwtPlotItem::Rtti_PlotCurve){
+		DataCurve *c = (DataCurve *)it;
+		c->setLabelsRotation(boxLabelsAngle->value());
+		c->setLabelsWhiteOut(boxLabelsWhiteOut->isChecked());
+		c->setLabelsOffset(boxLabelsXOffset->value(), boxLabelsYOffset->value());
+		c->setLabelsColor(boxLabelsColor->color());
+		c->setLabelsAlignment(labelsAlignment());
+
+		if (c->type() == Graph::Box)
+			((BoxCurve *)c)->setLabelsDisplayPolicy((BoxCurve::LabelsDisplayPolicy)boxLabelsColumn->currentIndex());
+	}
+}
+
+void PlotDialog::applyLabelsFormatToLayer(Graph *g)
+{
+	if (!g)
+		return;
+
+	QList<QwtPlotItem *> lst = g->curvesList();
+	foreach (QwtPlotItem *it, lst)
+		applyLabelsFormatToItem(it);
+
+	g->replot();
+}
+
+void PlotDialog::applyLabelsFormat(QwtPlotItem *c)
+{
+	if (!c || privateTabWidget->currentPage() != labelsPage)
+		return;
+
+	Graph *layer = (Graph *)c->plot();
+	if (!layer)
+		return;
+
+	ApplicationWindow *app = (ApplicationWindow *)this->parent();
+	switch(boxLabelsFormatApplyToBox->currentIndex()){
+		case 0://selected curve
+			applyLabelsFormatToItem(c);
+		break;
+		case 1://this layer
+			applyLabelsFormatToLayer(layer);
+		break;
+		case 2://this window
+		{
+			QList<Graph *> layersLst = layer->multiLayer()->layersList();
+			foreach(Graph *g, layersLst)
+				applyLabelsFormatToLayer(g);
+		}
+		break;
+		case 3://all windows
+		{
+			QList<MdiSubWindow *> windows = app->windowsList();
+			foreach(MdiSubWindow *w, windows){
+				MultiLayer *ml = qobject_cast<MultiLayer *>(w);
+				if (!ml)
+					continue;
+
+				QList<Graph *> layersLst = ml->layersList();
+				foreach(Graph *g, layersLst)
+					applyLabelsFormatToLayer(g);
+			}
+		}
+		break;
+		default:
+			break;
+	}
+	app->modifiedProject();
+}
+
 QRect PlotDialog::layerCanvasRect(QWidget *widget, double x, double y, double w, double h, FrameWidget::Unit unit)
 {
     if (!widget)
@@ -3977,6 +4248,12 @@ void PlotDialog::enableBoxApplyColor(int index)
 	boxApplyColorTo->setEnabled(index);
 }
 
+void PlotDialog::enableLabelsPage()
+{
+	int index = privateTabWidget->indexOf(labelsPage);
+	privateTabWidget->setTabEnabled(index, boxBoxLabels->isChecked() || boxWhiskerLabels->isChecked());
+	acceptParams();
+}
 /*****************************************************************************
  *
  * Class LayerItem

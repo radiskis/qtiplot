@@ -3905,7 +3905,7 @@ Autocompletion will not be available!</source>
     </message>
     <message>
         <source>chart</source>
-        <translation type="unfinished">диаграмма</translation>
+        <translation type="obsolete">диаграмма</translation>
     </message>
     <message>
         <source>Overwrite file?</source>
@@ -11488,7 +11488,7 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Please enter a positive bin size value!</source>
-        <translation type="obsolete">Пожалуйста введите положительное значение размера столбика!</translation>
+        <translation type="unfinished">Пожалуйста введите положительное значение размера столбика!</translation>
     </message>
     <message>
         <source>Please enter a valid bin size value!</source>
@@ -11532,7 +11532,7 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>QtiPlot - Bin size input error</source>
-        <translation type="obsolete">QtiPlot - Ошибка ввода размера корзины</translation>
+        <translation type="unfinished">QtiPlot - Ошибка ввода размера корзины</translation>
     </message>
     <message>
         <source>QtiPlot - End limit error</source>
@@ -11992,6 +11992,34 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Apply Co&amp;lor</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Box &amp;Labels</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Whis&amp;ker Labels</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Display</source>
+        <translation type="unfinished">Показывать как</translation>
+    </message>
+    <message>
+        <source>Percentage</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Value</source>
+        <translation type="unfinished">Значение</translation>
+    </message>
+    <message>
+        <source>Percentage (Value)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Value (Percentage)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -12820,6 +12848,10 @@ have the same number of rows.</source>
     <message>
         <source>Max</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Size</source>
+        <translation type="unfinished">Размер</translation>
     </message>
 </context>
 <context>

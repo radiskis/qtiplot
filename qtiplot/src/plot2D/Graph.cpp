@@ -1893,18 +1893,14 @@ void Graph::deselect()
 void Graph::deselectCurves()
 {
 	QList<QwtPlotItem *> curves = curvesList();
-    foreach(QwtPlotItem *i, curves){
-    	if(i->rtti() == QwtPlotItem::Rtti_PlotSpectrogram &&
+	foreach(QwtPlotItem *i, curves){
+		if(i->rtti() == QwtPlotItem::Rtti_PlotSpectrogram &&
 			((Spectrogram *)i)->hasSelectedLabels()){
-    		((Spectrogram *)i)->selectLabel(false);
-    		return;
-    	} else if(i->rtti() != QwtPlotItem::Rtti_PlotSpectrogram &&
-			((PlotCurve *)i)->type() != Graph::Function &&
-            ((DataCurve *)i)->hasSelectedLabels()){
-            ((DataCurve *)i)->setLabelsSelected(false);
-            return;
-        }
-    }
+			((Spectrogram *)i)->selectLabel(false);
+		} else if (i->rtti() == QwtPlotItem::Rtti_PlotCurve && ((PlotCurve *)i)->type() != Graph::Function){
+			((DataCurve *)i)->setLabelsSelected(false);
+		}
+	}
 }
 
 QwtPlotItem* Graph::selectedCurveLabels()
@@ -1915,7 +1911,7 @@ QwtPlotItem* Graph::selectedCurveLabels()
           ((Spectrogram *)i)->hasSelectedLabels())
             return i;
 
-        if(i->rtti() != QwtPlotItem::Rtti_PlotSpectrogram &&
+		if(i->rtti() == QwtPlotItem::Rtti_PlotCurve &&
           ((PlotCurve *)i)->type() != Graph::Function &&
           ((DataCurve *)i)->hasSelectedLabels())
             return i;

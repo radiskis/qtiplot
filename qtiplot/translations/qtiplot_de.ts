@@ -9921,10 +9921,6 @@ Autocompletion will not be available!</source>
         <source>S&amp;mooth</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <source>chart</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>ArrowMarker</name>
@@ -20435,11 +20431,11 @@ Wollen sie Zellen einfügen?</translation>
     </message>
     <message>
         <source>QtiPlot - Bin size input error</source>
-        <translation type="obsolete">QtiPlot - Fehler bei der Intervallgröße</translation>
+        <translation type="unfinished">QtiPlot - Fehler bei der Intervallgröße</translation>
     </message>
     <message>
         <source>Please enter a positive bin size value!</source>
-        <translation type="obsolete">Bitte eine positive Intervallgröße eingeben!</translation>
+        <translation type="unfinished">Bitte eine positive Intervallgröße eingeben!</translation>
     </message>
     <message>
         <source>Vector Data</source>
@@ -20940,6 +20936,34 @@ Wollen sie Zellen einfügen?</translation>
     </message>
     <message>
         <source>Apply Co&amp;lor</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Box &amp;Labels</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Whis&amp;ker Labels</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Display</source>
+        <translation type="unfinished">Typ</translation>
+    </message>
+    <message>
+        <source>Percentage</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Value</source>
+        <translation type="unfinished">Wert</translation>
+    </message>
+    <message>
+        <source>Percentage (Value)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Value (Percentage)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -21835,6 +21859,10 @@ Wollen sie Zellen einfügen?</translation>
     <message>
         <source>Max</source>
         <translation type="unfinished">Max</translation>
+    </message>
+    <message>
+        <source>Size</source>
+        <translation type="unfinished">Größe</translation>
     </message>
 </context>
 <context>
