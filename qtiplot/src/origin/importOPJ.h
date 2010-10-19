@@ -61,6 +61,7 @@ private:
 	QString parseOriginTags(const QString &str);
 	void addText(const Origin::TextBox& text, Graph* graph, double fFontScaleFactor, double fScale);
 	void setPieTexts(PieCurve *p, Graph* graph, const Origin::GraphLayer& layer, double fFontScaleFactor, double fScale);
+	void setCurveLabelsProperties(DataCurve *mc, const Origin::GraphCurve& _curve, double fFontScaleFactor);
 	int parse_error;
 	int xoffset;
 	int frameWidth;

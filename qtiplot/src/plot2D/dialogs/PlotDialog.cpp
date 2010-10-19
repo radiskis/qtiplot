@@ -2090,7 +2090,6 @@ void PlotDialog::insertTabs(int plot_type)
 		privateTabWidget->addTab (percentilePage, tr("Percentile"));
 		privateTabWidget->addTab(labelsPage, tr("Labels"));
 		privateTabWidget->showPage(linePage);
-		return;
 	} else if (plot_type == Graph::ColorMap || plot_type == Graph::GrayScale || plot_type == Graph::Contour){
   		privateTabWidget->addTab(spectroValuesPage, tr("Values"));
   		privateTabWidget->addTab(spectrogramPage, tr("Colors"));
@@ -2650,14 +2649,17 @@ void PlotDialog::setActiveCurve(CurveTreeItem *item)
     labelsGroupBox->blockSignals(true);
 	labelsGroupBox->setChecked(dc->hasVisibleLabels());
 
-    QStringList cols = dc->table()->columnsList();
-    boxLabelsColumn->blockSignals(true);
-    boxLabelsColumn->clear();
-    boxLabelsColumn->addItems(cols);
-    int labelsColIndex = cols.indexOf(dc->labelsColumnName());
-    if (labelsColIndex >= 0)
-        boxLabelsColumn->setCurrentIndex(labelsColIndex);
-    boxLabelsColumn->blockSignals(false);
+	boxLabelsColumn->blockSignals(true);
+	if (curveType != Graph::Box){
+		QStringList cols = dc->table()->columnsList();
+		boxLabelsColumn->clear();
+		boxLabelsColumn->addItems(cols);
+		int labelsColIndex = cols.indexOf(dc->labelsColumnName());
+		if (labelsColIndex >= 0)
+			boxLabelsColumn->setCurrentIndex(labelsColIndex);
+	} else
+		boxLabelsColumn->setCurrentIndex(((BoxCurve*)i)->labelsDisplayPolicy());
+	boxLabelsColumn->blockSignals(false);
 
 	boxLabelsAngle->blockSignals(true);
     boxLabelsAngle->setValue(dc->labelsRotation());
@@ -3133,8 +3135,11 @@ bool PlotDialog::acceptParams()
 				if (specialCurve){
 					if (!labelsGroupBox->isChecked())
 						c->clearLabels();
-					else
+					else {
+						if (c->type() == Graph::Box)
+							((BoxCurve *)c)->setLabelsDisplayPolicy((BoxCurve::LabelsDisplayPolicy)boxLabelsColumn->currentIndex());
 						c->setLabelsColumnName(QString());
+					}
 				} else if (cols.size() > 1){
 					c->setLabelsColumnName(QString());
 					cols.pop_back();
@@ -3559,9 +3564,20 @@ void PlotDialog::setLayerDefaultValues()
 
 void PlotDialog::showAllLabelControls(bool show, int curveType)
 {
-	bool on = (curveType != Graph::Box && curveType != Graph::Histogram);
+	bool on = (curveType != Graph::Histogram);
 	boxLabelsColumn->setVisible(show && on);
 	labelsColumnLbl->setVisible(show && on);
+
+	if (curveType == Graph::Box){
+		labelsColumnLbl->setText(tr("Display"));
+		boxLabelsColumn->clear();
+		boxLabelsColumn->addItem(tr("Percentage"));
+		boxLabelsColumn->addItem(tr("Value"));
+		boxLabelsColumn->addItem(tr("Percentage (Value)"));
+		boxLabelsColumn->addItem(tr("Value (Percentage)"));
+	} else {
+		labelsColumnLbl->setText(tr("Column"));
+	}
 
 	boxLabelsAlign->setVisible(show);
 	justifyLabelsLbl->setVisible(show);

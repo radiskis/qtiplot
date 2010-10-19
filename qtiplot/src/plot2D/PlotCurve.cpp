@@ -28,6 +28,7 @@
  ***************************************************************************/
 #include "PlotCurve.h"
 #include "ErrorBarsCurve.h"
+#include "BoxCurve.h"
 #include "Graph.h"
 #include "ScaleDraw.h"
 #include "ScaleEngine.h"
@@ -989,6 +990,10 @@ QString DataCurve::saveToString()
         s += "\t<xoffset>" + QString::number(d_labels_x_offset) + "</xoffset>\n";
     if (d_labels_y_offset != 0.0)
         s += "\t<yoffset>" + QString::number(d_labels_y_offset) + "</yoffset>\n";
+
+	if (type() == Graph::Box)
+		s += "\t<display>" + QString::number(((BoxCurve *)this)->labelsDisplayPolicy()) + "</display>\n";
+
     return s + "</CurveLabels>\n";
 }
 
@@ -1030,6 +1035,8 @@ void DataCurve::restoreLabels(const QStringList& lst)
             xoffset = s.remove("<xoffset>").remove("</xoffset>").toInt();
         else if (s.contains("<yoffset>"))
             yoffset = s.remove("<yoffset>").remove("</yoffset>").toInt();
+		else if (s.contains("<display>"))
+			((BoxCurve *)this)->setLabelsDisplayPolicy((BoxCurve::LabelsDisplayPolicy)s.remove("<display>").remove("</display>").toInt());
     }
     setLabelsOffset(xoffset, yoffset);
     setLabelsColumnName(labelsColumn);
