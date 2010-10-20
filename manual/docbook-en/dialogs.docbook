@@ -719,21 +719,20 @@ When the speed mode is enabled, filtering of the data is activated only for the 
 		where <emphasis>y<subscript>i</subscript></emphasis> are the y values in the fitted data set.</para>
   	  </listitem>
   	  <listitem>
-  	    <para><emphasis>Arbitrary Dataset</emphasis>: you have the possibility to set the weighting coeficients using an arbitrary data set <emphasis>w<subscript>i</subscript> = 1/c<subscript>i</subscript></emphasis><superscript>2</superscript>,
+  	    <para><emphasis>Arbitrary Dataset</emphasis>: allows setting the weighting coeficients using an arbitrary data set <emphasis>w<subscript>i</subscript> = 1/c<subscript>i</subscript></emphasis><superscript>2</superscript>,
 		where <emphasis>c<subscript>i</subscript></emphasis> are the values in the arbitrary data set.
 		The column used for the weighting must have a number of rows equal to the number of points in the fitted curve. </para>
   	  </listitem>
 	  <listitem>
-  	    <para><emphasis>Direct Weighting</emphasis>: you have the possibility to set the weighting coeficients using an arbitrary data set <emphasis>w<subscript>i</subscript> = c<subscript>i</subscript></emphasis>,
+  	    <para><emphasis>Direct Weighting</emphasis>: allows setting the weighting coeficients using an arbitrary data set <emphasis>w<subscript>i</subscript> = c<subscript>i</subscript></emphasis>,
 		where <emphasis>c<subscript>i</subscript></emphasis> are the values in the arbitrary data set.
 		The column used for the weighting must have a number of rows equal to the number of points in the fitted curve. </para>
   	  </listitem>
   	</orderedlist>
   <para>After the fit, the log window is opened to show the results of the fitting process.</para>
-  <para>Depending on the settings in the <emphasis>Custom Output</emphasis> tab, a function curve (option <emphasis>Uniform X Function</emphasis>)
-  or a new table (if you choose the option <emphasis>Same X as Fitting Data</emphasis>) will be created for each fit.
+  <para>Depending on the settings in the <emphasis>Custom Output</emphasis> tab, a function curve (option <emphasis>Uniform X Function</emphasis>) or a new table (if you choose the option <emphasis>Same X as Fitting Data</emphasis>) will be created for each fit.
   The new table includes all the X and Y values used to compute and to plot the fitted function and is
-  hidden by default, but it can be found and viewed with the <link linkend="project-explorer-dialog">project explorer</link>.</para>
+  hidden by default. It can be found in and viewed from the <link linkend="project-explorer-dialog">project explorer</link>.</para>
 
   <figure id="fig-non-linear-curve-fit-4">
     <title>The third step of the &non-linear-curve-fit-cmd; dialog box.</title>
@@ -748,14 +747,12 @@ When the speed mode is enabled, filtering of the data is activated only for the 
   </figure>
 
 <para>This dialog tab provides controls that can be used to evaluate the goodness of fit.
-The first one is the <emphasis>Residuals Plot</emphasis> button which can be used to display the curve of
-the plot residuals. The <emphasis>Conf. Bands</emphasis> and <emphasis>Pred. Bands</emphasis> buttons can be used to
-generate confidence and prediction limits for the current fit, based on the user input confidence value.
+The first  is the <emphasis>Residuals Plot</emphasis> button which is used to display the curve of
+the plot residuals. The <emphasis>Conf. Bands</emphasis> and <emphasis>Pred. Bands</emphasis> buttons can be used to generate confidence and prediction limits for the current fit, based on the user input confidence value.
 </para>
 
 <para>
-After the fit, a series of fit statistics are displayed in the log window
-allowing to evaluate the goodness of fit. This values are:
+After the fit, a series of fit statistics are displayed in the log window allowing evaluation of  the goodness of fit. These values are:
 <orderedlist>
   	  <listitem>Chi^2/doF </listitem>
   	  <listitem>R-square</listitem>
@@ -768,7 +765,7 @@ For detailed explanations about the meaning of this statistical values, please v
 <ulink url="http://www.mathworks.com/access/helpdesk_r13/help/toolbox/curvefit/ch_fitt9.html">link</ulink>.
 </para>
 
-<para>By default, the reported errors are not automatically scaled with the square root of the
+<para>By default, reported errors are not automatically scaled by the square root of the
 reduced chi-squared value. You can choose to enable this option by checking the
 <emphasis>Scale errors with sqrt(Chi^2/doF)</emphasis> box.</para>
 
@@ -779,44 +776,45 @@ reduced chi-squared value. You can choose to enable this option by checking the
 <!-- ************************************************** -->
 <sect1 id="plot-options-dialog">
   <title>General Plot Options</title>
-  <para>The first tab is used to set the general scales used for the two or three axis.</para>
+  <para>The first tab is used to set the general scales used for two or three axis plots.</para>
   <figure id="fig-plot-options-1-dialog">
-    <title>General plot options dialog: the scale tab.</title>
+    <title>General plot options dialog: The Scale Tab.</title>
     <mediaobject>
       <imageobject>
         <imagedata  format="PNG" fileref="pics/plot-options-1.png"/>
       </imageobject>
     </mediaobject>
   </figure>
-  <para>In this tab, you can also set the number of ticks used for each axis. This can be done in two ways: you can set the number of labels which are used for the whole scale. Whatever the number you enter, &appname; will use a value which leads to a pretty plot: for example, if you enter 7 ticks for a 0..100 scale, &appname; will use 10 major ticks from 10 to 10. If you want to fix non classical values, you can select the step method.</para>
-  <para>The grid tab is used to draw grid lines on the plot. The frequency of the lines are related to the number of label and major ticks set with the <emphasis>Scale</emphasis> tab.</para>
+  <para>In this tab, you can set the number of ticks used for each axis. This can be done in two ways: 1) Set the number of labels to use for the entire scale. Whatever number you enter, &appname; may adjust the value so as to produce a prettier plot (for example, if you enter 7 ticks for a 0..100 scale, &appname; will use 10 major ticks spaced evenly from 10 to 100). 2) Set the Step Increment and &appname; will generate as many ticks as needed to fill the scale range using the indicated increment. This produces tick spacings and labels which are more like those that are typically done on hand drawn graphs.</para>
+
+  <para>The grid tab is used to draw grid lines on the plot. The frequency of the lines are related to the number of labels and major ticks set with the <emphasis>Scale</emphasis> tab.</para>
   <figure id="fig-plot-options-2-dialog">
-    <title>General plot options dialog: the grid tab.</title>
+    <title>General plot options dialog: The Grid Tab.</title>
     <mediaobject>
       <imageobject>
         <imagedata  format="PNG" fileref="pics/plot-options-2.png"/>
       </imageobject>
     </mediaobject>
   </figure>
-  <para>The third tab is used to modify the setting of the different axis. You must select the axis that must be customized in the right window. The label of the axis can be modified in the title window, see the <link linkend="text-options-dialog">text options dialog</link> section for more details.</para>
+  <para>The third tab is used to modify the setting of the different axes. You must select the axis to be customized in the right window. The label of that axis can then be modified in the title window - see the <link linkend="text-options-dialog">text options dialog</link> section for more details.</para>
   <figure id="fig-plot-options-3-dialog">
-    <title>General plot options dialog: the axis tab.</title>
+    <title>General plot options dialog: The Axis Tab.</title>
     <mediaobject>
       <imageobject>
         <imagedata  format="PNG" fileref="pics/plot-options-3.png"/>
       </imageobject>
     </mediaobject>
   </figure>
-  <para>The <emphasis>General</emphasis> settings tab is used to customize the global aspect of the plot. The canvas is the area defined by the axis, you can draw a box around this canvas and define a background color for this canvas. The background area is the global drawing area, you can also define a color border and a background color for this area. The margin parameter controls the distance between the drawing area limit and the canvas. If you want to modify the margin between the window limits and the drawing area, you must modify the layer parameters (manualy with the mouse or with the <link linkend="arrange-layers-dialog">arrange layers dialog</link>.</para>
+  <para>The <emphasis>General</emphasis> settings tab is used to customize global aspects of the plot. The canvas is the area bounded by the axes. You can draw a box around this canvas and define its background color. The background area is the global drawing area of the graph window. You can also define a color border and a background color for this area as well. The <emphasis>margin</emphasis> parameter controls the distance between the drawing area limit and the canvas. If you want to modify the margin between the window limits and the drawing area, you must modify the layer parameters (manually with the mouse or with the <link linkend="arrange-layers-dialog">arrange layers dialog</link>.</para>
   <figure id="fig-plot-options-4-dialog">
-    <title>General plot options dialog: General settings.</title>
+    <title>General plot options dialog: General Settings.</title>
     <mediaobject>
       <imageobject>
         <imagedata  format="PNG" fileref="pics/plot-options-4.png"/>
       </imageobject>
     </mediaobject>
   </figure>
-  <para>The parameters in the <emphasis>Axes</emphasis> group allow to modify the linestyle of the axes and of the ticks.</para>
+  <para>The parameters in the <emphasis>Axes</emphasis> group allow modification of the linestyle used to draw the axes and ticks.</para>
 </sect1>
 
 <!-- ************************************************** -->
@@ -825,9 +823,8 @@ reduced chi-squared value. You can choose to enable this option by checking the
 <sect1 id="plot-wizard-dialog">
   <title>Plot Wizard</title>
   <para>This dialog is activated by selecting the command <link linkend="plot-wizard-cmd">&plot-wizard-cmd;</link> from the <link linkend="sec-view-menu">View Menu</link> or with the &plot-wizard-key; key. This command is always active.</para>
-  <para>This dialog is used to build a new plot by selecting the columns in the tables available in the current project. At first, you have to select the table you want to use, and then click on <emphasis>New curve</emphasis> to create the curve.
-  After that, you have to select at least one column for X and one for Y. You can also select one more column for X-errors or for Y-errors.
-  The plot created will have the default style you defined using the <link linkend="preferences-dialog">Preferences dialog</link> through the '2D Plots -> Curves' tab.</para>
+  <para>This dialog is used to build a new plot by selecting the columns from the tables available in the current project. First, select the table you want to use from the <emphasis>Worksheet</emphasis> combo box and click on <emphasis>New curve</emphasis> to create the curve. After that, select at least one column for X and one for Y using the &lt;-&gt;X and &lt;-&gt;Y buttons. You can also select columns for Z, X-errors and/or Y-errors using the buttons provided for these options.
+  The plot will be created using the default style defined using the '2D Plots -> Curves' tab in the <link linkend="preferences-dialog">Preferences dialog</link>.</para>
   <figure id="fig-plot-wizard">
     <title>The plot wizard dialog box.</title>
     <informalexample>
@@ -846,7 +843,7 @@ reduced chi-squared value. You can choose to enable this option by checking the
 <!-- ************************************************** -->
 <sect1 id="project-explorer-dialog">
   <title>Project Explorer</title>
-  <para>The project explorer shows a list of all the windows, tables, matrices and folders which are included in the current project. It can be used to create new folders and windows, to find existing ones, to make hidden elements visible, to perform basic operations like: renaming, deleting, hiding, resizing, printing, etc... You can also use it in order to display the list of dependencies and properties of an element in the project.</para>
+  <para>The project explorer shows a list of all the windows, tables, matrices and folders which are included in the current project. It can be used to create new folders and windows, to find existing ones, to make hidden elements visible, and to perform basic operations like: renaming, deleting, hiding, resizing, printing, etc. You can also use it to display a list of the dependencies and properties of any element in the project.</para>
   <figure id="fig-project-explorer-1">
     <title>The project explorer panel.</title>
     <mediaobject>
@@ -862,9 +859,12 @@ reduced chi-squared value. You can choose to enable this option by checking the
 <!-- ************************************************** -->
 <sect1 id="preferences-dialog">
   <title>Preferences Dialog</title>
-  <para>The preference dialog is used to customize the application. It has six different tabs. If you confirm your changes to the default behaviour of the application, the changes are saved and stored imediatelly.</para>
-  <para>The first icon can be selected to change the <emphasis>General</emphasis> options of the application.
-  In the first tab:  <emphasis>Application</emphasis>, the style is the general decoration used for the windows.
+  <para>The preference dialog is used to customize the default behavior of &appname;. There are six pages which are selected using one of icons from the column on the left hand side of the dialog. The text box at the top of the dialog shows the name of the selected page. No matter which page is selected, there are 4 buttons along the bottom edge of the dialog: <emphasis>Default Options</emphasis>, <emphasis>Apply</emphasis>, <emphasis>OK</emphasis>, and <emphasis>Cancel</emphasis>. Changes must be confirmed using either the <emphasis>Apply</emphasis> or <emphasis>OK</emphasis> buttons. The <emphasis>OK</emphasis> button additionally closes the dialog. Upon confirmation, changes are saved and stored immediately. The <emphasis>Cancel</emphasis> button will not undo changes which have already been confirmed but provides a means of exiting the dialog without confirming any changes that are pending. Finally, the <emphasis>Default Options</emphasis> button will restore the values of all the items on the page/tab which is currently displayed to the program defaults. This is useful when you've lost track of what you may have changed.</para>
+
+<sect2 id="general-preferences"><title>General Preferences</title>
+  <para>Selecting the <inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/general.png"/></imageobject></inlinemediaobject> General icon opens the <emphasis>General</emphasis> options page, which contains a set of 6 tabs used to set options affecting the general behavior of &appname;.
+  The first tab, <emphasis>Application</emphasis>, sets the style is the general decoration used for the windows.
+
   It defines the aspect of the buttons and dialog boxes. The available styles are part of the Qt library.
   The font is the general font used for the GUI (menus, dialogs, etc), it doesn't apply to the plots.
   You can select the language of the application in the corresponding combo-box.
@@ -900,7 +900,7 @@ the source archive, must be placed in the same folder as the Python configuratio
 &appname; on start-up. You can edit this file and add your own key words:
 one word per line.
 
-Completion suggestions are automatically poped-up for words that have more than two
+Completion suggestions are automatically popped-up for words that have more than two
 characters, but you can trigger autocompletion at any time using the shortcut Ctrl+U.
 Autocompletion can be disabled by unchecking the <emphasis>Enable autocompletion</emphasis>
 option.</para>
@@ -958,10 +958,12 @@ via a proxy.</para>
       </imageobject>
     </mediaobject>
   </figure>
+</sect2>
 
-  <para>The second set of option allows to customize the defaut aspect of <link linkend="sec-intro-table">tables</link>: background, text colors, and fonts for tables and labels.
+<sect2 id="tabels-preferences"><title>Tables Preferences</title>
+  <para>Selecting the <inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/configTable.png"/></imageobject></inlinemediaobject> Tables icon opens the second page of the preferences dialog which allows customizing default aspects of <link linkend="sec-intro-table">tables</link>: background, text colors, and fonts for tables and labels.
   By checking the <emphasis>Display Comments in Header</emphasis> option, the column comments will also be
-  displayed in the table header, bellow the column names.
+  displayed in the table header, below the column names.
   If the <emphasis>Automatically Recalculate Column Values</emphasis> option is checked, all modifications in the values
   of a column trigger a recalculation of all columns with formulas depending on the modified column.
   </para>
@@ -973,7 +975,10 @@ via a proxy.</para>
       </imageobject>
     </mediaobject>
   </informalfigure>
-  <para>The second set of options is used to customize the default aspect of <emphasis>2D plots</emphasis>.
+</sect2>
+
+<sect2 id="2dplot-preferences"><title>2D Plot Preferences</title>
+<para>Selecting the <inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/config_curves.png"/></imageobject></inlinemediaobject> 2D Plots Icon opens the third page of the preferences dialog. This set of options is used to customize default aspects of <emphasis>2D plots</emphasis>.
   The first tab is used to modify some general options. Most of the changes made to these
   options will be applied only to the newly created plots.
   Only a few of the changes, like <emphasis>Autoscaling</emphasis> of the plot axes,
@@ -1063,8 +1068,11 @@ via a proxy.</para>
       </imageobject>
     </mediaobject>
   </informalfigure>
-     <para>The following tab allows to customize the aspect of three dimensional plots.
-    From this dialog you have the possibility to define a speed drawing mode, which is very usefull
+</sect2>
+
+<sect2 id="3dplot-preferences"><title>3D Plot Preferences</title>
+<para>Selecting the <inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/logo.png"/></imageobject></inlinemediaobject> 3D Plots Icon opens the fourth page of the preferences dialog. This set of options is used to customize default aspects of three dimensional plots.
+    From this dialog you have the possibility to define a speed drawing mode, which is very useful
     when working with large data sets. This can be realized via the <emphasis>Resolution</emphasis>
     option: the higher this value, the smaller the number of data points drawn on the 3D plots,
     therefore the higher the drawing speed. For a value of 1, all the data points are drawn.</para>
@@ -1076,8 +1084,10 @@ via a proxy.</para>
       </imageobject>
     </mediaobject>
   </figure>
+</sect2>
 
-<para>The <emphasis>Notes</emphasis> tab allows the user to customize some default options for the text editors, such as
+<sect2 id="notes-preferences"><title>Notes Preferences</title>
+<para>Selecting the <inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/notes_32.png"/></imageobject></inlinemediaobject> Notes Icon opens the fifth page of the preferences dialog. This set of options is used to customize some default characteristics of the text editors, such as
 the length of the <emphasis>TAB</emphasis> character and the font.
 The user can also specify whether the line numbers should be displayed or not.
 Displaying the line numbers can be particularly helpful when debugging Python scripts.</para>
@@ -1090,7 +1100,10 @@ Displaying the line numbers can be particularly helpful when debugging Python sc
       </imageobject>
     </mediaobject>
   </figure>
+</sect2>
 
+<sect2 id="fitting-preferences"><title>Fitting Preferences</title>
+<para>Selecting the <inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/fit.png"/></imageobject></inlinemediaobject> Fitting Icon opens the sixth page of the preferences dialog. This page is used to set default fitting options</para>
   <figure id="fig-preferences-dialog-10">
     <title>The preferences dialog: fitting options.</title>
     <mediaobject>
@@ -1099,6 +1112,7 @@ Displaying the line numbers can be particularly helpful when debugging Python sc
       </imageobject>
     </mediaobject>
   </figure>
+</sect2>
 </sect1>
 
 <!-- ************************************************** -->
