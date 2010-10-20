@@ -179,6 +179,10 @@ private:
 	void applyGapToLayer(Graph *g);
 	void applyGap(Graph *g);
 
+	void setLabelsFont(const QFont& font, Graph *, const QwtPlotItem *);
+	void setLabelsFontToPlotItem(const QFont& font, const QwtPlotItem *);
+	void setLabelsFontToLayer(const QFont& font, Graph *);
+
     int labelsAlignment();
 	void closeEvent(QCloseEvent* e);
 
