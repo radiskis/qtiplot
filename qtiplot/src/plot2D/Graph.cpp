@@ -1906,17 +1906,15 @@ void Graph::deselectCurves()
 QwtPlotItem* Graph::selectedCurveLabels()
 {
 	QList<QwtPlotItem *> curves = curvesList();
-    foreach(QwtPlotItem *i, curves){
-    	if(i->rtti() == QwtPlotItem::Rtti_PlotSpectrogram &&
-          ((Spectrogram *)i)->hasSelectedLabels())
-            return i;
+	foreach(QwtPlotItem *i, curves){
+		if(i->rtti() == QwtPlotItem::Rtti_PlotSpectrogram && ((Spectrogram *)i)->hasSelectedLabels())
+			return i;
 
-		if(i->rtti() == QwtPlotItem::Rtti_PlotCurve &&
-          ((PlotCurve *)i)->type() != Graph::Function &&
-          ((DataCurve *)i)->hasSelectedLabels())
-            return i;
+		if(i->rtti() == QwtPlotItem::Rtti_PlotCurve && ((PlotCurve *)i)->type() != Graph::Function &&
+		  ((DataCurve *)i)->hasSelectedLabels())
+			return i;
 	}
-    return NULL;
+	return NULL;
 }
 
 bool Graph::titleSelected()
