@@ -223,6 +223,7 @@ addCurve
 removeCurve
 deleteFitCurves
 dataCurve
+functionCurve
 numCurves
 addFunction
 addPolarFunction
@@ -566,7 +567,10 @@ setColorInterval
 color1
 color2
 QColor
+parameterName
 parameterNames
+parametersCount
+parameterValue
 Ellipse
 setDecimalSeparators
 removeCol

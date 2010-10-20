@@ -70,6 +70,15 @@ public:
 
 	bool loadData(int points = 0, bool xLog10Scale = false);
 
+	//! Returns the number of parameters in your function formula
+	int parametersCount(){return d_constants.count();};
+	//! Returns the name of the parameter of rang index
+	QString parameterName(int index);
+	//! Returns the value of the parameter of rang index
+	double parameterValue(int index);
+	//! Returns the value of the name parameter
+	double parameterValue(const QString& name);
+
 	QMap<QString, double> constants(){return d_constants;};
 	void setConstants(const QMap<QString, double>& map){d_constants = map;};
 	void setConstant(const QString& parName, double val){d_constants.insert(parName, val);};

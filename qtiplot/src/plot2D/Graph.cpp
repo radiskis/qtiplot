@@ -2867,6 +2867,15 @@ DataCurve * Graph::dataCurve(int index)
 	return 0;
 }
 
+FunctionCurve * Graph::functionCurve(int index)
+{
+	PlotCurve *c = curve(index);
+	if (c && c->type() == Function)
+		return (FunctionCurve*)c;
+
+	return 0;
+}
+
 BoxCurve * Graph::boxCurve(int index)
 {
 	DataCurve *c = dataCurve(index);

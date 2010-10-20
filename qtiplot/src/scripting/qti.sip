@@ -1261,6 +1261,15 @@ public:
 	FunctionType functionType();
 	void setFunctionType(const FunctionType& t);
 
+	//! Returns the number of parameters in your function formula
+	int parametersCount();
+	//! Returns the name of the parameter of rang index
+	QString parameterName(int index);
+	//! Returns the value of the parameter of rang index
+	double parameterValue(int index);
+	//! Returns the value of the name parameter
+	double parameterValue(const QString& name);
+
 	bool loadData(int points = 0, bool xLog10Scale = false);
 
 private:
@@ -1778,6 +1787,7 @@ public:
   void setGrayScale();
   void setIndexedColors();
 
+	FunctionCurve * functionCurve(int index);
 	FunctionCurve* addFunction(const QString&, double, double, int=100);
 %MethodCode
   QStringList l;

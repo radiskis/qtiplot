@@ -324,3 +324,46 @@ bool FunctionCurve::loadData(int points, bool xLog10Scale)
 	free(X); free(Y);
 	return true;
 }
+
+QString FunctionCurve::parameterName(int index)
+{
+	int size = d_constants.size();
+	if (index < 0 || index >= size)
+		return QString();
+
+	int i = 0;
+	QMapIterator<QString, double> it(d_constants);
+	while (it.hasNext() && i < size){
+		it.next();
+		if (index == i)
+			return it.key();
+		i++;
+	}
+	return QString();
+}
+
+double FunctionCurve::parameterValue(int index)
+{
+	int size = d_constants.size();
+	if (index < 0 || index >= size)
+		return 0.0;
+
+	int i = 0;
+	QMapIterator<QString, double> it(d_constants);
+	while (it.hasNext() && i < size){
+		it.next();
+		if (index == i)
+			return it.value();
+		i++;
+	}
+	return 0.0;
+}
+
+double FunctionCurve::parameterValue(const QString& name)
+{
+	QMap<QString, double>::const_iterator it = d_constants.find(name);
+	if (it != d_constants.end())
+		return it.value();
+
+	return 0.0;
+}
