@@ -294,6 +294,7 @@ class Graph: public QwtPlot
 		//! map curve title to index
 		int curveIndex(const QString &title){return plotItemsList().findIndex(title);}
 		DataCurve* dataCurve(int index);
+		FunctionCurve* functionCurve(int index);
 		//! get curve by index
 		PlotCurve* curve(int index);
 		//! get curve by name

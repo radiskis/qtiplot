@@ -2058,505 +2058,6 @@ will do the trick, but you can also select a layer by its number:
 l = g.layer(num)
 </programlisting>
 
-<sect3 id="Python-Curves">
-<title>Working with curves</title>
-You can then add or remove curves to or from this layer:
-<programlisting>
-l.insertCurve(table, Ycolumn, type=Layer.Scatter, int startRow = 0, int endRow = -1)# returns a reference to the inserted curve
-l.insertCurve(table, Xcolumn, Ycolumn, type=Layer.Scatter, int startRow = 0, int endRow = -1)# returns a reference to the inserted curve
-l.addCurve(table, column, type=Layer.Line, lineWidth = 1, symbolSize = 3, startRow = 0, endRow = -1)# returns True on success
-l.addCurves(table, (2,4), type=Layer.Line, lineWidth = 1, symbolSize = 3, startRow = 0, endRow = -1)# returns True on success
-l.removeCurve(curveName)
-l.removeCurve(curveIndex)
-l.removeCurve(curveReference)
-l.deleteFitCurves()
-</programlisting>
-
-It is possible to change the order of the curves inserted in a layer using the following function:
-<programlisting>
-l.changeCurveIndex(int oldIndex, int newIndex)
-</programlisting>
-
-Sometimes, when performing data analysis, one might need the curve title. It is possible to obtain it using the method bellow:
-<programlisting>
-title = l.curveTitle(curveIndex)
-</programlisting>
-
-It is possible to get a reference to a curve on the layer l using it's index or it's title, like shown bellow:
-<programlisting>
-c = l.curve(curveIndex)
-c = l.curve(curveTitle)
-dc = l.dataCurve(curveIndex)
-</programlisting>
-<para>Please, keep in mind the fact that the above methods might return an invalid reference
-if the curve with the specified index/title is not a PlotCurve or a DataCurve object, respectively.
-For example, an analytical function curve is a PlotCurve but not a DataCurve and spectrograms are a
-completely different type of plot items which are neither PlotCurves nor DataCurves.</para>
-
-<para>Use the following function to change the axis attachment of a curve:</para>
-<programlisting>
-l.setCurveAxes(number, x-axis, y-axis)
-</programlisting>
-<para>where number is the curve's number, x-axis is either 0 or 1 (bottom or top) and y-axis is either 0 or 1 (left or right).</para>
-You can also add analytical function curves to a plot layer:
-<programlisting>
-c = l.addFunction("x*sin(x)", 0, 3*pi, points = 100)
-c.setTitle("x*sin(x)")
-c.setPen(Qt.green)
-c.setBrush(QtGui.QColor(0, 255, 0, 100))
-
-l.addParametricFunction("cos(m)", "sin(m)", 0, 2*pi, points = 100, variableName = "m")
-l.addPolarFunction("t", "t", 0, 2*pi, points = 100, variableName = "t")
-</programlisting>
-
-When dealing with analytical function curves, you can customize them using the following methods:
-<programlisting>
-c.setRange(0, 2*pi)
-c.setVariable("t")
-c.setFormulas("sin(t)", "cos(t)")
-c.setFunctionType(FunctionCurve.Polar) # or c.setFunctionType(FunctionCurve.Parametric)
-c.loadData(1000, xLog10Scale = False)
-
-c.setFunctionType(FunctionCurve.Normal)
-c.setFormula("cos(x)")
-c.loadData()
-</programlisting>
-
-In case you need the number of curves on a layer, you can get it with <programlisting>
-l.numCurves()
-</programlisting>
-
-Once you have added a curve to a 2D plot, you can fully customize it's appearance:
-<programlisting>
-l = newGraph().activeLayer()
-l.setAntialiasing()
-c = l.insertCurve(table("Table1"), "Table1_2", Layer.LineSymbols)
-c.setPen(QtGui.QPen(Qt.red, 3))
-c.setBrush(QtGui.QBrush(Qt.darkYellow))
-c.setSymbol(PlotSymbol(PlotSymbol.Hexagon, QtGui.QBrush(Qt.yellow), QtGui.QPen(Qt.blue, 1.5), QtCore.QSize(15, 15)))
-</programlisting>
-
-It is possible to change the number of symbols to be displayed for a curve using the function bellow.
-This option can be very usefull for very large data sets:
-<programlisting>
-c.setSkipSymbolsCount(3)
-print c.skipSymbolsCount()
-</programlisting>
-
-An alternative way of customizing a curve is by using the functions bellow:
-<programlisting>
-l.setCurveLineColor(int curve, int color) # uses the index of the colors in the default QtiPlot color list: 0 = black, 1 = red, 2 = green, etc...
-l.setCurveLineStyle(int curve, Qt::PenStyle style)
-l.setCurveLineWidth(int curve, double width)
-</programlisting>
-
-You can also define a global color policy for the plot layer using the following
-convenience functions:
-<programlisting>
-l.setGrayScale()
-l.setIndexedColors() # uses the colors in the default QtiPlot color list: 0 = black, 1 = red, 2 = green, etc...
-</programlisting>
-
-You can display labels showing the y values for each data point in a DataCurve:
-<programlisting>
-c.setLabelsColumnName("Table1_2")
-c.setLabelsOffset(50, 50)
-c.setLabelsColor(Qt.red)
-c.setLabelsFont(QtGui.QFont("Arial", 14))
-c.setLabelsRotation(45)
-c.loadData() # creates the labels and updates the display
-</programlisting>
-
-and, of course, you can disable them using:
-<programlisting>
-c.clearLabels()
-l.replot() # redraw the plot layer object
-</programlisting>
-
-If you need to change the range of data points displayed in a DataCurve you can use
-the following methods:
-<programlisting>
-c.setRowRange(int startRow, int endRow)
-c.setFullRange()
-</programlisting>
-
-Also, you can hide/show a plot curve via:
-<programlisting>
-c.setVisible(bool on)
-</programlisting>
-
-In case you need to get information about the data stored in the curve,
-you have at your disposal the functions bellow:
-<programlisting>
-points = c.dataSize()
-for i in range (0, points):
-	print i, "x = ", c.x(i), "y = ", c.y(i)
-
-print c.minXValue()
-print c.maxXValue()
-print c.minYValue()
-print c.maxYValue()
-</programlisting>
-</sect3>
-
-<sect3 id = "Python-ErrorBars">
-<title>Error Bars</title>
-
-Each data curve, <emphasis>c</emphasis>, can have attached a list of error bars:
-<programlisting>
-errors = c.errorBarsList()
-</programlisting>
-
-The properties of an error bar curve can be accesses, via the following methods:
-<programlisting>
-err = c.errorBarsList()[0]
-for i in range(0, err.dataSize()):
-	print err.errorValue(i)
-
-err.capLength()
-err.width()
-err.color()
-err.direction()
-err.xErrors()
-err.throughSymbol()
-err.plusSide()
-err.minusSide()
-c = err.masterCurve() # reference to the master curve to which the error bars curve is attached.
-err.detachFromMasterCurve() # equivalent to c.removeErrorBars(err)
-</programlisting>
-
-... and can be modified, via the following methods:
-<programlisting>
-err.setCapLength(12)
-err.setWidth(3)
-err.setColor(Qt.red)
-err.setDirection(ErrorBarsCurve.Vertical)
-err.setXErrors(True) # equivalent to err.setDirection(ErrorBarsCurve.Horizontal)
-err.drawThroughSymbol(True)
-err.drawPlusSide(True)
-err.drawMinusSide(False)
-err.setMasterCurve(c)
-</programlisting>
-
-You can remove all error bars attached to a curve using:
-<programlisting>
-c.clearErrorBars()
-</programlisting>
-</sect3>
-
-<sect3 id = "Python-PlotSymbols">
-<title>Plot symbols</title>
-
-Here's how you can customize the plot symbol used for a 2D plot curve <varname>c</varname>:
-<programlisting>
-s = c.symbol()
-s.setSize(QtCore.QSize(7, 7))# or s.setSize(7)
-s.setBrush(QtGui.QBrush(Qt.darkYellow))
-s.setPen(QtGui.QPen(Qt.blue, 3))
-s.setStyle(PlotSymbol.Diamond)
-l.replot() # redraw the plot layer object
-</programlisting>
-
-The symbol styles available in QtiPlot are:
-<variablelist spacing="compact">
-            <varlistentry>
-              <term>0</term>
-
-              <listitem>
-                <para>PlotSymbol.NoSymbol</para>
-              </listitem>
-            </varlistentry>
-
-            <varlistentry>
-              <term>1</term>
-
-              <listitem>
-                <para>PlotSymbol.Ellipse</para>
-              </listitem>
-            </varlistentry>
-
-            <varlistentry>
-              <term>2</term>
-
-              <listitem>
-                <para>PlotSymbol.Rect</para>
-              </listitem>
-            </varlistentry>
-
-            <varlistentry>
-              <term>3</term>
-
-              <listitem>
-                <para>PlotSymbol.Diamond</para>
-              </listitem>
-            </varlistentry>
-
-            <varlistentry>
-              <term>4</term>
-
-              <listitem>
-                <para>PlotSymbol.Triangle</para>
-              </listitem>
-            </varlistentry>
-
-            <varlistentry>
-              <term>5</term>
-
-              <listitem>
-                <para>PlotSymbol.DTriangle</para>
-              </listitem>
-            </varlistentry>
-
-            <varlistentry>
-              <term>6</term>
-
-              <listitem>
-                <para>PlotSymbol.UTriangle</para>
-              </listitem>
-            </varlistentry>
-
-            <varlistentry>
-              <term>7</term>
-
-              <listitem>
-                <para>PlotSymbol.LTriangle</para>
-              </listitem>
-            </varlistentry>
-
-            <varlistentry>
-              <term>8</term>
-
-              <listitem>
-                <para>PlotSymbol.RTriangle</para>
-              </listitem>
-            </varlistentry>
-
-            <varlistentry>
-              <term>9</term>
-
-              <listitem>
-                <para>PlotSymbol.Cross</para>
-              </listitem>
-            </varlistentry>
-
-            <varlistentry>
-              <term>10</term>
-
-              <listitem>
-                <para>PlotSymbol.XCross</para>
-              </listitem>
-            </varlistentry>
-
-			 <varlistentry>
-              <term>11</term>
-
-              <listitem>
-                <para>PlotSymbol.HLine</para>
-              </listitem>
-            </varlistentry>
-
-			<varlistentry>
-              <term>12</term>
-
-              <listitem>
-                <para>PlotSymbol.VLine</para>
-              </listitem>
-            </varlistentry>
-            <varlistentry>
-              <term>13</term>
-
-              <listitem>
-                <para>PlotSymbol.Star1</para>
-              </listitem>
-            </varlistentry>
-
-            <varlistentry>
-              <term>14</term>
-            <listitem>
-                <para>PlotSymbol.Star2</para>
-              </listitem>
-            </varlistentry>
-
-            <varlistentry>
-              <term>15</term>
-            <listitem>
-                <para>PlotSymbol.Hexagon</para>
-              </listitem>
-            </varlistentry>
-          </variablelist>
-</sect3>
-
-<sect3 id = "Python-Spectrograms">
-<title>Image and Contour Line Plots (Spectrograms)</title>
-
-As you have seen in the previous section, it is possible create 2D plots from matrices.
-Here's how you can do it in practice:
-<programlisting>
-m = importImage("C:/poze/adi/PIC00074.jpg")
-g1 = plot(m, Layer.ColorMap)
-g2 = plot(m, Layer.Contour)
-g3 = plot(m, Layer.GrayScale)
-</programlisting>
-
-The plot functions above return a reference to the multilayer plot window. If you need a reference to the
-spectrogram object itself, you can get it as shown in the example bellow:
-<programlisting>
-m = newMatrix("TestMatrix", 1000, 800)
-m.setFormula("x*y")
-m.calculate()
-g = plot(m, Layer.ColorMap)
-s = g.activeLayer().spectrogram(m)
-s.setColorBarWidth(20)
-</programlisting>
-
-It is possible to fine tune the plots created from a matrix:
-
-<programlisting>
-m = newMatrix("TestMatrix", 1000, 800)
-m.setFormula("x*y")
-m.calculate()
-
-s = newGraph().activeLayer().plotSpectrogram(m, Layer.ColorMap)
-s.setContourLevels((20.0, 30.0, 60.0, 80.0))
-s.setDefaultContourPen(QtGui.QPen(Qt.yellow)) # set global pen for the contour lines
-s.setLabelsWhiteOut(True)
-s.setLabelsColor(Qt.red)
-s.setLabelsFont(QtGui.QFont("Arial", 14))
-s.setLabelsRotation(45)
-s.showColorScale(Layer.Top)
-s.setColorBarWidth(20)
-</programlisting>
-
-As you have seen earlier, you can set a global pen for the contour lines, using:
-<programlisting>
-s.setDefaultContourPen(QtGui.QPen(Qt.yellow))
-</programlisting>
-You can also assign a specific pen for each contour line, using the function bellow:
-<programlisting>
-s.setContourLinePen(index, QPen)
-</programlisting>
-or you can automatically set pen colors defined by the color map of the spectrogram:
-<programlisting>
-s.setColorMapPen(bool on = True)
-</programlisting>
-
-You can also use any of the following functions:
-<programlisting>
-s.setMatrix(Matrix *, bool useFormula = False)
-s.setUseMatrixFormula(bool useFormula = True)# calculate data to be drawn using matrix formula (if any)
-s.setLevelsNumber(int)
-s.showColorScale(int axis, bool on = True)
-s.setGrayScale()
-s.setDefaultColorMap()
-s.setCustomColorMap(LinearColorMap map)
-s.showContourLineLabels(bool show = True) # enable/disable contour line labels
-s.setLabelsOffset(int x, int y) # offset values for all labels in % of the text size
-s.updateData()
-</programlisting>
-</sect3>
-
-<sect3 id = "Python-Histograms">
-<title>Histograms</title>
-
-As you have seen in the previous section, it is possible create 2D histograms from matrices or tables.
-Here's a small script showing how to customize a histogram and how to get access to the
-statistical information in the histogram (bin positions, counts, mean, standard deviation, etc...):
-<programlisting>
-m = newMatrix("TestHistogram", 1000, 800)
-m.setFormula("x*y")
-m.calculate()
-
-g = newGraph().activeLayer()
-h = g.addHistogram(m)
-h.setBinning(10, 1, 90) # the bin size is set to 10, data range is set to [1, 90]
-h.loadData() # update the histogram
-g.replot() # update the display
-
-# print histogram values:
-for i in range (0, h.dataSize()):
-	print i, "Bin start = ", h.x(i), "counts = ", h.y(i)
-
-# print statistic information:
-print "Standard deviation = ", h.standardDeviation()
-print "Mean = ", h.mean()
-</programlisting>
-
-You can also enable autobinning (a default number of ten bins will be used):
-<programlisting>
- h.setAutoBinning()
- </programlisting>
-</sect3>
-
-<sect3 id = "Python-BoxWhiskersPlos">
-<title>Box and whiskers plots</title>
-The following script shows how to create and customize a box and whiskers plot:
-<programlisting>
-g = newGraph().activeLayer()
-g.plotBox(table("Table1"), ["2", "3", "4"])
-for i in range (0, g.numCurves()):
-		box = g.boxCurve(i)
-		if (box):
-			box.setBrush(QtGui.QBrush(Qt.red, Qt.BDiagPattern))
-			s = PlotSymbol()
-			s.setPen(QtGui.QPen(Qt.blue, 2))
-			s.setSize(QtCore.QSize(10, 10))
-			box.setSymbol(s)
-			box.setMeanStyle(PlotSymbol.Cross)
-			box.setBoxStyle(BoxCurve.WindBox)
-			box.setBoxWidth(80)
-			box.setWhiskersRange(BoxCurve.SD) # standard deviation
-</programlisting>
-
-The following functions give access to the statistics information for the data series displayed with a box and whiskers plot:
-<programlisting>
-s = box.statistics() # returns information as a string
-m = box.median()
-q = box.quantile(f) # f must be a fraction between 0 and 1
-</programlisting>
-
-For an exhaustive review of the methods giving access to the properties of a box plot, please consult the
-<ulink url="http://soft.proindependent.com/doc/manual-en/Python-API/html/index.html">QtiPlot/Python API</ulink>.
-</sect3>
-
-<sect3 id = "Python-PieCurve">
-<title>Pie Plots</title>
-The following script shows how to create and customize a pie plot:
-<programlisting>
-g = newGraph().activeLayer()
-pie = g.plotPie(table("Table1"), "2")
-pie.setRadius(70)
-pie.setViewAngle(40)
-pie.setThickness(20)
-pie.setStartAzimuth(45)
-pie.setLabelsEdgeDistance(50)
-pie.setCounterClockwise(True)
-pie.setBrushStyle(Qt.Dense3Pattern)
-pie.setFirstColor(3)
-pie.setPen(QtGui.QPen(Qt.red, 2))
-pie.setLabelValuesFormat(True)
-</programlisting>
-
-For an exhaustive review of the methods giving access to the properties of a pie plot, please consult the
-<ulink url="http://soft.proindependent.com/doc/manual-en/Python-API/html/index.html">QtiPlot/Python API</ulink>.
-</sect3>
-
-<sect3 id = "Python-VectorsCurve">
-<title>Vector Curves</title>
-The following script shows how to create and customize a vector curve:
-<programlisting>
-g = newGraph().activeLayer()
-v = g.plotVectors(table("Table1"), ["1", "2", "3", "4"], Layer.VectXYAM)
-v.setVectorPen(Qt.red)
-v.fillArrowHead(False)
-v.setHeadAngle(15)
-v.setHeadLength(20)
-v.setPosition(VectorCurve.Middle)
-</programlisting>
-
-For an exhaustive review of the methods giving access to the properties of a vector curve, please consult the
-<ulink url="http://soft.proindependent.com/doc/manual-en/Python-API/html/index.html">QtiPlot/Python API</ulink>.
-</sect3>
-
 <sect3 id="Python-Title">
 <title>The plot title</title>
 <programlisting>
@@ -2597,31 +2098,31 @@ l.enableAxis(int axis, on = True)
 </programlisting>
 where <varname>axis</varname> can be any integer value between 0 and 3 or the equivalent reserved word:
 	  <variablelist spacing="compact">
-            <varlistentry>
-              <term>0.</term>
-              <listitem>
-                <para>Layer.Left</para>
-              </listitem>
-            </varlistentry>
-            <varlistentry>
-              <term>1.</term>
-              <listitem>
-                <para>Layer.Right</para>
-              </listitem>
-            </varlistentry>
-            <varlistentry>
-              <term>2.</term>
-              <listitem>
-                <para>Layer.Bottom</para>
-              </listitem>
-            </varlistentry>
-            <varlistentry>
-              <term>3.</term>
-              <listitem>
-                <para>Layer.Top</para>
-              </listitem>
-            </varlistentry>
-          </variablelist>
+			<varlistentry>
+			  <term>0.</term>
+			  <listitem>
+				<para>Layer.Left</para>
+			  </listitem>
+			</varlistentry>
+			<varlistentry>
+			  <term>1.</term>
+			  <listitem>
+				<para>Layer.Right</para>
+			  </listitem>
+			</varlistentry>
+			<varlistentry>
+			  <term>2.</term>
+			  <listitem>
+				<para>Layer.Bottom</para>
+			  </listitem>
+			</varlistentry>
+			<varlistentry>
+			  <term>3.</term>
+			  <listitem>
+				<para>Layer.Top</para>
+			  </listitem>
+			</varlistentry>
+		  </variablelist>
 
 If an axis is enabled, you can fully customize it via a Python script.
 For example you can set its title:
@@ -2650,31 +2151,31 @@ A rotation angle can be set only for horizontal axes (Bottom and Top).
 l.setAxisNumericFormat(axis, format, precision = 6, formula)
 </programlisting>
 where <varname>format</varname> can have the following values: <variablelist spacing="compact">
-            <varlistentry>
-              <term>0.</term>
-              <listitem>
-                <para>Automatic: the most compact numeric representation is chosen</para>
-              </listitem>
-            </varlistentry>
-            <varlistentry>
-              <term>1.</term>
-              <listitem>
-                <para>Decimal: numbers are displayed in floating point form</para>
-              </listitem>
-            </varlistentry>
-            <varlistentry>
-              <term>2.</term>
-              <listitem>
-                <para>Scientific: numbers are displayed using the exponential notation</para>
-              </listitem>
-            </varlistentry>
-            <varlistentry>
-              <term>3.</term>
-              <listitem>
-                <para>Superscripts: like Scientific, but the exponential part is displayed as a power of 10</para>
-              </listitem>
-            </varlistentry>
-          </variablelist>
+			<varlistentry>
+			  <term>0.</term>
+			  <listitem>
+				<para>Automatic: the most compact numeric representation is chosen</para>
+			  </listitem>
+			</varlistentry>
+			<varlistentry>
+			  <term>1.</term>
+			  <listitem>
+				<para>Decimal: numbers are displayed in floating point form</para>
+			  </listitem>
+			</varlistentry>
+			<varlistentry>
+			  <term>2.</term>
+			  <listitem>
+				<para>Scientific: numbers are displayed using the exponential notation</para>
+			  </listitem>
+			</varlistentry>
+			<varlistentry>
+			  <term>3.</term>
+			  <listitem>
+				<para>Superscripts: like Scientific, but the exponential part is displayed as a power of 10</para>
+			  </listitem>
+			</varlistentry>
+		  </variablelist>
 <varname>precision</varname> is the number of significant digits and
 <varname>formula</varname> is a mathematical expression that can be used to link oposite scales. It's
 argument must be <varname>x</varname> for horizontal axes and <varname>y</varname> for vertical axes.
@@ -2697,31 +2198,31 @@ l.setAxisTicksLength(axis, majTicksType, minTicksType, minLength, majLength)
 where the <varname>majTicksType</varname> and <varname>minTicksType</varname> parameters specify the
 desired orientation for the major and minor ticks, respectively:
 <variablelist spacing="compact">
-            <varlistentry>
-              <term>0.</term>
-              <listitem>
-                <para>Layer.NoTicks</para>
-              </listitem>
-            </varlistentry>
-            <varlistentry>
-              <term>1.</term>
-              <listitem>
-                <para>Layer.Out: outward orientation for ticks, with respect to the plot canvas</para>
-              </listitem>
-            </varlistentry>
-            <varlistentry>
-              <term>2.</term>
-              <listitem>
-                <para>Layer.InOut: both inward and outward ticks</para>
-              </listitem>
-            </varlistentry>
-            <varlistentry>
-              <term>3.</term>
-              <listitem>
-                <para>Layer.In: inward ticks</para>
-              </listitem>
-            </varlistentry>
-          </variablelist>
+			<varlistentry>
+			  <term>0.</term>
+			  <listitem>
+				<para>Layer.NoTicks</para>
+			  </listitem>
+			</varlistentry>
+			<varlistentry>
+			  <term>1.</term>
+			  <listitem>
+				<para>Layer.Out: outward orientation for ticks, with respect to the plot canvas</para>
+			  </listitem>
+			</varlistentry>
+			<varlistentry>
+			  <term>2.</term>
+			  <listitem>
+				<para>Layer.InOut: both inward and outward ticks</para>
+			  </listitem>
+			</varlistentry>
+			<varlistentry>
+			  <term>3.</term>
+			  <listitem>
+				<para>Layer.In: inward ticks</para>
+			  </listitem>
+			</varlistentry>
+		  </variablelist>
 <varname>minLength</varname> specifies the length of the minor ticks, in pixels and
 <varname>majLength</varname> the length of the major ticks.
 
@@ -2729,18 +2230,18 @@ desired orientation for the major and minor ticks, respectively:
 l.setScale(int axis, double start, double end, double step=0.0, int majorTicks=5, int minorTicks=5, int type=0, bool inverted=False)
 </programlisting>
 where <varname>type</varname> specifies the desired scale type: <variablelist spacing="compact">
-            <varlistentry>
-              <term>0.</term>
-              <listitem>
-                <para>Layer.Linear</para>
-              </listitem>
-            </varlistentry>
-            <varlistentry>
-              <term>1.</term>
-              <listitem>
-                <para>Layer.Log10</para>
-              </listitem>
-            </varlistentry>
+			<varlistentry>
+			  <term>0.</term>
+			  <listitem>
+				<para>Layer.Linear</para>
+			  </listitem>
+			</varlistentry>
+			<varlistentry>
+			  <term>1.</term>
+			  <listitem>
+				<para>Layer.Log10</para>
+			  </listitem>
+			</varlistentry>
 			  <varlistentry>
 				<term>2.</term>
 				<listitem>
@@ -2771,7 +2272,7 @@ where <varname>type</varname> specifies the desired scale type: <variablelist sp
 					  <para>Layer.Logit</para>
 					</listitem>
 				  </varlistentry>
-          </variablelist>
+		  </variablelist>
 and <varname>step</varname> defines the size of the interval between the major scale ticks. If not specified (default value is 0.0), the step size is calculated automatically.
 The other flags should be self-explanatory.</para>
 
@@ -2924,118 +2425,6 @@ timeStamp = l.addTimeStamp()
 </programlisting>
 </sect3>
 
-<sect3 id="Python-Arrows">
-<title>Adding arrows/lines to a plot layer</title>
-<programlisting>
-arrow = ArrowMarker()
-arrow.setStart(10.5, 12.5)
-arrow.setEnd(200, 400.51)
-arrow.setStyle(QtCore.Qt.DashLine)
-arrow.setColor(QtGui.QColor("red"))
-arrow.setWidth(1)
-arrow.drawStartArrow(False)
-arrow.drawEndArrow(True)
-arrow.setHeadLength(7)
-arrow.setHeadAngle(35)
-arrow.fillArrowHead(True)
-
-l = newGraph().activeLayer()
-arrow1 = l.addArrow(arrow)
-
-arrow.setStart(120.5, 320.5)
-arrow.setColor(QtGui.QColor("blue"))
-arrow2 = l.addArrow(arrow)
-
-l.remove(arrow1)
-</programlisting>
-
-<para>As you might notice from the sample code above, the <varname>addArrow</varname> function
-returns a reference to a new arrow object that can be used later on to modify this
-new arrow or to delete it with the <varname>remove</varname> function.</para>
-
-<para>It is possible to modify the properties of all the lines/arrows in a plot layer, see the short example bellow:</para>
-<programlisting>
-g = graph("Graph1").activeLayer()
-lst = g.arrowsList()
-for i in range (0, g.numArrows()):
-	lst[i].setColor(Qt.green)
-
-g.replot()
-</programlisting>
-
-</sect3>
-
-<sect3 id="Python-Images">
-<title>Adding images to a layer</title>
-<programlisting>
-l = newGraph().activeLayer()
-image = l.addImage("C:/poze/adi/PIC00074.jpg")
-image.setCoordinates(200, 800, 800, 200)
-image.setFrameStyle(Frame.Shadow)
-image.setFrameColor(QtCore.Qt.green)
-image.setFrameWidth(3)
-l.replot()
-</programlisting>
-
-The <varname>setCoordinates</varname> function above can be used to set the geometry of the image using
-scale coordinates. If you need to specify the image geometry in pixel coordinates, independently of
-the plot axes values, you may use the following functions:
-<programlisting>
-image.setOrigin(x, y)
-image.setSize(width, height)
-image.setRect(x, y, width, height)
-l.replot()
-</programlisting>
-
-You can remove an image using its reference:
-<programlisting>
-l.remove(image)
-</programlisting>
-</sect3>
-
-<sect3 id="Python-Rectangles">
-<title>Rectangles</title>
-<programlisting>
-l = newGraph().activeLayer()
-
-r = Rectangle(l)
-r.setSize(100, 100)
-r.setOrigin(100, 200)
-r.setBackgroundColor(QtCore.Qt.yellow)
-r.setFrameColor(QtCore.Qt.red)
-r.setFrameWidth(3)
-r.setFrameLineStyle(QtCore.Qt.DotLine)
-r.setBrush(QtGui.QBrush(QtCore.Qt.green, QtCore.Qt.FDiagPattern))
-
-r1 = l.add(r)
-</programlisting>
-
-You can remove a rectangle using its reference:
-<programlisting>
-r2 = l.add(r)
-r2.setOrigin(200, 200)
-l.remove(r1)
-</programlisting>
-</sect3>
-
-<sect3 id="Python-Ellipses">
-<title>Circles/Ellipses</title>
-<programlisting>
-l = newGraph().activeLayer()
-
-e = Ellipse(l)
-e.setSize(100, 100)
-e.setOrigin(100, 200)
-e.setBackgroundColor(QtCore.Qt.yellow)
-e.setFrameColor(QtCore.Qt.red)
-e.setFrameWidth(0.8)
-e.setFrameLineStyle(QtCore.Qt.DotLine)
-e.setBrush(QtGui.QBrush(QtCore.Qt.green, QtCore.Qt.FDiagPattern))
-
-l.add(e)
-</programlisting>
-</sect3>
-
 <sect3 id="Python-Antialiasing">
 <title>Antialiasing</title>
 Antialiasing can be enabled/disabled for the drawing of the curves and other layer
@@ -3086,8 +2475,644 @@ l.setAutoscaleFonts(False)
 
 Please keep in mind that the fonts of the layer are not rescaled when you resize the layer canvas using the above methods.
 </sect3>
+</sect2>
 
-<sect3 id="Python-Exporting-2DPlots">
+<sect2 id="Python-Curves">
+<title>Working with 2D curves</title>
+You can then add or remove curves to or from this layer:
+<programlisting>
+l.insertCurve(table, Ycolumn, type=Layer.Scatter, int startRow = 0, int endRow = -1)# returns a reference to the inserted curve
+l.insertCurve(table, Xcolumn, Ycolumn, type=Layer.Scatter, int startRow = 0, int endRow = -1)# returns a reference to the inserted curve
+l.addCurve(table, column, type=Layer.Line, lineWidth = 1, symbolSize = 3, startRow = 0, endRow = -1)# returns True on success
+l.addCurves(table, (2,4), type=Layer.Line, lineWidth = 1, symbolSize = 3, startRow = 0, endRow = -1)# returns True on success
+l.removeCurve(curveName)
+l.removeCurve(curveIndex)
+l.removeCurve(curveReference)
+l.deleteFitCurves()
+</programlisting>
+
+It is possible to change the order of the curves inserted in a layer using the following function:
+<programlisting>
+l.changeCurveIndex(int oldIndex, int newIndex)
+</programlisting>
+
+Sometimes, when performing data analysis, one might need the curve title. It is possible to obtain it using the method bellow:
+<programlisting>
+title = l.curveTitle(curveIndex)
+</programlisting>
+
+It is possible to get a reference to a curve on the layer l using it's index or it's title, like shown bellow:
+<programlisting>
+c = l.curve(curveIndex)
+c = l.curve(curveTitle)
+dc = l.dataCurve(curveIndex)
+</programlisting>
+<para>Please, keep in mind the fact that the above methods might return an invalid reference
+if the curve with the specified index/title is not a PlotCurve or a DataCurve object, respectively.
+For example, an analytical function curve is a PlotCurve but not a DataCurve and spectrograms are a
+completely different type of plot items which are neither PlotCurves nor DataCurves.</para>
+
+<para>Use the following function to change the axis attachment of a curve:</para>
+<programlisting>
+l.setCurveAxes(number, x-axis, y-axis)
+</programlisting>
+<para>where number is the curve's number, x-axis is either 0 or 1 (bottom or top) and y-axis is either 0 or 1 (left or right).</para>
+
+In case you need the number of curves on a layer, you can get it with <programlisting>
+l.numCurves()
+</programlisting>
+
+Once you have added a curve to a 2D plot, you can fully customize it's appearance:
+<programlisting>
+l = newGraph().activeLayer()
+l.setAntialiasing()
+c = l.insertCurve(table("Table1"), "Table1_2", Layer.LineSymbols)
+c.setPen(QtGui.QPen(Qt.red, 3))
+c.setBrush(QtGui.QBrush(Qt.darkYellow))
+c.setSymbol(PlotSymbol(PlotSymbol.Hexagon, QtGui.QBrush(Qt.yellow), QtGui.QPen(Qt.blue, 1.5), QtCore.QSize(15, 15)))
+</programlisting>
+
+It is possible to change the number of symbols to be displayed for a curve using the function bellow.
+This option can be very usefull for very large data sets:
+<programlisting>
+c.setSkipSymbolsCount(3)
+print c.skipSymbolsCount()
+</programlisting>
+
+An alternative way of customizing a curve is by using the functions bellow:
+<programlisting>
+l.setCurveLineColor(int curve, int color) # uses the index of the colors in the default QtiPlot color list: 0 = black, 1 = red, 2 = green, etc...
+l.setCurveLineStyle(int curve, Qt::PenStyle style)
+l.setCurveLineWidth(int curve, double width)
+</programlisting>
+
+You can also define a global color policy for the plot layer using the following
+convenience functions:
+<programlisting>
+l.setGrayScale()
+l.setIndexedColors() # uses the colors in the default QtiPlot color list: 0 = black, 1 = red, 2 = green, etc...
+</programlisting>
+
+You can display labels showing the y values for each data point in a DataCurve:
+<programlisting>
+c.setLabelsColumnName("Table1_2")
+c.setLabelsOffset(50, 50)
+c.setLabelsColor(Qt.red)
+c.setLabelsFont(QtGui.QFont("Arial", 14))
+c.setLabelsRotation(45)
+c.loadData() # creates the labels and updates the display
+</programlisting>
+
+and, of course, you can disable them using:
+<programlisting>
+c.clearLabels()
+l.replot() # redraw the plot layer object
+</programlisting>
+
+If you need to change the range of data points displayed in a DataCurve you can use
+the following methods:
+<programlisting>
+c.setRowRange(int startRow, int endRow)
+c.setFullRange()
+</programlisting>
+
+Also, you can hide/show a plot curve via:
+<programlisting>
+c.setVisible(bool on)
+</programlisting>
+
+In case you need to get information about the data stored in the curve,
+you have at your disposal the functions bellow:
+<programlisting>
+points = c.dataSize()
+for i in range (0, points):
+	print i, "x = ", c.x(i), "y = ", c.y(i)
+
+print c.minXValue()
+print c.maxXValue()
+print c.minYValue()
+print c.maxYValue()
+</programlisting>
+
+<sect3 id = "Python-PlotSymbols">
+<title>Curve symbols</title>
+
+Here's how you can customize the plot symbol used for a 2D plot curve <varname>c</varname>:
+<programlisting>
+s = c.symbol()
+s.setSize(QtCore.QSize(7, 7))# or s.setSize(7)
+s.setBrush(QtGui.QBrush(Qt.darkYellow))
+s.setPen(QtGui.QPen(Qt.blue, 3))
+s.setStyle(PlotSymbol.Diamond)
+l.replot() # redraw the plot layer object
+</programlisting>
+
+The symbol styles available in QtiPlot are:
+<variablelist spacing="compact">
+			<varlistentry>
+			  <term>0</term>
+
+			  <listitem>
+				<para>PlotSymbol.NoSymbol</para>
+			  </listitem>
+			</varlistentry>
+
+			<varlistentry>
+			  <term>1</term>
+
+			  <listitem>
+				<para>PlotSymbol.Ellipse</para>
+			  </listitem>
+			</varlistentry>
+
+			<varlistentry>
+			  <term>2</term>
+
+			  <listitem>
+				<para>PlotSymbol.Rect</para>
+			  </listitem>
+			</varlistentry>
+
+			<varlistentry>
+			  <term>3</term>
+
+			  <listitem>
+				<para>PlotSymbol.Diamond</para>
+			  </listitem>
+			</varlistentry>
+
+			<varlistentry>
+			  <term>4</term>
+
+			  <listitem>
+				<para>PlotSymbol.Triangle</para>
+			  </listitem>
+			</varlistentry>
+
+			<varlistentry>
+			  <term>5</term>
+
+			  <listitem>
+				<para>PlotSymbol.DTriangle</para>
+			  </listitem>
+			</varlistentry>
+
+			<varlistentry>
+			  <term>6</term>
+
+			  <listitem>
+				<para>PlotSymbol.UTriangle</para>
+			  </listitem>
+			</varlistentry>
+
+			<varlistentry>
+			  <term>7</term>
+
+			  <listitem>
+				<para>PlotSymbol.LTriangle</para>
+			  </listitem>
+			</varlistentry>
+
+			<varlistentry>
+			  <term>8</term>
+
+			  <listitem>
+				<para>PlotSymbol.RTriangle</para>
+			  </listitem>
+			</varlistentry>
+
+			<varlistentry>
+			  <term>9</term>
+
+			  <listitem>
+				<para>PlotSymbol.Cross</para>
+			  </listitem>
+			</varlistentry>
+
+			<varlistentry>
+			  <term>10</term>
+
+			  <listitem>
+				<para>PlotSymbol.XCross</para>
+			  </listitem>
+			</varlistentry>
+
+			 <varlistentry>
+			  <term>11</term>
+
+			  <listitem>
+				<para>PlotSymbol.HLine</para>
+			  </listitem>
+			</varlistentry>
+
+			<varlistentry>
+			  <term>12</term>
+
+			  <listitem>
+				<para>PlotSymbol.VLine</para>
+			  </listitem>
+			</varlistentry>
+			<varlistentry>
+			  <term>13</term>
+
+			  <listitem>
+				<para>PlotSymbol.Star1</para>
+			  </listitem>
+			</varlistentry>
+
+			<varlistentry>
+			  <term>14</term>
+			<listitem>
+				<para>PlotSymbol.Star2</para>
+			  </listitem>
+			</varlistentry>
+
+			<varlistentry>
+			  <term>15</term>
+			<listitem>
+				<para>PlotSymbol.Hexagon</para>
+			  </listitem>
+			</varlistentry>
+		  </variablelist>
+</sect3>
+</sect2>
+
+<sect2 id = "Python-AnalyticalFunctions">
+<title>2D Analytical Functions</title>
+You can also add analytical function curves to a plot layer:
+<programlisting>
+f = l.addFunction("x*sin(x)", 0, 3*pi, points = 100)
+f.setTitle("x*sin(x)")
+f.setPen(Qt.green)
+f.setBrush(QtGui.QColor(0, 255, 0, 100))
+
+l.addParametricFunction("cos(m)", "sin(m)", 0, 2*pi, points = 100, variableName = "m")
+l.addPolarFunction("t", "t", 0, 2*pi, points = 100, variableName = "t")
+</programlisting>
+
+It is possible to get a reference to an analytical function curve on the layer l using it's index, like shown bellow:
+<programlisting>
+f = l.functionCurve(curveIndex)
+</programlisting>
+
+When dealing with analytical function curves, you can customize them using the following methods:
+<programlisting>
+f.setRange(0, 2*pi)
+f.setVariable("t")
+f.setFormulas("sin(t)", "cos(t)")
+f.setFunctionType(FunctionCurve.Polar) # or c.setFunctionType(FunctionCurve.Parametric)
+f.loadData(1000, xLog10Scale = False)
+
+f.setFunctionType(FunctionCurve.Normal)
+f.setFormula("cos(x)")
+f.loadData()
+</programlisting>
+
+If you need to access the values and names of a function's parameters, you have at your disposal the following methods:
+<programlisting>
+i = f.parametersCount() # the number of parameters in your function formula
+name = f.parameterName(index) # the name of the parameter of rang index as a QString
+p1 = f.parameterValue(index) # the value of the parameter of rang index as a double
+p2 = f.parameterValue(name) # the value of a parameter using its name string
+</programlisting>
+
+The abscissae range for which the function is calculated/displayed, can be obtained/modified via the methods bellow:
+<programlisting>
+x1 = f.startRange()
+x2 = f.endRange()
+f.setRange(0.5, 15.2)
+</programlisting>
+</sect2>
+
+<sect2 id = "Python-ErrorBars">
+<title>Error Bars</title>
+
+Each data curve, <emphasis>c</emphasis>, can have attached a list of error bars:
+<programlisting>
+errors = c.errorBarsList()
+</programlisting>
+
+The properties of an error bar curve can be accesses, via the following methods:
+<programlisting>
+err = c.errorBarsList()[0]
+for i in range(0, err.dataSize()):
+	print err.errorValue(i)
+
+err.capLength()
+err.width()
+err.color()
+err.direction()
+err.xErrors()
+err.throughSymbol()
+err.plusSide()
+err.minusSide()
+c = err.masterCurve() # reference to the master curve to which the error bars curve is attached.
+err.detachFromMasterCurve() # equivalent to c.removeErrorBars(err)
+</programlisting>
+
+... and can be modified, via the following methods:
+<programlisting>
+err.setCapLength(12)
+err.setWidth(3)
+err.setColor(Qt.red)
+err.setDirection(ErrorBarsCurve.Vertical)
+err.setXErrors(True) # equivalent to err.setDirection(ErrorBarsCurve.Horizontal)
+err.drawThroughSymbol(True)
+err.drawPlusSide(True)
+err.drawMinusSide(False)
+err.setMasterCurve(c)
+</programlisting>
+
+You can remove all error bars attached to a curve using:
+<programlisting>
+c.clearErrorBars()
+</programlisting>
+</sect2>
+
+<sect2 id = "Python-Spectrograms">
+<title>Image and Contour Line Plots (Spectrograms)</title>
+
+As you have seen in the previous section, it is possible create 2D plots from matrices.
+Here's how you can do it in practice:
+<programlisting>
+m = importImage("C:/poze/adi/PIC00074.jpg")
+g1 = plot(m, Layer.ColorMap)
+g2 = plot(m, Layer.Contour)
+g3 = plot(m, Layer.GrayScale)
+</programlisting>
+
+The plot functions above return a reference to the multilayer plot window. If you need a reference to the
+spectrogram object itself, you can get it as shown in the example bellow:
+<programlisting>
+m = newMatrix("TestMatrix", 1000, 800)
+m.setFormula("x*y")
+m.calculate()
+g = plot(m, Layer.ColorMap)
+s = g.activeLayer().spectrogram(m)
+s.setColorBarWidth(20)
+</programlisting>
+
+It is possible to fine tune the plots created from a matrix:
+
+<programlisting>
+m = newMatrix("TestMatrix", 1000, 800)
+m.setFormula("x*y")
+m.calculate()
+
+s = newGraph().activeLayer().plotSpectrogram(m, Layer.ColorMap)
+s.setContourLevels((20.0, 30.0, 60.0, 80.0))
+s.setDefaultContourPen(QtGui.QPen(Qt.yellow)) # set global pen for the contour lines
+s.setLabelsWhiteOut(True)
+s.setLabelsColor(Qt.red)
+s.setLabelsFont(QtGui.QFont("Arial", 14))
+s.setLabelsRotation(45)
+s.showColorScale(Layer.Top)
+s.setColorBarWidth(20)
+</programlisting>
+
+As you have seen earlier, you can set a global pen for the contour lines, using:
+<programlisting>
+s.setDefaultContourPen(QtGui.QPen(Qt.yellow))
+</programlisting>
+You can also assign a specific pen for each contour line, using the function bellow:
+<programlisting>
+s.setContourLinePen(index, QPen)
+</programlisting>
+or you can automatically set pen colors defined by the color map of the spectrogram:
+<programlisting>
+s.setColorMapPen(bool on = True)
+</programlisting>
+
+You can also use any of the following functions:
+<programlisting>
+s.setMatrix(Matrix *, bool useFormula = False)
+s.setUseMatrixFormula(bool useFormula = True)# calculate data to be drawn using matrix formula (if any)
+s.setLevelsNumber(int)
+s.showColorScale(int axis, bool on = True)
+s.setGrayScale()
+s.setDefaultColorMap()
+s.setCustomColorMap(LinearColorMap map)
+s.showContourLineLabels(bool show = True) # enable/disable contour line labels
+s.setLabelsOffset(int x, int y) # offset values for all labels in % of the text size
+s.updateData()
+</programlisting>
+</sect2>
+
+<sect2 id = "Python-Histograms">
+<title>Histograms</title>
+
+As you have seen in the previous section, it is possible create 2D histograms from matrices or tables.
+Here's a small script showing how to customize a histogram and how to get access to the
+statistical information in the histogram (bin positions, counts, mean, standard deviation, etc...):
+<programlisting>
+m = newMatrix("TestHistogram", 1000, 800)
+m.setFormula("x*y")
+m.calculate()
+
+g = newGraph().activeLayer()
+h = g.addHistogram(m)
+h.setBinning(10, 1, 90) # the bin size is set to 10, data range is set to [1, 90]
+h.loadData() # update the histogram
+g.replot() # update the display
+
+# print histogram values:
+for i in range (0, h.dataSize()):
+	print i, "Bin start = ", h.x(i), "counts = ", h.y(i)
+
+# print statistic information:
+print "Standard deviation = ", h.standardDeviation()
+print "Mean = ", h.mean()
+</programlisting>
+
+You can also enable autobinning (a default number of ten bins will be used):
+<programlisting>
+ h.setAutoBinning()
+ </programlisting>
+</sect2>
+
+<sect2 id = "Python-BoxWhiskersPlos">
+<title>Box and whiskers plots</title>
+The following script shows how to create and customize a box and whiskers plot:
+<programlisting>
+g = newGraph().activeLayer()
+g.plotBox(table("Table1"), ["2", "3", "4"])
+for i in range (0, g.numCurves()):
+		box = g.boxCurve(i)
+		if (box):
+			box.setBrush(QtGui.QBrush(Qt.red, Qt.BDiagPattern))
+			s = PlotSymbol()
+			s.setPen(QtGui.QPen(Qt.blue, 2))
+			s.setSize(QtCore.QSize(10, 10))
+			box.setSymbol(s)
+			box.setMeanStyle(PlotSymbol.Cross)
+			box.setBoxStyle(BoxCurve.WindBox)
+			box.setBoxWidth(80)
+			box.setWhiskersRange(BoxCurve.SD) # standard deviation
+</programlisting>
+
+The following functions give access to the statistics information for the data series displayed with a box and whiskers plot:
+<programlisting>
+s = box.statistics() # returns information as a string
+m = box.median()
+q = box.quantile(f) # f must be a fraction between 0 and 1
+</programlisting>
+
+For an exhaustive review of the methods giving access to the properties of a box plot, please consult the
+<ulink url="http://soft.proindependent.com/doc/manual-en/Python-API/html/index.html">QtiPlot/Python API</ulink>.
+</sect2>
+
+<sect2 id = "Python-PieCurve">
+<title>Pie Plots</title>
+The following script shows how to create and customize a pie plot:
+<programlisting>
+g = newGraph().activeLayer()
+pie = g.plotPie(table("Table1"), "2")
+pie.setRadius(70)
+pie.setViewAngle(40)
+pie.setThickness(20)
+pie.setStartAzimuth(45)
+pie.setLabelsEdgeDistance(50)
+pie.setCounterClockwise(True)
+pie.setBrushStyle(Qt.Dense3Pattern)
+pie.setFirstColor(3)
+pie.setPen(QtGui.QPen(Qt.red, 2))
+pie.setLabelValuesFormat(True)
+</programlisting>
+
+For an exhaustive review of the methods giving access to the properties of a pie plot, please consult the
+<ulink url="http://soft.proindependent.com/doc/manual-en/Python-API/html/index.html">QtiPlot/Python API</ulink>.
+</sect2>
+
+<sect2 id = "Python-VectorsCurve">
+<title>Vector Plots</title>
+The following script shows how to create and customize a vector curve:
+<programlisting>
+g = newGraph().activeLayer()
+v = g.plotVectors(table("Table1"), ["1", "2", "3", "4"], Layer.VectXYAM)
+v.setVectorPen(Qt.red)
+v.fillArrowHead(False)
+v.setHeadAngle(15)
+v.setHeadLength(20)
+v.setPosition(VectorCurve.Middle)
+</programlisting>
+
+For an exhaustive review of the methods giving access to the properties of a vector curve, please consult the
+<ulink url="http://soft.proindependent.com/doc/manual-en/Python-API/html/index.html">QtiPlot/Python API</ulink>.
+</sect2>
+
+<sect2 id="Python-Arrows">
+<title>Adding arrows/lines to a plot layer</title>
+<programlisting>
+arrow = ArrowMarker()
+arrow.setStart(10.5, 12.5)
+arrow.setEnd(200, 400.51)
+arrow.setStyle(QtCore.Qt.DashLine)
+arrow.setColor(QtGui.QColor("red"))
+arrow.setWidth(1)
+arrow.drawStartArrow(False)
+arrow.drawEndArrow(True)
+arrow.setHeadLength(7)
+arrow.setHeadAngle(35)
+arrow.fillArrowHead(True)
+
+l = newGraph().activeLayer()
+arrow1 = l.addArrow(arrow)
+
+arrow.setStart(120.5, 320.5)
+arrow.setColor(QtGui.QColor("blue"))
+arrow2 = l.addArrow(arrow)
+
+l.remove(arrow1)
+</programlisting>
+
+<para>As you might notice from the sample code above, the <varname>addArrow</varname> function
+returns a reference to a new arrow object that can be used later on to modify this
+new arrow or to delete it with the <varname>remove</varname> function.</para>
+
+<para>It is possible to modify the properties of all the lines/arrows in a plot layer, see the short example bellow:</para>
+<programlisting>
+g = graph("Graph1").activeLayer()
+lst = g.arrowsList()
+for i in range (0, g.numArrows()):
+	lst[i].setColor(Qt.green)
+
+g.replot()
+</programlisting>
+
+</sect2>
+
+<sect2 id="Python-Images">
+<title>Adding images to a layer</title>
+<programlisting>
+l = newGraph().activeLayer()
+image = l.addImage("C:/poze/adi/PIC00074.jpg")
+image.setCoordinates(200, 800, 800, 200)
+image.setFrameStyle(Frame.Shadow)
+image.setFrameColor(QtCore.Qt.green)
+image.setFrameWidth(3)
+l.replot()
+</programlisting>
+
+The <varname>setCoordinates</varname> function above can be used to set the geometry of the image using
+scale coordinates. If you need to specify the image geometry in pixel coordinates, independently of
+the plot axes values, you may use the following functions:
+<programlisting>
+image.setOrigin(x, y)
+image.setSize(width, height)
+image.setRect(x, y, width, height)
+l.replot()
+</programlisting>
+
+You can remove an image using its reference:
+<programlisting>
+l.remove(image)
+</programlisting>
+</sect2>
+
+<sect2 id="Python-Rectangles">
+<title>Rectangles</title>
+<programlisting>
+l = newGraph().activeLayer()
+
+r = Rectangle(l)
+r.setSize(100, 100)
+r.setOrigin(100, 200)
+r.setBackgroundColor(QtCore.Qt.yellow)
+r.setFrameColor(QtCore.Qt.red)
+r.setFrameWidth(3)
+r.setFrameLineStyle(QtCore.Qt.DotLine)
+r.setBrush(QtGui.QBrush(QtCore.Qt.green, QtCore.Qt.FDiagPattern))
+
+r1 = l.add(r)
+</programlisting>
+
+You can remove a rectangle using its reference:
+<programlisting>
+r2 = l.add(r)
+r2.setOrigin(200, 200)
+l.remove(r1)
+</programlisting>
+</sect2>
+
+<sect2 id="Python-Ellipses">
+<title>Circles/Ellipses</title>
+<programlisting>
+l = newGraph().activeLayer()
+
+e = Ellipse(l)
+e.setSize(100, 100)
+e.setOrigin(100, 200)
+e.setBackgroundColor(QtCore.Qt.yellow)
+e.setFrameColor(QtCore.Qt.red)
+e.setFrameWidth(0.8)
+e.setFrameLineStyle(QtCore.Qt.DotLine)
+e.setBrush(QtGui.QBrush(QtCore.Qt.green, QtCore.Qt.FDiagPattern))
+
+l.add(e)
+</programlisting>
+</sect2>
+
+<sect2 id="Python-Exporting-2DPlots">
 <title>Exporting plots/layers to different image formats</title>
 Layers and whole Graphs can be printed and exported from within Python.
 The fastest way to export a plot/layer is the following: <programlisting>
@@ -3166,7 +3191,7 @@ the TeX document.
 </para>
 
 <para>All the export functions rely on the file name suffix in order to choose the image format.</para>
-</sect3></sect2>
+</sect2>
 
 <sect2 id="Python-MultiLayer">
       <title>Arranging Layers</title>
