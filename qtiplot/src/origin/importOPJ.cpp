@@ -1456,6 +1456,20 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 					box->setData(QwtSingleArrayData(double(i + 1), QwtArray<double>(), 0));
 
 					box->setVisibleLabels(layer.percentile.labels);
+					switch(layer.percentile.labels){
+						case 2:
+							box->showBoxLabels();
+						break;
+						case 4:
+							box->showWhiskerLabels();
+						break;
+						case 6:
+							box->showBoxLabels();
+							box->showWhiskerLabels();
+						break;
+						default:
+							break;
+					}
 
 					int b_style = 0;
 					if (layer.percentile.diamondBox)

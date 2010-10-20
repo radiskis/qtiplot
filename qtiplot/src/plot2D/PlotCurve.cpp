@@ -1083,16 +1083,14 @@ bool DataCurve::hasSelectedLabels()
 	if (!validCurveType())
 		return false;
 
-    if (d_labels_list.isEmpty())
-        return false;
+	if (d_labels_list.isEmpty())
+		return false;
 
-    foreach(PlotMarker *m, d_labels_list){
-        if (m->label().backgroundPen() == QPen(Qt::blue))
-            return true;
-        else
-            return false;
-    }
-    return false;
+	foreach(PlotMarker *m, d_labels_list){
+		if (m->label().backgroundPen().color() == Qt::blue)
+			return true;
+	}
+	return false;
 }
 
 void DataCurve::setLabelsSelected(bool on)
@@ -1132,9 +1130,7 @@ bool DataCurve::validCurveType()
 
 void DataCurve::moveLabels(const QPoint& pos)
 {
-	if (!validCurveType())
-		return;
-	if (!d_selected_label || d_labels_list.isEmpty())
+	if (!validCurveType() || !d_selected_label || d_labels_list.isEmpty())
 		return;
 
     QwtPlot *d_plot = plot();

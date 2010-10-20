@@ -52,7 +52,7 @@ BoxCurve::BoxCurve(Table *t, const QString& name, int startRow, int endRow):
 	d_whiskers_labels(false),
 	d_labels_display(Percentage)
 {
-	d_labels_x_offset = 50;
+	d_labels_x_offset = 100;
 	d_labels_y_offset = 0;
 
 	setType(Graph::Box);
@@ -647,14 +647,14 @@ void BoxCurve::createLabel(double val)
 	QSize size = t.textSize();
 	double dx = d_labels_x_offset*0.01*size.height();
 	double dy = -((d_labels_y_offset*0.01 + 0.5)*size.height());
-	double x2 = d_plot->transform(x_axis, x(0)) + 3*dx;
+	double x2 = d_plot->transform(x_axis, x(0)) + dx;
 	if (index > 0 && index < 4 && b_style != NoBox){
 		if (((index == 1 || index == 3) && b_style != Diamond))
 			x2 += hbw;
 		else if (index == 2){
 			switch(b_style){
 				case Notch:
-					x2 += 0.25*hbw;
+					x2 += 0.3*hbw;
 				break;
 				case WindBox:
 					x2 += 0.8*hbw;
@@ -718,14 +718,14 @@ void BoxCurve::updateLabels(bool updateText)
 		QSize size = m->label().textSize();
 		double dx = d_labels_x_offset*0.01*size.height();
 		double dy = -((d_labels_y_offset*0.01 + 0.5)*size.height());
-		double x2 = d_plot->transform(x_axis, x(0)) + 3*dx;
+		double x2 = d_plot->transform(x_axis, x(0)) + dx;
 		if (index > 0 && index < 4 && b_style != NoBox){
 			if (((index == 1 || index == 3) && b_style != Diamond))
 				x2 += hbw;
 			else if (index == 2){
 				switch(b_style){
 					case Notch:
-						x2 += 0.25*hbw;
+						x2 += 0.3*hbw;
 					break;
 					case WindBox:
 						x2 += 0.8*hbw;
