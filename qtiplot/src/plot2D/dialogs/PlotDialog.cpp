@@ -3445,14 +3445,14 @@ void PlotDialog::closeEvent(QCloseEvent* e)
 
 void PlotDialog::chooseLabelsFont()
 {
-    QTreeWidgetItem *item = listBox->currentItem();
-    if (!item || item->type() != CurveTreeItem::PlotCurveTreeItem)
-        return;
+	QTreeWidgetItem *item = listBox->currentItem();
+	if (!item || item->type() != CurveTreeItem::PlotCurveTreeItem)
+		return;
 
-    const QwtPlotItem *i = ((CurveTreeItem *)item)->plotItem();
-    Graph *graph = ((CurveTreeItem *)item)->graph();
-    if (!i || !graph)
-        return;
+	const QwtPlotItem *i = ((CurveTreeItem *)item)->plotItem();
+	Graph *graph = ((CurveTreeItem *)item)->graph();
+	if (!i || !graph)
+		return;
 
 	QFont font = QFont();
 	bool spectrogram = false;
@@ -3462,17 +3462,71 @@ void PlotDialog::chooseLabelsFont()
 	} else
 		font = ((DataCurve *)i)->labelsFont();
 
-    bool okF;
+	bool okF;
 	QFont fnt = QFontDialog::getFont(&okF, font, this);
-	if (okF && fnt != font){
-		if (spectrogram)
-			((Spectrogram *)i)->setLabelsFont(fnt);
-		else
-			((DataCurve *)i)->setLabelsFont(fnt);
+	if (okF && fnt != font)
+		setLabelsFont(fnt, graph, i);
+}
 
-        graph->replot();
-        graph->notifyChanges();
+void PlotDialog::setLabelsFontToPlotItem(const QFont& font, const QwtPlotItem *i)
+{
+	if (!i)
+		return;
+
+	if (i->rtti() == QwtPlotItem::Rtti_PlotSpectrogram)
+		((Spectrogram *)i)->setLabelsFont(font);
+	else
+		((DataCurve *)i)->setLabelsFont(font);
+}
+
+void PlotDialog::setLabelsFontToLayer(const QFont& font, Graph *g)
+{
+	if (!g)
+		return;
+
+	QList<QwtPlotItem *> lst = g->curvesList();
+	foreach (QwtPlotItem *it, lst)
+		setLabelsFontToPlotItem(font, it);
+
+	g->replot();
+}
+
+void PlotDialog::setLabelsFont(const QFont& font, Graph *plot, const QwtPlotItem *i)
+{
+	ApplicationWindow *app = (ApplicationWindow *)this->parent();
+	switch(boxLabelsFormatApplyToBox->currentIndex()){
+		case 0://selected curve
+			setLabelsFontToPlotItem(font, i);
+			plot->replot();
+		break;
+		case 1://this layer
+			setLabelsFontToLayer(font, plot);
+		break;
+		case 2://this window
+		{
+			QList<Graph *> layersLst = plot->multiLayer()->layersList();
+			foreach(Graph *g, layersLst)
+				setLabelsFontToLayer(font, g);
+		}
+		break;
+		case 3://all windows
+		{
+			QList<MdiSubWindow *> windows = app->windowsList();
+			foreach(MdiSubWindow *w, windows){
+				MultiLayer *ml = qobject_cast<MultiLayer *>(w);
+				if (!ml)
+					continue;
+
+				QList<Graph *> layersLst = ml->layersList();
+				foreach(Graph *g, layersLst)
+					setLabelsFontToLayer(font, g);
+			}
+		}
+		break;
+		default:
+			break;
 	}
+	app->modifiedProject();
 }
 
 int PlotDialog::labelsAlignment()
