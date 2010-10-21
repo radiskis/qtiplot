@@ -329,22 +329,6 @@
 <section ref="x6301.html#Python-Stem-and-Leaf-Plot" title="Stem Plots">
 </section>
 <section ref="x6301.html#Python-Plots2D" title="2D Plots">
-<section ref="x6301.html#Python-Curves" title="Working with curves">
-</section>
-<section ref="x6301.html#Python-ErrorBars" title="Error Bars">
-</section>
-<section ref="x6301.html#Python-PlotSymbols" title="Plot symbols">
-</section>
-<section ref="x6301.html#Python-Spectrograms" title="Image and Contour Line Plots (Spectrograms)">
-</section>
-<section ref="x6301.html#Python-Histograms" title="Histograms">
-</section>
-<section ref="x6301.html#Python-BoxWhiskersPlos" title="Box and whiskers plots">
-</section>
-<section ref="x6301.html#Python-PieCurve" title="Pie Plots">
-</section>
-<section ref="x6301.html#Python-VectorsCurve" title="Vector Curves">
-</section>
 <section ref="x6301.html#Python-Title" title="The plot title">
 </section>
 <section ref="x6301.html#Python-Axes" title="Customizing the axes">
@@ -357,6 +341,31 @@
 </section>
 <section ref="x6301.html#Python-Legends" title="The plot legend">
 </section>
+<section ref="x6301.html#Python-Antialiasing" title="Antialiasing">
+</section>
+<section ref="x6301.html#Python-ResizingLayers" title="Resizing layers">
+</section>
+<section ref="x6301.html#Python-Resizing" title="Resizing the drawing area">
+</section>
+</section>
+<section ref="x6301.html#Python-Curves" title="Working with 2D curves">
+<section ref="x6301.html#Python-PlotSymbols" title="Curve symbols">
+</section>
+</section>
+<section ref="x6301.html#Python-AnalyticalFunctions" title="2D Analytical Functions">
+</section>
+<section ref="x6301.html#Python-ErrorBars" title="Error Bars">
+</section>
+<section ref="x6301.html#Python-Spectrograms" title="Image and Contour Line Plots (Spectrograms)">
+</section>
+<section ref="x6301.html#Python-Histograms" title="Histograms">
+</section>
+<section ref="x6301.html#Python-BoxWhiskersPlos" title="Box and whiskers plots">
+</section>
+<section ref="x6301.html#Python-PieCurve" title="Pie Plots">
+</section>
+<section ref="x6301.html#Python-VectorsCurve" title="Vector Plots">
+</section>
 <section ref="x6301.html#Python-Arrows" title="Adding arrows/lines to a plot layer">
 </section>
 <section ref="x6301.html#Python-Images" title="Adding images to a layer">
@@ -365,21 +374,14 @@
 </section>
 <section ref="x6301.html#Python-Ellipses" title="Circles/Ellipses">
 </section>
-<section ref="x6301.html#Python-Antialiasing" title="Antialiasing">
-</section>
-<section ref="x6301.html#Python-ResizingLayers" title="Resizing layers">
-</section>
-<section ref="x6301.html#Python-Resizing" title="Resizing the drawing area">
-</section>
 <section ref="x6301.html#Python-Exporting-2DPlots" title="Exporting plots/layers to different image formats">
-</section>
 </section>
 <section ref="x6301.html#Python-MultiLayer" title="Arranging Layers">
 </section>
 <section ref="x6301.html#Python-WaterfallPlots" title="Waterfall Plots">
 </section>
 <section ref="x6301.html#Python-Plots3D" title="3D Plots">
-<section ref="x6301.html#AEN7293" title="Creating a 3D plot">
+<section ref="x6301.html#AEN7298" title="Creating a 3D plot">
 </section>
 <section ref="x6301.html#Python-3D-View" title="Customizing the view">
 </section>
@@ -430,7 +432,7 @@
 </section>
 </section>
 </section>
-<section ref="c7607.html" title="Frequently asked questions">
+<section ref="c7612.html" title="Frequently asked questions">
 </section>
 </DCF>
 </assistantconfig>
