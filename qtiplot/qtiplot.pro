@@ -87,6 +87,7 @@ TRANSLATIONS    = translations/qtiplot_cn.ts \
 				  translations/qtiplot_de.ts \
 				  translations/qtiplot_es.ts \
 				  translations/qtiplot_fr.ts \
+				  translations/qtiplot_it.ts \
 				  #translations/qtiplot_pt.ts \
 				  translations/qtiplot_ro.ts \
 				  translations/qtiplot_ru.ts \
