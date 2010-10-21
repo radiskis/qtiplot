@@ -859,20 +859,10 @@ reduced chi-squared value. You can choose to enable this option by checking the
 <!-- ************************************************** -->
 <sect1 id="preferences-dialog">
   <title>Preferences Dialog</title>
-  <para>The preference dialog is used to customize the default behavior of &appname;. There are six pages which are selected using one of icons from the column on the left hand side of the dialog. The text box at the top of the dialog shows the name of the selected page. No matter which page is selected, there are 4 buttons along the bottom edge of the dialog: <emphasis>Default Options</emphasis>, <emphasis>Apply</emphasis>, <emphasis>OK</emphasis>, and <emphasis>Cancel</emphasis>. Changes must be confirmed using either the <emphasis>Apply</emphasis> or <emphasis>OK</emphasis> buttons. The <emphasis>OK</emphasis> button additionally closes the dialog. Upon confirmation, changes are saved and stored immediately. The <emphasis>Cancel</emphasis> button will not undo changes which have already been confirmed but provides a means of exiting the dialog without confirming any changes that are pending. Finally, the <emphasis>Default Options</emphasis> button will restore the values of all the items on the page/tab which is currently displayed to the program defaults. This is useful when you've lost track of what you may have changed.</para>
+  <para>The preference dialog is used to customize the default behavior of &appname;. There are six pages of options which are selected using one of icons from the column on the left hand side of the dialog. The text box at the top of the dialog shows the name of the selected page. No matter which page is selected, there are always 4 buttons along the bottom edge of the dialog: <emphasis>Default Options</emphasis>, <emphasis>Apply</emphasis>, <emphasis>OK</emphasis>, and <emphasis>Cancel</emphasis>. Changes must be confirmed using either the <emphasis>Apply</emphasis> or <emphasis>OK</emphasis> buttons. The <emphasis>OK</emphasis> button additionally closes the dialog. Upon confirmation, changes are saved and stored immediately. The <emphasis>Cancel</emphasis> button will not undo changes which have already been confirmed but provides a means of exiting the dialog without confirming any changes that are pending. Finally, the <emphasis>Default Options</emphasis> button will restore the values of all the items on the page/tab which is currently displayed to the program defaults. This is useful when you've lost track of what you may have changed.</para>
 
 <sect2 id="general-preferences"><title>General Preferences</title>
-  <para>Selecting the <inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/general.png"/></imageobject></inlinemediaobject> General icon opens the <emphasis>General</emphasis> options page, which contains a set of 6 tabs used to set options affecting the general behavior of &appname;.
-  The first tab, <emphasis>Application</emphasis>, sets the style is the general decoration used for the windows.
-
-  It defines the aspect of the buttons and dialog boxes. The available styles are part of the Qt library.
-  The font is the general font used for the GUI (menus, dialogs, etc), it doesn't apply to the plots.
-  You can select the language of the application in the corresponding combo-box.
-  All translations available can be downloaded from the following address:
-  <ulink url="http://soft.proindependent.com/translations.html">http://soft.proindependent.com/translations.html</ulink>.
-  By default the translations must be place in a folder called <emphasis>translations</emphasis>,
-  situated in the same location as the &appname; executable, in order to be loaded by the application, but you
-  can specify a different folder via the <emphasis>File Locations</emphasis> tab.</para>
+  <para>Selecting the <inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/general.png"/></imageobject></inlinemediaobject> General icon displays the <emphasis>General</emphasis> options page. The controls that control the general options are grouped onto a set of 6 tabs. Each tab references a set of related options.</para>
   <figure id="fig-preferences-dialog-1">
     <title>The preferences dialog: general parameters for the application.</title>
     <mediaobject>
@@ -882,32 +872,42 @@ reduced chi-squared value. You can choose to enable this option by checking the
     </mediaobject>
   </figure>
 
-  <para>The <emphasis>Matrix Undo Stack Size</emphasis> is the number of operations that can be undone/redone
-  when working on a matrix. By default it is set to ten operations. A high value for this parameter can be very costly in
-  terms of memory consumption, especially for large matrices.</para>
+  <sect3 id="general-preferences-application-tab"><title>Application Tab</title>
+  <para>Controls on the <emphasis>Application</emphasis> tab are used to set application wide defaults.</para>
 
-  <para>The <emphasis>Endline character</emphasis> defines the end of line convention used by &appname; for
-  copy/paste operations and for exporting matrices/tables to ASCII files. The end of line convention can be:
+<para>The <emphasis>Language</emphasis> combo-box lists the tranlations available in &appname;. Select a language from this list. Control names, program labels, etc., will be displayed in this language.  All available translations can be downloaded from the following address:
+  <ulink url="http://soft.proindependent.com/translations.html">http://soft.proindependent.com/translations.html</ulink>. In order to be loaded by the application, translations must be placed in the folder specified in the <link linkend="general-preferences-file-locations-tab">File Locations</link> tab. By default, the folder is named <emphasis>translations</emphasis> and is located in the same folder as the &appname; executable. You can specify a different folder in the <emphasis>File Locations</emphasis> tab, if you wish.</para>
+
+<para> The <emphasis>Style</emphasis> combo-box defines the style used by &appname; for the window decorations. These include stylistic aspects of buttons, dialog boxes, window borders and titles, etc. Available styles are those currently available in the Qt library.</para>
+
+<para>The <emphasis>Font</emphasis> chooser selects the font used in the GUI (menus, dialogs, etc). It doesn't apply to plots.</para>
+
+<para>The <emphasis>Default Scripting Language</emphasis> combo-box is used to set the scripting language. muParser is the default. Python will also be available if Python support has been compiled into &appname;.</para>  
+
+<para>The <emphasis>Matrix Undo Stack Size</emphasis> is the number of operations that can be undone/redone when working on a matrix. By default it is set to ten operations. A high value for this parameter can be very costly in terms of memory consumption, especially for large matrices.</para>
+
+<para>The <emphasis>Endline character</emphasis> combo-box defines the end of line convention used by &appname; for copy/paste operations and for exporting matrices/tables to ASCII files. The end of line convention can be set to any one of the following:
   <emphasis>Line Feed (LF)</emphasis>, <emphasis>Carriage Return + Line Feed (CRLF)</emphasis> or
   <emphasis>Carriage Return (CR)</emphasis> only.</para>
 
-<para>Starting with version 0.9.6, autocompletion is enabled by default in all &appname;
-editors: in Notes, in the Script Window and in the values dialogs for matrices and tables.
-The autocompletion mechanism is based on a list of words provided by the
-<emphasis>qti_wordlist.txt</emphasis> file. This file, which is shipped with
-the source archive, must be placed in the same folder as the Python configuration files
-(see <emphasis>File Locations</emphasis> tab bellow), and is automatically loaded by
-&appname; on start-up. You can edit this file and add your own key words:
-one word per line.
+<para>The <emphasis>Start New Project</emphasis> combo-box is used to select what type of child window, if any, is created when a new project is started. The default is for new projects to contain an empty Table window.</para>
 
-Completion suggestions are automatically popped-up for words that have more than two
-characters, but you can trigger autocompletion at any time using the shortcut Ctrl+U.
-Autocompletion can be disabled by unchecking the <emphasis>Enable autocompletion</emphasis>
-option.</para>
+<para>The <emphasis>Save Every</emphasis> check box is used to turn the auto-save feature on(checked) or off(unchecked). The associated textbox/spin button is used to set the autosave interval. The interval is in minutes. The textbox only accepts positive integer numeric input. All other input is ignored.</para>
 
-  <para>The second tab of the <emphasis>General</emphasis> option set is used to disable the prompting on deleting
-  project windows. Also you can disable the warnings prompted by default when renaming
-  new table windows with names already used in the current project.</para>
+<para>The <emphasis>Backup project before saving</emphasis> option is used to create a backup copy of the current project before saving a changed project file. This option is enabled when checked.</para>
+
+<para>When checked, the <emphasis>Check for new versions at startup</emphasis> option will look for program updates on the internet each time the program is started. The default is disabled.</para>
+
+<para>When checked, the <emphasis>Enable Autocompletion</emphasis> option enables the autocompletion feature of &appname;. Starting with version 0.9.6, autocompletion is enabled by default in all &appname; editors (Notes, Script Windows, and values dialogs for matrices and tables). The autocompletion mechanism is based on a list of words provided by the <emphasis>qti_wordlist.txt</emphasis> file. This file, which is shipped with the source archive, must be placed in the same folder as the Python configuration files
+(see <link linkend="general-preferences-file-locations-tab">File Locations</link>, below), and is automatically loaded by
+&appname; on start-up. You can edit this file and add your own key words, one word per line. Completion suggestions are automatically popped-up for words that have more than two characters, but you can trigger autocompletion at any time using the shortcut &autocomplete-key;. <!--Ctrl U -->
+Autocompletion can be disabled by unchecking the <emphasis>Enable autocompletion</emphasis> option.</para>
+
+<para>When checked, the <emphasis>Open last project at startup</emphasis> option enables the feature that reloads the last active project when &appname; is restarted. The default is enabled.</para>
+</sect3>
+
+<sect3 id="general-preferences-confirmations-tab"><title>Confirmations Tab</title>
+  <para>The <emphasis>General Preferences: Confirmations</emphasis> tab contains a set of 8 check boxes that enable/disable various warning prompts. The first six are warnings given when deleting project windows (Folders, Tables, Matrices, 2D Plots, 3D Plots, and Notes). The remaining 2 are warnings given when 1) renaming or appending windows with names that are already used in the current project, and, 2) when attempting to overwrite an existing file.  All warnings are enabled by default.</para>
   <informalfigure id="fig-preferences-dialog-2">
     <mediaobject>
       <imageobject>
@@ -915,7 +915,10 @@ option.</para>
       </imageobject>
     </mediaobject>
   </informalfigure>
-  <para>In this tab, you can change the default color for the workspace of the application. You can also choose the background color and the text color for panels. The panels are the <link linkend="sec-intro-log-window">Log Window</link> and the <link linkend="project-explorer-dialog">Project explorer</link>.</para>
+</sect3>
+
+<sect3 id="general-preferences-colors-tab"><title>Colors Tab</title>
+  <para>In this tab, you can change the default color for the &appname; workspace, the panel background color and the panel text color. Panels refer specifically to the <link linkend="sec-intro-log-window">Log Window</link> and the <link linkend="project-explorer-dialog">Project explorer</link>.</para>
   <informalfigure id="fig-preferences-dialog-3">
     <mediaobject>
       <imageobject>
@@ -923,12 +926,10 @@ option.</para>
       </imageobject>
     </mediaobject>
   </informalfigure>
+</sect3>
 
-  <para>The <emphasis>Numeric Format</emphasis> tab allows you to customize the
-  characters used as decimal point and as thousands separator. By default, &appname; uses the
-  locale settings detected on your system. &appname; will convert all the existing data in your project to the new settings
-  when you click the <emphasis>Apply</emphasis> button. The <emphasis>Number of Decimal Digits</emphasis>
-  specifies the default precision used for any calculations operated on your data in Tables/Matrices.</para>
+<sect3 id="general-preferences-numeric-format-tab"><title>Numeric Format Tab</title>
+  <para>The <emphasis>Numeric Format</emphasis> tab allows customizing several aspects of numeric formatting used by &appname;. The <emphasis>Number of Decimal Digits</emphasis> specifies the default precision used for any calculations applied to your data in Tables and Matrices. The <emphasis>Decimal Separators</emphasis> fields allow selection of the characters used as the decimal point and the thousands separator. By default, &appname; uses the <emphasis>locale</emphasis> settings detected on your system. Separate fields are provided for data in tables/matrices and data copied to the clipboard. The thousands separator can be eliminated completely from tables and matrices by checking the <emphasis>Omit Thousands Separator</emphasis> option. &appname; will convert all the existing data in your project to the new settings when you click the <emphasis>Apply</emphasis> button.</para>
   <informalfigure id="fig-preferences-dialog-11">
     <mediaobject>
       <imageobject>
@@ -936,11 +937,10 @@ option.</para>
       </imageobject>
     </mediaobject>
   </informalfigure>
+</sect3>
 
-   <para>The <emphasis>File Locations</emphasis> tab allows you to define custom locations for the
-folders containing the translation files, the manual files and the Python configuration files,
-<emphasis>qtiplotrc.py</emphasis> and <emphasis>qtiUtil.py</emphasis>, in case &appname; was built with Python
-scripting support.</para>
+<sect3 id="general-preferences-file-locations-tab"><title>File Locations Tab</title>
+   <para>The <emphasis>File Locations</emphasis> tab allows you to define custom locations for the folders containing the translation files, the manual files and the Python configuration files (<emphasis>qtiplotrc.py</emphasis> and <emphasis>qtiUtil.py</emphasis>) if &appname; was built with Python scripting support. Default folder entries are also provided for the <emphasis>LaTex Compiler</emphasis> and for <emphasis>scripts</emphasis> that are to be loaded at program startup. The <emphasis>LaTex Compiler </emphasis>folder only has meaning if &appname; was compiled with <emphasis>LaTex </emphasis>support.</para>
   <figure id="fig-preferences-dialog-13">
     <mediaobject>
       <imageobject>
@@ -948,9 +948,11 @@ scripting support.</para>
       </imageobject>
     </mediaobject>
   </figure>
+</sect3>
 
-<para>The <emphasis>Internet Connection</emphasis> tab is useful only in case you connect to the internet
-via a proxy.</para>
+<sect3 id="general-preferences-internet-connections-tab"><title>Internet Connections Tab</title>
+<para>Settings on the <emphasis>Internet Connection</emphasis> tab are only needed if you connect to the internet
+via a proxy server. If you don't now how to set these options, contact your Network Administrator or other suitably knowledgeable person.</para>
   <figure id="fig-preferences-dialog-16">
     <mediaobject>
       <imageobject>
@@ -958,11 +960,12 @@ via a proxy.</para>
       </imageobject>
     </mediaobject>
   </figure>
+ </sect3>
 </sect2>
 
-<sect2 id="tabels-preferences"><title>Tables Preferences</title>
+<sect2 id="tables-preferences"><title>Tables Preferences</title>
   <para>Selecting the <inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/configTable.png"/></imageobject></inlinemediaobject> Tables icon opens the second page of the preferences dialog which allows customizing default aspects of <link linkend="sec-intro-table">tables</link>: background, text colors, and fonts for tables and labels.
-  By checking the <emphasis>Display Comments in Header</emphasis> option, the column comments will also be
+  By checking the <emphasis>Display Comments in Header</emphasis> option, column comments will also be
   displayed in the table header, below the column names.
   If the <emphasis>Automatically Recalculate Column Values</emphasis> option is checked, all modifications in the values
   of a column trigger a recalculation of all columns with formulas depending on the modified column.
@@ -978,13 +981,12 @@ via a proxy.</para>
 </sect2>
 
 <sect2 id="2dplot-preferences"><title>2D Plot Preferences</title>
-<para>Selecting the <inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/config_curves.png"/></imageobject></inlinemediaobject> 2D Plots Icon opens the third page of the preferences dialog. This set of options is used to customize default aspects of <emphasis>2D plots</emphasis>.
-  The first tab is used to modify some general options. Most of the changes made to these
-  options will be applied only to the newly created plots.
-  Only a few of the changes, like <emphasis>Autoscaling</emphasis> of the plot axes,
-  <emphasis>Antialising</emphasis> of curves and the behavior on resize events will also affect
-  the already existing plots.
-  </para>
+<para>Selecting the <inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/config_curves.png"/></imageobject></inlinemediaobject> 2D Plots Icon opens the third page of the preferences dialog. This set of options is used to customize default aspects of <emphasis>2D plots</emphasis>.</para>
+
+<sect3 id="2dplot-preferences-options-tab"><title>Options Tab</title>
+<para>The <emphasis>Options </emphasis>tab is used to modify some general options. Most of the changes made to these
+  options will be applied only to newly created plots. Changing a few of these options, such as plot axis <emphasis>Autoscaling</emphasis>,
+  <emphasis>Antialiasing</emphasis> of curves and the behavior on resize events will affect extant plots.</para>
   <figure id="fig-preferences-dialog-5">
     <title>The preferences dialog: 2D plot options.</title>
     <mediaobject>
@@ -993,7 +995,10 @@ via a proxy.</para>
       </imageobject>
     </mediaobject>
   </figure>
-  <para>The second tab named <emphasis>Curves</emphasis> defines the default style used when you create a new plot.</para>
+ </sect3>
+
+ <sect3 id="2dplot-preferences-curves-tab"><title>Curves Tab</title>
+  <para>The <emphasis>Curves </emphasis>tab contains a large number of controls that define the default style used when creating a new plot. The operation of these controls should be self evident.</para>
   <informalfigure id="fig-preferences-dialog-6">
     <mediaobject>
       <imageobject>
@@ -1001,8 +1006,10 @@ via a proxy.</para>
       </imageobject>
     </mediaobject>
   </informalfigure>
-  <para>The third tab named <emphasis>Axes</emphasis> allows you to specify which plot axes will be displayed
-   in a new layer and the main aspect parameters of an axis.</para>
+ </sect3>
+
+ <sect3 id="2dplot-preferences-axes-tab"><title>Axes Tab</title>
+  <para>The <emphasis>Axes </emphasis>tab allows specification of which plot axes will be displayed in a new layer and the dominant stylistic aspects of the axes.</para>
   <informalfigure id="fig-preferences-dialog-15">
     <mediaobject>
       <imageobject>
@@ -1010,7 +1017,10 @@ via a proxy.</para>
       </imageobject>
     </mediaobject>
   </informalfigure>
-  <para>The fourth tab named <emphasis>Ticks</emphasis> defines the default style for the ticks of the axes used when you create a new plot.</para>
+ </sect3>
+
+ <sect3 id="2dplot-preferences-ticks-tab"><title>Ticks Tab</title>
+  <para>The <emphasis>Ticks </emphasis>tab defines the default style for axis ticks drawn on newly created plots.</para>
   <informalfigure id="fig-preferences-dialog-7">
     <mediaobject>
       <imageobject>
@@ -1018,7 +1028,9 @@ via a proxy.</para>
       </imageobject>
     </mediaobject>
   </informalfigure>
+ </sect3>
 
+ <sect3 id="2dplot-preferences-grid-tab"><title>Grid Tab</title>
   <para>The <emphasis>Grid</emphasis> tab defines the default aspect of plot layer grids.</para>
   <informalfigure id="fig-preferences-dialog-18">
 	<mediaobject>
@@ -1027,8 +1039,10 @@ via a proxy.</para>
 	  </imageobject>
 	</mediaobject>
   </informalfigure>
+ </sect3>
 
-  <para>The sixth tab named <emphasis>Geometry</emphasis> defines the default size for the drawing area of a plot layer.</para>
+ <sect3 id="2dplot-preferences-geometry-tab"><title>Geometry Tab</title>
+  <para>The <emphasis>Geometry </emphasis>tab defines the default size for the drawing area of a plot layer When the <emphasis>Keep aspect ratio </emphasis>option is checked, changing either the width or height will change proportionally change the other.</para>
   <informalfigure id="fig-preferences-dialog-17">
 	<mediaobject>
 	  <imageobject>
@@ -1036,11 +1050,10 @@ via a proxy.</para>
 	  </imageobject>
 	</mediaobject>
   </informalfigure>
+ </sect3>
 
-  <para>The seventh tab named <emphasis>Speed</emphasis> lets the user enable/disable antialiasing for 2D plots.
-   Since antialiasing is a major source of slow-down in rendering 2D plots,
-   here you have the possibility to disable it for curves displaying large data sets.
-   This is essential in order to keep the application responsive.</para>
+ <sect3 id="2dplot-preferences-speed-tab"><title>Speed Tab</title>
+  <para>The <emphasis>Speed </emphasis>tab lets the user enable/disable antialiasing when drawing/redrawing 2D plots. Antialiasing is a major source of slow-down when rendering 2D plots. Unchecking the <emphasis>Antialiasing </emphasis>checkbox disables antialiasing for all curves, which probably will only be needed in extreme circumstances. Checking the <emphasis>Disable for curves with more than </emphasis>checkbox will disable antialiasing only for curves having data sets larger than the threshhold set with the textbox to the right of the <emphasis>Disable for curves with more than </emphasis>checkbox. Disabling this option i sprobably not a good idea. The default is for both of these options to be enabled, with a threshhold of 1000 data points. Proper setting of these options is essential to keeping the application responsive.</para>
   <informalfigure id="fig-preferences-dialog-19">
 	<mediaobject>
 	  <imageobject>
@@ -1048,8 +1061,10 @@ via a proxy.</para>
 	  </imageobject>
 	</mediaobject>
   </informalfigure>
+ </sect3>
 
-  <para>The eighth tab named <emphasis>Fonts</emphasis> defines the default fonts used when you create a new plot.</para>
+ <sect3 id="2dplot-preferences-fonts-tab"><title>Fonts Tab</title>
+  <para>The <emphasis>Fonts </emphasis>tab defines the default fonts used when creating new plots. Options are provided for the plot <emphasis>Title</emphasis>, plot <emphasis>Legend</emphasis>, <emphasis>Axes Labels</emphasis>, and <emphasis>Axes Numbers</emphasis>.</para>
   <informalfigure id="fig-preferences-dialog-8">
     <mediaobject>
       <imageobject>
@@ -1057,10 +1072,10 @@ via a proxy.</para>
       </imageobject>
     </mediaobject>
   </informalfigure>
-   <para>The last tab named <emphasis>Print</emphasis> allows you to define the default options
-   used when printing 2D plots. If you want the layers to be printed with their original dimensions,
-   you must be sure to uncheck the option <emphasis>Scale layers to paper size</emphasis>. By checking the <emphasis>Print Cropmarks</emphasis>
-   option you ensure that some visible marks are drawn around the borders of the plot.</para>
+ </sect3>
+
+ <sect3 id="2dplot-preferences-print-tab"><title>Print Tab</title>
+   <para>The <emphasis>Print </emphasis> tab allows you to control a few default options that are used when printing 2D plots. If you want layers to be printed with their original dimensions, you must be sure to uncheck the <emphasis>Scale layers to paper size </emphasis>option. Checking the <emphasis>Print Cropmarks</emphasis> option ensures that some visible marks will be drawn around the borders of the plot.</para>
   <informalfigure id="fig-preferences-dialog-12">
     <mediaobject>
       <imageobject>
@@ -1068,14 +1083,11 @@ via a proxy.</para>
       </imageobject>
     </mediaobject>
   </informalfigure>
+ </sect3>
 </sect2>
 
 <sect2 id="3dplot-preferences"><title>3D Plot Preferences</title>
-<para>Selecting the <inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/logo.png"/></imageobject></inlinemediaobject> 3D Plots Icon opens the fourth page of the preferences dialog. This set of options is used to customize default aspects of three dimensional plots.
-    From this dialog you have the possibility to define a speed drawing mode, which is very useful
-    when working with large data sets. This can be realized via the <emphasis>Resolution</emphasis>
-    option: the higher this value, the smaller the number of data points drawn on the 3D plots,
-    therefore the higher the drawing speed. For a value of 1, all the data points are drawn.</para>
+<para>Selecting the <inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/logo.png"/></imageobject></inlinemediaobject> 3D Plots Icon opens the fourth page of the preferences dialog. This set of options is used to customize default aspects of three dimensional plots. Most of the options are self-explanatory. However, the <emphasis>Resolution </emphasis>option needs clarification. This option is more or less akin to a speed drawing mode, which can be very useful when working with large data sets. Larger values of the <emphasis>Resolution</emphasis> option result in fewer data points being drawn on 3D plots, and therefore a higher drawing speed. When <emphasis>Resolution </emphasis> is set to 1, all data points are drawn.</para>
   <figure id="fig-preferences-dialog-9">
     <title>The preferences dialog: 3D plot options.</title>
     <mediaobject>
@@ -1087,10 +1099,7 @@ via a proxy.</para>
 </sect2>
 
 <sect2 id="notes-preferences"><title>Notes Preferences</title>
-<para>Selecting the <inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/notes_32.png"/></imageobject></inlinemediaobject> Notes Icon opens the fifth page of the preferences dialog. This set of options is used to customize some default characteristics of the text editors, such as
-the length of the <emphasis>TAB</emphasis> character and the font.
-The user can also specify whether the line numbers should be displayed or not.
-Displaying the line numbers can be particularly helpful when debugging Python scripts.</para>
+<para>Selecting the <inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/notes_32.png"/></imageobject></inlinemediaobject> Notes Icon opens the fifth page of the preferences dialog. This set of options is used to customize some of the default characteristics of the text editors, such as the length of the <emphasis>TAB</emphasis> character and the font. The user can also specify whether or not line numbers should be displayed. Displaying the line numbers can be particularly helpful when debugging Python scripts.</para>
 
   <figure id="fig-preferences-dialog-notes">
     <title>The preferences dialog: note options.</title>
@@ -1103,7 +1112,7 @@ Displaying the line numbers can be particularly helpful when debugging Python sc
 </sect2>
 
 <sect2 id="fitting-preferences"><title>Fitting Preferences</title>
-<para>Selecting the <inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/fit.png"/></imageobject></inlinemediaobject> Fitting Icon opens the sixth page of the preferences dialog. This page is used to set default fitting options</para>
+<para>Selecting the <inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/fit.png"/></imageobject></inlinemediaobject> Fitting Icon opens the sixth page of the preferences dialog. This page is used to set default fitting options. Most of the options are standard and straightforward. The <emphasis>Generated Fit Curve </emphasis>options may be confusing at first glance. While it may be typical to plot a fit curve as y=f(x) using the original X data that was used in the fitting operation, &appname; provides the alternative (by selecting the <emphasis>Uniform X Function </emphasis>option) of plotting the curve using a user specified number of X data points (default=100) uniformly spaced over the X range of the fit. Since linear fits are completely defined by 2 points, you can also have &appname; default to simply plotting linear fits using 2 data points by checking the <emphasis>2 points for linear fits </emphasis>option.</para>
   <figure id="fig-preferences-dialog-10">
     <title>The preferences dialog: fitting options.</title>
     <mediaobject>
@@ -1120,7 +1129,7 @@ Displaying the line numbers can be particularly helpful when debugging Python sc
 <!-- ************************************************** -->
 <sect1 id="printer-setup-dialog">
   <title>Printer-setup</title>
-  <para>This dialog box is opened by the &print-lnk; from the &file-menu-lnk;. It is used to print the selected window (plot or table) and its aspect depends on your operating system. The following screenshot shows this dialog on a Linux system using the KDE window manager.</para>
+  <para>This dialog box is opened by the &print-lnk; from the &file-menu-lnk; or by entering the &print-key; key. It is used to print the selected window (plot or table) and its exact appearance will depend both upon your operating system and the pronters that you have available. The following screenshot shows the dialog on a Linux system with one printer that uses the KDE window manager.</para>
   <figure id="fig-printer-setup">
     <title>The &print-cmd; dialog.</title>
     <mediaobject>
@@ -1137,22 +1146,12 @@ Displaying the line numbers can be particularly helpful when debugging Python sc
 <sect1 id="set-column-values-dialog">
   <title>Set Column Values</title>
       <indexterm><primary>table</primary></indexterm>
-  <para>This dialog is activated by the &set-column-values-lnk; of the &table-menu-lnk;. It allows to fill a column with the result of a function.</para>
-  <para>The available mathematical functions (assuming you are using the default scripting language, muParser) are listed in the <link linkend= "sec-muParser">appendix</link>. The special function <emphasis>col(x)</emphasis> can be used to access to the values of the column x, where x can be the column's number (as in <emphasis>col(2)</emphasis>) or its name in doublequotes (as in <emphasis>col("time")</emphasis>).
-  You can also get values from other tables using the function <emphasis>tablecol(t,c)</emphasis>, where t is the table's name in doublequotes and c is the column's number or name in doublequotes (example: <emphasis>tablecol("Table1","time")</emphasis>).</para>
-  <para>The variables <code>i</code> and <code>j</code> can be used to access the current row and column numbers.
-	  Similarly, <code>sr</code> and <code>er</code> represent the selected start and end row, respectively.
+  <para>This dialog is activated with the &set-column-values-lnk; from the &table-menu-lnk; or by entering the shortcut &set-column-values-key;. It provides for filling a column with the result of a function evaluation.</para>
+  <para>The available mathematical functions (assuming you are using the default scripting language, muParser) are listed in the <emphasis>function selector </emphasis>combo-box next to the <emphasis>Add function </emphasis>button. Details of these functions and supported mathematical operators are listed in the <link linkend= "sec-muParser">muParser</link> section in the chapter on <emphasis>Mathematical Expressions and Scripting</emphasis>. The special function, <emphasis>col(c)</emphasis>, is used to access the values of column <code>c</code>, where <code>c</code> is the column's number (as in <emphasis>col(2)</emphasis>) or its name in doublequotes (as in <emphasis>col("time")</emphasis>).
+  You can also obtain values from other tables using the <emphasis>tablecol(t,c)</emphasis> function, where <code>t</code> is the table's name in doublequotes and <code>c</code> is the column's number or its name in doublequotes (example: <emphasis>tablecol("Table1","time")</emphasis>).</para>
+  <para>The variables <code>i</code> and <code>j</code> can be used to access the current row and column numbers. Similarly, <code>sr</code> and <code>er</code> represent the selected starting and ending row, respectively.
   </para>
-  <para>Using Python as scripting language gives you even more possibilities, since you can not
-  only use arbitrary Python code in the function body, but also access other objects within
-  your project. For details, see <link linkend="Python">here</link>.
-
-  Nevertheless, even if Python allows for a more powerfull synthax,
-  it can be quite slow for very large tables.
-  Therefore you have the possibility to use muParser instead, even if Python is
-  set as the default script engine for your current project, by checking the box
-  <emphasis>Use built-in muParser</emphasis>. Using muParser as scripting engine
-  higly increases the speed of the evaluation for single line expressions.</para>
+  <para>Using Python as scripting language gives you even more possibilities. Not only can you use arbitrary Python code in the function body, but also access other objects within your project. For details, see the section on <link linkend="Python">Python </link>in the chapter on <emphasis>Mathematical Expressions and Scripting</emphasis>. Nevertheless, even though Python allows for a more powerful synthax, it can be quite slow for very large tables. Therefore you might want to use muParser instead, even when Python is set as the default script engine for your current project, Checking the <emphasis>Use built-in muParser</emphasis> option will force the use of muParser as the scripting engine. This greatly increases the speed of the evaluation for single line expressions.</para>
 
   <figure id="fig-sec-column-values">
     <title>The &set-column-values-cmd; dialog.</title>
@@ -1163,10 +1162,8 @@ Displaying the line numbers can be particularly helpful when debugging Python sc
     </mediaobject>
   </figure>
 
-  <para>Warning: If you make some changes in the table, the values are not computed again, unless you check the
-   <emphasis>Automatically Recalculate Column Values</emphasis> option in the <emphasis>Tables</emphasis> tab of the <link linkend="fig-preferences-dialog-4">Preferences dialog</link>.
-	If this option is unchecked you have to explicitly tell &appname; to recalculate individual cells or whole columns or rows by selecting "Recalculate" from their context menu or by pressing Control+Return.
-  </para>
+  <para>Warning: When you make changes to the values in a table which contains "filled" values, the dependent values are not recomputed unless the <emphasis>Automatically Recalculate Column Values</emphasis> option is checked in the <link linkend="tables-preferences">Tables tab</link> of the <emphasis>Preferences</emphasis> dialog. If this option is unchecked, you will have to explicitly tell &appname; to recalculate individual cells or whole columns or rows by selecting "Recalculate" from their context menu or by pressing &recalculate-key;.
+  </para><!-- fig-preferences-dialog-4 -->
 
 </sect1>
 

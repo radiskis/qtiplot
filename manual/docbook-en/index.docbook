@@ -182,6 +182,9 @@
 <!--
               menu: Edit
 -->
+
+<!ENTITY autocomplete-key "<keycode>Ctrl+U</keycode>">
+
 <!ENTITY edit-menu-lnk '<link linkend="sec-edit-menu">Edit menu</link>'>
 <!ENTITY undo-cmd "<command>Undo</command>">
 <!ENTITY undo-lnk '<link linkend="undo-cmd"><command>Undo</command> command</link>'>
@@ -616,6 +619,7 @@
 <!ENTITY column-options-lnk '<link linkend="column-options-cmd"><command>Column Options...</command> command</link>'>
 <!ENTITY column-options-key "<keycode>Ctrl-Alt-O</keycode>">
 
+<!ENTITY recalculate-key "<keycode>Ctrl+RETURN</keycode>">
 <!ENTITY set-column-values-cmd "<command>Set Column Values...</command>">
 <!ENTITY set-column-values-lnk '<link linkend="set-column-values-cmd"><command>Set Column Values...</command> command</link>'>
 <!ENTITY set-column-values-key "<keycode>Alt-Q</keycode>">
