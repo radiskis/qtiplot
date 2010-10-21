@@ -931,6 +931,25 @@ Table * ApplicationWindow::importUsingExcel(const QString& fn, int sheet)
 		} else
 			t->showNormal();
 
+		int row = t->numRows() + 1;
+		for (int col = 1; col <= t->numCols(); col++){
+			QAxObject* cell = ws->querySubObject("Cells( int, int )", row, col);
+			if (!cell)
+				continue;
+
+			QString format = cell->property("NumberFormat").toString().simplified();
+			if (format.contains("y") || format.contains("d")){
+				QStringList lst = format.split(" ", QString::SkipEmptyParts);
+				if (lst.size() == 1)
+					format = lst[0].replace("m", "M");
+				else if (lst.size() == 2)
+					format = lst[0].replace("m", "M") + " " + lst[1];
+
+				t->setDateFormat(format, col - 1, false);
+			} else if (format.contains("h") || format.contains("m") || format.contains("s"))
+				t->setTimeFormat(format, col - 1, false);
+		}
+
 		importExcelCharts(ws, fn);
 
 		if (sheet > 0 && sheet == i)
