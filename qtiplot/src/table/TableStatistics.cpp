@@ -191,7 +191,7 @@ void TableStatistics::update(Table *t, const QString& colName)
 			int i = d_targets[r];
 			int m = 0;
 			for (j = 0; j < cols; j++)
-					if (!d_base->text(i, j).isEmpty() && d_base->columnType(j) == Numeric)
+					if (!d_base->text(i, j).isEmpty() && d_base->columnType(j) == Numeric && !d_base->isColumnHidden(j))
 							m++;
 
 			if (!m){//clear row statistics
@@ -205,7 +205,7 @@ void TableStatistics::update(Table *t, const QString& colName)
 				int aux = 0;
 				for (j = 0; j<cols; j++){
 					QString text = d_base->text(i,j);
-					if (!text.isEmpty() && d_base->columnType(j) == Numeric){
+					if (!text.isEmpty() && d_base->columnType(j) == Numeric && !d_base->isColumnHidden(j)){
 						double val = d_base->cell(i, j);
 						gsl_vector_set (y, aux, val);
 						dat[aux] = val;
