@@ -932,7 +932,19 @@ Table * ApplicationWindow::importUsingExcel(const QString& fn, int sheet)
 			t->showNormal();
 
 		int row = t->numRows() + 1;
+		QStringList header;
+		bool firstLineAllStrings = true;
 		for (int col = 1; col <= t->numCols(); col++){
+			if (firstLineAllStrings){
+				QString s = t->text(0, col - 1);
+				bool ok;
+				s.toDouble (&ok);
+				if (ok)
+					firstLineAllStrings = false;
+				else
+					header << s;
+			}
+
 			QAxObject* cell = ws->querySubObject("Cells( int, int )", row, col);
 			if (!cell)
 				continue;
@@ -948,6 +960,11 @@ Table * ApplicationWindow::importUsingExcel(const QString& fn, int sheet)
 				t->setDateFormat(format, col - 1, false);
 			} else if (format.contains("h") || format.contains("m") || format.contains("s"))
 				t->setTimeFormat(format, col - 1, false);
+		}
+
+		if (!header.isEmpty() && firstLineAllStrings){
+			t->deleteRows(0, 1);
+			t->setHeader(header);
 		}
 
 		importExcelCharts(ws, fn);

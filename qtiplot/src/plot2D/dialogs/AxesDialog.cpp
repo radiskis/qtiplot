@@ -525,7 +525,7 @@ void AxesDialog::initAxesPage()
 	boxAxisType->addItem(tr("Day of the week"));
 	boxAxisType->addItem(tr("Month"));
 	boxAxisType->addItem(tr("Time"));
-	boxAxisType->addItem(tr("Date"));
+	boxAxisType->addItem(tr("Date") + "/" + tr("Time"));
 	boxAxisType->addItem(tr("Column Headings"));
 	leftBoxLayout->addWidget( boxAxisType, 0, 1 );
 
@@ -912,6 +912,13 @@ void AxesDialog::showAxisFormatOptions(int format)
 				boxFormat->setCurrentText(formatInfo);
 				originDateTimeBox->setDateTime (scaleDraw->dateTimeOrigin());
 			}
+			boxFormat->insertItem("yyyy-MM-dd hh:mm:ss");
+			boxFormat->insertItem("yyyy/MM/dd hh:mm:ss");
+			boxFormat->insertItem("yyyy.MM.dd hh:mm:ss");
+			boxFormat->insertItem("dd-MM-yyyy hh:mm:ss");
+			boxFormat->insertItem("dd/MM/yyyy hh:mm:ss");
+			boxFormat->insertItem("dd.MM.yyyy hh:mm:ss");
+
 			boxFormat->insertItem("yyyy-MM-dd");
 			boxFormat->insertItem("yyyy/MM/dd");
 			boxFormat->insertItem("yyyy.MM.dd");
@@ -1324,11 +1331,23 @@ bool AxesDialog::updatePlot(QWidget *page)
 		        switch (boxUnit->currentIndex())
                     {
                     case 0:
-						step *= 86400;
+						step *= 60;//min
                     break;
                     case 1:
-                         step *= 604800;
+						 step *= 3600;//hour
                     break;
+					case 2:
+						step *= 86400;//day
+					break;
+					case 3:
+						 step *= 604800;//week
+					break;
+					case 4:
+						 step *= 2592000;//month
+					break;
+					case 5:
+						 step *= 31536000;//year
+					break;
                     }
 	            }
           	}
@@ -1531,9 +1550,34 @@ void AxesDialog::updateScale()
         boxEndDateTime->setDateTime(origin.addSecs((int)end));
 
 		boxUnit->show();
+		boxUnit->insertItem(tr("min."));
+		boxUnit->insertItem(tr("hours"));
 		boxUnit->insertItem(tr("days"));
 		boxUnit->insertItem(tr("weeks"));
-		boxStep->setValue(d_graph->axisStep(a)/86400.0);
+		boxUnit->insertItem(tr("months"));
+		boxUnit->insertItem(tr("years"));
+
+		double step = d_graph->axisStep(a)/3600.0; //hours
+		if (step < 1){
+			boxUnit->setCurrentIndex(0);
+			boxStep->setValue(step*60);
+		} else if (step < 24){
+			boxUnit->setCurrentIndex(1);
+			boxStep->setValue(step);
+		} else if (step < 168){
+			boxUnit->setCurrentIndex(2);
+			boxStep->setValue(step/24.0);
+		} else if (step < 720){
+			boxUnit->setCurrentIndex(3);
+			boxStep->setValue(step/168.0);
+		} else if (step < 8760){
+			boxUnit->setCurrentIndex(4);
+			boxStep->setValue(step/720.0);
+		} else {
+			boxUnit->setCurrentIndex(5);
+			boxStep->setValue(step/8760.0);
+		}
+
 		boxStep->setSingleStep(1);
 	} else if (type == ScaleDraw::Time){
 	    ScaleDraw *sclDraw = (ScaleDraw *)d_graph->axisScaleDraw(a);
@@ -1556,9 +1600,10 @@ void AxesDialog::updateScale()
         boxUnit->insertItem(tr("sec."));
         boxUnit->insertItem(tr("min."));
         boxUnit->insertItem(tr("hours"));
-        boxUnit->setCurrentIndex(1);
-        boxStep->setValue(d_graph->axisStep(a)/1e3);
-        boxStep->setSingleStep(1000);
+
+		boxUnit->setCurrentIndex(1);
+		boxStep->setValue(d_graph->axisStep(a)/1e3);
+		boxStep->setSingleStep(1000);
 	} else {
 	    boxStart->show();
         boxStart->setValue(start);
