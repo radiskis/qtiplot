@@ -32,6 +32,8 @@
 #include <QHttp>
 #include <QIODevice>
 #include <QNetworkProxy>
+#include <QCompleter>
+#include <QDirModel>
 
 #include "EnrichmentDialog.h"
 #include <Graph.h>
@@ -242,6 +244,13 @@ void EnrichmentDialog::initImagePage()
     gl->addWidget(new QLabel( tr("File")), 0, 0);
 
 	imagePathBox = new QLineEdit();
+
+	QCompleter *completer = new QCompleter(this);
+	completer->setModel(new QDirModel(completer));
+	completer->setModelSorting(QCompleter::CaseSensitivelySortedModel);
+	completer->setCompletionMode(QCompleter::InlineCompletion);
+
+	imagePathBox->setCompleter(completer);
 	gl->addWidget(imagePathBox, 0, 1);
 
 	QPushButton *browseBtn = new QPushButton();
@@ -591,6 +600,8 @@ void EnrichmentDialog::setWidget(QWidget *w)
 			boxSaveImagesInternally->blockSignals(true);
 			boxSaveImagesInternally->setChecked(i->saveInternally());
 			boxSaveImagesInternally->blockSignals(false);
+
+			bestSizeButton->show();
 		}
 	} else if (d_widget_type == Frame){
 		RectangleWidget *r = qobject_cast<RectangleWidget *>(d_widget);
@@ -887,11 +898,20 @@ void EnrichmentDialog::adjustWidth(double height)
 
 void EnrichmentDialog::setBestSize()
 {
+	ImageWidget *iw = qobject_cast<ImageWidget *>(d_widget);
+	if (iw){
+		iw->setSize(iw->pixmap().size());
+		displayCoordinates(unitBox->currentIndex());
+		d_plot->multiLayer()->notifyChanges();
+		return;
+	}
+
 	TexWidget *tw = qobject_cast<TexWidget *>(d_widget);
 	if (tw){
 		tw->setBestSize();
 		displayCoordinates(unitBox->currentIndex());
 		d_plot->multiLayer()->notifyChanges();
+		return;
 	}
 }
 

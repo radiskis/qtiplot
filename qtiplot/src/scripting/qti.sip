@@ -1890,6 +1890,10 @@ public:
   void setBackgroundColor(const QColor& color);
   void setCanvasBackground(const QColor& color) /PyName=setCanvasColor/;
 
+  QPixmap backgroundPixmap();
+  QString canvasBackgroundFileName();
+  void setCanvasBackgroundImage (const QString & = QString(), bool = true);
+
   void setCanvasGeometry(int x, int y, int w, int h);
   void setCanvasGeometry(const QRect &canvasRect);
   void setCanvasSize(int w, int h);

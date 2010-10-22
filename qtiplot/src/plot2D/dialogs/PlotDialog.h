@@ -108,6 +108,9 @@ private slots:
 
 	void removeSelectedObject();
 
+	void chooseBackgroundImageFile(const QString& fn = QString());
+	void resizeCanvasToFitImage();
+
 	void pickErrorBarsColor();
 	void enableBoxApplyColor(int);
 
@@ -150,6 +153,7 @@ protected slots:
     void showCustomPenColumn(bool on);
 
 private:
+	void setBackgroundImage();
 	void applyCanvasSize();
 
 	void applyFormatToLayer(Graph *g);
@@ -200,6 +204,7 @@ private:
 	void initSpectrogramValuesPage();
 	void initContourLinesPage();
 	void initLayerPage();
+	void initBackgroundImagePage();
 	void initLayerGeometryPage();
 	void initPlotGeometryPage();
 	void initLayerSpeedPage();
@@ -228,7 +233,7 @@ private:
 
     QPushButton *btnTitle, *btnAxesLabels, *btnAxesNumbers, *btnLegend;
 	ColorMapEditor *colorMapEditor;
-    QWidget *curvePlotTypeBox, *layerPage, *layerGeometryPage, *piePage, *fontsPage, *printPage, *speedPage, *functionPage;
+	QWidget *curvePlotTypeBox, *layerPage, *layerGeometryPage, *piePage, *fontsPage, *printPage, *speedPage, *functionPage, *backgroundImagePage;
     QTreeWidget* listBox;
     QCheckBox *boxAntialiasing, *boxScaleLayers, *boxPrintCrops;
     ColorButton *boxBorderColor, *boxBackgroundColor, *boxCanvasColor;
@@ -239,6 +244,8 @@ private:
     ColorButton *boxPieLineColor;
     PatternBox *boxPiePattern;
     PenStyleBox* boxPieLineStyle;
+	QLineEdit *imagePathBox;
+	QComboBox *imageApplyToBox;
 
     QPushButton* buttonApply, *btnWorksheet;
     QPushButton* buttonOk, *btnMore;

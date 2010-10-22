@@ -74,6 +74,8 @@
 #include <QClipboard>
 #include <QCursor>
 #include <QImage>
+#include <QBuffer>
+#include <QImageReader>
 #include <QMessageBox>
 #include <QPixmap>
 #include <QPainter>
@@ -112,6 +114,9 @@ Graph::Graph(int x, int y, int width, int height, QWidget* parent, Qt::WFlags f)
 	setWindowFlags(f);
     setAttribute(Qt::WA_DeleteOnClose);
 	setAcceptDrops(true);
+
+	d_canvas_bkg_path = QString();
+	d_canvas_bkg_pix = QPixmap();
 
 	d_active_tool = NULL;
 	d_range_selector = NULL;
@@ -4158,6 +4163,7 @@ QString Graph::saveToString(bool saveAsTemplate)
 	s+="<Antialiasing>" + QString::number(d_antialiasing) + "</Antialiasing>\n";
 	s+="Background\t" + paletteBackgroundColor().name() + "\t";
 	s+=QString::number(paletteBackgroundColor().alpha()) + "\n";
+	s+=saveBackgroundImage();
 	s+="Margin\t"+QString::number(margin())+"\n";
 	s+="Border\t"+QString::number(lineWidth())+"\t"+frameColor().name()+"\n";
 	s+=grid()->saveToString();
@@ -4207,6 +4213,42 @@ QString Graph::saveToString(bool saveAsTemplate)
 	}
 	s += "</graph>\n";
 	return s;
+}
+
+QString Graph::saveBackgroundImage()
+{
+	if (d_canvas_bkg_path.isEmpty())
+		return QString();
+
+	QString s = "<BackgroundImage>\n";
+	s += "<path>" + d_canvas_bkg_path + "</path>\n";
+	s += "<xpm>\n";
+	QByteArray bytes;
+	QBuffer buffer(&bytes);
+	buffer.open(QIODevice::WriteOnly);
+	d_canvas_bkg_pix.save(&buffer, "XPM");
+	s += QString(bytes);
+	s += "</xpm>\n";
+
+	return s + "</BackgroundImage>\n";
+}
+
+void Graph::restoreBackgroundImage(const QStringList& lst)
+{
+	QStringList::const_iterator line;
+	for (line = lst.begin(); line != lst.end(); line++){
+		QString s = *line;
+		if (s.contains("<path>"))
+			d_canvas_bkg_path = s.remove("<path>").remove("</path>");
+		else if (s.contains("<xpm>")){
+			QString xpm;
+			while ( s != "</xpm>" ){
+				s = *(++line);
+				xpm += s + "\n";
+			}
+			d_canvas_bkg_pix.loadFromData(xpm.toAscii());
+		}
+	}
 }
 
 void Graph::updateMarkersBoundingRect(bool rescaleEvent)
@@ -4641,6 +4683,7 @@ void Graph::copy(Graph* g)
 	setBackgroundColor(g->paletteBackgroundColor());
 	setFrame(g->lineWidth(), g->frameColor());
 	setCanvasBackground(g->canvasBackground());
+	setCanvasBackgroundImage(g->canvasBackgroundFileName(), false);
 	setAxisTitlePolicy(g->axisTitlePolicy());
 
 	for (int i = 0; i < QwtPlot::axisCnt; i++)
@@ -5752,6 +5795,35 @@ void Graph::printFrame(QPainter *painter, const QRect &rect) const
 	painter->restore();
 }
 
+void Graph::setCanvasBackgroundImage(const QString & fn, bool update)
+{
+	if (fn == d_canvas_bkg_path)
+		return;
+
+	if (fn.isEmpty()){
+		d_canvas_bkg_path = QString();
+		d_canvas_bkg_pix = QPixmap();
+		return;
+	}
+
+	QFileInfo fi(fn);
+	if (!fi.exists ()|| !fi.isReadable())
+		return;
+
+	QList<QByteArray> lst = QImageReader::supportedImageFormats() << "JPG";
+	for (int i = 0; i<(int)lst.count(); i++){
+		if (fn.contains("." + lst[i])){
+			d_canvas_bkg_pix.load(fn, lst[i], QPixmap::Auto);
+			d_canvas_bkg_path = fn;
+
+			if (update)
+				replot();
+
+			return;
+		}
+	}
+}
+
 void Graph::printCanvas(QPainter *painter, const QRect &canvasRect,
    			 const QwtScaleMap map[axisCnt], const QwtPlotPrintFilter &pfilter) const
 {
@@ -5837,6 +5909,9 @@ void Graph::drawItems (QPainter *painter, const QRect &rect,
 	}
 	if (d_grid->z() >= minz)
 		d_grid->setZ(minz - 10.0);
+
+	if (!d_canvas_bkg_pix.isNull())
+		painter->drawPixmap(rect, d_canvas_bkg_pix);
 
 	QwtPlot::drawItems(painter, rect, map, pfilter);
 

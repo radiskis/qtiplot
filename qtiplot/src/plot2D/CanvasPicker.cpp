@@ -75,7 +75,8 @@ bool CanvasPicker::eventFilter(QObject *object, QEvent *e)
 				}
 
                 int dist, point;
-                g->closestCurve(me->pos().x(), me->pos().y(), dist, point);
+                if (g->closestCurve(me->pos().x(), me->pos().y(), dist, point))
+					return true;
 
 				if (me->button() == Qt::LeftButton && (g->drawLineActive())){
 					startLinePoint = me->pos();

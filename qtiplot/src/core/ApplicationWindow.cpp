@@ -12995,6 +12995,14 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot, co
 			}
 			lst.pop_back();
 			EllipseWidget::restore(ag, lst);
+		} else if (s == "<BackgroundImage>"){//version 0.9.8.4
+			QStringList lst;
+			while ( s != "</BackgroundImage>" ){
+				s = list[++j];
+				lst << s;
+			}
+			lst.pop_back();
+			ag->restoreBackgroundImage(lst);
 		}
 		else if (s.contains("AxisType"))
 		{
