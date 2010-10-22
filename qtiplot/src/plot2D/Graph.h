@@ -437,6 +437,7 @@ class Graph: public QwtPlot
 		QString saveAxesBackbones();
 		QString saveTickLabelsSpace();
 		QString saveLabelsPrefixAndSuffix();
+		QString saveBackgroundImage();
 		static QString rgbaName(const QColor& color);
 		//@}
 
@@ -602,6 +603,14 @@ class Graph: public QwtPlot
 		void setCanvasFrame(int width = 1, const QColor& color =  QColor(Qt::black));
 		QColor canvasFrameColor();
 		int canvasFrameWidth();
+		//@}
+
+		//! \name Canvas Image Background
+		//@{
+		QString canvasBackgroundFileName(){return d_canvas_bkg_path;};
+		void setCanvasBackgroundImage (const QString & fn = QString(), bool update = true);
+		void restoreBackgroundImage(const QStringList& lst);
+		QPixmap backgroundPixmap(){return d_canvas_bkg_pix;};
 		//@}
 
 		//! \name Plot Title
@@ -859,5 +868,8 @@ signals:
 		AxisTitlePolicy d_axis_title_policy;
 		bool d_synchronize_scales;
 		QStringList d_axis_titles;
+
+		QString d_canvas_bkg_path;
+		QPixmap d_canvas_bkg_pix;
 };
 #endif // GRAPH_H

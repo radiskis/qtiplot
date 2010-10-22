@@ -75,6 +75,8 @@
 #include <QDateTime>
 #include <QSlider>
 #include <QPainter>
+#include <QCompleter>
+#include <QDirModel>
 
 #include <qwt_plot_canvas.h>
 
@@ -139,6 +141,7 @@ PlotDialog::PlotDialog(bool showExtended, QWidget* parent, Qt::WFlags fl )
 	initPieGeometryPage();
 	initPieLabelsPage();
 	initLayerPage();
+	initBackgroundImagePage();
 	initLayerGeometryPage();
 	initLayerSpeedPage();
 	initFontsPage();
@@ -559,6 +562,52 @@ void PlotDialog::initPlotGeometryPage()
 	connect(boxPlotWidth, SIGNAL(valueChanged (double)), this, SLOT(adjustPlotHeight(double)));
 	connect(boxPlotHeight, SIGNAL(valueChanged (double)), this, SLOT(adjustPlotWidth(double)));
 	connect(plotUnitBox, SIGNAL(activated(int)), this, SLOT(displayPlotCoordinates(int)));
+}
+
+void PlotDialog::initBackgroundImagePage()
+{
+	backgroundImagePage = new QWidget();
+
+	QGroupBox *gb = new QGroupBox();
+	QGridLayout *gl = new QGridLayout(gb);
+	gl->addWidget(new QLabel( tr("File")), 0, 0);
+
+	imagePathBox = new QLineEdit();
+
+	QCompleter *completer = new QCompleter(this);
+	completer->setModel(new QDirModel(completer));
+	completer->setModelSorting(QCompleter::CaseSensitivelySortedModel);
+	completer->setCompletionMode(QCompleter::InlineCompletion);
+
+	imagePathBox->setCompleter(completer);
+	gl->addWidget(imagePathBox, 0, 1);
+
+	QPushButton *browseBtn = new QPushButton();
+	connect(browseBtn, SIGNAL(clicked()), this, SLOT(chooseBackgroundImageFile()));
+	browseBtn->setIcon(QIcon(":/folder_open.png"));
+	gl->addWidget(browseBtn, 0, 2);
+
+	QLabel *l = new QLabel(tr("Apply &to..."));
+	gl->addWidget(l, 1, 0);
+
+	imageApplyToBox = new QComboBox();
+	imageApplyToBox->insertItem(tr("Layer"));
+	imageApplyToBox->insertItem(tr("Window"));
+	imageApplyToBox->insertItem(tr("All Windows"));
+	gl->addWidget(imageApplyToBox, 1, 1);
+
+	l->setBuddy(imageApplyToBox);
+
+	QPushButton *buttonResizeCanvas = new QPushButton(tr("&Resize layer to fit original image size"));
+	connect(buttonResizeCanvas, SIGNAL(clicked()), this, SLOT(resizeCanvasToFitImage()));
+	gl->addWidget(buttonResizeCanvas, 2, 1);
+
+	gl->setColumnStretch(1, 1);
+	gl->setRowStretch(3, 1);
+
+	QVBoxLayout *layout = new QVBoxLayout(backgroundImagePage);
+	layout->addWidget(gb);
+	privateTabWidget->addTab(backgroundImagePage, tr( "&Background Image" ) );
 }
 
 void PlotDialog::initLayerGeometryPage()
@@ -1971,11 +2020,40 @@ void PlotDialog::removeSelectedObject()
 
 		clearTabWidget();
 		privateTabWidget->addTab (layerPage, tr("Layer"));
+		privateTabWidget->addTab (backgroundImagePage, tr("&Background Image"));
 		privateTabWidget->addTab (layerGeometryPage, tr("Geometry"));
 		privateTabWidget->addTab (speedPage, tr("Speed"));
 		privateTabWidget->showPage(layerPage);
 
 		setActiveLayer(layerItem);
+	}
+}
+
+void PlotDialog::chooseBackgroundImageFile(const QString& fn)
+{
+	ApplicationWindow *app = (ApplicationWindow *)this->parent();
+	if (!app)
+		return;
+
+	LayerItem *item = (LayerItem *)listBox->currentItem();
+	if (!item)
+		return;
+
+	Graph *g = item->graph();
+	if (!g)
+		return;
+
+	QString path = fn;
+	if (path.isEmpty())
+		path = ApplicationWindow::getFileName(this, tr("QtiPlot - Import image from file"), g->canvasBackgroundFileName(),
+					ApplicationWindow::imageFilter(), 0, false);
+
+	if (!path.isEmpty()){
+		g->setCanvasBackgroundImage(path);
+		imagePathBox->setText(path);
+		QFileInfo fi(path);
+		app->imagesDirPath = fi.dirPath(true);
+		app->modifiedProject();
 	}
 }
 
@@ -2040,6 +2118,7 @@ void PlotDialog::updateTabWindow(QTreeWidgetItem *currentItem, QTreeWidgetItem *
         if (previousItem->type() != LayerItem::LayerTreeItem){
             clearTabWidget();
             privateTabWidget->addTab (layerPage, tr("Layer"));
+			privateTabWidget->addTab (backgroundImagePage, tr("&Background Image"));
 			privateTabWidget->addTab (layerGeometryPage, tr("Geometry"));
 			privateTabWidget->addTab (speedPage, tr("Speed"));
             privateTabWidget->showPage(layerPage);
@@ -2191,6 +2270,7 @@ void PlotDialog::clearTabWidget()
     privateTabWidget->removeTab(privateTabWidget->indexOf(pieLabelsPage));
 	privateTabWidget->removeTab(privateTabWidget->indexOf(layerPage));
 	privateTabWidget->removeTab(privateTabWidget->indexOf(layerGeometryPage));
+	privateTabWidget->removeTab(privateTabWidget->indexOf(backgroundImagePage));
 	privateTabWidget->removeTab(privateTabWidget->indexOf(speedPage));
 	privateTabWidget->removeTab(privateTabWidget->indexOf(fontsPage));
 	privateTabWidget->removeTab(privateTabWidget->indexOf(printPage));
@@ -2350,6 +2430,10 @@ void PlotDialog::setActiveLayer(LayerItem *item)
     boxMaxPoints->blockSignals(true);
     boxMaxPoints->setValue(g->speedModeMaxPoints());
     boxMaxPoints->blockSignals(false);
+
+	imagePathBox->blockSignals(true);
+	imagePathBox->setText(g->canvasBackgroundFileName());
+	imagePathBox->blockSignals(false);
 }
 
 void PlotDialog::updateContourLevelsDisplay(Spectrogram *sp)
@@ -2827,6 +2911,65 @@ void PlotDialog::applyCanvasSize()
 	}
 }
 
+void PlotDialog::resizeCanvasToFitImage()
+{
+	LayerItem *item = (LayerItem *)listBox->currentItem();
+	if (!item)
+		return;
+	Graph *g = item->graph();
+	if (!g || privateTabWidget->currentWidget() != backgroundImagePage)
+		return;
+
+	QPixmap pix = g->backgroundPixmap();
+	if (!pix.isNull())
+		g->setCanvasSize(pix.size());
+}
+
+void PlotDialog::setBackgroundImage()
+{
+	LayerItem *item = (LayerItem *)listBox->currentItem();
+	if (!item)
+		return;
+	Graph *g = item->graph();
+	if (!g || privateTabWidget->currentWidget() != backgroundImagePage)
+		return;
+
+	QString fn = this->imagePathBox->text();
+	ApplicationWindow *app = (ApplicationWindow *)this->parent();
+	switch(imageApplyToBox->currentIndex()){
+		case 0://this layer
+			g->setCanvasBackgroundImage(fn);
+		break;
+
+		case 1://this window
+		{
+			QList<Graph *> layersLst = d_ml->layersList();
+			foreach(Graph *g, layersLst)
+				g->setCanvasBackgroundImage(fn);
+		}
+		break;
+
+		case 2://all windows
+		{
+			QList<MdiSubWindow *> windows = app->windowsList();
+			foreach(MdiSubWindow *w, windows){
+				MultiLayer *ml = qobject_cast<MultiLayer *>(w);
+				if (!ml)
+					continue;
+
+				QList<Graph *> layersLst = ml->layersList();
+				foreach(Graph *g, layersLst)
+					g->setCanvasBackgroundImage(fn);
+			}
+		}
+		break;
+
+		default:
+			break;
+	}
+	app->modifiedProject();
+}
+
 void PlotDialog::applyLayerFormat()
 {
 	if (privateTabWidget->currentWidget() != layerPage)
@@ -2952,6 +3095,9 @@ bool PlotDialog::acceptParams()
 		if (app)
 			app->d_layer_geometry_unit = unitBox->currentIndex();
 
+		return true;
+	} else if (privateTabWidget->currentWidget() == backgroundImagePage){
+		setBackgroundImage();
 		return true;
 	} else if (privateTabWidget->currentWidget() == speedPage){
 		LayerItem *item = (LayerItem *)listBox->currentItem();

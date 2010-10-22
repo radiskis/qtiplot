@@ -2313,10 +2313,19 @@ l.drawAxesBackbones(True)
 <sect3 id="Python-Canvas">
 <title>The canvas</title>
 You can display a rectangular frame around the drawing area of the plot (the canvas) and
-fill it with a background color, using:<programlisting>
+fill it with a background color or with an image, using:
+<programlisting>
 l.setCanvasFrame(2, QtGui.QColor("red"))
 l.setCanvasColor(QtGui.QColor("lightGrey"))
+l.setCanvasBackgroundImage("C:/qtiplot/qtiplot/qtiplot_logo.png")
 </programlisting>
+
+The following access methods are available for the canvas background image:
+<programlisting>
+pic = l.backgroundPixmap() # QPixmap
+path = l.canvasBackgroundFileName()
+</programlisting>
+
 Drawing the canvas frame and disabling the axes backbone lines
 is the only possible solution for the issue of axes not touching themselves at their ends.
 </sect3>

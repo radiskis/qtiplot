@@ -270,6 +270,9 @@ setMargin
 setFrame
 setCanvasFrame
 setCanvasColor
+canvasBackgroundFileName
+setCanvasBackgroundImage
+backgroundPixmap
 grid
 showGrid
 replot
