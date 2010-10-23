@@ -1173,10 +1173,7 @@ via a proxy server. If you don't now how to set these options, contact your Netw
 <sect1 id="set-dimensions-dialog">
   <title>Set Matrix Dimensions</title>
       <indexterm><primary>matrix</primary></indexterm>
-  <para>This command is in the &matrix-menu-lnk;. It allows to specify the number of rows and columns of a matrix.
-In this window, you can also define a range for X-values and Y-values. These X and Y ranges will be used in plots as initial scale ranges.
-They are also available via the <emphasis>x</emphasis> and <emphasis>y</emphasis> variables
-if you choose to define the content of the matrix with the <link linkend="set-values-dialog">Set Values Dialog</link>.</para>
+  <para>This command appears in the &matrix-menu-lnk;. It allows direct specification of the number of rows and columns of a matrix. In this window, you can also define a range for X-values and Y-values. These X and Y ranges will be used in new plots as the initial scale ranges. They are also available via the <emphasis>x</emphasis> and <emphasis>y</emphasis> variables if you choose to define the contents of the matrix with the <link linkend="set-values-dialog">Set Values Dialog</link>.</para>
   <figure id="fig-set-dimensions-dialog">
     <title>The &set-dimensions-cmd; dialog for matrix.</title>
     <mediaobject>
@@ -1194,12 +1191,10 @@ if you choose to define the content of the matrix with the <link linkend="set-va
 <title>Import ASCII files</title>
 <indexterm><primary>table</primary></indexterm>
 
-This dialog is activated by selecting the command
-<link linkend="import-ascii-cmd">&import-ascii-cmd;</link>
-from the <link linkend="sec-file-menu">File Menu</link>. It can be used to select several
+<para>This dialog is activated by selecting the <link linkend="import-ascii-cmd">&import-ascii-cmd;</link> command from the <link linkend="sec-file-menu">File Menu</link>. It can be used to select several
 files at a time. The files are imported using a set of default options. You can
 display and edit these options by pressing the <emphasis>Advanced</emphasis> button.
-All your changes to the default import parameters will be saved.
+All your changes to the default import parameters will be saved.</para>
 
 <figure id="fig-set-import-options">
     <title>The dialog box.</title>
@@ -1210,34 +1205,22 @@ All your changes to the default import parameters will be saved.
     </mediaobject>
   </figure>
 
-<para>You can define a custom file filter in the <emphasis>Files of type:</emphasis> field in order to preselect files
- (e.g. typing *.mydata then "Enter" so that only files XXX.mydata are listed in the directory view).</para>
+<para>You can define a custom file filter in the <emphasis>Files of type:</emphasis> field in order to preselect files. For example, typing *.mydata and then the "Enter" key will set a filter that will show only files of the form "XXX.mydata" in the directory view.</para>
 
-<para>Concerning the separator which is used between the columns, you must bear in mind that there
+<para>Concerning the character which is used to separate column values, you must bear in mind that there
 is no grouping of separators, so if you use "SPACE", you must use only <emphasis>one</emphasis>
 separator between each column or check the <emphasis>Simplify white spaces</emphasis> option.</para>
 
-<para>If your data files have a particular structure, for example if they present
-several lines containing the description of your experiment, before the actual data start,
-you have the possibility to skip the n first lines of the file. You can also skip all lines
-starting with a comment character/string. The comment string can be customized via the text edit line
-<emphasis>Ignore lines starting with</emphasis>.</para>
+<para>If your data files have a particular structure, for example if they begin with several lines describing your experiment, you may skip the first n lines of the file. You can also skip all lines starting with a comment character/string. The comment string can be customized using the <emphasis>Ignore lines starting with</emphasis> text edit box.</para>
 
-<para>If you choose to use the first line as column names and/or the second line as comments
-to be displayed in the table header, you must use the same separator between the column names
-and between the data columns.</para>
+<para>If you choose to use the first line to define column names and/or the second line as comments
+to be displayed in the table header, you must use the same separator between column names as that used between data columns.</para>
 
-<para>Assuming that the data files you want to import were created
-using different decimal separator conventions than the ones you're using, like for example
-a comma character for the decimal point instead of a dot character, you have the possibility
-to convert the data to your current settings, by specifying the
-<emphasis>Decimal Separators</emphasis> convention used in the ASCII files
-in conjunction with the <emphasis>Omit thousands separator</emphasis> option.</para>
+<para>If the files you want to import were created using a different convention for the decimal and thousands separator characters than the current setting, then the <emphasis>Decimal Separators</emphasis> option can be used to configure &appname; to use a matching convention. For example, when a comma character is used for the decimal point instead of the dot character, simply change the <emphasis>Decimal Separators</emphasis> option to match. You can have &appname; ignore the Thousands separator altogether with the <emphasis>Omit thousands separator</emphasis> option.</para>
 
 <para>Finally, you can specify the kind of data to be imported in each column by pressing the
  <emphasis>Column Types...</emphasis> button or by clicking on the column header in the preview table.
- A dialog will pop-up allowing you to choose a data type (the default data type for each column is <emphasis>Numeric</emphasis>)
- and a column format for date/time columns.</para>
+ A dialog will pop-up allowing you to choose a data type (the default data type for each column is <emphasis>Numeric</emphasis>) and a column format date/time columns.</para>
 </sect1>
 
 <!-- ************************************************** -->
@@ -1245,9 +1228,9 @@ in conjunction with the <emphasis>Omit thousands separator</emphasis> option.</p
 <!-- ************************************************** -->
 <sect1 id="set-properties-dialog">
   <title>Matrix Properties</title>
-  <para>This command is in the &matrix-menu-lnk;. It allows to specify some global properties of the selected matrix such as the cell width (in pixels) and the format for numbers.</para>
+  <para>This command is located in the &matrix-menu-lnk;. It allows setting some global properties of the selected matrix, such as the cell width (in pixels) and the format used for numbers.</para>
   <figure id="fig-set-properties-dialog">
-    <title>The &set-properties-cmd; dialog for matrix.</title>
+    <title>The &set-properties-cmd; dialog for matrices.</title>
     <mediaobject>
       <imageobject>
         <imagedata  format="PNG" fileref="pics/matrix-set-properties.png"/>
@@ -1262,12 +1245,9 @@ in conjunction with the <emphasis>Omit thousands separator</emphasis> option.</p
 <sect1 id="set-values-dialog">
   <title>Set Matrix Values</title>
       <indexterm><primary>matrix</primary></indexterm>
-  <para>This command is in the &matrix-menu-lnk;. It allows to fill in a matrix with the results of a function z=f(i,j) in which i and j are the row and column numbers.</para>
-  <para>You can use the X-values and Y-values defined with the &set-dimensions-lnk; command, and also define your functions based on the
-  <emphasis>x</emphasis> and <emphasis>y</emphasis> variables.</para>
-  <para>The functions can be written on several lines, and the intrinsic functions which
-  are available are listed in the <link linkend="sec-muParser">appendix</link> .</para>
-
+  <para>This command is located in the &matrix-menu-lnk;. It allows filling in a matrix with the results of evaluating a function, <emphasis>z=f(i,j)</emphasis>, in which <code>i</code> and <code>j</code> are the row and column numbers.</para>
+  <para>You can use the X-values and Y-values defined with the &set-dimensions-lnk; command, and also define your functions based on the <emphasis>x</emphasis> and <emphasis>y</emphasis> variables.</para>
+  <para>Functions can span several lines. The available intrinsic functions are listed in the <link linkend="sec-muParser"> muParser</link> section of the Mathematical Expressions and Scripting chapter.</para>
   <figure id="fig-set-values-dialog">
     <title>The &set-values-cmd; dialog for matrix.</title>
     <mediaobject>
@@ -1277,22 +1257,19 @@ in conjunction with the <emphasis>Omit thousands separator</emphasis> option.</p
     </mediaobject>
   </figure>
 
-<para>Using Python as scripting engine for the calculation of matrix values has the drawback
-  that even if it allows a more powerfull synthax, it can be quite slow for large matrices.
-  Therefore you have the possibility to use muParser instead, even if Python is
-  set as the default script engine for your &appname; project, by checking the box
-  <emphasis>Use built-in muParser</emphasis>. Warning: muParser is very fast for the
-  evaluation of single line expressions only, therefore try to avoid a synthax like:
+<para>Using Python as scripting engine for the calculation of matrix values has the advantage of a more powerful syntax.  The drawback is that it can be quite slow for large matrices.
+  You can use muParser instead, even if Python is set as the default script engine for your &appname; project, by checking the <emphasis>Use built-in muParser</emphasis> box. Note that muParser is very fast for the
+  evaluation of single line expressions only, therefore try to avoid syntax like:
 <programlisting>
     a = cell(1, 1)
     b = cell(2, 2)
     a*b*x + b*x*x + a
 </programlisting>
-and prefer the following one:
+in preference for something like the following:
 <programlisting>
     cell(1, 1)*cell(2, 2)*x + cell(2, 2)*x*x + cell(1, 1)
 </programlisting>
-which will highly increase the speed of the evaluation!</para>
+which will greatly increase the speed of evaluation!</para>
 </sect1>
 
 <!-- ************************************************** -->
@@ -1300,9 +1277,10 @@ which will highly increase the speed of the evaluation!</para>
 <!-- ************************************************** -->
 <sect1 id="surface-plot-options-dialog">
   <title>Surface plot options</title>
-  <para>This dialog box is used to customize a 3D function plot which has been created by the &new-surface-3d-plot-lnk; from the &file-menu-lnk;. It is activated by a double click on the 3D plot.</para>
+  <para>This dialog box is used to customize 3D function plots which created using the &new-surface-3d-plot-lnk; from the &file-menu-lnk;. It is activated by a double click on the 3D plot.</para>
 
-  <para>The first tab is used to modify the X, Y and Z ranges. It allows also to specify the number of labels on the axis and the number of secondary ticks.</para>
+ <sect2 id="surface-plot-options-scale-tab"><title>Scale Tab</title>
+ <para>The first tab is used to modify the X, Y, and Z ranges. It also allows specification of the number of labels drawn on the axes and the number of minor ticks.</para>
   <figure id="fig-surface-plot-options-1">
     <title>The surface plot options dialog box.</title>
     <mediaobject>
@@ -1311,7 +1289,10 @@ which will highly increase the speed of the evaluation!</para>
       </imageobject>
     </mediaobject>
   </figure>
-  <para>The second tab defines the main parameters of the three axis: the axis label and its font,
+ </sect2>
+
+ <sect2 id="surface-plot-options-axis-tab"><title>Axis Tab</title>
+ <para>The second tab defines the main parameters of the three axis: the axis label and its font,
   and the length of the ticks. This length is defined in the same units as the range of the axis.
   If something is changed in the scales of the graph, the length of the ticks is re-calculated by &appname;.
   The font button allows to modify only the font used for the label,
@@ -1329,7 +1310,9 @@ which will highly increase the speed of the evaluation!</para>
       </imageobject>
     </mediaobject>
   </informalfigure>
+ </sect2>
 
+ <sect2 id="surface-plot-options-grid-tab"><title>Grid Tab</title>
   <para>The third tab is used to define or modify the properties of the plot grid.</para>
   <informalfigure id="fig-surface-plot-options-3">
     <mediaobject>
@@ -1338,7 +1321,9 @@ which will highly increase the speed of the evaluation!</para>
       </imageobject>
     </mediaobject>
   </informalfigure>
+ </sect2>
 
+ <sect2 id="surface-plot-options-title-tab"><title>Title Tab</title>
   <para>The fourth tab is used to define or modify the title of the plot. You can not add subscripts/superscripts, bold characters, etc in your title as you can do it for 2D plots.</para>
   <informalfigure id="fig-surface-plot-options-4">
 	<mediaobject>
@@ -1347,7 +1332,9 @@ which will highly increase the speed of the evaluation!</para>
 	  </imageobject>
 	</mediaobject>
   </informalfigure>
+ </sect2>
 
+ <sect2 id="surface-plot-options-colors-tab"><title>Colors Tab</title>
   <para>The fifth tab allows to modify the colors used in the different elements of the plot.</para>
   <informalfigure id="fig-surface-plot-options-4">
     <mediaobject>
@@ -1364,7 +1351,9 @@ color defined as a linear interpolation between the adjacent values in the color
 The format of the file is simple: each line defines a color by red, green and blue values as integers
  between 0 and 255. The numbers should be separated by spaces. You can find several examples of colormaps on the
  <ulink url="http://soft.proindependent.com/download.html">&appname; web site</ulink>.</para>
+ </sect2>
 
+ <sect2 id="surface-plot-options-general-tab"><title>General Tab</title>
 <para>The <emphasis>General</emphasis> tab is used to define some global parameters and the aspect ratio of the plot. The default behaviour is to use the perspective to compute the 3D plot. If you choose to check the <emphasis>Orthogonal</emphasis> check box, the plot will use vertical Z axis whatever the view angle of the plot.</para>
 
   <figure id="fig-surface-plot-options-5">
@@ -1375,7 +1364,9 @@ The format of the file is simple: each line defines a color by red, green and bl
       </imageobject>
     </mediaobject>
   </figure>
+ </sect2>
 
+ <sect2 id="surface-plot-options-print-tab"><title>Print Tab</title>
 <para>The <emphasis>Print</emphasis> tab is used to define some useful print options, like scaling to the paper size or
  showing the cropmarks.</para>
 
@@ -1387,6 +1378,7 @@ The format of the file is simple: each line defines a color by red, green and bl
 	  </imageobject>
 	</mediaobject>
   </figure>
+ </sect2>
 </sect1>
 
 
