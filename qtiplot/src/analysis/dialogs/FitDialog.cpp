@@ -104,9 +104,7 @@ FitDialog::FitDialog(Graph *g, QWidget* parent, Qt::WFlags fl )
 
 	QString modelsPath = app->fitModelsPath;
 	QFileInfo fim(modelsPath);
-	if (modelsPath.isEmpty() || !fim.isDir() || !fim.isWritable())
-		chooseFitModelsFolder();
-	else
+	if (!modelsPath.isEmpty() && fim.isDir() && fim.isWritable())
     	loadUserFunctions();
 
 	if (d_user_functions.size())
