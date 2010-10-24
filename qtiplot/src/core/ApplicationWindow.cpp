@@ -515,7 +515,7 @@ void ApplicationWindow::setDefaultOptions()
 
 #ifdef TRANSLATIONS_PATH
 	d_translations_folder = TRANSLATIONS_PATH;
-	fitPluginsPath = "usr/local/qtiplot/fitPlugins";
+	fitPluginsPath = "/usr/local/qtiplot/fitPlugins";
 #else
 	d_translations_folder = aux + "/translations";
 	fitPluginsPath = aux + "/fitPlugins";
