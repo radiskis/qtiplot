@@ -5803,6 +5803,7 @@ void Graph::setCanvasBackgroundImage(const QString & fn, bool update)
 	if (fn.isEmpty()){
 		d_canvas_bkg_path = QString();
 		d_canvas_bkg_pix = QPixmap();
+		replot();
 		return;
 	}
 

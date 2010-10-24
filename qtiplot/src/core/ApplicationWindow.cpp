@@ -515,8 +515,10 @@ void ApplicationWindow::setDefaultOptions()
 
 #ifdef TRANSLATIONS_PATH
 	d_translations_folder = TRANSLATIONS_PATH;
+	fitPluginsPath = "usr/local/qtiplot/fitPlugins";
 #else
 	d_translations_folder = aux + "/translations";
+	fitPluginsPath = aux + "/fitPlugins";
 #endif
 
 #ifdef MANUAL_PATH
@@ -533,8 +535,6 @@ void ApplicationWindow::setDefaultOptions()
 #endif
 
 	d_startup_scripts_folder = aux + "/scripts";
-
-	fitPluginsPath = aux + "fitPlugins";
 	fitModelsPath = QString::null;
 	templatesDir = aux;
 	asciiDirPath = aux;
@@ -5472,13 +5472,12 @@ void ApplicationWindow::readSettings()
 	settings.beginGroup("/Paths");
 	QString appPath = qApp->applicationDirPath();
     workingDir = settings.value("/WorkingDir", appPath).toString();
+	fitPluginsPath = settings.value("/FitPlugins", fitPluginsPath).toString();
 #ifdef Q_OS_WIN
-	fitPluginsPath = settings.value("/FitPlugins", "fitPlugins").toString();
 	templatesDir = settings.value("/TemplatesDir", appPath).toString();
 	asciiDirPath = settings.value("/ASCII", appPath).toString();
 	imagesDirPath = settings.value("/Images", appPath).toString();
 #else
-	fitPluginsPath = settings.value("/FitPlugins", "/usr/lib/qtiplot/plugins").toString();
 	templatesDir = settings.value("/TemplatesDir", QDir::homePath()).toString();
 	asciiDirPath = settings.value("/ASCII", QDir::homePath()).toString();
 	imagesDirPath = settings.value("/Images", QDir::homePath()).toString();
