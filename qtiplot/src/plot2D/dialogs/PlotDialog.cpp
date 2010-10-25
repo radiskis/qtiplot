@@ -52,6 +52,7 @@
 #include <ImageWidget.h>
 #include <TexWidget.h>
 #include <EnrichmentDialog.h>
+#include <ImageSymbol.h>
 
 #include <QTreeWidget>
 #include <QLineEdit>
@@ -124,6 +125,11 @@ PlotDialog::PlotDialog(bool showExtended, QWidget* parent, Qt::WFlags fl )
 	hb1->addStretch();
 
     gl->addWidget(curvePlotTypeBox, 1, 0);
+
+	completer = new QCompleter(this);
+	completer->setModel(new QDirModel(completer));
+	completer->setModelSorting(QCompleter::CaseSensitivelySortedModel);
+	completer->setCompletionMode(QCompleter::InlineCompletion);
 
 	initAxesPage();
 	initLinePage();
@@ -573,11 +579,6 @@ void PlotDialog::initBackgroundImagePage()
 	gl->addWidget(new QLabel( tr("File")), 0, 0);
 
 	imagePathBox = new QLineEdit();
-
-	QCompleter *completer = new QCompleter(this);
-	completer->setModel(new QDirModel(completer));
-	completer->setModelSorting(QCompleter::CaseSensitivelySortedModel);
-	completer->setCompletionMode(QCompleter::InlineCompletion);
 
 	imagePathBox->setCompleter(completer);
 	gl->addWidget(imagePathBox, 0, 1);
@@ -1112,8 +1113,18 @@ void PlotDialog::initLinePage()
 
 void PlotDialog::initSymbolsPage()
 {
-	QGroupBox *gb = new QGroupBox();
-    QGridLayout *gl = new QGridLayout(gb);
+	QGroupBox *gb0 = new QGroupBox();
+	QHBoxLayout* hl0 = new QHBoxLayout(gb0);
+
+	standardSymbolBtn = new QRadioButton(tr("&Standard Symbol"));
+	standardSymbolBtn->setChecked(true);
+	hl0->addWidget(standardSymbolBtn);
+
+	imageSymbolBtn = new QRadioButton(tr("&Image"));
+	hl0->addWidget(imageSymbolBtn);
+
+	standardSymbolFormatBox = new QGroupBox();
+	QGridLayout *gl = new QGridLayout(standardSymbolFormatBox);
     gl->addWidget(new QLabel(tr( "Style" )), 0, 0);
 	boxSymbolStyle = new SymbolBox();
     gl->addWidget(boxSymbolStyle, 0, 1);
@@ -1136,32 +1147,63 @@ void PlotDialog::initSymbolsPage()
     boxPenWidth->setRange(0.1, 100);
     gl->addWidget(boxPenWidth, 4, 1);
 
-	gl->addWidget(new QLabel(tr( "Skip Points" )), 5, 0);
+	imageSymBolFormatBox = new QGroupBox();
+	imageSymBolFormatBox->hide();
+
+	QGridLayout *gl1 = new QGridLayout(imageSymBolFormatBox);
+	gl1->addWidget(new QLabel( tr("File")), 0, 0);
+
+	imageSymbolPathBox = new QLineEdit();
+	imageSymbolPathBox->setCompleter(completer);
+	gl1->addWidget(imageSymbolPathBox, 0, 1);
+
+	QPushButton *browseBtn = new QPushButton();
+	connect(browseBtn, SIGNAL(clicked()), this, SLOT(chooseSymbolImageFile()));
+	browseBtn->setIcon(QIcon(":/folder_open.png"));
+	gl1->addWidget(browseBtn, 0, 2);
+
+	gl1->addWidget(new QLabel(tr("Preview")), 1, 0);
+	symbolImageLabel = new QLabel();
+	gl1->addWidget(symbolImageLabel, 1, 1);
+
+	QHBoxLayout* hl = new QHBoxLayout();
+	hl->addWidget(standardSymbolFormatBox);
+	hl->addWidget(imageSymBolFormatBox);
+
+	QGridLayout *gl2 = new QGridLayout();
+	gl2->addWidget(new QLabel(tr( "Skip Points" )), 0, 0);
     boxSkipSymbols = new QSpinBox();
     boxSkipSymbols->setMinimum(1);
     boxSkipSymbols->setWrapping(true);
     boxSkipSymbols->setSpecialValueText(tr("None"));
-    gl->addWidget(boxSkipSymbols, 5, 1);
+	gl2->addWidget(boxSkipSymbols, 0, 1);
 
     QLabel *l = new QLabel(tr("Apply Format &to"));
-	gl->addWidget(l, 6, 0);
+	gl2->addWidget(l, 1, 0);
 
 	symbolsFormatApplyToBox = new QComboBox();
 	symbolsFormatApplyToBox->insertItem(tr("Selected Curve"));
 	symbolsFormatApplyToBox->insertItem(tr("Layer"));
     symbolsFormatApplyToBox->insertItem(tr("Window"));
     symbolsFormatApplyToBox->insertItem(tr("All Windows"));
-	gl->addWidget(symbolsFormatApplyToBox, 6, 1);
+	gl2->addWidget(symbolsFormatApplyToBox, 1, 1);
 	l->setBuddy(symbolsFormatApplyToBox);
 
-    gl->setRowStretch (7, 1);
+	gl2->setRowStretch (2, 1);
 
     symbolPage = new QWidget();
-	QHBoxLayout* hl = new QHBoxLayout(symbolPage);
-	hl->addWidget(gb);
+	QVBoxLayout* vl = new QVBoxLayout(symbolPage);
+	vl->addWidget(gb0);
+	vl->addLayout(hl);
+	vl->addLayout(gl2);
 
 	privateTabWidget->insertTab(symbolPage, tr( "Symbol" ));
 
+	connect(standardSymbolBtn, SIGNAL(toggled(bool)), standardSymbolFormatBox, SLOT(setVisible(bool)));
+	connect(imageSymbolBtn, SIGNAL(toggled(bool)), imageSymBolFormatBox, SLOT(setVisible(bool)));
+
+	connect(boxSymbolSize, SIGNAL(valueChanged(int)), this, SLOT(acceptParams()));
+	connect(boxPenWidth, SIGNAL(valueChanged(double)), this, SLOT(acceptParams()));
 	connect(boxSymbolColor, SIGNAL(colorChanged()), this, SLOT(acceptParams()));
 	connect(boxSymbolStyle, SIGNAL(activated(int)), this, SLOT(acceptParams()));
 	connect(boxFillColor, SIGNAL(colorChanged()), this, SLOT(acceptParams()));
@@ -2057,6 +2099,33 @@ void PlotDialog::chooseBackgroundImageFile(const QString& fn)
 	}
 }
 
+void PlotDialog::chooseSymbolImageFile()
+{
+	QTreeWidgetItem *it = listBox->currentItem();
+	if (!it)
+		return;
+
+	CurveTreeItem *item = (CurveTreeItem *)it;
+	QwtPlotCurve *c = (QwtPlotCurve *)item->plotItem();
+	if (!c || c->rtti() != QwtPlotItem::Rtti_PlotCurve)
+		return;
+
+	ApplicationWindow *app = (ApplicationWindow *)this->parent();
+	if (!app)
+		return;
+
+	QString path = ApplicationWindow::getFileName(this, tr("QtiPlot - Import image from file"), imageSymbolPathBox->text(),
+					ApplicationWindow::imageFilter(), 0, false);
+	if (!path.isEmpty()){
+		imageSymbolPathBox->setText(path);
+		acceptParams();
+
+		QFileInfo fi(path);
+		app->imagesDirPath = fi.dirPath(true);
+		app->modifiedProject();
+	}
+}
+
 void PlotDialog::pickErrorBarsColor()
 {
     CurveTreeItem *item = (CurveTreeItem *)listBox->currentItem();
@@ -2609,17 +2678,35 @@ void PlotDialog::setActiveCurve(CurveTreeItem *item)
 
     //symbol page
     const QwtSymbol s = c->symbol();
-    boxSymbolSize->setValue(s.size().width()/2);
-    boxSymbolStyle->setStyle(s.style());
-    boxSymbolColor->blockSignals(true);
-    boxSymbolColor->setColor(s.pen().color());
-    boxSymbolColor->blockSignals(false);
-    boxPenWidth->setValue(s.pen().widthF());
-    boxFillSymbol->setChecked(s.brush() != Qt::NoBrush);
-    boxFillColor->setEnabled(s.brush() != Qt::NoBrush);
-    boxFillColor->blockSignals(true);
-    boxFillColor->setColor(s.brush().color());
-    boxFillColor->blockSignals(false);
+	if (s.pen().style() != Qt::NoPen){
+		standardSymbolBtn->setChecked(true);
+
+		boxSymbolSize->blockSignals(true);
+		boxSymbolSize->setValue(s.size().width()/2);
+		boxSymbolSize->blockSignals(false);
+
+		boxSymbolStyle->setStyle(s.style());
+		boxSymbolColor->blockSignals(true);
+		boxSymbolColor->setColor(s.pen().color());
+		boxSymbolColor->blockSignals(false);
+
+		boxPenWidth->blockSignals(true);
+		boxPenWidth->setValue(s.pen().widthF());
+		boxPenWidth->blockSignals(false);
+
+		boxFillSymbol->setChecked(s.brush() != Qt::NoBrush);
+		boxFillColor->setEnabled(s.brush() != Qt::NoBrush);
+		boxFillColor->blockSignals(true);
+		boxFillColor->setColor(s.brush().color());
+		boxFillColor->blockSignals(false);
+	} else {
+		imageSymbolBtn->setChecked(true);
+
+		ImageSymbol *is = (ImageSymbol *)(&c->symbol());
+		imageSymbolPathBox->setText(is->imagePath());
+		symbolImageLabel->setPixmap(is->pixmap());
+	}
+
     boxSkipSymbols->blockSignals(true);
     boxSkipSymbols->setValue(c->skipSymbolsCount());
     boxSkipSymbols->setMaximum(c->dataSize());
@@ -3909,25 +3996,36 @@ void PlotDialog::applySymbolsFormatToCurve(QwtPlotCurve *c, bool fillColor, bool
 	if (!c)
 		return;
 
-	QwtSymbol symbol = c->symbol();
-	if (symbol.style() == QwtSymbol::NoSymbol)
-		return;
+	if (standardSymbolBtn->isChecked()){
+		QwtSymbol symbol = c->symbol();
+		if (symbol.style() == QwtSymbol::NoSymbol)
+			return;
 
-	int size = 2*boxSymbolSize->value() + 1;
+		int size = 2*boxSymbolSize->value() + 1;
 
-	QBrush br = symbol.brush();
-	if (fillColor)
-		br = QBrush(boxFillColor->color(), Qt::SolidPattern);
-	if (!boxFillSymbol->isChecked())
-		br = QBrush();
+		QBrush br = symbol.brush();
+		if (fillColor)
+			br = QBrush(boxFillColor->color(), Qt::SolidPattern);
+		if (!boxFillSymbol->isChecked())
+			br = QBrush();
 
-	QPen pen = QPen(symbol.pen().color(), boxPenWidth->value(), Qt::SolidLine, Qt::FlatCap, Qt::MiterJoin);
-	if (penColor)
-		pen.setColor(boxSymbolColor->color());
-	pen.setCosmetic(true);
+		QPen pen = QPen(symbol.pen().color(), boxPenWidth->value(), Qt::SolidLine, Qt::FlatCap, Qt::MiterJoin);
+		if (penColor)
+			pen.setColor(boxSymbolColor->color());
+		pen.setCosmetic(true);
 
-	QwtSymbol s = QwtSymbol(boxSymbolStyle->selectedSymbol(), br, pen, QSize(size, size));
-	c->setSymbol(s);
+		QwtSymbol s = QwtSymbol(boxSymbolStyle->selectedSymbol(), br, pen, QSize(size, size));
+		c->setSymbol(s);
+	} else if (imageSymbolBtn->isChecked()){
+		QString path = imageSymbolPathBox->text();
+		QFileInfo fi(path);
+		if (fi.exists() && fi.isReadable() && fi.isFile()){
+			ImageSymbol symbol = ImageSymbol(path);
+			c->setSymbol(symbol);
+			symbolImageLabel->setPixmap(symbol.pixmap());
+		} else
+			c->setSymbol(ImageSymbol(*symbolImageLabel->pixmap(), path));
+	}
 
 	((PlotCurve *)c)->setSkipSymbolsCount(boxSkipSymbols->value());
 }

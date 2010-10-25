@@ -35,6 +35,7 @@
 
 class QCheckBox;
 class QComboBox;
+class QCompleter;
 class QLabel;
 class QLineEdit;
 class QListWidget;
@@ -110,6 +111,8 @@ private slots:
 
 	void chooseBackgroundImageFile(const QString& fn = QString());
 	void resizeCanvasToFitImage();
+
+	void chooseSymbolImageFile();
 
 	void pickErrorBarsColor();
 	void enableBoxApplyColor(int);
@@ -353,6 +356,13 @@ private:
 	EnrichmentDialog *enrichmentDialog;
 	QPushButton *btnUp, *btnDown;
 	QLabel *barsOffsetLabel;
+
+	QRadioButton *standardSymbolBtn, *imageSymbolBtn;
+	QGroupBox *standardSymbolFormatBox, *imageSymBolFormatBox;
+	QLineEdit *imageSymbolPathBox;
+	QLabel *symbolImageLabel;
+
+	QCompleter *completer;
 };
 
 /*****************************************************************************

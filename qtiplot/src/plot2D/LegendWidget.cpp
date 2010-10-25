@@ -239,19 +239,22 @@ void LegendWidget::drawSymbol(PlotCurve *c, int point, QPainter *p, int x, int y
 			QwtPainter::drawLine(p, x, y, x + l, y);
 	}
 
-	QwtSymbol symb = c->symbol();
-	int symb_size = symb.size().width();
-	if (symb_size > 15)
-		symb_size = 15;
-	else if (symb_size < 3)
-		symb_size = 3;
-	symb.setSize(symb_size);
+	if (c->symbol().pen().style() != Qt::NoPen){
+		QwtSymbol symb = c->symbol();
+		int symb_size = symb.size().width();
+		if (symb_size > 15)
+			symb_size = 15;
+		else if (symb_size < 3)
+			symb_size = 3;
+		symb.setSize(symb_size);
 
-	QPen pen = symb.pen();
-	pen.setCosmetic(false);
-	symb.setPen(pen);
+		QPen pen = symb.pen();
+		pen.setCosmetic(false);
+		symb.setPen(pen);
 
-	symb.draw(p, x + l/2, y);
+		symb.draw(p, x + l/2, y);
+	} else //ImageSymbol ?
+		c->symbol().draw(p, x + l/2, y);
 	p->restore();
 }
 

@@ -45,6 +45,7 @@ public:
         Star1, 
         Star2, 
         Hexagon, 
+		Image,
 
         StyleCnt 
     };

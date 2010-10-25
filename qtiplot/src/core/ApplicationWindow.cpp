@@ -13002,9 +13002,15 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot, co
 			}
 			lst.pop_back();
 			ag->restoreBackgroundImage(lst);
-		}
-		else if (s.contains("AxisType"))
-		{
+		} else if (s == "<SymbolImage>"){//version 0.9.8.4
+			QStringList lst;
+			while ( s != "</SymbolImage>" ){
+				s = list[++j];
+				lst << s;
+			}
+			lst.pop_back();
+			ag->restoreSymbolImage(curveID - 1, lst);
+		} else if (s.contains("AxisType")) {
 			QStringList fList = s.split("\t");
 			for (int i=0; i<4; i++){
 				QStringList lst = fList[i+1].split(";", QString::SkipEmptyParts);
