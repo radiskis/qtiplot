@@ -58,6 +58,7 @@
 #include "RectangleWidget.h"
 #include "EllipseWidget.h"
 #include <FrameWidget.h>
+#include <ImageSymbol.h>
 
 #ifdef EMF_OUTPUT
 	#include <EmfEngine.h>
@@ -2526,6 +2527,56 @@ QString Graph::saveCurveLayout(int index)
 	return s;
 }
 
+QString Graph::saveCurveSymbolImage(PlotCurve *c)
+{
+	if (!c || c->symbol().style() != QwtSymbol::Image)
+		return QString();
+
+	ImageSymbol *is = (ImageSymbol *)(&c->symbol());
+	if (!is)
+		return QString();
+
+	QString s = "<SymbolImage>\n";
+	s += "<path>" + is->imagePath() + "</path>\n";
+	s += "<xpm>\n";
+	QByteArray bytes;
+	QBuffer buffer(&bytes);
+	buffer.open(QIODevice::WriteOnly);
+	is->pixmap().save(&buffer, "XPM");
+	s += QString(bytes);
+	s += "</xpm>\n";
+
+	return s + "</SymbolImage>\n";
+}
+
+void Graph::restoreSymbolImage(int index, const QStringList& lst)
+{
+	if (index < 0 || index >= d_curves.count())
+		return;
+
+	PlotCurve *c = this->curve(index);
+	if (!c)
+		return;
+
+	QString path;
+	QStringList::const_iterator line;
+	for (line = lst.begin(); line != lst.end(); line++){
+		QString s = *line;
+		if (s.contains("<path>"))
+			path = s.remove("<path>").remove("</path>");
+		else if (s.contains("<xpm>")){
+			QString xpm;
+			while ( s != "</xpm>" ){
+				s = *(++line);
+				xpm += s + "\n";
+			}
+			QPixmap pix;
+			pix.loadFromData(xpm.toAscii());
+			c->setSymbol(ImageSymbol(pix, path));
+		}
+	}
+}
+
 QString Graph::saveCurves()
 {
 	QString s;
@@ -2557,6 +2608,7 @@ QString Graph::saveCurves()
 				s += QString::number(c->startRow())+"\t"+QString::number(c->endRow())+"\t";
 				s += QString::number(c->isVisible())+"\n";
 				s += c->saveToString();
+				s += saveCurveSymbolImage(c);
 			} else if (c->type() == ErrorBars){
   	        	ErrorBarsCurve *er = (ErrorBarsCurve *)it;
   	            s += "ErrorBars\t";
@@ -6550,9 +6602,11 @@ void Graph::print(QPainter *painter, const QRect &plotRect, const QwtPlotPrintFi
 				}
 				QwtSymbol symbol = c->symbol();
 				pen = symbol.pen();
-				pen.setCosmetic(false);
-				symbol.setPen(pen);
-				c->setSymbol(symbol);
+				if (pen.style() != Qt::NoPen){
+					pen.setCosmetic(false);
+					symbol.setPen(pen);
+					c->setSymbol(symbol);
+				}
 			}
 		}
 	}
@@ -6587,9 +6641,11 @@ void Graph::print(QPainter *painter, const QRect &plotRect, const QwtPlotPrintFi
 
 			QwtSymbol symbol = c->symbol();
 			pen = symbol.pen();
-			pen.setCosmetic(true);
-			symbol.setPen(pen);
-			c->setSymbol(symbol);
+			if (pen.style() != Qt::NoPen){
+				pen.setCosmetic(true);
+				symbol.setPen(pen);
+				c->setSymbol(symbol);
+			}
 		}
 	}
 

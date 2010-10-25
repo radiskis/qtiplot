@@ -412,7 +412,7 @@ class Graph: public QwtPlot
 		void setAutoScale();
 		void updateScale();
 
-		//! \name Saving to File
+		//! \name Saving/Restoring to/from file
 		//@{
 		QString saveToString(bool saveAsTemplate = false);
 		QString saveScale();
@@ -438,6 +438,9 @@ class Graph: public QwtPlot
 		QString saveTickLabelsSpace();
 		QString saveLabelsPrefixAndSuffix();
 		QString saveBackgroundImage();
+		void restoreBackgroundImage(const QStringList& lst);
+		QString saveCurveSymbolImage(PlotCurve *c);
+		void restoreSymbolImage(int index, const QStringList& lst);
 		static QString rgbaName(const QColor& color);
 		//@}
 
@@ -609,7 +612,6 @@ class Graph: public QwtPlot
 		//@{
 		QString canvasBackgroundFileName(){return d_canvas_bkg_path;};
 		void setCanvasBackgroundImage (const QString & fn = QString(), bool update = true);
-		void restoreBackgroundImage(const QStringList& lst);
 		QPixmap backgroundPixmap(){return d_canvas_bkg_pix;};
 		//@}
 
