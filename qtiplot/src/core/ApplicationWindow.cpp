@@ -938,7 +938,7 @@ void ApplicationWindow::initToolBars()
 	actionAddFormula = new QAction(tr("Add E&quation"), this);
 	actionAddFormula->setShortcut( tr("ALT+Q") );
 	actionAddFormula->setCheckable(true);
-	actionAddFormula->setIcon(QIcon(":/equation.png"));
+	actionAddFormula->setIcon(QIcon(":/formula.png"));
 	connect(actionAddFormula, SIGNAL(triggered()), this, SLOT(addTexFormula()));
 	plotTools->addAction(actionAddFormula);
 

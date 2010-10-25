@@ -4708,7 +4708,7 @@ QPixmap FrameWidgetTreeItem::frameWidgetPixmap()
 	} else if (qobject_cast<ImageWidget *>(d_widget))
 		return QPixmap(":/monalisa.png");
 	else if (qobject_cast<TexWidget *>(d_widget))
-		return QPixmap(":/equation.png");
+		return QPixmap(":/formula.png");
 
 	return QPixmap();
 }

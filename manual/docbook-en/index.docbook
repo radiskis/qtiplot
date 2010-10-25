@@ -361,7 +361,7 @@
 <!ENTITY add-eq-cmd "<command>Add Equation</command>">
 <!ENTITY add-eq-lnk '<link linkend="add-eq-cmd"><command>Add Equation</command></link>'>
 <!ENTITY add-eq-key "<keycode>Alt-Q</keycode>">
-<!ENTITY add-eq-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/equation.png"/></imageobject></inlinemediaobject>'>
+<!ENTITY add-eq-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/formula.png"/></imageobject></inlinemediaobject>'>
 
 <!ENTITY remove-layer-cmd "<command>Remove Layer</command>">
 <!ENTITY remove-layer-lnk '<link linkend="remove-layer-cmd">&remove-layer-cmd;</link>'>
