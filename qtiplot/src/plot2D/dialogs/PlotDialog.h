@@ -139,7 +139,8 @@ private slots:
 	void adjustPlotWidth(double height);
 	void adjustPlotHeight(double width);
 
-protected slots:
+	void setCanvasDefaultValues();
+
     void setActiveLayer(LayerItem *item);
     void updateTreeWidgetItem(QTreeWidgetItem *item);
     void updateBackgroundTransparency(int alpha);
@@ -151,12 +152,14 @@ protected slots:
 	void editCurve();
 	void chooseLabelsFont();
 	void applyLayerFormat();
+	void applyCanvasFormat();
 	void setLayerDefaultValues();
     void setEquidistantLevels();
     void showCustomPenColumn(bool on);
 
 private:
-	void setBackgroundImage();
+	void resizeLayerToFitImage(Graph *g);
+	void applyCanvasFormatToLayer(Graph *g);
 	void applyCanvasSize();
 
 	void applyFormatToLayer(Graph *g);
@@ -207,7 +210,7 @@ private:
 	void initSpectrogramValuesPage();
 	void initContourLinesPage();
 	void initLayerPage();
-	void initBackgroundImagePage();
+	void initCanvasPage();
 	void initLayerGeometryPage();
 	void initPlotGeometryPage();
 	void initLayerSpeedPage();
@@ -236,7 +239,7 @@ private:
 
     QPushButton *btnTitle, *btnAxesLabels, *btnAxesNumbers, *btnLegend;
 	ColorMapEditor *colorMapEditor;
-	QWidget *curvePlotTypeBox, *layerPage, *layerGeometryPage, *piePage, *fontsPage, *printPage, *speedPage, *functionPage, *backgroundImagePage;
+	QWidget *curvePlotTypeBox, *layerPage, *layerGeometryPage, *piePage, *fontsPage, *printPage, *speedPage, *functionPage, *canvasPage;
     QTreeWidget* listBox;
     QCheckBox *boxAntialiasing, *boxScaleLayers, *boxPrintCrops;
     ColorButton *boxBorderColor, *boxBackgroundColor, *boxCanvasColor;
@@ -249,6 +252,8 @@ private:
     PenStyleBox* boxPieLineStyle;
 	QLineEdit *imagePathBox;
 	QComboBox *imageApplyToBox;
+	QRadioButton *colorBtn, *imageBtn;
+	QGroupBox *canvasColorBox, *canvasImageBox;
 
     QPushButton* buttonApply, *btnWorksheet;
     QPushButton* buttonOk, *btnMore;
@@ -361,6 +366,12 @@ private:
 	QGroupBox *standardSymbolFormatBox, *imageSymBolFormatBox;
 	QLineEdit *imageSymbolPathBox;
 	QLabel *symbolImageLabel;
+
+	QGroupBox *boxFramed;
+	ColorButton *boxFrameColor;
+	QSpinBox *boxFrameWidth;
+	QPushButton *canvasDefaultBtn;
+	QSlider *canvasOpacitySlider;
 
 	QCompleter *completer;
 };

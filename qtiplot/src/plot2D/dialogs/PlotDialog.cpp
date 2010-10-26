@@ -147,7 +147,7 @@ PlotDialog::PlotDialog(bool showExtended, QWidget* parent, Qt::WFlags fl )
 	initPieGeometryPage();
 	initPieLabelsPage();
 	initLayerPage();
-	initBackgroundImagePage();
+	initCanvasPage();
 	initLayerGeometryPage();
 	initLayerSpeedPage();
 	initFontsPage();
@@ -420,17 +420,6 @@ void PlotDialog::initLayerPage()
     boxBackgroundTransparency->setSpecialValueText(tr("Transparent"));
     boxBkgLayout->addWidget( boxBackgroundTransparency, 0, 3 );
 
-    boxBkgLayout->addWidget( new QLabel(tr("Canvas Color" )), 1, 0);
-    boxCanvasColor = new ColorButton();
-    boxBkgLayout->addWidget( boxCanvasColor, 1, 1 );
-    boxBkgLayout->addWidget( new QLabel(tr( "Opacity" )), 1, 2 );
-    boxCanvasTransparency = new QSpinBox();
-    boxCanvasTransparency->setRange(0, 255);
-    boxCanvasTransparency->setSingleStep(5);
-    boxCanvasTransparency->setWrapping(true);
-    boxCanvasTransparency->setSpecialValueText(tr("Transparent"));
-    boxBkgLayout->addWidget( boxCanvasTransparency, 1, 3 );
-
     boxBkgLayout->addWidget( new QLabel(tr("Border Color" )), 2, 0);
     boxBorderColor = new ColorButton();
     boxBkgLayout->addWidget( boxBorderColor, 2, 1);
@@ -439,19 +428,19 @@ void PlotDialog::initLayerPage()
     boxBorderWidth = new QSpinBox();
     boxBkgLayout->addWidget( boxBorderWidth, 2, 3);
 
-	boxAntialiasing = new QCheckBox(tr("Antialiasing"));
-    boxBkgLayout->addWidget( boxAntialiasing, 3, 0);
-
-	boxBkgLayout->addWidget( new QLabel(tr( "Margin" )), 3, 2);
+	boxBkgLayout->addWidget( new QLabel(tr( "Margin" )), 3, 0);
 	boxMargin = new QSpinBox();
-    boxMargin->setRange( 0, 1000 );
-    boxMargin->setSingleStep(5);
-    boxBkgLayout->addWidget( boxMargin, 3, 3);
+	boxMargin->setRange( 0, 1000 );
+	boxMargin->setSingleStep(5);
+	boxBkgLayout->addWidget( boxMargin, 3, 1);
+
+	boxAntialiasing = new QCheckBox(tr("Antialiasing"));
+	boxBkgLayout->addWidget( boxAntialiasing, 4, 0);
 
 	layerScaleFonts = new QCheckBox(tr("Scale &Fonts"));
-	boxBkgLayout->addWidget(layerScaleFonts, 4, 0);
+	boxBkgLayout->addWidget(layerScaleFonts, 5, 0);
 
-	boxBkgLayout->setRowStretch(5, 1);
+	boxBkgLayout->setRowStretch(6, 1);
 
     QVBoxLayout *vl = new QVBoxLayout();
 
@@ -478,12 +467,10 @@ void PlotDialog::initLayerPage()
     privateTabWidget->addTab(layerPage, tr("Layer"));
 
 	connect(boxBackgroundTransparency, SIGNAL(valueChanged(int)), this, SLOT(updateBackgroundTransparency(int)));
-	connect(boxCanvasTransparency, SIGNAL(valueChanged(int)), this, SLOT(updateCanvasTransparency(int)));
 	connect(boxAntialiasing, SIGNAL(toggled(bool)), this, SLOT(applyLayerFormat()));
 	connect(boxMargin, SIGNAL(valueChanged (int)), this, SLOT(applyLayerFormat()));
 	connect(boxBorderColor, SIGNAL(colorChanged()), this, SLOT(applyLayerFormat()));
 	connect(boxBackgroundColor, SIGNAL(colorChanged()), this, SLOT(applyLayerFormat()));
-	connect(boxCanvasColor, SIGNAL(colorChanged()), this, SLOT(applyLayerFormat()));
 	connect(boxBorderWidth, SIGNAL(valueChanged (int)), this, SLOT(applyLayerFormat()));
 }
 
@@ -570,16 +557,47 @@ void PlotDialog::initPlotGeometryPage()
 	connect(plotUnitBox, SIGNAL(activated(int)), this, SLOT(displayPlotCoordinates(int)));
 }
 
-void PlotDialog::initBackgroundImagePage()
+void PlotDialog::initCanvasPage()
 {
-	backgroundImagePage = new QWidget();
+	canvasPage = new QWidget();
 
-	QGroupBox *gb = new QGroupBox();
-	QGridLayout *gl = new QGridLayout(gb);
+	QHBoxLayout* hl1 = new QHBoxLayout();
+
+	colorBtn = new QRadioButton(tr("&Background Color"));
+	colorBtn->setChecked(true);
+	hl1->addWidget(colorBtn);
+
+	imageBtn = new QRadioButton(tr("Background &Image"));
+	hl1->addWidget(imageBtn);
+
+	canvasColorBox = new QGroupBox();
+	QGridLayout *gl1 = new QGridLayout(canvasColorBox);
+
+	gl1->addWidget( new QLabel(tr("Color")), 0, 0);
+	boxCanvasColor = new ColorButton();
+	gl1->addWidget( boxCanvasColor, 0, 1);
+	gl1->addWidget( new QLabel(tr("Opacity")), 1, 0);
+	boxCanvasTransparency = new QSpinBox();
+	boxCanvasTransparency->setRange(0, 255);
+	boxCanvasTransparency->setSingleStep(5);
+	boxCanvasTransparency->setWrapping(true);
+	boxCanvasTransparency->setSpecialValueText(tr("Transparent"));
+	gl1->addWidget( boxCanvasTransparency, 1, 1);
+
+	canvasOpacitySlider = new QSlider();
+	canvasOpacitySlider->setOrientation(Qt::Horizontal);
+	canvasOpacitySlider->setRange(0, 255);
+	gl1->addWidget(canvasOpacitySlider, 1, 2);
+
+	gl1->setColumnStretch(2, 1);
+	gl1->setRowStretch(2, 1);
+
+	canvasImageBox = new QGroupBox();
+	canvasImageBox->hide();
+	QGridLayout *gl = new QGridLayout(canvasImageBox);
 	gl->addWidget(new QLabel( tr("File")), 0, 0);
 
 	imagePathBox = new QLineEdit();
-
 	imagePathBox->setCompleter(completer);
 	gl->addWidget(imagePathBox, 0, 1);
 
@@ -588,27 +606,70 @@ void PlotDialog::initBackgroundImagePage()
 	browseBtn->setIcon(QIcon(":/folder_open.png"));
 	gl->addWidget(browseBtn, 0, 2);
 
+	QPushButton *buttonResizeCanvas = new QPushButton(tr("&Resize layer to fit original image size"));
+	connect(buttonResizeCanvas, SIGNAL(clicked()), this, SLOT(resizeCanvasToFitImage()));
+	gl->addWidget(buttonResizeCanvas, 1, 1);
+
+	gl->setColumnStretch(1, 1);
+	gl->setRowStretch(2, 1);
+
+	QVBoxLayout *vl = new QVBoxLayout();
+	vl->addWidget(canvasColorBox);
+	vl->addWidget(canvasImageBox);
+
+	boxFramed = new QGroupBox(tr("&Frame"));
+	boxFramed->setCheckable (true);
+
+	QGridLayout *boxFramedLayout = new QGridLayout(boxFramed);
+	boxFramedLayout->addWidget( new QLabel(tr("Color" )), 0, 0 );
+	boxFrameColor = new ColorButton(boxFramed);
+	boxFramedLayout->addWidget( boxFrameColor, 0, 1 );
+
+	boxFramedLayout->addWidget( new QLabel(tr( "Width" )), 1, 0 );
+	boxFrameWidth = new QSpinBox();
+	boxFrameWidth->setMinimum(1);
+	boxFramedLayout->addWidget( boxFrameWidth, 1, 1 );
+
+	boxFramedLayout->setRowStretch(2, 1);
+
+	QVBoxLayout *vl1 = new QVBoxLayout();
+	vl1->addLayout(hl1);
+	vl1->addLayout(vl);
+	vl1->addWidget(boxFramed);
+
+	QVBoxLayout *vl2 = new QVBoxLayout();
+
+	canvasDefaultBtn = new QPushButton(tr("Set As &Default"));
+	vl2->addWidget(canvasDefaultBtn);
+
 	QLabel *l = new QLabel(tr("Apply &to..."));
-	gl->addWidget(l, 1, 0);
+	vl2->addWidget(l);
 
 	imageApplyToBox = new QComboBox();
 	imageApplyToBox->insertItem(tr("Layer"));
 	imageApplyToBox->insertItem(tr("Window"));
 	imageApplyToBox->insertItem(tr("All Windows"));
-	gl->addWidget(imageApplyToBox, 1, 1);
-
+	vl2->addWidget(imageApplyToBox);
+	vl2->addStretch();
 	l->setBuddy(imageApplyToBox);
 
-	QPushButton *buttonResizeCanvas = new QPushButton(tr("&Resize layer to fit original image size"));
-	connect(buttonResizeCanvas, SIGNAL(clicked()), this, SLOT(resizeCanvasToFitImage()));
-	gl->addWidget(buttonResizeCanvas, 2, 1);
+	QHBoxLayout* hl = new QHBoxLayout(canvasPage);
+	hl->addLayout(vl1);
+	hl->addLayout(vl2);
 
-	gl->setColumnStretch(1, 1);
-	gl->setRowStretch(3, 1);
+	privateTabWidget->addTab(canvasPage, tr("Canvas"));
 
-	QVBoxLayout *layout = new QVBoxLayout(backgroundImagePage);
-	layout->addWidget(gb);
-	privateTabWidget->addTab(backgroundImagePage, tr( "&Background Image" ) );
+	connect(canvasDefaultBtn, SIGNAL(clicked()), this, SLOT(setCanvasDefaultValues()));
+	connect(boxFrameColor, SIGNAL(colorChanged()), this, SLOT(applyCanvasFormat()));
+	connect(boxFramed, SIGNAL(toggled(bool)), this, SLOT(applyCanvasFormat()));
+	connect(boxFrameWidth, SIGNAL(valueChanged (int)), this, SLOT(applyCanvasFormat()));
+	connect(boxCanvasColor, SIGNAL(colorChanged()), this, SLOT(applyCanvasFormat()));
+	connect(boxCanvasTransparency, SIGNAL(valueChanged(int)), this, SLOT(updateCanvasTransparency(int)));
+	connect(colorBtn, SIGNAL(toggled(bool)), canvasColorBox, SLOT(setVisible(bool)));
+	connect(imageBtn, SIGNAL(toggled(bool)), canvasImageBox, SLOT(setVisible(bool)));
+
+	connect(canvasOpacitySlider, SIGNAL(valueChanged(int)), boxCanvasTransparency, SLOT(setValue(int)));
+	connect(boxCanvasTransparency, SIGNAL(valueChanged(int)), canvasOpacitySlider, SLOT(setValue(int)));
 }
 
 void PlotDialog::initLayerGeometryPage()
@@ -1113,8 +1174,7 @@ void PlotDialog::initLinePage()
 
 void PlotDialog::initSymbolsPage()
 {
-	QGroupBox *gb0 = new QGroupBox();
-	QHBoxLayout* hl0 = new QHBoxLayout(gb0);
+	QHBoxLayout* hl0 = new QHBoxLayout();
 
 	standardSymbolBtn = new QRadioButton(tr("&Standard Symbol"));
 	standardSymbolBtn->setChecked(true);
@@ -1193,7 +1253,7 @@ void PlotDialog::initSymbolsPage()
 
     symbolPage = new QWidget();
 	QVBoxLayout* vl = new QVBoxLayout(symbolPage);
-	vl->addWidget(gb0);
+	vl->addLayout(hl0);
 	vl->addLayout(hl);
 	vl->addLayout(gl2);
 
@@ -2062,7 +2122,7 @@ void PlotDialog::removeSelectedObject()
 
 		clearTabWidget();
 		privateTabWidget->addTab (layerPage, tr("Layer"));
-		privateTabWidget->addTab (backgroundImagePage, tr("&Background Image"));
+		privateTabWidget->addTab (canvasPage, tr("Canvas"));
 		privateTabWidget->addTab (layerGeometryPage, tr("Geometry"));
 		privateTabWidget->addTab (speedPage, tr("Speed"));
 		privateTabWidget->showPage(layerPage);
@@ -2091,8 +2151,8 @@ void PlotDialog::chooseBackgroundImageFile(const QString& fn)
 					ApplicationWindow::imageFilter(), 0, false);
 
 	if (!path.isEmpty()){
-		g->setCanvasBackgroundImage(path);
 		imagePathBox->setText(path);
+		applyCanvasFormat();
 		QFileInfo fi(path);
 		app->imagesDirPath = fi.dirPath(true);
 		app->modifiedProject();
@@ -2187,7 +2247,7 @@ void PlotDialog::updateTabWindow(QTreeWidgetItem *currentItem, QTreeWidgetItem *
         if (previousItem->type() != LayerItem::LayerTreeItem){
             clearTabWidget();
             privateTabWidget->addTab (layerPage, tr("Layer"));
-			privateTabWidget->addTab (backgroundImagePage, tr("&Background Image"));
+			privateTabWidget->addTab (canvasPage, tr("Canvas"));
 			privateTabWidget->addTab (layerGeometryPage, tr("Geometry"));
 			privateTabWidget->addTab (speedPage, tr("Speed"));
             privateTabWidget->showPage(layerPage);
@@ -2339,7 +2399,7 @@ void PlotDialog::clearTabWidget()
     privateTabWidget->removeTab(privateTabWidget->indexOf(pieLabelsPage));
 	privateTabWidget->removeTab(privateTabWidget->indexOf(layerPage));
 	privateTabWidget->removeTab(privateTabWidget->indexOf(layerGeometryPage));
-	privateTabWidget->removeTab(privateTabWidget->indexOf(backgroundImagePage));
+	privateTabWidget->removeTab(privateTabWidget->indexOf(canvasPage));
 	privateTabWidget->removeTab(privateTabWidget->indexOf(speedPage));
 	privateTabWidget->removeTab(privateTabWidget->indexOf(fontsPage));
 	privateTabWidget->removeTab(privateTabWidget->indexOf(printPage));
@@ -2448,6 +2508,7 @@ void PlotDialog::setActiveLayer(LayerItem *item)
     boxMargin->blockSignals(true);
     boxBackgroundTransparency->blockSignals(true);
     boxCanvasTransparency->blockSignals(true);
+	canvasOpacitySlider->blockSignals(true);
     boxBorderWidth->blockSignals(true);
 
     boxMargin->setValue(g->margin());
@@ -2462,6 +2523,7 @@ void PlotDialog::setActiveLayer(LayerItem *item)
 
 	c = g->canvasBackground();
 	boxCanvasTransparency->setValue(c.alpha());
+	canvasOpacitySlider->setValue(c.alpha());
 	boxCanvasColor->setEnabled(c.alpha());
 	c.setAlpha(255);
 	boxCanvasColor->setColor(c);
@@ -2481,6 +2543,7 @@ void PlotDialog::setActiveLayer(LayerItem *item)
 
     boxBackgroundTransparency->blockSignals(false);
     boxCanvasTransparency->blockSignals(false);
+	canvasOpacitySlider->blockSignals(false);
     boxBorderWidth->blockSignals(false);
     boxBorderColor->blockSignals(false);
     boxBackgroundColor->blockSignals(false);
@@ -2503,6 +2566,20 @@ void PlotDialog::setActiveLayer(LayerItem *item)
 	imagePathBox->blockSignals(true);
 	imagePathBox->setText(g->canvasBackgroundFileName());
 	imagePathBox->blockSignals(false);
+
+	imageBtn->setChecked(!g->backgroundPixmap().isNull());
+
+	boxFramed->blockSignals(true);
+	boxFramed->setChecked(g->canvasFrameWidth()>0);
+	boxFramed->blockSignals(false);
+
+	boxFrameColor->blockSignals(true);
+	boxFrameColor->setColor(g->canvasFrameColor());
+	boxFrameColor->blockSignals(false);
+
+	boxFrameWidth->blockSignals(true);
+	boxFrameWidth->setValue(g->canvasFrameWidth());
+	boxFrameWidth->blockSignals(false);
 }
 
 void PlotDialog::updateContourLevelsDisplay(Spectrogram *sp)
@@ -2998,13 +3075,9 @@ void PlotDialog::applyCanvasSize()
 	}
 }
 
-void PlotDialog::resizeCanvasToFitImage()
+void PlotDialog::resizeLayerToFitImage(Graph *g)
 {
-	LayerItem *item = (LayerItem *)listBox->currentItem();
-	if (!item)
-		return;
-	Graph *g = item->graph();
-	if (!g || privateTabWidget->currentWidget() != backgroundImagePage)
+	if (!g)
 		return;
 
 	QPixmap pix = g->backgroundPixmap();
@@ -3012,27 +3085,92 @@ void PlotDialog::resizeCanvasToFitImage()
 		g->setCanvasSize(pix.size());
 }
 
-void PlotDialog::setBackgroundImage()
+void PlotDialog::resizeCanvasToFitImage()
 {
-	LayerItem *item = (LayerItem *)listBox->currentItem();
-	if (!item)
-		return;
-	Graph *g = item->graph();
-	if (!g || privateTabWidget->currentWidget() != backgroundImagePage)
+	if (privateTabWidget->currentWidget() != canvasPage)
 		return;
 
-	QString fn = this->imagePathBox->text();
 	ApplicationWindow *app = (ApplicationWindow *)this->parent();
 	switch(imageApplyToBox->currentIndex()){
 		case 0://this layer
-			g->setCanvasBackgroundImage(fn);
+		{
+			LayerItem *item = (LayerItem *)listBox->currentItem();
+			if (!item)
+				return;
+			resizeLayerToFitImage(item->graph());
+		}
+		break;
+		case 1://this window
+		{
+			QList<Graph *> layersLst = d_ml->layersList();
+			foreach(Graph *g, layersLst)
+				resizeLayerToFitImage(g);
+		}
+		break;
+		case 2://all windows
+		{
+			QList<MdiSubWindow *> windows = app->windowsList();
+			foreach(MdiSubWindow *w, windows){
+				MultiLayer *ml = qobject_cast<MultiLayer *>(w);
+				if (!ml)
+					continue;
+
+				QList<Graph *> layersLst = ml->layersList();
+				foreach(Graph *g, layersLst)
+					resizeLayerToFitImage(g);
+			}
+		}
+		break;
+		default:
+			break;
+	}
+	app->modifiedProject();
+}
+
+void PlotDialog::applyCanvasFormatToLayer(Graph *g)
+{
+	if (!g)
+		return;
+
+	if (colorBtn->isChecked()){
+		g->setCanvasBackgroundImage("");
+		QColor c = boxCanvasColor->color();
+		c.setAlpha(boxCanvasTransparency->value());
+		g->setCanvasBackground(c);
+	} else if (imageBtn->isChecked()){
+		QColor c = Qt::white;
+		c.setAlpha(0);
+		g->setCanvasBackground(c);
+		g->setCanvasBackgroundImage(imagePathBox->text());
+	}
+
+	if (boxFramed->isChecked())
+		g->setCanvasFrame(boxFrameWidth->value(), boxFrameColor->color());
+	else
+		g->setCanvasFrame(0);
+}
+
+void PlotDialog::applyCanvasFormat()
+{
+	if (privateTabWidget->currentWidget() != canvasPage)
+		return;
+
+	ApplicationWindow *app = (ApplicationWindow *)this->parent();
+	switch(imageApplyToBox->currentIndex()){
+		case 0://this layer
+		{
+			LayerItem *item = (LayerItem *)listBox->currentItem();
+			if (!item)
+				return;
+			applyCanvasFormatToLayer(item->graph());
+		}
 		break;
 
 		case 1://this window
 		{
 			QList<Graph *> layersLst = d_ml->layersList();
 			foreach(Graph *g, layersLst)
-				g->setCanvasBackgroundImage(fn);
+				applyCanvasFormatToLayer(g);
 		}
 		break;
 
@@ -3046,7 +3184,7 @@ void PlotDialog::setBackgroundImage()
 
 				QList<Graph *> layersLst = ml->layersList();
 				foreach(Graph *g, layersLst)
-					g->setCanvasBackgroundImage(fn);
+					applyCanvasFormatToLayer(g);
 			}
 		}
 		break;
@@ -3069,12 +3207,7 @@ void PlotDialog::applyLayerFormat()
 			LayerItem *item = (LayerItem *)listBox->currentItem();
         	if (!item)
             	return;
-
-        	Graph *g = item->graph();
-			if (!g)
-				return;
-
-			applyFormatToLayer(g);
+			applyFormatToLayer(item->graph());
 		}
 		break;
 
@@ -3118,10 +3251,6 @@ void PlotDialog::applyFormatToLayer(Graph *g)
 	QColor c = boxBackgroundColor->color();
 	c.setAlpha(boxBackgroundTransparency->value());
 	g->setBackgroundColor(c);
-
-	c = boxCanvasColor->color();
-	c.setAlpha(boxCanvasTransparency->value());
-	g->setCanvasBackground(c);
 
 	g->setAntialiasing(boxAntialiasing->isChecked());
 	g->setAutoscaleFonts(layerScaleFonts->isChecked());
@@ -3183,8 +3312,8 @@ bool PlotDialog::acceptParams()
 			app->d_layer_geometry_unit = unitBox->currentIndex();
 
 		return true;
-	} else if (privateTabWidget->currentWidget() == backgroundImagePage){
-		setBackgroundImage();
+	} else if (privateTabWidget->currentWidget() == canvasPage){
+		applyCanvasFormat();
 		return true;
 	} else if (privateTabWidget->currentWidget() == speedPage){
 		LayerItem *item = (LayerItem *)listBox->currentItem();
@@ -3582,7 +3711,7 @@ void PlotDialog::updateBackgroundTransparency(int alpha)
 void PlotDialog::updateCanvasTransparency(int alpha)
 {
     boxCanvasColor->setEnabled(alpha);
-	applyLayerFormat();
+	applyCanvasFormat();
 }
 
 void PlotDialog::setTitlesFont()
@@ -3862,14 +3991,31 @@ void PlotDialog::setLayerDefaultValues()
 	if (!app)
 		return;
 
-    app->d_graph_background_color = boxBackgroundColor->color();
+	app->d_graph_background_color = boxBackgroundColor->color();
 	app->d_graph_background_opacity = boxBackgroundTransparency->value();
-	app->d_graph_canvas_color = boxCanvasColor->color();
-	app->d_graph_canvas_opacity = boxCanvasTransparency->value();
 	app->d_graph_border_color = boxBorderColor->color();
 	app->d_graph_border_width = boxBorderWidth->value();
 	app->defaultPlotMargin = boxMargin->value();
 	app->antialiasing2DPlots = boxAntialiasing->isChecked();
+
+	app->saveSettings();
+}
+
+void PlotDialog::setCanvasDefaultValues()
+{
+	ApplicationWindow *app = (ApplicationWindow *)this->parent();
+	if (!app)
+		return;
+
+	app->d_graph_canvas_color = boxCanvasColor->color();
+	app->d_graph_canvas_opacity = boxCanvasTransparency->value();
+
+	if (boxFramed->isChecked())
+		app->canvasFrameWidth = boxFrameWidth->value();
+	else
+		app->canvasFrameWidth = 0;
+
+	app->d_canvas_frame_color = boxFrameColor->color();
 
 	app->saveSettings();
 }
