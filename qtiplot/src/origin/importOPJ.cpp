@@ -716,7 +716,7 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 				return false;
 
 			if (opj.version() >= 8.0)
-				graph->setAxisTitlePolicy(Graph::NameAndComment);
+				graph->setAxisTitlePolicy(Graph::ColName);
 			else
 				graph->setAxisTitlePolicy(mw->d_graph_axis_labeling);
 			graph->setAutoscaleFonts(false);

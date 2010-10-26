@@ -381,7 +381,26 @@ from the colormap defined in the <emphasis>Colors</emphasis> setting tab. If you
     </mediaobject>
   </figure>
 
-<para>The second tab defines the geometry of the plot layer.</para>
+<para>The second tab defines the properties of the plot canvas: the background color/image and the frame around the canvas.</para>
+  <figure id="fig-custom-canvas-1">
+	<title>The Plot Details Dialog: Canvas with a solid background color.</title>
+	<mediaobject>
+	  <imageobject>
+		<imagedata  format="PNG" fileref="pics/custom-canvas-1.png"/>
+	  </imageobject>
+	</mediaobject>
+  </figure>
+
+  <figure id="fig-custom-canvas-2">
+	<title>The Plot Details Dialog: Canvas with a background image.</title>
+	<mediaobject>
+	  <imageobject>
+		<imagedata  format="PNG" fileref="pics/custom-canvas-2.png"/>
+	  </imageobject>
+	</mediaobject>
+  </figure>
+
+<para>The third tab defines the geometry of the plot layer.</para>
   <figure id="fig-custom-curves-pie-2">
     <title>The Plot Details Dialog: Layer geometry.</title>
     <mediaobject>
@@ -391,7 +410,7 @@ from the colormap defined in the <emphasis>Colors</emphasis> setting tab. If you
     </mediaobject>
   </figure>
 
-  <para>The third tab can be used to customize the speed mode for the layer. This can be very useful when dealing with very large data sets. Speed mode uses the Douglas and Peucker algorithm, the purpose of which is to take a 'curve' composed of line segments (or points) and find a new curve with fewer points that is not too dissimilar from the original curve. The algorithm defines 'not too dissimilar' as a function of the maximum distance (tolerance) between the original curve and the new curve. The new curve then consists of a subset of the line segments (or points) that defined the original curve.
+  <para>The fourth tab can be used to customize the speed mode for the layer. This can be very useful when dealing with very large data sets. Speed mode uses the Douglas and Peucker algorithm, the purpose of which is to take a 'curve' composed of line segments (or points) and find a new curve with fewer points that is not too dissimilar from the original curve. The algorithm defines 'not too dissimilar' as a function of the maximum distance (tolerance) between the original curve and the new curve. The new curve then consists of a subset of the line segments (or points) that defined the original curve.
 
 When the speed mode is enabled, filtering of the data is activated only for the curves with more than the specified maximum number of data points.
   </para>
