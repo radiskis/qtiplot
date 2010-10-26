@@ -195,7 +195,7 @@ void AxesDialog::initScalesPage()
 	breaksLayout->addWidget(boxBreakWidth, 4, 1);
 
     boxLog10AfterBreak = new QCheckBox(tr("&Log10 Scale After Break"));
-    breaksLayout->addWidget(boxLog10AfterBreak, 0, 3);
+	breaksLayout->addWidget(boxLog10AfterBreak, 0, 2);
 
     breaksLayout->addWidget(new QLabel(tr("Step Before Break")), 1, 2);
     boxStepBeforeBreak = new DoubleSpinBox();
