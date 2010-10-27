@@ -439,7 +439,6 @@ class Graph: public QwtPlot
 		QString saveLabelsPrefixAndSuffix();
 		QString saveBackgroundImage();
 		void restoreBackgroundImage(const QStringList& lst);
-		QString saveCurveSymbolImage(PlotCurve *c);
 		void restoreSymbolImage(int index, const QStringList& lst);
 		static QString rgbaName(const QColor& color);
 		//@}
