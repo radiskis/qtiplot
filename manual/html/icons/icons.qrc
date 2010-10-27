@@ -222,5 +222,6 @@
         <file>new_excel.png</file>
         <file>raise.png</file>
         <file>lower.png</file>
+        <file>font.png</file>
     </qresource>
 </RCC>

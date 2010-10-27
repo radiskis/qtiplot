@@ -75,6 +75,9 @@ the hard disk. Make sure that you have backed up the file if you will ever need 
       </listitem>
     </varlistentry>
   </variablelist>
+
+<para>If you need to display asymmetric error bars you must define two sets of error bars for the same curve: one for the upper limits (with disabled minus side) and one for the lower limits (with disabled plus side).</para>
+
   <figure id="fig-add-error-bars-2">
     <title>Example of a plot with both X and Y Error Bars.</title>
     <mediaobject>

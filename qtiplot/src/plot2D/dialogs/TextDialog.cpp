@@ -69,27 +69,26 @@ TextDialog::TextDialog(TextType type, QWidget* parent, Qt::WFlags fl)
 	colorBtn = new ColorButton();
 	topLayout->addWidget(colorBtn, 0, 1);
 
-	topLayout->addWidget(new QLabel(tr("Font")), 1, 0);
-
 	buttonFont = new QPushButton(tr( "&Font" ));
-	topLayout->addWidget(buttonFont, 1, 1);
+	buttonFont->setIcon(QIcon(":/font.png"));
+	topLayout->addWidget(buttonFont, 0, 2);
 
-	topLayout->addWidget(new QLabel(tr("Alignment")), 2, 0);
+	topLayout->addWidget(new QLabel(tr("Alignment")), 1, 0);
 	alignmentBox = new QComboBox();
 	alignmentBox->addItem( tr( "Center" ) );
 	alignmentBox->addItem( tr( "Left" ) );
 	alignmentBox->addItem( tr( "Right" ) );
-	topLayout->addWidget(alignmentBox, 2, 1);
+	topLayout->addWidget(alignmentBox, 1, 1);
 
 	if (type == AxisTitle){
-		topLayout->addWidget(new QLabel(tr("Distance to axis")), 3, 0);
+		topLayout->addWidget(new QLabel(tr("Distance to axis")), 2, 0);
 		distanceBox = new QSpinBox();
 		distanceBox->setRange(0, 1000);
-		topLayout->addWidget(distanceBox, 3, 1);
+		topLayout->addWidget(distanceBox, 2, 1);
 		invertTitleBox = new QCheckBox(tr("&Inverted"));
 		invertTitleBox->hide();
 		connect(invertTitleBox, SIGNAL(toggled(bool)), this, SLOT(apply()));
-		topLayout->addWidget(invertTitleBox, 4, 1);
+		topLayout->addWidget(invertTitleBox, 1, 2);
 	}
 
 	topLayout->setColumnStretch(2, 1);

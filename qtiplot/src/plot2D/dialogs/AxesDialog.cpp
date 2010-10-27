@@ -501,6 +501,7 @@ void AxesDialog::initAxesPage()
 	hl->addWidget(boxLabelsDistance);
 
 	buttonLabelFont = new QPushButton(tr("&Font"));
+	buttonLabelFont->setIcon(QIcon(":/font.png"));
 	hl->addWidget(buttonLabelFont);
 
 	invertTitleBox = new QCheckBox(tr("&Inverted"));
@@ -533,6 +534,7 @@ void AxesDialog::initAxesPage()
 
 	btnAxesFont = new QPushButton();
 	btnAxesFont->setText( tr( "Axis &Font" ) );
+	btnAxesFont->setIcon(QIcon(":/font.png"));
 	leftBoxLayout->addWidget( btnAxesFont, 1, 1 );
 
 	leftBoxLayout->addWidget( new QLabel(tr( "Color" )), 2, 0 );

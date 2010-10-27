@@ -1121,20 +1121,6 @@
     <firstname>Stephen</firstname>
     <surname>Besch</surname>
   </author>
-  <author>
-    <firstname>Roger</firstname>
-    <surname>Gadiou</surname>
-    <affiliation>
-      <address><email>&email-roger;</email></address>
-    </affiliation>
-  </author>
-  <author>
-    <firstname>Knut</firstname>
-    <surname>Franke</surname>
-    <affiliation>
-      <address><email>&email-knut;</email></address>
-    </affiliation>
-  </author>
 </authorgroup>
 
 <copyright>

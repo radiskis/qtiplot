@@ -205,7 +205,8 @@ void Plot3DDialog::initAxesPage()
     gl1->addWidget(new QLabel(tr("Axis Font")), 1, 0);
 
     QHBoxLayout* hb1 = new QHBoxLayout();
-	btnLabelFont = new QPushButton(tr( "&Choose font" ));
+	btnLabelFont = new QPushButton(tr( "&Font" ));
+	btnLabelFont->setIcon(QIcon(":/font.png"));
     hb1->addWidget(btnLabelFont);
 
 	axisTitleFormatButtons = new TextFormatButtons(boxLabel);
@@ -257,6 +258,7 @@ void Plot3DDialog::initTitlePage()
     colorLabel->setBuddy(btnTitleColor);
 
     btnTitleFont = new QPushButton(tr( "&Font" ));
+	btnTitleFont->setIcon(QIcon(":/font.png"));
     hb1->addWidget(btnTitleFont);
 
 	QVBoxLayout* vl = new QVBoxLayout();
@@ -395,7 +397,8 @@ void Plot3DDialog::initGeneralPage()
     gl1->addWidget(boxResolution, 2, 1);
 
     gl1->addWidget(new QLabel( tr( "Numbers Font" )), 3, 0);
-	btnNumbersFont = new QPushButton(tr( "&Choose Font" ));
+	btnNumbersFont = new QPushButton(tr( "&Font" ));
+	btnNumbersFont->setIcon(QIcon(":/font.png"));
     gl1->addWidget(btnNumbersFont, 3, 1);
 
     gl1->addWidget(new QLabel( tr( "Distance labels - axis" )), 4, 0);
