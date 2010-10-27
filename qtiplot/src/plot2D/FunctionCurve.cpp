@@ -92,6 +92,7 @@ QString FunctionCurve::saveToString()
  	}
 	s += saveCurveLayout();
 	s += "</Function>\n";
+	s += saveCurveSymbolImage();
 	return s;
 }
 

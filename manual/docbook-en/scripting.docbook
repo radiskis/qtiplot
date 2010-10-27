@@ -2743,6 +2743,30 @@ The symbol styles available in QtiPlot are:
 			  </listitem>
 			</varlistentry>
 		  </variablelist>
+
+It is also possible to define a custom image as the plot symbol for a curve:
+<programlisting>
+g = newGraph().activeLayer()
+c = g.addFunction("cos(x)", 0, 10, 20)
+c.setSymbol(ImageSymbol("qtiplot/manual/html/icons/help.png"))
+</programlisting>
+
+Here's a short script showing how to draw a custom plot symbol and assign it to a curve:
+<programlisting>
+pix = QtGui.QPixmap(QtCore.QSize(11, 11))
+pix.fill(Qt.transparent)
+p = QtGui.QPainter(pix)
+r = QtCore.QRect(0, 0, 10, 10)
+p.drawEllipse(r)
+p.setPen(QtGui.QPen(Qt.red))
+p.drawLine(5, 0, 5, 10)
+p.drawLine(0, 5, 10, 5)
+p.end()
+
+g = newGraph().activeLayer()
+c = g.addFunction("sin(x)", 0, 10, 20)
+c.setSymbol(ImageSymbol(pix))
+</programlisting>
 </sect3>
 </sect2>
 

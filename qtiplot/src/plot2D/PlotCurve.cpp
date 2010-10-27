@@ -32,12 +32,14 @@
 #include "Graph.h"
 #include "ScaleDraw.h"
 #include "ScaleEngine.h"
-
 #include <SymbolBox.h>
 #include <PatternBox.h>
+#include <ImageSymbol.h>
 
 #include <QDateTime>
 #include <QPainter>
+#include <QBuffer>
+
 #include <qwt_symbol.h>
 #include <qwt_painter.h>
 #include <qwt_curve_fitter.h>
@@ -88,6 +90,28 @@ QwtDoubleRect PlotCurve::boundingRect() const
 	r.setTop(top);
 
 	return r;
+}
+
+QString PlotCurve::saveCurveSymbolImage()
+{
+	if (symbol().style() != QwtSymbol::Image)
+		return QString();
+
+	ImageSymbol *is = (ImageSymbol *)(&symbol());
+	if (!is)
+		return QString();
+
+	QString s = "<SymbolImage>\n";
+	s += "<path>" + is->imagePath() + "</path>\n";
+	s += "<xpm>\n";
+	QByteArray bytes;
+	QBuffer buffer(&bytes);
+	buffer.open(QIODevice::WriteOnly);
+	is->pixmap().save(&buffer, "XPM");
+	s += QString(bytes);
+	s += "</xpm>\n";
+
+	return s + "</SymbolImage>\n";
 }
 
 QString PlotCurve::saveCurveLayout()
@@ -997,7 +1021,8 @@ QString DataCurve::saveToString()
 		s += "\t<display>" + QString::number(((BoxCurve *)this)->labelsDisplayPolicy()) + "</display>\n";
 	}
 
-    return s + "</CurveLabels>\n";
+	s += "</CurveLabels>\n";
+	return s + saveCurveSymbolImage();
 }
 
 void DataCurve::restoreLabels(const QStringList& lst)

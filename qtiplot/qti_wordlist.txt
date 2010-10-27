@@ -854,3 +854,6 @@ AlignCanvases
 statistics
 median
 quantile
+ImageSymbol
+pixmap
+imagePath

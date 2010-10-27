@@ -63,6 +63,7 @@ public:
 	bool sideLinesEnabled(){return d_side_lines;};
 	void enableSideLines(bool on){d_side_lines = on;};
 
+	QString saveCurveSymbolImage();
 	QString saveCurveLayout();
 	void restoreCurveLayout(const QStringList& lst);
 

@@ -2527,28 +2527,6 @@ QString Graph::saveCurveLayout(int index)
 	return s;
 }
 
-QString Graph::saveCurveSymbolImage(PlotCurve *c)
-{
-	if (!c || c->symbol().style() != QwtSymbol::Image)
-		return QString();
-
-	ImageSymbol *is = (ImageSymbol *)(&c->symbol());
-	if (!is)
-		return QString();
-
-	QString s = "<SymbolImage>\n";
-	s += "<path>" + is->imagePath() + "</path>\n";
-	s += "<xpm>\n";
-	QByteArray bytes;
-	QBuffer buffer(&bytes);
-	buffer.open(QIODevice::WriteOnly);
-	is->pixmap().save(&buffer, "XPM");
-	s += QString(bytes);
-	s += "</xpm>\n";
-
-	return s + "</SymbolImage>\n";
-}
-
 void Graph::restoreSymbolImage(int index, const QStringList& lst)
 {
 	if (index < 0 || index >= d_curves.count())
@@ -2608,7 +2586,6 @@ QString Graph::saveCurves()
 				s += QString::number(c->startRow())+"\t"+QString::number(c->endRow())+"\t";
 				s += QString::number(c->isVisible())+"\n";
 				s += c->saveToString();
-				s += saveCurveSymbolImage(c);
 			} else if (c->type() == ErrorBars){
   	        	ErrorBarsCurve *er = (ErrorBarsCurve *)it;
   	            s += "ErrorBars\t";
