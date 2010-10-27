@@ -30,6 +30,7 @@
 #define OdsFileHandler_H
 
 #include <QXmlDefaultHandler>
+#include <QDateTime>
 #include <vector>
 
 class ApplicationWindow;
@@ -70,6 +71,7 @@ private:
 		int	col;
 		double	d;
 		QString	str;
+		QDateTime date_time;
 		CellType type;
 	};
 

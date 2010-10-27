@@ -54,7 +54,7 @@ d_ods_file_name(odsFileName)
 	}
 
 	if (qName == "table:table-cell"){
-		cell_data cell = {d_rows - 1, 0, 0.0, "", EmptyCell};
+		cell_data cell = {d_rows - 1, 0, 0.0, "", QDateTime(), EmptyCell};
 		QString type = attributes.value("office:value-type");
 		if (type == QString("float")){
 			cell.d = attributes.value("office:value").toDouble();
@@ -69,6 +69,7 @@ d_ods_file_name(odsFileName)
 			cell.d = attributes.value("office:value").toDouble();
 			cell.type = Boolean;
 		} else if (type == QString("date")){
+			cell.date_time = QDateTime::fromString(attributes.value("office:date-value"), "yyyy-MM-ddThh:mm:ss");
 			cell.type = Date;
 		} else if (type == QString("time")){
 			cell.type = Time;
@@ -132,16 +133,44 @@ bool OdsFileHandler::endElement(const QString & /* namespaceURI */,
 				if (cell.type == Float)
 					t->setCell(cell.row, cell.col, cell.d);
 				else {
-					if (cell.type == Date)
-						t->setDateFormat("dd.MM.yyyy", cell.col, false);
-					else if (cell.type == Time)
-						t->setTimeFormat("h:mm:ss", cell.col, false);
-					else if (cell.type == String)
-						t->setTextFormat(cell.col);
-
-					t->setText(cell.row, cell.col, cell.str);
+					if (cell.type == Date){
+						t->setText(cell.row, cell.col, cell.date_time.toString("yyyy-MM-dd hh:mm:ss"));
+						t->setDateFormat("yyyy-MM-dd hh:mm:ss", cell.col, false);
+					} else if (cell.type == Time){
+						t->setTimeFormat("hh:mm:ss", cell.col, false);
+						t->setText(cell.row, cell.col, cell.str);
+					} else
+						t->setText(cell.row, cell.col, cell.str);
 				}
 			}
+
+			int emptyRows = 0;
+			for (unsigned int i = 0; i < d_rows; i++){
+				if (!t->isEmptyRow(i))
+					break;
+				emptyRows++;
+			}
+			if (emptyRows)
+				t->deleteRows(0, emptyRows);
+
+			QStringList header;
+			bool firstLineAllStrings = true;
+			for (unsigned int col = 0; col <= d_last_column; col++){
+				if (firstLineAllStrings){
+					QString s = t->text(0, col);
+					bool ok;
+					s.toDouble (&ok);
+					if (ok)
+						firstLineAllStrings = false;
+					else
+						header << s;
+				}
+			}
+			if (!header.isEmpty() && firstLineAllStrings){
+				t->deleteRows(0, 1);
+				t->setHeader(header);
+			}
+
 			t->showNormal();
 			d_tables << t;
 		} else

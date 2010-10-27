@@ -159,6 +159,7 @@ void EnrichmentDialog::initTextPage()
 	gl1->addWidget(textColorBtn, 0, 1);
 
 	textFontBtn = new QPushButton(tr( "&Font" ));
+	textFontBtn->setIcon(QIcon(":/font.png"));
 	connect(textFontBtn, SIGNAL(clicked()), this, SLOT(customFont()));
 	gl1->addWidget(textFontBtn, 0, 2);
 

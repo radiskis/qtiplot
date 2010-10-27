@@ -227,8 +227,10 @@ void ConfigDialog::initTablesPage()
 	QHBoxLayout * bottomLayout = new QHBoxLayout( groupBoxTableFonts );
 
 	buttonTextFont= new QPushButton();
+	buttonTextFont->setIcon(QIcon(":/font.png"));
 	bottomLayout->addWidget( buttonTextFont );
 	buttonHeaderFont= new QPushButton();
+	buttonHeaderFont->setIcon(QIcon(":/font.png"));
 	bottomLayout->addWidget( buttonHeaderFont );
 
 	boxTableComments = new QCheckBox();
@@ -423,12 +425,16 @@ void ConfigDialog::initPlotsPage()
 	plotFontsLayout->addWidget( groupBox2DFonts );
 	QVBoxLayout * fontsLayout = new QVBoxLayout( groupBox2DFonts );
 	buttonTitleFont= new QPushButton();
+	buttonTitleFont->setIcon(QIcon(":/font.png"));
 	fontsLayout->addWidget( buttonTitleFont );
 	buttonLegendFont= new QPushButton();
+	buttonLegendFont->setIcon(QIcon(":/font.png"));
 	fontsLayout->addWidget( buttonLegendFont );
 	buttonAxesFont= new QPushButton();
+	buttonAxesFont->setIcon(QIcon(":/font.png"));
 	fontsLayout->addWidget( buttonAxesFont );
 	buttonNumbersFont= new QPushButton();
+	buttonNumbersFont->setIcon(QIcon(":/font.png"));
 	fontsLayout->addWidget( buttonNumbersFont );
 	fontsLayout->addStretch();
 
@@ -539,10 +545,13 @@ void ConfigDialog::initPlots3DPage()
     groupBox3DFonts = new QGroupBox();
 	QGridLayout * fl = new QGridLayout( groupBox3DFonts );
 	btnTitleFnt = new QPushButton();
+	btnTitleFnt->setIcon(QIcon(":/font.png"));
 	fl->addWidget( btnTitleFnt, 0, 0);
 	btnLabelsFnt = new QPushButton();
+	btnLabelsFnt->setIcon(QIcon(":/font.png"));
 	fl->addWidget( btnLabelsFnt, 0, 1);
 	btnNumFnt = new QPushButton();
+	btnNumFnt->setIcon(QIcon(":/font.png"));
 	fl->addWidget( btnNumFnt, 0, 2);
 	fl->setRowStretch(1, 1);
 

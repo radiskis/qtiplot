@@ -1010,6 +1010,7 @@ void PlotDialog::initLabelsPage()
     boxLabelsAngle->setRange(0, 180);
     gl->addWidget(boxLabelsAngle, 3, 1);
     btnLabelsFont = new QPushButton(tr("&Font"));
+	btnLabelsFont->setIcon(QIcon(":/font.png"));
 	gl->addWidget(btnLabelsFont, 2, 2);
 
     gl->addWidget(new QLabel(tr("X Offset (font height %)")), 4, 0);
