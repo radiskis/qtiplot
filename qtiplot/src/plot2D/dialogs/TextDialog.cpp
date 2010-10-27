@@ -91,7 +91,7 @@ TextDialog::TextDialog(TextType type, QWidget* parent, Qt::WFlags fl)
 		topLayout->addWidget(invertTitleBox, 1, 2);
 	}
 
-	topLayout->setColumnStretch(2, 1);
+	topLayout->setColumnStretch(3, 1);
 
     QVBoxLayout *vl = new QVBoxLayout();
     buttonApply = new QPushButton(tr( "&Apply to..." ));
