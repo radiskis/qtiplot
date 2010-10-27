@@ -91,7 +91,7 @@ the hard disk. Make sure that you have backed up the file if you will ever need 
 <sect1 id="add-function-dialog">
   <title>Add Function</title>
   <para>This dialog box is used to add a function curve to the active plot. The plotted function is built with the common operators *, +, /, -, and ^ (for multiplication, addition, division, subtraction and exponentiation, respectively). A complete set of intrinsic functions are available and these are listed in the <link linkend="sec-muParser">muParser</link> section of the chapter on <emphasis>Mathematical Expressions and Scripting</emphasis>.</para>
-  <para>The first item is the <emphasis>Curve Type</emphasis> and is used to select the form of the generator function. The simplest and most common function definition is the classical cartesian coordinate definition, y=f(x). This is the default option and is simply named "Function". Just below this is a text pane in which to enter the function definition, The next two parameters are used to select the X-range to be used for the plot. The last parameter sets the number of data points to be computed in the selected X-range. At the very bottom is a "Function Selector" which contains a dropdown list of intrinsic functions and brief description of the function. Clicking on the <emphasis>Add Function</emphasis> button will copy the selected function into the function definition pane. </para>
+  <para>The first item is the <emphasis>Curve Type</emphasis> and is used to select the form of the generator function. The simplest and most common function definition is the classical Cartesian coordinate definition, y=f(x). This is the default option and is simply named "Function". Just below this is a text pane in which to enter the function definition, The next two parameters are used to select the X-range to be used for the plot. The last parameter sets the number of data points to be computed in the selected X-range. At the very bottom is a "Function Selector" which contains a dropdown list of intrinsic functions and brief description of the function. Clicking on the <emphasis>Add Function</emphasis> button will copy the selected function into the function definition pane. </para>
   <figure id="add-function-dialog-1">
     <title>The &add-function-cmd; dialog box: Cartesian Coordinates.</title>
     <mediaobject>
@@ -110,7 +110,7 @@ the hard disk. Make sure that you have backed up the file if you will ever need 
 		<imagedata  format="PNG" fileref="pics/add-function-dialog4.png"/>
 	  </imageobject>
 	</mediaobject>
-  </figure>
+  </figure>linkend=
 
   <para>A function can also be defined using a parametric definition by selecting "Parametric plot" as the <emphasis>Curve type</emphasis>. That is, given some variable, <emphasis>m</emphasis>, the (x,y) data points are computed using functions of that variable, x=f(m) and y=g(m).</para>
   <para>The first parameter is the name of the parametric variable (here <emphasis>m</emphasis>). It is followed by the definitions of the two functions, the range of the parametric variable, and the number of data points.</para>
@@ -192,10 +192,10 @@ which opens a dialog allowing to edit the plot range.</para>
 in the active graph window. You can add new layers or remove existing ones using the <emphasis>Number</emphasis> of layers control. Checking the <emphasis>Link X axes</emphasis> option makes all the X-axes interdependent, meaning that if you manually set abscissa scale limits on one plot layer, then the same limits will automatically be set on all other layers in the plot window.</para>
 
 <para>You can specify the number of rows and columns that define a grid of plots. With the default settings, &appname; computes the size of the layers in the grid from the size of the graph window.
-If you check the <emphasis>Layer Canvas Size</emphasis> option, you can set the size of the drawing area for the layers. &appname; will then modify the size of the graph window to accomodate them.
+If you check the <emphasis>Layer Canvas Size</emphasis> option, you can set the size of the drawing area for the layers. &appname; will then modify the size of the graph window to accommodate them.
 When the <emphasis>Fixed size</emphasis> box is checked, the size of the layers will be kept unchanged when you manually resize the graph window.</para>
 
-<para>The controls in the two group boxes on the right, <emphasis>Alignment</emphasis> and <emphasis>Spacing</emphasis>, are used to set the alignment of the layers in the window and the margins between the layer borders and the graph window limits. The <emphasis>Spacing</emphasis> group includes an <emphasis>Align</emphasis> control with 2 options (<emphasis>Canvases</emphasis> and <emphasis>Layers</emphasis>) that control the meaning of the row and column spacing entries. If the <emphasis>Canvases</emphasis> alignment option is chosen, then the spacing fields define the distances between the axes of the layers. On the otherhand, if the <emphasis>Layers</emphasis> alignment option is chosen, then the spacing fields define the distances between the borders of the layers.</para>
+<para>The controls in the two group boxes on the right, <emphasis>Alignment</emphasis> and <emphasis>Spacing</emphasis>, are used to set the alignment of the layers in the window and the margins between the layer borders and the graph window limits. The <emphasis>Spacing</emphasis> group includes an <emphasis>Align</emphasis> control with 2 options (<emphasis>Canvases</emphasis> and <emphasis>Layers</emphasis>) that control the meaning of the row and column spacing entries. If the <emphasis>Canvases</emphasis> alignment option is chosen, then the spacing fields define the distances between the axes of the layers. On the other hand, if the <emphasis>Layers</emphasis> alignment option is chosen, then the spacing fields define the distances between the borders of the layers.</para>
 
 <para>Finally, it is also possible swap two layers using the <emphasis>Swap Layers</emphasis> controls. Simply select the Source and Destination layers and click the <emphasis>Swap</emphasis> button.</para>
   <figure id="fig-define-layer-1">
@@ -589,7 +589,7 @@ When the speed mode is enabled, filtering of the data is activated only for the 
 <!-- ************************************************** -->
 <sect1 id="define-surface-plot-dialog">
   <title>Define surface plot</title>
-  <para>This dialog is used when you enter the &new-surface-3d-plot-cmd; command. It allows for the creation of a new function of two variables. When the "Function" <emphasis>Surface type </emphasis>is selected the coordinate system will be cartesian and the function will be of the form: z = f(x,y).</para>
+  <para>This dialog is used when you enter the &new-surface-3d-plot-cmd; command. It allows for the creation of a new function of two variables. When the "Function" <emphasis>Surface type </emphasis>is selected the coordinate system will be Cartesian and the function will be of the form: z = f(x,y).</para>
   <figure id="fig-define-surface-plot-dialog">
     <title>The &new-surface-3d-plot-cmd; dialog box.</title>
     <mediaobject>
@@ -676,7 +676,7 @@ When the speed mode is enabled, filtering of the data is activated only for the 
 
 <sect1 id="integrate-function-dialog">
   <title>Integrate Function Dialog</title>
-  <para>This dialog box is opened when you select the &integrate-function-cmd; command from the &analysis-menu-lnk; Pressing the <emphasis>Integrate </emphasis>button performs a numerical integration of a user defined analytitical function. This function is entered/edited in the <emphasis>Function</emphasis> text box. A combo box which lists internally defined functions is provided. Clicking the "Add" button will copy the selected function into the <emphasis>Function</emphasis> text box at the position of the text cursor. Clicking the "Clear" button will clear the entire contents of the <emphasis>Function</emphasis> text box. Clicking on the "Recent" button opens a dialog which contains a combo box that lists recently used functions. Selecting one of these and clicking "OK" will replace whatever is in the <emphasis>Function</emphasis> text box with the selected function. The second input field displays the name of the independent variable of the function (i.e., the variable of integration). It is set to <emphasis>X</emphasis> by default. The third parameter is the maximum number of subintervals that that the integration algorithm may use to integrate the function. The default value of 1000 should work in almost all circumstances. The fourth parameter is the tolerance limit. Smaller numbers will result in the algorithm using more subintervals. The default value of 0.01 should work for most functions. The next two fields are the lower and upper limits of integration. Set these to whatever values you need. The final item is the <emphasis>Plot Area </emphasis>check box. Leave this checked if you want a plot of the integrated function to be drawn on the currently active layer. A table of the plotted data can be generated by right clicking on the curve and selecting the <emphasis>Worksheet </emphasis>command.</para>
+  <para>This dialog box is opened when you select the &integrate-function-cmd; command from the &analysis-menu-lnk; Pressing the <emphasis>Integrate </emphasis>button performs a numerical integration of a user defined analytical function. This function is entered/edited in the <emphasis>Function</emphasis> text box. A combo box which lists internally defined functions is provided. Clicking the "Add" button will copy the selected function into the <emphasis>Function</emphasis> text box at the position of the text cursor. Clicking the "Clear" button will clear the entire contents of the <emphasis>Function</emphasis> text box. Clicking on the "Recent" button opens a dialog which contains a combo box that lists recently used functions. Selecting one of these and clicking "OK" will replace whatever is in the <emphasis>Function</emphasis> text box with the selected function. The second input field displays the name of the independent variable of the function (i.e., the variable of integration). It is set to <emphasis>X</emphasis> by default. The third parameter is the maximum number of subintervals that that the integration algorithm may use to integrate the function. The default value of 1000 should work in almost all circumstances. The fourth parameter is the tolerance limit. Smaller numbers will result in the algorithm using more subintervals. The default value of 0.01 should work for most functions. The next two fields are the lower and upper limits of integration. Set these to whatever values you need. The final item is the <emphasis>Plot Area </emphasis>check box. Leave this checked if you want a plot of the integrated function to be drawn on the currently active layer. A table of the plotted data can be generated by right clicking on the curve and selecting the <emphasis>Worksheet </emphasis>command.</para>
   <figure id="fig-integrate-function-dialog">
     <title>The &integrate-function-cmd; dialog box.</title>
     <mediaobject>
@@ -728,22 +728,22 @@ When the speed mode is enabled, filtering of the data is activated only for the 
   <para> In this second tab you can also choose a weighting method for your fit (the default is <emphasis>No weighting</emphasis>). The available weighting methods are:</para>
   	  <orderedlist>
 	  <listitem>
-  	   <para><emphasis>No weight</emphasis>: all weighting coeficients are set to 1 (<emphasis>w<subscript>i</subscript> = 1</emphasis>). </para>
+  	   <para><emphasis>No weight</emphasis>: all weighting coefficients are set to 1 (<emphasis>w<subscript>i</subscript> = 1</emphasis>). </para>
   	  </listitem>
   	  <listitem>
-  	   <para><emphasis>Instrumental</emphasis>: the values of the associated error bars are used as weighting coeficients <emphasis>w<subscript>i</subscript> = 1/er<subscript>i</subscript><superscript>2</superscript></emphasis>, where <emphasis>er<subscript>i</subscript></emphasis> are the error bar sizes stored in error bar columns. You must add Y-error bars to the analysed curve before performing the fit.</para>
+  	   <para><emphasis>Instrumental</emphasis>: the values of the associated error bars are used as weighting coefficients <emphasis>w<subscript>i</subscript> = 1/er<subscript>i</subscript><superscript>2</superscript></emphasis>, where <emphasis>er<subscript>i</subscript></emphasis> are the error bar sizes stored in error bar columns. You must add Y-error bars to the analyzed curve before performing the fit.</para>
   	  </listitem>
   	  <listitem>
-  	    <para><emphasis>Statistical</emphasis>: the weighting coeficients are calculated as <emphasis>w<subscript>i</subscript> = 1/y<subscript>i</subscript></emphasis>,
+  	    <para><emphasis>Statistical</emphasis>: the weighting coefficients are calculated as <emphasis>w<subscript>i</subscript> = 1/y<subscript>i</subscript></emphasis>,
 		where <emphasis>y<subscript>i</subscript></emphasis> are the y values in the fitted data set.</para>
   	  </listitem>
   	  <listitem>
-  	    <para><emphasis>Arbitrary Dataset</emphasis>: allows setting the weighting coeficients using an arbitrary data set <emphasis>w<subscript>i</subscript> = 1/c<subscript>i</subscript></emphasis><superscript>2</superscript>,
+  	    <para><emphasis>Arbitrary Dataset</emphasis>: allows setting the weighting coefficients using an arbitrary data set <emphasis>w<subscript>i</subscript> = 1/c<subscript>i</subscript></emphasis><superscript>2</superscript>,
 		where <emphasis>c<subscript>i</subscript></emphasis> are the values in the arbitrary data set.
 		The column used for the weighting must have a number of rows equal to the number of points in the fitted curve. </para>
   	  </listitem>
 	  <listitem>
-  	    <para><emphasis>Direct Weighting</emphasis>: allows setting the weighting coeficients using an arbitrary data set <emphasis>w<subscript>i</subscript> = c<subscript>i</subscript></emphasis>,
+  	    <para><emphasis>Direct Weighting</emphasis>: allows setting the weighting coefficients using an arbitrary data set <emphasis>w<subscript>i</subscript> = c<subscript>i</subscript></emphasis>,
 		where <emphasis>c<subscript>i</subscript></emphasis> are the values in the arbitrary data set.
 		The column used for the weighting must have a number of rows equal to the number of points in the fitted curve. </para>
   	  </listitem>
@@ -894,7 +894,7 @@ reduced chi-squared value. You can choose to enable this option by checking the
   <sect3 id="general-preferences-application-tab"><title>Application Tab</title>
   <para>Controls on the <emphasis>Application</emphasis> tab are used to set application wide defaults.</para>
 
-<para>The <emphasis>Language</emphasis> combo-box lists the tranlations available in &appname;. Select a language from this list. Control names, program labels, etc., will be displayed in this language.  All available translations can be downloaded from the following address:
+<para>The <emphasis>Language</emphasis> combo-box lists the translations available in &appname;. Select a language from this list. Control names, program labels, etc., will be displayed in this language.  All available translations can be downloaded from the following address:
   <ulink url="http://soft.proindependent.com/translations.html">http://soft.proindependent.com/translations.html</ulink>. In order to be loaded by the application, translations must be placed in the folder specified in the <link linkend="general-preferences-file-locations-tab">File Locations</link> tab. By default, the folder is named <emphasis>translations</emphasis> and is located in the same folder as the &appname; executable. You can specify a different folder in the <emphasis>File Locations</emphasis> tab, if you wish.</para>
 
 <para> The <emphasis>Style</emphasis> combo-box defines the style used by &appname; for the window decorations. These include stylistic aspects of buttons, dialog boxes, window borders and titles, etc. Available styles are those currently available in the Qt library.</para>
@@ -1072,7 +1072,7 @@ via a proxy server. If you don't now how to set these options, contact your Netw
  </sect3>
 
  <sect3 id="2dplot-preferences-speed-tab"><title>Speed Tab</title>
-  <para>The <emphasis>Speed </emphasis>tab lets the user enable/disable antialiasing when drawing/redrawing 2D plots. Antialiasing is a major source of slow-down when rendering 2D plots. Unchecking the <emphasis>Antialiasing </emphasis>checkbox disables antialiasing for all curves, which probably will only be needed in extreme circumstances. Checking the <emphasis>Disable for curves with more than </emphasis>checkbox will disable antialiasing only for curves having data sets larger than the threshhold set with the textbox to the right of the <emphasis>Disable for curves with more than </emphasis>checkbox. Disabling this option i sprobably not a good idea. The default is for both of these options to be enabled, with a threshhold of 1000 data points. Proper setting of these options is essential to keeping the application responsive.</para>
+  <para>The <emphasis>Speed </emphasis>tab lets the user enable/disable antialiasing when drawing/redrawing 2D plots. Antialiasing is a major source of slow-down when rendering 2D plots. Unchecking the <emphasis>Antialiasing </emphasis>checkbox disables antialiasing for all curves, which probably will only be needed in extreme circumstances. Checking the <emphasis>Disable for curves with more than </emphasis>checkbox will disable antialiasing only for curves having data sets larger than the threshold set with the textbox to the right of the <emphasis>Disable for curves with more than </emphasis>checkbox. Disabling this option is probably not a good idea. The default is for both of these options to be enabled, with a threshold of 1000 data points. Proper setting of these options is essential to keeping the application responsive.</para>
   <informalfigure id="fig-preferences-dialog-19">
 	<mediaobject>
 	  <imageobject>
@@ -1148,7 +1148,7 @@ via a proxy server. If you don't now how to set these options, contact your Netw
 <!-- ************************************************** -->
 <sect1 id="printer-setup-dialog">
   <title>Printer-setup</title>
-  <para>This dialog box is opened by the &print-lnk; from the &file-menu-lnk; or by entering the &print-key; key. It is used to print the selected window (plot or table) and its exact appearance will depend both upon your operating system and the pronters that you have available. The following screenshot shows the dialog on a Linux system with one printer that uses the KDE window manager.</para>
+  <para>This dialog box is opened by the &print-lnk; from the &file-menu-lnk; or by entering the &print-key; key. It is used to print the selected window (plot or table) and its exact appearance will depend both upon your operating system and the printers that you have available. The following screenshot shows the dialog on a Linux system with one printer that uses the KDE window manager.</para>
   <figure id="fig-printer-setup">
     <title>The &print-cmd; dialog.</title>
     <mediaobject>
@@ -1166,11 +1166,11 @@ via a proxy server. If you don't now how to set these options, contact your Netw
   <title>Set Column Values</title>
       <indexterm><primary>table</primary></indexterm>
   <para>This dialog is activated with the &set-column-values-lnk; from the &table-menu-lnk; or by entering the shortcut &set-column-values-key;. It provides for filling a column with the result of a function evaluation.</para>
-  <para>The available mathematical functions (assuming you are using the default scripting language, muParser) are listed in the <emphasis>function selector </emphasis>combo-box next to the <emphasis>Add function </emphasis>button. Details of these functions and supported mathematical operators are listed in the <link linkend= "sec-muParser">muParser</link> section in the chapter on <emphasis>Mathematical Expressions and Scripting</emphasis>. The special function, <emphasis>col(c)</emphasis>, is used to access the values of column <code>c</code>, where <code>c</code> is the column's number (as in <emphasis>col(2)</emphasis>) or its name in doublequotes (as in <emphasis>col("time")</emphasis>).
-  You can also obtain values from other tables using the <emphasis>tablecol(t,c)</emphasis> function, where <code>t</code> is the table's name in doublequotes and <code>c</code> is the column's number or its name in doublequotes (example: <emphasis>tablecol("Table1","time")</emphasis>).</para>
+  <para>The available mathematical functions (assuming you are using the default scripting language, muParser) are listed in the <emphasis>function selector </emphasis>combo-box next to the <emphasis>Add function </emphasis>button. Details of these functions and supported mathematical operators are listed in the <link linkend= "sec-muParser">muParser</link> section in the chapter on <emphasis>Mathematical Expressions and Scripting</emphasis>. The special function, <emphasis>col(c)</emphasis>, is used to access the values of column <code>c</code>, where <code>c</code> is the column's number (as in <emphasis>col(2)</emphasis>) or its name in double quotes (as in <emphasis>col("time")</emphasis>).
+  You can also obtain values from other tables using the <emphasis>tablecol(t,c)</emphasis> function, where <code>t</code> is the table's name in double quotes and <code>c</code> is the column's number or its name in double quotes (example: <emphasis>tablecol("Table1","time")</emphasis>).</para>
   <para>The variables <code>i</code> and <code>j</code> can be used to access the current row and column numbers. Similarly, <code>sr</code> and <code>er</code> represent the selected starting and ending row, respectively.
   </para>
-  <para>Using Python as scripting language gives you even more possibilities. Not only can you use arbitrary Python code in the function body, but also access other objects within your project. For details, see the section on <link linkend="Python">Python </link>in the chapter on <emphasis>Mathematical Expressions and Scripting</emphasis>. Nevertheless, even though Python allows for a more powerful synthax, it can be quite slow for very large tables. Therefore you might want to use muParser instead, even when Python is set as the default script engine for your current project, Checking the <emphasis>Use built-in muParser</emphasis> option will force the use of muParser as the scripting engine. This greatly increases the speed of the evaluation for single line expressions.</para>
+  <para>Using Python as scripting language gives you even more possibilities. Not only can you use arbitrary Python code in the function body, but also access other objects within your project. For details, see the section on <link linkend="Python">Python </link>in the chapter on <emphasis>Mathematical Expressions and Scripting</emphasis>. Nevertheless, even though Python allows for a more powerful syntax, it can be quite slow for very large tables. Therefore you might want to use muParser instead, even when Python is set as the default script engine for your current project, Checking the <emphasis>Use built-in muParser</emphasis> option will force the use of muParser as the scripting engine. This greatly increases the speed of the evaluation for single line expressions.</para>
 
   <figure id="fig-sec-column-values">
     <title>The &set-column-values-cmd; dialog.</title>
@@ -1276,9 +1276,7 @@ to be displayed in the table header, you must use the same separator between col
     </mediaobject>
   </figure>
 
-<para>Using Python as scripting engine for the calculation of matrix values has the advantage of a more powerful syntax.  The drawback is that it can be quite slow for large matrices.
-  You can use muParser instead, even if Python is set as the default script engine for your &appname; project, by checking the <emphasis>Use built-in muParser</emphasis> box. Note that muParser is very fast for the
-  evaluation of single line expressions only, therefore try to avoid syntax like:
+<para>Using Python as scripting engine for the calculation of matrix values has the advantage of a more powerful syntax.  The drawback is that it can be quite slow for large matrices. You can use muParser instead, even if Python is set as the default script engine for your &appname; project, by checking the <emphasis>Use built-in muParser</emphasis> box. Note that muParser is very fast for the evaluation of single line expressions only, therefore try to avoid syntax like:
 <programlisting>
     a = cell(1, 1)
     b = cell(2, 2)
@@ -1296,10 +1294,10 @@ which will greatly increase the speed of evaluation!</para>
 <!-- ************************************************** -->
 <sect1 id="surface-plot-options-dialog">
   <title>Surface plot options</title>
-  <para>This dialog box is used to customize 3D function plots which created using the &new-surface-3d-plot-lnk; from the &file-menu-lnk;. It is activated by a double click on the 3D plot.</para>
+  <para>This dialog box is used to customize 3D function plots created using the &new-surface-3d-plot-lnk; from the &file-menu-lnk;. It is activated by a double click on a 3D plot.</para>
 
  <sect2 id="surface-plot-options-scale-tab"><title>Scale Tab</title>
- <para>The first tab is used to modify the X, Y, and Z ranges. It also allows specification of the number of labels drawn on the axes and the number of minor ticks.</para>
+ <para>The first tab is used to modify the X, Y, and Z ranges. It also allows specification of the number of labels (major ticks) to be drawn on the axes, as well as the number of minor ticks.</para>
   <figure id="fig-surface-plot-options-1">
     <title>The surface plot options dialog box.</title>
     <mediaobject>
@@ -1311,16 +1309,13 @@ which will greatly increase the speed of evaluation!</para>
  </sect2>
 
  <sect2 id="surface-plot-options-axis-tab"><title>Axis Tab</title>
- <para>The second tab defines the main parameters of the three axis: the axis label and its font,
-  and the length of the ticks. This length is defined in the same units as the range of the axis.
-  If something is changed in the scales of the graph, the length of the ticks is re-calculated by &appname;.
-  The font button allows to modify only the font used for the label,
-  if you want to customize the font of the numbers used for the axis, you must used the fifth tab.
-  The superscript and subscript buttons allow an easy insertion of LaTeX superscript/subscript commands.
-  The superscript/subscript texts will only be rendered as such if you export the plot to a .tex file, by
+ <para>The second tab defines the main parameters of the three axes: the axis label, its font,
+  and the length of the ticks. Tick length is defined in the same units as the axis range.
+  If the graph scales are changed, &appname; will re-calculate the length of the ticks.
+  The font button on this tab only allows modification of the font used for the label. The font used for axis numbers is selected using the font control on the <link linkend="surface-plot-options-general-tab">General Tab</link>. The superscript and subscript buttons allow for easy insertion of LaTeX superscript/subscript commands.
+  The superscript/subscript texts will only be rendered as such if you export the plot to a ".tex" file by
   choosing the <emphasis>LaTeX file</emphasis> text mode in the advanced settings of the export dialog.
-  In order to render the superscripts/subscripts, this file must be compiled separatelly, therefore you need
-  a LaTeX environement installed on your computer.
+  In order to render the superscripts/subscripts, the exported LaTex file must be compiled separately, therefore you need a LaTeX environment installed on your computer.
   </para>
   <informalfigure id="fig-surface-plot-options-2">
     <mediaobject>
@@ -1343,7 +1338,7 @@ which will greatly increase the speed of evaluation!</para>
  </sect2>
 
  <sect2 id="surface-plot-options-title-tab"><title>Title Tab</title>
-  <para>The fourth tab is used to define or modify the title of the plot. You can not add subscripts/superscripts, bold characters, etc in your title as you can do it for 2D plots.</para>
+  <para>The fourth tab is used to define or modify the title of the plot. You can add LaTex format subscripts, superscripts, bold characters, etc in your title in a manner identical to that described for LaTex formatting in the <link linkend="surface-plot-options-axis-tab">Axis Tab</link>.</para>
   <informalfigure id="fig-surface-plot-options-4">
 	<mediaobject>
 	  <imageobject>
@@ -1354,7 +1349,7 @@ which will greatly increase the speed of evaluation!</para>
  </sect2>
 
  <sect2 id="surface-plot-options-colors-tab"><title>Colors Tab</title>
-  <para>The fifth tab allows to modify the colors used in the different elements of the plot.</para>
+  <para>The fifth tab allows modification of the colors used for different elements of the plot.</para>
   <informalfigure id="fig-surface-plot-options-4">
     <mediaobject>
       <imageobject>
@@ -1363,17 +1358,15 @@ which will greatly increase the speed of evaluation!</para>
     </mediaobject>
   </informalfigure>
 <para>The <emphasis>Linear color map</emphasis> group defines the color scheme which is used to show
-the Z-values. If the <emphasis>Scale Colors</emphasis> box is checked, a Z value will be represented by a
+Z-values. If the <emphasis>Scale Colors</emphasis> box is checked, a Z value will be represented by a
 color defined as a linear interpolation between the adjacent values in the color table.</para>
 
-<para>Another way to define colors is to read a colormap from a file.
-The format of the file is simple: each line defines a color by red, green and blue values as integers
- between 0 and 255. The numbers should be separated by spaces. You can find several examples of colormaps on the
+<para>You may also read a colormap from a file. The format of the file is simple: each line defines a color by red, green and blue values as integers between 0 and 255. Numbers should be separated by spaces. You can find several examples of colormaps on the
  <ulink url="http://soft.proindependent.com/download.html">&appname; web site</ulink>.</para>
  </sect2>
 
  <sect2 id="surface-plot-options-general-tab"><title>General Tab</title>
-<para>The <emphasis>General</emphasis> tab is used to define some global parameters and the aspect ratio of the plot. The default behaviour is to use the perspective to compute the 3D plot. If you choose to check the <emphasis>Orthogonal</emphasis> check box, the plot will use vertical Z axis whatever the view angle of the plot.</para>
+<para>The <emphasis>General</emphasis> tab is used to define some global parameters and the aspect ratio of the plot. The default behavior is to use perspective to compute the 3D plot. If you choose to check the <emphasis>Orthogonal</emphasis> check box, the plot will use a vertical Z axis regardless of the view angle of the plot.</para>
 
   <figure id="fig-surface-plot-options-5">
 	<title>The general plot options tab.</title>
@@ -1386,8 +1379,7 @@ The format of the file is simple: each line defines a color by red, green and bl
  </sect2>
 
  <sect2 id="surface-plot-options-print-tab"><title>Print Tab</title>
-<para>The <emphasis>Print</emphasis> tab is used to define some useful print options, like scaling to the paper size or
- showing the cropmarks.</para>
+<para>The <emphasis>Print</emphasis> tab is used to define some useful print options, like scaling to the printer's paper size or showing cropmarks.</para>
 
   <figure id="fig-surface-plot-options-5">
 	<title>The 3D plot print options.</title>
@@ -1406,8 +1398,7 @@ The format of the file is simple: each line defines a color by red, green and bl
 <!-- ************************************************** -->
 <sect1 id="text-options-dialog">
   <title>Text options</title>
-  <para>This dialog can be opened by several commands such as &format-title-lnk;
-  or when you double click on an axis title in your plot.
+  <para>This dialog can be opened using several different commands, such as the &format-title-lnk;, or simply by double clicking on an axis title in your plot.
   The <emphasis>Color</emphasis>, <emphasis>Font</emphasis> and <emphasis>Alignment</emphasis>
   commands allow the modification of the general settings of the text label.
   You can also specify the distance between the label and the corresponding axis, using the
@@ -1422,36 +1413,34 @@ The format of the file is simple: each line defines a color by red, green and bl
     </mediaobject>
   </figure>
   <para>The following slightly modified dialog is opened when you double click on texts/legends
-  in your plot in order to customize them. It also allows to add text boxes to a plot layer.
-  When the text object is a legend, listing the curves plotted on the layer, the curve symbols and
+  in your plot in order to customize them. It also allows adding text boxes to a plot layer.
+  When the text object is a legend (a listing of the curves plotted on the layer) the curve symbols and
   lines are also drawn in the text box, in front of the curve names.
   In order to display the symbol of a curve and the name of the data set,
-  the follwing synthax is used: <emphasis>\l(1.2)%(1.2)</emphasis>. In this example the first integer before the dot
+  the following syntax is used: <emphasis>\l(1.2)%(1.2)</emphasis>. In this example the first integer before the dot
   is the index of the plot layer and the second value, the number 2, refers to the index
   of the curve. The index of the layer is optional, if not specified, the parent layer is used.
   </para>
   <para>
   The % character is an alias for the name of the data set.
-  By adding ",@C" or ",@L" to the number you can alternativly use the name or comment of the dataset, e.g.
+  By adding ",@C" or ",@L" to the number you can alternatively use the name or comment of the dataset, e.g.
   <emphasis>\l(2)%(2,@C)</emphasis> will use the column name.
-  Additionaly you can use "@W" to display the table name and "@WL" for the table label.
+  Additionally, you can use "@W" to display the table name and "@WL" for the table label.
   To display the contents of a specific cell of the source data table use <emphasis>%(curve #,@L,col,row)</emphasis>.
   If the col parameter is missing the y-column of the dataset is used.
   </para>
 
-<para>If the <emphasis>Auto-update</emphasis> box is checked the legend is updated each time
+<para>If the <emphasis>Auto-update</emphasis> box is checked, the legend is updated each time
 a curve is added or removed from the plot layer.</para>
 
 <para>The <emphasis>TeX Output</emphasis> option specifies if LaTeX special characters should be escaped or not when exporting
 to .tex files. If the text contains LaTeX syntax (like superscripts, subscripts, etc...) and you want them to be interpreted
 by the LaTeX compiler, you should check this option.</para>
 
-<para>By pressing the <emphasis>Set As Default</emphasis> button all text format options will
+<para>By pressing the <emphasis>Set As Default</emphasis> button, all text format options will
 be saved to the user preferences and will be applied to new text objects.
-The <emphasis>Apply to...</emphasis> button can be used to apply the format options to
-all text objects in the active plot layer or in the current plot window or in
-all plot windows in the project. The domain of application can be chosen from the
-list box bellow the <emphasis>Apply to...</emphasis> button.</para>
+The <emphasis>Apply to...</emphasis> button can be used to apply these format options to
+all text objects in the active plot layer, the current plot window, or all plot windows in the project. The scope of application of the new format can be chosen from the list box below the <emphasis>Apply to...</emphasis> button.</para>
 
   <para>The <emphasis>Opacity</emphasis> of the <emphasis>Background color</emphasis> can have a value
   between 0 (transparent background) and 255 (completely opaque background).</para>
@@ -1463,11 +1452,11 @@ list box bellow the <emphasis>Apply to...</emphasis> button.</para>
       </imageobject>
     </mediaobject>
   </figure>
-  <para>The text item can be modified in the text window. Several improvements can be added to the text:</para>
+  <para>The text item can be modified in the text window. Several enhancements can be added to text:</para>
   <itemizedlist>
-    <listitem><para>&lt;sub&gt;text&lt;/sub&gt; will draw the text as subscripts. You can insert this sequence by clicking on the <inlinemediaobject><imageobject><imagedata  format="PNG" fileref="pics/text-options-icon1.png"/></imageobject></inlinemediaobject>.</para></listitem>
-    <listitem><para>&lt;sup&gt;text&lt;/sup&gt; will draw the text as superscripts. You can insert this sequence by clicking on the <inlinemediaobject><imageobject><imagedata  format="PNG" fileref="pics/text-options-icon2.png"/></imageobject></inlinemediaobject>.</para></listitem>
-    <listitem><para>By clicking on the <inlinemediaobject><imageobject><imagedata  format="PNG" fileref="pics/text-options-icon3.png"/></imageobject></inlinemediaobject>, you can open a new dialog which allows to select lower greek characters:</para>
+    <listitem><para>&lt;sub&gt;text&lt;/sub&gt; will draw the text as subscripts. You can insert this sequence by clicking on the <inlinemediaobject><imageobject><imagedata  format="PNG" fileref="pics/text-options-icon1.png"/></imageobject></inlinemediaobject> button.</para></listitem>
+    <listitem><para>&lt;sup&gt;text&lt;/sup&gt; will draw the text as superscripts. You can insert this sequence by clicking on the <inlinemediaobject><imageobject><imagedata  format="PNG" fileref="pics/text-options-icon2.png"/></imageobject></inlinemediaobject> button.</para></listitem>
+    <listitem><para>Clicking on the <inlinemediaobject><imageobject><imagedata  format="PNG" fileref="pics/text-options-icon3.png"/></imageobject></inlinemediaobject> button, opens a dialog for selecting lower case Greek characters:</para>
     <informalfigure id="fig-text-options1">
       <mediaobject>
         <imageobject>
@@ -1476,7 +1465,7 @@ list box bellow the <emphasis>Apply to...</emphasis> button.</para>
       </mediaobject>
     </informalfigure>
     </listitem>
-    <listitem><para>By clicking on the <inlinemediaobject><imageobject><imagedata  format="PNG" fileref="pics/text-options-icon4.png"/></imageobject></inlinemediaobject>, you can open a new dialog which allows to select upper greek characters:</para>
+    <listitem><para>Clicking on the <inlinemediaobject><imageobject><imagedata  format="PNG" fileref="pics/text-options-icon4.png"/></imageobject></inlinemediaobject> button opens a dialog for selecting upper case Greek characters:</para>
     <informalfigure id="fig-text-options2">
       <mediaobject>
         <imageobject>
@@ -1485,7 +1474,7 @@ list box bellow the <emphasis>Apply to...</emphasis> button.</para>
       </mediaobject>
     </informalfigure>
     </listitem>
-    <listitem><para>By clicking on the integral symbol you can open a new dialog which allows to select various mathematical symbols:</para>
+    <listitem><para>Clicking on the integral symbol opens a dialog which allows selecting various mathematical symbols:</para>
     <informalfigure id="fig-text-options4">
       <mediaobject>
         <imageobject>
@@ -1494,7 +1483,7 @@ list box bellow the <emphasis>Apply to...</emphasis> button.</para>
       </mediaobject>
     </informalfigure>
     </listitem>
-    <listitem><para>By clicking on the arrow icon, you can open a new dialog which allows to select various arrow symbols:</para>
+    <listitem><para>Clicking on the arrow icon opens a dialog which allows selecting various arrow symbols:</para>
     <informalfigure id="fig-text-options5">
       <mediaobject>
         <imageobject>
@@ -1503,9 +1492,9 @@ list box bellow the <emphasis>Apply to...</emphasis> button.</para>
       </mediaobject>
     </informalfigure>
     </listitem>
-    <listitem><para>&lt;b&gt;text&lt;/b&gt; will draw the text with bold characters. You can insert this sequence by clicking on the <inlinemediaobject><imageobject><imagedata  format="PNG" fileref="pics/text-options-icon5.png"/></imageobject></inlinemediaobject>.</para></listitem>
-    <listitem><para>&lt;i&gt;text&lt;/i&gt; will draw the text with italic characters. You can insert this sequence by clicking on the <inlinemediaobject><imageobject><imagedata  format="PNG" fileref="pics/text-options-icon6.png"/></imageobject></inlinemediaobject>.</para></listitem>
-    <listitem><para>&lt;u&gt;text&lt;/u&gt; will draw the text with underlined characters. You can insert this sequence by clicking on the <inlinemediaobject><imageobject><imagedata  format="PNG" fileref="pics/text-options-icon7.png"/></imageobject></inlinemediaobject>.</para></listitem>
+    <listitem><para>&lt;b&gt;text&lt;/b&gt; will draw the text with bold characters. You can insert this sequence by clicking on the <inlinemediaobject><imageobject><imagedata  format="PNG" fileref="pics/text-options-icon5.png"/></imageobject></inlinemediaobject> button.</para></listitem>
+    <listitem><para>&lt;i&gt;text&lt;/i&gt; will draw the text with italic characters. You can insert this sequence by clicking on the <inlinemediaobject><imageobject><imagedata  format="PNG" fileref="pics/text-options-icon6.png"/></imageobject></inlinemediaobject> button.</para></listitem>
+    <listitem><para>&lt;u&gt;text&lt;/u&gt; will draw the text with underlined characters. You can insert this sequence by clicking on the <inlinemediaobject><imageobject><imagedata  format="PNG" fileref="pics/text-options-icon7.png"/></imageobject></inlinemediaobject> button.</para></listitem>
   </itemizedlist>
 
 </sect1>
