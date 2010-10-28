@@ -1311,7 +1311,7 @@ void Graph3D::setAxisNumericFormat(int axis, int format, int precision)
 	sp->coordinates()->axes[axis3].setNumericFormat((Qwt3D::Scale::NumericFormat)format, precision);
 	sp->coordinates()->axes[axis4].setNumericFormat((Qwt3D::Scale::NumericFormat)format, precision);
 
-	update();
+	sp->updateGL();
 	emit modified();
 }
 
@@ -1375,7 +1375,6 @@ void Graph3D::setScale(int axis, double start, double end, int majorTicks, int m
 	sp->coordinates()->axes[axis3].setLimits(start, end);
 	sp->coordinates()->axes[axis4].setLimits(start, end);
 
-	resetAxesType();
 	if(scaleType[axis] != type){
 		sp->coordinates()->axes[axis1].setScale(type);
 		sp->coordinates()->axes[axis2].setScale(type);
@@ -1511,7 +1510,7 @@ void Graph3D::updateScalesFromMatrix(double xl, double xr, double yl, double yr,
 	d_active_curve->loadFromData(data_matrix, nc, nr, xl, xr, yl, yr);
 	Matrix::freeMatrixData(data_matrix, nc);
 
-	sp->createCoordinateSystem(Triple(xl, yl, zmin), Triple(xr, yr, zmax));
+	sp->coordinates()->setPosition(Triple(xl, yl, zmin), Triple(xr, yr, zmax));
 	d_active_curve->legend()->setLimits(zmin, zmax);
 	d_active_curve->legend()->setMajors(legendMajorTicks);
 
@@ -1559,7 +1558,7 @@ void Graph3D::updateScales(double xl, double xr, double yl, double yr,double zl,
 
 	if (d_active_curve)
 		d_active_curve->loadFromData(data, xmesh, ymesh, xl, xr, yl, yr);
-	sp->createCoordinateSystem(Triple(xl, yl, zl), Triple(xr, yr, zr));
+	sp->coordinates()->setPosition(Triple(xl, yl, zl), Triple(xr, yr, zr));
 	Matrix::freeMatrixData(data, xmesh);
 }
 

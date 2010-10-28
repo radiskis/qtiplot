@@ -1087,10 +1087,9 @@ bool Plot3DDialog::updatePlot()
 	} else if (generalDialog->currentPage() == (QWidget*)scale){
 		double start = qMin(boxFrom->value(), boxTo->value());
 		double end = qMax(boxFrom->value(), boxTo->value());
-		d_plot->setScale(axesList->currentRow(), start, end, boxMajors->value(),
-						 boxMinors->value(), (Qwt3D::SCALETYPE)boxType->currentIndex());
-
+		d_plot->setScale(axesList->currentRow(), start, end, boxMajors->value(), boxMinors->value(), (Qwt3D::SCALETYPE)boxType->currentIndex());
 		d_plot->setAxisNumericFormat(axesList->currentRow(), boxTickLabelsFormat->currentIndex(), boxPrecision->value());
+		viewScaleLimits(axesList->currentRow());
 	} else if (generalDialog->currentPage() == axes){
 		int axis = axesList2->currentRow();
 		labels[axis] = boxLabel->text();

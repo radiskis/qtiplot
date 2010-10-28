@@ -125,10 +125,7 @@
 #include <ScriptWindow.h>
 #include <PythonSyntaxHighlighter.h>
 #include <CreateBinMatrixDialog.h>
-#if QT_VERSION >= 0x040500
-#include <QTextDocumentWriter>
-#endif
-#include <QToolButton>
+#include <StudentTestDialog.h>
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -181,6 +178,10 @@ using namespace std;
 #include <QCompleter>
 #include <QStringListModel>
 #include <QNetworkProxy>
+#if QT_VERSION >= 0x040500
+#include <QTextDocumentWriter>
+#endif
+#include <QToolButton>
 
 #include <zlib.h>
 #include <iostream>
@@ -3537,6 +3538,16 @@ void ApplicationWindow::convertTableToMatrixRandomXYZ()
 	gd->exec();
 }
 #endif
+
+void ApplicationWindow::showStudentTestDialog(bool twoSamples)
+{
+	Table *t = (Table*)activeWindow(TableWindow);
+	if (!t)
+		return;
+
+	StudentTestDialog *std = new StudentTestDialog(t, twoSamples, this);
+	std->exec();
+}
 
 Matrix* ApplicationWindow::tableToMatrixRegularXYZ(Table* t, const QString& colName)
 {
@@ -9943,6 +9954,7 @@ void ApplicationWindow::analysisMenuAboutToShow()
         analysisMenu->addAction(actionShowColStatistics);
         analysisMenu->addAction(actionShowRowStatistics);
         analysisMenu->addAction(actionFrequencyCount);
+		analysisMenu->addAction(actionOneSampletTest);
         analysisMenu->insertSeparator();
         analysisMenu->addAction(actionSortSelection);
         analysisMenu->addAction(actionSortTable);
@@ -14439,6 +14451,9 @@ void ApplicationWindow::createActions()
 
 	actionFrequencyCount = new QAction(tr("&Frequency Count ..."), this);
 	connect(actionFrequencyCount, SIGNAL(activated()), this, SLOT(showFrequencyCountDialog()));
+
+	actionOneSampletTest = new QAction(tr("&One Sample t-Test..."), this);
+	connect(actionOneSampletTest, SIGNAL(activated()), this, SLOT(showStudentTestDialog()));
 
     actionReadOnlyCol = new QAction(tr("&Read Only"), this);
     connect(actionReadOnlyCol, SIGNAL(activated()), this, SLOT(setReadOnlyCol()));

@@ -243,7 +243,7 @@ void QwtPlainTextEngine::textMargins(const QFont &font, const QString &,
 
     const QFontMetrics fm(font);
     top = fm.ascent() - d_data->effectiveAscent(font);
-	bottom = fm.descent() - 2;
+	bottom = fm.descent() - 5;
 }
 
 /*!

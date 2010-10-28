@@ -60,6 +60,7 @@ INCLUDEPATH += src/analysis/dialogs/
 			   src/analysis/dialogs/PolynomFitDialog.h \
 			   src/analysis/dialogs/SmoothCurveDialog.h \
 			   src/analysis/dialogs/SubtractDataDialog.h \
+			   src/analysis/dialogs/StudentTestDialog.h \
 
 	SOURCES += src/analysis/dialogs/BaselineDialog.cpp \
 			   src/analysis/dialogs/ExpDecayDialog.cpp \
@@ -72,6 +73,7 @@ INCLUDEPATH += src/analysis/dialogs/
 			   src/analysis/dialogs/PolynomFitDialog.cpp \
 			   src/analysis/dialogs/SmoothCurveDialog.cpp \
 			   src/analysis/dialogs/SubtractDataDialog.cpp \
+			   src/analysis/dialogs/StudentTestDialog.cpp \
 
 !isEmpty(ALGLIB_LIBS) {
 	HEADERS += src/analysis/dialogs/GriddingDialog.h
