@@ -134,7 +134,7 @@ StudentTestDialog::StudentTestDialog(Table *t, bool twoSamples, QWidget* parent,
 	buttonAddLevel = new QPushButton(tr("&Add Level"));
 	gl3->addWidget(buttonAddLevel, 0, 2);
 
-	/*boxPowerAnalysis = new QCheckBox(tr("&Power Analysis"));
+	boxPowerAnalysis = new QCheckBox(tr("&Power Analysis"));
 
 	boxPowerLevel = new DoubleSpinBox();
 	boxPowerLevel->setDisabled(true);
@@ -145,7 +145,7 @@ StudentTestDialog::StudentTestDialog(Table *t, bool twoSamples, QWidget* parent,
 	QGroupBox *gb3 = new QGroupBox();
 	QHBoxLayout *hl1 = new QHBoxLayout(gb3);
 	hl1->addWidget(boxPowerAnalysis);
-	hl1->addWidget(boxPowerLevel);*/
+	hl1->addWidget(boxPowerLevel);
 
 	buttonOk = new QPushButton(tr( "&Compute" ));
 
@@ -158,14 +158,14 @@ StudentTestDialog::StudentTestDialog(Table *t, bool twoSamples, QWidget* parent,
 	vl->addLayout(gl1);
 	vl->addWidget(gb2);
 	vl->addWidget(boxConfidenceInterval);
-	//vl->addWidget(gb3);
+	vl->addWidget(gb3);
 	vl->addStretch();
 	vl->addLayout(hl2);
 
 	connect(buttonOk, SIGNAL(clicked()), this, SLOT(accept()));
 	connect(buttonAddLevel, SIGNAL(clicked()), this, SLOT(addConfidenceLevel()));
 
-	//connect(boxPowerAnalysis, SIGNAL(toggled(bool)), boxPowerLevel, SLOT(setEnabled(bool)));
+	connect(boxPowerAnalysis, SIGNAL(toggled(bool)), boxPowerLevel, SLOT(setEnabled(bool)));
 	connect(leftTailButton, SIGNAL(toggled(bool)), this, SLOT(updateMeanLabel()));
 	connect(rightTailButton, SIGNAL(toggled(bool)), this, SLOT(updateMeanLabel()));
 	connect(bothTailButton, SIGNAL(toggled(bool)), this, SLOT(updateMeanLabel()));
@@ -326,14 +326,22 @@ void StudentTestDialog::accept()
 			s += sep1;
 		}
 
-		/*if (boxPowerAnalysis->isChecked()){
-			double power = ????//gsl_cdf_tdist_P(gsl_cdf_tdist_P(boxPowerLevel->value(), dof) - st, dof);
+		if (boxPowerAnalysis->isChecked()){
+			double power = 0.0;
+			if (bothTailButton->isChecked()){
+				power = 1 - gsl_cdf_tdist_P(gsl_cdf_tdist_Pinv(1 - 0.5*boxPowerLevel->value(), dof) - st, dof);
+				power += gsl_cdf_tdist_P(gsl_cdf_tdist_Pinv(0.5*boxPowerLevel->value(), dof) - st, dof);
+			} else if (leftTailButton->isChecked())
+				power = gsl_cdf_tdist_P(gsl_cdf_tdist_Pinv(boxPowerLevel->value(), dof) - st, dof);
+			else if (rightTailButton->isChecked())
+				power = 1 - gsl_cdf_tdist_P(gsl_cdf_tdist_Pinv(1 - boxPowerLevel->value(), dof) - st, dof);
+
 			s += "\n" + tr("Power Analysis") + "\n\n";
 			s += tr("Alpha") + sep + tr("Sample Size") + sep + tr("Power") + "\n";
 			s += sep1;
 			s += l.toString(boxPowerLevel->value(), 'g', 6) + sep + QString::number(size) + sep + l.toString(power, 'g', p) + "\n";
 			s += sep1;
-		}*/
+		}
 
 		app->updateLog(s);
 	}
