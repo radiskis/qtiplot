@@ -70,6 +70,7 @@ const muParserScripting::mathFunction muParserScripting::math_functions[] = {
   { "hazard", 1, hazard,NULL,NULL, QObject::tr("hazard(x):\n Computes the hazard function for the normal distribution h(x) = erfz(x)/erfq(x).") },
   { "if", 3, NULL,NULL,NULL, QObject::tr("if(e1, e2, e3):\n if e1 then e2 else e3.") },
   { "inv_gauss_cdf", 2, NULL, inv_gauss_cdf, NULL, QObject::tr("inv_gauss_cdf(x, sigma):\n Computes the inverse of the cumulative distribution function for a Gaussian distribution with standard deviation sigma.") },
+  { "invt", 2, NULL, invt, NULL, QObject::tr("invt(x, n):\n Inverse t-distribution with n degrees of freedom.") },
   { "ln", 1, NULL,NULL,NULL, QObject::tr("ln(x):\n Calculate natural logarithm log_e.") },
   { "log", 1, NULL,NULL,NULL, QObject::tr("log(x):\n Calculate decimal logarithm log_10.") },
   { "log10", 1, NULL,NULL,NULL, QObject::tr("log10(x):\n Calculate decimal logarithm log_10.") },

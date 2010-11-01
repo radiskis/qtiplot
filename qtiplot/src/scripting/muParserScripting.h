@@ -128,6 +128,8 @@ class muParserScripting: public ScriptingEnv
 	   { return gsl_sf_lambert_W0(x); }
 	static double lambert_Wm1(double x)
 	   { return gsl_sf_lambert_Wm1(x); }
+	static double invt(double x, double n)
+	   { return gsl_cdf_tdist_P(x, n);}
 	static double ttable(double x, double n)
 	   { return gsl_cdf_tdist_Pinv(x, n); }
 	static double gauss_pdf(double x, double sigma )
