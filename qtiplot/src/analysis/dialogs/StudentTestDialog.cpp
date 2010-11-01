@@ -38,6 +38,7 @@
 #include <QRadioButton>
 #include <QLabel>
 #include <QDateTime>
+#include <QSpinBox>
 
 #include <gsl/gsl_statistics.h>
 #include <gsl/gsl_vector.h>
@@ -134,18 +135,28 @@ StudentTestDialog::StudentTestDialog(Table *t, bool twoSamples, QWidget* parent,
 	buttonAddLevel = new QPushButton(tr("&Add Level"));
 	gl3->addWidget(buttonAddLevel, 0, 2);
 
-	boxPowerAnalysis = new QCheckBox(tr("&Power Analysis"));
+	boxPowerAnalysis = new QGroupBox(tr("&Power Analysis"));
+	boxPowerAnalysis->setCheckable(true);
+
+	QGridLayout *gl4 = new QGridLayout(boxPowerAnalysis);
 
 	boxPowerLevel = new DoubleSpinBox();
-	boxPowerLevel->setDisabled(true);
 	boxPowerLevel->setRange(0.01, 0.99);
 	boxPowerLevel->setSingleStep(0.01);
 	boxPowerLevel->setValue(0.5);
 
-	QGroupBox *gb3 = new QGroupBox();
-	QHBoxLayout *hl1 = new QHBoxLayout(gb3);
-	hl1->addWidget(boxPowerAnalysis);
-	hl1->addWidget(boxPowerLevel);
+	gl4->addWidget(new QLabel(tr("Alpha")), 0, 0);
+	gl4->addWidget(boxPowerLevel, 0, 1);
+
+	boxOtherSampleSize = new QCheckBox(tr("Sample &Size"));
+	boxOtherSampleSize->setChecked(false);
+	gl4->addWidget(boxOtherSampleSize, 1, 0);
+
+	boxSampleSize = new QSpinBox();
+	boxSampleSize->setRange(1, INT_MAX);
+	boxSampleSize->setValue(50);
+	boxSampleSize->setEnabled(false);
+	gl4->addWidget(boxSampleSize, 1, 1);
 
 	buttonOk = new QPushButton(tr( "&Compute" ));
 
@@ -158,14 +169,13 @@ StudentTestDialog::StudentTestDialog(Table *t, bool twoSamples, QWidget* parent,
 	vl->addLayout(gl1);
 	vl->addWidget(gb2);
 	vl->addWidget(boxConfidenceInterval);
-	vl->addWidget(gb3);
+	vl->addWidget(boxPowerAnalysis);
 	vl->addStretch();
 	vl->addLayout(hl2);
 
 	connect(buttonOk, SIGNAL(clicked()), this, SLOT(accept()));
 	connect(buttonAddLevel, SIGNAL(clicked()), this, SLOT(addConfidenceLevel()));
-
-	connect(boxPowerAnalysis, SIGNAL(toggled(bool)), boxPowerLevel, SLOT(setEnabled(bool)));
+	connect(boxOtherSampleSize, SIGNAL(toggled(bool)), boxSampleSize, SLOT(setEnabled(bool)));
 	connect(leftTailButton, SIGNAL(toggled(bool)), this, SLOT(updateMeanLabel()));
 	connect(rightTailButton, SIGNAL(toggled(bool)), this, SLOT(updateMeanLabel()));
 	connect(bothTailButton, SIGNAL(toggled(bool)), this, SLOT(updateMeanLabel()));
@@ -258,11 +268,10 @@ void StudentTestDialog::accept()
 		int p = app->d_decimal_digits;
 		QLocale l = app->locale();
 		QString s = "[" + QDateTime::currentDateTime().toString(Qt::LocalDate)+ " \"" + d_table->objectName() + "\"]\t";
-		if (d_two_samples){
+		if (d_two_samples)
 			s += tr("Two sample t-Test") + "\n";
-		} else {
+		else
 			s += tr("One sample t-Test") + "\n";
-		}
 
 		QString sep = "\t";
 		QString sep1 = "-----------------------------------------------------------------------------------------------------------------------------\n";
@@ -339,7 +348,19 @@ void StudentTestDialog::accept()
 			s += "\n" + tr("Power Analysis") + "\n\n";
 			s += tr("Alpha") + sep + tr("Sample Size") + sep + tr("Power") + "\n";
 			s += sep1;
-			s += l.toString(boxPowerLevel->value(), 'g', 6) + sep + QString::number(size) + sep + l.toString(power, 'g', p) + "\n";
+			s += l.toString(boxPowerLevel->value(), 'g', 6) + sep + QString::number(size) + sep + l.toString(power, 'g', p) + "   (" + tr("actual") + ")\n";
+			if (boxOtherSampleSize->isChecked()){
+				dof = boxSampleSize->value() - 1;
+				if (bothTailButton->isChecked()){
+					power = 1 - gsl_cdf_tdist_P(gsl_cdf_tdist_Pinv(1 - 0.5*boxPowerLevel->value(), dof) - st, dof);
+					power += gsl_cdf_tdist_P(gsl_cdf_tdist_Pinv(0.5*boxPowerLevel->value(), dof) - st, dof);
+				} else if (leftTailButton->isChecked())
+					power = gsl_cdf_tdist_P(gsl_cdf_tdist_Pinv(boxPowerLevel->value(), dof) - st, dof);
+				else if (rightTailButton->isChecked())
+					power = 1 - gsl_cdf_tdist_P(gsl_cdf_tdist_Pinv(1 - boxPowerLevel->value(), dof) - st, dof);
+
+				s += l.toString(boxPowerLevel->value(), 'g', 6) + sep + QString::number(boxSampleSize->value()) + sep + l.toString(power, 'g', p) + "\n";
+			}
 			s += sep1;
 		}
 

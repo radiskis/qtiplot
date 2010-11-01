@@ -37,6 +37,7 @@ class QCheckBox;
 class QLabel;
 class QPushButton;
 class QRadioButton;
+class QSpinBox;
 class DoubleSpinBox;
 class Table;
 
@@ -70,7 +71,9 @@ private:
 	QGroupBox *boxConfidenceInterval;
 	QPushButton* buttonAddLevel;
 	QPushButton* buttonOk;
-	QCheckBox *boxPowerAnalysis;
+	QGroupBox *boxPowerAnalysis;
+	QSpinBox *boxSampleSize;
+	QCheckBox *boxOtherSampleSize;
 	DoubleSpinBox* boxMean;
 	DoubleSpinBox* boxSignificance;
 	DoubleSpinBox* boxPowerLevel;
