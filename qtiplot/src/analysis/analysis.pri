@@ -23,6 +23,8 @@ INCLUDEPATH += src/analysis/dialogs/
 			   src/analysis/PolynomialFit.h \
 			   src/analysis/SigmoidalFit.h \
 			   src/analysis/SmoothFilter.h \
+			   src/analysis/Statistics.h \
+			   src/analysis/tTest.h \
 			   src/analysis/fft2D.h \
 			   src/analysis/fit_gsl.h \
 			   src/analysis/nrutil.h \
@@ -45,6 +47,8 @@ INCLUDEPATH += src/analysis/dialogs/
 			   src/analysis/PolynomialFit.cpp \
 			   src/analysis/SigmoidalFit.cpp \
 			   src/analysis/SmoothFilter.cpp \
+			   src/analysis/Statistics.cpp \
+			   src/analysis/tTest.cpp \
 			   src/analysis/fft2D.cpp \
 				src/analysis/fit_gsl.cpp \
 			   src/analysis/nrutil.cpp \

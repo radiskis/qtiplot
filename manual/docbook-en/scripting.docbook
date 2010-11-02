@@ -4192,6 +4192,38 @@ smooth.run()
 </sect3>
 </sect2>
 
+<sect2 id="Python-Statistics">
+<title>Descriptive Statistics</title>
+<programlisting>
+stats = Statistics("Table1_2")
+stats.run()
+
+print stats.mean()
+print stats.standardDeviation()
+print stats.standardError()
+</programlisting>
+
+
+<sect3 id="Python-tTest">
+<title>Hypothesis Testing - One Sample Student's t-Test</title>
+<programlisting>
+test = tTest(15.2, 0.05, "Table1_2") # test mean = 15.2, significance level = 0.05
+test.run()
+
+test.setTestMean(15.0)
+test.setSignificanceLevel(0.5)
+test.setTail(tTest.Left) # or tTest.Right, or tTest.Both (default value)
+test.run()
+
+print test.t()
+print test.dof()
+print test.power(0.5)
+print test.power(0.5, 50) # alternative sample size = 50
+print test.pValue()
+</programlisting>
+</sect3>
+</sect2>
+
 <sect2 id = "Python-Notes">
 <title>Working with Notes</title>
 <para>

@@ -30,6 +30,7 @@
 #include <ApplicationWindow.h>
 #include <Table.h>
 #include <DoubleSpinBox.h>
+#include <tTest.h>
 
 #include <QGroupBox>
 #include <QComboBox>
@@ -39,10 +40,6 @@
 #include <QLabel>
 #include <QDateTime>
 #include <QSpinBox>
-
-#include <gsl/gsl_statistics.h>
-#include <gsl/gsl_vector.h>
-#include <gsl/gsl_cdf.h>
 
 StudentTestDialog::StudentTestDialog(Table *t, bool twoSamples, QWidget* parent, Qt::WFlags fl )
     : QDialog( parent, fl ),
@@ -92,20 +89,22 @@ StudentTestDialog::StudentTestDialog(Table *t, bool twoSamples, QWidget* parent,
 	gl2->addWidget(boxMean, 0, 2);
 
 	gl2->addWidget(new QLabel(tr("Alternate") + ":"), 1, 0);
-	bothTailButton = new QRadioButton(tr("Mean <>"));
+
+	QString mean = tr("Mean");
+	bothTailButton = new QRadioButton(mean + " <>");
 	bothTailButton->setChecked(true);
 	gl2->addWidget(bothTailButton, 1, 1);
 	bothTailLabel = new QLabel();
 	bothTailLabel->setText("0");
 	gl2->addWidget(bothTailLabel, 1, 2);
 
-	rightTailButton = new QRadioButton(tr("Mean >"));
+	rightTailButton = new QRadioButton(mean + " >");
 	gl2->addWidget(rightTailButton, 2, 1);
 	rightTailLabel = new QLabel();
 	rightTailLabel->setText("0");
 	gl2->addWidget(rightTailLabel, 2, 2);
 
-	leftTailButton = new QRadioButton(tr("Mean <"));
+	leftTailButton = new QRadioButton(mean + " <");
 	gl2->addWidget(leftTailButton, 3, 1);
 	leftTailLabel = new QLabel();
 	leftTailLabel->setText("0");
@@ -224,146 +223,56 @@ void StudentTestDialog::updateMeanLabels(double val)
 
 void StudentTestDialog::accept()
 {
-	int col = -1;
-	int sr = 0;
-	int er = d_table->numRows();
-	int ts = d_table->table()->currentSelection();
-	if (ts >= 0){
-		Q3TableSelection sel = d_table->table()->selection(ts);
-		sr = sel.topRow();
-		er = sel.bottomRow() + 1;
-		col = sel.leftCol();
-	}
-	int size = 0;
-	for (int i = sr; i < er; i++){
-		if (!d_table->text(i, col).isEmpty())
-			size++;
-	}
+	ApplicationWindow *app = (ApplicationWindow *)parent();
+	double testMean = boxMean->value();
 
-	gsl_vector *d_col_values = NULL;
-	if (size > 1)
-		d_col_values = gsl_vector_alloc(size);
+	tTest stats(app, testMean, boxSignificance->value());
+	if (!stats.setData(boxSample1->currentText()))
+		return;
 
-	if (d_col_values){
-		int aux = 0;
-		for (int i = sr; i < er; i++){
-			if (!d_table->text(i, col).isEmpty()){
-				gsl_vector_set(d_col_values, aux, d_table->cell(i, col));
-				aux++;
-			}
-		}
-		double *data = d_col_values->data;
+	tTest::Tail tail = tTest::Left;
+	if (bothTailButton->isChecked())
+		tail = tTest::Both;
+	else if (rightTailButton->isChecked())
+		tail = tTest::Right;
+	stats.setTail(tail);
 
-		double mean = gsl_stats_mean (data, 1, size);
-		double sd = gsl_stats_sd(data, 1, size);
-		double se = sd/sqrt(size);
-		gsl_vector_free(d_col_values);
+	int p = app->d_decimal_digits;
+	QLocale l = app->locale();
 
-		unsigned int dof = size - 1;
-		double testMean = boxMean->value();
-		double st = sqrt(size)*(mean - testMean)/sd;
-		double pval = gsl_cdf_tdist_P(st, dof);
+	QString sep = "\t\t";
+	QString sep1 = "-----------------------------------------------------------------------------------------------------------------------------\n";
+	QString s = stats.logInfo();
 
-		ApplicationWindow *app = (ApplicationWindow *)parent();
-		int p = app->d_decimal_digits;
-		QLocale l = app->locale();
-		QString s = "[" + QDateTime::currentDateTime().toString(Qt::LocalDate)+ " \"" + d_table->objectName() + "\"]\t";
-		if (d_two_samples)
-			s += tr("Two sample t-Test") + "\n";
-		else
-			s += tr("One sample t-Test") + "\n";
+	if (boxConfidenceInterval->isChecked()){
+		QGridLayout *gl = (QGridLayout *)boxConfidenceInterval->layout();
+		int rows = gl->rowCount();
 
-		QString sep = "\t";
-		QString sep1 = "-----------------------------------------------------------------------------------------------------------------------------\n";
-		s += "\n";
-		s += tr("Sample") + sep + tr("N") + sep + tr("Mean") + sep + tr("Standard Deviation") + sep + tr("Standard Error") + "\n";
+		s += "\n" + tr("Confidence Interval for Mean") + "\n\n";
+		s += tr("Level") + sep + tr("Lower Limit") + sep + tr("Upper Limit") + "\n";
 		s += sep1;
-		s += d_table->colName(col) + sep + QString::number(size) + sep + l.toString(mean, 'g', p) + sep;
-		s += l.toString(sd, 'g', p) + sep + l.toString(se, 'g', p) + "\n";
-		s += sep1 + "\n";
-
-		QString h0, ha, compare;
-		if (bothTailButton->isChecked()){
-			h0 = " = ";
-			ha = " <> ";
-			compare = tr("different");
-			pval = 2*(1 - pval);
-		} else if (rightTailButton->isChecked()){
-			h0 = " <= ";
-			ha = " > ";
-			compare = tr("greater");
-			pval = 1 - pval;
-		} else if (leftTailButton->isChecked()){
-			h0 = " >= ";
-			ha = " < ";
-			compare = tr("less");
+		for (int i = 0; i < rows; i++){
+			DoubleSpinBox *sb = (DoubleSpinBox *)gl->itemAtPosition (i, 1)->widget();
+			double level = sb->value();
+			s += l.toString(level) + sep + l.toString(stats.lcl(level), 'g', p);
+			s += "\t" + l.toString(stats.ucl(level),'g', p) + "\n";
 		}
-
-		s += tr("Null Hypothesis") + ":\t\t\t" + tr("Mean") + h0 + l.toString(testMean, 'g', p) + "\n";
-		s += tr("Alternative Hypothesis") + ":\t\t" + tr("Mean") + ha + l.toString(testMean, 'g', p) + "\n\n";
-
-		sep = "\t\t";
-		s += tr("t") + sep + tr("DoF") + sep + tr("P Value") + "\n";
 		s += sep1;
-		s += l.toString(st, 'g', 6) + sep + QString::number(dof) + sep + l.toString(pval, 'g', p) +  + "\n";
-		s += sep1;
-		s += "\n";
-		s += tr("At the %1 level, the population mean").arg(boxSignificance->value()) + " ";
-
-		if (pval < boxSignificance->value())
-			s += tr("is significantly");
-		else
-			s += tr("is not significantly");
-		s += " " + compare + " " + tr("than the test mean");
-		s += " (" + l.toString(testMean, 'g', p) + ").\n";
-
-		if (boxConfidenceInterval->isChecked()){
-			QGridLayout *gl = (QGridLayout *)boxConfidenceInterval->layout();
-			int rows = gl->rowCount();
-
-			s += "\n" + tr("Confidence Interval for Mean") + "\n\n";
-			s += tr("Level") + sep + tr("Lower Limit") + sep + tr("Upper Limit") + "\n";
-			s += sep1;
-			for (int i = 0; i < rows; i++){
-				DoubleSpinBox *sb = (DoubleSpinBox *)gl->itemAtPosition (i, 1)->widget();
-				double level = sb->value();
-				double alpha = 1 - level/100.0;
-				double conf = se*gsl_cdf_tdist_Pinv(1 - 0.5*alpha, dof);
-				s += l.toString(level) + sep + l.toString(mean - conf, 'g', p);
-				s += "\t" + l.toString(mean + conf,'g', p) + "\n";
-			}
-			s += sep1;
-		}
-
-		if (boxPowerAnalysis->isChecked()){
-			double power = 0.0;
-			if (bothTailButton->isChecked()){
-				power = 1 - gsl_cdf_tdist_P(gsl_cdf_tdist_Pinv(1 - 0.5*boxPowerLevel->value(), dof) - st, dof);
-				power += gsl_cdf_tdist_P(gsl_cdf_tdist_Pinv(0.5*boxPowerLevel->value(), dof) - st, dof);
-			} else if (leftTailButton->isChecked())
-				power = gsl_cdf_tdist_P(gsl_cdf_tdist_Pinv(boxPowerLevel->value(), dof) - st, dof);
-			else if (rightTailButton->isChecked())
-				power = 1 - gsl_cdf_tdist_P(gsl_cdf_tdist_Pinv(1 - boxPowerLevel->value(), dof) - st, dof);
-
-			s += "\n" + tr("Power Analysis") + "\n\n";
-			s += tr("Alpha") + sep + tr("Sample Size") + sep + tr("Power") + "\n";
-			s += sep1;
-			s += l.toString(boxPowerLevel->value(), 'g', 6) + sep + QString::number(size) + sep + l.toString(power, 'g', p) + "   (" + tr("actual") + ")\n";
-			if (boxOtherSampleSize->isChecked()){
-				dof = boxSampleSize->value() - 1;
-				if (bothTailButton->isChecked()){
-					power = 1 - gsl_cdf_tdist_P(gsl_cdf_tdist_Pinv(1 - 0.5*boxPowerLevel->value(), dof) - st, dof);
-					power += gsl_cdf_tdist_P(gsl_cdf_tdist_Pinv(0.5*boxPowerLevel->value(), dof) - st, dof);
-				} else if (leftTailButton->isChecked())
-					power = gsl_cdf_tdist_P(gsl_cdf_tdist_Pinv(boxPowerLevel->value(), dof) - st, dof);
-				else if (rightTailButton->isChecked())
-					power = 1 - gsl_cdf_tdist_P(gsl_cdf_tdist_Pinv(1 - boxPowerLevel->value(), dof) - st, dof);
-
-				s += l.toString(boxPowerLevel->value(), 'g', 6) + sep + QString::number(boxSampleSize->value()) + sep + l.toString(power, 'g', p) + "\n";
-			}
-			s += sep1;
-		}
-
-		app->updateLog(s);
 	}
+
+	if (boxPowerAnalysis->isChecked()){
+		double power = stats.power(boxPowerLevel->value());
+		s += "\n" + tr("Power Analysis") + "\n\n";
+		s += tr("Alpha") + sep + tr("Sample Size") + sep + tr("Power") + "\n";
+		s += sep1;
+		s += l.toString(boxPowerLevel->value(), 'g', 6) + sep + QString::number(stats.dataSize()) + sep + l.toString(power, 'g', p) + "   (" + tr("actual") + ")\n";
+		if (boxOtherSampleSize->isChecked()){
+			int size = boxSampleSize->value();
+			power = stats.power(boxPowerLevel->value(), size);
+			s += l.toString(boxPowerLevel->value(), 'g', 6) + sep + QString::number(size) + sep + l.toString(power, 'g', p) + "\n";
+		}
+		s += sep1;
+	}
+
+	app->updateLog(s);
 }
