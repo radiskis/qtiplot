@@ -462,6 +462,10 @@
 <section ref="x6407.html#Python-Smooth" title="Smoothing">
 </section>
 </section>
+<section ref="x6407.html#Python-Statistics" title="Descriptive Statistics">
+<section ref="x6407.html#Python-tTest" title="Hypothesis Testing - One Sample Student's t-Test">
+</section>
+</section>
 <section ref="x6407.html#Python-Notes" title="Working with Notes">
 </section>
 <section ref="x6407.html#Python-QtDialogs" title="Using Qt's dialogs and classes">
@@ -476,7 +480,7 @@
 </section>
 </section>
 </section>
-<section ref="c7721.html" title="Frequently asked questions">
+<section ref="c7727.html" title="Frequently asked questions">
 </section>
 </DCF>
 </assistantconfig>

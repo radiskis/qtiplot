@@ -3252,6 +3252,62 @@ public:
   bool run();
 };
 
+class Statistics : QObject
+{
+%TypeHeaderCode
+#include <Statistics.h>
+%End
+public:
+  Statistics(ApplicationWindow * /TransferThis/, const QString& = QString());
+  Statistics(const QString& = QString()) /NoDerived/;
+%MethodCode
+  SIPQTI_APP(new sipStatistics(app, *a0))
+%End
+  ~Statistics();
+
+  bool setData(const QString&);
+
+  //! Returns the size of the input data set
+  unsigned int dataSize();
+
+  double mean();
+  double standardDeviation();
+  double standardError();
+
+  virtual QString logInfo();
+  virtual bool run();
+};
+
+class tTest : Statistics
+{
+%TypeHeaderCode
+#include <tTest.h>
+%End
+public:
+  enum Tail{Left = 0, Right = 1, Both = 2};
+
+  tTest(ApplicationWindow * /TransferThis/, double, double, const QString& = QString());
+  tTest(double, double, const QString& = QString()) /NoDerived/;
+%MethodCode
+  SIPQTI_APP(new siptTest(app, a0, a1, *a2))
+%End
+
+  void setTail(const Tail&);
+  void setTestMean(double);
+  void setSignificanceLevel(double);
+  virtual QString logInfo();
+
+  double t();
+  double pValue();
+  int dof();
+
+  double power(double alpha, int size = 0);
+  //! Lower Confidence Limit
+  double lcl(double);
+  //! Upper Confidence Limit
+  double ucl(double);
+};
+
 // used for output redirection
 class PythonScripting
 {

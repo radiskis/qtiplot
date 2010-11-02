@@ -18995,8 +18995,15 @@ void ApplicationWindow::addWindowsListToCompleter()
 	Folder *f = projectFolder();
 	while (f){
 		QList<MdiSubWindow *> folderWindows = f->windowsList();
-		foreach(MdiSubWindow *w, folderWindows)
+		foreach(MdiSubWindow *w, folderWindows){
 			lst << w->objectName();
+
+			if (w->inherits("Table")){
+				Table *t = (Table*)w;
+				for (int i = 0; i < t->numCols(); i++)
+					lst.append(t->colName(i));
+			}
+		}
 		f = f->folderBelow();
 	}
 	lst.sort();

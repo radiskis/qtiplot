@@ -857,3 +857,12 @@ quantile
 ImageSymbol
 pixmap
 imagePath
+Statistics
+standardError
+tTest
+setTail
+setTestMean
+setSignificanceLevel
+pValue
+dof
+power
