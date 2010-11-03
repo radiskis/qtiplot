@@ -28,7 +28,6 @@
  ***************************************************************************/
 #include "StudentTestDialog.h"
 #include <ApplicationWindow.h>
-#include <Table.h>
 #include <DoubleSpinBox.h>
 #include <tTest.h>
 
@@ -38,12 +37,10 @@
 #include <QPushButton>
 #include <QRadioButton>
 #include <QLabel>
-#include <QDateTime>
 #include <QSpinBox>
 
 StudentTestDialog::StudentTestDialog(Table *t, bool twoSamples, QWidget* parent, Qt::WFlags fl )
     : QDialog( parent, fl ),
-	d_table(t),
 	d_two_samples(twoSamples)
 {
 	setObjectName( "StudentTestDialog" );
@@ -60,7 +57,7 @@ StudentTestDialog::StudentTestDialog(Table *t, bool twoSamples, QWidget* parent,
 	gl1->addWidget(new QLabel(tr("Sample") + ":"), 0, 0);
 
 	boxSample1 = new QComboBox();
-	boxSample1->addItems(t->columnsList());
+	boxSample1->addItems(t->applicationWindow()->columnsList());
 	gl1->addWidget(boxSample1, 0, 1);
 
 	int col = t->selectedColumn();

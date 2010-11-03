@@ -4220,6 +4220,9 @@ print test.dof()
 print test.power(0.5)
 print test.power(0.5, 50) # alternative sample size = 50
 print test.pValue()
+
+print test.lcl(90) # lower confidence limit for mean
+print test.ucl(90) # upper confidence limit for mean
 </programlisting>
 </sect3>
 </sect2>
