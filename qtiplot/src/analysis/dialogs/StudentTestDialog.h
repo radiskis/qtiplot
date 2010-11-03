@@ -56,7 +56,6 @@ private slots:
 	void addConfidenceLevel();
 
 private:
-	Table *d_table;
 	bool d_two_samples;
 
 	QComboBox *boxSample1;

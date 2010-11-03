@@ -123,7 +123,7 @@ double tTest::power(double alpha, int size)
 //! Lower Confidence Limit
 double tTest::lcl(double confidenceLevel)
 {
-	if (!d_n)
+	if (!d_n || confidenceLevel < 0 || confidenceLevel > 100)
 		return 0.0;
 
 	double alpha = 1 - confidenceLevel/100.0;
@@ -134,7 +134,7 @@ double tTest::lcl(double confidenceLevel)
 //! Upper Confidence Limit
 double tTest::ucl(double confidenceLevel)
 {
-	if (!d_n)
+	if (!d_n || confidenceLevel < 0 || confidenceLevel > 100)
 		return 0.0;
 
 	double alpha = 1 - confidenceLevel/100.0;
@@ -153,7 +153,7 @@ QString tTest::logInfo()
 	/*if (d_two_samples)
 		s += tr("Two sample t-Test") + "\n";
 	else*/
-		s += tr("One sample t-Test") + "\n";
+		s += QObject::tr("One sample t-Test") + "\n";
 
 	s += "\n";
 	s += Statistics::logInfo();
@@ -184,7 +184,7 @@ QString tTest::logInfo()
 	QString sep = "\t\t";
 	s += QObject::tr("t") + sep + QObject::tr("DoF") + sep + QObject::tr("P Value") + "\n";
 	s += sep1;
-	s += l.toString(t(), 'g', 6) + sep + QString::number(dof()) + sep + l.toString(pval, 'g', p) +  + "\n";
+	s += l.toString(t(), 'g', p) + "\t" + QString::number(dof()) + sep + l.toString(pval, 'g', p) +  + "\n";
 	s += sep1;
 	s += "\n";
 	s += QObject::tr("At the %1 level, the population mean").arg(l.toString(d_significance_level, 'g', 6)) + " ";
