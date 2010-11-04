@@ -4205,24 +4205,33 @@ print stats.standardError()
 
 
 <sect3 id="Python-tTest">
-<title>Hypothesis Testing - One Sample Student's t-Test</title>
+<title>Hypothesis Testing - Student's t-Test</title>
 <programlisting>
-test = tTest(15.2, 0.05, "Table1_2") # test mean = 15.2, significance level = 0.05
+test = tTest(15.2, 0.05, "Table1_2") # One sample test, test mean = 15.2, significance level = 0.05
 test.run()
 
-test.setTestMean(15.0)
+test.setTestValue(15.0)
 test.setSignificanceLevel(0.5)
 test.setTail(tTest.Left) # or tTest.Right, or tTest.Both (default value)
 test.run()
 
 print test.t()
-print test.dof()
+print test.dof() # degrees of freedom
 print test.power(0.5)
 print test.power(0.5, 50) # alternative sample size = 50
 print test.pValue()
-
 print test.lcl(90) # lower confidence limit for mean
 print test.ucl(90) # upper confidence limit for mean
+
+test = tTest(15.2, 0.05, "Table1_1", "Table1_2", True) # Two sample paired test
+print test.logInfo()
+
+test = tTest(15.2, 0.05, "Table1_1", "Table1_2") # Two sample independent test
+test.run()
+
+test.setSample1("Table2_1")
+test.setSample2("Table3_2", True) # Two sample paired test
+test.run()
 </programlisting>
 </sect3>
 </sect2>
