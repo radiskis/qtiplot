@@ -861,8 +861,12 @@ Statistics
 standardError
 tTest
 setTail
-setTestMean
+setTestValue
 setSignificanceLevel
 pValue
 dof
 power
+setSample1
+setSample2
+True
+False

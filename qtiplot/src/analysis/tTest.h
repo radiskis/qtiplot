@@ -41,10 +41,15 @@ class tTest : public Statistics
 	public:
 		enum Tail{Left = 0, Right = 1, Both = 2};
 
-		tTest(ApplicationWindow *parent, double testMean, double level, const QString& sample = QString());
+		tTest(ApplicationWindow *parent, double testValue, double level,
+			const QString& sample1 = QString(), const QString& sample2 = QString(), bool paired = false);
 		void setTail(const Tail&);
-		void setTestMean(double);
+		void setTestValue(double);
 		void setSignificanceLevel(double);
+
+		bool setSample1(const QString& colName){return setData(colName);};
+		bool setSample2(const QString& colName, bool paired = false);
+
 		virtual QString logInfo();
 
 		double t();
@@ -58,9 +63,15 @@ class tTest : public Statistics
 		double ucl(double confidenceLevel);
 
 	protected:
-		double d_test_mean;
+		double t(int size);
+		void freeMemory();
+
+		double d_test_val;
 		double d_significance_level;
 		int d_tail;
+		Statistics *d_sample2;
+		bool d_independent_test;
+		double d_s12, d_diff;
 };
 
 #endif

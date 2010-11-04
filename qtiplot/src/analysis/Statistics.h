@@ -47,6 +47,8 @@ class Statistics : public QObject
 		virtual bool run();
 		bool setData(const QString&);
 
+		QString sampleName(){return d_col_name;};
+
 		//! Returns the size of the input data set
 		unsigned int dataSize(){return d_n;};
 

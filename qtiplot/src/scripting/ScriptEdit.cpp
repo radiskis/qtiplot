@@ -645,22 +645,26 @@ void ScriptEdit::setDirPath(const QString& path)
 	tc.movePosition(QTextCursor::Left);
 	tc.movePosition(QTextCursor::EndOfWord);
 
-	bool specialWord = (completion == "qti" || completion == "app" || completion == "self") ? true : false;
-	bool keyWord = (PythonSyntaxHighlighter::keywordsList().contains(completion));
+	if (completion == "qti" || completion == "app" || completion == "self" || completion == "QtGui" || completion == "QtCore"){
+		tc.insertText(completion.right(extra) + ".");
+		setTextCursor(tc);
+		return;
+	}
 
+	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(scriptEnv->application());
+	if (app && (app->windowsNameList().contains(completion) || app->table(completion))){//window or column name?
+		tc.insertText(completion.right(extra) + "\"");
+		setTextCursor(tc);
+		return;
+	}
+
+	bool keyWord = (PythonSyntaxHighlighter::keywordsList().contains(completion));
 	QChar startChar = completion[0];
-	if (startChar.category() == QChar::Letter_Lowercase && !specialWord && !keyWord){
+	if (startChar.category() == QChar::Letter_Lowercase && !keyWord){
 		tc.insertText(completion.right(extra) + "()");
 		tc.movePosition(QTextCursor::PreviousCharacter, QTextCursor::MoveAnchor, 1);
-	} else if (specialWord)
-		tc.insertText(completion.right(extra) + ".");
-	else {
-		ApplicationWindow *app = qobject_cast<ApplicationWindow *>(scriptEnv->application());
-		if (app && (app->windowsNameList().contains(completion) || app->table(completion)))//window or table column name?
-			tc.insertText(completion.right(extra) + "\"");
-		else
-			tc.insertText(completion.right(extra));
-	}
+	} else
+		tc.insertText(completion.right(extra));
 
 	setTextCursor(tc);
  }

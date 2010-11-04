@@ -76,6 +76,9 @@ private:
 	DoubleSpinBox* boxMean;
 	DoubleSpinBox* boxSignificance;
 	DoubleSpinBox* boxPowerLevel;
+
+	QRadioButton *independentTestBtn;
+	QRadioButton *pairedTestBtn;
 };
 
 #endif

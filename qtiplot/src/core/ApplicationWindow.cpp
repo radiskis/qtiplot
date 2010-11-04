@@ -9951,10 +9951,15 @@ void ApplicationWindow::analysisMenuAboutToShow()
         analysisMenu->addAction(actionMatrixFFTDirect);
         analysisMenu->addAction(actionMatrixFFTInverse);
 	} else if (w->inherits("Table")){
-        analysisMenu->addAction(actionShowColStatistics);
-        analysisMenu->addAction(actionShowRowStatistics);
-        analysisMenu->addAction(actionFrequencyCount);
-		analysisMenu->addAction(actionOneSampletTest);
+		QMenu *statsMenu = analysisMenu->addMenu (tr("Descriptive S&tatistics"));
+		statsMenu->addAction(actionShowColStatistics);
+		statsMenu->addAction(actionShowRowStatistics);
+		statsMenu->addAction(actionFrequencyCount);
+
+		QMenu *tTestMenu = analysisMenu->addMenu (tr("&Hypothesis Testing"));
+		tTestMenu->addAction(actionOneSampletTest);
+		tTestMenu->addAction(actionTwoSampletTest);
+
         analysisMenu->insertSeparator();
         analysisMenu->addAction(actionSortSelection);
         analysisMenu->addAction(actionSortTable);
@@ -14416,7 +14421,7 @@ void ApplicationWindow::createActions()
 	actionSortTable = new QAction(QPixmap(":/sort.png"), tr("Sort Ta&ble"), this);
 	connect(actionSortTable, SIGNAL(activated()), this, SLOT(sortActiveTable()));
 
-	actionSortSelection = new QAction(tr("Sort Columns"), this);
+	actionSortSelection = new QAction("&" + tr("Sort Columns") + "...", this);
 	connect(actionSortSelection, SIGNAL(activated()), this, SLOT(sortSelection()));
 
 	actionNormalizeTable = new QAction(tr("&Table"), this);
@@ -14454,6 +14459,9 @@ void ApplicationWindow::createActions()
 
 	actionOneSampletTest = new QAction(tr("&One Sample t-Test..."), this);
 	connect(actionOneSampletTest, SIGNAL(activated()), this, SLOT(showStudentTestDialog()));
+
+	actionTwoSampletTest = new QAction(tr("&Two Sample t-Test..."), this);
+	connect(actionTwoSampletTest, SIGNAL(activated()), this, SLOT(showTwoSampleStudentTestDialog()));
 
     actionReadOnlyCol = new QAction(tr("&Read Only"), this);
     connect(actionReadOnlyCol, SIGNAL(activated()), this, SLOT(setReadOnlyCol()));

@@ -125,8 +125,7 @@ QString Statistics::logInfo()
 	s += QObject::tr("Standard Deviation") + sep + QObject::tr("Standard Error") + "\n";
 	s += sep1;
 	s += d_col_name + sep + QString::number(d_n) + sep + l.toString(d_mean, 'g', p) + sep;
-	s += l.toString(d_sd, 'g', p) + sep + l.toString(d_se, 'g', p) + "\n";
-	s += sep1 + "\n";
+	s += l.toString(d_sd, 'g', p) + "\t\t" + l.toString(d_se, 'g', p) + "\n";
 	return s;
 }
 

@@ -3286,21 +3286,22 @@ class tTest : Statistics
 public:
   enum Tail{Left = 0, Right = 1, Both = 2};
 
-  tTest(ApplicationWindow * /TransferThis/, double, double, const QString& = QString());
-  tTest(double, double, const QString& = QString()) /NoDerived/;
+  tTest(ApplicationWindow * /TransferThis/, double, double, const QString& = QString(), const QString& = QString(), bool = false);
+  tTest(double, double, const QString& = QString(), const QString& = QString(), bool = false) /NoDerived/;
 %MethodCode
-  SIPQTI_APP(new siptTest(app, a0, a1, *a2))
+  SIPQTI_APP(new siptTest(app, a0, a1, *a2, *a3, a4))
 %End
 
   void setTail(const Tail&);
-  void setTestMean(double);
+  void setTestValue(double);
   void setSignificanceLevel(double);
-  virtual QString logInfo();
+  bool setSample1(const QString&);
+  bool setSample2(const QString&, bool = false);
 
+  virtual QString logInfo();
   double t();
   double pValue();
   int dof();
-
   double power(double alpha, int size = 0);
   //! Lower Confidence Limit
   double lcl(double);

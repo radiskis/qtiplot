@@ -32,14 +32,19 @@
 #include <QApplication>
 #include <QLocale>
 
+#include <gsl/gsl_statistics.h>
 #include <gsl/gsl_cdf.h>
 
-tTest::tTest(ApplicationWindow *parent, double testMean, double level, const QString& sample)
-: Statistics(parent, sample),
-d_test_mean(testMean),
+tTest::tTest(ApplicationWindow *parent, double testMean, double level, const QString& sample1, const QString& sample2, bool paired)
+: Statistics(parent, sample1),
+d_test_val(testMean),
 d_significance_level(level),
-d_tail(Both)
+d_tail(Both),
+d_sample2(0),
+d_independent_test(true)
 {
+	if (!sample2.isEmpty())
+		setSample2(sample2, paired);
 }
 
 void tTest::setTail(const Tail& tail)
@@ -47,9 +52,9 @@ void tTest::setTail(const Tail& tail)
 	d_tail = tail;
 }
 
-void tTest::setTestMean(double mean)
+void tTest::setTestValue(double mean)
 {
-	d_test_mean = mean;
+	d_test_val = mean;
 }
 
 void tTest::setSignificanceLevel(double s)
@@ -62,15 +67,26 @@ void tTest::setSignificanceLevel(double s)
 
 int tTest::dof()
 {
+	if (d_sample2 && d_independent_test)
+		return d_n  + d_sample2->dataSize() - 2;
+
 	return d_n - 1;
 }
 
 double tTest::t()
 {
 	if (!d_n)
-		return .0;
+		return 0.0;
 
-	return sqrt(d_n)*(d_mean - d_test_mean)/d_sd;
+	if (d_sample2)
+		return (d_diff - d_test_val)/d_s12;
+
+	return sqrt(d_n)*(d_mean - d_test_val)/d_sd;
+}
+
+double tTest::t(int size)
+{
+	return sqrt(size)*(d_mean - d_test_val)/d_sd;
 }
 
 double tTest::pValue()
@@ -86,7 +102,10 @@ double tTest::pValue()
 			p = 1 - p;
 		break;
 		case Both:
-			p = 2*(1 - p);
+			if (p < 0.5)
+				p = 2*p;
+			else
+				p = 2*(1 - p);
 		break;
 	}
 	return p;
@@ -98,12 +117,16 @@ double tTest::power(double alpha, int size)
 		return 0.0;
 
 	int dof = this->dof();
-	if (!size)
-		size = d_n;
-	else
-		dof = size - 1;
-
 	double st = t();
+	if (size){
+		if (d_sample2 && d_independent_test)
+			dof = size - 2;
+		else
+			dof = size - 1;
+
+		st = t(size);
+	}
+
 	double p = 0.0;
 	switch(d_tail){
 		case Left:
@@ -127,8 +150,12 @@ double tTest::lcl(double confidenceLevel)
 		return 0.0;
 
 	double alpha = 1 - confidenceLevel/100.0;
-	double conf = d_se*gsl_cdf_tdist_Pinv(1 - 0.5*alpha, dof());
-	return d_mean - conf;
+	double conf = gsl_cdf_tdist_Pinv(1 - 0.5*alpha, dof());
+
+	if (d_sample2)
+		return d_diff - d_s12*conf;
+
+	return d_mean - d_se*conf;
 }
 
 //! Upper Confidence Limit
@@ -138,8 +165,12 @@ double tTest::ucl(double confidenceLevel)
 		return 0.0;
 
 	double alpha = 1 - confidenceLevel/100.0;
-	double conf = d_se*gsl_cdf_tdist_Pinv(1 - 0.5*alpha, dof());
-	return d_mean + conf;
+	double conf = gsl_cdf_tdist_Pinv(1 - 0.5*alpha, dof());
+
+	if (d_sample2)
+		return d_diff + d_s12*conf;
+
+	return d_mean + d_se*conf;
 }
 
 QString tTest::logInfo()
@@ -150,13 +181,24 @@ QString tTest::logInfo()
 	QString sep1 = "-----------------------------------------------------------------------------------------------------------------------------\n";
 
 	QString s = "[" + QDateTime::currentDateTime().toString(Qt::LocalDate)+ " \"" + d_table->objectName() + "\"]\t";
-	/*if (d_two_samples)
-		s += tr("Two sample t-Test") + "\n";
-	else*/
-		s += QObject::tr("One sample t-Test") + "\n";
+	if (d_sample2){
+		if (d_independent_test)
+			s += QObject::tr("Two Sample Independent t-Test") + "\n";
+		else
+			s += QObject::tr("Two Sample Paired t-Test") + "\n";
+	} else
+		s += QObject::tr("One Sample t-Test") + "\n";
 
 	s += "\n";
 	s += Statistics::logInfo();
+	if (d_sample2){
+		QString sep = "\t";
+		s += d_sample2->sampleName() + sep + QString::number(d_sample2->dataSize()) + sep + l.toString(d_sample2->mean(), 'g', p) + sep;
+		s += l.toString(d_sample2->standardDeviation(), 'g', p) + "\t\t" + l.toString(d_sample2->standardError(), 'g', p) + "\n";
+		s += sep1 + "\n";
+		s += QObject::tr("Difference of Means") + ":\t" + l.toString(d_diff, 'g', p) + "\n\n";
+	} else
+		s += sep1 + "\n";
 
 	QString h0, ha, compare;
 	switch((int)d_tail){
@@ -177,24 +219,85 @@ QString tTest::logInfo()
 		break;
 	}
 
-	s += QObject::tr("Null Hypothesis") + ":\t\t\t" + QObject::tr("Mean") + h0 + l.toString(d_test_mean, 'g', p) + "\n";
-	s += QObject::tr("Alternative Hypothesis") + ":\t\t" + QObject::tr("Mean") + ha + l.toString(d_test_mean, 'g', p) + "\n\n";
+	QString mText = QObject::tr("Mean");
+	if (d_sample2)
+		mText = mText + "1 - " + mText + "2";
+
+	s += QObject::tr("Null Hypothesis") + ":\t\t\t" + mText + h0 + l.toString(d_test_val, 'g', p) + "\n";
+	s += QObject::tr("Alternative Hypothesis") + ":\t\t" + mText + ha + l.toString(d_test_val, 'g', p) + "\n\n";
 
 	double pval = this->pValue();
 	QString sep = "\t\t";
 	s += QObject::tr("t") + sep + QObject::tr("DoF") + sep + QObject::tr("P Value") + "\n";
 	s += sep1;
-	s += l.toString(t(), 'g', p) + "\t" + QString::number(dof()) + sep + l.toString(pval, 'g', p) +  + "\n";
+	s += l.toString(t(), 'g', p) + sep + QString::number(dof()) + sep + l.toString(pval, 'g', p) +  + "\n";
 	s += sep1;
 	s += "\n";
-	s += QObject::tr("At the %1 level, the population mean").arg(l.toString(d_significance_level, 'g', 6)) + " ";
+
+	if (d_sample2)
+		s += QObject::tr("At the %1 level, the difference of the population means").arg(l.toString(d_significance_level, 'g', 6)) + " ";
+	else
+		s += QObject::tr("At the %1 level, the population mean").arg(l.toString(d_significance_level, 'g', 6)) + " ";
 
 	if (pval < d_significance_level)
 		s += QObject::tr("is significantly");
 	else
 		s += QObject::tr("is not significantly");
-	s += " " + compare + " " + QObject::tr("than the test mean");
-	s += " (" + l.toString(d_test_mean, 'g', p) + ").\n";
+	s += " " + compare + " ";
 
+	if (d_sample2)
+		s += QObject::tr("than the test difference");
+	else
+		s += QObject::tr("than the test mean");
+
+	s += " (" + l.toString(d_test_val, 'g', p) + ").\n";
 	return s;
+}
+
+bool tTest::setSample2(const QString& colName, bool paired)
+{
+	d_sample2 = new Statistics((ApplicationWindow *)this->parent(), colName);
+
+	unsigned int d_n2 = d_sample2->dataSize();
+	if (paired && d_n2 != d_n){
+		QMessageBox::information((QWidget *)parent(), QObject::tr("Attention!"),
+								 QObject::tr("Paired t-Test requires equal sample sizes."));
+		delete d_sample2;
+		d_sample2 = 0;
+		return false;
+	}
+
+	if (paired){
+		d_independent_test = false;
+
+		double *data2 = d_sample2->data();
+		for (unsigned int i = 0; i < d_n; i++)
+			d_data[i] = d_data[i] - data2[i];
+
+		d_s12 = gsl_stats_sd(d_data, 1, d_n)/sqrt(d_n);
+		if (d_s12 == 0){
+			QMessageBox::warning((QWidget *)parent(), QObject::tr("Attention!"),
+			QObject::tr("The test statistics t and P can not be computed because the sample variance of the differences between Sample1 and Sample2 is 0."));
+			delete d_sample2;
+			d_sample2 = 0;
+			return false;
+		}
+	} else {
+		double d_sd2 = d_sample2->standardDeviation();
+		double s = sqrt(((d_n - 1)*d_sd*d_sd + (d_n2 - 1)*d_sd2*d_sd2)/(double)(d_n  + d_n2 - 2));
+		d_s12 = s*sqrt(1/(double)d_n + 1/(double)d_n2);
+	}
+
+	d_diff = d_mean - d_sample2->mean();
+
+	return d_n2 > 0;
+}
+
+void tTest::freeMemory()
+{
+	Statistics::freeMemory();
+	if (d_sample2){
+		delete d_sample2;
+		d_sample2 = NULL;
+	}
 }

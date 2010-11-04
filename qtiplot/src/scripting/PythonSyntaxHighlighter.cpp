@@ -37,7 +37,7 @@ const QStringList PythonSyntaxHighlighter::d_keywords = QStringList() << "and" <
 					<< "finally" << "for" << "from" << "global"
 					<< "if" << "import" << "in" << "is"
 					<< "lambda" << "not" << "or" << "pass"
-					<< "print" << "raise" << "return" << "try" << "while";
+					<< "print" << "raise" << "return" << "try" << "while" << "True" << "False";
 
 PythonSyntaxHighlighter::PythonSyntaxHighlighter(ScriptEdit *parent)
     : SyntaxHighlighter(parent)
