@@ -223,5 +223,6 @@
         <file>raise.png</file>
         <file>lower.png</file>
         <file>font.png</file>
+        <file>normalRandomNumbers.png</file>
     </qresource>
 </RCC>

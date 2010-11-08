@@ -61,6 +61,8 @@
 #include <gsl/gsl_sort.h>
 #include <gsl/gsl_sort_vector.h>
 #include <gsl/gsl_heapsort.h>
+#include <gsl/gsl_rng.h>
+#include <gsl/gsl_randist.h>
 
 #ifdef XLS_IMPORT
     #include <ExcelFormat.h>
@@ -2352,6 +2354,66 @@ void Table::setRandomValues()
 	}
 
 	emit modifiedWindow(this);
+	QApplication::restoreOverrideCursor();
+}
+
+void Table::setNormalRandomValues()
+{
+	QStringList list = selectedColumns();
+	QStringList lstReadOnly;
+	for (int i = 0; i < list.count(); i++){
+		QString name = list[i];
+		int col = colIndex(name);
+		if (d_table->isColumnReadOnly(col))
+			lstReadOnly << name;
+	}
+
+	if (lstReadOnly.count() > 0){
+		QMessageBox::warning(this, tr("QtiPlot - Error"),
+		tr("The folowing columns") + ":\n" + lstReadOnly.join("\n") + "\n" + tr("are read only!"));
+	}
+
+	for (int i = 0; i < list.count(); i++)
+		setNormalRandomValues(colIndex(list[i]));
+
+	emit modifiedWindow(this);
+}
+
+void Table::setNormalRandomValues(int col, int startRow, int endRow, double sigma)
+{
+	if (col < 0 || col >= d_table->numCols() || d_table->isColumnReadOnly(col))
+		return;
+
+	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+
+	int rows = d_table->numRows();
+	if (startRow < 0 || startRow >= rows)
+		startRow = 0;
+	if (endRow < 0 || endRow >= rows)
+		endRow = rows - 1;
+
+	gsl_rng_env_setup();
+	const gsl_rng_type * T = gsl_rng_default;
+	gsl_rng * r = gsl_rng_alloc (T);
+	if (!r)
+		return;
+
+	time_t tmp;
+	time(&tmp);
+	gsl_rng_set(r, tmp + col);
+
+	int prec;
+	char f;
+	columnNumericFormat(col, &f, &prec);
+
+
+	for (int i = startRow; i <= endRow; i++)
+		d_table->setText(i, col, locale().toString(gsl_ran_gaussian_ziggurat(r, sigma), f, prec));
+
+	emit modifiedData(this, colName(col));
+
+	gsl_rng_free (r);
+
 	QApplication::restoreOverrideCursor();
 }
 

@@ -58,9 +58,9 @@ private:
     QString currentText;
     QString errorStr;
 	//Index of the last non-empty cell in a sheet
-	int d_last_column;
+	unsigned int d_last_column;
 	//Total number of rows in a sheet
-	int d_rows;
+	unsigned int d_rows;
 	//Current column in a row
 	int d_col;
 

@@ -47,7 +47,7 @@ d_w(0.0),
 d_pValue(0.0)
 {
 	if (d_n < 3 || d_n > 5000){
-		QMessageBox::critical(0, QObject::tr("Attention!"), QObject::tr("Sample size must be between 3 and 5000."));
+		QMessageBox::critical(parent, QObject::tr("Attention!"), QObject::tr("Sample size must be between 3 and 5000."));
 		this->freeMemory();
 	} else {
 		int init = false;

@@ -1089,6 +1089,11 @@ for c1, c2, c3 in t:
   # do stuff, assuming t has three columns
 </programlisting>
 
+It is possible to assign normal random values to a complete column or to a subset of rows in a column:
+<programlisting>
+	t.setNormalRandomValues(col, startRow = 1, endRow = -1, standardDeviation = 1.0)
+</programlisting>
+
 Assigning values to a complete row or column is also possible.
 While the new row data has to be a tuple which length must match the column number,
 column data just has to be iteratable. If the iterator stops before the end of the table
