@@ -664,6 +664,14 @@ public:
   sipCpp->sortColumns(l, a1, a2, *a3);
 %End
 
+void setRandomValues(SIP_PYOBJECT, int startRow = 1, int endRow = -1);
+%MethodCode
+sipIsErr = 0;
+CHECK_TABLE_COL(a0);
+if (sipIsErr == 0)
+	sipCpp->setRandomValues(col, a1 - 1, a2 - 1);
+%End
+
 void setNormalRandomValues(SIP_PYOBJECT, int startRow = 1, int endRow = -1, double sd = 1.0);
 %MethodCode
 sipIsErr = 0;

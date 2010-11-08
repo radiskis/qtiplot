@@ -871,4 +871,5 @@ setSample2
 ShapiroWilkTest
 True
 False
+setRandomValues
 setNormalRandomValues

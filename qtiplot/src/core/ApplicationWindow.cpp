@@ -1812,9 +1812,6 @@ void ApplicationWindow::customColumnActions()
     actionSetYErrCol->setEnabled(false);
     actionDisregardCol->setEnabled(false);
     actionSwapColumns->setEnabled(false);
-    actionSetAscValues->setEnabled(false);
-    actionSetRandomValues->setEnabled(false);
-	actionSetRandomNormalValues->setEnabled(false);
 
 	Table *t = (Table*)activeWindow(TableWindow);
     if (!t)
@@ -1835,9 +1832,6 @@ void ApplicationWindow::customColumnActions()
 	}
 
 	if (selectedCols >= 1){
-	    actionSetAscValues->setEnabled(true);
-        actionSetRandomValues->setEnabled(true);
-		actionSetRandomNormalValues->setEnabled(true);
         actionSetXCol->setEnabled(true);
         actionSetYCol->setEnabled(true);
         actionSetZCol->setEnabled(true);

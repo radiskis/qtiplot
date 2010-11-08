@@ -1295,8 +1295,8 @@ void Table::clearCol()
 	if (d_table->isColumnReadOnly(selectedCol))
 		return;
 
-	for (int i=0; i<d_table->numRows(); i++){
-		if (d_table->isSelected (i, selectedCol))
+	for (int i = 0; i < d_table->numRows(); i++){
+		if (d_table->isSelected(i, selectedCol))
 			d_table->setText(i, selectedCol, "");
 	}
 
@@ -1372,10 +1372,10 @@ void Table::deselect()
 
 void Table::clearSelection()
 {
-	QStringList list=selectedColumns();
+	QStringList list = selectedColumns();
 	int n = int(list.count());
 
-	if (n>0){
+	if (n > 0){
 		QStringList lstReadOnly;
 		for (int i=0; i<list.count(); i++){
 			QString name = list[i];
@@ -1387,10 +1387,8 @@ void Table::clearSelection()
 			QMessageBox::warning(this, tr("QtiPlot - Error"),
         	tr("The folowing columns")+":\n"+ lstReadOnly.join("\n") + "\n"+ tr("are read only!"));
     	}
-
-		for (int i=0; i<n; i++){
-			QString name = list[i];
-			selectedCol = colIndex(name);
+		for (int i = 0; i < n; i++){
+			selectedCol = colIndex(list[i]);
 			clearCol();
 		}
 	} else {
@@ -1567,13 +1565,13 @@ void Table::pasteSelection()
 	}
 	if (lstReadOnly.count() > 0){
 		QMessageBox::warning(this, tr("QtiPlot - Error"),
-        tr("The folowing columns")+":\n"+ lstReadOnly.join("\n") + "\n"+ tr("are read only!"));
+		tr("The folowing columns") + ":\n" + lstReadOnly.join("\n") + "\n" + tr("are read only!"));
     }
 
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
 	QStringList colLabels;
-	for (int i = 0; i < left & i < col_label.size(); i++)
+	for (int i = 0; i < left && i < col_label.size(); i++)
 		colLabels << col_label[i];
 	for (int i = left + cols; i < col_label.size(); i++)
 		colLabels << col_label[i];
@@ -1696,21 +1694,12 @@ void Table::removeCol(const QStringList& list)
 
 void Table::normalizeSelection()
 {
-	QStringList s = selectedColumns();
-	QStringList lstReadOnly;
-	for (int i=0; i<(int)s.count(); i++){
-		int col = colIndex(s[i]);
-		if (d_table->isColumnReadOnly(col))
-			lstReadOnly << col_label[col];
-	}
+	QStringList lst = writableSelectedColumns();
+	if (lst.isEmpty())
+		return;
 
-	if (lstReadOnly.count() > 0){
-		QMessageBox::warning(this, tr("QtiPlot - Error"),
-        tr("The folowing columns")+":\n"+ lstReadOnly.join("\n") + "\n"+ tr("are read only!"));
-    }
-
-	for (int i=0; i<(int)s.count(); i++)
-		normalizeCol(colIndex(s[i]));
+	for (int i = 0; i < lst.count(); i++)
+		normalizeCol(colIndex(lst[i]));
 
 	emit modifiedWindow(this);
 }
@@ -1728,7 +1717,7 @@ void Table::normalize()
         tr("The folowing columns")+":\n"+ lstReadOnly.join("\n") + "\n"+ tr("are read only!"));
     }
 
-	for (int i=0; i<d_table->numCols(); i++)
+	for (int i = 0; i < d_table->numCols(); i++)
 		normalizeCol(i);
 
 	emit modifiedWindow(this);
@@ -2318,63 +2307,52 @@ void Table::setDayFormat(const QString& format, int col, bool updateCells)
 
 void Table::setRandomValues()
 {
-	QStringList list=selectedColumns();
-	QStringList lstReadOnly;
-	for (int i=0; i<list.count(); i++){
-		QString name = list[i];
-		int col = colIndex(name);
-		if (d_table->isColumnReadOnly(col))
-			lstReadOnly << name;
-	}
+	QStringList list = writableSelectedColumns();
+	if (list.isEmpty())
+		return;
 
-	if (lstReadOnly.count() > 0){
-		QMessageBox::warning(this, tr("QtiPlot - Error"),
-        tr("The folowing columns")+":\n"+ lstReadOnly.join("\n") + "\n"+ tr("are read only!"));
-    }
+	Q3TableSelection selection = getSelection();
+	for (int i = 0; i < list.count(); i++)
+		setRandomValues(colIndex(list[i]), selection.topRow(), selection.bottomRow());
+
+	emit modifiedWindow(this);
+}
+
+void Table::setRandomValues(int col, int startRow, int endRow)
+{
+	if (col < 0 || col >= d_table->numCols() || d_table->isColumnReadOnly(col))
+		return;
 
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
-    time_t tmp;
-    srand(time(&tmp));
-	int rows=d_table->numRows();
-	for (int j=0; j<(int) list.count(); j++){
-		QString name=list[j];
-		selectedCol=colIndex(name);
-        if (d_table->isColumnReadOnly(selectedCol))
-            continue;
+	int rows = d_table->numRows();
+	if (startRow < 0 || startRow >= rows)
+		startRow = 0;
+	if (endRow < 0 || endRow >= rows)
+		endRow = rows - 1;
 
-		int prec;
-		char f;
-		columnNumericFormat(selectedCol, &f, &prec);
+	int prec;
+	char f;
+	columnNumericFormat(col, &f, &prec);
 
-		for (int i=0; i<rows; i++)
-			d_table->setText(i, selectedCol, locale().toString(double(rand())/double(RAND_MAX), f, prec));
+	srand(time(NULL) + col);
+	for (int i = startRow; i <= endRow; i++)
+		d_table->setText(i, col, locale().toString(double(rand())/double(RAND_MAX), f, prec));
 
-		emit modifiedData(this, name);
-	}
+	emit modifiedData(this, colName(col));
 
-	emit modifiedWindow(this);
 	QApplication::restoreOverrideCursor();
 }
 
 void Table::setNormalRandomValues()
 {
-	QStringList list = selectedColumns();
-	QStringList lstReadOnly;
-	for (int i = 0; i < list.count(); i++){
-		QString name = list[i];
-		int col = colIndex(name);
-		if (d_table->isColumnReadOnly(col))
-			lstReadOnly << name;
-	}
+	QStringList list = writableSelectedColumns();
+	if (list.isEmpty())
+		return;
 
-	if (lstReadOnly.count() > 0){
-		QMessageBox::warning(this, tr("QtiPlot - Error"),
-		tr("The folowing columns") + ":\n" + lstReadOnly.join("\n") + "\n" + tr("are read only!"));
-	}
-
+	Q3TableSelection selection = getSelection();
 	for (int i = 0; i < list.count(); i++)
-		setNormalRandomValues(colIndex(list[i]));
+		setNormalRandomValues(colIndex(list[i]), selection.topRow(), selection.bottomRow());
 
 	emit modifiedWindow(this);
 }
@@ -2398,22 +2376,16 @@ void Table::setNormalRandomValues(int col, int startRow, int endRow, double sigm
 	if (!r)
 		return;
 
-	time_t tmp;
-	time(&tmp);
-	gsl_rng_set(r, tmp + col);
-
 	int prec;
 	char f;
 	columnNumericFormat(col, &f, &prec);
 
-
+	gsl_rng_set(r, time(NULL) + col);
 	for (int i = startRow; i <= endRow; i++)
 		d_table->setText(i, col, locale().toString(gsl_ran_gaussian_ziggurat(r, sigma), f, prec));
-
-	emit modifiedData(this, colName(col));
-
 	gsl_rng_free (r);
 
+	emit modifiedData(this, colName(col));
 	QApplication::restoreOverrideCursor();
 }
 
@@ -2531,25 +2503,41 @@ void Table::setHeaderColType()
 	}
 }
 
-void Table::setAscValues()
+QStringList Table::writableSelectedColumns()
 {
-	QStringList list=selectedColumns();
+	Q3TableSelection selection = getSelection();
+	QStringList list = selectedColumns();
+	if (list.isEmpty()){
+		for (int i = selection.leftCol(); i <= selection.rightCol(); i++)
+			list << colName(i);
+	}
+
 	QStringList lstReadOnly;
-	for (int i=0; i<list.count(); i++){
+	for (int i = 0; i < list.count(); i++){
 		QString name = list[i];
 		int col = colIndex(name);
 		if (d_table->isColumnReadOnly(col))
 			lstReadOnly << name;
 	}
 
-	if (lstReadOnly.count() > 0){
+	if (!lstReadOnly.isEmpty()){
 		QMessageBox::warning(this, tr("QtiPlot - Error"),
-        tr("The folowing columns")+":\n"+ lstReadOnly.join("\n") + "\n"+ tr("are read only!"));
-    }
+		tr("The folowing columns") + ":\n" + lstReadOnly.join("\n") + "\n" + tr("are read only!"));
+	}
+	return list;
+}
+
+void Table::setAscValues()
+{
+	QStringList list = writableSelectedColumns();
+	if (list.isEmpty())
+		return;
 
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+
+	Q3TableSelection selection = getSelection();
 	int rows = d_table->numRows();
-	for (int j=0; j<(int) list.count(); j++){
+	for (int j = 0; j < list.count(); j++){
 		QString name = list[j];
 		selectedCol = colIndex(name);
 
@@ -2565,8 +2553,8 @@ void Table::setAscValues()
 		char f;
 		columnNumericFormat(selectedCol, &f, &prec);
 
-		for (int i=0; i<rows; i++)
-			setText(i, selectedCol, QString::number(i+1, f, prec));
+		for (int i = selection.topRow(); i <= selection.bottomRow(); i++)
+			setText(i, selectedCol, QString::number(i + 1, f, prec));
 
 		emit modifiedData(this, name);
 	}
