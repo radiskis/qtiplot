@@ -117,6 +117,7 @@ public slots:
 	void setHeaderColType();
 	void setText(int row,int col,const QString & text);
 	void setRandomValues();
+	void setRandomValues(int col, int startRow = 0, int endRow = -1);
 	void setNormalRandomValues();
 	void setNormalRandomValues(int col, int startRow = 0, int endRow = -1, double sigma = 1.0);
 	void setAscValues();
@@ -248,6 +249,7 @@ public slots:
 	//@}
 
 	void init(int rows, int cols);
+	QStringList writableSelectedColumns();
 	QStringList selectedColumns();
 	QStringList selectedYColumns();
 	QStringList selectedErrColumns();

@@ -425,7 +425,7 @@
 <section ref="x6407.html#Python-WaterfallPlots" title="Waterfall Plots">
 </section>
 <section ref="x6407.html#Python-Plots3D" title="3D Plots">
-<section ref="x6407.html#AEN7407" title="Creating a 3D plot">
+<section ref="x6407.html#AEN7408" title="Creating a 3D plot">
 </section>
 <section ref="x6407.html#Python-3D-View" title="Customizing the view">
 </section>
@@ -463,7 +463,9 @@
 </section>
 </section>
 <section ref="x6407.html#Python-Statistics" title="Descriptive Statistics">
-<section ref="x6407.html#Python-tTest" title="Hypothesis Testing - One Sample Student's t-Test">
+<section ref="x6407.html#Python-tTest" title="Hypothesis Testing - Student's t-Test">
+</section>
+<section ref="x6407.html#Python-ShapiroWilkTest" title="Normality Test (Shapiro - Wilk)">
 </section>
 </section>
 <section ref="x6407.html#Python-Notes" title="Working with Notes">
@@ -480,7 +482,7 @@
 </section>
 </section>
 </section>
-<section ref="c7727.html" title="Frequently asked questions">
+<section ref="c7731.html" title="Frequently asked questions">
 </section>
 </DCF>
 </assistantconfig>
