@@ -117,6 +117,8 @@ public slots:
 	void setHeaderColType();
 	void setText(int row,int col,const QString & text);
 	void setRandomValues();
+	void setNormalRandomValues();
+	void setNormalRandomValues(int col, int startRow = 0, int endRow = -1, double sigma = 1.0);
 	void setAscValues();
 
 	void cellEdited(int,int col);

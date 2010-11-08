@@ -851,6 +851,7 @@ public slots:
 
 	void setAscValues();
 	void setRandomValues();
+	void setNormalRandomValues();
 	void setXCol();
 	void setYCol();
 	void setZCol();
@@ -1499,7 +1500,7 @@ private:
 	QAction *actionLowPassFilter, *actionHighPassFilter, *actionBandPassFilter, *actionBandBlockFilter;
 	QAction *actionSortTable, *actionSortSelection, *actionNormalizeSelection;
 	QAction *actionNormalizeTable, *actionConvolute, *actionDeconvolute, *actionCorrelate, *actionAutoCorrelate;
-	QAction *actionTranslateHor, *actionTranslateVert, *actionSetAscValues, *actionSetRandomValues;
+	QAction *actionTranslateHor, *actionTranslateVert, *actionSetAscValues, *actionSetRandomValues, *actionSetRandomNormalValues;
 	QAction *actionSetXCol, *actionSetYCol, *actionSetZCol, *actionSetLabelCol, *actionDisregardCol, *actionSetXErrCol, *actionSetYErrCol;
 	QAction *actionBoxPlot, *actionMultiPeakGauss, *actionMultiPeakLorentz, *actionCheckUpdates;
 	QAction *actionDonate, *actionHomePage, *actionDownloadManual, *actionTechnicalSupport, *actionTranslations;

@@ -1121,6 +1121,7 @@ void ApplicationWindow::initToolBars()
 	columnTools->addAction(actionShowColumnValuesDialog);
 	columnTools->addAction(actionSetAscValues);
 	columnTools->addAction(actionSetRandomValues);
+	columnTools->addAction(actionSetRandomNormalValues);
 	columnTools->addSeparator();
 	columnTools->addAction(actionSortTable);
 	columnTools->addAction(actionShowColStatistics);
@@ -1521,6 +1522,7 @@ void ApplicationWindow::tableMenuAboutToShow()
 
 	fillMenu->addAction(actionSetAscValues);
 	fillMenu->addAction(actionSetRandomValues);
+	fillMenu->addAction(actionSetRandomNormalValues);
 	tableMenu->addMenu (fillMenu);
 
 	tableMenu->addAction(actionClearTable);
@@ -1812,6 +1814,7 @@ void ApplicationWindow::customColumnActions()
     actionSwapColumns->setEnabled(false);
     actionSetAscValues->setEnabled(false);
     actionSetRandomValues->setEnabled(false);
+	actionSetRandomNormalValues->setEnabled(false);
 
 	Table *t = (Table*)activeWindow(TableWindow);
     if (!t)
@@ -1834,6 +1837,7 @@ void ApplicationWindow::customColumnActions()
 	if (selectedCols >= 1){
 	    actionSetAscValues->setEnabled(true);
         actionSetRandomValues->setEnabled(true);
+		actionSetRandomNormalValues->setEnabled(true);
         actionSetXCol->setEnabled(true);
         actionSetYCol->setEnabled(true);
         actionSetZCol->setEnabled(true);
@@ -7756,6 +7760,7 @@ void ApplicationWindow::showColMenu(int c)
 			contextMenu.addAction(actionTableRecalculate);
 			fill.addAction(actionSetAscValues);
 			fill.addAction(actionSetRandomValues);
+			fill.addAction(actionSetRandomNormalValues);
 			fill.setTitle(tr("&Fill Column With"));
 			contextMenu.addMenu(&fill);
 
@@ -7880,6 +7885,7 @@ void ApplicationWindow::showColMenu(int c)
 
 			fill.addAction(actionSetAscValues);
 			fill.addAction(actionSetRandomValues);
+			fill.addAction(actionSetRandomNormalValues);
 			fill.setTitle(tr("&Fill Columns With"));
 			contextMenu.addMenu(&fill);
 
@@ -14486,6 +14492,9 @@ void ApplicationWindow::createActions()
 	actionSetRandomValues = new QAction(QIcon(":/randomNumbers.png"),tr("&Random Values"), this);
 	connect(actionSetRandomValues, SIGNAL(activated()), this, SLOT(setRandomValues()));
 
+	actionSetRandomNormalValues = new QAction(QIcon(":/normalRandomNumbers.png"), tr("&Normal Random Numbers"), this);
+	connect(actionSetRandomNormalValues, SIGNAL(activated()), this, SLOT(setNormalRandomValues()));
+
 	actionFrequencyCount = new QAction(tr("&Frequency Count ..."), this);
 	connect(actionFrequencyCount, SIGNAL(activated()), this, SLOT(showFrequencyCountDialog()));
 
@@ -15216,6 +15225,9 @@ void ApplicationWindow::translateActionsStrings()
 	actionSetAscValues->setToolTip(tr("Fill selected columns with row numbers"));
 	actionSetRandomValues->setMenuText(tr("&Random Values"));
 	actionSetRandomValues->setToolTip(tr("Fill selected columns with random numbers"));
+	actionSetRandomNormalValues->setMenuText(tr("&Normal Random Numbers"));
+	actionSetRandomNormalValues->setToolTip(tr("Fill selected columns with normal random numbers"));
+
 	actionFrequencyCount->setMenuText(tr("&Frequency Count ..."));
 	actionOneSampletTest->setMenuText(tr("&One Sample t-Test..."));
 	actionTwoSampletTest->setMenuText(tr("&Two Sample t-Test..."));
@@ -15785,6 +15797,15 @@ void ApplicationWindow::setRandomValues()
 		return;
 
     t->setRandomValues();
+}
+
+void ApplicationWindow::setNormalRandomValues()
+{
+	Table *t = (Table *)activeWindow(TableWindow);
+	if (!t)
+		return;
+
+	t->setNormalRandomValues();
 }
 
 void ApplicationWindow::setXErrCol()
