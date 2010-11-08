@@ -56,6 +56,15 @@
 #include <gsl/gsl_math.h>
 #include <fstream>
 
+ConstFunction::ConstFunction(double z, Qwt3D::Curve *pw)
+: Function(pw), d_z(z)
+{}
+
+double ConstFunction::operator()(double x, double y)
+{
+	return d_z;
+}
+
 UserFunction::UserFunction(const QString& s, Qwt3D::Curve *pw)
 : Function(pw), formula(s)
 {}
@@ -155,6 +164,8 @@ void Graph3D::initPlot()
 	setAcceptDrops(true);
 
 	d_active_curve = NULL;
+	d_const_curve = NULL;
+	d_const_func = NULL;
 
 	d_table = 0;
 	d_table_plot_type = NoTable;
@@ -275,6 +286,31 @@ void Graph3D::initCoord()
 	sp->coordinates()->setAutoScale(false);
 }
 
+void Graph3D::addHiddenConstantCurve(double z, double xl, double xr, double yl, double yr)
+{
+	if (d_const_curve){
+		delete d_const_curve;
+		d_const_curve = 0;
+	}
+
+	if (d_const_func){
+		delete d_const_func;
+		d_const_func = 0;
+	}
+
+	d_const_curve = new Curve(sp);
+	d_const_curve->setPlotStyle(NOPLOT);
+	d_const_curve->legend()->drawScale(false);
+	d_const_curve->legend()->drawNumbers(false);
+	d_const_curve->showColorLegend(false);
+	sp->addCurve(d_const_curve);
+
+	d_const_func = new ConstFunction(z, d_const_curve);
+	d_const_func->setMesh(20, 20);
+	d_const_func->setDomain(xl, xr, yl, yr);
+	d_const_func->create();
+}
+
 Curve* Graph3D::addCurve()
 {
 	removeCurve();
@@ -290,6 +326,7 @@ Curve* Graph3D::addCurve()
 	d_active_curve->setProjection(FACE, false);
 	d_active_curve->setProjection(SIDE, false);
 	d_active_curve->setResolution(app->d_3D_resolution);
+	d_active_curve->legend()->axis()->setNumberFont (this->numbersFont());
 
 	if (!title.isEmpty() && d_active_curve->title()->string() != title)
 		setTitle(title, titleCol, titleFnt);
@@ -659,8 +696,18 @@ void Graph3D::loadData(Table* table, int xCol, int yCol, int zCol,
 	if (!d_active_curve)
 		d_active_curve = addCurve();
 	d_active_curve->loadFromData (data, cells);
+
 	if (check_limits)
 		sp->createCoordinateSystem(Triple(xl, yl, zl), Triple(xr, yr, zr));
+
+	if (check_limits){
+		if (d_const_func){
+			d_const_func->setZ(zl);
+			d_const_func->setDomain(xl, xr, yl, yr);
+			d_const_func->create ();
+		} else
+			addHiddenConstantCurve(zl, xl, xr, yl, yr);
+	}
 
 	double start, end;
 	sp->coordinates()->axes[Z1].limits (start, end);
@@ -1476,13 +1523,13 @@ void Graph3D::updateScalesFromMatrix(double xl, double xr, double yl, double yr,
 
 	int nc = qRound(fabs(xr - xl)/dx) + 1;// new number of columns
 	int nr = qRound(fabs(yr - yl)/dy) + 1;// new number of rows
-
 	double **data_matrix = Matrix::allocateMatrixData(nc, nr);
 	for (int i = 0; i < nc; i++){
 		double x = x_begin + i*dx;
 		if (x < xStart || x > xEnd){
 			for (int j = 0; j < nr; j++)
 				data_matrix[i][j] = zmin;
+			continue;
 		}
 
 		double dli, dlf;
@@ -1490,8 +1537,10 @@ void Graph3D::updateScalesFromMatrix(double xl, double xr, double yl, double yr,
 		int l = qRound(dli); if (dlf > 0.5) l++;
 		for (int j = 0; j < nr; j++){
 			double y = y_begin + j*dy;
-			if (y < yStart || y > yEnd)
+			if (y < yStart || y > yEnd){
 				data_matrix[i][j] = zmin;
+				continue;
+			}
 
 			double dki, dkf;
 			dkf = modf(fabs((y - yStart)/dy), &dki);
@@ -2822,7 +2871,7 @@ void Graph3D::setDataColorMap(const QwtLinearColorMap& colorMap)
 
 	col_ = new StandardColor(d_active_curve);
 	col_->setColorVector(cv);
-	sp->setDataColor(col_);
+	d_active_curve->setDataColor(col_);
 
 	if (legendOn){
 		sp->showColorLegend(false);

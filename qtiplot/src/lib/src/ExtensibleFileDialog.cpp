@@ -39,11 +39,10 @@ ExtensibleFileDialog::ExtensibleFileDialog(QWidget *parent, bool extended, Qt::W
 {
 	d_extension = 0;
 
-	d_extension_toggle = new QPushButton(tr("<< &Advanced"));
+	d_extension_toggle = new QPushButton();
 	d_extension_toggle->setCheckable(true);
-	if (extended)
-		d_extension_toggle->toggle();
 	d_extension_toggle->hide(); // show only for d_extension != 0
+	setExtended(extended);
 
 	QGridLayout *main_layout = qobject_cast<QGridLayout*>(layout());
 	if (main_layout) {
@@ -84,6 +83,7 @@ void ExtensibleFileDialog::setExtensionWidget(QWidget *extension)
 
 	d_extension->setVisible(d_extension_toggle->isChecked());
 	connect(d_extension_toggle, SIGNAL(toggled(bool)), d_extension, SLOT(setVisible(bool)));
+	connect(d_extension_toggle, SIGNAL(toggled(bool)), this, SLOT(updateToggleButtonText(bool)));
 }
 
 void ExtensibleFileDialog::setEditableFilter(bool on)
@@ -102,4 +102,21 @@ void ExtensibleFileDialog::setEditableFilter(bool on)
 			return;
 		}
 	}
+}
+
+void ExtensibleFileDialog::updateToggleButtonText(bool toggled)
+{
+	QString s = tr("&Advanced");
+	if (toggled)
+		s += " >>";
+	else
+		s = tr("<< &Advanced");
+	d_extension_toggle->setText(s);
+}
+
+void ExtensibleFileDialog::setExtended(bool extended)
+{
+	updateToggleButtonText(extended);
+	if (extended)
+		d_extension_toggle->toggle();
 }

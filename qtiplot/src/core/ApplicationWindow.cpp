@@ -126,6 +126,7 @@
 #include <PythonSyntaxHighlighter.h>
 #include <CreateBinMatrixDialog.h>
 #include <StudentTestDialog.h>
+#include <ShapiroWilkTest.h>
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -3547,6 +3548,36 @@ void ApplicationWindow::showStudentTestDialog(bool twoSamples)
 
 	StudentTestDialog *std = new StudentTestDialog(t, twoSamples, this);
 	std->exec();
+}
+
+void ApplicationWindow::testNormality()
+{
+	Table *t = (Table*)activeWindow(TableWindow);
+	if (!t)
+		return;
+
+	QStringList lst = t->selectedColumns();
+	if (lst.isEmpty()){
+		QMessageBox::warning(this, tr("QtiPlot - Column selection error"), tr("Please select a column first!"));
+		return;
+	}
+
+	QString s = QString::null;
+	ShapiroWilkTest *sw = new ShapiroWilkTest(this, lst[0]);
+	unsigned int n = sw->dataSize();
+	if (n >= 3 && n <= 5000)
+		s += sw->logInfo();
+	delete sw;
+
+	for (int i = 1; i < lst.size(); i++){
+		ShapiroWilkTest *sw = new ShapiroWilkTest(this, lst[i]);
+		unsigned int n = sw->dataSize();
+		if (n >= 3 && n <= 5000)
+			s += sw->shortLogInfo();
+		delete sw;
+	}
+
+	updateLog(s);
 }
 
 Matrix* ApplicationWindow::tableToMatrixRegularXYZ(Table* t, const QString& colName)
@@ -9955,6 +9986,7 @@ void ApplicationWindow::analysisMenuAboutToShow()
 		statsMenu->addAction(actionShowColStatistics);
 		statsMenu->addAction(actionShowRowStatistics);
 		statsMenu->addAction(actionFrequencyCount);
+		statsMenu->addAction(actionShapiroWilk);
 
 		QMenu *tTestMenu = analysisMenu->addMenu (tr("&Hypothesis Testing"));
 		tTestMenu->addAction(actionOneSampletTest);
@@ -14457,6 +14489,9 @@ void ApplicationWindow::createActions()
 	actionFrequencyCount = new QAction(tr("&Frequency Count ..."), this);
 	connect(actionFrequencyCount, SIGNAL(activated()), this, SLOT(showFrequencyCountDialog()));
 
+	actionShapiroWilk = new QAction(tr("&Normality Test (Shapiro - Wilk)"), this);
+	connect(actionShapiroWilk, SIGNAL(activated()), this, SLOT(testNormality()));
+
 	actionOneSampletTest = new QAction(tr("&One Sample t-Test..."), this);
 	connect(actionOneSampletTest, SIGNAL(activated()), this, SLOT(showStudentTestDialog()));
 
@@ -15182,6 +15217,10 @@ void ApplicationWindow::translateActionsStrings()
 	actionSetRandomValues->setMenuText(tr("&Random Values"));
 	actionSetRandomValues->setToolTip(tr("Fill selected columns with random numbers"));
 	actionFrequencyCount->setMenuText(tr("&Frequency Count ..."));
+	actionOneSampletTest->setMenuText(tr("&One Sample t-Test..."));
+	actionTwoSampletTest->setMenuText(tr("&Two Sample t-Test..."));
+	actionShapiroWilk->setMenuText(tr("&Normality Test (Shapiro - Wilk)"));
+
 	actionSetXCol->setMenuText(tr("&X"));
 	actionSetXCol->setToolTip(tr("Set column as X"));
 	actionSetYCol->setMenuText(tr("&Y"));

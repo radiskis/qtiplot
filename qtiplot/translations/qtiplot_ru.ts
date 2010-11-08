@@ -3939,6 +3939,26 @@ Autocompletion will not be available!</source>
         <source>S&amp;mooth</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Descriptive S&amp;tatistics</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Hypothesis Testing</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Normality Test (Shapiro - Wilk)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;One Sample t-Test...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Two Sample t-Test...</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ArrowMarker</name>
@@ -4472,6 +4492,14 @@ Autocompletion will not be available!</source>
     <message>
         <source>Suffix</source>
         <translation>Суффикс</translation>
+    </message>
+    <message>
+        <source>months</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>years</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -6911,6 +6939,10 @@ The following special codes can be used:
     <message>
         <source>&lt;&lt; &amp;Advanced</source>
         <translation>&lt;&lt; &amp;Подробно</translation>
+    </message>
+    <message>
+        <source>&amp;Advanced</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -10733,11 +10765,11 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>&amp;Choose Font</source>
-        <translation>&amp;Выбор шрифта</translation>
+        <translation type="obsolete">&amp;Выбор шрифта</translation>
     </message>
     <message>
         <source>&amp;Choose font</source>
-        <translation>&amp;Выбор шрифта</translation>
+        <translation type="obsolete">&amp;Выбор шрифта</translation>
     </message>
     <message>
         <source>&amp;Colors</source>
@@ -11176,7 +11208,7 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Canvas Color</source>
-        <translation>Цвет холста</translation>
+        <translation type="obsolete">Цвет холста</translation>
     </message>
     <message>
         <source>Cap Width</source>
@@ -12022,6 +12054,46 @@ have the same number of rows.</source>
         <source>Value (Percentage)</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>&amp;Background Color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Background &amp;Image</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>File</source>
+        <translation type="unfinished">Файл</translation>
+    </message>
+    <message>
+        <source>&amp;Resize layer to fit original image size</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Frame</source>
+        <translation type="unfinished">&amp;Рамка</translation>
+    </message>
+    <message>
+        <source>Canvas</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Standard Symbol</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Image</source>
+        <translation type="unfinished">&amp;Изображение</translation>
+    </message>
+    <message>
+        <source>Preview</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>QtiPlot - Import image from file</source>
+        <translation type="unfinished">QtiPlot - Импортировать изображение из файла</translation>
+    </message>
 </context>
 <context>
     <name>PlotWizard</name>
@@ -12126,15 +12198,15 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>QtiPlot - Plugin Error</source>
-        <translation>QtiPlot - ошибка модуля</translation>
+        <translation type="obsolete">QtiPlot - ошибка модуля</translation>
     </message>
     <message>
         <source>The plugin does not implement a %1 method necessary for Levenberg-Marquardt fitting.</source>
-        <translation>В модуле отсутствует реализация метода %1, необходимого для аппроксимации Левенберга-Марквардта.</translation>
+        <translation type="obsolete">В модуле отсутствует реализация метода %1, необходимого для аппроксимации Левенберга-Марквардта.</translation>
     </message>
     <message>
         <source>The plugin does not implement a %1 method necessary for simplex fitting.</source>
-        <translation>В модуле отсутствует реализация метода %1, необходимого для симплексной аппроксимации.</translation>
+        <translation type="obsolete">В модуле отсутствует реализация метода %1, необходимого для симплексной аппроксимации.</translation>
     </message>
 </context>
 <context>
@@ -12852,6 +12924,139 @@ have the same number of rows.</source>
     <message>
         <source>Size</source>
         <translation type="unfinished">Размер</translation>
+    </message>
+    <message>
+        <source>Attention!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sample size must be between 3 and 5000.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Normality Test (Shapiro - Wilk)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Dataset</source>
+        <translation type="unfinished">Набор данных</translation>
+    </message>
+    <message>
+        <source>N</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>W</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>P Value</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Decision</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Normal at %1 level</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sample</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Mean</source>
+        <translation type="unfinished">Среднее</translation>
+    </message>
+    <message>
+        <source>Standard Deviation</source>
+        <translation type="unfinished">Среднеквадратичное отклонение</translation>
+    </message>
+    <message>
+        <source>Standard Error</source>
+        <translation type="unfinished">Стандартная Ошибка</translation>
+    </message>
+    <message>
+        <source>Two Sample Independent t-Test</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Two Sample Paired t-Test</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>One Sample t-Test</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Difference of Means</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>different</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>greater</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>less</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Null Hypothesis</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Alternative Hypothesis</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>t</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>DoF</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>At the %1 level, the difference of the population means</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>At the %1 level, the population mean</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>is significantly</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>is not significantly</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>than the test difference</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>than the test mean</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Paired t-Test requires equal sample sizes.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The test statistics t and P can not be computed because the sample variance of the differences between Sample1 and Sample2 is 0.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>invt(x, n):
+ Inverse t-distribution with n degrees of freedom.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -13602,6 +13807,136 @@ have the same number of rows.</source>
     <message>
         <source>Together</source>
         <translation>Совместно</translation>
+    </message>
+</context>
+<context>
+    <name>Statistics</name>
+    <message>
+        <source>QtiPlot</source>
+        <translation type="unfinished">QtiPlot</translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation type="unfinished">Ошибка</translation>
+    </message>
+    <message>
+        <source>You didn&apos;t specify a valid data set for this operation!</source>
+        <translation type="unfinished">Не указан допустимый набор данных для данной операции!</translation>
+    </message>
+    <message>
+        <source>Memory Allocation Error</source>
+        <translation type="unfinished">Ошибка выделения памяти</translation>
+    </message>
+    <message>
+        <source>Not enough memory, operation aborted!</source>
+        <translation type="unfinished">Недостаточно памяти, операция отменена!</translation>
+    </message>
+</context>
+<context>
+    <name>StudentTestDialog</name>
+    <message>
+        <source>Two sample t-Test</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>In&amp;dependent Test</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Pai&amp;red Test</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>One sample t-Test</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sample</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Mean</source>
+        <translation type="unfinished">Среднее</translation>
+    </message>
+    <message>
+        <source>Hypotheses</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Null</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Alternate</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Significance Level</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Confidence &amp;Interval(s)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Level(s) in %</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Add Level</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Power Analysis</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Alpha</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sample &amp;Size</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Compute</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Confidence Interval for Difference of Means</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Confidence Interval for Mean</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Level</source>
+        <translation type="unfinished">Уровень</translation>
+    </message>
+    <message>
+        <source>Lower Limit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Upper Limit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Power Analysis</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sample Size</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Power</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>actual</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -14379,7 +14714,7 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Font</source>
-        <translation>Шрифт</translation>
+        <translation type="obsolete">Шрифт</translation>
     </message>
     <message>
         <source>Left</source>

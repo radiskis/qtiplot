@@ -3309,6 +3309,24 @@ public:
   double ucl(double);
 };
 
+class ShapiroWilkTest : Statistics
+{
+%TypeHeaderCode
+#include <ShapiroWilkTest.h>
+%End
+public:
+  ShapiroWilkTest(ApplicationWindow * /TransferThis/, const QString& = QString());
+  ShapiroWilkTest(const QString& = QString()) /NoDerived/;
+%MethodCode
+  SIPQTI_APP(new sipShapiroWilkTest(app, *a0))
+%End
+
+  void setSignificanceLevel(double);
+  virtual QString logInfo();
+  double w();
+  double pValue();
+};
+
 // used for output redirection
 class PythonScripting
 {

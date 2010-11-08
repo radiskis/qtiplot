@@ -7347,7 +7347,7 @@ Autocompletion will not be available!</source>
     </message>
     <message>
         <source>Raise object on top</source>
-        <translation>Adu obiectul in faţa</translation>
+        <translation>Adu obiectul in faţă</translation>
     </message>
     <message>
         <source>Lower object to the bottom</source>
@@ -7412,6 +7412,26 @@ Autocompletion will not be available!</source>
     <message>
         <source>S&amp;mooth</source>
         <translation>&amp;Netezeşte</translation>
+    </message>
+    <message>
+        <source>Descriptive S&amp;tatistics</source>
+        <translation>S&amp;tatistică</translation>
+    </message>
+    <message>
+        <source>&amp;Hypothesis Testing</source>
+        <translation>Testarea &amp;ipotezelor</translation>
+    </message>
+    <message>
+        <source>&amp;Normality Test (Shapiro - Wilk)</source>
+        <translation>Test de &amp;normalitate (Shapiro - Wilk)</translation>
+    </message>
+    <message>
+        <source>&amp;One Sample t-Test...</source>
+        <translation>t-Test &amp;un eşantion...</translation>
+    </message>
+    <message>
+        <source>&amp;Two Sample t-Test...</source>
+        <translation>t-Test &amp;două eşantioane...</translation>
     </message>
 </context>
 <context>
@@ -7982,6 +8002,14 @@ Autocompletion will not be available!</source>
     <message>
         <source>Suffix</source>
         <translation>Sufix</translation>
+    </message>
+    <message>
+        <source>months</source>
+        <translation>luni</translation>
+    </message>
+    <message>
+        <source>years</source>
+        <translation>ani</translation>
     </message>
 </context>
 <context>
@@ -10459,6 +10487,10 @@ The following special codes can be used:
         <source>&lt;&lt; &amp;Advanced</source>
         <translation>&lt;&lt; Opţiuni &amp;Avansate</translation>
     </message>
+    <message>
+        <source>&amp;Advanced</source>
+        <translation>Opţiuni &amp;Avansate</translation>
+    </message>
 </context>
 <context>
     <name>ExtractDataDialog</name>
@@ -12730,43 +12762,43 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>&amp;Add</source>
-        <translation type="unfinished">&amp;Adaugă</translation>
+        <translation>&amp;Adaugă</translation>
     </message>
     <message>
         <source>Clea&amp;r</source>
-        <translation type="unfinished">Go&amp;leşte</translation>
+        <translation>Go&amp;leşte</translation>
     </message>
     <message>
         <source>Rece&amp;nt</source>
-        <translation type="unfinished"></translation>
+        <translation>Re&amp;cent</translation>
     </message>
     <message>
         <source>Click here to select a recently typed expression</source>
-        <translation type="unfinished">Apăsați aici pentru a alege o expresie recent introdusă</translation>
+        <translation>Apăsați aici pentru a alege o expresie recent introdusă</translation>
     </message>
     <message>
         <source>Subintervals</source>
-        <translation type="unfinished"></translation>
+        <translation>Subintervale</translation>
     </message>
     <message>
         <source>QtiPlot - Input error</source>
-        <translation type="unfinished">QtiPlot - Eroare</translation>
+        <translation>QtiPlot - Eroare</translation>
     </message>
     <message>
         <source>QtiPlot</source>
-        <translation type="unfinished">QtiPlot</translation>
+        <translation>QtiPlot</translation>
     </message>
     <message>
         <source>Sorry, there are no recent expressions available!</source>
-        <translation type="unfinished">Ne pare rău, nu există expresii recente disponibile!</translation>
+        <translation>Ne pare rău, nu există expresii recente disponibile!</translation>
     </message>
     <message>
         <source>Recent Functions</source>
-        <translation type="unfinished">Funcții recente</translation>
+        <translation>Funcții recente</translation>
     </message>
     <message>
         <source>Please, choose a function:</source>
-        <translation type="unfinished">Vă rugăm să alegeţi o funcţie:</translation>
+        <translation>Vă rugăm să alegeţi o funcţie:</translation>
     </message>
 </context>
 <context>
@@ -12837,7 +12869,7 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Error</source>
-        <translation type="unfinished">Eroare</translation>
+        <translation>Eroare</translation>
     </message>
 </context>
 <context>
@@ -14344,7 +14376,7 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>&amp;Choose font</source>
-        <translation>Alegeţi &amp;font</translation>
+        <translation type="obsolete">Alegeţi &amp;font</translation>
     </message>
     <message>
         <source>Major Ticks Length</source>
@@ -14444,7 +14476,7 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>&amp;Choose Font</source>
-        <translation>Alegeţi &amp;font</translation>
+        <translation type="obsolete">Alegeţi &amp;font</translation>
     </message>
     <message>
         <source>Distance labels - axis</source>
@@ -14671,7 +14703,7 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Canvas Color</source>
-        <translation>Culoarea suprafeţei</translation>
+        <translation type="obsolete">Culoarea suprafeţei</translation>
     </message>
     <message>
         <source>Border Color</source>
@@ -15451,11 +15483,11 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>QtiPlot - Bin size input error</source>
-        <translation type="unfinished">QtiPlot - Eroare detectată în pasul de eşantionaj</translation>
+        <translation>QtiPlot - Eroare detectată în pasul de eşantionaj</translation>
     </message>
     <message>
         <source>Please enter a positive bin size value!</source>
-        <translation type="unfinished">Vă rugăm introduceţi un pas de eşantionajului pozitiv!</translation>
+        <translation>Vă rugăm introduceţi un pas de eşantionajului pozitiv!</translation>
     </message>
     <message>
         <source>Vector Data</source>
@@ -15563,11 +15595,11 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Statistics for</source>
-        <translation type="unfinished"></translation>
+        <translation>Statistici pentru</translation>
     </message>
     <message>
         <source>Apply Co&amp;lor</source>
-        <translation type="unfinished"></translation>
+        <translation>Aplică cu&amp;loarea</translation>
     </message>
     <message>
         <source>Box &amp;Labels</source>
@@ -15579,23 +15611,63 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Display</source>
-        <translation type="unfinished">Afişaj</translation>
+        <translation>Afişaj</translation>
     </message>
     <message>
         <source>Percentage</source>
-        <translation type="unfinished"></translation>
+        <translation>Procent</translation>
     </message>
     <message>
         <source>Value</source>
-        <translation type="unfinished">Valoare</translation>
+        <translation>Valoare</translation>
     </message>
     <message>
         <source>Percentage (Value)</source>
-        <translation type="unfinished"></translation>
+        <translation>Procent (Valoare)</translation>
     </message>
     <message>
         <source>Value (Percentage)</source>
+        <translation>Valoare (Procent)</translation>
+    </message>
+    <message>
+        <source>&amp;Background Color</source>
+        <translation>Culoare de &amp;fundal</translation>
+    </message>
+    <message>
+        <source>Background &amp;Image</source>
+        <translation>&amp;Imagine de fundal</translation>
+    </message>
+    <message>
+        <source>File</source>
+        <translation>Fişier</translation>
+    </message>
+    <message>
+        <source>&amp;Resize layer to fit original image size</source>
+        <translation>&amp;Dimensiuni reale ale imagini</translation>
+    </message>
+    <message>
+        <source>&amp;Frame</source>
+        <translation>&amp;Bordură</translation>
+    </message>
+    <message>
+        <source>Canvas</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Standard Symbol</source>
+        <translation>Simbol &amp;standard</translation>
+    </message>
+    <message>
+        <source>&amp;Image</source>
+        <translation>&amp;Imagine</translation>
+    </message>
+    <message>
+        <source>Preview</source>
+        <translation>Previzualizare</translation>
+    </message>
+    <message>
+        <source>QtiPlot - Import image from file</source>
+        <translation>QtiPlot - Importă imagine din fişier</translation>
     </message>
 </context>
 <context>
@@ -15701,15 +15773,15 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>QtiPlot - Plugin Error</source>
-        <translation>QtiPlot - Eroare extensie</translation>
+        <translation type="obsolete">QtiPlot - Eroare extensie</translation>
     </message>
     <message>
         <source>The plugin does not implement a %1 method necessary for simplex fitting.</source>
-        <translation>Extensia nu implementează metoda %1 necesară pentru ajustările de tip simplex.</translation>
+        <translation type="obsolete">Extensia nu implementează metoda %1 necesară pentru ajustările de tip simplex.</translation>
     </message>
     <message>
         <source>The plugin does not implement a %1 method necessary for Levenberg-Marquardt fitting.</source>
-        <translation>Extensia nu implementează metoda %1 necesară pentru ajustările de tip Levenberg-Marquardt.</translation>
+        <translation type="obsolete">Extensia nu implementează metoda %1 necesară pentru ajustările de tip Levenberg-Marquardt.</translation>
     </message>
 </context>
 <context>
@@ -16281,7 +16353,8 @@ have the same number of rows.</source>
     <message>
         <source>ttable(x, n):
  Student&apos;s t-distribution with n degrees of freedom.</source>
-        <translation type="unfinished"></translation>
+        <translation>ttable(x, n):
+ Distribuţia lui Student (t) cu n grade de libertate.</translation>
     </message>
     <message>
         <source>w0(x):
@@ -16400,34 +16473,167 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Min</source>
-        <translation type="unfinished">Minim</translation>
+        <translation>Minim</translation>
     </message>
     <message>
         <source>D1 (1st decile)</source>
-        <translation type="unfinished"></translation>
+        <translation>D1 (primul decil)</translation>
     </message>
     <message>
         <source>Q1 (1st quartile)</source>
-        <translation type="unfinished"></translation>
+        <translation>Q1 (prima quartilă)</translation>
     </message>
     <message>
         <source>Median</source>
-        <translation type="unfinished">Median</translation>
+        <translation>Median</translation>
     </message>
     <message>
         <source>Q3 (3rd quartile)</source>
-        <translation type="unfinished"></translation>
+        <translation>Q3 (a treia quartilă)</translation>
     </message>
     <message>
         <source>D9 (9th decile)</source>
-        <translation type="unfinished"></translation>
+        <translation>D9 (al nouălea decil)</translation>
     </message>
     <message>
         <source>Max</source>
-        <translation type="unfinished">Maxim</translation>
+        <translation>Maxim</translation>
     </message>
     <message>
         <source>Size</source>
+        <translation>Mărime</translation>
+    </message>
+    <message>
+        <source>Attention!</source>
+        <translation>Atenţie!</translation>
+    </message>
+    <message>
+        <source>Sample size must be between 3 and 5000.</source>
+        <translation>Dimensiunea eşantionului trebuie să fie între 3 şi 5000.</translation>
+    </message>
+    <message>
+        <source>Normality Test (Shapiro - Wilk)</source>
+        <translation>Test de normalitate (Shapiro - Wilk)</translation>
+    </message>
+    <message>
+        <source>Dataset</source>
+        <translation>Set de date</translation>
+    </message>
+    <message>
+        <source>N</source>
+        <translation>N</translation>
+    </message>
+    <message>
+        <source>W</source>
+        <translation>W</translation>
+    </message>
+    <message>
+        <source>P Value</source>
+        <translation>Valoare P</translation>
+    </message>
+    <message>
+        <source>Decision</source>
+        <translation>Decizie</translation>
+    </message>
+    <message>
+        <source>Normal at %1 level</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sample</source>
+        <translation>Eşantion</translation>
+    </message>
+    <message>
+        <source>Mean</source>
+        <translation>Medie</translation>
+    </message>
+    <message>
+        <source>Standard Deviation</source>
+        <translation>Deviaţia standard</translation>
+    </message>
+    <message>
+        <source>Standard Error</source>
+        <translation>Eroare standard</translation>
+    </message>
+    <message>
+        <source>Two Sample Independent t-Test</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Two Sample Paired t-Test</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>One Sample t-Test</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Difference of Means</source>
+        <translation>Diferenţă de medii</translation>
+    </message>
+    <message>
+        <source>different</source>
+        <translation>diferit</translation>
+    </message>
+    <message>
+        <source>greater</source>
+        <translation>mai mare</translation>
+    </message>
+    <message>
+        <source>less</source>
+        <translation>mai mic</translation>
+    </message>
+    <message>
+        <source>Null Hypothesis</source>
+        <translation>Ipoteza nulă</translation>
+    </message>
+    <message>
+        <source>Alternative Hypothesis</source>
+        <translation>Ipoteza alternativă</translation>
+    </message>
+    <message>
+        <source>t</source>
+        <translation>t</translation>
+    </message>
+    <message>
+        <source>DoF</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>At the %1 level, the difference of the population means</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>At the %1 level, the population mean</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>is significantly</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>is not significantly</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>than the test difference</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>than the test mean</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Paired t-Test requires equal sample sizes.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The test statistics t and P can not be computed because the sample variance of the differences between Sample1 and Sample2 is 0.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>invt(x, n):
+ Inverse t-distribution with n degrees of freedom.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -17183,6 +17389,136 @@ have the same number of rows.</source>
     <message>
         <source>&amp;Close</source>
         <translation>În&amp;chide</translation>
+    </message>
+</context>
+<context>
+    <name>Statistics</name>
+    <message>
+        <source>QtiPlot</source>
+        <translation>QtiPlot</translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation>Eroare</translation>
+    </message>
+    <message>
+        <source>You didn&apos;t specify a valid data set for this operation!</source>
+        <translation>Nu aţi specificat un set de date valid pentru această operaţie!</translation>
+    </message>
+    <message>
+        <source>Memory Allocation Error</source>
+        <translation>Eroare de alocare a memoriei</translation>
+    </message>
+    <message>
+        <source>Not enough memory, operation aborted!</source>
+        <translation>Memorie insuficientă, operaţia a fost abandonată!</translation>
+    </message>
+</context>
+<context>
+    <name>StudentTestDialog</name>
+    <message>
+        <source>Two sample t-Test</source>
+        <translation>t-Test cu două eşantioane</translation>
+    </message>
+    <message>
+        <source>In&amp;dependent Test</source>
+        <translation>Test In&amp;dependent</translation>
+    </message>
+    <message>
+        <source>Pai&amp;red Test</source>
+        <translation>Test &amp;pereche</translation>
+    </message>
+    <message>
+        <source>One sample t-Test</source>
+        <translation>t-Test cu un eşantion</translation>
+    </message>
+    <message>
+        <source>Sample</source>
+        <translation>Eşantion</translation>
+    </message>
+    <message>
+        <source>Mean</source>
+        <translation>Medie</translation>
+    </message>
+    <message>
+        <source>Hypotheses</source>
+        <translation>Ipoteză</translation>
+    </message>
+    <message>
+        <source>Null</source>
+        <translation>Nulă</translation>
+    </message>
+    <message>
+        <source>Alternate</source>
+        <translation>Alternativă</translation>
+    </message>
+    <message>
+        <source>Significance Level</source>
+        <translation>Nivel semnificativ</translation>
+    </message>
+    <message>
+        <source>Confidence &amp;Interval(s)</source>
+        <translation>&amp;Interval(e) de încredere</translation>
+    </message>
+    <message>
+        <source>Level(s) in %</source>
+        <translation>Nivel(e) in %</translation>
+    </message>
+    <message>
+        <source>&amp;Add Level</source>
+        <translation>&amp;Adaugă nivel</translation>
+    </message>
+    <message>
+        <source>&amp;Power Analysis</source>
+        <translation>Analiza &amp;puterii</translation>
+    </message>
+    <message>
+        <source>Alpha</source>
+        <translation>Alfa</translation>
+    </message>
+    <message>
+        <source>Sample &amp;Size</source>
+        <translation>&amp;Mărime eşantion</translation>
+    </message>
+    <message>
+        <source>&amp;Compute</source>
+        <translation>&amp;Calculează</translation>
+    </message>
+    <message>
+        <source>Confidence Interval for Difference of Means</source>
+        <translation>Interval de încredere pentru diferenţa de medii</translation>
+    </message>
+    <message>
+        <source>Confidence Interval for Mean</source>
+        <translation>Interval de încredere pentru medie</translation>
+    </message>
+    <message>
+        <source>Level</source>
+        <translation>Nivel</translation>
+    </message>
+    <message>
+        <source>Lower Limit</source>
+        <translation>Limita inferioară</translation>
+    </message>
+    <message>
+        <source>Upper Limit</source>
+        <translation>Limita superioară</translation>
+    </message>
+    <message>
+        <source>Power Analysis</source>
+        <translation>Analiza puterii</translation>
+    </message>
+    <message>
+        <source>Sample Size</source>
+        <translation>Mărime eşantion</translation>
+    </message>
+    <message>
+        <source>Power</source>
+        <translation>Putere</translation>
+    </message>
+    <message>
+        <source>actual</source>
+        <translation>curent</translation>
     </message>
 </context>
 <context>
@@ -17992,7 +18328,7 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Font</source>
-        <translation>Font</translation>
+        <translation type="obsolete">Font</translation>
     </message>
     <message>
         <source>&amp;Font</source>
