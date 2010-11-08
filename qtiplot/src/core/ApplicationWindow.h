@@ -681,6 +681,7 @@ public slots:
 	void adjustColumnWidth();
 	void showStudentTestDialog(bool twoSamples = false);
 	void showTwoSampleStudentTestDialog(){return showStudentTestDialog(true);};
+	void testNormality();
 	//@}
 
 	//! \name Plot Tools
@@ -1507,7 +1508,7 @@ private:
 	QAction *actionNextWindow, *actionPrevWindow;
 	QAction *actionScriptingLang, *actionRestartScripting, *actionClearTable, *actionGoToRow, *actionGoToColumn;
 	QAction *actionNoteExecute, *actionNoteExecuteAll, *actionNoteEvaluate, *actionSaveNote, *actionFrequencyCount;
-	QAction *actionOneSampletTest, *actionTwoSampletTest;
+	QAction *actionOneSampletTest, *actionTwoSampletTest, *actionShapiroWilk;
 	QAction *actionAnimate, *actionPerspective, *actionFitFrame, *actionResetRotation;
     QAction *actionDeleteRows, *actionDrawPoints, *actionAddZoomPlot;
 	QAction *btnCursor, *btnSelect, *btnPicker, *btnRemovePoints, *btnMovePoints, *actionDragCurve;

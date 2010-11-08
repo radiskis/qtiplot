@@ -21,6 +21,7 @@ INCLUDEPATH += src/analysis/dialogs/
 			   src/analysis/NonLinearFit.h \
 			   src/analysis/PluginFit.h \
 			   src/analysis/PolynomialFit.h \
+			   src/analysis/ShapiroWilkTest.h \
 			   src/analysis/SigmoidalFit.h \
 			   src/analysis/SmoothFilter.h \
 			   src/analysis/Statistics.h \
@@ -45,12 +46,13 @@ INCLUDEPATH += src/analysis/dialogs/
 			   src/analysis/NonLinearFit.cpp \
 			   src/analysis/PluginFit.cpp \
 			   src/analysis/PolynomialFit.cpp \
+			   src/analysis/ShapiroWilkTest.cpp \
 			   src/analysis/SigmoidalFit.cpp \
 			   src/analysis/SmoothFilter.cpp \
 			   src/analysis/Statistics.cpp \
 			   src/analysis/tTest.cpp \
 			   src/analysis/fft2D.cpp \
-				src/analysis/fit_gsl.cpp \
+			   src/analysis/fit_gsl.cpp \
 			   src/analysis/nrutil.cpp \
 
 	HEADERS += src/analysis/dialogs/BaselineDialog.h \

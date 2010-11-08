@@ -112,6 +112,7 @@ contains(SCRIPTING_LANGS, Python) {
 			 $${SIP_DIR}/sipqtiDeconvolution.cpp \
 			 $${SIP_DIR}/sipqtiStatistics.cpp \
 			 $${SIP_DIR}/sipqtitTest.cpp \
+			 $${SIP_DIR}/sipqtiShapiroWilkTest.cpp \
 
 exists(../../$${SIP_DIR}/sipqtiQList.cpp) {
   # SIP < 4.9

@@ -47,6 +47,7 @@ using namespace Qwt3D;
 class QTextDocument;
 class UserFunction;
 class UserParametricSurface;
+class ConstFunction;
 
 /*!\brief 3D graph widget.
  *
@@ -392,6 +393,7 @@ signals:
 	void modified();
 
 private:
+	void addHiddenConstantCurve(double z, double xl, double xr, double yl, double yr);
 	Curve* addCurve();
 	void removeCurve();
 
@@ -436,6 +438,21 @@ private:
 	Qwt3D::PLOTSTYLE style_;
 	PlotType d_table_plot_type;
 	Curve * d_active_curve;
+	ConstFunction *d_const_func;
+	Curve * d_const_curve;
+};
+
+//! Class for constant z surfaces
+class ConstFunction : public Function
+{
+public:
+	ConstFunction(double z, Qwt3D::Curve *pw);
+
+	double operator()(double x, double y);
+	void setZ(double z){d_z = z;};
+
+private:
+	  double d_z;
 };
 
 //! Class for user defined surfaces

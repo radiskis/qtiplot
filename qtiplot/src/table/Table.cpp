@@ -1508,22 +1508,29 @@ void Table::pasteSelection()
 	{//verify if the strings in the line used to rename the columns are not all numbers
 		clipboardLocale.toDouble(firstLine[i], &allNumbers);
 		if (!allNumbers){
-			switch(QMessageBox::question(this, tr("QtiPlot") + " - " + tr("Paste operation"),
-			tr("How should QtiPlot interpret first clipboard line?"),
-			tr("&Values"), tr("Column &Names"), tr("&Comments"), 1, 1)){
-				case 0:
-				break;
-				case 1:
-					pasteHeader = true;
-					linesList.pop_front();
-					rows--;
-				break;
-				case 2:
-					pasteComments = true;
-					linesList.pop_front();
-					rows--;
-				break;
+			QMessageBox msgBox(this);
+			msgBox.setIconPixmap(QPixmap(":/qtiplot_logo.png"));
+			msgBox.setWindowTitle(tr("QtiPlot") + " - " + tr("Paste operation"));
+			msgBox.setText(tr("How should QtiPlot interpret first clipboard line?"));
+			msgBox.addButton(tr("&Values"), QMessageBox::AcceptRole);
+			QPushButton *namesButton = msgBox.addButton(tr("Column &Names"), QMessageBox::AcceptRole);
+			msgBox.setDefaultButton(namesButton);
+			QAbstractButton *commentsButton = msgBox.addButton(tr("&Comments"), QMessageBox::AcceptRole);
+			msgBox.addButton(QMessageBox::Cancel);
+
+			if (msgBox.exec() == QMessageBox::Cancel)
+				return;
+
+			if (msgBox.clickedButton() == namesButton){
+				pasteHeader = true;
+				linesList.pop_front();
+				rows--;
+			} else if (msgBox.clickedButton() == commentsButton){
+				pasteComments = true;
+				linesList.pop_front();
+				rows--;
 			}
+
 			break;
 		}
 	}

@@ -868,5 +868,6 @@ dof
 power
 setSample1
 setSample2
+ShapiroWilkTest
 True
 False

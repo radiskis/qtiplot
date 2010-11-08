@@ -4234,6 +4234,19 @@ test.setSample2("Table3_2", True) # Two sample paired test
 test.run()
 </programlisting>
 </sect3>
+
+<sect3 id="Python-ShapiroWilkTest">
+<title>Normality Test (Shapiro - Wilk)</title>
+<programlisting>
+test = ShapiroWilkTest("Table3_1")
+test.setSignificanceLevel(0.1)
+test.run()
+
+print test.w()
+print test.pValue()
+print test.logInfo()
+</programlisting>
+</sect3>
 </sect2>
 
 <sect2 id = "Python-Notes">

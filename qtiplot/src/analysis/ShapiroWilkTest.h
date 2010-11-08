@@ -1,10 +1,10 @@
 /***************************************************************************
-    File                 : globals.h
+	File                 : ShapiroWilkTest.h
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2006 by Ion Vasilief, Tilman Hoener zu Siederdissen
-    Email (use @ for *)  : ion_vasilief*yahoo.fr, thzs*gmx.net
-    Description          : Definition of global constants
+	Copyright            : (C) 2010 by Ion Vasilief
+    Email (use @ for *)  : ion_vasilief*yahoo.fr
+	Description          : Normality test
 
  ***************************************************************************/
 
@@ -26,18 +26,33 @@
  *   Boston, MA  02110-1301  USA                                           *
  *                                                                         *
  ***************************************************************************/
-//  Don't forget to change the Doxyfile when changing these!
-//! Major version number
-const int maj_version = 0;
-//! Minor version number (0..9)
-const int min_version = 9;
-//! Patch version number (0..9)
-const int patch_version = 8;
-//! Extra version information string (like "alpha", "-2", etc...)
-const char * extra_version = ".3";
-const char * svn_revision = SVN_REVISION;  //SRB: SVN_REVISION set by compiler from QTIPLOT_SVN_REVISION environment variable. (10/1/2010 )
+#ifndef NORMTEST_H
+#define NORMTEST_H
 
-//! Copyright string containing the author namesqmake
-const char * copyright_string = "Copyright (C) 2004-2010 Ion Vasilief";
-//! Release date as a string
-const char * release_date = " 2010/11/04";
+#include <Statistics.h>
+
+//! Normality test
+class ShapiroWilkTest : public Statistics
+{
+	Q_OBJECT
+
+	public:
+		ShapiroWilkTest(ApplicationWindow *parent, const QString& sample = QString());
+
+		void setSignificanceLevel(double);
+
+		double w(){return d_w;};
+		double pValue(){return d_pValue;};
+		virtual QString logInfo();
+		QString shortLogInfo();
+
+	protected:
+		void swilk(int *init, double *x, int *n, int *n1, int *n2, double *a,  double *w, double *pw, int *ifault);
+		static double poly(const double *cc, int nord, double x);
+
+		double d_significance_level;
+		double d_w;
+		double d_pValue;
+};
+
+#endif
