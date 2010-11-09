@@ -5233,7 +5233,7 @@ Are you sure you want to continue?</source>
     </message>
     <message>
         <source>Fit &amp;Linear</source>
-        <translation>Ajustare &amp;liniară</translation>
+        <translation>Regresie &amp;liniară</translation>
     </message>
     <message>
         <source>Fit &amp;Polynomial ...</source>
@@ -7423,15 +7423,23 @@ Autocompletion will not be available!</source>
     </message>
     <message>
         <source>&amp;Normality Test (Shapiro - Wilk)</source>
-        <translation>Test de &amp;normalitate (Shapiro - Wilk)</translation>
+        <translation>Testul Shapiro - &amp;Wilk</translation>
     </message>
     <message>
         <source>&amp;One Sample t-Test...</source>
-        <translation>t-Test &amp;un eşantion...</translation>
+        <translation>Test t Student cu &amp;un eşantion...</translation>
     </message>
     <message>
         <source>&amp;Two Sample t-Test...</source>
-        <translation>t-Test &amp;două eşantioane...</translation>
+        <translation>Test t Student cu &amp;două eşantioane...</translation>
+    </message>
+    <message>
+        <source>&amp;Normal Random Numbers</source>
+        <translation>Numere repartizate &amp;normal</translation>
+    </message>
+    <message>
+        <source>Fill selected columns with normal random numbers</source>
+        <translation>Umple coloanele selectate cu numere aleatorii repartizate normal</translation>
     </message>
 </context>
 <context>
@@ -8983,7 +8991,7 @@ The following special codes can be used:
     </message>
     <message>
         <source>2 points for linear fits</source>
-        <translation>Doar 2 puncte pentru ajustările liniare</translation>
+        <translation>Doar 2 puncte pentru regresiile liniare</translation>
     </message>
     <message>
         <source>Display Peak Curves for Multi-peak Fits</source>
@@ -15603,11 +15611,11 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Box &amp;Labels</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Etichete cutie</translation>
     </message>
     <message>
         <source>Whis&amp;ker Labels</source>
-        <translation type="unfinished"></translation>
+        <translation>Etichete &amp;mustăţi</translation>
     </message>
     <message>
         <source>Display</source>
@@ -15651,7 +15659,7 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Canvas</source>
-        <translation type="unfinished"></translation>
+        <translation>Suprafaţă</translation>
     </message>
     <message>
         <source>&amp;Standard Symbol</source>
@@ -16167,37 +16175,44 @@ have the same number of rows.</source>
     <message>
         <source>bessel_j0(x):
   Regular cylindrical Bessel function of zeroth order, J_0(x).</source>
-        <translation></translation>
+        <translation>bessel_j0(x):
+ Funcţia cilindrică Bessel de ordinul zero, J_0(x).</translation>
     </message>
     <message>
         <source>bessel_j1(x):
   Regular cylindrical Bessel function of first order, J_1(x).</source>
-        <translation type="unfinished"></translation>
+        <translation>bessel_j1(x):
+ Funcţia cilindrică Bessel de ordinul unu, J_1(x).</translation>
     </message>
     <message>
         <source>bessel_jn(double x, int n):
  Regular cylindrical Bessel function of order n, J_n(x).</source>
-        <translation type="unfinished"></translation>
+        <translation>bessel_jn(double x, int n):
+ Funcţia cilindrică Bessel de ordinul n, J_n(x).</translation>
     </message>
     <message>
         <source>bessel_jn_zero(double n, unsigned int s):
  s-th positive zero x_s of regular cylindrical Bessel function of order n, J_n(x_s)=0</source>
-        <translation type="unfinished"></translation>
+        <translation>bessel_jn_zero(double n, unsigned int s):
+ Al s-lea zero pozitiv, x_s, al funcţiei cilindrice Bessel de ordin n, J_n(x_s)=0</translation>
     </message>
     <message>
         <source>bessel_y0(x):
  Irregular cylindrical Bessel function of zeroth order, Y_0(x), for x&gt;0.</source>
-        <translation type="unfinished"></translation>
+        <translation>bessel_y0(x):
+ Funcţia cilindrică Bessel de ordinul zero, Y_0(x), pentru x&gt;0.</translation>
     </message>
     <message>
         <source>bessel_y1(x):
  Irregular cylindrical Bessel function of first order, Y_1(x), for x&gt;0.</source>
-        <translation type="unfinished"></translation>
+        <translation>bessel_y1(x):
+ Funcţia cilindrică Bessel de ordinul unu, Y_1(x), pentru x&gt;0.</translation>
     </message>
     <message>
         <source>bessel_yn(double x, int n):
  Irregular cylindrical Bessel function of order n, Y_n(x), for x&gt;0.</source>
-        <translation type="unfinished"></translation>
+        <translation>bessel_yn(double x, int n):
+ Funcţia cilindrică Bessel de ordinul n, Y_n(x), pentru x&gt;0.</translation>
     </message>
     <message>
         <source>beta(a,b):
@@ -16226,12 +16241,14 @@ have the same number of rows.</source>
     <message>
         <source>erfz(x):
  The Gaussian probability density function Z(x).</source>
-        <translation type="unfinished"></translation>
+        <translation>erfz(x):
+ Funcţia densităţii de probabilitate faussiană Z(x).</translation>
     </message>
     <message>
         <source>erfq(x):
  The upper tail of the Gaussian probability function Q(x).</source>
-        <translation type="unfinished"></translation>
+        <translation>erfq(x):
+ Coada de sus a funcţiei probabilitate gaussiană Q(x).</translation>
     </message>
     <message>
         <source>exp(x):
@@ -16249,12 +16266,14 @@ have the same number of rows.</source>
     <message>
         <source>gamma(x):
  Computes the Gamma function, subject to x not being a negative integer.</source>
-        <translation type="unfinished"></translation>
+        <translation>gamma(x):
+ Calculează funcţia Gamma, cu condiţia ca x să nu fie un număr întreg negativ.</translation>
     </message>
     <message>
         <source>gammaln(x):
  Computes the logarithm of the Gamma function, subject to x not a being negative integer. For x&lt;0, log(|Gamma(x)|) is returned.</source>
-        <translation type="unfinished"></translation>
+        <translation>gammaln(x):
+ Logaritmul natural al funcției gamma, cu condiţia ca x să nu fie un număr întreg negativ. Pentru x&lt;0, întoarce log(|Gamma(x)|).</translation>
     </message>
     <message>
         <source>gauss_cdf(x, sigma):
@@ -16269,7 +16288,8 @@ have the same number of rows.</source>
     <message>
         <source>hazard(x):
  Computes the hazard function for the normal distribution h(x) = erfz(x)/erfq(x).</source>
-        <translation type="unfinished"></translation>
+        <translation>hazard(x):
+ Calculează funcţia hazard pentru distribuţie normală h(x) = erfz(x)/erfq(x).</translation>
     </message>
     <message>
         <source>inv_gauss_cdf(x, sigma):
@@ -16354,21 +16374,23 @@ have the same number of rows.</source>
         <source>ttable(x, n):
  Student&apos;s t-distribution with n degrees of freedom.</source>
         <translation>ttable(x, n):
- Distribuţia lui Student (t) cu n grade de libertate.</translation>
+ Distribuţia t Student cu n grade de libertate.</translation>
     </message>
     <message>
         <source>w0(x):
  Compute the principal branch of Lambert&apos;s W function, W_0(x).
  W is defined as a solution to the equation W(x)*exp(W(x))=x.
  For x&lt;0, there are two real-valued branches; this function computes the one where W&gt;-1 for x&lt;0 (also see wm1(x)).</source>
-        <translation type="unfinished"></translation>
+        <translation>w0(x):
+ Calculează ramura principală a funcţiei lui Lambert, W_0(x). W este definită ca o soluţie a ecuaţiei W(x)*exp(W(x))=x. Pentru x&lt;0, există două ramuri; această funcţie calculează ramura pentru care W&gt;-1 pentru x&lt;0 (a se vedea wm1(x)).</translation>
     </message>
     <message>
         <source>wm1(x):
  Compute the secondary branch of Lambert&apos;s W function, W_{-1}(x).
  W is defined as a solution to the equation W(x)*exp(W(x))=x.
  For x&lt;0, there are two real-valued branches; this function computes the one where W&lt;-1 for x&lt;0. (also see w0(x)).</source>
-        <translation type="unfinished"></translation>
+        <translation>wm1(x):
+ Calculează ramura secundară a funcţiei lui Lambert, W_{-1}(x). W este definită ca o soluţie a ecuaţiei W(x)*exp(W(x))=x. Pentru x&lt;0, există două ramuri; această funcţie calculează ramura pentru care W&lt;-1 pentru x&lt;0. (a se vedea w0(x)).</translation>
     </message>
     <message>
         <source>AVG(&quot;colName&quot;, i, j):
@@ -16509,11 +16531,11 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Sample size must be between 3 and 5000.</source>
-        <translation>Dimensiunea eşantionului trebuie să fie între 3 şi 5000.</translation>
+        <translation>Mărimea eşantionului trebuie să fie între 3 şi 5000.</translation>
     </message>
     <message>
         <source>Normality Test (Shapiro - Wilk)</source>
-        <translation>Test de normalitate (Shapiro - Wilk)</translation>
+        <translation>Testul Shapiro - Wilk (ipoteza de normalitate a distribuției)</translation>
     </message>
     <message>
         <source>Dataset</source>
@@ -16537,7 +16559,7 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Normal at %1 level</source>
-        <translation type="unfinished"></translation>
+        <translation>Distribuţia este normală pentru un prag de acceptabilitate de %1</translation>
     </message>
     <message>
         <source>Sample</source>
@@ -16557,15 +16579,15 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Two Sample Independent t-Test</source>
-        <translation type="unfinished"></translation>
+        <translation>Test t Student cu două eşantioane independente</translation>
     </message>
     <message>
         <source>Two Sample Paired t-Test</source>
-        <translation type="unfinished"></translation>
+        <translation>Test t împerecheat Student cu două eşantioane</translation>
     </message>
     <message>
         <source>One Sample t-Test</source>
-        <translation type="unfinished"></translation>
+        <translation>Test t Student cu un eşantion</translation>
     </message>
     <message>
         <source>Difference of Means</source>
@@ -16573,7 +16595,7 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>different</source>
-        <translation>diferit</translation>
+        <translation>diferită</translation>
     </message>
     <message>
         <source>greater</source>
@@ -16597,44 +16619,61 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>DoF</source>
-        <translation type="unfinished"></translation>
+        <translation>Grade de libertate</translation>
     </message>
     <message>
         <source>At the %1 level, the difference of the population means</source>
-        <translation type="unfinished"></translation>
+        <translation>Pentru un prag critic de acceptabilitate de %1, diferenţă mediilor populaţiilor</translation>
     </message>
     <message>
         <source>At the %1 level, the population mean</source>
-        <translation type="unfinished"></translation>
+        <translation>Pentru un prag critic de acceptabilitate de %1, media populaţiei</translation>
     </message>
     <message>
         <source>is significantly</source>
-        <translation type="unfinished"></translation>
+        <translation>este  semnificativ</translation>
     </message>
     <message>
         <source>is not significantly</source>
-        <translation type="unfinished"></translation>
+        <translation>nu este  semnificativ</translation>
     </message>
     <message>
         <source>than the test difference</source>
-        <translation type="unfinished"></translation>
+        <translation>de diferența test</translation>
     </message>
     <message>
         <source>than the test mean</source>
-        <translation type="unfinished"></translation>
+        <translation>de media test</translation>
     </message>
     <message>
         <source>Paired t-Test requires equal sample sizes.</source>
-        <translation type="unfinished"></translation>
+        <translation>Testut t împerecheat Student necesită eşantioane de dimensiuni egale.</translation>
     </message>
     <message>
         <source>The test statistics t and P can not be computed because the sample variance of the differences between Sample1 and Sample2 is 0.</source>
-        <translation type="unfinished"></translation>
+        <translation>Statistica t si probabilitatea nu pot fi calculate pentru că varianţa diferenţei dintre eşantionul1 si eşantionul 2 este 0.</translation>
     </message>
     <message>
         <source>invt(x, n):
  Inverse t-distribution with n degrees of freedom.</source>
-        <translation type="unfinished"></translation>
+        <translation>invt(x, n):
+ Returnează inversul distribuției t Student cu n grade de libertate.</translation>
+    </message>
+    <message>
+        <source>Not normal at %1 level</source>
+        <translation>Distribuţia nu este normală pentru un prag de acceptabilitate de%1</translation>
+    </message>
+    <message>
+        <source>ftable(x, m, n):
+ F-Distribution with m and n degrees of freedom.</source>
+        <translation>ftable(x, m, n):
+ Distribuția de probabilitate F cu m și n grade de libertate.</translation>
+    </message>
+    <message>
+        <source>invf(x, m, n):
+ Inverse F-Distribution with m and n degrees of freedom.</source>
+        <translation>invf(x, m, n):
+ Inversa distribuției de probabilitate F cu m și n grade de libertate.</translation>
     </message>
 </context>
 <context>
@@ -17418,19 +17457,19 @@ have the same number of rows.</source>
     <name>StudentTestDialog</name>
     <message>
         <source>Two sample t-Test</source>
-        <translation>t-Test cu două eşantioane</translation>
+        <translation>Test t Student cu două eşantioane</translation>
     </message>
     <message>
         <source>In&amp;dependent Test</source>
-        <translation>Test In&amp;dependent</translation>
+        <translation>Test in&amp;dependent</translation>
     </message>
     <message>
         <source>Pai&amp;red Test</source>
-        <translation>Test &amp;pereche</translation>
+        <translation>Test îm&amp;perecheat</translation>
     </message>
     <message>
         <source>One sample t-Test</source>
-        <translation>t-Test cu un eşantion</translation>
+        <translation>Test t Student cu un eşantion</translation>
     </message>
     <message>
         <source>Sample</source>
@@ -17454,7 +17493,7 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Significance Level</source>
-        <translation>Nivel semnificativ</translation>
+        <translation>Prag de acceptabilitate</translation>
     </message>
     <message>
         <source>Confidence &amp;Interval(s)</source>

@@ -132,6 +132,10 @@ class muParserScripting: public ScriptingEnv
 	   { return gsl_cdf_tdist_P(x, n);}
 	static double ttable(double x, double n)
 	   { return gsl_cdf_tdist_Pinv(x, n); }
+	static double ftable(double x, double m, double n)
+		{return gsl_cdf_fdist_Pinv(x, m, n);};
+	static double invf(double x, double m, double n)
+		{return gsl_cdf_fdist_P(x, m, n);};
 	static double gauss_pdf(double x, double sigma )
 		{return gsl_ran_gaussian_pdf (x, sigma);};
 	static double gauss_cdf(double x, double sigma )

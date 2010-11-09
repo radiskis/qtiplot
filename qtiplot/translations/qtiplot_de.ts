@@ -9941,6 +9941,14 @@ Autocompletion will not be available!</source>
         <source>&amp;Two Sample t-Test...</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>&amp;Normal Random Numbers</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Fill selected columns with normal random numbers</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ArrowMarker</name>
@@ -22067,6 +22075,20 @@ Wollen sie Zellen einfügen?</translation>
     <message>
         <source>invt(x, n):
  Inverse t-distribution with n degrees of freedom.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Not normal at %1 level</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>ftable(x, m, n):
+ F-Distribution with m and n degrees of freedom.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>invf(x, m, n):
+ Inverse F-Distribution with m and n degrees of freedom.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
