@@ -163,7 +163,7 @@ gsl_multifit_fdfsolver * Fit::fitGSL(gsl_multifit_function_fdf f, int &iteration
 
 gsl_multimin_fminimizer * Fit::fitSimplex(gsl_multimin_function f, int &iterations, int &status)
 {
-	const gsl_multimin_fminimizer_type *T = gsl_multimin_fminimizer_nmsimplex;
+	const gsl_multimin_fminimizer_type *T = gsl_multimin_fminimizer_nmsimplex2;
 
 	//size of the simplex
 	gsl_vector *ss;
