@@ -273,12 +273,12 @@ void ApplicationWindow::init(bool factorySettings)
 	fli->setOpen( true );
 
 	lv = new FolderListView();
-	lv->addColumn (tr("Name"),-1 );
-	lv->addColumn (tr("Type"),-1 );
-	lv->addColumn (tr("View"),-1 );
-	lv->addColumn (tr("Size"),-1 );
-	lv->addColumn (tr("Created"),-1);
-	lv->addColumn (tr("Label"),-1);
+	lv->addColumn (tr("Name"));
+	lv->addColumn (tr("Type"));
+	lv->addColumn (tr("View"));
+	//lv->addColumn (tr("Size"));
+	lv->addColumn (tr("Created"));
+	lv->addColumn (tr("Label"));
 	lv->setResizeMode(Q3ListView::LastColumn);
 	lv->setMinimumHeight(80);
 	lv->setSelectionMode(Q3ListView::Extended);
@@ -1251,9 +1251,9 @@ void ApplicationWindow::insertTranslatedStrings()
 	lv->setColumnText (0, tr("Name"));
 	lv->setColumnText (1, tr("Type"));
 	lv->setColumnText (2, tr("View"));
-	lv->setColumnText (3, tr("Size"));
-	lv->setColumnText (4, tr("Created"));
-	lv->setColumnText (5, tr("Label"));
+	//lv->setColumnText (3, tr("Size"));
+	lv->setColumnText (3, tr("Created"));
+	lv->setColumnText (4, tr("Label"));
 
 	if (scriptWindow)
 		scriptWindow->setWindowTitle(tr("QtiPlot - Script Window"));
@@ -2136,7 +2136,7 @@ void ApplicationWindow::renameListViewItem(const QString& oldName,const QString&
 {
 	Q3ListViewItem *it=lv->findItem (oldName,0, Q3ListView::ExactMatch | Qt::CaseSensitive );
 	if (it)
-		it->setText(0,newName);
+		it->setText(0, newName);
 }
 
 void ApplicationWindow::setListViewLabel(const QString& caption,const QString& label)
@@ -2144,36 +2144,36 @@ void ApplicationWindow::setListViewLabel(const QString& caption,const QString& l
 	Q3ListViewItem *it = lv->findItem ( caption, 0, Q3ListView::ExactMatch | Qt::CaseSensitive );
 	if (it){
 		QString s = label;
-		it->setText(5, s.replace("\n", " "));
+		it->setText(4, s.replace("\n", " "));
 	}
 }
 
 void ApplicationWindow::setListViewDate(const QString& caption,const QString& date)
 {
-	Q3ListViewItem *it=lv->findItem ( caption, 0, Q3ListView::ExactMatch | Qt::CaseSensitive );
+	Q3ListViewItem *it = lv->findItem ( caption, 0, Q3ListView::ExactMatch | Qt::CaseSensitive );
 	if (it)
-		it->setText(4,date);
+		it->setText(3, date);
 }
 
 void ApplicationWindow::setListView(const QString& caption,const QString& view)
 {
-	Q3ListViewItem *it=lv->findItem ( caption,0, Q3ListView::ExactMatch | Qt::CaseSensitive );
+	Q3ListViewItem *it = lv->findItem ( caption,0, Q3ListView::ExactMatch | Qt::CaseSensitive );
 	if (it)
-		it->setText(2,view);
+		it->setText(2, view);
 }
 
 void ApplicationWindow::setListViewSize(const QString& caption,const QString& size)
 {
-	Q3ListViewItem *it=lv->findItem ( caption,0, Q3ListView::ExactMatch | Qt::CaseSensitive );
+	/*Q3ListViewItem *it=lv->findItem ( caption,0, Q3ListView::ExactMatch | Qt::CaseSensitive );
 	if (it)
-		it->setText(3,size);
+		it->setText(3, size);*/
 }
 
 QString ApplicationWindow::listViewDate(const QString& caption)
 {
-	Q3ListViewItem *it=lv->findItem (caption,0, Q3ListView::ExactMatch | Qt::CaseSensitive );
+	Q3ListViewItem *it = lv->findItem (caption,0, Q3ListView::ExactMatch | Qt::CaseSensitive );
 	if (it)
-		return it->text(4);
+		return it->text(3);
 	else
 		return "";
 }
@@ -9575,7 +9575,7 @@ MdiSubWindow* ApplicationWindow::clone(MdiSubWindow* w)
 
 		nw->setWindowLabel(w->windowLabel());
 		nw->setCaptionPolicy(w->captionPolicy());
-		setListViewSize(nw->objectName(), w->sizeToString());
+		//setListViewSize(nw->objectName(), w->sizeToString());
 	}
 	QApplication::restoreOverrideCursor();
 	customMenu(nw);
@@ -10429,9 +10429,9 @@ void ApplicationWindow::modifiedProject(MdiSubWindow *w)
 
 	modifiedProject();
 
-	Q3ListViewItem *it = lv->findItem (w->objectName(), 0, Q3ListView::ExactMatch | Qt::CaseSensitive );
+	/*Q3ListViewItem *it = lv->findItem (w->objectName(), 0, Q3ListView::ExactMatch | Qt::CaseSensitive );
 	if (it)
-		it->setText(3, w->sizeToString());
+		it->setText(3, w->sizeToString());*/
 }
 
 void ApplicationWindow::timerEvent ( QTimerEvent *e)
@@ -10807,9 +10807,9 @@ void ApplicationWindow::showTable(int i)
 	updateWindowLists(t);
 
 	t->showMaximized();
-	Q3ListViewItem *it=lv->findItem (t->objectName(), 0, Q3ListView::ExactMatch | Qt::CaseSensitive );
+	Q3ListViewItem *it = lv->findItem (t->objectName(), 0, Q3ListView::ExactMatch | Qt::CaseSensitive );
 	if (it)
-		it->setText(2,tr("Maximized"));
+		it->setText(2, tr("Maximized"));
 }
 
 void ApplicationWindow::showTable(Table *w, const QString& curve)
@@ -17251,9 +17251,9 @@ void ApplicationWindow::addListViewItem(MdiSubWindow *w)
 
 	it->setText(0, w->objectName());
     it->setText(2, w->aspect());
-	it->setText(3, w->sizeToString());
-	it->setText(4, w->birthDate());
-	it->setText(5, w->windowLabel().replace("\n", " "));
+	//it->setText(3, w->sizeToString());
+	it->setText(3, w->birthDate());
+	it->setText(4, w->windowLabel().replace("\n", " "));
 
 	updateCompleter(w->objectName());
 }
@@ -17290,7 +17290,7 @@ void ApplicationWindow::windowProperties()
 		s +=  tr("Type") + ": " + tr("3D Graph") + "\n\n";
 	}
 	s += tr("Path") + ": " + current_folder->path() + "\n\n";
-	s += tr("Size") + ": " + w->sizeToString() + "\n\n";
+	//s += tr("Size") + ": " + w->sizeToString() + "\n\n";
 	s += tr("Created") + ": " + w->birthDate() + "\n\n";
 	s += tr("Status") + ": " + it->text(2) + "\n\n";
 	mbox->setText(s);
