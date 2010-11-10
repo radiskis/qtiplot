@@ -1675,6 +1675,7 @@ void FitDialog::loadUserFunctions()
         }
     }
 
+	funcBox->clear();
     if (d_user_functions.size() > 0){
         funcBox->addItems(names);
         funcBox->setCurrentRow(0);
@@ -1719,10 +1720,19 @@ void FitDialog::saveInitialGuesses()
             if (!baseName.contains("."))
                 fn.append(".fit");
 
-            if (d_current_fit->save(fn))
-                d_user_functions.append(d_current_fit);
-          }
-    }
+			QString name = boxName->text();
+			bool rename = (!name.isEmpty() && d_current_fit->objectName() != name);
+			if (rename)
+				d_current_fit->setObjectName(name);
+
+			if (d_current_fit->save(fn)){
+				if (rename)
+					loadUserFunctions();
+				else
+					d_user_functions.append(d_current_fit);
+			}
+		}
+	}
 }
 
 void FitDialog::loadInitialGuesses()
