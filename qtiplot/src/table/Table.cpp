@@ -2536,7 +2536,6 @@ void Table::setAscValues()
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
 	Q3TableSelection selection = getSelection();
-	int rows = d_table->numRows();
 	for (int j = 0; j < list.count(); j++){
 		QString name = list[j];
 		selectedCol = colIndex(name);
