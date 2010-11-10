@@ -37,58 +37,29 @@ void CoordinateSystem::init(Triple first, Triple second)
 {
 	destroy();
 	
-  for (unsigned i=0; i!=axes.size(); ++i)
-    axes[i].setScale(LINEARSCALE);
-		
-	Triple dv = second - first;
-	
+	for (unsigned i = 0; i != axes.size(); ++i)
+		axes[i].setScale(LINEARSCALE);
+
 	setPosition(first, second);
 	
-	double majl =  dv.length() / 100; // 1 %
+	double majl = (second - first).length() / 100; // 1 %
 	setTicLength(majl, 0.6 * majl);
 
-	axes[X1].setPosition(first, first+Triple(dv.x,    0,     0));												// front bottom x
-	axes[Y1].setPosition(first, first+Triple(   0, dv.y,     0));												// bottom left  y
-	axes[Z1].setPosition (first+Triple(   0, dv.y, 0), first+Triple(   0, dv.y, dv.z));	// back left z
 	axes[X1].setTicOrientation(0,-1,0);
 	axes[Y1].setTicOrientation(-1,0,0);
 	axes[Z1].setTicOrientation(-1,0,0);
-	
-	axes[X1].setLimits(first.x, second.x);
-	axes[X2].setLimits(first.x, second.x);
-	axes[X3].setLimits(first.x, second.x);
-	axes[X4].setLimits(first.x, second.x);
-	
-	axes[Y1].setLimits(first.y, second.y);
-	axes[Y2].setLimits(first.y, second.y);
-	axes[Y3].setLimits(first.y, second.y);
-	axes[Y4].setLimits(first.y, second.y);
-	
-	axes[Z1].setLimits(first.z, second.z);
-	axes[Z2].setLimits(first.z, second.z);
-	axes[Z3].setLimits(first.z, second.z);
-	axes[Z4].setLimits(first.z, second.z);
 
 	// remaining x axes 
-	axes[X2].setPosition(first+Triple( 0,    0, dv.z), first+Triple( dv.x,    0, dv.z));	// front top x
-	axes[X3].setPosition(first+Triple( 0, dv.y, dv.z), second);		  											// back top x
-	axes[X4].setPosition(first+Triple( 0, dv.y,    0), first+Triple( dv.x, dv.y,    0));	// back bottom x
 	axes[X2].setTicOrientation(0,-1,0);
 	axes[X3].setTicOrientation(0,1,0);
 	axes[X4].setTicOrientation(0,1,0);
 	
 	// remaining y axes 
-	axes[Y2].setPosition(first+Triple(dv.x, 0,    0), first+Triple(dv.x, dv.y,  0)); // bottom right y
-	axes[Y3].setPosition(first+Triple(dv.x, 0, dv.z), second);											 // top right y
-	axes[Y4].setPosition(first+Triple(0,    0, dv.z), first+Triple(0,  dv.y, dv.z)); // top left y
 	axes[Y2].setTicOrientation(1,0,0);
 	axes[Y3].setTicOrientation(1,0,0);
 	axes[Y4].setTicOrientation (-1,0,0);
 
 	// remaining z axes 
-	axes[Z2].setPosition(first, first+Triple(   0,    0,  dv.z));												// front left z
-	axes[Z4].setPosition(first+Triple(dv.x, dv.y, 0), second );                         // back right z
-	axes[Z3].setPosition(first+Triple(dv.x,    0, 0), first+Triple(dv.x,    0, dv.z));	// front right z
 	axes[Z2].setTicOrientation(-1,0,0);
 	axes[Z4].setTicOrientation(1,0,0);
 	axes[Z3].setTicOrientation(1,0,0);
@@ -397,6 +368,42 @@ void CoordinateSystem::setPosition(Triple first, Triple second)
 {
 	first_ = first;
 	second_ = second;
+
+	Triple dv = second - first;
+
+	axes[X1].setPosition(first, first+Triple(dv.x,    0,     0));	// front bottom x
+	axes[Y1].setPosition(first, first+Triple(   0, dv.y,     0));	// bottom left  y
+	axes[Z1].setPosition (first+Triple(0, dv.y, 0), first+Triple(0, dv.y, dv.z));	// back left z
+
+	axes[X1].setLimits(first.x, second.x);
+	axes[X2].setLimits(first.x, second.x);
+	axes[X3].setLimits(first.x, second.x);
+	axes[X4].setLimits(first.x, second.x);
+
+	axes[Y1].setLimits(first.y, second.y);
+	axes[Y2].setLimits(first.y, second.y);
+	axes[Y3].setLimits(first.y, second.y);
+	axes[Y4].setLimits(first.y, second.y);
+
+	axes[Z1].setLimits(first.z, second.z);
+	axes[Z2].setLimits(first.z, second.z);
+	axes[Z3].setLimits(first.z, second.z);
+	axes[Z4].setLimits(first.z, second.z);
+
+	// remaining x axes
+	axes[X2].setPosition(first+Triple( 0,    0, dv.z), first+Triple( dv.x,    0, dv.z));	// front top x
+	axes[X3].setPosition(first+Triple( 0, dv.y, dv.z), second);	// back top x
+	axes[X4].setPosition(first+Triple( 0, dv.y,    0), first+Triple( dv.x, dv.y,    0));	// back bottom x
+
+	// remaining y axes
+	axes[Y2].setPosition(first+Triple(dv.x, 0,    0), first+Triple(dv.x, dv.y,  0)); // bottom right y
+	axes[Y3].setPosition(first+Triple(dv.x, 0, dv.z), second); // top right y
+	axes[Y4].setPosition(first+Triple(0,    0, dv.z), first+Triple(0,  dv.y, dv.z)); // top left y
+
+	// remaining z axes
+	axes[Z2].setPosition(first, first+Triple(   0,    0,  dv.z));	// front left z
+	axes[Z4].setPosition(first+Triple(dv.x, dv.y, 0), second );	// back right z
+	axes[Z3].setPosition(first+Triple(dv.x,    0, 0), first+Triple(dv.x,    0, dv.z));	// front right z
 }
 
 void CoordinateSystem::setTicLength(double major, double minor)

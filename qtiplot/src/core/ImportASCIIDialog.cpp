@@ -4,7 +4,7 @@
     --------------------------------------------------------------------
 	Copyright            : (C) 2004 - 2010 by Ion Vasilief,
 						   (C) 2006 - June 2007 by Knut Franke
-    Email (use @ for *)  : ion_vasilief*yahoo.fr, knut.franke*gmx.de
+	Email (use @ for *)  : ion_vasilief*yahoo.fr
     Description          : Import ASCII file(s) dialog
 
  ***************************************************************************/
