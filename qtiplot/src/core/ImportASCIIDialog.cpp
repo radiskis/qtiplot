@@ -516,11 +516,6 @@ void ImportASCIIDialog::changePreviewFile(const QString& path)
 	if (path.isEmpty())
 		return;
 
-	if (d_current_path.isEmpty()){//avoid importing the first file which is by default selected in the file dialog
-		d_current_path = path;
-		return;
-	}
-
 	QFileInfo fi(path);
 	if (!fi.exists() || fi.isDir() || !fi.isFile())
 		return;
