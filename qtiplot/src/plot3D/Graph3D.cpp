@@ -60,7 +60,7 @@ ConstFunction::ConstFunction(double z, Qwt3D::Curve *pw)
 : Function(pw), d_z(z)
 {}
 
-double ConstFunction::operator()(double x, double y)
+double ConstFunction::operator()(double, double)
 {
 	return d_z;
 }
@@ -894,9 +894,6 @@ void Graph3D::resetNonEmptyStyle()
 void Graph3D::update()
 {
 	sp->makeCurrent();
-
-	resetAxesLabels();
-
 	sp->updateData();
 }
 
@@ -1380,9 +1377,6 @@ void Graph3D::setScale(int axis, double start, double end, int majorTicks, int m
 	sp->coordinates()->axes[Y1].limits(yMin, yMax);
 	sp->coordinates()->axes[Z1].limits(zMin, zMax);
 
-	double majorTicLength, minorTicLength;
-	sp->coordinates()->axes[axis].ticLength(majorTicLength, minorTicLength);
-
 	switch(axis){
 		case 0:
 			if (xMin != start || xMax != end){
@@ -1407,9 +1401,11 @@ void Graph3D::setScale(int axis, double start, double end, int majorTicks, int m
 	}
 
 	if (d_func){
-		d_func->setDomain(xMin, xMax, yMin, yMax);
-		d_func->setMinZ(zMin);
-		d_func->setMaxZ(zMax);
+		if (axis == 2){
+			d_func->setMinZ(zMin);
+			d_func->setMaxZ(zMax);
+		} else
+			d_func->setDomain(xMin, xMax, yMin, yMax);
 		d_func->create();
 	} else if (d_surface){
 		d_surface->restrictRange(ParallelEpiped(Triple(xMin, yMin, zMin), Triple(xMax, yMax, zMax)));
@@ -1444,8 +1440,6 @@ void Graph3D::setScale(int axis, double start, double end, int majorTicks, int m
 		sp->coordinates()->axes[axis4].setMinors(minorTicks);
 	}
 
-	sp->coordinates()->axes[axis].setTicLength(majorTicLength, minorTicLength);
-
 	if (d_active_curve)
 		d_active_curve->updateColorLegend(legendMajorTicks, 2);
 
@@ -1457,11 +1451,6 @@ void Graph3D::setScales(double xl, double xr, double yl, double yr, double zl, d
 {
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
-	double *majorTicLengths = new double[12];
-	double *minorTicLengths = new double[12];
-	for (int i = 0; i < 12; i++)
-		sp->coordinates()->axes[i].ticLength(majorTicLengths[i], minorTicLengths[i]);
-
 	if (d_matrix)
 		updateScalesFromMatrix(xl, xr, yl, yr, zl, zr);
     else if (d_func){
@@ -1469,7 +1458,7 @@ void Graph3D::setScales(double xl, double xr, double yl, double yr, double zl, d
         d_func->setMinZ(zl);
         d_func->setMaxZ(zr);
         d_func->create ();
-        sp->createCoordinateSystem(Triple(xl, yl, zl), Triple(xr, yr, zr));
+		sp->coordinates()->setPosition(Triple(xl, yl, zl), Triple(xr, yr, zr));
 		d_active_curve->legend()->setLimits(zl, zr);
     } else if (d_table){
 		QString name = plotAssociation;
@@ -1494,15 +1483,9 @@ void Graph3D::setScales(double xl, double xr, double yl, double yr, double zl, d
 		} else if (name.endsWith("(Y)",true))
 			updateScales(xl, xr, yl, yr, zl, zr, xCol, yCol);
 	}
-    resetAxesLabels();
+
 	if (d_autoscale)
 		findBestLayout();
-
-	for (int i = 0; i < 12; i++)
-		sp->coordinates()->axes[i].setTicLength(majorTicLengths[i], minorTicLengths[i]);
-
-	delete [] majorTicLengths;
-	delete [] minorTicLengths;
 
 	QApplication::restoreOverrideCursor();
 }
@@ -1614,8 +1597,7 @@ void Graph3D::updateScales(double xl, double xr, double yl, double yr,double zl,
 void Graph3D::setTicks(const QStringList& options)
 {
 	int min,maj;
-	if (int(options.count()) == 6)
-	{
+	if (int(options.count()) == 6){
 		maj=options[0].toInt();
 		sp->coordinates()->axes[X1].setMajors(maj);
 		sp->coordinates()->axes[X2].setMajors(maj);
@@ -1651,9 +1633,7 @@ void Graph3D::setTicks(const QStringList& options)
 		sp->coordinates()->axes[Z2].setMinors(min);
 		sp->coordinates()->axes[Z3].setMinors(min);
 		sp->coordinates()->axes[Z4].setMinors(min);
-	}
-	else
-	{
+	} else {
 		maj=options[1].toInt();
 		sp->coordinates()->axes[X1].setMajors(maj);
 		sp->coordinates()->axes[X2].setMajors(maj);

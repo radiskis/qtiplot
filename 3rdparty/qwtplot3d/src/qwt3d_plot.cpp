@@ -279,10 +279,11 @@ void Plot3D::childConnect(bool connect)
 */
 void Plot3D::createCoordinateSystem( Triple beg, Triple end )
 {
-	if (beg != coordinates_p.first() || end != coordinates_p.second()){
+	if (coordinates_p.first() == Triple(0,0,0) && coordinates_p.second() == Triple(0,0,0)){
 		coordinates_p.setPlot(this);
 		coordinates_p.init(beg, end);
-	}
+	} else
+		coordinates_p.setPosition(beg, end);
 }
 
 /*!

@@ -11,8 +11,6 @@ Curve::Curve(QWidget* parent)
 {
 	if (plot_p) {
 		title_p = new Label();
-		qDebug() << "Curve: Class constructor" << this
-				 << "\r\n\t Parent:" << parent;
 		plot_p->setCurve(this);
 		plot_p->addTitle(title_p);
 		connects();
@@ -33,8 +31,6 @@ Curve::Curve(QWidget* parent)
     resolution_p = 1;
     actualDataG_ = new GridData();
     actualDataC_ = new CellData();
-	qDebug() << "Curve: Constructor Actual Data - " << this << "GridData =" << actualDataG_ << "CellData =" << actualDataC_;
-
     actualData_p = actualDataG_;
 
     displaylists_p.resize(DisplayListSize);
@@ -84,8 +80,6 @@ Curve::~Curve()
 
 void Curve::connects()
 {
-	qDebug() << "Curve: Connecting Curve" << this;
-	
 	// Parent Plot3D Relayed Signals
 	connect(plot_p, SIGNAL(setCurveResolution(int)),					SLOT(setResolution(int)));
 	connect(plot_p, SIGNAL(setCurvePolygonOffset(double)),				SLOT(setPolygonOffset(double)));
@@ -124,8 +118,6 @@ void Curve::connects()
 
 void Curve::disconnects()
 {
-	qDebug() << "Curve: Disconnecting Data Curve" << this;
-	
 	disconnect(plot_p, 0, this, 0);
 	disconnect(this, 0, plot_p, 0);
 }
