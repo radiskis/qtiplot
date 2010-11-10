@@ -1314,118 +1314,96 @@ The active items appearing in a menu depends upon which project window is active
 <!--		beginning of menu Analysis		-->
 <!-- ************************************************** -->
 
-<sect2 id="sec-analysis-menu-table">
-  <title>Commands for the analysis of data in tables</title>
+<sect2 id="sec-analysis-menu-table"><title>Commands for the analysis of data in tables</title>
 
 <!--		beginning of menu Analysis of Tables	-->
-<variablelist>
-<varlistentry id="statistics-on-columns-cmd">
-  <term>&statistics-on-columns-cmd;</term>
-  <listitem>
+<sect3 id="descriptive-statistics"><title>Descriptive Statistics</title>
+
+<sect4 id="statistics-on-columns-cmd"><title>&statistics-on-columns-cmd;</title>
     <para>Creates a new table providing basic statistical information about the selected columns in the active table: average, variance, standard deviation, max value, etc...</para>
     <informalfigure id="fig-statistics-columns">
       <mediaobject>
-        <imageobject>
-          <imagedata  format="PNG" fileref="pics/statistics-columns.png"/>
-        </imageobject>
+        <imageobject><imagedata  format="PNG" fileref="pics/statistics-columns.png"/></imageobject>
       </mediaobject>
     </informalfigure>
   <para>If you select several columns in one table, one line of statistical information will be created for each  selected column. However, you can not select columns from different tables and obtain one single table of statistics.</para>
-  </listitem>
-</varlistentry>
-<varlistentry id="statistics-on-rows-cmd">
-  <term>&statistics-on-rows-cmd;</term>
-  <listitem>
-    <para>Creates a new table providing basic statistical information about the selected rows in the active table: average, variance, standard deviation, max value, etc.</para>
-    <para>See the &statistics-on-columns-lnk; command for more details.</para>
-  </listitem>
-</varlistentry>
-<varlistentry id="sort-column-cmd">
-  <term>&sort-column-cmd;</term>
-  <listitem>
+</sect4>
+
+<sect4 id="statistics-on-rows-cmd"><title>&statistics-on-rows-cmd;</title>
+    <para>Creates a new table providing basic statistical information about the selected rows in the active table: average, variance, standard deviation, max value, etc. Prior to version 0.9.8.4, statistics were calculated on data in all columns in a selected row which contained numeric data of any kind, whether the column was visible or not. As of version 0.9.8.4, statistics are calculated only on numeric data in visible colums. Usually, statistics should be calculated on data of a similar type - Y values for example. This feature permits selection of only those columns that should be included in the statistical calculation.</para>
+    <para>See the &statistics-on-columns-lnk; command for details on exactly what statistical values are calculated.</para>
+</sect4>
+
+<sect4 id="frequency-count-cmd"> <title>&frequency-count-cmd;</title>
+    <para>Calculates the frequency distribution of the data in the selected column. A dialog is popped up which allows selecting the data range and the bin width. The results are placed in a newly created table. This table will contain 4 columns with rows for each bin. These rows contain 1) the center value of the bin, the frequency (count) for the bin, the lower limit of the bin, and the cumulative frequency up to that bin. If more than one column is selected, an error dialog will pop-up.</para>
+</sect4>
+
+<sect4 id="normality-test-cmd"> <title>&normality-test-cmd;</title>
+    <para>This command computes a <ulink url="http://en.wikipedia.org/wiki/Shapiro%E2%80%93Wilk_test">Shapiro-Wilk test</ulink> on the selected column to determine how well the column conforms to a normal distribution. For a detailed discussion of this topic, see the Wikipedia article on <ulink url="http://en.wikipedia.org/wiki/Normality_test"> Normality Testing</ulink>.</para>
+</sect4>
+</sect3>
+
+<sect3 id="hypothesis-testing"><title>Hypothesis-Testing</title>
+  <sect4 id="t-test-1"><title>One Sample t-Test</title><para>This command performs a Student's t-test on a the selected column of data to estimate the statistical liklihood that the mean has a specific value. It is assumed that the data are normally distributed. The results of the test are placed in the Results Log. The Wikipedia article on the <ulink url="http://en.wikipedia.org/wiki/T-test">Student's t-test</ulink> makes for excellent reading on this topic.</para></sect4>
+  <sect4 id="t-test-2"><title>Two Sample t-Test</title><para>This command performs a Student's t-test on two selected columns of data to estimate the statistical liklihood that the means are the same. The results of the test are placed in the Results Log. See the Wikipedia article on the <ulink url="http://en.wikipedia.org/wiki/T-test">Student's t-test</ulink> for more information.</para></sect4>
+</sect3>
+
+
+<sect3 id="sort-column-cmd"> <title>&sort-column-cmd;</title>
     <para>Sorts the selected columns. If more than one column is selected, you have the option to sort them: </para>
   <itemizedlist>
-    <listitem>
-      <para>separately: each column will be sorted independently in ascending or descending order</para>
-    </listitem>
-    <listitem>
-      <para>together: the column selected as the <emphasis>leading column</emphasis> will be sorted into ascending or descending order. The other selected columns will be sorted so as to keep the rows unchanged.</para>
-    </listitem>
+    <listitem><para>separately: each column will be sorted independently in ascending or descending order</para></listitem>
+    <listitem><para>together: the column selected as the <emphasis>leading column</emphasis> will be sorted into ascending or descending order. The other selected columns will be sorted so as to keep the rows unchanged.</para></listitem>
   </itemizedlist>
     <informalfigure id="sort-table-dialog">
       <mediaobject>
-        <imageobject>
-          <imagedata  format="PNG" fileref="pics/sort-table-dialog.png"/>
-        </imageobject>
+        <imageobject><imagedata  format="PNG" fileref="pics/sort-table-dialog.png"/></imageobject>
       </mediaobject>
     </informalfigure>
-  </listitem>
-</varlistentry>
-<varlistentry id="sort-table-cmd">
-  <term>&sort-table-cmd;</term>
-  <listitem>
+</sect3>
+
+<sect3 id="sort-table-cmd"><title>&sort-table-cmd;</title>
     <para>This command functions in the the same manner as the <link linkend="sort-column-cmd">&sort-column-cmd;</link> command, except that it operates on all columns of the active table.</para>
-  </listitem>
-</varlistentry>
-<varlistentry id="normalize-cmd">
-  <term>&normalize-cmd;</term>
-  <listitem>
+</sect3>
+
+
+<sect3 id="normalize-cmd"><title>&normalize-cmd;</title>
     <para>These commands are used to normalize data in tables. In this case, normalization is the process of dividing each entry in the column by the column's maximum positive value, making the maximum range value equal to 1. Data is not re-centered so negative values will remain negative and the minimum value may be less than -1. Columns are normalized separately. The command does not create new columns for the normalized data but replaces the values in the selected columns with their normalized values. There are 2 variants of this command:</para>
-    <variablelist>
-      <varlistentry id="normalize-column-cmd">
-	<term>&normalize-column-cmd;</term>
-	<listitem>
+
+      <sect4 id="normalize-column-cmd"><title>&normalize-column-cmd;</title>
 	  <para>Normalizes only the selected column or columns. If you want the normalized data in a new column, use the &add-column-cmd; command to create a new column, fill it using a "copy/paste" sequence and then normalize the new column. </para>
-	</listitem>
-      </varlistentry>
-      <varlistentry id="normalize-table-cmd">
-	<term>&normalize-table-cmd;</term>
-	<listitem>
+      </sect4>
+
+      <sect4 id="normalize-table-cmd"><title>&normalize-table-cmd;</title>
 	  <para>Normalizes all the columns of the table. It is not a global normalization of all values of the table: each column is normalized separately.</para>
-	</listitem>
-      </varlistentry>
-    </variablelist>
-  </listitem>
-</varlistentry>
-<varlistentry id="fft-cmd">
-  <term>&fft-cmd;</term>
-  <listitem>
+      </sect4>
+</sect3>
+
+<sect3 id="fft-cmd"><title>&fft-cmd;</title>
     <para>Computes a direct or inverse Fast Fourier Transform. The parameters used can be set with the <link linkend="fft-dialog">FFT dialog</link>. See the <link linkend="sec-fft">fft section</link> of the <link linkend="analysis">Analysis chapter</link> for more details.</para>
-  </listitem>
-</varlistentry>
-<varlistentry id="correlate-cmd">
-  <term>&correlate-cmd;</term>
-  <listitem>
+</sect3>
+
+<sect3 id="correlate-cmd"><title>&correlate-cmd;</title>
     <para>Does a cross-correlation of the two columns which are selected. See the <link linkend="sec-correlate">correlate section</link> of the <link linkend="analysis">Analysis chapter</link> for more details.</para>
-  </listitem>
-</varlistentry>
+</sect3>
 
-<varlistentry id="autocorrelate-cmd">
-  <term>&autocorrelate-cmd;</term>
-  <listitem>
+
+<sect3 id="autocorrelate-cmd"><title>&autocorrelate-cmd;</title>
     <para>Does a cross-correlation of the selected column with itself (auto-correlation). See the <link linkend="sec-correlate">correlate section</link> of the <link linkend="analysis">Analysis chapter</link> for more details.</para>
-  </listitem>
-</varlistentry>
+</sect3>
 
-<varlistentry id="convolute-cmd">
-  <term>&convolute-cmd;</term>
-  <listitem>
+<sect3 id="convolute-cmd"><title>&convolute-cmd;</title>
     <para>Does a convolution of two selected columns. The first one being the response and the second the signal. See the <link linkend="sec-convolute">convolution section</link> of the <link linkend="analysis">Analysis chapter</link> for more details.</para>
-  </listitem>
-</varlistentry>
-<varlistentry id="deconvolute-cmd">
-  <term>&deconvolute-cmd;</term>
-  <listitem>
+</sect3>
+
+<sect3 id="deconvolute-cmd"><title>&deconvolute-cmd;</title>
     <para>Does a deconvolution of two selected columns. The first one being the response and the second the signal. See the <link linkend="sec-deconvolute">deconvolution section</link> of the <link linkend="analysis">Analysis chapter</link> for more details.</para>
-  </listitem>
-</varlistentry>
-<varlistentry id="non-linear-curve-fit-cmd">
-  <term>&non-linear-curve-fit-cmd; (&non-linear-curve-fit-key;)</term>
-  <listitem>
+</sect3>
+
+<sect3 id="non-linear-curve-fit-cmd"><title>&non-linear-curve-fit-cmd; (&non-linear-curve-fit-key;)</title>
     <para>Opens the <link linkend="non-linear-curve-fit-dialog">Non-linear Fit</link> dialog, allowing you to choose the curve to fit, the algorithm and tolerance to use, and the number of iterations to be performed. You also enter the analytical function, the names of the fitting parameters and their initial (guessed) values. See the <link linkend="sec-non-linear-curve-fit">Non Linear Curve Fit section</link> of the <link linkend="analysis">Analysis chapter</link> for more details.</para>
-  </listitem>
-</varlistentry>
-</variablelist>
+</sect3>
+
 <!--		End of menu Analysis of Tables		-->
 </sect2>
 <sect2 id="sec-analysis-menu-plot">
@@ -1434,16 +1412,16 @@ The active items appearing in a menu depends upon which project window is active
   <para>In most of the cases (except for integration), a new red curve is added to the active plot layer and a a new table containing the data used to plot this curve is added to the workspace. Useful information about the operation performed will be showed in the Results Log display.</para>
   <para>The commands <link linkend="fft-cmd">&fft-cmd;</link> and <link linkend="non-linear-curve-fit-cmd">&non-linear-curve-fit-cmd;</link> are presented in the <link linkend="sec-analysis-menu-table">Table Analysis Menu</link>.</para>
 <!--		Beginning of menu Analysis of Plots	-->
+
 <variablelist>
 <varlistentry>
-<!--************************************************************************** -->
   <term>Analysis -> Differentiate</term>
   <listitem>
     <para>Creates a new plot displaying the resulting curve of the numerical differentiation. The computation of the derivative is done by centered finite differences.</para>
     <para>This command creates a new table which contains one column for X-values and one column for derivatives of Y-values. It also creates a new plot of the derivative.</para>
   </listitem>
 </varlistentry>
-<!--************************************************************************** -->
+
 <varlistentry id="integrate-curve-cmd">
   <term>Analysis -> Integrate</term>
   <listitem>

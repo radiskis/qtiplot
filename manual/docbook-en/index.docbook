@@ -732,10 +732,32 @@
 <!ENTITY statistics-on-columns-lnk '<link linkend="statistics-on-columns-cmd"><command>Statistics on Columns</command> command</link>'>
 <!ENTITY statistics-on-columns-key "">
   <!ENTITY statistics-on-columns-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/col_stat.png"/></imageobject></inlinemediaobject>'>
+
 <!ENTITY statistics-on-rows-cmd "<command>Statistics on Rows</command>">
 <!ENTITY statistics-on-rows-lnk '<link linkend="statistics-on-rows-cmd"><command>Statistics on Rows</command> command</link>'>
 <!ENTITY statistics-on-rows-key "">
   <!ENTITY statistics-on-rows-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/stat_rows.png"/></imageobject></inlinemediaobject>'>
+
+<!ENTITY statistics-on-rows-cmd "<command>Statistics on Rows</command>">
+<!ENTITY statistics-on-rows-lnk '<link linkend="statistics-on-rows-cmd"><command>Statistics on Rows</command> command</link>'>
+<!ENTITY statistics-on-rows-key "">
+  <!ENTITY statistics-on-rows-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/stat_rows.png"/></imageobject></inlinemediaobject>'>
+
+<!ENTITY frequency-count-cmd "<command>Frequency Count</command>">
+<!ENTITY frequency-count-lnk '<link linkend="frequency-count-cmd">&frequency-count-cmd;</link>'>
+<!ENTITY frequency-count-key "">
+<!--ENTITY frequency-count-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/.png"/></imageobject></inlinemediaobject>'-->
+
+<!ENTITY normality-test-cmd "<command>Normality Test</command>">
+<!ENTITY normality-test-lnk '<link linkend="normality-test-cmd">&normality-test-cmd;</link>'>
+<!ENTITY normality-test-key "">
+<!--ENTITY normality-test-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/.png"/></imageobject></inlinemediaobject>'-->
+
+<!--ENTITY -cmd "<command>Frequency Count</command>">
+<!ENTITY -lnk '<link linkend="-cmd">&-cmd;</link>'>
+<!ENTITY -key ""-->
+<!--ENTITY -icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/.png"/></imageobject></inlinemediaobject>'-->
+
 <!ENTITY sort-column-cmd "<command>Sort Column</command>">
 <!ENTITY sort-column-lnk '<link linkend="sort-column-cmd"><command>Sort Column</command> command</link>'>
 <!ENTITY sort-column-key "">
