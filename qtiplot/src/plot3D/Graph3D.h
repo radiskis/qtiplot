@@ -393,7 +393,7 @@ signals:
 	void modified();
 
 private:
-	void addHiddenConstantCurve(double z, double xl, double xr, double yl, double yr);
+	void addHiddenConstantCurve(double xl, double xr, double yl, double yr, double zl, double zr);
 	Curve* addCurve();
 	void removeCurve();
 
@@ -446,13 +446,8 @@ private:
 class ConstFunction : public Function
 {
 public:
-	ConstFunction(double z, Qwt3D::Curve *pw);
-
+	ConstFunction(Qwt3D::Curve *pw);
 	double operator()(double x, double y);
-	void setZ(double z){d_z = z;};
-
-private:
-	  double d_z;
 };
 
 //! Class for user defined surfaces

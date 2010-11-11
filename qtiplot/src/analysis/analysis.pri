@@ -85,3 +85,10 @@ INCLUDEPATH += src/analysis/dialogs/
 	HEADERS += src/analysis/dialogs/GriddingDialog.h
 	SOURCES += src/analysis/dialogs/GriddingDialog.cpp
 }
+
+!isEmpty(TAMUANOVA_INCLUDEPATH) {
+	HEADERS += src/analysis/Anova.h
+	SOURCES += src/analysis/Anova.cpp
+	HEADERS += src/analysis/dialogs/AnovaDialog.h
+	SOURCES += src/analysis/dialogs/AnovaDialog.cpp
+}

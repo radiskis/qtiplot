@@ -75,8 +75,11 @@ bool Statistics::setData(const QString& colName)
 		return false;
 
 	int col = d_table->colIndex(colName);
-	if (col < 0)
+	if (col < 0){
+		QMessageBox::information((ApplicationWindow *)parent(), QObject::tr("Attention!"),
+				tr("There is no sample dataset called %1 in this project.").arg(colName));
 		return false;
+	}
 	d_col_name = colName;
 
 	unsigned int rows = d_table->numRows();
@@ -90,8 +93,11 @@ bool Statistics::setData(const QString& colName)
 		if (!d_table->text(i, col).isEmpty())
 			d_n++;
 	}
-	if (!d_n)
+	if (!d_n){
+		QMessageBox::information((ApplicationWindow *)parent(), QObject::tr("Attention!"),
+		QObject::tr("The sample dataset (%1) must have at least one data point.").arg(colName));
 		return false;
+	}
 
 	d_data = (double *)malloc(d_n*sizeof(double));
 	if (!d_data){

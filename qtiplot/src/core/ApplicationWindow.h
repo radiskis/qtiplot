@@ -682,6 +682,10 @@ public slots:
 	void showStudentTestDialog(bool twoSamples = false);
 	void showTwoSampleStudentTestDialog(){return showStudentTestDialog(true);};
 	void testNormality();
+#ifdef HAVE_TAMUANOVA
+	void showANOVADialog(bool twoWay = false);
+	void showTwoWayANOVADialog(){return showANOVADialog(true);};
+#endif
 	//@}
 
 	//! \name Plot Tools
@@ -1546,5 +1550,8 @@ private:
 	QList<QColor> d_indexed_colors;
 	QStringList d_indexed_color_names;
 	QList<int> d_symbols_list;
+#ifdef HAVE_TAMUANOVA
+	QAction *actionOneWayANOVA, *actionTwoWayANOVA;
+#endif
 };
 #endif

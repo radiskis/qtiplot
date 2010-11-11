@@ -150,6 +150,14 @@ ALGLIB_INCLUDEPATH = $$QTI_ROOT/3rdparty/alglib/
 ALGLIB_LIBS = $$QTI_ROOT/3rdparty/alglib/libalglib.a
 
 ##########################################################
+## TAMUANOVA - optional. you don't have to set these variables
+# http://www.stat.tamu.edu/~aredd/tamuanova/
+##########################################################
+
+# include path.
+TAMUANOVA_INCLUDEPATH = $$QTI_ROOT/3rdparty/tamu_anova/
+
+##########################################################
 ## python - only used if python is needed
 ##########################################################
 
