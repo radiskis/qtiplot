@@ -1320,7 +1320,7 @@ The active items appearing in a menu depends upon which project window is active
 <sect3 id="descriptive-statistics"><title>Descriptive Statistics</title>
 
 <sect4 id="statistics-on-columns-cmd"><title>&statistics-on-columns-cmd;</title>
-    <para>Creates a new table providing basic statistical information about the selected columns in the active table: average, variance, standard deviation, max value, etc...</para>
+    <para>The &desc-stats-ptr;&statistics-on-columns-cmd; command creates a new table providing basic statistical information about the selected columns in the active table: average, variance, standard deviation, max value, etc...</para>
     <informalfigure id="fig-statistics-columns">
       <mediaobject>
         <imageobject><imagedata  format="PNG" fileref="pics/statistics-columns.png"/></imageobject>
@@ -1330,27 +1330,29 @@ The active items appearing in a menu depends upon which project window is active
 </sect4>
 
 <sect4 id="statistics-on-rows-cmd"><title>&statistics-on-rows-cmd;</title>
-    <para>Creates a new table providing basic statistical information about the selected rows in the active table: average, variance, standard deviation, max value, etc. Prior to version 0.9.8.4, statistics were calculated on data in all columns in a selected row which contained numeric data of any kind, whether the column was visible or not. As of version 0.9.8.4, statistics are calculated only on numeric data in visible colums. Usually, statistics should be calculated on data of a similar type - Y values for example. This feature permits selection of only those columns that should be included in the statistical calculation.</para>
+    <para>The &desc-stats-ptr;&statistics-on-rows-cmd; command creates a new table providing basic statistical information about the selected rows in the active table: average, variance, standard deviation, max value, etc. Prior to version 0.9.8.4, statistics were calculated on data in all columns in a selected row which contained numeric data of any kind, whether the column was visible or not. As of version 0.9.8.4, statistics are calculated only on numeric data in visible colums. Usually, statistics should be calculated on data of a similar type - Y values for example. This feature permits selection of only those columns that should be included in the statistical calculation.</para>
     <para>See the &statistics-on-columns-lnk; command for details on exactly what statistical values are calculated.</para>
 </sect4>
 
 <sect4 id="frequency-count-cmd"> <title>&frequency-count-cmd;</title>
-    <para>Calculates the frequency distribution of the data in the selected column. A dialog is popped up which allows selecting the data range and the bin width. The results are placed in a newly created table. This table will contain 4 columns with rows for each bin. These rows contain 1) the center value of the bin, the frequency (count) for the bin, the lower limit of the bin, and the cumulative frequency up to that bin. If more than one column is selected, an error dialog will pop-up.</para>
+    <para>The &desc-stats-ptr;&frequency-count-cmd; command calculates the frequency distribution of the data in the selected column. A dialog is popped up which allows selecting the data range and the bin width. The results are placed in a newly created table. This table will contain 4 columns with rows for each bin. These rows contain 1) the center value of the bin, the frequency (count) for the bin, the lower limit of the bin, and the cumulative frequency up to that bin. If more than one column is selected, an error dialog will pop-up.</para>
 </sect4>
 
 <sect4 id="normality-test-cmd"> <title>&normality-test-cmd;</title>
-    <para>This command computes a <ulink url="http://en.wikipedia.org/wiki/Shapiro%E2%80%93Wilk_test">Shapiro-Wilk test</ulink> on the selected column to determine how well the column conforms to a normal distribution. For a detailed discussion of this topic, see the Wikipedia article on <ulink url="http://en.wikipedia.org/wiki/Normality_test"> Normality Testing</ulink>.</para>
+    <para>The &desc-stats-ptr;&normality-test-cmd; command computes a <ulink url="http://en.wikipedia.org/wiki/Shapiro%E2%80%93Wilk_test">Shapiro-Wilk test</ulink> on the selected column to determine how well the column conforms to a normal distribution. For a detailed discussion of this topic, see the Wikipedia article on <ulink url="http://en.wikipedia.org/wiki/Normality_test"> Normality Testing</ulink>.</para>
 </sect4>
 </sect3>
-
+ 
 <sect3 id="hypothesis-testing"><title>Hypothesis-Testing</title>
-  <sect4 id="t-test-1"><title>One Sample t-Test</title><para>This command performs a Student's t-test on a the selected column of data to estimate the statistical liklihood that the mean has a specific value. It is assumed that the data are normally distributed. The results of the test are placed in the Results Log. The Wikipedia article on the <ulink url="http://en.wikipedia.org/wiki/T-test">Student's t-test</ulink> makes for excellent reading on this topic.</para></sect4>
-  <sect4 id="t-test-2"><title>Two Sample t-Test</title><para>This command performs a Student's t-test on two selected columns of data to estimate the statistical liklihood that the means are the same. The results of the test are placed in the Results Log. See the Wikipedia article on the <ulink url="http://en.wikipedia.org/wiki/T-test">Student's t-test</ulink> for more information.</para></sect4>
+  <sect4 id="t-test-1-cmd"><title>&t-test-1-cmd;</title>
+<para>The &hyp-test-ptr;&t-test-1-cmd; command performs a Student's t-test on a the selected column of data to estimate the statistical liklihood that the mean has a specific value. It is assumed that the data are normally distributed. The results of the test are placed in the Results Log. The Wikipedia article on the <ulink url="http://en.wikipedia.org/wiki/T-test">Student's t-test</ulink> makes for excellent reading on this topic.</para></sect4>
+  <sect4 id="t-test-2-cmd"><title>&t-test-2-cmd;</title>
+<para>The &hyp-test-ptr;&t-test-2-cmd; command performs a Student's t-test on two selected columns of data to estimate the statistical liklihood that the means are the same. The results of the test are placed in the Results Log. See the Wikipedia article on the <ulink url="http://en.wikipedia.org/wiki/T-test">Student's t-test</ulink> for more information.</para></sect4>
 </sect3>
 
 
 <sect3 id="sort-column-cmd"> <title>&sort-column-cmd;</title>
-    <para>Sorts the selected columns. If more than one column is selected, you have the option to sort them: </para>
+    <para>The &analysis-ptr;&sort-column-cmd; command sorts the selected columns. If more than one column is selected, you have the option to sort them: </para>
   <itemizedlist>
     <listitem><para>separately: each column will be sorted independently in ascending or descending order</para></listitem>
     <listitem><para>together: the column selected as the <emphasis>leading column</emphasis> will be sorted into ascending or descending order. The other selected columns will be sorted so as to keep the rows unchanged.</para></listitem>
@@ -1363,33 +1365,41 @@ The active items appearing in a menu depends upon which project window is active
 </sect3>
 
 <sect3 id="sort-table-cmd"><title>&sort-table-cmd;</title>
-    <para>This command functions in the the same manner as the <link linkend="sort-column-cmd">&sort-column-cmd;</link> command, except that it operates on all columns of the active table.</para>
+    <para>The &analysis-ptr;&sort-table-cmd; command functions in the the same manner as the <link linkend="sort-column-cmd">&sort-column-cmd;</link> command, except that it operates on all columns of the active table.</para>
 </sect3>
-
 
 <sect3 id="normalize-cmd"><title>&normalize-cmd;</title>
     <para>These commands are used to normalize data in tables. In this case, normalization is the process of dividing each entry in the column by the column's maximum positive value, making the maximum range value equal to 1. Data is not re-centered so negative values will remain negative and the minimum value may be less than -1. Columns are normalized separately. The command does not create new columns for the normalized data but replaces the values in the selected columns with their normalized values. There are 2 variants of this command:</para>
 
       <sect4 id="normalize-column-cmd"><title>&normalize-column-cmd;</title>
-	  <para>Normalizes only the selected column or columns. If you want the normalized data in a new column, use the &add-column-cmd; command to create a new column, fill it using a "copy/paste" sequence and then normalize the new column. </para>
+	  <para>The &norm-ptr;&normalize-column-cmd; command normalizes only the selected column or columns. If you want the normalized data in a new column, use the &add-column-cmd; command to create a new column, fill it using a "copy/paste" sequence and then normalize the new column. </para>
       </sect4>
 
       <sect4 id="normalize-table-cmd"><title>&normalize-table-cmd;</title>
-	  <para>Normalizes all the columns of the table. It is not a global normalization of all values of the table: each column is normalized separately.</para>
+	  <para>The &norm-ptr;&normalize-table-cmd; command normalizes all the columns of the table. It is not a global normalization of all values of the table: each column is normalized separately.</para>
       </sect4>
 </sect3>
 
+<sect3 id="differentiate-column-cmd"><title>Differentiate Column</title>
+    <para>The &analysis-ptr; <command>Differentiate Column</command> command computes the derivative of the selected Y column using centered finite differences. A new plot is created displaying the result of the numerical differentiation.</para>
+    <para>This command creates a new (hidden) table that contains one column of X-values and one column of derivatives of the Y-values.</para>
+</sect3>
+
+<sect3 id="integrate-column-cmd"><title>Integrate Column</title>
+    <para>The &analysis-ptr; <command>Integrate Column</command> command computes the integral of the selected Y column using the trapezoidal. A new plot is created displaying the result of the numerical integration.</para>
+    <para>This command creates a new (hidden) table that contains one column of X-values and one column of integrated Y-values.</para>
+</sect3>
+
 <sect3 id="fft-cmd"><title>&fft-cmd;</title>
-    <para>Computes a direct or inverse Fast Fourier Transform. The parameters used can be set with the <link linkend="fft-dialog">FFT dialog</link>. See the <link linkend="sec-fft">fft section</link> of the <link linkend="analysis">Analysis chapter</link> for more details.</para>
+    <para>The &analysis-ptr;&fft-cmd; command computes a direct or inverse Fast Fourier Transform. The parameters used can be set with the <link linkend="fft-dialog">FFT dialog</link>. See the <link linkend="sec-fft">fft section</link> of the <link linkend="analysis">Analysis chapter</link> for more details.</para>
 </sect3>
 
 <sect3 id="correlate-cmd"><title>&correlate-cmd;</title>
-    <para>Does a cross-correlation of the two columns which are selected. See the <link linkend="sec-correlate">correlate section</link> of the <link linkend="analysis">Analysis chapter</link> for more details.</para>
+    <para>The &analysis-ptr;&correlate-cmd; command computes the cross-correlation of the two selected columns. See the <link linkend="sec-correlate">correlate section</link> of the <link linkend="analysis">Analysis chapter</link> for more details.</para>
 </sect3>
 
-
 <sect3 id="autocorrelate-cmd"><title>&autocorrelate-cmd;</title>
-    <para>Does a cross-correlation of the selected column with itself (auto-correlation). See the <link linkend="sec-correlate">correlate section</link> of the <link linkend="analysis">Analysis chapter</link> for more details.</para>
+    <para>The &analysis-ptr;&autocorrelate-cmd; command computes the cross-correlation of the selected column with itself (auto-correlation). See the <link linkend="sec-correlate">correlate section</link> of the <link linkend="analysis">Analysis chapter</link> for more details.</para>
 </sect3>
 
 <sect3 id="convolute-cmd"><title>&convolute-cmd;</title>
@@ -1397,7 +1407,7 @@ The active items appearing in a menu depends upon which project window is active
 </sect3>
 
 <sect3 id="deconvolute-cmd"><title>&deconvolute-cmd;</title>
-    <para>Does a deconvolution of two selected columns. The first one being the response and the second the signal. See the <link linkend="sec-deconvolute">deconvolution section</link> of the <link linkend="analysis">Analysis chapter</link> for more details.</para>
+    <para>he &analysis-ptr;&deconvolute-cmd; command computes the deconvolution of two selected columns. The first one being the response and the second the signal. See the <link linkend="sec-deconvolute">deconvolution section</link> of the <link linkend="analysis">Analysis chapter</link> for more details.</para>
 </sect3>
 
 <sect3 id="non-linear-curve-fit-cmd"><title>&non-linear-curve-fit-cmd; (&non-linear-curve-fit-key;)</title>
@@ -1413,177 +1423,111 @@ The active items appearing in a menu depends upon which project window is active
   <para>The commands <link linkend="fft-cmd">&fft-cmd;</link> and <link linkend="non-linear-curve-fit-cmd">&non-linear-curve-fit-cmd;</link> are presented in the <link linkend="sec-analysis-menu-table">Table Analysis Menu</link>.</para>
 <!--		Beginning of menu Analysis of Plots	-->
 
-<variablelist>
-<varlistentry>
-  <term>Analysis -> Differentiate</term>
-  <listitem>
-    <para>Creates a new plot displaying the resulting curve of the numerical differentiation. The computation of the derivative is done by centered finite differences.</para>
-    <para>This command creates a new table which contains one column for X-values and one column for derivatives of Y-values. It also creates a new plot of the derivative.</para>
-  </listitem>
-</varlistentry>
+<!--Translate 
+			Vertical
+			Horizontal
+		Subtract
+			Baseline
+			Reference Data
+			Straight Line
+		-->
 
-<varlistentry id="integrate-curve-cmd">
-  <term>Analysis -> Integrate</term>
-  <listitem>
-    <para>This command performs a piecewise numerical integration of a curve on the selected layer. Curves are integrated using the trapezoidal rule. There must be at least one curve on the layer. If there are multiple curves, a dialog will be opened asking you to select which curve to use for the integration:</para>
+
+<sect3><title>&differentiate-cmd;</title>
+    <para>the Analysis -> &differentiate-cmd; command creates a new plot displaying the resulting curve of the numerical differentiation. The computation of the derivative is done by centered finite differences. A new table is created which contains one column for X-values and one column for derivatives of Y-values. It also creates a new plot of the derivative.</para>
+</sect3>
+<!--************************************************************************** -->
+
+<sect3 id="integrate-curve-cmd"><title>&integrate-curve-cmd;</title>
+    <para>the Analysis -> &integrate-curve-cmd; command performs a piecewise numerical integration of a curve on the selected layer. Curves are integrated using the trapezoidal rule. There must be at least one curve on the layer. If there are multiple curves, a dialog will be opened asking you to select which curve to use for the integration:</para>
     <informalfigure id="fig-integrate-curve">
-      <mediaobject>
-        <imageobject>
-          <imagedata  format="PNG" fileref="pics/integrate-curve.png"/>
-        </imageobject>
-      </mediaobject>
+      <mediaobject><imageobject><imagedata  format="PNG" fileref="pics/integrate-curve.png"/></imageobject></mediaobject>
     </informalfigure> 
 <para> After selecting a curve, you may either proceed by clicking "OK" or abort with "Cancel". If there is only one curve on the layer, the integration is performed immediately upon selecting the &integrate-curve-cmd; command. A new Graph Window will be created containing a plot of the integrated curve, the data for which is stored in a new (hidden) table. </para>
-  </listitem>
-</varlistentry>
+</sect3>
 <!--************************************************************************** -->
-<varlistentry>
-  <term>Analysis -> Integrate Function...</term>
-  <listitem>
-    <para>This command provides the capability of performing the numerical integration of a user defined function. The <link linkend="integrate-function-dialog">Function Integration dialog</link> is opened when this command is executed.  This dialog provides for the definition of the function, the variable of integration, and the parameters that control the integration. Integration is performed using the QAGS algorithm from the GNU Scientific Library. For many functions, all you need do is set the limits of integration and click the "Integrate" button. The default values for the other parameters will usually produce excellent results. For some functions, especially those containing singularities and discontinuities, you may need to experiment with the number of sub-intervals and the tolerance limit to obtain acceptable results. However, a detailed discussion of the use of these 2 parameters is beyond the scope of this manual. If the <emphasis>Plot Area </emphasis> option is checked, a curve of the integrated function will be added to the currently active layer. In any case, an entry is made in the <link linkend="sec-intro-log-window">Log Panel</link> which contains the numerical result of the computed definite integral over the specified interval.</para>
-  </listitem>
-</varlistentry>
+
+<sect3 id="integrate-function-cmd"><title>&integrate-function-cmd;</title>
+    <para>The Analysis -> &integrate-function-cmd; command provides the capability of performing the numerical integration of a user defined function. The <link linkend="integrate-function-dialog">Function Integration dialog</link> is opened when this command is executed.  This dialog provides for the definition of the function, the variable of integration, and the parameters that control the integration. Integration is performed using the QAGS algorithm from the GNU Scientific Library. For many functions, all you need do is set the limits of integration and click the "Integrate" button. The default values for the other parameters will usually produce excellent results. For some functions, especially those containing singularities and discontinuities, you may need to experiment with the number of sub-intervals and the tolerance limit to obtain acceptable results. However, a detailed discussion of the use of these 2 parameters is beyond the scope of this manual. If the <emphasis>Plot Area </emphasis> option is checked, a curve of the integrated function will be added to the currently active layer. In any case, an entry is made in the <link linkend="sec-intro-log-window">Log Panel</link> which contains the numerical result of the computed definite integral over the specified interval.</para>
+</sect3>
 <!--************************************************************************** -->
-<varlistentry>
-  <term>Analysis -> Smooth</term>
-  <listitem>
-    <para>.</para>
-    <variablelist>
+
+<sect3 id="smooth-cmd"><title>&smooth-cmd;</title><para>There are 4 variants of the &smooth-cmd; menu item:</para>
+    
 <!--************************************************************************** -->
-      <varlistentry>
-	<term>Savitski-Golay</term>
-	<listitem>
-	  <para>This command performs a smoothing of the selected curve with the Savitzky-Golay method. The formula used to smooth the curve defined by the points y<subscript>i</subscript>=f(x<subscript>i</subscript>) is:</para>
-	  <informalequation>
-	    <mediaobject>
-	      <imageobject>
+  <sect4 id="savitsky-golay-cmd"><title>Savitski-Golay</title>
+	  <para>The Analysis -> &savitsky-golay-cmd; command performs a smoothing of the selected curve using the Savitzky-Golay method. The formula used to smooth the curve defined by the points y<subscript>i</subscript>=f(x<subscript>i</subscript>) is:</para>
+	  <informalequation><mediaobject><imageobject>
 	        <imagedata format="PNG" fileref="equations/savitzky-golay.png"/>
-	      </imageobject>
-	    </mediaobject>
-	  </informalequation>
+	  </imageobject></mediaobject></informalequation>
 	  <para>The f<subscript>i</subscript> values are computed by fitting the data points to a polynomial. They depend on the number of points used for the smoothing of the curve and the order of the polynomial. Compared to the moving window average method, the advantage of this smoothing method is that the values of extrema are not truncated. The dialog allows specification of the curve which will be smoothed, the order of the polynomial, the number of data points used for the polynomial fit before and after each point, and the color used to draw the smoothed curved. A new table will be created to store the data points x<subscript>i</subscript>, z<subscript>i</subscript>.</para>
-	  <figure id="fig-smooth-1">
-	    <title>The &savitsky-golay-cmd; dialog.</title>
-	    <mediaobject>
-	      <imageobject>
-	        <imagedata  format="PNG" fileref="pics/smooth-1-dialog.png"/>
-	      </imageobject>
-	    </mediaobject>
+	  <figure id="fig-smooth-1"><title>The &savitsky-golay-cmd; dialog.</title>
+	    <mediaobject><imageobject><imagedata  format="PNG" fileref="pics/smooth-1-dialog.png"/></imageobject></mediaobject>
 	  </figure>
-	</listitem>
-      </varlistentry>
+  </sect4>
 <!--************************************************************************** -->
-       <varlistentry>
-	<term>Moving Window Average...</term>
-	<listitem>
-	  <para>This command performs a smoothing of the selected curve with the moving window average method. The formula used to smooth the curve defined by the points y<subscript>i</subscript>=f(x<subscript>i</subscript>) is:</para>
-	  <informalequation>
-	    <mediaobject>
-	      <imageobject>
+
+	<sect4 id="moving-window-cmd"><title>Moving Window Average...</title>
+	  <para>The Analysis -> &moving-window-cmd; command performs a smoothing of the selected curve with the moving window average method. The formula used to smooth the curve defined by the points y<subscript>i</subscript>=f(x<subscript>i</subscript>) is:</para>
+	  <informalequation><mediaobject><imageobject>
 	        <imagedata format="PNG" fileref="equations/equation_moving_window.png"/>
-	      </imageobject>
-	    </mediaobject>
-	  </informalequation>
-          <para>The greater the number of points, <emphasis>n</emphasis>, the smoother the resulting curve z<subscript>i</subscript>=f(x<subscript>i</subscript>) will be. The dialog allows  specification of the curve which will be smoothed, the value of <emphasis>n</emphasis> and the color used to draw the smoothed curve. A new table will be created to store the data points x<subscript>i</subscript>, z<subscript>i</subscript>.</para>
-	  <figure id="fig-smooth-2">
-	    <title>The &moving-window-cmd; dialog.</title>
-	    <mediaobject>
-	      <imageobject>
-	        <imagedata  format="PNG" fileref="pics/smooth-2-dialog.png"/>
-	      </imageobject>
-	    </mediaobject>
+	      </imageobject></mediaobject></informalequation>
+    <para>The greater the number of points, <emphasis>n</emphasis>, the smoother the resulting curve z<subscript>i</subscript>=f(x<subscript>i</subscript>) will be. The dialog allows  specification of the curve which will be smoothed, the value of <emphasis>n</emphasis> and the color used to draw the smoothed curve. A new table will be created to store the data points x<subscript>i</subscript>, z<subscript>i</subscript>.</para>
+	  <figure id="fig-smooth-2"><title>The &moving-window-cmd; dialog.</title>
+	    <mediaobject><imageobject><imagedata  format="PNG" fileref="pics/smooth-2-dialog.png"/></imageobject></mediaobject>
 	  </figure>
-	</listitem>
-      </varlistentry>
+  </sect4>
 <!--************************************************************************** -->
-       <varlistentry>
-	<term>Lowess...</term>
-	<listitem>
-	  <para>
-      This command performs a smoothing of the selected curve using the Lowess (aka Loess) algorithm.
+
+   <sect4 id="lowess-cmd"><title>Lowess...</title>
+	  <para>The Analysis -> &lowess-cmd; command performs a smoothing of the selected curve using the Lowess (aka Loess) algorithm.
       It provides a  robust locally weighted regression and is well suited to smooth data for which no
-      formal model exists.
-    </para>
-    <para>
-      The parameter <emphasis>f</emphasis> is the fraction of points which define the local neighborhood.
+      formal model exists.</para>
+    <para>The parameter <emphasis>f</emphasis> is the fraction of points which define the local neighborhood.
       A value of 0.2 uses 20% of the curve total points as neighbors for each data point (+/- 10%).
       Values of <emphasis>f</emphasis> closer to 1 yield smoother curves.
       The <emphasis>iterations</emphasis> parameter specifies the number of times to run the algorithm runs over the entire data set,
-      each time refining the local weights. In most cases, two iterations will be sufficient.
-    </para>
-	  <figure id="fig-smooth-3">
-	    <title>The &lowess-cmd; dialog.</title>
-	    <mediaobject>
-	      <imageobject>
+      each time refining the local weights. In most cases, two iterations will be sufficient.</para>
+	  <figure id="fig-smooth-3"><title>The &lowess-cmd; dialog.</title><mediaobject><imageobject>
 	        <imagedata  format="PNG" fileref="pics/smooth-3-dialog.png"/>
-	      </imageobject>
-	    </mediaobject>
-	  </figure>
-	</listitem>
-      </varlistentry>
+	      </imageobject></mediaobject></figure>
+      </sect4>
 <!--************************************************************************** -->
-    </variablelist>
-  </listitem>
-</varlistentry>
+
+</sect3>
 <!--************************************************************************** -->
-<varlistentry>
-  <term>Analysis -> FFT Filter</term>
-  <listitem>
-    <para></para>
-    <variablelist>
+<sect3 id="fft-filter-cmd "><title>&fft-filter-cmd;</title>
+    <para>The Analysis -> &fft-filter-cmd; menu item provides Lowpass, Highpass, Bandpass and Bandteject filter topolopgies:</para>
+
 <!--************************************************************************** -->
-      <varlistentry>
-	<term>Low Pass...</term>
-	<listitem>
-	  <para>This command uses an FFT based digital filter to attenuate the high frequencies present in an input signal. See the <link linkend="sec-fft-filter-low">filtering section</link> for more details. A dialog box will be opened in which you can select the curve (input signal) to filter and the cut-off frequency of the filter.</para>
-	  <figure id="fig-fft-filter-low-dialog">
-	    <title>The &fft-low-pass-cmd; dialog.</title>
-	    <mediaobject>
-	      <imageobject>
+      <sect4 id="fft-low-pass-cmd"><title>Low Pass;</title>
+	  <para>The Analysis -> &fft-low-pass-cmd; command uses an FFT based digital filter to attenuate the high frequencies present in an input signal. See the <link linkend="sec-fft-filter-low">filtering section</link> for more details. A dialog box will be opened in which you can select the curve (input signal) to filter and the cut-off frequency of the filter.</para>
+	  <figure id="fig-fft-filter-low-dialog"><title>The &fft-low-pass-cmd; dialog.</title><mediaobject><imageobject>
 	        <imagedata  format="PNG" fileref="pics/filter-fft-low-dialog.png"/>
-	      </imageobject>
-	    </mediaobject>
-	  </figure>
+	      </imageobject></mediaobject></figure>
 	  <para>This command creates a new table containing the filtered data, and adds a new curve to the current layer. The curve is a plot of the filtered data.</para>
-	</listitem>
-      </varlistentry>
+      </sect4>
 <!--************************************************************************** -->
-      <varlistentry>
-	<term>High Pass...</term>
-	<listitem>
-	  <para>This command uses an FFT based digital filter to attenuate the low frequencies present in an input signal. See the <link linkend="sec-fft-filter-high">filtering section</link> for more details. A dialog box will be opened in which you can select the curve to filter and the cut-off frequency of the filter.</para>
-	  <figure id="fig-fft-filter-high-dialog">
-	    <title>The &fft-high-pass-cmd; dialog.</title>
-	    <mediaobject>
-	      <imageobject>
+
+   <sect4 id="fft-high-pass-cmd"><title>High Pass...</title>
+	  <para>The Analysis -> &fft-high-pass-cmd; command uses an FFT based digital filter to attenuate the low frequencies present in an input signal. See the <link linkend="sec-fft-filter-high">filtering section</link> for more details. A dialog box will be opened in which you can select the curve to filter and the cut-off frequency of the filter.</para>
+	  <figure id="fig-fft-filter-high-dialog"><title>The &fft-high-pass-cmd; dialog.</title><mediaobject><imageobject>
 	        <imagedata  format="PNG" fileref="pics/filter-fft-low-dialog.png"/>
-	      </imageobject>
-	    </mediaobject>
-	  </figure>
+	      </imageobject></mediaobject></figure>
 	  <para>This command creates a new table containing the filtered data, and adds a new curve to the current layer. The curve is a plot of the filtered data.</para>
-	</listitem>
-      </varlistentry>
+
+   </sect4>
 <!--************************************************************************** -->
-      <varlistentry>
-	<term>Band Pass...</term>
-	<listitem>
-	  <para>This command uses an FFT based digital filter to attenuate both high and low frequencies present in an input signal. See the <link linkend="sec-fft-filter-band">filtering section</link> for more details. A dialog box will be opened in which you can select the curve to filter and both the low and high cutoff frequencies of the filter.</para>
-	  <figure id="fig-fft-filter-band-dialog">
-	    <title>The &fft-band-pass-cmd; dialog.</title>
-	    <mediaobject>
-	      <imageobject>
+   <sect4 id="fft-band-pass-cmd"><title>Band Pass...</title>
+	  <para>The Analysis -> &fft-band-pass-cmd; command uses an FFT based digital filter to attenuate both high and low frequencies present in an input signal. See the <link linkend="sec-fft-filter-band">filtering section</link> for more details. A dialog box will be opened in which you can select the curve to filter and both the low and high cutoff frequencies of the filter.</para>
+	  <figure id="fig-fft-filter-band-dialog"><title>The &fft-band-pass-cmd; dialog.</title><mediaobject><imageobject>
 	        <imagedata  format="PNG" fileref="pics/filter-fft-band-dialog.png"/>
-	      </imageobject>
-	    </mediaobject>
-	  </figure>
+	      </imageobject></mediaobject></figure>
 	  <para>This command creates a new table containing the filtered data, and adds a new curve to the current layer. The curve is a plot of the filtered data.</para>
-	</listitem>
-      </varlistentry>
+   </sect4>
 <!--************************************************************************** -->
-      <varlistentry>
-	<term>Band Block...</term>
-	<listitem>
-	  <para>This command uses an FFT based digital filter to remove a band of frequencies from a signal while leaving those frequencies above and below the stop band. See the <link linkend="sec-fft-filter-block">filtering section</link> for more details. A dialog box will be opened in which you can select the curve to filter and both the lower and upper stop-band frequencies of the filter.</para>
+  <sect4 id="fft-band-stop-cmd"><title>Band Block...</title>
+	  <para>The Analysis -> &fft-band-pass-cmd; command uses an FFT based digital filter to remove a band of frequencies from a signal while leaving those frequencies above and below the stop band. See the <link linkend="sec-fft-filter-block">filtering section</link> for more details. A dialog box will be opened in which you can select the curve to filter and both the lower and upper stop-band frequencies of the filter.</para>
 	  <figure id="fig-fft-filter-block-dialog">
 	    <title>The &fft-band-block-cmd; dialog.</title>
 	    <mediaobject>
@@ -1593,16 +1537,12 @@ The active items appearing in a menu depends upon which project window is active
 	    </mediaobject>
 	  </figure>
 	  <para>This command creates a new table containing the filtered data, and adds a new curve to the current layer. The curve is a plot of the filtered data.</para>
-	</listitem>
-      </varlistentry>
+  </sect4>
+</sect3>
 <!--************************************************************************** -->
-    </variablelist>
-  </listitem>
-</varlistentry>
-<varlistentry>
-  <term>Analysis -> Interpolate...</term>
-  <listitem>
-    <para>Performs an interpolation. The curve must have enough data points to compute interpolated points, if not a warning message will be popped up.</para>
+
+<sect3 id="interpolate-cmd"><title>Analysis -> Interpolate...</title>
+    <para>The Analysis -> &interpolate-cmd; command performs an interpolation using the selected method. The curve must have enough data points to compute interpolated points, if not a warning message will be popped up.</para>
     <para>The available interpolation methods are <emphasis>Linear</emphasis> (the curve must contain at least 3 points), <emphasis>Cubic Spline</emphasis> (the curve you analyze must contain at least 4 points), <emphasis>Non-rounded Akime spline</emphasis> (the curve you analyze must contain at least 5 points). See the <link linkend="sec-interpolate">Analysis chapter</link> for a comparison of the different methods.</para>
 	  <figure id="fig-interpolate-dialog">
 	    <title>The &interpolate-cmd; dialog.</title>
@@ -1613,28 +1553,22 @@ The active items appearing in a menu depends upon which project window is active
 	    </mediaobject>
 	  </figure>
     <para>This command creates a new curve on the current layer, and a new table.</para>
-  </listitem>
-</varlistentry>
-<varlistentry>
-  <term>Analysis -> &fft-cmd;</term>
-  <listitem>
-    <para>Performs a <link linkend="sec-fft">forward or inverse FFT</link> of the selected curve. The parameters used can be set with the <link linkend="fft-dialog">FFT dialog</link>. </para>
+</sect3>
+
+<sect3 id="fft-cmd"><title>&fft-cmd;</title>
+    <para>The Analysis -> &fft-cmd; command performs a <link linkend="sec-fft">forward or inverse FFT</link> of the selected curve. The parameters used can be set with the <link linkend="fft-dialog">FFT dialog</link>. </para>
     <para>The inverse FFT transform of a forward transform will result in a data set identical to that used for the forward transform.</para>
-  </listitem>
-</varlistentry>
-<varlistentry>
-  <term>Analysis -> Fit Linear</term>
-  <listitem>
-    <para>Performs a <link linkend="sec-fit-linear">linear fit</link> of the selected curve. The results will be given in the <link linkend="sec-intro-log-window">Log panel</link></para>
-  </listitem>
-</varlistentry>
-<varlistentry>
-  <term>Analysis -> Fit Polynomial...</term>
-  <listitem>
-    <para>Opens the Polynomial Fit dialog, allowing you to choose the curve to fit, the order of the polynomial function to use, the number of points of the resulting curve and the abscissa limits for the fit.</para>
-  </listitem>
-</varlistentry>
-<varlistentry>
+</sect3>
+
+<sect3 id="fit-linear-cmd"><title>Fit Linear</title>
+    <para>The Analysis -> &fit-linear-cmd; command performs a <link linkend="sec-fit-linear">linear fit</link> of the selected curve. The results will be given in the <link linkend="sec-intro-log-window">Log panel</link></para>
+</sect3>
+
+<sect3 id="fit-polynomial-cmd"><title>&fit-polynomial-cmd;</title>
+    <para>The Analysis -> &fit-polynomial-cmd; command opens the Polynomial Fit dialog, allowing you to choose the curve to fit, the order of the polynomial function to use, the number of points of the resulting curve and the abscissa limits for the fit.</para>
+</sect3>
+
+<variablelist><varlistentry>
   <term>Analysis -> Fit Exponential Decay</term>
   <listitem>
     <para>There are 3 forms of exponential decay available:</para>
@@ -1666,24 +1600,28 @@ The active items appearing in a menu depends upon which project window is active
     <para>Performs an exponential growth fit to the selected curve.</para>
   </listitem>
 </varlistentry>
-<varlistentry>
-  <term>Analysis -> &fit-lorentzian-cmd;</term>
-  <listitem>
-    <para>Performs a Lorentzian fit to the selected curve. It can be used to obtain the correlation equation of a <link linkend="sec-fit-lorentzian">bell shaped data set</link>. </para>
-  </listitem>
-</varlistentry>
-<varlistentry>
-  <term>Analysis -> &fit-gaussian-cmd;</term>
-  <listitem>
-    <para>Performs a Gaussian fit to the selected curve. It can be used to obtain the correlation equation of a <link linkend="sec-fit-gaussian">bell shaped data set</link>.</para>
-  </listitem>
-</varlistentry>
+
 <varlistentry>
   <term>Analysis -> &fit-bolzmann-cmd;</term>
   <listitem>
     <para>Performs a fit to a <link linkend="sec-fit-bolzmann">Boltzmann function</link> on the selected curve. It can be used to obtain the correlation equation of an <link linkend="sec-fit-bolzmann">S shaped data set</link>.</para>
   </listitem>
 </varlistentry>
+
+<varlistentry>
+  <term>Analysis -> &fit-gaussian-cmd;</term>
+  <listitem>
+    <para>Performs a Gaussian fit to the selected curve. It can be used to obtain the correlation equation of a <link linkend="sec-fit-gaussian">bell shaped data set</link>.</para>
+  </listitem>
+</varlistentry>
+
+<varlistentry>
+  <term>Analysis -> &fit-lorentzian-cmd;</term>
+  <listitem>
+    <para>Performs a Lorentzian fit to the selected curve. It can be used to obtain the correlation equation of a <link linkend="sec-fit-lorentzian">bell shaped data set</link>. </para>
+  </listitem>
+</varlistentry>
+
 <varlistentry>
   <term>Analysis -> &fit-multipeak-gaussian-cmd;</term>
   <listitem>
@@ -1697,6 +1635,8 @@ The active items appearing in a menu depends upon which project window is active
   </listitem>
 </varlistentry>
 </variablelist>
+
+
 <!--		End of menu Analysis of Plots		-->
 </sect2>
 <!-- ************************************************** -->
@@ -1805,19 +1745,23 @@ The active items appearing in a menu depends upon which project window is active
         <para>Each element in the column is filled with its corresponding row number.</para>
       </listitem>
     </varlistentry>
-    <varlistentry id="fill-column-with-random-values-cmd">
-      <term>&fill-column-with-random-values-cmd;</term>
-      <listitem>
-        <para>Each element in the column is filled with a random value between 0 and 1.</para>
-      </listitem>
+
+    <varlistentry id="fill-column-with-random-values-cmd"><term>&fill-column-with-random-values-cmd;</term>
+      <listitem><para>Each element in the column is filled with a random value between 0 and 1.</para></listitem>
     </varlistentry>
+
+    <varlistentry id="fill-column-with-normal-random-values-cmd"><term>&fill-column-with-normal-random-values-cmd;</term>
+      <listitem><para>The rows in the selected column are filled with normally distributed random values calculate using the <ulink url="http://seehuhn.de/pages/ziggurat">Ziggurat method</ulink> with a mean of 0.0 and a standard deviation of 1.0. The computational routine is from the Gnu Scientific Library (look <ulink url="http://www.gnu.org/software/gsl/manual/html_node/The-Gaussian-Distribution.html">here</ulink> for more details).</para></listitem>
+    </varlistentry>
+
+
     </variablelist>
   </listitem>
 </varlistentry>
 <varlistentry id="clear-cmd">
   <term>&clear-cmd;</term>
   <listitem>
-    <para>Removes all the values of the selected column</para>
+    <para>Removes all the values of the selected column.</para>
   </listitem>
 </varlistentry>
 
