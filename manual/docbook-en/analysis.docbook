@@ -135,7 +135,7 @@
 </sect2>
 
 <sect2 id="sec-fit-polynomial">
-<title>Fitting to a polynome</title>
+<title>Fitting to a polynomial</title>
 
 <para>This command is used to fit a curve which has a linear shape. The results will be given in the <link linkend="sec-intro-log-window">Log panel</link></para>
 

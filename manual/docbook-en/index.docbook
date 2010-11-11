@@ -642,6 +642,11 @@
 <!ENTITY fill-column-with-random-values-key "">
 <!ENTITY fill-column-with-random-values-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/randomNumbers.png"/></imageobject></inlinemediaobject>'>
 
+<!ENTITY fill-column-with-normal-random-values-cmd "<command>Fill Column With -> Normal Random Numbers</command>">
+<!ENTITY fill-column-with-normal-random-values-lnk '<link linkend="fill-column-with-normal-random-values-cmd">&fill-column-with-normal-random-values-cmd;</link>'>
+<!ENTITY fill-column-with-normal-random-values-key "">
+<!ENTITY fill-column-with-normal-random-values-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/normalRandomNumbers.png"/></imageobject></inlinemediaobject>'>
+
 <!ENTITY clear-cmd "<command>Clear</command>">
 <!ENTITY clear-lnk '<link linkend="clear-cmd"><command>clear</command> command</link>'>
 <!ENTITY clear-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/erase.png"/></imageobject></inlinemediaobject>'>
@@ -725,8 +730,13 @@
 <!ENTITY convert-to-matrix-lnk '<link linkend="convert-to-matrix-cmd"><command>Convert to Matrix</command> command</link>'>
 <!-- Missing: Direct, 2D Binning, Regular XYZ-->
 <!--
-              menu: Analysis
+              menu: Analysis of tables
 -->
+<!ENTITY analysis-ptr "Analysis -> ">
+<!ENTITY desc-stats-ptr "Analysis -> Descriptive Statistics -> ">
+<!ENTITY hyp-test-ptr "Analysis -> Hypothesis Testing -> ">
+<!ENTITY norm-ptr "Analysis -> Normalize -> ">
+
 <!ENTITY analysis-table-menu-lnk '<link linkend="sec-analysis-table-menu">Analysis menu</link>'>
 <!ENTITY statistics-on-columns-cmd "<command>Statistics on Columns</command>">
 <!ENTITY statistics-on-columns-lnk '<link linkend="statistics-on-columns-cmd"><command>Statistics on Columns</command> command</link>'>
@@ -753,10 +763,13 @@
 <!ENTITY normality-test-key "">
 <!--ENTITY normality-test-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/.png"/></imageobject></inlinemediaobject>'-->
 
-<!--ENTITY -cmd "<command>Frequency Count</command>">
-<!ENTITY -lnk '<link linkend="-cmd">&-cmd;</link>'>
-<!ENTITY -key ""-->
-<!--ENTITY -icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/.png"/></imageobject></inlinemediaobject>'-->
+<!ENTITY t-test-1-cmd "<command>One Sample t-Test</command>">
+<!ENTITY t-test-1-lnk '<link linkend="t-test-1-cmd">&t-test-1-cmd;</link>'>
+<!ENTITY t-test-1-key "">
+
+<!ENTITY t-test-2-cmd "<command>Two Sample t-Test</command>">
+<!ENTITY t-test-2-lnk '<link linkend="t-test-2-cmd">&t-test-2-cmd;</link>'>
+<!ENTITY t-test-2-key "">
 
 <!ENTITY sort-column-cmd "<command>Sort Column</command>">
 <!ENTITY sort-column-lnk '<link linkend="sort-column-cmd"><command>Sort Column</command> command</link>'>
@@ -782,7 +795,7 @@
 <!ENTITY deconvolute-cmd "<command>Deconvolute</command>">
 <!ENTITY deconvolute-lnk '<link linkend="deconvolute-cmd"><command>Deconvolute</command> command</link>'>
 <!--
-              menu: Analysis
+              menu: Analysis of graphs
 -->
 <!ENTITY analysis-graph-menu-lnk '<link linkend="sec-analysis-graph-menu">Analysis menu</link>'>
 <!ENTITY translate-cmd "<command>Translate</command>">
@@ -801,7 +814,7 @@
 <!ENTITY integrate-function-lnk '<link linkend="integrate-function-cmd">&integrate-function-cmd;</link>'>
 
 <!ENTITY smooth-cmd "<command>Smooth</command>">
-<!ENTITY smooth-lnk '<link linkend="smooth-cmd"><command>Smooth</command> command</link>'>
+<!ENTITY smooth-lnk '<link linkend="smooth-cmd"><command>Smooth</command></link>'>
 <!ENTITY savitsky-golay-cmd "<command>Smooth -> Savitsky-Golay...</command>">
 <!ENTITY savitsky-golay-lnk '<link linkend="savitsky-golay-cmd"><command>Smooth -> Savitsky-Golay...</command> command</link>'>
 <!ENTITY moving-window-cmd "<command>Smooth -> Moving Window Average...</command>">
@@ -810,6 +823,7 @@
 <!ENTITY lowess-lnk '<link linkend="lowess-cmd"><command>Smooth -> Lowess...</command> command</link>'>
 <!ENTITY smooth-fft-filter-cmd "<command>Smooth -> FFT Filter...</command>">
 <!ENTITY smooth-fft-filter-lnk '<link linkend="smooth-fft-filter-cmd"><command>Smooth -> FFT Filter...</command> command</link>'>
+
 <!ENTITY fft-filter-cmd "<command>FFT Filter</command>">
 <!ENTITY fft-filter-lnk '<link linkend="fft-filter-cmd"><command>FFT Filter</command> command</link>'>
 <!ENTITY fft-low-pass-cmd "<command>FFT Filter -> Low Pass...</command>">
@@ -820,8 +834,11 @@
 <!ENTITY fft-band-pass-lnk '<link linkend="fft-band-pass-cmd"><command>FFT Filter -> Band Pass...</command> command</link>'>
 <!ENTITY fft-band-block-cmd "<command>FFT Filter -> Band Block...</command>">
 <!ENTITY fft-band-block-lnk '<link linkend="fft-band-block-cmd"><command>FFT Filter -> Band Block...</command> command</link>'>
+
 <!ENTITY interpolate-cmd "<command>Interpolate...</command>">
 <!ENTITY interpolate-lnk '<link linkend="interpolate-cmd"><command>Interpolate...</command> command</link>'>
+<!ENTITY fit-fft-cmd "<command>Fit FFT</command>">
+<!ENTITY fit-fftr-lnk '<link linkend="fit-linear-cmd"><command>Fit Linear</command> command</link>'>
 <!ENTITY fit-linear-cmd "<command>Fit Linear</command>">
 <!ENTITY fit-linear-lnk '<link linkend="fit-linear-cmd"><command>Fit Linear</command> command</link>'>
 <!ENTITY fit-polynomial-cmd "<command>Fit Polynomial...</command>">

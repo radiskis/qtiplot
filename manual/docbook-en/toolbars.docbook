@@ -1013,12 +1013,19 @@ The <emphasis>File Toolbar</emphasis> provides single-click access to commands f
    <entry>&fill-column-with-row-number-key;</entry>
    <entry>Fills each row in the selected column with it's corresponding row number.</entry>
   </row>
-  <row>
 
+  <row>
    <entry>&fill-column-with-random-values-icon;</entry>
    <entry><link linkend="fill-column-with-random-values-cmd">Table -> &fill-column-with-random-values-cmd;</link></entry>
    <entry>&fill-column-with-random-values-key;</entry>
    <entry>Fills each row in the selected column with a random value.</entry>
+  </row>
+
+  <row>
+   <entry>&fill-column-with-normal-random-values-icon;</entry>
+   <entry><link linkend="fill-column-with-normal-random-values-cmd">Table -> &fill-column-with-normal-random-values-cmd;</link></entry>
+   <entry>&fill-column-with-normal-random-values-key;</entry>
+   <entry>Fills each row in the selected column with a normally distributed random value.</entry>
   </row>
 
   <row>
