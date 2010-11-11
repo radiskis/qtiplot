@@ -3935,31 +3935,31 @@ L&apos;autocomplétion ne sera pas disponible!</translation>
     </message>
     <message>
         <source>Descriptive S&amp;tatistics</source>
-        <translation type="unfinished"></translation>
+        <translation>S&amp;tatiques descriptives</translation>
     </message>
     <message>
         <source>&amp;Hypothesis Testing</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Hypothèse de test</translation>
     </message>
     <message>
         <source>&amp;Normality Test (Shapiro - Wilk)</source>
-        <translation type="unfinished"></translation>
+        <translation>Test de &amp;normalité (Shapiro - Wilk)</translation>
     </message>
     <message>
         <source>&amp;One Sample t-Test...</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Un échantillon t-test...</translation>
     </message>
     <message>
         <source>&amp;Two Sample t-Test...</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Deux échantillon t-Test...</translation>
     </message>
     <message>
         <source>&amp;Normal Random Numbers</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Nombres aléatoires normaux</translation>
     </message>
     <message>
         <source>Fill selected columns with normal random numbers</source>
-        <translation type="unfinished"></translation>
+        <translation>Remplir les colonnes sélectionnées avec des nombres aléatoires normaux</translation>
     </message>
 </context>
 <context>
@@ -4514,11 +4514,11 @@ L&apos;autocomplétion ne sera pas disponible!</translation>
     </message>
     <message>
         <source>months</source>
-        <translation type="unfinished"></translation>
+        <translation>mois</translation>
     </message>
     <message>
         <source>years</source>
-        <translation type="unfinished"></translation>
+        <translation>années</translation>
     </message>
 </context>
 <context>
@@ -6952,7 +6952,7 @@ Les codes spéciaux suivant peuvent être utilisés :
     </message>
     <message>
         <source>&amp;Advanced</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Avancé</translation>
     </message>
 </context>
 <context>
@@ -11609,11 +11609,11 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>QtiPlot - Bin size input error</source>
-        <translation type="unfinished">QtiPlot - Erreur de taille des échantillons</translation>
+        <translation>QtiPlot - Erreur des tailles d&apos;échantillons</translation>
     </message>
     <message>
         <source>Please enter a positive bin size value!</source>
-        <translation type="unfinished">Donnez une valeur positive de taille d&apos;échantillons !</translation>
+        <translation>Donnez une valeur positive de taille d&apos;échantillons !</translation>
     </message>
     <message>
         <source>Vector Data</source>
@@ -11973,75 +11973,75 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Apply Co&amp;lor</source>
-        <translation type="unfinished"></translation>
+        <translation>Appliquer la cou&amp;leur</translation>
     </message>
     <message>
         <source>Box &amp;Labels</source>
-        <translation type="unfinished"></translation>
+        <translation>Étiquettes des &amp;boîtes</translation>
     </message>
     <message>
         <source>Whis&amp;ker Labels</source>
-        <translation type="unfinished"></translation>
+        <translation>Éti&amp;quette des whiskers</translation>
     </message>
     <message>
         <source>Display</source>
-        <translation type="unfinished">Affichage :</translation>
+        <translation>Affichage :</translation>
     </message>
     <message>
         <source>Percentage</source>
-        <translation type="unfinished"></translation>
+        <translation>Pourcentage</translation>
     </message>
     <message>
         <source>Value</source>
-        <translation type="unfinished">Valeur</translation>
+        <translation>Valeur</translation>
     </message>
     <message>
         <source>Percentage (Value)</source>
-        <translation type="unfinished"></translation>
+        <translation>Pourcentage (valeur)</translation>
     </message>
     <message>
         <source>Value (Percentage)</source>
-        <translation type="unfinished"></translation>
+        <translation>Valeur (pourcentage)</translation>
     </message>
     <message>
         <source>&amp;Background Color</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Couleur d&apos;arrière plan</translation>
     </message>
     <message>
         <source>Background &amp;Image</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Image d&apos;arrière plan</translation>
     </message>
     <message>
         <source>File</source>
-        <translation type="unfinished">Fichier</translation>
+        <translation>Fichier</translation>
     </message>
     <message>
         <source>&amp;Resize layer to fit original image size</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Redimmensionner la planche à la taille originale de l&apos;image</translation>
     </message>
     <message>
         <source>&amp;Frame</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Cadre</translation>
     </message>
     <message>
         <source>Canvas</source>
-        <translation type="unfinished"></translation>
+        <translation>Cadre</translation>
     </message>
     <message>
         <source>&amp;Standard Symbol</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Symbole standard</translation>
     </message>
     <message>
         <source>&amp;Image</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Image</translation>
     </message>
     <message>
         <source>Preview</source>
-        <translation type="unfinished"></translation>
+        <translation>Aperçu</translation>
     </message>
     <message>
         <source>QtiPlot - Import image from file</source>
-        <translation type="unfinished">QtiPlot - Importer une image à partir d&apos;un fichier</translation>
+        <translation>QtiPlot - Importer une image à partir d&apos;un fichier</translation>
     </message>
 </context>
 <context>
@@ -12879,154 +12879,154 @@ Calcule le sinus de x.</translation>
     </message>
     <message>
         <source>Size</source>
-        <translation type="unfinished"></translation>
+        <translation>Taille</translation>
     </message>
     <message>
         <source>Attention!</source>
-        <translation type="unfinished"></translation>
+        <translation>Attention !</translation>
     </message>
     <message>
         <source>Sample size must be between 3 and 5000.</source>
-        <translation type="unfinished"></translation>
+        <translation>La taille de l&apos;échantillon doit être comprise entre 3 et 5000.</translation>
     </message>
     <message>
         <source>Normality Test (Shapiro - Wilk)</source>
-        <translation type="unfinished"></translation>
+        <translation>Test de normalité (Shapiro - Wilk)</translation>
     </message>
     <message>
         <source>Dataset</source>
-        <translation type="unfinished">Données</translation>
+        <translation>Données</translation>
     </message>
     <message>
         <source>N</source>
-        <translation type="unfinished"></translation>
+        <translation>N</translation>
     </message>
     <message>
         <source>W</source>
-        <translation type="unfinished"></translation>
+        <translation>W</translation>
     </message>
     <message>
         <source>P Value</source>
-        <translation type="unfinished"></translation>
+        <translation>Valeur de P</translation>
     </message>
     <message>
         <source>Decision</source>
-        <translation type="unfinished"></translation>
+        <translation>Décision</translation>
     </message>
     <message>
         <source>Normal at %1 level</source>
-        <translation type="unfinished"></translation>
+        <translation>Normal à 1%</translation>
     </message>
     <message>
         <source>Sample</source>
-        <translation type="unfinished"></translation>
+        <translation>Échantillon</translation>
     </message>
     <message>
         <source>Mean</source>
-        <translation type="unfinished">Moyenne</translation>
+        <translation>Moyenne</translation>
     </message>
     <message>
         <source>Standard Deviation</source>
-        <translation type="unfinished">Écart type</translation>
+        <translation>Écart type</translation>
     </message>
     <message>
         <source>Standard Error</source>
-        <translation type="unfinished">Erreur type</translation>
+        <translation>Erreur type</translation>
     </message>
     <message>
         <source>Two Sample Independent t-Test</source>
-        <translation type="unfinished"></translation>
+        <translation>Deux échantillons t-Test indépendants...</translation>
     </message>
     <message>
         <source>Two Sample Paired t-Test</source>
-        <translation type="unfinished"></translation>
+        <translation>Deux échantillons t-Test appairés</translation>
     </message>
     <message>
         <source>One Sample t-Test</source>
-        <translation type="unfinished"></translation>
+        <translation>Un échantillon t-test</translation>
     </message>
     <message>
         <source>Difference of Means</source>
-        <translation type="unfinished"></translation>
+        <translation>Difference de moyennes</translation>
     </message>
     <message>
         <source>different</source>
-        <translation type="unfinished"></translation>
+        <translation>Different</translation>
     </message>
     <message>
         <source>greater</source>
-        <translation type="unfinished"></translation>
+        <translation>Plus grand</translation>
     </message>
     <message>
         <source>less</source>
-        <translation type="unfinished"></translation>
+        <translation>moins</translation>
     </message>
     <message>
         <source>Null Hypothesis</source>
-        <translation type="unfinished"></translation>
+        <translation>Hypothèse nulle</translation>
     </message>
     <message>
         <source>Alternative Hypothesis</source>
-        <translation type="unfinished"></translation>
+        <translation>Hypothèse alternative</translation>
     </message>
     <message>
         <source>t</source>
-        <translation type="unfinished"></translation>
+        <translation>t</translation>
     </message>
     <message>
         <source>DoF</source>
-        <translation type="unfinished"></translation>
+        <translation>DoF</translation>
     </message>
     <message>
         <source>At the %1 level, the difference of the population means</source>
-        <translation type="unfinished"></translation>
+        <translation>Au niveau %1, la différence des moyennes de populations</translation>
     </message>
     <message>
         <source>At the %1 level, the population mean</source>
-        <translation type="unfinished"></translation>
+        <translation>Au niveau %1, la moyenne de population</translation>
     </message>
     <message>
         <source>is significantly</source>
-        <translation type="unfinished"></translation>
+        <translation>est nettement</translation>
     </message>
     <message>
         <source>is not significantly</source>
-        <translation type="unfinished"></translation>
+        <translation>n&apos;est pas nettement</translation>
     </message>
     <message>
         <source>than the test difference</source>
-        <translation type="unfinished"></translation>
+        <translation>que la différence de test</translation>
     </message>
     <message>
         <source>than the test mean</source>
-        <translation type="unfinished"></translation>
+        <translation>que la moyenne de test</translation>
     </message>
     <message>
         <source>Paired t-Test requires equal sample sizes.</source>
-        <translation type="unfinished"></translation>
+        <translation>t-Test appairés nécessitent des tailles d&apos;échantillons égales.</translation>
     </message>
     <message>
         <source>The test statistics t and P can not be computed because the sample variance of the differences between Sample1 and Sample2 is 0.</source>
-        <translation type="unfinished"></translation>
+        <translation>Les statistiques de test t et p ne peuvent pas être calculées car la variance de l&apos;échantillon des différences entre l&apos;Échantillon1 et l&apos;Échantillon2 est égale à zéro</translation>
     </message>
     <message>
         <source>invt(x, n):
  Inverse t-distribution with n degrees of freedom.</source>
-        <translation type="unfinished"></translation>
+        <translation>distribution en t inverse avec n degrées de liberté.</translation>
     </message>
     <message>
         <source>Not normal at %1 level</source>
-        <translation type="unfinished"></translation>
+        <translation>Non normal au niveau %1</translation>
     </message>
     <message>
         <source>ftable(x, m, n):
  F-Distribution with m and n degrees of freedom.</source>
-        <translation type="unfinished"></translation>
+        <translation>ftable(x, m, n) : Distribution en F avec m et n degrés de liberté.</translation>
     </message>
     <message>
         <source>invf(x, m, n):
  Inverse F-Distribution with m and n degrees of freedom.</source>
-        <translation type="unfinished"></translation>
+        <translation>invf(x, m, n) : Distribution en F inverse avec m et n degrés de liberté.</translation>
     </message>
 </context>
 <context>
@@ -13780,130 +13780,130 @@ Calcule le sinus de x.</translation>
     <name>Statistics</name>
     <message>
         <source>QtiPlot</source>
-        <translation type="unfinished"></translation>
+        <translation>QtiPlot</translation>
     </message>
     <message>
         <source>Error</source>
-        <translation type="unfinished">Erreur</translation>
+        <translation>Erreur</translation>
     </message>
     <message>
         <source>You didn&apos;t specify a valid data set for this operation!</source>
-        <translation type="unfinished">Vous n&apos;avez pas spécifié de données valides pour cette opération !</translation>
+        <translation>Vous n&apos;avez pas spécifié de données valides pour cette opération !</translation>
     </message>
     <message>
         <source>Memory Allocation Error</source>
-        <translation type="unfinished"></translation>
+        <translation>Erreur d&apos;allocation mémoire</translation>
     </message>
     <message>
         <source>Not enough memory, operation aborted!</source>
-        <translation type="unfinished"></translation>
+        <translation>Pas assez de mémoire, opération annulée !</translation>
     </message>
 </context>
 <context>
     <name>StudentTestDialog</name>
     <message>
         <source>Two sample t-Test</source>
-        <translation type="unfinished"></translation>
+        <translation>Deux échantillons t-Test</translation>
     </message>
     <message>
         <source>In&amp;dependent Test</source>
-        <translation type="unfinished"></translation>
+        <translation>Test in&amp;d&amp;pendant</translation>
     </message>
     <message>
         <source>Pai&amp;red Test</source>
-        <translation type="unfinished"></translation>
+        <translation>Test appai&amp;rés</translation>
     </message>
     <message>
         <source>One sample t-Test</source>
-        <translation type="unfinished"></translation>
+        <translation>Un échantillon t-test</translation>
     </message>
     <message>
         <source>Sample</source>
-        <translation type="unfinished"></translation>
+        <translation>Échantillon</translation>
     </message>
     <message>
         <source>Mean</source>
-        <translation type="unfinished">Moyenne</translation>
+        <translation>Moyenne</translation>
     </message>
     <message>
         <source>Hypotheses</source>
-        <translation type="unfinished"></translation>
+        <translation>Hypothèses</translation>
     </message>
     <message>
         <source>Null</source>
-        <translation type="unfinished"></translation>
+        <translation>Nul</translation>
     </message>
     <message>
         <source>Alternate</source>
-        <translation type="unfinished"></translation>
+        <translation>Aletrnatif</translation>
     </message>
     <message>
         <source>Significance Level</source>
-        <translation type="unfinished"></translation>
+        <translation>Niveau significatif</translation>
     </message>
     <message>
         <source>Confidence &amp;Interval(s)</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Interval(s) de confiance</translation>
     </message>
     <message>
         <source>Level(s) in %</source>
-        <translation type="unfinished"></translation>
+        <translation>Niveau(x) en %</translation>
     </message>
     <message>
         <source>&amp;Add Level</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Ajouter un niveau</translation>
     </message>
     <message>
         <source>&amp;Power Analysis</source>
-        <translation type="unfinished"></translation>
+        <translation>Analyse de &amp;puissance</translation>
     </message>
     <message>
         <source>Alpha</source>
-        <translation type="unfinished"></translation>
+        <translation>Alpha</translation>
     </message>
     <message>
         <source>Sample &amp;Size</source>
-        <translation type="unfinished"></translation>
+        <translation>Taille de l&apos;échantillon</translation>
     </message>
     <message>
         <source>&amp;Compute</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Calculer</translation>
     </message>
     <message>
         <source>Confidence Interval for Difference of Means</source>
-        <translation type="unfinished"></translation>
+        <translation>Intervalle de confiance pour les moyennes de différences</translation>
     </message>
     <message>
         <source>Confidence Interval for Mean</source>
-        <translation type="unfinished"></translation>
+        <translation>Intervalle de confiance pour la moyenne</translation>
     </message>
     <message>
         <source>Level</source>
-        <translation type="unfinished">Niveau</translation>
+        <translation>Niveau</translation>
     </message>
     <message>
         <source>Lower Limit</source>
-        <translation type="unfinished"></translation>
+        <translation>Limite basse</translation>
     </message>
     <message>
         <source>Upper Limit</source>
-        <translation type="unfinished"></translation>
+        <translation>Limite haute</translation>
     </message>
     <message>
         <source>Power Analysis</source>
-        <translation type="unfinished"></translation>
+        <translation>Analyse de puissance</translation>
     </message>
     <message>
         <source>Sample Size</source>
-        <translation type="unfinished"></translation>
+        <translation>Taille de l&apos;échantillon</translation>
     </message>
     <message>
         <source>Power</source>
-        <translation type="unfinished"></translation>
+        <translation>Puissance</translation>
     </message>
     <message>
         <source>actual</source>
-        <translation type="unfinished"></translation>
+        <translation>Actuelle</translation>
     </message>
 </context>
 <context>
