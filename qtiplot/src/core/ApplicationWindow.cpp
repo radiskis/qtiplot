@@ -212,6 +212,10 @@ using namespace std;
 	#include "MatrixResamplingDialog.h"
 #endif
 
+#ifdef HAVE_TAMUANOVA
+	#include "AnovaDialog.h"
+#endif
+
 using namespace Qwt3D;
 
 extern "C"
@@ -3545,7 +3549,7 @@ void ApplicationWindow::showStudentTestDialog(bool twoSamples)
 		return;
 
 	StudentTestDialog *std = new StudentTestDialog(t, twoSamples, this);
-	std->exec();
+	std->show();
 }
 
 void ApplicationWindow::testNormality()
@@ -3577,6 +3581,18 @@ void ApplicationWindow::testNormality()
 
 	updateLog(s);
 }
+
+#ifdef HAVE_TAMUANOVA
+void ApplicationWindow::showANOVADialog(bool twoWay)
+{
+	Table *t = (Table*)activeWindow(TableWindow);
+	if (!t)
+		return;
+
+	AnovaDialog *ad = new AnovaDialog(t, twoWay, this);
+	ad->show();
+}
+#endif
 
 Matrix* ApplicationWindow::tableToMatrixRegularXYZ(Table* t, const QString& colName)
 {
@@ -9992,6 +10008,11 @@ void ApplicationWindow::analysisMenuAboutToShow()
 		tTestMenu->addAction(actionOneSampletTest);
 		tTestMenu->addAction(actionTwoSampletTest);
 
+#ifdef HAVE_TAMUANOVA
+		QMenu *anovaMenu = analysisMenu->addMenu (tr("ANO&VA"));
+		anovaMenu->addAction(actionOneWayANOVA);
+		//anovaMenu->addAction(actionTwoWayANOVA);
+#endif
         analysisMenu->insertSeparator();
         analysisMenu->addAction(actionSortSelection);
         analysisMenu->addAction(actionSortTable);
@@ -14501,6 +14522,14 @@ void ApplicationWindow::createActions()
 	actionTwoSampletTest = new QAction(tr("&Two Sample t-Test..."), this);
 	connect(actionTwoSampletTest, SIGNAL(activated()), this, SLOT(showTwoSampleStudentTestDialog()));
 
+#ifdef HAVE_TAMUANOVA
+	actionOneWayANOVA = new QAction(tr("&One-Way ANOVA..."), this);
+	connect(actionOneWayANOVA, SIGNAL(activated()), this, SLOT(showANOVADialog()));
+
+	actionTwoWayANOVA = new QAction(tr("&Two-Way ANOVA..."), this);
+	connect(actionTwoWayANOVA, SIGNAL(activated()), this, SLOT(showTwoWayANOVADialog()));
+#endif
+
     actionReadOnlyCol = new QAction(tr("&Read Only"), this);
     connect(actionReadOnlyCol, SIGNAL(activated()), this, SLOT(setReadOnlyCol()));
 
@@ -15226,7 +15255,10 @@ void ApplicationWindow::translateActionsStrings()
 	actionOneSampletTest->setMenuText(tr("&One Sample t-Test..."));
 	actionTwoSampletTest->setMenuText(tr("&Two Sample t-Test..."));
 	actionShapiroWilk->setMenuText(tr("&Normality Test (Shapiro - Wilk)"));
-
+#ifdef HAVE_TAMUANOVA
+	actionOneWayANOVA->setMenuText(tr("&One-Way ANOVA..."));
+	actionTwoWayANOVA->setMenuText(tr("&Two-Way ANOVA..."));
+#endif
 	actionSetXCol->setMenuText(tr("&X"));
 	actionSetXCol->setToolTip(tr("Set column as X"));
 	actionSetYCol->setMenuText(tr("&Y"));

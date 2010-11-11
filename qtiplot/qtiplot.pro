@@ -252,6 +252,18 @@ win32: contains(CONFIG, Excel) {
 
 ###############################################################
 
+# check if we have TAMUANOVA
+!isEmpty(TAMUANOVA_INCLUDEPATH) {
+	DEFINES += HAVE_TAMUANOVA
+	INCLUDEPATH += $$TAMUANOVA_INCLUDEPATH
+
+	HEADERS += $$TAMUANOVA_INCLUDEPATH/tamu_anova.h
+	SOURCES += $$TAMUANOVA_INCLUDEPATH/anova_1.c
+	SOURCES += $$TAMUANOVA_INCLUDEPATH/anova_2.c
+}
+
+###############################################################
+
 # At the very end: add global include- and lib path
 #unix:INCLUDEPATH += $$SYS_INCLUDEPATH
 #unix:LIBS += $$SYS_LIBS

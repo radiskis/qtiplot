@@ -26,6 +26,15 @@ public:
 	void setMinZ(double val); //!< Sets minimal z value.
 	void setMaxZ(double val); //!< Sets maximal z value.
 
+	double xMin(){return range_p.minVertex.x;};
+	double xMax(){return range_p.maxVertex.x;};
+
+	double yMin(){return range_p.minVertex.y;};
+	double yMax(){return range_p.maxVertex.y;};
+
+	double zMin(){return range_p.minVertex.z;};
+	double zMax(){return range_p.maxVertex.z;};
+
 	//! Assigns a new Curve and creates a data representation for it.
 	virtual bool create(Qwt3D::Curve& plotWidget);
 	//! Creates data representation for the actual assigned Curve.

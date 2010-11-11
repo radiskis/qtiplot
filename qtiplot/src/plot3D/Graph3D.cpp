@@ -56,13 +56,16 @@
 #include <gsl/gsl_math.h>
 #include <fstream>
 
-ConstFunction::ConstFunction(double z, Qwt3D::Curve *pw)
-: Function(pw), d_z(z)
+ConstFunction::ConstFunction(Qwt3D::Curve *pw)
+: Function(pw)
 {}
 
-double ConstFunction::operator()(double, double)
+double ConstFunction::operator()(double x, double y)
 {
-	return d_z;
+	if (x < 0.5*(xMin() + xMax()) || y < 0.5*(yMin() + yMax()))
+		return zMin();
+
+	return zMax();
 }
 
 UserFunction::UserFunction(const QString& s, Qwt3D::Curve *pw)
@@ -75,18 +78,14 @@ double UserFunction::operator()(double x, double y)
 		return 0.0;
 
 	MyParser parser;
-	double result=0.0;
-	try
-	{
+	double result = 0.0;
+	try {
 		parser.DefineVar("x", &x);
 		parser.DefineVar("y", &y);
-
 		parser.SetExpr((const std::string)formula.ascii());
-		result=parser.Eval();
-	}
-	catch(mu::ParserError &e)
-	{
-		QMessageBox::critical(0,"QtiPlot - Input function error",QString::fromStdString(e.GetMsg()));
+		result = parser.Eval();
+	} catch(mu::ParserError &e){
+		QMessageBox::critical(0, "QtiPlot - Input function error", QString::fromStdString(e.GetMsg()));
 	}
 	return result;
 }
@@ -286,7 +285,7 @@ void Graph3D::initCoord()
 	sp->coordinates()->setAutoScale(false);
 }
 
-void Graph3D::addHiddenConstantCurve(double z, double xl, double xr, double yl, double yr)
+void Graph3D::addHiddenConstantCurve(double xl, double xr, double yl, double yr, double zl, double zr)
 {
 	if (d_const_curve){
 		delete d_const_curve;
@@ -305,9 +304,11 @@ void Graph3D::addHiddenConstantCurve(double z, double xl, double xr, double yl, 
 	d_const_curve->showColorLegend(false);
 	sp->addCurve(d_const_curve);
 
-	d_const_func = new ConstFunction(z, d_const_curve);
-	d_const_func->setMesh(20, 20);
+	d_const_func = new ConstFunction(d_const_curve);
+	d_const_func->setMesh(3, 3);
 	d_const_func->setDomain(xl, xr, yl, yr);
+	d_const_func->setMinZ(zl);
+	d_const_func->setMaxZ(zr);
 	d_const_func->create();
 }
 
@@ -700,14 +701,15 @@ void Graph3D::loadData(Table* table, int xCol, int yCol, int zCol,
 	if (check_limits)
 		sp->createCoordinateSystem(Triple(xl, yl, zl), Triple(xr, yr, zr));
 
-	if (check_limits){
+	//if (check_limits){
 		if (d_const_func){
-			d_const_func->setZ(zl);
 			d_const_func->setDomain(xl, xr, yl, yr);
-			d_const_func->create ();
+			d_const_func->setMinZ(zl);
+			d_const_func->setMaxZ(zr);
+			d_const_func->create();
 		} else
-			addHiddenConstantCurve(zl, xl, xr, yl, yr);
-	}
+			addHiddenConstantCurve(xl, xr, yl, yr, zl, zr);
+	//}
 
 	double start, end;
 	sp->coordinates()->axes[Z1].limits (start, end);
