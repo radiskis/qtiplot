@@ -1350,6 +1350,13 @@ The active items appearing in a menu depends upon which project window is active
 <para>The &hyp-test-ptr;&t-test-2-cmd; command performs a Student's t-test on two selected columns of data to estimate the statistical liklihood that the means are the same. The results of the test are placed in the Results Log. See the Wikipedia article on the <ulink url="http://en.wikipedia.org/wiki/T-test">Student's t-test</ulink> for more information.</para></sect4>
 </sect3>
 
+<sect3 id="anova"><title>ANOVA</title>
+  <sect4 id="anova-1-cmd"><title>&anova-1-cmd;</title>
+<para>The Analysis -> ANOVA -> &anova-1-cmd; command performs a One-way analysis of variance on a the selected column of data. The results of the test are placed in the Results Log. The Wikipedia article on the <ulink url="http://en.wikipedia.org/wiki/One-way_ANOVA">One-way ANOVA</ulink> for a more detailed discussion.</para></sect4>
+
+  <sect4 id="anova-2-cmd"><title>&anova-2-cmd;</title>
+<para>The Analysis -> ANOVA -> &anova-2-cmd; command performs a Two-way analysis of variance on a the selected columns of data. The results of the test are placed in the Results Log. See the Wikipedia article on the <ulink url="http://en.wikipedia.org/wiki/Analysis_of_variance">Analysis of Variance</ulink> for more details about this topic.</para></sect4>
+</sect3>
 
 <sect3 id="sort-column-cmd"> <title>&sort-column-cmd;</title>
     <para>The &analysis-ptr;&sort-column-cmd; command sorts the selected columns. If more than one column is selected, you have the option to sort them: </para>

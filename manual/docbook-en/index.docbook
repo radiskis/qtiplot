@@ -771,6 +771,15 @@
 <!ENTITY t-test-2-lnk '<link linkend="t-test-2-cmd">&t-test-2-cmd;</link>'>
 <!ENTITY t-test-2-key "">
 
+<!ENTITY anova-1-cmd "<command>One-Way ANOVA</command>">
+<!ENTITY anova-1-lnk '<link linkend="anova-1-cmd">&anova-1-cmd;</link>'>
+<!ENTITY anova-1-key "">
+
+<!ENTITY anova-2-cmd "<command>Two-Way ANOVA</command>">
+<!ENTITY anova-2-lnk '<link linkend="anova-2-cmd">&anova-2-cmd;</link>'>
+<!ENTITY anova-2-key "">
+
+
 <!ENTITY sort-column-cmd "<command>Sort Column</command>">
 <!ENTITY sort-column-lnk '<link linkend="sort-column-cmd"><command>Sort Column</command> command</link>'>
 <!ENTITY sort-column-key "">
