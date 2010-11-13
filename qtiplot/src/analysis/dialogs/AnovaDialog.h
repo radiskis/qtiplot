@@ -32,8 +32,11 @@
 #include <QDialog>
 
 class QCheckBox;
+class QComboBox;
 class QPushButton;
 class QListWidget;
+class QSpinBox;
+class QTreeWidget;
 class DoubleSpinBox;
 class Table;
 
@@ -50,19 +53,26 @@ private slots:
 	void addData();
 	void removeData();
 	void showCurrentFolder(bool);
+	void updateLevelBoxes();
 
 private:
 	bool d_two_way;
 
 	QListWidget* availableSamples;
-	QListWidget* selectedSamples;
+	QTreeWidget *selectedSamples;
 
 	QCheckBox *currentFolderBox;
+	QCheckBox *showInteractionsBox;
+	QCheckBox *showStatisticsBox;
 
 	QPushButton* btnAdd;
 	QPushButton* btnRemove;
 	QPushButton* buttonOk;
 
+	QComboBox* boxModel;
+
+	QSpinBox *aLevelsBox;
+	QSpinBox *bLevelsBox;
 	DoubleSpinBox* boxSignificance;
 };
 

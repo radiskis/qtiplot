@@ -30,6 +30,7 @@
 #define Anova_H
 
 #include <Statistics.h>
+#include <tamu_anova.h>
 
 class Table;
 
@@ -39,25 +40,33 @@ class Anova : public Statistics
 	Q_OBJECT
 
 	public:
-		Anova(ApplicationWindow *parent, double level);
+		Anova(ApplicationWindow *parent, double level, bool twoWay = false);
 		void setSignificanceLevel(double);
-		bool addSample(const QString& colName);
+		void showDescriptiveStatistics(bool show = true){d_descriptive_statistics = show;};
+		void showAnovaTwoWayInteractions(bool show = true){d_show_interactions = show;};
+		void setAnovaTwoWayType(int type){d_anova_type = (gsl_anova_twoway_types)type;};
+		bool addSample(const QString& colName, int aLevel = 1, int bLevel = 1);
 		bool run();
 
 		virtual QString logInfo();
 
-		double pValue(){return pVal;};
-		double FValue(){return F;};
-
 	protected:
+		bool twoWayANOVA();
+		bool oneWayANOVA();
 		void freeMemory();
+		QString levelName(int level, bool b = false);
 
 		double d_significance_level;
+		bool d_descriptive_statistics;
 		bool d_two_way;
+		bool d_show_interactions;
+		gsl_anova_twoway_types d_anova_type;
 		QList<Statistics *> d_data_samples;
+		QList<int> d_factorA_levels;
+		QList<int> d_factorB_levels;
 
-		long dfTr, dfE, dfT;
-		double SSTr, SSE, SST, MSTr, MSE, F, pVal;
+		tamu_anova_table d_at;
+		tamu_anova_table_twoway d_att;
 };
 
 #endif

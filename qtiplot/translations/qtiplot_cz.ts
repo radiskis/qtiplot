@@ -21,6 +21,96 @@
     </message>
 </context>
 <context>
+    <name>Anova</name>
+    <message>
+        <source>ANOVA</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>AnovaDialog</name>
+    <message>
+        <source>Two Way ANOVA</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sample</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Factor A Level</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Factor B Level</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>A</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>B</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>One Way ANOVA</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Available Data</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show current &amp;folder only</source>
+        <translation type="unfinished">Ukázat pouze &amp;nynější složku</translation>
+    </message>
+    <message>
+        <source>Selected Data</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Significance Level</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show &amp;Descriptive Statistics</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>ANOVA &amp;Type</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Fixed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Random</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Mixed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Interactions</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Compute</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Factor &amp;A Levels</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Factor &amp;B Levels</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>ApplicationWindow</name>
     <message>
         <source>&amp;X</source>
@@ -3963,6 +4053,18 @@ Různé části tohoto souboru se nemusí zobrazovat tak, jak se očekává.</tr
     </message>
     <message>
         <source>Fill selected columns with normal random numbers</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>ANO&amp;VA</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;One-Way ANOVA...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Two-Way ANOVA...</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -13084,6 +13186,118 @@ pokud e1 pak e2 jinak e3.</translation>
  Inverse F-Distribution with m and n degrees of freedom.</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Two-Way ANOVA requires three or more data samples.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>One-Way ANOVA requires two or more data samples.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Factor A must have two or more levels.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Factor B must have two or more levels.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>A</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>B</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Two-Way ANOVA</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Fixed Model</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Random Model</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Mixed Model</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>One-Way ANOVA</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Selected Data</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Factor A Level</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Factor B Level</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The means of all selected datasets are equal</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The means of one or more selected datasets are different</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Source</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sum of Squares</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Mean Square</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>F Value</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation type="unfinished">Chyba</translation>
+    </message>
+    <message>
+        <source>Total</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Model</source>
+        <translation type="unfinished">Model</translation>
+    </message>
+    <message>
+        <source>At the %1 level, the population means</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>are significantly different</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>are not significantly different</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The sample dataset (%1) must have at least one data point.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>There are no data points in Factor A &apos;%1&apos; and Factor B &apos;%2&apos; level combination.</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>QtColorPicker</name>
@@ -13851,6 +14065,10 @@ pokud e1 pak e2 jinak e3.</translation>
     </message>
     <message>
         <source>Not enough memory, operation aborted!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>There is no sample dataset called %1 in this project.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

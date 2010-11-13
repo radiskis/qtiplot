@@ -10011,7 +10011,7 @@ void ApplicationWindow::analysisMenuAboutToShow()
 #ifdef HAVE_TAMUANOVA
 		QMenu *anovaMenu = analysisMenu->addMenu (tr("ANO&VA"));
 		anovaMenu->addAction(actionOneWayANOVA);
-		//anovaMenu->addAction(actionTwoWayANOVA);
+		anovaMenu->addAction(actionTwoWayANOVA);
 #endif
         analysisMenu->insertSeparator();
         analysisMenu->addAction(actionSortSelection);
