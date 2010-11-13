@@ -32,10 +32,14 @@
 #include <Folder.h>
 #include <DoubleSpinBox.h>
 
+#include <QComboBox>
 #include <QGroupBox>
+#include <QSpinBox>
 #include <QLayout>
 #include <QPushButton>
 #include <QListWidget>
+#include <QHeaderView>
+#include <QTreeWidget>
 #include <QLabel>
 
 AnovaDialog::AnovaDialog(Table *t, bool twoWay, QWidget* parent, Qt::WFlags fl )
@@ -43,11 +47,6 @@ AnovaDialog::AnovaDialog(Table *t, bool twoWay, QWidget* parent, Qt::WFlags fl )
 	d_two_way(twoWay)
 {
 	setObjectName( "AnovaDialog" );
-	if (twoWay)
-		setWindowTitle(tr("Two Way ANOVA"));
-	else
-		setWindowTitle(tr("One Way ANOVA"));
-
 	setSizeGripEnabled( true );
 	setAttribute(Qt::WA_DeleteOnClose);
 
@@ -55,9 +54,42 @@ AnovaDialog::AnovaDialog(Table *t, bool twoWay, QWidget* parent, Qt::WFlags fl )
 	availableSamples->setSelectionMode (QAbstractItemView::ExtendedSelection);
 	availableSamples->addItems(((ApplicationWindow *)parent)->columnsList());
 
-	selectedSamples = new QListWidget();
+	selectedSamples = new QTreeWidget();
+	selectedSamples->setRootIsDecorated(false);
 	selectedSamples->setSelectionMode (QAbstractItemView::ExtendedSelection);
-	selectedSamples->addItems(t->selectedColumns());
+	if (twoWay){
+		setWindowTitle(tr("Two Way ANOVA"));
+		selectedSamples->setHeaderLabels (QStringList() << tr("Sample") << tr("Factor A Level") << tr("Factor B Level"));
+		selectedSamples->header()->setResizeMode(QHeaderView::ResizeToContents);
+		selectedSamples->setUniformRowHeights(true);
+
+		QString levelA = tr("A");
+		QString levelB = tr("B");
+		QStringList aLevels, bLevels;
+		for (int i = 0; i < 2; i++){
+			aLevels << levelA + QString::number(i + 1);
+			bLevels << levelB + QString::number(i + 1);
+		}
+
+		QStringList lst = t->selectedColumns();
+		foreach(QString text, lst){
+			QTreeWidgetItem *item = new QTreeWidgetItem(QStringList(text));
+			selectedSamples->addTopLevelItem(item);
+			QComboBox *box = new QComboBox();
+			box->addItems(aLevels);
+			selectedSamples->setItemWidget(item, 1, box);
+
+			box = new QComboBox();
+			box->addItems(bLevels);
+			selectedSamples->setItemWidget(item, 2, box);
+		}
+	} else {
+		setWindowTitle(tr("One Way ANOVA"));
+		selectedSamples->setHeaderHidden(true);
+		QStringList lst = t->selectedColumns();
+		foreach(QString text, lst)
+			selectedSamples->addTopLevelItem(new QTreeWidgetItem(QStringList(text)));
+	}
 
 	QVBoxLayout* vl1 = new QVBoxLayout();
 	btnAdd = new QPushButton();
@@ -74,26 +106,71 @@ AnovaDialog::AnovaDialog(Table *t, bool twoWay, QWidget* parent, Qt::WFlags fl )
 	vl1->addStretch();
 
 	QGridLayout *gl1 = new QGridLayout();
-	gl1->addWidget(new QLabel(tr("Available Data")), 0, 0);
+	QHBoxLayout *hl1 = new QHBoxLayout();
+	hl1->addWidget(new QLabel(tr("Available Data")));
+	hl1->addStretch();
+	currentFolderBox = new QCheckBox(tr("Show current &folder only" ));
+	hl1->addWidget(currentFolderBox);
+	gl1->addLayout(hl1, 0, 0);
 	gl1->addWidget(new QLabel(tr("Selected Data")), 0, 2);
 
 	gl1->addWidget(availableSamples, 1, 0);
 	gl1->addLayout(vl1, 1, 1);
 	gl1->addWidget(selectedSamples, 1, 2);
 
-	currentFolderBox = new QCheckBox(tr("Show current &folder only" ));
-	gl1->addWidget(currentFolderBox, 2, 0);
-
-	QHBoxLayout *hl1 = new QHBoxLayout();
-	hl1->addWidget(new QLabel(tr("Significance Level")));
+	QGridLayout *gl3 = new QGridLayout();
+	gl3->addWidget(new QLabel(tr("Significance Level")), 0, 0);
 	boxSignificance = new DoubleSpinBox();
 	boxSignificance->setRange(0.0, 1.0);
 	boxSignificance->setDecimals(2);
 	boxSignificance->setSingleStep(0.01);
 	boxSignificance->setValue(0.05);
-	hl1->addWidget(boxSignificance, 1);
+	gl3->addWidget(boxSignificance, 0, 1);
 
-	gl1->addLayout(hl1, 2, 2);
+	showStatisticsBox = new QCheckBox(tr("Show &Descriptive Statistics" ));
+	showStatisticsBox->setChecked(!twoWay);
+	gl3->addWidget(showStatisticsBox, 1, 0);
+	gl3->setRowStretch(2, 1);
+
+	gl1->addLayout(gl3, 2, 0);
+
+	QGridLayout *gl2 = new QGridLayout();
+
+	if (twoWay){
+		aLevelsBox = new QSpinBox();
+		aLevelsBox->setMinimum(2);
+		aLevelsBox->setValue(2);
+		connect(aLevelsBox, SIGNAL(valueChanged(int)), this, SLOT(updateLevelBoxes()));
+
+		QLabel *lblA = new QLabel(tr("Factor &A Levels"));
+		lblA->setBuddy(aLevelsBox);
+		gl2->addWidget(lblA, 0, 0);
+		gl2->addWidget(aLevelsBox, 0, 1);
+
+		bLevelsBox = new QSpinBox();
+		bLevelsBox->setMinimum(2);
+		bLevelsBox->setValue(2);
+		connect(bLevelsBox, SIGNAL(valueChanged(int)), this, SLOT(updateLevelBoxes()));
+
+		QLabel *lblB = new QLabel(tr("Factor &B Levels"));
+		lblB->setBuddy(bLevelsBox);
+		gl2->addWidget(lblB, 1, 0);
+		gl2->addWidget(bLevelsBox, 1, 1);
+
+		QLabel *lbl = new QLabel(tr("ANOVA &Type"));
+		gl2->addWidget(lbl, 2, 0);
+		boxModel = new QComboBox();
+		boxModel->addItems(QStringList() << tr("Fixed") << tr("Random") << tr("Mixed"));
+		lbl->setBuddy(boxModel);
+		gl2->addWidget(boxModel, 2, 1);
+
+		showInteractionsBox = new QCheckBox(tr("&Interactions" ));
+		showInteractionsBox->setChecked(true);
+		gl2->addWidget(showInteractionsBox, 3, 1);
+		gl2->setRowStretch(4, 1);
+	}
+
+	gl1->addLayout(gl2, 2, 2);
 
 	buttonOk = new QPushButton(tr( "&Compute" ));
 
@@ -133,30 +210,97 @@ void AnovaDialog::showCurrentFolder(bool currentFolder)
 		availableSamples->addItems(app->columnsList());
 }
 
+void AnovaDialog::updateLevelBoxes()
+{
+	QString levelA = tr("A");
+	QString levelB = tr("B");
+	QStringList aLevels, bLevels;
+	for (int i = 0; i < aLevelsBox->value(); i++)
+		aLevels << levelA + QString::number(i + 1);
+	for (int i = 0; i < bLevelsBox->value(); i++)
+		bLevels << levelB + QString::number(i + 1);
+
+	int count = selectedSamples->topLevelItemCount();
+	for(int i = 0; i < count; i++){
+		QTreeWidgetItem *item = selectedSamples->topLevelItem(i);
+		if (!item)
+			continue;
+
+		QComboBox *box = (QComboBox *)selectedSamples->itemWidget(item, 1);
+		box->clear();
+		box->addItems(aLevels);
+
+		box = (QComboBox *)selectedSamples->itemWidget(item, 2);
+		box->clear();
+		box->addItems(bLevels);
+	}
+}
+
 void AnovaDialog::addData()
 {
 	QList<QListWidgetItem *> items = availableSamples->selectedItems();
-	foreach(QListWidgetItem *item, items){
-		QString s = item->text();
-		if (selectedSamples->findItems(s, Qt::MatchExactly).isEmpty())
-			selectedSamples->addItem(s);
+	if (items.isEmpty())
+		return;
+
+	if (d_two_way){
+		foreach(QListWidgetItem *item, items){
+			QString s = item->text();
+			if (selectedSamples->findItems(s, Qt::MatchExactly).isEmpty()){
+				QTreeWidgetItem *it = new QTreeWidgetItem(QStringList(s));
+				selectedSamples->addTopLevelItem(it);
+
+				QComboBox *box = new QComboBox();
+				selectedSamples->setItemWidget(it, 1, box);
+
+				box = new QComboBox();
+				selectedSamples->setItemWidget(it, 2, box);
+			}
+		}
+		updateLevelBoxes();
+	} else {
+		foreach(QListWidgetItem *item, items){
+			QString s = item->text();
+			if (selectedSamples->findItems(s, Qt::MatchExactly).isEmpty())
+				selectedSamples->addTopLevelItem(new QTreeWidgetItem(QStringList(s)));
+		}
 	}
 }
 
 void AnovaDialog::removeData()
 {
-	QList<QListWidgetItem *> items = selectedSamples->selectedItems();
-	foreach(QListWidgetItem *item, items)
-		selectedSamples->takeItem(selectedSamples->row(item));
+	QList<QTreeWidgetItem *> items = selectedSamples->selectedItems();
+	if (items.isEmpty())
+		return;
+
+	foreach(QTreeWidgetItem *item, items)
+		selectedSamples->takeTopLevelItem(selectedSamples->indexOfTopLevelItem(item));
+
+	if (d_two_way)
+		updateLevelBoxes();
 }
 
 void AnovaDialog::accept()
 {
-	Anova anova((ApplicationWindow *)parent(), boxSignificance->value());
-	for(int i = 0; i < selectedSamples->count(); i++){
-		QListWidgetItem *item = selectedSamples->item(i);
-		if (item && !anova.addSample(item->text()))
+	Anova anova((ApplicationWindow *)parent(), boxSignificance->value(), d_two_way);
+	for(int i = 0; i < selectedSamples->topLevelItemCount(); i++){
+		QTreeWidgetItem *item = selectedSamples->topLevelItem(i);
+		if (!item)
+			continue;
+
+		if (d_two_way){
+			QComboBox *box1 = (QComboBox *)selectedSamples->itemWidget(item, 1);
+			QComboBox *box2 = (QComboBox *)selectedSamples->itemWidget(item, 2);
+			if (!anova.addSample(item->text(0), box1->currentIndex() + 1, box2->currentIndex() + 1))
+				return;
+		} else if (!anova.addSample(item->text(0)))
 			return;
+	}
+
+	anova.showDescriptiveStatistics(showStatisticsBox->isChecked());
+
+	if (d_two_way){
+		anova.setAnovaTwoWayType(boxModel->currentIndex());
+		anova.showAnovaTwoWayInteractions(showInteractionsBox->isChecked());
 	}
 
 	if (!anova.run())
