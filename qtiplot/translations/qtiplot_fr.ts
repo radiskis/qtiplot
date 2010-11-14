@@ -24,90 +24,90 @@
     <name>Anova</name>
     <message>
         <source>ANOVA</source>
-        <translation type="unfinished"></translation>
+        <translation>ANOVA</translation>
     </message>
 </context>
 <context>
     <name>AnovaDialog</name>
     <message>
         <source>Two Way ANOVA</source>
-        <translation type="unfinished"></translation>
+        <translation>Variance à deux facteurs</translation>
     </message>
     <message>
         <source>Sample</source>
-        <translation type="unfinished">Échantillon</translation>
+        <translation>Échantillon</translation>
     </message>
     <message>
         <source>Factor A Level</source>
-        <translation type="unfinished"></translation>
+        <translation>Niveau du facteur A</translation>
     </message>
     <message>
         <source>Factor B Level</source>
-        <translation type="unfinished"></translation>
+        <translation>Niveau du facteur B</translation>
     </message>
     <message>
         <source>A</source>
-        <translation type="unfinished"></translation>
+        <translation>A</translation>
     </message>
     <message>
         <source>B</source>
-        <translation type="unfinished">B</translation>
+        <translation>BB</translation>
     </message>
     <message>
         <source>One Way ANOVA</source>
-        <translation type="unfinished"></translation>
+        <translation>Variance à un facteur</translation>
     </message>
     <message>
         <source>Available Data</source>
-        <translation type="unfinished"></translation>
+        <translation>Données disponibles</translation>
     </message>
     <message>
         <source>Show current &amp;folder only</source>
-        <translation type="unfinished">Voir le dossier actuel u&amp;niquement</translation>
+        <translation>Voir le dossier actuel u&amp;niquement</translation>
     </message>
     <message>
         <source>Selected Data</source>
-        <translation type="unfinished"></translation>
+        <translation>Données sélectionnées</translation>
     </message>
     <message>
         <source>Significance Level</source>
-        <translation type="unfinished">Niveau significatif</translation>
+        <translation>Niveau significatif</translation>
     </message>
     <message>
         <source>Show &amp;Descriptive Statistics</source>
-        <translation type="unfinished"></translation>
+        <translation>Voir les statiques &amp;descriptives</translation>
     </message>
     <message>
         <source>ANOVA &amp;Type</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Type de variance</translation>
     </message>
     <message>
         <source>Fixed</source>
-        <translation type="unfinished"></translation>
+        <translation>Fixe</translation>
     </message>
     <message>
         <source>Random</source>
-        <translation type="unfinished"></translation>
+        <translation>Aléatoire</translation>
     </message>
     <message>
         <source>Mixed</source>
-        <translation type="unfinished"></translation>
+        <translation>Mixte</translation>
     </message>
     <message>
         <source>&amp;Interactions</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Interactions</translation>
     </message>
     <message>
         <source>&amp;Compute</source>
-        <translation type="unfinished">&amp;Calculer</translation>
+        <translation>&amp;Calculer</translation>
     </message>
     <message>
         <source>Factor &amp;A Levels</source>
-        <translation type="unfinished"></translation>
+        <translation>Niveaux du facteur &amp;A</translation>
     </message>
     <message>
         <source>Factor &amp;B Levels</source>
-        <translation type="unfinished"></translation>
+        <translation>Niveaux du facteur &amp;B</translation>
     </message>
 </context>
 <context>
@@ -4053,15 +4053,15 @@ L&apos;autocomplétion ne sera pas disponible!</translation>
     </message>
     <message>
         <source>ANO&amp;VA</source>
-        <translation type="unfinished"></translation>
+        <translation>ANO&amp;VA</translation>
     </message>
     <message>
         <source>&amp;One-Way ANOVA...</source>
-        <translation type="unfinished"></translation>
+        <translation>Variance à &amp;un facteur...</translation>
     </message>
     <message>
         <source>&amp;Two-Way ANOVA...</source>
-        <translation type="unfinished"></translation>
+        <translation>Variance à &amp;deux facteurs...</translation>
     </message>
 </context>
 <context>
@@ -13132,115 +13132,115 @@ Calcule le sinus de x.</translation>
     </message>
     <message>
         <source>Two-Way ANOVA requires three or more data samples.</source>
-        <translation type="unfinished"></translation>
+        <translation>La variance à deux facteurs nécessite au moins trois série de données.</translation>
     </message>
     <message>
         <source>One-Way ANOVA requires two or more data samples.</source>
-        <translation type="unfinished"></translation>
+        <translation>La variance à un facteur nécessite au moins trois série de données.</translation>
     </message>
     <message>
         <source>Factor A must have two or more levels.</source>
-        <translation type="unfinished"></translation>
+        <translation>Le facteur A doit avoir au moins deux niveaux.</translation>
     </message>
     <message>
         <source>Factor B must have two or more levels.</source>
-        <translation type="unfinished"></translation>
+        <translation>Le facteur B doit avoir au moins deux niveaux.</translation>
     </message>
     <message>
         <source>A</source>
-        <translation type="unfinished"></translation>
+        <translation>A</translation>
     </message>
     <message>
         <source>B</source>
-        <translation type="unfinished">B</translation>
+        <translation>B</translation>
     </message>
     <message>
         <source>Two-Way ANOVA</source>
-        <translation type="unfinished"></translation>
+        <translation>Variance à deux facteurs</translation>
     </message>
     <message>
         <source>Fixed Model</source>
-        <translation type="unfinished"></translation>
+        <translation>Effet fixe</translation>
     </message>
     <message>
         <source>Random Model</source>
-        <translation type="unfinished"></translation>
+        <translation>Effet aléatoire</translation>
     </message>
     <message>
         <source>Mixed Model</source>
-        <translation type="unfinished"></translation>
+        <translation>Modèle mixte</translation>
     </message>
     <message>
         <source>One-Way ANOVA</source>
-        <translation type="unfinished"></translation>
+        <translation>Variance à un facteur</translation>
     </message>
     <message>
         <source>Selected Data</source>
-        <translation type="unfinished"></translation>
+        <translation>Données sélectionnées</translation>
     </message>
     <message>
         <source>Factor A Level</source>
-        <translation type="unfinished"></translation>
+        <translation>Niveau du facteur A</translation>
     </message>
     <message>
         <source>Factor B Level</source>
-        <translation type="unfinished"></translation>
+        <translation>Niveau du facteur B</translation>
     </message>
     <message>
         <source>The means of all selected datasets are equal</source>
-        <translation type="unfinished"></translation>
+        <translation>Les moyennes de toutes les données sélectionnées sont égales</translation>
     </message>
     <message>
         <source>The means of one or more selected datasets are different</source>
-        <translation type="unfinished"></translation>
+        <translation>Les moyennes d&apos;une donnée sélectionnée (ou plus) sont différentes</translation>
     </message>
     <message>
         <source>Source</source>
-        <translation type="unfinished"></translation>
+        <translation>Source</translation>
     </message>
     <message>
         <source>Sum of Squares</source>
-        <translation type="unfinished"></translation>
+        <translation>Somme des carrés</translation>
     </message>
     <message>
         <source>Mean Square</source>
-        <translation type="unfinished"></translation>
+        <translation>Moyenne quadratique</translation>
     </message>
     <message>
         <source>F Value</source>
-        <translation type="unfinished"></translation>
+        <translation>Valeur de F</translation>
     </message>
     <message>
         <source>Error</source>
-        <translation type="unfinished">Erreur</translation>
+        <translation>Erreur</translation>
     </message>
     <message>
         <source>Total</source>
-        <translation type="unfinished"></translation>
+        <translation>Total</translation>
     </message>
     <message>
         <source>Model</source>
-        <translation type="unfinished">Modèle</translation>
+        <translation>Modèle</translation>
     </message>
     <message>
         <source>At the %1 level, the population means</source>
-        <translation type="unfinished"></translation>
+        <translation>Au niveau %1, la moyenne de population</translation>
     </message>
     <message>
         <source>are significantly different</source>
-        <translation type="unfinished"></translation>
+        <translation>sont nettement différents</translation>
     </message>
     <message>
         <source>are not significantly different</source>
-        <translation type="unfinished"></translation>
+        <translation>ne sont pas nettement différents</translation>
     </message>
     <message>
         <source>The sample dataset (%1) must have at least one data point.</source>
-        <translation type="unfinished"></translation>
+        <translation>Les données d&apos;échantillons (%1) doit avoir au moins un point de donnée.</translation>
     </message>
     <message>
         <source>There are no data points in Factor A &apos;%1&apos; and Factor B &apos;%2&apos; level combination.</source>
-        <translation type="unfinished"></translation>
+        <translation>Il n&apos;y a pas de points de données de niveaux de combinaison dans les facteurs A &apos;%1&apos; et B &apos;%2&apos;.</translation>
     </message>
 </context>
 <context>
@@ -14014,7 +14014,7 @@ Calcule le sinus de x.</translation>
     </message>
     <message>
         <source>There is no sample dataset called %1 in this project.</source>
-        <translation type="unfinished"></translation>
+        <translation>Il n&apos;y a pas de données d&apos;échantillons appelées %1 dans ce projet.</translation>
     </message>
 </context>
 <context>
