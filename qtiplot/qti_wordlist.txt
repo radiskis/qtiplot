@@ -873,3 +873,10 @@ True
 False
 setRandomValues
 setNormalRandomValues
+Anova
+addSample
+showDescriptiveStatistics
+fStat
+ssm
+sse
+sst

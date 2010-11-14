@@ -156,6 +156,8 @@ ALGLIB_LIBS = $$QTI_ROOT/3rdparty/alglib/libalglib.a
 
 # include path.
 TAMUANOVA_INCLUDEPATH = $$QTI_ROOT/3rdparty/tamu_anova/
+# link locally against a copy in 3rdparty/
+TAMUANOVA_LIBS = $$QTI_ROOT/3rdparty/tamu_anova/libtamuanova.a
 
 ##########################################################
 ## python - only used if python is needed

@@ -3343,6 +3343,31 @@ public:
   double pValue();
 };
 
+class Anova : Statistics
+{
+%TypeHeaderCode
+#include <Anova.h>
+%End
+public:
+  Anova(ApplicationWindow * /TransferThis/, double level = 0.05, bool twoWay = false);
+  Anova(double level = 0.05, bool twoWay = false) /NoDerived/;
+%MethodCode
+  SIPQTI_APP(new sipAnova(app, a0, a1))
+%End
+
+  bool run();
+  bool addSample(const QString& colName, int aLevel = 1, int bLevel = 1);
+  void setSignificanceLevel(double);
+  void showDescriptiveStatistics(bool show = true);
+
+  virtual QString logInfo();
+  double fStat();
+  double pValue();
+  double ssm();
+  double sse();
+  double sst();
+};
+
 // used for output redirection
 class PythonScripting
 {

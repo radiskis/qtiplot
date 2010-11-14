@@ -40,7 +40,7 @@ class Anova : public Statistics
 	Q_OBJECT
 
 	public:
-		Anova(ApplicationWindow *parent, double level, bool twoWay = false);
+		Anova(ApplicationWindow *parent, double level = 0.05, bool twoWay = false);
 		void setSignificanceLevel(double);
 		void showDescriptiveStatistics(bool show = true){d_descriptive_statistics = show;};
 		void showAnovaTwoWayInteractions(bool show = true){d_show_interactions = show;};
@@ -49,6 +49,12 @@ class Anova : public Statistics
 		bool run();
 
 		virtual QString logInfo();
+
+		double fStat(){return d_at.F;};
+		double pValue(){return d_at.p;};
+		double ssm(){return d_at.SSTr;};
+		double sse(){return d_at.SSE;};
+		double sst(){return d_at.SST;};
 
 	protected:
 		bool twoWayANOVA();

@@ -53,8 +53,10 @@ void Anova::setSignificanceLevel(double s)
 bool Anova::addSample(const QString& colName, int aLevel, int bLevel)
 {
 	if (!d_n){
-		d_factorA_levels << aLevel;
-		d_factorB_levels << bLevel;
+		if (d_two_way){
+			d_factorA_levels << aLevel;
+			d_factorB_levels << bLevel;
+		}
 		return setData(colName);
 	}
 
@@ -65,8 +67,10 @@ bool Anova::addSample(const QString& colName, int aLevel, int bLevel)
 	}
 
 	d_data_samples << sample;
-	d_factorA_levels << aLevel;
-	d_factorB_levels << bLevel;
+	if (d_two_way){
+		d_factorA_levels << aLevel;
+		d_factorB_levels << bLevel;
+	}
 	return true;
 }
 
