@@ -4199,6 +4199,9 @@ smooth.run()
 </sect2>
 
 <sect2 id="Python-Statistics">
+<title>Statistics</title>
+
+<sect3 id="Python-DescriptiveStatistics">
 <title>Descriptive Statistics</title>
 <programlisting>
 stats = Statistics("Table1_2")
@@ -4208,7 +4211,7 @@ print stats.mean()
 print stats.standardDeviation()
 print stats.standardError()
 </programlisting>
-
+</sect3>
 
 <sect3 id="Python-tTest">
 <title>Hypothesis Testing - Student's t-Test</title>
@@ -4250,6 +4253,31 @@ test.run()
 
 print test.w()
 print test.pValue()
+print test.logInfo()
+</programlisting>
+</sect3>
+
+<sect3 id="Python-OneWayANOVA">
+<title>One-Way ANOVA</title>
+Please read the
+<ulink url="http://www.stat.tamu.edu/~aredd/tamuanova/tamu_anova.pdf">documentation of the TAMUANOVA library</ulink>
+ for the description of the computed sum of squares.
+
+<programlisting>
+test = Anova()
+test.setSignificanceLevel(0.1) # default level is 0.05
+test.addSample("Table1_1");
+test.addSample("Table1_2");
+test.addSample("Table1_3");
+test.run()
+
+print test.fStat() # F statistic = ssm/sse
+print test.pValue()
+print test.ssm() # "between-group" sum of squares
+print test.sse() # "within-group" sum of squares
+print test.sst() # total sum of squares
+
+test.showDescriptiveStatistics(False)
 print test.logInfo()
 </programlisting>
 </sect3>

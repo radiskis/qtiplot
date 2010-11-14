@@ -542,10 +542,14 @@
 <section ref="x6474.html#Python-Smooth" title="Smoothing">
 </section>
 </section>
-<section ref="x6474.html#Python-Statistics" title="Descriptive Statistics">
+<section ref="x6474.html#Python-Statistics" title="Statistics">
+<section ref="x6474.html#Python-DescriptiveStatistics" title="Descriptive Statistics">
+</section>
 <section ref="x6474.html#Python-tTest" title="Hypothesis Testing - Student's t-Test">
 </section>
 <section ref="x6474.html#Python-ShapiroWilkTest" title="Normality Test (Shapiro - Wilk)">
+</section>
+<section ref="x6474.html#Python-OneWayANOVA" title="One-Way ANOVA">
 </section>
 </section>
 <section ref="x6474.html#Python-Notes" title="Working with Notes">
@@ -562,7 +566,7 @@
 </section>
 </section>
 </section>
-<section ref="c7798.html" title="Frequently asked questions">
+<section ref="c7804.html" title="Frequently asked questions">
 </section>
 </DCF>
 </assistantconfig>
