@@ -850,7 +850,7 @@ for i in range(1, 11):
       <para>We will assume that you are using the <link
       linkend="Python-init">initialization file</link> shipped with
       QtiPlot. Accessing the objects in your project is straight-forward,
-        <programlisting>
+<programlisting>
 t = table("Table1")
 m = matrix("Matrix1")
 g = graph("Graph1")
@@ -860,7 +860,10 @@ n = note("Notes1")
 log = resultsLog()
 # display some information in the data display toolbar:
 displayInfo(text)
-	  </programlisting> as is creating new objects: <programlisting>
+# get a pointer to the QLineEdit object in the data display toolbar and access the information displayed:
+info = infoLineEdit()
+text = info.text()
+</programlisting> as is creating new objects: <programlisting>
 # create an empty table named "tony" with 5 rows and 2 columns:
 t = newTable("tony", 5, 2)
 # use defaults

@@ -591,7 +591,7 @@ int DataPickerTool::findClosestPoint(QwtPlotCurve *c, double x, bool up)
 }
 
 BaselineTool::BaselineTool(QwtPlotCurve *c, Graph *graph, ApplicationWindow *app)
-	: DataPickerTool(graph, app, DataPickerTool::Move, app->displayInfoLineEdit(), SLOT(setText(const QString&)))
+	: DataPickerTool(graph, app, DataPickerTool::Move, app->infoLineEdit(), SLOT(setText(const QString&)))
 {
 	setSelectedCurve(c);
 }

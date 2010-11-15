@@ -1608,7 +1608,7 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 							vt = c->table();
 					}
 
-					ImageProfilesTool *tool = new ImageProfilesTool(mw, graph, sp->matrix(), ht, vt, mw->displayInfoLineEdit(), SLOT(setText(const QString&)));
+					ImageProfilesTool *tool = new ImageProfilesTool(mw, graph, sp->matrix(), ht, vt, mw->infoLineEdit(), SLOT(setText(const QString&)));
 					graph->setActiveTool(tool);
 
 					Origin::GraphLayer& layer = _graph.layers[0];
