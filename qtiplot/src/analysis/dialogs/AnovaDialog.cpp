@@ -281,8 +281,8 @@ void AnovaDialog::removeData()
 
 void AnovaDialog::accept()
 {
-	Anova anova((ApplicationWindow *)parent(), boxSignificance->value(), d_two_way);
-	for(int i = 0; i < selectedSamples->topLevelItemCount(); i++){
+	Anova anova((ApplicationWindow *)parent(), d_two_way, boxSignificance->value());
+	for (int i = 0; i < selectedSamples->topLevelItemCount(); i++){
 		QTreeWidgetItem *item = selectedSamples->topLevelItem(i);
 		if (!item)
 			continue;
@@ -299,7 +299,7 @@ void AnovaDialog::accept()
 	anova.showDescriptiveStatistics(showStatisticsBox->isChecked());
 
 	if (d_two_way){
-		anova.setAnovaTwoWayType(boxModel->currentIndex());
+		anova.setAnovaTwoWayModel(boxModel->currentIndex());
 		anova.showAnovaTwoWayInteractions(showInteractionsBox->isChecked());
 	}
 

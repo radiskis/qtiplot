@@ -51,6 +51,8 @@ class Statistics : public QObject
 
 		//! Returns the size of the input data set
 		unsigned int dataSize(){return d_n;};
+		//! Returns the degrees of freedom
+		virtual int dof(){return d_n - 1;};
 
 		//! Returns the y values of the input data set
 		double* data(){return d_data;};
