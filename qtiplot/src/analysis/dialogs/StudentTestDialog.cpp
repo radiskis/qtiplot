@@ -30,6 +30,7 @@
 #include <ApplicationWindow.h>
 #include <DoubleSpinBox.h>
 #include <tTest.h>
+#include <ChiSquareTest.h>
 
 #include <QGroupBox>
 #include <QComboBox>
@@ -39,24 +40,30 @@
 #include <QLabel>
 #include <QSpinBox>
 
-StudentTestDialog::StudentTestDialog(Table *t, bool twoSamples, QWidget* parent, Qt::WFlags fl )
+StudentTestDialog::StudentTestDialog(bool chiSquare, Table *t, bool twoSamples, QWidget* parent, Qt::WFlags fl )
     : QDialog( parent, fl ),
+	d_chi_square_test(chiSquare),
 	d_two_samples(twoSamples)
 {
 	setObjectName( "StudentTestDialog" );
 	QHBoxLayout *hl = 0;
-	if (twoSamples){
-		setWindowTitle(tr("Two sample t-Test"));
 
-		independentTestBtn = new QRadioButton(tr("In&dependent Test"));
-		independentTestBtn->setChecked(true);
-		pairedTestBtn = new QRadioButton(tr("Pai&red Test"));
-		hl = new QHBoxLayout();
-		hl->addWidget(independentTestBtn);
-		hl->addWidget(pairedTestBtn);
-		hl->addStretch();
-	} else
-		setWindowTitle(tr("One sample t-Test"));
+	if (chiSquare)
+		setWindowTitle(tr("One Sample Test for Variance"));
+	else {
+		if (twoSamples){
+			setWindowTitle(tr("Two sample t-Test"));
+
+			independentTestBtn = new QRadioButton(tr("In&dependent Test"));
+			independentTestBtn->setChecked(true);
+			pairedTestBtn = new QRadioButton(tr("Pai&red Test"));
+			hl = new QHBoxLayout();
+			hl->addWidget(independentTestBtn);
+			hl->addWidget(pairedTestBtn);
+			hl->addStretch();
+		} else
+			setWindowTitle(tr("One sample t-Test"));
+	}
 
 	setSizeGripEnabled( true );
 	setAttribute(Qt::WA_DeleteOnClose);
@@ -80,17 +87,21 @@ StudentTestDialog::StudentTestDialog(Table *t, bool twoSamples, QWidget* parent,
 		boxSample1->setCurrentIndex(boxSample1->findText(t->colName(0)));
 
 	QString mean = tr("Mean");
-	if (twoSamples){
-		mean = mean + "1 - " + mean + "2";
-		sample1Label->setText(tr("Sample") + "1:");
-		gl1->addWidget(new QLabel(tr("Sample") + "2:"), 1, 0);
+	if (chiSquare)
+		mean = tr("Variance");
+	else {
+		if (twoSamples){
+			mean = mean + "1 - " + mean + "2";
+			sample1Label->setText(tr("Sample") + "1:");
+			gl1->addWidget(new QLabel(tr("Sample") + "2:"), 1, 0);
 
-		boxSample2 = new QComboBox();
-		boxSample2->addItems(columnsList);
-		gl1->addWidget(boxSample2, 1, 1);
+			boxSample2 = new QComboBox();
+			boxSample2->addItems(columnsList);
+			gl1->addWidget(boxSample2, 1, 1);
 
-		if (selectedColumns > 1)
-			boxSample2->setCurrentIndex(boxSample2->findText(lst[1]));
+			if (selectedColumns > 1)
+				boxSample2->setCurrentIndex(boxSample2->findText(lst[1]));
+		}
 	}
 
 	QGroupBox *gb2 = new QGroupBox(tr("Hypotheses"));
@@ -150,28 +161,31 @@ StudentTestDialog::StudentTestDialog(Table *t, bool twoSamples, QWidget* parent,
 	buttonAddLevel = new QPushButton(tr("&Add Level"));
 	gl3->addWidget(buttonAddLevel, 0, 2);
 
-	boxPowerAnalysis = new QGroupBox(tr("&Power Analysis"));
-	boxPowerAnalysis->setCheckable(true);
+	if (!chiSquare){
+		boxPowerAnalysis = new QGroupBox(tr("&Power Analysis"));
+		boxPowerAnalysis->setCheckable(true);
 
-	QGridLayout *gl4 = new QGridLayout(boxPowerAnalysis);
+		QGridLayout *gl4 = new QGridLayout(boxPowerAnalysis);
 
-	boxPowerLevel = new DoubleSpinBox();
-	boxPowerLevel->setRange(0.01, 0.99);
-	boxPowerLevel->setSingleStep(0.01);
-	boxPowerLevel->setValue(0.05);
+		boxPowerLevel = new DoubleSpinBox();
+		boxPowerLevel->setRange(0.01, 0.99);
+		boxPowerLevel->setSingleStep(0.01);
+		boxPowerLevel->setValue(0.05);
 
-	gl4->addWidget(new QLabel(tr("Alpha")), 0, 0);
-	gl4->addWidget(boxPowerLevel, 0, 1);
+		gl4->addWidget(new QLabel(tr("Alpha")), 0, 0);
+		gl4->addWidget(boxPowerLevel, 0, 1);
 
-	boxOtherSampleSize = new QCheckBox(tr("Sample &Size"));
-	boxOtherSampleSize->setChecked(false);
-	gl4->addWidget(boxOtherSampleSize, 1, 0);
+		boxOtherSampleSize = new QCheckBox(tr("Sample &Size"));
+		boxOtherSampleSize->setChecked(false);
+		connect(boxOtherSampleSize, SIGNAL(toggled(bool)), boxSampleSize, SLOT(setEnabled(bool)));
+		gl4->addWidget(boxOtherSampleSize, 1, 0);
 
-	boxSampleSize = new QSpinBox();
-	boxSampleSize->setRange(1, INT_MAX);
-	boxSampleSize->setValue(50);
-	boxSampleSize->setEnabled(false);
-	gl4->addWidget(boxSampleSize, 1, 1);
+		boxSampleSize = new QSpinBox();
+		boxSampleSize->setRange(1, INT_MAX);
+		boxSampleSize->setValue(50);
+		boxSampleSize->setEnabled(false);
+		gl4->addWidget(boxSampleSize, 1, 1);
+	}
 
 	buttonOk = new QPushButton(tr( "&Compute" ));
 
@@ -189,13 +203,13 @@ StudentTestDialog::StudentTestDialog(Table *t, bool twoSamples, QWidget* parent,
 	vl->addLayout(gl1);
 	vl->addWidget(gb2);
 	vl->addWidget(boxConfidenceInterval);
-	vl->addWidget(boxPowerAnalysis);
+	if (!chiSquare)
+		vl->addWidget(boxPowerAnalysis);
 	vl->addStretch();
 	vl->addLayout(hl2);
 
 	connect(buttonOk, SIGNAL(clicked()), this, SLOT(accept()));
 	connect(buttonAddLevel, SIGNAL(clicked()), this, SLOT(addConfidenceLevel()));
-	connect(boxOtherSampleSize, SIGNAL(toggled(bool)), boxSampleSize, SLOT(setEnabled(bool)));
 	connect(leftTailButton, SIGNAL(toggled(bool)), this, SLOT(updateMeanLabel()));
 	connect(rightTailButton, SIGNAL(toggled(bool)), this, SLOT(updateMeanLabel()));
 	connect(bothTailButton, SIGNAL(toggled(bool)), this, SLOT(updateMeanLabel()));
@@ -223,7 +237,9 @@ void StudentTestDialog::addConfidenceLevel()
 void StudentTestDialog::updateMeanLabel()
 {
 	QString s = tr("Mean");
-	if (d_two_samples)
+	if (d_chi_square_test)
+		s = tr("Variance");
+	else if (d_two_samples)
 		s = s + "1 - " + s + "2";
 
 	if (bothTailButton->isChecked())
@@ -247,10 +263,17 @@ void StudentTestDialog::updateMeanLabels(double val)
 
 void StudentTestDialog::accept()
 {
-	ApplicationWindow *app = (ApplicationWindow *)parent();
-	double testMean = boxMean->value();
+	if (d_chi_square_test)
+		acceptChiSquareTest();
+	else
+		acceptStudentTest();
+}
 
-	tTest stats(app, testMean, boxSignificance->value());
+void StudentTestDialog::acceptStudentTest()
+{
+	ApplicationWindow *app = (ApplicationWindow *)parent();
+
+	tTest stats(app, boxMean->value(), boxSignificance->value());
 	if (!stats.setData(boxSample1->currentText()))
 		return;
 
@@ -308,5 +331,48 @@ void StudentTestDialog::accept()
 		s += sep1;
 	}
 
+	app->updateLog(s);
+}
+
+void StudentTestDialog::acceptChiSquareTest()
+{
+	ApplicationWindow *app = (ApplicationWindow *)parent();
+
+	ChiSquareTest stats(app, boxMean->value(), boxSignificance->value());
+	if (!stats.setData(boxSample1->currentText()))
+		return;
+
+	ChiSquareTest::Tail tail = ChiSquareTest::Left;
+	if (bothTailButton->isChecked())
+		tail = ChiSquareTest::Both;
+	else if (rightTailButton->isChecked())
+		tail = ChiSquareTest::Right;
+
+	stats.setTail(tail);
+
+	int p = app->d_decimal_digits;
+	QLocale l = app->locale();
+
+	QString sep = "\t\t";
+	QString sep1 = "-----------------------------------------------------------------------------------------------------------------------------\n";
+	QString s = stats.logInfo();
+
+	if (boxConfidenceInterval->isChecked()){
+		QGridLayout *gl = (QGridLayout *)boxConfidenceInterval->layout();
+		int rows = gl->rowCount();
+
+		s += "\n";
+		s += tr("Confidence Intervals for Variance");
+		s += "\n\n";
+		s += tr("Level") + sep + tr("Lower Limit") + sep + tr("Upper Limit") + "\n";
+		s += sep1;
+		for (int i = 0; i < rows; i++){
+			DoubleSpinBox *sb = (DoubleSpinBox *)gl->itemAtPosition (i, 1)->widget();
+			double level = sb->value();
+			s += l.toString(level) + sep + l.toString(stats.lcl(level), 'g', p);
+			s += sep + l.toString(stats.ucl(level),'g', p) + "\n";
+		}
+		s += sep1;
+	}
 	app->updateLog(s);
 }

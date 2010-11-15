@@ -1,10 +1,10 @@
 /***************************************************************************
-	File                 : Statistics.h
+	File                 : ChiSquareTest.h
     Project              : QtiPlot
     --------------------------------------------------------------------
 	Copyright            : (C) 2010 by Ion Vasilief
     Email (use @ for *)  : ion_vasilief*yahoo.fr
-	Description          : Abstract base class for statistics data analysis
+	Description          : Chi Square Test for Variance
 
  ***************************************************************************/
 
@@ -26,63 +26,40 @@
  *   Boston, MA  02110-1301  USA                                           *
  *                                                                         *
  ***************************************************************************/
-#ifndef STATISTICS_H
-#define STATISTICS_H
+#ifndef CHISQUARETEST_H
+#define CHISQUARETEST_H
 
-#include <QObject>
-#include <ApplicationWindow.h>
+#include <Statistics.h>
 
 class Table;
 
 //! Abstract base class for data analysis operations
-class Statistics : public QObject
+class ChiSquareTest : public Statistics
 {
 	Q_OBJECT
 
 	public:
-		Statistics(ApplicationWindow *parent, const QString& name = QString());
-		~Statistics();
+		enum Tail{Left = 0, Right = 1, Both = 2};
 
-		//! Actually does the job. Should be reimplemented in derived classes.
-		virtual bool run();
-		bool setData(const QString&);
-
-		QString sampleName(){return d_col_name;};
-
-		//! Returns the size of the input data set
-		unsigned int dataSize(){return d_n;};
-		//! Returns the degrees of freedom
-		virtual int dof(){return d_n - 1;};
-
-		//! Returns the y values of the input data set
-		double* data(){return d_data;};
-
-		double mean(){return d_mean;};
-		double variance(){return d_variance;};
-		double standardDeviation(){return d_sd;};
-		double standardError(){return d_se;};
+		ChiSquareTest(ApplicationWindow *parent, double testValue, double level, const QString& sample = QString());
+		void setTail(const Tail& tail){d_tail = tail;};
+		void setTestValue(double val){d_test_val = val;};
+		void setSignificanceLevel(double);
 
 		virtual QString logInfo();
 
+		double chiSquare();
+		double pValue();
+
+		//! Lower Confidence Limit
+		double lcl(double confidenceLevel);
+		//! Upper Confidence Limit
+		double ucl(double confidenceLevel);
+
 	protected:
-        void init();
-        void memoryErrorMessage();
-	    //! Frees the memory allocated for the X and Y data sets
-        virtual void freeMemory();
-
-        //! A table source of data
-		Table *d_table;
-		//! The name of the source data set
-		QString d_col_name;
-		//! The size of the data set to be analyzed
-		unsigned int d_n;
-		//! y data set to be analysed
-		double *d_data;
-
-		double d_mean;
-		double d_sd;
-		double d_variance;
-		double d_se;
+		double d_test_val;
+		double d_significance_level;
+		int d_tail;
 };
 
 #endif

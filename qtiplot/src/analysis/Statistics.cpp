@@ -113,6 +113,7 @@ bool Statistics::setData(const QString& colName)
 		}
 	}
 	d_mean = gsl_stats_mean (d_data, 1, d_n);
+	d_variance = gsl_stats_variance(d_data, 1, d_n);
 	d_sd = gsl_stats_sd(d_data, 1, d_n);
 	d_se = d_sd/sqrt(d_n);
 
@@ -128,10 +129,12 @@ QString Statistics::logInfo()
 	QString sep1 = "-----------------------------------------------------------------------------------------------------------------------------\n";
 
 	QString s = QObject::tr("Sample") + sep + QObject::tr("N") + sep + QObject::tr("Mean") + sep;
-	s += QObject::tr("Standard Deviation") + sep + QObject::tr("Standard Error") + "\n";
+	s += QObject::tr("Standard Deviation") + sep + QObject::tr("Variance") + sep;
+	s += QObject::tr("Standard Error") + "\n";
 	s += sep1;
 	s += d_col_name + sep + QString::number(d_n) + sep + l.toString(d_mean, 'g', p) + sep;
-	s += l.toString(d_sd, 'g', p) + "\t\t" + l.toString(d_se, 'g', p) + "\n";
+	s += l.toString(d_sd, 'g', p) + "\t\t" + l.toString(d_variance, 'g', p) + sep;
+	s += l.toString(d_se, 'g', p) + "\n";
 	return s;
 }
 

@@ -854,6 +854,7 @@ AlignLayers
 AlignCanvases
 statistics
 median
+variance
 quantile
 ImageSymbol
 pixmap

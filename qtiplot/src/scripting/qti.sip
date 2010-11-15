@@ -3290,6 +3290,7 @@ public:
   virtual int dof();
 
   double mean();
+  double variance();
   double standardDeviation();
   double standardError();
 
@@ -3326,6 +3327,24 @@ public:
   double lcl(double);
   //! Upper Confidence Limit
   double ucl(double);
+};
+
+class ChiSquareTest : Statistics
+{
+%TypeHeaderCode
+#include <ChiSquareTest.h>
+%End
+public:
+  ChiSquareTest(ApplicationWindow * /TransferThis/, double testValue, double level, const QString& = QString());
+  ChiSquareTest(double testValue, double level, const QString& = QString()) /NoDerived/;
+%MethodCode
+  SIPQTI_APP(new sipChiSquareTest(app, a0, a1, *a2))
+%End
+
+  void setSignificanceLevel(double);
+  virtual QString logInfo();
+  double chiSquare();
+  double pValue();
 };
 
 class ShapiroWilkTest : Statistics

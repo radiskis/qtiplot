@@ -4211,6 +4211,7 @@ stats = Statistics("Table1_2")
 stats.run()
 
 print stats.mean()
+print stats.variance()
 print stats.standardDeviation()
 print stats.standardError()
 </programlisting>
@@ -4244,6 +4245,18 @@ test.run()
 test.setSample1("Table2_1")
 test.setSample2("Table3_2", True) # Two sample paired test
 test.run()
+</programlisting>
+</sect3>
+
+<sect3 id="Python-ChiSquareTest">
+<title>One Sample Test for Variance (Chi-Square Test)</title>
+<programlisting>
+test = ChiSquareTest(88.2, 0.05, "Table1_2") # Test variance = 88.2, significance level = 0.05
+test.run()
+
+print test.chiSquare()
+print test.pValue()
+print test.logInfo()
 </programlisting>
 </sect3>
 
