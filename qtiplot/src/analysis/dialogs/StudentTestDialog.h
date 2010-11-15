@@ -47,7 +47,7 @@ class StudentTestDialog : public QDialog
     Q_OBJECT
 
 public:
-	StudentTestDialog(Table *t, bool twoSamples = false, QWidget* parent = 0, Qt::WFlags fl = 0);
+	StudentTestDialog(bool chiSquare, Table *t, bool twoSamples = false, QWidget* parent = 0, Qt::WFlags fl = 0);
 
 private slots:
     void accept();
@@ -56,6 +56,10 @@ private slots:
 	void addConfidenceLevel();
 
 private:
+	void acceptStudentTest();
+	void acceptChiSquareTest();
+
+	bool d_chi_square_test;
 	bool d_two_samples;
 
 	QComboBox *boxSample1;

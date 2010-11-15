@@ -5,7 +5,8 @@
 INCLUDEPATH += src/analysis/
 INCLUDEPATH += src/analysis/dialogs/
 
-    HEADERS += src/analysis/Convolution.h \
+	HEADERS += src/analysis/ChiSquareTest.h \
+			   src/analysis/Convolution.h \
 			   src/analysis/Correlation.h \
 			   src/analysis/Differentiation.h \
 			   src/analysis/ExponentialFit.h \
@@ -30,7 +31,8 @@ INCLUDEPATH += src/analysis/dialogs/
 			   src/analysis/fit_gsl.h \
 			   src/analysis/nrutil.h \
 
-	SOURCES += src/analysis/Convolution.cpp \
+	SOURCES += src/analysis/ChiSquareTest.cpp \
+			   src/analysis/Convolution.cpp \
 			   src/analysis/Correlation.cpp \
 			   src/analysis/Differentiation.cpp \
 			   src/analysis/ExponentialFit.cpp \

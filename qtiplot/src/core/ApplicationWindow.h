@@ -679,6 +679,7 @@ public slots:
 	void moveTableRowUp();
 	void moveTableRowDown();
 	void adjustColumnWidth();
+	void showChiSquareTestDialog();
 	void showStudentTestDialog(bool twoSamples = false);
 	void showTwoSampleStudentTestDialog(){return showStudentTestDialog(true);};
 	void testNormality();
@@ -1513,7 +1514,7 @@ private:
 	QAction *actionNextWindow, *actionPrevWindow;
 	QAction *actionScriptingLang, *actionRestartScripting, *actionClearTable, *actionGoToRow, *actionGoToColumn;
 	QAction *actionNoteExecute, *actionNoteExecuteAll, *actionNoteEvaluate, *actionSaveNote, *actionFrequencyCount;
-	QAction *actionOneSampletTest, *actionTwoSampletTest, *actionShapiroWilk;
+	QAction *actionOneSampletTest, *actionTwoSampletTest, *actionShapiroWilk, *actionChiSquareTest;
 	QAction *actionAnimate, *actionPerspective, *actionFitFrame, *actionResetRotation;
     QAction *actionDeleteRows, *actionDrawPoints, *actionAddZoomPlot;
 	QAction *btnCursor, *btnSelect, *btnPicker, *btnRemovePoints, *btnMovePoints, *actionDragCurve;

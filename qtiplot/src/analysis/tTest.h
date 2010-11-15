@@ -4,7 +4,7 @@
     --------------------------------------------------------------------
 	Copyright            : (C) 2010 by Ion Vasilief
     Email (use @ for *)  : ion_vasilief*yahoo.fr
-	Description          : Abstract base class for statistics data analysis
+	Description          : Student's t-Test
 
  ***************************************************************************/
 

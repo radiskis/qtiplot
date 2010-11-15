@@ -113,6 +113,7 @@ contains(SCRIPTING_LANGS, Python) {
 			 $${SIP_DIR}/sipqtiStatistics.cpp \
 			 $${SIP_DIR}/sipqtitTest.cpp \
 			 $${SIP_DIR}/sipqtiShapiroWilkTest.cpp \
+			 $${SIP_DIR}/sipqtiChiSquareTest.cpp \
 			 $${SIP_DIR}/sipqtiAnova.cpp \
 
 exists(../../$${SIP_DIR}/sipqtiQList.cpp) {
