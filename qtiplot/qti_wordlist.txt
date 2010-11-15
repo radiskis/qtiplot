@@ -733,6 +733,7 @@ Polar
 setMinorTicksType
 setMajorTicksType
 displayInfo
+infoLineEdit
 errorBarsList
 removeErrorBars
 clearErrorBars

@@ -3,7 +3,6 @@
 using namespace std;
 using namespace Qwt3D;
 
-
 CoordinateSystem::CoordinateSystem(Triple first, Triple second, COORDSTYLE st)
 {
 	autodecoration_ = true;

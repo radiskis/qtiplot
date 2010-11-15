@@ -896,6 +896,7 @@ void Graph3D::resetNonEmptyStyle()
 void Graph3D::update()
 {
 	sp->makeCurrent();
+	resetAxesLabels();
 	sp->updateData();
 }
 
@@ -1002,26 +1003,26 @@ void Graph3D::setTickLengths(const QStringList& lst)
 	if (int(lst.count()) > 6)
 		tick_length.remove(tick_length.first());
 
-	majorl=tick_length[0].toDouble();
-	minorl=tick_length[1].toDouble();
-	sp->coordinates()->axes[X1].setTicLength (majorl,minorl);
-	sp->coordinates()->axes[X2].setTicLength (majorl,minorl);
-	sp->coordinates()->axes[X3].setTicLength (majorl,minorl);
-	sp->coordinates()->axes[X4].setTicLength (majorl,minorl);
+	majorl = tick_length[0].toDouble();
+	minorl = tick_length[1].toDouble();
+	sp->coordinates()->axes[X1].setTicLength (majorl, minorl);
+	sp->coordinates()->axes[X2].setTicLength (majorl, minorl);
+	sp->coordinates()->axes[X3].setTicLength (majorl, minorl);
+	sp->coordinates()->axes[X4].setTicLength (majorl, minorl);
 
-	majorl=tick_length[2].toDouble();
-	minorl=tick_length[3].toDouble();
-	sp->coordinates()->axes[Y1].setTicLength (majorl,minorl);
-	sp->coordinates()->axes[Y2].setTicLength (majorl,minorl);
-	sp->coordinates()->axes[Y3].setTicLength (majorl,minorl);
-	sp->coordinates()->axes[Y4].setTicLength (majorl,minorl);
+	majorl = tick_length[2].toDouble();
+	minorl = tick_length[3].toDouble();
+	sp->coordinates()->axes[Y1].setTicLength (majorl, minorl);
+	sp->coordinates()->axes[Y2].setTicLength (majorl, minorl);
+	sp->coordinates()->axes[Y3].setTicLength (majorl, minorl);
+	sp->coordinates()->axes[Y4].setTicLength (majorl, minorl);
 
-	majorl=tick_length[4].toDouble();
-	minorl=tick_length[5].toDouble();
-	sp->coordinates()->axes[Z1].setTicLength (majorl,minorl);
-	sp->coordinates()->axes[Z2].setTicLength (majorl,minorl);
-	sp->coordinates()->axes[Z3].setTicLength (majorl,minorl);
-	sp->coordinates()->axes[Z4].setTicLength (majorl,minorl);
+	majorl = tick_length[4].toDouble();
+	minorl = tick_length[5].toDouble();
+	sp->coordinates()->axes[Z1].setTicLength (majorl, minorl);
+	sp->coordinates()->axes[Z2].setTicLength (majorl, minorl);
+	sp->coordinates()->axes[Z3].setTicLength (majorl, minorl);
+	sp->coordinates()->axes[Z4].setTicLength (majorl, minorl);
 }
 
 void Graph3D::setXAxisTickLength(double majorLength, double minorLength)
@@ -1453,6 +1454,11 @@ void Graph3D::setScales(double xl, double xr, double yl, double yr, double zl, d
 {
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
+	double *majorTicLengths = new double[12];
+	double *minorTicLengths = new double[12];
+	for (int i = 0; i < 12; i++)
+			sp->coordinates()->axes[i].ticLength(majorTicLengths[i], minorTicLengths[i]);
+
 	if (d_matrix)
 		updateScalesFromMatrix(xl, xr, yl, yr, zl, zr);
     else if (d_func){
@@ -1488,6 +1494,12 @@ void Graph3D::setScales(double xl, double xr, double yl, double yr, double zl, d
 
 	if (d_autoscale)
 		findBestLayout();
+
+	for (int i = 0; i < 12; i++)
+		sp->coordinates()->axes[i].setTicLength(majorTicLengths[i], minorTicLengths[i]);
+
+	delete [] majorTicLengths;
+	delete [] minorTicLengths;
 
 	QApplication::restoreOverrideCursor();
 }

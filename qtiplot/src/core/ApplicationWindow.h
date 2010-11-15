@@ -228,7 +228,7 @@ public:
 	bool isMdiAreaEnabled(){return d_mdi_windows_area;};
 
 	void displayInfo(const QString& text){info->setText(text);};
-	QLineEdit *displayInfoLineEdit(){return info;};
+	QLineEdit *infoLineEdit(){return info;};
 
 	QList<QColor> indexedColors(){return d_indexed_colors;};
 	void setIndexedColors(const QList<QColor>& lst){d_indexed_colors = lst;};
