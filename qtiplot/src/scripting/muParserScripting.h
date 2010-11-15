@@ -92,6 +92,17 @@ class muParserScripting: public ScriptingEnv
 		return u;
 	}
 
+	static double normal(double x){
+		const gsl_rng_type * T = gsl_rng_default;
+		gsl_rng * r = gsl_rng_alloc (T);
+		if (!r)
+			return 0.0;
+		gsl_rng_set(r, (unsigned int)x*time(NULL));
+		double u = gsl_ran_ugaussian(r);
+		gsl_rng_free (r);
+		return u;
+	}
+
     static double mod(double x, double y)
       { return fmod(x,y); }
     static double bessel_J0(double x)
@@ -142,6 +153,16 @@ class muParserScripting: public ScriptingEnv
 		{return gsl_cdf_gaussian_P (x, sigma);};
 	static double inv_gauss_cdf(double x, double sigma)
 		{return gsl_cdf_gaussian_Pinv(x, sigma);};
+
+	static double normcdf(double x)
+		{return gsl_cdf_ugaussian_P(x);};
+	static double norminv(double x)
+		{return gsl_cdf_ugaussian_Pinv(x);};
+
+	static double chi2cdf(double x, double n)
+		{return gsl_cdf_chisq_P (x, n);};
+	static double chi2inv(double x, double n)
+		{return gsl_cdf_chisq_Pinv(x, n);};
 };
 
 class EmptySourceError : public mu::ParserError
