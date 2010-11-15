@@ -32,11 +32,11 @@
 #include <QApplication>
 #include <QLocale>
 
-Anova::Anova(ApplicationWindow *parent, double level, bool twoWay)
+Anova::Anova(ApplicationWindow *parent, bool twoWay, double level)
 : Statistics(parent),
+d_two_way(twoWay),
 d_significance_level(level),
 d_descriptive_statistics(true),
-d_two_way(twoWay),
 d_show_interactions(true),
 d_anova_type(anova_fixed)
 {

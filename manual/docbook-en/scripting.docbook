@@ -4261,7 +4261,7 @@ print test.logInfo()
 <title>One-Way ANOVA</title>
 Please read the
 <ulink url="http://www.stat.tamu.edu/~aredd/tamuanova/tamu_anova.pdf">documentation of the TAMUANOVA library</ulink>
- for the description of the computed sum of squares.
+ for more details.
 
 <programlisting>
 test = Anova()
@@ -4278,6 +4278,38 @@ print test.sse() # "within-group" sum of squares
 print test.sst() # total sum of squares
 
 test.showDescriptiveStatistics(False)
+print test.logInfo()
+</programlisting>
+</sect3>
+
+<sect3 id="Python-TwoWayANOVA">
+<title>Two-Way ANOVA</title>
+Please read the
+<ulink url="http://www.stat.tamu.edu/~aredd/tamuanova/tamu_anova.pdf">documentation of the TAMUANOVA library</ulink>
+ for more details.
+
+<programlisting>
+test = Anova(True)
+test.addSample("Table1_1", 1, 1) # Level factor A = 1, level factor B = 1
+test.addSample("Table1_2", 1, 2) # Level factor A = 1, level factor B = 2
+test.addSample("Table1_3", 2, 1) # Level factor A = 2, level factor B = 1
+test.addSample("Table1_4", 2, 2) # Level factor A = 2, level factor B = 2
+test.setAnovaTwoWayModel(2) # Fixed model = 0, Random model = 1, Mixed model = 2
+test.run()
+
+print test.fStatA() # F statistic for factor A
+print test.fStatB() # F statistic for factor B
+print test.fStatAB() # F statistic for the interaction
+print test.pValueA() # P value for factor A
+print test.pValueB() # P value for factor B
+print test.pValueAB() # P value for the interaction
+print test.ssa() # sum of squares for factor A
+print test.ssb() # sum of squares for factor B
+print test.ssab() # sum of squares for the interaction
+print test.msa() # mean square value for factor A
+print test.msb() # mean square value for factor B
+print test.msab() # mean square value for the interaction
+
 print test.logInfo()
 </programlisting>
 </sect3>
