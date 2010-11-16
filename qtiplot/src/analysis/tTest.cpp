@@ -39,6 +39,8 @@ tTest::tTest(ApplicationWindow *parent, double testMean, double level, const QSt
 d_sample2(0),
 d_independent_test(true)
 {
+	setObjectName(QObject::tr("Student's t-Test"));
+
 	if (!sample2.isEmpty())
 		setSample2(sample2, paired);
 }
@@ -168,15 +170,18 @@ QString tTest::logInfo()
 		s += QObject::tr("One Sample t-Test") + "\n";
 
 	s += "\n";
-	s += Statistics::logInfo();
-	if (d_sample2){
-		QString sep = "\t";
-		s += d_sample2->sampleName() + sep + QString::number(d_sample2->dataSize()) + sep + l.toString(d_sample2->mean(), 'g', p) + sep;
-		s += l.toString(d_sample2->standardDeviation(), 'g', p) + "\t\t" + l.toString(d_sample2->standardError(), 'g', p) + "\n";
-		s += sep1 + "\n";
-		s += QObject::tr("Difference of Means") + ":\t" + l.toString(d_diff, 'g', p) + "\n\n";
-	} else
-		s += sep1 + "\n";
+
+	if (d_descriptive_statistics){
+		s += Statistics::logInfo();
+		if (d_sample2){
+			QString sep = "\t";
+			s += d_sample2->sampleName() + sep + QString::number(d_sample2->dataSize()) + sep + l.toString(d_sample2->mean(), 'g', p) + sep;
+			s += l.toString(d_sample2->standardDeviation(), 'g', p) + "\t\t" + l.toString(d_sample2->standardError(), 'g', p) + "\n";
+			s += sep1 + "\n";
+			s += QObject::tr("Difference of Means") + ":\t" + l.toString(d_diff, 'g', p) + "\n\n";
+		} else
+			s += sep1 + "\n";
+	}
 
 	QString h0, ha, compare;
 	switch((int)d_tail){
@@ -204,7 +209,7 @@ QString tTest::logInfo()
 	s += QObject::tr("Null Hypothesis") + ":\t\t\t" + mText + h0 + l.toString(d_test_val, 'g', p) + "\n";
 	s += QObject::tr("Alternative Hypothesis") + ":\t\t" + mText + ha + l.toString(d_test_val, 'g', p) + "\n\n";
 
-	double pval = this->pValue();
+	double pval = pValue();
 	QString sep = "\t\t";
 	s += QObject::tr("t") + sep + QObject::tr("DoF") + sep + QObject::tr("P Value") + "\n";
 	s += sep1;

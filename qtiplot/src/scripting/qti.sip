@@ -3283,6 +3283,7 @@ public:
   ~Statistics();
 
   bool setData(const QString&);
+  void showResultsLog(bool = true);
 
   //! Returns the size of the input data set
   unsigned int dataSize();
@@ -3314,8 +3315,11 @@ public:
   void setTail(const Tail&);
   void setTestValue(double);
   void setSignificanceLevel(double);
+  void showDescriptiveStatistics(bool show = true);
 
+  Table* resultTable();
   virtual QString logInfo();
+  virtual double statistic();
   virtual bool run();
 };
 
@@ -3337,6 +3341,7 @@ public:
 
   virtual QString logInfo();
   double t();
+  double statistic();
   double pValue();
   int dof();
   double power(double alpha, int size = 0);
@@ -3360,10 +3365,11 @@ public:
 
   virtual QString logInfo();
   double chiSquare();
+  double statistic();
   double pValue();
 };
 
-class ShapiroWilkTest : Statistics
+class ShapiroWilkTest : StatisticTest
 {
 %TypeHeaderCode
 #include <ShapiroWilkTest.h>
@@ -3375,9 +3381,9 @@ public:
   SIPQTI_APP(new sipShapiroWilkTest(app, *a0))
 %End
 
-  void setSignificanceLevel(double);
   virtual QString logInfo();
   double w();
+  double statistic();
   double pValue();
 };
 
@@ -3395,11 +3401,11 @@ public:
 
   bool run();
   bool addSample(const QString& colName, int aLevel = 1, int bLevel = 1);
-  void showDescriptiveStatistics(bool show = true);
   void setAnovaTwoWayModel(int);
 
   virtual QString logInfo();
   double fStat();
+  double statistic();
   double pValue();
   //! Sum of squares
   double ssm();

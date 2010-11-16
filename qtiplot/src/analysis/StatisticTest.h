@@ -31,6 +31,8 @@
 
 #include <Statistics.h>
 
+class Table;
+
 //! Abstract base class for statistic tests
 class StatisticTest : public Statistics
 {
@@ -42,6 +44,7 @@ class StatisticTest : public Statistics
 		StatisticTest(ApplicationWindow *parent, double testValue = 0.0, double level = 0.05, const QString& sample = QString());
 		void setTail(const Tail& tail){d_tail = tail;};
 		void setTestValue(double val){d_test_val = val;};
+		void showDescriptiveStatistics(bool show = true){d_descriptive_statistics = show;};
 
 		void setSignificanceLevel(double s)
 		{
@@ -58,10 +61,17 @@ class StatisticTest : public Statistics
 		//! Upper Confidence Limit
 		virtual double ucl(double){return 0.0;};
 
+		//! Returns a pointer to the table created to display the results
+		Table *resultTable(){if (!d_result_table) createResultTable(); return d_result_table;};
+
 	protected:
+		virtual void createResultTable();
+
 		double d_test_val;
 		double d_significance_level;
 		int d_tail;
+		bool d_descriptive_statistics;
+		Table * d_result_table;
 };
 
 #endif

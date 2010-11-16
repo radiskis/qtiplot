@@ -36,18 +36,14 @@
 #include <gsl/gsl_statistics.h>
 
 Statistics::Statistics(ApplicationWindow *parent, const QString& colName)
-: QObject(parent)
+: QObject(parent),
+d_col_name(QString::null),
+d_result_log(true),
+d_n(0),
+d_data(0),
+d_table(0)
 {
-	init();
 	setData(colName);
-}
-
-void Statistics::init()
-{
-	d_n = 0;
-	d_data = NULL;
-	d_table = NULL;
-	d_col_name = QString::null;
 }
 
 bool Statistics::run()
@@ -59,7 +55,8 @@ bool Statistics::run()
 	}
 
 	QApplication::setOverrideCursor(Qt::WaitCursor);
-	((ApplicationWindow *)parent())->updateLog(logInfo());
+	if (d_result_log)
+		((ApplicationWindow *)parent())->updateLog(logInfo());
 	QApplication::restoreOverrideCursor();
 	return true;
 }

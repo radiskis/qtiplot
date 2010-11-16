@@ -37,8 +37,6 @@ class tTest : public StatisticTest
 	Q_OBJECT
 
 	public:
-		enum Tail{Left = 0, Right = 1, Both = 2};
-
 		tTest(ApplicationWindow *parent, double testValue, double level,
 			const QString& sample1 = QString(), const QString& sample2 = QString(), bool paired = false);
 
@@ -48,6 +46,7 @@ class tTest : public StatisticTest
 		virtual QString logInfo();
 
 		double t();
+		double statistic(){return t();};
 		double pValue();
 		int dof();
 

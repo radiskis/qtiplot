@@ -46,6 +46,7 @@ class Statistics : public QObject
 		//! Actually does the job. Should be reimplemented in derived classes.
 		virtual bool run();
 		bool setData(const QString&);
+		void showResultsLog(bool show = true){d_result_log = show;};
 
 		QString sampleName(){return d_col_name;};
 
@@ -65,19 +66,20 @@ class Statistics : public QObject
 		virtual QString logInfo();
 
 	protected:
-        void init();
-        void memoryErrorMessage();
-	    //! Frees the memory allocated for the X and Y data sets
-        virtual void freeMemory();
+		void memoryErrorMessage();
+		//! Frees the memory allocated for the X and Y data sets
+		virtual void freeMemory();
 
-        //! A table source of data
-		Table *d_table;
 		//! The name of the source data set
 		QString d_col_name;
+		//! Flag specifying if the results should be displayed in the results log
+		bool d_result_log;
 		//! The size of the data set to be analyzed
 		unsigned int d_n;
 		//! y data set to be analysed
 		double *d_data;
+		//! A table source of data
+		Table *d_table;
 
 		double d_mean;
 		double d_sd;

@@ -4217,6 +4217,20 @@ print stats.standardError()
 </programlisting>
 </sect3>
 
+For all the statistic test bellow, once you have created a test object, you can use the following methods:
+
+<programlisting>
+test.showResultsLog(False) # disable the logging of the results
+test.showDescriptiveStatistics(False) # disable the display of the descriptive statistics results
+test.run()
+
+print test.statistic()
+print test.pValue()
+print test.logInfo()
+
+t = test.resultTable() # Returns a pointer to the table created to display the results
+</programlisting>
+
 <sect3 id="Python-tTest">
 <title>Hypothesis Testing - Student's t-Test</title>
 <programlisting>
@@ -4228,7 +4242,7 @@ test.setSignificanceLevel(0.5)
 test.setTail(tTest.Left) # or tTest.Right, or tTest.Both (default value)
 test.run()
 
-print test.t()
+print test.t() # same as test.statistic()
 print test.dof() # degrees of freedom
 print test.power(0.5)
 print test.power(0.5, 50) # alternative sample size = 50
@@ -4254,7 +4268,7 @@ test.run()
 test = ChiSquareTest(88.2, 0.05, "Table1_2") # Test variance = 88.2, significance level = 0.05
 test.run()
 
-print test.chiSquare()
+print test.chiSquare() # same as test.statistic()
 print test.pValue()
 print test.logInfo()
 </programlisting>
@@ -4267,7 +4281,7 @@ test = ShapiroWilkTest("Table3_1")
 test.setSignificanceLevel(0.1)
 test.run()
 
-print test.w()
+print test.w() # same as test.statistic()
 print test.pValue()
 print test.logInfo()
 </programlisting>
@@ -4287,7 +4301,7 @@ test.addSample("Table1_2");
 test.addSample("Table1_3");
 test.run()
 
-print test.fStat() # F statistic = ssm/sse
+print test.fStat() # F statistic = ssm/sse (same as test.statistic())
 print test.pValue()
 print test.ssm() # "between-group" sum of squares
 print test.sse() # "within-group" sum of squares

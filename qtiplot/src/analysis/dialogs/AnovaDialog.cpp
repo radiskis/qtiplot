@@ -67,8 +67,9 @@ AnovaDialog::AnovaDialog(Table *t, bool twoWay, QWidget* parent, Qt::WFlags fl )
 		QString levelB = tr("B");
 		QStringList aLevels, bLevels;
 		for (int i = 0; i < 2; i++){
-			aLevels << levelA + QString::number(i + 1);
-			bLevels << levelB + QString::number(i + 1);
+			QString l = QString::number(i + 1);
+			aLevels << levelA + l;
+			bLevels << levelB + l;
 		}
 
 		QStringList lst = t->selectedColumns();
