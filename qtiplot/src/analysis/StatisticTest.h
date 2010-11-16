@@ -1,10 +1,10 @@
 /***************************************************************************
-	File                 : ChiSquareTest.h
+	File                 : StatisticTest.h
     Project              : QtiPlot
     --------------------------------------------------------------------
 	Copyright            : (C) 2010 by Ion Vasilief
     Email (use @ for *)  : ion_vasilief*yahoo.fr
-	Description          : Chi Square Test for Variance
+	Description          : Base class for statistic tests
 
  ***************************************************************************/
 
@@ -26,27 +26,42 @@
  *   Boston, MA  02110-1301  USA                                           *
  *                                                                         *
  ***************************************************************************/
-#ifndef CHISQUARETEST_H
-#define CHISQUARETEST_H
+#ifndef STATISTICTEST_H
+#define STATISTICTEST_H
 
-#include <StatisticTest.h>
+#include <Statistics.h>
 
-//! Chi-Square test for variance
-class ChiSquareTest : public StatisticTest
+//! Abstract base class for statistic tests
+class StatisticTest : public Statistics
 {
 	Q_OBJECT
 
 	public:
-		ChiSquareTest(ApplicationWindow *parent, double testValue, double level, const QString& sample = QString());
+		enum Tail{Left = 0, Right = 1, Both = 2};
 
-		virtual QString logInfo();
-		double chiSquare();
-		double pValue();
+		StatisticTest(ApplicationWindow *parent, double testValue = 0.0, double level = 0.05, const QString& sample = QString());
+		void setTail(const Tail& tail){d_tail = tail;};
+		void setTestValue(double val){d_test_val = val;};
 
+		void setSignificanceLevel(double s)
+		{
+			if (s < 0.0 || s > 1.0)
+				return;
+			d_significance_level = s;
+		}
+
+		virtual QString logInfo(){return Statistics::logInfo();};
+		virtual double statistic(){return 0.0;};
+		virtual double pValue(){return 0.0;};
 		//! Lower Confidence Limit
-		double lcl(double confidenceLevel);
+		virtual double lcl(double){return 0.0;};
 		//! Upper Confidence Limit
-		double ucl(double confidenceLevel);
+		virtual double ucl(double){return 0.0;};
+
+	protected:
+		double d_test_val;
+		double d_significance_level;
+		int d_tail;
 };
 
 #endif

@@ -503,8 +503,7 @@ public slots:
 	//! recalculate selected cells of current table
 	void recalculateTable();
 
-	TableStatistics *newTableStatistics(Table *base, int type, QList<int>,
-	    const QString &caption=QString::null);
+	TableStatistics *newTableStatistics(Table *base, int type, QList<int>, int start = 0, int end = -1, const QString &caption = QString::null);
 	//@}
 
 	//! \name Graphs

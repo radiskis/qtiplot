@@ -247,12 +247,12 @@ void Matrix::save(const QString &fn, const QString &info, bool saveAsTemplate)
 			for(int j = 0; j < cols; j++){
 				double val = d_data[aux + j];
 				if (gsl_finite(val))
-					t << QString::number(val, 'e', 16);
+					t << QString::number(val, 'g', 16);
 				t << "\t";
 			}
 			double val = d_data[aux + cols];
 			if (gsl_finite(val))
-				t << QString::number(val, 'e', 16);
+				t << QString::number(val, 'g', 16);
 			t << "\n";
 		}
 		t << "</data>\n";

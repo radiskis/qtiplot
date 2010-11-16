@@ -38,13 +38,19 @@
 #include <gsl/gsl_sort.h>
 #include <math.h>
 
-TableStatistics::TableStatistics(ScriptingEnv *env, ApplicationWindow *parent, Table *base, Type t, QList<int> targets)
+TableStatistics::TableStatistics(ScriptingEnv *env, ApplicationWindow *parent, Table *base, Type t, QList<int> targets, int start, int end)
 	: Table(env, 1, 1, "", parent, ""),
-	d_base(base), d_type(t), d_targets(targets)
+	d_base(base), d_type(t), d_targets(targets), d_start(start), d_end(end)
 {
     d_table->setReadOnly(true);
 	setCaptionPolicy(MdiSubWindow::Both);
+	if (d_start < 0)
+		d_start = 0;
+
 	if (d_type == row){
+		if (d_end < 0)
+			d_end = d_base->numCols() - 1;
+
 		resizeRows(d_targets.size());
         resizeCols(11);
 		setColName(0, tr("Row"));
@@ -61,7 +67,7 @@ TableStatistics::TableStatistics(ScriptingEnv *env, ApplicationWindow *parent, T
 
 		d_stats_col_type << Row << Cols << Mean << StandardDev << StandardError << Variance << Sum << Max << Min << N << Median;
 
-		for (int i=0; i < d_targets.size(); i++)
+		for (int i = 0; i < d_targets.size(); i++)
             setText(i, 0, QString::number(d_targets[i]+1));
 
 		if (d_base){
@@ -70,6 +76,9 @@ TableStatistics::TableStatistics(ScriptingEnv *env, ApplicationWindow *parent, T
 			update(d_base, QString::null);
 		}
 	} else if (d_type == column){
+		if (d_end < 0)
+			d_end = d_base->numRows() - 1;
+
 		resizeRows(d_targets.size());
 		resizeCols(13);
 		setColName(0, tr("Col"));
@@ -186,13 +195,14 @@ void TableStatistics::update(Table *t, const QString& colName)
 
 	int j;
 	if (d_type == row){
-		for (int r=0; r < d_targets.size(); r++){
+		for (int r = 0; r < d_targets.size(); r++){
 			int cols = d_base->numCols();
 			int i = d_targets[r];
 			int m = 0;
-			for (j = 0; j < cols; j++)
-					if (!d_base->text(i, j).isEmpty() && d_base->columnType(j) == Numeric && !d_base->isColumnHidden(j))
-							m++;
+			for (j = d_start; j <= d_end; j++){
+				if (!d_base->text(i, j).isEmpty() && d_base->columnType(j) == Numeric && !d_base->isColumnHidden(j))
+					m++;
+			}
 
 			if (!m){//clear row statistics
 				for (j = 1; j < numCols(); j++)
@@ -203,7 +213,7 @@ void TableStatistics::update(Table *t, const QString& colName)
 				double *dat = new double[m];
 				gsl_vector *y = gsl_vector_alloc (m);
 				int aux = 0;
-				for (j = 0; j<cols; j++){
+				for (j = d_start; j <= d_end; j++){
 					QString text = d_base->text(i,j);
 					if (!text.isEmpty() && d_base->columnType(j) == Numeric && !d_base->isColumnHidden(j)){
 						double val = d_base->cell(i, j);
@@ -220,7 +230,7 @@ void TableStatistics::update(Table *t, const QString& colName)
 				for (int k = 0; k < d_stats_col_type.size(); k++){
 					switch (d_stats_col_type[k]){
 						case Cols:
-							setText(r, k, QString::number(d_base->numCols()));
+							setText(r, k, QString::number(m));
 						break;
 						case Mean:
 							setCell(r, k, mean);
@@ -272,7 +282,7 @@ void TableStatistics::update(Table *t, const QString& colName)
 
 				int rows = d_base->numRows();
 				int start = -1, m = 0;
-				for (j=0; j<rows; j++){
+				for (j = d_start; j <= d_end; j++){
 					if (!d_base->text(j, i).isEmpty()){
 						m++;
 						if (start < 0) start = j;
@@ -296,7 +306,7 @@ void TableStatistics::update(Table *t, const QString& colName)
 				gsl_vector_set (y, 0, val);
 				dat[0] = val;
 				double min = val, max = val;
-				for (j = start + 1; j<rows; j++){
+				for (j = start + 1; j <= d_end; j++){
 					if (!d_base->text(j, i).isEmpty()){
 						aux++;
 						val = d_base->cell(j, i);
@@ -320,7 +330,7 @@ void TableStatistics::update(Table *t, const QString& colName)
 							setText(c, k, d_base->colLabel(d_targets[c]));
 						break;
 						case Rows:
-							setText(c, k, "[1:"+QString::number(rows)+"]");
+							setText(c, k, "[" + QString::number(start + 1) + ":" + QString::number(d_end + 1) + "]");
 						break;
 						case Mean:
 							setCell(c, k, mean);
@@ -373,7 +383,7 @@ void TableStatistics::update(Table *t, const QString& colName)
 		}
 	}
 
-for (int i=0; i<numCols(); i++)
+for (int i = 0; i < numCols(); i++)
 	emit modifiedData(this, Table::colName(i));
 }
 
@@ -413,6 +423,12 @@ void TableStatistics::removeStatsCol(int col)
 		d_stats_col_type.removeAt(col);
 }
 
+void TableStatistics::setRange(int start, int end)
+{
+	d_start = start;
+	d_end = end;
+}
+
 void TableStatistics::save(const QString& fn, const QString &geometry, bool)
 {
 	if (!d_base){
@@ -437,7 +453,9 @@ void TableStatistics::save(const QString& fn, const QString &geometry, bool)
 	for (QList<int>::iterator i=d_targets.begin(); i!=d_targets.end(); ++i)
 		t << "\t" + QString::number(*i);
 	t << "\n";
-
+	if (d_start != 0 || (d_type == row && d_end != d_base->numCols() - 1) ||
+		(d_type == column && d_end != d_base->numRows() - 1))
+		t << "Range\t" + QString::number(d_start) + "\t" + QString::number(d_end) + "\n";
 	t << "ColStatType";
 	for (int i = 0; i < d_stats_col_type.size(); ++i)
 		t << "\t" + QString::number(d_stats_col_type[i]);

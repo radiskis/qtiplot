@@ -45,7 +45,7 @@ class TableStatistics : public Table
 		//! supported statistics types
 		enum Type { row, column };
 		enum StatisticsColType {NoStats, Row, Col, Rows, Cols, Mean, StandardDev, StandardError, Variance, Sum, iMax, Max, iMin, Min, N, Median};
-		TableStatistics(ScriptingEnv *env, ApplicationWindow *parent, Table *base, Type, QList<int> targets);
+		TableStatistics(ScriptingEnv *env, ApplicationWindow *parent, Table *base, Type, QList<int> targets, int start = 0, int end = -1);
 		//! return the type of statistics
 		Type type() const { return d_type; }
 		//! return the base table of which statistics are displayed
@@ -53,6 +53,7 @@ class TableStatistics : public Table
 		// saving
 		virtual void save(const QString&, const QString &geometry, bool = false);
 		void setColumnStatsTypes(const QList<int>& colStatTypes);
+		void setRange(int start, int end);
 
     public slots:
         //! update statistics when the user triggers a recaculate action
@@ -77,6 +78,7 @@ class TableStatistics : public Table
 		Type d_type;
 		QList<int> d_targets;
 		QList<int> d_stats_col_type;
+		int d_start, d_end;
 };
 
 #endif

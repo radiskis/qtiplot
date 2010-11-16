@@ -29,19 +29,17 @@
 #ifndef Anova_H
 #define Anova_H
 
-#include <Statistics.h>
+#include <StatisticTest.h>
 #include <tamu_anova.h>
 
-class Table;
-
-//! Abstract base class for data analysis operations
-class Anova : public Statistics
+//! ANOVA
+class Anova : public StatisticTest
 {
 	Q_OBJECT
 
 	public:
 		Anova(ApplicationWindow *parent, bool twoWay = false, double level = 0.05);
-		void setSignificanceLevel(double);
+
 		void showDescriptiveStatistics(bool show = true){d_descriptive_statistics = show;};
 		void showAnovaTwoWayInteractions(bool show = true){d_show_interactions = show;};
 		void setAnovaTwoWayModel(int type){d_anova_type = (gsl_anova_twoway_types)type;};
@@ -87,7 +85,6 @@ class Anova : public Statistics
 		QString levelName(int level, bool b = false);
 
 		bool d_two_way;
-		double d_significance_level;
 		bool d_descriptive_statistics;
 		bool d_show_interactions;
 		gsl_anova_twoway_types d_anova_type;

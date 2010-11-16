@@ -3298,13 +3298,33 @@ public:
   virtual bool run();
 };
 
-class tTest : Statistics
+class StatisticTest : Statistics
+{
+%TypeHeaderCode
+#include <StatisticTest.h>
+%End
+public:
+  StatisticTest(ApplicationWindow * /TransferThis/, double = 0.0, double = 0.05, const QString& = QString());
+  StatisticTest(double = 0.0, double = 0.05, const QString& = QString()) /NoDerived/;
+%MethodCode
+  SIPQTI_APP(new sipStatisticTest(app, a0, a1, *a2))
+%End
+  enum Tail{Left = 0, Right = 1, Both = 2};
+
+  void setTail(const Tail&);
+  void setTestValue(double);
+  void setSignificanceLevel(double);
+
+  virtual QString logInfo();
+  virtual bool run();
+};
+
+class tTest : StatisticTest
 {
 %TypeHeaderCode
 #include <tTest.h>
 %End
 public:
-  enum Tail{Left = 0, Right = 1, Both = 2};
 
   tTest(ApplicationWindow * /TransferThis/, double, double, const QString& = QString(), const QString& = QString(), bool = false);
   tTest(double, double, const QString& = QString(), const QString& = QString(), bool = false) /NoDerived/;
@@ -3312,9 +3332,6 @@ public:
   SIPQTI_APP(new siptTest(app, a0, a1, *a2, *a3, a4))
 %End
 
-  void setTail(const Tail&);
-  void setTestValue(double);
-  void setSignificanceLevel(double);
   bool setSample1(const QString&);
   bool setSample2(const QString&, bool = false);
 
@@ -3329,7 +3346,7 @@ public:
   double ucl(double);
 };
 
-class ChiSquareTest : Statistics
+class ChiSquareTest : StatisticTest
 {
 %TypeHeaderCode
 #include <ChiSquareTest.h>
@@ -3341,7 +3358,6 @@ public:
   SIPQTI_APP(new sipChiSquareTest(app, a0, a1, *a2))
 %End
 
-  void setSignificanceLevel(double);
   virtual QString logInfo();
   double chiSquare();
   double pValue();
@@ -3365,7 +3381,7 @@ public:
   double pValue();
 };
 
-class Anova : Statistics
+class Anova : StatisticTest
 {
 %TypeHeaderCode
 #include <Anova.h>
@@ -3379,7 +3395,6 @@ public:
 
   bool run();
   bool addSample(const QString& colName, int aLevel = 1, int bLevel = 1);
-  void setSignificanceLevel(double);
   void showDescriptiveStatistics(bool show = true);
   void setAnovaTwoWayModel(int);
 

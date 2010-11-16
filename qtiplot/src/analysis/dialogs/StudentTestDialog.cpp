@@ -31,6 +31,7 @@
 #include <DoubleSpinBox.h>
 #include <tTest.h>
 #include <ChiSquareTest.h>
+#include <StatisticTest.h>
 
 #include <QGroupBox>
 #include <QComboBox>
@@ -177,7 +178,6 @@ StudentTestDialog::StudentTestDialog(bool chiSquare, Table *t, bool twoSamples, 
 
 		boxOtherSampleSize = new QCheckBox(tr("Sample &Size"));
 		boxOtherSampleSize->setChecked(false);
-		connect(boxOtherSampleSize, SIGNAL(toggled(bool)), boxSampleSize, SLOT(setEnabled(bool)));
 		gl4->addWidget(boxOtherSampleSize, 1, 0);
 
 		boxSampleSize = new QSpinBox();
@@ -185,6 +185,8 @@ StudentTestDialog::StudentTestDialog(bool chiSquare, Table *t, bool twoSamples, 
 		boxSampleSize->setValue(50);
 		boxSampleSize->setEnabled(false);
 		gl4->addWidget(boxSampleSize, 1, 1);
+
+		connect(boxOtherSampleSize, SIGNAL(toggled(bool)), boxSampleSize, SLOT(setEnabled(bool)));
 	}
 
 	buttonOk = new QPushButton(tr( "&Compute" ));
@@ -229,7 +231,7 @@ void StudentTestDialog::addConfidenceLevel()
 	sbox->setSingleStep(1.0);
 
 	DoubleSpinBox *sb = (DoubleSpinBox *)gl->itemAtPosition (rows - 1, 1)->widget();
-	sbox->setValue(0.5*(100 + sb->value()));
+	sbox->setValue(floor(0.5*(100 + sb->value())));
 
 	gl->addWidget(sbox, rows, 1);
 }
@@ -282,11 +284,11 @@ void StudentTestDialog::acceptStudentTest()
 			return;
 	}
 
-	tTest::Tail tail = tTest::Left;
+	StatisticTest::Tail tail = StatisticTest::Left;
 	if (bothTailButton->isChecked())
-		tail = tTest::Both;
+		tail = StatisticTest::Both;
 	else if (rightTailButton->isChecked())
-		tail = tTest::Right;
+		tail = StatisticTest::Right;
 	stats.setTail(tail);
 
 	int p = app->d_decimal_digits;
@@ -342,11 +344,11 @@ void StudentTestDialog::acceptChiSquareTest()
 	if (!stats.setData(boxSample1->currentText()))
 		return;
 
-	ChiSquareTest::Tail tail = ChiSquareTest::Left;
+	StatisticTest::Tail tail = StatisticTest::Left;
 	if (bothTailButton->isChecked())
-		tail = ChiSquareTest::Both;
+		tail = StatisticTest::Both;
 	else if (rightTailButton->isChecked())
-		tail = ChiSquareTest::Right;
+		tail = StatisticTest::Right;
 
 	stats.setTail(tail);
 

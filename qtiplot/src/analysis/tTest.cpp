@@ -27,7 +27,6 @@
  *                                                                         *
  ***************************************************************************/
 #include "tTest.h"
-#include <Table.h>
 
 #include <QApplication>
 #include <QLocale>
@@ -36,33 +35,12 @@
 #include <gsl/gsl_cdf.h>
 
 tTest::tTest(ApplicationWindow *parent, double testMean, double level, const QString& sample1, const QString& sample2, bool paired)
-: Statistics(parent, sample1),
-d_test_val(testMean),
-d_significance_level(level),
-d_tail(Both),
+: StatisticTest(parent, testMean, level, sample1),
 d_sample2(0),
 d_independent_test(true)
 {
 	if (!sample2.isEmpty())
 		setSample2(sample2, paired);
-}
-
-void tTest::setTail(const Tail& tail)
-{
-	d_tail = tail;
-}
-
-void tTest::setTestValue(double mean)
-{
-	d_test_val = mean;
-}
-
-void tTest::setSignificanceLevel(double s)
-{
-	if (s < 0.0 || s > 1.0)
-		return;
-
-	d_significance_level = s;
 }
 
 int tTest::dof()

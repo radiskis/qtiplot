@@ -27,7 +27,7 @@
  *                                                                         *
  ***************************************************************************/
 #include "ChiSquareTest.h"
-#include <Table.h>
+#include <StatisticTest.h>
 
 #include <QApplication>
 #include <QLocale>
@@ -35,19 +35,8 @@
 #include <gsl/gsl_cdf.h>
 
 ChiSquareTest::ChiSquareTest(ApplicationWindow *parent, double testValue, double level, const QString& sample)
-: Statistics(parent, sample),
-d_test_val(testValue),
-d_significance_level(level),
-d_tail(Both)
+: StatisticTest(parent, testValue, level, sample)
 {
-}
-
-void ChiSquareTest::setSignificanceLevel(double s)
-{
-	if (s < 0.0 || s > 1.0)
-		return;
-
-	d_significance_level = s;
 }
 
 double ChiSquareTest::chiSquare()
