@@ -41,8 +41,7 @@
 #endif
 
 ShapiroWilkTest::ShapiroWilkTest(ApplicationWindow *parent, const QString& sample)
-: Statistics(parent, sample),
-d_significance_level(0.05),
+: StatisticTest(parent, 0.0, 0.05, sample),
 d_w(0.0),
 d_pValue(0.0)
 {
@@ -50,6 +49,7 @@ d_pValue(0.0)
 		QMessageBox::critical(parent, QObject::tr("Attention!"), QObject::tr("Sample size must be between 3 and 5000."));
 		this->freeMemory();
 	} else {
+		setObjectName(QObject::tr("Shapiro-Wilk Normality Test"));
 		int init = false;
 		int n = d_n;
 		int n1 = d_n;
@@ -59,14 +59,6 @@ d_pValue(0.0)
 		gsl_sort(d_data, 1, d_n);// the data must be sorted first
 		swilk(&init, d_data, &n, &n1, &n2, a, &d_w, &d_pValue, &error);
 	}
-}
-
-void ShapiroWilkTest::setSignificanceLevel(double s)
-{
-	if (s < 0.0 || s > 1.0)
-		return;
-
-	d_significance_level = s;
 }
 
 QString ShapiroWilkTest::logInfo()

@@ -878,6 +878,7 @@ setNormalRandomValues
 Anova
 addSample
 showDescriptiveStatistics
+showResultsLog
 setAnovaTwoWayModel
 fStat
 fStatA

@@ -29,19 +29,18 @@
 #ifndef NORMTEST_H
 #define NORMTEST_H
 
-#include <Statistics.h>
+#include <StatisticTest.h>
 
 //! Normality test
-class ShapiroWilkTest : public Statistics
+class ShapiroWilkTest : public StatisticTest
 {
 	Q_OBJECT
 
 	public:
 		ShapiroWilkTest(ApplicationWindow *parent, const QString& sample = QString());
 
-		void setSignificanceLevel(double);
-
 		double w(){return d_w;};
+		double statistic(){return d_w;};
 		double pValue(){return d_pValue;};
 		virtual QString logInfo();
 		QString shortLogInfo();
@@ -50,7 +49,6 @@ class ShapiroWilkTest : public Statistics
 		void swilk(int *init, double *x, int *n, int *n1, int *n2, double *a,  double *w, double *pw, int *ifault);
 		static double poly(const double *cc, int nord, double x);
 
-		double d_significance_level;
 		double d_w;
 		double d_pValue;
 };

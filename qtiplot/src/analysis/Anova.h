@@ -40,7 +40,6 @@ class Anova : public StatisticTest
 	public:
 		Anova(ApplicationWindow *parent, bool twoWay = false, double level = 0.05);
 
-		void showDescriptiveStatistics(bool show = true){d_descriptive_statistics = show;};
 		void showAnovaTwoWayInteractions(bool show = true){d_show_interactions = show;};
 		void setAnovaTwoWayModel(int type){d_anova_type = (gsl_anova_twoway_types)type;};
 		bool addSample(const QString& colName, int aLevel = 1, int bLevel = 1);
@@ -51,6 +50,7 @@ class Anova : public StatisticTest
 		//! \name One-Way ANOVA results
 		//@{
 		double fStat(){return d_at.F;};
+		double statistic(){return d_at.F;};
 		double pValue(){return d_at.p;};
 		double ssm(){return d_at.SSTr;};
 		//@}
@@ -81,11 +81,11 @@ class Anova : public StatisticTest
 	protected:
 		bool twoWayANOVA();
 		bool oneWayANOVA();
+		void createResultTable();
 		void freeMemory();
 		QString levelName(int level, bool b = false);
 
 		bool d_two_way;
-		bool d_descriptive_statistics;
 		bool d_show_interactions;
 		gsl_anova_twoway_types d_anova_type;
 		QList<Statistics *> d_data_samples;

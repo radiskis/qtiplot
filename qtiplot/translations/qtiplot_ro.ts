@@ -4260,11 +4260,11 @@ Diverse părţi din acest fişier ar putea fi afişate incorect.</translation>
     </message>
     <message>
         <source>QtiPlot - Row selection error</source>
-        <translation>QtiPlot - Eroare de selecţie a liniei</translation>
+        <translation type="obsolete">QtiPlot - Eroare de selecţie a liniei</translation>
     </message>
     <message>
         <source>Please select a row first!</source>
-        <translation>Vă rugam să selectaţi mai întâi o linie!</translation>
+        <translation type="obsolete">Vă rugam să selectaţi mai întâi o linie!</translation>
     </message>
     <message>
         <source>&amp;Line</source>
@@ -7542,6 +7542,10 @@ Autocompletion will not be available!</source>
     <message>
         <source>&amp;Two-Way ANOVA...</source>
         <translation>&amp;Două variabile independente...</translation>
+    </message>
+    <message>
+        <source>Chi-square Test for &amp;Variance...</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -16889,6 +16893,79 @@ have the same number of rows.</source>
         <source>There are no data points in Factor A &apos;%1&apos; and Factor B &apos;%2&apos; level combination.</source>
         <translation>Nu există date pentru combinaţia de niveluri &apos;%1&apos; (Factor A) şi &apos;%2&apos; (Factor B).</translation>
     </message>
+    <message>
+        <source>ANOVA</source>
+        <translation type="unfinished">ANOVA</translation>
+    </message>
+    <message>
+        <source>A*B</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Result Table</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Chi-square Test</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Chi-square Test for Variance</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Variance</source>
+        <translation type="unfinished">Varianţă</translation>
+    </message>
+    <message>
+        <source>Chi-Square</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>At the %1 level, the population variance</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>than the test variance</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Shapiro-Wilk Normality Test</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Statistic</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Student&apos;s t-Test</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>chi2cdf(x, df):
+ Computes the cumulative distribution function for a chi-squared distribution with df degrees of freedom.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>chi2inv(p, df):
+ Computes the inverse of the cumulative distribution function for a chi-squared distribution with df degrees of freedom.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>normal(seed):
+ Returns a normal random number using the Ziggurat algorithm.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>normcdf(x):
+ Computes the cumulative distribution function for a Gaussian distribution with standard deviation sigma = 1.0.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>norminv(p):
+ Computes the inverse of the cumulative distribution function for a Gaussian distribution with standard deviation sigma = 1.0.</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>QtColorPicker</name>
@@ -17776,6 +17853,18 @@ have the same number of rows.</source>
     <message>
         <source>actual</source>
         <translation>curent</translation>
+    </message>
+    <message>
+        <source>Chi-square Test for Variance</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Variance</source>
+        <translation type="unfinished">Varianţă</translation>
+    </message>
+    <message>
+        <source>Confidence Intervals for Variance</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

@@ -14523,7 +14523,7 @@ void ApplicationWindow::createActions()
 	actionShapiroWilk = new QAction(tr("&Normality Test (Shapiro - Wilk)"), this);
 	connect(actionShapiroWilk, SIGNAL(activated()), this, SLOT(testNormality()));
 
-	actionChiSquareTest = new QAction(tr("One Sample Test for &Variance..."), this);
+	actionChiSquareTest = new QAction(tr("Chi-square Test for &Variance..."), this);
 	connect(actionChiSquareTest, SIGNAL(activated()), this, SLOT(showChiSquareTestDialog()));
 
 	actionOneSampletTest = new QAction(tr("&One Sample t-Test..."), this);
@@ -15260,7 +15260,7 @@ void ApplicationWindow::translateActionsStrings()
 	actionSetRandomValues->setToolTip(tr("Fill selected columns with random numbers"));
 	actionSetRandomNormalValues->setMenuText(tr("&Normal Random Numbers"));
 	actionSetRandomNormalValues->setToolTip(tr("Fill selected columns with normal random numbers"));
-	actionChiSquareTest->setMenuText(tr("One Sample Test for &Variance..."));
+	actionChiSquareTest->setMenuText(tr("Chi-square Test for &Variance..."));
 	actionFrequencyCount->setMenuText(tr("&Frequency Count ..."));
 	actionOneSampletTest->setMenuText(tr("&One Sample t-Test..."));
 	actionTwoSampletTest->setMenuText(tr("&Two Sample t-Test..."));

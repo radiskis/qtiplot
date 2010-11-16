@@ -27,11 +27,45 @@
  *                                                                         *
  ***************************************************************************/
 #include "StatisticTest.h"
+#include <Table.h>
 
 StatisticTest::StatisticTest(ApplicationWindow *parent, double testVal, double level, const QString& sample)
 : Statistics(parent, sample),
 d_test_val(testVal),
 d_significance_level(level),
-d_tail(Both)
+d_tail(Both),
+d_descriptive_statistics(true),
+d_result_table(0)
 {
+}
+
+void StatisticTest::createResultTable()
+{
+	if (d_result_table)
+		return;
+
+	ApplicationWindow *app = (ApplicationWindow *)parent();
+	d_result_table = app->newTable(1, 9);
+
+	QStringList header = QStringList() << QObject::tr("Sample") << QObject::tr("N") << QObject::tr("DoF") << QObject::tr("Mean")
+						 << QObject::tr("Standard Deviation") << QObject::tr("Variance") << QObject::tr("Standard Error")
+						 << QObject::tr("Statistic") << QObject::tr("P Value");
+
+	d_result_table->setHeader(header);
+	d_result_table->setText(0, 0, sampleName());
+	d_result_table->setColumnType(0, Table::Text);
+	d_result_table->setCell(0, 1, d_n);
+	d_result_table->setCell(0, 2, dof());
+	d_result_table->setCell(0, 3, d_mean);
+	d_result_table->setCell(0, 4, d_sd);
+	d_result_table->setCell(0, 5, d_variance);
+	d_result_table->setCell(0, 6, d_se);
+	d_result_table->setCell(0, 7, statistic());
+	d_result_table->setCell(0, 8, pValue());
+
+	for (int i = 0; i < d_result_table->numCols(); i++)
+		d_result_table->table()->adjustColumn(i);
+
+	d_result_table->setWindowLabel(objectName() + " " + QObject::tr("Result Table"));
+	d_result_table->show();
 }

@@ -37,6 +37,7 @@
 ChiSquareTest::ChiSquareTest(ApplicationWindow *parent, double testValue, double level, const QString& sample)
 : StatisticTest(parent, testValue, level, sample)
 {
+	setObjectName(QObject::tr("Chi-square Test"));
 }
 
 double ChiSquareTest::chiSquare()
@@ -99,10 +100,13 @@ QString ChiSquareTest::logInfo()
 	QString sep1 = "-----------------------------------------------------------------------------------------------------------------------------\n";
 
 	QString s = "[" + QDateTime::currentDateTime().toString(Qt::LocalDate)+ " \"" + d_table->objectName() + "\"]\t";
-	s += QObject::tr("One Sample Test for Variance") + "\n";
+	s += QObject::tr("Chi-square Test for Variance") + "\n";
 	s += "\n";
-	s += Statistics::logInfo();
-	s += sep1 + "\n";
+
+	if (d_descriptive_statistics){
+		s += Statistics::logInfo();
+		s += sep1 + "\n";
+	}
 
 	QString h0, ha, compare;
 	switch((int)d_tail){
@@ -127,7 +131,7 @@ QString ChiSquareTest::logInfo()
 	s += QObject::tr("Null Hypothesis") + ":\t\t\t" + mText + h0 + l.toString(d_test_val, 'g', p) + "\n";
 	s += QObject::tr("Alternative Hypothesis") + ":\t\t" + mText + ha + l.toString(d_test_val, 'g', p) + "\n\n";
 
-	double pval = this->pValue();
+	double pval = pValue();
 	QString sep = "\t\t";
 	s += QObject::tr("Chi-Square") + sep + QObject::tr("DoF") + sep + QObject::tr("P Value") + "\n";
 	s += sep1;

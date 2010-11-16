@@ -42,6 +42,7 @@ class ChiSquareTest : public StatisticTest
 		virtual QString logInfo();
 		double chiSquare();
 		double pValue();
+		double statistic(){return chiSquare();};
 
 		//! Lower Confidence Limit
 		double lcl(double confidenceLevel);

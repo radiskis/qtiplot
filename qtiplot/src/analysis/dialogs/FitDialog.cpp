@@ -886,7 +886,7 @@ void FitDialog::saveUserFunction()
 
 	QString name = boxName->text();
     QStringList lst = userFunctionNames();
-	QString formula = parseFormula(editBox->text().simplified());
+	QString formula = parseFormula(editBox->text().simplified().remove(QRegExp("\\s")));
 	if (lst.contains(name)){
 		int index = lst.findIndex(name);
 		d_current_fit = (NonLinearFit *)d_user_functions[index];
@@ -967,7 +967,7 @@ void FitDialog::removeUserFunction()
 
 void FitDialog::showFitPage()
 {
-	QString formula = editBox->text().simplified();
+	QString formula = editBox->text().simplified().remove(QRegExp("\\s"));
 	if (formula.isEmpty()){
 		QMessageBox::critical(this, tr("QtiPlot - Input function error"), tr("Please enter a valid function!"));
 		editBox->setFocus();

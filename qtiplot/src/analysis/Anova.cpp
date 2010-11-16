@@ -34,10 +34,10 @@
 Anova::Anova(ApplicationWindow *parent, bool twoWay, double level)
 : StatisticTest(parent, 0.0, level),
 d_two_way(twoWay),
-d_descriptive_statistics(true),
 d_show_interactions(true),
 d_anova_type(anova_fixed)
 {
+	setObjectName(QObject::tr("ANOVA"));
 }
 
 bool Anova::addSample(const QString& colName, int aLevel, int bLevel)
@@ -85,7 +85,8 @@ bool Anova::run()
 	else if(!oneWayANOVA())
 		return false;
 
-	((ApplicationWindow *)parent())->updateLog(logInfo());
+	if (d_result_log)
+		((ApplicationWindow *)parent())->updateLog(logInfo());
 	QApplication::restoreOverrideCursor();
 	return true;
 }
@@ -315,6 +316,79 @@ QString Anova::logInfo()
 	}
 
 	return s;
+}
+
+void Anova::createResultTable()
+{
+	if (d_result_table)
+		return;
+
+	ApplicationWindow *app = (ApplicationWindow *)parent();
+	if (d_two_way){
+		d_result_table = app->newTable(5, 6);
+
+		d_result_table->setText(0, 0, QObject::tr("A"));
+		d_result_table->setText(1, 0, QObject::tr("B"));
+		d_result_table->setText(2, 0, QObject::tr("A*B"));
+		d_result_table->setText(3, 0, QObject::tr("Error"));
+		d_result_table->setText(4, 0, QObject::tr("Total"));
+		d_result_table->setColumnType(0, Table::Text);
+
+		d_result_table->setCell(0, 1, d_att.dfA);
+		d_result_table->setCell(0, 2, d_att.SSA);
+		d_result_table->setCell(0, 3, d_att.MSA);
+		d_result_table->setCell(0, 4, d_att.FA);
+		d_result_table->setCell(0, 5, d_att.pA);
+
+		d_result_table->setCell(1, 1, d_att.dfB);
+		d_result_table->setCell(1, 2, d_att.SSB);
+		d_result_table->setCell(1, 3, d_att.MSB);
+		d_result_table->setCell(1, 4, d_att.FB);
+		d_result_table->setCell(1, 5, d_att.pB);
+
+		d_result_table->setCell(2, 1, d_att.dfAB);
+		d_result_table->setCell(2, 2, d_att.SSAB);
+		d_result_table->setCell(2, 3, d_att.MSAB);
+		d_result_table->setCell(2, 4, d_att.FAB);
+		d_result_table->setCell(2, 5, d_att.pAB);
+
+		d_result_table->setCell(3, 1, d_att.dfE);
+		d_result_table->setCell(3, 2, d_att.SSE);
+		d_result_table->setCell(3, 3, d_att.MSE);
+
+		d_result_table->setCell(4, 1, d_att.dfT);
+		d_result_table->setCell(4, 2, d_att.SST);
+	} else {
+		d_result_table = app->newTable(3, 6);
+
+		d_result_table->setText(0, 0, QObject::tr("Model"));
+		d_result_table->setText(1, 0, QObject::tr("Error"));
+		d_result_table->setText(2, 0, QObject::tr("Total"));
+		d_result_table->setColumnType(0, Table::Text);
+
+		d_result_table->setCell(0, 1, d_at.dfTr);
+		d_result_table->setCell(0, 2, d_at.SSTr);
+		d_result_table->setCell(0, 3, d_at.MSTr);
+		d_result_table->setCell(0, 4, d_at.F);
+		d_result_table->setCell(0, 5, d_at.p);
+
+		d_result_table->setCell(1, 1, d_at.dfE);
+		d_result_table->setCell(1, 2, d_at.SSE);
+		d_result_table->setCell(1, 3, d_at.MSE);
+
+		d_result_table->setCell(2, 1, d_at.dfT);
+		d_result_table->setCell(2, 2, d_at.SST);
+	}
+
+	QStringList header = QStringList() << QObject::tr("Source") << QObject::tr("DoF") << QObject::tr("Sum of Squares")
+						 << QObject::tr("Mean Square") << QObject::tr("F Value") << QObject::tr("P Value");
+	d_result_table->setHeader(header);
+
+	for (int i = 0; i < d_result_table->numCols(); i++)
+		d_result_table->table()->adjustColumn(i);
+
+	d_result_table->setWindowLabel(objectName() + " " + QObject::tr("Result Table"));
+	d_result_table->show();
 }
 
 void Anova::freeMemory()

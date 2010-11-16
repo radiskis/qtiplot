@@ -50,7 +50,7 @@ StudentTestDialog::StudentTestDialog(bool chiSquare, Table *t, bool twoSamples, 
 	QHBoxLayout *hl = 0;
 
 	if (chiSquare)
-		setWindowTitle(tr("One Sample Test for Variance"));
+		setWindowTitle(tr("Chi-square Test for Variance"));
 	else {
 		if (twoSamples){
 			setWindowTitle(tr("Two sample t-Test"));
