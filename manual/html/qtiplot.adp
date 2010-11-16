@@ -547,9 +547,13 @@
 </section>
 <section ref="x6474.html#Python-tTest" title="Hypothesis Testing - Student's t-Test">
 </section>
+<section ref="x6474.html#Python-ChiSquareTest" title="One Sample Test for Variance (Chi-Square Test)">
+</section>
 <section ref="x6474.html#Python-ShapiroWilkTest" title="Normality Test (Shapiro - Wilk)">
 </section>
 <section ref="x6474.html#Python-OneWayANOVA" title="One-Way ANOVA">
+</section>
+<section ref="x6474.html#Python-TwoWayANOVA" title="Two-Way ANOVA">
 </section>
 </section>
 <section ref="x6474.html#Python-Notes" title="Working with Notes">
@@ -566,7 +570,7 @@
 </section>
 </section>
 </section>
-<section ref="c7804.html" title="Frequently asked questions">
+<section ref="c7811.html" title="Frequently asked questions">
 </section>
 </DCF>
 </assistantconfig>

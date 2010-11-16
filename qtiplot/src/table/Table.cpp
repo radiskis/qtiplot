@@ -875,12 +875,12 @@ void Table::save(const QString& fn, const QString& geometry, bool saveAsTemplate
 				t << QString::number(i) + "\t";
 				for (int j=0; j<cols; j++){
 			    	if (colTypes[j] == Numeric && !d_table->text(i, j).isEmpty())
-                    	t << QString::number(cell(i, j), 'e', 14) + "\t";
+						t << QString::number(cell(i, j), 'g', 14) + "\t";
 					else
 						t << d_table->text(i, j) + "\t";
 				}
             	if (colTypes[cols] == Numeric && !d_table->text(i, cols).isEmpty())
-                	t << QString::number(cell(i, cols), 'e', 14) + "\n";
+					t << QString::number(cell(i, cols), 'g', 14) + "\n";
 				else
 					t << d_table->text(i, cols) + "\n";
 			}

@@ -3063,9 +3063,9 @@ void ApplicationWindow::initTable(Table* w, const QString& caption)
 /*
  * !creates a new table with type statistics on target columns/rows of table base
  */
-TableStatistics *ApplicationWindow::newTableStatistics(Table *base, int type, QList<int> target, const QString &caption)
+TableStatistics *ApplicationWindow::newTableStatistics(Table *base, int type, QList<int> target, int start, int end, const QString &caption)
 {
-	TableStatistics* s = new TableStatistics(scriptEnv, this, base, (TableStatistics::Type) type, target);
+	TableStatistics* s = new TableStatistics(scriptEnv, this, base, (TableStatistics::Type) type, target, start, end);
 	if (caption.isEmpty())
 		initTable(s, s->objectName());
 	else
@@ -7634,17 +7634,13 @@ void ApplicationWindow::showColStatistics()
 	if (!t)
 		return;
 
-	if (int(t->selectedColumns().count()) > 0)
-	{
-		QList<int> targets;
-		for (int i=0; i < t->numCols(); i++)
-			if (t->isColumnSelected(i, true))
-				targets << i;
-		newTableStatistics(t, TableStatistics::column, targets)->showNormal();
-	}
-	else
-		QMessageBox::warning(this, tr("QtiPlot - Column selection error"),
-				tr("Please select a column first!"));
+	QList<int> targets;
+	for (int i = 0; i < t->numCols(); i++)
+		if (t->isColumnSelected(i))
+			targets << i;
+
+	Q3TableSelection select = t->getSelection();
+	newTableStatistics(t, TableStatistics::column, targets, select.topRow(), select.bottomRow())->showNormal();
 }
 
 void ApplicationWindow::showRowStatistics()
@@ -7653,15 +7649,13 @@ void ApplicationWindow::showRowStatistics()
 	if (!t)
 		return;
 
-	if (t->numSelectedRows() > 0){
-		QList<int> targets;
-		for (int i=0; i < t->numRows(); i++)
-			if (t->isRowSelected(i, true))
-				targets << i;
-		newTableStatistics(t, TableStatistics::row, targets)->showNormal();
-	} else
-		QMessageBox::warning(this, tr("QtiPlot - Row selection error"),
-				tr("Please select a row first!"));
+	QList<int> targets;
+	for (int i = 0; i < t->numRows(); i++)
+		if (t->isRowSelected(i))
+			targets << i;
+
+	Q3TableSelection select = t->getSelection();
+	newTableStatistics(t, TableStatistics::row, targets, select.leftCol(), select.rightCol())->showNormal();
 }
 
 void ApplicationWindow::showColMenu(int c)
@@ -7919,6 +7913,7 @@ void ApplicationWindow::showColMenu(int c)
 			contextMenu.addAction(actionSortTable);
 			contextMenu.insertSeparator();
 			contextMenu.addAction(actionShowColStatistics);
+			contextMenu.addAction(actionShowRowStatistics);
 			contextMenu.insertSeparator();
 			contextMenu.addAction(actionAdjustColumnWidth);
 		}
@@ -11165,8 +11160,6 @@ void ApplicationWindow::showTableContextMenu(bool selection)
 			cm.insertItem(QPixmap(":/insert_row.png"), tr("&Insert Row"), t, SLOT(insertRow()));
 			cm.insertItem(QPixmap(":/delete_row.png"), tr("&Delete Row"), t, SLOT(deleteSelectedRows()));
 			cm.insertItem(QPixmap(":/erase.png"), tr("Clea&r Row"), t, SLOT(clearSelection()));
-			cm.insertSeparator();
-			cm.addAction(actionShowRowStatistics);
 		} else if (t->numSelectedRows() > 1) {
 			cm.addAction(actionShowColumnValuesDialog);
 			cm.insertItem(QPixmap(":/cut.png"),tr("Cu&t"), t, SLOT(cutSelection()));
@@ -11176,8 +11169,6 @@ void ApplicationWindow::showTableContextMenu(bool selection)
 			cm.addAction(actionTableRecalculate);
 			cm.insertItem(QPixmap(":/delete_row.png"), tr("&Delete Rows"), t, SLOT(deleteSelectedRows()));
 			cm.insertItem(QPixmap(":/erase.png"),tr("Clea&r Rows"), t, SLOT(clearSelection()));
-			cm.insertSeparator();
-			cm.addAction(actionShowRowStatistics);
 		} else if (t->numRows() > 0 && t->numCols() > 0){
 			cm.addAction(actionShowColumnValuesDialog);
 			cm.insertItem(QPixmap(":/cut.png"),tr("Cu&t"), t, SLOT(cutSelection()));
@@ -11187,6 +11178,9 @@ void ApplicationWindow::showTableContextMenu(bool selection)
 			cm.addAction(actionTableRecalculate);
 			cm.insertItem(QPixmap(":/erase.png"),tr("Clea&r"), t, SLOT(clearSelection()));
 		}
+		cm.insertSeparator();
+		cm.addAction(actionShowColStatistics);
+		cm.addAction(actionShowRowStatistics);
 	} else {
 		cm.addAction(actionShowExportASCIIDialog);
 		cm.insertSeparator();
@@ -12403,7 +12397,7 @@ TableStatistics* ApplicationWindow::openTableStatistics(const QStringList &flist
 		targets << (*line).section('\t',i,i).toInt();
 
 	TableStatistics* w = newTableStatistics(table(list[1]),
-			list[2]=="row" ? TableStatistics::row : TableStatistics::column, targets, caption);
+			list[2]=="row" ? TableStatistics::row : TableStatistics::column, targets, 0, -1, caption);
 
 	setListViewDate(caption, list[3]);
 	w->setBirthDate(list[3]);
@@ -12415,6 +12409,8 @@ TableStatistics* ApplicationWindow::openTableStatistics(const QStringList &flist
 			for (int i = 1; i < fields.size(); i++)
 				colStatTypes << fields[i].toInt();
 			w->setColumnStatsTypes(colStatTypes);
+		} else if (fields[0] == "Range"){
+			w->setRange(fields[1].toInt(), fields[2].toInt());
 		} else if (fields[0] == "geometry")
 			restoreWindowGeometry(this, w, *line);
 		else if (fields[0] == "header"){

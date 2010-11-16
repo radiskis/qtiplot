@@ -27,27 +27,17 @@
  *                                                                         *
  ***************************************************************************/
 #include "Anova.h"
-#include <Table.h>
 
 #include <QApplication>
 #include <QLocale>
 
 Anova::Anova(ApplicationWindow *parent, bool twoWay, double level)
-: Statistics(parent),
+: StatisticTest(parent, 0.0, level),
 d_two_way(twoWay),
-d_significance_level(level),
 d_descriptive_statistics(true),
 d_show_interactions(true),
 d_anova_type(anova_fixed)
 {
-}
-
-void Anova::setSignificanceLevel(double s)
-{
-	if (s < 0.0 || s > 1.0)
-		return;
-
-	d_significance_level = s;
 }
 
 bool Anova::addSample(const QString& colName, int aLevel, int bLevel)

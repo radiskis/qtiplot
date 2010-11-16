@@ -111,6 +111,7 @@ contains(SCRIPTING_LANGS, Python) {
 			 $${SIP_DIR}/sipqtiConvolution.cpp \
 			 $${SIP_DIR}/sipqtiDeconvolution.cpp \
 			 $${SIP_DIR}/sipqtiStatistics.cpp \
+			 $${SIP_DIR}/sipqtiStatisticTest.cpp \
 			 $${SIP_DIR}/sipqtitTest.cpp \
 			 $${SIP_DIR}/sipqtiShapiroWilkTest.cpp \
 			 $${SIP_DIR}/sipqtiChiSquareTest.cpp \

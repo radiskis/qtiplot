@@ -1,10 +1,10 @@
 /***************************************************************************
-	File                 : ChiSquareTest.h
+	File                 : StatisticTest.cpp
     Project              : QtiPlot
     --------------------------------------------------------------------
 	Copyright            : (C) 2010 by Ion Vasilief
     Email (use @ for *)  : ion_vasilief*yahoo.fr
-	Description          : Chi Square Test for Variance
+	Description          : Base class for statistic tests
 
  ***************************************************************************/
 
@@ -26,27 +26,12 @@
  *   Boston, MA  02110-1301  USA                                           *
  *                                                                         *
  ***************************************************************************/
-#ifndef CHISQUARETEST_H
-#define CHISQUARETEST_H
+#include "StatisticTest.h"
 
-#include <StatisticTest.h>
-
-//! Chi-Square test for variance
-class ChiSquareTest : public StatisticTest
+StatisticTest::StatisticTest(ApplicationWindow *parent, double testVal, double level, const QString& sample)
+: Statistics(parent, sample),
+d_test_val(testVal),
+d_significance_level(level),
+d_tail(Both)
 {
-	Q_OBJECT
-
-	public:
-		ChiSquareTest(ApplicationWindow *parent, double testValue, double level, const QString& sample = QString());
-
-		virtual QString logInfo();
-		double chiSquare();
-		double pValue();
-
-		//! Lower Confidence Limit
-		double lcl(double confidenceLevel);
-		//! Upper Confidence Limit
-		double ucl(double confidenceLevel);
-};
-
-#endif
+}

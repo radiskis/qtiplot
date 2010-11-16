@@ -26,6 +26,7 @@ INCLUDEPATH += src/analysis/dialogs/
 			   src/analysis/SigmoidalFit.h \
 			   src/analysis/SmoothFilter.h \
 			   src/analysis/Statistics.h \
+			   src/analysis/StatisticTest.h \
 			   src/analysis/tTest.h \
 			   src/analysis/fft2D.h \
 			   src/analysis/fit_gsl.h \
@@ -52,6 +53,7 @@ INCLUDEPATH += src/analysis/dialogs/
 			   src/analysis/SigmoidalFit.cpp \
 			   src/analysis/SmoothFilter.cpp \
 			   src/analysis/Statistics.cpp \
+			   src/analysis/StatisticTest.cpp \
 			   src/analysis/tTest.cpp \
 			   src/analysis/fft2D.cpp \
 			   src/analysis/fit_gsl.cpp \

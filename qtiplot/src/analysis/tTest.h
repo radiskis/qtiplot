@@ -29,12 +29,10 @@
 #ifndef TTEST_H
 #define TTEST_H
 
-#include <Statistics.h>
+#include <StatisticTest.h>
 
-class Table;
-
-//! Abstract base class for data analysis operations
-class tTest : public Statistics
+//! Student's t-Test
+class tTest : public StatisticTest
 {
 	Q_OBJECT
 
@@ -43,9 +41,6 @@ class tTest : public Statistics
 
 		tTest(ApplicationWindow *parent, double testValue, double level,
 			const QString& sample1 = QString(), const QString& sample2 = QString(), bool paired = false);
-		void setTail(const Tail&);
-		void setTestValue(double);
-		void setSignificanceLevel(double);
 
 		bool setSample1(const QString& colName){return setData(colName);};
 		bool setSample2(const QString& colName, bool paired = false);
@@ -66,9 +61,6 @@ class tTest : public Statistics
 		double t(int size);
 		void freeMemory();
 
-		double d_test_val;
-		double d_significance_level;
-		int d_tail;
 		Statistics *d_sample2;
 		bool d_independent_test;
 		double d_s12, d_diff;
