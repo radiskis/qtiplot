@@ -4228,7 +4228,7 @@ print test.statistic()
 print test.pValue()
 print test.logInfo()
 
-t = test.resultTable() # Returns a pointer to the table created to display the results
+t = test.resultTable("MyResultTable") # Returns a pointer to the table created to display the results (the table name is optional)
 </programlisting>
 
 <sect3 id="Python-tTest">

@@ -3317,7 +3317,7 @@ public:
   void setSignificanceLevel(double);
   void showDescriptiveStatistics(bool show = true);
 
-  Table* resultTable();
+  Table* resultTable(const QString& = QString());
   virtual QString logInfo();
   virtual double statistic();
   virtual bool run();

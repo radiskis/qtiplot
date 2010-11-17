@@ -78,10 +78,13 @@ class Anova : public StatisticTest
 		double sst(){if (d_two_way) return d_att.SST; return d_at.SST;};
 		double mse(){if (d_two_way) return d_att.MSE; return d_at.MSE;};
 
+		//! Returns a pointer to the table created to display the results
+		virtual Table *resultTable(const QString& name = QString());
+		virtual void outputResultsTo(Table *);
+
 	protected:
 		bool twoWayANOVA();
 		bool oneWayANOVA();
-		void createResultTable();
 		void freeMemory();
 		QString levelName(int level, bool b = false);
 

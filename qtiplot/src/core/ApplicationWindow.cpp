@@ -126,7 +126,6 @@
 #include <PythonSyntaxHighlighter.h>
 #include <CreateBinMatrixDialog.h>
 #include <StudentTestDialog.h>
-#include <ShapiroWilkTest.h>
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -3548,7 +3547,7 @@ void ApplicationWindow::showChiSquareTestDialog()
 	if (!t)
 		return;
 
-	StudentTestDialog *std = new StudentTestDialog(true, t, false, this);
+	StudentTestDialog *std = new StudentTestDialog(StatisticTest::ChiSquareTest, t, false, this);
 	std->show();
 }
 
@@ -3558,7 +3557,7 @@ void ApplicationWindow::showStudentTestDialog(bool twoSamples)
 	if (!t)
 		return;
 
-	StudentTestDialog *std = new StudentTestDialog(false, t, twoSamples, this);
+	StudentTestDialog *std = new StudentTestDialog(StatisticTest::StudentTest, t, twoSamples, this);
 	std->show();
 }
 
@@ -3568,28 +3567,8 @@ void ApplicationWindow::testNormality()
 	if (!t)
 		return;
 
-	QStringList lst = t->selectedColumns();
-	if (lst.isEmpty()){
-		QMessageBox::warning(this, tr("QtiPlot - Column selection error"), tr("Please select a column first!"));
-		return;
-	}
-
-	QString s = QString::null;
-	ShapiroWilkTest *sw = new ShapiroWilkTest(this, lst[0]);
-	unsigned int n = sw->dataSize();
-	if (n >= 3 && n <= 5000)
-		s += sw->logInfo();
-	delete sw;
-
-	for (int i = 1; i < lst.size(); i++){
-		ShapiroWilkTest *sw = new ShapiroWilkTest(this, lst[i]);
-		unsigned int n = sw->dataSize();
-		if (n >= 3 && n <= 5000)
-			s += sw->shortLogInfo();
-		delete sw;
-	}
-
-	updateLog(s);
+	AnovaDialog *ad = new AnovaDialog(this, t, StatisticTest::NormalityTest);
+	ad->show();
 }
 
 #ifdef HAVE_TAMUANOVA
@@ -3599,7 +3578,7 @@ void ApplicationWindow::showANOVADialog(bool twoWay)
 	if (!t)
 		return;
 
-	AnovaDialog *ad = new AnovaDialog(t, twoWay, this);
+	AnovaDialog *ad = new AnovaDialog(this, t, StatisticTest::AnovaTest, twoWay);
 	ad->show();
 }
 #endif
@@ -14520,7 +14499,7 @@ void ApplicationWindow::createActions()
 	actionFrequencyCount = new QAction(tr("&Frequency Count ..."), this);
 	connect(actionFrequencyCount, SIGNAL(activated()), this, SLOT(showFrequencyCountDialog()));
 
-	actionShapiroWilk = new QAction(tr("&Normality Test (Shapiro - Wilk)"), this);
+	actionShapiroWilk = new QAction(tr("&Normality Test (Shapiro - Wilk)") + "...", this);
 	connect(actionShapiroWilk, SIGNAL(activated()), this, SLOT(testNormality()));
 
 	actionChiSquareTest = new QAction(tr("Chi-square Test for &Variance..."), this);
@@ -15264,7 +15243,7 @@ void ApplicationWindow::translateActionsStrings()
 	actionFrequencyCount->setMenuText(tr("&Frequency Count ..."));
 	actionOneSampletTest->setMenuText(tr("&One Sample t-Test..."));
 	actionTwoSampletTest->setMenuText(tr("&Two Sample t-Test..."));
-	actionShapiroWilk->setMenuText(tr("&Normality Test (Shapiro - Wilk)"));
+	actionShapiroWilk->setMenuText(tr("&Normality Test (Shapiro - Wilk)") + "...");
 #ifdef HAVE_TAMUANOVA
 	actionOneWayANOVA->setMenuText(tr("&One-Way ANOVA..."));
 	actionTwoWayANOVA->setMenuText(tr("&Two-Way ANOVA..."));

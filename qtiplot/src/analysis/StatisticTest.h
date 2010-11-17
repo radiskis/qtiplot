@@ -40,14 +40,14 @@ class StatisticTest : public Statistics
 
 	public:
 		enum Tail{Left = 0, Right = 1, Both = 2};
+		enum TestType{StudentTest = 0, NormalityTest = 1, ChiSquareTest = 2, AnovaTest = 3};
 
 		StatisticTest(ApplicationWindow *parent, double testValue = 0.0, double level = 0.05, const QString& sample = QString());
 		void setTail(const Tail& tail){d_tail = tail;};
 		void setTestValue(double val){d_test_val = val;};
 		void showDescriptiveStatistics(bool show = true){d_descriptive_statistics = show;};
 
-		void setSignificanceLevel(double s)
-		{
+		void setSignificanceLevel(double s){
 			if (s < 0.0 || s > 1.0)
 				return;
 			d_significance_level = s;
@@ -62,16 +62,14 @@ class StatisticTest : public Statistics
 		virtual double ucl(double){return 0.0;};
 
 		//! Returns a pointer to the table created to display the results
-		Table *resultTable(){if (!d_result_table) createResultTable(); return d_result_table;};
+		virtual Table *resultTable(const QString& name = QString());
+		virtual void outputResultsTo(Table *);
 
 	protected:
-		virtual void createResultTable();
-
 		double d_test_val;
 		double d_significance_level;
 		int d_tail;
 		bool d_descriptive_statistics;
-		Table * d_result_table;
 };
 
 #endif
