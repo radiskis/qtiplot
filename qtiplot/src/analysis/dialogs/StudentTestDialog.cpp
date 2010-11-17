@@ -31,7 +31,7 @@
 #include <DoubleSpinBox.h>
 #include <tTest.h>
 #include <ChiSquareTest.h>
-#include <StatisticTest.h>
+#include <Note.h>
 
 #include <QGroupBox>
 #include <QComboBox>
@@ -39,17 +39,21 @@
 #include <QPushButton>
 #include <QRadioButton>
 #include <QLabel>
+#include <QLineEdit>
 #include <QSpinBox>
 
-StudentTestDialog::StudentTestDialog(bool chiSquare, Table *t, bool twoSamples, QWidget* parent, Qt::WFlags fl )
+StudentTestDialog::StudentTestDialog(const StatisticTest::TestType& type, Table *t, bool twoSamples, QWidget* parent, Qt::WFlags fl )
     : QDialog( parent, fl ),
-	d_chi_square_test(chiSquare),
+	d_test_type(type),
 	d_two_samples(twoSamples)
 {
+	d_table = 0;
+	d_note = 0;
+
 	setObjectName( "StudentTestDialog" );
 	QHBoxLayout *hl = 0;
 
-	if (chiSquare)
+	if (type == StatisticTest::ChiSquareTest)
 		setWindowTitle(tr("Chi-square Test for Variance"));
 	else {
 		if (twoSamples){
@@ -88,7 +92,7 @@ StudentTestDialog::StudentTestDialog(bool chiSquare, Table *t, bool twoSamples, 
 		boxSample1->setCurrentIndex(boxSample1->findText(t->colName(0)));
 
 	QString mean = tr("Mean");
-	if (chiSquare)
+	if (type == StatisticTest::ChiSquareTest)
 		mean = tr("Variance");
 	else {
 		if (twoSamples){
@@ -162,7 +166,7 @@ StudentTestDialog::StudentTestDialog(bool chiSquare, Table *t, bool twoSamples, 
 	buttonAddLevel = new QPushButton(tr("&Add Level"));
 	gl3->addWidget(buttonAddLevel, 0, 2);
 
-	if (!chiSquare){
+	if (type == StatisticTest::StudentTest){
 		boxPowerAnalysis = new QGroupBox(tr("&Power Analysis"));
 		boxPowerAnalysis->setCheckable(true);
 
@@ -189,6 +193,26 @@ StudentTestDialog::StudentTestDialog(bool chiSquare, Table *t, bool twoSamples, 
 		connect(boxOtherSampleSize, SIGNAL(toggled(bool)), boxSampleSize, SLOT(setEnabled(bool)));
 	}
 
+	outputSettingsBox = new QGroupBox(tr("Output Settings"));
+	QGridLayout *gl4 = new QGridLayout(outputSettingsBox);
+
+	boxResultsTable = new QCheckBox(tr("&Table"));
+	gl4->addWidget(boxResultsTable, 0, 0);
+
+	tableNameLineEdit = new QLineEdit();
+	tableNameLineEdit->setEnabled(false);
+	gl4->addWidget(tableNameLineEdit, 0, 1);
+
+	boxNoteWindow = new QCheckBox(tr("&Notes Window"));
+	gl4->addWidget(boxNoteWindow, 1, 0);
+
+	noteNameLineEdit = new QLineEdit();
+	noteNameLineEdit->setEnabled(false);
+	gl4->addWidget(noteNameLineEdit, 1, 1);
+
+	boxResultsLog = new QCheckBox(tr("Results &Log"));
+	gl4->addWidget(boxResultsLog, 2, 0);
+
 	buttonOk = new QPushButton(tr( "&Compute" ));
 
 	QHBoxLayout *hl2 = new QHBoxLayout();
@@ -205,8 +229,9 @@ StudentTestDialog::StudentTestDialog(bool chiSquare, Table *t, bool twoSamples, 
 	vl->addLayout(gl1);
 	vl->addWidget(gb2);
 	vl->addWidget(boxConfidenceInterval);
-	if (!chiSquare)
+	if (type == StatisticTest::StudentTest)
 		vl->addWidget(boxPowerAnalysis);
+	vl->addWidget(outputSettingsBox);
 	vl->addStretch();
 	vl->addLayout(hl2);
 
@@ -216,6 +241,8 @@ StudentTestDialog::StudentTestDialog(bool chiSquare, Table *t, bool twoSamples, 
 	connect(rightTailButton, SIGNAL(toggled(bool)), this, SLOT(updateMeanLabel()));
 	connect(bothTailButton, SIGNAL(toggled(bool)), this, SLOT(updateMeanLabel()));
 	connect(boxMean, SIGNAL(valueChanged(double)), this, SLOT(updateMeanLabels(double)));
+	connect(boxResultsTable, SIGNAL(toggled(bool)), tableNameLineEdit, SLOT(setEnabled(bool)));
+	connect(boxNoteWindow, SIGNAL(toggled(bool)), noteNameLineEdit, SLOT(setEnabled(bool)));
 }
 
 void StudentTestDialog::addConfidenceLevel()
@@ -239,7 +266,7 @@ void StudentTestDialog::addConfidenceLevel()
 void StudentTestDialog::updateMeanLabel()
 {
 	QString s = tr("Mean");
-	if (d_chi_square_test)
+	if (d_test_type == StatisticTest::ChiSquareTest)
 		s = tr("Variance");
 	else if (d_two_samples)
 		s = s + "1 - " + s + "2";
@@ -265,9 +292,9 @@ void StudentTestDialog::updateMeanLabels(double val)
 
 void StudentTestDialog::accept()
 {
-	if (d_chi_square_test)
+	if (d_test_type == StatisticTest::ChiSquareTest)
 		acceptChiSquareTest();
-	else
+	else if (d_test_type == StatisticTest::StudentTest)
 		acceptStudentTest();
 }
 
@@ -333,7 +360,7 @@ void StudentTestDialog::acceptStudentTest()
 		s += sep1;
 	}
 
-	app->updateLog(s);
+	outputResults(&stats, s);
 }
 
 void StudentTestDialog::acceptChiSquareTest()
@@ -376,5 +403,59 @@ void StudentTestDialog::acceptChiSquareTest()
 		}
 		s += sep1;
 	}
-	app->updateLog(s);
+
+	outputResults(&stats, s);
+}
+
+void StudentTestDialog::outputResults(StatisticTest* stats, const QString& s)
+{
+	if (!stats)
+		return;
+
+	ApplicationWindow *app = (ApplicationWindow *)parent();
+	if (boxResultsLog->isChecked())
+		app->updateLog(s);
+
+	if (boxResultsTable->isChecked()){
+		QString name = tableNameLineEdit->text();
+		if (!d_table)
+			d_table = stats->resultTable(name);
+		else {
+			if (d_table->objectName() != name){
+				Table *t = app->table(name);
+				if (t){
+					d_table = t;
+					stats->outputResultsTo(d_table);
+				} else
+					d_table = stats->resultTable(name);
+			} else
+				stats->outputResultsTo(d_table);
+		}
+
+		if (d_table && name.isEmpty())
+			tableNameLineEdit->setText(d_table->objectName());
+	}
+
+	if (boxNoteWindow->isChecked()){
+		QString name = noteNameLineEdit->text();
+		if (!d_note){
+			d_note = app->newNote(name);
+			d_note->setText(s);
+		} else {
+			if (d_note->objectName() != name){
+				Note *n = qobject_cast<Note *>(app->window(name));
+				if (n){
+					d_note = n;
+					d_note->currentEditor()->append(s);
+				} else {
+					d_note = app->newNote(name);
+					d_note->setText(s);
+				}
+			} else
+				d_note->currentEditor()->append(s);
+		}
+
+		if (d_note && name.isEmpty())
+			noteNameLineEdit->setText(d_note->objectName());
+	}
 }

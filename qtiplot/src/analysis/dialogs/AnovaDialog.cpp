@@ -27,10 +27,14 @@
  *                                                                         *
  ***************************************************************************/
 #include "AnovaDialog.h"
-#include <Anova.h>
+#ifdef HAVE_TAMUANOVA
+	#include <Anova.h>
+#endif
+#include <ShapiroWilkTest.h>
 #include <ApplicationWindow.h>
 #include <Folder.h>
 #include <DoubleSpinBox.h>
+#include <Note.h>
 
 #include <QComboBox>
 #include <QGroupBox>
@@ -42,10 +46,14 @@
 #include <QTreeWidget>
 #include <QLabel>
 
-AnovaDialog::AnovaDialog(Table *t, bool twoWay, QWidget* parent, Qt::WFlags fl )
+AnovaDialog::AnovaDialog(QWidget* parent, Table *t, const StatisticTest::TestType& type, bool twoWay, Qt::WFlags fl)
 	: QDialog( parent, fl),
+	d_test_type(type),
 	d_two_way(twoWay)
 {
+	d_table = 0;
+	d_note = 0;
+
 	setObjectName( "AnovaDialog" );
 	setSizeGripEnabled( true );
 	setAttribute(Qt::WA_DeleteOnClose);
@@ -57,7 +65,7 @@ AnovaDialog::AnovaDialog(Table *t, bool twoWay, QWidget* parent, Qt::WFlags fl )
 	selectedSamples = new QTreeWidget();
 	selectedSamples->setRootIsDecorated(false);
 	selectedSamples->setSelectionMode (QAbstractItemView::ExtendedSelection);
-	if (twoWay){
+	if (type == StatisticTest::AnovaTest && twoWay){
 		setWindowTitle(tr("Two Way ANOVA"));
 		selectedSamples->setHeaderLabels (QStringList() << tr("Sample") << tr("Factor A Level") << tr("Factor B Level"));
 		selectedSamples->header()->setResizeMode(QHeaderView::ResizeToContents);
@@ -85,7 +93,11 @@ AnovaDialog::AnovaDialog(Table *t, bool twoWay, QWidget* parent, Qt::WFlags fl )
 			selectedSamples->setItemWidget(item, 2, box);
 		}
 	} else {
-		setWindowTitle(tr("One Way ANOVA"));
+		if (type == StatisticTest::AnovaTest)
+			setWindowTitle(tr("One Way ANOVA"));
+		else
+			setWindowTitle(tr("Normality Test (Shapiro-Wilk)"));
+
 		selectedSamples->setHeaderHidden(true);
 		QStringList lst = t->selectedColumns();
 		foreach(QString text, lst)
@@ -128,12 +140,34 @@ AnovaDialog::AnovaDialog(Table *t, bool twoWay, QWidget* parent, Qt::WFlags fl )
 	boxSignificance->setValue(0.05);
 	gl3->addWidget(boxSignificance, 0, 1);
 
-	showStatisticsBox = new QCheckBox(tr("Show &Descriptive Statistics" ));
-	showStatisticsBox->setChecked(!twoWay);
-	gl3->addWidget(showStatisticsBox, 1, 0);
-	gl3->setRowStretch(2, 1);
-
+	if (d_test_type == StatisticTest::AnovaTest){
+		showStatisticsBox = new QCheckBox(tr("Show &Descriptive Statistics" ));
+		showStatisticsBox->setChecked(!twoWay);
+		gl3->addWidget(showStatisticsBox, 1, 0);
+		gl3->setRowStretch(2, 1);
+	}
 	gl1->addLayout(gl3, 2, 0);
+
+	outputSettingsBox = new QGroupBox(tr("Output Settings"));
+	QGridLayout *gl4 = new QGridLayout(outputSettingsBox);
+
+	boxResultsTable = new QCheckBox(tr("&Table"));
+	gl4->addWidget(boxResultsTable, 0, 0);
+
+	tableNameLineEdit = new QLineEdit();
+	tableNameLineEdit->setEnabled(false);
+	gl4->addWidget(tableNameLineEdit, 0, 1);
+
+	boxNoteWindow = new QCheckBox(tr("&Notes Window"));
+	gl4->addWidget(boxNoteWindow, 1, 0);
+
+	noteNameLineEdit = new QLineEdit();
+	noteNameLineEdit->setEnabled(false);
+	gl4->addWidget(noteNameLineEdit, 1, 1);
+
+	boxResultsLog = new QCheckBox(tr("Results &Log"));
+	gl4->addWidget(boxResultsLog, 2, 0);
+	gl1->addWidget(outputSettingsBox, 3, 0);
 
 	QGridLayout *gl2 = new QGridLayout();
 
@@ -189,6 +223,8 @@ AnovaDialog::AnovaDialog(Table *t, bool twoWay, QWidget* parent, Qt::WFlags fl )
 	connect(btnAdd, SIGNAL(clicked()),this, SLOT(addData()));
 	connect(btnRemove, SIGNAL(clicked()),this, SLOT(removeData()));
 	connect(currentFolderBox, SIGNAL(toggled(bool)), this, SLOT(showCurrentFolder(bool)));
+	connect(boxResultsTable, SIGNAL(toggled(bool)), tableNameLineEdit, SLOT(setEnabled(bool)));
+	connect(boxNoteWindow, SIGNAL(toggled(bool)), noteNameLineEdit, SLOT(setEnabled(bool)));
 }
 
 void AnovaDialog::showCurrentFolder(bool currentFolder)
@@ -282,6 +318,41 @@ void AnovaDialog::removeData()
 
 void AnovaDialog::accept()
 {
+#ifdef HAVE_TAMUANOVA
+	if (d_test_type == StatisticTest::AnovaTest)
+		acceptAnova();
+	else
+#endif
+	if (d_test_type == StatisticTest::NormalityTest)
+		acceptNormalityTest();
+}
+
+void AnovaDialog::acceptNormalityTest()
+{
+	ApplicationWindow *app = (ApplicationWindow *)parent();
+	for (int i = 0; i < selectedSamples->topLevelItemCount(); i++){
+		QTreeWidgetItem *item = selectedSamples->topLevelItem(i);
+		if (!item)
+			continue;
+
+		QString s = QString::null;
+		ShapiroWilkTest *sw = new ShapiroWilkTest(app, item->text(0));
+		unsigned int n = sw->dataSize();
+		if (n >= 3 && n <= 5000){
+			sw->setSignificanceLevel(boxSignificance->value());
+			if (i)
+				s = sw->shortLogInfo();
+			else
+				s = sw->logInfo();
+		}
+		outputResults(sw, s);
+		delete sw;
+	}
+}
+
+#ifdef HAVE_TAMUANOVA
+void AnovaDialog::acceptAnova()
+{
 	Anova anova((ApplicationWindow *)parent(), d_two_way, boxSignificance->value());
 	for (int i = 0; i < selectedSamples->topLevelItemCount(); i++){
 		QTreeWidgetItem *item = selectedSamples->topLevelItem(i);
@@ -306,4 +377,60 @@ void AnovaDialog::accept()
 
 	if (!anova.run())
 		return;
+
+	outputResults(&anova, anova.logInfo());
+}
+#endif
+
+void AnovaDialog::outputResults(StatisticTest* stats, const QString& s)
+{
+	if (!stats)
+		return;
+
+	ApplicationWindow *app = (ApplicationWindow *)parent();
+	if (boxResultsLog->isChecked())
+		app->updateLog(s);
+
+	if (boxResultsTable->isChecked()){
+		QString name = tableNameLineEdit->text();
+		if (!d_table)
+			d_table = stats->resultTable(name);
+		else {
+			if (d_table->objectName() != name){
+				Table *t = app->table(name);
+				if (t){
+					d_table = t;
+					stats->outputResultsTo(d_table);
+				} else
+					d_table = stats->resultTable(name);
+			} else
+				stats->outputResultsTo(d_table);
+		}
+
+		if (d_table && name.isEmpty())
+			tableNameLineEdit->setText(d_table->objectName());
+	}
+
+	if (boxNoteWindow->isChecked()){
+		QString name = noteNameLineEdit->text();
+		if (!d_note){
+			d_note = app->newNote(name);
+			d_note->setText(s);
+		} else {
+			if (d_note->objectName() != name){
+				Note *n = qobject_cast<Note *>(app->window(name));
+				if (n){
+					d_note = n;
+					d_note->currentEditor()->append(s);
+				} else {
+					d_note = app->newNote(name);
+					d_note->setText(s);
+				}
+			} else
+				d_note->currentEditor()->append(s);
+		}
+
+		if (d_note && name.isEmpty())
+			noteNameLineEdit->setText(d_note->objectName());
+	}
 }

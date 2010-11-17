@@ -30,16 +30,19 @@
 #define StudentTestDialog_H
 
 #include <QDialog>
+#include <StatisticTest.h>
 
 class QGroupBox;
 class QComboBox;
 class QCheckBox;
 class QLabel;
+class QLineEdit;
 class QPushButton;
 class QRadioButton;
 class QSpinBox;
 class DoubleSpinBox;
 class Table;
+class Note;
 
 //! Filter options dialog
 class StudentTestDialog : public QDialog
@@ -47,7 +50,7 @@ class StudentTestDialog : public QDialog
     Q_OBJECT
 
 public:
-	StudentTestDialog(bool chiSquare, Table *t, bool twoSamples = false, QWidget* parent = 0, Qt::WFlags fl = 0);
+	StudentTestDialog(const StatisticTest::TestType& type, Table *t, bool twoSamples = false, QWidget* parent = 0, Qt::WFlags fl = 0);
 
 private slots:
     void accept();
@@ -58,8 +61,9 @@ private slots:
 private:
 	void acceptStudentTest();
 	void acceptChiSquareTest();
+	void outputResults(StatisticTest* stats, const QString& s);
 
-	bool d_chi_square_test;
+	StatisticTest::TestType d_test_type;
 	bool d_two_samples;
 
 	QComboBox *boxSample1;
@@ -83,6 +87,16 @@ private:
 
 	QRadioButton *independentTestBtn;
 	QRadioButton *pairedTestBtn;
+
+	QGroupBox *outputSettingsBox;
+	QCheckBox *boxResultsTable;
+	QLineEdit *tableNameLineEdit;
+	QCheckBox *boxResultsLog;
+	QCheckBox *boxNoteWindow;
+	QLineEdit *noteNameLineEdit;
+
+	Table *d_table;
+	Note *d_note;
 };
 
 #endif

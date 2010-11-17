@@ -30,15 +30,19 @@
 #define AnovaDialog_H
 
 #include <QDialog>
+#include <StatisticTest.h>
 
 class QCheckBox;
 class QComboBox;
+class QGroupBox;
 class QPushButton;
 class QListWidget;
+class QLineEdit;
 class QSpinBox;
 class QTreeWidget;
 class DoubleSpinBox;
 class Table;
+class Note;
 
 //! Filter options dialog
 class AnovaDialog : public QDialog
@@ -46,7 +50,7 @@ class AnovaDialog : public QDialog
     Q_OBJECT
 
 public:
-	AnovaDialog(Table *t, bool twoWay = false, QWidget* parent = 0, Qt::WFlags fl = 0);
+	AnovaDialog(QWidget* parent, Table *t, const StatisticTest::TestType& type = StatisticTest::AnovaTest, bool twoWay = false, Qt::WFlags fl = 0);
 
 private slots:
 	void accept();
@@ -56,6 +60,12 @@ private slots:
 	void updateLevelBoxes();
 
 private:
+	void acceptNormalityTest();
+#ifdef HAVE_TAMUANOVA
+	void acceptAnova();
+#endif
+	void outputResults(StatisticTest* stats, const QString& s);
+	StatisticTest::TestType d_test_type;
 	bool d_two_way;
 
 	QListWidget* availableSamples;
@@ -74,6 +84,16 @@ private:
 	QSpinBox *aLevelsBox;
 	QSpinBox *bLevelsBox;
 	DoubleSpinBox* boxSignificance;
+
+	QGroupBox *outputSettingsBox;
+	QCheckBox *boxResultsTable;
+	QLineEdit *tableNameLineEdit;
+	QCheckBox *boxResultsLog;
+	QCheckBox *boxNoteWindow;
+	QLineEdit *noteNameLineEdit;
+
+	Table *d_table;
+	Note *d_note;
 };
 
 #endif

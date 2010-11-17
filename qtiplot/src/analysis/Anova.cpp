@@ -85,8 +85,6 @@ bool Anova::run()
 	else if(!oneWayANOVA())
 		return false;
 
-	if (d_result_log)
-		((ApplicationWindow *)parent())->updateLog(logInfo());
 	QApplication::restoreOverrideCursor();
 	return true;
 }
@@ -318,77 +316,152 @@ QString Anova::logInfo()
 	return s;
 }
 
-void Anova::createResultTable()
+void Anova::outputResultsTo(Table *t)
 {
-	if (d_result_table)
+	if (!t)
 		return;
 
-	ApplicationWindow *app = (ApplicationWindow *)parent();
+	int rows = t->numRows();
+	if (d_two_way)
+		t->setNumRows(rows + 5);
+	else
+		t->setNumRows(rows + 3);
+
+	if (t->numCols() < 6)
+		t->setNumCols(6);
+
 	if (d_two_way){
-		d_result_table = app->newTable(5, 6);
+		t->setText(rows, 0, QObject::tr("A"));
+		t->setText(rows + 1, 0, QObject::tr("B"));
+		t->setText(rows + 2, 0, QObject::tr("A*B"));
+		t->setText(rows + 3, 0, QObject::tr("Error"));
+		t->setText(rows + 4, 0, QObject::tr("Total"));
+		t->setColumnType(0, Table::Text);
 
-		d_result_table->setText(0, 0, QObject::tr("A"));
-		d_result_table->setText(1, 0, QObject::tr("B"));
-		d_result_table->setText(2, 0, QObject::tr("A*B"));
-		d_result_table->setText(3, 0, QObject::tr("Error"));
-		d_result_table->setText(4, 0, QObject::tr("Total"));
-		d_result_table->setColumnType(0, Table::Text);
+		t->setCell(rows, 1, d_att.dfA);
+		t->setCell(rows, 2, d_att.SSA);
+		t->setCell(rows, 3, d_att.MSA);
+		t->setCell(rows, 4, d_att.FA);
+		t->setCell(rows, 5, d_att.pA);
 
-		d_result_table->setCell(0, 1, d_att.dfA);
-		d_result_table->setCell(0, 2, d_att.SSA);
-		d_result_table->setCell(0, 3, d_att.MSA);
-		d_result_table->setCell(0, 4, d_att.FA);
-		d_result_table->setCell(0, 5, d_att.pA);
+		rows++;
+		t->setCell(rows, 1, d_att.dfB);
+		t->setCell(rows, 2, d_att.SSB);
+		t->setCell(rows, 3, d_att.MSB);
+		t->setCell(rows, 4, d_att.FB);
+		t->setCell(rows, 5, d_att.pB);
 
-		d_result_table->setCell(1, 1, d_att.dfB);
-		d_result_table->setCell(1, 2, d_att.SSB);
-		d_result_table->setCell(1, 3, d_att.MSB);
-		d_result_table->setCell(1, 4, d_att.FB);
-		d_result_table->setCell(1, 5, d_att.pB);
+		rows++;
+		t->setCell(rows, 1, d_att.dfAB);
+		t->setCell(rows, 2, d_att.SSAB);
+		t->setCell(rows, 3, d_att.MSAB);
+		t->setCell(rows, 4, d_att.FAB);
+		t->setCell(rows, 5, d_att.pAB);
 
-		d_result_table->setCell(2, 1, d_att.dfAB);
-		d_result_table->setCell(2, 2, d_att.SSAB);
-		d_result_table->setCell(2, 3, d_att.MSAB);
-		d_result_table->setCell(2, 4, d_att.FAB);
-		d_result_table->setCell(2, 5, d_att.pAB);
+		rows++;
+		t->setCell(rows, 1, d_att.dfE);
+		t->setCell(rows, 2, d_att.SSE);
+		t->setCell(rows, 3, d_att.MSE);
 
-		d_result_table->setCell(3, 1, d_att.dfE);
-		d_result_table->setCell(3, 2, d_att.SSE);
-		d_result_table->setCell(3, 3, d_att.MSE);
-
-		d_result_table->setCell(4, 1, d_att.dfT);
-		d_result_table->setCell(4, 2, d_att.SST);
+		rows++;
+		t->setCell(rows, 1, d_att.dfT);
+		t->setCell(rows, 2, d_att.SST);
 	} else {
-		d_result_table = app->newTable(3, 6);
+		t->setText(rows, 0, QObject::tr("Model"));
+		t->setText(rows + 1, 0, QObject::tr("Error"));
+		t->setText(rows + 2, 0, QObject::tr("Total"));
+		t->setColumnType(0, Table::Text);
 
-		d_result_table->setText(0, 0, QObject::tr("Model"));
-		d_result_table->setText(1, 0, QObject::tr("Error"));
-		d_result_table->setText(2, 0, QObject::tr("Total"));
-		d_result_table->setColumnType(0, Table::Text);
+		t->setCell(rows, 1, d_at.dfTr);
+		t->setCell(rows, 2, d_at.SSTr);
+		t->setCell(rows, 3, d_at.MSTr);
+		t->setCell(rows, 4, d_at.F);
+		t->setCell(rows, 5, d_at.p);
 
-		d_result_table->setCell(0, 1, d_at.dfTr);
-		d_result_table->setCell(0, 2, d_at.SSTr);
-		d_result_table->setCell(0, 3, d_at.MSTr);
-		d_result_table->setCell(0, 4, d_at.F);
-		d_result_table->setCell(0, 5, d_at.p);
+		rows++;
+		t->setCell(rows, 1, d_at.dfE);
+		t->setCell(rows, 2, d_at.SSE);
+		t->setCell(rows, 3, d_at.MSE);
 
-		d_result_table->setCell(1, 1, d_at.dfE);
-		d_result_table->setCell(1, 2, d_at.SSE);
-		d_result_table->setCell(1, 3, d_at.MSE);
+		rows++;
+		t->setCell(rows, 1, d_at.dfT);
+		t->setCell(rows, 2, d_at.SST);
+	}
 
-		d_result_table->setCell(2, 1, d_at.dfT);
-		d_result_table->setCell(2, 2, d_at.SST);
+	for (int i = 0; i < t->numCols(); i++)
+		t->table()->adjustColumn(i);
+}
+
+Table * Anova::resultTable(const QString& name)
+{
+	ApplicationWindow *app = (ApplicationWindow *)parent();
+	Table *t = 0;
+	if (d_two_way){
+		t = app->newTable(5, 6);
+
+		t->setText(0, 0, QObject::tr("A"));
+		t->setText(1, 0, QObject::tr("B"));
+		t->setText(2, 0, QObject::tr("A*B"));
+		t->setText(3, 0, QObject::tr("Error"));
+		t->setText(4, 0, QObject::tr("Total"));
+		t->setColumnType(0, Table::Text);
+
+		t->setCell(0, 1, d_att.dfA);
+		t->setCell(0, 2, d_att.SSA);
+		t->setCell(0, 3, d_att.MSA);
+		t->setCell(0, 4, d_att.FA);
+		t->setCell(0, 5, d_att.pA);
+
+		t->setCell(1, 1, d_att.dfB);
+		t->setCell(1, 2, d_att.SSB);
+		t->setCell(1, 3, d_att.MSB);
+		t->setCell(1, 4, d_att.FB);
+		t->setCell(1, 5, d_att.pB);
+
+		t->setCell(2, 1, d_att.dfAB);
+		t->setCell(2, 2, d_att.SSAB);
+		t->setCell(2, 3, d_att.MSAB);
+		t->setCell(2, 4, d_att.FAB);
+		t->setCell(2, 5, d_att.pAB);
+
+		t->setCell(3, 1, d_att.dfE);
+		t->setCell(3, 2, d_att.SSE);
+		t->setCell(3, 3, d_att.MSE);
+
+		t->setCell(4, 1, d_att.dfT);
+		t->setCell(4, 2, d_att.SST);
+	} else {
+		t = app->newTable(3, 6);
+
+		t->setText(0, 0, QObject::tr("Model"));
+		t->setText(1, 0, QObject::tr("Error"));
+		t->setText(2, 0, QObject::tr("Total"));
+		t->setColumnType(0, Table::Text);
+
+		t->setCell(0, 1, d_at.dfTr);
+		t->setCell(0, 2, d_at.SSTr);
+		t->setCell(0, 3, d_at.MSTr);
+		t->setCell(0, 4, d_at.F);
+		t->setCell(0, 5, d_at.p);
+
+		t->setCell(1, 1, d_at.dfE);
+		t->setCell(1, 2, d_at.SSE);
+		t->setCell(1, 3, d_at.MSE);
+
+		t->setCell(2, 1, d_at.dfT);
+		t->setCell(2, 2, d_at.SST);
 	}
 
 	QStringList header = QStringList() << QObject::tr("Source") << QObject::tr("DoF") << QObject::tr("Sum of Squares")
 						 << QObject::tr("Mean Square") << QObject::tr("F Value") << QObject::tr("P Value");
-	d_result_table->setHeader(header);
+	t->setHeader(header);
 
-	for (int i = 0; i < d_result_table->numCols(); i++)
-		d_result_table->table()->adjustColumn(i);
+	for (int i = 0; i < t->numCols(); i++)
+		t->table()->adjustColumn(i);
 
-	d_result_table->setWindowLabel(objectName() + " " + QObject::tr("Result Table"));
-	d_result_table->show();
+	t->setWindowLabel(objectName() + " " + QObject::tr("Result Table"));
+	t->show();
+	return t;
 }
 
 void Anova::freeMemory()

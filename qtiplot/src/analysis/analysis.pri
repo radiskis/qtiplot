@@ -59,7 +59,8 @@ INCLUDEPATH += src/analysis/dialogs/
 			   src/analysis/fit_gsl.cpp \
 			   src/analysis/nrutil.cpp \
 
-	HEADERS += src/analysis/dialogs/BaselineDialog.h \
+	HEADERS += src/analysis/dialogs/AnovaDialog.h \
+			   src/analysis/dialogs/BaselineDialog.h \
 			   src/analysis/dialogs/ExpDecayDialog.h \
 			   src/analysis/dialogs/FFTDialog.h \
 			   src/analysis/dialogs/FitDialog.h \
@@ -72,7 +73,8 @@ INCLUDEPATH += src/analysis/dialogs/
 			   src/analysis/dialogs/SubtractDataDialog.h \
 			   src/analysis/dialogs/StudentTestDialog.h \
 
-	SOURCES += src/analysis/dialogs/BaselineDialog.cpp \
+	SOURCES += src/analysis/dialogs/AnovaDialog.cpp \
+			   src/analysis/dialogs/BaselineDialog.cpp \
 			   src/analysis/dialogs/ExpDecayDialog.cpp \
 			   src/analysis/dialogs/FFTDialog.cpp \
 			   src/analysis/dialogs/FitDialog.cpp \
@@ -93,6 +95,4 @@ INCLUDEPATH += src/analysis/dialogs/
 !isEmpty(TAMUANOVA_LIBS) {
 	HEADERS += src/analysis/Anova.h
 	SOURCES += src/analysis/Anova.cpp
-	HEADERS += src/analysis/dialogs/AnovaDialog.h
-	SOURCES += src/analysis/dialogs/AnovaDialog.cpp
 }

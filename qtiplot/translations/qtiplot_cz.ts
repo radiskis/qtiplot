@@ -109,6 +109,26 @@
         <source>Factor &amp;B Levels</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Normality Test (Shapiro-Wilk)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Output Settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Table</source>
+        <translation type="unfinished">&amp;Tabulka</translation>
+    </message>
+    <message>
+        <source>&amp;Notes Window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Results &amp;Log</source>
+        <translation type="unfinished">Zápis &amp;výsledků</translation>
+    </message>
 </context>
 <context>
     <name>ApplicationWindow</name>
@@ -14266,6 +14286,22 @@ pokud e1 pak e2 jinak e3.</translation>
     <message>
         <source>Confidence Intervals for Variance</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Output Settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Table</source>
+        <translation type="unfinished">&amp;Tabulka</translation>
+    </message>
+    <message>
+        <source>&amp;Notes Window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Results &amp;Log</source>
+        <translation type="unfinished">Zápis &amp;výsledků</translation>
     </message>
 </context>
 <context>

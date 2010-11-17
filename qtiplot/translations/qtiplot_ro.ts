@@ -3516,6 +3516,26 @@ Are you sure you want to continue?</source>
         <source>Factor &amp;B Levels</source>
         <translation>Nivele factor &amp;B</translation>
     </message>
+    <message>
+        <source>Normality Test (Shapiro-Wilk)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Output Settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Table</source>
+        <translation type="unfinished">&amp;Tabel</translation>
+    </message>
+    <message>
+        <source>&amp;Notes Window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Results &amp;Log</source>
+        <translation type="unfinished">Rezu&amp;ltate</translation>
+    </message>
 </context>
 <context>
     <name>ApplicationWindow</name>
@@ -17865,6 +17885,22 @@ have the same number of rows.</source>
     <message>
         <source>Confidence Intervals for Variance</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Output Settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Table</source>
+        <translation type="unfinished">&amp;Tabel</translation>
+    </message>
+    <message>
+        <source>&amp;Notes Window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Results &amp;Log</source>
+        <translation type="unfinished">Rezu&amp;ltate</translation>
     </message>
 </context>
 <context>
