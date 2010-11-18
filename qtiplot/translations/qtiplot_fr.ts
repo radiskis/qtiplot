@@ -51,7 +51,7 @@
     </message>
     <message>
         <source>B</source>
-        <translation>BB</translation>
+        <translation>B</translation>
     </message>
     <message>
         <source>One Way ANOVA</source>
@@ -111,23 +111,23 @@
     </message>
     <message>
         <source>Normality Test (Shapiro-Wilk)</source>
-        <translation type="unfinished"></translation>
+        <translation>Test de normalité (Shapiro - Wilk)</translation>
     </message>
     <message>
         <source>Output Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Sortie des résultats vers</translation>
     </message>
     <message>
         <source>&amp;Table</source>
-        <translation type="unfinished">&amp;Table</translation>
+        <translation>&amp;Table</translation>
     </message>
     <message>
         <source>&amp;Notes Window</source>
-        <translation type="unfinished"></translation>
+        <translation>Fe&amp;nêtre de commentaires</translation>
     </message>
     <message>
         <source>Results &amp;Log</source>
-        <translation type="unfinished">&amp;Historique des résultats</translation>
+        <translation>Historique des résu&amp;ltats</translation>
     </message>
 </context>
 <context>
@@ -4085,7 +4085,7 @@ L&apos;autocomplétion ne sera pas disponible!</translation>
     </message>
     <message>
         <source>Chi-square Test for &amp;Variance...</source>
-        <translation type="unfinished"></translation>
+        <translation>Test du Chi² pour la &amp;variance...</translation>
     </message>
 </context>
 <context>
@@ -13133,7 +13133,7 @@ Calcule le sinus de x.</translation>
     </message>
     <message>
         <source>The test statistics t and P can not be computed because the sample variance of the differences between Sample1 and Sample2 is 0.</source>
-        <translation>Les statistiques de test t et p ne peuvent pas être calculées car la variance de l&apos;échantillon des différences entre l&apos;Échantillon1 et l&apos;Échantillon2 est égale à zéro</translation>
+        <translation>Les statistiques de test t et p ne peuvent pas être calculées car la variance de l&apos;échantillon des différences entre l&apos;Échantillon1 et l&apos;Échantillon2 est égale à zéro.</translation>
     </message>
     <message>
         <source>invt(x, n):
@@ -13156,11 +13156,11 @@ Calcule le sinus de x.</translation>
     </message>
     <message>
         <source>Two-Way ANOVA requires three or more data samples.</source>
-        <translation>La variance à deux facteurs nécessite au moins trois série de données.</translation>
+        <translation>La variance à deux facteurs nécessite au moins trois séries de données.</translation>
     </message>
     <message>
         <source>One-Way ANOVA requires two or more data samples.</source>
-        <translation>La variance à un facteur nécessite au moins trois série de données.</translation>
+        <translation>La variance à un facteur nécessite au moins trois séries de données.</translation>
     </message>
     <message>
         <source>Factor A must have two or more levels.</source>
@@ -13268,76 +13268,79 @@ Calcule le sinus de x.</translation>
     </message>
     <message>
         <source>ANOVA</source>
-        <translation type="unfinished">ANOVA</translation>
+        <translation>ANOVA</translation>
     </message>
     <message>
         <source>A*B</source>
-        <translation type="unfinished"></translation>
+        <translation>A*B</translation>
     </message>
     <message>
         <source>Result Table</source>
-        <translation type="unfinished"></translation>
+        <translation>Tableau de résultats</translation>
     </message>
     <message>
         <source>Chi-square Test</source>
-        <translation type="unfinished"></translation>
+        <translation>Test du Chi²</translation>
     </message>
     <message>
         <source>Chi-square Test for Variance</source>
-        <translation type="unfinished"></translation>
+        <translation>Test du Chi² pour la variance</translation>
     </message>
     <message>
         <source>Variance</source>
-        <translation type="unfinished">Variance</translation>
+        <translation>Variance</translation>
     </message>
     <message>
         <source>Chi-Square</source>
-        <translation type="unfinished"></translation>
+        <translation>Chi²</translation>
     </message>
     <message>
         <source>At the %1 level, the population variance</source>
-        <translation type="unfinished"></translation>
+        <translation>Au niveau %1, la variance de population</translation>
     </message>
     <message>
         <source>than the test variance</source>
-        <translation type="unfinished"></translation>
+        <translation>que la variance de test</translation>
     </message>
     <message>
         <source>Shapiro-Wilk Normality Test</source>
-        <translation type="unfinished"></translation>
+        <translation>Test de normalité Shapiro-Wilk</translation>
     </message>
     <message>
         <source>Statistic</source>
-        <translation type="unfinished"></translation>
+        <translation>Statistique</translation>
     </message>
     <message>
         <source>Student&apos;s t-Test</source>
-        <translation type="unfinished"></translation>
+        <translation>Test de Student</translation>
     </message>
     <message>
         <source>chi2cdf(x, df):
  Computes the cumulative distribution function for a chi-squared distribution with df degrees of freedom.</source>
-        <translation type="unfinished"></translation>
+        <translation>chi2cdf(x, df) : Calcule la fonction de distribution cumulée pur une distribution chi² avec df degrés de libertés.</translation>
     </message>
     <message>
         <source>chi2inv(p, df):
  Computes the inverse of the cumulative distribution function for a chi-squared distribution with df degrees of freedom.</source>
-        <translation type="unfinished"></translation>
+        <translation>chi2inv(p, df) : calcule l&apos;inverse de la fonction de distribution cumulée pour une distribution en chi² avec df degrés de liberté.</translation>
     </message>
     <message>
         <source>normal(seed):
  Returns a normal random number using the Ziggurat algorithm.</source>
-        <translation type="unfinished"></translation>
+        <translation>normal(seed) :
+ Renvoie un nombre aléatoire avec l&apos;algorithme  de Ziggurat.</translation>
     </message>
     <message>
         <source>normcdf(x):
  Computes the cumulative distribution function for a Gaussian distribution with standard deviation sigma = 1.0.</source>
-        <translation type="unfinished"></translation>
+        <translation>nomcdf(x) :
+ Calcule la fonction de distribution cumulée pour une distribution gaussienne avec un écart-type sigma de 1.0.</translation>
     </message>
     <message>
         <source>norminv(p):
  Computes the inverse of the cumulative distribution function for a Gaussian distribution with standard deviation sigma = 1.0.</source>
-        <translation type="unfinished"></translation>
+        <translation>norminv(p) :
+ Calculel&apos;inverse de la fonction de distribution cumulée pour une distribution gaussienne avec un écart-type sigma de 1.0.</translation>
     </message>
 </context>
 <context>
@@ -14122,7 +14125,7 @@ Calcule le sinus de x.</translation>
     </message>
     <message>
         <source>In&amp;dependent Test</source>
-        <translation>Test in&amp;d&amp;pendant</translation>
+        <translation>Test in&amp;dépendant</translation>
     </message>
     <message>
         <source>Pai&amp;red Test</source>
@@ -14134,7 +14137,7 @@ Calcule le sinus de x.</translation>
     </message>
     <message>
         <source>Sample</source>
-        <translation>Échantillon</translation>
+        <translation>Échantillon </translation>
     </message>
     <message>
         <source>Mean</source>
@@ -14146,11 +14149,11 @@ Calcule le sinus de x.</translation>
     </message>
     <message>
         <source>Null</source>
-        <translation>Nul</translation>
+        <translation>Nulle </translation>
     </message>
     <message>
         <source>Alternate</source>
-        <translation>Aletrnatif</translation>
+        <translation>Alternative </translation>
     </message>
     <message>
         <source>Significance Level</source>
@@ -14158,7 +14161,7 @@ Calcule le sinus de x.</translation>
     </message>
     <message>
         <source>Confidence &amp;Interval(s)</source>
-        <translation>&amp;Interval(s) de confiance</translation>
+        <translation>&amp;Intervalle(s) de confiance</translation>
     </message>
     <message>
         <source>Level(s) in %</source>
@@ -14222,31 +14225,31 @@ Calcule le sinus de x.</translation>
     </message>
     <message>
         <source>Chi-square Test for Variance</source>
-        <translation type="unfinished"></translation>
+        <translation>Test du Chi² pour la variance</translation>
     </message>
     <message>
         <source>Variance</source>
-        <translation type="unfinished">Variance</translation>
+        <translation>Variance</translation>
     </message>
     <message>
         <source>Confidence Intervals for Variance</source>
-        <translation type="unfinished"></translation>
+        <translation>Intervalle de confiance pour la variance</translation>
     </message>
     <message>
         <source>Output Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Sortie des résultats vers</translation>
     </message>
     <message>
         <source>&amp;Table</source>
-        <translation type="unfinished">&amp;Table</translation>
+        <translation>&amp;Table</translation>
     </message>
     <message>
         <source>&amp;Notes Window</source>
-        <translation type="unfinished"></translation>
+        <translation>Fe&amp;nêtre de commentaires</translation>
     </message>
     <message>
         <source>Results &amp;Log</source>
-        <translation type="unfinished">&amp;Historique des résultats</translation>
+        <translation>Historique des résu&amp;ltats</translation>
     </message>
 </context>
 <context>
