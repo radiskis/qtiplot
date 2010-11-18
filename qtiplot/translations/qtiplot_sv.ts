@@ -3794,10 +3794,6 @@ den första representerar signalen och den andra svarsfunktionen!</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Show &amp;Descriptive Statistics</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>ANOVA &amp;Type</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3848,6 +3844,10 @@ den första representerar signalen och den andra svarsfunktionen!</translation>
     <message>
         <source>Results &amp;Log</source>
         <translation type="unfinished">Resultat&amp;logg</translation>
+    </message>
+    <message>
+        <source>&amp;Descriptive Statistics</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -8654,6 +8654,10 @@ Automatisk komplettering ej tillgängligt!</translation>
         <source>Chi-square Test for &amp;Variance...</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>chart</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ArrowMarker</name>
@@ -13451,11 +13455,11 @@ Följande specialkoder kan användas:
     </message>
     <message>
         <source>&amp;Ok</source>
-        <translation>&amp;Ok</translation>
+        <translation type="obsolete">&amp;Ok</translation>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation>&amp;Stäng</translation>
+        <translation type="obsolete">&amp;Stäng</translation>
     </message>
     <message>
         <source>Constant</source>

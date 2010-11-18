@@ -47,6 +47,7 @@ StudentTestDialog::StudentTestDialog(const StatisticTest::TestType& type, Table 
 	d_test_type(type),
 	d_two_samples(twoSamples)
 {
+	ApplicationWindow *app = (ApplicationWindow *)parent;
 	d_table = 0;
 	d_note = 0;
 
@@ -147,7 +148,7 @@ StudentTestDialog::StudentTestDialog(const StatisticTest::TestType& type, Table 
 	boxSignificance->setRange(0.0, 1.0);
 	boxSignificance->setDecimals(2);
 	boxSignificance->setSingleStep(0.01);
-	boxSignificance->setValue(0.05);
+	boxSignificance->setValue(app->d_stats_significance_level);
 	gl2->addWidget(boxSignificance, 4, 1);
 
 	boxConfidenceInterval = new QGroupBox(tr("Confidence &Interval(s)"));
@@ -197,6 +198,7 @@ StudentTestDialog::StudentTestDialog(const StatisticTest::TestType& type, Table 
 	QGridLayout *gl4 = new QGridLayout(outputSettingsBox);
 
 	boxResultsTable = new QCheckBox(tr("&Table"));
+	boxResultsTable->setChecked(app->d_stats_result_table);
 	gl4->addWidget(boxResultsTable, 0, 0);
 
 	tableNameLineEdit = new QLineEdit();
@@ -204,6 +206,7 @@ StudentTestDialog::StudentTestDialog(const StatisticTest::TestType& type, Table 
 	gl4->addWidget(tableNameLineEdit, 0, 1);
 
 	boxNoteWindow = new QCheckBox(tr("&Notes Window"));
+	boxNoteWindow->setChecked(app->d_stats_result_notes);
 	gl4->addWidget(boxNoteWindow, 1, 0);
 
 	noteNameLineEdit = new QLineEdit();
@@ -211,6 +214,7 @@ StudentTestDialog::StudentTestDialog(const StatisticTest::TestType& type, Table 
 	gl4->addWidget(noteNameLineEdit, 1, 1);
 
 	boxResultsLog = new QCheckBox(tr("Results &Log"));
+	boxResultsLog->setChecked(app->d_stats_result_log);
 	gl4->addWidget(boxResultsLog, 2, 0);
 
 	buttonOk = new QPushButton(tr( "&Compute" ));
@@ -458,4 +462,17 @@ void StudentTestDialog::outputResults(StatisticTest* stats, const QString& s)
 		if (d_note && name.isEmpty())
 			noteNameLineEdit->setText(d_note->objectName());
 	}
+}
+
+void StudentTestDialog::closeEvent(QCloseEvent* e)
+{
+	ApplicationWindow *app = (ApplicationWindow *)this->parent();
+	if (app){
+		app->d_stats_significance_level = boxSignificance->value();
+		app->d_stats_result_table = boxResultsTable->isChecked();
+		app->d_stats_result_log = boxResultsLog->isChecked();
+		app->d_stats_result_notes = boxNoteWindow->isChecked();
+	}
+
+	e->accept();
 }

@@ -51,6 +51,7 @@ AnovaDialog::AnovaDialog(QWidget* parent, Table *t, const StatisticTest::TestTyp
 	d_test_type(type),
 	d_two_way(twoWay)
 {
+	ApplicationWindow *app = (ApplicationWindow *)parent;
 	d_table = 0;
 	d_note = 0;
 
@@ -131,27 +132,22 @@ AnovaDialog::AnovaDialog(QWidget* parent, Table *t, const StatisticTest::TestTyp
 	gl1->addLayout(vl1, 1, 1);
 	gl1->addWidget(selectedSamples, 1, 2);
 
-	QGridLayout *gl3 = new QGridLayout();
-	gl3->addWidget(new QLabel(tr("Significance Level")), 0, 0);
+	QHBoxLayout *hl3 = new QHBoxLayout();
+	hl3->addWidget(new QLabel(tr("Significance Level")));
 	boxSignificance = new DoubleSpinBox();
 	boxSignificance->setRange(0.0, 1.0);
 	boxSignificance->setDecimals(2);
 	boxSignificance->setSingleStep(0.01);
-	boxSignificance->setValue(0.05);
-	gl3->addWidget(boxSignificance, 0, 1);
+	boxSignificance->setValue(app->d_stats_significance_level);
 
-	if (d_test_type == StatisticTest::AnovaTest){
-		showStatisticsBox = new QCheckBox(tr("Show &Descriptive Statistics" ));
-		showStatisticsBox->setChecked(!twoWay);
-		gl3->addWidget(showStatisticsBox, 1, 0);
-		gl3->setRowStretch(2, 1);
-	}
-	gl1->addLayout(gl3, 2, 0);
+	hl3->addWidget(boxSignificance);
 
 	outputSettingsBox = new QGroupBox(tr("Output Settings"));
 	QGridLayout *gl4 = new QGridLayout(outputSettingsBox);
 
 	boxResultsTable = new QCheckBox(tr("&Table"));
+	boxResultsTable->setChecked(app->d_stats_result_table);
+
 	gl4->addWidget(boxResultsTable, 0, 0);
 
 	tableNameLineEdit = new QLineEdit();
@@ -159,6 +155,7 @@ AnovaDialog::AnovaDialog(QWidget* parent, Table *t, const StatisticTest::TestTyp
 	gl4->addWidget(tableNameLineEdit, 0, 1);
 
 	boxNoteWindow = new QCheckBox(tr("&Notes Window"));
+	boxNoteWindow->setChecked(app->d_stats_result_notes);
 	gl4->addWidget(boxNoteWindow, 1, 0);
 
 	noteNameLineEdit = new QLineEdit();
@@ -166,8 +163,21 @@ AnovaDialog::AnovaDialog(QWidget* parent, Table *t, const StatisticTest::TestTyp
 	gl4->addWidget(noteNameLineEdit, 1, 1);
 
 	boxResultsLog = new QCheckBox(tr("Results &Log"));
+	boxResultsLog->setChecked(app->d_stats_result_log);
 	gl4->addWidget(boxResultsLog, 2, 0);
-	gl1->addWidget(outputSettingsBox, 3, 0);
+
+	if (d_test_type == StatisticTest::AnovaTest){
+		showStatisticsBox = new QCheckBox(tr("&Descriptive Statistics" ));
+		showStatisticsBox->setChecked(app->d_descriptive_stats);
+		showStatisticsBox->setEnabled(boxNoteWindow->isChecked() || boxResultsLog->isChecked());
+		gl4->addWidget(showStatisticsBox, 2, 1);
+	}
+
+	QVBoxLayout *vl0 = new QVBoxLayout();
+	vl0->addLayout(hl3);
+	vl0->addWidget(outputSettingsBox);
+
+	gl1->addLayout(vl0, 2, 0);
 
 	QGridLayout *gl2 = new QGridLayout();
 
@@ -225,6 +235,16 @@ AnovaDialog::AnovaDialog(QWidget* parent, Table *t, const StatisticTest::TestTyp
 	connect(currentFolderBox, SIGNAL(toggled(bool)), this, SLOT(showCurrentFolder(bool)));
 	connect(boxResultsTable, SIGNAL(toggled(bool)), tableNameLineEdit, SLOT(setEnabled(bool)));
 	connect(boxNoteWindow, SIGNAL(toggled(bool)), noteNameLineEdit, SLOT(setEnabled(bool)));
+	connect(boxNoteWindow, SIGNAL(toggled(bool)), this, SLOT(enableDescriptiveStatistics()));
+	connect(boxResultsLog, SIGNAL(toggled(bool)), this, SLOT(enableDescriptiveStatistics()));
+}
+
+void AnovaDialog::enableDescriptiveStatistics()
+{
+	if (d_test_type != StatisticTest::AnovaTest)
+		return;
+
+	showStatisticsBox->setEnabled(boxNoteWindow->isChecked() || boxResultsLog->isChecked());
 }
 
 void AnovaDialog::showCurrentFolder(bool currentFolder)
@@ -368,7 +388,7 @@ void AnovaDialog::acceptAnova()
 			return;
 	}
 
-	anova.showDescriptiveStatistics(showStatisticsBox->isChecked());
+	anova.showDescriptiveStatistics(showStatisticsBox->isEnabled() && showStatisticsBox->isChecked());
 
 	if (d_two_way){
 		anova.setAnovaTwoWayModel(boxModel->currentIndex());
@@ -433,4 +453,19 @@ void AnovaDialog::outputResults(StatisticTest* stats, const QString& s)
 		if (d_note && name.isEmpty())
 			noteNameLineEdit->setText(d_note->objectName());
 	}
+}
+
+void AnovaDialog::closeEvent(QCloseEvent* e)
+{
+	ApplicationWindow *app = (ApplicationWindow *)this->parent();
+	if (app){
+		app->d_stats_significance_level = boxSignificance->value();
+		app->d_stats_result_table = boxResultsTable->isChecked();
+		app->d_stats_result_log = boxResultsLog->isChecked();
+		app->d_stats_result_notes = boxNoteWindow->isChecked();
+		if (d_test_type == StatisticTest::AnovaTest)
+			app->d_descriptive_stats = showStatisticsBox->isChecked();
+	}
+
+	e->accept();
 }

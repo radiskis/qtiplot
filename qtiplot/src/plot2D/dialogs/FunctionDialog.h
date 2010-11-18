@@ -31,6 +31,8 @@
 
 #include <Graph.h>
 
+class QAbstractButton;
+class QDialogButtonBox;
 class QTableWidget;
 class QStackedWidget;
 class QWidget;
@@ -56,13 +58,17 @@ public:
     void setCurveToModify(FunctionCurve *c);
 	void setGraph(Graph *g){graph = g;};
 
-protected slots:
+public slots:
+	bool apply();
+
+private slots:
 	void raiseWidget(int index);
 	void insertFunction();
 	void updateFunctionExplain(int);
-	void acceptFunction();
-	void acceptParametric();
-	void acceptPolar();
+	void accept();
+	bool acceptFunction();
+	bool acceptParametric();
+	bool acceptPolar();
 	void showFunctionLog();
 	void showXParLog();
 	void showYParLog();
@@ -70,9 +76,7 @@ protected slots:
 	void showPolarThetaLog();
 	void setActiveEditor(ScriptEdit *edit){d_active_editor = edit;};
 	void guessConstants();
-
-public slots:
-	void accept();
+	void buttonClicked(QAbstractButton *);
 	void clearList();
 
 private:
@@ -96,8 +100,6 @@ private:
 	DoubleSpinBox* boxPolarFrom;
 	DoubleSpinBox* boxPolarTo;
     QPushButton* buttonClear;
-    QPushButton* buttonCancel;
-    QPushButton* buttonOk;
 	QSpinBox* boxPoints;
 	QSpinBox* boxParPoints;
 	QSpinBox* boxPolarPoints;
@@ -111,6 +113,7 @@ private:
 	QComboBox* boxMathFunctions;
 	QTextEdit* boxFunctionExplain;
 	QPushButton *buttonFunctionLog, *buttonXParLog, *buttonYParLog, *buttonPolarRadiusLog, *buttonPolarRThetaLog;
+	QDialogButtonBox *buttonBox;
 
 	ApplicationWindow *d_app;
 	ScriptEdit *d_active_editor;

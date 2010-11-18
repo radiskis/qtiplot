@@ -1191,6 +1191,12 @@ private slots:
 
 // TODO: a lot of this stuff should be private
 public:
+	double d_stats_significance_level;
+	bool d_stats_result_table;
+	bool d_stats_result_log;
+	bool d_stats_result_notes;
+	bool d_descriptive_stats;
+
 	bool d_ask_web_connection;
 	bool d_open_last_project;
 	int d_curve_max_antialising_size;

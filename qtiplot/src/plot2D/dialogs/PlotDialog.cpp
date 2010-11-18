@@ -3542,7 +3542,7 @@ bool PlotDialog::acceptParams()
   	    }
 		applyLabelsFormat(plotItem);
 	} else if (privateTabWidget->currentPage() == functionPage){
-		functionEdit->accept();
+		functionEdit->apply();
 	}
 
 	graph->replot();

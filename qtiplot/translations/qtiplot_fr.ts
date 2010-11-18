@@ -75,7 +75,7 @@
     </message>
     <message>
         <source>Show &amp;Descriptive Statistics</source>
-        <translation>Voir les statiques &amp;descriptives</translation>
+        <translation type="obsolete">Voir les statiques &amp;descriptives</translation>
     </message>
     <message>
         <source>ANOVA &amp;Type</source>
@@ -128,6 +128,10 @@
     <message>
         <source>Results &amp;Log</source>
         <translation>Historique des résu&amp;ltats</translation>
+    </message>
+    <message>
+        <source>&amp;Descriptive Statistics</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -4021,7 +4025,7 @@ L&apos;autocomplétion ne sera pas disponible!</translation>
     </message>
     <message>
         <source>chart</source>
-        <translation type="obsolete">Diagramme</translation>
+        <translation type="unfinished">Diagramme</translation>
     </message>
     <message>
         <source>Yes, don&apos;t ask me again</source>
@@ -8466,11 +8470,11 @@ Les codes spéciaux suivant peuvent être utilisés :
     </message>
     <message>
         <source>&amp;Ok</source>
-        <translation>&amp;Ok</translation>
+        <translation type="obsolete">&amp;Ok</translation>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation>&amp;fermer</translation>
+        <translation type="obsolete">&amp;fermer</translation>
     </message>
     <message>
         <source>Constant</source>
