@@ -3552,10 +3552,6 @@ Do you want to overwrite it?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Show &amp;Descriptive Statistics</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>ANOVA &amp;Type</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3606,6 +3602,10 @@ Do you want to overwrite it?</source>
     <message>
         <source>Results &amp;Log</source>
         <translation type="unfinished">Registro de Resultados</translation>
+    </message>
+    <message>
+        <source>&amp;Descriptive Statistics</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -8420,6 +8420,10 @@ Autocompletion will not be available!</source>
         <source>Chi-square Test for &amp;Variance...</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>chart</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>AssociationsDialog</name>
@@ -13113,11 +13117,11 @@ The following special codes can be used:
     </message>
     <message>
         <source>&amp;Ok</source>
-        <translation type="unfinished">&amp;Ok</translation>
+        <translation type="obsolete">&amp;Ok</translation>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation type="unfinished">&amp;Cerrar</translation>
+        <translation type="obsolete">&amp;Cerrar</translation>
     </message>
     <message>
         <source>Constant</source>

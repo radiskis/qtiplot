@@ -74,10 +74,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Show &amp;Descriptive Statistics</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>ANOVA &amp;Type</source>
         <translation type="unfinished"></translation>
     </message>
@@ -128,6 +124,10 @@
     <message>
         <source>Results &amp;Log</source>
         <translation type="unfinished">Zápis &amp;výsledků</translation>
+    </message>
+    <message>
+        <source>&amp;Descriptive Statistics</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -4089,6 +4089,10 @@ Různé části tohoto souboru se nemusí zobrazovat tak, jak se očekává.</tr
     </message>
     <message>
         <source>Chi-square Test for &amp;Variance...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>chart</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -8375,7 +8379,7 @@ K tomu lze použít následujících zvláštních kódů:
     </message>
     <message>
         <source>&amp;Ok</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>R =</source>
@@ -8407,7 +8411,7 @@ K tomu lze použít následujících zvláštních kódů:
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation>&amp;Zavřít</translation>
+        <translation type="obsolete">&amp;Zavřít</translation>
     </message>
     <message>
         <source>Points</source>

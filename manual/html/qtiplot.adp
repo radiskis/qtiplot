@@ -570,7 +570,7 @@
 </section>
 </section>
 </section>
-<section ref="c7811.html" title="Frequently asked questions">
+<section ref="c7812.html" title="Frequently asked questions">
 </section>
 </DCF>
 </assistantconfig>

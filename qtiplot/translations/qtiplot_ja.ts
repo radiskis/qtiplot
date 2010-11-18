@@ -468,10 +468,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Show &amp;Descriptive Statistics</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>ANOVA &amp;Type</source>
         <translation type="unfinished"></translation>
     </message>
@@ -522,6 +518,10 @@
     <message>
         <source>Results &amp;Log</source>
         <translation type="unfinished">結果ログ(&amp;L)</translation>
+    </message>
+    <message>
+        <source>&amp;Descriptive Statistics</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -4572,6 +4572,10 @@ Autocompletion will not be available!</source>
     </message>
     <message>
         <source>Chi-square Test for &amp;Variance...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>chart</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -8890,14 +8894,6 @@ The following special codes can be used:
     </message>
     <message>
         <source>Clea&amp;r Function</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Ok</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Close</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

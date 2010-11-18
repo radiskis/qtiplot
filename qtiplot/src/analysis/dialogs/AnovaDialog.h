@@ -58,8 +58,10 @@ private slots:
 	void removeData();
 	void showCurrentFolder(bool);
 	void updateLevelBoxes();
+	void enableDescriptiveStatistics();
 
 private:
+	void closeEvent(QCloseEvent*);
 	void acceptNormalityTest();
 #ifdef HAVE_TAMUANOVA
 	void acceptAnova();

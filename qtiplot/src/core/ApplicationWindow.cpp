@@ -455,6 +455,12 @@ void ApplicationWindow::initWindow()
 
 void ApplicationWindow::setDefaultOptions()
 {
+	d_stats_significance_level = 0.05;
+	d_stats_result_table = false;
+	d_stats_result_log = true;
+	d_stats_result_notes = false;
+	d_descriptive_stats = true;
+
 	d_ask_web_connection = true;
 	d_open_last_project = false;
 	d_force_muParser = true;
@@ -5505,6 +5511,15 @@ void ApplicationWindow::readSettings()
 	d_add_curves_dialog_size = QSize(settings.value("/Width", 700).toInt(), settings.value("/Height", 400).toInt());
 	d_show_current_folder = settings.value("/ShowCurrentFolder", false).toBool();
 	settings.endGroup(); // AddRemoveCurves Dialog
+
+	settings.beginGroup("/Statistics");
+	d_stats_significance_level = settings.value("/SignificanceLevel", d_stats_significance_level).toDouble();
+	d_stats_result_table = settings.value("/ResultTable", d_stats_result_table).toBool();
+	d_stats_result_log = settings.value("/ResultLog", d_stats_result_log).toBool();
+	d_stats_result_notes = settings.value("/Notes", d_stats_result_notes).toBool();
+	d_descriptive_stats = settings.value("/DescriptiveStats", d_descriptive_stats).toBool();
+	settings.endGroup(); // Statistics dialogs
+
 	settings.endGroup(); // Dialogs
 
 	settings.beginGroup("/Colors");
@@ -5964,6 +5979,15 @@ void ApplicationWindow::saveSettings()
 	settings.setValue("/Height", d_add_curves_dialog_size.height());
 	settings.setValue("/ShowCurrentFolder", d_show_current_folder);
 	settings.endGroup(); // AddRemoveCurves Dialog
+
+	settings.beginGroup("/Statistics");
+	settings.setValue("/SignificanceLevel", d_stats_significance_level);
+	settings.setValue("/ResultTable", d_stats_result_table);
+	settings.setValue("/ResultLog", d_stats_result_log);
+	settings.setValue("/Notes", d_stats_result_notes);
+	settings.setValue("/DescriptiveStats", d_descriptive_stats);
+	settings.endGroup(); // Statistics dialogs
+
 	settings.endGroup(); // Dialogs
 
 	settings.beginGroup("/Colors");

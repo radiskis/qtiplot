@@ -59,6 +59,7 @@ private slots:
 	void addConfidenceLevel();
 
 private:
+	void closeEvent(QCloseEvent*);
 	void acceptStudentTest();
 	void acceptChiSquareTest();
 	void outputResults(StatisticTest* stats, const QString& s);

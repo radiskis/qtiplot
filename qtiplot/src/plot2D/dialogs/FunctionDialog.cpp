@@ -52,6 +52,7 @@
 #include <QStringListModel>
 #include <QInputDialog>
 #include <QApplication>
+#include <QDialogButtonBox>
 
 FunctionDialog::FunctionDialog(ApplicationWindow* parent, bool standAlone, Qt::WFlags fl )
 : QDialog( parent, fl ), d_app(parent), d_active_editor(0), d_stand_alone(standAlone)
@@ -308,20 +309,10 @@ FunctionDialog::FunctionDialog(ApplicationWindow* parent, bool standAlone, Qt::W
 	vbox1->addStretch();
 
 	if (standAlone){
-		buttonOk = new QPushButton(tr( "&Ok" ));
-		buttonOk->setDefault(true);
-		connect( buttonOk, SIGNAL( clicked() ), this, SLOT( accept() ) );
-
-		buttonCancel = new QPushButton(tr( "&Close" ));
-		buttonCancel->setAutoDefault(false);
-		connect( buttonCancel, SIGNAL( clicked() ), this, SLOT( reject() ) );
-
-		QHBoxLayout *hbox2 = new QHBoxLayout();
-		hbox2->addWidget(buttonOk);
-		hbox2->addWidget(buttonCancel);
-		hbox2->addStretch();
-
-		vbox1->addLayout(hbox2);
+		buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Apply | QDialogButtonBox::Cancel);
+		buttonBox->setCenterButtons(true);
+		connect(buttonBox, SIGNAL(clicked(QAbstractButton *)), this, SLOT(buttonClicked(QAbstractButton *)));
+		vbox1->addWidget(buttonBox);
 
 		setSizeGripEnabled(true);
 		setWindowTitle( tr( "QtiPlot - Add function curve" ) );
@@ -333,6 +324,21 @@ FunctionDialog::FunctionDialog(ApplicationWindow* parent, bool standAlone, Qt::W
 
 	curveID = -1;
 	graph = 0;
+}
+
+void FunctionDialog::buttonClicked(QAbstractButton *btn)
+{
+	switch(buttonBox->buttonRole(btn)){
+		case QDialogButtonBox::AcceptRole:
+			accept();
+		break;
+		case QDialogButtonBox::RejectRole:
+			reject();
+		break;
+		default:
+			apply();
+		break;
+	}
 }
 
 void FunctionDialog::raiseWidget(int index)
@@ -445,20 +451,18 @@ void FunctionDialog::clearList()
 	}
 }
 
-void FunctionDialog::acceptFunction()
+bool FunctionDialog::acceptFunction()
 {
 	double start = boxFrom->value();
 	double end = boxTo->value();
 	if (start >= end){
 		QMessageBox::critical(this, tr("QtiPlot - Input error"), tr("Please enter x limits that satisfy: from < end!"));
 		boxTo->setFocus();
-		return;
+		return false;
 	}
 
 	QMap<QString, double> constants;
-
 	QString formula = boxFunction->text().simplified();
-	bool error = false;
 	try {
 		double x = start;
 		MyParser parser;
@@ -479,14 +483,14 @@ void FunctionDialog::acceptFunction()
 	} catch(mu::ParserError &e) {
 		QMessageBox::critical(this, tr("QtiPlot - Input function error"), QString::fromStdString(e.GetMsg()));
 		boxFunction->setFocus();
-		error=true;
+		return false;
 	}
 
 	// Collecting all the information
 	int type = boxType->currentItem();
 	QStringList formulas;
 	formulas += formula;
-	if (!error && d_app){
+	if (d_app){
 		d_app->updateFunctionLists(type, formulas);
 		if (!graph){
 			MultiLayer *plot = d_app->newFunctionPlot(formulas, start, end, boxPoints->value(), "x", type);
@@ -501,9 +505,10 @@ void FunctionDialog::acceptFunction()
 				setConstants(graph->addFunction(formulas, start, end, boxPoints->value(), "x", type), constants);
 		}
 	}
+	return true;
 }
 
-void FunctionDialog::acceptParametric()
+bool FunctionDialog::acceptParametric()
 {
 	double start = boxParFrom->value();
 	double end = boxParTo->value();
@@ -512,16 +517,14 @@ void FunctionDialog::acceptParametric()
 		QMessageBox::critical(this, tr("QtiPlot - Input error"),
 				tr("Please enter parameter limits that satisfy: from < end!"));
 		boxParTo->setFocus();
-		return;
+		return false;
 	}
 
 	double parameter;
 	QString xformula = boxXFunction->text().simplified();
 	QString yformula = boxYFunction->text().simplified();
-	bool error = false;
 
 	QMap<QString, double> constants;
-
 	try {
 		MyParser parser;
 		parser.DefineVar((boxParameter->text()).ascii(), &parameter);
@@ -542,7 +545,7 @@ void FunctionDialog::acceptParametric()
 	} catch(mu::ParserError &e) {
 		QMessageBox::critical(this, tr("QtiPlot - Input function error"), QString::fromStdString(e.GetMsg()));
 		boxXFunction->setFocus();
-		error = true;
+		return false;
 	}
 
 	try {
@@ -564,14 +567,14 @@ void FunctionDialog::acceptParametric()
 	} catch(mu::ParserError &e) {
 		QMessageBox::critical(this, tr("QtiPlot - Input function error"), QString::fromStdString(e.GetMsg()));
 		boxYFunction->setFocus();
-		error = true;
+		return false;
 	}
 	// Collecting all the information
 	int type = boxType->currentItem();
 	QStringList formulas;
 	formulas += xformula;
 	formulas += yformula;
-	if (!error && d_app){
+	if (d_app){
 		d_app->updateFunctionLists(type, formulas);
 		if (!graph){
 			MultiLayer *plot = d_app->newFunctionPlot(formulas, start, end, boxParPoints->value(), boxParameter->text(), type);
@@ -586,9 +589,10 @@ void FunctionDialog::acceptParametric()
 				setConstants(graph->addFunction(formulas, start, end, boxParPoints->value(), boxParameter->text(), type), constants);
 		}
 	}
+	return true;
 }
 
-void FunctionDialog::acceptPolar()
+bool FunctionDialog::acceptPolar()
 {
 	double start = boxPolarFrom->value();
 	double end = boxPolarTo->value();
@@ -596,16 +600,14 @@ void FunctionDialog::acceptPolar()
 		QMessageBox::critical(this, tr("QtiPlot - Input error"),
 				tr("Please enter parameter limits that satisfy: from < end!"));
 		boxPolarTo->setFocus();
-		return;
+		return false;
 	}
 
 	double parameter;
 	QString rformula = boxPolarRadius->text().simplified();
 	QString tformula = boxPolarTheta->text().simplified();
-	bool error = false;
 
 	QMap<QString, double> constants;
-
 	try {
 		MyParser parser;
 		parser.DefineVar((boxPolarParameter->text()).ascii(), &parameter);
@@ -626,7 +628,7 @@ void FunctionDialog::acceptPolar()
 	} catch(mu::ParserError &e) {
 		QMessageBox::critical(this, tr("QtiPlot - Input function error"), QString::fromStdString(e.GetMsg()));
 		boxPolarRadius->setFocus();
-		error = true;
+		return false;
 	}
 
 	try {
@@ -647,14 +649,14 @@ void FunctionDialog::acceptPolar()
 	} catch(mu::ParserError &e) {
 		QMessageBox::critical(this, tr("QtiPlot - Input function error"), QString::fromStdString(e.GetMsg()));
 		boxPolarTheta->setFocus();
-		error = true;
+		return false;
 	}
 	// Collecting all the information
 	int type = boxType->currentItem();
 	QStringList formulas;
 	formulas += rformula;
 	formulas += tformula;
-	if (!error && d_app){
+	if (d_app){
 		d_app->updateFunctionLists(type, formulas);
 
 		if (!graph){
@@ -670,24 +672,31 @@ void FunctionDialog::acceptPolar()
 				setConstants(graph->addFunction(formulas, start, end, boxPolarPoints->value(), boxPolarParameter->text(), type), constants);
 		}
 	}
+	return true;
 }
 
 void FunctionDialog::accept()
 {
-	switch (boxType->currentIndex())
-	{
+	if (apply())
+		close();
+}
+
+bool FunctionDialog::apply()
+{
+	switch (boxType->currentIndex()){
 		case 0:
-			acceptFunction();
+			return acceptFunction();
 			break;
 
 		case 1:
-			acceptParametric();
+			return acceptParametric();
 			break;
 
 		case 2:
-			acceptPolar();
+			return acceptPolar();
 			break;
 	}
+	return false;
 }
 
 void FunctionDialog::showFunctionLog()

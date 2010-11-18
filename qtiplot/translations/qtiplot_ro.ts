@@ -3482,7 +3482,7 @@ Are you sure you want to continue?</source>
     </message>
     <message>
         <source>Show &amp;Descriptive Statistics</source>
-        <translation>Afişază &amp;statistici</translation>
+        <translation type="obsolete">Afişază &amp;statistici</translation>
     </message>
     <message>
         <source>ANOVA &amp;Type</source>
@@ -3535,6 +3535,10 @@ Are you sure you want to continue?</source>
     <message>
         <source>Results &amp;Log</source>
         <translation type="unfinished">Rezu&amp;ltate</translation>
+    </message>
+    <message>
+        <source>&amp;Descriptive Statistics</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -7565,6 +7569,10 @@ Autocompletion will not be available!</source>
     </message>
     <message>
         <source>Chi-square Test for &amp;Variance...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>chart</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -12036,11 +12044,11 @@ The following special codes can be used:
     </message>
     <message>
         <source>&amp;Ok</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation>În&amp;chide</translation>
+        <translation type="obsolete">În&amp;chide</translation>
     </message>
     <message>
         <source>Clear list</source>
