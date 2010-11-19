@@ -47,7 +47,7 @@
 #include <QLabel>
 
 AnovaDialog::AnovaDialog(QWidget* parent, Table *t, const StatisticTest::TestType& type, bool twoWay)
-	: QDialog(parent, Qt::WindowMinimizeButtonHint),
+	: QDialog(parent),
 	d_test_type(type),
 	d_two_way(twoWay)
 {
@@ -58,6 +58,10 @@ AnovaDialog::AnovaDialog(QWidget* parent, Table *t, const StatisticTest::TestTyp
 	setObjectName( "AnovaDialog" );
 	setSizeGripEnabled( true );
 	setAttribute(Qt::WA_DeleteOnClose);
+
+#ifdef Q_OS_WIN
+	setWindowFlags(windowFlags() | Qt::WindowMinimizeButtonHint);
+#endif
 
 	availableSamples = new QListWidget();
 	availableSamples->setSelectionMode (QAbstractItemView::ExtendedSelection);

@@ -67,12 +67,15 @@
 using namespace std;
 
 FitDialog::FitDialog(Graph *g, QWidget* parent)
-: QDialog(parent, Qt::WindowMinimizeButtonHint)
+: QDialog(parent)
 {
-    setObjectName("FitDialog");
+	setObjectName("FitDialog");
 	setWindowTitle(tr("QtiPlot - Fit Wizard"));
 	setSizeGripEnabled(true);
 	setAttribute(Qt::WA_DeleteOnClose);
+#ifdef Q_OS_WIN
+	setWindowFlags(windowFlags() | Qt::WindowMinimizeButtonHint);
+#endif
 
 	d_param_table = 0;
 	d_current_fit = 0;

@@ -43,7 +43,7 @@
 #include <QSpinBox>
 
 StudentTestDialog::StudentTestDialog(const StatisticTest::TestType& type, Table *t, bool twoSamples, QWidget* parent)
-	: QDialog( parent, Qt::WindowMinimizeButtonHint),
+	: QDialog( parent),
 	d_test_type(type),
 	d_two_samples(twoSamples)
 {
@@ -73,6 +73,9 @@ StudentTestDialog::StudentTestDialog(const StatisticTest::TestType& type, Table 
 
 	setSizeGripEnabled( true );
 	setAttribute(Qt::WA_DeleteOnClose);
+#ifdef Q_OS_WIN
+	setWindowFlags(windowFlags() | Qt::WindowMinimizeButtonHint);
+#endif
 
 	QGridLayout *gl1 = new QGridLayout();
 	gl1->setColumnStretch(1, 1);
