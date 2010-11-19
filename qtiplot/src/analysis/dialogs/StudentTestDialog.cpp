@@ -217,6 +217,11 @@ StudentTestDialog::StudentTestDialog(const StatisticTest::TestType& type, Table 
 	boxResultsLog->setChecked(app->d_stats_result_log);
 	gl4->addWidget(boxResultsLog, 2, 0);
 
+	showStatisticsBox = new QCheckBox(tr("&Descriptive Statistics" ));
+	showStatisticsBox->setChecked(app->d_descriptive_stats);
+	enableDescriptiveStatistics();
+	gl4->addWidget(showStatisticsBox, 2, 1);
+
 	buttonOk = new QPushButton(tr( "&Compute" ));
 
 	QHBoxLayout *hl2 = new QHBoxLayout();
@@ -247,6 +252,13 @@ StudentTestDialog::StudentTestDialog(const StatisticTest::TestType& type, Table 
 	connect(boxMean, SIGNAL(valueChanged(double)), this, SLOT(updateMeanLabels(double)));
 	connect(boxResultsTable, SIGNAL(toggled(bool)), tableNameLineEdit, SLOT(setEnabled(bool)));
 	connect(boxNoteWindow, SIGNAL(toggled(bool)), noteNameLineEdit, SLOT(setEnabled(bool)));
+	connect(boxNoteWindow, SIGNAL(toggled(bool)), this, SLOT(enableDescriptiveStatistics()));
+	connect(boxResultsLog, SIGNAL(toggled(bool)), this, SLOT(enableDescriptiveStatistics()));
+}
+
+void StudentTestDialog::enableDescriptiveStatistics()
+{
+	showStatisticsBox->setEnabled(boxNoteWindow->isChecked() || boxResultsLog->isChecked());
 }
 
 void StudentTestDialog::addConfidenceLevel()
@@ -322,6 +334,8 @@ void StudentTestDialog::acceptStudentTest()
 		tail = StatisticTest::Right;
 	stats.setTail(tail);
 
+	stats.showDescriptiveStatistics(showStatisticsBox->isEnabled() && showStatisticsBox->isChecked());
+
 	int p = app->d_decimal_digits;
 	QLocale l = app->locale();
 
@@ -382,6 +396,7 @@ void StudentTestDialog::acceptChiSquareTest()
 		tail = StatisticTest::Right;
 
 	stats.setTail(tail);
+	stats.showDescriptiveStatistics(showStatisticsBox->isEnabled() && showStatisticsBox->isChecked());
 
 	int p = app->d_decimal_digits;
 	QLocale l = app->locale();
@@ -472,6 +487,7 @@ void StudentTestDialog::closeEvent(QCloseEvent* e)
 		app->d_stats_result_table = boxResultsTable->isChecked();
 		app->d_stats_result_log = boxResultsLog->isChecked();
 		app->d_stats_result_notes = boxNoteWindow->isChecked();
+		app->d_descriptive_stats = showStatisticsBox->isChecked();
 	}
 
 	e->accept();

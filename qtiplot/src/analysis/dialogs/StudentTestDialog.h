@@ -57,6 +57,7 @@ private slots:
 	void updateMeanLabels(double);
 	void updateMeanLabel();
 	void addConfidenceLevel();
+	void enableDescriptiveStatistics();
 
 private:
 	void closeEvent(QCloseEvent*);
@@ -95,6 +96,7 @@ private:
 	QCheckBox *boxResultsLog;
 	QCheckBox *boxNoteWindow;
 	QLineEdit *noteNameLineEdit;
+	QCheckBox *showStatisticsBox;
 
 	Table *d_table;
 	Note *d_note;

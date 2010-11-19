@@ -3470,7 +3470,7 @@ Are you sure you want to continue?</source>
     </message>
     <message>
         <source>Show current &amp;folder only</source>
-        <translation>Afişază doar conţinutul &amp;dosarului curent</translation>
+        <translation>Afişază doar &amp;dosarul curent</translation>
     </message>
     <message>
         <source>Selected Data</source>
@@ -3518,27 +3518,27 @@ Are you sure you want to continue?</source>
     </message>
     <message>
         <source>Normality Test (Shapiro-Wilk)</source>
-        <translation type="unfinished"></translation>
+        <translation>Testul de normalitate (Shapiro - Wilk)</translation>
     </message>
     <message>
         <source>Output Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Setări rezultate</translation>
     </message>
     <message>
         <source>&amp;Table</source>
-        <translation type="unfinished">&amp;Tabel</translation>
+        <translation>&amp;Tabel</translation>
     </message>
     <message>
         <source>&amp;Notes Window</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Note</translation>
     </message>
     <message>
         <source>Results &amp;Log</source>
-        <translation type="unfinished">Rezu&amp;ltate</translation>
+        <translation>Rezu&amp;ltate</translation>
     </message>
     <message>
         <source>&amp;Descriptive Statistics</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Statistică descriptivă</translation>
     </message>
 </context>
 <context>
@@ -7569,11 +7569,11 @@ Autocompletion will not be available!</source>
     </message>
     <message>
         <source>Chi-square Test for &amp;Variance...</source>
-        <translation type="unfinished"></translation>
+        <translation>Testul chi-pătrat pentru &amp;varianţă...</translation>
     </message>
     <message>
         <source>chart</source>
-        <translation type="unfinished"></translation>
+        <translation>diagramă</translation>
     </message>
 </context>
 <context>
@@ -16795,7 +16795,7 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Not normal at %1 level</source>
-        <translation>Distribuţia nu este normală pentru un prag de acceptabilitate de%1</translation>
+        <translation>Distribuţia nu este normală pentru un prag de acceptabilitate de %1</translation>
     </message>
     <message>
         <source>ftable(x, m, n):
@@ -16903,7 +16903,7 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>At the %1 level, the population means</source>
-        <translation>La nivelul de %1,  mediile populaţiilor</translation>
+        <translation>La nivelul de %1 mediile populaţiilor</translation>
     </message>
     <message>
         <source>are significantly different</source>
@@ -16923,51 +16923,51 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>ANOVA</source>
-        <translation type="unfinished">ANOVA</translation>
+        <translation>ANOVA</translation>
     </message>
     <message>
         <source>A*B</source>
-        <translation type="unfinished"></translation>
+        <translation>A*B</translation>
     </message>
     <message>
         <source>Result Table</source>
-        <translation type="unfinished"></translation>
+        <translation>tabel rezultate</translation>
     </message>
     <message>
         <source>Chi-square Test</source>
-        <translation type="unfinished"></translation>
+        <translation>Testul chi-pătrat</translation>
     </message>
     <message>
         <source>Chi-square Test for Variance</source>
-        <translation type="unfinished"></translation>
+        <translation>Testul chi-pătrat pentru varianţă</translation>
     </message>
     <message>
         <source>Variance</source>
-        <translation type="unfinished">Varianţă</translation>
+        <translation>Varianţă</translation>
     </message>
     <message>
         <source>Chi-Square</source>
-        <translation type="unfinished"></translation>
+        <translation>Chi-pătrat</translation>
     </message>
     <message>
         <source>At the %1 level, the population variance</source>
-        <translation type="unfinished"></translation>
+        <translation>La nivelul de %1,  varianţa populaţiei</translation>
     </message>
     <message>
         <source>than the test variance</source>
-        <translation type="unfinished"></translation>
+        <translation>de varianța test</translation>
     </message>
     <message>
         <source>Shapiro-Wilk Normality Test</source>
-        <translation type="unfinished"></translation>
+        <translation>Testul Shapiro - Wilk (ipoteza de normalitate)</translation>
     </message>
     <message>
         <source>Statistic</source>
-        <translation type="unfinished"></translation>
+        <translation>Statistică</translation>
     </message>
     <message>
         <source>Student&apos;s t-Test</source>
-        <translation type="unfinished"></translation>
+        <translation>Test t Student</translation>
     </message>
     <message>
         <source>chi2cdf(x, df):
@@ -17884,31 +17884,35 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Chi-square Test for Variance</source>
-        <translation type="unfinished"></translation>
+        <translation>Testul chi-pătrat pentru varianţă</translation>
     </message>
     <message>
         <source>Variance</source>
-        <translation type="unfinished">Varianţă</translation>
+        <translation>Varianţă</translation>
     </message>
     <message>
         <source>Confidence Intervals for Variance</source>
-        <translation type="unfinished"></translation>
+        <translation>Interval de încredere pentru varianţă</translation>
     </message>
     <message>
         <source>Output Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Setări rezultate</translation>
     </message>
     <message>
         <source>&amp;Table</source>
-        <translation type="unfinished">&amp;Tabel</translation>
+        <translation>&amp;Tabel</translation>
     </message>
     <message>
         <source>&amp;Notes Window</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Note</translation>
     </message>
     <message>
         <source>Results &amp;Log</source>
-        <translation type="unfinished">Rezu&amp;ltate</translation>
+        <translation>Rezu&amp;ltate</translation>
+    </message>
+    <message>
+        <source>&amp;Descriptive Statistics</source>
+        <translation>&amp;Statistică descriptivă</translation>
     </message>
 </context>
 <context>
