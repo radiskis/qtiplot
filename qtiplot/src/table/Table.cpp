@@ -610,13 +610,13 @@ bool Table::calculate(int col, int startRow, int endRow, bool forceMuParser, boo
 		resizeRows(endRow + 1);
 
 	QString cmd = commands[col];
-	if (cmd.isEmpty() || colTypes[col] != Numeric){
-		for (int i=startRow; i<=endRow; i++)
+	if (cmd.isEmpty()){
+		for (int i = startRow; i <= endRow; i++)
 			d_table->setText(i, col, cmd);
-        if (notifyChanges)
-            emit modifiedData(this, colName(col));
-        emit modifiedWindow(this);
-        return true;
+		if (notifyChanges)
+			emit modifiedData(this, colName(col));
+		emit modifiedWindow(this);
+		return true;
 	}
 
 	QApplication::setOverrideCursor(Qt::WaitCursor);
