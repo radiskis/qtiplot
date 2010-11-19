@@ -66,8 +66,8 @@
 
 using namespace std;
 
-FitDialog::FitDialog(Graph *g, QWidget* parent, Qt::WFlags fl )
-: QDialog( parent, fl )
+FitDialog::FitDialog(Graph *g, QWidget* parent)
+: QDialog(parent, Qt::WindowMinimizeButtonHint)
 {
     setObjectName("FitDialog");
 	setWindowTitle(tr("QtiPlot - Fit Wizard"));

@@ -42,8 +42,8 @@
 #include <QLineEdit>
 #include <QSpinBox>
 
-StudentTestDialog::StudentTestDialog(const StatisticTest::TestType& type, Table *t, bool twoSamples, QWidget* parent, Qt::WFlags fl )
-    : QDialog( parent, fl ),
+StudentTestDialog::StudentTestDialog(const StatisticTest::TestType& type, Table *t, bool twoSamples, QWidget* parent)
+	: QDialog( parent, Qt::WindowMinimizeButtonHint),
 	d_test_type(type),
 	d_two_samples(twoSamples)
 {

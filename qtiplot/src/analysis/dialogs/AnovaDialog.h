@@ -50,7 +50,7 @@ class AnovaDialog : public QDialog
     Q_OBJECT
 
 public:
-	AnovaDialog(QWidget* parent, Table *t, const StatisticTest::TestType& type = StatisticTest::AnovaTest, bool twoWay = false, Qt::WFlags fl = 0);
+	AnovaDialog(QWidget* parent, Table *t, const StatisticTest::TestType& type = StatisticTest::AnovaTest, bool twoWay = false);
 
 private slots:
 	void accept();
