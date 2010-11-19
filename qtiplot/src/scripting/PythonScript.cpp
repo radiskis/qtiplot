@@ -108,6 +108,8 @@ bool PythonScript::compile(bool for_eval)
 				"\texcept(IndexError): return self.cell(c,i)\n"
 				"def cell(c,r):\n"
 				"\treturn self.cell(c,r)\n"
+				"def cellData(c,r):\n"
+				"\treturn self.cellData(c,r)\n"
 				"def tablecol(t,c):\n"
 				"\treturn self.folder().rootFolder().table(t,True).cell(c,i)\n"
 				"def _meth_table_col_(t,c):\n"
