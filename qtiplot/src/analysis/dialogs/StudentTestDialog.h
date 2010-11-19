@@ -50,7 +50,7 @@ class StudentTestDialog : public QDialog
     Q_OBJECT
 
 public:
-	StudentTestDialog(const StatisticTest::TestType& type, Table *t, bool twoSamples = false, QWidget* parent = 0, Qt::WFlags fl = 0);
+	StudentTestDialog(const StatisticTest::TestType& type, Table *t, bool twoSamples = false, QWidget* parent = 0);
 
 private slots:
     void accept();

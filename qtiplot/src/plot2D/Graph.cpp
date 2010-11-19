@@ -4867,6 +4867,7 @@ void Graph::copyCurves(Graph* g)
   	     	Spectrogram *sp = ((Spectrogram *)it)->copy(this);
   	        insertCurve(sp);
 
+			sp->setRenderHint(QwtPlotItem::RenderAntialiased, it->testRenderHint(QwtPlotItem::RenderAntialiased));
   	        sp->showColorScale(((Spectrogram *)it)->colorScaleAxis(), ((Spectrogram *)it)->hasColorScale());
   	        sp->setColorBarWidth(((Spectrogram *)it)->colorBarWidth());
 			sp->setVisible(it->isVisible());
@@ -5397,9 +5398,6 @@ void Graph::setAntialiasing(bool on, bool update)
 
 bool Graph::isCurveAntialiasingEnabled(QwtPlotItem *it)
 {
-	if (!it || it->rtti() == QwtPlotItem::Rtti_PlotSpectrogram)
-		return false;
-
 	if (!d_antialiasing)
 		return false;
 

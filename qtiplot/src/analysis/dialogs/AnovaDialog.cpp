@@ -46,8 +46,8 @@
 #include <QTreeWidget>
 #include <QLabel>
 
-AnovaDialog::AnovaDialog(QWidget* parent, Table *t, const StatisticTest::TestType& type, bool twoWay, Qt::WFlags fl)
-	: QDialog( parent, fl),
+AnovaDialog::AnovaDialog(QWidget* parent, Table *t, const StatisticTest::TestType& type, bool twoWay)
+	: QDialog(parent, Qt::WindowMinimizeButtonHint),
 	d_test_type(type),
 	d_two_way(twoWay)
 {

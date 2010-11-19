@@ -29,7 +29,7 @@
 #ifndef FITDIALOG_H
 #define FITDIALOG_H
 
-#include "../../plot2D/Graph.h"
+#include <Graph.h>
 #include <QDoubleSpinBox>
 #include <QCheckBox>
 
@@ -59,7 +59,7 @@ class FitDialog : public QDialog
     Q_OBJECT
 
 public:
-    FitDialog(Graph *g, QWidget* parent = 0, Qt::WFlags fl = 0 );
+	FitDialog(Graph *g, QWidget* parent = 0);
 
     void setSrcTables(QList<MdiSubWindow*> tables);
 
