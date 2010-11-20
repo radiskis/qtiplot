@@ -1264,14 +1264,11 @@ void FitDialog::setCurrentFit(int function)
 			if (d_user_functions.size() > function)
 				d_current_fit = d_user_functions[function];
 		break;
-
 		case 1:
 			d_current_fit = d_built_in_functions[function];
 		break;
-
 		case 2:
 		break;
-
 		case 3:
 			if (d_plugins.size() > 0)
 		    	d_current_fit = d_plugins[function];
@@ -1288,35 +1285,41 @@ void FitDialog::showExpression(int function)
 	if (!d_current_fit)
 		return;
 
-	if (categoryBox->currentRow() == 2)
-		explainBox->setText(MyParser::explainFunction(function));
-	else if (categoryBox->currentRow() == 1){
-		polynomOrderLabel->hide();
-		polynomOrderBox->hide();
-		if (funcBox->currentItem()->text() == tr("Gauss") ||
-			funcBox->currentItem()->text() == tr("Lorentz")){
-			polynomOrderLabel->setText(tr("Peaks"));
-			polynomOrderLabel->show();
-			polynomOrderBox->show();
-		} else if (funcBox->currentItem()->text() == tr("Polynomial")){
-			polynomOrderLabel->setText(tr("Polynomial Order"));
-			polynomOrderLabel->show();
-			polynomOrderBox->show();
-		}
-		explainBox->setText(d_current_fit->formula());
-		setFunction(boxUseBuiltIn->isChecked());
-	} else if (categoryBox->currentRow() == 0){
-		if (d_user_functions.size() > function)
-			explainBox->setText(d_current_fit->formula());
-		else
-			explainBox->clear();
-		setFunction(boxUseBuiltIn->isChecked());
-	} else if (categoryBox->currentRow() == 3){
-		if (d_plugins.size() > 0){
+	switch(categoryBox->currentRow()){
+		case 0:
+			if (d_user_functions.size() > function)
+				explainBox->setText(d_current_fit->formula());
+			else
+				explainBox->clear();
+			setFunction(boxUseBuiltIn->isChecked());
+		break;
+		case 1:
+			polynomOrderLabel->hide();
+			polynomOrderBox->hide();
+			if (qobject_cast<MultiPeakFit *>(d_current_fit) || qobject_cast<PolynomialFit *>(d_current_fit)){
+				if (qobject_cast<MultiPeakFit *>(d_current_fit)){
+					polynomOrderLabel->setText(tr("Peaks"));
+					((MultiPeakFit *)d_current_fit)->setNumPeaks(polynomOrderBox->value());
+				} else {
+					polynomOrderLabel->setText(tr("Polynomial Order"));
+					((PolynomialFit *)d_current_fit)->setOrder(polynomOrderBox->value());
+				}
+				polynomOrderLabel->show();
+				polynomOrderBox->show();
+			}
 			explainBox->setText(d_current_fit->formula());
 			setFunction(boxUseBuiltIn->isChecked());
-		} else
-			explainBox->clear();
+		break;
+		case 2:
+			explainBox->setText(MyParser::explainFunction(function));
+		break;
+		case 3:
+			if (d_plugins.size() > 0){
+				explainBox->setText(d_current_fit->formula());
+				setFunction(boxUseBuiltIn->isChecked());
+			} else
+				explainBox->clear();
+		break;
 	}
 }
 
@@ -1623,15 +1626,12 @@ void FitDialog::initBuiltInFunctions()
 
 void FitDialog::setNumPeaks(int peaks)
 {
-	if (d_current_fit->objectName() == tr("Gauss") ||
-		d_current_fit->objectName() == tr("Lorentz"))
+	if (qobject_cast<MultiPeakFit *>(d_current_fit))
 		((MultiPeakFit *)d_current_fit)->setNumPeaks(peaks);
-	else if (d_current_fit->objectName() == tr("Polynomial"))
+	else if (qobject_cast<PolynomialFit *>(d_current_fit))
 		((PolynomialFit *)d_current_fit)->setOrder(peaks);
 
-	int index = funcBox->currentRow();
-	d_built_in_functions[index] = d_current_fit;
-	showExpression(index);
+	showExpression(funcBox->currentRow());
 }
 
 QStringList FitDialog::builtInFunctionNames()
@@ -1724,7 +1724,7 @@ void FitDialog::saveInitialGuesses()
                 fn.append(".fit");
 
 			QString name = boxName->text();
-			bool rename = (!name.isEmpty() && d_current_fit->objectName() != name);
+			bool rename = (qobject_cast<NonLinearFit*>(d_current_fit) && !name.isEmpty() && d_current_fit->objectName() != name);
 			if (rename)
 				d_current_fit->setObjectName(name);
 

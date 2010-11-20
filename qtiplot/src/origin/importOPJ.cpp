@@ -1299,7 +1299,8 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 						tickTypeMap[formats[i].majorTicksType], tickTypeMap[formats[i].minorTicksType],
 						!(ticks[i].hidden),	ColorBox::defaultColor(formats[i].color), format, prec,
 						-ticks[i].rotation, 0, "", (ticks[i].color == 0xF7 ? ColorBox::defaultColor(formats[i].color) : ColorBox::defaultColor(ticks[i].color)),
-						4, true, ScaleDraw::ShowAll, QString(formats[i].prefix.c_str()), QString(formats[i].suffix.c_str()));
+						4, true, ScaleDraw::ShowAll, parseOriginText(QString(formats[i].prefix.c_str())),
+						parseOriginText(QString(formats[i].suffix.c_str())));
 
 				QwtScaleWidget *scale = graph->axisWidget(i);
 				if (scale)
@@ -1659,31 +1660,31 @@ void ImportOPJ::importSpectrogram(Graph *graph, Spectrogram *sp, const Origin::G
 	if (!graph || !sp)
 		return;
 
-	if (_curve.colorMap.levels.size() > 2){
+	graph->enableAxis(QwtPlot::yRight);
+
+	int levelsCount = _curve.colorMap.levels.size();
+	if (levelsCount > 2 && levelsCount < 20){
 		Origin::ColorMapVector::const_iterator it = _curve.colorMap.levels.begin();
 		double vmin = it->first;
-		it = _curve.colorMap.levels.end() - 2;
-		double vmax = it->first;
-		sp->setRange(vmin, vmax);
-		graph->enableAxis(QwtPlot::yRight);
-
-		QwtValueList ticksList;
-		for(Origin::ColorMapVector::const_iterator it = _curve.colorMap.levels.begin(); it != _curve.colorMap.levels.end(); ++it)
-			ticksList << it->first;
-		if (ticksList.size() >= 2){
-			vmax += (ticksList[1] - ticksList[0]);
-			ticksList << vmax;
+		it = _curve.colorMap.levels.begin() + 1;
+		double step = it->first - vmin;
+		if (step < 0){
+			vmin = it->first;
+			it = _curve.colorMap.levels.begin() + 2;
+			step = fabs(it->first - vmin);
 		}
-		QwtValueList ticks[QwtScaleDiv::NTickTypes];
-		ticks[QwtScaleDiv::MajorTick] = ticksList;
-		ticks[QwtScaleDiv::MediumTick] = QwtValueList();
-		ticks[QwtScaleDiv::MinorTick] = QwtValueList();
+		it = _curve.colorMap.levels.end() - 2;
+		double vmax = it->first + step;
 
-		QwtScaleDiv div(vmin, vmax, ticks);
 		if (!layer.colorScale.reverseOrder)
-			div.invert();
-		graph->setAxisScaleDiv(QwtPlot::yRight, div);
-	}
+			graph->setAxisScale(QwtPlot::yRight, QMAX(vmin, vmax), QMIN(vmin, vmax), step);
+		else
+			graph->setAxisScale(QwtPlot::yRight, QMIN(vmin, vmax), QMAX(vmin, vmax), step);
+		graph->setAxisStep(QwtPlot::yRight, step);
+	} else
+		graph->setAxisMaxMajor(QwtPlot::yRight, 10);
+	graph->setAxisMaxMinor(QwtPlot::yRight, 0);
+
 	sp->setCustomColorMap(qwtColorMap(_curve.colorMap));
 
 	QwtValueList levels;
@@ -1786,32 +1787,32 @@ bool ImportOPJ::importGraph3D(const OriginFile& opj, unsigned int g, unsigned in
 
 		QFont font = plot->xAxisLabelFont();
 		font.setPointSize(floor(layer.xAxis.formatAxis[0].label.fontSize*fFontScaleFactor + 0.5));
-		QString label = parseOriginText(QString::fromLocal8Bit(layer.xAxis.formatAxis[0].label.text.c_str()));
+		QString label = parseOriginText(QString::fromLocal8Bit(layer.xAxis.formatAxis[0].label.text.c_str()), true);
 		RGBA xLabelColor = Qt2GL(originToQtColor(layer.xAxis.formatAxis[0].label.color));
 		if (label.isEmpty()){
-			label = parseOriginText(QString::fromLocal8Bit(layer.xAxis.formatAxis[1].label.text.c_str()));
+			label = parseOriginText(QString::fromLocal8Bit(layer.xAxis.formatAxis[1].label.text.c_str()), true);
 			xLabelColor = Qt2GL(originToQtColor(layer.xAxis.formatAxis[1].label.color));
 			font.setPointSize(floor(layer.xAxis.formatAxis[1].label.fontSize*fFontScaleFactor + 0.5));
 		}
 		plot->setXAxisLabel(label);
 		plot->setXAxisLabelFont(font);
 
-		label = parseOriginText(QString::fromLocal8Bit(layer.yAxis.formatAxis[0].label.text.c_str()));
+		label = parseOriginText(QString::fromLocal8Bit(layer.yAxis.formatAxis[0].label.text.c_str()), true);
 		font.setPointSize(floor(layer.yAxis.formatAxis[0].label.fontSize*fFontScaleFactor + 0.5));
 		RGBA yLabelColor = Qt2GL(originToQtColor(layer.yAxis.formatAxis[0].label.color));
 		if (label.isEmpty()){
-			label = parseOriginText(QString::fromLocal8Bit(layer.yAxis.formatAxis[1].label.text.c_str()));
+			label = parseOriginText(QString::fromLocal8Bit(layer.yAxis.formatAxis[1].label.text.c_str()), true);
 			yLabelColor = Qt2GL(originToQtColor(layer.yAxis.formatAxis[1].label.color));
 			font.setPointSize(floor(layer.yAxis.formatAxis[1].label.fontSize*fFontScaleFactor + 0.5));
 		}
 		plot->setYAxisLabel(label);
 		plot->setYAxisLabelFont(font);
 
-		label = parseOriginText(QString::fromLocal8Bit(layer.zAxis.formatAxis[0].label.text.c_str()));
+		label = parseOriginText(QString::fromLocal8Bit(layer.zAxis.formatAxis[0].label.text.c_str()), true);
 		font.setPointSize(floor(layer.zAxis.formatAxis[0].label.fontSize*fFontScaleFactor + 0.5));
 		RGBA zLabelColor = Qt2GL(originToQtColor(layer.zAxis.formatAxis[0].label.color));
 		if (label.isEmpty()){
-			label = parseOriginText(QString::fromLocal8Bit(layer.zAxis.formatAxis[1].label.text.c_str()));
+			label = parseOriginText(QString::fromLocal8Bit(layer.zAxis.formatAxis[1].label.text.c_str()), true);
 			zLabelColor = Qt2GL(originToQtColor(layer.zAxis.formatAxis[1].label.color));
 			font.setPointSize(floor(layer.zAxis.formatAxis[1].label.fontSize*fFontScaleFactor + 0.5));
 		}
@@ -2177,21 +2178,47 @@ void ImportOPJ::parseXYZContourPlotAxisTitles(Graph *g, Table *t, const Origin::
 	}
 }
 
-QString ImportOPJ::parseOriginText(const QString &str)
+QString ImportOPJ::parseOriginText(const QString &str, bool removeSpecialTags)
 {
 	QStringList lines = str.trimmed().split("\n");
 	QString text = "";
 	for(int i = 0; i < lines.size(); ++i){
 		if(i > 0)
 			text.append("\n");
-		text.append(parseOriginTags(lines[i]));
+		text.append(parseOriginTags(lines[i], removeSpecialTags));
 	}
 	return text;
 }
 
-QString ImportOPJ::parseOriginTags(const QString &str)
+QString ImportOPJ::parseOriginTags(const QString &str, bool removeSpecialTags)
 {
 	QString line = str;
+
+	if (removeSpecialTags){
+		QStringList lst = QStringList() << "\\\\\\s*f\\:.*\\(.*\\)"
+			<< "\\\\\\s*i\\s*\\(.*\\)"
+			<< "\\\\\\s*u\\s*\\(.*\\)"
+			<< "\\\\\\s*g\\s*\\(.*\\)"
+			<< "\\\\\\s*\\-\\s*\\(.*\\)"
+			<< "\\\\\\s*\\+\\s*\\(.*\\)";
+
+		foreach (QString s, lst){
+			QRegExp fontModifier(s);
+			fontModifier.setMinimal(true);
+			int index = line.indexOf(fontModifier);
+			while (index >= 0){
+				int pos1 = line.indexOf("(", index) + 1;
+				int length = fontModifier.matchedLength();
+				int l = index + length;
+				line = line.left(index) + line.mid(pos1, l - pos1 - 1) + line.right(line.length() - l);
+
+				index = line.indexOf(fontModifier);
+			}
+		}
+		return parseAsciiCodes(line);
+	}
+
+
 	//Lookbehind conditions are not supported - so need to reverse string
 	QRegExp rx("\\)[^\\)\\(]*\\((?!\\s*[buig\\+\\-]\\s*\\\\)");
 	QRegExp rxfont("\\)[^\\)\\(]*\\((?![^\\:]*\\:f\\s*\\\\)");
@@ -2247,7 +2274,7 @@ QString ImportOPJ::parseOriginTags(const QString &str)
 	QString ltag[]={"<b>","<i>","<u>","<font face=Symbol>","<sup>","<sub>","<font face=%1>"};
 	QString rtag[]={"</b>","</i>","</u>","</font>","</sup>","</sub>","</font>"};
 	QRegExp rxtags[7];
-	for(int i=0; i<7; ++i)
+	for (int i = 0; i < 7; ++i)
 		rxtags[i].setPattern(rxstr[i]+"[^\\(\\)]*\\)");
 
 	bool flag=true;
@@ -2284,6 +2311,7 @@ QString ImportOPJ::parseOriginTags(const QString &str)
 	//replace unclosed tags
 	for(int i=0; i<6; ++i)
 		line.replace(QRegExp(rxstr[i]), ltag[i]);
+
 	rxfont.setPattern(rxstr[6]);
 	int pos = rxfont.indexIn(line);
 	while (pos > -1) {
@@ -2307,6 +2335,24 @@ QString ImportOPJ::parseOriginTags(const QString &str)
 		index = line.indexOf(fontModifier, index + length);
 	}
 
+	return parseAsciiCodes(line);
+}
+
+QString ImportOPJ::parseAsciiCodes(const QString& str)
+{
+	QString line = str;
+
+	QRegExp charCode("\\\\\\s*\\(\\d+\\)");
+	charCode.setMinimal(true);
+	int index = line.indexOf(charCode);
+	while (index >= 0){//replace ASCII codes
+		int pos1 = line.indexOf("(", index) + 1;
+		int length = charCode.matchedLength();
+		QString mid = line.mid(pos1, index + length - pos1 - 1);
+		line = line.replace(index, length, QString(QChar(mid.toInt())));
+
+		index = line.indexOf(charCode);
+	}
 	return line;
 }
 
@@ -2316,16 +2362,29 @@ QwtLinearColorMap ImportOPJ::qwtColorMap(const Origin::ColorMap& colorMap)
 	QColor color1 = originToQtColor(it->second.fillColor);
 	double level1 = it->first;
 
-	it = colorMap.levels.end() - 2;
+	it = colorMap.levels.begin() + 1;
+	if (it->first < level1){
+		level1 = it->first;
+		color1 = originToQtColor(it->second.fillColor);
+	}
+
+	int endIndex = 1;
+	it = colorMap.levels.end() - endIndex;
 	QColor color2 = originToQtColor(it->second.fillColor);
 	double level2 = it->first;
+	if (level2 == level1){
+		endIndex++;
+		it = colorMap.levels.end() - endIndex;
+		level2 = it->first;
+	}
 
 	QwtLinearColorMap qwt_color_map = QwtLinearColorMap(color1, color2);
 	qwt_color_map.setMode(QwtLinearColorMap::FixedColors);
 
+	double start = QMIN(level1, level2);
 	double dl = fabs(level2 - level1);
-	for(it = colorMap.levels.begin() + 1; it != colorMap.levels.end() - 2; ++it)
-		qwt_color_map.addColorStop(it->first/dl, originToQtColor(it->second.fillColor));
+	for(it = colorMap.levels.begin() + 1; it != colorMap.levels.end() - endIndex; ++it)
+		qwt_color_map.addColorStop(fabs(it->first - start)/dl, originToQtColor(it->second.fillColor));
 
 	return qwt_color_map;
 }
