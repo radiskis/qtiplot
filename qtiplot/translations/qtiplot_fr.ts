@@ -4025,7 +4025,7 @@ L&apos;autocomplétion ne sera pas disponible!</translation>
     </message>
     <message>
         <source>chart</source>
-        <translation type="unfinished">Diagramme</translation>
+        <translation type="obsolete">Diagramme</translation>
     </message>
     <message>
         <source>Yes, don&apos;t ask me again</source>
@@ -8095,7 +8095,7 @@ Les codes spéciaux suivant peuvent être utilisés :
     </message>
     <message>
         <source>Gauss</source>
-        <translation>Gauss</translation>
+        <translation type="obsolete">Gauss</translation>
     </message>
     <message>
         <source>Peaks</source>
@@ -8103,11 +8103,11 @@ Les codes spéciaux suivant peuvent être utilisés :
     </message>
     <message>
         <source>Lorentz</source>
-        <translation>Lorentz</translation>
+        <translation type="obsolete">Lorentz</translation>
     </message>
     <message>
         <source>Polynomial</source>
-        <translation>Polynomial</translation>
+        <translation type="obsolete">Polynomial</translation>
     </message>
     <message>
         <source>QtiPlot - Warning</source>
@@ -12173,6 +12173,10 @@ have the same number of rows.</source>
         <source>QtiPlot - Import image from file</source>
         <translation>QtiPlot - Importer une image à partir d&apos;un fichier</translation>
     </message>
+    <message>
+        <source>Auto&amp;scaling</source>
+        <translation type="unfinished">Échelle auto&amp;matique</translation>
+    </message>
 </context>
 <context>
     <name>PlotWizard</name>
@@ -14254,6 +14258,10 @@ Calcule le sinus de x.</translation>
     <message>
         <source>Results &amp;Log</source>
         <translation>Historique des résu&amp;ltats</translation>
+    </message>
+    <message>
+        <source>&amp;Descriptive Statistics</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

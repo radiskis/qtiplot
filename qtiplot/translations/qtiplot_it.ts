@@ -4036,10 +4036,6 @@ Il completamento automatico non sarà disponibile!</translation>
         <source>English</source>
         <translation>Italiano</translation>
     </message>
-    <message>
-        <source>chart</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>AssociationsDialog</name>
@@ -8130,11 +8126,11 @@ Discrepanza tra i dati e il modello di stima</translation>
     </message>
     <message>
         <source>Gauss</source>
-        <translation>Gauss</translation>
+        <translation type="obsolete">Gauss</translation>
     </message>
     <message>
         <source>Lorentz</source>
-        <translation>Lorentz</translation>
+        <translation type="obsolete">Lorentz</translation>
     </message>
     <message>
         <source>Peaks</source>
@@ -8142,7 +8138,7 @@ Discrepanza tra i dati e il modello di stima</translation>
     </message>
     <message>
         <source>Polynomial</source>
-        <translation>Polinomiale</translation>
+        <translation type="obsolete">Polinomiale</translation>
     </message>
     <message>
         <source>QtiPlot - Warning</source>
@@ -12074,6 +12070,10 @@ Ampiezza della classe (base del rettangolo)</translation>
         <source>Magnitude</source>
         <translation>Dimensione</translation>
     </message>
+    <message>
+        <source>Auto&amp;scaling</source>
+        <translation type="unfinished">(&amp;s) Usa una scala automatica</translation>
+    </message>
 </context>
 <context>
     <name>PlotWizard</name>
@@ -14040,6 +14040,10 @@ Per x&lt;0 ci sono due rami di valori reali; questa funzione calcola quello in c
     </message>
     <message>
         <source>Confidence Intervals for Variance</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Descriptive Statistics</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

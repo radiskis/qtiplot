@@ -12546,6 +12546,8 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot, co
 			bool antialiasing = s.remove("<Antialiasing>").remove("</Antialiasing>").toInt();
 			ag->setAntialiasing(antialiasing);
 		}
+		else if (s.startsWith ("<Autoscaling>") && s.endsWith ("</Autoscaling>"))
+			ag->enableAutoscaling(s.remove("<Autoscaling>").remove("</Autoscaling>").toInt());
 		else if (s.contains ("PieCurve")){
 			QStringList curve=s.split("\t");
 			if (!app->renamedTables.isEmpty()){
@@ -13139,7 +13141,6 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot, co
 		ag->disableCurveAntialiasing(app->d_disable_curve_antialiasing, app->d_curve_max_antialising_size);
 		ag->updateAxesTitles();
 		ag->updateLayout();
-		ag->enableAutoscaling(autoscale2DPlots);
 		ag->setSynchronizedScaleDivisions(d_synchronize_graph_scales);
 		ag->blockSignals(false);
 		ag->setAutoscaleFonts(app->autoScaleFonts);

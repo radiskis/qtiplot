@@ -241,7 +241,7 @@ private:
 	ColorMapEditor *colorMapEditor;
 	QWidget *curvePlotTypeBox, *layerPage, *layerGeometryPage, *piePage, *fontsPage, *printPage, *speedPage, *functionPage, *canvasPage;
     QTreeWidget* listBox;
-    QCheckBox *boxAntialiasing, *boxScaleLayers, *boxPrintCrops;
+	QCheckBox *boxAntialiasing, *boxScaleLayers, *boxPrintCrops, *boxAutoscaling;
     ColorButton *boxBorderColor, *boxBackgroundColor, *boxCanvasColor;
 	QSpinBox *boxBackgroundTransparency, *boxCanvasTransparency, *boxBorderWidth, *boxMargin;
 	QSpinBox *boxRadius;

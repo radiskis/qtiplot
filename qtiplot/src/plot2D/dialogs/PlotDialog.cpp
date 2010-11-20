@@ -437,10 +437,13 @@ void PlotDialog::initLayerPage()
 	boxAntialiasing = new QCheckBox(tr("Antialiasing"));
 	boxBkgLayout->addWidget( boxAntialiasing, 4, 0);
 
-	layerScaleFonts = new QCheckBox(tr("Scale &Fonts"));
-	boxBkgLayout->addWidget(layerScaleFonts, 5, 0);
+	boxAutoscaling = new QCheckBox(tr("Auto&scaling"));
+	boxBkgLayout->addWidget(boxAutoscaling, 5, 0);
 
-	boxBkgLayout->setRowStretch(6, 1);
+	layerScaleFonts = new QCheckBox(tr("Scale &Fonts"));
+	boxBkgLayout->addWidget(layerScaleFonts, 6, 0);
+
+	boxBkgLayout->setRowStretch(7, 1);
 
     QVBoxLayout *vl = new QVBoxLayout();
 
@@ -2507,6 +2510,7 @@ void PlotDialog::setActiveLayer(LayerItem *item)
     boxBackgroundColor->blockSignals(true);
     boxCanvasColor->blockSignals(true);
     boxAntialiasing->blockSignals(true);
+	boxAutoscaling->blockSignals(true);
     boxMargin->blockSignals(true);
     boxBackgroundTransparency->blockSignals(true);
     boxCanvasTransparency->blockSignals(true);
@@ -2531,6 +2535,7 @@ void PlotDialog::setActiveLayer(LayerItem *item)
 	boxCanvasColor->setColor(c);
 
 	boxAntialiasing->setChecked(g->antialiasing());
+	boxAutoscaling->setChecked(g->isAutoscalingEnabled());
 	layerScaleFonts->setChecked(g->autoscaleFonts());
 
 	boxLayerWidth->blockSignals(true);
@@ -2551,6 +2556,7 @@ void PlotDialog::setActiveLayer(LayerItem *item)
     boxBackgroundColor->blockSignals(false);
     boxCanvasColor->blockSignals(false);
     boxAntialiasing->blockSignals(false);
+	boxAutoscaling->blockSignals(false);
     boxMargin->blockSignals(false);
 
 	speedModeBox->blockSignals(true);
@@ -3255,6 +3261,8 @@ void PlotDialog::applyFormatToLayer(Graph *g)
 	g->setBackgroundColor(c);
 
 	g->setAntialiasing(boxAntialiasing->isChecked());
+	g->enableAutoscaling(boxAutoscaling->isChecked());
+	g->updateScale();
 	g->setAutoscaleFonts(layerScaleFonts->isChecked());
 }
 

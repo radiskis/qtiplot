@@ -4091,10 +4091,6 @@ Různé části tohoto souboru se nemusí zobrazovat tak, jak se očekává.</tr
         <source>Chi-square Test for &amp;Variance...</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <source>chart</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>ArrowMarker</name>
@@ -7892,11 +7888,11 @@ K tomu lze použít následujících zvláštních kódů:
     </message>
     <message>
         <source>Gauss</source>
-        <translation>Gauss</translation>
+        <translation type="obsolete">Gauss</translation>
     </message>
     <message>
         <source>Polynomial</source>
-        <translation>Mnohočlenný</translation>
+        <translation type="obsolete">Mnohočlenný</translation>
     </message>
     <message>
         <source>Peaks</source>
@@ -8002,7 +7998,7 @@ K tomu lze použít následujících zvláštních kódů:
     </message>
     <message>
         <source>Lorentz</source>
-        <translation>Lorentz</translation>
+        <translation type="obsolete">Lorentz</translation>
     </message>
     <message>
         <source>&amp;One table for all fits</source>
@@ -12228,6 +12224,10 @@ K tomu lze použít následujících zvláštních kódů:
         <source>QtiPlot - Import image from file</source>
         <translation type="unfinished">QtiPlot - Zavést obrázek ze souboru</translation>
     </message>
+    <message>
+        <source>Auto&amp;scaling</source>
+        <translation type="unfinished">Automatická &amp;velikost</translation>
+    </message>
 </context>
 <context>
     <name>PlotWizard</name>
@@ -14306,6 +14306,10 @@ pokud e1 pak e2 jinak e3.</translation>
     <message>
         <source>Results &amp;Log</source>
         <translation type="unfinished">Zápis &amp;výsledků</translation>
+    </message>
+    <message>
+        <source>&amp;Descriptive Statistics</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

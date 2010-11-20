@@ -8420,10 +8420,6 @@ Autocompletion will not be available!</source>
         <source>Chi-square Test for &amp;Variance...</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <source>chart</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>AssociationsDialog</name>
@@ -12699,7 +12695,7 @@ The following special codes can be used:
     </message>
     <message>
         <source>Gauss</source>
-        <translation type="unfinished">Gauss</translation>
+        <translation type="obsolete">Gauss</translation>
     </message>
     <message>
         <source>Peaks</source>
@@ -12707,11 +12703,11 @@ The following special codes can be used:
     </message>
     <message>
         <source>Lorentz</source>
-        <translation type="unfinished">Lorentz</translation>
+        <translation type="obsolete">Lorentz</translation>
     </message>
     <message>
         <source>Polynomial</source>
-        <translation type="unfinished">Polinomial</translation>
+        <translation type="obsolete">Polinomial</translation>
     </message>
     <message>
         <source>QtiPlot - Warning</source>
@@ -17968,6 +17964,10 @@ Do you want to insert cells?</source>
         <source>QtiPlot - Import image from file</source>
         <translation type="unfinished">QtiPlot - Importar imagen de archivo</translation>
     </message>
+    <message>
+        <source>Auto&amp;scaling</source>
+        <translation type="unfinished">Autoe&amp;scalado</translation>
+    </message>
 </context>
 <context>
     <name>PlotWizard</name>
@@ -20001,6 +20001,10 @@ Do you want to overwrite it?</source>
     <message>
         <source>Results &amp;Log</source>
         <translation type="unfinished">Registro de Resultados</translation>
+    </message>
+    <message>
+        <source>&amp;Descriptive Statistics</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

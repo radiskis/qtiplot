@@ -7573,7 +7573,7 @@ Autocompletion will not be available!</source>
     </message>
     <message>
         <source>chart</source>
-        <translation>diagramă</translation>
+        <translation type="obsolete">diagramă</translation>
     </message>
 </context>
 <context>
@@ -11799,11 +11799,11 @@ The following special codes can be used:
     </message>
     <message>
         <source>Gauss</source>
-        <translation>Gauss</translation>
+        <translation type="obsolete">Gauss</translation>
     </message>
     <message>
         <source>Lorentz</source>
-        <translation>Lorenz</translation>
+        <translation type="obsolete">Lorenz</translation>
     </message>
     <message>
         <source>Peaks</source>
@@ -11811,7 +11811,7 @@ The following special codes can be used:
     </message>
     <message>
         <source>Polynomial</source>
-        <translation>Polinomial</translation>
+        <translation type="obsolete">Polinomial</translation>
     </message>
     <message>
         <source>QtiPlot - Warning</source>
@@ -15810,6 +15810,10 @@ have the same number of rows.</source>
     <message>
         <source>QtiPlot - Import image from file</source>
         <translation>QtiPlot - Importă imagine din fişier</translation>
+    </message>
+    <message>
+        <source>Auto&amp;scaling</source>
+        <translation>&amp;Scală automată</translation>
     </message>
 </context>
 <context>

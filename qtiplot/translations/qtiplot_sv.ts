@@ -8654,10 +8654,6 @@ Automatisk komplettering ej tillgängligt!</translation>
         <source>Chi-square Test for &amp;Variance...</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <source>chart</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>ArrowMarker</name>
@@ -13032,7 +13028,7 @@ Följande specialkoder kan användas:
     </message>
     <message>
         <source>Gauss</source>
-        <translation>Gauss</translation>
+        <translation type="obsolete">Gauss</translation>
     </message>
     <message>
         <source>Peaks</source>
@@ -13040,11 +13036,11 @@ Följande specialkoder kan användas:
     </message>
     <message>
         <source>Lorentz</source>
-        <translation>Lorentz</translation>
+        <translation type="obsolete">Lorentz</translation>
     </message>
     <message>
         <source>Polynomial</source>
-        <translation>Polynomisk</translation>
+        <translation type="obsolete">Polynomisk</translation>
     </message>
     <message>
         <source>QtiPlot - Warning</source>
@@ -18523,6 +18519,10 @@ Vill du skjuta in celler?</translation>
         <source>QtiPlot - Import image from file</source>
         <translation type="unfinished">QtiPlot - Importera bild från fil</translation>
     </message>
+    <message>
+        <source>Auto&amp;scaling</source>
+        <translation type="unfinished">Auto&amp;skalning</translation>
+    </message>
 </context>
 <context>
     <name>PlotWizard</name>
@@ -20707,6 +20707,10 @@ Vill du skriva över den?</translation>
     <message>
         <source>Results &amp;Log</source>
         <translation type="unfinished">Resultat&amp;logg</translation>
+    </message>
+    <message>
+        <source>&amp;Descriptive Statistics</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
