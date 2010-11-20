@@ -52,7 +52,9 @@ table->setSelectionMode(QAbstractItemView::SingleSelection);
 table->verticalHeader()->setResizeMode(QHeaderView::ResizeToContents);
 table->verticalHeader()->hide();
 table->horizontalHeader()->setClickable( false );
-table->horizontalHeader()->setResizeMode(QHeaderView::Stretch);
+table->horizontalHeader()->setResizeMode(0, QHeaderView::Interactive);
+table->horizontalHeader()->setResizeMode(1, QHeaderView::ResizeToContents);
+table->horizontalHeader()->setStretchLastSection(true);
 table->viewport()->setMouseTracking(true);
 table->viewport()->installEventFilter(this);
 table->setHorizontalHeaderLabels(QStringList() << tr("Level") << tr("Color"));
@@ -148,8 +150,8 @@ void ColorMapEditor::setColorMap(const QwtLinearColorMap& map)
 
 void ColorMapEditor::setRange(double min, double max)
 {
-    min_val = min;
-    max_val = max;
+	min_val = QMIN(min, max);
+	max_val = QMAX(min, max);
 }
 
 void ColorMapEditor::insertLevel()

@@ -1533,7 +1533,8 @@ void PlotDialog::initSpectrogramPage()
     vl->addWidget(customScaleBox);
 
     QHBoxLayout *hl = new QHBoxLayout(imageGroupBox);
-	colorMapEditor = new ColorMapEditor(((ApplicationWindow*)parent())->locale());
+	ApplicationWindow *app = (ApplicationWindow*)parent();
+	colorMapEditor = new ColorMapEditor(app->locale(), app->d_decimal_digits);
     hl->addLayout(vl);
 	hl->addWidget(colorMapEditor);
 

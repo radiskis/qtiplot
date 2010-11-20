@@ -390,6 +390,7 @@ class Graph: public QwtPlot
 				double stepBeforeBreak = 0.0, double stepAfterBreak = 0.0, int minTicksBeforeBreak = 4,
 				int minTicksAfterBreak = 4, bool log10AfterBreak = false, int breakWidth = 4, bool breakDecoration = true);
 		double axisStep(int axis){return d_user_step[axis];};
+		void setAxisStep(int axis, double step){d_user_step[axis] = step;};
 		void setCanvasCoordinates(const QRectF&);
 
 		//! \name Curves Layout

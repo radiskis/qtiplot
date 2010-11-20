@@ -810,8 +810,7 @@ void Graph::showAxis(int axis, int type, const QString& formatInfo, Table *table
 	sd->setPrefix(prefix);
 	sd->setSuffix(suffix);
 
-	setAxisTicksLength(axis, majTicksType, minTicksType,
-			minorTickLength(), majorTickLength());
+	setAxisTicksLength(axis, majTicksType, minTicksType, minorTickLength(), majorTickLength());
 
 	if (d_synchronize_scales && axisOn && (axis == QwtPlot::xTop || axis == QwtPlot::yRight))
 		updateSecondaryAxis(axis);//synchronize scale divisions
@@ -4649,8 +4648,7 @@ void Graph::copyScaleWidget(Graph* g, int i)
 			if (i == yRight)
 				scale->setLayoutFlag(QwtScaleWidget::TitleInverted, g->axisWidget(i)->testLayoutFlag(QwtScaleWidget::TitleInverted));
 		}
-	} else
-		enableAxis(i, false);
+	}
 }
 
 void Graph::copyScaleDraw(Graph* g, int i)
