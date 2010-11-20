@@ -4015,7 +4015,7 @@ Autocompletion will not be available!</source>
     </message>
     <message>
         <source>chart</source>
-        <translation type="unfinished">диаграмма</translation>
+        <translation type="obsolete">диаграмма</translation>
     </message>
     <message>
         <source>Overwrite file?</source>
@@ -7952,7 +7952,7 @@ The following special codes can be used:
     </message>
     <message>
         <source>Gauss</source>
-        <translation>Гаусс</translation>
+        <translation type="obsolete">Гаусс</translation>
     </message>
     <message>
         <source>Generated Fit Curve</source>
@@ -7972,7 +7972,7 @@ The following special codes can be used:
     </message>
     <message>
         <source>Lorentz</source>
-        <translation>Лоренц</translation>
+        <translation type="obsolete">Лоренц</translation>
     </message>
     <message>
         <source>Name</source>
@@ -8056,7 +8056,7 @@ The following special codes can be used:
     </message>
     <message>
         <source>Polynomial</source>
-        <translation>Полиномиальная</translation>
+        <translation type="obsolete">Полиномиальная</translation>
     </message>
     <message>
         <source>Polynomial Order</source>
@@ -12228,6 +12228,10 @@ have the same number of rows.</source>
         <source>QtiPlot - Import image from file</source>
         <translation type="unfinished">QtiPlot - Импортировать изображение из файла</translation>
     </message>
+    <message>
+        <source>Auto&amp;scaling</source>
+        <translation type="unfinished">Авто&amp;масштабирование</translation>
+    </message>
 </context>
 <context>
     <name>PlotWizard</name>
@@ -14302,6 +14306,10 @@ have the same number of rows.</source>
     <message>
         <source>Results &amp;Log</source>
         <translation type="unfinished">&amp;Журнал результатов</translation>
+    </message>
+    <message>
+        <source>&amp;Descriptive Statistics</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

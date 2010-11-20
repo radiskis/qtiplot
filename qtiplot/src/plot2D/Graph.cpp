@@ -3359,6 +3359,13 @@ bool Graph::addCurves(Table* w, const QStringList& names, int style, double lWid
 	d_zoomer[0]->setZoomBase();
 	d_zoomer[1]->setZoomBase();
 
+	if (!d_auto_scale){
+	//We need this hack due to the fact that in Qwt 5.0 we can't
+	//disable autoscaling in an easier way, like for example: setAxisAutoScale(axisId, false)
+		for (int i = 0; i < QwtPlot::axisCnt; i++)
+			setAxisScaleDiv(i, *axisScaleDiv(i));
+	}
+
 	return true;
 }
 
@@ -4189,6 +4196,7 @@ QString Graph::saveToString(bool saveAsTemplate)
 	s+=QString::number(geometry().height())+"\n";
 	s+=saveTitle();
 	s+="<Antialiasing>" + QString::number(d_antialiasing) + "</Antialiasing>\n";
+	s+="<Autoscaling>" + QString::number(d_auto_scale) + "</Autoscaling>\n";
 	s+="Background\t" + paletteBackgroundColor().name() + "\t";
 	s+=QString::number(paletteBackgroundColor().alpha()) + "\n";
 	s+=saveBackgroundImage();

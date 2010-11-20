@@ -4574,10 +4574,6 @@ Autocompletion will not be available!</source>
         <source>Chi-square Test for &amp;Variance...</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <source>chart</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>AssociationsDialog</name>
@@ -8547,19 +8543,7 @@ The following special codes can be used:
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Gauss</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Peaks</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Lorentz</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Polynomial</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -12504,6 +12488,10 @@ have the same number of rows.</source>
         <source>QtiPlot - Import image from file</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Auto&amp;scaling</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>PlotWizard</name>
@@ -14379,6 +14367,10 @@ have the same number of rows.</source>
     <message>
         <source>Results &amp;Log</source>
         <translation type="unfinished">結果ログ(&amp;L)</translation>
+    </message>
+    <message>
+        <source>&amp;Descriptive Statistics</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
