@@ -807,12 +807,25 @@
               menu: Analysis of graphs
 -->
 <!ENTITY analysis-graph-menu-lnk '<link linkend="sec-analysis-graph-menu">Analysis menu</link>'>
+
 <!ENTITY translate-cmd "<command>Translate</command>">
 <!ENTITY translate-lnk '<link linkend="translate-cmd"><command>Translate</command> command</link>'>
+
 <!ENTITY translate-vertical-cmd "<command>Translate -> Vertical</command>">
 <!ENTITY translate-vertical-lnk '<link linkend="translate-vertical-cmd"><command>Translate -> Vertical</command> command</link>'>
 <!ENTITY translate-horizontal-cmd "<command>Translate -> Horizontal</command>">
 <!ENTITY translate-horizontal-lnk '<link linkend="translate-horizontal-cmd"><command>Translate -> Horizontal</command> command</link>'>
+
+<!ENTITY subtract-cmd "<command>Subtract</command>">
+<!ENTITY subtract-lnk '<link linkend="subtract-cmd">&subtract-cmd; command</link>'>
+
+<!ENTITY subtract-baseline-cmd "<command>Subtract -> Baseline</command>">
+<!ENTITY subtract-baseline-lnk '<link linkend="subtract-baseline-cmd">&subtract-baseline-cmd; command</link>'>
+<!ENTITY subtract-reference-data-cmd "<command>Subtract -> Reference Data</command>">
+<!ENTITY subtract-reference-data-lnk '<link linkend="subtract-reference-data-cmd">&subtract-reference-data-cmd; command</link>'>
+<!ENTITY subtract-straight-line-cmd "<command>Subtract -> Straight Line</command>">
+<!ENTITY subtract-straight-line-lnk '<link linkend="subtract-baseline-cmd">&subtract-straight-line-cmd; command</link>'>
+
 <!ENTITY differentiate-cmd "<command>Differentiate</command>">
 <!ENTITY differentiate-lnk '<link linkend="differentiate-cmd"><command>Differentiate</command> command</link>'>
 
@@ -852,18 +865,23 @@
 <!ENTITY fit-linear-lnk '<link linkend="fit-linear-cmd"><command>Fit Linear</command> command</link>'>
 <!ENTITY fit-polynomial-cmd "<command>Fit Polynomial...</command>">
 <!ENTITY fit-polynomial-lnk '<link linkend="fit-polynomial-cmd"><command>Fit Polynomial...</command> command</link>'>
+
 <!ENTITY fit-exp-decay-cmd "<command>Fit Exponential Decay</command>">
-<!ENTITY fit-exp-decay-lnk '<link linkend="fit-exp-decay-cmd"><command>Fit Exponential Decay</command> command</link>'>
+<!ENTITY fit-exp-decay-lnk '<link linkend="fit-exp-decay-cmd">&fit-exp-decay-cmd;</link>'>
+
 <!ENTITY fit-exp-decay-1-cmd "<command>Fit Exponential Decay -> First Order...</command>">
 <!ENTITY fit-exp-decay-1-lnk '<link linkend="fit-exp-decay-1-cmd"><command>Fit Exponential Decay -> First Order...</command> command</link>'>
+
 <!ENTITY fit-exp-decay-2-cmd "<command>Fit Exponential Decay -> Second Order...</command>">
 <!ENTITY fit-exp-decay-2-lnk '<link linkend="fit-exp-decay-2-cmd"><command>Fit Exponential Decay -> Second Order...</command> command</link>'>
+
 <!ENTITY fit-exp-decay-3-cmd "<command>Fit Exponential Decay -> Third Order...</command>">
 <!ENTITY fit-exp-decay-3-lnk '<link linkend="fit-exp-decay-3-cmd"><command>Fit Exponential Decay -> Third Order...</command> command</link>'>
+
 <!ENTITY fit-exp-growth-cmd "<command>Fit Exponential Growth...</command>">
 <!ENTITY fit-exp-growth-lnk '<link linkend="fit-exp-growth-cmd"><command>Fit Exponential Growth...</command> command</link>'>
-<!ENTITY fit-bolzmann-cmd "<command>Fit Bolzmann (sigmoidal)</command>">
-<!ENTITY fit-bolzmann-lnk '<link linkend="fit-bolzmann-cmd"><command>Fit Bolzmann (sigmoidal)</command> command</link>'>
+<!ENTITY fit-boltzmann-cmd "<command>Fit Boltzmann (sigmoidal)</command>">
+<!ENTITY fit-boltzmann-lnk '<link linkend="fit-boltzmann-cmd"><command>Fit Boltzmann (sigmoidal)</command> command</link>'>
 <!ENTITY fit-gaussian-cmd "<command>Fit Gaussian</command>">
 <!ENTITY fit-gaussian-lnk '<link linkend="fit-gaussian-cmd"><command>Fit Gaussian</command> command</link>'>
 <!ENTITY fit-lorentzian-cmd "<command>Fit Lorentzian</command>">

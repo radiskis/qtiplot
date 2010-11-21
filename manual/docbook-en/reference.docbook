@@ -1425,20 +1425,32 @@ The active items appearing in a menu depends upon which project window is active
 </sect2>
 <sect2 id="sec-analysis-menu-plot">
   <title>Commands for the analysis of curves in plots</title>
-  <para>The following items are enabled only if the active window is a 2D Multilayer Plot Window. If the active plot layer contains more than one curve, and the Data Range Selectors are not enabled, a dialog window will pop-out allowing you to select the curve you want to analyze.</para>
-  <para>In most of the cases (except for integration), a new red curve is added to the active plot layer and a a new table containing the data used to plot this curve is added to the workspace. Useful information about the operation performed will be showed in the Results Log display.</para>
-  <para>The commands <link linkend="fft-cmd">&fft-cmd;</link> and <link linkend="non-linear-curve-fit-cmd">&non-linear-curve-fit-cmd;</link> are presented in the <link linkend="sec-analysis-menu-table">Table Analysis Menu</link>.</para>
+  <para>The following items are enabled only if the active window is a 2D Multilayer Plot Window. If the active plot layer contains more than one curve, and the Data Range Selectors are not enabled, a dialog window will pop-up allowing you to select the curve you want to analyze.</para>
+  <para>In most cases (except for integration), a new red curve is added to the active plot layer and a new table containing the data used to plot this curve is added to the workspace. Useful information about the operation performed will be shown in the Results Log display.</para>
+  <para>The commands for the<link linkend="fft-cmd">&fft-cmd;</link> and <link linkend="non-linear-curve-fit-cmd">&non-linear-curve-fit-cmd;</link> are presented in the <link linkend="sec-analysis-menu-table">Table Analysis Menu</link>.</para>
+
 <!--		Beginning of menu Analysis of Plots	-->
+<sect3 id="translate-cmd"><title>&translate-cmd;</title>
+  <para>This next group of are 2 commands are used for translating curves horizontally and vertically:</para>
+  <sect4 id="translate-vertical-cmd"><title>Vertical</title>
+    <para>The Analysis -> &translate-vertical-cmd;</para>
+  </sect4>
+  <sect4 id="translate-horizontal-cmd"><title>Horizontal</title>
+    <para>The Analysis -> &translate-horizontal-cmd;</para>
+  </sect4>
+</sect3>
 
-<!--Translate 
-			Vertical
-			Horizontal
-		Subtract
-			Baseline
-			Reference Data
-			Straight Line
-		-->
-
+<sect3 id="subtract-cmd"><title>&subtract-cmd;</title><para>The &subtract-cmd; group is also used to translate curves, however, in these cases, some functional relationship is used.</para>
+  <sect4 id="subtract-baseline-cmd"><title>&subtract-baseline-cmd;</title>
+    <para>The Analysis &subtract-baseline-cmd;</para>
+  </sect4>
+  <sect4 id="subtract-reference-data-cmd"><title>&subtract-reference-data-cmd;</title>
+    <para>The Analysis &subtract-reference-data-cmd;</para>
+  </sect4>
+  <sect4 id="subtract-straight-line-cmd"><title>&subtract-straight-line-cmd;</title>
+    <para>The Analysis &subtract-straight-line-cmd;</para>
+  </sect4>
+</sect3>
 
 <sect3><title>&differentiate-cmd;</title>
     <para>the Analysis -> &differentiate-cmd; command creates a new plot displaying the resulting curve of the numerical differentiation. The computation of the derivative is done by centered finite differences. A new table is created which contains one column for X-values and one column for derivatives of Y-values. It also creates a new plot of the derivative.</para>
@@ -1499,31 +1511,29 @@ The active items appearing in a menu depends upon which project window is active
 	        <imagedata  format="PNG" fileref="pics/smooth-3-dialog.png"/>
 	      </imageobject></mediaobject></figure>
       </sect4>
-<!--************************************************************************** -->
-
 </sect3>
+
 <!--************************************************************************** -->
 <sect3 id="fft-filter-cmd "><title>&fft-filter-cmd;</title>
     <para>The Analysis -> &fft-filter-cmd; menu item provides Lowpass, Highpass, Bandpass and Bandteject filter topolopgies:</para>
 
 <!--************************************************************************** -->
-      <sect4 id="fft-low-pass-cmd"><title>Low Pass;</title>
+  <sect4 id="fft-low-pass-cmd"><title>Low Pass;</title>
 	  <para>The Analysis -> &fft-low-pass-cmd; command uses an FFT based digital filter to attenuate the high frequencies present in an input signal. See the <link linkend="sec-fft-filter-low">filtering section</link> for more details. A dialog box will be opened in which you can select the curve (input signal) to filter and the cut-off frequency of the filter.</para>
 	  <figure id="fig-fft-filter-low-dialog"><title>The &fft-low-pass-cmd; dialog.</title><mediaobject><imageobject>
 	        <imagedata  format="PNG" fileref="pics/filter-fft-low-dialog.png"/>
 	      </imageobject></mediaobject></figure>
 	  <para>This command creates a new table containing the filtered data, and adds a new curve to the current layer. The curve is a plot of the filtered data.</para>
-      </sect4>
+  </sect4>
 <!--************************************************************************** -->
 
-   <sect4 id="fft-high-pass-cmd"><title>High Pass...</title>
+  <sect4 id="fft-high-pass-cmd"><title>High Pass...</title>
 	  <para>The Analysis -> &fft-high-pass-cmd; command uses an FFT based digital filter to attenuate the low frequencies present in an input signal. See the <link linkend="sec-fft-filter-high">filtering section</link> for more details. A dialog box will be opened in which you can select the curve to filter and the cut-off frequency of the filter.</para>
 	  <figure id="fig-fft-filter-high-dialog"><title>The &fft-high-pass-cmd; dialog.</title><mediaobject><imageobject>
 	        <imagedata  format="PNG" fileref="pics/filter-fft-low-dialog.png"/>
 	      </imageobject></mediaobject></figure>
 	  <para>This command creates a new table containing the filtered data, and adds a new curve to the current layer. The curve is a plot of the filtered data.</para>
-
-   </sect4>
+  </sect4>
 <!--************************************************************************** -->
    <sect4 id="fft-band-pass-cmd"><title>Band Pass...</title>
 	  <para>The Analysis -> &fft-band-pass-cmd; command uses an FFT based digital filter to attenuate both high and low frequencies present in an input signal. See the <link linkend="sec-fft-filter-band">filtering section</link> for more details. A dialog box will be opened in which you can select the curve to filter and both the low and high cutoff frequencies of the filter.</para>
@@ -1575,81 +1585,49 @@ The active items appearing in a menu depends upon which project window is active
     <para>The Analysis -> &fit-polynomial-cmd; command opens the Polynomial Fit dialog, allowing you to choose the curve to fit, the order of the polynomial function to use, the number of points of the resulting curve and the abscissa limits for the fit.</para>
 </sect3>
 
-<variablelist><varlistentry>
-  <term>Analysis -> Fit Exponential Decay</term>
-  <listitem>
-    <para>There are 3 forms of exponential decay available:</para>
-    <variablelist>
-      <varlistentry>
-	<term>First Order...</term>
-	<listitem>
-	  <para>Opens the Exponential Fit dialog, allowing you to choose the curve to fit and the initial guesses for the fit parameters.</para>
-	</listitem>
-      </varlistentry>
-      <varlistentry>
-	<term>Second Order...</term>
-	<listitem>
-	  <para>Opens a dialog, allowing you to choose the curve to fit and the initial guesses for the fit parameters.</para>
-	</listitem>
-      </varlistentry>
-      <varlistentry>
-	<term>Third Order...</term>
-	<listitem>
-	  <para>Opens a dialog, allowing you to choose the curve to fit and the initial guesses for the fit parameters.</para>
-	</listitem>
-      </varlistentry>
-    </variablelist>
-  </listitem>
-</varlistentry>
-<varlistentry>
-  <term>Analysis -> &fit-exp-growth-cmd;</term>
-  <listitem>
-    <para>Performs an exponential growth fit to the selected curve.</para>
-  </listitem>
-</varlistentry>
+<sect3 id="fit-exp-decay-cmd"><title>Fit Exponential Decay</title>
+    <para>Analysis -> &fit-exp-decay-cmd; provides 3 forms of exponential decay:</para>
+      <sect4 id="fit-exp-decay-1-cmd"><title>First Order...</title>
+	      <para>The Analysis -> &fit-exp-decay-1-cmd; opens the Exponential Fit dialog, allowing you to choose the curve to fit and the initial guesses for the fit parameters.</para>
+      </sect4>
+      <sect4 id="fit-exp-decay-2-cmd"><title>Second Order...</title>
+	  <para>The Analysis -> &fit-exp-decay-2-cmd; opens a dialog, allowing you to choose the curve to fit and the initial guesses for the fit parameters.</para>
+      </sect4>
+      <sect4 id="fit-exp-decay-3-cmd"><title>Third Order...</title>
+	  <para>The Analysis -> &fit-exp-decay-3-cmd; opens a dialog, allowing you to choose the curve to fit and the initial guesses for the fit parameters.</para>
+      </sect4>
+</sect3>
 
-<varlistentry>
-  <term>Analysis -> &fit-bolzmann-cmd;</term>
-  <listitem>
-    <para>Performs a fit to a <link linkend="sec-fit-bolzmann">Boltzmann function</link> on the selected curve. It can be used to obtain the correlation equation of an <link linkend="sec-fit-bolzmann">S shaped data set</link>.</para>
-  </listitem>
-</varlistentry>
+<sect3 id="fit-exp-growth-cmd"><title>&fit-exp-growth-cmd;</title>
+    <para>Analysis -> &fit-exp-growth-cmd; performs an exponential growth fit to the selected curve.</para>
+</sect3>
 
-<varlistentry>
-  <term>Analysis -> &fit-gaussian-cmd;</term>
-  <listitem>
-    <para>Performs a Gaussian fit to the selected curve. It can be used to obtain the correlation equation of a <link linkend="sec-fit-gaussian">bell shaped data set</link>.</para>
-  </listitem>
-</varlistentry>
+<sect3 id="fit-boltzmann-cmd"><title>&fit-boltzmann-cmd;</title>
+    <para>The Analysis -> &fit-boltzmann-cmd; performs a fit to a <link linkend="sec-fit-boltzmann">Boltzmann function</link> on the selected curve. It can be used to obtain the correlation equation of an <link linkend="sec-fit-boltzmann">S shaped data set</link>.</para>
+</sect3>
 
-<varlistentry>
-  <term>Analysis -> &fit-lorentzian-cmd;</term>
-  <listitem>
-    <para>Performs a Lorentzian fit to the selected curve. It can be used to obtain the correlation equation of a <link linkend="sec-fit-lorentzian">bell shaped data set</link>. </para>
-  </listitem>
-</varlistentry>
+<sect3 id="fit-gaussian-cmd"><title>&fit-gaussian-cmd;</title>
+    <para>THe Analysis -> &fit-gaussian-cmd; performs a Gaussian fit to the selected curve. It can be used to obtain the correlation equation of a <link linkend="sec-fit-gaussian">bell shaped data set</link>.</para>
+</sect3>
 
-<varlistentry>
-  <term>Analysis -> &fit-multipeak-gaussian-cmd;</term>
-  <listitem>
-    <para>Performs a fit to a <link linkend="sec-fit-multipeak">sum of N Gaussian functions</link> on the selected curve.</para>
-  </listitem>
-</varlistentry>
-<varlistentry>
-  <term>Analysis -> &fit-multipeak-lorentzian-cmd;</term>
-  <listitem>
-    <para>Performs a fit to a <link linkend="sec-fit-multipeak">sum of N Lorentzian functions</link> on the selected curve.</para>
-  </listitem>
-</varlistentry>
-</variablelist>
+<sect3 id="fit-lorentzian-cmd"><title>&fit-lorentzian-cmd;</title>
+    <para>Analysis -> &fit-lorentzian-cmd; performs a Lorentzian fit to the selected curve. It can be used to obtain the correlation equation of a <link linkend="sec-fit-lorentzian">bell shaped data set</link>. </para>
 
+</sect3>
 
-<!--		End of menu Analysis of Plots		-->
+<sect3 id="fit-multipeak-gaussian-cmd"><title>&fit-multipeak-gaussian-cmd;</title>
+    <para>The Analysis -> &fit-multipeak-gaussian-cmd; performs a fit to a <link linkend="sec-fit-multipeak">sum of N Gaussian functions</link> on the selected curve.</para>
+</sect3>
+
+<sect3 id="fit-multipeak-lorentzian-cmd"><title>Analysis -> &fit-multipeak-lorentzian-cmd;</title>
+    <para>The Analysis -> &fit-multipeak-lorentzian-cmd; performs a fit to a <link linkend="sec-fit-multipeak">sum of N Lorentzian functions</link> on the selected curve.</para>
+</sect3>
 </sect2>
+<!--		End of menu Analysis of Plots		-->
+</sect1>
 <!-- ************************************************** -->
 <!--		End of menu Analysis			-->
 <!-- ************************************************** -->
-</sect1>
 
 <sect1 id="sec-table-menu">
   <title>The Table Menu</title>
