@@ -4489,11 +4489,11 @@ Are you sure you want to continue?</source>
     </message>
     <message>
         <source>Continue</source>
-        <translation>Continuă</translation>
+        <translation type="obsolete">Continuă</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation>Anulează</translation>
+        <translation type="obsolete">Anulează</translation>
     </message>
     <message>
         <source>Could not write to file: &lt;h4&gt;%1&lt;/h4&gt;&lt;p&gt;Please verify that you have the right to write to this location or that the file is not being used by another application!</source>
@@ -7573,7 +7573,7 @@ Autocompletion will not be available!</source>
     </message>
     <message>
         <source>chart</source>
-        <translation type="obsolete">diagramă</translation>
+        <translation>diagramă</translation>
     </message>
 </context>
 <context>
@@ -9442,6 +9442,10 @@ The following special codes can be used:
     <message>
         <source>Choose the location of the startup scripts folder!</source>
         <translation>Alegeţi dosarul conţinand programele executate la pornire!</translation>
+    </message>
+    <message>
+        <source>Ask before modifying data &amp;points</source>
+        <translation>Confirmă modificarea punctelor de &amp;date</translation>
     </message>
 </context>
 <context>

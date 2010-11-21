@@ -422,7 +422,7 @@
     </message>
     <message>
         <source>Cancel</source>
-        <translation>Отмена</translation>
+        <translation type="obsolete">Отмена</translation>
     </message>
     <message>
         <source>Cannot make a backup copy of &lt;b&gt;%1&lt;/b&gt; (to %2).&lt;br&gt;If you ignore this, you run the risk of &lt;b&gt;data loss&lt;/b&gt;.</source>
@@ -538,7 +538,7 @@
     </message>
     <message>
         <source>Continue</source>
-        <translation>Продолжить</translation>
+        <translation type="obsolete">Продолжить</translation>
     </message>
     <message>
         <source>Contour + &amp;Color Fill</source>
@@ -4015,7 +4015,7 @@ Autocompletion will not be available!</source>
     </message>
     <message>
         <source>chart</source>
-        <translation type="obsolete">диаграмма</translation>
+        <translation type="unfinished">диаграмма</translation>
     </message>
     <message>
         <source>Overwrite file?</source>
@@ -5921,6 +5921,10 @@ The following special codes can be used:
     </message>
     <message>
         <source>Choose the location of the startup scripts folder!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ask before modifying data &amp;points</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

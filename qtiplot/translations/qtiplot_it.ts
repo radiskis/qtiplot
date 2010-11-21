@@ -1149,11 +1149,11 @@ Sei scuro di voler continuare?</translation>
     </message>
     <message>
         <source>Continue</source>
-        <translation>Continua</translation>
+        <translation type="obsolete">Continua</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation>Annulla</translation>
+        <translation type="obsolete">Annulla</translation>
     </message>
     <message>
         <source>Choose a filename to save under</source>
@@ -4036,6 +4036,10 @@ Il completamento automatico non sarà disponibile!</translation>
         <source>English</source>
         <translation>Italiano</translation>
     </message>
+    <message>
+        <source>chart</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>AssociationsDialog</name>
@@ -5839,6 +5843,10 @@ segnalando errori o proponendo modifiche</translation>
     <message>
         <source>You need to restart QtiPlot before your changes become effective, would you like to do it now?</source>
         <translation>E&apos; necessario riavviare QtiPlot per attivare le modifiche. Vuoi farlo ora?</translation>
+    </message>
+    <message>
+        <source>Ask before modifying data &amp;points</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

@@ -1645,10 +1645,14 @@ void ConfigDialog::initConfirmationsPage()
 	boxConfirmOverwrite = new QCheckBox();
 	boxConfirmOverwrite->setChecked(app->d_confirm_overwrite);
 
+	boxConfirmModifyDataPoints = new QCheckBox();
+	boxConfirmModifyDataPoints->setChecked(app->d_confirm_modif_2D_points);
+
 	QVBoxLayout * confirmPageLayout = new QVBoxLayout( confirm );
 	confirmPageLayout->addWidget(groupBoxConfirm);
 	confirmPageLayout->addWidget(boxPromptRenameTables);
 	confirmPageLayout->addWidget(boxConfirmOverwrite);
+	confirmPageLayout->addWidget(boxConfirmModifyDataPoints);
 	confirmPageLayout->addStretch();
 }
 
@@ -1932,6 +1936,7 @@ void ConfigDialog::languageChange()
 	buttonTitleFont->setText( tr( "T&itle" ) );
 	boxPromptRenameTables->setText( tr( "Prompt on &renaming tables when appending projects" ) );
 	boxConfirmOverwrite->setText( tr( "Ask before over&writing files" ) );
+	boxConfirmModifyDataPoints->setText( tr( "Ask before modifying data &points" ) );
 
 	//application page
 	appTabWidget->setTabText(appTabWidget->indexOf(application), tr("Application"));
@@ -2450,6 +2455,7 @@ void ConfigDialog::apply()
 	// general page: confirmations tab
 	app->d_inform_rename_table = boxPromptRenameTables->isChecked();
 	app->d_confirm_overwrite = boxConfirmOverwrite->isChecked();
+	app->d_confirm_modif_2D_points = boxConfirmModifyDataPoints->isChecked();
 	app->confirmCloseFolder = boxFolders->isChecked();
 	app->updateConfirmOptions(boxTables->isChecked(), boxMatrices->isChecked(),
 			boxPlots2D->isChecked(), boxPlots3D->isChecked(),
@@ -3318,6 +3324,7 @@ void ConfigDialog::setApplication(ApplicationWindow *app)
 	boxNotes->setChecked(app->confirmCloseNotes);
 	boxPromptRenameTables->setChecked(app->d_inform_rename_table);
 	boxConfirmOverwrite->setChecked(app->d_confirm_overwrite);
+	boxConfirmModifyDataPoints->setChecked(app->d_confirm_modif_2D_points);
 
 	btnWorkspace->setColor(app->workspaceColor);
 	btnPanels->setColor(app->panelsColor);

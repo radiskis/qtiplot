@@ -4716,11 +4716,11 @@ Are you sure you want to continue?</source>
     </message>
     <message>
         <source>Continue</source>
-        <translation>Fortsätt</translation>
+        <translation type="obsolete">Fortsätt</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation>Avbryt</translation>
+        <translation type="obsolete">Avbryt</translation>
     </message>
     <message>
         <source>There are no curves available on this plot!</source>
@@ -8654,6 +8654,10 @@ Automatisk komplettering ej tillgängligt!</translation>
         <source>Chi-square Test for &amp;Variance...</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>chart</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ArrowMarker</name>
@@ -10627,6 +10631,10 @@ Följande specialkoder kan användas:
     </message>
     <message>
         <source>Choose the location of the startup scripts folder!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ask before modifying data &amp;points</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

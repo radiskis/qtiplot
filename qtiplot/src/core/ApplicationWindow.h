@@ -1196,7 +1196,7 @@ public:
 	bool d_stats_result_log;
 	bool d_stats_result_notes;
 	bool d_descriptive_stats;
-
+	bool d_confirm_modif_2D_points;
 	bool d_ask_web_connection;
 	bool d_open_last_project;
 	int d_curve_max_antialising_size;

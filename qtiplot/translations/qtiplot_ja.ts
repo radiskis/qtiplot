@@ -948,14 +948,6 @@ Are you sure you want to continue?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Continue</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Choose a filename to save under</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4574,6 +4566,10 @@ Autocompletion will not be available!</source>
         <source>Chi-square Test for &amp;Variance...</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>chart</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>AssociationsDialog</name>
@@ -6368,6 +6364,10 @@ The following special codes can be used:
     </message>
     <message>
         <source>Choose the location of the startup scripts folder!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ask before modifying data &amp;points</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
