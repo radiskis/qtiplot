@@ -75,16 +75,6 @@ QMap<Origin::FillPattern, int> ImportOPJ::patternStyles;
 QMap<Origin::ProjectNode::NodeType, QString> ImportOPJ::classes;
 QMap<Origin::GraphAxis::Scale, ScaleTransformation::Type> ImportOPJ::scaleTypes;
 
-QString strreverse(const QString &str) //QString reversing
-{
-	QString out="";
-	for(int i=str.length()-1; i>=0; --i)
-	{
-		out+=str[i];
-	}
-	return out;
-}
-
 QString posixTimeToString(ptime pt)
 {
 	stringstream ss;
@@ -2178,39 +2168,43 @@ void ImportOPJ::parseXYZContourPlotAxisTitles(Graph *g, Table *t, const Origin::
 	}
 }
 
-QString ImportOPJ::parseOriginText(const QString &str, bool removeSpecialTags)
+QString ImportOPJ::parseOriginText(const QString &str, bool removeTags)
 {
 	QStringList lines = str.trimmed().split("\n");
 	QString text = "";
 	for(int i = 0; i < lines.size(); ++i){
 		if(i > 0)
 			text.append("\n");
-		text.append(parseOriginTags(lines[i], removeSpecialTags));
+		text.append(parseOriginTags(lines[i], removeTags));
 	}
 	return text;
 }
 
-QString ImportOPJ::parseOriginTags(const QString &str, bool removeSpecialTags)
+QString ImportOPJ::parseOriginTags(const QString &str, bool removeTags)
 {
 	QString line = str;
 
-	if (removeSpecialTags){
-		QStringList lst = QStringList() << "\\\\\\s*f\\:.*\\(.*\\)"
-			<< "\\\\\\s*i\\s*\\(.*\\)"
-			<< "\\\\\\s*u\\s*\\(.*\\)"
-			<< "\\\\\\s*g\\s*\\(.*\\)"
-			<< "\\\\\\s*\\-\\s*\\(.*\\)"
-			<< "\\\\\\s*\\+\\s*\\(.*\\)";
+	QStringList tagsLst = QStringList()
+		<< "\\\\\\s*b\\s*\\(.*\\)"
+		<< "\\\\\\s*i\\s*\\(.*\\)"
+		<< "\\\\\\s*u\\s*\\(.*\\)"
+		<< "\\\\\\s*g\\s*\\(.*\\)"
+		<< "\\\\\\s*\\+\\s*\\(.*\\)"
+		<< "\\\\\\s*\\-\\s*\\(.*\\)"
+		<< "\\\\\\s*f\\:.*\\(.*\\)"
+		<< "\\\\\\s*c(\\d)+\\(.*\\)" // \c2(...) like tags
+		<< "\\\\\\s*p(\\d)+\\(.*\\)"; // \p163(...) like tags
 
-		foreach (QString s, lst){
+	if (removeTags){
+		foreach (QString s, tagsLst){
 			QRegExp fontModifier(s);
 			fontModifier.setMinimal(true);
 			int index = line.indexOf(fontModifier);
 			while (index >= 0){
-				int pos1 = line.indexOf("(", index) + 1;
+				int pos = line.indexOf("(", index) + 1;
 				int length = fontModifier.matchedLength();
 				int l = index + length;
-				line = line.left(index) + line.mid(pos1, l - pos1 - 1) + line.right(line.length() - l);
+				line = line.left(index) + line.mid(pos, l - pos - 1) + line.right(line.length() - l);
 
 				index = line.indexOf(fontModifier);
 			}
@@ -2218,124 +2212,42 @@ QString ImportOPJ::parseOriginTags(const QString &str, bool removeSpecialTags)
 		return parseAsciiCodes(line);
 	}
 
-
-	//Lookbehind conditions are not supported - so need to reverse string
-	QRegExp rx("\\)[^\\)\\(]*\\((?!\\s*[buig\\+\\-]\\s*\\\\)");
-	QRegExp rxfont("\\)[^\\)\\(]*\\((?![^\\:]*\\:f\\s*\\\\)");
-	QString linerev = strreverse(line);
-	QString lBracket=strreverse("&lbracket;");
-	QString rBracket=strreverse("&rbracket;");
-	QString ltagBracket=strreverse("&ltagbracket;");
-	QString rtagBracket=strreverse("&rtagbracket;");
-	int pos1=rx.indexIn(linerev);
-	int pos2=rxfont.indexIn(linerev);
-
-	while (pos1>-1 || pos2>-1) {
-		if(pos1==pos2)
-		{
-			QString value = rx.cap(0);
-			int len=value.length();
-			value=rBracket+value.mid(1,len-2)+lBracket;
-			linerev.replace(pos1, len, value);
-		}
-		else if ((pos1>pos2&&pos2!=-1)||pos1==-1)
-		{
-			QString value = rxfont.cap(0);
-			int len=value.length();
-			value=rtagBracket+value.mid(1,len-2)+ltagBracket;
-			linerev.replace(pos2, len, value);
-		}
-		else if ((pos2>pos1&&pos1!=-1)||pos2==-1)
-		{
-			QString value = rx.cap(0);
-			int len=value.length();
-			value=rtagBracket+value.mid(1,len-2)+ltagBracket;
-			linerev.replace(pos1, len, value);
-		}
-
-		pos1=rx.indexIn(linerev);
-		pos2=rxfont.indexIn(linerev);
-	}
-	linerev.replace(ltagBracket, "(");
-	linerev.replace(rtagBracket, ")");
-
-	line = strreverse(linerev);
+	line = parseAsciiCodes(line);
 
 	//replace \b(...), \i(...), \u(...), \g(...), \+(...), \-(...), \f:font(...) tags
-	QString rxstr[]={
-		"\\\\\\s*b\\s*\\(",
-		"\\\\\\s*i\\s*\\(",
-		"\\\\\\s*u\\s*\\(",
-		"\\\\\\s*g\\s*\\(",
-		"\\\\\\s*\\+\\s*\\(",
-		"\\\\\\s*\\-\\s*\\(",
-		"\\\\\\s*f\\:[^\\(]*\\("};
-	int postag[]={0,0,0,0,0,0,0};
-	QString ltag[]={"<b>","<i>","<u>","<font face=Symbol>","<sup>","<sub>","<font face=%1>"};
-	QString rtag[]={"</b>","</i>","</u>","</font>","</sup>","</sub>","</font>"};
-	QRegExp rxtags[7];
-	for (int i = 0; i < 7; ++i)
-		rxtags[i].setPattern(rxstr[i]+"[^\\(\\)]*\\)");
+	QString ltag[] = {"<b>","<i>","<u>","<font face=Symbol>","<sup>","<sub>","<font face=%1>", "<font color=%1>"};
+	QString rtag[] = {"</b>","</i>","</u>","</font>","</sup>","</sub>","</font>","</font>"};
 
-	bool flag=true;
-	while(flag) {
-		for(int i=0; i<7; ++i)
-		{
-			postag[i] = rxtags[i].indexIn(line);
-			while (postag[i] > -1) {
-				QString value = rxtags[i].cap(0);
-				int len=value.length();
-				int pos2=value.indexOf("(");
-				if(i<6)
-					value=ltag[i]+value.mid(pos2+1,len-pos2-2)+rtag[i];
-				else
-				{
-					int posfont=value.indexOf("f:");
-					value=ltag[i].arg(value.mid(posfont+2,pos2-posfont-2))+value.mid(pos2+1,len-pos2-2)+rtag[i];
-				}
-				line.replace(postag[i], len, value);
-				postag[i] = rxtags[i].indexIn(line);
-			}
-		}
-		flag=false;
-		for(int i=0; i<7; ++i)
-		{
-			if(rxtags[i].indexIn(line)>-1)
-			{
-				flag=true;
-				break;
-			}
+	for(int i = 0; i < tagsLst.size(); i++){
+		QRegExp fontModifier(tagsLst[i]);
+		fontModifier.setMinimal(true);
+		int index = line.indexOf(fontModifier);
+		while (index >= 0){
+			int pos = line.indexOf("(", index) + 1;
+			int length = fontModifier.matchedLength();
+			int l = index + length;
+
+			QString left = line.left(index);
+			QString mid = line.mid(pos, l - pos - 1);
+			QString right = line.right(line.length() - l);
+
+			if (i == 6){
+				int posFont = line.indexOf(":", index) + 1;
+				QString fontName = line.mid(posFont, pos - posFont - 1);
+				line = QString(left + ltag[i] + mid + rtag[i] + right).arg(fontName);
+			} else if (i == 7){
+				int posC = index + 2;
+				int colIndex = line.mid(posC, pos - posC - 1).toInt() - 1;
+				line = QString(left + ltag[i] + mid + rtag[i] + right).arg(ColorBox::defaultColor(colIndex).name());
+			} else if (i == 8){// remove \p163(...) like tags
+				line = left + mid + right;
+			} else
+				line = left + ltag[i] + mid + rtag[i] + right;
+
+			index = line.indexOf(fontModifier);
 		}
 	}
-
-	//replace unclosed tags
-	for(int i=0; i<6; ++i)
-		line.replace(QRegExp(rxstr[i]), ltag[i]);
-
-	rxfont.setPattern(rxstr[6]);
-	int pos = rxfont.indexIn(line);
-	while (pos > -1) {
-		QString value = rxfont.cap(0);
-		int len=value.length();
-		int posfont=value.indexOf("f:");
-		value=ltag[6].arg(value.mid(posfont+2,len-posfont-3));
-		line.replace(pos, len, value);
-		pos = rxfont.indexIn(line);
-	}
-
-	line.replace("&lbracket;", "(");
-	line.replace("&rbracket;", ")");
-
-	QRegExp fontModifier("\\\\p(\\d)+\\(.*\\)");//remove \p163(...) like tags
-	int index = line.indexOf(fontModifier);
-	while (index >= 0){
-		int pos1 = line.indexOf("(", index + 2) + 1;
-		int length = fontModifier.matchedLength();
-		line = line.mid(pos1, length - pos1 - 1);
-		index = line.indexOf(fontModifier, index + length);
-	}
-
-	return parseAsciiCodes(line);
+	return line;
 }
 
 QString ImportOPJ::parseAsciiCodes(const QString& str)
