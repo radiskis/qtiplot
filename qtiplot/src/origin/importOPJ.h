@@ -57,8 +57,8 @@ private:
 	QwtSymbol::Style originToQwtSymbolStyle(unsigned char type);
 	QwtLinearColorMap qwtColorMap(const Origin::ColorMap& colorMap);
     int arrowAngle(double length, double width){return ceil(45*atan(0.5*width/length)/atan(1.0));};
-	QString parseOriginText(const QString &str, bool removeSpecialTags = false);
-	QString parseOriginTags(const QString &str, bool removeSpecialTags = false);
+	QString parseOriginText(const QString &str, bool removeTags = false);
+	QString parseOriginTags(const QString &str, bool removeTags = false);
 	QString parseAsciiCodes(const QString& str);
 	void addText(const Origin::TextBox& text, Graph* graph, double fFontScaleFactor, double fScale);
 	void setPieTexts(PieCurve *p, Graph* graph, const Origin::GraphLayer& layer, double fFontScaleFactor, double fScale);
