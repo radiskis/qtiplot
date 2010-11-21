@@ -460,7 +460,7 @@ void ApplicationWindow::setDefaultOptions()
 	d_stats_result_log = true;
 	d_stats_result_notes = false;
 	d_descriptive_stats = true;
-
+	d_confirm_modif_2D_points = true;
 	d_ask_web_connection = true;
 	d_open_last_project = false;
 	d_force_muParser = true;
@@ -5583,6 +5583,7 @@ void ApplicationWindow::readSettings()
 	d_inform_rename_table = settings.value("/RenameTable", true).toBool();
 	d_confirm_overwrite = settings.value("/Overwrite", true).toBool();
 	d_ask_web_connection = settings.value("/WebConnection", d_ask_web_connection).toBool();
+	d_confirm_modif_2D_points = settings.value("/ModifyDataPoints", d_confirm_modif_2D_points).toBool();
 	settings.endGroup(); // Confirmations
 
 
@@ -6037,6 +6038,7 @@ void ApplicationWindow::saveSettings()
 	settings.setValue("/RenameTable", d_inform_rename_table);
 	settings.setValue("/Overwrite", d_confirm_overwrite);
 	settings.setValue("/WebConnection", d_ask_web_connection);
+	settings.setValue("/ModifyDataPoints", d_confirm_modif_2D_points);
 	settings.endGroup(); // Confirmations
 
 	/* ----------------- group Tables -------------- */
@@ -8552,23 +8554,31 @@ void ApplicationWindow::removePoints()
 	}
 
 	if (g->isPiePlot()){
-		QMessageBox::warning(this,tr("QtiPlot - Warning"),
-				tr("This functionality is not available for pie plots!"));
+		QMessageBox::warning(this,tr("QtiPlot - Warning"), tr("This functionality is not available for pie plots!"));
 		btnPointer->setChecked(true);
 		return;
-	} else {
-		switch(QMessageBox::warning (this,tr("QtiPlot"),
-					tr("This will modify the data in the worksheets!\nAre you sure you want to continue?"),
-					tr("Continue"), tr("Cancel"), 0, 1)){
-			case 0:
-				g->setActiveTool(new DataPickerTool(g, this, DataPickerTool::Remove, info, SLOT(setText(const QString&))));
-				displayBar->show();
-				break;
+	}
 
-			case 1:
-				btnPointer->setChecked(true);
-				break;
-		}
+	if (d_confirm_modif_2D_points){
+		QMessageBox msgBox(QMessageBox::Question, tr("QtiPlot"),
+		tr("This will modify the data in the worksheets!\nAre you sure you want to continue?"));
+
+		QPushButton *yesButton = msgBox.addButton(tr("Yes, don't ask me again"), QMessageBox::YesRole);
+		msgBox.addButton(QMessageBox::Cancel);
+		msgBox.setDefaultButton(msgBox.addButton(QMessageBox::Yes));
+		msgBox.setEscapeButton(QMessageBox::Cancel);
+		msgBox.setWindowIcon(this->windowIcon());
+		msgBox.exec();
+		if (msgBox.clickedButton() == yesButton || msgBox.clickedButton() == msgBox.defaultButton()){
+			g->setActiveTool(new DataPickerTool(g, this, DataPickerTool::Remove, info, SLOT(setText(const QString&))));
+			displayBar->show();
+			if (msgBox.clickedButton() == yesButton)
+				d_confirm_modif_2D_points = false;
+		} else
+			btnPointer->setChecked(true);
+	} else {
+		g->setActiveTool(new DataPickerTool(g, this, DataPickerTool::Remove, info, SLOT(setText(const QString&))));
+		displayBar->show();
 	}
 }
 
@@ -8597,26 +8607,55 @@ void ApplicationWindow::movePoints(bool wholeCurve)
 
 		btnPointer->setChecked(true);
 		return;
-	} else {
-		switch(QMessageBox::warning (this, tr("QtiPlot"),
-					tr("This will modify the data in the worksheets!\nAre you sure you want to continue?"),
-					tr("Continue"), tr("Cancel"), 0, 1))
-		{
-			case 0:
-				if (g){
-					DataPickerTool *tool = new DataPickerTool(g, this, DataPickerTool::Move, info, SLOT(setText(const QString&)));
-					if (wholeCurve)
-						tool->setMode(DataPickerTool::MoveCurve);
-					g->setActiveTool(tool);
-					displayBar->show();
-				}
-				break;
-
-			case 1:
-				btnPointer->setChecked(true);
-				break;
-		}
 	}
+
+
+	if (d_confirm_modif_2D_points){
+		QMessageBox msgBox(QMessageBox::Question, tr("QtiPlot"),
+		tr("This will modify the data in the worksheets!\nAre you sure you want to continue?"));
+
+		QPushButton *yesButton = msgBox.addButton(tr("Yes, don't ask me again"), QMessageBox::YesRole);
+		msgBox.addButton(QMessageBox::Cancel);
+		msgBox.setDefaultButton(msgBox.addButton(QMessageBox::Yes));
+		msgBox.setEscapeButton(QMessageBox::Cancel);
+		msgBox.setWindowIcon(this->windowIcon());
+		msgBox.exec();
+		if (msgBox.clickedButton() == yesButton || msgBox.clickedButton() == msgBox.defaultButton()){
+			DataPickerTool *tool = new DataPickerTool(g, this, DataPickerTool::Move, info, SLOT(setText(const QString&)));
+			if (wholeCurve)
+				tool->setMode(DataPickerTool::MoveCurve);
+			g->setActiveTool(tool);
+			displayBar->show();
+			if (msgBox.clickedButton() == yesButton)
+				d_confirm_modif_2D_points = false;
+		} else
+			btnPointer->setChecked(true);
+	} else {
+		DataPickerTool *tool = new DataPickerTool(g, this, DataPickerTool::Move, info, SLOT(setText(const QString&)));
+		if (wholeCurve)
+			tool->setMode(DataPickerTool::MoveCurve);
+		g->setActiveTool(tool);
+		displayBar->show();
+	}
+
+	/*switch(QMessageBox::warning (this, tr("QtiPlot"),
+				tr("This will modify the data in the worksheets!\nAre you sure you want to continue?"),
+				tr("Continue"), tr("Cancel"), 0, 1))
+	{
+		case 0:
+			if (g){
+				DataPickerTool *tool = new DataPickerTool(g, this, DataPickerTool::Move, info, SLOT(setText(const QString&)));
+				if (wholeCurve)
+					tool->setMode(DataPickerTool::MoveCurve);
+				g->setActiveTool(tool);
+				displayBar->show();
+			}
+			break;
+
+		case 1:
+			btnPointer->setChecked(true);
+			break;
+	}*/
 }
 
 void ApplicationWindow::exportPDF()

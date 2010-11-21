@@ -1352,7 +1352,7 @@ Automatické dokončení nebude dostupné!</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation>Zrušit</translation>
+        <translation type="obsolete">Zrušit</translation>
     </message>
     <message>
         <source>Add Column</source>
@@ -1842,7 +1842,7 @@ Varování. Tento krok přeuspořádá stávající vrstvy!</translation>
     </message>
     <message>
         <source>Continue</source>
-        <translation>Pokračovat</translation>
+        <translation type="obsolete">Pokračovat</translation>
     </message>
     <message>
         <source>The selected error column is empty!</source>
@@ -4091,6 +4091,10 @@ Různé části tohoto souboru se nemusí zobrazovat tak, jak se očekává.</tr
         <source>Chi-square Test for &amp;Variance...</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>chart</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ArrowMarker</name>
@@ -5936,6 +5940,10 @@ K tomu lze použít následujících zvláštních kódů:
     <message>
         <source>Choose the location of the startup scripts folder!</source>
         <translation>Vyberte umístění složky se spouštěcími skripty!</translation>
+    </message>
+    <message>
+        <source>Ask before modifying data &amp;points</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

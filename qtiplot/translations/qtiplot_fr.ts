@@ -1168,7 +1168,7 @@
     </message>
     <message>
         <source>Cancel</source>
-        <translation>Annuler</translation>
+        <translation type="obsolete">Annuler</translation>
     </message>
     <message>
         <source>QtiPlot - Edit function</source>
@@ -1402,7 +1402,7 @@ Are you sure you want to continue?</source>
     </message>
     <message>
         <source>Continue</source>
-        <translation>Continuer</translation>
+        <translation type="obsolete">Continuer</translation>
     </message>
     <message>
         <source>QtiPlot - Help Files Not Found!</source>
@@ -4025,7 +4025,7 @@ L&apos;autocomplétion ne sera pas disponible!</translation>
     </message>
     <message>
         <source>chart</source>
-        <translation type="obsolete">Diagramme</translation>
+        <translation type="unfinished">Diagramme</translation>
     </message>
     <message>
         <source>Yes, don&apos;t ask me again</source>
@@ -5928,6 +5928,10 @@ Les codes spéciaux suivant peuvent être utilisés :
     <message>
         <source>Choose the location of the startup scripts folder!</source>
         <translation>Choisissez l&apos;emplacement du répertoire des scripts au démarrage !</translation>
+    </message>
+    <message>
+        <source>Ask before modifying data &amp;points</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

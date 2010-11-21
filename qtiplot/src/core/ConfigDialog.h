@@ -270,7 +270,7 @@ private:
 	QLabel *buttonCommentLabel, *buttonNumericLabel, *buttonQuotationLabel;
 	QLabel *buttonKeywordLabel, *buttonFunctionLabel, *buttonClassLabel;
 
-	QCheckBox *boxMuParserCLocale, *boxConfirmOverwrite;
+	QCheckBox *boxMuParserCLocale, *boxConfirmOverwrite, *boxConfirmModifyDataPoints;
 	DoubleSpinBox *boxCanvasHeight, *boxCanvasWidth;
 	QComboBox *unitBox;
 	QLabel *unitBoxLabel, *canvasWidthLabel, *canvasHeightLabel;
