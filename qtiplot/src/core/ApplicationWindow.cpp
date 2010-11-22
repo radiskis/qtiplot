@@ -18707,6 +18707,7 @@ void ApplicationWindow::initCompleter()
 
 	QStringList words;
 	words.append("col");
+	words.append("tablecol");
 	words.append("cell");
 #ifdef SCRIPTING_PYTHON
 	if (scriptEnv->name() == QString("Python")){
