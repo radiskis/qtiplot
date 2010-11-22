@@ -111,7 +111,7 @@ bool PythonScript::compile(bool for_eval)
 				"def cellData(c,r):\n"
 				"\treturn self.cellData(c,r)\n"
 				"def tablecol(t,c):\n"
-				"\treturn self.folder().rootFolder().table(t,True).cell(c,i)\n"
+				"\treturn table(t).cell(c,i)\n"
 				"def _meth_table_col_(t,c):\n"
 				"\treturn t.cell(c,i)\n"
 				"self.__class__.col = _meth_table_col_",

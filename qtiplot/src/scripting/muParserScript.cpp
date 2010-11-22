@@ -29,6 +29,7 @@
  ***************************************************************************/
 #include "muParserScript.h"
 #include "muParserScripting.h"
+#include <ApplicationWindow.h>
 #include <Table.h>
 #include <Matrix.h>
 #include <Folder.h>
@@ -159,16 +160,18 @@ double muParserScript::tablecol(const QString &arg)
 		throw Parser::exception_type(tr("tablecol: wrong number of arguments (need 2, got %1)").arg(items.count()).ascii());
 	if (!items[0].startsWith("\"") || !items[0].endsWith("\""))
 		throw Parser::exception_type(tr("tablecol: first argument must be a string (table name)").ascii());
-	Table *target_table = this_table->folder()->rootFolder()->table(items[0].mid(1,items[0].length()-2));
+	Table *target_table = scriptingEnv()->application()->table(items[0].mid(1, items[0].length()-2));
 	if (!target_table)
 		throw Parser::exception_type(tr("Couldn't find a table named %1.").arg(items[0]).ascii());
-	if (items[1].startsWith("\"") && items[1].endsWith("\"")) {
-		col = target_table->colNames().findIndex(items[1].mid(1,items[1].length()-2));
-		if (col<0)
+
+	QString arg2 = items[1].trimmed();
+	if (arg2.startsWith("\"") && arg2.endsWith("\"")){
+		col = target_table->colIndex(arg2.mid(1, arg2.length() - 2));
+		if (col < 0)
 			throw Parser::exception_type(tr("There's no column named %1 in table %2!").
-					arg(items[1]).arg(target_table->name()).ascii());
+					arg(arg2).arg(target_table->name()).ascii());
 	} else {
-		local_parser.SetExpr(items[1].ascii());
+		local_parser.SetExpr(arg2.ascii());
 		col = qRound(local_parser.Eval()) - 1;
 	}
 	if (variables["i"])
