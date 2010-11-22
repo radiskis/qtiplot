@@ -131,7 +131,7 @@
     </message>
     <message>
         <source>&amp;Descriptive Statistics</source>
-        <translation type="unfinished"></translation>
+        <translation>Statistiques &amp;descriptives</translation>
     </message>
 </context>
 <context>
@@ -4025,7 +4025,7 @@ L&apos;autocomplétion ne sera pas disponible!</translation>
     </message>
     <message>
         <source>chart</source>
-        <translation type="unfinished">Diagramme</translation>
+        <translation>Diagramme</translation>
     </message>
     <message>
         <source>Yes, don&apos;t ask me again</source>
@@ -4049,7 +4049,7 @@ L&apos;autocomplétion ne sera pas disponible!</translation>
     </message>
     <message>
         <source>Descriptive S&amp;tatistics</source>
-        <translation>S&amp;tatiques descriptives</translation>
+        <translation>S&amp;tatistiques descriptives</translation>
     </message>
     <message>
         <source>&amp;Hypothesis Testing</source>
@@ -5931,7 +5931,7 @@ Les codes spéciaux suivant peuvent être utilisés :
     </message>
     <message>
         <source>Ask before modifying data &amp;points</source>
-        <translation type="unfinished"></translation>
+        <translation>Demander avant de modifier les &amp;points de données</translation>
     </message>
 </context>
 <context>
@@ -12179,7 +12179,7 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Auto&amp;scaling</source>
-        <translation type="unfinished">Échelle auto&amp;matique</translation>
+        <translation>Échelle auto&amp;matique</translation>
     </message>
 </context>
 <context>
@@ -14265,7 +14265,7 @@ Calcule le sinus de x.</translation>
     </message>
     <message>
         <source>&amp;Descriptive Statistics</source>
-        <translation type="unfinished"></translation>
+        <translation>Statistiques &amp;descriptives</translation>
     </message>
 </context>
 <context>
