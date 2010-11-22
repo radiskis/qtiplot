@@ -1431,24 +1431,33 @@ The active items appearing in a menu depends upon which project window is active
 
 <!--		Beginning of menu Analysis of Plots	-->
 <sect3 id="translate-cmd"><title>&translate-cmd;</title>
-  <para>This next group of are 2 commands are used for translating curves horizontally and vertically:</para>
+  <para>This next group of are 2 commands are used for translating curves horizontally and vertically.</para>
   <sect4 id="translate-vertical-cmd"><title>Vertical</title>
-    <para>The Analysis -> &translate-vertical-cmd;</para>
+    <para>The Analysis -> &translate-vertical-cmd; is used to move a curve in the vertical direction. When the command is selected, the cursor changes to a box and cross with an X-Y coordinate display which floats along with the cursor. You then select 2 points. The first must be a point on a curve. When the first points is selected, a crosshair will be drawn to indicate it's location. The second point can then be selected anywhere in the active graph region. The vertical distance between the selected points will be calculated, and the selected curve will be translated by this amount. The net result is to place the selected graph point at the new vertical location. Horizontal distance is ignored. This allows selection of the second point at one of the vertical axes, facilitating alignment of the selected graph point with some value on that axis. The second point may also be another curve point (either on the same or a different curve), a feature which makes it easy to align two or more curves in the vertical direction. <emphasis>Warning: </emphasis> the underlying curve's data is modified by this operation. No other warning will be given.</para>
   </sect4>
   <sect4 id="translate-horizontal-cmd"><title>Horizontal</title>
-    <para>The Analysis -> &translate-horizontal-cmd;</para>
+    <para>The Analysis -> &translate-horizontal-cmd;is used to move a curve in the horizontal direction. When the command is selected, the cursor changes to a box and cross with an X-Y coordinate display which floats along with the cursor. You then select 2 points. The first must be a point on a curve. When the first points is selected, a crosshair will be drawn to indicate it's location. The second point then can be selected anywhere on the active graph region. The horizontal distance between the selected points will be calculated, and the curve will be translated horizontally by this amount. The net result is to place the selected graph point at the new location. Vertical distance is ignored. This allows selection of the second point at one of the horizontal axes, facilitating alignment of the selected graph point with some value on that axis. The second point may also be another curve point (either on the same or a different curve), a feature which makes it easy to align two or more curves in the horizontal direction. <emphasis>Warning: </emphasis> the underlying curve's data is modified by this operation. No other warning will be given.</para>
   </sect4>
 </sect3>
 
 <sect3 id="subtract-cmd"><title>&subtract-cmd;</title><para>The &subtract-cmd; group is also used to translate curves, however, in these cases, some functional relationship is used.</para>
   <sect4 id="subtract-baseline-cmd"><title>&subtract-baseline-cmd;</title>
-    <para>The Analysis &subtract-baseline-cmd;</para>
+    <para>The Analysis &subtract-baseline-cmd; opens the <emphasis>Baseline</emphasis> dialog.</para>
+
+    <informalfigure id="subtract-baseline">
+      <mediaobject><imageobject><imagedata  format="PNG" fileref="pics/baseline-dialog.png"/></imageobject></mediaobject>
+    </informalfigure> 
+
   </sect4>
   <sect4 id="subtract-reference-data-cmd"><title>&subtract-reference-data-cmd;</title>
     <para>The Analysis &subtract-reference-data-cmd;</para>
+    <informalfigure id="subtract-reference-data">
+      <mediaobject><imageobject><imagedata  format="PNG" fileref="pics/mathondatasets-dialog.png"/></imageobject></mediaobject>
+    </informalfigure> 
+
   </sect4>
   <sect4 id="subtract-straight-line-cmd"><title>&subtract-straight-line-cmd;</title>
-    <para>The Analysis &subtract-straight-line-cmd;</para>
+    <para>The Analysis &subtract-straight-line-cmd; operates in a manner similar to the Analysis -> &subtract-baseline-lnk;. However, in this case, the two points which are selected define the end-points of a straight line which is subtracted from <emphasis>all </emphasis>the curves on the layer.The cursor changes to a cross target with an X-Y coordinate display which floats along with the cursor, similar to that used in the Analysis -> &subtract-baseline-lnk; When the first point is selected, it will be marked with a small circle and crosshairs. As soon as the second point is selected, the line between the t points will be subtracted from the curves. <emphasis>Warning: </emphasis> the underlying curve's data is modified by this operation. No other warning will be given.</para>
   </sect4>
 </sect3>
 

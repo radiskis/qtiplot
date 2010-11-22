@@ -824,7 +824,7 @@
 <!ENTITY subtract-reference-data-cmd "<command>Subtract -> Reference Data</command>">
 <!ENTITY subtract-reference-data-lnk '<link linkend="subtract-reference-data-cmd">&subtract-reference-data-cmd; command</link>'>
 <!ENTITY subtract-straight-line-cmd "<command>Subtract -> Straight Line</command>">
-<!ENTITY subtract-straight-line-lnk '<link linkend="subtract-baseline-cmd">&subtract-straight-line-cmd; command</link>'>
+<!ENTITY subtract-straight-line-lnk '<link linkend="subtract-straight-line-cmd">&subtract-straight-line-cmd; command</link>'>
 
 <!ENTITY differentiate-cmd "<command>Differentiate</command>">
 <!ENTITY differentiate-lnk '<link linkend="differentiate-cmd"><command>Differentiate</command> command</link>'>
