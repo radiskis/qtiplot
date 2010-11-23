@@ -828,7 +828,7 @@ QString ScaleDraw::formatString()
 	if (d_type == Time)
 		return d_date_time_origin.time().toString() + ";" + d_format_info;
 	else if (d_type == Date)
-		return d_date_time_origin.toString(Qt::ISODate) + ";" + d_format_info;
+		return d_date_time_origin.toString(d_format_info) + ";" + d_format_info;
 
 	return d_format_info;
 }

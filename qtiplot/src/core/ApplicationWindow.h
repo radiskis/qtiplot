@@ -481,12 +481,14 @@ public slots:
 	Table* importOdfSpreadsheet(const QString& = QString::null, int sheet = -1);
 
 	Table* importExcel(const QString& = QString::null, int sheet = -1);
+	//Table* adoReadExcelSheet(const QString& fileName, int sheetIndex, bool header = false);
 #ifdef HAS_EXCEL
 	static bool isExcelInstalled();
 	Table* importUsingExcel(const QString& = QString::null, int sheet = -1);
 	void importExcelCharts(QAxObject* ws, const QString& fn = QString::null);
 	MultiLayer *importExcelChart(QAxObject* chart, const QString& fn = QString::null, const QString& name = QString::null);
 #endif
+
 #ifdef XLS_IMPORT
 	Table* importExcelCrossplatform(const QString& = QString::null, int sheet = -1);
 	void exportExcel();

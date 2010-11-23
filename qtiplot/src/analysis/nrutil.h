@@ -5,7 +5,7 @@
 #define FREE_ARG char*
 #define TINY 1.0e-20
 
-void nrerror(char error_text[]);
+void nrerror(const char error_text[]);
 double **matrix(long nrl, long nrh, long ncl, long nch);
 void free_matrix(double **m, long nrl, long nrh, long ncl, long nch);
 double *vector(long nl, long nh);

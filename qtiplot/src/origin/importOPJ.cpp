@@ -1102,40 +1102,6 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 				catch(...)
 				{}
 			}
-			if (style == Graph::HorizontalBars){
-				graph->setScale(0,layer.xAxis.min,layer.xAxis.max,layer.xAxis.step,layer.xAxis.majorTicks,layer.xAxis.minorTicks,layer.xAxis.scale);
-				graph->setScale(2,layer.yAxis.min,layer.yAxis.max,layer.yAxis.step,layer.yAxis.majorTicks,layer.yAxis.minorTicks,layer.yAxis.scale);
-			} else {
-				Origin::GraphAxisBreak breakX = layer.xAxisBreak;
-				Origin::GraphAxisBreak breakY = layer.yAxisBreak;
-				bool invert = (layer.xAxis.min > layer.xAxis.max);
-				if (style != Graph::Box){
-					if (breakX.show){
-						for (int i = 2; i < QwtPlot::axisCnt; i++)
-							graph->setScale(i, layer.xAxis.min,layer.xAxis.max,layer.xAxis.step,layer.xAxis.majorTicks,layer.xAxis.minorTicks,scaleTypes[(Origin::GraphAxis::Scale)layer.xAxis.scale],
-									invert, breakX.from, breakX.to, breakX.position, breakX.scaleIncrementBefore, breakX.scaleIncrementAfter,
-									breakX.minorTicksBefore, breakX.minorTicksAfter, breakX.log10);
-					} else {
-						for (int i = 2; i < QwtPlot::axisCnt; i++){
-							if (!graph->axisWidget(i)->isColorBarEnabled())
-								graph->setScale(i, layer.xAxis.min,layer.xAxis.max,layer.xAxis.step,layer.xAxis.majorTicks,layer.xAxis.minorTicks,scaleTypes[(Origin::GraphAxis::Scale)layer.xAxis.scale], invert);
-						}
-					}
-				}
-
-				invert = (layer.yAxis.min > layer.yAxis.max) || matrixImage;
-				if (breakY.show){
-					for (int i = 0; i <= 1; i++)
-						graph->setScale(i, layer.yAxis.min,layer.yAxis.max,layer.yAxis.step,layer.yAxis.majorTicks,layer.yAxis.minorTicks,scaleTypes[(Origin::GraphAxis::Scale)layer.xAxis.scale], //??xAxis??
-							invert, breakY.from, breakY.to, breakY.position, breakY.scaleIncrementBefore, breakY.scaleIncrementAfter,
-							breakY.minorTicksBefore, breakY.minorTicksAfter, breakY.log10);
-				} else {
-					for (int i = 0; i <= 1; i++){
-						if (!graph->axisWidget(i)->isColorBarEnabled())
-							graph->setScale(i, layer.yAxis.min,layer.yAxis.max,layer.yAxis.step,layer.yAxis.majorTicks,layer.yAxis.minorTicks,scaleTypes[(Origin::GraphAxis::Scale)layer.yAxis.scale], invert);
-					}
-				}
-			}
 
 			//grid
 			Grid *grid = graph->grid();
@@ -1187,7 +1153,7 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 				QString data(ticks[i].dataName.c_str());
 				QString tableName = data.right(data.length()-2) + "_" + ticks[i].columnName.c_str();
 
-				QString formatInfo;
+				QString formatInfo = tableName;
 				int format = ScaleDraw::Automatic;
 				int type = 0;
 				int prec = ticks[i].decimalPlaces;
@@ -1231,10 +1197,12 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 						type=ScaleDraw::Text;
 						break;
 					case 2: // Date
-						type=ScaleDraw::Date;
+						type = ScaleDraw::Date;
+						formatInfo = "";
 						break;
 					case 3: // Time
-						type=ScaleDraw::Time;
+						type = ScaleDraw::Time;
+						formatInfo = "";
 						break;
 					case Origin::Month: // Month
 						type=ScaleDraw::Month;
@@ -1285,12 +1253,14 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 							graph->axisScaleEngine(i)->setAttribute(QwtScaleEngine::Inverted, true);
 					}
 				} else
-					graph->showAxis(i, type, tableName, mw->table(tableName), !(formats[i].hidden),
+					graph->showAxis(i, type, formatInfo, mw->table(tableName), !(formats[i].hidden),
 						tickTypeMap[formats[i].majorTicksType], tickTypeMap[formats[i].minorTicksType],
 						!(ticks[i].hidden),	ColorBox::defaultColor(formats[i].color), format, prec,
 						-ticks[i].rotation, 0, "", (ticks[i].color == 0xF7 ? ColorBox::defaultColor(formats[i].color) : ColorBox::defaultColor(ticks[i].color)),
 						4, true, ScaleDraw::ShowAll, parseOriginText(QString(formats[i].prefix.c_str())),
 						parseOriginText(QString(formats[i].suffix.c_str())));
+
+
 
 				QwtScaleWidget *scale = graph->axisWidget(i);
 				if (scale)
@@ -1313,6 +1283,46 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 
 				if (_graph.isLayout)
 					graph->enableAxis(i, false);
+			}
+
+			//set scale limits
+			if (style == Graph::HorizontalBars){
+				graph->setScale(0,layer.xAxis.min,layer.xAxis.max,layer.xAxis.step,layer.xAxis.majorTicks,layer.xAxis.minorTicks,layer.xAxis.scale);
+				graph->setScale(2,layer.yAxis.min,layer.yAxis.max,layer.yAxis.step,layer.yAxis.majorTicks,layer.yAxis.minorTicks,layer.yAxis.scale);
+			} else {
+				Origin::GraphAxisBreak breakX = layer.xAxisBreak;
+				Origin::GraphAxisBreak breakY = layer.yAxisBreak;
+				bool invert = (layer.xAxis.min > layer.xAxis.max);
+				if (style != Graph::Box){
+					if (breakX.show){
+						for (int i = 2; i < QwtPlot::axisCnt; i++)
+							graph->setScale(i, layer.xAxis.min,layer.xAxis.max,layer.xAxis.step,layer.xAxis.majorTicks,layer.xAxis.minorTicks,scaleTypes[(Origin::GraphAxis::Scale)layer.xAxis.scale],
+									invert, breakX.from, breakX.to, breakX.position, breakX.scaleIncrementBefore, breakX.scaleIncrementAfter,
+									breakX.minorTicksBefore, breakX.minorTicksAfter, breakX.log10);
+					} else {
+						for (int i = 2; i < QwtPlot::axisCnt; i++){
+							if (graph->axisWidget(i)->isColorBarEnabled())
+								continue;
+							ScaleDraw *sd = (ScaleDraw *)graph->axisScaleDraw(i);
+							if (sd->scaleType() == ScaleDraw::Date)
+								continue;
+							graph->setScale(i, layer.xAxis.min,layer.xAxis.max,layer.xAxis.step,layer.xAxis.majorTicks,layer.xAxis.minorTicks,scaleTypes[(Origin::GraphAxis::Scale)layer.xAxis.scale], invert);
+						}
+					}
+				}
+
+				invert = (layer.yAxis.min > layer.yAxis.max) || matrixImage;
+				if (breakY.show){
+					for (int i = 0; i <= 1; i++)
+						graph->setScale(i, layer.yAxis.min,layer.yAxis.max,layer.yAxis.step,layer.yAxis.majorTicks,layer.yAxis.minorTicks,scaleTypes[(Origin::GraphAxis::Scale)layer.xAxis.scale], //??xAxis??
+							invert, breakY.from, breakY.to, breakY.position, breakY.scaleIncrementBefore, breakY.scaleIncrementAfter,
+							breakY.minorTicksBefore, breakY.minorTicksAfter, breakY.log10);
+				} else {
+					for (int i = 0; i <= 1; i++){
+						if (!graph->axisWidget(i)->isColorBarEnabled())
+							graph->setScale(i, layer.yAxis.min,layer.yAxis.max,layer.yAxis.step,layer.yAxis.majorTicks,layer.yAxis.minorTicks,scaleTypes[(Origin::GraphAxis::Scale)layer.yAxis.scale], invert);
+					}
+				}
 			}
 
 			if (XYZContourTable)
