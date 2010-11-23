@@ -3,8 +3,8 @@
     Project              : QtiPlot
     --------------------------------------------------------------------
     Copyright            : (C) 2006 by Ion Vasilief, Tilman Hoener zu Siederdissen
-    Email (use @ for *)  : ion_vasilief*yahoo.fr, thzs*gmx.net
-    Description          : General plot options dialog
+	Email (use @ for *)  : ion_vasilief*yahoo.fr
+	Description          : Axes preferences dialog
 
  ***************************************************************************/
 
@@ -91,6 +91,7 @@ public slots:
 private slots:
 	void showAxisFormula(int axis);
 	void customAxisLabelFont();
+	void pickAxisLabelColor();
 	void setAxisType(int axis);
 	void updateAxisType(int axis);
 	void updateTitleBox(int axis);
@@ -217,6 +218,7 @@ protected:
 	QLineEdit *boxPrefix, *boxSuffix;
 
 	QComboBox *showTicksPolicyBox;
+	ColorButton *axisLabelColorButton;
 };
 
 #endif

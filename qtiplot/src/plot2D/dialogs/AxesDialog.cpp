@@ -4,8 +4,8 @@
     --------------------------------------------------------------------
 	Copyright            : (C) 2004 - 2010 by Ion Vasilief,
 						   (C) 2006 - June 2007 Tilman Hoener zu Siederdissen
-    Email (use @ for *)  : ion_vasilief*yahoo.fr, thzs*gmx.net
-    Description          : General plot options dialog
+	Email (use @ for *)  : ion_vasilief*yahoo.fr
+	Description          : Axes preferences dialog
 
  ***************************************************************************/
 
@@ -493,16 +493,23 @@ void AxesDialog::initAxesPage()
 	labelBoxLayout->addWidget(formatButtons);
 
 	QHBoxLayout *hl = new QHBoxLayout();
+	hl->addWidget(new QLabel(tr("Color")));
+	axisLabelColorButton = new ColorButton();
+	connect(axisLabelColorButton, SIGNAL(colorChanged()), this, SLOT(pickAxisLabelColor()));
+	hl->addWidget(axisLabelColorButton);
+
+	buttonLabelFont = new QPushButton(tr("&Font"));
+	buttonLabelFont->setIcon(QIcon(":/font.png"));
+	connect(buttonLabelFont, SIGNAL(clicked()), this, SLOT(customAxisLabelFont()));
+	hl->addWidget(buttonLabelFont);
+
 	hl->addWidget(new QLabel(tr("Distance to axis")));
 	boxLabelsDistance = new QSpinBox();
 	boxLabelsDistance->setRange(0, 1000);
 	boxLabelsDistance->setSuffix(" " + tr("pixels"));
 	connect(boxLabelsDistance, SIGNAL(valueChanged(int)), this, SLOT(updatePlot()));
 	hl->addWidget(boxLabelsDistance);
-
-	buttonLabelFont = new QPushButton(tr("&Font"));
-	buttonLabelFont->setIcon(QIcon(":/font.png"));
-	hl->addWidget(buttonLabelFont);
+	hl->addStretch();
 
 	invertTitleBox = new QCheckBox(tr("&Inverted"));
 	invertTitleBox->hide();
@@ -672,8 +679,6 @@ void AxesDialog::initAxesPage()
 	mainLayout3->addLayout( rightLayout );
 
 	generalDialog->addTab( axesPage, tr( "Axis" ) );
-
-	connect(buttonLabelFont, SIGNAL(clicked()), this, SLOT(customAxisLabelFont()));
 
 	connect(axesTitlesList,SIGNAL(currentRowChanged(int)), this, SLOT(updateShowBox(int)));
 	connect(axesTitlesList,SIGNAL(currentRowChanged(int)), this, SLOT(updateAxisColor(int)));
@@ -1277,12 +1282,16 @@ void AxesDialog::updateAxisColor(int)
 {
 	int a = mapToQwtAxisId();
 	boxAxisColor->blockSignals(true);
-    boxAxisColor->setColor(d_graph->axisColor(a));
+	boxAxisColor->setColor(d_graph->axisColor(a));
 	boxAxisColor->blockSignals(false);
 
 	boxAxisNumColor->blockSignals(true);
-    boxAxisNumColor->setColor(d_graph->axisLabelsColor(a));
+	boxAxisNumColor->setColor(d_graph->axisLabelsColor(a));
 	boxAxisNumColor->blockSignals(false);
+
+	axisLabelColorButton->blockSignals(true);
+	axisLabelColorButton->setColor(d_graph->axisTitleColor(a));
+	axisLabelColorButton->blockSignals(false);
 }
 
 bool AxesDialog::updatePlot(QWidget *page)
@@ -1902,11 +1911,17 @@ void AxesDialog::showFormulaBox()
 		boxFormula->hide();
 }
 
+void AxesDialog::pickAxisLabelColor()
+{
+	d_graph->setAxisTitleColor(mapToQwtAxisId(), axisLabelColorButton->color());
+	d_graph->replot();
+}
+
 void AxesDialog::customAxisLabelFont()
 {
 	int axis = mapToQwtAxisId();
-		bool okF;
-		QFont oldFont = d_graph->axisTitleFont(axis);
+	bool okF;
+	QFont oldFont = d_graph->axisTitleFont(axis);
 	QFont fnt = QFontDialog::getFont( &okF, oldFont,this);
 	if (okF && fnt != oldFont)
 		d_graph->setAxisTitleFont(axis, fnt);
