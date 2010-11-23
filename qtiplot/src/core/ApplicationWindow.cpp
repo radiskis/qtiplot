@@ -4338,11 +4338,18 @@ Table * ApplicationWindow::importExcel(const QString& fileName, int sheet)
 			return NULL;
 	}
 
+
 #ifdef HAS_EXCEL
 	Table *t = importUsingExcel(fn, sheet);
 	if (t)
 		return t;
 #endif
+
+/*
+#ifdef Q_OS_WIN
+	return adoReadExcelSheet(fn, sheet);
+#endif
+*/
 
 #ifdef XLS_IMPORT
 	return importExcelCrossplatform(fn, sheet);

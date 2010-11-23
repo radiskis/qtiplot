@@ -886,16 +886,18 @@ void Graph::setLabelsDateTimeFormat(int axis, int type, const QString& formatInf
 		return;
 
 	QStringList list = formatInfo.split(";", QString::KeepEmptyParts);
-	if ((int)list.count() < 2){
-		QMessageBox::critical(this, tr("QtiPlot - Error"),
-		tr("Couldn't change the axis type to the requested format!"));
+	if (list.count() < 2){
+		//QMessageBox::critical(this, tr("QtiPlot - Error"), tr("Couldn't change the axis type to the requested format!"));
 		return;
-    }
+	}
 	if (list[0].isEmpty() || list[1].isEmpty()){
-		QMessageBox::critical(this, tr("QtiPlot - Error"),
-		tr("Couldn't change the axis type to the requested format!"));
+		//QMessageBox::critical(this, tr("QtiPlot - Error"), tr("Couldn't change the axis type to the requested format!"));
 		return;
     }
+
+	ScaleDraw *sd = (ScaleDraw *)axisScaleDraw(axis);
+	if (sd->scaleType() == type && sd->formatString() == formatInfo)
+		return;
 
 	if (type == ScaleDraw::Time){
 		ScaleDraw *sd = new ScaleDraw(this);
@@ -904,7 +906,7 @@ void Graph::setLabelsDateTimeFormat(int axis, int type, const QString& formatInf
 		setAxisScaleDraw (axis, sd);
 	} else if (type == ScaleDraw::Date) {
 		ScaleDraw *sd = new ScaleDraw(this);
-		sd->setDateFormat(QDateTime::fromString (list[0], Qt::ISODate), list[1]);
+		sd->setDateFormat(QDateTime::fromString (list[0], list[1]), list[1]);
 		sd->enableComponent (QwtAbstractScaleDraw::Backbone, drawAxesBackbone);
 		setAxisScaleDraw (axis, sd);
 	}
@@ -3482,7 +3484,7 @@ DataCurve* Graph::insertCurve(Table* w, const QString& xColName, const QString& 
 		QString fmtInfo = time0.toString() + ";" + date_time_fmt;
 		setLabelsDateTimeFormat(xAxis, ScaleDraw::Time, fmtInfo);
 	} else if (xColType == Table::Date ){
-		QString fmtInfo = date0.toString(Qt::ISODate) + ";" + date_time_fmt;
+		QString fmtInfo = date0.toString(date_time_fmt) + ";" + date_time_fmt;
 		setLabelsDateTimeFormat(xAxis, ScaleDraw::Date, fmtInfo);
 	}
 
