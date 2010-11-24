@@ -1252,13 +1252,26 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 						if (!layer.colorScale.reverseOrder)
 							graph->axisScaleEngine(i)->setAttribute(QwtScaleEngine::Inverted, true);
 					}
-				} else
+				} else {
+					QString formula = "";
+					QString factor = QString(formats[i].factor.c_str()).replace(",", ".");
+					if (!factor.isEmpty()){
+						if (i == QwtPlot::xBottom || i == QwtPlot::xTop)
+							formula = "x/";
+						else
+							formula = "y/";
+						QLocale locale = mw->locale();
+						locale.setNumberOptions(QLocale::OmitGroupSeparator);
+						formula += locale.toString(factor.toDouble());
+					}
+
 					graph->showAxis(i, type, formatInfo, mw->table(tableName), !(formats[i].hidden),
 						tickTypeMap[formats[i].majorTicksType], tickTypeMap[formats[i].minorTicksType],
 						!(ticks[i].hidden),	ColorBox::defaultColor(formats[i].color), format, prec,
-						-ticks[i].rotation, 0, "", (ticks[i].color == 0xF7 ? ColorBox::defaultColor(formats[i].color) : ColorBox::defaultColor(ticks[i].color)),
+						-ticks[i].rotation, 0, formula, (ticks[i].color == 0xF7 ? ColorBox::defaultColor(formats[i].color) : ColorBox::defaultColor(ticks[i].color)),
 						4, true, ScaleDraw::ShowAll, parseOriginText(QString(formats[i].prefix.c_str())),
 						parseOriginText(QString(formats[i].suffix.c_str())));
+				}
 
 
 
