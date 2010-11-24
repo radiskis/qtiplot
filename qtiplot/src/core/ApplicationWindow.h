@@ -1199,6 +1199,9 @@ public:
 	bool d_stats_result_table;
 	bool d_stats_result_log;
 	bool d_stats_result_notes;
+	bool d_stats_confidence;
+	bool d_stats_power;
+	bool d_stats_output;
 	bool d_descriptive_stats;
 	bool d_confirm_modif_2D_points;
 	bool d_ask_web_connection;

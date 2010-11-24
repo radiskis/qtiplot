@@ -1,10 +1,10 @@
 /***************************************************************************
-	File                 : AnovaDialog.h
+	File                 : CollapsiveGroupBox.h
     Project              : QtiPlot
     --------------------------------------------------------------------
 	Copyright            : (C) 2010 by Ion Vasilief
     Email (use @ for *)  : ion_vasilief*yahoo.fr
-	Description          : ANOVA dialog
+	Description          : A collapsive QGroupBox
 
  ***************************************************************************/
 
@@ -26,77 +26,30 @@
  *   Boston, MA  02110-1301  USA                                           *
  *                                                                         *
  ***************************************************************************/
-#ifndef AnovaDialog_H
-#define AnovaDialog_H
 
-#include <QDialog>
-#include <StatisticTest.h>
+#ifndef COLLAPSIVE_GROUP_BOX__H
+#define COLLAPSIVE_GROUP_BOX__H
 
-class QCheckBox;
-class QComboBox;
-class QGroupBox;
-class QPushButton;
-class QListWidget;
-class QLineEdit;
-class QSpinBox;
-class QTreeWidget;
-class CollapsiveGroupBox;
-class DoubleSpinBox;
-class Table;
-class Note;
+#include <QGroupBox>
 
-//! Filter options dialog
-class AnovaDialog : public QDialog
+//! A collapsive QGroupBox.
+/**
+ *
+ */
+class CollapsiveGroupBox : public QGroupBox
 {
-    Q_OBJECT
+	Q_OBJECT
 
 public:
-	AnovaDialog(QWidget* parent, Table *t, const StatisticTest::TestType& type = StatisticTest::AnovaTest, bool twoWay = false);
+	//! Constructor.
+	/**
+	* \param parent parent widget (only affects placement of the widget)
+	*/
+	CollapsiveGroupBox(const QString & title = QString(), QWidget * parent = 0);
 
-private slots:
-	void accept();
-	void addData();
-	void removeData();
-	void showCurrentFolder(bool);
-	void updateLevelBoxes();
-	void enableDescriptiveStatistics();
-
-private:
-	void closeEvent(QCloseEvent*);
-	void acceptNormalityTest();
-#ifdef HAVE_TAMUANOVA
-	void acceptAnova();
-#endif
-	void outputResults(StatisticTest* stats, const QString& s);
-	StatisticTest::TestType d_test_type;
-	bool d_two_way;
-
-	QListWidget* availableSamples;
-	QTreeWidget *selectedSamples;
-
-	QCheckBox *currentFolderBox;
-	QCheckBox *showInteractionsBox;
-	QCheckBox *showStatisticsBox;
-
-	QPushButton* btnAdd;
-	QPushButton* btnRemove;
-	QPushButton* buttonOk;
-
-	QComboBox* boxModel;
-
-	QSpinBox *aLevelsBox;
-	QSpinBox *bLevelsBox;
-	DoubleSpinBox* boxSignificance;
-
-	CollapsiveGroupBox *outputSettingsBox;
-	QCheckBox *boxResultsTable;
-	QLineEdit *tableNameLineEdit;
-	QCheckBox *boxResultsLog;
-	QCheckBox *boxNoteWindow;
-	QLineEdit *noteNameLineEdit;
-
-	Table *d_table;
-	Note *d_note;
+public slots:
+	void setCollapsed (bool collapsed = true);
+	void setExpanded (bool expanded = true);
 };
 
 #endif

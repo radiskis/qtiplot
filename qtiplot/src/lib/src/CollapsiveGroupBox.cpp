@@ -1,10 +1,10 @@
 /***************************************************************************
-	File                 : AnovaDialog.h
+	File                 : CollapsiveGroupBox.cpp
     Project              : QtiPlot
     --------------------------------------------------------------------
 	Copyright            : (C) 2010 by Ion Vasilief
     Email (use @ for *)  : ion_vasilief*yahoo.fr
-	Description          : ANOVA dialog
+	Description          : A collapsive QGroupBox
 
  ***************************************************************************/
 
@@ -26,77 +26,30 @@
  *   Boston, MA  02110-1301  USA                                           *
  *                                                                         *
  ***************************************************************************/
-#ifndef AnovaDialog_H
-#define AnovaDialog_H
+#include "CollapsiveGroupBox.h"
 
-#include <QDialog>
-#include <StatisticTest.h>
-
-class QCheckBox;
-class QComboBox;
-class QGroupBox;
-class QPushButton;
-class QListWidget;
-class QLineEdit;
-class QSpinBox;
-class QTreeWidget;
-class CollapsiveGroupBox;
-class DoubleSpinBox;
-class Table;
-class Note;
-
-//! Filter options dialog
-class AnovaDialog : public QDialog
+CollapsiveGroupBox::CollapsiveGroupBox(const QString & title, QWidget *parent) : QGroupBox(title, parent)
 {
-    Q_OBJECT
+	setCheckable(true);
+	connect(this, SIGNAL(toggled(bool)), this, SLOT(setExpanded(bool)));
+}
 
-public:
-	AnovaDialog(QWidget* parent, Table *t, const StatisticTest::TestType& type = StatisticTest::AnovaTest, bool twoWay = false);
+void CollapsiveGroupBox::setCollapsed(bool collapsed)
+{
+	foreach (QObject *o, children()){
+		if (o->isWidgetType())
+			((QWidget *)o)->setVisible(collapsed);
+	}
 
-private slots:
-	void accept();
-	void addData();
-	void removeData();
-	void showCurrentFolder(bool);
-	void updateLevelBoxes();
-	void enableDescriptiveStatistics();
+	setFlat(collapsed);
+}
 
-private:
-	void closeEvent(QCloseEvent*);
-	void acceptNormalityTest();
-#ifdef HAVE_TAMUANOVA
-	void acceptAnova();
-#endif
-	void outputResults(StatisticTest* stats, const QString& s);
-	StatisticTest::TestType d_test_type;
-	bool d_two_way;
+void CollapsiveGroupBox::setExpanded(bool expanded)
+{
+	foreach (QObject *o, children()){
+		if (o->isWidgetType())
+			((QWidget *)o)->setVisible(expanded);
+	}
 
-	QListWidget* availableSamples;
-	QTreeWidget *selectedSamples;
-
-	QCheckBox *currentFolderBox;
-	QCheckBox *showInteractionsBox;
-	QCheckBox *showStatisticsBox;
-
-	QPushButton* btnAdd;
-	QPushButton* btnRemove;
-	QPushButton* buttonOk;
-
-	QComboBox* boxModel;
-
-	QSpinBox *aLevelsBox;
-	QSpinBox *bLevelsBox;
-	DoubleSpinBox* boxSignificance;
-
-	CollapsiveGroupBox *outputSettingsBox;
-	QCheckBox *boxResultsTable;
-	QLineEdit *tableNameLineEdit;
-	QCheckBox *boxResultsLog;
-	QCheckBox *boxNoteWindow;
-	QLineEdit *noteNameLineEdit;
-
-	Table *d_table;
-	Note *d_note;
-};
-
-#endif
+	setFlat(!expanded);
+}

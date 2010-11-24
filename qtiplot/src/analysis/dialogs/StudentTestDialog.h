@@ -43,6 +43,7 @@ class QSpinBox;
 class DoubleSpinBox;
 class Table;
 class Note;
+class CollapsiveGroupBox;
 
 //! Filter options dialog
 class StudentTestDialog : public QDialog
@@ -77,10 +78,10 @@ private:
 	QLabel *bothTailLabel;
 	QLabel *leftTailLabel;
 	QLabel *rightTailLabel;
-	QGroupBox *boxConfidenceInterval;
+	CollapsiveGroupBox *boxConfidenceInterval;
 	QPushButton* buttonAddLevel;
 	QPushButton* buttonOk;
-	QGroupBox *boxPowerAnalysis;
+	CollapsiveGroupBox *boxPowerAnalysis;
 	QSpinBox *boxSampleSize;
 	QCheckBox *boxOtherSampleSize;
 	DoubleSpinBox* boxMean;
@@ -90,7 +91,7 @@ private:
 	QRadioButton *independentTestBtn;
 	QRadioButton *pairedTestBtn;
 
-	QGroupBox *outputSettingsBox;
+	CollapsiveGroupBox *outputSettingsBox;
 	QCheckBox *boxResultsTable;
 	QLineEdit *tableNameLineEdit;
 	QCheckBox *boxResultsLog;

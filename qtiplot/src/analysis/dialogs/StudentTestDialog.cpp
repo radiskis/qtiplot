@@ -29,6 +29,7 @@
 #include "StudentTestDialog.h"
 #include <ApplicationWindow.h>
 #include <DoubleSpinBox.h>
+#include <CollapsiveGroupBox.h>
 #include <tTest.h>
 #include <ChiSquareTest.h>
 #include <Note.h>
@@ -154,8 +155,7 @@ StudentTestDialog::StudentTestDialog(const StatisticTest::TestType& type, Table 
 	boxSignificance->setValue(app->d_stats_significance_level);
 	gl2->addWidget(boxSignificance, 4, 1);
 
-	boxConfidenceInterval = new QGroupBox(tr("Confidence &Interval(s)"));
-	boxConfidenceInterval->setCheckable(true);
+	boxConfidenceInterval = new CollapsiveGroupBox(tr("Confidence &Interval(s)"));
 
 	DoubleSpinBox *sbox = new DoubleSpinBox();
 	sbox->setRange(0.01, 99.99);
@@ -169,11 +169,10 @@ StudentTestDialog::StudentTestDialog(const StatisticTest::TestType& type, Table 
 
 	buttonAddLevel = new QPushButton(tr("&Add Level"));
 	gl3->addWidget(buttonAddLevel, 0, 2);
+	boxConfidenceInterval->setChecked(app->d_stats_confidence);
 
 	if (type == StatisticTest::StudentTest){
-		boxPowerAnalysis = new QGroupBox(tr("&Power Analysis"));
-		boxPowerAnalysis->setCheckable(true);
-
+		boxPowerAnalysis = new CollapsiveGroupBox(tr("&Power Analysis"));
 		QGridLayout *gl4 = new QGridLayout(boxPowerAnalysis);
 
 		boxPowerLevel = new DoubleSpinBox();
@@ -195,9 +194,10 @@ StudentTestDialog::StudentTestDialog(const StatisticTest::TestType& type, Table 
 		gl4->addWidget(boxSampleSize, 1, 1);
 
 		connect(boxOtherSampleSize, SIGNAL(toggled(bool)), boxSampleSize, SLOT(setEnabled(bool)));
+		boxPowerAnalysis->setChecked(app->d_stats_power);
 	}
 
-	outputSettingsBox = new QGroupBox(tr("Output Settings"));
+	outputSettingsBox = new CollapsiveGroupBox("&" + tr("Output Settings"));
 	QGridLayout *gl4 = new QGridLayout(outputSettingsBox);
 
 	boxResultsTable = new QCheckBox(tr("&Table"));
@@ -224,6 +224,7 @@ StudentTestDialog::StudentTestDialog(const StatisticTest::TestType& type, Table 
 	showStatisticsBox->setChecked(app->d_descriptive_stats);
 	enableDescriptiveStatistics();
 	gl4->addWidget(showStatisticsBox, 2, 1);
+	outputSettingsBox->setChecked(app->d_stats_output);
 
 	buttonOk = new QPushButton(tr( "&Compute" ));
 
@@ -491,6 +492,10 @@ void StudentTestDialog::closeEvent(QCloseEvent* e)
 		app->d_stats_result_log = boxResultsLog->isChecked();
 		app->d_stats_result_notes = boxNoteWindow->isChecked();
 		app->d_descriptive_stats = showStatisticsBox->isChecked();
+		app->d_stats_output = outputSettingsBox->isChecked();
+		app->d_stats_confidence = boxConfidenceInterval->isChecked();
+		if (d_test_type == StatisticTest::StudentTest)
+			app->d_stats_power = boxPowerAnalysis->isChecked();
 	}
 
 	e->accept();

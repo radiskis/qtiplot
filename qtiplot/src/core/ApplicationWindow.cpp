@@ -461,6 +461,10 @@ void ApplicationWindow::setDefaultOptions()
 	d_stats_result_log = true;
 	d_stats_result_notes = false;
 	d_descriptive_stats = true;
+	d_stats_confidence = true;
+	d_stats_power = true;
+	d_stats_output = true;
+
 	d_confirm_modif_2D_points = true;
 	d_ask_web_connection = true;
 	d_open_last_project = false;
@@ -5535,6 +5539,9 @@ void ApplicationWindow::readSettings()
 	d_stats_result_log = settings.value("/ResultLog", d_stats_result_log).toBool();
 	d_stats_result_notes = settings.value("/Notes", d_stats_result_notes).toBool();
 	d_descriptive_stats = settings.value("/DescriptiveStats", d_descriptive_stats).toBool();
+	d_stats_confidence = settings.value("/ConfidenceIntervals", d_stats_confidence).toBool();
+	d_stats_power = settings.value("/PowerAnalysis", d_stats_power).toBool();
+	d_stats_output = settings.value("/OutputSettings", d_stats_output).toBool();
 	settings.endGroup(); // Statistics dialogs
 
 	settings.endGroup(); // Dialogs
@@ -6004,6 +6011,9 @@ void ApplicationWindow::saveSettings()
 	settings.setValue("/ResultLog", d_stats_result_log);
 	settings.setValue("/Notes", d_stats_result_notes);
 	settings.setValue("/DescriptiveStats", d_descriptive_stats);
+	settings.setValue("/ConfidenceIntervals", d_stats_confidence);
+	settings.setValue("/PowerAnalysis", d_stats_power);
+	settings.setValue("/OutputSettings", d_stats_output);
 	settings.endGroup(); // Statistics dialogs
 
 	settings.endGroup(); // Dialogs
