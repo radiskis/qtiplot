@@ -32,7 +32,6 @@
 
 #include <QMessageBox>
 #include <QApplication>
-#include <QSettings>
 #include <QLocale>
 
 #include <gsl/gsl_const_mksa.h>
@@ -60,14 +59,14 @@ MyParser::MyParser()
 
 QLocale MyParser::getLocale()
 {
-#ifdef Q_OS_MAC
-	QSettings settings(QSettings::IniFormat,QSettings::UserScope, "ProIndependent", "QtiPlot");
-#else
-	QSettings settings(QSettings::NativeFormat,QSettings::UserScope, "ProIndependent", "QtiPlot");
-#endif
-	settings.beginGroup("/General");
-	bool cLocale = settings.value("/MuParserCLocale", true).toBool();
-	settings.endGroup();
+	bool cLocale = true;
+	foreach (QWidget *w, QApplication::allWidgets()){
+		ApplicationWindow *app = qobject_cast<ApplicationWindow *>(w);
+		if (app){
+			cLocale = app->d_muparser_c_locale;
+			break;
+		}
+	}
 
 	QLocale locale = QLocale::c();
 	if (!cLocale)

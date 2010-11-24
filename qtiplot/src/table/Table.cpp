@@ -563,10 +563,12 @@ bool Table::muParserCalculate(int col, int startRow, int endRow, bool notifyChan
     char f;
     columnNumericFormat(col, &f, &prec);
 
+	setAutoUpdateValues(false);
+
     if (mup->codeLines() == 1){
         for (int i = startRow; i <= endRow; i++){
             *r = i + 1.0;
-            d_table->setText(i, col, mup->evalSingleLineToString(loc, f, prec));
+			d_table->setText(i, col, mup->evalSingleLineToString(loc, f, prec));
         }
 	} else {
         QVariant ret;
@@ -586,6 +588,8 @@ bool Table::muParserCalculate(int col, int startRow, int endRow, bool notifyChan
 	if (notifyChanges)
         emit modifiedData(this, colName(col));
 	emit modifiedWindow(this);
+
+	setAutoUpdateValues(applicationWindow()->autoUpdateTableValues());
 	QApplication::restoreOverrideCursor();
 	return true;
 }
@@ -635,6 +639,8 @@ bool Table::calculate(int col, int startRow, int endRow, bool forceMuParser, boo
     char f;
     columnNumericFormat(col, &f, &prec);
 
+	setAutoUpdateValues(false);
+
 	colscript->setDouble(col + 1.0, "j");
 	colscript->setDouble(startRow + 1.0, "sr");
 	colscript->setDouble(endRow + 1.0, "er");
@@ -652,8 +658,11 @@ bool Table::calculate(int col, int startRow, int endRow, bool forceMuParser, boo
 		}
 	}
 	if (notifyChanges)
-        emit modifiedData(this, colName(col));
+		emit modifiedData(this, colName(col));
 	emit modifiedWindow(this);
+
+	setAutoUpdateValues(applicationWindow()->autoUpdateTableValues());
+
 	QApplication::restoreOverrideCursor();
 	return true;
 }
