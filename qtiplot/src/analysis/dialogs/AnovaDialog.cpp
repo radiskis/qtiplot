@@ -33,6 +33,7 @@
 #include <ShapiroWilkTest.h>
 #include <ApplicationWindow.h>
 #include <Folder.h>
+#include <CollapsiveGroupBox.h>
 #include <DoubleSpinBox.h>
 #include <Note.h>
 
@@ -146,7 +147,7 @@ AnovaDialog::AnovaDialog(QWidget* parent, Table *t, const StatisticTest::TestTyp
 
 	hl3->addWidget(boxSignificance);
 
-	outputSettingsBox = new QGroupBox(tr("Output Settings"));
+	outputSettingsBox = new CollapsiveGroupBox("&" + tr("Output Settings"));
 	QGridLayout *gl4 = new QGridLayout(outputSettingsBox);
 
 	boxResultsTable = new QCheckBox(tr("&Table"));
@@ -176,6 +177,7 @@ AnovaDialog::AnovaDialog(QWidget* parent, Table *t, const StatisticTest::TestTyp
 		showStatisticsBox->setEnabled(boxNoteWindow->isChecked() || boxResultsLog->isChecked());
 		gl4->addWidget(showStatisticsBox, 2, 1);
 	}
+	outputSettingsBox->setChecked(app->d_stats_output);
 
 	QVBoxLayout *vl0 = new QVBoxLayout();
 	vl0->addLayout(hl3);
@@ -467,6 +469,7 @@ void AnovaDialog::closeEvent(QCloseEvent* e)
 		app->d_stats_result_table = boxResultsTable->isChecked();
 		app->d_stats_result_log = boxResultsLog->isChecked();
 		app->d_stats_result_notes = boxNoteWindow->isChecked();
+		app->d_stats_output = outputSettingsBox->isChecked();
 		if (d_test_type == StatisticTest::AnovaTest)
 			app->d_descriptive_stats = showStatisticsBox->isChecked();
 	}
