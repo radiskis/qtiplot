@@ -355,9 +355,10 @@ void Graph::select(QWidget *l, bool add)
     deselectCurves();
 
     d_active_enrichment = qobject_cast<LegendWidget *>(l);
-    if (d_active_enrichment)
-        emit currentFontChanged(((LegendWidget *)l)->font());
-    else
+	if (d_active_enrichment){
+		currentFontChanged(((LegendWidget *)l)->font());
+		currentColorChanged(((LegendWidget *)l)->textColor());
+	} else
         d_active_enrichment = qobject_cast<FrameWidget *>(l);
 
     if (add){
@@ -1936,7 +1937,8 @@ void Graph::selectTitle(bool select)
     if (select){
         deselect();
         emit selectedGraph(this);
-		emit currentFontChanged(title().font());
+		currentFontChanged(title().font());
+		currentColorChanged(title().color());
     }
 }
 
@@ -5783,6 +5785,48 @@ void Graph::setCurrentFont(const QFont& f)
                 }
 			}
 	    }
+	}
+}
+
+void Graph::setCurrentColor(const QColor& c)
+{
+	QwtScaleWidget *axis = scalePicker->selectedAxis();
+	if (axis){
+		if (scalePicker->titleSelected()){
+			QwtText title = axis->title();
+			title.setColor(c);
+			axis->setTitle(title);
+		} else if (scalePicker->labelsSelected()){
+			QPalette pal = axis->palette();
+			pal.setColor(QColorGroup::Text, c);
+			axis->setPalette(pal);
+		}
+		emit modifiedGraph();
+	} else if (d_active_enrichment){
+		LegendWidget *l = qobject_cast<LegendWidget *>(d_active_enrichment);
+		if (l){
+			l->setTextColor(c);
+			l->repaint();
+			emit modifiedGraph();
+		}
+	} else if (titlePicker->selected()){
+		QwtText t = title();
+		t.setColor(c);
+		setTitle(t);
+		emit modifiedGraph();
+	} else {
+		QList<QwtPlotItem *> curves = curvesList();
+		foreach(QwtPlotItem *i, curves){
+			if(i->rtti() != QwtPlotItem::Rtti_PlotSpectrogram &&
+			  ((PlotCurve *)i)->type() != Graph::Function){
+				if(((DataCurve *)i)->hasSelectedLabels()){
+				   ((DataCurve *)i)->setLabelsColor(c);
+				   replot();
+				   emit modifiedGraph();
+				   return;
+				}
+			}
+		}
 	}
 }
 

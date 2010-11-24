@@ -1139,6 +1139,7 @@ void DataCurve::setLabelsSelected(bool on)
         g->selectTitle(false);
         g->deselectMarker();
         g->notifyFontChange(d_labels_font);
+		g->notifyColorChange(d_labels_color);
     }
     plot()->replot();
 }

@@ -763,6 +763,8 @@ class Graph: public QwtPlot
 		bool isCurveAntialiasingDisabled(){return d_disable_curve_antialiasing;};
 		int maxAntialisingSize(){return d_max_antialising_size;};
 
+		void setCurrentColor(const QColor& c);
+		void notifyColorChange(const QColor& c){emit currentColorChanged(c);};
 		void setCurrentFont(const QFont& f);
 		void notifyFontChange(const QFont& f){emit currentFontChanged(f);};
         void enableTextEditor();
@@ -791,6 +793,7 @@ signals:
 		void dataRangeChanged();
 		void showFitResults(const QString&);
 		void currentFontChanged(const QFont&);
+		void currentColorChanged(const QColor&);
         void enableTextEditor(Graph *);
         void axisDivChanged(Graph *, int);
 		void updatedLayout(Graph *);

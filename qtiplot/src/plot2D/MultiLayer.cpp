@@ -1352,6 +1352,7 @@ void MultiLayer::connectLayer(Graph *g)
 	connect (g,SIGNAL(modifiedGraph()),this,SLOT(notifyChanges()));
 	connect (g,SIGNAL(selectedGraph(Graph*)),this, SLOT(setActiveLayer(Graph*)));
 	connect (g,SIGNAL(currentFontChanged(const QFont&)), this, SIGNAL(currentFontChanged(const QFont&)));
+	connect (g,SIGNAL(currentColorChanged(const QColor&)), this, SIGNAL(currentColorChanged(const QColor&)));
 	if (d_link_x_axes)
 		connect(g, SIGNAL(axisDivChanged(Graph *, int)), this, SLOT(updateLayerAxes(Graph *, int)));
 }

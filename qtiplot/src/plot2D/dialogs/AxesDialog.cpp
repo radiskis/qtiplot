@@ -940,7 +940,7 @@ void AxesDialog::showAxisFormatOptions(int format)
         {
             labelTable->show();
             QString tableName = d_graph->axisFormatInfo(axis);
-            if (tablesList.contains(tableName))
+			if (((ApplicationWindow *)parent())->tableNames().contains(tableName))
                 boxTableName->setCurrentText(tableName);
             boxTableName->show();
         }
@@ -1381,9 +1381,6 @@ bool AxesDialog::updatePlot(QWidget *page)
 		int axis = mapToQwtAxisId();
 		int format = boxAxisType->currentIndex();
 
-		int baseline = boxBaseline->value();
-		axesBaseline[axis] = baseline;
-
         QString formatInfo = QString::null;
 		if (format == ScaleDraw::Numeric){
 			if (boxShowFormula->isChecked()){
@@ -1404,9 +1401,10 @@ bool AxesDialog::updatePlot(QWidget *page)
 					return false;
 				}
 			}
-		} else if (format == ScaleDraw::Date)
-			formatInfo = originDateTimeBox->dateTime().toString(Qt::ISODate) + ";" + boxFormat->currentText();
-		else if (format == ScaleDraw::Time)
+		} else if (format == ScaleDraw::Date){
+			QString fmt = boxFormat->currentText();
+			formatInfo = originDateTimeBox->dateTime().toString(fmt) + ";" + fmt;
+		} else if (format == ScaleDraw::Time)
 			formatInfo = originDateTimeBox->time().toString() + ";" + boxFormat->currentText();
 		else if (format == ScaleDraw::Day || format == ScaleDraw::Month)
             formatInfo = QString::number(boxFormat->currentIndex());
@@ -1430,7 +1428,7 @@ bool AxesDialog::updatePlot(QWidget *page)
 			formula = QString();
 		showAxis(axis, format, formatInfo, boxShowAxis->isChecked(), boxMajorTicksType->currentIndex(), boxMinorTicksType->currentIndex(),
 				boxShowLabels->isChecked(), boxAxisColor->color(), boxFormat->currentIndex(),
-				boxPrecision->value(), boxAngle->value(), baseline, formula, boxAxisNumColor->color(),
+				boxPrecision->value(), boxAngle->value(), boxBaseline->value(), formula, boxAxisNumColor->color(),
 				boxTickLabelDistance->value(), boxAxisBackbone->isChecked(), showTicksPolicyBox->currentIndex());
 
 		if (axis == QwtPlot::yRight){
@@ -1458,18 +1456,13 @@ void AxesDialog::setGraph(Graph *g)
 
 	d_graph = g;
 
-	tablesList = app->tableNames();
-	boxTableName->insertStringList(tablesList);
-
+	boxTableName->insertStringList(app->tableNames());
 	boxColName-> insertStringList(app->columnsList(Table::All));
 
 	xAxisOn = g->axisEnabled(QwtPlot::xBottom);
 	yAxisOn = g->axisEnabled(QwtPlot::yLeft);
 	topAxisOn = g->axisEnabled(QwtPlot::xTop);
 	rightAxisOn = g->axisEnabled(QwtPlot::yRight);
-
-	majTicks = g->getMajorTicksType();
-	minTicks = g->getMinorTicksType();
 
 	updateTitleBox(0);
 
@@ -1479,12 +1472,6 @@ void AxesDialog::setGraph(Graph *g)
 	for (int axis=0; axis<QwtPlot::axisCnt; axis++){
 		const QwtScaleDraw *sd = g->axisScaleDraw (axis);
 		tickLabelsOn << QString::number(sd->hasComponent(QwtAbstractScaleDraw::Labels));
-
-		QwtScaleWidget *scale = (QwtScaleWidget *)g->axisWidget(axis);
-		if (scale)
-			axesBaseline << scale->margin();
-		else
-			axesBaseline << 0;
 	}
 
 	boxAxesLinewidth->setValue(g->axesLinewidth());
@@ -1721,7 +1708,11 @@ void AxesDialog::setAxisType(int)
 
 void AxesDialog::setBaselineDist(int)
 {
-	boxBaseline->setValue(axesBaseline[mapToQwtAxisId()]);
+	QwtScaleWidget *scale = (QwtScaleWidget *)d_graph->axisWidget(mapToQwtAxisId());
+	if (scale)
+		boxBaseline->setValue(scale->margin());
+	else
+		boxBaseline->setValue(0);
 }
 
 void AxesDialog::updateCurrentAxis()
@@ -1748,8 +1739,8 @@ void AxesDialog::updateCurrentAxis()
 void AxesDialog::setTicksType(int)
 {
 	int a = mapToQwtAxisId();
-	boxMajorTicksType->setCurrentIndex(majTicks[a]);
-	boxMinorTicksType->setCurrentIndex(minTicks[a]);
+	boxMajorTicksType->setCurrentIndex(d_graph->getMajorTicksType()[a]);
+	boxMinorTicksType->setCurrentIndex(d_graph->getMinorTicksType()[a]);
 }
 
 void AxesDialog::updateTickLabelsList(bool on)
