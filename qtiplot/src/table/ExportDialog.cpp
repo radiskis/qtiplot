@@ -239,11 +239,14 @@ void ExportDialog::accept()
 		}
 		file.close();
 
-		if (d_window->inherits("Table"))
-            ((Table *)d_window)->exportASCII(file_name, sep, boxNames->isChecked(),
-								boxComments->isChecked(), boxSelection->isChecked());
-        else if (d_window->isA("Matrix"))
-            ((Matrix *)d_window)->exportASCII(file_name, sep, boxSelection->isChecked());
+		MdiSubWindow* w = app->window(boxTable->currentText());
+		if (!w)
+			return;
+
+		if (w->inherits("Table"))
+			((Table *)w)->exportASCII(file_name, sep, boxNames->isChecked(), boxComments->isChecked(), boxSelection->isChecked());
+		else if (qobject_cast<Matrix *>(w))
+			((Matrix *)w)->exportASCII(file_name, sep, boxSelection->isChecked());
 	}
 
 	close();
