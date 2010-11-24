@@ -237,6 +237,7 @@ signals:
 	void pasteMarker();
 	void setPointerCursor();
 	void currentFontChanged(const QFont&);
+	void currentColorChanged(const QColor&);
 
 private:
 	//! \name Event Handlers

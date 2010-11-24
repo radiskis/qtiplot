@@ -44,6 +44,7 @@
 #include <SelectionMoveResizer.h>
 #include <SymbolBox.h>
 #include <ColorBox.h>
+#include <ColorButton.h>
 #include <PenStyleBox.h>
 #include <PatternBox.h>
 #include <SymbolDialog.h>
@@ -1244,6 +1245,10 @@ void ApplicationWindow::initToolBars()
 	actionGreekMajSymbol->addTo(formatToolBar);
 	actionMathSymbol->addTo(formatToolBar);
 
+	ColorButton *cBtn = new ColorButton();
+	connect(cBtn, SIGNAL(colorChanged()), this, SLOT(setTextColor()));
+	actionTextColor = formatToolBar->addWidget(cBtn);
+
 	formatToolBar->setEnabled(false);
 	formatToolBar->hide();
 
@@ -1860,11 +1865,16 @@ void ApplicationWindow::customToolBars(QMdiSubWindow* w)
 	if (!w)
         return;
 
-    if (w->isA("MultiLayer") && d_plot_tool_bar){
-        if(!plotTools->isVisible())
-            plotTools->show();
-        plotTools->setEnabled (true);
-        custom2DPlotTools((MultiLayer *)w);
+	actionTextColor->setVisible(false);
+
+	if (qobject_cast<MultiLayer*>(w)){
+		actionTextColor->setVisible(true);
+		if (d_plot_tool_bar){
+			if(!plotTools->isVisible())
+				plotTools->show();
+			plotTools->setEnabled (true);
+			custom2DPlotTools((MultiLayer *)w);
+		}
 		if(d_format_tool_bar && !formatToolBar->isVisible()){
 			formatToolBar->setEnabled (true);
             formatToolBar->show();
@@ -1881,17 +1891,17 @@ void ApplicationWindow::customToolBars(QMdiSubWindow* w)
             columnTools->setEnabled (true);
             customColumnActions();
         }
-    } else if (w->isA("Matrix") && d_matrix_tool_bar){
+	} else if (qobject_cast<Matrix*>(w) && d_matrix_tool_bar){
          if(!plotMatrixBar->isVisible())
             plotMatrixBar->show();
         plotMatrixBar->setEnabled (true);
-    } else if (w->isA("Graph3D") && d_plot3D_tool_bar){
+	} else if (qobject_cast<Graph3D*>(w) && d_plot3D_tool_bar){
 		if(!plot3DTools->isVisible())
 			plot3DTools->show();
 
 		plot3DTools->setEnabled(((Graph3D*)w)->plotStyle() != Qwt3D::NOPLOT);
 		custom3DActions(w);
-    } else if (w->isA("Note")){
+	} else if (qobject_cast<Note*>(w)){
 		if(d_format_tool_bar && !formatToolBar->isVisible())
             formatToolBar->show();
 		if(d_notes_tool_bar && !noteTools->isVisible())
@@ -13740,6 +13750,7 @@ void ApplicationWindow::connectMultilayerPlot(MultiLayer *g)
 
 	connect (g,SIGNAL(setPointerCursor()),this, SLOT(pickPointerCursor()));
 	connect (g,SIGNAL(currentFontChanged(const QFont&)), this, SLOT(setFormatBarFont(const QFont&)));
+	connect (g,SIGNAL(currentColorChanged(const QColor&)), this, SLOT(setFormatBarColor(const QColor&)));
 
 	g->askOnCloseEvent(confirmClosePlot2D);
 }
@@ -18234,6 +18245,16 @@ void ApplicationWindow::matrixInverseFFT()
 	m->fft(true);
 }
 
+void ApplicationWindow::setFormatBarColor(const QColor& color)
+{
+	formatToolBar->setEnabled(true);
+
+	ColorButton *cb = (ColorButton *)formatToolBar->widgetForAction(actionTextColor);
+	cb->blockSignals(true);
+	cb->setColor(color);
+	cb->blockSignals(false);
+}
+
 void ApplicationWindow::setFormatBarFont(const QFont& font)
 {
 	formatToolBar->setEnabled(true);
@@ -18264,6 +18285,18 @@ void ApplicationWindow::setFormatBarFont(const QFont& font)
     actionGreekSymbol->setEnabled(false);
     actionGreekMajSymbol->setEnabled(false);
     actionMathSymbol->setEnabled(false);
+}
+
+void ApplicationWindow::setTextColor()
+{
+	ColorButton *cb = (ColorButton *)formatToolBar->widgetForAction(actionTextColor);
+
+	MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
+	if (plot){
+		Graph* g = plot->activeLayer();
+		if (g)
+			g->setCurrentColor(cb->color());
+	}
 }
 
 void ApplicationWindow::setFontSize(int size)

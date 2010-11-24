@@ -610,6 +610,7 @@ void Spectrogram::selectLabel(bool on)
 	if (on){
 		d_graph->deselect();
 		d_graph->notifyFontChange(d_labels_font);
+		d_graph->notifyColorChange(d_labels_color);
 	}
 
 	foreach(PlotMarker *m, d_labels_list){

@@ -1111,6 +1111,7 @@ public slots:
 
 	void showToolBarsMenu();
 	void setFormatBarFont(const QFont &);
+	void setFormatBarColor(const QColor&);
 
 signals:
 	void modified();
@@ -1174,6 +1175,7 @@ private slots:
     void insertGreekSymbol();
     void insertGreekMajSymbol();
     void insertMathSymbol();
+	void setTextColor();
 	//@}
 
 	void showCustomActionDialog();
@@ -1531,7 +1533,7 @@ private:
     QAction *actionMatrixGrayScale, *actionMatrixRainbowScale, *actionMatrixCustomScale, *actionRotateMatrixMinus;
     QAction *actionMatrixXY, *actionMatrixColumnRow, *actionImagePlot, *actionToolBars, *actionImageProfilesPlot;
     QAction *actionMatrixFFTDirect, *actionMatrixFFTInverse;
-	QAction *actionFontBold, *actionFontItalic, *actionFontBox, *actionFontSize;
+	QAction *actionFontBold, *actionFontItalic, *actionFontBox, *actionFontSize, *actionTextColor;
 	QAction *actionSuperscript, *actionSubscript, *actionUnderline, *actionGreekSymbol, *actionCustomActionDialog;
 	QAction *actionGreekMajSymbol, *actionMathSymbol;
 	QAction *Box, *Frame, *None;

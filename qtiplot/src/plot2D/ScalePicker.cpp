@@ -223,6 +223,7 @@ void ScalePicker::selectTitle(QwtScaleWidget *scale, bool select)
     if (select){
         title.setBackgroundPen(QPen(Qt::blue));
 		g->notifyFontChange(title.font());
+		g->notifyColorChange(title.color());
     } else
         title.setBackgroundPen(QPen(Qt::NoPen));
 
@@ -245,6 +246,7 @@ void ScalePicker::selectLabels(QwtScaleWidget *scale, bool select)
 	d_title_selected = false;
 
 	g->notifyFontChange(scale->font());
+	g->notifyColorChange(scale->palette().color(QPalette::Active, QColorGroup::Text));
 
 	ScaleDraw *sc_draw = (ScaleDraw *)scale->scaleDraw();
 	sc_draw->setSelected(select);
