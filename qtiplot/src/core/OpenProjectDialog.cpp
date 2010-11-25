@@ -49,9 +49,13 @@ OpenProjectDialog::OpenProjectDialog(QWidget *parent, bool extended, Qt::WFlags 
 		<< tr("Origin graph") + " (*.ogg *.OGG)"
 #endif
 		<< tr("Backup files") + " (*.qti~)"
-#ifdef XLS_IMPORT
+
+#ifdef Q_OS_WIN
+		<< tr("Excel") + " (*.xls *.xlsx)"
+#elif XLS_IMPORT
 		<< tr("Excel") + " (*.xls)"
 #endif
+
 #ifdef ODS_IMPORT
 		<< tr("ODF Spreadsheet") + " (*.ods)"
 #endif

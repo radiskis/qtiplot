@@ -4344,26 +4344,26 @@ Table * ApplicationWindow::importExcel(const QString& fileName, int sheet)
 	QString fn = fileName;
 	if (fn.isEmpty()){
 		QString filter = "*.xls";
+#ifdef Q_OS_WIN
 	#ifdef HAS_EXCEL
 		filter = tr("Excel files") + " (*.xl *.xlsx *.xlsm *.xlsb *.xlam *.xltx *.xltm *.xls *.xla *.xlt *.xlm *.xlw)";
+	#else
+		filter = tr("Excel files") + " (*.xls *.xlsx)";
 	#endif
+#endif
 		fn = getFileName(this, tr("Open Excel File"), QString::null, filter, 0, false);
 		if (fn.isEmpty())
 			return NULL;
 	}
 
-
-#ifdef HAS_EXCEL
+#ifdef Q_OS_WIN
+	#ifdef HAS_EXCEL
 	Table *t = importUsingExcel(fn, sheet);
 	if (t)
 		return t;
+	#endif
+	return importExcelADO(fn, sheet);
 #endif
-
-/*
-#ifdef Q_OS_WIN
-	return adoReadExcelSheet(fn, sheet);
-#endif
-*/
 
 #ifdef XLS_IMPORT
 	return importExcelCrossplatform(fn, sheet);
@@ -4846,7 +4846,8 @@ ApplicationWindow* ApplicationWindow::open(const QString& fn, bool factorySettin
 		return importOPJ(fn, factorySettings, newProject);
 	else
 #endif
-#ifdef HAS_EXCEL
+#ifdef Q_OS_WIN
+	#ifdef HAS_EXCEL
 	if (isExcelInstalled()){
 		if (fn.endsWith(".xl", Qt::CaseInsensitive) || fn.endsWith(".xlsx", Qt::CaseInsensitive) ||
 			fn.endsWith(".xlsm", Qt::CaseInsensitive) || fn.endsWith(".xlsb", Qt::CaseInsensitive) ||
@@ -4858,6 +4859,12 @@ ApplicationWindow* ApplicationWindow::open(const QString& fn, bool factorySettin
 			return this;
 		}
 	} else
+	#else
+	if (fn.endsWith(".xls", Qt::CaseInsensitive || fn.endsWith(".xlsx", Qt::CaseInsensitive))){
+		importExcel(fn);
+		return this;
+	}
+	#endif
 #endif
 #ifdef XLS_IMPORT
 	if (fn.endsWith(".xls", Qt::CaseInsensitive)){
@@ -16437,6 +16444,11 @@ Folder* ApplicationWindow::appendProject(const QString& fn, Folder* parentFolder
 	if (fn.contains(".opj", Qt::CaseInsensitive) || fn.contains(".ogm", Qt::CaseInsensitive) ||
 		fn.contains(".ogw", Qt::CaseInsensitive) || fn.contains(".ogg", Qt::CaseInsensitive))
 		ImportOPJ(this, fn);
+	else
+#endif
+#ifdef Q_OS_WIN
+	if (fn.endsWith(".xls", Qt::CaseInsensitive || fn.endsWith(".xlsx", Qt::CaseInsensitive)))
+		importExcel(fn);
 	else
 #endif
 #ifdef XLS_IMPORT
