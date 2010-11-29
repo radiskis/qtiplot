@@ -1895,12 +1895,12 @@ void ApplicationWindow::customToolBars(QMdiSubWindow* w)
             columnTools->setEnabled (true);
             customColumnActions();
         }
-	} else if (qobject_cast<Matrix*>(w) && d_matrix_tool_bar){
-         if(!plotMatrixBar->isVisible())
+	} else if (qobject_cast<Matrix*>(w)){
+		 if(d_matrix_tool_bar && !plotMatrixBar->isVisible())
             plotMatrixBar->show();
         plotMatrixBar->setEnabled (true);
-	} else if (qobject_cast<Graph3D*>(w) && d_plot3D_tool_bar){
-		if(!plot3DTools->isVisible())
+	} else if (qobject_cast<Graph3D*>(w)){
+		if(d_plot3D_tool_bar && !plot3DTools->isVisible())
 			plot3DTools->show();
 
 		plot3DTools->setEnabled(((Graph3D*)w)->plotStyle() != Qwt3D::NOPLOT);
