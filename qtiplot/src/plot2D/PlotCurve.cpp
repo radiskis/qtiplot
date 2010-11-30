@@ -627,18 +627,8 @@ void DataCurve::loadData()
                 c->setData(X.data(), Y.data(), size);
 		}
 
-		if (xColType == Table::Text){
+		if (xColType == Table::Text)
 			g->setLabelsTextFormat(xAxis, ScaleDraw::Text, d_x_column, xLabels);
-		} else if (xColType == Table::Time || xColType == Table::Date){
-			ScaleDraw *old_sd = (ScaleDraw *)g->axisScaleDraw(xAxis);
-			ScaleDraw *sd = new ScaleDraw(g, old_sd);
-			if (xColType == Table::Date)
-				sd->setDateTimeOrigin(date0);
-			else
-				sd->setDateTimeOrigin(QDateTime(QDate::currentDate(), time0));
-			g->setAxisScaleDraw(xAxis, sd);
-		}
-
 		if (yColType == Table::Text)
 			g->setLabelsTextFormat(QwtPlot::yLeft, ScaleDraw::Text, title().text(), yLabels);
 	}

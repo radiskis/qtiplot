@@ -90,8 +90,8 @@ public:
 
 	void setDayFormat(NameFormat format);
 	void setMonthFormat(NameFormat format);
-	void setTimeFormat(const QTime& t, const QString& format);
-	void setDateFormat(const QDateTime& d, const QString& format);
+	void setTimeFormat(const QString& format, const QTime& t = QTime());
+	void setDateFormat(const QString& format, const QDateTime& d = QDateTime());
 
 	QDateTime dateTimeOrigin(){return d_date_time_origin;};
     void setDateTimeOrigin(const QDateTime& d){d_date_time_origin = d;};

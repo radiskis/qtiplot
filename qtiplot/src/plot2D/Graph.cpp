@@ -887,30 +887,31 @@ void Graph::setLabelsDateTimeFormat(int axis, int type, const QString& formatInf
 		return;
 
 	QStringList list = formatInfo.split(";", QString::KeepEmptyParts);
-	if (list.count() < 2){
-		//QMessageBox::critical(this, tr("QtiPlot - Error"), tr("Couldn't change the axis type to the requested format!"));
+	if (list.count() < 2)
 		return;
-	}
-	if (list[0].isEmpty() || list[1].isEmpty()){
-		//QMessageBox::critical(this, tr("QtiPlot - Error"), tr("Couldn't change the axis type to the requested format!"));
+	if (list[1].isEmpty())
 		return;
-    }
 
 	ScaleDraw *sd = (ScaleDraw *)axisScaleDraw(axis);
 	if (sd->scaleType() == type && sd->formatString() == formatInfo)
 		return;
 
+	ScaleDraw *nsd = new ScaleDraw(this);
+
 	if (type == ScaleDraw::Time){
-		ScaleDraw *sd = new ScaleDraw(this);
-		sd->setTimeFormat(QTime::fromString (list[0]), list[1]);
-		sd->enableComponent (QwtAbstractScaleDraw::Backbone, drawAxesBackbone);
-		setAxisScaleDraw (axis, sd);
-	} else if (type == ScaleDraw::Date) {
-		ScaleDraw *sd = new ScaleDraw(this);
-		sd->setDateFormat(QDateTime::fromString (list[0], list[1]), list[1]);
-		sd->enableComponent (QwtAbstractScaleDraw::Backbone, drawAxesBackbone);
-		setAxisScaleDraw (axis, sd);
+		QTime t = sd->dateTimeOrigin().time();
+		if (!list[0].isEmpty())
+			t = QTime::fromString(list[0]);
+		nsd->setTimeFormat(list[1], t);
+	} else if (type == ScaleDraw::Date){
+		QDateTime dt = sd->dateTimeOrigin();
+		if (!list[0].isEmpty())
+			dt = QDateTime::fromString (list[0], list[1]);
+		nsd->setDateFormat(list[1], dt);
 	}
+
+	nsd->enableComponent (QwtAbstractScaleDraw::Backbone, drawAxesBackbone);
+	setAxisScaleDraw (axis, nsd);
 }
 
 void Graph::setAxisLabelRotation(int axis, int rotation)
@@ -2080,6 +2081,18 @@ void Graph::updateCurvesData(Table* w, const QString& yColName)
 		}
         updatePlot();
     }
+}
+
+void Graph::reloadCurvesData()
+{
+	foreach(QwtPlotItem *it, d_curves){
+		if (it->rtti() != QwtPlotItem::Rtti_PlotSpectrogram){
+			PlotCurve *c = (PlotCurve*)it;
+			if (c->type() == Function)
+				continue;
+			((DataCurve *)it)->loadData();
+		}
+	}
 }
 
 QString Graph::saveEnabledAxes()

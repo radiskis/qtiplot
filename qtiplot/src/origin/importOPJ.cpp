@@ -307,7 +307,7 @@ bool ImportOPJ::importTables(const OriginFile& opj)
 
             table->saveToMemory(d_cells);
 
-			QString format;
+			QString format = formatString(column.valueType, column.valueTypeSpecification);
 			switch(column.valueType)
 			{
 			case Origin::Numeric:
@@ -340,127 +340,13 @@ bool ImportOPJ::importTables(const OriginFile& opj)
 				table->setTextFormat(j);
 				break;
 			case Origin::Date:
-				switch(column.valueTypeSpecification)
-				{
-                case -128:
-                    format="dd/MM/yyyy";
-					break;
-                case -119:
-                    format="dd/MM/yyyy HH:mm";
-					break;
-                case -118:
-                    format="dd/MM/yyyy HH:mm:ss";
-					break;
-				case 0:
-				case 9:
-				case 10:
-					format="dd.MM.yyyy";
-					break;
-				case 2:
-					format="MMM d";
-					break;
-				case 3:
-					format="M/d";
-					break;
-				case 4:
-					format="d";
-					break;
-				case 5:
-				case 6:
-					format="ddd";
-					break;
-				case 7:
-					format="yyyy";
-					break;
-				case 8:
-					format="yy";
-					break;
-				case 11:
-				case 12:
-				case 13:
-				case 14:
-				case 15:
-					format="yyMMdd";
-					break;
-				case 16:
-				case 17:
-					format="MMM";
-					break;
-				case 19:
-					format="M-d-yyyy";
-					break;
-				default:
-					format="dd.MM.yyyy";
-				}
 				table->setDateFormat(format, j);
 				break;
 			case Origin::Time:
-				switch(column.valueTypeSpecification + 128)
-				{
-				case 0:
-					format="hh:mm";
-					break;
-				case 1:
-					format="hh";
-					break;
-				case 2:
-					format="hh:mm:ss";
-					break;
-				case 3:
-					format="hh:mm:ss.zzz";
-					break;
-				case 4:
-					format="hh ap";
-					break;
-				case 5:
-					format="hh:mm ap";
-					break;
-				case 6:
-					format="mm:ss";
-					break;
-				case 7:
-					format="mm:ss.zzz";
-					break;
-				case 8:
-					format="hhmm";
-					break;
-				case 9:
-					format="hhmmss";
-					break;
-				case 10:
-					format="hh:mm:ss.zzz";
-					break;
-				}
-				table->setTimeFormat(format, j);
+				table->setTimeFormat(formatString(column.valueType, column.valueTypeSpecification + 128), j);
 				break;
 			case Origin::Month:
-				switch(column.valueTypeSpecification)
-				{
-                    case 0:
-                        format = "MMM";
-					break;
-                    case 1:
-                        format = "MMMM";
-					break;
-                    case 2:
-                        format = "M";
-					break;
-				}
-				table->setMonthFormat(format, j);
-				break;
 			case Origin::Day:
-				switch(column.valueTypeSpecification)
-				{
-                    case 0:
-                        format = "ddd";
-					break;
-                    case 1:
-                        format = "dddd";
-					break;
-                    case 2:
-                        format = "d";
-					break;
-				}
 				table->setDayFormat(format, j);
 				break;
 			default:
@@ -468,7 +354,6 @@ bool ImportOPJ::importTables(const OriginFile& opj)
 			}
             table->freeMemory();
 		}
-
 
 		if(!(spread.hidden || spread.loose) || opj.version() != 7.5){
 			switch(spread.state){
@@ -660,7 +545,7 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 		Origin::Graph _graph = opj.graph(g);
 		MultiLayer *ml = mw->multilayerPlot(_graph.name.c_str(), 0);
 		if (!ml)
-			return false;
+			continue;
 
 		ml->setCaptionPolicy((MdiSubWindow::CaptionPolicy)_graph.title);
 		ml->setBirthDate(posixTimeToString(_graph.creationDate));
@@ -703,7 +588,7 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 
 			Graph *graph = ml->addLayer();
 			if(!graph)
-				return false;
+				continue;
 
 			if (opj.version() >= 8.0)
 				graph->setAxisTitlePolicy(Graph::ColName);
@@ -800,7 +685,7 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 
 				switch(data[0].toAscii()){
 				case 'T':{
-					tableName = data.right(data.length()-2);
+					tableName = data.right(data.length() - 2).replace ("_", "-");
 					Table* table = mw->table(tableName);
 					if (!table)
 						break;
@@ -1193,22 +1078,22 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 								break;
 						}
 						break;
-					case Origin::Text: //Text
+					case Origin::Text:
 						type=ScaleDraw::Text;
 						break;
-					case 2: // Date
+					case Origin::Date:
 						type = ScaleDraw::Date;
-						formatInfo = "";
+						formatInfo = ";" + formatString(ticks[i].valueType, ticks[i].valueTypeSpecification);
 						break;
-					case 3: // Time
+					case Origin::Time:
 						type = ScaleDraw::Time;
-						formatInfo = "";
+						formatInfo = ";" + formatString(ticks[i].valueType, ticks[i].valueTypeSpecification);
 						break;
-					case Origin::Month: // Month
+					case Origin::Month:
 						type=ScaleDraw::Month;
 						format=ticks[i].valueTypeSpecification;
 						break;
-					case Origin::Day: // Day
+					case Origin::Day:
 						type=ScaleDraw::Day;
 						format=ticks[i].valueTypeSpecification;
 						break;
@@ -1238,7 +1123,10 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 					QwtScaleWidget *scale = graph->axisWidget(i);
 					if (scale){
 						scale->setColorBarEnabled(true);
-						scale->setColorBarWidth(qRound(layer.colorScale.colorBarThickness*0.01*scale->font().pointSize()));
+						double barWidth = qRound(layer.colorScale.colorBarThickness*0.01*scale->font().pointSize());
+						if (barWidth < 200)
+							scale->setColorBarWidth(barWidth);
+
 						ScaleDraw *sd = (ScaleDraw *)scale->scaleDraw();
 						if (sd){
 							sd->enableComponent(QwtAbstractScaleDraw::Labels);
@@ -1317,8 +1205,16 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 							if (graph->axisWidget(i)->isColorBarEnabled())
 								continue;
 							ScaleDraw *sd = (ScaleDraw *)graph->axisScaleDraw(i);
-							if (sd->scaleType() == ScaleDraw::Date)
+							if (sd->scaleType() == ScaleDraw::Date){
+								double start = layer.xAxis.min;
+								double step = layer.xAxis.step*8.64e4;
+								QDateTime startDate = Table::dateTime(start);
+								sd->setDateTimeOrigin(startDate);
+								graph->setAxisScale(i, 0, startDate.secsTo(Table::dateTime(layer.xAxis.max)), step);
+								graph->setAxisStep(i, step);
+								graph->reloadCurvesData();
 								continue;
+							}
 							graph->setScale(i, layer.xAxis.min,layer.xAxis.max,layer.xAxis.step,layer.xAxis.majorTicks,layer.xAxis.minorTicks,scaleTypes[(Origin::GraphAxis::Scale)layer.xAxis.scale], invert);
 						}
 					}
@@ -2457,6 +2353,135 @@ void ImportOPJ::setCurveLabelsProperties(DataCurve *mc, const Origin::GraphCurve
 	fnt.setUnderline(_curve.text.fontUnderline);
 	fnt.setPointSizeF(_curve.text.fontSize*fFontScaleFactor);
 	mc->setLabelsFont(fnt);
+}
+
+QString ImportOPJ::formatString(const Origin::ValueType& type, int valueTypeSpecification)
+{
+	QString format = QString();
+	switch(type){
+		case Origin::Date:
+			switch(valueTypeSpecification){
+				case -128:
+					format="dd/MM/yyyy";
+					break;
+				case -119:
+					format="dd.MM.yyyy HH:mm";
+					break;
+				case -118:
+					format="dd/MM/yyyy HH:mm:ss";
+					break;
+				case 0:
+				case 9:
+				case 10:
+					format="dd.MM.yyyy";
+					break;
+				case 2:
+					format="MMM d";
+					break;
+				case 3:
+					format="M/d";
+					break;
+				case 4:
+					format="d";
+					break;
+				case 5:
+				case 6:
+					format="ddd";
+					break;
+				case 7:
+					format="yyyy";
+					break;
+				case 8:
+					format="yy";
+					break;
+				case 11:
+				case 12:
+				case 13:
+				case 14:
+				case 15:
+					format="yyMMdd";
+					break;
+				case 16:
+				case 17:
+					format="MMM";
+					break;
+				case 19:
+					format="M-d-yyyy";
+					break;
+				default:
+					format="dd.MM.yyyy";
+			}
+			break;
+		case Origin::Time:
+			switch(valueTypeSpecification + 128)
+			{
+			case 0:
+				format="hh:mm";
+				break;
+			case 1:
+				format="hh";
+				break;
+			case 2:
+				format="hh:mm:ss";
+				break;
+			case 3:
+				format="hh:mm:ss.zzz";
+				break;
+			case 4:
+				format="hh ap";
+				break;
+			case 5:
+				format="hh:mm ap";
+				break;
+			case 6:
+				format="mm:ss";
+				break;
+			case 7:
+				format="mm:ss.zzz";
+				break;
+			case 8:
+				format="hhmm";
+				break;
+			case 9:
+				format="hhmmss";
+				break;
+			case 10:
+				format="hh:mm:ss.zzz";
+				break;
+			}
+			break;
+		case Origin::Month:
+			switch(valueTypeSpecification)
+			{
+				case 0:
+					format = "MMM";
+				break;
+				case 1:
+					format = "MMMM";
+				break;
+				case 2:
+					format = "M";
+				break;
+			}
+			break;
+		case Origin::Day:
+			switch(valueTypeSpecification)
+			{
+				case 0:
+					format = "ddd";
+				break;
+				case 1:
+					format = "dddd";
+				break;
+				case 2:
+					format = "d";
+				break;
+			}
+			break;
+		default:
+			break;
+	}
+	return format;
 }
 
 //TODO: bug in grid dialog
