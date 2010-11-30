@@ -2168,6 +2168,15 @@ void Table::setColumnsFormat(const QStringList& lst)
 	col_format = lst;
 }
 
+QDateTime Table::dateTime(double val)
+{
+	QDateTime d = QDateTime(QDate::fromJulianDay((int)val + 1));
+	double msecs = (val - floor(val))*864e5;
+	d.setTime(d.time().addMSecs(qRound(msecs)));
+
+	return d;
+}
+
 bool Table::setDateFormat(const QString& format, int col, bool updateCells)
 {
 	if (colTypes[col] == Date && col_format[col] == format)
@@ -2187,9 +2196,7 @@ bool Table::setDateFormat(const QString& format, int col, bool updateCells)
 				}
 
 				if (d_saved_cells){
-					d = QDateTime(QDate::fromJulianDay((int)d_saved_cells[col][i] + 1));
-					double msecs = (d_saved_cells[col][i] - floor(d_saved_cells[col][i]))*864e5;
-					d.setTime(d.time().addMSecs(qRound(msecs)));
+					d = dateTime(d_saved_cells[col][i]);
 					if (d.isValid())
 						d_table->setText(i, col, d.toString(format));
 				}

@@ -283,6 +283,7 @@ class Graph: public QwtPlot
 		void removeCurves(const QString& s);
 
 		void updateCurvesData(Table* w, const QString& yColName);
+		void reloadCurvesData();
 
 		int curveCount(){return d_curves.size();};
 		bool validCurvesDataSize();

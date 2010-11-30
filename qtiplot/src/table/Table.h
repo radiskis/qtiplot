@@ -84,6 +84,7 @@ public:
 	double min(int col, int startRow = 0, int endRow = -1);
 	double max(int col, int startRow = 0, int endRow = -1);
 	Table* extractData(const QString& name, const QString& condition, int startRow = 0, int endRow = -1);
+	static QDateTime dateTime(double val);
 
 public slots:
 	MyTable* table(){return d_table;};

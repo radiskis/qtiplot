@@ -54,6 +54,8 @@ private:
 	void parseXYZContourPlotAxisTitles(Graph *g, Table *t, const Origin::GraphCurve& curve);
 	void convertDoubleAxesPlot(MultiLayer *ml);
 
+	QString formatString(const Origin::ValueType& type, int valueTypeSpecification);
+
 	QwtSymbol::Style originToQwtSymbolStyle(unsigned char type);
 	QwtLinearColorMap qwtColorMap(const Origin::ColorMap& colorMap);
     int arrowAngle(double length, double width){return ceil(45*atan(0.5*width/length)/atan(1.0));};

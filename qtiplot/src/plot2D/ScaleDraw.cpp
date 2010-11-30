@@ -809,18 +809,20 @@ void ScaleDraw::setMonthFormat(NameFormat format)
 	d_name_format = format;
 }
 
-void ScaleDraw::setTimeFormat(const QTime& t, const QString& format)
+void ScaleDraw::setTimeFormat(const QString& format, const QTime& t)
 {
 	d_type = Time;
 	d_format_info = format;
-	d_date_time_origin.setTime(t);
+	if (!t.isNull() && t.isValid())
+		d_date_time_origin.setTime(t);
 }
 
-void ScaleDraw::setDateFormat(const QDateTime& d, const QString& format)
+void ScaleDraw::setDateFormat(const QString& format, const QDateTime& d)
 {
 	d_type = Date;
 	d_format_info = format;
-	d_date_time_origin = d;
+	if (!d.isNull() && d.isValid())
+		d_date_time_origin = d;
 }
 
 QString ScaleDraw::formatString()
