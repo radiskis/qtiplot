@@ -410,7 +410,7 @@ bool ImportOPJ::importTables(const OriginFile& opj)
 			else {
 				Origin::ColorMap colorMap = matrix.colorMap;
 				colorMap.levels.pop_back();
-				Matrix->setColorMap(qwtColorMap(colorMap));
+				Matrix->setColorMap(qwtColorMap(Matrix, colorMap));
 			}
 		}
 
@@ -1263,18 +1263,17 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 
 			for(unsigned int i = 0; i < layer.lines.size(); ++i){
 				ArrowMarker mrk;
-
-				if (layer.lines[i].attach == Origin::Page || style == Graph::Pie){
+				//if (layer.lines[i].attach == Origin::Page || style == Graph::Pie || ){
 					mrk.setAttachPolicy(ArrowMarker::Page);
 
 					QPoint pos = graph->canvas()->mapFrom(ml->canvas(), QPoint(layer.lines[i].clientRect.left*fScale + 2*layer.lines[i].width, layer.lines[i].clientRect.top*fScale + yOffset));
 					mrk.setEndPoint(graph->invTransform(QwtPlot::xBottom, pos.x()), graph->invTransform(QwtPlot::yLeft, pos.y()));
 					pos = graph->canvas()->mapFrom(ml->canvas(), QPoint(layer.lines[i].clientRect.right*fScale, layer.lines[i].clientRect.bottom*fScale + yOffset));
 					mrk.setStartPoint(graph->invTransform(QwtPlot::xBottom, pos.x()), graph->invTransform(QwtPlot::yLeft, pos.y()));
-				} else {
+				/*} else {
 					mrk.setStartPoint(layer.lines[i].begin.x, layer.lines[i].begin.y);
 					mrk.setEndPoint(layer.lines[i].end.x, layer.lines[i].end.y);
-				}
+				}*/
 
 				mrk.drawStartArrow(layer.lines[i].begin.shapeType > 0);
 				mrk.drawEndArrow(layer.lines[i].end.shapeType > 0);
@@ -1570,31 +1569,32 @@ void ImportOPJ::importSpectrogram(Graph *graph, Spectrogram *sp, const Origin::G
 		return;
 
 	graph->enableAxis(QwtPlot::yRight);
+	graph->setAxisTicksLength(QwtPlot::yRight, Graph::NoTicks, Graph::NoTicks, 0, 0);
 
 	int levelsCount = _curve.colorMap.levels.size();
-	if (levelsCount > 2 && levelsCount < 20){
-		Origin::ColorMapVector::const_iterator it = _curve.colorMap.levels.begin();
-		double vmin = it->first;
-		it = _curve.colorMap.levels.begin() + 1;
-		double step = it->first - vmin;
-		if (step < 0){
-			vmin = it->first;
-			it = _curve.colorMap.levels.begin() + 2;
-			step = fabs(it->first - vmin);
-		}
-		it = _curve.colorMap.levels.end() - 2;
-		double vmax = it->first + step;
+	if (sp->matrix() && levelsCount > 2 && levelsCount < 100){
+		double vmin = 0.0, vmax = 0.0;
+		sp->matrix()->range(&vmin, &vmax);
 
+		QwtValueList ticksList;
+		ticksList << floor(vmin);
+		for(Origin::ColorMapVector::const_iterator it = _curve.colorMap.levels.begin() + 1; it != _curve.colorMap.levels.end(); ++it)
+			ticksList << it->first;
+		ticksList << ceil(vmax);
+
+		QwtValueList ticks[QwtScaleDiv::NTickTypes];
+		ticks[QwtScaleDiv::MajorTick] = ticksList;
+		ticks[QwtScaleDiv::MediumTick] = QwtValueList();
+		ticks[QwtScaleDiv::MinorTick] = QwtValueList();
+
+		QwtScaleDiv div(vmin, vmax, ticks);
 		if (!layer.colorScale.reverseOrder)
-			graph->setAxisScale(QwtPlot::yRight, QMAX(vmin, vmax), QMIN(vmin, vmax), step);
-		else
-			graph->setAxisScale(QwtPlot::yRight, QMIN(vmin, vmax), QMAX(vmin, vmax), step);
-		graph->setAxisStep(QwtPlot::yRight, step);
+			div.invert();
+		graph->setAxisScaleDiv(QwtPlot::yRight, div);
 	} else
 		graph->setAxisMaxMajor(QwtPlot::yRight, 10);
-	graph->setAxisMaxMinor(QwtPlot::yRight, 0);
 
-	sp->setCustomColorMap(qwtColorMap(_curve.colorMap));
+	sp->setCustomColorMap(qwtColorMap(sp->matrix(), _curve.colorMap));
 
 	QwtValueList levels;
 	QList<QPen> penList;
@@ -1845,7 +1845,7 @@ bool ImportOPJ::importGraph3D(const OriginFile& opj, unsigned int g, unsigned in
 						ColorVector colors;
 						for(Origin::ColorMapVector::const_iterator it = _curve.surface.colorMap.levels.begin() + 1; it != _curve.surface.colorMap.levels.end() - 1; ++it)
 							colors.push_back(Qt2GL(originToQtColor(it->second.fillColor)));
-						plot->setDataColorMap(colors, qwtColorMap(_curve.surface.colorMap));
+						plot->setDataColorMap(colors, qwtColorMap(matrix, _curve.surface.colorMap));
 
 						if(_curve.surface.bottomContour.fill)
 							plot->setFloorData();
@@ -1875,7 +1875,7 @@ bool ImportOPJ::importGraph3D(const OriginFile& opj, unsigned int g, unsigned in
 						ColorVector colors;
 						for(Origin::ColorMapVector::const_iterator it = _curve.surface.colorMap.levels.begin() + 1; it != _curve.surface.colorMap.levels.end(); ++it)
 								colors.push_back(Qt2GL(originToQtColor(it->second.fillColor)));
-						plot->setDataColorMap(colors, qwtColorMap(_curve.surface.colorMap));
+						plot->setDataColorMap(colors, qwtColorMap(matrix, _curve.surface.colorMap));
 					}
 					break;
 					default:
@@ -2187,35 +2187,26 @@ QString ImportOPJ::parseAsciiCodes(const QString& str)
 	return line;
 }
 
-QwtLinearColorMap ImportOPJ::qwtColorMap(const Origin::ColorMap& colorMap)
+QwtLinearColorMap ImportOPJ::qwtColorMap(Matrix *m, const Origin::ColorMap& colorMap)
 {
+	if (!m)
+		return QwtLinearColorMap();
+
+	double mmin = 0.0, mmax = 0.0;
+	m->range(&mmin, &mmax);
+
 	Origin::ColorMapVector::const_iterator it = colorMap.levels.begin();
 	QColor color1 = originToQtColor(it->second.fillColor);
-	double level1 = it->first;
 
-	it = colorMap.levels.begin() + 1;
-	if (it->first < level1){
-		level1 = it->first;
-		color1 = originToQtColor(it->second.fillColor);
-	}
-
-	int endIndex = 1;
-	it = colorMap.levels.end() - endIndex;
+	it = colorMap.levels.end() - 1;
 	QColor color2 = originToQtColor(it->second.fillColor);
-	double level2 = it->first;
-	if (level2 == level1){
-		endIndex++;
-		it = colorMap.levels.end() - endIndex;
-		level2 = it->first;
-	}
 
 	QwtLinearColorMap qwt_color_map = QwtLinearColorMap(color1, color2);
 	qwt_color_map.setMode(QwtLinearColorMap::FixedColors);
 
-	double start = QMIN(level1, level2);
-	double dl = fabs(level2 - level1);
-	for(it = colorMap.levels.begin() + 1; it != colorMap.levels.end() - endIndex; ++it)
-		qwt_color_map.addColorStop(fabs(it->first - start)/dl, originToQtColor(it->second.fillColor));
+	double dl = fabs(mmax - mmin);
+	for(it = colorMap.levels.begin() + 1; it != colorMap.levels.end() - 1; ++it)
+		qwt_color_map.addColorStop(fabs(it->first - mmin)/dl, originToQtColor(it->second.fillColor));
 
 	return qwt_color_map;
 }
@@ -2365,15 +2356,13 @@ QString ImportOPJ::formatString(const Origin::ValueType& type, int valueTypeSpec
 					format="dd/MM/yyyy";
 					break;
 				case -119:
+				case 9:
 					format="dd.MM.yyyy HH:mm";
 					break;
 				case -118:
-					format="dd/MM/yyyy HH:mm:ss";
-					break;
 				case 0:
-				case 9:
 				case 10:
-					format="dd.MM.yyyy";
+					format="dd.MM.yyyy HH:mm:ss";
 					break;
 				case 2:
 					format="MMM d";
@@ -2395,11 +2384,19 @@ QString ImportOPJ::formatString(const Origin::ValueType& type, int valueTypeSpec
 					format="yy";
 					break;
 				case 11:
-				case 12:
-				case 13:
-				case 14:
-				case 15:
 					format="yyMMdd";
+					break;
+				case 12:
+					format="yyMMdd hh:mm";
+					break;
+				case 13:
+					format="yyMMdd hh:mm:ss";
+					break;
+				case 14:
+					format="yyMMdd hhmm";
+					break;
+				case 15:
+					format="yyMMdd hhmmss";
 					break;
 				case 16:
 				case 17:

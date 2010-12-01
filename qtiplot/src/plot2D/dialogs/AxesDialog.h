@@ -191,9 +191,6 @@ protected:
 	TextFormatButtons *formatButtons;
 
 	QStringList tickLabelsOn;
-	bool xAxisOn, yAxisOn, topAxisOn, rightAxisOn;
-	int xBottomLabelsRotation, xTopLabelsRotation;
-
 	QGroupBox *boxAxesBreaks;
 	DoubleSpinBox *boxBreakStart, *boxBreakEnd, *boxStepBeforeBreak, *boxStepAfterBreak;
 	QSpinBox *boxBreakPosition, *boxBreakWidth;
