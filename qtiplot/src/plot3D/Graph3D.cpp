@@ -302,6 +302,7 @@ void Graph3D::addHiddenConstantCurve(double xl, double xr, double yl, double yr,
 	d_const_curve->legend()->drawScale(false);
 	d_const_curve->legend()->drawNumbers(false);
 	d_const_curve->showColorLegend(false);
+	d_const_curve->setTitle(QString());
 	sp->addCurve(d_const_curve);
 
 	d_const_func = new ConstFunction(d_const_curve);
@@ -673,9 +674,12 @@ void Graph3D::loadData(Table* table, int xCol, int yCol, int zCol,
 			double y = table->cell(i, yCol);
 			double z = table->cell(i, zCol);
 
-			if (check_limits &&
+			/*if (check_limits &&
 			   ((axis < 0 && (x < xl || x > xr || y < yl || y > yr || z < zl || z > zr)) ||
 			   (axis == 0 && (x < xl || x > xr)) || (axis == 1 && (y < yl || y > yr)) || (axis == 2 && (z < zl || z > zr))))
+				continue;*/
+
+			if (check_limits && (x < xl || x > xr || y < yl || y > yr || z < zl || z > zr))
 				continue;
 
 			data.push_back (Triple(x, y, z));
@@ -698,10 +702,9 @@ void Graph3D::loadData(Table* table, int xCol, int yCol, int zCol,
 		d_active_curve = addCurve();
 	d_active_curve->loadFromData (data, cells);
 
-	if (check_limits)
+	if (check_limits){
 		sp->createCoordinateSystem(Triple(xl, yl, zl), Triple(xr, yr, zr));
 
-	//if (check_limits){
 		if (d_const_func){
 			d_const_func->setDomain(xl, xr, yl, yr);
 			d_const_func->setMinZ(zl);
@@ -709,7 +712,7 @@ void Graph3D::loadData(Table* table, int xCol, int yCol, int zCol,
 			d_const_func->create();
 		} else
 			addHiddenConstantCurve(xl, xr, yl, yr, zl, zr);
-	//}
+	}
 
 	double start, end;
 	sp->coordinates()->axes[Z1].limits (start, end);
