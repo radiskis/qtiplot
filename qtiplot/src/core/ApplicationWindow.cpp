@@ -15699,7 +15699,11 @@ MultiLayer* ApplicationWindow::plotSpectrogram(Matrix *m, Graph::CurveType type)
 	MultiLayer* g = multilayerPlot(generateUniqueName(tr("Graph")));
 	Graph* plot = g->activeLayer();
 	setPreferences(plot);
-	plot->plotSpectrogram(m, type);
+
+	Spectrogram *sp = plot->plotSpectrogram(m, type);
+	if (type == Graph::ColorMap)
+		sp->setCustomColorMap(m->colorMap());
+
 	g->arrangeLayers(false, true);
 	QApplication::restoreOverrideCursor();
 	return g;
