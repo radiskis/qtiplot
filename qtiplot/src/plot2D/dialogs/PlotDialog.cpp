@@ -3016,15 +3016,13 @@ void PlotDialog::setActiveCurve(CurveTreeItem *item)
 
 void PlotDialog::updateEndPointColumns(const QString& text)
 {
-	QStringList cols=text.split(",", QString::SkipEmptyParts);
-	QStringList aux=cols[0].split(":", QString::SkipEmptyParts);
-	QString table=aux[0];
+	QStringList cols = text.split(", ", QString::SkipEmptyParts);
+	QStringList aux = cols[0].split(": ", QString::SkipEmptyParts);
+	QString table = aux[0];
 	QStringList list;
-	for (int i=0; i<(int)columnNames.count(); i++)
-	{
-		QString s=columnNames[i];
+	foreach(QString s, columnNames){
 		if (s.contains(table))
-			list<<s;
+			list << s.remove(QRegExp("\\s"));
 	}
 
 	xEndBox->clear();

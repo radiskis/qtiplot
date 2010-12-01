@@ -2,7 +2,7 @@
     File                 : VectorCurve.cpp
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2006 by Ion Vasilief
+	Copyright            : (C) 2006 - 2010 by Ion Vasilief
     Email (use @ for *)  : ion_vasilief*yahoo.fr
     Description          : Vector curve class
 
@@ -34,6 +34,7 @@
 #include <qwt_painter.h>
 #include <qwt_double_rect.h>
 #include <QPainter>
+#include <stdio.h>
 
 VectorCurve::VectorCurve(VectorStyle style, Table *t, const QString& xColName, const char *name,
 				const QString& endCol1, const QString& endCol2, int startRow, int endRow):
@@ -45,7 +46,8 @@ VectorCurve::VectorCurve(VectorStyle style, Table *t, const QString& xColName, c
 	d_headAngle (45),
 	d_position (Tail),
 	d_end_x_a (endCol1),
-	d_end_y_m (endCol2)
+	d_end_y_m (endCol2),
+	vectorEnd(0)
 {
 	d_pen.setCosmetic(true);
 	if (style == XYXY){
@@ -88,57 +90,51 @@ void VectorCurve::draw(QPainter *painter,
 void VectorCurve::drawVector(QPainter *painter,
     const QwtScaleMap &xMap, const QwtScaleMap &yMap, int from, int to) const
 {
-if (d_style == XYAM)
-{
- for (int i = from; i <= to; i++)
-	{
-	const double x0 = x(i);
-	const double y0 = y(i);
-	const double angle = vectorEnd->x(i);
-	const double mag = vectorEnd->y(i);
+	if (d_style == XYAM){
+		for (int i = from; i <= to; i++){
+			const double x0 = x(i);
+			const double y0 = y(i);
+			const double angle = vectorEnd->x(i);
+			const double mag = vectorEnd->y(i);
 
-	int xs = 0, ys = 0, xe = 0, ye = 0;
-	switch(d_position)
-		{
-		case Tail:
-			xs = xMap.transform(x0);
-			ys = yMap.transform(y0);
-			xe = xMap.transform(x0 + mag*cos(angle));
-			ye = yMap.transform(y0 + mag*sin(angle));
-		break;
+			int xs = 0, ys = 0, xe = 0, ye = 0;
+			switch(d_position){
+				case Tail:
+					xs = xMap.transform(x0);
+					ys = yMap.transform(y0);
+					xe = xMap.transform(x0 + mag*cos(angle));
+					ye = yMap.transform(y0 + mag*sin(angle));
+				break;
 
-		case Middle:
-			{
-			double dxh = 0.5*mag*cos(angle);
-			double dyh = 0.5*mag*sin(angle);
-			xs = xMap.transform(x0 - dxh);
-			ys = yMap.transform(y0 - dyh);
-			xe = xMap.transform(x0 + dxh);
-			ye = yMap.transform(y0 + dyh);
+				case Middle:
+					{
+					double dxh = 0.5*mag*cos(angle);
+					double dyh = 0.5*mag*sin(angle);
+					xs = xMap.transform(x0 - dxh);
+					ys = yMap.transform(y0 - dyh);
+					xe = xMap.transform(x0 + dxh);
+					ye = yMap.transform(y0 + dyh);
+					}
+				break;
+
+				case Head:
+					xs = xMap.transform(x0 - mag*cos(angle));
+					ys = yMap.transform(y0 - mag*sin(angle));
+					xe = xMap.transform(x0);
+					ye = yMap.transform(y0);
+				break;
 			}
-		break;
-
-		case Head:
-			xs = xMap.transform(x0 - mag*cos(angle));
-			ys = yMap.transform(y0 - mag*sin(angle));
-			xe = xMap.transform(x0);
-			ye = yMap.transform(y0);
-		break;
+			QwtPainter::drawLine(painter, xs, ys, xe, ye);
+			drawArrowHead(painter, xs, ys, xe, ye);
 		}
-	QwtPainter::drawLine(painter, xs, ys, xe, ye);
-	drawArrowHead(painter, xs, ys, xe, ye);
-	}
-}
-else
-	{
-	for (int i = from; i <= to; i++)
-		{
-		const int xs = xMap.transform(x(i));
-		const int ys = yMap.transform(y(i));
-		const int xe = xMap.transform(vectorEnd->x(i));
-		const int ye = yMap.transform(vectorEnd->y(i));
-		QwtPainter::drawLine(painter, xs, ys, xe, ye);
-		drawArrowHead(painter, xs, ys, xe, ye);
+	} else {
+		for (int i = from; i <= to; i++){
+			const int xs = xMap.transform(x(i));
+			const int ys = yMap.transform(y(i));
+			const int xe = xMap.transform(vectorEnd->x(i));
+			const int ye = yMap.transform(vectorEnd->y(i));
+			QwtPainter::drawLine(painter, xs, ys, xe, ye);
+			drawArrowHead(painter, xs, ys, xe, ye);
 		}
 	}
 }
@@ -168,21 +164,18 @@ void VectorCurve::drawArrowHead(QPainter *p, int xs, int ys, int xe, int ye) con
 
 double VectorCurve::theta(int x0, int y0, int x1, int y1) const
 {
-double t,pi=4*atan(-1.0);
-if (x1==x0)
-	{
-	if (y0>y1)
-		t=90;
-	else
-		t=270;
+	double t = 0.0, pi = 4*atan(-1.0);
+	if (x1 == x0){
+		if (y0 > y1)
+			t = 90;
+		else
+			t = 270;
+	} else {
+		t = atan2((y1 - y0)*1.0, (x1 - x0)*1.0)*180/pi;
+		if (t < 0)
+			t = 360 + t;
 	}
-else
-	{
-	t=atan2((y1-y0)*1.0,(x1-x0)*1.0)*180/pi;
-	if (t<0)
-		t=360+t;
-	}
-return t;
+	return t;
 }
 
 void VectorCurve::setVectorEnd(const QString& xColName, const QString& yColName)
@@ -198,7 +191,7 @@ void VectorCurve::setVectorEnd(const QString& xColName, const QString& yColName)
 
 void VectorCurve::setVectorEnd(const QwtArray<double>&x, const QwtArray<double>&y)
 {
-    vectorEnd = new QwtArrayData(x, y);
+	vectorEnd = new QwtArrayData(x, y);
 }
 
 double VectorCurve::width()
@@ -218,69 +211,72 @@ QColor VectorCurve::color()
 
 void VectorCurve::setColor(const QColor& c)
 {
-if (d_pen.color() != c)
-	d_pen.setColor(c);
+	if (d_pen.color() != c)
+		d_pen.setColor(c);
 }
 
 void VectorCurve::setHeadLength(int l)
 {
-if (d_headLength != l)
-	d_headLength = l;
+	if (d_headLength != l)
+		d_headLength = l;
 }
 
 void VectorCurve::setHeadAngle(int a)
 {
-if (d_headAngle != a)
-	d_headAngle = a;
+	if (d_headAngle != a)
+		d_headAngle = a;
 }
 
 void VectorCurve::fillArrowHead(bool fill)
 {
-if (filledArrow != fill)
-	filledArrow = fill;
+	if (filledArrow != fill)
+		filledArrow = fill;
 }
 
 QwtDoubleRect VectorCurve::boundingRect() const
 {
-QwtDoubleRect rect = QwtPlotCurve::boundingRect();
-QwtDoubleRect vrect = vectorEnd->boundingRect();
+	QwtDoubleRect rect = QwtPlotCurve::boundingRect();
+	if (!vectorEnd)
+		return rect;
 
-if (d_style == XYXY){
-	rect.setTop(QMIN((double)rect.top(), (double)vrect.top()));
-	rect.setBottom(QMAX((double)rect.bottom(), (double)vrect.bottom()));
-	rect.setLeft(QMIN((double)rect.left(), (double)vrect.left()));
-	rect.setRight(QMAX((double)rect.right(), (double)vrect.right()));
-} else {
-	const double angle = vectorEnd->x(0);
-	double mag = vectorEnd->y(0);
-	switch(d_position)
-		{
-		case Tail:
-			rect.setTop(QMIN((double)rect.top(), (double)(rect.top()+mag*sin(angle))));
-			rect.setBottom(QMAX((double)rect.bottom(), (double)(rect.bottom()+mag*sin(angle))));
-			rect.setLeft(QMIN((double)rect.left(), (double)(rect.left()+mag*cos(angle))));
-			rect.setRight(QMAX((double)rect.right(), (double)(rect.right()+mag*cos(angle))));
-		break;
+	QwtDoubleRect vrect = vectorEnd->boundingRect();
 
-		case Middle:
+	if (d_style == XYXY){
+		rect.setTop(QMIN((double)rect.top(), (double)vrect.top()));
+		rect.setBottom(QMAX((double)rect.bottom(), (double)vrect.bottom()));
+		rect.setLeft(QMIN((double)rect.left(), (double)vrect.left()));
+		rect.setRight(QMAX((double)rect.right(), (double)vrect.right()));
+	} else {
+		const double angle = vectorEnd->x(0);
+		double mag = vectorEnd->y(0);
+		switch(d_position)
 			{
-			mag *= 0.5;
-			rect.setTop(QMIN((double)rect.top(), (double)(rect.top() - fabs(mag*sin(angle)))));
-			rect.setBottom(QMAX((double)rect.bottom(), (double)(rect.bottom() + fabs(mag*sin(angle)))));
-			rect.setLeft(QMIN((double)rect.left(), (double)(rect.left() - fabs(mag*cos(angle)))));
-			rect.setRight(QMAX((double)rect.right(), (double)(rect.right() + fabs(mag*cos(angle)))));
-			}
-		break;
+			case Tail:
+				rect.setTop(QMIN((double)rect.top(), (double)(rect.top()+mag*sin(angle))));
+				rect.setBottom(QMAX((double)rect.bottom(), (double)(rect.bottom()+mag*sin(angle))));
+				rect.setLeft(QMIN((double)rect.left(), (double)(rect.left()+mag*cos(angle))));
+				rect.setRight(QMAX((double)rect.right(), (double)(rect.right()+mag*cos(angle))));
+			break;
 
-		case Head:
-			rect.setTop(QMIN((double)rect.top(), (double)(rect.top() - mag*sin(angle))));
-			rect.setBottom(QMAX((double)rect.bottom(), (double)(rect.bottom() - mag*sin(angle))));
-			rect.setLeft(QMIN((double)rect.left(), (double)(rect.left() - mag*cos(angle))));
-			rect.setRight(QMAX((double)rect.right(), (double)(rect.right() - mag*cos(angle))));
-		break;
+			case Middle:
+				{
+				mag *= 0.5;
+				rect.setTop(QMIN((double)rect.top(), (double)(rect.top() - fabs(mag*sin(angle)))));
+				rect.setBottom(QMAX((double)rect.bottom(), (double)(rect.bottom() + fabs(mag*sin(angle)))));
+				rect.setLeft(QMIN((double)rect.left(), (double)(rect.left() - fabs(mag*cos(angle)))));
+				rect.setRight(QMAX((double)rect.right(), (double)(rect.right() + fabs(mag*cos(angle)))));
+				}
+			break;
+
+			case Head:
+				rect.setTop(QMIN((double)rect.top(), (double)(rect.top() - mag*sin(angle))));
+				rect.setBottom(QMAX((double)rect.bottom(), (double)(rect.bottom() - mag*sin(angle))));
+				rect.setLeft(QMIN((double)rect.left(), (double)(rect.left() - mag*cos(angle))));
+				rect.setRight(QMAX((double)rect.right(), (double)(rect.right() - mag*cos(angle))));
+			break;
+			}
 		}
-	}
-return rect;
+	return rect;
 }
 
 void VectorCurve::updateColumnNames(const QString& oldName, const QString& newName, bool updateTableName)
@@ -340,51 +336,52 @@ bool VectorCurve::updateData(Table *t, const QString& colName)
 
 void VectorCurve::loadData()
 {
-    if (!plot())
-        return;
+	if (!plot())
+		return;
 
 	int xcol = d_table->colIndex(d_x_column);
 	int ycol = d_table->colIndex(title().text());
-	int endXCol = d_table->colIndex(d_end_x_a);
-	int endYCol = d_table->colIndex(d_end_y_m);
+	int endXCol = d_table->colIndex(d_end_x_a.remove(QRegExp("\\s")));
+	int endYCol = d_table->colIndex(d_end_y_m.remove(QRegExp("\\s")));
 
 	int rows = abs(d_end_row - d_start_row) + 1;
-    QVector<double> X(rows), Y(rows), X2(rows), Y2(rows);
-    int size = 0;
-    QLocale locale = ((Graph *)plot())->multiLayer()->locale();
+	QVector<double> X(rows), Y(rows), X2(rows), Y2(rows);
+	int size = 0;
+	QLocale locale = ((Graph *)plot())->multiLayer()->locale();
 	for (int i = d_start_row; i <= d_end_row; i++){
 		QString xval = d_table->text(i, xcol);
 		QString yval = d_table->text(i, ycol);
 		QString xend = d_table->text(i, endXCol);
 		QString yend = d_table->text(i, endYCol);
 		if (!xval.isEmpty() && !yval.isEmpty() && !xend.isEmpty() && !yend.isEmpty()){
-		    bool valid_data = true;
+			bool valid_data = true;
 			X[size] = locale.toDouble(xval, &valid_data);
 			if (!valid_data)
-                continue;
-            Y[size] = locale.toDouble(yval, &valid_data);
-            if (!valid_data)
-                continue;
+				continue;
+			Y[size] = locale.toDouble(yval, &valid_data);
+			if (!valid_data)
+				continue;
 			X2[size] = locale.toDouble(xend, &valid_data);
 			if (!valid_data)
-                continue;
-            Y2[size] = locale.toDouble(yend, &valid_data);
+				continue;
+			Y2[size] = locale.toDouble(yend, &valid_data);
 			if (valid_data)
-                size++;
+				size++;
 		}
 	}
 
 	if (!size)
 		return;
 
-    X.resize(size); Y.resize(size); X2.resize(size); Y2.resize(size);
+	X.resize(size); Y.resize(size); X2.resize(size); Y2.resize(size);
 	setData(X.data(), Y.data(), size);
 	foreach(ErrorBarsCurve *c, d_error_bars)
-        c->setData(X.data(), Y.data(), size);
+		c->setData(X.data(), Y.data(), size);
 	setVectorEnd(X2, Y2);
 }
 
 VectorCurve::~VectorCurve()
 {
-delete vectorEnd;
+	if (vectorEnd)
+		delete vectorEnd;
 }
