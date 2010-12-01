@@ -3625,14 +3625,14 @@ void Graph::updatePlot()
 
 void Graph::updateScale()
 {
-    if (!d_auto_scale){
-    //We need this hack due to the fact that in Qwt 5.0 we can't
-    //disable autoscaling in an easier way, like for example: setAxisAutoScale(axisId, false)
-        for (int i = 0; i < QwtPlot::axisCnt; i++)
-            setAxisScaleDiv(i, *axisScaleDiv(i));
-    }
+	if (!d_auto_scale){
+	//We need this hack due to the fact that in Qwt 5.0 we can't
+	//disable autoscaling in an easier way, like for example: setAxisAutoScale(axisId, false)
+		for (int i = 0; i < QwtPlot::axisCnt; i++)
+			setAxisScaleDiv(i, *axisScaleDiv(i));
+	}
 
-    replot();
+	replot();
 
 	updateMarkersBoundingRect();
 

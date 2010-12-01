@@ -385,7 +385,7 @@ void FunctionDialog::setCurveToModify(Graph *g, int curve)
 			sb->setLocale(QLocale());
 			sb->setValue(i.value());
         	boxConstants->setCellWidget(row, 1, sb);
-			connect(sb, SIGNAL(valueChanged(double)), this, SLOT(accept()));
+			connect(sb, SIGNAL(valueChanged(double)), this, SLOT(apply()));
 			row++;
  		}
 	} else
@@ -864,7 +864,7 @@ void FunctionDialog::guessConstants()
 				sb->setValue(values[index]);
 		}
 		if (!d_stand_alone)
-			connect(sb, SIGNAL(valueChanged(double)), this, SLOT(accept()));
+			connect(sb, SIGNAL(valueChanged(double)), this, SLOT(apply()));
 		row++;
 	}
 
