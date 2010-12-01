@@ -53,7 +53,6 @@ public:
 	QString vectorEndXAColName(){return d_end_x_a;};
 	QString vectorEndYMColName(){return d_end_y_m;};
 	void setVectorEnd(const QString& xColName, const QString& yColName);
-	void setVectorEnd(const QwtArray<double>&x, const QwtArray<double>&y);
 
 	double width();
 	void setWidth(double w);
@@ -86,6 +85,8 @@ public:
 	void setVectorPen(const QPen& pen){d_pen = pen;};
 
 private:
+	void setVectorEnd(const QwtArray<double>&x, const QwtArray<double>&y);
+
 	void draw(QPainter *painter,const QwtScaleMap &xMap,
 		const QwtScaleMap &yMap, int from, int to) const;
 
@@ -96,13 +97,12 @@ private:
 		double theta(int x0, int y0, int x1, int y1) const;
 
 protected:
-	QwtArrayData *vectorEnd;
 	QPen d_pen;
 	bool filledArrow;
 	int d_style, d_headLength, d_headAngle, d_position;
-
 	QString d_end_x_a;
 	QString d_end_y_m;
+	QwtArrayData *vectorEnd;
 };
 
 #endif
