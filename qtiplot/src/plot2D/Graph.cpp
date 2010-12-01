@@ -618,8 +618,10 @@ QString Graph::saveLabelsPrefixAndSuffix()
 QString Graph::saveLabelsRotation()
 {
 	QString s = "LabelsRotation\t";
-	s+=QString::number(labelsRotation(QwtPlot::xBottom))+"\t";
-	s+=QString::number(labelsRotation(QwtPlot::xTop))+"\n";
+	s += QString::number(labelsRotation(QwtPlot::xBottom)) + "\t";
+	s += QString::number(labelsRotation(QwtPlot::xTop)) + "\t";
+	s += QString::number(labelsRotation(QwtPlot::yLeft)) + "\t";
+	s += QString::number(labelsRotation(QwtPlot::yRight)) + "\n";
 	return s;
 }
 
@@ -4750,11 +4752,10 @@ void Graph::copy(Graph* g)
 
 	copyCurves(g);
 
-	for (int i = 0; i < QwtPlot::axisCnt; i++)
+	for (int i = 0; i < QwtPlot::axisCnt; i++){
 		copyScaleDraw(g, i);
-
-	setAxisLabelRotation(QwtPlot::xBottom, g->labelsRotation(QwtPlot::xBottom));
-  	setAxisLabelRotation(QwtPlot::xTop, g->labelsRotation(QwtPlot::xTop));
+		setAxisLabelRotation(i, g->labelsRotation(i));
+	}
 
 	updateAxesTitles();
     updateLayout();

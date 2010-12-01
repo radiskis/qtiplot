@@ -966,19 +966,15 @@ void AxesDialog::showAxis()
     switch(a){
         case 0:
             axis = QwtPlot::xBottom;
-            xAxisOn=ok;
         break;
         case 1:
             axis = QwtPlot::yLeft;
-            yAxisOn=ok;
         break;
         case 2:
             axis = QwtPlot::xTop;
-            topAxisOn=ok;
         break;
         case 3:
             axis = QwtPlot::yRight;
-            rightAxisOn=ok;
         break;
     }
 
@@ -990,12 +986,7 @@ void AxesDialog::showAxis()
     boxColName->setEnabled(labels && ok);
     boxShowFormula->setEnabled(labels && ok);
 	boxFormula->setEnabled(labels && ok);
-
-	if (axis == QwtPlot::xBottom || axis == QwtPlot::xTop)
-		boxAngle->setEnabled(labels && ok);
-	else
-		boxAngle->setDisabled(true);
-
+	boxAngle->setEnabled(labels && ok);
 	boxPrecision->setEnabled(labels && ok);
 
 	QString formula =  boxFormula->text();
@@ -1010,50 +1001,15 @@ void AxesDialog::showAxis()
 
 void AxesDialog::updateShowBox(int axis)
 {
-	switch(axis)
-	{
-		case 0:
-			{
-				boxShowAxis->setChecked(xAxisOn);
-				int labelsOn=tickLabelsOn[2].toInt();
-				boxShowLabels->setChecked(labelsOn);
-				boxAngle->setEnabled(labelsOn && xAxisOn);
-				boxFormat->setEnabled(labelsOn && xAxisOn);
-				boxAngle->setValue(xBottomLabelsRotation);
-				break;
-			}
-		case 1:
-			{
-				boxShowAxis->setChecked(yAxisOn);
-				int labelsOn=tickLabelsOn[0].toInt();
-				boxShowLabels->setChecked(labelsOn);
-				boxFormat->setEnabled(labelsOn && yAxisOn);
-				boxAngle->setEnabled(false);
-				boxAngle->setValue(0);
-				break;
-			}
-		case 2:
-			{
-				boxShowAxis->setChecked(topAxisOn);
+	int a = mapToQwtAxis(axis);
+	bool axisOn = d_graph->axisEnabled(a);
+	boxShowAxis->setChecked(axisOn);
 
-				int labelsOn=tickLabelsOn[3].toInt();
-				boxShowLabels->setChecked(labelsOn);
-				boxFormat->setEnabled(labelsOn && topAxisOn);
-				boxAngle->setEnabled(labelsOn && topAxisOn);
-				boxAngle->setValue(xTopLabelsRotation);
-				break;
-			}
-		case 3:
-			{
-				boxShowAxis->setChecked(rightAxisOn);
-				int labelsOn=tickLabelsOn[1].toInt();
-				boxShowLabels->setChecked(labelsOn );
-				boxFormat->setEnabled(labelsOn && rightAxisOn);
-				boxAngle->setEnabled(false);
-				boxAngle->setValue(0);
-				break;
-			}
-	}
+	int labelsOn = tickLabelsOn[a].toInt();
+	boxShowLabels->setChecked(labelsOn);
+	boxFormat->setEnabled(labelsOn && axisOn);
+	boxAngle->setEnabled(labelsOn && axisOn);
+	boxAngle->setValue(d_graph->labelsRotation(a));
 
 	bool ok = boxShowAxis->isChecked();
 	axisFormatBox->setEnabled(ok);
@@ -1417,11 +1373,6 @@ bool AxesDialog::updatePlot(QWidget *page)
 			d_graph->setAxisTitle(axis, boxTitle->text());
 
 		d_graph->setAxisTitleDistance(axis, boxLabelsDistance->value());
-		
-		if (axis == QwtPlot::xBottom)
-			xBottomLabelsRotation = boxAngle->value();
-		else if (axis == QwtPlot::xTop)
-			xTopLabelsRotation = boxAngle->value();
 
 		QString formula = boxFormula->text();
 		if (!boxShowFormula->isChecked())
@@ -1459,15 +1410,7 @@ void AxesDialog::setGraph(Graph *g)
 	boxTableName->insertStringList(app->tableNames());
 	boxColName-> insertStringList(app->columnsList(Table::All));
 
-	xAxisOn = g->axisEnabled(QwtPlot::xBottom);
-	yAxisOn = g->axisEnabled(QwtPlot::yLeft);
-	topAxisOn = g->axisEnabled(QwtPlot::xTop);
-	rightAxisOn = g->axisEnabled(QwtPlot::yRight);
-
 	updateTitleBox(0);
-
-	xBottomLabelsRotation = g->labelsRotation(QwtPlot::xBottom);
-	xTopLabelsRotation = g->labelsRotation(QwtPlot::xTop);
 
 	for (int axis=0; axis<QwtPlot::axisCnt; axis++){
 		const QwtScaleDraw *sd = g->axisScaleDraw (axis);
@@ -1491,28 +1434,28 @@ void AxesDialog::setGraph(Graph *g)
 
 int AxesDialog::mapToQwtAxisId()
 {
-return mapToQwtAxis(axesTitlesList->currentRow());
+	return mapToQwtAxis(axesTitlesList->currentRow());
 }
 
 int AxesDialog::mapToQwtAxis(int axis)
 {
-int a=-1;
-switch(axis)
-        {
-        case 0:
-           a = QwtPlot::xBottom;
-        break;
-        case 1:
-            a = QwtPlot::yLeft;
-        break;
-        case 2:
-             a = QwtPlot::xTop;
-        break;
-        case 3:
-             a = QwtPlot::yRight;
-        break;
+	int a = -1;
+	switch(axis)
+		{
+		case 0:
+			a = QwtPlot::xBottom;
+		break;
+		case 1:
+			a = QwtPlot::yLeft;
+		break;
+		case 2:
+			 a = QwtPlot::xTop;
+		break;
+		case 3:
+			 a = QwtPlot::yRight;
+		break;
 		}
-return a;
+	return a;
 }
 
 void AxesDialog::updateScale()
@@ -1749,10 +1692,7 @@ void AxesDialog::updateTickLabelsList(bool on)
 
 	boxFormat->setEnabled(on && boxShowAxis->isChecked());
 	boxColName->setEnabled(on && boxShowAxis->isChecked());
-
-	if (axis == QwtPlot::xBottom || axis == QwtPlot::xTop)
-		boxAngle->setEnabled(on);
-
+	boxAngle->setEnabled(on);
 	boxPrecision->setEnabled(on);
 
 	if (tickLabelsOn[axis] == QString::number(on))

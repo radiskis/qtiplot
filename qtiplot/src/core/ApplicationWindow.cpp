@@ -12990,9 +12990,13 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot, co
 		}
 		else if (s.contains ("LabelsRotation"))
 		{
-			QStringList fList=s.split("\t");
+			QStringList fList = s.split("\t");
 			ag->setAxisLabelRotation(QwtPlot::xBottom, fList[1].toInt());
 			ag->setAxisLabelRotation(QwtPlot::xTop, fList[2].toInt());
+			if (fList.size() == 5){
+				ag->setAxisLabelRotation(QwtPlot::yLeft, fList[3].toInt());
+				ag->setAxisLabelRotation(QwtPlot::yRight, fList[4].toInt());
+			}
 		}
 		else if (s.contains ("DrawAxesBackbone"))
 		{
