@@ -11486,8 +11486,14 @@ void ApplicationWindow::updateFunctionLists(int type, QStringList &formulas)
 MultiLayer* ApplicationWindow::newFunctionPlot(QStringList &formulas, double start, double end, int points, const QString& var, int type)
 {
 	MultiLayer *ml = newGraph();
-	if (ml)
-		ml->activeLayer()->addFunction(formulas, start, end, points, var, type);
+	if (ml){
+		Graph *g = ml->activeLayer();
+		if (g){
+			g->enableAutoscaling();
+			g->addFunction(formulas, start, end, points, var, type);
+			g->enableAutoscaling(false);
+		}
+	}
 
 	updateFunctionLists(type, formulas);
 	return ml;
