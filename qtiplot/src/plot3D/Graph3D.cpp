@@ -303,6 +303,9 @@ void Graph3D::addHiddenConstantCurve(double xl, double xr, double yl, double yr,
 	d_const_curve->legend()->drawNumbers(false);
 	d_const_curve->showColorLegend(false);
 	d_const_curve->setTitle(QString());
+	d_const_curve->setDataProjection(false);
+	d_const_curve->setFloorStyle(NOFLOOR);
+	d_const_curve->setProjection(BASE, false);
 	sp->addCurve(d_const_curve);
 
 	d_const_func = new ConstFunction(d_const_curve);
@@ -703,7 +706,7 @@ void Graph3D::loadData(Table* table, int xCol, int yCol, int zCol,
 	d_active_curve->loadFromData (data, cells);
 
 	if (check_limits){
-		sp->createCoordinateSystem(Triple(xl, yl, zl), Triple(xr, yr, zr));
+		sp->coordinates()->setPosition(Triple(xl, yl, zl), Triple(xr, yr, zr));
 
 		if (d_const_func){
 			d_const_func->setDomain(xl, xr, yl, yr);
@@ -1472,26 +1475,17 @@ void Graph3D::setScales(double xl, double xr, double yl, double yr, double zl, d
 		sp->coordinates()->setPosition(Triple(xl, yl, zl), Triple(xr, yr, zr));
 		d_active_curve->legend()->setLimits(zl, zr);
     } else if (d_table){
-		QString name = plotAssociation;
+		QStringList cols = plotAssociation.split(",");
+		if (cols.size() < 3)
+			return;
 
-		int pos = name.find("_", 0);
-		int posX = name.find("(", pos);
-		QString xColName = name.mid(pos+1, posX-pos-1);
-		int xCol = d_table->colIndex(xColName);
+		int xCol = d_table->colIndex(cols[0].remove("(X)"));
+		int yCol = d_table->colIndex(cols[1].remove("(Y)"));
 
-		pos = name.find(",", posX);
-		posX = name.find("(", pos);
-		QString yColName = name.mid(pos+1, posX-pos-1);
-		int yCol = d_table->colIndex(yColName);
-
-		if (name.endsWith("(Z)",true)){
-			pos = name.find(",",posX);
-			posX = name.find("(",pos);
-			QString zColName = name.mid(pos + 1, posX - pos - 1);
-			int zCol = d_table->colIndex(zColName);
-
+		if (plotAssociation.endsWith("(Z)",true)){
+			int zCol = d_table->colIndex(cols[2].remove("(Z)"));
 			loadData(d_table, xCol, yCol, zCol, xl, xr, yl, yr, zl, zr, axis);
-		} else if (name.endsWith("(Y)",true))
+		} else if (plotAssociation.endsWith("(Y)",true))
 			updateScales(xl, xr, yl, yr, zl, zr, xCol, yCol);
 	}
 
