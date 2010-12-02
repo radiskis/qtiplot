@@ -9061,7 +9061,7 @@ The following special codes can be used:
     </message>
     <message>
         <source>Use second row as &amp;comments</source>
-        <translation>Utiliser la seconde colonne pour les &amp;commentaires</translation>
+        <translation>Utiliser la seconde ligne pour les &amp;commentaires</translation>
     </message>
     <message>
         <source>&amp;Remove white spaces from line ends</source>
@@ -9190,7 +9190,7 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Use first row &amp;as</source>
-        <translation>Utiliser l&amp;a première colonne comme</translation>
+        <translation>Utiliser l&amp;a première ligne comme</translation>
     </message>
     <message>
         <source>Column Names</source>
