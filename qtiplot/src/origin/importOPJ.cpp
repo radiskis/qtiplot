@@ -219,7 +219,7 @@ bool ImportOPJ::importTables(const OriginFile& opj)
 	for(unsigned int s = 0; s < opj.spreadCount(); ++s){
 		Origin::SpreadSheet spread = opj.spread(s);
 		int columnCount = spread.columns.size();
-		int maxrows = spread.maxRows;
+		unsigned int maxrows = spread.maxRows;
 		if(!columnCount) //remove tables without cols
 			continue;
 
@@ -312,15 +312,14 @@ bool ImportOPJ::importTables(const OriginFile& opj)
 			{
 			case Origin::Numeric:
 			case Origin::TextNumeric:
+			{
 				if (set_text_column){
 					table->setTextFormat(j);
 					break;
 				}
 
-				int f;
-				if(column.numericDisplayType == 0)
-					f = 0;
-				else
+				int f = 0;
+				if (column.numericDisplayType != 0){
 					switch(column.valueTypeSpecification)
 					{
 					case 0: //Decimal 1000
@@ -334,8 +333,10 @@ bool ImportOPJ::importTables(const OriginFile& opj)
 						f=0;
 						break;
 					}
+				}
 				table->setColNumericFormat(f, column.decimalPlaces, j, !has_texts);
 				break;
+			}
 			case Origin::Text:
 				table->setTextFormat(j);
 				break;
@@ -576,7 +577,6 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 		bool boxWhiskersPlot = false;
 		bool showColorScale = false;
 		unsigned int layers = _graph.layers.size();
-		bool commonYAxes = false;
 		bool doubleAxesLayout = false;
 		for(unsigned int l = 0; l < layers; ++l){
 			Origin::GraphLayer& layer = _graph.layers[l];
@@ -599,9 +599,7 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 			Origin::Rect layerRect = layer.clientRect;
 			if (l){
 				Origin::GraphLayer& prevLayer = _graph.layers[l - 1];
-				if (prevLayer.clientRect.left + prevLayer.clientRect.width() == layerRect.left)
-					commonYAxes = true;
-				else if (layers == 2 && (prevLayer.clientRect.left == layerRect.left &&
+				if (layers == 2 && (prevLayer.clientRect.left == layerRect.left &&
 					prevLayer.clientRect.top == layerRect.top &&
 					prevLayer.clientRect.right == layerRect.right &&
 					prevLayer.clientRect.bottom == layerRect.bottom))
@@ -615,6 +613,7 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 
 			int style = 0;
 			bool matrixImage = false;
+			bool horizontalBars = false;
 			Origin::GraphCurve XYZContourCurve;
 			Table *XYZContourTable = 0;
 
@@ -638,10 +637,15 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 						style = Graph::ErrorBars;
 						break;
 					case Origin::GraphCurve::Column:
-						style = Graph::VerticalBars;
+						if (_graph.templateName == "BAR"){
+							style = Graph::HorizontalBars;
+							horizontalBars = true;
+						} else
+							style = Graph::VerticalBars;
 						break;
 					case Origin::GraphCurve::Bar:
 						style = Graph::HorizontalBars;
+						horizontalBars = true;
 						break;
 					case Origin::GraphCurve::Histogram:
 						style = Graph::Histogram;
@@ -988,6 +992,13 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 				{}
 			}
 
+			if (horizontalBars){
+				Origin::GraphAxis xAxis = layer.xAxis;
+				Origin::GraphAxis yAxis = layer.yAxis;
+				layer.xAxis = yAxis;
+				layer.yAxis = xAxis;
+			}
+
 			//grid
 			Grid *grid = graph->grid();
 			grid->enableX(!layer.xAxis.majorGrid.hidden);
@@ -1034,7 +1045,7 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 				ticks.push_back(layer.xAxis.tickAxis[0]); //right
 			}
 
-			for(int i = 0; i < 4; ++i){
+			for(int i = 0; i < QwtPlot::axisCnt; ++i){
 				QString data(ticks[i].dataName.c_str());
 				QString tableName = data.right(data.length()-2) + "_" + ticks[i].columnName.c_str();
 
@@ -1143,14 +1154,15 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 				} else {
 					QString formula = "";
 					QString factor = QString(formats[i].factor.c_str()).replace(",", ".");
-					if (!factor.isEmpty()){
+					double f = factor.toDouble();
+					if (!factor.isEmpty() && f != 0.0){
 						if (i == QwtPlot::xBottom || i == QwtPlot::xTop)
 							formula = "x/";
 						else
 							formula = "y/";
 						QLocale locale = mw->locale();
 						locale.setNumberOptions(QLocale::OmitGroupSeparator);
-						formula += locale.toString(factor.toDouble());
+						formula += locale.toString(f);
 					}
 
 					graph->showAxis(i, type, formatInfo, mw->table(tableName), !(formats[i].hidden),
@@ -1160,8 +1172,6 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 						4, true, ScaleDraw::ShowAll, parseOriginText(QString(formats[i].prefix.c_str())),
 						parseOriginText(QString(formats[i].suffix.c_str())));
 				}
-
-
 
 				QwtScaleWidget *scale = graph->axisWidget(i);
 				if (scale)
@@ -1187,50 +1197,45 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 			}
 
 			//set scale limits
-			if (style == Graph::HorizontalBars){
-				graph->setScale(0,layer.xAxis.min,layer.xAxis.max,layer.xAxis.step,layer.xAxis.majorTicks,layer.xAxis.minorTicks,layer.xAxis.scale);
-				graph->setScale(2,layer.yAxis.min,layer.yAxis.max,layer.yAxis.step,layer.yAxis.majorTicks,layer.yAxis.minorTicks,layer.yAxis.scale);
-			} else {
-				Origin::GraphAxisBreak breakX = layer.xAxisBreak;
-				Origin::GraphAxisBreak breakY = layer.yAxisBreak;
-				bool invert = (layer.xAxis.min > layer.xAxis.max);
-				if (style != Graph::Box){
-					if (breakX.show){
-						for (int i = 2; i < QwtPlot::axisCnt; i++)
-							graph->setScale(i, layer.xAxis.min,layer.xAxis.max,layer.xAxis.step,layer.xAxis.majorTicks,layer.xAxis.minorTicks,scaleTypes[(Origin::GraphAxis::Scale)layer.xAxis.scale],
-									invert, breakX.from, breakX.to, breakX.position, breakX.scaleIncrementBefore, breakX.scaleIncrementAfter,
-									breakX.minorTicksBefore, breakX.minorTicksAfter, breakX.log10);
-					} else {
-						for (int i = 2; i < QwtPlot::axisCnt; i++){
-							if (graph->axisWidget(i)->isColorBarEnabled())
-								continue;
-							ScaleDraw *sd = (ScaleDraw *)graph->axisScaleDraw(i);
-							if (sd->scaleType() == ScaleDraw::Date){
-								double start = layer.xAxis.min;
-								double step = layer.xAxis.step*8.64e4;
-								QDateTime startDate = Table::dateTime(start);
-								sd->setDateTimeOrigin(startDate);
-								graph->setAxisScale(i, 0, startDate.secsTo(Table::dateTime(layer.xAxis.max)), step);
-								graph->setAxisStep(i, step);
-								graph->reloadCurvesData();
-								continue;
-							}
-							graph->setScale(i, layer.xAxis.min,layer.xAxis.max,layer.xAxis.step,layer.xAxis.majorTicks,layer.xAxis.minorTicks,scaleTypes[(Origin::GraphAxis::Scale)layer.xAxis.scale], invert);
+			Origin::GraphAxisBreak breakX = layer.xAxisBreak;
+			Origin::GraphAxisBreak breakY = layer.yAxisBreak;
+			bool invert = (layer.xAxis.min > layer.xAxis.max);
+			if (style != Graph::Box){
+				if (breakX.show){
+					for (int i = 2; i < QwtPlot::axisCnt; i++)
+						graph->setScale(i, layer.xAxis.min,layer.xAxis.max,layer.xAxis.step,layer.xAxis.majorTicks,layer.xAxis.minorTicks,scaleTypes[(Origin::GraphAxis::Scale)layer.xAxis.scale],
+								invert, breakX.from, breakX.to, breakX.position, breakX.scaleIncrementBefore, breakX.scaleIncrementAfter,
+								breakX.minorTicksBefore, breakX.minorTicksAfter, breakX.log10);
+				} else {
+					for (int i = 2; i < QwtPlot::axisCnt; i++){
+						if (graph->axisWidget(i)->isColorBarEnabled())
+							continue;
+						ScaleDraw *sd = (ScaleDraw *)graph->axisScaleDraw(i);
+						if (sd->scaleType() == ScaleDraw::Date){
+							double start = layer.xAxis.min;
+							double step = layer.xAxis.step*8.64e4;
+							QDateTime startDate = Table::dateTime(start);
+							sd->setDateTimeOrigin(startDate);
+							graph->setAxisScale(i, 0, startDate.secsTo(Table::dateTime(layer.xAxis.max)), step);
+							graph->setAxisStep(i, step);
+							graph->reloadCurvesData();
+							continue;
 						}
+						graph->setScale(i, layer.xAxis.min,layer.xAxis.max,layer.xAxis.step,layer.xAxis.majorTicks,layer.xAxis.minorTicks,scaleTypes[(Origin::GraphAxis::Scale)layer.xAxis.scale], invert);
 					}
 				}
+			}
 
-				invert = (layer.yAxis.min > layer.yAxis.max) || matrixImage;
-				if (breakY.show){
-					for (int i = 0; i <= 1; i++)
-						graph->setScale(i, layer.yAxis.min,layer.yAxis.max,layer.yAxis.step,layer.yAxis.majorTicks,layer.yAxis.minorTicks,scaleTypes[(Origin::GraphAxis::Scale)layer.xAxis.scale], //??xAxis??
-							invert, breakY.from, breakY.to, breakY.position, breakY.scaleIncrementBefore, breakY.scaleIncrementAfter,
-							breakY.minorTicksBefore, breakY.minorTicksAfter, breakY.log10);
-				} else {
-					for (int i = 0; i <= 1; i++){
-						if (!graph->axisWidget(i)->isColorBarEnabled())
-							graph->setScale(i, layer.yAxis.min,layer.yAxis.max,layer.yAxis.step,layer.yAxis.majorTicks,layer.yAxis.minorTicks,scaleTypes[(Origin::GraphAxis::Scale)layer.yAxis.scale], invert);
-					}
+			invert = (layer.yAxis.min > layer.yAxis.max) || matrixImage;
+			if (breakY.show){
+				for (int i = 0; i <= 1; i++)
+					graph->setScale(i, layer.yAxis.min,layer.yAxis.max,layer.yAxis.step,layer.yAxis.majorTicks,layer.yAxis.minorTicks,scaleTypes[(Origin::GraphAxis::Scale)layer.xAxis.scale], //??xAxis??
+						invert, breakY.from, breakY.to, breakY.position, breakY.scaleIncrementBefore, breakY.scaleIncrementAfter,
+						breakY.minorTicksBefore, breakY.minorTicksAfter, breakY.log10);
+			} else {
+				for (int i = 0; i <= 1; i++){
+					if (!graph->axisWidget(i)->isColorBarEnabled())
+						graph->setScale(i, layer.yAxis.min,layer.yAxis.max,layer.yAxis.step,layer.yAxis.majorTicks,layer.yAxis.minorTicks,scaleTypes[(Origin::GraphAxis::Scale)layer.yAxis.scale], invert);
 				}
 			}
 
@@ -1286,7 +1291,7 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 			}
 
 			for(unsigned int i = 0; i < layer.figures.size(); ++i){
-				FrameWidget* fw;
+				FrameWidget* fw = 0;
 				switch(layer.figures[i].type){
 					case Origin::Figure::Rectangle:
 						fw = new RectangleWidget(graph);
@@ -1488,13 +1493,7 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 			}
 		}
 
-		if (commonYAxes){
-			ml->setSpacing(5, 0);
-			ml->setCols(ml->numLayers());
-			ml->setAlignPolicy(MultiLayer::AlignCanvases);
-			ml->setCommonLayerAxes(true, false);
-			ml->arrangeLayers(false, false);
-		} else if (doubleAxesLayout)
+		if (doubleAxesLayout)
 			convertDoubleAxesPlot(ml);
 
 		if (imageProfileTool){
@@ -2355,14 +2354,11 @@ QString ImportOPJ::formatString(const Origin::ValueType& type, int valueTypeSpec
 				case -128:
 					format="dd/MM/yyyy";
 					break;
-				case -119:
-				case 9:
-					format="dd.MM.yyyy HH:mm";
-					break;
-				case -118:
 				case 0:
-				case 10:
-					format="dd.MM.yyyy HH:mm:ss";
+					format="dd.MM.yyyy";
+					break;
+				case 1:
+					format="d MMMM yyyy";
 					break;
 				case 2:
 					format="MMM d";
@@ -2382,6 +2378,14 @@ QString ImportOPJ::formatString(const Origin::ValueType& type, int valueTypeSpec
 					break;
 				case 8:
 					format="yy";
+					break;
+				case 9:
+				case -119:
+					format="dd.MM.yyyy HH:mm";
+					break;
+				case 10:
+				case -118:
+					format="dd.MM.yyyy HH:mm:ss";
 					break;
 				case 11:
 					format="yyMMdd";

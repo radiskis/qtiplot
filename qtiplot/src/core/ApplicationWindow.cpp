@@ -15707,7 +15707,7 @@ MultiLayer* ApplicationWindow::plotSpectrogram(Matrix *m, Graph::CurveType type)
 	setPreferences(plot);
 
 	Spectrogram *sp = plot->plotSpectrogram(m, type);
-	if (type == Graph::ColorMap)
+	if (sp && type == Graph::ColorMap)
 		sp->setCustomColorMap(m->colorMap());
 
 	g->arrangeLayers(false, true);
