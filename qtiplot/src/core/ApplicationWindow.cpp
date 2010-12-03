@@ -5138,19 +5138,25 @@ ApplicationWindow* ApplicationWindow::openProject(const QString& fn, bool factor
 			plot->blockSignals(true);
 
 			if (d_file_version > 71){
-				QStringList lst=t.readLine().split("\t");
-				plot->setWindowLabel(lst[1]);
-				plot->setCaptionPolicy((MdiSubWindow::CaptionPolicy)lst[2].toInt());
+				QStringList lst = t.readLine().split("\t");
+				if (lst.size() > 1)
+					plot->setWindowLabel(lst[1]);
+				if (lst.size() > 2)
+					plot->setCaptionPolicy((MdiSubWindow::CaptionPolicy)lst[2].toInt());
 			}
 			if (d_file_version > 83){
 				QStringList lst=t.readLine().split("\t", QString::SkipEmptyParts);
-				plot->setMargins(lst[1].toInt(),lst[2].toInt(),lst[3].toInt(),lst[4].toInt());
+				if (lst.size() >= 5)
+					plot->setMargins(lst[1].toInt(),lst[2].toInt(),lst[3].toInt(),lst[4].toInt());
 				lst=t.readLine().split("\t", QString::SkipEmptyParts);
-				plot->setSpacing(lst[1].toInt(),lst[2].toInt());
+				if (lst.size() >= 3)
+					plot->setSpacing(lst[1].toInt(),lst[2].toInt());
 				lst=t.readLine().split("\t", QString::SkipEmptyParts);
-				plot->setLayerCanvasSize(lst[1].toInt(),lst[2].toInt());
+				if (lst.size() >= 3)
+					plot->setLayerCanvasSize(lst[1].toInt(),lst[2].toInt());
 				lst=t.readLine().split("\t", QString::SkipEmptyParts);
-				plot->setAlignement(lst[1].toInt(),lst[2].toInt());
+				if (lst.size() >= 3)
+					plot->setAlignement(lst[1].toInt(),lst[2].toInt());
 			}
 
 			while ( s != "</multiLayer>" ){//open layers

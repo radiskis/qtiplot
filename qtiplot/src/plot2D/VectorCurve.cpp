@@ -341,8 +341,8 @@ void VectorCurve::loadData()
 
 	int xcol = d_table->colIndex(d_x_column);
 	int ycol = d_table->colIndex(title().text());
-	int endXCol = d_table->colIndex(d_end_x_a.remove(QRegExp("\\s")));
-	int endYCol = d_table->colIndex(d_end_y_m.remove(QRegExp("\\s")));
+	int endXCol = d_table->colIndex(d_end_x_a.replace("_ ", "_"));
+	int endYCol = d_table->colIndex(d_end_y_m.replace("_ ", "_"));
 
 	int rows = abs(d_end_row - d_start_row) + 1;
 	QVector<double> X(rows), Y(rows), X2(rows), Y2(rows);

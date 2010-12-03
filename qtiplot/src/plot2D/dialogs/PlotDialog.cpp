@@ -3022,7 +3022,7 @@ void PlotDialog::updateEndPointColumns(const QString& text)
 	QStringList list;
 	foreach(QString s, columnNames){
 		if (s.contains(table))
-			list << s.remove(QRegExp("\\s"));
+			list << s;
 	}
 
 	xEndBox->clear();
