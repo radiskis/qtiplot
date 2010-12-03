@@ -578,6 +578,13 @@ QString LegendWidget::parse(const QString& str)
     s.remove(QRegExp("\\l(*)", Qt::CaseInsensitive, QRegExp::Wildcard));
     s.remove(QRegExp("\\p{*}", Qt::CaseInsensitive, QRegExp::Wildcard));
 
+	QString ltag[] = {"<b>","<i>","<u>","<sup>","<sub>"};
+	QString rtag[] = {"</b>","</i>","</u>","</sup>","</sub>"};
+	for (int i = 0; i < 5; i++){//remove special tags if they are not paired
+		if (s.count(ltag[i]) != s.count(rtag[i]))
+			s.remove(QRegExp(ltag[i])).remove(QRegExp(rtag[i]));
+	}
+
 	QString aux = str;
     while (aux.contains(QRegExp("%(*)", Qt::CaseInsensitive, QRegExp::Wildcard))){//curve name specification
 		int pos = str.indexOf("%(", 0, Qt::CaseInsensitive);
