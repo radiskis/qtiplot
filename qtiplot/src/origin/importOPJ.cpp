@@ -2103,6 +2103,7 @@ QString ImportOPJ::parseOriginTags(const QString &str, bool removeTags)
 	QString line = str;
 
 	QStringList tagsLst = QStringList()
+		<< "\\\\\\s*l\\s*\\(.*\\)" // \l(...) legend tags
 		<< "\\\\\\s*b\\s*\\(.*\\)"
 		<< "\\\\\\s*i\\s*\\(.*\\)"
 		<< "\\\\\\s*u\\s*\\(.*\\)"
@@ -2111,7 +2112,7 @@ QString ImportOPJ::parseOriginTags(const QString &str, bool removeTags)
 		<< "\\\\\\s*\\-\\s*\\(.*\\)"
 		<< "\\\\\\s*f\\:.*\\(.*\\)"
 		<< "\\\\\\s*c(\\d)+\\(.*\\)" // \c2(...) like tags
-		<< "\\\\\\s*p(\\d)+\\(.*\\)"; // \p163(...) like tags
+		<< "\\\\\\s*p(\\d)+\\(.*\\)";
 
 	if (removeTags){
 		foreach (QString s, tagsLst){
@@ -2133,8 +2134,8 @@ QString ImportOPJ::parseOriginTags(const QString &str, bool removeTags)
 	line = parseAsciiCodes(line);
 
 	//replace \b(...), \i(...), \u(...), \g(...), \+(...), \-(...), \f:font(...) tags
-	QString ltag[] = {"<b>","<i>","<u>","<font face=Symbol>","<sup>","<sub>","<font face=%1>", "<font color=%1>"};
-	QString rtag[] = {"</b>","</i>","</u>","</font>","</sup>","</sub>","</font>","</font>"};
+	QString ltag[] = {"", "<b>","<i>","<u>","<font face=Symbol>","<sup>","<sub>","<font face=%1>", "<font color=%1>"};
+	QString rtag[] = {"", "</b>","</i>","</u>","</font>","</sup>","</sub>","</font>","</font>"};
 
 	for(int i = 0; i < tagsLst.size(); i++){
 		QRegExp fontModifier(tagsLst[i]);
@@ -2149,15 +2150,17 @@ QString ImportOPJ::parseOriginTags(const QString &str, bool removeTags)
 			QString mid = line.mid(pos, l - pos - 1);
 			QString right = line.right(line.length() - l);
 
-			if (i == 6){
+			if (i == 0){
+				line = line.left(pos - 1) + "&lbracket;" + mid + "&rbracket;" + right;
+			} else if (i == 7){
 				int posFont = line.indexOf(":", index) + 1;
 				QString fontName = line.mid(posFont, pos - posFont - 1);
 				line = QString(left + ltag[i] + mid + rtag[i] + right).arg(fontName);
-			} else if (i == 7){
+			} else if (i == 8){
 				int posC = index + 2;
 				int colIndex = line.mid(posC, pos - posC - 1).toInt() - 1;
 				line = QString(left + ltag[i] + mid + rtag[i] + right).arg(ColorBox::defaultColor(colIndex).name());
-			} else if (i == 8){// remove \p163(...) like tags
+			} else if (i == 9){// remove \p163(...) like tags
 				line = left + mid + right;
 			} else
 				line = left + ltag[i] + mid + rtag[i] + right;
@@ -2165,7 +2168,7 @@ QString ImportOPJ::parseOriginTags(const QString &str, bool removeTags)
 			index = line.indexOf(fontModifier);
 		}
 	}
-	return line;
+	return line.replace("&lbracket;", "(").replace("&rbracket;", ")");
 }
 
 QString ImportOPJ::parseAsciiCodes(const QString& str)

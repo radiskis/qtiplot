@@ -349,9 +349,9 @@ void ScaleDraw::drawLabel(QPainter *painter, double value) const
     ScaleEngine *sc_engine = (ScaleEngine *)d_plot->axisScaleEngine(axis());
 	if (sc_engine->hasBreak()){
 		bool invertedScale = sc_engine->testAttribute(QwtScaleEngine::Inverted);
-		if (invertedScale && sc_engine->axisBreakRight() == value)
+		if (invertedScale && (sc_engine->axisBreakLeft() > value && sc_engine->axisBreakRight() < value))
         	return;
-		if (!invertedScale && sc_engine->axisBreakLeft() == value)
+		if (!invertedScale && (sc_engine->axisBreakLeft() < value && sc_engine->axisBreakRight() > value))
         	return;
 	}
 
@@ -501,7 +501,7 @@ int ScaleDraw::axis() const
 void ScaleDraw::drawTick(QPainter *p, double value, int len) const
 {
 	ScaleEngine *sc_engine = (ScaleEngine *)d_plot->axisScaleEngine(axis());
-	if (sc_engine->hasBreak() && (sc_engine->axisBreakLeft() == value || sc_engine->axisBreakRight() == value))
+	if (sc_engine->hasBreak() && (sc_engine->axisBreakLeft() < value && sc_engine->axisBreakRight() > value))
 		return;
 
 	QwtScaleDiv scDiv = scaleDiv();
