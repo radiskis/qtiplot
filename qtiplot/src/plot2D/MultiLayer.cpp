@@ -131,6 +131,8 @@ d_size_policy(UserSize),
 d_link_x_axes(false),
 d_common_axes_layout(false)
 {
+	d_layer_coordinates.resize(0);
+
 	layerButtonsBox = new QHBoxLayout();
 	waterfallBox = new QHBoxLayout();
 	toolbuttonsBox = new QHBoxLayout();
@@ -310,7 +312,7 @@ QRect MultiLayer::canvasChildrenRect()
 
 void MultiLayer::resizeLayers (QResizeEvent *re)
 {
-	if (!d_scale_layers || applicationWindow()->d_opening_file){
+	if (!d_scale_layers || applicationWindow()->d_opening_file || graphsList.isEmpty()){
 		emit modifiedPlot();
 		return;
 	}
@@ -322,7 +324,7 @@ void MultiLayer::resizeLayers (QResizeEvent *re)
 		size.setHeight(oldSize.height());
 
 	bool invalidOldSize = !oldSize.isValid();
-	if(!oldSize.isValid()){// The old size is invalid when maximizing a window (why?)
+	if(invalidOldSize){// The old size is invalid when maximizing a window (why?)
 		if (d_canvas_size.isValid())
 			oldSize = d_canvas_size;
 		else {
@@ -331,21 +333,69 @@ void MultiLayer::resizeLayers (QResizeEvent *re)
 		}
 	}
 
-	double w_ratio = (double)size.width()/(double)oldSize.width();
-	double h_ratio = (double)(size.height())/(double)(oldSize.height());
-
 	if (d_common_axes_layout && !invalidOldSize)
 		arrangeLayers(false, false);
 	else {
-		foreach (Graph *g, graphsList){
-			int gx = qRound(g->x()*w_ratio);
-			int gy = qRound(g->y()*h_ratio);
-			int gw = qRound(g->width()*w_ratio);
-			int gh = qRound(g->height()*h_ratio);
-			g->setGeometry(gx, gy, gw, gh);
+		int dw = size.width() - oldSize.width();
+		int dh = size.height() - oldSize.height();
+
+		Graph *g0 = graphsList[0];
+		int l = graphsList.size();
+		if (d_layer_coordinates.size() == 0){
+			d_layer_coordinates.resize(l);
+
+			QPoint oPos = g0->pos() + g0->canvas()->pos();
+			for(int i = 1; i < l; i++){
+				Graph *g = graphsList[i];
+				if (!g)
+					continue;
+
+				QwtPlotCanvas *canvas = g->canvas();
+				QPoint pos = g->pos() + canvas->pos() - oPos;
+
+				double xl = g0->invTransform(QwtPlot::xBottom, pos.x());
+				double yt = g0->invTransform(QwtPlot::yLeft, pos.y());
+				double xr = g0->invTransform(QwtPlot::xBottom, pos.x() + canvas->width() - 1);
+				double yb = g0->invTransform(QwtPlot::yLeft, pos.y() + canvas->height() - 1);
+
+				d_layer_coordinates[i] = QRectF(QPointF(xl, yt), QPointF(xr, yb));
+			}
+		}
+
+		g0->setCanvasSize(g0->canvas()->size() + QSize(dw, dh));
+		g0->updateLayout();
+
+		for(int i = 1; i < l; i++){
+			Graph *g = graphsList[i];
+			if (!g)
+				continue;
+
+			QRectF r = d_layer_coordinates[i];
+
+			int xl = g0->transform(QwtPlot::xBottom, r.left());
+			int yt = g0->transform(QwtPlot::yLeft, r.top());
+			int xr = g0->transform(QwtPlot::xBottom, r.right());
+			int yb = g0->transform(QwtPlot::yLeft, r.bottom());
+
+			QPoint tl = g0->canvas()->mapTo(d_canvas, QPoint(xl, yt));
+			QPoint br = g0->canvas()->mapTo(d_canvas, QPoint(xr, yb));
+
+			if (invalidOldSize){
+				int fw = 4;
+				if (this->isMaximized()){
+					tl += QPoint(fw, -fw);
+					br += QPoint(fw/2, -fw);
+				} else {
+					tl -= QPoint(fw, -fw/2);
+					br -= QPoint(fw/2, -fw);
+				}
+			}
+
+			g->setCanvasGeometry(QRect(tl, br));
 		}
 	}
 
+	double h_ratio = (double)(size.height())/(double)(oldSize.height());
 	foreach (Graph *g, graphsList){
 		if (g->autoscaleFonts())
 			g->scaleFonts(h_ratio);
@@ -1408,6 +1458,12 @@ bool MultiLayer::eventFilter(QObject *object, QEvent *e)
 	}
 
 	return MdiSubWindow::eventFilter(object, e);
+}
+
+void MultiLayer::mouseReleaseEvent( QMouseEvent * e)
+{
+	d_layer_coordinates.resize(0);
+	return QMdiSubWindow::mouseReleaseEvent(e);
 }
 
 void MultiLayer::keyPressEvent(QKeyEvent * e)
