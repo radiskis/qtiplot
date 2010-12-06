@@ -242,6 +242,7 @@ signals:
 private:
 	//! \name Event Handlers
 	//@{
+	void mouseReleaseEvent(QMouseEvent *);
 	void dropEvent(QDropEvent*);
 	void dragEnterEvent(QDragEnterEvent*);
 	void wheelEvent(QWheelEvent *);
@@ -283,6 +284,8 @@ private:
 	SizePolicy d_size_policy;
 	bool d_link_x_axes;
 	bool d_common_axes_layout;
+
+	QVector<QRectF> d_layer_coordinates;
 };
 
 //! Button with layer number
