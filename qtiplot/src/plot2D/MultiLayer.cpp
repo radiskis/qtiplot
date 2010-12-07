@@ -333,12 +333,16 @@ void MultiLayer::resizeLayers (QResizeEvent *re)
 		}
 	}
 
-	if (d_common_axes_layout && !invalidOldSize)
-		arrangeLayers(false, false);
-	else {
-		int dw = size.width() - oldSize.width();
-		int dh = size.height() - oldSize.height();
+	double w_ratio = (double)size.width()/(double)oldSize.width();
+	double h_ratio = (double)(size.height())/(double)(oldSize.height());
 
+	if (d_common_axes_layout && !invalidOldSize){
+		arrangeLayers(false, false);
+		foreach (Graph *g, graphsList){
+			if (g->autoscaleFonts())
+				g->scaleFonts(h_ratio);
+		}
+	} else {
 		Graph *g0 = graphsList[0];
 		int l = graphsList.size();
 		if (d_layer_coordinates.size() == 0){
@@ -362,7 +366,16 @@ void MultiLayer::resizeLayers (QResizeEvent *re)
 			}
 		}
 
-		g0->setCanvasSize(g0->canvas()->size() + QSize(dw, dh));
+		if (g0->autoscaleFonts())
+			g0->scaleFonts(h_ratio);
+
+		QwtPlotCanvas *canvas0 = g0->canvas();
+		QPoint pos = g0->pos() + canvas0->pos();
+		int x = qRound(pos.x()*w_ratio);
+		int y = qRound(pos.y()*h_ratio);
+		int w = qRound(canvas0->width()*w_ratio);
+		int h = qRound(canvas0->height()*h_ratio);
+		g0->setCanvasGeometry(QRect(x, y, w, h));
 		g0->updateLayout();
 
 		for(int i = 1; i < l; i++){
@@ -377,29 +390,16 @@ void MultiLayer::resizeLayers (QResizeEvent *re)
 			int xr = g0->transform(QwtPlot::xBottom, r.right());
 			int yb = g0->transform(QwtPlot::yLeft, r.bottom());
 
-			QPoint tl = g0->canvas()->mapTo(d_canvas, QPoint(xl, yt));
-			QPoint br = g0->canvas()->mapTo(d_canvas, QPoint(xr, yb));
+			QPoint tl = canvas0->mapTo(d_canvas, QPoint(xl, yt));
+			QPoint br = canvas0->mapTo(d_canvas, QPoint(xr, yb));
 
-			if (invalidOldSize){
-				int fw = 4;
-				if (this->isMaximized()){
-					tl += QPoint(fw, -fw);
-					br += QPoint(fw/2, -fw);
-				} else {
-					tl -= QPoint(fw, -fw/2);
-					br -= QPoint(fw/2, -fw);
-				}
-			}
+			if (g->autoscaleFonts())
+				g->scaleFonts(h_ratio);
 
 			g->setCanvasGeometry(QRect(tl, br));
 		}
 	}
 
-	double h_ratio = (double)(size.height())/(double)(oldSize.height());
-	foreach (Graph *g, graphsList){
-		if (g->autoscaleFonts())
-			g->scaleFonts(h_ratio);
-	}
 	emit modifiedPlot();
 }
 
