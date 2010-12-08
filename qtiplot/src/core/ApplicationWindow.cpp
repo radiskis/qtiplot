@@ -12147,7 +12147,7 @@ void ApplicationWindow::autoArrangeLayers()
 		plot->updateWaterfallLayout();
 	else {
 		plot->setMargins(5, 5, 5, 5);
-		plot->setSpacing(5, 5);
+		//plot->setSpacing(5, 5);
 		plot->arrangeLayers(true, false);
 	}
 }
