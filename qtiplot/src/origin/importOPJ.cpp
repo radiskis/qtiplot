@@ -535,6 +535,7 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 		fake->setParent(0);
 		frameWidth = fake->frameGeometry().width() - fake->geometry().width();
 		frameHeight = fake->frameGeometry().height() - fake->geometry().height();
+
 		standardFrame = Origin::Rect(fake->geometry().width(), fake->geometry().height());
 		fake->setMaximized();
 		maximazedFrame = Origin::Rect(fake->geometry().width(), fake->geometry().height());
@@ -563,14 +564,12 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 		else
 			height = width / ratio;
 
-
 		int yOffset = LayerButton::btnSize();
 
 		ml->resize(graphWindowRect.width(), graphWindowRect.height() + 3*yOffset);
 
 		double fScale = (double)(graphWindowRect.width() - frameWidth)/(double)width;
 		double fWindowFactor =  QMIN((double)graphWindowRect.width()/500.0, (double)graphWindowRect.height()/350.0);
-		double fFontScaleFactor = 0.4;
 		double fVectorArrowScaleFactor = 0.08*fWindowFactor;
 
 		bool imageProfileTool = false;
@@ -597,6 +596,11 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 			graph->setAutoscaleFonts(false);
 
 			Origin::Rect layerRect = layer.clientRect;
+
+			double fFontScaleFactorH = layerRect.height()*graphWindowRect.height()/(double)(height*height);
+			double fFontScaleFactorW = layerRect.width()*fScale/(double)(width);
+			double fFontScaleFactor = 0.68*600.0*(fFontScaleFactorW + fFontScaleFactorH)/(double)graph->logicalDpiX();
+
 			if (l){
 				Origin::GraphLayer& prevLayer = _graph.layers[l - 1];
 				if (layers == 2 && (prevLayer.clientRect.left == layerRect.left &&
@@ -1550,9 +1554,9 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 				ml->show();
 				mw->hideWindow(ml);
 			}
-
 			foreach (Graph *g, ml->layersList())
-				g->setAutoscaleFonts(mw->autoScaleFonts && _graph.state != Origin::Window::Maximized);
+				g->setAutoscaleFonts(mw->autoScaleFonts);
+				//g->setAutoscaleFonts(mw->autoScaleFonts && _graph.state != Origin::Window::Maximized);
 		} else {
 			ml->askOnCloseEvent(false);
 			ml->close();
