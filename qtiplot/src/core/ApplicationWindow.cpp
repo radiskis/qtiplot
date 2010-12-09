@@ -9381,7 +9381,6 @@ void ApplicationWindow::showEnrichementDialog()
 		wt = EnrichmentDialog::Ellipse;
 
 	EnrichmentDialog *ed = new EnrichmentDialog(wt, g, this, this);
-	connect(ed, SIGNAL(destroyed(QObject*)), g, SLOT(deselectMarker()));
 	ed->setWidget(g->activeEnrichment());
 	ed->exec();
 }
@@ -10999,6 +10998,10 @@ void ApplicationWindow::showGraphContextMenu()
 	if (!ag)
 		return;
 
+	QPoint pos = QCursor::pos();
+	if (!ag->canvas()->geometry().contains(ag->mapFromGlobal(pos)))
+		return;
+
 	QMenu cm(this);
 
 	QMenu addMenu(this);
@@ -11079,7 +11082,7 @@ void ApplicationWindow::showGraphContextMenu()
 	cm.addAction(tr("P&roperties..."), this, SLOT(showGeneralPlotDialog()));
 	cm.addSeparator();
 	cm.addAction(actionDeleteLayer);
-	cm.exec(QCursor::pos());
+	cm.exec(pos);
 }
 
 void ApplicationWindow::showWindowContextMenu()
@@ -11090,8 +11093,11 @@ void ApplicationWindow::showWindowContextMenu()
 
 	QMenu cm(this);
 	QMenu plot3D(this);
-	if (w->isA("MultiLayer")){
+	if (qobject_cast<MultiLayer *>(w)){
 		MultiLayer *g = (MultiLayer*)w;
+		if (!g->frameGeometry().contains(g->mapFromGlobal(QCursor::pos())))
+			return;
+
 		if (lastCopiedLayer){
 			cm.insertItem(QPixmap(":/paste.png"), tr("&Paste Layer"), this, SLOT(pasteSelection()));
 			cm.insertSeparator();
