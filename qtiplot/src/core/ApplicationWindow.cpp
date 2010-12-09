@@ -7722,7 +7722,7 @@ void ApplicationWindow::showColMenu(int c)
 	QMenu stat(this);
 	QMenu norm(this);
 
-	if ((int)w->selectedColumns().count() == 1){
+	if (w->selectedColumns().count() == 1){
 		w->setSelectedCol(c);
 		plot.addAction(actionPlotL);
 		plot.addAction(actionPlotP);
@@ -7853,7 +7853,7 @@ void ApplicationWindow::showColMenu(int c)
 		contextMenu.insertSeparator();
 		contextMenu.addAction(actionAdjustColumnWidth);
 		contextMenu.addAction(actionShowColumnOptionsDialog);
-	} else if ((int)w->selectedColumns().count() > 1){
+	} else if (w->selectedColumns().count() > 1){
 		plot.addAction(actionPlotL);
 		plot.addAction(actionPlotP);
 		plot.addAction(actionPlotLP);

@@ -376,24 +376,16 @@ int Table::colY(int col, int xCol)
 void Table::setPlotDesignation(PlotDesignation pd, bool rightColumns)
 {
 	if (rightColumns){
-	     int cols = d_table->numCols();
-	     for (int i = selectedCol; i<cols; i++){
-            col_plot_type[i] = pd;
-            if (pd == Label)
-                colTypes[i] = Text;
-            else if (pd != None)
-                colTypes[i] = Numeric;
-        }
+		 int cols = d_table->numCols();
+		 for (int i = selectedCol; i<cols; i++){
+			col_plot_type[i] = pd;
+		}
 	} else {
-        QStringList list = selectedColumns();
-        for (int i=0; i<(int) list.count(); i++){
-            int col = colIndex(list[i]);
-            col_plot_type[col] = pd;
-            if (pd == Label)
-                colTypes[col] = Text;
-            else if (pd != None)
-                colTypes[col] = Numeric;
-        }
+		QStringList list = selectedColumns();
+		for (int i = 0; i < list.count(); i++){
+			int col = colIndex(list[i]);
+			col_plot_type[col] = pd;
+		}
 	}
 
 	setHeaderColType();
@@ -403,11 +395,9 @@ void Table::setPlotDesignation(PlotDesignation pd, bool rightColumns)
 void Table::setColPlotDesignation(int col, PlotDesignation pd)
 {
 	if (col < 0 || col >= d_table->numCols() || col_plot_type[col] == pd)
-        return;
+		return;
 
 	col_plot_type[col] = pd;
-	if (pd == Label)
-        colTypes[col] = Text;
 }
 
 void Table::columnNumericFormat(int col, int *f, int *precision)

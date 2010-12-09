@@ -37,7 +37,7 @@ const int patch_version = 8;
 const char * extra_version = ".4";
 const char * svn_revision = SVN_REVISION;  //SRB: SVN_REVISION set by compiler from QTIPLOT_SVN_REVISION environment variable. (10/1/2010 )
 
-//! Copyright string containing the author namesqmake
+//! Copyright string containing the author names
 const char * copyright_string = "Copyright (C) 2004-2010 Ion Vasilief";
 //! Release date as a string
-const char * release_date = " 2010/12/07";
+const char * release_date = " 2010/12/09";
