@@ -994,7 +994,8 @@ void ApplicationWindow::initToolBars()
 	plotTools->addAction(actionAddRectangle);
 
 	pix.fill(Qt::transparent);
-	p.drawEllipse(QRect(0, 2, 15, 12));
+	p.setRenderHint(QPainter::Antialiasing);
+	p.drawEllipse(QRect(1, 2, 14, 12));
 	p.end();
 
 	actionAddEllipse = new QAction(tr("Add &Ellipse"), this);
@@ -9380,10 +9381,9 @@ void ApplicationWindow::showEnrichementDialog()
 		wt = EnrichmentDialog::Ellipse;
 
 	EnrichmentDialog *ed = new EnrichmentDialog(wt, g, this, this);
+	connect(ed, SIGNAL(destroyed(QObject*)), g, SLOT(deselectMarker()));
 	ed->setWidget(g->activeEnrichment());
 	ed->exec();
-
-    g->deselectMarker();
 }
 
 void ApplicationWindow::showLineDialog()

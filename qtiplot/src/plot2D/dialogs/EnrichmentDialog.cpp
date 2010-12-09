@@ -52,7 +52,7 @@
 #include <PenStyleBox.h>
 
 EnrichmentDialog::EnrichmentDialog(WidgetType wt, Graph *g, ApplicationWindow *app, QWidget *parent)
-	: QDialog(parent), d_plot(g), d_widget(NULL), d_widget_type(wt), d_app(app)
+	: QDialog(parent), d_app(app), d_plot(g), d_widget(NULL), d_widget_type(wt)
 {
 	bool standAlone = qobject_cast<ApplicationWindow*>(parent);
 	if (standAlone)
@@ -520,10 +520,7 @@ void EnrichmentDialog::customButtons(QWidget *w)
 
 void EnrichmentDialog::setWidget(QWidget *w)
 {
-	if (!w)
-		return;
-
-	if (!d_app)
+	if (!w || !d_app)
 		return;
 
 	d_widget = w;
