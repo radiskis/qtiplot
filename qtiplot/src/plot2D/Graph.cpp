@@ -3829,12 +3829,15 @@ void Graph::addLegendItem()
 
 void Graph::contextMenuEvent(QContextMenuEvent *e)
 {
-	if (d_selected_arrow) {
+	if (d_selected_arrow){
 		emit showMarkerPopupMenu();
 		return;
 	}
 
-	QPoint pos = canvas()->mapFrom(this, e->pos());
+	if (!canvas()->geometry().contains(mapFromGlobal(e->globalPos())))
+		return;
+
+	QPoint pos = canvas()->mapFromParent(e->pos());
 	int dist, point;
 	QwtPlotItem *item = closestCurve(pos.x(), pos.y(), dist, point);
 	if (item && dist < 10)//10 pixels tolerance

@@ -10998,10 +10998,6 @@ void ApplicationWindow::showGraphContextMenu()
 	if (!ag)
 		return;
 
-	QPoint pos = QCursor::pos();
-	if (!ag->canvas()->geometry().contains(ag->mapFromGlobal(pos)))
-		return;
-
 	QMenu cm(this);
 
 	QMenu addMenu(this);
@@ -11082,7 +11078,7 @@ void ApplicationWindow::showGraphContextMenu()
 	cm.addAction(tr("P&roperties..."), this, SLOT(showGeneralPlotDialog()));
 	cm.addSeparator();
 	cm.addAction(actionDeleteLayer);
-	cm.exec(pos);
+	cm.exec(QCursor::pos());
 }
 
 void ApplicationWindow::showWindowContextMenu()
