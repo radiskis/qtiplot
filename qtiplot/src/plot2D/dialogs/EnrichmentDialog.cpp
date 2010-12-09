@@ -527,6 +527,11 @@ void EnrichmentDialog::setWidget(QWidget *w)
 
     FrameWidget *fw = qobject_cast<FrameWidget *>(d_widget);
     if (fw){
+	#ifndef QT_MAC_USE_COCOA
+		if (d_plot)
+			d_plot->deselectMarker();
+	#endif
+
 		frameBox->blockSignals(true);
         frameBox->setCurrentIndex(fw->frameStyle());
 		frameBox->blockSignals(false);
