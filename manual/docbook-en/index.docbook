@@ -99,8 +99,14 @@
 <!ENTITY save-project-lnk '<link linkend="save-project-cmd"><command>Save Project</command> command</link>'>
   <!ENTITY save-project-key "<keycode>Ctrl-S</keycode>">
   <!ENTITY save-project-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/filesave.png"/></imageobject></inlinemediaobject>'>
+
 <!ENTITY save-project-as-cmd "<command>Save Project as...</command>">
 <!ENTITY save-project-as-lnk '<link linkend="save-project-as-cmd"><command>Save Project as...</command> command</link>'>
+ <!ENTITY save-project-as-key "<keycode>Ctrl-Shift-S</keycode>">
+
+<!ENTITY save-window-as-cmd "<command>Save Window as...</command>">
+<!ENTITY save-window-as-lnk '<link linkend="save-window-as-cmd"><command>Save Window as...</command> command</link>'>
+ <!ENTITY save-window-as-key "<keycode>Ctrl-Shift-S</keycode>">
 
 <!--Open Excel and Open ODF spreadsheet commands added by SRB -->
 
@@ -1127,15 +1133,15 @@
 <!ENTITY zoom-commands-lnk '<link linkend="zoom-commands-table">Zoom Commands</link>'>
 <!ENTITY zoom-commands-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/zoom-cmds.png"/></imageobject></inlinemediaobject>'>
 
-<!ENTITY tablecommands-group1-title "Group1 Commands">
+<!ENTITY tablecommands-group1-title "Line Plots">
 <!ENTITY tablecommands-group1-lnk '<link linkend="tablecommands-group1-table"> &tablecommands-group1-title;</link>'>
 <!ENTITY tablecommands-group1-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/table-toolbar-group1.png"/></imageobject></inlinemediaobject>'>
 
-<!ENTITY tablecommands-group2-title "Group2 Commands">
+<!ENTITY tablecommands-group2-title "Scatter Plots">
 <!ENTITY tablecommands-group2-lnk '<link linkend="tablecommands-group2-table"> &tablecommands-group2-title;</link>'>
 <!ENTITY tablecommands-group2-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/table-toolbar-group2.png"/></imageobject></inlinemediaobject>'>
 
-<!ENTITY tablecommands-group3-title "Group3 Commands">
+<!ENTITY tablecommands-group3-title "Line &amp; Symbol Plots">
 <!ENTITY tablecommands-group3-lnk '<link linkend="tablecommands-group3-table"> &tablecommands-group3-title;</link>'>
 <!ENTITY tablecommands-group3-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/table-toolbar-group3.png"/></imageobject></inlinemediaobject>'>
 
