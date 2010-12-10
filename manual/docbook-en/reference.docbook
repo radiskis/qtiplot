@@ -12,354 +12,244 @@ The active items appearing in a menu depends upon which project window is active
 
 <para>Many of the commands from the File Menu are also linked to corresponding icons in the <link linkend="sec-file-toolbar">File Toolbar</link>. Clicking one of these icons will directly execute the linked command.</para>
 
-<variablelist>
-<varlistentry>
-  <term>File-> New -></term>
-  <listitem>
-     <variablelist>
-       <varlistentry id="new-project-cmd">
-          <term>&new-project-cmd; (&new-project-key;)</term>
-          <listitem>
-             <para>Creates a new &appname; project file. If another project is already open and has been saved at least once, it will be closed before the new project is created. If another project is open but has never been saved, a dialog will be opened to ask if the current project should be saved.</para>
-          </listitem>
-       </varlistentry>
 
-       <varlistentry id="new-folder-cmd">
-          <term>&new-folder-cmd; (&new-folder-key;)</term>
-          <listitem>
-             <para>Adds a new folder to the project. The new folder is added to the current folder.</para>
-          </listitem>
-       </varlistentry>
+<sect2 id="subsec-file-new"><title>File-> New -></title>
 
-       <varlistentry id="new-table-cmd">
-          <term>&new-table-cmd; (&new-table-key;)</term>
-          <listitem>
-             <para>Creates a new (empty) table and adds it to the project. The empty table will have 30 rows and 2 columns. The number of rows and columns can be changed with the &rows-lnk; and &columns-lnk; of the &table-menu-lnk;.</para>
-             <informalfigure id="fig-new-table">
-               <mediaobject>
-                 <imageobject>
-                    <imagedata  format="PNG" fileref="pics/new-table.png"/>
-                 </imageobject>
-               </mediaobject>
-             </informalfigure>
-             <para>The properties of each column (numeric format, column width, etc) can be modified using the &column-options-lnk; of the &table-menu-lnk;. See the <link linkend="sec-intro-table">table section</link> for more details.</para>
-          </listitem>
-       </varlistentry>
-       <varlistentry id="new-matrix-cmd">
-          <term>&new-matrix-cmd;</term>
-          <listitem>
-             <para>Creates a new (empty) Matrix and adds it to the project. The empty matrix will have 32x32 cells. These dimensions can be changed using the &set-dimensions-lnk; of the &matrix-menu-lnk;</para>
-             <informalfigure id="fig-new-matrix">
-               <mediaobject>
-                 <imageobject>
-                    <imagedata  format="PNG" fileref="pics/new-matrix.png"/>
-                 </imageobject>
-               </mediaobject>
-             </informalfigure>
-             <para>See the <link linkend="sec-intro-matrix">matrix section</link> for more details.</para>
-          </listitem>
-       </varlistentry>
-       <varlistentry id="new-note-cmd">
-          <term>&new-note-cmd;</term>
-          <listitem>
-             <para>Creates a new note window and adds it to the project. A note is a simple text window which can be used to add comments to the current project.</para>
-             <informalfigure id="fig-new-note">
-               <mediaobject>
-                 <imageobject>
-                    <imagedata  format="PNG" fileref="pics/new-note1.png"/>
-                 </imageobject>
-               </mediaobject>
-             </informalfigure>
-          </listitem>
-       </varlistentry>
-       <varlistentry id="new-graph-cmd">
-          <term>&new-graph-cmd;</term>
-          <listitem>
-             <para>Creates a new 2D plot, that is, a graph window with a single, empty layer, and adds it to the project. Current defaults are used to create the layer, which is just a framework into which you add curves with the &add-remove-curve-lnk;.</para>
-             <informalfigure id="fig-new-graph">
-               <mediaobject>
-                 <imageobject>
-                    <imagedata  format="PNG" fileref="pics/new-graph.png"/>
-                 </imageobject>
-               </mediaobject>
-             </informalfigure>
-          </listitem>
-       </varlistentry>
-       <varlistentry id="new-function-plot-cmd">
-          <term>&new-function-plot-cmd; (&new-function-plot-key;)</term>
-          <listitem>
-             <para>Opens a <link linkend="add-function-dialog">dialog</link> which is used to create a 2D plot by specifying an analytical function. See the <link linkend="sec-2d-plot-from-function">2D plot section</link> of the tutorial for a general overview of this function.</para>
-             <para>The function can be defined in Cartesian, parametric or polar coordinates, see the &add-function-lnk; for more details. </para>
-          </listitem>
-       </varlistentry>
-        <varlistentry id="new-surface-3d-plot-cmd">
-          <term>&new-surface-3d-plot-cmd; (&new-surface-3d-plot-key;)</term>
-          <listitem>
-             <para>Opens a <link linkend="define-surface-plot-dialog">dialog</link> which is used to create a 3D plot by specifying an analytical function. Only Cartesian coordinates are available. See the <link linkend="sec-3d-plot-function">3D plot section</link> of the tutorial for more detail on this function.</para>
-          </listitem>
-       </varlistentry>
-    </variablelist>
-  </listitem>
-</varlistentry>
-<varlistentry id="open-cmd">
-  <term>File -> &open-cmd; (&open-key;)</term>
-  <listitem>
-     <para>Opens an existing &appname; project file (.qti). If your project has been saved in a compressed format, you must select the <emphasis>.qti.gz</emphasis> file format.</para>
-     <para>This command can also be used to open projects which have been built with <emphasis>Origin</emphasis> software.</para>
-  </listitem>
-</varlistentry>
+		<sect3 id="new-project-cmd"><title>&new-project-cmd; (&new-project-key;)</title>
+			<para>Creates a new &appname; project file. If another project is already open and has been saved at least once,
+					 it will be closed before the new project is created. If another project is open but has never been saved,
+					 a dialog will be opened to ask if the current project should be saved.</para>
+		</sect3>
+		<sect3 id="new-folder-cmd"><title>&new-folder-cmd; (&new-folder-key;)</title>
+			<para>Adds a new folder to the project. The new folder is added to the current folder.</para>
+		</sect3>
+		<sect3 id="new-table-cmd"><title>&new-table-cmd; (&new-table-key;)</title>
+			<para>Creates a new (empty) table and adds it to the project. The empty table will have 30 rows and 2 columns.
+					The number of rows and columns can be changed with the &rows-lnk; and &columns-lnk; of the &table-menu-lnk;.</para>
+			<informalfigure id="fig-new-table"><mediaobject><imageobject>
+				<imagedata  format="PNG" fileref="pics/new-table.png"/>
+			</imageobject></mediaobject></informalfigure>
+			<para>The properties of each column (numeric format, column width, etc) can be modified using the &column-options-lnk;
+				 of the &table-menu-lnk;. See the <link linkend="sec-intro-table">table section</link> for more details.</para>
+		</sect3>
+    <sect3 id="new-matrix-cmd"><title>&new-matrix-cmd;</title>
+    	<para>Creates a new (empty) Matrix and adds it to the project. The empty matrix will have 32x32 cells. These
+				dimensions can be changed using the &set-dimensions-lnk; of the &matrix-menu-lnk;</para>
+			<informalfigure id="fig-new-matrix"><mediaobject><imageobject>
+				<imagedata  format="PNG" fileref="pics/new-matrix.png"/>
+			</imageobject></mediaobject></informalfigure>
+			<para>See the <link linkend="sec-intro-matrix">matrix section</link> for more details.</para>
+		</sect3>
+    <sect3 id="new-note-cmd"><title>&new-note-cmd;</title>
+			<para>Creates a new note window and adds it to the project. A note is a simple text window which can be used
+				to add comments to the current project.</para>
+			<informalfigure id="fig-new-note"><mediaobject><imageobject>
+				<imagedata  format="PNG" fileref="pics/new-note1.png"/>
+			</imageobject></mediaobject></informalfigure>
+		</sect3>
+		<sect3 id="new-graph-cmd"><title>&new-graph-cmd;</title>
+			<para>Creates a new 2D plot, that is, a graph window with a single, empty layer, and adds it to the project.
+				Current defaults are used to create the layer, which is just a framework into which you add curves with
+				the &add-remove-curve-lnk;.</para>
+			<informalfigure id="fig-new-graph"><mediaobject><imageobject>
+				<imagedata  format="PNG" fileref="pics/new-graph.png"/>
+			</imageobject></mediaobject></informalfigure>
+    </sect3>
+    <sect3 id="new-function-plot-cmd"><title>&new-function-plot-cmd; (&new-function-plot-key;)</title>
+    	<para>Opens a <link linkend="add-function-dialog">dialog</link> which is used to create a 2D plot by specifying
+				an analytical function. See the <link linkend="sec-2d-plot-from-function">2D plot section</link> of the tutorial
+				for a general overview of this function.</para>
+			<para>The function can be defined in Cartesian, parametric or polar coordinates, see the &add-function-lnk;
+				for more details. </para>
+		</sect3>
+		<sect3 id="new-surface-3d-plot-cmd"><title>&new-surface-3d-plot-cmd; (&new-surface-3d-plot-key;)</title>
+     	<para>Opens a <link linkend="define-surface-plot-dialog">dialog</link> which is used to create a 3D plot by
+				specifying an analytical function. Only Cartesian coordinates are available.
+				See the <link linkend="sec-3d-plot-function">3D plot section</link> of the tutorial for more detail on this function.</para>
+		</sect3>
+	</sect2>
 
-<varlistentry id="append-cmd">
-  <term>File -> &append-cmd; (&append-key;)</term>
-  <listitem>
-     <para>Appends an existing &appname; project file (.qti) to the current project as a new folder.</para>
-     <para>This command can also be used to append projects which have been built with <emphasis>Origin</emphasis> software.</para>
-  </listitem>
-</varlistentry>
-
-<varlistentry id="recent-projects-cmd">
-  <term>File-> &recent-projects-cmd;</term>
-  <listitem>
-     <para>Opens a list of the most recently used &appname; project files. You can open one of these files by selecting it from the list. If the file no longer exists or has been moved, an error message will pop-up and the filename will be deleted from the list.</para>
-  </listitem>
-</varlistentry>
-
-<varlistentry id="close-cmd">
-  <term>File -> &close-cmd;</term>
-  <listitem>
-     <para>Closes current project, without quitting the application.</para>
-  </listitem>
-</varlistentry>
-
-<!--
-		Insertion of images
--->
-<varlistentry id="open-image-file-cmd">
-  <term>File-> &open-image-file-cmd;</term>
-  <listitem>
-     <para>This command adds a new graph window to the &appname; project and loads an image file into it. The image can be resized and moved around in the graph window if desired. It can also be copied and inserted into another 2D plot with a result similar to that obtained using the &add-image-lnk;. An image can also be used to generate an intensity matrix (see the &import-image-lnk;).</para>
-  </listitem>
-</varlistentry>
-<varlistentry id="import-image-cmd">
-  <term>File-> &import-image-cmd;</term>
-  <listitem>
-    <para>Using this command, an image may be loaded into a &appname; project and converted into an intensity matrix. For each pixel, an intensity between 0 and 255 is computed from the intensities of the three colors red, green and blue.</para>
-    <informalfigure id="fig-plot-intensity-matrix">
-      <mediaobject>
-        <imageobject>
-          <imagedata  format="PNG" fileref="pics/plot-intensity-matrix.png"/>
-        </imageobject>
-      </mediaobject>
-    </informalfigure>
-	 <para>This example shows the 3D plot drawn from the intensity matrix obtained from the &appname; logo.</para>
-  </listitem>
-</varlistentry>
-<!--
-		export or print plots
--->
-<varlistentry id="save-project-cmd">
-  <term>File-> &save-project-cmd; (&save-project-key;)</term>
-  <listitem>
-     <para>Saves the current project. If the project hasn't been saved yet (an "untitled" project), a dialog will open, allowing you to save the project to a specific location. In a project file, all settings and all plots are stored in ASCII format.</para>
-     <para>If the project includes large tables, it may be useful to save the project in a compressed file format. The free zlib library is used to save files in gzip format ( .qti.gz ).</para>
-  </listitem>
-</varlistentry>
-<varlistentry id="save-project-as-cmd">
-  <term>File-> &save-project-as-cmd;</term>
-  <listitem>
-     <para>Saves the current project under a file name different than the current name.</para>
-  </listitem>
-</varlistentry>
-<varlistentry id="open-template-cmd">
-  <term>File -> &open-template-cmd;</term>
-  <listitem>
-     <para>Opens an existing &appname; template file (.qpt). This command will create a new graph window with one or more empty layers created using the same graphical parameters (window geometry, fonts, colors, etc). as the layers in the saved template.</para>
-     <informalfigure id="fig-open-template">
-       <informalexample>
-          <para>The first figure below is a graph which was saved as a template. The second figure is the graph with a new, empty layer created using the &open-template-cmd; command to load the saved template file.</para>
-       </informalexample>
-       <mediaobject>
-         <imageobject>
-           <imagedata  format="PNG" fileref="pics/template2.png"/>
-         </imageobject>
-       </mediaobject>
-       <mediaobject>
-         <imageobject>
-           <imagedata  format="PNG" fileref="pics/template1.png"/>
-         </imageobject>
-       </mediaobject>
-     </informalfigure>
-     <para>You just have to add curves with the &add-remove-curve-lnk;, but note that the style used to draw these curves is not kept in the template.</para>
-  </listitem>
-</varlistentry>
+	<sect2 id="open-cmd"><title>File -> &open-cmd; (&open-key;)</title>
+		<para>Opens an existing &appname; project file (.qti). If your project has been saved in a compressed format,
+			you must select the <emphasis>.qti.gz</emphasis> file format.</para>
+		<para>This command can also be used to open projects which have been built with <emphasis>Origin</emphasis> software.</para>
+  </sect2>
 
 <!-- Added entries for Open Excel and Open ODF Spreadsheet SRB (09/18/2010 )-->
-<varlistentry id="open-excel-cmd">
-  <term>File -> &open-excel-cmd;</term>
-  <listitem>
+	<sect2 id="open-excel-cmd"><title>File -> &open-excel-cmd;</title>
     <para>Opens a file dialog permitting you to select an Excel file. When a file is selected and opened, &appname; creates a new table for each sheet in the file and reads the spreadsheets into the tables. If the file contains graphs, &appname; will also import them, but only if you have Excel installed on your machine.</para>
-  </listitem>
-</varlistentry>
-<varlistentry id="open-odf-cmd">
-  <term>File -> &open-odf-cmd;</term>
-  <listitem>
-    <para>Opens a file dialog permitting you to select an OpenOffice spreadsheet file. When a file is selected and opened, &appname; creates a new table for each sheet in the file and reads the spreadsheets into the tables.</para>
-  </listitem>
-</varlistentry>
+  </sect2>
 
-<varlistentry id="save-as-template-cmd">
-  <term>File -> &save-as-template-cmd;</term>
-  <listitem>
-     <para>Save the active graph as a &appname; template file (.qpt). The resulting template will contain all of the layers from the graph, including images, text labels (axes, etc), and any graphical parameters, including the positions and sizes of the layers. Plotted data, the style used to draw curves, and any associated scales are not saved in the template.</para>
-  </listitem>
-</varlistentry>
-<varlistentry id="export-graph-cmd">
-  <term>File -> &export-graph-cmd;</term>
-  <listitem>
-<!--		beginning of Export Graph			-->
-  <para>The &export-graph-cmd; command appears in the file menu whenever a graph window is selected. All graphs, or one graph at a time, can be exported in any of the available image formats. Since all export options have the same image formats available, these will be described first. Depending upon the image format chosen, you may be able to customize some image file parameters by checking the <emphasis>show options</emphasis> check box. Available options vary according to the format chosen.</para>
-  <para>For the <emphasis>bmp, pbm, jpeg, xbm, pgm, ppm</emphasis> image formats, the only available option is the quality of the image. This parameter defines the image compression ratio, and may be set to any value between 0 and 100%. Higher values produce a better quality image and a larger file, while lower values result in increasingly lossy compression, degraded image quality, and smaller file size.
-   For <emphasis>png</emphasis>, <emphasis>tiff</emphasis> and <emphasis>xpm</emphasis>, there is an option to choose a transparent background.</para>
-    <informalfigure id="fig-export-graph-png">
-      <mediaobject>
-        <imageobject>
-          <imagedata  format="PNG" fileref="pics/export-graph-png.png"/>
-        </imageobject>
-      </mediaobject>
-    </informalfigure>
-  <para>For <emphasis>eps</emphasis>, <emphasis>pdf</emphasis>, and <emphasis>ps</emphasis> file formats, the option dialog is different again. The main parameters available are the desired resolution and the size of the sheet of paper for which the image will be formatted. The default value for the resolution is the screen resolution. If you increase the resolution, the overall size of the plot will be unchanged but the quality of the graphic elements will be better.</para>
+	<sect2 id="open-odf-cmd"><title>File -> &open-odf-cmd;</title>
+		<para>Opens a file dialog permitting you to select an OpenOffice spreadsheet file. When a file is selected
+			and opened, &appname; creates a new table for each sheet in the file and reads the spreadsheets into the tables.</para>
+  </sect2>
 
-  <para>By default the plot is exported to its real size on screen, but if you wish, you can choose a different size  by checking the <emphasis>Custom print size</emphasis> box.
-  In addition, there is a <emphasis>Keep aspect ratio</emphasis> option. If you check this box and modify one dimension of a plot, the other dimension will automatically be modified to keep the plot's aspect ratio the same.</para>
-    <informalfigure id="fig-export-graph-eps">
-      <mediaobject>
-        <imageobject>
-          <imagedata  format="PNG" fileref="pics/export-graph-eps.png"/>
-        </imageobject>
-      </mediaobject>
-    </informalfigure>
+	<sect2 id="open-image-file-cmd"><title>File-> &open-image-file-cmd;</title>
+    <para>This command adds a new graph window to the &appname; project and loads an image file into it.
+			The image can be resized and moved around in the graph window if desired. It can also be copied and
+			inserted into another 2D plot with a result similar to that obtained using the &add-image-lnk;. An
+			image can also be used to generate an intensity matrix (see the &import-image-lnk;).</para>
+  </sect2>
 
-	<para>When exporting the plot to LaTeX (.tex) there are two very useful options: <emphasis>Export font sizes</emphasis> and
-	<emphasis>Escape special characters in title/axis labels</emphasis>. If checked, the first option will include LaTeX commands in the output which keep the original font sizes. If not checked, the font size specified in the preamble of the TeX document will be used for all text strings in the plot.
-    The second option specifies whether LaTeX special characters should be escaped or not when exporting. If the title or the axis labels contain	LaTeX syntax (like superscripts, subscripts, etc...), and you want them to be interpreted by the LaTeX compiler, you must uncheck this option.</para>
+	<sect2 id="append-cmd"><title>File -> &append-cmd; (&append-key;)</title>
+		<para>Appends an existing &appname; project file (.qti) to the current project as a new folder.</para>
+		<para>This command can also be used to append projects which have been built with <emphasis>Origin</emphasis> software.</para>
+  </sect2>
 
-	<informalfigure id="fig-export-graph-tex">
-      <mediaobject>
-        <imageobject>
-          <imagedata  format="PNG" fileref="pics/export-graph-tex.png"/>
-        </imageobject>
-      </mediaobject>
-    </informalfigure>
+	<sect2 id="recent-projects-cmd"><title>File-> &recent-projects-cmd;</title>
+		<para>Opens a list of the most recently used &appname; project files. You can open one of these files
+			by selecting it from the list. If the file no longer exists or has been moved, an error message will
+			pop-up and the filename will be deleted from the list.</para>
+	</sect2>
 
-     <variablelist>
-       <varlistentry id="export-graph-current-cmd">
-         <term>&export-graph-current-cmd; (&export-graph-current-key;)</term>
-         <listitem>
-           <para>This selection will save the active graph using one of the image formats described above.</para>
-         </listitem>
-       </varlistentry>
-       <varlistentry id="export-graph-all-cmd">
-         <term> &export-graph-all-cmd; (&export-graph-all-key;)</term>
-         <listitem>
-           <para>This selection will save all graphs in the project using one of the image formats described above.</para>
-         </listitem>
-       </varlistentry>
+	<sect2 id="close-cmd"><title>File -> &close-cmd;</title>
+    <para>Closes current project, without quitting the application.</para>
+  </sect2>
 
-       <varlistentry id="odf-presentation-cmd">
-         <term> &odf-presentation-cmd;</term>
-         <listitem>
-           <para>This selection will save all the graphs in the project in an Open Document Format file (.odf) that can be opened and edited with OpenOffice.</para>
-         </listitem>
-       </varlistentry>
-     </variablelist>
-<!--		end of Export Graph				-->
-  </listitem>
-</varlistentry>
+<!--export or print plots-->
+	<sect2 id="save-project-cmd"><title>File-> &save-project-cmd; (&save-project-key;)</title>
+   <para>Saves the current project. If the project hasn't been saved yet (an "untitled" project),
+			a dialog will open, allowing you to save the project to a specific location. In a project file,
+			all settings and all plots are stored in ASCII format.</para>
+		<para>If the project includes large tables, it may be useful to save the project in a compressed
+			file format. The free zlib library is used to save files in gzip format ( .qti.gz ).</para>
+	</sect2>
 
-<!--Added entry for Export item. SRB (09/19/2010 ) -->
-<varlistentry id="export-cmd">
-  <term>File -> &export-cmd;</term>
-  <listitem>
-  <para>The &export-cmd; command appears in the file menu whenever a non-graph window is selected.</para>
-     <variablelist>
-       <varlistentry id="export-ascii-cmd">
-         <term>&export-ascii-cmd;</term>
-         <listitem>
-           <para>This selection will save the active table or matrix in ASCII format.</para>
-         </listitem>
-       </varlistentry>
-       <varlistentry id="export-excel-cmd">
-         <term> &export-excel-cmd;</term>
-         <listitem>
-           <para>This selection will save the active table or matrix as an Excel spreadsheet.</para>
-         </listitem>
-       </varlistentry>
+	<sect2 id="save-project-as-cmd"><title>File-> &save-project-as-cmd; (&save-project-as-key;)</title>
+    <para>Saves the current project under a file name different than the current name.</para>
+  </sect2>
 
-       <varlistentry id="export-pdf-cmd">
-         <term> &export-pdf-cmd; (&export-pdf-key;)</term>
-         <listitem>
-           <para>This selection will save the active window as a PDF document.</para>
-         </listitem>
-       </varlistentry>
-     </variablelist>
-<!--		end of Export	(SRB)-->
+	<sect2 id="save-window-as-cmd"><title>File-> &save-window-as-cmd;</title>
+		<para></para>
+	</sect2>
 
-  </listitem>
-</varlistentry>
+	<sect2 id="open-template-cmd"><title>File -> &open-template-cmd;</title>
+		<para>Opens an existing &appname; template file (.qpt). This command will create a new graph
+			window with one or more empty layers created using the same graphical parameters (window
+			geometry, fonts, colors, etc). as the layers in the saved template.</para>
+		<informalfigure id="fig-open-template">
+			<informalexample><para>The first figure below is a graph which was saved as a template. The second
+				figure is the graph with a new, empty layer created using the &open-template-cmd; command to load
+				the saved template file.</para></informalexample>
+			<mediaobject><imageobject><imagedata  format="PNG" fileref="pics/template2.png"/></imageobject></mediaobject>
+			<mediaobject><imageobject><imagedata  format="PNG" fileref="pics/template1.png"/></imageobject></mediaobject>
+		</informalfigure>
+		<para>You just have to add curves with the &add-remove-curve-lnk;, but note that the style used to draw
+			these curves is not kept in the template.</para>
+	</sect2>
 
-<varlistentry id="print-cmd">
-  <term>File-> &print-cmd; (&print-key;)</term>
-  <listitem>
-     <para>Prints the active plot. A print <link linkend="printer-setup-dialog">dialog</link> is opened where you can select the printer, different paper sizes, etc.</para>
-  </listitem>
-</varlistentry>
+	<sect2 id="save-as-template-cmd"><title>File -> &save-as-template-cmd;</title>
+		<para>Save the active graph as a &appname; template file (.qpt). The resulting template will contain all
+			of the layers from the graph, including images, text labels (axes, etc), and any graphical parameters,
+			including the positions and sizes of the layers. Plotted data, the style used to draw curves, and any
+			associated scales are not saved in the template.</para>
+  </sect2>
 
-<varlistentry id="print-preview-cmd">
-  <term>File-> &print-preview-cmd;</term>
-  <listitem>
-     <para>Displays a print preview for the active window.
-     You can use this dialog to print the previewed window.</para>
-  </listitem>
-</varlistentry>
+	<sect2 id="print-cmd"><title>File-> &print-cmd; (&print-key;)</title>
+    <para>Prints the active plot. A print <link linkend="printer-setup-dialog">dialog</link> is opened
+			where you can select the printer, different paper sizes, etc.</para>
+  </sect2>
 
-<varlistentry id="print-all-plots-cmd">
-  <term>File-> &print-all-plots-cmd;</term>
-  <listitem>
-     <para>Prints all plots in the project. A print <link linkend="printer-setup-dialog">dialog</link> is opened where you can select the printer, different paper sizes, etc.</para>
-  </listitem>
-</varlistentry>
-<!--
-		read or write data files
--->
-<varlistentry id="export-ascii-cmd">
-  <term>File -> &export-ascii-cmd;</term>
-  <listitem>
-     <para>Opens the <link linkend="export-ascii-dialog">&export-ascii-cmd; dialog</link> to allow saving data from the active table to an ASCII file.</para>
-  </listitem>
-</varlistentry>
-<varlistentry id="import-ascii-cmd">
-  <term>File -> &import-ascii-cmd; (&import-ascii-key;)</term>
-  <listitem>
-    <para> Opens the <link linkend="set-import-options-dialog">Import dialog</link> used to import ASCII data files. The file to import, and the options for importation are set in this dialog.</para>
-  </listitem>
-</varlistentry>
+	<sect2 id="print-preview-cmd"><title>File-> &print-preview-cmd;</title>
+    <para>Displays a print preview for the active window. You can use this dialog to print the previewed window.</para>
+  </sect2>
 
-<varlistentry id="import-sound-cmd">
-  <term>File -> &import-sound-cmd; </term>
-  <listitem>
-    <para>This option allows you to import an uncompressed sound (.wav) file (PCM format).</para>
-  </listitem>
-</varlistentry>
+	<sect2 id="print-all-plots-cmd"><title>File-> &print-all-plots-cmd;</title>
+    <para>Prints all plots in the project. A print <link linkend="printer-setup-dialog">dialog</link> is opened
+			where you can select the printer, different paper sizes, etc.</para>
+  </sect2>
 
-<varlistentry id="quit-cmd">
-  <term>File -> &quit-cmd; (&quit-key;)</term>
-  <listitem>
-     <para>Closes the application. You will be asked whether or not you want to save any changes.</para>
-  </listitem>
-</varlistentry>
-</variablelist>
+	<sect2 id="export-graph-cmd"><title>File -> &export-graph-cmd;</title><!--beginning of Export Graph-->
+  	<para>The &export-graph-cmd; command appears in the file menu whenever a graph window is selected.
+			All graphs, or one graph at a time, can be exported in any of the available image formats. Since
+			all export options have the same image formats available, these will be described first. Depending
+			upon the image format chosen, you may be able to customize some image file parameters by checking
+			the <emphasis>show options</emphasis> check box. Available options vary according to the format chosen.</para>
+		<para>For the <emphasis>bmp, pbm, jpeg, xbm, pgm, ppm</emphasis> image formats, the only available option
+			is the quality of the image. This parameter defines the image compression ratio, and may be set to any
+			value between 0 and 100%. Higher values produce a better quality image and a larger file, while lower
+			values result in increasingly lossy compression, degraded image quality, and smaller file size.
+			For <emphasis>png</emphasis>, <emphasis>tiff</emphasis> and <emphasis>xpm</emphasis>, there is an option
+			to choose a transparent background.</para>
+    <informalfigure id="fig-export-graph-png"><mediaobject><imageobject>
+			<imagedata  format="PNG" fileref="pics/export-graph-png.png"/>
+		</imageobject></mediaobject></informalfigure>
+  	<para>For <emphasis>eps</emphasis>, <emphasis>pdf</emphasis>, and <emphasis>ps</emphasis> file formats,
+			the option dialog is different again. The main parameters available are the desired resolution and the
+			size of the sheet of paper for which the image will be formatted. The default value for the resolution
+			is the screen resolution. If you increase the resolution, the overall size of the plot will be unchanged
+			but the quality of the graphic elements will be better.</para>
+		<para>By default the plot is exported to its real size on screen, but if you wish, you can choose a
+			different size  by checking the <emphasis>Custom print size</emphasis> box. In addition, there is
+			a <emphasis>Keep aspect ratio</emphasis> option. If you check this box and modify one dimension of
+			a plot, the other dimension will automatically be modified to keep the plot's aspect ratio the same.</para>
+    <informalfigure id="fig-export-graph-eps"><mediaobject><imageobject>
+			<imagedata  format="PNG" fileref="pics/export-graph-eps.png"/>
+		</imageobject></mediaobject></informalfigure>
+		<para>When exporting the plot to LaTeX (.tex) there are two very useful options: <emphasis>Export font sizes
+			</emphasis> and	<emphasis>Escape special characters in title/axis labels</emphasis>. If checked, the first
+			option will include LaTeX commands in the output which keep the original font sizes. If not checked, the
+			font size specified in the preamble of the TeX document will be used for all text strings in the plot.
+			The second option specifies whether LaTeX special characters should be escaped or not when exporting. If
+			the title or the axis labels contain	LaTeX syntax (like superscripts, subscripts, etc...), and you want
+			them to be interpreted by the LaTeX compiler, you must uncheck this option.</para>
+		<informalfigure id="fig-export-graph-tex"><mediaobject><imageobject>
+			<imagedata  format="PNG" fileref="pics/export-graph-tex.png"/>
+		</imageobject></mediaobject></informalfigure>
 
-</sect1>
+		<sect3 id="export-graph-current-cmd"><title>&export-graph-current-cmd; (&export-graph-current-key;)</title>
+			<para>This selection will save the active graph using one of the image formats described above.</para>
+		</sect3>
+    <sect3 id="export-graph-all-cmd"><title> &export-graph-all-cmd; (&export-graph-all-key;)</title>
+    	<para>This selection will save all graphs in the project using one of the image formats described above.</para>
+		</sect3>
+		<sect3 id="odf-presentation-cmd"><title> &odf-presentation-cmd;</title>
+			<para>This selection will save all the graphs in the project in an Open Document Format file (.odf)
+				that can be opened and edited with OpenOffice.</para>
+		</sect3>
+	</sect2><!--end of Export Graph-->
+
+	<sect2 id="export-cmd"><title>>File -> &export-cmd;</title><!--Added entries for Export item. SRB (09/19/2010 ) -->
+  	<para>The &export-cmd; command appears in the file menu whenever a non-graph window (i.e., Table or Matrix) is selected.</para>
+		<sect3 id="export-ascii-cmd"><title>&export-ascii-cmd;</title>
+			<para>This command opens the <link linkend="export-ascii-dialog">Export ASCII</link> dialog, with which you can save the active table or matrix in a chosen ASCII format (".dat", ".html", ".odf", ".tex", ".txt", and ".xls" are available).</para>
+    </sect3>
+		<sect3 id="export-excel-cmd"><title> &export-excel-cmd;</title>
+      <para>This command opens the <link linkend="export-ascii-dialog">Export ASCII</link> dialog with the ".xls" format pre-selected.
+				This saves the active table or matrix as an Excel spreadsheet.</para>
+    </sect3>
+    <sect3 id="export-pdf-cmd"><title> &export-pdf-cmd; (&export-pdf-key;)</title>
+      <para>This command opens a generic file dialog to save the active window as a PDF document.</para>
+    </sect3>
+	</sect2><!--end of Export	item(SRB)-->
+
+	<sect2 id="sec-file-import"><title>File -> Import</title><!--Import data files-->
+
+		<sect3 id="import-ascii-cmd"><title>File -> &import-ascii-cmd; (&import-ascii-key;)</title>
+			<para> Opens the <link linkend="set-import-options-dialog">Import dialog</link> used to import ASCII
+				data files. The file to import, and the options for importation are set in this dialog.</para>
+		</sect3>
+
+		<sect3 id="import-sound-cmd"><title>File -> &import-sound-cmd; </title>
+			<para>This option allows you to import an uncompressed sound (.wav) file (PCM format).</para>
+		</sect3>
+
+		<sect3 id="import-image-cmd"><title>File-> &import-image-cmd;</title><!--Insertion of images--> 
+			<para>Using this command, an image may be loaded into a &appname; project and converted into an
+				intensity matrix. For each pixel, an intensity between 0 and 255 is computed from the intensities
+				of the three colors red, green and blue.</para>
+			<informalfigure id="fig-plot-intensity-matrix"><mediaobject><imageobject>
+				<imagedata  format="PNG" fileref="pics/plot-intensity-matrix.png"/>
+			</imageobject></mediaobject></informalfigure>
+			<para>This example shows the 3D plot drawn from the intensity matrix obtained from the &appname; logo.</para>
+		</sect3>
+	</sect2>
+
+	<sect2 id="quit-cmd"><title>File -> &quit-cmd; (&quit-key;)</title>
+    <para>Closes the application. You will be asked whether or not you want to save any changes.</para>
+  </sect2>
+</sect1><!--End of File Menu-->
 
 <!--  **************  Edit Menu  ******************  -->
 <!--  *********************************************  -->
@@ -1414,7 +1304,7 @@ The active items appearing in a menu depends upon which project window is active
 </sect3>
 
 <sect3 id="deconvolute-cmd"><title>&deconvolute-cmd;</title>
-    <para>he &analysis-ptr;&deconvolute-cmd; command computes the deconvolution of two selected columns. The first one being the response and the second the signal. See the <link linkend="sec-deconvolute">deconvolution section</link> of the <link linkend="analysis">Analysis chapter</link> for more details.</para>
+    <para>The &analysis-ptr;&deconvolute-cmd; command computes the deconvolution of two selected columns. The first one being the response and the second the signal. See the <link linkend="sec-deconvolute">deconvolution section</link> of the <link linkend="analysis">Analysis chapter</link> for more details.</para>
 </sect3>
 
 <sect3 id="non-linear-curve-fit-cmd"><title>&non-linear-curve-fit-cmd; (&non-linear-curve-fit-key;)</title>
@@ -1433,31 +1323,31 @@ The active items appearing in a menu depends upon which project window is active
 <sect3 id="translate-cmd"><title>&translate-cmd;</title>
   <para>This next group of are 2 commands are used for translating curves horizontally and vertically.</para>
   <sect4 id="translate-vertical-cmd"><title>Vertical</title>
-    <para>The Analysis -> &translate-vertical-cmd; is used to move a curve in the vertical direction. When the command is selected, the cursor changes to a box and cross with an X-Y coordinate display which floats along with the cursor. You then select 2 points. The first must be a point on a curve. When the first points is selected, a crosshair will be drawn to indicate it's location. The second point can then be selected anywhere in the active graph region. The vertical distance between the selected points will be calculated, and the selected curve will be translated by this amount. The net result is to place the selected graph point at the new vertical location. Horizontal distance is ignored. This allows selection of the second point at one of the vertical axes, facilitating alignment of the selected graph point with some value on that axis. The second point may also be another curve point (either on the same or a different curve), a feature which makes it easy to align two or more curves in the vertical direction. <emphasis>Warning: </emphasis> the underlying curve's data is modified by this operation. No other warning will be given.</para>
+    <para>The Analysis -> &translate-vertical-cmd; command is used to move a curve in the vertical direction. When the command is selected, the cursor changes to a box and cross with an X-Y coordinate display which floats along with the cursor. You then select 2 points. The first must be a point on a curve. When the first points is selected, a crosshair will be drawn to indicate it's location. The second point can then be selected anywhere in the active graph region. The vertical distance between the selected points will be calculated, and the selected curve will be translated by this amount. The net result is to place the selected graph point at the new vertical location. Horizontal distance is ignored. This allows selection of the second point at one of the vertical axes, facilitating alignment of the selected graph point with some value on that axis. The second point may also be another curve point (either on the same or a different curve), a feature which makes it easy to align two or more curves in the vertical direction. <emphasis>Warning: </emphasis> the underlying curve's data is modified by this operation. No other warning will be given.</para>
   </sect4>
   <sect4 id="translate-horizontal-cmd"><title>Horizontal</title>
-    <para>The Analysis -> &translate-horizontal-cmd;is used to move a curve in the horizontal direction. When the command is selected, the cursor changes to a box and cross with an X-Y coordinate display which floats along with the cursor. You then select 2 points. The first must be a point on a curve. When the first points is selected, a crosshair will be drawn to indicate it's location. The second point then can be selected anywhere on the active graph region. The horizontal distance between the selected points will be calculated, and the curve will be translated horizontally by this amount. The net result is to place the selected graph point at the new location. Vertical distance is ignored. This allows selection of the second point at one of the horizontal axes, facilitating alignment of the selected graph point with some value on that axis. The second point may also be another curve point (either on the same or a different curve), a feature which makes it easy to align two or more curves in the horizontal direction. <emphasis>Warning: </emphasis> the underlying curve's data is modified by this operation. No other warning will be given.</para>
+    <para>The Analysis -> &translate-horizontal-cmd; command is used to move a curve in the horizontal direction. When the command is selected, the cursor changes to a box and cross with an X-Y coordinate display which floats along with the cursor. You then select 2 points. The first must be a point on a curve. When the first points is selected, a crosshair will be drawn to indicate it's location. The second point then can be selected anywhere on the active graph region. The horizontal distance between the selected points will be calculated, and the curve will be translated horizontally by this amount. The net result is to place the selected graph point at the new location. Vertical distance is ignored. This allows selection of the second point at one of the horizontal axes, facilitating alignment of the selected graph point with some value on that axis. The second point may also be another curve point (either on the same or a different curve), a feature which makes it easy to align two or more curves in the horizontal direction. <emphasis>Warning: </emphasis> the underlying curve's data is modified by this operation. No other warning will be given.</para>
   </sect4>
 </sect3>
 
 <sect3 id="subtract-cmd"><title>&subtract-cmd;</title><para>The &subtract-cmd; group is also used to translate curves, however, in these cases, some functional relationship is used.</para>
   <sect4 id="subtract-baseline-cmd"><title>&subtract-baseline-cmd;</title>
-    <para>The Analysis &subtract-baseline-cmd; opens the <emphasis>Baseline</emphasis> dialog.</para>
+    <para>The Analysis &subtract-baseline-cmd; command opens the <emphasis>Baseline</emphasis> dialog.</para>
 
     <informalfigure id="subtract-baseline">
       <mediaobject><imageobject><imagedata  format="PNG" fileref="pics/baseline-dialog.png"/></imageobject></mediaobject>
     </informalfigure> 
-
   </sect4>
+
   <sect4 id="subtract-reference-data-cmd"><title>&subtract-reference-data-cmd;</title>
-    <para>The Analysis &subtract-reference-data-cmd;</para>
+    <para>The Analysis &subtract-reference-data-cmd; command opens the <emphasis>Math on Data Sets</emphasis> dialog.</para>
     <informalfigure id="subtract-reference-data">
       <mediaobject><imageobject><imagedata  format="PNG" fileref="pics/mathondatasets-dialog.png"/></imageobject></mediaobject>
     </informalfigure> 
-
   </sect4>
+
   <sect4 id="subtract-straight-line-cmd"><title>&subtract-straight-line-cmd;</title>
-    <para>The Analysis &subtract-straight-line-cmd; operates in a manner similar to the Analysis -> &subtract-baseline-lnk;. However, in this case, the two points which are selected define the end-points of a straight line which is subtracted from <emphasis>all </emphasis>the curves on the layer.The cursor changes to a cross target with an X-Y coordinate display which floats along with the cursor, similar to that used in the Analysis -> &subtract-baseline-lnk; When the first point is selected, it will be marked with a small circle and crosshairs. As soon as the second point is selected, the line between the t points will be subtracted from the curves. <emphasis>Warning: </emphasis> the underlying curve's data is modified by this operation. No other warning will be given.</para>
+    <para>The Analysis &subtract-straight-line-cmd; command operates in a manner similar to the Analysis -> &subtract-baseline-lnk;. However, in this case, the two points which are selected define the end-points of a straight line which is subtracted from <emphasis>all </emphasis>the curves on the layer.The cursor changes to a cross target with an X-Y coordinate display which floats along with the cursor, similar to that used in the Analysis -> &subtract-baseline-lnk;. When the first point is selected, it will be marked with a small circle and crosshairs. As soon as the second point is selected, the line between the two points will be subtracted from the curves. <emphasis>Warning: </emphasis> the underlying curves' data is modified by this operation. No other warning will be given.</para>
   </sect4>
 </sect3>
 
