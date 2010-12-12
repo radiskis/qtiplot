@@ -104,38 +104,38 @@ void ScalePicker::mouseRightClicked(const QwtScaleWidget *scale, const QPoint &p
 // The rect of a scale without the title
 QRect ScalePicker::scaleRect(const QwtScaleWidget *scale) const
 {
-int margin = 1; // pixels tolerance
-QRect rect = scale->rect();
-rect.setRect(rect.x() - margin, rect.y() - margin, rect.width() + 2 * margin, rect.height() +  2 * margin);
+	int margin = 1; // pixels tolerance
+	QRect rect = scale->rect();
+	rect.setRect(rect.x() - margin, rect.y() - margin, rect.width() + 2 * margin, rect.height() +  2 * margin);
 
-if (scale->title().text().isEmpty())
+	if (scale->title().text().isEmpty())
+		return rect;
+
+	int dh = scale->title().textSize().height();
+	switch(scale->alignment())
+		{
+		case QwtScaleDraw::LeftScale:
+			{
+			rect.setLeft(rect.left() + dh);
+			break;
+			}
+		case QwtScaleDraw::RightScale:
+			{
+			rect.setRight(rect.right() - dh);
+			break;
+			}
+		case QwtScaleDraw::BottomScale:
+			{
+			rect.setBottom(rect.bottom() - dh);
+			break;
+			}
+		case QwtScaleDraw::TopScale:
+			{
+			rect.setTop(rect.top() + dh);
+			break;
+			}
+		}
 	return rect;
-
-int dh = scale->title().textSize().height();
-switch(scale->alignment())
-    {
-    case QwtScaleDraw::LeftScale:
-        {
-		rect.setLeft(rect.left() + dh);
-        break;
-        }
-    case QwtScaleDraw::RightScale:
-        {
-		rect.setRight(rect.right() - dh);
-        break;
-        }
-    case QwtScaleDraw::BottomScale:
-        {
-		rect.setBottom(rect.bottom() - dh);
-	    break;
-        }
-    case QwtScaleDraw::TopScale:
-        {
-		rect.setTop(rect.top() + dh);
-        break;
-        }
-    }
-return rect;
 }
 
 void ScalePicker::refresh()
@@ -178,29 +178,28 @@ QRect ScalePicker::titleRect(const QwtScaleWidget *scale) const
 	rect = rect.adjusted (margin, margin, -margin, -margin);
 
 	int dh = scale->title().textSize().height();
-	switch(scale->alignment())
-    {
-    	case QwtScaleDraw::LeftScale:
-        {
+	switch(scale->alignment()){
+		case QwtScaleDraw::LeftScale:
+		{
 			rect.setRight(rect.left() + dh);
-        	break;
-        }
-    	case QwtScaleDraw::RightScale:
-        {
+			break;
+		}
+		case QwtScaleDraw::RightScale:
+		{
 			rect.setLeft(rect.right() - dh);
-        	break;
-        }
-    	case QwtScaleDraw::BottomScale:
-        {
+			break;
+		}
+		case QwtScaleDraw::BottomScale:
+		{
 			rect.setTop(rect.bottom() - dh);
-	    	break;
-        }
-    	case QwtScaleDraw::TopScale:
-        {
+			break;
+		}
+		case QwtScaleDraw::TopScale:
+		{
 			rect.setBottom(rect.top() + dh);
-        	break;
-        }
-    }
+			break;
+		}
+	}
 	return rect;
 }
 

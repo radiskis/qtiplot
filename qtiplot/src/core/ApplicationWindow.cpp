@@ -6903,15 +6903,21 @@ QString ApplicationWindow::getFileName(QWidget *parent, const QString & caption,
 	return fd.selectedFiles()[0];
 }
 
-QString ApplicationWindow::getSaveProjectName(const QString& fileName, bool *compress)
+QString ApplicationWindow::getSaveProjectName(const QString& fileName, bool *compress, int scope)
 {
 	QString fn = fileName;
 	if (fileName.isEmpty()){
 		QString filter = tr("QtiPlot project") + " (*.qti);;";
 		filter += tr("Compressed QtiPlot project") + " (*.qti.gz)";
 
+		QString windowTitle = tr("Save Project As");
+		if (scope == 1)
+			windowTitle = tr("Save Folder As");
+		else if (scope == 2)
+			windowTitle = tr("Save Window As");
+
 		QString selectedFilter;
-		fn = getFileName(this, tr("Save Project As"), workingDir, filter, &selectedFilter, true, d_confirm_overwrite);
+		fn = getFileName(this, windowTitle, workingDir, filter, &selectedFilter, true, d_confirm_overwrite);
 		if (selectedFilter.contains(".gz"))
 			*compress = true;
 	}
@@ -6959,7 +6965,7 @@ void ApplicationWindow::saveWindowAs(const QString& fileName, bool compress)
 	if (!w)
 		return;
 
-	QString fn = getSaveProjectName(fileName, &compress);
+	QString fn = getSaveProjectName(fileName, &compress, 2);
 	if (!fn.isEmpty()){
 		if (saveWindow(w, fn, compress))
 			updateRecentProjectsList(fn);
@@ -10999,6 +11005,20 @@ void ApplicationWindow::showGraphContextMenu()
 		return;
 
 	QMenu cm(this);
+	if (plot->isLayerSelected(ag)){
+		cm.addAction(QPixmap(":/copy.png"), tr("&Copy"), this, SLOT(copyActiveLayer()));
+		if (lastCopiedLayer)
+			cm.addAction(QPixmap(":/paste.png"), tr("&Paste Layer"), this, SLOT(pasteSelection()));
+		else if (d_enrichement_copy)
+			cm.insertItem(QPixmap(":/paste.png"), tr("&Paste"), plot, SIGNAL(pasteMarker()));
+		else if (d_arrow_copy)
+			cm.addAction(QPixmap(":/paste.png"), tr("&Paste Line/Arrow"), plot, SIGNAL(pasteMarker()));
+		cm.addAction(actionDeleteLayer);
+		cm.addSeparator();
+		cm.addAction(tr("P&roperties..."), this, SLOT(showGeneralPlotDialog()));
+		cm.exec(QCursor::pos());
+		return;
+	}
 
 	QMenu addMenu(this);
 	if (ag->isPiePlot()){
@@ -13617,10 +13637,12 @@ void ApplicationWindow::disableTools()
 
 	QList<MdiSubWindow *> windows = windowsList();
 	foreach(MdiSubWindow *w, windows){
-		if (w->isA("MultiLayer")){
-			QList<Graph *> layers = ((MultiLayer*)w)->layersList();
+		MultiLayer *ml = qobject_cast<MultiLayer *>(w);
+		if (ml){
+			ml->deselect();
+			QList<Graph *> layers = ml->layersList();
 			foreach(Graph *g, layers)
-                g->disableTools();
+				g->disableTools();
 		}
 	}
 }
@@ -13633,6 +13655,8 @@ void ApplicationWindow::pickDataTool( QAction* action )
 	MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
 	if (!plot)
 		return;
+
+	plot->deselect();
 
 	QList<Graph *> layers = plot->layersList();
 	foreach(Graph *g, layers)
@@ -16776,7 +16800,7 @@ void ApplicationWindow::saveFolderAsProject(Folder *f)
 #endif
 
 	bool compress = false;
-	QString fn = getSaveProjectName("", &compress);
+	QString fn = getSaveProjectName("", &compress, 1);
 	if (!fn.isEmpty())
 		saveFolder(f, fn, compress);
 }

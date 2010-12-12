@@ -274,6 +274,25 @@ void MultiLayer::activateGraph(LayerButton* button)
 	}
 }
 
+bool MultiLayer::isLayerSelected(Graph* g)
+{
+	if (!g || !d_layers_selector)
+		return false;
+
+	return d_layers_selector.data()->contains(g->canvas());
+}
+
+void MultiLayer::selectLayerCanvas(Graph* g)
+{
+	if (!g)
+		return;
+
+	setActiveLayer(g);
+
+	d_layers_selector = new SelectionMoveResizer(g->canvas());
+	connect(d_layers_selector, SIGNAL(targetsChanged()), this, SIGNAL(modifiedPlot()));
+}
+
 void MultiLayer::setActiveLayer(Graph* g)
 {
 	if (!g || active_graph == g)
@@ -282,14 +301,13 @@ void MultiLayer::setActiveLayer(Graph* g)
 	active_graph = g;
 	active_graph->setFocus();
 
-	if (d_layers_selector)
-		delete d_layers_selector;
+	deselect();
 
 	if (!d_is_waterfall_plot)
 		active_graph->raise();//raise layer on top of the layers stack
 	active_graph->raiseEnrichements();
 
-	for(int i=0; i<graphsList.count(); i++){
+	for(int i = 0; i < graphsList.count(); i++){
 		Graph *gr = (Graph *)graphsList.at(i);
 		gr->deselect();
 
@@ -1049,9 +1067,8 @@ void MultiLayer::exportVector(const QString& fileName, int res, bool color,
 				const QSizeF& customSize, int unit, double fontsFactor)
 {
 	if ( fileName.isEmpty() ){
-		QMessageBox::critical(this, tr("QtiPlot - Error"),
-		tr("Please provide a valid file name!"));
-        return;
+		QMessageBox::critical(this, tr("QtiPlot - Error"), tr("Please provide a valid file name!"));
+		return;
 	}
 
 	QPrinter printer;
@@ -1401,6 +1418,7 @@ void MultiLayer::connectLayer(Graph *g)
 	connect (g,SIGNAL(modifiedGraph()),this,SIGNAL(modifiedPlot()));
 	connect (g,SIGNAL(modifiedGraph()),this,SLOT(notifyChanges()));
 	connect (g,SIGNAL(selectedGraph(Graph*)),this, SLOT(setActiveLayer(Graph*)));
+	connect (g,SIGNAL(selectedCanvas(Graph*)), this, SLOT(selectLayerCanvas(Graph*)));
 	connect (g,SIGNAL(currentFontChanged(const QFont&)), this, SIGNAL(currentFontChanged(const QFont&)));
 	connect (g,SIGNAL(currentColorChanged(const QColor&)), this, SIGNAL(currentColorChanged(const QColor&)));
 	if (d_link_x_axes)
@@ -1415,46 +1433,45 @@ bool MultiLayer::eventFilter(QObject *object, QEvent *e)
 		d_canvas->setUpdatesEnabled(true);
 		d_canvas_size = d_canvas->size();
 	} else if (e->type() == QEvent::MouseButtonPress && object == (QObject *)d_canvas){
-	    const QMouseEvent *me = (const QMouseEvent *)e;
+		const QMouseEvent *me = (const QMouseEvent *)e;
 		if (me->button() == Qt::RightButton || me->button() == Qt::MidButton)
-            return QMdiSubWindow::eventFilter(object, e);
+			return QMdiSubWindow::eventFilter(object, e);
 
 		if (d_is_waterfall_plot)
 			return true;
 
-		QPoint pos = d_canvas->mapFromParent(me->pos());
-        // iterate backwards, so layers on top are preferred for selection
-        QList<Graph*>::iterator i = graphsList.end();
+		QPoint pos = d_canvas->mapFromGlobal(me->globalPos());
+		// iterate backwards, so layers on top are preferred for selection
+		QList<Graph*>::iterator i = graphsList.end();
 		while (i != graphsList.begin()){
-            --i;
-            Graph *g = *i;
+			--i;
+			Graph *g = *i;
 			if (g->hasSeletedItems()){
 				g->deselect();
-                return true;
+				return true;
 			}
 
-            QRect igeo = (*i)->frameGeometry();
-            if (igeo.contains(pos)) {
-                if (me->modifiers() & Qt::ShiftModifier) {
-                    if (d_layers_selector)
-                        d_layers_selector->add((*i)->canvas());
-                    else {
-                        d_layers_selector = new SelectionMoveResizer((*i)->canvas());
-                        connect(d_layers_selector, SIGNAL(targetsChanged()), this, SIGNAL(modifiedPlot()));
-                    }
-                } else {
-                    setActiveLayer(g);
-                    active_graph->raise();
-                    if (!d_layers_selector) {
-                        d_layers_selector = new SelectionMoveResizer((*i)->canvas());
-                        connect(d_layers_selector, SIGNAL(targetsChanged()), this, SIGNAL(modifiedPlot()));
-                    }
-                }
-                return true;
-            }
-        }
-        if (d_layers_selector)
-            delete d_layers_selector;
+			QRect igeo = g->frameGeometry();
+			if (igeo.contains(pos)){
+				if (me->modifiers() & Qt::ShiftModifier){
+					if (d_layers_selector)
+						d_layers_selector->add((*i)->canvas());
+					else {
+						d_layers_selector = new SelectionMoveResizer(g->canvas());
+						connect(d_layers_selector, SIGNAL(targetsChanged()), this, SIGNAL(modifiedPlot()));
+					}
+				} else {
+					setActiveLayer(g);
+					if (!g->mousePressed(e) && !d_layers_selector){
+						d_layers_selector = new SelectionMoveResizer(g->canvas());
+						connect(d_layers_selector, SIGNAL(targetsChanged()), this, SIGNAL(modifiedPlot()));
+					}
+				}
+				return true;
+			}
+		}
+
+		deselect();
 	}
 
 	return MdiSubWindow::eventFilter(object, e);
@@ -1491,8 +1508,7 @@ void MultiLayer::keyPressEvent(QKeyEvent * e)
 	}
 
 	if (e->key() == Qt::Key_F10){
-		if (d_layers_selector)
-			delete d_layers_selector;
+		deselect();
 		int index = graphsList.indexOf(active_graph) - 1;
 		if (index < 0)
 			index = graphsList.size() - 1;
@@ -2299,10 +2315,15 @@ void MultiLayer::updateLayersLayout(Graph *g)
 	}
 }
 
-MultiLayer::~MultiLayer()
+void MultiLayer::deselect()
 {
 	if(d_layers_selector)
-		d_layers_selector->setParent(NULL);
+		delete d_layers_selector;
+}
+
+MultiLayer::~MultiLayer()
+{
+	deselect();
 
 	foreach(Graph *g, graphsList)
 		delete g;

@@ -124,6 +124,10 @@ public:
 	bool hasCommonAxes(){return d_common_axes_layout;};
 	void setCommonAxesLayout(bool on = true){d_common_axes_layout = on;};
 
+	void deselect();
+	bool hasSelectedLayers();
+	bool isLayerSelected(Graph*);
+
 public slots:
 	Graph* addLayer(int x = 0, int y = 0, int width = 0, int height = 0, bool = false);
 
@@ -135,6 +139,7 @@ public slots:
 	Graph* activeLayer(){return active_graph;};
 	void setActiveLayer(Graph* g);
 	void activateGraph(LayerButton* button);
+	void selectLayerCanvas(Graph* g);
 
     //! Returns the layer at the given position; returns 0 if there is no such layer.
 	Graph* layerAt(const QPoint& pos);
@@ -207,8 +212,6 @@ public slots:
 	void connectLayer(Graph *g);
 
 	void save(const QString& fn, const QString& geometry, bool = false);
-
-    bool hasSelectedLayers();
 
     //! \name Waterfall Plots
 	//@{

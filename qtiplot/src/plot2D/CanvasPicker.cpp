@@ -34,7 +34,6 @@
 #include <MultiLayer.h>
 
 #include <QVector>
-#include <QMessageBox>
 
 #include <qwt_text_label.h>
 #include <qwt_plot_canvas.h>
@@ -64,15 +63,7 @@ bool CanvasPicker::eventFilter(QObject *object, QEvent *e)
 				if (!(me->modifiers() & Qt::ShiftModifier))
                     g->deselect();
 
-				emit selectPlot();
-
-				bool allAxisDisabled = true;
-				for (int i=0; i < QwtPlot::axisCnt; i++){
-					if (g->axisEnabled(i)){
-						allAxisDisabled = false;
-						break;
-					}
-				}
+				g->activateGraph();
 
                 int dist, point;
                 if (g->closestCurve(me->pos().x(), me->pos().y(), dist, point))
@@ -105,6 +96,8 @@ bool CanvasPicker::eventFilter(QObject *object, QEvent *e)
 
 				if (me->button() == Qt::LeftButton && !g->zoomOn() &&
 					!g->hasPanningMagnifierEnabled() && !g->activeTool() && !g->selectedCurveLabels()){
+					selectPlot();
+
 					QDrag *drag = new QDrag(plot());
 					QMimeData *mimeData = new QMimeData;
 					QPoint p = plot()->canvas()->mapToParent(me->pos());
