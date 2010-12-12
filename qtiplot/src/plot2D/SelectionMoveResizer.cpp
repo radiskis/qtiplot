@@ -31,6 +31,7 @@
 
 #include <QPainter>
 #include <QMouseEvent>
+#include <QCoreApplication>
 
 #include <qwt_scale_map.h>
 #include <qwt_plot.h>
@@ -357,8 +358,14 @@ void SelectionMoveResizer::mousePressEvent(QMouseEvent *me)
 		// If one of the parents' event handlers deletes me, Qt crashes while trying to send the QContextMenuEvent.
 		foreach(QWidget *w, d_widgets){
 			FrameWidget *l = qobject_cast<FrameWidget *>(w);
-			if (!l)
-				continue;
+			if (!l){
+				QwtPlotCanvas *canvas = qobject_cast<QwtPlotCanvas *>(w);
+				if (canvas){
+					QMouseEvent e(QEvent::ContextMenu, canvas->mapFromGlobal(me->globalPos()), Qt::RightButton, 0, 0);
+					QCoreApplication::sendEvent(canvas->plot(), &e);
+					return;
+				}
+			}
 			if(l->geometry().contains(me->pos()))
 				return l->showContextMenu();
 		}
@@ -421,11 +428,19 @@ void SelectionMoveResizer::mouseMoveEvent(QMouseEvent *me)
 
 void SelectionMoveResizer::mouseDoubleClickEvent(QMouseEvent *e)
 {
-	foreach(QWidget *w, d_widgets) {
+	foreach(QWidget *w, d_widgets){
 		FrameWidget *l = qobject_cast<FrameWidget *>(w);
-		if (!l)
-			continue;
-		if(l->geometry().contains(e->pos())){
+		if (!l){
+			QwtPlotCanvas *canvas = qobject_cast<QwtPlotCanvas *>(w);
+			if (canvas){
+				QMouseEvent event(QEvent::MouseButtonDblClick, canvas->mapFromGlobal(e->globalPos()), Qt::LeftButton, 0, 0);
+				QCoreApplication::sendEvent(canvas, &event);
+				delete this;
+				return;
+			}
+		}
+
+		if(l && l->geometry().contains(e->pos())){
 			LegendWidget *lw = qobject_cast<LegendWidget *>(w);
 			if (lw)
 				return lw->showTextEditor();

@@ -378,6 +378,7 @@ class Graph: public QwtPlot
 
 		//! \name Event Handlers
 		//@{
+		bool mousePressed(QEvent *);
 		void contextMenuEvent(QContextMenuEvent *);
 		void closeEvent(QCloseEvent *e);
 		bool focusNextPrevChild ( bool next );
@@ -686,6 +687,7 @@ class Graph: public QwtPlot
 		void createTable(const QString& curveName);
         void createTable(const QwtPlotCurve* curve);
 		void activateGraph();
+		void selectCanvas();
 
 		//! \name Vector Curves
 		//@{
@@ -771,7 +773,8 @@ class Graph: public QwtPlot
         void enableTextEditor();
 
 signals:
-		void selectedGraph (Graph*);
+		void selectedGraph(Graph*);
+		void selectedCanvas(Graph*);
 		void closedGraph();
 		void drawLineEnded(bool);
 		void cursorInfo(const QString&);

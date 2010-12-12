@@ -213,7 +213,7 @@ Graph::Graph(int x, int y, int width, int height, QWidget* parent, Qt::WFlags f)
 	setFocusProxy(plCanvas);
 	setFrameShape(QFrame::Box);
 	setLineWidth(0);
-	setMouseTracking(true );
+	setMouseTracking(true);
 
 	cp = new CanvasPicker(this);
 
@@ -231,7 +231,7 @@ Graph::Graph(int x, int y, int width, int height, QWidget* parent, Qt::WFlags f)
 	d_magnifier = NULL;
 	d_panner = NULL;
 
-	connect (cp,SIGNAL(selectPlot()),this,SLOT(activateGraph()));
+	connect (cp,SIGNAL(selectPlot()), this, SLOT(selectCanvas()));
 	connect (cp,SIGNAL(viewLineDialog()),this,SIGNAL(viewLineDialog()));
 	connect (cp,SIGNAL(showPlotDialog(int)),this,SIGNAL(showPlotDialog(int)));
 	connect (cp,SIGNAL(showMarkerPopupMenu()),this,SIGNAL(showMarkerPopupMenu()));
@@ -263,6 +263,12 @@ MultiLayer* Graph::multiLayer() const
 void Graph::notifyChanges()
 {
 	emit modifiedGraph();
+}
+
+void Graph::selectCanvas()
+{
+	selectedCanvas(this);
+	setFocus();
 }
 
 void Graph::activateGraph()
@@ -7104,9 +7110,6 @@ void Graph::dragEnterEvent( QDragEnterEvent* e )
 	if (g && g->multiLayer() == this->multiLayer())
 		return;
 
-	if (d_panner || zoomOn() || d_active_tool || selectedCurveLabels())
-		return;
-
 	if (e->mimeData()->hasFormat("text/plain"))
 		e->acceptProposedAction();
 }
@@ -7191,4 +7194,37 @@ QList<FrameWidget*> Graph::stackingOrderEnrichmentsList() const
 			enrichements << fw;
 	}
 	return enrichements;
+}
+
+bool Graph::mousePressed(QEvent *e)
+{
+	const QMouseEvent *me = (const QMouseEvent *)e;
+
+	QList<FrameWidget*> lst = stackingOrderEnrichmentsList();
+	foreach(FrameWidget *o, lst){
+		QPoint pos = o->mapFromGlobal(me->globalPos());
+		if (o->rect().contains(pos))
+			return QCoreApplication::sendEvent(o, e);
+	}
+
+	QPoint pos = mapFromGlobal(me->globalPos());
+	if (plotLayout()->titleRect().contains(pos))
+		return QCoreApplication::sendEvent(titleLabel(), e);
+
+	for (int i = 0; i < QwtPlot::axisCnt; i++ ){
+		QwtScaleWidget *sw = axisWidget(i);
+		if (!sw)
+			continue;
+
+		QRect r = plotLayout()->scaleRect(i);
+		if (r.contains(pos)){
+			if (scalePicker->scaleRect(sw).translated(r.topLeft()).contains(pos))
+				scalePicker->selectLabels(sw);
+			else
+				scalePicker->selectTitle(sw);
+			return true;
+		}
+	}
+
+	return false;
 }

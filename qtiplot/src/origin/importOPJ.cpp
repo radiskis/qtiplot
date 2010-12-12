@@ -1169,10 +1169,14 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 						formula += locale.toString(f);
 					}
 
+					int axisOffset = 0;
+					if (formats[i].axisPosition == 1)
+						axisOffset = qRound(0.01*formats[i].axisPositionValue*layerRect.width()*fScale);
+
 					graph->showAxis(i, type, formatInfo, mw->table(tableName), !(formats[i].hidden),
 						tickTypeMap[formats[i].majorTicksType], tickTypeMap[formats[i].minorTicksType],
 						!(ticks[i].hidden),	ColorBox::defaultColor(formats[i].color), format, prec,
-						-ticks[i].rotation, 0, formula, (ticks[i].color == 0xF7 ? ColorBox::defaultColor(formats[i].color) : ColorBox::defaultColor(ticks[i].color)),
+						-ticks[i].rotation, axisOffset, formula, (ticks[i].color == 0xF7 ? ColorBox::defaultColor(formats[i].color) : ColorBox::defaultColor(ticks[i].color)),
 						4, true, ScaleDraw::ShowAll, parseOriginText(QString(formats[i].prefix.c_str())),
 						parseOriginText(QString(formats[i].suffix.c_str())));
 				}
