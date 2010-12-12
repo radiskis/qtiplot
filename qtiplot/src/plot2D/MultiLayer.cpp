@@ -287,6 +287,24 @@ void MultiLayer::selectLayerCanvas(Graph* g)
 	if (!g)
 		return;
 
+	QRect ar = g->frameGeometry();
+	foreach (Graph *gr, graphsList){
+		if (gr == g)
+			continue;
+
+		QPoint pos = gr->mapFromGlobal(QCursor::pos());
+		if (ar.contains(gr->frameGeometry()) && gr->rect().contains(pos)){
+			setActiveLayer(gr);
+
+			QMouseEvent e(QEvent::MouseButtonPress, QCursor::pos(), Qt::LeftButton, 0, 0);
+			if (!gr->mousePressed(&e)){
+				d_layers_selector = new SelectionMoveResizer(gr->canvas());
+				connect(d_layers_selector, SIGNAL(targetsChanged()), this, SIGNAL(modifiedPlot()));
+			}
+			return;
+		}
+	}
+
 	setActiveLayer(g);
 
 	d_layers_selector = new SelectionMoveResizer(g->canvas());
