@@ -4334,6 +4334,7 @@ void ApplicationWindow::exportExcel()
 {
 	ExportDialog *ed = showExportASCIIDialog();
 	if (ed){
+		ed->setWindowTitle(tr("Export Excel"));
 		ed->setNameFilters(QStringList() << "*.xls");
 		ed->updateAdvancedOptions(".xls");
 	}
