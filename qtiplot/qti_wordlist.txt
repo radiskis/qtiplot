@@ -871,8 +871,6 @@ power
 setSample1
 setSample2
 ShapiroWilkTest
-True
-False
 setRandomValues
 setNormalRandomValues
 Anova

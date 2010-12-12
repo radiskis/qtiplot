@@ -178,20 +178,28 @@ void ScriptEdit::focusInEvent(QFocusEvent *e)
 
 void ScriptEdit::keyPressEvent(QKeyEvent *e)
 {
+	if (e->key() == Qt::Key_QuoteDbl){
+		QTextCursor cursor = textCursor();
+		cursor.insertText("\"\"");
+		cursor.movePosition(QTextCursor::PreviousCharacter, QTextCursor::MoveAnchor, 1);
+		setTextCursor(cursor);
+		return;
+	}
+
 	if (d_completer && d_completer->popup()->isVisible()){
          // The following keys are forwarded by the completer to the widget
-        switch (e->key()) {
-        case Qt::Key_Enter:
-        case Qt::Key_Return:
-        case Qt::Key_Escape:
-        case Qt::Key_Tab:
-        case Qt::Key_Backtab:
-			e->ignore();
-			return; // let the completer do default behavior
-        default:
-            break;
-        }
-     }
+		switch (e->key()) {
+			case Qt::Key_Enter:
+			case Qt::Key_Return:
+			case Qt::Key_Escape:
+			case Qt::Key_Tab:
+			case Qt::Key_Backtab:
+				e->ignore();
+				return; // let the completer do default behavior
+			default:
+				break;
+		}
+	 }
 
     QTextEdit::keyPressEvent(e);
     if (d_completer && !d_completer->popup()->isVisible() && e->key() == Qt::Key_Return)
@@ -653,7 +661,7 @@ void ScriptEdit::setDirPath(const QString& path)
 
 	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(scriptEnv->application());
 	if (app && (app->windowsNameList().contains(completion) || app->table(completion))){//window or column name?
-		tc.insertText(completion.right(extra) + "\"");
+		tc.insertText(completion.right(extra));
 		setTextCursor(tc);
 		return;
 	}
@@ -679,6 +687,9 @@ void ScriptEdit::setDirPath(const QString& path)
 		tc.select(QTextCursor::LineUnderCursor);
 		s = tc.selectedText();
 		s.remove(")");
+		if (s.endsWith("\""))
+			s.chop(1);
+
 		int pos1 = s.lastIndexOf("\"") + 1;
 		int pos2 = s.lastIndexOf(".") + 1;
 		int pos3 = s.lastIndexOf("(") + 1;
@@ -692,6 +703,14 @@ void ScriptEdit::setDirPath(const QString& path)
 			return s.mid(pos2, s.length() - pos2);
 		else if (pos1 != -1)
 			return s.mid(pos1, s.length() - pos1);
+	} else if (s.contains("\"")){
+		tc.select(QTextCursor::LineUnderCursor);
+		s = tc.selectedText();
+		if (s.endsWith("\""))
+			s.chop(1);
+		int pos = s.lastIndexOf("\"") + 1;
+		if (pos != -1)
+			return s.mid(pos, s.length() - pos);
 	}
 
 	return s;
