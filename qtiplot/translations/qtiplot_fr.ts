@@ -3997,7 +3997,7 @@ L&apos;autocomplétion ne sera pas disponible!</translation>
     </message>
     <message>
         <source>Save Window As</source>
-        <translation type="unfinished">Sauvegarder la fenêtre comme</translation>
+        <translation>Sauvegarder la fenêtre comme</translation>
     </message>
     <message>
         <source>Save &amp;Window As...</source>
@@ -4093,7 +4093,7 @@ L&apos;autocomplétion ne sera pas disponible!</translation>
     </message>
     <message>
         <source>Save Folder As</source>
-        <translation type="unfinished"></translation>
+        <translation>Sauvegarder le répertoire sous</translation>
     </message>
 </context>
 <context>
