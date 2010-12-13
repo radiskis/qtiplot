@@ -96,7 +96,7 @@ bool CanvasPicker::eventFilter(QObject *object, QEvent *e)
 
 				if (me->button() == Qt::LeftButton && !g->zoomOn() &&
 					!g->hasPanningMagnifierEnabled() && !g->activeTool() && !g->selectedCurveLabels()){
-					selectPlot();
+					g->selectCanvas();
 
 					QDrag *drag = new QDrag(plot());
 					QMimeData *mimeData = new QMimeData;

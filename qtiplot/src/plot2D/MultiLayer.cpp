@@ -282,10 +282,11 @@ bool MultiLayer::isLayerSelected(Graph* g)
 	return d_layers_selector.data()->contains(g->canvas());
 }
 
-void MultiLayer::selectLayerCanvas(Graph* g)
+//! Try to guess on which layer the user clicked if the layers are superposed
+Graph* MultiLayer::clickedLayer(Graph* g)
 {
 	if (!g)
-		return;
+		return 0;
 
 	QRect ar = g->frameGeometry();
 	foreach (Graph *gr, graphsList){
@@ -294,29 +295,36 @@ void MultiLayer::selectLayerCanvas(Graph* g)
 
 		QPoint pos = gr->mapFromGlobal(QCursor::pos());
 		if (ar.contains(gr->frameGeometry()) && gr->rect().contains(pos)){
-			setActiveLayer(gr);
-
-			QMouseEvent e(QEvent::MouseButtonPress, QCursor::pos(), Qt::LeftButton, 0, 0);
-			if (!gr->mousePressed(&e)){
-				d_layers_selector = new SelectionMoveResizer(gr->canvas());
-				connect(d_layers_selector, SIGNAL(targetsChanged()), this, SIGNAL(modifiedPlot()));
-			}
-			return;
+			return gr;
 		}
 	}
 
+	return g;
+}
+
+void MultiLayer::selectLayerCanvas(Graph* g)
+{
 	setActiveLayer(g);
 
-	d_layers_selector = new SelectionMoveResizer(g->canvas());
-	connect(d_layers_selector, SIGNAL(targetsChanged()), this, SIGNAL(modifiedPlot()));
+	if (active_graph && active_graph != g){
+		QMouseEvent e(QEvent::MouseButtonPress, QCursor::pos(), Qt::LeftButton, 0, 0);
+		if (!active_graph->mousePressed(&e)){
+			d_layers_selector = new SelectionMoveResizer(active_graph->canvas());
+			connect(d_layers_selector, SIGNAL(targetsChanged()), this, SIGNAL(modifiedPlot()));
+		}
+	} else {
+		d_layers_selector = new SelectionMoveResizer(g->canvas());
+		connect(d_layers_selector, SIGNAL(targetsChanged()), this, SIGNAL(modifiedPlot()));
+	}
 }
 
 void MultiLayer::setActiveLayer(Graph* g)
 {
-	if (!g || active_graph == g)
+	Graph *ag = clickedLayer(g);
+	if (!ag || active_graph == ag)
 		return;
 
-	active_graph = g;
+	active_graph = ag;
 	active_graph->setFocus();
 
 	deselect();
@@ -330,7 +338,7 @@ void MultiLayer::setActiveLayer(Graph* g)
 		gr->deselect();
 
 		LayerButton *btn = (LayerButton *)buttonsList.at(i);
-		if (gr == g)
+		if (gr == ag)
 			btn->setOn(true);
 		else
 			btn->setOn(false);
@@ -1452,7 +1460,10 @@ bool MultiLayer::eventFilter(QObject *object, QEvent *e)
 		d_canvas_size = d_canvas->size();
 	} else if (e->type() == QEvent::MouseButtonPress && object == (QObject *)d_canvas){
 		const QMouseEvent *me = (const QMouseEvent *)e;
-		if (me->button() == Qt::RightButton || me->button() == Qt::MidButton)
+		if (me->button() == Qt::RightButton && applicationWindow()){
+			applicationWindow()->showWindowContextMenu();
+			return true;
+		} else if (me->button() == Qt::MidButton)
 			return QMdiSubWindow::eventFilter(object, e);
 
 		if (d_is_waterfall_plot)
@@ -1536,8 +1547,8 @@ void MultiLayer::keyPressEvent(QKeyEvent * e)
 		return;
 	}
 
-	if (e->key() == Qt::Key_F11){
-		emit showContextMenu();
+	if (e->key() == Qt::Key_F11 && applicationWindow()){
+		applicationWindow()->showWindowContextMenu();
 		return;
 	}
 }

@@ -3997,7 +3997,7 @@ L&apos;autocomplétion ne sera pas disponible!</translation>
     </message>
     <message>
         <source>Save Window As</source>
-        <translation type="obsolete">Sauvegarder la fenêtre comme</translation>
+        <translation type="unfinished">Sauvegarder la fenêtre comme</translation>
     </message>
     <message>
         <source>Save &amp;Window As...</source>
@@ -4090,6 +4090,10 @@ L&apos;autocomplétion ne sera pas disponible!</translation>
     <message>
         <source>Chi-square Test for &amp;Variance...</source>
         <translation>Test du Chi² pour la &amp;variance...</translation>
+    </message>
+    <message>
+        <source>Save Folder As</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -8647,7 +8651,7 @@ Les codes spéciaux suivant peuvent être utilisés :
     </message>
     <message>
         <source>Couldn&apos;t change the axis type to the requested format!</source>
-        <translation>Ne peut changer le type de l&apos;axe au format demandé !</translation>
+        <translation type="obsolete">Ne peut changer le type de l&apos;axe au format demandé !</translation>
     </message>
     <message>
         <source>Y Axis Title</source>

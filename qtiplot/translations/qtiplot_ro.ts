@@ -7481,7 +7481,7 @@ Autocompletion will not be available!</source>
     </message>
     <message>
         <source>Save Window As</source>
-        <translation type="obsolete">Salvează fereastra ca</translation>
+        <translation>Salvează fereastra ca</translation>
     </message>
     <message>
         <source>Save &amp;Window As...</source>
@@ -7574,6 +7574,10 @@ Autocompletion will not be available!</source>
     <message>
         <source>chart</source>
         <translation>diagramă</translation>
+    </message>
+    <message>
+        <source>Save Folder As</source>
+        <translation>Salvează dosarul ca</translation>
     </message>
 </context>
 <context>
@@ -12161,7 +12165,7 @@ The following special codes can be used:
     </message>
     <message>
         <source>Couldn&apos;t change the axis type to the requested format!</source>
-        <translation>Formatul axei nu a putut fi schimbat!</translation>
+        <translation type="obsolete">Formatul axei nu a putut fi schimbat!</translation>
     </message>
     <message>
         <source>Please provide a valid file name!</source>

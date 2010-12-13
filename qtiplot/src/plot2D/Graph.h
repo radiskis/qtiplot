@@ -160,6 +160,7 @@ class Graph: public QwtPlot
 		bool hasSeletedItems();
 		void deselect();
 		void deselect(QWidget *);
+		void selectCanvas();
 
 		QPointer<SelectionMoveResizer> selectionMoveResizer(){return d_markers_selector;};
 
@@ -687,7 +688,6 @@ class Graph: public QwtPlot
 		void createTable(const QString& curveName);
         void createTable(const QwtPlotCurve* curve);
 		void activateGraph();
-		void selectCanvas();
 
 		//! \name Vector Curves
 		//@{

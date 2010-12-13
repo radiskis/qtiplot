@@ -253,6 +253,8 @@ private:
 	bool eventFilter(QObject *object, QEvent *);
 	void releaseLayer();
 	void resizeLayers(QResizeEvent *);
+	//! Try to guess on which layer the user clicked if the layers are superposed
+	Graph* clickedLayer(Graph*);
 	//@}
 
 	LayerButton* addLayerButton();

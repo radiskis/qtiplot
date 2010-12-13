@@ -4993,10 +4993,6 @@ Die erste repräsentiert die Signal- und die zweite die Antwortfunktion!</transl
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Show &amp;Descriptive Statistics</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>ANOVA &amp;Type</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5047,6 +5043,10 @@ Die erste repräsentiert die Signal- und die zweite die Antwortfunktion!</transl
     <message>
         <source>Results &amp;Log</source>
         <translation type="unfinished">Ergebnis-&amp;Log</translation>
+    </message>
+    <message>
+        <source>&amp;Descriptive Statistics</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -6901,11 +6901,11 @@ Wollen Sie fortfahren?</translation>
     </message>
     <message>
         <source>Continue</source>
-        <translation>Fortfahren</translation>
+        <translation type="obsolete">Fortfahren</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation>Abbrechen</translation>
+        <translation type="obsolete">Abbrechen</translation>
     </message>
     <message>
         <source>Click on plot or move cursor to display coordinates!</source>
@@ -10075,6 +10075,18 @@ Autocompletion will not be available!</source>
         <source>Chi-square Test for &amp;Variance...</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Save Folder As</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save Window As</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>chart</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ArrowMarker</name>
@@ -12184,6 +12196,10 @@ Die folgenden Spezialcodes können benutzt werden:
     </message>
     <message>
         <source>Choose the location of the startup scripts folder!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ask before modifying data &amp;points</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -14719,7 +14735,7 @@ die Reihenfolge der Parameter ist wichtig!</translation>
     </message>
     <message>
         <source>Gauss</source>
-        <translation>Gauß</translation>
+        <translation type="obsolete">Gauß</translation>
     </message>
     <message>
         <source>Peaks</source>
@@ -14727,11 +14743,11 @@ die Reihenfolge der Parameter ist wichtig!</translation>
     </message>
     <message>
         <source>Lorentz</source>
-        <translation>Lorentz</translation>
+        <translation type="obsolete">Lorentz</translation>
     </message>
     <message>
         <source>Polynomial</source>
-        <translation>Polynomiell</translation>
+        <translation type="obsolete">Polynomiell</translation>
     </message>
     <message>
         <source>MultiPeak</source>
@@ -15138,11 +15154,11 @@ die Reihenfolge der Parameter ist wichtig!</translation>
     </message>
     <message>
         <source>&amp;Ok</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation>S&amp;chließen</translation>
+        <translation type="obsolete">S&amp;chließen</translation>
     </message>
     <message>
         <source>Constant</source>
@@ -16199,7 +16215,7 @@ die Reihenfolge der Parameter ist wichtig!</translation>
     </message>
     <message>
         <source>Couldn&apos;t change the axis type to the requested format!</source>
-        <translation>Konnte den Achsentyp nicht in das gewünschte Format ändern!</translation>
+        <translation type="obsolete">Konnte den Achsentyp nicht in das gewünschte Format ändern!</translation>
     </message>
     <message>
         <source>Y Axis Title</source>
@@ -21172,6 +21188,10 @@ Wollen sie Zellen einfügen?</translation>
         <source>QtiPlot - Import image from file</source>
         <translation type="unfinished">QtiPlot - Bild aus Datei importieren</translation>
     </message>
+    <message>
+        <source>Auto&amp;scaling</source>
+        <translation type="unfinished">Automatische &amp;Skalierung</translation>
+    </message>
 </context>
 <context>
     <name>PlotWizard</name>
@@ -23445,6 +23465,10 @@ Wollen Sie sie überschreiben?</translation>
         <source>Results &amp;Log</source>
         <translation type="unfinished">Ergebnis-&amp;Log</translation>
     </message>
+    <message>
+        <source>&amp;Descriptive Statistics</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>SubtractDataDialog</name>
@@ -23873,7 +23897,725 @@ Wollen Sie trotzdem die Zellen einfügen?</translation>
         <source>You need to define a Y column first!</source>
         <translation type="obsolete">Sie müssen zuerst eine Y-Spalte definieren!</translation>
     </message>
->
+    <message>
+        <source>Multiline expressions take much more time to evaluate! Do you want to continue anyways?</source>
+        <translation type="unfinished">Mehrzeilige Ausdrücke benötigen viel mehr Zeit zur Auswertung! Möchten Sie trotzdem fortfahren?</translation>
+    </message>
+    <message>
+        <source>Warning</source>
+        <translation type="unfinished">Warnung</translation>
+    </message>
+    <message>
+        <source>Column &apos;%1&apos; is read only!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>There is already a column called : &lt;b&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The table &apos;%1&apos; contains read-only columns! Operation aborted!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The folowing columns</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>are read only!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Paste operation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>How should QtiPlot interpret first clipboard line?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Values</source>
+        <translation type="unfinished">&amp;Werte</translation>
+    </message>
+    <message>
+        <source>Column &amp;Names</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Comments</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Please indicate the name of the leading column!</source>
+        <translation type="unfinished">Bitte den Namen der führenden Spalte angeben!</translation>
+    </message>
+    <message>
+        <source>The leading column is empty! Operation aborted!</source>
+        <translation type="unfinished">Die führende Spalte ist leer! Operation abgebrochen!</translation>
+    </message>
+    <message>
+        <source>Qtiplot</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Reading file...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Could not write to file: &lt;br&gt;&lt;h4&gt;</source>
+        <translation type="unfinished">Konnte nicht in Datei schreiben: &lt;br&gt;&lt;h4&gt;</translation>
+    </message>
+    <message>
+        <source>Rows will be deleted from the table!</source>
+        <translation type="unfinished">Es werden Zeilen aus der Tabelle gelöscht!</translation>
+    </message>
+    <message>
+        <source>Do you really want to continue?</source>
+        <translation type="unfinished">Wollen Sie wirklich fortfahren?</translation>
+    </message>
+    <message>
+        <source>Columns will be deleted from the table!</source>
+        <translation type="unfinished">Es werden Spalten aus der Tabelle gelöscht!</translation>
+    </message>
+    <message>
+        <source>kB</source>
+        <translation type="unfinished">kB</translation>
+    </message>
+</context>
+<context>
+    <name>TableDialog</name>
+    <message>
+        <source>QtiPlot - Column options</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Column Name:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enumerate all to the right</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;OK</source>
+        <translation type="unfinished">&amp;OK</translation>
+    </message>
+    <message>
+        <source>&amp;Apply</source>
+        <translation type="unfinished">&amp;Anwenden</translation>
+    </message>
+    <message>
+        <source>&amp;Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Plot Designation:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>None</source>
+        <translation type="unfinished">Keine</translation>
+    </message>
+    <message>
+        <source>X (abscissae)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Y (ordinates)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Z (height)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>X Error</source>
+        <translation type="unfinished">X-Fehler</translation>
+    </message>
+    <message>
+        <source>Y Error</source>
+        <translation type="unfinished">Y-Fehler</translation>
+    </message>
+    <message>
+        <source>Label</source>
+        <translation type="unfinished">Beschriftung</translation>
+    </message>
+    <message>
+        <source>Display</source>
+        <translation type="unfinished">Typ</translation>
+    </message>
+    <message>
+        <source>Numeric</source>
+        <translation type="unfinished">Numerisch</translation>
+    </message>
+    <message>
+        <source>Text</source>
+        <translation type="unfinished">Text</translation>
+    </message>
+    <message>
+        <source>Date</source>
+        <translation type="unfinished">Datum</translation>
+    </message>
+    <message>
+        <source>Time</source>
+        <translation type="unfinished">Zeit</translation>
+    </message>
+    <message>
+        <source>Month</source>
+        <translation type="unfinished">Monat</translation>
+    </message>
+    <message>
+        <source>Day of Week</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Format:</source>
+        <translation type="unfinished">Format:</translation>
+    </message>
+    <message>
+        <source>Precision:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Read-only</source>
+        <translation type="unfinished">Sch&amp;reibgeschützt</translation>
+    </message>
+    <message>
+        <source>&amp;Hidden</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Apply to all columns to the right</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Options</source>
+        <translation type="unfinished">Optionen</translation>
+    </message>
+    <message>
+        <source>Column Width:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Apply to all</source>
+        <translation type="unfinished">Auf alle anwenden</translation>
+    </message>
+    <message>
+        <source>&amp;Display Comments in Header</source>
+        <translation type="unfinished">Zeige Kommentare in &amp;der Kopfzeile</translation>
+    </message>
+    <message>
+        <source>Comment:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>QtiPlot - Warning</source>
+        <translation type="unfinished">QtiPlot - Warnung</translation>
+    </message>
+    <message>
+        <source>For internal consistency reasons the underscore character is replaced with a minus sign.</source>
+        <translation type="unfinished">Um interne Konsistenz zu sichern, wurden Unterstriche durch ein Minuszeichen ersetzt.</translation>
+    </message>
+    <message>
+        <source>Default</source>
+        <translation type="unfinished">Standard</translation>
+    </message>
+    <message>
+        <source>Decimal: 1000</source>
+        <translation type="unfinished">Dezimal: 1000</translation>
+    </message>
+    <message>
+        <source>Scientific: 1E3</source>
+        <translation type="unfinished">Wissenschaftlich: 1E3</translation>
+    </message>
+    <message>
+        <source>dd/MM/yyyy</source>
+        <translation type="unfinished">dd/MM/aaaa</translation>
+    </message>
+    <message>
+        <source>dd/MM/yyyy HH:mm</source>
+        <translation type="unfinished">dd/MM/yyyy HH:mm</translation>
+    </message>
+    <message>
+        <source>dd/MM/yyyy HH:mm:ss</source>
+        <translation type="unfinished">dd/MM/yyyy HH:mm:ss</translation>
+    </message>
+    <message>
+        <source>dd.MM.yyyy</source>
+        <translation type="unfinished">dd.MM.aaaa</translation>
+    </message>
+    <message>
+        <source>dd.MM.yyyy HH:mm</source>
+        <translation type="unfinished">dd.MM.yyyy HH:mm</translation>
+    </message>
+    <message>
+        <source>dd.MM.yyyy HH:mm:ss</source>
+        <translation type="unfinished">dd.MM.yyyy HH:mm:ss</translation>
+    </message>
+    <message>
+        <source>dd MM yyyy</source>
+        <translation type="unfinished">dd MM yyyy</translation>
+    </message>
+    <message>
+        <source>dd MM yyyy HH:mm</source>
+        <translation type="unfinished">dd MM yyyy HH:mm</translation>
+    </message>
+    <message>
+        <source>dd MM yyyy HH:mm:ss</source>
+        <translation type="unfinished">dd MM yyyy HH:mm:s</translation>
+    </message>
+    <message>
+        <source>yyyy-MM-dd</source>
+        <translation type="unfinished">aaaa-MM-dd</translation>
+    </message>
+    <message>
+        <source>yyyy-MM-dd HH:mm</source>
+        <translation type="unfinished">yyyy-MM-dd HH:mm</translation>
+    </message>
+    <message>
+        <source>yyyy-MM-dd HH:mm:ss</source>
+        <translation type="unfinished">yyyy-MM-dd HH:mm:ss</translation>
+    </message>
+    <message>
+        <source>yyyyMMdd</source>
+        <translation type="unfinished">yyyyMMdd</translation>
+    </message>
+    <message>
+        <source>yyyyMMdd HH:mm</source>
+        <translation type="unfinished">yyyyMMdd HH:mm</translation>
+    </message>
+    <message>
+        <source>yyyyMMdd HH:mm:ss</source>
+        <translation type="unfinished">yyyyMMdd HH:mm:ss</translation>
+    </message>
+    <message>
+        <source>h</source>
+        <translation type="unfinished">h</translation>
+    </message>
+    <message>
+        <source>h ap</source>
+        <translation type="unfinished">h ap</translation>
+    </message>
+    <message>
+        <source>h AP</source>
+        <translation type="unfinished">h AP</translation>
+    </message>
+    <message>
+        <source>h:mm</source>
+        <translation type="unfinished">h:mm</translation>
+    </message>
+    <message>
+        <source>h:mm ap</source>
+        <translation type="unfinished">h:mm ap</translation>
+    </message>
+    <message>
+        <source>hh:mm</source>
+        <translation type="unfinished">hh:mm</translation>
+    </message>
+    <message>
+        <source>h:mm:ss</source>
+        <translation type="unfinished">h:mm:ss</translation>
+    </message>
+    <message>
+        <source>h:mm:ss.zzz</source>
+        <translation type="unfinished">h:mm:ss.zzz</translation>
+    </message>
+    <message>
+        <source>mm:ss</source>
+        <translation type="unfinished">mm:ss</translation>
+    </message>
+    <message>
+        <source>mm:ss.zzz</source>
+        <translation type="unfinished">mm:ss.zzz</translation>
+    </message>
+    <message>
+        <source>hmm</source>
+        <translation type="unfinished">hmm</translation>
+    </message>
+    <message>
+        <source>hmmss</source>
+        <translation type="unfinished">hmmss</translation>
+    </message>
+    <message>
+        <source>hhmmss</source>
+        <translation type="unfinished">hhmm</translation>
+    </message>
+    <message>
+        <source>QtiPlot - Error</source>
+        <translation type="unfinished">QtiPlot - Fehler</translation>
+    </message>
+    <message>
+        <source>Couldn&apos;t guess the source data format, please specify it using the &apos;Format&apos; box!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>For more information about the supported date/time formats please read the Qt documentation for the QDateTime class!</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>TableStatistics</name>
+    <message>
+        <source>Row</source>
+        <translation type="unfinished">Zeile</translation>
+    </message>
+    <message>
+        <source>Cols</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Mean</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>StandardDev</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>StandardError</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Variance</source>
+        <translation type="unfinished">Varianz</translation>
+    </message>
+    <message>
+        <source>Sum</source>
+        <translation type="unfinished">Summe</translation>
+    </message>
+    <message>
+        <source>Max</source>
+        <translation type="unfinished">Max</translation>
+    </message>
+    <message>
+        <source>Min</source>
+        <translation type="unfinished">Min</translation>
+    </message>
+    <message>
+        <source>Median</source>
+        <translation type="unfinished">Mittelwert</translation>
+    </message>
+    <message>
+        <source>RowStats</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Row Statistics of %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Col</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Rows</source>
+        <translation type="unfinished">Zeilen</translation>
+    </message>
+    <message>
+        <source>iMax</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>iMin</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>ColStats</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Column Statistics of %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>TexWidget</name>
+    <message>
+        <source>Equation</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>TextDialog</name>
+    <message>
+        <source>QtiPlot - Text options</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Text Color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Font</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Alignment</source>
+        <translation type="unfinished">Ausrichtung</translation>
+    </message>
+    <message>
+        <source>Center</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Left</source>
+        <translation type="unfinished">Links</translation>
+    </message>
+    <message>
+        <source>Right</source>
+        <translation type="unfinished">Rechts</translation>
+    </message>
+    <message>
+        <source>Distance to axis</source>
+        <translation type="unfinished">Abstand zur Achse</translation>
+    </message>
+    <message>
+        <source>&amp;Inverted</source>
+        <translation type="unfinished">&amp;Invertiert</translation>
+    </message>
+    <message>
+        <source>&amp;Apply to...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Object</source>
+        <translation type="unfinished">Objekt</translation>
+    </message>
+    <message>
+        <source>Layer</source>
+        <translation type="unfinished">Ebene</translation>
+    </message>
+    <message>
+        <source>Window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>All Windows</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Close</source>
+        <translation type="unfinished">S&amp;chließen</translation>
+    </message>
+    <message>
+        <source>QtiPlot</source>
+        <translation type="unfinished">QtiPlot</translation>
+    </message>
+    <message>
+        <source>X Axis Title</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Y Axis Title</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Top Axis Title</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Right Axis Title</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>TextEditor</name>
+    <message>
+        <source>QtiPlot</source>
+        <translation type="unfinished">QtiPlot</translation>
+    </message>
+    <message>
+        <source>Confirmation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure you want to add %1 text lines into this text box?</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>TextFormatButtons</name>
+    <message>
+        <source>B</source>
+        <comment>Button bold</comment>
+        <translation type="unfinished">B</translation>
+    </message>
+    <message>
+        <source>It</source>
+        <comment>Button italics</comment>
+        <translation type="unfinished">It</translation>
+    </message>
+    <message>
+        <source>U</source>
+        <comment>Button underline</comment>
+        <translation type="unfinished">U</translation>
+    </message>
+</context>
+<context>
+    <name>ThreeExpFit</name>
+    <message>
+        <source>ExpDecay3</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Exponential decay</source>
+        <translation type="unfinished">Exponentielles Abklingen</translation>
+    </message>
+    <message>
+        <source>first amplitude</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>first lifetime</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>second amplitude</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>second lifetime</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>third amplitude</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>third lifetime</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>offset</source>
+        <translation type="unfinished">Offset</translation>
+    </message>
+</context>
+<context>
+    <name>TranslateCurveTool</name>
+    <message>
+        <source>Double-click on plot to select a data point!</source>
+        <translation type="unfinished">Auf das Diagramm doppelklicken, um einen Datenpunkt auszuwählen!</translation>
+    </message>
+    <message>
+        <source>QtiPlot - Warning</source>
+        <translation type="unfinished">QtiPlot - Warnung</translation>
+    </message>
+    <message>
+        <source>The column &apos;%1&apos; is read-only! Operation aborted!</source>
+        <translation type="unfinished">Die Spalte &apos;%1&apos; ist schreibgeschützt! Vorgang abgebrochen!</translation>
+    </message>
+    <message>
+        <source>Curve selected! Move cursor and click to choose a point and double-click/press &apos;Enter&apos; to finish!</source>
+        <translation type="unfinished">Kurve ausgewählt! Bewegen Sie den Cursor, wählen Sie durch einen Klick einen Punkt aus und bestätigen Sie durch einen Doppelklick oder &apos;Enter&apos;!</translation>
+    </message>
+    <message>
+        <source>This operation cannot be performed on function curves.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This operation cannot be performed on curves plotted from columns having a non-numerical format.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>TwoExpFit</name>
+    <message>
+        <source>ExpDecay2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Exponential decay</source>
+        <translation type="unfinished">Exponentielles Abklingen</translation>
+    </message>
+    <message>
+        <source>first amplitude</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>first lifetime</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>second amplitude</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>second lifetime</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>offset</source>
+        <translation type="unfinished">Offset</translation>
+    </message>
+</context>
+<context>
+    <name>muParserScript</name>
+    <message>
+        <source>col() works only on tables!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>There&apos;s no column named %1 in table %2!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>There&apos;s no row %1 in table %2!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>There&apos;s no column %1 in table %2!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>tablecol() works only on tables!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>tablecol: wrong number of arguments (need 2, got %1)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>tablecol: first argument must be a string (table name)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Couldn&apos;t find a table named %1.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>cell() works only on tables and matrices!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>There&apos;s no row %1 in matrix %2!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>There&apos;s no column %1 in matrix %2!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Out of memory</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>SUM() works only on tables!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>AVG() works only on tables!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>MIN() works only on tables!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>MAX() works only on tables!</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>textDlg</name>
     <message>
         <source>Color</source>

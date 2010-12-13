@@ -361,7 +361,7 @@ void SelectionMoveResizer::mousePressEvent(QMouseEvent *me)
 			if (!l){
 				QwtPlotCanvas *canvas = qobject_cast<QwtPlotCanvas *>(w);
 				if (canvas){
-					QMouseEvent e(QEvent::ContextMenu, canvas->mapFromGlobal(me->globalPos()), Qt::RightButton, 0, 0);
+					QContextMenuEvent e(QContextMenuEvent::Other, canvas->mapFromGlobal(me->globalPos()));
 					QCoreApplication::sendEvent(canvas->plot(), &e);
 					return;
 				}
