@@ -72,7 +72,6 @@ signals:
 	void viewLineDialog();
 	void showMarkerPopupMenu();
 	void modified();
-	void selectPlot();
 
 private:
 	bool pointSelected;

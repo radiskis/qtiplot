@@ -4040,6 +4040,14 @@ Il completamento automatico non sarà disponibile!</translation>
         <source>chart</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Save Folder As</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save Window As</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>AssociationsDialog</name>
@@ -8468,7 +8476,7 @@ Discrepanza tra i dati e il modello di stima</translation>
     </message>
     <message>
         <source>Couldn&apos;t change the axis type to the requested format!</source>
-        <translation>Non posso cambiare il tipo di assi con quello richiesto!</translation>
+        <translation type="obsolete">Non posso cambiare il tipo di assi con quello richiesto!</translation>
     </message>
     <message>
         <source>Y Axis Title</source>

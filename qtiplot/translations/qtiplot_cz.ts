@@ -4001,7 +4001,7 @@ Různé části tohoto souboru se nemusí zobrazovat tak, jak se očekává.</tr
     </message>
     <message>
         <source>Save Window As</source>
-        <translation type="obsolete">Uložit okno jako</translation>
+        <translation type="unfinished">Uložit okno jako</translation>
     </message>
     <message>
         <source>Save &amp;Window As...</source>
@@ -4093,6 +4093,10 @@ Různé části tohoto souboru se nemusí zobrazovat tak, jak se očekává.</tr
     </message>
     <message>
         <source>chart</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save Folder As</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -8572,7 +8576,7 @@ K tomu lze použít následujících zvláštních kódů:
     </message>
     <message>
         <source>Couldn&apos;t change the axis type to the requested format!</source>
-        <translation>Nepodařilo se změnit typ osy na požadovaný formát!</translation>
+        <translation type="obsolete">Nepodařilo se změnit typ osy na požadovaný formát!</translation>
     </message>
     <message>
         <source>&amp;Copy</source>

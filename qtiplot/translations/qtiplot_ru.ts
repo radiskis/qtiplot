@@ -3999,7 +3999,7 @@ Autocompletion will not be available!</source>
     </message>
     <message>
         <source>Save Window As</source>
-        <translation type="obsolete">Сохранить окно как</translation>
+        <translation type="unfinished">Сохранить окно как</translation>
     </message>
     <message>
         <source>Save &amp;Window As...</source>
@@ -4091,6 +4091,10 @@ Autocompletion will not be available!</source>
     </message>
     <message>
         <source>Chi-square Test for &amp;Variance...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save Folder As</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -8684,7 +8688,7 @@ The following special codes can be used:
     </message>
     <message>
         <source>Couldn&apos;t change the axis type to the requested format!</source>
-        <translation>Невозможно изменить тип оси на требуемый!</translation>
+        <translation type="obsolete">Невозможно изменить тип оси на требуемый!</translation>
     </message>
     <message>
         <source>Y Axis Title</source>

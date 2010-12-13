@@ -4570,6 +4570,14 @@ Autocompletion will not be available!</source>
         <source>chart</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Save Folder As</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save Window As</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>AssociationsDialog</name>
@@ -9043,10 +9051,6 @@ The following special codes can be used:
     </message>
     <message>
         <source>F</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Couldn&apos;t change the axis type to the requested format!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

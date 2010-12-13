@@ -9572,6 +9572,7 @@ void ApplicationWindow::pasteSelection()
 		MultiLayer* plot = (MultiLayer*)m;
 		if (!plot)
 			return;
+		plot->deselect();
 
 		if (lastCopiedLayer){
 			QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
@@ -13792,22 +13793,17 @@ void ApplicationWindow::connectSurfacePlot(Graph3D *plot)
 void ApplicationWindow::connectMultilayerPlot(MultiLayer *g)
 {
 	connect (g,SIGNAL(showEnrichementDialog()),this,SLOT(showEnrichementDialog()));
-
-	connect (g,SIGNAL(showContextMenu()),this,SLOT(showWindowContextMenu()));
 	connect (g,SIGNAL(showCurvesDialog()),this,SLOT(showCurvesDialog()));
 	connect (g,SIGNAL(drawLineEnded(bool)), btnPointer, SLOT(setOn(bool)));
-
 	connect (g,SIGNAL(showMarkerPopupMenu()),this,SLOT(showMarkerPopupMenu()));
 	connect (g,SIGNAL(closedWindow(MdiSubWindow*)),this, SLOT(closeWindow(MdiSubWindow*)));
 	connect (g,SIGNAL(hiddenWindow(MdiSubWindow*)),this, SLOT(hideWindow(MdiSubWindow*)));
 	connect (g,SIGNAL(statusChanged(MdiSubWindow*)),this, SLOT(updateWindowStatus(MdiSubWindow*)));
 	connect (g,SIGNAL(cursorInfo(const QString&)),info,SLOT(setText(const QString&)));
-
 	connect (g,SIGNAL(modifiedWindow(MdiSubWindow*)),this,SLOT(modifiedProject(MdiSubWindow*)));
 	connect (g,SIGNAL(modifiedPlot()), this, SLOT(modifiedProject()));
 	connect (g,SIGNAL(showLineDialog()),this, SLOT(showLineDialog()));
 	connect (g,SIGNAL(pasteMarker()),this,SLOT(pasteSelection()));
-
 	connect (g,SIGNAL(setPointerCursor()),this, SLOT(pickPointerCursor()));
 	connect (g,SIGNAL(currentFontChanged(const QFont&)), this, SLOT(setFormatBarFont(const QFont&)));
 	connect (g,SIGNAL(currentColorChanged(const QColor&)), this, SLOT(setFormatBarColor(const QColor&)));

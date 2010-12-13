@@ -8564,7 +8564,7 @@ Automatisk komplettering ej tillgängligt!</translation>
     </message>
     <message>
         <source>Save Window As</source>
-        <translation type="obsolete">Spara fönster som</translation>
+        <translation type="unfinished">Spara fönster som</translation>
     </message>
     <message>
         <source>Save &amp;Window As...</source>
@@ -8656,6 +8656,10 @@ Automatisk komplettering ej tillgängligt!</translation>
     </message>
     <message>
         <source>chart</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save Folder As</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -14046,7 +14050,7 @@ Följande specialkoder kan användas:
     </message>
     <message>
         <source>Couldn&apos;t change the axis type to the requested format!</source>
-        <translation>Kunde inte ändra axeltyp till det begärda formatet!</translation>
+        <translation type="obsolete">Kunde inte ändra axeltyp till det begärda formatet!</translation>
     </message>
     <message>
         <source>Y Axis Title</source>
