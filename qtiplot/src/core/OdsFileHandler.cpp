@@ -69,7 +69,7 @@ d_ods_file_name(odsFileName)
 			cell.d = attributes.value("office:value").toDouble();
 			cell.type = Boolean;
 		} else if (type == QString("date")){
-			cell.date_time = QDateTime::fromString(attributes.value("office:date-value"), "yyyy-MM-ddThh:mm:ss");
+			cell.date_time = QDateTime::fromString(attributes.value("office:date-value"), Qt::ISODate);
 			cell.type = Date;
 		} else if (type == QString("time")){
 			cell.type = Time;

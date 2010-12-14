@@ -928,10 +928,19 @@ Table * ApplicationWindow::importUsingExcel(const QString& fn, int sheet)
 			t->askOnCloseEvent(false);
 			t->close();
 			continue;
-		} else
-			t->showNormal();
+		}
 
-		int row = t->numRows() + 1;
+		int emptyRows = 0;
+		int rows = t->numRows();
+		for (unsigned int i = 0; i < rows; i++){
+			if (!t->isEmptyRow(i))
+				break;
+			emptyRows++;
+		}
+		if (emptyRows)
+			t->deleteRows(0, emptyRows);
+
+		int row = rows - emptyRows - 1;
 		QStringList header;
 		bool firstLineAllStrings = true;
 		for (int col = 1; col <= t->numCols(); col++){
@@ -966,6 +975,8 @@ Table * ApplicationWindow::importUsingExcel(const QString& fn, int sheet)
 			t->deleteRows(0, 1);
 			t->setHeader(header);
 		}
+
+		t->showNormal();
 
 		importExcelCharts(ws, fn);
 
