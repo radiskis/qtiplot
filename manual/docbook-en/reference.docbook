@@ -302,7 +302,9 @@ The active items appearing in a menu depends upon which project window is active
      <para>Opens the <link linkend="plot-wizard-dialog">Plot Wizard dialog</link>.</para>
   </sect2>
 	<sect2 id="project-explorer-cmd"><title>View -> &project-explorer-cmd; (&project-explorer-key;)</title>
-     <para>Opens/Close the <link linkend="project-explorer-dialog">Project Explorer</link>, which gives an overview of the structure of a project and allows the user to perform various operations on the windows (tables and plots) in the workspace.</para>
+     <para>Opens/Closes the <link linkend="project-explorer-dialog">Project Explorer</link> dialog, which gives an overview
+			of the structure of a project and allows the user to perform various operations on the windows (tables and plots)
+			in the workspace.</para>
   </sect2>
 	<sect2 id="results-log-cmd"><title>View -> &results-log-cmd;</title>
      <para>Opens/Closes a <link linkend="sec-intro-log-window">panel</link> displaying a history of all data analysis operations performed by the user.</para>
@@ -345,6 +347,16 @@ The active items appearing in a menu depends upon which project window is active
 			<sect3 id="evaluate-cmd"><title>Scripting -> &evaluate-cmd; (&evaluate-key;)</title>
      		<para>Evaluates the line where the mouse cursor is placed in the Notes window.</para>
   		</sect3>
+			<sect3><title>Rename Tab...</title>
+				<para>Opens a standard dialog which permits changing the name of the active notes tab.</para>
+			</sect3>
+			<sect3><title>Add Tab</title>
+				<para>Adds a new tab to the active notes window. The new tab will be named <emphasis>untitled</emphasis> by default.
+					The tab may be renamed at any time using the Rename Tab... command.</para>
+			</sect3>
+			<sect3><title>Close Tab</title>
+				<para>Closes (deletes) the active Notes tab. The contents of the tab will be lost. No warning is given!</para>
+			</sect3>
 		</sect2>
 </sect1><!-- End of Scripting Menu -->
 
@@ -837,7 +849,7 @@ The active items appearing in a menu depends upon which project window is active
 </sect4>
 
 <sect4 id="statistics-on-rows-cmd"><title>&statistics-on-rows-cmd;</title>
-    <para>The &desc-stats-ptr;&statistics-on-rows-cmd; command creates a new table providing basic statistical information about the selected rows in the active table: average, variance, standard deviation, max value, etc. Prior to version 0.9.8.4, statistics were calculated on data in all columns in a selected row which contained numeric data of any kind, whether the column was visible or not. As of version 0.9.8.4, statistics are calculated only on numeric data in visible colums. Usually, statistics should be calculated on data of a similar type - Y values for example. This feature permits selection of only those columns that should be included in the statistical calculation.</para>
+    <para>The &desc-stats-ptr;&statistics-on-rows-cmd; command creates a new table providing basic statistical information about the selected rows in the active table: average, variance, standard deviation, max value, etc. Prior to version 0.9.8.4, statistics were calculated on data in all columns in a selected row which contained numeric data of any kind, whether the column was visible or not. As of version 0.9.8.4, statistics are calculated only on numeric data in visible columns. Usually, statistics should be calculated on data of a similar type - Y values for example. This feature permits selection of only those columns that should be included in the statistical calculation.</para>
     <para>See the &statistics-on-columns-lnk; command for details on exactly what statistical values are calculated.</para>
 </sect4>
 
@@ -852,9 +864,9 @@ The active items appearing in a menu depends upon which project window is active
  
 <sect3 id="hypothesis-testing"><title>Hypothesis-Testing</title>
   <sect4 id="t-test-1-cmd"><title>&t-test-1-cmd;</title>
-<para>The &hyp-test-ptr;&t-test-1-cmd; command performs a Student's t-test on a the selected column of data to estimate the statistical liklihood that the mean has a specific value. It is assumed that the data are normally distributed. The results of the test are placed in the Results Log. The Wikipedia article on the <ulink url="http://en.wikipedia.org/wiki/T-test">Student's t-test</ulink> makes for excellent reading on this topic.</para></sect4>
+<para>The &hyp-test-ptr;&t-test-1-cmd; command performs a Student's t-test on a the selected column of data to estimate the statistical likelihood that the mean has a specific value. It is assumed that the data are normally distributed. The results of the test are placed in the Results Log. The Wikipedia article on the <ulink url="http://en.wikipedia.org/wiki/T-test">Student's t-test</ulink> makes for excellent reading on this topic.</para></sect4>
   <sect4 id="t-test-2-cmd"><title>&t-test-2-cmd;</title>
-<para>The &hyp-test-ptr;&t-test-2-cmd; command performs a Student's t-test on two selected columns of data to estimate the statistical liklihood that the means are the same. The results of the test are placed in the Results Log. See the Wikipedia article on the <ulink url="http://en.wikipedia.org/wiki/T-test">Student's t-test</ulink> for more information.</para></sect4>
+<para>The &hyp-test-ptr;&t-test-2-cmd; command performs a Student's t-test on two selected columns of data to estimate the statistical likelihood that the means are the same. The results of the test are placed in the Results Log. See the Wikipedia article on the <ulink url="http://en.wikipedia.org/wiki/T-test">Student's t-test</ulink> for more information.</para></sect4>
 </sect3>
 
 <sect3 id="anova"><title>ANOVA</title>
@@ -1031,7 +1043,7 @@ The active items appearing in a menu depends upon which project window is active
 
 <!--************************************************************************** -->
 <sect3 id="fft-filter-cmd "><title>&fft-filter-cmd;</title>
-    <para>The Analysis -> &fft-filter-cmd; menu item provides Lowpass, Highpass, Bandpass and Bandteject filter topolopgies:</para>
+    <para>The Analysis -> &fft-filter-cmd; menu item provides Lowpass, Highpass, Bandpass and Bandreject filter topologies:</para>
 
 <!--************************************************************************** -->
   <sect4 id="fft-low-pass-cmd"><title>Low Pass;</title>
@@ -1123,7 +1135,7 @@ The active items appearing in a menu depends upon which project window is active
 </sect3>
 
 <sect3 id="fit-gaussian-cmd"><title>&fit-gaussian-cmd;</title>
-    <para>THe Analysis -> &fit-gaussian-cmd; performs a Gaussian fit to the selected curve. It can be used to obtain the correlation equation of a <link linkend="sec-fit-gaussian">bell shaped data set</link>.</para>
+    <para>The Analysis -> &fit-gaussian-cmd; performs a Gaussian fit to the selected curve. It can be used to obtain the correlation equation of a <link linkend="sec-fit-gaussian">bell shaped data set</link>.</para>
 </sect3>
 
 <sect3 id="fit-lorentzian-cmd"><title>&fit-lorentzian-cmd;</title>
@@ -1432,7 +1444,7 @@ If both the number of columns and the number of rows in the original matrix are 
 <!--		beginning of menu Window		-->
 <!-- ************************************************** -->
 
-<sect1 id="sec-window-menu"><title>The Window Menu</title>
+<sect1 id="sec-window-menu"><title>The Windows Menu</title>
   <para>In addition to the items listed below, this menu will also display a list containing the first ten windows created in the workspace. These windows can be made active, or can be shown if they are hidden, by selecting their name from the list. If your project contains more then ten windows, you must use the Project explorer in order to perform these operations on the remaining windows.</para>
 
   <sect2><title>Folders</title>
@@ -1473,6 +1485,15 @@ If both the number of columns and the number of rows in the original matrix are 
   <sect2><title>Close Window (<keycode>Ctrl-W</keycode>)</title>
     <para>Closes the active window. A dialog will pop-up asking you to confirm the operation if the corresponding option in the Preferences dialog ("Confirmations" tab) is checked.</para>
   </sect2>
+
+  <sect2><title>Numbered Window List</title>
+		<para>A numbered list of the current folder's windows appears at the bottom of the Window Menu. This list may contain up to
+			9 entries. Clicking on one of the entries in this list will activate that window (that is, display the window, and
+			unhide it if necessary.  If there are more than 9 entries, the <emphasis>More Windows...</emphasis> command will
+			be added to the	Window Menu immediately following the last item in the numbered window list. Selecting the
+			<emphasis>More Windows...</emphasis> command opens the &project-explorer-lnk;, which provides access to all windows in
+		 all folders in the project.</para>
+	</sect2>
 </sect1><!--End of menu Window-->
 
 <sect1 id="sec-plot3d"><title>Customization of 3D plots</title>

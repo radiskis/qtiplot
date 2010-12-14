@@ -133,7 +133,7 @@
           <row>
             <entry>-</entry>
 
-            <entry>Substraction</entry>
+            <entry>Subtraction</entry>
           </row>
 
           <row>
@@ -237,25 +237,25 @@
             <row>
               <entry>acos(x)</entry>
 
-              <entry>inverse cosinus</entry>
+              <entry>inverse cosine</entry>
             </row>
 
             <row>
               <entry>acosh(x)</entry>
 
-              <entry>inverse hyperbolic cosinus</entry>
+              <entry>inverse hyperbolic cosine</entry>
             </row>
 
             <row>
               <entry>asin(x)</entry>
 
-              <entry>inverse sinus</entry>
+              <entry>inverse sine</entry>
             </row>
 
             <row>
               <entry>asinh(x)</entry>
 
-              <entry>inverse hyperbolic sinus</entry>
+              <entry>inverse hyperbolic sine</entry>
             </row>
 
             <row>
@@ -331,13 +331,13 @@
             <row>
               <entry>cos(x)</entry>
 
-              <entry>cosinus of x</entry>
+              <entry>cosine of x</entry>
             </row>
 
             <row>
               <entry>cosh(x)</entry>
 
-              <entry>hyperbolic cosinus of x</entry>
+              <entry>hyperbolic cosine of x</entry>
             </row>
 
             <row>
@@ -397,19 +397,19 @@
             <row>
               <entry>ln(x)</entry>
 
-              <entry>natural logarythm of x</entry>
+              <entry>natural logarithm of x</entry>
             </row>
 
             <row>
               <entry>log(x)</entry>
 
-              <entry>decimal logarythm of x</entry>
+              <entry>decimal logarithm of x</entry>
             </row>
 
             <row>
               <entry>log2(x)</entry>
 
-              <entry>base 2 logarythm of x</entry>
+              <entry>base 2 logarithm of x</entry>
             </row>
 
             <row>
@@ -439,13 +439,13 @@
             <row>
               <entry>sin(x)</entry>
 
-              <entry>sinus of x</entry>
+              <entry>sine of x</entry>
             </row>
 
             <row>
               <entry>sinh(x)</entry>
 
-              <entry>hyperblic sinus of x</entry>
+              <entry>hyperbolic sine of x</entry>
             </row>
 
             <row>
@@ -489,7 +489,7 @@
             <row>
               <entry>cell(a,b)</entry>
 
-				  <entry>In the contex of a matrix, returns the value at row a and column b.
+				  <entry>In the context of a matrix, returns the value at row a and column b.
 					  In the context of a table, returns the value at column a and row b (remember that tables use column logic).
 					  Everywhere else, this function is undefined.
 				  </entry>
@@ -690,13 +690,13 @@ for i in range(1, 11):
             <row>
               <entry>acos(x)</entry>
 
-              <entry>inverse cosinus</entry>
+              <entry>inverse cosine</entry>
             </row>
 
             <row>
               <entry>asin(x)</entry>
 
-              <entry>inverse sinus</entry>
+              <entry>inverse sine</entry>
             </row>
 
             <row>
@@ -720,13 +720,13 @@ for i in range(1, 11):
             <row>
               <entry>cos(x)</entry>
 
-              <entry>cosinus of x</entry>
+              <entry>cosine of x</entry>
             </row>
 
             <row>
               <entry>cosh(x)</entry>
 
-              <entry>hyperbolic cosinus of x</entry>
+              <entry>hyperbolic cosine of x</entry>
             </row>
 
             <row>
@@ -782,13 +782,13 @@ for i in range(1, 11):
             <row>
               <entry>log(x)</entry>
 
-              <entry>natural (base e) logarythm of x</entry>
+              <entry>natural (base e) logarithm of x</entry>
             </row>
 
             <row>
               <entry>log10(x)</entry>
 
-              <entry>decimal (base 10) logarythm of x</entry>
+              <entry>decimal (base 10) logarithm of x</entry>
             </row>
 
             <row>
@@ -813,13 +813,13 @@ for i in range(1, 11):
             <row>
               <entry>sin(x)</entry>
 
-              <entry>sinus of x</entry>
+              <entry>sine of x</entry>
             </row>
 
             <row>
               <entry>sinh(x)</entry>
 
-              <entry>hyperblic sinus of x</entry>
+              <entry>hyperbolic sine of x</entry>
             </row>
 
             <row>
@@ -882,7 +882,7 @@ p = newPlot3D()
 n = newNote("momo")
 # use defaults
 n = newNote()
-</programlisting>The currently selected Table/Matrix etc. can be accessed with the follwing commands:
+</programlisting>The currently selected Table/Matrix etc. can be accessed with the following commands:
 <programlisting>
 t = currentTable()
 m = currentMatrix()
@@ -911,7 +911,7 @@ The caption policy can have one of the following values:
           Name <para>the window caption is determined by the window name</para>
         </listitem>
         <listitem>
-          Label<para>the caption is detemined by the window label</para>
+          Label<para>the caption is determined by the window label</para>
         </listitem>
         <listitem>
           Both<para>caption = "name - label"</para>
@@ -954,7 +954,7 @@ QtCore.QObject.connect(workspace(), QtCore.SIGNAL("subWindowActivated(QMdiSubWin
 <sect2 id="Python-Folders">
 <title>Project Folders</title>
 Storing your data tables/matrices and your plots in folders can be very convenient and helpful
-when you're analysing loads of data files in the same project.
+when you're analyzing loads of data files in the same project.
 New objects will always be added to the active folder. You can get a pointer to it via:
 <programlisting>
 f = activeFolder()
@@ -1064,7 +1064,7 @@ t.setNumCols(number)
 </programlisting>
 
 You can add a new column at the end of the table or you can insert new columns before a
-<varname>startColumn</varname> using the functions bellow:
+<varname>startColumn</varname> using the functions below:
 <programlisting>
 t.addColumn()
 t.insertColumns(startColumn, count)
@@ -1086,7 +1086,7 @@ rowTuple = t[idx] # row index starts at 0
 rowTupleList = t[slice]
 </programlisting>
 
-A Table is iteratable. The data is returned row wise as tuple.
+A Table is iterable. The data is returned row wise as tuple.
 <programlisting>
 for c1, c2, c3 in t:
   # do stuff, assuming t has three columns
@@ -1109,7 +1109,7 @@ A negative offset ignores the firsts values of the iterator.
 t.setColData(col, iterableValueSequence, offset=0)
 # just fill the first column with a list of values, staring at row 6
 t.setColData(1, [12,23,34,56,67], 5)
-# fill the second column with fibonacci numbers, omitting the first three.
+# fill the second column with Fibonacci numbers, omitting the first three.
 def FibonacciGenerator():
   a, b = 1, 1
   while True:
@@ -1363,7 +1363,7 @@ It is also possible to swap two columns using:
 t.swapColumns(column1, column2)
 </programlisting>
 
-You can delete a colum or a range of rows using the functions bellow:
+You can delete a column or a range of rows using the functions below:
 <programlisting>
 t.removeCol(number)
 t.deleteRows(startRowNumber, endRowNumber)
@@ -1460,7 +1460,7 @@ importComments=False,comment="#",readOnly=False,importAs=Table.Overwrite,locale=
 </programlisting>
 
 As you see from the above list of import options, you have the possibility to set the new columns as read-only.
-This will prevent the imported data from beeing modified. You have the possibility to remove this protection
+This will prevent the imported data from being modified. You have the possibility to remove this protection
 at any time, by using:
 <programlisting>
 t.setReadOnlyColumn(col, False)
@@ -1555,7 +1555,7 @@ t = importOdfSpreadsheet(file, sheet)
 <title>Export Tables</title>
 
 <para>You can export values from a table to an ASCII <varname>file</varname>, using
-<varname>sep</varname> as separator chararacter. The <varname>ColumnLabels</varname> option
+<varname>sep</varname> as separator character. The <varname>ColumnLabels</varname> option
 allows you to export or ignore the column labels, <varname>ColumnComments</varname> does the same for the comments
 displayed in the table header and the <varname>SelectionOnly</varname> option makes
 possible to export only the selected cells of the table.</para>
@@ -1587,7 +1587,7 @@ t.setColumnWidth(col, width)
 t.hideColumn(col, True)
 </programlisting>
 
-If one or several tabel columns are hidden you can make them visible again using:
+If one or several table columns are hidden you can make them visible again using:
 <programlisting>
 t.showAllColumns()
 </programlisting>
@@ -1782,7 +1782,7 @@ m.resetView()
 </programlisting>
 
 If you need to get data from a table, in order to use it in a matrix (or vice-versa), you can
-avoid time consuming copy/paste operations and speed up the whole proces by simply converting
+avoid time consuming copy/paste operations and speed up the whole process by simply converting
 the table into a matrix:
 <programlisting>
 m = tableToMatrix(table("Table1"))
@@ -1824,7 +1824,7 @@ m2.exportVector(fileName, resolution, color = True)
 </programlisting>,
 
 where the <varname>quality</varname> parameter influences the size of the output file.
-The higher this value (maximum is 100), the higher the qualitity of the image, but the larger the size of the resulting files.
+The higher this value (maximum is 100), the higher the quality of the image, but the larger the size of the resulting files.
 The <varname>dpi</varname> parameter represents the export resolution in pixels per inch (the default is screen resolution).
 
 <para>You can also import an ASCII data <varname>file</varname>, using <varname>sep</varname> as separator characters, ignoring
@@ -1867,7 +1867,7 @@ Possible values are: 0 for line feed (LF), which is the default value,
 lines. Negative values mean that all data lines must be imported.</para>
 
 <para>Also, you can export values from a matrix to an ASCII <varname>file</varname>, using
-<varname>sep</varname> as separator chararacters. The <varname>SelectionOnly</varname> option makes
+<varname>sep</varname> as separator characters. The <varname>SelectionOnly</varname> option makes
 possible to export only the selected cells of the matrix.</para>
 <programlisting>
 m.exportASCII(file, sep="\t", SelectionOnly=False)
@@ -1877,17 +1877,17 @@ m.exportASCII(file, sep="\t", SelectionOnly=False)
 <sect2 id = "Python-Stem-and-Leaf-Plot">
 <title>Stem Plots</title>
 <para>
-A stemplot (or stem-and-leaf plot), in statistics, is a device for presenting
+A stem-plot (or stem-and-leaf plot), in statistics, is a device for presenting
 quantitative data in a graphical format, similar to a histogram,
 to assist in visualizing the shape of a distribution.
-A basic stemplot contains two columns separated by a vertical line.
+A basic stem-plot contains two columns separated by a vertical line.
 The left column contains the stems and the right column contains the leaves.
 See <ulink url="http://en.wikipedia.org/wiki/Stemplot">Wikipedia</ulink> for more details.
 </para>
 
 <para>
-QtiPlot provides a text representation of a stemplot. The following function
-returns a string of characters reprezenting the statistical analysis of the data:
+QtiPlot provides a text representation of a stem-plot. The following function
+returns a string of characters representing the statistical analysis of the data:
 
 <programlisting>
 text = stemPlot(Table *t, columnName, power = 1001, startRow = 0, endRow = -1)
@@ -1900,7 +1900,7 @@ confirm the automatically detected stem unit.
 </para>
 
 <para>
-Once you have created the string representation of the stemplot, you can display it in any text editor you like:
+Once you have created the string representation of the stem-plot, you can display it in any text editor you like:
 in a note within the project or even in the results log:
 
 <programlisting>
@@ -2186,10 +2186,10 @@ where <varname>format</varname> can have the following values: <variablelist spa
 			</varlistentry>
 		  </variablelist>
 <varname>precision</varname> is the number of significant digits and
-<varname>formula</varname> is a mathematical expression that can be used to link oposite scales. It's
+<varname>formula</varname> is a mathematical expression that can be used to link opposite scales. It's
 argument must be <varname>x</varname> for horizontal axes and <varname>y</varname> for vertical axes.
 For example, assuming that the bottom axis displays a range of wavelengths in nanometers and that the top
-axis represents the equivalent energies in eV, with the help of the code bellow all the wavelengths
+axis represents the equivalent energies in eV, with the help of the code below all the wavelengths
 will be automatically converted to electron-volts and the result will be displayed in floating point form
 with two significant digits after the decimal dot sign:
 <programlisting>
@@ -2377,7 +2377,7 @@ grid.setXZeroLinePen(QtGui.QPen(QtCore.Qt.black, 2))
 grid.setYZeroLinePen(QtGui.QPen(QtCore.Qt.black, 2))
 l.replot()
 </programlisting>
-All the grid functions containing an <varname>X</varname> refer to the vertical grid lineas, whereas the <varname>Y</varname> leter indicates the horizontal ones.
+All the grid functions containing an <varname>X</varname> refer to the vertical grid lines, whereas the <varname>Y</varname> letter indicates the horizontal ones.
 Also, the <varname>Maj</varname> word refers to the main grid lines and <varname>Min</varname> to the secondary grid.
 </sect3>
 
@@ -2453,7 +2453,7 @@ l.setAntialiasing(True, bool update = True)
 
 <sect3 id="Python-ResizingLayers">
 <title>Resizing layers</title>
-A layer can be resized using the methods bellow, where the first argument is the new width,
+A layer can be resized using the methods below, where the first argument is the new width,
  the second is the new height and sizes are defined in pixels:
  <programlisting>
  l.resize(200, 200);
@@ -2467,9 +2467,9 @@ A layer can be resized using the methods bellow, where the first argument is the
  l.setGeometry(QRect(x, y, w, h));
  </programlisting>
 
-The default behaviour of 2D plot layers, with respect to the resizing of the graph window
+The default behavior of 2D plot layers, with respect to the resizing of the graph window
 is to adapt the sizes of the fonts used for the various texts, to the new size
-of the plot window. You can override this behaviour and keep the size of the fonts unchanged:
+of the plot window. You can override this behavior and keep the size of the fonts unchanged:
 <programlisting>
 l.setAutoscaleFonts(False)
 </programlisting>
@@ -2477,7 +2477,7 @@ l.setAutoscaleFonts(False)
 
 <sect3 id="Python-Resizing">
 <title>Resizing the drawing area</title>
- The drawing area of a layer (the canvas) can be resized using the methods bellow, where the first argument is the new width,
+ The drawing area of a layer (the canvas) can be resized using the methods below, where the first argument is the new width,
  the second is the new height and sizes are defined in pixels:
  <programlisting>
  l.setCanvasSize(200, 200);
@@ -2514,12 +2514,12 @@ It is possible to change the order of the curves inserted in a layer using the f
 l.changeCurveIndex(int oldIndex, int newIndex)
 </programlisting>
 
-Sometimes, when performing data analysis, one might need the curve title. It is possible to obtain it using the method bellow:
+Sometimes, when performing data analysis, one might need the curve title. It is possible to obtain it using the method below:
 <programlisting>
 title = l.curveTitle(curveIndex)
 </programlisting>
 
-It is possible to get a reference to a curve on the layer l using it's index or it's title, like shown bellow:
+It is possible to get a reference to a curve on the layer l using it's index or it's title, like shown below:
 <programlisting>
 c = l.curve(curveIndex)
 c = l.curve(curveTitle)
@@ -2550,14 +2550,14 @@ c.setBrush(QtGui.QBrush(Qt.darkYellow))
 c.setSymbol(PlotSymbol(PlotSymbol.Hexagon, QtGui.QBrush(Qt.yellow), QtGui.QPen(Qt.blue, 1.5), QtCore.QSize(15, 15)))
 </programlisting>
 
-It is possible to change the number of symbols to be displayed for a curve using the function bellow.
+It is possible to change the number of symbols to be displayed for a curve using the function below.
 This option can be very usefull for very large data sets:
 <programlisting>
 c.setSkipSymbolsCount(3)
 print c.skipSymbolsCount()
 </programlisting>
 
-An alternative way of customizing a curve is by using the functions bellow:
+An alternative way of customizing a curve is by using the functions below:
 <programlisting>
 l.setCurveLineColor(int curve, int color) # uses the index of the colors in the default QtiPlot color list: 0 = black, 1 = red, 2 = green, etc...
 l.setCurveLineStyle(int curve, Qt::PenStyle style)
@@ -2600,7 +2600,7 @@ c.setVisible(bool on)
 </programlisting>
 
 In case you need to get information about the data stored in the curve,
-you have at your disposal the functions bellow:
+you have at your disposal the functions below:
 <programlisting>
 points = c.dataSize()
 for i in range (0, points):
@@ -2792,7 +2792,7 @@ l.addParametricFunction("cos(m)", "sin(m)", 0, 2*pi, points = 100, variableName 
 l.addPolarFunction("t", "t", 0, 2*pi, points = 100, variableName = "t")
 </programlisting>
 
-It is possible to get a reference to an analytical function curve on the layer l using it's index, like shown bellow:
+It is possible to get a reference to an analytical function curve on the layer l using it's index, like shown below:
 <programlisting>
 f = l.functionCurve(curveIndex)
 </programlisting>
@@ -2818,7 +2818,7 @@ p1 = f.parameterValue(index) # the value of the parameter of rang index as a dou
 p2 = f.parameterValue(name) # the value of a parameter using its name string
 </programlisting>
 
-The abscissae range for which the function is calculated/displayed, can be obtained/modified via the methods bellow:
+The abscissae range for which the function is calculated/displayed, can be obtained/modified via the methods below:
 <programlisting>
 x1 = f.startRange()
 x2 = f.endRange()
@@ -2884,7 +2884,7 @@ g3 = plot(m, Layer.GrayScale)
 </programlisting>
 
 The plot functions above return a reference to the multilayer plot window. If you need a reference to the
-spectrogram object itself, you can get it as shown in the example bellow:
+spectrogram object itself, you can get it as shown in the example below:
 <programlisting>
 m = newMatrix("TestMatrix", 1000, 800)
 m.setFormula("x*y")
@@ -2916,7 +2916,7 @@ As you have seen earlier, you can set a global pen for the contour lines, using:
 <programlisting>
 s.setDefaultContourPen(QtGui.QPen(Qt.yellow))
 </programlisting>
-You can also assign a specific pen for each contour line, using the function bellow:
+You can also assign a specific pen for each contour line, using the function below:
 <programlisting>
 s.setContourLinePen(index, QPen)
 </programlisting>
@@ -3071,7 +3071,7 @@ l.remove(arrow1)
 returns a reference to a new arrow object that can be used later on to modify this
 new arrow or to delete it with the <varname>remove</varname> function.</para>
 
-<para>It is possible to modify the properties of all the lines/arrows in a plot layer, see the short example bellow:</para>
+<para>It is possible to modify the properties of all the lines/arrows in a plot layer, see the short example below:</para>
 <programlisting>
 g = graph("Graph1").activeLayer()
 lst = g.arrowsList()
@@ -3175,7 +3175,7 @@ l.exportTex(fileName, color = True, escapeStrings = True, fontSizes = True, size
 one of the Qt supported bitmap image formats (.bmp, .png, .jpg, etc...). The <varname>transparent</varname>
 option can only be used in conjunction with the file formats supporting transprency: .png and .tif (.tiff).
 The <varname>quality</varname> parameter influences the size of the output file. The higher this value (maximum is 100),
-the higher the qualitity of the image, but the larger the size of the resulting files.
+the higher the quality of the image, but the larger the size of the resulting files.
 The <varname>dpi</varname> parameter represents the export resolution in pixels per inch (the default is screen resolution),
 <varname>size</varname> is the printed size of the image (the default is the size on screen) and
 <varname>unit</varname> is the length unit used to express the custom size
@@ -3252,7 +3252,7 @@ The <varname>arrangeLayers()</varname> function takes two parameters. The first 
 if the layers should be arranged automatically, using a best-layout algorithm, or if the
 numbers of rows and columns is fixed by the user. If the value of the second parameter is
 <varname>True</varname>, the size of the canvas is fixed by the user and the plot window
-will be enlarged or shrinked, according to the user settings. Otherwise the size of the plot
+will be enlarged or shrunken, according to the user settings. Otherwise the size of the plot
 window will be kept and the canvas area of each layer will be automatically adapted to fit this size.
 Here's how you can modify the graph created in the previous example, in order to display a row of three
 layers, while keeping the size of the plot window unchanged:
@@ -3263,7 +3263,7 @@ g.setCols(3)
 g.arrangeLayers(False, False)
 </programlisting>
 
-By default, the space betwee two neighbouring layers as well as the distance between the layers
+By default, the space between two neighboring layers as well as the distance between the layers
 and the borders of the plot window is set to five pixels. You can change the spacing between the
 layers and the margins using the following functions:
 <programlisting>
@@ -3286,7 +3286,7 @@ to the whole layer widget (Graph.AlignLayers) and you can specify the alignment 
 g.setAlignPolicy(Graph.AlignCanvases)
 </programlisting>
 
-A very often needed layout is the one with shared layer axes having linked abcissae
+A very often needed layout is the one with shared layer axes having linked abscissae
 (modifying the x scale for one layer will automatically adjust the scales for all plot layers).
 Here's how you can simply create such a 2x2 layers grid, with only a few lines of code:
 <programlisting>
@@ -3298,8 +3298,8 @@ g.arrangeLayers()
 g.linkXLayerAxes(True)
 </programlisting>
 
-All the examples above suppose that the layers are aranged on a grid, but of course you can add layers
-at any position in the plot window. In the examples bellow the x, y coordinates, in pixels,
+All the examples above suppose that the layers are arranged on a grid, but of course you can add layers
+at any position in the plot window. In the examples below the x, y coordinates, in pixels,
 refer to the position of the top-left corner of the layer.
 The origin of the coordinates system coincides with the top-left corner of the plot window, the y
 coordinate increasing towards the bottom of the window. If the width and height of the layer are not specified
@@ -3329,7 +3329,7 @@ g.setActiveLayer(l)
 </programlisting>
 
 In case you need to perform a repetitive task on all the layers in a plot window, you need to use a for loop
-and of course you need to know the number of layers existant on the plot. Here's a small example showing how to
+and of course you need to know the number of layers existing on the plot. Here's a small example showing how to
 custom the titles of all the layers in the plot window:
 <programlisting>
 g = graph("Graph1")
@@ -3353,7 +3353,7 @@ g.swapLayers(layerNum1, layerNum2)
       <title>Waterfall Plots</title>
 
 Waterfall plots use a cascading layout for the layers in a 2D plot window.
-You can create and customize them using the functions bellow:
+You can create and customize them using the functions below:
 <programlisting>
 g = waterfallPlot(table("Table1"), (2, 3, 4))
 g.setWaterfallOffset(15, 10)
@@ -3422,7 +3422,7 @@ any integer value from 1 to 5, with the following signification:
           </variablelist>
 
 For 3D plots created from tables the <varname>style</varname> parameter can take
-any integer value from 0 to 3 or the equivalent style values from the follwing list:
+any integer value from 0 to 3 or the equivalent style values from the following list:
 
 <variablelist spacing="compact">
             <varlistentry>
@@ -3558,7 +3558,7 @@ g.setEmptyFloor()
 <sect3 id="Python-3D-Coordinates">
 <title>Customizing the Coordinates System</title>
 The coordinates system around the surface plot can be customized to display all the twelve axes,
-only three of them or none, respectively, with the help of the following funcions:
+only three of them or none, respectively, with the help of the following functions:
 <programlisting>
 g.setBoxed()
 g.setFramed()
@@ -3573,7 +3573,7 @@ g.setZAxisLabel("Z axis legend")
 g.setLabelsDistance(30)
 </programlisting>
 
-It is possible to set the numerical format and precision of the axes using the function bellow:
+It is possible to set the numerical format and precision of the axes using the function below:
 <programlisting>
 g.setAxisNumericFormat(axis, format, precision)
 </programlisting>
@@ -3656,16 +3656,16 @@ g.setDataColorMap(map)
 g.update()
 </programlisting>
 
-Also, you can use predifined color maps stored in .map files.
+Also, you can use predefined color maps stored in .map files.
 A .map file consists of a of 255 lines, each line defining a color coded as RGB values.
-A set of predefined color map files can be downloaded from QtiPlot web site, in the "Miscelanous"
+A set of predefined color map files can be downloaded from QtiPlot web site, in the "Miscellaneous"
 section.
 <programlisting>
 g.setDataColorMap(fileName)
 g.update()
 </programlisting>
 
-The colors of all the other plot elements can be customized as shown bellow. Don't forget to
+The colors of all the other plot elements can be customized as shown below. Don't forget to
 update the plot in order to display the new colors:
 <programlisting>
 g.setMeshColor(QtGui.QColor("blue"))
@@ -3682,7 +3682,7 @@ g.update()
 
 <sect3 id="Python-3D-Export">
 <title>Exporting</title>
-In order to export a 3D plot you need to specify a file name containing a valid file format extention:
+In order to export a 3D plot you need to specify a file name containing a valid file format extension:
 <programlisting>
 g.export(fileName)
 </programlisting>
@@ -3742,11 +3742,11 @@ a scale factor.
 
 <para>
 3D plots can be exported to any of the following vector formats: .eps, .ps, .pdf, .pgf and .svg, using
-the function bellow:
+the function below:
 <programlisting>
 g.exportVector(fileName, textMode = 0, sortMode = 1, size = QSizeF(), unit = Frame.Pixel, fontsFactor = 1.0)
 </programlisting>
-where <varname>textMode</varname> is an integer value, specifing how texts are handled. It can take
+where <varname>textMode</varname> is an integer value, specifying how texts are handled. It can take
 one of the following values:
 <variablelist spacing="compact">
             <varlistentry>
@@ -3825,7 +3825,7 @@ Not all operations support curves as data sources, like for example:
 convolution/deconvolution and correlation. For these operations only table columns can be used
 as data sources for the moment.
 
-<para>Once you have initialized an operation, you can still chage its input data via
+<para>Once you have initialized an operation, you can still change its input data via
 the following functions:</para>
 <programlisting>
 op.setDataFromCurve(graph("Graph2").activeLayer().curve(1), 10.5, 20.1)
@@ -3846,7 +3846,7 @@ op.enableGraphicsDisplay(True, graph("Graph2").activeLayer())
 </programlisting>
 
 Let's assume that you need to perform a specific operation <varname>op</varname>,
-which analyses your data and at the end, displays a result curve.
+which analyzes your data and at the end, displays a result curve.
 For this kind of operations, you can customize the number of points in the resulting curve
 and its color:
 <programlisting>
@@ -3883,7 +3883,7 @@ conv = Convolution(table("Table1"),  "B", "C")
 conv.setColor("green")
 conv.run()
 </programlisting>
-The deconvolution and the correlation of two data sets can be done using a similar synthax:
+The deconvolution and the correlation of two data sets can be done using a similar syntax:
 <programlisting>
 dec = Deconvolution(table("Table1"),  "B", "C")
 dec.run()
@@ -4129,7 +4129,7 @@ print(formula)
 </programlisting>
 
 If the first parameter of generateFunction() is set to False, QtiPlot will create a hidden data
-table contining the same number of points as the data set/curve to be fitted (same abscissae).
+table containing the same number of points as the data set/curve to be fitted (same abscissae).
 You can interact with this table and extract the data points of the result fit curve using:
 <programlisting>
 t = f.resultTable()
@@ -4217,7 +4217,7 @@ print stats.standardError()
 </programlisting>
 </sect3>
 
-For all the statistic test bellow, once you have created a test object, you can use the following methods:
+For all the statistic test below, once you have created a test object, you can use the following methods:
 
 <programlisting>
 test.showResultsLog(False) # disable the logging of the results
@@ -4383,7 +4383,7 @@ Furthermore, let's suppose that these files were created
 during several series of measurements, each measurement generating a set
 of files identified by a certain string in the file name, like for example: "disper1".
 In order to analyze these files, you need first of all to import them into tables.
-The following code snippet shows how to automize this task using Qt dialogs and convenience classes:
+The following code snippet shows how to automate this task using Qt dialogs and convenience classes:
 
 <programlisting>
 # Pop-up a file dialog allowing to chose the working folder:
@@ -4421,7 +4421,7 @@ with the help of the <varname>uic</varname> module.
 As an example, suppose that we have created a test dialog containing an input QDoubleSpinBox called "valueBox"
 and a QPushButton called "okButton". On pressing this button, we would like to create a new table displaying
 the input value in its first cell. We have saved this dialog to a file called "myDialog.ui".
-A minimalistic approach is shown in the small script bellow:
+A minimalistic approach is shown in the small script below:
 </para>
 
 <programlisting>
@@ -4440,9 +4440,9 @@ For more details about how to use .ui files in your Python scripts please read t
 <ulink url="http://www.riverbankcomputing.co.uk/static/Docs/PyQt4/pyqt4ref.html#using-the-generated-code">PyQt4 documentation</ulink>.
 </sect2>
 
-<sect2 id="Python-AutomatizationExample">
-<title>Task automatization example</title>
-Bellow you can find a detailed example showing how to completely automatize tasks in QtiPlot.
+<sect2 id="Python-AutomationExample">
+<title>Task automation example</title>
+Below you can find a detailed example showing how to completely automatize tasks in QtiPlot.
 It can be used in order to verify the accuracy of the curve fitting algorithms in QtiPlot. The data used
 in this example is retrieved from the <ulink url="http://www.itl.nist.gov/div898/strd/">
 Statistical Reference Datasets Project of the National Institute of Standards and Technology (NIST)</ulink>.
@@ -4461,7 +4461,7 @@ saveout = sys.stdout
 fsock = open(dirPath + "/" + "results.txt", "w")
 sys.stdout = fsock
 
-# on Unix systems you can redirect the output directly to a console by uncommenting the line bellow:
+# on Unix systems you can redirect the output directly to a console by uncommenting the line below:
 #sys.stdout = sys.__stdout__
 
 # make sure that the decimal separator is the dot character
