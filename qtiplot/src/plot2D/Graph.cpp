@@ -3443,9 +3443,9 @@ DataCurve* Graph::insertCurve(Table* w, const QString& xColName, const QString& 
 			time0 = sd->dateTimeOrigin().time();
 		else {
 			for (int i = startRow; i <= endRow; i++ ){
-				QString xval = w->text(i, xcol);
+				QString xval = w->text(i, xcol).trimmed();
 				if (!xval.isEmpty()){
-					time0 = QTime::fromString (xval, date_time_fmt);
+					time0 = QTime::fromString(xval, date_time_fmt);
 					if (time0.isValid())
 						break;
 				}
@@ -3457,7 +3457,7 @@ DataCurve* Graph::insertCurve(Table* w, const QString& xColName, const QString& 
 			date0 = sd->dateTimeOrigin();
 		else {
 			for (int i = startRow; i <= endRow; i++ ){
-				QString xval = w->text(i, xcol);
+				QString xval = w->text(i, xcol).trimmed();
 				if (!xval.isEmpty()){
 					date0 = QDateTime::fromString(xval, date_time_fmt);
 					if (date0.isValid())
