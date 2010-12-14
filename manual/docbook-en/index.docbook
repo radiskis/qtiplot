@@ -243,10 +243,14 @@
 <!ENTITY plot-wizard-lnk '<link linkend="plot-wizard-cmd"><command>Plot Wizard</command> command</link>'>
   <!ENTITY plot-wizard-key "<keycode>Ctrl-Alt-W</keycode>">
   <!ENTITY plot-wizard-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/wizard.png"/></imageobject></inlinemediaobject>'>
+
 <!ENTITY project-explorer-cmd "<command>Project Explorer</command>">
-<!ENTITY project-explorer-lnk '<link linkend="project-explorer-cmd"><command>Project Explorer</command> command</link>'>
-  <!ENTITY project-explorer-key "<keycode>Ctrl-E</keycode>">
-  <!ENTITY project-explorer-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/folder.png"/></imageobject></inlinemediaobject>'>
+<!ENTITY project-explorer-lnk '<link linkend="project-explorer-cmd">&project-explorer-cmd;</link>'>
+<!ENTITY project-explorer-key "<keycode>Ctrl-E</keycode>">
+<!ENTITY project-explorer-icon '<inlinemediaobject><imageobject>
+	<imagedata format="PNG" fileref="icons/folder.png"/>
+</imageobject></inlinemediaobject>'>
+
 <!ENTITY results-log-cmd "<command>Results log</command>">
 <!ENTITY results-log-lnk '<link linkend="results-log-cmd"><command>Results log</command> command</link>'>
   <!ENTITY results-log-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/log.png"/></imageobject></inlinemediaobject>'>
