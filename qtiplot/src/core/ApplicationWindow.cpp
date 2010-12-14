@@ -4458,6 +4458,25 @@ Table * ApplicationWindow::importExcelCrossplatform(const QString& fn, int sheet
 				}
 			}
 		}
+
+		QStringList header;
+		bool firstLineAllStrings = true;
+		for (int col = 0; col <= table->numCols(); col++){
+			if (firstLineAllStrings){
+				QString s = table->text(0, col);
+				bool ok;
+				s.toDouble (&ok);
+				if (ok)
+					firstLineAllStrings = false;
+				else
+					header << s;
+			}
+		}
+		if (!header.isEmpty() && firstLineAllStrings){
+			table->deleteRows(0, 1);
+			table->setHeader(header);
+		}
+
 		table->showNormal();
 
 		if (sheet > 0 && sheet == currentSheet)
