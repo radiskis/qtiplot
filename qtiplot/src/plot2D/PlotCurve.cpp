@@ -541,7 +541,7 @@ void DataCurve::loadData()
 			time0 = sd->dateTimeOrigin().time();
 		else {
 			for (int i = d_start_row; i <= d_end_row; i++ ){
-				QString xval=d_table->text(i,xcol);
+				QString xval = d_table->text(i, xcol).trimmed();
 				if (!xval.isEmpty()){
 					time0 = QTime::fromString (xval, date_time_fmt);
 					if (time0.isValid())
@@ -555,7 +555,7 @@ void DataCurve::loadData()
 			date0 = sd->dateTimeOrigin();
 		else {
 			for (int i = d_start_row; i <= d_end_row; i++ ){
-				QString xval=d_table->text(i,xcol);
+				QString xval = d_table->text(i, xcol).trimmed();
 				if (!xval.isEmpty()){
 					date0 = QDateTime::fromString (xval, date_time_fmt);
 					if (date0.isValid())
@@ -568,19 +568,19 @@ void DataCurve::loadData()
 	int size = 0, from = 0;
 	d_data_ranges.clear();
 	for (int i = d_start_row; i <= d_end_row; i++ ){
-		QString xval = d_table->text(i,xcol);
-		QString yval = d_table->text(i,ycol);
+		QString xval = d_table->text(i, xcol);
+		QString yval = d_table->text(i, ycol);
 		if (!xval.isEmpty() && !yval.isEmpty()){
 			bool valid_data = true;
 			if (xColType == Table::Text){
 				xLabels << xval;
 				X[size] = (double)(size + 1);
 			} else if (xColType == Table::Time){
-				QTime time = QTime::fromString (xval, date_time_fmt);
+				QTime time = QTime::fromString(xval.trimmed(), date_time_fmt);
 				if (time.isValid())
 					X[size]= time0.msecsTo (time);
 			} else if (xColType == Table::Date){
-				QDateTime d = QDateTime::fromString (xval, date_time_fmt);
+				QDateTime d = QDateTime::fromString(xval.trimmed(), date_time_fmt);
 				if (d.isValid())
 					X[size] = (double) date0.secsTo(d);
 			} else
