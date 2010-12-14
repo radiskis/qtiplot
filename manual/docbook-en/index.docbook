@@ -57,17 +57,21 @@
 <!ENTITY new-table-lnk '<link linkend="new-table-cmd"><command>New -> New Table</command> command</link>'>
   <!ENTITY new-table-key "<keycode>Ctrl-T</keycode>">
   <!ENTITY new-table-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/table.png"/></imageobject></inlinemediaobject>'>
+
 <!ENTITY new-matrix-cmd "<command>New -> New Matrix</command>">
 <!ENTITY new-matrix-lnk '<link linkend="new-matrix-cmd"><command>New -> New Matrix</command> command</link>'>
   <!ENTITY new-matrix-key "<keycode>Ctrl-M</keycode>">
   <!ENTITY new-matrix-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/new_matrix.png"/></imageobject></inlinemediaobject>'>
+
 <!ENTITY new-note-cmd "<command>New -> New Note</command>">
 <!ENTITY new-note-lnk '<link linkend="new-note-cmd"><command>New -> New Note</command> command</link>'>
   <!ENTITY new-note-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/new_note.png"/></imageobject></inlinemediaobject>'>
+
 <!ENTITY new-graph-cmd "<command>New -> New Graph</command>">
 <!ENTITY new-graph-lnk '<link linkend="new-graph-cmd"><command>New -> New Graph</command> command</link>'>
   <!ENTITY new-graph-key "<keycode>Ctrl-G</keycode>">
   <!ENTITY new-graph-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/new_graph.png"/></imageobject></inlinemediaobject>'>
+
 <!ENTITY new-function-plot-cmd "<command>New -> New Function Plot</command>">
 <!ENTITY new-function-plot-lnk '<link linkend="new-function-plot-cmd"><command>New -> New Function Plot</command> command</link>'>
   <!ENTITY new-function-plot-key "<keycode>Ctrl-F</keycode>">
@@ -90,11 +94,14 @@
 <!ENTITY recent-projects-cmd "<command>Recent Projects</command>">
 <!ENTITY recent-projects-lnk '<link linkend="recent-projects-cmd"><command>Recent Projects</command> command</link>'>
 <!ENTITY close-cmd "<command>Close</command>">
+
 <!ENTITY open-image-file-cmd "<command>Open Image File</command>">
 <!ENTITY open-image-file-lnk '<link linkend="open-image-file-cmd"><command>Open Image File</command> command</link>'>
   <!ENTITY open-image-file-key "<keycode>Ctrl-I</keycode>">
+
 <!ENTITY import-image-cmd "<command>Import Image...</command>">
 <!ENTITY import-image-lnk '<link linkend="import-image-cmd"><command>Import Image...</command> command</link>'>
+
 <!ENTITY save-project-cmd "<command>Save Project</command>">
 <!ENTITY save-project-lnk '<link linkend="save-project-cmd"><command>Save Project</command> command</link>'>
   <!ENTITY save-project-key "<keycode>Ctrl-S</keycode>">
@@ -137,7 +144,6 @@
 <!--export-cmd added SRB -->
 <!ENTITY export-cmd "<command>Export</command>">
 <!ENTITY export-lnk '<link linkend="export-cmd"><command>Export</command> command</link>'>
-
 
 <!ENTITY odf-presentation-cmd "<command>File -> Create Open Document Presentation...</command>">
 <!ENTITY odf-presentation-lnk '<link linkend="odf-presentation-cmd"><command>File -> Create Open Document Presentation...</command> command</link>'>
@@ -183,11 +189,11 @@
 
 <!ENTITY quit-cmd "<command>Quit</command>">
 <!ENTITY quit-lnk '<link linkend="quit-cmd"><command>Quit</command> command</link>'>
-<!ENTITY quit-key "<keycode>Alt-F4</keycode>">
+<!--OLD  ENTITY quit-key "<keycode>Alt-F4</keycode>"-->
+<!ENTITY quit-key "<keycode>Ctrl-Q</keycode>">
 <!ENTITY quit-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/quit.png"/></imageobject></inlinemediaobject>'>
-<!--
-              menu: Edit
--->
+
+<!--     menu: Edit     -->
 
 <!ENTITY autocomplete-key "<keycode>Ctrl+U</keycode>">
 
@@ -196,10 +202,12 @@
 <!ENTITY undo-lnk '<link linkend="undo-cmd"><command>Undo</command> command</link>'>
   <!ENTITY undo-key "<keycode>Ctrl-Z</keycode>">
   <!ENTITY undo-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/undo.png"/></imageobject></inlinemediaobject>'>
+
 <!ENTITY redo-cmd "<command>Redo</command>">
 <!ENTITY redo-lnk '<link linkend="redo-cmd"><command>Redo</command> command</link>'>
-  <!ENTITY redo-key "<keycode>Ctrl-R</keycode>">
-  <!ENTITY redo-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/redo.png"/></imageobject></inlinemediaobject>'>
+<!-- Old: ENTITY redo-key "<keycode>Ctrl-R</keycode>" -->
+<!ENTITY redo-key "<keycode>Ctrl-Shift-Z</keycode>">
+<!ENTITY redo-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/redo.png"/></imageobject></inlinemediaobject>'>
 
 <!ENTITY cut-cmd "<command>Cut Selection</command>">
 <!ENTITY cut-lnk '<link linkend="cut-cmd">&cut-cmd;</link>'>
@@ -436,13 +444,17 @@
 <!ENTITY vertical-steps-cmd "<command>Vertical Steps</command>">
 <!ENTITY vertical-steps-lnk '<link linkend="vertical-steps-cmd">&vertical-steps-cmd;</link>'>
   <!ENTITY vertical-steps-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/vert_steps.png"/></imageobject></inlinemediaobject>'>
+
 <!ENTITY columns-cmd "<command>Columns</command>">
 <!ENTITY columns-lnk '<link linkend="columns-cmd">&columns-cmd;</link>'>
   <!ENTITY columns-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/vertBars.png"/></imageobject></inlinemediaobject>'>
-
 <!ENTITY rows-cmd "<command>Rows</command>">
 <!ENTITY rows-lnk '<link linkend="rows-cmd">&rows-cmd;</link>'>
   <!ENTITY rows-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/hBars.png"/></imageobject></inlinemediaobject>'>
+
+<!ENTITY special-bar-column-cmd "<command>Special Bar+Column</command>">
+<!ENTITY special-bar-column-lnk '<link linkend="special-bar-column-cmd">&special-bar-column-cmd; command</link>'>
+
 <!ENTITY area-cmd "<command>Area</command>">
 <!ENTITY area-lnk '<link linkend="area-cmd"><command>Area</command></link>'>
   <!ENTITY area-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/area.png"/></imageobject></inlinemediaobject>'>
@@ -479,106 +491,165 @@
 
 <!ENTITY statistical-graphs-cmd "<command>Statistical Graphs</command>">
 <!ENTITY statistical-graphs-lnk '<link linkend="statistical-graphs-cmd"><command>Statistical Graphs</command> command</link>'>
-<!ENTITY box-plot-cmd "<command>Statistical Graphs -> Box Plot</command>">
-<!ENTITY box-plot-lnk '<link linkend="box-plot-cmd"><command>Statistical Graphs -> Box Plot</command> command</link>'>
-  <!ENTITY box-plot-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/boxPlot.png"/></imageobject></inlinemediaobject>'>
 
-<!ENTITY histogram-cmd "<command>Statistical Graphs -> Histogram</command>">
-<!ENTITY histogram-lnk '<link linkend="histogram-cmd"><command>Statistical Graphs -> Histogram</command> command</link>'>
-  <!ENTITY histogram-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/histogram.png"/></imageobject></inlinemediaobject>'>
+<!ENTITY box-plot-cmd "<command>Box Plot</command>">
+<!ENTITY box-plot-lnk '<link linkend="box-plot-cmd">&box-plot-cmd; command</link>'>
+<!ENTITY box-plot-icon '<inlinemediaobject><imageobject>
+	<imagedata format="PNG" fileref="icons/boxPlot.png"/>
+</imageobject></inlinemediaobject>'>
 
-<!ENTITY stacked-histogram-cmd "<command>Statistical Graphs -> Stacked Histogram</command>">
-<!ENTITY stacked-histogram-lnk '<link linkend="stacked-histogram-cmd"><command>Statistical Graphs -> Stacked Histogram</command> command</link>'>
-  <!ENTITY stacked-histogram-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/stacked_hist.png"/></imageobject></inlinemediaobject>'>
+<!ENTITY histogram-cmd "<command> Histogram</command>">
+<!ENTITY histogram-lnk '<link linkend="histogram-cmd">&histogram-cmd; command</link>'>
+ <!ENTITY histogram-icon '<inlinemediaobject><imageobject>
+	<imagedata format="PNG" fileref="icons/histogram.png"/>
+</imageobject></inlinemediaobject>'>
 
-<!ENTITY stem-and-leaf-cmd "<command>Statistical Graphs -> Stem and Leaf</command>">
+<!ENTITY stacked-histogram-cmd "<command>Stacked Histogram</command>">
+<!ENTITY stacked-histogram-lnk '<link linkend="stacked-histogram-cmd">&stacked-histogram-cmd; command</link>'>
+<!ENTITY stacked-histogram-icon '<inlinemediaobject><imageobject>
+	<imagedata format="PNG" fileref="icons/stacked_hist.png"/>
+</imageobject></inlinemediaobject>'>
+
+<!ENTITY stem-and-leaf-cmd "<command>Stem and Leaf</command>">
 <!ENTITY stem-and-leaf-lnk '<link linkend="stem-and-leaf-cmd">&stem-and-leaf-cmd; command</link>'>
-  <!ENTITY stem-and-leaf-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/leaf.png"/></imageobject></inlinemediaobject>'>
+<!ENTITY stem-and-leaf-icon '<inlinemediaobject><imageobject>
+	<imagedata format="PNG" fileref="icons/leaf.png"/>
+</imageobject></inlinemediaobject>'>
 
 <!ENTITY panel-cmd "<command>Panel</command>">
-<!ENTITY panel-lnk '<link linkend="panel-cmd"><command>Panel</command> command</link>'>
-<!ENTITY vertical-2-layers-cmd "<command>Panel -> Vertical 2 Layers</command>">
-<!ENTITY vertical-2-layers-lnk '<link linkend="vertical-2-layers-cmd"><command>Panel -> Vertical 2 Layers</command> command</link>'>
-  <!ENTITY vertical-2-layers-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/panel_v2.png"/></imageobject></inlinemediaobject>'>
-<!ENTITY horizontal-2-layers-cmd "<command>Panel -> Horizontal 2 Layers</command>">
-<!ENTITY horizontal-2-layers-lnk '<link linkend="horizontal-2-layers-cmd"><command>Panel -> Horizontal 2 Layers</command> command</link>'>
-  <!ENTITY horizontal-2-layers-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/panel_h2.png"/></imageobject></inlinemediaobject>'>
-<!ENTITY four-layers-cmd "<command>Panel -> 4 Layers</command>">
-<!ENTITY four-layers-lnk '<link linkend="four-layers-cmd"><command>Panel -> 4 Layers</command> command</link>'>
-  <!ENTITY four-layers-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/panel_4.png"/></imageobject></inlinemediaobject>'>
-<!ENTITY stacked-layers-cmd "<command>Panel -> Stacked Layers</command>">
-<!ENTITY stacked-layers-lnk '<link linkend="stacked-layers-cmd"><command>Panel -> Stacked Layers</command> command</link>'>
+<!ENTITY panel-lnk '<link linkend="panel-cmd">&panel-cmd; command</link>'>
 
-<!ENTITY custom-panel-cmd "<command>Panel -> Custom Layout...</command>">
+<!ENTITY vertical-2-layers-cmd "<command>Vertical 2 Layers</command>">
+<!ENTITY vertical-2-layers-lnk '<link linkend="vertical-2-layers-cmd">&vertical-2-layers-cmd; command</link>'>
+<!ENTITY vertical-2-layers-icon '<inlinemediaobject><imageobject>
+	<imagedata format="PNG" fileref="icons/panel_v2.png"/>
+</imageobject></inlinemediaobject>'>
+
+<!ENTITY horizontal-2-layers-cmd "<command>Horizontal 2 Layers</command>">
+<!ENTITY horizontal-2-layers-lnk '<link linkend="horizontal-2-layers-cmd">&horizontal-2-layers-cmd; command</link>'>
+<!ENTITY horizontal-2-layers-icon '<inlinemediaobject><imageobject>
+	<imagedata format="PNG" fileref="icons/panel_h2.png"/>
+</imageobject></inlinemediaobject>'>
+
+<!ENTITY four-layers-cmd "<command>4 Layers</command>">
+<!ENTITY four-layers-lnk '<link linkend="four-layers-cmd">&four-layers-cmd; command</link>'>
+<!ENTITY four-layers-icon '<inlinemediaobject><imageobject>
+	<imagedata format="PNG" fileref="icons/panel_4.png"/>
+</imageobject></inlinemediaobject>'>
+
+<!ENTITY stacked-layers-cmd "<command>Stacked Layers</command>">
+<!ENTITY stacked-layers-lnk '<link linkend="stacked-layers-cmd">&stacked-layers-cmd; command</link>'>
+<!ENTITY stacked-layers-icon '<inlinemediaobject><imageobject>
+	<imagedata format="PNG" fileref="icons/stacked.png"/>
+</imageobject></inlinemediaobject>'>
+
+<!ENTITY custom-panel-cmd "<command>Custom Layout...</command>">
 <!ENTITY custom-panel-lnk '<link linkend="custom-panel-cmd">&custom-panel-cmd; command</link>'>
-<!ENTITY custom-panel-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/arrangeLayers.png"/></imageobject></inlinemediaobject>'>
+<!ENTITY custom-panel-icon '<inlinemediaobject><imageobject>
+	<imagedata format="PNG" fileref="icons/arrangeLayers.png"/>
+</imageobject></inlinemediaobject>'>
 
-  <!ENTITY stacked-layers-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/stacked.png"/></imageobject></inlinemediaobject>'>
 <!ENTITY plot-3d-cmd "<command>Plot 3D</command>">
 <!ENTITY plot-3d-lnk '<link linkend="plot-3d-cmd"><command>Plot 3D</command> command</link>'>
-<!ENTITY ribbons-cmd "<command>Plot 3D -> Ribbons</command>">
-<!ENTITY ribbons-lnk '<link linkend="ribbons-cmd"><command>Plot 3D -> Ribbons</command> command</link>'>
-  <!ENTITY ribbons-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/ribbon.png"/></imageobject></inlinemediaobject>'>
-<!ENTITY bars-cmd "<command>Plot 3D -> Bars</command>">
-<!ENTITY bars-lnk '<link linkend="bars-cmd"><command>Plot 3D -> Bars</command> command</link>'>
-  <!ENTITY bars-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/bars.png"/></imageobject></inlinemediaobject>'>
-<!ENTITY scatter3d-cmd "<command>Plot 3D -> Scatter</command>">
-<!ENTITY scatter3d-lnk '<link linkend="scatter3d-cmd"><command>Plot 3D -> Scatter</command> command</link>'>
-  <!ENTITY scatter3d-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/scatter.png"/></imageobject></inlinemediaobject>'>
-<!ENTITY trajectory-cmd "<command>Plot 3D -> Trajectory</command>">
-<!ENTITY trajectory-lnk '<link linkend="trajectory-cmd"><command>Plot 3D -> Trajectory</command> command</link>'>
-  <!ENTITY trajectory-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/trajectory.png"/></imageobject></inlinemediaobject>'>
+
+<!ENTITY ribbons-cmd "<command>Ribbons</command>">
+<!ENTITY ribbons-lnk '<link linkend="ribbons-cmd">&ribbons-cmd; command</link>'>
+<!ENTITY ribbons-icon '<inlinemediaobject><imageobject>
+	<imagedata format="PNG" fileref="icons/ribbon.png"/>
+</imageobject></inlinemediaobject>'>
+
+<!ENTITY bars-cmd "<command>Bars</command>">
+<!ENTITY bars-lnk '<link linkend="bars-cmd"><command>&bars-cmd; command</link>'>
+<!ENTITY bars-icon '<inlinemediaobject><imageobject>
+	<imagedata format="PNG" fileref="icons/bars.png"/>
+</imageobject></inlinemediaobject>'>
+
+<!ENTITY scatter3d-cmd "<command>Scatter</command>">
+<!ENTITY scatter3d-lnk '<link linkend="scatter3d-cmd">&scatter3d-cmd; command</link>'>
+<!ENTITY scatter3d-icon '<inlinemediaobject><imageobject>
+	<imagedata format="PNG" fileref="icons/scatter.png"/>
+</imageobject></inlinemediaobject>'>
+
+<!ENTITY trajectory-cmd "<command>Trajectory</command>">
+<!ENTITY trajectory-lnk '<link linkend="trajectory-cmd">&trajectory-cmd; command</link>'>
+<!ENTITY trajectory-icon '<inlinemediaobject><imageobject>
+	<imagedata format="PNG" fileref="icons/trajectory.png"/>
+</imageobject></inlinemediaobject>'>
+
 <!--
               menu: Matrix
 -->
+
 <!ENTITY matrix-menu-lnk '<link linkend="sec-matrix-menu">Matrix menu</link>'>
 <!ENTITY set-properties-cmd "<command>Set Properties...</command>">
 <!ENTITY set-properties-lnk '<link linkend="set-properties-cmd"><command>Set Properties...</command> command</link>'>
+
 <!ENTITY set-dimensions-cmd "<command>Set Dimensions...</command>">
 <!ENTITY set-dimensions-lnk '<link linkend="set-dimensions-cmd"><command>Set Dimensions...</command> command</link>'>
+<!ENTITY set-dimensions-key "<keycode>Ctrl-D</keycode>">
+
 <!ENTITY set-values-cmd "<command>Set Values...</command>">
 <!ENTITY set-values-lnk '<link linkend="set-values-cmd"><command>Set Values...</command> command</link>'>
+<!ENTITY set-values-key "<keycode>Ctrl-Q</keycode>">
+
 <!ENTITY recalculate-cmd "<command>Recalculate</command>">
 <!ENTITY recalculate-key "<keycode>Ctrl-Return</keycode>">
+
 <!ENTITY rotate90-cmd "<command>Rotate 90</command>">
 <!ENTITY rotate90-key "<keycode>Ctrl-Shift-R</keycode>">
+
 <!ENTITY rotate-90-cmd "<command>Rotate -90</command>">
 <!ENTITY rotate-90-key "<keycode>Ctrl-Alt-R</keycode>">
+
 <!ENTITY flipV-cmd "<command>Flip V</command>">
 <!ENTITY flipV-key "<keycode>Ctrl-Shift-V</keycode>">
+
 <!ENTITY flipH-cmd "<command>Flip H</command>">
 <!ENTITY flipH-key "<keycode>Ctrl-Shift-H</keycode>">
+
 <!ENTITY expand-cmd "<command>Expand...</command>">
 <!ENTITY expand-lnk '<link linkend="expand-cmd"><command>Expand...</command> command</link>'>
+
 <!ENTITY shrink-cmd "<command>Shrink...</command>">
 <!ENTITY shrink-lnk '<link linkend="shrink-cmd"><command>Shrink...</command> command</link>'>
+
 <!ENTITY smooth-cmd "<command>Smooth</command>">
 <!ENTITY smooth-lnk '<link linkend="smooth-cmd"><command>Smooth</command> command</link>'>
+
 <!ENTITY transpose-cmd "<command>Transpose</command>">
 <!ENTITY transpose-lnk '<link linkend="transpose-cmd"><command>Transpose</command> command</link>'>
+
 <!ENTITY invert-cmd "<command>Invert</command>">
 <!ENTITY invert-lnk '<link linkend="invert-cmd"><command>Invert</command> command</link>'>
 
 <!ENTITY image-view-cmd "<command>Image mode</command>">
 <!ENTITY image-view-key "<keycode>Ctrl-Shift-I</keycode>">
+
 <!ENTITY table-view-cmd "<command>Data mode</command>">
 <!ENTITY table-view-key "<keycode>Ctrl-Shift-D</keycode>">
+
 <!ENTITY gray-scale-cmd "<command>Gray Scale</command>">
+
 <!ENTITY rainbow-palette-cmd "<command>Rainbow</command>">
+
 <!ENTITY custom-palette-cmd "<command>Custom</command>">
+
 <!ENTITY show-col-row-cmd "<command>Show Column/Row</command>">
 <!ENTITY show-col-row-key "<keycode>Ctrl-Shift-C</keycode>">
+
 <!ENTITY show-x-y-cmd "<command>Show X/Y</command>">
 <!ENTITY show-x-y-key "<keycode>Ctrl-Shift-X</keycode>">
 
 <!ENTITY determinant-cmd "<command>Determinant</command>">
 <!ENTITY determinant-lnk '<link linkend="determinant-cmd"><command>Determinant</command> command</link>'>
 <!ENTITY convert-to-table-cmd "<command>Convert to Spreadsheet</command>">
+
 <!ENTITY convert-to-table-lnk '<link linkend="convert-to-table-cmd"><command>Convert to Spreadsheet</command> command</link>'>
 <!--
               menu: Table
 -->
 <!ENTITY table-menu-lnk '<link linkend="sec-table-menu">Table menu</link>'>
+
 <!ENTITY set-column-as-cmd "<command>Set Column As</command>">
 <!ENTITY set-column-as-lnk '<link linkend="set-column-as-cmd"><command>Set Column As</command> command</link>'>
 
@@ -706,7 +777,7 @@
 <!ENTITY set-rows-cmd "<command>Set Rows...</command>">
 <!ENTITY rows-lnk '<link linkend="set-rows-cmd">&set-rows-cmd;</link>'>
 
-<!ENTITY delete-rows-interval-cmd "<command></command>">
+<!ENTITY delete-rows-interval-cmd "<command>Delete Rows Interval...</command>">
 <!ENTITY delete-rows-interval-cmd-lnk '<link linkend="delete-rows-interval-cmd-cmd">&delete-rows-interval-cmd-cmd;</link>'>
 <!ENTITY delete-rows-interval-key "">
 
