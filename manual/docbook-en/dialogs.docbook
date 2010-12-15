@@ -992,14 +992,11 @@ via a proxy server. If you don't now how to set these options, contact your Netw
   If the <emphasis>Automatically Recalculate Column Values</emphasis> option is checked, all modifications in the values
   of a column trigger a recalculation of all columns with formulas depending on the modified column.
   </para>
-  <informalfigure id="fig-preferences-dialog-4">
-    <title>The preferences dialog: table options.</title>
-    <mediaobject>
-      <imageobject>
+  <figure id="fig-preferences-dialog-4"><title>The preferences dialog: table options.</title>
+    <mediaobject><imageobject>
         <imagedata  format="PNG" fileref="pics/preferences-dialog4.png"/>
-      </imageobject>
-    </mediaobject>
-  </informalfigure>
+    </imageobject></mediaobject>
+  </figure>
 </sect2>
 
 <sect2 id="2dplot-preferences"><title>2D Plot Preferences</title>
