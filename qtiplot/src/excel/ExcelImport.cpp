@@ -946,6 +946,11 @@ Table * ApplicationWindow::importUsingExcel(const QString& fn, int sheet)
 		for (int col = 1; col <= t->numCols(); col++){
 			if (firstLineAllStrings){
 				QString s = t->text(0, col - 1);
+				if (s.isEmpty()){
+					firstLineAllStrings = false;
+					break;
+				}
+
 				bool ok;
 				s.toDouble (&ok);
 				if (ok)

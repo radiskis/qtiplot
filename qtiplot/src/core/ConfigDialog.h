@@ -119,6 +119,13 @@ private slots:
 	void chooseTexCompiler();
 	bool validateTexCompiler();
 
+	void chooseOffice();
+	bool validateOffice();
+	void chooseJava();
+	bool validateJava();
+	void chooseJODConverter();
+	bool validateJODConverter();
+
 	void enableMajorGrids(bool on);
 	void enableMinorGrids(bool on);
 
@@ -311,6 +318,18 @@ private:
 	QCheckBox *disableAntialiasingBox, *openLastProjectBox;
 	QSpinBox *curveSizeBox;
 	QPushButton *btnDefaultSettings;
+
+	QLineEdit *sofficePathBox;
+	QPushButton *browseOfficeBtn;
+	QLabel *officeLabel;
+
+	QLineEdit *javaPathBox;
+	QPushButton *browseJavaBtn;
+	QLabel *javaLabel;
+
+	QLineEdit *jodconverterPathBox;
+	QPushButton *browseJODConverterBtn;
+	QLabel *jodconverterLabel;
 };
 
 #endif // CONFIGDIALOG_H

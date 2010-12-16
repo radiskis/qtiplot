@@ -39,7 +39,7 @@ class Table;
 class OdsFileHandler : public QXmlDefaultHandler
 {
 public:
-	OdsFileHandler(ApplicationWindow *app, const QString& odsFileName);
+	OdsFileHandler(ApplicationWindow *app, const QString& odsFileName, const QString& legendName = QString::null);
 
     bool startElement(const QString &namespaceURI, const QString &localName,
                        const QString &qName, const QXmlAttributes &attributes);
@@ -55,6 +55,7 @@ public:
 private:
 	ApplicationWindow * d_app;
 	QString d_ods_file_name;
+	QString d_legend_name;
     QString currentText;
     QString errorStr;
 	//Index of the last non-empty cell in a sheet

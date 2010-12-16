@@ -199,6 +199,7 @@ using namespace std;
 #ifdef ODS_IMPORT
 	#include <QTemporaryFile>
 	#include <OdsFileHandler.h>
+	#include <ExcelFileConverter.h>
 	#include <quazip.h>
 	#include <quazipfile.h>
 #endif
@@ -475,7 +476,6 @@ void ApplicationWindow::setDefaultOptions()
 	d_symbols_list = SymbolBox::defaultSymbols();
 
 	d_latex_compiler = MathTran;
-	d_latex_compiler_path = QString::null;
 	d_mdi_windows_area = true;
 	d_open_project_filter = QString::null;//tr("QtiPlot project") + " (*.qti)";
 
@@ -528,6 +528,20 @@ void ApplicationWindow::setDefaultOptions()
 
 	QString aux = qApp->applicationDirPath();
 	workingDir = aux;
+
+#ifdef Q_WS_WIN
+	d_java_path = "/usr/bin/java";
+	d_soffice_path = "C:/Program Files/OpenOffice.org 3/program/soffice.exe";
+#elif Q_WS_MAC
+	d_java_path = "/usr/bin/java";
+	d_soffice_path = "/Applications/OpenOffice.org.app/Contents/MacOS/soffice";
+#else
+	d_java_path = "/usr/bin/java";
+	d_soffice_path = "/usr/bin/soffice";
+	d_latex_compiler_path = "/usr/bin/latex";
+	d_latex_compiler = Local;
+#endif
+	d_jodconverter_path = aux + "/jodconverter/lib/jodconverter-cli-2.2.2.jar";
 
 #ifdef TRANSLATIONS_PATH
 	d_translations_folder = TRANSLATIONS_PATH;
@@ -782,10 +796,8 @@ void ApplicationWindow::initToolBars()
 	fileTools->addSeparator ();
 	fileTools->addAction(actionOpen);
 	fileTools->addAction(actionOpenTemplate);
-#ifdef XLS_IMPORT
-	fileTools->addAction(actionOpenExcel);
-#endif
 #ifdef ODS_IMPORT
+	fileTools->addAction(actionOpenExcel);
 	fileTools->addAction(actionOpenOds);
 #endif
 	fileTools->addAction(actionAppendProject);
@@ -4272,7 +4284,7 @@ ApplicationWindow * ApplicationWindow::plotFile(const QString& fn)
 	return app;
 }
 
-Table * ApplicationWindow::importOdfSpreadsheet(const QString& fileName, int sheet)
+Table * ApplicationWindow::importOdfSpreadsheet(const QString& fileName, int sheet, const QString& legendName)
 {
 #ifdef ODS_IMPORT
 	QString fn = fileName;
@@ -4284,6 +4296,7 @@ Table * ApplicationWindow::importOdfSpreadsheet(const QString& fileName, int she
 
 	QuaZipFile file(fn, "content.xml");
 	if(!file.open(QIODevice::ReadOnly)){
+		QApplication::restoreOverrideCursor();
 		QMessageBox::critical(this, tr("QtiPlot"), tr("Couldn't open file %1").arg(fn));
 		return NULL;
 	}
@@ -4296,14 +4309,18 @@ Table * ApplicationWindow::importOdfSpreadsheet(const QString& fileName, int she
 	}
 	file.close();
 
-	OdsFileHandler handler(this, fn);
+	OdsFileHandler handler(this, fn, legendName);
 	QXmlSimpleReader reader;
 	reader.setContentHandler(&handler);
 	reader.setErrorHandler(&handler);
 
 	QXmlInputSource xmlInputSource(&out);
 	if (reader.parse(xmlInputSource)){
-		updateRecentProjectsList(fn);
+		if (legendName.isEmpty())
+			updateRecentProjectsList(fn);
+		else
+			updateRecentProjectsList(legendName);
+
 		int sheets = handler.sheetsCount();
 		if (sheet > sheets){
 			QMessageBox::critical(this, tr("QtiPlot"), tr("File %1 contains only %2 sheets!").arg(fn).arg(sheets));
@@ -4367,13 +4384,22 @@ Table * ApplicationWindow::importExcel(const QString& fileName, int sheet)
 	return importExcelADO(fn, sheet);
 #endif
 
-#ifdef XLS_IMPORT
+#ifdef ODS_IMPORT
 	return importExcelCrossplatform(fn, sheet);
 #endif
 
 	return NULL;
 }
 
+#ifdef ODS_IMPORT
+Table * ApplicationWindow::importExcelCrossplatform(const QString& fn, int sheet)
+{
+	ExcelFileConverter efc(fn, sheet, this);
+	return efc.outputTable();
+}
+#endif
+
+/*
 #ifdef XLS_IMPORT
 Table * ApplicationWindow::importExcelCrossplatform(const QString& fn, int sheet)
 {
@@ -4488,6 +4514,7 @@ Table * ApplicationWindow::importExcelCrossplatform(const QString& fn, int sheet
 	return table;
 }
 #endif
+*/
 
 Table * ApplicationWindow::importWaveFile()
 {
@@ -5609,6 +5636,9 @@ void ApplicationWindow::readSettings()
 	d_python_config_folder = settings.value("/PythonConfigDir", d_python_config_folder).toString();
 	d_latex_compiler_path = settings.value("/LaTeXCompiler", d_latex_compiler_path).toString();
 	d_startup_scripts_folder = settings.value("/StartupScripts", d_startup_scripts_folder).toString();
+	d_soffice_path = settings.value("/OpenOffice", d_soffice_path).toString();
+	d_java_path = settings.value("/Java", d_java_path).toString();
+	d_jodconverter_path = settings.value("/JoDConverter", d_jodconverter_path).toString();
 	settings.endGroup(); // Paths
 
 	d_open_project_filter = settings.value("/OpenProjectFilter", d_open_project_filter).toString();
@@ -6072,6 +6102,9 @@ void ApplicationWindow::saveSettings()
 	settings.setValue("/PythonConfigDir", d_python_config_folder);
 	settings.setValue("/LaTeXCompiler", d_latex_compiler_path);
 	settings.setValue("/StartupScripts", d_startup_scripts_folder);
+	settings.setValue("/OpenOffice", d_soffice_path);
+	settings.setValue("/Java", d_java_path);
+	settings.setValue("/JoDConverter", d_jodconverter_path);
 	settings.endGroup(); // Paths
 
 	settings.setValue("/OpenProjectFilter", d_open_project_filter);
@@ -10249,10 +10282,8 @@ void ApplicationWindow::fileMenuAboutToShow()
 	newMenu->addAction(actionNewFunctionPlot);
 	newMenu->addAction(actionNewSurfacePlot);
 	fileMenu->addAction(actionOpen);
-#ifdef XLS_IMPORT
-	fileMenu->addAction(actionOpenExcel);
-#endif
 #ifdef ODS_IMPORT
+	fileMenu->addAction(actionOpenExcel);
 	fileMenu->addAction(actionOpenOds);
 #endif
 	fileMenu->addAction(actionLoadImage);
@@ -13933,15 +13964,15 @@ void ApplicationWindow::createActions()
 	connect(actionOpen, SIGNAL(activated()), this, SLOT(open()));
 
 #ifdef XLS_IMPORT
-	actionOpenExcel = new QAction(QIcon(":/open_excel.png"), tr("Open Exce&l ..."), this);
-	actionOpenExcel->setShortcut( tr("Ctrl+Shift+E") );
-	connect(actionOpenExcel, SIGNAL(activated()), this, SLOT(importExcel()));
-
 	actionExportExcel = new QAction(QIcon(":/new_excel.png"), tr("Export Exce&l ..."), this);
 	connect(actionExportExcel, SIGNAL(activated()), this, SLOT(exportExcel()));
 #endif
 
 #ifdef ODS_IMPORT
+	actionOpenExcel = new QAction(QIcon(":/open_excel.png"), tr("Open Exce&l ..."), this);
+	actionOpenExcel->setShortcut( tr("Ctrl+Shift+E") );
+	connect(actionOpenExcel, SIGNAL(activated()), this, SLOT(importExcel()));
+
 	actionOpenOds = new QAction(QIcon(":/ods_spreadsheet.png"), tr("Open ODF Spreads&heet..."), this);
 	actionOpenOds->setShortcut( tr("Ctrl+Alt+S") );
 	connect(actionOpenOds, SIGNAL(activated()), this, SLOT(importOdfSpreadsheet()));
@@ -14954,10 +14985,6 @@ void ApplicationWindow::translateActionsStrings()
 	actionOpen->setToolTip(tr("Open project"));
 
 #ifdef XLS_IMPORT
-	actionOpenExcel->setMenuText(tr("Open Exce&l ..."));
-	actionOpenExcel->setShortcut( tr("Ctrl+Shift+E") );
-	actionOpenExcel->setToolTip(tr("Open Excel"));
-
 	actionExportExcel->setMenuText(tr("Export Exce&l ..."));
 	actionExportExcel->setToolTip(tr("Export Excel"));
 #endif
@@ -14965,6 +14992,10 @@ void ApplicationWindow::translateActionsStrings()
 	actionOpenOds->setMenuText(tr("Open ODF Spreads&heet..."));
 	actionOpenOds->setShortcut( tr("Ctrl+Alt+S") );
 	actionOpenOds->setToolTip(tr("Open ODF Spreadsheet"));
+
+	actionOpenExcel->setMenuText(tr("Open Exce&l ..."));
+	actionOpenExcel->setShortcut( tr("Ctrl+Shift+E") );
+	actionOpenExcel->setToolTip(tr("Open Excel"));
 #endif
 	actionLoadImage->setMenuText(tr("Open Image &File..."));
 	actionLoadImage->setShortcut(tr("Ctrl+I"));

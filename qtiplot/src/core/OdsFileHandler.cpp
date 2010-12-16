@@ -29,9 +29,10 @@
 #include "OdsFileHandler.h"
 #include "ApplicationWindow.h"
 
-OdsFileHandler::OdsFileHandler(ApplicationWindow *app, const QString& odsFileName) :
+OdsFileHandler::OdsFileHandler(ApplicationWindow *app, const QString& odsFileName, const QString& legendName) :
 d_app(app),
-d_ods_file_name(odsFileName)
+d_ods_file_name(odsFileName),
+d_legend_name(legendName)
  {
 	d_rows = 0;
 	d_col = 0;
@@ -47,9 +48,13 @@ d_ods_file_name(odsFileName)
 		d_sheet_names << attributes.value("table:name");
 
 	if (qName == "table:table-row"){
-		if (!attributes.value("table:number-rows-repeated").isEmpty())
-			d_rows += attributes.value("table:number-rows-repeated").toInt();
-		else
+		if (!attributes.value("table:number-rows-repeated").isEmpty()){
+			int r = attributes.value("table:number-rows-repeated").toInt();
+			if (d_rows + r < 1048575)
+				d_rows += r;
+			else
+				d_rows--;
+		} else
 			d_rows++;
 	}
 
@@ -126,7 +131,11 @@ bool OdsFileHandler::endElement(const QString & /* namespaceURI */,
 
 	if (qName == "table:table"){
 		if (!cells.empty() && (d_last_column > 1 || d_rows > 1)){
-			Table *t = d_app->newTable(d_rows, d_last_column + 1, QString::null, d_ods_file_name + ", " + d_sheet_names.last());
+			QString legendName = d_legend_name;
+			if (legendName.isEmpty())
+				legendName = d_ods_file_name;
+
+			Table *t = d_app->newTable(d_rows, d_last_column + 1, QString::null, legendName + ", " + d_sheet_names.last());
 			int n = cells.size();
 			for (int i = 0; i < n; i++){
 				cell_data cell = cells[i];
@@ -158,6 +167,10 @@ bool OdsFileHandler::endElement(const QString & /* namespaceURI */,
 			for (unsigned int col = 0; col <= d_last_column; col++){
 				if (firstLineAllStrings){
 					QString s = t->text(0, col);
+					if (s.isEmpty()){
+						firstLineAllStrings = false;
+						break;
+					}
 					bool ok;
 					s.toDouble (&ok);
 					if (ok)

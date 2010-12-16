@@ -132,6 +132,7 @@ SOURCES += ../3rdparty/zlib/minigzip.c
 
 include(src/analysis/analysis.pri)
 include(src/core/core.pri)
+include(src/excel/excel.pri)
 include(src/lib/libqti.pri)
 include(src/plot2D/plot2D.pri)
 include(src/plot3D/plot3D.pri)

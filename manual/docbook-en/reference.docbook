@@ -210,7 +210,7 @@ The active items appearing in a menu depends upon which project window is active
 		</sect3>
 	</sect2><!--end of Export Graph-->
 
-	<sect2 id="export-cmd"><title>>File -> &export-cmd;</title><!--Added entries for Export item. SRB (09/19/2010 ) -->
+	<sect2 id="export-cmd"><title>File -> &export-cmd;</title><!--Added entries for Export item. SRB (09/19/2010 ) -->
   	<para>The &export-cmd; command appears in the file menu whenever a non-graph window (i.e., Table or Matrix) is selected.</para>
 		<sect3 id="export-ascii-cmd"><title>&export-ascii-cmd;</title>
 			<para>This command opens the <link linkend="export-ascii-dialog">Export ASCII</link> dialog, with which you can save the active table or matrix in a chosen ASCII format (".dat", ".html", ".odf", ".tex", ".txt", and ".xls" are available).</para>
