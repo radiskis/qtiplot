@@ -98,8 +98,6 @@ void ExcelFileConverter::finishImport(int, QProcess::ExitStatus exitStatus)
 	if (d_table)
 		return;
 
-	killOfficeServer();
-
 	if (exitStatus != QProcess::NormalExit){
 		QMessageBox::critical((ApplicationWindow *)parent(), tr("QtiPlot"), tr("Operation failed"));
 		return;
@@ -133,7 +131,9 @@ void ExcelFileConverter::displayOfficeError(QProcess::ProcessError error)
 {
 	if (soffice && soffice->pid())
 		displayError("<a href=\"http://www.openoffice.org/\">" + tr("OpenOffice.org") + "</a>", error);
-	killOfficeServer();
+
+	soffice->kill();
+	soffice = 0;
 }
 
 void ExcelFileConverter::displayError(const QString& process, QProcess::ProcessError error)
@@ -168,19 +168,4 @@ void ExcelFileConverter::displayError(const QString& process, QProcess::ProcessE
 
 	QApplication::restoreOverrideCursor();
 	QMessageBox::critical((ApplicationWindow *)parent(), tr("Operation failed"), msg + "!");
-}
-
-void ExcelFileConverter::killOfficeServer()
-{
-#ifdef Q_WS_X11
-	QProcess::execute("killall soffice.bin");
-#elif Q_WS_MAC
-	QProcess::execute("killall soffice");
-#endif
-
-	if (!soffice)
-		return;
-
-	soffice->kill();
-	soffice = 0;
 }
