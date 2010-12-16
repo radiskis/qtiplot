@@ -530,13 +530,14 @@ void ApplicationWindow::setDefaultOptions()
 	workingDir = aux;
 
 #ifdef Q_WS_WIN
-	d_java_path = "/usr/bin/java";
+	d_java_path = "C:/Program Files/Java/jre6/bin/java.exe";
 	d_soffice_path = "C:/Program Files/OpenOffice.org 3/program/soffice.exe";
 #endif
 #ifdef Q_WS_MAC
 	d_java_path = "/usr/bin/java";
 	d_soffice_path = "/Applications/OpenOffice.org.app/Contents/MacOS/soffice";
-#else
+#endif
+#ifdef Q_WS_X11
 	d_java_path = "/usr/bin/java";
 	d_soffice_path = "/usr/bin/soffice";
 	d_latex_compiler_path = "/usr/bin/latex";
@@ -4376,11 +4377,10 @@ Table * ApplicationWindow::importExcel(const QString& fileName, int sheet)
 
 #ifdef Q_OS_WIN
 	#ifdef HAS_EXCEL
-	Table *t = importUsingExcel(fn, sheet);
-	if (t)
-		return t;
+		Table *t = importUsingExcel(fn, sheet);
+		if (t)
+			return t;
 	#endif
-	return importExcelADO(fn, sheet);
 #endif
 
 #ifdef ODS_IMPORT
@@ -4397,123 +4397,6 @@ Table * ApplicationWindow::importExcelCrossplatform(const QString& fn, int sheet
 	return efc.outputTable();
 }
 #endif
-
-/*
-#ifdef XLS_IMPORT
-Table * ApplicationWindow::importExcelCrossplatform(const QString& fn, int sheet)
-{
-	BasicExcel xls;
-	if (!xls.Load(fn)){
-		QMessageBox::critical(this, tr("QtiPlot"), tr("Couldn't open file %1").arg(fn));
-		return 0;
-	}
-
-	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-
-	XLSFormatManager fmt_mgr(xls);
-
-	Table *table = NULL;
-	for (size_t s = 0; s < xls.GetTotalWorkSheets(); s++){// process all sheets
-		int currentSheet = s + 1;
-		if (sheet > 0 && sheet != currentSheet)
-			continue;
-
-		BasicExcelWorksheet* sh = xls.GetWorksheet(s);
-		if (!sh)
-			continue;
-
-		int rows = sh->GetTotalRows();
-		int cols = sh->GetTotalCols();
-		if (rows == 1 && !cols){
-			if (sheet > 0 && sheet == currentSheet){
-				QMessageBox::critical(this, tr("QtiPlot"), tr("Sheet %1 is empty, operation aborted!").arg(sheet));
-				return NULL;
-			} else
-				continue;
-		}
-
-		table = newTable(rows, cols, QString::null, fn + ", " + tr("sheet") + ": " + QString(sh->GetAnsiSheetName()));
-		QTime t1(0, 0);
-		QDate d1(1899, 12, 30);//start date in Excel files see(http://sc.openoffice.org/excelfileformat.pdf)
-		double daySeconds = 24*60*60;
-		for(int i = 0; i < rows; i++){
-			for(int j = 0; j < cols; j++){
-				BasicExcelCell* cell = sh->Cell(i, j);
-				if (!cell)
-					continue;
-
-				CellFormat fmt(fmt_mgr, cell);
-				const wstring& fmt_string = fmt.get_format_string();
-				QString fmtString = QString::fromStdWString(fmt_string);
-
-				switch(cell->Type()){
-					case BasicExcelCell::UNDEFINED:
-						continue;
-					break;
-					case BasicExcelCell::STRING:
-						table->setText(i, j, cell->GetString());
-					break;
-					case BasicExcelCell::INT:
-					case BasicExcelCell::DOUBLE:
-					case BasicExcelCell::FORMULA:
-						if (fmt_string == XLS_FORMAT_DATE || fmt_string == XLS_FORMAT_DATETIME ||
-							fmt_string == L"D-MMM-YY" || fmt_string == L"D-MMM" || fmt_string == L"MMM-YY"){// date
-
-							if (fmt_string == XLS_FORMAT_DATE || fmt_string == XLS_FORMAT_DATETIME)
-								fmtString = "dd.MM.yyyy";
-							else
-								fmtString = fmtString.replace("D", "d").replace("Y", "y");
-
-							if (table->columnType(j) != Table::Date)
-								table->setDateFormat(fmtString, j, false);
-
-							QDate d2 = d1.addDays(cell->GetDouble());
-							table->setText(i, j, d2.toString(fmtString));
-						} else if (fmt_string == XLS_FORMAT_TIME || fmt_string == L"h:mm AM/PM" ||
-								fmt_string == L"h:mm:ss AM/PM" || fmt_string == L"h:mm" ||
-								fmt_string == L"mm:ss" || fmt_string == L"[h]:mm:ss" || fmt_string == L"mm:ss.0"){
-							if (table->columnType(j) != Table::Time)
-								table->setTimeFormat(fmtString, j, false);
-
-							QTime t2 = t1.addSecs(qRound(cell->GetDouble()*daySeconds));
-							table->setText(i, j, t2.toString(fmtString));
-						} else
-							table->setCell(i, j, cell->GetDouble());
-					break;
-				}
-			}
-		}
-
-		QStringList header;
-		bool firstLineAllStrings = true;
-		for (int col = 0; col <= table->numCols(); col++){
-			if (firstLineAllStrings){
-				QString s = table->text(0, col);
-				bool ok;
-				s.toDouble (&ok);
-				if (ok)
-					firstLineAllStrings = false;
-				else
-					header << s;
-			}
-		}
-		if (!header.isEmpty() && firstLineAllStrings){
-			table->deleteRows(0, 1);
-			table->setHeader(header);
-		}
-
-		table->showNormal();
-
-		if (sheet > 0 && sheet == currentSheet)
-			break;
-	}
-	xls.Close();
-	updateRecentProjectsList(fn);
-	QApplication::restoreOverrideCursor();
-	return table;
-}
-#endif
-*/
 
 Table * ApplicationWindow::importWaveFile()
 {
