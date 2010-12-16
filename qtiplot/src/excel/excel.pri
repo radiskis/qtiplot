@@ -3,10 +3,17 @@
 ###############################################################
 INCLUDEPATH += src/excel/
 
-HEADERS += src/excel/adodb.h
+win32 {
+	HEADERS += src/excel/adodb.h
 
-SOURCES += src/excel/adodb.cpp
-SOURCES += src/excel/ExcelADO.cpp
-contains(CONFIG, Excel) {
-	SOURCES += src/excel/ExcelImport.cpp
+	SOURCES += src/excel/adodb.cpp
+	SOURCES += src/excel/ExcelADO.cpp
+	contains(CONFIG, Excel) {
+		SOURCES += src/excel/ExcelImport.cpp
+	}
+}
+
+!isEmpty(QUAZIP_LIBS) {
+	HEADERS += src/excel/ExcelFileConverter.h
+	SOURCES += src/excel/ExcelFileConverter.cpp
 }

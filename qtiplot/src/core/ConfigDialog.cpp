@@ -1669,7 +1669,8 @@ void ConfigDialog::initFileLocationsPage()
 	QGroupBox *gb = new QGroupBox();
 	QGridLayout *gl = new QGridLayout(gb);
 
-	lblTranslationsPath = new QLabel(tr("Translations"));
+	lblTranslationsPath = new QLabel;
+	lblTranslationsPath->setOpenExternalLinks(true);
 	gl->addWidget(lblTranslationsPath , 0, 0);
 
 	translationsPathLine = new QLineEdit();
@@ -1681,7 +1682,8 @@ void ConfigDialog::initFileLocationsPage()
 	browseTranslationsBtn->setIcon(QIcon(":/folder_open.png"));
 	gl->addWidget(browseTranslationsBtn, 0, 2);
 
-	lblHelpPath = new QLabel(tr("Help"));
+	lblHelpPath = new QLabel;
+	lblHelpPath->setOpenExternalLinks(true);
 	gl->addWidget(lblHelpPath, 1, 0 );
 
 	QFileInfo hfi(app->helpFilePath);
@@ -1693,7 +1695,8 @@ void ConfigDialog::initFileLocationsPage()
 	browseHelpBtn->setIcon(QIcon(":/folder_open.png"));
 	gl->addWidget(browseHelpBtn, 1, 2);
 
-	texCompilerLabel = new QLabel(tr("LaTeX Compiler"));
+	texCompilerLabel = new QLabel;
+	texCompilerLabel->setOpenExternalLinks(true);
 	gl->addWidget(texCompilerLabel, 2, 0);
 
 	texCompilerPathBox = new QLineEdit(QDir::toNativeSeparators(app->d_latex_compiler_path));
@@ -1707,37 +1710,80 @@ void ConfigDialog::initFileLocationsPage()
 	connect(browseTexCompilerBtn, SIGNAL(clicked()), this, SLOT(chooseTexCompiler()));
 
     gl->addWidget(browseTexCompilerBtn, 2, 2);
-	gl->setRowStretch(3, 1);
+
+	officeLabel = new QLabel;
+	officeLabel->setOpenExternalLinks(true);
+	gl->addWidget(officeLabel, 3, 0);
+
+	sofficePathBox = new QLineEdit(QDir::toNativeSeparators(app->d_soffice_path));
+	sofficePathBox->setCompleter(completer);
+	connect(sofficePathBox, SIGNAL(editingFinished ()), this, SLOT(validateOffice()));
+	gl->addWidget(sofficePathBox, 3, 1);
+
+	browseOfficeBtn = new QPushButton;
+	browseOfficeBtn->setIcon(QIcon(":/folder_open.png"));
+	connect(browseOfficeBtn, SIGNAL(clicked()), this, SLOT(chooseOffice()));
+	gl->addWidget(browseOfficeBtn, 3, 2);
+
+	javaLabel = new QLabel(tr("Java"));
+	javaLabel->setOpenExternalLinks(true);
+	gl->addWidget(javaLabel, 4, 0);
+
+	javaPathBox = new QLineEdit(QDir::toNativeSeparators(app->d_java_path));
+	javaPathBox->setCompleter(completer);
+	connect(javaPathBox, SIGNAL(editingFinished ()), this, SLOT(validateJava()));
+	gl->addWidget(javaPathBox, 4, 1);
+
+	browseJavaBtn = new QPushButton;
+	browseJavaBtn->setIcon(QIcon(":/folder_open.png"));
+	connect(browseJavaBtn, SIGNAL(clicked()), this, SLOT(chooseJava()));
+	gl->addWidget(browseJavaBtn, 4, 2);
+
+	jodconverterLabel = new QLabel;
+	jodconverterLabel->setOpenExternalLinks(true);
+	gl->addWidget(jodconverterLabel, 5, 0);
+
+	jodconverterPathBox = new QLineEdit(QDir::toNativeSeparators(app->d_jodconverter_path));
+	jodconverterPathBox->setCompleter(completer);
+	connect(jodconverterPathBox, SIGNAL(editingFinished ()), this, SLOT(validateJODConverter()));
+	gl->addWidget(jodconverterPathBox, 5, 1);
+
+	browseJODConverterBtn = new QPushButton;
+	browseJODConverterBtn->setIcon(QIcon(":/folder_open.png"));
+	connect(browseJODConverterBtn, SIGNAL(clicked()), this, SLOT(chooseJODConverter()));
+	gl->addWidget(browseJODConverterBtn, 5, 2);
+
+	gl->setRowStretch(6, 1);
 
 #ifdef SCRIPTING_PYTHON
-	lblPythonConfigDir = new QLabel(tr("Python Configuration Files"));
-	gl->addWidget(lblPythonConfigDir, 3, 0);
+	lblPythonConfigDir = new QLabel;
+	gl->addWidget(lblPythonConfigDir, 6, 0);
 
 	pythonConfigDirLine = new QLineEdit(QDir::toNativeSeparators(app->d_python_config_folder));
 	pythonConfigDirLine->setCompleter(completer);
-	gl->addWidget(pythonConfigDirLine, 3, 1);
+	gl->addWidget(pythonConfigDirLine, 6, 1);
 
 	QPushButton *browsePythonConfigBtn = new QPushButton();
 	browsePythonConfigBtn->setIcon(QIcon(":/folder_open.png"));
 	connect(browsePythonConfigBtn, SIGNAL(clicked()), this, SLOT(choosePythonConfigFolder()));
-	gl->addWidget(browsePythonConfigBtn, 3, 2);
+	gl->addWidget(browsePythonConfigBtn, 6, 2);
 
 	bool showScriptsFolder = (app->defaultScriptingLang == QString("Python"));
-	lblPythonScriptsDir = new QLabel(tr("Startup Scripts"));
+	lblPythonScriptsDir = new QLabel;
 	lblPythonScriptsDir->setVisible(showScriptsFolder);
-	gl->addWidget(lblPythonScriptsDir, 4, 0);
+	gl->addWidget(lblPythonScriptsDir, 7, 0);
 
 	pythonScriptsDirLine = new QLineEdit(QDir::toNativeSeparators(app->d_startup_scripts_folder));
 	pythonScriptsDirLine->setCompleter(completer);
 	pythonScriptsDirLine->setVisible(showScriptsFolder);
-	gl->addWidget(pythonScriptsDirLine, 4, 1);
+	gl->addWidget(pythonScriptsDirLine, 7, 1);
 
 	browsePythonScriptsBtn = new QPushButton();
 	browsePythonScriptsBtn->setIcon(QIcon(":/folder_open.png"));
 	browsePythonScriptsBtn->setVisible(showScriptsFolder);
 	connect(browsePythonScriptsBtn, SIGNAL(clicked()), this, SLOT(chooseStartupScriptsFolder()));
-	gl->addWidget(browsePythonScriptsBtn, 4, 2);
-	gl->setRowStretch(5, 1);
+	gl->addWidget(browsePythonScriptsBtn, 7, 2);
+	gl->setRowStretch(8, 1);
 
 	connect(boxScriptingLanguage, SIGNAL(activated(const QString &)), this, SLOT(showStartupScriptsFolder(const QString &)));
 #endif
@@ -2003,8 +2049,12 @@ void ConfigDialog::languageChange()
     else if (app->clipboardLocale().name() == QLocale(QLocale::French).name())
         boxClipboardLocale->setCurrentIndex(3);
 
-	lblTranslationsPath->setText(tr("Translations"));
-	lblHelpPath->setText(tr("Help"));
+	lblTranslationsPath->setText("<a href=\"http://soft.proindependent.com/translations.html\">" + tr("Translations") + "</a>");
+	lblHelpPath->setText("<a href=\"http://soft.proindependent.com/manuals.html\">" + tr("Help") + "</a>");
+	texCompilerLabel->setText("<a href=\"http://www.latex-project.org/\">" + tr("LaTeX Compiler") + "</a>");
+	officeLabel->setText("<a href=\"http://www.openoffice.org/\">" + tr("OpenOffice.org") + "</a>");
+	javaLabel->setText("<a href=\"http://www.java.com/\">" + tr("Java") + "</a>");
+	jodconverterLabel->setText("<a href=\"http://www.artofsolving.com/opensource/jodconverter\">" + tr("JODConverter") + "</a>");
 #ifdef SCRIPTING_PYTHON
 	lblPythonConfigDir->setText(tr("Python Configuration Files"));
 	lblPythonScriptsDir->setText(tr("Startup Scripts"));
@@ -2978,6 +3028,129 @@ void ConfigDialog::chooseTexCompiler()
 	}
 }
 
+void ConfigDialog::chooseOffice()
+{
+	ApplicationWindow *app = (ApplicationWindow *)parentWidget();
+	if (!app)
+		return;
+
+	QFileInfo tfi(app->d_soffice_path);
+	QString compiler = ApplicationWindow::getFileName(this, tr("Choose location"), app->d_soffice_path, QString(), 0, false);
+	if (!compiler.isEmpty()){
+		app->d_soffice_path = QDir::toNativeSeparators(compiler);
+		sofficePathBox->setText(app->d_soffice_path);
+	}
+}
+
+bool ConfigDialog::validateOffice()
+{
+	QString path = sofficePathBox->text();
+	if (path.isEmpty())
+		return false;
+
+	ApplicationWindow *app = (ApplicationWindow *)parentWidget();
+	QFileInfo fi(path);
+	if (!fi.exists()){
+		QMessageBox::critical(this, tr("QtiPlot - File Not Found!"),
+		tr("The file %1 doesn't exist.<br>Please choose another file!").arg(path));
+		sofficePathBox->setText(app->d_soffice_path);
+		return false;
+	}
+
+	if (fi.isDir()){
+		QMessageBox::critical(this, tr("QtiPlot - File Not Found!"),
+		tr("%1 is a folder.<br>Please choose a file!").arg(path));
+		sofficePathBox->setText(app->d_soffice_path);
+		return false;
+	}
+
+	app->d_soffice_path = QDir::toNativeSeparators(path);
+	sofficePathBox->setText(app->d_soffice_path);
+	return true;
+}
+
+void ConfigDialog::chooseJava()
+{
+	ApplicationWindow *app = (ApplicationWindow *)parentWidget();
+	if (!app)
+		return;
+
+	QFileInfo tfi(app->d_java_path);
+	QString compiler = ApplicationWindow::getFileName(this, tr("Choose location"), app->d_java_path, QString(), 0, false);
+	if (!compiler.isEmpty()){
+		app->d_java_path = QDir::toNativeSeparators(compiler);
+		javaPathBox->setText(app->d_java_path);
+	}
+}
+
+bool ConfigDialog::validateJava()
+{
+	QString path = javaPathBox->text();
+	if (path.isEmpty())
+		return false;
+
+	ApplicationWindow *app = (ApplicationWindow *)parentWidget();
+	QFileInfo fi(path);
+	if (!fi.exists()){
+		QMessageBox::critical(this, tr("QtiPlot - File Not Found!"),
+		tr("The file %1 doesn't exist.<br>Please choose another file!").arg(path));
+		javaPathBox->setText(app->d_java_path);
+		return false;
+	}
+
+	if (fi.isDir()){
+		QMessageBox::critical(this, tr("QtiPlot - File Not Found!"),
+		tr("%1 is a folder.<br>Please choose a file!").arg(path));
+		javaPathBox->setText(app->d_java_path);
+		return false;
+	}
+
+	app->d_java_path = QDir::toNativeSeparators(path);
+	javaPathBox->setText(app->d_java_path);
+	return true;
+}
+
+void ConfigDialog::chooseJODConverter()
+{
+	ApplicationWindow *app = (ApplicationWindow *)parentWidget();
+	if (!app)
+		return;
+
+	QFileInfo tfi(app->d_jodconverter_path);
+	QString compiler = ApplicationWindow::getFileName(this, tr("Choose location"), app->d_jodconverter_path, "*.jar", 0, false);
+	if (!compiler.isEmpty()){
+		app->d_jodconverter_path = QDir::toNativeSeparators(compiler);
+		jodconverterPathBox->setText(app->d_jodconverter_path);
+	}
+}
+
+bool ConfigDialog::validateJODConverter()
+{
+	QString path = jodconverterPathBox->text();
+	if (path.isEmpty())
+		return false;
+
+	ApplicationWindow *app = (ApplicationWindow *)parentWidget();
+	QFileInfo fi(path);
+	if (!fi.exists()){
+		QMessageBox::critical(this, tr("QtiPlot - File Not Found!"),
+		tr("The file %1 doesn't exist.<br>Please choose another file!").arg(path));
+		jodconverterPathBox->setText(app->d_jodconverter_path);
+		return false;
+	}
+
+	if (fi.isDir()){
+		QMessageBox::critical(this, tr("QtiPlot - File Not Found!"),
+		tr("%1 is a folder.<br>Please choose a file!").arg(path));
+		jodconverterPathBox->setText(app->d_jodconverter_path);
+		return false;
+	}
+
+	app->d_jodconverter_path = QDir::toNativeSeparators(path);
+	jodconverterPathBox->setText(app->d_jodconverter_path);
+	return true;
+}
+
 bool ConfigDialog::validateTexCompiler()
 {
 	QString path = texCompilerPathBox->text();
@@ -3337,6 +3510,9 @@ void ConfigDialog::setApplication(ApplicationWindow *app)
 	translationsPathLine->setText(QDir::toNativeSeparators(app->d_translations_folder));
 	helpPathLine->setText(QDir::toNativeSeparators(QFileInfo(app->helpFilePath).dir().absolutePath()));
 	texCompilerPathBox->setText(QDir::toNativeSeparators(app->d_latex_compiler_path));
+	sofficePathBox->setText(QDir::toNativeSeparators(app->d_soffice_path));
+	javaPathBox->setText(QDir::toNativeSeparators(app->d_java_path));
+	jodconverterPathBox->setText(QDir::toNativeSeparators(app->d_jodconverter_path));
 #ifdef SCRIPTING_PYTHON
 	pythonConfigDirLine->setText(QDir::toNativeSeparators(app->d_python_config_folder));
 	pythonScriptsDirLine->setText(QDir::toNativeSeparators(app->d_startup_scripts_folder));

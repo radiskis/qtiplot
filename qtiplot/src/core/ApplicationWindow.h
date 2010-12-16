@@ -478,7 +478,7 @@ public slots:
 	void connectTable(Table* w);
 	void initTable(Table* w, const QString& caption);
 	void customTable(Table* w);
-	Table* importOdfSpreadsheet(const QString& = QString::null, int sheet = -1);
+	Table* importOdfSpreadsheet(const QString& = QString::null, int sheet = -1, const QString& legendName = QString::null);
 
 	Table* importExcel(const QString& = QString::null, int sheet = -1);
 #ifdef Q_OS_WIN
@@ -491,8 +491,11 @@ public slots:
 #endif
 #endif
 
-#ifdef XLS_IMPORT
+#ifdef ODS_IMPORT
 	Table* importExcelCrossplatform(const QString& = QString::null, int sheet = -1);
+#endif
+
+#ifdef XLS_IMPORT
 	void exportExcel();
 #endif
 
@@ -1220,6 +1223,9 @@ public:
 	bool d_synchronize_graph_scales;
 	int d_latex_compiler;
 	QString d_latex_compiler_path;
+	QString d_java_path;
+	QString d_soffice_path;
+	QString d_jodconverter_path;
 	//! Last selected filter in open project dialog
     QString d_open_project_filter;
 	//! Default geometry unit to be displayed in the EnrichmentDialog.
@@ -1466,10 +1472,10 @@ private:
     QAction *actionOpen, *actionLoadImage, *actionSaveProject, *actionSaveProjectAs, *actionImportImage;
 	QAction *actionLoad, *actionUndo, *actionRedo, *actionImportSound;
 #ifdef ODS_IMPORT
-	QAction *actionOpenOds;
+	QAction *actionOpenOds, *actionOpenExcel;
 #endif
 #ifdef XLS_IMPORT
-	QAction *actionOpenExcel, *actionExportExcel;
+	QAction *actionExportExcel;
 #endif
     QAction *actionCopyWindow, *actionShowAllColumns, *actionHideSelectedColumns;
     QAction *actionCutSelection, *actionCopySelection, *actionPasteSelection, *actionClearSelection;

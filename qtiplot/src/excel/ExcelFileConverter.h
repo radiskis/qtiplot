@@ -1,10 +1,10 @@
 /***************************************************************************
-    File                 : globals.h
+	File                 : ExcelFileConverter.h
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2006 by Ion Vasilief, Tilman Hoener zu Siederdissen
-    Email (use @ for *)  : ion_vasilief*yahoo.fr, thzs*gmx.net
-    Description          : Definition of global constants
+	Copyright            : (C) 2010 by Ion Vasilief
+    Email (use @ for *)  : ion_vasilief*yahoo.fr
+	Description          : An object converting Excel files to Open Document Format Spreadsheets (.ods)
 
  ***************************************************************************/
 
@@ -26,18 +26,39 @@
  *   Boston, MA  02110-1301  USA                                           *
  *                                                                         *
  ***************************************************************************/
-//  Don't forget to change the Doxyfile when changing these!
-//! Major version number
-const int maj_version = 0;
-//! Minor version number (0..9)
-const int min_version = 9;
-//! Patch version number (0..9)
-const int patch_version = 8;
-//! Extra version information string (like "alpha", "-2", etc...)
-const char * extra_version = ".4";
-const char * svn_revision = SVN_REVISION;  //SRB: SVN_REVISION set by compiler from QTIPLOT_SVN_REVISION environment variable. (10/1/2010 )
+#ifndef ExcelFileConverter_H
+#define ExcelFileConverter_H
 
-//! Copyright string containing the author names
-const char * copyright_string = "Copyright (C) 2004-2010 Ion Vasilief";
-//! Release date as a string
-const char * release_date = " 2010/12/16";
+#include <QObject>
+#include <QProcess>
+
+class ApplicationWindow;
+class Table;
+
+class ExcelFileConverter : public QObject
+{
+	Q_OBJECT
+
+public:
+	ExcelFileConverter(const QString& fileName, int sheet, ApplicationWindow *app);
+	Table *outputTable(){return d_table;};
+
+private slots:
+	void startConvertion();
+	void displayJavaError(QProcess::ProcessError error);
+	void displayOfficeError(QProcess::ProcessError error);
+	void finishImport(int exitCode, QProcess::ExitStatus exitStatus);
+
+private:
+	void killOfficeServer();
+	void startOpenOfficeServer();
+	void displayError(const QString& process, QProcess::ProcessError error);
+
+	QString d_file_name;
+	int d_sheet;
+	QString d_output_file;
+	QProcess *soffice, *java;
+	Table *d_table;
+};
+
+#endif

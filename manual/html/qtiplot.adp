@@ -142,7 +142,7 @@
 <section ref="c686.html#odf-presentation-cmd" title=" File -> Create Open Document Presentation...">
 </section>
 </section>
-<section ref="c686.html#export-cmd" title=">File -> Export">
+<section ref="c686.html#export-cmd" title="File -> Export">
 <section ref="c686.html#export-ascii-cmd" title="Export ASCII">
 </section>
 <section ref="c686.html#export-excel-cmd" title=" Export Excel">
