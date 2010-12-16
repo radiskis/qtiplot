@@ -2841,7 +2841,7 @@ Are you sure you want to continue?</source>
     </message>
     <message>
         <source>Sheet %1 is empty, operation aborted!</source>
-        <translation>Лист %1 пуст, операция отменена!</translation>
+        <translation type="obsolete">Лист %1 пуст, операция отменена!</translation>
     </message>
     <message>
         <source>sheet</source>
@@ -5931,6 +5931,22 @@ The following special codes can be used:
         <source>Ask before modifying data &amp;points</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Java</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OpenOffice.org</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>JODConverter</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Choose location</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ContourLinesEditor</name>
@@ -6889,6 +6905,61 @@ The following special codes can be used:
     <message>
         <source>Existing column</source>
         <translation>Существующий столбец</translation>
+    </message>
+</context>
+<context>
+    <name>ExcelFileConverter</name>
+    <message>
+        <source>QtiPlot</source>
+        <translation type="unfinished">QtiPlot</translation>
+    </message>
+    <message>
+        <source>Operation failed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Coudn&apos;t start</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>JODConverter</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Please set the correct path in the preferences dialog</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Java</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OpenOffice.org</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Couldn&apos;t start</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>crashed</source>
+        <translation type="unfinished">совершил недопустимую ошибку</translation>
+    </message>
+    <message>
+        <source>timedout</source>
+        <translation type="unfinished">вышел за рамки предоставленного времени</translation>
+    </message>
+    <message>
+        <source>write error</source>
+        <translation type="unfinished">ошибка записи</translation>
+    </message>
+    <message>
+        <source>read error</source>
+        <translation type="unfinished">ошибка чтения</translation>
+    </message>
+    <message>
+        <source>unknown error</source>
+        <translation type="unfinished">неизвестная ошибка</translation>
     </message>
 </context>
 <context>
@@ -14874,75 +14945,75 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>dd MM yyyy</source>
-        <translation>дд ММ гггг</translation>
+        <translation type="obsolete">дд ММ гггг</translation>
     </message>
     <message>
         <source>dd.MM.yyyy</source>
-        <translation>дд.ММ.гггг</translation>
+        <translation type="obsolete">дд.ММ.гггг</translation>
     </message>
     <message>
         <source>dd/MM/yyyy</source>
-        <translation>дд/ММ/гггг</translation>
+        <translation type="obsolete">дд/ММ/гггг</translation>
     </message>
     <message>
         <source>h</source>
-        <translation>ч</translation>
+        <translation type="obsolete">ч</translation>
     </message>
     <message>
         <source>h AP</source>
-        <translation>Ч 12</translation>
+        <translation type="obsolete">Ч 12</translation>
     </message>
     <message>
         <source>h ap</source>
-        <translation>ч 12</translation>
+        <translation type="obsolete">ч 12</translation>
     </message>
     <message>
         <source>h:mm</source>
-        <translation>ч:мм</translation>
+        <translation type="obsolete">ч:мм</translation>
     </message>
     <message>
         <source>h:mm ap</source>
-        <translation>ч:мм 12</translation>
+        <translation type="obsolete">ч:мм 12</translation>
     </message>
     <message>
         <source>h:mm:ss</source>
-        <translation>ч:мм:сс</translation>
+        <translation type="obsolete">ч:мм:сс</translation>
     </message>
     <message>
         <source>h:mm:ss.zzz</source>
-        <translation>ч:мм:сс.ххх</translation>
+        <translation type="obsolete">ч:мм:сс.ххх</translation>
     </message>
     <message>
         <source>hh:mm</source>
-        <translation>чч:мм</translation>
+        <translation type="obsolete">чч:мм</translation>
     </message>
     <message>
         <source>hhmmss</source>
-        <translation>ччммсс</translation>
+        <translation type="obsolete">ччммсс</translation>
     </message>
     <message>
         <source>hmm</source>
-        <translation>чмм</translation>
+        <translation type="obsolete">чмм</translation>
     </message>
     <message>
         <source>hmmss</source>
-        <translation>чммсс</translation>
+        <translation type="obsolete">чммсс</translation>
     </message>
     <message>
         <source>mm:ss</source>
-        <translation>мм:сс</translation>
+        <translation type="obsolete">мм:сс</translation>
     </message>
     <message>
         <source>mm:ss.zzz</source>
-        <translation>мм:сс.ххх</translation>
+        <translation type="obsolete">мм:сс.ххх</translation>
     </message>
     <message>
         <source>yyyy-MM-dd</source>
-        <translation>гггг-ММ-дд</translation>
+        <translation type="obsolete">гггг-ММ-дд</translation>
     </message>
     <message>
         <source>yyyyMMdd</source>
-        <translation>ггггММдд</translation>
+        <translation type="obsolete">ггггММдд</translation>
     </message>
     <message>
         <source>&amp;Read-only</source>
@@ -14958,43 +15029,43 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>dd/MM/yyyy HH:mm</source>
-        <translation>дд/ММ/гггг ЧЧ:мм</translation>
+        <translation type="obsolete">дд/ММ/гггг ЧЧ:мм</translation>
     </message>
     <message>
         <source>dd/MM/yyyy HH:mm:ss</source>
-        <translation>дд/ММ/гггг ЧЧ:мм:cc</translation>
+        <translation type="obsolete">дд/ММ/гггг ЧЧ:мм:cc</translation>
     </message>
     <message>
         <source>dd.MM.yyyy HH:mm</source>
-        <translation>дд.ММ.гггг ЧЧ:мм</translation>
+        <translation type="obsolete">дд.ММ.гггг ЧЧ:мм</translation>
     </message>
     <message>
         <source>dd.MM.yyyy HH:mm:ss</source>
-        <translation>дд.ММ.гггг ЧЧ:мм:cc</translation>
+        <translation type="obsolete">дд.ММ.гггг ЧЧ:мм:cc</translation>
     </message>
     <message>
         <source>dd MM yyyy HH:mm</source>
-        <translation>дд ММ гггг ЧЧ:мм</translation>
+        <translation type="obsolete">дд ММ гггг ЧЧ:мм</translation>
     </message>
     <message>
         <source>dd MM yyyy HH:mm:ss</source>
-        <translation>дд ММ гггг ЧЧ:мм:cc</translation>
+        <translation type="obsolete">дд ММ гггг ЧЧ:мм:cc</translation>
     </message>
     <message>
         <source>yyyy-MM-dd HH:mm</source>
-        <translation>гггг-ММ-дд ЧЧ:мм</translation>
+        <translation type="obsolete">гггг-ММ-дд ЧЧ:мм</translation>
     </message>
     <message>
         <source>yyyy-MM-dd HH:mm:ss</source>
-        <translation>гггг-ММ-дд ЧЧ:мм:cc</translation>
+        <translation type="obsolete">гггг-ММ-дд ЧЧ:мм:cc</translation>
     </message>
     <message>
         <source>yyyyMMdd HH:mm</source>
-        <translation>ггггММдд ЧЧ:мм</translation>
+        <translation type="obsolete">ггггММдд ЧЧ:мм</translation>
     </message>
     <message>
         <source>yyyyMMdd HH:mm:ss</source>
-        <translation>ггггММдд ЧЧ:мм:сс</translation>
+        <translation type="obsolete">ггггММдд ЧЧ:мм:сс</translation>
     </message>
 </context>
 <context>

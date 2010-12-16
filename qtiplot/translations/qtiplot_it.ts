@@ -698,7 +698,7 @@
     </message>
     <message>
         <source>Sheet %1 is empty, operation aborted!</source>
-        <translation>Il foglio %1 è vuoto. Operazione fallita!</translation>
+        <translation type="obsolete">Il foglio %1 è vuoto. Operazione fallita!</translation>
     </message>
     <message>
         <source>sheet</source>
@@ -5856,6 +5856,22 @@ segnalando errori o proponendo modifiche</translation>
         <source>Ask before modifying data &amp;points</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Java</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OpenOffice.org</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>JODConverter</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Choose location</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ContourLinesEditor</name>
@@ -6816,6 +6832,61 @@ Derivata di</translation>
     <message>
         <source>Existing column</source>
         <translation>Colonna esistente</translation>
+    </message>
+</context>
+<context>
+    <name>ExcelFileConverter</name>
+    <message>
+        <source>QtiPlot</source>
+        <translation type="unfinished">QtiPlot</translation>
+    </message>
+    <message>
+        <source>Operation failed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Coudn&apos;t start</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>JODConverter</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Please set the correct path in the preferences dialog</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Java</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OpenOffice.org</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Couldn&apos;t start</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>crashed</source>
+        <translation type="unfinished">incidente rovinoso</translation>
+    </message>
+    <message>
+        <source>timedout</source>
+        <translation type="unfinished">timedout*</translation>
+    </message>
+    <message>
+        <source>write error</source>
+        <translation type="unfinished">scrivi e visualizza errore</translation>
+    </message>
+    <message>
+        <source>read error</source>
+        <translation type="unfinished">errore di lettura</translation>
+    </message>
+    <message>
+        <source>unknown error</source>
+        <translation type="unfinished">errore sconosciuto</translation>
     </message>
 </context>
 <context>
@@ -14597,115 +14668,115 @@ Per x&lt;0 ci sono due rami di valori reali; questa funzione calcola quello in c
     </message>
     <message>
         <source>dd/MM/yyyy</source>
-        <translation>gg/mm/aaaa</translation>
+        <translation type="obsolete">gg/mm/aaaa</translation>
     </message>
     <message>
         <source>dd/MM/yyyy HH:mm</source>
-        <translation>gg/mm/aaaa hh:minmin</translation>
+        <translation type="obsolete">gg/mm/aaaa hh:minmin</translation>
     </message>
     <message>
         <source>dd/MM/yyyy HH:mm:ss</source>
-        <translation>gg/mm/aaaa hh:minmin:ss</translation>
+        <translation type="obsolete">gg/mm/aaaa hh:minmin:ss</translation>
     </message>
     <message>
         <source>dd.MM.yyyy</source>
-        <translation>gg.mm.aaaa</translation>
+        <translation type="obsolete">gg.mm.aaaa</translation>
     </message>
     <message>
         <source>dd.MM.yyyy HH:mm</source>
-        <translation>gg.mm.aaaa hh:minmin</translation>
+        <translation type="obsolete">gg.mm.aaaa hh:minmin</translation>
     </message>
     <message>
         <source>dd.MM.yyyy HH:mm:ss</source>
-        <translation>gg.mm.aaaa hh:minmin:ss</translation>
+        <translation type="obsolete">gg.mm.aaaa hh:minmin:ss</translation>
     </message>
     <message>
         <source>dd MM yyyy</source>
-        <translation>gg mm aaaa</translation>
+        <translation type="obsolete">gg mm aaaa</translation>
     </message>
     <message>
         <source>dd MM yyyy HH:mm</source>
-        <translation>gg mm aaaa hh:minmin</translation>
+        <translation type="obsolete">gg mm aaaa hh:minmin</translation>
     </message>
     <message>
         <source>dd MM yyyy HH:mm:ss</source>
-        <translation>gg mm aaaa hh:minmin:ss</translation>
+        <translation type="obsolete">gg mm aaaa hh:minmin:ss</translation>
     </message>
     <message>
         <source>yyyy-MM-dd</source>
-        <translation>aaaa-mm-gg</translation>
+        <translation type="obsolete">aaaa-mm-gg</translation>
     </message>
     <message>
         <source>yyyy-MM-dd HH:mm</source>
-        <translation>aaaa-mm-gg hh:minmin</translation>
+        <translation type="obsolete">aaaa-mm-gg hh:minmin</translation>
     </message>
     <message>
         <source>yyyy-MM-dd HH:mm:ss</source>
-        <translation>aaaa-mm-gg hh:minmin:ss</translation>
+        <translation type="obsolete">aaaa-mm-gg hh:minmin:ss</translation>
     </message>
     <message>
         <source>yyyyMMdd</source>
-        <translation>aaaammgg</translation>
+        <translation type="obsolete">aaaammgg</translation>
     </message>
     <message>
         <source>yyyyMMdd HH:mm</source>
-        <translation>aaaammgg hh:minmin</translation>
+        <translation type="obsolete">aaaammgg hh:minmin</translation>
     </message>
     <message>
         <source>yyyyMMdd HH:mm:ss</source>
-        <translation>aaaammgg hh:minmin:ss</translation>
+        <translation type="obsolete">aaaammgg hh:minmin:ss</translation>
     </message>
     <message>
         <source>h</source>
-        <translation>h</translation>
+        <translation type="obsolete">h</translation>
     </message>
     <message>
         <source>h ap</source>
-        <translation>h ap</translation>
+        <translation type="obsolete">h ap</translation>
     </message>
     <message>
         <source>h AP</source>
-        <translation>h AP</translation>
+        <translation type="obsolete">h AP</translation>
     </message>
     <message>
         <source>h:mm</source>
-        <translation>h:mm</translation>
+        <translation type="obsolete">h:mm</translation>
     </message>
     <message>
         <source>h:mm ap</source>
-        <translation>h:mm ap</translation>
+        <translation type="obsolete">h:mm ap</translation>
     </message>
     <message>
         <source>hh:mm</source>
-        <translation>hh:mm</translation>
+        <translation type="obsolete">hh:mm</translation>
     </message>
     <message>
         <source>h:mm:ss</source>
-        <translation>h:mm:ss</translation>
+        <translation type="obsolete">h:mm:ss</translation>
     </message>
     <message>
         <source>h:mm:ss.zzz</source>
-        <translation>h:mm:ss.zzz</translation>
+        <translation type="obsolete">h:mm:ss.zzz</translation>
     </message>
     <message>
         <source>mm:ss</source>
-        <translation>mm:ss</translation>
+        <translation type="obsolete">mm:ss</translation>
     </message>
     <message>
         <source>mm:ss.zzz</source>
-        <translation>mm:ss.zzz</translation>
+        <translation type="obsolete">mm:ss.zzz</translation>
     </message>
     <message>
         <source>hmm</source>
-        <translation>hmm</translation>
+        <translation type="obsolete">hmm</translation>
     </message>
     <message>
         <source>hmmss</source>
-        <translation>hmmss</translation>
+        <translation type="obsolete">hmmss</translation>
     </message>
     <message>
         <source>hhmmss</source>
-        <translation>hhmmss</translation>
+        <translation type="obsolete">hhmmss</translation>
     </message>
     <message>
         <source>QtiPlot - Error</source>

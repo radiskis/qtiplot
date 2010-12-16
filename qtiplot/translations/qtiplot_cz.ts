@@ -3363,10 +3363,6 @@ Různé části tohoto souboru se nemusí zobrazovat tak, jak se očekává.</tr
         <translation>Znázornit nákres</translation>
     </message>
     <message>
-        <source>Sheet %1 is empty, operation aborted!</source>
-        <translation></translation>
-    </message>
-    <message>
         <source>&amp;Reset to Full Range</source>
         <translation>&amp;Znovu nastavit na plný rozsah</translation>
     </message>
@@ -5949,6 +5945,22 @@ K tomu lze použít následujících zvláštních kódů:
         <source>Ask before modifying data &amp;points</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Java</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OpenOffice.org</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>JODConverter</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Choose location</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ContourLinesEditor</name>
@@ -6911,6 +6923,61 @@ K tomu lze použít následujících zvláštních kódů:
     <message>
         <source>Source of errors</source>
         <translation>Chybové údaje</translation>
+    </message>
+</context>
+<context>
+    <name>ExcelFileConverter</name>
+    <message>
+        <source>QtiPlot</source>
+        <translation type="unfinished">QtiPlot</translation>
+    </message>
+    <message>
+        <source>Operation failed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Coudn&apos;t start</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>JODConverter</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Please set the correct path in the preferences dialog</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Java</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OpenOffice.org</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Couldn&apos;t start</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>crashed</source>
+        <translation type="unfinished">spadlo</translation>
+    </message>
+    <message>
+        <source>timedout</source>
+        <translation type="unfinished">vypršelo</translation>
+    </message>
+    <message>
+        <source>write error</source>
+        <translation type="unfinished">chyba zápisu</translation>
+    </message>
+    <message>
+        <source>read error</source>
+        <translation type="unfinished">chyba čtení</translation>
+    </message>
+    <message>
+        <source>unknown error</source>
+        <translation type="unfinished">neznámá chyba</translation>
     </message>
 </context>
 <context>
@@ -14714,7 +14781,7 @@ pokud e1 pak e2 jinak e3.</translation>
     <name>TableDialog</name>
     <message>
         <source>h</source>
-        <translation>h</translation>
+        <translation type="obsolete">h</translation>
     </message>
     <message>
         <source>&amp;OK</source>
@@ -14722,7 +14789,7 @@ pokud e1 pak e2 jinak e3.</translation>
     </message>
     <message>
         <source>hmm</source>
-        <translation>hmm</translation>
+        <translation type="obsolete">hmm</translation>
     </message>
     <message>
         <source>Date</source>
@@ -14742,15 +14809,15 @@ pokud e1 pak e2 jinak e3.</translation>
     </message>
     <message>
         <source>h AP</source>
-        <translation>h ap</translation>
+        <translation type="obsolete">h ap</translation>
     </message>
     <message>
         <source>h ap</source>
-        <translation>h ap</translation>
+        <translation type="obsolete">h ap</translation>
     </message>
     <message>
         <source>h:mm</source>
-        <translation>h:mm</translation>
+        <translation type="obsolete">h:mm</translation>
     </message>
     <message>
         <source>Label</source>
@@ -14762,11 +14829,11 @@ pokud e1 pak e2 jinak e3.</translation>
     </message>
     <message>
         <source>hh:mm</source>
-        <translation>hh:mm</translation>
+        <translation type="obsolete">hh:mm</translation>
     </message>
     <message>
         <source>hmmss</source>
-        <translation>hmmss</translation>
+        <translation type="obsolete">hmmss</translation>
     </message>
     <message>
         <source>Plot Designation:</source>
@@ -14774,7 +14841,7 @@ pokud e1 pak e2 jinak e3.</translation>
     </message>
     <message>
         <source>mm:ss</source>
-        <translation>mm:ss</translation>
+        <translation type="obsolete">mm:ss</translation>
     </message>
     <message>
         <source>Scientific: 1E3</source>
@@ -14782,7 +14849,7 @@ pokud e1 pak e2 jinak e3.</translation>
     </message>
     <message>
         <source>yyyyMMdd</source>
-        <translation>rrrrmmdd</translation>
+        <translation type="obsolete">rrrrmmdd</translation>
     </message>
     <message>
         <source>QtiPlot - Error</source>
@@ -14790,19 +14857,19 @@ pokud e1 pak e2 jinak e3.</translation>
     </message>
     <message>
         <source>dd MM yyyy HH:mm:ss</source>
-        <translation>dd.mm.rrrr hh:mm:ss</translation>
+        <translation type="obsolete">dd.mm.rrrr hh:mm:ss</translation>
     </message>
     <message>
         <source>dd.MM.yyyy HH:mm:ss</source>
-        <translation>dd.mm.rrrr hh:mm:ss</translation>
+        <translation type="obsolete">dd.mm.rrrr hh:mm:ss</translation>
     </message>
     <message>
         <source>dd/MM/yyyy HH:mm:ss</source>
-        <translation>dd/mm/rrrr hh:mm:ss</translation>
+        <translation type="obsolete">dd/mm/rrrr hh:mm:ss</translation>
     </message>
     <message>
         <source>mm:ss.zzz</source>
-        <translation>mm:ss.zzz</translation>
+        <translation type="obsolete">mm:ss.zzz</translation>
     </message>
     <message>
         <source>QtiPlot - Column options</source>
@@ -14810,19 +14877,19 @@ pokud e1 pak e2 jinak e3.</translation>
     </message>
     <message>
         <source>h:mm:ss.zzz</source>
-        <translation>h:mm:ss.zzz</translation>
+        <translation type="obsolete">h:mm:ss.zzz</translation>
     </message>
     <message>
         <source>dd MM yyyy</source>
-        <translation>dd mm rrrr</translation>
+        <translation type="obsolete">dd mm rrrr</translation>
     </message>
     <message>
         <source>dd/MM/yyyy</source>
-        <translation>dd/mm/rrrr</translation>
+        <translation type="obsolete">dd/mm/rrrr</translation>
     </message>
     <message>
         <source>dd.MM.yyyy</source>
-        <translation>dd.mm.rrrr</translation>
+        <translation type="obsolete">dd.mm.rrrr</translation>
     </message>
     <message>
         <source>&amp;Apply</source>
@@ -14850,7 +14917,7 @@ pokud e1 pak e2 jinak e3.</translation>
     </message>
     <message>
         <source>yyyy-MM-dd HH:mm:ss</source>
-        <translation>dd mm rrrr hh:mm:ss</translation>
+        <translation type="obsolete">dd mm rrrr hh:mm:ss</translation>
     </message>
     <message>
         <source>Y (ordinates)</source>
@@ -14886,11 +14953,11 @@ pokud e1 pak e2 jinak e3.</translation>
     </message>
     <message>
         <source>hhmmss</source>
-        <translation>hhmmss</translation>
+        <translation type="obsolete">hhmmss</translation>
     </message>
     <message>
         <source>yyyyMMdd HH:mm</source>
-        <translation>rrrrmmdd hh:mm</translation>
+        <translation type="obsolete">rrrrmmdd hh:mm</translation>
     </message>
     <message>
         <source>&amp;Read-only</source>
@@ -14898,11 +14965,11 @@ pokud e1 pak e2 jinak e3.</translation>
     </message>
     <message>
         <source>dd.MM.yyyy HH:mm</source>
-        <translation>dd.mm.rrrr hh:mm</translation>
+        <translation type="obsolete">dd.mm.rrrr hh:mm</translation>
     </message>
     <message>
         <source>dd/MM/yyyy HH:mm</source>
-        <translation>dd/mm/rrrr hh:mm</translation>
+        <translation type="obsolete">dd/mm/rrrr hh:mm</translation>
     </message>
     <message>
         <source>Precision:</source>
@@ -14914,7 +14981,7 @@ pokud e1 pak e2 jinak e3.</translation>
     </message>
     <message>
         <source>yyyy-MM-dd HH:mm</source>
-        <translation>rrrr mm dd hh:mm</translation>
+        <translation type="obsolete">rrrr mm dd hh:mm</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
@@ -14926,11 +14993,11 @@ pokud e1 pak e2 jinak e3.</translation>
     </message>
     <message>
         <source>dd MM yyyy HH:mm</source>
-        <translation>dd mm rrrr hh:mm</translation>
+        <translation type="obsolete">dd mm rrrr hh:mm</translation>
     </message>
     <message>
         <source>yyyyMMdd HH:mm:ss</source>
-        <translation>rrrrmmdd hh:mm:ss</translation>
+        <translation type="obsolete">rrrrmmdd hh:mm:ss</translation>
     </message>
     <message>
         <source>&amp;Hidden</source>
@@ -14946,15 +15013,15 @@ pokud e1 pak e2 jinak e3.</translation>
     </message>
     <message>
         <source>h:mm ap</source>
-        <translation>h:mm ap</translation>
+        <translation type="obsolete">h:mm ap</translation>
     </message>
     <message>
         <source>h:mm:ss</source>
-        <translation>h:mm:ss</translation>
+        <translation type="obsolete">h:mm:ss</translation>
     </message>
     <message>
         <source>yyyy-MM-dd</source>
-        <translation>rrrr mm dd</translation>
+        <translation type="obsolete">rrrr mm dd</translation>
     </message>
     <message>
         <source>Format:</source>

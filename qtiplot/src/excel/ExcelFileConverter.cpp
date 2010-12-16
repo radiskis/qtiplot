@@ -111,9 +111,12 @@ void ExcelFileConverter::finishImport(int, QProcess::ExitStatus exitStatus)
 			+ tr("Please set the correct path in the preferences dialog") + "!");
 			return;
 		} else {
-			java->kill();
-			java = 0;
+			if (java){
+				java->kill();
+				java = 0;
+			}
 			startConvertion();
+			return;
 		}
 	}
 

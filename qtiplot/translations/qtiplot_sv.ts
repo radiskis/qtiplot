@@ -3858,7 +3858,7 @@ den första representerar signalen och den andra svarsfunktionen!</translation>
     </message>
     <message>
         <source>Sheet %1 is empty, operation aborted!</source>
-        <translation>Ark %1 är tomt, operationen avbryts!</translation>
+        <translation type="obsolete">Ark %1 är tomt, operationen avbryts!</translation>
     </message>
     <message>
         <source>sheet</source>
@@ -10641,6 +10641,22 @@ Följande specialkoder kan användas:
         <source>Ask before modifying data &amp;points</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Java</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OpenOffice.org</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>JODConverter</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Choose location</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ContourLinesEditor</name>
@@ -11701,6 +11717,61 @@ Följande specialkoder kan användas:
     <message>
         <source>Existing column</source>
         <translation>Befintlig kolumn</translation>
+    </message>
+</context>
+<context>
+    <name>ExcelFileConverter</name>
+    <message>
+        <source>QtiPlot</source>
+        <translation type="unfinished">QtiPlot</translation>
+    </message>
+    <message>
+        <source>Operation failed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Coudn&apos;t start</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>JODConverter</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Please set the correct path in the preferences dialog</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Java</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OpenOffice.org</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Couldn&apos;t start</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>crashed</source>
+        <translation type="unfinished">kraschade</translation>
+    </message>
+    <message>
+        <source>timedout</source>
+        <translation type="unfinished">tiden tog slut</translation>
+    </message>
+    <message>
+        <source>write error</source>
+        <translation type="unfinished">skrivfel</translation>
+    </message>
+    <message>
+        <source>read error</source>
+        <translation type="unfinished">läsfel</translation>
+    </message>
+    <message>
+        <source>unknown error</source>
+        <translation type="unfinished">okänt fel</translation>
     </message>
 </context>
 <context>
@@ -21413,59 +21484,59 @@ den första representerar signalen och den andra svarsfunktionen!</translation>
     </message>
     <message>
         <source>yyyy-MM-dd</source>
-        <translation>yyyy-mm-dd</translation>
+        <translation type="obsolete">yyyy-mm-dd</translation>
     </message>
     <message>
         <source>h</source>
-        <translation>h</translation>
+        <translation type="obsolete">h</translation>
     </message>
     <message>
         <source>h ap</source>
-        <translation>h ap</translation>
+        <translation type="obsolete">h ap</translation>
     </message>
     <message>
         <source>h AP</source>
-        <translation>h AP</translation>
+        <translation type="obsolete">h AP</translation>
     </message>
     <message>
         <source>h:mm</source>
-        <translation>h:mm</translation>
+        <translation type="obsolete">h:mm</translation>
     </message>
     <message>
         <source>h:mm ap</source>
-        <translation>h.mm ap</translation>
+        <translation type="obsolete">h.mm ap</translation>
     </message>
     <message>
         <source>hh:mm</source>
-        <translation>hh:mm</translation>
+        <translation type="obsolete">hh:mm</translation>
     </message>
     <message>
         <source>h:mm:ss</source>
-        <translation>h:mm:ss</translation>
+        <translation type="obsolete">h:mm:ss</translation>
     </message>
     <message>
         <source>h:mm:ss.zzz</source>
-        <translation>h:mm:ss,zzz</translation>
+        <translation type="obsolete">h:mm:ss,zzz</translation>
     </message>
     <message>
         <source>mm:ss</source>
-        <translation>mm:ss</translation>
+        <translation type="obsolete">mm:ss</translation>
     </message>
     <message>
         <source>mm:ss.zzz</source>
-        <translation>mm:ss:zzz</translation>
+        <translation type="obsolete">mm:ss:zzz</translation>
     </message>
     <message>
         <source>hmm</source>
-        <translation>hmm</translation>
+        <translation type="obsolete">hmm</translation>
     </message>
     <message>
         <source>hmmss</source>
-        <translation>hmmss</translation>
+        <translation type="obsolete">hmmss</translation>
     </message>
     <message>
         <source>hhmmss</source>
-        <translation>hhmmss</translation>
+        <translation type="obsolete">hhmmss</translation>
     </message>
     <message>
         <source>&amp;Display Comments in Header</source>
@@ -21473,19 +21544,19 @@ den första representerar signalen och den andra svarsfunktionen!</translation>
     </message>
     <message>
         <source>dd/MM/yyyy</source>
-        <translation>dd/MM/yyyy</translation>
+        <translation type="obsolete">dd/MM/yyyy</translation>
     </message>
     <message>
         <source>dd.MM.yyyy</source>
-        <translation>dd.MM.yyyy</translation>
+        <translation type="obsolete">dd.MM.yyyy</translation>
     </message>
     <message>
         <source>dd MM yyyy</source>
-        <translation>dd MM yyyy</translation>
+        <translation type="obsolete">dd MM yyyy</translation>
     </message>
     <message>
         <source>yyyyMMdd</source>
-        <translation>yyyyMMdd</translation>
+        <translation type="obsolete">yyyyMMdd</translation>
     </message>
     <message>
         <source>Couldn&apos;t guess the source data format, please specify it using the &apos;Format&apos; box!</source>
@@ -21509,43 +21580,43 @@ den första representerar signalen och den andra svarsfunktionen!</translation>
     </message>
     <message>
         <source>dd/MM/yyyy HH:mm</source>
-        <translation>dd/MM/yyyy HH:mm</translation>
+        <translation type="obsolete">dd/MM/yyyy HH:mm</translation>
     </message>
     <message>
         <source>dd/MM/yyyy HH:mm:ss</source>
-        <translation>dd/MM/yyyy HH:mm:ss</translation>
+        <translation type="obsolete">dd/MM/yyyy HH:mm:ss</translation>
     </message>
     <message>
         <source>dd.MM.yyyy HH:mm</source>
-        <translation>dd.MM.yyyy HH:mm</translation>
+        <translation type="obsolete">dd.MM.yyyy HH:mm</translation>
     </message>
     <message>
         <source>dd.MM.yyyy HH:mm:ss</source>
-        <translation>dd.MM.yyyy HH:mm:ss</translation>
+        <translation type="obsolete">dd.MM.yyyy HH:mm:ss</translation>
     </message>
     <message>
         <source>dd MM yyyy HH:mm</source>
-        <translation>dd MM yyyy HH:mm</translation>
+        <translation type="obsolete">dd MM yyyy HH:mm</translation>
     </message>
     <message>
         <source>dd MM yyyy HH:mm:ss</source>
-        <translation>dd MM yyyy HH:mm:ss</translation>
+        <translation type="obsolete">dd MM yyyy HH:mm:ss</translation>
     </message>
     <message>
         <source>yyyy-MM-dd HH:mm</source>
-        <translation>dd-MM-yyyy HH:mm</translation>
+        <translation type="obsolete">dd-MM-yyyy HH:mm</translation>
     </message>
     <message>
         <source>yyyy-MM-dd HH:mm:ss</source>
-        <translation>yyyy-MM-dd HH:mm:ss</translation>
+        <translation type="obsolete">yyyy-MM-dd HH:mm:ss</translation>
     </message>
     <message>
         <source>yyyyMMdd HH:mm</source>
-        <translation>yyyyMMdd HH:mm</translation>
+        <translation type="obsolete">yyyyMMdd HH:mm</translation>
     </message>
     <message>
         <source>yyyyMMdd HH:mm:ss</source>
-        <translation>yyyyMMdd HH:mm:ss</translation>
+        <translation type="obsolete">yyyyMMdd HH:mm:ss</translation>
     </message>
 </context>
 <context>

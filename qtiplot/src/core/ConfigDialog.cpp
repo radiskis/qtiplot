@@ -3018,10 +3018,12 @@ void ConfigDialog::chooseTexCompiler()
 	if (!app)
 		return;
 
-	QFileInfo tfi(app->d_latex_compiler_path);
+	QString filter = QString();
+#ifdef Q_WS_WIN
+	filter = "*.exe";
+#endif
 	QString compiler = ApplicationWindow::getFileName(this, tr("Choose the location of the LaTeX compiler!"),
-	app->d_latex_compiler_path, QString(), 0, false);
-
+	app->d_latex_compiler_path, filter, 0, false);
 	if (!compiler.isEmpty()){
 		app->d_latex_compiler_path = QDir::toNativeSeparators(compiler);
 		texCompilerPathBox->setText(app->d_latex_compiler_path);
@@ -3034,8 +3036,11 @@ void ConfigDialog::chooseOffice()
 	if (!app)
 		return;
 
-	QFileInfo tfi(app->d_soffice_path);
-	QString compiler = ApplicationWindow::getFileName(this, tr("Choose location"), app->d_soffice_path, QString(), 0, false);
+	QString filter = QString();
+#ifdef Q_WS_WIN
+	filter = "*.exe";
+#endif
+	QString compiler = ApplicationWindow::getFileName(this, tr("Choose location"), app->d_soffice_path, filter, 0, false);
 	if (!compiler.isEmpty()){
 		app->d_soffice_path = QDir::toNativeSeparators(compiler);
 		sofficePathBox->setText(app->d_soffice_path);
@@ -3075,8 +3080,11 @@ void ConfigDialog::chooseJava()
 	if (!app)
 		return;
 
-	QFileInfo tfi(app->d_java_path);
-	QString compiler = ApplicationWindow::getFileName(this, tr("Choose location"), app->d_java_path, QString(), 0, false);
+	QString filter = QString();
+#ifdef Q_WS_WIN
+	filter = "*.exe";
+#endif
+	QString compiler = ApplicationWindow::getFileName(this, tr("Choose location"), app->d_java_path, filter, 0, false);
 	if (!compiler.isEmpty()){
 		app->d_java_path = QDir::toNativeSeparators(compiler);
 		javaPathBox->setText(app->d_java_path);
@@ -3116,7 +3124,6 @@ void ConfigDialog::chooseJODConverter()
 	if (!app)
 		return;
 
-	QFileInfo tfi(app->d_jodconverter_path);
 	QString compiler = ApplicationWindow::getFileName(this, tr("Choose location"), app->d_jodconverter_path, "*.jar", 0, false);
 	if (!compiler.isEmpty()){
 		app->d_jodconverter_path = QDir::toNativeSeparators(compiler);
