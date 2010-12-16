@@ -50,13 +50,8 @@ OpenProjectDialog::OpenProjectDialog(QWidget *parent, bool extended, Qt::WFlags 
 #endif
 		<< tr("Backup files") + " (*.qti~)"
 
-#ifdef Q_OS_WIN
-		<< tr("Excel") + " (*.xls *.xlsx)"
-#elif XLS_IMPORT
-		<< tr("Excel") + " (*.xls)"
-#endif
-
 #ifdef ODS_IMPORT
+		<< tr("Excel") + " (*.xls *.xlsx)"
 		<< tr("ODF Spreadsheet") + " (*.ods)"
 #endif
 		<< tr("All files") + " (*)";
@@ -92,7 +87,8 @@ OpenProjectDialog::OpenProjectDialog(QWidget *parent, bool extended, Qt::WFlags 
 
 void OpenProjectDialog::updateAdvancedOptions (const QString & filter)
 {
-	if (filter.contains("*.ogm") || filter.contains("*.ogw") || filter.contains("*.xls")) {
+	if (filter.contains("*.ogm") || filter.contains("*.ogw") ||
+		filter.contains("*.xls") || filter.contains("*.xlsx")){
 		d_extension_toggle->setChecked(false);
 		d_extension_toggle->setEnabled(false);
 		return;

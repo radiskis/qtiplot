@@ -532,7 +532,8 @@ void ApplicationWindow::setDefaultOptions()
 #ifdef Q_WS_WIN
 	d_java_path = "/usr/bin/java";
 	d_soffice_path = "C:/Program Files/OpenOffice.org 3/program/soffice.exe";
-#elif Q_WS_MAC
+#endif
+#ifdef Q_WS_MAC
 	d_java_path = "/usr/bin/java";
 	d_soffice_path = "/Applications/OpenOffice.org.app/Contents/MacOS/soffice";
 #else
@@ -541,7 +542,7 @@ void ApplicationWindow::setDefaultOptions()
 	d_latex_compiler_path = "/usr/bin/latex";
 	d_latex_compiler = Local;
 #endif
-	d_jodconverter_path = aux + "/jodconverter/lib/jodconverter-cli-2.2.2.jar";
+	d_jodconverter_path = QDir::toNativeSeparators(aux + "/jodconverter/lib/jodconverter-cli-2.2.2.jar");
 
 #ifdef TRANSLATIONS_PATH
 	d_translations_folder = TRANSLATIONS_PATH;
@@ -4362,12 +4363,10 @@ Table * ApplicationWindow::importExcel(const QString& fileName, int sheet)
 {
 	QString fn = fileName;
 	if (fn.isEmpty()){
-		QString filter = "*.xls";
+		QString filter = tr("Excel files") + " (*.xls *.xlsx)";
 #ifdef Q_OS_WIN
 	#ifdef HAS_EXCEL
 		filter = tr("Excel files") + " (*.xl *.xlsx *.xlsm *.xlsb *.xlam *.xltx *.xltm *.xls *.xla *.xlt *.xlm *.xlw)";
-	#else
-		filter = tr("Excel files") + " (*.xls *.xlsx)";
 	#endif
 #endif
 		fn = getFileName(this, tr("Open Excel File"), QString::null, filter, 0, false);
@@ -4914,8 +4913,9 @@ ApplicationWindow* ApplicationWindow::open(const QString& fn, bool factorySettin
 	}
 	#endif
 #endif
-#ifdef XLS_IMPORT
-	if (fn.endsWith(".xls", Qt::CaseInsensitive)){
+
+#ifdef ODS_IMPORT
+	if (fn.endsWith(".xls", Qt::CaseInsensitive || fn.endsWith(".xlsx", Qt::CaseInsensitive))){
 		importExcel(fn);
 		return this;
 	}
@@ -16482,7 +16482,7 @@ Folder* ApplicationWindow::appendProject(const QString& fn, Folder* parentFolder
 
 	if (fn.endsWith(".qti") || fn.endsWith(".opj", Qt::CaseInsensitive) || fn.endsWith(".ogm", Qt::CaseInsensitive) ||
 		fn.endsWith(".ogw", Qt::CaseInsensitive) || fn.endsWith(".ogg", Qt::CaseInsensitive) ||
-		fn.endsWith(".xls", Qt::CaseInsensitive) || fn.endsWith(".ods", Qt::CaseInsensitive)){
+		fn.endsWith(".xls", Qt::CaseInsensitive) || fn.endsWith(".xlsx", Qt::CaseInsensitive) || fn.endsWith(".ods", Qt::CaseInsensitive)){
 		QFileInfo f(fn);
 		if (!f.exists ()){
 			QMessageBox::critical(this, tr("QtiPlot - File opening error"), tr("The file: <b>%1</b> doesn't exist!").arg(fn));
@@ -16539,13 +16539,8 @@ Folder* ApplicationWindow::appendProject(const QString& fn, Folder* parentFolder
 		ImportOPJ(this, fn);
 	else
 #endif
-#ifdef Q_OS_WIN
+#ifdef ODS_IMPORT
 	if (fn.endsWith(".xls", Qt::CaseInsensitive || fn.endsWith(".xlsx", Qt::CaseInsensitive)))
-		importExcel(fn);
-	else
-#endif
-#ifdef XLS_IMPORT
-	if (fn.endsWith(".xls", Qt::CaseInsensitive))
 		importExcel(fn);
 	else
 #endif

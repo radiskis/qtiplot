@@ -50,7 +50,6 @@ private slots:
 	void finishImport(int exitCode, QProcess::ExitStatus exitStatus);
 
 private:
-	void killOfficeServer();
 	void startOpenOfficeServer();
 	void displayError(const QString& process, QProcess::ProcessError error);
 
