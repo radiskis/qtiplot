@@ -530,8 +530,8 @@ void ApplicationWindow::setDefaultOptions()
 	workingDir = aux;
 
 #ifdef Q_WS_WIN
-	d_java_path = "C:/Program Files/Java/jre6/bin/java.exe";
-	d_soffice_path = "C:/Program Files/OpenOffice.org 3/program/soffice.exe";
+	d_java_path = QDir::toNativeSeparators("C:/Program Files/Java/jre6/bin/java.exe");
+	d_soffice_path = QDir::toNativeSeparators("C:/Program Files/OpenOffice.org 3/program/soffice.exe");
 #endif
 #ifdef Q_WS_MAC
 	d_java_path = "/usr/bin/java";

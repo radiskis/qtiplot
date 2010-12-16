@@ -4119,10 +4119,6 @@ Autocompletion will not be available!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Sheet %1 is empty, operation aborted!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>sheet</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6378,6 +6374,22 @@ The following special codes can be used:
         <source>Ask before modifying data &amp;points</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Java</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OpenOffice.org</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>JODConverter</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Choose location</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ContourLinesEditor</name>
@@ -7335,6 +7347,61 @@ The following special codes can be used:
     </message>
     <message>
         <source>Existing column</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ExcelFileConverter</name>
+    <message>
+        <source>QtiPlot</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Operation failed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Coudn&apos;t start</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>JODConverter</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Please set the correct path in the preferences dialog</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Java</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OpenOffice.org</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Couldn&apos;t start</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>crashed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>timedout</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>write error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>read error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>unknown error</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -14898,83 +14965,11 @@ have the same number of rows.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>yyyy-MM-dd</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>h</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>h ap</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>h AP</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>h:mm</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>h:mm ap</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>hh:mm</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>h:mm:ss</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>h:mm:ss.zzz</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>mm:ss</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>mm:ss.zzz</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>hmm</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>hmmss</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>hhmmss</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>&amp;Read-only</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>&amp;Display Comments in Header</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>dd/MM/yyyy</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>dd.MM.yyyy</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>dd MM yyyy</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>yyyyMMdd</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -14991,46 +14986,6 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>&amp;Hidden</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>dd/MM/yyyy HH:mm</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>dd/MM/yyyy HH:mm:ss</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>dd.MM.yyyy HH:mm</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>dd.MM.yyyy HH:mm:ss</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>dd MM yyyy HH:mm</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>dd MM yyyy HH:mm:ss</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>yyyy-MM-dd HH:mm</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>yyyy-MM-dd HH:mm:ss</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>yyyyMMdd HH:mm</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>yyyyMMdd HH:mm:ss</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

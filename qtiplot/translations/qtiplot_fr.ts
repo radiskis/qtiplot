@@ -2450,7 +2450,7 @@ Quelques parties de ce fichier peuvent ne pas être affichés comme attendu.</tr
     </message>
     <message>
         <source>Sheet %1 is empty, operation aborted!</source>
-        <translation>La feuille %1 est vide, opération annulée !</translation>
+        <translation type="obsolete">La feuille %1 est vide, opération annulée !</translation>
     </message>
     <message>
         <source>sheet</source>
@@ -5937,6 +5937,22 @@ Les codes spéciaux suivant peuvent être utilisés :
         <source>Ask before modifying data &amp;points</source>
         <translation>Demander avant de modifier les &amp;points de données</translation>
     </message>
+    <message>
+        <source>Java</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OpenOffice.org</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>JODConverter</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Choose location</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ContourLinesEditor</name>
@@ -6895,6 +6911,61 @@ Les codes spéciaux suivant peuvent être utilisés :
     <message>
         <source>Existing column</source>
         <translation>Colonne existante</translation>
+    </message>
+</context>
+<context>
+    <name>ExcelFileConverter</name>
+    <message>
+        <source>QtiPlot</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Operation failed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Coudn&apos;t start</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>JODConverter</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Please set the correct path in the preferences dialog</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Java</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OpenOffice.org</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Couldn&apos;t start</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>crashed</source>
+        <translation type="unfinished">terminé brusquement</translation>
+    </message>
+    <message>
+        <source>timedout</source>
+        <translation type="unfinished">temps dépassé</translation>
+    </message>
+    <message>
+        <source>write error</source>
+        <translation type="unfinished">erreur d&apos;écriture</translation>
+    </message>
+    <message>
+        <source>read error</source>
+        <translation type="unfinished">erreur de lecture</translation>
+    </message>
+    <message>
+        <source>unknown error</source>
+        <translation type="unfinished">erreur inconnue</translation>
     </message>
 </context>
 <context>
@@ -14770,59 +14841,59 @@ Calcule le sinus de x.</translation>
     </message>
     <message>
         <source>yyyy-MM-dd</source>
-        <translation>aaaa-MM-jj</translation>
+        <translation type="obsolete">aaaa-MM-jj</translation>
     </message>
     <message>
         <source>h</source>
-        <translation>h</translation>
+        <translation type="obsolete">h</translation>
     </message>
     <message>
         <source>h ap</source>
-        <translation>h ap</translation>
+        <translation type="obsolete">h ap</translation>
     </message>
     <message>
         <source>h AP</source>
-        <translation>h AP</translation>
+        <translation type="obsolete">h AP</translation>
     </message>
     <message>
         <source>h:mm</source>
-        <translation>h:mm</translation>
+        <translation type="obsolete">h:mm</translation>
     </message>
     <message>
         <source>h:mm ap</source>
-        <translation>h:mm ap</translation>
+        <translation type="obsolete">h:mm ap</translation>
     </message>
     <message>
         <source>hh:mm</source>
-        <translation>hh:mm</translation>
+        <translation type="obsolete">hh:mm</translation>
     </message>
     <message>
         <source>h:mm:ss</source>
-        <translation>h:mm:ss</translation>
+        <translation type="obsolete">h:mm:ss</translation>
     </message>
     <message>
         <source>h:mm:ss.zzz</source>
-        <translation>h:mm:ss.zzz</translation>
+        <translation type="obsolete">h:mm:ss.zzz</translation>
     </message>
     <message>
         <source>mm:ss</source>
-        <translation>mm:ss</translation>
+        <translation type="obsolete">mm:ss</translation>
     </message>
     <message>
         <source>mm:ss.zzz</source>
-        <translation>mm:ss.zzz</translation>
+        <translation type="obsolete">mm:ss.zzz</translation>
     </message>
     <message>
         <source>hmm</source>
-        <translation>hmm</translation>
+        <translation type="obsolete">hmm</translation>
     </message>
     <message>
         <source>hmmss</source>
-        <translation>hmmss</translation>
+        <translation type="obsolete">hmmss</translation>
     </message>
     <message>
         <source>hhmmss</source>
-        <translation>hhmmss</translation>
+        <translation type="obsolete">hhmmss</translation>
     </message>
     <message>
         <source>&amp;Display Comments in Header</source>
@@ -14830,19 +14901,19 @@ Calcule le sinus de x.</translation>
     </message>
     <message>
         <source>dd/MM/yyyy</source>
-        <translation>jj/MM/aaaa</translation>
+        <translation type="obsolete">jj/MM/aaaa</translation>
     </message>
     <message>
         <source>dd.MM.yyyy</source>
-        <translation>jj.MM.aaaa</translation>
+        <translation type="obsolete">jj.MM.aaaa</translation>
     </message>
     <message>
         <source>dd MM yyyy</source>
-        <translation>jj MM aaaa</translation>
+        <translation type="obsolete">jj MM aaaa</translation>
     </message>
     <message>
         <source>yyyyMMdd</source>
-        <translation>aaaaMMjj</translation>
+        <translation type="obsolete">aaaaMMjj</translation>
     </message>
     <message>
         <source>Couldn&apos;t guess the source data format, please specify it using the &apos;Format&apos; box!</source>
@@ -14866,43 +14937,43 @@ Calcule le sinus de x.</translation>
     </message>
     <message>
         <source>dd/MM/yyyy HH:mm</source>
-        <translation>jj/MM/aaaa HH:mm</translation>
+        <translation type="obsolete">jj/MM/aaaa HH:mm</translation>
     </message>
     <message>
         <source>dd/MM/yyyy HH:mm:ss</source>
-        <translation>jj/MM/aaaa HH:mm:ss</translation>
+        <translation type="obsolete">jj/MM/aaaa HH:mm:ss</translation>
     </message>
     <message>
         <source>dd.MM.yyyy HH:mm</source>
-        <translation>j.M.aaaa HH:mm</translation>
+        <translation type="obsolete">j.M.aaaa HH:mm</translation>
     </message>
     <message>
         <source>dd.MM.yyyy HH:mm:ss</source>
-        <translation>jj.MM.aaaa HH:mm:ss</translation>
+        <translation type="obsolete">jj.MM.aaaa HH:mm:ss</translation>
     </message>
     <message>
         <source>dd MM yyyy HH:mm</source>
-        <translation>jj MM aaaa HH:mm</translation>
+        <translation type="obsolete">jj MM aaaa HH:mm</translation>
     </message>
     <message>
         <source>dd MM yyyy HH:mm:ss</source>
-        <translation>jj MM aaaa HH:mm:ss</translation>
+        <translation type="obsolete">jj MM aaaa HH:mm:ss</translation>
     </message>
     <message>
         <source>yyyy-MM-dd HH:mm</source>
-        <translation>aaaa-MM-jj HH:mm</translation>
+        <translation type="obsolete">aaaa-MM-jj HH:mm</translation>
     </message>
     <message>
         <source>yyyy-MM-dd HH:mm:ss</source>
-        <translation>aaaa-MM-jj HH:mm:ss</translation>
+        <translation type="obsolete">aaaa-MM-jj HH:mm:ss</translation>
     </message>
     <message>
         <source>yyyyMMdd HH:mm</source>
-        <translation>aaaaMMjj HH:mm</translation>
+        <translation type="obsolete">aaaaMMjj HH:mm</translation>
     </message>
     <message>
         <source>yyyyMMdd HH:mm:ss</source>
-        <translation>aaaaMMjj HH:mm:ss</translation>
+        <translation type="obsolete">aaaaMMjj HH:mm:ss</translation>
     </message>
     <message>
         <source>Column Name</source>

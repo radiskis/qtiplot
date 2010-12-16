@@ -3549,7 +3549,7 @@ Are you sure you want to continue?</source>
     </message>
     <message>
         <source>Sheet %1 is empty, operation aborted!</source>
-        <translation>Foaia de calcul %1 este goală, operația a fost abandonată!</translation>
+        <translation type="obsolete">Foaia de calcul %1 este goală, operația a fost abandonată!</translation>
     </message>
     <message>
         <source>sheet</source>
@@ -9451,6 +9451,22 @@ The following special codes can be used:
         <source>Ask before modifying data &amp;points</source>
         <translation>Confirmă modificarea punctelor de &amp;date</translation>
     </message>
+    <message>
+        <source>Java</source>
+        <translation>Java</translation>
+    </message>
+    <message>
+        <source>OpenOffice.org</source>
+        <translation>OpenOffice.org</translation>
+    </message>
+    <message>
+        <source>JODConverter</source>
+        <translation>JODConverter</translation>
+    </message>
+    <message>
+        <source>Choose location</source>
+        <translation>Alege amplasament</translation>
+    </message>
 </context>
 <context>
     <name>ContourLinesEditor</name>
@@ -10392,7 +10408,7 @@ The following special codes can be used:
     </message>
     <message>
         <source>Please set the correct path to the compiler in the preferences dialog!</source>
-        <translation>Vă rugăm să specificaţi locaţia corectă pentru compilator in dialogul &quot;Opţiuni...&quot;!</translation>
+        <translation>Vă rugăm să specificaţi locaţia corectă pentru compilator în dialogul &quot;Opţiuni...&quot;!</translation>
     </message>
 </context>
 <context>
@@ -10436,6 +10452,61 @@ The following special codes can be used:
     <message>
         <source>Existing column</source>
         <translation>Coloană existentă</translation>
+    </message>
+</context>
+<context>
+    <name>ExcelFileConverter</name>
+    <message>
+        <source>QtiPlot</source>
+        <translation>QtiPlot</translation>
+    </message>
+    <message>
+        <source>Operation failed</source>
+        <translation>Operaţiune eşuată</translation>
+    </message>
+    <message>
+        <source>Coudn&apos;t start</source>
+        <translation>Nu a fost găsit</translation>
+    </message>
+    <message>
+        <source>JODConverter</source>
+        <translation>JODConverter</translation>
+    </message>
+    <message>
+        <source>Please set the correct path in the preferences dialog</source>
+        <translation>Vă rugăm să specificaţi locaţia corectă în dialogul &quot;Opţiuni...&quot;</translation>
+    </message>
+    <message>
+        <source>Java</source>
+        <translation>Java</translation>
+    </message>
+    <message>
+        <source>OpenOffice.org</source>
+        <translation>OpenOffice.org</translation>
+    </message>
+    <message>
+        <source>Couldn&apos;t start</source>
+        <translation>Nu a fost găsit</translation>
+    </message>
+    <message>
+        <source>crashed</source>
+        <translation>distrus</translation>
+    </message>
+    <message>
+        <source>timedout</source>
+        <translation>oprit</translation>
+    </message>
+    <message>
+        <source>write error</source>
+        <translation>eroare de scriere</translation>
+    </message>
+    <message>
+        <source>read error</source>
+        <translation>eroare de citire</translation>
+    </message>
+    <message>
+        <source>unknown error</source>
+        <translation>eroare necunoscută</translation>
     </message>
 </context>
 <context>
@@ -18521,115 +18592,107 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>dd/MM/yyyy</source>
-        <translation>zz/LL/aaaa</translation>
+        <translation type="obsolete">zz/LL/aaaa</translation>
     </message>
     <message>
         <source>dd/MM/yyyy HH:mm</source>
-        <translation>zz/LL/aaaa  OO:mm</translation>
+        <translation type="obsolete">zz/LL/aaaa  OO:mm</translation>
     </message>
     <message>
         <source>dd/MM/yyyy HH:mm:ss</source>
-        <translation>zz/LL/aaaa  OO:mm:ss</translation>
+        <translation type="obsolete">zz/LL/aaaa  OO:mm:ss</translation>
     </message>
     <message>
         <source>dd.MM.yyyy</source>
-        <translation>zz.LL.aaaa</translation>
+        <translation type="obsolete">zz.LL.aaaa</translation>
     </message>
     <message>
         <source>dd.MM.yyyy HH:mm</source>
-        <translation>zz.LL.aaaa OO:mm</translation>
+        <translation type="obsolete">zz.LL.aaaa OO:mm</translation>
     </message>
     <message>
         <source>dd.MM.yyyy HH:mm:ss</source>
-        <translation>zz.LL.aaaa OO:mm:ss</translation>
+        <translation type="obsolete">zz.LL.aaaa OO:mm:ss</translation>
     </message>
     <message>
         <source>dd MM yyyy</source>
-        <translation>zz LL aaaa</translation>
+        <translation type="obsolete">zz LL aaaa</translation>
     </message>
     <message>
         <source>dd MM yyyy HH:mm</source>
-        <translation>zz LL aaaa  OO:mm</translation>
+        <translation type="obsolete">zz LL aaaa  OO:mm</translation>
     </message>
     <message>
         <source>dd MM yyyy HH:mm:ss</source>
-        <translation>zz LL aaaa  OO:mm:ss</translation>
+        <translation type="obsolete">zz LL aaaa  OO:mm:ss</translation>
     </message>
     <message>
         <source>yyyy-MM-dd</source>
-        <translation>aaaa-LL-zz</translation>
+        <translation type="obsolete">aaaa-LL-zz</translation>
     </message>
     <message>
         <source>yyyy-MM-dd HH:mm</source>
-        <translation>aaaa-LL-zz OO:mm</translation>
+        <translation type="obsolete">aaaa-LL-zz OO:mm</translation>
     </message>
     <message>
         <source>yyyy-MM-dd HH:mm:ss</source>
-        <translation>aaaa-LL-zz OO:mm:ss</translation>
+        <translation type="obsolete">aaaa-LL-zz OO:mm:ss</translation>
     </message>
     <message>
         <source>yyyyMMdd</source>
-        <translation>aaaaLLzz</translation>
+        <translation type="obsolete">aaaaLLzz</translation>
     </message>
     <message>
         <source>yyyyMMdd HH:mm</source>
-        <translation>aaaaLLzz OO:mm</translation>
+        <translation type="obsolete">aaaaLLzz OO:mm</translation>
     </message>
     <message>
         <source>yyyyMMdd HH:mm:ss</source>
-        <translation>aaaaLLzz OO:mm:ss</translation>
+        <translation type="obsolete">aaaaLLzz OO:mm:ss</translation>
     </message>
     <message>
         <source>h</source>
-        <translation>o</translation>
+        <translation type="obsolete">o</translation>
     </message>
     <message>
         <source>h ap</source>
-        <translation>o ap</translation>
+        <translation type="obsolete">o ap</translation>
     </message>
     <message>
         <source>h AP</source>
-        <translation>o AP</translation>
+        <translation type="obsolete">o AP</translation>
     </message>
     <message>
         <source>h:mm</source>
-        <translation>o:mm</translation>
+        <translation type="obsolete">o:mm</translation>
     </message>
     <message>
         <source>h:mm ap</source>
-        <translation>o:mm ap</translation>
+        <translation type="obsolete">o:mm ap</translation>
     </message>
     <message>
         <source>hh:mm</source>
-        <translation>oo:mm</translation>
+        <translation type="obsolete">oo:mm</translation>
     </message>
     <message>
         <source>h:mm:ss</source>
-        <translation>o:mm:ss</translation>
+        <translation type="obsolete">o:mm:ss</translation>
     </message>
     <message>
         <source>h:mm:ss.zzz</source>
-        <translation>o:mm:ss.zzz</translation>
-    </message>
-    <message>
-        <source>mm:ss</source>
-        <translation></translation>
-    </message>
-    <message>
-        <source>mm:ss.zzz</source>
-        <translation></translation>
+        <translation type="obsolete">o:mm:ss.zzz</translation>
     </message>
     <message>
         <source>hmm</source>
-        <translation>omm</translation>
+        <translation type="obsolete">omm</translation>
     </message>
     <message>
         <source>hmmss</source>
-        <translation>ommss</translation>
+        <translation type="obsolete">ommss</translation>
     </message>
     <message>
         <source>hhmmss</source>
-        <translation>oommss</translation>
+        <translation type="obsolete">oommss</translation>
     </message>
     <message>
         <source>Couldn&apos;t guess the source data format, please specify it using the &apos;Format&apos; box!</source>
