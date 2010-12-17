@@ -2111,6 +2111,14 @@ void Table::setTextFormat(int col)
 		colTypes[col] = Text;
 }
 
+void Table::setColNumericFormat(int col)
+{
+	if (colTypes[col] == Numeric || (col < 0 && col >= colTypes.count()))
+		return;
+
+	colTypes[col] = Numeric;
+}
+
 void Table::setColNumericFormat(int f, int prec, int col, bool updateCells)
 {
 	if (prec < 0)

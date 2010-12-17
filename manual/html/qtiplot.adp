@@ -162,7 +162,7 @@
 </section>
 </section>
 <section ref="x959.html" title="The Edit Menu">
-<section ref="x959.html#AEN961" title="Edit -> Undo (Ctrl-Z)">
+<section ref="x959.html#undo-cmd" title="Edit -> Undo (Ctrl-Z)">
 </section>
 <section ref="x959.html#redo-cmd" title="Edit -> Redo (Ctrl-Shift-Z)">
 </section>
@@ -178,7 +178,7 @@
 </section>
 <section ref="x959.html#clear-log-cmd" title="Edit -> Clear Log Information">
 </section>
-<section ref="x959.html#preferences-cmd" title="View -> Preferences...">
+<section ref="x959.html#preferences-cmd" title="Edit -> Preferences...">
 </section>
 </section>
 <section ref="x1005.html" title="The View Menu">

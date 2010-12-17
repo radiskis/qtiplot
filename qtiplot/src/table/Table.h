@@ -298,6 +298,7 @@ public slots:
 	void setColumnsFormat(const QStringList& lst);
 
 	void setTextFormat(int col);
+	void setColNumericFormat(int col);
 	void setColNumericFormat(int f, int prec, int col, bool updateCells = true);
 	bool setDateFormat(const QString& format, int col, bool updateCells = true);
 	bool setTimeFormat(const QString& format, int col, bool updateCells = true);

@@ -257,7 +257,7 @@ The active items appearing in a menu depends upon which project window is active
 <!--  *********************************************  -->
 
 <sect1 id="sec-edit-menu"><title>The Edit Menu</title>
-	<sect2> id="undo-cmd"><title>Edit -> &undo-cmd; (&undo-key;)</title>
+	<sect2 id="undo-cmd"><title>Edit -> &undo-cmd; (&undo-key;)</title>
      <para>Undo the last change to a note or matrix. Currently this function does not work for anything other than
 			notes and matrices.</para>
   </sect2>
@@ -285,7 +285,7 @@ The active items appearing in a menu depends upon which project window is active
 	<sect2 id="clear-log-cmd"><title>Edit -> &clear-log-cmd;</title>
      <para>Allows the user to clear the log panel. All history information about analyses performed by the user will be deleted from the project file. The <link linkend="sec-intro-log-window">log panel</link> will then be empty.</para>
   </sect2>
-	<sect2 id="preferences-cmd"><title>View -> &preferences-cmd;</title>
+	<sect2 id="preferences-cmd"><title>Edit -> &preferences-cmd;</title>
      <para>Opens the <link linkend="preferences-dialog">Preferences dialog</link>.</para>
   </sect2>
 </sect1><!-- End of Edit Menu -->
