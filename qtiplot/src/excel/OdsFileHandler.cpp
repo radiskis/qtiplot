@@ -139,9 +139,10 @@ bool OdsFileHandler::endElement(const QString & /* namespaceURI */,
 			int n = cells.size();
 			for (int i = 0; i < n; i++){
 				cell_data cell = cells[i];
-				if (cell.type == Float)
+				if (cell.type == Float){
 					t->setCell(cell.row, cell.col, cell.d);
-				else {
+					t->setColNumericFormat(cell.col);
+				} else {
 					if (cell.type == Date){
 						t->setText(cell.row, cell.col, cell.date_time.toString("yyyy-MM-dd hh:mm:ss"));
 						t->setDateFormat("yyyy-MM-dd hh:mm:ss", cell.col, false);
