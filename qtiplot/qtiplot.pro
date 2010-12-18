@@ -83,27 +83,29 @@ RESOURCES     = ../manual/html/icons/icons.qrc
 ###################### TRANSLATIONS #########################################
 
 TRANSLATIONS    = translations/qtiplot_cn.ts \
-				  translations/qtiplot_cz.ts \
-				  translations/qtiplot_de.ts \
-				  translations/qtiplot_es.ts \
-				  translations/qtiplot_fr.ts \
-				  translations/qtiplot_it.ts \
-				  translations/qtiplot_pt.ts \
-				  translations/qtiplot_ro.ts \
-				  translations/qtiplot_ru.ts \
-				  translations/qtiplot_ja.ts \
-				  translations/qtiplot_sv.ts
+		  translations/qtiplot_cz.ts \
+		  translations/qtiplot_de.ts \
+		  translations/qtiplot_el.ts \
+		  translations/qtiplot_es.ts \
+		  translations/qtiplot_fr.ts \
+		  translations/qtiplot_it.ts \
+		  translations/qtiplot_pt.ts \
+		  translations/qtiplot_ro.ts \
+		  translations/qtiplot_ru.ts \
+		  translations/qtiplot_ja.ts \
+		  translations/qtiplot_sv.ts
 
 translations.files += translations/qtiplot_cn.qm \
-					translations/qtiplot_cz.qm \
-					translations/qtiplot_de.qm \
-					translations/qtiplot_es.qm \
-					translations/qtiplot_fr.qm \
-					translations/qtiplot_pt.qm \
-					translations/qtiplot_ro.qm \
-					translations/qtiplot_ru.qm \
-					translations/qtiplot_ja.qm \
-					translations/qtiplot_sv.qm
+		translations/qtiplot_cz.qm \
+		translations/qtiplot_de.qm \
+		translations/qtiplot_es.qm \
+		translations/qtiplot_el.qm \
+		translations/qtiplot_fr.qm \
+		translations/qtiplot_pt.qm \
+		translations/qtiplot_ro.qm \
+		translations/qtiplot_ru.qm \
+		translations/qtiplot_ja.qm \
+		translations/qtiplot_sv.qm
 
 isEmpty(LUPDATE): LUPDATE = lupdate
 #system($$LUPDATE -verbose qtiplot.pro)
