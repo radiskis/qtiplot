@@ -5939,19 +5939,19 @@ Les codes spéciaux suivant peuvent être utilisés :
     </message>
     <message>
         <source>Java</source>
-        <translation type="unfinished"></translation>
+        <translation>Java</translation>
     </message>
     <message>
         <source>OpenOffice.org</source>
-        <translation type="unfinished"></translation>
+        <translation>OpenOffice.org</translation>
     </message>
     <message>
         <source>JODConverter</source>
-        <translation type="unfinished"></translation>
+        <translation>JODConverter</translation>
     </message>
     <message>
         <source>Choose location</source>
-        <translation type="unfinished"></translation>
+        <translation>Choisissez l&apos;emplacement</translation>
     </message>
 </context>
 <context>
@@ -6917,55 +6917,55 @@ Les codes spéciaux suivant peuvent être utilisés :
     <name>ExcelFileConverter</name>
     <message>
         <source>QtiPlot</source>
-        <translation type="unfinished"></translation>
+        <translation>QtiPlot</translation>
     </message>
     <message>
         <source>Operation failed</source>
-        <translation type="unfinished"></translation>
+        <translation>L&apos;opération a échouée</translation>
     </message>
     <message>
         <source>Coudn&apos;t start</source>
-        <translation type="unfinished"></translation>
+        <translation>Ne peut démarrer</translation>
     </message>
     <message>
         <source>JODConverter</source>
-        <translation type="unfinished"></translation>
+        <translation>JODConverter</translation>
     </message>
     <message>
         <source>Please set the correct path in the preferences dialog</source>
-        <translation type="unfinished"></translation>
+        <translation>Veuillez indiquez le chemin correct dans les préférences</translation>
     </message>
     <message>
         <source>Java</source>
-        <translation type="unfinished"></translation>
+        <translation>Java</translation>
     </message>
     <message>
         <source>OpenOffice.org</source>
-        <translation type="unfinished"></translation>
+        <translation>OpenOffice.org</translation>
     </message>
     <message>
         <source>Couldn&apos;t start</source>
-        <translation type="unfinished"></translation>
+        <translation>Ne peut démarrer</translation>
     </message>
     <message>
         <source>crashed</source>
-        <translation type="unfinished">terminé brusquement</translation>
+        <translation>terminé brusquement</translation>
     </message>
     <message>
         <source>timedout</source>
-        <translation type="unfinished">temps dépassé</translation>
+        <translation>temps dépassé</translation>
     </message>
     <message>
         <source>write error</source>
-        <translation type="unfinished">erreur d&apos;écriture</translation>
+        <translation>erreur d&apos;écriture</translation>
     </message>
     <message>
         <source>read error</source>
-        <translation type="unfinished">erreur de lecture</translation>
+        <translation>erreur de lecture</translation>
     </message>
     <message>
         <source>unknown error</source>
-        <translation type="unfinished">erreur inconnue</translation>
+        <translation>erreur inconnue</translation>
     </message>
 </context>
 <context>
