@@ -165,7 +165,8 @@ public:
 
 	bool exportODF(const QString& fname, bool exportSelection);
 #ifdef XLS_IMPORT
-        bool exportExcel(const QString& fname, bool exportSelection);
+	bool exportExcel(const QString& fname, bool exportSelection);
+	bool exportExcelAndConvertTo(const QString& fname, bool exportSelection);
 #endif
 	bool exportASCII(const QString& fname, const QString& separator, bool exportSelection);
 	void importASCII(const QString &fname, const QString &sep, int ignoredLines, bool stripSpaces,

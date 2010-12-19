@@ -4,7 +4,7 @@
     --------------------------------------------------------------------
 	Copyright            : (C) 2010 by Ion Vasilief
     Email (use @ for *)  : ion_vasilief*yahoo.fr
-	Description          : An object converting Excel files to Open Document Format Spreadsheets (.ods)
+	Description          : An object converting Excel files to Open Document Format Spreadsheets (.ods) or to CSV
 
  ***************************************************************************/
 
@@ -33,9 +33,11 @@
 #include <QDir>
 #include <QMessageBox>
 
-ExcelFileConverter::ExcelFileConverter(const QString& fileName, int sheet, ApplicationWindow *app) : QObject(app),
+ExcelFileConverter::ExcelFileConverter(const QString& fileName, int sheet, ApplicationWindow *app, const OperatingMode& mode)
+: QObject(app),
 d_file_name(fileName),
 d_sheet(sheet),
+d_operating_mode(mode),
 soffice(0),
 java(0),
 d_table(0)
@@ -68,7 +70,16 @@ void ExcelFileConverter::startConvertion()
 	if (!soffice)
 		return;
 
-	d_output_file = QDir::tempPath() + "/" + QFileInfo(d_file_name).baseName() + ".ods";
+	if (d_operating_mode == Import)
+		d_output_file = QDir::tempPath() + "/" + QFileInfo(d_file_name).baseName() + ".ods";
+	else if (d_operating_mode == ConvertToCsv){
+		d_output_file = d_file_name;
+		d_output_file.replace(".xls", ".csv");
+	} else if (d_operating_mode == ConvertToOds){
+		d_output_file = d_file_name;
+		d_output_file.replace(".xls", ".ods");
+	}
+
 	if (QFile::exists(d_output_file) || d_table || java)
 		return;
 
@@ -76,7 +87,7 @@ void ExcelFileConverter::startConvertion()
 
 	java = new QProcess(app);
 	connect(java, SIGNAL(finished(int, QProcess::ExitStatus)),
-			this, SLOT(finishImport(int, QProcess::ExitStatus)));
+			this, SLOT(finish(int, QProcess::ExitStatus)));
 	connect(java, SIGNAL(error(QProcess::ProcessError)),
 			this, SLOT(displayJavaError(QProcess::ProcessError)));
 
@@ -91,7 +102,7 @@ void ExcelFileConverter::startConvertion()
 	java->waitForFinished();
 }
 
-void ExcelFileConverter::finishImport(int, QProcess::ExitStatus exitStatus)
+void ExcelFileConverter::finish(int, QProcess::ExitStatus exitStatus)
 {
 	QApplication::restoreOverrideCursor();
 
@@ -121,9 +132,12 @@ void ExcelFileConverter::finishImport(int, QProcess::ExitStatus exitStatus)
 	}
 
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-	d_table = app->importOdfSpreadsheet(d_output_file, d_sheet, d_file_name);
+	if (d_operating_mode == Import){
+		d_table = app->importOdfSpreadsheet(d_output_file, d_sheet, d_file_name);
+		QFile::remove(d_output_file);
+	} else
+		QFile::remove(d_file_name);
 
-	QFile::remove(d_output_file);
 	QApplication::restoreOverrideCursor();
 }
 

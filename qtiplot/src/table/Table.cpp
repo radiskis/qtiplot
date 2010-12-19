@@ -66,6 +66,7 @@
 
 #ifdef XLS_IMPORT
     #include <ExcelFormat.h>
+	#include <ExcelFileConverter.h>
     using namespace ExcelFormat;
 #endif
 
@@ -2823,6 +2824,24 @@ void Table::importASCII(const QString &fname, const QString &sep, int ignoredLin
 }
 
 #ifdef XLS_IMPORT
+bool Table::exportExcelAndConvertTo(const QString& fname, bool withLabels, bool exportComments, bool exportSelection)
+{
+	QString name = fname;
+	QString ext = QFileInfo(fname).completeSuffix();
+	name.replace("." + ext, ".xls");
+	if (!exportExcel(name, withLabels, exportComments, exportSelection))
+		return false;
+
+	QFile::remove(fname);
+
+	if (ext == "ods")
+		ExcelFileConverter(name, -1, this->applicationWindow(), ExcelFileConverter::ConvertToOds);
+	else if (ext == "csv")
+		ExcelFileConverter(name, -1, this->applicationWindow(), ExcelFileConverter::ConvertToCsv);
+
+	return true;
+}
+
 bool Table::exportExcel(const QString& fname, bool withLabels, bool exportComments, bool exportSelection)
 {
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
@@ -3127,7 +3146,8 @@ bool Table::exportASCII(const QString& fname, const QString& separator,
 	QFile f(fname);
 	if ( !f.open( QIODevice::WriteOnly ) ){
 		QMessageBox::critical(0, tr("QtiPlot - ASCII Export Error"),
-				tr("Could not write to file: <br><h4>"+fname+ "</h4><p>Please verify that you have the right to write to this location!").arg(fname));
+				tr("Could not write to file: <br><h4>" + fname +
+				"</h4><p>Please verify that you have the right to write to this location!").arg(fname));
 		return false;
 	}
 
@@ -3139,6 +3159,9 @@ bool Table::exportASCII(const QString& fname, const QString& separator,
 	else if (fname.endsWith(".xls")){
 		f.close();
 		return exportExcel(fname, withLabels, exportComments, exportSelection);
+	} else if (fname.endsWith(".csv") || fname.endsWith(".ods")){
+		f.close();
+		return exportExcelAndConvertTo(fname, withLabels, exportComments, exportSelection);
 	}
 #endif
 
