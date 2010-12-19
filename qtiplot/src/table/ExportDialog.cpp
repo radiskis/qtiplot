@@ -142,7 +142,8 @@ void ExportDialog::initAdvancedOptions()
 
 void ExportDialog::updateAdvancedOptions (const QString & filter)
 {
-	bool on = !filter.contains(".tex") && !filter.contains(".odf") && !filter.contains(".html") && !filter.contains(".xls");
+	bool on = !filter.contains(".tex") && !filter.contains(".odf") && !filter.contains(".html") &&
+			  !filter.contains(".xls") && !filter.contains(".ods") && !filter.contains(".csv");
 	separatorLbl->setVisible(on);
 	boxSeparator->setVisible(on);
 	buttonHelp->setVisible(on);
@@ -184,6 +185,8 @@ void ExportDialog::setFileTypeFilters()
 	list << "TXT";
 	list << "TEX";
 #ifdef XLS_IMPORT
+	list << "CSV";
+	list << "ODS";
 	list << "XLS";
 #endif
 

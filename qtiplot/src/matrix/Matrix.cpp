@@ -56,6 +56,7 @@
 #include <QImageWriter>
 #include <QSvgGenerator>
 #include <QFile>
+#include <QFileInfo>
 #include <QUndoStack>
 #if QT_VERSION >= 0x040500
 #include <QTextDocumentWriter>
@@ -74,6 +75,7 @@
 
 #ifdef XLS_IMPORT
     #include <ExcelFormat.h>
+	#include <ExcelFileConverter.h>
     using namespace ExcelFormat;
 #endif
 
@@ -1634,6 +1636,24 @@ bool Matrix::exportODF(const QString& fname, bool exportSelection)
 }
 
 #ifdef XLS_IMPORT
+bool Matrix::exportExcelAndConvertTo(const QString& fname, bool exportSelection)
+{
+	QString name = fname;
+	QString ext = QFileInfo(fname).completeSuffix();
+	name.replace("." + ext, ".xls");
+	if (!exportExcel(name, exportSelection))
+		return false;
+
+	QFile::remove(fname);
+
+	if (ext == "ods")
+		ExcelFileConverter(name, -1, this->applicationWindow(), ExcelFileConverter::ConvertToOds);
+	else if (ext == "csv")
+		ExcelFileConverter(name, -1, this->applicationWindow(), ExcelFileConverter::ConvertToCsv);
+
+	return true;
+}
+
 bool Matrix::exportExcel(const QString& fname, bool exportSelection)
 {
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
@@ -1702,10 +1722,13 @@ bool Matrix::exportASCII(const QString& fname, const QString& separator, bool ex
 		return exportODF(fname, exportSelection);
 	}
 #ifdef XLS_IMPORT
-        else if (fname.endsWith(".xls")){
-            f.close();
-            return exportExcel(fname, exportSelection);
-        }
+	else if (fname.endsWith(".xls")){
+		f.close();
+		return exportExcel(fname, exportSelection);
+	} else if (fname.endsWith(".csv") || fname.endsWith(".ods")){
+		f.close();
+		return exportExcelAndConvertTo(fname, exportSelection);
+	}
 #endif
 
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));

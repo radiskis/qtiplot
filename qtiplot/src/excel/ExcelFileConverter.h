@@ -4,7 +4,7 @@
     --------------------------------------------------------------------
 	Copyright            : (C) 2010 by Ion Vasilief
     Email (use @ for *)  : ion_vasilief*yahoo.fr
-	Description          : An object converting Excel files to Open Document Format Spreadsheets (.ods)
+	Description          : An object converting Excel files to Open Document Format Spreadsheets (.ods) or to CSV
 
  ***************************************************************************/
 
@@ -40,14 +40,16 @@ class ExcelFileConverter : public QObject
 	Q_OBJECT
 
 public:
-	ExcelFileConverter(const QString& fileName, int sheet, ApplicationWindow *app);
+	enum OperatingMode{Import = 0, ConvertToCsv = 1, ConvertToOds = 2};
+
+	ExcelFileConverter(const QString& fileName, int sheet, ApplicationWindow *app, const OperatingMode& mode = Import);
 	Table *outputTable(){return d_table;};
 
 private slots:
 	void startConvertion();
 	void displayJavaError(QProcess::ProcessError error);
 	void displayOfficeError(QProcess::ProcessError error);
-	void finishImport(int exitCode, QProcess::ExitStatus exitStatus);
+	void finish(int exitCode, QProcess::ExitStatus exitStatus);
 
 private:
 	void startOpenOfficeServer();
@@ -55,6 +57,7 @@ private:
 
 	QString d_file_name;
 	int d_sheet;
+	OperatingMode d_operating_mode;
 	QString d_output_file;
 	QProcess *soffice, *java;
 	Table *d_table;
