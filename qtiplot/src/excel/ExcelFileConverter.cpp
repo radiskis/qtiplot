@@ -42,6 +42,14 @@ soffice(0),
 java(0),
 d_table(0)
 {
+#ifdef Q_WS_X11
+	d_soffice_already_running = false;
+	QProcess *ps = new QProcess();
+	ps->start("ps -ef");
+	if (ps->waitForFinished() && ps->readAllStandardOutput().contains("soffice"))
+		d_soffice_already_running = true;
+	ps->kill();
+#endif
 	startOpenOfficeServer();
 }
 
@@ -138,6 +146,14 @@ void ExcelFileConverter::finish(int, QProcess::ExitStatus exitStatus)
 	} else
 		QFile::remove(d_file_name);
 
+	if (soffice)
+		soffice->kill();
+
+#ifdef Q_WS_X11
+	if (!d_soffice_already_running)
+		QProcess::execute("killall soffice.bin");
+#endif
+
 	QApplication::restoreOverrideCursor();
 }
 
@@ -154,7 +170,8 @@ void ExcelFileConverter::displayJavaError(QProcess::ProcessError error)
 void ExcelFileConverter::displayOfficeError(QProcess::ProcessError error)
 {
 	if (soffice && soffice->pid())
-		displayError("<a href=\"http://www.openoffice.org/\">" + tr("OpenOffice.org") + "</a>", error);
+		displayError("<a href=\"http://www.openoffice.org/\">" + tr("OpenOffice.org") + "</a>/" +
+					 "<a href=\"http://www.documentfoundation.org/\">" + tr("LibreOffice") + "</a>", error);
 
 	soffice->kill();
 	soffice = 0;

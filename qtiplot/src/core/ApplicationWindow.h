@@ -496,6 +496,7 @@ public slots:
 
 #ifdef XLS_IMPORT
 	void exportExcel();
+	void exportOds();
 #endif
 
 	Table* importWaveFile();
@@ -1474,7 +1475,7 @@ private:
 	QAction *actionOpenOds, *actionOpenExcel;
 #endif
 #ifdef XLS_IMPORT
-	QAction *actionExportExcel;
+	QAction *actionExportExcel, *actionExportOds;
 #endif
     QAction *actionCopyWindow, *actionShowAllColumns, *actionHideSelectedColumns;
     QAction *actionCutSelection, *actionCopySelection, *actionPasteSelection, *actionClearSelection;

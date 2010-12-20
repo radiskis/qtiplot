@@ -224,5 +224,6 @@
         <file>lower.png</file>
         <file>font.png</file>
         <file>normalRandomNumbers.png</file>
+        <file>new_ods.png</file>
     </qresource>
 </RCC>

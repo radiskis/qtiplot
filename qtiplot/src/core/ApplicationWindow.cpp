@@ -4358,6 +4358,16 @@ void ApplicationWindow::exportExcel()
 		ed->updateAdvancedOptions(".xls");
 	}
 }
+
+void ApplicationWindow::exportOds()
+{
+	ExportDialog *ed = showExportASCIIDialog();
+	if (ed){
+		ed->setWindowTitle(tr("Export Open Document Spreadsheet"));
+		ed->setNameFilters(QStringList() << "*.ods");
+		ed->updateAdvancedOptions(".ods");
+	}
+}
 #endif
 
 Table * ApplicationWindow::importExcel(const QString& fileName, int sheet)
@@ -10200,6 +10210,7 @@ void ApplicationWindow::fileMenuAboutToShow()
 			exportMenu->addAction(actionShowExportASCIIDialog);
 		#ifdef XLS_IMPORT
 			exportMenu->addAction(actionExportExcel);
+			exportMenu->addAction(actionExportOds);
 		#endif
 			exportMenu->addAction(actionExportPDF);
 			if (w->isA("Matrix"))
@@ -13849,6 +13860,9 @@ void ApplicationWindow::createActions()
 #ifdef XLS_IMPORT
 	actionExportExcel = new QAction(QIcon(":/new_excel.png"), tr("Export Exce&l ..."), this);
 	connect(actionExportExcel, SIGNAL(activated()), this, SLOT(exportExcel()));
+
+	actionExportOds = new QAction(QIcon(":/new_ods.png"), tr("Export &Open Document Spreadsheet ..."), this);
+	connect(actionExportOds, SIGNAL(activated()), this, SLOT(exportOds()));
 #endif
 
 #ifdef ODS_IMPORT
@@ -14870,6 +14884,9 @@ void ApplicationWindow::translateActionsStrings()
 #ifdef XLS_IMPORT
 	actionExportExcel->setMenuText(tr("Export Exce&l ..."));
 	actionExportExcel->setToolTip(tr("Export Excel"));
+
+	actionExportOds->setMenuText(tr("Export &Open Document Spreadsheet ..."));
+	actionExportOds->setToolTip(tr("Export Open Document Spreadsheet"));
 #endif
 #ifdef ODS_IMPORT
 	actionOpenOds->setMenuText(tr("Open ODF Spreads&heet..."));

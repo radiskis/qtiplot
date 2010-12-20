@@ -4044,6 +4044,14 @@ Autocompletion will not be available!</source>
         <source>chart</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Export Open Document Spreadsheet</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export &amp;Open Document Spreadsheet ...</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>AssociationsDialog</name>
@@ -5864,6 +5872,10 @@ The following special codes can be used:
         <source>Choose location</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>LibreOffice</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ContourLinesEditor</name>
@@ -6877,6 +6889,10 @@ The following special codes can be used:
     <message>
         <source>unknown error</source>
         <translation type="unfinished">άγνωστο σφάλμα</translation>
+    </message>
+    <message>
+        <source>LibreOffice</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

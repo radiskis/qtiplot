@@ -4095,6 +4095,14 @@ L&apos;autocomplétion ne sera pas disponible!</translation>
         <source>Save Folder As</source>
         <translation>Sauvegarder le répertoire sous</translation>
     </message>
+    <message>
+        <source>Export Open Document Spreadsheet</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export &amp;Open Document Spreadsheet ...</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ArrowMarker</name>
@@ -5953,6 +5961,10 @@ Les codes spéciaux suivant peuvent être utilisés :
         <source>Choose location</source>
         <translation>Choisissez l&apos;emplacement</translation>
     </message>
+    <message>
+        <source>LibreOffice</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ContourLinesEditor</name>
@@ -6966,6 +6978,10 @@ Les codes spéciaux suivant peuvent être utilisés :
     <message>
         <source>unknown error</source>
         <translation>erreur inconnue</translation>
+    </message>
+    <message>
+        <source>LibreOffice</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
