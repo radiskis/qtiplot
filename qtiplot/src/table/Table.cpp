@@ -2956,6 +2956,7 @@ bool Table::exportExcel(const QString& fname, bool withLabels, bool exportCommen
 		startRow++;
 	}
 
+	QDate excelOrig = QDate(1900, 1, 1);
 	if (exportSelection && selectedCols){
 		for (int i = topRow; i <= bottomRow; i++){
 			for (int j = 0; j < aux; j++){
@@ -2963,10 +2964,21 @@ bool Table::exportExcel(const QString& fname, bool withLabels, bool exportCommen
 				QString s = d_table->text(i, col);
 				if (s.isEmpty())
 					continue;
-				if (columnType(col) == Numeric)
-					sheet->Cell(startRow, j)->Set(cell(i, col));
-				else
-					sheet->Cell(startRow, j)->Set(s.toStdString().c_str());
+
+				BasicExcelCell* c = sheet->Cell(startRow, j);
+				int colType = colTypes[col];
+				if (colType == Numeric)
+					c->Set(cell(i, col));
+				else if (colType == Table::Date || colType == Table::Time){
+					QString fmt = col_format[col];
+					if (colType == Table::Date){
+						QDateTime dt = QDateTime::fromString(s, fmt);
+						c->Set(fabs(excelOrig.daysTo(dt.date())) + 2 + QTime(0, 0).msecsTo(dt.time())/86400000.0);
+					} else
+						c->Set(QTime(0, 0).msecsTo(QTime::fromString(s, fmt))/86400000.0);
+					c->SetFormat(CellFormat(fmt_mgr).set_format_string(fmt));
+				} else
+					c->Set(s.toStdString().c_str());
 			}
 			startRow++;
 			if (startRow > 65536)
@@ -2979,10 +2991,21 @@ bool Table::exportExcel(const QString& fname, bool withLabels, bool exportCommen
 				QString s = d_table->text(i, j);
 				if (s.isEmpty())
 					continue;
-				if (columnType(j) == Numeric)
-					sheet->Cell(startRow, j)->Set(cell(i, j));
-				else
-					sheet->Cell(startRow, j)->Set(s.toStdString().c_str());
+
+				BasicExcelCell* c = sheet->Cell(startRow, j);
+				int colType = colTypes[j];
+				if (colType == Numeric)
+					c->Set(cell(i, j));
+				else if (colType == Table::Date || colType == Table::Time){
+					QString fmt = col_format[j];
+					if (colType == Table::Date){
+						QDateTime dt = QDateTime::fromString(s, fmt);
+						c->Set(fabs(excelOrig.daysTo(dt.date())) + 2 + QTime(0, 0).msecsTo(dt.time())/86400000.0);
+					} else
+						c->Set(QTime(0, 0).msecsTo(QTime::fromString(s, fmt))/86400000.0);
+					c->SetFormat(CellFormat(fmt_mgr).set_format_string(fmt));
+				} else
+					c->Set(s.toStdString().c_str());
 			}
 			startRow++;
 			if (startRow > 65536)
