@@ -61,6 +61,9 @@ private:
 	QString d_output_file;
 	QProcess *soffice, *java;
 	Table *d_table;
+#ifdef Q_WS_X11
+	bool d_soffice_already_running;
+#endif
 };
 
 #endif

@@ -10087,6 +10087,14 @@ Autocompletion will not be available!</source>
         <source>chart</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Export Open Document Spreadsheet</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export &amp;Open Document Spreadsheet ...</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ArrowMarker</name>
@@ -12218,6 +12226,10 @@ Die folgenden Spezialcodes können benutzt werden:
         <source>Choose location</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>LibreOffice</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ContourLinesEditor</name>
@@ -13349,6 +13361,10 @@ Die folgenden Spezialcodes können benutzt werden:
     <message>
         <source>unknown error</source>
         <translation type="unfinished">unbekannter Fehler</translation>
+    </message>
+    <message>
+        <source>LibreOffice</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

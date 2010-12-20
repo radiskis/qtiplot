@@ -7579,6 +7579,14 @@ Autocompletion will not be available!</source>
         <source>Save Folder As</source>
         <translation>Salvează dosarul ca</translation>
     </message>
+    <message>
+        <source>Export Open Document Spreadsheet</source>
+        <translation>Exportă foaie de calcul ODS</translation>
+    </message>
+    <message>
+        <source>Export &amp;Open Document Spreadsheet ...</source>
+        <translation>Exportă foaie de calcul &amp;ODS...</translation>
+    </message>
 </context>
 <context>
     <name>ArrowMarker</name>
@@ -9467,6 +9475,10 @@ The following special codes can be used:
         <source>Choose location</source>
         <translation>Alege amplasament</translation>
     </message>
+    <message>
+        <source>LibreOffice</source>
+        <translation>LibreOffice</translation>
+    </message>
 </context>
 <context>
     <name>ContourLinesEditor</name>
@@ -10507,6 +10519,10 @@ The following special codes can be used:
     <message>
         <source>unknown error</source>
         <translation>eroare necunoscută</translation>
+    </message>
+    <message>
+        <source>LibreOffice</source>
+        <translation>LibreOffice</translation>
     </message>
 </context>
 <context>

@@ -4095,6 +4095,14 @@ Různé části tohoto souboru se nemusí zobrazovat tak, jak se očekává.</tr
         <source>Save Folder As</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Export Open Document Spreadsheet</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export &amp;Open Document Spreadsheet ...</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ArrowMarker</name>
@@ -5961,6 +5969,10 @@ K tomu lze použít následujících zvláštních kódů:
         <source>Choose location</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>LibreOffice</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ContourLinesEditor</name>
@@ -6978,6 +6990,10 @@ K tomu lze použít následujících zvláštních kódů:
     <message>
         <source>unknown error</source>
         <translation type="unfinished">neznámá chyba</translation>
+    </message>
+    <message>
+        <source>LibreOffice</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

@@ -2052,7 +2052,8 @@ void ConfigDialog::languageChange()
 	lblTranslationsPath->setText("<a href=\"http://soft.proindependent.com/translations.html\">" + tr("Translations") + "</a>");
 	lblHelpPath->setText("<a href=\"http://soft.proindependent.com/manuals.html\">" + tr("Help") + "</a>");
 	texCompilerLabel->setText("<a href=\"http://www.latex-project.org/\">" + tr("LaTeX Compiler") + "</a>");
-	officeLabel->setText("<a href=\"http://www.openoffice.org/\">" + tr("OpenOffice.org") + "</a>");
+	officeLabel->setText("<a href=\"http://www.openoffice.org/\">" + tr("OpenOffice.org") + "</a>/" +
+						 "<a href=\"http://www.documentfoundation.org/\">" + tr("LibreOffice") + "</a>");
 	javaLabel->setText("<a href=\"http://www.java.com/\">" + tr("Java") + "</a>");
 	jodconverterLabel->setText("<a href=\"http://www.artofsolving.com/opensource/jodconverter\">" + tr("JODConverter") + "</a>");
 #ifdef SCRIPTING_PYTHON

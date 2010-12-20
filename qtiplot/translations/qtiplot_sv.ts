@@ -8662,6 +8662,14 @@ Automatisk komplettering ej tillgängligt!</translation>
         <source>Save Folder As</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Export Open Document Spreadsheet</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export &amp;Open Document Spreadsheet ...</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ArrowMarker</name>
@@ -10657,6 +10665,10 @@ Följande specialkoder kan användas:
         <source>Choose location</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>LibreOffice</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ContourLinesEditor</name>
@@ -11772,6 +11784,10 @@ Följande specialkoder kan användas:
     <message>
         <source>unknown error</source>
         <translation type="unfinished">okänt fel</translation>
+    </message>
+    <message>
+        <source>LibreOffice</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

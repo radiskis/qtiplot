@@ -5962,6 +5962,14 @@ Autocompletion will not be available!</source>
         <source>sheet</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Export Open Document Spreadsheet</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export &amp;Open Document Spreadsheet ...</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>AsciiTableImportFilter</name>
@@ -8044,6 +8052,10 @@ Os seguintes códigos podem ser usados:
         <source>You need to restart QtiPlot before your changes become effective, would you like to do it now?</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>LibreOffice</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ContourLinesEditor</name>
@@ -9355,6 +9367,10 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>unknown error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>LibreOffice</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
