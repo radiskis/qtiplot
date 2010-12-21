@@ -85,6 +85,7 @@ public:
 	double max(int col, int startRow = 0, int endRow = -1);
 	Table* extractData(const QString& name, const QString& condition, int startRow = 0, int endRow = -1);
 	static QDateTime dateTime(double val);
+	double excelDateTime(const QString& s, const QString& fmt, int colType);
 
 public slots:
 	MyTable* table(){return d_table;};
