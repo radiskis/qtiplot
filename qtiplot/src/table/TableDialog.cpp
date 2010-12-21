@@ -423,24 +423,24 @@ void TableDialog::updateDisplay(int item)
 		case 2:
             formatBox->setEditable(true);
 			formatBox->addItem("dd/MM/yyyy");
-			formatBox->addItem("dd/MM/yyyy HH:mm");
-			formatBox->addItem("dd/MM/yyyy HH:mm:ss");
+			formatBox->addItem("dd/MM/yyyy hh:mm");
+			formatBox->addItem("dd/MM/yyyy hh:mm:ss");
 
 			formatBox->addItem("dd.MM.yyyy");
-			formatBox->addItem("dd.MM.yyyy HH:mm");
-			formatBox->addItem("dd.MM.yyyy HH:mm:ss");
+			formatBox->addItem("dd.MM.yyyy hh:mm");
+			formatBox->addItem("dd.MM.yyyy hh:mm:ss");
 
 			formatBox->addItem("dd MM yyyy");
-			formatBox->addItem("dd MM yyyy HH:mm");
-			formatBox->addItem("dd MM yyyy HH:mm:ss");
+			formatBox->addItem("dd MM yyyy hh:mm");
+			formatBox->addItem("dd MM yyyy hh:mm:ss");
 
 			formatBox->addItem("yyyy-MM-dd");
-			formatBox->addItem("yyyy-MM-dd HH:mm");
-			formatBox->addItem("yyyy-MM-dd HH:mm:ss");
+			formatBox->addItem("yyyy-MM-dd hh:mm");
+			formatBox->addItem("yyyy-MM-dd hh:mm:ss");
 
 			formatBox->addItem("yyyyMMdd");
-			formatBox->addItem("yyyyMMdd HH:mm");
-			formatBox->addItem("yyyyMMdd HH:mm:ss");
+			formatBox->addItem("yyyyMMdd hh:mm");
+			formatBox->addItem("yyyyMMdd hh:mm:ss");
 		break;
 
 		case 3:

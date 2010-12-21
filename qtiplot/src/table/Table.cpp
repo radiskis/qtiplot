@@ -2057,43 +2057,44 @@ void Table::setText (int row, int col, const QString & text )
 
 void Table::saveToMemory()
 {
-    int rows = d_table->numRows();
-    int cols = d_table->numCols();
+	int rows = d_table->numRows();
+	int cols = d_table->numCols();
 
-    d_saved_cells = new double* [cols];
+	d_saved_cells = new double* [cols];
 	for ( int i = 0; i < cols; ++i)
 		d_saved_cells[i] = new double [rows];
 
-    for (int col = 0; col < cols; col++){// initialize the matrix to zero
-        for (int row = 0; row < rows; row++)
-            d_saved_cells[col][row] = 0.0;}
+	for (int col = 0; col < cols; col++){// initialize the matrix to zero
+		for (int row = 0; row < rows; row++)
+			d_saved_cells[col][row] = 0.0;}
 
 	for (int col = 0; col < cols; col++){
-		if (colTypes[col] == Time){
+		int colType = colTypes[col];
+		QString fmt = col_format[col].trimmed();
+		if (colType == Time){
 			QTime ref = QTime(0, 0);
 			for (int row = 0; row <rows; row++){
-				QTime t = QTime::fromString(d_table->text(row, col), col_format[col]);
-                d_saved_cells[col][row] = ref.msecsTo(t);
-				}
-            }
-		else if (colTypes[col] == Date){
+				QTime t = QTime::fromString(d_table->text(row, col).trimmed(), fmt);
+				d_saved_cells[col][row] = ref.msecsTo(t);
+			}
+		} else if (colType == Date){
 			QTime ref = QTime(0, 0);
 			for (int row = 0; row < rows; row++){
-				QDateTime dt = QDateTime::fromString(d_table->text(row, col), col_format[col]);
+				QDateTime dt = QDateTime::fromString(d_table->text(row, col).trimmed(), fmt);
 				d_saved_cells[col][row] = dt.date().toJulianDay() - 1 + (double)ref.msecsTo(dt.time())/864.0e5;
-				}
-            }
-        }
+			}
+		}
+	}
 
-    QLocale l = locale();
+	QLocale l = locale();
 	for (int col = 0; col < cols; col++){
-	    if (colTypes[col] == Numeric){
-            for (int row=0; row < rows; row++){
-                QString s = d_table->text(row, col);
-                if (!s.isEmpty())
-                    d_saved_cells[col][row] = l.toDouble(s);
-            }
-	    }
+		if (colTypes[col] == Numeric){
+			for (int row = 0; row < rows; row++){
+				QString s = d_table->text(row, col);
+				if (!s.isEmpty())
+					d_saved_cells[col][row] = l.toDouble(s);
+			}
+		}
 	}
 }
 
@@ -2956,7 +2957,6 @@ bool Table::exportExcel(const QString& fname, bool withLabels, bool exportCommen
 		startRow++;
 	}
 
-	QDate excelOrig = QDate(1900, 1, 1);
 	if (exportSelection && selectedCols){
 		for (int i = topRow; i <= bottomRow; i++){
 			for (int j = 0; j < aux; j++){
@@ -2970,12 +2970,8 @@ bool Table::exportExcel(const QString& fname, bool withLabels, bool exportCommen
 				if (colType == Numeric)
 					c->Set(cell(i, col));
 				else if (colType == Table::Date || colType == Table::Time){
-					QString fmt = col_format[col];
-					if (colType == Table::Date){
-						QDateTime dt = QDateTime::fromString(s, fmt);
-						c->Set(fabs(excelOrig.daysTo(dt.date())) + 2 + QTime(0, 0).msecsTo(dt.time())/86400000.0);
-					} else
-						c->Set(QTime(0, 0).msecsTo(QTime::fromString(s, fmt))/86400000.0);
+					QString fmt = col_format[col].trimmed();
+					c->Set(excelDateTime(s.trimmed(), fmt, colType));
 					c->SetFormat(CellFormat(fmt_mgr).set_format_string(fmt));
 				} else
 					c->Set(s.toStdString().c_str());
@@ -2997,12 +2993,8 @@ bool Table::exportExcel(const QString& fname, bool withLabels, bool exportCommen
 				if (colType == Numeric)
 					c->Set(cell(i, j));
 				else if (colType == Table::Date || colType == Table::Time){
-					QString fmt = col_format[j];
-					if (colType == Table::Date){
-						QDateTime dt = QDateTime::fromString(s, fmt);
-						c->Set(fabs(excelOrig.daysTo(dt.date())) + 2 + QTime(0, 0).msecsTo(dt.time())/86400000.0);
-					} else
-						c->Set(QTime(0, 0).msecsTo(QTime::fromString(s, fmt))/86400000.0);
+					QString fmt = col_format[j].trimmed();
+					c->Set(excelDateTime(s.trimmed(), fmt, colType));
 					c->SetFormat(CellFormat(fmt_mgr).set_format_string(fmt));
 				} else
 					c->Set(s.toStdString().c_str());
@@ -3019,6 +3011,16 @@ bool Table::exportExcel(const QString& fname, bool withLabels, bool exportCommen
 	return true;
 }
 #endif
+
+double Table::excelDateTime(const QString& s, const QString& fmt, int colType)
+{
+	if (colType == Table::Date){
+		QDateTime dt = QDateTime::fromString(s, fmt);
+		return fabs(QDate(1900, 1, 1).daysTo(dt.date())) + 2 + QTime(0, 0).msecsTo(dt.time())/86400000.0;
+	}
+
+	return QTime(0, 0).msecsTo(QTime::fromString(s, fmt))/86400000.0;
+}
 
 bool Table::exportODF(const QString& fname, bool withLabels, bool exportComments, bool exportSelection)
 {
