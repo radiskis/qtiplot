@@ -177,15 +177,15 @@ void ExportDialog::enableTableName(bool ok)
 void ExportDialog::setFileTypeFilters()
 {
 	QList<QByteArray> list;
+	list << "CSV";
 	list << "DAT";
+	list << "TXT";
+	list << "TEX";
 #if QT_VERSION >= 0x040500
 	list << "ODF";
 	list << "HTML";
 #endif
-	list << "TXT";
-	list << "TEX";
 #ifdef XLS_IMPORT
-	list << "CSV";
 	list << "ODS";
 	list << "XLS";
 #endif

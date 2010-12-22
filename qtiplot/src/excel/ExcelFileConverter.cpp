@@ -4,7 +4,7 @@
     --------------------------------------------------------------------
 	Copyright            : (C) 2010 by Ion Vasilief
     Email (use @ for *)  : ion_vasilief*yahoo.fr
-	Description          : An object converting Excel files to Open Document Format Spreadsheets (.ods) or to CSV
+	Description          : An object converting Excel files to Open Document Format Spreadsheets (.ods)
 
  ***************************************************************************/
 
@@ -80,10 +80,7 @@ void ExcelFileConverter::startConvertion()
 
 	if (d_operating_mode == Import)
 		d_output_file = QDir::tempPath() + "/" + QFileInfo(d_file_name).baseName() + ".ods";
-	else if (d_operating_mode == ConvertToCsv){
-		d_output_file = d_file_name;
-		d_output_file.replace(".xls", ".csv");
-	} else if (d_operating_mode == ConvertToOds){
+	else if (d_operating_mode == Convert){
 		d_output_file = d_file_name;
 		d_output_file.replace(".xls", ".ods");
 	}
