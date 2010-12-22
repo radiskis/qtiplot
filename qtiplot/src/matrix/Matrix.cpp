@@ -1646,11 +1646,7 @@ bool Matrix::exportExcelAndConvertTo(const QString& fname, bool exportSelection)
 
 	QFile::remove(fname);
 
-	if (ext == "ods")
-		ExcelFileConverter(name, -1, this->applicationWindow(), ExcelFileConverter::ConvertToOds);
-	else if (ext == "csv")
-		ExcelFileConverter(name, -1, this->applicationWindow(), ExcelFileConverter::ConvertToCsv);
-
+	ExcelFileConverter(name, -1, this->applicationWindow(), ExcelFileConverter::Convert);
 	return true;
 }
 
@@ -1725,7 +1721,7 @@ bool Matrix::exportASCII(const QString& fname, const QString& separator, bool ex
 	else if (fname.endsWith(".xls")){
 		f.close();
 		return exportExcel(fname, exportSelection);
-	} else if (fname.endsWith(".csv") || fname.endsWith(".ods")){
+	} else if (fname.endsWith(".ods")){
 		f.close();
 		return exportExcelAndConvertTo(fname, exportSelection);
 	}
@@ -1748,6 +1744,10 @@ bool Matrix::exportASCII(const QString& fname, const QString& separator, bool ex
 		eol = "\\\\\\hline\n";
 		sep = " & ";
 	}
+
+	bool exportCsv = fname.endsWith(".csv") ? true : false;
+	if (exportCsv)
+		sep = ",";
 
 	if (exportSelection && d_view_type == TableView){
             QModelIndexList selectedIndexes = d_table_view->selectionModel()->selectedIndexes();
@@ -1778,13 +1778,32 @@ bool Matrix::exportASCII(const QString& fname, const QString& separator, bool ex
 		t << "}\\hline\n";
 	}
 
-	for (int i = topRow; i <= bottomRow; i++){
-		for (int j = leftCol; j < rightCol; j++){
-			t << d_matrix_model->text(i, j);
-			t << sep;
+	if (exportCsv){
+		for (int i = topRow; i <= bottomRow; i++){
+			for (int j = leftCol; j < rightCol; j++){
+				QString s = d_matrix_model->text(i, j);
+				if (s.contains(","))
+					t << "\"" + s + "\"";
+				else
+					t << s;
+				t << sep;
+			}
+			QString s = d_matrix_model->text(i, rightCol);
+			if (s.contains(","))
+				t << "\"" + s + "\"";
+			else
+				t << s;
+			t << eol;
 		}
-		t << d_matrix_model->text(i, rightCol);
-		t << eol;
+	} else {
+		for (int i = topRow; i <= bottomRow; i++){
+			for (int j = leftCol; j < rightCol; j++){
+				t << d_matrix_model->text(i, j);
+				t << sep;
+			}
+			t << d_matrix_model->text(i, rightCol);
+			t << eol;
+		}
 	}
 
 	if (exportTex)

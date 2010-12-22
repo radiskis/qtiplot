@@ -2835,11 +2835,7 @@ bool Table::exportExcelAndConvertTo(const QString& fname, bool withLabels, bool 
 
 	QFile::remove(fname);
 
-	if (ext == "ods")
-		ExcelFileConverter(name, -1, this->applicationWindow(), ExcelFileConverter::ConvertToOds);
-	else if (ext == "csv")
-		ExcelFileConverter(name, -1, this->applicationWindow(), ExcelFileConverter::ConvertToCsv);
-
+	ExcelFileConverter(name, -1, this->applicationWindow(), ExcelFileConverter::Convert);
 	return true;
 }
 
@@ -3184,7 +3180,7 @@ bool Table::exportASCII(const QString& fname, const QString& separator,
 	else if (fname.endsWith(".xls")){
 		f.close();
 		return exportExcel(fname, withLabels, exportComments, exportSelection);
-	} else if (fname.endsWith(".csv") || fname.endsWith(".ods")){
+	} else if (fname.endsWith(".ods")){
 		f.close();
 		return exportExcelAndConvertTo(fname, withLabels, exportComments, exportSelection);
 	}
@@ -3201,6 +3197,10 @@ bool Table::exportASCII(const QString& fname, const QString& separator,
 		eol = "\\\\\\hline\n";
 		sep = " & ";
 	}
+
+	bool exportCsv = fname.endsWith(".csv") ? true : false;
+	if (exportCsv)
+		sep = ",";
 
 	int rows = d_table->numRows();
 	int cols = d_table->numCols();
@@ -3250,7 +3250,7 @@ bool Table::exportASCII(const QString& fname, const QString& separator,
 	if (withLabels){
 		QStringList header = colNames();
 		QStringList ls = header.grep ( QRegExp ("\\D"));
-                if (exportSelection && selectedCols){
+		if (exportSelection && selectedCols){
 			for (int i = 0; i < aux; i++){
 				if (ls.count()>0)
 					t << header[sCols[i]] + sep;
@@ -3278,31 +3278,67 @@ bool Table::exportASCII(const QString& fname, const QString& separator,
 	}// finished writting labels
 
 	if (exportComments){
-                if (exportSelection && selectedCols){
+		if (exportSelection && selectedCols){
 			for (int i = 0; i < aux; i++)
-                            t << comments[sCols[i]] + sep;
+				t << comments[sCols[i]] + sep;
 			if (aux >= 0)
-                            t << comments[sCols[aux]] + eol;
+				t << comments[sCols[aux]] + eol;
 		} else {
-                    for (int i = 0; i < aux; i++)
-                        t << comments[i] + sep;
-                    t << comments[aux] + eol;
-                }
+			for (int i = 0; i < aux; i++)
+				t << comments[i] + sep;
+			t << comments[aux] + eol;
+		}
 	}
 
-        if (exportSelection && selectedCols){
-		for (int i = topRow; i <= bottomRow; i++){
-			for (int j = 0; j < aux; j++)
-				t << d_table->text(i, sCols[j]) + sep;
-			if (aux >= 0)
-				t << d_table->text(i, sCols[aux]) + eol;
+	if (exportSelection && selectedCols){
+		if (exportCsv){
+			for (int i = topRow; i <= bottomRow; i++){
+				for (int j = 0; j < aux; j++){
+					QString s = d_table->text(i, sCols[j]);
+					if (s.contains(","))
+						t << "\"" + s + "\"" + sep;
+					else
+						t << s + sep;
+				}
+				if (aux >= 0){
+					QString s = d_table->text(i, sCols[aux]);
+					if (s.contains(","))
+						t << "\"" + s + "\"" + eol;
+					else
+						t << s + eol;
+				}
+			}
+		} else {
+			for (int i = topRow; i <= bottomRow; i++){
+				for (int j = 0; j < aux; j++)
+					t << d_table->text(i, sCols[j]) + sep;
+				if (aux >= 0)
+					t << d_table->text(i, sCols[aux]) + eol;
+			}
 		}
 		delete [] sCols;
 	} else {
-		for (int i = 0; i < rows; i++) {
-			for (int j = 0; j < aux; j++)
-				t << d_table->text(i, j) + sep;
-			t << d_table->text(i, aux) + eol;
+		if (exportCsv){
+			for (int i = 0; i < rows; i++) {
+				for (int j = 0; j < aux; j++){
+					QString s = d_table->text(i, j);
+					if (s.contains(","))
+						t << "\"" + s + "\"" + sep;
+					else
+						t << s + sep;
+				}
+				QString s = d_table->text(i, aux);
+				if (s.contains(","))
+					t << "\"" + s + "\"" + eol;
+				else
+					t << s + eol;
+			}
+		} else {
+			for (int i = 0; i < rows; i++) {
+				for (int j = 0; j < aux; j++)
+					t << d_table->text(i, j) + sep;
+				t << d_table->text(i, aux) + eol;
+			}
 		}
 	}
 
