@@ -1464,14 +1464,18 @@ void Table::copySelection()
 		Q3TableSelection sel = d_table->selection(0);
 		int right = sel.rightCol();
 		int bottom = sel.bottomRow();
-		for (int i = sel.topRow(); i<bottom; i++){
+		if (right < 0 || bottom < 0)
+			text = d_table->text(d_table->currentRow(), d_table->currentColumn());
+		else {
+			for (int i = sel.topRow(); i<bottom; i++){
+				for (int j = sel.leftCol(); j<right; j++)
+					text += d_table->text(i, j) + "\t";
+				text += d_table->text(i, right) + eol;
+			}
 			for (int j = sel.leftCol(); j<right; j++)
-				text += d_table->text(i, j) + "\t";
-			text += d_table->text(i, right) + eol;
+					text += d_table->text(bottom, j) + "\t";
+				text += d_table->text(bottom, right);
 		}
-		for (int j = sel.leftCol(); j<right; j++)
-				text += d_table->text(bottom, j) + "\t";
-			text += d_table->text(bottom, right);
 	}
 
 	// Copy text into the clipboard
