@@ -7367,7 +7367,8 @@ ExportDialog* ApplicationWindow::showExportASCIIDialog()
 #if QT_VERSION >= 0x040500
 	ed->open();
 #else
-	ed->exec();
+	ed->setModal(true);
+	ed->show();
 #endif
 	return ed;
 }
@@ -16121,11 +16122,9 @@ void ApplicationWindow::showDonationDialog()
 	QMessageBox *msg = new QMessageBox(this);
 	msg->setText(s);
 	msg->setWindowTitle(tr("Please support QtiPlot!"));
-	QPushButton *btn = msg->addButton(tr("Make a donation"), QMessageBox::AcceptRole);
-	msg->addButton(tr("Close"), QMessageBox::RejectRole);
+	msg->addButton(tr("Make a donation"), QMessageBox::AcceptRole);
 	msg->exec();
-	if (msg->clickedButton() == btn)
-		showDonationsPage();
+	showDonationsPage();
 }
 
 void ApplicationWindow::parseCommandLineArguments(const QStringList& args)
