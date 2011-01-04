@@ -7293,7 +7293,7 @@ Autocompletion will not be available!</source>
     </message>
     <message>
         <source>Close</source>
-        <translation>Închide</translation>
+        <translation type="obsolete">Închide</translation>
     </message>
     <message>
         <source>Spec&amp;ial Bar/Column</source>

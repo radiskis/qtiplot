@@ -94,7 +94,9 @@ void BoxCurve::draw(QPainter *painter,
 		to = size - 1;
 
 	painter->save();
-	painter->setPen(QwtPainter::scaledPen(pen()));
+	QPen pen = QwtPainter::scaledPen(this->pen());
+	pen.setCapStyle(Qt::FlatCap);
+	painter->setPen(pen);
 
 	double *dat = (double *)malloc(size*sizeof(double));
 	if (!dat)
@@ -225,14 +227,12 @@ void BoxCurve::drawBox(QPainter *painter, const QwtScaleMap &xMap,
 		painter->drawLine(px - l, w_lowerq, px + l, w_lowerq);
 		painter->drawLine(px - l, w_upperq, px + l, w_upperq);
 
-		if (b_style)
-		{
+		if (b_style){
 			if (w_upperq != b_upperq)
 				painter->drawLine(px, w_upperq, px, b_upperq);
 			if (w_lowerq != b_lowerq)
 				painter->drawLine(px, w_lowerq, px, b_lowerq);
-		}
-		else
+		} else
 			painter->drawLine(px, w_upperq, px, w_lowerq);
 	}
 

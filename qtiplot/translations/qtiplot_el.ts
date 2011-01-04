@@ -3560,7 +3560,7 @@ Are you sure you want to continue?</source>
     </message>
     <message>
         <source>Close</source>
-        <translation>Κλείσιμο</translation>
+        <translation type="obsolete">Κλείσιμο</translation>
     </message>
     <message>
         <source>&lt;b&gt; %1 &lt;/b&gt;: This command line option must be used without other arguments!</source>

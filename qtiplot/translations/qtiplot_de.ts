@@ -9813,7 +9813,7 @@ Autocompletion will not be available!</source>
     </message>
     <message>
         <source>Close</source>
-        <translation>Schließen</translation>
+        <translation type="obsolete">Schließen</translation>
     </message>
     <message>
         <source>Spec&amp;ial Bar/Column</source>

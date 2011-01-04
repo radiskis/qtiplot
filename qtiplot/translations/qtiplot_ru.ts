@@ -3811,7 +3811,7 @@ Autocompletion will not be available!</source>
     </message>
     <message>
         <source>Close</source>
-        <translation>Закрыть</translation>
+        <translation type="obsolete">Закрыть</translation>
     </message>
     <message>
         <source>Spec&amp;ial Bar/Column</source>

@@ -5439,7 +5439,7 @@ a primera representa o sinal e a segunda a função resposta!</translation>
     </message>
     <message>
         <source>F4</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">F4</translation>
     </message>
     <message>
         <source>&amp;Replace...</source>
@@ -5791,7 +5791,7 @@ a primera representa o sinal e a segunda a função resposta!</translation>
     </message>
     <message>
         <source>Close</source>
-        <translation type="unfinished">Fechar</translation>
+        <translation type="obsolete">Fechar</translation>
     </message>
     <message>
         <source>show standalone scripting window</source>
@@ -6562,11 +6562,11 @@ Autocompletion will not be available!</source>
     </message>
     <message>
         <source>Decimal: 10000.0</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Decimal: 10000.0</translation>
     </message>
     <message>
         <source>Scientific: 1e4</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Científico: 1E4 {1e?}</translation>
     </message>
     <message>
         <source>Scientific: 1x10^4</source>
@@ -6578,7 +6578,7 @@ Autocompletion will not be available!</source>
     </message>
     <message>
         <source>Scientific: 1·10^4</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Científico: 1E4 {1·10^?}</translation>
     </message>
     <message>
         <source>Origin</source>
@@ -16032,11 +16032,11 @@ s-ésimo zero positivo x_s da função regular cilíndrica de Bessel de ordem n,
     </message>
     <message>
         <source>Decimal: 10000.0</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Decimal: 10000.0</translation>
     </message>
     <message>
         <source>Scientific: 1e4</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Científico: 1E4 {1e?}</translation>
     </message>
     <message>
         <source>Engineering: 10k</source>
@@ -19164,7 +19164,7 @@ Deseja sobreescrevê-lo?</translation>
     </message>
     <message>
         <source>F4</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">F4</translation>
     </message>
     <message>
         <source>&amp;Replace...</source>
