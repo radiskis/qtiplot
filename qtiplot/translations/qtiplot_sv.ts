@@ -8432,7 +8432,7 @@ Automatisk komplettering ej tillgängligt!</translation>
     </message>
     <message>
         <source>Close</source>
-        <translation>Stäng</translation>
+        <translation type="obsolete">Stäng</translation>
     </message>
     <message>
         <source>Spec&amp;ial Bar/Column</source>

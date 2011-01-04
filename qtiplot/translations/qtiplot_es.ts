@@ -8198,7 +8198,7 @@ Autocompletion will not be available!</source>
     </message>
     <message>
         <source>Close</source>
-        <translation type="unfinished">Cerrar</translation>
+        <translation type="obsolete">Cerrar</translation>
     </message>
     <message>
         <source>Spec&amp;ial Bar/Column</source>

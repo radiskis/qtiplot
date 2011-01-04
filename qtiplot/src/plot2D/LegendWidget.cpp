@@ -866,7 +866,7 @@ QSize LegendWidget::textSize(QPainter *p, const QwtText& text)
 			int width = size.width() + QFontMetrics(text.font(), p->device()).boundingRect(" ").width();
 			size =  QSize(width, size.height());
 		} else
-			size = QFontMetrics(text.font(), p->device()).boundingRect(s + " ").size();
+			size = QFontMetrics(text.font(), p->device()).boundingRect(s + "  ").size();
 	}
 	return size;
 }
