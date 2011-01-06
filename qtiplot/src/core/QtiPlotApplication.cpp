@@ -67,7 +67,7 @@ QtiPlotApplication::QtiPlotApplication( int & argc, char ** argv) : QApplication
 		mw->parseCommandLineArguments(args);
 	}
 
-	#ifdef QTIPLOT_DEMO
+	#if defined(QTIPLOT_DEMO) || (!defined(QTIPLOT_PRO) && defined(Q_OS_WIN))
 		QTimer::singleShot(600000, this, SLOT(close()));
 	#endif
 
@@ -76,7 +76,6 @@ QtiPlotApplication::QtiPlotApplication( int & argc, char ** argv) : QApplication
 	#endif
 }
 
-#ifdef QTIPLOT_DEMO
 void QtiPlotApplication::close()
 {
 	ApplicationWindow *mw = d_windows.last();
@@ -85,7 +84,6 @@ void QtiPlotApplication::close()
 
 	quit();
 }
-#endif
 
 bool QtiPlotApplication::event(QEvent *event)
 {

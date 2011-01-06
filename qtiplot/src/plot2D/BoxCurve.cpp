@@ -231,7 +231,7 @@ void BoxCurve::drawBox(QPainter *painter, const QwtScaleMap &xMap,
 			if (w_upperq != b_upperq)
 				painter->drawLine(px, w_upperq, px, b_upperq);
 			if (w_lowerq != b_lowerq)
-				painter->drawLine(px, w_lowerq, px, b_lowerq);
+				painter->drawLine(px, w_lowerq, px, b_lowerq + 1);
 		} else
 			painter->drawLine(px, w_upperq, px, w_lowerq);
 	}
