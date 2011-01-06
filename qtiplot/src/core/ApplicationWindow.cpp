@@ -6780,7 +6780,7 @@ bool ApplicationWindow::saveProject(bool compress)
 		return false;
 	}
 
-#ifdef QTIPLOT_DEMO
+#if defined(QTIPLOT_DEMO) || (!defined(QTIPLOT_PRO) && defined(Q_OS_WIN))
 	showDemoVersionMessage();
 	return false;
 #endif
@@ -6881,7 +6881,7 @@ QString ApplicationWindow::getSaveProjectName(const QString& fileName, bool *com
 
 void ApplicationWindow::saveProjectAs(const QString& fileName, bool compress)
 {
-#ifdef QTIPLOT_DEMO
+#if defined(QTIPLOT_DEMO) || (!defined(QTIPLOT_PRO) && defined(Q_OS_WIN))
 	showDemoVersionMessage();
 	return;
 #endif
@@ -6902,7 +6902,7 @@ void ApplicationWindow::saveProjectAs(const QString& fileName, bool compress)
 
 void ApplicationWindow::saveWindowAs(const QString& fileName, bool compress)
 {
-#ifdef QTIPLOT_DEMO
+#if defined(QTIPLOT_DEMO) || (!defined(QTIPLOT_PRO) && defined(Q_OS_WIN))
 	showDemoVersionMessage();
 	return;
 #endif
@@ -10608,7 +10608,7 @@ void ApplicationWindow::dragEnterEvent( QDragEnterEvent* e )
 
 void ApplicationWindow::closeEvent( QCloseEvent* ce )
 {
-    #ifdef QTIPLOT_DEMO
+	#if defined(QTIPLOT_DEMO) || (!defined(QTIPLOT_PRO) && defined(Q_OS_WIN))
         showDemoVersionMessage();
     #endif
 
@@ -10643,7 +10643,7 @@ QMessageBox::StandardButton ApplicationWindow::showSaveProjectMessage()
 		QString s = tr("Save changes to project: <p><b> %1 </b> ?").arg(projectname);
 		switch(QMessageBox::information(this, tr("QtiPlot"), s, QMessageBox::Yes|QMessageBox::No|QMessageBox::Cancel, QMessageBox::Yes)){
 			case QMessageBox::Yes:
-			#ifdef QTIPLOT_DEMO
+			#if defined(QTIPLOT_DEMO) || (!defined(QTIPLOT_PRO) && defined(Q_OS_WIN))
 				showDemoVersionMessage();
 				return QMessageBox::Discard;
 			#else
@@ -16598,7 +16598,6 @@ Folder* ApplicationWindow::appendProject(const QString& fn, Folder* parentFolder
 	return new_folder;
 }
 
-#ifdef QTIPLOT_DEMO
 void ApplicationWindow::showDemoVersionMessage()
 {
     saved = true;
@@ -16617,7 +16616,6 @@ void ApplicationWindow::showDemoVersionMessage()
 				<a href=\"http://soft.proindependent.com/why_donate.html\">make a donation</a>\
 				in order to support the further development of QtiPlot."));
 }
-#endif
 
 void ApplicationWindow::saveFolder(Folder *folder, const QString& fn, bool compress)
 {
@@ -16735,7 +16733,7 @@ void ApplicationWindow::saveAsProject()
 
 void ApplicationWindow::saveFolderAsProject(Folder *f)
 {
-#ifdef QTIPLOT_DEMO
+#if defined(QTIPLOT_DEMO) || (!defined(QTIPLOT_PRO) && defined(Q_OS_WIN))
 	showDemoVersionMessage();
 	return;
 #endif
