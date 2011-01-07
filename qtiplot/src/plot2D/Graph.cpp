@@ -64,7 +64,9 @@
 	#include <EmfEngine.h>
 #endif
 
-#include <QTeXEngine.h>
+#ifdef TEX_OUTPUT
+	#include <QTeXEngine.h>
+#endif
 
 #include <ColorBox.h>
 #include <PatternBox.h>
