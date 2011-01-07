@@ -5,7 +5,7 @@
     <name>AddWidgetTool</name>
     <message>
         <source>Click on plot to choose the position of the new object!</source>
-        <translation>Cliquer sur le graphe pour choisir la position du nouvel objet !</translation>
+        <translation>Cliquez sur le graphe pour choisir la position du nouvel objet !</translation>
     </message>
     <message>
         <source>enter your text here</source>
@@ -13,11 +13,11 @@
     </message>
     <message>
         <source>Move cursor in order to resize the new rectangle!</source>
-        <translation>Bouger le curseur afin de redimensionner le nouveau rectangle !</translation>
+        <translation>Bougez le curseur afin de redimensionner le nouveau rectangle !</translation>
     </message>
     <message>
         <source>Move cursor in order to resize the new ellipse!</source>
-        <translation>Bouger le curseur afin de redimensionner la nouvelle éllipse !</translation>
+        <translation>Bougez le curseur afin de redimensionner la nouvelle éllipse !</translation>
     </message>
 </context>
 <context>
@@ -844,7 +844,7 @@
     </message>
     <message>
         <source>More windows...</source>
-        <translation>Autres fenêtres...</translation>
+        <translation>Plus de fenêtres...</translation>
     </message>
     <message>
         <source>&amp;Activate Window</source>
@@ -896,7 +896,7 @@
     </message>
     <message>
         <source>3D &amp;Hidden Line</source>
-        <translation>Lignes &amp;cachées 3D</translation>
+        <translation>Lignes 3D &amp;cachées</translation>
     </message>
     <message>
         <source>3D &amp;Polygons</source>
@@ -1020,7 +1020,7 @@
     </message>
     <message>
         <source>Set Column &amp;Values ...</source>
-        <translation>Fixer les &amp;valeurs de la Colonne...</translation>
+        <translation>Fixer les &amp;valeurs de la colonne...</translation>
     </message>
     <message>
         <source>&amp;Remove Layer</source>
@@ -1056,7 +1056,7 @@
     </message>
     <message>
         <source>QtiPlot - Enter rows number</source>
-        <translation>QtiPlot - Entrer le nombre de rangées</translation>
+        <translation>QtiPlot - Entrez le nombre de rangées</translation>
     </message>
     <message>
         <source>Rows</source>
@@ -1064,7 +1064,7 @@
     </message>
     <message>
         <source>QtiPlot - Enter columns number</source>
-        <translation>QtiPlot - Entrer le nombre de colonnes</translation>
+        <translation>QtiPlot - Entrez le nombre de colonnes</translation>
     </message>
     <message>
         <source>Columns</source>
@@ -1144,7 +1144,7 @@
     </message>
     <message>
         <source>Save changes to project: &lt;p&gt;&lt;b&gt; %1 &lt;/b&gt; ?</source>
-        <translation>Sauvegarder les changements du projet : &lt;p&gt;&lt;b&gt; %1 &lt;/b&gt; ?</translation>
+        <translation>Sauvegarder les changements au projet : &lt;p&gt;&lt;b&gt; %1 &lt;/b&gt; ?</translation>
     </message>
     <message>
         <source>&amp;Axes...</source>
@@ -1376,7 +1376,7 @@
     </message>
     <message>
         <source>The file: &lt;b&gt; %1 &lt;/b&gt; &lt;p&gt;does not exist anymore!&lt;p&gt;It will be removed from the list.</source>
-        <translation>Un fichier nommé &lt;p&gt;&lt;b&gt;%1&lt;/b&gt;&lt;p&gt;n&apos;existe plus. Il sera effacé de la liste.</translation>
+        <translation>Le fichier nommé &lt;p&gt;&lt;b&gt;%1&lt;/b&gt;&lt;p&gt;n&apos;existe plus. Il sera effacé de la liste.</translation>
     </message>
     <message>
         <source>Could not write to file: &lt;br&gt;&lt;h4&gt; %1 &lt;/h4&gt;&lt;p&gt;Please verify that you have the right to write to this location!</source>
@@ -1490,7 +1490,7 @@ Are you sure you want to continue?</source>
     </message>
     <message>
         <source>Compressed QtiPlot project</source>
-        <translation>Projet QtiPlot compréssé</translation>
+        <translation>Projet QtiPlot compressé</translation>
     </message>
     <message>
         <source>Save Project As</source>
@@ -1514,15 +1514,15 @@ Are you sure you want to continue?</source>
     </message>
     <message>
         <source>Please enter a valid name!</source>
-        <translation>Donnez un nom valide !</translation>
+        <translation>Veuillez donner un nom valide !</translation>
     </message>
     <message>
         <source>The name you chose is not valid: only letters and digits are allowed!</source>
-        <translation>Le nom que vous avez choisi n&apos;est pas valide : seuls les lettres et les caractères alphanumériques sont autorisés !</translation>
+        <translation>Le nom que vous avez choisi n&apos;est pas valide : seuls les lettres et caractères alphanumériques sont autorisés !</translation>
     </message>
     <message>
         <source>Please choose another name!</source>
-        <translation>Choisissez un autre nom !</translation>
+        <translation>Veuillez choisir un autre nom !</translation>
     </message>
     <message>
         <source>Name already exists!</source>
@@ -1586,7 +1586,7 @@ Are you sure you want to continue?</source>
     </message>
     <message>
         <source>&amp;About QtiPlot</source>
-        <translation>&amp;A propos de QtiPlot</translation>
+        <translation>&amp;À propos de QtiPlot</translation>
     </message>
     <message>
         <source>&amp;Box Plot</source>
@@ -1690,7 +1690,7 @@ Are you sure you want to continue?</source>
     </message>
     <message>
         <source>Cannot make a backup copy of &lt;b&gt;%1&lt;/b&gt; (to %2).&lt;br&gt;If you ignore this, you run the risk of &lt;b&gt;data loss&lt;/b&gt;.</source>
-        <translation>Impossible de faire une sauvegarde de &lt;b&gt;%1&lt;/b&gt; (vers %2).&lt;br&gt;Si vous ignorez ce message, vous prenez le risque de &lt;b&gt;prendre des données&lt;/b&gt;.</translation>
+        <translation>Impossible de faire une sauvegarde de &lt;b&gt;%1&lt;/b&gt; (vers %2).&lt;br&gt;Si vous ignorez ce message, vous prenez le risque de &lt;b&gt;perdre des données&lt;/b&gt;.</translation>
     </message>
     <message>
         <source>The file: &lt;br&gt;&lt;b&gt;%1&lt;/b&gt; is opened in read-only mode</source>
@@ -1758,7 +1758,7 @@ Are you sure you want to continue?</source>
     </message>
     <message>
         <source>New Folder</source>
-        <translation>Nouveau Dossier</translation>
+        <translation>Nouveau dossier</translation>
     </message>
     <message>
         <source>QtiPlot - Delete folder?</source>
@@ -1774,7 +1774,7 @@ Are you sure you want to continue?</source>
     </message>
     <message>
         <source>Status</source>
-        <translation>Etat</translation>
+        <translation>État</translation>
     </message>
     <message>
         <source>QtiPlot - No match found</source>
@@ -1914,7 +1914,7 @@ Are you sure you want to continue?</source>
     </message>
     <message>
         <source>Draw arrow</source>
-        <translation>Déssiner une flèche</translation>
+        <translation>Dessiner une flèche</translation>
     </message>
     <message>
         <source>Graph</source>
@@ -1940,7 +1940,7 @@ Various parts of this file may not be displayed as expected.</source>
         <translation>Le fichier &quot;%1&quot; a été crée en utilisant &quot;%2&quot; comme langage de script.
 
 L&apos;initialisation a échouée. &quot;%3&quot; est utilisé en substitution.
-Quelques parties de ce fichier peuvent ne pas être affichés comme attendu.</translation>
+Quelques parties de ce fichier peuvent ne pas être affichées comme attendu.</translation>
     </message>
     <message>
         <source>QtiPlot - Scripting Error</source>
@@ -2008,7 +2008,7 @@ Quelques parties de ce fichier peuvent ne pas être affichés comme attendu.</tr
     </message>
     <message>
         <source>E&amp;xecute</source>
-        <translation>É&amp;xécuter</translation>
+        <translation>E&amp;xécuter</translation>
     </message>
     <message>
         <source>Ctrl+J</source>
@@ -2032,7 +2032,7 @@ Quelques parties de ce fichier peuvent ne pas être affichés comme attendu.</tr
     </message>
     <message>
         <source>Error while fetching version file with HTTP: %1.</source>
-        <translation>Erreur lors de la recherche de la version du fichier par le WEB : %1.</translation>
+        <translation>Erreur lors de la recherche par le WEB de la version du fichier : %1.</translation>
     </message>
     <message>
         <source>QtiPlot - Updates Available</source>
@@ -2076,7 +2076,7 @@ Quelques parties de ce fichier peuvent ne pas être affichés comme attendu.</tr
     </message>
     <message>
         <source>QtiPlot - Help Profile Not Found!</source>
-        <translation>QtiPlot - Profile d&apos;aide non trouvé !</translation>
+        <translation>QtiPlot - Profil d&apos;aide non trouvé !</translation>
     </message>
     <message>
         <source>Ctrl+K</source>
@@ -2092,7 +2092,7 @@ Quelques parties de ce fichier peuvent ne pas être affichés comme attendu.</tr
     </message>
     <message>
         <source>Contour - &amp;Color Fill</source>
-        <translation>Contour - &amp;Couleur de remplissage</translation>
+        <translation>Contour - &amp;couleur de remplissage</translation>
     </message>
     <message>
         <source>Contour &amp;Lines</source>
@@ -2156,7 +2156,7 @@ Quelques parties de ce fichier peuvent ne pas être affichés comme attendu.</tr
     </message>
     <message>
         <source>Reset rotation</source>
-        <translation>MaJ Rotation</translation>
+        <translation>MàJ rotation</translation>
     </message>
     <message>
         <source>Fit frame to window</source>
@@ -2244,7 +2244,7 @@ Quelques parties de ce fichier peuvent ne pas être affichés comme attendu.</tr
     </message>
     <message>
         <source>QtiPlot - Overwrite file?</source>
-        <translation>QtiPlot - Écraser le fichier?</translation>
+        <translation>QtiPlot - Écraser le fichier ?</translation>
     </message>
     <message>
         <source>Please select two columns for this operation!</source>
@@ -2257,7 +2257,8 @@ Quelques parties de ce fichier peuvent ne pas être affichés comme attendu.</tr
     <message>
         <source>Please select two columns for this operation:
  the first represents the signal and the second the response function!</source>
-        <translation>Sélectionnez 2 colonnes pour cette opération : La première représente le signal et la seconde, la réponse de la fonction !</translation>
+        <translation>Sélectionnez 2 colonnes pour cette opération :
+La première représente le signal et la seconde, la réponse de la fonction !</translation>
     </message>
     <message>
         <source>Vertical &amp;Drop Lines</source>
@@ -2358,7 +2359,7 @@ Quelques parties de ce fichier peuvent ne pas être affichés comme attendu.</tr
     </message>
     <message>
         <source>&amp;Export PDF</source>
-        <translation>&amp;Exporter en PDF</translation>
+        <translation>&amp;Export PDF</translation>
     </message>
     <message>
         <source>Ctrl+Alt+P</source>
@@ -2382,7 +2383,7 @@ Quelques parties de ce fichier peuvent ne pas être affichés comme attendu.</tr
     </message>
     <message>
         <source>Add Time Stamp</source>
-        <translation>Ajouter Date et Heure</translation>
+        <translation>Ajouter date et heure</translation>
     </message>
     <message>
         <source>&amp;Choose Help Folder...</source>
@@ -2394,7 +2395,7 @@ Quelques parties de ce fichier peuvent ne pas être affichés comme attendu.</tr
     </message>
     <message>
         <source>&amp;View Pixel Line Profile</source>
-        <translation>&amp;Voir le profile en pixel suivant une ligne</translation>
+        <translation>&amp;Voir le profil en pixel suivant une ligne</translation>
     </message>
     <message>
         <source>&amp;Intensity Table</source>
@@ -2418,7 +2419,7 @@ Quelques parties de ce fichier peuvent ne pas être affichés comme attendu.</tr
     </message>
     <message>
         <source>You must select a single Y column that has an associated X column!</source>
-        <translation>Vous devez sélectionner une seule colonne Y qui possède une colonne X associée !</translation>
+        <translation>Vous ne devez sélectionner n qu&apos;une seule colonne Y qui possède une colonne X associée !</translation>
     </message>
     <message>
         <source>You must select exactly one Z column!</source>
@@ -2490,7 +2491,7 @@ Quelques parties de ce fichier peuvent ne pas être affichés comme attendu.</tr
     </message>
     <message>
         <source>Sample Rate</source>
-        <translation>Taux d&apos;échantillonage</translation>
+        <translation>Taux d&apos;échantillonnage</translation>
     </message>
     <message>
         <source>Byte Rate</source>
@@ -2547,7 +2548,7 @@ Quelques parties de ce fichier peuvent ne pas être affichés comme attendu.</tr
     </message>
     <message>
         <source>Create Open &amp;Document Presentation...</source>
-        <translation>Créer un fichier O&amp;DP...</translation>
+        <translation>Créer une présentation O&amp;DP...</translation>
     </message>
     <message>
         <source>&amp;Close</source>
@@ -2567,7 +2568,7 @@ Quelques parties de ce fichier peuvent ne pas être affichés comme attendu.</tr
     </message>
     <message>
         <source>&amp;Image Profiles</source>
-        <translation>Profiles d&apos;&amp;images</translation>
+        <translation>Profils d&apos;&amp;images</translation>
     </message>
     <message>
         <source>2D &amp;Binning</source>
@@ -2587,7 +2588,7 @@ Quelques parties de ce fichier peuvent ne pas être affichés comme attendu.</tr
     </message>
     <message>
         <source>QtiPlot &amp;Forums</source>
-        <translation>&amp;Forum QtiPlot</translation>
+        <translation>&amp;Forums QtiPlot</translation>
     </message>
     <message>
         <source>Report a &amp;Bug</source>
@@ -2707,7 +2708,7 @@ Quelques parties de ce fichier peuvent ne pas être affichés comme attendu.</tr
     </message>
     <message>
         <source>Show analysis results</source>
-        <translation>Voir les résultats d&apos;analyse</translation>
+        <translation>Voir les résultats de l&apos;analyse</translation>
     </message>
     <message>
         <source>Export to PDF</source>
@@ -2719,7 +2720,7 @@ Quelques parties de ce fichier peuvent ne pas être affichés comme attendu.</tr
     </message>
     <message>
         <source>Date &amp; time </source>
-        <translation>Date &amp; Heure </translation>
+        <translation>Date &amp; heure </translation>
     </message>
     <message>
         <source>Plot as line</source>
@@ -2755,11 +2756,11 @@ Quelques parties de ce fichier peuvent ne pas être affichés comme attendu.</tr
     </message>
     <message>
         <source>Image Profiles</source>
-        <translation>Profiles d&apos;image</translation>
+        <translation>Profils d&apos;image</translation>
     </message>
     <message>
         <source>Box and whiskers plot</source>
-        <translation>Graphe Whiskers</translation>
+        <translation>Graphe à moustache</translation>
     </message>
     <message>
         <source>Visit QtiPlot &amp;Forums</source>
@@ -2780,6 +2781,7 @@ Quelques parties de ce fichier peuvent ne pas être affichés comme attendu.</tr
     </message>
     <message>
         <source>Show replace dialog</source>
+        <translatorcomment>Rémy : Bof...</translatorcomment>
         <translation>Afficher la boite &quot;Remplacer&quot;</translation>
     </message>
     <message>
@@ -2832,7 +2834,7 @@ Quelques parties de ce fichier peuvent ne pas être affichés comme attendu.</tr
     </message>
     <message>
         <source>Mesh &amp; Filled Polygons</source>
-        <translation>Cour&amp;be 3D + maillage</translation>
+        <translation>Courbe 3D + maillage</translation>
     </message>
     <message>
         <source>Crosshairs</source>
@@ -2908,11 +2910,11 @@ Quelques parties de ce fichier peuvent ne pas être affichés comme attendu.</tr
     </message>
     <message>
         <source>Start row</source>
-        <translation>Rangée de départ</translation>
+        <translation>Première rangée</translation>
     </message>
     <message>
         <source>End row</source>
-        <translation>Rangée de fin</translation>
+        <translation>Dernière rangée</translation>
     </message>
     <message>
         <source>Set Display Range</source>
@@ -2948,7 +2950,7 @@ Quelques parties de ce fichier peuvent ne pas être affichés comme attendu.</tr
     </message>
     <message>
         <source>Please support QtiPlot!</source>
-        <translation>Supportez Qtiplot !</translation>
+        <translation>Aidez Qtiplot !</translation>
     </message>
     <message>
         <source>&lt;b&gt; %1 &lt;/b&gt;: This command line option must be used without other arguments!</source>
@@ -3116,7 +3118,7 @@ Quelques parties de ce fichier peuvent ne pas être affichés comme attendu.</tr
     </message>
     <message>
         <source>&amp;Swap columns</source>
-        <translation>Intervertirr les Colonne&amp;s</translation>
+        <translation>Intervertir lescolonne&amp;s</translation>
     </message>
     <message>
         <source>Move &amp;Right</source>
@@ -3128,7 +3130,7 @@ Quelques parties de ce fichier peuvent ne pas être affichés comme attendu.</tr
     </message>
     <message>
         <source>Move to F&amp;irst</source>
-        <translation>Prem&amp;iere colonne</translation>
+        <translation>Prem&amp;ière colonne</translation>
     </message>
     <message>
         <source>Move to Las&amp;t</source>
@@ -3140,7 +3142,7 @@ Quelques parties de ce fichier peuvent ne pas être affichés comme attendu.</tr
     </message>
     <message>
         <source>Flip &amp;V</source>
-        <translation>Retourner &amp;Verticalement</translation>
+        <translation>Retourner &amp;verticalement</translation>
     </message>
     <message>
         <source>Ctrl+Shift+V</source>
@@ -3148,7 +3150,7 @@ Quelques parties de ce fichier peuvent ne pas être affichés comme attendu.</tr
     </message>
     <message>
         <source>Flip &amp;H</source>
-        <translation>Retourner &amp;Horizontalement</translation>
+        <translation>Retourner &amp;horizontalement</translation>
     </message>
     <message>
         <source>Ctrl+Shift+H</source>
@@ -3168,7 +3170,7 @@ Quelques parties de ce fichier peuvent ne pas être affichés comme attendu.</tr
     </message>
     <message>
         <source>&amp;Image mode</source>
-        <translation>Convertir en &amp;Image</translation>
+        <translation>Convertir en &amp;image</translation>
     </message>
     <message>
         <source>Ctrl+Shift+I</source>
@@ -3176,7 +3178,7 @@ Quelques parties de ce fichier peuvent ne pas être affichés comme attendu.</tr
     </message>
     <message>
         <source>&amp;Data mode</source>
-        <translation>Convertir en &amp;Données</translation>
+        <translation>Convertir en &amp;données</translation>
     </message>
     <message>
         <source>Ctrl+Shift+D</source>
@@ -3192,7 +3194,7 @@ Quelques parties de ce fichier peuvent ne pas être affichés comme attendu.</tr
     </message>
     <message>
         <source>Show &amp;Column/Row</source>
-        <translation>Montrer &amp;Colonnes/Lignes</translation>
+        <translation>Montrer &amp;colonnes/lignes</translation>
     </message>
     <message>
         <source>Ctrl+Shift+C</source>
@@ -3225,7 +3227,7 @@ Quelques parties de ce fichier peuvent ne pas être affichés comme attendu.</tr
     </message>
     <message>
         <source>&amp;Read Only</source>
-        <translation>Lectu&amp;Re Seule</translation>
+        <translation>Lectu&amp;re seule</translation>
     </message>
     <message>
         <source>&amp;Disregard</source>
@@ -3241,7 +3243,7 @@ Quelques parties de ce fichier peuvent ne pas être affichés comme attendu.</tr
     </message>
     <message>
         <source>Swap selected columns</source>
-        <translation>Echanger les colonnes sélectionnées</translation>
+        <translation>Échanger les colonnes sélectionnées</translation>
     </message>
     <message>
         <source>Move Right</source>
@@ -3361,7 +3363,7 @@ Quelques parties de ce fichier peuvent ne pas être affichés comme attendu.</tr
     </message>
     <message>
         <source>Hide selected columns</source>
-        <translation>Caché les colonnes sélectionnées</translation>
+        <translation>Cacher les colonnes sélectionnées</translation>
     </message>
     <message>
         <source>Show all table columns</source>
@@ -3401,7 +3403,7 @@ Quelques parties de ce fichier peuvent ne pas être affichés comme attendu.</tr
     </message>
     <message>
         <source>Set Matrix Values</source>
-        <translation>Définier les valeurs de la matrice</translation>
+        <translation>Définir les valeurs de la matrice</translation>
     </message>
     <message>
         <source>Image Plot</source>
@@ -3409,15 +3411,15 @@ Quelques parties de ce fichier peuvent ne pas être affichés comme attendu.</tr
     </message>
     <message>
         <source>Flip Vertically</source>
-        <translation>Retourner Verticalement</translation>
+        <translation>Retourner verticalement</translation>
     </message>
     <message>
         <source>Flip Horizontally</source>
-        <translation>Retourner Horizontalement</translation>
+        <translation>Retourner horizontalement</translation>
     </message>
     <message>
         <source>Fill selected columns with row numbers</source>
-        <translation>Remplir les colonnes sélectionnée avec les numéros des lignes</translation>
+        <translation>Remplir les colonnes sélectionnées avec les numéros des lignes</translation>
     </message>
     <message>
         <source>Fill selected columns with random numbers</source>
@@ -3453,11 +3455,11 @@ Quelques parties de ce fichier peuvent ne pas être affichés comme attendu.</tr
     </message>
     <message>
         <source>Integration of %1</source>
-        <translation>L&apos;intégration de  %1</translation>
+        <translation>L&apos;intégration de %1</translation>
     </message>
     <message>
         <source>Area</source>
-        <translation> Aire</translation>
+        <translation>Aire</translation>
     </message>
     <message>
         <source>Please select a &apos;Y&apos; column first!</source>
@@ -3465,7 +3467,7 @@ Quelques parties de ce fichier peuvent ne pas être affichés comme attendu.</tr
     </message>
     <message>
         <source>Linear Regression of %1</source>
-        <translation>Régression Linéraire de %1</translation>
+        <translation>Régression linéraire de %1</translation>
     </message>
     <message>
         <source>Slope</source>
@@ -3489,7 +3491,7 @@ Quelques parties de ce fichier peuvent ne pas être affichés comme attendu.</tr
     </message>
     <message>
         <source>Show Line &amp;Numbers</source>
-        <translation>Montrer les &amp;Numéros des lignes</translation>
+        <translation>Montrer les &amp;numéros des lignes</translation>
     </message>
     <message>
         <source>Add E&amp;quation</source>
@@ -3509,7 +3511,7 @@ Quelques parties de ce fichier peuvent ne pas être affichés comme attendu.</tr
     </message>
     <message>
         <source>There are no layers available on this plot. Operation aborted!</source>
-        <translation>il n&apos;y a pas de planches disponibles sur ce graphe. Opération interrompue !</translation>
+        <translation>Il n&apos;y a pas de planches disponibles sur ce graphe. Opération interrompue !</translation>
     </message>
     <message>
         <source>&amp;Paste Tex Formula</source>
@@ -3554,7 +3556,7 @@ Quelques parties de ce fichier peuvent ne pas être affichés comme attendu.</tr
     </message>
     <message>
         <source>Extract to &amp;Layers</source>
-        <translation>Scinder en p&amp;lanche</translation>
+        <translation>Scinder en p&amp;lanches</translation>
     </message>
     <message>
         <source>Add Inset Layer</source>
@@ -3578,11 +3580,11 @@ Quelques parties de ce fichier peuvent ne pas être affichés comme attendu.</tr
     </message>
     <message>
         <source>Add &amp;Ellipse</source>
-        <translation>Ajouter une &amp;éllipse</translation>
+        <translation>Ajouter une &amp;ellipse</translation>
     </message>
     <message>
         <source>CTRL+ALT+E</source>
-        <translation>CTRL+ALT+E</translation>
+        <translation>Ctrl+Alt+E</translation>
     </message>
     <message>
         <source>&amp;Paste Rectangle</source>
@@ -3590,11 +3592,11 @@ Quelques parties de ce fichier peuvent ne pas être affichés comme attendu.</tr
     </message>
     <message>
         <source>&amp;Paste Ellipse</source>
-        <translation>Coller l&apos;élli&amp;pse</translation>
+        <translation>Coller l&apos;elli&amp;pse</translation>
     </message>
     <message>
         <source>Add Ellipse/Circle</source>
-        <translation>Ajouter une éllipse/un cercle</translation>
+        <translation>Ajouter une ellipse/un cercle</translation>
     </message>
     <message>
         <source>Set Default Palette</source>
@@ -3610,7 +3612,7 @@ Quelques parties de ce fichier peuvent ne pas être affichés comme attendu.</tr
     </message>
     <message>
         <source>Profiles</source>
-        <translation>Profiles</translation>
+        <translation>Profils</translation>
     </message>
     <message>
         <source>Horizontal</source>
@@ -3622,7 +3624,7 @@ Quelques parties de ce fichier peuvent ne pas être affichés comme attendu.</tr
     </message>
     <message>
         <source>&lt;font size=+2, color = darkBlue&gt;&lt;b&gt;QtiPlot is open-source software and its development required hundreds of hours of work.&lt;br&gt;&lt;br&gt;				If you like it, you&apos;re using it in your work and you would like to see it 				constantly improved, please support its authors by making a donation.&lt;/b&gt;&lt;/font&gt;</source>
-        <translation>&lt;font size=+2, color = darkBlue&gt;&lt;b&gt;QtiPlot est un logiciel libre et son développement nécessite des centaines h&apos;eures de travail.&lt;br&gt;&lt;br&gt;Si vous l&apos;aimez, que vous l&apos;utilisez à votre travail et que vous voulez le voir constamment évoluer, merci de le supporter en faisant une donation à son auteur&lt;/b&gt;&lt;/font&gt;</translation>
+        <translation>&lt;font size=+2, color = darkBlue&gt;&lt;b&gt;QtiPlot est un logiciel libre et son développement nécessite des centaines d&apos;heures de travail.&lt;br&gt;&lt;br&gt;Si vous l&apos;aimez, que vous l&apos;utilisez à votre travail et que vous voulez le voir constamment évoluer, merci de le supporter en faisant une donation à son auteur&lt;/b&gt;&lt;/font&gt;</translation>
     </message>
     <message>
         <source>Make a donation</source>
@@ -3634,11 +3636,11 @@ Quelques parties de ce fichier peuvent ne pas être affichés comme attendu.</tr
     </message>
     <message>
         <source>execute the script file given as argument without displying the user interface. Warning: 2D plots are not correctly handled in this functioning mode!</source>
-        <translation>Execute le script donnée en argument sans le montrer dans l&apos;interface utilisateur. Attention ! Les graphs 2D ne sont pas bien pris en compte dans ce mode de fonctionnement!</translation>
+        <translation>Exécute le script passé en argument sans le montrer dans l&apos;interface utilisateur. Attention ! Les graphes 2D ne sont pas bien pris en compte dans ce mode de fonctionnement !</translation>
     </message>
     <message>
         <source>can be any .qti, qti.gz, .ods, .opj, .ogm, .ogw, .ogg, .py, .xls or ASCII file</source>
-        <translation>peut être .qti, .qti.gz, .ods,  .opj, .ogm, .ogw, .ogg, .py, .xls ou un fichier ASCII</translation>
+        <translation>peut être .qti, .qti.gz, .ods, .opj, .ogm, .ogw, .ogg, .py, .xls ou un fichier ASCII</translation>
     </message>
     <message>
         <source>Help</source>
@@ -3646,7 +3648,7 @@ Quelques parties de ce fichier peuvent ne pas être affichés comme attendu.</tr
     </message>
     <message>
         <source>You are using the demonstration version of Qtiplot.				It is identical with the full version, except that you can&apos;t save your work to project files and you can&apos;t use it for more than 10 minutes per session.				&lt;br&gt;&lt;br&gt;				If you want to have ready-to-use, fully functional binaries, please subscribe for a				&lt;a href=&quot;http://soft.proindependent.com/individual_contract.html&quot;&gt;single-user binaries maintenance contract&lt;/a&gt;.				&lt;br&gt;&lt;br&gt;				QtiPlot is free software in the sense of free speech.				If you know how to use it, you can get				&lt;a href=&quot;http://soft.proindependent.com/download.html&quot;&gt;the source code&lt;/a&gt;				free of charge.				Nevertheless, you are welcome to				&lt;a href=&quot;http://soft.proindependent.com/why_donate.html&quot;&gt;make a donation&lt;/a&gt;				in order to support the further development of QtiPlot.</source>
-        <translation>Vous utilisez la version de démonstration de QtiPlot.	Elle est identique à la version complète mais vous ne pouvez sauvegarder votre travail et vous ne pouvez pas l&apos;utiliser plus de 10 minutes par session.	&lt;br&gt;&lt;br&gt;. Pour disposer de la version complète, veuillez souscrire un contrat de maintenance à &lt;a href=&quot;http://soft.proindependent.com/individual_contract.html&quot;&gt;.	&lt;br&gt;&lt;br&gt;	QtiPlot est un logiciel libre au sens de la liberté d&apos;expression.	Si vous savez comment l&apos;utiliser, vous pouvez avoir	&lt;a href=&quot;http://developer.berlios.de/project/showfiles.php?group_id=6626&quot;&gt; les fichiers sources&lt;/a&gt; sans charges.	. Néanmoins, vous êtes le bienvenu	&lt;a href=&quot;http://soft.proindependent.com/why_donate.html&quot;&gt; pour faire un don&lt;/a&gt;	afin d&apos;aidez aux développements futurs de QtiPlot.</translation>
+        <translation>Vous utilisez la version de démonstration de QtiPlot.	Elle est identique à la version complète mais vous ne pouvez sauvegarder votre travail et vous ne pouvez pas l&apos;utiliser plus de 10 minutes par session.	&lt;br&gt;&lt;br&gt;. Pour disposer de la version complète, veuillez souscrire un contrat de maintenance à &lt;a href=&quot;http://soft.proindependent.com/individual_contract.html&quot;&gt;.	&lt;br&gt;&lt;br&gt;	QtiPlot est un logiciel libre au sens de la liberté d&apos;expression.	Si vous savez comment l&apos;utiliser, vous pouvez avoir	&lt;a href=&quot;http://developer.berlios.de/project/showfiles.php?group_id=6626&quot;&gt; les fichiers sources&lt;/a&gt; sans paiement.	. Néanmoins, vous êtes le bienvenu	&lt;a href=&quot;http://soft.proindependent.com/why_donate.html&quot;&gt; pour faire un don&lt;/a&gt;	afin d&apos;aider aux développements futurs de QtiPlot.</translation>
     </message>
     <message>
         <source>QtiPlot - Enter column number</source>
@@ -3654,7 +3656,7 @@ Quelques parties de ce fichier peuvent ne pas être affichés comme attendu.</tr
     </message>
     <message>
         <source>QtiPlot was not built with Python scripting support included!</source>
-        <translation>Qtiplot a été compilé sans le support des scripts Python!</translation>
+        <translation>Qtiplot a été compilé sans le support des scripts Python !</translation>
     </message>
     <message>
         <source>Starting with version 0.9.1 QtiPlot stores the user defined fit models to a different location.</source>
@@ -3662,7 +3664,7 @@ Quelques parties de ce fichier peuvent ne pas être affichés comme attendu.</tr
     </message>
     <message>
         <source>If you want to save your already defined models, please choose a destination folder.</source>
-        <translation>Si vous voulez sauvegarder vos modèles prédfinis, choisissez un dossier de destination.</translation>
+        <translation>Si vous voulez sauvegarder vos modèles prédéfinis, choisissez un dossier de destination.</translation>
     </message>
     <message>
         <source>Import fit models</source>
@@ -3680,7 +3682,7 @@ Quelques parties de ce fichier peuvent ne pas être affichés comme attendu.</tr
         <source>Couldn&apos;t load file: %1.
 Autocompletion will not be available!</source>
         <translation>Ne peut charger le fichier: %1.
-L&apos;autocomplétion ne sera pas disponible!</translation>
+L&apos;autocomplétion ne sera pas disponible !</translation>
     </message>
     <message>
         <source>Please select exactly one column and more than one non empty cell!</source>
@@ -3688,11 +3690,11 @@ L&apos;autocomplétion ne sera pas disponible!</translation>
     </message>
     <message>
         <source>Rotate 90 Clockwise</source>
-        <translation>Tourner de 90° vers la droite</translation>
+        <translation>Tourner de 90° dans le sens horaire</translation>
     </message>
     <message>
         <source>Rotate 90 Counterclockwise</source>
-        <translation>Tourner de 90° vers la gauche</translation>
+        <translation>Tourner de 90° dans le sens anti-horaire</translation>
     </message>
     <message>
         <source>Ctrl+Shift+S</source>
@@ -3700,19 +3702,20 @@ L&apos;autocomplétion ne sera pas disponible!</translation>
     </message>
     <message>
         <source>Data set: %1 doesn&apos;t exist!</source>
-        <translation>Les données %1 doesn&apos;t exist !</translation>
+        <translation>Les données %1 n&apos;existent pas !</translation>
     </message>
     <message>
         <source>Stem and leaf plot of dataset</source>
+        <translatorcomment>Rémy : Bof...</translatorcomment>
         <translation>Tracé des données en &quot;stemplot&quot;</translation>
     </message>
     <message>
         <source>from row</source>
-        <translation>De la rangée</translation>
+        <translation>De la ligne</translation>
     </message>
     <message>
         <source>to row</source>
-        <translation>à la rangée</translation>
+        <translation>à la ligne</translation>
     </message>
     <message>
         <source>Not enough memory for this dataset!</source>
@@ -3728,7 +3731,7 @@ L&apos;autocomplétion ne sera pas disponible!</translation>
     </message>
     <message>
         <source>Please confirm the stem unit!</source>
-        <translation>Mercid e confirmer l&apos;unité du &quot;stem&quot;!</translation>
+        <translation>Merci de confirmer l&apos;unité du &quot;stem&quot; !</translation>
     </message>
     <message>
         <source>Data set</source>
@@ -3736,7 +3739,7 @@ L&apos;autocomplétion ne sera pas disponible!</translation>
     </message>
     <message>
         <source>stem unit</source>
-        <translation>Unité du &quot;stem&quot;</translation>
+        <translation>unité du &quot;stem&quot;</translation>
     </message>
     <message>
         <source>Stem unit</source>
@@ -3744,7 +3747,7 @@ L&apos;autocomplétion ne sera pas disponible!</translation>
     </message>
     <message>
         <source>Leaf unit</source>
-        <translation>Unité de la Feuille</translation>
+        <translation>Unité de la feuille</translation>
     </message>
     <message>
         <source>Key</source>
@@ -3752,11 +3755,11 @@ L&apos;autocomplétion ne sera pas disponible!</translation>
     </message>
     <message>
         <source>means</source>
-        <translation>moyenne</translation>
+        <translation>moyennes</translation>
     </message>
     <message>
         <source>Input error: empty data set!</source>
-        <translation>Erreur en entrée : plage de données vide!</translation>
+        <translation>Erreur en entrée : plage de données vide !</translation>
     </message>
     <message>
         <source>Stem-and-Leaf Plot</source>
@@ -3784,7 +3787,7 @@ L&apos;autocomplétion ne sera pas disponible!</translation>
     </message>
     <message>
         <source>Fit Slop&amp;e</source>
-        <translation>Ajuster la parti&amp;e linéaire</translation>
+        <translation>Ajuster la p&amp;ente</translation>
     </message>
     <message>
         <source>&amp;Add</source>
@@ -3800,6 +3803,7 @@ L&apos;autocomplétion ne sera pas disponible!</translation>
     </message>
     <message>
         <source>&amp;Indexed Colors</source>
+        <translatorcomment>Rémy : bof...</translatorcomment>
         <translation>Couleurs &amp;indéxées</translation>
     </message>
     <message>
@@ -3837,7 +3841,7 @@ L&apos;autocomplétion ne sera pas disponible!</translation>
     </message>
     <message>
         <source>Print preview of window: </source>
-        <translation>Aperçu avant impression de la fenêtre :</translation>
+        <translation>Aperçu de la fenêtre avant impression :</translation>
     </message>
     <message>
         <source>Print Pre&amp;view</source>
@@ -3881,7 +3885,7 @@ L&apos;autocomplétion ne sera pas disponible!</translation>
     </message>
     <message>
         <source> </source>
-        <translation></translation>
+        <translation> </translation>
     </message>
     <message>
         <source>&amp;Custom Layout...</source>
@@ -3933,7 +3937,7 @@ L&apos;autocomplétion ne sera pas disponible!</translation>
     </message>
     <message>
         <source>&amp;Reference Data...</source>
-        <translation>&amp;Donnée de référence...</translation>
+        <translation>&amp;Données de référence...</translation>
     </message>
     <message>
         <source>&amp;Open...</source>
@@ -3953,7 +3957,7 @@ L&apos;autocomplétion ne sera pas disponible!</translation>
     </message>
     <message>
         <source>E&amp;xport ASCII...</source>
-        <translation>E&amp;xporter en ASCII...</translation>
+        <translation>E&amp;xport fichier ASCII...</translation>
     </message>
     <message>
         <source>The selected table is empty, operation aborted!</source>
@@ -3961,11 +3965,11 @@ L&apos;autocomplétion ne sera pas disponible!</translation>
     </message>
     <message>
         <source>Export Exce&amp;l ...</source>
-        <translation>Exportation Exce&amp;l...</translation>
+        <translation>Export tableur Exce&amp;l...</translation>
     </message>
     <message>
         <source>Export Excel</source>
-        <translation>Exportation Excel</translation>
+        <translation>Export tableur Excel</translation>
     </message>
     <message>
         <source>&amp;Front</source>
@@ -4061,18 +4065,20 @@ L&apos;autocomplétion ne sera pas disponible!</translation>
     </message>
     <message>
         <source>&amp;One Sample t-Test...</source>
-        <translation>&amp;Un échantillon t-test...</translation>
+        <translation>&amp;Test de Student à un échantill&amp;on...</translation>
     </message>
     <message>
         <source>&amp;Two Sample t-Test...</source>
-        <translation>&amp;Deux échantillon t-Test...</translation>
+        <translation>&amp;Test de Student à deux échantillons...</translation>
     </message>
     <message>
         <source>&amp;Normal Random Numbers</source>
+        <translatorcomment>Rémy : Bof...</translatorcomment>
         <translation>&amp;Nombres aléatoires normaux</translation>
     </message>
     <message>
         <source>Fill selected columns with normal random numbers</source>
+        <translatorcomment>Rémy : Bof...</translatorcomment>
         <translation>Remplir les colonnes sélectionnées avec des nombres aléatoires normaux</translation>
     </message>
     <message>
@@ -4097,11 +4103,11 @@ L&apos;autocomplétion ne sera pas disponible!</translation>
     </message>
     <message>
         <source>Export Open Document Spreadsheet</source>
-        <translation type="unfinished"></translation>
+        <translation>Export tableur ODS</translation>
     </message>
     <message>
         <source>Export &amp;Open Document Spreadsheet ...</source>
-        <translation type="unfinished"></translation>
+        <translation>Export tableur &amp;ODS...</translation>
     </message>
 </context>
 <context>
@@ -4311,7 +4317,7 @@ L&apos;autocomplétion ne sera pas disponible!</translation>
     </message>
     <message>
         <source>Show</source>
-        <translation>Voir</translation>
+        <translation>Afficher</translation>
     </message>
     <message>
         <source>Title</source>
@@ -4363,7 +4369,7 @@ L&apos;autocomplétion ne sera pas disponible!</translation>
     </message>
     <message>
         <source>None</source>
-        <translation>Sans</translation>
+        <translation>Aucune</translation>
     </message>
     <message>
         <source>Out</source>
@@ -4379,7 +4385,7 @@ L&apos;autocomplétion ne sera pas disponible!</translation>
     </message>
     <message>
         <source>Labels space</source>
-        <translation>Espace entre labels</translation>
+        <translation>Espace entre étiquettes</translation>
     </message>
     <message>
         <source>Stand-off</source>
@@ -4391,7 +4397,7 @@ L&apos;autocomplétion ne sera pas disponible!</translation>
     </message>
     <message>
         <source>Show &amp;backbone</source>
-        <translation>Mon&amp;trer la ligne d&apos;axe</translation>
+        <translation>A&amp;fficher la ligne d&apos;axe</translation>
     </message>
     <message>
         <source>Column</source>
@@ -4600,7 +4606,7 @@ L&apos;autocomplétion ne sera pas disponible!</translation>
     </message>
     <message>
         <source>Scientific: 1·10^4</source>
-        <translation>Scientific : 1 10^4</translation>
+        <translation>Scientifique : 1 10^4</translation>
     </message>
     <message>
         <source>Origin</source>
@@ -4872,14 +4878,14 @@ L&apos;autocomplétion ne sera pas disponible!</translation>
     </message>
     <message>
         <source>&amp;Scale Colors</source>
-        <translation>Couleur&amp;s dégradées</translation>
+        <translation>Échelle des couleur&amp;s</translation>
     </message>
 </context>
 <context>
     <name>ColorMapPreviewDialog</name>
     <message>
         <source>QtiPlot - Color Map Preview Dialog</source>
-        <translation>Qtiplot - Dialogue d&apos;aperçu des cartes de couleur</translation>
+        <translation>Qtiplot - Boîte de dialogue d&apos;aperçu des cartes de couleur</translation>
     </message>
     <message>
         <source>Colormap files</source>
@@ -4913,7 +4919,7 @@ The following special codes can be used:
 \t for a TAB character 
 \s for a SPACE</source>
         <translation>Le séparateur de colonne peut être personnalisé. 
-Les codes spéciaux suivant peuvent être utilisés :
+Les codes spéciaux suivants peuvent être utilisés :
 \t pour une tabulation 
 \s pour une espace</translation>
     </message>
@@ -5097,7 +5103,7 @@ Les codes spéciaux suivant peuvent être utilisés :
     </message>
     <message>
         <source>Axes &amp;backbones</source>
-        <translation>A&amp;bscisses / Ordonnées</translation>
+        <translation>A&amp;bscisses / ordonnées</translation>
     </message>
     <message>
         <source>Canvas Fra&amp;me</source>
@@ -5105,7 +5111,7 @@ Les codes spéciaux suivant peuvent être utilisés :
     </message>
     <message>
         <source>Show &amp;Title</source>
-        <translation>Montrer le &amp;titre</translation>
+        <translation>Afficher le &amp;titre</translation>
     </message>
     <message>
         <source>Scale &amp;Fonts</source>
@@ -5282,7 +5288,7 @@ Les codes spéciaux suivant peuvent être utilisés :
     </message>
     <message>
         <source>Background</source>
-        <translation>Arrière Plan</translation>
+        <translation>Arrière plan</translation>
     </message>
     <message>
         <source>Text</source>
@@ -5426,7 +5432,7 @@ Les codes spéciaux suivant peuvent être utilisés :
     </message>
     <message>
         <source>Paste Parameters to Plot</source>
-        <translation>Copier les paramètres sur le graphe</translation>
+        <translation>Coller les paramètres sur le graphe</translation>
     </message>
     <message>
         <source>Peaks Color</source>
@@ -5963,7 +5969,7 @@ Les codes spéciaux suivant peuvent être utilisés :
     </message>
     <message>
         <source>LibreOffice</source>
-        <translation type="unfinished"></translation>
+        <translation>LibreOffice</translation>
     </message>
 </context>
 <context>
@@ -6981,7 +6987,7 @@ Les codes spéciaux suivant peuvent être utilisés :
     </message>
     <message>
         <source>LibreOffice</source>
-        <translation type="unfinished"></translation>
+        <translation>LibreOffice</translation>
     </message>
 </context>
 <context>
@@ -7086,7 +7092,7 @@ Les codes spéciaux suivant peuvent être utilisés :
     <name>ExportDialog</name>
     <message>
         <source>QtiPlot - Export ASCII</source>
-        <translation>Qtiplot - Exporter en  ASCII</translation>
+        <translation>Qtiplot - Exportation ASCII</translation>
     </message>
     <message>
         <source>Table</source>
@@ -10124,7 +10130,7 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>QtiPlot - ASCII Export Error</source>
-        <translation>QtiPlot - Erreur d&apos;export ASCII Export</translation>
+        <translation>QtiPlot - Erreur d&apos;export ASCII</translation>
     </message>
     <message>
         <source>Could not write to file: &lt;br&gt;&lt;h4&gt;%1&lt;/h4&gt;&lt;p&gt;Please verify that you have the right to write to this location!</source>
@@ -13144,7 +13150,7 @@ Calcule le sinus de x.</translation>
     </message>
     <message>
         <source>Normal at %1 level</source>
-        <translation>Normal à 1%</translation>
+        <translation>Normale à 1%</translation>
     </message>
     <message>
         <source>Sample</source>
@@ -13164,11 +13170,11 @@ Calcule le sinus de x.</translation>
     </message>
     <message>
         <source>Two Sample Independent t-Test</source>
-        <translation>Deux échantillons t-Test indépendants...</translation>
+        <translation>Test de Student à deux échantillons indépendants</translation>
     </message>
     <message>
         <source>Two Sample Paired t-Test</source>
-        <translation>Deux échantillons t-Test appairés</translation>
+        <translation>Test de Student à deux échantillons appariés</translation>
     </message>
     <message>
         <source>One Sample t-Test</source>
@@ -14224,7 +14230,7 @@ Calcule le sinus de x.</translation>
     <name>StudentTestDialog</name>
     <message>
         <source>Two sample t-Test</source>
-        <translation>Deux échantillons t-Test</translation>
+        <translation>Test de Student à deux échantillons</translation>
     </message>
     <message>
         <source>In&amp;dependent Test</source>
@@ -14232,15 +14238,15 @@ Calcule le sinus de x.</translation>
     </message>
     <message>
         <source>Pai&amp;red Test</source>
-        <translation>Test appai&amp;rés</translation>
+        <translation>Test appa&amp;riés</translation>
     </message>
     <message>
         <source>One sample t-Test</source>
-        <translation>Un échantillon t-test</translation>
+        <translation>Test de Student à un échantillon</translation>
     </message>
     <message>
         <source>Sample</source>
-        <translation>Échantillon </translation>
+        <translation>Échantillon</translation>
     </message>
     <message>
         <source>Mean</source>
@@ -14284,7 +14290,7 @@ Calcule le sinus de x.</translation>
     </message>
     <message>
         <source>Sample &amp;Size</source>
-        <translation>Taille de l&apos;échantillon</translation>
+        <translation>&amp;Taille de l&apos;échantillon</translation>
     </message>
     <message>
         <source>&amp;Compute</source>
@@ -14646,7 +14652,7 @@ Calcule le sinus de x.</translation>
     </message>
     <message>
         <source>QtiPlot - ASCII Export Error</source>
-        <translation>Qtiplot - Erreur lors de l&apos;exportation en ASCII</translation>
+        <translation>QtiPlot - Erreur d&apos;export ASCII</translation>
     </message>
     <message>
         <source>QtiPlot</source>
