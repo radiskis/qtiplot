@@ -55,7 +55,9 @@
 	#include <EmfEngine.h>
 #endif
 
-#include <QTeXEngine.h>
+#ifdef TEX_OUTPUT
+	#include <QTeXEngine.h>
+#endif
 
 #include <qwt_plot.h>
 #include <qwt_plot_canvas.h>

@@ -35,7 +35,9 @@
 #include <ApplicationWindow.h>
 #include <PenStyleBox.h>
 
-#include <QTeXEngine.h>
+#ifdef TEX_OUTPUT
+	#include <QTeXEngine.h>
+#endif
 
 #include <QPainter>
 #include <QPaintEngine>

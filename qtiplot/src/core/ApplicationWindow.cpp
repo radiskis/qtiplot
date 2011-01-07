@@ -213,9 +213,7 @@ using namespace std;
 	#include "MatrixResamplingDialog.h"
 #endif
 
-#ifdef HAVE_TAMUANOVA
-	#include "AnovaDialog.h"
-#endif
+#include "AnovaDialog.h"
 
 using namespace Qwt3D;
 
