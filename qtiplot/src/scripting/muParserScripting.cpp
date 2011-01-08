@@ -59,6 +59,7 @@ const muParserScripting::mathFunction muParserScripting::math_functions[] = {
   { "chi2inv", 2, NULL,chi2inv,NULL, QObject::tr("chi2inv(p, df):\n Computes the inverse of the cumulative distribution function for a chi-squared distribution with df degrees of freedom.") },
   { "cos", 1, NULL,NULL,NULL, QObject::tr("cos(x):\n Calculate cosine.") },
   { "cosh", 1, NULL,NULL,NULL, QObject::tr("cosh(x):\n Hyperbolic cos function.") },
+  { "dilog", 1, dilog, NULL,NULL, QObject::tr("dilog(x):\n Compute the dilogarithm for a real argument. In Lewin's notation this is Li_2(x), the real part of the dilogarithm of a real x.") },
   { "erf", 1, erf, NULL,NULL, QObject::tr("erf(x):\n  The error function.") },
   { "erfc", 1, erfc, NULL,NULL, QObject::tr("erfc(x):\n Complementary error function erfc(x) = 1 - erf(x).") },
   { "erfz", 1, erf_Z, NULL,NULL, QObject::tr("erfz(x):\n The Gaussian probability density function Z(x).") },
