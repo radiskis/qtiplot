@@ -103,66 +103,36 @@ class muParserScripting: public ScriptingEnv
 		return u;
 	}
 
-    static double mod(double x, double y)
-      { return fmod(x,y); }
-    static double bessel_J0(double x)
-      { return gsl_sf_bessel_J0 (x); }
-    static double bessel_J1(double x)
-      { return gsl_sf_bessel_J1 (x); }
-    static double bessel_Jn(double x, double n)
-      { return gsl_sf_bessel_Jn ((int)n, x); }
-    static double bessel_Yn(double x, double n)
-      { return gsl_sf_bessel_Yn ((int)n, x); }
-    static double bessel_Jn_zero(double n, double s)
-      { return gsl_sf_bessel_zero_Jnu(n, (unsigned int) s); }
-    static double bessel_Y0(double x)
-      { return gsl_sf_bessel_Y0 (x); }
-    static double bessel_Y1(double x)
-      { return gsl_sf_bessel_Y1 (x); }
-    static double beta(double a, double b)
-      { return gsl_sf_beta (a,b); }
-    static double erf(double x)
-      { return gsl_sf_erf (x); }
-    static double erfc(double x)
-      { return gsl_sf_erfc (x); }
-    static double erf_Z(double x)
-      { return gsl_sf_erf_Z (x); }
-    static double erf_Q(double x)
-      { return gsl_sf_erf_Q (x); }
-    static double gamma(double x)
-      { return gsl_sf_gamma (x); }
-    static double lngamma(double x)
-      { return gsl_sf_lngamma (x); }
-    static double hazard(double x)
-      { return gsl_sf_hazard (x); }
-	static double lambert_W0(double x)
-	   { return gsl_sf_lambert_W0(x); }
-	static double lambert_Wm1(double x)
-	   { return gsl_sf_lambert_Wm1(x); }
-	static double invt(double x, double n)
-	   { return gsl_cdf_tdist_P(x, n);}
-	static double ttable(double x, double n)
-	   { return gsl_cdf_tdist_Pinv(x, n); }
-	static double ftable(double x, double m, double n)
-		{return gsl_cdf_fdist_Pinv(x, m, n);};
-	static double invf(double x, double m, double n)
-		{return gsl_cdf_fdist_P(x, m, n);};
-	static double gauss_pdf(double x, double sigma )
-		{return gsl_ran_gaussian_pdf (x, sigma);};
-	static double gauss_cdf(double x, double sigma )
-		{return gsl_cdf_gaussian_P (x, sigma);};
-	static double inv_gauss_cdf(double x, double sigma)
-		{return gsl_cdf_gaussian_Pinv(x, sigma);};
-
-	static double normcdf(double x)
-		{return gsl_cdf_ugaussian_P(x);};
-	static double norminv(double x)
-		{return gsl_cdf_ugaussian_Pinv(x);};
-
-	static double chi2cdf(double x, double n)
-		{return gsl_cdf_chisq_P (x, n);};
-	static double chi2inv(double x, double n)
-		{return gsl_cdf_chisq_Pinv(x, n);};
+	static double mod(double x, double y){ return fmod(x,y);};
+	static double bessel_J0(double x){ return gsl_sf_bessel_J0 (x);};
+	static double bessel_J1(double x){ return gsl_sf_bessel_J1 (x);};
+	static double bessel_Jn(double x, double n){ return gsl_sf_bessel_Jn ((int)n, x);};
+	static double bessel_Yn(double x, double n){ return gsl_sf_bessel_Yn ((int)n, x);};
+	static double bessel_Jn_zero(double n, double s){ return gsl_sf_bessel_zero_Jnu(n, (unsigned int) s);};
+	static double bessel_Y0(double x){ return gsl_sf_bessel_Y0 (x);};
+	static double bessel_Y1(double x){ return gsl_sf_bessel_Y1 (x);};
+	static double beta(double a, double b){ return gsl_sf_beta (a,b);};
+	static double erf(double x){ return gsl_sf_erf (x);};
+	static double erfc(double x){ return gsl_sf_erfc (x);};
+	static double erf_Z(double x){ return gsl_sf_erf_Z (x);};
+	static double erf_Q(double x){ return gsl_sf_erf_Q (x);};
+	static double gamma(double x){ return gsl_sf_gamma (x);};
+	static double lngamma(double x){ return gsl_sf_lngamma (x);};
+	static double hazard(double x){ return gsl_sf_hazard (x);};
+	static double lambert_W0(double x){ return gsl_sf_lambert_W0(x);};
+	static double lambert_Wm1(double x){ return gsl_sf_lambert_Wm1(x);};
+	static double invt(double x, double n){ return gsl_cdf_tdist_P(x, n);};
+	static double ttable(double x, double n){ return gsl_cdf_tdist_Pinv(x, n);};
+	static double ftable(double x, double m, double n){return gsl_cdf_fdist_Pinv(x, m, n);};
+	static double invf(double x, double m, double n){return gsl_cdf_fdist_P(x, m, n);};
+	static double gauss_pdf(double x, double sigma){return gsl_ran_gaussian_pdf (x, sigma);};
+	static double gauss_cdf(double x, double sigma){return gsl_cdf_gaussian_P (x, sigma);};
+	static double inv_gauss_cdf(double x, double sigma){return gsl_cdf_gaussian_Pinv(x, sigma);};
+	static double normcdf(double x){return gsl_cdf_ugaussian_P(x);};
+	static double norminv(double x){return gsl_cdf_ugaussian_Pinv(x);};
+	static double chi2cdf(double x, double n){return gsl_cdf_chisq_P (x, n);};
+	static double chi2inv(double x, double n){return gsl_cdf_chisq_Pinv(x, n);};
+	static double dilog(double x){return gsl_sf_dilog(x);};
 };
 
 class EmptySourceError : public mu::ParserError
