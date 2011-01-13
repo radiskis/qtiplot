@@ -662,7 +662,7 @@ void Graph3D::addData(Table* table, int xCol, int yCol, int zCol, int type)
 }
 
 void Graph3D::loadData(Table* table, int xCol, int yCol, int zCol,
-		double xl, double xr, double yl, double yr, double zl, double zr, int axis)
+		double xl, double xr, double yl, double yr, double zl, double zr, int /*axis*/)
 {
 	if (!table || xCol < 0 || yCol < 0 || zCol < 0)
 		return;
@@ -717,14 +717,7 @@ void Graph3D::loadData(Table* table, int xCol, int yCol, int zCol,
 
 	if (check_limits){
 		sp->coordinates()->setPosition(Triple(xl, yl, zl), Triple(xr, yr, zr));
-
-		if (d_const_func){
-			d_const_func->setDomain(xl, xr, yl, yr);
-			d_const_func->setMinZ(zl);
-			d_const_func->setMaxZ(zr);
-			d_const_func->create();
-		} else
-			addHiddenConstantCurve(xl, xr, yl, yr, zl, zr);
+		changeScales(xl, xr, yl, yr, zl, zr);
 	}
 
 	double start, end;
@@ -995,7 +988,7 @@ void Graph3D::setZAxisLabelFont(const QStringList& lst)
 QStringList Graph3D::axisTickLengths()
 {
 	QStringList lst;
-	double majorl,minorl;
+	double majorl, minorl;
 
 	sp->coordinates()->axes[X1].ticLength (majorl,minorl);
 	lst<<QString::number(majorl);
@@ -1050,7 +1043,7 @@ void Graph3D::setXAxisTickLength(double majorLength, double minorLength)
 		sp->coordinates()->axes[X2].setTicLength (majorLength,minorLength);
 		sp->coordinates()->axes[X3].setTicLength (majorLength,minorLength);
 		sp->coordinates()->axes[X4].setTicLength (majorLength,minorLength);
-		}
+	}
 }
 
 void Graph3D::setYAxisTickLength(double majorLength, double minorLength)
@@ -1470,10 +1463,7 @@ void Graph3D::setScales(double xl, double xr, double yl, double yr, double zl, d
 {
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
-	double *majorTicLengths = new double[12];
-	double *minorTicLengths = new double[12];
-	for (int i = 0; i < 12; i++)
-			sp->coordinates()->axes[i].ticLength(majorTicLengths[i], minorTicLengths[i]);
+	QStringList tickLengths = axisTickLengths();
 
 	if (d_matrix)
 		updateScalesFromMatrix(xl, xr, yl, yr, zl, zr);
@@ -1502,71 +1492,13 @@ void Graph3D::setScales(double xl, double xr, double yl, double yr, double zl, d
 	if (d_autoscale)
 		findBestLayout();
 
-	for (int i = 0; i < 12; i++)
-		sp->coordinates()->axes[i].setTicLength(majorTicLengths[i], minorTicLengths[i]);
-
-	delete [] majorTicLengths;
-	delete [] minorTicLengths;
+	setTickLengths(tickLengths);//restore tick lengths
 
 	QApplication::restoreOverrideCursor();
 }
 
-void Graph3D::updateScalesFromMatrix(double xl, double xr, double yl, double yr, double zl, double zr)
+void Graph3D::changeScales(double xl, double xr, double yl, double yr, double zl, double zr)
 {
-	double zmin = qMin(zl, zr);
-	double zmax = qMax(zl, zr);
-
-	double xStart = qMin(d_matrix->xStart(), d_matrix->xEnd());
-	double xEnd = qMax(d_matrix->xStart(), d_matrix->xEnd());
-	double yStart = qMin(d_matrix->yStart(), d_matrix->yEnd());
-	double yEnd = qMax(d_matrix->yStart(), d_matrix->yEnd());
-	double dx = d_matrix->dx();
-	double dy = d_matrix->dy();
-	double x_begin = qMin(xl, xr);
-	double y_begin = qMin(yl, yr);
-
-	int nc = qRound(fabs(xr - xl)/dx) + 1;// new number of columns
-	int nr = qRound(fabs(yr - yl)/dy) + 1;// new number of rows
-	double **data_matrix = Matrix::allocateMatrixData(nc, nr);
-	for (int i = 0; i < nc; i++){
-		double x = x_begin + i*dx;
-		if (x < xStart || x > xEnd){
-			for (int j = 0; j < nr; j++)
-				data_matrix[i][j] = zmin;
-			continue;
-		}
-
-		double dli, dlf;
-		dlf = modf(fabs((x - xStart)/dx), &dli);
-		int l = qRound(dli); if (dlf > 0.5) l++;
-		for (int j = 0; j < nr; j++){
-			double y = y_begin + j*dy;
-			if (y < yStart || y > yEnd){
-				data_matrix[i][j] = zmin;
-				continue;
-			}
-
-			double dki, dkf;
-			dkf = modf(fabs((y - yStart)/dy), &dki);
-			int k = qRound(dki); if (dkf > 0.5) k++;
-			double val = d_matrix->cell(k, l);
-			if (val > zmax)
-				data_matrix[i][j] = zmax;
-			else if (val < zmin)
-				data_matrix[i][j] = zmin;
-			else
-				data_matrix[i][j] = val;
-		}
-	}
-	if (!d_active_curve)
-		d_active_curve = addCurve();
-	d_active_curve->loadFromData(data_matrix, nc, nr, xl, xr, yl, yr);
-	Matrix::freeMatrixData(data_matrix, nc);
-
-	sp->coordinates()->setPosition(Triple(xl, yl, zmin), Triple(xr, yr, zmax));
-	d_active_curve->legend()->setLimits(zmin, zmax);
-	d_active_curve->legend()->setMajors(legendMajorTicks);
-
 	if (d_const_func){
 		d_const_func->setDomain(xl, xr, yl, yr);
 		d_const_func->setMinZ(zl);
@@ -1574,7 +1506,87 @@ void Graph3D::updateScalesFromMatrix(double xl, double xr, double yl, double yr,
 		d_const_func->create();
 	} else
 		addHiddenConstantCurve(xl, xr, yl, yr, zl, zr);
+}
 
+void Graph3D::updateScalesFromMatrix(double xl, double xr, double yl, double yr, double zl, double zr)
+{
+	double xmin = qMin(xl, xr);
+	double xmax = qMax(xl, xr);
+	double ymin = qMin(yl, yr);
+	double ymax = qMax(yl, yr);
+	double zmin = qMin(zl, zr);
+	double zmax = qMax(zl, zr);
+
+	double xStart = qMin(d_matrix->xStart(), d_matrix->xEnd());
+	double xEnd = qMax(d_matrix->xStart(), d_matrix->xEnd());
+	double yStart = qMin(d_matrix->yStart(), d_matrix->yEnd());
+	double yEnd = qMax(d_matrix->yStart(), d_matrix->yEnd());
+	double zStart = 0.0, zEnd = 0.0;
+	d_matrix->range(&zStart, &zEnd);
+
+	sp->coordinates()->setPosition(Triple(xl, yl, zmin), Triple(xr, yr, zmax));
+
+	if (xmin > xEnd || xmax < xStart || ymin > yEnd || ymax < yStart || zmin > zEnd || zmax < zStart){
+		if (d_active_curve)
+			delete d_active_curve;
+		d_active_curve = 0;
+
+		changeScales(xl, xr, yl, yr, zl, zr);
+		update();
+		return;
+	}
+
+	if (!d_active_curve)
+		d_active_curve = addCurve();
+
+	int cols = d_matrix->numCols();
+	int rows = d_matrix->numRows();
+	double **data = 0;
+	if (xmin <= xStart && xmax >= xEnd && ymin <= yStart && ymax >= yEnd){
+		data = Matrix::allocateMatrixData(cols, rows);
+		for (int i = 0; i < cols; i++ ){
+			for (int j = 0; j < rows; j++)
+				data[i][j] = d_matrix->cell(j, i);
+		}
+		d_active_curve->loadFromData(data, cols, rows, d_matrix->xStart(), d_matrix->xEnd(), d_matrix->yStart(), d_matrix->yEnd());
+	} else {
+		double x_begin = qMax(xmin, xStart);
+		double y_begin = qMax(ymin, yStart);
+		double x_end = qMin(xmax, xEnd);
+		double y_end = qMin(ymax, yEnd);
+
+		double dx = d_matrix->dx();
+		double dy = d_matrix->dy();
+
+		cols = qRound(fabs(x_end - x_begin)/dx) + 1;
+		rows = qRound(fabs(y_end - y_begin)/dy) + 1;
+		data = Matrix::allocateMatrixData(cols, rows);
+		for (int i = 0; i < cols; i++){
+			double x = x_begin + i*dx;
+			double dli, dlf;
+			dlf = modf(fabs((x - xStart)/dx), &dli);
+			int l = qRound(dli); if (dlf > 0.5) l++;
+			for (int j = 0; j < rows; j++){
+				double y = y_begin + j*dy;
+				if (y < yStart || y > yEnd){
+					data[i][j] = zmin;
+					continue;
+				}
+
+				double dki, dkf;
+				dkf = modf(fabs((y - yStart)/dy), &dki);
+				int k = qRound(dki); if (dkf > 0.5) k++;
+				data[i][j] = d_matrix->cell(k, l);
+			}
+		}
+		d_active_curve->loadFromData(data, cols, rows, x_begin, x_end, y_begin, y_end);
+	}
+	Matrix::freeMatrixData(data, cols);
+
+	d_active_curve->legend()->setLimits(zmin, zmax);
+	d_active_curve->legend()->setMajors(legendMajorTicks);
+
+	changeScales(xl, xr, yl, yr, zl, zr);
 	update();
 }
 

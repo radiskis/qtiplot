@@ -109,7 +109,7 @@ private:
 	QGroupBox *linearColorMapGroupBox, *colorMapFileGroupBox;
 	QLabel *colorMapPreviewLabel;
 	QFont titleFont, xAxisFont,yAxisFont,zAxisFont, numbersFont;
-	QStringList labels, tickLengths;
+	QStringList labels;
     QDoubleSpinBox *boxMeshLineWidth;
     QPushButton* buttonApply;
     QPushButton* buttonOk;
