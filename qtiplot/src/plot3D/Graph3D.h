@@ -394,6 +394,8 @@ signals:
 
 private:
 	void addHiddenConstantCurve(double xl, double xr, double yl, double yr, double zl, double zr);
+	void changeScales(double xl, double xr, double yl, double yr, double zl, double zr);
+
 	Curve* addCurve();
 	void removeCurve();
 

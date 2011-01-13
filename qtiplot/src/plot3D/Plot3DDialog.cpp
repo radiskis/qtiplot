@@ -697,7 +697,7 @@ void Plot3DDialog::setPlot(Graph3D *g)
 	labels = g->axesLabels();
 	boxLabel->setText(labels[0]);
 
-	tickLengths = g->axisTickLengths();
+	QStringList tickLengths = g->axisTickLengths();
 	boxMajorLength->setValue(tickLengths[0].toDouble());
 	boxMinorLength->setValue(tickLengths[1].toDouble());
 
@@ -952,6 +952,8 @@ void Plot3DDialog::pickNumbersFont()
 void Plot3DDialog::viewAxisOptions(int axis)
 {
 	boxLabel->setText(labels[axis]);
+
+	QStringList tickLengths = d_plot->axisTickLengths();
 
 	boxMajorLength->blockSignals(true);
 	boxMajorLength->setValue(tickLengths[2*axis+0].toDouble());
