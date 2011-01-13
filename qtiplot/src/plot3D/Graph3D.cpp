@@ -1558,8 +1558,8 @@ void Graph3D::updateScalesFromMatrix(double xl, double xr, double yl, double yr,
 		double dx = d_matrix->dx();
 		double dy = d_matrix->dy();
 
-		cols = qRound(fabs(x_end - x_begin)/dx) + 1;
-		rows = qRound(fabs(y_end - y_begin)/dy) + 1;
+		cols = qRound(fabs(x_end - x_begin)/dx);
+		rows = qRound(fabs(y_end - y_begin)/dy);
 		data = Matrix::allocateMatrixData(cols, rows);
 		for (int i = 0; i < cols; i++){
 			double x = x_begin + i*dx;
