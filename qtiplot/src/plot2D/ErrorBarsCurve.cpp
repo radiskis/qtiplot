@@ -94,14 +94,14 @@ void ErrorBarsCurve::draw(QPainter *painter,
 void ErrorBarsCurve::drawErrorBars(QPainter *painter,
 		const QwtScaleMap &xMap, const QwtScaleMap &yMap, int from, int to) const
 {
-    int sh2 = 0, sw2 = 0;
-    double x_factor = (double)painter->device()->logicalDpiX()/(double)plot()->logicalDpiX();
-    double y_factor = (double)painter->device()->logicalDpiY()/(double)plot()->logicalDpiY();
-    const QwtSymbol symbol = d_master_curve->symbol();
-    if (symbol.style() != QwtSymbol::NoSymbol){
-        sh2 = int(0.5*y_factor*symbol.size().height());
-        sw2 = int(0.5*x_factor*symbol.size().width());
-    }
+	int sh2 = 0, sw2 = 0;
+	double x_factor = (double)painter->device()->logicalDpiX()/(double)plot()->logicalDpiX();
+	double y_factor = (double)painter->device()->logicalDpiY()/(double)plot()->logicalDpiY();
+	const QwtSymbol symbol = d_master_curve->symbol();
+	if (symbol.style() != QwtSymbol::NoSymbol){
+		sh2 = int(0.5*y_factor*symbol.size().height());
+		sw2 = int(0.5*x_factor*symbol.size().width());
+	}
 
 	double d_xOffset = 0.0;
 	double d_yOffset = 0.0;
@@ -120,47 +120,56 @@ void ErrorBarsCurve::drawErrorBars(QPainter *painter,
 		skipPoints = 1;
 
 	for (int i = from; i <= to; i += skipPoints){
-		const int xi = xMap.transform(x(i) + d_xOffset);
-		const int yi = yMap.transform(y(i) + d_yOffset);
+		const double xval = x(i);
+		const double yval = y(i);
+
+		const double xi = xMap.xTransform(xval + d_xOffset);
+		const double yi = yMap.xTransform(yval + d_yOffset);
 
 		double error = err[i];
 		if (error == 0.0)
 			continue;
 
 		if (type == Vertical){
-			const int yh = yMap.transform(y(i) + error);
-			const int yl = yMap.transform(y(i) - error);
-			const int yhl = yi - sh2;
-			const int ylh = yi + sh2;
+			if (d_master_curve->type() != Graph::VerticalBars && yval < 0)
+				error *= -1.0;
+
+			const double yh = yMap.xTransform(yval + error);
+			const double yl = yMap.xTransform(yval - error);
+			const double yhl = yi - sh2;
+			const double ylh = yi + sh2;
 			const int cap2 = qRound(d_cap_length*0.5*x_factor);
 
 			if (plus){
-				QwtPainter::drawLine(painter, xi, yhl, xi, yh);
-				QwtPainter::drawLine(painter, xi - cap2, yh, xi + cap2, yh);
+				painter->drawLine(QLineF(xi, yhl, xi, yh));
+				painter->drawLine(QLineF(xi - cap2, yh, xi + cap2, yh));
 			}
 			if (minus && (!logYScale || (logYScale && yl > 0))){
-				QwtPainter::drawLine(painter, xi, ylh, xi, yl);
-				QwtPainter::drawLine(painter, xi - cap2, yl, xi + cap2, yl);
+				painter->drawLine(QLineF(xi, ylh, xi, yl));
+				painter->drawLine(QLineF(xi - cap2, yl, xi + cap2, yl));
 			}
 			if (through && (plus || minus))
-				QwtPainter::drawLine(painter, xi, yhl, xi, ylh);
-		} else if (type == Horizontal) {
-			const int xp = xMap.transform(x(i) + error);
-			const int xm = xMap.transform(x(i) - error);
-  			const int xpm = xi + sw2;
-  	        const int xmp = xi - sw2;
+				painter->drawLine(QLineF(xi, yhl, xi, ylh));
+		} else if (type == Horizontal){
+			if (d_master_curve->type() != Graph::HorizontalBars && xval < 0)
+				error *= -1.0;
+
+			const double xp = xMap.xTransform(xval + error);
+			const double xm = xMap.xTransform(xval - error);
+			const double xpm = xi + sw2;
+			const double xmp = xi - sw2;
 			const int cap2 = qRound(d_cap_length*0.5*y_factor);
 
 			if (plus){
-				QwtPainter::drawLine(painter, xp, yi, xpm, yi);
-				QwtPainter::drawLine(painter, xp, yi - cap2, xp, yi + cap2);
+				painter->drawLine(QLineF(xp, yi, xpm, yi));
+				painter->drawLine(QLineF(xp, yi - cap2, xp, yi + cap2));
 			}
 			if (minus){
-				QwtPainter::drawLine(painter, xm, yi, xmp, yi);
-				QwtPainter::drawLine(painter, xm, yi - cap2, xm, yi + cap2);
+				painter->drawLine(QLineF(xm, yi, xmp, yi));
+				painter->drawLine(QLineF(xm, yi - cap2, xm, yi + cap2));
 			}
 			if (through && (plus || minus))
-				QwtPainter::drawLine(painter, xmp, yi, xpm, yi);
+				painter->drawLine(QLineF(xmp, yi, xpm, yi));
 		}
 	}
 }

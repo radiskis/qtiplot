@@ -3275,13 +3275,16 @@ bool PlotDialog::acceptParams()
 		FrameWidget::setRect(d_ml, boxPlotX->value(), boxPlotY->value(), boxPlotWidth->value(),
 		boxPlotHeight->value(), (FrameWidget::Unit)plotUnitBox->currentIndex());
 		d_ml->setScaleLayersOnResize(!boxResizeLayers->isChecked());
+		d_ml->notifyChanges();
 		return true;
 	} else if (privateTabWidget->currentWidget() == fontsPage){
 		d_ml->setFonts(titleFont, axesFont, numbersFont, legendFont);
+		d_ml->notifyChanges();
 		return true;
     } else if (privateTabWidget->currentWidget() == printPage){
 		d_ml->setScaleLayersOnPrint(boxScaleLayers->isChecked());
 		d_ml->printCropmarks(boxPrintCrops->isChecked());
+		d_ml->notifyChanges();
 		return true;
 	} else if (privateTabWidget->currentWidget() == miscPage){
 		d_ml->linkXLayerAxes(boxLinkXAxes->isChecked());
@@ -3945,8 +3948,8 @@ void PlotDialog::displayPlotCoordinates(int unit)
 
 	plot_aspect_ratio = (double)d_ml->width()/(double)d_ml->height();
 
-	boxPlotX->setValue(FrameWidget::xIn(d_ml, (FrameWidget::Unit)unit) + FrameWidget::xIn(d_ml, (FrameWidget::Unit)unit));
-	boxPlotY->setValue(FrameWidget::yIn(d_ml, (FrameWidget::Unit)unit) + FrameWidget::yIn(d_ml, (FrameWidget::Unit)unit));
+	boxPlotX->setValue(FrameWidget::xIn(d_ml, (FrameWidget::Unit)unit));
+	boxPlotY->setValue(FrameWidget::yIn(d_ml, (FrameWidget::Unit)unit));
 	boxPlotWidth->setValue(FrameWidget::widthIn(d_ml, (FrameWidget::Unit)unit));
 	boxPlotHeight->setValue(FrameWidget::heightIn(d_ml, (FrameWidget::Unit)unit));
 }

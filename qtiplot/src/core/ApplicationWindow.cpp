@@ -4217,15 +4217,17 @@ void ApplicationWindow::setGraphDefaultSettings(bool autoscale, bool scaleFonts,
 
 	QList<MdiSubWindow *> windows = windowsList();
 	foreach(MdiSubWindow *w, windows){
-		if (w->isA("MultiLayer")){
-			((MultiLayer*)w)->setScaleLayersOnResize(autoResizeLayers);
-			QList<Graph *> layers = ((MultiLayer*)w)->layersList();
-			foreach(Graph *g, layers){
-				g->enableAutoscaling(autoscale2DPlots);
-				g->updateScale();
-				g->setAutoscaleFonts(autoScaleFonts);
-				g->setAntialiasing(antialiasing2DPlots);
-			}
+		MultiLayer *ml = qobject_cast<MultiLayer*>(w);
+		if (!ml)
+			continue;
+
+		ml->setScaleLayersOnResize(autoResizeLayers);
+		QList<Graph *> layers = ml->layersList();
+		foreach(Graph *g, layers){
+			g->enableAutoscaling(autoscale2DPlots);
+			g->updateScale();
+			g->setAutoscaleFonts(autoScaleFonts);
+			g->setAntialiasing(antialiasing2DPlots);
 		}
 	}
 }
@@ -5069,7 +5071,6 @@ ApplicationWindow* ApplicationWindow::openProject(const QString& fn, bool factor
 			QString caption = graph[0];
 
 			plot = app->multilayerPlot(caption, 0,  graph[2].toInt(), graph[1].toInt());
-
 			app->setListViewDate(caption, graph[3]);
 			plot->setBirthDate(graph[3]);
 
@@ -5124,6 +5125,8 @@ ApplicationWindow* ApplicationWindow::openProject(const QString& fn, bool factor
 					plot->setAlignPolicy((MultiLayer::AlignPolicy)s.trimmed().remove("<AlignPolicy>").remove("</AlignPolicy>").toInt());
 				else if (s.contains("<CommonAxes>"))
 					plot->setCommonAxesLayout(s.trimmed().remove("<CommonAxes>").remove("</CommonAxes>").toInt());
+				else if (s.contains("<ScaleLayers>"))
+					plot->setScaleLayersOnResize(s.trimmed().remove("<ScaleLayers>").remove("</ScaleLayers>").toInt());
 			}
 			plot->blockSignals(false);
 			progress.setValue(aux);
@@ -5169,12 +5172,12 @@ ApplicationWindow* ApplicationWindow::openProject(const QString& fn, bool factor
 	app->blockSignals (false);
 	app->renamedTables.clear();
 
-	app->restoreApplicationGeometry();
 	app->executeNotes();
 	app->savedProject();
 	app->d_opening_file = false;
 	app->d_workspace->blockSignals(false);
 	app->addWindowsListToCompleter();
+	app->restoreApplicationGeometry();
 	return app;
 }
 
@@ -5357,6 +5360,10 @@ MdiSubWindow* ApplicationWindow::openTemplate(const QString& fn)
 						ml->linkXLayerAxes(s.trimmed().remove("<LinkXAxes>").remove("</LinkXAxes>").toInt());
 					else if (s.contains("<AlignPolicy>"))
 						ml->setAlignPolicy((MultiLayer::AlignPolicy)s.trimmed().remove("<AlignPolicy>").remove("</AlignPolicy>").toInt());
+					else if (s.contains("<CommonAxes>"))
+						ml->setCommonAxesLayout(s.trimmed().remove("<CommonAxes>").remove("</CommonAxes>").toInt());
+					else if (s.contains("<ScaleLayers>"))
+						ml->setScaleLayersOnResize(s.trimmed().remove("<ScaleLayers>").remove("</ScaleLayers>").toInt());
 				}
 			}
 		} else {

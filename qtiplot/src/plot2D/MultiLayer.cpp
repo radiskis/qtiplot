@@ -359,7 +359,8 @@ QRect MultiLayer::canvasChildrenRect()
 void MultiLayer::resizeLayers (QResizeEvent *re)
 {
 	if (!d_scale_layers || applicationWindow()->d_opening_file || graphsList.isEmpty()){
-		emit modifiedPlot();
+		if (!applicationWindow()->d_opening_file)
+			emit modifiedPlot();
 		return;
 	}
 
@@ -1651,6 +1652,7 @@ void MultiLayer::save(const QString &fn, const QString &geometry, bool saveAsTem
 	}
 
 	t << "<LinkXAxes>" + QString::number(d_link_x_axes) + "</LinkXAxes>\n";
+	t << "<ScaleLayers>" + QString::number(d_scale_layers) + "</ScaleLayers>\n";
 	t << "</multiLayer>\n";
 }
 
