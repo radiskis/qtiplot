@@ -349,6 +349,16 @@ void Graph3D::removeCurve()
 		d_func = 0;
 	}
 
+	if (d_const_curve){
+		delete d_const_curve;
+		d_const_curve = 0;
+	}
+
+	if (d_const_func){
+		delete d_const_func;
+		d_const_func = 0;
+	}
+
 	if (d_active_curve){
 		delete d_active_curve;
 		d_active_curve = 0;
@@ -1556,6 +1566,14 @@ void Graph3D::updateScalesFromMatrix(double xl, double xr, double yl, double yr,
 	sp->coordinates()->setPosition(Triple(xl, yl, zmin), Triple(xr, yr, zmax));
 	d_active_curve->legend()->setLimits(zmin, zmax);
 	d_active_curve->legend()->setMajors(legendMajorTicks);
+
+	if (d_const_func){
+		d_const_func->setDomain(xl, xr, yl, yr);
+		d_const_func->setMinZ(zl);
+		d_const_func->setMaxZ(zr);
+		d_const_func->create();
+	} else
+		addHiddenConstantCurve(xl, xr, yl, yr, zl, zr);
 
 	update();
 }
@@ -3456,10 +3474,6 @@ void Graph3D::dropEvent(QDropEvent* event)
 
 Graph3D::~Graph3D()
 {
-	if (d_surface)
-		delete d_surface;
-	if (d_func)
-		delete d_func;
-
+	removeCurve();
 	delete sp;
 }

@@ -26,11 +26,11 @@ public:
 	void setMinZ(double val); //!< Sets minimal z value.
 	void setMaxZ(double val); //!< Sets maximal z value.
 
-	double xMin(){return range_p.minVertex.x;};
-	double xMax(){return range_p.maxVertex.x;};
+	double xMin(){return minu_p;};
+	double xMax(){return maxu_p;};
 
-	double yMin(){return range_p.minVertex.y;};
-	double yMax(){return range_p.maxVertex.y;};
+	double yMin(){return minv_p;};
+	double yMax(){return maxv_p;};
 
 	double zMin(){return range_p.minVertex.z;};
 	double zMax(){return range_p.maxVertex.z;};
