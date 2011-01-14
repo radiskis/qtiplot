@@ -62,8 +62,13 @@ contains(CONFIG, CustomInstall){
 	DEFINES       += MANUAL_PATH="\\\"$$replace(manual.path," ","\ ")\\\"
 	}
 
-win32:DEFINES += QT_DLL QT_THREAD_SUPPORT
 QT            += opengl qt3support network svg xml
+CONFIG(static){
+	QTPLUGIN += qjpeg qgif qtiff qmng
+	DEFINES += STATIC
+} else {
+	win32:DEFINES += QT_DLL QT_THREAD_SUPPORT
+}
 
 MOC_DIR        = ../tmp/qtiplot
 OBJECTS_DIR    = ../tmp/qtiplot
@@ -241,7 +246,6 @@ contains(SCRIPTING_LANGS, Python) {
 win32: contains(CONFIG, Excel) {
 	CONFIG += qaxcontainer
 	DEFINES += HAS_EXCEL
-	SOURCES += src/core/ExcelImport.cpp
 }
 
 ###############################################################

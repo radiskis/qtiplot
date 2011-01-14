@@ -197,5 +197,8 @@ contains( TARGET, qtiplot ) {
   
   CONFIG          += release
   #CONFIG          += debug
+  
+  # Uncomment the following line if you want to link statically against Qt.
+  #CONFIG           += static
   #win32: CONFIG   += console
 }
