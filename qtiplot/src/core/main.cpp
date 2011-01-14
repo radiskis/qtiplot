@@ -119,8 +119,19 @@ If you want to contribute code, please read the notes on \ref style "coding styl
   - For indentations, tabs are preferred because they allow everyone to choose the indentation depth for him/herself.
 */
 
+#ifdef STATIC
+	#include <QtPlugin>
+#endif
+
 int main( int argc, char ** argv )
 {
+#ifdef STATIC
+	Q_IMPORT_PLUGIN(qgif);
+	Q_IMPORT_PLUGIN(qjpeg);
+	Q_IMPORT_PLUGIN(qmng);
+	Q_IMPORT_PLUGIN(qtiff);
+#endif
+
 	QtiPlotApplication app( argc, argv );
 	app.connect( &app, SIGNAL(lastWindowClosed()), &app, SLOT(quit()) );
 	return app.exec();
