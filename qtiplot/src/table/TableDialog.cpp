@@ -291,7 +291,8 @@ void TableDialog::apply()
 {
 	if (colName->text().contains("_")){
 		QMessageBox::warning(this, tr("QtiPlot - Warning"),
-		tr("For internal consistency reasons the underscore character is replaced with a minus sign."));}
+		tr("For internal consistency reasons the underscore character is replaced with a minus sign."));
+	}
 
 	QString name = colName->text().replace("-", "_");
 
@@ -303,41 +304,40 @@ void TableDialog::apply()
 	bool rightColumns = applyToRightCols->isChecked();
 	int format = formatBox->currentIndex();
 	int colType = displayBox->currentIndex();
-	switch(colType)
-	{
-	case 0:
-		setNumericFormat(formatBox->currentIndex(), precisionBox->value(), rightColumns);
-	break;
+	switch(colType){
+		case 0:
+			setNumericFormat(formatBox->currentIndex(), precisionBox->value(), rightColumns);
+		break;
 
-	case 1:
-		setTextFormat(rightColumns);
-	break;
+		case 1:
+			setTextFormat(rightColumns);
+		break;
 
-	case 2:
-		 setDateTimeFormat(colType, formatBox->currentText(), rightColumns);
-	break;
+		case 2:
+			 setDateTimeFormat(colType, formatBox->currentText(), rightColumns);
+		break;
 
-	case 3:
-		setDateTimeFormat(colType, formatBox->currentText(), rightColumns);
-	break;
+		case 3:
+			setDateTimeFormat(colType, formatBox->currentText(), rightColumns);
+		break;
 
-	case 4:
-		if(format == 0)
-			setMonthFormat("MMM", rightColumns);
-		else if(format == 1)
-			setMonthFormat("MMMM", rightColumns);
-		else if(format == 2)
-			setMonthFormat("M", rightColumns);
-	break;
+		case 4:
+			if(format == 0)
+				setMonthFormat("MMM", rightColumns);
+			else if(format == 1)
+				setMonthFormat("MMMM", rightColumns);
+			else if(format == 2)
+				setMonthFormat("M", rightColumns);
+		break;
 
-	case 5:
-		if(format == 0)
-			setDayFormat("ddd", rightColumns);
-		else if(format == 1)
-			setDayFormat("dddd", rightColumns);
-		else if(format == 2)
-			setDayFormat("d", rightColumns);
-	break;
+		case 5:
+			if(format == 0)
+				setDayFormat("ddd", rightColumns);
+			else if(format == 1)
+				setDayFormat("dddd", rightColumns);
+			else if(format == 2)
+				setDayFormat("d", rightColumns);
+		break;
 	}
 
 	if (rightColumns){
@@ -516,7 +516,6 @@ void TableDialog::setDateTimeFormat(int type, const QString& format, bool allRig
         formatBox->insertItem(0, format);
         formatBox->setCurrentText(format);
     }
-    d_table->notifyChanges();
 }
 
 void TableDialog::setNumericFormat(int type, int prec, bool allRightColumns)
@@ -528,8 +527,6 @@ void TableDialog::setNumericFormat(int type, int prec, bool allRightColumns)
 			d_table->setColNumericFormat(type, prec, i);
 	} else
 		d_table->setColNumericFormat(type, prec, sc);
-
-	d_table->notifyChanges();
 	QApplication::restoreOverrideCursor();
 }
 
@@ -554,7 +551,6 @@ void TableDialog::setDayFormat(const QString& format, bool allRightColumns)
         d_table->setDayFormat(format, sc);
 
 	QApplication::restoreOverrideCursor();
-    d_table->notifyChanges();
 }
 
 void TableDialog::setMonthFormat(const QString& format, bool allRightColumns)
@@ -568,5 +564,4 @@ void TableDialog::setMonthFormat(const QString& format, bool allRightColumns)
         d_table->setMonthFormat(format, sc);
 
 	QApplication::restoreOverrideCursor();
-    d_table->notifyChanges();
 }

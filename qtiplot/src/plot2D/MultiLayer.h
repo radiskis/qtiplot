@@ -309,6 +309,7 @@ protected:
 signals:
 	void showCurvesDialog();
 	void clicked(LayerButton*);
+	void showLayerContextMenu();
 };
 
 #endif
