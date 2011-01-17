@@ -929,6 +929,8 @@ void Table::setColComment(int col, const QString& s)
 
 	if (d_show_comments)
 		setHeaderColType();
+
+	emit modifiedWindow(this);
 }
 
 void Table::setColumnWidth(int width, bool allCols)
@@ -2113,7 +2115,7 @@ void Table::freeMemory()
 
 void Table::setTextFormat(int col)
 {
-	if (col >= 0 && col < colTypes.count())
+	if (col >= 0 && col < colTypes.count() && colTypes[col] != Text)
 		colTypes[col] = Text;
 }
 
@@ -2137,7 +2139,8 @@ void Table::setColNumericFormat(int f, int prec, int col, bool updateCells)
 		columnNumericFormat(col, &old_f, &old_prec);
 		if (old_f == f && old_prec == prec)
 			return;
-	}
+	} else if (!updateCells)
+		emit modifiedData(this, colName(col));
 
 	colTypes[col] = Numeric;
 	col_format[col] = QString::number(f) + "/" + QString::number(prec);
@@ -2216,6 +2219,7 @@ bool Table::setDateFormat(const QString& format, int col, bool updateCells)
 			d_saved_cells[col][i] = dt.date().toJulianDay() - 1 + (double)ref.msecsTo(dt.time())/864.0e5;
 		}
 	}
+	emit modifiedData(this, colName(col));
 	return true;
 }
 
@@ -2258,6 +2262,7 @@ bool Table::setTimeFormat(const QString& format, int col, bool updateCells)
 			d_saved_cells[col][i] = ref.msecsTo(t);
 		}
 	}
+	emit modifiedData(this, colName(col));
 	return true;
 }
 
@@ -2272,7 +2277,7 @@ void Table::setMonthFormat(const QString& format, int col, bool updateCells)
 	if (!updateCells)
         return;
 
-    for (int i=0; i<numRows(); i++){
+	for (int i = 0; i < numRows(); i++){
         QString t = d_table->text(i,col);
         if (!t.isEmpty()){
             int day;
@@ -2291,6 +2296,7 @@ void Table::setMonthFormat(const QString& format, int col, bool updateCells)
                 d_table->setText(i, col, QDate::longMonthName(day));
         }
     }
+	emit modifiedData(this, colName(col));
 }
 
 void Table::setDayFormat(const QString& format, int col, bool updateCells)
@@ -2304,7 +2310,7 @@ void Table::setDayFormat(const QString& format, int col, bool updateCells)
 	if (!updateCells)
         return;
 
-	for (int i=0; i<numRows(); i++){
+	for (int i = 0; i < numRows(); i++){
         QString t = d_table->text(i,col);
         if (!t.isEmpty()){
             int day;
@@ -2323,6 +2329,7 @@ void Table::setDayFormat(const QString& format, int col, bool updateCells)
                 d_table->setText(i, col, QDate::longDayName(day));
         }
     }
+	emit modifiedData(this, colName(col));
 }
 
 void Table::setRandomValues()
@@ -3807,7 +3814,11 @@ void Table::setReadOnlyColumn(int col, bool on)
     if (col < 0 || col >= d_table->numCols())
         return;
 
+	if (d_table->isColumnReadOnly(col) == on)
+		return;
+
 	d_table->setColumnReadOnly(col, on);
+	emit modifiedWindow(this);
 }
 
 void Table::moveColumn(int, int fromIndex, int toIndex)
@@ -3888,10 +3899,12 @@ void Table::moveColumnBy(int cols)
 
 void Table::hideColumn(int col, bool hide)
 {
-	if(hide)
+	if (hide)
 		d_table->hideColumn(col);
 	else
 		d_table->showColumn(col);
+
+	emit modifiedWindow(this);
 }
 
 void Table::hideSelectedColumns()

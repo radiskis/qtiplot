@@ -92,8 +92,11 @@ LayerButton::LayerButton(const QString& text, QWidget* parent)
 
 void LayerButton::mousePressEvent( QMouseEvent *event )
 {
-	if (event->button() == Qt::LeftButton && !isOn())
+	if (!isOn())
 		emit clicked(this);
+
+	if (event->button() == Qt::RightButton && isOn())
+		showLayerContextMenu();
 }
 
 void LayerButton::mouseDoubleClickEvent ( QMouseEvent * )
@@ -214,6 +217,9 @@ LayerButton* MultiLayer::addLayerButton()
 	LayerButton *button = new LayerButton(QString::number(graphsList.size() + 1));
 	connect (button, SIGNAL(clicked(LayerButton*)), this, SLOT(activateGraph(LayerButton*)));
 	connect (button, SIGNAL(showCurvesDialog()), this, SIGNAL(showCurvesDialog()));
+	ApplicationWindow *app = applicationWindow();
+	if (app)
+		connect(button, SIGNAL(showLayerContextMenu()), app, SLOT(showGraphContextMenu()));
 
 	buttonsList.append(button);
     layerButtonsBox->addWidget(button);

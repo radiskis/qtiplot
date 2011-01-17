@@ -5173,11 +5173,11 @@ ApplicationWindow* ApplicationWindow::openProject(const QString& fn, bool factor
 	app->renamedTables.clear();
 
 	app->executeNotes();
-	app->savedProject();
 	app->d_opening_file = false;
 	app->d_workspace->blockSignals(false);
 	app->addWindowsListToCompleter();
 	app->restoreApplicationGeometry();
+	app->savedProject();
 	return app;
 }
 
