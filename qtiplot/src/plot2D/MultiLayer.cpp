@@ -219,7 +219,7 @@ LayerButton* MultiLayer::addLayerButton()
 	connect (button, SIGNAL(showCurvesDialog()), this, SIGNAL(showCurvesDialog()));
 	ApplicationWindow *app = applicationWindow();
 	if (app)
-		connect(button, SIGNAL(showLayerContextMenu()), app, SLOT(showGraphContextMenu()));
+		connect(button, SIGNAL(showLayerContextMenu()), app, SLOT(showWindowContextMenu()));
 
 	buttonsList.append(button);
     layerButtonsBox->addWidget(button);
