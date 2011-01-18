@@ -11063,7 +11063,7 @@ void ApplicationWindow::showWindowContextMenu()
 	QMenu plot3D(this);
 	if (qobject_cast<MultiLayer *>(w)){
 		MultiLayer *g = (MultiLayer*)w;
-		if (!g->frameGeometry().contains(g->mapFromGlobal(QCursor::pos())))
+		if (!g->geometry().contains(d_workspace->mapFromGlobal(QCursor::pos())))
 			return;
 
 		if (lastCopiedLayer){
