@@ -1932,6 +1932,11 @@ void PlotDialog::setMultiLayer(MultiLayer *ml)
     }
 }
 
+void PlotDialog::selectMultiLayerItem()
+{
+	listBox->setCurrentItem(listBox->topLevelItem(0));
+}
+
 void PlotDialog::selectCurve(int index)
 {
 	LayerItem *layerItem = (LayerItem *)listBox->currentItem();

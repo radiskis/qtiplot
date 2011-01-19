@@ -377,7 +377,7 @@ void MultiLayer::resizeLayers (QResizeEvent *re)
 		size.setHeight(oldSize.height());
 
 	bool invalidOldSize = !oldSize.isValid();
-	if(invalidOldSize){// The old size is invalid when maximizing a window (why?)
+	if (invalidOldSize){// The old size is invalid when maximizing a window (why?)
 		if (d_canvas_size.isValid())
 			oldSize = d_canvas_size;
 		else {
@@ -388,6 +388,22 @@ void MultiLayer::resizeLayers (QResizeEvent *re)
 
 	double w_ratio = (double)size.width()/(double)oldSize.width();
 	double h_ratio = (double)(size.height())/(double)(oldSize.height());
+
+	if (isWaterfallPlot()){
+		foreach (Graph *g, graphsList){
+			int gx = qRound(g->x()*w_ratio);
+			int gy = qRound(g->y()*h_ratio);
+			int gw = qRound(g->width()*w_ratio);
+			int gh = qRound(g->height()*h_ratio);
+			g->setGeometry(gx, gy, gw, gh);
+		}
+		foreach (Graph *g, graphsList){
+			if (g->autoscaleFonts())
+				g->scaleFonts(h_ratio);
+		}
+		emit modifiedPlot();
+		return;
+	}
 
 	if (d_common_axes_layout && !invalidOldSize){
 		arrangeLayers(false, false);
@@ -1508,8 +1524,11 @@ bool MultiLayer::eventFilter(QObject *object, QEvent *e)
 				return true;
 			}
 		}
-
 		deselect();
+	} else if (e->type() == QEvent::MouseButtonDblClick && object == (QObject *)d_canvas){
+		if (applicationWindow())
+			applicationWindow()->showPlotDialog(-100);
+		return true;
 	}
 
 	return MdiSubWindow::eventFilter(object, e);
@@ -1749,13 +1768,13 @@ void MultiLayer::setNumLayers(int n)
 void MultiLayer::copy(MultiLayer* ml)
 {
     resize(ml->size());
+	hide();
 
 	setSpacing(ml->rowsSpacing(), ml->colsSpacing());
 	setAlignement(ml->horizontalAlignement(), ml->verticalAlignement());
 	setMargins(ml->leftMargin(), ml->rightMargin(), ml->topMargin(), ml->bottomMargin());
 	d_size_policy = ml->sizePolicy();
 	d_align_policy = ml->alignPolicy();
-
 	d_scale_on_print = ml->scaleLayersOnPrint();
 	d_print_cropmarks = ml->printCropmarksEnabled();
 
@@ -1772,11 +1791,13 @@ void MultiLayer::copy(MultiLayer* ml)
 		d_waterfall_offset_y = ml->waterfallYOffset();
 		createWaterfallBox();
 		setWaterfallSideLines(ml->sideLinesEnabled());
+		updateWaterfallLayout();
 	}
 
 	d_scale_layers = ml->scaleLayersOnResize();
 	linkXLayerAxes(ml->hasLinkedXLayerAxes());
 	d_common_axes_layout = ml->hasCommonAxes();
+	show();
 }
 
 bool MultiLayer::swapLayers(int src, int dest)
