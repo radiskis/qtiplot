@@ -4763,6 +4763,7 @@ void Graph::copy(Graph* g)
 	copyCurves(g);
 
 	for (int i = 0; i < QwtPlot::axisCnt; i++){
+		enableAxis(i, g->axisEnabled(i));
 		copyScaleDraw(g, i);
 		setAxisLabelRotation(i, g->labelsRotation(i));
 	}

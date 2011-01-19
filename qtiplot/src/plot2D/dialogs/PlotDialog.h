@@ -79,6 +79,7 @@ public:
     void initFonts(const QFont& titlefont, const QFont& axesfont, const QFont& numbersfont, const QFont& legendfont);
 	void insertColumnsList(const QStringList& names){columnNames = names;};
 	void setMultiLayer(MultiLayer *ml);
+	void selectMultiLayerItem();
 
 public slots:
 	void showAll(bool all);

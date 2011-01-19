@@ -2849,6 +2849,7 @@ MultiLayer* ApplicationWindow::waterfallPlot(Table *t, const QStringList& list)
 	}
 
 	MultiLayer* ml = new MultiLayer(this, curves, 1, 1);
+	ml->setScaleLayersOnResize(false);
 	QList<Graph *> layersList = ml->layersList();
 	int i = 0;
 	foreach(Graph *g, layersList){
@@ -2874,6 +2875,8 @@ MultiLayer* ApplicationWindow::waterfallPlot(Table *t, const QStringList& list)
 	Graph *g = layersList.last();
 	if (g)
 		g->newLegend(legend.trimmed())->move(QPoint(5, 5));
+
+	ml->setScaleLayersOnResize(autoResizeLayers);
 	return ml;
 }
 
@@ -5165,18 +5168,16 @@ ApplicationWindow* ApplicationWindow::openProject(const QString& fn, bool factor
 	QString fileName = fi2.absFilePath();
 
 	app->updateRecentProjectsList(fileName);
-
 	app->folders->setCurrentItem(cf->folderListItem());
 	app->folders->blockSignals (false);
 	app->changeFolder(cf, true);//change folder to user defined current folder
 	app->blockSignals (false);
 	app->renamedTables.clear();
-
 	app->executeNotes();
-	app->d_opening_file = false;
 	app->d_workspace->blockSignals(false);
 	app->addWindowsListToCompleter();
 	app->restoreApplicationGeometry();
+	app->d_opening_file = false;
 	app->savedProject();
 	return app;
 }
@@ -8253,7 +8254,9 @@ void ApplicationWindow::showPlotDialog(int curveIndex)
 		Graph *g = w->activeLayer();
 		if (g)
 			pd->selectCurve(curveIndex);
-	}
+	} else if (curveIndex == -100)
+		pd->selectMultiLayerItem();
+
     pd->initFonts(plotTitleFont, plotAxesFont, plotNumbersFont, plotLegendFont);
 	pd->showAll(d_extended_plot_dialog);
 	pd->show();
@@ -11084,9 +11087,11 @@ void ApplicationWindow::showWindowContextMenu()
 		cm.insertItem(tr("E&xport Page"), this, SLOT(exportGraph()));
 		cm.addAction(actionPrint);
 		cm.insertSeparator();
+		cm.addAction(tr("&Properties..."), this, SLOT(showGeneralPlotDialog()));
+		cm.addSeparator();
 		cm.addAction(actionCloseWindow);
 	} else if (w->isA("Graph3D")){
-		Graph3D *g=(Graph3D*)w;
+		Graph3D *g = (Graph3D*)w;
 		if (!g->hasData()){
 			cm.insertItem(tr("3D &Plot"), &plot3D);
 			if (hasTable())
