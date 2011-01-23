@@ -1016,7 +1016,7 @@
     </message>
     <message>
         <source>Column &amp;Options ...</source>
-        <translation>&amp;Options de la colonne...</translation>
+        <translation>Pr&amp;opriétés...</translation>
     </message>
     <message>
         <source>Set Column &amp;Values ...</source>
@@ -4717,7 +4717,7 @@ L&apos;autocomplétion ne sera pas disponible !</translation>
     </message>
     <message>
         <source>Create &amp;Baseline</source>
-        <translation>Créer la ligne de &amp;base</translation>
+        <translation type="unfinished">&amp;Créer</translation>
     </message>
     <message>
         <source>&amp;Subtract</source>
@@ -4725,7 +4725,7 @@ L&apos;autocomplétion ne sera pas disponible !</translation>
     </message>
     <message>
         <source>&amp;Undo Subtraction</source>
-        <translation>Ann&amp;uler la soustraction</translation>
+        <translation type="unfinished">Ann&amp;uler</translation>
     </message>
     <message>
         <source>&amp;Modify</source>
@@ -9673,7 +9673,7 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Rows</source>
-        <translation>Rangées</translation>
+        <translation type="unfinished">Lignes</translation>
     </message>
     <message>
         <source>Grid</source>
@@ -9697,11 +9697,11 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Columns gap</source>
-        <translation>Entre colonnes</translation>
+        <translation type="unfinished">Espace entre colonnes</translation>
     </message>
     <message>
         <source>Rows gap</source>
-        <translation>Entre rangées</translation>
+        <translation type="unfinished">Espace entre lignes</translation>
     </message>
     <message>
         <source>Left margin</source>
@@ -9761,11 +9761,11 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>QtiPlot - Rows input error</source>
-        <translation>Qtiplot - Erreur lors de l&apos;entrée de la rangée</translation>
+        <translation type="unfinished">Qtiplot - Erreur lors de l&apos;entrée de la ligne</translation>
     </message>
     <message>
         <source>The number of rows you&apos;ve entered is greater than the number of graphs (%1)!</source>
-        <translation>Le nombre de rangées que vous avez donné est plus grand que le nombre de graphes (%1) !</translation>
+        <translation type="unfinished">Le nombre de lignes que vous avez donné est plus grand que le nombre de graphes (%1) !</translation>
     </message>
     <message>
         <source>Layers</source>
@@ -9837,7 +9837,7 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Link &amp;X axes</source>
-        <translation>Lier les axes &amp;X</translation>
+        <translation type="unfinished">Souder les axes &amp;X</translation>
     </message>
     <message>
         <source>&amp;Fixed size</source>
@@ -9867,7 +9867,7 @@ have the same number of rows.</source>
     <name>LineDialog</name>
     <message>
         <source>QtiPlot - Line options</source>
-        <translation>Qtiplot - Options de ligne</translation>
+        <translation type="unfinished">Qtiplot - Propriétés</translation>
     </message>
     <message>
         <source>Color</source>
@@ -10094,7 +10094,7 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>offset</source>
-        <translation>Décalage en Y</translation>
+        <translation type="unfinished">décalage en Y</translation>
     </message>
 </context>
 <context>
@@ -10146,11 +10146,11 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Flip Vertically</source>
-        <translation>Retourner Verticalement</translation>
+        <translation type="unfinished">Retourner verticalement</translation>
     </message>
     <message>
         <source>Flip Horizontally</source>
-        <translation>Retourner Horizontalement</translation>
+        <translation type="unfinished">Retourner horizontalement</translation>
     </message>
     <message>
         <source>Rotate 90°</source>
@@ -10190,7 +10190,7 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Forward FFT</source>
-        <translation>Transformée de Fourier Directe</translation>
+        <translation type="unfinished">Transformée de Fourier directe</translation>
     </message>
     <message>
         <source>Inverse FFT</source>
@@ -10202,7 +10202,7 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Memory Allocation Error</source>
-        <translation>Erreur d&apos;allocaiton mémoire</translation>
+        <translation type="unfinished">Erreur d&apos;allocation mémoire</translation>
     </message>
     <message>
         <source>Not enough memory, operation aborted!</source>
@@ -10234,7 +10234,7 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Resample</source>
-        <translation>Ré-échantilloné</translation>
+        <translation type="unfinished">Ré-échantillonné</translation>
     </message>
     <message>
         <source>bilinear</source>
@@ -10246,7 +10246,7 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>QtiPlot was built without support for ALGLIB, resampling is not possible!</source>
-        <translation>QtiPlot a été compilé sans le support pour AGLIB, le ré-échantillonnage est impossible !</translation>
+        <translation type="unfinished">QtiPlot a été compilé sans le support pour ALGLIB, le ré-échantillonnage est impossible !</translation>
     </message>
     <message>
         <source>Smoothed</source>
@@ -10313,7 +10313,7 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Set Data Format %1</source>
-        <translation>Définir le format des donnnées %1</translation>
+        <translation type="unfinished">Définir le format des données %1</translation>
     </message>
     <message>
         <source>Precision %1 digits</source>
@@ -10379,7 +10379,7 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Rows</source>
-        <translation>Rangées</translation>
+        <translation type="unfinished">Lignes</translation>
     </message>
     <message>
         <source>Method</source>
@@ -10418,7 +10418,7 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Rows</source>
-        <translation>Rangées</translation>
+        <translation type="unfinished">Lignes</translation>
     </message>
     <message>
         <source>Columns</source>
@@ -10430,7 +10430,7 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Y (Rows)</source>
-        <translation>Y (Rangées)</translation>
+        <translation type="unfinished">Y (Lignes)</translation>
     </message>
     <message>
         <source>First</source>
@@ -10469,7 +10469,7 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>For row (i)</source>
-        <translation>Pour la rangée (i)</translation>
+        <translation type="unfinished">Pour la ligne (i)</translation>
     </message>
     <message>
         <source>to</source>
@@ -10555,7 +10555,7 @@ have the same number of rows.</source>
     <name>MultiLayer</name>
     <message>
         <source>Do you want QtiPlot to rearrange the remaining layers?</source>
-        <translation>Voulez-vous que Qtiplot redispose les autres planches ?</translation>
+        <translation type="unfinished">Voulez-vous que Qtiplot redispose les planches restantes ?</translation>
     </message>
     <message>
         <source>&amp;Yes</source>
@@ -10729,7 +10729,7 @@ have the same number of rows.</source>
     <name>MultiPeakFitTool</name>
     <message>
         <source>Move cursor and click to select a point and double-click/press &apos;Enter&apos; to set the position of a peak!</source>
-        <translation>Déplacer le curseur et cliquez poour sélectionner un point et double-qliquez (ou tapez &apos;Entrée&apos;) pour fixer la position d&apos;un Pic !</translation>
+        <translation type="unfinished">Déplacez le curseur et cliquez pour sélectionner un point et double-qliquez (ou tapez &apos;Entrée&apos;) pour fixer la position d&apos;un pic !</translation>
     </message>
     <message>
         <source>Peak %1 selected! Click to select a point and double-click/press &apos;Enter&apos; to set the position of the next peak!</source>
@@ -10764,11 +10764,11 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>You must provide a list containing at least one parameter for this type of fit. Operation aborted!</source>
-        <translation>Vous devez fournir une liste contenant au moins 1 paramètre pour ce type d&apos;ajustement. Opération annulée !</translation>
+        <translation type="unfinished">Vous devez fournir une liste contenant au moins un paramètre pour ce type d&apos;ajustement. Opération annulée !</translation>
     </message>
     <message>
         <source>Non-linear Fit</source>
-        <translation>Non-Ajustement non-linéaire</translation>
+        <translation type="unfinished">Ajustement non-linéaire</translation>
     </message>
     <message>
         <source>constant</source>
@@ -10780,7 +10780,7 @@ have the same number of rows.</source>
     <message>
         <source>Add tab</source>
         <translatorcomment>Rémy : tab c&apos;est bien table ?</translatorcomment>
-        <translation>AJouter une table</translation>
+        <translation type="unfinished">Ajouter une table</translation>
     </message>
     <message>
         <source>Please, enter new title:</source>
@@ -10858,7 +10858,7 @@ have the same number of rows.</source>
     <name>PatternBox</name>
     <message>
         <source>Solid</source>
-        <translation>plein</translation>
+        <translation type="unfinished">Plein</translation>
     </message>
     <message>
         <source>Horizontal</source>
@@ -11033,7 +11033,7 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Coordinate System</source>
-        <translation>Couleurs systèmes</translation>
+        <translation type="unfinished">Coordonnées systèmes</translation>
     </message>
     <message>
         <source>Opacity</source>
@@ -11384,7 +11384,7 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>&amp;Speed Mode, Skip Points if needed</source>
-        <translation>Mode rapide, &amp;sauter des données si nécessaire</translation>
+        <translation type="unfinished">Mode rapide, pa&amp;sser des points si nécessaire</translation>
     </message>
     <message>
         <source>data points</source>
@@ -11448,7 +11448,7 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Diamond</source>
-        <translation>Diamant</translation>
+        <translation type="unfinished">Losange</translation>
     </message>
     <message>
         <source>Perc 10, 25, 75, 90</source>
@@ -11508,11 +11508,11 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Whiskers</source>
-        <translation>Whiskers</translation>
+        <translation type="unfinished">Moustaches</translation>
     </message>
     <message>
         <source>No Whiskers</source>
-        <translation>Sans Whiskers</translation>
+        <translation type="unfinished">Sans moustaches</translation>
     </message>
     <message>
         <source>75-25</source>
@@ -11536,7 +11536,7 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Box/Whiskers</source>
-        <translation>Boîte / Whiskers</translation>
+        <translation type="unfinished">Boîte / Moustaches</translation>
     </message>
     <message>
         <source>Max</source>
@@ -11588,7 +11588,7 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Use &amp;Color Map</source>
-        <translation>Utiliser la &amp;carte des couleurs</translation>
+        <translation type="unfinished">Utiliser une &amp;carte de couleurs</translation>
     </message>
     <message>
         <source>Use Default &amp;Pen</source>
@@ -11696,7 +11696,7 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Arrowheads</source>
-        <translation>Têtes des flêches</translation>
+        <translation type="unfinished">Extrémités</translation>
     </message>
     <message>
         <source>Length</source>
@@ -11848,7 +11848,7 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Vector Data</source>
-        <translation>Vecteur Donnée</translation>
+        <translation type="unfinished">Vecteur Données</translation>
     </message>
     <message>
         <source>Magnitude</source>
@@ -11956,7 +11956,7 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>&amp;Scale layers to paper size</source>
-        <translation>Redimensionner les planche&amp;s à la taille du papier</translation>
+        <translation type="unfinished">Redimensionner les planche&amp;s aux dimensions du papier</translation>
     </message>
     <message>
         <source>Print Crop&amp;marks</source>
@@ -12020,7 +12020,7 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Rotation</source>
-        <translation></translation>
+        <translation type="unfinished">Rotation</translation>
     </message>
     <message>
         <source>Starting Azimuth (deg)</source>
@@ -12040,7 +12040,7 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Pie Geometry</source>
-        <translation>Géométrie du graphe</translation>
+        <translation type="unfinished">Géométrie du diagramme</translation>
     </message>
     <message>
         <source>Automatic &amp;Format</source>
@@ -12056,7 +12056,7 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Categories/&amp;Rows</source>
-        <translation>Catégories/&amp;Rangées</translation>
+        <translation type="unfinished">Catégo&amp;ries / Lignes</translation>
     </message>
     <message>
         <source>Associate Position with &amp;Wedge</source>
@@ -12076,15 +12076,15 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>mm</source>
-        <translation></translation>
+        <translation type="unfinished">mm</translation>
     </message>
     <message>
         <source>cm</source>
-        <translation></translation>
+        <translation type="unfinished">cm</translation>
     </message>
     <message>
         <source>point</source>
-        <translation></translation>
+        <translation type="unfinished">point</translation>
     </message>
     <message>
         <source>pixel</source>
@@ -12148,11 +12148,11 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Use &amp;Table Custom Pen</source>
-        <translation>Utiliser la &amp;table des stylos personnalisée</translation>
+        <translation type="unfinished">Utiliser la &amp;table personnalisée des stylos</translation>
     </message>
     <message>
         <source>Link &amp;X axes</source>
-        <translation>Lier les axes &amp;X</translation>
+        <translation type="unfinished">Souder les axes &amp;X</translation>
     </message>
     <message>
         <source>Miscellaneous</source>
@@ -12172,7 +12172,7 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Scale &amp;Fonts</source>
-        <translation>&amp;Échelle automatique de la police</translation>
+        <translation type="unfinished">&amp;Échelle de la police</translation>
     </message>
     <message>
         <source>Do not &amp;resize layers when window size changes</source>
@@ -12212,7 +12212,7 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Whis&amp;ker Labels</source>
-        <translation>Éti&amp;quette des whiskers</translation>
+        <translation type="unfinished">Éti&amp;quette des moustaches</translation>
     </message>
     <message>
         <source>Display</source>
@@ -12315,7 +12315,7 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Worksheet</source>
-        <translation>Feuille de travail</translation>
+        <translation type="unfinished">Feuille de calcul</translation>
     </message>
     <message>
         <source>&amp;Plot</source>
@@ -12464,7 +12464,7 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Polynomial Fit</source>
-        <translation>Ajustement</translation>
+        <translation type="unfinished">Ajustement polynomial</translation>
     </message>
 </context>
 <context>
@@ -12642,11 +12642,11 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Accessing QtiPlot functions or objects from Python code won&apos;t work. Probably your version of Qt/SIP/PyQt differs from the one QtiPlot was compiled against.</source>
-        <translation>Accéder via python aux fonctions ou objets de Qtiplot ne fonctionnera pas. Vos versions de Qt/SIP/PyQT sont sans doutes différents de ceux avec lesquels Qtiplot a été compilé.</translation>
+        <translation type="unfinished">Accéder via python, aux fonctions ou objets de Qtiplot ne fonctionnera pas. Vos versions de Qt/SIP/PyQT sont sans doutes différentes de celles avec lesquelles Qtiplot a été compilé.</translation>
     </message>
     <message>
         <source>Couldn&apos;t find initialization files</source>
-        <translation>Impossible de trouver les fichiers d&apos;initialisations</translation>
+        <translation type="unfinished">Impossible de trouver les fichiers d&apos;initialisation</translation>
     </message>
     <message>
         <source>Please indicate the correct path to the Python configuration files in the preferences dialog.</source>
@@ -12764,8 +12764,8 @@ have the same number of rows.</source>
     <message>
         <source>bessel_jn_zero(double n, unsigned int s):
  s-th positive zero x_s of regular cylindrical Bessel function of order n, J_n(x_s)=0</source>
-        <translation>bessel_jn_zero(double n, unsigned int s) :
-s-ème zéro positif x-s de la fonction de Bessel cylindrique réguliaire d&apos;ordre n, J_n(x_s) = 0</translation>
+        <translation type="unfinished">bessel_jn_zero(double n, unsigned int s) :
+s-ème zéro positif x_s de la fonction de Bessel cylindrique réguliaire d&apos;ordre n, J_n(x_s) = 0</translation>
     </message>
     <message>
         <source>bessel_y0(x):
@@ -12795,9 +12795,9 @@ s-ème zéro positif x-s de la fonction de Bessel cylindrique réguliaire d&apos
         <source>ceil(x):
  Round to the next larger integer,
  smallest integer larger or equal to x.</source>
-        <translation>ceil(x) :
+        <translation type="unfinished">ceil(x) :
  Arrondi à l&apos;entier immédiatement supérieur,
- Plus petit intier supérieur ou égal à x.</translation>
+ Plus petit entier supérieur ou égal à x.</translation>
     </message>
     <message>
         <source>cos(x):
@@ -12832,8 +12832,8 @@ s-ème zéro positif x-s de la fonction de Bessel cylindrique réguliaire d&apos
     <message>
         <source>erfq(x):
  The upper tail of the Gaussian probability function Q(x).</source>
-        <translation>erfq(x) :
-Partie supérieure de la fonction de probalité Gaussienne Q(x).</translation>
+        <translation type="unfinished">erfq(x) :
+ Partie supérieure de la fonction de probalité Gaussienne Q(x).</translation>
     </message>
     <message>
         <source>exp(x):
@@ -12845,9 +12845,9 @@ Partie supérieure de la fonction de probalité Gaussienne Q(x).</translation>
         <source>floor(x):
  Round to the next smaller integer,
  largest integer smaller or equal to x.</source>
-        <translation>floor(x) :
+        <translation type="unfinished">floor(x) :
  Arrondi au prochain plus petit entier,
- Le plus grand entier supérieur ou égal à x.</translation>
+ le plus grand entier supérieur ou égal à x.</translation>
     </message>
     <message>
         <source>gamma(x):
@@ -12956,14 +12956,14 @@ si e1 alors e2 sinon e3.</translation>
     <message>
         <source>sin(x):
  Calculate sine.</source>
-        <translation>sin(x) :
-Calcule le sinus de x.</translation>
+        <translation type="unfinished">sin(x) :
+Calcule la fonction sinus de x.</translation>
     </message>
     <message>
         <source>sinh(x):
  Hyperbolic sin function.</source>
-        <translation>sinh(x) :
- Calcule la fonction sinus hyberbolique de x.</translation>
+        <translation type="unfinished">sinh(x) :
+ Fonction sinus hyberbolique de x.</translation>
     </message>
     <message>
         <source>sqrt(x):
@@ -13023,8 +13023,8 @@ Calcule le sinus de x.</translation>
     <message>
         <source>SUM(&quot;colName&quot;, i, j):
  The sum of all cells from row i to j in column colName.</source>
-        <translation>SUM(&quot;colName&quot;,i,j) :
- La somme de toutes les celulles de la colonne colName pour les rangées de i à j.</translation>
+        <translation type="unfinished">SUM(&quot;colName&quot;,i,j) :
+ La somme de toutes les celulles de la colonne colName pour les lignes de i à j.</translation>
     </message>
     <message>
         <source>QtiPlot - Memory Allocation Error</source>
@@ -13046,31 +13046,31 @@ Calcule le sinus de x.</translation>
     </message>
     <message>
         <source>angle</source>
-        <translation>angle </translation>
+        <translation type="unfinished">angle</translation>
     </message>
     <message>
         <source>length</source>
-        <translation>longueur </translation>
+        <translation type="unfinished">longueur</translation>
     </message>
     <message>
         <source>dx</source>
-        <translation>dx </translation>
+        <translation type="unfinished">dx</translation>
     </message>
     <message>
         <source>dy</source>
-        <translation>dy </translation>
+        <translation type="unfinished">dy</translation>
     </message>
     <message>
         <source>eqn</source>
-        <translation>eq </translation>
+        <translation type="unfinished">eq</translation>
     </message>
     <message>
         <source>y</source>
-        <translation>y </translation>
+        <translation type="unfinished">y</translation>
     </message>
     <message>
         <source>x</source>
-        <translation>x </translation>
+        <translation type="unfinished">x</translation>
     </message>
     <message>
         <source>MIN(&quot;colName&quot;, i, j):
@@ -13178,7 +13178,7 @@ Calcule le sinus de x.</translation>
     </message>
     <message>
         <source>One Sample t-Test</source>
-        <translation>Un échantillon t-test</translation>
+        <translation type="unfinished">Un échantillon de Student</translation>
     </message>
     <message>
         <source>Difference of Means</source>
@@ -13186,7 +13186,7 @@ Calcule le sinus de x.</translation>
     </message>
     <message>
         <source>different</source>
-        <translation>Different</translation>
+        <translation type="unfinished">Différent</translation>
     </message>
     <message>
         <source>greater</source>
@@ -13238,7 +13238,7 @@ Calcule le sinus de x.</translation>
     </message>
     <message>
         <source>Paired t-Test requires equal sample sizes.</source>
-        <translation>t-Test appairés nécessitent des tailles d&apos;échantillons égales.</translation>
+        <translation type="unfinished">Le test de Student appariés nécessitent des tailles d&apos;échantillons égales.</translation>
     </message>
     <message>
         <source>The test statistics t and P can not be computed because the sample variance of the differences between Sample1 and Sample2 is 0.</source>
@@ -13256,20 +13256,22 @@ Calcule le sinus de x.</translation>
     <message>
         <source>ftable(x, m, n):
  F-Distribution with m and n degrees of freedom.</source>
-        <translation>ftable(x, m, n) : Distribution en F avec m et n degrés de liberté.</translation>
+        <translation type="unfinished">ftable(x, m, n) : 
+Distribution en F avec m et n degrés de liberté.</translation>
     </message>
     <message>
         <source>invf(x, m, n):
  Inverse F-Distribution with m and n degrees of freedom.</source>
-        <translation>invf(x, m, n) : Distribution en F inverse avec m et n degrés de liberté.</translation>
+        <translation type="unfinished">invf(x, m, n) : 
+Distribution en F inverse avec m et n degrés de liberté.</translation>
     </message>
     <message>
         <source>Two-Way ANOVA requires three or more data samples.</source>
-        <translation>La variance à deux facteurs nécessite au moins trois séries de données.</translation>
+        <translation type="unfinished">L&apos;analyse de la variance (ANOVA) à deux facteurs nécessite au moins trois séries de données.</translation>
     </message>
     <message>
         <source>One-Way ANOVA requires two or more data samples.</source>
-        <translation>La variance à un facteur nécessite au moins trois séries de données.</translation>
+        <translation type="unfinished">L&apos;analyse de la variance (ANOVA) à un facteur nécessite au moins trois séries de données.</translation>
     </message>
     <message>
         <source>Factor A must have two or more levels.</source>
@@ -13289,7 +13291,7 @@ Calcule le sinus de x.</translation>
     </message>
     <message>
         <source>Two-Way ANOVA</source>
-        <translation>Variance à deux facteurs</translation>
+        <translation type="unfinished">ANOVA à deux facteurs</translation>
     </message>
     <message>
         <source>Fixed Model</source>
@@ -13301,11 +13303,11 @@ Calcule le sinus de x.</translation>
     </message>
     <message>
         <source>Mixed Model</source>
-        <translation>Modèle mixte</translation>
+        <translation type="unfinished">Effets mixtes</translation>
     </message>
     <message>
         <source>One-Way ANOVA</source>
-        <translation>Variance à un facteur</translation>
+        <translation type="unfinished">ANOVA à un facteur</translation>
     </message>
     <message>
         <source>Selected Data</source>
@@ -13353,7 +13355,7 @@ Calcule le sinus de x.</translation>
     </message>
     <message>
         <source>Model</source>
-        <translation>Modèle</translation>
+        <translation type="unfinished">Effet</translation>
     </message>
     <message>
         <source>At the %1 level, the population means</source>
@@ -13426,18 +13428,20 @@ Calcule le sinus de x.</translation>
     <message>
         <source>chi2cdf(x, df):
  Computes the cumulative distribution function for a chi-squared distribution with df degrees of freedom.</source>
-        <translation>chi2cdf(x, df) : Calcule la fonction de distribution cumulée pur une distribution chi² avec df degrés de libertés.</translation>
+        <translation type="unfinished">chi2cdf(x, df) : 
+Calcule la fonction de distribution cumulée pur une distribution chi² avec df degrés de libertés.</translation>
     </message>
     <message>
         <source>chi2inv(p, df):
  Computes the inverse of the cumulative distribution function for a chi-squared distribution with df degrees of freedom.</source>
-        <translation>chi2inv(p, df) : calcule l&apos;inverse de la fonction de distribution cumulée pour une distribution en chi² avec df degrés de liberté.</translation>
+        <translation type="unfinished">chi2inv(p, df) :
+ Calcule l&apos;inverse de la fonction de distribution cumulée pour une distribution en chi² avec df degrés de liberté.</translation>
     </message>
     <message>
         <source>normal(seed):
  Returns a normal random number using the Ziggurat algorithm.</source>
-        <translation>normal(seed) :
- Renvoie un nombre aléatoire avec l&apos;algorithme  de Ziggurat.</translation>
+        <translation type="unfinished">normal(seed) :
+ Renvoie un nombre aléatoire avec l&apos;algorithme de Ziggurat.</translation>
     </message>
     <message>
         <source>normcdf(x):
@@ -13969,7 +13973,7 @@ Calcule le sinus de x.</translation>
     </message>
     <message>
         <source>QtiPlot - Scripting Error</source>
-        <translation>QtiPlot - Erreur de Script</translation>
+        <translation type="unfinished">QtiPlot - Erreur de script</translation>
     </message>
     <message>
         <source>Scripting language &quot;%1&quot; failed to initialize.</source>
@@ -13984,7 +13988,7 @@ Calcule le sinus de x.</translation>
     </message>
     <message>
         <source>For row (i)</source>
-        <translation>Pour la rangée (i)</translation>
+        <translation type="unfinished">Pour la ligne (i)</translation>
     </message>
     <message>
         <source>to</source>
@@ -14027,7 +14031,7 @@ Calcule le sinus de x.</translation>
     </message>
     <message>
         <source>Boltzmann</source>
-        <translation></translation>
+        <translation type="unfinished">Boltzmann</translation>
     </message>
     <message>
         <source>init value</source>
@@ -14258,11 +14262,11 @@ Calcule le sinus de x.</translation>
     </message>
     <message>
         <source>Null</source>
-        <translation>Nulle </translation>
+        <translation type="unfinished">Nulle</translation>
     </message>
     <message>
         <source>Alternate</source>
-        <translation>Alternative </translation>
+        <translation type="unfinished">Alternative</translation>
     </message>
     <message>
         <source>Significance Level</source>
@@ -14385,7 +14389,7 @@ Calcule le sinus de x.</translation>
     </message>
     <message>
         <source>&amp;Data set</source>
-        <translation>Jeu de &amp;données</translation>
+        <translation type="unfinished">&amp;Données</translation>
     </message>
     <message>
         <source>Current &amp;folder</source>
@@ -14409,14 +14413,14 @@ Calcule le sinus de x.</translation>
     </message>
     <message>
         <source>Data set %1 must containt at least two valid data points in order to perform this operation!</source>
-        <translation>Le jeu de donnée %1 doit contenir au minimum 2 données valides pour ce type d&apos;opération !</translation>
+        <translation type="unfinished">Le jeu de données %1 doit contenir au minimum 2 données valides pour ce type d&apos;opération !</translation>
     </message>
 </context>
 <context>
     <name>SubtractLineTool</name>
     <message>
         <source>Move cursor and click to select and double-click/press &apos;Enter&apos; to set the position of the first point!</source>
-        <translation>Déplacer le curseur et cliquez pour sélectionner un point et double-cliquez (ou tapez &apos;Entrée&apos;) pour fixer la position du premier point !</translation>
+        <translation type="unfinished">Déplacez le curseur et cliquez pour sélectionner un point puis double-cliquez (ou tapez &apos;Entrée&apos;) pour fixer la position du premier point !</translation>
     </message>
     <message>
         <source>First point selected! Click to select and double-click/press &apos;Enter&apos; to set the position of the 2nd point!</source>
@@ -14507,7 +14511,7 @@ Calcule le sinus de x.</translation>
     </message>
     <message>
         <source>Rows</source>
-        <translation>Rangées</translation>
+        <translation type="unfinished">Lignes</translation>
     </message>
     <message>
         <source>Equations</source>
@@ -14515,19 +14519,19 @@ Calcule le sinus de x.</translation>
     </message>
     <message>
         <source>X(u,v)=</source>
-        <translation></translation>
+        <translation type="unfinished">X(u,v) =</translation>
     </message>
     <message>
         <source>Y(u,v)=</source>
-        <translation></translation>
+        <translation type="unfinished">Y(u,v) =</translation>
     </message>
     <message>
         <source>Z(u,v)=</source>
-        <translation></translation>
+        <translation type="unfinished">Z(u,v) =</translation>
     </message>
     <message>
         <source>u</source>
-        <translation></translation>
+        <translation type="unfinished">u</translation>
     </message>
     <message>
         <source>Periodic</source>
@@ -14535,7 +14539,7 @@ Calcule le sinus de x.</translation>
     </message>
     <message>
         <source>v</source>
-        <translation></translation>
+        <translation type="unfinished">v</translation>
     </message>
     <message>
         <source>QtiPlot - X Formula Error</source>
@@ -14547,7 +14551,7 @@ Calcule le sinus de x.</translation>
     </message>
     <message>
         <source>QtiPlot - Z Formula Error</source>
-        <translation>QtiPlot - Z Formula Error</translation>
+        <translation type="unfinished">QtiPlot - Erreur de formule sur Z</translation>
     </message>
     <message>
         <source>QtiPlot</source>
@@ -14582,7 +14586,7 @@ Calcule le sinus de x.</translation>
     </message>
     <message>
         <source>Diamond</source>
-        <translation>Diamant</translation>
+        <translation type="unfinished">Losange</translation>
     </message>
     <message>
         <source>Triangle</source>
@@ -14652,7 +14656,7 @@ Calcule le sinus de x.</translation>
     </message>
     <message>
         <source>QtiPlot - ASCII Export Error</source>
-        <translation>QtiPlot - Erreur d&apos;export ASCII</translation>
+        <translation type="unfinished">QtiPlot - Erreur d&apos;exportation ASCII</translation>
     </message>
     <message>
         <source>QtiPlot</source>
@@ -14668,7 +14672,7 @@ Calcule le sinus de x.</translation>
     </message>
     <message>
         <source>Rows will be deleted from the table!</source>
-        <translation>Les rangées seront effacées de cette table !</translation>
+        <translation type="unfinished">Les lignes seront effacées de cette table !</translation>
     </message>
     <message>
         <source>Do you really want to continue?</source>
@@ -14696,7 +14700,7 @@ Calcule le sinus de x.</translation>
     </message>
     <message>
         <source>Column &apos;%1&apos; is read only!</source>
-        <translation>La colonne %1 est en lecture seule !</translation>
+        <translation type="unfinished">La colonne &apos;%1&apos; est en lecture seule !</translation>
     </message>
     <message>
         <source>The table &apos;%1&apos; contains read-only columns! Operation aborted!</source>
@@ -14755,7 +14759,7 @@ Calcule le sinus de x.</translation>
     <name>TableDialog</name>
     <message>
         <source>QtiPlot - Column options</source>
-        <translation>QtiPlot - Options de colonne</translation>
+        <translation>QtiPlot - Propriétés</translation>
     </message>
     <message>
         <source>Enumerate all to the right</source>
@@ -14823,11 +14827,11 @@ Calcule le sinus de x.</translation>
     </message>
     <message>
         <source>Day of Week</source>
-        <translation>Jour de la semaine</translation>
+        <translation>Jour de semaine</translation>
     </message>
     <message>
         <source>Apply to all columns to the right</source>
-        <translation>Appliquer à toutes les colonnes vers la droite</translation>
+        <translation>Appliquer à toutes les colonnes de droite</translation>
     </message>
     <message>
         <source>Options</source>
@@ -14839,7 +14843,7 @@ Calcule le sinus de x.</translation>
     </message>
     <message>
         <source>QtiPlot - Warning</source>
-        <translation>QtiPlot - Attention</translation>
+        <translation>QtiPlot - Avertissement</translation>
     </message>
     <message>
         <source>For internal consistency reasons the underscore character is replaced with a minus sign.</source>
@@ -14939,11 +14943,11 @@ Calcule le sinus de x.</translation>
     </message>
     <message>
         <source>Couldn&apos;t guess the source data format, please specify it using the &apos;Format&apos; box!</source>
-        <translation>Ne peut détecter le format de données de la source, veuillez le spécifier en utilisant la boîte &apos;Format&apos; !</translation>
+        <translation>Ne peut détecter le format de donnée de la source, veuillez le spécifier en utilisant la boîte &apos;Format&apos; !</translation>
     </message>
     <message>
         <source>For more information about the supported date/time formats please read the Qt documentation for the QDateTime class!</source>
-        <translation>Pour plus d&apos;informations des formats date/heure supportés lisez la documentation de Qt (classe QDateTime) !</translation>
+        <translation>Pour plus d&apos;informations sur les formats date/heure supportés, lisez la documentation de Qt (classe QDateTime) !</translation>
     </message>
     <message>
         <source>&amp;Read-only</source>
@@ -15050,11 +15054,11 @@ Calcule le sinus de x.</translation>
     <name>TableStatistics</name>
     <message>
         <source>Row Statistics of %1</source>
-        <translation>Statistiques de la rangée de %1</translation>
+        <translation>Statistiques de la ligne de %1</translation>
     </message>
     <message>
         <source>Row</source>
-        <translation>Rangée</translation>
+        <translation>Ligne</translation>
     </message>
     <message>
         <source>Cols</source>
@@ -15090,7 +15094,7 @@ Calcule le sinus de x.</translation>
     </message>
     <message>
         <source>Rows</source>
-        <translation>Rangées</translation>
+        <translation>Lignes</translation>
     </message>
     <message>
         <source>iMax</source>
@@ -15102,7 +15106,7 @@ Calcule le sinus de x.</translation>
     </message>
     <message>
         <source>RowStats</source>
-        <translation>Stats Rangée</translation>
+        <translation>Stats ligne</translation>
     </message>
     <message>
         <source>StandardDev</source>
@@ -15132,7 +15136,7 @@ Calcule le sinus de x.</translation>
     <name>TextDialog</name>
     <message>
         <source>QtiPlot - Text options</source>
-        <translation>QtiPlot - Options du Texte</translation>
+        <translation>QtiPlot - Options du texte</translation>
     </message>
     <message>
         <source>Font</source>
@@ -15164,7 +15168,7 @@ Calcule le sinus de x.</translation>
     </message>
     <message>
         <source>QtiPlot</source>
-        <translation></translation>
+        <translation>QtiPlot</translation>
     </message>
     <message>
         <source>X Axis Title</source>
@@ -15180,7 +15184,7 @@ Calcule le sinus de x.</translation>
     </message>
     <message>
         <source>Right Axis Title</source>
-        <translation>Axe de droite</translation>
+        <translation>Axe latéral droit</translation>
     </message>
     <message>
         <source>&amp;Apply to...</source>
@@ -15188,15 +15192,15 @@ Calcule le sinus de x.</translation>
     </message>
     <message>
         <source>Object</source>
-        <translation>Objet</translation>
+        <translation>L&apos;objet</translation>
     </message>
     <message>
         <source>Layer</source>
-        <translation>Planche</translation>
+        <translation>La planche</translation>
     </message>
     <message>
         <source>Window</source>
-        <translation>Fenêtre</translation>
+        <translation>La fenêtre</translation>
     </message>
     <message>
         <source>All Windows</source>
@@ -15219,15 +15223,15 @@ Calcule le sinus de x.</translation>
     <name>TextEditor</name>
     <message>
         <source>QtiPlot</source>
-        <translation></translation>
+        <translation>QtiPlot</translation>
     </message>
     <message>
         <source>Confirmation</source>
-        <translation></translation>
+        <translation>Confirmation</translation>
     </message>
     <message>
         <source>Are you sure you want to add %1 text lines into this text box?</source>
-        <translation>Êtes-vous sûr de vouloir ajouter %1 lines dans cette boite à texte ?</translation>
+        <translation>Êtes-vous sûr de vouloir ajouter %1 lignes dans cette zone de texte ?</translation>
     </message>
 </context>
 <context>
@@ -15260,11 +15264,11 @@ Calcule le sinus de x.</translation>
     </message>
     <message>
         <source>first amplitude</source>
-        <translation>Premier amplitude</translation>
+        <translation>Première amplitude</translation>
     </message>
     <message>
         <source>first lifetime</source>
-        <translation>premier constante de temps</translation>
+        <translation>première constante de temps</translation>
     </message>
     <message>
         <source>second amplitude</source>
@@ -15284,7 +15288,7 @@ Calcule le sinus de x.</translation>
     </message>
     <message>
         <source>offset</source>
-        <translation>Décalage en Y</translation>
+        <translation>décalage en Y</translation>
     </message>
 </context>
 <context>
@@ -15299,11 +15303,11 @@ Calcule le sinus de x.</translation>
     </message>
     <message>
         <source>This operation cannot be performed on function curves.</source>
-        <translation>Cette opération ne peut être réalisée sur les fonctions.</translation>
+        <translation>Cette opération ne peut pas être réalisée sur les fonctions.</translation>
     </message>
     <message>
         <source>This operation cannot be performed on curves plotted from columns having a non-numerical format.</source>
-        <translation>Cette opération ne peut être réalisée sur des courbes ayant des colonnes au format non numérique.</translation>
+        <translation>Cette opération ne peut pas être réalisée sur des courbes ayant des colonnes au format non numérique.</translation>
     </message>
     <message>
         <source>The column &apos;%1&apos; is read-only! Operation aborted!</source>
@@ -15338,7 +15342,7 @@ Calcule le sinus de x.</translation>
     </message>
     <message>
         <source>second lifetime</source>
-        <translation>deuxième contante de temps</translation>
+        <translation>deuxième constante de temps</translation>
     </message>
     <message>
         <source>offset</source>
@@ -15357,11 +15361,11 @@ Calcule le sinus de x.</translation>
     </message>
     <message>
         <source>There&apos;s no column named %1 in table %2!</source>
-        <translation>Il y a une colonne nommée %1 dans la table %2 !</translation>
+        <translation>Il n&apos;y a pas de colonne nommée %1 dans la table %2 !</translation>
     </message>
     <message>
         <source>There&apos;s no row %1 in table %2!</source>
-        <translation>Il y a une rangée nommée %1 dans la table %2 !</translation>
+        <translation>Il n&apos;y a pas de ligne nommée %1 dans la table %2 !</translation>
     </message>
     <message>
         <source>There&apos;s no column %1 in table %2!</source>
@@ -15369,7 +15373,7 @@ Calcule le sinus de x.</translation>
     </message>
     <message>
         <source>There&apos;s no row %1 in matrix %2!</source>
-        <translation>Il n&apos;y a pas de rangées %1 dans la matrice %2 !</translation>
+        <translation>Il n&apos;y a pas de ligne %1 dans la matrice %2 !</translation>
     </message>
     <message>
         <source>There&apos;s no column %1 in matrix %2!</source>
@@ -15405,11 +15409,11 @@ Calcule le sinus de x.</translation>
     </message>
     <message>
         <source>MIN() works only on tables!</source>
-        <translation>MIN() ne fonctionne que sur les tables !</translation>
+        <translation>MIN() ne fonctionne qu&apos;avec des tables !</translation>
     </message>
     <message>
         <source>MAX() works only on tables!</source>
-        <translation>MAX() ne fonctionne que sur les tables !</translation>
+        <translation>MAX() ne fonctionne qu&apos;avec des tables !</translation>
     </message>
 </context>
 </TS>
