@@ -2473,8 +2473,8 @@ void Table::setHeader(QStringList header)
 
 int Table::colIndex(const QString& name)
 {
-	int pos = name.find("_",false);
-	QString label = name.right(name.length()-pos-1);
+	int pos = name.lastIndexOf("_");
+	QString label = name.right(name.length() - pos - 1);
 	return col_label.findIndex(label);
 }
 

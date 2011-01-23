@@ -44,6 +44,7 @@ RenameWindowDialog::RenameWindowDialog(QWidget* parent, Qt::WFlags fl )
     : QDialog( parent, fl )
 {
 	setWindowTitle(tr("QtiPlot - Rename Window"));
+	setAttribute(Qt::WA_DeleteOnClose);
 
 	QGridLayout * leftLayout = new QGridLayout();
 	QVBoxLayout * rightLayout = new QVBoxLayout();
@@ -134,19 +135,10 @@ void RenameWindowDialog::accept()
 		close();
 
 	ApplicationWindow *app = (ApplicationWindow *)parentWidget();
-	if (!app)
+	if (!app || !app->setWindowName(window, text))
 		return;
 
-	if (text.contains("_")){
-  		QMessageBox::warning(this, tr("QtiPlot - Warning"),
-  	    tr("For internal consistency reasons the underscore character is replaced with a minus sign."));}
-
-  	if (text.replace("_", "-") != name){
-		if(!app->setWindowName(window, text))
-			return;
-	}
-
-	label.replace("\n"," ").replace("\t"," ");
+	label.replace("\n", " ").replace("\t", " ");
 	window->setWindowLabel(label);
 	window->setCaptionPolicy(policy);
 	app->modifiedProject(window);

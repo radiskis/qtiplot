@@ -351,8 +351,6 @@ public slots:
 	//@{
 	Graph3D* newPlot3D(const QString& title = QString());
 	Graph3D* plotXYZ(Table* table,const QString& zColName, int type);
-	Graph3D* addRibbon(const QString& caption, const QString& formula,
-						double xl, double xr, double yl, double yr, double zl, double zr);
 	//@}
 
 	//! \name Surface Plots
