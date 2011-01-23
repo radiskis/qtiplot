@@ -905,7 +905,11 @@ void Graph::setLabelsDateTimeFormat(int axis, int type, const QString& formatInf
 	if (sd->scaleType() == type && sd->formatString() == formatInfo)
 		return;
 
-	ScaleDraw *nsd = new ScaleDraw(this);
+	ScaleDraw *nsd = 0;
+	if (sd->scaleType() == type)
+		nsd = new ScaleDraw(this, sd);
+	else
+		nsd = new ScaleDraw(this);
 
 	if (type == ScaleDraw::Time){
 		QTime t = sd->dateTimeOrigin().time();
@@ -3422,8 +3426,8 @@ DataCurve* Graph::insertCurve(Table* w, const QString& xColName, const QString& 
 		return c;
 	}
 
-	int xcol=w->colIndex(xColName);
-	int ycol=w->colIndex(yColName);
+	int xcol = w->colIndex(xColName);
+	int ycol = w->colIndex(yColName);
 	if (xcol < 0 || ycol < 0)
 		return NULL;
 
@@ -3439,8 +3443,8 @@ DataCurve* Graph::insertCurve(Table* w, const QString& xColName, const QString& 
 	if (style == HorizontalBars)
 		xAxis = QwtPlot::yLeft;
 
+	ScaleDraw *sd = (ScaleDraw *)axisScaleDraw(xAxis);
 	if (xColType == Table::Time){
-		ScaleDraw *sd = (ScaleDraw *)axisScaleDraw(xAxis);
 		if (sd && sd->scaleType() == ScaleDraw::Time)
 			time0 = sd->dateTimeOrigin().time();
 		else {
@@ -3454,7 +3458,6 @@ DataCurve* Graph::insertCurve(Table* w, const QString& xColName, const QString& 
 			}
 		}
 	} else if (xColType == Table::Date){
-		ScaleDraw *sd = (ScaleDraw *)axisScaleDraw(xAxis);
 		if (sd && sd->scaleType() == ScaleDraw::Date)
 			date0 = sd->dateTimeOrigin();
 		else {
@@ -3504,10 +3507,10 @@ DataCurve* Graph::insertCurve(Table* w, const QString& xColName, const QString& 
 	c->loadData();
 	c->enableSpeedMode();
 
-	if (xColType == Table::Time){
+	if (xColType == Table::Time && sd && sd->scaleType() != ScaleDraw::Time){
 		QString fmtInfo = time0.toString() + ";" + date_time_fmt;
 		setLabelsDateTimeFormat(xAxis, ScaleDraw::Time, fmtInfo);
-	} else if (xColType == Table::Date ){
+	} else if (xColType == Table::Date && sd && sd->scaleType() != ScaleDraw::Date){
 		QString fmtInfo = date0.toString(date_time_fmt) + ";" + date_time_fmt;
 		setLabelsDateTimeFormat(xAxis, ScaleDraw::Date, fmtInfo);
 	}
