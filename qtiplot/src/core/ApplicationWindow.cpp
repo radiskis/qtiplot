@@ -7156,7 +7156,7 @@ bool ApplicationWindow::setWindowName(MdiSubWindow *w, const QString &text)
 	if (newName.isEmpty()){
 		QMessageBox::critical(this, tr("QtiPlot - Error"), tr("Please enter a valid name!"));
 		return false;
-	} else if (newName.contains(QRegExp("\\W"))){
+	} else if (QString(newName).remove("-").contains(QRegExp("\\W"))){
 		QMessageBox::critical(this, tr("QtiPlot - Error"),
 				tr("The name you chose is not valid: only letters and digits are allowed!")+
 				"<p>" + tr("Please choose another name!"));
