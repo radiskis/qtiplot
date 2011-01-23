@@ -2521,30 +2521,6 @@ void ApplicationWindow::updateSurfaceFuncList(const QString& s)
 		surfaceFunc.pop_back();
 }
 
-Graph3D* ApplicationWindow::addRibbon(const QString& caption, const QString& formula,
-		double xl, double xr, double yl, double yr, double zl, double zr)
-{
-	Table* t = table(formula.left(formula.find("_", 0)));
-	if (!t)
-		return 0;
-
-	QString s = formula;
-	s.remove("(X)").remove("(Y)");
-	QStringList l = s.split(",");
-	if (l.size() != 2)
-		return 0;
-
-	Graph3D *plot = newPlot3D(caption);
-	if(!plot)
-		return 0;
-
-	plot->addRibbon(t, l[0], l[1], xl, xr, yl, yr, zl, zr);
-	plot->setDataColorMap(d_3D_color_map);
-	plot->update();
-
-	return plot;
-}
-
 Graph3D* ApplicationWindow::newPlot3D(const QString& title)
 {
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
@@ -3077,8 +3053,6 @@ Table* ApplicationWindow::newHiddenTable(const QString& name, const QString& lab
 void ApplicationWindow::initTable(Table* w, const QString& caption)
 {
 	QString name = caption;
-	name = name.replace ("_","-");
-
 	while(name.isEmpty() || alreadyUsedName(name))
 		name = generateUniqueName(tr("Table"));
 
@@ -3811,8 +3785,7 @@ MdiSubWindow* ApplicationWindow::window(const QString& name)
 
 Table* ApplicationWindow::table(const QString& name)
 {
-	int pos = name.find("_", 0);
-	QString caption = name.left(pos);
+	QString caption = name.left(name.lastIndexOf("_"));
 
     Folder *f = projectFolder();
 	while (f){
@@ -3823,7 +3796,6 @@ Table* ApplicationWindow::table(const QString& name)
 		}
 		f = f->folderBelow();
 	}
-
 	return  0;
 }
 
@@ -7142,7 +7114,6 @@ void ApplicationWindow::rename()
 		return;
 
 	RenameWindowDialog *rwd = new RenameWindowDialog(this);
-	rwd->setAttribute(Qt::WA_DeleteOnClose);
 	rwd->setWidget(m);
 	rwd->exec();
 }
@@ -7155,7 +7126,6 @@ void ApplicationWindow::renameWindow()
 		return;
 
 	RenameWindowDialog *rwd = new RenameWindowDialog(this);
-	rwd->setAttribute(Qt::WA_DeleteOnClose);
 	rwd->setWidget(w);
 	rwd->exec();
 }
@@ -7183,7 +7153,6 @@ bool ApplicationWindow::setWindowName(MdiSubWindow *w, const QString &text)
 		return true;
 
 	QString newName = text;
-	newName.replace("-", "_");
 	if (newName.isEmpty()){
 		QMessageBox::critical(this, tr("QtiPlot - Error"), tr("Please enter a valid name!"));
 		return false;
@@ -7194,13 +7163,8 @@ bool ApplicationWindow::setWindowName(MdiSubWindow *w, const QString &text)
 		return false;
 	}
 
-	if (w->inherits("Table"))
-		newName.replace("_", "-");
-
 	while(alreadyUsedName(newName)){
-		QMessageBox::critical(this, tr("QtiPlot - Error"), tr("Name <b>%1</b> already exists!").arg(newName)+
-				"<p>"+tr("Please choose another name!")+
-				"<p>"+tr("Warning: for internal consistency reasons the underscore character is replaced with a minus sign."));
+		QMessageBox::critical(this, tr("QtiPlot - Error"), tr("Name <b>%1</b> already exists!").arg(newName) + "<p>" + tr("Please choose another name!"));
 		return false;
 	}
 
@@ -12615,7 +12579,7 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot, co
 		else if (s.contains ("PieCurve")){
 			QStringList curve=s.split("\t");
 			if (!app->renamedTables.isEmpty()){
-				QString caption = (curve[1]).left((curve[1]).find("_",0));
+				QString caption = (curve[1]).left((curve[1]).lastIndexOf("_"));
 				if (app->renamedTables.contains(caption))
 				{//modify the name of the curve according to the new table name
 					int index = app->renamedTables.findIndex(caption);
@@ -12654,7 +12618,7 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot, co
 		}else if (s.left(6)=="curve\t"){
 			QStringList curve = s.split("\t", QString::SkipEmptyParts);
 			if (!app->renamedTables.isEmpty()){
-				QString caption = (curve[2]).left((curve[2]).find("_",0));
+				QString caption = (curve[2]).left((curve[2]).lastIndexOf("_"));
 				if (app->renamedTables.contains(caption))
 				{//modify the name of the curve according to the new table name
 					int index = app->renamedTables.findIndex (caption);
@@ -12843,7 +12807,7 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot, co
 		else if (s.contains ("ErrorBars")){
 			QStringList curve = s.split("\t", QString::SkipEmptyParts);
 			if (!app->renamedTables.isEmpty()){
-				QString caption = (curve[4]).left((curve[4]).find("_",0));
+				QString caption = (curve[4]).left((curve[4]).lastIndexOf("_"));
 				if (app->renamedTables.contains(caption))
 				{//modify the name of the curve according to the new table name
 					int index = app->renamedTables.findIndex (caption);

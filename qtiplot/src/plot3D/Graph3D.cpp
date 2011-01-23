@@ -733,24 +733,23 @@ void Graph3D::updateData(Table* table)
 		return;
 
 	QString name = plotAssociation;
-	int pos=name.find("_",0);
-	int posX=name.find("(",pos);
-	QString xColName=name.mid(pos+1,posX-pos-1);
+	QStringList lst = name.split(",");
+	if (lst.size() < 2)
+		return;
 
-	pos=name.find(",", posX);
-	posX=name.find("(", pos);
-	QString yColName=name.mid(pos+1, posX-pos-1);
+	QString xColName = lst[0];
+	xColName.chop(3);
+	int xCol = table->colIndex(xColName);
 
-	int xCol=table->colIndex(xColName);
-	int yCol=table->colIndex(yColName);
+	QString yColName = lst[1];
+	yColName.chop(3);
+	int yCol = table->colIndex(yColName);
 
-	if (name.contains("(Z)", true)) {
-		pos=name.find(",", posX);
-		posX=name.find("(", pos);
-		QString zColName=name.mid(pos+1, posX-pos-1);
-		int zCol=table->colIndex(zColName);
+	if (lst.size() == 3 && name.contains("(Z)", true)){
+		QString zColName = lst[2];
+		zColName.chop(3);
 		resetNonEmptyStyle();
-		loadData(table, xCol, yCol, zCol);
+		loadData(table, xCol, yCol, table->colIndex(zColName));
 	} else
 		updateDataXY(table, xCol, yCol);
 
@@ -3088,7 +3087,7 @@ void Graph3D::copy(Graph3D* g)
 		s.remove("(X)").remove("(Y)");
 		QStringList l = s.split(",");
 		if (l.size() == 2)
-			addRibbon(g->table(), l[0], l[1],g->xStart(),g->xStop(), g->yStart(),g->yStop(),g->zStart(),g->zStop());
+			addRibbon(g->table(), l[0], l[1], g->xStart(), g->xStop(), g->yStart(), g->yStop(), g->zStart(), g->zStop());
 	} else
 		addMatrixData(g->matrix(), g->xStart(), g->xStop(), g->yStart(), g->yStop(),g->zStart(),g->zStop());
 
@@ -3259,28 +3258,28 @@ Graph3D* Graph3D::restore(ApplicationWindow* app, const QStringList &lst, int fi
 	ApplicationWindow::restoreWindowGeometry(app, plot, lst[1]);
 	QString formula = fList[1];
 	if (!formula.isEmpty()){
-		if (formula.endsWith("(Y)",true)){//Ribbon plot
-			Table* t = app->table(formula.left(formula.find("_", 0)));
-			if (!t)
-				return 0;
-
+		if (formula.endsWith("(Y)", true)){//Ribbon plot
 			formula.remove("(X)").remove("(Y)");
 			QStringList l = formula.split(",");
-			if (l.size() == 2)
-				plot->addRibbon(t, l[0], l[1], fList[2].toDouble(), fList[3].toDouble(),
-				fList[4].toDouble(), fList[5].toDouble(), fList[6].toDouble(), fList[7].toDouble());
-		} else if (formula.contains("(Z)",true) > 0){
-			Table* t = app->table(formula.left(formula.find("_", 0)));
+			if (l.size() < 2)
+				return 0;
+			Table* t = app->table(l[0]);
 			if (!t)
 				return 0;
-
-			plot->show();
+			plot->addRibbon(t, l[0], l[1], fList[2].toDouble(), fList[3].toDouble(),
+					fList[4].toDouble(), fList[5].toDouble(), fList[6].toDouble(), fList[7].toDouble());
+		} else if (formula.contains("(Z)",true) > 0){
 			formula.remove("(X)").remove("(Y)").remove("(Z)");
 			QStringList l = formula.split(",");
-			if (l.size() == 3)
-				plot->loadData(t, t->colIndex(l[0]), t->colIndex(l[1]), t->colIndex(l[2]),
-						   fList[2].toDouble(),fList[3].toDouble(), fList[4].toDouble(),
-						   fList[5].toDouble(),fList[6].toDouble(),fList[7].toDouble());
+			if (l.size() < 3)
+				return 0;
+			Table* t = app->table(l[0]);
+			if (!t)
+				return 0;
+			plot->show();
+			plot->loadData(t, t->colIndex(l[0]), t->colIndex(l[1]), t->colIndex(l[2]),
+							fList[2].toDouble(), fList[3].toDouble(), fList[4].toDouble(),
+							fList[5].toDouble(), fList[6].toDouble(), fList[7].toDouble());
 		} else if (formula.startsWith("matrix<",true) && fList[1].endsWith(">",false)){
 			formula.remove("matrix<", true).remove(">");
 			Matrix* m = app->matrix(formula);
