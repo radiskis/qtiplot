@@ -2481,51 +2481,77 @@ int Table::colIndex(const QString& name)
 void Table::setHeaderColType()
 {
 	int xcols = 0;
-	for (int j=0; j < d_table->numCols(); j++){
+	for (int j = 0; j < d_table->numCols(); j++){
 		if (col_plot_type[j] == X)
 			xcols++;
 	}
 
 	if (xcols > 1){
 		xcols = 0;
-		for (int i=0; i < d_table->numCols(); i++){
-			if (col_plot_type[i] == X)
-				setColumnHeader(i, col_label[i]+"[X" + QString::number(++xcols) +"]");
-			else if (col_plot_type[i] == Y){
-				if(xcols>0)
-					setColumnHeader(i, col_label[i]+"[Y"+ QString::number(xcols) +"]");
-				else
-					setColumnHeader(i, col_label[i]+"[Y]");
-			} else if (col_plot_type[i] == Z){
-				if(xcols>0)
-					setColumnHeader(i, col_label[i]+"[Z"+ QString::number(xcols) +"]");
-				else
-					setColumnHeader(i, col_label[i]+"[Z]");
-			} else if (col_plot_type[i] == xErr)
-				setColumnHeader(i, col_label[i]+"[xEr]");
-			else if (col_plot_type[i] == yErr)
-				setColumnHeader(i, col_label[i]+"[yEr]");
-			else if (col_plot_type[i] == Label)
-				setColumnHeader(i, col_label[i]+"[L]");
-			else
-				setColumnHeader(i, col_label[i]);
+		for (int i = 0; i < d_table->numCols(); i++){
+			if (i >= col_label.size() || i >= col_plot_type.size())
+				continue;
+			int colType = col_plot_type[i];
+			QString label = col_label[i];
+			switch(colType){
+				case X:
+					setColumnHeader(i, label + "[X" + QString::number(++xcols) + "]");
+				break;
+				case Y:
+					if (xcols > 0)
+						setColumnHeader(i, label + "[Y" + QString::number(xcols) + "]");
+					else
+						setColumnHeader(i, label + "[Y]");
+				break;
+				case Z:
+					if (xcols > 0)
+						setColumnHeader(i, label + "[Z" + QString::number(xcols) + "]");
+					else
+						setColumnHeader(i, label + "[Z]");
+				break;
+				case xErr:
+					setColumnHeader(i, label + "[xEr]");
+				break;
+				case yErr:
+					setColumnHeader(i, label + "[yEr]");
+				break;
+				case Label:
+					setColumnHeader(i, label + "[L]");
+				break;
+				default:
+					setColumnHeader(i, label);
+				break;
+			}
 		}
 	} else {
-		for (int i=0; i < d_table->numCols(); i++){
-			if (col_plot_type[i] == X)
-				setColumnHeader(i, col_label[i]+"[X]");
-			else if (col_plot_type[i] == Y)
-				setColumnHeader(i, col_label[i]+"[Y]");
-			else if (col_plot_type[i] == Z)
-				setColumnHeader(i, col_label[i]+"[Z]");
-			else if (col_plot_type[i] == xErr)
-				setColumnHeader(i, col_label[i]+"[xEr]");
-			else if (col_plot_type[i] == yErr)
-				setColumnHeader(i, col_label[i]+"[yEr]");
-			else if (col_plot_type[i] == Label)
-				setColumnHeader(i, col_label[i]+"[L]");
-			else
-				setColumnHeader(i, col_label[i]);
+		for (int i = 0; i < d_table->numCols(); i++){
+			if (i >= col_label.size() || i >= col_plot_type.size())
+				continue;
+			int colType = col_plot_type[i];
+			QString label = col_label[i];
+			switch(colType){
+				case X:
+					setColumnHeader(i, label + "[X]");
+				break;
+				case Y:
+					setColumnHeader(i, label + "[Y]");
+				break;
+				case Z:
+					setColumnHeader(i, label + "[Z]");
+				break;
+				case xErr:
+					setColumnHeader(i, label + "[xEr]");
+				break;
+				case yErr:
+					setColumnHeader(i, label + "[yEr]");
+				break;
+				case Label:
+					setColumnHeader(i, label + "[L]");
+				break;
+				default:
+					setColumnHeader(i, label);
+				break;
+			}
 		}
 	}
 }
@@ -3745,7 +3771,8 @@ void Table::setColumnHeader(int index, const QString& label)
 	if (d_show_comments){
 		QString s = label;
 		int lines = d_table->columnWidth(index)/head->fontMetrics().boundingRect("_").width();
-		head->setLabel(index, s.remove("\n") + "\n" + QString(lines, '_') + "\n" + comments[index]);
+		if (index >= 0 && index < comments.size())
+			head->setLabel(index, s.remove("\n") + "\n" + QString(lines, '_') + "\n" + comments[index]);
 	} else
 		head->setLabel(index, label);
 }
