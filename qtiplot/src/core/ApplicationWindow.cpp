@@ -18063,7 +18063,7 @@ void ApplicationWindow::moveTableRowDown()
 void ApplicationWindow::restoreApplicationGeometry()
 {
     if (d_app_rect.isNull()){
-#ifndef Q_WS_WIN
+#ifdef Q_WS_X11
 	MultiLayer *ml = (MultiLayer *)activeWindow(MultiLayerWindow);
 	bool scaleLayers = true;
 	if (ml && ml->isMaximized()){
@@ -18073,7 +18073,7 @@ void ApplicationWindow::restoreApplicationGeometry()
 #endif
 	showMaximized();
 
-#ifndef Q_WS_WIN
+#ifdef Q_WS_X11
 	QCoreApplication::processEvents();
 	if (ml && ml->isMaximized())
 	    ml->setScaleLayersOnResize(scaleLayers);

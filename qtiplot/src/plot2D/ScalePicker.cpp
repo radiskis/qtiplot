@@ -49,33 +49,34 @@ ScalePicker::ScalePicker(Graph *plot):
 
 bool ScalePicker::eventFilter(QObject *object, QEvent *e)
 {
-	if (!object->inherits("QwtScaleWidget"))
+	QwtScaleWidget *scale = qobject_cast<QwtScaleWidget *>(object);
+	if (!scale)
 		return QObject::eventFilter(object, e);
 
-	QwtScaleWidget *scale = (QwtScaleWidget *)object;
-	d_current_axis = scale;
-
-	if ( e->type() == QEvent::MouseButtonDblClick ){
+	if (e->type() == QEvent::MouseButtonDblClick){
+		d_current_axis = scale;
 		mouseDblClicked(scale, ((QMouseEvent *)e)->pos());
 		return true;
 	}
 
-	if ( e->type() == QEvent::MouseButtonPress){
+	if (e->type() == QEvent::MouseButtonPress){
+		d_current_axis = scale;
 		const QMouseEvent *me = (const QMouseEvent *)e;
 		QPoint pos = me->pos();
-		if (me->button() == Qt::LeftButton){
-			scale->setFocus();
-			emit clicked();
 
-			deselect();
+		scale->setFocus();
+		emit clicked();
 
-			if (titleRect(scale).contains(pos))
-				selectTitle(scale);
-			else if (!scaleTicksRect(scale).contains(pos))
-				selectLabels(scale);
+		deselect();
 
+		if (titleRect(scale).contains(pos))
+			selectTitle(scale);
+		else if (!scaleTicksRect(scale).contains(pos))
+			selectLabels(scale);
+
+		if (me->button() == Qt::LeftButton)
 			return !(me->modifiers() & Qt::ShiftModifier) && !scaleTicksRect(scale).contains(pos);
-		} else if (me->button() == Qt::RightButton){
+		else if (me->button() == Qt::RightButton){
 			mouseRightClicked(scale, pos);
 			return true;
 		}
