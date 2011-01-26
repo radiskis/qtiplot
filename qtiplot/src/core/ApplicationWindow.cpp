@@ -5146,10 +5146,10 @@ ApplicationWindow* ApplicationWindow::openProject(const QString& fn, bool factor
 	app->blockSignals (false);
 	app->renamedTables.clear();
 	app->executeNotes();
-	app->d_workspace->blockSignals(false);
-	app->addWindowsListToCompleter();
-	app->restoreApplicationGeometry();
-	app->d_opening_file = false;
+        app->d_workspace->blockSignals(false);
+        app->addWindowsListToCompleter();
+        app->restoreApplicationGeometry();
+        app->d_opening_file = false;
 	app->savedProject();
 	return app;
 }
@@ -12576,6 +12576,8 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot, co
 		}
 		else if (s.startsWith ("<Autoscaling>") && s.endsWith ("</Autoscaling>"))
 			ag->enableAutoscaling(s.remove("<Autoscaling>").remove("</Autoscaling>").toInt());
+		else if (s.startsWith ("<ScaleFonts>") && s.endsWith ("</ScaleFonts>"))
+			ag->setAutoscaleFonts(s.remove("<ScaleFonts>").remove("</ScaleFonts>").toInt());
 		else if (s.contains ("PieCurve")){
 			QStringList curve=s.split("\t");
 			if (!app->renamedTables.isEmpty()){
@@ -13175,7 +13177,6 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot, co
 		ag->updateLayout();
 		ag->setSynchronizedScaleDivisions(d_synchronize_graph_scales);
 		ag->blockSignals(false);
-		ag->setAutoscaleFonts(app->autoScaleFonts);
 	}
     return ag;
 }
@@ -18061,13 +18062,27 @@ void ApplicationWindow::moveTableRowDown()
 
 void ApplicationWindow::restoreApplicationGeometry()
 {
-	if (d_app_rect.isNull())
-		showMaximized();
-	else {
-		resize(d_app_rect.size());
-		move(d_app_rect.topLeft());
-		show();
+    if (d_app_rect.isNull()){
+#ifndef Q_WS_WIN
+	MultiLayer *ml = (MultiLayer *)activeWindow(MultiLayerWindow);
+	bool scaleLayers = true;
+	if (ml && ml->isMaximized()){
+	    scaleLayers = ml->scaleLayersOnResize();
+	    ml->setScaleLayersOnResize(false);
 	}
+#endif
+	showMaximized();
+
+#ifndef Q_WS_WIN
+	QCoreApplication::processEvents();
+	if (ml && ml->isMaximized())
+	    ml->setScaleLayersOnResize(scaleLayers);
+#endif
+    } else {
+	resize(d_app_rect.size());
+	move(d_app_rect.topLeft());
+	show();
+    }
 }
 
 void ApplicationWindow::scriptsDirPathChanged(const QString& path)

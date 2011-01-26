@@ -4229,6 +4229,7 @@ QString Graph::saveToString(bool saveAsTemplate)
 	s+=saveTitle();
 	s+="<Antialiasing>" + QString::number(d_antialiasing) + "</Antialiasing>\n";
 	s+="<Autoscaling>" + QString::number(d_auto_scale) + "</Autoscaling>\n";
+	s+="<ScaleFonts>" + QString::number(autoScaleFonts) + "</ScaleFonts>\n";
 	s+="Background\t" + paletteBackgroundColor().name() + "\t";
 	s+=QString::number(paletteBackgroundColor().alpha()) + "\n";
 	s+=saveBackgroundImage();
