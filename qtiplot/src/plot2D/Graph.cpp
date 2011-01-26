@@ -2,7 +2,7 @@
     File                 : Graph.cpp
     Project              : QtiPlot
     --------------------------------------------------------------------
-	Copyright            : (C) 2004-2010 by Ion Vasilief
+	Copyright            : (C) 2004-2011 by Ion Vasilief
     Email (use @ for *)  : ion_vasilief*yahoo.fr
     Description          : Graph widget
 
@@ -5436,8 +5436,11 @@ void Graph::setAntialiasing(bool on, bool update)
 
 bool Graph::isCurveAntialiasingEnabled(QwtPlotItem *it)
 {
-	if (!d_antialiasing)
+	if (!d_antialiasing || !it)
 		return false;
+
+	if (it->rtti() == QwtPlotItem::Rtti_PlotSpectrogram)
+		return true;
 
 	if (d_disable_curve_antialiasing && ((PlotCurve *)it)->dataSize() > d_max_antialising_size)
 		return false;
