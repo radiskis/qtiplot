@@ -1292,7 +1292,7 @@ void Graph::updateSecondaryAxis(int axis, bool changeFormat)
 		return;
 
 	if (changeFormat && axisScaleDraw(axis)->hasComponent(QwtAbstractScaleDraw::Labels)){
-		ScaleDraw *sd = (ScaleDraw *)axisScaleDraw (a);
+		ScaleDraw *sd = (ScaleDraw *)axisScaleDraw(a);
 		ScaleDraw::ScaleType type = sd->scaleType();
 		if (type == ScaleDraw::Day)
 			setLabelsDayFormat(axis, sd->nameFormat());
@@ -1301,7 +1301,7 @@ void Graph::updateSecondaryAxis(int axis, bool changeFormat)
 		else if (type == ScaleDraw::Time || type == ScaleDraw::Date)
 			setLabelsDateTimeFormat(axis, type, sd->formatString());
 		else
-			setAxisScaleDraw(axis, new ScaleDraw(this, sd->labelsList(), sd->formatString(), sd->scaleType()));
+			setAxisScaleDraw(axis, new ScaleDraw(this, sd));
 	}
 
 	ScaleEngine *sc_engine = (ScaleEngine *)axisScaleEngine(axis);
@@ -1313,9 +1313,9 @@ void Graph::updateSecondaryAxis(int axis, bool changeFormat)
 
 void Graph::invertScale(int axis)
 {
-QwtScaleDiv *scaleDiv = axisScaleDiv(axis);
-if (scaleDiv)
-    scaleDiv->invert();
+	QwtScaleDiv *scaleDiv = axisScaleDiv(axis);
+	if (scaleDiv)
+		scaleDiv->invert();
 }
 
 QwtDoubleInterval Graph::axisBoundingInterval(int axis)
@@ -3381,7 +3381,6 @@ bool Graph::addCurves(Table* w, const QStringList& names, int style, double lWid
 
 	updateSecondaryAxis(QwtPlot::xTop, true);
 	updateSecondaryAxis(QwtPlot::yRight, true);
-
 	updateAxesTitles();
 
 	replot();
