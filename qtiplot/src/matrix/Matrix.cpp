@@ -33,6 +33,8 @@
 #include <muParserScript.h>
 #include <ScriptingEnv.h>
 #include <ColorMapEditor.h>
+#include <ExcelFileConverter.h>
+#include <ImportExportPlugin.h>
 
 #include <QtGlobal>
 #include <QTextStream>
@@ -68,16 +70,6 @@
 
 #include <gsl/gsl_math.h>
 #include <gsl/gsl_linalg.h>
-
-#ifdef EMF_OUTPUT
-#include <EmfEngine.h>
-#endif
-
-#ifdef XLS_IMPORT
-    #include <ExcelFormat.h>
-	#include <ExcelFileConverter.h>
-    using namespace ExcelFormat;
-#endif
 
 Matrix::Matrix(ScriptingEnv *env, int r, int c, const QString& label, ApplicationWindow* parent, const QString& name, Qt::WFlags f)
 : MdiSubWindow(label, parent, name, f), scripted(env)
@@ -970,16 +962,12 @@ void Matrix::exportToFile(const QString& fileName)
 	} else if(fileName.contains(".svg")){
 		exportSVG(fileName);
 		return;
-	}
-#ifdef EMF_OUTPUT
-	else if(fileName.contains(".emf")){
+	} else if(fileName.contains(".emf")){
 		exportEMF(fileName);
 		return;
-	}
-#endif
-	else {
+	} else {
 		QList<QByteArray> list = QImageWriter::supportedImageFormats();
-    	for(int i=0 ; i<list.count() ; i++){
+		for(int i=0 ; i<list.count() ; i++){
 			if (fileName.contains( "." + list[i].toLower())){
 				d_matrix_model->renderImage().save(fileName, list[i], 100);
 				return;
@@ -1155,18 +1143,15 @@ void Matrix::exportVector(const QString& fileName, int res, bool color)
     paint.end();
 }
 
-#ifdef EMF_OUTPUT
 void Matrix::exportEMF(const QString& fileName)
 {
-	int width = numRows();
-	int height = numCols();
-
-	EmfPaintDevice emf(QSize(width, height), fileName);
-	QPainter p(&emf);
-	p.drawImage (QRect(0, 0, width, height), d_matrix_model->renderImage());
-	p.end();
+	if (!applicationWindow())
+		return;
+	ImportExportPlugin *ep = applicationWindow()->exportPlugin("emf");
+	if (!ep)
+		return;
+	ep->exportMatrix(this, fileName, false);
 }
-#endif
 
 bool Matrix::isEmpty()
 {
@@ -1635,7 +1620,6 @@ bool Matrix::exportODF(const QString& fname, bool exportSelection)
 	return false;
 }
 
-#ifdef XLS_IMPORT
 bool Matrix::exportExcelAndConvertTo(const QString& fname, bool exportSelection)
 {
 	QString name = fname;
@@ -1646,63 +1630,20 @@ bool Matrix::exportExcelAndConvertTo(const QString& fname, bool exportSelection)
 
 	QFile::remove(fname);
 
-	ExcelFileConverter(name, -1, this->applicationWindow(), ExcelFileConverter::Convert);
+	ExcelFileConverter(name, -1, applicationWindow());
 	return true;
 }
 
 bool Matrix::exportExcel(const QString& fname, bool exportSelection)
 {
-	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+	if (!applicationWindow())
+		return false;
+	ImportExportPlugin *ep = applicationWindow()->exportPlugin("xls");
+	if (!ep)
+		return false;
 
-	int topRow = 0;
-	int bottomRow = numRows() - 1;
-	int leftCol = 0;
-	int rightCol = numCols() - 1;
-
-	if (exportSelection && d_view_type == TableView){
-		QModelIndexList selectedIndexes = d_table_view->selectionModel()->selectedIndexes();
-		if (!selectedIndexes.isEmpty()){
-			topRow = selectedIndexes[0].row();
-			bottomRow = topRow;
-			leftCol = selectedIndexes[0].column();
-			rightCol = leftCol;
-		}
-
-		foreach(QModelIndex index, selectedIndexes){
-			int row = index.row();
-			if (row < topRow)
-				topRow = row;
-			if (row > bottomRow)
-				bottomRow = row;
-
-			int col = index.column();
-			if (col < leftCol)
-				leftCol = col;
-			if (col > rightCol)
-				rightCol = col;
-		}
-	}
-
-	BasicExcel xls;
-	xls.New(1);
-	BasicExcelWorksheet* sheet = xls.GetWorksheet((size_t)0);
-
-	rightCol = QMIN(rightCol, 256);
-	bottomRow = QMIN(bottomRow, 65536);
-	for (int i = topRow; i <= bottomRow; i++){
-		for (int j = leftCol; j <= rightCol; j++){
-			if (d_matrix_model->text(i, j).isEmpty())
-				continue;
-			sheet->Cell(i, j)->Set(d_matrix_model->cell(i, j));
-		}
-	}
-
-	xls.SaveAs(fname);
-
-	QApplication::restoreOverrideCursor();
-	return true;
+	return ep->exportMatrix(this, fname, exportSelection);
 }
-#endif
 
 bool Matrix::exportASCII(const QString& fname, const QString& separator, bool exportSelection)
 {
@@ -1717,7 +1658,6 @@ bool Matrix::exportASCII(const QString& fname, const QString& separator, bool ex
 		f.close();
 		return exportODF(fname, exportSelection);
 	}
-#ifdef XLS_IMPORT
 	else if (fname.endsWith(".xls")){
 		f.close();
 		return exportExcel(fname, exportSelection);
@@ -1725,7 +1665,6 @@ bool Matrix::exportASCII(const QString& fname, const QString& separator, bool ex
 		f.close();
 		return exportExcelAndConvertTo(fname, exportSelection);
 	}
-#endif
 
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 

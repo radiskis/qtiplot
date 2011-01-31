@@ -32,6 +32,8 @@
 #include <ImportASCIIDialog.h>
 #include <muParserScript.h>
 #include <ApplicationWindow.h>
+#include <ExcelFileConverter.h>
+#include <ImportExportPlugin.h>
 
 #include <QMessageBox>
 #include <QDateTime>
@@ -63,12 +65,6 @@
 #include <gsl/gsl_heapsort.h>
 #include <gsl/gsl_rng.h>
 #include <gsl/gsl_randist.h>
-
-#ifdef XLS_IMPORT
-    #include <ExcelFormat.h>
-	#include <ExcelFileConverter.h>
-    using namespace ExcelFormat;
-#endif
 
 Table::Table(ScriptingEnv *env, int r, int c, const QString& label, ApplicationWindow* parent, const QString& name, Qt::WFlags f)
 : MdiSubWindow(label,parent,name,f), scripted(env)
@@ -2861,7 +2857,6 @@ void Table::importASCII(const QString &fname, const QString &sep, int ignoredLin
 	}
 }
 
-#ifdef XLS_IMPORT
 bool Table::exportExcelAndConvertTo(const QString& fname, bool withLabels, bool exportComments, bool exportSelection)
 {
 	QString name = fname;
@@ -2871,188 +2866,19 @@ bool Table::exportExcelAndConvertTo(const QString& fname, bool withLabels, bool 
 		return false;
 
 	QFile::remove(fname);
-
-	ExcelFileConverter(name, -1, this->applicationWindow(), ExcelFileConverter::Convert);
+	ExcelFileConverter(name, -1, applicationWindow());
 	return true;
 }
 
 bool Table::exportExcel(const QString& fname, bool withLabels, bool exportComments, bool exportSelection)
 {
-	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+	if (!applicationWindow())
+		return false;
+	ImportExportPlugin *ep = applicationWindow()->exportPlugin("xls");
+	if (!ep)
+		return false;
 
-	int rows = d_table->numRows();
-	int cols = d_table->numCols();
-	int selectedCols = 0;
-	int topRow = 0, bottomRow = 0;
-	int *sCols = 0;
-	if (exportSelection){
-		for (int i=0; i<cols; i++){
-			if (d_table->isColumnSelected(i))
-				selectedCols++;
-		}
-
-		sCols = new int[selectedCols];
-		int aux = 0;
-		for (int i=0; i<cols; i++){
-			if (d_table->isColumnSelected(i)){
-				sCols[aux] = i;
-				aux++;
-			}
-		}
-
-		for (int i=0; i<rows; i++){
-			if (d_table->isRowSelected(i)){
-				topRow = i;
-				break;
-			}
-		}
-
-		for (int i = rows - 1; i > 0; i--){
-			if (d_table->isRowSelected(i)){
-				bottomRow = i;
-				break;
-			}
-		}
-	}
-
-	int aux = selectedCols;
-	if (!selectedCols)
-		aux = cols;
-
-	aux = QMIN(aux, 256);
-
-	int headerRows = 0;
-	if (withLabels)
-		headerRows++;
-	if (exportComments)
-		headerRows++;
-
-	BasicExcel xls;
-	xls.New(1);
-	BasicExcelWorksheet* sheet = xls.GetWorksheet((size_t)0);
-
-	XLSFormatManager fmt_mgr(xls);
-	ExcelFont font_bold;
-	font_bold._weight = 700;
-	CellFormat fmt_bold(fmt_mgr, font_bold);
-	for (int i = 0; i < aux; i++){
-		for (int j = 0; j < headerRows; j++){
-			BasicExcelCell* cell = sheet->Cell(j, i);
-			cell->SetFormat(fmt_bold);
-		}
-	}
-
-	int startRow = 0;
-	if (withLabels){
-		startRow++;
-
-		QStringList header = colNames();
-		QStringList ls = header.grep ( QRegExp ("\\D"));
-		if (exportSelection && selectedCols){
-			for (int i = 0; i < aux; i++){
-				BasicExcelCell* cell = sheet->Cell(0, i);
-				if (ls.count()>0)
-					cell->Set(header[sCols[i]].toStdString().c_str());
-				else
-					cell->Set(("C" + header[sCols[i]]).toStdString().c_str());
-			}
-		} else {
-			if (ls.count() > 0){
-				for (int j = 0; j < aux; j++){
-					BasicExcelCell* cell = sheet->Cell(0, j);
-					cell->Set(header[j].toStdString().c_str());
-				}
-			} else {
-				for (int j = 0; j < aux; j++){
-					BasicExcelCell* cell = sheet->Cell(0, j);
-					cell->Set(("C" + header[j]).toStdString().c_str());
-				}
-			}
-		}
-	}// finished writting labels
-
-	if (exportComments){
-		if (exportSelection && selectedCols){
-			for (int i = 0; i < aux; i++){
-				QString s = comments[sCols[i]];
-				if (s.isEmpty())
-					continue;
-				sheet->Cell(startRow, i)->Set(s.toStdString().c_str());
-			}
-		} else {
-			for (int i = 0; i < aux; i++){
-				QString s = comments[i];
-				if (s.isEmpty())
-					continue;
-				sheet->Cell(startRow, i)->Set(s.toStdString().c_str());
-			}
-		}
-		startRow++;
-	}
-
-	if (exportSelection && selectedCols){
-		for (int i = topRow; i <= bottomRow; i++){
-			for (int j = 0; j < aux; j++){
-				int col = sCols[j];
-				QString s = d_table->text(i, col);
-				if (s.isEmpty())
-					continue;
-
-				BasicExcelCell* c = sheet->Cell(startRow, j);
-				int colType = colTypes[col];
-				if (colType == Numeric)
-					c->Set(cell(i, col));
-				else if (colType == Table::Date || colType == Table::Time){
-					QString fmt = col_format[col].trimmed();
-					c->Set(excelDateTime(s.trimmed(), fmt, colType));
-					c->SetFormat(CellFormat(fmt_mgr).set_format_string(fmt));
-				} else
-					c->Set(s.toStdString().c_str());
-			}
-			startRow++;
-			if (startRow > 65536)
-				break;
-		}
-		delete [] sCols;
-	} else {
-		for (int i = 0; i < rows; i++){
-			for (int j = 0; j < aux; j++){
-				QString s = d_table->text(i, j);
-				if (s.isEmpty())
-					continue;
-
-				BasicExcelCell* c = sheet->Cell(startRow, j);
-				int colType = colTypes[j];
-				if (colType == Numeric)
-					c->Set(cell(i, j));
-				else if (colType == Table::Date || colType == Table::Time){
-					QString fmt = col_format[j].trimmed();
-					c->Set(excelDateTime(s.trimmed(), fmt, colType));
-					c->SetFormat(CellFormat(fmt_mgr).set_format_string(fmt));
-				} else
-					c->Set(s.toStdString().c_str());
-			}
-			startRow++;
-			if (startRow > 65536)
-				break;
-		}
-	}
-
-	xls.SaveAs(fname);
-
-	QApplication::restoreOverrideCursor();
-	return true;
-}
-#endif
-
-double Table::excelDateTime(const QString& s, const QString& fmt, int colType)
-{
-	if (colType == Table::Date){
-		QDateTime dt = QDateTime::fromString(s, fmt);
-		return fabs(QDate(1900, 1, 1).daysTo(dt.date())) + 2 + QTime(0, 0).msecsTo(dt.time())/86400000.0;
-	}
-
-	return QTime(0, 0).msecsTo(QTime::fromString(s, fmt))/86400000.0;
+	return ep->exportTable(this, fname, withLabels, exportComments, exportSelection);
 }
 
 bool Table::exportODF(const QString& fname, bool withLabels, bool exportComments, bool exportSelection)
@@ -3213,7 +3039,6 @@ bool Table::exportASCII(const QString& fname, const QString& separator,
 		f.close();
 		return exportODF(fname, withLabels, exportComments, exportSelection);
 	}
-#ifdef XLS_IMPORT
 	else if (fname.endsWith(".xls")){
 		f.close();
 		return exportExcel(fname, withLabels, exportComments, exportSelection);
@@ -3221,7 +3046,6 @@ bool Table::exportASCII(const QString& fname, const QString& separator,
 		f.close();
 		return exportExcelAndConvertTo(fname, withLabels, exportComments, exportSelection);
 	}
-#endif
 
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 

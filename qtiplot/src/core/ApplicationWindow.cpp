@@ -2,7 +2,7 @@
 	File                 : ApplicationWindow.cpp
 	Project              : QtiPlot
 --------------------------------------------------------------------
-	Copyright            : (C) 2004 - 2010 by Ion Vasilief,
+	Copyright            : (C) 2004 - 2011 by Ion Vasilief,
 						   (C) 2006 - June 2007 Tilman Hoener zu Siederdissen, Knut Franke
 	Email (use @ for *)  : ion_vasilief*yahoo.fr
 	Description          : QtiPlot's main window
@@ -127,6 +127,7 @@
 #include <PythonSyntaxHighlighter.h>
 #include <CreateBinMatrixDialog.h>
 #include <StudentTestDialog.h>
+#include <ImportExportPlugin.h>
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -142,6 +143,7 @@ using namespace std;
 #include <qwt_plot_magnifier.h>
 #include <qwt_symbol.h>
 
+#include <QPluginLoader>
 #include <QFileDialog>
 #include <QInputDialog>
 #include <QProgressDialog>
@@ -190,22 +192,12 @@ using namespace std;
 #include <gsl/gsl_statistics.h>
 #include <gsl/gsl_sort.h>
 
-#ifdef XLS_IMPORT
-	#include <ExcelFormat.h>
-	#include <BasicExcel.hpp>
-	using namespace ExcelFormat;
-#endif
-
 #ifdef ODS_IMPORT
 	#include <QTemporaryFile>
 	#include <OdsFileHandler.h>
 	#include <ExcelFileConverter.h>
 	#include <quazip.h>
 	#include <quazipfile.h>
-#endif
-
-#ifdef OPJ_IMPORT
-	#include "importOPJ.h"
 #endif
 
 #ifdef HAVE_ALGLIB
@@ -406,6 +398,7 @@ void ApplicationWindow::init(bool factorySettings)
 
     loadCustomActions();
     initCompleter();
+	loadPlugins();
 
 #ifdef SCRIPTING_PYTHON
 	if (defaultScriptingLang == QString("Python"))
@@ -2616,10 +2609,8 @@ void ApplicationWindow::exportMatrix(const QString& exportFilter)
 		m->exportVector(file_name, ied->vectorResolution(), ied->color());
 	else if (selected_filter.contains(".svg"))
 		m->exportSVG(file_name);
-#ifdef EMF_OUTPUT
 	else if (selected_filter.contains(".emf"))
 		m->exportEMF(file_name);
-#endif
 	else if (selected_filter.contains(".odf"))
 		m->exportRasterImage(file_name, ied->quality(), ied->bitmapResolution());
 	else {
@@ -4323,9 +4314,12 @@ Table * ApplicationWindow::importOdfSpreadsheet(const QString& fileName, int she
 #endif
 }
 
-#ifdef XLS_IMPORT
 void ApplicationWindow::exportExcel()
 {
+	ImportExportPlugin *ep = exportPlugin("xls");
+	if (!ep)
+		return;
+
 	ExportDialog *ed = showExportASCIIDialog();
 	if (ed){
 		ed->setWindowTitle(tr("Export Excel"));
@@ -4336,6 +4330,10 @@ void ApplicationWindow::exportExcel()
 
 void ApplicationWindow::exportOds()
 {
+	ImportExportPlugin *ep = exportPlugin("xls");
+	if (!ep)
+		return;
+
 	ExportDialog *ed = showExportASCIIDialog();
 	if (ed){
 		ed->setWindowTitle(tr("Export Open Document Spreadsheet"));
@@ -4343,7 +4341,6 @@ void ApplicationWindow::exportOds()
 		ed->updateAdvancedOptions(".ods");
 	}
 }
-#endif
 
 Table * ApplicationWindow::importExcel(const QString& fileName, int sheet)
 {
@@ -4368,20 +4365,18 @@ Table * ApplicationWindow::importExcel(const QString& fileName, int sheet)
 	#endif
 #endif
 
-#ifdef ODS_IMPORT
 	return importExcelCrossplatform(fn, sheet);
-#endif
-
-	return NULL;
 }
 
-#ifdef ODS_IMPORT
-Table * ApplicationWindow::importExcelCrossplatform(const QString& fn, int sheet)
+Table * ApplicationWindow::importExcelCrossplatform(const QString& fileName, int)
 {
-	ExcelFileConverter efc(fn, sheet, this);
-	return efc.outputTable();
+	ImportExportPlugin *plugin = importPlugin(fileName);
+	if (plugin){
+		plugin->setApplicationWindow(this);
+		plugin->import(fileName);
+	}
+	return 0;
 }
-#endif
 
 Table * ApplicationWindow::importWaveFile()
 {
@@ -4755,12 +4750,10 @@ ApplicationWindow* ApplicationWindow::open(const QString& fn, bool factorySettin
 	if (!this->isFileReadable(fn))
 		return NULL;
 
-#ifdef OPJ_IMPORT
 	if (fn.endsWith(".opj", Qt::CaseInsensitive) || fn.endsWith(".ogm", Qt::CaseInsensitive) ||
 		fn.endsWith(".ogw", Qt::CaseInsensitive) || fn.endsWith(".ogg", Qt::CaseInsensitive))
 		return importOPJ(fn, factorySettings, newProject);
 	else
-#endif
 #ifdef Q_OS_WIN
 	#ifdef HAS_EXCEL
 	if (isExcelInstalled()){
@@ -6379,12 +6372,10 @@ void ApplicationWindow::exportGraph(const QString& exportFilter)
         return;
     }
 
-#ifdef EMF_OUTPUT
     if (plot2D && selected_filter.contains(".emf")){
 		plot2D->exportEMF(file_name, ied->customExportSize(), ied->sizeUnit(), ied->scaleFontsFactor());
 		return;
     }
-#endif
 
 #ifdef TEX_OUTPUT
 	if (plot2D && selected_filter.contains(".tex")){
@@ -6458,12 +6449,10 @@ void ApplicationWindow::exportLayer()
 			ied->customExportSize(), ied->sizeUnit(), ied->scaleFontsFactor());
 	else if (selected_filter.contains(".svg"))
 		g->exportSVG(file_name, ied->customExportSize(), ied->sizeUnit(), ied->scaleFontsFactor());
-#ifdef EMF_OUTPUT
-    else if (selected_filter.contains(".emf"))
+	else if (selected_filter.contains(".emf"))
 		g->exportEMF(file_name, ied->customExportSize(), ied->sizeUnit(), ied->scaleFontsFactor());
-#endif
 #ifdef TEX_OUTPUT
-    else if (selected_filter.contains(".tex"))
+	else if (selected_filter.contains(".tex"))
 		g->exportTeX(file_name, ied->color(), ied->escapeStrings(), ied->exportFontSizes(), ied->customExportSize(), ied->sizeUnit(), ied->scaleFontsFactor());
 #endif
     else if (selected_filter.contains(".odf"))
@@ -6622,12 +6611,10 @@ void ApplicationWindow::exportAllGraphs()
 		}
 		f.close();
 
-#ifdef EMF_OUTPUT
 	if (plot2D && file_suffix.contains(".emf")){
 		plot2D->exportEMF(file_name, ied->customExportSize(), ied->sizeUnit(), ied->scaleFontsFactor());
 		return;
 	}
-#endif
 
 #ifdef TEX_OUTPUT
 	if (plot2D && file_suffix.contains(".tex")){
@@ -10181,10 +10168,8 @@ void ApplicationWindow::fileMenuAboutToShow()
 		} else if (w->inherits("Table") || w->isA("Matrix")){
 			QMenu *exportMenu = fileMenu->addMenu(tr("Export"));
 			exportMenu->addAction(actionShowExportASCIIDialog);
-		#ifdef XLS_IMPORT
 			exportMenu->addAction(actionExportExcel);
 			exportMenu->addAction(actionExportOds);
-		#endif
 			exportMenu->addAction(actionExportPDF);
 			if (w->isA("Matrix"))
 				exportMenu->addAction(actionExportMatrix);
@@ -11145,8 +11130,14 @@ void ApplicationWindow::customWindowTitleBarMenu(MdiSubWindow *w, QMenu *menu)
 	menu->addSeparator();
 
 	if (w->inherits("Table") || w->isA("Matrix")){
-	    menu->addAction(actionLoad);
-		menu->addAction(actionShowExportASCIIDialog);
+		menu->addAction(actionLoad);
+		QMenu *exportMenu = menu->addMenu(tr("Export"));
+		exportMenu->addAction(actionShowExportASCIIDialog);
+		exportMenu->addAction(actionExportExcel);
+		exportMenu->addAction(actionExportOds);
+		exportMenu->addAction(actionExportPDF);
+		if (w->isA("Matrix"))
+			exportMenu->addAction(actionExportMatrix);
 		menu->addSeparator();
 	}
 
@@ -13833,19 +13824,17 @@ void ApplicationWindow::createActions()
 	actionOpen->setShortcut( tr("Ctrl+O") );
 	connect(actionOpen, SIGNAL(activated()), this, SLOT(open()));
 
-#ifdef XLS_IMPORT
 	actionExportExcel = new QAction(QIcon(":/new_excel.png"), tr("Export Exce&l ..."), this);
 	connect(actionExportExcel, SIGNAL(activated()), this, SLOT(exportExcel()));
 
 	actionExportOds = new QAction(QIcon(":/new_ods.png"), tr("Export &Open Document Spreadsheet ..."), this);
 	connect(actionExportOds, SIGNAL(activated()), this, SLOT(exportOds()));
-#endif
 
-#ifdef ODS_IMPORT
 	actionOpenExcel = new QAction(QIcon(":/open_excel.png"), tr("Open Exce&l ..."), this);
 	actionOpenExcel->setShortcut( tr("Ctrl+Shift+E") );
 	connect(actionOpenExcel, SIGNAL(activated()), this, SLOT(importExcel()));
 
+#ifdef ODS_IMPORT
 	actionOpenOds = new QAction(QIcon(":/ods_spreadsheet.png"), tr("Open ODF Spreads&heet..."), this);
 	actionOpenOds->setShortcut( tr("Ctrl+Alt+S") );
 	connect(actionOpenOds, SIGNAL(activated()), this, SLOT(importOdfSpreadsheet()));
@@ -14857,13 +14846,12 @@ void ApplicationWindow::translateActionsStrings()
 	actionOpen->setShortcut(tr("Ctrl+O"));
 	actionOpen->setToolTip(tr("Open project"));
 
-#ifdef XLS_IMPORT
 	actionExportExcel->setMenuText(tr("Export Exce&l ..."));
 	actionExportExcel->setToolTip(tr("Export Excel"));
 
 	actionExportOds->setMenuText(tr("Export &Open Document Spreadsheet ..."));
 	actionExportOds->setToolTip(tr("Export Open Document Spreadsheet"));
-#endif
+
 #ifdef ODS_IMPORT
 	actionOpenOds->setMenuText(tr("Open ODF Spreads&heet..."));
 	actionOpenOds->setShortcut( tr("Ctrl+Alt+S") );
@@ -15706,9 +15694,12 @@ MultiLayer* ApplicationWindow::plotImageProfiles(Matrix *m)
 	return g;
 }
 
-#ifdef OPJ_IMPORT
 ApplicationWindow* ApplicationWindow::importOPJ(const QString& filename, bool factorySettings, bool newProject)
-{
+{	
+	ImportExportPlugin *op = importPlugin(filename);
+	if (!op)
+		return 0;
+
 	if (filename.endsWith(".opj", Qt::CaseInsensitive) || filename.endsWith(".ogg", Qt::CaseInsensitive)){
 		QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
@@ -15721,19 +15712,20 @@ ApplicationWindow* ApplicationWindow::importOPJ(const QString& filename, bool fa
 		app->projectname = filename;
 		app->updateRecentProjectsList(filename);
 
-		ImportOPJ(app, filename);
+		op->setApplicationWindow(app);
+		op->import(filename);
 
 		app->explorerWindow->setVisible(true);
 		QApplication::restoreOverrideCursor();
 		return app;
 	} else if (filename.endsWith(".ogm", Qt::CaseInsensitive) || filename.endsWith(".ogw", Qt::CaseInsensitive)){
-		ImportOPJ(this, filename);
+		op->setApplicationWindow(this);
+		op->import(filename);
 		updateRecentProjectsList(filename);
 		return this;
 	}
 	return 0;
 }
-#endif
 
 void ApplicationWindow::deleteFitTables()
 {
@@ -16407,12 +16399,10 @@ Folder* ApplicationWindow::appendProject(const QString& fn, Folder* parentFolder
 	FolderListItem *fli = new FolderListItem(item, current_folder);
 	current_folder->setFolderListItem(fli);
 
-#ifdef OPJ_IMPORT
 	if (fn.contains(".opj", Qt::CaseInsensitive) || fn.contains(".ogm", Qt::CaseInsensitive) ||
 		fn.contains(".ogw", Qt::CaseInsensitive) || fn.contains(".ogg", Qt::CaseInsensitive))
-		ImportOPJ(this, fn);
+		importOPJ(fn, false, false);
 	else
-#endif
 #ifdef ODS_IMPORT
 	if (fn.endsWith(".xls", Qt::CaseInsensitive || fn.endsWith(".xlsx", Qt::CaseInsensitive)))
 		importExcel(fn);
@@ -19324,3 +19314,55 @@ QAXFACTORY_BEGIN("{89ab08da-df8c-4bd0-8327-72f73741c1a6}", "{082bd921-0832-4ca7-
     QAXCLASS(ApplicationWindow)
 QAXFACTORY_END()
 #endif
+
+void ApplicationWindow::showProVersionMessage()
+{
+	QMessageBox::critical(this, tr("QtiPlot Pro feature"),
+	tr("This functionality is only available in QtiPlot Pro version, please subscribe for a maintenance contract!"));
+
+	QDesktopServices::openUrl(QUrl("http://soft.proindependent.com/pricing.html"));
+}
+
+ImportExportPlugin * ApplicationWindow::exportPlugin(const QString& suffix)
+{
+	foreach (ImportExportPlugin *plugin, d_import_export_plugins){
+		if (plugin->exportFormats().contains(suffix))
+			return plugin;
+	}
+
+	showProVersionMessage();
+	return 0;
+}
+
+ImportExportPlugin * ApplicationWindow::importPlugin(const QString& fileName)
+{
+	foreach (ImportExportPlugin *plugin, d_import_export_plugins){
+		if (plugin->importFormats().contains(QFileInfo(fileName).completeSuffix()))
+			return plugin;
+	}
+
+	showProVersionMessage();
+	return 0;
+}
+
+void ApplicationWindow::loadPlugins()
+{
+	foreach (QObject *plugin, QPluginLoader::staticInstances()){
+		ImportExportPlugin *p = qobject_cast<ImportExportPlugin *>(plugin);
+		if (p)
+			d_import_export_plugins << p;
+	}
+
+	QDir pluginsDir = QDir(qApp->applicationDirPath());
+	pluginsDir.cd("plugins");
+
+	foreach (QString fileName, pluginsDir.entryList(QDir::Files)){
+		QPluginLoader loader(pluginsDir.absoluteFilePath(fileName));
+		QObject *plugin = loader.instance();
+		if (plugin){
+			ImportExportPlugin *p = qobject_cast<ImportExportPlugin *>(plugin);
+			if (p)
+				d_import_export_plugins << p;
+		}
+	}
+}

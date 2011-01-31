@@ -40,10 +40,7 @@ class ExcelFileConverter : public QObject
 	Q_OBJECT
 
 public:
-	enum OperatingMode{Import = 0, Convert = 1};
-
-	ExcelFileConverter(const QString& fileName, int sheet, ApplicationWindow *app, const OperatingMode& mode = Import);
-	Table *outputTable(){return d_table;};
+	ExcelFileConverter(const QString& fileName, int sheet, ApplicationWindow *app);
 
 private slots:
 	void startConvertion();
@@ -57,7 +54,6 @@ private:
 
 	QString d_file_name;
 	int d_sheet;
-	OperatingMode d_operating_mode;
 	QString d_output_file;
 	QProcess *soffice, *java;
 	Table *d_table;

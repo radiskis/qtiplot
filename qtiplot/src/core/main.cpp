@@ -2,7 +2,7 @@
     File                 : main.cpp
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2006 by Ion Vasilief
+	Copyright            : (C) 2004 - 2011 by Ion Vasilief
     Email (use @ for *)  : ion_vasilief*yahoo.fr
     Description          : QtiPlot main function
 
@@ -119,9 +119,7 @@ If you want to contribute code, please read the notes on \ref style "coding styl
   - For indentations, tabs are preferred because they allow everyone to choose the indentation depth for him/herself.
 */
 
-#ifdef STATIC
-	#include <QtPlugin>
-#endif
+#include <QtPlugin>
 
 int main( int argc, char ** argv )
 {
@@ -130,6 +128,12 @@ int main( int argc, char ** argv )
 	Q_IMPORT_PLUGIN(qjpeg);
 	Q_IMPORT_PLUGIN(qmng);
 	Q_IMPORT_PLUGIN(qtiff);
+#endif
+
+#ifdef QTIPLOT_PRO
+	 Q_IMPORT_PLUGIN(QtiPlotExcelPlugin);
+	 Q_IMPORT_PLUGIN(QtiPlotEmfExportPlugin);
+	 Q_IMPORT_PLUGIN(QtiPlotOriginPlugin);
 #endif
 
 	QtiPlotApplication app( argc, argv );

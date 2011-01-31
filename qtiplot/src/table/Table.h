@@ -85,7 +85,6 @@ public:
 	double max(int col, int startRow = 0, int endRow = -1);
 	Table* extractData(const QString& name, const QString& condition, int startRow = 0, int endRow = -1);
 	static QDateTime dateTime(double val);
-	double excelDateTime(const QString& s, const QString& fmt, int colType);
 
 public slots:
 	MyTable* table(){return d_table;};
@@ -306,10 +305,8 @@ public slots:
 	void setMonthFormat(const QString& format, int col, bool updateCells = true);
 	void setDayFormat(const QString& format, int col, bool updateCells = true);
 
-#ifdef XLS_IMPORT
 	bool exportExcel(const QString& fname, bool withLabels, bool exportComments, bool exportSelection);
 	bool exportExcelAndConvertTo(const QString& fname, bool withLabels, bool exportComments, bool exportSelection);
-#endif
 	bool exportODF(const QString& fname, bool withLabels, bool exportComments, bool exportSelection);
 	bool exportASCII(const QString& fname, const QString& separator, bool withLabels = false,
                      bool exportComments = false, bool exportSelection = false);

@@ -193,9 +193,7 @@ public slots:
 
 	void draw(QPaintDevice *, const QSizeF& customSize, int unit, int res, double fontsFactor = 1.0);
 
-#ifdef EMF_OUTPUT
 	void exportEMF(const QString& fname, const QSizeF& customSize = QSizeF(), int unit = FrameWidget::Pixel, double fontsFactor = 1.0);
-#endif
 	void exportTeX(const QString& fname, bool color = true, bool escapeStrings = true, bool fontSizes = true,
 					const QSizeF& customSize = QSizeF(), int unit = FrameWidget::Pixel, double fontsFactor = 1.0);
 

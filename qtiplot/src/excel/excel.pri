@@ -9,10 +9,10 @@ win32 {
 	}
 }
 
-!isEmpty(QUAZIP_LIBS) {
-	HEADERS += src/excel/ExcelFileConverter.h
-	HEADERS += src/excel/OdsFileHandler.h
+HEADERS += src/excel/ExcelFileConverter.h
+SOURCES += src/excel/ExcelFileConverter.cpp
 
-	SOURCES += src/excel/ExcelFileConverter.cpp
+!isEmpty(QUAZIP_LIBS) {
+	HEADERS += src/excel/OdsFileHandler.h
 	SOURCES += src/excel/OdsFileHandler.cpp
 }

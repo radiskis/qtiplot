@@ -185,10 +185,8 @@ void ExportDialog::setFileTypeFilters()
 	list << "ODF";
 	list << "HTML";
 #endif
-#ifdef XLS_IMPORT
 	list << "ODS";
 	list << "XLS";
-#endif
 
 	QStringList filters;
 	for(int i = 0 ; i < list.count() ; i++)

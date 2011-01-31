@@ -63,12 +63,12 @@ contains(CONFIG, CustomInstall){
 	}
 
 QT            += opengl qt3support network svg xml
-CONFIG(static){
-	QTPLUGIN += qjpeg qgif qtiff qmng
-	DEFINES += STATIC
-} else {
-	win32:DEFINES += QT_DLL QT_THREAD_SUPPORT
-}
+#CONFIG(static){
+#	QTPLUGIN += qjpeg qgif qtiff qmng
+#	DEFINES += STATIC
+#} else {
+#	win32:DEFINES += QT_DLL QT_THREAD_SUPPORT
+#}
 
 MOC_DIR        = ../tmp/qtiplot
 OBJECTS_DIR    = ../tmp/qtiplot
@@ -190,19 +190,6 @@ contains(SCRIPTING_LANGS, Python) {
 
 ###############################################################
 
-# check if we have EmfEnginge
-!isEmpty(EMF_ENGINE_LIBS) {
-	DEFINES += EMF_OUTPUT
-	INCLUDEPATH += $$EMF_ENGINE_INCLUDEPATH
-        INCLUDEPATH += /usr/local/include/libEMF
-
-	LIBS        += $$EMF_ENGINE_LIBS
-        win32:LIBS  += -lgdiplus
-        unix:LIBS   += /usr/local/lib/libEMF.a
-}
-
-###############################################################
-
 # check if we have QTeXEngine
 !isEmpty(TEX_ENGINE_LIBS) {
 	DEFINES += TEX_OUTPUT
@@ -212,32 +199,11 @@ contains(SCRIPTING_LANGS, Python) {
 
 ###############################################################
 
-# check if we have libxls
-!isEmpty(XLS_LIBS) {
-	DEFINES += XLS_IMPORT
-	INCLUDEPATH += $$XLS_INCLUDEPATH
-	LIBS        += $$XLS_LIBS
-}
-
-###############################################################
-
 # check if we have QuaZIP
 !isEmpty(QUAZIP_LIBS) {
 	DEFINES += ODS_IMPORT
 	INCLUDEPATH += $$QUAZIP_INCLUDEPATH
 	LIBS        += $$QUAZIP_LIBS
-}
-
-###############################################################
-
-# check if we have liborigin2
-!isEmpty(LIBORIGIN_LIBS) {
-	DEFINES += OPJ_IMPORT
-	INCLUDEPATH += $$LIBORIGIN_INCLUDEPATH
-	INCLUDEPATH += $$BOOST_INCLUDEPATH
-	LIBS        += $$LIBORIGIN_LIBS
-	LIBS        += $$BOOST_LIBS
-	include(src/origin/origin.pri)
 }
 
 ###############################################################
