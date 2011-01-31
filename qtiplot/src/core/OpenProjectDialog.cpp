@@ -42,16 +42,13 @@ OpenProjectDialog::OpenProjectDialog(QWidget *parent, bool extended, Qt::WFlags 
 	QStringList filters;
 	filters << tr("QtiPlot project") + " (*.qti)"
 		<< tr("Compressed QtiPlot project") + " (*.qti.gz)"
-#ifdef OPJ_IMPORT
 		<< tr("Origin project") + " (*.opj *.OPJ)"
 		<< tr("Origin matrix") + " (*.ogm *.OGM)"
 		<< tr("Origin worksheet") + " (*.ogw *.OGW)"
 		<< tr("Origin graph") + " (*.ogg *.OGG)"
-#endif
 		<< tr("Backup files") + " (*.qti~)"
-
+		<< tr("Excel") + " (*.xls)"
 #ifdef ODS_IMPORT
-		<< tr("Excel") + " (*.xls *.xlsx)"
 		<< tr("ODF Spreadsheet") + " (*.ods)"
 #endif
 		<< tr("All files") + " (*)";

@@ -58,10 +58,8 @@ ImageExportDialog::ImageExportDialog(MdiSubWindow *window, QWidget * parent, boo
 	list << "PDF";
 	list << "SVG";
 
-#if EMF_OUTPUT
-    if (!qobject_cast<Graph3D *> (d_window))
+	if (!qobject_cast<Graph3D *> (d_window))
 		list << "EMF";
-#endif
 
 #ifdef TEX_OUTPUT
 	if (qobject_cast<MultiLayer *> (d_window))
@@ -275,13 +273,11 @@ void ImageExportDialog::updateAdvancedOptions (const QString & filter)
 	d_raster_options->hide();
 	d_custom_size_box->hide();
 
-#if EMF_OUTPUT
 	if (filter.contains("*.emf") && !qobject_cast<MultiLayer *> (d_window)){
 		d_extension_toggle->setChecked(false);
 		d_extension_toggle->setEnabled(false);
 		return;
 	}
-#endif
 
 	if (filter.contains("*.svg")){
 		if (qobject_cast<Graph3D *> (d_window)){

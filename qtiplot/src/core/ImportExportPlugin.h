@@ -1,10 +1,10 @@
 /***************************************************************************
-    File                 : globals.h
-    Project              : QtiPlot
-    --------------------------------------------------------------------
-    Copyright            : (C) 2006 by Ion Vasilief, Tilman Hoener zu Siederdissen
-    Email (use @ for *)  : ion_vasilief*yahoo.fr, thzs*gmx.net
-    Description          : Definition of global constants
+	File                 : ImportExportPlugin.h
+	Project              : QtiPlot
+	--------------------------------------------------------------------
+	Copyright            : (C) 2011 by Ion Vasilief
+	Email (use @ for *)  : ion_vasilief*yahoo.fr
+	Description          : Base class for import/export plugins
 
  ***************************************************************************/
 
@@ -26,18 +26,34 @@
  *   Boston, MA  02110-1301  USA                                           *
  *                                                                         *
  ***************************************************************************/
-//  Don't forget to change the Doxyfile when changing these!
-//! Major version number
-const int maj_version = 0;
-//! Minor version number (0..9)
-const int min_version = 9;
-//! Patch version number (0..9)
-const int patch_version = 8;
-//! Extra version information string (like "alpha", "-2", etc...)
-const char * extra_version = ".4";
-const char * svn_revision = SVN_REVISION;  //SRB: SVN_REVISION set by compiler from QTIPLOT_SVN_REVISION environment variable. (10/1/2010 )
+#ifndef INTERFACES_H
+#define INTERFACES_H
 
-//! Copyright string containing the author names
-const char * copyright_string = "Copyright (C) 2004-2011 Ion Vasilief";
-//! Release date as a string
-const char * release_date = " 2011/01/31";
+#include <QtPlugin>
+#include <ApplicationWindow.h>
+
+class QStringList;
+
+class ImportExportPlugin
+{
+public:
+	virtual ~ImportExportPlugin() {}
+
+	virtual QStringList importFormats() const = 0;
+	virtual void import(const QString & fileName) = 0;
+
+	virtual QStringList exportFormats() const = 0;
+	virtual bool exportTable(Table *t, const QString& fname, bool withLabels, bool exportComments, bool exportSelection) = 0;
+	virtual bool exportMatrix(Matrix *m, const QString& fname, bool exportSelection) = 0;
+	virtual bool exportGraph(Graph *g, const QString& fname, const QSizeF& customSize, int unit, double fontsFactor) = 0;
+	virtual bool exportMultiLayerPlot(MultiLayer *ml, const QString& fname, const QSizeF& customSize, int unit, double fontsFactor) = 0;
+
+	void setApplicationWindow(ApplicationWindow *app){d_app = app;};
+	ApplicationWindow *applicationWindow(){return d_app;};
+
+private:
+	ApplicationWindow *d_app;
+};
+
+Q_DECLARE_INTERFACE(ImportExportPlugin, "com.ProIndependent.QtiPlot.ImportExportPlugin/1.0")
+#endif

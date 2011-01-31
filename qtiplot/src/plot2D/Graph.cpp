@@ -59,10 +59,7 @@
 #include "EllipseWidget.h"
 #include <FrameWidget.h>
 #include <ImageSymbol.h>
-
-#ifdef EMF_OUTPUT
-	#include <EmfEngine.h>
-#endif
+#include <ImportExportPlugin.h>
 
 #ifdef TEX_OUTPUT
 	#include <QTeXEngine.h>
@@ -1469,23 +1466,19 @@ QStringList Graph::plotItemsList()
 void Graph::copyImage()
 {
 #ifdef Q_OS_WIN
-	#ifdef EMF_OUTPUT
-		if (OpenClipboard(0)){
-			EmptyClipboard();
+	if (OpenClipboard(0)){
+		EmptyClipboard();
 
-			QString path = QDir::tempPath();
-			QString name = path + "/" + "qtiplot_clipboard.emf";
-			name = QDir::cleanPath(name);
-			exportEMF(name);
-			HENHMETAFILE handle = GetEnhMetaFile(name.toStdWString().c_str());
+		QString path = QDir::tempPath();
+		QString name = path + "/" + "qtiplot_clipboard.emf";
+		name = QDir::cleanPath(name);
+		exportEMF(name);
+		HENHMETAFILE handle = GetEnhMetaFile(name.toStdWString().c_str());
 
-			SetClipboardData(CF_ENHMETAFILE, handle);
-			CloseClipboard();
-			QFile::remove(name);
-		}
-	#else
-		QApplication::clipboard()->setPixmap(graphPixmap(), QClipboard::Clipboard);
-	#endif
+		SetClipboardData(CF_ENHMETAFILE, handle);
+		CloseClipboard();
+		QFile::remove(name);
+	}
 #else
 	QApplication::clipboard()->setPixmap(graphPixmap(), QClipboard::Clipboard);
 #endif
@@ -1552,13 +1545,10 @@ void Graph::exportToFile(const QString& fileName)
 		return;
 	}
 #endif
-#ifdef EMF_OUTPUT
 	 else if(fileName.contains(".emf")){
 		exportEMF(fileName);
 		return;
-	}
-#endif
-	else {
+	} else {
 		QList<QByteArray> list = QImageWriter::supportedImageFormats();
     	for(int i=0 ; i<list.count() ; i++){
 			if (fileName.contains( "." + list[i].toLower())){
@@ -1783,18 +1773,16 @@ void Graph::draw(QPaintDevice *device, const QSize& size, double fontsFactor)
 	QApplication::restoreOverrideCursor();
 }
 
-#ifdef EMF_OUTPUT
 void Graph::exportEMF(const QString& fname, const QSizeF& customSize, int unit, double fontsFactor)
 {
-	int res = logicalDpiX();
-	QSize size = boundingRect().size();
-	if (customSize.isValid())
-		size = Graph::customPrintSize(customSize, unit, res);
+	if (!multiLayer()->applicationWindow())
+		return;
+	ImportExportPlugin *ep = multiLayer()->applicationWindow()->exportPlugin("emf");
+	if (!ep)
+		return;
 
-	EmfPaintDevice emf(size, fname);
-	draw(&emf, size, fontsFactor);
+	ep->exportGraph(this, fname, customSize, unit, fontsFactor);
 }
-#endif
 
 void Graph::exportTeX(const QString& fname, bool color, bool escapeStrings, bool fontSizes, const QSizeF& customSize, int unit, double fontsFactor)
 {

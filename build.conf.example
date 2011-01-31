@@ -62,42 +62,6 @@ QWT3D_INCLUDEPATH = $$QTI_ROOT/3rdparty/qwtplot3d/include
 win32:QWT3D_LIBS = $$QTI_ROOT/3rdparty/qwtplot3d/lib/qwtplot3d.dll
 unix:QWT3D_LIBS = $$QTI_ROOT/3rdparty/qwtplot3d/lib/libqwtplot3d.a
 
-##########################################################
-## Boost libraries (http://www.boost.org/) - optional
-##########################################################
-
-# include path. leave it blank to use SYS_INCLUDE
-BOOST_INCLUDEPATH = $$QTI_ROOT/3rdparty/boost
-# link statically against a copy in 3rdparty/
-unix: BOOST_LIBS = $$QTI_ROOT/3rdparty/boost/lib/libboost_date_time.a \
-				   $$QTI_ROOT/3rdparty/boost/lib/libboost_thread.a
-win32:BOOST_LIBS = $$QTI_ROOT/3rdparty/boost/lib/libboost_date_time-mgw34-mt.lib \
-				   $$QTI_ROOT/3rdparty/boost/lib/libboost_thread-mgw34-mt.lib
-# or dynamically against a system-wide installation
-#BOOST_LIBS = -lboost_date_time-mt -lboost_thread-mt
-
-##########################################################
-## liborigin2 - optional. you don't have to set these variables
-# http://soft.proindependent.com/liborigin2/
-##########################################################
-
-# include path. leave it blank to use SYS_INCLUDE
-LIBORIGIN_INCLUDEPATH = $$QTI_ROOT/3rdparty/liborigin2
-# link statically against a copy in 3rdparty/
-LIBORIGIN_LIBS = $$QTI_ROOT/3rdparty/liborigin2/liborigin2.a
-
-###########################################################
-## libxls - optional. you don't have to set these variables
-# http://libxls.sourceforge.net/
-###########################################################
-
-# include path.
-#XLS_INCLUDEPATH = $$QTI_ROOT/3rdparty/libxls/include/
-XLS_INCLUDEPATH = $$QTI_ROOT/3rdparty/ExcelFormat/
-# link locally against a copy in 3rdparty/
-#XLS_LIBS = $$QTI_ROOT/3rdparty/libxls/lib/libxlsreader.a
-XLS_LIBS = $$QTI_ROOT/3rdparty/ExcelFormat/lib/libExcelFormat.a
-
 ###########################################################
 ## QuaZIP - optional. you don't have to set these variables
 # http://quazip.sourceforge.net/
@@ -118,16 +82,6 @@ LIBPNG_INCLUDEPATH = $$QTI_ROOT/3rdparty/libpng/
 LIBPNG_LIBS = $$QTI_ROOT/3rdparty/libpng/libpng.a
 # or dynamically against a system-wide installation
 #LIBPNG_LIBS = -lpng
-
-##########################################################
-## EmfEngine - optional. you don't have to set these variables
-# http://soft.proindependent.com/emf/index.html
-##########################################################
-
-# include path.
-EMF_ENGINE_INCLUDEPATH = $$QTI_ROOT/3rdparty/EmfEngine/src
-# link locally against a copy in 3rdparty/
-EMF_ENGINE_LIBS = $$QTI_ROOT/3rdparty/EmfEngine/libEmfEngine.a
 
 ##########################################################
 ## QTeXEngine - optional. you don't have to set these variables

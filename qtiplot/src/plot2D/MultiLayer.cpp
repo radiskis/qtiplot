@@ -51,10 +51,6 @@
 #include <QTextDocumentWriter>
 #endif
 
-#ifdef EMF_OUTPUT
-	#include <EmfEngine.h>
-#endif
-
 #ifdef TEX_OUTPUT
 	#include <QTeXEngine.h>
 #endif
@@ -75,6 +71,7 @@
 #include <Matrix.h>
 #include <ColorButton.h>
 #include <ScaleEngine.h>
+#include <ImportExportPlugin.h>
 
 #include <gsl/gsl_vector.h>
 
@@ -1011,13 +1008,10 @@ void MultiLayer::exportToFile(const QString& fileName)
 		return;
 	}
 #endif
-#ifdef EMF_OUTPUT
 	 else if(fileName.contains(".emf")){
 		exportEMF(fileName);
 		return;
-	}
-#endif
-	 else {
+	} else {
 		QList<QByteArray> list = QImageWriter::supportedImageFormats();
     	for(int i=0 ; i<list.count() ; i++){
 			if (fileName.contains( "." + list[i].toLower())){
@@ -1235,18 +1229,15 @@ void MultiLayer::exportSVG(const QString& fname, const QSizeF& customSize, int u
 	draw(&svg, customSize, unit, res, fontsFactor);
 }
 
-#ifdef EMF_OUTPUT
 void MultiLayer::exportEMF(const QString& fname, const QSizeF& customSize, int unit, double fontsFactor)
 {
-	int res = logicalDpiX();
-	QSize size = d_canvas->size();
-	if (customSize.isValid())
-		size = Graph::customPrintSize(customSize, unit, res);
-
-	EmfPaintDevice emf(size, fname);
-	draw(&emf, customSize, unit, res, fontsFactor);
+	if (!applicationWindow())
+		return;
+	ImportExportPlugin *ep = applicationWindow()->exportPlugin("emf");
+	if (!ep)
+		return;
+	ep->exportMultiLayerPlot(this, fname, customSize, unit, fontsFactor);
 }
-#endif
 
 void MultiLayer::exportTeX(const QString& fname, bool color, bool escapeStrings, bool fontSizes, const QSizeF& customSize, int unit, double fontsFactor)
 {
@@ -1289,24 +1280,20 @@ void MultiLayer::copyAllLayers()
 		g->deselectMarker();
 
 #ifdef Q_OS_WIN
-	#ifdef EMF_OUTPUT
-		if (OpenClipboard(0)){
-			EmptyClipboard();
+	if (OpenClipboard(0)){
+		EmptyClipboard();
 
-			QString path = QDir::tempPath();
-			QString name = path + "/" + "qtiplot_clipboard.emf";
-			name = QDir::cleanPath(name);
+		QString path = QDir::tempPath();
+		QString name = path + "/" + "qtiplot_clipboard.emf";
+		name = QDir::cleanPath(name);
 
-			exportEMF(name);
-			HENHMETAFILE handle = GetEnhMetaFile(name.toStdWString().c_str());
+		exportEMF(name);
+		HENHMETAFILE handle = GetEnhMetaFile(name.toStdWString().c_str());
 
-			SetClipboardData(CF_ENHMETAFILE, handle);
-			CloseClipboard();
-			QFile::remove(name);
-		}
-	#else
-		QApplication::clipboard()->setImage(canvasPixmap().convertToImage());
-	#endif
+		SetClipboardData(CF_ENHMETAFILE, handle);
+		CloseClipboard();
+		QFile::remove(name);
+	}
 #else
 	QApplication::clipboard()->setImage(canvasPixmap().convertToImage());
 #endif

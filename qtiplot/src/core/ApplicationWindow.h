@@ -104,6 +104,7 @@ class AssociationsDialog;
 class ScriptEdit;
 class ExportDialog;
 class Grid;
+class ImportExportPlugin;
 
 /**
  * \brief QtiPlot's main window.
@@ -241,15 +242,19 @@ public:
 
 	void connectScriptEditor(ScriptEdit *);
 
+	//! \name Import/Export Plugins
+	//@{
+	ImportExportPlugin* exportPlugin(const QString& suffix);
+	ImportExportPlugin* importPlugin(const QString& fileName);
+	//@}
+
 public slots:
 	//! \name Projects and Project Files
 	//@{
 	void open();
 	ApplicationWindow* open(const QString& fn, bool factorySettings = false, bool newProject = true);
 	ApplicationWindow* openProject(const QString& fn, bool factorySettings = false, bool newProject = true);
-#ifdef OPJ_IMPORT
 	ApplicationWindow* importOPJ(const QString& fn, bool factorySettings = false, bool newProject = true);
-#endif
 	void closeProject();
 
 	/**
@@ -488,14 +493,10 @@ public slots:
 	#endif
 #endif
 
-#ifdef ODS_IMPORT
 	Table* importExcelCrossplatform(const QString& = QString::null, int sheet = -1);
-#endif
 
-#ifdef XLS_IMPORT
 	void exportExcel();
 	void exportOds();
-#endif
 
 	Table* importWaveFile();
 	void importASCII(const QString& fileName = QString::null);
@@ -938,6 +939,7 @@ public slots:
 	void downloadTranslation();
 	//! Shown when the user tries to save the project.
 	void showDemoVersionMessage();
+	void showProVersionMessage();
 
 	void parseCommandLineArguments(const QStringList& args);
 	void createLanguagesList();
@@ -1416,6 +1418,9 @@ public:
 	//@}
 
 private:
+	void loadPlugins();
+	QList<ImportExportPlugin *> d_import_export_plugins;
+
 	bool d_mdi_windows_area;
 	MdiSubWindow *d_active_window;
     TextEditor *d_text_editor;
@@ -1468,11 +1473,9 @@ private:
     QAction *actionOpen, *actionLoadImage, *actionSaveProject, *actionSaveProjectAs, *actionImportImage;
 	QAction *actionLoad, *actionUndo, *actionRedo, *actionImportSound;
 #ifdef ODS_IMPORT
-	QAction *actionOpenOds, *actionOpenExcel;
+	QAction *actionOpenOds;
 #endif
-#ifdef XLS_IMPORT
-	QAction *actionExportExcel, *actionExportOds;
-#endif
+	QAction *actionExportExcel, *actionExportOds, *actionOpenExcel;
     QAction *actionCopyWindow, *actionShowAllColumns, *actionHideSelectedColumns;
     QAction *actionCutSelection, *actionCopySelection, *actionPasteSelection, *actionClearSelection;
     QAction *actionShowExplorer, *actionShowLog, *actionAddLayer, *actionShowLayerDialog, *actionAutomaticLayout;
