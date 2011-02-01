@@ -81,8 +81,8 @@ public:
 
 	double avg(int col, int startRow = 0, int endRow = -1);
 	double sum(int col, int startRow = 0, int endRow = -1);
-	double min(int col, int startRow = 0, int endRow = -1);
-	double max(int col, int startRow = 0, int endRow = -1);
+	double minColumnValue(int col, int startRow = 0, int endRow = -1);
+	double maxColumnValue(int col, int startRow = 0, int endRow = -1);
 	Table* extractData(const QString& name, const QString& condition, int startRow = 0, int endRow = -1);
 	static QDateTime dateTime(double val);
 

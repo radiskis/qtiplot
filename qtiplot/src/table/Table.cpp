@@ -3861,7 +3861,7 @@ double Table::avg(int col, int startRow, int endRow)
 	return 0.0;
 }
 
-double Table::min(int col, int startRow, int endRow)
+double Table::minColumnValue(int col, int startRow, int endRow)
 {
 	if (col < 0 || col >= d_table->numCols())
 		return 0.0;
@@ -3888,7 +3888,7 @@ double Table::min(int col, int startRow, int endRow)
 	return min;
 }
 
-double Table::max(int col, int startRow, int endRow)
+double Table::maxColumnValue(int col, int startRow, int endRow)
 {
 	if (col < 0 || col >= d_table->numCols())
 		return 0.0;

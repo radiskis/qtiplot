@@ -519,7 +519,7 @@ double muParserScript::min(const QString &arg, int start, int end)
 		throw Parser::exception_type(tr("There's no column named %1 in table %2!").arg(arg).arg(Context->name()).ascii());
 
 	rvariables.clear();
-	return table->min(col, start, end);
+	return table->minColumnValue(col, start, end);
 }
 
 double muParserScript::max(const QString &arg, int start, int end)
@@ -533,5 +533,5 @@ double muParserScript::max(const QString &arg, int start, int end)
 		throw Parser::exception_type(tr("There's no column named %1 in table %2!").arg(arg).arg(Context->name()).ascii());
 
 	rvariables.clear();
-	return table->max(col, start, end);
+	return table->maxColumnValue(col, start, end);
 }
