@@ -5655,6 +5655,13 @@ void Graph::setGrayScale()
 
 void Graph::setIndexedColors()
 {
+	QList<QColor> colors;
+	MultiLayer *ml = multiLayer();
+	if (ml && ml->applicationWindow())
+		colors = ml->applicationWindow()->indexedColors();
+	else
+		colors = ColorBox::defaultColors();
+
 	int i = 0;
 	foreach (QwtPlotItem *it, d_curves){
 		if (it->rtti() == QwtPlotItem::Rtti_PlotSpectrogram)
@@ -5665,7 +5672,7 @@ void Graph::setIndexedColors()
 			continue;
 
 		QPen pen = c->pen();
-		QColor color = ColorBox::defaultColor(i);
+		QColor color = colors[i];
 		pen.setColor(color);
 		c->setPen(pen);
 
