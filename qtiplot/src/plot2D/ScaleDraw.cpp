@@ -542,6 +542,10 @@ void ScaleDraw::drawTick(QPainter *p, double value, int len) const
 
 void ScaleDraw::drawInwardTick(QPainter *painter, double value, int len) const
 {
+	ScaleEngine *sc_engine = (ScaleEngine *)d_plot->axisScaleEngine(axis());
+	if (sc_engine->hasBreak() && (sc_engine->axisBreakLeft() < value && sc_engine->axisBreakRight() > value))
+		return;
+
 	int pw2 = qwtMin((int)painter->pen().width(), len) / 2;
 
 	QwtScaleMap scaleMap = map();
@@ -641,7 +645,7 @@ void ScaleDraw::draw(QPainter *painter, const QPalette& palette) const
 		const QwtValueList &ticks = this->scaleDiv().ticks(QwtScaleDiv::MajorTick);
 		for (int i = 0; i < (int)ticks.count(); i++){
 			const double v = ticks[i];
-			if ( this->scaleDiv().contains(v) )
+			if (this->scaleDiv().contains(v))
 				drawInwardTick(painter, v, majLen);
 		}
 	}
@@ -673,7 +677,7 @@ void ScaleDraw::drawBreak(QPainter *painter) const
 	pen.setColor(d_plot->axisWidget(axis())->palette().color(QPalette::Active, QColorGroup::Foreground));
 	painter->setPen(pen);
 
-	int len = majTickLength();
+	int len = d_plot->majorTickLength();
 
     QwtScaleMap scaleMap = map();
     const QwtMetricsMap metricsMap = QwtPainter::metricsMap();

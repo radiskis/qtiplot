@@ -65,6 +65,10 @@
 	#include <QTeXEngine.h>
 #endif
 
+#ifdef Q_OS_WIN
+	#include <windows.h>
+#endif
+
 #include <ColorBox.h>
 #include <PatternBox.h>
 #include <SymbolBox.h>

@@ -55,6 +55,10 @@
 	#include <QTeXEngine.h>
 #endif
 
+#ifdef Q_OS_WIN
+	#include <windows.h>
+#endif
+
 #include <qwt_plot.h>
 #include <qwt_plot_canvas.h>
 #include <qwt_plot_layout.h>

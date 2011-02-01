@@ -17381,8 +17381,7 @@ void ApplicationWindow::addFolderListViewItem(Folder *f)
 	it->setActive(false);
 	it->setText(0, f->objectName());
 	it->setText(1, tr("Folder"));
-	it->setText(3, f->sizeToString());
-	it->setText(4, f->birthDate());
+	it->setText(3, f->birthDate());
 }
 
 void ApplicationWindow::find(const QString& s, bool windowNames, bool labels,
