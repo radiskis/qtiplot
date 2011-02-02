@@ -62,16 +62,6 @@ QWT3D_INCLUDEPATH = $$QTI_ROOT/3rdparty/qwtplot3d/include
 win32:QWT3D_LIBS = $$QTI_ROOT/3rdparty/qwtplot3d/lib/qwtplot3d.dll
 unix:QWT3D_LIBS = $$QTI_ROOT/3rdparty/qwtplot3d/lib/libqwtplot3d.a
 
-###########################################################
-## QuaZIP - optional. you don't have to set these variables
-# http://quazip.sourceforge.net/
-###########################################################
-
-# include path.
-QUAZIP_INCLUDEPATH = $$QTI_ROOT/3rdparty/quazip/quazip/
-# link locally against a copy in 3rdparty/
-QUAZIP_LIBS = $$QTI_ROOT/3rdparty/quazip/lib/libquazip.a
-
 ##########################################################
 ## libpng - optional. you don't have to set these variables
 ##########################################################

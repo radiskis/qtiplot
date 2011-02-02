@@ -48,9 +48,7 @@ OpenProjectDialog::OpenProjectDialog(QWidget *parent, bool extended, Qt::WFlags 
 		<< tr("Origin graph") + " (*.ogg *.OGG)"
 		<< tr("Backup files") + " (*.qti~)"
 		<< tr("Excel") + " (*.xls)"
-#ifdef ODS_IMPORT
 		<< tr("ODF Spreadsheet") + " (*.ods)"
-#endif
 		<< tr("All files") + " (*)";
 	setFilters(filters);
 
