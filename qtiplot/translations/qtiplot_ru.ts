@@ -2625,7 +2625,7 @@ Are you sure you want to continue?</source>
     </message>
     <message>
         <source>Warning: for internal consistency reasons the underscore character is replaced with a minus sign.</source>
-        <translation>Предупреждение: для обеспечения внутренней согласованности символ подчёркивания был заменён на знак минус.</translation>
+        <translation type="obsolete">Предупреждение: для обеспечения внутренней согласованности символ подчёркивания был заменён на знак минус.</translation>
     </message>
     <message>
         <source>&amp;Window</source>
@@ -2821,15 +2821,15 @@ Are you sure you want to continue?</source>
     </message>
     <message>
         <source>Couldn&apos;t open file %1</source>
-        <translation>Невозможно открыть файл %1</translation>
+        <translation type="obsolete">Невозможно открыть файл %1</translation>
     </message>
     <message>
         <source>File %1 contains only %2 sheets!</source>
-        <translation>Файл &apos;%1&apos; содержит только %2 листов!</translation>
+        <translation type="obsolete">Файл &apos;%1&apos; содержит только %2 листов!</translation>
     </message>
     <message>
         <source>QtiPlot was built without ODF spreadsheet support!</source>
-        <translation>QtiPlot скомпилирован без поддержки таблиц ODF!</translation>
+        <translation type="obsolete">QtiPlot скомпилирован без поддержки таблиц ODF!</translation>
     </message>
     <message>
         <source>Open Excel File</source>
@@ -2845,7 +2845,7 @@ Are you sure you want to continue?</source>
     </message>
     <message>
         <source>sheet</source>
-        <translation>лист</translation>
+        <translation type="obsolete">лист</translation>
     </message>
     <message>
         <source>QtiPlot was built without libxls support!</source>
@@ -4015,7 +4015,7 @@ Autocompletion will not be available!</source>
     </message>
     <message>
         <source>chart</source>
-        <translation type="unfinished">диаграмма</translation>
+        <translation type="obsolete">диаграмма</translation>
     </message>
     <message>
         <source>Overwrite file?</source>
@@ -4103,6 +4103,14 @@ Autocompletion will not be available!</source>
     </message>
     <message>
         <source>Export &amp;Open Document Spreadsheet ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>QtiPlot Pro feature</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This functionality is only available in QtiPlot Pro version, please subscribe for a maintenance contract!</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -5957,6 +5965,10 @@ The following special codes can be used:
     </message>
     <message>
         <source>LibreOffice</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Prompt on pasting &amp;values to tables</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -13490,6 +13502,11 @@ have the same number of rows.</source>
  Computes the inverse of the cumulative distribution function for a Gaussian distribution with standard deviation sigma = 1.0.</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>dilog(x):
+ Compute the dilogarithm for a real argument. In Lewin&apos;s notation this is Li_2(x), the real part of the dilogarithm of a real x.</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>QtColorPicker</name>
@@ -13620,7 +13637,7 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>For internal consistency reasons the underscore character is replaced with a minus sign.</source>
-        <translation>Для обеспечения внутренней согласованности символ подчёркивания был заменён на знак минус.</translation>
+        <translation type="obsolete">Для обеспечения внутренней согласованности символ подчёркивания был заменён на знак минус.</translation>
     </message>
     <message>
         <source>&amp;Label</source>
@@ -13640,7 +13657,7 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>QtiPlot - Warning</source>
-        <translation>QtiPlot - Предупреждение</translation>
+        <translation type="obsolete">QtiPlot - Предупреждение</translation>
     </message>
     <message>
         <source>Window Title</source>

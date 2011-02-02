@@ -3497,7 +3497,7 @@ Varias partes deste arquivo podem não ser apresentadas como o esperado.</transl
     </message>
     <message>
         <source>Warning: for internal consistency reasons the underscore character is replaced with a minus sign.</source>
-        <translation>Aviso: por razões de consistência interna o caractere de contagem abaixo é substituído pelo sinal de menos.</translation>
+        <translation type="obsolete">Aviso: por razões de consistência interna o caractere de contagem abaixo é substituído pelo sinal de menos.</translation>
     </message>
     <message>
         <source>&amp;Horizontal Steps</source>
@@ -4762,18 +4762,6 @@ a primera representa o sinal e a segunda a função resposta!</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Couldn&apos;t open file %1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>File %1 contains only %2 sheets!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>QtiPlot was built without ODF spreadsheet support!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Export Excel</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5955,19 +5943,19 @@ Autocompletion will not be available!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>chart</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>sheet</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Export Open Document Spreadsheet</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Export &amp;Open Document Spreadsheet ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>QtiPlot Pro feature</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This functionality is only available in QtiPlot Pro version, please subscribe for a maintenance contract!</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -8054,6 +8042,10 @@ Os seguintes códigos podem ser usados:
     </message>
     <message>
         <source>LibreOffice</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Prompt on pasting &amp;values to tables</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -18628,6 +18620,11 @@ s-ésimo zero positivo x_s da função regular cilíndrica de Bessel de ordem n,
  The sum of all cells from row i to j in column colName.</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>dilog(x):
+ Compute the dilogarithm for a real argument. In Lewin&apos;s notation this is Li_2(x), the real part of the dilogarithm of a real x.</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>QtColorPicker</name>
@@ -18782,11 +18779,11 @@ s-ésimo zero positivo x_s da função regular cilíndrica de Bessel de ordem n,
     </message>
     <message>
         <source>QtiPlot - Warning</source>
-        <translation type="unfinished">QtiPlot- Aviso</translation>
+        <translation type="obsolete">QtiPlot- Aviso</translation>
     </message>
     <message>
         <source>For internal consistency reasons the underscore character is replaced with a minus sign.</source>
-        <translation>Por razões de consistência interna o caracter de sub-linha é substituído pelo sinal de menos.</translation>
+        <translation type="obsolete">Por razões de consistência interna o caracter de sub-linha é substituído pelo sinal de menos.</translation>
     </message>
     <message>
         <source>Rename Window</source>

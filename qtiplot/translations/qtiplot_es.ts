@@ -3611,10 +3611,6 @@ Do you want to overwrite it?</source>
 <context>
     <name>ApplicationWindow</name>
     <message>
-        <source>sheet</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>File</source>
         <translation>Archivo</translation>
     </message>
@@ -6175,14 +6171,6 @@ Varias partes de este archivo pueden no mostrarse como se esperaba.</translation
         <translation type="unfinished">&amp;X</translation>
     </message>
     <message>
-        <source>Couldn&apos;t open file %1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>File %1 contains only %2 sheets!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Open Excel File</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7339,7 +7327,7 @@ Autocompletion will not be available!</source>
     </message>
     <message>
         <source>Warning: for internal consistency reasons the underscore character is replaced with a minus sign.</source>
-        <translation type="unfinished">Aviso: por razones de consistencia interna el carácter de guión bajo es reemplazado por el signo menos.</translation>
+        <translation type="obsolete">Aviso: por razones de consistencia interna el carácter de guión bajo es reemplazado por el signo menos.</translation>
     </message>
     <message>
         <source>&amp;Horizontal Steps</source>
@@ -8037,10 +8025,6 @@ Autocompletion will not be available!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>QtiPlot was built without ODF spreadsheet support!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>You need at least two columns for this operation!</source>
         <translation type="unfinished">¡Necesita por lo menos dos columnas para esta operación!</translation>
     </message>
@@ -8417,10 +8401,6 @@ Autocompletion will not be available!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>chart</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Save Folder As</source>
         <translation type="unfinished"></translation>
     </message>
@@ -8434,6 +8414,14 @@ Autocompletion will not be available!</source>
     </message>
     <message>
         <source>Export &amp;Open Document Spreadsheet ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>QtiPlot Pro feature</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This functionality is only available in QtiPlot Pro version, please subscribe for a maintenance contract!</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -10369,6 +10357,10 @@ The following special codes can be used:
     </message>
     <message>
         <source>LibreOffice</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Prompt on pasting &amp;values to tables</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -19119,6 +19111,11 @@ Do you want to insert cells?</source>
  Computes the inverse of the cumulative distribution function for a Gaussian distribution with standard deviation sigma = 1.0.</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>dilog(x):
+ Compute the dilogarithm for a real argument. In Lewin&apos;s notation this is Li_2(x), the real part of the dilogarithm of a real x.</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>QtColorPicker</name>
@@ -19269,11 +19266,11 @@ Do you want to insert cells?</source>
     </message>
     <message>
         <source>QtiPlot - Warning</source>
-        <translation type="unfinished">QtiPlot- Aviso</translation>
+        <translation type="obsolete">QtiPlot- Aviso</translation>
     </message>
     <message>
         <source>For internal consistency reasons the underscore character is replaced with a minus sign.</source>
-        <translation type="unfinished">Por razones de consistencia interna el carácter de guión bajo es reemplazado por el signo menos.</translation>
+        <translation type="obsolete">Por razones de consistencia interna el carácter de guión bajo es reemplazado por el signo menos.</translation>
     </message>
 </context>
 <context>

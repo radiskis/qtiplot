@@ -3862,7 +3862,7 @@ den första representerar signalen och den andra svarsfunktionen!</translation>
     </message>
     <message>
         <source>sheet</source>
-        <translation>ark</translation>
+        <translation type="obsolete">ark</translation>
     </message>
     <message>
         <source>QtiPlot was built without libxls support!</source>
@@ -6610,7 +6610,7 @@ Delar av denna fil kanske inte visas som väntat.</translation>
     </message>
     <message>
         <source>Warning: for internal consistency reasons the underscore character is replaced with a minus sign.</source>
-        <translation>Varning: av interna skäl byts understrykningstecknet mot minustecken.</translation>
+        <translation type="obsolete">Varning: av interna skäl byts understrykningstecknet mot minustecken.</translation>
     </message>
     <message>
         <source>&lt;h2&gt;</source>
@@ -6840,11 +6840,11 @@ den första representerar signalen och den andra svarsfunktionen!</translation>
     </message>
     <message>
         <source>Couldn&apos;t open file %1</source>
-        <translation>Kunde inte öppna filen %1</translation>
+        <translation type="obsolete">Kunde inte öppna filen %1</translation>
     </message>
     <message>
         <source>File %1 contains only %2 sheets!</source>
-        <translation>Filen %1 innehåller bara %2 ark!</translation>
+        <translation type="obsolete">Filen %1 innehåller bara %2 ark!</translation>
     </message>
     <message>
         <source>Open Excel File</source>
@@ -7305,7 +7305,7 @@ den första representerar signalen och den andra svarsfunktionen!</translation>
     </message>
     <message>
         <source>QtiPlot was built without ODF spreadsheet support!</source>
-        <translation>QtiPlot byggts utan stöd för ODF.kalkylark!</translation>
+        <translation type="obsolete">QtiPlot byggts utan stöd för ODF.kalkylark!</translation>
     </message>
     <message>
         <source>Open Exce&amp;l ...</source>
@@ -8655,10 +8655,6 @@ Automatisk komplettering ej tillgängligt!</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>chart</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Save Folder As</source>
         <translation type="unfinished"></translation>
     </message>
@@ -8668,6 +8664,14 @@ Automatisk komplettering ej tillgängligt!</translation>
     </message>
     <message>
         <source>Export &amp;Open Document Spreadsheet ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>QtiPlot Pro feature</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This functionality is only available in QtiPlot Pro version, please subscribe for a maintenance contract!</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -10667,6 +10671,10 @@ Följande specialkoder kan användas:
     </message>
     <message>
         <source>LibreOffice</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Prompt on pasting &amp;values to tables</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -19811,6 +19819,11 @@ Vill du skjuta in celler?</translation>
  Computes the inverse of the cumulative distribution function for a Gaussian distribution with standard deviation sigma = 1.0.</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>dilog(x):
+ Compute the dilogarithm for a real argument. In Lewin&apos;s notation this is Li_2(x), the real part of the dilogarithm of a real x.</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>QtColorPicker</name>
@@ -19971,11 +19984,11 @@ Vill du skjuta in celler?</translation>
     </message>
     <message>
         <source>QtiPlot - Warning</source>
-        <translation>QtiPlot - Varning</translation>
+        <translation type="obsolete">QtiPlot - Varning</translation>
     </message>
     <message>
         <source>For internal consistency reasons the underscore character is replaced with a minus sign.</source>
-        <translation>Av interna skäl byts understrykningstecknet mot minustecken.</translation>
+        <translation type="obsolete">Av interna skäl byts understrykningstecknet mot minustecken.</translation>
     </message>
 </context>
 <context>

@@ -5061,7 +5061,7 @@ Die erste repräsentiert die Signal- und die zweite die Antwortfunktion!</transl
     </message>
     <message>
         <source>sheet</source>
-        <translation>Blatt</translation>
+        <translation type="obsolete">Blatt</translation>
     </message>
     <message>
         <source>QtiPlot was built without libxls support!</source>
@@ -7993,7 +7993,7 @@ Einige Teile der Datei werden eventuell nicht wie erwartet dargestellt.</transla
     </message>
     <message>
         <source>Warning: for internal consistency reasons the underscore character is replaced with a minus sign.</source>
-        <translation>Warnung: Um interne Konsistenz sicherzustellen, wurden Unterstriche durch ein Minuszeichen ersetzt.</translation>
+        <translation type="obsolete">Warnung: Um interne Konsistenz sicherzustellen, wurden Unterstriche durch ein Minuszeichen ersetzt.</translation>
     </message>
     <message>
         <source>QtiPlot - Help Profile Not Found!</source>
@@ -8772,11 +8772,11 @@ Die erste repräsentiert die Signal- und die zweite die Antwortfunktion!</transl
     </message>
     <message>
         <source>File %1 contains only %2 sheets!</source>
-        <translation>Datei %1 enthült nur %2 Blätter!</translation>
+        <translation type="obsolete">Datei %1 enthült nur %2 Blätter!</translation>
     </message>
     <message>
         <source>QtiPlot was built without ODF spreadsheet support!</source>
-        <translation>QtiPlot wurde ohne Unterstützung für ODF-Tabellenkalkulationsdateien erstellt!</translation>
+        <translation type="obsolete">QtiPlot wurde ohne Unterstützung für ODF-Tabellenkalkulationsdateien erstellt!</translation>
     </message>
     <message>
         <source>Imported sound file</source>
@@ -9228,7 +9228,7 @@ Die erste repräsentiert die Signal- und die zweite die Antwortfunktion!</transl
     </message>
     <message>
         <source>Couldn&apos;t open file %1</source>
-        <translation>Konnte Datei %1 nicht öffnen</translation>
+        <translation type="obsolete">Konnte Datei %1 nicht öffnen</translation>
     </message>
     <message>
         <source>Open Excel File</source>
@@ -10084,15 +10084,19 @@ Autocompletion will not be available!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>chart</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Export Open Document Spreadsheet</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Export &amp;Open Document Spreadsheet ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>QtiPlot Pro feature</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This functionality is only available in QtiPlot Pro version, please subscribe for a maintenance contract!</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -12228,6 +12232,10 @@ Die folgenden Spezialcodes können benutzt werden:
     </message>
     <message>
         <source>LibreOffice</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Prompt on pasting &amp;values to tables</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -22509,6 +22517,11 @@ Wollen sie Zellen einfügen?</translation>
  Computes the inverse of the cumulative distribution function for a Gaussian distribution with standard deviation sigma = 1.0.</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>dilog(x):
+ Compute the dilogarithm for a real argument. In Lewin&apos;s notation this is Li_2(x), the real part of the dilogarithm of a real x.</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>QShortcut</name>
@@ -22692,11 +22705,11 @@ Wollen sie Zellen einfügen?</translation>
     </message>
     <message>
         <source>QtiPlot - Warning</source>
-        <translation>QtiPlot - Warnung</translation>
+        <translation type="obsolete">QtiPlot - Warnung</translation>
     </message>
     <message>
         <source>For internal consistency reasons the underscore character is replaced with a minus sign.</source>
-        <translation>Um interne Konsistenz zu sichern, wurden Unterstriche durch ein Minuszeichen ersetzt.</translation>
+        <translation type="obsolete">Um interne Konsistenz zu sichern, wurden Unterstriche durch ein Minuszeichen ersetzt.</translation>
     </message>
 </context>
 <context>

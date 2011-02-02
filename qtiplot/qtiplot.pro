@@ -35,6 +35,7 @@ QMAKE_PROJECT_DEPTH = 0
 
 CONFIG        += qt warn_on exceptions opengl thread
 CONFIG        += assistant
+win32:CONFIG  += qaxcontainer
 
 DEFINES       += QT_PLUGIN
 contains(CONFIG, CustomInstall){

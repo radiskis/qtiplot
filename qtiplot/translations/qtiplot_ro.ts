@@ -3553,7 +3553,7 @@ Are you sure you want to continue?</source>
     </message>
     <message>
         <source>sheet</source>
-        <translation>foaie de calcul</translation>
+        <translation type="obsolete">foaie de calcul</translation>
     </message>
     <message>
         <source>QtiPlot was built without libxls support!</source>
@@ -4211,7 +4211,7 @@ Diverse părţi din acest fişier ar putea fi afişate incorect.</translation>
     </message>
     <message>
         <source>Warning: for internal consistency reasons the underscore character is replaced with a minus sign.</source>
-        <translation>Avertisment: din motive legate de reprezentarea internă folosită de QtiPlot, caracterul &quot;_&quot; va fi înlocuit cu semnul minus &apos;-&apos;.</translation>
+        <translation type="obsolete">Avertisment: din motive legate de reprezentarea internă folosită de QtiPlot, caracterul &quot;_&quot; va fi înlocuit cu semnul minus &apos;-&apos;.</translation>
     </message>
     <message>
         <source>Choose a directory to export the tables to</source>
@@ -5755,7 +5755,7 @@ Are you sure you want to continue?</source>
     </message>
     <message>
         <source>Couldn&apos;t open file %1</source>
-        <translation>Fişierul %1 nu a putut fi deschis</translation>
+        <translation type="obsolete">Fişierul %1 nu a putut fi deschis</translation>
     </message>
     <message>
         <source>Open Excel File</source>
@@ -6371,7 +6371,7 @@ Are you sure you want to continue?</source>
     </message>
     <message>
         <source>File %1 contains only %2 sheets!</source>
-        <translation>Fișierul %1 conține doar %2 foi de calcul!</translation>
+        <translation type="obsolete">Fișierul %1 conține doar %2 foi de calcul!</translation>
     </message>
     <message>
         <source>Paste Selection as Te&amp;xt</source>
@@ -6932,7 +6932,7 @@ Are you sure you want to continue?</source>
     </message>
     <message>
         <source>QtiPlot was built without ODF spreadsheet support!</source>
-        <translation>QtiPlot a fost compilat fara suport pentru foile de calcul ODF!</translation>
+        <translation type="obsolete">QtiPlot a fost compilat fara suport pentru foile de calcul ODF!</translation>
     </message>
     <message>
         <source>App&amp;end Project...</source>
@@ -7573,7 +7573,7 @@ Autocompletion will not be available!</source>
     </message>
     <message>
         <source>chart</source>
-        <translation>diagramă</translation>
+        <translation type="obsolete">diagramă</translation>
     </message>
     <message>
         <source>Save Folder As</source>
@@ -7586,6 +7586,14 @@ Autocompletion will not be available!</source>
     <message>
         <source>Export &amp;Open Document Spreadsheet ...</source>
         <translation>Exportă foaie de calcul &amp;ODS...</translation>
+    </message>
+    <message>
+        <source>QtiPlot Pro feature</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This functionality is only available in QtiPlot Pro version, please subscribe for a maintenance contract!</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -9478,6 +9486,10 @@ The following special codes can be used:
     <message>
         <source>LibreOffice</source>
         <translation>LibreOffice</translation>
+    </message>
+    <message>
+        <source>Prompt on pasting &amp;values to tables</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -17093,6 +17105,11 @@ have the same number of rows.</source>
  Computes the inverse of the cumulative distribution function for a Gaussian distribution with standard deviation sigma = 1.0.</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>dilog(x):
+ Compute the dilogarithm for a real argument. In Lewin&apos;s notation this is Li_2(x), the real part of the dilogarithm of a real x.</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>QtColorPicker</name>
@@ -17243,11 +17260,11 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>QtiPlot - Warning</source>
-        <translation>QtiPlot - Avertisment</translation>
+        <translation type="obsolete">QtiPlot - Avertisment</translation>
     </message>
     <message>
         <source>For internal consistency reasons the underscore character is replaced with a minus sign.</source>
-        <translation>Avertisment: din motive legate de reprezentarea internă folosită de QtiPlot, caracterul &quot;_&quot; va fi înlocuit cu semnul minus &apos;-&apos;.</translation>
+        <translation type="obsolete">Avertisment: din motive legate de reprezentarea internă folosită de QtiPlot, caracterul &quot;_&quot; va fi înlocuit cu semnul minus &apos;-&apos;.</translation>
     </message>
 </context>
 <context>
