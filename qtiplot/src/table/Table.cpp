@@ -376,12 +376,16 @@ void Table::setPlotDesignation(PlotDesignation pd, bool rightColumns)
 		 int cols = d_table->numCols();
 		 for (int i = selectedCol; i<cols; i++){
 			col_plot_type[i] = pd;
+			if (pd == Table::Label)
+				colTypes[i] = Text;
 		}
 	} else {
 		QStringList list = selectedColumns();
 		for (int i = 0; i < list.count(); i++){
 			int col = colIndex(list[i]);
 			col_plot_type[col] = pd;
+			if (pd == Table::Label)
+				colTypes[col] = Text;
 		}
 	}
 
