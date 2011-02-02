@@ -3816,14 +3816,12 @@ void Graph::addLegendItem()
 		LegendWidget *l = qobject_cast<LegendWidget *>(fw);
 		if (l && l->isAutoUpdateEnabled()){
 			QString text = l->text();
-			int curves = d_curves.size();
-        	if (text.endsWith ("\n") || text.isEmpty())
-            	text.append("\\l("+QString::number(curves)+")"+"%("+QString::number(curves)+")");
-        	else
-            	text.append("\n\\l("+QString::number(curves)+")"+"%("+QString::number(curves)+")");
-
-        	l->setText(text);
-        	l->repaint();
+			if (text.endsWith("\n") || text.isEmpty())
+				text.append(legendText(false, d_curves.size() - 1));
+			else
+				text.append("\n" + legendText(false, d_curves.size() - 1));
+			l->setText(text);
+			l->repaint();
 		}
 	}
 }

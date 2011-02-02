@@ -1642,6 +1642,9 @@ void ConfigDialog::initConfirmationsPage()
 	boxPromptRenameTables = new QCheckBox();
 	boxPromptRenameTables->setChecked(app->d_inform_rename_table);
 
+	boxTablePasteDialog = new QCheckBox();
+	boxTablePasteDialog->setChecked(app->d_show_table_paste_dialog);
+
 	boxConfirmOverwrite = new QCheckBox();
 	boxConfirmOverwrite->setChecked(app->d_confirm_overwrite);
 
@@ -1651,6 +1654,7 @@ void ConfigDialog::initConfirmationsPage()
 	QVBoxLayout * confirmPageLayout = new QVBoxLayout( confirm );
 	confirmPageLayout->addWidget(groupBoxConfirm);
 	confirmPageLayout->addWidget(boxPromptRenameTables);
+	confirmPageLayout->addWidget(boxTablePasteDialog);
 	confirmPageLayout->addWidget(boxConfirmOverwrite);
 	confirmPageLayout->addWidget(boxConfirmModifyDataPoints);
 	confirmPageLayout->addStretch();
@@ -1981,6 +1985,7 @@ void ConfigDialog::languageChange()
 	buttonLegendFont->setText( tr( "&Legend" ) );
 	buttonTitleFont->setText( tr( "T&itle" ) );
 	boxPromptRenameTables->setText( tr( "Prompt on &renaming tables when appending projects" ) );
+	boxTablePasteDialog->setText(tr( "Prompt on pasting &values to tables" ));
 	boxConfirmOverwrite->setText( tr( "Ask before over&writing files" ) );
 	boxConfirmModifyDataPoints->setText( tr( "Ask before modifying data &points" ) );
 
@@ -2273,6 +2278,7 @@ void ConfigDialog::apply()
 
 	app->columnSeparator = sep;
 	app->setAutoUpdateTableValues(boxUpdateTableValues->isChecked());
+	app->d_show_table_paste_dialog = boxTablePasteDialog->isChecked();
 
 	app->tableBkgdColor = buttonBackground->color();
 	app->tableTextColor = buttonText->color();
@@ -3504,6 +3510,7 @@ void ConfigDialog::setApplication(ApplicationWindow *app)
 	boxPlots3D->setChecked(app->confirmClosePlot3D);
 	boxNotes->setChecked(app->confirmCloseNotes);
 	boxPromptRenameTables->setChecked(app->d_inform_rename_table);
+	boxTablePasteDialog->setChecked(app->d_show_table_paste_dialog);
 	boxConfirmOverwrite->setChecked(app->d_confirm_overwrite);
 	boxConfirmModifyDataPoints->setChecked(app->d_confirm_modif_2D_points);
 
