@@ -232,7 +232,7 @@ private:
 	QLabel *lblPythonScriptsDir;
 	QLineEdit *pythonScriptsDirLine;
 #endif
-	QCheckBox *boxUpdateTableValues;
+	QCheckBox *boxUpdateTableValues, *boxTablePasteDialog;
 	QGroupBox *groupBackgroundOptions;
 	QLabel *labelGraphFrameColor, *labelGraphFrameWidth;
 	QLabel *labelGraphBkgColor, *labelGraphCanvasColor;

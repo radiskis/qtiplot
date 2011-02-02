@@ -486,6 +486,7 @@ void ApplicationWindow::setDefaultOptions()
     d_note_line_numbers = true;
 
 	d_auto_update_table_values = true;
+	d_show_table_paste_dialog = true;
 	d_active_window = NULL;
     d_matrix_undo_stack_size = 10;
 
@@ -4757,7 +4758,6 @@ ApplicationWindow* ApplicationWindow::open(const QString& fn, bool factorySettin
 		return importOPJ(fn, factorySettings, newProject);
 	else
 #ifdef Q_OS_WIN
-	#ifdef HAS_EXCEL
 	if (isExcelInstalled()){
 		if (fn.endsWith(".xl", Qt::CaseInsensitive) || fn.endsWith(".xlsx", Qt::CaseInsensitive) ||
 			fn.endsWith(".xlsm", Qt::CaseInsensitive) || fn.endsWith(".xlsb", Qt::CaseInsensitive) ||
@@ -4768,22 +4768,13 @@ ApplicationWindow* ApplicationWindow::open(const QString& fn, bool factorySettin
 			importExcel(fn);
 			return this;
 		}
-	} else
-	#else
-	if (fn.endsWith(".xls", Qt::CaseInsensitive || fn.endsWith(".xlsx", Qt::CaseInsensitive))){
+	}
+#endif
+	if (fn.endsWith(".xls", Qt::CaseInsensitive)){
 		importExcel(fn);
 		return this;
 	}
-	#endif
-#endif
 
-#ifdef ODS_IMPORT
-	if (fn.endsWith(".xls", Qt::CaseInsensitive || fn.endsWith(".xlsx", Qt::CaseInsensitive))){
-		importExcel(fn);
-		return this;
-	}
-	else
-#endif
 	if (fn.endsWith(".py", Qt::CaseInsensitive))
 		return loadScript(fn);
 	else if (fn.endsWith(".ods", Qt::CaseInsensitive)){
@@ -5545,6 +5536,7 @@ void ApplicationWindow::readSettings()
 	settings.beginGroup("/Tables");
 	d_show_table_comments = settings.value("/DisplayComments", false).toBool();
 	d_auto_update_table_values = settings.value("/AutoUpdateValues", true).toBool();
+	d_show_table_paste_dialog = settings.value("/EnablePasteDialog", d_show_table_paste_dialog).toBool();
 
 	QStringList tableFonts = settings.value("/Fonts").toStringList();
 	if (tableFonts.size() == 8)
@@ -6005,6 +5997,7 @@ void ApplicationWindow::saveSettings()
 	settings.beginGroup("/Tables");
 	settings.setValue("/DisplayComments", d_show_table_comments);
 	settings.setValue("/AutoUpdateValues", d_auto_update_table_values);
+	settings.setValue("/EnablePasteDialog", d_show_table_paste_dialog);
 	QStringList tableFonts;
 	tableFonts<<tableTextFont.family();
 	tableFonts<<QString::number(tableTextFont.pointSize());

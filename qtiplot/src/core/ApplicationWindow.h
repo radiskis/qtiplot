@@ -1187,6 +1187,7 @@ private slots:
 
 // TODO: a lot of this stuff should be private
 public:
+	bool d_show_table_paste_dialog;
 	double d_stats_significance_level;
 	bool d_stats_result_table;
 	bool d_stats_result_log;
