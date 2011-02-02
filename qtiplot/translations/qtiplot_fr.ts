@@ -2068,7 +2068,7 @@ Quelques parties de ce fichier peuvent ne pas être affichées comme attendu.</t
     </message>
     <message>
         <source>Warning: for internal consistency reasons the underscore character is replaced with a minus sign.</source>
-        <translation>Averstissement : pour des raisons d&apos;uniformité, le trait souligné (_) est remplacé par le signe moins (-).</translation>
+        <translation type="obsolete">Averstissement : pour des raisons d&apos;uniformité, le trait souligné (_) est remplacé par le signe moins (-).</translation>
     </message>
     <message>
         <source>&amp;Horizontal Steps</source>
@@ -2431,15 +2431,15 @@ La première représente le signal et la seconde, la réponse de la fonction !</
     </message>
     <message>
         <source>Couldn&apos;t open file %1</source>
-        <translation>Ne peut ouvrir le fichier %1</translation>
+        <translation type="obsolete">Ne peut ouvrir le fichier %1</translation>
     </message>
     <message>
         <source>File %1 contains only %2 sheets!</source>
-        <translation>Le fichier %1 ne contient que %2 feuillles !</translation>
+        <translation type="obsolete">Le fichier %1 ne contient que %2 feuillles !</translation>
     </message>
     <message>
         <source>QtiPlot was built without ODF spreadsheet support!</source>
-        <translation>QtiPlot a été compilé sans le support des fichiers tableurs ODF !</translation>
+        <translation type="obsolete">QtiPlot a été compilé sans le support des fichiers tableurs ODF !</translation>
     </message>
     <message>
         <source>Open Excel File</source>
@@ -2455,7 +2455,7 @@ La première représente le signal et la seconde, la réponse de la fonction !</
     </message>
     <message>
         <source>sheet</source>
-        <translation>feuille</translation>
+        <translation type="obsolete">feuille</translation>
     </message>
     <message>
         <source>QtiPlot was built without libxls support!</source>
@@ -4029,7 +4029,7 @@ L&apos;autocomplétion ne sera pas disponible !</translation>
     </message>
     <message>
         <source>chart</source>
-        <translation>Diagramme</translation>
+        <translation type="obsolete">Diagramme</translation>
     </message>
     <message>
         <source>Yes, don&apos;t ask me again</source>
@@ -4108,6 +4108,14 @@ L&apos;autocomplétion ne sera pas disponible !</translation>
     <message>
         <source>Export &amp;Open Document Spreadsheet ...</source>
         <translation>Export tableur &amp;ODS...</translation>
+    </message>
+    <message>
+        <source>QtiPlot Pro feature</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This functionality is only available in QtiPlot Pro version, please subscribe for a maintenance contract!</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -5970,6 +5978,10 @@ Les codes spéciaux suivants peuvent être utilisés :
     <message>
         <source>LibreOffice</source>
         <translation>LibreOffice</translation>
+    </message>
+    <message>
+        <source>Prompt on pasting &amp;values to tables</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -13455,6 +13467,11 @@ Calcule la fonction de distribution cumulée pur une distribution chi² avec df 
         <translation>norminv(p) :
  Calculel&apos;inverse de la fonction de distribution cumulée pour une distribution gaussienne avec un écart-type sigma de 1.0.</translation>
     </message>
+    <message>
+        <source>dilog(x):
+ Compute the dilogarithm for a real argument. In Lewin&apos;s notation this is Li_2(x), the real part of the dilogarithm of a real x.</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>QtColorPicker</name>
@@ -13605,11 +13622,11 @@ Calcule la fonction de distribution cumulée pur une distribution chi² avec df 
     </message>
     <message>
         <source>QtiPlot - Warning</source>
-        <translation>QtiPlot - Avertissement</translation>
+        <translation type="obsolete">QtiPlot - Avertissement</translation>
     </message>
     <message>
         <source>For internal consistency reasons the underscore character is replaced with a minus sign.</source>
-        <translation>Pour des raisons d&apos;uniformité, le trait souligné (_) est remplacé par le signe moins (-).</translation>
+        <translation type="obsolete">Pour des raisons d&apos;uniformité, le trait souligné (_) est remplacé par le signe moins (-).</translation>
     </message>
 </context>
 <context>

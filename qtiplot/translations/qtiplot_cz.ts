@@ -657,10 +657,6 @@
         <translation>Statistické údaje k &amp;řádkům</translation>
     </message>
     <message>
-        <source>sheet</source>
-        <translation></translation>
-    </message>
-    <message>
         <source>Zoom In/Out and Drag Canvas Horizontally</source>
         <translation></translation>
     </message>
@@ -1757,10 +1753,6 @@ Varování. Tento krok přeuspořádá stávající vrstvy!</translation>
         <translation>Změnit &amp;velikost okna...</translation>
     </message>
     <message>
-        <source>QtiPlot was built without ODF spreadsheet support!</source>
-        <translation></translation>
-    </message>
-    <message>
         <source>The destination folder already contains a folder called &apos;%1&apos;! Folder skipped!</source>
         <translation>Cílová složka již obsahuje složku nazvanou &apos;%1&apos;! Složka byla přeskočena!</translation>
     </message>
@@ -2133,10 +2125,6 @@ Jste si jist, že chcete pokračovat?</translation>
     <message>
         <source>Could not write to file: &lt;h4&gt;%1&lt;/h4&gt;&lt;p&gt;Please verify that you have the right to write to this location or that the file is not being used by another application!</source>
         <translation>Nelze zapisovat do souboru: &lt;h4&gt;%1&lt;/h4&gt;&lt;p&gt;Ověřte, prosím, že máte oprávnění pro zápis do tohoto umístění, nebo že soubor nepoužívá další aplikace!</translation>
-    </message>
-    <message>
-        <source>Couldn&apos;t open file %1</source>
-        <translation></translation>
     </message>
     <message>
         <source>E&amp;xport</source>
@@ -3812,7 +3800,7 @@ Různé části tohoto souboru se nemusí zobrazovat tak, jak se očekává.</tr
     </message>
     <message>
         <source>Warning: for internal consistency reasons the underscore character is replaced with a minus sign.</source>
-        <translation>Varování: Kvůli zajištění vnitřní ucelenosti byl znak podtržení nahrazen znaménkem mínus.</translation>
+        <translation type="obsolete">Varování: Kvůli zajištění vnitřní ucelenosti byl znak podtržení nahrazen znaménkem mínus.</translation>
     </message>
     <message>
         <source>Scripting Console</source>
@@ -3864,7 +3852,7 @@ Různé části tohoto souboru se nemusí zobrazovat tak, jak se očekává.</tr
     </message>
     <message>
         <source>File %1 contains only %2 sheets!</source>
-        <translation>Soubor %1 obsahuje pouze %2 listy!</translation>
+        <translation type="obsolete">Soubor %1 obsahuje pouze %2 listy!</translation>
     </message>
     <message>
         <source>Paste Selection as Te&amp;xt</source>
@@ -4088,10 +4076,6 @@ Různé části tohoto souboru se nemusí zobrazovat tak, jak se očekává.</tr
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>chart</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Save Folder As</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4101,6 +4085,14 @@ Různé části tohoto souboru se nemusí zobrazovat tak, jak se očekává.</tr
     </message>
     <message>
         <source>Export &amp;Open Document Spreadsheet ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>QtiPlot Pro feature</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This functionality is only available in QtiPlot Pro version, please subscribe for a maintenance contract!</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -5971,6 +5963,10 @@ K tomu lze použít následujících zvláštních kódů:
     </message>
     <message>
         <source>LibreOffice</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Prompt on pasting &amp;values to tables</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -13494,6 +13490,11 @@ pokud e1 pak e2 jinak e3.</translation>
  Computes the inverse of the cumulative distribution function for a Gaussian distribution with standard deviation sigma = 1.0.</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>dilog(x):
+ Compute the dilogarithm for a real argument. In Lewin&apos;s notation this is Li_2(x), the real part of the dilogarithm of a real x.</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>QtColorPicker</name>
@@ -13640,7 +13641,7 @@ pokud e1 pak e2 jinak e3.</translation>
     </message>
     <message>
         <source>For internal consistency reasons the underscore character is replaced with a minus sign.</source>
-        <translation>Z důvodů zajištění vnitřní ucelenosti by znaky podtržení nahrazeny znaménkem mínus.</translation>
+        <translation type="obsolete">Z důvodů zajištění vnitřní ucelenosti by znaky podtržení nahrazeny znaménkem mínus.</translation>
     </message>
     <message>
         <source>QtiPlot - Rename Window</source>
@@ -13648,7 +13649,7 @@ pokud e1 pak e2 jinak e3.</translation>
     </message>
     <message>
         <source>QtiPlot - Warning</source>
-        <translation>QtiPlot - Varování</translation>
+        <translation type="obsolete">QtiPlot - Varování</translation>
     </message>
 </context>
 <context>

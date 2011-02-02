@@ -547,10 +547,6 @@
         <translation>ファイル(&amp;F)</translation>
     </message>
     <message>
-        <source>Couldn&apos;t open file %1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Open Excel File</source>
         <translation type="unfinished"></translation>
     </message>
@@ -787,10 +783,6 @@ Various parts of this file may not be displayed as expected.</source>
     </message>
     <message>
         <source>Name &lt;b&gt;%1&lt;/b&gt; already exists!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Warning: for internal consistency reasons the underscore character is replaced with a minus sign.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1093,10 +1085,6 @@ Are you sure you want to continue?</source>
     </message>
     <message>
         <source>Auto &amp;Column Width</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>File %1 contains only %2 sheets!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4111,14 +4099,6 @@ Autocompletion will not be available!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>QtiPlot was built without ODF spreadsheet support!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>sheet</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>&amp;Normalize</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4559,10 +4539,6 @@ Autocompletion will not be available!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>chart</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Save Folder As</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4576,6 +4552,14 @@ Autocompletion will not be available!</source>
     </message>
     <message>
         <source>Export &amp;Open Document Spreadsheet ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>QtiPlot Pro feature</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This functionality is only available in QtiPlot Pro version, please subscribe for a maintenance contract!</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -6396,6 +6380,10 @@ The following special codes can be used:
     </message>
     <message>
         <source>LibreOffice</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Prompt on pasting &amp;values to tables</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -13543,6 +13531,11 @@ have the same number of rows.</source>
  Computes the inverse of the cumulative distribution function for a Gaussian distribution with standard deviation sigma = 1.0.</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>dilog(x):
+ Compute the dilogarithm for a real argument. In Lewin&apos;s notation this is Li_2(x), the real part of the dilogarithm of a real x.</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>QtColorPicker</name>
@@ -13689,14 +13682,6 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>QtiPlot - Warning</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>For internal consistency reasons the underscore character is replaced with a minus sign.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
