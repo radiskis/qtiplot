@@ -185,6 +185,9 @@ using namespace std;
 #include <QTextDocumentWriter>
 #endif
 #include <QToolButton>
+#ifdef Q_OS_WIN
+	#include <QAxObject>
+#endif
 
 #include <zlib.h>
 #include <iostream>
@@ -4342,38 +4345,37 @@ void ApplicationWindow::exportOds()
 	}
 }
 
+#ifdef Q_OS_WIN
+bool ApplicationWindow::isExcelInstalled()
+{
+	QAxObject *excel = new QAxObject();
+	if (!excel->setControl("Excel.Application"))
+		return false;
+
+	excel->dynamicCall("Quit()");
+	delete excel;
+	return true;
+}
+#endif
+
 Table * ApplicationWindow::importExcel(const QString& fileName, int sheet)
 {
 	QString fn = fileName;
 	if (fn.isEmpty()){
-		QString filter = tr("Excel files") + " (*.xls *.xlsx)";
+		QString filter = tr("Excel files") + " (*.xls)";
 #ifdef Q_OS_WIN
-	#ifdef HAS_EXCEL
-		filter = tr("Excel files") + " (*.xl *.xlsx *.xlsm *.xlsb *.xlam *.xltx *.xltm *.xls *.xla *.xlt *.xlm *.xlw)";
-	#endif
+		if (isExcelInstalled())
+			filter = tr("Excel files") + " (*.xl *.xlsx *.xlsm *.xlsb *.xlam *.xltx *.xltm *.xls *.xla *.xlt *.xlm *.xlw)";
 #endif
 		fn = getFileName(this, tr("Open Excel File"), QString::null, filter, 0, false);
 		if (fn.isEmpty())
 			return NULL;
 	}
 
-#ifdef Q_OS_WIN
-	#ifdef HAS_EXCEL
-		Table *t = importUsingExcel(fn, sheet);
-		if (t)
-			return t;
-	#endif
-#endif
-
-	return importExcelCrossplatform(fn, sheet);
-}
-
-Table * ApplicationWindow::importExcelCrossplatform(const QString& fileName, int)
-{
-	ImportExportPlugin *plugin = importPlugin(fileName);
+	ImportExportPlugin *plugin = importPlugin(fn);
 	if (plugin){
 		plugin->setApplicationWindow(this);
-		plugin->import(fileName);
+		plugin->import(fn);
 	}
 	return 0;
 }
