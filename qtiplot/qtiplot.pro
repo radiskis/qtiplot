@@ -199,23 +199,6 @@ contains(SCRIPTING_LANGS, Python) {
 
 ###############################################################
 
-# check if we have QuaZIP
-!isEmpty(QUAZIP_LIBS) {
-	DEFINES += ODS_IMPORT
-	INCLUDEPATH += $$QUAZIP_INCLUDEPATH
-	LIBS        += $$QUAZIP_LIBS
-}
-
-###############################################################
-
-# check if support for Microsoft Excel should be enabled
-win32: contains(CONFIG, Excel) {
-	CONFIG += qaxcontainer
-	DEFINES += HAS_EXCEL
-}
-
-###############################################################
-
 # check if we have ALGLIB
 !isEmpty(ALGLIB_LIBS) {
 	DEFINES += HAVE_ALGLIB
