@@ -477,7 +477,7 @@ public slots:
 	void connectTable(Table* w);
 	void initTable(Table* w, const QString& caption);
 	void customTable(Table* w);
-	Table* importOdfSpreadsheet(const QString& = QString::null, int sheet = -1, const QString& legendName = QString::null);
+	Table* importOdfSpreadsheet(const QString& = QString::null, int sheet = -1);
 
 	Table* importExcel(const QString& = QString::null, int sheet = -1);
 #ifdef Q_OS_WIN
@@ -1462,9 +1462,7 @@ private:
     QAction *actionNewSurfacePlot, *actionNewMatrix, *actionNewGraph, *actionNewFolder;
     QAction *actionOpen, *actionLoadImage, *actionSaveProject, *actionSaveProjectAs, *actionImportImage;
 	QAction *actionLoad, *actionUndo, *actionRedo, *actionImportSound;
-#ifdef ODS_IMPORT
 	QAction *actionOpenOds;
-#endif
 	QAction *actionExportExcel, *actionExportOds, *actionOpenExcel;
     QAction *actionCopyWindow, *actionShowAllColumns, *actionHideSelectedColumns;
     QAction *actionCutSelection, *actionCopySelection, *actionPasteSelection, *actionClearSelection;

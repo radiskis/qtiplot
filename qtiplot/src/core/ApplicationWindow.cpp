@@ -195,14 +195,6 @@ using namespace std;
 #include <gsl/gsl_statistics.h>
 #include <gsl/gsl_sort.h>
 
-#ifdef ODS_IMPORT
-	#include <QTemporaryFile>
-	#include <OdsFileHandler.h>
-	#include <ExcelFileConverter.h>
-	#include <quazip.h>
-	#include <quazipfile.h>
-#endif
-
 #ifdef HAVE_ALGLIB
 	#include "GriddingDialog.h"
 	#include "MatrixResamplingDialog.h"
@@ -793,10 +785,8 @@ void ApplicationWindow::initToolBars()
 	fileTools->addSeparator ();
 	fileTools->addAction(actionOpen);
 	fileTools->addAction(actionOpenTemplate);
-#ifdef ODS_IMPORT
 	fileTools->addAction(actionOpenExcel);
 	fileTools->addAction(actionOpenOds);
-#endif
 	fileTools->addAction(actionAppendProject);
 	fileTools->addAction(actionSaveProject);
 	fileTools->addAction(actionSaveTemplate);
@@ -4256,9 +4246,8 @@ ApplicationWindow * ApplicationWindow::plotFile(const QString& fn)
 	return app;
 }
 
-Table * ApplicationWindow::importOdfSpreadsheet(const QString& fileName, int sheet, const QString& legendName)
+Table * ApplicationWindow::importOdfSpreadsheet(const QString& fileName, int sheet)
 {
-#ifdef ODS_IMPORT
 	QString fn = fileName;
 	if (fn.isEmpty()){
 		fn = getFileName(this, tr("Open ODF Spreadsheet File"), QString::null, "*.ods", 0, false);
@@ -4266,56 +4255,12 @@ Table * ApplicationWindow::importOdfSpreadsheet(const QString& fileName, int she
 			return NULL;
 	}
 
-	QuaZipFile file(fn, "content.xml");
-	if(!file.open(QIODevice::ReadOnly)){
-		QApplication::restoreOverrideCursor();
-		QMessageBox::critical(this, tr("QtiPlot"), tr("Couldn't open file %1").arg(fn));
-		return NULL;
+	ImportExportPlugin *plugin = importPlugin(fn);
+	if (plugin){
+		plugin->setApplicationWindow(this);
+		plugin->import(fn);
 	}
-	QTemporaryFile out;
-	if (out.open()){
-		char c;
-		while(file.getChar(&c))
-			out.putChar(c);
-		out.close();
-	}
-	file.close();
-
-	OdsFileHandler handler(this, fn, legendName);
-	QXmlSimpleReader reader;
-	reader.setContentHandler(&handler);
-	reader.setErrorHandler(&handler);
-
-	QXmlInputSource xmlInputSource(&out);
-	if (reader.parse(xmlInputSource)){
-		if (legendName.isEmpty())
-			updateRecentProjectsList(fn);
-		else
-			updateRecentProjectsList(legendName);
-
-		int sheets = handler.sheetsCount();
-		if (sheet > sheets){
-			QMessageBox::critical(this, tr("QtiPlot"), tr("File %1 contains only %2 sheets!").arg(fn).arg(sheets));
-		} else if (sheet > 0){
-			Table *aux = NULL;
-			for (int i = 0; i < sheets; i++){
-				Table *t = handler.sheet(i);
-				if (i == sheet - 1)
-					aux = t;
-				else {
-					t->askOnCloseEvent(false);
-					t->close();
-				}
-			}
-			return aux;
-		}
-		return handler.sheet(sheets - 1);
-	}
-	return NULL;
-#else
-	QMessageBox::critical(this, tr("QtiPlot"), tr("QtiPlot was built without ODF spreadsheet support!"));
-	return NULL;
-#endif
+	return 0;
 }
 
 void ApplicationWindow::exportExcel()
@@ -10130,10 +10075,8 @@ void ApplicationWindow::fileMenuAboutToShow()
 	newMenu->addAction(actionNewFunctionPlot);
 	newMenu->addAction(actionNewSurfacePlot);
 	fileMenu->addAction(actionOpen);
-#ifdef ODS_IMPORT
 	fileMenu->addAction(actionOpenExcel);
 	fileMenu->addAction(actionOpenOds);
-#endif
 	fileMenu->addAction(actionLoadImage);
 	fileMenu->addAction(actionAppendProject);
 	recentMenuID = fileMenu->insertItem(tr("&Recent Projects"), recent);
@@ -13829,11 +13772,9 @@ void ApplicationWindow::createActions()
 	actionOpenExcel->setShortcut( tr("Ctrl+Shift+E") );
 	connect(actionOpenExcel, SIGNAL(activated()), this, SLOT(importExcel()));
 
-#ifdef ODS_IMPORT
 	actionOpenOds = new QAction(QIcon(":/ods_spreadsheet.png"), tr("Open ODF Spreads&heet..."), this);
 	actionOpenOds->setShortcut( tr("Ctrl+Alt+S") );
 	connect(actionOpenOds, SIGNAL(activated()), this, SLOT(importOdfSpreadsheet()));
-#endif
 
 	actionLoadImage = new QAction(tr("Open Image &File..."), this);
 	actionLoadImage->setShortcut( tr("Ctrl+I") );
@@ -14847,7 +14788,6 @@ void ApplicationWindow::translateActionsStrings()
 	actionExportOds->setMenuText(tr("Export &Open Document Spreadsheet ..."));
 	actionExportOds->setToolTip(tr("Export Open Document Spreadsheet"));
 
-#ifdef ODS_IMPORT
 	actionOpenOds->setMenuText(tr("Open ODF Spreads&heet..."));
 	actionOpenOds->setShortcut( tr("Ctrl+Alt+S") );
 	actionOpenOds->setToolTip(tr("Open ODF Spreadsheet"));
@@ -14855,7 +14795,7 @@ void ApplicationWindow::translateActionsStrings()
 	actionOpenExcel->setMenuText(tr("Open Exce&l ..."));
 	actionOpenExcel->setShortcut( tr("Ctrl+Shift+E") );
 	actionOpenExcel->setToolTip(tr("Open Excel"));
-#endif
+
 	actionLoadImage->setMenuText(tr("Open Image &File..."));
 	actionLoadImage->setShortcut(tr("Ctrl+I"));
 
@@ -16397,13 +16337,9 @@ Folder* ApplicationWindow::appendProject(const QString& fn, Folder* parentFolder
 	if (fn.contains(".opj", Qt::CaseInsensitive) || fn.contains(".ogm", Qt::CaseInsensitive) ||
 		fn.contains(".ogw", Qt::CaseInsensitive) || fn.contains(".ogg", Qt::CaseInsensitive))
 		importOPJ(fn, false, false);
-	else
-#ifdef ODS_IMPORT
-	if (fn.endsWith(".xls", Qt::CaseInsensitive || fn.endsWith(".xlsx", Qt::CaseInsensitive)))
+	else if (fn.endsWith(".xls", Qt::CaseInsensitive))
 		importExcel(fn);
-	else
-#endif
-	if (fn.endsWith(".ods", Qt::CaseInsensitive))
+	else if (fn.endsWith(".ods", Qt::CaseInsensitive))
 		importOdfSpreadsheet(fn);
 	else {
 		QFile f(fname);
