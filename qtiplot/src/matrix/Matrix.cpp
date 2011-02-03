@@ -1647,18 +1647,32 @@ bool Matrix::exportExcel(const QString& fname, bool exportSelection)
 
 bool Matrix::exportASCII(const QString& fname, const QString& separator, bool exportSelection)
 {
+	if (!applicationWindow())
+		return false;
+
+	if (fname.endsWith(".tex")){
+		ImportExportPlugin *ep = applicationWindow()->exportPlugin("tex");
+		if (!ep)
+			return false;
+		return ep->exportMatrix(this, fname, exportSelection);
+	} else if (fname.endsWith(".csv")){
+		ImportExportPlugin *ep = applicationWindow()->exportPlugin("csv");
+		if (!ep)
+			return false;
+		return ep->exportMatrix(this, fname, exportSelection);
+	}
+
 	QFile f(fname);
-	if ( !f.open( QIODevice::WriteOnly ) ){
+	if (!f.open( QIODevice::WriteOnly)){
 		QMessageBox::critical(this, tr("QtiPlot - ASCII Export Error"),
-				tr("Could not write to file: <br><h4>%1</h4><p>Please verify that you have the right to write to this location!").arg(fname));
+		tr("Could not write to file: <br><h4>%1</h4><p>Please verify that you have the right to write to this location!").arg(fname));
 		return false;
 	}
 
 	if (fname.endsWith(".odf") || fname.endsWith(".html")){
 		f.close();
 		return exportODF(fname, exportSelection);
-	}
-	else if (fname.endsWith(".xls")){
+	} else if (fname.endsWith(".xls")){
 		f.close();
 		return exportExcel(fname, exportSelection);
 	} else if (fname.endsWith(".ods")){
@@ -1677,76 +1691,37 @@ bool Matrix::exportASCII(const QString& fname, const QString& separator, bool ex
 	QString eol = applicationWindow()->endOfLine();
 	QString sep = separator;
 
-	bool exportTex = (fname.endsWith(".tex")) ? true : false;
-	if (exportTex){
-		t << "\\begin{tabular}{|";
-		eol = "\\\\\\hline\n";
-		sep = " & ";
-	}
-
-	bool exportCsv = fname.endsWith(".csv") ? true : false;
-	if (exportCsv)
-		sep = ",";
-
 	if (exportSelection && d_view_type == TableView){
-            QModelIndexList selectedIndexes = d_table_view->selectionModel()->selectedIndexes();
-            if (!selectedIndexes.isEmpty()){
-                topRow = selectedIndexes[0].row();
-                bottomRow = topRow;
-                leftCol = selectedIndexes[0].column();
-                rightCol = leftCol;
-            }
-            foreach(QModelIndex index, selectedIndexes){
-                int row = index.row();
-                if (row < topRow)
-                    topRow = row;
-                if (row > bottomRow)
-                    bottomRow = row;
-
-                int col = index.column();
-                if (col < leftCol)
-                    leftCol = col;
-                if (col > rightCol)
-                    rightCol = col;
-            }
-	}
-
-	if (exportTex){
-		for (int i = leftCol; i <= rightCol; i++)
-			t << "c|";
-		t << "}\\hline\n";
-	}
-
-	if (exportCsv){
-		for (int i = topRow; i <= bottomRow; i++){
-			for (int j = leftCol; j < rightCol; j++){
-				QString s = d_matrix_model->text(i, j);
-				if (s.contains(","))
-					t << "\"" + s + "\"";
-				else
-					t << s;
-				t << sep;
-			}
-			QString s = d_matrix_model->text(i, rightCol);
-			if (s.contains(","))
-				t << "\"" + s + "\"";
-			else
-				t << s;
-			t << eol;
+		QModelIndexList selectedIndexes = d_table_view->selectionModel()->selectedIndexes();
+		if (!selectedIndexes.isEmpty()){
+			topRow = selectedIndexes[0].row();
+			bottomRow = topRow;
+			leftCol = selectedIndexes[0].column();
+			rightCol = leftCol;
 		}
-	} else {
-		for (int i = topRow; i <= bottomRow; i++){
-			for (int j = leftCol; j < rightCol; j++){
-				t << d_matrix_model->text(i, j);
-				t << sep;
-			}
-			t << d_matrix_model->text(i, rightCol);
-			t << eol;
+		foreach(QModelIndex index, selectedIndexes){
+			int row = index.row();
+			if (row < topRow)
+				topRow = row;
+			if (row > bottomRow)
+				bottomRow = row;
+
+			int col = index.column();
+			if (col < leftCol)
+				leftCol = col;
+			if (col > rightCol)
+				rightCol = col;
 		}
 	}
 
-	if (exportTex)
-		t << "\\end{tabular}\n";
+	for (int i = topRow; i <= bottomRow; i++){
+		for (int j = leftCol; j < rightCol; j++){
+			t << d_matrix_model->text(i, j);
+			t << sep;
+		}
+		t << d_matrix_model->text(i, rightCol);
+		t << eol;
+	}
 
 	f.close();
 	QApplication::restoreOverrideCursor();
