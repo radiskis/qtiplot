@@ -2863,7 +2863,7 @@ void Table::importASCII(const QString &fname, const QString &sep, int ignoredLin
 	}
 }
 
-bool Table::exportExcelAndConvertTo(const QString& fname, bool withLabels, bool exportComments, bool exportSelection)
+bool Table::exportOdsSpreadsheet(const QString& fname, bool withLabels, bool exportComments, bool exportSelection)
 {
 	QString name = fname;
 	QString ext = QFileInfo(fname).completeSuffix();
@@ -2872,7 +2872,7 @@ bool Table::exportExcelAndConvertTo(const QString& fname, bool withLabels, bool 
 		return false;
 
 	QFile::remove(fname);
-	ExcelFileConverter(name, -1, applicationWindow());
+	ExcelFileConverter(name, applicationWindow());
 	return true;
 }
 
@@ -3064,7 +3064,7 @@ bool Table::exportASCII(const QString& fname, const QString& separator,
 		return exportExcel(fname, withLabels, exportComments, exportSelection);
 	} else if (fname.endsWith(".ods")){
 		f.close();
-		return exportExcelAndConvertTo(fname, withLabels, exportComments, exportSelection);
+		return exportOdsSpreadsheet(fname, withLabels, exportComments, exportSelection);
 	}
 
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));

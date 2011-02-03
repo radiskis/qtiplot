@@ -306,7 +306,7 @@ public slots:
 	void setDayFormat(const QString& format, int col, bool updateCells = true);
 
 	bool exportExcel(const QString& fname, bool withLabels, bool exportComments, bool exportSelection);
-	bool exportExcelAndConvertTo(const QString& fname, bool withLabels, bool exportComments, bool exportSelection);
+	bool exportOdsSpreadsheet(const QString& fname, bool withLabels, bool exportComments, bool exportSelection);
 	bool exportODF(const QString& fname, bool withLabels, bool exportComments, bool exportSelection);
 	bool exportASCII(const QString& fname, const QString& separator, bool withLabels = false,
                      bool exportComments = false, bool exportSelection = false);

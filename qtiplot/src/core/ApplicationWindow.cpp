@@ -4279,7 +4279,7 @@ void ApplicationWindow::exportExcel()
 
 void ApplicationWindow::exportOds()
 {
-	ImportExportPlugin *ep = exportPlugin("xls");
+	ImportExportPlugin *ep = exportPlugin("ods");
 	if (!ep)
 		return;
 

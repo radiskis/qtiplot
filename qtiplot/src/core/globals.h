@@ -40,4 +40,4 @@ const char * svn_revision = SVN_REVISION;  //SRB: SVN_REVISION set by compiler f
 //! Copyright string containing the author names
 const char * copyright_string = "Copyright (C) 2004-2011 Ion Vasilief";
 //! Release date as a string
-const char * release_date = " 2011/01/31";
+const char * release_date = " 2011/02/03";
