@@ -2890,142 +2890,142 @@ bool Table::exportExcel(const QString& fname, bool withLabels, bool exportCommen
 bool Table::exportODF(const QString& fname, bool withLabels, bool exportComments, bool exportSelection)
 {
 #if QT_VERSION >= 0x040500
-        QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
-        int rows = d_table->numRows();
-        int cols = d_table->numCols();
-        int selectedCols = 0;
-        int topRow = 0, bottomRow = 0;
-        int *sCols = 0;
-        int r = rows;
-        if (exportSelection){
-                for (int i=0; i<cols; i++){
-                        if (d_table->isColumnSelected(i))
-                                selectedCols++;
-                }
+	int rows = d_table->numRows();
+	int cols = d_table->numCols();
+	int selectedCols = 0;
+	int topRow = 0, bottomRow = 0;
+	int *sCols = 0;
+	int r = rows;
+	if (exportSelection){
+		for (int i=0; i<cols; i++){
+			if (d_table->isColumnSelected(i))
+				selectedCols++;
+		}
 
-                sCols = new int[selectedCols];
-                int aux = 0;
-                for (int i=0; i<cols; i++){
-                        if (d_table->isColumnSelected(i)){
-                                sCols[aux] = i;
-                                aux++;
-                        }
-                }
+		sCols = new int[selectedCols];
+		int aux = 0;
+		for (int i=0; i<cols; i++){
+			if (d_table->isColumnSelected(i)){
+				sCols[aux] = i;
+				aux++;
+			}
+		}
 
-                for (int i=0; i<rows; i++){
-                        if (d_table->isRowSelected(i)){
-                                topRow = i;
-                                break;
-                        }
-                }
+		for (int i=0; i<rows; i++){
+			if (d_table->isRowSelected(i)){
+				topRow = i;
+				break;
+			}
+		}
 
-                for (int i = rows - 1; i > 0; i--){
-                        if (d_table->isRowSelected(i)){
-                                bottomRow = i;
-                                break;
-                        }
-                }
+		for (int i = rows - 1; i > 0; i--){
+			if (d_table->isRowSelected(i)){
+				bottomRow = i;
+				break;
+			}
+		}
 
-                r = abs(bottomRow - topRow) + 1;
-        }
+		r = abs(bottomRow - topRow) + 1;
+	}
 
-        int aux = selectedCols;
-        if (!selectedCols)
-                aux = cols;
+	int aux = selectedCols;
+	if (!selectedCols)
+			aux = cols;
 
-        QTextDocument *document = new QTextDocument();
-        QTextCursor cursor = QTextCursor(document);
+	QTextDocument *document = new QTextDocument();
+	QTextCursor cursor = QTextCursor(document);
 
-        QTextTableFormat tableFormat;
-        tableFormat.setAlignment(Qt::AlignCenter);
-        tableFormat.setCellPadding(0);
-        tableFormat.setHeaderRowCount(0);
-        tableFormat.setBorder (1);
-        tableFormat.setBorderStyle(QTextFrameFormat::BorderStyle_Solid);
-        tableFormat.setWidth(QTextLength(QTextLength::PercentageLength, 100));
+	QTextTableFormat tableFormat;
+	tableFormat.setAlignment(Qt::AlignCenter);
+	tableFormat.setCellPadding(0);
+	tableFormat.setHeaderRowCount(0);
+	tableFormat.setBorder (1);
+	tableFormat.setBorderStyle(QTextFrameFormat::BorderStyle_Solid);
+	tableFormat.setWidth(QTextLength(QTextLength::PercentageLength, 100));
 
-        int headerRows = 0;
-        if (withLabels)
-                headerRows++;
-        if (exportComments)
-                headerRows++;
-        r += headerRows;
+	int headerRows = 0;
+	if (withLabels)
+		headerRows++;
+	if (exportComments)
+		headerRows++;
+	r += headerRows;
 
-        QTextTable *table = cursor.insertTable(r, aux, tableFormat);
-        QTextCharFormat cellFormat;
-        cellFormat.setBackground (QBrush(Qt::gray));
-        for (int i = 0; i < aux; i++){
-                for (int j = 0; j < headerRows; j++){
-                        QTextTableCell cell = table->cellAt(j, i);
-                        cell.setFormat(cellFormat);
-                }
-        }
+	QTextTable *table = cursor.insertTable(r, aux, tableFormat);
+	QTextCharFormat cellFormat;
+	cellFormat.setBackground (QBrush(Qt::gray));
+	for (int i = 0; i < aux; i++){
+		for (int j = 0; j < headerRows; j++){
+			QTextTableCell cell = table->cellAt(j, i);
+			cell.setFormat(cellFormat);
+		}
+	}
 
-        if (withLabels){
-                QStringList header = colNames();
-                QStringList ls = header.grep ( QRegExp ("\\D"));
-                if (exportSelection && selectedCols){
-                        for (int i = 0; i < aux; i++){
-                                if (ls.count()>0)
-                                        cursor.insertText(header[sCols[i]]);
-                                else
-                                        cursor.insertText("C" + header[sCols[i]]);
-                                cursor.movePosition(QTextCursor::NextCell);
-                        }
-                } else {
-                        if (ls.count() > 0){
-                                for (int j = 0; j < aux; j++){
-                                        cursor.insertText(header[j]);
-                                        cursor.movePosition(QTextCursor::NextCell);
-                                }
-                        } else {
-                                for (int j = 0; j < aux; j++){
-                                        cursor.insertText("C" + header[j]);
-                                        cursor.movePosition(QTextCursor::NextCell);
-                                }
-                        }
-                }
-        }// finished writting labels
+	if (withLabels){
+		QStringList header = colNames();
+		QStringList ls = header.grep ( QRegExp ("\\D"));
+		if (exportSelection && selectedCols){
+			for (int i = 0; i < aux; i++){
+				if (ls.count()>0)
+					cursor.insertText(header[sCols[i]]);
+				else
+					cursor.insertText("C" + header[sCols[i]]);
+				cursor.movePosition(QTextCursor::NextCell);
+			}
+		} else {
+			if (ls.count() > 0){
+				for (int j = 0; j < aux; j++){
+					cursor.insertText(header[j]);
+					cursor.movePosition(QTextCursor::NextCell);
+				}
+			} else {
+				for (int j = 0; j < aux; j++){
+					cursor.insertText("C" + header[j]);
+					cursor.movePosition(QTextCursor::NextCell);
+				}
+			}
+		}
+	}// finished writting labels
 
-        if (exportComments){
-                if (exportSelection && selectedCols){
-                        for (int i = 0; i < aux; i++){
-                            cursor.insertText(comments[sCols[i]]);
-                            cursor.movePosition(QTextCursor::NextCell);
-                        }
-                } else {
-                    for (int i = 0; i < aux; i++){
-                        cursor.insertText(comments[i]);
-                        cursor.movePosition(QTextCursor::NextCell);
-                    }
-        }
-        }
+	if (exportComments){
+		if (exportSelection && selectedCols){
+			for (int i = 0; i < aux; i++){
+				cursor.insertText(comments[sCols[i]]);
+				cursor.movePosition(QTextCursor::NextCell);
+			}
+		} else {
+			for (int i = 0; i < aux; i++){
+				cursor.insertText(comments[i]);
+				cursor.movePosition(QTextCursor::NextCell);
+			}
+		}
+	}
 
-        if (exportSelection && selectedCols){
-                for (int i = topRow; i <= bottomRow; i++){
-                        for (int j = 0; j < aux; j++){
-                                cursor.insertText(d_table->text(i, sCols[j]));
-                                cursor.movePosition(QTextCursor::NextCell);
-                        }
-                }
-                delete [] sCols;
-        } else {
-                for (int i = 0; i < rows; i++) {
-                        for (int j = 0; j < aux; j++){
-                                cursor.insertText(d_table->text(i, j));
-                                cursor.movePosition(QTextCursor::NextCell);
-                        }
-                }
-        }
+	if (exportSelection && selectedCols){
+		for (int i = topRow; i <= bottomRow; i++){
+			for (int j = 0; j < aux; j++){
+				cursor.insertText(d_table->text(i, sCols[j]));
+				cursor.movePosition(QTextCursor::NextCell);
+			}
+		}
+		delete [] sCols;
+	} else {
+		for (int i = 0; i < rows; i++) {
+			for (int j = 0; j < aux; j++){
+				cursor.insertText(d_table->text(i, j));
+				cursor.movePosition(QTextCursor::NextCell);
+			}
+		}
+	}
 
-        QTextDocumentWriter writer(fname);
-        if (fname.endsWith(".html"))
-                writer.setFormat("HTML");
-        writer.write(document);
+	QTextDocumentWriter writer(fname);
+	if (fname.endsWith(".html"))
+		writer.setFormat("HTML");
+	writer.write(document);
 
-        QApplication::restoreOverrideCursor();
-        return true;
+	QApplication::restoreOverrideCursor();
+	return true;
 #endif
 	return false;
 }
@@ -3033,6 +3033,21 @@ bool Table::exportODF(const QString& fname, bool withLabels, bool exportComments
 bool Table::exportASCII(const QString& fname, const QString& separator,
 		bool withLabels, bool exportComments, bool exportSelection)
 {
+	if (!applicationWindow())
+		return false;
+
+	if (fname.endsWith(".tex")){
+		ImportExportPlugin *ep = applicationWindow()->exportPlugin("tex");
+		if (!ep)
+			return false;
+		return ep->exportTable(this, fname, withLabels, exportComments, exportSelection);
+	} else if (fname.endsWith(".csv")){
+		ImportExportPlugin *ep = applicationWindow()->exportPlugin("csv");
+		if (!ep)
+			return false;
+		return ep->exportTable(this, fname, withLabels, exportComments, exportSelection);
+	}
+
 	QFile f(fname);
 	if ( !f.open( QIODevice::WriteOnly ) ){
 		QMessageBox::critical(0, tr("QtiPlot - ASCII Export Error"),
@@ -3044,8 +3059,7 @@ bool Table::exportASCII(const QString& fname, const QString& separator,
 	if (fname.endsWith(".odf") || fname.endsWith(".html")){
 		f.close();
 		return exportODF(fname, withLabels, exportComments, exportSelection);
-	}
-	else if (fname.endsWith(".xls")){
+	} else if (fname.endsWith(".xls")){
 		f.close();
 		return exportExcel(fname, withLabels, exportComments, exportSelection);
 	} else if (fname.endsWith(".ods")){
@@ -3058,16 +3072,6 @@ bool Table::exportASCII(const QString& fname, const QString& separator,
 	QTextStream t( &f );
 	QString eol = applicationWindow()->endOfLine();
 	QString sep = separator;
-	bool exportTex = (fname.endsWith(".tex")) ? true : false;
-	if (exportTex){
-		t << "\\begin{tabular}{|";
-		eol = "\\\\\\hline\n";
-		sep = " & ";
-	}
-
-	bool exportCsv = fname.endsWith(".csv") ? true : false;
-	if (exportCsv)
-		sep = ",";
 
 	int rows = d_table->numRows();
 	int cols = d_table->numCols();
@@ -3107,12 +3111,6 @@ bool Table::exportASCII(const QString& fname, const QString& separator,
 	int aux = selectedCols - 1;
 	if (!selectedCols)
 		aux = cols - 1;
-
-	if (exportTex){
-		for (int i = 0; i <= aux; i++)
-			t << "c|";
-		t << "}\\hline\n";
-	}
 
 	if (withLabels){
 		QStringList header = colNames();
@@ -3158,59 +3156,20 @@ bool Table::exportASCII(const QString& fname, const QString& separator,
 	}
 
 	if (exportSelection && selectedCols){
-		if (exportCsv){
-			for (int i = topRow; i <= bottomRow; i++){
-				for (int j = 0; j < aux; j++){
-					QString s = d_table->text(i, sCols[j]);
-					if (s.contains(","))
-						t << "\"" + s + "\"" + sep;
-					else
-						t << s + sep;
-				}
-				if (aux >= 0){
-					QString s = d_table->text(i, sCols[aux]);
-					if (s.contains(","))
-						t << "\"" + s + "\"" + eol;
-					else
-						t << s + eol;
-				}
-			}
-		} else {
-			for (int i = topRow; i <= bottomRow; i++){
-				for (int j = 0; j < aux; j++)
-					t << d_table->text(i, sCols[j]) + sep;
-				if (aux >= 0)
-					t << d_table->text(i, sCols[aux]) + eol;
-			}
+		for (int i = topRow; i <= bottomRow; i++){
+			for (int j = 0; j < aux; j++)
+				t << d_table->text(i, sCols[j]) + sep;
+			if (aux >= 0)
+				t << d_table->text(i, sCols[aux]) + eol;
 		}
 		delete [] sCols;
 	} else {
-		if (exportCsv){
-			for (int i = 0; i < rows; i++) {
-				for (int j = 0; j < aux; j++){
-					QString s = d_table->text(i, j);
-					if (s.contains(","))
-						t << "\"" + s + "\"" + sep;
-					else
-						t << s + sep;
-				}
-				QString s = d_table->text(i, aux);
-				if (s.contains(","))
-					t << "\"" + s + "\"" + eol;
-				else
-					t << s + eol;
-			}
-		} else {
-			for (int i = 0; i < rows; i++) {
-				for (int j = 0; j < aux; j++)
-					t << d_table->text(i, j) + sep;
-				t << d_table->text(i, aux) + eol;
-			}
+		for (int i = 0; i < rows; i++) {
+			for (int j = 0; j < aux; j++)
+				t << d_table->text(i, j) + sep;
+			t << d_table->text(i, aux) + eol;
 		}
 	}
-
-	if (exportTex)
-		t << "\\end{tabular}\n";
 
 	f.close();
 	QApplication::restoreOverrideCursor();

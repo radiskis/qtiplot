@@ -131,6 +131,8 @@ int main( int argc, char ** argv )
 #endif
 
 #ifdef QTIPLOT_PRO
+	Q_IMPORT_PLUGIN(QtiPlotCsvPlugin);
+	Q_IMPORT_PLUGIN(QtiPlotTexPlugin);
 	Q_IMPORT_PLUGIN(QtiPlotOdsPlugin);
 	Q_IMPORT_PLUGIN(QtiPlotExcelPlugin);
 	Q_IMPORT_PLUGIN(QtiPlotEmfExportPlugin);

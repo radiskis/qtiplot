@@ -40,13 +40,13 @@ public:
 	virtual ~ImportExportPlugin() {}
 
 	virtual QStringList importFormats() const = 0;
-	virtual void import(const QString & fileName) = 0;
+	virtual void import(const QString & fileName){};
 
 	virtual QStringList exportFormats() const = 0;
-	virtual bool exportTable(Table *t, const QString& fname, bool withLabels, bool exportComments, bool exportSelection) = 0;
-	virtual bool exportMatrix(Matrix *m, const QString& fname, bool exportSelection) = 0;
-	virtual bool exportGraph(Graph *g, const QString& fname, const QSizeF& customSize, int unit, double fontsFactor) = 0;
-	virtual bool exportMultiLayerPlot(MultiLayer *ml, const QString& fname, const QSizeF& customSize, int unit, double fontsFactor) = 0;
+	virtual bool exportTable(Table *t, const QString& fname, bool withLabels, bool exportComments, bool exportSelection){return false;}
+	virtual bool exportMatrix(Matrix *m, const QString& fname, bool exportSelection){return false;}
+	virtual bool exportGraph(Graph *g, const QString& fname, const QSizeF& customSize, int unit, double fontsFactor = 1){return false;}
+	virtual bool exportMultiLayerPlot(MultiLayer *ml, const QString& fname, const QSizeF& customSize, int unit, double fontsFactor = 1){return false;}
 
 	void setApplicationWindow(ApplicationWindow *app){d_app = app;};
 	ApplicationWindow *applicationWindow(){return d_app;};
