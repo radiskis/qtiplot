@@ -33,13 +33,11 @@
 #include <QDir>
 #include <QMessageBox>
 
-ExcelFileConverter::ExcelFileConverter(const QString& fileName, int sheet, ApplicationWindow *app)
+ExcelFileConverter::ExcelFileConverter(const QString& fileName, ApplicationWindow *app)
 : QObject(app),
 d_file_name(fileName),
-d_sheet(sheet),
 soffice(0),
-java(0),
-d_table(0)
+java(0)
 {
 #ifdef Q_WS_X11
 	d_soffice_already_running = false;
@@ -80,7 +78,7 @@ void ExcelFileConverter::startConvertion()
 	d_output_file = d_file_name;
 	d_output_file.replace(".xls", ".ods");
 
-	if (QFile::exists(d_output_file) || d_table || java)
+	if (QFile::exists(d_output_file) || java)
 		return;
 
 	ApplicationWindow *app = (ApplicationWindow *)parent();
@@ -105,9 +103,6 @@ void ExcelFileConverter::startConvertion()
 void ExcelFileConverter::finish(int, QProcess::ExitStatus exitStatus)
 {
 	QApplication::restoreOverrideCursor();
-
-	if (d_table)
-		return;
 
 	if (exitStatus != QProcess::NormalExit){
 		QMessageBox::critical((ApplicationWindow *)parent(), tr("QtiPlot"), tr("Operation failed"));

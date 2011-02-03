@@ -1620,7 +1620,7 @@ bool Matrix::exportODF(const QString& fname, bool exportSelection)
 	return false;
 }
 
-bool Matrix::exportExcelAndConvertTo(const QString& fname, bool exportSelection)
+bool Matrix::exportOdsSpreadsheet(const QString& fname, bool exportSelection)
 {
 	QString name = fname;
 	QString ext = QFileInfo(fname).completeSuffix();
@@ -1630,7 +1630,7 @@ bool Matrix::exportExcelAndConvertTo(const QString& fname, bool exportSelection)
 
 	QFile::remove(fname);
 
-	ExcelFileConverter(name, -1, applicationWindow());
+	ExcelFileConverter(name, applicationWindow());
 	return true;
 }
 
@@ -1641,7 +1641,6 @@ bool Matrix::exportExcel(const QString& fname, bool exportSelection)
 	ImportExportPlugin *ep = applicationWindow()->exportPlugin("xls");
 	if (!ep)
 		return false;
-
 	return ep->exportMatrix(this, fname, exportSelection);
 }
 
@@ -1677,7 +1676,7 @@ bool Matrix::exportASCII(const QString& fname, const QString& separator, bool ex
 		return exportExcel(fname, exportSelection);
 	} else if (fname.endsWith(".ods")){
 		f.close();
-		return exportExcelAndConvertTo(fname, exportSelection);
+		return exportOdsSpreadsheet(fname, exportSelection);
 	}
 
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
