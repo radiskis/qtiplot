@@ -3648,7 +3648,7 @@ La première représente le signal et la seconde, la réponse de la fonction !</
     </message>
     <message>
         <source>You are using the demonstration version of Qtiplot.				It is identical with the full version, except that you can&apos;t save your work to project files and you can&apos;t use it for more than 10 minutes per session.				&lt;br&gt;&lt;br&gt;				If you want to have ready-to-use, fully functional binaries, please subscribe for a				&lt;a href=&quot;http://soft.proindependent.com/individual_contract.html&quot;&gt;single-user binaries maintenance contract&lt;/a&gt;.				&lt;br&gt;&lt;br&gt;				QtiPlot is free software in the sense of free speech.				If you know how to use it, you can get				&lt;a href=&quot;http://soft.proindependent.com/download.html&quot;&gt;the source code&lt;/a&gt;				free of charge.				Nevertheless, you are welcome to				&lt;a href=&quot;http://soft.proindependent.com/why_donate.html&quot;&gt;make a donation&lt;/a&gt;				in order to support the further development of QtiPlot.</source>
-        <translation>Vous utilisez la version de démonstration de QtiPlot.	Elle est identique à la version complète mais vous ne pouvez sauvegarder votre travail et vous ne pouvez pas l&apos;utiliser plus de 10 minutes par session.	&lt;br&gt;&lt;br&gt;. Pour disposer de la version complète, veuillez souscrire un contrat de maintenance à &lt;a href=&quot;http://soft.proindependent.com/individual_contract.html&quot;&gt;.	&lt;br&gt;&lt;br&gt;	QtiPlot est un logiciel libre au sens de la liberté d&apos;expression.	Si vous savez comment l&apos;utiliser, vous pouvez avoir	&lt;a href=&quot;http://developer.berlios.de/project/showfiles.php?group_id=6626&quot;&gt; les fichiers sources&lt;/a&gt; sans paiement.	. Néanmoins, vous êtes le bienvenu	&lt;a href=&quot;http://soft.proindependent.com/why_donate.html&quot;&gt; pour faire un don&lt;/a&gt;	afin d&apos;aider aux développements futurs de QtiPlot.</translation>
+        <translation>Vous utilisez la version de démonstration de QtiPlot. Elle est identique à la version complète mais vous ne pouvez pas sauvegarder votre travail et vous ne pouvez pas l&apos;utiliser plus de 10 minutes par session.&lt;br&gt;&lt;br&gt;Pour disposer de la version complète, veuillez souscrire un contrat de maintenance à &lt;a href=&quot;http://soft.proindependent.com/individual_contract.html&quot;&gt;.&lt;br&gt;&lt;br&gt;	QtiPlot est un logiciel libre au sens de la liberté d&apos;expression. Si vous savez comment l&apos;utiliser, vous pouvez avoir	&lt;a href=&quot;http://developer.berlios.de/project/showfiles.php?group_id=6626&quot;&gt; les fichiers sources&lt;/a&gt; sans paiement. Néanmoins, vous êtes encouragés	&lt;a href=&quot;http://soft.proindependent.com/why_donate.html&quot;&gt; à faire un don&lt;/a&gt; afin d&apos;aider aux développements futurs de QtiPlot.</translation>
     </message>
     <message>
         <source>QtiPlot - Enter column number</source>
@@ -4111,11 +4111,11 @@ L&apos;autocomplétion ne sera pas disponible !</translation>
     </message>
     <message>
         <source>QtiPlot Pro feature</source>
-        <translation type="unfinished"></translation>
+        <translation>Option Qtiplot Pro</translation>
     </message>
     <message>
         <source>This functionality is only available in QtiPlot Pro version, please subscribe for a maintenance contract!</source>
-        <translation type="unfinished"></translation>
+        <translation>Cette fonctionnalité n&apos;est disponible que pour la version QtiPlot Pro. Veuillez souscrire un contrat de maintenance pour en bénéficier !</translation>
     </message>
 </context>
 <context>
@@ -5480,7 +5480,7 @@ Les codes spéciaux suivants peuvent être utilisés :
     </message>
     <message>
         <source>Prompt on &amp;renaming tables when appending projects</source>
-        <translation>Demander à &amp;renommer les tables lors de l&apos;ajout à de nouveaux projets</translation>
+        <translation>Demander avant de &amp;renommer les tables lors de l&apos;ajout à de nouveaux projets</translation>
     </message>
     <message>
         <source>Numeric Format</source>
@@ -5981,7 +5981,7 @@ Les codes spéciaux suivants peuvent être utilisés :
     </message>
     <message>
         <source>Prompt on pasting &amp;values to tables</source>
-        <translation type="unfinished"></translation>
+        <translation>Demander avant de coller des &amp;valeurs dans une table</translation>
     </message>
 </context>
 <context>
@@ -13465,12 +13465,13 @@ Calcule la fonction de distribution cumulée pur une distribution chi² avec df 
         <source>norminv(p):
  Computes the inverse of the cumulative distribution function for a Gaussian distribution with standard deviation sigma = 1.0.</source>
         <translation>norminv(p) :
- Calculel&apos;inverse de la fonction de distribution cumulée pour une distribution gaussienne avec un écart-type sigma de 1.0.</translation>
+ Calcule l&apos;inverse de la fonction de distribution cumulée pour une distribution gaussienne avec un écart-type sigma de 1.0.</translation>
     </message>
     <message>
         <source>dilog(x):
  Compute the dilogarithm for a real argument. In Lewin&apos;s notation this is Li_2(x), the real part of the dilogarithm of a real x.</source>
-        <translation type="unfinished"></translation>
+        <translation>dilog(x) :
+ Calcule le dilogarithme pour un argument réel. Dans la notation de Lewin, c&apos;est Li_2(x), la partie réelle du dilogarithme d&apos;un réel x.</translation>
     </message>
 </context>
 <context>
