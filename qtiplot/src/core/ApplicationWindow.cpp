@@ -4258,7 +4258,7 @@ Table * ApplicationWindow::importOdfSpreadsheet(const QString& fileName, int she
 	ImportExportPlugin *plugin = importPlugin(fn);
 	if (plugin){
 		plugin->setApplicationWindow(this);
-		plugin->import(fn);
+		return plugin->import(fn, sheet);
 	}
 	return 0;
 }
@@ -4321,7 +4321,7 @@ Table * ApplicationWindow::importExcel(const QString& fileName, int sheet)
 	ImportExportPlugin *plugin = importPlugin(fn);
 	if (plugin){
 		plugin->setApplicationWindow(this);
-		plugin->import(fn);
+		return plugin->import(fn, sheet);
 	}
 	return 0;
 }

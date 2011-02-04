@@ -40,7 +40,7 @@ public:
 	virtual ~ImportExportPlugin() {}
 
 	virtual QStringList importFormats() const = 0;
-	virtual void import(const QString & fileName){};
+	virtual Table* import(const QString & fileName, int sheet = -1){return 0;}
 
 	virtual QStringList exportFormats() const = 0;
 	virtual bool exportTable(Table *t, const QString& fname, bool withLabels, bool exportComments, bool exportSelection){return false;}
