@@ -2,7 +2,7 @@
     File                 : FilterDialog.cpp
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2006 by Ion Vasilief
+	Copyright            : (C) 2006 - 2011 by Ion Vasilief
     Email (use @ for *)  : ion_vasilief*yahoo.fr
     Description          : Filter options dialog
 
@@ -130,7 +130,7 @@ void FilterDialog::filter()
 		}
 	}
 
-	FFTFilter *f = new FFTFilter((ApplicationWindow *)this->parent(), graph, boxName->currentText(), filter_type);
+	FFTFilter *f = new FFTFilter((ApplicationWindow *)parent(), (QwtPlotCurve *)graph->curve(boxName->currentIndex()), filter_type);
 	if (filter_type == FFTFilter::BandPass){
     	f->setBand(from, to);
     	f->enableOffset(boxOffset->isChecked());

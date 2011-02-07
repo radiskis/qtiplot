@@ -2,7 +2,7 @@
     File                 : InterpolationDialog.h
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2006 by Ion Vasilief
+	Copyright            : (C) 2006 - 2011 by Ion Vasilief
     Email (use @ for *)  : ion_vasilief*yahoo.fr
     Description          : Interpolation options dialog
 
@@ -47,7 +47,7 @@ public:
     InterpolationDialog( QWidget* parent = 0, Qt::WFlags fl = 0 );
 
 public slots:
-	void activateCurve(const QString& curveName);
+	void activateCurve(int curveIndex);
 	void setGraph(Graph *g);
 	void interpolate();
 	void changeDataRange();

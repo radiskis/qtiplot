@@ -2,7 +2,7 @@
     File                 : PolynomFitDialog.cpp
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2006 by Ion Vasilief
+	Copyright            : (C) 2006 - 2011 by Ion Vasilief
     Email (use @ for *)  : ion_vasilief*yahoo.fr
     Description          : Fit polynomial dialog
 
@@ -32,6 +32,7 @@
 #include <ApplicationWindow.h>
 #include <DoubleSpinBox.h>
 #include <ColorButton.h>
+#include <RangeSelectorTool.h>
 
 #include <QSpinBox>
 #include <QCheckBox>
@@ -111,15 +112,14 @@ PolynomFitDialog::PolynomFitDialog( QWidget* parent, Qt::WFlags fl )
 
 	connect( buttonFit, SIGNAL( clicked() ), this, SLOT( fit() ) );
 	connect( buttonCancel, SIGNAL( clicked() ), this, SLOT( close() ) );
-	connect( boxName, SIGNAL( activated(const QString&) ), this, SLOT(activateCurve(const QString&)));
+	connect( boxName, SIGNAL( activated(int) ), this, SLOT(activateCurve(int)));
 }
 
 void PolynomFitDialog::fit()
 {
 	QString curveName = boxName->currentText();
 	QStringList curvesList = graph->analysableCurvesList();
-	if (!curvesList.contains(curveName))
-	{
+	if (!curvesList.contains(curveName)){
 		QMessageBox::critical(this, tr("QtiPlot - Warning"),
 				tr("The curve <b> %1 </b> doesn't exist anymore! Operation aborted!").arg(curveName));
 		boxName->clear();
@@ -129,7 +129,7 @@ void PolynomFitDialog::fit()
 
 	ApplicationWindow *app = (ApplicationWindow *)this->parent();
     PolynomialFit *fitter = new PolynomialFit(app, graph, boxOrder->value(), boxShowFormula->isChecked());
-    if (fitter->setDataFromCurve(curveName, boxStart->value(), boxEnd->value())){
+	if (fitter->setDataFromCurve((QwtPlotCurve *)graph->curve(boxName->currentIndex()), boxStart->value(), boxEnd->value())){
 		fitter->setColor(boxColor->color());
         fitter->setOutputPrecision(app->fit_output_precision);
 		fitter->generateFunction(app->generateUniformFitPoints, app->fitPoints);
@@ -146,20 +146,19 @@ void PolynomFitDialog::setGraph(Graph *g)
 	graph = g;
 	boxName->addItems (g->analysableCurvesList());
 
-	QString selectedCurve = g->selectedCurveTitle();
-	if (!selectedCurve.isEmpty())
-		boxName->setCurrentIndex(boxName->findText (selectedCurve));
+	if (g->rangeSelectorsEnabled())
+		boxName->setCurrentIndex(g->curveIndex(g->rangeSelectorTool()->selectedCurve()));
 
-	activateCurve(boxName->currentText());
+	activateCurve(boxName->currentIndex());
 
 	connect (graph, SIGNAL(destroyed()), this, SLOT(close()));
 	connect (graph, SIGNAL(dataRangeChanged()), this, SLOT(changeDataRange()));
 };
 
-void PolynomFitDialog::activateCurve(const QString& curveName)
+void PolynomFitDialog::activateCurve(int curveIndex)
 {
 	double start, end;
-	int n_points = graph->range(curveName, &start, &end);
+	int n_points = graph->range((QwtPlotCurve *)graph->curve(curveIndex), &start, &end);
 
 	boxStart->setValue(start);
 	boxEnd->setValue(end);

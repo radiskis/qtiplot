@@ -2,7 +2,7 @@
     File                 : FitDialog.cpp
     Project              : QtiPlot
     --------------------------------------------------------------------
-	Copyright            : (C) 2004-2010 by Ion Vasilief
+	Copyright            : (C) 2004 - 2011 by Ion Vasilief
     Email (use @ for *)  : ion_vasilief*yahoo.fr
     Description          : Fit Wizard
 
@@ -41,6 +41,7 @@
 #include <DoubleSpinBox.h>
 #include <FunctionCurve.h>
 #include <ScriptEdit.h>
+#include <RangeSelectorTool.h>
 
 #include <QListWidget>
 #include <QTableWidget>
@@ -384,7 +385,7 @@ void FitDialog::initFitPage()
     fitPage->setLayout(vbox1);
     tw->addWidget(fitPage);
 
-	connect( boxCurve, SIGNAL( activated(const QString&) ), this, SLOT( activateCurve(const QString&) ) );
+	connect( boxCurve, SIGNAL(activated(int)), this, SLOT( activateCurve(int)));
 	connect( buttonOk, SIGNAL( clicked() ), this, SLOT(accept()));
 	connect( buttonCancel1, SIGNAL( clicked() ), this, SLOT(close()));
 	connect( buttonEdit, SIGNAL( clicked() ), this, SLOT(showEditPage()));
@@ -834,25 +835,23 @@ void FitDialog::setGraph(Graph *g)
 
 	boxCurve->clear();
 	boxCurve->addItems(d_graph->analysableCurvesList());
+	if (g->rangeSelectorsEnabled())
+		boxCurve->setCurrentIndex(g->curveIndex(g->rangeSelectorTool()->selectedCurve()));
 
-	QString selectedCurve = g->selectedCurveTitle();
-	if (!selectedCurve.isEmpty())
-		boxCurve->setCurrentIndex(boxCurve->findText (selectedCurve));
-
-	activateCurve(boxCurve->currentText());
+	activateCurve(boxCurve->currentIndex());
 
 	connect (d_graph, SIGNAL(closedGraph()), this, SLOT(close()));
 	connect (d_graph, SIGNAL(dataRangeChanged()), this, SLOT(changeDataRange()));
 };
 
-void FitDialog::activateCurve(const QString& curveName)
+void FitDialog::activateCurve(int curveIndex)
 {
-	QwtPlotCurve *c = d_graph->curve(curveName);
+	QwtPlotCurve *c = d_graph->curve(curveIndex);
 	if (!c)
 		return;
 
 	double start, end;
-    d_graph->range(curveName, &start, &end);
+	d_graph->range(c, &start, &end);
     boxFrom->setValue(QMIN(start, end));
     boxTo->setValue(QMAX(start, end));
 	//Set the same color as the data curve chosen for fit (Feature Request #4031)
@@ -891,7 +890,7 @@ void FitDialog::saveUserFunction()
     QStringList lst = userFunctionNames();
 	QString formula = parseFormula(editBox->text().simplified().remove(QRegExp("\\s")));
 	if (lst.contains(name)){
-		int index = lst.findIndex(name);
+		int index = lst.indexOf(name);
 		d_current_fit = (NonLinearFit *)d_user_functions[index];
         if (d_current_fit->setFormula(formula))
         	d_current_fit->save(d_current_fit->fileName());
@@ -1352,8 +1351,8 @@ void FitDialog::accept()
 	ApplicationWindow *app = (ApplicationWindow *)this->parent();
 
 	QString curve = boxCurve->currentText();
-	QStringList curvesList = d_graph->curveNamesList();
-	if (curvesList.contains(curve) <= 0){
+	QStringList curvesList = d_graph->analysableCurvesList();
+	if (!curvesList.contains(curve)){
 		QMessageBox::critical(app, tr("QtiPlot - Warning"),
 				tr("The curve <b> %1 </b> doesn't exist anymore! Operation aborted!").arg(curve));
 		boxCurve->clear();
@@ -1449,9 +1448,9 @@ void FitDialog::accept()
 
 		d_current_fit->setInitialGuesses(paramsInit);
 
-		if (!d_current_fit->setDataFromCurve(curve, start, end) ||
+		if (!d_current_fit->setDataFromCurve(d_graph->curve(boxCurve->currentIndex()), start, end) ||
 			!d_current_fit->setWeightingData ((Fit::WeightingMethod)boxWeighting->currentIndex(),
-					       tableNamesBox->currentText()+"_"+colNamesBox->currentText())) return;
+						   tableNamesBox->currentText() + "_" + colNamesBox->currentText())) return;
 
 		if (btnParamRange->isEnabled()){
 			for (int i=0; i<n; i++)

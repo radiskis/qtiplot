@@ -3788,7 +3788,7 @@ Matrix* ApplicationWindow::matrix(const QString& name)
 {
 	QString caption = name;
 	if (d_is_appending_file && !renamedTables.isEmpty() && renamedTables.contains(caption)){
-		int index = renamedTables.findIndex(caption);
+		int index = renamedTables.indexOf(caption);
 		caption = renamedTables[index + 1];
 	}
 
@@ -3892,136 +3892,20 @@ void ApplicationWindow::addErrorBars()
 
 	Graph* g = (Graph*)plot->activeLayer();
 	if (!g)
-        return;
-
-    if (!g->curveCount()){
+		return;
+	if (!g->curveCount()){
 		QMessageBox::warning(this, tr("QtiPlot - Warning"), tr("There are no curves available on this plot!"));
 		return;
 	}
-
 	if (g->isPiePlot()){
-        QMessageBox::warning(this, tr("QtiPlot - Warning"), tr("This functionality is not available for pie plots!"));
-        return;
-	}
-
-    ErrDialog* ed = new ErrDialog(this);
-    connect (ed, SIGNAL(options(const QString&, int, double, int)), this, SLOT(defineErrorBars(const QString&, int, double, int)));
-    connect (ed, SIGNAL(options(const QString&, const QString&, int)), this, SLOT(defineErrorBars(const QString&, const QString&, int)));
-
-    ed->setCurveNames(g->analysableCurvesList());
-    ed->setSrcTables(tableList());
-    ed->exec();
-}
-
-void ApplicationWindow::defineErrorBars(const QString& name, int type, double percent, int direction)
-{
-    MdiSubWindow *w = activeWindow(MultiLayerWindow);
-    if (!w)
-		return;
-
-	Graph* g = ((MultiLayer*)w)->activeLayer();
-	if (!g)
-		return;
-
-	Table *t = table(name);
-	if (!t){//user defined function
-		QMessageBox::critical(this, tr("QtiPlot - Error bars error"),
-				tr("This feature is not available for user defined function curves!"));
+		QMessageBox::warning(this, tr("QtiPlot - Warning"), tr("This functionality is not available for pie plots!"));
 		return;
 	}
 
-	DataCurve *master_curve = (DataCurve *)g->curve(name);
-	QString xColName = master_curve->xColumnName();
-	if (xColName.isEmpty())
-		return;
-
-	if (direction == ErrorBarsCurve::Horizontal)
-		t->addCol(Table::xErr);
-	else
-		t->addCol(Table::yErr);
-
-	int r = master_curve->dataSize();
-	int rows = t->numRows();
-	int c = t->numCols() - 1;
-	int ycol = t->colIndex(name);
-	if (!direction)
-		ycol = t->colIndex(xColName);
-
-	QVarLengthArray<double> Y(r);
-	if (direction == ErrorBarsCurve::Horizontal){
-		for (int i = 0; i < r; i++)
-			Y[i] = master_curve->x(i);
-	} else {
-		for (int i = 0; i < r; i++)
-			Y[i] = master_curve->y(i);
-	}
-
-	QString errColName = t->colName(c);
-
-	if (type == 0){
-        double prc = 0.01*percent;
-		int aux = 0;
-		for (int i = 0; i < rows; i++){
-			if (!t->text(i, ycol).isEmpty() && aux < r){
-				t->setCell(i, c, Y[aux]*prc);
-				aux++;
-			}
-		}
-	} else if (type == 1) {
-		double sd = gsl_stats_sd(Y.data(), 1, r);
-		for (int i = 0; i < rows; i++){
-			if (!t->text(i, ycol).isEmpty())
-				t->setCell(i, c, sd);
-		}
-	}
-	ErrorBarsCurve *er = g->addErrorBars(xColName, name, t, errColName, direction);
-	if (er){
-		er->setColor(master_curve->pen().color());
-		g->replot();
-		emit modified();
-	}
-}
-
-void ApplicationWindow::defineErrorBars(const QString& curveName, const QString& errColumnName, int direction)
-{
-	Table *w = table(curveName);
-	if (!w){//user defined function --> no worksheet available
-		QMessageBox::critical(this,tr("QtiPlot - Error"),
-				tr("This feature is not available for user defined function curves!"));
-		return;
-	}
-
-	Table *errTable = table(errColumnName);
-	if (w->numRows() != errTable->numRows()){
-		QMessageBox::critical(this,tr("QtiPlot - Error"),  tr("The selected columns have different numbers of rows!"));
-		addErrorBars();
-		return;
-	}
-
-	int errCol = errTable->colIndex(errColumnName);
-	if (errTable->isEmptyColumn(errCol)){
-		QMessageBox::critical(this, tr("QtiPlot - Error"), tr("The selected error column is empty!"));
-		addErrorBars();
-		return;
-	}
-
-	MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
-    if (!plot)
-		return;
-
-	Graph* g = plot->activeLayer();
-	if (!g)
-		return;
-
-	ErrorBarsCurve *er = g->addErrorBars(curveName, errTable, errColumnName, direction);
-	if (er){
-		DataCurve *mc = er->masterCurve();
-		if (mc){
-			er->setColor(mc->pen().color());
-			g->replot();
-		}
-		emit modified();
-	}
+	ErrDialog* ed = new ErrDialog(this);
+	ed->setCurveNames(g->analysableCurvesList());
+	ed->setSrcTables(tableList());
+	ed->exec();
 }
 
 void ApplicationWindow::removeCurves(const QString& name)
@@ -12513,7 +12397,7 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot, co
 				QString caption = (curve[1]).left((curve[1]).lastIndexOf("_"));
 				if (app->renamedTables.contains(caption))
 				{//modify the name of the curve according to the new table name
-					int index = app->renamedTables.findIndex(caption);
+					int index = app->renamedTables.indexOf(caption);
 					QString newCaption = app->renamedTables[++index];
 					curve.replaceInStrings(caption+"_", newCaption+"_");
 				}
@@ -12552,7 +12436,7 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot, co
 				QString caption = (curve[2]).left((curve[2]).lastIndexOf("_"));
 				if (app->renamedTables.contains(caption))
 				{//modify the name of the curve according to the new table name
-					int index = app->renamedTables.findIndex (caption);
+					int index = app->renamedTables.indexOf(caption);
 					QString newCaption = app->renamedTables[++index];
 					curve.replaceInStrings(caption+"_", newCaption+"_");
 				}
@@ -12734,14 +12618,13 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot, co
 
 			}
 			curveID++;
-		}
-		else if (s.contains ("ErrorBars")){
+		} else if (s.contains ("ErrorBars")){
 			QStringList curve = s.split("\t", QString::SkipEmptyParts);
 			if (!app->renamedTables.isEmpty()){
 				QString caption = (curve[4]).left((curve[4]).lastIndexOf("_"));
 				if (app->renamedTables.contains(caption))
 				{//modify the name of the curve according to the new table name
-					int index = app->renamedTables.findIndex (caption);
+					int index = app->renamedTables.indexOf(caption);
 					QString newCaption = app->renamedTables[++index];
 					curve.replaceInStrings(caption+"_", newCaption+"_");
 				}
@@ -12749,9 +12632,10 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot, co
 			Table *w = app->table(curve[3]);
 			Table *errTable = app->table(curve[4]);
 			if (w && errTable){
-				ag->addErrorBars(curve[2], curve[3], errTable, curve[4], curve[1].toInt(),
-						curve[5].toDouble(), curve[6].toInt(), QColor(curve[7]),
-						curve[8].toInt(), curve[10].toInt(), curve[9].toInt());
+				DataCurve *mc = (curve.size() >= 12) ? ag->dataCurve(curve[11].toInt()) : ag->masterCurve(curve[2], curve[3]);
+				ag->addErrorBars(mc, errTable, curve[4], curve[1].toInt(),
+					curve[5].toDouble(), curve[6].toInt(), QColor(curve[7]),
+					curve[8].toInt(), curve[10].toInt(), curve[9].toInt());
 			}
 			curveID++;
 		}
@@ -13127,24 +13011,25 @@ void ApplicationWindow::copyActiveLayer()
 
 void ApplicationWindow::showDataSetDialog(Analysis operation)
 {
-    MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
+	MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
 	if (!plot)
 		return;
 
 	Graph *g = plot->activeLayer();
 	if (!g)
-        return;
+		return;
 
 	bool ok;
-	QString curve = QInputDialog::getItem(this, tr("QtiPlot - Choose data set"),
-					tr("Curve") + ": ", g->analysableCurvesList(), 0, false, &ok);
-	if (ok && !curve.isEmpty())
-		analyzeCurve(g, operation, curve);
+	QStringList curves = g->analysableCurvesList();
+	QString txt = QInputDialog::getItem(this, tr("QtiPlot - Choose data set"),
+					tr("Curve") + ": ", curves, 0, false, &ok);
+	if (ok && !txt.isEmpty())
+		analyzeCurve(g, g->curve(curves.indexOf(txt)), operation);
 }
 
-void ApplicationWindow::analyzeCurve(Graph *g, Analysis operation, const QString& curveTitle)
+void ApplicationWindow::analyzeCurve(Graph *g,  QwtPlotCurve *c, Analysis operation)
 {
-	if (!g)
+	if (!g || !c)
 		return;
 
 	Fit *fitter = 0;
@@ -13153,14 +13038,14 @@ void ApplicationWindow::analyzeCurve(Graph *g, Analysis operation, const QString
 	    break;
 		case Integrate:
 		{
-			Integration *i = new Integration(this, g, curveTitle);
+			Integration *i = new Integration(this, c);
 			i->run();
 			delete i;
 		}
 		break;
 		case Diff:
 		{
-			Differentiation *diff = new Differentiation(this, g, curveTitle);
+			Differentiation *diff = new Differentiation(this, c);
 			diff->enableGraphicsDisplay(true);
 			diff->run();
 			delete diff;
@@ -13177,14 +13062,11 @@ void ApplicationWindow::analyzeCurve(Graph *g, Analysis operation, const QString
 		break;
 		case FitSigmoidal:
 		{
-			QwtPlotCurve* c = g->curve(curveTitle);
-            if (c){
-            	ScaleEngine *se = (ScaleEngine *)g->axisScaleEngine(c->xAxis());
-            	if(se->type() == ScaleTransformation::Log10)
-					fitter = new LogisticFit (this, g);
-				else
-					fitter = new SigmoidalFit (this, g);
-            }
+			ScaleEngine *se = (ScaleEngine *)g->axisScaleEngine(c->xAxis());
+			if(se->type() == ScaleTransformation::Log10)
+				fitter = new LogisticFit (this, g);
+			else
+				fitter = new SigmoidalFit (this, g);
 		}
 		break;
 		case FitSlope:
@@ -13195,7 +13077,7 @@ void ApplicationWindow::analyzeCurve(Graph *g, Analysis operation, const QString
 	if (!fitter)
 		return;
 
-	if (fitter->setDataFromCurve(curveTitle)){
+	if (fitter->setDataFromCurve(c)){
 		if (operation != FitLinear && operation != FitSlope){
 			fitter->guessInitialValues();
 			fitter->scaleErrors(fit_scale_errors);
@@ -13220,18 +13102,15 @@ void ApplicationWindow::analysis(Analysis operation)
 	if (!g || !g->validCurvesDataSize())
 		return;
 
-	QString curve_title = g->selectedCurveTitle();
-	if (!curve_title.isNull()) {
-		analyzeCurve(g, operation, curve_title);
+	if (g->rangeSelectorsEnabled()){
+		analyzeCurve(g, g->rangeSelectorTool()->selectedCurve(), operation);
 		return;
 	}
 
-    QStringList lst = g->analysableCurvesList();
-	if (lst.count() == 1){
-		const QwtPlotCurve *c = g->curve(lst[0]);
-		if (c)
-			analyzeCurve(g, operation, lst[0]);
-	} else
+	QStringList lst = g->analysableCurvesList();
+	if (lst.count() == 1)
+		analyzeCurve(g, g->curve(0), operation);
+	else
 		showDataSetDialog(operation);
 }
 

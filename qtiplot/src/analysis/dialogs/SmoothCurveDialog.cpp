@@ -135,25 +135,19 @@ SmoothCurveDialog::SmoothCurveDialog(int method, QWidget* parent, Qt::WFlags fl 
 
 	connect( btnSmooth, SIGNAL(clicked()), this, SLOT( smooth()));
 	connect( buttonCancel, SIGNAL(clicked()), this, SLOT( close()));
-	connect( boxName, SIGNAL(activated(const QString&)), this, SLOT(activateCurve(const QString&)));
+	connect( boxName, SIGNAL(activated(int)), this, SLOT(activateCurve(int)));
 }
 
 void SmoothCurveDialog::smooth()
 {
-    SmoothFilter *sf = new SmoothFilter((ApplicationWindow *)this->parent(), graph,
-                                        boxName->currentText(), smooth_method);
-    if (smooth_method == SmoothFilter::SavitzkyGolay)
-    {
-        sf->setSmoothPoints(boxPointsLeft->value(), boxPointsRight->value());
-        sf->setPolynomOrder(boxOrder->value());
-    }
-    else
-    if (smooth_method == SmoothFilter::Lowess)
-    {
-        sf->setLowessParameter(boxF->value(), boxOrder->value()); // we use the "order" spinbox for "iterations"
-    }
-    else
-        sf->setSmoothPoints(boxPointsLeft->value());
+	SmoothFilter *sf = new SmoothFilter((ApplicationWindow *)parent(), graph->curve(boxName->currentIndex()), smooth_method);
+	if (smooth_method == SmoothFilter::SavitzkyGolay){
+		sf->setSmoothPoints(boxPointsLeft->value(), boxPointsRight->value());
+		sf->setPolynomOrder(boxOrder->value());
+	} else if (smooth_method == SmoothFilter::Lowess){
+		sf->setLowessParameter(boxF->value(), boxOrder->value()); // we use the "order" spinbox for "iterations"
+	} else
+		sf->setSmoothPoints(boxPointsLeft->value());
 
 	sf->setColor(boxColor->color());
 	sf->run();
@@ -167,13 +161,13 @@ void SmoothCurveDialog::setGraph(Graph *g)
 
 	graph = g;
 	boxName->addItems (g->analysableCurvesList());
-	activateCurve(boxName->currentText());
+	activateCurve(boxName->currentIndex());
 }
 
-void SmoothCurveDialog::activateCurve(const QString& curveName)
+void SmoothCurveDialog::activateCurve(int curveIndex)
 {
 	if (smooth_method == SmoothFilter::Average){
-		PlotCurve *c = graph->curve(curveName);
+		PlotCurve *c = graph->curve(curveIndex);
 		if (!c || c->rtti() != QwtPlotItem::Rtti_PlotCurve)
 			return;
 

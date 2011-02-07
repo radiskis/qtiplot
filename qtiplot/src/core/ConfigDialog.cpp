@@ -665,7 +665,7 @@ void ConfigDialog::initAppPage()
 	boxScriptingLanguage = new QComboBox();
 	QStringList llist = ScriptingLangManager::languages();
 	boxScriptingLanguage->insertStringList(llist);
-	boxScriptingLanguage->setCurrentItem(llist.findIndex(app->defaultScriptingLang));
+	boxScriptingLanguage->setCurrentItem(llist.indexOf(app->defaultScriptingLang));
 	topBoxLayout->addWidget( boxScriptingLanguage, 3, 1 );
 
     lblUndoStackSize = new QLabel();
@@ -3490,7 +3490,7 @@ void ConfigDialog::setApplication(ApplicationWindow *app)
 	QStringList llist = ScriptingLangManager::languages();
 	boxScriptingLanguage->clear();
 	boxScriptingLanguage->insertStringList(llist);
-	boxScriptingLanguage->setCurrentItem(llist.findIndex(app->defaultScriptingLang));
+	boxScriptingLanguage->setCurrentItem(llist.indexOf(app->defaultScriptingLang));
 
 	undoStackSizeBox->setValue(app->matrixUndoStackSize());
 	boxEndLine->setCurrentIndex((int)app->d_eol);

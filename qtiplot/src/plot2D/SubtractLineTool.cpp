@@ -2,7 +2,7 @@
 	File                 : SubtractLineTool.cpp
     Project              : QtiPlot
     --------------------------------------------------------------------
-	Copyright            : (C) 2010 by Ion Vasilief
+	Copyright            : (C) 2010 - 2011 by Ion Vasilief
 	Email (use @ for *)  : ion_vasilief*yahoo.fr
 	Description          : Plot tool for substracting a straight line
 
@@ -27,16 +27,15 @@
  *                                                                         *
  ***************************************************************************/
 #include "SubtractLineTool.h"
-#include "RangeSelectorTool.h"
+#include <RangeSelectorTool.h>
 #include <ApplicationWindow.h>
 #include <PlotCurve.h>
 
 #include <qwt_plot_curve.h>
 #include <qwt_plot_marker.h>
 #include <qwt_symbol.h>
-#include <QApplication>
 
-#include <gsl/gsl_statistics.h>
+#include <QApplication>
 
 SubtractLineTool::SubtractLineTool(Graph *graph, ApplicationWindow *app, const QObject *status_target, const char *status_slot)
 	: PlotToolInterface(graph)
@@ -96,25 +95,31 @@ void SubtractLineTool::finalize()
 	} else
 		d_graph->canvas()->unsetCursor();
 
-	double den = d_line.x2() - d_line.x1();
+	double den = d_line.dx();
 	double slope = 0.0;
 	double intercept = 0.0;
 	if (den != 0.0){
-		slope = (d_line.y2() - d_line.y1())/den;
+		slope = d_line.dy()/den;
 		intercept = d_line.y1() - slope*d_line.x1();
 	}
 
 	for (int i = 0; i < d_graph->curveCount(); i++){
 		DataCurve *c = d_graph->dataCurve(i);
-		if (!c)
+		if (!c || c->type() == Graph::ErrorBars)
 			continue;
 
 		Table *t = c->table();
 		int yCol = t->colIndex(c->title().text());
-		int n = c->dataSize();
-		for (int j = 0; j < n; j++){
-			if (!t->text(j, yCol).isEmpty())
-				t->setCell(j, yCol, c->y(j) - (c->x(j)*slope + intercept));
+		int startRow = c->startRow(), endRow = c->endRow();
+		if (startRow < 0)
+			startRow = 0;
+		if (endRow < 0)
+			endRow = c->dataSize() - 1;
+		for (int j = startRow; j <= endRow; j++){
+			if (!t->text(j, yCol).isEmpty()){
+				int index = j - startRow;
+				t->setCell(j, yCol, c->y(index) - (c->x(index)*slope + intercept));
+			}
 		}
 		t->notifyChanges(c->title().text());
 	}

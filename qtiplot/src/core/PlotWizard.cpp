@@ -2,7 +2,7 @@
     File                 : PlotWizard.cpp
     Project              : QtiPlot
     --------------------------------------------------------------------
-	Copyright            : (C) 2004 - 2010 by Ion Vasilief
+	Copyright            : (C) 2004 - 2011 by Ion Vasilief
     Email (use @ for *)  : ion_vasilief*yahoo.fr
     Description          : A wizard type dialog to create new plots
 
@@ -143,36 +143,28 @@ QSize PlotWizard::sizeHint() const
 void PlotWizard::accept()
 {
 	QStringList curves, curves3D, ribbons;
-	for (int i=0; i < plotAssociations->count(); i++)
-	{
+	for (int i=0; i < plotAssociations->count(); i++){
 		QString text = plotAssociations->item(i)->text();
-        if (text.endsWith("(X)"))
-        {
-            QMessageBox::critical(this, tr("QtiPlot - Error"),
-            tr("Please define a Y column for the following curve") + ":\n\n" + text);
-            return;
-        }
+		if (text.endsWith("(X)")){
+			QMessageBox::critical(this, tr("QtiPlot - Error"),
+			tr("Please define a Y column for the following curve") + ":\n\n" + text);
+			return;
+		}
 
-		if ( text.contains("(Z)") )
-		{
+		if ( text.contains("(Z)") ){
 			if ( text.contains("(Y)") && !curves3D.contains(text) )
 				curves3D << text;
 			else if ( !text.contains("(Y)") && !ribbons.contains(text) )
 				ribbons << text;
-		}
-		else if ( text.contains("(xErr)") || text.contains("(yErr)"))
-		{
+		} else if ( text.contains("(xErr)") || text.contains("(yErr)")){
 			QStringList lst = text.split(",", QString::SkipEmptyParts);
 			lst.pop_back();
 			QString master_curve = lst.join(",");
-
 			if (!curves.contains(master_curve))
 				curves.prepend(master_curve);
-
 			if (!curves.contains(text))
 				curves << text; //add error bars at the end of the list.
-		}
-		else if (!curves.contains(text))
+		} else
 			curves.prepend(text);
 	}
 

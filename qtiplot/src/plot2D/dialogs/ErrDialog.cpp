@@ -2,7 +2,7 @@
     File                 : ErrDialog.cpp
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2006 by Ion Vasilief
+	Copyright            : (C) 2006 - 2011 by Ion Vasilief
     Email (use @ for *)  : ion_vasilief*yahoo.fr
     Description          : Add error bars dialog
 
@@ -29,6 +29,9 @@
 #include "ErrDialog.h"
 #include <Table.h>
 #include <DoubleSpinBox.h>
+#include <ErrorBarsCurve.h>
+#include <MultiLayer.h>
+#include <ApplicationWindow.h>
 
 #include <QHBoxLayout>
 #include <QVBoxLayout>
@@ -43,6 +46,7 @@
 #include <QList>
 #include <QWidget>
 
+#include <gsl/gsl_statistics.h>
 
 ErrDialog::ErrDialog( QWidget* parent, Qt::WFlags fl )
     : QDialog( parent, fl )
@@ -168,22 +172,90 @@ void ErrDialog::selectSrcTable(int tabnr)
 
 void ErrDialog::add()
 {
-	int direction = -1;
-	if (xErrBox->isChecked())
-		direction = 0;
-	else
-		direction = 1;
+	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent());
+	if (!app)
+		return;
+	MultiLayer *plot = (MultiLayer *)app->activeWindow(ApplicationWindow::MultiLayerWindow);
+	if (!plot)
+		return;
+	Graph* g = plot->activeLayer();
+	if (!g)
+		return;
+	DataCurve *curve = g->dataCurve(nameLabel->currentIndex());
+	if (!curve){
+		QMessageBox::critical(app, tr("QtiPlot - Error"),
+		tr("This feature is not available for user defined function curves!"));
+		return;
+	}
+	if (curve->xColumnName().isEmpty())
+		return;
 
-	if (columnBox->isChecked())
-		emit options(nameLabel->currentText(), tableNamesBox->currentText() + "_" + colNamesBox->currentText(), direction);
-	else {
-		int type;
-		if (percentBox->isChecked())
-			type = 0;
+	int direction = xErrBox->isChecked() ? 0 : 1;
+
+	ErrorBarsCurve *er = NULL;
+	if (columnBox->isChecked()){
+		QString errColumnName = tableNamesBox->currentText() + "_" + colNamesBox->currentText();
+		Table *errTable = app->table(errColumnName);
+		if (!errTable)
+			return;
+		/*if (w->numRows() != errTable->numRows()){
+			QMessageBox::critical(app, tr("QtiPlot - Error"), tr("The selected columns have different numbers of rows!"));
+			return;
+		}*/
+		if (errTable->isEmptyColumn(errTable->colIndex(errColumnName))){
+			QMessageBox::critical(app, tr("QtiPlot - Error"), tr("The selected error column is empty!"));
+			return;
+		}
+		er = g->addErrorBars(curve, errTable, errColumnName, direction);
+	} else {
+		QString name = nameLabel->currentText();
+		Table *t = app->table(name);
+		if (!t)
+			return;
+		if (direction == ErrorBarsCurve::Horizontal)
+			t->addCol(Table::xErr);
 		else
-			type = 1;
+			t->addCol(Table::yErr);
 
-		emit options(nameLabel->currentText(),type, valueBox->value(), direction);
+		int r = curve->dataSize();
+		int rows = t->numRows();
+		int col = t->numCols() - 1;
+		int ycol = t->colIndex(name);
+		if (!direction)
+			ycol = t->colIndex(curve->xColumnName());
+
+		QVarLengthArray<double> Y(r);
+		if (direction == ErrorBarsCurve::Horizontal){
+			for (int i = 0; i < r; i++)
+				Y[i] = curve->x(i);
+		} else {
+			for (int i = 0; i < r; i++)
+				Y[i] = curve->y(i);
+		}
+
+		if (percentBox->isChecked()){
+			double prc = 0.01*valueBox->value();
+			int aux = 0;
+			for (int i = curve->startRow(); i <= curve->endRow(); i++){
+				if (!t->text(i, ycol).isEmpty() && aux < r){
+					t->setCell(i, col, Y[aux]*prc);
+					aux++;
+				}
+			}
+		} else {
+			double sd = gsl_stats_sd(Y.data(), 1, r);
+			for (int i = 0; i < rows; i++){
+				if (!t->text(i, ycol).isEmpty())
+					t->setCell(i, col, sd);
+			}
+		}
+		er = g->addErrorBars(curve, t, t->colName(col), direction);
+	}
+
+	if (er){
+		er->setColor(curve->pen().color());
+		g->replot();
+		plot->notifyChanges();
 	}
 }
 

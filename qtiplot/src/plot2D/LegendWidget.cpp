@@ -707,13 +707,13 @@ PlotCurve* LegendWidget::getCurve(const QString& s, int &point)
 	PlotCurve *curve = 0;
 
 	QStringList l = s.split(",");
-    if (l.count() == 2)
+	if (l.count() == 2)
 		point = l[1].toInt() - 1;
 
 	if (!l.isEmpty()){
 		l = l[0].split(".");
-    	if (l.count() == 2){
-    		int cv = l[1].toInt() - 1;
+		if (l.count() == 2){
+			int cv = l[1].toInt() - 1;
 			Graph *layer = d_plot->multiLayer()->layer(l[0].toInt());
 			if (layer && cv >= 0 && cv < layer->curveCount())
 				return (PlotCurve*)layer->curve(cv);

@@ -2,7 +2,7 @@
     File                 : FFTDialog.h
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2006 by Ion Vasilief
+	Copyright            : (C) 2006 - 2011 by Ion Vasilief
     Email (use @ for *)  : ion_vasilief*yahoo.fr
     Description          : Fast Fourier transform options dialog
 
@@ -55,6 +55,7 @@ public slots:
 	void setTable(Table *t);
 	void setMatrix(Matrix *m);
 	void activateCurve(const QString& curveName);
+	void activateCurve(int curveIndex);
 	void accept();
 
 private:

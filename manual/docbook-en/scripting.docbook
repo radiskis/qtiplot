@@ -2829,6 +2829,12 @@ f.setRange(0.5, 15.2)
 <sect2 id = "Python-ErrorBars">
 <title>Error Bars</title>
 
+Having a plot layer <emphasis>l</emphasis>, you can add error bars to a data curve <emphasis>c</emphasis>, named <emphasis>curveName</emphasis>, using the following methods:
+<programlisting>
+err1 = l.addErrorBars(c, Table *t, QString errColName, int type = 1, double width = 1, int capLength = 8, color = Qt.black, throughSymbol = True, minusSide = True, plusSide = True)
+err2 = l.addErrorBars(curveName, Table *t, QString errColName, int type = 1, double width = 1, int capLength = 8, color = Qt.black, throughSymbol = True, minusSide = True, plusSide = True)
+</programlisting>
+
 Each data curve, <emphasis>c</emphasis>, can have attached a list of error bars:
 <programlisting>
 errors = c.errorBarsList()
