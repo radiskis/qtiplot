@@ -2,7 +2,7 @@
     File                 : SmoothCurveDialog.h
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2006 by Ion Vasilief
+	Copyright            : (C) 2006 - 2011 by Ion Vasilief
     Email (use @ for *)  : ion_vasilief*yahoo.fr
     Description          : Smoothing options dialog
 
@@ -49,7 +49,7 @@ public:
 public slots:
 	void setGraph(Graph *g);
 	void smooth();
-	void activateCurve(const QString& curveName);
+	void activateCurve(int curveNIndex);
 
 private:
 	Graph *graph;

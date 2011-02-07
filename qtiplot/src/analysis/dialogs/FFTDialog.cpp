@@ -2,7 +2,7 @@
     File                 : FFTDialog.cpp
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2006 by Ion Vasilief
+	Copyright            : (C) 2006 - 2011 by Ion Vasilief
     Email (use @ for *)  : ion_vasilief*yahoo.fr
     Description          : Fast Fourier transform options dialog
 
@@ -55,7 +55,7 @@ FFTDialog::FFTDialog(int type, QWidget* parent, Qt::WFlags fl )
 	setSizeGripEnabled( true );
 	setAttribute(Qt::WA_DeleteOnClose);
 
-    d_matrix = 0;
+	d_matrix = 0;
 	d_table = 0;
 	graph = 0;
 	d_type = type;
@@ -65,27 +65,30 @@ FFTDialog::FFTDialog(int type, QWidget* parent, Qt::WFlags fl )
 	backwardBtn = new QRadioButton(tr("&Inverse"));
 
 	QHBoxLayout *hbox1 = new QHBoxLayout();
-    hbox1->addWidget(forwardBtn);
-    hbox1->addWidget(backwardBtn);
+	hbox1->addWidget(forwardBtn);
+	hbox1->addWidget(backwardBtn);
 	hbox1->addStretch();
 
 	QGroupBox *gb1 = new QGroupBox();
-    gb1->setLayout(hbox1);
+	gb1->setLayout(hbox1);
 
 	QGridLayout *gl1 = new QGridLayout();
 	if (d_type == onGraph)
-	    gl1->addWidget(new QLabel(tr("Curve")), 0, 0);
+		gl1->addWidget(new QLabel(tr("Curve")), 0, 0);
 	else if (d_type == onTable)
 		gl1->addWidget(new QLabel(tr("Sampling")), 0, 0);
 
-    if (d_type != onMatrix){
-        boxName = new QComboBox();
-        connect( boxName, SIGNAL( activated(const QString&) ), this, SLOT( activateCurve(const QString&) ) );
-        gl1->addWidget(boxName, 0, 1);
-        setFocusProxy(boxName);
-    }
+	if (d_type != onMatrix){
+		boxName = new QComboBox();
+		if (d_type == onTable)
+			connect(boxName, SIGNAL(activated(const QString&)), this, SLOT(activateCurve(const QString&)));
+		else if (d_type == onGraph)
+			connect(boxName, SIGNAL(activated(int)), this, SLOT(activateCurve(int)));
+		gl1->addWidget(boxName, 0, 1);
+		setFocusProxy(boxName);
+	}
 
-    boxSampling = new DoubleSpinBox();
+	boxSampling = new DoubleSpinBox();
 	boxSampling->setDecimals(((ApplicationWindow *)parent)->d_decimal_digits);
 	boxSampling->setLocale(((ApplicationWindow *)parent)->locale());
 
@@ -98,46 +101,46 @@ FFTDialog::FFTDialog(int type, QWidget* parent, Qt::WFlags fl )
 		boxImaginary = new QComboBox();
 		gl1->addWidget(boxImaginary, 2, 1);
 
-        if (d_type == onTable){
-            gl1->addWidget(new QLabel(tr("Sampling Interval")), 3, 0);
-            gl1->addWidget(boxSampling, 3, 1);
-        }
-    } else if (d_type == onGraph){
-        gl1->addWidget(new QLabel(tr("Sampling Interval")), 1, 0);
+		if (d_type == onTable){
+			gl1->addWidget(new QLabel(tr("Sampling Interval")), 3, 0);
+			gl1->addWidget(boxSampling, 3, 1);
+		}
+	} else if (d_type == onGraph){
+		gl1->addWidget(new QLabel(tr("Sampling Interval")), 1, 0);
 		gl1->addWidget(boxSampling, 1, 1);
-    }
+	}
 
- 	QGroupBox *gb2 = new QGroupBox();
-    gb2->setLayout(gl1);
+	QGroupBox *gb2 = new QGroupBox();
+	gb2->setLayout(gl1);
 
 	boxNormalize = new QCheckBox(tr( "&Normalize Amplitude" ));
 	boxNormalize->setChecked(true);
 
-    if (d_type != onMatrix){
-        boxOrder = new QCheckBox(tr( "&Shift Results" ));
-        boxOrder->setChecked(true);
-    }
+	if (d_type != onMatrix){
+		boxOrder = new QCheckBox(tr( "&Shift Results" ));
+		boxOrder->setChecked(true);
+	}
 
-    QVBoxLayout *vbox1 = new QVBoxLayout();
-    vbox1->addWidget(gb1);
-    vbox1->addWidget(gb2);
-    vbox1->addWidget(boxNormalize);
-    if (d_type != onMatrix)
-        vbox1->addWidget(boxOrder);
+	QVBoxLayout *vbox1 = new QVBoxLayout();
+	vbox1->addWidget(gb1);
+	vbox1->addWidget(gb2);
+	vbox1->addWidget(boxNormalize);
+	if (d_type != onMatrix)
+		vbox1->addWidget(boxOrder);
 	vbox1->addStretch();
 
-    buttonOK = new QPushButton(tr("&OK"));
+	buttonOK = new QPushButton(tr("&OK"));
 	buttonOK->setDefault( true );
 	buttonCancel = new QPushButton(tr("&Close"));
 
 	QVBoxLayout *vbox2 = new QVBoxLayout();
-    vbox2->addWidget(buttonOK);
-    vbox2->addWidget(buttonCancel);
-    vbox2->addStretch();
+	vbox2->addWidget(buttonOK);
+	vbox2->addWidget(buttonCancel);
+	vbox2->addStretch();
 
-    QHBoxLayout *hbox2 = new QHBoxLayout(this);
-    hbox2->addLayout(vbox1);
-    hbox2->addLayout(vbox2);
+	QHBoxLayout *hbox2 = new QHBoxLayout(this);
+	hbox2->addLayout(vbox1);
+	hbox2->addLayout(vbox2);
 
 	// signals and slots connections
 	connect( buttonOK, SIGNAL( clicked() ), this, SLOT( accept() ) );
@@ -155,7 +158,7 @@ void FFTDialog::accept()
 	ApplicationWindow *app = (ApplicationWindow *)parent();
     FFT *fft = NULL;
 	if (graph)
-        fft = new FFT(app, graph, boxName->currentText());
+		fft = new FFT(app, graph->curve(boxName->currentIndex()));
 	else if (d_table){
 		if (boxReal->currentText().isEmpty()){
 			QMessageBox::critical(this, tr("QtiPlot - Error"), tr("Please choose a column for the real part of the data!"));
@@ -179,22 +182,28 @@ void FFTDialog::setGraph(Graph *g)
 		return;
 
 	graph = g;
-	boxName->insertStringList (g->analysableCurvesList());
-	activateCurve(boxName->currentText());
-};
+	boxName->insertStringList(g->analysableCurvesList());
+	activateCurve(boxName->currentIndex());
+}
+
+void FFTDialog::activateCurve(int curveIndex)
+{
+	if (!graph)
+		return;
+
+	PlotCurve *c = graph->curve(curveIndex);
+	if (!c)
+		return;
+	boxSampling->setValue(c->x(1) - c->x(0));
+}
 
 void FFTDialog::activateCurve(const QString& curveName)
 {
-	if (graph){
-		PlotCurve *c = graph->curve(curveName);
-		if (!c)
-			return;
+	if (!d_table)
+		return;
 
-		boxSampling->setValue(c->x(1) - c->x(0));
-	} else if (d_table) {
-	    int col = d_table->colIndex(curveName);
-		boxSampling->setValue(d_table->cell(1, col) - d_table->cell(0, col));
-	}
+	int col = d_table->colIndex(curveName);
+	boxSampling->setValue(d_table->cell(1, col) - d_table->cell(0, col));
 }
 
 void FFTDialog::setTable(Table *t)

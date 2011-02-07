@@ -32,6 +32,7 @@
 #include <Graph.h>
 #include <DoubleSpinBox.h>
 #include <PlotCurve.h>
+#include <RangeSelectorTool.h>
 
 #include <QGroupBox>
 #include <QCheckBox>
@@ -196,8 +197,7 @@ void SubtractDataDialog::interpolate()
 	if (!graph)
 		return;
 
-	int index = graph->curveIndex(boxInputName->currentText());
-	DataCurve *c = graph->dataCurve(index);
+	DataCurve *c = graph->dataCurve(boxInputName->currentIndex());
 	if (!c)
 		return;
 
@@ -209,13 +209,17 @@ void SubtractDataDialog::interpolate()
 	if (!inputTable)
 		return;
 
-	int inputPoints = inputTable->numRows();
-	QString xColName = c->xColumnName();
-	int xCol = inputTable->colIndex(xColName);
+	int startRow = c->startRow(), endRow = c->endRow();
+	if (startRow < 0)
+		startRow = 0;
+	if (endRow < 0)
+		endRow = c->dataSize() - 1;
+
+	int xCol = inputTable->colIndex(c->xColumnName());
 	int yCol = inputTable->colIndex(c->title().text());
 	if (btnValue->isChecked()){
 		double offset = boxOffset->value();
-		for (int i = 0; i < inputPoints; i++){
+		for (int i = startRow; i <= endRow; i++){
 			if (!inputTable->text(i, yCol).isEmpty() && !inputTable->text(i, xCol).isEmpty())
 				inputTable->setCell(i, yCol, combineValues(inputTable->cell(i, yCol), offset));
 		}
@@ -233,7 +237,7 @@ void SubtractDataDialog::interpolate()
 
 	int refXCol = refTable->colX(refCol);
 	if (refTable == inputTable && refXCol == xCol){//same X column
-		for (int i = 0; i < inputPoints; i++){
+		for (int i = startRow; i <= endRow; i++){
 			if (!inputTable->text(i, yCol).isEmpty() && !inputTable->text(i, xCol).isEmpty())
 				inputTable->setCell(i, yCol, combineValues(inputTable->cell(i, yCol), refTable->cell(i, refCol)));
 		}
@@ -307,7 +311,7 @@ void SubtractDataDialog::interpolate()
 	gsl_spline *interp = gsl_spline_alloc(gsl_interp_linear, refPoints);
 	gsl_spline_init (interp, xtemp, ytemp, refPoints);
 
-	for (int i = 0; i < inputPoints; i++){
+	for (int i = startRow; i <= endRow; i++){
 		if (!inputTable->text(i, yCol).isEmpty() && !inputTable->text(i, xCol).isEmpty())
 			inputTable->setCell(i, yCol, combineValues(inputTable->cell(i, yCol), gsl_spline_eval(interp, inputTable->cell(i, xCol), acc)));
 	}
@@ -326,10 +330,8 @@ void SubtractDataDialog::setGraph(Graph *g)
 
 	graph = g;
 	boxInputName->addItems(g->analysableCurvesList());
-
-	QString selectedCurve = g->selectedCurveTitle();
-	if (!selectedCurve.isEmpty())
-		boxInputName->setCurrentIndex(boxInputName->findText(selectedCurve));
+	if (g->rangeSelectorsEnabled())
+		boxInputName->setCurrentIndex(g->curveIndex(g->rangeSelectorTool()->selectedCurve()));
 
 	connect (graph, SIGNAL(destroyed()), this, SLOT(close()));
 }

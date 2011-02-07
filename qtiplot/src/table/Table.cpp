@@ -2477,7 +2477,7 @@ int Table::colIndex(const QString& name)
 {
 	int pos = name.lastIndexOf("_");
 	QString label = name.right(name.length() - pos - 1);
-	return col_label.findIndex(label);
+	return col_label.indexOf(label);
 }
 
 void Table::setHeaderColType()

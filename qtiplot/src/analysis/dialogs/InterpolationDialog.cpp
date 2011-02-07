@@ -2,7 +2,7 @@
     File                 : InterpolationDialog.cpp
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2006 by Ion Vasilief
+	Copyright            : (C) 2006 - 2011 by Ion Vasilief
     Email (use @ for *)  : ion_vasilief*yahoo.fr
     Description          : Interpolation options dialog
 
@@ -31,6 +31,7 @@
 #include <Graph.h>
 #include <ColorButton.h>
 #include <DoubleSpinBox.h>
+#include <RangeSelectorTool.h>
 
 #include <QGroupBox>
 #include <QSpinBox>
@@ -104,7 +105,7 @@ InterpolationDialog::InterpolationDialog( QWidget* parent, Qt::WFlags fl )
     hb->addWidget(gb1, 1);
     hb->addLayout(vl);
 
-	connect( boxName, SIGNAL(activated(const QString&)), this, SLOT( activateCurve(const QString&)));
+	connect( boxName, SIGNAL(activated(int)), this, SLOT( activateCurve(int)));
 	connect( buttonFit, SIGNAL( clicked() ), this, SLOT( interpolate() ) );
 	connect( buttonCancel, SIGNAL( clicked() ), this, SLOT( close() ) );
 }
@@ -129,7 +130,7 @@ void InterpolationDialog::interpolate()
 		return;
 	}
 
-	Interpolation *i = new Interpolation((ApplicationWindow *)this->parent(), graph, curve, from, to, boxMethod->currentIndex());
+	Interpolation *i = new Interpolation((ApplicationWindow *)parent(), (QwtPlotCurve *)graph->curve(boxName->currentIndex()), from, to, boxMethod->currentIndex());
 	i->setOutputPoints(boxPoints->value());
 	i->setColor(boxColor->color());
 	i->run();
@@ -144,19 +145,18 @@ void InterpolationDialog::setGraph(Graph *g)
 	graph = g;
 	boxName->addItems(g->analysableCurvesList());
 
-	QString selectedCurve = g->selectedCurveTitle();
-	if (!selectedCurve.isEmpty())
-		boxName->setCurrentIndex(boxName->findText(selectedCurve));
+	if (g->rangeSelectorsEnabled())
+		boxName->setCurrentIndex(g->curveIndex(g->rangeSelectorTool()->selectedCurve()));
 
-	activateCurve(boxName->currentText());
+	activateCurve(boxName->currentIndex());
 
 	connect (graph, SIGNAL(destroyed()), this, SLOT(close()));
 	connect (graph, SIGNAL(dataRangeChanged()), this, SLOT(changeDataRange()));
 };
 
-void InterpolationDialog::activateCurve(const QString& curveName)
+void InterpolationDialog::activateCurve(int curveIndex)
 {
-	PlotCurve *c = graph->curve(curveName);
+	QwtPlotCurve *c = (QwtPlotCurve *)graph->curve(curveIndex);
 	if (!c)
 		return;
 
@@ -165,7 +165,7 @@ void InterpolationDialog::activateCurve(const QString& curveName)
         return;
 
 	double start, end;
-	graph->range(curveName, &start, &end);
+	graph->range(c, &start, &end);
 	boxStart->setValue(QMIN(start, end));
 	boxEnd->setValue(QMAX(start, end));
 };

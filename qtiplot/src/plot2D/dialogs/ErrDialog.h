@@ -2,7 +2,7 @@
     File                 : ErrDialog.h
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2006 by Ion Vasilief
+	Copyright            : (C) 2006 - 2011 by Ion Vasilief
     Email (use @ for *)  : ion_vasilief*yahoo.fr
     Description          : Add error bars dialog
 
@@ -81,12 +81,6 @@ public slots:
 	void setSrcTables(QList<MdiSubWindow *> tables);
 	//! Select a table
 	void selectSrcTable(int tabnr);
-
-signals:
-	//! This is usually connected to the main window's defineErrorBars() slot
-	void options(const QString& curveName, int type, double percent, int direction);
-	//! This is usually connected to the main window's defineErrorBars() slot
-	void options(const QString& curveName, const QString& errColumnName, int direction);
 };
 
 #endif // ERRDIALOG_H

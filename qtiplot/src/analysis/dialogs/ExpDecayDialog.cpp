@@ -2,7 +2,7 @@
     File                 : ExpDecayDialog.cpp
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2006 by Ion Vasilief
+	Copyright            : (C) 2006 - 2011 by Ion Vasilief
     Email (use @ for *)  : ion_vasilief*yahoo.fr
     Description          : Fit exponential decay dialog
 
@@ -34,6 +34,7 @@
 #include <DoubleSpinBox.h>
 #include <ColorButton.h>
 #include <PlotCurve.h>
+#include <RangeSelectorTool.h>
 
 #include <QMessageBox>
 #include <QLayout>
@@ -59,7 +60,7 @@ ExpDecayDialog::ExpDecayDialog(int type, QWidget* parent, Qt::WFlags fl )
 	gl1->addWidget(new QLabel(tr("Exponential Fit of")), 0, 0);
 
 	boxName = new QComboBox();
-	connect( boxName, SIGNAL( activated(const QString&) ), this, SLOT( activateCurve(const QString&) ) );
+	connect( boxName, SIGNAL( activated(int) ), this, SLOT( activateCurve(int) ) );
 	gl1->addWidget(boxName, 0, 1);
 
 	if (type < 0)
@@ -163,28 +164,27 @@ void ExpDecayDialog::setGraph(Graph *g)
 
 	boxName->addItems(graph->analysableCurvesList());
 
-	QString selectedCurve = g->selectedCurveTitle();
-	if (!selectedCurve.isEmpty())
-		boxName->setCurrentIndex(boxName->findText (selectedCurve));
+	if (g->rangeSelectorsEnabled())
+		boxName->setCurrentIndex(g->curveIndex(g->rangeSelectorTool()->selectedCurve()));
 
-	activateCurve(boxName->currentText());
+	activateCurve(boxName->currentIndex());
 
 	connect (graph, SIGNAL(destroyed()), this, SLOT(close()));
 	connect (graph, SIGNAL(dataRangeChanged()), this, SLOT(changeDataRange()));
 }
 
-void ExpDecayDialog::activateCurve(const QString& curveName)
+void ExpDecayDialog::activateCurve(int curveIndex)
 {
-	PlotCurve *c = graph->curve(curveName);
+	PlotCurve *c = graph->curve(curveIndex);
 	if (!c)
 		return;
 
-    ApplicationWindow *app = (ApplicationWindow *)this->parent();
+	ApplicationWindow *app = (ApplicationWindow *)parent();
 	if (!app)
         return;
 
 	double start, end;
-	graph->range(curveName, &start, &end);
+	graph->range(c, &start, &end);
 	boxStart->setValue(QMIN(start, end));
 	boxYOffset->setValue(c->minYValue());
 	if (slopes < 2)
@@ -202,7 +202,7 @@ void ExpDecayDialog::changeDataRange()
 void ExpDecayDialog::fit()
 {
 	QString curve = boxName->currentText();
-	PlotCurve *c = graph->curve(curve);
+	PlotCurve *c = graph->curve(boxName->currentIndex());
 	QStringList curvesList = graph->analysableCurvesList();
 	if (!c || !curvesList.contains(curve)){
 		QMessageBox::critical(this,tr("QtiPlot - Warning"),
@@ -233,7 +233,7 @@ void ExpDecayDialog::fit()
 		fitter->setInitialGuesses(x_init);
 	}
 
-  	if (fitter->setDataFromCurve(boxName->currentText(), boxStart->value(), c->maxXValue())){
+	if (fitter->setDataFromCurve(c, boxStart->value(), c->maxXValue())){
 		fitter->setColor(boxColor->color());
 		fitter->scaleErrors(app->fit_scale_errors);
         fitter->setOutputPrecision(app->fit_output_precision);

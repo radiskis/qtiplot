@@ -294,7 +294,7 @@ class Graph: public QwtPlot
 		//! Map curve pointer to index.
 		int curveIndex(QwtPlotItem *c){return d_curves.indexOf(c);};
 		//! map curve title to index
-		int curveIndex(const QString &title){return plotItemsList().findIndex(title);}
+		int curveIndex(const QString &title){return plotItemsList().indexOf(title);}
 		DataCurve* dataCurve(int index);
 		FunctionCurve* functionCurve(int index);
 		//! get curve by index
@@ -363,6 +363,10 @@ class Graph: public QwtPlot
 				bool through = true, bool minus = true, bool plus = true);
 
 		ErrorBarsCurve* addErrorBars(const QString& yColName, Table *errTable, const QString& errColName,
+				int type = 1, double width = 1, int cap = 8, const QColor& color = QColor(Qt::black),
+				bool through = true, bool minus = true, bool plus = true);
+
+		ErrorBarsCurve* addErrorBars(DataCurve *c, Table *errTable, const QString& errColName,
 				int type = 1, double width = 1, int cap = 8, const QColor& color = QColor(Qt::black),
 				bool through = true, bool minus = true, bool plus = true);
 
@@ -628,11 +632,6 @@ class Graph: public QwtPlot
 		//! Sets title to an empty string and hides the text label
 		void removeTitle();
 		void initTitle( bool on, const QFont& fnt);
-		//@}
-
-		//! \name Modifing insertCurve Data
-		//@{
-		QString selectedCurveTitle();
 		//@}
 
 		void disableTools();

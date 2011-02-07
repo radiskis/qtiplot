@@ -2,7 +2,7 @@
     File                 : FitDialog.h
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2004-2007 by Ion Vasilief
+	Copyright            : (C) 2004 - 2011 by Ion Vasilief
     Email (use @ for *)  : ion_vasilief*yahoo.fr
     Description          : Fit Wizard
 
@@ -87,7 +87,7 @@ private slots:
 	void saveUserFunction();
 	void removeUserFunction();
 	void setGraph(Graph *g);
-	void activateCurve(const QString& curveName);
+	void activateCurve(int curveIndex);
 	void chooseFolder();
 	void changeDataRange();
 	void selectSrcTable(int tabnr);

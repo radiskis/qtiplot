@@ -730,13 +730,11 @@ public slots:
 	void integrate();
 	void differentiate();
 	void analysis(Analysis operation);
-	void analyzeCurve(Graph *g, Analysis operation, const QString& curveTitle);
+	void analyzeCurve(Graph *g, QwtPlotCurve *c, Analysis operation);
 	void showDataSetDialog(Analysis operation);
 	//@}
 
 	void addErrorBars();
-	void defineErrorBars(const QString& name, int type, double percent, int direction);
-	void defineErrorBars(const QString& curveName, const QString& errColumnName, int direction);
 	void movePoints(bool wholeCurve = false);
 	void removePoints();
 

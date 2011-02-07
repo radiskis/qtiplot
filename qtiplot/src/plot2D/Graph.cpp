@@ -1436,13 +1436,17 @@ QStringList Graph::analysableCurvesList()
 {
 	QStringList cList;
 	foreach(QwtPlotItem *it, d_curves){
-    	if (it->rtti() != QwtPlotItem::Rtti_PlotSpectrogram){
+		if (it->rtti() != QwtPlotItem::Rtti_PlotSpectrogram){
 			PlotCurve *c = (PlotCurve*)it;
-        	if (c->type() != ErrorBars)
+			if (c->type() == ErrorBars)
+				continue;
+			if (c->type() != Function){
+				DataCurve *dc = (DataCurve*)it;
+				cList << dc->title().text() + " [" + QString::number(dc->startRow() + 1) + ":" + QString::number(dc->endRow() + 1) + "]";
+			} else
 				cList << c->title().text();
 		}
 	}
-
 	return cList;
 }
 
@@ -1812,14 +1816,6 @@ void Graph::exportTeX(const QString& fname, bool color, bool escapeStrings, bool
 
 	d_is_exporting_tex = false;
 #endif
-}
-
-QString Graph::selectedCurveTitle()
-{
-	if (d_range_selector && d_range_selector->isVisible())
-		return d_range_selector->selectedCurve()->title().text();
-	else
-		return QString::null;
 }
 
 bool Graph::markerSelected()
@@ -2608,19 +2604,20 @@ QString Graph::saveCurves()
 				s += QString::number(c->isVisible())+"\n";
 				s += c->saveToString();
 			} else if (c->type() == ErrorBars){
-  	        	ErrorBarsCurve *er = (ErrorBarsCurve *)it;
-  	            s += "ErrorBars\t";
-  	            s += QString::number(er->direction())+"\t";
-  	            s += er->masterCurve()->xColumnName() + "\t";
-  	            s += er->masterCurve()->title().text() + "\t";
-  	            s += er->title().text() + "\t";
-  	            s += QString::number(er->width())+"\t";
-  	            s += QString::number(er->capLength())+"\t";
-  	            s += er->color().name()+"\t";
-  	            s += QString::number(er->throughSymbol())+"\t";
-  	            s += QString::number(er->plusSide())+"\t";
-  	            s += QString::number(er->minusSide())+"\n";
-  	            s += er->saveToString();
+				ErrorBarsCurve *er = (ErrorBarsCurve *)it;
+				s += "ErrorBars\t";
+				s += QString::number(er->direction()) + "\t";
+				s += er->masterCurve()->xColumnName() + "\t";
+				s += er->masterCurve()->title().text() + "\t";
+				s += er->title().text() + "\t";
+				s += QString::number(er->width()) + "\t";
+				s += QString::number(er->capLength()) + "\t";
+				s += er->color().name() + "\t";
+				s += QString::number(er->throughSymbol()) + "\t";
+				s += QString::number(er->plusSide()) + "\t";
+				s += QString::number(er->minusSide()) + "\t";
+				s += QString::number(curveIndex(er->masterCurve())) + "\n";
+				s += er->saveToString();
   	       }
 		}
 	}
@@ -3173,8 +3170,7 @@ ErrorBarsCurve* Graph::addErrorBars(const QString& yColName, Table *errTable, co
 			continue;
 
 		if (it->title().text() == yColName){
-			return addErrorBars(((DataCurve*)it)->xColumnName(), yColName, errTable, errColName,
-					type, width, cap, color, through, minus, plus);
+			return addErrorBars((DataCurve*)it, errTable, errColName, type, width, cap, color, through, minus, plus);
 		}
 	}
 	return NULL;
@@ -3184,14 +3180,19 @@ ErrorBarsCurve* Graph::addErrorBars(const QString& xColName, const QString& yCol
 		Table *errTable, const QString& errColName, int type, double width, int cap,
 		const QColor& color, bool through, bool minus, bool plus)
 {
-	DataCurve *master_curve = masterCurve(xColName, yColName);
-	if (!master_curve)
+	return addErrorBars(masterCurve(xColName, yColName), errTable, errColName, type, width, cap, color, through, minus, plus);
+}
+
+ErrorBarsCurve* Graph::addErrorBars(DataCurve *c, Table *errTable, const QString& errColName,
+				int type, double width, int cap, const QColor& color, bool through, bool minus, bool plus)
+{
+	if (!c)
 		return NULL;
 
 	ErrorBarsCurve *er = new ErrorBarsCurve(type, errTable, errColName);
 	insertCurve(er);
 
-	er->setMasterCurve(master_curve);
+	er->setMasterCurve(c);
 	er->setCapLength(cap);
 	er->setColor(color);
 	er->setWidth(width);
@@ -3408,8 +3409,8 @@ DataCurve* Graph::insertCurve(Table* w, int xcol, const QString& name, int style
 
 DataCurve* Graph::insertCurve(Table* w, const QString& xColName, const QString& yColName, int style, int startRow, int endRow)
 {
-	if (plotItemsList().contains(yColName))
-		return NULL;
+	//if (plotItemsList().contains(yColName))
+		//return NULL;
 
 	if (style == Histogram){
 		DataCurve *c = new QwtHistogram(w, yColName, startRow, endRow);
@@ -3713,13 +3714,13 @@ void Graph::removeCurve(QwtPlotItem *it)
 	removeLegendItem(index);
 
 	if (it->rtti() != QwtPlotItem::Rtti_PlotSpectrogram){
-        if (((PlotCurve *)it)->type() == ErrorBars)
-            ((ErrorBarsCurve *)it)->detachFromMasterCurve();
-		else if (((PlotCurve *)it)->type() != Function){
+		int curveType = ((PlotCurve *)it)->type();
+		if (curveType == ErrorBars)
+			((ErrorBarsCurve *)it)->detachFromMasterCurve();
+		else if (curveType != Function){
 			((DataCurve *)it)->clearErrorBars();
 			((DataCurve *)it)->clearLabels();
 		}
-
 		if (d_fit_curves.contains((QwtPlotCurve *)it)){
 			int i = d_fit_curves.indexOf((QwtPlotCurve *)it);
 			if (i >= 0 && i < d_fit_curves.size())
@@ -3727,24 +3728,24 @@ void Graph::removeCurve(QwtPlotItem *it)
 		}
 	} else {
 		((Spectrogram *)it)->clearLabels();
-  	    QwtScaleWidget *colorAxis = axisWidget(((Spectrogram *)it)->colorScaleAxis());
-  	    if (colorAxis)
-  	    	colorAxis->setColorBarEnabled(false);
-  	}
+		QwtScaleWidget *colorAxis = axisWidget(((Spectrogram *)it)->colorScaleAxis());
+		if (colorAxis)
+			colorAxis->setColorBarEnabled(false);
+	}
 
-    if (d_range_selector && d_range_selector->isVisible() &&
+	if (d_range_selector && d_range_selector->isVisible() &&
 		curve(index) == d_range_selector->selectedCurve()){
 		int curves = d_curves.size();
-        if (curves > 1 && (index - 1) >= 0)
-            d_range_selector->setSelectedCurve(curve(index - 1));
-        else if (curves > 1 && index + 1 < curves)
-            d_range_selector->setSelectedCurve(curve(index + 1));
-        else
-            disableTools();
-    }
+		if (curves > 1 && (index - 1) >= 0)
+			d_range_selector->setSelectedCurve(curve(index - 1));
+		else if (curves > 1 && index + 1 < curves)
+			d_range_selector->setSelectedCurve(curve(index + 1));
+		else
+			disableTools();
+	}
 
 	it->detach();
-	d_curves.removeAt(index);
+	d_curves.removeAll(it);
 	emit modifiedGraph();
 }
 
@@ -4824,10 +4825,10 @@ void Graph::copyCurves(Graph* g)
 									cv->title().text(), cv->startRow(), cv->endRow());
                 insertCurve(c);
 				((QwtBarCurve*)c)->copy((const QwtBarCurve*)cv);
-			} else if (style == ErrorBars) {
+			} else if (style == ErrorBars){
 				ErrorBarsCurve *er = (ErrorBarsCurve*)cv;
 				DataCurve *master_curve = masterCurve(er);
-				if (master_curve) {
+				if (master_curve){
 					c = new ErrorBarsCurve(cv->table(), cv->title().text());
 					insertCurve(c);
 					((ErrorBarsCurve*)c)->copy(er);
@@ -5151,7 +5152,7 @@ void Graph::addFitCurve(QwtPlotCurve *c)
 void Graph::deleteFitCurves()
 {
 	foreach(QwtPlotCurve *c, d_fit_curves)
-		removeCurve(curveIndex(c));
+		removeCurve(c);
 
 	replot();
 }
@@ -5710,13 +5711,16 @@ void Graph::setIndexedColors()
 DataCurve* Graph::masterCurve(ErrorBarsCurve *er)
 {
 	foreach(QwtPlotItem *it, d_curves){
-        if (it->rtti() == QwtPlotItem::Rtti_PlotSpectrogram)
-            continue;
-        if (((PlotCurve *)it)->type() == Function)
-            continue;
+		if (it->rtti() == QwtPlotItem::Rtti_PlotSpectrogram)
+			continue;
+		if (((PlotCurve *)it)->type() == Function)
+			continue;
 
-        if (((DataCurve *)it)->plotAssociation() == er->masterCurve()->plotAssociation())
-			return (DataCurve *)it;
+		DataCurve *c = (DataCurve *)it;
+		DataCurve *mc = er->masterCurve();
+		if (c && mc && c->plotAssociation() == mc->plotAssociation() &&
+			c->startRow() == mc->startRow() && c->endRow() == mc->endRow())
+			return c;
 	}
 	return 0;
 }
@@ -5729,6 +5733,7 @@ DataCurve* Graph::masterCurve(const QString& xColName, const QString& yColName)
             continue;
         if (((PlotCurve *)it)->type() == Function)
             continue;
+
 		if (((DataCurve *)it)->xColumnName() == xColName && it->title().text() == yColName)
 			return (DataCurve *)it;
 	}

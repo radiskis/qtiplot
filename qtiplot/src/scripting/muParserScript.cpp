@@ -102,7 +102,7 @@ double muParserScript::col(const QString &arg)
 	int col, row;
 	Parser local_parser(rparser);
 	if (items[0].startsWith("\"") && items[0].endsWith("\"")) {
-		col = table->colNames().findIndex(items[0].mid(1,items[0].length()-2));
+		col = table->colNames().indexOf(items[0].mid(1,items[0].length()-2));
 		if (col<0)
 			throw Parser::exception_type(tr("There's no column named %1 in table %2!").
 					arg(items[0]).arg(Context->name()).ascii());
@@ -486,7 +486,7 @@ double muParserScript::sum(const QString &arg, int start, int end)
 		throw Parser::exception_type(tr("SUM() works only on tables!").ascii());
 
 	Table *table = (Table*) Context;
-	int col = table->colNames().findIndex(arg);
+	int col = table->colNames().indexOf(arg);
 	if (col < 0)
 		throw Parser::exception_type(tr("There's no column named %1 in table %2!").arg(arg).arg(Context->name()).ascii());
 
@@ -500,7 +500,7 @@ double muParserScript::avg(const QString &arg, int start, int end)
 		throw Parser::exception_type(tr("AVG() works only on tables!").ascii());
 
 	Table *table = (Table*) Context;
-	int col = table->colNames().findIndex(arg);
+	int col = table->colNames().indexOf(arg);
 	if (col < 0)
 		throw Parser::exception_type(tr("There's no column named %1 in table %2!").arg(arg).arg(Context->name()).ascii());
 
@@ -514,7 +514,7 @@ double muParserScript::min(const QString &arg, int start, int end)
 		throw Parser::exception_type(tr("MIN() works only on tables!").ascii());
 
 	Table *table = (Table*) Context;
-	int col = table->colNames().findIndex(arg);
+	int col = table->colNames().indexOf(arg);
 	if (col < 0)
 		throw Parser::exception_type(tr("There's no column named %1 in table %2!").arg(arg).arg(Context->name()).ascii());
 
@@ -528,7 +528,7 @@ double muParserScript::max(const QString &arg, int start, int end)
 		throw Parser::exception_type(tr("MAX() works only on tables!").ascii());
 
 	Table *table = (Table*) Context;
-	int col = table->colNames().findIndex(arg);
+	int col = table->colNames().indexOf(arg);
 	if (col < 0)
 		throw Parser::exception_type(tr("There's no column named %1 in table %2!").arg(arg).arg(Context->name()).ascii());
 

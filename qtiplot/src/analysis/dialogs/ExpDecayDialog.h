@@ -2,7 +2,7 @@
     File                 : ExpDecayDialog.h
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2006 by Ion Vasilief
+	Copyright            : (C) 2006 - 2011 by Ion Vasilief
     Email (use @ for *)  : ion_vasilief*yahoo.fr
     Description          : Fit exponential decay dialog
 
@@ -52,13 +52,8 @@ public slots:
 	void setGraph(Graph *g);
 
 private slots:
-    void activateCurve(const QString& curveName);
+	void activateCurve(int curveIndex);
 	void changeDataRange();
-
-signals:
-	void options(const QString&,double,double,double,double,int);
-	void options(const QString&, double,double,double,int);
-	void options3(const QString&,double,double,double,double,double,int);
 
 private:
     void closeEvent (QCloseEvent *);

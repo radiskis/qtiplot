@@ -2,7 +2,7 @@
     File                 : PolynomFitDialog.h
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2006 by Ion Vasilief
+	Copyright            : (C) 2006 - 2011 by Ion Vasilief
     Email (use @ for *)  : ion_vasilief*yahoo.fr
     Description          : Fit polynomial dialog
 
@@ -50,7 +50,7 @@ public:
 public slots:
 	void fit();
 	void setGraph(Graph *g);
-	void activateCurve(const QString& curveName);
+	void activateCurve(int curveIndex);
 	void changeDataRange();
 
 private:

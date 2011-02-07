@@ -526,15 +526,12 @@ bool CurvesDialog::addCurveFromTable(ApplicationWindow *app, Table *t, const QSt
 void CurvesDialog::removeCurves()
 {
 	QList<QListWidgetItem *> lst = contents->selectedItems();
-	for (int i = 0; i < lst.size(); ++i){
-        QListWidgetItem *it = lst.at(i);
-        QString s = it->text();
-        if (boxShowRange->isChecked()){
-            QStringList lst = s.split("[");
-            s = lst[0];
-        }
-        d_graph->removeCurve(s);
-    }
+	QList<QwtPlotItem *> curvesList;
+	for (int i = 0; i < lst.size(); ++i)
+		curvesList << d_graph->curve(contents->row(lst.at(i)));
+
+	foreach(QwtPlotItem *c, curvesList)
+		d_graph->removeCurve(c);
 
 	showCurveRange(boxShowRange->isChecked());
 	d_graph->updatePlot();
