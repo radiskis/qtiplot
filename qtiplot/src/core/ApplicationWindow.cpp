@@ -19135,8 +19135,10 @@ void ApplicationWindow::showProVersionMessage()
 ImportExportPlugin * ApplicationWindow::exportPlugin(const QString& suffix)
 {
 	foreach (ImportExportPlugin *plugin, d_import_export_plugins){
-		if (plugin->exportFormats().contains(suffix))
-			return plugin;
+	    if (plugin->exportFormats().contains(suffix)){
+		plugin->setApplicationWindow(this);
+		return plugin;
+	    }
 	}
 
 	showProVersionMessage();
@@ -19147,7 +19149,7 @@ ImportExportPlugin * ApplicationWindow::importPlugin(const QString& fileName)
 {
 	foreach (ImportExportPlugin *plugin, d_import_export_plugins){
 		if (plugin->importFormats().contains(QFileInfo(fileName).completeSuffix()))
-			return plugin;
+		    return plugin;
 	}
 
 	showProVersionMessage();
