@@ -3298,7 +3298,7 @@ public:
   double standardDeviation();
   double standardError();
 
-  virtual QString logInfo();
+  QString logInfo(bool header = true);
   virtual bool run();
 };
 

@@ -103,10 +103,8 @@ QString ChiSquareTest::logInfo()
 	s += QObject::tr("Chi-square Test for Variance") + "\n";
 	s += "\n";
 
-	if (d_descriptive_statistics){
+	if (d_descriptive_statistics)
 		s += Statistics::logInfo();
-		s += sep1 + "\n";
-	}
 
 	QString h0, ha, compare;
 	switch((int)d_tail){

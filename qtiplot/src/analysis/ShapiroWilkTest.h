@@ -46,6 +46,7 @@ class ShapiroWilkTest : public StatisticTest
 		QString shortLogInfo();
 
 	protected:
+		QString infoString(bool header = true);
 		void swilk(int *init, double *x, int *n, int *n1, int *n2, double *a,  double *w, double *pw, int *ifault);
 		static double poly(const double *cc, int nord, double x);
 

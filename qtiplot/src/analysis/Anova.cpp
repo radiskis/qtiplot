@@ -255,11 +255,8 @@ QString Anova::logInfo()
 
 	if (d_descriptive_statistics){
 		s += Statistics::logInfo();
-		foreach(Statistics *sample, d_data_samples){
-			s += sample->sampleName() + sep + QString::number(sample->dataSize()) + sep + l.toString(sample->mean(), 'g', p) + sep;
-			s += l.toString(sample->standardDeviation(), 'g', p) + "\t\t" + l.toString(sample->standardError(), 'g', p) + "\n";
-		}
-		s += sep1 + "\n";
+		foreach(Statistics *sample, d_data_samples)
+			s += sample->logInfo(false);
 	}
 
 	if (d_two_way){

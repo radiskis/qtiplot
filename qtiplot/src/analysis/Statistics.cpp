@@ -2,7 +2,7 @@
 	File                 : Statistics.cpp
     Project              : QtiPlot
     --------------------------------------------------------------------
-	Copyright            : (C) 2010 by Ion Vasilief
+	Copyright            : (C) 2010 - 2011 by Ion Vasilief
     Email (use @ for *)  : ion_vasilief*yahoo.fr
 	Description          : Abstract base class for statistics data analysis
 
@@ -117,22 +117,58 @@ bool Statistics::setData(const QString& colName)
 	return true;
 }
 
-QString Statistics::logInfo()
+QString Statistics::logInfo(bool header)
 {
 	ApplicationWindow *app = (ApplicationWindow *)parent();
 	QLocale l = app->locale();
 	int p = app->d_decimal_digits;
-	QString sep = "\t";
-	QString sep1 = "-----------------------------------------------------------------------------------------------------------------------------\n";
 
-	QString s = QObject::tr("Sample") + sep + QObject::tr("N") + sep + QObject::tr("Mean") + sep;
-	s += QObject::tr("Standard Deviation") + sep + QObject::tr("Variance") + sep;
-	s += QObject::tr("Standard Error") + "\n";
-	s += sep1;
-	s += d_col_name + sep + QString::number(d_n) + sep + l.toString(d_mean, 'g', p) + sep;
-	s += l.toString(d_sd, 'g', p) + "\t\t" + l.toString(d_variance, 'g', p) + sep;
-	s += l.toString(d_se, 'g', p) + "\n";
-	return s;
+	QStringList lst;
+	lst << QObject::tr("Sample");
+	lst << QObject::tr("N");
+	lst << QObject::tr("Mean");
+	lst << QObject::tr("Standard Deviation");
+	lst << QObject::tr("Variance");
+	lst << QObject::tr("Standard Error");
+	lst << d_col_name;
+	lst << QString::number(d_n);
+	lst << l.toString(d_mean, 'g', p);
+	lst << l.toString(d_sd, 'g', p);
+	lst << l.toString(d_variance, 'g', p);
+	lst << l.toString(d_se, 'g', p);
+
+	QFontMetrics fm(app->font());
+	int width = 0;
+	foreach(QString s, lst){
+		int aw = fm.width(s);
+		if (aw > width)
+			width = aw;
+	}
+	width += 6;
+
+	QString s;
+	QString lineSep;
+	for (int i = 0; i < 6; i++){
+		QString aux = lst[i];
+		int spaces = ceil((double)(width - fm.width(aux))/(double)fm.width(QLatin1Char(' '))) + 1;
+		s += aux + QString(spaces, QLatin1Char(' '));
+		if (i == 5){
+			int scores = ceil((double)fm.width(s)/(double)fm.width(QLatin1Char('-')));
+			lineSep = "\n" + QString(scores, QLatin1Char('-')) + "\n";
+			s += lineSep;
+		}
+	}
+
+	if (!header)
+		s = QString();
+
+	for (int i = 6; i < lst.size(); i++){
+		QString aux = lst[i];
+		int spaces = ceil((double)(width - fm.width(aux))/(double)fm.width(QLatin1Char(' '))) + 1;
+		s += aux + QString(spaces, QLatin1Char(' '));
+	}
+
+	return s + lineSep;
 }
 
 void Statistics::memoryErrorMessage()
@@ -140,8 +176,7 @@ void Statistics::memoryErrorMessage()
 	QApplication::restoreOverrideCursor();
 
 	QMessageBox::critical((ApplicationWindow *)parent(),
-		tr("QtiPlot") + " - " + tr("Memory Allocation Error"),
-		tr("Not enough memory, operation aborted!"));
+	tr("QtiPlot") + " - " + tr("Memory Allocation Error"), tr("Not enough memory, operation aborted!"));
 }
 
 void Statistics::freeMemory()
