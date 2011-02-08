@@ -40,13 +40,13 @@ public:
 	virtual ~ImportExportPlugin() {}
 
 	virtual QStringList importFormats() const = 0;
-	virtual Table* import(const QString & fileName, int sheet = -1){return 0;}
+	virtual Table* import(const QString & /*fileName*/, int /*sheet*/ = -1){return 0;}
 
 	virtual QStringList exportFormats() const = 0;
-	virtual bool exportTable(Table *t, const QString& fname, bool withLabels, bool exportComments, bool exportSelection){return false;}
-	virtual bool exportMatrix(Matrix *m, const QString& fname, bool exportSelection){return false;}
-	virtual bool exportGraph(Graph *g, const QString& fname, const QSizeF& customSize, int unit, double fontsFactor = 1){return false;}
-	virtual bool exportMultiLayerPlot(MultiLayer *ml, const QString& fname, const QSizeF& customSize, int unit, double fontsFactor = 1){return false;}
+	virtual bool exportTable(Table *, const QString& /*fname*/, bool /*withLabels*/, bool /*exportComments*/, bool /*exportSelection*/){return false;}
+	virtual bool exportMatrix(Matrix *, const QString& /*fname*/, bool /*exportSelection*/){return false;}
+	virtual bool exportGraph(Graph *, const QString& /*fname*/, const QSizeF& /*customSize*/, int /*unit*/, double /*fontsFactor*/ = 1){return false;}
+	virtual bool exportMultiLayerPlot(MultiLayer *, const QString& /*fname*/, const QSizeF& /*customSize*/, int /*unit*/, double /*fontsFactor*/ = 1){return false;}
 
 	void setApplicationWindow(ApplicationWindow *app){d_app = app;};
 	ApplicationWindow *applicationWindow(){return d_app;};
