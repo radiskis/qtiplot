@@ -174,13 +174,9 @@ QString tTest::logInfo()
 	if (d_descriptive_statistics){
 		s += Statistics::logInfo();
 		if (d_sample2){
-			QString sep = "\t";
-			s += d_sample2->sampleName() + sep + QString::number(d_sample2->dataSize()) + sep + l.toString(d_sample2->mean(), 'g', p) + sep;
-			s += l.toString(d_sample2->standardDeviation(), 'g', p) + "\t\t" + l.toString(d_sample2->standardError(), 'g', p) + "\n";
-			s += sep1 + "\n";
+			s += d_sample2->logInfo(false);
 			s += QObject::tr("Difference of Means") + ":\t" + l.toString(d_diff, 'g', p) + "\n\n";
-		} else
-			s += sep1 + "\n";
+		}
 	}
 
 	QString h0, ha, compare;

@@ -63,41 +63,72 @@ d_pValue(0.0)
 
 QString ShapiroWilkTest::logInfo()
 {
-	ApplicationWindow *app = (ApplicationWindow *)parent();
-	QLocale l = app->locale();
-	int p = app->d_decimal_digits;
-
-	QString sep = "\t";
-	QString sep1 = "-----------------------------------------------------------------------------------------------------------------------------\n";
-
 	QString s = "\n[" + QDateTime::currentDateTime().toString(Qt::LocalDate)+ " \"" + d_table->objectName() + "\"]\t";
 	s += QObject::tr("Normality Test (Shapiro - Wilk)") + "\n\n";
-	s += QObject::tr("Dataset") + sep + QObject::tr("N") + sep + QObject::tr("W") + sep;
-	s += QObject::tr("P Value") + sep + QObject::tr("Decision") + "\n";
-	s += sep1;
-	s += d_col_name + sep + QString::number(d_n) + sep + l.toString(d_w, 'g', p) + sep;
-	s += l.toString(d_pValue, 'g', p) + sep;
-	if (d_pValue >= d_significance_level)
-		s += QObject::tr("Normal at %1 level").arg(l.toString(d_significance_level));
-	else
-		s += QObject::tr("Not normal at %1 level").arg(l.toString(d_significance_level));
-	return s + "\n";
+	return s + infoString();
 }
 
 QString ShapiroWilkTest::shortLogInfo()
+{
+	return infoString(false);
+}
+
+QString ShapiroWilkTest::infoString(bool header)
 {
 	ApplicationWindow *app = (ApplicationWindow *)parent();
 	QLocale l = app->locale();
 	int p = app->d_decimal_digits;
 
-	QString sep = "\t";
-	QString s = d_col_name + sep + QString::number(d_n) + sep + l.toString(d_w, 'g', p) + sep;
-	s += l.toString(d_pValue, 'g', p) + sep;
+	QStringList lst;
+	lst << QObject::tr("Dataset");
+	lst << QObject::tr("N");
+	lst << QObject::tr("W");
+	lst << QObject::tr("P Value");
+	lst << d_col_name;
+	lst << QString::number(d_n);
+	lst << l.toString(d_w, 'g', p);
+	lst << l.toString(d_pValue, 'g', p);
+
+	QFontMetrics fm(app->font());
+	int width = 0;
+	foreach(QString aux, lst){
+		int aw = fm.width(aux);
+		if (aw > width)
+			width = aw;
+	}
+	width += 6;
+
+	QString head;
+	for (int i = 0; i < 4; i++){
+		QString aux = lst[i];
+		int spaces = ceil((double)(width - fm.width(aux))/(double)fm.width(QLatin1Char(' '))) + 1;
+		head += aux + QString(spaces, QLatin1Char(' '));
+	}
+
+	head += QObject::tr("Decision");
+
+	QString s;
+	if (header)
+		s = head;
+
+	QString val;
+	for (int i = 4; i < lst.size(); i++){
+		QString aux = lst[i];
+		int spaces = ceil((double)(width - fm.width(aux))/(double)fm.width(QLatin1Char(' '))) + 1;
+		val += aux + QString(spaces, QLatin1Char(' '));
+	}
+
 	if (d_pValue >= d_significance_level)
-		s += QObject::tr("Normal at %1 level").arg(l.toString(d_significance_level));
+		val += QObject::tr("Normal at %1 level").arg(l.toString(d_significance_level));
 	else
-		s += QObject::tr("Not normal at %1 level").arg(l.toString(d_significance_level));
-	return s + "\n";
+		val += QObject::tr("Not normal at %1 level").arg(l.toString(d_significance_level));
+
+	if (header){
+		int scores = ceil((double)fm.width(val)/(double)fm.width(QLatin1Char('-')));
+		s +="\n" + QString(scores, QLatin1Char('-')) + "\n";
+	}
+
+	return s + val + "\n";
 }
 
 void ShapiroWilkTest::swilk(int *init,/* logical: is a[] already initialized ? */

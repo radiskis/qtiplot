@@ -63,7 +63,7 @@ class Statistics : public QObject
 		double standardDeviation(){return d_sd;};
 		double standardError(){return d_se;};
 
-		virtual QString logInfo();
+		QString logInfo(bool header = true);
 
 	protected:
 		void memoryErrorMessage();
