@@ -4208,19 +4208,24 @@ Table * ApplicationWindow::importExcel(const QString& fileName, int sheet)
 	return 0;
 }
 
-Table * ApplicationWindow::importODBC()
+#ifdef Q_OS_WIN
+Table * ApplicationWindow::importMicrosoftAccess(const QString& fileName, int sheet)
 {
-	QString filter = tr("Access Databases") + " (*.mdb *accdb)";
-	QString fn = getFileName(this, tr("Open Database"), QString::null, filter, 0, false);
-	if (fn.isEmpty())
-		return 0;
+	QString fn = fileName;
+	if (fn.isEmpty()){
+		QString filter = tr("Access Databases") + " (*.mdb *accdb)";
+		fn = getFileName(this, tr("Open Database"), QString::null, filter, 0, false);
+		if (fn.isEmpty())
+			return 0;
+	}
 
 	ImportExportPlugin *plugin = importPlugin(fn);
 	if (plugin)
-		return plugin->import(fn);
+		return plugin->import(fn, sheet);
 
 	return 0;
 }
+#endif
 
 Table * ApplicationWindow::importWaveFile()
 {
@@ -4609,6 +4614,11 @@ ApplicationWindow* ApplicationWindow::open(const QString& fn, bool factorySettin
 			importExcel(fn);
 			return this;
 		}
+	}
+
+	if (fn.endsWith(".mdb", Qt::CaseInsensitive) || fn.endsWith(".accdb", Qt::CaseInsensitive)){
+		importMicrosoftAccess(fn);
+		return this;
 	}
 #endif
 	if (fn.endsWith(".xls", Qt::CaseInsensitive)){
@@ -10014,7 +10024,9 @@ void ApplicationWindow::fileMenuAboutToShow()
 	importMenu->addAction(actionLoad);
 	importMenu->addAction(actionImportSound);
 	importMenu->addAction(actionImportImage);
-	importMenu->addAction(actionImportODBC);
+#ifdef Q_OS_WIN
+	importMenu->addAction(actionImportMicrosoftAccess);
+#endif
 
 	fileMenu->insertSeparator();
 	fileMenu->addAction(actionCloseAllWindows);
@@ -13702,8 +13714,10 @@ void ApplicationWindow::createActions()
 	actionImportSound = new QAction(tr("&Sound (WAV)..."), this);
 	connect(actionImportSound, SIGNAL(activated()), this, SLOT(importWaveFile()));
 
-	actionImportODBC = new QAction(QIcon(":/access.png"), tr("Microsoft &Access..."), this);
-	connect(actionImportODBC, SIGNAL(activated()), this, SLOT(importODBC()));
+#ifdef Q_OS_WIN
+	actionImportMicrosoftAccess = new QAction(QIcon(":/access.png"), tr("Microsoft &Access..."), this);
+	connect(actionImportMicrosoftAccess, SIGNAL(activated()), this, SLOT(importMicrosoftAccess()));
+#endif
 
 	actionUndo = new QAction(QIcon(":/undo.png"), tr("&Undo"), this);
 	actionUndo->setShortcut( tr("Ctrl+Z") );
@@ -14694,7 +14708,10 @@ void ApplicationWindow::translateActionsStrings()
 	actionLoadImage->setMenuText(tr("Open Image &File..."));
 	actionLoadImage->setShortcut(tr("Ctrl+I"));
 
-	actionImportODBC->setMenuText(tr("Microsoft &Access..."));
+#ifdef Q_OS_WIN
+	actionImportMicrosoftAccess->setMenuText(tr("Microsoft &Access..."));
+#endif
+
 	actionImportSound->setMenuText(tr("&Sound (WAV)..."));
 	actionImportImage->setMenuText(tr("Import I&mage..."));
 
