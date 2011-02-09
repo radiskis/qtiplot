@@ -4140,10 +4140,9 @@ Table * ApplicationWindow::importOdfSpreadsheet(const QString& fileName, int she
 	}
 
 	ImportExportPlugin *plugin = importPlugin(fn);
-	if (plugin){
-		plugin->setApplicationWindow(this);
+	if (plugin)
 		return plugin->import(fn, sheet);
-	}
+
 	return 0;
 }
 
@@ -4203,10 +4202,23 @@ Table * ApplicationWindow::importExcel(const QString& fileName, int sheet)
 	}
 
 	ImportExportPlugin *plugin = importPlugin(fn);
-	if (plugin){
-		plugin->setApplicationWindow(this);
+	if (plugin)
 		return plugin->import(fn, sheet);
-	}
+
+	return 0;
+}
+
+Table * ApplicationWindow::importODBC()
+{
+	QString filter = tr("Access Databases") + " (*.mdb *accdb)";
+	QString fn = getFileName(this, tr("Open Database"), QString::null, filter, 0, false);
+	if (fn.isEmpty())
+		return 0;
+
+	ImportExportPlugin *plugin = importPlugin(fn);
+	if (plugin)
+		return plugin->import(fn);
+
 	return 0;
 }
 
@@ -10002,6 +10014,7 @@ void ApplicationWindow::fileMenuAboutToShow()
 	importMenu->addAction(actionLoad);
 	importMenu->addAction(actionImportSound);
 	importMenu->addAction(actionImportImage);
+	importMenu->addAction(actionImportODBC);
 
 	fileMenu->insertSeparator();
 	fileMenu->addAction(actionCloseAllWindows);
@@ -13689,6 +13702,9 @@ void ApplicationWindow::createActions()
 	actionImportSound = new QAction(tr("&Sound (WAV)..."), this);
 	connect(actionImportSound, SIGNAL(activated()), this, SLOT(importWaveFile()));
 
+	actionImportODBC = new QAction(QIcon(":/access.png"), tr("Microsoft &Access..."), this);
+	connect(actionImportODBC, SIGNAL(activated()), this, SLOT(importODBC()));
+
 	actionUndo = new QAction(QIcon(":/undo.png"), tr("&Undo"), this);
 	actionUndo->setShortcut( tr("Ctrl+Z") );
 	connect(actionUndo, SIGNAL(activated()), this, SLOT(undo()));
@@ -14678,6 +14694,7 @@ void ApplicationWindow::translateActionsStrings()
 	actionLoadImage->setMenuText(tr("Open Image &File..."));
 	actionLoadImage->setShortcut(tr("Ctrl+I"));
 
+	actionImportODBC->setMenuText(tr("Microsoft &Access..."));
 	actionImportSound->setMenuText(tr("&Sound (WAV)..."));
 	actionImportImage->setMenuText(tr("Import I&mage..."));
 
@@ -15533,7 +15550,6 @@ ApplicationWindow* ApplicationWindow::importOPJ(const QString& filename, bool fa
 		QApplication::restoreOverrideCursor();
 		return app;
 	} else if (filename.endsWith(".ogm", Qt::CaseInsensitive) || filename.endsWith(".ogw", Qt::CaseInsensitive)){
-		op->setApplicationWindow(this);
 		op->import(filename);
 		updateRecentProjectsList(filename);
 		return this;
@@ -19148,8 +19164,10 @@ ImportExportPlugin * ApplicationWindow::exportPlugin(const QString& suffix)
 ImportExportPlugin * ApplicationWindow::importPlugin(const QString& fileName)
 {
 	foreach (ImportExportPlugin *plugin, d_import_export_plugins){
-		if (plugin->importFormats().contains(QFileInfo(fileName).completeSuffix()))
-		    return plugin;
+		if (plugin->importFormats().contains(QFileInfo(fileName).completeSuffix())){
+			plugin->setApplicationWindow(this);
+			return plugin;
+		}
 	}
 
 	showProVersionMessage();

@@ -39,10 +39,10 @@ class ImportExportPlugin
 public:
 	virtual ~ImportExportPlugin() {}
 
-	virtual QStringList importFormats() const = 0;
+	virtual QStringList importFormats() const {return QStringList();};
 	virtual Table* import(const QString & /*fileName*/, int /*sheet*/ = -1){return 0;}
 
-	virtual QStringList exportFormats() const = 0;
+	virtual QStringList exportFormats() const {return QStringList();};
 	virtual bool exportTable(Table *, const QString& /*fname*/, bool /*withLabels*/, bool /*exportComments*/, bool /*exportSelection*/){return false;}
 	virtual bool exportMatrix(Matrix *, const QString& /*fname*/, bool /*exportSelection*/){return false;}
 	virtual bool exportGraph(Graph *, const QString& /*fname*/, const QSizeF& /*customSize*/, int /*unit*/, double /*fontsFactor*/ = 1){return false;}

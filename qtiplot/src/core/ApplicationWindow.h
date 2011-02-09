@@ -487,6 +487,7 @@ public slots:
 	void exportExcel();
 	void exportOds();
 
+	Table* importODBC();
 	Table* importWaveFile();
 	void importASCII(const QString& fileName = QString::null);
 	void importASCII(const QStringList& files, int import_mode, const QString& local_column_separator, int local_ignored_lines, bool local_rename_columns,
@@ -1459,7 +1460,7 @@ private:
     QAction *actionNewProject, *actionAppendProject, *actionNewNote, *actionNewTable, *actionNewFunctionPlot;
     QAction *actionNewSurfacePlot, *actionNewMatrix, *actionNewGraph, *actionNewFolder;
     QAction *actionOpen, *actionLoadImage, *actionSaveProject, *actionSaveProjectAs, *actionImportImage;
-	QAction *actionLoad, *actionUndo, *actionRedo, *actionImportSound;
+	QAction *actionLoad, *actionUndo, *actionRedo, *actionImportSound, *actionImportODBC;
 	QAction *actionOpenOds;
 	QAction *actionExportExcel, *actionExportOds, *actionOpenExcel;
     QAction *actionCopyWindow, *actionShowAllColumns, *actionHideSelectedColumns;
