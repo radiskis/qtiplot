@@ -4208,24 +4208,25 @@ Table * ApplicationWindow::importExcel(const QString& fileName, int sheet)
 	return 0;
 }
 
-#ifdef Q_OS_WIN
-Table * ApplicationWindow::importMicrosoftAccess(const QString& fileName, int sheet)
+Table * ApplicationWindow::importDatabase(const QString& fileName, int table)
 {
 	QString fn = fileName;
 	if (fn.isEmpty()){
-		QString filter = tr("Access Databases") + " (*.mdb *accdb)";
-		fn = getFileName(this, tr("Open Database"), QString::null, filter, 0, false);
+		QStringList filters = QStringList() << tr("SQLite 3") + " (*.db)";
+	#ifdef Q_OS_WIN
+		filters << tr("Microsoft Access") + " (*.mdb *accdb)";
+	#endif
+		fn = getFileName(this, tr("Open Database"), QString::null, filters.join(";"), 0, false);
 		if (fn.isEmpty())
 			return 0;
 	}
 
 	ImportExportPlugin *plugin = importPlugin(fn);
 	if (plugin)
-		return plugin->import(fn, sheet);
+		return plugin->import(fn, table);
 
 	return 0;
 }
-#endif
 
 Table * ApplicationWindow::importWaveFile()
 {
@@ -4616,8 +4617,8 @@ ApplicationWindow* ApplicationWindow::open(const QString& fn, bool factorySettin
 		}
 	}
 
-	if (fn.endsWith(".mdb", Qt::CaseInsensitive) || fn.endsWith(".accdb", Qt::CaseInsensitive)){
-		importMicrosoftAccess(fn);
+	if (fn.endsWith(".db", Qt::CaseInsensitive) || fn.endsWith(".mdb", Qt::CaseInsensitive) || fn.endsWith(".accdb", Qt::CaseInsensitive)){
+		importDatabase(fn);
 		return this;
 	}
 #endif
@@ -6616,6 +6617,9 @@ QString ApplicationWindow::getFileName(QWidget *parent, const QString & caption,
 									   QString * selectedFilter, bool save, bool confirmOverwrite)
 {
 	QFileDialog fd(parent, caption, dir, filter);
+	if (filter.contains(";"))
+		fd.setNameFilters(filter.split(";"));
+
 	if (save)
 		fd.setAcceptMode(QFileDialog::AcceptSave);
 	else
@@ -10024,9 +10028,7 @@ void ApplicationWindow::fileMenuAboutToShow()
 	importMenu->addAction(actionLoad);
 	importMenu->addAction(actionImportSound);
 	importMenu->addAction(actionImportImage);
-#ifdef Q_OS_WIN
-	importMenu->addAction(actionImportMicrosoftAccess);
-#endif
+	importMenu->addAction(actionImportDatabase);
 
 	fileMenu->insertSeparator();
 	fileMenu->addAction(actionCloseAllWindows);
@@ -13714,10 +13716,8 @@ void ApplicationWindow::createActions()
 	actionImportSound = new QAction(tr("&Sound (WAV)..."), this);
 	connect(actionImportSound, SIGNAL(activated()), this, SLOT(importWaveFile()));
 
-#ifdef Q_OS_WIN
-	actionImportMicrosoftAccess = new QAction(QIcon(":/access.png"), tr("Microsoft &Access..."), this);
-	connect(actionImportMicrosoftAccess, SIGNAL(activated()), this, SLOT(importMicrosoftAccess()));
-#endif
+	actionImportDatabase = new QAction(tr("&Database..."), this);
+	connect(actionImportDatabase, SIGNAL(activated()), this, SLOT(importDatabase()));
 
 	actionUndo = new QAction(QIcon(":/undo.png"), tr("&Undo"), this);
 	actionUndo->setShortcut( tr("Ctrl+Z") );
@@ -14708,10 +14708,7 @@ void ApplicationWindow::translateActionsStrings()
 	actionLoadImage->setMenuText(tr("Open Image &File..."));
 	actionLoadImage->setShortcut(tr("Ctrl+I"));
 
-#ifdef Q_OS_WIN
-	actionImportMicrosoftAccess->setMenuText(tr("Microsoft &Access..."));
-#endif
-
+	actionImportDatabase->setMenuText(tr("&Database..."));
 	actionImportSound->setMenuText(tr("&Sound (WAV)..."));
 	actionImportImage->setMenuText(tr("Import I&mage..."));
 
