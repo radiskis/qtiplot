@@ -60,11 +60,14 @@ TableDialog::TableDialog(Table *t, QWidget* parent, Qt::WFlags fl )
 
 	buttonPrev = new QPushButton("&<<");
 	buttonPrev->setAutoDefault(false);
-	buttonPrev->setMaximumWidth(40);
 
 	buttonNext = new QPushButton("&>>");
 	buttonNext->setAutoDefault(false);
+
+#ifndef Q_OS_MAC
+	buttonPrev->setMaximumWidth(40);
 	buttonNext->setMaximumWidth(40);
+#endif
 
 	QHBoxLayout *hboxb = new QHBoxLayout();
     hboxb->addWidget(buttonPrev);
