@@ -4616,18 +4616,15 @@ ApplicationWindow* ApplicationWindow::open(const QString& fn, bool factorySettin
 			return this;
 		}
 	}
+#endif
 
 	if (fn.endsWith(".db", Qt::CaseInsensitive) || fn.endsWith(".mdb", Qt::CaseInsensitive) || fn.endsWith(".accdb", Qt::CaseInsensitive)){
 		importDatabase(fn);
 		return this;
-	}
-#endif
-	if (fn.endsWith(".xls", Qt::CaseInsensitive)){
+	} else if (fn.endsWith(".xls", Qt::CaseInsensitive)){
 		importExcel(fn);
 		return this;
-	}
-
-	if (fn.endsWith(".py", Qt::CaseInsensitive))
+	} else if (fn.endsWith(".py", Qt::CaseInsensitive))
 		return loadScript(fn);
 	else if (fn.endsWith(".ods", Qt::CaseInsensitive)){
 		importOdfSpreadsheet(fn);
