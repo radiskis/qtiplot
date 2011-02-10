@@ -482,12 +482,12 @@ public slots:
 	Table* importExcel(const QString& = QString::null, int sheet = -1);
 #ifdef Q_OS_WIN
 	static bool isExcelInstalled();
-	Table* importMicrosoftAccess(const QString& = QString::null, int sheet = -1);
 #endif
 
 	void exportExcel();
 	void exportOds();
 
+	Table* importDatabase(const QString& = QString::null, int sheet = -1);
 	Table* importWaveFile();
 	void importASCII(const QString& fileName = QString::null);
 	void importASCII(const QStringList& files, int import_mode, const QString& local_column_separator, int local_ignored_lines, bool local_rename_columns,
@@ -1461,10 +1461,7 @@ private:
     QAction *actionNewSurfacePlot, *actionNewMatrix, *actionNewGraph, *actionNewFolder;
     QAction *actionOpen, *actionLoadImage, *actionSaveProject, *actionSaveProjectAs, *actionImportImage;
 	QAction *actionLoad, *actionUndo, *actionRedo, *actionImportSound;
-#ifdef Q_OS_WIN
-	QAction *actionImportMicrosoftAccess;
-#endif
-	QAction *actionOpenOds;
+	QAction *actionImportDatabase, *actionOpenOds;
 	QAction *actionExportExcel, *actionExportOds, *actionOpenExcel;
     QAction *actionCopyWindow, *actionShowAllColumns, *actionHideSelectedColumns;
     QAction *actionCutSelection, *actionCopySelection, *actionPasteSelection, *actionClearSelection;

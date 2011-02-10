@@ -137,9 +137,7 @@ int main( int argc, char ** argv )
 	Q_IMPORT_PLUGIN(QtiPlotExcelPlugin);
 	Q_IMPORT_PLUGIN(QtiPlotEmfExportPlugin);
 	Q_IMPORT_PLUGIN(QtiPlotOriginPlugin);
-	#ifdef Q_OS_WIN
-	Q_IMPORT_PLUGIN(QtiPlotMicrosoftAccessPlugin);
-	#endif
+	Q_IMPORT_PLUGIN(QtiPlotDatabasePlugin);
 #endif
 
 	QtiPlotApplication app( argc, argv );
