@@ -4212,10 +4212,14 @@ Table * ApplicationWindow::importDatabase(const QString& fileName, int table)
 {
 	QString fn = fileName;
 	if (fn.isEmpty()){
-		QStringList filters = QStringList() << tr("SQLite 3") + " (*.db)";
+		QStringList filters;
 	#ifdef Q_OS_WIN
 		filters << tr("Microsoft Access") + " (*.mdb *accdb)";
+	#else
+		filters << tr("Microsoft Access") + " (*.mdb)";
 	#endif
+		filters << tr("SQLite 3") + " (*.db)";
+
 		fn = getFileName(this, tr("Open Database"), QString::null, filters.join(";"), 0, false);
 		if (fn.isEmpty())
 			return 0;
