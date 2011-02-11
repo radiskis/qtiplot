@@ -264,7 +264,7 @@ public slots:
 	int columnWidth(int col);
 	QStringList columnWidths();
 	void setColWidths(const QStringList& widths);
-	void adjustColumnsWidth();
+	void adjustColumnsWidth(bool selection = true);
 
 	void setSelectedCol(int col){selectedCol = col;};
 	int selectedColumn(){return selectedCol;};

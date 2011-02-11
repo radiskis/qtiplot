@@ -953,11 +953,17 @@ void Table::setColumnWidth(int width, bool allCols)
 	}
 }
 
-void Table::adjustColumnsWidth()
+void Table::adjustColumnsWidth(bool selection)
 {
 	int cols = d_table->numCols();
-	for (int i = 0; i < cols; i++){
-		if(d_table->isColumnSelected (i, true))
+
+	if (selection){
+		for (int i = 0; i < cols; i++){
+			if(d_table->isColumnSelected (i, true))
+				d_table->adjustColumn(i);
+		}
+	} else {
+		for (int i = 0; i < cols; i++)
 			d_table->adjustColumn(i);
 	}
 
