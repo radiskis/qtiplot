@@ -37,9 +37,9 @@ class QStringList;
 class ImportExportPlugin
 {
 public:
-	virtual ~ImportExportPlugin() {}
+	virtual ~ImportExportPlugin(){}
 
-	virtual QStringList importFormats() const {return QStringList();};
+	virtual QStringList importFormats(){return QStringList();};
 	virtual Table* import(const QString & /*fileName*/, int /*sheet*/ = -1){return 0;}
 
 	virtual QStringList exportFormats() const {return QStringList();};
