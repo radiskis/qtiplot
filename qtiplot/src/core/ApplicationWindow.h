@@ -481,7 +481,7 @@ public slots:
 
 	Table* importExcel(const QString& = QString::null, int sheet = -1);
 #ifdef Q_OS_WIN
-	static bool isExcelInstalled();
+	bool isExcelInstalled(){return d_has_excel;};
 #endif
 
 	void exportExcel();
@@ -1407,6 +1407,9 @@ public:
 	//@}
 
 private:
+#ifdef Q_OS_WIN
+	void detectExcel();
+#endif
 	void loadPlugins();
 	QList<ImportExportPlugin *> d_import_export_plugins;
 
@@ -1559,6 +1562,9 @@ private:
 	QList<int> d_symbols_list;
 #ifdef HAVE_TAMUANOVA
 	QAction *actionOneWayANOVA, *actionTwoWayANOVA;
+#endif
+#ifdef Q_OS_WIN
+	bool d_has_excel;
 #endif
 };
 #endif

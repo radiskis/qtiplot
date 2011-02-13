@@ -393,6 +393,9 @@ void ApplicationWindow::init(bool factorySettings)
 
     loadCustomActions();
     initCompleter();
+#ifdef Q_OS_WIN
+	detectExcel();
+#endif
 	loadPlugins();
 
 #ifdef SCRIPTING_PYTHON
@@ -517,6 +520,7 @@ void ApplicationWindow::setDefaultOptions()
 	workingDir = aux;
 
 #ifdef Q_WS_WIN
+	d_has_excel = false;
 	d_java_path = QDir::toNativeSeparators("C:/Program Files/Java/jre6/bin/java.exe");
 	d_soffice_path = QDir::toNativeSeparators("C:/Program Files/OpenOffice.org 3/program/soffice.exe");
 #endif
@@ -4175,15 +4179,15 @@ void ApplicationWindow::exportOds()
 }
 
 #ifdef Q_OS_WIN
-bool ApplicationWindow::isExcelInstalled()
+void ApplicationWindow::detectExcel()
 {
 	QAxObject *excel = new QAxObject();
 	if (!excel->setControl("Excel.Application"))
-		return false;
+		return;
 
 	excel->dynamicCall("Quit()");
 	delete excel;
-	return true;
+	d_has_excel = true;
 }
 #endif
 
@@ -4193,7 +4197,7 @@ Table * ApplicationWindow::importExcel(const QString& fileName, int sheet)
 	if (fn.isEmpty()){
 		QString filter = tr("Excel files") + " (*.xls)";
 #ifdef Q_OS_WIN
-		if (isExcelInstalled())
+		if (d_has_excel)
 			filter = tr("Excel files") + " (*.xl *.xlsx *.xlsm *.xlsb *.xlam *.xltx *.xltm *.xls *.xla *.xlt *.xlm *.xlw)";
 #endif
 		fn = getFileName(this, tr("Open Excel File"), QString::null, filter, 0, false);
@@ -19166,10 +19170,8 @@ void ApplicationWindow::showProVersionMessage()
 ImportExportPlugin * ApplicationWindow::exportPlugin(const QString& suffix)
 {
 	foreach (ImportExportPlugin *plugin, d_import_export_plugins){
-	    if (plugin->exportFormats().contains(suffix)){
-		plugin->setApplicationWindow(this);
-		return plugin;
-	    }
+		if (plugin->exportFormats().contains(suffix))
+			return plugin;
 	}
 
 	showProVersionMessage();
@@ -19179,10 +19181,8 @@ ImportExportPlugin * ApplicationWindow::exportPlugin(const QString& suffix)
 ImportExportPlugin * ApplicationWindow::importPlugin(const QString& fileName)
 {
 	foreach (ImportExportPlugin *plugin, d_import_export_plugins){
-		if (plugin->importFormats().contains(QFileInfo(fileName).completeSuffix())){
-			plugin->setApplicationWindow(this);
+		if (plugin->importFormats().contains(QFileInfo(fileName).completeSuffix()))
 			return plugin;
-		}
 	}
 
 	showProVersionMessage();
@@ -19193,8 +19193,10 @@ void ApplicationWindow::loadPlugins()
 {
 	foreach (QObject *plugin, QPluginLoader::staticInstances()){
 		ImportExportPlugin *p = qobject_cast<ImportExportPlugin *>(plugin);
-		if (p)
+		if (p){
+			p->setApplicationWindow(this);
 			d_import_export_plugins << p;
+		}
 	}
 
 	QDir pluginsDir = QDir(qApp->applicationDirPath());
@@ -19205,8 +19207,10 @@ void ApplicationWindow::loadPlugins()
 		QObject *plugin = loader.instance();
 		if (plugin){
 			ImportExportPlugin *p = qobject_cast<ImportExportPlugin *>(plugin);
-			if (p)
+			if (p){
+				p->setApplicationWindow(this);
 				d_import_export_plugins << p;
+			}
 		}
 	}
 }
