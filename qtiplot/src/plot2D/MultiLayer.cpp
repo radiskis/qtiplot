@@ -436,16 +436,12 @@ void MultiLayer::resizeLayers (QResizeEvent *re)
 			}
 		}
 
+		QwtPlotCanvas *canvas0 = g0->canvas();
+		g0->setGeometry(qRound(g0->x()*w_ratio), qRound(g0->y()*h_ratio),
+						qRound(g0->width()*w_ratio), qRound(g0->height()*h_ratio));
+
 		if (g0->autoscaleFonts())
 			g0->scaleFonts(h_ratio);
-
-		QwtPlotCanvas *canvas0 = g0->canvas();
-		QPoint pos = g0->pos() + canvas0->pos();
-		int x = qRound(pos.x()*w_ratio);
-		int y = qRound(pos.y()*h_ratio);
-		int w = qRound(canvas0->width()*w_ratio);
-		int h = qRound(canvas0->height()*h_ratio);
-		g0->setCanvasGeometry(QRect(x, y, w, h));
 		g0->updateLayout();
 
 		for(int i = 1; i < l; i++){
