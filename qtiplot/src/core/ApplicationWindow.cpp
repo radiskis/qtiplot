@@ -4218,6 +4218,7 @@ Table * ApplicationWindow::importDatabase(const QString& fileName, int table)
 	if (fn.isEmpty()){
 		QStringList filters;
 	#ifdef Q_OS_WIN
+		filters << tr("dBase") + " (*.dbf)";
 		filters << tr("Microsoft Access") + " (*.mdb *accdb)";
 	#else
 		filters << tr("Microsoft Access") + " (*.mdb)";
@@ -4626,7 +4627,8 @@ ApplicationWindow* ApplicationWindow::open(const QString& fn, bool factorySettin
 	}
 #endif
 
-	if (fn.endsWith(".db", Qt::CaseInsensitive) || fn.endsWith(".mdb", Qt::CaseInsensitive) || fn.endsWith(".accdb", Qt::CaseInsensitive)){
+	if (fn.endsWith(".db", Qt::CaseInsensitive) || fn.endsWith(".dbf", Qt::CaseInsensitive) ||
+		fn.endsWith(".mdb", Qt::CaseInsensitive) || fn.endsWith(".accdb", Qt::CaseInsensitive)){
 		importDatabase(fn);
 		return this;
 	} else if (fn.endsWith(".xls", Qt::CaseInsensitive)){
