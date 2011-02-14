@@ -867,11 +867,11 @@ Deseja sobrescrevê-lo?</translation>
     </message>
     <message>
         <source>QtiPlot - Error bars error</source>
-        <translation type="unfinished">QtiPlot - Erro nas barras de erro</translation>
+        <translation type="obsolete">QtiPlot - Erro nas barras de erro</translation>
     </message>
     <message>
         <source>This feature is not available for user defined function curves!</source>
-        <translation>Esta característica não está disponível para curvas de função definidas por usuários!</translation>
+        <translation type="obsolete">Esta característica não está disponível para curvas de função definidas por usuários!</translation>
     </message>
     <message>
         <source>QtiPlot - File Open Error</source>
@@ -1999,11 +1999,11 @@ Deseja sobrescrevê-lo?</translation>
     </message>
     <message>
         <source>The selected columns have different numbers of rows!</source>
-        <translation>As colunas selecionadas tem número de linhas diferentes!</translation>
+        <translation type="obsolete">As colunas selecionadas tem número de linhas diferentes!</translation>
     </message>
     <message>
         <source>The selected error column is empty!</source>
-        <translation type="unfinished">A columa de erro selecionada está vazia!</translation>
+        <translation type="obsolete">A columa de erro selecionada está vazia!</translation>
     </message>
     <message>
         <source>The file: &lt;b&gt; %1 &lt;/b&gt; was not created using QtiPlot!</source>
@@ -5958,6 +5958,26 @@ Autocompletion will not be available!</source>
         <source>This functionality is only available in QtiPlot Pro version, please subscribe for a maintenance contract!</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>dBase</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Microsoft Access</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>SQLite 3</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open Database</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Database...</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>AsciiTableImportFilter</name>
@@ -9305,6 +9325,18 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>Existing column</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>QtiPlot - Error</source>
+        <translation type="unfinished">QtiPlot - Erro</translation>
+    </message>
+    <message>
+        <source>This feature is not available for user defined function curves!</source>
+        <translation type="unfinished">Esta característica não está disponível para curvas de função definidas por usuários!</translation>
+    </message>
+    <message>
+        <source>The selected error column is empty!</source>
+        <translation type="unfinished">A columa de erro selecionada está vazia!</translation>
     </message>
 </context>
 <context>
