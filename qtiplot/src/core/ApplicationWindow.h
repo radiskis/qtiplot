@@ -244,6 +244,8 @@ public:
 	ImportExportPlugin* importPlugin(const QString& fileName);
 	//@}
 
+	bool isFileReadable(const QString&);
+
 public slots:
 	//! \name Projects and Project Files
 	//@{
@@ -1127,7 +1129,6 @@ private:
 	void goToParentFolder();
 	bool isProjectFile(const QString& fn);
 	void initSearchForUpdates();
-	bool isFileReadable(const QString&);
 
 private slots:
 	void addColumnNameToCompleter(const QString& colName, bool remove = false);
