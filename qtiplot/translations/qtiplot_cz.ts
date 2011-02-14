@@ -1838,7 +1838,7 @@ Varování. Tento krok přeuspořádá stávající vrstvy!</translation>
     </message>
     <message>
         <source>The selected error column is empty!</source>
-        <translation>Vybraný chybový sloupec je prázdný!</translation>
+        <translation type="obsolete">Vybraný chybový sloupec je prázdný!</translation>
     </message>
     <message>
         <source>Zoom Out</source>
@@ -2366,7 +2366,7 @@ První představuje funkci signálu a druhý funkci odpovědi!</translation>
     </message>
     <message>
         <source>This feature is not available for user defined function curves!</source>
-        <translation>Tato funkce není pro uživatelem stanovené křivky funkcí dostupná!</translation>
+        <translation type="obsolete">Tato funkce není pro uživatelem stanovené křivky funkcí dostupná!</translation>
     </message>
     <message>
         <source>Stem-and-&amp;Leaf Plot</source>
@@ -2568,7 +2568,7 @@ Různé části tohoto souboru se nemusí zobrazovat tak, jak se očekává.</tr
     </message>
     <message>
         <source>The selected columns have different numbers of rows!</source>
-        <translation>Vybrané sloupce mají různé počty řádků!</translation>
+        <translation type="obsolete">Vybrané sloupce mají různé počty řádků!</translation>
     </message>
     <message>
         <source>&amp;Third Order ...</source>
@@ -2792,7 +2792,7 @@ Různé části tohoto souboru se nemusí zobrazovat tak, jak se očekává.</tr
     </message>
     <message>
         <source>QtiPlot - Error bars error</source>
-        <translation>QtiPlot - Chyba chybových úseček</translation>
+        <translation type="obsolete">QtiPlot - Chyba chybových úseček</translation>
     </message>
     <message>
         <source>Save changes to project: &lt;p&gt;&lt;b&gt; %1 &lt;/b&gt; ?</source>
@@ -4093,6 +4093,26 @@ Různé části tohoto souboru se nemusí zobrazovat tak, jak se očekává.</tr
     </message>
     <message>
         <source>This functionality is only available in QtiPlot Pro version, please subscribe for a maintenance contract!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>dBase</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Microsoft Access</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>SQLite 3</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open Database</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Database...</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -6931,6 +6951,18 @@ K tomu lze použít následujících zvláštních kódů:
     <message>
         <source>Source of errors</source>
         <translation>Chybové údaje</translation>
+    </message>
+    <message>
+        <source>QtiPlot - Error</source>
+        <translation type="unfinished">QtiPlot - Chyba</translation>
+    </message>
+    <message>
+        <source>This feature is not available for user defined function curves!</source>
+        <translation type="unfinished">Tato funkce není pro uživatelem stanovené křivky funkcí dostupná!</translation>
+    </message>
+    <message>
+        <source>The selected error column is empty!</source>
+        <translation type="unfinished">Vybraný chybový sloupec je prázdný!</translation>
     </message>
 </context>
 <context>

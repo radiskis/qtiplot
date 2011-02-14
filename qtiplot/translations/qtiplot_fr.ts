@@ -270,11 +270,11 @@
     </message>
     <message>
         <source>QtiPlot - Error bars error</source>
-        <translation>QtiPlot - Erreur sur les barres d&apos;erreur du graphe</translation>
+        <translation type="obsolete">QtiPlot - Erreur sur les barres d&apos;erreur du graphe</translation>
     </message>
     <message>
         <source>This feature is not available for user defined function curves!</source>
-        <translation>Cette fonctionnalité n&apos;est pas disponible pour les fonctions définies par l&apos;utilisateur !</translation>
+        <translation type="obsolete">Cette fonctionnalité n&apos;est pas disponible pour les fonctions définies par l&apos;utilisateur !</translation>
     </message>
     <message>
         <source>QtiPlot - File Open Error</source>
@@ -1352,11 +1352,11 @@
     </message>
     <message>
         <source>The selected columns have different numbers of rows!</source>
-        <translation>Les colonnes sélectionnées ont un nombre de rangées différentes !</translation>
+        <translation type="obsolete">Les colonnes sélectionnées ont un nombre de rangées différentes !</translation>
     </message>
     <message>
         <source>The selected error column is empty!</source>
-        <translation>La colonne d&apos;erreur sélectionnée est vide !</translation>
+        <translation type="obsolete">La colonne d&apos;erreur sélectionnée est vide !</translation>
     </message>
     <message>
         <source>The file: &lt;b&gt; %1 &lt;/b&gt; was not created using QtiPlot!</source>
@@ -4116,6 +4116,26 @@ L&apos;autocomplétion ne sera pas disponible !</translation>
     <message>
         <source>This functionality is only available in QtiPlot Pro version, please subscribe for a maintenance contract!</source>
         <translation>Cette fonctionnalité n&apos;est disponible que pour la version QtiPlot Pro. Veuillez souscrire un contrat de maintenance pour en bénéficier !</translation>
+    </message>
+    <message>
+        <source>dBase</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Microsoft Access</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>SQLite 3</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open Database</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Database...</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -6941,6 +6961,18 @@ Les codes spéciaux suivants peuvent être utilisés :
     <message>
         <source>Existing column</source>
         <translation>Colonne existante</translation>
+    </message>
+    <message>
+        <source>QtiPlot - Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This feature is not available for user defined function curves!</source>
+        <translation type="unfinished">Cette fonctionnalité n&apos;est pas disponible pour les fonctions définies par l&apos;utilisateur !</translation>
+    </message>
+    <message>
+        <source>The selected error column is empty!</source>
+        <translation type="unfinished">La colonne d&apos;erreur sélectionnée est vide !</translation>
     </message>
 </context>
 <context>

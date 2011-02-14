@@ -3919,14 +3919,6 @@ Autocompletion will not be available!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>QtiPlot - Error bars error</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>This feature is not available for user defined function curves!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>There are no curves available on this plot!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4184,14 +4176,6 @@ Autocompletion will not be available!</source>
     </message>
     <message>
         <source>This functionality is not available for pie plots!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>The selected columns have different numbers of rows!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>The selected error column is empty!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4560,6 +4544,26 @@ Autocompletion will not be available!</source>
     </message>
     <message>
         <source>This functionality is only available in QtiPlot Pro version, please subscribe for a maintenance contract!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>dBase</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Microsoft Access</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>SQLite 3</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open Database</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Database...</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -7343,6 +7347,18 @@ The following special codes can be used:
     </message>
     <message>
         <source>Existing column</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>QtiPlot - Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This feature is not available for user defined function curves!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The selected error column is empty!</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

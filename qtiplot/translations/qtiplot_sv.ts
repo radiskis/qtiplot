@@ -4256,19 +4256,19 @@ den första representerar signalen och den andra svarsfunktionen!</translation>
     </message>
     <message>
         <source>QtiPlot - Error bars error</source>
-        <translation>QtiPlot - Felstavsfel</translation>
+        <translation type="obsolete">QtiPlot - Felstavsfel</translation>
     </message>
     <message>
         <source>This feature is not available for user defined function curves!</source>
-        <translation>Denna egenskap är inte tillgänglig för användardefinierade funktionskurvor!</translation>
+        <translation type="obsolete">Denna egenskap är inte tillgänglig för användardefinierade funktionskurvor!</translation>
     </message>
     <message>
         <source>The selected columns have different numbers of rows!</source>
-        <translation>De valda kolumnerna har olika antal rader!</translation>
+        <translation type="obsolete">De valda kolumnerna har olika antal rader!</translation>
     </message>
     <message>
         <source>The selected error column is empty!</source>
-        <translation>Den valda felkolumnen är tom!</translation>
+        <translation type="obsolete">Den valda felkolumnen är tom!</translation>
     </message>
     <message>
         <source>All files</source>
@@ -8674,6 +8674,26 @@ Automatisk komplettering ej tillgängligt!</translation>
         <source>This functionality is only available in QtiPlot Pro version, please subscribe for a maintenance contract!</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>dBase</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Microsoft Access</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>SQLite 3</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open Database</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Database...</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ArrowMarker</name>
@@ -11737,6 +11757,18 @@ Följande specialkoder kan användas:
     <message>
         <source>Existing column</source>
         <translation>Befintlig kolumn</translation>
+    </message>
+    <message>
+        <source>QtiPlot - Error</source>
+        <translation type="unfinished">QtiPlot - Fel</translation>
+    </message>
+    <message>
+        <source>This feature is not available for user defined function curves!</source>
+        <translation type="unfinished">Denna egenskap är inte tillgänglig för användardefinierade funktionskurvor!</translation>
+    </message>
+    <message>
+        <source>The selected error column is empty!</source>
+        <translation type="unfinished">Den valda felkolumnen är tom!</translation>
     </message>
 </context>
 <context>

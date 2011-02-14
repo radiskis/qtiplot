@@ -4217,8 +4217,8 @@ Table * ApplicationWindow::importDatabase(const QString& fileName, int table)
 	QString fn = fileName;
 	if (fn.isEmpty()){
 		QStringList filters;
-	#ifdef Q_OS_WIN
 		filters << tr("dBase") + " (*.dbf)";
+	#ifdef Q_OS_WIN
 		filters << tr("Microsoft Access") + " (*.mdb *accdb)";
 	#else
 		filters << tr("Microsoft Access") + " (*.mdb)";

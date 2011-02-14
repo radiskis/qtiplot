@@ -5262,11 +5262,11 @@ Die erste repräsentiert die Signal- und die zweite die Antwortfunktion!</transl
     </message>
     <message>
         <source>QtiPlot - Error bars error</source>
-        <translation>QtiPlot - Fehlerbalken-Fehler</translation>
+        <translation type="obsolete">QtiPlot - Fehlerbalken-Fehler</translation>
     </message>
     <message>
         <source>This feature is not available for user defined function curves!</source>
-        <translation>Diese Funktion steht für benutzerdefinierte Funktionskurven nicht zur Verfügung!</translation>
+        <translation type="obsolete">Diese Funktion steht für benutzerdefinierte Funktionskurven nicht zur Verfügung!</translation>
     </message>
     <message>
         <source>QtiPlot - File Open Error</source>
@@ -6615,11 +6615,11 @@ Operation aborted!</source>
     </message>
     <message>
         <source>The selected columns have different numbers of rows!</source>
-        <translation>Die ausgewählten Spalen haben eine unterschiedliche Anzahl Zeilen!</translation>
+        <translation type="obsolete">Die ausgewählten Spalen haben eine unterschiedliche Anzahl Zeilen!</translation>
     </message>
     <message>
         <source>The selected error column is empty!</source>
-        <translation>Die ausgewählte Fehlerspalte ist leer!</translation>
+        <translation type="obsolete">Die ausgewählte Fehlerspalte ist leer!</translation>
     </message>
     <message>
         <source>QtiPlot - File opening error</source>
@@ -10099,6 +10099,26 @@ Autocompletion will not be available!</source>
         <source>This functionality is only available in QtiPlot Pro version, please subscribe for a maintenance contract!</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>dBase</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Microsoft Access</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>SQLite 3</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open Database</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Database...</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ArrowMarker</name>
@@ -13314,6 +13334,18 @@ Die folgenden Spezialcodes können benutzt werden:
     <message>
         <source>Existing column</source>
         <translation>Existierende Spalte</translation>
+    </message>
+    <message>
+        <source>QtiPlot - Error</source>
+        <translation type="unfinished">QtiPlot - Fehler</translation>
+    </message>
+    <message>
+        <source>This feature is not available for user defined function curves!</source>
+        <translation type="unfinished">Diese Funktion steht für benutzerdefinierte Funktionskurven nicht zur Verfügung!</translation>
+    </message>
+    <message>
+        <source>The selected error column is empty!</source>
+        <translation type="unfinished">Die ausgewählte Fehlerspalte ist leer!</translation>
     </message>
 </context>
 <context>

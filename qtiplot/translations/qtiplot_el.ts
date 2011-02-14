@@ -658,19 +658,19 @@
     </message>
     <message>
         <source>QtiPlot - Error bars error</source>
-        <translation>QtiPlot - Σφάλμα ράβδων σφάλματος</translation>
+        <translation type="obsolete">QtiPlot - Σφάλμα ράβδων σφάλματος</translation>
     </message>
     <message>
         <source>This feature is not available for user defined function curves!</source>
-        <translation>Αυτό το χαρακτηριστικό δεν είναι διαθέσιμο για καμπύλες ορισμένες από το χρήστη!</translation>
+        <translation type="obsolete">Αυτό το χαρακτηριστικό δεν είναι διαθέσιμο για καμπύλες ορισμένες από το χρήστη!</translation>
     </message>
     <message>
         <source>The selected columns have different numbers of rows!</source>
-        <translation>Οι επιλεγμένεςστήλες έχουν διαφορετικούς αριθμούς γραμμών!</translation>
+        <translation type="obsolete">Οι επιλεγμένεςστήλες έχουν διαφορετικούς αριθμούς γραμμών!</translation>
     </message>
     <message>
         <source>The selected error column is empty!</source>
-        <translation>Η επιλεγμένη στήλη σφάλματος είναι κενή!</translation>
+        <translation type="obsolete">Η επιλεγμένη στήλη σφάλματος είναι κενή!</translation>
     </message>
     <message>
         <source>Open ODF Spreadsheet File</source>
@@ -4048,6 +4048,26 @@ Autocompletion will not be available!</source>
         <source>This functionality is only available in QtiPlot Pro version, please subscribe for a maintenance contract!</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>dBase</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Microsoft Access</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>SQLite 3</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open Database</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Database...</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>AssociationsDialog</name>
@@ -6834,6 +6854,18 @@ The following special codes can be used:
     <message>
         <source>Existing column</source>
         <translation>Υπάρχουσα στήλη</translation>
+    </message>
+    <message>
+        <source>QtiPlot - Error</source>
+        <translation type="unfinished">QtiPlot - Σφάλμα</translation>
+    </message>
+    <message>
+        <source>This feature is not available for user defined function curves!</source>
+        <translation type="unfinished">Αυτό το χαρακτηριστικό δεν είναι διαθέσιμο για καμπύλες ορισμένες από το χρήστη!</translation>
+    </message>
+    <message>
+        <source>The selected error column is empty!</source>
+        <translation type="unfinished">Η επιλεγμένη στήλη σφάλματος είναι κενή!</translation>
     </message>
 </context>
 <context>

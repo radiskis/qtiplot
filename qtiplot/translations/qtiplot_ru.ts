@@ -1863,7 +1863,7 @@
     </message>
     <message>
         <source>QtiPlot - Error bars error</source>
-        <translation>QtiPlot - Ошибка круговой диаграммы</translation>
+        <translation type="obsolete">QtiPlot - Ошибка круговой диаграммы</translation>
     </message>
     <message>
         <source>QtiPlot - Export Error</source>
@@ -2440,11 +2440,11 @@ Various parts of this file may not be displayed as expected.</source>
     </message>
     <message>
         <source>The selected columns have different numbers of rows!</source>
-        <translation>В выбранных столбцах разное число строк!</translation>
+        <translation type="obsolete">В выбранных столбцах разное число строк!</translation>
     </message>
     <message>
         <source>The selected error column is empty!</source>
-        <translation>Выбранный столбец ошибок пуст!</translation>
+        <translation type="obsolete">Выбранный столбец ошибок пуст!</translation>
     </message>
     <message>
         <source>The table &apos;%1&apos; already exists. It has been renamed &apos;%2&apos;.</source>
@@ -2484,7 +2484,7 @@ Various parts of this file may not be displayed as expected.</source>
     </message>
     <message>
         <source>This feature is not available for user defined function curves!</source>
-        <translation>Эта функция недоступна для кривых, определённых пользователем!</translation>
+        <translation type="obsolete">Эта функция недоступна для кривых, определённых пользователем!</translation>
     </message>
     <message>
         <source>This file is provided with the QtiPlot manual which can be downloaded from the following internet address:</source>
@@ -4111,6 +4111,26 @@ Autocompletion will not be available!</source>
     </message>
     <message>
         <source>This functionality is only available in QtiPlot Pro version, please subscribe for a maintenance contract!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>dBase</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Microsoft Access</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>SQLite 3</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open Database</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Database...</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -6929,6 +6949,18 @@ The following special codes can be used:
     <message>
         <source>Existing column</source>
         <translation>Существующий столбец</translation>
+    </message>
+    <message>
+        <source>QtiPlot - Error</source>
+        <translation type="unfinished">QtiPlot - Ошибка</translation>
+    </message>
+    <message>
+        <source>This feature is not available for user defined function curves!</source>
+        <translation type="unfinished">Эта функция недоступна для кривых, определённых пользователем!</translation>
+    </message>
+    <message>
+        <source>The selected error column is empty!</source>
+        <translation type="unfinished">Выбранный столбец ошибок пуст!</translation>
     </message>
 </context>
 <context>

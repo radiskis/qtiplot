@@ -4017,19 +4017,19 @@ Are you sure you want to continue?</source>
     </message>
     <message>
         <source>QtiPlot - Error bars error</source>
-        <translation>QtiPlot - Eroare</translation>
+        <translation type="obsolete">QtiPlot - Eroare</translation>
     </message>
     <message>
         <source>This feature is not available for user defined function curves!</source>
-        <translation>Această operaţie nu este disponibilă pentru funcţii!</translation>
+        <translation type="obsolete">Această operaţie nu este disponibilă pentru funcţii!</translation>
     </message>
     <message>
         <source>The selected columns have different numbers of rows!</source>
-        <translation>Coloanele selecţionate au un număr diferit de linii!</translation>
+        <translation type="obsolete">Coloanele selecţionate au un număr diferit de linii!</translation>
     </message>
     <message>
         <source>The selected error column is empty!</source>
-        <translation>Coloana de bare de eroare selecţionată este goală!</translation>
+        <translation type="obsolete">Coloana de bare de eroare selecţionată este goală!</translation>
     </message>
     <message>
         <source>QtiPlot - File openning error</source>
@@ -7589,11 +7589,31 @@ Autocompletion will not be available!</source>
     </message>
     <message>
         <source>QtiPlot Pro feature</source>
-        <translation type="unfinished"></translation>
+        <translation>Funcționalitate QtiPlot Pro</translation>
     </message>
     <message>
         <source>This functionality is only available in QtiPlot Pro version, please subscribe for a maintenance contract!</source>
-        <translation type="unfinished"></translation>
+        <translation>Această funcționalitate este disponibilă doar în versiunea QtiPlot Pro, vă rugăm să subscrieți un contract de mentenanță!</translation>
+    </message>
+    <message>
+        <source>dBase</source>
+        <translation>dBase</translation>
+    </message>
+    <message>
+        <source>Microsoft Access</source>
+        <translation>Microsoft Access</translation>
+    </message>
+    <message>
+        <source>SQLite 3</source>
+        <translation>SQLite 3</translation>
+    </message>
+    <message>
+        <source>Open Database</source>
+        <translation>Deschide baza de date</translation>
+    </message>
+    <message>
+        <source>&amp;Database...</source>
+        <translation>Bază de &amp;date...</translation>
     </message>
 </context>
 <context>
@@ -9489,7 +9509,7 @@ The following special codes can be used:
     </message>
     <message>
         <source>Prompt on pasting &amp;values to tables</source>
-        <translation type="unfinished"></translation>
+        <translation>Confirmă lipirea de &amp;valori ce conţin text în tabele</translation>
     </message>
 </context>
 <context>
@@ -10476,6 +10496,18 @@ The following special codes can be used:
     <message>
         <source>Existing column</source>
         <translation>Coloană existentă</translation>
+    </message>
+    <message>
+        <source>QtiPlot - Error</source>
+        <translation>QtiPlot - Eroare</translation>
+    </message>
+    <message>
+        <source>This feature is not available for user defined function curves!</source>
+        <translation>Această operaţie nu este disponibilă pentru funcţii!</translation>
+    </message>
+    <message>
+        <source>The selected error column is empty!</source>
+        <translation>Coloana de bare de eroare selecţionată este goală!</translation>
     </message>
 </context>
 <context>
