@@ -5,7 +5,7 @@
     <name>AddWidgetTool</name>
     <message>
         <source>Click on plot to choose the position of the new object!</source>
-        <translation>Cliquez sur le graphe pour choisir la position du nouvel objet !</translation>
+        <translation>Cliquez sur le graphe pour positionner le nouvel objet !</translation>
     </message>
     <message>
         <source>enter your text here</source>
@@ -238,7 +238,7 @@
     </message>
     <message>
         <source>&lt;h4&gt;There are no tables available in this project.&lt;/h4&gt;&lt;p&gt;&lt;h4&gt;Please create a table and try again!&lt;/h4&gt;</source>
-        <translation>&lt;h4&gt;Il n&apos;y a pas de tables disponibles dans ce projet.&lt;/h4&gt;&lt;p&gt;&lt;h4&gt;Veuillez créer une table et réessayer !&lt;/h4&gt;</translation>
+        <translation>&lt;h4&gt;Il n&apos;y a pas de tables disponibles dans ce projet.&lt;/h4&gt;&lt;p&gt;&lt;h4&gt;Veuillez créer une table puis réessayer !&lt;/h4&gt;</translation>
     </message>
     <message>
         <source>QtiPlot - Choose data set</source>
@@ -266,7 +266,7 @@
     </message>
     <message>
         <source>&lt;h4&gt;There are no plot layers available in this window.&lt;/h4&gt;&lt;p&gt;&lt;h4&gt;Please add a layer and try again!&lt;/h4&gt;</source>
-        <translation>&lt;h4&gt;Il n&apos;y a pas de planche disponible dans cette fenêtre.&lt;/h4&gt;&lt;p&gt;&lt;h4&gt;Veuillez ajouter une planche et ré-essayer !&lt;/h4&gt;</translation>
+        <translation>&lt;h4&gt;Il n&apos;y a pas de planche disponible sur cette fenêtre.&lt;/h4&gt;&lt;p&gt;&lt;h4&gt;Veuillez ajouter une planche puis réessayer !&lt;/h4&gt;</translation>
     </message>
     <message>
         <source>QtiPlot - Error bars error</source>
@@ -282,7 +282,7 @@
     </message>
     <message>
         <source>&lt;h4&gt;There are no plot layers available in this window!&lt;/h4&gt;</source>
-        <translation>&lt;h4&gt;Il n&apos;y a pas de planche disponible dans cette fenêtre !&lt;/h4&gt;</translation>
+        <translation>&lt;h4&gt;Il n&apos;y a pas de planche disponible sur cette fenêtre !&lt;/h4&gt;</translation>
     </message>
     <message>
         <source>A file called: &lt;p&gt;&lt;b&gt;%1&lt;/b&gt;&lt;p&gt;already exists. Do you want to overwrite it?</source>
@@ -322,7 +322,7 @@
     </message>
     <message>
         <source>&lt;h4&gt;There are no plot layers available in this window.&lt;/h4&gt;</source>
-        <translation>&lt;h4&gt;Il n&apos;y a pas de planche disponible dans cette fenêtre.&lt;/h4&gt;</translation>
+        <translation>&lt;h4&gt;Il n&apos;y a pas de planche disponible sur cette fenêtre.&lt;/h4&gt;</translation>
     </message>
     <message>
         <source>Sorry, there are no results to display!</source>
@@ -4119,23 +4119,23 @@ L&apos;autocomplétion ne sera pas disponible !</translation>
     </message>
     <message>
         <source>dBase</source>
-        <translation type="unfinished"></translation>
+        <translation>dBase</translation>
     </message>
     <message>
         <source>Microsoft Access</source>
-        <translation type="unfinished"></translation>
+        <translation>Microsoft Access</translation>
     </message>
     <message>
         <source>SQLite 3</source>
-        <translation type="unfinished"></translation>
+        <translation>SQLite 3</translation>
     </message>
     <message>
         <source>Open Database</source>
-        <translation type="unfinished"></translation>
+        <translation>Ouvrir une base de donnée</translation>
     </message>
     <message>
         <source>&amp;Database...</source>
-        <translation type="unfinished"></translation>
+        <translation>Base de &amp;données...</translation>
     </message>
 </context>
 <context>
@@ -6964,15 +6964,15 @@ Les codes spéciaux suivants peuvent être utilisés :
     </message>
     <message>
         <source>QtiPlot - Error</source>
-        <translation type="unfinished"></translation>
+        <translation>QtiPlot - Erreur</translation>
     </message>
     <message>
         <source>This feature is not available for user defined function curves!</source>
-        <translation type="unfinished">Cette fonctionnalité n&apos;est pas disponible pour les fonctions définies par l&apos;utilisateur !</translation>
+        <translation>Cette fonctionnalité n&apos;est pas disponible pour les fonctions définies par l&apos;utilisateur !</translation>
     </message>
     <message>
         <source>The selected error column is empty!</source>
-        <translation type="unfinished">La colonne d&apos;erreur sélectionnée est vide !</translation>
+        <translation>La colonne d&apos;erreur sélectionnée est vide !</translation>
     </message>
 </context>
 <context>
