@@ -368,14 +368,15 @@ void CurvesDialog::addCurves()
 		QString text = item->text(0);
 		switch(item->type()){
 			case ColumnItem:
-				if (contents->findItems(text, Qt::MatchExactly).isEmpty()){
-					Table *t = app->table(text);
-					if (t && !addCurveFromTable(app, t, text))
-						emptyColumns << text;
-				}
+			{
+				Table *t = app->table(text);
+				if (t && !addCurveFromTable(app, t, text))
+					emptyColumns << text;
+			}
 			break;
 
-			case TableItem:{
+			case TableItem:
+			{
 				Table *t = app->table(text);
 				if (!t)
 					continue;
@@ -383,10 +384,8 @@ void CurvesDialog::addCurves()
 				QStringList lst = t->YColumns();
 				for(int i = 0; i < lst.size(); i++){
 					QString s = lst[i];
-					if (contents->findItems(s, Qt::MatchExactly ).isEmpty ()){
-						if (!addCurveFromTable(app, t, s))
-							emptyColumns << s;
-					}
+					if (!addCurveFromTable(app, t, s))
+						emptyColumns << s;
 				}
 			}
 			break;
