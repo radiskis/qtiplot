@@ -232,19 +232,3 @@ contains(CONFIG, BrowserPlugin){
 	RC_FILE	= qtiplot.rc
 	include(../3rdparty/QtSolutions/qtbrowserplugin/src/qtbrowserplugin.pri)
 }
-
-PLUGINS_PATH = src/plugins
-LIBS        += $$PLUGINS_PATH/libQtiPlotdBasePlugin.a
-LIBS        += $$PLUGINS_PATH/libQtiPlotDatabasePlugin.a
-LIBS        += $$PLUGINS_PATH/libQtiPlotCsvPlugin.a
-LIBS        += $$PLUGINS_PATH/libQtiPlotTexPlugin.a
-LIBS        += $$PLUGINS_PATH/libQtiPlotOdsPlugin.a
-LIBS        += $$PLUGINS_PATH/libQtiPlotExcelPlugin.a
-LIBS        += $$PLUGINS_PATH/libQtiPlotOriginPlugin.a
-LIBS        += $$PLUGINS_PATH/libQtiPlotEmfExportPlugin.a
-
-LIBS        += ../3rdparty/quazip/lib/libquazip.a
-LIBS        += /usr/local/lib/libEMF.a
-
-QT         += sql
-unix: LIBS        += /usr/local/lib/libmdb.a
