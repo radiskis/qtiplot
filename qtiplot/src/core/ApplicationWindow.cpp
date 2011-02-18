@@ -181,6 +181,7 @@ using namespace std;
 #include <QCompleter>
 #include <QStringListModel>
 #include <QNetworkProxy>
+#include <QHostInfo>
 #if QT_VERSION >= 0x040500
 #include <QTextDocumentWriter>
 #endif
@@ -15942,6 +15943,18 @@ void ApplicationWindow::showDonationDialog()
 	msg->setWindowTitle(tr("Please support QtiPlot!"));
 	msg->addButton(tr("Make a donation"), QMessageBox::AcceptRole);
 	msg->exec();
+
+	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+
+	QString qtiplotWeb = "www.qtiplot.ro";
+	QHostInfo hostInfo = QHostInfo::fromName(qtiplotWeb);
+	if (hostInfo.error() != QHostInfo::NoError){
+		QApplication::restoreOverrideCursor();
+		QMessageBox::critical(this, tr("QtiPlot - Error"), qtiplotWeb + ": " + hostInfo.errorString());
+		exit(0);
+	}
+
+	QApplication::restoreOverrideCursor();
 	showDonationsPage();
 }
 

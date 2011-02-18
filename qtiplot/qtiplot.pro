@@ -64,12 +64,12 @@ contains(CONFIG, CustomInstall){
 	}
 
 QT            += opengl qt3support network svg xml
-#CONFIG(static){
-#	QTPLUGIN += qjpeg qgif qtiff qmng
-#	DEFINES += STATIC
-#} else {
-#	win32:DEFINES += QT_DLL QT_THREAD_SUPPORT
-#}
+contains(CONFIG, StaticBuild){
+	QTPLUGIN += qjpeg qgif qtiff qmng qsvg
+	DEFINES += QTIPLOT_STATIC_BUILD
+} else {
+	win32:DEFINES += QT_DLL QT_THREAD_SUPPORT
+}
 
 MOC_DIR        = ../tmp/qtiplot
 OBJECTS_DIR    = ../tmp/qtiplot
@@ -218,9 +218,9 @@ contains(SCRIPTING_LANGS, Python) {
 
 ###############################################################
 
-# At the very end: add global include- and lib path
-#unix:INCLUDEPATH += $$SYS_INCLUDEPATH
-#unix:LIBS += $$SYS_LIBS
+#At the very end: add global include- and lib path
+unix:INCLUDEPATH += $$SYS_INCLUDEPATH
+unix:LIBS += $$SYS_LIBS
 
 ###############################################################
 ############### Building QtiPlot as a browser plugin ##########
@@ -232,3 +232,19 @@ contains(CONFIG, BrowserPlugin){
 	RC_FILE	= qtiplot.rc
 	include(../3rdparty/QtSolutions/qtbrowserplugin/src/qtbrowserplugin.pri)
 }
+
+PLUGINS_PATH = src/plugins
+LIBS        += $$PLUGINS_PATH/libQtiPlotdBasePlugin.a
+LIBS        += $$PLUGINS_PATH/libQtiPlotDatabasePlugin.a
+LIBS        += $$PLUGINS_PATH/libQtiPlotCsvPlugin.a
+LIBS        += $$PLUGINS_PATH/libQtiPlotTexPlugin.a
+LIBS        += $$PLUGINS_PATH/libQtiPlotOdsPlugin.a
+LIBS        += $$PLUGINS_PATH/libQtiPlotExcelPlugin.a
+LIBS        += $$PLUGINS_PATH/libQtiPlotOriginPlugin.a
+LIBS        += $$PLUGINS_PATH/libQtiPlotEmfExportPlugin.a
+
+LIBS        += ../3rdparty/quazip/lib/libquazip.a
+LIBS        += /usr/local/lib/libEMF.a
+
+QT         += sql
+unix: LIBS        += /usr/local/lib/libmdb.a
