@@ -123,7 +123,7 @@ If you want to contribute code, please read the notes on \ref style "coding styl
 
 int main( int argc, char ** argv )
 {
-#ifdef STATIC
+#ifdef QTIPLOT_STATIC_BUILD
 	Q_IMPORT_PLUGIN(qgif);
 	Q_IMPORT_PLUGIN(qjpeg);
 	Q_IMPORT_PLUGIN(qmng);
