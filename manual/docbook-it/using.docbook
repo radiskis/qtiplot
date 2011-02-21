@@ -1,0 +1,367 @@
+<!--
+		tutorial
+		========
+
+	This chapter gives a small overview of the features and a how-to for obtaining
+	the first simple plots.
+-->
+
+<title>Disegnare grafici con QtiPlot</title>
+<!--
+======================================================================================
+
+		2D plots
+		========
+-->
+<sect1 id="sec-2d-plots">
+<title>Tracciati 2D</title>
+
+<para>Un grafico bidimensionale si basa su curve definite da valori Y calcolati come funzione di valori X. Ci sono due modi per ottenere grafici 2D, secondo come sono definiti i valori (X,Y):</para>
+
+<itemizedlist>
+  <listitem>
+    <para>Quando i valori (X,Y) sono contenuti in una <link linkend="sec-intro-table">tabella</link> &egrave; necessario selezionare almeno un colonna impostata come valori X e una come valori Y. Le impostazioni della colonna si stabiliscono nella finestra di dialogo &column-options-lnk;. Dopo aver selezionato le colonne si produce il grafico con un comando del men&ugrave; &plot-menu-lnk;.</para>
+  </listitem>
+  <listitem>
+    <para>Quando si vuole produrre il grafico di una funzione non &egrave; necessaria una tabella. Si pu&ograve; tracciare direttamente la funzione con il comando &new-function-plot-lnk;. Questo comando apre la corrispondente finestra di dialogo per <link linkend="add-function-dialog">aggiungere una curva di funzione</link> dove si definisce l'espressione matematica della funzione.</para>
+  </listitem>
+  <listitem>
+    <para>Si possono combinare i due metodi: prima si crea una <link linkend="sec-intro-table">tabella</link> vuota e poi si compilano le sue colonne con valori calcolati tramite una funzione. Per compilare le colonne in questo modo, si usa il comando Tabella &rarr;   &set-column-values-lnk;. Dopo aver compilato le colonne, per tracciare e visualizzare il grafico dei dati, &egrave; sufficiente selezionarle e usare una delle voci del men&ugrave; &plot-menu-lnk;.</para>
+  </listitem>
+</itemizedlist>
+
+<para>In tutti questi casi, QtiPlot crea un nuovo grafico posizionato in una nuova tavola (layer). I grafici dei dati e quelli delle funzioni possono eventualmente essere aggiunti ad una tavola esistente con il comando &new-function-plot-lnk; oppure cliccando con il tasto destro sull'area della tavola in cui si desidera aggiungere la curva e selezionando dal men&ugrave; a tendina l'operazione <emphasis>Aggiungi... &rarr; Aggiungi funzione</emphasis>, oppure usando la stessa voce nel men&ugrave; <link linkend="sec-graph-menu">Grafico</link>.</para>
+
+<para>Dopo aver creato il grafico, &egrave; possibile modificare i suoi gli elementi con i comandi del men&ugrave; <link linkend="sec-format-menu">Formato</link>. Con i comandi del men&ugrave; <link linkend="sec-graph-menu">Grafico</link> &egrave; possibile aggiungere nuovi elementi (titoli e etichette, linee o frecce, nuove legende, immagini) al grafico stesso..</para>
+<!--
+======================================================================================
+
+		small tutorial to obtain a 2D plot
+-->
+<sect2 id="sec-2d-plot-from-data">
+<title>Grafici 2D da dati.</title>
+
+<para>I dati sono contenuti in una <link linkend="sec-intro-table">tabella</link>. Ci sono due modi per inserire i valori (X,Y) nella tabella: &egrave; possibile digitarli direttamente dalla tastiera, oppure leggerli in un file. Qui si considera solo la prima soluzione, il secondo metodo &egrave; descritto nella sezione &import-ascii-lnk; .</para>
+
+<para>Per questo esempio, si crea prima un nuovo progetto con il comando &new-project-lnk; dal &file-menu-lnk;. In alternativa si usa la combinazione dei tasti &new-project-key; o l'icona &new-project-icon; che si trova nella &file-toolbar-lnk;. Dopo il nuovo progetto si crea una nuova tabella con il comando &new-table-lnk; dal &file-menu-lnk; oppure con i tasti &new-table-key; o l'icona &new-table-icon; dalla &file-toolbar-lnk;.</para>
+
+<para>Ogni tabella appena creata ha due colonne (una per i valori X e l'altra per i valori Y) e 30 righe. Si pu&ograve; modificare il suo numero di righe e di colonne con i comandi &set-rows-lnk; o &set-columns-lnk; del men&ugrave; &table-menu-lnk;. oppure selezionando una riga o una colonna con il tasto destro del mouse. Modificando il numero di righe in 7 e inserendo i valori come illustrato (si pu&ograve; ovviamente inserire anche valori diversi) si ottiene una tabella analoga a questa:</para>
+
+<figure id="fig-simple-2dplot-1">
+  <title>Grafico 2D semplice: la tabella</title>
+  <mediaobject>
+    <imageobject>
+      <imagedata  format="PNG" fileref="tutorial/simple-2dplot-1.png"/>
+    </imageobject>
+  </mediaobject>
+</figure>
+
+<para>Successivamente, si selezionano i dati che si vuole rappresentare nel grafico. Per selezionare le 2 colonne di dati appena immessi, cliccare con il tasto sinistro sul titolo della prima colonna e trascinare il puntatore del mouse sopra il titolo della seconda colonna tenendo premuto il tasto sinistro del mouse. Adesso, con le colonne selezionate, &egrave; possibile costruire il grafico (che in questo caso &egrave; un semplice insieme bidimensionale di punti) con il comando &scatter-lnk; dal men&ugrave; <emphasis>Tracciato</emphasis>, o cliccando sull'icona &scatter-icon; nella &plot-toolbar-lnk;. Il tracciato viene visualizzato in una una nuova tavola di una nuova finestra grafico. Ogni nuovo elemento viene creato usando le impostazioni di default. Si possono personalizzare le opzioni di default tramite la finestra per l'impostazione delle <link linkend="preferences-dialog">Preferenze</link>. In questo esempio, utilizzando le opzioni di default, si ottiene il seguente risultato:</para>
+
+<figure id="fig-simple-2dplot-2">
+  <title>Grafico 2D semplice: grafico di default</title>
+  <mediaobject>
+    <imageobject>
+      <imagedata  format="PNG" fileref="tutorial/simple-2dplot-2.png"/>
+    </imageobject>
+  </mediaobject>
+</figure>
+
+<para>Ora &egrave; possibile personalizzare il tracciato e tutti gli elementi della tavola. Con un doppio clic in punto qualsiasi del grafico si apre il men&ugrave; di personalizzazione delle curve <link linkend="custom-curves-dialog">Propriet&agrave; del grafico</link> per modificare la forma e i simboli del tracciato.  Con doppio clic in un punto qualsiasi degli assi si apre la finestra di dialogo  <link linkend="plot-options-dialog">Opzioni generali del grafico</link> per modificare la scala, i caratteri dei nomi per gli assi ecc.. Si possono inoltre aggiungere le linee della griglia di suddivisione principale e secondaria, ecc.. Con un doppio clic su un qualsiasi carattere di testo si pu&ograve; modificare il testo e la sua formattazione. Dopo alcune modifiche il grafico precedente si presenta ora come nella figura seguente:</para>
+
+<figure id="fig-simple-2dplot-3">
+  <title>Grafico 2D semplice: il grafico finito.</title>
+  <mediaobject>
+    <imageobject>
+      <imagedata  format="PNG" fileref="tutorial/simple-2dplot-3.png"/>
+    </imageobject>
+  </mediaobject>
+</figure>
+
+<para>&Egrave; possibile salvare il progetto in un file .qti con il comando &save-project-lnk; nel men&ugrave; &file-menu-lnk; oppure con il comando da tastiera &save-project-key; o cliccando sull'icona &save-project-icon; nella &file-toolbar-lnk;. &Egrave; possibile esportare il grafico come immagine in diversi formati con il comando &export-graph-current-lnk; del men&ugrave; &file-menu-lnk;, o digitando il comando &export-graph-current-key;.
+</para>
+
+<para>Partendo da una tabella si possono tracciare diversi tipi di curve. I diversi tipi di curve sono descritte nel paragrafo &plot-menu-lnk;</para>
+
+<para>In un grafico &egrave; possibile usare fino a quattro assi: </para>
+
+<figure id="fig-two-axes-plot">
+  <title>Grafico 2D con due assi Y.</title>
+  <mediaobject>
+    <imageobject>
+      <imagedata  format="PNG" fileref="pics/plot-two-axes.png"/>
+    </imageobject>
+  </mediaobject>
+</figure>
+
+<para>Oltre alla formattazione personalizzata descritta prima, in questa figura, gli assi utilizzati per ciascuna curva sono stati definiti utilizzando la finestra di dialogo <link linkend="custom-curves-dialog">Personalizza le curve</link> e le due frecce sono state aggiunte con il comando &draw-arrow-lnk;. Attenzione: per ottenere la seconda curva nel grafico, si deve modicare la tabella aggiungendo una seconda colonna di dati Y  (per questa operazione si pu&ograve; usare il men&ugrave; <link linkend="sec-graph-menu">Grafico</link> e selezionare <emphasis>Aggiungi/Rimuovi curve</emphasis>).</para>
+
+<informalfigure id="fig-two-axes-dialog">
+  <mediaobject>
+    <imageobject>
+      <imagedata  format="PNG" fileref="pics/plot-two-axes-dialog.png"/>
+    </imageobject>
+  </mediaobject>
+</informalfigure>
+</sect2>
+
+<sect2 id="sec-2d-plot-from-function">
+<title>Grafici 2D da funzione.</title>
+
+<para>Ci sono due modi per ottenere questo tipo di grafico: &egrave; possibile tracciare direttamente il grafico della funzione, oppure compilare una tabella con i dati ottenuti dalla funzione e tracciare successivamente il grafico nel modo usuale.</para>
+
+<sect3>
+<title>Grafico di funzione in modo diretto.</title>
+
+<para>Quando si vuole solo tracciare direttamente il grafico della funzione si pu&ograve; utilizzare il comando &new-function-plot-lnk; dal men&ugrave; &file-menu-lnk; oppure cliccare sull'icona &new-function-plot-icon;  nella &file-toolbar-lnk; oppure digitare &new-function-plot-key;.</para>
+
+<para>Con il comando <link linkend="add-function-dialog">Aggiungi una curva di funzione</link> si apre una finestra di dialogo in cui si pu&ograve; inserire un'espressione o una funzione, stabilire l'intervallo di X da usare nel grafico e il numero di punti da creare nell'intervallo di X. Oltre alle impostazioni per grafici di funzioni classiche del tipo <emphasis>y=f(x)</emphasis> si possono anche definire funzioni parametriche o polari.</para>
+
+<figure id="fig-direct-function-plot">
+  <title>Grafico 2D di funzione.</title>
+  <mediaobject>
+    <imageobject>
+      <imagedata  format="PNG" fileref="pics/direct-function-plot.png"/>
+    </imageobject>
+  </mediaobject>
+</figure>
+
+</sect3>
+
+<sect3>
+<title>Compilare una tabella con i valori di una funzione.</title>
+
+<para>Quando non si vuole operare solo sul grafico , ma anche sui dati, occorre creare una tabella come descritto nella <link linkend="sec-2d-plot-from-data">sezione precedente</link> e successivamente compilare la tabella con i valori della funzione usando il comando &set-column-values-lnk;.</para>
+
+<para>Per ottenere lo stesso grafico dell'esempio precedente si pu&ograve; usare questo procedimento: creare una nuova tabella (con la combinazione di tasti &new-table-key;),  selezionare la prima colonna e usare il comando &set-column-values-lnk; dal men&ugrave; contestuale o dal men&ugrave; &table-menu-lnk;. Per compilare la tabella si possono usare i numeri di riga <emphasis>i</emphasis> come argomento. Per un intervallo da 0,01 a 30 con 300 suddivisioni, la prima colonna &egrave; creata con 300 righe e i valori da inserire per ogni riga sono determinati con l'espressione <emphasis>i/10</emphasis> (numero di riga diviso 10) producendo 299 intervalli con passo 0,1. Dato che la numerazione delle righe inizia da 1, per ottenere effettivamente la gamma X utilizzata nell'ultimo esempio (0-30 con 300 punti), si deve definire la funzione con l'espressione <emphasis>(i-1)*30/299</emphasis>.</para>
+
+<figure id="fig-table-function-plot-1">
+  <title>Grafico 2D di funzione: compilare la colonna X.</title>
+  <mediaobject>
+    <imageobject>
+      <imagedata  format="PNG" fileref="tutorial/table-function-plot1.png"/>
+    </imageobject>
+  </mediaobject>
+</figure>
+
+<para>Successivamente selezionare la seconda colonna (Y) e con &set-column-values-lnk; stabilire i valori Y. L'espressione &egrave; una funzione di X e perci&ograve; X si chiama <emphasis>col(1)</emphasis>. Inserire <emphasis>sin(col("1"))+cos(col("1")/3+1)</emphasis> e usare <emphasis>Applica</emphasis> per generare i valori della colonna Y.</para>
+
+<figure id="fig-table-function-plot-2">
+  <title>Grafico 2D di funzione: compilare la colonna Y</title>
+  <mediaobject>
+    <imageobject>
+      <imagedata  format="PNG" fileref="tutorial/table-function-plot2.png"/>
+    </imageobject>
+  </mediaobject>
+</figure>
+
+<para>Quando la tabella &egrave; pronta si pu&ograve; tracciare il grafico come descritto in precedenza.</para>
+
+</sect3>
+
+</sect2>
+
+</sect1>
+<!--
+======================================================================================
+
+		3D plots
+		========
+-->
+<sect1 id="sec-3d-plots">
+<title>Grafici 3D</title>
+
+<para>I grafici 3D sono generati da dati definiti con Z = f (X, Y). Come per i grafici 2D, ci sono due modi per ottenere un grafico 3D, secondo il modo in cui vengono definiti i valori X, Y e Z:</para>
+
+<itemizedlist>
+  <listitem>
+    <para>I valori di Z possono essere contenuti in una <link linkend="sec-intro-matrix">matrice</link>. &appname; considera tutti i dati presenti nella matrice come valori Z, e definisce i valori X e i valori Y come funzioni dei numeri di riga e di colonna.</para>
+    <para>Si possono inserire i dati nella matrice in diversi modi:</para>
+    <itemizedlist>
+      <listitem>
+        <para>uno per volta digitandoli da tastiera,</para>
+      </listitem>
+      <listitem>
+        <para>leggendo un file ASCII in una tabella e convertendo la tabella in matrice,</para>
+      </listitem>
+      <listitem>
+        <para>impostando i valori con una funzione.</para>
+      </listitem>
+    </itemizedlist>
+  </listitem>
+<listitem>
+<para>Quando si desidera tracciare il grafico di una funzione, non &egrave; necessaria una matrice. &Egrave; possibile tracciare direttamente il grafico di una funzione con il comando &new-surface-3d-plot-lnk;. Si apre la corrispondente <link linkend="define-surface-plot-dialog">finestra di dialogo</link> in cui definire l'espressione matematica della funzione da tracciare.</para>
+</listitem>
+</itemizedlist>
+
+<para>Si possono selezionare diversi tipi di grafici 3D. Vedere la sezione &plot3d-menu-lnk; del capitolo <link linkend="reference">Guida ai comandi</link> per un elenco dei tipi disponibili..</para>
+
+<figure id="fig-exemple-3dplot">
+  <title>Esempio di grafico 3D.</title>
+  <mediaobject>
+    <imageobject>
+      <imagedata  format="PNG" fileref="pics/exemple-plot3d.png"/>
+    </imageobject>
+  </mediaobject>
+</figure>
+
+<para>
+I grafici 3D usano OpenGL quindi si possono facilmente ruotare, scalare e spostare con il mouse. Utilizzando la finestra di dialogo per le impostazioni dei grafici 3D o la barra degli strumenti per i grafici di superficie 3D, &egrave; possibile modificare tutte le impostazioni predefinite per un grafico tridimensionale: griglie, scale, assi, titolo, legenda e colori per i diversi elementi.
+</para>
+
+<para>Con una matrice si possono costruire diversi tipi di grafici. I vari tipi sono descritti nella sezione &plot3d-menu-lnk;</para>
+
+<sect2 id="sec-3d-plot-function">
+<title>Tracciare direttamente il grafico 3D di una funzione</title>
+
+<para>Questo &egrave; il modo pi&ugrave; semplice per ottenere un grafico 3D. Si usa il comando &new-surface-3d-plot-lnk; del men&ugrave; &file-menu-lnk; oppure si digita &new-surface-3d-plot-key;. Questi comandi aprono la <link linkend="define-surface-plot-dialog">finestra di dialogo</link> per definire la funzione:</para>
+
+<figure id="fig-define-surface-plot">
+  <title>Definire un nuovo grafico di superficie 3D.</title>
+  <mediaobject>
+    <imageobject>
+      <imagedata  format="PNG" fileref="pics/define-surface-plot.png"/>
+    </imageobject>
+  </mediaobject>
+</figure>
+
+<para>&Egrave; possibile inserire la funzione <emphasis>z = f (x, y)</emphasis> e gli intervalli per X, Y e Z. QtiPlot crea un grafico 3D di default:</para>
+
+<figure id="fig-default-surface-plot">
+  <title>Grafico di superficie creato con le impostazioni predefinite.</title>
+  <mediaobject>
+    <imageobject>
+      <imagedata  format="PNG" fileref="pics/3D-function-plot-default.png"/>
+    </imageobject>
+  </mediaobject>
+</figure>
+
+<para>&Egrave; quindi possibile personalizzare il grafico, aprendo il dialogo con le <link linkend="surface-plot-options-dialog">opzioni per il grafico di superficie</link>. &Egrave; possibile modificare gli intervalli degli assi e i parametri, aggiungere un titolo, cambiare i colori dei diversi elementi, e modificare le proporzioni del grafico. Inoltre, &egrave; possibile utilizzare i comandi della &plot3d-toolbar-lnk; per aggiungere griglie sui piani perimetrali o per modificare lo stile del grafico. Il grafico seguente illustra alcune delle modifiche possibili:</para>
+
+<figure id="fig-modified-surface-plot">
+  <title>Grafico di superficie dopo le modifiche.</title>
+  <mediaobject>
+    <imageobject>
+      <imagedata  format="PNG" fileref="pics/3D-function-plot-modified.png"/>
+    </imageobject>
+  </mediaobject>
+</figure>
+
+<para>Quando si vuole modificare la funzione stessa, &egrave; possibile utilizzare il comando <emphasis>Opzioni per la superficie ...</emphasis> che &egrave; disponibile dopo aver aperto il menu contestuale con un clic del tasto destro sulla superficie 3D. Questo comando apre nuovamente la <link linkend="define-surface-plot-dialog">finestra di dialogo per definire la funzione</link>.</para>
+</sect2>
+
+<sect2 id="sec-3d-plot-matrix">
+<title>Tracciare un grafico 3D usando una matrice.</title>
+
+<para>Il secondo modo permette di ottenere un grafico 3D da una <link linkend="sec-intro-matrix">matrice</link>. In questo caso la prima operazione &egrave; compilare la matrice. Questo si pu&ograve; eseguire valutando una funzione.</para>
+<para>Con il comando &new-matrix-lnk; si crea una matrice default vuota con 32x32 celle. Il comando &set-dimensions-lnk; permette di modificare il numero di righe e di colonne della matrice. Questa <link linkend="set-dimensions-dialog">finestra di dialogo</link> si usa anche per definire gli intervalli di X e Y. </para>
+
+  <informalfigure>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/matrix-set-dimensions.png"/>
+      </imageobject>
+    </mediaobject>
+  </informalfigure>
+
+<para>Poi si usa il comando &set-values-lnk; per riempire le celle con i numeri. Gli intervalli per X e Y definiti nella fase precedente non sono conosciuti da questa finestra di dialogo, quindi la funzione deve essere definita utilizzando i numeri di riga e di colonna (i, j) come parametri (vedere la sezione <link linkend="set-values-dialog">Imposta i valori</link> per i dettagli).</para>
+
+<para>Un altro modo per ottenere una matrice &egrave; quello di importare un file ASCII in una tabella con il comando &import-ascii-lnk; dal menu &file-menu-lnk;. La tabella pu&ograve; poi essere trasformata in una matrice con il comando &convert-to-matrix-lnk; dal menu &table-menu-lnk;.</para>
+
+<para>Infine, utilizzare questa matrice per costruire un grafico 3D con uno dei comandi dal menu &plot-menu-lnk;.</para>
+
+</sect2>
+
+</sect1>
+<!--
+======================================================================================
+
+		Multilayer plots
+		================
+-->
+<sect1 id="sec-multilayer-plots">
+<title>Finestre con diverse tavole</title>
+
+<para>Le finestre di grafico possono contenere pi&ugrave; tavole, ognuna con caratteristiche diverse. Ogni tavola ha un proprio pulsante numerato. Quando una tavola &egrave; attiva il pulsante corrispondente &egrave; evidenziato. &Egrave; attiva una sola tavola alla volta e gli strumenti per il grafico (zoom, cursori, strumenti di disegno, cancellare e spostare i punti) funzionano solo su questa tavola. Ogni tavola si attiva cliccando su di essa o sul pulsante corrispondente.</para>
+<para>Per posizionare le tavole nella finestra si usa il comando <link linkend="arrange-layers-dialog">&arrange-layers-cmd;</link>. Per aggiungere o rimuovere delle tavole si usano i comandi &add-layer-lnk; e &remove-layer-lnk; oppure si usa copia / incolla per copiare una tavola di una finestra in una finestra diversa. Tutte queste funzioni sono disponibili nel menu &graph-menu-lnk;, nella &plot-toolbar-lnk; e nel menu contestuale (clic con il tasto destro nella finestra di grafico, nell'area non occupata dalle tavole).</para>
+<para>Per ridimensionare e spostare una tavola si usa la finestra di dialogo <emphasis>Dimensioni</emphasis> (Selezionare la scheda Dimensioni nelle <link linkend="format-plot-cmd">&format-plot-cmd;</link> dal menu <link linkend="sec-format-menu">Formato</link>). Si pu&ograve; anche organizzare (disporre) e ridimensionare le tavole a mano usando il mouse. Prima si seleziona la tavola da modificare o spostare, poi si seleziona la cornice della sua tela cliccando con il tasto sinistro su un asse. QtiPlot disegna una casella che delimita l'area del tracciato con maniglie agli angoli e punti medi dei lati. Il cursore assume una forma diversa secondo la sua posizione sulla tavola : a forma di mano quando &egrave; dentro l'area del tracciato, o una freccia a due punte, quando &egrave; su una delle maniglie. La forma del cursore richiama la funzione che esso svolge quando si preme il tasto sinistro.</para>
+<para>Quando il cursore assume la forma di una mano, premendo il tasto sinistro, si pu&ograve; trascinare l'intera tavola con il mouse. Rilasciando il tasto la tavola viene fissata nella nuova posizione. Quando il cursore assume la forma di doppia freccia, premendo il tasto sinistro, si pu&ograve; trascinare il bordo corrispondente e modificare la scala. Rilasciando il tasto del mouse viene fissata la nuova dimensione e applicato il nuovo valore di scala. Afferrando una maniglia centrale si sposta solo il bordo corrispondente, mentre afferrando una maniglia d'angolo si spostano simultaneamente entrambi i bordi interessati. Trascinando le maniglie d'angolo non si mantengono le proporzioni della tavola.</para>
+<para>Si pu&ograve; anche ridimensionare una tavola utilizzando la rotella del mouse in combinazione con i tasti <emphasis>Ctrl, Alt</emphasis>, o <emphasis>Shift</emphasis>. Per usare la rotellina del mouse, la tavola desiderata deve essere selezionata facendo clic nella tavola o utilizzando il pulsante di selezione della tavola. <emphasis>Non</emphasis> &egrave; necessario avere l'area del tracciato selezionata, la rotellina funzioner&agrave; in ogni caso. La rotellina funziona nei modi seguenti: tenendo premuto il tasto <emphasis>Ctrl</emphasis> mentre si ruota la rotellina si ridimensiona l'altezza, tenendo premuto il tasto <emphasis>Alt</emphasis> mentre si ruota la rotellina si ridimensiona la larghezza, tenendo premuto il tasto <emphasis>Shift</emphasis> durante la rotazione si ridimensiona sia l'altezza che la larghezza. Si noti che in questo ultimo caso (Shift + Wheel), le proporzioni del grafico sono conservate.</para>
+
+<sect2 id="sec-building-multilayer-plots-1">
+<title>Costruire un pannello con diverse tavole</title>
+
+<para>Il seguente &egrave; il modo pi&ugrave; semplice per ottenere una finestra di grafico con diverse tavole. Esso pu&ograve; essere utilizzato quando si vuole costruire un pannello di tavole disposte in modo semplice: 2 tavole in una riga o in una colonna, o 4 tavole in 2 righe e 2 colonne.</para>
+<para>&Egrave; possibile selezionare due colonne con valori Y in una tabella e quindi utilizzare uno dei comandi per i pannelli nel menu &plot-menu-lnk;. QtiPlot crea un gruppo di tavole in cui le dimensioni dei vari elementi di ogni tavola sono sincronizzate.</para>
+
+  <informalfigure>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/multilayer-panel.png"/>
+      </imageobject>
+    </mediaobject>
+  </informalfigure>
+
+<para>&Egrave; quindi possibile personalizzare i grafici. Quando si desidera cambiare la loro disposizione nel pannello, utilizzare il comando &arrange-layers-lnk; dal menu &graph-menu-lnk;. In questo caso, tenere presente che ogni grafico &egrave; inserito in una propria tavola la cui superficie &egrave; la met&agrave; o un quarto della superficie della finestra. Quindi, quando si desidera condividere un elemento per due grafici (per esempio una etichetta di testo), &egrave; necessario aggiungerlo in una nuova tavola (per maggiori informazioni si veda la sezione &add-text-lnk;).</para>
+
+</sect2>
+
+<sect2 id="sec-building-multilayer-plots-2">
+<title>Costruire gradualmente un pannello con diverse tavole </title>
+
+<para>Quando serve, si pu&ograve; costruire gradualmente un pannello complesso contenente diverse tavole.</para>
+<para>Il primo passaggio consiste nel costruire il primo grafico (usando, per esempio, due colonne di una tabella). Iniziare con la creazione di una finestra standard di grafico:</para>
+
+  <informalfigure>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/multilayer-step-1.png"/>
+      </imageobject>
+    </mediaobject>
+  </informalfigure>
+
+<para>Quindi, selezionare la finestra del grafico e utilizzare il comando &add-layer-lnk; dal menu &graph-menu-lnk;. Questo attiva la finestra di dialogo <link linkend="add-layer-dialog">&add-layer-cmd;</link>. Quando si sceglie <emphasis>Proponi</emphasis> si ottiene un pannello con due colonne (e due tavole affiancate), quando si sceglie <emphasis>Usa tutto il pannello</emphasis> si ottengono due tavole sovrapposte che si possono modificare in seguito.</para>
+
+  <informalfigure>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/multilayer-step-2.png"/>
+      </imageobject>
+    </mediaobject>
+  </informalfigure>
+
+<para>Quando si vuole costruire un pannello con due righe (e due tavole soprastanti, non sovrapposte), &egrave; possibile utilizzare il comando &arrange-layers-lnk; per riordinare automaticamente le tavole.</para>
+
+  <informalfigure>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/multilayer-step-3.png"/>
+      </imageobject>
+    </mediaobject>
+  </informalfigure>
+
+<para>Poi selezionare la seconda tavola (vuota) e utilizzare il comando &add-remove-curve-lnk; per selezionare i valori Y da una delle tavole del progetto.</para>
+
+  <informalfigure>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/multilayer-step-4.png"/>
+      </imageobject>
+    </mediaobject>
+  </informalfigure>
+
+<para>Dopo questo, &egrave; possibile personalizzare il grafico. Le modifiche effettuate sull'asse o sulle etichette degli assi possono avere modificato la geometria dei due grafici. Si pu&ograve; nuovamente riposizionare i due grafici utilizzando &arrange-layers-lnk; una seconda volta.</para>
+
+  <informalfigure>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/multilayer-step-5.png"/>
+      </imageobject>
+    </mediaobject>
+  </informalfigure>
+
+</sect2>
+
+</sect1>
+
+
