@@ -7,3 +7,4 @@ web:
 
 pdf:
 	dblatex -o qtiplot-manual-en.pdf -c dblatex.conf docbook-en/index.docbook
+	dblatex -o qtiplot-manual-it.pdf -c dblatex.conf docbook-it/index.docbook

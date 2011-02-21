@@ -1,0 +1,697 @@
+
+<!--
+======================================================================================
+
+		NOTE DI TRADUZIONE
+		========
+-->
+
+<title>Appendice. Sezioni aggiunte</title>
+<para>Questo capitolo non &egrave; presente nel manuale originale, oltre alla lista delle tabelle, contiene informazioni sulle traduzioni (del manuale e del programma), alcuni examples di grafici prodotti con QtiPlot, una breve guida per installare QtiPlot e, non tradotta, la sezione Crediti e Licenze </para>
+<sidebar id="avvertenza">   
+  <para>Avvertenza: QtiPlot viene spesso arricchito di nuove funzionalit&agrave; per cui alcune parti della traduzione possono risultare non completamente aggiornate. Si consiglia di verificare sempre in <ulink url="http://soft.proindependent.com/qtiplot.html">http://soft.proindependent.com/qtiplot.html</ulink> se sono disponibili ulteriori aggiornamenti.</para>
+  </sidebar>
+<sect1 id="sec-lista-tabelle">
+<title>Lista delle tabelle</title>
+<para>In DocBook, per produrre questo documento, le tabelle sono oggetti <varname>table</varname>. Quando DocBook viene convertito in HTML le tabelle costruite come <varname>table</varname> sono visualizzate nella loro posizione corretta, mentre se DocBook viene convertito in PDF le tabelle si posizionano in modo anomalo interrompendo i testi. Questo si verifica anche nella versione originale. Per ovviare al disguido e migliorare la leggibilit&agrave;, il traduttore, per produrre il PDF, ha utilizzato il comando <varname>informaltable</varname>. Con questa soluzione non viene per&ograve; creato l'indice automatico delle tabelle. Nel manuale in formato PDF, l'elenco sottostante sostituisce pertanto quello automatico.</para> 
+
+<para><link linkend="sec-I-comandi-della barra-degli-strumenti-Modifica">I comandi della barra degli strumenti Modifica</link></para>
+<para><link linkend="sec-I-comandi-della barra-degli-strumenti-File">I comandi della barra degli strumenti File</link></para>
+<para><link linkend="sec-I-comandi-della barra-degli-strumenti-Grafico">I comandi della barra degli strumenti Grafico</link></para>
+<para><link linkend="sec-I-comandi-della barra-degli-strumenti-ingrandimento">I comandi di ingrandimento e riduzione della barra degli strumenti Grafico</link></para>
+<para><link linkend="sec-I-comandi-della barra-degli-strumenti-tracciato">I comandi della barra degli strumenti Tracciato</link></para>
+<para><link linkend="sec-tracciatogruppo1">Comandi per &tablecommands-group1-title;.</link></para>
+<para><link linkend="sec-tracciatogruppo2">Comandi per &tablecommands-group2-title;;.</link></para>
+<para><link linkend="sec-tracciatogruppo3">Comandi per &tablecommands-group3-title;.</link></para>
+<para><link linkend="sec-tracciatogruppo4">Comandi per &tablecommands-group4-title;.</link></para>
+<para><link linkend="sec-tracciatogruppo5">Comandi per &tablecommands-group5-title;.</link></para>
+<para><link linkend="sec-tracciatogruppo6">Comandi per &tablecommands-group6-title;.</link></para>
+<para><link linkend="sec-tracciatogruppo7">Comandi per &tablecommands-group7-title;.</link></para>
+<para><link linkend="sec-tracciatogruppo8">Comandi per &tablecommands-group8-title;.</link></para>
+<para><link linkend="sec-colonna">I comandi della barra degli strumenti Colonna.</link></para>
+<para><link linkend="sec-grafici3d">I comandi della barra degli strumenti Superficie 3D.</link></para>
+<para><link linkend="sec-costanti fisiche fondamentali predefinite">muParser. Costanti fisiche fondamentali predefinite.</link></para>
+<para><link linkend="sec-operatori matematici supportati">muParser. Operatori matematici supportati.</link></para>
+<para><link linkend="sec-funzioni matematiche">muParser. Funzioni matematiche.</link></para>
+<para><link linkend="sec-funzioni non matematiche">muParser. Funzioni non matematiche.</link></para>
+<para><link linkend="Python-functions">Python. Funzioni matematiche supportate.</link></para>
+
+
+
+
+</sect1>
+<sect1 id="sec-note-traduzione">
+<title>Traduzione</title>
+<sidebar id="avvertenza1">   
+  <para>Avvertenza: QtiPlot viene spesso arricchito di nuove funzionalit&agrave; per cui alcune parti della traduzione possono risultare non completamente aggiornate. Si consiglia di verificare sempre in <ulink url="http://soft.proindependent.com/qtiplot.html">http://soft.proindependent.com/qtiplot.html</ulink> se sono disponibili ulteriori aggiornamenti.</para>
+  </sidebar>
+<sect2 id="sec-install-trad">
+  <sect2info><indexterm><primary>Traduzione</primary><secondary>Installare la traduzione del programma</secondary></indexterm></sect2info>
+<title>Installare la traduzione del programma</title>
+<para>Per ora, il file per la lingua italiana non si installa con l'applicazione, ma &egrave; disponibile in <ulink url="http://soft.proindependent.com/translations.html">http://soft.proindependent.com/translations.html</ulink>. Per avere il programma tradotto, scaricare il file <ulink url="http://soft.proindependent.com/translations.html">qtiplot_it.qm</ulink>, nella cartella <emphasis>.../QtiPlot/translations</emphasis> e selezionare la lingua &italiano; nel dialogo delle <emphasis>Preferenze</emphasis> di QtiPlot.</para>
+<para>Il file <emphasis>qtiplot_it.qm</emphasis> &egrave; realizzato per una specifica versione di QtiPlot, ma &egrave; fruibile con tutte le versioni. Quando le versioni sono differenti, semplicemente non traduce alcune voci.</para>   
+<para>Il file <ulink url="http://soft.proindependent.com/translations/qtiplot_it.ts">qtiplot_it.ts</ulink> contiene invece il frasario della traduzione e, come spiegato nella stessa pagina del download, permette di creare il file qtiplot_it.qm mediante l'applicazione Qt Linguist. Chi intende migliorare questo lavoro pu&ograve; utilizzarlo liberamente come punto di partenza.</para>
+
+<para>In questo manuale, salvo eventuali aggiornamenti, <email>&email-renato;</email> ha utilizzato la stessa terminologia usata per tradurre il programma. Per una efficace corrispondenza dei termini verificare se entrambe le versioni sono identificate con la stessa data di aggiornamento. La data di questa guida &egrave; nel paragrafo di <link linkend="data-traduzione">Presentazione</link></para>
+<para>Per controllare la versione usata dal programma, avviare l'applicazione e selezionare Modifica &rarr; <link linkend="preferences-dialog">Preferenze &rarr; Generale</link> &rarr; Lingua &rarr; Italiano e poi <emphasis>Applica</emphasis>. La data della versione di qtiplot_it.qm &egrave; visualizzata a fianco della voce <emphasis>Lingua</emphasis>, questo ovviamente solo quando si utilizza il file di renatoriv@libero.it .</para>
+<figure id="fig-preferences-dialog-1">
+    <title>La scheda per impostare la lingua nella finestra di dialogo delle preferenze: .</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/preferences-dialog1.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+</sect2>
+
+<sect2 id="sec-uso-man-it">
+  <sect2info><indexterm><primary>Traduzione</primary><secondary>Usare il manuale in italiano</secondary></indexterm></sect2info>
+<title>Usare il manuale in italiano</title>
+<para>&Egrave; in preparazione un docbook-it per consentire di usare questo manuale anche durante una sessione di QtiPlot. Se docbook-it &egrave; gi&agrave; disponibile (verificare nel sito indicato in precedenza) significa che il lavoro &egrave; ultimato e si pu&ograve; avviare l'applicazione con il manuale in italiano tramite i comandi <emphasis>Aiuto &rarr; Scegli la cartella degli aiuti</emphasis> nel men&ugrave; principale. Si pu&ograve; ottenere lo stesso risultato indicando semplicemente a QtiPlot dove si trova il file del manuale attraverso l'impostazione di  <emphasis>Modifica &rarr; Preferenze &rarr; Indirizzi dei file &rarr; scelta della cartella</emphasis>. Dopo queste operazioni, cliccando su <emphasis>Aiuto &rarr; Aiuto</emphasis> si apre il manuale italiano.</para> 
+<figure id="fig-preferences-dialog-13">
+    <title>Il dialogo delle preferenze: la scheda per l'indirizzo dei file. </title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/preferences-dialog13.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+<para>Questa traduzione, come quella del programma, &egrave; provvisoria ed &egrave; fornita senza garanzie, non &egrave; professionale e pu&ograve; contenere errori o imprecisioni. &Egrave; stata realizzata per agevolare l'uso didattico dell'applicazione e la comprensione del suo funzionamento. Quando si ha dimestichezza con la struttura del programma, forse &egrave; pi&ugrave; produttivo usare la versione inglese. Quando i lavori realizzati con QtiPlot sono importanti si deve fare assolutamente riferimento alla versione originale del manuale.</para>
+<para>In alcuni casi l'applicazione costruisce i testi dei comandi assemblando singole parti di frasi secondo la sintassi inglese. Per alcune voci del programma non &egrave; quindi possibile produrre una traduzione soddisfacente conforme alla struttura italiana. Per ovviare a questo inconveniente si dovrebbe intervenire sul codice dell'applicazione.</para>
+<para>Si ringrazia anticipatamente chi vorr&agrave; contribuire a migliorare la traduzione con suggerimenti e correzioni. Le segnalazioni in merito saranno prese in considerazione per gli aggiornamenti.</para>
+<para>Nel testo in italiano sono mantenuti i collegamenti originali per spostarsi agevolmente all'interno del manuale.</para> 
+</sect2>
+
+<sect2 id="sec-disambig">
+  <sect2info><indexterm><primary>Traduzione</primary><secondary>Disambiguazione</secondary></indexterm></sect2info>
+<title>Disambiguazione</title>
+
+<para>Per alcuni termini risultati ambigui, si sono adottate generalmente le seguenti convenzioni:</para>
+<itemizedlist>
+<listitem><para>Workspace = <link linkend="general-concepts">Area di lavoro</link> (parte del pannello principale di QtiPlot aperto all'avvio del programma in cui &egrave; possibile produrre nuovi oggetti in finestre dedicate). Notare che alcuni pannelli dell'applicazione si possono collocare anche all'esterno della finestra principale di QtiPlot, mentre gli oggetti creati (tabelle, grafici, ecc.) possono stare solo all'interno dell'area di lavoro;</para></listitem>
+<listitem><para>Window =  <link linkend="sec-correlate">Finestra</link> (nuovo oggetto pannello creato all'interno dell'area di lavoro);</para></listitem>
+<listitem><para>Layer = Tavola (parte del pannello Finestra che comprende assi, titolo, etichette, curve, ecc. per il grafico. &Egrave; sempre all'interno di una finestra);</para></listitem>
+<listitem><para>Layer = Livello o Piano quando riguarda oggetti posizionati in piani sovrapposti (un oggetto nasconde un altro oggetto) e non soprastanti (un oggetto sta pi&ugrave; in alto di un altro oggetto, e entrambi sono visibili);</para></listitem>
+<listitem><para>Stacked = Soprastanti ( in genere grafici e tavole);</para></listitem>
+<listitem><para>Stacked = Impilate (barre e colonne affiancate o soprastanti);</para></listitem>
+<listitem><para>Canvas = Tela (area che contiene il tracciato del grafico, all'interno di una tavola);</para></listitem>
+<listitem><para>Frame = Quadro o Cornice o Bordo della Tela o della Tavola</para></listitem>
+<listitem><para>Plot = <link linkend="sec-intro-plot-window">Finestra di grafico</link> o tracciato del grafico o genericamente grafico;</para></listitem> 
+<listitem><para>Plot = <link linkend="line-cmd">Tracciato</link> (curve, punti, aree, barre, ecc.) quando si riferisce a una finestra di tabella e permette di tracciare un grafico 2D;</para></listitem>
+<listitem><para>Graph = <link linkend="sec-intro-plot-window">Grafico</link> quando si riferisce a una finestra con un grafico e permette di apportarvi delle modifiche;</para></listitem>
+<listitem><para>3D Plot = <link linkend="sec-plot3d-menu">Grafico 3D</link> quando si riferisce ad una matrice e permette di produrre un grafico tridimensionale;</para></listitem>
+<listitem><para>Smooth = <link linkend="sec-analysis-menu-plot">Levigatura</link>, Perequazione, Correzione della distribuzione, Lisciatura o Smussatura di curva (regolarizza la curva);</para></listitem>
+<listitem><para>Fit = <link linkend="sec-ajustements-specifiques">Adattamento</link> di curva (modifica sostanziale della curva);</para></listitem>
+
+</itemizedlist>
+</sect2>
+</sect1>
+<!--
+======================================================================================
+
+		ESEMPI
+		========
+-->
+<sect1 id="sec-examples-grafici">
+<title>Esempi di grafici</title>
+<para>I seguenti grafici sono degli examples tratti da <ulink url="http://soft.proindependent.com/qtiplot.html">http://soft.proindependent.com/qtiplot.html</ulink>. Allo stesso indirizzo sono disponibili anche delle brevi videoguide sull'uso dell'applicazione.</para>
+<para>Le didascalie non sono tradotte, i link permettono di collegarsi alla fonte originale.</para>
+<figure id="fig-cc8027-1">
+    <title>Grafico scatola e baffi. </title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="examples/cc8027-1.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+<para>Comparison of different dynamic indices of preload. Box-and-whisker plots and individual values (open circles) of respiratory variations of brachial peak velocity (&Delta;Vpeakbrach), radial arterial pulse pressure variation (&Delta;PPrad) and stroke volume variation measured using the FloTrac/Vigileo monitoring system (&Delta;SVVigileo) before volume expansion (VE), in responder (R, stroke volume index (SVi) &lt;=15% after VE) and nonresponder (NR, SVi 15% after VE) patients. The central box represents the values from the lower to upper quartile (25th to 75th percentile). The middle line represents the median. A line extends from the minimum to the maximum value. Monge Garc&iacute;a et al. <ulink url="http://ccforum.com/content/13/5/R142">Critical Care, September 2009</ulink> 13:R142 doi:10.1186/cc8027 </para>
+<figure id="fig-contour">
+    <title>Curve di livello. </title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="examples/contour.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+<figure id="fig-spectrogram">
+    <title>Mappa a colori e curve di livello. </title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="examples/spectrogram.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+
+<para></para>
+
+<figure id="fig-journal3">
+    <title>Grafico a settori. </title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="examples/journal3.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+<para></para>
+<para>A. Categories or targets of inhibitors identified in initial chemical genetic screen. Number of inhibitors in each class is indicated. B. Dose-response curve of a selected inhibitors on LepA effector translocation. Data from three independent experiments (colored circles) were fitted (colored line) using the four parameter logistic model to determine the IC50.</para>
+<para>This figure was published in "Chemical Genetics Reveals Bacterial and Host Cell Functions Critical for Type IV Effector Translocation by Legionella pneumophila", Xavier Charpentier, Jo&euml;lle E. Gabay, Moraima Reyes, Jing W. Zhu, Arthur Weiss, Howard A. Shuman, <ulink url="http://www.plospathogens.org/article/info:doi/10.1371/journal.ppat.1000501">PLoS Pathogens</ulink>.</para>
+
+<figure id="fig-journal4">
+    <title>Istogrammi. </title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="examples/journal4.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+<para>Figure 4. The protonophore CCCP inhibits Icm/Dot-dependent activities. </para>
+<para>A. Effect of translation inhibitors (kanamycin, erythromycin) and protonophore (CCCP) on translocation of the LepA effector in J774 cells. B. Icm/Dot-dependent red blood cell (RBC) lysis by L. pneumophila and effect of translation inhibitors (kanamycin, erythromycin) and respiratory chain poison sodium azide. C. Time course effect of the CCCP protonophore or the DMSO carrier on Icm/Dot-dependent RBC lysis by L. pneumophila. D. Effect of the CCCP protonophore on the bacterial ATP levels as a function of exposure time. In all panels error bars represent standard deviation from three independent experiments. </para>
+<para>This figure was published in "Chemical Genetics Reveals Bacterial and Host Cell Functions Critical for Type IV Effector Translocation by Legionella pneumophila", Xavier Charpentier, Jo&euml;lle E. Gabay, Moraima Reyes, Jing W. Zhu, Arthur Weiss, Howard A. Shuman, <ulink url="http://www.plospathogens.org/article/info:doi/10.1371/journal.ppat.1000501">PLoS Pathogens</ulink>. </para>
+
+<figure id="fig-mfig009a">
+    <title>Grafico a dispersione. </title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="examples/mfig009a.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+<para>Figure 9. Linearized Eyring plots (-Rln(kh/kBT)=-S+H/T) for the exchange of bridging and terminal methyl groups in [Y(AlMe4)3] ((), 1H NMR data; (), 13C NMR data), [Lu(AlMe4)3] (), and [Sm(AlMe4)3] (). </para>
+<para>This figure was published in "Homoleptic Rare-Earth Metal(III) Tetramethylaluminates: Structural Chemistry, Reactivity, and Performance in Isoprene Polymerization", Melanie Zimmermann, Nils &Aring;ge Fr&oslash;ystein, Andreas Fischbach, Peter Sirsch, H. Martin Dietrich, Karl W. T&ouml;rnroos, Eberhardt Herdtweck, Reiner Anwander, <ulink url="http://www3.interscience.wiley.com/journal/114295453/abstract">Chemistry - A European Journal, Volume 13 Issue 31, Pages 8784 - 8800</ulink>. </para>
+
+<figure id="fig-plot3D">
+    <title>Grafico di superficie 3D con la formula x*sin(x)*cos(y). </title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="examples/plot3D.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+
+
+
+<figure id="fig-waterfall">
+    <title>Grafico 2D a cascata.</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="examples/waterfall.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+
+<figure id="fig-zbc0230975130002">
+    <title>Diverse tavole nella stessa finestra di grafico.</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="examples/zbc0230975130002.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+<para>Spine membrane topology produces anomalous diffusion. a, three-dimensional representation of Monte Carlo simulations. Theoretical spines were produced by a vertical concatenation of a truncated sphere (head radius 450 nm) with a cylinder (neck radius 200 nm and neck length 750 nm) placed in the middle of a flat field (4 x 4 &micro;m, half displayed in the figure). The step size for spine shaping was 10 nm. As a starting condition, particles (red dots) were randomly distributed in the flat field. The blue trajectory represents the successive positions of a particle during a 775-ms run, starting in the flat field and ending in the spine head. Over time, particles fill the theoretical spine; see right panel (t = 30 s). b, the black curve represents the number of particles in a spine (same features as in a) over time. The red curve shows the corresponding fit (time constant t is 5.78 s; efficient diffusion coefficient is 0.023 &micro;m2/s; time exponent: a = 0.88). c, distribution of log(Deff/Dth) (where Deff = efficient diffusion coefficient and Dth = theoretical diffusion coefficient) for 256 experiments on flat and stubby spines and 512 experiments on mushroom-shaped spines. In mushroom-shaped spines, Deff is 10-1000 times smaller than Dth (medians: flat, -0.042; stubby, -0.271; mushroom-shaped, -1.41; stubby versus flat, p &lt; 0.05; mushroom-shaped versus flat, p &lt; 0.001). d and e, log(Deff/Dth) plotted versus spine features, respectively, neck radius/neck length and neck radius/head radius. Data were grouped (bin sizes, 0.2 (d) and 0.1 (e)) and mean &plusmn; S.E. plotted. </para>
+<para>This figure was published in "Dynamin-dependent Membrane Drift Recruits AMPA Receptors to Dendritic Spines", Fr&eacute;d&eacute;ric Jaskolski, Belen Mayo-Martin, David Jane and Jeremy M. Henley, J Biol Chem. 2009 May 1; 284(18): 12491-12503. doi: 10.1074/jbc.M808401200. Graphics a) and b) were not created using QtiPlot. </para>
+
+<figure id="fig-zbc0230975130005">
+    <title>Grafico a barre. </title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="examples/zbc0230975130005.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+<para>
+FIGURE 5. Dominant negative dynamin inhibits membrane drift into spines. a, sample of images of the dendritic shaft of a neuron expressing mCherry-tagged dynamin 2K44A and mGFP presented as an inverted color map for monochromatic images. Scale bar = 1 &micro;m. b, scatter plots of computed diffusion coefficients of mGFP in spines and dendritic shafts. The median values in &micro;m2/s are: on spines, control (mGFP alone), n = 20, 0.302; Dyn2WT, n = 18, 0.475; Dyn2K44A, n = 21, 0.070, p &lt; 0.01 versus Dyn2WT); on dendritic shaft, control (mGFP alone), n = 5, 1.68; Dyn2WT, n = 5, 1.47; Dyn2K44A, n = 5, 1.17, ns). c, mean &plusmn; S.E. of mobile fraction of mGFP in spines (control (mGFP alone), n = 20, 0.79 &plusmn; 0.03; Dyn2WT, n = 24, 0.64 &plusmn; 0.06; Dyn2K44A, n = 21, 0.65 &plusmn; 0.03, p &lt; 0.05 versus control) and on the dendritic shaft (control (mGFP alone), n = 5, 0.65 &plusmn; 0.06; Dyn2WT, n = 5, 0.62 &plusmn; 0.05; Dyn2K44A, n = 5, 0.65 &plusmn; 0.04). d, normalized mGFP FLIP traces recorded in Dyn2WT- and Dyn2K44A-transfected neurons from the FLIP region (black), the shaft (gray), and the spine (red). Thin traces are corresponding fits, and arrows indicate the time constant computed for the exponential decay fit (Dyn2WT, shaft, 6.45 s, spine, 4.45 s; Dyn2K44A, shaft, 4.29 s, spine, 12.41 s). e, mean &plusmn; S.E. of time constant ratio (spine/shaft) measured during FLIP experiments (control (mGFP alone), 1.49 &plusmn; 0.16; Dyn2WT, 1.42 &plusmn; 0.28; Dyn2K44A, 2.98 &plusmn; 0.30; Dyn2WT versus Dyn2K44A, p &lt; 0.05). </para>
+<para>This figure was published in "Dynamin-dependent Membrane Drift Recruits AMPA Receptors to Dendritic Spines", Fr&eacute;d&eacute;ric Jaskolski, Belen Mayo-Martin, David Jane and Jeremy M. Henley, J Biol Chem. 2009 May 1; 284(18): 12491-12503. doi: 10.1074/jbc.M808401200. </para>
+
+<figure id="fig-matrix">
+    <title>Grafico in formato immagine con profili, prodotto da matrice. </title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="examples/matrix.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+<para>The Image Profiles graph allows you to create a gray scale plot of matrix data and lets you see the X and Y intensity profiles of the data. The ability to control the exact position of the horizontal and vertical lines along each axis is provided. </para>
+
+<figure id="fig-seashell">
+    <title>Grafico di superficie parametrica. </title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="examples/seashell.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+
+<figure id="fig-explorer">
+    <title>Grafico scatola e baffi con l'esploratore del progetto.</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="examples/explorer.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+
+<figure id="fig-table">
+    <title>Inserire i dati nella tabella. </title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="examples/table.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+
+<figure id="fig-multi_peak_fit">
+    <title>Adattamento multi picco gaussiano e lorentziano. </title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="examples/multi_peak_fit.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+
+<figure id="fig-fit">
+    <title>Adattamento guidato. </title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="examples/fit.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+
+<para>With just one-click you get access to an extensive list of data analysis routines: statistics analysis, sorting, FFT, data smoothing (Savitzky-Golay, Lowess, FFT smoothing, and moving window average), data filtering (low/high/band pass and band block filters), convolution/deconvolution, correlation, interpolation, numerical, integration/differentiation: </para>
+<figure id="fig-analysis">
+    <title>Analisi. </title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="examples/analysis.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+
+<para></para>
+<para>QtiPlot can be easily integrated with <ulink url="http://www.latex-project.org/">LaTeX</ulink>, the high-quality typesetting system which is the de facto standard for the communication and publication of scientific documents: all worksheets can be exported as .tex tables and all plots can be exported as .tex figures using the <ulink url="http://sourceforge.net/projects/pgf/">TikZ/Pgf</ulink> graphic systems. This makes straightforward the integration of text labels with complex mathematical expressions into the plots. </para>
+<para></para>
+<figure id="fig-latex_plot">
+    <title>Original 2D plot displaying LaTeX-math mode text labels: </title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="examples/latex_plot.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+
+<figure id="fig-latex_export">
+    <title>Resulting image of the exported plot after LaTeX compilation: </title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="examples/latex_export.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+
+<para>QtiPlot is fully scriptable via Python.</para>
+<para>The fact that you can run Python scripts from QtiPlot gives you the possibility to use powerfull existing scientific tools, like <ulink url="http://www.scipy.org/">SciPy</ulink>, <ulink url="http://www.sympy.org/">SymPy</ulink> or <ulink url="http://rpy.sourceforge.net/">rpy2</ulink>, thus bringing unlimited data analysis power. Here's a screenshot demonstrating how QtiPlot can become a full-featured computer algebra system (CAS), thanks to SymPy: </para>
+<figure id="fig-sympy">
+    <title>Finestra di script Python</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="examples/sympy.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+<para>If you need a detailed example showing how to completely automatize tasks in QtiPlot, please <ulink url="http://soft.proindependent.com/src/examples/strd_nist_fit.py.zip">download this Python script</ulink>. It can be used in order to verify the accuracy of the curve fitting algorithms in QtiPlot. The data used in this example is retrieved from the <ulink url="http://www.itl.nist.gov/div898/strd/">Statistical Reference Datasets Project of the National Institute of Standards and Technology (NIST)</ulink>.</para>
+<para>In order to run this example, you need an internet connection, since the script will try to download all the <ulink url="http://www.itl.nist.gov/div898/strd/nls/nls_main.shtml">nonlinear regression test files</ulink> from the Statistical Reference Datasets Project. Unzip the downloaded script and launch QtiPlot from a command interpreter: </para>
+<screen>
+qtiplot -x strd_nist_fit.py
+</screen>
+<para>If you don't want to display the QtiPlot user interface, run the example with the following option: </para>
+<screen>
+qtiplot -X strd_nist_fit.py
+</screen>
+<para>For more details about the scripting capabilities available in QtiPlot, via Python and PyQt, please read the user manual.</para>
+
+
+</sect1>
+
+<!--
+======================================================================================
+
+		INSTALLARE QTIPLOT
+		========
+-->
+<sect1 id="sec-installare">
+<title>Installare QtiPlot (vers. 0.9.8.3)</title>
+<sidebar id="avvertenza2">   
+  <para>Avvertenza: QtiPlot viene spesso arricchito di nuove funzionalit&agrave; per cui alcune parti della traduzione possono risultare non completamente aggiornate. Si consiglia di verificare sempre in <ulink url="http://soft.proindependent.com/qtiplot.html">http://soft.proindependent.com/qtiplot.html</ulink> se sono disponibili ulteriori aggiornamenti.</para>
+  </sidebar>
+<sect2 id="sec-ottenere">
+<title>Come ottenere QtiPlot</title>
+
+<para>QtiPlot &egrave; disponibile sia in versione <emphasis>free</emphasis> completamante funzionante che <emphasis>a pagamento</emphasis>.</para>
+<para>La Home Page di QtiPlot si trova al seguente indirizzo: <ulink url="http://soft.proindependent.com">http://soft.proindependent.com</ulink>, dove sono anche disponibili gli aggiornamenti e le informazioni. QtiPlot &egrave; distribuito in pacchetti sorgenti che devono essere compilati. Allo stesso indirizzo si trovano anche pacchetti compilati per le principali distribuzioni di Linux, per Mac OS X (>= 10.4) e per Windows.</para>
+
+</sect2>
+
+<sect2 id="sec-compilati">
+<title>Installare con pacchetti compilati</title>
+
+
+<para>Ion Vasilief, il fondatore e sviluppatore principale di QtiPlot, distribuisce a pagamento i pacchetti binari compilati per Windows, Mac OS X (>= 10.4) e i pacchetti .deb per le distribuzioni Linux basate su Debian: <ulink url="http://www.debian.org">Debian</ulink>, <ulink url="http://www.ubuntulinux.org">Ubuntu</ulink>, etc... Sono anche disponibili file binari adatti a tutte le altre distribuzioni Linux. Si pu&ograve; ottenere diversi tipi di contratti di manutenzione dei file, verificare i dettagli sui <ulink url="http://soft.proindependent.com/pricing.html">prezzi</ulink>, o richiedere una <ulink url="http://soft.proindependent.com/proforma.html">fattura</ulink>. Le tariffe includono il supporto tecnico e l'accesso a tutti gli aggiornamenti disponibili in un anno.</para>
+
+<para>Con Windows, effettuare il download del file <ulink url="http://soft.proindependent.com/download.html">qtiplot-0.9.7.8.exe</ulink>. Per installarlo, cliccare sull'icona qtiplot-0.9.7.8.exe e seguire le istruzioni di installazione</para>
+<para>Il pacchetto previsto per Mac OS X &egrave; universale e pu&ograve; essere installato sia su sistemi PowerPC che Intel  Mac Pro. Si pu&ograve; scaricare il pacchetto <ulink url="http://soft.proindependent.com/download.html">qtiplot-0.9.7.8.pkg.zip</ulink>. Per avviare l'installazione estrarre il file, cliccare sull'icona qtiplot-0.9.7.8.pkg e seguire le istruzioni di installazione.</para>
+<para>Per installare QtiPlot su distribuzioni Linux Debian: scaricare il file <ulink url="http://soft.proindependent.com/download.html">qtiplot_0.9.7.8_i386.deb</ulink>, aprire il terminale come utente root e digitare:</para>
+<screen>
+dpkg -i qtiplot_0.x.x_i386.deb
+</screen>
+
+<sidebar>
+    <title>NdT</title>
+    <para>Le versioni citate sono quelle riportate nell'originale di questo testo e possono essere diverse da quelle disponibili.</para>
+    <para>Attualmente, per piattaforme Linux &egrave; disponibile nei repository la versione 0.9.8.1 che permette di salvare e stampare i progetti senza limitazioni.</para>
+    <para>Per installare la versione <ulink url="http://soft.proindependent.com/download.html">0.9.7.13-i386</ulink>, senza il supporto per gli script Python, scaricare l'applicazione e scompattare l'archivio con:</para>
+<screen>
+tar -xvf ./qtiplot-0.9.7.13-i386.tar.bz2
+</screen>
+    <para>spostare la cartella in /usr/local/bin/qtiplot con:</para>
+<screen>
+sudo mv qtiplot-0.9.7.13-i386 /usr/local/bin/qtiplot
+</screen>
+    <para>Per aggiungere eventualmente l'icona al men&ugrave;, fare clic con il tasto destro su <emphasis>Applicazioni</emphasis>, selezionare <emphasis>Modifica men&ugrave; &rarr; Scienza &rarr; Nuova voce</emphasis> e compilare i campi del lanciatore con:</para>
+<screen>
+QtiPlot
+/usr/local/bin/qtiplot/qtiplot
+Applicazione per analizzare dati e tracciare grafici
+</screen>
+    <para>Le demo <emphasis>free</emphasis> pacchettizzate per Windows non consentono di salvare il lavoro.</para>
+    
+</sidebar>
+
+</sect2>
+
+<sect2 id="sec-sorgenti">
+<title>Compilare e installare da file sorgente</title>
+<sect3 id="sec-requisiti">
+<title>Requisiti</title>
+
+<para>Per compilare QtiPlot da sorgente, sono necessarie le seguenti librerie:</para>
+
+<variablelist>
+<varlistentry id="qt-lnk">
+  <term>&qt-lnk;</term>
+  <listitem>
+    <para>QtiPlot funziona solo con le versioni 4.5.x  della libreria <ulink url="http://trolltech.com/products/qt">Qt</ulink>.</para>    
+ </listitem>
+</varlistentry>
+<varlistentry id="qwt-lnk">
+  <term>&qwt-lnk;</term>
+  <listitem>
+    <para>&Egrave; necessario utilizzare la versione leggermente modificata della libreria <ulink url="http://qwt.sourceforge.net/">Qwt 5,2</ulink> fornita con QtiPlot nella cartella 3rdparty/qwt.</para>    
+ </listitem>
+</varlistentry>
+<varlistentry id="qwtplot-lnk">
+  <term>&qwtplot-lnk;</term>
+  <listitem>
+    <para>Per creare grafici 3D viene utilizzata una versione modificata della libreria <ulink url="http://qwt.sourceforge.net/projects/qwtplot3d">QwtPlot3D</ulink>. Non &egrave; necessario installarla separatamente in quanto &egrave; inclusa in QtiPlot (nella cartella 3rdparty/qwtplot3d), cos&igrave; .</para>    
+ </listitem>
+</varlistentry>
+<varlistentry id="muparser-lnk">
+  <term>&muparser-lnk;</term>
+  <listitem>
+    <para>QtiPlot usa la versione 1.32 della libreria <ulink url="http://muparser.sourceforge.net/">muParser</ulink>.</para>    
+ </listitem>
+</varlistentry>
+<varlistentry id="liborigin-lnk">
+  <term>&liborigin-lnk;</term>
+  <listitem>
+    <para>L'ultima versione di <ulink url="http://soft.proindependent.com/liborigin2/index.html">liborigin2</ulink> permette di leggere i file di progetto OriginLab 7,5. &Egrave; inclusa in QtiPlot (nella cartella 3rdparty/liborigin), quindi non c'&egrave; bisogno di scaricarla e installarla.</para>    
+ </listitem>
+</varlistentry>
+<varlistentry id="boostc-lnk">
+  <term>&boostc-lnk;</term>
+  <listitem>
+    <para>liborigin dipende dalla libreria <ulink url="http://www.boost.org/">C + + BOOST (> = 1.33.0)</ulink>, che &egrave; necessario scaricare e installare separatamente.</para>    
+ </listitem>
+</varlistentry>
+<varlistentry id="gsl-lnk">
+  <term>&gsl-lnk;</term>
+  <listitem>
+    <para>Per compilare Qtiplot &egrave; necessaria anche la libreria <ulink url="http://www.gnu.org/gsl/">GSL</ulink>.</para>    
+ </listitem>
+</varlistentry>
+<varlistentry id="zlib-lnk">
+  <term>&zlib-lnk;</term>
+  <listitem>
+    <para>Per la compressione dei file di progetto QtiPlot utilizza anche la libreria <ulink url="http://www.zlib.net/">zlib</ulink>.</para>    
+ </listitem>
+</varlistentry>
+<varlistentry id="libpng-lnk">
+  <term>&libpng-lnk;</term>
+  <listitem>
+    <para>Per l'esportazione di grafici 3D QtiPlot utilizza anche la libreria <ulink url="http://www.libpng/pub/png/libpng.html">libpng</ulink>.</para>    
+ </listitem>
+</varlistentry>
+<varlistentry id="libxls-lnk">
+  <term>&libxls-lnk;</term>
+  <listitem>
+    <para>Per l'importazione file .xls di Excel. QtiPlot utilizza anche la libreria <ulink url="http://libxls.sourceforge.net/">libxls</ulink>.</para>    
+ </listitem>
+</varlistentry>
+<varlistentry id="quazip-lnk">
+  <term>&quazip-lnk;</term>
+  <listitem>
+    <para>Per l'importazione di fogli di calcolo .ods ODF QtiPlot usa la libreria <ulink url="http://quazip.sourceforge.net/">QuaZIP</ulink>.</para>    
+ </listitem>
+</varlistentry>
+</variablelist>
+<para>Infine, se si desidera il supporto per gli script Python, &egrave; necessario scaricare e installare anche: <ulink url="http://www.python.org/">Python</ulink> 2.x, <ulink url="http://www.riverbankcomputing.co.uk/software/sip/intro">SIP</ulink>, e <ulink url="http://www.riverbankcomputing.co.uk/software/pyqt/intro">PyQt v4</ulink>. Tutti e tre sono presenti in molte distribuzioni Linux.</para>
+
+</sect3>
+<sect3 id="sec-linux">
+<title>Linux e Mac OS X</title>
+<para>Scaricare <ulink url="http://soft.proindependent.com/download.html">l'archivio qtiplot</ulink> (file .tar.bz2 o .zip) e decomprimerlo. Quindi aprire il terminale e andare nella cartella principale dell'archivio decompresso (che dovrebbe essere qtiplot-0.9.7.8). Creare il file build.conf, ad esempio:</para>
+<screen>
+cp build.conf.example build.conf
+</screen>
+<para>&Egrave; necessario editare il file build.conf per assicurarsi che QtiPlot trovi le librerie di supporto di terze parti. Dopo questa operazione, tornare alla directory principale qtiplot 0.9.7.8 e digitare:</para>
+<screen>
+qmake qtiplot.pro
+make
+</screen>
+<para>per installare QtiPlot, &egrave; necessario accedere come root e digitare:</para>
+<screen>
+make install
+</screen>
+<para>&Egrave; quindi possibile uscire da root e lanciare l'applicazione:</para>
+<screen>
+qtiplot
+</screen>
+<para>Nell'introduzione di questo manuale sono riportate le <link linkend="command-line-options">opzioni per la riga di comando</link></para>
+</sect3>
+
+<sect3 id="sec-windows">
+<title>Windows</title>
+<para>Per compilare l'applicazione da sorgenti &egrave; necessario scaricare e installare il compilatore <ulink url="http://www.mingw.org/">MinGW</ulink>, l'unico supportato dal Open Source Edition Qt su Windows. Quindi si deve procedere esattamente come su sistemi Linux o Mac OS X, seguendo le indicazioni di cui sopra.</para>
+
+
+</sect3>
+</sect2>
+</sect1>
+
+<sect1 id="sec-installarenuova">
+<title>Installare QtiPlot (vers.0.9.8.4)</title>
+<sidebar id="avvertenza2">   
+  <para>Avvertenza: QtiPlot viene spesso arricchito di nuove funzionalit&agrave; per cui alcune parti della traduzione possono risultare non completamente aggiornate. Si consiglia di verificare sempre in <ulink url="http://soft.proindependent.com/qtiplot.html">http://soft.proindependent.com/qtiplot.html</ulink> se sono disponibili ulteriori aggiornamenti.</para>
+  </sidebar>
+<sect2 id="sec-ottenere">
+<title>Licenze:</title>
+
+<para>QtiPlot is distributed under the <ulink url="http://www.gnu.org/licenses/gpl.html">GNU General Public License</ulink>. Thus it is <ulink url="http://www.gnu.org/licenses/gpl.html">"free software"</ulink>. "Free software" is a matter of liberty, not price. To understand the concept, you should think of "free" as in "free speech", not as in "free beer". "Free software" is also often called <ulink url="http://en.wikipedia.org/wiki/Alternative_terms_for_free_software">Open Source, FOSS, or FLOSS</ulink>.</para>
+</sect2>
+<sect2><title>Requisiti generali:</title>
+<para>&Egrave; necessario installare le seguenti librerie: <ulink url="http://www.trolltech.com/products/qt/index.html">Qt (>= 4.5.0)</ulink>, <ulink url="http://sources.redhat.com/gsl/">GSL</ulink>, <ulink url="http://muparser.sourceforge.net/">muParser (1.32)</ulink>, <ulink url="http://www.zlib.net/">zlib</ulink> e <ulink url="http://www.libpng.org/pub/png/libpng.html">libpng</ulink>.</para>
+<para>&Egrave; necessario compilare e installare anche le versioni modificate delle librerie: <ulink url="http://qwt.sourceforge.net/index.html">Qwt (5.2)</ulink> e <ulink url="http://qwtplot3d.sourceforge.net/">QwtPlot3D</ulink> che sono fornite con il codice sorgente di QtiPlot e contenute rispettivamente nelle cartelle <emphasis>3rdparty/qwt</emphasis> e <emphasis>3rdparty/qwtplot3d</emphasis>.</para>
+<para>Per esportare i grafici 2D in formato Tex si deve scaricare e installare anche <ulink url="http://soft.proindependent.com/qtexengine/">QTeXEngine</ulink>.</para>
+<para>Per convertire un gruppo di dati XYZ distribuiti in modo casuale in matrice si deve scaricare e installare <ulink url="http://www.alglib.net/">ALGLIB (2.6)</ulink>.</para>
+<para>Per eseguire i calcoli statistici e l'analisi della varianza ANOVA si deve scaricare e installare <ulink url="http://www.stat.tamu.edu/~aredd/tamuanova/">TAMUANOVA</ulink>.</para>
+<para>Per disporre del supporto per gli script Python si deve scaricare e installare <ulink url="http://www.python.org/">Python</ulink>, <ulink url="http://www.riverbankcomputing.co.uk/software/sip/download">SIP</ulink> and <ulink url="http://www.riverbankcomputing.co.uk/software/pyqt/download">PyQt4</ulink>.</para>
+<para>Per compilare e installare QqtiPlot &egrave; necessario anche <emphasis>qmake</emphasis>, che viene distribuito come parte di Qt. </para>
+</sect2>
+<sect2><title>Linux e Mac OS X:</title>
+<sect3><title>Installare QtiPlot con binari precompilati a pagamento:</title>
+<para>Ion Vasilief distribuisce QtiPlot in file binari <ulink url="http://www.debian.org/">Debian</ulink> precompilati sia per Debian, Ubuntu, ...che per Mac OS X (>= 10.4). Questi pacchetti contengono tutte le librerie necessarie, ad eccezione di Python e Qt (per Linux), che devono essere installati separatamente. </para>
+</sect3>
+<sect3><title>Installare QtiPlot con binari precompilati con licenza GPL per Linux:</title>
+<para>Il team di QtiPlot offre i file binari precompilati con licenza GPL per GNU / Linux gratuitamente, ma senza garantire alcun supporto.</para>
+<para>Per utilizzare il servizio di supporto, si deve sottoscrivere un contratto di manutenzione. Dettagli in merito a questo servizio sono disponibili in: <ulink url="http://soft.proindependent.com/download.html">QtiPlot download page</ulink>.</para>
+<para>Per installare il pacchetto Debian, scaricare il file <ulink url="http://soft.proindependent.com/download.html">qtiplot_X.X.X_i386.deb</ulink> e accedere al sistema come <emphasis>root</emphasis> (in Ubuntu, accedere come utente normale e utilizzare <emphasis>sudo</emphasis>), quindi aprire il teminale ed eseguire il seguente comando:
+<screen>dpkg -i qtiplot_X.X.X_i386.deb</screen></para>
+<para>Per installare QtiPlot su Mac OS X, scaricare file <ulink url="http://sources.redhat.com/gsl/">qtiplot-X.X.X.pkg.zip</ulink>, estrarlo, fare doppio clic sul file <emphasis>qtiplot-X.X.X.pkg</emphasis> e seguire le istruzioni di installazione. Al rilascio ogni nuova versione il pacchetto (comprese le istruzioni di installazione) si trova in <ulink url="http://soft.proindependent.com/download.html">QtiPlot download page</ulink> oppure nella sezione files di <ulink url="https://developer.berlios.de/project/showfiles.php?group_id=6626">QtiPlot project page at berliOS</ulink>.</para>
+</sect3>
+<sect3><title>Compilare QtiPlot da file sorgente:</title>
+<para>1. Installare tutte le dipendenze elencate prima utilizzando il gestore dei pacchetti o direttamente da sorgente. Quando si utilizzano pacchetti precompilati, accertarsi di installare anche i corrispondenti pacchetti di sviluppo (*-dev oppure *-devel). Per visualizzare il manuale all'interno di QtiPlot (si pu&ograve; anche farlo con il proprio browser preferito), serve anche Qt Assistant che a volte si trova in un pacchetto separato (<emphasis>qt4-dev-tools</emphasis> per Ubuntu edgy). </para>
+<para>2. Aprire il terminale. </para>
+<para>3. Scaricare l'archivio .tar.bz2 con i sorgenti di QtiPlot (oppure l'archivio .zip che ha lo stesso contenuto):
+<screen>wget http://soft.proindependent.com/src/qtiplot-X.X.X.tar.bz2</screen></para>
+<para>4. Estrarre i file sorgente: <screen>tar -xvjf qtiplot-X.X.X.tar.bz2</screen> oppure <screen>unzip qtiplot-X.X.X.zip</screen> </para>
+<para>5. Entrare nella directory principale <emphasis>qtiplot-X.X.X</emphasis>:
+<screen>cd qtiplot-X.X.X</screen> </para>
+<para>6. Creare il file <emphasis>build.conf</emphasis>. Per questo si pu&ograve; utilizzare il file <emphasis>build.conf.example</emphasis> come modello e farne una copia:
+<screen>cp build.conf.example build.conf</screen> </para>
+<para>7. Aprire <emphasis>build.conf</emphasis> con l'editor preferito. Nella parte finale di questo file commentare la riga <screen>SCRIPTING_LANGS += Python</screen> oppure assicurarsi di aver installato le seguenti dipendenze aggiuntive: <ulink url="http://www.python.org/">Python</ulink>, <ulink url="http://www.riverbankcomputing.co.uk/software/sip/download">SIP</ulink> e <ulink url="http://www.riverbankcomputing.co.uk/software/pyqt/download">PyQt4</ulink> </para>
+<para>8. Compilare QtiPlot:
+<screen>qmake &amp;&amp; make</screen> </para>
+<para>9. Installare QtiPlot nel sistema (servono i privilegi root):
+<screen>sudo make install</screen>
+oppure, in alternativa,
+<screen>su -c "make install"</screen> </para>
+</sect3>
+</sect2>
+<sect2><title>Windows:</title>
+<sect3><title>Installare QtiPlot con binari precompilati a pagamento:</title>
+<para>Ion Vasilief distribuisce QtiPlot in file binari anche per Windows. In generale QtiPlot dovrebbe funzionare su qualsiasi versione di Windows da 98 a Vista. Ma non aspettatevi che funzioni perfettamente su versioni precedenti al 2000. Per gli aspetti specifici di applicazioni per piattaforme basate su Qt4 vedere <ulink url="http://www.trolltech.com/developer/notes/platforms/index">doc.trolltech.com</ulink>.
+Per installare QtiPlot:</para>
+<para>1. Scaricare il file <ulink url="http://soft.proindependent.com/download.html">qtiplot-X.X.X.exe</ulink>. </para>
+<para>2. Fare doppio clic su <emphasis>qtiplot-X.X.X.exe</emphasis> e seguire le istruzioni di installazione. </para>
+</sect3>
+<sect3><title>Compilare QtiPlot da file sorgente:</title>
+<para>Il processo di installazione richiede gli stessi passaggi descritti prima nella sezione per Linux e Mac OS X.</para>
+</sect3>
+<sect3><title>Forums e mailing lists:</title>
+<para>Se si intende discutere di QtiPlot con altri utenti (o con gli sviluppatori) o si &egrave; insteressati al suo ulteriore sviluppo, si pu&ograve; utilizzare il relativo <ulink url="https://developer.berlios.de/forum/?group_id=6626">forum di QtiPlot</ulink> o iscriversi a <ulink url="https://developer.berlios.de/mail/?group_id=6626">QtiPlot mailing list</ulink>.</para>
+</sect3>
+</sect2>
+</sect1>
+
+
+
+<!--
+======================================================================================
+
+		
+		================
+-->
+<sect1 id="sec-licenze">
+<title>Crediti e licenze</title>
+
+<para>QtiPlot</para>
+<para>Program copyright:</para>
+<para>2004-2011 Ion Vasilief <email>&email-ion;</email></para>
+<para>2006-2007 Tilman Hoener zu Siederdissen <email>&email-tilman;</email></para>
+<para>2006-2007 Knut Franke <email>&email-knut;</email></para>
+<para>Documentation copyright:</para>
+<para>2004-2011 Ion Vasilief ion_vasilief@yahoo.fr</para>
+<para>2006-2007 Roger Gadiou <email>&email-roger;</email></para>
+<para>2006-2007 Knut Franke Knut.Franke@gmx.de</para>
+<para>Permission is granted to copy, distribute and/or modify this document under the terms of the GNU Free Documentation License, Version 1.1 or any later version published by the Free Software Foundation; with no Invariant Sections, with no Front-Cover Texts, and with no Back-Cover Texts.</para>
+
+
+<sect2 id="sec-gnu">
+<title>GNU Free Documentation License</title>
+
+<para>Version 1.1, March 2000</para>
+<para>Copyright (C) 2000 Free Software Foundation, Inc. 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA</para>
+<para>Everyone is permitted to copy and distribute verbatim copies of this license document, but changing it is not allowed.</para>
+
+<sect3 id="sec-preamble">
+<title>Preamble</title>
+
+<para>The purpose of this License is to make a manual, textbook, or other written document "free" in the sense of freedom: to assure everyone the effective freedom to copy and redistribute it, with or without modifying it, either commercially or noncommercially. Secondarily, this License preserves for the author and publisher a way to get credit for their work, while not being considered responsible for modifications made by others.</para>
+<para>This License is a kind of "copyleft", which means that derivative works of the document must themselves be free in the same sense. It complements the GNU General Public License, which is a copyleft license designed for free software.</para>
+<para>We have designed this License in order to use it for manuals for free software, because free software needs free documentation: a free program should come with manuals providing the same freedoms that the software does. But this License is not limited to software manuals; it can be used for any textual work, regardless of subject matter or whether it is published as a printed book. We recommend this License principally for works whose purpose is instruction or reference.</para>
+</sect3>
+
+<sect3 id="sec-definiz">
+<title>Applicability And Definitions</title>
+<para>This License applies to any manual or other work that contains a notice placed by the copyright holder saying it can be distributed under the terms of this License. The "Document", below, refers to any such manual or work. Any member of the public is a licensee, and is addressed as "you".</para>
+<para>A "Modified Version" of the Document means any work containing the Document or a portion of it, either copied verbatim, or with modifications and/or translated into another language.</para>
+<para>A "Secondary Section" is a named appendix or a front-matter section of the Document that deals exclusively with the relationship of the publishers or authors of the Document to the Document's overall subject (or to related matters) and contains nothing that could fall directly within that overall subject. (For example, if the Document is in part a textbook of mathematics, a Secondary Section may not explain any mathematics.) The relationship could be a matter of historical connection with the subject or with related matters, or of legal, commercial, philosophical, ethical or political position regarding them.</para>
+<para>The "Invariant Sections" are certain Secondary Sections whose titles are designated, as being those of Invariant Sections, in the notice that says that the Document is released under this License.</para>
+<para>The "Cover Texts" are certain short passages of text that are listed, as Front-Cover Texts or Back-Cover Texts, in the notice that says that the Document is released under this License. A "Transparent" copy of the Document means a machine-readable copy, represented in a format whose specification is available to the general public, whose contents can be viewed and edited directly and straightforwardly with generic text editors or (for images composed of pixels) generic paint programs or (for drawings) some widely available drawing editor, and that is suitable for input to text formatters or for automatic translation to a variety of formats suitable for input to text formatters. A copy made in an otherwise Transparent file format whose markup has been designed to thwart or discourage subsequent modification by readers is not Transparent. A copy that is not "Transparent" is called "Opaque".</para>
+<para>Examples of suitable formats for Transparent copies include plain ASCII without markup, Texinfo input format, LaTeX input format, SGML or XML using a publicly available DTD, and standard-conforming simple HTML designed for human modification. Opaque formats include PostScript, PDF, proprietary formats that can be read and edited only by proprietary word processors, SGML or XML for which the DTD and/or processing tools are not generally available, and the machine-generated HTML produced by some word processors for output purposes only.</para>
+<para>The "Title Page" means, for a printed book, the title page itself, plus such following pages as are needed to hold, legibly, the material this License requires to appear in the title page. For works in formats which do not have any title page as such, "Title Page" means the text near the most prominent appearance of the work's title, preceding the beginning of the body of the text.</para>
+</sect3>
+
+<sect3 id="sec-copie">
+<title>Verbatim Copying</title>
+<para>You may copy and distribute the Document in any medium, either commercially or noncommercially, provided that this License, the copyright notices, and the license notice saying this License applies to the Document are reproduced in all copies, and that you add no other conditions whatsoever to those of this License. You may not use technical measures to obstruct or control the reading or further copying of the copies you make or distribute. However, you may accept compensation in exchange for copies. If you distribute a large enough number of copies you must also follow the conditions in section 3.</para>
+<para>You may also lend copies, under the same conditions stated above, and you may publicly display copies.</para>
+</sect3>
+
+<sect3 id="sec-copiequan">
+<title>Copying In Quantity</title>
+<para>If you publish printed copies of the Document numbering more than 100, and the Document's license notice requires Cover Texts, you must enclose the copies in covers that carry, clearly and legibly, all these Cover Texts: Front-Cover Texts on the front cover, and Back-Cover Texts on the back cover. Both covers must also clearly and legibly identify you as the publisher of these copies. The front cover must present the full title with all words of the title equally prominent and visible. You may add other material on the covers in addition. Copying with changes limited to the covers, as long as they preserve the title of the Document and satisfy these conditions, can be treated as verbatim copying in other respects.</para>
+<para>If the required texts for either cover are too voluminous to fit legibly, you should put the first ones listed (as many as fit reasonably) on the actual cover, and continue the rest onto adjacent pages.</para>
+<para>If you publish or distribute Opaque copies of the Document numbering more than 100, you must either include a machine-readable Transparent copy along with each Opaque copy, or state in or with each Opaque copy a publicly-accessible computer-network location containing a complete Transparent copy of the Document, free of added material, which the general network-using public has access to download anonymously at no charge using public-standard network protocols. If you use the latter option, you must take reasonably prudent steps, when you begin distribution of Opaque copies in quantity, to ensure that this Transparent copy will remain thus accessible at the stated location until at least one year after the last time you distribute an Opaque copy (directly or through your agents or retailers) of that edition to the public.</para>
+<para>It is requested, but not required, that you contact the authors of the Document well before redistributing any large number of copies, to give them a chance to provide you with an updated version of the Document.</para>
+</sect3>
+
+<sect3 id="sec-modifiche">
+<title>Modifications</title>
+<para>You may copy and distribute a Modified Version of the Document under the conditions of sections 2 and 3 above, provided that you release the Modified Version under precisely this License, with the Modified Version filling the role of the Document, thus licensing distribution and modification of the Modified Version to whoever possesses a copy of it. In addition, you must do these things in the Modified Version:</para>
+<para>Use in the Title Page (and on the covers, if any) a title distinct from that of the Document, and from those of previous versions (which should, if there were any, be listed in the History section of the Document). You may use the same title as a previous version if the original publisher of that version gives permission.</para>
+<para>List on the Title Page, as authors, one or more persons or entities responsible for authorship of the modifications in the Modified Version, together with at least five of the principal authors of the Document (all of its principal authors, if it has less than five). State on the Title page the name of the publisher of the Modified Version, as the publisher. Preserve all the copyright notices of the Document.</para>
+<para>Add an appropriate copyright notice for your modifications adjacent to the other copyright notices.</para>
+<para>Include, immediately after the copyright notices, a license notice giving the public permission to use the Modified Version under the terms of this License, in the form shown in the Addendum below.</para>
+<para>Preserve in that license notice the full lists of Invariant Sections and required Cover Texts given in the Document's license notice.</para>
+<para>Include an unaltered copy of this License.</para>
+<para>Preserve the section entitled "History", and its title, and add to it an item stating at least the title, year, new authors, and publisher of the Modified Version as given on the Title Page. If there is no section entitled "History" in the Document, create one stating the title, year, authors, and publisher of the Document as given on its Title Page, then add an item describing the Modified Version as stated in the previous sentence.</para>
+<para>Preserve the network location, if any, given in the Document for public access to a Transparent copy of the Document, and likewise the network locations given in the Document for previous versions it was based on. These may be placed in the "History" section. You may omit a network location for a work that was published at least four years before the Document itself, or if the original publisher of the version it refers to gives permission.</para>
+<para>In any section entitled "Acknowledgements" or "Dedications", preserve the section's title, and preserve in the section all the substance and tone of each of the contributor acknowledgements and/or dedications given therein.</para>
+<para>Preserve all the Invariant Sections of the Document, unaltered in their text and in their titles. Section numbers or the equivalent are not considered part of the section titles. Delete any section entitled "Endorsements". Such a section may not be included in the Modified Version.</para>
+<para>Do not retitle any existing section as "Endorsements" or to conflict in title with any Invariant Section.</para>
+<para>If the Modified Version includes new front-matter sections or appendices that qualify as Secondary Sections and contain no material copied from the Document, you may at your option designate some or all of these sections as invariant. To do this, add their titles to the list of Invariant Sections in the Modified Version's license notice. These titles must be distinct from any other section titles.</para>
+<para>You may add a section entitled "Endorsements", provided it contains nothing but endorsements of your Modified Version by various parties--for example, statements of peer review or that the text has been approved by an organization as the authoritative definition of a standard.</para>
+<para>You may add a passage of up to five words as a Front-Cover Text, and a passage of up to 25 words as a Back-Cover Text, to the end of the list of Cover Texts in the Modified Version. Only one passage of Front-Cover Text and one of Back-Cover Text may be added by (or through arrangements made by) any one entity. If the Document already includes a cover text for the same cover, previously added by you or by arrangement made by the same entity you are acting on behalf of, you may not add another; but you may replace the old one, on explicit permission from the previous publisher that added the old one.</para>
+<para>The author(s) and publisher(s) of the Document do not by this License give permission to use their names for publicity for or to assert or imply endorsement of any Modified Version.</para>
+</sect3>
+
+<sect3 id="sec-combinati">
+<title>Combining Documents</title>
+<para>You may combine the Document with other documents released under this License, under the terms defined in section 4 above for modified versions, provided that you include in the combination all of the Invariant Sections of all of the original documents, unmodified, and list them all as Invariant Sections of your combined work in its license notice.</para>
+<para>The combined work need only contain one copy of this License, and multiple identical Invariant Sections may be replaced with a single copy. If there are multiple Invariant Sections with the same name but different contents, make the title of each such section unique by adding at the end of it, in parentheses, the name of the original author or publisher of that section if known, or else a unique number. Make the same adjustment to the section titles in the list of Invariant Sections in the license notice of the combined work.</para>
+<para>In the combination, you must combine any sections entitled "History" in the various original documents, forming one section entitled "History"; likewise combine any sections entitled "Acknowledgements", and any sections entitled "Dedications". You must delete all sections entitled "Endorsements."</para>
+
+</sect3>
+
+
+<sect3 id="sec-collezioni">
+<title>Collections Of Documents</title>
+<para>You may make a collection consisting of the Document and other documents released under this License, and replace the individual copies of this License in the various documents with a single copy that is included in the collection, provided that you follow the rules of this License for verbatim copying of each of the documents in all other respects.</para>
+<para>You may extract a single document from such a collection, and distribute it individually under this License, provided you insert a copy of this License into the extracted document, and follow this License in all other respects regarding verbatim copying of that document.</para>
+
+</sect3>
+
+
+<sect3 id="sec-aggregazione">
+<title>Aggregation With Independent Works</title>
+<para>A compilation of the Document or its derivatives with other separate and independent documents or works, in or on a volume of a storage or distribution medium, does not as a whole count as a Modified Version of the Document, provided no compilation copyright is claimed for the compilation. Such a compilation is called an "aggregate", and this License does not apply to the other self-contained works thus compiled with the Document, on account of their being thus compiled, if they are not themselves derivative works of the Document.</para>
+<para>If the Cover Text requirement of section 3 is applicable to these copies of the Document, then if the Document is less than one quarter of the entire aggregate, the Document's Cover Texts may be placed on covers that surround only the Document within the aggregate. Otherwise they must appear on covers around the whole aggregate.</para>
+
+</sect3>
+
+
+<sect3 id="sec-traduzioni">
+<title>Translation</title>
+<para>Translation is considered a kind of modification, so you may distribute translations of the Document under the terms of section 4. Replacing Invariant Sections with translations requires special permission from their copyright holders, but you may include translations of some or all Invariant Sections in addition to the original versions of these Invariant Sections. You may include a translation of this License provided that you also include the original English version of this License. In case of a disagreement between the translation and the original English version of this License, the original English version will prevail.</para>
+
+</sect3>
+
+<sect3 id="sec-termination">
+<title>Termination</title>
+<para>You may not copy, modify, sublicense, or distribute the Document except as expressly provided for under this License. Any other attempt to copy, modify, sublicense or distribute the Document is void, and will automatically terminate your rights under this License. However, parties who have received copies, or rights, from you under this License will not have their licenses terminated so long as such parties remain in full compliance.</para>
+
+</sect3>
+
+<sect3 id="sec-future">
+<title>Future Revisions Of This License</title>
+<para>The Free Software Foundation may publish new, revised versions of the GNU Free Documentation License from time to time. Such new versions will be similar in spirit to the present version, but may differ in detail to address new problems or concerns. See http:///www.gnu.org/copyleft/. Each version of the License is given a distinguishing version number. If the Document specifies that a particular numbered version of this License "or any later version" applies to it, you have the option of following the terms and conditions either of that specified version or of any later version that has been published (not as a draft) by the Free Software Foundation. If the Document does not specify a version number of this License, you may choose any version ever published (not as a draft) by </para>
+
+</sect3>
+
+
+</sect2>
+
+
+
+</sect1>
+

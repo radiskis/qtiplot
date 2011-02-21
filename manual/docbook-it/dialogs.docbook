@@ -1,0 +1,1483 @@
+<!--
+
+		DESCRIPTION OF THE DIFFERENT DIALOG BOXES
+		========================================
+
+-->
+
+<title>Le finestre di dialogo</title>
+
+<!-- ************************************************** -->
+<!--		Add Custom Script Action				-->
+<!-- ************************************************** -->
+<sect1 id="custom-action-dialog">
+  <title>Aggiungere una operazione personalizzata</title>
+  Questa finestra di dialogo permette di creare il lanciatore di un nuovo script Python e di aggiungerlo ai men&ugrave; o alle barre degli strumenti di  &appname;.
+  Si pu&ograve; personalizzare completamente il lanciatore definendo: 1) il testo di descrizione del comando nel men&ugrave; in cui si vuole inserirlo, 2) l'icona, 3) la combinazione di tasti per l'avvio rapido e 4) una descrizione sintetica del comando. La descrizione appare vicino al pulsante del comando quando il mouse viene posizionato sopra la voce. La combinazione di tasti per l'avvio veloce deve essere esclusiva.
+
+  <figure id="fig-add-custom-action-dialog">
+    <title>La finestra di dialogo &add-custom-action-cmd; per aggiungere ai men&ugrave; un comando personalizzato.</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/add-custom-action.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+
+<para>Il <emphasis>File script</emphasis> &egrave; il file script in Python che viene eseguito quando si esegue il comando aggiunto. Quando si clicca sul pulsante <emphasis>Aggiungi</emphasis>, tutte le impostazioni del nuovo lanciatore vengono salvate in un file XML nella cartella della directory selezionata. All'avvio QtiPlot analizza tutti i file XML di questa cartella e crea le corrispondenti voci nei men&ugrave; o crea i pulsanti nelle barre delle applicazioni. Quando si clicca sul pulsante <emphasis>Rimuovi</emphasis>, il lanciatore selezionato nella parte sinistra della finestra viene rimosso dai men&ugrave; di QtiPlot e il corrispondente file XML viene cancellato dall'hard disk. Assicurarsi di aver di aver salvato una copia del file per un suo eventuale riutilizzo in seguito. </para>
+</sect1>
+
+<!-- ************************************************** -->
+<!--		Errorbars				-->
+<!-- ************************************************** -->
+<sect1 id="add-error-bars-dialog">
+  <title>Aggiungere le barre di errore</title>
+  <para>Questo dialogo si apre con il comando &add-error-bars-lnk; dal men&ugrave; &graph-menu-lnk;.</para>
+  <para>Questo comando serve per aggiungere le barre di errore X o Y a ogni punto dei dati nel grafico.</para>
+<!--
+  <para>Note that both the add and OK buttons will add errors bars. For this reason, if you have used the add button already, then you should close the dialog with the cancel button (NOT the OK button).</para> -->
+
+<para>Cliccando su <emphasis>Chiudi</emphasis> non viene aggiunta alcuna barra al grafico. Per aggiungere le barre si devono impostare i parametri desiderati poi cliccare su <emphasis>Aggiungi</emphasis>. </para>
+  <figure id="fig-add-error-bars-1">
+    <title>La finestra di dialogo &add-error-bars-cmd;.</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/add-error-bars-1.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+  <para>Ci sono tre modi per determinare la dimensione delle barre:</para>
+  <variablelist>
+    <varlistentry>
+      <term>1) Con i valori di una colonna della tabella:</term>
+      <listitem>
+        <para>1) Partendo da una colonna di errori gi&agrave; presente nella tabella: in questo caso, i valori della colonna di errori selezionata sono usati per calcolare le barre di errore. Se V &egrave; il valore dei dati per un punto ed E &egrave; il valore nella corrispondente riga di una colonna barre di errore, la dimensione nel grafico della sua barra &egrave; da V-E fino a V+E.</para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>2) Con una percentuale dei valori:</term>
+      <listitem>
+        <para>2) Calcolando la percentuale dei valori: questo comando aggiunge una nuova colonna alla tabella associata al grafico e la compila con i risultati di V*E/100 dove V &egrave; il valore dei dati per un punto ed E &egrave; il valore della percentuale impostato. Il calcolo viene eseguito per ogni riga della tabella. La colonna creata in questo modo pu&ograve; essere utilizzata per tracciare le barre nel grafico con la procedura descritta per il caso precedente. La colonna pu&ograve; essere modificata come una normale colonna. Le barre nel grafico si adattano automaticamente a tutti i cambiamenti apportati alla colonna degli errori.</para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>3) Con la deviazione standard dei valori:</term>
+      <listitem>
+        <para>3) Calcolando prima la deviazione standard dei valori. Questo ha significato solo quando i dati sono disposti intorno ad un valore medio. Come nel caso precedente, viene creata una nuova colonna nella tabella attiva e ogni riga viene compilata con la deviazione standard calcolata. Con questo metodo, il programma non conosce e non pu&ograve; calcolare la deviazione standard di ogni singolo punto. Quando ci&ograve; &egrave; necessario, si deve ripetere pi&ugrave; volte l'operazione utilizzando in ogni sessione i valori x e y del punto interessato.</para>
+<para>Quando &egrave; necessario visualizzare le barre di errore in modo asimmetrico &egrave; necessario definire due gruppi di barre di errore per la stessa curva: un gruppo per i limiti superiori (con il lato negativo disabilitato) e uno per i limiti inferiori (con il lato positivo disabilitato).</para>
+      </listitem>
+    </varlistentry>
+  </variablelist>
+  <figure id="fig-add-error-bars-2">
+    <title>Esempio di un grafico con barre di errore X e Y.</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/add-error-bars-2.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+</sect1>
+
+<!-- ************************************************** -->
+<!--		Add Function				-->
+<!-- ************************************************** -->
+<sect1 id="add-function-dialog">
+  <title>Aggiungere una funzione</title>
+  <para>Questo dialogo serve per aggiungere una funzione al grafico attivo. La funzione &egrave; costruita con i normali operatori: +,-,*,/,^ rispettivamente somma, sottrazione, prodotto, divisione, potenza. La gamma di funzioni intrinseche disponibili &egrave; elencata nella sezione dedicata a <link linkend="sec-muParser">muParser</link> nel capitolo <emphasis>Espressioni matematiche e script</emphasis>.</para>
+  <para>La prima voce di questo dialogo serve per stabilire quale tipo di curva si intende produrre. Nella definizione della funzione pi&ugrave; semplice e comune si usano le classiche coordinate cartesiane e la funzione &egrave; del tipo <emphasis>y=f(x)</emphasis>. Questa &egrave; l'impostazione predefinita. I due parametri successivi definiscono l'intervallo di valori X da usare nel grafico. L'ultimo parametro stabilisce quanti punti devono essere considerati nell'intervallo precedentemente definito. La parte inferiore della finestra di dialogo &egrave; un selettore di funzioni che contiene un elenco a discesa di funzioni intrinseche con breve descrizione della funzione stessa. Facendo clic sul pulsante <emphasis>Aggiungi</emphasis> la funzione selezionata viene copiata nel riquadro di definizione della funzione.</para>
+  <figure id="add-function-dialog-1">
+    <title>La finestra di dialogo &add-function-cmd;: le coordinate cartesiane.</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/add-function-dialog1.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+
+  <para>Quando l'espressione della funzione contiene dei termini che sono delle costanti come nel caso <emphasis>f(x)= a*x+b</emphasis>, QtiPlot le individua e visualizza una tabella nella parte destra della finestra per inserire i valori delle costanti individuate.</para>
+
+  <figure id="add-function-dialog-4">
+	<title>La finestra di dialogo &add-function-cmd;: individuazione automatica delle costanti.</title>
+	<mediaobject>
+	  <imageobject>
+		<imagedata  format="PNG" fileref="pics/add-function-dialog4.png"/>
+	  </imageobject>
+	</mediaobject>
+  </figure>
+
+  <para>Si pu&ograve; anche impostare una funzione parametrica selezionando per il <emphasis>Tipo di curva</emphasis> la voce <emphasis>Curva parametrata</emphasis>. In questo caso i valori x e y dipendono dalla variabile m e sono quindi calcolati con le funzioni di questa variabile: <emphasis>x=f(m)</emphasis> e <emphasis>y=g(m)</emphasis>.</para>
+  <para>Nel campo <emphasis>Parametro</emphasis> si deve inserire il nome della variabile parametrica (in questo caso la variabile da inserire &egrave; m), nei campi successivi si devono definire le funzioni, impostare l'intervallo e il numero di punti da determinare per il grafico.</para>
+  <figure id="add-function-dialog-2">
+    <title>La finestra di dialogo &add-function-cmd;: coordinate parametriche.</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/add-function-dialog2.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+  <para>Si pu&ograve; infine usare una funzione polare. Data la variabile t , il raggio R e l'angolo Theta sono calcolati usando due funzioni della variabile data: <emphasis>R=f(t)</emphasis> e <emphasis>Theta=g(t)</emphasis>, in modo analogo a quello usato per la funzione parametrica. Nell'esempio, i valori x e y per i punti del grafico sono calcolati come <emphasis>x=R*cos(Theta)</emphasis> e <emphasis>y=R*sin(Theta)</emphasis>.</para>
+  <para>Nel campo <emphasis>Parametro</emphasis> si deve inserire il nome della variabile parametrica (in questo caso la variabile da inserire &egrave; t), nei campi successivi si devono definire le funzioni, impostare l'intervallo e il numero di punti da determinare per il grafico. L'angolo &egrave; misurato in radianti. La costante <emphasis>pi greco</emphasis> &egrave; gi&agrave; definita internamente come <emphasis>pi</emphasis>, si pu&ograve; quindi usare la scrittura <emphasis>3*pi</emphasis> per impostare l'intervallo.</para>
+  <figure id="add-function-dialog-3">
+    <title>La finestra di dialogo &add-function-cmd;: coordinate polari.</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/add-function-dialog3.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+</sect1>
+<!-- ************************************************** -->
+<!--		Add Layer				-->
+<!-- ************************************************** -->
+<sect1 id="add-layer-dialog">
+  <title>Aggiungere una tavola</title>
+  <para>Questo dialogo si usa per aggiungere una nuova tavola al grafico attivo. Scegliendo <emphasis>Proponi</emphasis>, QtiPlot divide in due la finestra e posiziona la nuova tavola a destra. Scegliendo <emphasis>Usa tutto il pannello</emphasis>, QtiPlot crea una nuova tavola grande come la finestra e la sovrappone alle tavole esistenti. La nuova tavola contiene una tela vuota. La posizione e le dimensioni di ogni tavola si modificano selezionando prima la tavola desiderata con il corrispondente pulsante  <inlinemediaobject><imageobject><imagedata format="PNG" fileref="pics/layer-button.png"/></imageobject></inlinemediaobject> e poi selezionando <emphasis>Propriet&agrave;</emphasis> nel men&ugrave; contestuale della tavola attivata.</para>
+  <figure id="fig-add-layer-dialog">
+    <title>La finestra di dialogo &add-layer-cmd;.</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/add-layer.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+</sect1>
+
+<!-- ************************************************** -->
+<!--		Add / Remove curves			-->
+<!-- ************************************************** -->
+<sect1 id="add-remove-curve-dialog">
+  <title>Aggiungere o rimuovere delle curve</title>
+  <para>Questo dialogo si apre con il comando <link linkend="add-remove-curve-cmd">&add-remove-curve-cmd;</link> dal men&ugrave; <link linkend="sec-graph-menu">Grafico</link>.</para>
+  <para>Nella riquadro di sinistra in questa scheda sono elencate le colonne delle tabelle del progetto disponibili per un grafico. Quando la casella <emphasis>Visualizza solo le tabelle della cartella corrente</emphasis> &egrave; selezionata , sono elencate solo le tabelle contenute nella cartella del progetto attivo.
+  Nel riquadro di destra sono elencate le curve gi&agrave; tracciate. Nell'esempio presentato sotto, si vedono due tabelle in cui &egrave; possibile selezionare delle colonne con &add-remove-curve-cmd;. Con questo dialogo si seleziona una colonna Y e QtiPlot usa automaticamente i dati dalla corrispondente colonna X.</para>
+  <figure id="fig-add-remove-curve">
+    <title>La finestra di dialogo &add-remove-curve-cmd; .</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/add-remove-curve.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+
+  <para>Con questo dialogo, quando si seleziona una curva nel riquadro di destra, si possono cambiare le colonne da usare con il pulsante <emphasis>Dati associati ai tracciati...</emphasis>. Si possono usare solo valori X e Y contenuti nella stessa tabella. Quando le colonne che si intende usare sono contenute in tabelle diverse, esse devono essere copiate nella stessa tabella.</para>
+  <para>Quando il grafico &egrave; la curva di una funzione, si pu&ograve; modificare la funzione con il pulsante <emphasis>Scrivi o modifica la funzione...</emphasis> .
+  Per maggiori informazioni su questa operazione, consultare la sezione <link linkend="add-function-dialog">&add-function-cmd; </link> .</para>
+<para>Quando &egrave; selezionata la casella <emphasis>Visualizza l'intervallo di dati</emphasis>, per tutte le curve che non sono ricavate da una funzione, l'intervallo di dati usato per tracciare il grafico e visibile nella curva viene visualizzato nel riquadro di destra. Con il comando <emphasis>Modifica l'intervallo di dati</emphasis> si pu&ograve; stabilire quale intervallo visualizzare nel grafico senza cancellare i dati non utilizzati.</para>
+</sect1>
+
+<!-- ************************************************** -->
+<!--		Arrange Layers				-->
+<!-- ************************************************** -->
+<sect1 id="arrange-layers-dialog">
+  <title>Posizionare le tavole</title>
+  Questo dialogo si apre con il comando <emphasis>Posiziona le tavole</emphasis>  del men&ugrave; <link linkend="sec-graph-menu">Grafico</link> oppure con la combinazione di tasti &arrange-layers-key;.
+
+<para>Questo dialogo permette di modificare la disposizione e la geometria delle tavole presenti nella finestra. Con il campo <emphasis>Numero</emphasis> &egrave; possibile aggiungere o rimuovere delle tavole . Selezionando la casella <emphasis>Collega gli assi X</emphasis>, tutti gli assi X diventano interdipendenti e le modifiche manuali fatte per un asse vengono applicate automaticamente anche agli altri assi.</para>
+
+<para>Si pu&ograve; specificare su quante righe o colonne si vogliono ordinare le tavole. Con le impostazioni predefinite, QtiPlot calcola le dimensioni delle tavole e adatta la finestra. Quando si attiva la funzione <emphasis>Dimensioni della tela della tavola</emphasis>, &egrave; possibile definire, in pixel, l'area della tavola in cui tracciare i grafici (tela del grafico). In questo caso QtiPlot aggiorna e adatta tutte le dimensioni. Con l'opzione <emphasis>Blocca le dimensioni</emphasis> attivata, quando si ridimensiona la finestra le dimensioni della tavola non vengono modificate.</para>
+
+<para>I controlli dei riquadri nella parte destra sono divisi in due gruppi. <emphasis>Allineamento</emphasis> e <emphasis>Distanza</emphasis> servono per allineare e distanziare le tavole nelle finestre. La voce <emphasis>Allinea</emphasis> prevede la possibilit&agrave; di allineare le tavole o le tele delle tavole. Quando si allineano le tele, la distanza impostata vale come distanza tra gli assi delle tavole. Quando si allineano le tavole, la distanza viene applicata ai bordi delle tavole. </para>
+
+<para>Con le opzioni del riquadro <emphasis>Scambia le tavole</emphasis> si pu&ograve; scambiare la posizione di due tavole alla volta.</para>
+  <figure id="fig-define-layer-1">
+    <title>La finestra di dialogo &arrange-layers-cmd; per posizionare le tavole in una finestra.</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/arrange-layers-dialog.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+
+  <para>Dopo aver completato le impostazioni, cliccando sul pulsante <emphasis>Applica</emphasis> o su <emphasis>OK</emphasis> si ottiene il riposizionamento dei grafici e delle finestre.</para>
+  <figure id="fig-define-layer-3">
+    <title>Esempio di allineamento verticale di due grafici.</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/define-layout-3.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+  <para>Quando vengono apportate successive modifiche a grafici gi&agrave; allineati, si pu&ograve; perdere l'allineamento. In questo caso si deve eseguire un nuovo allineamento &arrange-layers-cmd; .</para>
+</sect1>
+
+<!-- ************************************************** -->
+<!--		Arrow Dialog				-->
+<!-- ************************************************** -->
+<sect1 id="arrow-dialog">
+  <title>Opzioni per le linee</title>
+  <para>Questo dialogo permette di modificare le linee o le frecce che sono state create con il corrispondente comando dal men&ugrave; <link linkend="sec-graph-menu">Grafico</link> oppure con la combinazione di tasti &draw-arrow-key;. Il dialogo si apre anche con un doppio clic su una freccia o su una linea, oppure con un clic del destro su una linea o freccia e selezionando poi la voce <emphasis>Propriet&agrave;</emphasis>. </para>
+  <para>La prima scheda del dialogo &egrave; la scheda <emphasis>Linea</emphasis> e permette di cambiare il colore, il tipo o lo spessore delle linee. Lo spessore &egrave; definito in pixel. Si pu&ograve; definire un tipo di linea da usare per tutte le nuove linee con il pulsante <emphasis>Usa come predefinita</emphasis>.</para>
+  <figure id="fig-line-options-1">
+    <title>Opzioni per le linee e le frecce: la prima scheda.</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/line-options-1.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+  <para>La scheda <emphasis>Punta delle frecce</emphasis> si usa per modificare le frecce terminali. Si pu&ograve; definire un tipo di freccia da usare per tutte le nuove frecce con il pulsante <emphasis>Usa come predefinita</emphasis>.</para>
+  <figure id="fig-line-options-2">
+    <title>Opzioni per le linee e le frecce: la seconda scheda.</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/line-options-2.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+  <para>La scheda <emphasis>Dimensioni</emphasis> serve a stabilire le coordinate per il punto iniziale e il punto finale della linea o della freccia selezionata. Con il men&ugrave; a tendina della voce <emphasis>Unit&agrave;</emphasis>, si possono impostare le coordinate come valori degli assi X e Y letti a partire dall'angolo in basso a sinistra oppure come pixel conteggiati a partire dall'angolo in alto a sinistra.</para>
+  <figure id="fig-line-options-3">
+    <title>Opzioni per le linee e le frecce: la terza scheda.</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/line-options-3.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+  <para></para>
+
+</sect1>
+
+<!-- ************************************************** -->
+<!--		Column Options				-->
+<!-- ************************************************** -->
+<sect1 id="column-options-dialog">
+  <title>Opzioni per le colonne</title>
+  <para>Questo dialogo si attiva con il comando <link linkend="column-options-cmd">&column-options-cmd;</link> nel men&ugrave; <link linkend="sec-table-menu">Tabella </link>. Per usare questo comando si deve selezionare almeno una colonna.</para>
+  <figure id="fig-column-options">
+    <title>&column-options-cmd; .</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/column-options.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+  <para>La casella <emphasis>Numera le colonne a destra di questa</emphasis> si usa per rinominare tutte le colonne che sono a destra di quella selezionata. Se, per esempio, la colonna selezionata si chiama xyz, le colonne successive sono rinominate xyz1, xyz2 e cos&igrave; via.</para>
+  <para>I pulsanti &lt;&lt; e &gt;&gt; servono a selezionare colonna diversa senza chiudere la scheda. Il campo <emphasis>Nome della colonna</emphasis> riporta il nome della colonna selezionata. La colonna a cui viene applicato il formato &egrave; quella il cui nome appare in quel momento nel campo <emphasis>Nome della colonna</emphasis>.</para>
+  <para>Il selettore <emphasis>Designazione nel grafico</emphasis> serve a stabilire se, nel grafico, la colonna &egrave; da usare come X, Y , Z o barre di errore. In una tabella si possono impostare diverse colonne come colonne X, in questo caso assumono il nome X1, X2, ecc.. Le corrispondenti colonne Y si chiamano Y1, Y2, ecc. </para>
+ <para>Il campo <emphasis>Commento</emphasis> serve ad inserire un testo di commento delle colonne. Quando la casella <emphasis>Visualizza i commenti nell'intestazione</emphasis> &egrave; selezionata, questi commenti sono visualizzati nel titolo della colonna sotto il nome. </para>
+</sect1>
+
+<!-- ************************************************** -->
+<!--		Contour Curves Options			-->
+<!-- ************************************************** -->
+<sect1 id="contour-options-dialog">
+  <title>Opzioni per le curve di livello</title>
+  <para>Questo dialogo si apre cliccando su una curva di livello (o nell'area del grafico) in un grafico creato da una matrice mediante uno dei seguenti comandi del men&ugrave; &plot3d-menu-lnk;: &contour-color-lnk;, &contour-lines-lnk; oppure &gray-scale-lnk;.</para>
+
+  <figure id="fig-contour-options-9">
+    <title>Opzioni per le curve di livello: la scheda per i valori..</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/contour-curve-dialog-9.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+
+La scheda <emphasis>Valori</emphasis>   permette di scegliere la matrice da usare come sorgente dei dati per il grafico. &Egrave; possibile usare la formula definita per la matrice per calcolare i valori Z attivando la casella <emphasis>Usa la formula della matrice per calcolare i valori</emphasis>. Questo modo restituisce risultati molto precisi e la curva viene tracciata in modo accurato, ma funziona solo con formule scritte in modo compatibile con la sintassi muParser.
+
+  <figure id="fig-contour-options-1">
+    <title>Opzioni per le curve di livello: la scheda per i colori.</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/contour-curve-dialog-1.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+  <para>In questa scheda ci sono due gruppi di controlli: <emphasis>Immagine</emphasis> e <emphasis>Barra con scala dei colori</emphasis>. Ogni gruppo si attiva selezionando la casella vicino alla voce corrispondente. Il primo gruppo di controlli, chiamato <emphasis>Immagine</emphasis>, si riferisce ai colori da usare per i livelli. La casella <emphasis>Immagine</emphasis> si seleziona quando si desidera evidenziare i livelli con i colori. Se la casella non &egrave; selezionata, QtiPlot visualizza solo le curve e non la mappa. Con la casella <emphasis>Immagine</emphasis> selezionata, si pu&ograve; scegliere di colorare la mappa in tre modi diversi: scala in grigio, scala con colori predefiniti oppure scala con colori personalizzati. Nella figura seguente sono visualizzate la scala di grigio e la mappa dei colori predefiniti.</para>
+  <informalfigure id="fig-contour-options-5">
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/contour-curve-dialog-5.png"/>
+      </imageobject>
+    </mediaobject>
+  </informalfigure>
+  <informalfigure id="fig-contour-options-6">
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/contour-curve-dialog-6.png"/>
+      </imageobject>
+    </mediaobject>
+  </informalfigure>
+  <para>Per modificare la scala dei colori si deve attivare la casella <emphasis>Immagine</emphasis> poi scegliere la voce <emphasis>Tavolozza dei colori personalizzata</emphasis>. Viene visualizzata una scheda con il numero di livelli e il colore corrispondente ad ogni livello. Si possono aggiungere quanti livelli si desidera e abbinarli ai colori preferiti. I valori del primo e dell'ultimo livello non sono modificabili perch&egrave; corrispondono sempre al minimo e al massimo di Z, ma si pu&ograve; cambiare i loro colore. Ecco un classico esempio di personalizzazione:</para>
+    <informalfigure id="fig-contour-options-3">
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/contour-curve-dialog-3.png"/>
+      </imageobject>
+    </mediaobject>
+  </informalfigure>
+  <para>Quando la casella <emphasis>Usa la scala in colori</emphasis> &egrave; selezionata, per i livelli di Z intermedi a quelli definiti &egrave; applicato un colore ottenuto per interpolazione dei colori dei livelli definiti. &Egrave; possibile definire un colore diverso per ogni livello. Quando la casella <emphasis>Usa la scala in colori</emphasis> viene deselezionata, l'interpolazione non viene applicata e ogni livello assume il colore previsto nella scala. In questo caso si devono impostare molti livelli per ottenere un grafico efficace. </para>
+    <informalfigure id="fig-contour-options-4">
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/contour-curve-dialog-4.png"/>
+      </imageobject>
+    </mediaobject>
+  </informalfigure>
+  <para>Il secondo gruppo di controlli di questa scheda permette di visualizzare una barra con la scala dei colori. Si pu&ograve; stabilire la posizione e la larghezza di questa barra.</para>
+
+	<figure id="fig-contour-options-7">
+    <title>Opzioni per le curve di livello: la scheda per le curve di livello.</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/contour-curve-dialog-7.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+
+<para>La scheda <emphasis>Curve di livello</emphasis> serve a personalizzare le curve di livello. Si pu&ograve; impostare il numero di curve e il loro colore. Quando si seleziona <emphasis>Utilizza la penna predefinita</emphasis>, un riquadro a fianco permette di impostare il tipo di penna da usare per le curve.
+Quando si seleziona <emphasis>Usa la tavolozza dei colori</emphasis>, le curve sono tracciate con i colori definiti nella scheda <emphasis>Colori</emphasis> per la mappa secondo i valori di Z. Quando si seleziona <emphasis>Usa la tavolozza personalizzata</emphasis>, le curve sono tracciate con i colori personalizzati definiti nel riquadro superiore, secondo il valore di Z.</para>
+
+  <figure id="fig-contour-options-8">
+    <title>Opzioni per le curve di livello: la scheda per le etichette.</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/contour-curve-dialog-8.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+
+  <para>La scheda <emphasis>Etichette</emphasis> permette di visualizzare o nascondere le etichette dei valori Z per ogni curva. Le etichette si possono personalizzare. </para>
+
+</sect1>
+
+<!-- ************************************************** -->
+<!--		Custom Curves Dialog			-->
+<!-- ************************************************** -->
+<sect1 id="custom-curves-dialog">
+  <title>Opzioni per il grafico</title>
+  <para>Questo dialogo si apre con il comando <link linkend="format-plot-cmd">&format-plot-cmd;</link> dal men&ugrave; <link linkend="sec-format-menu">Formato</link>. Si apre anche con un doppio clic sul grafico oppure cliccando con il tasto destro sul grafico e selezionando <emphasis>Propriet&agrave;...</emphasis> nel men&ugrave; che viene aperto. Quando la finestra contiene pi&ugrave; di una tavola, QtiPlot si posiziona sulla tavola attiva. Le opzioni contenute in questa finestra di dialogo dipendono dal tipo di grafico selezionato.</para>
+  <figure id="fig-custom-curves-1">
+    <title>Opzioni per il grafico: propriet&agrave; della tavola (vers. 0.9.8.3).</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/custom-curves-1.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+<figure id="fig-custom-curves-1a">
+    <title>Opzioni per il grafico: propriet&agrave; della tavola (vers. 0.9.8.4).</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/custom-curves-1a.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+<para>Questa seconda scheda &egrave; presente solo nelle versioni recenti di QtiPlot. In essa si imposta il colore o l'immagine  e il tipo di bordo da usare per la tela del grafico.</para>
+<figure id="fig-custom-canvas-1a">
+    <title>Opzioni per il grafico: colore di sfondo per la tela.  (vers. 0.9.8.4).</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/custom-canvas-1a.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+<figure id="fig-custom-canvas-2a">
+    <title>Opzioni per il grafico: immagine di sfondo per la tela. (vers. 0.9.8.4).</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/custom-canvas-2a.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+<para>Nella seconda scheda si impostano forma e dimensioni della tavola.</para>
+  <figure id="fig-custom-curves-pie-2">
+    <title>Opzioni per il grafico: forma e dimensioni della tavola.</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/custom-layer-geometry.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+
+  <para>La terza scheda serve a personalizzare la velocit&agrave; di esecuzione del grafico. Questo pu&ograve; essere utile quando si devono elaborare grosse quantit&agrave; di dati. Per aumentare la velocit&agrave; &egrave; usato l'algoritmo di Douglas e Peucker che scompone la curva in tanti segmenti e ne costruisce una simile usando meno punti.
+
+Anche se la casella <emphasis>Modalit&agrave; veloce</emphasis> &egrave; selezionata, la filtrazione dei punti si attiva solo per le curve con un numero di punti superiore a quello indicato.
+  </para>
+  <figure id="fig-custom-curves-pie-2">
+    <title>Opzioni per il grafico: velocit&agrave; di tracciamento del grafico.</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/custom-layer-speed.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+
+  <para>La parte sinistra della finestra contiene l'elenco delle tavole del progetto e il sotto elenco delle tabelle collegate ai diversi grafici in lavorazione. L'altra parte della finestra visualizza le curve tracciate nella tavola. Si possono modificare le propriet&agrave; della curva selezionata. Cliccando su <emphasis>Dati associati ai tracciati</emphasis> si pu&ograve; cambiare la colonna di dati usata per produrre la curva. Questo comando apre un dialogo per selezionare in una tabella le colonne con dati di tipo X e Y.</para>
+
+  <figure id="fig-custom-curves-3">
+    <title>Opzioni per il grafico: gestione delle matrici associate al grafico.</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/custom-curves-3.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+ <para>Il pulsante <emphasis>Foglio di calcolo</emphasis> permette di accedere alla tabella che contiene la colonna usata per la curva.</para>
+
+<sect2 id="custom-curves-dialog-lines">
+<title>Personalizzare le curve nei grafici con linee e punti.</title>
+
+  <para>Nella prima scheda si stabilisce a quale asse associare la curva. Questo permette di rappresentare nello stesso grafico pi&ugrave; curve aventi scale diverse per x e/o y.</para>
+  <figure id="fig-custom-curves-line-1">
+    <title>Opzioni per il grafico: assegnazione degli assi.</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/custom-curves-axes.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+
+ <para>La seconda scheda serve a modificare le propriet&agrave; delle linee. Per maggiori informazioni sulle linee disponibili consultare la sezione &plot-menu-lnk;.</para>
+  <figure id="fig-custom-curves-line-1">
+    <title>Opzioni per il grafico: formato della linea.</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/custom-curves-4.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+
+  <para>La terza scheda serve per modificare le propriet&agrave; dei simboli usati per i punti.</para>
+  <figure id="fig-custom-curves-line-2">
+    <title>Opzioni per il grafico: formato dei punti.</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/custom-curves-2.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+
+    <para>La scheda <emphasis>Etichette</emphasis> serve per modificare le propriet&agrave; delle etichette.</para>
+  <figure id="fig-custom-curves-labels">
+    <title>Opzioni per il grafico: formato delle etichette.</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/custom-curves-labels.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+</sect2>
+<!-- Here* -->
+<sect2 id="custom-error-bars-box">
+<title>Personalizzare le barre di errore</title>
+  <figure id="fig-custom-error-bars">
+    <title>Opzioni per il grafico: propriet&agrave; per le barre di errore.</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/custom-error-bars.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+</sect2>
+
+<sect2 id="custom-curves-dialog-pie">
+<title>Personalizzare i grafici a settori</title>
+  <para>Questo comando &egrave; disponibile per i <link linkend="pie-cmd"> grafici a settori </link>. La prima scheda permette, nella prima parte, la personalizzazione dei settori. Si pu&ograve; modificare la linea del bordo, il suo colore ecc.</para>
+  <para>La seconda parte di questa scheda permette di definire il colore di riempimento dei settori. Con il pulsante <emphasis>Colore del primo settore</emphasis> si decide il colore da usare nel primo settore, gli altri sono applicati secondo l'ordine definito nella lista dei colori. Le impostazioni predefinite prevedono il colore nero per il primo settore, il colore 2 per il secondo settore e cos&igrave; di seguito.</para>
+  <para>Il <emphasis>Tipo di riempimento</emphasis> &egrave; applicato a tutti i settori. Le impostazioni predefinite prevedono il colore pieno.</para>
+  <figure id="fig-custom-curves-pie-1">
+    <title>Opzioni per il grafico a settori: propriet&agrave; dei settori.</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/custom-curves-pie-1.png"/>
+
+
+
+      </imageobject>
+    </mediaobject>
+  </figure>
+
+  <figure id="fig-custom-curves-pie-2">
+    <title>Opzioni per il grafico a settori: forma dei settori.</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/custom-curves-pie-2.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+
+  <figure id="fig-custom-curves-pie-3">
+    <title>Opzioni per il grafico a settori: propriet&agrave; delle etichette.</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/custom-curves-pie-3.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+</sect2>
+
+<sect2 id="custom-curves-dialog-box">
+<title>Personalizzare i grafici scatola e baffi</title>
+  <figure id="fig-custom-curves-box-1">
+    <title>Opzioni per i grafici scatola e baffi: propriet&agrave; del riempimento.</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/custom-curves-box-1.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+
+  <figure id="fig-custom-curves-box-2">
+    <title>Opzioni per i grafici scatola e baffi: propriet&agrave; della scatola e dei baffi (vers 0.9.8.3).</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/custom-curves-box-2.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+<figure id="fig-custom-curves-box-2a">
+    <title>Opzioni per i grafici scatola e baffi: propriet&agrave; della scatola e dei baffi (vers 0.9.8.4).</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/custom-curves-box-2a.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+  <figure id="fig-custom-curves-box-3">
+    <title>Opzioni per i grafici scatola e baffi: propriet&agrave; del percentile (vers 0.9.8.3).</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/custom-curves-box-3.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+
+<figure id="fig-custom-curves-box-3a">
+    <title>Opzioni per i grafici scatola e baffi: propriet&agrave; del percentile (vers 0.9.8.4).</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/custom-curves-box-3a.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+
+</sect2>
+
+<sect2 id="custom-curves-dialog-histogram">
+<title>Personalizzare gli istogrammi</title>
+  <figure id="fig-custom-curves-histogram-1">
+    <title>Opzioni per i grafici con istogrammi: propriet&agrave; del riempimento.</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/custom-curves-histogram-1.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+  <figure id="fig-custom-curves-histogram-2">
+    <title>Opzioni per i grafici con istogrammi: propriet&agrave; degli spazi (distanze tra le barre).</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/custom-curves-histogram-2.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+  <figure id="fig-custom-curves-histogram-3">
+    <title>Opzioni per i grafici con istogrammi: propriet&agrave; dei dati.</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/custom-curves-histogram-3.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+</sect2>
+
+</sect1>
+
+<!-- ************************************************** -->
+<!--		Add surface function			-->
+<!-- ************************************************** -->
+<sect1 id="define-surface-plot-dialog">
+  <title>Impostare un nuovo grafico di superficie 3D</title>
+  <para>Questo dialogo si apre quando si usa il comando &new-surface-3d-plot-cmd;. Serve per definire una funzione con due variabili. L'unico sistema di coordinate disponibile per un grafico di superficie &egrave; quello cartesiano e la funzione &egrave; del tipo <emphasis>z= f(x,y)</emphasis>.</para>
+  <figure id="fig-define-surface-plot-dialog">
+    <title>La finestra di dialogo &new-surface-3d-plot-cmd; (funzione).</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/define-surface-plot.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+  <para>Si pu&ograve; stabilire la scala per X, Y, Z e definire i parametri della griglia.</para>
+
+<para>Si pu&ograve; anche creare un grafico di superficie <emphasis>Parametrica</emphasis>. I soli parametri che si possono inserire sono la latitudine e la longitudine rappresentati dalle variabili <varname>u</varname> e <varname>v</varname>. Nell'esempio si produce il grafico di una sfera con raggio uguale a uno.</para>
+  <figure id="fig-define-param-surface-plot-dialog">
+    <title>La finestra di dialogo &new-surface-3d-plot-cmd; (parametrica).</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/define-param-surface-plot.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+
+<para>Nel caso di una superficie parametrica, si pu&ograve; definire l'ampiezza da disegnare impostando i due parametri per l'angolo e si pu&ograve; impostare le propriet&agrave; della griglia. Richiedendo pi&ugrave; righe o colonne nella griglia, si migliora la risoluzione, ma si usa pi&ugrave; memoria e si rallenta l'operazione.</para>
+
+<para>Si pu&ograve; anche fornire informazioni sulla simmetria rotazionale per disegnare la rotazione della superficie parametrica, selezionando le caselle <varname>Periodic</varname> ( una per ogni parametro).</para>
+</sect1>
+<!-- ************************************************** -->
+<!--		Export ASCII				-->
+<!-- ************************************************** -->
+<sect1 id="export-ascii-dialog">
+  <title>Esportare file ASCII</title>
+      <indexterm><primary>table</primary></indexterm>
+  <para>Questo dialogo si apre selezionando il comando <link linkend="export-ascii-cmd">&export-ascii-cmd;</link> dal men&ugrave; <link linkend="sec-file-menu">File</link>. Il comando &egrave; disponibile quando il progetto contiene almeno una tabella.</para>
+  <para>Questo comando si usa per esportare tutti o una parte dei dati da un progetto a un file ASCII. In alternativa si pu&ograve; scegliere di esportare una tabella o una matrice in formato .tex, .odf o .html.</para>
+  <para>Nel seguente esempio di esportazione di una selezione di dati da una tabella a un file ASCII, il nome della colonna selezionata &egrave; esportato nella prima riga del file. Quando &egrave; selezionata l'opzione <emphasis>Includi i commenti della colonna</emphasis>, i commenti dell'intestazione sono esportati nella seconda riga del file. Come separatore di colonne &egrave; usato il carattere TAB. Quando, come nell'esempio, la casella <emphasis>Esporta selezione</emphasis> viene selezionata sono esportate solo le colonne selezionate.</para>
+  <figure id="fig-export-ascii">
+    <title>Esportare una selezione di dati da una tabella a un file ASCII</title>
+    
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/export-ascii.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+<para>Quando la casella <emphasis>Includi i nomi delle colonne</emphasis> non &egrave; selezionata, le colonne sono esportate con il nome C1,C2, ecc.. Il formato dei numeri viene mantenuto anche nel file ASCII, questo permette di esportare i dati con sufficiente precisione.</para>
+</sect1>
+
+<!-- ************************************************** -->
+<!--		FFT					-->
+<!-- ************************************************** -->
+<sect1 id="fft-dialog">
+  <title>Trasformata di Fourier veloce</title>
+  <para>Il dialogo &fft-cmd; si applica sia a tabelle che a grafici. Si usa per calcolare sia la trasformata diretta che la trasformata inversa. Per degli esempi consultare le sezione <link linkend="sec-fft">FFT </link> nel capitolo <link linkend="analysis">Analisi</link> .</para>
+
+  <figure id="fig-fft-dialog-curve">
+    <title>La finestra di dialogo &fft-cmd; per una curva in un grafico.</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/fft-dialog-curve.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+  <para>Con questo comando QtiPlot crea una nuova finestra che contiene un grafico dell'ampiezza della curva FFT e una nuova tabella di dati per la parte reale, la parte immaginaria, l'ampiezza e l'angolo della FFT. </para>
+  <para>Quando la casella <emphasis>Normalizza l'ampiezza</emphasis> &egrave; selezionata, l'ampiezza della curva viene normalizzata a 1. Quando &egrave; selezionata la casella <emphasis>Centra la frequenza....</emphasis>, la frequenza viene spostata e centrata su 0 Hz.</para>
+  <figure id="fig-fft-dialog-table">
+    <title>La finestra di dialogo &fft-cmd; per i dati in una tabella.</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/fft-dialog-table.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+  <para>Nel caso di una tabella si deve selezionare una colonna X per i campioni e una colonna  Y (per la parte reale) oppure, nel caso di numeri complessi, due colonne Y (una per la parte reale e una per la parte immaginaria). Se le colonne contengono dei numeri complessi, la prima colonna &egrave; la parte reale di Y e la seconda colonna la parte immaginaria. Se i valori di Y sono dei semplici numeri reali, non &egrave; necessario selezionare  una parte immaginaria e si pu&ograve; lasciare il campo vuoto.</para>
+  <para>Per impostazione predefinita, l'intervallo di campionatura corrisponde all'intervallo tra due valori X. Impostare un valore minore non serve, si pu&ograve; incrementare il valore per eseguire meno campionamenti.</para>
+</sect1>
+
+<!-- ************************************************** -->
+<!--		Integrate dialog			-->
+<!-- ************************************************** -->
+<sect1 id="integrate-dialog">
+  <title>Integrare la funzione</title>  
+<sect2><title>Integrare la funzione (vers.0.9.8.4)</title>  
+<para>Questo dialogo si apre quando si seleziona il comando &integrate-function-cmd; nel men&ugrave; &analysis-menu-lnk;. Cliccando sul pulsante <emphasis>Integrare</emphasis> si esegue una integrazione numerica della funzione definita dall'utente.</para>
+<para>La funzione si definisce nel campo di testo <emphasis>Funzione</emphasis>.  Una casella combinata elenca e mette a disposizione le funzioni interne gi&agrave; definite. Con il pulsante <emphasis>Aggiungi</emphasis> si copia la funzione selezionata dalla casella combinata al campo di testo, nel punto in cui si trova il cursore. Con il pulsante <emphasis>Cancella</emphasis> si cancella l'intero contenuto del campo <emphasis>Funzione</emphasis>. Cliccando sul pulsante <emphasis>Recenti</emphasis> si apre la finestra di dialogo <emphasis>Funzioni recenti</emphasis> dove una casella combinata elenca le funzioni usate di recente. Selezionando una di queste e facendo clic su <emphasis>OK</emphasis> si sostituisce la funzione contenuta nel campo <emphasis>Funzione</emphasis> con quella  selezionata.</para>
+<para>Il secondo campo di testo visualizza il nome della variabile indipendente della funzione (cio&egrave;, la variabile di integrazione), per impostazione predefinita la variabile &egrave; x.</para>
+ <para>Il terzo parametro &egrave; il numero massimo di sottointervalli che l'algoritmo di integrazione pu&ograve; utilizzare per integrare la funzione. Il valore di default 1000 dovrebbe funzionare in quasi tutte le circostanze.</para>
+<para>Il quarto parametro &egrave; il limite di <emphasis>Tolleranza</emphasis>. Valori piccoli costringono l'algoritmo a utilizzare molti sottointervalli. Il valore di default 0,01 dovrebbe funzionare per la maggior parte delle funzioni. I due campi successivi definiscono il limite inferiore e il limite superiore di integrazione. Impostare questi valori come si desidera.</para>
+<para>L'ultimo elemento di controllo &egrave; la casella <emphasis>Viualizza l'area nel grafico</emphasis>. Selezionare questa opzione quando si vuole tracciare il grafico della funzione integrata nella tavola attiva. Per ottenere una tabella con i dati del tracciato fare clic con il taso destro sulla curva prodotta e selezionare il comando <emphasis>Foglio di calcolo</emphasis>.</para>
+  <figure id="fig-integrate-dialoga">
+    <title>La finestra di dialogo &integrate-cmd; (vers. 0.9.8.4).</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/integrate-dialoga.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+  <para>La tabella dei <link linkend="sec-intro-log-window">Risultati delle analisi</link> di integrazione si visualizza con <link linkend="sec-intro-project-explorer">Esploratore del progetto</link>.</para>
+</sect2>
+<sect2> 
+  <title>Integrare la funzione (vers. 0.9.8.3)</title>
+  <para>Questo dialogo si apre quando si seleziona il comando &integrate-function-cmd; nel men&ugrave; &analysis-menu-lnk;.
+  Il primo campo di testo della finestra <emphasis>Funzione</emphasis> permette di digitare la funzione che si vuole integrare. Il secondo campo di testo visualizza il nome della variabile indipendente della funzione (cio&egrave;, la variabile di integrazione), per impostazione predefinita la variabile &egrave; x. Il terzo parametro &egrave; <emphasis>Ordine dell'integrazione</emphasis>: ordine 1 corrisponde alla regola trapezoidale, in questo caso la curva &egrave; prodotta unendo direttamente con un segmento due punti consecutivi. Scegliendo ordine 2, sono usati tre punti e la curva &egrave; prodotta con un polinomio di secondo grado. Quando si dispone di una grande quantit&agrave; di punti, l'ordine 1 &egrave; sufficiente. </para>
+  <figure id="fig-integrate-dialog">
+    <title>La finestra di dialogo &integrate-cmd; (vers. 0.9.8.3).</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/integrate-dialog.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+  <para>La tabella dei <link linkend="sec-intro-log-window">Risultati delle analisi</link> di integrazione si visualizza con <link linkend="sec-intro-project-explorer">Esploratore del progetto</link>.</para>
+</sect2>
+</sect1>
+
+<!-- ************************************************** -->
+<!--		Fit Wizard			-->
+<!-- ************************************************** -->
+<sect1 id="non-linear-curve-fit-dialog">
+  <title>Adattamento guidato</title>
+  <para>Questo dialogo si apre selezionando il comando <link linkend="non-linear-curve-fit-cmd">&non-linear-curve-fit-cmd;</link> nel men&ugrave; <link linkend="sec-analysis-menu-plot">Analisi</link>. Il comando &egrave; disponibile quando &egrave; attiva una finestra di tabella o di grafico. Se &egrave; attiva una finestra di tabella, il comando crea subito un grafico derivato dalle colonne selezionate nella tabella.</para>
+  <para>Questo dialogo serve per eseguire un adeguato adattamento dei punti dati usando una funzione matematica. L'adattamento &egrave; eseguito cercando una funzione che si avvicini il pi&ugrave; possibile ad un'interpolazione dell'insieme di dati (punti dati). La funzione minimizza la somma dei quadrati delle distanze dai punti dati riducendo al minimo la differenza dei minimi quadrati tra i punti dati e i valori Y della funzione.</para>
+  <sidebar>
+    <title>Nota:</title>
+    <para>Quando si modificano i valori dei punti dati, la curva dell'adattamento non viene aggiornata. Per aggiornare la curva si deve rimuovere quella precedente e ripetere l'adattamento utilizzando la stessa funzione con i nuovi dati.</para>
+  </sidebar>
+  <para>I riquadri superiori di questa scheda di dialogo servono a scegliere una funzione tra quelle gi&agrave; definite e disponibili. Sono previste quattro categorie di funzioni: le funzioni che l'utente ha definito e salvato, le funzioni (interne) classiche proposte da QtiPlot nel men&ugrave; Analisi, le funzioni di base (sin, cos, log, ...) e quelle di estensione o plugins. </para>
+  <para>Per usare una di queste funzioni basta selezionarla e cliccare sulla casella <emphasis>Adatta usando ...</emphasis>, sotto ai riquadri, per confermare.</para>
+  <para>Per definire una propria funzione si usa la parte inferiore della finestra. Si pu&ograve; digitare interamente la funzione o usare i pulsanti per selezionare e aggiungere delle funzioni gi&agrave; definite e disponibili. Per aggiungere funzioni si usa il pulsante <emphasis>Aggiungi espressione</emphasis>. Quando la scrittura dell'espressione personalizzata &egrave; completata, fare clic sul pulsante <emphasis>Salva</emphasis> per aggiungere la funzione all'elenco delle funzioni definite dall'utente. La definizione presente nel campo <emphasis>Nome</emphasis> &egrave; utilizzata per il nome della funzione. Una copia della funzione viene salvata su disco con l'estensione <emphasis>. fit</emphasis>. &Egrave; possibile stabilire la cartella in cui salvare i file <emphasis>. fit</emphasis>  utilizzando il pulsante <emphasis>Scegli la cartella dei modelli ...</emphasis> (visibile solo quando &egrave; selezionata <emphasis>Definita dall'utente</emphasis>), oppure selezionando una nuova cartella nella finestra di dialogo <emphasis>Salva</emphasis>. Per rimuovere una funzione dalla lista definita dall'utente basta selezionarla e fare clic sul pulsante <emphasis>Rimuovi</emphasis>. Un avviso chiede di confermare l'eliminazione.</para>
+  <para>Il primo passaggio serve a definire la funzione da usare per l'adattamento. Quando questa operazione &egrave; conclusa fare clic sull'icona &next-icon; per attivare la sessione di adattamento.</para>
+  <figure id="fig-non-linear-curve-fit-1">
+    <title>La finestra del primo passo per eseguire un &non-linear-curve-fit-cmd; .</title>
+   
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/fit-dialog1.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+  <para>Il secondo passaggio serve a definire i parametri per l'adattamento. Si inseriscono i dati iniziali per eseguire l'adattamento.</para>
+  <figure id="fig-non-linear-curve-fit-2">
+    <title>La finestra del secondo passo per eseguire un &non-linear-curve-fit-cmd; .</title>
+    
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/fit-dialog2.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+  <para>In questa seconda scheda si stabilisce anche il metodo di ponderazione per l'adattamento. Il metodo predefinito &egrave;: senza ponderazione. I metodi di ponderazione disponibili sono:</para>
+  	  <orderedlist>
+	  <listitem>
+  	   <para>Senza peso: tutti i coefficienti di ponderazione sono impostati uguali a 1 (<emphasis>w<subscript>i</subscript> = 1</emphasis>). </para>
+  	  </listitem>
+  	  <listitem>
+  	   <para>Strumentale: i valori delle barre di errori associate sono usati come coefficienti di ponderazione <emphasis>w<subscript>i</subscript> = 1/er<subscript>i</subscript><superscript>2</superscript></emphasis>, dove <emphasis>er<subscript>i</subscript></emphasis> sono i valori delle barre di errori inseriti nelle corrispondenti colonne . Prima di eseguire l'adattamento si deve aggiungere una barra di errori Y alla curva da analizzare.</para>
+  	  </listitem>
+  	  <listitem>
+  	    <para>Statistico: il coefficiente di ponderazione &egrave; calcolato come <emphasis>w<subscript>i</subscript> = 1/y<subscript>i</subscript></emphasis>,
+		dove <emphasis>y<subscript>i</subscript></emphasis> sono i valori di y nei dati analizzati.</para>
+  	  </listitem>
+  	  <listitem>
+  	    <para>Dati arbitrari: per i coefficienti di ponderazione si usa un gruppo di dati arbitrario (a piacere) <emphasis>w<subscript>i</subscript> = 1/c<subscript>i</subscript></emphasis><superscript>2</superscript>,
+		dove <emphasis>c<subscript>i</subscript></emphasis> sono i valori di un gruppo di dati arbitrario contenuto in una colonna.
+		La colonna dei dati usata per la ponderazione deve avere un numero di righe uguale al numero di punti della curva analizzata. </para>
+  	  </listitem>
+	  <listitem>
+  	    <para>Peso diretto: per i coefficienti di ponderazione si usa un gruppo di dati arbitrario <emphasis>w<subscript>i</subscript> = c<subscript>i</subscript></emphasis>,
+		dove <emphasis>c<subscript>i</subscript></emphasis> sono i valori di un gruppo di dati a piacere.
+		La colonna usata per la ponderazione deve avere un numero di righe uguale al numero di punti della curva analizzata. </para>
+  	  </listitem>
+  	</orderedlist>
+  <para>Dopo l'adattamento, si apre una finestra che visualizza il rapporto sui risultati del processo di adattamento .</para>
+  <para>Secondo le impostazioni della scheda <emphasis>Parametri in uscita</emphasis>, ad ogni modellazione o adattamento, viene creata una curva di funzione (se &egrave; selezionata l'opzione <emphasis>Genera la curva dell'adattamento usando &rarr; Dei dati X distribuiti uniformemente</emphasis>) o una nuova tabella (se &egrave; selezionata l'opzione <emphasis>Genera la curva dell'adattamento usando &rarr; I dati X originali usati per l'adattamento</emphasis>). La nuova tabella comprende tutti i valori X e Y usati per calcolare e tracciare il grafico della funzione. La tabella &egrave; preimposta come nascosta, si visualizza con <link linkend="project-explorer-dialog">Esploratore dei progetti</link>.</para>
+  <sidebar>
+  <title>NdT: copia di quanto descritto per la finestra di dialogo Preferenze alla scheda Adattamenti.</title>
+  <para>Selezionando l'icona <emphasis>Adattamenti</emphasis> si apre la sesta scheda della finestra di dialogo delle preferenze. Questa scheda &egrave; utilizzata per impostare i parametri di adattamento predefiniti. La maggior parte delle opzioni sono standard e facilmente comprensibili. A prima vista, invece il parametro <emphasis>Genera la curva dell'adattamento usando</emphasis> pu&ograve; essere fonte di confusione. Anche se &egrave; consuetudine tracciare una curva di adattamento di tipo y = f (x) utilizzando <emphasis>i dati X originali utilizzati nelle operazioni di adattamento</emphasis>, QtiPlot fornisce un'alternativa (selezionando l'opzione <emphasis>Dei dati X distribuiti uniformemente</emphasis>) che permette di tracciare la curva con un numero di punti dati per X determinato dall'utente (default = 100) e distribuito in modo uniforme su tutto l'intervallo X dell'adattamento. Dato che un adattamento lineare &egrave; completamente definito da 2 punti, , &egrave; possibile impostare QtiPlot (selezionando la casella 2 punti per gli adattamenti lineari) in modo che, di default, usi semplicemente 2 punti dati per tracciare gli adattamenti lineari.</para>
+  </sidebar>
+  <para>La terza scheda &egrave; usata per personalizzare i dati in uscita dopo una operazione di adattamento.</para>
+  <figure id="fig-non-linear-curve-fit-4">
+    <title>La finestra del terzo passo per eseguire un &non-linear-curve-fit-cmd; .</title>
+    
+    
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/fit-dialog4.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+
+<para>Questa scheda di dialogo fornisce i controlli da usare per valutare la bont&agrave; dell'adattamento.
+Il pulsante <emphasis>Grafico degli scarti residui</emphasis> serve per tracciare il grafico degli scarti residui. I pulsanti <emphasis>Bande di confidenza</emphasis> e <emphasis>Bande di previsione</emphasis> servono a tracciare i limiti di confidenza e di previsioni dell'adattamento corrente, secondo il valore di confidenza impostato dall'utente.
+</para>
+
+<para>
+Dopo l'esecuzione dell'adattamento, una serie di dati statistici viene visualizzata nel pannello <link linkend="sec-intro-log-window">Risultati delle analisi</link> per consentire di valutare la bont&agrave; dell'adattamento. I dati visualizzati sono:
+<orderedlist>
+  	  <listitem>Chi^2/doF chiquadro/gradi di libert&agrave;</listitem>
+  	  <listitem>R-square R quadro R quadrato</listitem>
+  	  <listitem>Adjusted R-square R quadro corretto</listitem>
+  	  <listitem>RMSE (Root Mean Squared Error) Radice dell'errore quadratico medio</listitem>
+  	  <listitem>RSS (Residual Sum of Squares) Somma dei quadrati degli errori o Somma dei quadrati degli scarti residui</listitem>
+</orderedlist>
+
+In
+<ulink url="http://www.mathworks.com/access/helpdesk_r13/help/toolbox/curvefit/ch_fitt9.html">www.mathworks.com</ulink> sono disponibili maggiori informazioni sul significato dei dati statistici.
+</para>
+
+<para>Come impostazione predefinita, gli errori riportati non sono automaticamente scalati con la radice quadrata di chi quadro ridotto (chi quadro/gradi di libert&agrave; ). Questa operazione si esegue attivando l'opzione <emphasis>Pesa gli errori con radice(Chi^2/doF)...</emphasis></para>
+
+</sect1>
+
+<!-- ************************************************** -->
+<!--		General Plot Options			-->
+<!-- ************************************************** -->
+<sect1 id="plot-options-dialog">
+  <title>Opzioni generali per il grafico</title>
+  <para>La prima scheda serve per le impostazioni generali delle scale usate nei grafici a due o tre assi.</para>
+  <figure id="fig-plot-options-1-dialog">
+    <title>Opzioni generali del grafico: la scheda Scale.</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/plot-options-1.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+  <para>In questa scheda si imposta il numero di suddivisioni di ogni asse. Questa operazione si pu&ograve; eseguire in due modi. 1) Si pu&ograve; impostare il numero di etichette da usare in tutta la scala. Qualunque sia il numero inserito, &appname; usa il valore che produce il grafico esteticamente migliore: per esempio se vengono impostati 7 suddivisioni per una scala da 0 a 100, &appname; usa 10 suddivisioni di 10 in 10. 2) Per ottenere una suddivisione non classica, si pu&ograve; impostare il <emphasis>passo</emphasis> delle suddivisioni.</para>
+  <para>La scheda delle griglie serve per disegnare le griglie nel grafico. Il numero di linee tracciate dipende dal numero di etichette e di suddivisioni principali impostate nella scheda <emphasis>Scale</emphasis> .</para>
+  <figure id="fig-plot-options-2-dialog">
+    <title>Opzioni generali del grafico: la scheda Griglie.</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/plot-options-2.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+  <para>La terza scheda serve per modificare le impostazioni di ogni asse. Nel riquadro laterale si seleziona l'asse da personalizzare. Le impostazioni di questa scheda non si applicano al titolo o nome dell'asse. L'etichetta dell'asse si modifica con le opzioni per i titoli, per maggiori informazioni vedere la sezione <link linkend="text-options-dialog">Opzioni per i testi</link> . Sinteticamente: sull'etichetta dell'asse fare clic con il destro e scegliere <emphasis>Propriet&agrave;</emphasis>.</para>
+  <figure id="fig-plot-options-3-dialog">
+    <title>Opzioni generali del grafico: la scheda Assi.</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/plot-options-3.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+  <para>La scheda <emphasis>Generale</emphasis> serve a personalizzare l'aspetto globale del grafico. Per tela si intende l'area di disegno delimitata dagli assi. Si pu&ograve; tracciare il bordo della tela o lasciare la tela priva di bordo, si pu&ograve; impostare un colore per lo sfondo della tela o lasciare l'area bianca. Per modificare la distanza tra i bordi della finestra e l'area del disegno (tela), si devono modificare i parametri della tavola (manualmente con il mouse oppure con la finestra di dialogo  <link linkend="arrange-layers-dialog">Posiziona le tavole</link>).</para>
+  <para>NdT: nella mia versione di QtiPlot, gli sfondi non si impostano in questa scheda, ma si impostano con il comando <emphasis>Opzioni per il grafico</emphasis> o cliccando con il destro sul grafico e scegliendo <emphasis>Propriet&agrave;</emphasis>. Sempre nella mia versione, anche il parametro margine, che controlla la distanza tra il bordo della finestra e l'area del grafico (tela), si trova nelle <emphasis>Opzioni per il grafico</emphasis>.</para>
+  <figure id="fig-plot-options-4-dialog">
+    <title>Opzioni generali del grafico: la scheda Generale.</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/plot-options-4.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+  <para>I parametri del gruppo <emphasis>Assi</emphasis> modificano il tipo di linea per gli assi e per le tacche di suddivisione.</para>
+</sect1>
+
+<!-- ************************************************** -->
+<!--		Plot Wizard				-->
+<!-- ************************************************** -->
+<sect1 id="plot-wizard-dialog">
+  <title>Grafico guidato</title>
+  <para>Questa finestra si apre con il comando <link linkend="plot-wizard-cmd">&plot-wizard-cmd;</link> che si trova nel men&ugrave; <link linkend="sec-view-menu">Visualizza</link> o con la combinazione di tasti &plot-wizard-key; . Questo comando &egrave; sempre disponibile, indipendentemente dal tipo di finestra selezionata.</para>
+  <para>Con questo dialogo si realizza un nuovo grafico partendo da colonne disponibili in tabelle del progetto in corso. Si seleziona prima la tabella da usare, poi si clicca su <emphasis>Nuova curva</emphasis> per creare la curva.
+  Dopo si aggiunge almeno una colonna X e una colonna Y. Si pu&ograve; anche selezionare una o pi&ugrave; colonne di errori X o Y. Si clicca infine su <emphasis>Grafico</emphasis> per visualizzare la tavola. Il grafico viene tracciato secondo le impostazioni predefinite per le curve dei grafici 2D nel dialogo <link linkend="preferences-dialog">Preferenze</link> .</para>
+  <para>Nell'esempio seguente viene prodotta una curva usando i dati della Tabella 1 e un'altra usando i dati della Tabella 2 (con barre di errori X).</para>
+  <figure id="fig-plot-wizard">
+    <title>La finestra di dialogo Assistente grafico.</title>  
+    
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/plot-wizard.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+</sect1>
+
+
+<!-- ************************************************** -->
+<!--		Project Explorer			-->
+<!-- ************************************************** -->
+<sect1 id="project-explorer-dialog">
+  <title>L'esploratore del progetto</title>
+  <para>L'esploratore del progetto si apre con il comando <emphasis>Esploratore dei progetti</emphasis> che si trova nel men&ugrave; <emphasis>Visualizza</emphasis> e mostra l'elenco di tutti gli oggetti, tabelle, grafici, ecc., contenuti nel progetto. Mediante i relativi men&ugrave; contestuali si aggiungono cartelle o finestre, si cercano gli oggetti, si rendono visibili quelli nascosti o viceversa, si eseguono rinomina o ridimensionamento e stampa. Si pu&ograve; inoltre visualizzare i collegamenti e le dipendenze tra gli oggetti del progetto o le loro propriet&agrave;</para>
+  <figure id="fig-project-explorer-1">
+    <title>Il pannello dell'esploratore dei progetti.</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/explorer1.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+</sect1>
+
+<!-- ************************************************** -->
+<!--		Preferences Dialog			-->
+<!-- ************************************************** -->
+<sect1 id="preferences-dialog">
+  <title>La finestra di dialogo Preferenze</title>
+  
+<para>La finestra di dialogo <emphasis>Preferenze</emphasis> si trova nel men&ugrave; <emphasis>Modifica</emphasis> e serve a personalizzare il comportamento predefinito di QtiPlot. Questo dialogo &egrave; strutturato in sei diverse sezioni selezionabili utilizzando una delle icone dalla colonna sul lato sinistro della finestra di dialogo. Ogni sezione &egrave; a sua volta suddivisa in un numero adeguato di schede.</para>
+<para>Per tutte le sezioni, il nome della scheda selezionata si trova nella parte superiore della finestra. Lungo il bordo inferiore della finestra ci sono sempre 4 pulsanti: <emphasis>Ripristina le opzioni di default</emphasis>, <emphasis>Applica</emphasis>, <emphasis>OK</emphasis> e <emphasis>Annulla</emphasis>. Le modifiche devono essere confermate utilizzando il pulsante <emphasis>Applica</emphasis> o <emphasis>OK</emphasis>. Ripetendo il comando <emphasis>OK</emphasis> si chiude il dialogo. Quando si confermano le modifiche con il pulsante <emphasis>Applica</emphasis>, le nuove impostazioni sono subito applicate e salvate come impostazioni predefinite. Il pulsante <emphasis>Annulla</emphasis> non annulla le modifiche che sono gi&agrave; state confermate, ma permette di uscire dal dialogo senza confermare quelle in sospeso. Infine, il pulsante <emphasis>Ripristina le opzioni di default</emphasis> consente di ripristinare le impostazioni di default originali del programma per tutti gli elementi della sezione o della scheda visibile. Questo &egrave; utile quando non si ricordano le modifiche apportate alle impostazioni originali.</para>
+
+<sect2>
+  <title>Preferenze generali</title>
+<para>Cliccando sull'icona &general-icon; Generale si apre la sezione <emphasis>Generale</emphasis> del dialogo per le <emphasis>Preferenze</emphasis>. I controlli di questa sezione sono suddivisi in sei schede. Ogni scheda si riferirisce a un gruppo di opzioni correlate. </para>
+  <figure id="fig-preferences-dialog-1">
+    <title>Preferenze: i parametri generali per l'applicazione.</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/preferences-dialog1.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+<sect3>
+<title>La scheda Applicazione</title>
+<para>I controlli della scheda <emphasis>Applicazione</emphasis> servono a definire varie impostazioni generali del programma.</para>
+<para>La casella combinata <emphasis>Lingua</emphasis> elenca le traduzioni disponibili in QtiPlot. Selezionare una lingua da questo elenco. I comandi, le etichette del programma, ecc, sono subito visualizzati in questa lingua. Tutte le traduzioni disponibili possono essere scaricate al seguente indirizzo: <ulink url="http://soft.proindependent.com/translations.html"> http://soft.proindependent.com/translations.html</ulink>. L'impostazione predefinita presume che il file della traduzione sia collocato nella cartella <emphasis>tranlations</emphasis>, situata nella stessa posizione dell'eseguibile di &appname;, per poter essere caricata con l'applicazione, ma &egrave; possibile usare una cartella diversa impostandola attraverso la scheda <link linkend="indirizzifile">Indirizzi dei file</link>.</para>
+<para>La casella combinata <emphasis>Stile</emphasis> serve per definire lo stile utilizzato da QtiPlot per la decorazioni delle finestre. Questo comprende gli aspetti stilistici dei pulsanti, delle finestre di dialogo, dei bordi delle finestre e dei titoli, ecc.... Gli stili disponibili sono quelli attualmente disponibili nelle librerie Qt.</para>
+<para>Il selettore <emphasis>Scegli il carattere</emphasis> seleziona il tipo di carattere utilizzato per la GUI (menu, finestre di dialogo, ecc.). Il tipo di carattere generale utilizzato per la GUI (menu, finestre di dialogo, ecc) non &egrave; applicato ai grafici.</para>
+<para>La casella combinata <emphasis>Linguaggio degli script predefinito</emphasis> &egrave; utilizzato per impostare il linguaggio di script. muParser &egrave; il liguaggio di default. Anche Python &egrave; disponibile quando in QtiPlot &egrave; stato compilato il supporto per Python. </para>
+ <para>Il parametro <emphasis>Modifiche alla matrice da conservare per correzioni</emphasis> &egrave; il numero di operazioni che possono essere annullate o ripetute quando si lavora su una matrice. Di default &egrave; impostato su dieci operazioni. Un valore alto di questo parametro pu&ograve; essere molto dispendioso in termini di consumo di memoria, soprattutto con le matrici di grandi dimensioni.</para>
+  <para>Il campo <emphasis>Carattere di fine della riga</emphasis> definisce il carattere di fine riga convenzionale utilizzato da &appname; per le operazioni di copia / incolla e per l'esportazione di matrici / tabelle in file ASCII. Il carattere di fine della riga convenzionale pu&ograve; essere solamente: Line Feed (LF), Carriage Return + Line Feed (CRLF) o Carriage Return (CR).</para>
+<para>Il campo <emphasis>Avvia i nuovi progetti partendo da</emphasis> serve per stabilire il tipo di finestra figlio, eventuale, da creare quando viene iniziato un nuovo progetto. Per impostazione predefinita i nuovi progetti all'avvio contengono una finestra <emphasis>Tabella</emphasis> vuota. </para>
+<para>La casella di controllo <emphasis>Salva tutto ogni</emphasis> &egrave; utilizzata per attivare (casella selezionata) o disattivare (casella non selezionata) la funzione di salvataggio automatico. La casella di testo associata (con pulsante di selezione) viene utilizzata per impostare l'intervallo di salvataggio automatico. L'intervallo &egrave; espresso in minuti. La casella accetta solo valori numerici interi positivi. Tutti gli altri input sono ignorati. </para>
+<para>L'opzione <emphasis>Fai una copia di sicurezza del progetto prima di salvarlo</emphasis> viene utilizzata per creare una copia di backup del progetto corrente prima di salvare le modifiche di un file Progetto. Questa opzione &egrave; attiva quando &egrave; selezionata. </para>
+
+ <para>Quando la casella  <emphasis>Verifica la disponobilit&agrave; di nuove versioni all'avvio</emphasis> &egrave; selezionata, ogni volta che QtiPlot viene lanciato cerca gli aggiornamenti del programma su Internet . Per impostazione predefinita l'opzione &egrave; disabilitata. </para>
+
+ <para>Quando l'opzione <emphasis>Abilita il  completamento automatico</emphasis> &egrave; selezionata, Qtiplot attiva la funzionalit&agrave; di completamento automatico. A partire dalla versione 0.9.6, il completamento automatico &egrave; abilitato di default in tutti gli editor di QtiPlot: in Annotazioni, nella finestra Script e nelle finestre di dialogo per i valori delle matrici e delle tabelle. Il sistema di completamento automatico &egrave; basato su un elenco di parole contenute nel file <emphasis>qti_wordlist.txt</emphasis>. Questo file, che viene fornito con l'archivio sorgente, deve essere posto nella stessa cartella del file di configurazione di Python (vedere la scheda <link linkend="indirizzifile">Indirizzi dei file</link>), e viene caricato automaticamente da QtiPlot in fase di avvio. &Egrave; possibile modificare questo file e aggiungere delle parole chiave personali inserendo nel file una parola per riga.
+I suggerimenti di completamento sono visualizzati automaticamente per le parole che hanno pi&ugrave; di due caratteri, ma &egrave; possibile effettuare il completamento automatico in qualsiasi momento tramite la combinazione di tasti Ctrl+U. Il completamento automatico pu&ograve; essere disattivato deselezionando l'opzione <emphasis>Abilita il completamento automatico</emphasis>. </para>
+
+<para>Se l'opzione <emphasis>All'avvio apri l'ultimo progetto</emphasis> &egrave; selezionata, quando Qtiplot viene avviato carica automaticamente l'ultimo progetto utilizzato. Per impostazione predefinita questa opzione &egrave; abilitata.</para>
+</sect3>
+<sect3>
+<title>La scheda Conferme</title>
+  <para>La scheda <emphasis>Conferme</emphasis> della sezione <emphasis>Generale</emphasis> contiene 8 caselle di controllo per abilitare o disabilitare diversi avvisi o richieste di conferma prima eseguire operazioni importanti nel progetto. Le prime sei opzioni riguardano le avvertenze visualizzate quando si esegue una operazione per chiudere o cancellare le finestre del progetto (Cartelle, Tabelle, Matrici, Grafici 2D, Grafici 3D e Note). I restanti due avvertimenti sono forniti quando 1) si tenta di rinominare o aggiungere finestre definendole con nomi che sono gi&agrave; utilizzati nel progetto corrente, e, 2) quando si tenta di sovrascrivere un file esistente. Di default tutti gli avvisi sono abilitati.</para>
+  <informalfigure id="fig-preferences-dialog-2">
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/preferences-dialog2.png"/>
+      </imageobject>
+    </mediaobject>
+  </informalfigure>
+</sect3>
+<sect3>
+<title>La scheda Colori</title>
+  <para>La scheda <emphasis>Colori</emphasis> permette di modificare il colore predefinito per l'area di lavoro dell'applicazione (finestra principale). &Egrave; anche possibile scegliere il colore di sfondo e il colore del testo per i pannelli. Per pannelli si intende specialmente la finestra di <link linkend="sec-intro-log-window">Risultati delle analisi</link> e la finestra <link linkend="project-explorer-dialog">Esploratore del progetto</link>.</para>
+  <informalfigure id="fig-preferences-dialog-3">
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/preferences-dialog3.png"/>
+      </imageobject>
+    </mediaobject>
+  </informalfigure>
+</sect3>
+<sect3>
+<title>La scheda Formato dei numeri</title>
+  <para>La scheda <emphasis>Formato dei numeri</emphasis> permette di personalizzare diversi aspetti della formattazione numerica utilizzata da QtiPlot. Il campo <emphasis>Numero di cifre decimali</emphasis> specifica la precisione di default utilizzata per i calcoli eseguiti sui dati delle tabelle o delle matrici. Il campo <emphasis>Separatore dei decimali</emphasis> permette di stabilire i caratteri da utilizzare per il punto decimale e per il separatore delle migliaia. Per impostazione predefinita, QtiPlot utilizza le impostazioni internazionali rilevate nel sistema in cui opera. Per impostare il separatore sono previsti due campi diversi, uno per i dati delle tabelle o matrici e uno per i dati copiati negli appunti. Nelle tabelle e nelle  matrici il separatore delle migliaia pu&ograve; essere eliminato completamente  selezionando la casella <emphasis>Ometti il separatore delle migliaia</emphasis>. Quando si fa clic su <emphasis>Applica</emphasis>, QtiPlot converte e applica le nuove impostazioni a tutti i dati esistenti nel progetto. </para>
+ <informalfigure id="fig-preferences-dialog-11">
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/preferences-dialog11.png"/>
+      </imageobject>
+    </mediaobject>
+  </informalfigure>
+</sect3>
+<sect3 id="indirizzifile">
+<title>La scheda Indirizzi dei file</title>
+   <para>La scheda <emphasis>Indirizzi dei file</emphasis> consente di definire percorsi personalizzati per le cartelle contenenti i file  <emphasis>Traduzioni</emphasis>, i file <emphasis>Manuale (Aiuto)</emphasis> e i <emphasis>File di configurazione Python</emphasis>, <emphasis>qtiplotrc.py</emphasis> e <emphasis>qtiUtil.py</emphasis> nel caso che QtiPlot venga compilato con il supporto per gli script Python. Inoltre, &egrave; previsto un indirizzo di default per la cartella del <emphasis>Compilatore LaTeX</emphasis> e un'altro per la cartella degli  <emphasis>script</emphasis> che devono essere caricati all'avvio del programma. La cartella <emphasis>Compilatore LaTex</emphasis> ha significato solo quando QtiPlot &egrave; stato compilato con il supporto <emphasis>LaTex</emphasis>.</para>
+  <figure id="fig-preferences-dialog-13">
+    <title>Preferenze: le opzioni per l'indirizzo dei file (vers. 0.9.8.4). </title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/preferences-dialog13.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+<figure id="fig-preferences-dialogold-13">
+    <title>Preferenze: le opzioni per l'indirizzo dei file (vers. 0.9.8.3). </title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/preferences-dialog13old.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+</sect3>
+<sect3>
+<title>La scheda Connessione Internet</title>
+<para>La scheda <emphasis>Connessione Internet</emphasis> serve solo per connettersi a internet tramite proxy server. Per impostare queste opzioni, contattare l'amministratore della rete o altra persona debitamente informata.</para>
+  <figure id="fig-preferences-dialog-16">
+    <title>Preferenze: le opzioni per la connessione. </title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/preferences-dialog16.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+</sect3>
+
+</sect2>
+<sect2>
+  <title>Preferenze per le Tabelle</title>
+
+  <para>Cliccando sull'icona &configTable-icon; Tabelle si apre il secondo gruppo di opzioni che permette di personalizzare l'aspetto predefinito delle <link linkend="sec-intro-table">Tabelle</link>: sfondo, colori del testo e font per le tabelle e le etichette. Selezionando la voce <emphasis>Visualizza i commenti nell'intestazione delle colonne</emphasis>, i commenti delle colonne sono visualizzati nell'intestazione, sotto i nomi delle colonne.
+  Se la voce <emphasis>Aggiorna automaticamente i valori nelle colonne</emphasis> &egrave; selezionata, tutte le modifiche apportate alla formula per i valori di una colonna si applicano automaticamente anche alle colonne associate.
+  </para>
+  <figure id="fig-preferences-dialog-4">
+    <title>Preferenze: le opzioni per le tabelle. </title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/preferences-dialog4.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+</sect2>
+<sect2>
+  <title>Preferenze per i Grafici 2D</title>
+  <para>Cliccando sull'icona &config_curves-icon; Grafico 2D si apre il terzo gruppo di opzioni che serve a personalizzare l'aspetto predefinito dei grafici 2D.</para>
+
+<sect3>
+<title>La scheda Opzioni</title>
+<para>La scheda <emphasis>Opzioni</emphasis> &egrave; utilizzata per modificare alcune opzioni generali. La maggior parte delle modifiche apportate a queste opzioni, sono applicate solo ai nuovi grafici. Solo alcune opzioni, come <emphasis>Usa una scala automatica</emphasis> per gli assi del grafico, <emphasis>Antialiasing</emphasis> per le curve e il comportamento per quando si ridimensionano le finestre, sono applicate anche alle tavole esistenti.</para>
+  <figure id="fig-preferences-dialog-5">
+    <title>Preferenze: le opzioni per i grafici 2D.</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/preferences-dialog5.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+</sect3>
+<sect3>
+<title>La scheda Curve</title>
+  <para>Nella seconda scheda denominata <emphasis>Curve</emphasis> si imposta lo stile predefinito da utilizzare per le curve quando si crea un nuovo grafico. Le operazioni di questi controlli sono autoesplicative.</para>
+  <informalfigure id="fig-preferences-dialog-6">
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/preferences-dialog6.png"/>
+      </imageobject>
+    </mediaobject>
+  </informalfigure>
+</sect3>
+<sect3>
+<title>La scheda Assi</title>
+  <para>La terza scheda denominata <emphasis>Assi</emphasis> permette di impostare i parametri principali per la disposizione e l'aspetto degli assi in una nuova tavola. </para>
+  <informalfigure id="fig-preferences-dialog-15">
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/preferences-dialog15.png"/>
+      </imageobject>
+    </mediaobject>
+  </informalfigure>
+</sect3>
+<sect3>
+<title>La scheda Graduazioni</title>
+  <para>La quarta scheda denominata <emphasis>Graduazioni</emphasis> definisce lo stile di default per le tacche di graduazione degli assi utilizzato quando si crea un nuovo grafico.</para>
+  <informalfigure id="fig-preferences-dialog-7">
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/preferences-dialog7.png"/>
+      </imageobject>
+    </mediaobject>
+  </informalfigure>
+</sect3>
+<sect3>
+<title>La scheda Griglia</title>
+  <para>La scheda <emphasis>Griglia</emphasis> definisce l'aspetto di default per le griglie del grafico.</para>
+  <informalfigure id="fig-preferences-dialog-18">
+	<mediaobject>
+	  <imageobject>
+		<imagedata  format="PNG" fileref="pics/preferences-dialog18.png"/>
+	  </imageobject>
+	</mediaobject>
+  </informalfigure>
+</sect3>
+<sect3>
+<title>La scheda Dimensioni</title>
+  <para>La sesta scheda chiamata <emphasis>Dimensioni</emphasis> definisce la dimensione di default per l'area di disegno di una tavola. Quando la casella <emphasis>Mantieni la proporzione</emphasis> &egrave; selezionata, le modifiche apportate all'altezza o alla larghezza sono applicate in modo proporzionale anche all'altra dimensione.</para>
+  <informalfigure id="fig-preferences-dialog-17">
+	<mediaobject>
+	  <imageobject>
+		<imagedata  format="PNG" fileref="pics/preferences-dialog17.png"/>
+	  </imageobject>
+	</mediaobject>
+  </informalfigure>
+</sect3>
+<sect3>
+<title>La scheda Velocit&agrave; di tracciamento</title>
+  <para>La settima scheda denominata <emphasis>Velocit&agrave; di tracciamento</emphasis> consente all'utente di attivare o disattivare l'antialiasing per i grafici 2D.  Dato che l'antialiasing rallenta notevolmente il rendering dei grafici 2D, quando le curve usano insiemi di dati molto grandi, si ha la possibilit&agrave; di disattivare questa funzione  selezionando la casella <emphasis>Disattiva per le curve con pi&ugrave; di</emphasis>. In questo caso l'antialiasing viene disabilitato solo per le curve che contengono un numero di punti superiore a quello impostato nella casella a fianco. Disattivare questa funzione probabilmente non &egrave; una buona idea. Di default la funzione si attiva quando si superano i 1000 punti dati. Impostare correttamente questo valore &egrave; importante per mantenere l'applicazione reattiva.</para>
+  <informalfigure id="fig-preferences-dialog-19">
+	<mediaobject>
+	  <imageobject>
+		<imagedata  format="PNG" fileref="pics/preferences-dialog19.png"/>
+	  </imageobject>
+	</mediaobject>
+  </informalfigure>
+</sect3>
+<sect3>
+<title>La scheda Caratteri</title>
+  <para>L'ottava scheda denominata <emphasis>Caratteri</emphasis> definisce i caratteri di default da usare quando si crea un nuovo grafico. Queste opzioni sono disponibili per: <emphasis>Nome del grafico</emphasis>, <emphasis>Legenda</emphasis>, <emphasis>Etichette degli assi</emphasis>, <emphasis>Numerazione degli assi</emphasis>.</para>
+  <informalfigure id="fig-preferences-dialog-8">
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/preferences-dialog8.png"/>
+      </imageobject>
+    </mediaobject>
+  </informalfigure>
+</sect3>
+<sect3>
+<title>La scheda Stampa</title>
+   <para>L'ultima scheda denominata <emphasis>Stampa</emphasis> consente di definire le opzioni di default utilizzate nelle stampe dei grafici 2D. Quando si desidera stampare le tavole con le loro dimensioni originali, &egrave; necessario assicurarsi di deselezionare l'opzione <emphasis>Adatta le dimensioni delle tavole....</emphasis> L'opzione <emphasis>Stampa le linee di taglio</emphasis> permette di aggiungere e stampare le linee di taglio attorno al grafico.</para>
+  <informalfigure id="fig-preferences-dialog-12">
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/preferences-dialog12.png"/>
+      </imageobject>
+    </mediaobject>
+  </informalfigure>
+</sect3>
+</sect2>
+<sect2>
+  <title>Preferenze per i Grafici 3D</title>
+     <para>Cliccando sull'icona &logo-icon; Grafici 3D si apre la quarta sezione del dialogo <emphasis>Preferenze</emphasis>. Questo gruppo di opzioni permette di personalizzare l'aspetto dei grafici tridimensionali. Con questa finestra si ha la possibilit&agrave; di definire la <emphasis>Risoluzione</emphasis>. Questa opzione, simile a <emphasis>Velocit&agrave; di tracciamento</emphasis>, &egrave; molto utile quando si lavora con grandi insiemi di dati perch&egrave; la velocit&agrave; di disegno dei grafici dipende dalla risoluzione impostata: al crescere del valore di risoluzione diminuisce il numero di punti di dati elaborati per il grafico 3D, quindi maggiore &egrave; la velocit&agrave; di disegno. Con il valore 1 sono disegnati tutti i punti dati.</para>
+  <figure id="fig-preferences-dialog-9">
+    <title>Preferenze: le opzioni per i grafici 3D.</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/preferences-dialog9.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+</sect2>
+<sect2>
+  <title>Preferenze per le Annotazioni</title>
+<para>Cliccando sull'icona &notes_32-icon; Annotazioni si apre la quinta sezione del dialogo <emphasis>Preferenze</emphasis>. Questo gruppo di opzioni permette di personalizzare alcune caratteristiche di default per gli editor di testo, come ad esempio il tipo di carattere o la <emphasis>Lunghezza del tabulato</emphasis> (distanza tra un carattere e quello successivo quando si preme Tab). Si pu&ograve; anche specificare se il numero di riga deve essere visualizzato o meno. La visualizzazione del numero di riga pu&ograve; essere particolarmente utile per la messa a punto di script Python.</para>
+
+  <figure id="fig-preferences-dialog-notes">
+    <title>Preferenze: le opzioni per le annotazioni.</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/preferences-dialog14.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+</sect2>
+<sect2>
+  <title>Preferenze per gli Adattamenti</title>
+<para>Selezionando l'icona &fit-icon; Adattamenti si apre la sesta sezione del dialogo <emphasis>Preferenze</emphasis>. Questa scheda &egrave; utilizzata per impostare i parametri di adattamento predefiniti. La maggior parte delle opzioni sono standard e facilmente comprensibili. A prima vista, invece il parametro <emphasis>Genera la curva dell'adattamento usando</emphasis> pu&ograve; essere fonte di confusione. Anche se &egrave; consuetudine tracciare una curva di adattamento di tipo y = f (x) utilizzando <emphasis>i dati X originali utilizzati nelle operazioni di adattamento</emphasis>, QtiPlot fornisce un'alternativa (selezionando l'opzione <emphasis>Dei dati X distribuiti uniformemente</emphasis>) che permette di tracciare la curva con un numero di punti dati per X determinato dall'utente (default = 100) e distribuito in modo uniforme su tutto l'intervallo X dell'adattamento. Dato che un adattamento lineare &egrave; completamente definito da 2 punti, , &egrave; possibile impostare QtiPlot (selezionando la casella <emphasis>2 punti per gli adattamenti lineari</emphasis>) in modo che, di default, usi semplicemente 2 punti dati per tracciare gli adattamenti lineari.</para>
+  <figure id="fig-preferences-dialog-10">
+    <title>Preferenze: le opzioni per gli adattamenti delle curve.</title>
+  
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/preferences-dialog10.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+</sect2>
+</sect1>
+
+
+<!-- ************************************************** -->
+<!--		Printer setup				-->
+<!-- ************************************************** -->
+<sect1 id="printer-setup-dialog">
+  <title>Impostare la stampa</title>
+  <para>Questa finestra di dialogo si apre con il comando &print-lnk; nel men&ugrave; &file-menu-lnk; oppure con la combinazione di tasti <emphasis>Ctrl-P</emphasis>. Permettere l'impostazione di alcuni parametri per stampare la finestra attiva, il grafico o la tabella, e il suo aspetto varia secondo il sistema operativo installato. La schermata seguente mostra questo dialogo in un sistema Linux in ambiente KDE.</para>
+  <figure id="fig-printer-setup">
+    <title>La finestra di dialogo per impostare la stampa</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/dialog-print-setup-plot.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+</sect1>
+
+<!-- ************************************************** -->
+<!--		Set Column Values			-->
+<!-- ************************************************** -->
+<sect1 id="set-column-values-dialog">
+  <title>Impostare i valori della colonna</title>
+      <indexterm><primary>table</primary></indexterm>
+  <para>Questo dialogo si attiva con il comando &set-column-values-lnk; dal men&ugrave; &table-menu-lnk; oppure con la combinazione di tasti &add-eq-key;. Serve a compilare la colonna con i risultati di una funzione.</para>
+  <para>Le funzioni matematiche disponibili (nell'ipotesi che si usi muParser come linguaggio predefinito per gli script) sono elencate nella casella combinata dove si possono selezionare e poi con il comando <emphasis>Aggiungi funzione</emphasis> inserire nel campo di testo per definire la funzione. Informazioni pi&ugrave; dettagliate sulle funzioni e sugli operatori si trovano nella sezione <link linkend= "sec-muParser">muParser</link> nel capitolo <emphasis>Funzioni matematiche e script</emphasis>. La funzione speciale <emphasis>col(c)</emphasis> si usa per accedere ai valori della colonna <code>c</code>, dove <code>c</code> pu&ograve; essere il numero della colonna (come nel caso: <emphasis>col(2)</emphasis>) oppure il suo nome scritto tra virgolette (come nel caso: <emphasis>col("time")</emphasis>).
+  Si pu&ograve; anche accedere ai valori di altre tabelle con la funzione <emphasis>tablecol(t,c)</emphasis>, dove <code>t</code> &egrave; il nome della tabella tra virgolette e <code>c</code> &egrave; il numero o il nome della colonna tra virgolette (come nel caso: <emphasis>tablecol("Table1","time")</emphasis>).</para>
+  <para>Le variabili <code>i</code> e <code>j</code> si usano per accedere ai numeri di riga e di colonna. In modo analogo, <code>sr</code> e <code>er</code> rappresentano rispettivamente l'inizio e il fine riga impostati.
+  </para>
+  <para>Usare Python come linguaggio predefinito per gli script offre maggiori possibilit&agrave;, dato che si pu&ograve; usare il codice Python non solo per la funzione, ma anche accedere altri oggetti all'interno di un progetto. Per informazioni pi&ugrave; dettagliate vedere la sezione  <link linkend="Python">Python</link> nel capitolo <emphasis>Funzioni matematiche e script</emphasis>.
+  Python possiede una sintassi pi&ugrave; potente, ma pu&ograve; essere lento in caso di tabelle molto grandi. Per tabelle molto grandi, si ha per&ograve; la possibilit&agrave; di usare muParser al posto di Python , anche quando, per il progetto in uso, Python &egrave; impostato come linguaggio predefinito, selezionando la casella <emphasis>Usa muParser</emphasis> in questa finestra di dialogo. muParser &egrave; molto veloce nel valutare espressioni scritte in una sola riga.</para>
+
+  <figure id="fig-sec-column-values">
+    <title>La finestra di dialogo &set-column-values-cmd; .</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/set-column-values-dialog.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+
+  <para>Attenzione. Quando si apportano modifiche alla tabella, i valori vengono aggiornati automaticamente solo se &egrave; selezionata l'opzione <emphasis>Aggiorna automaticamente i valori</emphasis> nel dialogo <emphasis>Tabella</emphasis> del men&ugrave; <link linkend="fig-preferences-dialog-4">Preferenze</link>.
+	Quando l'opzione non &egrave; selezionata occorre richiedere a QtiPlot di aggiornare il valore di una cella, di una colonna o di una riga con il comando <emphasis>Aggiorna i valori della colonna</emphasis> nel corrispondente men&ugrave; contestuale oppure digitando Ctrl-Invio.
+  </para>
+
+</sect1>
+
+<!-- ************************************************** -->
+<!--		Set Matrix Dimensions				-->
+<!-- ************************************************** -->
+<sect1 id="set-dimensions-dialog">
+  <title>Impostare le dimensioni della matrice</title>
+      <indexterm><primary>matrix</primary></indexterm>
+  <para>Questo comando si trova nel men&ugrave; &matrix-menu-lnk;. Serve per specificare il numero di righe e di colonne che si vuole assegnare alla matrice. In questa finestra si stabilisce anche l'intervallo di valori per X, l'intervallo di valori per Y e il corrispondente punto di inizio. Questi dati sono usati nel grafico per determinare i valori sugli assi. Gli intervalli si possono anche definire mediante l'impostazione delle variabili x e y quando si decide di compilare la matrice con i valori di una funzione di x e y tramite il dialogo <link linkend="set-values-dialog">Imposta i valori</link>.</para>
+  <figure id="fig-set-dimensions-dialog">
+    <title>La finestra di dialogo &set-dimensions-cmd; della matrice.</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/matrix-set-dimensions.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+</sect1>
+
+<!-- ************************************************** -->
+<!--		Import ASCII files			-->
+<!-- ************************************************** -->
+<sect1 id="set-import-options-dialog">
+<title>Importare file ASCII</title>
+<indexterm><primary>table</primary></indexterm>
+
+Questo dialogo si apre con il comando 
+<link linkend="import-ascii-cmd">&import-ascii-cmd;</link>
+del men&ugrave; <link linkend="sec-file-menu">File</link>. Pu&ograve; essere usato per selezionare diversi file contemporaneamente. I file sono importati applicando le opzioni predefinite. Per variare le opzioni di importazione predefinite si apre il men&ugrave; con il pulsante <emphasis>Avanzate</emphasis> e si impostano i parametri desiderati. Tutte le modifiche ai parametri di importazione sono salvate e usate per le importazioni successive.
+
+<figure id="fig-set-import-options">
+    <title>La finestra di dialogo per le importazioni.</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/set-import-options.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+
+<para>Si pu&ograve; impostare un filtro per il file da importare personalizzando il campo <emphasis>Tipo di file</emphasis>. Se, ad esempio, nella riga si scrive <emphasis>*.mieidati</emphasis>, quando si preme <emphasis>Invio</emphasis>, sono elencati solo i file con estensione <emphasis>xxx.mieidati</emphasis> presenti nella cartella scelta. </para>
+
+<para>Non si possono usare pi&ugrave; separatori di colonna raggruppati, il separatore deve essere una solo. Se, ad esempio, si usa <emphasis>S</emphasis>pazio, si deve avere un solo spazio tra ogni colonna. Se sono presenti pi&ugrave; separatori si deve abilitare l'opzione <emphasis>Semplifica gli spazi vuoti</emphasis>. Questa opzione comprime tutti gli spazi vuoti in uno solo.</para>
+
+<para>Se il file di dati da importare ha una particolare struttura, ad esempio, contiene diverse righe con delle descrizioni, prima di avviare l'importazione, si pu&ograve; decidere di escludere un certo numero n di righe dall'operazione. Si pu&ograve; anche escludere dall'importazione le righe commentate o che iniziano con una specifica stringa. La stringa da ignorare si inserisce nel campo <emphasis>Ignora le righe che iniziano con</emphasis>.</para>
+
+<para>Quando si seleziona <emphasis>Usa la prima riga per</emphasis> e/o <emphasis>Usa la seconda riga per</emphasis> si deve usare il medesimo il separatore di colonna sia per i nomi delle colonne e che per i dati..</para>
+
+<para>I dati da importare devono essere tutti scritti con lo stesso tipo di separatore di decimali. Se il file di dati da importare contiene valori scritti con separatori di decimali diversi, virgole e punti nello stesso insieme di dati, si devono convertire tutti i dati nello stesso formato preferito. Per fare questo si imposta la voce <emphasis>Separatore dei decimali</emphasis> sul tipo desiderato e si seleziona la voce <emphasis>Ometti i separatori di migliaia</emphasis>.</para>
+
+<para>Il tipo di dati, numero,testo,data,ecc., da importare in ogni colonna si imposta con il pulsante <emphasis>Tipi di colonne</emphasis> oppure cliccando direttamente sull'intestazione della colonna nell'area dell'anteprima. Una finestra a scomparsa permette di scegliere il tipo di dati e il formato della colonna.</para>
+</sect1>
+
+<!-- ************************************************** -->
+<!--		Set Matrix Properties				-->
+<!-- ************************************************** -->
+<sect1 id="set-properties-dialog">
+  <title>Propriet&agrave; della matrice</title>
+  <para>Il comando Propriet&agrave; della matrice si trova nel men&ugrave; &matrix-menu-lnk;. Permette di impostare alcune propriet&agrave; globali della matrice selezionata quali la dimensione delle celle ( in pixel) e il formato dei numeri.</para>
+  <figure id="fig-set-properties-dialog">
+    <title>La finestra di dialogo Imposta le &set-properties-cmd; della matrice.</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/matrix-set-properties.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+</sect1>
+
+<!-- ************************************************** -->
+<!--		Set Matrix Values				-->
+<!-- ************************************************** -->
+<sect1 id="set-values-dialog">
+  <title>Impostare i valori della matrice</title>
+      <indexterm><primary>matrix</primary></indexterm>
+  <para>Il comando Imposta i valori si trova nel men&ugrave; &matrix-menu-lnk;. Permette di compilare una matrice con i risultati di una funzione di tipo <emphasis>z=f(i,j)</emphasis> in cui <code>i</code> e <code>j</code> sono i numeri di riga e di colonna.</para>
+  <para>Si possono usare valori X e valori Y definiti con il comando &set-dimensions-lnk; e anche definire una funzione basata sulle variabili X e Y.</para>
+  <para>Si pu&ograve; scrivere la funzione in diverse righe. Le funzioni intrinseche disponibili sono elencate nella sezione <link linkend="sec-muParser">muParser</link> del capitolo <emphasis>Espressioni matematiche e script</emphasis>.</para>
+
+  <figure id="fig-set-values-dialog">
+    <title>La finestra di dialogo &set-values-cmd; della matrice.</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/matrix-set-values.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+
+<para>Python, come motore di script per il calcolo dei valori di matrice, permette una sintassi pi&ugrave; potente, ma ha lo svantaggio di essere molto lento con matrici di grandi dimensioni. Python &egrave; impostato come motore degli script predefinito per i progetti di QtiPlot. In sostituzione, si pu&ograve; impostare muParser nella scheda Generale del dialogo delle Preferenze alla voce <emphasis>Linguaggio degli script predefinito</emphasis>. Attenzione: muParser &egrave; molto veloce nel valutare le espressioni scritte in una sola riga, quindi cercare di evitare una sintassi del tipo:
+<programlisting>
+    a = cell(1, 1)
+    b = cell(2, 2)
+    a*b*x + b*x*x + a
+</programlisting>
+e preferire la sintassi seguente:
+<programlisting>
+    cell(1, 1)*cell(2, 2)*x + cell(2, 2)*x*x + cell(1, 1)
+</programlisting>
+che incrementa notevolmente la velocit&agrave; di valutazione.</para>
+</sect1>
+
+<!-- ************************************************** -->
+<!--		Surface plot options			-->
+<!-- ************************************************** -->
+<sect1 id="surface-plot-options-dialog">
+  <title>Opzioni per il grafico di superficie</title>
+  <para>Questa finestra di dialogo si usa per personalizzare un grafico di funzione 3D creato con il comando &new-surface-3d-plot-lnk; del men&ugrave; &file-menu-lnk;. Si attiva con un doppio clic sul grafico 3D.</para>
+<sect2>
+  <title>La scheda Scale</title>
+  <para>La prima scheda consente di modificare l'intervallo dell'asse X, Y e Z e di stabilire il numero di suddivisioni principali e secondarie.</para>
+  <figure id="fig-surface-plot-options-1">
+    <title>Grafico 3D: opzioni per un grafico di superficie. </title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/surface-plot-options-dialog1.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+</sect2>
+<sect2 id ="assi-sec">
+  <title>La scheda Assi</title>
+  <para>La seconda scheda consente di definire i parametri principali dei tre assi: l'etichetta ed i suoi caratteri, e la lunghezza delle tacche di suddivisione. Alla lunghezza delle tacche si applica lo stesso formato scelto per l'intervallo di valori di ogni asse. Quando si apportano modifiche alla <emphasis>Scala</emphasis>, QtiPlot aggiorna la lunghezza delle tacche.</para>
+ <para>Le impostazioni per i caratteri definite in questa scheda agiscono solo sull'etichetta dell'asse. La personalizzazione dei caratteri per i numeri si fa nella tabella <emphasis>Generale</emphasis>. I pulsanti <emphasis>apice</emphasis> e <emphasis>pedice</emphasis> consentono un facile inserimento di comandi LaTex. I testi con apice e pedice non subiscono modifiche durante l'esportazione solo quando si esporta il testo in formato .tex dopo aver selezionato <emphasis>Esporta il testo come file LaTex</emphasis> nelle opzioni <emphasis>Avanzate</emphasis> del dialogo di esportazione. Per mantenere la formattazione apice o pedice, il file deve essere compilato separatamente, quindi sul computer deve essere installato un ambiente Latex.
+  </para>
+  <informalfigure id="fig-surface-plot-options-2">
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/surface-plot-options-dialog2.png"/>
+      </imageobject>
+    </mediaobject>
+  </informalfigure>
+</sect2>
+<sect2>
+  <title>La scheda Griglia</title>
+  <para>La terza scheda permette di definire o modificare le propriet&agrave; delle griglie.</para>
+  <informalfigure id="fig-surface-plot-options-3">
+    <mediaobject>
+      <imageobject>
+		<imagedata  format="PNG" fileref="pics/surface-plot-options-dialog7.png"/>
+      </imageobject>
+    </mediaobject>
+  </informalfigure>
+</sect2>
+<sect2>
+  <title>La scheda Titolo</title>
+  <para>La quarta scheda permette di definire o modificare il titolo del grafico. Nei titoli si pu&ograve; utilizzare il formato LaTex apice, pedice, grassetto, ecc.. con le stesse modalit&agrave; descritte nella scheda <link linkend="assi-sec">Assi</link></para>
+  <informalfigure id="fig-surface-plot-options-4">
+	<mediaobject>
+	  <imageobject>
+		<imagedata  format="PNG" fileref="pics/surface-plot-options-dialog3.png"/>
+	  </imageobject>
+	</mediaobject>
+  </informalfigure>
+</sect2>
+<sect2>
+  <title>La scheda Colori</title>
+  <para>La quinta scheda permette di modificare i colori dei diversi elementi del grafico.</para>
+  <informalfigure id="fig-surface-plot-options-4">
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/surface-plot-options-dialog4.png"/>
+      </imageobject>
+    </mediaobject>
+  </informalfigure>
+<para>Il gruppo di opzioni <emphasis>Indice dei colori per i livelli</emphasis> definisce i colori della superficie del grafico secondo i valori Z. Ad ogni colore &egrave; associato un valore Z. Se la casella <emphasis>Usa la scala in colori</emphasis> &egrave; selezionata, i diversi valori Z sono rappresentati associandoli ai colori della scala e applicando una interpolazione lineare per i valori intermedi.</para>
+
+<para>Un modo diverso di definire i colori per i livelli Z consiste nel leggerli in un file. Il formato del file &egrave; semplice: ogni riga definisce un colore con in intero compreso tra 0 e 255, secondo l'intensit&agrave; di rosso, verde e blu . I numeri devono essere separati da uno spazio. In <ulink url="http://soft.proindependent.com/download.html">&appname; web site</ulink> sono disponibili diversi esempi di mappe di colori.</para>
+</sect2>
+<sect2>
+  <title>La scheda Generale</title>
+<para>La scheda <emphasis>Generale</emphasis> &egrave; usata per definire alcuni parametri globali, l'aspetto e le proporzioni del grafico. Per default il grafico &egrave; prodotto in prospettiva, per modificare questa impostazione basta selezionare <emphasis>Ortogonale</emphasis> e il grafico viene visualizzato con l'asse Z in posizione verticale. </para>
+
+  <figure id="fig-surface-plot-options-5">
+	<title>Grafico 3D: opzioni generali del grafico.</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/surface-plot-options-dialog5.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+</sect2>
+<sect2>
+  <title>La scheda Stampa</title>
+<para>La scheda <emphasis>Stampa</emphasis> permette di definire le normali opzioni di stampa quali il ridimensionamento o la stampa delle linee di taglio.</para>
+
+  <figure id="fig-surface-plot-options-5">
+	<title>Grafico 3D: opzioni di stampa del grafico.</title>
+	<mediaobject>
+	  <imageobject>
+		<imagedata  format="PNG" fileref="pics/surface-plot-options-dialog6.png"/>
+	  </imageobject>
+	</mediaobject>
+  </figure>
+</sect2>
+</sect1>
+
+
+<!-- ************************************************** -->
+<!--		Text options				-->
+<!-- ************************************************** -->
+<sect1 id="text-options-dialog">
+  <title>Opzioni per i testi</title>
+<sect2><title>Opzioni per i titoli</title>
+  <para>Questo dialogo si avvia con diversi comandi, ad esempio con il comando &format-title-lnk;
+  o con un doppio clic sul nome di un asse in un grafico. I comandi <emphasis>Colore dei testi</emphasis>, <emphasis>Carattere</emphasis> e <emphasis>Allineamento</emphasis> permettono di modificare le impostazioni predefinite per i testi delle etichette. Si stabilisce anche la distanza tra l'etichetta e l'asse corrispondente variando il valore di <emphasis>Distanza dall'asse</emphasis>.</para>
+<para>I caratteri speciali si inseriscono con le modalit&agrave; descritte nella sezione <link linkend="caratteri-speciali">Inserire caratteri speciali</link>.</para>
+  <figure id="fig-text-options">
+    <title>La finestra di dialogo delle opzioni per il titolo degli assi.</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/text-options-dialog.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+</sect2>
+<sect2><title>Opzioni per le caselle di testo</title>
+  <para>Il seguente dialogo, leggermente diverso da quello precedente, si apre con un doppio clic sulla legenda del grafico (oppure si seleziona la legenda con il taso destro e poi si clicca su Propriet&agrave;) e serve per modificare un oggetto testo. Questo comando &egrave; anche usato per aggiungere una casella di testo al grafico. Quando l'oggetto testo &egrave; una legenda, in essa sono elencate le curve tracciate nel grafico. Nella legenda il nome delle curve &egrave; preceduto da un simbolo simile per tipo, colore e forma alla linea usata per disegnare la curva corrispondente. Per stabilire o modificare il simbolo e il nome da visualizzare si usa la sintassi: <emphasis>\l(1.2)%(1.2)</emphasis>. Il prefisso \I &egrave; collegato al simbolo e il prefisso % &egrave; collegato al nome. Il primo numero, davanti al punto, si riferisce alla tavola del grafico e il secondo numero, dopo il punto, si riferisce alla curva; questo vale sia per il simbolo che per il nome. Il riferimento alla tavola &egrave; facoltativo, quando manca si fa riferimento alla tavola madre. 
+  </para>
+  <para>
+  Nella legenda il carattere % &egrave; un sostituto per il nome dell'insieme dei dati. Aggiungendo ,@C oppure ,@L al numero si pu&ograve; visualizzare alternativamente il nome della colonna oppure il commento dell'insieme dei dati. Ad esempio si usa
+  <emphasis>\l(2)%(2,@C)</emphasis> per visualizzare il nome della colonna. Si usa inoltre @W per visualizzare il nome della tabella e @WL per visualizzare l'etichetta della tabella. Per visualizzare il contenuto di una specifica cella della tabella sorgente si usa <emphasis>%(curve #,@L,col,row)</emphasis>.
+  Se manca il parametro col &egrave; usata la colonna Y.
+  </para>
+
+<para>Quando la casella <emphasis>Aggiorna automaticamente</emphasis> &egrave; selezionata, la legenda viene aggiornata automaticamente ogni volta che si modifica la tavola. </para>
+
+<para>L'opzione <emphasis>Output in formato TeX</emphasis> specifica se, durante l'esportazione del file in formato .tex, i caratteri speciali LaTeX devono essere ignorati o mantenuti. Per interpretare un testo che contiene caratteri con sintassi LaTeX (come apici, pedici, ecc ..) con un compilatore LaTeX, si deve selezionare questa opzione.</para>
+
+<para>Quando si preme il pulsante <emphasis>Imposta come predefinite</emphasis> tutta la formattazione del testo &egrave; salvata nelle <emphasis>Preferenze</emphasis> e applicata ai nuovi oggetti testo. Quando si preme il pulsante <emphasis>Applica il formato a</emphasis>, il formato &egrave; applicato agli oggetti elencati nel pulsante sottostante: oggetto, tavola, finestra o tutte le finestre.</para>
+
+  <para>I valori di <emphasis>Opacit&agrave;</emphasis> di <emphasis>Sfondo</emphasis> devono essere compresi tra 0 (sfondo trasparente) e 255 (sfondo non trasparente).</para>
+  <figure id="fig-text-options-legend">
+    <title>La finestra di dialogo per le opzioni dei testi della legenda.</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/text-options-dialog3.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+  <para>Questa finestra di dialogo serve anche per scrivere o modificare i testi, compresi i nomi delle curve nella legenda. Per modificare il nome delle curve nella legenda si cancella il simbolo % e la parte successiva e si sostituisce con il testo desiderato.</para>
+</sect2>
+<sect2 id="caratteri-speciali"><title>Inserire caratteri speciali nei testi</title>
+<para>Per migliorare il testo sono disponibili le seguenti opzioni:</para>
+  <itemizedlist>
+    <listitem><para>&lt;sub&gt;text&lt;/sub&gt; restituisce il testo come pedice. &Egrave; possibile inserire questa sequenza facendo clic sul pulsante <inlinemediaobject><imageobject><imagedata  format="PNG" fileref="pics/text-options-icon1.png"/></imageobject></inlinemediaobject>.</para></listitem>
+    <listitem><para>&lt;sup&gt;text&lt;/sup&gt; restituisce il testo come apice. &Egrave; possibile inserire questa sequenza facendo clic su il pulsante <inlinemediaobject><imageobject><imagedata  format="PNG" fileref="pics/text-options-icon2.png"/></imageobject></inlinemediaobject>.</para></listitem>
+    <listitem><para>Cliccando sul pulsante <inlinemediaobject><imageobject><imagedata  format="PNG" fileref="pics/text-options-icon3.png"/></imageobject></inlinemediaobject>, &egrave; possibile aprire una nuova finestra di dialogo che permette di selezionare i caratteri minuscoli dell'alfabeto greco:</para>
+    <informalfigure id="fig-text-options1">
+      <mediaobject>
+        <imageobject>
+          <imagedata  format="PNG" fileref="pics/text-options-dialog1.png"/>
+        </imageobject>
+      </mediaobject>
+    </informalfigure>
+    </listitem>
+    <listitem><para>Cliccando sul pulsante <inlinemediaobject><imageobject><imagedata  format="PNG" fileref="pics/text-options-icon4.png"/></imageobject></inlinemediaobject>, &egrave; possibile aprire una nuova finestra di dialogo che permette di selezionare i caratteri maiuscoli dell'alfabeto greco:</para>
+    <informalfigure id="fig-text-options2">
+      <mediaobject>
+        <imageobject>
+          <imagedata  format="PNG" fileref="pics/text-options-dialog2.png"/>
+        </imageobject>
+      </mediaobject>
+    </informalfigure>
+    </listitem>
+    <listitem><para>Cliccando sul simbolo &int; integrale, &egrave; possibile aprire una nuova finestra di dialogo che permette di selezionare numerosi simboli matematici:</para>
+    <informalfigure id="fig-text-options4">
+      <mediaobject>
+        <imageobject>
+          <imagedata  format="PNG" fileref="pics/text-options-dialog4.png"/>
+        </imageobject>
+      </mediaobject>
+    </informalfigure>
+    </listitem>
+    <listitem><para>Cliccando sul simbolo &rarr; freccia, &egrave; possibile aprire una nuova finestra di dialogo che permette di selezionare numerosi tipi di frecce:</para>
+    <informalfigure id="fig-text-options5">
+      <mediaobject>
+        <imageobject>
+          <imagedata  format="PNG" fileref="pics/text-options-dialog5.png"/>
+        </imageobject>
+      </mediaobject>
+    </informalfigure>
+    </listitem>
+    <listitem><para>&lt;b&gt;text&lt;/b&gt; restituisce il testo con caratteri in grassetto. &Egrave; possibile inserire questa sequenza facendo clic su <inlinemediaobject><imageobject><imagedata  format="PNG" fileref="pics/text-options-icon5.png"/></imageobject></inlinemediaobject>.</para></listitem>
+    <listitem><para>&lt;i&gt;text&lt;/i&gt; restituisce il testo con caratteri inclinati (italic). &Egrave; possibile inserire questa sequenza facendo clic su <inlinemediaobject><imageobject><imagedata  format="PNG" fileref="pics/text-options-icon6.png"/></imageobject></inlinemediaobject>.</para></listitem>
+    <listitem><para>&lt;u&gt;text&lt;/u&gt; restituisce il testo sottolineato. &Egrave; possibile inserire questa sequenza facendo clic su <inlinemediaobject><imageobject><imagedata  format="PNG" fileref="pics/text-options-icon7.png"/></imageobject></inlinemediaobject>.</para></listitem>
+  </itemizedlist>
+</sect2>
+</sect1>
+

@@ -1,0 +1,402 @@
+<!--
+
+		SMALL TUTORIAL ON THE ANALYSIS POSSIBILITIES
+		============================================
+
+		JANUARY 2006: BASED ON VERSION 0.7.7
+
+-->
+
+<title>Analisi dei dati e delle curve</title>
+
+<sect1 id="sec-fft">
+<title>Trasformata di Fourier veloce</title>
+
+<para>Questa funzione si attiva con il comando <link linkend="fft-cmd">&fft-cmd;</link>. La funzione &egrave; disponibile nel men&ugrave; <link linkend="sec-analysis-menu">Analisi</link> quando una tabella o un grafico sono selezionati. La <emphasis>Trasformata di Fourier veloce</emphasis> scompone un segnale in tutte le sue componenti elementari assumendo che il segnale <emphasis>x(t)</emphasis> possa essere descritto come una sommatoria:</para>
+
+<equation>
+  <title>Equazione di Fourier</title>
+  <mediaobject>
+    <imageobject>
+      <imagedata format="PNG" fileref="equations/equation_fourier.png"/>
+    </imageobject>
+  </mediaobject>
+</equation>
+
+<para>In cui <inlinemediaobject><imageobject><imagedata format="PNG" fileref="equations/equation_omega-n.png"/></imageobject></inlinemediaobject> sono le frequenze, a<subscript>n</subscript> sono le ampiezze di ogni frequenza e <inlinemediaobject><imageobject><imagedata format="PNG" fileref="equations/equation_psi-n.png"/></imageobject></inlinemediaobject> sono le frequenze delle corrispondenti fasi. QtiPlot calcola questi parametri e costruisce un nuovo grafico in cui l'ampiezza &egrave; una funzione della frequenza.</para>
+
+<para>Esempio di comando <emphasis>FFT</emphasis> eseguito su una curva per estrarre le frequenze caratteristiche. Il segnale &egrave; rappresentato nel tracciato in basso, mentre il tracciato ampiezza-frequenza si trova nella parte superiore della tavola. In questo esempio, la curva dell'ampiezza &egrave; stata normalizzata, e le frequenze sono state traslate per ottenere un grafico centrato sull'asse delle x.</para>
+<figure id="fig-exemple-fft">
+  <title>Esempio di Trasformata Veloce di Fourier Inversa</title>
+  
+  <mediaobject>
+    <imageobject>
+      <imagedata  format="PNG" fileref="pics/exemple-fft.png"/>
+    </imageobject>
+  </mediaobject>
+</figure>
+
+<para>I parametri importanti della FFT si possono modificare utilizzando la finestra di dialogo <link linkend="fft-dialog">FFT</link>, compresa la selezione di una FFT inversa. Una FFT inversa eseguita sui risultati di un FFT diretta restituisce il segnale originale. Spesso, &egrave; utile rimuovere o modificare alcune componenti della frequenza prima di eseguire la FFT inversa. Questo &egrave; particolarmente utile quando si desidera rimuovere alcune interferenze note. Un esempio comune &egrave; la rimozione delle interferenze power-line (di solito 50 o 60 Hz, secondo il paese). Ricordare che questa operazione rimuove anche le eventuali porzioni del segnale reale che si trovano in quella stessa frequenza. Questa operazione deve quindi essere usata con prudenza.</para>
+</sect1>
+<sect1 id="sec-correlate">
+<title>Correlazione</title>
+
+<para>Questa funzione si attiva con il comando <link linkend="correlate-cmd">&correlate-cmd;</link> che si trova nel men&ugrave; <link linkend="sec-analysis-menu">Analisi</link> quando &egrave; selezionata una tabella. La funzione <emphasis>Correlazione</emphasis>, detta anche funzione delle covarianze &egrave; usata per testare le similarit&agrave; tra due segnali <emphasis>x(t)</emphasis> e <emphasis>y(t)</emphasis>. La correlazione &egrave; eseguita con:</para>
+
+<equation>
+  <title>Funzione delle covarianze di due segnali <emphasis>x(t)</emphasis> e <emphasis>y(t)</emphasis></title>
+  <mediaobject>
+    <imageobject>
+      <imagedata format="PNG" fileref="equations/equation_covariance.png"/>
+    </imageobject>
+  </mediaobject>
+</equation>
+
+<para>in cui <inlineequation><graphic fileref="equations/equation_x-m.png"/></inlineequation> e <inlineequation><graphic fileref="equations/equation_y-m.png"/></inlineequation> sono rispettivamente la media dei segnali <emphasis>x(t)</emphasis> e <emphasis>y(t)</emphasis>.</para>
+<para>Se <emphasis>N</emphasis> &egrave; il numero di punti, la funzione &egrave; computata tra <emphasis>-N/2</emphasis> e <emphasis>N/2</emphasis>. Le ascisse rappresentano quindi il numero di punti e non dei valori di <emphasis>t</emphasis> .</para>
+
+<para>Nel primo grafico sono rappresentati i due segnali. Nel secondo grafico si applica la funzione correlazione e si dimostra che c'&egrave; correlazione. Nel terzo grafico si applica la trasformata di Fourier e si estraggono le frequenze caratteristiche della funzione correlazione.</para>
+<figure id="fig-exemple-correlation">
+  <title>Esempio di correlazione tra due funzioni sinusoidali.</title>
+  
+  <mediaobject>
+    <imageobject>
+      <imagedata  format="PNG" fileref="pics/exemple-correlation.png"/>
+    </imageobject>
+  </mediaobject>
+</figure>
+
+<para>La correlazione di un segnale con se stesso pu&ograve; essere utilizzata anche in analisi spettrale (in questo caso &egrave; detta autocorrelazione o funzione di autocovarianza). </para>
+
+</sect1>
+
+<sect1 id="sec-convolute">
+<title>Convoluzione</title>
+<para>.</para>
+
+</sect1>
+
+<sect1 id="sec-deconvolute">
+<title>Deconvoluzione</title>
+<para>.</para>
+
+</sect1>
+
+<sect1 id="sec-non-linear-curve-fit">
+<title>Adattamento di curve guidato</title>
+
+<para>Questa funzione si attiva con il comando <link linkend="non-linear-curve-fit-cmd">&non-linear-curve-fit-cmd;</link> disponibile nel men&ugrave; <link linkend="sec-analysis-menu">Analisi</link> quando &egrave; selezionata una tabella.</para>
+
+<para>I risultati sono riportati nel pannello <emphasis>Risultati delle analisi</emphasis>, la curva &egrave; tracciata nella finestra attiva e viene creata una nuova tabella per archiviare i dati dell'adattamento. </para>
+  <figure id="fig-non-linear-curve-fit-3">
+    <title>Il risultato di un &non-linear-curve-fit-cmd;.</title>
+    
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG"  fileref="pics/fit-dialog3.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+
+</sect1>
+
+<sect1 id="sec-ajustements-specifiques">
+<title>Adattamento di curve specifiche</title>
+
+<para>&appname; permette di accedere velocemente alle funzioni di adattamento pi&ugrave; utilizzate.</para>
+
+<sect2 id="sec-fit-linear">
+<title>Adattamento con una linea. Adattamento lineare</title>
+
+<para>Questo adattamento &egrave; utilizzato per modellare curve con andamento lineare.</para>
+
+  <figure id="fig-fit-linear">
+    <title>Il risultato di un &fit-linear-cmd;.</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/fit-linear.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+
+<para>I risultati sono riportati nel pannello <link linkend="sec-intro-log-window">Risultati delle analisi</link>:</para>
+  <informalfigure id="fig-fit-linear-resultat">
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/fit-linear-resultat.png"/>
+      </imageobject>
+    </mediaobject>
+  </informalfigure>
+
+</sect2>
+
+<sect2 id="sec-fit-polynomial">
+<title>Adattamento con un polinomio. Adattamento polinomiale</title>
+
+<para>Questo adattamento &egrave; usato per modellare curve con andamento lineare. I risultati sono riportati nel pannello <link linkend="sec-intro-log-window">Risultati delle analisi</link></para>
+
+  <informalfigure id="fig-fit-polynomial-dialog">
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/fit-polynomial.png"/>
+      </imageobject>
+    </mediaobject>
+  </informalfigure>
+
+  <figure id="fig-fit-polynomial-result">
+    <title>Il risultato di un &fit-polynomial-cmd;, i dati iniziali, la curva aggiunta al grafico ed i risultati nel pannello Risultati delle analisi</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/fit-polynomial-resultat.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+
+</sect2>
+
+
+<sect2 id="sec-fit-bolzmann">
+<title>Adattamento con una funzione di Bolzmann. Adattamento di Bolzmann</title>
+
+<para>Questo adattamento &egrave; usato per modellare curve con andamento sigmoidale (a S). La funzione usata &egrave;:</para>
+
+<equation>
+  <title>Equazione di Bolzmann</title>
+  <mediaobject>
+    <imageobject>
+      <imagedata  format="PNG" fileref="equations/equation_bolzmann.png"/>
+    </imageobject>
+  </mediaobject>
+</equation>
+
+<para>in cui A<subscript>1</subscript> &egrave; il limite inferiore di Y, A<subscript>2</subscript> &egrave; il limite superiore di Y, x<subscript>0</subscript> &egrave; il punto di inflessione (punto di flesso a met&agrave; ampiezza) e dx &egrave; l'ampiezza.</para>
+
+  <figure id="fig-fit-bolzman">
+    <title>Il risultato di un &fit-bolzmann-cmd;.</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/fit-bolzmann.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+
+<para>Quando sull'asse X &egrave; impostata una scala logaritmica, il comando &fit-bolzmann-cmd; usa l'equazione logistica per la modellazione:</para>
+
+<equation>
+  <title>Equazione logistica</title>
+  <mediaobject>
+    <imageobject>
+      <imagedata  format="PNG" fileref="equations/equation_logistic.png"/>
+    </imageobject>
+  </mediaobject>
+</equation>
+
+<para>Dove A<subscript>1</subscript> &egrave; il valore iniziale di Y , A<subscript>2</subscript> &egrave; il valore finale di Y, x<subscript>0</subscript> &egrave; il punto di inflessione (centro) e p &egrave; la potenza.</para>
+</sect2>
+
+<sect2 id="sec-fit-gaussian">
+<title>Adattamento con una funzione di Gauss. Adattamento Gaussiano</title>
+
+<para>Questo adattamento &egrave; usato per modellare curve con andamento a campana. la funzione utilizzata &egrave;:</para>
+
+<equation>
+  <title>Equazione di Gauss</title>
+  <mediaobject>
+    <imageobject>
+      <imagedata  format="PNG" fileref="equations/equation_gauss.png"/>
+    </imageobject>
+  </mediaobject>
+</equation>
+
+<para>In cui A &egrave; l'altezza, w &egrave; la larghezza, x<subscript>c</subscript> &egrave; il centro e y<subscript>0</subscript> &egrave; lo scostamento sull'asse Y.</para>
+
+  <figure id="fig-fit-gauss">
+    <title>Il risultato di un &fit-gaussian-cmd;.</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/fit-gauss.png"/>
+      </imageobject>
+   </mediaobject>
+  </figure>
+
+</sect2>
+
+<sect2 id="sec-fit-lorentzian">
+<title>Adattamento con una funzione di Lorentz. Adattamento Lorentziano</title>
+
+<para>Questo adattamento si usa per modellare curve con andamento a campana. La funzione usata &egrave;:</para>
+
+<equation>
+  <title>Equazione di Lorentz</title>
+  <mediaobject>
+    <imageobject>
+      <imagedata  format="PNG" fileref="equations/equation_lorentz.png"/>
+    </imageobject>
+  </mediaobject>
+</equation>
+
+<para>In cui A &egrave; l'area, w &egrave; la larghezza, x<subscript>c</subscript> &egrave; il centro e y<subscript>0</subscript> &egrave; lo scostamento sull'asse Y.</para>
+
+  <figure id="fig-fit-lorentz">
+    <title>Il risultato di un &fit-lorentzian-cmd;.</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/fit-lorentz.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+
+</sect2>
+
+</sect1>
+
+<sect1 id="sec-fit-multipeak">
+<title>Adattamento multi-picco</title>
+
+<para>Questo tipo di adattamento permette di modellare la curva dei punti dati secondo una somma di N funzioni gaussiane o lorentziane.</para>
+<para>Prima si stabilisce il numero dei picchi e poi la loro posizione sulla curva. Per stabilire la posizione dei picchi si clicca sul grafico in un punto dati della curva e si convalida la scelta di ogni punto con un doppio clic o con il tasto <emphasis>INVIO</emphasis>.</para>
+  <figure id="fig-fit-multipeak">
+    <title>Il risultato di un &fit-multipeak-gaussian-cmd;.</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/fit-multipeak-2.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+
+
+</sect1>
+
+<sect1 id="sec-filtering">
+<title>Filtrazione dei dati delle curve</title>
+
+<para>In questa sezione si suppone di avere una curva del seguente tipo:</para>
+  <informalfigure id="fig-fft-filter-signal">
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/filter-fft-signal.png"/>
+      </imageobject>
+    </mediaobject>
+  </informalfigure>
+<para>Questo segnale ha uno spettro di potenza con alte e basse frequenze. L'analisi della curva con FFT (trasformata di Fourier) produce il seguente risultato:</para>
+  <informalfigure id="fig-fft-filter-signal-power">
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/filter-fft-signal-power.png"/>
+      </imageobject>
+    </mediaobject>
+  </informalfigure>
+<para>Nella sezione seguente si vedono gli effetti dei diversi filtri applicati alla curva.</para>
+
+<sect2 id="sec-fft-filter-low">
+<title>Filtro FFT passa basso</title>
+
+<para>Questo filtro taglia le alte frequenze del segnale. Si deve solo stabilire la frequenza di taglio del filtro. Quando si applica il filtro e si tagliano le frequenze oltre 1 Hz si ottiene il seguente risultato:</para>
+  <figure id="fig-filter-fft-low-signal">
+  <title>Il segnale dopo il filtraggio FFT passa basso</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/filter-fft-low-signal.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+  <para>Lo spettro di potenza del nuovo segnale dimostra che sono tagliate solo le frequenze superiori a 1 Hz.</para>
+  <informalfigure id="fig-filter-fft-low-power">
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/filter-fft-low-power.png"/>
+      </imageobject>
+    </mediaobject>
+  </informalfigure>
+</sect2>
+
+<sect2 id="sec-fft-filter-high">
+<title>Filtro FFT passa alto</title>
+
+<para>Questo filtro taglia le basse frequenze del segnale. Si deve solo impostare la frequenza di taglio del filtro. Quando si applica il filtro e si tagliano le frequenze al di sotto di 1 Hz si ottiene:</para>
+  <figure id="fig-filter-fft-high-signal">
+  <title>Il segnale dopo il filtraggio passa alto</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/filter-fft-high-signal.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+  <para>Lo spettro di potenza del nuovo segnale dimostra che sono tagliate solo le frequenze al di sotto di 1 Hz.</para>
+  <informalfigure id="fig-filter-fft-high-power">
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/filter-fft-high-power.png"/>
+      </imageobject>
+    </mediaobject>
+  </informalfigure>
+</sect2>
+
+<sect2 id="sec-fft-filter-band">
+<title>Filtro FFT passa banda</title>
+
+<para>Questo filtro permette di tagliare sia le alte che le basse frequenze del segnale e permette di mantenere una banda di frequenze. Si devono impostare le due frequenze di taglio, limiti della banda. Quando si applica questo filtro e si tagliano le frequenze inferiori a 1,5 Hz e superiori a 3,5 Hz si ottiene:</para>
+  <figure id="fig-filter-fft-band-signal">
+  <title>Il segnale dopo il filtraggio passa banda</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/filter-fft-band-signal.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+  <para>Lo spettro di potenza del nuovo segnale dimostra che sono tagliate solo le frequenze al di sotto di 1,5 Hz e al di sopra di 3,5 Hz e che le frequenze della banda 1,5-3,5 Hz sono salvaguardate.</para>
+  <informalfigure id="fig-filter-fft-band-power">
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/filter-fft-band-power.png"/>
+      </imageobject>
+    </mediaobject>
+  </informalfigure>
+</sect2>
+
+<sect2 id="sec-fft-filter-block">
+<title>Filtro FFT blocca banda</title>
+
+<para>Questo filtro permette di tagliare le frequenze del segnale entro un intervallo. Si devono impostare le frequenze limite della banda che si vuole tagliare. Quando si applica questo filtro per eliminare le frequenze tra 1,5 Hz e 3,5 Hz si ottiene:</para>
+  <figure id="fig-filter-fft-block-signal">
+  <title>Il segnale dopo il filtraggio blocca banda</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/filter-fft-block-signal.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+  <para>Lo spettro di potenza del nuovo segnale dimostra che vengono tagliate solo le frequenze comprese tra 1,5 Hz e 3,5 Hz.</para>
+  <informalfigure id="fig-filter-fft-block-power">
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/filter-fft-block-power.png"/>
+      </imageobject>
+    </mediaobject>
+  </informalfigure>
+</sect2>
+</sect1>
+
+<sect1 id="sec-interpolate">
+<title>Interpolazione</title>
+
+<para>Il comando <emphasis>Interpolazione</emphasis> crea una nuova curva con un alto numero di punti ottenuti per interpolazione dei punti dati. La finestra di dialogo permette di definire il numero di questi punti (predefiniti sono 1000). Poi si deve definire il metodo di interpolazione da usare, l'intervallo dei valori di X ed il colore con cui si vuole tracciare la curva interpolante. Oltre alla nuova curva nel grafico attivo, il comando crea una nuova tabella per achiviare i dati.</para>
+  <informalfigure id="fig-interpolate-dialog-b">
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/interpolate-dialog.png"/>
+      </imageobject>
+    </mediaobject>
+  </informalfigure>
+<para>Il metodo di interpolazione pi&ugrave; semplice &egrave; il metodo <emphasis>lineare</emphasis>. In questo caso i punti intermedi tra due valori si trovano supponendo che la funzione sia lineare. Il metodo <emphasis>cubica</emphasis> applica una interpolazione spline cubica producendo una curva interpolante pi&ugrave; liscia, in questo caso servono almeno 4 punti. Il metodo <emphasis>Akima</emphasis> &egrave; un metodo di interpolazione polinomiale, produce l'interpolante con un polinomio di grado opportuno. Per maggiori informazioni si pu&ograve; consultare la relativa sezione di <ulink url="http://www.gnu.org/software/gsl/manual/html_node/Interpolation.html#Interpolation">GNU Scientific Library</ulink>.</para>
+  <figure id="fig-interpolate-methods">
+  <title>Comparazione dei tre metodi di interpolazione</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/interpolate-methods.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+</sect1>
+
+

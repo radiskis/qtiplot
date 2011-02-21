@@ -1,0 +1,100 @@
+<chapter id="faq">
+<title>Domande frequenti</title>
+
+<qandaset defaultlabel='qanda'>
+
+<qandaentry>
+  <question>
+    <para>Come si estraggono i dati da un file di testo?</para>
+  </question>
+  <answer>
+    <para>Dal men&ugrave; &file-menu-lnk; selezionare la voce &import-ascii-lnk;.</para>
+  </answer>
+</qandaentry>
+
+<qandaentry>
+  <question>
+    <para>Come si traccia il grafico dei dati contenuti in una tabella?</para>
+  </question>
+  <answer>
+    <para>Cliccare con il tasto destro sull'intestazione della colonna della tabella per selezionarla . Scegliere la voce Tracciato &rarr; grafico desiderato dal men&ugrave; che viene mostrato.</para>
+    <para>You can also use the plot assistant: press 'CTRL+ALT+W' keys to show it, or go to 'View' menu &rarr; 'Plot wizard'.</para>
+  </answer>
+</qandaentry>
+
+<qandaentry>
+  <question>
+    <para>Come si esporta un grafico in formato immagine?</para>
+  </question>
+  <answer>
+    <para>Cliccare con il tasto destro all'interno del grafico e scegliere la voce Esporta. Se si clicca in un altro punto della finestra l'opzione non appare nel men&ugrave;.</para>
+  </answer>
+</qandaentry>
+
+<qandaentry>
+  <question>
+    <para>Come si esporta un grafico in formato immagine trasparente?</para>
+  </question>
+  <answer>
+    <para>Scegliere per l'esportazione il formato .png e impostare la trasparenza. Per maggiori informazioni vedere la sezione &export-graph-current-lnk;.</para>
+  </answer>
+</qandaentry>
+
+<qandaentry>
+  <question>
+    <para>Come si esporta un file in formato testo?</para>
+  </question>
+  <answer>
+    <para>Dal men&ugrave; &file-menu-lnk; scegliere &export-ascii-lnk;.</para>
+  </answer>
+</qandaentry>
+
+<qandaentry>
+  <question>
+    <para>Come si sceglie una finestra con l'esploratore del progetto?</para>
+  </question>
+  <answer>
+    <para>Nell'esploratore del progetto, una finestra si attiva in modalit&agrave; espansa con un doppio clic sul suo nome. Cliccando invece sul nome della finestra con il tasto destro si apre il men&ugrave; con le altre opzioni.</para>
+  </answer>
+</qandaentry>
+
+<qandaentry>
+  <question>
+    <para>Come si seleziona un intervallo di dati per modificare una curva e visualizzarne solo una parte?</para>
+  </question>
+  <answer>
+    <para>Attivare la finestra del grafico. Dal men&ugrave; &data-menu-lnk; scegliere &select-data-range-lnk;. Fare clic sul grafico e con i tasti alto o basso scegliere la curva da modificare. Premere Ctrl e con i tasti destra o sinistra spostarsi sulla curva e modificare l'intervallo di dati. Un riferimento rosso e uno nero permettono di conoscere l'intervallo selezionato. Posizionare il cursore sulla curva entro l'intervallo e cliccare con il tasto destro per aprire il men&ugrave; di modifica dell'intervallo, della visualizzazione o ripristinare il grafico completo.</para>
+  </answer>
+</qandaentry>
+
+<qandaentry>
+  <question>
+    <para>Come si modifica una curva usando una funzione personale?</para>
+  </question>
+  <answer>
+    <para>Dal men&ugrave; &analysis-menu-lnk; selezionare &non-linear-curve-fit-lnk;. Definire la funzione (miaFunzione=....), inserire i valori iniziali dei parametri, l'intervallo ed il numero di iterazioni e premere OK.</para>
+  </answer>
+</qandaentry>
+
+<qandaentry>
+  <question>
+    <para>Come si traccia il grafico dell'intensit&agrave; dei pixel (o profilo del livello di intensit&agrave;) di una immagine?</para>
+  </question>
+  <answer>
+    <para>Fare clic con il tasto destro sull'immagine e nel men&ugrave; che viene aperto scegliere Visualizza il profilo in pixel. Si apre una finestra di dialogo per impostare il numero di pixel da usare nell'analisi. Scegliere e premere OK. Con il tasto sinistro del mouse, selezionare il punto di inizio da analizzare e, senza rilasciare il tasto, spostare il mouse fino al punto finale. Quando si rilascia il tasto appare una finestra con il grafico intensit&agrave; dei pixel contro indice dei pixel.</para>
+  </answer>
+</qandaentry>
+
+<qandaentry>
+  <question>
+    <para>Come si costruisce un grafico che ha un solo asse X, ma due assi Y con diversi ordini di grandezza?</para>
+  </question>
+  <answer>
+    <para>
+	Servono almeno due colonne di tipo Y. Selezionare almeno due colonne tipo Y e usare il comando &double-y-lnk;.
+	</para>
+  </answer>
+</qandaentry>
+</qandaset>
+
+</chapter>

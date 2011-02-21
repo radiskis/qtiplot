@@ -1,0 +1,322 @@
+<chapter id="introduction">
+<title>Introduzione</title>
+
+<!-- The introduction chapter contains a brief introduction for the
+application that explains what it does and where to report
+problems. Basically a long version of the abstract.  Don't include a
+revision history. (see installation appendix comment) -->
+
+<sect1 id="sec-qtiplot-intro">
+<title>Cosa fa &appname; </title>
+
+<para>&appname; &egrave; un programma per realizzare grafici a due o tre dimensioni e per analizzare insiemi di dati. I grafici possono essere realizzati partendo da un gruppo di dati contenuti in <link linkend="sec-intro-table">tabelle</link> o da funzioni analitiche. </para>
+<para>Il progetto &egrave; stato iniziato nel 2000 da Ion Vasilief. Fino al 2005 Ion ha sviluppato il programma da solo. Dal 2006 si sono aggiunti altri programmatori ed il progetto &egrave; stato ospitato da <ulink url="www.berlios.de/projects/qtiplot/">BerliOS Developer</ulink>. Questo software vuole essere uno strumento di analisi e rappresentazione grafica di dati alternativo ai software commerciali.</para>
+
+<para>&appname; &egrave; uno strumento dinamico: i grafici creati partendo da un insieme di dati e le tabelle che contengono i dati sono interconnessi. Quando una tabella viene modificata, tutti gli oggetti del grafico ad essa collegato (curve, scala degli assi, legende) sono  aggiornati automaticamente. Per esempio, cancellando una tabella o anche solo una delle colonne, vengono anche automaticamente rimosse le corrispondenti curve nel grafico dipendente. I grafici possono essere esportati in diversi formati e inseriti come immagini in documenti o presentazioni.</para>
+
+<para>Tutti i parametri per l'impostazione completa di tabelle, matrici e grafici possono essere salvati in un file progetto con estensione <emphasis>.qti</emphasis>. Questo file progetto pu&ograve; essere aperto usando la <link linkend="specify-a-file">riga di comando</link>, il men&ugrave; <link linkend="sec-file-menu">File</link>, o l'icona <emphasis>Apri un progetto esistente</emphasis> nella  <link linkend="sec-file-toolbar">barra degli strumenti per i file</link>.</para>
+
+<para>Su un grafico 2D, le operazioni di analisi dei dati ( integrazione, interpolazione, FFT, adattamenti e modellazioni di curve, ecc.) si realizzano usando il <emphasis>men&ugrave; Analisi</emphasis>. I risultati di tutte queste operazioni sono archiviati nel file del progetto . I risultati si possono visualizzare in qualsiasi momento tramite il comando  Visualizza &rarr;  &results-log-lnk; e si possono cancellare con il comando  Modifica &rarr; &clear-log-lnk;.</para>
+
+<para>Avviando l'applicazione si crea, per il nuovo progetto, un file di nome <emphasis>senza nome</emphasis> composto da una finestra principale di colore grigio (l'area di lavoro) che pu&ograve; ospitare, secondo le impostazione definite nelle Preferenze, una finestra figlio inizialmente vuota. La finestra figlio iniziale si personalizza con il comando Modifica &rarr;  <link linkend="preferences-dialog">Preferenze</link>. Essa pu&ograve; essere una tabella, una matrice, un testo di appunti o un grafico 2D vuoto. Per poter operare, si deve completare l'area di lavoro con almeno un contenitore di dati (tabella o matrice). Sia le tabelle che le matrici vuote si possono creare manualmente con il comando File &rarr;  &new-table-lnk; e successivamente riempire con i dati oppure si possono importare i dati da file ASCII con il comando File &rarr;  &import-ascii-lnk; e creare cos&igrave; automaticamente nuove tabelle gi&agrave; compilate..</para>
+
+<para>I componenti di un progetto si esplorano facilmente con l'esploratore dei progetti attraverso il comando <emphasis>Visualizza &rarr; Esploratore dei progetti</emphasis>. L'esploratore dei progetti consente anche di eseguire diverse operazioni sulle tabelle e sui grafici (riduzioni, ingrandimenti, chiusura, rinomina, stampa, ecc.).</para>
+
+</sect1>
+
+<sect1 id="command-line-options">
+<title>Parametri della riga di comando</title>
+<sect2 id="specify-a-file">
+	<sect2info><indexterm><primary>Parametri della riga di comando</primary><secondary>Specificare un file da aprire</secondary></indexterm></sect2info>
+<title>Specificare un file da aprire</title>
+
+<para>Quando si avvia &appname; dalla riga di comando si pu&ograve; aprire direttamente il progetto desiderato digitando:</para>
+
+<screen>
+qtiplot nome_del_file.&file-ext;
+</screen>
+
+<para>Altri formati di file ammessi sono: <emphasis>.opj, .ogm, .ogw, .ogg</emphasis> per i progetti di tipo Origin, e <emphasis>.qti, qti.gz</emphasis> per i progetti di tipo QtiPlot.</para>
+<para>Il nome pu&ograve; anche riferirsi a un file ASCII:</para>
+
+<screen>
+qtiplot ASCII_nome_del_file
+</screen>
+
+<para> in questo caso viene creato un nuovo progetto di nome <emphasis>senza nome</emphasis>. Il nuovo progetto appena creato contiene una tabella con i dati del file ASCII e un grafico bidimensionale di tutte le colonne come funzione della prima colonna del file. Spetta all'utente formattare correttamente il file ASCII. Il file &egrave; letto e interpretato secondo le impostazioni stabilite con la finestra di dialogo del comando &import-ascii-lnk; . Le impostazioni predefinite per questa operazione prevedono:</para>
+<itemizedlist>
+  <listitem><para>il separatore di campo predefinito &egrave;: <emphasis>;</emphasis>  modificabile nel dialogo &preferences-lnk;,</para></listitem>
+  <listitem><para>sono lette tutte le righe,</para></listitem>
+  <listitem><para>la prima riga &egrave; usata per il nome delle colonne,</para></listitem>
+  <listitem><para>gli spazi alla fine delle righe non vengono rimossi,</para></listitem>
+  <listitem><para>gli spazi non sono semplificati.</para></listitem>
+</itemizedlist>
+
+</sect2>
+
+<sect2 id="qtiplot-options">
+	<sect2info><indexterm><primary>Opzioni della riga di comando</primary><secondary>Opzioni</secondary></indexterm></sect2info>
+<title>Opzioni della riga di comando</title>
+
+<para>Le opzioni valide per la riga di comando sono:</para>
+<itemizedlist>
+<listitem><para>-a or --about: visualizza le informazioni su QtiPlot e esce</para></listitem>
+<listitem><para>-c or --console: visualizza una finestra script indipendente</para></listitem>
+<listitem><para>-d or --default-settings: avvia QtiPlot con le impostazioni predefinite</para></listitem>
+<listitem><para>-h or --help: visualizza le opzioni della riga di comando</para></listitem>
+<listitem><para>-l=XX or --lang=XX: avvia QtiPlot nella lingua indicata XX (en, fr, de, ...)</para></listitem>
+<listitem><para>-m or --manual: visualizza il manuale di QtiPlot in una finestra separata</para></listitem>
+<listitem><para>-v or --version: visualizza la versione di QtiPlot</para></listitem>
+<listitem><para>-x or --execute: esegue il file script indicato nell'argomento</para></listitem>
+<listitem><para>-X: esegue il file script senza visualizzare l'interfaccia utente.
+Attenzione, i grafici 2D eseguiti con questa modalit&agrave; non sempre sono rappresentati correttamente.</para></listitem>
+</itemizedlist>
+</sect2>
+</sect1>
+
+<sect1 id="general-concepts">
+<title>Concetti generali e termini</title>
+<para>In un file <emphasis>Progetto</emphasis> &egrave; possibile salvare diversi grafici e tutti i dati relativi ad essi. Il progetto &egrave; quindi il contenitore principale di QtiPlot. L'immagine seguente &egrave; un esempio di una tipica sessione di lavoro con QtiPlot. Nell'esempio si vede il pannello dei <link linkend="sec-intro-log-window">risultati delle analisi</link> nella parte alta dell'area di lavoro, l'<link linkend="sec-intro-project-explorer">esploratore del progetto</link> in basso, una <link linkend="sec-intro-table">tabella di dati</link> e una <link linkend="sec-intro-plot-window">finestra di grafico</link>. Le altre finestre sono ridotte o nascoste.</para>
+
+<figure id="fig-qtiplot-session">
+  <title>Una tipica sessione di lavoro con QtiPlot</title>
+  <mediaobject>
+    <imageobject>
+      <imagedata  format="PNG" fileref="pics/qtiplot-session.png"/>
+    </imageobject>
+  </mediaobject>
+</figure>
+<title>Nota sulle finestre massimizzate, ingrandite al massimo (per non perdere tempo a cercare i pulsanti di comando)</title>
+<para>Nota generale sullo stile delle finestre in MDI. QtiPlot usa lo stile Interfaccia a Documenti Multipli (MDI) per le sue finestre secondarie (grafici, tabelle, ecc.). Questo &egrave; un metodo efficace per aprire diverse finestre secondarie all'interno di una finestra principale (ad esempio finestre di grafico o di tabelle contenute nella finestra del progetto). Questa raccolta di finestre &egrave; poi trattata come un unico gruppo quando la finestra principale viene spostata o ridimensionata. Il sistema di espansione delle finestre secondarie &egrave; una caratteristica dell'interfaccia MDI che all'inizio crea un po' di confusione. Come &egrave; prevedibile, quando le finestre secondarie sono massimizzate, vengono espanse alle dimensioni dello spazio di lavoro della finestra principale, e non alle dimensioni dello schermo, ma per impostazione predefinita, le finestre secondarie massimizzate non hanno la barra del titolo. Di conseguenza, la finestra massimizzata non contiene i pulsanti di comando e si ha l'impressione (errata) che, dopo un ingrandimento, la sotto finestra non possa pi&ugrave; essere ridotta, normalizzata o chiusa. Invece, le caselle di controllo sono ancora presenti, sono solo spostate all'estrema destra della barra dei menu della finestra principale. Dato che si pu&ograve; ingrandire solo una sotto finestra per volta, non ci sono dubbi su quale sotto finestra agiscono i comandi disponibili. Infine, come promemoria, il nome e l'etichetta della finestra secondaria ingrandita sono aggiunti al titolo della finestra principale, come in questo esempio:</para>
+<para>    "&appname; - ProjectName - [WindowName - WindowLabel]"</para>
+<para> </para>
+
+<para>In QtiPlot sono disponibili numerosi comandi . Secondo gli elementi selezionati (tabelle, grafici, ecc.) sono disponibili differenti sottoinsiemi di comandi specifici (i men&ugrave;). La barra del men&ugrave; principale cambia quando, nel progetto, si selezionano elementi diversi e propone solo i comandi applicabili all'oggetto attivo. Inoltre, si accede ai comandi pertinenti ad ogni elemento attivando il men&ugrave; contestuale con il tasto destro del mouse quando il puntatore &egrave; posizionato sull'oggetto.</para>
+<para>In un progetto si pu&ograve; usare uno dei seguenti gruppi di comandi: </para>
+
+<variablelist>
+  <varlistentry>
+    <term><link linkend="sec-intro-table">Tabella</link></term>
+    <listitem>
+      <indexterm><primary>tabella</primary></indexterm>
+      <para>Una tabella &egrave; un foglio elettronico da usare come contenitore per i dati da inserire. La tabella &egrave; inserita in una sua propria finestra (la finestra Nuova Tabella). Essa pu&ograve; essere utilizzata per eseguire diversi calcoli e analisi statistiche sui dati. In ogni tabella, le colonne possono essere etichettate e impostate come valori sull'asse X, valori sull'asse Y oppure valori sull'asse Z quando si vuole tracciare un grafico 3D.</para>
+      <para>Una tabella si crea con il comando File &rarr;  &new-table-lnk;. Ci sono diversi modi per compilare la tabella con i dati. Per usare i dati contenuti in un proprio file ASCII, i dati si importano con il comando File &rarr;  &import-ascii-lnk;. Per compilare la tabella manualmente si inseriscono i dati da tastiera. Per compilare la tabella con i risultati di una funzione matematica si usa il comando Tabella &rarr;  &set-column-values-lnk; dal men&ugrave; &table-menu-lnk;.</para>
+    </listitem>
+  </varlistentry>
+  <varlistentry>
+    <term><link linkend="sec-intro-matrix">Matrice</link></term>
+    <listitem>
+      <indexterm><primary>matrice</primary></indexterm>
+      <para>Una matrice &egrave; una tabella speciale usata come contenitore di dati per i grafici 3D. Una matrice contiene i valori per l'asse Z e non comprende colonne o righe definite come valori sull'asse X o sull'asse Y. &Egrave; comunque possibile specificare i valori per l'asse X e per l'asse Y con il comando &set-dimensions-lnk; in &matrix-menu-lnk;.</para>
+      <para>Una matrice si crea con il comando File &rarr;  &new-matrix-lnk;. Per usare dei dati contenuti in una matrice di formato ASCII, si importano i dati in una tabella con il comando &import-ascii-lnk;, e poi si converte la tabella in una matrice con il comando &convert-to-matrix-lnk;. Con il comando &set-values-lnk; in &matrix-menu-lnk;  e con le stesse modalit&agrave; usate per le tabelle, si pu&ograve; compilare la matrice con i risultati di una funzione matematica di tipo <emphasis>z=(i,j)</emphasis> in cui <emphasis>i</emphasis> e <emphasis>j</emphasis> sono i numeri delle righe e delle colonne.</para>
+    </listitem>
+  </varlistentry>
+  <varlistentry>
+    <term><link linkend="sec-intro-plot-window">Grafico</link></term>
+    <listitem>
+      <indexterm>
+        <primary>grafico</primary>
+      </indexterm>
+      <para>Un grafico (finestra di grafico) pu&ograve; contenere una o pi&ugrave; tavole. Una tavola &egrave; formata da assi, voci di testo, tracciati delle curve e da una unica area (tela del grafico) delimitata dalle linee degli assi. Per costruire il grafico nell'area di lavoro sono tracciate una o pi&ugrave; curve prodotte usando dati o funzioni. &Egrave; possibile modificare l'aspetto delle tavole costruite come grafico di una matrice e dei relativi tracciati contenuti . In questo documento, il termine finestra di grafico &egrave; sinonimo di grafico.</para>
+      <para>Con il comando &add-layer-lnk; del men&ugrave; &graph-menu-lnk; si aggiunge una nuova tavola a una finestra grafico . Con il comando Grafico &rarr;  &remove-layer-lnk; si elimina una tavola, ma quando si rimuove una tavola si rimuove anche il tracciato contenuto. Si pu&ograve; copiare una tavola in una finestra diversa o una finestra in un'altra (la finestra viene aggiunta come una nuova tavola); per maggiori informazioni vedere alla sezione  <link linkend="sec-multilayer-plots">Finestre con pi&ugrave; tavole</link> .</para>
+      <para>Le curve si aggiungono in diversi modi. Per generare le curve si usano i dati di una tabella o di una matrice oppure si producono con una funzione a una o due variabili ( vedere le sezioni  <link linkend="sec-2d-plots">Grafici 2D</link> e <link linkend="sec-3d-plots">Grafici 3D</link>).</para>
+    </listitem>
+  </varlistentry>
+  <varlistentry>
+    <term><link linkend="sec-intro-note">Annotazioni</link></term>
+    <listitem>
+      <para>Questa finestra &egrave; un contenitore di testi e si usa per aggiungere dei commenti al progetto, ma dispone anche di ulteriori potenzialit&agrave;. Pu&ograve; servire da calcolatrice, per eseguire singoli comandi e per editare degli script.</para>
+    </listitem>
+  </varlistentry>
+  <varlistentry>
+    <term><link linkend="sec-intro-log-window">Risultati delle analisi</link></term>
+    <listitem>
+      <para>Questa finestra &egrave; l'archivio dei risultati di tutti i calcoli eseguiti. Se questa finestra non &egrave; visibile, si pu&ograve; aprirla con l'<link linkend="sec-intro-project-explorer">Esploratore dei progetti</link> o con il comando Visualizza &rarr;   &results-log-lnk;.</para>
+      <para>Il testo del rapporto &egrave; salvato nel file del progetto, quando si apre un progetto salvato in precedenza, il rapporto viene riscritto con i risultati dei calcoli precedenti. </para>
+    </listitem>
+  </varlistentry>
+  <varlistentry>
+    <term><link linkend="sec-intro-project-explorer">Esploratore dei progetti</link></term>
+    <listitem>
+      <para>In questa finestra sono elencate tutte le finestre del progetto. L'<link linkend="project-explorer-dialog">Esploratore dei progetti</link> permette di accedere velocemente a tutti gli elementi del progetto, sia nascosti che visibili. Pu&ograve; essere usato per eseguire diverse operazioni sugli elementi elencati come rinomina, visualizzazione, ecc. delle finestre.</para>
+      <para>Dalla versione 0.8.5, un progetto pu&ograve; contenere diversi progetti indipendenti. In questo caso i singoli progetti sono salvati in cartelle diverse.</para>
+    </listitem>
+  </varlistentry>
+</variablelist>
+
+<!--
+		General description of a table
+		==============================
+-->
+<sect2 id="sec-intro-table">
+<title>Tabella </title>
+
+      <indexterm><primary>tabella</primary></indexterm>
+<para>
+Quando si lavora con i dati, le tabelle sono il punto centrale di &appname;. Una tabella &egrave; composta sostanzialmente da un foglio di calcolo semplificato contenuto in una finestra ed &egrave; usata per controllare, modificare o convertire i dati. Le tabelle sono estremamente personalizzabili: tutte le preferenze in merito ai colori o ai formati dei caratteri di testo si impostano nel men&ugrave; &preferences-lnk; in &view-menu-lnk;. Per ridimensionare la tabella in merito alle righe o alle colonne si usa il comando &set-rows-lnk; o &set-columns-lnk; del men&ugrave; &table-menu-lnk; .
+</para>
+
+<figure id="fig-the-table">
+  <title>La tabella di QtiPlot</title>
+  <mediaobject>
+    <imageobject>
+      <imagedata  format="PNG" fileref="pics/table.png"/>
+    </imageobject>
+  </mediaobject>
+</figure>
+
+<para> Ogni colonna di una tabella ha una etichetta e ad ogni colonna si pu&ograve; attribuire un formato: numerico, testo, data o ora. Ciascuna colonna ha uno dei seguenti contrassegni distintivi: X, Y, Z, errori in X, errori in Y, etichetta, oppure nessuna impostazione (&egrave; una semplice colonna senza nessuna impostazione distintiva). Nei grafici 2D creati utilizzando i dati della tabella, le colonne contrassegnate come X sono usate per le ascisse mentre le colonne contrassegnate come Y sono usate per le ordinate. Per usare i dati di una colonna quando si traccia un grafico 2D, la colonna deve essere contrassegnata X o Y. Le colonne errori X o errori Y sono usate per aggiungere le barre di errore nei grafici 2D. I contrassegni si possono modificare con il comando <link linkend="column-options-dialog">Opzioni della colonna</link>. Questa finestra di dialogo si attiva con doppio clic sull'etichetta della tabella oppure con il comando &column-options-lnk; in &table-menu-lnk;.</para>
+
+<para> La colonna di una tabella si attiva con un clic del tasto sinistro sulla sua etichetta. La selezione di pi&ugrave; colonne si fa in uno dei due modi seguenti. Primo metodo, quando le colonne sono adiacenti, cliccare sull'etichetta della prima colonna desiderata e, senza rilasciare il tasto sinistro del mouse, trascinare il puntatore sull'etichetta delle altre colonne da selezionare. Secondo metodo, quando le colonne non sono adiacenti, selezionare la prima colonna poi, con il tasto <keycode>Ctrl</keycode> premuto, selezionare le altre colonne con un clic sulle relative etichette. Il secondo metodo vale anche per deselezionare specifiche colonne. La selezione di tutte le colonne della tabella si esegue con i tasti <keycode>Ctrl+A</keycode>.</para>
+
+<para> Sulle colonne selezionate si possono effettuare diverse operazioni: compilarle con i dati, normalizzarle, ordinarle, visualizzare statistiche e infine tracciare le curve dei dati. Tutte queste funzioni si attivano con un clic del tasto destro sull'etichetta della colonna o con il men&ugrave; &table-menu-lnk;.</para>
+
+<para> Tutte le altre funzioni della tabella: rinominare, duplicare, esportare, stampare e chiudere sono raggiungibili tramite il menu contestuale (tasto destro del mouse in qualsiasi punto della tabella di fuori della zona della etichetta di colonna). </para>
+
+<para> &Egrave; possibile tagliare, copiare e incollare dati tra tabelle o tra una tabella di QtiPlot e un'altra applicazione (Excel, Gnumeric, ecc.)</para>
+
+<para> &Egrave; possibile importare uno o pi&ugrave; file ASCII utilizzando il comando &import-ascii-lnk; dal menu &file-menu-lnk;. Naturalmente &egrave; anche possibile esportare i dati di una tabella in un file di testo utilizzando il comando &export-ascii-lnk;.</para>
+
+</sect2>
+
+<!--
+		General description of a matrix
+		===============================
+-->
+<sect2 id="sec-intro-matrix">
+<title>Matrice </title>
+
+      <indexterm><primary>matrice</primary></indexterm>
+<para>La matrice &egrave; una tabella speciale usata per i dati che dipendono da due variabili.
+Questa tabella speciale si usa per creare dei grafici 3D oppure delle curve di livello in un grafico 2D attraverso il men&ugrave; &plot3d-menu-lnk; o il men&ugrave; della &plot3d-toolbar-lnk;. 
+A differenza della tabella, la matrice funziona in due modalit&agrave; diverse: pu&ograve; visualizzare i dati in formato numerico (come la tabella) oppure pu&ograve; visualizzare i dati in formato immagine. La matrice pu&ograve; anche essere usata come un semplice visualizzatore di immagini oppure anche come editor di immagini, dato che attua diverse funzioni di manipolazione dell'immagine stessa come: la rotazione di 90 gradi, il ribaltamento orizzontale o verticale, ecc..</para>
+
+<para>In una matrice non ci sono colonne o righe speciali per i valori e le etichette di X o Y. Tuttavia si pu&ograve; specificare una scala per X e una scala per Y con il comando Matrice &rarr; &set-dimensions-lnk;.</para>
+
+<figure id="fig-matrix">
+  <title>La matrice di QtiPlot</title>
+  <mediaobject>
+    <imageobject>
+      <imagedata  format="PNG" fileref="pics/matrix.png"/>
+    </imageobject>
+  </mediaobject>
+</figure>
+
+<para>I valori contenuti nella matrice della figura sono prodotti con la funzione <emphasis>z=(i, j, x, y)</emphasis> inserita con il comando Matrice &rarr;  &set-values-lnk;,
+dove <emphasis>i</emphasis> e <emphasis>j</emphasis> sono rispettivamente i numeri di riga e di colonna e dove <emphasis>x</emphasis> e <emphasis>y</emphasis> sono le coordinate corrispondenti.
+In una matrice si possono anche inserire valori letti direttamente in un file ASCII con il comando File &rarr;  &import-ascii-lnk; o valori letti direttamente in un file immagine.</para>
+
+</sect2>
+
+<!--
+		General description of a plot window (aka graph)
+		====================================
+-->
+<sect2 id="sec-intro-plot-window">
+<title>Grafico </title>
+
+<para>La finestra grafico (che &egrave; un grafico), &egrave; il contenitore per tracciare le curve. &Egrave; composta da una o pi&ugrave; tavole, che sono il principale contenitore di un tracciato. Ogni tavola comprende un'area (tela del grafico) per posizionare le curve quando si produce il tracciato. Ogni tavola ha una sua propria forma e delle propriet&agrave; grafiche specifiche (colore di sfondo, tela, ecc.). La figura seguente presenta un grafico con due tavole di caratteristiche diverse.</para>
+
+<figure id="fig-plot-window">
+  <title>Esempio di grafico 2D con QtiPlot</title>
+  <mediaobject>
+    <imageobject>
+      <imagedata  format="PNG" fileref="pics/plot-window.png"/>
+    </imageobject>
+  </mediaobject>
+</figure>
+
+<para>Ogni tavola si attiva con un clic sul corrispondente pulsante  <inlinemediaobject><imageobject><imagedata format="PNG" fileref="pics/layer-button.png"/></imageobject></inlinemediaobject> nell'angolo in alto a sinistra della finestra.</para>
+
+<para>Si possono modificare i vari elementi del grafico accedendo al men&ugrave; corrispondente con un clic sull'oggetto . Questi sono:</para>
+
+<itemizedlist>
+<listitem>
+<para>Il grafico stesso: per questo si usa il comando <link linkend="custom-curves-dialog">Opzioni per il grafico</link>. Si possono aggiungere nuove curve al grafico o cambiare il modo in cui le curve sono tracciate.</para>
+</listitem>
+<listitem>
+<para>Gli assi o le etichette degli assi: per questo si usa il comando <link linkend="plot-options-dialog">Opzioni per gli assi</link> che permette di personalizzare gli assi, il numero o le etichette degli assi e le griglie.</para>
+</listitem>
+<listitem>
+<para>I testi compresa la legenda: per questo si usa il comando <link linkend="text-options-dialog">Opzioni per i testi</link> che permette di personalizzare i caratteri delle etichette e il riquadro che le contiene.</para>
+</listitem>
+<listitem>
+<para>Le frecce e linee: per questo si usa il comando <link linkend="arrow-dialog">Opzioni per le linee</link>.</para>
+</listitem>
+<listitem>
+<para>Le immagini: per questo si apre una finestra di dialogo che permette di personalizzare la forma e la posizione dell'immagine.</para>
+</listitem>
+</itemizedlist>
+
+<para>Gli elementi di una tavola si selezionano con un clic del tasto sinistro. Si deseleziona qualsiasi elemento con il tasto <emphasis>Escape</emphasis> (Esc). Un clic con il tasto destro su un elemento della tavola apre il men&ugrave; corrispondente per un accesso veloce alle opzioni relative all'elemento stesso. Per selezionare pi&ugrave; oggetti tenere il tasto <emphasis>Shift</emphasis> (Maiusc) premuto e fare clic sugli oggetti che si vuole aggiungere alla selezione. Gli elementi di una selezione multipla sono spostati o ridimensionati insieme con il mouse.</para>
+
+</sect2>
+
+<!--
+		General description of a note
+
+		===========================================
+-->
+<sect2 id="sec-intro-note">
+<title>Annotazioni o Note</title>
+
+<para>Questa finestra &egrave; un contenitore di testi e si usa per aggiungere dei commenti al progetto, ma dispone anche di ulteriori potenzialit&agrave;. Pu&ograve; essere usata come calcolatrice, per eseguire singoli comandi e per editare degli script. La valutazione di espressioni matematiche e l'esecuzione dei codici sono svolti attraverso il menu contestuale di una finestra <emphasis>Annotazione</emphasis>, attraverso il menu <emphasis>Script</emphasis> o con le idonee combinazioni di tasti. Per informazioni sulla sintassi delle espressioni, sulle funzioni matematiche supportate e su come editare script si pu&ograve; consultare la sezione <link linkend="scripting">Espressioni matematiche e script</link>.</para>
+
+<figure id="fig-note-window">
+  <title>La finestra Annotazioni di QtiPlot.</title>
+  <mediaobject>
+    <imageobject>
+      <imagedata  format="PNG" fileref="pics/new-note1.png"/>
+    </imageobject>
+  </mediaobject>
+</figure>
+
+<para>La finestra fornisce potenti funzionalit&agrave; come editor di testo particolarmente utili negli script: evidenzia in modo personalizzabile la sintassi Python, visualizza il numero di linea, trova e sostituisce un testo e propone suggerimenti per il completamento automatico delle parole con pi&ugrave; di due caratteri. &Egrave; possibile attivare manualmente il completamento automatico utilizzando <emphasis>Ctrl + U</emphasis>. I colori utilizzati per evidenziare la sintassi si personalizzano attraverso la scheda <emphasis>Annotazioni</emphasis> nella finestra delle <link linkend="fig-preferences-dialog-notes">Preferenze</link>.</para>
+</sect2>
+
+<!--
+		General description of the log window
+		=====================================
+-->
+<sect2 id="sec-intro-log-window">
+<title>Risultati delle analisi</title>
+
+<para>Questa finestra contiene la cronologia di tutte le analisi eseguite in un progetto. Contiene i risultati delle correlazioni, degli adattamenti, ecc..</para>
+
+<figure id="fig-log-window">
+  <title>La finestra Risultati delle analisi di QtiPlot.</title>
+  <mediaobject>
+    <imageobject>
+      <imagedata  format="PNG" fileref="pics/log-window.png"/>
+    </imageobject>
+  </mediaobject>
+</figure>
+</sect2>
+
+<!--
+		General description of the project explorer
+		===========================================
+-->
+<sect2 id="sec-intro-project-explorer">
+<title>Esploratore dei progetti</title>
+
+<para>Questa finestra si pu&ograve; aprire o chiudere con il comando &project-explorer-lnk; dal men&ugrave; &view-menu-lnk; oppure cliccando sull'icona &project-explorer-icon; nella <link linkend="sec-file-toolbar">barra degli strumenti per i file</link>.</para>
+
+<figure id="fig-project-explorer">
+  <title>L'esploratore del progetto di QtiPlot.</title>
+  <mediaobject>
+    <imageobject>
+      <imagedata  format="PNG" fileref="pics/explorer1.png"/>
+    </imageobject>
+  </mediaobject>
+</figure>
+
+<para>L'esploratore fornisce una visione globale della struttura del progetto e permette di eseguire diverse operazioni sulle finestre (tabelle, grafici e annotazioni) dell'area di lavoro quali: visualizzare o nascondere, ridurre, chiudere, rinominare, stampare, ecc.. Per eseguire queste operazioni si deve aprire il men&ugrave; contestuale cliccando, nella lista dell'esploratore, con il tasto destro sull'elemento desiderato.</para>
+<para>Con un doppio clic su un elemento si visualizza l'elemento ingrandito su tutta l'area di lavoro, anche se prima era contrassegnato nascosto.</para>
+<para>Tramite l'esploratore, si possono organizzare i vari elementi del progetto in cartelle. Quando si seleziona una cartella, per impostazione di default, sono visualizzati solo gli elementi della cartella. Per visualizzare anche gli elementi contenuti nelle sottocartelle si deve aprire il men&ugrave; contestuale cliccando con il destro sulla cartella principale e attivare l'opzione <emphasis>Visualizza le finestre &rarr; della cartella e delle sottocartelle</emphasis>.</para>
+
+</sect2>
+
+</sect1>
+
+</chapter>
