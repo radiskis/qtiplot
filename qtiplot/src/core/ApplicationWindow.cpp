@@ -9220,6 +9220,13 @@ void ApplicationWindow::clearSelection()
 			QwtScaleWidget *axis = g->currentScale();
 			if (axis)
 				axis->setTitle(" ");
+		} else if (g->selectedCurveLabels()){
+			QwtPlotItem *i = g->selectedCurveLabels();
+			if(i->rtti() == QwtPlotItem::Rtti_PlotSpectrogram)
+				((Spectrogram *)i)->showContourLineLabels(false);
+			else if(i->rtti() == QwtPlotItem::Rtti_PlotCurve && ((PlotCurve *)i)->type() != Graph::Function)
+				((DataCurve *)i)->clearLabels();
+			g->replot();
 		} else
 			g->removeMarker();
 	}

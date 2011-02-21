@@ -2948,26 +2948,27 @@ void PlotDialog::setActiveCurve(CurveTreeItem *item)
             else
                 boxWhiskersCoef->setValue((int)b->whiskersRange());
 
+			bool visibleLabels = b->hasVisibleLabels();
 			boxBoxLabels->blockSignals(true);
-			boxBoxLabels->setChecked(b->hasBoxLabels());
+			boxBoxLabels->setChecked(b->hasBoxLabels() && visibleLabels);
 			boxBoxLabels->blockSignals(false);
 
 			boxWhiskerLabels->blockSignals(true);
-			boxWhiskerLabels->setChecked(b->hasWhiskerLabels());
+			boxWhiskerLabels->setChecked(b->hasWhiskerLabels() && visibleLabels);
 			boxWhiskerLabels->blockSignals(false);
 
-			privateTabWidget->setTabEnabled(privateTabWidget->indexOf(labelsPage), b->hasBoxLabels() || b->hasWhiskerLabels());
+			privateTabWidget->setTabEnabled(privateTabWidget->indexOf(labelsPage), (b->hasBoxLabels() || b->hasWhiskerLabels()) && visibleLabels);
         }
     }
 
-    DataCurve *dc = (DataCurve *)i;
+	DataCurve *dc = (DataCurve *)i;
 	if (!dc->table()){
 		privateTabWidget->removeTab(privateTabWidget->indexOf(labelsPage));
 		return;
 	}
+	labelsGroupBox->blockSignals(true);
 	showAllLabelControls(true, curveType);
 
-    labelsGroupBox->blockSignals(true);
 	labelsGroupBox->setChecked(dc->hasVisibleLabels());
 
 	boxLabelsColumn->blockSignals(true);

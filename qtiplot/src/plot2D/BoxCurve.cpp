@@ -448,8 +448,7 @@ void BoxCurve::showBoxLabels(bool on)
 	d_box_labels = on;
 	if (!d_show_labels)
 		loadLabels();
-	else
-		updateLabels();
+	updateLabels();
 }
 
 void BoxCurve::showWhiskerLabels(bool on)
@@ -460,8 +459,7 @@ void BoxCurve::showWhiskerLabels(bool on)
 	d_whiskers_labels = on;
 	if (!d_show_labels)
 		loadLabels();
-	else
-		updateLabels();
+	updateLabels();
 }
 
 QString BoxCurve::labelText(int index, double val)
