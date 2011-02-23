@@ -47,23 +47,19 @@ TableStatistics::TableStatistics(ScriptingEnv *env, ApplicationWindow *parent, T
 	if (d_start < 0)
 		d_start = 0;
 
+	QStringList header = QStringList(), comments = QStringList();
 	if (d_type == row){
 		if (d_end < 0)
 			d_end = d_base->numCols() - 1;
 
 		resizeRows(d_targets.size());
-        resizeCols(11);
-		setColName(0, tr("Row"));
-		setColName(1, tr("Cols"));
-		setColName(2, tr("Mean"));
-        setColName(3, tr("StandardDev"));
-        setColName(4, tr("StandardError"));
-        setColName(5, tr("Variance"));
-        setColName(6, tr("Sum"));
-        setColName(7, tr("Max"));
-        setColName(8, tr("Min"));
-        setColName(9, "N");
-        setColName(10, tr("Median"));
+		resizeCols(11);
+
+		header << tr("Row") << tr("Cols") << tr("Mean") << tr("StandardDev") << tr("StandardError") << tr("Variance")
+		<< tr("Sum") << tr("Max") << tr("Min") << "N" << tr("Median");
+
+		comments << tr("Index of Row") << tr("Number of Columns") << tr("Mean") << tr("Standard Deviation") << tr("Standard Error") << tr("Variance")
+		<< tr("Sum") << tr("Maximum Value") << tr("Minimum Value") << tr("Number of Points") << tr("Median");
 
 		d_stats_col_type << Row << Cols << Mean << StandardDev << StandardError << Variance << Sum << Max << Min << N << Median;
 
@@ -81,20 +77,12 @@ TableStatistics::TableStatistics(ScriptingEnv *env, ApplicationWindow *parent, T
 
 		resizeRows(d_targets.size());
 		resizeCols(13);
-		setColName(0, tr("Col"));
-		setColName(1, tr("Rows"));
-		setColName(2, tr("Mean"));
-		setColName(3, tr("StandardDev"));
-		setColName(4, tr("StandardError"));
 
-		setColName(5, tr("Variance"));
-		setColName(6, tr("Sum"));
-		setColName(7, tr("iMax"));
-		setColName(8, tr("Max"));
-		setColName(9, tr("iMin"));
-		setColName(10, tr("Min"));
-		setColName(11, "N");
-		setColName(12, tr("Median"));
+		header << tr("Col") << tr("Rows") << tr("Mean") << tr("StandardDev") << tr("StandardError")
+		<< tr("Variance") << tr("Sum") << tr("iMax") << tr("Max") << tr("iMin") << tr("Min") << "N" << tr("Median");
+
+		comments << tr("Column Name") << tr("Rows Included") << tr("Mean") << tr("Standard Deviation") << tr("Standard Error")
+		<< tr("Variance") << tr("Sum") << tr("Index of Maximum Value") << tr("Maximum Value") << tr("Index of Minimum Value") << tr("Minimum Value") << tr("Number of Points") << tr("Median");
 
 		d_stats_col_type << Col << Rows << Mean << StandardDev << StandardError << Variance << Sum << iMax << Max << iMin << Min << N << Median;
 
@@ -117,9 +105,10 @@ TableStatistics::TableStatistics(ScriptingEnv *env, ApplicationWindow *parent, T
         h = (numRows()+1)*(d_table->verticalHeader())->sectionSize(0);
 	setGeometry(50, 50, w + 45, h + 45);
 
-    setColPlotDesignation(0, Table::X);
-    setColPlotDesignation(4, Table::yErr);
-	setHeaderColType();
+	setColPlotDesignation(0, Table::X);
+	setColPlotDesignation(4, Table::yErr);
+	setHeader(header);
+	setColComments(comments);
 
 	if (d_base){
 		connect(d_base, SIGNAL(modifiedData(Table*, const QString&)), this, SLOT(update(Table*, const QString&)));
