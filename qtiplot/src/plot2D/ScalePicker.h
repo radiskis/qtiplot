@@ -93,6 +93,11 @@ signals:
 	 */
 	void axisDblClicked(int);
 
+	/*! Emitted when the user double-clicks on the ticks of an axis.
+	 * The argument specifies the axis' QwtScaleDraw::Alignment.
+	 */
+	void axisTicksDblClicked(int);
+
 	/*! Emitted when the user double-clicks on an the axis title.
 	 */
 	void axisTitleDblClicked();

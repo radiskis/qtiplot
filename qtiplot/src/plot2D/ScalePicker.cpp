@@ -88,8 +88,12 @@ void ScalePicker::mouseDblClicked(const QwtScaleWidget *scale, const QPoint &pos
 {
 	if (titleRect(scale).contains(pos))
 		emit axisTitleDblClicked();
-	else if (scaleRect(scale).contains(pos))
-        emit axisDblClicked(scale->alignment());
+	else if (scaleRect(scale).contains(pos)){
+		if (scaleTicksRect(scale).contains(pos))
+			emit axisTicksDblClicked(scale->alignment());
+		else
+			emit axisDblClicked(scale->alignment());
+	}
 }
 
 void ScalePicker::mouseRightClicked(const QwtScaleWidget *scale, const QPoint &pos)

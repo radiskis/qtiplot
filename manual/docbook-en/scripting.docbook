@@ -22,7 +22,7 @@
     Doing so will raise an error message.</para>
 
     <table frame="sides" pgwide="1" tocentry="1">
-      <title>Predefined Fundamental Physical Constants</title>
+      <title>muParser: Predefined Fundamental Physical Constants</title>
 
       <tgroup cols="2">
         <colspec align="left" colname="name" colwidth="1*" />
@@ -108,7 +108,7 @@
     </table>
 
     <table frame="sides" pgwide="1" tocentry="1">
-      <title>Supported Mathematical Operators</title>
+      <title>muParser: Supported Mathematical Operators</title>
 
       <tgroup cols="2">
         <colspec align="left" colname="name" colwidth="1*" />
@@ -212,7 +212,7 @@
     </table>
 
       <table frame="sides" pgwide="1" tocentry="1">
-        <title>Mathematical Functions</title>
+        <title>muParser: Mathematical Functions</title>
 
         <tgroup cols="2">
           <colspec align="left" colname="name" colwidth="1*" />
@@ -470,7 +470,7 @@
       </table>
 
       <table frame="sides" pgwide="1" tocentry="1">
-        <title>Non-Mathematical Functions</title>
+        <title>muParser: Non-Mathematical Functions</title>
 
         <tgroup cols="2">
           <colspec align="left" colname="name" colwidth="1*" />
@@ -671,7 +671,7 @@ for i in range(1, 11):
       only) are defined.</para>
 
       <table frame="sides" pgwide="1" tocentry="1">
-        <title>Supported Mathematical Functions</title>
+        <title>Python: Supported Mathematical Functions</title>
 
         <tgroup cols="2">
           <colspec align="left" colname="name" colwidth="1*" />
