@@ -116,7 +116,7 @@ Graph::Graph(int x, int y, int width, int height, QWidget* parent, Qt::WFlags f)
 : QwtPlot(parent)
 {
 	setWindowFlags(f);
-    setAttribute(Qt::WA_DeleteOnClose);
+	setAttribute(Qt::WA_DeleteOnClose);
 	setAcceptDrops(true);
 
 	d_canvas_bkg_path = QString();
@@ -143,13 +143,8 @@ Graph::Graph(int x, int y, int width, int height, QWidget* parent, Qt::WFlags f)
 	d_speed_mode_points = 3000;
 	d_synchronize_scales = true;
 
-	d_user_step = QVector<double>(QwtPlot::axisCnt);
-	for (int i=0; i<QwtPlot::axisCnt; i++)
-		d_user_step[i] = 0.0;
-
 	setGeometry(x, y, width, height);
-	setAttribute(Qt::WA_DeleteOnClose);
-	setAutoReplot (false);
+	setAutoReplot(false);
 
 	d_min_tick_length = 5;
 	d_maj_tick_length = 9;
@@ -162,7 +157,10 @@ Graph::Graph(int x, int y, int width, int height, QWidget* parent, Qt::WFlags f)
 	d_grid->attach(this);
 
 	//custom scale
-	for (int i = 0; i < QwtPlot::axisCnt; i++) {
+	d_user_step = QVector<double>(QwtPlot::axisCnt);
+	for (int i = 0; i < QwtPlot::axisCnt; i++){
+		d_user_step[i] = 0.0;
+
 		QwtScaleWidget *scale = (QwtScaleWidget *) axisWidget(i);
 		if (scale){
 			scale->setMargin(0);
@@ -4735,6 +4733,24 @@ void Graph::copyScaleDraw(Graph* g, int i)
 	setAxisScaleDiv (i, div);
 }
 
+void Graph::copyEnrichments(Graph* g)
+{
+	if (!g)
+		return;
+
+	QList<FrameWidget *> enrichements = g->enrichmentsList();
+	foreach (FrameWidget *e, enrichements){
+		PieLabel *l = qobject_cast<PieLabel *>(e);
+		if (l)
+			continue;
+		add(e);
+	}
+
+	QList<ArrowMarker *> lines = g->arrowsList();
+	foreach (ArrowMarker *a, lines)
+		addArrow(a);
+}
+
 void Graph::copy(Graph* g)
 {
 	setMargin(g->margin());
@@ -4769,17 +4785,7 @@ void Graph::copy(Graph* g)
 	d_zoomer[0]->setZoomBase();
 	d_zoomer[1]->setZoomBase();
 
-	QList<FrameWidget *> enrichements = g->enrichmentsList();
-	foreach (FrameWidget *e, enrichements){
-		PieLabel *l = qobject_cast<PieLabel *>(e);
-		if (l)
-			continue;
-		add(e);
-	}
-
-	QList<ArrowMarker *> lines = g->arrowsList();
-	foreach (ArrowMarker *a, lines)
-		addArrow(a);
+	copyEnrichments(g);
 
 	d_disable_curve_antialiasing = g->isCurveAntialiasingDisabled();
 	d_max_antialising_size = g->maxAntialisingSize();

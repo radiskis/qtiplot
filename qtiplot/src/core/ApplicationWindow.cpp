@@ -19203,7 +19203,7 @@ ImportExportPlugin * ApplicationWindow::exportPlugin(const QString& suffix)
 ImportExportPlugin * ApplicationWindow::importPlugin(const QString& fileName)
 {
 	foreach (ImportExportPlugin *plugin, d_import_export_plugins){
-		if (plugin->importFormats().contains(QFileInfo(fileName).completeSuffix()))
+		if (plugin->importFormats().contains(QFileInfo(fileName).suffix()))
 			return plugin;
 	}
 

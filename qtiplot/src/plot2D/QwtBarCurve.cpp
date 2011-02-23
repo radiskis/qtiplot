@@ -221,18 +221,18 @@ QwtDoubleRect QwtBarCurve::boundingRect() const
 
 void QwtBarCurve::setGap (int gap)
 {
-if (bar_gap == gap)
-	return;
+	if (bar_gap == gap)
+		return;
 
-bar_gap =gap;
+	bar_gap =gap;
 }
 
 void QwtBarCurve::setOffset(int offset)
 {
-if (bar_offset == offset)
-	return;
+	if (bar_offset == offset)
+		return;
 
-bar_offset = offset;
+	bar_offset = offset;
 }
 
 double QwtBarCurve::dataOffset()
