@@ -6277,13 +6277,7 @@ void Graph::setTickLength (int minLength, int majLength)
 
 QwtPlotItem* Graph::closestCurve(int xpos, int ypos, int &dist, int &point)
 {
-	QwtScaleMap map[QwtPlot::axisCnt];
-	for (int axis = 0; axis < QwtPlot::axisCnt; axis++)
-		map[axis] = canvasMap(axis);
-
 	double dmin = DBL_MAX;
-	double dxpos = double(xpos);
-	double dypos = double(ypos);
 	QPoint p = QPoint(xpos, ypos);
 	QwtPlotItem *curve = NULL;
 	foreach (QwtPlotItem *item, d_curves){
@@ -6302,26 +6296,25 @@ QwtPlotItem* Graph::closestCurve(int xpos, int ypos, int &dist, int &point)
 			}
 		}
 
-		double dx = map[c->xAxis()].invTransform(dxpos);
-		double dy = map[c->yAxis()].invTransform(dypos);
-		for (int i = 0; i < c->dataSize(); i++){
-			double cx = c->x(i) - dx;
-			double cy = c->y(i) - dy;
-			double f = qwtSqr(cx) + qwtSqr(cy);
-			if (f < dmin){
-				dmin = f;
-				curve = c;
-			}
+		double d = 0;
+		int pnt = c->closestPoint(p, &d);
+		if (pnt >= 0 && d < dmin){
+			dmin = d;
+			curve = c;
+			point = pnt;
 		}
 	}
 
 	if (curve){
-		point = ((PlotCurve *)curve)->closestPoint(p, &dmin);
 		if (dmin <= 10){
 			dist = qRound(dmin);
 			return curve;
 		}
 	}
+
+	QwtScaleMap map[QwtPlot::axisCnt];
+	for (int axis = 0; axis < QwtPlot::axisCnt; axis++)
+		map[axis] = canvasMap(axis);
 
 	foreach (QwtPlotItem *item, d_curves){
 		if(item->rtti() != QwtPlotItem::Rtti_PlotSpectrogram)
