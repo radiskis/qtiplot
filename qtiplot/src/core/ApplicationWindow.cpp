@@ -4992,10 +4992,10 @@ ApplicationWindow* ApplicationWindow::openProject(const QString& fn, bool factor
 	app->blockSignals (false);
 	app->renamedTables.clear();
 	app->executeNotes();
-        app->d_workspace->blockSignals(false);
-        app->addWindowsListToCompleter();
-        app->restoreApplicationGeometry();
-        app->d_opening_file = false;
+	app->d_workspace->blockSignals(false);
+	app->addWindowsListToCompleter();
+	app->d_opening_file = false;
+	app->restoreApplicationGeometry();
 	app->savedProject();
 	return app;
 }
@@ -17918,27 +17918,22 @@ void ApplicationWindow::moveTableRowDown()
 
 void ApplicationWindow::restoreApplicationGeometry()
 {
-    if (d_app_rect.isNull()){
-#ifdef Q_WS_X11
-	MultiLayer *ml = (MultiLayer *)activeWindow(MultiLayerWindow);
-	bool scaleLayers = true;
-	if (ml && ml->isMaximized()){
-	    scaleLayers = ml->scaleLayersOnResize();
-	    ml->setScaleLayersOnResize(false);
+	if (d_app_rect.isNull()){
+		showMaximized();
+	} else {
+		resize(d_app_rect.size());
+		move(d_app_rect.topLeft());
+		show();
 	}
-#endif
-	showMaximized();
 
-#ifdef Q_WS_X11
-	QCoreApplication::processEvents();
-	if (ml && ml->isMaximized())
-	    ml->setScaleLayersOnResize(scaleLayers);
-#endif
-    } else {
-	resize(d_app_rect.size());
-	move(d_app_rect.topLeft());
-	show();
-    }
+	MultiLayer *ml = (MultiLayer *)activeWindow(MultiLayerWindow);
+	if (ml && ml->isMaximized()){
+		bool scaleLayers = ml->scaleLayersOnResize();
+		ml->setScaleLayersOnResize(true);
+		ml->showNormal();
+		ml->showMaximized();
+		ml->setScaleLayersOnResize(scaleLayers);
+	}
 }
 
 void ApplicationWindow::scriptsDirPathChanged(const QString& path)
