@@ -353,12 +353,9 @@ void ApplicationWindow::init(bool factorySettings)
 	connect(actionPrevWindow, SIGNAL(activated()), d_workspace, SLOT(activatePreviousSubWindow()));
 
 	connect(this, SIGNAL(modified()),this, SLOT(modifiedProject()));
-	connect(d_workspace, SIGNAL(subWindowActivated(QMdiSubWindow *)),
-			this, SLOT(windowActivated(QMdiSubWindow*)));
-	connect(lv, SIGNAL(doubleClicked(Q3ListViewItem *)),
-			this, SLOT(maximizeWindow(Q3ListViewItem *)));
-	connect(lv, SIGNAL(doubleClicked(Q3ListViewItem *)),
-			this, SLOT(folderItemDoubleClicked(Q3ListViewItem *)));
+        connect(d_workspace, SIGNAL(subWindowActivated(QMdiSubWindow *)), this, SLOT(windowActivated(QMdiSubWindow*)));
+        connect(lv, SIGNAL(doubleClicked(Q3ListViewItem *)), this, SLOT(maximizeWindow(Q3ListViewItem *)));
+        connect(lv, SIGNAL(doubleClicked(Q3ListViewItem *)), this, SLOT(folderItemDoubleClicked(Q3ListViewItem *)));
 	connect(lv, SIGNAL(contextMenuRequested(Q3ListViewItem *, const QPoint &, int)),
 			this, SLOT(showWindowPopupMenu(Q3ListViewItem *, const QPoint &, int)));
 	connect(lv, SIGNAL(dragItems(QList<Q3ListViewItem *>)),
@@ -2861,10 +2858,10 @@ void ApplicationWindow::initMultilayerPlot(MultiLayer* g, const QString& name)
 		g->setParent(0);
 
 	connectMultilayerPlot(g);
-	g->showNormal();
+        g->showNormal();
 
 	addListViewItem(g);
-	windowActivated(g);
+        windowActivated(g);
 }
 
 void ApplicationWindow::setAutoUpdateTableValues(bool on)
@@ -3872,9 +3869,12 @@ void ApplicationWindow::windowActivated(QMdiSubWindow *w)
 	}
 
 	Folder *f = window->folder();
-	if (f)
+        if (f)
 		f->setActiveWindow(window);
 
+        d_workspace->setActiveSubWindow(0);
+        d_workspace->setActiveSubWindow(window);
+        window->raise();
 	emit modified();
 }
 
