@@ -330,6 +330,11 @@ private:
 	QLineEdit *jodconverterPathBox;
 	QPushButton *browseJODConverterBtn;
 	QLabel *jodconverterLabel;
+
+#ifdef Q_OS_WIN
+	QLabel *excelImportMethodLabel;
+	QComboBox *excelImportMethod;
+#endif
 };
 
 #endif // CONFIGDIALOG_H
