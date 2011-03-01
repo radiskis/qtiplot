@@ -160,7 +160,9 @@ public:
 	enum EndLineChar{LF, CRLF, CR};
 	enum Analysis{NoAnalysis, Integrate, Diff, FitLinear, FitGauss, FitLorentz, FitSigmoidal, FitSlope};
 	enum LaTeXCompiler{MathTran, Local};
-
+#ifdef Q_OS_WIN
+	enum ExcelImportMethod{ExcelFormatLibrary, LocalExcelInstallation};
+#endif
 	FolderListView *lv, *folders;
 	QDockWidget *logWindow;
 
@@ -245,6 +247,12 @@ public:
 	//@}
 
 	bool isFileReadable(const QString&);
+#ifdef Q_OS_WIN
+	bool importUsingExcel();
+	bool isExcelInstalled(){return d_has_excel;};
+	ExcelImportMethod excelImportMethod(){return d_excel_import_method;};
+	void setExcelImportMethod(const ExcelImportMethod& method){d_excel_import_method = method;};
+#endif
 
 public slots:
 	//! \name Projects and Project Files
@@ -480,12 +488,7 @@ public slots:
 	void initTable(Table* w, const QString& caption);
 	void customTable(Table* w);
 	Table* importOdfSpreadsheet(const QString& = QString::null, int sheet = -1);
-
 	Table* importExcel(const QString& = QString::null, int sheet = -1);
-#ifdef Q_OS_WIN
-	bool isExcelInstalled(){return d_has_excel;};
-#endif
-
 	void exportExcel();
 	void exportOds();
 
@@ -1408,9 +1411,6 @@ public:
 	//@}
 
 private:
-#ifdef Q_OS_WIN
-	void detectExcel();
-#endif
 	void loadPlugins();
 	QList<ImportExportPlugin *> d_import_export_plugins;
 
@@ -1565,7 +1565,9 @@ private:
 	QAction *actionOneWayANOVA, *actionTwoWayANOVA;
 #endif
 #ifdef Q_OS_WIN
+	void detectExcel();
 	bool d_has_excel;
+	ExcelImportMethod d_excel_import_method;
 #endif
 };
 #endif

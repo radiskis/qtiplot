@@ -347,15 +347,10 @@ void ApplicationWindow::init(bool factorySettings)
 
 	assistant = new QAssistantClient( QString(), this );
 
-	actionNextWindow = new QAction(QIcon(":/next.png"), tr("&Next","next window"), this);
-	actionNextWindow->setShortcut( tr("F5","next window shortcut") );
-	connect(actionNextWindow, SIGNAL(activated()), d_workspace, SLOT(activateNextSubWindow()));
-
-	actionPrevWindow = new QAction(QIcon(":/prev.png"), tr("&Previous","previous window"), this);
-	actionPrevWindow->setShortcut( tr("F6","previous window shortcut") );
-	connect(actionPrevWindow, SIGNAL(activated()), d_workspace, SLOT(activatePreviousSubWindow()));
-
 	connect(tablesDepend, SIGNAL(activated(int)), this, SLOT(showTable(int)));
+
+	connect(actionNextWindow, SIGNAL(activated()), d_workspace, SLOT(activateNextSubWindow()));
+	connect(actionPrevWindow, SIGNAL(activated()), d_workspace, SLOT(activatePreviousSubWindow()));
 
 	connect(this, SIGNAL(modified()),this, SLOT(modifiedProject()));
 	connect(d_workspace, SIGNAL(subWindowActivated(QMdiSubWindow *)),
@@ -395,7 +390,8 @@ void ApplicationWindow::init(bool factorySettings)
     loadCustomActions();
     initCompleter();
 #ifdef Q_OS_WIN
-	detectExcel();
+	if (d_excel_import_method == LocalExcelInstallation)
+		detectExcel();
 #endif
 	loadPlugins();
 
@@ -520,12 +516,13 @@ void ApplicationWindow::setDefaultOptions()
 	QString aux = qApp->applicationDirPath();
 	workingDir = aux;
 
-#ifdef Q_WS_WIN
+#ifdef Q_OS_WIN
 	d_has_excel = false;
+	d_excel_import_method = LocalExcelInstallation;
 	d_java_path = QDir::toNativeSeparators("C:/Program Files/Java/jre6/bin/java.exe");
 	d_soffice_path = QDir::toNativeSeparators("C:/Program Files/OpenOffice.org 3/program/soffice.exe");
 #endif
-#ifdef Q_WS_MAC
+#ifdef Q_OS_MAC
 	d_java_path = "/usr/bin/java";
 	d_soffice_path = "/Applications/OpenOffice.org.app/Contents/MacOS/soffice";
 #endif
@@ -4190,6 +4187,11 @@ void ApplicationWindow::detectExcel()
 	delete excel;
 	d_has_excel = true;
 }
+
+bool ApplicationWindow::importUsingExcel()
+{
+	return (d_excel_import_method == LocalExcelInstallation) && d_has_excel;
+}
 #endif
 
 Table * ApplicationWindow::importExcel(const QString& fileName, int sheet)
@@ -4198,7 +4200,7 @@ Table * ApplicationWindow::importExcel(const QString& fileName, int sheet)
 	if (fn.isEmpty()){
 		QString filter = tr("Excel files") + " (*.xls)";
 #ifdef Q_OS_WIN
-		if (d_has_excel)
+		if (importUsingExcel())
 			filter = tr("Excel files") + " (*.xl *.xlsx *.xlsm *.xlsb *.xlam *.xltx *.xltm *.xls *.xla *.xlt *.xlm *.xlw)";
 #endif
 		fn = getFileName(this, tr("Open Excel File"), QString::null, filter, 0, false);
@@ -4615,7 +4617,7 @@ ApplicationWindow* ApplicationWindow::open(const QString& fn, bool factorySettin
 		return importOPJ(fn, factorySettings, newProject);
 	else
 #ifdef Q_OS_WIN
-	if (isExcelInstalled()){
+	if (importUsingExcel()){
 		if (fn.endsWith(".xl", Qt::CaseInsensitive) || fn.endsWith(".xlsx", Qt::CaseInsensitive) ||
 			fn.endsWith(".xlsm", Qt::CaseInsensitive) || fn.endsWith(".xlsb", Qt::CaseInsensitive) ||
 			fn.endsWith(".xlam", Qt::CaseInsensitive) || fn.endsWith(".xltx", Qt::CaseInsensitive) ||
@@ -4949,6 +4951,8 @@ ApplicationWindow* ApplicationWindow::openProject(const QString& fn, bool factor
 				else if (s.contains("<ScaleLayers>"))
 					plot->setScaleLayersOnResize(s.trimmed().remove("<ScaleLayers>").remove("</ScaleLayers>").toInt());
 			}
+			if (plot->status() == MdiSubWindow::Minimized)
+				plot->showMinimized();
 			plot->blockSignals(false);
 			progress.setValue(aux);
 		} else if  (s == "<SurfacePlot>") {//process 3D plots information
@@ -5235,12 +5239,13 @@ void ApplicationWindow::readSettings()
     //(only needed on Windows due to a Qt bug?)
 #ifdef Q_OS_WIN
 	if (!recentProjects.isEmpty() && recentProjects[0].contains("^e"))
-        recentProjects = recentProjects[0].split("^e", QString::SkipEmptyParts);
-    else if (recentProjects.count() == 1){
-        QString s = recentProjects[0];
-        if (s.remove(QRegExp("\\s")).isEmpty())
-            recentProjects = QStringList();
-    }
+		recentProjects = recentProjects[0].split("^e", QString::SkipEmptyParts);
+	else if (recentProjects.count() == 1){
+		QString s = recentProjects[0];
+		if (s.remove(QRegExp("\\s")).isEmpty())
+		recentProjects = QStringList();
+	}
+	d_excel_import_method = (ApplicationWindow::ExcelImportMethod)settings.value("/ExcelImportMethod", d_excel_import_method).toInt();
 #endif
 
 	updateRecentProjectsList();
@@ -5736,6 +5741,9 @@ void ApplicationWindow::saveSettings()
 	settings.setValue("/Language", appLanguage);
 	settings.setValue("/ShowWindowsPolicy", show_windows_policy);
 	settings.setValue("/RecentProjects", recentProjects);
+#ifdef Q_OS_WIN
+	settings.setValue("/ExcelImportMethod", d_excel_import_method);
+#endif
 	settings.setValue("/Style", appStyle);
 	settings.setValue("/AutoSave", autoSave);
 	settings.setValue("/AutoSaveTime", autoSaveTime);
@@ -6554,12 +6562,12 @@ void ApplicationWindow::restoreWindowGeometry(ApplicationWindow *app, MdiSubWind
 
 	QString caption = w->objectName();
 	if (s.contains ("minimized")) {
-	    QStringList lst = s.split("\t");
-	    if (lst.count() > 4){
+		QStringList lst = s.split("\t");
+		if (lst.count() > 4){
 			int width = lst[3].toInt();
 			int height = lst[4].toInt();
 			if(width > 0 && height > 0)
-            	w->resize(width, height);
+				w->resize(width, height);
 		}
 		w->setStatus(MdiSubWindow::Minimized);
 		app->setListView(caption, tr("Minimized"));
@@ -6568,20 +6576,20 @@ void ApplicationWindow::restoreWindowGeometry(ApplicationWindow *app, MdiSubWind
 	} else {
 		QStringList lst = s.split("\t");
 		if (lst.count() > 4){
-            w->resize(lst[3].toInt(), lst[4].toInt());
-            w->move(lst[1].toInt(), lst[2].toInt());
+			w->resize(lst[3].toInt(), lst[4].toInt());
+			w->move(lst[1].toInt(), lst[2].toInt());
 		}
 		w->setStatus(MdiSubWindow::Normal);
-        if (lst.count() > 5) {
-            if (lst[5] == "hidden")
-                app->hideWindow(w);
-        }
+		if (lst.count() > 5) {
+			if (lst[5] == "hidden")
+				app->hideWindow(w);
+		}
 	}
 
 	if (s.contains ("active")) {
-        Folder *f = w->folder();
-        if (f)
-            f->setActiveWindow(w);
+		Folder *f = w->folder();
+		if (f)
+			f->setActiveWindow(w);
 	}
 }
 
@@ -10100,7 +10108,7 @@ void ApplicationWindow::windowsMenuAboutToShow()
 
 	QList<MdiSubWindow *> windows = current_folder->windowsList();
 	int n = int(windows.count());
-	if (!n ){
+	if (!n){
 		#ifdef SCRIPTING_PYTHON
 			windowsMenu->addAction(actionShowScriptWindow);
 		#endif
@@ -14162,6 +14170,12 @@ void ApplicationWindow::createActions()
 	actionRename = new QAction(tr("&Rename Window"), this);
 	connect(actionRename, SIGNAL(activated()), this, SLOT(rename()));
 
+	actionNextWindow = new QAction(QIcon(":/next.png"), tr("&Next","next window"), this);
+	actionNextWindow->setShortcut( tr("F5","next window shortcut") );
+
+	actionPrevWindow = new QAction(QIcon(":/prev.png"), tr("&Previous","previous window"), this);
+	actionPrevWindow->setShortcut( tr("F6","previous window shortcut") );
+
 	actionCloseWindow = new QAction(QIcon(":/close.png"), tr("Close &Window"), this);
 	connect(actionCloseWindow, SIGNAL(activated()), this, SLOT(closeActiveWindow()));
 
@@ -14784,6 +14798,12 @@ void ApplicationWindow::translateActionsStrings()
 	actionShowExplorer->setToolTip(tr("Show project explorer"));
 
 	actionFindWindow->setMenuText(tr("&Find..."));
+
+	actionNextWindow->setMenuText(tr("&Next","next window"));
+	actionNextWindow->setShortcut(tr("F5","next window shortcut"));
+
+	actionPrevWindow->setMenuText(tr("&Previous","previous window"));
+	actionPrevWindow->setShortcut(tr("F6","previous window shortcut"));
 
 	actionShowLog->setMenuText(tr("Results &Log"));
 	actionShowLog->setToolTip(tr("Show analysis results"));
@@ -16405,7 +16425,13 @@ Folder* ApplicationWindow::appendProject(const QString& fn, Folder* parentFolder
 						plot->linkXLayerAxes(s.trimmed().remove("<LinkXAxes>").remove("</LinkXAxes>").toInt());
 					else if (s.contains("<AlignPolicy>"))
 						plot->setAlignPolicy((MultiLayer::AlignPolicy)s.trimmed().remove("<AlignPolicy>").remove("</AlignPolicy>").toInt());
+					else if (s.contains("<CommonAxes>"))
+						plot->setCommonAxesLayout(s.trimmed().remove("<CommonAxes>").remove("</CommonAxes>").toInt());
+					else if (s.contains("<ScaleLayers>"))
+						plot->setScaleLayersOnResize(s.trimmed().remove("<ScaleLayers>").remove("</ScaleLayers>").toInt());
 				}
+				if (plot->status() == MdiSubWindow::Minimized)
+					plot->showMinimized();
 				plot->blockSignals(false);
 			}else if  (s == "<SurfacePlot>"){//process 3D plots information
 				lst.clear();

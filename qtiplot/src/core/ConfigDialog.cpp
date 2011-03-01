@@ -677,10 +677,6 @@ void ConfigDialog::initAppPage()
 	lblEndOfLine = new QLabel();
 	topBoxLayout->addWidget(lblEndOfLine, 5, 0 );
 	boxEndLine = new QComboBox();
-	boxEndLine->addItem(tr("LF (Unix)"));
-	boxEndLine->addItem(tr("CRLF (Windows)"));
-	boxEndLine->addItem(tr("CR (Mac)"));
-	boxEndLine->setCurrentIndex((int)app->d_eol);
 	topBoxLayout->addWidget(boxEndLine, 5, 1);
 
 	lblInitWindow = new QLabel();
@@ -715,6 +711,14 @@ void ConfigDialog::initAppPage()
 	topBoxLayout->addWidget(openLastProjectBox, 11, 0);
 
 	topBoxLayout->setRowStretch(12, 1);
+
+#ifdef Q_OS_WIN
+	excelImportMethodLabel = new QLabel;
+	topBoxLayout->addWidget(excelImportMethodLabel, 12, 0);
+	excelImportMethod = new QComboBox;
+	topBoxLayout->addWidget(excelImportMethod, 12, 1);
+	topBoxLayout->setRowStretch(13, 1);
+#endif
 
 	appTabWidget->addTab(application, QString());
 
@@ -2011,6 +2015,12 @@ void ConfigDialog::languageChange()
 	lblScriptingLanguage->setText(tr("Default scripting language"));
 	lblUndoStackSize->setText(tr("Matrix Undo Stack Size"));
 	lblEndOfLine->setText(tr("Endline character"));
+	boxEndLine->clear();
+	boxEndLine->addItem(tr("LF (Unix)"));
+	boxEndLine->addItem(tr("CRLF (Windows)"));
+	boxEndLine->addItem(tr("CR (Mac)"));
+	boxEndLine->setCurrentIndex((int)app->d_eol);
+
 	lblInitWindow->setText(tr("Start New Project"));
 	boxInitWindow->clear();
 	boxInitWindow->addItem(tr("Empty"));
@@ -2021,6 +2031,14 @@ void ConfigDialog::languageChange()
 	boxInitWindow->setCurrentIndex((int)app->d_init_window_type);
     completionBox->setText(tr("&Enable autocompletion (Ctrl+U)"));
 	openLastProjectBox->setText(tr("Open &last project at startup"));
+
+#ifdef Q_OS_WIN
+	excelImportMethodLabel->setText(tr("Import Excel files using"));
+	excelImportMethod->clear();
+	excelImportMethod->addItem(tr("Excel Format Library"));
+	excelImportMethod->addItem(tr("Locally Installed Excel"));
+	excelImportMethod->setCurrentIndex((int)app->excelImportMethod());
+#endif
 
 	lblAppPrecision->setText(tr("Number of Decimal Digits"));
 	lblDecimalSeparator->setText(tr("Decimal Separators"));
@@ -2412,6 +2430,9 @@ void ConfigDialog::apply()
 	app->d_eol = (ApplicationWindow::EndLineChar)boxEndLine->currentIndex();
     app->enableCompletion(completionBox->isChecked());
 	app->d_open_last_project = openLastProjectBox->isChecked();
+#ifdef Q_OS_WIN
+	app->setExcelImportMethod((ApplicationWindow::ExcelImportMethod)excelImportMethod->currentIndex());
+#endif
 
 	// general page: numeric format tab
 	app->d_decimal_digits = boxAppPrecision->value();
@@ -3494,6 +3515,10 @@ void ConfigDialog::setApplication(ApplicationWindow *app)
 
 	undoStackSizeBox->setValue(app->matrixUndoStackSize());
 	boxEndLine->setCurrentIndex((int)app->d_eol);
+	boxInitWindow->setCurrentIndex((int)app->d_init_window_type);
+#ifdef Q_OS_WIN
+	excelImportMethod->setCurrentIndex((int)app->excelImportMethod());
+#endif
 	boxSave->setChecked(app->autoSave);
 	boxMinutes->setValue(app->autoSaveTime);
 	boxMinutes->setEnabled(app->autoSave);
