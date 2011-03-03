@@ -3869,12 +3869,12 @@ void ApplicationWindow::windowActivated(QMdiSubWindow *w)
 	}
 
 	Folder *f = window->folder();
-        if (f)
+	if (f)
 		f->setActiveWindow(window);
 
-        d_workspace->setActiveSubWindow(0);
-        d_workspace->setActiveSubWindow(window);
-        window->raise();
+	d_workspace->setActiveSubWindow(0);
+	d_workspace->setActiveSubWindow(window);
+	window->raise();
 	emit modified();
 }
 

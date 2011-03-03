@@ -1513,8 +1513,14 @@ void FitDialog::modifyGuesses(double* initVal)
 
 void FitDialog::changeDataRange()
 {
+	if (!d_graph->rangeSelectorsEnabled())
+		return;
+
+	boxCurve->setCurrentIndex(d_graph->curveIndex(d_graph->rangeSelectorTool()->selectedCurve()));
+
 	double start = d_graph->selectedXStartValue();
 	double end = d_graph->selectedXEndValue();
+
 	boxFrom->setValue(QMIN(start, end));
 	boxTo->setValue(QMAX(start, end));
 }
@@ -1581,7 +1587,8 @@ void FitDialog::deleteFitCurves()
 {
 	d_graph->deleteFitCurves();
 	boxCurve->clear();
-	boxCurve->addItems(d_graph->curveNamesList());
+	boxCurve->addItems(d_graph->analysableCurvesList());
+	changeDataRange();
 }
 
 void FitDialog::resetFunction()
