@@ -112,6 +112,7 @@ QwtText ScaleDraw::label(double value) const
 	if (s.isEmpty())
 		return QwtText();
 
+	s.replace("-", QChar(0x2212));
 	return QwtText(d_prefix + s + d_suffix);
 }
 
