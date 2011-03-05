@@ -12258,6 +12258,18 @@ Die folgenden Spezialcodes können benutzt werden:
         <source>Prompt on pasting &amp;values to tables</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Import Excel files using</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Excel Format Library</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Locally Installed Excel</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ContourLinesEditor</name>
@@ -24457,6 +24469,50 @@ Wollen Sie trotzdem die Zellen einfügen?</translation>
     </message>
     <message>
         <source>Column Statistics of %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Index of Row</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Number of Columns</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Standard Deviation</source>
+        <translation type="unfinished">Standardabweichung</translation>
+    </message>
+    <message>
+        <source>Standard Error</source>
+        <translation type="unfinished">Standardfehler</translation>
+    </message>
+    <message>
+        <source>Maximum Value</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Minimum Value</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Number of Points</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Column Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Rows Included</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Index of Maximum Value</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Index of Minimum Value</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -6003,6 +6003,18 @@ Les codes spéciaux suivants peuvent être utilisés :
         <source>Prompt on pasting &amp;values to tables</source>
         <translation>Demander avant de coller des &amp;valeurs dans une table</translation>
     </message>
+    <message>
+        <source>Import Excel files using</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Excel Format Library</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Locally Installed Excel</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ContourLinesEditor</name>
@@ -15173,6 +15185,50 @@ Calcule la fonction de distribution cumulée pur une distribution chi² avec df 
     <message>
         <source>Median</source>
         <translation>Médiane</translation>
+    </message>
+    <message>
+        <source>Index of Row</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Number of Columns</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Standard Deviation</source>
+        <translation type="unfinished">Écart type</translation>
+    </message>
+    <message>
+        <source>Standard Error</source>
+        <translation type="unfinished">Erreur type</translation>
+    </message>
+    <message>
+        <source>Maximum Value</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Minimum Value</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Number of Points</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Column Name</source>
+        <translation type="unfinished">Nom de la colonne</translation>
+    </message>
+    <message>
+        <source>Rows Included</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Index of Maximum Value</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Index of Minimum Value</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
