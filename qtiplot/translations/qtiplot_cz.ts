@@ -24,110 +24,110 @@
     <name>Anova</name>
     <message>
         <source>ANOVA</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
 </context>
 <context>
     <name>AnovaDialog</name>
     <message>
         <source>Two Way ANOVA</source>
-        <translation type="unfinished"></translation>
+        <translation>Dvoucestná ANOVA</translation>
     </message>
     <message>
         <source>Sample</source>
-        <translation type="unfinished"></translation>
+        <translation>Vzorek</translation>
     </message>
     <message>
         <source>Factor A Level</source>
-        <translation type="unfinished"></translation>
+        <translation>Úroveň činitele A</translation>
     </message>
     <message>
         <source>Factor B Level</source>
-        <translation type="unfinished"></translation>
+        <translation>Úroveň činitele B</translation>
     </message>
     <message>
         <source>A</source>
-        <translation type="unfinished"></translation>
+        <translation>A</translation>
     </message>
     <message>
         <source>B</source>
-        <translation type="unfinished"></translation>
+        <translation>B</translation>
     </message>
     <message>
         <source>One Way ANOVA</source>
-        <translation type="unfinished"></translation>
+        <translation>Jednocestná ANOVA</translation>
     </message>
     <message>
         <source>Available Data</source>
-        <translation type="unfinished"></translation>
+        <translation>Dostupná data</translation>
     </message>
     <message>
         <source>Show current &amp;folder only</source>
-        <translation type="unfinished">Ukázat pouze &amp;nynější složku</translation>
+        <translation>Ukázat pouze &amp;nynější složku</translation>
     </message>
     <message>
         <source>Selected Data</source>
-        <translation type="unfinished"></translation>
+        <translation>Vybraná data</translation>
     </message>
     <message>
         <source>Significance Level</source>
-        <translation type="unfinished"></translation>
+        <translation>Úroveň významu</translation>
     </message>
     <message>
         <source>ANOVA &amp;Type</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Typ ANOVA</translation>
     </message>
     <message>
         <source>Fixed</source>
-        <translation type="unfinished"></translation>
+        <translation>Pevný</translation>
     </message>
     <message>
         <source>Random</source>
-        <translation type="unfinished"></translation>
+        <translation>Náhodný</translation>
     </message>
     <message>
         <source>Mixed</source>
-        <translation type="unfinished"></translation>
+        <translation>Smíšený</translation>
     </message>
     <message>
         <source>&amp;Interactions</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Vzájemné působení</translation>
     </message>
     <message>
         <source>&amp;Compute</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Spočítat</translation>
     </message>
     <message>
         <source>Factor &amp;A Levels</source>
-        <translation type="unfinished"></translation>
+        <translation>Úrovně činitele &amp;A</translation>
     </message>
     <message>
         <source>Factor &amp;B Levels</source>
-        <translation type="unfinished"></translation>
+        <translation>Úrovně činitele &amp;B</translation>
     </message>
     <message>
         <source>Normality Test (Shapiro-Wilk)</source>
-        <translation type="unfinished"></translation>
+        <translation>Zkouška normálnosti (Shapiro-Wilk)</translation>
     </message>
     <message>
         <source>Output Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Nastavení výstupu</translation>
     </message>
     <message>
         <source>&amp;Table</source>
-        <translation type="unfinished">&amp;Tabulka</translation>
+        <translation>&amp;Tabulka</translation>
     </message>
     <message>
         <source>&amp;Notes Window</source>
-        <translation type="unfinished"></translation>
+        <translation>Okno na &amp;poznámky</translation>
     </message>
     <message>
         <source>Results &amp;Log</source>
-        <translation type="unfinished">Zápis &amp;výsledků</translation>
+        <translation>Zápis &amp;výsledků</translation>
     </message>
     <message>
         <source>&amp;Descriptive Statistics</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Popisná statistika</translation>
     </message>
 </context>
 <context>
@@ -178,7 +178,7 @@
     </message>
     <message>
         <source>Box</source>
-        <translation>Bedna</translation>
+        <translation>Krabice</translation>
     </message>
     <message>
         <source>Del</source>
@@ -2274,7 +2274,7 @@ První představuje funkci signálu a druhý funkci odpovědi!</translation>
     </message>
     <message>
         <source>2D &amp;Binning</source>
-        <translation>Dvojrozměrné &amp;uložení do bedny</translation>
+        <translation>Dvojrozměrný histogram: &amp;intervaly/rozdělení do tříd</translation>
     </message>
     <message>
         <source>Set &amp;Properties...</source>
@@ -3576,7 +3576,7 @@ Různé části tohoto souboru se nemusí zobrazovat tak, jak se očekává.</tr
     </message>
     <message>
         <source>Box and whiskers plot</source>
-        <translation>Bednový a vousatý nákres</translation>
+        <translation>Krabicový a vousatý nákres</translation>
     </message>
     <message>
         <source>&amp;Activate Window</source>
@@ -3985,7 +3985,7 @@ Různé části tohoto souboru se nemusí zobrazovat tak, jak se očekává.</tr
     </message>
     <message>
         <source>Save Window As</source>
-        <translation type="unfinished">Uložit okno jako</translation>
+        <translation>Uložit okno jako</translation>
     </message>
     <message>
         <source>Save &amp;Window As...</source>
@@ -4033,87 +4033,87 @@ Různé části tohoto souboru se nemusí zobrazovat tak, jak se očekává.</tr
     </message>
     <message>
         <source>Descriptive S&amp;tatistics</source>
-        <translation type="unfinished"></translation>
+        <translation>Popisná s&amp;tatistika</translation>
     </message>
     <message>
         <source>&amp;Hypothesis Testing</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Zkoušení předpokladu</translation>
     </message>
     <message>
         <source>&amp;Normality Test (Shapiro - Wilk)</source>
-        <translation type="unfinished"></translation>
+        <translation>Zkouška &amp;normálnosti (Shapiro - Wilk)</translation>
     </message>
     <message>
         <source>&amp;One Sample t-Test...</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Jednovzorková t-zkouška...</translation>
     </message>
     <message>
         <source>&amp;Two Sample t-Test...</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Dvouvzorková t-zkouška...</translation>
     </message>
     <message>
         <source>&amp;Normal Random Numbers</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Obyčejná náhodná čísla</translation>
     </message>
     <message>
         <source>Fill selected columns with normal random numbers</source>
-        <translation type="unfinished"></translation>
+        <translation>Naplnit vybrané sloupce obyčejnými náhodnými čísly</translation>
     </message>
     <message>
         <source>ANO&amp;VA</source>
-        <translation type="unfinished"></translation>
+        <translation>ANO&amp;VA</translation>
     </message>
     <message>
         <source>&amp;One-Way ANOVA...</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Jednocestná ANOVA (variační analýza)...</translation>
     </message>
     <message>
         <source>&amp;Two-Way ANOVA...</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Dvoucestná ANOVA (variační analýza)...</translation>
     </message>
     <message>
         <source>Chi-square Test for &amp;Variance...</source>
-        <translation type="unfinished"></translation>
+        <translation>Chí kvadrátová zkouška na &amp;odchylku...</translation>
     </message>
     <message>
         <source>Save Folder As</source>
-        <translation type="unfinished"></translation>
+        <translation>Uložit složku jako</translation>
     </message>
     <message>
         <source>Export Open Document Spreadsheet</source>
-        <translation type="unfinished"></translation>
+        <translation>Vyvést Open Document Spreadsheet</translation>
     </message>
     <message>
         <source>Export &amp;Open Document Spreadsheet ...</source>
-        <translation type="unfinished"></translation>
+        <translation>Vyvést &amp;Open Document Spreadsheet...</translation>
     </message>
     <message>
         <source>QtiPlot Pro feature</source>
-        <translation type="unfinished"></translation>
+        <translation>Vlastnost QtiPlot Pro</translation>
     </message>
     <message>
         <source>This functionality is only available in QtiPlot Pro version, please subscribe for a maintenance contract!</source>
-        <translation type="unfinished"></translation>
+        <translation>Tato vlastnost je dostupná pouze ve verzi QtiPlot Pro. Předplaťte si, prosím, smlouvu na udržování!</translation>
     </message>
     <message>
         <source>dBase</source>
-        <translation type="unfinished"></translation>
+        <translation>dBase</translation>
     </message>
     <message>
         <source>Microsoft Access</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>SQLite 3</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>Open Database</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>&amp;Database...</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Databáze...</translation>
     </message>
 </context>
 <context>
@@ -4671,11 +4671,11 @@ Různé části tohoto souboru se nemusí zobrazovat tak, jak se očekává.</tr
     </message>
     <message>
         <source>months</source>
-        <translation type="unfinished"></translation>
+        <translation>měsíce</translation>
     </message>
     <message>
         <source>years</source>
-        <translation type="unfinished"></translation>
+        <translation>roky</translation>
     </message>
 </context>
 <context>
@@ -5963,30 +5963,42 @@ K tomu lze použít následujících zvláštních kódů:
     </message>
     <message>
         <source>Ask before modifying data &amp;points</source>
-        <translation type="unfinished"></translation>
+        <translation>Zeptat se před upravením datových &amp;bodů</translation>
     </message>
     <message>
         <source>Java</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>OpenOffice.org</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>JODConverter</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>Choose location</source>
-        <translation type="unfinished"></translation>
+        <translation>Vybrat umístění</translation>
     </message>
     <message>
         <source>LibreOffice</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>Prompt on pasting &amp;values to tables</source>
+        <translation>Vyzvat při vkládání &amp;hodnot do tabulek</translation>
+    </message>
+    <message>
+        <source>Import Excel files using</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Excel Format Library</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Locally Installed Excel</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -6041,7 +6053,7 @@ K tomu lze použít následujících zvláštních kódů:
     <name>Convolution</name>
     <message>
         <source>The response data set %1 does not exist!</source>
-        <translation>Záznam s údaji o odpovědi %1 neexistuje!</translation>
+        <translation>Datový soubor odpovědi %1 neexistuje!</translation>
     </message>
     <message>
         <source>Error</source>
@@ -6061,7 +6073,7 @@ K tomu lze použít následujících zvláštních kódů:
     </message>
     <message>
         <source>The signal data set %1 does not exist!</source>
-        <translation>Záznam s údaji o signálu  %1 neexistuje!</translation>
+        <translation>Datový soubor signálu  %1 neexistuje!</translation>
     </message>
     <message>
         <source>QtiPlot</source>
@@ -6092,7 +6104,7 @@ K tomu lze použít následujících zvláštních kódů:
     </message>
     <message>
         <source>The data set %1 does not exist!</source>
-        <translation>Záznam s údaji %1 neexistuje!</translation>
+        <translation>Datový soubor %1 neexistuje!</translation>
     </message>
     <message>
         <source>Correlation</source>
@@ -6135,7 +6147,7 @@ K tomu lze použít následujících zvláštních kódů:
     </message>
     <message>
         <source>Bin Matrix Dialog</source>
-        <translation>Dialog matice binárního souboru</translation>
+        <translation>Dialog pro převod matice: 2D Histogramm</translation>
     </message>
     <message>
         <source>QtiPlot</source>
@@ -6170,7 +6182,7 @@ K tomu lze použít následujících zvláštních kódů:
     </message>
     <message>
         <source>Data set: </source>
-        <translation>Záznam s údaji:</translation>
+        <translation>Datový soubor:</translation>
     </message>
     <message>
         <source>From row number</source>
@@ -6954,74 +6966,74 @@ K tomu lze použít následujících zvláštních kódů:
     </message>
     <message>
         <source>QtiPlot - Error</source>
-        <translation type="unfinished">QtiPlot - Chyba</translation>
+        <translation>QtiPlot - Chyba</translation>
     </message>
     <message>
         <source>This feature is not available for user defined function curves!</source>
-        <translation type="unfinished">Tato funkce není pro uživatelem stanovené křivky funkcí dostupná!</translation>
+        <translation>Tato funkce není pro uživatelem stanovené křivky funkcí dostupná!</translation>
     </message>
     <message>
         <source>The selected error column is empty!</source>
-        <translation type="unfinished">Vybraný chybový sloupec je prázdný!</translation>
+        <translation>Vybraný chybový sloupec je prázdný!</translation>
     </message>
 </context>
 <context>
     <name>ExcelFileConverter</name>
     <message>
         <source>QtiPlot</source>
-        <translation type="unfinished">QtiPlot</translation>
+        <translation>QtiPlot</translation>
     </message>
     <message>
         <source>Operation failed</source>
-        <translation type="unfinished"></translation>
+        <translation>Operace se nepodařila</translation>
     </message>
     <message>
         <source>Coudn&apos;t start</source>
-        <translation type="unfinished"></translation>
+        <translation>Nepodařilo se spustit</translation>
     </message>
     <message>
         <source>JODConverter</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>Please set the correct path in the preferences dialog</source>
-        <translation type="unfinished"></translation>
+        <translation>Nastavte, prosím, správnou cestu v dialogu nastavení</translation>
     </message>
     <message>
         <source>Java</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>OpenOffice.org</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>Couldn&apos;t start</source>
-        <translation type="unfinished"></translation>
+        <translation>Nepodařilo se spustit</translation>
     </message>
     <message>
         <source>crashed</source>
-        <translation type="unfinished">spadlo</translation>
+        <translation>spadlo</translation>
     </message>
     <message>
         <source>timedout</source>
-        <translation type="unfinished">vypršelo</translation>
+        <translation>vypršelo</translation>
     </message>
     <message>
         <source>write error</source>
-        <translation type="unfinished">chyba zápisu</translation>
+        <translation>chyba zápisu</translation>
     </message>
     <message>
         <source>read error</source>
-        <translation type="unfinished">chyba čtení</translation>
+        <translation>chyba čtení</translation>
     </message>
     <message>
         <source>unknown error</source>
-        <translation type="unfinished">neznámá chyba</translation>
+        <translation>neznámá chyba</translation>
     </message>
     <message>
         <source>LibreOffice</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
 </context>
 <context>
@@ -7215,7 +7227,7 @@ K tomu lze použít následujících zvláštních kódů:
     </message>
     <message>
         <source>&amp;Advanced</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Pokročilé</translation>
     </message>
 </context>
 <context>
@@ -7510,7 +7522,7 @@ K tomu lze použít následujících zvláštních kódů:
     </message>
     <message>
         <source>You didn&apos;t specify a valid data set for this operation!</source>
-        <translation>Pro tuto operaci jste nestanovil platný záznam s údaji!</translation>
+        <translation>Pro tuto operaci jste nestanovil platný datový soubor!</translation>
     </message>
     <message>
         <source>Several data points have the same x value causing divisions by zero, operation aborted!</source>
@@ -7742,7 +7754,7 @@ K tomu lze použít následujících zvláštních kódů:
     </message>
     <message>
         <source>Upper %1 Confidence Limit</source>
-        <translation>Horní mezní hodnota důvěry %1</translation>
+        <translation>Horní mezní hodnota spolehlivosti %1</translation>
     </message>
     <message>
         <source>Error</source>
@@ -7766,7 +7778,7 @@ K tomu lze použít následujících zvláštních kódů:
     </message>
     <message>
         <source>Lower %1 Confidence Limit</source>
-        <translation>Dolní mezní hodnota důvěry %1</translation>
+        <translation>Dolní mezní hodnota spolehlivosti %1</translation>
     </message>
     <message>
         <source>QtiPlot - Error</source>
@@ -7842,7 +7854,7 @@ K tomu lze použít následujících zvláštních kódů:
     </message>
     <message>
         <source>You didn&apos;t specify a valid data set for this fit operation. Operation aborted!</source>
-        <translation>Nestanovil jste platný záznam s údaji pro operaci umístění. Operace zrušena!</translation>
+        <translation>Nestanovil jste platný datový soubor pro operaci umístění. Operace zrušena!</translation>
     </message>
     <message>
         <source>Please perform a fit first!</source>
@@ -7874,7 +7886,7 @@ K tomu lze použít následujících zvláštních kódů:
     </message>
     <message>
         <source>Confidence Limits of %1</source>
-        <translation>Mezní hodnoty důvěry %1</translation>
+        <translation>Mezní hodnoty spolehlivosti %1</translation>
     </message>
     <message>
         <source>Prediction Limits of %1</source>
@@ -8755,7 +8767,7 @@ K tomu lze použít následujících zvláštních kódů:
     </message>
     <message>
         <source>Data set generated from curve</source>
-        <translation>Záznam s údaji vytvořený z křivky</translation>
+        <translation>Datový soubor vytvořený z křivky</translation>
     </message>
     <message>
         <source>The columns</source>
@@ -9464,43 +9476,43 @@ K tomu lze použít následujících zvláštních kódů:
     </message>
     <message>
         <source>&amp;Add</source>
-        <translation type="unfinished">&amp;Přidat</translation>
+        <translation>&amp;Přidat</translation>
     </message>
     <message>
         <source>Clea&amp;r</source>
-        <translation type="unfinished">Vypráz&amp;dnit</translation>
+        <translation>Vypráz&amp;dnit</translation>
     </message>
     <message>
         <source>Rece&amp;nt</source>
-        <translation type="unfinished"></translation>
+        <translation>Nedáv&amp;ný</translation>
     </message>
     <message>
         <source>Click here to select a recently typed expression</source>
-        <translation type="unfinished"></translation>
+        <translation>Klepněte sem pro vybrání nedávno zadaného výrazu</translation>
     </message>
     <message>
         <source>Subintervals</source>
-        <translation type="unfinished"></translation>
+        <translation>Podintervaly</translation>
     </message>
     <message>
         <source>QtiPlot - Input error</source>
-        <translation type="unfinished"></translation>
+        <translation>QtiPlot - Chyba při zadání</translation>
     </message>
     <message>
         <source>QtiPlot</source>
-        <translation type="unfinished">QtiPlot</translation>
+        <translation>QtiPlot</translation>
     </message>
     <message>
         <source>Sorry, there are no recent expressions available!</source>
-        <translation type="unfinished"></translation>
+        <translation>Promiňte, ale nejsou tu dostupné žádné nedávné výrazy!</translation>
     </message>
     <message>
         <source>Recent Functions</source>
-        <translation type="unfinished"></translation>
+        <translation>Naposledy použité funkce</translation>
     </message>
     <message>
         <source>Please, choose a function:</source>
-        <translation type="unfinished"></translation>
+        <translation>Vyberte, prosím, funkci:</translation>
     </message>
 </context>
 <context>
@@ -9571,7 +9583,7 @@ K tomu lze použít následujících zvláštních kódů:
     </message>
     <message>
         <source>Error</source>
-        <translation type="unfinished">Chyba</translation>
+        <translation>Chyba</translation>
     </message>
 </context>
 <context>
@@ -10113,7 +10125,7 @@ K tomu lze použít následujících zvláštních kódů:
     <name>LogisticFit</name>
     <message>
         <source>power</source>
-        <translation>síla</translation>
+        <translation>mocnina</translation>
     </message>
     <message>
         <source>Logistic</source>
@@ -11381,7 +11393,7 @@ K tomu lze použít následujících zvláštních kódů:
     </message>
     <message>
         <source>Box</source>
-        <translation>Bedna</translation>
+        <translation>Krabice</translation>
     </message>
     <message>
         <source>End</source>
@@ -12097,7 +12109,7 @@ K tomu lze použít následujících zvláštních kódů:
     </message>
     <message>
         <source>Box/Whiskers</source>
-        <translation>Okénko/Vousy</translation>
+        <translation>Krabice/Vousy</translation>
     </message>
     <message>
         <source>&amp;Values</source>
@@ -12141,7 +12153,7 @@ K tomu lze použít následujících zvláštních kódů:
     </message>
     <message>
         <source>QtiPlot - Bin size input error</source>
-        <translation type="unfinished">QtiPlot - Chyba ve velikosti rozmezí</translation>
+        <translation>QtiPlot - Vstupní chyba ve velikosti intervalu</translation>
     </message>
     <message>
         <source>Set As &amp;Default</source>
@@ -12165,7 +12177,7 @@ K tomu lze použít následujících zvláštních kódů:
     </message>
     <message>
         <source>Please enter a positive bin size value!</source>
-        <translation type="unfinished">Zadejte, prosím, kladnou hodnotu pro velikost rozmezí!</translation>
+        <translation>Zadejte, prosím, kladnou hodnotu pro velikost intervalu!</translation>
     </message>
     <message>
         <source>Contour Lines</source>
@@ -12273,83 +12285,83 @@ K tomu lze použít následujících zvláštních kódů:
     </message>
     <message>
         <source>Statistics for</source>
-        <translation type="unfinished"></translation>
+        <translation>Statistika pro</translation>
     </message>
     <message>
         <source>Apply Co&amp;lor</source>
-        <translation type="unfinished"></translation>
+        <translation>Použít bar&amp;vu</translation>
     </message>
     <message>
         <source>Box &amp;Labels</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Popisy krabic</translation>
     </message>
     <message>
         <source>Whis&amp;ker Labels</source>
-        <translation type="unfinished"></translation>
+        <translation>Popisy &amp;vousů</translation>
     </message>
     <message>
         <source>Display</source>
-        <translation type="unfinished">Zobrazení</translation>
+        <translation>Zobrazení</translation>
     </message>
     <message>
         <source>Percentage</source>
-        <translation type="unfinished"></translation>
+        <translation>Procentní podíl</translation>
     </message>
     <message>
         <source>Value</source>
-        <translation type="unfinished">Hodnota</translation>
+        <translation>Hodnota</translation>
     </message>
     <message>
         <source>Percentage (Value)</source>
-        <translation type="unfinished"></translation>
+        <translation>Procentní podíl (hodnota)</translation>
     </message>
     <message>
         <source>Value (Percentage)</source>
-        <translation type="unfinished"></translation>
+        <translation>Hodnota (procentní podíl)</translation>
     </message>
     <message>
         <source>&amp;Background Color</source>
-        <translation type="unfinished"></translation>
+        <translation>Barva &amp;pozadí</translation>
     </message>
     <message>
         <source>Background &amp;Image</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Obrázek pozadí</translation>
     </message>
     <message>
         <source>File</source>
-        <translation type="unfinished">Soubor</translation>
+        <translation>Soubor</translation>
     </message>
     <message>
         <source>&amp;Resize layer to fit original image size</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Změnit velikost vrstvy, aby se přizpůsobila původní velikosti obrázku</translation>
     </message>
     <message>
         <source>&amp;Frame</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Rám</translation>
     </message>
     <message>
         <source>Canvas</source>
-        <translation type="unfinished"></translation>
+        <translation>Plátno</translation>
     </message>
     <message>
         <source>&amp;Standard Symbol</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Obvyklé symboly</translation>
     </message>
     <message>
         <source>&amp;Image</source>
-        <translation type="unfinished">&amp;Obrázek</translation>
+        <translation>&amp;Obrázek</translation>
     </message>
     <message>
         <source>Preview</source>
-        <translation type="unfinished"></translation>
+        <translation>Náhled</translation>
     </message>
     <message>
         <source>QtiPlot - Import image from file</source>
-        <translation type="unfinished">QtiPlot - Zavést obrázek ze souboru</translation>
+        <translation>QtiPlot - Zavést obrázek ze souboru</translation>
     </message>
     <message>
         <source>Auto&amp;scaling</source>
-        <translation type="unfinished">Automatická &amp;velikost</translation>
+        <translation>Automatická &amp;velikost</translation>
     </message>
 </context>
 <context>
@@ -12878,13 +12890,13 @@ K tomu lze použít následujících zvláštních kódů:
         <source>ttable(x, n):
  Student&apos;s t-distribution with n degrees of freedom.</source>
         <translation>ttable(x, n):
- Studentovo rozložení s n stupni volnosti.</translation>
+ Studentovo t-rozložení s n stupni volnosti.</translation>
     </message>
     <message>
         <source>inv_gauss_cdf(x, sigma):
  Computes the inverse of the cumulative distribution function for a Gaussian distribution with standard deviation sigma.</source>
         <translation>inv_gauss_cdf(x, sigma):
- Počítá převrácenou /reciprokou/ hodnotu kumulativní distribuční funkce pro Gaussovu distribuci s obvyklou odchylkou sigma.</translation>
+ Počítá převrácenou /reciprokou/ hodnotu kumulativní distribuční funkce pro Gaussovo rozdělení (distribuci) s obvyklou odchylkou sigma.</translation>
     </message>
     <message>
         <source>mod(x,y):
@@ -12936,7 +12948,7 @@ K tomu lze použít následujících zvláštních kódů:
         <source>gauss_pdf(x, sigma):
  Computes the probability density at x for a Gaussian distribution with standard deviation sigma.</source>
         <translation>gauss_cdf(x, sigma):
- Počítá funkci hustoty pravděpodobnosti v x pro Gaussovu distribuci s obvyklou odchylkou sigma.</translation>
+ Počítá funkci hustoty pravděpodobnosti v x pro Gaussovo rozdělení (distribuci) s obvyklou odchylkou sigma.</translation>
     </message>
     <message>
         <source>acos(x):
@@ -13080,7 +13092,7 @@ pokud e1 pak e2 jinak e3.</translation>
         <source>gauss_cdf(x, sigma):
  Computes the cumulative distribution function for a Gaussian distribution with standard deviation sigma.</source>
         <translation>gauss_cdf(x, sigma):
- Počítá hodnotu kumulativní distribuční funkce pro Gaussovu distribuci s obvyklou odchylkou sigma.</translation>
+ Počítá hodnotu kumulativní distribuční funkce pro Gaussovo rozdělení (distribuci) s obvyklou odchylkou sigma.</translation>
     </message>
     <message>
         <source>acosh(x):
@@ -13160,372 +13172,381 @@ pokud e1 pak e2 jinak e3.</translation>
     </message>
     <message>
         <source>Min</source>
-        <translation type="unfinished">Minimum</translation>
+        <translation>Nejméně</translation>
     </message>
     <message>
         <source>D1 (1st decile)</source>
-        <translation type="unfinished"></translation>
+        <translation>D1 (1. decil)</translation>
     </message>
     <message>
         <source>Q1 (1st quartile)</source>
-        <translation type="unfinished"></translation>
+        <translation>Q1 (1. kvartil)</translation>
     </message>
     <message>
         <source>Median</source>
-        <translation type="unfinished">Střední hodnota</translation>
+        <translation>Střední hodnota</translation>
     </message>
     <message>
         <source>Q3 (3rd quartile)</source>
-        <translation type="unfinished"></translation>
+        <translation>Q3 (3. kvartil)</translation>
     </message>
     <message>
         <source>D9 (9th decile)</source>
-        <translation type="unfinished"></translation>
+        <translation>D9 (9. decil)</translation>
     </message>
     <message>
         <source>Max</source>
-        <translation type="unfinished">Maximum</translation>
+        <translation>Nejvíce</translation>
     </message>
     <message>
         <source>Size</source>
-        <translation type="unfinished">Velikost</translation>
+        <translation>Velikost</translation>
     </message>
     <message>
         <source>Attention!</source>
-        <translation type="unfinished"></translation>
+        <translation>Pozor!</translation>
     </message>
     <message>
         <source>Sample size must be between 3 and 5000.</source>
-        <translation type="unfinished"></translation>
+        <translation>Velikost vzorku musí být mezi 3 a 5000.</translation>
     </message>
     <message>
         <source>Normality Test (Shapiro - Wilk)</source>
-        <translation type="unfinished"></translation>
+        <translation>Zkouška normálnosti (Shapiro - Wilk)</translation>
     </message>
     <message>
         <source>Dataset</source>
-        <translation type="unfinished">Soubor dat</translation>
+        <translation>Soubor dat</translation>
     </message>
     <message>
         <source>N</source>
-        <translation type="unfinished"></translation>
+        <translation>N</translation>
     </message>
     <message>
         <source>W</source>
-        <translation type="unfinished"></translation>
+        <translation>W</translation>
     </message>
     <message>
         <source>P Value</source>
-        <translation type="unfinished"></translation>
+        <translation>Hodnota P</translation>
     </message>
     <message>
         <source>Decision</source>
-        <translation type="unfinished"></translation>
+        <translation>Rozhodnutí</translation>
     </message>
     <message>
         <source>Normal at %1 level</source>
-        <translation type="unfinished"></translation>
+        <translation>Normální na %1 úrovni</translation>
     </message>
     <message>
         <source>Sample</source>
-        <translation type="unfinished"></translation>
+        <translation>Vzorek</translation>
     </message>
     <message>
         <source>Mean</source>
-        <translation type="unfinished"></translation>
+        <translation>Průměr</translation>
     </message>
     <message>
         <source>Standard Deviation</source>
-        <translation type="unfinished">Obvyklá odchylka</translation>
+        <translation>Obvyklá odchylka</translation>
     </message>
     <message>
         <source>Standard Error</source>
-        <translation type="unfinished">Obvyklá chyba</translation>
+        <translation>Obvyklá chyba</translation>
     </message>
     <message>
         <source>Two Sample Independent t-Test</source>
-        <translation type="unfinished"></translation>
+        <translation>Dvouvzorková nezávislá t-zkouška</translation>
     </message>
     <message>
         <source>Two Sample Paired t-Test</source>
-        <translation type="unfinished"></translation>
+        <translation>Dvouvzorková párová t-zkouška</translation>
     </message>
     <message>
         <source>One Sample t-Test</source>
-        <translation type="unfinished"></translation>
+        <translation>Jednovzorková t-zkouška</translation>
     </message>
     <message>
         <source>Difference of Means</source>
-        <translation type="unfinished"></translation>
+        <translation>Rozdíl průměrů</translation>
     </message>
     <message>
         <source>different</source>
-        <translation type="unfinished"></translation>
+        <translation>rozdílný</translation>
     </message>
     <message>
         <source>greater</source>
-        <translation type="unfinished"></translation>
+        <translation>větší</translation>
     </message>
     <message>
         <source>less</source>
-        <translation type="unfinished"></translation>
+        <translation>méně</translation>
     </message>
     <message>
         <source>Null Hypothesis</source>
-        <translation type="unfinished"></translation>
+        <translation>Nulová hypotéza</translation>
     </message>
     <message>
         <source>Alternative Hypothesis</source>
-        <translation type="unfinished"></translation>
+        <translation>Alternativní hypotéza</translation>
     </message>
     <message>
         <source>t</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>DoF</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>At the %1 level, the difference of the population means</source>
-        <translation type="unfinished"></translation>
+        <translation>Na %1 úrovni, rozdíl v populačních průměrech</translation>
     </message>
     <message>
         <source>At the %1 level, the population mean</source>
-        <translation type="unfinished"></translation>
+        <translation>Na %1 úrovni, populační průměr</translation>
     </message>
     <message>
         <source>is significantly</source>
-        <translation type="unfinished"></translation>
+        <translation>je významně</translation>
     </message>
     <message>
         <source>is not significantly</source>
-        <translation type="unfinished"></translation>
+        <translation>není významně</translation>
     </message>
     <message>
         <source>than the test difference</source>
-        <translation type="unfinished"></translation>
+        <translation>než zkouškový rozdíl</translation>
     </message>
     <message>
         <source>than the test mean</source>
-        <translation type="unfinished"></translation>
+        <translation>než zkouškový průměr</translation>
     </message>
     <message>
         <source>Paired t-Test requires equal sample sizes.</source>
-        <translation type="unfinished"></translation>
+        <translation>Párová t-zkouška vyžaduje stejnou velikost vzorků.</translation>
     </message>
     <message>
         <source>The test statistics t and P can not be computed because the sample variance of the differences between Sample1 and Sample2 is 0.</source>
-        <translation type="unfinished"></translation>
+        <translation>Zkouškovou statistiku t a P nelze spočítat, protože odchylka vzorku rozdílů mezi Vzorek1 a Vzorek2 je 0.</translation>
     </message>
     <message>
         <source>invt(x, n):
  Inverse t-distribution with n degrees of freedom.</source>
-        <translation type="unfinished"></translation>
+        <translation>invt(x, n):
+ Převrácené t-rozložení s n stupni volnosti.</translation>
     </message>
     <message>
         <source>Not normal at %1 level</source>
-        <translation type="unfinished"></translation>
+        <translation>Nenormální na %1 úrovni</translation>
     </message>
     <message>
         <source>ftable(x, m, n):
  F-Distribution with m and n degrees of freedom.</source>
-        <translation type="unfinished"></translation>
+        <translation>ftable(x, m, n):
+ F-rozložení s m a n stupni volnosti.</translation>
     </message>
     <message>
         <source>invf(x, m, n):
  Inverse F-Distribution with m and n degrees of freedom.</source>
-        <translation type="unfinished"></translation>
+        <translation>invf(x, m, n):
+ Převrácené F-rozložení s m a n stupni volnosti.</translation>
     </message>
     <message>
         <source>Two-Way ANOVA requires three or more data samples.</source>
-        <translation type="unfinished"></translation>
+        <translation>Dvoucestná ANOVA vyžaduje tři nebo více datových vzorků.</translation>
     </message>
     <message>
         <source>One-Way ANOVA requires two or more data samples.</source>
-        <translation type="unfinished"></translation>
+        <translation>Jednocestná ANOVA vyžaduje dva nebo více datových vzorků.</translation>
     </message>
     <message>
         <source>Factor A must have two or more levels.</source>
-        <translation type="unfinished"></translation>
+        <translation>Činitel A musí mít dvě nebo více úrovní.</translation>
     </message>
     <message>
         <source>Factor B must have two or more levels.</source>
-        <translation type="unfinished"></translation>
+        <translation>Činitel B musí mít dvě nebo více úrovní.</translation>
     </message>
     <message>
         <source>A</source>
-        <translation type="unfinished"></translation>
+        <translation>A</translation>
     </message>
     <message>
         <source>B</source>
-        <translation type="unfinished"></translation>
+        <translation>B</translation>
     </message>
     <message>
         <source>Two-Way ANOVA</source>
-        <translation type="unfinished"></translation>
+        <translation>Dvoucestná ANOVA</translation>
     </message>
     <message>
         <source>Fixed Model</source>
-        <translation type="unfinished"></translation>
+        <translation>Pevný model</translation>
     </message>
     <message>
         <source>Random Model</source>
-        <translation type="unfinished"></translation>
+        <translation>Náhodný model</translation>
     </message>
     <message>
         <source>Mixed Model</source>
-        <translation type="unfinished"></translation>
+        <translation>Smíšený model</translation>
     </message>
     <message>
         <source>One-Way ANOVA</source>
-        <translation type="unfinished"></translation>
+        <translation>Jednocestná ANOVA</translation>
     </message>
     <message>
         <source>Selected Data</source>
-        <translation type="unfinished"></translation>
+        <translation>Vybraná data</translation>
     </message>
     <message>
         <source>Factor A Level</source>
-        <translation type="unfinished"></translation>
+        <translation>Úroveň činitele A</translation>
     </message>
     <message>
         <source>Factor B Level</source>
-        <translation type="unfinished"></translation>
+        <translation>Úroveň činitele B</translation>
     </message>
     <message>
         <source>The means of all selected datasets are equal</source>
-        <translation type="unfinished"></translation>
+        <translation>Průměry všech vybraných datových souborů jsou si rovny</translation>
     </message>
     <message>
         <source>The means of one or more selected datasets are different</source>
-        <translation type="unfinished"></translation>
+        <translation>Průměry jednoho nebo více vybraných datových souborů jsou rozdílné</translation>
     </message>
     <message>
         <source>Source</source>
-        <translation type="unfinished"></translation>
+        <translation>Zdroj</translation>
     </message>
     <message>
         <source>Sum of Squares</source>
-        <translation type="unfinished"></translation>
+        <translation>Součet čtverců (dvojmocnin)</translation>
     </message>
     <message>
         <source>Mean Square</source>
-        <translation type="unfinished"></translation>
+        <translation>Střední čtverec</translation>
     </message>
     <message>
         <source>F Value</source>
-        <translation type="unfinished"></translation>
+        <translation>Hodnota F</translation>
     </message>
     <message>
         <source>Error</source>
-        <translation type="unfinished">Chyba</translation>
+        <translation>Chyba</translation>
     </message>
     <message>
         <source>Total</source>
-        <translation type="unfinished"></translation>
+        <translation>Celkem</translation>
     </message>
     <message>
         <source>Model</source>
-        <translation type="unfinished">Model</translation>
+        <translation>Model</translation>
     </message>
     <message>
         <source>At the %1 level, the population means</source>
-        <translation type="unfinished"></translation>
+        <translation>Na %1 úrovni, populační průměry</translation>
     </message>
     <message>
         <source>are significantly different</source>
-        <translation type="unfinished"></translation>
+        <translation>jsou významně rozdílné</translation>
     </message>
     <message>
         <source>are not significantly different</source>
-        <translation type="unfinished"></translation>
+        <translation>nejsou významně rozdílné</translation>
     </message>
     <message>
         <source>The sample dataset (%1) must have at least one data point.</source>
-        <translation type="unfinished"></translation>
+        <translation>Datový soubor vzorku (%1) musí mít alespoň jeden datový bod.</translation>
     </message>
     <message>
         <source>There are no data points in Factor A &apos;%1&apos; and Factor B &apos;%2&apos; level combination.</source>
-        <translation type="unfinished"></translation>
+        <translation>V úrovňovém spojení Činitele A &apos;%1&apos; a Činitele B &apos;%2&apos; nejsou žádné datové body.</translation>
     </message>
     <message>
         <source>ANOVA</source>
-        <translation type="unfinished"></translation>
+        <translation>ANOVA</translation>
     </message>
     <message>
         <source>A*B</source>
-        <translation type="unfinished"></translation>
+        <translation>A*B</translation>
     </message>
     <message>
         <source>Result Table</source>
-        <translation type="unfinished"></translation>
+        <translation>Výsledková tabulka</translation>
     </message>
     <message>
         <source>Chi-square Test</source>
-        <translation type="unfinished"></translation>
+        <translation>Chí kvadrátová zkouška</translation>
     </message>
     <message>
         <source>Chi-square Test for Variance</source>
-        <translation type="unfinished"></translation>
+        <translation>Chí kvadrátová zkouška na odchylku</translation>
     </message>
     <message>
         <source>Variance</source>
-        <translation type="unfinished">Odchylka</translation>
+        <translation>Odchylka</translation>
     </message>
     <message>
         <source>Chi-Square</source>
-        <translation type="unfinished"></translation>
+        <translation>Chí kvadrát</translation>
     </message>
     <message>
         <source>At the %1 level, the population variance</source>
-        <translation type="unfinished"></translation>
+        <translation>Na %1 úrovni, populační odchylka</translation>
     </message>
     <message>
         <source>than the test variance</source>
-        <translation type="unfinished"></translation>
+        <translation>pak zkoušková odchylka</translation>
     </message>
     <message>
         <source>Shapiro-Wilk Normality Test</source>
-        <translation type="unfinished"></translation>
+        <translation>Zkouška normálnosti Shapiro-Wilk</translation>
     </message>
     <message>
         <source>Statistic</source>
-        <translation type="unfinished"></translation>
+        <translation>Statistika</translation>
     </message>
     <message>
         <source>Student&apos;s t-Test</source>
-        <translation type="unfinished"></translation>
+        <translation>Studentova zkouška</translation>
     </message>
     <message>
         <source>chi2cdf(x, df):
  Computes the cumulative distribution function for a chi-squared distribution with df degrees of freedom.</source>
-        <translation type="unfinished"></translation>
+        <translation>chi2cdf(x, df):
+ Počítá hodnotu kumulativní distribuční funkce pro chí-kvadrát rozdělení s df stupni volnosti.</translation>
     </message>
     <message>
         <source>chi2inv(p, df):
  Computes the inverse of the cumulative distribution function for a chi-squared distribution with df degrees of freedom.</source>
-        <translation type="unfinished"></translation>
+        <translation>chi2inv(p, df):
+ Počítá obrácenou hodnotu kumulativní distribuční funkce pro chí-kvadrát rozdělení s df stupni volnosti.</translation>
     </message>
     <message>
         <source>normal(seed):
  Returns a normal random number using the Ziggurat algorithm.</source>
-        <translation type="unfinished"></translation>
+        <translation>normal(seed):
+ Vrací normální náhodné číslo za použití algoritmu zikkurat (Ziggurat).</translation>
     </message>
     <message>
         <source>normcdf(x):
  Computes the cumulative distribution function for a Gaussian distribution with standard deviation sigma = 1.0.</source>
-        <translation type="unfinished"></translation>
+        <translation>normcdf(x):
+ Počítá hodnotu kumulativní distribuční funkce pro Gaussovo rozdělení (distribuci) s obvyklou odchylkou sigma = 1.0.</translation>
     </message>
     <message>
         <source>norminv(p):
  Computes the inverse of the cumulative distribution function for a Gaussian distribution with standard deviation sigma = 1.0.</source>
-        <translation type="unfinished"></translation>
+        <translation>norminv(p):
+ Počítá převrácenou hodnotu kumulativní distribuční funkce pro Gaussovo rozdělení (distribuci) s obvyklou odchylkou sigma = 1.0.</translation>
     </message>
     <message>
         <source>dilog(x):
  Compute the dilogarithm for a real argument. In Lewin&apos;s notation this is Li_2(x), the real part of the dilogarithm of a real x.</source>
-        <translation type="unfinished"></translation>
+        <translation>dilog(x):
+ Počítá dilogaritmus pro skutečný argument. V zápise Lewinově to je Li_2(x), skutečná (reálná) část dilogaritmu skutečného x.</translation>
     </message>
 </context>
 <context>
@@ -14278,166 +14299,166 @@ pokud e1 pak e2 jinak e3.</translation>
     <name>Statistics</name>
     <message>
         <source>QtiPlot</source>
-        <translation type="unfinished">QtiPlot</translation>
+        <translation>QtiPlot</translation>
     </message>
     <message>
         <source>Error</source>
-        <translation type="unfinished">Chyba</translation>
+        <translation>Chyba</translation>
     </message>
     <message>
         <source>You didn&apos;t specify a valid data set for this operation!</source>
-        <translation type="unfinished">Pro tuto operaci jste nestanovil platný záznam s údaji!</translation>
+        <translation>Pro tuto operaci jste nestanovil platný datový soubor!</translation>
     </message>
     <message>
         <source>Memory Allocation Error</source>
-        <translation type="unfinished">Chyba v přidělení paměti</translation>
+        <translation>Chyba v přidělení paměti</translation>
     </message>
     <message>
         <source>Not enough memory, operation aborted!</source>
-        <translation type="unfinished"></translation>
+        <translation>Není dostatek paměti, a tak byla operace zrušena!</translation>
     </message>
     <message>
         <source>There is no sample dataset called %1 in this project.</source>
-        <translation type="unfinished"></translation>
+        <translation>V tomto projektu není žádný datový soubor se vzorky s názvem %1.</translation>
     </message>
 </context>
 <context>
     <name>StudentTestDialog</name>
     <message>
         <source>Two sample t-Test</source>
-        <translation type="unfinished"></translation>
+        <translation>Dvouvzorková t-zkouška</translation>
     </message>
     <message>
         <source>In&amp;dependent Test</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Nezávislá zkouška</translation>
     </message>
     <message>
         <source>Pai&amp;red Test</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Párová zkouška</translation>
     </message>
     <message>
         <source>One sample t-Test</source>
-        <translation type="unfinished"></translation>
+        <translation>Jednovzorková t-zkouška</translation>
     </message>
     <message>
         <source>Sample</source>
-        <translation type="unfinished"></translation>
+        <translation>Vzorek</translation>
     </message>
     <message>
         <source>Mean</source>
-        <translation type="unfinished"></translation>
+        <translation>Průměr</translation>
     </message>
     <message>
         <source>Hypotheses</source>
-        <translation type="unfinished"></translation>
+        <translation>Předpoklady</translation>
     </message>
     <message>
         <source>Null</source>
-        <translation type="unfinished"></translation>
+        <translation>Nulový</translation>
     </message>
     <message>
         <source>Alternate</source>
-        <translation type="unfinished"></translation>
+        <translation>Náhradní</translation>
     </message>
     <message>
         <source>Significance Level</source>
-        <translation type="unfinished"></translation>
+        <translation>Úroveň významu</translation>
     </message>
     <message>
         <source>Confidence &amp;Interval(s)</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Rozmezí spolehlivosti</translation>
     </message>
     <message>
         <source>Level(s) in %</source>
-        <translation type="unfinished"></translation>
+        <translation>Úroveň(ě) v %</translation>
     </message>
     <message>
         <source>&amp;Add Level</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Přidat úroveň</translation>
     </message>
     <message>
         <source>&amp;Power Analysis</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Rozbor mocniny</translation>
     </message>
     <message>
         <source>Alpha</source>
-        <translation type="unfinished"></translation>
+        <translation>Alfa</translation>
     </message>
     <message>
         <source>Sample &amp;Size</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Velikost vzorku</translation>
     </message>
     <message>
         <source>&amp;Compute</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Spočítat</translation>
     </message>
     <message>
         <source>Confidence Interval for Difference of Means</source>
-        <translation type="unfinished"></translation>
+        <translation>Rozmezí spolehlivosti pro rozdíl průměrů</translation>
     </message>
     <message>
         <source>Confidence Interval for Mean</source>
-        <translation type="unfinished"></translation>
+        <translation>Rozmezí spolehlivosti pro průměr</translation>
     </message>
     <message>
         <source>Level</source>
-        <translation type="unfinished">Úroveň</translation>
+        <translation>Úroveň</translation>
     </message>
     <message>
         <source>Lower Limit</source>
-        <translation type="unfinished"></translation>
+        <translation>Spodní mez</translation>
     </message>
     <message>
         <source>Upper Limit</source>
-        <translation type="unfinished"></translation>
+        <translation>Horní mez</translation>
     </message>
     <message>
         <source>Power Analysis</source>
-        <translation type="unfinished"></translation>
+        <translation>Rozbor mocniny</translation>
     </message>
     <message>
         <source>Sample Size</source>
-        <translation type="unfinished"></translation>
+        <translation>Velikost vzorku</translation>
     </message>
     <message>
         <source>Power</source>
-        <translation type="unfinished"></translation>
+        <translation>Mocnina</translation>
     </message>
     <message>
         <source>actual</source>
-        <translation type="unfinished"></translation>
+        <translation>skutečný</translation>
     </message>
     <message>
         <source>Chi-square Test for Variance</source>
-        <translation type="unfinished"></translation>
+        <translation>Chí kvadrátová zkouška na odchylku</translation>
     </message>
     <message>
         <source>Variance</source>
-        <translation type="unfinished">Odchylka</translation>
+        <translation>Odchylka</translation>
     </message>
     <message>
         <source>Confidence Intervals for Variance</source>
-        <translation type="unfinished"></translation>
+        <translation>Rozmezí spolehlivosti pro odchylku</translation>
     </message>
     <message>
         <source>Output Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Nastavení výstupu</translation>
     </message>
     <message>
         <source>&amp;Table</source>
-        <translation type="unfinished">&amp;Tabulka</translation>
+        <translation>&amp;Tabulka</translation>
     </message>
     <message>
         <source>&amp;Notes Window</source>
-        <translation type="unfinished"></translation>
+        <translation>Okno na &amp;poznámky</translation>
     </message>
     <message>
         <source>Results &amp;Log</source>
-        <translation type="unfinished">Zápis &amp;výsledků</translation>
+        <translation>Zápis &amp;výsledků</translation>
     </message>
     <message>
         <source>&amp;Descriptive Statistics</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Popisná statistika</translation>
     </message>
 </context>
 <context>
@@ -15174,6 +15195,50 @@ pokud e1 pak e2 jinak e3.</translation>
     <message>
         <source>StandardDev</source>
         <translation>Obvyklá odchylka</translation>
+    </message>
+    <message>
+        <source>Index of Row</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Number of Columns</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Standard Deviation</source>
+        <translation type="unfinished">Obvyklá odchylka</translation>
+    </message>
+    <message>
+        <source>Standard Error</source>
+        <translation type="unfinished">Obvyklá chyba</translation>
+    </message>
+    <message>
+        <source>Maximum Value</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Minimum Value</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Number of Points</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Column Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Rows Included</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Index of Maximum Value</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Index of Minimum Value</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
