@@ -82,13 +82,15 @@ void ErrorBarsCurve::draw(QPainter *painter,
 	if (to < 0)
 		to = dataSize() - 1;
 
-  painter->save();
-  QPen p = QwtPainter::scaledPen(pen());
-  p.setCapStyle(Qt::FlatCap);
-  p.setJoinStyle(Qt::MiterJoin);
-  painter->setPen(p);
-  drawErrorBars(painter, xMap, yMap, from, to);
-  painter->restore();
+	painter->save();
+	QPen p = pen();
+	p.setCapStyle(Qt::FlatCap);
+	p.setJoinStyle(Qt::MiterJoin);
+	if ((double)painter->device()->logicalDpiX()/(double)plot()->logicalDpiX() != 1.0)
+		p = QwtPainter::scaledPen(p);
+	painter->setPen(p);
+	drawErrorBars(painter, xMap, yMap, from, to);
+	painter->restore();
 }
 
 void ErrorBarsCurve::drawErrorBars(QPainter *painter,
