@@ -1523,8 +1523,14 @@ bool MultiLayer::eventFilter(QObject *object, QEvent *e)
 
 void MultiLayer::mouseReleaseEvent( QMouseEvent * e)
 {
-	d_layer_coordinates.resize(0);
+	d_layer_coordinates.clear();
 	return QMdiSubWindow::mouseReleaseEvent(e);
+}
+
+void MultiLayer::showEvent (QShowEvent * e)
+{
+	d_layer_coordinates.clear();
+	return QMdiSubWindow::showEvent(e);
 }
 
 void MultiLayer::keyPressEvent(QKeyEvent * e)
