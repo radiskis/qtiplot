@@ -244,6 +244,7 @@ private:
 	//! \name Event Handlers
 	//@{
 	void mouseReleaseEvent(QMouseEvent *);
+	void showEvent(QShowEvent *);
 	void dropEvent(QDropEvent*);
 	void dragEnterEvent(QDragEnterEvent*);
 	void wheelEvent(QWheelEvent *);
