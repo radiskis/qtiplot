@@ -71,7 +71,7 @@ bool ScalePicker::eventFilter(QObject *object, QEvent *e)
 
 		if (titleRect(scale).contains(pos))
 			selectTitle(scale);
-		else if (!scaleTicksRect(scale).contains(pos))
+		else if (labelClicked(scale, pos))
 			selectLabels(scale);
 
 		if (me->button() == Qt::LeftButton)
@@ -82,6 +82,44 @@ bool ScalePicker::eventFilter(QObject *object, QEvent *e)
 		}
 	}
 	return QObject::eventFilter(object, e);
+}
+
+bool ScalePicker::labelClicked(const QwtScaleWidget *scale, const QPoint &pos)
+{
+	if (!scale)
+		return false;
+
+	Graph *g = plot();
+	if (!g)
+		return false;
+
+	QwtScaleDraw::Alignment align =	scale->alignment();
+	int axis = -1;
+	switch (align){
+		case QwtScaleDraw::BottomScale:
+			axis = QwtPlot::xBottom;
+		break;
+		case QwtScaleDraw::TopScale:
+			axis = QwtPlot::xTop;
+		break;
+		case QwtScaleDraw::LeftScale:
+			axis = QwtPlot::yLeft;
+		break;
+		case QwtScaleDraw::RightScale:
+			axis = QwtPlot::yRight;
+		break;
+	}
+
+	QFont font = g->axisFont(axis);
+	const QwtScaleDiv *div = g->axisScaleDiv(axis);
+	const QwtScaleDraw *scDraw = scale->scaleDraw();
+	QwtValueList ticks = div->ticks(QwtScaleDiv::MajorTick);
+	foreach(double val, ticks){
+		QRect r = scDraw->boundingLabelRect(font, val);
+		if (r.contains(pos))
+			return true;
+	}
+	return false;
 }
 
 void ScalePicker::mouseDblClicked(const QwtScaleWidget *scale, const QPoint &pos)
@@ -111,14 +149,13 @@ QRect ScalePicker::scaleRect(const QwtScaleWidget *scale) const
 {
 	int margin = 1; // pixels tolerance
 	QRect rect = scale->rect();
-	rect.setRect(rect.x() - margin, rect.y() - margin, rect.width() + 2 * margin, rect.height() +  2 * margin);
+	//rect.setRect(rect.x() - margin, rect.y() - margin, rect.width() + 2 * margin, rect.height() +  2 * margin);
 
 	if (scale->title().text().isEmpty())
 		return rect;
 
 	int dh = scale->title().textSize().height();
-	switch(scale->alignment())
-		{
+	switch(scale->alignment()){
 		case QwtScaleDraw::LeftScale:
 			{
 			rect.setLeft(rect.left() + dh);
@@ -139,7 +176,7 @@ QRect ScalePicker::scaleRect(const QwtScaleWidget *scale) const
 			rect.setTop(rect.top() + dh);
 			break;
 			}
-		}
+	}
 	return rect;
 }
 
@@ -179,9 +216,6 @@ QRect ScalePicker::titleRect(const QwtScaleWidget *scale) const
 		return QRect();
 
 	QRect rect = scale->rect();
-	int margin = scale->margin();
-	rect = rect.adjusted (margin, margin, -margin, -margin);
-
 	int dh = scale->title().textSize().height();
 	switch(scale->alignment()){
 		case QwtScaleDraw::LeftScale:
@@ -205,6 +239,7 @@ QRect ScalePicker::titleRect(const QwtScaleWidget *scale) const
 			break;
 		}
 	}
+
 	return rect;
 }
 

@@ -107,6 +107,7 @@ private:
 	void mouseDblClicked(const QwtScaleWidget *, const QPoint &);
 	void mouseClicked(const QwtScaleWidget *scale, const QPoint &pos) ;
 	void mouseRightClicked(const QwtScaleWidget *scale, const QPoint &pos);
+	bool labelClicked(const QwtScaleWidget *scale, const QPoint &pos);
 
 	bool d_title_selected;
 	bool d_labels_selected;
