@@ -9147,19 +9147,19 @@ void ApplicationWindow::showEnrichementDialog()
 	if (!g)
 		return;
 
-	EnrichmentDialog::WidgetType wt = EnrichmentDialog::Frame;
-	LegendWidget *l = (LegendWidget *)g->activeText();
-	if (l)
-		wt = EnrichmentDialog::Text;
-	else if (qobject_cast<ImageWidget *>(g->activeEnrichment()))
-		wt = EnrichmentDialog::Image;
-	else if (qobject_cast<TexWidget *>(g->activeEnrichment()))
-		wt = EnrichmentDialog::Tex;
-	else if (qobject_cast<EllipseWidget *>(g->activeEnrichment()))
+	FrameWidget *w = g->activeEnrichment();
+	EnrichmentDialog::WidgetType wt = EnrichmentDialog::Text;
+	if (qobject_cast<RectangleWidget *>(w))
+		wt = EnrichmentDialog::Frame;
+	else if (qobject_cast<EllipseWidget *>(w))
 		wt = EnrichmentDialog::Ellipse;
+	else if (qobject_cast<ImageWidget *>(w))
+		wt = EnrichmentDialog::Image;
+	else if (qobject_cast<TexWidget *>(w))
+		wt = EnrichmentDialog::Tex;
 
 	EnrichmentDialog *ed = new EnrichmentDialog(wt, g, this, this);
-	ed->setWidget(g->activeEnrichment());
+	ed->setWidget(w);
 	ed->exec();
 }
 

@@ -303,11 +303,9 @@ Graph* MultiLayer::clickedLayer(Graph* g)
 			continue;
 
 		QPoint pos = gr->mapFromGlobal(QCursor::pos());
-		if (ar.contains(gr->frameGeometry()) && gr->rect().contains(pos)){
+		if ((ar.contains(gr->frameGeometry()) && gr->rect().contains(pos)))
 			return gr;
-		}
 	}
-
 	return g;
 }
 
@@ -329,11 +327,14 @@ void MultiLayer::selectLayerCanvas(Graph* g)
 
 void MultiLayer::setActiveLayer(Graph* g)
 {
-	Graph *ag = clickedLayer(g);
+	/*Graph *ag = clickedLayer(g);
 	if (!ag || active_graph == ag)
+		return;*/
+
+	if (!g || active_graph == g)
 		return;
 
-	active_graph = ag;
+	active_graph = g;
 	active_graph->setFocus();
 
 	deselect();
@@ -347,7 +348,7 @@ void MultiLayer::setActiveLayer(Graph* g)
 		gr->deselect();
 
 		LayerButton *btn = (LayerButton *)buttonsList.at(i);
-		if (gr == ag)
+		if (gr == g)
 			btn->setOn(true);
 		else
 			btn->setOn(false);
