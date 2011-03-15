@@ -182,7 +182,7 @@ void SyntaxHighlighter::highlightBlock(const QString &text)
 
         data->insert(info);
 
-        rightPos = text.indexOf(')', rightPos +1);
+		rightPos = text.indexOf(')', rightPos + 1);
     }
 
     setCurrentBlockUserData(data);
