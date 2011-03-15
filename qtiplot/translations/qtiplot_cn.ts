@@ -15163,7 +15163,7 @@ The following special codes can be used:
         <location filename="../src/plot2D/Graph.cpp" line="1538"/>
         <location filename="../src/plot2D/Graph.cpp" line="1566"/>
         <location filename="../src/plot2D/Graph.cpp" line="1608"/>
-        <location filename="../src/plot2D/Graph.cpp" line="5390"/>
+        <location filename="../src/plot2D/Graph.cpp" line="5391"/>
         <source>QtiPlot - Error</source>
         <translation>QtiPlot - 错误</translation>
     </message>
@@ -15214,7 +15214,7 @@ The following special codes can be used:
     <message>
         <location filename="../src/plot2D/Graph.cpp" line="4510"/>
         <location filename="../src/plot2D/Graph.cpp" line="4514"/>
-        <location filename="../src/plot2D/Graph.cpp" line="5380"/>
+        <location filename="../src/plot2D/Graph.cpp" line="5381"/>
         <source>QtiPlot - Warning</source>
         <translation>QtiPlot - 警告</translation>
     </message>
@@ -15295,12 +15295,12 @@ The following special codes can be used:
         <translation>比例(&amp;S)...</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.cpp" line="5380"/>
+        <location filename="../src/plot2D/Graph.cpp" line="5381"/>
         <source>There are no curves available on this plot!</source>
         <translation>绘图中没有有效曲线!</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.cpp" line="5391"/>
+        <location filename="../src/plot2D/Graph.cpp" line="5392"/>
         <source>There are no curves with more than two points on this plot. Operation aborted!</source>
         <translation>绘图中没有包含多于两个点的曲线。操作中止!</translation>
     </message>
@@ -17611,111 +17611,111 @@ have the same number of rows.</source>
         <translation>移除活动层</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/MultiLayer.cpp" line="476"/>
+        <location filename="../src/plot2D/MultiLayer.cpp" line="477"/>
         <source>QtiPlot - Guess best layout?</source>
         <translation>QtiPlot - 猜测最优布局?</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/MultiLayer.cpp" line="477"/>
+        <location filename="../src/plot2D/MultiLayer.cpp" line="478"/>
         <source>Do you want QtiPlot to rearrange the remaining layers?</source>
         <translation>你希望QtiPlot重排现在的图层吗?</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/MultiLayer.cpp" line="478"/>
+        <location filename="../src/plot2D/MultiLayer.cpp" line="479"/>
         <source>&amp;Yes</source>
         <translation>是(&amp;Y)</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/MultiLayer.cpp" line="478"/>
+        <location filename="../src/plot2D/MultiLayer.cpp" line="479"/>
         <source>&amp;No</source>
         <translation>否(&amp;N)</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/MultiLayer.cpp" line="478"/>
+        <location filename="../src/plot2D/MultiLayer.cpp" line="479"/>
         <source>&amp;Cancel</source>
         <translation>取消(&amp;C)</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/MultiLayer.cpp" line="994"/>
-        <location filename="../src/plot2D/MultiLayer.cpp" line="1022"/>
-        <location filename="../src/plot2D/MultiLayer.cpp" line="1115"/>
+        <location filename="../src/plot2D/MultiLayer.cpp" line="995"/>
+        <location filename="../src/plot2D/MultiLayer.cpp" line="1023"/>
+        <location filename="../src/plot2D/MultiLayer.cpp" line="1116"/>
         <source>QtiPlot - Error</source>
         <translation>QtiPlot - 错误</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/MultiLayer.cpp" line="994"/>
-        <location filename="../src/plot2D/MultiLayer.cpp" line="1115"/>
+        <location filename="../src/plot2D/MultiLayer.cpp" line="995"/>
+        <location filename="../src/plot2D/MultiLayer.cpp" line="1116"/>
         <source>Please provide a valid file name!</source>
         <translation>请提供有效的文件名!</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/MultiLayer.cpp" line="1022"/>
+        <location filename="../src/plot2D/MultiLayer.cpp" line="1023"/>
         <source>File format not handled, operation aborted!</source>
         <translation>无法处理的文件格式,操作中止!</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/MultiLayer.cpp" line="1825"/>
+        <location filename="../src/plot2D/MultiLayer.cpp" line="1832"/>
         <source>kB</source>
         <translation>kB</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/MultiLayer.cpp" line="1867"/>
+        <location filename="../src/plot2D/MultiLayer.cpp" line="1874"/>
         <source>Offset Amount...</source>
         <translation>偏移量...</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/MultiLayer.cpp" line="1871"/>
+        <location filename="../src/plot2D/MultiLayer.cpp" line="1878"/>
         <source>Reverse Order</source>
         <translation>逆序</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/MultiLayer.cpp" line="1875"/>
+        <location filename="../src/plot2D/MultiLayer.cpp" line="1882"/>
         <source>Fill Area...</source>
         <translation>填充区域...</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/MultiLayer.cpp" line="1979"/>
+        <location filename="../src/plot2D/MultiLayer.cpp" line="1986"/>
         <source>Offset Dialog</source>
         <translation>偏移设置窗口</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/MultiLayer.cpp" line="1984"/>
+        <location filename="../src/plot2D/MultiLayer.cpp" line="1991"/>
         <source>Total Y Offset (%)</source>
         <translation>总Y偏移(%)</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/MultiLayer.cpp" line="1990"/>
+        <location filename="../src/plot2D/MultiLayer.cpp" line="1997"/>
         <source>Total X Offset (%)</source>
         <translation>总X偏移(%)</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/MultiLayer.cpp" line="2000"/>
+        <location filename="../src/plot2D/MultiLayer.cpp" line="2007"/>
         <source>&amp;Apply</source>
         <translation>应用(&amp;A)</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/MultiLayer.cpp" line="2003"/>
-        <location filename="../src/plot2D/MultiLayer.cpp" line="2123"/>
+        <location filename="../src/plot2D/MultiLayer.cpp" line="2010"/>
+        <location filename="../src/plot2D/MultiLayer.cpp" line="2130"/>
         <source>&amp;Close</source>
         <translation>关闭(&amp;C)</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/MultiLayer.cpp" line="2094"/>
+        <location filename="../src/plot2D/MultiLayer.cpp" line="2101"/>
         <source>Fill Curves</source>
         <translation>填充曲线</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/MultiLayer.cpp" line="2096"/>
+        <location filename="../src/plot2D/MultiLayer.cpp" line="2103"/>
         <source>Enable Fill</source>
         <translation>启用填充</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/MultiLayer.cpp" line="2100"/>
+        <location filename="../src/plot2D/MultiLayer.cpp" line="2107"/>
         <source>Fill with Color</source>
         <translation>填充色</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/MultiLayer.cpp" line="2104"/>
+        <location filename="../src/plot2D/MultiLayer.cpp" line="2111"/>
         <source>Side Lines</source>
         <translation>边线</translation>
     </message>

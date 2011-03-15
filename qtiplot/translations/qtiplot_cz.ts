@@ -718,7 +718,7 @@
     </message>
     <message>
         <source>Fit &amp;Wizard...</source>
-        <translation>&amp;Průvodce přízpůsobením křivek...</translation>
+        <translation>&amp;Průvodce umístěním křivek...</translation>
     </message>
     <message>
         <source>Go to Colum&amp;n...</source>
@@ -778,7 +778,7 @@
     </message>
     <message>
         <source>&amp;Autocorrelate</source>
-        <translation>&amp;Automaticky dát do vzájemného vztahu</translation>
+        <translation>Najít vztah &amp;automaticky</translation>
     </message>
     <message>
         <source>Sho&amp;w All Columns</source>
@@ -1686,7 +1686,7 @@ Varování. Tento krok přeuspořádá stávající vrstvy!</translation>
     </message>
     <message>
         <source>Fit Slop&amp;e</source>
-        <translation>Umístit &amp;sklon</translation>
+        <translation>Upravit &amp;sklon</translation>
     </message>
     <message>
         <source>Status</source>
@@ -1714,7 +1714,7 @@ Varování. Tento krok přeuspořádá stávající vrstvy!</translation>
     </message>
     <message>
         <source>&amp;Convolute</source>
-        <translation>&amp;Složit</translation>
+        <translation>&amp;Provést konvoluci</translation>
     </message>
     <message>
         <source>Window</source>
@@ -1858,7 +1858,7 @@ Varování. Tento krok přeuspořádá stávající vrstvy!</translation>
     </message>
     <message>
         <source>Integr&amp;ate Function...</source>
-        <translation>Začle&amp;nit funkci...</translation>
+        <translation>Inte&amp;grovat funkci...</translation>
     </message>
     <message>
         <source>Set column as X</source>
@@ -2088,7 +2088,7 @@ Jste si jist, že chcete pokračovat?</translation>
     </message>
     <message>
         <source>&amp;Deconvolute</source>
-        <translation>&amp;Rozložit</translation>
+        <translation>&amp;Provést dekonvoluci</translation>
     </message>
     <message>
         <source>Leaf unit</source>
@@ -2326,7 +2326,7 @@ První představuje funkci signálu a druhý funkci odpovědi!</translation>
     </message>
     <message>
         <source>&amp;Scripting</source>
-        <translation>&amp;Skriptování</translation>
+        <translation>&amp;Skripty</translation>
     </message>
     <message>
         <source>&amp;FFT Filter...</source>
@@ -2346,7 +2346,7 @@ První představuje funkci signálu a druhý funkci odpovědi!</translation>
     </message>
     <message>
         <source>New &amp;Note</source>
-        <translation>Novou &amp;poznámku</translation>
+        <translation>Nová &amp;poznámka</translation>
     </message>
     <message>
         <source>&amp;Worksheet</source>
@@ -2448,7 +2448,7 @@ Různé části tohoto souboru se nemusí zobrazovat tak, jak se očekává.</tr
     </message>
     <message>
         <source>Co&amp;rrelate</source>
-        <translation>Dát do &amp;vzájemného vztahu</translation>
+        <translation>&amp;Najít vztah (korelovat)</translation>
     </message>
     <message>
         <source>&amp;Vectors &amp;XYXY</source>
@@ -2688,7 +2688,7 @@ Různé části tohoto souboru se nemusí zobrazovat tak, jak se očekává.</tr
     </message>
     <message>
         <source>&amp;Integrate</source>
-        <translation>&amp;Začlenit</translation>
+        <translation>&amp;Integrovat</translation>
     </message>
     <message>
         <source>&amp;Default</source>
@@ -3128,7 +3128,7 @@ Různé části tohoto souboru se nemusí zobrazovat tak, jak se očekává.</tr
     </message>
     <message>
         <source>Load Custom User &amp;Interface...</source>
-        <translation></translation>
+        <translation>Nahrát vlastní uživatelské &amp;rozhraní...</translation>
     </message>
     <message>
         <source>Fit &amp;Multi-peak</source>
@@ -3364,7 +3364,7 @@ Různé části tohoto souboru se nemusí zobrazovat tak, jak se očekává.</tr
     </message>
     <message>
         <source>&amp;Lowess...</source>
-        <translation></translation>
+        <translation>&amp;Místní regrese (lineární)...</translation>
     </message>
     <message>
         <source>Choose a directory to export the graphs to</source>
@@ -3372,7 +3372,7 @@ Různé části tohoto souboru se nemusí zobrazovat tak, jak se očekává.</tr
     </message>
     <message>
         <source>Add &amp;Custom Script Action...</source>
-        <translation>Přidat &amp;akci vlastního skriptu...</translation>
+        <translation>Přidat &amp;činnost vlastního skriptu...</translation>
     </message>
     <message>
         <source>E&amp;xecute</source>
@@ -3692,7 +3692,7 @@ Různé části tohoto souboru se nemusí zobrazovat tak, jak se očekává.</tr
     </message>
     <message>
         <source>&amp;Horizontal Steps</source>
-        <translation>&amp;Vodorovné kroky</translation>
+        <translation>&amp;Vodorovné stupně</translation>
     </message>
     <message>
         <source>&amp;Delete Window</source>
@@ -5211,7 +5211,7 @@ Různé části tohoto souboru se nemusí zobrazovat tak, jak se očekává.</tr
     </message>
     <message>
         <source> Vertical steps</source>
-        <translation>Svislé kroky</translation>
+        <translation> Svislé stupně</translation>
     </message>
     <message>
         <source>Show &amp;Title</source>
@@ -5451,7 +5451,7 @@ Různé části tohoto souboru se nemusí zobrazovat tak, jak se očekává.</tr
     </message>
     <message>
         <source>Ask before over&amp;writing files</source>
-        <translation></translation>
+        <translation>Zeptat se před &amp;přepsáním souborů</translation>
     </message>
     <message>
         <source>Language</source>
@@ -5619,7 +5619,7 @@ Různé části tohoto souboru se nemusí zobrazovat tak, jak se očekává.</tr
     </message>
     <message>
         <source>mu&amp;Parser uses C locale settings</source>
-        <translation></translation>
+        <translation>mu&amp;Parser používá formát čísel C</translation>
     </message>
     <message>
         <source>Default curve style</source>
@@ -5723,7 +5723,7 @@ Různé části tohoto souboru se nemusí zobrazovat tak, jak se očekává.</tr
     </message>
     <message>
         <source> Horizontal steps</source>
-        <translation> Vodorovné kroky</translation>
+        <translation> Vodorovné stupně</translation>
     </message>
     <message>
         <source>&amp;Text Font</source>
@@ -6233,7 +6233,7 @@ K tomu lze použít následujících zvláštních kódů:
     </message>
     <message>
         <source> Vertical steps</source>
-        <translation> Svislé kroky</translation>
+        <translation> Svislé stupně</translation>
     </message>
     <message>
         <source>Contour - Color Fill</source>
@@ -6321,7 +6321,7 @@ K tomu lze použít následujících zvláštních kódů:
     </message>
     <message>
         <source> Horizontal steps</source>
-        <translation> Vodorovné kroky</translation>
+        <translation> Vodorovné stupně</translation>
     </message>
     <message>
         <source>Axes</source>
@@ -9464,7 +9464,7 @@ K tomu lze použít následujících zvláštních kódů:
     </message>
     <message>
         <source>&amp;Integrate</source>
-        <translation>&amp;Začlenit</translation>
+        <translation>&amp;Integrovat</translation>
     </message>
     <message>
         <source>Order (1 - 5, 1 = Trapezoidal Rule)</source>
@@ -11681,7 +11681,7 @@ K tomu lze použít následujících zvláštních kódů:
     </message>
     <message>
         <source>Vertical Steps</source>
-        <translation>Svislé kroky</translation>
+        <translation>Svislé stupně</translation>
     </message>
     <message>
         <source>Perc 25, 75</source>
@@ -12213,7 +12213,7 @@ K tomu lze použít následujících zvláštních kódů:
     </message>
     <message>
         <source>Horizontal Steps</source>
-        <translation>Vodorovné kroky</translation>
+        <translation>Vodorovné stupně</translation>
     </message>
     <message>
         <source>Pie Geometry</source>
@@ -14170,7 +14170,7 @@ pokud e1 pak e2 jinak e3.</translation>
     </message>
     <message>
         <source>Iterations</source>
-        <translation></translation>
+        <translation>Iterace (opakování)</translation>
     </message>
     <message>
         <source>&amp;Smooth</source>
@@ -14197,7 +14197,7 @@ pokud e1 pak e2 jinak e3.</translation>
     </message>
     <message>
         <source>FFT smoothing</source>
-        <translation>FFT vyhlazování</translation>
+        <translation>Vyhlazování FFT</translation>
     </message>
     <message>
         <source>Savitzky-Golay smoothing</source>
@@ -14205,7 +14205,7 @@ pokud e1 pak e2 jinak e3.</translation>
     </message>
     <message>
         <source>The number of iterations must be at least 1!</source>
-        <translation></translation>
+        <translation>Počet iterací (opakování) musí být alespoň 1!</translation>
     </message>
     <message>
         <source>average smoothing</source>
@@ -14229,11 +14229,11 @@ pokud e1 pak e2 jinak e3.</translation>
     </message>
     <message>
         <source>Lowess smoothing with f=%1 and %2 iterations</source>
-        <translation></translation>
+        <translation>Vyhlazování s pomocí místní regrese s f=%1 a %2 iteracemi (opakováními)</translation>
     </message>
     <message>
         <source>Setting Lowess parameter is only available for Lowess smooth filters! Ignored option!</source>
-        <translation></translation>
+        <translation>Nastavení parametru pro místní regresi je dostupné pouze pro tento způsob vyrovnání místní regrese. Nastavení se přehlíží!</translation>
     </message>
     <message>
         <source>The number of points must be positive!</source>
@@ -14241,11 +14241,11 @@ pokud e1 pak e2 jinak e3.</translation>
     </message>
     <message>
         <source>The parameter f must be between 0 and 1!</source>
-        <translation></translation>
+        <translation>Parametr f musí být mezi 0 a 1!</translation>
     </message>
     <message>
         <source>Unknown smooth filter. Valid values are: 1 - Savitky-Golay, 2 - FFT, 3 - Moving Window Average, 4 - Lowess.</source>
-        <translation></translation>
+        <translation>Neznámý vyhlazovací filtr. Platnými hodnotami jsou: 1 - Savitky-Golay, 2 - FFT, 3 - Klouzavý průměr, 4 - Místní regrese.</translation>
     </message>
     <message>
         <source>Setting polynomial order is only available for Savitzky-Golay smooth filters! Ignored option!</source>
