@@ -49,7 +49,7 @@ public:
 public slots:
 	void setGraph(Graph *g);
 	void smooth();
-	void activateCurve(int curveNIndex);
+	void activateCurve(const QString&);
 
 private:
 	Graph *graph;

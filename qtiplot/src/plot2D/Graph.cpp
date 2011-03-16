@@ -1449,6 +1449,21 @@ QStringList Graph::analysableCurvesList()
 	return cList;
 }
 
+QString Graph::curveRange(QwtPlotCurve *c)
+{
+	if (!c)
+		return QString();
+	PlotCurve *pc = (PlotCurve *)c;
+	if (pc->type() == ErrorBars)
+		return QString();
+
+	if (pc->type() != Function){
+		DataCurve *dc = (DataCurve*)c;
+		return dc->title().text() + " [" + QString::number(dc->startRow() + 1) + ":" + QString::number(dc->endRow() + 1) + "]";
+	}
+	return c->title().text();
+}
+
 QStringList Graph::curveNamesList()
 {
 	QStringList cList;

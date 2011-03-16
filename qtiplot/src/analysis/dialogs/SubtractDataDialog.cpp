@@ -197,7 +197,8 @@ void SubtractDataDialog::interpolate()
 	if (!graph)
 		return;
 
-	DataCurve *c = graph->dataCurve(boxInputName->currentIndex());
+	QString name = boxInputName->currentText();
+	DataCurve *c = graph->dataCurve(graph->curveIndex(name.left(name.indexOf(" ["))));
 	if (!c)
 		return;
 
@@ -331,7 +332,7 @@ void SubtractDataDialog::setGraph(Graph *g)
 	graph = g;
 	boxInputName->addItems(g->analysableCurvesList());
 	if (g->rangeSelectorsEnabled())
-		boxInputName->setCurrentIndex(g->curveIndex(g->rangeSelectorTool()->selectedCurve()));
+		boxInputName->setCurrentIndex(boxInputName->findText(g->curveRange(g->rangeSelectorTool()->selectedCurve())));
 
 	connect (graph, SIGNAL(destroyed()), this, SLOT(close()));
 }

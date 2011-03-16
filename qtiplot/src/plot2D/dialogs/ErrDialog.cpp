@@ -52,8 +52,8 @@ ErrDialog::ErrDialog( QWidget* parent, Qt::WFlags fl )
     : QDialog( parent, fl )
 {
 	setAttribute(Qt::WA_DeleteOnClose);
-    setFocusPolicy( Qt::StrongFocus );
-    setSizeGripEnabled( true );
+	setFocusPolicy( Qt::StrongFocus );
+	setSizeGripEnabled( true );
 
 	QVBoxLayout *vbox1 = new QVBoxLayout();
 	vbox1->setSpacing (5);
@@ -61,13 +61,13 @@ ErrDialog::ErrDialog( QWidget* parent, Qt::WFlags fl )
 	QHBoxLayout *hbox1 = new QHBoxLayout();
 	vbox1->addLayout(hbox1);
 
-    textLabel1 = new QLabel();
+	textLabel1 = new QLabel();
 	hbox1->addWidget(textLabel1);
 
-    nameLabel = new QComboBox();
-	hbox1->addWidget(nameLabel);
+	nameLabel = new QComboBox();
+	hbox1->addWidget(nameLabel, 1);
 
-    groupBox1 = new QGroupBox(QString(tr("Source of errors")));
+	groupBox1 = new QGroupBox(tr("Source of errors"));
 	QGridLayout * gridLayout = new QGridLayout(groupBox1);
 	vbox1->addWidget(groupBox1);
 
@@ -75,73 +75,76 @@ ErrDialog::ErrDialog( QWidget* parent, Qt::WFlags fl )
 	buttonGroup1->setExclusive( true );
 
 	columnBox = new QRadioButton();
-    columnBox->setChecked( true );
+	columnBox->setChecked( true );
 	buttonGroup1->addButton(columnBox);
 	gridLayout->addWidget(columnBox, 0, 0 );
 
 	colNamesBox = new QComboBox();
-    tableNamesBox = new QComboBox();
+	tableNamesBox = new QComboBox();
 
-    QHBoxLayout * comboBoxes = new QHBoxLayout();
+	QHBoxLayout * comboBoxes = new QHBoxLayout();
 	comboBoxes->addWidget(tableNamesBox);
 	comboBoxes->addWidget(colNamesBox);
 
 	gridLayout->addLayout(comboBoxes, 0, 1);
 
-    percentBox = new QRadioButton();
+	percentBox = new QRadioButton();
 	buttonGroup1->addButton(percentBox);
 	gridLayout->addWidget(percentBox, 1, 0 );
 
-    valueBox = new DoubleSpinBox();
-    valueBox->setMinimum(0.0);
-    valueBox->setLocale(QLocale());
+	valueBox = new DoubleSpinBox();
+	valueBox->setMinimum(0.0);
+	valueBox->setLocale(QLocale());
 	valueBox->setValue(5);
-    valueBox->setAlignment( Qt::AlignHCenter );
+	valueBox->setAlignment( Qt::AlignHCenter );
 	valueBox->setEnabled(false);
 	gridLayout->addWidget(valueBox, 1, 1);
 
 	standardBox = new QRadioButton();
 	buttonGroup1->addButton(standardBox);
 	gridLayout->addWidget(standardBox, 2, 0 );
+	gridLayout->setColStretch(1, 1);
 
-	groupBox3 = new QGroupBox(QString());
+	groupBox3 = new QGroupBox();
 	vbox1->addWidget(groupBox3);
+	vbox1->addStretch();
 	QHBoxLayout * hbox2 = new QHBoxLayout(groupBox3);
 
 	buttonGroup2 = new QButtonGroup();
-	buttonGroup2->setExclusive( true );
+	buttonGroup2->setExclusive(true);
 
-    xErrBox = new QRadioButton();
+	xErrBox = new QRadioButton();
 	buttonGroup2->addButton(xErrBox);
-	hbox2->addWidget(xErrBox );
+	hbox2->addWidget(xErrBox);
 
-    yErrBox = new QRadioButton();
+	yErrBox = new QRadioButton();
 	buttonGroup2->addButton(yErrBox);
-	hbox2->addWidget(yErrBox );
-    yErrBox->setChecked( true );
+	hbox2->addWidget(yErrBox);
+	yErrBox->setChecked(true);
+	hbox2->addStretch();
 
 	QVBoxLayout * vbox2 = new QVBoxLayout();
 	buttonAdd = new QPushButton();
-    buttonAdd->setDefault( true );
+	buttonAdd->setDefault( true );
 	vbox2->addWidget(buttonAdd);
 
-    buttonCancel = new QPushButton();
+	buttonCancel = new QPushButton();
 	vbox2->addWidget(buttonCancel);
 
-	vbox2->addStretch(1);
+	vbox2->addStretch();
 
 	QHBoxLayout * hlayout1 = new QHBoxLayout(this);
 	hlayout1->addLayout(vbox1);
-    hlayout1->addLayout(vbox2);
+	hlayout1->addLayout(vbox2);
 
-    languageChange();
+	languageChange();
 
-  // signals and slots connections
+	// signals and slots connections
 	connect( buttonAdd, SIGNAL( clicked() ), this, SLOT( add() ) );
-    connect( buttonCancel, SIGNAL( clicked() ), this, SLOT( reject() ) );
+	connect( buttonCancel, SIGNAL( clicked() ), this, SLOT( reject() ) );
 	connect( percentBox, SIGNAL( toggled(bool) ), valueBox, SLOT( setEnabled(bool) ) );
 	connect( columnBox, SIGNAL( toggled(bool) ), tableNamesBox, SLOT( setEnabled(bool) ) );
- 	connect( columnBox, SIGNAL( toggled(bool) ), colNamesBox, SLOT( setEnabled(bool) ) );
+	connect( columnBox, SIGNAL( toggled(bool) ), colNamesBox, SLOT( setEnabled(bool) ) );
 	connect( tableNamesBox, SIGNAL( activated(int) ), this, SLOT( selectSrcTable(int) ));
 }
 
@@ -181,12 +184,16 @@ void ErrDialog::add()
 	Graph* g = plot->activeLayer();
 	if (!g)
 		return;
-	DataCurve *curve = g->dataCurve(nameLabel->currentIndex());
+
+	QString name = nameLabel->currentText();
+	name = name.left(name.indexOf(" ["));
+	DataCurve *curve = g->dataCurve(g->curveIndex(name));
 	if (!curve){
 		QMessageBox::critical(app, tr("QtiPlot - Error"),
 		tr("This feature is not available for user defined function curves!"));
 		return;
 	}
+
 	if (curve->xColumnName().isEmpty())
 		return;
 
@@ -208,7 +215,6 @@ void ErrDialog::add()
 		}
 		er = g->addErrorBars(curve, errTable, errColumnName, direction);
 	} else {
-		QString name = nameLabel->currentText();
 		Table *t = app->table(name);
 		if (!t)
 			return;

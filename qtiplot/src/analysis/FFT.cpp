@@ -258,14 +258,14 @@ void FFT::output()
 
 void FFT::outputGraphs()
 {
-	if (!d_output_graph)
-		createOutputGraph();
+	createOutputGraph();
 
 	MultiLayer *ml = d_output_graph->multiLayer();
 
 	d_output_graph->setTitle(QString::null);
 	d_output_graph->setYAxisTitle(tr("Angle (deg)"));
 	d_output_graph->enableAxis(QwtPlot::xTop, true);
+	d_output_graph->enableAxis(QwtPlot::yRight, true);
 	if (!d_inverse)
 		d_output_graph->setAxisTitle(QwtPlot::xTop, tr("Frequency") + " (" + tr("Hz") + ")");
 	else

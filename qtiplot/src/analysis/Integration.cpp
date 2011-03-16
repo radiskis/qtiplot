@@ -104,7 +104,7 @@ void Integration::init()
 {
 	setObjectName(tr("Integration"));
 	d_integrand = DataSet;
-    d_sort_data = true;
+	d_sort_data = true;
 }
 
 double Integration::trapez()

@@ -225,7 +225,8 @@ void BaselineDialog::createBaseline()
 	disableBaselineTool();
 
 	if (btnAutomatic->isChecked()){
-		Interpolation *i = new Interpolation(app, graph->curve(boxInputName->currentIndex()), boxInterpolationMethod->currentIndex());
+		QString name = boxInputName->currentText();
+		Interpolation *i = new Interpolation(app, graph->curve(name.left(name.indexOf(" ["))), boxInterpolationMethod->currentIndex());
 		i->setOutputPoints(boxPoints->value());
 		i->run();
 		delete i;
@@ -234,7 +235,8 @@ void BaselineDialog::createBaseline()
 	} else if (btnEquation->isChecked()){
 		double start = graph->axisScaleDiv(QwtPlot::xBottom)->lowerBound();
 		double end = graph->axisScaleDiv(QwtPlot::xBottom)->upperBound();
-		DataCurve *c = graph->dataCurve(boxInputName->currentIndex());
+		QString name = boxInputName->currentText();
+		DataCurve *c = graph->dataCurve(graph->curveIndex(name.left(name.indexOf(" ["))));
 		if (c){
 			start = c->minXValue();
 			end = c->maxXValue();
@@ -279,7 +281,8 @@ void BaselineDialog::subtractBaseline(bool add)
 	if (!graph)
 		return;
 
-	DataCurve *c = graph->dataCurve(boxInputName->currentIndex());
+	QString name = boxInputName->currentText();
+	DataCurve *c = graph->dataCurve(graph->curveIndex(name.left(name.indexOf(" ["))));
 	if (!c)
 		return;
 
@@ -404,7 +407,7 @@ void BaselineDialog::setGraph(Graph *g)
 
 	boxInputName->addItems(g->analysableCurvesList());
 	if (g->rangeSelectorsEnabled())
-		boxInputName->setCurrentIndex(g->curveIndex(g->rangeSelectorTool()->selectedCurve()));
+		boxInputName->setCurrentIndex(boxInputName->findText(g->curveRange(g->rangeSelectorTool()->selectedCurve())));
 
 	connect (graph, SIGNAL(destroyed()), this, SLOT(close()));
 	connect (graph, SIGNAL(modifiedGraph()), this, SLOT(updateGraphCurves()));

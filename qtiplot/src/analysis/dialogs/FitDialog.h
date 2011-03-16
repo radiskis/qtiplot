@@ -87,7 +87,7 @@ private slots:
 	void saveUserFunction();
 	void removeUserFunction();
 	void setGraph(Graph *g);
-	void activateCurve(int curveIndex);
+	void activateCurve(const QString&);
 	void chooseFolder();
 	void changeDataRange();
 	void selectSrcTable(int tabnr);

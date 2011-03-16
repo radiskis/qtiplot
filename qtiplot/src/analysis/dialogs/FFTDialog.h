@@ -55,7 +55,6 @@ public slots:
 	void setTable(Table *t);
 	void setMatrix(Matrix *m);
 	void activateCurve(const QString& curveName);
-	void activateCurve(int curveIndex);
 	void accept();
 
 private:

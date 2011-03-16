@@ -80,10 +80,7 @@ FFTDialog::FFTDialog(int type, QWidget* parent, Qt::WFlags fl )
 
 	if (d_type != onMatrix){
 		boxName = new QComboBox();
-		if (d_type == onTable)
-			connect(boxName, SIGNAL(activated(const QString&)), this, SLOT(activateCurve(const QString&)));
-		else if (d_type == onGraph)
-			connect(boxName, SIGNAL(activated(int)), this, SLOT(activateCurve(int)));
+		connect(boxName, SIGNAL(activated(const QString&)), this, SLOT(activateCurve(const QString&)));
 		gl1->addWidget(boxName, 0, 1);
 		setFocusProxy(boxName);
 	}
@@ -157,9 +154,10 @@ void FFTDialog::accept()
 
 	ApplicationWindow *app = (ApplicationWindow *)parent();
     FFT *fft = NULL;
-	if (graph)
-		fft = new FFT(app, graph->curve(boxName->currentIndex()));
-	else if (d_table){
+	if (graph){
+		QString name = boxName->currentText();
+		fft = new FFT(app, graph->curve(name.left(name.indexOf(" ["))));
+	} else if (d_table){
 		if (boxReal->currentText().isEmpty()){
 			QMessageBox::critical(this, tr("QtiPlot - Error"), tr("Please choose a column for the real part of the data!"));
 			boxReal->setFocus();
@@ -183,27 +181,20 @@ void FFTDialog::setGraph(Graph *g)
 
 	graph = g;
 	boxName->insertStringList(g->analysableCurvesList());
-	activateCurve(boxName->currentIndex());
+	activateCurve(boxName->currentText());
 }
 
-void FFTDialog::activateCurve(int curveIndex)
+void FFTDialog::activateCurve(const QString& s)
 {
-	if (!graph)
-		return;
-
-	PlotCurve *c = graph->curve(curveIndex);
-	if (!c)
-		return;
-	boxSampling->setValue(c->x(1) - c->x(0));
-}
-
-void FFTDialog::activateCurve(const QString& curveName)
-{
-	if (!d_table)
-		return;
-
-	int col = d_table->colIndex(curveName);
-	boxSampling->setValue(d_table->cell(1, col) - d_table->cell(0, col));
+	if (d_table){
+		int col = d_table->colIndex(s);
+		boxSampling->setValue(d_table->cell(1, col) - d_table->cell(0, col));
+	} else if (graph){
+		PlotCurve *c = graph->curve(s.left(s.indexOf(" [")));
+		if (!c)
+			return;
+		boxSampling->setValue(c->x(1) - c->x(0));
+	}
 }
 
 void FFTDialog::setTable(Table *t)

@@ -304,6 +304,8 @@ class Graph: public QwtPlot
 		PlotCurve* curve(const QString &title){return curve(curveIndex(title));};
 		//! get curve title string by inde (convenience function for scripts)
 		QString curveTitle(int index);
+		//! returns the curve range information as a string: "curve_name [start:end]"
+		QString curveRange(QwtPlotCurve *c);
 
 		//! Returns the names of all the curves suitable for data analysis, as a string list. The list excludes error bars and spectrograms.
 		QStringList analysableCurvesList();

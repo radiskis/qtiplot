@@ -60,7 +60,7 @@ ExpDecayDialog::ExpDecayDialog(int type, QWidget* parent, Qt::WFlags fl )
 	gl1->addWidget(new QLabel(tr("Exponential Fit of")), 0, 0);
 
 	boxName = new QComboBox();
-	connect( boxName, SIGNAL( activated(int) ), this, SLOT( activateCurve(int) ) );
+	connect(boxName, SIGNAL(activated(const QString&)), this, SLOT(activateCurve(const QString&)));
 	gl1->addWidget(boxName, 0, 1);
 
 	if (type < 0)
@@ -165,17 +165,17 @@ void ExpDecayDialog::setGraph(Graph *g)
 	boxName->addItems(graph->analysableCurvesList());
 
 	if (g->rangeSelectorsEnabled())
-		boxName->setCurrentIndex(g->curveIndex(g->rangeSelectorTool()->selectedCurve()));
+		boxName->setCurrentIndex(boxName->findText(g->curveRange(g->rangeSelectorTool()->selectedCurve())));
 
-	activateCurve(boxName->currentIndex());
+	activateCurve(boxName->currentText());
 
 	connect (graph, SIGNAL(destroyed()), this, SLOT(close()));
 	connect (graph, SIGNAL(dataRangeChanged()), this, SLOT(changeDataRange()));
 }
 
-void ExpDecayDialog::activateCurve(int curveIndex)
+void ExpDecayDialog::activateCurve(const QString& s)
 {
-	PlotCurve *c = graph->curve(curveIndex);
+	PlotCurve *c = graph->curve(s.left(s.indexOf(" [")));
 	if (!c)
 		return;
 
@@ -202,7 +202,7 @@ void ExpDecayDialog::changeDataRange()
 void ExpDecayDialog::fit()
 {
 	QString curve = boxName->currentText();
-	PlotCurve *c = graph->curve(boxName->currentIndex());
+	PlotCurve *c = graph->curve(curve.left(curve.indexOf(" [")));
 	QStringList curvesList = graph->analysableCurvesList();
 	if (!c || !curvesList.contains(curve)){
 		QMessageBox::critical(this,tr("QtiPlot - Warning"),

@@ -52,7 +52,7 @@ public slots:
 	void setGraph(Graph *g);
 
 private slots:
-	void activateCurve(int curveIndex);
+	void activateCurve(const QString&);
 	void changeDataRange();
 
 private:
