@@ -105,22 +105,23 @@ InterpolationDialog::InterpolationDialog( QWidget* parent, Qt::WFlags fl )
     hb->addWidget(gb1, 1);
     hb->addLayout(vl);
 
-	connect( boxName, SIGNAL(activated(int)), this, SLOT( activateCurve(int)));
-	connect( buttonFit, SIGNAL( clicked() ), this, SLOT( interpolate() ) );
-	connect( buttonCancel, SIGNAL( clicked() ), this, SLOT( close() ) );
+	connect(boxName, SIGNAL(activated(const QString&)), this, SLOT(activateCurve(const QString&)));
+	connect(buttonFit, SIGNAL(clicked()), this, SLOT(interpolate()));
+	connect(buttonCancel, SIGNAL(clicked()), this, SLOT(close()));
 }
 
 void InterpolationDialog::interpolate()
 {
-	QString curve = boxName->currentText();
+	QString curveName = boxName->currentText();
 	QStringList curvesList = graph->analysableCurvesList();
-	if (!curvesList.contains(curve)){
+	if (!curvesList.contains(curveName)){
 		QMessageBox::critical(this,tr("QtiPlot - Warning"),
-		tr("The curve <b> %1 </b> doesn't exist anymore! Operation aborted!").arg(curve));
+		tr("The curve <b> %1 </b> doesn't exist anymore! Operation aborted!").arg(curveName));
 		boxName->clear();
 		boxName->addItems(curvesList);
 		return;
 	}
+	curveName = curveName.left(curveName.indexOf(" ["));
 
 	double from = boxStart->value();
 	double to = boxEnd->value();
@@ -130,7 +131,7 @@ void InterpolationDialog::interpolate()
 		return;
 	}
 
-	Interpolation *i = new Interpolation((ApplicationWindow *)parent(), (QwtPlotCurve *)graph->curve(boxName->currentIndex()), from, to, boxMethod->currentIndex());
+	Interpolation *i = new Interpolation((ApplicationWindow *)parent(), (QwtPlotCurve *)graph->curve(curveName), from, to, boxMethod->currentIndex());
 	i->setOutputPoints(boxPoints->value());
 	i->setColor(boxColor->color());
 	i->run();
@@ -146,17 +147,17 @@ void InterpolationDialog::setGraph(Graph *g)
 	boxName->addItems(g->analysableCurvesList());
 
 	if (g->rangeSelectorsEnabled())
-		boxName->setCurrentIndex(g->curveIndex(g->rangeSelectorTool()->selectedCurve()));
+		boxName->setCurrentIndex(boxName->findText(g->curveRange(g->rangeSelectorTool()->selectedCurve())));
 
-	activateCurve(boxName->currentIndex());
+	activateCurve(boxName->currentText());
 
 	connect (graph, SIGNAL(destroyed()), this, SLOT(close()));
 	connect (graph, SIGNAL(dataRangeChanged()), this, SLOT(changeDataRange()));
 };
 
-void InterpolationDialog::activateCurve(int curveIndex)
+void InterpolationDialog::activateCurve(const QString& s)
 {
-	QwtPlotCurve *c = (QwtPlotCurve *)graph->curve(curveIndex);
+	QwtPlotCurve *c = (QwtPlotCurve *)graph->curve(s.left(s.indexOf(" [")));
 	if (!c)
 		return;
 
@@ -172,12 +173,12 @@ void InterpolationDialog::activateCurve(int curveIndex)
 
 void InterpolationDialog::changeDataRange()
 {
-ApplicationWindow *app = (ApplicationWindow *)parent();
-if(!app)
-    return;
+	ApplicationWindow *app = (ApplicationWindow *)parent();
+	if(!app)
+		return;
 
-double start = graph->selectedXStartValue();
-double end = graph->selectedXEndValue();
-boxStart->setValue(QMIN(start, end));
-boxEnd->setValue(QMAX(start, end));
+	double start = graph->selectedXStartValue();
+	double end = graph->selectedXEndValue();
+	boxStart->setValue(QMIN(start, end));
+	boxEnd->setValue(QMAX(start, end));
 }

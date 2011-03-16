@@ -50,7 +50,7 @@ public:
 public slots:
 	void fit();
 	void setGraph(Graph *g);
-	void activateCurve(int curveIndex);
+	void activateCurve(const QString&);
 	void changeDataRange();
 
 private:

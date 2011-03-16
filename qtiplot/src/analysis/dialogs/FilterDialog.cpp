@@ -130,7 +130,9 @@ void FilterDialog::filter()
 		}
 	}
 
-	FFTFilter *f = new FFTFilter((ApplicationWindow *)parent(), (QwtPlotCurve *)graph->curve(boxName->currentIndex()), filter_type);
+	QString name = boxName->currentText();
+	name = name.left(name.indexOf(" ["));
+	FFTFilter *f = new FFTFilter((ApplicationWindow *)parent(), (QwtPlotCurve *)graph->curve(name), filter_type);
 	if (filter_type == FFTFilter::BandPass){
     	f->setBand(from, to);
     	f->enableOffset(boxOffset->isChecked());

@@ -112,7 +112,7 @@ PolynomFitDialog::PolynomFitDialog( QWidget* parent, Qt::WFlags fl )
 
 	connect( buttonFit, SIGNAL( clicked() ), this, SLOT( fit() ) );
 	connect( buttonCancel, SIGNAL( clicked() ), this, SLOT( close() ) );
-	connect( boxName, SIGNAL( activated(int) ), this, SLOT(activateCurve(int)));
+	connect( boxName, SIGNAL( activated(const QString &) ), this, SLOT(activateCurve(const QString &)));
 }
 
 void PolynomFitDialog::fit()
@@ -127,9 +127,11 @@ void PolynomFitDialog::fit()
 		return;
 	}
 
+	curveName = curveName.left(curveName.indexOf(" ["));
+
 	ApplicationWindow *app = (ApplicationWindow *)this->parent();
     PolynomialFit *fitter = new PolynomialFit(app, graph, boxOrder->value(), boxShowFormula->isChecked());
-	if (fitter->setDataFromCurve((QwtPlotCurve *)graph->curve(boxName->currentIndex()), boxStart->value(), boxEnd->value())){
+	if (fitter->setDataFromCurve((QwtPlotCurve *)graph->curve(curveName), boxStart->value(), boxEnd->value())){
 		fitter->setColor(boxColor->color());
         fitter->setOutputPrecision(app->fit_output_precision);
 		fitter->generateFunction(app->generateUniformFitPoints, app->fitPoints);
@@ -147,23 +149,23 @@ void PolynomFitDialog::setGraph(Graph *g)
 	boxName->addItems (g->analysableCurvesList());
 
 	if (g->rangeSelectorsEnabled())
-		boxName->setCurrentIndex(g->curveIndex(g->rangeSelectorTool()->selectedCurve()));
+		boxName->setCurrentIndex(boxName->findText(g->curveRange(g->rangeSelectorTool()->selectedCurve())));
 
-	activateCurve(boxName->currentIndex());
+	activateCurve(boxName->currentText());
 
 	connect (graph, SIGNAL(destroyed()), this, SLOT(close()));
 	connect (graph, SIGNAL(dataRangeChanged()), this, SLOT(changeDataRange()));
-};
+}
 
-void PolynomFitDialog::activateCurve(int curveIndex)
+void PolynomFitDialog::activateCurve(const QString& s)
 {
 	double start, end;
-	int n_points = graph->range((QwtPlotCurve *)graph->curve(curveIndex), &start, &end);
+	int n_points = graph->range((QwtPlotCurve *)graph->curve(s.left(s.indexOf(" ["))), &start, &end);
 
 	boxStart->setValue(start);
 	boxEnd->setValue(end);
 	boxPoints->setValue(QMAX(n_points, 100));
-};
+}
 
 void PolynomFitDialog::changeDataRange()
 {

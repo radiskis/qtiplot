@@ -47,24 +47,23 @@
 SmoothCurveDialog::SmoothCurveDialog(int method, QWidget* parent, Qt::WFlags fl )
     : QDialog( parent, fl ), smooth_method(method)
 {
-    setObjectName( "SmoothCurveDialog" );
+	setObjectName( "SmoothCurveDialog" );
 	setWindowTitle(tr("QtiPlot - Smoothing Options"));
 	setSizeGripEnabled( true );
 	setAttribute(Qt::WA_DeleteOnClose);
 
-    QGroupBox *gb1 = new QGroupBox();
-    QGridLayout *gl1 = new QGridLayout(gb1);
+	QGroupBox *gb1 = new QGroupBox();
+	QGridLayout *gl1 = new QGridLayout(gb1);
 	gl1->addWidget(new QLabel(tr("Curve")), 0, 0);
 
-    boxName = new QComboBox();
+	boxName = new QComboBox();
 	gl1->addWidget(boxName, 0, 1);
 
 	boxColor = new ColorButton();
 	boxColor->setColor(Qt::red);
 
-	if (method == SmoothFilter::SavitzkyGolay)
-		{
-        gl1->addWidget(new QLabel(tr("Polynomial Order")), 1, 0);
+	if (method == SmoothFilter::SavitzkyGolay){
+		gl1->addWidget(new QLabel(tr("Polynomial Order")), 1, 0);
 		boxOrder = new QSpinBox();
 		boxOrder->setRange(0, 9);
 		boxOrder->setValue(2);
@@ -84,11 +83,9 @@ SmoothCurveDialog::SmoothCurveDialog(int method, QWidget* parent, Qt::WFlags fl 
 
 		gl1->addWidget(new QLabel(tr("Color")), 4, 0);
 		gl1->addWidget(boxColor, 4, 1);
-        gl1->setRowStretch(5, 1);
-		}
-	else if (method == SmoothFilter::Lowess)
-		{
-        gl1->addWidget(new QLabel(tr("f")), 1, 0);
+		gl1->setRowStretch(5, 1);
+	} else if (method == SmoothFilter::Lowess){
+		gl1->addWidget(new QLabel(tr("f")), 1, 0);
 		boxF = new QDoubleSpinBox();
 		boxF->setRange(0, 1);
 		boxF->setValue(0.2);
@@ -103,10 +100,8 @@ SmoothCurveDialog::SmoothCurveDialog(int method, QWidget* parent, Qt::WFlags fl 
 
 		gl1->addWidget(new QLabel(tr("Color")), 3, 0);
 		gl1->addWidget(boxColor, 3, 1);
-        gl1->setRowStretch(4, 1);
-		}
-	else
-		{
+		gl1->setRowStretch(4, 1);
+	} else {
 		gl1->addWidget(new QLabel(tr("Points")), 1, 0);
 		boxPointsLeft = new QSpinBox();
 		boxPointsLeft->setRange(1, 1000000);
@@ -116,31 +111,34 @@ SmoothCurveDialog::SmoothCurveDialog(int method, QWidget* parent, Qt::WFlags fl 
 
 		gl1->addWidget(new QLabel(tr("Color")), 2, 0);
 		gl1->addWidget(boxColor, 2, 1);
-        gl1->setRowStretch(3, 1);
-		}
-    gl1->setColStretch(1, 1);
+		gl1->setRowStretch(3, 1);
+	}
+	gl1->setColStretch(1, 1);
 
 	btnSmooth = new QPushButton(tr( "&Smooth" ));
-    btnSmooth->setDefault(true);
-    buttonCancel = new QPushButton(tr( "&Close" ));
+	btnSmooth->setDefault(true);
+	buttonCancel = new QPushButton(tr( "&Close" ));
 
 	QVBoxLayout *vl = new QVBoxLayout();
- 	vl->addWidget(btnSmooth);
+	vl->addWidget(btnSmooth);
 	vl->addWidget(buttonCancel);
-    vl->addStretch();
+	vl->addStretch();
 
-    QHBoxLayout *hb = new QHBoxLayout(this);
-    hb->addWidget(gb1);
-    hb->addLayout(vl);
+	QHBoxLayout *hb = new QHBoxLayout(this);
+	hb->addWidget(gb1);
+	hb->addLayout(vl);
 
 	connect( btnSmooth, SIGNAL(clicked()), this, SLOT( smooth()));
 	connect( buttonCancel, SIGNAL(clicked()), this, SLOT( close()));
-	connect( boxName, SIGNAL(activated(int)), this, SLOT(activateCurve(int)));
+	connect( boxName, SIGNAL(activated(const QString&)), this, SLOT(activateCurve(const QString&)));
 }
 
 void SmoothCurveDialog::smooth()
 {
-	SmoothFilter *sf = new SmoothFilter((ApplicationWindow *)parent(), graph->curve(boxName->currentIndex()), smooth_method);
+	QString curveName = boxName->currentText();
+	curveName = curveName.left(curveName.indexOf(" ["));
+
+	SmoothFilter *sf = new SmoothFilter((ApplicationWindow *)parent(), graph->curve(curveName), smooth_method);
 	if (smooth_method == SmoothFilter::SavitzkyGolay){
 		sf->setSmoothPoints(boxPointsLeft->value(), boxPointsRight->value());
 		sf->setPolynomOrder(boxOrder->value());
@@ -161,13 +159,13 @@ void SmoothCurveDialog::setGraph(Graph *g)
 
 	graph = g;
 	boxName->addItems (g->analysableCurvesList());
-	activateCurve(boxName->currentIndex());
+	activateCurve(boxName->currentText());
 }
 
-void SmoothCurveDialog::activateCurve(int curveIndex)
+void SmoothCurveDialog::activateCurve(const QString& s)
 {
 	if (smooth_method == SmoothFilter::Average){
-		PlotCurve *c = graph->curve(curveIndex);
+		PlotCurve *c = graph->curve(s.left(s.indexOf(" [")));
 		if (!c || c->rtti() != QwtPlotItem::Rtti_PlotCurve)
 			return;
 

@@ -385,7 +385,7 @@ void FitDialog::initFitPage()
     fitPage->setLayout(vbox1);
     tw->addWidget(fitPage);
 
-	connect( boxCurve, SIGNAL(activated(int)), this, SLOT( activateCurve(int)));
+	connect( boxCurve, SIGNAL(activated(const QString&)), this, SLOT(activateCurve(const QString&)));
 	connect( buttonOk, SIGNAL( clicked() ), this, SLOT(accept()));
 	connect( buttonCancel1, SIGNAL( clicked() ), this, SLOT(close()));
 	connect( buttonEdit, SIGNAL( clicked() ), this, SLOT(showEditPage()));
@@ -836,17 +836,17 @@ void FitDialog::setGraph(Graph *g)
 	boxCurve->clear();
 	boxCurve->addItems(d_graph->analysableCurvesList());
 	if (g->rangeSelectorsEnabled())
-		boxCurve->setCurrentIndex(g->curveIndex(g->rangeSelectorTool()->selectedCurve()));
+		boxCurve->setCurrentIndex(boxCurve->findText(g->curveRange(g->rangeSelectorTool()->selectedCurve())));
 
-	activateCurve(boxCurve->currentIndex());
+	activateCurve(boxCurve->currentText());
 
 	connect (d_graph, SIGNAL(closedGraph()), this, SLOT(close()));
 	connect (d_graph, SIGNAL(dataRangeChanged()), this, SLOT(changeDataRange()));
 };
 
-void FitDialog::activateCurve(int curveIndex)
+void FitDialog::activateCurve(const QString& s)
 {
-	QwtPlotCurve *c = d_graph->curve(curveIndex);
+	QwtPlotCurve *c = d_graph->curve(s.left(s.indexOf(" [")));
 	if (!c)
 		return;
 
@@ -1448,12 +1448,14 @@ void FitDialog::accept()
 
 		d_current_fit->setInitialGuesses(paramsInit);
 
-		if (!d_current_fit->setDataFromCurve(d_graph->curve(boxCurve->currentIndex()), start, end) ||
+		QString name = boxCurve->currentText();
+		name = name.left(name.indexOf(" ["));
+		if (!d_current_fit->setDataFromCurve(d_graph->curve(name), start, end) ||
 			!d_current_fit->setWeightingData ((Fit::WeightingMethod)boxWeighting->currentIndex(),
 						   tableNamesBox->currentText() + "_" + colNamesBox->currentText())) return;
 
 		if (btnParamRange->isEnabled()){
-			for (int i=0; i<n; i++)
+			for (int i = 0; i < n; i++)
 				d_current_fit->setParameterRange(i, paramRangeLeft[i], paramRangeRight[i]);
 		}
 
@@ -1516,7 +1518,7 @@ void FitDialog::changeDataRange()
 	if (!d_graph->rangeSelectorsEnabled())
 		return;
 
-	boxCurve->setCurrentIndex(d_graph->curveIndex(d_graph->rangeSelectorTool()->selectedCurve()));
+	boxCurve->setCurrentIndex(boxCurve->findText(d_graph->curveRange(d_graph->rangeSelectorTool()->selectedCurve())));
 
 	double start = d_graph->selectedXStartValue();
 	double end = d_graph->selectedXEndValue();
@@ -1766,7 +1768,8 @@ void FitDialog::guessInitialValues()
 		return;
 
 	if (d_current_fit->type() == Fit::BuiltIn){
-		d_current_fit->setDataFromCurve(boxCurve->currentText(), boxFrom->value(), boxTo->value());
+		QString name = boxCurve->currentText();
+		d_current_fit->setDataFromCurve(name.left(name.indexOf(" [")), boxFrom->value(), boxTo->value());
 		d_current_fit->guessInitialValues();
 		//modifyGuesses (paramsInit);
 	}

@@ -47,7 +47,7 @@ public:
     InterpolationDialog( QWidget* parent = 0, Qt::WFlags fl = 0 );
 
 public slots:
-	void activateCurve(int curveIndex);
+	void activateCurve(const QString&);
 	void setGraph(Graph *g);
 	void interpolate();
 	void changeDataRange();

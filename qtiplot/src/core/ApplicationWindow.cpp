@@ -13074,7 +13074,7 @@ void ApplicationWindow::showDataSetDialog(Analysis operation)
 	QString txt = QInputDialog::getItem(this, tr("QtiPlot - Choose data set"),
 					tr("Curve") + ": ", curves, 0, false, &ok);
 	if (ok && !txt.isEmpty())
-		analyzeCurve(g, g->curve(curves.indexOf(txt)), operation);
+		analyzeCurve(g, g->curve(txt.left(txt.indexOf(" ["))), operation);
 }
 
 void ApplicationWindow::analyzeCurve(Graph *g,  QwtPlotCurve *c, Analysis operation)
