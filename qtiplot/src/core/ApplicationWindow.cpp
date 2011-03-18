@@ -4998,8 +4998,8 @@ ApplicationWindow* ApplicationWindow::openProject(const QString& fn, bool factor
 	app->executeNotes();
 	app->d_workspace->blockSignals(false);
 	app->addWindowsListToCompleter();
-	app->d_opening_file = false;
 	app->restoreApplicationGeometry();
+	app->d_opening_file = false;
 	app->savedProject();
 	return app;
 }
