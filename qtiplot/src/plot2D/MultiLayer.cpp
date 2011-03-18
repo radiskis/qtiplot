@@ -960,11 +960,8 @@ QPixmap MultiLayer::canvasPixmap(const QSize& size, double scaleFontsFactor, boo
 		return pic;
 	}
 
-	QRect canvasRect = d_canvas->rect();
-	double scaleFactorX = (double)size.width()/(double)canvasRect.width();
-	double scaleFactorY = (double)size.height()/(double)canvasRect.height();
-	if (scaleFontsFactor == 0)
-		scaleFontsFactor = scaleFactorY;
+	QSize oldSize = d_canvas->size();
+	d_canvas->resize(size);
 
 	QPixmap pic(size);
 	if (transparent)
@@ -975,17 +972,14 @@ QPixmap MultiLayer::canvasPixmap(const QSize& size, double scaleFontsFactor, boo
 
 	QList<Graph*> lst = stackOrderedLayersList();
 	foreach (Graph *g, lst){
-		QPoint pos = g->pos();
-		pos = QPoint(int(pos.x()*scaleFactorX), int(pos.y()*scaleFactorY));
-
-		int width = int(g->frameGeometry().width()*scaleFactorX);
-		int height = int(g->frameGeometry().height()*scaleFactorY);
-
 		g->scaleFonts(scaleFontsFactor);
-		g->print(&p, QRect(pos, QSize(width, height)));
+		g->print(&p, g->geometry());
 		g->scaleFonts(1.0/scaleFontsFactor);
 	}
+
 	p.end();
+
+	d_canvas->resize(oldSize);
 	return pic;
 }
 
