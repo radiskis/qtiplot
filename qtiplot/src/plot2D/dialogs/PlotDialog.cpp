@@ -2,7 +2,7 @@
     File                 : PlotDialog.cpp
     Project              : QtiPlot
     --------------------------------------------------------------------
-	Copyright            : (C) 2006-2010 by Ion Vasilief
+	Copyright            : (C) 2006-2011 by Ion Vasilief
     Email (use @ for *)  : ion_vasilief*yahoo.fr
     Description          : Custom curves dialog
 
@@ -194,8 +194,9 @@ PlotDialog::PlotDialog(bool showExtended, QWidget* parent, Qt::WFlags fl )
             this, SLOT(showPlotAssociations( QTreeWidgetItem *, int)));
 	connect(listBox, SIGNAL(currentItemChanged (QTreeWidgetItem *, QTreeWidgetItem *)),
             this, SLOT(updateTabWindow(QTreeWidgetItem *, QTreeWidgetItem *)));
-    connect(listBox, SIGNAL(itemCollapsed(QTreeWidgetItem *)), this, SLOT(updateTreeWidgetItem(QTreeWidgetItem *)));
-    connect(listBox, SIGNAL(itemExpanded(QTreeWidgetItem *)), this, SLOT(updateTreeWidgetItem(QTreeWidgetItem *)));
+	connect(listBox, SIGNAL(itemCollapsed(QTreeWidgetItem *)), this, SLOT(updateTreeWidgetItem(QTreeWidgetItem *)));
+	connect(listBox, SIGNAL(itemExpanded(QTreeWidgetItem *)), this, SLOT(updateTreeWidgetItem(QTreeWidgetItem *)));
+	connect(listBox, SIGNAL(itemChanged(QTreeWidgetItem *, int)), this, SLOT(updateCurveVisibility(QTreeWidgetItem *, int)));
 	connect(boxPlotType, SIGNAL(currentIndexChanged(int)), this, SLOT(changePlotType(int)));
 
 	QShortcut *shortcut = new QShortcut(QKeySequence(Qt::Key_Delete), this);
@@ -1901,10 +1902,10 @@ void PlotDialog::initVectPage()
 
 void PlotDialog::setMultiLayer(MultiLayer *ml)
 {
-    if (!ml)
-        return;
+	if (!ml)
+		return;
 
-    d_ml = ml;
+	d_ml = ml;
 	displayPlotCoordinates(ml->applicationWindow()->d_layer_geometry_unit);
 	boxResizeLayers->setChecked(!ml->scaleLayersOnResize());
 
@@ -1913,23 +1914,25 @@ void PlotDialog::setMultiLayer(MultiLayer *ml)
 	boxScaleLayers->setChecked(d_ml->scaleLayersOnPrint());
 	boxPrintCrops->setChecked(d_ml->printCropmarksEnabled());
 
-    QTreeWidgetItem *item = new QTreeWidgetItem(listBox, QStringList(ml->name()));
+	QTreeWidgetItem *item = new QTreeWidgetItem(listBox, QStringList(ml->name()));
 	item->setIcon(0, QIcon(":/folder_open.png"));
-    listBox->addTopLevelItem(item);
-    listBox->setCurrentItem(item);
+	listBox->addTopLevelItem(item);
+	listBox->setCurrentItem(item);
 
-    QList<Graph *> layers = ml->layersList();
-    int i = 0;
-    foreach(Graph *g, layers){
-        LayerItem *layer = new LayerItem(g, item, tr("Layer") + QString::number(++i));
-        item->addChild(layer);
+	listBox->blockSignals(true);
+	QList<Graph *> layers = ml->layersList();
+	int i = 0;
+	foreach(Graph *g, layers){
+		LayerItem *layer = new LayerItem(g, item, tr("Layer") + QString::number(++i));
+		item->addChild(layer);
 
-        if (g == ml->activeLayer()){
-            layer->setExpanded(true);
-        	layer->setActive(true);
-        	listBox->setCurrentItem(layer);
+		if (g == ml->activeLayer()){
+			layer->setExpanded(true);
+			layer->setActive(true);
+			listBox->setCurrentItem(layer);
 		}
-    }
+	}
+	listBox->blockSignals(false);
 }
 
 void PlotDialog::selectMultiLayerItem()
@@ -2607,12 +2610,12 @@ void PlotDialog::updateContourLevelsDisplay(Spectrogram *sp)
 
 void PlotDialog::setActiveCurve(CurveTreeItem *item)
 {
-    if (!item)
-        return;
+	if (!item)
+		return;
 
-    const QwtPlotItem *i = item->plotItem();
-    if (!i)
-        return;
+	const QwtPlotItem *i = item->plotItem();
+	if (!i)
+		return;
 
 	Graph *g = item->graph();
 	if (g){
@@ -3719,6 +3722,16 @@ void PlotDialog::updateTreeWidgetItem(QTreeWidgetItem *item)
 		item->setIcon(0, QIcon(":/folder_closed.png"));
 }
 
+void PlotDialog::updateCurveVisibility(QTreeWidgetItem *item, int column)
+{
+	if (!item || item->type() != CurveTreeItem::PlotCurveTreeItem || column)
+		return;
+
+	PlotCurve *curve = (PlotCurve *)((CurveTreeItem *)item)->plotItem();
+	curve->setVisible(item->checkState(0) == Qt::Checked);
+	curve->plot()->replot();
+}
+
 void PlotDialog::updateBackgroundTransparency(int alpha)
 {
 	boxBackgroundColor->setEnabled(alpha);
@@ -4781,14 +4794,16 @@ CurveTreeItem::CurveTreeItem(QwtPlotItem *curve, LayerItem *parent, const QStrin
     : QTreeWidgetItem( parent, QStringList(s), PlotCurveTreeItem ),
       d_curve(curve)
 {
+	setFlags(Qt::ItemIsSelectable | Qt::ItemIsUserCheckable | Qt::ItemIsEnabled);
 	setIcon(0, QPixmap(":/graph_disabled.png"));
+	setCheckState(0, curve->isVisible() ? Qt::Checked : Qt::Unchecked);
 }
 
 void CurveTreeItem::setActive(bool on)
 {
-    if (on)
+	if (on)
 		setIcon(0, QPixmap(":/graph_enabled.png"));
-    else
+	else
 		setIcon(0, QPixmap(":/graph_disabled.png"));
 }
 
