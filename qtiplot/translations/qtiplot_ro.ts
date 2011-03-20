@@ -15966,6 +15966,10 @@ have the same number of rows.</source>
         <source>Auto&amp;scaling</source>
         <translation>&amp;Scală automată</translation>
     </message>
+    <message>
+        <source>Edit &amp;Range...</source>
+        <translation>Editează inte&amp;rvalul...</translation>
+    </message>
 </context>
 <context>
     <name>PlotWizard</name>

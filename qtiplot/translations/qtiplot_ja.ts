@@ -12591,6 +12591,10 @@ have the same number of rows.</source>
         <source>Auto&amp;scaling</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Edit &amp;Range...</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>PlotWizard</name>

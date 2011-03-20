@@ -21331,6 +21331,10 @@ Wollen sie Zellen einfügen?</translation>
         <source>Auto&amp;scaling</source>
         <translation type="unfinished">Automatische &amp;Skalierung</translation>
     </message>
+    <message>
+        <source>Edit &amp;Range...</source>
+        <translation type="unfinished">Be&amp;reich ändern...</translation>
+    </message>
 </context>
 <context>
     <name>PlotWizard</name>

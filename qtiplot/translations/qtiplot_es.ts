@@ -18099,6 +18099,10 @@ Do you want to insert cells?</source>
         <source>Auto&amp;scaling</source>
         <translation type="unfinished">Autoe&amp;scalado</translation>
     </message>
+    <message>
+        <source>Edit &amp;Range...</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>PlotWizard</name>

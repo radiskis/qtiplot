@@ -12383,6 +12383,10 @@ have the same number of rows.</source>
         <source>Auto&amp;scaling</source>
         <translation type="unfinished">Авто&amp;масштабирование</translation>
     </message>
+    <message>
+        <source>Edit &amp;Range...</source>
+        <translation type="unfinished">Изменить &amp;диапазон...</translation>
+    </message>
 </context>
 <context>
     <name>PlotWizard</name>

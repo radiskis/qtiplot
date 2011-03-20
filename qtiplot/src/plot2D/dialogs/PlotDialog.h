@@ -152,6 +152,7 @@ private slots:
 	void setAxesNumbersFont();
 	void setLegendsFont();
 	void editCurve();
+	void editCurveRange();
 	void chooseLabelsFont();
 	void applyLayerFormat();
 	void applyCanvasFormat();
@@ -286,7 +287,7 @@ private:
 	QWidget *histogramPage, *spacingPage;
 	DoubleSpinBox *binSizeBox, *histogramBeginBox, *histogramEndBox;
 	QCheckBox *automaticBox;
-	QPushButton* buttonStatistics, *btnEditCurve, *buttonBoxStatistics;
+	QPushButton* buttonStatistics, *btnEditCurve, *buttonBoxStatistics, *btnEditCurveRange;
 	QSpinBox* gapBox, *offsetBox, *boxWidth;
 	QWidget *vectPage, *boxPage, *percentilePage, *axesPage;
 	QComboBox *xEndBox, *yEndBox, *boxType, *boxWhiskersType, *boxWhiskersRange, *boxRange;

@@ -18674,6 +18674,10 @@ Vill du skjuta in celler?</translation>
         <source>Auto&amp;scaling</source>
         <translation type="unfinished">Auto&amp;skalning</translation>
     </message>
+    <message>
+        <source>Edit &amp;Range...</source>
+        <translation type="unfinished">Redige&amp;ra område...</translation>
+    </message>
 </context>
 <context>
     <name>PlotWizard</name>
