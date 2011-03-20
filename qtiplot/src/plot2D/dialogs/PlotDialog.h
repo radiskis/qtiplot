@@ -2,7 +2,7 @@
     File                 : PlotDialog.h
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2006 by Ion Vasilief
+	Copyright            : (C) 2006 - 2011 by Ion Vasilief
     Email (use @ for *)  : ion_vasilief*yahoo.fr
     Description          : Custom curves dialog
 
@@ -144,6 +144,7 @@ private slots:
 
     void setActiveLayer(LayerItem *item);
     void updateTreeWidgetItem(QTreeWidgetItem *item);
+	void updateCurveVisibility(QTreeWidgetItem *item, int column);
     void updateBackgroundTransparency(int alpha);
     void updateCanvasTransparency(int alpha);
 	void setTitlesFont();
