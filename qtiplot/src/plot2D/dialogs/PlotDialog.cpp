@@ -53,6 +53,7 @@
 #include <TexWidget.h>
 #include <EnrichmentDialog.h>
 #include <ImageSymbol.h>
+#include <CurveRangeDialog.h>
 
 #include <QTreeWidget>
 #include <QLineEdit>
@@ -178,6 +179,8 @@ PlotDialog::PlotDialog(bool showExtended, QWidget* parent, Qt::WFlags fl )
     hb2->addWidget(buttonApply);
 	btnEditCurve = new QPushButton(tr("&Plot Associations..."));
     hb2->addWidget(btnEditCurve);
+	btnEditCurveRange = new QPushButton(tr("Edit &Range..."));
+	hb2->addWidget(btnEditCurveRange);
     hb2->addStretch();
     gl->addLayout(hb2, 1, 1);
 
@@ -190,6 +193,7 @@ PlotDialog::PlotDialog(bool showExtended, QWidget* parent, Qt::WFlags fl )
 	connect( buttonApply, SIGNAL(clicked() ), this, SLOT(acceptParams()));
 	connect( btnWorksheet, SIGNAL(clicked()), this, SLOT(showWorksheet()));
 	connect( btnEditCurve, SIGNAL(clicked()), this, SLOT(editCurve()));
+	connect( btnEditCurveRange, SIGNAL(clicked()), this, SLOT(editCurveRange()));
 	connect(listBox, SIGNAL(itemDoubleClicked( QTreeWidgetItem *, int)),
             this, SLOT(showPlotAssociations( QTreeWidgetItem *, int)));
 	connect(listBox, SIGNAL(currentItemChanged (QTreeWidgetItem *, QTreeWidgetItem *)),
@@ -251,6 +255,28 @@ void PlotDialog::showPlotAssociations(QTreeWidgetItem *item, int)
 		if (ad)
 			connect((QObject *)ad, SIGNAL(destroyed()), this, SLOT(show()));
 	}
+}
+
+void PlotDialog::editCurveRange()
+{
+	CurveTreeItem *item = (CurveTreeItem *)listBox->currentItem();
+	if (!item)
+		return;
+	if (item->type() != CurveTreeItem::PlotCurveTreeItem)
+		return;
+
+	ApplicationWindow *app = (ApplicationWindow *)this->parent();
+	if (!app)
+		return;
+
+	hide();
+
+	CurveRangeDialog* rd = new CurveRangeDialog(app);
+	if (rd){
+		rd->setCurveToModify(item->graph(), item->plotItemIndex());
+		connect((QObject *)rd, SIGNAL(destroyed()), this, SLOT(show()));
+	}
+	rd->exec();
 }
 
 void PlotDialog::editCurve()
@@ -2070,6 +2096,7 @@ void PlotDialog::contextMenuEvent(QContextMenuEvent *e)
 
 			if (it && it->rtti() == QwtPlotItem::Rtti_PlotCurve && ((PlotCurve *)it)->type() != Graph::Function){
 				contextMenu.insertItem(tr("&Plot Associations..."), this, SLOT(editCurve()));
+				contextMenu.insertItem(tr("Edit &Range..."), this, SLOT(editCurveRange()));
 				contextMenu.insertSeparator();
 			}
 		}
@@ -2293,17 +2320,19 @@ void PlotDialog::updateTabWindow(QTreeWidgetItem *currentItem, QTreeWidgetItem *
 		curvePlotTypeBox->hide();
 		btnWorksheet->hide();
 		btnEditCurve->hide();
+		btnEditCurveRange->hide();
 	} else {
-        clearTabWidget();
+		clearTabWidget();
 		privateTabWidget->addTab(plotGeometryPage, tr("Dimensions"));
 		privateTabWidget->addTab(printPage, tr("Print"));
-        privateTabWidget->addTab(fontsPage, tr("Fonts"));
+		privateTabWidget->addTab(fontsPage, tr("Fonts"));
 		privateTabWidget->addTab(miscPage, tr("Miscellaneous"));
 		privateTabWidget->showPage(plotGeometryPage);
 
-        curvePlotTypeBox->hide();
-        btnWorksheet->hide();
-        btnEditCurve->hide();
+		curvePlotTypeBox->hide();
+		btnWorksheet->hide();
+		btnEditCurve->hide();
+		btnEditCurveRange->hide();
     }
     boxPlotType->blockSignals(false);
 }
@@ -2513,6 +2542,7 @@ void PlotDialog::setActiveLayer(LayerItem *item)
 	curvePlotTypeBox->hide();
     btnWorksheet->hide();
     btnEditCurve->hide();
+	btnEditCurveRange->hide();
 
     boxBorderColor->blockSignals(true);
     boxBackgroundColor->blockSignals(true);
@@ -2627,7 +2657,8 @@ void PlotDialog::setActiveCurve(CurveTreeItem *item)
 	item->setActive(true);
 	listBox->scrollToItem(item);
 	btnWorksheet->show();
-    btnEditCurve->show();
+	btnEditCurve->show();
+	btnEditCurveRange->show();
 
     //axes page
     boxXAxis->setCurrentIndex(i->xAxis()-2);
@@ -2635,6 +2666,7 @@ void PlotDialog::setActiveCurve(CurveTreeItem *item)
 
     if (i->rtti() == QwtPlotItem::Rtti_PlotSpectrogram){
         btnEditCurve->hide();
+		btnEditCurveRange->hide();
         Spectrogram *sp = (Spectrogram *)i;
 
 		boxSpectroMatrix->setCurrentIndex(boxSpectroMatrix->findText (sp->matrix()->objectName()));
@@ -2696,6 +2728,7 @@ void PlotDialog::setActiveCurve(CurveTreeItem *item)
 
     PlotCurve *c = (PlotCurve*)i;
 	btnEditCurve->setVisible(c->type() != Graph::Function);
+	btnEditCurveRange->setVisible(c->type() != Graph::Function);
 
 	int curveType = item->plotItemStyle();
     if (curveType == Graph::Pie){

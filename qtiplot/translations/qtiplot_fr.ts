@@ -12334,6 +12334,10 @@ have the same number of rows.</source>
         <source>Auto&amp;scaling</source>
         <translation>Échelle auto&amp;matique</translation>
     </message>
+    <message>
+        <source>Edit &amp;Range...</source>
+        <translation type="unfinished">Modifie&amp;r la gamme...</translation>
+    </message>
 </context>
 <context>
     <name>PlotWizard</name>

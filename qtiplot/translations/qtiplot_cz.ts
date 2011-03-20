@@ -12363,6 +12363,10 @@ K tomu lze použít následujících zvláštních kódů:
         <source>Auto&amp;scaling</source>
         <translation>Automatická &amp;velikost</translation>
     </message>
+    <message>
+        <source>Edit &amp;Range...</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>PlotWizard</name>
