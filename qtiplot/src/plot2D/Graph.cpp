@@ -6866,6 +6866,7 @@ FrameWidget* Graph::add(FrameWidget* fw, bool copy)
 
 	aux->setAttachPolicy(fw->attachPolicy());
 	aux->setOnTop(fw->isOnTop());
+	aux->setVisible(fw->isVisible());
 
 	d_enrichments << aux;
 	d_active_enrichment = aux;

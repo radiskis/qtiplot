@@ -21335,6 +21335,10 @@ Wollen sie Zellen einfügen?</translation>
         <source>Edit &amp;Range...</source>
         <translation type="unfinished">Be&amp;reich ändern...</translation>
     </message>
+    <message>
+        <source>&amp;Hide</source>
+        <translation type="unfinished">Aus&amp;blenden</translation>
+    </message>
 </context>
 <context>
     <name>PlotWizard</name>

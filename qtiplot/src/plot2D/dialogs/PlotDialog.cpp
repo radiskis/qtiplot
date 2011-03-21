@@ -198,7 +198,7 @@ PlotDialog::PlotDialog(bool showExtended, QWidget* parent, Qt::WFlags fl )
             this, SLOT(updateTabWindow(QTreeWidgetItem *, QTreeWidgetItem *)));
 	connect(listBox, SIGNAL(itemCollapsed(QTreeWidgetItem *)), this, SLOT(updateTreeWidgetItem(QTreeWidgetItem *)));
 	connect(listBox, SIGNAL(itemExpanded(QTreeWidgetItem *)), this, SLOT(updateTreeWidgetItem(QTreeWidgetItem *)));
-	connect(listBox, SIGNAL(itemChanged(QTreeWidgetItem *, int)), this, SLOT(updateCurveVisibility(QTreeWidgetItem *, int)));
+	connect(listBox, SIGNAL(itemChanged(QTreeWidgetItem *, int)), this, SLOT(updateVisibility(QTreeWidgetItem *, int)));
 	connect(boxPlotType, SIGNAL(currentIndexChanged(int)), this, SLOT(changePlotType(int)));
 
 	QShortcut *shortcut = new QShortcut(QKeySequence(Qt::Key_Delete), this);
@@ -2065,6 +2065,10 @@ void PlotDialog::contextMenuEvent(QContextMenuEvent *e)
 				contextMenu.insertItem(tr("Edit &Range..."), this, SLOT(editCurveRange()));
 				contextMenu.insertSeparator();
 			}
+			contextMenu.insertItem(it->isVisible() ? tr("&Hide") : tr("&Show"), this, SLOT(updateVisibility()));
+		} else if (item->type() == FrameWidgetTreeItem::FrameWidgetItem){
+			FrameWidget *fw = ((FrameWidgetTreeItem *)item)->frameWidget();
+			contextMenu.insertItem(fw->isVisible() ? tr("&Hide") : tr("&Show"), this, SLOT(updateVisibility()));
 		}
 		contextMenu.insertItem(QPixmap(":/delete.png"), tr("&Delete"), this, SLOT(removeSelectedObject()));
 		contextMenu.exec(QCursor::pos());
@@ -3697,38 +3701,58 @@ void PlotDialog::showColorMapEditor(bool)
 
 void PlotDialog::showDefaultContourLinesBox(bool)
 {
-  	if (autoContourBox->isChecked())
-  		defaultPenBox->hide();
-  	else
-  		defaultPenBox->show();
+	if (autoContourBox->isChecked())
+		defaultPenBox->hide();
+	else
+		defaultPenBox->show();
 }
 
 void PlotDialog::showCustomPenColumn(bool on)
 {
-  	contourLinesEditor->showPenColumn(on);
-  	if (on)
+	contourLinesEditor->showPenColumn(on);
+	if (on)
 		defaultPenBox->hide();
 }
 
 void PlotDialog::updateTreeWidgetItem(QTreeWidgetItem *item)
 {
-    if (item->type() != QTreeWidgetItem::Type)
-        return;
+	if (item->type() != QTreeWidgetItem::Type)
+		return;
 
-    if (item->isExpanded())
+	if (item->isExpanded())
 		item->setIcon(0, QIcon(":/folder_open.png"));
-    else
+	else
 		item->setIcon(0, QIcon(":/folder_closed.png"));
 }
 
-void PlotDialog::updateCurveVisibility(QTreeWidgetItem *item, int column)
+void PlotDialog::updateVisibility()
 {
-	if (!item || item->type() != CurveTreeItem::PlotCurveTreeItem || column)
+	QTreeWidgetItem *item = listBox->currentItem();
+	if (!item)
 		return;
 
-	PlotCurve *curve = (PlotCurve *)((CurveTreeItem *)item)->plotItem();
-	curve->setVisible(item->checkState(0) == Qt::Checked);
-	curve->plot()->replot();
+	item->setCheckState(0, item->checkState(0) == Qt::Unchecked ? Qt::Checked : Qt::Unchecked);
+	updateVisibility(item, 0);
+}
+
+void PlotDialog::updateVisibility(QTreeWidgetItem *item, int column)
+{
+	if (!item || column)
+		return;
+
+	bool checked = (item->checkState(0) == Qt::Checked);
+	if (item->type() == CurveTreeItem::PlotCurveTreeItem){
+		PlotCurve *curve = (PlotCurve *)((CurveTreeItem *)item)->plotItem();
+		if (curve->isVisible() != checked)
+			((CurveTreeItem *)item)->graph()->notifyChanges();
+		curve->setVisible(checked);
+		curve->plot()->replot();
+	} else if (item->type() == FrameWidgetTreeItem::FrameWidgetItem){
+		FrameWidget *fw = ((FrameWidgetTreeItem *)item)->frameWidget();
+		if (fw->isVisible() != checked)
+			((FrameWidgetTreeItem *)item)->graph()->notifyChanges();
+		fw->setVisible(checked);
+	}
 }
 
 void PlotDialog::updateBackgroundTransparency(int alpha)
@@ -4846,6 +4870,8 @@ FrameWidgetTreeItem::FrameWidgetTreeItem(FrameWidget *w, LayerItem *parent, cons
 	d_widget(w)
 {
 	setActive(false);
+	setFlags(Qt::ItemIsSelectable | Qt::ItemIsUserCheckable | Qt::ItemIsEnabled);
+	setCheckState(0, d_widget->isVisible() ? Qt::Checked : Qt::Unchecked);
 }
 
 void FrameWidgetTreeItem::setActive(bool on)

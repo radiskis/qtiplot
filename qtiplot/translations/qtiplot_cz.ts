@@ -12367,6 +12367,10 @@ K tomu lze použít následujících zvláštních kódů:
         <source>Edit &amp;Range...</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>&amp;Hide</source>
+        <translation type="unfinished">&amp;Skrýt</translation>
+    </message>
 </context>
 <context>
     <name>PlotWizard</name>

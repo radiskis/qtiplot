@@ -162,7 +162,7 @@ void TexWidget::restore(Graph *g, const QStringList& lst)
 	QPixmap pix;
 	QStringList::const_iterator line;
 	QString formula;
-	bool onTop = true;
+	bool onTop = true, show = true;
 	for (line = lst.begin(); line != lst.end(); line++){
         QString s = *line;
         if (s.contains("<Frame>"))
@@ -185,6 +185,8 @@ void TexWidget::restore(Graph *g, const QStringList& lst)
 			attachTo = (FrameWidget::AttachPolicy)s.remove("<attachTo>").remove("</attachTo>").toInt();
 		else if (s.contains("<onTop>"))
 			onTop = s.remove("<onTop>").remove("</onTop>").toInt();
+		else if (s.contains("<visible>"))
+			show = s.remove("<visible>").remove("</visible>").toInt();
 		else if (s.contains("<tex>"))
 			formula = s.remove("<tex>").remove("</tex>");
 		else if (s.contains("<xpm>")){
@@ -207,4 +209,5 @@ void TexWidget::restore(Graph *g, const QStringList& lst)
 	t->setCoordinates(x, y, right, bottom);
 	t->setAttachPolicy(attachTo);
 	t->setOnTop(onTop);
+	t->setVisible(show);
 }

@@ -12338,6 +12338,10 @@ have the same number of rows.</source>
         <source>Edit &amp;Range...</source>
         <translation type="unfinished">Modifie&amp;r la gamme...</translation>
     </message>
+    <message>
+        <source>&amp;Hide</source>
+        <translation type="unfinished">Cac&amp;her</translation>
+    </message>
 </context>
 <context>
     <name>PlotWizard</name>
