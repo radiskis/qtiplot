@@ -77,8 +77,8 @@ void RectangleWidget::restore(Graph *g, const QStringList& lst)
 		return;
 
 	for (line = lst.begin(); line != lst.end(); line++){
-        QString s = *line;
-        if (s.contains("<Frame>"))
+		QString s = *line;
+		if (s.contains("<Frame>"))
 			r->setFrameStyle(s.remove("<Frame>").remove("</Frame>").toInt());
 		else if (s.contains("<Color>"))
 			r->setFrameColor(QColor(s.remove("<Color>").remove("</Color>")));
@@ -98,6 +98,8 @@ void RectangleWidget::restore(Graph *g, const QStringList& lst)
 			r->setAttachPolicy((FrameWidget::AttachPolicy)s.remove("<attachTo>").remove("</attachTo>").toInt());
 		else if (s.contains("<onTop>"))
 			r->setOnTop(s.remove("<onTop>").remove("</onTop>").toInt());
+		else if (s.contains("<visible>"))
+			r->setVisible(s.remove("<visible>").remove("</visible>").toInt());
 		else if (s.contains("<Background>"))
 			backgroundColor = QColor(s.remove("<Background>").remove("</Background>"));
 		else if (s.contains("<Alpha>"))
@@ -106,7 +108,7 @@ void RectangleWidget::restore(Graph *g, const QStringList& lst)
 			brush.setColor(QColor(s.remove("<BrushColor>").remove("</BrushColor>")));
 		else if (s.contains("<BrushStyle>"))
 			brush.setStyle(PatternBox::brushStyle((s.remove("<BrushStyle>").remove("</BrushStyle>")).toInt()));
-        else if (s.contains("<LinkedLayer>"))
+		else if (s.contains("<LinkedLayer>"))
 			r->setLinkedLayer(s.remove("<LinkedLayer>").remove("</LinkedLayer>").toInt());
 	}
 

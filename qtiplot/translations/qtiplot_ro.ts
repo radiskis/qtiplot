@@ -15970,6 +15970,10 @@ have the same number of rows.</source>
         <source>Edit &amp;Range...</source>
         <translation>Editează inte&amp;rvalul...</translation>
     </message>
+    <message>
+        <source>&amp;Hide</source>
+        <translation type="unfinished">Ascu&amp;nde</translation>
+    </message>
 </context>
 <context>
     <name>PlotWizard</name>

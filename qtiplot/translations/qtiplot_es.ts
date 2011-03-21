@@ -18103,6 +18103,10 @@ Do you want to insert cells?</source>
         <source>Edit &amp;Range...</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>&amp;Hide</source>
+        <translation type="unfinished">Ocultar</translation>
+    </message>
 </context>
 <context>
     <name>PlotWizard</name>

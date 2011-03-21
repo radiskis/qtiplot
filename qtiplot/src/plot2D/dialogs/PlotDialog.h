@@ -143,7 +143,8 @@ private slots:
 
     void setActiveLayer(LayerItem *item);
     void updateTreeWidgetItem(QTreeWidgetItem *item);
-	void updateCurveVisibility(QTreeWidgetItem *item, int column);
+	void updateVisibility();
+	void updateVisibility(QTreeWidgetItem *item, int column);
     void updateBackgroundTransparency(int alpha);
     void updateCanvasTransparency(int alpha);
 	void setTitlesFont();

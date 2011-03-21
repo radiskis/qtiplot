@@ -18678,6 +18678,10 @@ Vill du skjuta in celler?</translation>
         <source>Edit &amp;Range...</source>
         <translation type="unfinished">Redige&amp;ra område...</translation>
     </message>
+    <message>
+        <source>&amp;Hide</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>PlotWizard</name>
