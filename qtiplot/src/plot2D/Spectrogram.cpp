@@ -477,30 +477,32 @@ void Spectrogram::updateLabels(QPainter *p, const QwtScaleMap &, const QwtScaleM
 	const int numLevels = levels.size();
 	int x_axis = xAxis();
 	int y_axis = yAxis();
-    for (int l = 0; l < numLevels; l++){
-        const double level = levels[l];
-        const QPolygonF &lines = contourLines[level];
-        int i = (int)lines.size()/2;
+	for (int l = 0; l < numLevels; l++){
+		const double level = levels[l];
+		const QPolygonF &lines = contourLines[level];
+		if (lines.isEmpty())
+			continue;
 
 		PlotMarker *mrk = d_labels_list[l];
 		if (!mrk)
 			return;
 
 		QSize size = mrk->label().textSize();
-        int dx = int((d_labels_x_offset + mrk->xLabelOffset())*0.01*size.height());
-        int dy = -int(((d_labels_y_offset + mrk->yLabelOffset())*0.01 + 0.5)*size.height());
+		int dx = int((d_labels_x_offset + mrk->xLabelOffset())*0.01*size.height());
+		int dy = -int(((d_labels_y_offset + mrk->yLabelOffset())*0.01 + 0.5)*size.height());
 
+		int i = (int)lines.size()/2;
 		double x = lines[i].x();
 		double y = lines[i].y();
 
 		int x2 = d_graph->transform(x_axis, x) + dx;
-        int y2 = d_graph->transform(y_axis, y) + dy;
+		int y2 = d_graph->transform(y_axis, y) + dy;
 
 		if (p->device()->logicalDpiX() == plot()->logicalDpiX() ||
 			p->device()->logicalDpiY() == plot()->logicalDpiY())
 			mrk->setValue(d_graph->invTransform(x_axis, x2),
 							d_graph->invTransform(y_axis, y2));
-    }
+	}
 }
 
 void Spectrogram::setLabelsFont(const QFont& font)
