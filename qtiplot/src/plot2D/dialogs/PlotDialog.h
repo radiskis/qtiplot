@@ -119,7 +119,6 @@ private slots:
 	void enableBoxApplyColor(int);
 
 	void setAutomaticBinning(bool on = true);
-	void showPlotAssociations(QTreeWidgetItem *item, int);
 
 	//box plots
 	void setBoxType(int index);

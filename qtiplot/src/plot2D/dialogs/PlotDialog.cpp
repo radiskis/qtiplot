@@ -194,8 +194,6 @@ PlotDialog::PlotDialog(bool showExtended, QWidget* parent, Qt::WFlags fl )
 	connect( btnWorksheet, SIGNAL(clicked()), this, SLOT(showWorksheet()));
 	connect( btnEditCurve, SIGNAL(clicked()), this, SLOT(editCurve()));
 	connect( btnEditCurveRange, SIGNAL(clicked()), this, SLOT(editCurveRange()));
-	connect(listBox, SIGNAL(itemDoubleClicked( QTreeWidgetItem *, int)),
-            this, SLOT(showPlotAssociations( QTreeWidgetItem *, int)));
 	connect(listBox, SIGNAL(currentItemChanged (QTreeWidgetItem *, QTreeWidgetItem *)),
             this, SLOT(updateTabWindow(QTreeWidgetItem *, QTreeWidgetItem *)));
 	connect(listBox, SIGNAL(itemCollapsed(QTreeWidgetItem *)), this, SLOT(updateTreeWidgetItem(QTreeWidgetItem *)));
@@ -222,38 +220,6 @@ void PlotDialog::showAll(bool all)
 		listBox->hide();
 		curvePlotTypeBox->hide();
 		btnMore->setText("&<<");
-	}
-}
-
-void PlotDialog::showPlotAssociations(QTreeWidgetItem *item, int)
-{
-	if (!item)
-		return;
-
-	ApplicationWindow *app = (ApplicationWindow *)this->parent();
-	if (!app)
-		return;
-
-    if (item->type() != CurveTreeItem::PlotCurveTreeItem)
-        return;
-
-    QwtPlotItem *it = (QwtPlotItem *)((CurveTreeItem *)item)->plotItem();
-    if (!it)
-        return;
-
-    if (it->rtti() == QwtPlotItem::Rtti_PlotSpectrogram)
-    {
-  	    Spectrogram *sp = (Spectrogram *)it;
-  	    if (sp->matrix())
-  	    	sp->matrix()->showMaximized();
-        return;
-    }
-
-	hide();
-	if (((PlotCurve *)it)->type() != Graph::Function){
-        AssociationsDialog* ad = app->showPlotAssociations(((CurveTreeItem *)item)->plotItemIndex());
-		if (ad)
-			connect((QObject *)ad, SIGNAL(destroyed()), this, SLOT(show()));
 	}
 }
 
