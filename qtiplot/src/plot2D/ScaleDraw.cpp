@@ -2,7 +2,7 @@
     File                 : ScaleDraw.cpp
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2006 by Ion Vasilief
+	Copyright            : (C) 2006 - 2011 by Ion Vasilief
     Email (use @ for *)  : ion_vasilief*yahoo.fr
     Description          : Extension to QwtScaleDraw
 
@@ -348,7 +348,7 @@ void ScaleDraw::drawLabel(QPainter *painter, double value) const
 		return;
 
 	ScaleEngine *sc_engine = (ScaleEngine *)d_plot->axisScaleEngine(axis());
-	if (sc_engine->hasBreak() && sc_engine->axisBreakLeft() < value && sc_engine->axisBreakRight() > value)
+	if (sc_engine->hasBreak() && sc_engine->axisBreakLeft() <= value && sc_engine->axisBreakRight() >= value)
 		return;
 
 	QwtValueList majTicks = scaleDiv().ticks(QwtScaleDiv::MajorTick);
