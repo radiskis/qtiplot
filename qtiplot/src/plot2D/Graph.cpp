@@ -1397,12 +1397,12 @@ void Graph::setScale(int axis, double start, double end, double step,
 		max_min_intervals = minorTicks + 1;
 
 	QwtScaleDiv div = sc_engine->divideScale (QMIN(start, end), QMAX(start, end), majorTicks, max_min_intervals, step);
-	setAxisMaxMajor (axis, majorTicks);
-	setAxisMaxMinor (axis, minorTicks);
+	setAxisMaxMajor(axis, majorTicks);
+	setAxisMaxMinor(axis, minorTicks);
 
 	if (inverted)
 		div.invert();
-	setAxisScaleDiv (axis, div);
+	setAxisScaleDiv(axis, div);
 
 	d_zoomer[0]->setZoomBase();
 	d_zoomer[1]->setZoomBase();
@@ -4715,7 +4715,7 @@ void Graph::copyScaleDraw(Graph* g, int i)
 		else
 			setAxisScaleDraw(i, new ScaleDraw(this, sdg->labelsList(), sdg->formatString(), sdg->scaleType()));
 	} else
-		axisScaleDraw (i)->enableComponent (QwtAbstractScaleDraw::Labels, false);
+		axisScaleDraw (i)->enableComponent(QwtAbstractScaleDraw::Labels, false);
 
 	ScaleDraw *sd = (ScaleDraw *)axisScaleDraw(i);
 	sd->enableComponent (QwtAbstractScaleDraw::Backbone, sdg->hasComponent(QwtAbstractScaleDraw::Backbone));
@@ -4726,27 +4726,16 @@ void Graph::copyScaleDraw(Graph* g, int i)
 
 	setAxisTicksLength(i, sdg->majorTicksStyle(), sdg->minorTicksStyle(), g->minorTickLength(), g->majorTickLength());
 
-	//set same scale
 	const ScaleEngine *se = (ScaleEngine *)g->axisScaleEngine(i);
 	if (!se)
 		return;
 
-	ScaleEngine *sc_engine = (ScaleEngine *)axisScaleEngine(i);
-	sc_engine->clone(se);
-
-	setAxisMaxMajor (i, g->axisMaxMajor(i));
-	setAxisMaxMinor (i, g->axisMaxMinor(i));
-
-	double step = g->axisStep(i);
-	d_user_step[i] = step;
-
-	const QwtScaleDiv *gdiv = g->axisScaleDiv(i);
-	QwtScaleDiv div = sc_engine->divideScale (QMIN(gdiv->lowerBound(), gdiv->upperBound()),
-			QMAX(gdiv->lowerBound(), gdiv->upperBound()), g->axisMaxMajor(i), g->axisMaxMinor(i), step);
-
-	if (se->testAttribute(QwtScaleEngine::Inverted))
-		div.invert();
-	setAxisScaleDiv (i, div);
+	const QwtScaleDiv *div = g->axisScaleDiv(i);
+	//set same scale
+	setScale(i, div->lowerBound(), div->upperBound(), fabs(g->axisStep(i)), g->axisMaxMajor(i), g->axisMaxMinor(i),
+			se->type(), se->testAttribute(QwtScaleEngine::Inverted), se->axisBreakLeft(), se->axisBreakRight(),
+			se->breakPosition(), se->stepBeforeBreak(), se->stepAfterBreak(), se->minTicksBeforeBreak(),
+			se->minTicksAfterBreak(), se->log10ScaleAfterBreak(), se->breakWidth(), se->hasBreakDecoration());
 }
 
 void Graph::copyEnrichments(Graph* g)
