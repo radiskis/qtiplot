@@ -17503,8 +17503,8 @@ void ApplicationWindow::receivedVersionFile(bool error)
 		QString version = t.readLine();
 		version_buffer.close();
 
-		QString currentVersion = QString::number(maj_version) + "." + QString::number(min_version) +
-			"." + QString::number(patch_version) + QString(extra_version);
+		QString currentVersion = QString::number(maj_version) + "." + QString::number(min_version) + "." +
+								 QString::number(patch_version) + QString(extra_version) + QString(svn_revision);
 
 		if (currentVersion != version){
 			if(QMessageBox::question(this, tr("QtiPlot - Updates Available"),
