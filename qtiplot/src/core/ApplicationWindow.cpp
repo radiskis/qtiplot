@@ -17509,8 +17509,17 @@ void ApplicationWindow::receivedVersionFile(bool error)
 		if (currentVersion != version){
 			if(QMessageBox::question(this, tr("QtiPlot - Updates Available"),
 						tr("There is a newer version of QtiPlot (%1) available for download. Would you like to download it?").arg(version),
-						QMessageBox::Yes|QMessageBox::Default, QMessageBox::No|QMessageBox::Escape) == QMessageBox::Yes)
+						QMessageBox::Yes|QMessageBox::Default, QMessageBox::No|QMessageBox::Escape) == QMessageBox::Yes){
+			#ifdef Q_OS_WIN
+				QDesktopServices::openUrl(QUrl("http://soft.proindependent.com/login_exe.html"));
+			#endif
+			#ifdef Q_OS_MAC
+				QDesktopServices::openUrl(QUrl("http://soft.proindependent.com/login_mac.html"));
+			#endif
+			#ifdef Q_WS_X11
 				QDesktopServices::openUrl(QUrl("http://soft.proindependent.com/download.html"));
+			#endif
+			}
 		} else if (!autoSearchUpdatesRequest){
 			QMessageBox::information(this, tr("QtiPlot - No Updates Available"),
 					tr("No updates available. Your current version %1 is the last version available!").arg(version));
