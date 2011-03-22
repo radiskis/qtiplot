@@ -13026,7 +13026,7 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot, co
 					hort = app->table(lst[1]);
 				if (lst.size() >= 3)
 					vert = app->table(lst[2]);
-				ag->setActiveTool(new ImageProfilesTool(app, ag, app->matrix(lst[0]), hort, vert, app->info, SLOT(setText(const QString&))));
+				ag->setActiveTool(new ImageProfilesTool(app, ag, app->matrix(lst[0]), hort, vert));
 			}
 		} else if (s.startsWith ("<ImageProfileValues>") && s.endsWith ("</ImageProfileValues>")){
 			QStringList lst = s.remove("<ImageProfileValues>").remove("</ImageProfileValues>").split("\t");
@@ -15556,7 +15556,7 @@ MultiLayer* ApplicationWindow::plotImageProfiles(Matrix *m)
     Table *verTable = newHiddenTable(tr("Vertical"), QString::null, m->numRows(), 2);
 
 	Graph *sg = g->layer(1);
-	ImageProfilesTool *screener = new ImageProfilesTool(this, sg, m, horTable, verTable, info, SLOT(setText(const QString&)));
+	ImageProfilesTool *screener = new ImageProfilesTool(this, sg, m, horTable, verTable);
 	sg->setActiveTool(screener);
 
 	if (horTable && g->layer(2))

@@ -100,8 +100,7 @@ class ImageProfilesTool : public ScreenPickerTool
 {
 	Q_OBJECT
 	public:
-		ImageProfilesTool(ApplicationWindow *app, Graph *graph, Matrix *m, Table *horTable, Table *verTable,
-						const QObject *status_target=NULL, const char *status_slot="");
+		ImageProfilesTool(ApplicationWindow *app, Graph *graph, Matrix *m, Table *horTable, Table *verTable);
 
 		ImageProfilesTool* clone(Graph *g);
 

@@ -221,9 +221,8 @@ bool DrawPointTool::eventFilter(QObject *obj, QEvent *event)
 	return QwtPlotPicker::eventFilter(obj, event);
 }
 
-ImageProfilesTool::ImageProfilesTool(ApplicationWindow *app, Graph *graph, Matrix *m, Table *horTable, Table *verTable,
-						const QObject *status_target, const char *status_slot)
-	: ScreenPickerTool(graph, status_target, status_slot),
+ImageProfilesTool::ImageProfilesTool(ApplicationWindow *app, Graph *graph, Matrix *m, Table *horTable, Table *verTable)
+	: ScreenPickerTool(graph, app->infoLineEdit(), SLOT(setText(const QString&))),
 	d_app(app),
 	d_matrix(m),
 	d_hor_table(horTable),
@@ -350,7 +349,7 @@ ImageProfilesTool* ImageProfilesTool::clone(Graph *g)
 	if (d_ver_table)
 		d_ver_table->blockSignals(true);
 
-	ImageProfilesTool *tool = new ImageProfilesTool(d_app, g, d_matrix, d_hor_table, d_ver_table, d_status_target, d_status_slot);
+	ImageProfilesTool *tool = new ImageProfilesTool(d_app, g, d_matrix, d_hor_table, d_ver_table);
 	tool->append(QwtDoublePoint(xValue(), yValue()));
 
 	if (d_hor_table)

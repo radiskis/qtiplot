@@ -344,17 +344,12 @@ QString ScaleDraw::labelString(double value) const
 
 void ScaleDraw::drawLabel(QPainter *painter, double value) const
 {
-    if (!d_plot)
-        return;
+	if (!d_plot)
+		return;
 
-    ScaleEngine *sc_engine = (ScaleEngine *)d_plot->axisScaleEngine(axis());
-	if (sc_engine->hasBreak()){
-		bool invertedScale = sc_engine->testAttribute(QwtScaleEngine::Inverted);
-		if (invertedScale && (sc_engine->axisBreakLeft() > value && sc_engine->axisBreakRight() < value))
-        	return;
-		if (!invertedScale && (sc_engine->axisBreakLeft() < value && sc_engine->axisBreakRight() > value))
-        	return;
-	}
+	ScaleEngine *sc_engine = (ScaleEngine *)d_plot->axisScaleEngine(axis());
+	if (sc_engine->hasBreak() && sc_engine->axisBreakLeft() < value && sc_engine->axisBreakRight() > value)
+		return;
 
 	QwtValueList majTicks = scaleDiv().ticks(QwtScaleDiv::MajorTick);
 	if (majTicks.contains(value)){
@@ -378,36 +373,36 @@ void ScaleDraw::drawLabel(QPainter *painter, double value) const
 	}
 
 	QwtText lbl = tickLabel(painter->font(), value);
-    if ( lbl.isEmpty() )
-        return;
+	if ( lbl.isEmpty() )
+		return;
 
-    QPoint pos = labelPosition(value);
+	QPoint pos = labelPosition(value);
 
-    QSize labelSize = lbl.textSize(painter->font());
-    if ( labelSize.height() % 2 )
-        labelSize.setHeight(labelSize.height() + 1);
+	QSize labelSize = lbl.textSize(painter->font());
+	if ( labelSize.height() % 2 )
+		labelSize.setHeight(labelSize.height() + 1);
 
-    const QwtMetricsMap metricsMap = QwtPainter::metricsMap();
-    QwtPainter::resetMetricsMap();
+	const QwtMetricsMap metricsMap = QwtPainter::metricsMap();
+	QwtPainter::resetMetricsMap();
 
-    labelSize = metricsMap.layoutToDevice(labelSize);
-    pos = metricsMap.layoutToDevice(pos);
+	labelSize = metricsMap.layoutToDevice(labelSize);
+	pos = metricsMap.layoutToDevice(pos);
 
-    painter->save();
-    painter->setMatrix(labelMatrix( pos, labelSize), true);
+	painter->save();
+	painter->setMatrix(labelMatrix( pos, labelSize), true);
 
 	if (d_selected)
-        lbl.setBackgroundPen(QPen(Qt::blue));
-    else
-        lbl.setBackgroundPen(QPen(Qt::NoPen));
+		lbl.setBackgroundPen(QPen(Qt::blue));
+	else
+		lbl.setBackgroundPen(QPen(Qt::NoPen));
 
 	lbl.setRenderFlags(labelAlignment());
 
-    lbl.draw (painter, QRect(QPoint(0, 0), labelSize) );
+	lbl.draw (painter, QRect(QPoint(0, 0), labelSize) );
 
-    QwtPainter::setMetricsMap(metricsMap); // restore metrics map
+	QwtPainter::setMetricsMap(metricsMap); // restore metrics map
 
-    painter->restore();
+	painter->restore();
 }
 
 double ScaleDraw::transformValue(double value) const
