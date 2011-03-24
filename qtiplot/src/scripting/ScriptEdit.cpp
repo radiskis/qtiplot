@@ -559,9 +559,9 @@ QString ScriptEdit::save()
 
 QString ScriptEdit::exportASCII(const QString &filename)
 {
-	QString filter = tr("Text") + " (*.txt *.TXT);;";
+	QString filter = tr("Text") + " (*.txt);;";
 	filter += scriptEnv->fileFilter();
-	filter += tr("All Files")+" (*)";
+	filter += tr("All Files") + " (*)";
 
 	QString selectedFilter;
 	QString fn;
@@ -573,7 +573,6 @@ QString ScriptEdit::exportASCII(const QString &filename)
 	if (!fn.isEmpty()){
 		QFileInfo fi(fn);
 		scriptsDirPath = fi.absolutePath();
-
 		if (selectedFilter.contains(".txt") && !fn.endsWith(".txt", Qt::CaseInsensitive))
 			fn.append(".txt");
 		else if (selectedFilter.contains(".py") && !fn.endsWith(".py", Qt::CaseInsensitive))

@@ -36,8 +36,7 @@
 #include <qwt_painter.h>
 
 QwtHistogram::QwtHistogram(Table *t, const QString& name, int startRow, int endRow):
-	QwtBarCurve(QwtBarCurve::Vertical, t, "", name, startRow, endRow),
-	d_autoBin(true)
+	QwtBarCurve(QwtBarCurve::Vertical, t, "", name, startRow, endRow)
 {
 	init();
 }
@@ -45,14 +44,15 @@ QwtHistogram::QwtHistogram(Table *t, const QString& name, int startRow, int endR
 QwtHistogram::QwtHistogram(Matrix *m):
     QwtBarCurve(QwtBarCurve::Vertical, NULL, "matrix", m->objectName(), 0, 0)
 {
-    if (m){
+	if (m){
 		init();
-        d_matrix = m;
-    }
+		d_matrix = m;
+	}
 }
 
 void QwtHistogram::init()
 {
+	d_autoBin = true;
 	d_matrix = 0;
 	bar_gap = 0;
 	setType(Graph::Histogram);
@@ -235,11 +235,11 @@ void QwtHistogram::loadData()
 
 void QwtHistogram::loadDataFromMatrix()
 {
-    if (!d_matrix)
-        return;
+	if (!d_matrix)
+		return;
 
-   int size = d_matrix->numRows()*d_matrix->numCols();
-   const double *data = d_matrix->matrixModel()->dataVector();
+	int size = d_matrix->numRows()*d_matrix->numCols();
+	const double *data = d_matrix->matrixModel()->dataVector();
 
 	int n;
 	gsl_histogram *h;
@@ -252,16 +252,16 @@ void QwtHistogram::loadDataFromMatrix()
 
 		n = qRound((d_end - d_begin)/d_bin_size);
 		if (!n)
-            return;
+			return;
 
-		h = gsl_histogram_alloc (n);
+		h = gsl_histogram_alloc(n);
 		if (!h)
 			return;
 		gsl_histogram_set_ranges_uniform (h, floor(min), ceil(max));
 	} else {
 		n = int((d_end - d_begin)/d_bin_size + 1);
 		if (!n)
-            return;
+			return;
 
 		h = gsl_histogram_alloc (n);
 		if (!h)
