@@ -348,7 +348,7 @@ void ScaleDraw::drawLabel(QPainter *painter, double value) const
 		return;
 
 	ScaleEngine *sc_engine = (ScaleEngine *)d_plot->axisScaleEngine(axis());
-	if (sc_engine->hasBreak() && sc_engine->axisBreakLeft() <= value && sc_engine->axisBreakRight() >= value)
+	if (sc_engine->hasBreak() && sc_engine->axisBreakLeft() <= value && sc_engine->axisBreakRight() > value)
 		return;
 
 	QwtValueList majTicks = scaleDiv().ticks(QwtScaleDiv::MajorTick);
@@ -497,7 +497,7 @@ int ScaleDraw::axis() const
 void ScaleDraw::drawTick(QPainter *p, double value, int len) const
 {
 	ScaleEngine *sc_engine = (ScaleEngine *)d_plot->axisScaleEngine(axis());
-	if (sc_engine->hasBreak() && (sc_engine->axisBreakLeft() < value && sc_engine->axisBreakRight() > value))
+	if (sc_engine->hasBreak() && (sc_engine->axisBreakLeft() <= value && sc_engine->axisBreakRight() > value))
 		return;
 
 	QwtScaleDiv scDiv = scaleDiv();
