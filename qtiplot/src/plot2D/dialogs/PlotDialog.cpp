@@ -4668,6 +4668,8 @@ void PlotDialog::shiftCurveBy(int offset)
 	LayerItem *layerItem = (LayerItem *)item->parent();
 	QTreeWidgetItem *rootItem = layerItem->parent();
 
+	listBox->blockSignals(true);
+
 	rootItem->takeChild(rootItem->indexOfChild (layerItem));
 	delete layerItem;
 
@@ -4675,6 +4677,9 @@ void PlotDialog::shiftCurveBy(int offset)
 	rootItem->addChild(layerItem);
 
 	layerItem->setExpanded(true);
+
+	listBox->blockSignals(false);
+
 	CurveTreeItem *it = (CurveTreeItem *)layerItem->child(newIndex);
 	if (it){
 		listBox->setCurrentItem(it);
