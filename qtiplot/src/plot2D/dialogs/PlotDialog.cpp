@@ -1920,8 +1920,10 @@ void PlotDialog::setMultiLayer(MultiLayer *ml)
 
 		if (g == ml->activeLayer()){
 			layer->setExpanded(true);
+			listBox->blockSignals(false);
 			layer->setActive(true);
 			listBox->setCurrentItem(layer);
+			listBox->blockSignals(true);
 		}
 	}
 	listBox->blockSignals(false);
@@ -2105,6 +2107,8 @@ void PlotDialog::removeSelectedObject()
 
 	graph->updatePlot();
 
+	listBox->blockSignals(true);
+
 	LayerItem *layerItem = (LayerItem *)item->parent();
 	QTreeWidgetItem *rootItem = layerItem->parent();
 
@@ -2114,6 +2118,8 @@ void PlotDialog::removeSelectedObject()
 
 	layerItem = new LayerItem(graph, rootItem, tr("Layer") + QString::number(d_ml->layerIndex(graph) + 1));
 	rootItem->addChild(layerItem);
+
+	listBox->blockSignals(false);
 
 	if (graph->curveCount() > 0){
 		layerItem->setExpanded(true);
