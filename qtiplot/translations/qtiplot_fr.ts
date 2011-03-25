@@ -6005,15 +6005,15 @@ Les codes spéciaux suivants peuvent être utilisés :
     </message>
     <message>
         <source>Import Excel files using</source>
-        <translation type="unfinished"></translation>
+        <translation>Importer des fichiers Excel en utilisant</translation>
     </message>
     <message>
         <source>Excel Format Library</source>
-        <translation type="unfinished"></translation>
+        <translation>La librairie ExcelFormat</translation>
     </message>
     <message>
         <source>Locally Installed Excel</source>
-        <translation type="unfinished"></translation>
+        <translation>Microsoft Excel installé localement</translation>
     </message>
 </context>
 <context>
@@ -12336,11 +12336,11 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Edit &amp;Range...</source>
-        <translation type="unfinished">Modifie&amp;r la gamme...</translation>
+        <translation>Modifie&amp;r la gamme...</translation>
     </message>
     <message>
         <source>&amp;Hide</source>
-        <translation type="unfinished">Cac&amp;her</translation>
+        <translation>Cac&amp;her</translation>
     </message>
 </context>
 <context>
@@ -15196,47 +15196,47 @@ Calcule la fonction de distribution cumulée pur une distribution chi² avec df 
     </message>
     <message>
         <source>Index of Row</source>
-        <translation type="unfinished"></translation>
+        <translation>Indice de la ligne</translation>
     </message>
     <message>
         <source>Number of Columns</source>
-        <translation type="unfinished"></translation>
+        <translation>Nombre de colonnes</translation>
     </message>
     <message>
         <source>Standard Deviation</source>
-        <translation type="unfinished">Écart type</translation>
+        <translation>Écart type</translation>
     </message>
     <message>
         <source>Standard Error</source>
-        <translation type="unfinished">Erreur type</translation>
+        <translation>Erreur type</translation>
     </message>
     <message>
         <source>Maximum Value</source>
-        <translation type="unfinished"></translation>
+        <translation>Valeur maximum</translation>
     </message>
     <message>
         <source>Minimum Value</source>
-        <translation type="unfinished"></translation>
+        <translation>Valeur minimum</translation>
     </message>
     <message>
         <source>Number of Points</source>
-        <translation type="unfinished"></translation>
+        <translation>Nombre de points</translation>
     </message>
     <message>
         <source>Column Name</source>
-        <translation type="unfinished">Nom de la colonne</translation>
+        <translation>Nom de la colonne</translation>
     </message>
     <message>
         <source>Rows Included</source>
-        <translation type="unfinished"></translation>
+        <translation>Ligne incluse</translation>
     </message>
     <message>
         <source>Index of Maximum Value</source>
-        <translation type="unfinished"></translation>
+        <translation>Indice de la valeur maximum</translation>
     </message>
     <message>
         <source>Index of Minimum Value</source>
-        <translation type="unfinished"></translation>
+        <translation>Indice de la valeur minimum</translation>
     </message>
 </context>
 <context>
