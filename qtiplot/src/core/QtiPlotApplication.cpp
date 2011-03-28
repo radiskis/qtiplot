@@ -57,7 +57,7 @@ QtiPlotApplication::QtiPlotApplication( int & argc, char ** argv) : QApplication
 
 		ApplicationWindow *mw = new ApplicationWindow(factorySettings);
 		mw->restoreApplicationGeometry();
-	#if (!defined(QTIPLOT_PRO) && !defined(Q_WS_X11))
+	#if (!defined(QTIPLOT_PRO) && !defined(QTIPLOT_DEMO) && !defined(Q_WS_X11))
 		mw->showDonationDialog();
 	#endif
 		if (mw->autoSearchUpdates){

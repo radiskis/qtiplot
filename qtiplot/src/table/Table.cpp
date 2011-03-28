@@ -2784,15 +2784,19 @@ void Table::importASCII(const QString &fname, const QString &sep, int ignoredLin
 	if ((!renameCols || allNumbers) && !importComments && rows > 0){
 		//put values in the first line of the table
 		for (int i = 0; i < cols; i++){
+			QString cell = line[i];
+			if (cell.isEmpty())
+				continue;
+
 			bool ok;
-			double val = importLocale.toDouble(line[i], &ok);
+			double val = importLocale.toDouble(cell, &ok);
 			if (colTypes[startCol + i] == Table::Numeric && (ok || updateDecimalSeparators)){
 				char format;
 				int prec;
 				columnNumericFormat(startCol + i, &format, &prec);
 				d_table->setText(startRow, startCol + i, locale.toString(val, format, prec));
 			} else
-				d_table->setText(startRow, startCol + i, line[i]);
+				d_table->setText(startRow, startCol + i, cell);
 		}
 		startRow++;
 	}
@@ -2832,15 +2836,19 @@ void Table::importASCII(const QString &fname, const QString &sep, int ignoredLin
 		}
 
 		for (int j = 0; j<cols && j<lc; j++){
+			QString cell = line[j];
+			if (cell.isEmpty())
+				continue;
+
 			bool ok;
-			double val = importLocale.toDouble(line[j], &ok);
+			double val = importLocale.toDouble(cell, &ok);
 			if (colTypes[startCol + j] == Table::Numeric && (ok || updateDecimalSeparators)){
 				char format;
 				int prec;
 				columnNumericFormat(startCol + j, &format, &prec);
 				d_table->setText(row, startCol + j, locale.toString(val, format, prec));
 			} else
-				d_table->setText(row, startCol + j, line[j]);
+				d_table->setText(row, startCol + j, cell);
 		}
 
 		l++;
