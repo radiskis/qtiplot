@@ -715,13 +715,17 @@ void PreviewTable::importASCII(const QString &fname, const QString &sep, int ign
 
 	if ((!renameCols || allNumbers)&& !importComments && rows > 0){
 		//put values in the first line of the table
-		for (int i = 0; i<cols; i++){
+		for (int i = 0; i < cols; i++){
+			QString cell = line[i];
+			if (cell.isEmpty())
+				continue;
+
 			bool ok;
-			double val = importLocale.toDouble(line[i], &ok);
+			double val = importLocale.toDouble(cell, &ok);
 			if (colTypes[startCol + i] == Table::Numeric && (ok || updateDecimalSeparators))
 				setText(startRow, startCol + i, locale.toString(val, 'g', d_numeric_precision));
 			else
-				setText(startRow, startCol + i, line[i]);
+				setText(startRow, startCol + i, cell);
 		}
 		startRow++;
 	}
@@ -746,12 +750,16 @@ void PreviewTable::importASCII(const QString &fname, const QString &sep, int ign
 			cols = lc;
 		}
 		for (int j = 0; j < cols && j < lc; j++){
+			QString cell = line[j];
+			if (cell.isEmpty())
+				continue;
+
 			bool ok;
-			double val = importLocale.toDouble(line[j], &ok);
+			double val = importLocale.toDouble(cell, &ok);
 			if (colTypes[startCol + j] == Table::Numeric && (ok || updateDecimalSeparators))
 				setText(row, startCol + j, locale.toString(val, 'g', d_numeric_precision));
 			else
-				setText(row, startCol + j, line[j]);
+				setText(row, startCol + j, cell);
 		}
 
 		row++;
