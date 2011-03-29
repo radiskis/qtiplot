@@ -550,18 +550,23 @@ void DataPickerTool::pasteSelection()
 
 void DataPickerTool::selectTableRow()
 {
-    if (!d_selected_curve)
-        return;
+	if (!d_selected_curve)
+		return;
 
-    if (((PlotCurve *)d_selected_curve)->type() == Graph::Function)
-        return;
+	if (((PlotCurve *)d_selected_curve)->type() == Graph::Function)
+		return;
 
-    Table *t = ((DataCurve*)d_selected_curve)->table();
-    if (!t)
-        return;
+	DataCurve *c = (DataCurve*)d_selected_curve;
+	Table *t = c->table();
+	if (!t)
+		return;
 
-    int row = ((DataCurve*)d_selected_curve)->tableRow(d_selected_point);
-    t->goToRow(row + 1);
+	int row = c->tableRow(d_selected_point);
+	int col = t->colIndex(c->title().text());
+
+	t->table()->clearSelection();
+	t->table()->ensureCellVisible(row, col);
+	t->table()->selectCells(row, col, row, col);
 }
 
 int DataPickerTool::findClosestPoint(QwtPlotCurve *c, double x, bool up)
