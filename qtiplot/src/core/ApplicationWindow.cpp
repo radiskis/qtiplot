@@ -17113,8 +17113,17 @@ bool ApplicationWindow::changeFolder(Folder *newFolder, bool force)
 				w->showNormally();
 			else if(w->status() == MdiSubWindow::Minimized)
 				w->showMinimized();
-			else if(w->status() == MdiSubWindow::Maximized)
+			else if(w->status() == MdiSubWindow::Maximized){
+				MultiLayer *ml = qobject_cast<MultiLayer *>(w);
+				bool resizeLayers = false;
+				if (ml){
+					resizeLayers = ml->scaleLayersOnResize();
+					ml->setScaleLayersOnResize(false);
+				}
 				w->showMaximized();
+				if (ml)
+					ml->setScaleLayersOnResize(resizeLayers);
+			}
 		} else
 			w->setStatus(MdiSubWindow::Hidden);
 
