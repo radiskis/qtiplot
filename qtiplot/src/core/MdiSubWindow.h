@@ -138,6 +138,9 @@ public:
 	void setMinimized();
 	void setMaximized();
 
+	//! A showNormal() method making sure that layers in MultiLayer windows are not resized
+	void showNormally();
+
     //! Returns the size the window had before a change state event to minimized.
     QSize minRestoreSize(){return d_min_restore_size;};
 

@@ -13850,7 +13850,7 @@ void ApplicationWindow::createActions()
 	actionDeleteFitTables = new QAction(QIcon(":/close.png"), tr("Delete &Fit Tables"), this);
 	connect(actionDeleteFitTables, SIGNAL(activated()), this, SLOT(deleteFitTables()));
 
-	actionShowPlotWizard = new QAction(QIcon(":/wizard.png"), tr("Plot &Wizard"), this);
+	actionShowPlotWizard = new QAction(QIcon(":/wizard.png"), tr("Plot &Wizard") + "...", this);
 	actionShowPlotWizard->setShortcut( tr("Ctrl+Alt+W") );
 	connect(actionShowPlotWizard, SIGNAL(activated()), this, SLOT(showPlotWizard()));
 
@@ -14510,7 +14510,7 @@ void ApplicationWindow::createActions()
 	connect(actionTechnicalSupport, SIGNAL(activated()), this, SLOT(showSupportPage()));
 
 #ifdef SCRIPTING_PYTHON
-	actionScriptingLang = new QAction(tr("Scripting &language"), this);
+	actionScriptingLang = new QAction(tr("Scripting &language") + "...", this);
 	connect(actionScriptingLang, SIGNAL(activated()), this, SLOT(showScriptingLangDialog()));
 
 	actionCommentSelection = new QAction(QIcon(":/comment.png"), tr("Commen&t Selection"), this);
@@ -14869,7 +14869,7 @@ void ApplicationWindow::translateActionsStrings()
     actionToolBars->setMenuText(tr("&Toolbars..."));
 	actionToolBars->setShortcut(tr("Ctrl+Shift+T"));
 
-	actionShowPlotWizard->setMenuText(tr("Plot &Wizard"));
+	actionShowPlotWizard->setMenuText(tr("Plot &Wizard") + "...");
 	actionShowPlotWizard->setShortcut(tr("Ctrl+Alt+W"));
 
 	actionShowConfigureDialog->setMenuText(tr("&Preferences..."));
@@ -15212,7 +15212,7 @@ void ApplicationWindow::translateActionsStrings()
 	actionTechnicalSupport->setMenuText(tr("Technical &Support"));
 
 #ifdef SCRIPTING_PYTHON
-	actionScriptingLang->setMenuText(tr("Scripting &language"));
+	actionScriptingLang->setMenuText(tr("Scripting &language") + "...");
 	actionCommentSelection->setMenuText(tr("Commen&t Selection"));
 	actionCommentSelection->setToolTip(tr("Comment Selection"));
 	actionCommentSelection->setShortcut(tr("Ctrl+Shift+O"));
@@ -16758,19 +16758,13 @@ void ApplicationWindow::renameFolder(Q3ListViewItem *it, int col, const QString 
 void ApplicationWindow::showAllFolderWindows()
 {
 	QList<MdiSubWindow *> lst = current_folder->windowsList();
-	foreach(MdiSubWindow *w, lst)
-	{//force show all windows in current folder
-		if (w)
-		{
+	foreach(MdiSubWindow *w, lst){//force show all windows in current folder
+		if (w){
 			updateWindowLists(w);
-			switch (w->status())
-			{
+			switch (w->status()){
 				case MdiSubWindow::Hidden:
-					w->showNormal();
-					break;
-
 				case MdiSubWindow::Normal:
-					w->showNormal();
+					w->showNormally();
 					break;
 
 				case MdiSubWindow::Minimized:
@@ -16780,30 +16774,28 @@ void ApplicationWindow::showAllFolderWindows()
 				case MdiSubWindow::Maximized:
 					w->showMaximized();
 					break;
+
+				default:
+					break;
 			}
 		}
 	}
 
-	if ( (current_folder->children()).isEmpty() )
+	if ((current_folder->children()).isEmpty())
 		return;
 
 	FolderListItem *fi = current_folder->folderListItem();
 	FolderListItem *item = (FolderListItem *)fi->firstChild();
 	int initial_depth = item->depth();
-	while (item && item->depth() >= initial_depth)
-	{// show/hide windows in all subfolders
+	while (item && item->depth() >= initial_depth){//show/hide windows in all subfolders
 		lst = ((Folder *)item->folder())->windowsList();
 		foreach(MdiSubWindow *w, lst){
 			if (w && show_windows_policy == SubFolders){
 				updateWindowLists(w);
-				switch (w->status())
-				{
+				switch (w->status()){
 					case MdiSubWindow::Hidden:
-						w->showNormal();
-						break;
-
 					case MdiSubWindow::Normal:
-						w->showNormal();
+						w->showNormally();
 						break;
 
 					case MdiSubWindow::Minimized:
@@ -16813,9 +16805,11 @@ void ApplicationWindow::showAllFolderWindows()
 					case MdiSubWindow::Maximized:
 						w->showMaximized();
 						break;
+
+					default:
+						break;
 				}
-			}
-			else
+			} else
 				w->hide();
 		}
 
@@ -16829,16 +16823,14 @@ void ApplicationWindow::hideAllFolderWindows()
 	foreach(MdiSubWindow *w, lst)
 		hideWindow(w);
 
-	if ( (current_folder->children()).isEmpty() )
+	if ((current_folder->children()).isEmpty())
 		return;
 
-	if (show_windows_policy == SubFolders)
-	{
+	if (show_windows_policy == SubFolders){
 		FolderListItem *fi = current_folder->folderListItem();
 		FolderListItem *item = (FolderListItem *)fi->firstChild();
 		int initial_depth = item->depth();
-		while (item && item->depth() >= initial_depth)
-		{
+		while (item && item->depth() >= initial_depth){
 			lst = item->folder()->windowsList();
 			foreach(MdiSubWindow *w, lst)
 				hideWindow(w);
@@ -17118,7 +17110,7 @@ bool ApplicationWindow::changeFolder(Folder *newFolder, bool force)
 		if (!hiddenWindows->contains(w) && show_windows_policy != HideAll){
 			//show only windows in the current folder which are not hidden by the user
 			if(w->status() == MdiSubWindow::Normal)
-				w->showNormal();
+				w->showNormally();
 			else if(w->status() == MdiSubWindow::Minimized)
 				w->showMinimized();
 			else if(w->status() == MdiSubWindow::Maximized)
@@ -17138,7 +17130,7 @@ bool ApplicationWindow::changeFolder(Folder *newFolder, bool force)
 				if (!hiddenWindows->contains(w)){
 					if (show_windows_policy == SubFolders){
 						if (w->status() == MdiSubWindow::Normal || w->status() == MdiSubWindow::Maximized)
-							w->showNormal();
+							w->showNormally();
 						else if (w->status() == MdiSubWindow::Minimized)
 							w->showMinimized();
 					} else
