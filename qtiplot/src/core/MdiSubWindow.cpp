@@ -211,6 +211,21 @@ void MdiSubWindow::setHidden()
     hide();
 }
 
+void MdiSubWindow::showNormally()
+{
+	MultiLayer *ml = qobject_cast<MultiLayer*>(this);
+	bool resizeLayers = false;
+	if (ml){
+		resizeLayers = ml->scaleLayersOnResize();
+		ml->setScaleLayersOnResize(false);
+	}
+
+	showNormal();
+
+	if (ml)
+		ml->setScaleLayersOnResize(resizeLayers);
+}
+
 void MdiSubWindow::setNormal()
 {
 	showNormal();
