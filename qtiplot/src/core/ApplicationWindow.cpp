@@ -4556,8 +4556,6 @@ void ApplicationWindow::open()
 					return;
 				}
 
-				saveSettings();//the recent projects must be saved
-
 				#ifdef BROWSER_PLUGIN
 				if (isProjectFile(fn))
 					closeProject();
@@ -4566,8 +4564,10 @@ void ApplicationWindow::open()
 				ApplicationWindow *a = open (fn);
 				if (a){
 					a->workingDir = workingDir;
-					if (isProjectFile(fn))
+					if (isProjectFile(fn)){
+						recentProjects = a->recentProjects;//the recent projects must be saved
 						this->close();
+					}
 				}
 				#endif
 
