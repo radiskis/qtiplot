@@ -379,13 +379,12 @@ void MultiLayer::resizeLayers (QResizeEvent *re)
 		size.setHeight(oldSize.height());
 
 	bool invalidOldSize = !oldSize.isValid();
-	if (invalidOldSize){// The old size is invalid when maximizing a window (why?)
+	if (invalidOldSize){
+	//The old size is invalid when maximizing a window or when a minimized window is restored from a project file
 		if (d_canvas_size.isValid())
 			oldSize = d_canvas_size;
-		else {
-			QRect r = canvasChildrenRect();
-			oldSize = QSize(r.width() + left_margin + right_margin, r.height() + top_margin + bottom_margin);
-		}
+		else
+			return;
 	}
 
 	double w_ratio = (double)size.width()/(double)oldSize.width();

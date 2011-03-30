@@ -16761,23 +16761,7 @@ void ApplicationWindow::showAllFolderWindows()
 	foreach(MdiSubWindow *w, lst){//force show all windows in current folder
 		if (w){
 			updateWindowLists(w);
-			switch (w->status()){
-				case MdiSubWindow::Hidden:
-				case MdiSubWindow::Normal:
-					w->showNormally();
-					break;
-
-				case MdiSubWindow::Minimized:
-					w->showMinimized();
-					break;
-
-				case MdiSubWindow::Maximized:
-					w->showMaximized();
-					break;
-
-				default:
-					break;
-			}
+			w->restoreWindow();
 		}
 	}
 
@@ -16792,23 +16776,7 @@ void ApplicationWindow::showAllFolderWindows()
 		foreach(MdiSubWindow *w, lst){
 			if (w && show_windows_policy == SubFolders){
 				updateWindowLists(w);
-				switch (w->status()){
-					case MdiSubWindow::Hidden:
-					case MdiSubWindow::Normal:
-						w->showNormally();
-						break;
-
-					case MdiSubWindow::Minimized:
-						w->showMinimized();
-						break;
-
-					case MdiSubWindow::Maximized:
-						w->showMaximized();
-						break;
-
-					default:
-						break;
-				}
+				w->restoreWindow();
 			} else
 				w->hide();
 		}
@@ -17109,21 +17077,7 @@ bool ApplicationWindow::changeFolder(Folder *newFolder, bool force)
 	foreach(MdiSubWindow *w, lst){
 		if (!hiddenWindows->contains(w) && show_windows_policy != HideAll){
 			//show only windows in the current folder which are not hidden by the user
-			if(w->status() == MdiSubWindow::Normal)
-				w->showNormally();
-			else if(w->status() == MdiSubWindow::Minimized)
-				w->showMinimized();
-			else if(w->status() == MdiSubWindow::Maximized){
-				MultiLayer *ml = qobject_cast<MultiLayer *>(w);
-				bool resizeLayers = false;
-				if (ml){
-					resizeLayers = ml->scaleLayersOnResize();
-					ml->setScaleLayersOnResize(false);
-				}
-				w->showMaximized();
-				if (ml)
-					ml->setScaleLayersOnResize(resizeLayers);
-			}
+			w->restoreWindow();
 		} else
 			w->setStatus(MdiSubWindow::Hidden);
 
@@ -17139,7 +17093,7 @@ bool ApplicationWindow::changeFolder(Folder *newFolder, bool force)
 				if (!hiddenWindows->contains(w)){
 					if (show_windows_policy == SubFolders){
 						if (w->status() == MdiSubWindow::Normal || w->status() == MdiSubWindow::Maximized)
-							w->showNormally();
+							w->showNormal();
 						else if (w->status() == MdiSubWindow::Minimized)
 							w->showMinimized();
 					} else

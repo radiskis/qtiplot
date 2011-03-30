@@ -211,16 +211,29 @@ void MdiSubWindow::setHidden()
     hide();
 }
 
-void MdiSubWindow::showNormally()
+void MdiSubWindow::restoreWindow()
 {
-	MultiLayer *ml = qobject_cast<MultiLayer*>(this);
+	MultiLayer *ml = qobject_cast<MultiLayer *>(this);
 	bool resizeLayers = false;
 	if (ml){
 		resizeLayers = ml->scaleLayersOnResize();
 		ml->setScaleLayersOnResize(false);
 	}
 
-	showNormal();
+	switch (d_status){
+		case MdiSubWindow::Hidden:
+		case MdiSubWindow::Normal:
+			showNormal();
+			break;
+
+		case MdiSubWindow::Minimized:
+			showMinimized();
+			break;
+
+		case MdiSubWindow::Maximized:
+			showMaximized();
+			break;
+	}
 
 	if (ml)
 		ml->setScaleLayersOnResize(resizeLayers);
