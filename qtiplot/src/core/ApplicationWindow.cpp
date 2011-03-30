@@ -4567,7 +4567,8 @@ void ApplicationWindow::open()
 					if (isProjectFile(fn)){
 						recentProjects = a->recentProjects;//the recent projects must be saved
 						this->close();
-					}
+					} else
+						saveSettings();//the recent projects must be saved
 				}
 				#endif
 
