@@ -1765,7 +1765,7 @@ void MultiLayer::copy(MultiLayer* ml)
 	d_scale_on_print = ml->scaleLayersOnPrint();
 	d_print_cropmarks = ml->printCropmarksEnabled();
 
-	QList<Graph*> lst = ml->stackOrderedLayersList();
+	QList<Graph*> lst = ml->layersList();
 	foreach (Graph *g, lst){
 		Graph* g2 = addLayer(g->pos().x(), g->pos().y(), g->width(), g->height());
 		g2->setAutoscaleFonts(false);
