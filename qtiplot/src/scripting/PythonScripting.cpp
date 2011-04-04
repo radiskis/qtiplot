@@ -441,6 +441,6 @@ const QString PythonScripting::mathFunctionDoc(const QString &name) const
 const QStringList PythonScripting::fileExtensions() const
 {
 	QStringList extensions;
-	extensions << "py" << "PY";
+	extensions << "py";
 	return extensions;
 }
