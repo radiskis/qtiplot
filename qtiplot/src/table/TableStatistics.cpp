@@ -40,18 +40,15 @@
 
 TableStatistics::TableStatistics(ScriptingEnv *env, ApplicationWindow *parent, Table *base, Type t, QList<int> targets, int start, int end)
 	: Table(env, 1, 1, "", parent, ""),
-	d_base(base), d_type(t), d_targets(targets), d_start(start), d_end(end)
+	d_base(NULL), d_type(t), d_targets(targets), d_start(start), d_end(end)
 {
-    d_table->setReadOnly(true);
+	d_table->setReadOnly(true);
 	setCaptionPolicy(MdiSubWindow::Both);
 	if (d_start < 0)
 		d_start = 0;
 
 	QStringList header = QStringList(), comments = QStringList();
 	if (d_type == row){
-		if (d_end < 0)
-			d_end = d_base->numCols() - 1;
-
 		resizeRows(d_targets.size());
 		resizeCols(11);
 
@@ -64,17 +61,8 @@ TableStatistics::TableStatistics(ScriptingEnv *env, ApplicationWindow *parent, T
 		d_stats_col_type << Row << Cols << Mean << StandardDev << StandardError << Variance << Sum << Max << Min << N << Median;
 
 		for (int i = 0; i < d_targets.size(); i++)
-            setText(i, 0, QString::number(d_targets[i]+1));
-
-		if (d_base){
-			setName(QString(d_base->objectName()) + "-" + tr("RowStats"));
-			setWindowLabel(tr("Row Statistics of %1").arg(base->objectName()));
-			update(d_base, QString::null);
-		}
+			setText(i, 0, QString::number(d_targets[i]+1));
 	} else if (d_type == column){
-		if (d_end < 0)
-			d_end = d_base->numRows() - 1;
-
 		resizeRows(d_targets.size());
 		resizeCols(13);
 
@@ -87,22 +75,13 @@ TableStatistics::TableStatistics(ScriptingEnv *env, ApplicationWindow *parent, T
 		d_stats_col_type << Col << Rows << Mean << StandardDev << StandardError << Variance << Sum << iMax << Max << iMin << Min << N << Median;
 
 		setColumnType(1, Text);
-
-		if (d_base){
-			setName(QString(d_base->objectName()) + "-" + tr("ColStats"));
-			setWindowLabel(tr("Column Statistics of %1").arg(base->objectName()));
-			for (int i=0; i < d_targets.size(); i++){
-				setText(i, 0, d_base->colLabel(d_targets[i]));
-				update(d_base, d_base->colName(d_targets[i]));
-			}
-		}
 	}
-    int w = 9*(d_table->horizontalHeader())->sectionSize(0);
+	int w = 9*(d_table->horizontalHeader())->sectionSize(0);
 	int h = 0;
 	if (numRows()>11)
-        h = 11*(d_table->verticalHeader())->sectionSize(0);
+		h = 11*(d_table->verticalHeader())->sectionSize(0);
 	else
-        h = (numRows()+1)*(d_table->verticalHeader())->sectionSize(0);
+		h = (numRows()+1)*(d_table->verticalHeader())->sectionSize(0);
 	setGeometry(50, 50, w + 45, h + 45);
 
 	setColPlotDesignation(0, Table::X);
@@ -110,22 +89,54 @@ TableStatistics::TableStatistics(ScriptingEnv *env, ApplicationWindow *parent, T
 	setHeader(header);
 	setColComments(comments);
 
-	if (d_base){
-		connect(d_base, SIGNAL(modifiedData(Table*, const QString&)), this, SLOT(update(Table*, const QString&)));
-		connect(d_base, SIGNAL(changedColHeader(const QString&, const QString&)), this, SLOT(renameCol(const QString&, const QString&)));
-		connect(d_base, SIGNAL(removedCol(const QString&)), this, SLOT(removeCol(const QString&)));
-		connect(d_base, SIGNAL(destroyed()), this, SLOT(closedBase()));
-	}
+	setBase(base);
 
 	connect(this, SIGNAL(removedCol(int)), this, SLOT(removeStatsCol(int)));
 	connect(this, SIGNAL(colIndexChanged(int, int)), this, SLOT(changeColIndex(int, int)));
+}
+
+void TableStatistics::setBase(Table *t)
+{
+	if (!t)
+		return;
+
+	d_base = t;
+	d_base_name = d_base->objectName();
+
+	if (d_type == row){
+		if (d_end < 0)
+			d_end = d_base->numCols() - 1;
+
+		for (int i = 0; i < d_targets.size(); i++)
+			setText(i, 0, QString::number(d_targets[i]+1));
+
+		if (d_base){
+			setName(d_base_name + "-" + tr("RowStats"));
+			setWindowLabel(tr("Row Statistics of %1").arg(d_base_name));
+			update(d_base, QString::null);
+		}
+	} else if (d_type == column){
+		if (d_end < 0)
+			d_end = d_base->numRows() - 1;
+
+		setName(d_base_name + "-" + tr("ColStats"));
+		setWindowLabel(tr("Column Statistics of %1").arg(d_base_name));
+		for (int i = 0; i < d_targets.size(); i++){
+			setText(i, 0, d_base->colLabel(d_targets[i]));
+			update(d_base, d_base->colName(d_targets[i]));
+		}
+	}
+
+	connect(d_base, SIGNAL(modifiedData(Table*, const QString&)), this, SLOT(update(Table*, const QString&)));
+	connect(d_base, SIGNAL(changedColHeader(const QString&, const QString&)), this, SLOT(renameCol(const QString&, const QString&)));
+	connect(d_base, SIGNAL(removedCol(const QString&)), this, SLOT(removeCol(const QString&)));
+	connect(d_base, SIGNAL(destroyed()), this, SLOT(closedBase()));
 }
 
 void TableStatistics::setColumnStatsTypes(const QList<int>& colStatTypes)
 {
 	setNumCols(colStatTypes.size());
 	d_stats_col_type = colStatTypes;
-	update();
 }
 
 void TableStatistics::changeColIndex(int fromIndex, int toIndex)
@@ -170,11 +181,11 @@ void TableStatistics::closedBase()
 
 void TableStatistics::update()
 {
-    if (!d_base)
-        return;
+	if (!d_base)
+		return;
 
-    for (int i = 0; i < d_base->numCols (); i++)
-        update(d_base, d_base->colName(i));
+	for (int i = 0; i < d_base->numCols (); i++)
+		update(d_base, d_base->colName(i));
 }
 
 void TableStatistics::update(Table *t, const QString& colName)
@@ -185,7 +196,6 @@ void TableStatistics::update(Table *t, const QString& colName)
 	int j;
 	if (d_type == row){
 		for (int r = 0; r < d_targets.size(); r++){
-			int cols = d_base->numCols();
 			int i = d_targets[r];
 			int m = 0;
 			for (j = d_start; j <= d_end; j++){
@@ -269,7 +279,6 @@ void TableStatistics::update(Table *t, const QString& colName)
 				int i = d_base->colIndex(colName);
 				if (d_base->columnType(i) != Numeric) return;
 
-				int rows = d_base->numRows();
 				int start = -1, m = 0;
 				for (j = d_start; j <= d_end; j++){
 					if (!d_base->text(j, i).isEmpty()){

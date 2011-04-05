@@ -50,10 +50,14 @@ class TableStatistics : public Table
 		Type type() const { return d_type; }
 		//! return the base table of which statistics are displayed
 		Table *base() const { return d_base; }
+		void setBase(Table *t);
 		// saving
 		virtual void save(const QString&, const QString &geometry, bool = false);
 		void setColumnStatsTypes(const QList<int>& colStatTypes);
 		void setRange(int start, int end);
+
+		QString baseName(){return d_base_name;}
+		void setBaseName(const QString& name){d_base_name = name;}
 
     public slots:
         //! update statistics when the user triggers a recaculate action
@@ -79,6 +83,7 @@ class TableStatistics : public Table
 		QList<int> d_targets;
 		QList<int> d_stats_col_type;
 		int d_start, d_end;
+		QString d_base_name;
 };
 
 #endif

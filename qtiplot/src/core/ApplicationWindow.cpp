@@ -4987,6 +4987,13 @@ ApplicationWindow* ApplicationWindow::openProject(const QString& fn, bool factor
 		return 0;
 	}
 
+	QList<MdiSubWindow*> tables = app->tableList();
+	foreach(MdiSubWindow* w, tables){
+		TableStatistics *ts = qobject_cast<TableStatistics *>(w);
+		if (ts && !ts->base())
+			ts->setBase(app->table(ts->baseName()));
+	}
+
 	QFileInfo fi2(f);
 	QString fileName = fi2.absFilePath();
 
@@ -12288,11 +12295,14 @@ TableStatistics* ApplicationWindow::openTableStatistics(const QStringList &flist
 	QString caption=list[0];
 
 	QList<int> targets;
-	for (int i=1; i <= (*line).count('\t'); i++)
+	for (int i = 1; i <= (*line).count('\t'); i++)
 		targets << (*line).section('\t',i,i).toInt();
 
-	TableStatistics* w = newTableStatistics(table(list[1]),
+	Table *base = table(list[1]);
+	TableStatistics* w = newTableStatistics(base,
 			list[2]=="row" ? TableStatistics::row : TableStatistics::column, targets, 0, -1, caption);
+	if (!base)
+		w->setBaseName(list[1]);
 
 	setListViewDate(caption, list[3]);
 	w->setBirthDate(list[3]);
