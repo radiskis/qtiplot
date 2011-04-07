@@ -12789,10 +12789,6 @@ tiverem o mesmo número de linhas.</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Ignore lines starting with</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Use first row &amp;as</source>
         <translation type="unfinished"></translation>
     </message>
@@ -12862,6 +12858,10 @@ tiverem o mesmo número de linhas.</translation>
     </message>
     <message>
         <source>New Matrice</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ignore lines containing</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

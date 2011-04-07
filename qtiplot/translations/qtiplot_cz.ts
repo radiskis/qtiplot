@@ -9181,7 +9181,7 @@ K tomu lze použít následujících zvláštních kódů:
     </message>
     <message>
         <source>Ignore lines starting with</source>
-        <translation>Nevšímat si řádků začínajících na</translation>
+        <translation type="obsolete">Nevšímat si řádků začínajících na</translation>
     </message>
     <message>
         <source>LF (Unix)</source>
@@ -9426,6 +9426,10 @@ K tomu lze použít následujících zvláštních kódů:
     <message>
         <source>Column T&amp;ypes...</source>
         <translation>T&amp;ypy sloupců...</translation>
+    </message>
+    <message>
+        <source>Ignore lines containing</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

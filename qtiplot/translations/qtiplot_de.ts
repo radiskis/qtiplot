@@ -16926,7 +16926,7 @@ Die folgenden Spezialcodes können verwendet werden:
     </message>
     <message>
         <source>Ignore lines starting with</source>
-        <translation>Ignoriere Zeilen beginnend mit</translation>
+        <translation type="obsolete">Ignoriere Zeilen beginnend mit</translation>
     </message>
     <message>
         <source>Use first row to &amp;name columns</source>
@@ -17121,6 +17121,10 @@ in der ASCII-Datei unterschiedlich viele Zeilen aufweisen.</translation>
     </message>
     <message>
         <source>Column T&amp;ypes...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ignore lines containing</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

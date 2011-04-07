@@ -9210,7 +9210,7 @@ The following special codes can be used:
     </message>
     <message>
         <source>Ignore lines starting with</source>
-        <translation>Ignorer les lignes commançant par </translation>
+        <translation type="obsolete">Ignorer les lignes commançant par </translation>
     </message>
     <message>
         <source>Use second row as &amp;comments</source>
@@ -9404,6 +9404,10 @@ have the same number of rows.</source>
     <message>
         <source>Column T&amp;ypes...</source>
         <translation>T&amp;ypes de colonnes...</translation>
+    </message>
+    <message>
+        <source>Ignore lines containing</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

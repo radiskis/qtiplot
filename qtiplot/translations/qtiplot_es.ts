@@ -14354,10 +14354,6 @@ The following special codes can be used:
         <translation type="unfinished">líneas</translation>
     </message>
     <message>
-        <source>Ignore lines starting with</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Use first row to &amp;name columns</source>
         <translation type="obsolete">Usar primera fila para &amp;nombrar columnas</translation>
     </message>
@@ -14537,6 +14533,10 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Column T&amp;ypes...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ignore lines containing</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

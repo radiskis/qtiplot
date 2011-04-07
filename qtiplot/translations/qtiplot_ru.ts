@@ -9243,7 +9243,7 @@ be replaced with a single space.</source>
     </message>
     <message>
         <source>Ignore lines starting with</source>
-        <translation>Исключить строки, начинающиеся с</translation>
+        <translation type="obsolete">Исключить строки, начинающиеся с</translation>
     </message>
     <message>
         <source>Import each file as: </source>
@@ -9442,6 +9442,10 @@ have the same number of rows.</source>
     <message>
         <source>Column T&amp;ypes...</source>
         <translation>&amp;Тип столбцов...</translation>
+    </message>
+    <message>
+        <source>Ignore lines containing</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

@@ -12840,7 +12840,7 @@ The following special codes can be used:
     </message>
     <message>
         <source>Ignore lines starting with</source>
-        <translation>Ignoră liniile începând cu</translation>
+        <translation type="obsolete">Ignoră liniile începând cu</translation>
     </message>
     <message>
         <source>Use first row to &amp;name columns</source>
@@ -13005,6 +13005,10 @@ have the same number of rows.</source>
     <message>
         <source>Column T&amp;ypes...</source>
         <translation>T&amp;ipul coloanei...</translation>
+    </message>
+    <message>
+        <source>Ignore lines containing</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
