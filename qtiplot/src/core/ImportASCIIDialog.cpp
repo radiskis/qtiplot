@@ -2,7 +2,7 @@
     File                 : ImportASCIIDialog.cpp
     Project              : QtiPlot
     --------------------------------------------------------------------
-	Copyright            : (C) 2004 - 2010 by Ion Vasilief,
+	Copyright            : (C) 2004 - 2011 by Ion Vasilief,
 						   (C) 2006 - June 2007 by Knut Franke
 	Email (use @ for *)  : ion_vasilief*yahoo.fr
     Description          : Import ASCII file(s) dialog
@@ -158,7 +158,7 @@ void ImportASCIIDialog::initAdvancedOptions()
 	d_ignored_lines->setSizePolicy( QSizePolicy::Expanding, QSizePolicy::Fixed );
 	advanced_layout->addWidget(d_ignored_lines, 2, 1);
 
-	advanced_layout->addWidget(new QLabel(tr("Ignore lines starting with")), 3, 0);
+	advanced_layout->addWidget(new QLabel(tr("Ignore lines containing")), 3, 0);
 	d_comment_string = new QLineEdit();
     advanced_layout->addWidget(d_comment_string, 3, 1);
 

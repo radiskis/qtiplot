@@ -14876,7 +14876,7 @@ har samma antal rader.</translation>
     </message>
     <message>
         <source>Ignore lines starting with</source>
-        <translation>Uteslut rader, som börjar med</translation>
+        <translation type="obsolete">Uteslut rader, som börjar med</translation>
     </message>
     <message>
         <source>Use second row as &amp;comments</source>
@@ -14973,6 +14973,10 @@ har samma antal rader.</translation>
     <message>
         <source>Column T&amp;ypes...</source>
         <translation>Kolumn&amp;typer...</translation>
+    </message>
+    <message>
+        <source>Ignore lines containing</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

@@ -9567,10 +9567,6 @@ The following special codes can be used:
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Ignore lines starting with</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Use second row as &amp;comments</source>
         <translation type="unfinished"></translation>
     </message>
@@ -9734,6 +9730,10 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Column T&amp;ypes...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ignore lines containing</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
