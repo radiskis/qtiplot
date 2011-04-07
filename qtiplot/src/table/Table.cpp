@@ -1807,7 +1807,7 @@ void Table::sortColumns(const QStringList&s, int type, int order, const QString&
 {
 	int cols = s.count();
 	if(!type){//Sort columns separately
-		for(int i=0;i<cols;i++)
+		for(int i = 0; i < cols; i++)
 			sortColumn(colIndex(s[i]), order);
 	} else {
 		int leadcol = colIndex(leadCol);
@@ -1829,7 +1829,7 @@ void Table::sortColumns(const QStringList&s, int type, int order, const QString&
 				strings[non_empty_cells] = d_table->text(j, leadcol);				
 
 				if (columnType(leadcol) == Table::Date)
-					data_double[non_empty_cells] = (double)QDate::fromString (d_table->text(j, leadcol), format).toJulianDay();
+					data_double[non_empty_cells] = fromDateTime(QDateTime::fromString (d_table->text(j, leadcol), format));
 				else if (columnType(leadcol) == Table::Numeric)
 					data_double[non_empty_cells] = cell(j, leadcol);
 
@@ -1875,13 +1875,13 @@ void Table::sortColumns(const QStringList&s, int type, int order, const QString&
 			} else if (columnType(col) == Date) {
 				QString format = col_format[col];
 				for (int j = 0; j<non_empty_cells; j++)
-					data_double[j] = (double)QDate::fromString (d_table->text(valid_cell[j], col), format).toJulianDay();
+					data_double[j] = fromDateTime(QDateTime::fromString(d_table->text(valid_cell[j], col), format));
 				if(!order)
 					for (int j=0; j<non_empty_cells; j++)
-						d_table->setText(valid_cell[j], col, QDate::fromJulianDay(data_double[p[j]]).toString(format));
+						d_table->setText(valid_cell[j], col, dateTime(data_double[p[j]]).toString(format));
 				else
 					for (int j=0; j<non_empty_cells; j++)
-						d_table->setText(valid_cell[j], col, QDate::fromJulianDay(data_double[p[non_empty_cells-j-1]]).toString(format));
+						d_table->setText(valid_cell[j], col, dateTime(data_double[p[non_empty_cells - j - 1]]).toString(format));
 			} else if (columnType(col) == Numeric) {
                 for (int j = 0; j<non_empty_cells; j++)
                     data_double[j] = cell(valid_cell[j], col);
@@ -2092,11 +2092,8 @@ void Table::saveToMemory()
 				d_saved_cells[col][row] = ref.msecsTo(t);
 			}
 		} else if (colType == Date){
-			QTime ref = QTime(0, 0);
-			for (int row = 0; row < rows; row++){
-				QDateTime dt = QDateTime::fromString(d_table->text(row, col).trimmed(), fmt);
-				d_saved_cells[col][row] = dt.date().toJulianDay() - 1 + (double)ref.msecsTo(dt.time())/864.0e5;
-			}
+			for (int row = 0; row < rows; row++)
+				d_saved_cells[col][row] = fromDateTime(QDateTime::fromString(d_table->text(row, col).trimmed(), fmt));
 		}
 	}
 
@@ -2190,6 +2187,11 @@ QDateTime Table::dateTime(double val)
 	d.setTime(d.time().addMSecs(qRound(msecs)));
 
 	return d;
+}
+
+double Table::fromDateTime(const QDateTime& dt)
+{
+	return dt.date().toJulianDay() - 1 + (double)QTime(0, 0).msecsTo(dt.time())/864.0e5;
 }
 
 bool Table::setDateFormat(const QString& format, int col, bool updateCells)
