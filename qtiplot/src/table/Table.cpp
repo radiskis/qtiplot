@@ -1767,8 +1767,7 @@ void Table::normalizeCol(int col)
 
 void Table::sortColumnsDialog()
 {
-	SortDialog *sortd = new SortDialog((QWidget*)applicationWindow());
-	sortd->setAttribute(Qt::WA_DeleteOnClose);
+	SortDialog *sortd = new SortDialog(applicationWindow());
 	connect (sortd, SIGNAL(sort(int, int, const QString&)), this, SLOT(sortColumns(int, int, const QString&)));
 	sortd->insertColumnsList(selectedColumns());
 	sortd->exec();
@@ -1776,8 +1775,7 @@ void Table::sortColumnsDialog()
 
 void Table::sortTableDialog()
 {
-	SortDialog *sortd = new SortDialog((QWidget*)applicationWindow());
-	sortd->setAttribute(Qt::WA_DeleteOnClose);
+	SortDialog *sortd = new SortDialog(applicationWindow());
 	connect (sortd, SIGNAL(sort(int, int, const QString&)), this, SLOT(sort(int, int, const QString&)));
 	sortd->insertColumnsList(colNames());
 	sortd->exec();
@@ -1828,7 +1826,7 @@ void Table::sortColumns(const QStringList&s, int type, int order, const QString&
 			if (!d_table->text(j, leadcol).isEmpty()){
 				strings[non_empty_cells] = d_table->text(j, leadcol);				
 
-				if (columnType(leadcol) == Table::Date)
+				if (columnType(leadcol) == Table::Date || columnType(leadcol) == Table::Time)
 					data_double[non_empty_cells] = fromDateTime(QDateTime::fromString (d_table->text(j, leadcol), format));
 				else if (columnType(leadcol) == Table::Numeric)
 					data_double[non_empty_cells] = cell(j, leadcol);
@@ -1859,20 +1857,21 @@ void Table::sortColumns(const QStringList&s, int type, int order, const QString&
 		setAutoUpdateValues(false);
 
 		for(int i = 0; i < cols; i++){// Since we have the permutation index, sort all the columns
-            int col = colIndex(s[i]);
-            if (d_table->isColumnReadOnly(col))
-                continue;
+			int col = colIndex(s[i]);
+			if (d_table->isColumnReadOnly(col))
+				continue;
 
-			if (columnType(col) == Text){
-                for (int j = 0; j<non_empty_cells; j++)
-                    strings[j] = text(valid_cell[j], col);
-                if(!order)
-                    for (int j = 0; j < non_empty_cells; j++)
-                        d_table->setText(valid_cell[j], col, strings[p[j]]);
-                else
-                    for (int j = 0; j < non_empty_cells; j++)
+			int type = columnType(col);
+			if (type == Text){
+				for (int j = 0; j<non_empty_cells; j++)
+					strings[j] = text(valid_cell[j], col);
+				if(!order)
+					for (int j = 0; j < non_empty_cells; j++)
+						d_table->setText(valid_cell[j], col, strings[p[j]]);
+				else
+					for (int j = 0; j < non_empty_cells; j++)
 						d_table->setText(valid_cell[j], col, strings[p[non_empty_cells - j - 1]]);
-			} else if (columnType(col) == Date) {
+			} else if (type == Date || type == Time) {
 				QString format = col_format[col];
 				for (int j = 0; j<non_empty_cells; j++)
 					data_double[j] = fromDateTime(QDateTime::fromString(d_table->text(valid_cell[j], col), format));
@@ -1882,22 +1881,22 @@ void Table::sortColumns(const QStringList&s, int type, int order, const QString&
 				else
 					for (int j=0; j<non_empty_cells; j++)
 						d_table->setText(valid_cell[j], col, dateTime(data_double[p[non_empty_cells - j - 1]]).toString(format));
-			} else if (columnType(col) == Numeric) {
-                for (int j = 0; j<non_empty_cells; j++)
-                    data_double[j] = cell(valid_cell[j], col);
-                int prec;
-                char f;
-                columnNumericFormat(col, &f, &prec);
-                if(!order)
-                    for (int j=0; j<non_empty_cells; j++)
-                        d_table->setText(valid_cell[j], col, locale().toString(data_double[p[j]], f, prec));
-                else
-                    for (int j=0; j<non_empty_cells; j++)
-                        d_table->setText(valid_cell[j], col, locale().toString(data_double[p[non_empty_cells-j-1]], f, prec));
-            }
-        }
-        delete[] p;
-    }
+			} else if (type == Numeric) {
+				for (int j = 0; j<non_empty_cells; j++)
+					data_double[j] = cell(valid_cell[j], col);
+				int prec;
+				char f;
+				columnNumericFormat(col, &f, &prec);
+				if(!order)
+					for (int j=0; j<non_empty_cells; j++)
+						d_table->setText(valid_cell[j], col, locale().toString(data_double[p[j]], f, prec));
+				else
+					for (int j=0; j<non_empty_cells; j++)
+						d_table->setText(valid_cell[j], col, locale().toString(data_double[p[non_empty_cells-j-1]], f, prec));
+			}
+		}
+		delete[] p;
+	}
 
 	for(int i = 0; i < cols; i++){// notify changes
 		int col = colIndex(s[i]);
@@ -1915,23 +1914,31 @@ void Table::sortColumn(int col, int order)
 	if (col < 0)
 		col = d_table->currentColumn();
 
-    if (d_table->isColumnReadOnly(col))
-        return;
+	if (d_table->isColumnReadOnly(col))
+		return;
 
 	int rows=d_table->numRows();
 	int non_empty_cells = 0;
 	QVarLengthArray<int> valid_cell(rows);
 	QVarLengthArray<double> r(rows);
-    QStringList text_cells;
+	QStringList text_cells;
 	QString format = col_format[col];
 	for (int i = 0; i <rows; i++){
 		if (!d_table->text(i, col).isEmpty()){
-            if (columnType(col) == Table::Text)
-                text_cells << d_table->text(i, col);
-			else if (columnType(col) == Table::Date)
-				r[non_empty_cells] = (double)QDate::fromString (d_table->text(i, col), format).toJulianDay();
-			else if (columnType(col) == Table::Numeric)
-			    r[non_empty_cells] = cell(i, col);
+			switch(columnType(col)){
+				case Table::Text:
+					text_cells << d_table->text(i, col);
+				break;
+				case Table::Date:
+				case Table::Time:
+					r[non_empty_cells] = fromDateTime(QDateTime::fromString(d_table->text(i, col), format));
+				break;
+				case Table::Numeric:
+					r[non_empty_cells] = cell(i, col);
+				break;
+				default:
+					break;
+			}
 
 			valid_cell[non_empty_cells] = i;
 			non_empty_cells++;
@@ -1941,45 +1948,46 @@ void Table::sortColumn(int col, int order)
 	if (!non_empty_cells)
 		return;
 
+	int type = columnType(col);
 	valid_cell.resize(non_empty_cells);
-    if (columnType(col) == Table::Text){
-        r.clear();
-        text_cells.sort();
-    } else {
-        r.resize(non_empty_cells);
-        gsl_sort(r.data(), 1, non_empty_cells);
-    }
+	if (type == Table::Text){
+		r.clear();
+		text_cells.sort();
+	} else {
+		r.resize(non_empty_cells);
+		gsl_sort(r.data(), 1, non_empty_cells);
+	}
 
 	blockSignals(true);
 
-    if (columnType(col) == Table::Text){
-        if (!order){
-            for (int i=0; i<non_empty_cells; i++)
-                d_table->setText(valid_cell[i], col, text_cells[i]);
-        } else {
-            for (int i=0; i<non_empty_cells; i++)
-                d_table->setText(valid_cell[i], col, text_cells[non_empty_cells-i-1]);
-        }
-	} else if (columnType(col) == Table::Date){
+	if (type == Table::Text){
+		if (!order){
+			for (int i=0; i<non_empty_cells; i++)
+				d_table->setText(valid_cell[i], col, text_cells[i]);
+		} else {
+			for (int i=0; i<non_empty_cells; i++)
+				d_table->setText(valid_cell[i], col, text_cells[non_empty_cells-i-1]);
+		}
+	} else if (type == Table::Date || type == Table::Time){
 		if (!order) {
 			for (int i=0; i<non_empty_cells; i++)
-				 d_table->setText(valid_cell[i], col, QDate::fromJulianDay(r[i]).toString(format));
+				d_table->setText(valid_cell[i], col, dateTime(r[i]).toString(format));
 		 } else {
 			 for (int i=0; i<non_empty_cells; i++)
-				 d_table->setText(valid_cell[i], col, QDate::fromJulianDay(r[non_empty_cells-i-1]).toString(format));
+				 d_table->setText(valid_cell[i], col, dateTime(r[non_empty_cells-i-1]).toString(format));
 		 }
-	} else if (columnType(col) == Table::Numeric){
-	   int prec;
-	   char f;
-	   columnNumericFormat(col, &f, &prec);
-	   if (!order) {
-		   for (int i=0; i<non_empty_cells; i++)
+	} else if (type == Table::Numeric){
+		int prec;
+		char f;
+		columnNumericFormat(col, &f, &prec);
+		if (!order) {
+			for (int i=0; i<non_empty_cells; i++)
 				d_table->setText(valid_cell[i], col, locale().toString(r[i], f, prec));
 		} else {
 			for (int i=0; i<non_empty_cells; i++)
 				d_table->setText(valid_cell[i], col, locale().toString(r[non_empty_cells-i-1], f, prec));
 		}
-    }
+	}
 
 	blockSignals(false);
 
@@ -1989,12 +1997,12 @@ void Table::sortColumn(int col, int order)
 
 void Table::sortColAsc()
 {
-	sortColumn(d_table->currentColumn ());
+	sortColumns(selectedColumns());
 }
 
 void Table::sortColDesc()
 {
-	sortColumn(d_table->currentColumn(), 1);
+	sortColumns(selectedColumns(), 0, 1);
 }
 
 int Table::numRows()

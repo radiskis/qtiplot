@@ -2,7 +2,7 @@
     File                 : SortDialog.cpp
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2006 by Ion Vasilief
+	Copyright            : (C) 2006 - 2011 by Ion Vasilief
     Email (use @ for *)  : ion_vasilief*yahoo.fr
     Description          : Sorting options dialog
 
@@ -40,6 +40,7 @@ SortDialog::SortDialog( QWidget* parent, Qt::WFlags fl )
 {
 	setWindowTitle(tr("QtiPlot - Sorting Options"));
 	setSizeGripEnabled(true);
+	setAttribute(Qt::WA_DeleteOnClose);
 
 	QGroupBox *groupBox1 = new QGroupBox();
 	QGridLayout * topLayout = new QGridLayout(groupBox1);
