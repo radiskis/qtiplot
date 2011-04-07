@@ -7348,10 +7348,7 @@ void ApplicationWindow::sortActiveTable()
 	if (!t)
 		return;
 
-	if ((int)t->selectedColumns().count()>0)
-		t->sortTableDialog();
-	else
-		QMessageBox::warning(this, "QtiPlot - Column selection error","Please select a column first!");
+	t->sortTableDialog();
 }
 
 void ApplicationWindow::sortSelection()
@@ -7739,7 +7736,11 @@ void ApplicationWindow::showColMenu(int c)
 			contextMenu.addMenu(&norm);
 
 			contextMenu.insertSeparator();
-			contextMenu.addAction(actionSortSelection);
+			sorting.addAction(QIcon(":/sort_ascending.png"), tr("&Ascending"), w, SLOT(sortColAsc()));
+			sorting.addAction(QIcon(":/sort_descending.png"), tr("&Descending"), w, SLOT(sortColDesc()));
+			sorting.addAction(actionSortSelection);
+			sorting.setTitle("&" + tr("Sort Columns"));
+			contextMenu.addMenu(&sorting);
 			contextMenu.addAction(actionSortTable);
 			contextMenu.insertSeparator();
 			contextMenu.addAction(actionShowColStatistics);
@@ -9895,7 +9896,13 @@ void ApplicationWindow::analysisMenuAboutToShow()
 		anovaMenu->addAction(actionTwoWayANOVA);
 #endif
         analysisMenu->insertSeparator();
-        analysisMenu->addAction(actionSortSelection);
+		if (((Table *)w)->selectedColumns().count() > 1){
+			QMenu *sortMenu = analysisMenu->addMenu("&" + tr("Sort Columns"));
+			sortMenu->addAction(QIcon(":/sort_ascending.png"), tr("&Ascending"), w, SLOT(sortColAsc()));
+			sortMenu->addAction(QIcon(":/sort_descending.png"), tr("&Descending"), w, SLOT(sortColDesc()));
+			sortMenu->addAction(actionSortSelection);
+			analysisMenu->addMenu(sortMenu);
+		}
         analysisMenu->addAction(actionSortTable);
 
 		normMenu->clear();
@@ -14392,10 +14399,10 @@ void ApplicationWindow::createActions()
 	actionGrayMap = new QAction(QIcon(":/gray_map.png"), tr("&Gray Scale Map"), this);
 	connect(actionGrayMap, SIGNAL(activated()), this, SLOT(plotGrayScale()));
 
-	actionSortTable = new QAction(QPixmap(":/sort.png"), tr("Sort Ta&ble"), this);
+	actionSortTable = new QAction(QIcon(":/sort.png"), tr("Sort Ta&ble") + "...", this);
 	connect(actionSortTable, SIGNAL(activated()), this, SLOT(sortActiveTable()));
 
-	actionSortSelection = new QAction("&" + tr("Sort Columns") + "...", this);
+	actionSortSelection = new QAction(QIcon(":/sort.png"), tr("&Custom") + "...", this);
 	connect(actionSortSelection, SIGNAL(activated()), this, SLOT(sortSelection()));
 
 	actionNormalizeTable = new QAction(tr("&Table"), this);
@@ -15166,8 +15173,8 @@ void ApplicationWindow::translateActionsStrings()
 	actionPlot3DHiddenLine->setMenuText(tr("3D &Hidden Line"));
 	actionPlot3DPolygons->setMenuText(tr("3D &Polygons"));
 	actionPlot3DWireSurface->setMenuText(tr("3D Wire &Surface"));
-	actionSortTable->setMenuText(tr("Sort Ta&ble"));
-	actionSortSelection->setMenuText(tr("Sort Columns"));
+	actionSortTable->setMenuText(tr("Sort Ta&ble") + "...");
+	actionSortSelection->setMenuText(tr("&Custom") + "...");
 	actionNormalizeTable->setMenuText(tr("&Table"));
 	actionNormalizeSelection->setMenuText(tr("&Columns"));
 	actionCorrelate->setMenuText(tr("Co&rrelate"));
