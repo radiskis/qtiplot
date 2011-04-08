@@ -532,39 +532,7 @@ void DataCurve::loadData()
 	if (d_type == Graph::HorizontalBars)
 		xAxis = QwtPlot::yLeft;
 
-	QTime time0;
-	QDateTime date0;
 	QString date_time_fmt = d_table->columnFormat(xcol);
-	if (xColType == Table::Time){
-		ScaleDraw *sd = (ScaleDraw *)g->axisScaleDraw(xAxis);
-		if (sd && sd->scaleType() == ScaleDraw::Time)
-			time0 = sd->dateTimeOrigin().time();
-		else {
-			for (int i = d_start_row; i <= d_end_row; i++ ){
-				QString xval = d_table->text(i, xcol).trimmed();
-				if (!xval.isEmpty()){
-					time0 = QTime::fromString (xval, date_time_fmt);
-					if (time0.isValid())
-						break;
-				}
-			}
-		}
-	} else if (xColType == Table::Date){
-		ScaleDraw *sd = (ScaleDraw *)g->axisScaleDraw(xAxis);
-		if (sd && sd->scaleType() == ScaleDraw::Date)
-			date0 = sd->dateTimeOrigin();
-		else {
-			for (int i = d_start_row; i <= d_end_row; i++ ){
-				QString xval = d_table->text(i, xcol).trimmed();
-				if (!xval.isEmpty()){
-					date0 = QDateTime::fromString (xval, date_time_fmt);
-					if (date0.isValid())
-						break;
-				}
-			}
-		}
-	}
-
 	int size = 0, from = 0;
 	d_data_ranges.clear();
 	for (int i = d_start_row; i <= d_end_row; i++ ){
@@ -575,15 +543,11 @@ void DataCurve::loadData()
 			if (xColType == Table::Text){
 				xLabels << xval;
 				X[size] = (double)(size + 1);
-			} else if (xColType == Table::Time){
-				QTime time = QTime::fromString(xval.trimmed(), date_time_fmt);
-				if (time.isValid())
-					X[size]= time0.msecsTo (time);
-			} else if (xColType == Table::Date){
-				QDateTime d = QDateTime::fromString(xval.trimmed(), date_time_fmt);
-				if (d.isValid())
-					X[size] = (double) date0.secsTo(d);
-			} else
+			} else if (xColType == Table::Time)
+				X[size] = Table::fromTime(QTime::fromString(xval.trimmed(), date_time_fmt));
+			  else if (xColType == Table::Date)
+				X[size] = Table::fromDateTime(QDateTime::fromString(xval.trimmed(), date_time_fmt));
+			  else
 				X[size] = g->locale().toDouble(xval, &valid_data);
 
 			if (yColType == Table::Text){

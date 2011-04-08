@@ -912,15 +912,17 @@ void Graph::setLabelsDateTimeFormat(int axis, int type, const QString& formatInf
 		nsd = new ScaleDraw(this);
 
 	if (type == ScaleDraw::Time){
-		QTime t = sd->dateTimeOrigin().time();
+		/*QTime t = sd->dateTimeOrigin().time();
 		if (!list[0].isEmpty())
 			t = QTime::fromString(list[0]);
-		nsd->setTimeFormat(list[1], t);
+		nsd->setTimeFormat(list[1], t);*/
+		nsd->setTimeFormat(list[1]);
 	} else if (type == ScaleDraw::Date){
-		QDateTime dt = sd->dateTimeOrigin();
+		/*QDateTime dt = sd->dateTimeOrigin();
 		if (!list[0].isEmpty())
 			dt = QDateTime::fromString (list[0], list[1]);
-		nsd->setDateFormat(list[1], dt);
+		nsd->setDateFormat(list[1], dt);*/
+		nsd->setDateFormat(list[1]);
 	}
 
 	nsd->enableComponent (QwtAbstractScaleDraw::Backbone, drawAxesBackbone);
@@ -3423,9 +3425,6 @@ DataCurve* Graph::insertCurve(Table* w, int xcol, const QString& name, int style
 
 DataCurve* Graph::insertCurve(Table* w, const QString& xColName, const QString& yColName, int style, int startRow, int endRow)
 {
-	//if (plotItemsList().contains(yColName))
-		//return NULL;
-
 	if (style == Histogram){
 		DataCurve *c = new QwtHistogram(w, yColName, startRow, endRow);
 		insertCurve(c);
@@ -3437,46 +3436,12 @@ DataCurve* Graph::insertCurve(Table* w, const QString& xColName, const QString& 
 	if (xcol < 0 || ycol < 0)
 		return NULL;
 
-	int xColType = w->columnType(xcol);
-	QString date_time_fmt = w->columnFormat(xcol);
-	QTime time0;
-	QDateTime date0;
-
 	if (endRow < 0)
 		endRow = w->numRows() - 1;
 
 	int xAxis = QwtPlot::xBottom;
 	if (style == HorizontalBars)
 		xAxis = QwtPlot::yLeft;
-
-	ScaleDraw *sd = (ScaleDraw *)axisScaleDraw(xAxis);
-	if (xColType == Table::Time){
-		if (sd && sd->scaleType() == ScaleDraw::Time)
-			time0 = sd->dateTimeOrigin().time();
-		else {
-			for (int i = startRow; i <= endRow; i++ ){
-				QString xval = w->text(i, xcol).trimmed();
-				if (!xval.isEmpty()){
-					time0 = QTime::fromString(xval, date_time_fmt);
-					if (time0.isValid())
-						break;
-				}
-			}
-		}
-	} else if (xColType == Table::Date){
-		if (sd && sd->scaleType() == ScaleDraw::Date)
-			date0 = sd->dateTimeOrigin();
-		else {
-			for (int i = startRow; i <= endRow; i++ ){
-				QString xval = w->text(i, xcol).trimmed();
-				if (!xval.isEmpty()){
-					date0 = QDateTime::fromString(xval, date_time_fmt);
-					if (date0.isValid())
-						break;
-				}
-			}
-		}
-	}
 
 	int size = 0;
 	for (int i = startRow; i <= endRow; i++ ){
@@ -3513,11 +3478,14 @@ DataCurve* Graph::insertCurve(Table* w, const QString& xColName, const QString& 
 	c->loadData();
 	c->enableSpeedMode();
 
+	int xColType = w->columnType(xcol);
+	QString date_time_fmt = w->columnFormat(xcol);
+	ScaleDraw *sd = (ScaleDraw *)axisScaleDraw(xAxis);
 	if (xColType == Table::Time && sd && sd->scaleType() != ScaleDraw::Time){
-		QString fmtInfo = time0.toString() + ";" + date_time_fmt;
+		QString fmtInfo = QTime().toString() + ";" + date_time_fmt;
 		setLabelsDateTimeFormat(xAxis, ScaleDraw::Time, fmtInfo);
 	} else if (xColType == Table::Date && sd && sd->scaleType() != ScaleDraw::Date){
-		QString fmtInfo = date0.toString(date_time_fmt) + ";" + date_time_fmt;
+		QString fmtInfo = QDateTime().toString(date_time_fmt) + ";" + date_time_fmt;
 		setLabelsDateTimeFormat(xAxis, ScaleDraw::Date, fmtInfo);
 	}
 
@@ -4808,21 +4776,15 @@ void Graph::copy(Graph* g)
 
 void Graph::copyCurves(Graph* g)
 {
-    if (!g)
-        return;
-
-    QList<QwtPlotItem *> curvesList = g->curvesList();
-    foreach (QwtPlotItem *it, curvesList){
-        if (it->rtti() == QwtPlotItem::Rtti_PlotCurve){
-  	        DataCurve *cv = (DataCurve *)it;
+	if (!g)
+		return;
+	
+	QList<QwtPlotItem *> curvesList = g->curvesList();
+	foreach (QwtPlotItem *it, curvesList){
+		if (it->rtti() == QwtPlotItem::Rtti_PlotCurve){
+			DataCurve *cv = (DataCurve *)it;
 			int n = cv->dataSize();
 			int style = ((PlotCurve *)it)->type();
-			QVector<double> x(n);
-			QVector<double> y(n);
-			for (int j=0; j<n; j++){
-				x[j]=cv->x(j);
-				y[j]=cv->y(j);
-			}
 
 			PlotCurve *c = 0;
 			if (style == Pie){
@@ -4832,6 +4794,7 @@ void Graph::copyCurves(Graph* g)
 				c = new FunctionCurve(cv->title().text());
 				insertCurve(c);
 				((FunctionCurve*)c)->copy((FunctionCurve*)cv);
+				((FunctionCurve*)c)->loadData(n);
 			} else if (style == VerticalBars || style == HorizontalBars) {
 				c = new QwtBarCurve(((QwtBarCurve*)cv)->orientation(), cv->table(), cv->xColumnName(),
 									cv->title().text(), cv->startRow(), cv->endRow());
@@ -4867,19 +4830,24 @@ void Graph::copyCurves(Graph* g)
 			} else if (style == Box) {
 				c = new BoxCurve(cv->table(), cv->title().text(), cv->startRow(), cv->endRow());
 				insertCurve(c);
-				QwtSingleArrayData dat(x[0], y, n);
+
+				QVector<double> y(n);
+				for (int j = 0; j < n; j++)
+					y[j] = cv->y(j);
+				QwtSingleArrayData dat(cv->x(0), y, n);
 				c->setData(dat);
 				((BoxCurve*)c)->copy((BoxCurve *)cv);
 			} else {
 				c = new DataCurve(cv->table(), cv->xColumnName(), cv->title().text(), cv->startRow(), cv->endRow());
-                insertCurve(c);
+				insertCurve(c);
 			}
-			if (c->type() != Box && c->type() != ErrorBars){
-				c->setData(x.data(), y.data(), n);
-				if (c->type() != Function && c->type() != Pie)
-                    ((DataCurve *)c)->clone(cv);
-                else if (c->type() == Pie)
-                    ((PieCurve*)c)->clone((PieCurve*)cv);
+			if (c->type() != Box && c->type() != ErrorBars && c->type() != Function){
+				((DataCurve *)c)->loadData();
+
+				if (c->type() == Pie)
+					((PieCurve*)c)->clone((PieCurve*)cv);
+				else
+					((DataCurve *)c)->clone(cv);
 			}
 
 			c->setPen(cv->pen());

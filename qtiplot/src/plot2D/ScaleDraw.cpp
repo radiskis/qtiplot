@@ -31,6 +31,7 @@
 #include "MultiLayer.h"
 #include <MyParser.h>
 #include "ScaleEngine.h"
+#include "Table.h"
 
 #include <QDateTime>
 #include <QPainter>
@@ -260,7 +261,7 @@ QString ScaleDraw::labelString(double value) const
 
 		case Time:
 		{
-			QTime time = d_date_time_origin.time().addMSecs((int)value);
+			QTime time = Table::dateTime(value).time();
 			if (d_format_info == "M")
 				return QString::number(60*time.hour() + time.minute());
 			else if (d_format_info == "S")
@@ -271,7 +272,7 @@ QString ScaleDraw::labelString(double value) const
 		}
 
 		case Date:
-			return d_date_time_origin.addSecs((int)value).toString(d_format_info);
+			return Table::dateTime(value).toString(d_format_info);
 		break;
 
 		case ColHeader:

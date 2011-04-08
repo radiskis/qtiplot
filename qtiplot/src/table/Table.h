@@ -86,6 +86,7 @@ public:
 	Table* extractData(const QString& name, const QString& condition, int startRow = 0, int endRow = -1);
 	static QDateTime dateTime(double val);
 	static double fromDateTime(const QDateTime& dt);
+	static double fromTime(const QTime& t);
 
 public slots:
 	MyTable* table(){return d_table;};
