@@ -127,23 +127,25 @@ void AxesDialog::initScalesPage()
 	boxStartDateTime->hide();
 
 	boxStartTime = new QTimeEdit();
+	boxStartTime->setWrapping(true);
 	middleLayout->addWidget(boxStartTime, 0, 1 );
 	boxStartTime->hide();
 
 	middleLayout->addWidget(new QLabel(tr( "To" )), 1, 0);
 	boxEnd = new DoubleSpinBox();
 	boxEnd->setLocale(app->locale());
-    boxEnd->setDecimals(app->d_decimal_digits);
+	boxEnd->setDecimals(app->d_decimal_digits);
 	middleLayout->addWidget( boxEnd, 1, 1);
 
-    boxEndDateTime = new QDateTimeEdit();
-    boxEndDateTime->setCalendarPopup(true);
-    middleLayout->addWidget(boxEndDateTime, 1, 1);
-    boxEndDateTime->hide();
+	boxEndDateTime = new QDateTimeEdit();
+	boxEndDateTime->setCalendarPopup(true);
+	middleLayout->addWidget(boxEndDateTime, 1, 1);
+	boxEndDateTime->hide();
 
-    boxEndTime = new QTimeEdit();
-    middleLayout->addWidget(boxEndTime, 1, 1);
-    boxEndTime->hide();
+	boxEndTime = new QTimeEdit();
+	boxEndTime->setWrapping(true);
+	middleLayout->addWidget(boxEndTime, 1, 1);
+	boxEndTime->hide();
 
 	boxScaleTypeLabel = new QLabel(tr( "Type" ));
 	boxScaleType = new QComboBox();
@@ -871,9 +873,9 @@ void AxesDialog::showAxisFormatOptions(int format)
 			label2->show();
 			boxFormat->show();
 			boxFormat->setEditable(true);
-			label3->show();
+			/*label3->show();
 			label3->setText(tr("Origin"));
-			originDateTimeBox->show();
+			originDateTimeBox->show();*/
 
 			ScaleDraw *scaleDraw = (ScaleDraw *) d_graph->axisScaleDraw(axis);
 			if (scaleDraw){
@@ -908,9 +910,9 @@ void AxesDialog::showAxisFormatOptions(int format)
 			label2->show();
 			boxFormat->show();
 			boxFormat->setEditable(true);
-			label3->show();
+			/*label3->show();
 			label3->setText(tr("Origin"));
-			originDateTimeBox->show();
+			originDateTimeBox->show();*/
 
 			ScaleDraw *scaleDraw = (ScaleDraw *) d_graph->axisScaleDraw(axis);
 			if (scaleDraw){
@@ -1257,67 +1259,64 @@ bool AxesDialog::updatePlot(QWidget *page)
 		currentWidget = page;
 
 	if (currentWidget == scalesPage){
-        int a = mapToQwtAxis(axesList->currentRow());
-        ScaleDraw::ScaleType type = d_graph->axisType(a);
+		int a = mapToQwtAxis(axesList->currentRow());
+		ScaleDraw::ScaleType type = d_graph->axisType(a);
 
 		double start = 0.0, end = 0.0;
 		if (type == ScaleDraw::Date){
-            ScaleDraw *sclDraw = (ScaleDraw *)d_graph->axisScaleDraw(a);
-            QDateTime origin = sclDraw->dateTimeOrigin();
-            start = (double)origin.secsTo(boxStartDateTime->dateTime());
-            end = (double)origin.secsTo(boxEndDateTime->dateTime());
+			start = Table::fromDateTime(boxStartDateTime->dateTime());
+			end = Table::fromDateTime(boxEndDateTime->dateTime());
 		} else if (type == ScaleDraw::Time){
-            ScaleDraw *sclDraw = (ScaleDraw *)d_graph->axisScaleDraw(a);
-            QTime origin = sclDraw->dateTimeOrigin().time();
-            start = (double)origin.msecsTo(boxStartTime->time());
-            end = (double)origin.msecsTo(boxEndTime->time());
+			start = Table::fromTime(boxStartTime->time());
+			end = Table::fromTime(boxEndTime->time());
+			if (end < start)
+				end += 1.0;
 		} else {
-            start = boxStart->value();
-            end = boxEnd->value();
+			start = boxStart->value();
+			end = boxEnd->value();
 		}
 
 		double step = 0.0;
-        if (btnStep->isChecked()){
+		if (btnStep->isChecked()){
 			step = boxStep->value();
-        	if (type == ScaleDraw::Time){
-		      switch (boxUnit->currentIndex())
-                 {
-			     case 0:
-			     break;
-			     case 1:
-				 	step *= 1e3;
-			     break;
-			     case 2:
-				 	step *= 6e4;
-                 break;
-			     case 3:
-				     step *= 36e5;
-		         break;
-			     }
-		   } else if (type == ScaleDraw::Date){
-		        switch (boxUnit->currentIndex())
-                    {
-                    case 0:
-						step *= 60;//min
-                    break;
-                    case 1:
-						 step *= 3600;//hour
-                    break;
+			if (type == ScaleDraw::Time){
+				switch (boxUnit->currentIndex()){
+					case 0:
+						step /= 86400000.0;
+					break;
+					case 1:
+						step /= 86400.0;
+					break;
 					case 2:
-						step *= 86400;//day
+						step /= 1440.0;
 					break;
 					case 3:
-						 step *= 604800;//week
+						step /= 24.0;
 					break;
-					case 4:
-						 step *= 2592000;//month
-					break;
-					case 5:
-						 step *= 31536000;//year
-					break;
-                    }
-	            }
-          	}
+				}
+			} else if (type == ScaleDraw::Date){
+				switch (boxUnit->currentIndex()){
+				   case 0:
+					   step *= 1.0/1440.0;//min
+				   break;
+				   case 1:
+						step *= 1.0/24.0;//hour
+				   break;
+				   case 2:
+					   step *= 1;//day
+				   break;
+				   case 3:
+						step *= 7;//week
+				   break;
+				   case 4:
+						step *= 30;//month
+				   break;
+				   case 5:
+						step *= 365;//year
+				   break;
+				}
+			}
+		}
 
 		double breakLeft = -DBL_MAX, breakRight = DBL_MAX;
 		if (boxAxesBreaks->isChecked()){
@@ -1337,7 +1336,7 @@ bool AxesDialog::updatePlot(QWidget *page)
 		int axis = mapToQwtAxisId();
 		int format = boxAxisType->currentIndex();
 
-        QString formatInfo = QString::null;
+		QString formatInfo = QString::null;
 		if (format == ScaleDraw::Numeric){
 			if (boxShowFormula->isChecked()){
 				QString formula = boxFormula->text().lower();
@@ -1475,20 +1474,19 @@ void AxesDialog::updateScale()
 
     ScaleDraw::ScaleType type = d_graph->axisType(a);
 	if (type == ScaleDraw::Date){
-	    ScaleDraw *sclDraw = (ScaleDraw *)d_graph->axisScaleDraw(a);
-        QDateTime origin = sclDraw->dateTimeOrigin();
+		QString format = ((ScaleDraw *)d_graph->axisScaleDraw(a))->format();
 
-	    boxStart->hide();
-	    boxStartTime->hide();
-        boxStartDateTime->show();
-        boxStartDateTime->setDisplayFormat(sclDraw->format());
-        boxStartDateTime->setDateTime(origin.addSecs((int)start));
+		boxStart->hide();
+		boxStartTime->hide();
+		boxStartDateTime->show();
+		boxStartDateTime->setDisplayFormat(format);
+		boxStartDateTime->setDateTime(Table::dateTime(start));
 
-        boxEnd->hide();
-        boxEndTime->hide();
-        boxEndDateTime->show();
-        boxEndDateTime->setDisplayFormat(sclDraw->format());
-        boxEndDateTime->setDateTime(origin.addSecs((int)end));
+		boxEnd->hide();
+		boxEndTime->hide();
+		boxEndDateTime->show();
+		boxEndDateTime->setDisplayFormat(format);
+		boxEndDateTime->setDateTime(Table::dateTime(end));
 
 		boxUnit->show();
 		boxUnit->insertItem(tr("min."));
@@ -1498,53 +1496,66 @@ void AxesDialog::updateScale()
 		boxUnit->insertItem(tr("months"));
 		boxUnit->insertItem(tr("years"));
 
-		double step = d_graph->axisStep(a)/3600.0; //hours
-		if (step < 1){
+		double step = d_graph->axisStep(a);
+		if (step < 1.0/24.0){
 			boxUnit->setCurrentIndex(0);
-			boxStep->setValue(step*60);
-		} else if (step < 24){
+			boxStep->setValue(step*24*60);
+		} else if (step < 1.0){
 			boxUnit->setCurrentIndex(1);
-			boxStep->setValue(step);
-		} else if (step < 168){
-			boxUnit->setCurrentIndex(2);
-			boxStep->setValue(step/24.0);
-		} else if (step < 720){
-			boxUnit->setCurrentIndex(3);
-			boxStep->setValue(step/168.0);
-		} else if (step < 8760){
+			boxStep->setValue(step*24);
+		} else if (step < 30){
+			if (int(step) % 7){
+				boxUnit->setCurrentIndex(2);
+				boxStep->setValue(step);
+			} else {
+				boxUnit->setCurrentIndex(3);
+				boxStep->setValue(step/7.0);
+			}
+		} else if (step < 365){
 			boxUnit->setCurrentIndex(4);
-			boxStep->setValue(step/720.0);
+			boxStep->setValue(step/30.0);
 		} else {
 			boxUnit->setCurrentIndex(5);
-			boxStep->setValue(step/8760.0);
+			boxStep->setValue(step/365.0);
 		}
 
 		boxStep->setSingleStep(1);
 	} else if (type == ScaleDraw::Time){
-	    ScaleDraw *sclDraw = (ScaleDraw *)d_graph->axisScaleDraw(a);
-        QTime origin = sclDraw->dateTimeOrigin().time();
+		QString format = ((ScaleDraw *)d_graph->axisScaleDraw(a))->format();
+		boxStart->hide();
+		boxStartDateTime->hide();
+		boxStartTime->show();
+		boxStartTime->setDisplayFormat(format);
+		boxStartTime->setTime(Table::dateTime(start).time());
 
-	    boxStart->hide();
-	    boxStartDateTime->hide();
-        boxStartTime->show();
-        boxStartTime->setDisplayFormat(sclDraw->format());
-        boxStartTime->setTime(origin.addMSecs((int)start));
+		boxEnd->hide();
+		boxEndDateTime->hide();
+		boxEndTime->show();
+		boxEndTime->setDisplayFormat(format);
+		boxEndTime->setTime(Table::dateTime(end).time());
 
-        boxEnd->hide();
-        boxEndDateTime->hide();
-        boxEndTime->show();
-        boxEndTime->setDisplayFormat(sclDraw->format());
-        boxEndTime->setTime(origin.addMSecs((int)end));
+		boxUnit->show();
+		boxUnit->insertItem(tr("millisec."));
+		boxUnit->insertItem(tr("sec."));
+		boxUnit->insertItem(tr("min."));
+		boxUnit->insertItem(tr("hours"));
 
-        boxUnit->show();
-        boxUnit->insertItem(tr("millisec."));
-        boxUnit->insertItem(tr("sec."));
-        boxUnit->insertItem(tr("min."));
-        boxUnit->insertItem(tr("hours"));
-
-		boxUnit->setCurrentIndex(1);
-		boxStep->setValue(d_graph->axisStep(a)/1e3);
-		boxStep->setSingleStep(1000);
+		double step = d_graph->axisStep(a);
+		boxStep->setValue(step);
+		if (step < 1.0/86400.0){
+			boxUnit->setCurrentIndex(0);
+			boxStep->setValue(step*864e5);
+		} else if (step < 1.0/1440.0){
+			boxUnit->setCurrentIndex(1);
+			boxStep->setValue(step*864e3);
+		} else if (step < 1/24.0){
+			boxUnit->setCurrentIndex(2);
+			boxStep->setValue(step*1440.0);
+		} else {
+			boxUnit->setCurrentIndex(3);
+			boxStep->setValue(step*24.0);
+		}
+		boxStep->setSingleStep(1);
 	} else {
 	    boxStart->show();
         boxStart->setValue(start);

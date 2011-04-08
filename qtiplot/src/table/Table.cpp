@@ -2094,11 +2094,8 @@ void Table::saveToMemory()
 		int colType = colTypes[col];
 		QString fmt = col_format[col].trimmed();
 		if (colType == Time){
-			QTime ref = QTime(0, 0);
-			for (int row = 0; row <rows; row++){
-				QTime t = QTime::fromString(d_table->text(row, col).trimmed(), fmt);
-				d_saved_cells[col][row] = ref.msecsTo(t);
-			}
+			for (int row = 0; row < rows; row++)
+				d_saved_cells[col][row] = fromTime(QTime::fromString(d_table->text(row, col).trimmed(), fmt));
 		} else if (colType == Date){
 			for (int row = 0; row < rows; row++)
 				d_saved_cells[col][row] = fromDateTime(QDateTime::fromString(d_table->text(row, col).trimmed(), fmt));
@@ -2202,6 +2199,11 @@ double Table::fromDateTime(const QDateTime& dt)
 	return dt.date().toJulianDay() - 1 + (double)QTime(0, 0).msecsTo(dt.time())/864.0e5;
 }
 
+double Table::fromTime(const QTime& t)
+{
+	return (double)QTime(0, 0).msecsTo(t)/864.0e5;
+}
+
 bool Table::setDateFormat(const QString& format, int col, bool updateCells)
 {
 	if (colTypes[col] == Date && col_format[col] == format)
@@ -2230,12 +2232,9 @@ bool Table::setDateFormat(const QString& format, int col, bool updateCells)
 	}
 	colTypes[col] = Date;
 	col_format[col] = format;
-	QTime ref = QTime(0, 0);
 	if (first_time){//update d_saved_cells in case the user changes the time format before pressing OK in the column dialog
-		for (int i=0; i<d_table->numRows(); i++){
-			QDateTime dt = QDateTime::fromString(d_table->text(i, col), format);
-			d_saved_cells[col][i] = dt.date().toJulianDay() - 1 + (double)ref.msecsTo(dt.time())/864.0e5;
-		}
+		for (int i = 0; i < d_table->numRows(); i++)
+			d_saved_cells[col][i] = fromDateTime(QDateTime::fromString(d_table->text(i, col), format));
 	}
 	emit modifiedData(this, colName(col));
 	return true;
@@ -2246,39 +2245,34 @@ bool Table::setTimeFormat(const QString& format, int col, bool updateCells)
 	if (colTypes[col] == Time && col_format[col] == format)
 		return true;
 
-	QTime ref = QTime(0, 0);
 	bool first_time = false;
-    if (updateCells){
-	for (int i=0; i<d_table->numRows(); i++){
-		QString s = d_table->text(i,col);
-		if (!s.isEmpty()){
-			QTime t = QTime::fromString (s, format);
+	if (updateCells){
+		QTime ref = QTime(0, 0);
+		for (int i = 0; i < d_table->numRows(); i++){
+			QString s = d_table->text(i, col);
+			if (s.isEmpty())
+				continue;
+
+			QTime t = QTime::fromString(s, format);
 			if (colTypes[col] != Time && t.isValid()){
 			//This is the first time the user assigns a time format.
-            //If Qt understands the format we break the loop, assign it to the column and return true!
-            	first_time = true;
+			//If Qt understands the format we break the loop, assign it to the column and return true!
+				first_time = true;
 				break;
 			}
 
-		    if (d_saved_cells){
-				if (d_saved_cells[col][i] < 1)// import of Origin files
-                	t = ref.addMSecs(int(d_saved_cells[col][i]*86400000));
-				else
-					t = ref.addMSecs((int)d_saved_cells[col][i]);
-
+			if (d_saved_cells){
+				t = ref.addMSecs(qRound(d_saved_cells[col][i]*864e5));
 				if (t.isValid())
 					d_table->setText(i, col, t.toString(format));
 			}
 		}
 	}
-    }
 	colTypes[col] = Time;
 	col_format[col] = format;
 	if (first_time){//update d_saved_cells in case the user changes the time format before pressing OK in the column dialog
-		for (int i=0; i<d_table->numRows(); i++){
-			QTime t = QTime::fromString(d_table->text(i, col), format);
-			d_saved_cells[col][i] = ref.msecsTo(t);
-		}
+		for (int i = 0; i < d_table->numRows(); i++)
+			d_saved_cells[col][i] = fromTime(QTime::fromString(d_table->text(i, col), format));
 	}
 	emit modifiedData(this, colName(col));
 	return true;
