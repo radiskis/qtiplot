@@ -35,9 +35,9 @@ const int min_version = 9;
 const int patch_version = 8;
 //! Extra version information string (like "alpha", "-2", etc...)
 const char * extra_version = ".5";
-const char * svn_revision = SVN_REVISION;  //SRB: SVN_REVISION set by compiler from QTIPLOT_SVN_REVISION environment variable. (10/1/2010 )
+const char * svn_revision = " svn 2144";//SVN_REVISION;  //SRB: SVN_REVISION set by compiler from QTIPLOT_SVN_REVISION environment variable. (10/1/2010 )
 
 //! Copyright string containing the author names
 const char * copyright_string = "Copyright (C) 2004-2011 Ion Vasilief";
 //! Release date as a string
-const char * release_date = " 2011/03/24";
+const char * release_date = " 2011/04/09";

@@ -58,7 +58,6 @@ ScaleDraw::ScaleDraw(Graph *plot, const QString& formula):
 	d_minTicks(Out),
 	d_selected(false),
 	d_name_format(ShortName),
-	d_date_time_origin(QDateTime::currentDateTime()),
 	d_format_info("YYYY-MM-DDTHH:MM:SS"),
 	d_text_labels(QStringList()),
 	d_show_ticks_policy(ShowAll),
@@ -77,7 +76,6 @@ ScaleDraw::ScaleDraw(Graph *plot, const QStringList& labels, const QString& form
 	d_minTicks(Out),
 	d_selected(false),
 	d_name_format(ShortName),
-	d_date_time_origin(QDateTime::currentDateTime()),
 	d_format_info(format),
 	d_text_labels(labels),
 	d_prefix(""),
@@ -96,7 +94,6 @@ ScaleDraw::ScaleDraw(Graph *plot, ScaleDraw* sd):
 	d_minTicks = sd->d_minTicks;
 	d_selected = sd->d_selected;
 	d_name_format = sd->d_name_format;
-	d_date_time_origin = sd->d_date_time_origin;
 	d_format_info = sd->d_format_info;
 	d_text_labels = sd->d_text_labels;
 	d_show_ticks_policy = sd->showTicksPolicy();
@@ -810,28 +807,14 @@ void ScaleDraw::setMonthFormat(NameFormat format)
 	d_name_format = format;
 }
 
-void ScaleDraw::setTimeFormat(const QString& format, const QTime& t)
+void ScaleDraw::setTimeFormat(const QString& format)
 {
 	d_type = Time;
 	d_format_info = format;
-	if (!t.isNull() && t.isValid())
-		d_date_time_origin.setTime(t);
 }
 
-void ScaleDraw::setDateFormat(const QString& format, const QDateTime& d)
+void ScaleDraw::setDateFormat(const QString& format)
 {
 	d_type = Date;
 	d_format_info = format;
-	if (!d.isNull() && d.isValid())
-		d_date_time_origin = d;
-}
-
-QString ScaleDraw::formatString()
-{
-	if (d_type == Time)
-		return d_date_time_origin.time().toString() + ";" + d_format_info;
-	else if (d_type == Date)
-		return d_date_time_origin.toString(d_format_info) + ";" + d_format_info;
-
-	return d_format_info;
 }

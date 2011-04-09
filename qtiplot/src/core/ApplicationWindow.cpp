@@ -12739,7 +12739,7 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot, co
 						scl[12].toInt(), scl[14].toInt(), bool(scl[15].toInt()));
 			} else if (size == 8){
 				ag->setScale(scl[0].toInt(), scl[1].toDouble(), scl[2].toDouble(), scl[3].toDouble(),
-						scl[4].toInt(), scl[5].toInt(),  scl[6].toInt(), bool(scl[7].toInt()));
+					scl[4].toInt(), scl[5].toInt(), scl[6].toInt(), bool(scl[7].toInt()));
 			} else if (size == 18){
 				ag->setScale(scl[0].toInt(), scl[1].toDouble(), scl[2].toDouble(), scl[3].toDouble(),
 					scl[4].toInt(), scl[5].toInt(), scl[6].toInt(), bool(scl[7].toInt()), scl[8].toDouble(),
@@ -13009,25 +13009,28 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot, co
 			ag->restoreSymbolImage(curveID - 1, lst);
 		} else if (s.contains("AxisType")) {
 			QStringList fList = s.split("\t");
-			for (int i=0; i<4; i++){
+			for (int i = 0; i < 4; i++){
 				QStringList lst = fList[i+1].split(";", QString::SkipEmptyParts);
 				int format = lst[0].toInt();
 				if (format == ScaleDraw::Numeric)
-                    continue;
+					continue;
 				if (format == ScaleDraw::Day)
 					ag->setLabelsDayFormat(i, lst[1].toInt());
 				else if (format == ScaleDraw::Month)
 					ag->setLabelsMonthFormat(i, lst[1].toInt());
-				else if (format == ScaleDraw::Time || format == ScaleDraw::Date)
-					ag->setLabelsDateTimeFormat(i, format, lst[1]+";"+lst[2]);
-				else if (lst.size() > 1)
+				else if (format == ScaleDraw::Time || format == ScaleDraw::Date){
+					bool obsoleteDateTime = lst.size() > 2;
+					ag->setLabelsDateTimeFormat(i, format, obsoleteDateTime ? lst[2] : lst[1]);
+					if (obsoleteDateTime)
+						ag->recoverObsoleteDateTimeScale(i, format, lst[1]);
+				} else if (lst.size() > 1)
 					ag->setLabelsTextFormat(i, format, lst[1], app->table(lst[1]));
 			}
 		}
 		else if (d_file_version < 69 && s.contains ("AxesTickLabelsCol"))
 		{
 			QStringList fList = s.split("\t");
-			for (int i=0; i<4; i++){
+			for (int i = 0; i < 4; i++){
 				QString colName = fList[i+1];
 				Table *nw = app->table(colName);
 				ag->setLabelsTextFormat(i, ag->axisType(i), colName, nw);

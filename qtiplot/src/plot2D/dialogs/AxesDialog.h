@@ -124,7 +124,6 @@ private slots:
     void applyCanvasFormat();
     void setFrameDefaultValues();
 	void applyAxisFormat();
-	void setDisplayDateTimeFormat( const QString &);
 	void updateCurrentAxis();
 
 protected:
@@ -207,7 +206,6 @@ protected:
 	QSpinBox *boxLabelsDistance;
 	QGroupBox *axisFormatBox;
 	QComboBox *axisFormatApplyToBox;
-	QDateTimeEdit *originDateTimeBox;
 	QCheckBox *invertTitleBox;
 	QCheckBox* boxAxisBackbone;
 	QSpinBox *boxTickLabelDistance;
