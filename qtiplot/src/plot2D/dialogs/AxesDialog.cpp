@@ -123,13 +123,9 @@ void AxesDialog::initScalesPage()
 
 	boxStartDateTime = new QDateTimeEdit();
 	boxStartDateTime->setCalendarPopup(true);
+	boxStartDateTime->setWrapping(true);
 	middleLayout->addWidget( boxStartDateTime, 0, 1 );
 	boxStartDateTime->hide();
-
-	boxStartTime = new QTimeEdit();
-	boxStartTime->setWrapping(true);
-	middleLayout->addWidget(boxStartTime, 0, 1 );
-	boxStartTime->hide();
 
 	middleLayout->addWidget(new QLabel(tr( "To" )), 1, 0);
 	boxEnd = new DoubleSpinBox();
@@ -139,13 +135,9 @@ void AxesDialog::initScalesPage()
 
 	boxEndDateTime = new QDateTimeEdit();
 	boxEndDateTime->setCalendarPopup(true);
+	boxEndDateTime->setWrapping(true);
 	middleLayout->addWidget(boxEndDateTime, 1, 1);
 	boxEndDateTime->hide();
-
-	boxEndTime = new QTimeEdit();
-	boxEndTime->setWrapping(true);
-	middleLayout->addWidget(boxEndTime, 1, 1);
-	boxEndTime->hide();
 
 	boxScaleTypeLabel = new QLabel(tr( "Type" ));
 	boxScaleType = new QComboBox();
@@ -1247,14 +1239,9 @@ bool AxesDialog::updatePlot(QWidget *page)
 		ScaleDraw::ScaleType type = d_graph->axisType(a);
 
 		double start = 0.0, end = 0.0;
-		if (type == ScaleDraw::Date){
+		if (type == ScaleDraw::Date || type == ScaleDraw::Time){
 			start = Table::fromDateTime(boxStartDateTime->dateTime());
 			end = Table::fromDateTime(boxEndDateTime->dateTime());
-		} else if (type == ScaleDraw::Time){
-			start = Table::fromTime(boxStartTime->time());
-			end = Table::fromTime(boxEndTime->time());
-			if (end < start)
-				end += 1.0;
 		} else {
 			start = boxStart->value();
 			end = boxEnd->value();
@@ -1458,13 +1445,11 @@ void AxesDialog::updateScale()
 		QString format = ((ScaleDraw *)d_graph->axisScaleDraw(a))->formatString();
 
 		boxStart->hide();
-		boxStartTime->hide();
 		boxStartDateTime->show();
 		boxStartDateTime->setDisplayFormat(format);
 		boxStartDateTime->setDateTime(Table::dateTime(start));
 
 		boxEnd->hide();
-		boxEndTime->hide();
 		boxEndDateTime->show();
 		boxEndDateTime->setDisplayFormat(format);
 		boxEndDateTime->setDateTime(Table::dateTime(end));
@@ -1504,16 +1489,14 @@ void AxesDialog::updateScale()
 	} else if (type == ScaleDraw::Time){
 		QString format = ((ScaleDraw *)d_graph->axisScaleDraw(a))->formatString();
 		boxStart->hide();
-		boxStartDateTime->hide();
-		boxStartTime->show();
-		boxStartTime->setDisplayFormat(format);
-		boxStartTime->setTime(Table::dateTime(start).time());
+		boxStartDateTime->show();
+		boxStartDateTime->setDisplayFormat(format);
+		boxStartDateTime->setDateTime(Table::dateTime(start));
 
 		boxEnd->hide();
-		boxEndDateTime->hide();
-		boxEndTime->show();
-		boxEndTime->setDisplayFormat(format);
-		boxEndTime->setTime(Table::dateTime(end).time());
+		boxEndDateTime->show();
+		boxEndDateTime->setDisplayFormat(format);
+		boxEndDateTime->setDateTime(Table::dateTime(end));
 
 		boxUnit->show();
 		boxUnit->insertItem(tr("millisec."));
@@ -1540,11 +1523,9 @@ void AxesDialog::updateScale()
 	} else {
 	    boxStart->show();
         boxStart->setValue(start);
-        boxStartTime->hide();
         boxStartDateTime->hide();
         boxEnd->show();
         boxEnd->setValue(end);
-        boxEndTime->hide();
         boxEndDateTime->hide();
         boxStep->setValue(d_graph->axisStep(a));
         boxStep->setSingleStep(0.1);
