@@ -2,7 +2,8 @@
     File                 : AxesDialog.h
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2006 by Ion Vasilief, Tilman Hoener zu Siederdissen
+	Copyright            : (C) 2004 - 2011 by Ion Vasilief
+						   (C) 2006 Tilman Hoener zu Siederdissen
 	Email (use @ for *)  : ion_vasilief*yahoo.fr
 	Description          : Axes preferences dialog
 
@@ -200,7 +201,6 @@ protected:
 	//! Last selected tab
   	QWidget* lastPage;
     QDateTimeEdit *boxStartDateTime, *boxEndDateTime;
-    QTimeEdit *boxStartTime, *boxEndTime;
     QComboBox *canvasFrameApplyToBox;
     QPushButton *frameDefaultBtn;
 	QSpinBox *boxLabelsDistance;
