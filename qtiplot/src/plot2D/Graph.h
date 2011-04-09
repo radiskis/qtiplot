@@ -598,7 +598,7 @@ class Graph: public QwtPlot
 		void setLabelsDateTimeFormat(int axis, int type, const QString& formatInfo);
 		void setLabelsDayFormat(int axis, int format);
 		void setLabelsMonthFormat(int axis, int format);
-		void recoverObsoleteDateTimeScale(int axis, int type, const QString& origin);
+		void recoverObsoleteDateTimeScale(int axis, int type, const QString& origin, const QString& format);
 
 		QString axisFormatInfo(int axis);
 

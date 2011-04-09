@@ -13022,7 +13022,7 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot, co
 					bool obsoleteDateTime = lst.size() > 2;
 					ag->setLabelsDateTimeFormat(i, format, obsoleteDateTime ? lst[2] : lst[1]);
 					if (obsoleteDateTime)
-						ag->recoverObsoleteDateTimeScale(i, format, lst[1]);
+						ag->recoverObsoleteDateTimeScale(i, format, lst[1], lst[2]);
 				} else if (lst.size() > 1)
 					ag->setLabelsTextFormat(i, format, lst[1], app->table(lst[1]));
 			}
