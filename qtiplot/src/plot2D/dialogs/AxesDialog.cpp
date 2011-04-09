@@ -638,11 +638,6 @@ void AxesDialog::initAxesPage()
 	boxPrecision->setRange( 0, 10 );
 	rightBoxLayout->addWidget( boxPrecision, 3, 1 );
 
-	originDateTimeBox = new QDateTimeEdit();
-	originDateTimeBox->setCalendarPopup(true);
-	rightBoxLayout->addWidget( originDateTimeBox, 3, 1 );
-	originDateTimeBox->hide();
-
 	rightBoxLayout->addWidget( new QLabel(tr( "Angle" )), 4, 0 );
 
 	boxAngle = new QSpinBox();
@@ -705,8 +700,6 @@ void AxesDialog::initAxesPage()
 	connect(boxShowFormula, SIGNAL(clicked()), this, SLOT(showFormulaBox()));
 	connect(boxShowAxis, SIGNAL(clicked()), this, SLOT(showAxis()));
 	connect(boxFormat, SIGNAL(activated(int)), this, SLOT(setLabelsNumericFormat(int)));
-	connect(boxFormat, SIGNAL(currentIndexChanged (const QString &)),
-			this, SLOT(setDisplayDateTimeFormat( const QString &)));
 	connect(btnAxesFont, SIGNAL(clicked()), this, SLOT(customAxisFont()));
 	connect(boxAxisType, SIGNAL(activated(int)), this, SLOT(showAxisFormatOptions(int)));
 	connect(boxPrecision, SIGNAL(valueChanged(int)), this, SLOT(setLabelsNumericFormat(int)));
@@ -816,7 +809,6 @@ void AxesDialog::showAxisFormatOptions(int format)
 	boxFormula->hide();
 	boxTableName->hide();
 	labelTable->hide();
-	originDateTimeBox->hide();
 
 	switch (format)
 	{
@@ -873,16 +865,12 @@ void AxesDialog::showAxisFormatOptions(int format)
 			label2->show();
 			boxFormat->show();
 			boxFormat->setEditable(true);
-			/*label3->show();
-			label3->setText(tr("Origin"));
-			originDateTimeBox->show();*/
 
 			ScaleDraw *scaleDraw = (ScaleDraw *) d_graph->axisScaleDraw(axis);
 			if (scaleDraw){
-				QString formatInfo = scaleDraw->format();
+				QString formatInfo = scaleDraw->formatString();
 				boxFormat->insertItem(formatInfo);
 				boxFormat->setCurrentText(formatInfo);
-				originDateTimeBox->setDateTime (scaleDraw->dateTimeOrigin());
 			}
 
 			boxFormat->insertItem("h");
@@ -910,16 +898,12 @@ void AxesDialog::showAxisFormatOptions(int format)
 			label2->show();
 			boxFormat->show();
 			boxFormat->setEditable(true);
-			/*label3->show();
-			label3->setText(tr("Origin"));
-			originDateTimeBox->show();*/
 
 			ScaleDraw *scaleDraw = (ScaleDraw *) d_graph->axisScaleDraw(axis);
 			if (scaleDraw){
-				QString formatInfo = scaleDraw->format();
+				QString formatInfo = scaleDraw->formatString();
 				boxFormat->insertItem(formatInfo);
 				boxFormat->setCurrentText(formatInfo);
-				originDateTimeBox->setDateTime (scaleDraw->dateTimeOrigin());
 			}
 			boxFormat->insertItem("yyyy-MM-dd hh:mm:ss");
 			boxFormat->insertItem("yyyy/MM/dd hh:mm:ss");
@@ -1356,11 +1340,8 @@ bool AxesDialog::updatePlot(QWidget *page)
 					return false;
 				}
 			}
-		} else if (format == ScaleDraw::Date){
-			QString fmt = boxFormat->currentText();
-			formatInfo = originDateTimeBox->dateTime().toString(fmt) + ";" + fmt;
-		} else if (format == ScaleDraw::Time)
-			formatInfo = originDateTimeBox->time().toString() + ";" + boxFormat->currentText();
+		} else if (format == ScaleDraw::Date || format == ScaleDraw::Time)
+			formatInfo = boxFormat->currentText();
 		else if (format == ScaleDraw::Day || format == ScaleDraw::Month)
             formatInfo = QString::number(boxFormat->currentIndex());
           else if (format == ScaleDraw::ColHeader)
@@ -1474,7 +1455,7 @@ void AxesDialog::updateScale()
 
     ScaleDraw::ScaleType type = d_graph->axisType(a);
 	if (type == ScaleDraw::Date){
-		QString format = ((ScaleDraw *)d_graph->axisScaleDraw(a))->format();
+		QString format = ((ScaleDraw *)d_graph->axisScaleDraw(a))->formatString();
 
 		boxStart->hide();
 		boxStartTime->hide();
@@ -1521,7 +1502,7 @@ void AxesDialog::updateScale()
 
 		boxStep->setSingleStep(1);
 	} else if (type == ScaleDraw::Time){
-		QString format = ((ScaleDraw *)d_graph->axisScaleDraw(a))->format();
+		QString format = ((ScaleDraw *)d_graph->axisScaleDraw(a))->formatString();
 		boxStart->hide();
 		boxStartDateTime->hide();
 		boxStartTime->show();
@@ -1714,10 +1695,8 @@ void AxesDialog::updateTickLabelsList(bool on)
 	int type = boxAxisType->currentIndex();
 	if (type == ScaleDraw::Day || type == ScaleDraw::Month)
 		formatInfo = QString::number(boxFormat->currentIndex());
-	else if (type == ScaleDraw::Date)
-		formatInfo = originDateTimeBox->date().toString(Qt::ISODate) + ";" + boxFormat->currentText();
-	else if (type == ScaleDraw::Time)
-		formatInfo = originDateTimeBox->time().toString() + ";" + boxFormat->currentText();
+	else if (type == ScaleDraw::Date|| type == ScaleDraw::Time)
+		formatInfo = boxFormat->currentText();
 	else
 		formatInfo = boxColName->currentText();
 
@@ -1783,10 +1762,8 @@ void AxesDialog::setLabelsNumericFormat(int)
 		boxPrecision->setEnabled(true);
     } else if (type == ScaleDraw::Day || type == ScaleDraw::Month)
 		formatInfo = QString::number(format);
-	else if (type == ScaleDraw::Date)
-		formatInfo = originDateTimeBox->date().toString(Qt::ISODate) + ";" + boxFormat->currentText();
-	else if (type == ScaleDraw::Time)
-		formatInfo = originDateTimeBox->time().toString() + ";" + boxFormat->currentText();
+	else if (type == ScaleDraw::Date || type == ScaleDraw::Time)
+		formatInfo = boxFormat->currentText();
 	else
 		formatInfo = boxColName->currentText();
 
@@ -2097,15 +2074,4 @@ void AxesDialog::applyAxisFormat()
 			break;
 	}
 	app->modifiedProject();
-}
-
-void AxesDialog::setDisplayDateTimeFormat(const QString & format)
-{
-	ScaleDraw *scaleDraw = (ScaleDraw *) d_graph->axisScaleDraw(mapToQwtAxisId());
-	if (scaleDraw && scaleDraw->scaleType() == ScaleDraw::Time && (format == "M" || format == "S")){
-		originDateTimeBox->setDisplayFormat("hh:mm:ss");
-		return;
-	}
-
-	originDateTimeBox->setDisplayFormat(format);
 }

@@ -54,8 +54,7 @@ public:
 
 	Graph *plot(){return d_plot;};
 
-    QString formatString();
-    QString format(){return d_format_info;};
+	QString formatString(){return d_format_info;}
 
 	QString formula() {return d_formula;};
 	void setFormula(const QString& formula) {d_formula = formula;};
@@ -90,11 +89,8 @@ public:
 
 	void setDayFormat(NameFormat format);
 	void setMonthFormat(NameFormat format);
-	void setTimeFormat(const QString& format, const QTime& t = QTime());
-	void setDateFormat(const QString& format, const QDateTime& d = QDateTime());
-
-	QDateTime dateTimeOrigin(){return d_date_time_origin;};
-    void setDateTimeOrigin(const QDateTime& d){d_date_time_origin = d;};
+	void setTimeFormat(const QString& format);
+	void setDateFormat(const QString& format);
 
 	QStringList labelsList(){return d_text_labels;};
 	void setLabelsList(const QStringList& list){d_text_labels = list;};
@@ -135,8 +131,6 @@ private:
 	bool d_selected;
 	//! Stores the scale name format for Day and Month scales
 	NameFormat d_name_format;
-	//! Stores the date-time origin used to calculate labels for Date/Time scales
-	QDateTime d_date_time_origin;
 	//! Stores extra format information:
 	/* - the date/time format used to calculate labels for Date/Time scales
 	 * - the Column/Table name in the case of Text/ColHeader scales

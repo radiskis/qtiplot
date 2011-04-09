@@ -854,7 +854,7 @@ void Graph::setLabelsTextFormat(int axis, int type, const QString& name, const Q
 		return;
 
 	ScaleDraw *sd = (ScaleDraw *)axisScaleDraw(axis);
-	if (sd && sd->scaleType() == type && sd->labelsList() == lst && sd->format() == name)
+	if (sd && sd->scaleType() == type && sd->labelsList() == lst && sd->formatString() == name)
 		return;
 
 	setAxisScaleDraw(axis, new ScaleDraw(this, lst, name, (ScaleDraw::ScaleType)type));
@@ -895,12 +895,6 @@ void Graph::setLabelsDateTimeFormat(int axis, int type, const QString& formatInf
 	if (type < ScaleDraw::Time)
 		return;
 
-	QStringList list = formatInfo.split(";", QString::KeepEmptyParts);
-	if (list.count() < 2)
-		return;
-	if (list[1].isEmpty())
-		return;
-
 	ScaleDraw *sd = (ScaleDraw *)axisScaleDraw(axis);
 	if (sd->scaleType() == type && sd->formatString() == formatInfo)
 		return;
@@ -911,22 +905,34 @@ void Graph::setLabelsDateTimeFormat(int axis, int type, const QString& formatInf
 	else
 		nsd = new ScaleDraw(this);
 
-	if (type == ScaleDraw::Time){
-		/*QTime t = sd->dateTimeOrigin().time();
-		if (!list[0].isEmpty())
-			t = QTime::fromString(list[0]);
-		nsd->setTimeFormat(list[1], t);*/
-		nsd->setTimeFormat(list[1]);
-	} else if (type == ScaleDraw::Date){
-		/*QDateTime dt = sd->dateTimeOrigin();
-		if (!list[0].isEmpty())
-			dt = QDateTime::fromString (list[0], list[1]);
-		nsd->setDateFormat(list[1], dt);*/
-		nsd->setDateFormat(list[1]);
-	}
+	if (type == ScaleDraw::Time)
+		nsd->setTimeFormat(formatInfo);
+	else if (type == ScaleDraw::Date)
+		nsd->setDateFormat(formatInfo);
 
 	nsd->enableComponent (QwtAbstractScaleDraw::Backbone, drawAxesBackbone);
 	setAxisScaleDraw (axis, nsd);
+}
+
+void Graph::recoverObsoleteDateTimeScale(int axis, int type, const QString& origin)
+{
+	QwtScaleDiv *div = this->axisScaleDiv(axis);
+	double start = div->lowerBound();
+	double end = div->upperBound();
+
+	if (type == ScaleDraw::Date){
+		QDateTime dt = QDateTime::fromString(origin, Qt::ISODate);
+		QDateTime sdt = dt.addSecs(int(start));
+		QDateTime edt = dt.addSecs(int(end));
+		setAxisScale(axis, Table::fromDateTime(sdt), Table::fromDateTime(edt));
+	} else if (type == ScaleDraw::Time){
+		QTime t = QTime::fromString(origin, Qt::ISODate);
+		QTime st = t.addMSecs(int(start));
+		QTime et = t.addMSecs(int(end));
+		setAxisScale(axis, Table::fromTime(st), Table::fromTime(et));
+		//setAxisAutoScale(axis);
+	}
+	d_user_step[axis] = 0.0;
 }
 
 void Graph::setAxisLabelRotation(int axis, int rotation)
@@ -1348,7 +1354,7 @@ QwtDoubleInterval Graph::axisBoundingInterval(int axis)
 void Graph::setScale(int axis, double start, double end, double step,
 					int majorTicks, int minorTicks, int type, bool inverted,
 					double left_break, double right_break, int breakPos,
-                    double stepBeforeBreak, double stepAfterBreak, int minTicksBeforeBreak,
+					double stepBeforeBreak, double stepAfterBreak, int minTicksBeforeBreak,
 					int minTicksAfterBreak, bool log10AfterBreak, int breakWidth, bool breakDecoration)
 {
 	ScaleEngine *sc_engine = (ScaleEngine *)axisScaleEngine(axis);
@@ -3485,8 +3491,7 @@ DataCurve* Graph::insertCurve(Table* w, const QString& xColName, const QString& 
 		QString fmtInfo = QTime().toString() + ";" + date_time_fmt;
 		setLabelsDateTimeFormat(xAxis, ScaleDraw::Time, fmtInfo);
 	} else if (xColType == Table::Date && sd && sd->scaleType() != ScaleDraw::Date){
-		QString fmtInfo = QDateTime().toString(date_time_fmt) + ";" + date_time_fmt;
-		setLabelsDateTimeFormat(xAxis, ScaleDraw::Date, fmtInfo);
+		setLabelsDateTimeFormat(xAxis, ScaleDraw::Date, date_time_fmt);
 	}
 
 	addLegendItem();
