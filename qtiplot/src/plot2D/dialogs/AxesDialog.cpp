@@ -1242,6 +1242,8 @@ bool AxesDialog::updatePlot(QWidget *page)
 		if (type == ScaleDraw::Date || type == ScaleDraw::Time){
 			start = Table::fromDateTime(boxStartDateTime->dateTime());
 			end = Table::fromDateTime(boxEndDateTime->dateTime());
+			if (type == ScaleDraw::Time && end < start)
+				end += 1.0;
 		} else {
 			start = boxStart->value();
 			end = boxEnd->value();
