@@ -914,25 +914,31 @@ void Graph::setLabelsDateTimeFormat(int axis, int type, const QString& formatInf
 	setAxisScaleDraw (axis, nsd);
 }
 
-void Graph::recoverObsoleteDateTimeScale(int axis, int type, const QString& origin)
+void Graph::recoverObsoleteDateTimeScale(int axis, int type, const QString& origin, const QString& format)
 {
 	QwtScaleDiv *div = this->axisScaleDiv(axis);
 	double start = div->lowerBound();
 	double end = div->upperBound();
-
+	double step = d_user_step[axis];
+	double newStep = 0.0;
 	if (type == ScaleDraw::Date){
 		QDateTime dt = QDateTime::fromString(origin, Qt::ISODate);
+		if (dt.isNull())
+			dt = QDateTime::fromString(origin, format);
 		QDateTime sdt = dt.addSecs(int(start));
 		QDateTime edt = dt.addSecs(int(end));
-		setAxisScale(axis, Table::fromDateTime(sdt), Table::fromDateTime(edt));
+		if (step != 0.0)
+			newStep = step/864.0e2;
+		setAxisScale(axis, Table::fromDateTime(sdt), Table::fromDateTime(edt), newStep);
 	} else if (type == ScaleDraw::Time){
 		QTime t = QTime::fromString(origin, Qt::ISODate);
 		QTime st = t.addMSecs(int(start));
 		QTime et = t.addMSecs(int(end));
-		setAxisScale(axis, Table::fromTime(st), Table::fromTime(et));
-		//setAxisAutoScale(axis);
+		if (step != 0.0)
+			newStep = step/864.0e5;	
+		setAxisScale(axis, Table::fromTime(st), Table::fromTime(et), newStep);
 	}
-	d_user_step[axis] = 0.0;
+	d_user_step[axis] = newStep;
 }
 
 void Graph::setAxisLabelRotation(int axis, int rotation)
