@@ -3485,14 +3485,11 @@ DataCurve* Graph::insertCurve(Table* w, const QString& xColName, const QString& 
 	c->enableSpeedMode();
 
 	int xColType = w->columnType(xcol);
-	QString date_time_fmt = w->columnFormat(xcol);
 	ScaleDraw *sd = (ScaleDraw *)axisScaleDraw(xAxis);
-	if (xColType == Table::Time && sd && sd->scaleType() != ScaleDraw::Time){
-		QString fmtInfo = QTime().toString() + ";" + date_time_fmt;
-		setLabelsDateTimeFormat(xAxis, ScaleDraw::Time, fmtInfo);
-	} else if (xColType == Table::Date && sd && sd->scaleType() != ScaleDraw::Date){
-		setLabelsDateTimeFormat(xAxis, ScaleDraw::Date, date_time_fmt);
-	}
+	if (xColType == Table::Time && sd && sd->scaleType() != ScaleDraw::Time)
+		setLabelsDateTimeFormat(xAxis, ScaleDraw::Time, w->columnFormat(xcol));
+	else if (xColType == Table::Date && sd && sd->scaleType() != ScaleDraw::Date)
+		setLabelsDateTimeFormat(xAxis, ScaleDraw::Date, w->columnFormat(xcol));
 
 	addLegendItem();
 	return c;
