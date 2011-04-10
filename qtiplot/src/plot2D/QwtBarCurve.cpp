@@ -55,11 +55,12 @@ QwtBarCurve::QwtBarCurve(BarStyle style, Table *t, const QString& xColName, cons
 	}
 }
 
-void QwtBarCurve::copy(const QwtBarCurve *b)
+void QwtBarCurve::copy(QwtBarCurve *b)
 {
 	bar_gap = b->bar_gap;
 	bar_offset = b->bar_offset;
 	bar_style = b->bar_style;
+	d_is_stacked = b->isStacked();
 }
 
 void QwtBarCurve::draw(QPainter *painter,
