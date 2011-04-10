@@ -39,7 +39,7 @@ public:
 	enum BarStyle{Vertical = 0, Horizontal = 1};
 	QwtBarCurve(BarStyle style, Table *t, const QString& xColName, const QString& name, int startRow, int endRow);
 
-	void copy(const QwtBarCurve *b);
+	void copy(QwtBarCurve *b);
 
 	virtual QwtDoubleRect boundingRect() const;
 

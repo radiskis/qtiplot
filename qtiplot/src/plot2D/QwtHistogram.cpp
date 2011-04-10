@@ -62,7 +62,7 @@ void QwtHistogram::init()
 
 void QwtHistogram::copy(QwtHistogram *h)
 {
-	QwtBarCurve::copy((const QwtBarCurve *)h);
+	QwtBarCurve::copy((QwtBarCurve *)h);
 
 	d_autoBin = h->d_autoBin;
 	d_bin_size = h->d_bin_size;

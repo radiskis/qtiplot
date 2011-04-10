@@ -4807,7 +4807,7 @@ void Graph::copyCurves(Graph* g)
 				c = new QwtBarCurve(((QwtBarCurve*)cv)->orientation(), cv->table(), cv->xColumnName(),
 									cv->title().text(), cv->startRow(), cv->endRow());
                 insertCurve(c);
-				((QwtBarCurve*)c)->copy((const QwtBarCurve*)cv);
+				((QwtBarCurve*)c)->copy((QwtBarCurve*)cv);
 			} else if (style == ErrorBars){
 				ErrorBarsCurve *er = (ErrorBarsCurve*)cv;
 				DataCurve *master_curve = masterCurve(er);
