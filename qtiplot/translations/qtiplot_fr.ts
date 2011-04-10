@@ -9407,7 +9407,7 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Ignore lines containing</source>
-        <translation type="unfinished"></translation>
+        <translation>Ignorer les lignes contenant</translation>
     </message>
 </context>
 <context>
