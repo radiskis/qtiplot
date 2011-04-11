@@ -1377,7 +1377,11 @@ void MultiLayer::printAllLayers(QPainter *painter)
 		}
 	} else {
 		int x_margin = (pageRect.width() - canvasRect.width())/2;
+		if (x_margin <= 0)
+			x_margin = (int)((0.5/2.54)*printer->logicalDpiY()); // 0.5 cm margins
 		int y_margin = (pageRect.height() - canvasRect.height())/2;
+		if (y_margin <= 0)
+			y_margin = x_margin;
 
 		if (d_print_cropmarks)
 			cr.moveTo(x_margin, y_margin);

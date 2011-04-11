@@ -1721,8 +1721,7 @@ void Graph::print()
 		QRect paperRect = printer.paperRect();
 		double fontFactor = 1.0;
 		if (multiLayer()->scaleLayersOnPrint()){
-			int dpiy = printer.logicalDpiY();
-			int margin = (int) ((2/2.54)*dpiy ); // 2 cm margins
+			int margin = (int)((1/2.54)*printer.logicalDpiY()); // 1 cm margins
 
 			int width = qRound(aspect*printer.height()) - 2*margin;
 			int x = qRound(abs(printer.width()- width)*0.5);
@@ -1735,9 +1734,13 @@ void Graph::print()
 
 			fontFactor = (double)plotRect.height()/(double)this->height();
 		} else {
-    		int x_margin = (paperRect.width() - plotRect.width())/2;
-    		int y_margin = (paperRect.height() - plotRect.height())/2;
-    		plotRect.moveTo(x_margin, y_margin);
+			int x_margin = (paperRect.width() - plotRect.width())/2;
+			if (x_margin <= 0)
+				x_margin = (int)((0.5/2.54)*printer.logicalDpiY()); // 0.5 cm margins
+			int y_margin = (paperRect.height() - plotRect.height())/2;
+			if (y_margin <= 0)
+				y_margin = x_margin;
+			plotRect.moveTo(x_margin, y_margin);
 		}
 
         QPainter paint(&printer);
