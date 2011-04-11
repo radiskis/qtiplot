@@ -1719,6 +1719,7 @@ void Graph::print()
 
 		QRect plotRect = rect();
 		QRect paperRect = printer.paperRect();
+		double fontFactor = 1.0;
 		if (multiLayer()->scaleLayersOnPrint()){
 			int dpiy = printer.logicalDpiY();
 			int margin = (int) ((2/2.54)*dpiy ); // 2 cm margins
@@ -1731,6 +1732,8 @@ void Graph::print()
 				plotRect.setLeft(margin);
 				plotRect.setWidth(printer.width() - 2*margin);
 			}
+
+			fontFactor = (double)plotRect.height()/(double)this->height();
 		} else {
     		int x_margin = (paperRect.width() - plotRect.width())/2;
     		int y_margin = (paperRect.height() - plotRect.height())/2;
@@ -1750,7 +1753,7 @@ void Graph::print()
             paint.restore();
         }
 
-		print(&paint, plotRect);
+		print(&paint, plotRect, ScaledFontsPrintFilter(fontFactor));
 	}
 }
 

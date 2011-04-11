@@ -1329,9 +1329,7 @@ void MultiLayer::print()
 		}
 	#endif
 
-		QPainter paint(&printer);
-		printAllLayers(&paint);
-		paint.end();
+		print(&printer);
 	}
 }
 
@@ -1357,16 +1355,16 @@ void MultiLayer::printAllLayers(QPainter *painter)
 	QRect cr = canvasRect; // cropmarks rectangle
 
 	if (d_scale_on_print){
-        int margin = (int)((1/2.54)*printer->logicalDpiY()); // 1 cm margins
-		double scaleFactorX=(double)(paperRect.width()-2*margin)/(double)canvasRect.width();
-		double scaleFactorY=(double)(paperRect.height()-2*margin)/(double)canvasRect.height();
+		int margin = (int)((1/2.54)*printer->logicalDpiY()); // 1 cm margins
+		double scaleFactorX = (double)(paperRect.width() - 2*margin)/(double)canvasRect.width();
+		double scaleFactorY = (double)(paperRect.height() - 2*margin)/(double)canvasRect.height();
 
-        if (d_print_cropmarks){
+		if (d_print_cropmarks){
 			cr.moveTo(QPoint(margin + int(cr.x()*scaleFactorX),
 							 margin + int(cr.y()*scaleFactorY)));
 			cr.setWidth(int(cr.width()*scaleFactorX));
 			cr.setHeight(int(cr.height()*scaleFactorY));
-        }
+		}
 
 		foreach (Graph *g, graphsList){
 			QPoint pos = g->pos();
@@ -1375,25 +1373,25 @@ void MultiLayer::printAllLayers(QPainter *painter)
 			int width = int(g->frameGeometry().width()*scaleFactorX);
 			int height = int(g->frameGeometry().height()*scaleFactorY);
 
-			g->print(painter, QRect(pos, QSize(width,height)));
+			g->print(painter, QRect(pos, QSize(width,height)), ScaledFontsPrintFilter(scaleFactorY));
 		}
 	} else {
-    	int x_margin = (pageRect.width() - canvasRect.width())/2;
-    	int y_margin = (pageRect.height() - canvasRect.height())/2;
+		int x_margin = (pageRect.width() - canvasRect.width())/2;
+		int y_margin = (pageRect.height() - canvasRect.height())/2;
 
-        if (d_print_cropmarks)
-            cr.moveTo(x_margin, y_margin);
+		if (d_print_cropmarks)
+			cr.moveTo(x_margin, y_margin);
 
 		foreach (Graph *g, graphsList){
 			QPoint pos = g->pos();
 			pos = QPoint(x_margin + pos.x(), y_margin + pos.y());
-			g->print(painter, QRect(pos, g->size()));
+			g->print(painter, QRect(pos, g->size()), ScaledFontsPrintFilter(1.0));
 		}
 	}
 
 	if (d_print_cropmarks){
 		cr.addCoords(-1, -1, 2, 2);
-    	painter->save();
+		painter->save();
 		painter->setPen(QPen(QColor(Qt::black), 0.5, Qt::DashLine));
 		painter->drawLine(paperRect.left(), cr.top(), paperRect.right(), cr.top());
 		painter->drawLine(paperRect.left(), cr.bottom(), paperRect.right(), cr.bottom());
@@ -1401,7 +1399,6 @@ void MultiLayer::printAllLayers(QPainter *painter)
 		painter->drawLine(cr.right(), paperRect.top(), cr.right(), paperRect.bottom());
 		painter->restore();
 	}
-
 }
 
 void MultiLayer::setFonts(const QFont& titleFnt, const QFont& scaleFnt,
