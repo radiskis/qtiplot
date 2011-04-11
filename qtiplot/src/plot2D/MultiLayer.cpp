@@ -959,8 +959,10 @@ QPixmap MultiLayer::canvasPixmap(const QSize& size, double scaleFontsFactor, boo
 		return pic;
 	}
 
-	QSize oldSize = d_canvas->size();
-	d_canvas->resize(size);
+	double xScale = (double)size.width()/(double)d_canvas->width();
+	double yScale = (double)(size.height())/(double)(d_canvas->height());
+	if (scaleFontsFactor == 0.0)
+		scaleFontsFactor = yScale;
 
 	QPixmap pic(size);
 	if (transparent)
@@ -971,14 +973,15 @@ QPixmap MultiLayer::canvasPixmap(const QSize& size, double scaleFontsFactor, boo
 
 	QList<Graph*> lst = stackOrderedLayersList();
 	foreach (Graph *g, lst){
-		g->scaleFonts(scaleFontsFactor);
-		g->print(&p, g->geometry());
-		g->scaleFonts(1.0/scaleFontsFactor);
+		int gx = qRound(g->x()*xScale);
+		int gy = qRound(g->y()*yScale);
+		int gw = qRound(g->width()*xScale);
+		int gh = qRound(g->height()*yScale);
+
+		g->print(&p, QRect(gx, gy, gw, gh), ScaledFontsPrintFilter(scaleFontsFactor));
 	}
 
 	p.end();
-
-	d_canvas->resize(oldSize);
 	return pic;
 }
 
@@ -1145,9 +1148,7 @@ void MultiLayer::exportVector(const QString& fileName, int res, bool color,
 			if (fontsFactor == 0.0)
 				fontsFactor = Graph::customPrintSize(customSize, unit, logicalDpiX()).height()/(double)height();
 
-			g->scaleFonts(fontsFactor);
-        	g->print(&paint, r);
-        	g->scaleFonts(1.0/fontsFactor);
+			g->print(&paint, r, ScaledFontsPrintFilter(fontsFactor));
 		}
 	} else if (res && res != printer.resolution()){
 		double wfactor = (double)res/(double)logicalDpiX();
@@ -1160,14 +1161,14 @@ void MultiLayer::exportVector(const QString& fileName, int res, bool color,
 			QRect r = g->geometry();
 			r.setSize(QSize(int(r.width()*wfactor), int(r.height()*hfactor)));
 			r.moveTo(int(r.x()*wfactor), int(r.y()*hfactor));
-			g->print(&paint, r);
+			g->print(&paint, r, ScaledFontsPrintFilter(fontsFactor));
 		}
 	} else {
     	printer.setPaperSize(QSizeF(d_canvas->width(), d_canvas->height()), QPrinter::DevicePixel);
 		QPainter paint(&printer);
 		QList<Graph*> lst = stackOrderedLayersList();
 		foreach (Graph *g, lst)
-			g->print(&paint, g->geometry());
+			g->print(&paint, g->geometry(), ScaledFontsPrintFilter(fontsFactor));
 	}
 }
 
@@ -1190,14 +1191,12 @@ void MultiLayer::draw(QPaintDevice *device, const QSizeF& customSize, int unit, 
 			if (fontsFactor == 0.0)
 				fontsFactor = Graph::customPrintSize(customSize, unit, logicalDpiX()).height()/(double)height();
 
-			g->scaleFonts(fontsFactor);
-        	g->print(&paint, r);
-        	g->scaleFonts(1.0/fontsFactor);
+			g->print(&paint, r, ScaledFontsPrintFilter(fontsFactor));
 		}
 	} else {
 		QList<Graph*> lst = stackOrderedLayersList();
 		foreach (Graph *g, lst)
-			g->print(&paint, g->geometry());
+			g->print(&paint, g->geometry(), ScaledFontsPrintFilter(fontsFactor));
 	}
 	paint.end();
 	QApplication::restoreOverrideCursor();

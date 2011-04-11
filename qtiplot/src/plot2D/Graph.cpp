@@ -1546,18 +1546,15 @@ QPixmap Graph::graphPixmap(const QSize& size, double scaleFontsFactor, bool tran
 	if (scaleFontsFactor == 0)
 		scaleFontsFactor = (double)size.height()/(double)height();
 
-	scaleFonts(scaleFontsFactor);
-
 	QPixmap pixmap(size);
 	if (transparent)
 		pixmap.fill(Qt::transparent);
 	else
 		pixmap.fill();
 	QPainter p(&pixmap);
-	print(&p, r);
+	print(&p, r, ScaledFontsPrintFilter(scaleFontsFactor));
 	p.end();
 
-	scaleFonts(1.0/scaleFontsFactor);
 	return pixmap;
 }
 
@@ -1689,12 +1686,8 @@ void Graph::exportVector(const QString& fileName, int res, bool color,
 
 	printer.setOrientation(QPrinter::Portrait);
 
-	scaleFonts(fontsFactor);
-
 	QPainter paint(&printer);
-	print(&paint, r);
-
-	scaleFonts(1.0/fontsFactor);
+	print(&paint, r, ScaledFontsPrintFilter(fontsFactor));
 }
 
 void Graph::print()
@@ -1798,13 +1791,9 @@ void Graph::draw(QPaintDevice *device, const QSize& size, double fontsFactor)
 			r.setSize(size);
 	}
 
-	scaleFonts(fontsFactor);
-
 	QPainter p(device);
-	print(&p, r);
+	print(&p, r, ScaledFontsPrintFilter(fontsFactor));
 	p.end();
-
-	scaleFonts(1.0/fontsFactor);
 
 	QApplication::restoreOverrideCursor();
 }
@@ -4363,41 +4352,41 @@ void Graph::scaleFonts(double factor)
 
 	for (int i = 0; i<QwtPlot::axisCnt; i++){
 		QFont font = axisFont(i);
-		font.setPointSizeFloat(factor*font.pointSizeFloat());
+		font.setPointSizeFloat(factor*font.pointSizeF());
 		setAxisFont(i, font);
 
 		QwtText title = axisTitle(i);
 		font = title.font();
-		font.setPointSizeFloat(factor*font.pointSizeFloat());
+		font.setPointSizeF(factor*font.pointSizeF());
 		title.setFont(font);
 		((QwtPlot *)this)->setAxisTitle(i, title);
 	}
 
 	QwtText t = this->title();
 	QFont font = t.font();
-	font.setPointSizeFloat(factor*font.pointSizeFloat());
+	font.setPointSizeF(factor*font.pointSizeF());
 	t.setFont(font);
 	setTitle(t);
 
 	QList<QwtPlotItem *> curves = curvesList();
-    foreach(QwtPlotItem *i, curves){
-        if(i->rtti() != QwtPlotItem::Rtti_PlotSpectrogram &&
-          ((PlotCurve *)i)->type() != Graph::Function &&
-          ((DataCurve *)i)->hasLabels()){
-            QFont font = ((DataCurve *)i)->labelsFont();
-            font.setPointSizeFloat(factor*font.pointSizeFloat());
-            ((DataCurve *)i)->setLabelsFont(font);
-            if (((DataCurve *)i)->hasSelectedLabels())
-                notifyFontChange(font);
-        }
-    }
+	foreach(QwtPlotItem *i, curves){
+		if(i->rtti() != QwtPlotItem::Rtti_PlotSpectrogram &&
+		  ((PlotCurve *)i)->type() != Graph::Function &&
+		  ((DataCurve *)i)->hasLabels()){
+			QFont font = ((DataCurve *)i)->labelsFont();
+			font.setPointSizeF(factor*font.pointSizeF());
+			((DataCurve *)i)->setLabelsFont(font);
+			if (((DataCurve *)i)->hasSelectedLabels())
+				notifyFontChange(font);
+		}
+	}
 
     foreach(FrameWidget *f, d_enrichments){
 		LegendWidget *l = qobject_cast<LegendWidget *>(f);
 		if (!l)
 			continue;
 		QFont font = l->font();
-		font.setPointSizeFloat(factor*font.pointSizeFloat());
+		font.setPointSizeF(factor*font.pointSizeF());
 		l->setFont(font);
 		l->resetOrigin();
 	}
@@ -6544,6 +6533,8 @@ void Graph::print(QPainter *painter, const QRect &plotRect, const QwtPlotPrintFi
     // reset the widget attributes again. This way we produce a lot of
     // useless layout events ...
 
+	pfilter.apply((QwtPlot *)this);
+
     int baseLineDists[QwtPlot::axisCnt];
     if (pfilter.options() & QwtPlotPrintFilter::PrintFrameWithScales){
         // In case of no background we set the backbone of
@@ -6654,10 +6645,25 @@ void Graph::print(QPainter *painter, const QRect &plotRect, const QwtPlotPrintFi
 
 	// The canvas maps are already scaled.
 	QwtPainter::setMetricsMap(painter->device(), painter->device());
+
+	double fontFactor = ((ScaledFontsPrintFilter *)(&pfilter))->scaleFontsFactor();
 	QList<FrameWidget*> enrichments = stackingOrderEnrichmentsList();
 	foreach(FrameWidget *f, enrichments){
-		if (!f->isOnTop())
+		if (!f->isOnTop()){
+			QFont fnt;
+			LegendWidget *lw = qobject_cast<LegendWidget *>(f);
+			if (lw){
+				fnt = lw->font();
+				QFont font(fnt);
+				font.setPointSizeF(fontFactor*font.pointSizeF());
+				lw->setFont(font);
+			}
+
 			f->print(painter, map);
+
+			if (lw)//restore original font
+				lw->setFont(fnt);
+		}
 	}
 	printCanvas(painter, canvasRect, map, pfilter);
 	QwtPainter::resetMetricsMap();
@@ -6768,10 +6774,25 @@ void Graph::print(QPainter *painter, const QRect &plotRect, const QwtPlotPrintFi
 
 	QwtPainter::setMetricsMap(painter->device(), painter->device());
 	foreach(FrameWidget *f, enrichments){
-		if (f->isOnTop())
+		if (f->isOnTop()){
+			QFont fnt;
+			LegendWidget *lw = qobject_cast<LegendWidget *>(f);
+			if (lw){
+				fnt = lw->font();
+				QFont font(fnt);
+				font.setPointSizeF(fontFactor*font.pointSizeF());
+				lw->setFont(font);
+			}
+
 			f->print(painter, map);
+
+			if (lw)//restore original font
+				lw->setFont(fnt);
+		}
 	}
 	QwtPainter::resetMetricsMap();
+
+	pfilter.reset((QwtPlot *)this);
 
 	painter->restore();
 

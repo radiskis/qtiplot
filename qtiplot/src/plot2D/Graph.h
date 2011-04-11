@@ -881,4 +881,25 @@ signals:
 		QString d_canvas_bkg_path;
 		QPixmap d_canvas_bkg_pix;
 };
+
+class ScaledFontsPrintFilter: public QwtPlotPrintFilter
+{
+
+public:
+	ScaledFontsPrintFilter(double factor){d_factor = factor;};
+	virtual QFont font(const QFont &f, Item item) const
+	{
+		if (item == Title || item == AxisScale || item == AxisTitle || item == Marker){
+			QFont fnt(f);
+			fnt.setPointSizeFloat(d_factor*f.pointSizeFloat());
+			return fnt;
+		}
+		return f;
+	}
+
+	double scaleFontsFactor(){return d_factor;}
+
+private:
+	double d_factor;
+};
 #endif // GRAPH_H

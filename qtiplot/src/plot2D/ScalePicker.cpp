@@ -147,10 +147,7 @@ void ScalePicker::mouseRightClicked(const QwtScaleWidget *scale, const QPoint &p
 // The rect of a scale without the title
 QRect ScalePicker::scaleRect(const QwtScaleWidget *scale) const
 {
-	int margin = 1; // pixels tolerance
 	QRect rect = scale->rect();
-	//rect.setRect(rect.x() - margin, rect.y() - margin, rect.width() + 2 * margin, rect.height() +  2 * margin);
-
 	if (scale->title().text().isEmpty())
 		return rect;
 
