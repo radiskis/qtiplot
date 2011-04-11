@@ -128,7 +128,7 @@ void LegendWidget::print(QPainter *painter, const QwtScaleMap map[QwtPlot::axisC
 		((QTeXPaintDevice *)painter->device())->setTextHorizontalAlignment(Qt::AlignLeft);
 	} else
 #endif
-		drawFrame(painter, QRect(x, y, width, height).adjusted(-dfx, -dfy, dfx, dfy));
+	drawFrame(painter, QRect(x, y, width, height).adjusted(-dfx, -dfy, dfx, dfy));
 
 	drawText(painter, QRect(x, y, textWidth, textHeight), heights, symbolLineLength);
 
@@ -260,8 +260,7 @@ void LegendWidget::drawSymbol(PlotCurve *c, int point, QPainter *p, int x, int y
 	p->restore();
 }
 
-void LegendWidget::drawText(QPainter *p, const QRect& rect,
-		QwtArray<long> height, int symbolLineLength)
+void LegendWidget::drawText(QPainter *p, const QRect& rect, QwtArray<long> height, int symbolLineLength)
 {
 	p->save();
 	if (d_plot->antialiasing())
