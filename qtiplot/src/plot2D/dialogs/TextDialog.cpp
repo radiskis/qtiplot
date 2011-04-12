@@ -236,6 +236,7 @@ void TextDialog::apply()
 	switch(formatApplyToBox->currentIndex()){
 		case 0:
 			d_graph->replot();
+			d_graph->updateMarkersBoundingRect();
 		break;
 
 		case 1://this layer
@@ -304,6 +305,7 @@ void TextDialog::formatLayerLabels(Graph *g)
 	t.setRenderFlags(align);
 	g->setTitle(t);
 	g->replot();
+	g->updateMarkersBoundingRect();
 }
 
 int TextDialog::alignment()

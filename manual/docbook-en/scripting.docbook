@@ -1819,13 +1819,15 @@ m.export(fileName)
 This is a shortcut function which uses some default parameters in order to generate the output image.
 If you need more control over the export parameters you must use one of the following functions:
 <programlisting>
-m1.exportRasterImage(fileName, quality = 100, dpi = 0)
+m1.exportRasterImage(fileName, quality = 100, dpi = 0, compression = 0)
 m2.exportVector(fileName, resolution, color = True)
 </programlisting>,
 
 where the <varname>quality</varname> parameter influences the size of the output file.
 The higher this value (maximum is 100), the higher the quality of the image, but the larger the size of the resulting files.
 The <varname>dpi</varname> parameter represents the export resolution in pixels per inch (the default is screen resolution).
+The <varname>compression</varname> parameter can be 0 (no compression) or 1 (LZW) and is only effectif for .tif/.tiff images.
+It is neglected for all other raster image formats.
 
 <para>You can also import an ASCII data <varname>file</varname>, using <varname>sep</varname> as separator characters, ignoring
 <varname>ignore</varname> lines at the head of the file and all lines starting with a <varname>comment</varname> string:
@@ -3171,14 +3173,14 @@ This function uses some default parameters
 for the properties of the image. If you need more control over the exported images you can use one
 of the following specialized functions:<programlisting>
 l.exportVector(fileName, dpi = 96, color = True, size = QSizeF(), unit = Frame.Pixel, fontsFactor = 1.0)
-l.exportImage(fileName, quality = 100, transparent = False, dpi = 0, size = QSizeF(), unit = Frame.Pixel, fontsFactor = 1.0)
+l.exportImage(fileName, quality = 100, transparent = False, dpi = 0, size = QSizeF(), unit = Frame.Pixel, fontsFactor = 1.0, compression = 0)
 l.exportTex(fileName, color = True, escapeStrings = True, fontSizes = True, size = QSizeF(), unit = Frame.Pixel, fontsFactor = 1.0)</programlisting>
 
 <para>The function <varname>exportVector</varname> can export the plot/layer to the following vector formats:
 .eps, .ps, .pdf.</para>
 
 <para>The function <varname>exportImage</varname> can be used if you need to export to
-one of the Qt supported bitmap image formats (.bmp, .png, .jpg, etc...). The <varname>transparent</varname>
+one of the Qt supported raster image formats (.bmp, .png, .jpg, etc...). The <varname>transparent</varname>
 option can only be used in conjunction with the file formats supporting transprency: .png and .tif (.tiff).
 The <varname>quality</varname> parameter influences the size of the output file. The higher this value (maximum is 100),
 the higher the quality of the image, but the larger the size of the resulting files.
@@ -3226,7 +3228,11 @@ and can take one of the following values:
 The <varname>fontsFactor</varname> parameter represents a scaling factor
 for the font sizes of all texts in the plot (the default is 1.0, meaning no scaling).
 If you set this parameter to 0, the program will automatically try to calculate
-a scale factor.</para>
+a scale factor.
+
+The <varname>compression</varname> parameter can be 0 (no compression) or 1 (LZW) and is only effectif for .tif/.tiff images.
+It is neglected for all other raster image formats.
+</para>
 
 <para>
 The function <varname>exportTex</varname> can be used if you need to export to
@@ -3696,7 +3702,7 @@ g.export(fileName)
 This function uses some default export options. If you want to customize the exported image, you should use the
 following function in order to export to raster image formats:
 <programlisting>
-g.exportImage(fileName, int quality = 100, bool transparent = False, dpi = 0, size = QSizeF(), unit = Frame.Pixel, fontsFactor = 1.0)
+g.exportImage(fileName, int quality = 100, bool transparent = False, dpi = 0, size = QSizeF(), unit = Frame.Pixel, fontsFactor = 1.0, compression = 0)
 </programlisting>
 where <varname>quality</varname> is a compression factor: the larger its value, the better the quality of the
 exported image, but also the larger the file size.
@@ -3744,7 +3750,8 @@ and can take one of the following values:
 The <varname>fontsFactor</varname> parameter represents a scaling factor
 for the font sizes of all texts in the plot (the default is 1.0, meaning no scaling).
 If you set this parameter to 0, the program will automatically try to calculate
-a scale factor.
+a scale factor. The <varname>compression</varname> parameter can be 0 (no compression) or 1 (LZW) and is only effectif for .tif/.tiff images.
+It is neglected for all other raster image formats.
 
 <para>
 3D plots can be exported to any of the following vector formats: .eps, .ps, .pdf, .pgf and .svg, using

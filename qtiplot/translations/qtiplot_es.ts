@@ -8973,7 +8973,7 @@ Autocompletion will not be available!</source>
     </message>
     <message>
         <source>Origin</source>
-        <translation type="unfinished">Origen</translation>
+        <translation type="obsolete">Origen</translation>
     </message>
     <message>
         <source>&amp;Inverted</source>
@@ -10393,6 +10393,10 @@ The following special codes can be used:
     </message>
     <message>
         <source>Locally Installed Excel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show &amp;gaps for empty table cells</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -14215,6 +14219,18 @@ The following special codes can be used:
     </message>
     <message>
         <source>Print Resolution (DPI)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Compression</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>None</source>
+        <translation type="unfinished">Ninguno</translation>
+    </message>
+    <message>
+        <source>LZW</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

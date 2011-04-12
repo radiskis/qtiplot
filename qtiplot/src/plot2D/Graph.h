@@ -351,7 +351,7 @@ class Graph: public QwtPlot
 						const QSizeF& customSize = QSizeF (), int unit = FrameWidget::Pixel, double fontsFactor = 1.0);
 		void exportImage(const QString& fileName, int quality = 100, bool transparent = false,
 						 int dpi = 0, const QSizeF& customSize = QSizeF (),
-						 int unit = FrameWidget::Pixel, double fontsFactor = 1.0);
+						 int unit = FrameWidget::Pixel, double fontsFactor = 1.0, int compression = 0);
 
 		void draw(QPaintDevice *, const QSize& size, double fontsFactor = 1.0);
 		static QSize customPrintSize(const QSizeF& customSize, int unit, int dpi);
@@ -889,9 +889,12 @@ public:
 	ScaledFontsPrintFilter(double factor){d_factor = factor;};
 	virtual QFont font(const QFont &f, Item item) const
 	{
+		if (d_factor == 1.0 || d_factor <= 0.0)
+			return f;
+
 		if (item == Title || item == AxisScale || item == AxisTitle || item == Marker){
 			QFont fnt(f);
-			fnt.setPointSizeFloat(d_factor*f.pointSizeFloat());
+			fnt.setPointSizeF(d_factor*f.pointSizeF());
 			return fnt;
 		}
 		return f;
