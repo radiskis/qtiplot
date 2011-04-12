@@ -80,6 +80,7 @@
 #include <QImage>
 #include <QBuffer>
 #include <QImageReader>
+#include <QImageWriter>
 #include <QMessageBox>
 #include <QPixmap>
 #include <QPainter>
@@ -87,7 +88,6 @@
 #include <QTextStream>
 #include <QLocale>
 #include <QPrintDialog>
-#include <QImageWriter>
 #include <QFileInfo>
 #include <QSvgGenerator>
 #include <QDir>
@@ -1531,7 +1531,7 @@ QPixmap Graph::graphPixmap(const QSize& size, double scaleFontsFactor, bool tran
 		else
 			pixmap.fill();
 		QPainter p(&pixmap);
-		print(&p, r);
+		print(&p, r, ScaledFontsPrintFilter(1.0));
 		p.end();
 		return pixmap;
 	}
@@ -1594,7 +1594,7 @@ void Graph::exportToFile(const QString& fileName)
 }
 
 void Graph::exportImage(const QString& fileName, int quality, bool transparent, int dpi,
-						const QSizeF& customSize, int unit, double fontsFactor)
+						const QSizeF& customSize, int unit, double fontsFactor, int compression)
 {
 	if (!dpi)
 		dpi = logicalDpiX();
@@ -1624,7 +1624,15 @@ void Graph::exportImage(const QString& fileName, int quality, bool transparent, 
 		writer.write(document);
 	} else
 #endif
-		image.save(fileName, 0, quality);
+	{
+		QImageWriter writer(fileName);
+		if (compression > 0 && writer.supportsOption(QImageIOHandler::CompressionRatio)){
+			writer.setQuality(quality);
+			writer.setCompression(compression);
+			writer.write(image);
+		} else
+			image.save(fileName, 0, quality);
+	}
 }
 
 void Graph::exportVector(const QString& fileName, int res, bool color,
@@ -5784,10 +5792,8 @@ void Graph::setCurrentFont(const QFont& f)
 			emit modifiedGraph();
 		}
 	} else if (titlePicker->selected()){
-		QwtText t = title();
-		t.setFont(f);
-		setTitle(t);
-		emit modifiedGraph();
+		setTitleFont(f);
+		updateMarkersBoundingRect();
 	} else {
 	    QList<QwtPlotItem *> curves = curvesList();
 	    foreach(QwtPlotItem *i, curves){
@@ -6512,56 +6518,66 @@ void Graph::showEvent (QShowEvent * event)
 */
 void Graph::print(QPainter *painter, const QRect &plotRect, const QwtPlotPrintFilter &pfilter)
 {
-    int axisId;
-
 	if (painter == 0 || !painter->isActive() || !plotRect.isValid() || size().isNull())
-       return;
+		return;
 
 	deselect();
 
 	d_is_printing = true;
 
-    QwtText t = title();
+	QwtText t = title();
+
+	double fontFactor = ((ScaledFontsPrintFilter *)(&pfilter))->scaleFontsFactor();
+	if (fontFactor != 1.0 && fontFactor > 0.0){
+		QFont fnt = QFont(t.font());
+		fnt.setPointSize(fnt.pointSizeF()*fontFactor);
+
+		QwtText tc = title();
+		tc.setFont(fnt);
+		setTitle(tc);
+	}
+
 	printFrame(painter, plotRect);
 
-    painter->save();
+	painter->save();
 
-    // All paint operations need to be scaled according to
-    // the paint device metrics.
+	// All paint operations need to be scaled according to
+	// the paint device metrics.
 
-    QwtPainter::setMetricsMap(this, painter->device());
-    const QwtMetricsMap &metricsMap = QwtPainter::metricsMap();
+	QwtPainter::setMetricsMap(this, painter->device());
+	const QwtMetricsMap &metricsMap = QwtPainter::metricsMap();
 
-    // It is almost impossible to integrate into the Qt layout
-    // framework, when using different fonts for printing
-    // and screen. To avoid writing different and Qt unconform
-    // layout engines we change the widget attributes, print and
-    // reset the widget attributes again. This way we produce a lot of
-    // useless layout events ...
+	// It is almost impossible to integrate into the Qt layout
+	// framework, when using different fonts for printing
+	// and screen. To avoid writing different and Qt unconform
+	// layout engines we change the widget attributes, print and
+	// reset the widget attributes again. This way we produce a lot of
+	// useless layout events ...
 
 	pfilter.apply((QwtPlot *)this);
 
-    int baseLineDists[QwtPlot::axisCnt];
-    if (pfilter.options() & QwtPlotPrintFilter::PrintFrameWithScales){
-        // In case of no background we set the backbone of
-        // the scale on the frame of the canvas.
+	int axisId;
+	int baseLineDists[QwtPlot::axisCnt];
+	if (pfilter.options() & QwtPlotPrintFilter::PrintFrameWithScales){
+		// In case of no background we set the backbone of
+		// the scale on the frame of the canvas.
 
-        for (axisId = 0; axisId < QwtPlot::axisCnt; axisId++ ){
-            QwtScaleWidget *scaleWidget = (QwtScaleWidget *)axisWidget(axisId);
-            if ( scaleWidget ){
-                baseLineDists[axisId] = scaleWidget->margin();
-                scaleWidget->setMargin(0);
-            }
-        }
-    }
+		for (axisId = 0; axisId < QwtPlot::axisCnt; axisId++ ){
+			QwtScaleWidget *scaleWidget = (QwtScaleWidget *)axisWidget(axisId);
+			if ( scaleWidget ){
+				baseLineDists[axisId] = scaleWidget->margin();
+				scaleWidget->setMargin(0);
+			}
+		}
+	}
 
-    // Calculate the layout for the print.
+	// Calculate the layout for the print.
 
-    int layoutOptions = QwtPlotLayout::IgnoreScrollbars;
-    if ( !(pfilter.options() & QwtPlotPrintFilter::PrintMargin) )
-        layoutOptions |= QwtPlotLayout::IgnoreMargin;
-    if ( !(pfilter.options() & QwtPlotPrintFilter::PrintLegend) )
-        layoutOptions |= QwtPlotLayout::IgnoreLegend;
+	int layoutOptions = QwtPlotLayout::IgnoreScrollbars;
+	if ( !(pfilter.options() & QwtPlotPrintFilter::PrintMargin) )
+		layoutOptions |= QwtPlotLayout::IgnoreMargin;
+	if ( !(pfilter.options() & QwtPlotPrintFilter::PrintLegend) )
+		layoutOptions |= QwtPlotLayout::IgnoreLegend;
 
 	int bw = lineWidth();
 	plotLayout()->activate(this,
@@ -6572,53 +6588,53 @@ void Graph::print(QPainter *painter, const QRect &plotRect, const QwtPlotPrintFi
 	// The border of the bounding rect needs to be scaled to
 	// layout coordinates, so that it is aligned to the axes
 
-    QRect boundingRect( canvasRect.left() - 1, canvasRect.top() - 1,
-        canvasRect.width() + 2, canvasRect.height() + 2);
-    boundingRect = metricsMap.layoutToDevice(boundingRect);
-    boundingRect.setWidth(boundingRect.width() - 1);
-    boundingRect.setHeight(boundingRect.height() - 1);
+	QRect boundingRect( canvasRect.left() - 1, canvasRect.top() - 1,
+		canvasRect.width() + 2, canvasRect.height() + 2);
+	boundingRect = metricsMap.layoutToDevice(boundingRect);
+	boundingRect.setWidth(boundingRect.width() - 1);
+	boundingRect.setHeight(boundingRect.height() - 1);
 
-    canvasRect = metricsMap.layoutToDevice(canvasRect);
+	canvasRect = metricsMap.layoutToDevice(canvasRect);
 
-    // When using QwtPainter all sizes where computed in pixel
-    // coordinates and scaled by QwtPainter later. This limits
-    // the precision to screen resolution. A much better solution
-    // is to scale the maps and print in unlimited resolution.
+	// When using QwtPainter all sizes where computed in pixel
+	// coordinates and scaled by QwtPainter later. This limits
+	// the precision to screen resolution. A much better solution
+	// is to scale the maps and print in unlimited resolution.
 
 	QwtScaleMap map[axisCnt];
-    for (axisId = 0; axisId < axisCnt; axisId++){
-        map[axisId].setTransformation(axisScaleEngine(axisId)->transformation());
+	for (axisId = 0; axisId < axisCnt; axisId++){
+		map[axisId].setTransformation(axisScaleEngine(axisId)->transformation());
 
-        const QwtScaleDiv &scaleDiv = *axisScaleDiv(axisId);
-        map[axisId].setScaleInterval(scaleDiv.lowerBound(), scaleDiv.upperBound());
+		const QwtScaleDiv &scaleDiv = *axisScaleDiv(axisId);
+		map[axisId].setScaleInterval(scaleDiv.lowerBound(), scaleDiv.upperBound());
 
-        double from, to;
-        if ( axisEnabled(axisId) ){
-            const int sDist = axisWidget(axisId)->startBorderDist();
-            const int eDist = axisWidget(axisId)->endBorderDist();
-            const QRect &scaleRect = plotLayout()->scaleRect(axisId);
+		double from, to;
+		if ( axisEnabled(axisId) ){
+			const int sDist = axisWidget(axisId)->startBorderDist();
+			const int eDist = axisWidget(axisId)->endBorderDist();
+			const QRect &scaleRect = plotLayout()->scaleRect(axisId);
 
-            if ( axisId == xTop || axisId == xBottom ){
-                from = metricsMap.layoutToDeviceX(scaleRect.left() + sDist);
-                to = metricsMap.layoutToDeviceX(scaleRect.right() + 1 - eDist);
-            } else {
-                from = metricsMap.layoutToDeviceY(scaleRect.bottom() + 1 - eDist );
-                to = metricsMap.layoutToDeviceY(scaleRect.top() + sDist);
-            }
-        } else {
-            int margin = plotLayout()->canvasMargin(axisId);
-            if ( axisId == yLeft || axisId == yRight ){
-                margin = metricsMap.layoutToDeviceY(margin);
-                from = canvasRect.bottom() - margin;
-                to = canvasRect.top() + margin;
-            } else {
-                margin = metricsMap.layoutToDeviceX(margin);
-                from = canvasRect.left() + margin;
-                to = canvasRect.right() - margin;
-            }
-        }
-        map[axisId].setPaintXInterval(from, to);
-    }
+			if ( axisId == xTop || axisId == xBottom ){
+				from = metricsMap.layoutToDeviceX(scaleRect.left() + sDist);
+				to = metricsMap.layoutToDeviceX(scaleRect.right() + 1 - eDist);
+			} else {
+				from = metricsMap.layoutToDeviceY(scaleRect.bottom() + 1 - eDist );
+				to = metricsMap.layoutToDeviceY(scaleRect.top() + sDist);
+			}
+		} else {
+			int margin = plotLayout()->canvasMargin(axisId);
+			if ( axisId == yLeft || axisId == yRight ){
+				margin = metricsMap.layoutToDeviceY(margin);
+				from = canvasRect.bottom() - margin;
+				to = canvasRect.top() + margin;
+			} else {
+				margin = metricsMap.layoutToDeviceX(margin);
+				from = canvasRect.left() + margin;
+				to = canvasRect.right() - margin;
+			}
+		}
+		map[axisId].setPaintXInterval(from, to);
+	}
 
 	if (!metricsMap.isIdentity()){//we set non-cosmetic pens in order to scale pen width
 		foreach (QwtPlotItem *item, d_curves){
@@ -6652,7 +6668,7 @@ void Graph::print(QPainter *painter, const QRect &plotRect, const QwtPlotPrintFi
 	// The canvas maps are already scaled.
 	QwtPainter::setMetricsMap(painter->device(), painter->device());
 
-	double fontFactor = ((ScaledFontsPrintFilter *)(&pfilter))->scaleFontsFactor();
+	//double fontFactor = ((ScaledFontsPrintFilter *)(&pfilter))->scaleFontsFactor();
 	QList<FrameWidget*> enrichments = stackingOrderEnrichmentsList();
 	foreach(FrameWidget *f, enrichments){
 		if (!f->isOnTop()){
@@ -6720,7 +6736,6 @@ void Graph::print(QPainter *painter, const QRect &plotRect, const QwtPlotPrintFi
 				((QTeXPaintDevice *)painter->device())->setTextHorizontalAlignment(Qt::AlignLeft);
 			else if (flags & Qt::AlignRight)
 				((QTeXPaintDevice *)painter->device())->setTextHorizontalAlignment(Qt::AlignRight);
-
 		}
 #endif
 
@@ -6736,17 +6751,17 @@ void Graph::print(QPainter *painter, const QRect &plotRect, const QwtPlotPrintFi
 
 	canvasRect = plotLayout()->canvasRect();
 
-    for ( axisId = 0; axisId < QwtPlot::axisCnt; axisId++ ){
-        QwtScaleWidget *scaleWidget = (QwtScaleWidget *)axisWidget(axisId);
-        if (scaleWidget){
-            int baseDist = scaleWidget->margin();
+	for ( axisId = 0; axisId < QwtPlot::axisCnt; axisId++ ){
+		QwtScaleWidget *scaleWidget = (QwtScaleWidget *)axisWidget(axisId);
+		if (scaleWidget){
+			int baseDist = scaleWidget->margin();
 
-            int startDist, endDist;
-            scaleWidget->getBorderDistHint(startDist, endDist);
+			int startDist, endDist;
+			scaleWidget->getBorderDistHint(startDist, endDist);
 
-            QRect scaleRect = plotLayout()->scaleRect(axisId);
-            if (!scaleWidget->margin()){
-                switch(axisId){
+			QRect scaleRect = plotLayout()->scaleRect(axisId);
+			if (!scaleWidget->margin()){
+				switch(axisId){
 					case xBottom:
 						scaleRect.setTop(canvasRect.bottom());
 					break;
@@ -6759,23 +6774,23 @@ void Graph::print(QPainter *painter, const QRect &plotRect, const QwtPlotPrintFi
 					case yRight:
 						scaleRect.setLeft(canvasRect.right());
 					break;
-                }
-            }
+				}
+			}
 			printScale(painter, axisId, startDist, endDist, baseDist, scaleRect);
-        }
-    }
+		}
+	}
 	QwtPainter::resetMetricsMap();
 
 	plotLayout()->invalidate();
 
-    // reset all widgets with their original attributes.
+	// reset all widgets with their original attributes.
 	if ( pfilter.options() & QwtPlotPrintFilter::PrintFrameWithScales ){
-        // restore the previous base line dists
-        for (axisId = 0; axisId < QwtPlot::axisCnt; axisId++ ){
-            QwtScaleWidget *scaleWidget = (QwtScaleWidget *)axisWidget(axisId);
-            if ( scaleWidget  )
-                scaleWidget->setMargin(baseLineDists[axisId]);
-        }
+		// restore the previous base line dists
+		for (axisId = 0; axisId < QwtPlot::axisCnt; axisId++ ){
+			QwtScaleWidget *scaleWidget = (QwtScaleWidget *)axisWidget(axisId);
+			if ( scaleWidget  )
+				scaleWidget->setMargin(baseLineDists[axisId]);
+		}
 	}
 
 	QwtPainter::setMetricsMap(painter->device(), painter->device());

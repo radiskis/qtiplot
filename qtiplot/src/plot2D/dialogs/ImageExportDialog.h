@@ -67,6 +67,7 @@ private:
 	QSpinBox *d_quality;
 	QCheckBox *d_transparency;
 	QSpinBox *d_bitmap_resolution;
+	QComboBox *d_compression;
 
 	QComboBox *d_3D_text_export_mode;
     QComboBox *d_3D_export_sort;
@@ -75,7 +76,7 @@ private:
 	QGroupBox *d_custom_size_box;
 	DoubleSpinBox *widthBox, *heightBox, *scaleFontsBox;
 	QComboBox *unitBox;
-	QLabel *resolutionLabel;
+	QLabel *resolutionLabel, *compressionLabel;
 	QCheckBox *keepRatioBox;
 	QCheckBox *d_escape_tex_strings;
 	QCheckBox *d_tex_font_sizes;
@@ -104,6 +105,9 @@ public:
 
 	//! For raster formats: returns the output resolution the user selected, defaulting to the screen resolution.
 	int bitmapResolution() const { return d_bitmap_resolution->value(); };
+
+	//! For raster formats supporting this option returns the output image compression, 0 means no compression.
+	int compression() const {return d_compression->currentIndex();};
 
 	//! Return the quality (in percent) the user selected for export to raster formats.
 	int quality() const { return d_quality->value(); };

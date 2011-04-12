@@ -4638,7 +4638,7 @@ L&apos;autocomplétion ne sera pas disponible !</translation>
     </message>
     <message>
         <source>Origin</source>
-        <translation>Origine</translation>
+        <translation type="obsolete">Origine</translation>
     </message>
     <message>
         <source>&amp;Inverted</source>
@@ -6014,6 +6014,10 @@ Les codes spéciaux suivants peuvent être utilisés :
     <message>
         <source>Locally Installed Excel</source>
         <translation>Microsoft Excel installé localement</translation>
+    </message>
+    <message>
+        <source>Show &amp;gaps for empty table cells</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -9106,6 +9110,18 @@ Les codes spéciaux suivants peuvent être utilisés :
     <message>
         <source>Print Resolution (DPI)</source>
         <translation>Résolution (DPI)</translation>
+    </message>
+    <message>
+        <source>Compression</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>None</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>LZW</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

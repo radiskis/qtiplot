@@ -366,6 +366,10 @@ void ConfigDialog::initPlotsPage()
     boxLabelsEditing->setChecked(!app->d_in_place_editing);
     optionsTabLayout->addWidget(boxLabelsEditing);
 
+	boxEmptyCellGap = new QCheckBox();
+	boxEmptyCellGap->setChecked(app->d_show_empty_cell_gap);
+	optionsTabLayout->addWidget(boxEmptyCellGap);
+
 	plotsTabWidget->addTab( plotOptions, QString() );
 
 	initCurvesPage();
@@ -1839,6 +1843,7 @@ void ConfigDialog::languageChange()
 
 	boxResize->setText(tr("Do not &resize layers when window size changes"));
     boxLabelsEditing->setText(tr("&Disable in-place editing"));
+	boxEmptyCellGap->setText(tr("Show &gaps for empty table cells"));
 	lblMinTicksLength->setText(tr("Length"));
 
 	lblMajTicksLength->setText(tr("Length" ));
@@ -2331,6 +2336,7 @@ void ConfigDialog::apply()
 
 	// 2D plots page: options tab
 	app->d_in_place_editing = !boxLabelsEditing->isChecked();
+	app->d_show_empty_cell_gap = boxEmptyCellGap->isChecked();
 	app->titleOn = boxTitle->isChecked();
 
 	if (boxFrame->isChecked())
@@ -3592,6 +3598,7 @@ void ConfigDialog::setApplication(ApplicationWindow *app)
 	boxBorderWidth->setValue(app->d_graph_border_width);
 	boxResize->setChecked(!app->autoResizeLayers);
 	boxLabelsEditing->setChecked(!app->d_in_place_editing);
+	boxEmptyCellGap->setChecked(app->d_show_empty_cell_gap);
 
 	//curves page
 	boxCurveLineWidth->setLocale(app->locale());

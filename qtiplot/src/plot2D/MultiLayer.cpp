@@ -953,7 +953,7 @@ QPixmap MultiLayer::canvasPixmap(const QSize& size, double scaleFontsFactor, boo
 
 		QList<Graph*> lst = stackOrderedLayersList();
 		foreach (Graph *g, lst)
-			g->print(&p, g->geometry());
+			g->print(&p, g->geometry(), ScaledFontsPrintFilter(1.0));
 
 		p.end();
 		return pic;
@@ -1021,7 +1021,7 @@ void MultiLayer::exportToFile(const QString& fileName)
 }
 
 void MultiLayer::exportImage(const QString& fileName, int quality, bool transparent,
-				int dpi, const QSizeF& customSize, int unit, double fontsFactor)
+				int dpi, const QSizeF& customSize, int unit, double fontsFactor, int compression)
 {
 	if (!dpi)
 		dpi = logicalDpiX();
@@ -1048,7 +1048,15 @@ void MultiLayer::exportImage(const QString& fileName, int quality, bool transpar
 		writer.write(document);
 	} else
 #endif
-		image.save(fileName, 0, quality);
+	{
+		QImageWriter writer(fileName);
+		if (compression > 0 && writer.supportsOption(QImageIOHandler::CompressionRatio)){
+			writer.setQuality(quality);
+			writer.setCompression(compression);
+			writer.write(image);
+		} else
+			image.save(fileName, 0, quality);
+	}
 }
 
 #if QT_VERSION >= 0x040500

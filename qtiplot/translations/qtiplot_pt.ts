@@ -6589,10 +6589,6 @@ Autocompletion will not be available!</source>
         <translation type="unfinished">Científico: 1E4 {1·10^?}</translation>
     </message>
     <message>
-        <source>Origin</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>months</source>
         <translation type="unfinished">meses</translation>
     </message>
@@ -8078,6 +8074,10 @@ Os seguintes códigos podem ser usados:
     </message>
     <message>
         <source>Locally Installed Excel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show &amp;gaps for empty table cells</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -12508,6 +12508,18 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Could not write to file: &lt;br&gt;&lt;h4&gt; %1 &lt;/h4&gt;&lt;p&gt;Please verify that you have the right to write to this location!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Compression</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>None</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>LZW</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

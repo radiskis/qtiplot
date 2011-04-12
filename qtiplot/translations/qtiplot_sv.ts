@@ -9266,7 +9266,7 @@ Automatisk komplettering ej tillgängligt!</translation>
     </message>
     <message>
         <source>Origin</source>
-        <translation>Ursprung</translation>
+        <translation type="obsolete">Ursprung</translation>
     </message>
     <message>
         <source>&amp;Inverted</source>
@@ -10707,6 +10707,10 @@ Följande specialkoder kan användas:
     </message>
     <message>
         <source>Locally Installed Excel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show &amp;gaps for empty table cells</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -14606,6 +14610,18 @@ Följande specialkoder kan användas:
     <message>
         <source>Print Resolution (DPI)</source>
         <translation>Utskriftsupplösning(DPI)</translation>
+    </message>
+    <message>
+        <source>Compression</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>None</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>LZW</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

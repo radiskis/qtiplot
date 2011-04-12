@@ -2137,7 +2137,7 @@ void Graph3D::copyImage()
 }
 
 void Graph3D::exportImage(const QString& fileName, int quality, bool transparent,
-						int dpi, const QSizeF& customSize, int unit, double fontsFactor)
+			int dpi, const QSizeF& customSize, int unit, double fontsFactor, int compression)
 {
     if (!dpi)
 		dpi = logicalDpiX();
@@ -2197,7 +2197,15 @@ void Graph3D::exportImage(const QString& fileName, int quality, bool transparent
 		writer.write(document);
 	} else
 #endif
-		image.save(fileName, 0, quality);
+	{
+		QImageWriter writer(fileName);
+		if (compression > 0 && writer.supportsOption(QImageIOHandler::CompressionRatio)){
+			writer.setQuality(quality);
+			writer.setCompression(compression);
+			writer.write(image);
+		} else
+			image.save(fileName, 0, quality);
+	}
 }
 
 #if QT_VERSION >= 0x040500

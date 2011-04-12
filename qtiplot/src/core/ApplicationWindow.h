@@ -1190,6 +1190,7 @@ private slots:
 
 // TODO: a lot of this stuff should be private
 public:
+	bool d_show_empty_cell_gap;
 	bool d_show_table_paste_dialog;
 	double d_stats_significance_level;
 	bool d_stats_result_table;
@@ -1256,7 +1257,7 @@ public:
     QString d_image_export_filter, d_export_ASCII_file_filter;
     double d_scale_fonts_factor;
     bool d_export_transparency;
-    int d_export_quality;
+	int d_export_quality, d_export_compression;
     int d_export_vector_resolution, d_export_bitmap_resolution, d_export_size_unit;
     QSizeF d_export_raster_size;
     bool d_export_color;

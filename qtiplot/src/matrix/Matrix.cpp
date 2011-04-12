@@ -924,7 +924,7 @@ void Matrix::customEvent(QEvent *e)
 		scriptingChangeEvent((ScriptingChangeEvent*)e);
 }
 
-void Matrix::exportRasterImage(const QString& fileName, int quality, int dpi)
+void Matrix::exportRasterImage(const QString& fileName, int quality, int dpi, int compression)
 {
 	if (!dpi)
 		dpi = logicalDpiX();
@@ -946,7 +946,15 @@ void Matrix::exportRasterImage(const QString& fileName, int quality, int dpi)
 		writer.write(document);
 	} else
 #endif
-		image.save(fileName, 0, quality);
+	{
+		QImageWriter writer(fileName);
+		if (compression > 0 && writer.supportsOption(QImageIOHandler::CompressionRatio)){
+			writer.setQuality(quality);
+			writer.setCompression(compression);
+			writer.write(image);
+		} else
+			image.save(fileName, 0, quality);
+	}
 }
 
 void Matrix::exportToFile(const QString& fileName)

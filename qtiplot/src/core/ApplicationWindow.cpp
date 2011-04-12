@@ -440,6 +440,7 @@ void ApplicationWindow::initWindow()
 
 void ApplicationWindow::setDefaultOptions()
 {
+	d_show_empty_cell_gap = true;
 	d_stats_significance_level = 0.05;
 	d_stats_result_table = false;
 	d_stats_result_log = true;
@@ -750,6 +751,7 @@ void ApplicationWindow::setDefaultOptions()
 	d_image_export_filter = ".png";
 	d_export_transparency = false;
 	d_export_quality = 100;
+	d_export_compression = 1;
 	d_export_raster_size = QSizeF();
 	d_export_size_unit = FrameWidget::Pixel;
 	d_export_vector_resolution = QWidget().logicalDpiX();
@@ -2608,9 +2610,9 @@ void ApplicationWindow::exportMatrix(const QString& exportFilter)
 		m->exportRasterImage(file_name, ied->quality(), ied->bitmapResolution());
 	else {
 		QList<QByteArray> list = QImageWriter::supportedImageFormats();
-		for (int i=0; i<(int)list.count(); i++){
+		for (int i = 0; i < list.count(); i++){
 			if (selected_filter.contains("." + (list[i]).lower()))
-				m->exportRasterImage(file_name, ied->quality(), ied->bitmapResolution());
+				m->exportRasterImage(file_name, ied->quality(), ied->bitmapResolution(), ied->compression());
 		}
 	}
 }
@@ -5296,7 +5298,7 @@ void ApplicationWindow::readSettings()
 
 	QStringList applicationFont = settings.value("/Font").toStringList();
 	if (applicationFont.size() == 4)
-		appFont=QFont (applicationFont[0],applicationFont[1].toInt(),applicationFont[2].toInt(),applicationFont[3].toInt());
+		appFont = QFont (applicationFont[0],applicationFont[1].toInt(),applicationFont[2].toInt(),applicationFont[3].toInt());
 
 	QStringList colors = settings.value("/IndexedColors").toStringList();
 	if (!colors.isEmpty()){
@@ -5472,6 +5474,7 @@ void ApplicationWindow::readSettings()
 	d_graph_axis_labeling = (Graph::AxisTitlePolicy)settings.value("/AxisTitlePolicy", d_graph_axis_labeling).toInt();
 	d_keep_aspect_ration = settings.value("/KeepAspectRatio", d_keep_aspect_ration).toBool();
 	d_synchronize_graph_scales = settings.value("/SynchronizeScales", d_synchronize_graph_scales).toBool();
+	d_show_empty_cell_gap = settings.value("/ShowEmptyCellGap", d_show_empty_cell_gap).toBool();
 	settings.endGroup(); // General
 
 	settings.beginGroup("/Curves");
@@ -5669,6 +5672,7 @@ void ApplicationWindow::readSettings()
 	d_scale_fonts_factor = settings.value("/ScaleFontsFactor", d_scale_fonts_factor).toDouble();
 	d_export_escape_tex_strings = settings.value("/EscapeTeXStrings", true).toBool();
 	d_export_tex_font_sizes = settings.value("/ExportTeXFontSize", true).toBool();
+	d_export_compression = settings.value("/Compression", d_export_compression).toBool();
 	settings.endGroup(); // ExportImage
 
 	settings.beginGroup("/ScriptWindow");
@@ -5954,6 +5958,7 @@ void ApplicationWindow::saveSettings()
 	settings.setValue("/AxisTitlePolicy", d_graph_axis_labeling);
 	settings.setValue("/KeepAspectRatio", d_keep_aspect_ration);
 	settings.setValue("/SynchronizeScales", d_synchronize_graph_scales);
+	settings.setValue("/ShowEmptyCellGap", d_show_empty_cell_gap);
 	settings.endGroup(); // General
 
 	settings.beginGroup("/Curves");
@@ -6148,6 +6153,7 @@ void ApplicationWindow::saveSettings()
 	settings.setValue("/ScaleFontsFactor", d_scale_fonts_factor);
 	settings.setValue("/EscapeTeXStrings", d_export_escape_tex_strings);
 	settings.setValue("/ExportTeXFontSize", d_export_tex_font_sizes);
+	settings.setValue("/Compression", d_export_compression);
 	settings.endGroup(); // ExportImage
 
 	settings.beginGroup("/ScriptWindow");
@@ -6277,15 +6283,14 @@ void ApplicationWindow::exportGraph(const QString& exportFilter)
 
 	} else {
 		QList<QByteArray> list = QImageWriter::supportedImageFormats();
-		for (int i=0; i<(int)list.count(); i++){
-			if (selected_filter.contains("." + (list[i]).lower())) {
+		for (int i = 0; i < list.count(); i++){
+			if (selected_filter.contains("." + (list[i]).lower())){
 				if (plot2D)
-					plot2D->exportImage(file_name, ied->quality(), ied->transparency(),
-						ied->bitmapResolution(), ied->customExportSize(), ied->sizeUnit(),
-						ied->scaleFontsFactor());
+					plot2D->exportImage(file_name, ied->quality(), ied->transparency(), ied->bitmapResolution(),
+							ied->customExportSize(), ied->sizeUnit(), ied->scaleFontsFactor(), ied->compression());
 				else if (plot3D){
-					plot3D->exportImage(file_name, ied->quality(), ied->transparency(),
-						ied->bitmapResolution(), ied->customExportSize(), ied->sizeUnit(), ied->scaleFontsFactor());
+					plot3D->exportImage(file_name, ied->quality(), ied->transparency(), ied->bitmapResolution(),
+						ied->customExportSize(), ied->sizeUnit(), ied->scaleFontsFactor(), ied->compression());
 				}
 			}
 		}
@@ -6331,11 +6336,11 @@ void ApplicationWindow::exportLayer()
 						ied->customExportSize(), ied->sizeUnit(), ied->scaleFontsFactor());
     else {
 		QList<QByteArray> list = QImageWriter::supportedImageFormats();
-		for (int i=0; i<(int)list.count(); i++)
-			if (selected_filter.contains("."+(list[i]).lower()))
-				g->exportImage(file_name, ied->quality(), ied->transparency(),
-				ied->bitmapResolution(), ied->customExportSize(), ied->sizeUnit(),
-				ied->scaleFontsFactor());
+		for (int i = 0; i < list.count(); i++){
+			if (selected_filter.contains("." + (list[i]).lower()))
+				g->exportImage(file_name, ied->quality(), ied->transparency(), ied->bitmapResolution(),
+							ied->customExportSize(), ied->sizeUnit(), ied->scaleFontsFactor(), ied->compression());
+		}
 	}
 }
 
@@ -6508,15 +6513,15 @@ void ApplicationWindow::exportAllGraphs()
 			}
 		} else {
 			QList<QByteArray> list = QImageWriter::supportedImageFormats();
-			for (int i=0; i<(int)list.count(); i++){
+			for (int i = 0; i < list.count(); i++){
 				if (file_suffix.contains("." + (list[i]).lower())) {
 					if (plot2D)
 						plot2D->exportImage(file_name, ied->quality(), ied->transparency(),
 						ied->bitmapResolution(), ied->customExportSize(), ied->sizeUnit(),
-						ied->scaleFontsFactor());
+						ied->scaleFontsFactor(), ied->compression());
 					else if (plot3D)
-						plot3D->exportImage(file_name, ied->quality(), ied->transparency(),
-						ied->bitmapResolution(), ied->customExportSize(), ied->sizeUnit(), ied->scaleFontsFactor());
+						plot3D->exportImage(file_name, ied->quality(), ied->transparency(), ied->bitmapResolution(),
+							ied->customExportSize(), ied->sizeUnit(), ied->scaleFontsFactor(), ied->compression());
 				}
 			}
 		}

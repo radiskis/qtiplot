@@ -165,10 +165,19 @@ void ImageExportDialog::initAdvancedOptions()
 	d_bitmap_resolution->setValue(app->d_export_bitmap_resolution);
 	raster_layout->addWidget(d_bitmap_resolution, 2, 1);
 
+	compressionLabel = new QLabel(tr("Compression"));
+	raster_layout->addWidget(compressionLabel, 3, 0);
+	d_compression = new QComboBox();
+	d_compression->setEditable(false);
+	d_compression->addItem(tr("None"));
+	d_compression->addItem(tr("LZW"));
+	d_compression->setCurrentIndex(app->d_export_compression);
+	raster_layout->addWidget(d_compression, 3, 1);
+
 	d_transparency = new QCheckBox();
 	d_transparency->setText(tr("Save transparency"));
 	d_transparency->setChecked(app->d_export_transparency);
-	raster_layout->addWidget(d_transparency, 3, 1, 1, 2);
+	raster_layout->addWidget(d_transparency, 4, 1, 1, 2);
 
 	d_raster_options->hide();
 	vert_layout->addWidget(d_raster_options);
@@ -319,6 +328,10 @@ void ImageExportDialog::updateAdvancedOptions (const QString & filter)
 		if (!qobject_cast<Matrix *> (d_window))
 			d_custom_size_box->show();
 		d_transparency->setEnabled(filter.contains("*.tif") || filter.contains("*.tiff") || filter.contains("*.png") || filter.contains("*.xpm"));
+
+		bool supportsCompression = QImageWriter(filter).supportsOption(QImageIOHandler::CompressionRatio);
+		d_compression->setVisible(supportsCompression);
+		compressionLabel->setVisible(supportsCompression);
 	}
 }
 
@@ -338,6 +351,7 @@ void ImageExportDialog::closeEvent(QCloseEvent* e)
         app->d_export_tex_font_sizes = d_tex_font_sizes->isChecked();
         app->d_export_raster_size = customExportSize();
         app->d_scale_fonts_factor = scaleFontsBox->value();
+		app->d_export_compression = compression();
 
 		app->d_3D_export_text_mode = d_3D_text_export_mode->currentIndex();
 		app->d_3D_export_sort = d_3D_export_sort->currentIndex();

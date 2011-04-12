@@ -30,8 +30,10 @@
 #include "ErrorBarsCurve.h"
 #include "BoxCurve.h"
 #include "Graph.h"
+#include "MultiLayer.h"
 #include "ScaleDraw.h"
 #include "ScaleEngine.h"
+#include <ApplicationWindow.h>
 #include <SymbolBox.h>
 #include <PatternBox.h>
 #include <ImageSymbol.h>
@@ -497,7 +499,12 @@ void DataCurve::enableSpeedMode()
 
 void DataCurve::drawCurve(QPainter *p, int style, const QwtScaleMap &xMap, const QwtScaleMap &yMap, int from, int to) const
 {
-	if (d_data_ranges.empty())
+	ApplicationWindow *app = 0;
+	MultiLayer *ml = ((Graph *)plot())->multiLayer();
+	if (ml)
+		app = ml->applicationWindow();
+
+	if (d_data_ranges.empty() || (app && !app->d_show_empty_cell_gap))
 		return PlotCurve::drawCurve(p, style, xMap, yMap, from, to);
 
 	if(d_side_lines)

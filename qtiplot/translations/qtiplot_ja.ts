@@ -5034,10 +5034,6 @@ Autocompletion will not be available!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Origin</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>&amp;Inverted</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6400,6 +6396,10 @@ The following special codes can be used:
     </message>
     <message>
         <source>Locally Installed Excel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show &amp;gaps for empty table cells</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -9451,6 +9451,18 @@ The following special codes can be used:
     </message>
     <message>
         <source>Print Resolution (DPI)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Compression</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>None</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>LZW</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

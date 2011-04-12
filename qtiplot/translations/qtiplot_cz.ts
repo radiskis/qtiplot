@@ -4495,7 +4495,7 @@ Různé části tohoto souboru se nemusí zobrazovat tak, jak se očekává.</tr
     </message>
     <message>
         <source>Origin</source>
-        <translation>Původ</translation>
+        <translation type="obsolete">Původ</translation>
     </message>
     <message>
         <source>Show Labels</source>
@@ -5999,6 +5999,10 @@ K tomu lze použít následujících zvláštních kódů:
     </message>
     <message>
         <source>Locally Installed Excel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show &amp;gaps for empty table cells</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -9093,6 +9097,18 @@ K tomu lze použít následujících zvláštních kódů:
     <message>
         <source>Export 3D texts as</source>
         <translation>Vyvést trojrozměrné texty jako</translation>
+    </message>
+    <message>
+        <source>Compression</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>None</source>
+        <translation type="unfinished">Žádný</translation>
+    </message>
+    <message>
+        <source>LZW</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
