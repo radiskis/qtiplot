@@ -166,15 +166,35 @@ void QwtPlotPrintFilter::apply(QwtPlot *plot) const
 
     if ( plot->titleLabel() )
     {
-        QPalette palette = plot->titleLabel()->palette();
-        cache.titleColor = palette.color(
-            QPalette::Active, Palette::Text);
-        palette.setColor(QPalette::Active, Palette::Text,
-                         color(cache.titleColor, Title));
-        plot->titleLabel()->setPalette(palette);
+        QwtTextLabel* title = plot->titleLabel();
+        if ( title->text().testPaintAttribute(QwtText::PaintUsingTextColor) )
+        {
+			QwtText text = title->text();
+			cache.titleColor = text.color();
+			text.setColor(color(cache.titleColor, Title));
+			title->setText(text);
+        }
+        else
+        {
+            QPalette palette = title->palette();
+            cache.titleColor = palette.color(QPalette::Active, Palette::Text);
+            title->setPalette(palette);
+			palette.setColor(QPalette::Active, Palette::Text, color(cache.titleColor, Title));
+			title->setPalette(palette);
+        }
 
-        cache.titleFont = plot->titleLabel()->font();
-        plot->titleLabel()->setFont(font(cache.titleFont, Title));
+		if ( title->text().testPaintAttribute(QwtText::PaintUsingTextFont) )
+		{
+			QwtText text = title->text();
+			cache.titleFont = text.font();
+			text.setFont(font(cache.titleFont, Title));
+			title->setText(text);
+		}
+		else
+		{
+			cache.titleFont = title->font();
+			title->setFont(font(cache.titleFont, Title));
+		}
     }
     if ( plot->legend() )
     {
@@ -376,7 +396,7 @@ void QwtPlotPrintFilter::reset(QwtPlot *plot) const
     if ( plot->titleLabel() )
     {
         QwtTextLabel* title = plot->titleLabel();
-        if ( title->text().testPaintAttribute(QwtText::PaintUsingTextFont) )
+        if ( title->text().testPaintAttribute(QwtText::PaintUsingTextColor) )
         {
             QwtText text = title->text();
             text.setColor(cache.titleColor);
