@@ -6525,18 +6525,6 @@ void Graph::print(QPainter *painter, const QRect &plotRect, const QwtPlotPrintFi
 
 	d_is_printing = true;
 
-	QwtText t = title();
-
-	double fontFactor = ((ScaledFontsPrintFilter *)(&pfilter))->scaleFontsFactor();
-	if (fontFactor != 1.0 && fontFactor > 0.0){
-		QFont fnt = QFont(t.font());
-		fnt.setPointSize(fnt.pointSizeF()*fontFactor);
-
-		QwtText tc = title();
-		tc.setFont(fnt);
-		setTitle(tc);
-	}
-
 	printFrame(painter, plotRect);
 
 	painter->save();
@@ -6668,7 +6656,7 @@ void Graph::print(QPainter *painter, const QRect &plotRect, const QwtPlotPrintFi
 	// The canvas maps are already scaled.
 	QwtPainter::setMetricsMap(painter->device(), painter->device());
 
-	//double fontFactor = ((ScaledFontsPrintFilter *)(&pfilter))->scaleFontsFactor();
+	double fontFactor = ((ScaledFontsPrintFilter *)(&pfilter))->scaleFontsFactor();
 	QList<FrameWidget*> enrichments = stackingOrderEnrichmentsList();
 	foreach(FrameWidget *f, enrichments){
 		if (!f->isOnTop()){
@@ -6722,7 +6710,7 @@ void Graph::print(QPainter *painter, const QRect &plotRect, const QwtPlotPrintFi
 
 	if ((pfilter.options() & QwtPlotPrintFilter::PrintTitle) && (!titleLabel()->text().isEmpty())){
 		QwtTextLabel *title = titleLabel();
-		QString old_title = t.text();
+		QString old_title = title->text().text();
 #ifdef TEX_OUTPUT
 		if (d_is_exporting_tex){
 			QString s = old_title;
@@ -6818,7 +6806,6 @@ void Graph::print(QPainter *painter, const QRect &plotRect, const QwtPlotPrintFi
 	painter->restore();
 
 	d_is_printing = false;
-	setTitle(t);//hack used to avoid bug in Qwt::printTitle(): the title attributes are overwritten
 }
 
 TexWidget* Graph::addTexFormula(const QString& s, const QPixmap& pix)
