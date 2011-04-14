@@ -5095,10 +5095,10 @@ void ApplicationWindow::restartScriptingEnv()
 
 void ApplicationWindow::openTemplate()
 {
-	QString filter = "QtiPlot 2D Graph Template (*.qpt);;";
-	filter += "QtiPlot 3D Surface Template (*.qst);;";
-	filter += "QtiPlot Table Template (*.qtt);;";
-	filter += "QtiPlot Matrix Template (*.qmt);;";
+	QString filter = tr("QtiPlot 2D Graph Template") + " (*.qpt);";
+	filter += tr("QtiPlot 3D Surface Template") + " (*.qst);";
+	filter += tr("QtiPlot Table Template") + " (*.qtt);";
+	filter += tr("QtiPlot Matrix Template") + " (*.qmt)";
 
 	QString fn = getFileName(this, tr("QtiPlot - Open Template File"), templatesDir, filter, 0, false);
 	if (!fn.isEmpty()){
@@ -10955,7 +10955,7 @@ void ApplicationWindow::showWindowContextMenu()
 		cm.addAction(actionCopyWindow);
 		cm.insertSeparator();
 		cm.insertItem(tr("&Copy Graph"), g, SLOT(copyImage()));
-		cm.insertItem(tr("&Export"), this, SLOT(exportGraph()));
+		cm.insertItem(tr("&Export") + "...", this, SLOT(exportGraph()));
 		cm.addAction(actionPrint);
 		cm.insertSeparator();
 		cm.addAction(actionCloseWindow);
@@ -12218,8 +12218,7 @@ Table* ApplicationWindow::openTable(ApplicationWindow* app, const QStringList &f
 	app->setListViewDate(caption, list[3]);
 	w->setBirthDate(list[3]);
 
-	for (line++; line!=flist.end(); line++)
-	{
+	for (line++; line!=flist.end(); line++){
 		QStringList fields = (*line).split("\t");
 		if (fields[0] == "geometry" || fields[0] == "tgeometry") {
 			restoreWindowGeometry(app, w, *line);
@@ -12238,8 +12237,7 @@ Table* ApplicationWindow::openTable(ApplicationWindow* app, const QStringList &f
 		} else if (fields[0] == "com") { // legacy code
 			w->setCommands(*line);
 		} else if (fields[0] == "<com>") {
-			for (line++; line!=flist.end() && *line != "</com>"; line++)
-			{
+			for (line++; line!=flist.end() && *line != "</com>"; line++){
 				int col = (*line).mid(9,(*line).length()-11).toInt();
 				QString formula;
 				for (line++; line!=flist.end() && *line != "</col>"; line++)
@@ -14193,7 +14191,7 @@ void ApplicationWindow::createActions()
 	actionChooseHelpFolder = new QAction(tr("&Choose Help Folder..."), this);
 	connect(actionChooseHelpFolder, SIGNAL(activated()), this, SLOT(chooseHelpFolder()));
 
-	actionRename = new QAction(tr("&Rename Window"), this);
+	actionRename = new QAction(tr("&Rename Window") + "...", this);
 	connect(actionRename, SIGNAL(activated()), this, SLOT(rename()));
 
 	actionNextWindow = new QAction(QIcon(":/next.png"), tr("&Next","next window"), this);
@@ -15097,7 +15095,7 @@ void ApplicationWindow::translateActionsStrings()
 	actionShowHelp->setShortcut(tr("Ctrl+H"));
 
 	actionChooseHelpFolder->setMenuText(tr("&Choose Help Folder..."));
-	actionRename->setMenuText(tr("&Rename Window"));
+	actionRename->setMenuText(tr("&Rename Window") + "...");
 
 	actionCloseWindow->setMenuText(tr("Close &Window"));
 

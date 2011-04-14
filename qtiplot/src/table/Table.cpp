@@ -3474,46 +3474,55 @@ void Table::copy(Table *m, bool values)
 	col_format = m->getColumnsFormat();
 }
 
-void Table::restore(const QStringList& lst)
+void Table::restore(const QStringList& flist)
 {
-	QStringList l;
-	QStringList::const_iterator i=lst.begin();
-
-	l= (*i++).split("\t");
-	l.remove(l.first());
-	loadHeader(l);
-
-	setColWidths((*i).right((*i).length()-9).split("\t", QString::SkipEmptyParts));
-	i++;
-
-	l = (*i++).split("\t");
-	if (l[0] == "com")
-	{
-		l.remove(l.first());
-		setCommands(l);
-	} else if (l[0] == "<com>") {
-		commands.clear();
-		for (int col=0; col<numCols(); col++)
-			commands << "";
-		for (; i != lst.end() && *i != "</com>"; i++)
-		{
-			int col = (*i).mid(9,(*i).length()-11).toInt();
-			QString formula;
-			for (i++; i!=lst.end() && *i != "</col>"; i++)
-				formula += *i + "\n";
-			formula.truncate(formula.length()-1);
-			commands[col] = formula;
-		}
-		i++;
+	int cols = numCols();
+	QStringList::const_iterator line = flist.begin();
+	for (line++; line != flist.end(); line++){
+		QStringList fields = (*line).split("\t");
+		if (fields[0] == "geometry" || fields[0] == "tgeometry"){
+			//ApplicationWindow *app = this->applicationWindow();
+			//app->restoreWindowGeometry(app, this, *line);
+			continue;
+		} else if (fields[0] == "header") {
+			fields.pop_front();
+			loadHeader(fields);
+		} else if (fields[0] == "ColWidth") {
+			fields.pop_front();
+			setColWidths(fields);
+		} else if (fields[0] == "com") { // legacy code
+			fields.pop_front();
+			setCommands(*line);
+		} else if (fields[0] == "<com>") {
+			for (line++; line != flist.end() && *line != "</com>"; line++){
+				int col = (*line).mid(9, (*line).length() - 11).toInt();
+				QString formula;
+				for (line++; line != flist.end() && *line != "</col>"; line++)
+					formula += *line + "\n";
+				formula.truncate(formula.length() - 1);
+				setCommand(col,formula);
+			}
+		} else if (fields[0] == "ColType") { // d_file_version > 65
+			fields.pop_front();
+			setColumnTypes(fields);
+		} else if (fields[0] == "Comments") { // d_file_version > 71
+			fields.pop_front();
+			setColComments(fields);
+			setHeaderColType();
+		} else if (fields[0] == "WindowLabel" && fields.size() >= 3) { // d_file_version > 71
+			setWindowLabel(fields[1]);
+			setCaptionPolicy((MdiSubWindow::CaptionPolicy)fields[2].toInt());
+		} else if (fields[0] == "ReadOnlyColumn") { // d_file_version > 91
+			fields.pop_front();
+			for (int i = 0; i < cols; i++)
+				setReadOnlyColumn(i, fields[i].toShort());
+		} else if (fields[0] == "HiddenColumn") { // d_file_version >= 93
+			fields.pop_front();
+			for (int i = 0; i < cols; i++)
+				hideColumn(i, fields[i].toShort());
+		} else // <data> or values
+			break;
 	}
-
-	l = (*i++).split("\t");
-	l.remove(l.first());
-	setColumnTypes(l);
-
-	l = (*i++).split("\t");
-	l.remove(l.first());
-	setColComments(l);
 }
 
 void Table::notifyChanges()

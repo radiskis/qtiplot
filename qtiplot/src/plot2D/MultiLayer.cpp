@@ -1113,38 +1113,31 @@ void MultiLayer::exportPDF(const QString& fname)
 	exportVector(fname);
 }
 
-void MultiLayer::exportVector(const QString& fileName, int res, bool color,
+void MultiLayer::exportVector(QPrinter *printer, int res, bool color,
 				const QSizeF& customSize, int unit, double fontsFactor)
 {
-	if ( fileName.isEmpty() ){
-		QMessageBox::critical(this, tr("QtiPlot - Error"), tr("Please provide a valid file name!"));
+	if (!printer)
 		return;
-	}
+	if (!printer->resolution())
+		printer->setResolution(logicalDpiX());//we set screen resolution as default
 
-	QPrinter printer;
-	if (!printer.resolution())
-		printer.setResolution(logicalDpiX());//we set screen resolution as default
-
-    printer.setDocName (objectName());
-    printer.setFontEmbeddingEnabled(true);
-    printer.setCreator("QtiPlot");
-	printer.setFullPage(true);
-	printer.setOutputFileName(fileName);
-    if (fileName.contains(".eps"))
-    	printer.setOutputFormat(QPrinter::PostScriptFormat);
+	printer->setDocName (objectName());
+	printer->setFontEmbeddingEnabled(true);
+	printer->setCreator("QtiPlot");
+	printer->setFullPage(true);
 
 	if (color)
-		printer.setColorMode(QPrinter::Color);
+		printer->setColorMode(QPrinter::Color);
 	else
-		printer.setColorMode(QPrinter::GrayScale);
+		printer->setColorMode(QPrinter::GrayScale);
 
-	printer.setOrientation(QPrinter::Portrait);
+	printer->setOrientation(QPrinter::Portrait);
 	if (customSize.isValid()){
 		QSize size = Graph::customPrintSize(customSize, unit, res);
-		if (res && res != printer.resolution())
-			printer.setResolution(res);
-		printer.setPaperSize (QSizeF(size), QPrinter::DevicePixel);
-		QPainter paint(&printer);
+		if (res && res != printer->resolution())
+			printer->setResolution(res);
+		printer->setPaperSize (QSizeF(size), QPrinter::DevicePixel);
+		QPainter paint(printer);
 		QList<Graph*> lst = stackOrderedLayersList();
 		foreach (Graph *g, lst){
 			QRect r = g->geometry();
@@ -1158,12 +1151,13 @@ void MultiLayer::exportVector(const QString& fileName, int res, bool color,
 
 			g->print(&paint, r, ScaledFontsPrintFilter(fontsFactor));
 		}
-	} else if (res && res != printer.resolution()){
+		paint.end();
+	} else if (res && res != printer->resolution()){
 		double wfactor = (double)res/(double)logicalDpiX();
 		double hfactor = (double)res/(double)logicalDpiY();
-		printer.setResolution(res);
-		printer.setPaperSize (QSizeF(d_canvas->width()*wfactor*1.05, d_canvas->height()*hfactor), QPrinter::DevicePixel);
-		QPainter paint(&printer);
+		printer->setResolution(res);
+		printer->setPaperSize (QSizeF(d_canvas->width()*wfactor*1.05, d_canvas->height()*hfactor), QPrinter::DevicePixel);
+		QPainter paint(printer);
 		QList<Graph*> lst = stackOrderedLayersList();
 		foreach (Graph *g, lst){
 			QRect r = g->geometry();
@@ -1171,13 +1165,31 @@ void MultiLayer::exportVector(const QString& fileName, int res, bool color,
 			r.moveTo(int(r.x()*wfactor), int(r.y()*hfactor));
 			g->print(&paint, r, ScaledFontsPrintFilter(fontsFactor));
 		}
+		paint.end();
 	} else {
-    	printer.setPaperSize(QSizeF(d_canvas->width(), d_canvas->height()), QPrinter::DevicePixel);
-		QPainter paint(&printer);
+		printer->setPaperSize(QSizeF(d_canvas->width(), d_canvas->height()), QPrinter::DevicePixel);
+		QPainter paint(printer);
 		QList<Graph*> lst = stackOrderedLayersList();
 		foreach (Graph *g, lst)
 			g->print(&paint, g->geometry(), ScaledFontsPrintFilter(fontsFactor));
+		paint.end();
 	}
+}
+
+void MultiLayer::exportVector(const QString& fileName, int res, bool color,
+				const QSizeF& customSize, int unit, double fontsFactor)
+{
+	if (fileName.isEmpty()){
+		QMessageBox::critical(this, tr("QtiPlot - Error"), tr("Please provide a valid file name!"));
+		return;
+	}
+
+	QPrinter printer;
+	printer.setOutputFileName(fileName);
+	if (fileName.contains(".eps"))
+		printer.setOutputFormat(QPrinter::PostScriptFormat);
+
+	exportVector(&printer, res, color, customSize, unit, fontsFactor);
 }
 
 void MultiLayer::draw(QPaintDevice *device, const QSizeF& customSize, int unit, int res, double fontsFactor)

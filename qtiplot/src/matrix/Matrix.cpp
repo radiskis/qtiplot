@@ -1117,38 +1117,46 @@ void Matrix::print(const QString& fileName)
 	print(&printer);
 }
 
+void Matrix::exportVector(QPrinter *printer, int res, bool color)
+{
+	if (!printer)
+		return;
+
+	printer->setCreator("QtiPlot");
+	printer->setFullPage(true);
+	if (res)
+		printer->setResolution(res);
+
+	if (color)
+		printer->setColorMode(QPrinter::Color);
+	else
+		printer->setColorMode(QPrinter::GrayScale);
+
+	printer->setOrientation(QPrinter::Portrait);
+
+	int cols = numCols();
+	int rows = numRows();
+	QRect rect = QRect(0, 0, cols, rows);
+	printer->setPaperSize(QSizeF(cols, rows), QPrinter::DevicePixel);
+
+	QPainter paint(printer);
+	paint.drawImage(rect, d_matrix_model->renderImage());
+	paint.end();
+}
+
 void Matrix::exportVector(const QString& fileName, int res, bool color)
 {
-	if ( fileName.isEmpty() ){
+	if (fileName.isEmpty()){
 		QMessageBox::critical(this, tr("QtiPlot - Error"), tr("Please provide a valid file name!"));
-        return;
+		return;
 	}
 
 	QPrinter printer;
-    printer.setCreator("QtiPlot");
-	printer.setFullPage(true);
-	if (res)
-		printer.setResolution(res);
+	printer.setOutputFileName(fileName);
+	if (fileName.contains(".eps"))
+		printer.setOutputFormat(QPrinter::PostScriptFormat);
 
-    printer.setOutputFileName(fileName);
-    if (fileName.contains(".eps"))
-    	printer.setOutputFormat(QPrinter::PostScriptFormat);
-
-    if (color)
-		printer.setColorMode(QPrinter::Color);
-	else
-		printer.setColorMode(QPrinter::GrayScale);
-
-	printer.setOrientation(QPrinter::Portrait);
-
-    int cols = numCols();
-    int rows = numRows();
-    QRect rect = QRect(0, 0, cols, rows);
-    printer.setPaperSize(QSizeF(cols, rows), QPrinter::DevicePixel);
-
-    QPainter paint(&printer);
-    paint.drawImage(rect, d_matrix_model->renderImage());
-    paint.end();
+	exportVector(&printer, res, color);
 }
 
 void Matrix::exportEMF(const QString& fileName)

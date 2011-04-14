@@ -81,6 +81,8 @@ private:
 	QCheckBox *d_escape_tex_strings;
 	QCheckBox *d_tex_font_sizes;
 
+	QPushButton *d_preview_button;
+
 	double aspect_ratio;
 	Graph *d_layer;
 
@@ -135,6 +137,9 @@ protected slots:
 	void updateAdvancedOptions (const QString &filter);
 	void adjustWidth(double height);
 	void adjustHeight(double width);
+	void preview();
+	void drawPreview(QPrinter *);
+	void drawVectorPreview(QPrinter *);
 };
 
 #endif

@@ -102,6 +102,7 @@ public:
 	void exportSVG(const QString& fileName);
 	void exportToFile(const QString& fileName);
 	void exportVector(const QString& fileName, int res = 0, bool color = true);
+	void exportVector(QPrinter *printer, int res = 0, bool color = true);
 	void exportEMF(const QString& fileName);
 
 	MatrixModel * matrixModel(){return d_matrix_model;};
