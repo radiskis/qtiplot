@@ -2136,32 +2136,14 @@ void Graph3D::copyImage()
     sp->updateData();
 }
 
-void Graph3D::exportImage(const QString& fileName, int quality, bool transparent,
-			int dpi, const QSizeF& customSize, int unit, double fontsFactor, int compression)
+QPixmap Graph3D::pixmap(int dpi, const QSizeF& customSize, int unit, double fontsFactor)
 {
-    if (!dpi)
+	if (!dpi)
 		dpi = logicalDpiX();
 
 	QSize size = this->size();
-	if (customSize.isValid()){
-		switch(unit){
-			case FrameWidget::Pixel:
-				size = customSize.toSize();
-			break;
-			case FrameWidget::Inch:
-				size = QSize((qRound)(customSize.width()*dpi), (qRound)(customSize.height()*dpi));
-			break;
-			case FrameWidget::Millimeter:
-				size = QSize((qRound)(customSize.width()*dpi/25.4), (qRound)(customSize.height()*dpi/25.4));
-			break;
-			case FrameWidget::Centimeter:
-				size = QSize((qRound)(customSize.width()*dpi/2.54), (qRound)(customSize.height()*dpi/2.54));
-			break;
-			case FrameWidget::Point:
-				size = QSize((qRound)(customSize.width()*dpi/72.0), (qRound)(customSize.height()*dpi/72.0));
-			break;
-		}
-	}
+	if (customSize.isValid())
+		size = Graph::customPrintSize(customSize, unit, dpi);
 
 	if (fontsFactor == 0.0)
 		fontsFactor = (double)size.height()/(double)this->height();
@@ -2173,8 +2155,14 @@ void Graph3D::exportImage(const QString& fileName, int quality, bool transparent
 	scaleFonts(1.0/fontsFactor);
 
 	sp->updateData();
-	QImage image = pic.toImage();
+	return pic;
+}
 
+void Graph3D::exportImage(const QString& fileName, int quality, bool transparent,
+			int dpi, const QSizeF& customSize, int unit, double fontsFactor, int compression)
+{
+	QPixmap pic = pixmap(dpi, customSize, unit, fontsFactor);
+	QImage image = pic.toImage();
 	if (transparent){
 		QBitmap mask = pic.createMaskFromColor (QColor(Qt::white).rgb ());
 		pic.setMask(mask);
@@ -2305,9 +2293,9 @@ void Graph3D::exportVector(const QString& fileName, int textExportMode, int sort
 
 void Graph3D::exportToFile(const QString& fileName)
 {
-	if ( fileName.isEmpty() ){
+	if (fileName.isEmpty()){
 		QMessageBox::critical(this, tr("QtiPlot - Error"), tr("Please provide a valid file name!"));
-        return;
+		return;
 	}
 
 	if (fileName.contains(".eps") || fileName.contains(".pdf") ||
@@ -2316,13 +2304,13 @@ void Graph3D::exportToFile(const QString& fileName)
 		return;
 	} else {
 		QList<QByteArray> list = QImageWriter::supportedImageFormats();
-    	for(int i=0 ; i<list.count() ; i++){
+		for(int i = 0; i < list.count(); i++){
 			if (fileName.contains( "." + list[i].toLower())){
 				exportImage(fileName);
 				return;
 			}
 		}
-    	QMessageBox::critical(this, tr("QtiPlot - Error"), tr("File format not handled, operation aborted!"));
+		QMessageBox::critical(this, tr("QtiPlot - Error"), tr("File format not handled, operation aborted!"));
 	}
 }
 

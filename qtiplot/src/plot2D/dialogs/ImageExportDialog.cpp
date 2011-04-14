@@ -40,6 +40,7 @@
 #include <QPushButton>
 #include <QGridLayout>
 #include <QPrinter>
+#include <QPrintPreviewDialog>
 #include <QLabel>
 
 ImageExportDialog::ImageExportDialog(MdiSubWindow *window, QWidget * parent, bool extended, Graph *g, Qt::WFlags flags)
@@ -257,6 +258,17 @@ void ImageExportDialog::initAdvancedOptions()
 
 	vert_layout->addWidget(d_custom_size_box);
 
+	QHBoxLayout *hb = new QHBoxLayout;
+	hb->addStretch();
+
+	d_preview_button = new QPushButton(tr("&Preview"));
+	connect(d_preview_button, SIGNAL(clicked()), this, SLOT(preview()));
+
+	hb->addWidget(d_preview_button);
+	hb->addStretch();
+
+	vert_layout->addLayout(hb);
+
 	if (!d_window)
 		return;
 
@@ -311,6 +323,7 @@ void ImageExportDialog::updateAdvancedOptions (const QString & filter)
 		filter.contains("*.ps") || filter.contains("*.pdf") ||
 		filter.contains("*.svg") || filter.contains("*.tex")){
 		d_vector_options->show();
+		d_preview_button->setVisible(!filter.contains("*.tex"));
 		if (qobject_cast<MultiLayer *> (d_window)){
 			d_custom_size_box->show();
 			d_vector_options->setVisible(!filter.contains("*.svg") && !filter.contains("*.emf"));
@@ -321,8 +334,10 @@ void ImageExportDialog::updateAdvancedOptions (const QString & filter)
 
 			d_escape_tex_strings->setVisible(texOutput);
 			d_tex_font_sizes->setVisible(texOutput);
-		} else if (qobject_cast<Graph3D *> (d_window))
+		} else if (qobject_cast<Graph3D *> (d_window)){
 			d_custom_size_box->show();
+			d_preview_button->setVisible(false);
+		}
 	} else {
 		d_raster_options->show();
 		if (!qobject_cast<Matrix *> (d_window))
@@ -332,6 +347,7 @@ void ImageExportDialog::updateAdvancedOptions (const QString & filter)
 		bool supportsCompression = QImageWriter(filter).supportsOption(QImageIOHandler::CompressionRatio);
 		d_compression->setVisible(supportsCompression);
 		compressionLabel->setVisible(supportsCompression);
+		d_preview_button->setVisible(true);
 	}
 }
 
@@ -448,3 +464,88 @@ void ImageExportDialog::accept()
 
 	return QFileDialog::accept();
 }
+
+void ImageExportDialog::preview()
+{
+	QPrintPreviewDialog *previewDlg = new QPrintPreviewDialog(this, Qt::Window);
+	previewDlg->setAttribute(Qt::WA_DeleteOnClose);
+	previewDlg->setWindowTitle(tr("QtiPlot") + " - " + tr("Export preview of window: ") + d_window->objectName());
+
+	if (d_raster_options->isVisible())
+		connect(previewDlg, SIGNAL(paintRequested(QPrinter *)), this, SLOT(drawPreview(QPrinter *)));
+	else
+		connect(previewDlg, SIGNAL(paintRequested(QPrinter *)), this, SLOT(drawVectorPreview(QPrinter *)));
+
+	previewDlg->exec();
+}
+
+void ImageExportDialog::drawPreview(QPrinter *printer)
+{
+	if (!printer)
+		return;
+
+	QSizeF customSize = customExportSize();
+	int res = bitmapResolution();
+	QSize size = Graph::customPrintSize(customSize, sizeUnit(), res);
+
+	MultiLayer *ml = qobject_cast<MultiLayer*>(d_window);
+	Matrix *m = qobject_cast<Matrix*>(d_window);
+	Graph3D *g = qobject_cast<Graph3D*>(d_window);
+	if (d_layer){
+		if (!size.isValid())
+			size = d_layer->size();
+
+		d_layer->draw(printer, size, scaleFontsFactor());
+	} else if (ml){
+		if (!size.isValid())
+			size = ml->canvas()->size();
+
+		ml->draw(printer, customSize, sizeUnit(), res, scaleFontsFactor());
+	} else if (m){
+		size = QSize(m->numCols(), m->numRows());
+		QPainter p(printer);
+		p.drawImage(QRect(QPoint(0, 0), size), m->matrixModel()->renderImage());
+		p.end();
+	} else if (g){
+		if (!size.isValid())
+			size = g->size();
+
+		QPainter p(printer);
+		p.drawPixmap(QRect(QPoint(0, 0), size), g->pixmap(res, customSize, sizeUnit(), scaleFontsFactor()));
+		p.end();
+	}
+
+	printer->setPaperSize(size, QPrinter::DevicePixel);
+}
+
+void ImageExportDialog::drawVectorPreview(QPrinter *printer)
+{
+	if (!printer)
+		return;
+
+	QSizeF customSize = customExportSize();
+	int res = bitmapResolution();
+	int unit = sizeUnit();
+	QSize size = Graph::customPrintSize(customSize, unit, res);
+
+	MultiLayer *ml = qobject_cast<MultiLayer*>(d_window);
+	Matrix *m = qobject_cast<Matrix*>(d_window);
+	if (d_layer){
+		if (!size.isValid())
+			size = d_layer->size();
+
+		d_layer->exportVector(printer, res, color(), customSize, unit, scaleFontsFactor());
+	} else if (ml){
+		if (!size.isValid())
+			size = ml->canvas()->size();
+
+		ml->exportVector(printer, res, color(), customSize, unit, scaleFontsFactor());
+	} else if (m){
+		if (!size.isValid())
+			size = QSize(m->numCols(), m->numRows());
+
+		m->exportVector(printer, res, color());
+	}
+}
+
+

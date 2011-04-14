@@ -1635,22 +1635,18 @@ void Graph::exportImage(const QString& fileName, int quality, bool transparent, 
 	}
 }
 
-void Graph::exportVector(const QString& fileName, int res, bool color,
+void Graph::exportVector(QPrinter *printer, int res, bool color,
 						const QSizeF& customSize, int unit, double fontsFactor)
 {
-	if (fileName.isEmpty()){
-		QMessageBox::critical(this, tr("QtiPlot - Error"), tr("Please provide a valid file name!"));
+	if (!printer)
 		return;
-	}
+	if (!printer->resolution())
+		printer->setResolution(logicalDpiX());//we set screen resolution as default
 
-	QPrinter printer;
-	if (!printer.resolution())
-		printer.setResolution(logicalDpiX());//we set screen resolution as default
-
-	printer.setDocName(multiLayer()->objectName());
-	printer.setFontEmbeddingEnabled(true);
-	printer.setCreator("QtiPlot");
-	printer.setFullPage(true);
+	printer->setDocName(multiLayer()->objectName());
+	printer->setFontEmbeddingEnabled(true);
+	printer->setCreator("QtiPlot");
+	printer->setFullPage(true);
 	QRect r = rect();
 	QRect br = boundingRect();
 
@@ -1660,9 +1656,9 @@ void Graph::exportVector(const QString& fileName, int res, bool color,
 		if (fontsFactor == 0.0)
 			fontsFactor = customPrintSize(customSize, unit, logicalDpiX()).height()/(double)height();
 
-		if (res && res != printer.resolution())
-			printer.setResolution(res);
-		printer.setPaperSize (QSizeF(size), QPrinter::DevicePixel);
+		if (res && res != printer->resolution())
+			printer->setResolution(res);
+		printer->setPaperSize (QSizeF(size), QPrinter::DevicePixel);
 
 		if (br.width() != width() || br.height() != height()){
 			double wfactor = (double)br.width()/(double)width();
@@ -1670,32 +1666,45 @@ void Graph::exportVector(const QString& fileName, int res, bool color,
 			r.setSize(QSize(qRound(size.width()/wfactor), qRound(size.height()/hfactor)));
 		} else
 			r.setSize(size);
-	} else if (res && res != printer.resolution()){
+	} else if (res && res != printer->resolution()){
 		double wfactor = (double)res/(double)logicalDpiX();
 		double hfactor = (double)res/(double)logicalDpiY();
-		printer.setResolution(res);
+		printer->setResolution(res);
 
 		// LegendWidget size doesn't increase linearly with resolution.
 		// The extra width multiplication factor bellow accounts for this.
 		// We could calculate it precisely, but it's quite complicated...
-		printer.setPaperSize (QSizeF(br.width()*wfactor*1.05, br.height()*hfactor), QPrinter::DevicePixel);
+		printer->setPaperSize (QSizeF(br.width()*wfactor*1.05, br.height()*hfactor), QPrinter::DevicePixel);
 		r.setSize(QSize(qRound(width()*wfactor), qRound(height()*hfactor)));
 	} else
-		printer.setPaperSize (QSizeF(br.size()), QPrinter::DevicePixel);
+		printer->setPaperSize (QSizeF(br.size()), QPrinter::DevicePixel);
 
+	if (color)
+		printer->setColorMode(QPrinter::Color);
+	else
+		printer->setColorMode(QPrinter::GrayScale);
+
+	printer->setOrientation(QPrinter::Portrait);
+
+	QPainter paint(printer);
+	print(&paint, r, ScaledFontsPrintFilter(fontsFactor));
+	paint.end();
+}
+
+void Graph::exportVector(const QString& fileName, int res, bool color,
+						const QSizeF& customSize, int unit, double fontsFactor)
+{
+	if (fileName.isEmpty()){
+		QMessageBox::critical(this, tr("QtiPlot - Error"), tr("Please provide a valid file name!"));
+		return;
+	}
+
+	QPrinter printer;
 	printer.setOutputFileName(fileName);
 	if (fileName.contains(".eps"))
 		printer.setOutputFormat(QPrinter::PostScriptFormat);
 
-	if (color)
-		printer.setColorMode(QPrinter::Color);
-	else
-		printer.setColorMode(QPrinter::GrayScale);
-
-	printer.setOrientation(QPrinter::Portrait);
-
-	QPainter paint(&printer);
-	print(&paint, r, ScaledFontsPrintFilter(fontsFactor));
+	exportVector(&printer, res, color, customSize, unit, fontsFactor);
 }
 
 void Graph::print()
