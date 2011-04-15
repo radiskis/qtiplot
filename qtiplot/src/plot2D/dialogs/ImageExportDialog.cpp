@@ -515,6 +515,7 @@ void ImageExportDialog::drawPreview(QPrinter *printer)
 		p.end();
 	}
 
+	printer->setFullPage(true);
 	printer->setPaperSize(size, QPrinter::DevicePixel);
 }
 
