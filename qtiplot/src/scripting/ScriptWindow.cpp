@@ -344,8 +344,10 @@ void ScriptWindow::newScript()
 void ScriptWindow::open(const QString& fn)
 {
 	QString s = te->importASCII(fn);
-	if (!s.isEmpty())
+	if (!s.isEmpty()){
 		fileName = s;
+		setWindowTitle(tr("QtiPlot - Script Window") + " - " + fileName);
+	}
 }
 
 void ScriptWindow::saveAs()
