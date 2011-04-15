@@ -511,7 +511,7 @@ void ScriptEdit::print(QPrinter *printer)
 QString ScriptEdit::importASCII(const QString &filename)
 {
 	QString filter = scriptEnv->fileFilter();
-	filter += tr("Text") + " (*.txt *.TXT);;";
+	filter += tr("Text") + " (*.txt *.TXT);";
 	filter += tr("All Files")+" (*)";
 
 	QString f;
@@ -559,8 +559,8 @@ QString ScriptEdit::save()
 
 QString ScriptEdit::exportASCII(const QString &filename)
 {
-	QString filter = tr("Text") + " (*.txt);;";
-	filter += scriptEnv->fileFilter();
+	QString filter = scriptEnv->fileFilter();
+	filter += tr("Text") + " (*.txt);";
 	filter += tr("All Files") + " (*)";
 
 	QString selectedFilter;
