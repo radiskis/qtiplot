@@ -5972,10 +5972,7 @@ void Graph::drawItems (QPainter *painter, const QRect &rect,
 	}
 	painter->restore();
 
-	for (int i=0; i < QwtPlot::axisCnt; i++){
-		if (!axisEnabled(i))
-			continue;
-
+	for (int i = 0; i < QwtPlot::axisCnt; i++){
 		ScaleEngine *sc_engine = (ScaleEngine *)axisScaleEngine(i);
 		if (!sc_engine->hasBreak())
 			continue;
@@ -6005,9 +6002,9 @@ void Graph::drawItems (QPainter *painter, const QRect &rect,
 		}
 		QRegion cr(rect);
 		if (i == QwtPlot::xBottom || i == QwtPlot::xTop)
-			painter->setClipRegion(cr.subtracted(QRegion(start, rect.y(), abs(end - start), rect.height())), Qt::IntersectClip);
+			painter->setClipRegion(cr.subtracted(QRegion(start, rect.y(), abs(end - start + 1), rect.height())), Qt::IntersectClip);
 		else if (i == QwtPlot::yLeft || i == QwtPlot::yRight)
-			painter->setClipRegion(cr.subtracted(QRegion(rect.x(), end, rect.width(), abs(end - start))), Qt::IntersectClip);
+			painter->setClipRegion(cr.subtracted(QRegion(rect.x(), end, rect.width(), abs(end - start + 1))), Qt::IntersectClip);
 	}
 
 	painter->setRenderHint(QPainter::TextAntialiasing);

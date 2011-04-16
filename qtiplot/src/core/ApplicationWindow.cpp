@@ -16460,15 +16460,15 @@ Folder* ApplicationWindow::appendProject(const QString& fn, Folder* parentFolder
 				if (plot->status() == MdiSubWindow::Minimized)
 					plot->showMinimized();
 				plot->blockSignals(false);
-			}else if  (s == "<SurfacePlot>"){//process 3D plots information
+			} else if  (s == "<SurfacePlot>"){//process 3D plots information
 				lst.clear();
 				while ( s!="</SurfacePlot>" ){
 					s = t.readLine();
 					lst<<s;
 				}
 				Graph3D::restore(this, lst, d_file_version);
-                        } else if  (s == "</folder>")
-                            goToParentFolder();
+			} else if  (s == "</folder>")
+				goToParentFolder();
 		}
 		f.close();
 	}
