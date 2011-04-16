@@ -1396,8 +1396,8 @@ QImage Matrix::image()
 void Matrix::importImage(const QString& fn)
 {
 	QImage image(fn);
-    if (image.isNull())
-        return;
+	if (image.isNull())
+		return;
 
 	x_start = 0.0;
 	x_end = image.width() - 1.0;
@@ -1406,7 +1406,7 @@ void Matrix::importImage(const QString& fn)
 
 	double *buffer = d_matrix_model->dataCopy();
 	if (buffer){
-    	d_undo_stack->push(new MatrixSetImageCommand(d_matrix_model, image, d_view_type, 0,
+		d_undo_stack->push(new MatrixSetImageCommand(d_matrix_model, image, d_view_type, 0,
 							numRows() - 1, 0, numCols() - 1, buffer, tr("Import Image") + " \"" + fn + "\""));
 		emit modifiedWindow(this);
 		modifiedData(this);

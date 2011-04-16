@@ -257,7 +257,7 @@ void QwtHistogram::loadDataFromMatrix()
 		h = gsl_histogram_alloc(n);
 		if (!h)
 			return;
-		gsl_histogram_set_ranges_uniform (h, floor(min), ceil(max));
+		gsl_histogram_set_ranges_uniform (h, d_begin, d_end);
 	} else {
 		n = int((d_end - d_begin)/d_bin_size + 1);
 		if (!n)
