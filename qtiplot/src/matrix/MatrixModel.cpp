@@ -97,14 +97,14 @@ void MatrixModel::setImage(const QImage& image)
 {
 	if (!canResize(image.height(), image.width()))
 		return;
-
-    d_rows = image.height();
-    d_cols = image.width();
+	
+	d_rows = image.height();
+	d_cols = image.width();
 	int cell = 0;
-    for (int i=0; i<d_rows; i++ ){
-		for (int j=0; j<d_cols; j++)
-            d_data[cell++] = qGray(image.pixel (j, i));
-    }
+	for (int i = 0; i < d_rows; i++){
+		for (int j = 0; j < d_cols; j++)
+			d_data[cell++] = qGray(image.pixel (j, i));
+	}
 }
 
 Qt::ItemFlags MatrixModel::flags(const QModelIndex & index ) const

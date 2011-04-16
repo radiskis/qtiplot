@@ -2280,17 +2280,19 @@ void ApplicationWindow::remove3DMatrixPlots(Matrix *m)
 		else if (w->isA("MultiLayer")){
 			QList<Graph *> layers = ((MultiLayer*)w)->layersList();
 			foreach(Graph *g, layers){
+				bool update = false;
 				QList<QwtPlotItem *> curvesList = g->curvesList();
 				foreach (QwtPlotItem *it, curvesList){
-					if (it->rtti() == QwtPlotItem::Rtti_PlotSpectrogram){
-						if (((Spectrogram *)it)->matrix() == m)
-                            g->removeCurve(it);
-					} else if (((PlotCurve *)it)->type() == Graph::Histogram){
-                        if (((QwtHistogram *)it)->matrix() == m)
-                            g->removeCurve(it);
+					if (it->rtti() == QwtPlotItem::Rtti_PlotSpectrogram && ((Spectrogram *)it)->matrix() == m){
+						g->removeCurve(it);
+						update = true;
+					} else if (((PlotCurve *)it)->type() == Graph::Histogram && ((QwtHistogram *)it)->matrix() == m){
+						g->removeCurve(it);
+						update = true;
 					}
 				}
-				g->updatePlot();
+				if (update)
+					g->updatePlot();
 			}
 		}
 	}
@@ -2311,22 +2313,25 @@ void ApplicationWindow::updateMatrixPlots(Matrix *m)
 		else if (w->isA("MultiLayer")){
 			QList<Graph *> layers = ((MultiLayer*)w)->layersList();
 			foreach(Graph *g, layers){
+				bool update = false;
 				QList<QwtPlotItem *> curvesList = g->curvesList();
 				foreach (QwtPlotItem *it, curvesList){
 					if (it->rtti() == QwtPlotItem::Rtti_PlotSpectrogram){
-                        Spectrogram *sp = (Spectrogram *)it;
-                        if (sp->matrix() == m){
-                            sp->updateData();
-                            g->updatePlot();
-                        }
-				    } else if (((PlotCurve *)it)->type() == Graph::Histogram){
+						Spectrogram *sp = (Spectrogram *)it;
+						if (sp->matrix() == m){
+							sp->updateData();
+							update = true;
+						}
+					} else if (((PlotCurve *)it)->type() == Graph::Histogram){
 						QwtHistogram *h = (QwtHistogram *)it;
-                        if (h->matrix() == m){
-                            h->loadData();
-                            g->updatePlot();
-                        }
+						if (h->matrix() == m){
+							h->loadData();
+							update = true;
+						}
 					}
 				}
+				if (update)
+					g->updatePlot();
 			}
 		}
 	}
@@ -9674,13 +9679,11 @@ void ApplicationWindow::removeWindowFromLists(MdiSubWindow* w)
 
 	QString caption = w->objectName();
 	if (w->inherits("Table")){
-		Table* m=(Table*)w;
-		for (int i=0; i<m->numCols(); i++){
-			QString name=m->colName(i);
-			removeCurves(name);
-		}
+		Table* m = (Table*)w;
+		for (int i = 0; i < m->numCols(); i++)
+			removeCurves(m->colName(i));
 	} else if (w->isA("MultiLayer")){
-		MultiLayer *ml =  (MultiLayer*)w;
+		MultiLayer *ml = (MultiLayer*)w;
 		Graph *g = ml->activeLayer();
 		if (g)
 			btnPointer->setChecked(true);
