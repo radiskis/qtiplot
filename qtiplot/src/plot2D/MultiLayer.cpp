@@ -402,6 +402,7 @@ void MultiLayer::resizeLayers (QResizeEvent *re)
 			if (g->autoscaleFonts())
 				g->scaleFonts(h_ratio);
 		}
+		updateWaterfallLayout();
 		emit modifiedPlot();
 		return;
 	}
@@ -1904,9 +1905,9 @@ void MultiLayer::createWaterfallBox()
 	d_add_layer_btn->hide();
 	d_remove_layer_btn->hide();
 
-	Graph *first = graphsList.last();
-	if (first)
-		connect(first, SIGNAL(axisDivChanged(Graph *, int)), this, SLOT(updateWaterfallScales(Graph *, int)));
+	Graph *l = graphsList.last();
+	if (l)
+		connect(l, SIGNAL(axisDivChanged(Graph *, int)), this, SLOT(updateWaterfallScales(Graph *, int)));
 }
 
 void MultiLayer::updateWaterfallScales(Graph *g, int axis)
@@ -1914,16 +1915,22 @@ void MultiLayer::updateWaterfallScales(Graph *g, int axis)
 	if (!g)
 		return;
 
-	QwtScaleDiv *scDiv = g->axisScaleDiv(axis);
-	if (!scDiv)
+	QwtScaleDiv *sd = g->axisScaleDiv(axis);
+	const ScaleEngine *se = (ScaleEngine *)g->axisScaleEngine(axis);
+	if (!sd || !se)
 		return;
 
+	double step = fabs(g->axisStep(axis));
+	int majTicks = g->axisMaxMajor(axis);
+	int minTicks = g->axisMaxMinor(axis);
 	foreach(Graph *l, graphsList){
 		if (l == g)
 			continue;
 
-		l->setAxisScaleDiv(axis, *scDiv);
-		l->replot();
+		l->setScale(axis, sd->lowerBound(), sd->upperBound(), step, majTicks, minTicks,
+			se->type(), se->testAttribute(QwtScaleEngine::Inverted), se->axisBreakLeft(), se->axisBreakRight(),
+			se->breakPosition(), se->stepBeforeBreak(), se->stepAfterBreak(), se->minTicksBeforeBreak(),
+			se->minTicksAfterBreak(), se->log10ScaleAfterBreak(), se->breakWidth(), se->hasBreakDecoration());
 	}
 }
 
@@ -1951,7 +1958,7 @@ void MultiLayer::updateWaterfallLayout()
 	int dy = qRound(d_waterfall_offset_y*d_canvas->height()/100.0);
 	first->resize(QSize(d_canvas->width() - aux*dx - left_margin - right_margin,
 			d_canvas->height() - aux*dy - top_margin - bottom_margin));
-	first->move(first->x(), first->canvas()->y() + aux*dy);
+	first->move(first->x(), first->canvas()->y() + aux*(dy - 1));
 
 	QSize size = first->canvas()->size();
 	QPoint pos = QPoint(first->canvas()->x() + left_margin,
