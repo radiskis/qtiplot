@@ -3478,12 +3478,12 @@ void Table::restore(const QStringList& flist)
 {
 	int cols = numCols();
 	QStringList::const_iterator line = flist.begin();
-	for (line++; line != flist.end(); line++){
+	for (line; line != flist.end(); line++){
 		QStringList fields = (*line).split("\t");
 		if (fields[0] == "geometry" || fields[0] == "tgeometry"){
-			//ApplicationWindow *app = this->applicationWindow();
-			//app->restoreWindowGeometry(app, this, *line);
-			continue;
+			ApplicationWindow *app = applicationWindow();
+			if (app)
+				app->restoreWindowGeometry(app, this, *line);
 		} else if (fields[0] == "header") {
 			fields.pop_front();
 			loadHeader(fields);
