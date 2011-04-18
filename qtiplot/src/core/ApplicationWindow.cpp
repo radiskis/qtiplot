@@ -2808,42 +2808,31 @@ MultiLayer* ApplicationWindow::waterfallPlot(Table *t, const QStringList& list)
 	if (!t)
 		return 0;
 
-	int curves = list.count();
-	if(curves < 1){
+	if(list.count() < 1){
 		QMessageBox::warning(this, tr("QtiPlot - Plot error"),
 		tr("Please select a Y column to plot!"));
 		return 0;
 	}
 
-	MultiLayer* ml = new MultiLayer(this, curves, 1, 1);
-	ml->setScaleLayersOnResize(false);
-	QList<Graph *> layersList = ml->layersList();
-	int i = 0;
-	foreach(Graph *g, layersList){
-		DataCurve *cv = g->insertCurve(t, list[i], Graph::Line);
-		if (cv)
-			cv->setPen(QPen(d_indexed_colors[i], defaultCurveLineWidth));
-		i++;
-	}
-	QString legend = QString();
-	initMultilayerPlot(ml, QString());
-	foreach(Graph *g, layersList){
-		g->hide();
-		legend += g->legendText(true) + "\n";
-		setPreferences(g);
-		g->setCanvasFrame(0);
-		g->setTitle(QString::null);
-		g->setMargin(0);
-		g->setFrame(0);
-		g->raise();
-	}
+	MultiLayer* ml = new MultiLayer(this);
 
+	Graph *g = ml->activeLayer();
+	setPreferences(g);
+	g->enableAxis(QwtPlot::xTop, false);
+	g->enableAxis(QwtPlot::yRight, false);
+	g->setCanvasFrame(0);
+	g->setTitle(QString::null);
+	g->setMargin(0);
+	g->setFrame(0);
+	g->addCurves(t, list, Graph::Line);
+
+	initMultilayerPlot(ml);
+	ml->arrangeLayers(false, true);
 	ml->setWaterfallLayout();
-	Graph *g = layersList.last();
-	if (g)
-		g->newLegend(legend.trimmed())->move(QPoint(5, 5));
+	ml->updateWaterfallLayout();
 
-	ml->setScaleLayersOnResize(autoResizeLayers);
+	g->newLegend()->move(QPoint(g->x() + g->canvas()->x() + 5, 5));
+
 	return ml;
 }
 
@@ -4939,6 +4928,7 @@ ApplicationWindow* ApplicationWindow::openProject(const QString& fn, bool factor
 					if (lst.size() >= 3)
 						plot->setWaterfallSideLines(lst[2].toInt());
 					plot->createWaterfallBox();
+					plot->updateWaterfallLayout();
 				}
 
 				if (s.left(7) == "<graph>"){

@@ -30,6 +30,7 @@
 #include "ErrorBarsCurve.h"
 #include "BoxCurve.h"
 #include "Graph.h"
+#include "Grid.h"
 #include "MultiLayer.h"
 #include "ScaleDraw.h"
 #include "ScaleEngine.h"
@@ -45,6 +46,7 @@
 #include <qwt_symbol.h>
 #include <qwt_painter.h>
 #include <qwt_curve_fitter.h>
+#include <qwt_plot_canvas.h>
 
 PlotCurve::PlotCurve(const QString& name): QwtPlotCurve(name),
 d_type(0),
@@ -368,8 +370,8 @@ void PlotCurve::drawSideLines(QPainter *p, const QwtScaleMap &xMap, const QwtSca
 	p->setPen(pen);
 
 	double lw = 0.5*pen.widthF();
-	const double xl = xMap.xTransform(x(from));
-	const double xr = xMap.xTransform(x(to));
+	const double xl = xMap.xTransform(x(from)) - lw;
+	const double xr = xMap.xTransform(x(to)) + lw;
 	const double yl = yMap.xTransform(y(from)) - lw;
 	const double yr = yMap.xTransform(y(to)) - lw;
 	const double base = yMap.xTransform(baseline());
@@ -583,6 +585,35 @@ void DataCurve::loadData()
 
 	X.resize(size);
 	Y.resize(size);
+
+	MultiLayer *ml = g->multiLayer();
+	if (ml && ml->isWaterfallPlot()){
+		int index = g->curveIndex(this);
+		int curves = g->curveCount();
+		DataCurve *c = g->dataCurve(0);
+		if (index > 0 && c){
+			double xmin = c->minXValue();
+			double dx = index*ml->waterfallXOffset()*0.01*g->canvas()->width()/(double)(curves - 1);
+			d_x_offset = g->invTransform(xAxis, g->transform(xAxis, xmin) + dx) - xmin;
+
+			double ymin = c->minYValue();
+			double dy = index*ml->waterfallYOffset()*0.01*g->canvas()->height()/(double)(curves - 1);
+			d_y_offset = ymin - g->invTransform(yAxis(), g->transform(yAxis(), ymin) + dy);
+			
+			setZ(-index);
+			setBaseline(d_y_offset);
+
+			for (int i = 0; i < size; i++){
+				X[i] = X[i] + d_x_offset;
+				Y[i] = Y[i] + d_y_offset;
+			}
+		} else {
+			setZ(0);
+			setBaseline(0.0);
+		}
+		if (g->grid())
+			g->grid()->setZ(-g->curveCount() - 1);
+	}
 
 	if (!size){
 		remove();

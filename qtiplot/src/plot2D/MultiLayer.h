@@ -224,7 +224,6 @@ public slots:
 	void changeWaterfallXOffset(int);
     void changeWaterfallYOffset(int);
     void updateWaterfallLayout();
-    void updateWaterfallScales(Graph *g, int axis);
     //@}
 
 	void updateLayerAxes(Graph *g, int axis);

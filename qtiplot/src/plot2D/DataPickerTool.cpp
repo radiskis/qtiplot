@@ -137,21 +137,22 @@ void DataPickerTool::setSelection(QwtPlotCurve *curve, int point_index)
 			.arg(locale.toString(d_selected_curve->x(d_selected_point), 'G', d_app->d_decimal_digits))
 			.arg(locale.toString(d_selected_curve->y(d_selected_point), 'G', d_app->d_decimal_digits)));
 	} else {
-        int row = ((DataCurve*)d_selected_curve)->tableRow(d_selected_point);
-        Table *t = ((DataCurve*)d_selected_curve)->table();
+		DataCurve *c = (DataCurve*)d_selected_curve;
+		int row = c->tableRow(d_selected_point);
+		Table *t = c->table();
 		if (t){
-			int xcol = t->colIndex(((DataCurve*)d_selected_curve)->xColumnName());
-			QString xs = locale.toString(d_selected_curve->x(d_selected_point), 'G', d_app->d_decimal_digits);
+			int xcol = t->colIndex(c->xColumnName());
+			QString xs = locale.toString(c->x(d_selected_point) - c->xOffset(), 'G', d_app->d_decimal_digits);
 			if (t->columnType(xcol) != Table::Numeric)
 				xs = t->text(row, xcol);
 
-			int ycol = t->colIndex(((DataCurve*)d_selected_curve)->title().text());
-			QString ys = locale.toString(d_selected_curve->y(d_selected_point), 'G', d_app->d_decimal_digits);
+			int ycol = t->colIndex(c->title().text());
+			QString ys = locale.toString(c->y(d_selected_point) - c->yOffset(), 'G', d_app->d_decimal_digits);
 			if (t->columnType(ycol) != Table::Numeric)
 				ys = t->text(row, ycol);
 
 			emit statusText(QString("%1[%2]: x=%3; y=%4")
-				.arg(d_selected_curve->title().text()).arg(row + 1).arg(xs).arg(ys));
+				.arg(c->title().text()).arg(row + 1).arg(xs).arg(ys));
 		}
     }
 
