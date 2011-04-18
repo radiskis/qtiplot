@@ -318,7 +318,7 @@ public slots:
 	//! \name Multilayer Plots
 	//@{
 	//! Creates a new empty multilayer plot
-	MultiLayer* newGraph(const QString& caption = tr("Graph"));
+	MultiLayer* newGraph(const QString& caption = tr("Graph") + "1");
 	MultiLayer* multilayerPlot(int c, int r, int style, const MultiLayer::AlignPolicy& align = MultiLayer::AlignLayers);
 	MultiLayer* multilayerPlot(Table* w, const QStringList& colList, int style, int startRow = 0, int endRow = -1);
 	//! used when restoring a plot from a project file
