@@ -2037,12 +2037,8 @@ void PlotDialog::showStatistics()
 
 void PlotDialog::contextMenuEvent(QContextMenuEvent *e)
 {
-    QTreeWidgetItem *item = listBox->currentItem();
-    if (!item)
-        return;
-
-	if (item->type() != CurveTreeItem::PlotCurveTreeItem &&
-		item->type() != FrameWidgetTreeItem::FrameWidgetItem)
+	QTreeWidgetItem *item = listBox->currentItem();
+	if (!item || !item->parent())
 		return;
 
 	QPoint pos = listBox->viewport()->mapFromGlobal(QCursor::pos());
@@ -2097,6 +2093,12 @@ void PlotDialog::removeSelectedObject()
 			graph = ((CurveTreeItem *)item)->graph();
 			if (graph)
 				graph->removeCurve(((CurveTreeItem *)item)->plotItemIndex());
+		break;
+		case LayerItem::LayerTreeItem:{
+			d_ml->removeLayer(((LayerItem *)item)->graph());
+			listBox->clear();
+			setMultiLayer(d_ml);
+		}
 		break;
 		default:
 			return;

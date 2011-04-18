@@ -495,8 +495,19 @@ int ScaleDraw::axis() const
 void ScaleDraw::drawTick(QPainter *p, double value, int len) const
 {
 	ScaleEngine *sc_engine = (ScaleEngine *)d_plot->axisScaleEngine(axis());
-	if (sc_engine->hasBreak() && (sc_engine->axisBreakLeft() <= value && sc_engine->axisBreakRight() > value))
-		return;
+	if (sc_engine->hasBreak()){
+		double dlb = sc_engine->axisBreakLeft();
+		double drb = sc_engine->axisBreakRight();
+		if (dlb <= value && drb > value)
+			return;
+
+		if (d_plot->isPrinting()){
+			QwtScaleMap scaleMap = map();
+			double val = scaleMap.transform(value);
+			if (val >= scaleMap.transform(dlb) && val <= scaleMap.transform(drb))
+				return;
+		}
+	}
 
 	QwtScaleDiv scDiv = scaleDiv();
 	QwtValueList majTicks = scDiv.ticks(QwtScaleDiv::MajorTick);
@@ -531,7 +542,7 @@ void ScaleDraw::drawTick(QPainter *p, double value, int len) const
     if (minTicks.contains(value) && (d_minTicks == In || d_minTicks == None))
         return;
 
-    QwtScaleDraw::drawTick(p, value, len);
+	QwtScaleDraw::drawTick(p, value, len);
 }
 
 void ScaleDraw::drawInwardTick(QPainter *painter, double value, int len) const

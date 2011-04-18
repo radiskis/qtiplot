@@ -5962,15 +5962,12 @@ void Graph::printCanvas(QPainter *painter, const QRect &canvasRect,
 
 void Graph::drawItems (QPainter *painter, const QRect &rect,
 			const QwtScaleMap map[axisCnt], const QwtPlotPrintFilter &pfilter) const
-{
-	painter->save();
-	painter->setRenderHint(QPainter::Antialiasing);
-	for (int i=0; i<QwtPlot::axisCnt; i++){
+{	
+	for (int i = 0; i < QwtPlot::axisCnt; i++){
 		if (!axisEnabled(i) || d_is_printing)
 			continue;
 		drawBreak(painter, rect, map[i], i);
 	}
-	painter->restore();
 
 	for (int i = 0; i < QwtPlot::axisCnt; i++){
 		ScaleEngine *sc_engine = (ScaleEngine *)axisScaleEngine(i);
@@ -5981,7 +5978,7 @@ void Graph::drawItems (QPainter *painter, const QRect &rect,
 		int lb = m.transform(sc_engine->axisBreakLeft());
 		int rb = m.transform(sc_engine->axisBreakRight());
 
-		if (d_is_printing){
+		if (d_is_printing && painter->paintEngine()->type() != QPaintEngine::Raster){
 			if (i == QwtPlot::yLeft || i == QwtPlot::yRight){
 				double yfactor = (double)painter->device()->logicalDpiY()/(double)this->logicalDpiY();
 				int dy = qRound(abs(lb - rb)*yfactor*0.5);
@@ -6029,6 +6026,8 @@ void Graph::drawItems (QPainter *painter, const QRect &rect,
 	for (int i = 0; i<QwtPlot::axisCnt; i++){
 		if (!axisEnabled(i))
 			continue;
+
+		drawBreak(painter, rect, map[i], i);
 
 		ScaleDraw *sd = (ScaleDraw *) axisScaleDraw (i);
 		int majorTicksType = sd->majorTicksStyle();
@@ -6197,6 +6196,7 @@ void Graph::drawBreak(QPainter *painter, const QRect &rect, const QwtScaleMap &m
         return;
 
     painter->save();
+	painter->setRenderHint(QPainter::Antialiasing);
 
 	QColor color = axisWidget(axis)->palette().color(QPalette::Active, QColorGroup::Foreground);
 	painter->setPen(QPen(color, axesLinewidth(), Qt::SolidLine));
@@ -6665,21 +6665,22 @@ void Graph::print(QPainter *painter, const QRect &plotRect, const QwtPlotPrintFi
 	double fontFactor = ((ScaledFontsPrintFilter *)(&pfilter))->scaleFontsFactor();
 	QList<FrameWidget*> enrichments = stackingOrderEnrichmentsList();
 	foreach(FrameWidget *f, enrichments){
-		if (!f->isOnTop()){
-			QFont fnt;
-			LegendWidget *lw = qobject_cast<LegendWidget *>(f);
-			if (lw){
-				fnt = lw->font();
-				QFont font(fnt);
-				font.setPointSizeF(fontFactor*font.pointSizeF());
-				lw->setFont(font);
-			}
+		if (!f->isVisible() || f->isOnTop())
+			continue;
 
-			f->print(painter, map);
-
-			if (lw)//restore original font
-				lw->setFont(fnt);
+		QFont fnt;
+		LegendWidget *lw = qobject_cast<LegendWidget *>(f);
+		if (lw){
+			fnt = lw->font();
+			QFont font(fnt);
+			font.setPointSizeF(fontFactor*font.pointSizeF());
+			lw->setFont(font);
 		}
+
+		f->print(painter, map);
+
+		if (lw)//restore original font
+			lw->setFont(fnt);
 	}
 	printCanvas(painter, canvasRect, map, pfilter);
 	QwtPainter::resetMetricsMap();
@@ -6789,21 +6790,21 @@ void Graph::print(QPainter *painter, const QRect &plotRect, const QwtPlotPrintFi
 
 	QwtPainter::setMetricsMap(painter->device(), painter->device());
 	foreach(FrameWidget *f, enrichments){
-		if (f->isOnTop()){
-			QFont fnt;
-			LegendWidget *lw = qobject_cast<LegendWidget *>(f);
-			if (lw){
-				fnt = lw->font();
-				QFont font(fnt);
-				font.setPointSizeF(fontFactor*font.pointSizeF());
-				lw->setFont(font);
-			}
-
-			f->print(painter, map);
-
-			if (lw)//restore original font
-				lw->setFont(fnt);
+		if (!f->isVisible() || !f->isOnTop())
+			continue;
+		QFont fnt;
+		LegendWidget *lw = qobject_cast<LegendWidget *>(f);
+		if (lw){
+			fnt = lw->font();
+			QFont font(fnt);
+			font.setPointSizeF(fontFactor*font.pointSizeF());
+			lw->setFont(font);
 		}
+
+		f->print(painter, map);
+
+		if (lw)//restore original font
+			lw->setFont(fnt);
 	}
 	QwtPainter::resetMetricsMap();
 

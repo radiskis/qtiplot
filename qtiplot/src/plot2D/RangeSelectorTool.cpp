@@ -178,38 +178,38 @@ void RangeSelectorTool::emitStatusText()
 			.arg(locale.toString(d_selected_curve->y(d_active_point), 'G', 16))
 			.arg(locale.toString(((ErrorBarsCurve*)d_selected_curve)->errorValue(d_active_point), 'G', 16)));
     } else {
-        Table *t = ((DataCurve*)d_selected_curve)->table();
-        if (!t)
-            return;
+		DataCurve *c = (DataCurve*)d_selected_curve;
+		Table *t = c->table();
+		if (!t)
+			return;
 
-        int row = ((DataCurve*)d_selected_curve)->tableRow(d_active_point);
-
-		double x = d_selected_curve->x(d_active_point);
-		double y = d_selected_curve->y(d_active_point);
+		int row = c->tableRow(d_active_point);
+		double x = c->x(d_active_point);
+		double y = c->y(d_active_point);
 
 		ApplicationWindow *app = d_graph->multiLayer()->applicationWindow();
 		int prec = 15;
 		if (app)
 			prec = app->d_decimal_digits;
 
-        int xcol = t->colIndex(((DataCurve*)d_selected_curve)->xColumnName());
-		QString xs = locale.toString(x, 'G', prec);
+		int xcol = t->colIndex(c->xColumnName());
+		QString xs = locale.toString(x - c->xOffset(), 'G', prec);
 		if (t->columnType(xcol) != Table::Numeric)
 			xs = t->text(row, xcol);
 
-		int ycol = t->colIndex(((DataCurve*)d_selected_curve)->title().text());
-		QString ys = locale.toString(y, 'G', prec);
+		int ycol = t->colIndex(c->title().text());
+		QString ys = locale.toString(y - c->yOffset(), 'G', prec);
 		if (t->columnType(ycol) != Table::Numeric)
 			ys = t->text(row, ycol);
 
-        emit statusText(QString("%1 <=> %2[%3]: x=%4; y=%5; dx=%6; dy=%7")
+		emit statusText(QString("%1 <=> %2[%3]: x=%4; y=%5; dx=%6; dy=%7")
 			.arg(d_active_marker.xValue() > d_inactive_marker.xValue() ? tr("Right") : tr("Left"))
-			.arg(d_selected_curve->title().text())
+			.arg(c->title().text())
 			.arg(row + 1)
 			.arg(xs)
 			.arg(ys)
-			.arg(locale.toString(fabs(x - d_selected_curve->x(d_inactive_point)), 'G', prec))
-			.arg(locale.toString(fabs(y - d_selected_curve->y(d_inactive_point)), 'G', prec)));
+			.arg(locale.toString(fabs(x - c->x(d_inactive_point)), 'G', prec))
+			.arg(locale.toString(fabs(y - c->y(d_inactive_point)), 'G', prec)));
     }
 }
 

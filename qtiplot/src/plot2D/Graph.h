@@ -170,6 +170,7 @@ class Graph: public QwtPlot
 
 		Grid *grid(){return (Grid *)d_grid;};
 		QList<QwtPlotItem *> curvesList(){return d_curves;};
+		void setCurvesList(QList<QwtPlotItem *> lst){d_curves = lst;};
 
 		QwtPlotItem* closestCurve(int xpos, int ypos, int &dist, int &point);
 
