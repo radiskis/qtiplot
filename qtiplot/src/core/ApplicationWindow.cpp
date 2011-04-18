@@ -2704,7 +2704,11 @@ MultiLayer* ApplicationWindow::multilayerPlot(const QString& caption, int layers
 
 MultiLayer* ApplicationWindow::newGraph(const QString& caption)
 {
-	MultiLayer *ml = multilayerPlot(generateUniqueName(caption));
+	QString name = caption;
+	while(alreadyUsedName(name))
+		name = generateUniqueName(tr("Graph"));
+
+	MultiLayer *ml = multilayerPlot(name);
 	if (ml){
 		Graph *g = ml->activeLayer();
 		if (g){

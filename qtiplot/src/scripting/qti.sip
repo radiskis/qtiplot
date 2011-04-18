@@ -2223,7 +2223,14 @@ public:
     sipRes = sipCpp->projectFolder()->graph(*a0, true);
 %End
   MultiLayer* currentPlot() /PyName=currentGraph/;
-  MultiLayer* multilayerPlot(const QString& = "Graph1", int = 1, int = 1, int = 1)/PyName=newGraph/;
+
+  MultiLayer* newGraph(const QString& = "Graph1", int = 1, int = 1, int = 1);
+%MethodCode
+	if (a1 == 1)
+		sipRes = sipCpp->newGraph(*a0);
+	else
+		sipRes = sipCpp->multilayerPlot(*a0, a1, a2, a3);
+%End
 
   Note *note(const QString&);
 %MethodCode
