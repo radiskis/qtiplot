@@ -14623,6 +14623,14 @@ Följande specialkoder kan användas:
         <source>LZW</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>&amp;Preview</source>
+        <translation type="unfinished">&amp;Förhandsgranskning</translation>
+    </message>
+    <message>
+        <source>Export preview of window: </source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ImageExportOptionsDialog</name>
@@ -20445,12 +20453,20 @@ Vill du skriva över den?</translation>
         <source>Show &amp;Workspace</source>
         <translation>Visa &amp;arbetsutrymme</translation>
     </message>
+    <message>
+        <source>untitled</source>
+        <translation type="unfinished">utan titel</translation>
+    </message>
 </context>
 <context>
     <name>ScriptingEnv</name>
     <message>
         <source>%1 Source (*.%2);;</source>
-        <translation>%1 källa (*.%2);;</translation>
+        <translation type="obsolete">%1 källa (*.%2);;</translation>
+    </message>
+    <message>
+        <source>%1 Source (*.%2);</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

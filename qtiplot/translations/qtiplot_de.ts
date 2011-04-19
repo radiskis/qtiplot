@@ -16796,6 +16796,14 @@ die Reihenfolge der Parameter ist wichtig!</translation>
         <source>LZW</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>&amp;Preview</source>
+        <translation type="unfinished">&amp;Vorschau</translation>
+    </message>
+    <message>
+        <source>Export preview of window: </source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ImageExportOptionsDialog</name>
@@ -23166,12 +23174,20 @@ Wollen Sie sie überschreiben?</translation>
         <source>Show &amp;Workspace</source>
         <translation>Arbeits&amp;bereich anzeigen</translation>
     </message>
+    <message>
+        <source>untitled</source>
+        <translation type="unfinished">nicht benannt</translation>
+    </message>
 </context>
 <context>
     <name>ScriptingEnv</name>
     <message>
         <source>%1 Source (*.%2);;</source>
-        <translation>%1 Quelle (*.%2);;</translation>
+        <translation type="obsolete">%1 Quelle (*.%2);;</translation>
+    </message>
+    <message>
+        <source>%1 Source (*.%2);</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

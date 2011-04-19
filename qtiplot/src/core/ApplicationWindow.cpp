@@ -13845,7 +13845,7 @@ void ApplicationWindow::createActions()
 	actionPrint->setShortcut( tr("Ctrl+P") );
 	connect(actionPrint, SIGNAL(activated()), this, SLOT(print()));
 
-	actionPrintPreview = new QAction(QPixmap(":/preview.png"), tr("Print Pre&view..."), this);
+	actionPrintPreview = new QAction(QIcon(":/preview.png"), tr("Print Pre&view..."), this);
 	connect(actionPrintPreview, SIGNAL(activated()), this, SLOT(printPreview()));
 
 	actionPrintAllPlots = new QAction(tr("Print All Plo&ts"), this);
