@@ -83,7 +83,7 @@ d_app(app)
 	enableActions();
 
 	setIcon(QPixmap(":/logo.png"));
-	setWindowTitle(tr("QtiPlot - Script Window"));
+	setWindowTitle(tr("QtiPlot - Script Window") + " - " + tr("untitled"));
 	setFocusProxy(te);
 	setFocusPolicy(Qt::StrongFocus);
 	resize(QSize(500, 300));
@@ -129,7 +129,7 @@ void ScriptWindow::initActions()
 
 	file->addSeparator();
 
-	actionPrintPreview = new QAction(tr("Print Pre&view..."), this);
+	actionPrintPreview = new QAction(QIcon(":/preview.png"), tr("Print Pre&view..."), this);
 	connect(actionPrintPreview, SIGNAL(activated()), this, SLOT(printPreview()));
 	file->addAction(actionPrintPreview);
 
@@ -259,7 +259,7 @@ void ScriptWindow::initActions()
 
 void ScriptWindow::languageChange()
 {
-	setWindowTitle(tr("QtiPlot - Script Window"));
+	setWindowTitle(tr("QtiPlot - Script Window") + " - " + tr("untitled"));
 	consoleWindow->setWindowTitle(tr("Script Output Panel"));
 
 	menuBar()->clear();
@@ -339,6 +339,7 @@ void ScriptWindow::newScript()
 {
 	fileName = QString::null;
 	te->clear();
+	setWindowTitle(tr("QtiPlot - Script Window") + " - " + tr("untitled"));
 }
 
 void ScriptWindow::open(const QString& fn)
@@ -353,8 +354,10 @@ void ScriptWindow::open(const QString& fn)
 void ScriptWindow::saveAs()
 {
 	QString fn = te->exportASCII();
-	if (!fn.isEmpty())
+	if (!fn.isEmpty()){
 		fileName = fn;
+		setWindowTitle(tr("QtiPlot - Script Window") + " - " + fileName);
+	}
 }
 
 void ScriptWindow::save()
