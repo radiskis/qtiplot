@@ -6074,7 +6074,13 @@ void Graph::drawInwardTicks(QPainter *painter, const QRect &rect,
 	const QwtValueList medTickList = scDiv->ticks(QwtScaleDiv::MediumTick);
 	int medTicks = (int)medTickList.count();
 
-	const QwtValueList majTickList = scDiv->ticks(QwtScaleDiv::MajorTick);
+	QwtValueList majTickList = scDiv->ticks(QwtScaleDiv::MajorTick);
+
+	ScaleEngine *sc_engine = (ScaleEngine *)axisScaleEngine(axis);
+	if (sc_engine->hasBreak()){
+		majTickList.removeAll(sc_engine->axisBreakLeft());
+		majTickList.removeAll(sc_engine->axisBreakRight());
+	}
 	int majTicks = (int)majTickList.count();
 
 	int j, x, y, low,high;
