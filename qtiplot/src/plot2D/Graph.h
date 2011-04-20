@@ -775,6 +775,23 @@ class Graph: public QwtPlot
 		void notifyFontChange(const QFont& f){emit currentFontChanged(f);};
         void enableTextEditor();
 
+		//! \name Waterfall
+		//@{
+		bool isWaterfallPlot(){return d_waterfall_offset_x != 0 || d_waterfall_offset_y != 0;};
+		int waterfallXOffset(){return d_waterfall_offset_x;};
+		int waterfallYOffset(){return d_waterfall_offset_y;};
+		void setWaterfallOffset(int x, int y, bool update = false);
+		void setWaterfallXOffset(int);
+		void setWaterfallYOffset(int);
+		bool sideLinesEnabled(){return d_side_lines;};
+		void setWaterfallSideLines(bool on = true);
+		QColor waterfallFillColor(){return d_waterfall_fill_color;}
+		void setWaterfallFillColor(const QColor&);
+		void updateWaterfallFill(bool on);
+		//@}
+		void updateDataCurves();
+		void reverseCurveOrder();
+
 signals:
 		void selectedGraph(Graph*);
 		void selectedCanvas(Graph*);
@@ -883,6 +900,11 @@ signals:
 
 		QString d_canvas_bkg_path;
 		QPixmap d_canvas_bkg_pix;
+
+		int d_waterfall_offset_x, d_waterfall_offset_y;
+		//! Flag telling if we need to draw side lines for curves in a waterfall plot
+		bool d_side_lines;
+		QColor d_waterfall_fill_color;
 };
 
 class ScaledFontsPrintFilter: public QwtPlotPrintFilter

@@ -1811,6 +1811,7 @@ public:
   BoxCurve * boxCurve(int index);
 
   void changeCurveIndex(int fromIndex, int toIndex);
+  void reverseCurveOrder();
 
   void setCurveLineColor(int, int);
   void setCurveLineColor(int, QColor);
@@ -1975,6 +1976,10 @@ public:
 	}
 %End
 
+  void setWaterfallSideLines(bool = true);
+  void setWaterfallFillColor(const QColor&);
+  void setWaterfallOffset(int x, int y, bool = true);
+
 private:
   Graph(const Graph&);
 };
@@ -2026,9 +2031,6 @@ public:
   void exportTeX(const QString& fname, bool color = true, bool escapeStrings = true, bool fontSizes = true,
 		const QSizeF& customSize = QSizeF(), int unit = FrameWidget::Pixel, double fontsFactor = 1.0)/PyName=exportTex/;
 
-  void setWaterfallSideLines(bool = true);
-  void setWaterfallFillColor(const QColor&);
-  void setWaterfallOffset(int x, int y, bool = true);
   void reverseWaterfallOrder();
 
 private:

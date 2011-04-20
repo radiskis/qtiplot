@@ -696,6 +696,7 @@ Engineering
 skipSymbolsCount
 setSkipSymbolsCount
 changeCurveIndex
+reverseCurveOrder
 setFont
 tabs
 addTab
