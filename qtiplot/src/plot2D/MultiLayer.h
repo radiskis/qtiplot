@@ -100,11 +100,6 @@ public:
 
 	void setWaterfallLayout(bool on = true);
 	void createWaterfallBox();
-	bool isWaterfallPlot(){return d_is_waterfall_plot;};
-	int waterfallXOffset(){return d_waterfall_offset_x;};
-	int waterfallYOffset(){return d_waterfall_offset_y;};
-	void setWaterfallOffset(int x, int y, bool update = false);
-	bool sideLinesEnabled(){return d_side_lines;};
 
 	void setEqualSizedLayers();
 
@@ -218,12 +213,8 @@ public slots:
     void showWaterfallOffsetDialog();
     void reverseWaterfallOrder();
     void showWaterfallFillDialog();
-    void setWaterfallFillColor(const QColor&);
-    void updateWaterfallFill(bool on);
-    void setWaterfallSideLines(bool on = true);
-	void changeWaterfallXOffset(int);
-    void changeWaterfallYOffset(int);
-    void updateWaterfallLayout();
+	void updateWaterfalls();
+	bool isWaterfallPlot(){return d_is_waterfall_plot;};
     //@}
 
 	void updateLayerAxes(Graph *g, int axis);
@@ -275,11 +266,7 @@ private:
 
 	QPointer<SelectionMoveResizer> d_layers_selector;
 
-	int d_waterfall_offset_x, d_waterfall_offset_y;
 	bool d_is_waterfall_plot;
-	//! Flag telling if we need to draw side lines for curves in a waterfall plot
-	bool d_side_lines;
-	QColor d_waterfall_fill_color;
 
 	QPushButton *d_add_layer_btn, *d_remove_layer_btn;
 

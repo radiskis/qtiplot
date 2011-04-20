@@ -525,7 +525,7 @@ void ImageExportDialog::drawVectorPreview(QPrinter *printer)
 		return;
 
 	QSizeF customSize = customExportSize();
-	int res = bitmapResolution();
+	int res = vectorResolution();
 	int unit = sizeUnit();
 	QSize size = Graph::customPrintSize(customSize, unit, res);
 
@@ -535,12 +535,12 @@ void ImageExportDialog::drawVectorPreview(QPrinter *printer)
 		if (!size.isValid())
 			size = d_layer->size();
 
-		d_layer->exportVector(printer, res, color(), customSize, unit, scaleFontsFactor());
+		d_layer->exportVector(printer, d_layer->logicalDpiX(), color(), customSize, unit, scaleFontsFactor());
 	} else if (ml){
 		if (!size.isValid())
 			size = ml->canvas()->size();
 
-		ml->exportVector(printer, res, color(), customSize, unit, scaleFontsFactor());
+		ml->exportVector(printer, ml->logicalDpiX(), color(), customSize, unit, scaleFontsFactor());
 	} else if (m){
 		if (!size.isValid())
 			size = QSize(m->numCols(), m->numRows());

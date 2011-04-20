@@ -126,11 +126,7 @@ vert_align(VCenter),
 d_scale_on_print(true),
 d_print_cropmarks(false),
 d_scale_layers(parent->autoResizeLayers),
-d_waterfall_offset_x(10),
-d_waterfall_offset_y(20),
 d_is_waterfall_plot(false),
-d_side_lines(false),
-d_waterfall_fill_color(QColor()),
 d_canvas_size(QSize()),
 d_align_policy(AlignLayers),
 d_size_policy(UserSize),
@@ -339,8 +335,7 @@ void MultiLayer::setActiveLayer(Graph* g)
 
 	deselect();
 
-	if (!d_is_waterfall_plot)
-		active_graph->raise();//raise layer on top of the layers stack
+	active_graph->raise();//raise layer on top of the layers stack
 	active_graph->raiseEnrichements();
 
 	for(int i = 0; i < graphsList.count(); i++){
@@ -451,7 +446,7 @@ void MultiLayer::resizeLayers (QResizeEvent *re)
 	}
 
 	if (d_is_waterfall_plot)
-		updateWaterfallLayout();
+		updateWaterfalls();
 
 	emit modifiedPlot();
 }
@@ -1479,9 +1474,6 @@ bool MultiLayer::eventFilter(QObject *object, QEvent *e)
 		} else if (me->button() == Qt::MidButton)
 			return QMdiSubWindow::eventFilter(object, e);
 
-		if (d_is_waterfall_plot)
-			return true;
-
 		QPoint pos = d_canvas->mapFromGlobal(me->globalPos());
 		// iterate backwards, so layers on top are preferred for selection
 		QList<Graph*>::iterator i = graphsList.end();
@@ -1664,11 +1656,8 @@ void MultiLayer::save(const QString &fn, const QString &geometry, bool saveAsTem
 	foreach (Graph *g, graphsList)
 		t << g->saveToString(saveAsTemplate);
 
-	if (d_is_waterfall_plot){
-		t << "<waterfall>" + QString::number(d_waterfall_offset_x) + ",";
-		t << QString::number(d_waterfall_offset_y) + ",";
-		t << QString::number(d_side_lines) + "</waterfall>\n";
-	}
+	if (d_is_waterfall_plot)
+		t << "<waterfall>1</waterfall>\n";
 
 	t << "<LinkXAxes>" + QString::number(d_link_x_axes) + "</LinkXAxes>\n";
 	t << "<ScaleLayers>" + QString::number(d_scale_layers) + "</ScaleLayers>\n";
@@ -1781,11 +1770,8 @@ void MultiLayer::copy(MultiLayer* ml)
 	}
 
 	if (ml->isWaterfallPlot()){
-		d_waterfall_offset_x = ml->waterfallXOffset();
-		d_waterfall_offset_y = ml->waterfallYOffset();
 		createWaterfallBox();
-		setWaterfallSideLines(ml->sideLinesEnabled());
-		updateWaterfallLayout();
+		updateWaterfalls();
 	}
 
 	d_scale_layers = ml->scaleLayersOnResize();
@@ -1855,9 +1841,10 @@ void MultiLayer::setWaterfallLayout(bool on)
 
 	d_is_waterfall_plot = on;
 
-	if (on)
+	if (on){
 		createWaterfallBox();
-	else {
+		updateWaterfalls();
+	} else {
 		for (int i = 0; i < waterfallBox->count(); i++){
 			QLayoutItem *item = waterfallBox->itemAt(i);
 			if (item){
@@ -1883,40 +1870,24 @@ void MultiLayer::createWaterfallBox()
 	waterfallBox->addWidget(btn);
 
 	d_is_waterfall_plot = true;
-
-	foreach(LayerButton *btn, buttonsList)
-		btn->hide();
-
-	d_add_layer_btn->hide();
-	d_remove_layer_btn->hide();
 }
 
-void MultiLayer::updateWaterfallLayout()
+void MultiLayer::updateWaterfalls()
 {
 	if (!d_is_waterfall_plot || graphsList.isEmpty())
 		return;
 
-	Graph *g = graphsList[0];
-	int n = g->curveCount();
-	if (!n)
-		return;
-
-	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-	for (int i = 0; i < n; i++){
-		DataCurve *c = g->dataCurve(i);
-		if (c)
-			c->loadData();
+	foreach(Graph *g, graphsList){
+		if (g->isWaterfallPlot())
+			g->updateDataCurves();
 	}
-	g->replot();
-	QApplication::restoreOverrideCursor();
 }
 
 void MultiLayer::showWaterfallOffsetDialog()
 {
-	if (graphsList.isEmpty())
+	if (graphsList.isEmpty() || !active_graph)
 		return;
-
-	if (graphsList[0]->curvesList().isEmpty())
+	if (active_graph->curvesList().isEmpty())
 		return;
 
 	QDialog *offsetDialog = new QDialog(this);
@@ -1928,21 +1899,21 @@ void MultiLayer::showWaterfallOffsetDialog()
 	hl1->addWidget(new QLabel(tr("Total Y Offset (%)")), 0, 0);
 	QSpinBox *yOffsetBox = new QSpinBox();
 	yOffsetBox->setRange(-INT_MAX, INT_MAX);
-	yOffsetBox->setValue(d_waterfall_offset_y);
+	yOffsetBox->setValue(active_graph->waterfallYOffset());
 	hl1->addWidget(yOffsetBox, 0, 1);
 
 	hl1->addWidget(new QLabel(tr("Total X Offset (%)")), 1, 0);
 	QSpinBox *xOffsetBox = new QSpinBox();
 	xOffsetBox->setRange(-INT_MAX, INT_MAX);
-	xOffsetBox->setValue(d_waterfall_offset_x);
+	xOffsetBox->setValue(active_graph->waterfallXOffset());
 	hl1->addWidget(xOffsetBox, 1, 1);
 	hl1->setRowStretch(2, 1);
 
-	connect(yOffsetBox, SIGNAL(valueChanged(int)), this, SLOT(changeWaterfallYOffset(int)));
-	connect(xOffsetBox, SIGNAL(valueChanged(int)), this, SLOT(changeWaterfallXOffset(int)));
+	connect(yOffsetBox, SIGNAL(valueChanged(int)), active_graph, SLOT(setWaterfallYOffset(int)));
+	connect(xOffsetBox, SIGNAL(valueChanged(int)), active_graph, SLOT(setWaterfallXOffset(int)));
 
 	QPushButton *applyBtn = new QPushButton(tr("&Apply"));
-	connect(applyBtn, SIGNAL(clicked()), this, SLOT(updateWaterfallLayout()));
+	connect(applyBtn, SIGNAL(clicked()), this, SLOT(updateWaterfalls()));
 
 	QPushButton *closeBtn = new QPushButton(tr("&Close"));
 	connect(closeBtn, SIGNAL(clicked()), offsetDialog, SLOT(reject()));
@@ -1958,61 +1929,21 @@ void MultiLayer::showWaterfallOffsetDialog()
 	offsetDialog->exec();
 }
 
-void MultiLayer::changeWaterfallXOffset(int offset)
-{
-	if (offset == d_waterfall_offset_x)
-		return;
-
-	d_waterfall_offset_x = offset;
-	updateWaterfallLayout();
-	emit modifiedWindow(this);
-}
-
-void MultiLayer::setWaterfallOffset(int x, int y, bool update)
-{
-	d_waterfall_offset_x = x;
-	d_waterfall_offset_y = y;
-
-	if (update){
-		updateWaterfallLayout();
-		emit modifiedWindow(this);
-	}
-}
-
-void MultiLayer::changeWaterfallYOffset(int offset)
-{
-	if (offset == d_waterfall_offset_y)
-		return;
-
-	d_waterfall_offset_y = offset;
-	updateWaterfallLayout();
-	emit modifiedWindow(this);
-}
-
 void MultiLayer::reverseWaterfallOrder()
 {
-	if (graphsList.isEmpty())
-		return;
-	Graph *g = graphsList[0];
-	QList<QwtPlotItem *> curves = g->curvesList();
-	if (curves.isEmpty())
+	if (graphsList.isEmpty() || !active_graph)
 		return;
 
-	QList<QwtPlotItem *> lst;
-	int n = curves.size();
-	for (int i = 0; i < n; i++)
-		lst << curves[n - i - 1];
-	g->setCurvesList(lst);
-
-	updateWaterfallLayout();
+	active_graph->reverseCurveOrder();
+	active_graph->updateDataCurves();
 	emit modifiedWindow(this);
 }
 
 void MultiLayer::showWaterfallFillDialog()
 {
-	if (graphsList.isEmpty())
+	if (graphsList.isEmpty() || !active_graph)
 		return;
-	if (graphsList[0]->curvesList().isEmpty())
+	if (active_graph->curvesList().isEmpty())
 		return;
 
 	QDialog *waterfallFillDialog = new QDialog(this);
@@ -2027,23 +1958,17 @@ void MultiLayer::showWaterfallFillDialog()
 	hl1->addWidget(fillColorBox, 0, 1);
 
 	QCheckBox *sideLinesBox = new QCheckBox(tr("Side Lines"));
-	sideLinesBox->setChecked(d_side_lines);
+	sideLinesBox->setChecked(active_graph->sideLinesEnabled());
 	hl1->addWidget(sideLinesBox, 1, 0);
 	hl1->setRowStretch(2, 1);
 
-	if (active_graph){
-		QwtPlotCurve *cv = (QwtPlotCurve *)active_graph->curve(0);
-		if (cv){
-			d_waterfall_fill_color = cv->brush().color();
-			fillColorBox->setColor(d_waterfall_fill_color);
-			gb1->setChecked(cv->brush().style() != Qt::NoBrush);
-		}
-	}
+	QBrush brush = active_graph->curve(0)->brush();
+	fillColorBox->setColor(brush.style() != Qt::NoBrush ? brush.color() : active_graph->waterfallFillColor());
+	gb1->setChecked(brush.style() != Qt::NoBrush);
 
-	connect(gb1, SIGNAL(toggled(bool)), this, SLOT(updateWaterfallFill(bool)));
-	connect(fillColorBox, SIGNAL(colorChanged(const QColor&)),
-			this, SLOT(setWaterfallFillColor(const QColor&)));
-	connect(sideLinesBox, SIGNAL(toggled(bool)), this, SLOT(setWaterfallSideLines(bool)));
+	connect(gb1, SIGNAL(toggled(bool)), active_graph, SLOT(updateWaterfallFill(bool)));
+	connect(fillColorBox, SIGNAL(colorChanged(const QColor&)), active_graph, SLOT(setWaterfallFillColor(const QColor&)));
+	connect(sideLinesBox, SIGNAL(toggled(bool)), active_graph, SLOT(setWaterfallSideLines(bool)));
 
 	QPushButton *closeBtn = new QPushButton(tr("&Close"));
 	connect(closeBtn, SIGNAL(clicked()), waterfallFillDialog, SLOT(reject()));
@@ -2056,72 +1981,6 @@ void MultiLayer::showWaterfallFillDialog()
 	vl->addWidget(gb1);
 	vl->addLayout(hl2);
 	waterfallFillDialog->exec();
-}
-
-void MultiLayer::setWaterfallSideLines(bool on)
-{
-	if (graphsList.isEmpty() || d_side_lines == on)
-		return;
-
-	d_side_lines = on;
-
-	Graph *g = graphsList[0];
-	int n = g->curveCount();
-	if (!n)
-		return;
-	for (int i = 0; i < n; i++){
-		PlotCurve *cv = (PlotCurve *)g->curve(i);
-		if (cv)
-			cv->enableSideLines(on);
-	}
-	g->replot();
-
-	emit modifiedWindow(this);
-}
-
-void MultiLayer::setWaterfallFillColor(const QColor& c)
-{
-	if (graphsList.isEmpty() || d_waterfall_fill_color == c)
-		return;
-
-	d_waterfall_fill_color = c;
-
-	Graph *g = graphsList[0];
-	int n = g->curveCount();
-	if (!n)
-		return;
-	for (int i = 0; i < n; i++){
-		PlotCurve *cv = (PlotCurve *)g->curve(i);
-		if (cv)
-			cv->setBrush(QBrush(c));
-	}
-	g->replot();
-
-	emit modifiedWindow(this);
-}
-
-void MultiLayer::updateWaterfallFill(bool on)
-{
-	if (graphsList.isEmpty())
-		return;
-
-	Graph *g = graphsList[0];
-	int n = g->curveCount();
-	if (!n)
-		return;
-	for (int i = 0; i < n; i++){
-		PlotCurve *cv = (PlotCurve *)g->curve(i);
-		if (cv){
-			if (on)
-				cv->setBrush(QBrush(d_waterfall_fill_color));
-			else
-				cv->setBrush(QBrush());
-
-			cv->enableSideLines(d_side_lines);
-		}
-	}
-	g->replot();
-	emit modifiedWindow(this);
 }
 
 void MultiLayer::dragEnterEvent( QDragEnterEvent* e )

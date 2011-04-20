@@ -2829,11 +2829,11 @@ MultiLayer* ApplicationWindow::waterfallPlot(Table *t, const QStringList& list)
 	g->setMargin(0);
 	g->setFrame(0);
 	g->addCurves(t, list, Graph::Line);
+	g->setWaterfallOffset(10, 20);
 
 	initMultilayerPlot(ml);
 	ml->arrangeLayers(false, true);
 	ml->setWaterfallLayout();
-	ml->updateWaterfallLayout();
 
 	g->newLegend()->move(QPoint(g->x() + g->canvas()->x() + 5, 5));
 
@@ -4927,12 +4927,14 @@ ApplicationWindow* ApplicationWindow::openProject(const QString& fn, bool factor
 				s = t.readLine();
 				if (s.contains("<waterfall>")){
 					QStringList lst = s.trimmed().remove("<waterfall>").remove("</waterfall>").split(",");
-					if (lst.size() >= 2)
-						plot->setWaterfallOffset(lst[0].toInt(), lst[1].toInt());
-					if (lst.size() >= 3)
-						plot->setWaterfallSideLines(lst[2].toInt());
+					Graph *ag = plot->activeLayer();
+					if (ag && lst.size() >= 2){
+						ag->setWaterfallOffset(lst[0].toInt(), lst[1].toInt());
+						if (lst.size() >= 3)
+							ag->setWaterfallSideLines(lst[2].toInt());
+						ag->updateDataCurves();
+					}
 					plot->createWaterfallBox();
-					plot->updateWaterfallLayout();
 				}
 
 				if (s.left(7) == "<graph>"){
@@ -5174,10 +5176,12 @@ MdiSubWindow* ApplicationWindow::openTemplate(const QString& fn)
 					QString s = t.readLine();
 					if (s.contains("<waterfall>")){
 						QStringList lst = s.trimmed().remove("<waterfall>").remove("</waterfall>").split(",");
-						if (lst.size() >= 2)
-							ml->setWaterfallOffset(lst[0].toInt(), lst[1].toInt());
-						if (lst.size() >= 3)
-							ml->setWaterfallSideLines(lst[2].toInt());
+						Graph *ag = ml->activeLayer();
+						if (ag && lst.size() >= 2){
+							ag->setWaterfallOffset(lst[0].toInt(), lst[1].toInt());
+							if (lst.size() >= 3)
+								ag->setWaterfallSideLines(lst[2].toInt());
+						}
 						ml->createWaterfallBox();
 					}
 					if (s.left(7) == "<graph>"){
@@ -9372,7 +9376,8 @@ void ApplicationWindow::pasteSelection()
 			g->copy(lastCopiedLayer);
 			QPoint pos = plot->canvas()->mapFromGlobal(QCursor::pos());
 			g->setCanvasGeometry(pos.x(), pos.y(), lastCopiedLayer->canvas()->width(), lastCopiedLayer->canvas()->height());
-
+			if (g->isWaterfallPlot())
+				g->updateDataCurves();
 			QApplication::restoreOverrideCursor();
 		} else {
 			if (plot->numLayers() == 0)
@@ -11966,13 +11971,12 @@ void ApplicationWindow::autoArrangeLayers()
 	if (!plot)
 		return;
 
+	plot->setMargins(5, 5, 5, 5);
+	//plot->setSpacing(5, 5);
+	plot->arrangeLayers(true, false);
+
 	if (plot->isWaterfallPlot())
-		plot->updateWaterfallLayout();
-	else {
-		plot->setMargins(5, 5, 5, 5);
-		//plot->setSpacing(5, 5);
-		plot->arrangeLayers(true, false);
-	}
+		plot->updateWaterfalls();
 }
 
 void ApplicationWindow::extractGraphs()
@@ -13053,6 +13057,13 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot, co
 			QStringList lst = s.remove("<ImageProfileValues>").remove("</ImageProfileValues>").split("\t");
 			if (lst.size() == 2 && ag->activeTool())
 				((ImageProfilesTool *)ag->activeTool())->append(QwtDoublePoint(lst[0].toDouble(), lst[1].toDouble()));
+		} else if (s.contains("<waterfall>")){
+			QStringList lst = s.trimmed().remove("<waterfall>").remove("</waterfall>").split(",");
+			if (lst.size() >= 2)
+				ag->setWaterfallOffset(lst[0].toInt(), lst[1].toInt());
+			if (lst.size() >= 3)
+				ag->setWaterfallSideLines(lst[2].toInt());
+			ag->updateDataCurves();
 		}
 	}
 	if (ag){
@@ -16428,10 +16439,13 @@ Folder* ApplicationWindow::appendProject(const QString& fn, Folder* parentFolder
 					s = t.readLine();
 					if (s.contains("<waterfall>")){
 						QStringList lst = s.trimmed().remove("<waterfall>").remove("</waterfall>").split(",");
-						if (lst.size() >= 2)
-							plot->setWaterfallOffset(lst[0].toInt(), lst[1].toInt());
-						if (lst.size() >= 3)
-							plot->setWaterfallSideLines(lst[2].toInt());
+						Graph *ag = plot->activeLayer();
+						if (ag && lst.size() >= 2){
+							ag->setWaterfallOffset(lst[0].toInt(), lst[1].toInt());
+							if (lst.size() >= 3)
+								ag->setWaterfallSideLines(lst[2].toInt());
+							ag->updateDataCurves();
+						}
 						plot->createWaterfallBox();
 					}
 					if (s.left(7) == "<graph>"){
@@ -16454,7 +16468,7 @@ Folder* ApplicationWindow::appendProject(const QString& fn, Folder* parentFolder
 				if (plot->status() == MdiSubWindow::Minimized)
 					plot->showMinimized();
 				plot->blockSignals(false);
-			} else if  (s == "<SurfacePlot>"){//process 3D plots information
+			} else if (s == "<SurfacePlot>"){//process 3D plots information
 				lst.clear();
 				while ( s!="</SurfacePlot>" ){
 					s = t.readLine();
