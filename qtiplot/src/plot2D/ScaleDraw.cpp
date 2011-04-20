@@ -494,11 +494,15 @@ int ScaleDraw::axis() const
 
 void ScaleDraw::drawTick(QPainter *p, double value, int len) const
 {
-	ScaleEngine *sc_engine = (ScaleEngine *)d_plot->axisScaleEngine(axis());
+	int axis = this->axis();
+	ScaleEngine *sc_engine = (ScaleEngine *)d_plot->axisScaleEngine(axis);
 	if (sc_engine->hasBreak()){
 		double dlb = sc_engine->axisBreakLeft();
 		double drb = sc_engine->axisBreakRight();
-		if (dlb <= value && drb > value)
+		if ((dlb < value && drb > value) ||
+			((axis == QwtPlot::yLeft || axis == QwtPlot::xBottom) && value == dlb) ||
+			((axis == QwtPlot::yRight || axis == QwtPlot::xTop) && value == drb) ||
+			(sc_engine->testAttribute(QwtScaleEngine::Inverted) && (value == dlb || value == drb)))
 			return;
 
 		if (d_plot->isPrinting()){
@@ -548,7 +552,7 @@ void ScaleDraw::drawTick(QPainter *p, double value, int len) const
 void ScaleDraw::drawInwardTick(QPainter *painter, double value, int len) const
 {
 	ScaleEngine *sc_engine = (ScaleEngine *)d_plot->axisScaleEngine(axis());
-	if (sc_engine->hasBreak() && (sc_engine->axisBreakLeft() < value && sc_engine->axisBreakRight() > value))
+	if (sc_engine->hasBreak() && (sc_engine->axisBreakLeft() <= value && sc_engine->axisBreakRight() >= value))
 		return;
 
 	int pw2 = qwtMin((int)painter->pen().width(), len) / 2;
