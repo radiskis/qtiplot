@@ -1554,12 +1554,9 @@ void Table::pasteSelection()
 	if (!sel.isEmpty()){// not columns but only cells are selected
 		top = sel.topRow();
 		left = sel.leftCol();
-	} else if(cols == 1 && rows == 1){
+	} else {
 		top = d_table->currentRow();
 		left = d_table->currentColumn();
-	} else {
-		top = 0;
-		left = 0;
 		if (firstCol >= 0)// columns are selected
 			left = firstCol;
 	}
