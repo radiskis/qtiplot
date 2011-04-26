@@ -1857,6 +1857,9 @@ void MultiLayer::setWaterfallLayout(bool on)
 
 void MultiLayer::createWaterfallBox()
 {
+	if (d_is_waterfall_plot)
+		return;
+
 	QPushButton *btn = new QPushButton(tr("Offset Amount..."));
 	connect (btn, SIGNAL(clicked()), this, SLOT(showWaterfallOffsetDialog()));
 
