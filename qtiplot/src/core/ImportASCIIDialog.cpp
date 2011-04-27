@@ -60,6 +60,7 @@ ImportASCIIDialog::ImportASCIIDialog(bool new_windows_only, QWidget * parent, bo
 	initAdvancedOptions();
 	setNewWindowsOnly(new_windows_only);
 	setExtensionWidget(d_advanced_options);
+	setEditableFilter();
 
 	// get rembered option values
 	ApplicationWindow *app = (ApplicationWindow *)parent;
@@ -110,6 +111,7 @@ ImportASCIIDialog::ImportASCIIDialog(bool new_windows_only, QWidget * parent, bo
     connect(boxDecimalSeparator, SIGNAL(currentIndexChanged(int)), this, SLOT(preview()));
     connect(d_comment_string, SIGNAL(textChanged(const QString&)), this, SLOT(preview()));
     connect(this, SIGNAL(currentChanged(const QString&)), this, SLOT(changePreviewFile(const QString&)));
+	connect(this, SIGNAL(filterSelected(const QString &)), this, SLOT(selectFilter(const QString &)));
 }
 
 void ImportASCIIDialog::initAdvancedOptions()
@@ -568,10 +570,10 @@ void ImportASCIIDialog::selectFilter(const QString & filter)
 	if (!filters.contains(filter))
 		filters << filter;
 
-	setFilters(filters);
-	setEditableFilter();
-
-	QFileDialog::selectFilter(filter);
+	blockSignals(true);
+	setNameFilters(filters);
+	selectNameFilter(filter);
+	blockSignals(false);
 }
 
 /*****************************************************************************
