@@ -169,12 +169,13 @@ public:
 	//! Returns the convention used for the end line character!
 	inline int endLineChar(){return boxEndLine->currentIndex();};
 
-	void selectFilter(const QString & filter);
-
 	QList<int> columnTypes(){if (d_preview_table) return d_preview_table->columnTypes(); return QList<int>();};
 	QStringList columnFormats(){if (d_preview_table) return d_preview_table->columnFormats(); return QStringList();};
 
 	void setCurrentPath(const QString& path);
+
+public slots:
+	void selectFilter(const QString & filter);
 
 private slots:
 	//! Display help for advanced options.

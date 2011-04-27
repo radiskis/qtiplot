@@ -536,7 +536,7 @@ bool MatrixModel::importASCII(const QString &fname, const QString &sep, int igno
 		break;
 	}
 
-	for (int j = startCol; j<d_cols; j++){
+	for (int j = startCol; j < d_cols; j++){
 		int aux = j - startCol;
 		if (cols > aux){
 			if (updateDecimalSeparators)
@@ -547,28 +547,48 @@ bool MatrixModel::importASCII(const QString &fname, const QString &sep, int igno
 	}
 
 	qApp->processEvents(QEventLoop::ExcludeUserInput);
-	for (int i = startRow; i<d_rows; i++){
-		s = t.readLine();
-		if (simplifySpaces)
-			s = s.simplifyWhiteSpace();
-		else if (stripSpaces)
-			s = s.stripWhiteSpace();
-		line = s.split(sep);
-		int lc = line.size();
-		if (lc > cols)
-			setColumnCount(d_cols + lc - cols);
+	if (startCol){
+		for (int i = startRow; i < d_rows; i++){
+			s = t.readLine();
+			if (simplifySpaces)
+				s = s.simplifyWhiteSpace();
+			else if (stripSpaces)
+				s = s.stripWhiteSpace();
+			line = s.split(sep);
 
-		for (int j = startCol; j<d_cols; j++){
-			int aux = j - startCol;
-		    if (lc > aux){
+			int nc = line.size() + startCol;
+			if (nc > d_cols)
+				setColumnCount(nc);
+
+			for (int j = startCol; j < nc; j++){
 				if (updateDecimalSeparators)
-					setCell(i, j, locale.toDouble(line[aux]));
+					setCell(i, j, locale.toDouble(line[j - startCol]));
 				else
-					setText(i, j, line[aux]);
+					setText(i, j, line[j - startCol]);
+			}
+		}
+	} else {
+		for (int i = startRow; i < d_rows; i++){
+			s = t.readLine();
+			if (simplifySpaces)
+				s = s.simplifyWhiteSpace();
+			else if (stripSpaces)
+				s = s.stripWhiteSpace();
+			line = s.split(sep);
+			int lc = line.size();
+			if (lc > d_cols)
+				setColumnCount(lc);
+
+			for (int j = 0; j < lc; j++){
+				if (updateDecimalSeparators)
+					setCell(i, j, locale.toDouble(line[j]));
+				else
+					setText(i, j, line[j]);
 			}
 		}
 	}
-    f.remove();	//remove temp file
+
+	f.remove();	//remove temp file
 	if (d_matrix)
 		d_matrix->resetView();
 	QApplication::restoreOverrideCursor();

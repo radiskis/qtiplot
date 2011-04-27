@@ -99,6 +99,8 @@ void ExtensibleFileDialog::setEditableFilter(bool on)
 		QComboBox *filterBox = qobject_cast<QComboBox*>(item->widget());
 		if (filterBox){
 			filterBox->setEditable(on);
+			connect(filterBox, SIGNAL(editTextChanged(const QString &)),
+					this, SIGNAL(filterSelected(const QString &)));
 			return;
 		}
 	}
