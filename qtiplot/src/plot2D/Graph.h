@@ -783,9 +783,7 @@ class Graph: public QwtPlot
 		void setWaterfallOffset(int x, int y, bool update = false);
 		void setWaterfallXOffset(int);
 		void setWaterfallYOffset(int);
-		bool sideLinesEnabled(){return d_side_lines;};
 		void setWaterfallSideLines(bool on = true);
-		QColor waterfallFillColor(){return d_waterfall_fill_color;}
 		void setWaterfallFillColor(const QColor&);
 		void updateWaterfallFill(bool on);
 		//@}
@@ -902,9 +900,6 @@ signals:
 		QPixmap d_canvas_bkg_pix;
 
 		int d_waterfall_offset_x, d_waterfall_offset_y;
-		//! Flag telling if we need to draw side lines for curves in a waterfall plot
-		bool d_side_lines;
-		QColor d_waterfall_fill_color;
 };
 
 class ScaledFontsPrintFilter: public QwtPlotPrintFilter
