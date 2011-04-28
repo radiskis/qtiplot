@@ -99,7 +99,6 @@ public:
 	virtual QString sizeToString();
 
 	void setWaterfallLayout(bool on = true);
-	void createWaterfallBox();
 
 	void setEqualSizedLayers();
 
@@ -214,7 +213,9 @@ public slots:
     void reverseWaterfallOrder();
     void showWaterfallFillDialog();
 	void updateWaterfalls();
-	bool isWaterfallPlot(){return d_is_waterfall_plot;};
+	bool isWaterfallPlot(){return d_is_waterfall_plot;}
+	QColor waterfallFillColor(){return d_waterfall_fill_color;}
+	void setWaterfallFillColor(const QColor& c);
     //@}
 
 	void updateLayerAxes(Graph *g, int axis);
@@ -249,6 +250,7 @@ private:
 	//@}
 
 	LayerButton* addLayerButton();
+	void createWaterfallBox();
 
 	Graph* active_graph;
 	//! Used for resizing of layers.
@@ -267,6 +269,7 @@ private:
 	QPointer<SelectionMoveResizer> d_layers_selector;
 
 	bool d_is_waterfall_plot;
+	QColor d_waterfall_fill_color;
 
 	QPushButton *d_add_layer_btn, *d_remove_layer_btn;
 

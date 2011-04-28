@@ -124,8 +124,6 @@ Graph::Graph(int x, int y, int width, int height, QWidget* parent, Qt::WFlags f)
 
 	d_waterfall_offset_x = 0;
 	d_waterfall_offset_y = 0;
-	d_side_lines = false;
-	d_waterfall_fill_color = QColor();
 
 	d_active_tool = NULL;
 	d_range_selector = NULL;
@@ -4281,7 +4279,8 @@ QString Graph::saveToString(bool saveAsTemplate)
 	if (isWaterfallPlot()){
 		s += "<waterfall>" + QString::number(d_waterfall_offset_x) + ",";
 		s += QString::number(d_waterfall_offset_y) + ",";
-		s += QString::number(d_side_lines) + "</waterfall>\n";
+		bool sideLines = d_curves.size() > 0 && curve(0)->sideLinesEnabled();
+		s += QString::number(sideLines) + "</waterfall>\n";
 	}
 
 	s += "</graph>\n";
@@ -4753,7 +4752,6 @@ void Graph::copy(Graph* g)
 {
 	d_waterfall_offset_x = g->waterfallXOffset();
 	d_waterfall_offset_y = g->waterfallYOffset();
-	d_waterfall_fill_color = g->waterfallFillColor();
 
 	setMargin(g->margin());
 	setBackgroundColor(g->paletteBackgroundColor());
@@ -4872,7 +4870,7 @@ void Graph::copyCurves(Graph* g)
 			}
 			if (c->type() != Box && c->type() != ErrorBars && c->type() != Function){
 				((DataCurve *)c)->loadData();
-				c->enableSideLines(g->sideLinesEnabled());
+				c->enableSideLines(cv->sideLinesEnabled());
 
 				if (c->type() == Pie)
 					((PieCurve*)c)->clone((PieCurve*)cv);
@@ -7312,16 +7310,13 @@ void Graph::updateWaterfallFill(bool on)
 
 	for (int i = 0; i < n; i++){
 		PlotCurve *cv = (PlotCurve *)curve(i);
-		if (cv){
-			if (on){
-				if (!d_waterfall_fill_color.isValid())
-					d_waterfall_fill_color = Qt::black;
-				cv->setBrush(QBrush(d_waterfall_fill_color));
-			} else
-				cv->setBrush(QBrush());
+		if (!cv)
+			continue;
 
-			cv->enableSideLines(d_side_lines);
-		}
+		if (on && multiLayer())
+			cv->setBrush(QBrush(multiLayer()->waterfallFillColor()));
+		else
+			cv->setBrush(QBrush());
 	}
 	replot();
 	emit modifiedGraph();
@@ -7329,14 +7324,13 @@ void Graph::updateWaterfallFill(bool on)
 
 void Graph::setWaterfallSideLines(bool on)
 {
-	if (d_side_lines == on)
-		return;
-
-	d_side_lines = on;
-
 	int n = d_curves.size();
 	if (!n)
 		return;
+
+	if (curve(0)->sideLinesEnabled() == on)
+		return;
+
 	for (int i = 0; i < n; i++){
 		PlotCurve *cv = (PlotCurve *)curve(i);
 		if (cv)
@@ -7348,14 +7342,10 @@ void Graph::setWaterfallSideLines(bool on)
 
 void Graph::setWaterfallFillColor(const QColor& c)
 {
-	if (d_waterfall_fill_color == c)
-		return;
-
-	d_waterfall_fill_color = c;
-
 	int n = d_curves.size();
 	if (!n)
 		return;
+
 	for (int i = 0; i < n; i++){
 		PlotCurve *cv = (PlotCurve *)curve(i);
 		if (cv)
