@@ -2,7 +2,7 @@
     File                 : Table.cpp
     Project              : QtiPlot
     --------------------------------------------------------------------
-	Copyright            : (C) 2004 - 2010 by Ion Vasilief
+	Copyright            : (C) 2004 - 2011 by Ion Vasilief
 						   (C) 2006 - june 2007 byKnut Franke
     Email (use @ for *)  : ion_vasilief*yahoo.fr, knut.franke*gmx.de
     Description          : Table worksheet class
@@ -3596,6 +3596,8 @@ void Table::showComments(bool on)
 		return;
 
 	d_show_comments = on;
+	if (applicationWindow())
+		applicationWindow()->d_show_table_comments = on;
 	setHeaderColType();
 
 #ifndef Q_OS_MAC
