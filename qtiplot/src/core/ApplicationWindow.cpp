@@ -4932,9 +4932,8 @@ ApplicationWindow* ApplicationWindow::openProject(const QString& fn, bool factor
 						ag->setWaterfallOffset(lst[0].toInt(), lst[1].toInt());
 						if (lst.size() >= 3)
 							ag->setWaterfallSideLines(lst[2].toInt());
-						ag->updateDataCurves();
 					}
-					plot->createWaterfallBox();
+					plot->setWaterfallLayout();
 				}
 
 				if (s.left(7) == "<graph>"){
@@ -5182,7 +5181,7 @@ MdiSubWindow* ApplicationWindow::openTemplate(const QString& fn)
 							if (lst.size() >= 3)
 								ag->setWaterfallSideLines(lst[2].toInt());
 						}
-						ml->createWaterfallBox();
+						ml->setWaterfallLayout();
 					}
 					if (s.left(7) == "<graph>"){
 						QStringList lst;
@@ -16444,9 +16443,8 @@ Folder* ApplicationWindow::appendProject(const QString& fn, Folder* parentFolder
 							ag->setWaterfallOffset(lst[0].toInt(), lst[1].toInt());
 							if (lst.size() >= 3)
 								ag->setWaterfallSideLines(lst[2].toInt());
-							ag->updateDataCurves();
 						}
-						plot->createWaterfallBox();
+						plot->setWaterfallLayout();
 					}
 					if (s.left(7) == "<graph>"){
 						lst.clear();
