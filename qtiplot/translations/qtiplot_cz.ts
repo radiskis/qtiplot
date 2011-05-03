@@ -5991,15 +5991,15 @@ K tomu lze použít následujících zvláštních kódů:
     </message>
     <message>
         <source>Import Excel files using</source>
-        <translation type="unfinished"></translation>
+        <translation>Zavést soubory Excelu pomocí</translation>
     </message>
     <message>
         <source>Excel Format Library</source>
-        <translation type="unfinished"></translation>
+        <translation>Knihovny formátu Excel</translation>
     </message>
     <message>
         <source>Locally Installed Excel</source>
-        <translation type="unfinished"></translation>
+        <translation>Místně nainstalovaného Excelu</translation>
     </message>
     <message>
         <source>Show &amp;gaps for empty table cells</source>
@@ -15305,47 +15305,47 @@ pokud e1 pak e2 jinak e3.</translation>
     </message>
     <message>
         <source>Index of Row</source>
-        <translation type="unfinished"></translation>
+        <translation>Ukazatel řádků</translation>
     </message>
     <message>
         <source>Number of Columns</source>
-        <translation type="unfinished"></translation>
+        <translation>Počet sloupců</translation>
     </message>
     <message>
         <source>Standard Deviation</source>
-        <translation type="unfinished">Obvyklá odchylka</translation>
+        <translation>Obvyklá odchylka</translation>
     </message>
     <message>
         <source>Standard Error</source>
-        <translation type="unfinished">Obvyklá chyba</translation>
+        <translation>Obvyklá chyba</translation>
     </message>
     <message>
         <source>Maximum Value</source>
-        <translation type="unfinished"></translation>
+        <translation>Největší hodnota</translation>
     </message>
     <message>
         <source>Minimum Value</source>
-        <translation type="unfinished"></translation>
+        <translation>Nejmenší hodnota</translation>
     </message>
     <message>
         <source>Number of Points</source>
-        <translation type="unfinished"></translation>
+        <translation>Počet bodů</translation>
     </message>
     <message>
         <source>Column Name</source>
-        <translation type="unfinished"></translation>
+        <translation>Název sloupce</translation>
     </message>
     <message>
         <source>Rows Included</source>
-        <translation type="unfinished"></translation>
+        <translation>Zahrnuté řádky</translation>
     </message>
     <message>
         <source>Index of Maximum Value</source>
-        <translation type="unfinished"></translation>
+        <translation>Ukazatel největší hodnoty</translation>
     </message>
     <message>
         <source>Index of Minimum Value</source>
-        <translation type="unfinished"></translation>
+        <translation>Ukazatel nejmenší hodnoty</translation>
     </message>
 </context>
 <context>
