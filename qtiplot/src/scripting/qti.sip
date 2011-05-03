@@ -2382,7 +2382,7 @@ public:
   virtual bool run();
 
   bool setWeightingData(WeightingMethod, const QString&=QString::null);
-  bool setDataFromTable(Table *, const QString&, const QString&, int = 1, int = -1);
+  bool setDataFromTable(Table *, const QString&, const QString&, int = 1, int = -1, bool = false);
   void setInterval(double from, double to);
 
   QString formula();
@@ -2982,7 +2982,7 @@ public:
   bool setDataFromCurve(QwtPlotCurve *c, double from, double to);
   bool setDataFromCurve(const QString&, Graph*=0);
   bool setDataFromCurve(const QString& curveTitle, double from, double to, Graph *g = 0);
-  virtual bool setDataFromTable(Table *t, const QString& xColName, const QString& yColName, int from = 1, int to = -1);
+  virtual bool setDataFromTable(Table *t, const QString& xColName, const QString& yColName, int from = 1, int to = -1, bool = false);
 
   Table *resultTable();
 
@@ -3031,10 +3031,10 @@ class Integration : Filter
 #include "../src/analysis/Integration.h"
 %End
 public:
-  Integration(ApplicationWindow * /TransferThis/, Table *, const QString&, const QString&, int, int);
-  Integration(Table *, const QString&, const QString&, int = 1, int = -1) /NoDerived/;
+  Integration(ApplicationWindow * /TransferThis/, Table *, const QString&, const QString&, int, int, bool);
+  Integration(Table *, const QString&, const QString&, int = 1, int = -1, bool = false) /NoDerived/;
 %MethodCode
-  SIPQTI_APP(new sipIntegration(app, a0, *a1, *a2, a3, a4))
+  SIPQTI_APP(new sipIntegration(app, a0, *a1, *a2, a3, a4, a5))
 %End
 
   Integration(ApplicationWindow * /TransferThis/, QwtPlotCurve *);

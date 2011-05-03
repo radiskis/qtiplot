@@ -58,7 +58,7 @@ class Filter : public QObject
 		bool setDataFromCurve(const QString& curveTitle, Graph *g = 0);
 		bool setDataFromCurve(const QString& curveTitle, double from, double to, Graph *g = 0);
 
-		virtual bool setDataFromTable(Table *, const QString&, const QString&, int = 1, int = -1);
+		virtual bool setDataFromTable(Table *, const QString&, const QString&, int = 1, int = -1, bool = false);
 
 		//! Changes the data range if the source curve was already assigned. Provided for convenience.
 		void setInterval(double from, double to);
@@ -81,6 +81,8 @@ class Filter : public QObject
 
 		//! Sets the maximum number of iterations to be performed during an iterative session
 		void setMaximumIterations(int iter){d_max_iterations = iter;};
+
+		void setSortData(bool on = true){d_sort_data = on;}
 
 		//! Adds a new legend to the plot. Calls virtual legendInfo()
 		virtual void showLegend();

@@ -1,10 +1,10 @@
 /***************************************************************************
-    File                 : Integration.h
+	File                 : IntegrationDialog.h
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2007 by Ion Vasilief
+	Copyright            : (C) 2011 by Ion Vasilief
     Email (use @ for *)  : ion_vasilief*yahoo.fr
-    Description          : Numerical integration of data sets
+	Description          : Integration options dialog
 
  ***************************************************************************/
 
@@ -26,54 +26,53 @@
  *   Boston, MA  02110-1301  USA                                           *
  *                                                                         *
  ***************************************************************************/
-#ifndef INTEGRATION_H
-#define INTEGRATION_H
+#ifndef INTEGRATIONDIALOG_H
+#define INTEGRATIONDIALOG_H
 
-#include "Filter.h"
+#include <QDialog>
 
-class Integration : public Filter
+class QPushButton;
+class QComboBox;
+class QCheckBox;
+class QSpinBox;
+class Graph;
+class Table;
+class DoubleSpinBox;
+
+//! Integration options dialog
+class IntegrationDialog : public QDialog
 {
-Q_OBJECT
+    Q_OBJECT
 
 public:
-	enum Integrand{DataSet, AnalyticalFunction};
+	IntegrationDialog(Graph *g, QWidget* parent = 0, Qt::WFlags fl = 0 );
+	IntegrationDialog(Table *t, QWidget* parent = 0, Qt::WFlags fl = 0 );
 
-	Integration(ApplicationWindow *parent, Graph *g = 0);
-	Integration(ApplicationWindow *parent, QwtPlotCurve *c);
-	Integration(ApplicationWindow *parent, QwtPlotCurve *c, double start, double end);
-	Integration(ApplicationWindow *parent, Graph *g, const QString& curveTitle);
-	Integration(ApplicationWindow *parent, Graph *g, const QString& curveTitle, double start, double end);
-	Integration(ApplicationWindow *parent, Table *t, const QString& xCol, const QString& yCol, int start = 0, int end = -1, bool sort = false);
-	Integration(const QString& formula, const QString& var, ApplicationWindow *parent, Graph *g, double start, double end);
-
-	void setWorkspaceSize(int size){d_workspace_size = size;};
-
-	double area(){return d_area;};
-	QString variable(){return d_variable;};
-	QString formula(){return d_formula;};
+public slots:
+	void activateCurve(const QString&);
+	void integrate();
+	void changeDataRange();
 
 private:
-    void init();
-    QString logInfo();
+	void closeEvent (QCloseEvent * e );
 
-    void output();
+	void setGraph(Graph *g);
+	void setTable(Table *t);
+	void integrateCurve();
+	void integrateTable();
 
-	double trapez();
-	double gslIntegration();
-
-    //! the value of the integral
-    double d_area;
-	//! the value of the estimated error in GSL integration
-	double d_error;
-	//! the value of the workspace size in GSL integration
-	int d_workspace_size;
-
-	//! the type of the integrand
-	Integrand d_integrand;
-	//! Analytical function to be integrated
-	QString d_formula;
-	//! Variable name for the function to be integrated
-	QString d_variable;
+	Graph *d_graph;
+	Table *d_table;
+	QPushButton* buttonFit;
+	QPushButton* buttonCancel;
+	QComboBox* boxName;
+	QCheckBox *boxSortData;
+	QCheckBox *boxShowPlot;
+	QCheckBox *boxShowTable;
+	QSpinBox *boxStartRow;
+	QSpinBox *boxEndRow;
+	DoubleSpinBox* boxStart;
+	DoubleSpinBox* boxEnd;
 };
 
 #endif

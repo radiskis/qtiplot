@@ -1337,14 +1337,6 @@ Are you sure you want to continue?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Integration of %1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Area</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Linear Regression of %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -9895,6 +9887,69 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>IntegrationDialog</name>
+    <message>
+        <source>QtiPlot - Integration Options</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Curve</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>From Xmin</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>To Xmax</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Integrate</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Close</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>From row</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>To row</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>QtiPlot - Warning</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The curve &lt;b&gt; %1 &lt;/b&gt; doesn&apos;t exist anymore! Operation aborted!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>QtiPlot - Input error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Please enter x limits that satisfy: from &lt; to!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Integration of %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Column</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Area</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

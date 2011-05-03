@@ -93,10 +93,11 @@ Integration::Integration(ApplicationWindow *parent, Graph *g, const QString& cur
 	setDataFromCurve(curveTitle, start, end);
 }
 
-Integration::Integration(ApplicationWindow *parent, Table *t, const QString& xCol, const QString& yCol, int start, int end)
+Integration::Integration(ApplicationWindow *parent, Table *t, const QString& xCol, const QString& yCol, int start, int end, bool sort)
 : Filter(parent, t)
 {
 	init();
+	d_sort_data = sort;
 	setDataFromTable(t, xCol, yCol, start, end);
 }
 
@@ -122,7 +123,6 @@ double Integration::trapez()
     if (result){
         result[size] = sum;
         d_points = d_n;
-        d_output_graph = NULL;
         addResultCurve(d_x, result);
         free(result);
     }

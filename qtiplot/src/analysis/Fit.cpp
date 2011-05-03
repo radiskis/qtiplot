@@ -225,9 +225,9 @@ gsl_multimin_fminimizer * Fit::fitSimplex(gsl_multimin_function f, int &iteratio
 	return s_min;
 }
 
-bool Fit::setDataFromTable(Table *t, const QString& xColName, const QString& yColName, int from, int to)
+bool Fit::setDataFromTable(Table *t, const QString& xColName, const QString& yColName, int from, int to, bool sort)
 {
-    if (Filter::setDataFromTable(t, xColName, yColName, from, to)){
+	if (Filter::setDataFromTable(t, xColName, yColName, from, to, sort)){
     	if (d_w)
 			free(d_w);
 

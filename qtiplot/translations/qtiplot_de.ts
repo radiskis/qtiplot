@@ -9440,11 +9440,11 @@ Die erste repräsentiert die Signal- und die zweite die Antwortfunktion!</transl
     </message>
     <message>
         <source>Integration of %1</source>
-        <translation>Integration von %1</translation>
+        <translation type="obsolete">Integration von %1</translation>
     </message>
     <message>
         <source>Area</source>
-        <translation>Fläche</translation>
+        <translation type="obsolete">Fläche</translation>
     </message>
     <message>
         <source>Please select a &apos;Y&apos; column first!</source>
@@ -17741,6 +17741,69 @@ Die Grenzen müssen innerhalb des X-Bereichs sein. Fall diese Werte nicht bekann
     <message>
         <source>Error</source>
         <translation type="unfinished">Fehler</translation>
+    </message>
+</context>
+<context>
+    <name>IntegrationDialog</name>
+    <message>
+        <source>QtiPlot - Integration Options</source>
+        <translation type="unfinished">QtiPlot - Integrationsoptionen</translation>
+    </message>
+    <message>
+        <source>Curve</source>
+        <translation type="unfinished">Kurve</translation>
+    </message>
+    <message>
+        <source>From Xmin</source>
+        <translation type="unfinished">Von X-Min</translation>
+    </message>
+    <message>
+        <source>To Xmax</source>
+        <translation type="unfinished">bis X-Max</translation>
+    </message>
+    <message>
+        <source>&amp;Integrate</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Close</source>
+        <translation type="unfinished">S&amp;chließen</translation>
+    </message>
+    <message>
+        <source>From row</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>To row</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>QtiPlot - Warning</source>
+        <translation type="unfinished">QtiPlot - Warnung</translation>
+    </message>
+    <message>
+        <source>The curve &lt;b&gt; %1 &lt;/b&gt; doesn&apos;t exist anymore! Operation aborted!</source>
+        <translation type="unfinished">Die Kurve &lt;b&gt; %1 &lt;/b&gt; existiert nicht mehr! Operation abgebrochen!</translation>
+    </message>
+    <message>
+        <source>QtiPlot - Input error</source>
+        <translation type="unfinished">QtiPlot - Eingabefehler</translation>
+    </message>
+    <message>
+        <source>Please enter x limits that satisfy: from &lt; to!</source>
+        <translation type="unfinished">Bitte geben Sie einen X-Bereich ein, so dass Anfang &lt; Ende ist!</translation>
+    </message>
+    <message>
+        <source>Integration of %1</source>
+        <translation type="unfinished">Integration von %1</translation>
+    </message>
+    <message>
+        <source>Column</source>
+        <translation type="unfinished">Spalte</translation>
+    </message>
+    <message>
+        <source>Area</source>
+        <translation type="unfinished">Fläche</translation>
     </message>
 </context>
 <context>

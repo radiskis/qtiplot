@@ -492,7 +492,7 @@ MultiLayer * Filter::createOutputGraph()
 	return ml;
 }
 
-bool Filter::setDataFromTable(Table *t, const QString& xColName, const QString& yColName, int startRow, int endRow)
+bool Filter::setDataFromTable(Table *t, const QString& xColName, const QString& yColName, int startRow, int endRow, bool sort)
 {
 	d_init_err = true;
 
@@ -551,6 +551,7 @@ bool Filter::setDataFromTable(Table *t, const QString& xColName, const QString& 
 	Y.resize(d_n);
 	d_from = X[0];
     d_to = X[d_n-1];
+	d_sort_data = sort;
 
 	d_x = (double *)malloc(d_n*sizeof(double));
 	if (!d_x){

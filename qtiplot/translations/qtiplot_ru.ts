@@ -3485,11 +3485,11 @@ Are you sure you want to continue?</source>
     </message>
     <message>
         <source>Integration of %1</source>
-        <translation>Интегрирование  %1</translation>
+        <translation type="obsolete">Интегрирование  %1</translation>
     </message>
     <message>
         <source>Area</source>
-        <translation>Площадь</translation>
+        <translation type="obsolete">Площадь</translation>
     </message>
     <message>
         <source>Please select a &apos;Y&apos; column first!</source>
@@ -9628,6 +9628,69 @@ have the same number of rows.</source>
     <message>
         <source>Error</source>
         <translation type="unfinished">Ошибка</translation>
+    </message>
+</context>
+<context>
+    <name>IntegrationDialog</name>
+    <message>
+        <source>QtiPlot - Integration Options</source>
+        <translation type="unfinished">QtiPlot - Параметры интегрирования</translation>
+    </message>
+    <message>
+        <source>Curve</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>From Xmin</source>
+        <translation type="unfinished">Xmin</translation>
+    </message>
+    <message>
+        <source>To Xmax</source>
+        <translation type="unfinished">Xmax</translation>
+    </message>
+    <message>
+        <source>&amp;Integrate</source>
+        <translation type="unfinished">&amp;Интегрировать</translation>
+    </message>
+    <message>
+        <source>&amp;Close</source>
+        <translation type="unfinished">&amp;Закрыть</translation>
+    </message>
+    <message>
+        <source>From row</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>To row</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>QtiPlot - Warning</source>
+        <translation type="unfinished">QtiPlot - Предупреждение</translation>
+    </message>
+    <message>
+        <source>The curve &lt;b&gt; %1 &lt;/b&gt; doesn&apos;t exist anymore! Operation aborted!</source>
+        <translation type="unfinished">Кривая &lt;b&gt; %1 &lt;/b&gt; больше не существует! Операция отменена!</translation>
+    </message>
+    <message>
+        <source>QtiPlot - Input error</source>
+        <translation type="unfinished">QtiPlot - Ошибка ввода</translation>
+    </message>
+    <message>
+        <source>Please enter x limits that satisfy: from &lt; to!</source>
+        <translation type="unfinished">Значение Xmin должно быть меньше Xmax!</translation>
+    </message>
+    <message>
+        <source>Integration of %1</source>
+        <translation type="unfinished">Интегрирование  %1</translation>
+    </message>
+    <message>
+        <source>Column</source>
+        <translation type="unfinished">Столбец</translation>
+    </message>
+    <message>
+        <source>Area</source>
+        <translation type="unfinished">Площадь</translation>
     </message>
 </context>
 <context>

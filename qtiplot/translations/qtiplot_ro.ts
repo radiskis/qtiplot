@@ -4906,11 +4906,11 @@ Are you sure you want to continue?</source>
     </message>
     <message>
         <source>Integration of %1</source>
-        <translation>Integrala setului de date %1</translation>
+        <translation type="obsolete">Integrala setului de date %1</translation>
     </message>
     <message>
         <source>Area</source>
-        <translation>Aria</translation>
+        <translation type="obsolete">Aria</translation>
     </message>
     <message>
         <source>Linear Regression of %1</source>
@@ -13191,6 +13191,69 @@ have the same number of rows.</source>
     <message>
         <source>Error</source>
         <translation>Eroare</translation>
+    </message>
+</context>
+<context>
+    <name>IntegrationDialog</name>
+    <message>
+        <source>QtiPlot - Integration Options</source>
+        <translation type="unfinished">QtiPlot - Opţiuni de integrare</translation>
+    </message>
+    <message>
+        <source>Curve</source>
+        <translation type="unfinished">Curbă</translation>
+    </message>
+    <message>
+        <source>From Xmin</source>
+        <translation type="unfinished">De la Xmin</translation>
+    </message>
+    <message>
+        <source>To Xmax</source>
+        <translation type="unfinished">La Xmax</translation>
+    </message>
+    <message>
+        <source>&amp;Integrate</source>
+        <translation type="unfinished">&amp;Integrează</translation>
+    </message>
+    <message>
+        <source>&amp;Close</source>
+        <translation type="unfinished">În&amp;chide</translation>
+    </message>
+    <message>
+        <source>From row</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>To row</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>QtiPlot - Warning</source>
+        <translation type="unfinished">QtiPlot - Avertisment</translation>
+    </message>
+    <message>
+        <source>The curve &lt;b&gt; %1 &lt;/b&gt; doesn&apos;t exist anymore! Operation aborted!</source>
+        <translation type="unfinished">Curba &lt;b&gt; %1 &lt;/b&gt; nu mai există! Operaţiunea a fost abandonată!</translation>
+    </message>
+    <message>
+        <source>QtiPlot - Input error</source>
+        <translation type="unfinished">QtiPlot - Eroare</translation>
+    </message>
+    <message>
+        <source>Please enter x limits that satisfy: from &lt; to!</source>
+        <translation type="unfinished">Vă rugam să introduceţi limite care satisfac condiţia: Xmin &lt; Xmax !</translation>
+    </message>
+    <message>
+        <source>Integration of %1</source>
+        <translation type="unfinished">Integrala setului de date %1</translation>
+    </message>
+    <message>
+        <source>Column</source>
+        <translation type="unfinished">Coloană</translation>
+    </message>
+    <message>
+        <source>Area</source>
+        <translation type="unfinished">Aria</translation>
     </message>
 </context>
 <context>

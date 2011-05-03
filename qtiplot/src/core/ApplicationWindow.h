@@ -810,7 +810,7 @@ public slots:
 	void showPlotWizard();
 	void showFitPolynomDialog();
     void showFrequencyCountDialog();
-	void showIntegrationDialog();
+	void showFunctionIntegrationDialog();
 	void showInterpolationDialog();
 	void showExpGrowthDialog();
 	void showExpDecayDialog();
@@ -1190,6 +1190,9 @@ private slots:
 
 // TODO: a lot of this stuff should be private
 public:
+	bool d_int_sort_data;
+	bool d_int_show_plot;
+	bool d_int_results_table;
 	bool d_show_empty_cell_gap;
 	bool d_show_table_paste_dialog;
 	double d_stats_significance_level;
