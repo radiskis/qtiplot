@@ -4078,7 +4078,7 @@ f.setFormula("a0+a1*x+a2*x*x",0)
         <para>After creating the Fit object and before calling its fit()
         method, you can set a number of parameters that influence the fit:
         <programlisting>
-f.setDataFromTable(table("Table4"), "w", "energy", 10, 200) <lineannotation>change data source</lineannotation>
+f.setDataFromTable(table("Table4"), "w", "energy", 10, 200, True) <lineannotation>change data source (last parameter enables/disables data sorting)</lineannotation>
 f.setDataFromCurve(curve)			<lineannotation>change data source</lineannotation>
 f.setDataFromCurve(curveTitle, graph)		<lineannotation>change data source</lineannotation>
 f.setDataFromCurve(curve, from, to)		<lineannotation>change data source</lineannotation>
@@ -4160,18 +4160,19 @@ t = f.resultTable()
 With the same assumptions as above, here's how you can integrate a curve within a given interval:
 <programlisting>
 integral = Integration(graph("Graph1").activeLayer().curve(0), 2, 10)
-integral.setMethodOrder(4)
-integral.setTolerance(1e-4)
-integral.setMaximumIterations(100)
 integral.run()
 result = integral.area()
 </programlisting>
-The method order parameter can be any integer value between 1 (Trapezoidal rule, the default value) and 5.
-The code integrates the curve using an iterative algorithm. The tolerance determines the termination criteria for the solver.
-Because, sometimes we ask for too much accuracy, setting a maximum number of iterations makes sure
-that the solver will not enter an infinite loop, which could freeze the application.
 
-<para>As you can see from the above example, the numerical value of the integral can be obtained
+The script bellow shows how to perform an integration on a data set from a table:
+<programlisting>
+i = Integration(table("Table1"), "Table_1", "Table_2", 3, 20, True)# sorted data range from row 3 to 20
+i.enableGraphicsDisplay(False)
+i.run()
+result = i.area()
+</programlisting>
+
+<para>As you can see from the above examples, the numerical value of the integral can be obtained
 via the <varname>area()</varname> function.</para>
 </sect3>
 

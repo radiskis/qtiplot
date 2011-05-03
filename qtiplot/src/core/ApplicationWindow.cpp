@@ -60,6 +60,7 @@
 #include <LogisticFit.h>
 #include <NonLinearFit.h>
 #include <Integration.h>
+#include <IntegrationDialog.h>
 #include <Differentiation.h>
 #include <SmoothFilter.h>
 #include <FFTFilter.h>
@@ -440,6 +441,10 @@ void ApplicationWindow::initWindow()
 
 void ApplicationWindow::setDefaultOptions()
 {
+	d_int_sort_data = false;
+	d_int_show_plot = true;
+	d_int_results_table = true;
+
 	d_show_empty_cell_gap = true;
 	d_stats_significance_level = 0.05;
 	d_stats_result_table = false;
@@ -5339,6 +5344,12 @@ void ApplicationWindow::readSettings()
 	d_stats_output = settings.value("/OutputSettings", d_stats_output).toBool();
 	settings.endGroup(); // Statistics dialogs
 
+	settings.beginGroup("/Integration");
+	d_int_sort_data = settings.value("/SortData", d_int_sort_data).toBool();
+	d_int_show_plot = settings.value("/ShowPlot", d_int_show_plot).toBool();
+	d_int_results_table = settings.value("/ResultsTable", d_int_results_table).toBool();
+	settings.endGroup(); // Integration Dialog
+
 	settings.endGroup(); // Dialogs
 
 	settings.beginGroup("/Colors");
@@ -5819,6 +5830,12 @@ void ApplicationWindow::saveSettings()
 	settings.setValue("/PowerAnalysis", d_stats_power);
 	settings.setValue("/OutputSettings", d_stats_output);
 	settings.endGroup(); // Statistics dialogs
+
+	settings.beginGroup("/Integration");
+	settings.setValue("/SortData", d_int_sort_data);
+	settings.setValue("/ShowPlot", d_int_show_plot);
+	settings.setValue("/ResultsTable", d_int_results_table);
+	settings.endGroup(); // Integration Dialog
 
 	settings.endGroup(); // Dialogs
 
@@ -8818,7 +8835,7 @@ void ApplicationWindow::updateLog(const QString& result)
 	}
 }
 
-void ApplicationWindow::showIntegrationDialog()
+void ApplicationWindow::showFunctionIntegrationDialog()
 {
 	MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
 	if (!plot)
@@ -9834,6 +9851,7 @@ void ApplicationWindow::analysisMenuAboutToShow()
 
         analysisMenu->insertSeparator();
         analysisMenu->addAction(actionDifferentiate);
+		actionIntegrate->setMenuText(tr("&Integrate") + "...");
 		analysisMenu->addAction(actionIntegrate);
         analysisMenu->addAction(actionShowIntDialog);
         analysisMenu->insertSeparator();
@@ -9879,6 +9897,7 @@ void ApplicationWindow::analysisMenuAboutToShow()
         analysisMenu->insertSeparator();
         analysisMenu->addAction(actionShowFitDialog);
 	} else if (w->isA("Matrix")){
+		actionIntegrate->setMenuText(tr("&Integrate"));
         analysisMenu->addAction(actionIntegrate);
         analysisMenu->insertSeparator();
         analysisMenu->addAction(actionFFT);
@@ -9918,6 +9937,7 @@ void ApplicationWindow::analysisMenuAboutToShow()
 
         analysisMenu->insertSeparator();
 		analysisMenu->addAction(actionDifferentiate);
+		actionIntegrate->setMenuText(tr("&Integrate") + "...");
 		analysisMenu->addAction(actionIntegrate);
         analysisMenu->insertSeparator();
 		analysisMenu->addAction(actionFFT);
@@ -13201,9 +13221,13 @@ void ApplicationWindow::integrate()
 	if (!w)
 		return;
 
-	if (w->isA("MultiLayer"))
-		analysis(Integrate);
-	else if (w->isA("Matrix")){
+	if (w->isA("MultiLayer")){
+		Graph* g = ((MultiLayer *)w)->activeLayer();
+		if (!g)
+			return;
+		IntegrationDialog *id = new IntegrationDialog(g, this);
+		id->show();
+	} else if (w->isA("Matrix")){
 		QDateTime dt = QDateTime::currentDateTime ();
 		QString info = dt.toString(Qt::LocalDate);
 		info += "\n" + tr("Integration of %1 from zero is").arg(QString(w->objectName())) + ":\t";
@@ -13216,25 +13240,12 @@ void ApplicationWindow::integrate()
 		QStringList lst = t->selectedYColumns();
 		int cols = lst.size();
 		if (!cols){
-        	QMessageBox::warning(this, tr("QtiPlot - Column selection error"),
-        	tr("Please select a 'Y' column first!"));
+			QMessageBox::warning(this, tr("QtiPlot - Column selection error"),
+			tr("Please select a 'Y' column first!"));
 			return;
 		}
-
-		Table *result = newTable(cols, 2, "", tr("Integration of %1").arg(t->objectName()));
-		result->setColName(0, tr("Column"));
-		result->setColName(1, tr("Area"));
-		int aux = 0;
-		foreach (QString yCol, lst){
-			int xCol = t->colX(t->colIndex(yCol));
-			Integration *i = new Integration(this, t, t->colName(xCol), yCol);
-			i->run();
-			result->setText(aux, 0, yCol);
-			result->setCell(aux, 1, i->area());
-			aux++;
-			delete i;
-		}
-		result->show();
+		IntegrationDialog *id = new IntegrationDialog(t, this);
+		id->show();
 	}
 }
 
@@ -14045,11 +14056,11 @@ void ApplicationWindow::createActions()
 	actionShowRowStatistics = new QAction(QIcon(":/stat_rows.png"), tr("Statistics on &Rows"), this);
 	connect(actionShowRowStatistics, SIGNAL(activated()), this, SLOT(showRowStatistics()));
 
-	actionIntegrate = new QAction(tr("&Integrate"), this);
+	actionIntegrate = new QAction(tr("&Integrate") + "...", this);
 	connect(actionIntegrate, SIGNAL(activated()), this, SLOT(integrate()));
 
 	actionShowIntDialog = new QAction(tr("Integr&ate Function..."), this);
-	connect(actionShowIntDialog, SIGNAL(activated()), this, SLOT(showIntegrationDialog()));
+	connect(actionShowIntDialog, SIGNAL(activated()), this, SLOT(showFunctionIntegrationDialog()));
 
 	actionInterpolate = new QAction(tr("Inte&rpolate ..."), this);
 	connect(actionInterpolate, SIGNAL(activated()), this, SLOT(showInterpolationDialog()));
@@ -15032,7 +15043,7 @@ void ApplicationWindow::translateActionsStrings()
 	actionShowRowStatistics->setMenuText(tr("Statistics on &Rows"));
 	actionShowRowStatistics->setToolTip(tr("Selected rows statistics"));
 	actionShowIntDialog->setMenuText(tr("Integr&ate Function..."));
-	actionIntegrate->setMenuText(tr("&Integrate"));
+	actionIntegrate->setMenuText(tr("&Integrate") + "...");
 	actionInterpolate->setMenuText(tr("Inte&rpolate ..."));
 	actionLowPassFilter->setMenuText(tr("&Low Pass..."));
 	actionHighPassFilter->setMenuText(tr("&High Pass..."));

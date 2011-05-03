@@ -69,7 +69,7 @@ class Fit : public Filter
 		bool setWeightingData(WeightingMethod w, const QString& colName = QString::null);
 
 		void setDataCurve(QwtPlotCurve *curve, double start, double end);
-		bool setDataFromTable(Table *t, const QString& xColName, const QString& yColName, int from = 1, int to = -1);
+		bool setDataFromTable(Table *t, const QString& xColName, const QString& yColName, int from = 1, int to = -1, bool sort = false);
 
 		QString resultFormula(){return d_result_formula;};
 		QString formula(){return d_formula;};

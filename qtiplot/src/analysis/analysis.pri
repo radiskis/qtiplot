@@ -67,6 +67,7 @@ INCLUDEPATH += src/analysis/dialogs/
 			   src/analysis/dialogs/FilterDialog.h \
 			   src/analysis/dialogs/FrequencyCountDialog.h \
 			   src/analysis/dialogs/IntDialog.h \
+			   src/analysis/dialogs/IntegrationDialog.h \
 			   src/analysis/dialogs/InterpolationDialog.h \
 			   src/analysis/dialogs/PolynomFitDialog.h \
 			   src/analysis/dialogs/SmoothCurveDialog.h \
@@ -81,6 +82,7 @@ INCLUDEPATH += src/analysis/dialogs/
 			   src/analysis/dialogs/FilterDialog.cpp \
 			   src/analysis/dialogs/FrequencyCountDialog.cpp \
 			   src/analysis/dialogs/IntDialog.cpp \
+			   src/analysis/dialogs/IntegrationDialog.cpp \
 			   src/analysis/dialogs/InterpolationDialog.cpp \
 			   src/analysis/dialogs/PolynomFitDialog.cpp \
 			   src/analysis/dialogs/SmoothCurveDialog.cpp \

@@ -8162,11 +8162,11 @@ den första representerar signalen och den andra svarsfunktionen!</translation>
     </message>
     <message>
         <source>Integration of %1</source>
-        <translation>Integrering av %1</translation>
+        <translation type="obsolete">Integrering av %1</translation>
     </message>
     <message>
         <source>Area</source>
-        <translation>Yta</translation>
+        <translation type="obsolete">Yta</translation>
     </message>
     <message>
         <source>Please select a &apos;Y&apos; column first!</source>
@@ -15484,6 +15484,69 @@ Gränserna måste vara inom definitionsområdet för x; om du inte vet maximum- 
     <message>
         <source>Error</source>
         <translation type="unfinished">Fel</translation>
+    </message>
+</context>
+<context>
+    <name>IntegrationDialog</name>
+    <message>
+        <source>QtiPlot - Integration Options</source>
+        <translation type="unfinished">QtiPlot - Integrationsalternativ</translation>
+    </message>
+    <message>
+        <source>Curve</source>
+        <translation type="unfinished">Kurva</translation>
+    </message>
+    <message>
+        <source>From Xmin</source>
+        <translation type="unfinished">Från Xmin</translation>
+    </message>
+    <message>
+        <source>To Xmax</source>
+        <translation type="unfinished">Till Xmax</translation>
+    </message>
+    <message>
+        <source>&amp;Integrate</source>
+        <translation type="unfinished">&amp;Integrera</translation>
+    </message>
+    <message>
+        <source>&amp;Close</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>From row</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>To row</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>QtiPlot - Warning</source>
+        <translation type="unfinished">QtiPlot - Varning</translation>
+    </message>
+    <message>
+        <source>The curve &lt;b&gt; %1 &lt;/b&gt; doesn&apos;t exist anymore! Operation aborted!</source>
+        <translation type="unfinished">Kurvan &lt;b&gt; %1 &lt;/b&gt; finns inte längre. Åtgärden avbruten!</translation>
+    </message>
+    <message>
+        <source>QtiPlot - Input error</source>
+        <translation type="unfinished">QtiPlot - Indatafel</translation>
+    </message>
+    <message>
+        <source>Please enter x limits that satisfy: from &lt; to!</source>
+        <translation type="unfinished">Mata in x-gränser som tillfredställer villkoret: från &lt; till!</translation>
+    </message>
+    <message>
+        <source>Integration of %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Column</source>
+        <translation type="unfinished">Kolumn</translation>
+    </message>
+    <message>
+        <source>Area</source>
+        <translation type="unfinished">Yta</translation>
     </message>
 </context>
 <context>
