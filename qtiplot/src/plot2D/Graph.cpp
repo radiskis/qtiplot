@@ -3156,11 +3156,11 @@ void Graph::updateCurveLayout(PlotCurve* c, const CurveLayout *cL)
 		break;
 		case Spline:
 			c->setStyle(QwtPlotCurve::Lines);
-			c->setCurveAttribute(QwtPlotCurve::Fitted, true);
+			c->setCurveAttribute(QwtPlotCurve::Fitted);
 		break;
 		case VerticalSteps:
 			c->setStyle(QwtPlotCurve::Steps);
-			c->setCurveAttribute(QwtPlotCurve::Inverted, true);
+			c->setCurveAttribute(QwtPlotCurve::Inverted);
 		break;
 		default:
 			c->setStyle((QwtPlotCurve::CurveStyle)cL->connectType);
@@ -4026,8 +4026,8 @@ void Graph::insertImageMarker(const QStringList& lst, int fileVersion)
 
 void Graph::drawLine(bool on, bool arrow)
 {
-	drawLineOn=on;
-	drawArrowOn=arrow;
+	drawLineOn = on;
+	drawArrowOn = arrow;
 	if (!on)
 		emit drawLineEnded(true);
 }

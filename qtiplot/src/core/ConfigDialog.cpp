@@ -308,7 +308,12 @@ void ConfigDialog::initPlotsPage()
 	axisLabelingBox = new QComboBox;
 	optionsLayout->addWidget(axisLabelingBox, 7, 1);
 
-	optionsLayout->setRowStretch(8, 1);
+	attachToLabel = new QLabel;
+	optionsLayout->addWidget(attachToLabel, 8, 0);
+	attachToBox = new QComboBox;
+	optionsLayout->addWidget(attachToBox, 8, 1);
+
+	optionsLayout->setRowStretch(9, 1);
 
 	groupBackgroundOptions = new QGroupBox(tr("Background"));
 	optionsTabLayout->addWidget( groupBackgroundOptions );
@@ -1869,6 +1874,12 @@ void ConfigDialog::languageChange()
 	legendDisplayBox->addItem(tr("Table legend"));
 	legendDisplayBox->setCurrentIndex(app->d_graph_legend_display);
 
+	attachToLabel->setText(tr("Attach objects to"));
+	attachToBox->clear();
+	attachToBox->addItem(tr("Page"));
+	attachToBox->addItem(tr("Layer Scales"));
+	attachToBox->setCurrentIndex(app->d_graph_attach_policy);
+
 	lblAxisLabeling->setText(tr("Axis title" ));
 	axisLabelingBox->clear();
 	axisLabelingBox->addItem(tr("Default"));
@@ -2349,6 +2360,7 @@ void ConfigDialog::apply()
 	app->d_graph_tick_labels_dist = boxTickLabelsDist->value();
 	app->d_graph_legend_display = (Graph::LegendDisplayMode)legendDisplayBox->currentIndex();
 	app->d_graph_axis_labeling = (Graph::AxisTitlePolicy)axisLabelingBox->currentIndex();
+	app->d_graph_attach_policy = (FrameWidget::AttachPolicy)attachToBox->currentIndex();
 	app->setGraphDefaultSettings(boxAutoscaling->isChecked(), boxScaleFonts->isChecked(),
 		boxResize->isChecked(), antialiasingGroupBox->isChecked());
 	// 2D plots page: curves tab
@@ -3599,6 +3611,8 @@ void ConfigDialog::setApplication(ApplicationWindow *app)
 	boxResize->setChecked(!app->autoResizeLayers);
 	boxLabelsEditing->setChecked(!app->d_in_place_editing);
 	boxEmptyCellGap->setChecked(app->d_show_empty_cell_gap);
+	legendDisplayBox->setCurrentIndex(app->d_graph_legend_display);
+	attachToBox->setCurrentIndex(app->d_graph_attach_policy);
 
 	//curves page
 	boxCurveLineWidth->setLocale(app->locale());

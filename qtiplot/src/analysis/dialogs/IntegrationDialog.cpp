@@ -250,6 +250,9 @@ void IntegrationDialog::setTable(Table *t)
 
 	d_table = t;
 
+	if (t->selectedYColumns().size() < 2)
+		boxShowTable->hide();
+
 	Q3TableSelection sel = t->getSelection();
 	if (!sel.isEmpty()){
 		boxStartRow->setValue(sel.topRow() + 1);
@@ -281,7 +284,7 @@ void IntegrationDialog::integrateTable()
 	bool sortData = boxSortData->isChecked();
 
 	Table *result = 0;
-	if (boxShowTable->isChecked()){
+	if (boxShowTable->isVisible() && boxShowTable->isChecked()){
 		result = app->newTable(cols, 2, "", tr("Integration of %1").arg(d_table->objectName()));
 		result->setColName(0, tr("Column"));
 		result->setColName(1, tr("Area"));

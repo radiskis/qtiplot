@@ -31,6 +31,7 @@
 #include <Graph.h>
 #include <MultiLayer.h>
 #include <PenStyleBox.h>
+#include <ApplicationWindow.h>
 
 #include <QPainter>
 #include <QPaintEngine>
@@ -46,7 +47,7 @@ FrameWidget::FrameWidget(Graph *plot):QWidget(plot->multiLayer()->canvas()),
 	d_brush(QBrush()),
 	d_angle(0),
 	d_shadow_width(5),
-	d_attach_policy(Scales),
+	d_attach_policy((AttachPolicy)plot->multiLayer()->applicationWindow()->d_graph_attach_policy),
 	d_on_top(true)
 {
 	setAttribute(Qt::WA_DeleteOnClose);

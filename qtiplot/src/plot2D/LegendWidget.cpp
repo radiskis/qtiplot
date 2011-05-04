@@ -80,7 +80,6 @@ d_tex_output(false)
 	setMouseTracking(true);
 	show();
 	setFocus();
-	d_attach_policy = Page;
 }
 
 void LegendWidget::paintEvent(QPaintEvent *e)
