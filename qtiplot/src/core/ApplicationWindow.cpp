@@ -644,6 +644,7 @@ void ApplicationWindow::setDefaultOptions()
 	d_scale_plots_on_print = false;
 	d_print_cropmarks = false;
 	d_graph_legend_display = Graph::ColumnName;
+	d_graph_attach_policy = FrameWidget::Scales;
 	d_graph_axis_labeling = Graph::Default;
 	d_synchronize_graph_scales = true;
 	d_print_paper_size = QPrinter::A4;
@@ -5488,6 +5489,7 @@ void ApplicationWindow::readSettings()
 	d_keep_aspect_ration = settings.value("/KeepAspectRatio", d_keep_aspect_ration).toBool();
 	d_synchronize_graph_scales = settings.value("/SynchronizeScales", d_synchronize_graph_scales).toBool();
 	d_show_empty_cell_gap = settings.value("/ShowEmptyCellGap", d_show_empty_cell_gap).toBool();
+	d_graph_attach_policy = settings.value("/AttachPolicy", d_graph_attach_policy).toInt();
 	settings.endGroup(); // General
 
 	settings.beginGroup("/Curves");
@@ -5978,6 +5980,7 @@ void ApplicationWindow::saveSettings()
 	settings.setValue("/KeepAspectRatio", d_keep_aspect_ration);
 	settings.setValue("/SynchronizeScales", d_synchronize_graph_scales);
 	settings.setValue("/ShowEmptyCellGap", d_show_empty_cell_gap);
+	settings.setValue("/AttachPolicy", d_graph_attach_policy);
 	settings.endGroup(); // General
 
 	settings.beginGroup("/Curves");
@@ -9136,8 +9139,7 @@ void ApplicationWindow::drawArrow()
 	MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
 	if (!plot)
 		return;
-	if (plot->isEmpty())
-	{
+	if (plot->isEmpty()){
 		QMessageBox::warning(this,tr("QtiPlot - Warning"),
 				tr("<h4>There are no plot layers available in this window.</h4>"
 					"<p><h4>Please add a layer and try again!</h4>"));
@@ -13239,11 +13241,13 @@ void ApplicationWindow::integrate()
 		Table *t = (Table *)w;
 		QStringList lst = t->selectedYColumns();
 		int cols = lst.size();
-		if (!cols){
+		Q3TableSelection sel = t->getSelection();
+		if (!cols || sel.topRow() == sel.bottomRow()){
 			QMessageBox::warning(this, tr("QtiPlot - Column selection error"),
 			tr("Please select a 'Y' column first!"));
 			return;
 		}
+
 		IntegrationDialog *id = new IntegrationDialog(t, this);
 		id->show();
 	}

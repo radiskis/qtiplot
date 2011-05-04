@@ -414,8 +414,8 @@ void EnrichmentDialog::initGeometryPage()
 	QGridLayout *bl1 = new QGridLayout();
 
 	attachToBox = new QComboBox();
-	attachToBox->insertItem(tr("Page"));
-	attachToBox->insertItem(tr("Layer Scales"));
+	attachToBox->addItem(tr("Page"));
+	attachToBox->addItem(tr("Layer Scales"));
 	//attachToBox->setCurrentIndex((int)lm->attachPolicy());
 
 	if (d_widget_type != MDIWindow)

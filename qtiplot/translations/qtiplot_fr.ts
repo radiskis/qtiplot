@@ -6019,6 +6019,18 @@ Les codes spéciaux suivants peuvent être utilisés :
         <source>Show &amp;gaps for empty table cells</source>
         <translation>Montrer les &amp;trous des cellules vides d&apos;un tableau</translation>
     </message>
+    <message>
+        <source>Attach objects to</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Page</source>
+        <translation type="unfinished">Page</translation>
+    </message>
+    <message>
+        <source>Layer Scales</source>
+        <translation type="unfinished">Planche</translation>
+    </message>
 </context>
 <context>
     <name>ContourLinesEditor</name>

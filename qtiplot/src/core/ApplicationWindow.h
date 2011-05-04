@@ -1215,6 +1215,7 @@ public:
 	bool d_muparser_c_locale;
 	Graph::LegendDisplayMode d_graph_legend_display;
 	Graph::AxisTitlePolicy d_graph_axis_labeling;
+	int d_graph_attach_policy;
 	bool d_synchronize_graph_scales;
 	int d_latex_compiler;
 	QString d_latex_compiler_path;

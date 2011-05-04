@@ -10713,6 +10713,18 @@ Följande specialkoder kan användas:
         <source>Show &amp;gaps for empty table cells</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Attach objects to</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Page</source>
+        <translation type="unfinished">Sida</translation>
+    </message>
+    <message>
+        <source>Layer Scales</source>
+        <translation type="unfinished">Lagerskalor</translation>
+    </message>
 </context>
 <context>
     <name>ContourLinesEditor</name>

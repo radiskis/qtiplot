@@ -6005,6 +6005,18 @@ K tomu lze použít následujících zvláštních kódů:
         <source>Show &amp;gaps for empty table cells</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Attach objects to</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Page</source>
+        <translation type="unfinished">Strana</translation>
+    </message>
+    <message>
+        <source>Layer Scales</source>
+        <translation type="unfinished">Rozměry vrstvy</translation>
+    </message>
 </context>
 <context>
     <name>ContourLinesEditor</name>

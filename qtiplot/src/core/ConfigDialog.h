@@ -261,8 +261,8 @@ private:
     QPushButton *browseTexCompilerBtn;
     QLabel *texCompilerLabel;
 
-    QComboBox *legendDisplayBox;
-	QLabel *legendDisplayLabel;
+	QComboBox *legendDisplayBox, *attachToBox;
+	QLabel *legendDisplayLabel, *attachToLabel;
 
 	DoubleSpinBox *boxMajorGridWidth, *boxMinorGridWidth;
 	QComboBox *boxMajorGridStyle, *boxMinorGridStyle;
