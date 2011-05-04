@@ -6017,7 +6017,7 @@ Les codes spéciaux suivants peuvent être utilisés :
     </message>
     <message>
         <source>Show &amp;gaps for empty table cells</source>
-        <translation type="unfinished"></translation>
+        <translation>Montrer les &amp;trous des cellules vides d&apos;un tableau</translation>
     </message>
 </context>
 <context>
@@ -9113,23 +9113,23 @@ Les codes spéciaux suivants peuvent être utilisés :
     </message>
     <message>
         <source>Compression</source>
-        <translation type="unfinished"></translation>
+        <translation>Compression</translation>
     </message>
     <message>
         <source>None</source>
-        <translation type="unfinished"></translation>
+        <translation>Aucun</translation>
     </message>
     <message>
         <source>LZW</source>
-        <translation type="unfinished"></translation>
+        <translation>LZW</translation>
     </message>
     <message>
         <source>&amp;Preview</source>
-        <translation type="unfinished">A&amp;perçu</translation>
+        <translation>A&amp;perçu</translation>
     </message>
     <message>
         <source>Export preview of window: </source>
-        <translation type="unfinished"></translation>
+        <translation>Exporter l&apos;aperçu de la fenêtre :</translation>
     </message>
 </context>
 <context>
@@ -9596,63 +9596,63 @@ have the same number of rows.</source>
     <name>IntegrationDialog</name>
     <message>
         <source>QtiPlot - Integration Options</source>
-        <translation type="unfinished">Qtiplot - Options d&apos;intégration</translation>
+        <translation>Qtiplot - Options d&apos;intégration</translation>
     </message>
     <message>
         <source>Curve</source>
-        <translation type="unfinished">Courbe</translation>
+        <translation>Courbe</translation>
     </message>
     <message>
         <source>From Xmin</source>
-        <translation type="unfinished">De Xmin = </translation>
+        <translation>De Xmin = </translation>
     </message>
     <message>
         <source>To Xmax</source>
-        <translation type="unfinished">à Xmax = </translation>
+        <translation>à Xmax = </translation>
     </message>
     <message>
         <source>&amp;Integrate</source>
-        <translation type="unfinished">&amp;Intégrer</translation>
+        <translation>&amp;Intégrer</translation>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Fermer</translation>
     </message>
     <message>
         <source>From row</source>
-        <translation type="unfinished"></translation>
+        <translation>De la ligne</translation>
     </message>
     <message>
         <source>To row</source>
-        <translation type="unfinished"></translation>
+        <translation>à la ligne</translation>
     </message>
     <message>
         <source>QtiPlot - Warning</source>
-        <translation type="unfinished"></translation>
+        <translation>QtiPlot - Attention</translation>
     </message>
     <message>
         <source>The curve &lt;b&gt; %1 &lt;/b&gt; doesn&apos;t exist anymore! Operation aborted!</source>
-        <translation type="unfinished">La courbe &lt;b&gt; %1 &lt;/b&gt; n&apos;existe plus ! Opération annulée !</translation>
+        <translation>La courbe &lt;b&gt; %1 &lt;/b&gt; n&apos;existe plus ! Opération annulée !</translation>
     </message>
     <message>
         <source>QtiPlot - Input error</source>
-        <translation type="unfinished"></translation>
+        <translation>Qtiplot - Erreur</translation>
     </message>
     <message>
         <source>Please enter x limits that satisfy: from &lt; to!</source>
-        <translation type="unfinished">Donnez des limites en abscisses dans l&apos;ordre croissant !</translation>
+        <translation>Donnez des limites en abscisse dans l&apos;ordre croissant !</translation>
     </message>
     <message>
         <source>Integration of %1</source>
-        <translation type="unfinished">L&apos;intégration de %1</translation>
+        <translation>Intégration de %1</translation>
     </message>
     <message>
         <source>Column</source>
-        <translation type="unfinished">Colonne</translation>
+        <translation>Colonne</translation>
     </message>
     <message>
         <source>Area</source>
-        <translation type="unfinished"></translation>
+        <translation>Aire</translation>
     </message>
 </context>
 <context>
@@ -14112,7 +14112,7 @@ Calcule la fonction de distribution cumulée pur une distribution chi² avec df 
     </message>
     <message>
         <source>untitled</source>
-        <translation type="unfinished">Sans titre</translation>
+        <translation>Sans titre</translation>
     </message>
 </context>
 <context>
@@ -14123,7 +14123,7 @@ Calcule la fonction de distribution cumulée pur une distribution chi² avec df 
     </message>
     <message>
         <source>%1 Source (*.%2);</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 Source (*.%2);</translation>
     </message>
 </context>
 <context>
