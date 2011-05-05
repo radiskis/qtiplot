@@ -2,7 +2,7 @@
     File                 : ApplicationWindow.h
     Project              : QtiPlot
     --------------------------------------------------------------------
-	Copyright            : (C) 2004 - 2010 by Ion Vasilief,
+	Copyright            : (C) 2004 - 2011 by Ion Vasilief,
 						   (C) 2006 - june 2007 Tilman Hoener zu Siederdissen, Knut Franke
 	Email (use @ for *)  : ion_vasilief*yahoo.fr
     Description          : QtiPlot's main window
@@ -694,6 +694,10 @@ public slots:
 	void graphSelectionChanged(SelectionMoveResizer *);
 	void lowerActiveEnrichment();
 	void raiseActiveEnrichment(bool = true);
+	void alignTop();
+	void alignBottom();
+	void alignLeft();
+	void alignRight();
 	void newLegend();
 	void addTimeStamp();
 	void drawLine();
@@ -1558,6 +1562,7 @@ private:
 	QAction *actionVertSharedAxisLayers, *actionHorSharedAxisLayers, *actionSharedAxesLayers, *actionStackSharedAxisLayers;
 	QAction *actionCustomSharedAxisLayers, *actionCustomLayout, *actionExtractTableData, *actionSubtractLine, *actionSubtractReference;
 	QAction *actionRaiseEnrichment, *actionLowerEnrichment, *actionBaseline;
+	QAction *actionAlignTop, *actionAlignBottom, *actionAlignLeft, *actionAlignRight;
 
     QList<QAction *> d_user_actions;
     QUndoView *d_undo_view;

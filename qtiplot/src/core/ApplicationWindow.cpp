@@ -1017,6 +1017,10 @@ void ApplicationWindow::initToolBars()
 	plotTools->addSeparator();
 	plotTools->addAction(actionRaiseEnrichment);
 	plotTools->addAction(actionLowerEnrichment);
+	plotTools->addAction(actionAlignLeft);
+	plotTools->addAction(actionAlignRight);
+	plotTools->addAction(actionAlignTop);
+	plotTools->addAction(actionAlignBottom);
 
 	plotTools->hide();
 
@@ -10255,14 +10259,80 @@ void ApplicationWindow::raiseActiveEnrichment(bool on)
 		g->selectionMoveResizer()->raiseTargets(on);
 }
 
+void ApplicationWindow::alignTop()
+{
+	MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
+	if (!plot)
+		return;
+
+	Graph* g = plot->activeLayer();
+	if (!g)
+		return;
+
+	if (g->selectionMoveResizer())
+		g->selectionMoveResizer()->alignTargetsTop();
+}
+
+void ApplicationWindow::alignBottom()
+{
+	MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
+	if (!plot)
+		return;
+
+	Graph* g = plot->activeLayer();
+	if (!g)
+		return;
+
+	if (g->selectionMoveResizer())
+		g->selectionMoveResizer()->alignTargetsBottom();
+}
+
+void ApplicationWindow::alignLeft()
+{
+	MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
+	if (!plot)
+		return;
+
+	Graph* g = plot->activeLayer();
+	if (!g)
+		return;
+
+	if (g->selectionMoveResizer())
+		g->selectionMoveResizer()->alignTargetsLeft();
+}
+
+void ApplicationWindow::alignRight()
+{
+	MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
+	if (!plot)
+		return;
+
+	Graph* g = plot->activeLayer();
+	if (!g)
+		return;
+
+	if (g->selectionMoveResizer())
+		g->selectionMoveResizer()->alignTargetsRight();
+}
+
 void ApplicationWindow::graphSelectionChanged(SelectionMoveResizer *s)
 {
 	if (s){
 		actionRaiseEnrichment->setEnabled(true);
 		actionLowerEnrichment->setEnabled(true);
+		if (s->widgetsList().size() > 1){
+			actionAlignTop->setEnabled(true);
+			actionAlignBottom->setEnabled(true);
+			actionAlignLeft->setEnabled(true);
+			actionAlignRight->setEnabled(true);
+		}
 	} else {
 		actionRaiseEnrichment->setEnabled(false);
 		actionLowerEnrichment->setEnabled(false);
+		actionAlignTop->setEnabled(false);
+		actionAlignBottom->setEnabled(false);
+		actionAlignLeft->setEnabled(false);
+		actionAlignRight->setEnabled(false);
 	}
 }
 
@@ -13824,6 +13894,22 @@ void ApplicationWindow::createActions()
 	connect(actionLowerEnrichment, SIGNAL(activated()), this, SLOT(lowerActiveEnrichment()));
 	actionLowerEnrichment->setEnabled(false);
 
+	actionAlignTop = new QAction(QIcon(":/align_top.png"), tr("Align &Top"), this);
+	connect(actionAlignTop, SIGNAL(activated()), this, SLOT(alignTop()));
+	actionAlignTop->setEnabled(false);
+
+	actionAlignBottom = new QAction(QIcon(":/align_bottom.png"), tr("Align &Bottom"), this);
+	connect(actionAlignBottom, SIGNAL(activated()), this, SLOT(alignBottom()));
+	actionAlignBottom->setEnabled(false);
+
+	actionAlignLeft = new QAction(QIcon(":/align_left.png"), tr("Align &Left"), this);
+	connect(actionAlignLeft, SIGNAL(activated()), this, SLOT(alignLeft()));
+	actionAlignLeft->setEnabled(false);
+
+	actionAlignRight = new QAction(QIcon(":/align_right.png"), tr("Align &Right"), this);
+	connect(actionAlignRight, SIGNAL(activated()), this, SLOT(alignRight()));
+	actionAlignRight->setEnabled(false);
+
 	actionShowExplorer = explorerWindow->toggleViewAction();
 	actionShowExplorer->setIcon(QIcon(":/folder.png"));
 	actionShowExplorer->setShortcut( tr("Ctrl+E") );
@@ -14838,6 +14924,11 @@ void ApplicationWindow::translateActionsStrings()
 
 	actionLowerEnrichment->setMenuText(tr("&Back"));
 	actionLowerEnrichment->setToolTip(tr("Lower object to the bottom"));
+
+	actionAlignTop->setToolTip(tr("Align Top"));
+	actionAlignBottom->setToolTip(tr("Align Bottom"));
+	actionAlignLeft->setToolTip(tr("Align Left"));
+	actionAlignRight->setToolTip(tr("Align Right"));
 
 	actionShowExplorer->setMenuText(tr("Project &Explorer"));
 	actionShowExplorer->setShortcut(tr("Ctrl+E"));
