@@ -2724,7 +2724,7 @@ Různé části tohoto souboru se nemusí zobrazovat tak, jak se očekává.</tr
     </message>
     <message>
         <source>Integration of %1 from zero is</source>
-        <translation>Začlenění %1 od nuly je</translation>
+        <translation>Integrace %1 od nuly je</translation>
     </message>
     <message>
         <source>Flip Vertically</source>
@@ -4117,35 +4117,35 @@ Různé části tohoto souboru se nemusí zobrazovat tak, jak se očekává.</tr
     </message>
     <message>
         <source>Align &amp;Top</source>
-        <translation type="unfinished"></translation>
+        <translation>Zarovnat &amp;nahoru</translation>
     </message>
     <message>
         <source>Align &amp;Bottom</source>
-        <translation type="unfinished"></translation>
+        <translation>Zarovnat &amp;dolů</translation>
     </message>
     <message>
         <source>Align &amp;Left</source>
-        <translation type="unfinished"></translation>
+        <translation>Zarovnat &amp;vlevo</translation>
     </message>
     <message>
         <source>Align &amp;Right</source>
-        <translation type="unfinished"></translation>
+        <translation>Zarovnat &amp;vpravo</translation>
     </message>
     <message>
         <source>Align Top</source>
-        <translation type="unfinished"></translation>
+        <translation>Zarovnat nahoru</translation>
     </message>
     <message>
         <source>Align Bottom</source>
-        <translation type="unfinished"></translation>
+        <translation>Zarovnat dolů</translation>
     </message>
     <message>
         <source>Align Left</source>
-        <translation type="unfinished"></translation>
+        <translation>Zarovnat vlevo</translation>
     </message>
     <message>
         <source>Align Right</source>
-        <translation type="unfinished"></translation>
+        <translation>Zarovnat vpravo</translation>
     </message>
 </context>
 <context>
@@ -6035,19 +6035,19 @@ K tomu lze použít následujících zvláštních kódů:
     </message>
     <message>
         <source>Show &amp;gaps for empty table cells</source>
-        <translation type="unfinished"></translation>
+        <translation>Ukázat &amp;mezery pro prázdné buňky tabulky</translation>
     </message>
     <message>
         <source>Attach objects to</source>
-        <translation type="unfinished"></translation>
+        <translation>Připojit předměty k</translation>
     </message>
     <message>
         <source>Page</source>
-        <translation type="unfinished">Strana</translation>
+        <translation>Strana</translation>
     </message>
     <message>
         <source>Layer Scales</source>
-        <translation type="unfinished">Rozměry vrstvy</translation>
+        <translation>Rozměry vrstvy</translation>
     </message>
 </context>
 <context>
@@ -9144,23 +9144,23 @@ K tomu lze použít následujících zvláštních kódů:
     </message>
     <message>
         <source>Compression</source>
-        <translation type="unfinished"></translation>
+        <translation>Komprese</translation>
     </message>
     <message>
         <source>None</source>
-        <translation type="unfinished">Žádný</translation>
+        <translation>Žádná</translation>
     </message>
     <message>
         <source>LZW</source>
-        <translation type="unfinished"></translation>
+        <translation>LZW</translation>
     </message>
     <message>
         <source>&amp;Preview</source>
-        <translation type="unfinished">&amp;Náhled</translation>
+        <translation>&amp;Náhled</translation>
     </message>
     <message>
         <source>Export preview of window: </source>
-        <translation type="unfinished"></translation>
+        <translation>Vyvést náhled okna: </translation>
     </message>
 </context>
 <context>
@@ -9497,7 +9497,7 @@ K tomu lze použít následujících zvláštních kódů:
     </message>
     <message>
         <source>Ignore lines containing</source>
-        <translation type="unfinished"></translation>
+        <translation>Nevšímat si řádků obsahujících</translation>
     </message>
 </context>
 <context>
@@ -9512,7 +9512,7 @@ K tomu lze použít následujících zvláštních kódů:
     </message>
     <message>
         <source>QtiPlot - Integration Options</source>
-        <translation>QtiPlot - Volby pro začlenění</translation>
+        <translation>QtiPlot - Volby pro integraci</translation>
     </message>
     <message>
         <source>Lower limit</source>
@@ -9627,7 +9627,7 @@ K tomu lze použít následujících zvláštních kódů:
     </message>
     <message>
         <source>Numerical integration of</source>
-        <translation>Číselné začlenění</translation>
+        <translation>Číselná integrace</translation>
     </message>
     <message>
         <source>Unknown integration method. Valid values must be in the range: 1 (Trapezoidal Method) to 5.</source>
@@ -9651,7 +9651,7 @@ K tomu lze použít následujících zvláštních kódů:
     </message>
     <message>
         <source>Integration</source>
-        <translation>Začlenění</translation>
+        <translation>Integrace</translation>
     </message>
     <message>
         <source>Error</source>
@@ -9662,63 +9662,63 @@ K tomu lze použít následujících zvláštních kódů:
     <name>IntegrationDialog</name>
     <message>
         <source>QtiPlot - Integration Options</source>
-        <translation type="unfinished">QtiPlot - Volby pro začlenění</translation>
+        <translation>QtiPlot - Volby pro integraci</translation>
     </message>
     <message>
         <source>Curve</source>
-        <translation type="unfinished">Křivka</translation>
+        <translation>Křivka</translation>
     </message>
     <message>
         <source>From Xmin</source>
-        <translation type="unfinished">Od Xmin</translation>
+        <translation>Od Xmin</translation>
     </message>
     <message>
         <source>To Xmax</source>
-        <translation type="unfinished">Do Xmax</translation>
+        <translation>Do Xmax</translation>
     </message>
     <message>
         <source>&amp;Integrate</source>
-        <translation type="unfinished">&amp;Integrovat</translation>
+        <translation>&amp;Integrovat</translation>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation type="unfinished">&amp;Zavřít</translation>
+        <translation>&amp;Zavřít</translation>
     </message>
     <message>
         <source>From row</source>
-        <translation type="unfinished"></translation>
+        <translation>Od řádku</translation>
     </message>
     <message>
         <source>To row</source>
-        <translation type="unfinished"></translation>
+        <translation>Po řádek</translation>
     </message>
     <message>
         <source>QtiPlot - Warning</source>
-        <translation type="unfinished">QtiPlot - Varování</translation>
+        <translation>QtiPlot - Varování</translation>
     </message>
     <message>
         <source>The curve &lt;b&gt; %1 &lt;/b&gt; doesn&apos;t exist anymore! Operation aborted!</source>
-        <translation type="unfinished">Křivka &lt;b&gt; %1 &lt;/b&gt; již více neexistuje! Operace zrušena!</translation>
+        <translation>Křivka &lt;b&gt; %1 &lt;/b&gt; již více neexistuje! Operace zrušena!</translation>
     </message>
     <message>
         <source>QtiPlot - Input error</source>
-        <translation type="unfinished"></translation>
+        <translation>QtiPlot - Chyba v zadání</translation>
     </message>
     <message>
         <source>Please enter x limits that satisfy: from &lt; to!</source>
-        <translation type="unfinished">Zadejte, prosím, rozsah x, který vyhoví: Začátek &lt; Konec!</translation>
+        <translation>Zadejte, prosím, omezení x, která vyhoví: od &lt; do!</translation>
     </message>
     <message>
         <source>Integration of %1</source>
-        <translation type="unfinished">Začlenění %1</translation>
+        <translation>Integrace %1</translation>
     </message>
     <message>
         <source>Column</source>
-        <translation type="unfinished">Sloupec</translation>
+        <translation>Sloupec</translation>
     </message>
     <message>
         <source>Area</source>
-        <translation type="unfinished"></translation>
+        <translation> Oblast</translation>
     </message>
 </context>
 <context>
@@ -12500,11 +12500,11 @@ K tomu lze použít následujících zvláštních kódů:
     </message>
     <message>
         <source>Edit &amp;Range...</source>
-        <translation type="unfinished"></translation>
+        <translation>Upravit &amp;rozsah...</translation>
     </message>
     <message>
         <source>&amp;Hide</source>
-        <translation type="unfinished">&amp;Skrýt</translation>
+        <translation>&amp;Skrýt</translation>
     </message>
 </context>
 <context>
@@ -14186,7 +14186,7 @@ pokud e1 pak e2 jinak e3.</translation>
     </message>
     <message>
         <source>untitled</source>
-        <translation type="unfinished">bez názvu</translation>
+        <translation>bez názvu</translation>
     </message>
 </context>
 <context>
@@ -14197,7 +14197,7 @@ pokud e1 pak e2 jinak e3.</translation>
     </message>
     <message>
         <source>%1 Source (*.%2);</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 Zdroj (*.%2);</translation>
     </message>
 </context>
 <context>
