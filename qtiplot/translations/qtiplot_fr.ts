@@ -4137,6 +4137,38 @@ L&apos;autocomplétion ne sera pas disponible !</translation>
         <source>&amp;Database...</source>
         <translation>Base de &amp;données...</translation>
     </message>
+    <message>
+        <source>Align &amp;Top</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Align &amp;Bottom</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Align &amp;Left</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Align &amp;Right</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Align Top</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Align Bottom</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Align Left</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Align Right</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ArrowMarker</name>

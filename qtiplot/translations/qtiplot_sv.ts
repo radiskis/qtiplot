@@ -8694,6 +8694,38 @@ Automatisk komplettering ej tillgängligt!</translation>
         <source>&amp;Database...</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Align &amp;Top</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Align &amp;Bottom</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Align &amp;Left</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Align &amp;Right</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Align Top</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Align Bottom</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Align Left</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Align Right</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ArrowMarker</name>
