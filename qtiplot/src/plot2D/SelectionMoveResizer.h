@@ -102,9 +102,14 @@ class SelectionMoveResizer : public QWidget
 		virtual bool eventFilter(QObject *o, QEvent *e);
 		//! Returns true if w is one of targets, false else.
 		bool contains(QWidget *w) const { return d_widgets.contains(w); };
+		QList <QWidget *> widgetsList() const { return d_widgets; };
 		//! Returns true if m is one of targets, false else.
 		bool contains(ArrowMarker *m) const { return d_line_markers.contains(m); };
 		void raiseTargets(bool on = true);
+		void alignTargetsLeft();
+		void alignTargetsRight();
+		void alignTargetsTop();
+		void alignTargetsBottom();
 
 	public slots:
 		//! Add target to the list of items to be moved/resized together.

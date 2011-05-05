@@ -175,6 +175,104 @@ void SelectionMoveResizer::raiseTargets(bool on)
 		this->raise();
 }
 
+void SelectionMoveResizer::alignTargetsLeft()
+{
+	if (d_widgets.isEmpty())
+		return;
+
+	int left = d_widgets.first()->x();
+	foreach(QWidget *w, d_widgets){
+		FrameWidget *fw = qobject_cast<FrameWidget *>(w);
+		if (fw && fw->x() < left)
+			left = fw->x();
+	}
+
+	foreach(QWidget *w, d_widgets){
+		FrameWidget *fw = qobject_cast<FrameWidget *>(w);
+		if (fw && fw->x() != left)
+			fw->move(QPoint(left, fw->y()));
+	}
+
+	FrameWidget *w = qobject_cast<FrameWidget *>(d_widgets.first());
+	if (w)
+		w->plot()->notifyChanges();
+}
+
+void SelectionMoveResizer::alignTargetsRight()
+{
+	if (d_widgets.isEmpty())
+		return;
+
+	int right = d_widgets.first()->x() + d_widgets.first()->width();
+	foreach(QWidget *w, d_widgets){
+		FrameWidget *fw = qobject_cast<FrameWidget *>(w);
+		if (fw){
+			int r = fw->x() + fw->width();
+			if (r > right)
+				right = r;
+		}
+	}
+
+	foreach(QWidget *w, d_widgets){
+		FrameWidget *fw = qobject_cast<FrameWidget *>(w);
+		if (fw && (fw->x() + fw->width()) != right)
+			fw->move(QPoint(right - fw->width(), fw->y()));
+	}
+
+	FrameWidget *w = qobject_cast<FrameWidget *>(d_widgets.first());
+	if (w)
+		w->plot()->notifyChanges();
+}
+
+void SelectionMoveResizer::alignTargetsTop()
+{
+	if (d_widgets.isEmpty())
+		return;
+
+	int top = d_widgets.first()->y();
+	foreach(QWidget *w, d_widgets){
+		FrameWidget *fw = qobject_cast<FrameWidget *>(w);
+		if (fw && fw->y() < top)
+			top = fw->y();
+	}
+
+	foreach(QWidget *w, d_widgets){
+		FrameWidget *fw = qobject_cast<FrameWidget *>(w);
+		if (fw && fw->y() != top)
+			fw->move(QPoint(fw->x(), top));
+	}
+
+	FrameWidget *w = qobject_cast<FrameWidget *>(d_widgets.first());
+	if (w)
+		w->plot()->notifyChanges();
+}
+
+void SelectionMoveResizer::alignTargetsBottom()
+{
+	if (d_widgets.isEmpty())
+		return;
+
+	int bottom = d_widgets.first()->y() + d_widgets.first()->height();
+	foreach(QWidget *w, d_widgets){
+		FrameWidget *fw = qobject_cast<FrameWidget *>(w);
+		if (fw){
+			int b = fw->y() + fw->height();
+			if (b > bottom)
+				bottom = b;
+		}
+	}
+
+	foreach(QWidget *w, d_widgets){
+		FrameWidget *fw = qobject_cast<FrameWidget *>(w);
+		if (fw && (fw->y() + fw->height()) != bottom)
+			fw->move(QPoint(fw->x(), bottom - fw->height()));
+	}
+
+	FrameWidget *w = qobject_cast<FrameWidget *>(d_widgets.first());
+	if (w)
+		w->plot()->notifyChanges();
+}
+
 void SelectionMoveResizer::recalcBoundingRect()
 {
 	d_bounding_rect = QRect(0, 0, -1, -1);
