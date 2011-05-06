@@ -4139,35 +4139,36 @@ L&apos;autocomplétion ne sera pas disponible !</translation>
     </message>
     <message>
         <source>Align &amp;Top</source>
-        <translation type="unfinished"></translation>
+        <translatorcomment>Alignement en &amp;dessous</translatorcomment>
+        <translation>Alignemen&amp;t au dessus</translation>
     </message>
     <message>
         <source>Align &amp;Bottom</source>
-        <translation type="unfinished"></translation>
+        <translation>Alignement en &amp;dessous</translation>
     </message>
     <message>
         <source>Align &amp;Left</source>
-        <translation type="unfinished"></translation>
+        <translation>A&amp;lignementà gauche</translation>
     </message>
     <message>
         <source>Align &amp;Right</source>
-        <translation type="unfinished"></translation>
+        <translation>Alignement à d&amp;roite</translation>
     </message>
     <message>
         <source>Align Top</source>
-        <translation type="unfinished"></translation>
+        <translation>Alignement au dessus</translation>
     </message>
     <message>
         <source>Align Bottom</source>
-        <translation type="unfinished"></translation>
+        <translation>Alignement en dessous</translation>
     </message>
     <message>
         <source>Align Left</source>
-        <translation type="unfinished"></translation>
+        <translation>Alignementà gauche</translation>
     </message>
     <message>
         <source>Align Right</source>
-        <translation type="unfinished"></translation>
+        <translation>Alignement à droite</translation>
     </message>
 </context>
 <context>
@@ -6053,15 +6054,15 @@ Les codes spéciaux suivants peuvent être utilisés :
     </message>
     <message>
         <source>Attach objects to</source>
-        <translation type="unfinished"></translation>
+        <translation>Association</translation>
     </message>
     <message>
         <source>Page</source>
-        <translation type="unfinished">Page</translation>
+        <translation>Page</translation>
     </message>
     <message>
         <source>Layer Scales</source>
-        <translation type="unfinished">Planche</translation>
+        <translation>Planche</translation>
     </message>
 </context>
 <context>
