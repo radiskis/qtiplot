@@ -254,9 +254,8 @@ bool CanvasPicker::selectMarker(const QMouseEvent *e)
 	const QPoint point = e->pos();
 	QList<ArrowMarker *> lines = g->arrowsList();
 	foreach(ArrowMarker *i, lines){
-		int d = qRound(i->width() + floor(i->headLength()*tan(M_PI*i->headAngle()/180.0)+0.5));
 		double dist = i->dist(point.x(), point.y());
-		if (dist <= d){
+		if (dist <= i->arrowWidth()){
 			disableEditing();
 			if (e->modifiers() & Qt::ShiftModifier) {
 				plot()->setSelectedArrow(i, true);

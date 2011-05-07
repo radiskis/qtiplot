@@ -2,7 +2,7 @@
     File                 : LineDialog.cpp
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2006 by Ion Vasilief
+	Copyright            : (C) 2006 - 2011 by Ion Vasilief
     Email (use @ for *)  : ion_vasilief*yahoo.fr
     Description          : Line options dialog
 
@@ -109,7 +109,7 @@ LineDialog::LineDialog( ArrowMarker *line, QWidget* parent,  Qt::WFlags fl )
 
 	gl2->addWidget(new QLabel(tr( "Angle" )), 1, 0 );
 	boxHeadAngle = new QSpinBox();
-	boxHeadAngle->setRange(0, 85);
+	boxHeadAngle->setRange(0, 90);
 	boxHeadAngle->setSingleStep(5);
 	boxHeadAngle->setValue(lm->headAngle());
 	gl2->addWidget(boxHeadAngle, 1, 1);
@@ -149,10 +149,20 @@ LineDialog::LineDialog( ArrowMarker *line, QWidget* parent,  Qt::WFlags fl )
 
 	enableHeadTab();
 
-	connect( btnOk, SIGNAL( clicked() ), this, SLOT(accept() ) );
-	connect( btnApply, SIGNAL( clicked() ), this, SLOT(apply() ) );
-	connect( tw, SIGNAL(currentChanged (QWidget *)), this, SLOT(enableButtonDefault(QWidget *)));
-	connect( buttonDefault, SIGNAL(clicked()), this, SLOT(setDefaultValues()));
+	connect(colorBox, SIGNAL(colorChanged()), this, SLOT(apply()));
+	connect(styleBox, SIGNAL(activated(int)), this, SLOT(apply()));
+	connect(widthBox, SIGNAL(valueChanged(double)), this, SLOT(apply()));
+	connect(startBox, SIGNAL(toggled(bool)), this, SLOT(apply()));
+	connect(endBox, SIGNAL(toggled(bool)), this, SLOT(apply()));
+
+	connect(boxHeadLength, SIGNAL(valueChanged(int)), this, SLOT(apply()));
+	connect(boxHeadAngle, SIGNAL(valueChanged(int)), this, SLOT(apply()));
+	connect(filledBox, SIGNAL(toggled(bool)), this, SLOT(apply()));
+
+	connect(btnOk, SIGNAL(clicked()), this, SLOT(accept()));
+	connect(btnApply, SIGNAL(clicked()), this, SLOT(apply()));
+	connect(tw, SIGNAL(currentChanged (QWidget *)), this, SLOT(enableButtonDefault(QWidget *)));
+	connect(buttonDefault, SIGNAL(clicked()), this, SLOT(setDefaultValues()));
 }
 
 void LineDialog::initGeometryTab()
