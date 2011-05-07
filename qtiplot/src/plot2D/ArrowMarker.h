@@ -2,7 +2,7 @@
     File                 : ArrowMarker.h
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2006 by Ion Vasilief
+	Copyright            : (C) 2006 - 2011 by Ion Vasilief
     Email (use @ for *)  : ion_vasilief*yahoo.fr
     Description          : Arrow marker (extension to QwtPlotMarker)
 
@@ -74,6 +74,9 @@ public:
 	void setWidth(double w);
 	//! The width of the arrow line
 	double width(){return linePen().widthF();};
+
+	//! Returns half of the arrow width;
+	double arrowWidth();
 
 	//! Sets the pen style for the arrow line
 	void setStyle(Qt::PenStyle s);

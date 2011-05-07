@@ -2,7 +2,7 @@
     File                 : ArrowMarker.cpp
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2006 by Ion Vasilief
+	Copyright            : (C) 2006 - 2011 by Ion Vasilief
     Email (use @ for *)  : ion_vasilief*yahoo.fr
     Description          : Arrow marker (extension to QwtPlotMarker)
 
@@ -82,19 +82,23 @@ void ArrowMarker::draw(QPainter *p, const QwtScaleMap &xMap, const QwtScaleMap &
 		const double t = theta(x0, y0, x1, y1);
 		p->rotate(-t);
 
-		QPolygon endArray(3);
-		endArray[0] = QPoint(0, 0);
-
-		int d = qRound(headLength*tan(M_PI*d_head_angle/180.0) + 0.5);
-		endArray[1] = QPoint(-headLength, d);
-		endArray[2] = QPoint(-headLength, -d);
-
 		pen.setStyle(Qt::SolidLine);
 		p->setPen(pen);
-		if (d_fill_head)
-			p->setBrush(brush);
 
-		QwtPainter::drawPolygon(p, endArray);
+		if (d_head_angle < 90.0){
+			QPolygon endArray(3);
+			endArray[0] = QPoint(0, 0);
+
+			int d = qRound(headLength*tan(M_PI*d_head_angle/180.0) + 0.5);
+			endArray[1] = QPoint(-headLength, d);
+			endArray[2] = QPoint(-headLength, -d);
+
+			if (d_fill_head)
+				p->setBrush(brush);
+
+			QwtPainter::drawPolygon(p, endArray);
+		} else
+			QwtPainter::drawLine(p, 0, -headLength, 0, headLength);
 		p->restore();
     }
 
@@ -104,18 +108,22 @@ void ArrowMarker::draw(QPainter *p, const QwtScaleMap &xMap, const QwtScaleMap &
 		const double t = theta(x0, y0, x1, y1);
 		p->rotate(-t);
 
-		QPolygon startArray(3);
-		startArray[0] = QPoint(0, 0);
-
-		int d = qRound(headLength*tan(M_PI*d_head_angle/180.0) + 0.5);
-		startArray[1] = QPoint(headLength, d);
-		startArray[2] = QPoint(headLength, -d);
-
 		pen.setStyle(Qt::SolidLine);
 		p->setPen(pen);
-		if (d_fill_head)
-			p->setBrush(brush);
-		QwtPainter::drawPolygon(p, startArray);
+
+		if (d_head_angle < 90.0){
+			QPolygon startArray(3);
+			startArray[0] = QPoint(0, 0);
+
+			int d = qRound(headLength*tan(M_PI*d_head_angle/180.0) + 0.5);
+			startArray[1] = QPoint(headLength, d);
+			startArray[2] = QPoint(headLength, -d);
+
+			if (d_fill_head)
+				p->setBrush(brush);
+			QwtPainter::drawPolygon(p, startArray);
+		} else
+			QwtPainter::drawLine(p, 0, -headLength, 0, headLength);
 		p->restore();
     }
 
@@ -197,6 +205,14 @@ double ArrowMarker::dist(int x, int y)
 		d=(a*x-y+b)/sqrt(a*a+1);
 	}
 	return fabs(d);
+}
+
+double ArrowMarker::arrowWidth()
+{
+	if (d_head_angle < 90.0)
+		return qRound(width() + floor(d_head_length*tan(M_PI*d_head_angle/180.0) + 0.5));
+
+	return d_head_length;
 }
 
 void ArrowMarker::setColor(const QColor& c)
@@ -417,22 +433,18 @@ bool ArrowMarker::eventFilter(QObject *, QEvent *e)
 					return false;
 				QRect handler = QRect (QPoint(0,0), QSize(10, 10));
 				handler.moveCenter (startPoint());
-				if (handler.contains(me->pos()))
-				{
+				if (handler.contains(me->pos())){
 					QApplication::setOverrideCursor(QCursor(Qt::SizeAllCursor), true);
 					d_op = MoveStart;
 					return true;
 				}
 				handler.moveCenter (endPoint());
-				if (handler.contains(me->pos()))
-				{
+				if (handler.contains(me->pos())){
 					QApplication::setOverrideCursor(QCursor(Qt::SizeAllCursor), true);
 					d_op = MoveEnd;
 					return true;
 				}
-				int d = qRound(width() + (int)floor(headLength()*tan(M_PI*headAngle()/180.0) + 0.5));
-				if (dist(me->pos().x(),me->pos().y()) <= d)
-				{
+				if (dist(me->pos().x(), me->pos().y()) <= arrowWidth()){
 					QApplication::setOverrideCursor(QCursor(Qt::SizeAllCursor), true);
 					d_op = MoveBoth;
 					d_op_startat = me->pos()-startPoint();
