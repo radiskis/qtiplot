@@ -9996,6 +9996,18 @@ have the same number of rows.</source>
         <source>Area</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>&amp;Sort data</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show &amp;plot</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show results &amp;table</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Interpolation</name>

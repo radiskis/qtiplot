@@ -13435,6 +13435,18 @@ Os limites devem estar dentro do intervalo de x; se não conhece o valor máximo
         <source>Area</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>&amp;Sort data</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show &amp;plot</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show results &amp;table</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Interpolation</name>

@@ -70,10 +70,10 @@ IntegrationDialog::IntegrationDialog(Graph *g, QWidget* parent, Qt::WFlags fl )
 	boxEnd->setLocale(app->locale());
 	gl1->addWidget(boxEnd, 2, 1);
 
-	boxSortData = new QCheckBox("&Sort data");
+	boxSortData = new QCheckBox(tr("&Sort data"));
 	boxSortData->setChecked(app->d_int_sort_data);
 	gl1->addWidget(boxSortData, 3, 1);
-	boxShowPlot = new QCheckBox("Show &plot");
+	boxShowPlot = new QCheckBox(tr("Show &plot"));
 	boxShowPlot->setChecked(app->d_int_show_plot);
 	gl1->addWidget(boxShowPlot, 4, 1);
 
@@ -122,13 +122,13 @@ IntegrationDialog::IntegrationDialog(Table *t, QWidget* parent, Qt::WFlags fl )
 	boxEndRow = new QSpinBox();
 	gl1->addWidget(boxEndRow, 1, 1);
 
-	boxSortData = new QCheckBox("&Sort data");
+	boxSortData = new QCheckBox(tr("&Sort data"));
 	boxSortData->setChecked(app->d_int_sort_data);
 	gl1->addWidget(boxSortData, 2, 1);
-	boxShowPlot = new QCheckBox("Show &plot");
+	boxShowPlot = new QCheckBox(tr("Show &plot"));
 	boxShowPlot->setChecked(app->d_int_show_plot);
 	gl1->addWidget(boxShowPlot, 3, 1);
-	boxShowTable = new QCheckBox("Show results &table");
+	boxShowTable = new QCheckBox(tr("Show results &table"));
 	boxShowTable->setChecked(app->d_int_results_table);
 	gl1->addWidget(boxShowTable, 4, 1);
 
