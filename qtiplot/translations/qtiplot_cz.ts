@@ -9720,6 +9720,18 @@ K tomu lze použít následujících zvláštních kódů:
         <source>Area</source>
         <translation> Oblast</translation>
     </message>
+    <message>
+        <source>&amp;Sort data</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show &amp;plot</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show results &amp;table</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Interpolation</name>

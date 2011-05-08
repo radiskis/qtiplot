@@ -1538,11 +1538,11 @@ Are you sure you want to continue?</source>
     </message>
     <message>
         <source>Integration of %1</source>
-        <translation>Ολοκλήρωμα του %1</translation>
+        <translation type="obsolete">Ολοκλήρωμα του %1</translation>
     </message>
     <message>
         <source>Area</source>
-        <translation>Περιοχή</translation>
+        <translation type="obsolete">Περιοχή</translation>
     </message>
     <message>
         <source>Linear Regression of %1</source>
@@ -4068,6 +4068,38 @@ Autocompletion will not be available!</source>
         <source>&amp;Database...</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Align &amp;Top</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Align &amp;Bottom</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Align &amp;Left</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Align &amp;Right</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Align Top</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Align Bottom</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Align Left</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Align Right</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>AssociationsDialog</name>
@@ -4553,7 +4585,7 @@ Autocompletion will not be available!</source>
     </message>
     <message>
         <source>Origin</source>
-        <translation>Αρχική θέση</translation>
+        <translation type="obsolete">Αρχική θέση</translation>
     </message>
     <message>
         <source>QtiPlot - Formula input error</source>
@@ -5907,6 +5939,22 @@ The following special codes can be used:
     <message>
         <source>Locally Installed Excel</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show &amp;gaps for empty table cells</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Attach objects to</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Page</source>
+        <translation type="unfinished">Σελίδα</translation>
+    </message>
+    <message>
+        <source>Layer Scales</source>
+        <translation type="unfinished">Κλίμακες επιπέδου</translation>
     </message>
 </context>
 <context>
@@ -8987,6 +9035,26 @@ The following special codes can be used:
         <source>Could not write to file: &lt;br&gt;&lt;h4&gt; %1 &lt;/h4&gt;&lt;p&gt;Please verify that you have the right to write to this location!</source>
         <translation>Δεν ήταν δυνατή η εγγραφή στο αρχείο: &lt;br&gt;&lt;h4&gt; %1 &lt;/h4&gt;&lt;p&gt;Παρακαλώ επιβεβαιώστε ότι έχετε το δικαίωμα εγγραφής σε αυτή την τοποθεσία!</translation>
     </message>
+    <message>
+        <source>Compression</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>None</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>LZW</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Preview</source>
+        <translation type="unfinished">&amp;Προεπισκόπηση</translation>
+    </message>
+    <message>
+        <source>Export preview of window: </source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ImageProfilesTool</name>
@@ -9094,7 +9162,7 @@ The following special codes can be used:
     </message>
     <message>
         <source>Ignore lines starting with</source>
-        <translation>Αγνόηση γραμμών που αρχίζουν με</translation>
+        <translation type="obsolete">Αγνόηση γραμμών που αρχίζουν με</translation>
     </message>
     <message>
         <source>Use first row &amp;as</source>
@@ -9278,6 +9346,10 @@ have the same number of rows.</source>
         <source>Comma Separated Values</source>
         <translation>Τιμές διαχωρισμένες με κόμμα</translation>
     </message>
+    <message>
+        <source>Ignore lines containing</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>IntDialog</name>
@@ -9435,6 +9507,81 @@ have the same number of rows.</source>
     <message>
         <source>Error</source>
         <translation type="unfinished">Σφάλμα</translation>
+    </message>
+</context>
+<context>
+    <name>IntegrationDialog</name>
+    <message>
+        <source>QtiPlot - Integration Options</source>
+        <translation type="unfinished">QtiPlot - Επιλογές ολοκληρώματος</translation>
+    </message>
+    <message>
+        <source>Curve</source>
+        <translation type="unfinished">Καμπύλη</translation>
+    </message>
+    <message>
+        <source>From Xmin</source>
+        <translation type="unfinished">Από το Xmin</translation>
+    </message>
+    <message>
+        <source>To Xmax</source>
+        <translation type="unfinished">Έως το Xmax</translation>
+    </message>
+    <message>
+        <source>&amp;Sort data</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show &amp;plot</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Integrate</source>
+        <translation type="unfinished">&amp;Ολοκλήρωμα</translation>
+    </message>
+    <message>
+        <source>&amp;Close</source>
+        <translation type="unfinished">&amp;Κλείσιμο</translation>
+    </message>
+    <message>
+        <source>From row</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>To row</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show results &amp;table</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>QtiPlot - Warning</source>
+        <translation type="unfinished">QtiPlot - Προειδοποίηση</translation>
+    </message>
+    <message>
+        <source>The curve &lt;b&gt; %1 &lt;/b&gt; doesn&apos;t exist anymore! Operation aborted!</source>
+        <translation type="unfinished">Η καμπύλη &lt;b&gt; %1 &lt;/b&gt; πλέον δεν υπάρχει! Η λειτουργία εγκαταλείφθηκε!</translation>
+    </message>
+    <message>
+        <source>QtiPlot - Input error</source>
+        <translation type="unfinished">QtiPlot - Σφάλμα εισόδου</translation>
+    </message>
+    <message>
+        <source>Please enter x limits that satisfy: from &lt; to!</source>
+        <translation type="unfinished">Παρακαλώ εισάγετε όρια x που ικανοποιούν τη σχέση: από &lt; έως!</translation>
+    </message>
+    <message>
+        <source>Integration of %1</source>
+        <translation type="unfinished">Ολοκλήρωμα του %1</translation>
+    </message>
+    <message>
+        <source>Column</source>
+        <translation type="unfinished">Στήλη</translation>
+    </message>
+    <message>
+        <source>Area</source>
+        <translation type="unfinished">Περιοχή</translation>
     </message>
 </context>
 <context>
@@ -12186,6 +12333,14 @@ have the same number of rows.</source>
         <source>Value (Percentage)</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Edit &amp;Range...</source>
+        <translation type="unfinished">Επεξεργασία &amp;εύρους...</translation>
+    </message>
+    <message>
+        <source>&amp;Hide</source>
+        <translation type="unfinished">&amp;Απόκρυψη</translation>
+    </message>
 </context>
 <context>
     <name>PlotWizard</name>
@@ -13686,12 +13841,20 @@ have the same number of rows.</source>
         <source>Script print preview</source>
         <translation>Προεπισκόπηση εκτύπωσης σεναρίου</translation>
     </message>
+    <message>
+        <source>untitled</source>
+        <translation type="unfinished">ανώνυμο</translation>
+    </message>
 </context>
 <context>
     <name>ScriptingEnv</name>
     <message>
         <source>%1 Source (*.%2);;</source>
-        <translation>%1 Source (*.%2)</translation>
+        <translation type="obsolete">%1 Source (*.%2)</translation>
+    </message>
+    <message>
+        <source>%1 Source (*.%2);</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

@@ -16363,6 +16363,18 @@ have the same number of rows.</source>
         <translation type="unfinished">至Xmax</translation>
     </message>
     <message>
+        <location filename="../src/analysis/dialogs/IntegrationDialog.cpp" line="73"/>
+        <location filename="../src/analysis/dialogs/IntegrationDialog.cpp" line="125"/>
+        <source>&amp;Sort data</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/analysis/dialogs/IntegrationDialog.cpp" line="76"/>
+        <location filename="../src/analysis/dialogs/IntegrationDialog.cpp" line="128"/>
+        <source>Show &amp;plot</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../src/analysis/dialogs/IntegrationDialog.cpp" line="83"/>
         <location filename="../src/analysis/dialogs/IntegrationDialog.cpp" line="138"/>
         <source>&amp;Integrate</source>
@@ -16382,6 +16394,11 @@ have the same number of rows.</source>
     <message>
         <location filename="../src/analysis/dialogs/IntegrationDialog.cpp" line="121"/>
         <source>To row</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/analysis/dialogs/IntegrationDialog.cpp" line="131"/>
+        <source>Show results &amp;table</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -16962,59 +16979,59 @@ have the same number of rows.</source>
         <translation>确定(&amp;O)</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/LineDialog.cpp" line="163"/>
+        <location filename="../src/plot2D/dialogs/LineDialog.cpp" line="173"/>
         <source>Page</source>
         <translation>页</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/LineDialog.cpp" line="164"/>
+        <location filename="../src/plot2D/dialogs/LineDialog.cpp" line="174"/>
         <source>Layer Scales</source>
         <translation>层比例尺</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/LineDialog.cpp" line="167"/>
+        <location filename="../src/plot2D/dialogs/LineDialog.cpp" line="177"/>
         <source>Attach to</source>
         <translation>附加至</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/LineDialog.cpp" line="171"/>
+        <location filename="../src/plot2D/dialogs/LineDialog.cpp" line="181"/>
         <source>Scale Coordinates</source>
         <translation>缩放坐标系</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/LineDialog.cpp" line="172"/>
+        <location filename="../src/plot2D/dialogs/LineDialog.cpp" line="182"/>
         <source>Pixels</source>
         <translation>像素</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/LineDialog.cpp" line="174"/>
+        <location filename="../src/plot2D/dialogs/LineDialog.cpp" line="184"/>
         <source>Unit</source>
         <translation>单位</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/LineDialog.cpp" line="182"/>
+        <location filename="../src/plot2D/dialogs/LineDialog.cpp" line="192"/>
         <source>Start Point</source>
         <translation>起点</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/LineDialog.cpp" line="196"/>
-        <location filename="../src/plot2D/dialogs/LineDialog.cpp" line="220"/>
+        <location filename="../src/plot2D/dialogs/LineDialog.cpp" line="206"/>
+        <location filename="../src/plot2D/dialogs/LineDialog.cpp" line="230"/>
         <source>X</source>
         <translation>X</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/LineDialog.cpp" line="199"/>
-        <location filename="../src/plot2D/dialogs/LineDialog.cpp" line="224"/>
+        <location filename="../src/plot2D/dialogs/LineDialog.cpp" line="209"/>
+        <location filename="../src/plot2D/dialogs/LineDialog.cpp" line="234"/>
         <source>Y</source>
         <translation>Y</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/LineDialog.cpp" line="206"/>
+        <location filename="../src/plot2D/dialogs/LineDialog.cpp" line="216"/>
         <source>End Point</source>
         <translation>终点</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/LineDialog.cpp" line="242"/>
+        <location filename="../src/plot2D/dialogs/LineDialog.cpp" line="252"/>
         <source>&amp;Geometry</source>
         <translation>布局(&amp;G)</translation>
     </message>
@@ -20934,40 +20951,40 @@ have the same number of rows.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/plot2D/ArrowMarker.cpp" line="544"/>
+        <location filename="../src/plot2D/ArrowMarker.cpp" line="556"/>
         <source>dx</source>
         <translation type="unfinished">dx</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/ArrowMarker.cpp" line="545"/>
+        <location filename="../src/plot2D/ArrowMarker.cpp" line="557"/>
         <source>dy</source>
         <translation type="unfinished">dy</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/ArrowMarker.cpp" line="546"/>
+        <location filename="../src/plot2D/ArrowMarker.cpp" line="558"/>
         <source>angle</source>
         <translation type="unfinished">角度</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/ArrowMarker.cpp" line="547"/>
+        <location filename="../src/plot2D/ArrowMarker.cpp" line="559"/>
         <source>length</source>
         <translation type="unfinished">长度</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/ArrowMarker.cpp" line="552"/>
-        <location filename="../src/plot2D/ArrowMarker.cpp" line="567"/>
+        <location filename="../src/plot2D/ArrowMarker.cpp" line="564"/>
+        <location filename="../src/plot2D/ArrowMarker.cpp" line="579"/>
         <source>eqn</source>
         <translation type="unfinished">方程式
 </translation>
     </message>
     <message>
-        <location filename="../src/plot2D/ArrowMarker.cpp" line="552"/>
+        <location filename="../src/plot2D/ArrowMarker.cpp" line="564"/>
         <source>y</source>
         <translation type="unfinished">y</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/ArrowMarker.cpp" line="556"/>
-        <location filename="../src/plot2D/ArrowMarker.cpp" line="567"/>
+        <location filename="../src/plot2D/ArrowMarker.cpp" line="568"/>
+        <location filename="../src/plot2D/ArrowMarker.cpp" line="579"/>
         <source>x</source>
         <translation type="unfinished">x</translation>
     </message>

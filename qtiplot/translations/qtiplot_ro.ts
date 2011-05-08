@@ -7617,35 +7617,35 @@ Autocompletion will not be available!</source>
     </message>
     <message>
         <source>Align &amp;Top</source>
-        <translation type="unfinished"></translation>
+        <translation>Aliniere s&amp;us</translation>
     </message>
     <message>
         <source>Align &amp;Bottom</source>
-        <translation type="unfinished"></translation>
+        <translation>Aliniere &amp;jos</translation>
     </message>
     <message>
         <source>Align &amp;Left</source>
-        <translation type="unfinished"></translation>
+        <translation>Aliniere la &amp;stânga</translation>
     </message>
     <message>
         <source>Align &amp;Right</source>
-        <translation type="unfinished"></translation>
+        <translation>Aliniere la &amp;dreapta</translation>
     </message>
     <message>
         <source>Align Top</source>
-        <translation type="unfinished"></translation>
+        <translation>Aliniere sus</translation>
     </message>
     <message>
         <source>Align Bottom</source>
-        <translation type="unfinished"></translation>
+        <translation>Aliniere jos</translation>
     </message>
     <message>
         <source>Align Left</source>
-        <translation type="unfinished"></translation>
+        <translation>Aliniere la stânga</translation>
     </message>
     <message>
         <source>Align Right</source>
-        <translation type="unfinished"></translation>
+        <translation>Aliniere la dreapta</translation>
     </message>
 </context>
 <context>
@@ -9545,31 +9545,31 @@ The following special codes can be used:
     </message>
     <message>
         <source>Import Excel files using</source>
-        <translation type="unfinished"></translation>
+        <translation>Importă fişiere Excel folosind</translation>
     </message>
     <message>
         <source>Excel Format Library</source>
-        <translation type="unfinished"></translation>
+        <translation>Libraria ExcelFormat</translation>
     </message>
     <message>
         <source>Locally Installed Excel</source>
-        <translation type="unfinished"></translation>
+        <translation>Aplicația Excel instalată pe calculatorul dumneavoastră</translation>
     </message>
     <message>
         <source>Show &amp;gaps for empty table cells</source>
-        <translation type="unfinished"></translation>
+        <translation>Afişază spații pentru celulele &amp;goale din tabele</translation>
     </message>
     <message>
         <source>Attach objects to</source>
-        <translation type="unfinished"></translation>
+        <translation>Ataşază obiectele la</translation>
     </message>
     <message>
         <source>Page</source>
-        <translation type="unfinished">Pagină</translation>
+        <translation>Pagină</translation>
     </message>
     <message>
         <source>Layer Scales</source>
-        <translation type="unfinished">Axe de coordonate</translation>
+        <translation>Axe de coordonate</translation>
     </message>
 </context>
 <context>
@@ -12765,23 +12765,23 @@ The following special codes can be used:
     </message>
     <message>
         <source>Compression</source>
-        <translation type="unfinished"></translation>
+        <translation>Compresie</translation>
     </message>
     <message>
         <source>None</source>
-        <translation type="unfinished"></translation>
+        <translation>Fără compresie</translation>
     </message>
     <message>
         <source>LZW</source>
-        <translation type="unfinished"></translation>
+        <translation>LZW</translation>
     </message>
     <message>
         <source>&amp;Preview</source>
-        <translation type="unfinished">&amp;Previzualizare</translation>
+        <translation>&amp;Previzualizare</translation>
     </message>
     <message>
         <source>Export preview of window: </source>
-        <translation type="unfinished"></translation>
+        <translation>Previzualizare export pentru fereastra:</translation>
     </message>
 </context>
 <context>
@@ -13076,7 +13076,7 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Ignore lines containing</source>
-        <translation type="unfinished"></translation>
+        <translation>Ignoră liniile conținând</translation>
     </message>
 </context>
 <context>
@@ -13241,63 +13241,75 @@ have the same number of rows.</source>
     <name>IntegrationDialog</name>
     <message>
         <source>QtiPlot - Integration Options</source>
-        <translation type="unfinished">QtiPlot - Opţiuni de integrare</translation>
+        <translation>QtiPlot - Opţiuni de integrare</translation>
     </message>
     <message>
         <source>Curve</source>
-        <translation type="unfinished">Curbă</translation>
+        <translation>Curbă</translation>
     </message>
     <message>
         <source>From Xmin</source>
-        <translation type="unfinished">De la Xmin</translation>
+        <translation>De la Xmin</translation>
     </message>
     <message>
         <source>To Xmax</source>
-        <translation type="unfinished">La Xmax</translation>
+        <translation>La Xmax</translation>
     </message>
     <message>
         <source>&amp;Integrate</source>
-        <translation type="unfinished">&amp;Integrează</translation>
+        <translation>&amp;Integrează</translation>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation type="unfinished">În&amp;chide</translation>
+        <translation>În&amp;chide</translation>
     </message>
     <message>
         <source>From row</source>
-        <translation type="unfinished"></translation>
+        <translation>De la linia</translation>
     </message>
     <message>
         <source>To row</source>
-        <translation type="unfinished"></translation>
+        <translation>La linia</translation>
     </message>
     <message>
         <source>QtiPlot - Warning</source>
-        <translation type="unfinished">QtiPlot - Avertisment</translation>
+        <translation>QtiPlot - Avertisment</translation>
     </message>
     <message>
         <source>The curve &lt;b&gt; %1 &lt;/b&gt; doesn&apos;t exist anymore! Operation aborted!</source>
-        <translation type="unfinished">Curba &lt;b&gt; %1 &lt;/b&gt; nu mai există! Operaţiunea a fost abandonată!</translation>
+        <translation>Curba &lt;b&gt; %1 &lt;/b&gt; nu mai există! Operaţiunea a fost abandonată!</translation>
     </message>
     <message>
         <source>QtiPlot - Input error</source>
-        <translation type="unfinished">QtiPlot - Eroare</translation>
+        <translation>QtiPlot - Eroare</translation>
     </message>
     <message>
         <source>Please enter x limits that satisfy: from &lt; to!</source>
-        <translation type="unfinished">Vă rugam să introduceţi limite care satisfac condiţia: Xmin &lt; Xmax !</translation>
+        <translation>Vă rugam să introduceţi limite care satisfac condiţia: from &lt; to !</translation>
     </message>
     <message>
         <source>Integration of %1</source>
-        <translation type="unfinished">Integrala setului de date %1</translation>
+        <translation>Integrala setului de date %1</translation>
     </message>
     <message>
         <source>Column</source>
-        <translation type="unfinished">Coloană</translation>
+        <translation>Coloană</translation>
     </message>
     <message>
         <source>Area</source>
-        <translation type="unfinished">Aria</translation>
+        <translation>Aria</translation>
+    </message>
+    <message>
+        <source>&amp;Sort data</source>
+        <translation>Sortează &amp;datele</translation>
+    </message>
+    <message>
+        <source>Show &amp;plot</source>
+        <translation>Afişază &amp;graficul</translation>
+    </message>
+    <message>
+        <source>Show results &amp;table</source>
+        <translation>Afişază &amp;tabelul cu rezultatele</translation>
     </message>
 </context>
 <context>
@@ -16107,7 +16119,7 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>&amp;Hide</source>
-        <translation type="unfinished">Ascu&amp;nde</translation>
+        <translation>Ascu&amp;nde</translation>
     </message>
 </context>
 <context>
@@ -17796,7 +17808,7 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>untitled</source>
-        <translation type="unfinished">neintitulat</translation>
+        <translation>neintitulat</translation>
     </message>
 </context>
 <context>
@@ -17807,7 +17819,7 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>%1 Source (*.%2);</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 Sursă (*.%2);</translation>
     </message>
 </context>
 <context>
@@ -19007,47 +19019,47 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Index of Row</source>
-        <translation type="unfinished"></translation>
+        <translation>Indice de linie</translation>
     </message>
     <message>
         <source>Number of Columns</source>
-        <translation type="unfinished"></translation>
+        <translation>Număr de coloane</translation>
     </message>
     <message>
         <source>Standard Deviation</source>
-        <translation type="unfinished">Deviaţia standard</translation>
+        <translation>Deviaţie standard</translation>
     </message>
     <message>
         <source>Standard Error</source>
-        <translation type="unfinished">Eroare standard</translation>
+        <translation>Eroare standard</translation>
     </message>
     <message>
         <source>Maximum Value</source>
-        <translation type="unfinished"></translation>
+        <translation>Valoare maximă</translation>
     </message>
     <message>
         <source>Minimum Value</source>
-        <translation type="unfinished"></translation>
+        <translation>Valoare minimă</translation>
     </message>
     <message>
         <source>Number of Points</source>
-        <translation type="unfinished"></translation>
+        <translation>Număr de puncte</translation>
     </message>
     <message>
         <source>Column Name</source>
-        <translation type="unfinished"></translation>
+        <translation>Nume coloană</translation>
     </message>
     <message>
         <source>Rows Included</source>
-        <translation type="unfinished"></translation>
+        <translation>Linii incluse</translation>
     </message>
     <message>
         <source>Index of Maximum Value</source>
-        <translation type="unfinished"></translation>
+        <translation>Indicele valorii maxime</translation>
     </message>
     <message>
         <source>Index of Minimum Value</source>
-        <translation type="unfinished"></translation>
+        <translation>Indicele valorii minime</translation>
     </message>
 </context>
 <context>

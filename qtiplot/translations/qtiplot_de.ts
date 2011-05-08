@@ -17849,6 +17849,18 @@ Die Grenzen müssen innerhalb des X-Bereichs sein. Fall diese Werte nicht bekann
         <source>Area</source>
         <translation type="unfinished">Fläche</translation>
     </message>
+    <message>
+        <source>&amp;Sort data</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show &amp;plot</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show results &amp;table</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Interpolation</name>
