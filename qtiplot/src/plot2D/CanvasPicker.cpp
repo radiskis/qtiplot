@@ -65,18 +65,18 @@ bool CanvasPicker::eventFilter(QObject *object, QEvent *e)
 	
 				g->activateGraph();
 	
+				if (!g->zoomOn() && selectMarker(me)){
+					if (me->button() == Qt::RightButton)
+						emit showMarkerPopupMenu();
+					return true;
+				}
+
 				int dist, point;
 				if (g->closestCurve(me->pos().x(), me->pos().y(), dist, point))
 					return true;
 
 				if (me->button() == Qt::LeftButton && (g->drawLineActive())){
 					startLinePoint = me->pos();
-					return true;
-				}
-
-				if (!g->zoomOn() && selectMarker(me)){
-					if (me->button() == Qt::RightButton)
-						emit showMarkerPopupMenu();
 					return true;
 				}
 

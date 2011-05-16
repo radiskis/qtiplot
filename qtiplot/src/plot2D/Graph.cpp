@@ -84,6 +84,7 @@
 #include <QMessageBox>
 #include <QPixmap>
 #include <QPainter>
+#include <QPaintEngine>
 #include <QMenu>
 #include <QTextStream>
 #include <QLocale>
