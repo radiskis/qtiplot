@@ -6015,14 +6015,8 @@ void Graph::drawItems (QPainter *painter, const QRect &rect,
 
 	painter->setRenderHint(QPainter::TextAntialiasing);
 
-	double minz = -1.0;
-	foreach (QwtPlotItem *it, d_curves){
-		double z = it->z();
-		if (minz < z)
-			minz = z;
-	}
-	if (d_grid->z() >= minz)
-		d_grid->setZ(minz - 10.0);
+	//make sure the grid is at the bottom
+	d_grid->setZ(-INT_MAX);
 
 	if (!d_canvas_bkg_pix.isNull())
 		painter->drawPixmap(rect, d_canvas_bkg_pix);
