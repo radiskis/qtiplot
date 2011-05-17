@@ -2360,6 +2360,7 @@ l.setMargin(10)
 You can display the grid associated to a layer axis or the whole grid using:<programlisting>
 l.showGrid(axis)
 l.showGrid()
+l.setGridOnTop(on = True, update = True) # draw grid on top of data
 </programlisting>
 This will display the grid with the default color, width and pen style settings.
 If you need to change these settings, as well as to enable/disable certain grid lines,

@@ -745,6 +745,8 @@ class Graph: public QwtPlot
 		void showGrid();
 		//! Convenience function enabling the grid for a user defined axis
 		void showGrid(int axis);
+		void setGridOnTop(bool on = true, bool update = true);
+		bool hasGridOnTop(){return d_grid_on_top;}
 
 		void showAxisDialog();
 		void showScaleDialog();
@@ -864,6 +866,8 @@ signals:
 		bool drawLineOn, drawArrowOn, drawAxesBackbone;
 		//! Flag telling if we are performing a print operation
 		bool d_is_printing;
+		//! Flag telling if the grid should be drawn on top of data
+		bool d_grid_on_top;
 		//! Stores the step the user specified for the four scale. If step = 0.0, the step will be calculated automatically by the Qwt scale engine.
 		QVector<double> d_user_step;
 		//! Arrows/lines on plot

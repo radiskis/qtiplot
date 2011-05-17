@@ -216,6 +216,7 @@ private:
 	void initCanvasPage();
 	void initLayerGeometryPage();
 	void initPlotGeometryPage();
+	void initLayerDisplayPage();
 	void initLayerSpeedPage();
 	void initFontsPage();
 	void initMiscPage();
@@ -242,9 +243,10 @@ private:
 
     QPushButton *btnTitle, *btnAxesLabels, *btnAxesNumbers, *btnLegend;
 	ColorMapEditor *colorMapEditor;
-	QWidget *curvePlotTypeBox, *layerPage, *layerGeometryPage, *piePage, *fontsPage, *printPage, *speedPage, *functionPage, *canvasPage;
+	QWidget *curvePlotTypeBox, *layerPage, *layerGeometryPage, *piePage, *fontsPage, *printPage;
+	QWidget *layerDisplayPage, *speedPage, *functionPage, *canvasPage;
     QTreeWidget* listBox;
-	QCheckBox *boxAntialiasing, *boxScaleLayers, *boxPrintCrops, *boxAutoscaling;
+	QCheckBox *boxAntialiasing, *boxScaleLayers, *boxPrintCrops, *boxAutoscaling, *boxGridPosition;
     ColorButton *boxBorderColor, *boxBackgroundColor, *boxCanvasColor;
 	QSpinBox *boxBackgroundTransparency, *boxCanvasTransparency, *boxBorderWidth, *boxMargin;
 	QSpinBox *boxRadius;

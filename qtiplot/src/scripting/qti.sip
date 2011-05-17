@@ -1939,6 +1939,8 @@ public:
   Grid* grid();
   void showGrid(int);
   void showGrid();
+  void setGridOnTop(bool on = true, bool update = true);
+  bool hasGridOnTop();
 
   void replot();
 
