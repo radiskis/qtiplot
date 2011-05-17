@@ -159,6 +159,8 @@ Graph::Graph(int x, int y, int width, int height, QWidget* parent, Qt::WFlags f)
 	// grid
 	d_grid = new Grid();
 	d_grid->attach(this);
+	d_grid->setZ(INT_MIN);
+	d_grid_on_top = false;
 
 	//custom scale
 	d_user_step = QVector<double>(QwtPlot::axisCnt);
@@ -4226,6 +4228,7 @@ QString Graph::saveToString(bool saveAsTemplate)
 	s+="<Antialiasing>" + QString::number(d_antialiasing) + "</Antialiasing>\n";
 	s+="<Autoscaling>" + QString::number(d_auto_scale) + "</Autoscaling>\n";
 	s+="<ScaleFonts>" + QString::number(autoScaleFonts) + "</ScaleFonts>\n";
+	s+="<GridOnTop>" + QString::number(d_grid_on_top) + "</GridOnTop>\n";
 	s+="Background\t" + paletteBackgroundColor().name() + "\t";
 	s+=QString::number(paletteBackgroundColor().alpha()) + "\n";
 	s+=saveBackgroundImage();
@@ -4767,6 +4770,7 @@ void Graph::copy(Graph* g)
 	}
 
 	grid()->copy(g->grid());
+	d_grid_on_top = g->hasGridOnTop();
 	setTitle(g->title());
 	setCanvasFrame(g->canvasFrameWidth(), g->canvasFrameColor());
 	setAxesLinewidth(g->axesLinewidth());
@@ -6014,9 +6018,6 @@ void Graph::drawItems (QPainter *painter, const QRect &rect,
 	}
 
 	painter->setRenderHint(QPainter::TextAntialiasing);
-
-	//make sure the grid is at the bottom
-	d_grid->setZ(-INT_MAX);
 
 	if (!d_canvas_bkg_pix.isNull())
 		painter->drawPixmap(rect, d_canvas_bkg_pix);
@@ -7378,4 +7379,19 @@ void Graph::updateDataCurves()
 	}
 	replot();
 	QApplication::restoreOverrideCursor();
+}
+
+void Graph::setGridOnTop(bool on, bool update)
+{
+	if (d_grid_on_top == on)
+		return;
+
+	d_grid_on_top = on;
+
+	on ? d_grid->setZ(INT_MAX) : d_grid->setZ(INT_MIN);
+
+	if (update){
+		replot();
+		modifiedGraph();
+	}
 }

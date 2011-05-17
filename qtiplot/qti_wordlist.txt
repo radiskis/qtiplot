@@ -275,6 +275,8 @@ setCanvasBackgroundImage
 backgroundPixmap
 grid
 showGrid
+setGridOnTop
+hasGridOnTop
 replot
 exportImage
 enableAutoscaling

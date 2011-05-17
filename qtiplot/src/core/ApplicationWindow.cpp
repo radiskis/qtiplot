@@ -12538,7 +12538,7 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot, co
 				ag->setAxisColor(i, QColor(fList[i]));
 		}
 		else if (s.contains ("AxesNumberColors")){
-			QStringList fList=QStringList::split ("\t",s,TRUE);
+			QStringList fList = QStringList::split ("\t", s, true);
 			fList.pop_front();
 			for (int i=0; i<int(fList.count()); i++)
 				ag->setAxisLabelsColor(i, QColor(fList[i]));
@@ -12554,6 +12554,8 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot, co
 			ag->enableAutoscaling(s.remove("<Autoscaling>").remove("</Autoscaling>").toInt());
 		else if (s.startsWith ("<ScaleFonts>") && s.endsWith ("</ScaleFonts>"))
 			ag->setAutoscaleFonts(s.remove("<ScaleFonts>").remove("</ScaleFonts>").toInt());
+		else if (s.startsWith ("<GridOnTop>") && s.endsWith ("</GridOnTop>"))
+			ag->setGridOnTop(s.remove("<GridOnTop>").remove("</GridOnTop>").toInt(), false);
 		else if (s.contains ("PieCurve")){
 			QStringList curve=s.split("\t");
 			if (!app->renamedTables.isEmpty()){

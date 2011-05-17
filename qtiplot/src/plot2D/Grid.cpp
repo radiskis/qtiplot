@@ -311,6 +311,7 @@ void Grid::copy(Grid *grid)
 	enableYMin(grid->yMinEnabled());
 
 	setAxis(grid->xAxis(), grid->yAxis());
+	setZ(grid->z());
 
 	enableZeroLineX(grid->xZeroLineEnabled());
 	enableZeroLineY(grid->yZeroLineEnabled());

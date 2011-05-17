@@ -151,6 +151,7 @@ PlotDialog::PlotDialog(bool showExtended, QWidget* parent, Qt::WFlags fl )
 	initCanvasPage();
 	initLayerGeometryPage();
 	initLayerSpeedPage();
+	initLayerDisplayPage();
 	initFontsPage();
 	initPrintPage();
 	initMiscPage();
@@ -753,6 +754,25 @@ void PlotDialog::initLayerGeometryPage()
 	connect(boxLayerHeight, SIGNAL(valueChanged (double)), this, SLOT(adjustLayerWidth(double)));
 	connect(unitBox, SIGNAL(activated(int)), this, SLOT(displayCoordinates(int)));
 	unitBox->setCurrentIndex(app->d_layer_geometry_unit);
+}
+
+void PlotDialog::initLayerDisplayPage()
+{
+	layerDisplayPage = new QWidget();
+
+	QGroupBox *gb1 = new QGroupBox(tr("Data Drawing Options"));
+
+	boxGridPosition = new QCheckBox(tr("&Grid on Top of Data"));
+
+	QVBoxLayout *vl1 = new QVBoxLayout(gb1);
+	vl1->addWidget(boxGridPosition);
+	vl1->addStretch();
+
+	QVBoxLayout * vl = new QVBoxLayout( layerDisplayPage );
+	vl->addWidget(gb1);
+
+	privateTabWidget->addTab(layerDisplayPage, tr("Display"));
+	connect(boxGridPosition, SIGNAL(toggled(bool)), this, SLOT(acceptParams()));
 }
 
 void PlotDialog::initLayerSpeedPage()
@@ -2143,6 +2163,7 @@ void PlotDialog::removeSelectedObject()
 		privateTabWidget->addTab (canvasPage, tr("Canvas"));
 		privateTabWidget->addTab (layerGeometryPage, tr("Geometry"));
 		privateTabWidget->addTab (speedPage, tr("Speed"));
+		privateTabWidget->addTab (layerDisplayPage, tr("Display"));
 		privateTabWidget->showPage(layerPage);
 
 		setActiveLayer(layerItem);
@@ -2268,6 +2289,7 @@ void PlotDialog::updateTabWindow(QTreeWidgetItem *currentItem, QTreeWidgetItem *
 			privateTabWidget->addTab (canvasPage, tr("Canvas"));
 			privateTabWidget->addTab (layerGeometryPage, tr("Geometry"));
 			privateTabWidget->addTab (speedPage, tr("Speed"));
+			privateTabWidget->addTab (layerDisplayPage, tr("Display"));
             privateTabWidget->showPage(layerPage);
         }
         setActiveLayer((LayerItem *)currentItem);
@@ -2421,6 +2443,7 @@ void PlotDialog::clearTabWidget()
 	privateTabWidget->removeTab(privateTabWidget->indexOf(layerGeometryPage));
 	privateTabWidget->removeTab(privateTabWidget->indexOf(canvasPage));
 	privateTabWidget->removeTab(privateTabWidget->indexOf(speedPage));
+	privateTabWidget->removeTab(privateTabWidget->indexOf(layerDisplayPage));
 	privateTabWidget->removeTab(privateTabWidget->indexOf(fontsPage));
 	privateTabWidget->removeTab(privateTabWidget->indexOf(printPage));
 	privateTabWidget->removeTab(privateTabWidget->indexOf(miscPage));
@@ -2586,6 +2609,10 @@ void PlotDialog::setActiveLayer(LayerItem *item)
     boxMaxPoints->blockSignals(true);
     boxMaxPoints->setValue(g->speedModeMaxPoints());
     boxMaxPoints->blockSignals(false);
+
+	boxGridPosition->blockSignals(true);
+	boxGridPosition->setChecked(g->hasGridOnTop());
+	boxGridPosition->blockSignals(false);
 
 	imagePathBox->blockSignals(true);
 	imagePathBox->setText(g->canvasBackgroundFileName());
@@ -3348,9 +3375,9 @@ bool PlotDialog::acceptParams()
 		return true;
 	} else if (privateTabWidget->currentWidget() == speedPage){
 		LayerItem *item = (LayerItem *)listBox->currentItem();
-        if (!item)
-            return false;
-        Graph *g = item->graph();
+		if (!item)
+			return false;
+		Graph *g = item->graph();
 		if (!g)
 			return false;
 
@@ -3359,6 +3386,16 @@ bool PlotDialog::acceptParams()
 			tolerance = 0;
 
 		g->enableDouglasPeukerSpeedMode(tolerance, boxMaxPoints->value());
+		return true;
+	} else if (privateTabWidget->currentWidget() == layerDisplayPage){
+		LayerItem *item = (LayerItem *)listBox->currentItem();
+		if (!item)
+			return false;
+		Graph *g = item->graph();
+		if (!g)
+			return false;
+
+		g->setGridOnTop(boxGridPosition->isChecked());
 		return true;
 	}
 
