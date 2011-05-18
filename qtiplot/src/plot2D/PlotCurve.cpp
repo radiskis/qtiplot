@@ -501,12 +501,11 @@ void DataCurve::enableSpeedMode()
 
 void DataCurve::drawCurve(QPainter *p, int style, const QwtScaleMap &xMap, const QwtScaleMap &yMap, int from, int to) const
 {
-	ApplicationWindow *app = 0;
-	MultiLayer *ml = ((Graph *)plot())->multiLayer();
-	if (ml)
-		app = ml->applicationWindow();
+	Graph *g = (Graph *)plot();
+	if (!g)
+		return;
 
-	if (d_data_ranges.empty() || (app && !app->d_show_empty_cell_gap))
+	if (d_data_ranges.empty() || !g->isMissingDataGapEnabled())
 		return PlotCurve::drawCurve(p, style, xMap, yMap, from, to);
 
 	if(d_side_lines)

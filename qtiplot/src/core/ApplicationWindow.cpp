@@ -2924,7 +2924,8 @@ void ApplicationWindow::setPreferences(Graph* g)
 			}
 		}
 
-		g->grid()->copy(this->d_default_2D_grid);
+		g->grid()->copy(d_default_2D_grid);
+		g->showMissingDataGap(d_show_empty_cell_gap);
 
 		g->updateSecondaryAxis(QwtPlot::xTop);
 		g->updateSecondaryAxis(QwtPlot::yRight);
@@ -12556,6 +12557,8 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot, co
 			ag->setAutoscaleFonts(s.remove("<ScaleFonts>").remove("</ScaleFonts>").toInt());
 		else if (s.startsWith ("<GridOnTop>") && s.endsWith ("</GridOnTop>"))
 			ag->setGridOnTop(s.remove("<GridOnTop>").remove("</GridOnTop>").toInt(), false);
+		else if (s.startsWith ("<MissingDataGap>") && s.endsWith ("</MissingDataGap>"))
+			ag->showMissingDataGap(s.remove("<MissingDataGap>").remove("</MissingDataGap>").toInt(), false);
 		else if (s.contains ("PieCurve")){
 			QStringList curve=s.split("\t");
 			if (!app->renamedTables.isEmpty()){

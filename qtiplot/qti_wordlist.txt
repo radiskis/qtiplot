@@ -277,6 +277,8 @@ grid
 showGrid
 setGridOnTop
 hasGridOnTop
+showMissingDataGap
+isMissingDataGapEnabled
 replot
 exportImage
 enableAutoscaling
