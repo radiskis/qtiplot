@@ -10424,10 +10424,6 @@ The following special codes can be used:
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Show &amp;gaps for empty table cells</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Attach objects to</source>
         <translation type="unfinished"></translation>
     </message>
@@ -10437,6 +10433,10 @@ The following special codes can be used:
     </message>
     <message>
         <source>Layer Scales</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Co&amp;nnect line across missing data</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -18245,6 +18245,34 @@ Do you want to insert cells?</source>
     <message>
         <source>&amp;Hide</source>
         <translation type="unfinished">Ocultar</translation>
+    </message>
+    <message>
+        <source>Data Drawing Options</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Co&amp;nnect line across missing data</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Grid on top of data</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Left</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Right</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Bottom</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Top</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

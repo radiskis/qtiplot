@@ -378,6 +378,7 @@ private:
 	QPushButton *canvasDefaultBtn;
 	QSlider *canvasOpacitySlider;
 
+	QCheckBox *boxLeftAxis, *boxRightAxis, *boxBottomAxis, *boxTopAxis;
 	QCompleter *completer;
 };
 

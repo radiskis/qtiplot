@@ -1848,7 +1848,7 @@ void ConfigDialog::languageChange()
 
 	boxResize->setText(tr("Do not &resize layers when window size changes"));
     boxLabelsEditing->setText(tr("&Disable in-place editing"));
-	boxEmptyCellGap->setText(tr("Connect &line across missing data"));
+	boxEmptyCellGap->setText(tr("Co&nnect line across missing data"));
 	lblMinTicksLength->setText(tr("Length"));
 
 	lblMajTicksLength->setText(tr("Length" ));

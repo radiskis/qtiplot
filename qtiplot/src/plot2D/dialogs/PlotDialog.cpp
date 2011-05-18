@@ -762,7 +762,7 @@ void PlotDialog::initLayerDisplayPage()
 
 	QGroupBox *gb1 = new QGroupBox(tr("Data Drawing Options"));
 
-	boxMissingData = new QCheckBox(tr("Connect &line across missing data"));
+	boxMissingData = new QCheckBox(tr("Co&nnect line across missing data"));
 	boxGridPosition = new QCheckBox(tr("&Grid on top of data"));
 
 	QVBoxLayout *vl1 = new QVBoxLayout(gb1);
@@ -770,12 +770,43 @@ void PlotDialog::initLayerDisplayPage()
 	vl1->addWidget(boxGridPosition);
 	vl1->addStretch();
 
+	QGroupBox *gb2 = new QGroupBox(tr("Axes"));
+
+	boxLeftAxis = new QCheckBox(tr("&Left"));
+	boxLeftAxis->setIcon(QPixmap(":/left_axis.png"));
+	boxLeftAxis->setIconSize(QSize(33, 32));
+
+	boxRightAxis = new QCheckBox(tr("&Right"));
+	boxRightAxis->setIcon(QPixmap(":right_axis.png"));
+	boxRightAxis->setIconSize(QSize(33, 32));
+
+	boxBottomAxis = new QCheckBox(tr("&Bottom"));
+	boxBottomAxis->setIcon(QPixmap(":bottom_axis.png"));
+	boxBottomAxis->setIconSize(QSize(35, 32));
+
+	boxTopAxis = new QCheckBox(tr("&Top"));
+	boxTopAxis->setIcon(QPixmap(":top_axis.png"));
+	boxTopAxis->setIconSize(QSize(34, 34));
+
+	QGridLayout *vl2 = new QGridLayout(gb2);
+	vl2->addWidget(boxLeftAxis, 0, 0);
+	vl2->addWidget(boxRightAxis, 0, 1);
+	vl2->addWidget(boxBottomAxis, 1, 0);
+	vl2->addWidget(boxTopAxis, 1, 1);
+	vl2->setRowStretch(2, 1);
+
 	QVBoxLayout * vl = new QVBoxLayout( layerDisplayPage );
 	vl->addWidget(gb1);
+	vl->addWidget(gb2);
 
 	privateTabWidget->addTab(layerDisplayPage, tr("Display"));
 	connect(boxMissingData, SIGNAL(toggled(bool)), this, SLOT(acceptParams()));
 	connect(boxGridPosition, SIGNAL(toggled(bool)), this, SLOT(acceptParams()));
+
+	connect(boxLeftAxis, SIGNAL(toggled(bool)), this, SLOT(acceptParams()));
+	connect(boxRightAxis, SIGNAL(toggled(bool)), this, SLOT(acceptParams()));
+	connect(boxBottomAxis, SIGNAL(toggled(bool)), this, SLOT(acceptParams()));
+	connect(boxTopAxis, SIGNAL(toggled(bool)), this, SLOT(acceptParams()));
 }
 
 void PlotDialog::initLayerSpeedPage()
@@ -2621,6 +2652,22 @@ void PlotDialog::setActiveLayer(LayerItem *item)
 	boxGridPosition->setChecked(g->hasGridOnTop());
 	boxGridPosition->blockSignals(false);
 
+	boxLeftAxis->blockSignals(true);
+	boxLeftAxis->setChecked(g->axisEnabled(QwtPlot::yLeft));
+	boxLeftAxis->blockSignals(false);
+
+	boxRightAxis->blockSignals(true);
+	boxRightAxis->setChecked(g->axisEnabled(QwtPlot::yRight));
+	boxRightAxis->blockSignals(false);
+
+	boxBottomAxis->blockSignals(true);
+	boxBottomAxis->setChecked(g->axisEnabled(QwtPlot::xBottom));
+	boxBottomAxis->blockSignals(false);
+
+	boxTopAxis->blockSignals(true);
+	boxTopAxis->setChecked(g->axisEnabled(QwtPlot::xTop));
+	boxTopAxis->blockSignals(false);
+
 	imagePathBox->blockSignals(true);
 	imagePathBox->setText(g->canvasBackgroundFileName());
 	imagePathBox->blockSignals(false);
@@ -3404,6 +3451,31 @@ bool PlotDialog::acceptParams()
 
 		g->showMissingDataGap(!boxMissingData->isChecked());
 		g->setGridOnTop(boxGridPosition->isChecked());
+
+		bool notifyChanges = false;
+		if (g->axisEnabled(QwtPlot::yLeft) != boxLeftAxis->isChecked()){
+			g->enableAxis(QwtPlot::yLeft, boxLeftAxis->isChecked());
+			notifyChanges = true;
+		}
+
+		if (g->axisEnabled(QwtPlot::yRight) != boxRightAxis->isChecked()){
+			g->enableAxis(QwtPlot::yRight, boxRightAxis->isChecked());
+			notifyChanges = true;
+		}
+
+		if (g->axisEnabled(QwtPlot::xBottom) != boxBottomAxis->isChecked()){
+			g->enableAxis(QwtPlot::xBottom, boxBottomAxis->isChecked());
+			notifyChanges = true;
+		}
+
+		if (g->axisEnabled(QwtPlot::xTop) != boxTopAxis->isChecked()){
+			g->enableAxis(QwtPlot::xTop, boxTopAxis->isChecked());
+			notifyChanges = true;
+		}
+
+		if (notifyChanges)
+			g->notifyChanges();
+
 		return true;
 	}
 

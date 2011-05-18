@@ -6050,7 +6050,7 @@ Les codes spéciaux suivants peuvent être utilisés :
     </message>
     <message>
         <source>Show &amp;gaps for empty table cells</source>
-        <translation>Montrer les &amp;trous des cellules vides d&apos;un tableau</translation>
+        <translation type="obsolete">Montrer les &amp;trous des cellules vides d&apos;un tableau</translation>
     </message>
     <message>
         <source>Attach objects to</source>
@@ -6063,6 +6063,10 @@ Les codes spéciaux suivants peuvent être utilisés :
     <message>
         <source>Layer Scales</source>
         <translation>Planche</translation>
+    </message>
+    <message>
+        <source>Co&amp;nnect line across missing data</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -12489,6 +12493,34 @@ have the same number of rows.</source>
     <message>
         <source>&amp;Hide</source>
         <translation>Cac&amp;her</translation>
+    </message>
+    <message>
+        <source>Data Drawing Options</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Co&amp;nnect line across missing data</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Grid on top of data</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Left</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Right</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Bottom</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Top</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
