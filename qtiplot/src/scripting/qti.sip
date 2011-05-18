@@ -1818,6 +1818,9 @@ public:
   void setCurveLineStyle(int, Qt::PenStyle);
   void setCurveLineWidth(int, double);
 
+  void showMissingDataGap(bool on = true, bool update = true);
+  bool isMissingDataGapEnabled();
+
   void setGrayScale();
   void setIndexedColors();
 

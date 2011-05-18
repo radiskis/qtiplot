@@ -762,9 +762,11 @@ void PlotDialog::initLayerDisplayPage()
 
 	QGroupBox *gb1 = new QGroupBox(tr("Data Drawing Options"));
 
-	boxGridPosition = new QCheckBox(tr("&Grid on Top of Data"));
+	boxMissingData = new QCheckBox(tr("Connect &line across missing data"));
+	boxGridPosition = new QCheckBox(tr("&Grid on top of data"));
 
 	QVBoxLayout *vl1 = new QVBoxLayout(gb1);
+	vl1->addWidget(boxMissingData);
 	vl1->addWidget(boxGridPosition);
 	vl1->addStretch();
 
@@ -772,6 +774,7 @@ void PlotDialog::initLayerDisplayPage()
 	vl->addWidget(gb1);
 
 	privateTabWidget->addTab(layerDisplayPage, tr("Display"));
+	connect(boxMissingData, SIGNAL(toggled(bool)), this, SLOT(acceptParams()));
 	connect(boxGridPosition, SIGNAL(toggled(bool)), this, SLOT(acceptParams()));
 }
 
@@ -2610,6 +2613,10 @@ void PlotDialog::setActiveLayer(LayerItem *item)
     boxMaxPoints->setValue(g->speedModeMaxPoints());
     boxMaxPoints->blockSignals(false);
 
+	boxMissingData->blockSignals(true);
+	boxMissingData->setChecked(!g->isMissingDataGapEnabled());
+	boxMissingData->blockSignals(false);
+
 	boxGridPosition->blockSignals(true);
 	boxGridPosition->setChecked(g->hasGridOnTop());
 	boxGridPosition->blockSignals(false);
@@ -3395,6 +3402,7 @@ bool PlotDialog::acceptParams()
 		if (!g)
 			return false;
 
+		g->showMissingDataGap(!boxMissingData->isChecked());
 		g->setGridOnTop(boxGridPosition->isChecked());
 		return true;
 	}

@@ -246,7 +246,7 @@ private:
 	QWidget *curvePlotTypeBox, *layerPage, *layerGeometryPage, *piePage, *fontsPage, *printPage;
 	QWidget *layerDisplayPage, *speedPage, *functionPage, *canvasPage;
     QTreeWidget* listBox;
-	QCheckBox *boxAntialiasing, *boxScaleLayers, *boxPrintCrops, *boxAutoscaling, *boxGridPosition;
+	QCheckBox *boxAntialiasing, *boxScaleLayers, *boxPrintCrops, *boxAutoscaling, *boxGridPosition, *boxMissingData;
     ColorButton *boxBorderColor, *boxBackgroundColor, *boxCanvasColor;
 	QSpinBox *boxBackgroundTransparency, *boxCanvasTransparency, *boxBorderWidth, *boxMargin;
 	QSpinBox *boxRadius;

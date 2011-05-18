@@ -146,6 +146,7 @@ Graph::Graph(int x, int y, int width, int height, QWidget* parent, Qt::WFlags f)
 	d_Douglas_Peuker_tolerance = 0;
 	d_speed_mode_points = 3000;
 	d_synchronize_scales = true;
+	d_missing_data_gap = false;
 
 	setGeometry(x, y, width, height);
 	setAutoReplot(false);
@@ -4229,6 +4230,7 @@ QString Graph::saveToString(bool saveAsTemplate)
 	s+="<Autoscaling>" + QString::number(d_auto_scale) + "</Autoscaling>\n";
 	s+="<ScaleFonts>" + QString::number(autoScaleFonts) + "</ScaleFonts>\n";
 	s+="<GridOnTop>" + QString::number(d_grid_on_top) + "</GridOnTop>\n";
+	s+="<MissingDataGap>" + QString::number(d_missing_data_gap) + "</MissingDataGap>\n";
 	s+="Background\t" + paletteBackgroundColor().name() + "\t";
 	s+=QString::number(paletteBackgroundColor().alpha()) + "\n";
 	s+=saveBackgroundImage();
@@ -4771,6 +4773,7 @@ void Graph::copy(Graph* g)
 
 	grid()->copy(g->grid());
 	d_grid_on_top = g->hasGridOnTop();
+	d_missing_data_gap = g->isMissingDataGapEnabled();
 	setTitle(g->title());
 	setCanvasFrame(g->canvasFrameWidth(), g->canvasFrameColor());
 	setAxesLinewidth(g->axesLinewidth());
@@ -7389,6 +7392,19 @@ void Graph::setGridOnTop(bool on, bool update)
 	d_grid_on_top = on;
 
 	on ? d_grid->setZ(INT_MAX) : d_grid->setZ(INT_MIN);
+
+	if (update){
+		replot();
+		modifiedGraph();
+	}
+}
+
+void Graph::showMissingDataGap(bool on, bool update)
+{
+	if (d_missing_data_gap == on)
+		return;
+
+	d_missing_data_gap = on;
 
 	if (update){
 		replot();

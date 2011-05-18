@@ -777,6 +777,9 @@ class Graph: public QwtPlot
 		void notifyFontChange(const QFont& f){emit currentFontChanged(f);};
         void enableTextEditor();
 
+		void showMissingDataGap(bool on = true, bool update = true);
+		bool isMissingDataGapEnabled(){return d_missing_data_gap;}
+
 		//! \name Waterfall
 		//@{
 		bool isWaterfallPlot(){return d_waterfall_offset_x != 0 || d_waterfall_offset_y != 0;};
@@ -868,6 +871,8 @@ signals:
 		bool d_is_printing;
 		//! Flag telling if the grid should be drawn on top of data
 		bool d_grid_on_top;
+		//! Flag telling if the curves line should be connected across missing data
+		bool d_missing_data_gap;
 		//! Stores the step the user specified for the four scale. If step = 0.0, the step will be calculated automatically by the Qwt scale engine.
 		QVector<double> d_user_step;
 		//! Arrows/lines on plot

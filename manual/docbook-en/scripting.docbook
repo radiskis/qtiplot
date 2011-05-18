@@ -2518,6 +2518,13 @@ l.changeCurveIndex(int oldIndex, int newIndex)
 l.reverseCurveOrder()
 </programlisting>
 
+If the table column used to create a plot curve has empty cells,
+you can choose whether the curve line is drawn connected across the missing data or not.
+This behavior can be specified using:
+<programlisting>
+l.showMissingDataGap(on = True, replot = True)
+</programlisting>
+
 Sometimes, when performing data analysis, one might need the curve title. It is possible to obtain it using the method below:
 <programlisting>
 title = l.curveTitle(curveIndex)
