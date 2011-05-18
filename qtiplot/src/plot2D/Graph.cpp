@@ -1877,9 +1877,15 @@ bool Graph::markerSelected()
 void Graph::removeMarker()
 {
 	if (d_selected_arrow && d_lines.contains(d_selected_arrow))
-			remove(d_selected_arrow);
-	else if (d_active_enrichment)
-		remove(d_active_enrichment);
+		remove(d_selected_arrow);
+	else if (d_markers_selector){
+		QList <QWidget *> lst = d_markers_selector->widgetsList();
+		foreach(QWidget *w, lst){
+			FrameWidget *fw = qobject_cast<FrameWidget *>(w);
+			if (fw)
+				remove(fw);
+		}
+	}
 }
 
 void Graph::remove(ArrowMarker* arrow)
