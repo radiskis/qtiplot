@@ -6035,7 +6035,7 @@ K tomu lze použít následujících zvláštních kódů:
     </message>
     <message>
         <source>Show &amp;gaps for empty table cells</source>
-        <translation>Ukázat &amp;mezery pro prázdné buňky tabulky</translation>
+        <translation type="obsolete">Ukázat &amp;mezery pro prázdné buňky tabulky</translation>
     </message>
     <message>
         <source>Attach objects to</source>
@@ -6048,6 +6048,10 @@ K tomu lze použít následujících zvláštních kódů:
     <message>
         <source>Layer Scales</source>
         <translation>Rozměry vrstvy</translation>
+    </message>
+    <message>
+        <source>Co&amp;nnect line across missing data</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -12517,6 +12521,34 @@ K tomu lze použít následujících zvláštních kódů:
     <message>
         <source>&amp;Hide</source>
         <translation>&amp;Skrýt</translation>
+    </message>
+    <message>
+        <source>Data Drawing Options</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Co&amp;nnect line across missing data</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Grid on top of data</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Left</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Right</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Bottom</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Top</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

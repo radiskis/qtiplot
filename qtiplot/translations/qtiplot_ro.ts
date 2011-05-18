@@ -9557,7 +9557,7 @@ The following special codes can be used:
     </message>
     <message>
         <source>Show &amp;gaps for empty table cells</source>
-        <translation>Afişază spații pentru celulele &amp;goale din tabele</translation>
+        <translation type="obsolete">Afişază spații pentru celulele &amp;goale din tabele</translation>
     </message>
     <message>
         <source>Attach objects to</source>
@@ -9570,6 +9570,10 @@ The following special codes can be used:
     <message>
         <source>Layer Scales</source>
         <translation>Axe de coordonate</translation>
+    </message>
+    <message>
+        <source>Co&amp;nnect line across missing data</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -16120,6 +16124,34 @@ have the same number of rows.</source>
     <message>
         <source>&amp;Hide</source>
         <translation>Ascu&amp;nde</translation>
+    </message>
+    <message>
+        <source>Data Drawing Options</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Co&amp;nnect line across missing data</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Grid on top of data</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Left</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Right</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Bottom</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Top</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
