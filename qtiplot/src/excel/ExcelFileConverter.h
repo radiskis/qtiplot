@@ -40,7 +40,8 @@ class ExcelFileConverter : public QObject
 	Q_OBJECT
 
 public:
-	ExcelFileConverter(const QString& fileName, ApplicationWindow *app);
+	ExcelFileConverter(const QString& fileName, ApplicationWindow *app, bool keepInputFile = false);
+	QString outputFile(){return d_output_file;}
 
 private slots:
 	void startConvertion();
@@ -55,6 +56,7 @@ private:
 	QString d_file_name;
 	QString d_output_file;
 	QProcess *soffice, *java;
+	bool d_keep_input_file;
 #ifdef Q_WS_X11
 	bool d_soffice_already_running;
 #endif

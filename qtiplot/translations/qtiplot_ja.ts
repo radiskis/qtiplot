@@ -6438,6 +6438,10 @@ The following special codes can be used:
         <source>Co&amp;nnect line across missing data</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Locally Installed OpenOffice/LibreOffice</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ContourLinesEditor</name>

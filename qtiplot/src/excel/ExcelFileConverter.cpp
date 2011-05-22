@@ -33,11 +33,12 @@
 #include <QDir>
 #include <QMessageBox>
 
-ExcelFileConverter::ExcelFileConverter(const QString& fileName, ApplicationWindow *app)
+ExcelFileConverter::ExcelFileConverter(const QString& fileName, ApplicationWindow *app, bool keepInputFile)
 : QObject(app),
 d_file_name(fileName),
 soffice(0),
-java(0)
+java(0),
+d_keep_input_file(keepInputFile)
 {
 #ifdef Q_WS_X11
 	d_soffice_already_running = false;
@@ -75,8 +76,12 @@ void ExcelFileConverter::startConvertion()
 	if (!soffice)
 		return;
 
-	d_output_file = d_file_name;
-	d_output_file.replace(".xls", ".ods");
+	if (d_keep_input_file)
+		d_output_file = QDir::tempPath() + "/" + QFileInfo(d_file_name).baseName() + ".ods";
+	else {
+		d_output_file = d_file_name;
+		d_output_file.replace(".xls", ".ods");
+	}
 
 	if (QFile::exists(d_output_file) || java)
 		return;
@@ -127,7 +132,8 @@ void ExcelFileConverter::finish(int, QProcess::ExitStatus exitStatus)
 	}
 
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-	QFile::remove(d_file_name);
+	if (!d_keep_input_file)
+		QFile::remove(d_file_name);
 
 	if (soffice)
 		soffice->kill();

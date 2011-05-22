@@ -129,6 +129,7 @@
 #include <CreateBinMatrixDialog.h>
 #include <StudentTestDialog.h>
 #include <ImportExportPlugin.h>
+#include <ExcelFileConverter.h>
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -4213,10 +4214,28 @@ Table * ApplicationWindow::importExcel(const QString& fileName, int sheet)
 #ifdef Q_OS_WIN
 		if (importUsingExcel())
 			filter = tr("Excel files") + " (*.xl *.xlsx *.xlsm *.xlsb *.xlam *.xltx *.xltm *.xls *.xla *.xlt *.xlm *.xlw)";
+		else
 #endif
+		if (d_excel_import_method == LocalOpenOffice)
+			filter = tr("Excel files") + " (*.xls *.xlsx)";
+
 		fn = getFileName(this, tr("Open Excel File"), QString::null, filter, 0, false);
 		if (fn.isEmpty())
 			return NULL;
+	}
+
+	if (d_excel_import_method == LocalOpenOffice){
+		ExcelFileConverter fc(fn, this, true);
+
+		Table *t = importOdfSpreadsheet(fc.outputFile(), sheet);
+		if (t)
+			t->setWindowLabel(fn);
+		QFile::remove(fc.outputFile());
+
+		recentProjects.pop_front();
+		updateRecentProjectsList(fn);
+
+		return t;
 	}
 
 	ImportExportPlugin *plugin = importPlugin(fn);
