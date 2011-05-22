@@ -160,9 +160,8 @@ public:
 	enum EndLineChar{LF, CRLF, CR};
 	enum Analysis{NoAnalysis, Integrate, Diff, FitLinear, FitGauss, FitLorentz, FitSigmoidal, FitSlope};
 	enum LaTeXCompiler{MathTran, Local};
-#ifdef Q_OS_WIN
-	enum ExcelImportMethod{ExcelFormatLibrary, LocalExcelInstallation};
-#endif
+	enum ExcelImportMethod{ExcelFormatLibrary, LocalOpenOffice, LocalExcelInstallation};
+
 	FolderListView *lv, *folders;
 	QDockWidget *logWindow;
 
@@ -250,9 +249,10 @@ public:
 #ifdef Q_OS_WIN
 	bool importUsingExcel();
 	bool isExcelInstalled(){return d_has_excel;};
+#endif
+
 	ExcelImportMethod excelImportMethod(){return d_excel_import_method;};
 	void setExcelImportMethod(const ExcelImportMethod& method){d_excel_import_method = method;};
-#endif
 
 public slots:
 	//! \name Projects and Project Files
