@@ -520,9 +520,9 @@ void ApplicationWindow::setDefaultOptions()
 	QString aux = qApp->applicationDirPath();
 	workingDir = aux;
 
+	d_excel_import_method = ExcelFormatLibrary;
 #ifdef Q_OS_WIN
 	d_has_excel = false;
-	d_excel_import_method = LocalExcelInstallation;
 	d_java_path = QDir::toNativeSeparators("C:/Program Files/Java/jre6/bin/java.exe");
 	d_soffice_path = QDir::toNativeSeparators("C:/Program Files/OpenOffice.org 3/program/soffice.exe");
 #endif
@@ -4665,7 +4665,7 @@ ApplicationWindow* ApplicationWindow::open(const QString& fn, bool factorySettin
 		fn.endsWith(".mdb", Qt::CaseInsensitive) || fn.endsWith(".accdb", Qt::CaseInsensitive)){
 		importDatabase(fn);
 		return this;
-	} else if (fn.endsWith(".xls", Qt::CaseInsensitive)){
+	} else if (fn.endsWith(".xls", Qt::CaseInsensitive) || fn.endsWith(".xlsx", Qt::CaseInsensitive)){
 		importExcel(fn);
 		return this;
 	} else if (fn.endsWith(".py", Qt::CaseInsensitive))
@@ -5287,8 +5287,8 @@ void ApplicationWindow::readSettings()
 		if (s.remove(QRegExp("\\s")).isEmpty())
 		recentProjects = QStringList();
 	}
-	d_excel_import_method = (ApplicationWindow::ExcelImportMethod)settings.value("/ExcelImportMethod", d_excel_import_method).toInt();
 #endif
+	d_excel_import_method = (ApplicationWindow::ExcelImportMethod)settings.value("/ExcelImportMethod", d_excel_import_method).toInt();
 
 	updateRecentProjectsList();
 
@@ -5792,9 +5792,7 @@ void ApplicationWindow::saveSettings()
 	settings.setValue("/Language", appLanguage);
 	settings.setValue("/ShowWindowsPolicy", show_windows_policy);
 	settings.setValue("/RecentProjects", recentProjects);
-#ifdef Q_OS_WIN
 	settings.setValue("/ExcelImportMethod", d_excel_import_method);
-#endif
 	settings.setValue("/Style", appStyle);
 	settings.setValue("/AutoSave", autoSave);
 	settings.setValue("/AutoSaveTime", autoSaveTime);

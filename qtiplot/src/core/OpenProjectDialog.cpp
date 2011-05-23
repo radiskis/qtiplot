@@ -46,10 +46,24 @@ OpenProjectDialog::OpenProjectDialog(QWidget *parent, bool extended, Qt::WFlags 
 		<< tr("Origin matrix") + " (*.ogm *.OGM)"
 		<< tr("Origin worksheet") + " (*.ogw *.OGW)"
 		<< tr("Origin graph") + " (*.ogg *.OGG)"
-		<< tr("Backup files") + " (*.qti~)"
-		<< tr("Excel") + " (*.xls)"
-		<< tr("ODF Spreadsheet") + " (*.ods)"
-		<< tr("All files") + " (*)";
+		<< tr("Backup files") + " (*.qti~)";
+
+	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent);
+	if (app){
+		switch (app->excelImportMethod()){
+			case ApplicationWindow::LocalExcelInstallation:
+				filters << tr("Excel") + " (*.xl *.xlsx *.xlsm *.xlsb *.xlam *.xltx *.xltm *.xls *.xla *.xlt *.xlm *.xlw)";
+			break;
+			case ApplicationWindow::LocalOpenOffice:
+				filters << tr("Excel") + " (*.xls *.xlsx)";
+			break;
+			default:
+				filters << tr("Excel") + " (*.xls)";
+			break;
+		}
+	}
+
+	filters << tr("ODF Spreadsheet") + " (*.ods)" << tr("All files") + " (*)";
 	setFilters(filters);
 
 	QWidget *advanced_options = new QWidget();
@@ -73,7 +87,6 @@ OpenProjectDialog::OpenProjectDialog(QWidget *parent, bool extended, Qt::WFlags 
 				this, SLOT(updateAdvancedOptions ( const QString & )));
 #endif
 
-	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent);
 	if (app){
 		selectNameFilter(app->d_open_project_filter);
 		updateAdvancedOptions(app->d_open_project_filter);
