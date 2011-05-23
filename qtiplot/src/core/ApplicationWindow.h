@@ -1425,10 +1425,10 @@ private:
 
 	bool d_mdi_windows_area;
 	MdiSubWindow *d_active_window;
-    TextEditor *d_text_editor;
+	TextEditor *d_text_editor;
 	// Flag telling if table values should be automatically recalculated when values in a column are modified.
 	bool d_auto_update_table_values;
-    int d_matrix_undo_stack_size;
+	int d_matrix_undo_stack_size;
 
 	//! Workaround for the new colors introduced in rev 447
 	int convertOldToNewColorIndex(int cindex);
@@ -1455,7 +1455,7 @@ private:
 #endif
 	QMdiArea *d_workspace;
 
-    QToolBar *fileTools, *plotTools, *tableTools, *columnTools, *plot3DTools, *displayBar, *editTools, *plotMatrixBar;
+	QToolBar *fileTools, *plotTools, *tableTools, *columnTools, *plot3DTools, *displayBar, *editTools, *plotMatrixBar;
 	QToolBar *formatToolBar, *noteTools;
 	QToolButton *btnResults;
 	QWidgetList *hiddenWindows;
@@ -1470,51 +1470,51 @@ private:
 
 	QAction *actionEditCurveRange, *actionCurveFullRange, *actionShowAllCurves, *actionHideCurve, *actionHideOtherCurves;
 	QAction *actionRemoveCurve, *actionShowCurveWorksheet, *actionShowCurvePlotDialog;
-    QAction *actionNewProject, *actionAppendProject, *actionNewNote, *actionNewTable, *actionNewFunctionPlot;
-    QAction *actionNewSurfacePlot, *actionNewMatrix, *actionNewGraph, *actionNewFolder;
-    QAction *actionOpen, *actionLoadImage, *actionSaveProject, *actionSaveProjectAs, *actionImportImage;
+	QAction *actionNewProject, *actionAppendProject, *actionNewNote, *actionNewTable, *actionNewFunctionPlot;
+	QAction *actionNewSurfacePlot, *actionNewMatrix, *actionNewGraph, *actionNewFolder;
+	QAction *actionOpen, *actionLoadImage, *actionSaveProject, *actionSaveProjectAs, *actionImportImage;
 	QAction *actionLoad, *actionUndo, *actionRedo, *actionImportSound;
 	QAction *actionImportDatabase, *actionOpenOds;
 	QAction *actionExportExcel, *actionExportOds, *actionOpenExcel;
-    QAction *actionCopyWindow, *actionShowAllColumns, *actionHideSelectedColumns;
-    QAction *actionCutSelection, *actionCopySelection, *actionPasteSelection, *actionClearSelection;
-    QAction *actionShowExplorer, *actionShowLog, *actionAddLayer, *actionShowLayerDialog, *actionAutomaticLayout;
+	QAction *actionCopyWindow, *actionShowAllColumns, *actionHideSelectedColumns;
+	QAction *actionCutSelection, *actionCopySelection, *actionPasteSelection, *actionClearSelection;
+	QAction *actionShowExplorer, *actionShowLog, *actionAddLayer, *actionShowLayerDialog, *actionAutomaticLayout;
 #ifdef SCRIPTING_CONSOLE
-    QAction *actionShowConsole;
+	QAction *actionShowConsole;
 #endif
 #ifdef SCRIPTING_PYTHON
 	QAction *actionOpenQtDesignerUi, *actionCommentSelection, *actionUncommentSelection;
 #endif
-    QAction *actionSwapColumns, *actionMoveColRight, *actionMoveColLeft, *actionMoveColFirst, *actionMoveColLast, *actionShowScriptWindow;
-    QAction *actionExportGraph, *actionExportAllGraphs, *actionPrint, *actionPrintAllPlots, *actionShowExportASCIIDialog;
-    QAction *actionExportPDF, *actionReadOnlyCol, *actionStemPlot;
-    QAction *actionCloseAllWindows, *actionCloseProject, *actionClearLogInfo, *actionShowPlotWizard, *actionShowConfigureDialog;
-    QAction *actionShowCurvesDialog, *actionAddErrorBars, *actionAddFunctionCurve, *actionUnzoom, *actionNewLegend, *actionAddImage, *actionAddText;
-    QAction *actionPlotL, *actionPlotP, *actionPlotLP, *actionPlotVerticalDropLines, *actionPlotSpline;
-    QAction *actionPlotVertSteps, *actionPlotHorSteps, *actionPlotVerticalBars, *actionStackBars, *actionStackColumns;
+	QAction *actionSwapColumns, *actionMoveColRight, *actionMoveColLeft, *actionMoveColFirst, *actionMoveColLast, *actionShowScriptWindow;
+	QAction *actionExportGraph, *actionExportAllGraphs, *actionPrint, *actionPrintAllPlots, *actionShowExportASCIIDialog;
+	QAction *actionExportPDF, *actionReadOnlyCol, *actionStemPlot;
+	QAction *actionCloseAllWindows, *actionCloseProject, *actionClearLogInfo, *actionShowPlotWizard, *actionShowConfigureDialog;
+	QAction *actionShowCurvesDialog, *actionAddErrorBars, *actionAddFunctionCurve, *actionUnzoom, *actionNewLegend, *actionAddImage, *actionAddText;
+	QAction *actionPlotL, *actionPlotP, *actionPlotLP, *actionPlotVerticalDropLines, *actionPlotSpline;
+	QAction *actionPlotVertSteps, *actionPlotHorSteps, *actionPlotVerticalBars, *actionStackBars, *actionStackColumns;
 	QAction *actionPlotHorizontalBars, *actionPlotArea, *actionPlotPie, *actionPlotVectXYAM, *actionPlotVectXYXY;
-    QAction *actionPlotHistogram, *actionPlotStackedHistograms, *actionPlot2VerticalLayers, *actionPlot2HorizontalLayers, *actionPlot4Layers, *actionPlotStackedLayers;
-    QAction *actionPlot3DRibbon, *actionPlot3DBars, *actionPlot3DScatter, *actionPlot3DTrajectory;
-    QAction *actionPlotDoubleYAxis, *actionAddInsetLayer, *actionAddInsetCurveLayer;
-    QAction *actionShowColStatistics, *actionShowRowStatistics, *actionShowIntDialog, *actionIntegrate;
-    QAction *actionDifferentiate, *actionFitLinear, *actionFitSlope, *actionShowFitPolynomDialog;
-    QAction *actionShowExpDecayDialog, *actionShowTwoExpDecayDialog, *actionShowExpDecay3Dialog;
-    QAction *actionFitExpGrowth, *actionFitSigmoidal, *actionFitGauss, *actionFitLorentz, *actionShowFitDialog;
-    QAction *actionShowAxisDialog, *actionShowTitleDialog;
-    QAction *actionShowColumnOptionsDialog, *actionShowColumnValuesDialog, *actionShowColsDialog, *actionShowRowsDialog;
-    QAction *actionTableRecalculate, *actionExtractGraphs, *actionExtractLayers;
-    QAction *actionAbout, *actionShowHelp, *actionChooseHelpFolder;
-    QAction *actionRename, *actionCloseWindow;
+	QAction *actionPlotHistogram, *actionPlotStackedHistograms, *actionPlot2VerticalLayers, *actionPlot2HorizontalLayers, *actionPlot4Layers, *actionPlotStackedLayers;
+	QAction *actionPlot3DRibbon, *actionPlot3DBars, *actionPlot3DScatter, *actionPlot3DTrajectory;
+	QAction *actionPlotDoubleYAxis, *actionAddInsetLayer, *actionAddInsetCurveLayer;
+	QAction *actionShowColStatistics, *actionShowRowStatistics, *actionShowIntDialog, *actionIntegrate;
+	QAction *actionDifferentiate, *actionFitLinear, *actionFitSlope, *actionShowFitPolynomDialog;
+	QAction *actionShowExpDecayDialog, *actionShowTwoExpDecayDialog, *actionShowExpDecay3Dialog;
+	QAction *actionFitExpGrowth, *actionFitSigmoidal, *actionFitGauss, *actionFitLorentz, *actionShowFitDialog;
+	QAction *actionShowAxisDialog, *actionShowTitleDialog;
+	QAction *actionShowColumnOptionsDialog, *actionShowColumnValuesDialog, *actionShowColsDialog, *actionShowRowsDialog;
+	QAction *actionTableRecalculate, *actionExtractGraphs, *actionExtractLayers;
+	QAction *actionAbout, *actionShowHelp, *actionChooseHelpFolder;
+	QAction *actionRename, *actionCloseWindow;
 	QAction *actionConvertTableDirect, *actionConvertTableBinning, *actionConvertTableRegularXYZ;
 #ifdef HAVE_ALGLIB
 	QAction *actionConvertTableRandomXYZ, *actionExpandMatrix, *actionShrinkMatrix, *actionSmoothMatrix;
 #endif
-    QAction *actionAddColToTable, *actionDeleteLayer, *actionInterpolate;
-    QAction *actionResizeActiveWindow, *actionHideActiveWindow;
-    QAction *actionShowMoreWindows, *actionPixelLineProfile, *actionIntensityTable;
-    QAction *actionShowLineDialog, *actionShowTextDialog;
-    QAction *actionActivateWindow, *actionMinimizeWindow, *actionMaximizeWindow, *actionHideWindow, *actionResizeWindow;
-    QAction *actionEditSurfacePlot, *actionAdd3DData;
+	QAction *actionAddColToTable, *actionDeleteLayer, *actionInterpolate;
+	QAction *actionResizeActiveWindow, *actionHideActiveWindow;
+	QAction *actionShowMoreWindows, *actionPixelLineProfile, *actionIntensityTable;
+	QAction *actionShowLineDialog, *actionShowTextDialog;
+	QAction *actionActivateWindow, *actionMinimizeWindow, *actionMaximizeWindow, *actionHideWindow, *actionResizeWindow;
+	QAction *actionEditSurfacePlot, *actionAdd3DData;
 	QAction *actionMatrixDeterminant, *actionSetMatrixProperties, *actionConvertMatrixXYZ, *actionConvertMatrixYXZ;
 	QAction *actionSetMatrixDimensions, *actionConvertMatrixDirect, *actionSetMatrixValues, *actionTransposeMatrix, *actionInvertMatrix;
 	QAction *actionPlot3DWireFrame, *actionPlot3DHiddenLine, *actionPlot3DPolygons, *actionPlot3DWireSurface;
@@ -1535,38 +1535,38 @@ private:
 	QAction *actionNoteExecute, *actionNoteExecuteAll, *actionNoteEvaluate, *actionSaveNote, *actionFrequencyCount;
 	QAction *actionOneSampletTest, *actionTwoSampletTest, *actionShapiroWilk, *actionChiSquareTest;
 	QAction *actionAnimate, *actionPerspective, *actionFitFrame, *actionResetRotation;
-    QAction *actionDeleteRows, *actionDrawPoints, *actionAddZoomPlot;
+	QAction *actionDeleteRows, *actionDrawPoints, *actionAddZoomPlot;
 	QAction *btnCursor, *btnSelect, *btnPicker, *btnRemovePoints, *btnMovePoints, *actionDragCurve;
 	QAction *btnZoomIn, *btnZoomOut, *btnPointer, *btnLine, *btnArrow;
 	QAction *actionFlipMatrixVertically, *actionFlipMatrixHorizontally, *actionRotateMatrix;
 	QAction *actionViewMatrixImage, *actionViewMatrix, *actionExportMatrix, *actionMatrixDefaultScale;
-    QAction *actionMatrixGrayScale, *actionMatrixRainbowScale, *actionMatrixCustomScale, *actionRotateMatrixMinus;
-    QAction *actionMatrixXY, *actionMatrixColumnRow, *actionImagePlot, *actionToolBars, *actionImageProfilesPlot;
-    QAction *actionMatrixFFTDirect, *actionMatrixFFTInverse;
+	QAction *actionMatrixGrayScale, *actionMatrixRainbowScale, *actionMatrixCustomScale, *actionRotateMatrixMinus;
+	QAction *actionMatrixXY, *actionMatrixColumnRow, *actionImagePlot, *actionToolBars, *actionImageProfilesPlot;
+	QAction *actionMatrixFFTDirect, *actionMatrixFFTInverse;
 	QAction *actionFontBold, *actionFontItalic, *actionFontBox, *actionFontSize, *actionTextColor;
 	QAction *actionSuperscript, *actionSubscript, *actionUnderline, *actionGreekSymbol, *actionCustomActionDialog;
 	QAction *actionGreekMajSymbol, *actionMathSymbol;
 	QAction *Box, *Frame, *None;
-    QAction *front, *back, *right, *left, *ceil, *floor, *floordata, *flooriso, *floornone;
-    QAction *wireframe, *hiddenline, *polygon, *filledmesh, *pointstyle, *barstyle, *conestyle, *crossHairStyle;
-    QAction *actionShowUndoStack, *actionShowNoteLineNumbers, *actionAddFormula, *actionAddRectangle, *actionAddEllipse;
-    QActionGroup *coord, *floorstyle, *grids, *plotstyle, *dataTools;
+	QAction *front, *back, *right, *left, *ceil, *floor, *floordata, *flooriso, *floornone;
+	QAction *wireframe, *hiddenline, *polygon, *filledmesh, *pointstyle, *barstyle, *conestyle, *crossHairStyle;
+	QAction *actionShowUndoStack, *actionShowNoteLineNumbers, *actionAddFormula, *actionAddRectangle, *actionAddEllipse;
+	QActionGroup *coord, *floorstyle, *grids, *plotstyle, *dataTools;
 	QAction *actionMagnify, *actionFindWindow, *actionWaterfallPlot, *actionMagnifyHor, *actionMagnifyVert;
-    QAction *actionMoveRowUp, *actionMoveRowDown, *actionAdjustColumnWidth;
+	QAction *actionMoveRowUp, *actionMoveRowDown, *actionAdjustColumnWidth;
 #if QT_VERSION >= 0x040500
 	QAction *actionPresentationODF;
 #endif
 	QAction *actionRenameNoteTab, *actionAddNoteTab, *actionCloseNoteTab;
-    QAction *actionIncreaseIndent, *actionDecreaseIndent, *actionFind, *actionFindNext, *actionFindPrev, *actionReplace;
-    QAction *actionIncreasePrecision, *actionDecreasePrecision, *actionPrintPreview;
+	QAction *actionIncreaseIndent, *actionDecreaseIndent, *actionFind, *actionFindNext, *actionFindPrev, *actionReplace;
+	QAction *actionIncreasePrecision, *actionDecreasePrecision, *actionPrintPreview;
 	QAction *actionVertSharedAxisLayers, *actionHorSharedAxisLayers, *actionSharedAxesLayers, *actionStackSharedAxisLayers;
 	QAction *actionCustomSharedAxisLayers, *actionCustomLayout, *actionExtractTableData, *actionSubtractLine, *actionSubtractReference;
 	QAction *actionRaiseEnrichment, *actionLowerEnrichment, *actionBaseline;
 	QAction *actionAlignTop, *actionAlignBottom, *actionAlignLeft, *actionAlignRight;
 
-    QList<QAction *> d_user_actions;
-    QUndoView *d_undo_view;
-    QList<QMenu *> d_user_menus;
+	QList<QAction *> d_user_actions;
+	QUndoView *d_undo_view;
+	QList<QMenu *> d_user_menus;
 
 	QList<QColor> d_indexed_colors;
 	QStringList d_indexed_color_names;
@@ -1577,7 +1577,7 @@ private:
 #ifdef Q_OS_WIN
 	void detectExcel();
 	bool d_has_excel;
-	ExcelImportMethod d_excel_import_method;
 #endif
+	ExcelImportMethod d_excel_import_method;
 };
 #endif
