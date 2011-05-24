@@ -272,7 +272,7 @@ QString FrameWidget::saveToString()
     s += "<bottom>" + QString::number(d_y_bottom, 'g', 15) + "</bottom>\n";
     s += "<attachTo>" + QString::number(d_attach_policy) + "</attachTo>\n";
 	s += "<onTop>" + QString::number(d_on_top) + "</onTop>\n";
-	s += "<visible>" + QString::number(isVisible()) + "</visible>\n";
+	s += "<visible>" + QString::number(!isHidden()) + "</visible>\n";
 	return s;
 }
 
