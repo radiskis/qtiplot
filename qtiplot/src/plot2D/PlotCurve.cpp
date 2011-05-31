@@ -752,7 +752,7 @@ void DataCurve::setLabelsColumnName(const QString& name)
 		return;
 
 	d_labels_column = name;
-    loadLabels();
+	loadLabels();
 }
 
 void DataCurve::loadLabels()
