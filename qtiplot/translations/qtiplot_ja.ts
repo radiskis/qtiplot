@@ -11572,18 +11572,6 @@ have the same number of rows.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>X Zoom (%)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Y Zoom (%)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Z Zoom (%)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>&amp;General</source>
         <translation type="unfinished"></translation>
     </message>
@@ -11741,6 +11729,10 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Precision</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Rotation</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -20199,15 +20199,15 @@ Wollen sie Zellen einfügen?</translation>
     </message>
     <message>
         <source>X Zoom (%)</source>
-        <translation>X Zoom (%)</translation>
+        <translation type="obsolete">X Zoom (%)</translation>
     </message>
     <message>
         <source>Y Zoom (%)</source>
-        <translation>Y Zoom (%)</translation>
+        <translation type="obsolete">Y Zoom (%)</translation>
     </message>
     <message>
         <source>Z Zoom (%)</source>
-        <translation>Z Zoom (%)</translation>
+        <translation type="obsolete">Z Zoom (%)</translation>
     </message>
     <message>
         <source>&amp;General</source>
@@ -20400,6 +20400,10 @@ Wollen sie Zellen einfügen?</translation>
     <message>
         <source>Precision</source>
         <translation>Genauigkeit</translation>
+    </message>
+    <message>
+        <source>Rotation</source>
+        <translation type="unfinished">Rotation</translation>
     </message>
 </context>
 <context>

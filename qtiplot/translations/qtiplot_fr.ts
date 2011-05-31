@@ -11301,15 +11301,15 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>X Zoom (%)</source>
-        <translation>Zoom en X (%)</translation>
+        <translation type="obsolete">Zoom en X (%)</translation>
     </message>
     <message>
         <source>Y Zoom (%)</source>
-        <translation>Zoom en Y (%)</translation>
+        <translation type="obsolete">Zoom en Y (%)</translation>
     </message>
     <message>
         <source>Z Zoom (%)</source>
-        <translation>Zoom en Z (%)</translation>
+        <translation type="obsolete">Zoom en Z (%)</translation>
     </message>
     <message>
         <source>&amp;General</source>
@@ -11470,6 +11470,10 @@ have the same number of rows.</source>
     <message>
         <source>Precision</source>
         <translation>Précision</translation>
+    </message>
+    <message>
+        <source>Rotation</source>
+        <translation type="unfinished">Rotation</translation>
     </message>
 </context>
 <context>

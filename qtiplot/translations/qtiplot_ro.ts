@@ -14936,15 +14936,15 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>X Zoom (%)</source>
-        <translation>Mărire axă X (%)</translation>
+        <translation type="obsolete">Mărire axă X (%)</translation>
     </message>
     <message>
         <source>Y Zoom (%)</source>
-        <translation>Mărire axă Y (%)</translation>
+        <translation type="obsolete">Mărire axă Y (%)</translation>
     </message>
     <message>
         <source>Z Zoom (%)</source>
-        <translation>Mărire axă Z (%)</translation>
+        <translation type="obsolete">Mărire axă Z (%)</translation>
     </message>
     <message>
         <source>&amp;General</source>
@@ -15085,6 +15085,10 @@ have the same number of rows.</source>
     <message>
         <source>Precision</source>
         <translation>Precizie</translation>
+    </message>
+    <message>
+        <source>Rotation</source>
+        <translation type="unfinished">Rotaţie</translation>
     </message>
 </context>
 <context>

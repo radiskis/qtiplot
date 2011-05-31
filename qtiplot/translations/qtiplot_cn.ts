@@ -18314,18 +18314,21 @@ have the same number of rows.</source>
     <message>
         <location filename="../src/plot3D/Plot3DDialog.cpp" line="117"/>
         <location filename="../src/plot3D/Plot3DDialog.cpp" line="194"/>
+        <location filename="../src/plot3D/Plot3DDialog.cpp" line="429"/>
         <source>X</source>
         <translation>X</translation>
     </message>
     <message>
         <location filename="../src/plot3D/Plot3DDialog.cpp" line="118"/>
         <location filename="../src/plot3D/Plot3DDialog.cpp" line="195"/>
+        <location filename="../src/plot3D/Plot3DDialog.cpp" line="444"/>
         <source>Y</source>
         <translation>Y</translation>
     </message>
     <message>
         <location filename="../src/plot3D/Plot3DDialog.cpp" line="119"/>
         <location filename="../src/plot3D/Plot3DDialog.cpp" line="196"/>
+        <location filename="../src/plot3D/Plot3DDialog.cpp" line="459"/>
         <source>Z</source>
         <translation>u</translation>
     </message>
@@ -18441,7 +18444,7 @@ have the same number of rows.</source>
     <message>
         <location filename="../src/plot3D/Plot3DDialog.cpp" line="208"/>
         <location filename="../src/plot3D/Plot3DDialog.cpp" line="260"/>
-        <location filename="../src/plot3D/Plot3DDialog.cpp" line="400"/>
+        <location filename="../src/plot3D/Plot3DDialog.cpp" line="404"/>
         <source>&amp;Font</source>
         <translation>字体(&amp;F)</translation>
     </message>
@@ -18462,8 +18465,8 @@ have the same number of rows.</source>
     </message>
     <message>
         <location filename="../src/plot3D/Plot3DDialog.cpp" line="307"/>
-        <location filename="../src/plot3D/Plot3DDialog.cpp" line="906"/>
-        <location filename="../src/plot3D/Plot3DDialog.cpp" line="912"/>
+        <location filename="../src/plot3D/Plot3DDialog.cpp" line="955"/>
+        <location filename="../src/plot3D/Plot3DDialog.cpp" line="961"/>
         <source>None</source>
         <translation>不选</translation>
     </message>
@@ -18517,28 +18520,28 @@ have the same number of rows.</source>
         <translation>颜色(&amp;C)</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/Plot3DDialog.cpp" line="381"/>
+        <location filename="../src/plot3D/Plot3DDialog.cpp" line="385"/>
         <source>Show Legend</source>
         <translation>显示图例</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/Plot3DDialog.cpp" line="383"/>
+        <location filename="../src/plot3D/Plot3DDialog.cpp" line="387"/>
         <source>Orthogonal</source>
         <translation>正交</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/Plot3DDialog.cpp" line="386"/>
-        <location filename="../src/plot3D/Plot3DDialog.cpp" line="587"/>
+        <location filename="../src/plot3D/Plot3DDialog.cpp" line="390"/>
+        <location filename="../src/plot3D/Plot3DDialog.cpp" line="626"/>
         <source>Line Width</source>
         <translation>线宽</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/Plot3DDialog.cpp" line="393"/>
+        <location filename="../src/plot3D/Plot3DDialog.cpp" line="397"/>
         <source>Resolution</source>
         <translation>分辨率</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/Plot3DDialog.cpp" line="399"/>
+        <location filename="../src/plot3D/Plot3DDialog.cpp" line="403"/>
         <source>Numbers Font</source>
         <translation>数字字体</translation>
     </message>
@@ -18547,180 +18550,183 @@ have the same number of rows.</source>
         <translation type="obsolete">选择字体(&amp;C)</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/Plot3DDialog.cpp" line="404"/>
+        <location filename="../src/plot3D/Plot3DDialog.cpp" line="408"/>
         <source>Distance labels - axis</source>
         <translation>标签 - 轴距离</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/Plot3DDialog.cpp" line="415"/>
+        <location filename="../src/plot3D/Plot3DDialog.cpp" line="414"/>
+        <location filename="../src/plot3D/Plot3DDialog.cpp" line="426"/>
         <source>Zoom (%)</source>
         <translation>缩放（%）</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/Plot3DDialog.cpp" line="421"/>
         <source>X Zoom (%)</source>
-        <translation>X缩放（%）</translation>
+        <translation type="obsolete">X缩放（%）</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/Plot3DDialog.cpp" line="427"/>
         <source>Y Zoom (%)</source>
-        <translation>Y缩放（%）</translation>
+        <translation type="obsolete">Y缩放（%）</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/Plot3DDialog.cpp" line="433"/>
         <source>Z Zoom (%)</source>
-        <translation>Z缩放（%）</translation>
+        <translation type="obsolete">Z缩放（%）</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/Plot3DDialog.cpp" line="449"/>
+        <location filename="../src/plot3D/Plot3DDialog.cpp" line="485"/>
         <source>&amp;General</source>
         <translation>常规(&amp;G)</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/Plot3DDialog.cpp" line="477"/>
+        <location filename="../src/plot3D/Plot3DDialog.cpp" line="516"/>
         <source>Ma&amp;jor Grids</source>
         <translation>主栅格(&amp;j)</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/Plot3DDialog.cpp" line="480"/>
+        <location filename="../src/plot3D/Plot3DDialog.cpp" line="519"/>
         <source>Mi&amp;nor Grids</source>
         <translation>次栅格(&amp;n)</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/Plot3DDialog.cpp" line="483"/>
+        <location filename="../src/plot3D/Plot3DDialog.cpp" line="522"/>
         <source>Color</source>
         <translation>颜色</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/Plot3DDialog.cpp" line="491"/>
-        <location filename="../src/plot3D/Plot3DDialog.cpp" line="546"/>
+        <location filename="../src/plot3D/Plot3DDialog.cpp" line="530"/>
+        <location filename="../src/plot3D/Plot3DDialog.cpp" line="585"/>
         <source>Style</source>
         <translation>样式</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/Plot3DDialog.cpp" line="494"/>
-        <location filename="../src/plot3D/Plot3DDialog.cpp" line="506"/>
+        <location filename="../src/plot3D/Plot3DDialog.cpp" line="533"/>
+        <location filename="../src/plot3D/Plot3DDialog.cpp" line="545"/>
         <source>Solid</source>
         <translation>实心</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/Plot3DDialog.cpp" line="495"/>
-        <location filename="../src/plot3D/Plot3DDialog.cpp" line="507"/>
+        <location filename="../src/plot3D/Plot3DDialog.cpp" line="534"/>
+        <location filename="../src/plot3D/Plot3DDialog.cpp" line="546"/>
         <source>Dash</source>
         <translation>虚线</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/Plot3DDialog.cpp" line="496"/>
-        <location filename="../src/plot3D/Plot3DDialog.cpp" line="508"/>
-        <location filename="../src/plot3D/Plot3DDialog.cpp" line="548"/>
+        <location filename="../src/plot3D/Plot3DDialog.cpp" line="535"/>
+        <location filename="../src/plot3D/Plot3DDialog.cpp" line="547"/>
+        <location filename="../src/plot3D/Plot3DDialog.cpp" line="587"/>
         <source>Dot</source>
         <translation>点</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/Plot3DDialog.cpp" line="497"/>
-        <location filename="../src/plot3D/Plot3DDialog.cpp" line="509"/>
+        <location filename="../src/plot3D/Plot3DDialog.cpp" line="536"/>
+        <location filename="../src/plot3D/Plot3DDialog.cpp" line="548"/>
         <source>Dash Dot</source>
         <translation>点划线</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/Plot3DDialog.cpp" line="498"/>
-        <location filename="../src/plot3D/Plot3DDialog.cpp" line="510"/>
+        <location filename="../src/plot3D/Plot3DDialog.cpp" line="537"/>
+        <location filename="../src/plot3D/Plot3DDialog.cpp" line="549"/>
         <source>Dash Dot Dot</source>
         <translation>点划线点点</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/Plot3DDialog.cpp" line="499"/>
-        <location filename="../src/plot3D/Plot3DDialog.cpp" line="511"/>
+        <location filename="../src/plot3D/Plot3DDialog.cpp" line="538"/>
+        <location filename="../src/plot3D/Plot3DDialog.cpp" line="550"/>
         <source>Short Dash</source>
         <translation>短划线</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/Plot3DDialog.cpp" line="500"/>
-        <location filename="../src/plot3D/Plot3DDialog.cpp" line="512"/>
+        <location filename="../src/plot3D/Plot3DDialog.cpp" line="539"/>
+        <location filename="../src/plot3D/Plot3DDialog.cpp" line="551"/>
         <source>Short Dot</source>
         <translation>短点线</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/Plot3DDialog.cpp" line="501"/>
-        <location filename="../src/plot3D/Plot3DDialog.cpp" line="513"/>
+        <location filename="../src/plot3D/Plot3DDialog.cpp" line="540"/>
+        <location filename="../src/plot3D/Plot3DDialog.cpp" line="552"/>
         <source>Short Dash Dot</source>
         <translation>短点划线</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/Plot3DDialog.cpp" line="539"/>
+        <location filename="../src/plot3D/Plot3DDialog.cpp" line="578"/>
         <source>G&amp;rid</source>
         <translation>栅格(&amp;r)</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/Plot3DDialog.cpp" line="549"/>
+        <location filename="../src/plot3D/Plot3DDialog.cpp" line="588"/>
         <source>Cross Hair</source>
         <translation>叉丝</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/Plot3DDialog.cpp" line="550"/>
+        <location filename="../src/plot3D/Plot3DDialog.cpp" line="589"/>
         <source>Cone</source>
         <translation>圆锥体</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/Plot3DDialog.cpp" line="517"/>
-        <location filename="../src/plot3D/Plot3DDialog.cpp" line="560"/>
-        <location filename="../src/plot3D/Plot3DDialog.cpp" line="610"/>
-        <location filename="../src/plot3D/Plot3DDialog.cpp" line="833"/>
+        <location filename="../src/plot3D/Plot3DDialog.cpp" line="556"/>
+        <location filename="../src/plot3D/Plot3DDialog.cpp" line="599"/>
+        <location filename="../src/plot3D/Plot3DDialog.cpp" line="649"/>
+        <location filename="../src/plot3D/Plot3DDialog.cpp" line="882"/>
         <source>Width</source>
         <translation>宽度</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/Plot3DDialog.cpp" line="568"/>
+        <location filename="../src/plot3D/Plot3DDialog.cpp" line="427"/>
+        <source>Rotation</source>
+        <translation type="unfinished">旋转</translation>
+    </message>
+    <message>
+        <location filename="../src/plot3D/Plot3DDialog.cpp" line="607"/>
         <source>Smooth angles</source>
         <translation>平滑角</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/Plot3DDialog.cpp" line="579"/>
+        <location filename="../src/plot3D/Plot3DDialog.cpp" line="618"/>
         <source>Radius</source>
         <translation>半径</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/Plot3DDialog.cpp" line="595"/>
+        <location filename="../src/plot3D/Plot3DDialog.cpp" line="634"/>
         <source>Smooth line</source>
         <translation>平滑线</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/Plot3DDialog.cpp" line="599"/>
+        <location filename="../src/plot3D/Plot3DDialog.cpp" line="638"/>
         <source>Boxed</source>
         <translation>箱形框</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/Plot3DDialog.cpp" line="618"/>
+        <location filename="../src/plot3D/Plot3DDialog.cpp" line="657"/>
         <source>Quality</source>
         <translation>质量</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/Plot3DDialog.cpp" line="636"/>
+        <location filename="../src/plot3D/Plot3DDialog.cpp" line="675"/>
         <source>Points</source>
         <translation>点</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/Plot3DDialog.cpp" line="766"/>
+        <location filename="../src/plot3D/Plot3DDialog.cpp" line="815"/>
         <source>&amp;Worksheet</source>
         <translation>工作表(&amp;W)</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/Plot3DDialog.cpp" line="768"/>
+        <location filename="../src/plot3D/Plot3DDialog.cpp" line="817"/>
         <source>&amp;Matrix</source>
         <translation>矩阵(&amp;M)</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/Plot3DDialog.cpp" line="843"/>
+        <location filename="../src/plot3D/Plot3DDialog.cpp" line="892"/>
         <source>Draw lines</source>
         <translation>画线</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/Plot3DDialog.cpp" line="847"/>
+        <location filename="../src/plot3D/Plot3DDialog.cpp" line="896"/>
         <source>Filled bars</source>
         <translation>填充棒</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/Plot3DDialog.cpp" line="852"/>
+        <location filename="../src/plot3D/Plot3DDialog.cpp" line="901"/>
         <source>Bars</source>
         <translation>棒</translation>
     </message>
