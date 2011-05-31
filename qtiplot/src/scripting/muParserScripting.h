@@ -104,6 +104,9 @@ class muParserScripting: public ScriptingEnv
 	}
 
 	static double mod(double x, double y){ return fmod(x,y);};
+	static double bessel_I0(double x){ return gsl_sf_bessel_I0 (x);};
+	static double bessel_I1(double x){ return gsl_sf_bessel_I1 (x);};
+	static double bessel_In(double x, double n){ return gsl_sf_bessel_In ((int)n, x);};
 	static double bessel_J0(double x){ return gsl_sf_bessel_J0 (x);};
 	static double bessel_J1(double x){ return gsl_sf_bessel_J1 (x);};
 	static double bessel_Jn(double x, double n){ return gsl_sf_bessel_Jn ((int)n, x);};

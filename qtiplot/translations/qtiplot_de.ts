@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="de_DE">
+<TS version="2.0">
 <context>
     <name></name>
     <message>
@@ -4943,110 +4943,110 @@ Die erste repräsentiert die Signal- und die zweite die Antwortfunktion!</transl
     <name>Anova</name>
     <message>
         <source>ANOVA</source>
-        <translation type="unfinished"></translation>
+        <translation>ANOVA</translation>
     </message>
 </context>
 <context>
     <name>AnovaDialog</name>
     <message>
         <source>Two Way ANOVA</source>
-        <translation type="unfinished"></translation>
+        <translation>Zweiseitige ANOVA</translation>
     </message>
     <message>
         <source>Sample</source>
-        <translation type="unfinished"></translation>
+        <translation>Stichprobe</translation>
     </message>
     <message>
         <source>Factor A Level</source>
-        <translation type="unfinished"></translation>
+        <translation>Faktor A-Level</translation>
     </message>
     <message>
         <source>Factor B Level</source>
-        <translation type="unfinished"></translation>
+        <translation>Faktor B-Level</translation>
     </message>
     <message>
         <source>A</source>
-        <translation type="unfinished">A</translation>
+        <translation>A</translation>
     </message>
     <message>
         <source>B</source>
-        <translation type="unfinished">B</translation>
+        <translation>B</translation>
     </message>
     <message>
         <source>One Way ANOVA</source>
-        <translation type="unfinished"></translation>
+        <translation>Einseitige ANOVA</translation>
     </message>
     <message>
         <source>Available Data</source>
-        <translation type="unfinished"></translation>
+        <translation>Verfügbare Daten</translation>
     </message>
     <message>
         <source>Show current &amp;folder only</source>
-        <translation type="unfinished">Zeige nur den aktuellen &amp;Ordner</translation>
+        <translation>Zeige nur den aktuellen &amp;Ordner</translation>
     </message>
     <message>
         <source>Selected Data</source>
-        <translation type="unfinished"></translation>
+        <translation>Ausgewählte Daten</translation>
     </message>
     <message>
         <source>Significance Level</source>
-        <translation type="unfinished"></translation>
+        <translation>Signifikanzlevel</translation>
     </message>
     <message>
         <source>ANOVA &amp;Type</source>
-        <translation type="unfinished"></translation>
+        <translation>ANOVA-&amp;Typ</translation>
     </message>
     <message>
         <source>Fixed</source>
-        <translation type="unfinished"></translation>
+        <translation>Fix</translation>
     </message>
     <message>
         <source>Random</source>
-        <translation type="unfinished"></translation>
+        <translation>Zufällig</translation>
     </message>
     <message>
         <source>Mixed</source>
-        <translation type="unfinished"></translation>
+        <translation>Gemischt</translation>
     </message>
     <message>
         <source>&amp;Interactions</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Interaktionen</translation>
     </message>
     <message>
         <source>&amp;Compute</source>
-        <translation type="unfinished"></translation>
+        <translation>Bere&amp;chnen</translation>
     </message>
     <message>
         <source>Factor &amp;A Levels</source>
-        <translation type="unfinished"></translation>
+        <translation>Faktor-&amp;A-Stufen</translation>
     </message>
     <message>
         <source>Factor &amp;B Levels</source>
-        <translation type="unfinished"></translation>
+        <translation>Faktor-&amp;B-Stufen</translation>
     </message>
     <message>
         <source>Normality Test (Shapiro-Wilk)</source>
-        <translation type="unfinished"></translation>
+        <translation>Normalverteilungstest (Shapiro-Wilk)</translation>
     </message>
     <message>
         <source>Output Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Ausgabeeinstellungen</translation>
     </message>
     <message>
         <source>&amp;Table</source>
-        <translation type="unfinished">&amp;Tabelle</translation>
+        <translation>&amp;Tabelle</translation>
     </message>
     <message>
         <source>&amp;Notes Window</source>
-        <translation type="unfinished"></translation>
+        <translation>Anme&amp;rkungenfenster</translation>
     </message>
     <message>
         <source>Results &amp;Log</source>
-        <translation type="unfinished">Ergebnis-&amp;Log</translation>
+        <translation>Ergebnis-&amp;Log</translation>
     </message>
     <message>
         <source>&amp;Descriptive Statistics</source>
-        <translation type="unfinished"></translation>
+        <translation>Bes&amp;chreibende Statistiken</translation>
     </message>
 </context>
 <context>
@@ -8820,7 +8820,7 @@ Die erste repräsentiert die Signal- und die zweite die Antwortfunktion!</transl
     </message>
     <message>
         <source>Bits Per Sample</source>
-        <translation>Bits pro Sample</translation>
+        <translation>Bits pro Stichprobe</translation>
     </message>
     <message>
         <source>Presentation Preview</source>
@@ -9949,51 +9949,51 @@ Autocompletion will not be available!</source>
     </message>
     <message>
         <source>The selected table is empty, operation aborted!</source>
-        <translation type="unfinished"></translation>
+        <translation>Die ausgewählte Tabelle ist leer, Operation abgebrochen!</translation>
     </message>
     <message>
         <source>Export Exce&amp;l ...</source>
-        <translation type="unfinished"></translation>
+        <translation>Exce&amp;ldatei exportieren …</translation>
     </message>
     <message>
         <source>Export Excel</source>
-        <translation type="unfinished"></translation>
+        <translation>Exceldatei exportieren</translation>
     </message>
     <message>
         <source>&amp;Front</source>
-        <translation type="unfinished"></translation>
+        <translation>Schri&amp;ftart</translation>
     </message>
     <message>
         <source>&amp;Back</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Zurück</translation>
     </message>
     <message>
         <source>Raise object on top</source>
-        <translation type="unfinished"></translation>
+        <translation>Objekt nach oben anheben</translation>
     </message>
     <message>
         <source>Lower object to the bottom</source>
-        <translation type="unfinished"></translation>
+        <translation>Objekt nach unten absenken</translation>
     </message>
     <message>
         <source>The selected Y column is empty, operation aborted!</source>
-        <translation type="unfinished"></translation>
+        <translation>Die ausgewählte Y-Spalte ist leer, Operation abgebrochen!</translation>
     </message>
     <message>
         <source>The associated X column is empty, operation aborted!</source>
-        <translation type="unfinished"></translation>
+        <translation>Die zugeordnete X-Spalte ist leer, Operation abgebrochen!</translation>
     </message>
     <message>
         <source>Excel files</source>
-        <translation type="unfinished"></translation>
+        <translation>Exceldateien</translation>
     </message>
     <message>
         <source>Save &amp;Window As...</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Fenster speichern als …</translation>
     </message>
     <message>
         <source>&amp;Baseline...</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Grundlinie …</translation>
     </message>
     <message>
         <source>Shift+T</source>
@@ -10001,123 +10001,123 @@ Autocompletion will not be available!</source>
     </message>
     <message>
         <source>Overwrite file?</source>
-        <translation type="unfinished">Datei überschreiben?</translation>
+        <translation>Datei überschreiben?</translation>
     </message>
     <message>
         <source>%1 already exists.</source>
-        <translation type="unfinished">%1 existiert bereits.</translation>
+        <translation>%1 existiert bereits.</translation>
     </message>
     <message>
         <source>Do you want to replace it?</source>
-        <translation type="unfinished">Möchten Sie ersetzen?</translation>
+        <translation>Möchten Sie es ersetzen?</translation>
     </message>
     <message>
         <source>Yes, don&apos;t ask me again</source>
-        <translation type="unfinished"></translation>
+        <translation>Ja und nicht mehr nachfragen</translation>
     </message>
     <message>
         <source>Random &amp;XYZ...</source>
-        <translation type="unfinished"></translation>
+        <translation>Zufällige &amp;XYZ …</translation>
     </message>
     <message>
         <source>&amp;Expand...</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Erweitern …</translation>
     </message>
     <message>
         <source>&amp;Shrink...</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Verkleinern …</translation>
     </message>
     <message>
         <source>S&amp;mooth</source>
-        <translation type="unfinished"></translation>
+        <translation>G&amp;lätten</translation>
     </message>
     <message>
         <source>Descriptive S&amp;tatistics</source>
-        <translation type="unfinished"></translation>
+        <translation>Beschreibende S&amp;tatistiken</translation>
     </message>
     <message>
         <source>&amp;Hypothesis Testing</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Hypothesentest</translation>
     </message>
     <message>
         <source>&amp;Normality Test (Shapiro - Wilk)</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Normalverteilungstest (Shapiro - Wilk)</translation>
     </message>
     <message>
         <source>&amp;One Sample t-Test...</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Einstichproben-t-Test …</translation>
     </message>
     <message>
         <source>&amp;Two Sample t-Test...</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Zweistichproben-t-Test …</translation>
     </message>
     <message>
         <source>&amp;Normal Random Numbers</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Normalverteilte Zufallszahlen</translation>
     </message>
     <message>
         <source>Fill selected columns with normal random numbers</source>
-        <translation type="unfinished"></translation>
+        <translation>Ausgewählte Spalten mit normalverteilten Zufallszahlen füllen</translation>
     </message>
     <message>
         <source>ANO&amp;VA</source>
-        <translation type="unfinished"></translation>
+        <translation>ANO&amp;VA</translation>
     </message>
     <message>
         <source>&amp;One-Way ANOVA...</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Einseitige ANOVA …</translation>
     </message>
     <message>
         <source>&amp;Two-Way ANOVA...</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Zweiseitige ANOVA …</translation>
     </message>
     <message>
         <source>Chi-square Test for &amp;Variance...</source>
-        <translation type="unfinished"></translation>
+        <translation>Chi-Quadrattest für die &amp;Varianz …</translation>
     </message>
     <message>
         <source>Save Folder As</source>
-        <translation type="unfinished"></translation>
+        <translation>Ordner speichern als</translation>
     </message>
     <message>
         <source>Save Window As</source>
-        <translation type="unfinished"></translation>
+        <translation>Fenster speichern als</translation>
     </message>
     <message>
         <source>Export Open Document Spreadsheet</source>
-        <translation type="unfinished"></translation>
+        <translation>Als Open Document-Tabellenkalkulationsdatei exportieren</translation>
     </message>
     <message>
         <source>Export &amp;Open Document Spreadsheet ...</source>
-        <translation type="unfinished"></translation>
+        <translation>Als &amp;Open Document-Tabellenkalkulationsdatei exportieren …</translation>
     </message>
     <message>
         <source>QtiPlot Pro feature</source>
-        <translation type="unfinished"></translation>
+        <translation>QtiPlot Pro-Funktion</translation>
     </message>
     <message>
         <source>This functionality is only available in QtiPlot Pro version, please subscribe for a maintenance contract!</source>
-        <translation type="unfinished"></translation>
+        <translation>Diese Funktion ist nur in der Version QtiPlot Pro verfügbar, bitte schließen Sie einen Wartungsvertrag ab!</translation>
     </message>
     <message>
         <source>dBase</source>
-        <translation type="unfinished"></translation>
+        <translation>dBase</translation>
     </message>
     <message>
         <source>Microsoft Access</source>
-        <translation type="unfinished"></translation>
+        <translation>Microsoft Access</translation>
     </message>
     <message>
         <source>SQLite 3</source>
-        <translation type="unfinished"></translation>
+        <translation>SQLite 3</translation>
     </message>
     <message>
         <source>Open Database</source>
-        <translation type="unfinished"></translation>
+        <translation>Open Database</translation>
     </message>
     <message>
         <source>&amp;Database...</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Datenbank …</translation>
     </message>
     <message>
         <source>Align &amp;Top</source>
@@ -10253,7 +10253,6 @@ Autocompletion will not be available!</source>
     <message>
         <source>Magn.</source>
         <comment>Magnitude, vector length</comment>
-        <translatorcomment>Betrag, Länge des Vektors</translatorcomment>
         <translation>Betrag</translation>
     </message>
 </context>
@@ -10721,7 +10720,7 @@ Autocompletion will not be available!</source>
     </message>
     <message>
         <source>Apply &amp;to...</source>
-        <translation>Anwen&amp;den auf...</translation>
+        <translation>Anwen&amp;den auf …</translation>
     </message>
     <message>
         <source>Layer</source>
@@ -10805,19 +10804,19 @@ Autocompletion will not be available!</source>
     </message>
     <message>
         <source>Prefix</source>
-        <translation type="unfinished"></translation>
+        <translation>Präfix</translation>
     </message>
     <message>
         <source>Suffix</source>
-        <translation type="unfinished"></translation>
+        <translation>Suffix</translation>
     </message>
     <message>
         <source>months</source>
-        <translation type="unfinished"></translation>
+        <translation>Monate</translation>
     </message>
     <message>
         <source>years</source>
-        <translation type="unfinished"></translation>
+        <translation>Jahre</translation>
     </message>
 </context>
 <context>
@@ -10828,7 +10827,7 @@ Autocompletion will not be available!</source>
     </message>
     <message>
         <source>Baseline</source>
-        <translation type="unfinished"></translation>
+        <translation>Grundlinie</translation>
     </message>
     <message>
         <source>Curve</source>
@@ -10856,7 +10855,7 @@ Autocompletion will not be available!</source>
     </message>
     <message>
         <source>User Defined &amp;Equation Y =</source>
-        <translation type="unfinished"></translation>
+        <translation>Benutzdefinierte Gleichung &amp;Y =</translation>
     </message>
     <message>
         <source>Existing &amp;Dataset</source>
@@ -10864,7 +10863,7 @@ Autocompletion will not be available!</source>
     </message>
     <message>
         <source>Create &amp;Baseline</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Grundlinie erstellen</translation>
     </message>
     <message>
         <source>&amp;Subtract</source>
@@ -10872,11 +10871,11 @@ Autocompletion will not be available!</source>
     </message>
     <message>
         <source>&amp;Undo Subtraction</source>
-        <translation type="unfinished"></translation>
+        <translation>Subtraktion &amp;rückgängig machen</translation>
     </message>
     <message>
         <source>&amp;Modify</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Bearbeiten</translation>
     </message>
     <message>
         <source>&amp;Close</source>
@@ -11023,7 +11022,7 @@ Autocompletion will not be available!</source>
     <name>ColorMapEditor</name>
     <message>
         <source>Level</source>
-        <translation>Niveau</translation>
+        <translation>Level</translation>
     </message>
     <message>
         <source>Color</source>
@@ -12196,110 +12195,114 @@ Die folgenden Spezialcodes können benutzt werden:
     </message>
     <message>
         <source>Line Color</source>
-        <translation type="unfinished"></translation>
+        <translation>Linienfarbe</translation>
     </message>
     <message>
         <source>Line Type</source>
-        <translation type="unfinished">Linientyp</translation>
+        <translation>Linientyp</translation>
     </message>
     <message>
         <source>Thickness</source>
-        <translation type="unfinished"></translation>
+        <translation>Dicke</translation>
     </message>
     <message>
         <source>Grid</source>
-        <translation type="unfinished"></translation>
+        <translation>Gitterlinien</translation>
     </message>
     <message>
         <source>Major Grids</source>
-        <translation type="unfinished"></translation>
+        <translation>Hauptgitterlinien</translation>
     </message>
     <message>
         <source>Minor Grids</source>
-        <translation type="unfinished"></translation>
+        <translation>Hilfsgitterlinien</translation>
     </message>
     <message>
         <source>An&amp;tialised</source>
-        <translation type="unfinished">Kanteng&amp;lättung</translation>
+        <translation>Kanteng&amp;lättung</translation>
     </message>
     <message>
         <source>Horizontal</source>
-        <translation type="unfinished">Horizontal</translation>
+        <translation>Horizontal</translation>
     </message>
     <message>
         <source>Vertical</source>
-        <translation type="unfinished">Vertikal</translation>
+        <translation>Vertikal</translation>
     </message>
     <message>
         <source>Speed</source>
-        <translation type="unfinished">Beschleunigung</translation>
+        <translation>Beschleunigung</translation>
     </message>
     <message>
         <source>&amp;Disable for curves with more than</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Deaktivieren für Kurven mit mehr als</translation>
     </message>
     <message>
         <source>data points</source>
-        <translation type="unfinished">Datenpunkten</translation>
+        <translation>Datenpunkten</translation>
     </message>
     <message>
         <source>&amp;Default options</source>
-        <translation type="unfinished"></translation>
+        <translation>Stan&amp;dardeinstellungen</translation>
     </message>
     <message>
         <source>You need to restart QtiPlot before your changes become effective, would you like to do it now?</source>
-        <translation type="unfinished"></translation>
+        <translation>Sie müssen QtiPlot neustarten, um die Änderungen anzuwenden. Möchten Sie das jetzt tun?</translation>
     </message>
     <message>
         <source>Open &amp;last project at startup</source>
-        <translation type="unfinished"></translation>
+        <translation>Zu&amp;letzt verwendetes Projekt beim Programmstart öffnen</translation>
     </message>
     <message>
         <source>Startup Scripts</source>
-        <translation type="unfinished"></translation>
+        <translation>Startskripte</translation>
     </message>
     <message>
         <source>Choose the location of the startup scripts folder!</source>
-        <translation type="unfinished"></translation>
+        <translation>Wählen Sie den Ort des Startskripteordners!</translation>
     </message>
     <message>
         <source>Ask before modifying data &amp;points</source>
-        <translation type="unfinished"></translation>
+        <translation>Vor dem Verändern von Daten&amp;punkten nachfragen</translation>
     </message>
     <message>
         <source>Java</source>
-        <translation type="unfinished"></translation>
+        <translation>Java</translation>
     </message>
     <message>
         <source>OpenOffice.org</source>
-        <translation type="unfinished"></translation>
+        <translation>OpenOffice.org</translation>
     </message>
     <message>
         <source>JODConverter</source>
-        <translation type="unfinished"></translation>
+        <translation>JODConverter</translation>
     </message>
     <message>
         <source>Choose location</source>
-        <translation type="unfinished"></translation>
+        <translation>Standort wählen</translation>
     </message>
     <message>
         <source>LibreOffice</source>
-        <translation type="unfinished"></translation>
+        <translation>LibreOffice</translation>
     </message>
     <message>
         <source>Prompt on pasting &amp;values to tables</source>
-        <translation type="unfinished"></translation>
+        <translation>Beim Kopieren von &amp;Werten in Tabellen nachfragen</translation>
     </message>
     <message>
         <source>Import Excel files using</source>
-        <translation type="unfinished"></translation>
+        <translation>Import von Exceldateien mit Hilfe von</translation>
     </message>
     <message>
         <source>Excel Format Library</source>
-        <translation type="unfinished"></translation>
+        <translation>Excelformatbibliothek</translation>
     </message>
     <message>
         <source>Locally Installed Excel</source>
+        <translation>Lokaler Excelinstallation</translation>
+    </message>
+    <message>
+        <source>Co&amp;nnect line across missing data</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -12315,10 +12318,6 @@ Die folgenden Spezialcodes können benutzt werden:
         <translation type="unfinished">Ebenenskalierung</translation>
     </message>
     <message>
-        <source>Co&amp;nnect line across missing data</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Locally Installed OpenOffice/LibreOffice</source>
         <translation type="unfinished"></translation>
     </message>
@@ -12327,7 +12326,7 @@ Die folgenden Spezialcodes können benutzt werden:
     <name>ContourLinesEditor</name>
     <message>
         <source>Level</source>
-        <translation>Niveau</translation>
+        <translation>Level</translation>
     </message>
     <message>
         <source>Pen</source>
@@ -12531,7 +12530,7 @@ Die folgenden Spezialcodes können benutzt werden:
     </message>
     <message>
         <source>Apply to &amp;all layer curves</source>
-        <translation type="unfinished"></translation>
+        <translation>Auf &amp;alle Kurvenebenen anwenden</translation>
     </message>
 </context>
 <context>
@@ -12598,11 +12597,11 @@ Die folgenden Spezialcodes können benutzt werden:
     </message>
     <message>
         <source>&amp;Plot Associations...</source>
-        <translation>&amp;Darstellungszuordnungen...</translation>
+        <translation>&amp;Darstellungszuordnungen …</translation>
     </message>
     <message>
         <source>&amp;Edit Function...</source>
-        <translation>Funktion b&amp;earbeiten...</translation>
+        <translation>Funktion b&amp;earbeiten …</translation>
     </message>
     <message>
         <source>Close</source>
@@ -12650,7 +12649,7 @@ Die folgenden Spezialcodes können benutzt werden:
     </message>
     <message>
         <source>Edit &amp;Range...</source>
-        <translation>Be&amp;reich ändern...</translation>
+        <translation>Be&amp;reich ändern …</translation>
     </message>
     <message>
         <source>&amp;Show Range</source>
@@ -12670,23 +12669,23 @@ Die folgenden Spezialcodes können benutzt werden:
     </message>
     <message>
         <source>Axes</source>
-        <translation type="unfinished">Achsen</translation>
+        <translation>Achsen</translation>
     </message>
     <message>
         <source>Bottom</source>
-        <translation type="unfinished">Unten</translation>
+        <translation>Unten</translation>
     </message>
     <message>
         <source>Top</source>
-        <translation type="unfinished">Oben</translation>
+        <translation>Oben</translation>
     </message>
     <message>
         <source>Left</source>
-        <translation type="unfinished">Links</translation>
+        <translation>Links</translation>
     </message>
     <message>
         <source>Right</source>
-        <translation type="unfinished">Rechts</translation>
+        <translation>Rechts</translation>
     </message>
 </context>
 <context>
@@ -12857,7 +12856,7 @@ Die folgenden Spezialcodes können benutzt werden:
     </message>
     <message>
         <source>&amp;New Menu...</source>
-        <translation>&amp;Neues Menü...</translation>
+        <translation>&amp;Neues Menü …</translation>
     </message>
     <message>
         <source>Menu Bar</source>
@@ -12964,7 +12963,7 @@ Die folgenden Spezialcodes können benutzt werden:
     <name>EllipseWidget</name>
     <message>
         <source>Ellipse</source>
-        <translation type="unfinished">Ellipse</translation>
+        <translation>Ellipse</translation>
     </message>
 </context>
 <context>
@@ -13219,7 +13218,7 @@ Die folgenden Spezialcodes können benutzt werden:
     </message>
     <message>
         <source>Apply t&amp;o...</source>
-        <translation>Anwen&amp;den auf...</translation>
+        <translation>Anwen&amp;den auf …</translation>
     </message>
     <message>
         <source>Line</source>
@@ -13227,7 +13226,7 @@ Die folgenden Spezialcodes können benutzt werden:
     </message>
     <message>
         <source>Apply format &amp;to...</source>
-        <translation>Forma&amp;t anwenden auf...</translation>
+        <translation>Forma&amp;t anwenden auf …</translation>
     </message>
     <message>
         <source>MathTran (http://www.mathtran.org/)</source>
@@ -13401,74 +13400,74 @@ Die folgenden Spezialcodes können benutzt werden:
     </message>
     <message>
         <source>QtiPlot - Error</source>
-        <translation type="unfinished">QtiPlot - Fehler</translation>
+        <translation>QtiPlot - Fehler</translation>
     </message>
     <message>
         <source>This feature is not available for user defined function curves!</source>
-        <translation type="unfinished">Diese Funktion steht für benutzerdefinierte Funktionskurven nicht zur Verfügung!</translation>
+        <translation>Diese Funktion steht für benutzerdefinierte Funktionskurven nicht zur Verfügung!</translation>
     </message>
     <message>
         <source>The selected error column is empty!</source>
-        <translation type="unfinished">Die ausgewählte Fehlerspalte ist leer!</translation>
+        <translation>Die ausgewählte Fehlerspalte ist leer!</translation>
     </message>
 </context>
 <context>
     <name>ExcelFileConverter</name>
     <message>
         <source>QtiPlot</source>
-        <translation type="unfinished">QtiPlot</translation>
+        <translation>QtiPlot</translation>
     </message>
     <message>
         <source>Operation failed</source>
-        <translation type="unfinished"></translation>
+        <translation>Operation schlug fehl</translation>
     </message>
     <message>
         <source>Coudn&apos;t start</source>
-        <translation type="unfinished"></translation>
+        <translation>Konnte nicht gestartet werden</translation>
     </message>
     <message>
         <source>JODConverter</source>
-        <translation type="unfinished"></translation>
+        <translation>JODConverter</translation>
     </message>
     <message>
         <source>Please set the correct path in the preferences dialog</source>
-        <translation type="unfinished"></translation>
+        <translation>Bitte stellen Sie im Einstellungsdialog den korrekten Pfad ein</translation>
     </message>
     <message>
         <source>Java</source>
-        <translation type="unfinished"></translation>
+        <translation>Java</translation>
     </message>
     <message>
         <source>OpenOffice.org</source>
-        <translation type="unfinished"></translation>
+        <translation>OpenOffice.org</translation>
     </message>
     <message>
         <source>Couldn&apos;t start</source>
-        <translation type="unfinished"></translation>
+        <translation>Konnte nicht gestartet werden</translation>
     </message>
     <message>
         <source>crashed</source>
-        <translation type="unfinished">abgestürzt</translation>
+        <translation>abgestürzt</translation>
     </message>
     <message>
         <source>timedout</source>
-        <translation type="unfinished">Zeitüberschreitung</translation>
+        <translation>Zeitüberschreitung</translation>
     </message>
     <message>
         <source>write error</source>
-        <translation type="unfinished">Schreibfehler</translation>
+        <translation>Schreibfehler</translation>
     </message>
     <message>
         <source>read error</source>
-        <translation type="unfinished">Lesefehler</translation>
+        <translation>Lesefehler</translation>
     </message>
     <message>
         <source>unknown error</source>
-        <translation type="unfinished">unbekannter Fehler</translation>
+        <translation>unbekannter Fehler</translation>
     </message>
     <message>
         <source>LibreOffice</source>
-        <translation type="unfinished"></translation>
+        <translation>LibreOffice</translation>
     </message>
 </context>
 <context>
@@ -13732,7 +13731,7 @@ Die folgenden Spezialcodes können benutzt werden:
     </message>
     <message>
         <source>&amp;Advanced</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Erweitert</translation>
     </message>
 </context>
 <context>
@@ -15042,7 +15041,7 @@ die Reihenfolge der Parameter ist wichtig!</translation>
     </message>
     <message>
         <source>Choose plug&amp;ins folder...</source>
-        <translation>Plug&amp;in-Ordner wählen...</translation>
+        <translation>Plug&amp;in-Ordner wählen …</translation>
     </message>
     <message>
         <source>Start Fitting Session</source>
@@ -15080,7 +15079,7 @@ die Reihenfolge der Parameter ist wichtig!</translation>
     </message>
     <message>
         <source>Choose &amp;models folder...</source>
-        <translation>Ordner für Fit&amp;modelle wählen...</translation>
+        <translation>Ordner für Fit&amp;modelle wählen …</translation>
     </message>
     <message>
         <source>Choose the fit models folder</source>
@@ -16000,7 +15999,7 @@ die Reihenfolge der Parameter ist wichtig!</translation>
     </message>
     <message>
         <source>&amp;Properties...</source>
-        <translation>&amp;Eigenschaften...</translation>
+        <translation>&amp;Eigenschaften …</translation>
     </message>
     <message>
         <source>&amp;Rescale to show all</source>
@@ -16020,7 +16019,7 @@ die Reihenfolge der Parameter ist wichtig!</translation>
     </message>
     <message>
         <source>&amp;Scale...</source>
-        <translation>&amp;Skala...</translation>
+        <translation>&amp;Skala …</translation>
     </message>
     <message>
         <source>Your data is not valid. You need at least two different points for a histogram!</source>
@@ -16496,123 +16495,123 @@ die Reihenfolge der Parameter ist wichtig!</translation>
     <name>GriddingDialog</name>
     <message>
         <source>QtiPlot - Random XYZ Gridding</source>
-        <translation type="unfinished"></translation>
+        <translation>QtiPlot - Zufälliges XYZ-Gridding</translation>
     </message>
     <message>
         <source>Selected Z Dataset</source>
-        <translation type="unfinished"></translation>
+        <translation>Ausgewählter Z-Datensatz</translation>
     </message>
     <message>
         <source>Gridding Method</source>
-        <translation type="unfinished"></translation>
+        <translation>Griddingmethode</translation>
     </message>
     <message>
         <source>Shepard (non-uniform data)</source>
-        <translation type="unfinished"></translation>
+        <translation>Shepard (uneinheitliche Daten)</translation>
     </message>
     <message>
         <source>Shepard (uniform data)</source>
-        <translation type="unfinished"></translation>
+        <translation>Shepard (einheitliche Daten)</translation>
     </message>
     <message>
         <source>Quick (noisy data)</source>
-        <translation type="unfinished"></translation>
+        <translation>Quick (Verrauschte Daten)</translation>
     </message>
     <message>
         <source>Parameters</source>
-        <translation type="unfinished">Parameter</translation>
+        <translation>Parameter</translation>
     </message>
     <message>
         <source>Search Radius</source>
-        <translation type="unfinished"></translation>
+        <translation>Surchradius</translation>
     </message>
     <message>
         <source>Model</source>
-        <translation type="unfinished"></translation>
+        <translation>Modell</translation>
     </message>
     <message>
         <source>Linear</source>
-        <translation type="unfinished">Linear</translation>
+        <translation>Linear</translation>
     </message>
     <message>
         <source>Quadratic</source>
-        <translation type="unfinished"></translation>
+        <translation>Quadratisch</translation>
     </message>
     <message>
         <source>N&lt;sub&gt;q&lt;/sub&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>N&lt;sub&gt;q&lt;/sub&gt;</translation>
     </message>
     <message>
         <source>N&lt;sub&gt;w&lt;/sub&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>N&lt;sub&gt;w&lt;/sub&gt;</translation>
     </message>
     <message>
         <source>Matrix Dimensions</source>
-        <translation type="unfinished"></translation>
+        <translation>Matrixdimensionen</translation>
     </message>
     <message>
         <source>Columns</source>
-        <translation type="unfinished">Spalten</translation>
+        <translation>Spalten</translation>
     </message>
     <message>
         <source>Rows</source>
-        <translation type="unfinished">Zeilen</translation>
+        <translation>Zeilen</translation>
     </message>
     <message>
         <source>Matrix Coordinates</source>
-        <translation type="unfinished"></translation>
+        <translation>Matrixkoordinaten</translation>
     </message>
     <message>
         <source>X Minimum</source>
-        <translation type="unfinished"></translation>
+        <translation>X-Minimum</translation>
     </message>
     <message>
         <source>X Maximum</source>
-        <translation type="unfinished"></translation>
+        <translation>X-Maximum</translation>
     </message>
     <message>
         <source>Y Minimum</source>
-        <translation type="unfinished"></translation>
+        <translation>Y-Minimum</translation>
     </message>
     <message>
         <source>Y Maximum</source>
-        <translation type="unfinished"></translation>
+        <translation>Y-Maximum</translation>
     </message>
     <message>
         <source>&amp;Preview</source>
-        <translation type="unfinished">&amp;Vorschau</translation>
+        <translation>&amp;Vorschau</translation>
     </message>
     <message>
         <source>Plot Type</source>
-        <translation type="unfinished"></translation>
+        <translation>Diagrammtyp</translation>
     </message>
     <message>
         <source>Wireframe</source>
-        <translation type="unfinished">Drahtgitter</translation>
+        <translation>Drahtgitter</translation>
     </message>
     <message>
         <source>Hidden Line</source>
-        <translation type="unfinished">Versteckte Linien</translation>
+        <translation>Versteckte Linien</translation>
     </message>
     <message>
         <source>Crea&amp;te Plot</source>
-        <translation type="unfinished"></translation>
+        <translation>Diagramm ers&amp;tellen</translation>
     </message>
     <message>
         <source>&amp;Ok</source>
-        <translation type="unfinished">&amp;OK</translation>
+        <translation>&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation type="unfinished">S&amp;chließen</translation>
+        <translation>S&amp;chließen</translation>
     </message>
     <message>
         <source>X axis</source>
-        <translation type="unfinished">X-Achse</translation>
+        <translation>X-Achse</translation>
     </message>
     <message>
         <source>Y axis</source>
-        <translation type="unfinished">Y-Achse</translation>
+        <translation>Y-Achse</translation>
     </message>
 </context>
 <context>
@@ -16915,7 +16914,7 @@ die Reihenfolge der Parameter ist wichtig!</translation>
     </message>
     <message>
         <source>Image</source>
-        <translation type="unfinished">Farbbild</translation>
+        <translation>Farbbild</translation>
     </message>
 </context>
 <context>
@@ -17193,7 +17192,7 @@ in der ASCII-Datei unterschiedlich viele Zeilen aufweisen.</translation>
     </message>
     <message>
         <source>Column T&amp;ypes...</source>
-        <translation type="unfinished"></translation>
+        <translation>Spalten&amp;typen …</translation>
     </message>
     <message>
         <source>Ignore lines containing</source>
@@ -17557,7 +17556,7 @@ die Spalten unterschiedlich viele Zeilen haben.</translation>
     </message>
     <message>
         <source>QtiPlot - Input error</source>
-        <translation type="unfinished">QtiPlot - Eingabefehler</translation>
+        <translation>QtiPlot - Eingabefehler</translation>
     </message>
     <message>
         <source>Please give a number larger or equal to the minimum value of X, for the lower limit.
@@ -17645,7 +17644,7 @@ Die Grenzen müssen innerhalb des X-Bereichs sein. Fall diese Werte nicht bekann
     </message>
     <message>
         <source>QtiPlot</source>
-        <translation type="unfinished">QtiPlot</translation>
+        <translation>QtiPlot</translation>
     </message>
     <message>
         <source>Warning</source>
@@ -17681,35 +17680,35 @@ Die Grenzen müssen innerhalb des X-Bereichs sein. Fall diese Werte nicht bekann
     </message>
     <message>
         <source>&amp;Add</source>
-        <translation type="unfinished">&amp;Hinzufügen</translation>
+        <translation>&amp;Hinzufügen</translation>
     </message>
     <message>
         <source>Clea&amp;r</source>
-        <translation type="unfinished"></translation>
+        <translation>Lee&amp;ren</translation>
     </message>
     <message>
         <source>Rece&amp;nt</source>
-        <translation type="unfinished"></translation>
+        <translation>Zuletzt verwe&amp;ndet</translation>
     </message>
     <message>
         <source>Click here to select a recently typed expression</source>
-        <translation type="unfinished"></translation>
+        <translation>Anklicken, um eine Auswahl der zuletzt verwendeten Funktionen zu erhalten</translation>
     </message>
     <message>
         <source>Subintervals</source>
-        <translation type="unfinished"></translation>
+        <translation>Subintervalle</translation>
     </message>
     <message>
         <source>Sorry, there are no recent expressions available!</source>
-        <translation type="unfinished"></translation>
+        <translation>Es gibt keine zuletzt verwendete Funktionen!</translation>
     </message>
     <message>
         <source>Recent Functions</source>
-        <translation type="unfinished"></translation>
+        <translation>Zuletzt verwendete Funktionen</translation>
     </message>
     <message>
         <source>Please, choose a function:</source>
-        <translation type="unfinished">Bitte eine Funktion auswählen:</translation>
+        <translation>Bitte eine Funktion auswählen:</translation>
     </message>
 </context>
 <context>
@@ -17788,7 +17787,7 @@ Die Grenzen müssen innerhalb des X-Bereichs sein. Fall diese Werte nicht bekann
     </message>
     <message>
         <source>Error</source>
-        <translation type="unfinished">Fehler</translation>
+        <translation>Fehler</translation>
     </message>
 </context>
 <context>
@@ -17810,6 +17809,14 @@ Die Grenzen müssen innerhalb des X-Bereichs sein. Fall diese Werte nicht bekann
         <translation type="unfinished">bis X-Max</translation>
     </message>
     <message>
+        <source>&amp;Sort data</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show &amp;plot</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>&amp;Integrate</source>
         <translation type="unfinished"></translation>
     </message>
@@ -17823,6 +17830,10 @@ Die Grenzen müssen innerhalb des X-Bereichs sein. Fall diese Werte nicht bekann
     </message>
     <message>
         <source>To row</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show results &amp;table</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -17852,18 +17863,6 @@ Die Grenzen müssen innerhalb des X-Bereichs sein. Fall diese Werte nicht bekann
     <message>
         <source>Area</source>
         <translation type="unfinished">Fläche</translation>
-    </message>
-    <message>
-        <source>&amp;Sort data</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Show &amp;plot</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Show results &amp;table</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -18290,7 +18289,7 @@ Die Grenzen müssen innerhalb des X-Bereichs sein. Fall diese Werte nicht bekann
     <name>LegendWidget</name>
     <message>
         <source>Legend</source>
-        <translation type="unfinished"></translation>
+        <translation>Legende</translation>
     </message>
 </context>
 <context>
@@ -18786,23 +18785,23 @@ Wollen sie Zellen einfügen?</translation>
     </message>
     <message>
         <source>Resample</source>
-        <translation type="unfinished"></translation>
+        <translation>Stichprobenwiederholung</translation>
     </message>
     <message>
         <source>bilinear</source>
-        <translation type="unfinished"></translation>
+        <translation>bilinear</translation>
     </message>
     <message>
         <source>bicubic</source>
-        <translation type="unfinished"></translation>
+        <translation>bikubisch</translation>
     </message>
     <message>
         <source>QtiPlot was built without support for ALGLIB, resampling is not possible!</source>
-        <translation type="unfinished"></translation>
+        <translation>QtiPlot wurde ohne ALGLIB-Unterstützung erstellt, Stichprobenwiederholung wird nicht unterstütz!</translation>
     </message>
     <message>
         <source>Smoothed</source>
-        <translation type="unfinished">Geglättet</translation>
+        <translation>Geglättet</translation>
     </message>
 </context>
 <context>
@@ -18915,35 +18914,35 @@ Wollen sie Zellen einfügen?</translation>
     <name>MatrixResamplingDialog</name>
     <message>
         <source>Resample</source>
-        <translation type="unfinished"></translation>
+        <translation>Stichprobenwiederholung</translation>
     </message>
     <message>
         <source>Expand for every cell</source>
-        <translation type="unfinished"></translation>
+        <translation>Für jede Zelle erweitern</translation>
     </message>
     <message>
         <source>Shrink into 1x1 for every</source>
-        <translation type="unfinished"></translation>
+        <translation>Für alle nach 1x1 verkleinern</translation>
     </message>
     <message>
         <source>Columns</source>
-        <translation type="unfinished">Spalten</translation>
+        <translation>Spalten</translation>
     </message>
     <message>
         <source>Rows</source>
-        <translation type="unfinished">Zeilen</translation>
+        <translation>Zeilen</translation>
     </message>
     <message>
         <source>Method</source>
-        <translation type="unfinished"></translation>
+        <translation>Methode</translation>
     </message>
     <message>
         <source>Bilinear</source>
-        <translation type="unfinished"></translation>
+        <translation>Bilinear</translation>
     </message>
     <message>
         <source>Bicubic</source>
-        <translation type="unfinished"></translation>
+        <translation>Bikubisch</translation>
     </message>
     <message>
         <source>&amp;OK</source>
@@ -19227,7 +19226,7 @@ Wollen sie Zellen einfügen?</translation>
     </message>
     <message>
         <source>Offset Amount...</source>
-        <translation>Größe der Verschiebung...</translation>
+        <translation>Größe der Verschiebung …</translation>
     </message>
     <message>
         <source>Reverse Order</source>
@@ -19235,7 +19234,7 @@ Wollen sie Zellen einfügen?</translation>
     </message>
     <message>
         <source>Fill Area...</source>
-        <translation>Fläche füllen...</translation>
+        <translation>Fläche füllen …</translation>
     </message>
     <message>
         <source>Offset Dialog</source>
@@ -20447,7 +20446,7 @@ Wollen sie Zellen einfügen?</translation>
     </message>
     <message>
         <source>&amp;Plot Associations...</source>
-        <translation>&amp;Darstellungszuordnungen...</translation>
+        <translation>&amp;Darstellungszuordnungen …</translation>
     </message>
     <message>
         <source>&amp;Worksheet</source>
@@ -20903,11 +20902,11 @@ Wollen sie Zellen einfügen?</translation>
     </message>
     <message>
         <source>QtiPlot - Bin size input error</source>
-        <translation type="unfinished">QtiPlot - Fehler bei der Intervallgröße</translation>
+        <translation>QtiPlot - Fehler bei der Intervallgröße</translation>
     </message>
     <message>
         <source>Please enter a positive bin size value!</source>
-        <translation type="unfinished">Bitte eine positive Intervallgröße eingeben!</translation>
+        <translation>Bitte eine positive Intervallgröße eingeben!</translation>
     </message>
     <message>
         <source>Vector Data</source>
@@ -20979,7 +20978,7 @@ Wollen sie Zellen einfügen?</translation>
     </message>
     <message>
         <source>Levels</source>
-        <translation># Niveaus</translation>
+        <translation>Level</translation>
     </message>
     <message>
         <source>Use &amp;Color Map</source>
@@ -21303,7 +21302,7 @@ Wollen sie Zellen einfügen?</translation>
     </message>
     <message>
         <source>Apply &amp;to...</source>
-        <translation>Anwen&amp;den auf...</translation>
+        <translation>Anwen&amp;den auf …</translation>
     </message>
     <message>
         <source>Window</source>
@@ -21339,7 +21338,7 @@ Wollen sie Zellen einfügen?</translation>
     </message>
     <message>
         <source>Set Equidistant Levels</source>
-        <translation>äquidistante Niveaus setzen</translation>
+        <translation>Äquidistante Level setzen</translation>
     </message>
     <message>
         <source>Start</source>
@@ -21351,7 +21350,7 @@ Wollen sie Zellen einfügen?</translation>
     </message>
     <message>
         <source>Set &amp;Levels</source>
-        <translation>Setze &amp;Nivaus</translation>
+        <translation>Setze &amp;Level</translation>
     </message>
     <message>
         <source>Use &amp;Table Custom Pen</source>
@@ -21388,107 +21387,103 @@ Wollen sie Zellen einfügen?</translation>
     </message>
     <message>
         <source>Move upward</source>
-        <translation type="unfinished"></translation>
+        <translation>Aufwärts bewegen</translation>
     </message>
     <message>
         <source>Move downward</source>
-        <translation type="unfinished"></translation>
+        <translation>Abwärts bewegen</translation>
     </message>
     <message>
         <source>Move &amp;upward</source>
-        <translation type="unfinished"></translation>
+        <translation>A&amp;ufwärts bewegen</translation>
     </message>
     <message>
         <source>Move do&amp;wnward</source>
-        <translation type="unfinished"></translation>
+        <translation>Ab&amp;wärts bewegen</translation>
     </message>
     <message>
         <source>Statistics for</source>
-        <translation type="unfinished"></translation>
+        <translation>Statistiken für</translation>
     </message>
     <message>
         <source>Apply Co&amp;lor</source>
-        <translation type="unfinished"></translation>
+        <translation>F&amp;arbe anwenden</translation>
     </message>
     <message>
         <source>Box &amp;Labels</source>
-        <translation type="unfinished"></translation>
+        <translation>Rahmen&amp;text</translation>
     </message>
     <message>
         <source>Whis&amp;ker Labels</source>
-        <translation type="unfinished"></translation>
+        <translation>Whis&amp;kertext</translation>
     </message>
     <message>
         <source>Display</source>
-        <translation type="unfinished">Typ</translation>
+        <translation>Anzeige</translation>
     </message>
     <message>
         <source>Percentage</source>
-        <translation type="unfinished"></translation>
+        <translation>Prozentsatz</translation>
     </message>
     <message>
         <source>Value</source>
-        <translation type="unfinished">Wert</translation>
+        <translation>Wert</translation>
     </message>
     <message>
         <source>Percentage (Value)</source>
-        <translation type="unfinished"></translation>
+        <translation>Prozentsatz (Wert)</translation>
     </message>
     <message>
         <source>Value (Percentage)</source>
-        <translation type="unfinished"></translation>
+        <translation>Wert (Prozentsatz)</translation>
     </message>
     <message>
         <source>&amp;Background Color</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Hintergrundfarbe</translation>
     </message>
     <message>
         <source>Background &amp;Image</source>
-        <translation type="unfinished"></translation>
+        <translation>H&amp;intergrundbild</translation>
     </message>
     <message>
         <source>File</source>
-        <translation type="unfinished">Datei</translation>
+        <translation>Datei</translation>
     </message>
     <message>
         <source>&amp;Resize layer to fit original image size</source>
-        <translation type="unfinished"></translation>
+        <translation>Ebene &amp;reskalieren um Originalgröße des Bilds zu entsprechen</translation>
     </message>
     <message>
         <source>&amp;Frame</source>
-        <translation type="unfinished">&amp;Rahmen</translation>
+        <translation>&amp;Rahmen</translation>
     </message>
     <message>
         <source>Canvas</source>
-        <translation type="unfinished"></translation>
+        <translation>Zeichenfläche</translation>
     </message>
     <message>
         <source>&amp;Standard Symbol</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Standardsymbol</translation>
     </message>
     <message>
         <source>&amp;Image</source>
-        <translation type="unfinished">&amp;Bild</translation>
+        <translation>&amp;Bild</translation>
     </message>
     <message>
         <source>Preview</source>
-        <translation type="unfinished"></translation>
+        <translation>Vorschau</translation>
     </message>
     <message>
         <source>QtiPlot - Import image from file</source>
-        <translation type="unfinished">QtiPlot - Bild aus Datei importieren</translation>
+        <translation>QtiPlot - Bild aus Datei importieren</translation>
     </message>
     <message>
         <source>Auto&amp;scaling</source>
-        <translation type="unfinished">Automatische &amp;Skalierung</translation>
+        <translation>Automatische &amp;Skalierung</translation>
     </message>
     <message>
         <source>Edit &amp;Range...</source>
-        <translation type="unfinished">Be&amp;reich ändern...</translation>
-    </message>
-    <message>
-        <source>&amp;Hide</source>
-        <translation type="unfinished">Aus&amp;blenden</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Data Drawing Options</source>
@@ -21517,6 +21512,10 @@ Wollen sie Zellen einfügen?</translation>
     <message>
         <source>&amp;Top</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Hide</source>
+        <translation type="unfinished">Aus&amp;blenden</translation>
     </message>
 </context>
 <context>
@@ -22016,7 +22015,7 @@ Wollen sie Zellen einfügen?</translation>
     <message>
         <source>avg(x,y,...):
   Mean value of all arguments.</source>
-        <translation>avg(x,y,...)
+        <translation>avg(x,y,…)
  Mittelwert aller Elemente.</translation>
     </message>
     <message>
@@ -22102,14 +22101,12 @@ Wollen sie Zellen einfügen?</translation>
     <message>
         <source>erfz(x):
  The Gaussian probability density function Z(x).</source>
-        <translatorcomment>Z(x) = (1/\sqrt{2\pi}) \exp(-x^2/2).</translatorcomment>
         <translation>erfz(x)
  Wahrscheinlichkeitsdichtefunktion der Gauß- / Normal-Verteilung: Z(x).</translation>
     </message>
     <message>
         <source>erfq(x):
  The upper tail of the Gaussian probability function Q(x).</source>
-        <translatorcomment>Q(x) = (1/\sqrt{2\pi}) \int_x^\infty dt \exp(-t^2/2)</translatorcomment>
         <translation>erfq(x):
  Das Integral von x bis Unentlich über die Gaußsche Wahrscheinlichkeitsverteilung: Q(x) = 1 -gauss_cdf(x,1).</translation>
     </message>
@@ -22130,7 +22127,6 @@ Wollen sie Zellen einfügen?</translation>
     <message>
         <source>gamma(x):
  Computes the Gamma function, subject to x not being a negative integer.</source>
-        <translatorcomment>\Gamma(x) = \int_0^\infty dt t^{x-1} \exp(-t)</translatorcomment>
         <translation>gamma(x):
  Gammafunktion mit der Bedingung dass x kein negativer Integer und nicht Null ist.</translation>
     </message>
@@ -22155,7 +22151,6 @@ Wollen sie Zellen einfügen?</translation>
     <message>
         <source>hazard(x):
  Computes the hazard function for the normal distribution h(x) = erfz(x)/erfq(x).</source>
-        <translatorcomment>http://de.wikipedia.org/wiki/Hazardfunktion</translatorcomment>
         <translation>hazard(x):
  Hazardfunktion for the normal distribution h(x) = erfz(x)/erfq(x) = pdf / ( 1 - gauss_cdf(x,1) ).</translation>
     </message>
@@ -22168,7 +22163,6 @@ Wollen sie Zellen einfügen?</translation>
     <message>
         <source>inv_gauss_cdf(x, sigma):
  Computes the inverse of the cumulative distribution function for a Gaussian distribution with standard deviation sigma.</source>
-        <translatorcomment>http://de.wikipedia.org/wiki/Quantil</translatorcomment>
         <translation>inv_gauss_cdf(x, sigma):
  Quantil = inverse der kummulativen Verteilungsfunktion für die Gauß- / Normal-Verteilng mit der Standardabweichung sigma.</translation>
     </message>
@@ -22199,13 +22193,13 @@ Wollen sie Zellen einfügen?</translation>
     <message>
         <source>min(x,y,...):
  Calculate minimum of all arguments.</source>
-        <translation>min(x,y,...):
+        <translation>min(x,y,…):
  Minumum aller Elemente.</translation>
     </message>
     <message>
         <source>max(x,y,...):
  Calculate maximum of all arguments.</source>
-        <translation>max(x,y,...):
+        <translation>max(x,y,…):
  Maximum aller Elemente.</translation>
     </message>
     <message>
@@ -22348,409 +22342,435 @@ Wollen sie Zellen einfügen?</translation>
     </message>
     <message>
         <source>angle</source>
-        <translation type="unfinished">Winkel</translation>
+        <translation>Winkel</translation>
     </message>
     <message>
         <source>length</source>
-        <translation type="unfinished">Länge</translation>
+        <translation>Länge</translation>
     </message>
     <message>
         <source>dx</source>
-        <translation type="unfinished">dx</translation>
+        <translation>dx</translation>
     </message>
     <message>
         <source>dy</source>
-        <translation type="unfinished">dy</translation>
+        <translation>dy</translation>
     </message>
     <message>
         <source>eqn</source>
-        <translation type="unfinished">Gleichung</translation>
+        <translation>Gln</translation>
     </message>
     <message>
         <source>y</source>
-        <translation type="unfinished"></translation>
+        <translation>y</translation>
     </message>
     <message>
         <source>x</source>
-        <translation type="unfinished"></translation>
+        <translation>x</translation>
     </message>
     <message>
         <source>MIN(&quot;colName&quot;, i, j):
  The minimum of all cells from row i to j in column colName.</source>
-        <translation type="unfinished"></translation>
+        <translation>MIN(&quot;colName&quot;,i,j):
+Minimum aller Zellen von Zeile i bis j der Spalte colName.</translation>
     </message>
     <message>
         <source>MAX(&quot;colName&quot;, i, j):
  The maximum of all cells from row i to j in column colName.</source>
-        <translation type="unfinished"></translation>
+        <translation>Max(&quot;colName&quot;,i,j):
+Maximum aller Zellen von Zeile i bis j der Spalte colName.</translation>
     </message>
     <message>
         <source>Min</source>
-        <translation type="unfinished">Min</translation>
+        <translation>Min</translation>
     </message>
     <message>
         <source>D1 (1st decile)</source>
-        <translation type="unfinished"></translation>
+        <translation>D1 (erstes Zehntel)</translation>
     </message>
     <message>
         <source>Q1 (1st quartile)</source>
-        <translation type="unfinished"></translation>
+        <translation>Q1 (erstes Viertel)</translation>
     </message>
     <message>
         <source>Median</source>
-        <translation type="unfinished">Mittelwert</translation>
+        <translation>Mittelwert</translation>
     </message>
     <message>
         <source>Q3 (3rd quartile)</source>
-        <translation type="unfinished"></translation>
+        <translation>Q3 (drittes Viertel)</translation>
     </message>
     <message>
         <source>D9 (9th decile)</source>
-        <translation type="unfinished"></translation>
+        <translation>D9 (neuntes Zehntel)</translation>
     </message>
     <message>
         <source>Max</source>
-        <translation type="unfinished">Max</translation>
+        <translation>Max</translation>
     </message>
     <message>
         <source>Size</source>
-        <translation type="unfinished">Größe</translation>
+        <translation>Größe</translation>
     </message>
     <message>
         <source>Attention!</source>
-        <translation type="unfinished"></translation>
+        <translation>Achtung!</translation>
     </message>
     <message>
         <source>Sample size must be between 3 and 5000.</source>
-        <translation type="unfinished"></translation>
+        <translation>Stichprobengröße muss zwischen 3 und 5000 betragen.</translation>
     </message>
     <message>
         <source>Normality Test (Shapiro - Wilk)</source>
-        <translation type="unfinished"></translation>
+        <translation>Normalverteilungstest (Shapiro-Wilk)</translation>
     </message>
     <message>
         <source>Dataset</source>
-        <translation type="unfinished">Datensatz</translation>
+        <translation>Datensatz</translation>
     </message>
     <message>
         <source>N</source>
-        <translation type="unfinished"></translation>
+        <translation>N</translation>
     </message>
     <message>
         <source>W</source>
-        <translation type="unfinished"></translation>
+        <translation>W</translation>
     </message>
     <message>
         <source>P Value</source>
-        <translation type="unfinished"></translation>
+        <translation>P-Wert</translation>
     </message>
     <message>
         <source>Decision</source>
-        <translation type="unfinished"></translation>
+        <translation>Entscheidung</translation>
     </message>
     <message>
         <source>Normal at %1 level</source>
-        <translation type="unfinished"></translation>
+        <translation>Normal auf 1%-iges Level</translation>
     </message>
     <message>
         <source>Sample</source>
-        <translation type="unfinished"></translation>
+        <translation>Stichprobe</translation>
     </message>
     <message>
         <source>Mean</source>
-        <translation type="unfinished"></translation>
+        <translation>Mittel</translation>
     </message>
     <message>
         <source>Standard Deviation</source>
-        <translation type="unfinished">Standardabweichung</translation>
+        <translation>Standardabweichung</translation>
     </message>
     <message>
         <source>Standard Error</source>
-        <translation type="unfinished">Standardfehler</translation>
+        <translation>Standardfehler</translation>
     </message>
     <message>
         <source>Two Sample Independent t-Test</source>
-        <translation type="unfinished"></translation>
+        <translation>Unabhängiger Zweistichproben-t-Test</translation>
     </message>
     <message>
         <source>Two Sample Paired t-Test</source>
-        <translation type="unfinished"></translation>
+        <translation>Gepaarter Zweistichproben-t-Test</translation>
     </message>
     <message>
         <source>One Sample t-Test</source>
-        <translation type="unfinished"></translation>
+        <translation>Einstichproben t-Test</translation>
     </message>
     <message>
         <source>Difference of Means</source>
-        <translation type="unfinished"></translation>
+        <translation>Mittelwertdifferenz</translation>
     </message>
     <message>
         <source>different</source>
-        <translation type="unfinished"></translation>
+        <translation>unterschiedlich</translation>
     </message>
     <message>
         <source>greater</source>
-        <translation type="unfinished"></translation>
+        <translation>größer</translation>
     </message>
     <message>
         <source>less</source>
-        <translation type="unfinished"></translation>
+        <translation>kleiner</translation>
     </message>
     <message>
         <source>Null Hypothesis</source>
-        <translation type="unfinished"></translation>
+        <translation>Nullhypothese</translation>
     </message>
     <message>
         <source>Alternative Hypothesis</source>
-        <translation type="unfinished"></translation>
+        <translation>Alternative Hypothese</translation>
     </message>
     <message>
         <source>t</source>
-        <translation type="unfinished"></translation>
+        <translation>t</translation>
     </message>
     <message>
         <source>DoF</source>
-        <translation type="unfinished"></translation>
+        <translation>DoF</translation>
     </message>
     <message>
         <source>At the %1 level, the difference of the population means</source>
-        <translation type="unfinished"></translation>
+        <translation>Auf dem 1% Level ist die Differenz der Populationsmittelwerte</translation>
     </message>
     <message>
         <source>At the %1 level, the population mean</source>
-        <translation type="unfinished"></translation>
+        <translation>Auf dem 1% Level istder Populationsmittelwert</translation>
     </message>
     <message>
         <source>is significantly</source>
-        <translation type="unfinished"></translation>
+        <translation>signifikanter</translation>
     </message>
     <message>
         <source>is not significantly</source>
-        <translation type="unfinished"></translation>
+        <translation>nicht signifikanter</translation>
     </message>
     <message>
         <source>than the test difference</source>
-        <translation type="unfinished"></translation>
+        <translation>als die Testdifferenz</translation>
     </message>
     <message>
         <source>than the test mean</source>
-        <translation type="unfinished"></translation>
+        <translation>als der Testmittelwert</translation>
     </message>
     <message>
         <source>Paired t-Test requires equal sample sizes.</source>
-        <translation type="unfinished"></translation>
+        <translation>Gepaarter t-Test benötigt gleiche Stichprobengröße.</translation>
     </message>
     <message>
         <source>The test statistics t and P can not be computed because the sample variance of the differences between Sample1 and Sample2 is 0.</source>
-        <translation type="unfinished"></translation>
+        <translation>Die Teststatistiken t und P können nicht berechnet werden, weil die Stichprobenvarianz der Differenz zwischen Stichprobe1 und Stichprobe2 0 ist.</translation>
     </message>
     <message>
         <source>invt(x, n):
  Inverse t-distribution with n degrees of freedom.</source>
-        <translation type="unfinished"></translation>
+        <translation>invt(x,n):
+Inverse t-Verteilung mit n Freiheitsgraden.</translation>
     </message>
     <message>
         <source>Not normal at %1 level</source>
-        <translation type="unfinished"></translation>
+        <translation>Nicht normal auf 1% Level</translation>
     </message>
     <message>
         <source>ftable(x, m, n):
  F-Distribution with m and n degrees of freedom.</source>
-        <translation type="unfinished"></translation>
+        <translation>ftable(x, m, n):
+F-Verteilung mit m und n Freiheitsgraden.</translation>
     </message>
     <message>
         <source>invf(x, m, n):
  Inverse F-Distribution with m and n degrees of freedom.</source>
-        <translation type="unfinished"></translation>
+        <translation>invf(x, m, n):
+Inverse F-Verteilung mit m und n Freiheitsgraden.</translation>
     </message>
     <message>
         <source>Two-Way ANOVA requires three or more data samples.</source>
-        <translation type="unfinished"></translation>
+        <translation>Zweiseitige ANOVA benötigt drei oder mehr Datensätze.</translation>
     </message>
     <message>
         <source>One-Way ANOVA requires two or more data samples.</source>
-        <translation type="unfinished"></translation>
+        <translation>Einseitige ANOVA benötigt zwei oder mehr Datensätze.</translation>
     </message>
     <message>
         <source>Factor A must have two or more levels.</source>
-        <translation type="unfinished"></translation>
+        <translation>Faktor A muss über zwei oder mehr Level verfügen.</translation>
     </message>
     <message>
         <source>Factor B must have two or more levels.</source>
-        <translation type="unfinished"></translation>
+        <translation>Faktor B muss über zwei oder mehr Level verfügen.</translation>
     </message>
     <message>
         <source>A</source>
-        <translation type="unfinished">A</translation>
+        <translation>A</translation>
     </message>
     <message>
         <source>B</source>
-        <translation type="unfinished">B</translation>
+        <translation>B</translation>
     </message>
     <message>
         <source>Two-Way ANOVA</source>
-        <translation type="unfinished"></translation>
+        <translation>Zweiseitige ANOVA</translation>
     </message>
     <message>
         <source>Fixed Model</source>
-        <translation type="unfinished"></translation>
+        <translation>Fixed-Modell</translation>
     </message>
     <message>
         <source>Random Model</source>
-        <translation type="unfinished"></translation>
+        <translation>Random-Modell</translation>
     </message>
     <message>
         <source>Mixed Model</source>
-        <translation type="unfinished"></translation>
+        <translation>Mixed-Modell</translation>
     </message>
     <message>
         <source>One-Way ANOVA</source>
-        <translation type="unfinished"></translation>
+        <translation>Einseitige ANOVA</translation>
     </message>
     <message>
         <source>Selected Data</source>
-        <translation type="unfinished"></translation>
+        <translation>Ausgewählte Daten</translation>
     </message>
     <message>
         <source>Factor A Level</source>
-        <translation type="unfinished"></translation>
+        <translation>Faktor A-Level</translation>
     </message>
     <message>
         <source>Factor B Level</source>
-        <translation type="unfinished"></translation>
+        <translation>Faktor B-Level</translation>
     </message>
     <message>
         <source>The means of all selected datasets are equal</source>
-        <translation type="unfinished"></translation>
+        <translation>Die Mittelwerte aller ausgewählter Datensätze sind gleich</translation>
     </message>
     <message>
         <source>The means of one or more selected datasets are different</source>
-        <translation type="unfinished"></translation>
+        <translation>Die Mittelwerte eines oder mehrerer ausgewählter Datensätze sind verschieden</translation>
     </message>
     <message>
         <source>Source</source>
-        <translation type="unfinished"></translation>
+        <translation>Quelle</translation>
     </message>
     <message>
         <source>Sum of Squares</source>
-        <translation type="unfinished"></translation>
+        <translation>Wurzelsumme</translation>
     </message>
     <message>
         <source>Mean Square</source>
-        <translation type="unfinished"></translation>
+        <translation>Mittlere Wurzel</translation>
     </message>
     <message>
         <source>F Value</source>
-        <translation type="unfinished"></translation>
+        <translation>F-Wert</translation>
     </message>
     <message>
         <source>Error</source>
-        <translation type="unfinished">Fehler</translation>
+        <translation>Fehler</translation>
     </message>
     <message>
         <source>Total</source>
-        <translation type="unfinished"></translation>
+        <translation>Total</translation>
     </message>
     <message>
         <source>Model</source>
-        <translation type="unfinished"></translation>
+        <translation>Modell</translation>
     </message>
     <message>
         <source>At the %1 level, the population means</source>
-        <translation type="unfinished"></translation>
+        <translation>Auf dem 1% Level sind die Populationsmittelwerte</translation>
     </message>
     <message>
         <source>are significantly different</source>
-        <translation type="unfinished"></translation>
+        <translation>signifikant unterschiedlich</translation>
     </message>
     <message>
         <source>are not significantly different</source>
-        <translation type="unfinished"></translation>
+        <translation>nicht signifikant unterschiedlich</translation>
     </message>
     <message>
         <source>The sample dataset (%1) must have at least one data point.</source>
-        <translation type="unfinished"></translation>
+        <translation>Der Stichprobendatensatz (%1) muss über mindestens einen Datenpunkt verfügen.</translation>
     </message>
     <message>
         <source>There are no data points in Factor A &apos;%1&apos; and Factor B &apos;%2&apos; level combination.</source>
-        <translation type="unfinished"></translation>
+        <translation>Es gibt keine Datenpunkte in der Levelkombination Faktor A &apos;%1&apos; und Faktor B &apos;%2&apos;.</translation>
     </message>
     <message>
         <source>ANOVA</source>
-        <translation type="unfinished"></translation>
+        <translation>ANOVA</translation>
     </message>
     <message>
         <source>A*B</source>
-        <translation type="unfinished"></translation>
+        <translation>A*B</translation>
     </message>
     <message>
         <source>Result Table</source>
-        <translation type="unfinished"></translation>
+        <translation>Ergebnistabelle</translation>
     </message>
     <message>
         <source>Chi-square Test</source>
-        <translation type="unfinished"></translation>
+        <translation>Chi-Quadrattest</translation>
     </message>
     <message>
         <source>Chi-square Test for Variance</source>
-        <translation type="unfinished"></translation>
+        <translation>Chi-Quadrat-Test für die Varianz</translation>
     </message>
     <message>
         <source>Variance</source>
-        <translation type="unfinished">Varianz</translation>
+        <translation>Varianz</translation>
     </message>
     <message>
         <source>Chi-Square</source>
-        <translation type="unfinished"></translation>
+        <translation>Chi-Quadrat</translation>
     </message>
     <message>
         <source>At the %1 level, the population variance</source>
-        <translation type="unfinished"></translation>
+        <translation>Auf dem 1%-igem Level, die Populationsvarianz</translation>
     </message>
     <message>
         <source>than the test variance</source>
-        <translation type="unfinished"></translation>
+        <translation>als die Testvarianz</translation>
     </message>
     <message>
         <source>Shapiro-Wilk Normality Test</source>
-        <translation type="unfinished"></translation>
+        <translation>Shapiro-Wilk Normalverteilungstest</translation>
     </message>
     <message>
         <source>Statistic</source>
-        <translation type="unfinished"></translation>
+        <translation>Statistik</translation>
     </message>
     <message>
         <source>Student&apos;s t-Test</source>
-        <translation type="unfinished"></translation>
+        <translation>Student&apos;s t-Test</translation>
     </message>
     <message>
         <source>chi2cdf(x, df):
  Computes the cumulative distribution function for a chi-squared distribution with df degrees of freedom.</source>
-        <translation type="unfinished"></translation>
+        <translation>chi2cdf(x, df):
+Berechnet die Summenverteilungsfunktion einer Chi-Quadrat-Verteilung mit df Freiheitsgraden.</translation>
     </message>
     <message>
         <source>chi2inv(p, df):
  Computes the inverse of the cumulative distribution function for a chi-squared distribution with df degrees of freedom.</source>
-        <translation type="unfinished"></translation>
+        <translation>chi2inv(p, df):
+Berechnet die inverse Summenverteilungsfunktion einer Chi-Quadrat-Verteilung mit df Freiheitsgraden.</translation>
     </message>
     <message>
         <source>normal(seed):
  Returns a normal random number using the Ziggurat algorithm.</source>
-        <translation type="unfinished"></translation>
+        <translation>normal(seed):
+Gibt eine normalverteile Zufallszahl mit Hilfe des Ziggurat-Algorithmus aus.</translation>
     </message>
     <message>
         <source>normcdf(x):
  Computes the cumulative distribution function for a Gaussian distribution with standard deviation sigma = 1.0.</source>
-        <translation type="unfinished"></translation>
+        <translation>normcdf(x)
+Berechnet die Summenverteilungsfunktion einer Gauß-Verteilung mit der Standardabweichung Sigma = 1,0.</translation>
     </message>
     <message>
         <source>norminv(p):
  Computes the inverse of the cumulative distribution function for a Gaussian distribution with standard deviation sigma = 1.0.</source>
-        <translation type="unfinished"></translation>
+        <translation>norminv(p):
+Berechnet die inverse Summenverteilungsfunktion einer Gauß-Verteilung mit der Standardabweichung Sigma = 1,0.</translation>
     </message>
     <message>
         <source>dilog(x):
  Compute the dilogarithm for a real argument. In Lewin&apos;s notation this is Li_2(x), the real part of the dilogarithm of a real x.</source>
+        <translation>dilog(x):
+Berechnet den Dilogarithmus eines realen Arguments. In der Lewin-Notation entspricht dies Li_2(x), dem realen Teil des Dilogarithmuses eines realen x.</translation>
+    </message>
+    <message>
+        <source>bessel_i0(x):
+  Regular modified cylindrical Bessel function of zeroth order, I_0(x).</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>bessel_i1(x):
+  Regular modified cylindrical Bessel function of first order, I_1(x).</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>bessel_in(double x, int n):
+ Regular modified cylindrical Bessel function of order n, I_n(x).</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -22897,7 +22917,7 @@ Wollen sie Zellen einfügen?</translation>
     <name>RectangleWidget</name>
     <message>
         <source>Rectangle</source>
-        <translation type="unfinished">Rechteck</translation>
+        <translation>Rechteck</translation>
     </message>
 </context>
 <context>
@@ -23056,19 +23076,19 @@ Wollen Sie sie überschreiben?</translation>
     </message>
     <message>
         <source>&amp;Import...</source>
-        <translation>&amp;Importieren...</translation>
+        <translation>&amp;Importieren …</translation>
     </message>
     <message>
         <source>Sa&amp;ve as...</source>
-        <translation>Spe&amp;ichern als...</translation>
+        <translation>Spe&amp;ichern als …</translation>
     </message>
     <message>
         <source>&amp;Find...</source>
-        <translation>S&amp;uchen...</translation>
+        <translation>S&amp;uchen …</translation>
     </message>
     <message>
         <source>&amp;Replace...</source>
-        <translation>E&amp;rsetzen...</translation>
+        <translation>E&amp;rsetzen …</translation>
     </message>
     <message>
         <source>&amp;Find next</source>
@@ -23080,7 +23100,7 @@ Wollen Sie sie überschreiben?</translation>
     </message>
     <message>
         <source>Rena&amp;me Tab...</source>
-        <translation>Tab &amp;umbenennen...</translation>
+        <translation>Tab &amp;umbenennen …</translation>
     </message>
     <message>
         <source>A&amp;dd Tab</source>
@@ -23183,7 +23203,7 @@ Wollen Sie sie überschreiben?</translation>
     </message>
     <message>
         <source>&amp;Open...</source>
-        <translation>Ö&amp;ffnen...</translation>
+        <translation>Ö&amp;ffnen …</translation>
     </message>
     <message>
         <source>&amp;Save</source>
@@ -23191,7 +23211,7 @@ Wollen Sie sie überschreiben?</translation>
     </message>
     <message>
         <source>Save &amp;As...</source>
-        <translation>Speichern &amp;als...</translation>
+        <translation>Speichern &amp;als …</translation>
     </message>
     <message>
         <source>&amp;Print</source>
@@ -23271,7 +23291,7 @@ Wollen Sie sie überschreiben?</translation>
     </message>
     <message>
         <source>&amp;Find...</source>
-        <translation>Such&amp;en...</translation>
+        <translation>Such&amp;en …</translation>
     </message>
     <message>
         <source>Ctrl+Alt+F</source>
@@ -23295,7 +23315,7 @@ Wollen Sie sie überschreiben?</translation>
     </message>
     <message>
         <source>&amp;Replace...</source>
-        <translation>E&amp;rsetzen...</translation>
+        <translation>E&amp;rsetzen …</translation>
     </message>
     <message>
         <source>Show Script &amp;Output Panel</source>
@@ -23311,7 +23331,7 @@ Wollen Sie sie überschreiben?</translation>
     </message>
     <message>
         <source>Print Pre&amp;view...</source>
-        <translation>Druck&amp;vorschau...</translation>
+        <translation>Druck&amp;vorschau …</translation>
     </message>
     <message>
         <source>Script print preview</source>
@@ -23647,166 +23667,166 @@ Wollen Sie sie überschreiben?</translation>
     <name>Statistics</name>
     <message>
         <source>QtiPlot</source>
-        <translation type="unfinished">QtiPlot</translation>
+        <translation>QtiPlot</translation>
     </message>
     <message>
         <source>Error</source>
-        <translation type="unfinished">Fehler</translation>
+        <translation>Fehler</translation>
     </message>
     <message>
         <source>You didn&apos;t specify a valid data set for this operation!</source>
-        <translation type="unfinished">Sie haben keinen gültigen Datensatz für diese Operation angegeben!</translation>
+        <translation>Sie haben keinen gültigen Datensatz für diese Operation angegeben!</translation>
     </message>
     <message>
         <source>Memory Allocation Error</source>
-        <translation type="unfinished"></translation>
+        <translation>Speicherzuordnungsfehler</translation>
     </message>
     <message>
         <source>Not enough memory, operation aborted!</source>
-        <translation type="unfinished"></translation>
+        <translation>Nicht genügend Speicher, Operation abgebrochen!</translation>
     </message>
     <message>
         <source>There is no sample dataset called %1 in this project.</source>
-        <translation type="unfinished"></translation>
+        <translation>Es existiert kein Stichprobendatensatz namens %1 in diesem Projekt.</translation>
     </message>
 </context>
 <context>
     <name>StudentTestDialog</name>
     <message>
         <source>Two sample t-Test</source>
-        <translation type="unfinished"></translation>
+        <translation>Zweistichproben t-Test</translation>
     </message>
     <message>
         <source>In&amp;dependent Test</source>
-        <translation type="unfinished"></translation>
+        <translation>Una&amp;bhängigkeitstest</translation>
     </message>
     <message>
         <source>Pai&amp;red Test</source>
-        <translation type="unfinished"></translation>
+        <translation>Ge&amp;paartet Test</translation>
     </message>
     <message>
         <source>One sample t-Test</source>
-        <translation type="unfinished"></translation>
+        <translation>Einstichproben t-Test</translation>
     </message>
     <message>
         <source>Sample</source>
-        <translation type="unfinished"></translation>
+        <translation>Stichprobe</translation>
     </message>
     <message>
         <source>Mean</source>
-        <translation type="unfinished"></translation>
+        <translation>Mittelwert</translation>
     </message>
     <message>
         <source>Hypotheses</source>
-        <translation type="unfinished"></translation>
+        <translation>Hypothese</translation>
     </message>
     <message>
         <source>Null</source>
-        <translation type="unfinished"></translation>
+        <translation>Null</translation>
     </message>
     <message>
         <source>Alternate</source>
-        <translation type="unfinished"></translation>
+        <translation>Ersatz</translation>
     </message>
     <message>
         <source>Significance Level</source>
-        <translation type="unfinished"></translation>
+        <translation>Signifikanzlevel</translation>
     </message>
     <message>
         <source>Confidence &amp;Interval(s)</source>
-        <translation type="unfinished"></translation>
+        <translation>Konfidenz&amp;intervall(e)</translation>
     </message>
     <message>
         <source>Level(s) in %</source>
-        <translation type="unfinished"></translation>
+        <translation>Level in %</translation>
     </message>
     <message>
         <source>&amp;Add Level</source>
-        <translation type="unfinished"></translation>
+        <translation>Level &amp;hinzufügen</translation>
     </message>
     <message>
         <source>&amp;Power Analysis</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Mächtigkeitsanalyse</translation>
     </message>
     <message>
         <source>Alpha</source>
-        <translation type="unfinished"></translation>
+        <translation>Alpha</translation>
     </message>
     <message>
         <source>Sample &amp;Size</source>
-        <translation type="unfinished"></translation>
+        <translation>Stichproben&amp;größe</translation>
     </message>
     <message>
         <source>&amp;Compute</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Berechnen</translation>
     </message>
     <message>
         <source>Confidence Interval for Difference of Means</source>
-        <translation type="unfinished"></translation>
+        <translation>Konfidenzintervall der Mittelwertdifferenz</translation>
     </message>
     <message>
         <source>Confidence Interval for Mean</source>
-        <translation type="unfinished"></translation>
+        <translation>Konfidenzintervall des Mittelwerts</translation>
     </message>
     <message>
         <source>Level</source>
-        <translation type="unfinished">Niveau</translation>
+        <translation>Level</translation>
     </message>
     <message>
         <source>Lower Limit</source>
-        <translation type="unfinished"></translation>
+        <translation>Untere Grenze</translation>
     </message>
     <message>
         <source>Upper Limit</source>
-        <translation type="unfinished"></translation>
+        <translation>Obere Grenze</translation>
     </message>
     <message>
         <source>Power Analysis</source>
-        <translation type="unfinished"></translation>
+        <translation>Mächtigkeitsanalyse</translation>
     </message>
     <message>
         <source>Sample Size</source>
-        <translation type="unfinished"></translation>
+        <translation>Stichprobengröße</translation>
     </message>
     <message>
         <source>Power</source>
-        <translation type="unfinished"></translation>
+        <translation>Mächtigkeit</translation>
     </message>
     <message>
         <source>actual</source>
-        <translation type="unfinished"></translation>
+        <translation>aktuell</translation>
     </message>
     <message>
         <source>Chi-square Test for Variance</source>
-        <translation type="unfinished"></translation>
+        <translation>Chi-Quadrat-Test für die Varianz</translation>
     </message>
     <message>
         <source>Variance</source>
-        <translation type="unfinished">Varianz</translation>
+        <translation>Varianz</translation>
     </message>
     <message>
         <source>Confidence Intervals for Variance</source>
-        <translation type="unfinished"></translation>
+        <translation>Konfidenzintervall der Varianz</translation>
     </message>
     <message>
         <source>Output Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Ausgabeeinstellungen</translation>
     </message>
     <message>
         <source>&amp;Table</source>
-        <translation type="unfinished">&amp;Tabelle</translation>
+        <translation>&amp;Tabelle</translation>
     </message>
     <message>
         <source>&amp;Notes Window</source>
-        <translation type="unfinished"></translation>
+        <translation>Anme&amp;rkungenfenster</translation>
     </message>
     <message>
         <source>Results &amp;Log</source>
-        <translation type="unfinished">Ergebnis-&amp;Log</translation>
+        <translation>Ergebnis-&amp;Log</translation>
     </message>
     <message>
         <source>&amp;Descriptive Statistics</source>
-        <translation type="unfinished"></translation>
+        <translation>Bes&amp;chreibende Statistiken</translation>
     </message>
 </context>
 <context>
@@ -24238,234 +24258,234 @@ Wollen Sie trotzdem die Zellen einfügen?</translation>
     </message>
     <message>
         <source>Multiline expressions take much more time to evaluate! Do you want to continue anyways?</source>
-        <translation type="unfinished">Mehrzeilige Ausdrücke benötigen viel mehr Zeit zur Auswertung! Möchten Sie trotzdem fortfahren?</translation>
+        <translation>Mehrzeilige Ausdrücke benötigen viel mehr Zeit zur Auswertung! Möchten Sie trotzdem fortfahren?</translation>
     </message>
     <message>
         <source>Warning</source>
-        <translation type="unfinished">Warnung</translation>
+        <translation>Warnung</translation>
     </message>
     <message>
         <source>Column &apos;%1&apos; is read only!</source>
-        <translation type="unfinished"></translation>
+        <translation>Spalte &apos;%1&apos; ist nur-lesbar!</translation>
     </message>
     <message>
         <source>There is already a column called : &lt;b&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>Es existiert bereits eine solche Spalte: &lt;b&gt;</translation>
     </message>
     <message>
         <source>The table &apos;%1&apos; contains read-only columns! Operation aborted!</source>
-        <translation type="unfinished"></translation>
+        <translation>Tabelle &apos;%1&apos; enthält schreibgeschützte Spalten! Operation abgebrochen!</translation>
     </message>
     <message>
         <source>The folowing columns</source>
-        <translation type="unfinished"></translation>
+        <translation>Die folgenden Spalten</translation>
     </message>
     <message>
         <source>are read only!</source>
-        <translation type="unfinished"></translation>
+        <translation>können nur gelesen werden!</translation>
     </message>
     <message>
         <source>Paste operation</source>
-        <translation type="unfinished"></translation>
+        <translation>Operation anhängen</translation>
     </message>
     <message>
         <source>How should QtiPlot interpret first clipboard line?</source>
-        <translation type="unfinished"></translation>
+        <translation>Wie soll QtiPlot die erste Zeile aus der Zwischenablage interpretieren?</translation>
     </message>
     <message>
         <source>&amp;Values</source>
-        <translation type="unfinished">&amp;Werte</translation>
+        <translation>&amp;Werte</translation>
     </message>
     <message>
         <source>Column &amp;Names</source>
-        <translation type="unfinished"></translation>
+        <translation>S&amp;paltennamen</translation>
     </message>
     <message>
         <source>&amp;Comments</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Kommentare</translation>
     </message>
     <message>
         <source>Please indicate the name of the leading column!</source>
-        <translation type="unfinished">Bitte den Namen der führenden Spalte angeben!</translation>
+        <translation>Bitte den Namen der führenden Spalte angeben!</translation>
     </message>
     <message>
         <source>The leading column is empty! Operation aborted!</source>
-        <translation type="unfinished">Die führende Spalte ist leer! Operation abgebrochen!</translation>
+        <translation>Die führende Spalte ist leer! Operation abgebrochen!</translation>
     </message>
     <message>
         <source>Qtiplot</source>
-        <translation type="unfinished"></translation>
+        <translation>Qtiplot</translation>
     </message>
     <message>
         <source>Reading file...</source>
-        <translation type="unfinished"></translation>
+        <translation>Datei wird gelesen …</translation>
     </message>
     <message>
         <source>Could not write to file: &lt;br&gt;&lt;h4&gt;</source>
-        <translation type="unfinished">Konnte nicht in Datei schreiben: &lt;br&gt;&lt;h4&gt;</translation>
+        <translation>Konnte nicht in Datei schreiben: &lt;br&gt;&lt;h4&gt;</translation>
     </message>
     <message>
         <source>Rows will be deleted from the table!</source>
-        <translation type="unfinished">Es werden Zeilen aus der Tabelle gelöscht!</translation>
+        <translation>Es werden Zeilen aus der Tabelle gelöscht!</translation>
     </message>
     <message>
         <source>Do you really want to continue?</source>
-        <translation type="unfinished">Wollen Sie wirklich fortfahren?</translation>
+        <translation>Wollen Sie wirklich fortfahren?</translation>
     </message>
     <message>
         <source>Columns will be deleted from the table!</source>
-        <translation type="unfinished">Es werden Spalten aus der Tabelle gelöscht!</translation>
+        <translation>Es werden Spalten aus der Tabelle gelöscht!</translation>
     </message>
     <message>
         <source>kB</source>
-        <translation type="unfinished">kB</translation>
+        <translation>kB</translation>
     </message>
 </context>
 <context>
     <name>TableDialog</name>
     <message>
         <source>QtiPlot - Column options</source>
-        <translation type="unfinished"></translation>
+        <translation>QtiPlot - Spaltenoptionen</translation>
     </message>
     <message>
         <source>Column Name:</source>
-        <translation type="unfinished"></translation>
+        <translation>Spaltenname:</translation>
     </message>
     <message>
         <source>Enumerate all to the right</source>
-        <translation type="unfinished"></translation>
+        <translation>Nach rechts alle nummerieren</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation type="unfinished">&amp;OK</translation>
+        <translation>&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Apply</source>
-        <translation type="unfinished">&amp;Anwenden</translation>
+        <translation>&amp;Anwenden</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Ab&amp;brechen</translation>
     </message>
     <message>
         <source>Plot Designation:</source>
-        <translation type="unfinished"></translation>
+        <translation>Plot-Ziel:</translation>
     </message>
     <message>
         <source>None</source>
-        <translation type="unfinished">Keine</translation>
+        <translation>Keine</translation>
     </message>
     <message>
         <source>X (abscissae)</source>
-        <translation type="unfinished"></translation>
+        <translation>X (Abszisse)</translation>
     </message>
     <message>
         <source>Y (ordinates)</source>
-        <translation type="unfinished"></translation>
+        <translation>Y (Ordinate)</translation>
     </message>
     <message>
         <source>Z (height)</source>
-        <translation type="unfinished"></translation>
+        <translation>Z (Höhe)</translation>
     </message>
     <message>
         <source>X Error</source>
-        <translation type="unfinished">X-Fehler</translation>
+        <translation>X-Fehler</translation>
     </message>
     <message>
         <source>Y Error</source>
-        <translation type="unfinished">Y-Fehler</translation>
+        <translation>Y-Fehler</translation>
     </message>
     <message>
         <source>Label</source>
-        <translation type="unfinished">Beschriftung</translation>
+        <translation>Beschriftung</translation>
     </message>
     <message>
         <source>Display</source>
-        <translation type="unfinished">Typ</translation>
+        <translation>Typ</translation>
     </message>
     <message>
         <source>Numeric</source>
-        <translation type="unfinished">Numerisch</translation>
+        <translation>Numerisch</translation>
     </message>
     <message>
         <source>Text</source>
-        <translation type="unfinished">Text</translation>
+        <translation>Text</translation>
     </message>
     <message>
         <source>Date</source>
-        <translation type="unfinished">Datum</translation>
+        <translation>Datum</translation>
     </message>
     <message>
         <source>Time</source>
-        <translation type="unfinished">Zeit</translation>
+        <translation>Zeit</translation>
     </message>
     <message>
         <source>Month</source>
-        <translation type="unfinished">Monat</translation>
+        <translation>Monat</translation>
     </message>
     <message>
         <source>Day of Week</source>
-        <translation type="unfinished"></translation>
+        <translation>Wochentag</translation>
     </message>
     <message>
         <source>Format:</source>
-        <translation type="unfinished">Format:</translation>
+        <translation>Format:</translation>
     </message>
     <message>
         <source>Precision:</source>
-        <translation type="unfinished"></translation>
+        <translation>Genauigkeit:</translation>
     </message>
     <message>
         <source>&amp;Read-only</source>
-        <translation type="unfinished">Sch&amp;reibgeschützt</translation>
+        <translation>Sch&amp;reibgeschützt</translation>
     </message>
     <message>
         <source>&amp;Hidden</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Versteckt</translation>
     </message>
     <message>
         <source>Apply to all columns to the right</source>
-        <translation type="unfinished"></translation>
+        <translation>Nach rechts auf alle Spalten anwenden</translation>
     </message>
     <message>
         <source>Options</source>
-        <translation type="unfinished">Optionen</translation>
+        <translation>Optionen</translation>
     </message>
     <message>
         <source>Column Width:</source>
-        <translation type="unfinished"></translation>
+        <translation>Spaltenbreite:</translation>
     </message>
     <message>
         <source>Apply to all</source>
-        <translation type="unfinished">Auf alle anwenden</translation>
+        <translation>Auf alle anwenden</translation>
     </message>
     <message>
         <source>&amp;Display Comments in Header</source>
-        <translation type="unfinished">Zeige Kommentare in &amp;der Kopfzeile</translation>
+        <translation>Zeige Kommentare in &amp;der Kopfzeile</translation>
     </message>
     <message>
         <source>Comment:</source>
-        <translation type="unfinished"></translation>
+        <translation>Kommentar:</translation>
     </message>
     <message>
         <source>QtiPlot - Warning</source>
-        <translation type="unfinished">QtiPlot - Warnung</translation>
+        <translation>QtiPlot - Warnung</translation>
     </message>
     <message>
         <source>For internal consistency reasons the underscore character is replaced with a minus sign.</source>
-        <translation type="unfinished">Um interne Konsistenz zu sichern, wurden Unterstriche durch ein Minuszeichen ersetzt.</translation>
+        <translation>Um interne Konsistenz zu sichern, wurden Unterstriche durch ein Minuszeichen ersetzt.</translation>
     </message>
     <message>
         <source>Default</source>
-        <translation type="unfinished">Standard</translation>
+        <translation>Standard</translation>
     </message>
     <message>
         <source>Decimal: 1000</source>
-        <translation type="unfinished">Dezimal: 1000</translation>
+        <translation>Dezimal: 1000</translation>
     </message>
     <message>
         <source>Scientific: 1E3</source>
-        <translation type="unfinished">Wissenschaftlich: 1E3</translation>
+        <translation>Wissenschaftlich: 1E3</translation>
     </message>
     <message>
         <source>dd/MM/yyyy</source>
@@ -24581,239 +24601,239 @@ Wollen Sie trotzdem die Zellen einfügen?</translation>
     </message>
     <message>
         <source>QtiPlot - Error</source>
-        <translation type="unfinished">QtiPlot - Fehler</translation>
+        <translation>QtiPlot - Fehler</translation>
     </message>
     <message>
         <source>Couldn&apos;t guess the source data format, please specify it using the &apos;Format&apos; box!</source>
-        <translation type="unfinished"></translation>
+        <translation>Das Quelldatenformat konnte nicht bestimmt werden, bitte geben Sie es in der Box &apos;Format&apos; an!</translation>
     </message>
     <message>
         <source>For more information about the supported date/time formats please read the Qt documentation for the QDateTime class!</source>
-        <translation type="unfinished"></translation>
+        <translation>Lesen Sie die Qt-Dokumentation, um weitere Informationen über die unterstützten Zeit-/Datumsformate der QDateTime-Klasse zu erfahren!</translation>
     </message>
 </context>
 <context>
     <name>TableStatistics</name>
     <message>
         <source>Row</source>
-        <translation type="unfinished">Zeile</translation>
+        <translation>Zeile</translation>
     </message>
     <message>
         <source>Cols</source>
-        <translation type="unfinished"></translation>
+        <translation>Spalten</translation>
     </message>
     <message>
         <source>Mean</source>
-        <translation type="unfinished"></translation>
+        <translation>Mittel</translation>
     </message>
     <message>
         <source>StandardDev</source>
-        <translation type="unfinished"></translation>
+        <translation>Standardabweichung</translation>
     </message>
     <message>
         <source>StandardError</source>
-        <translation type="unfinished"></translation>
+        <translation>Standardfehler</translation>
     </message>
     <message>
         <source>Variance</source>
-        <translation type="unfinished">Varianz</translation>
+        <translation>Varianz</translation>
     </message>
     <message>
         <source>Sum</source>
-        <translation type="unfinished">Summe</translation>
+        <translation>Summe</translation>
     </message>
     <message>
         <source>Max</source>
-        <translation type="unfinished">Max</translation>
+        <translation>Max</translation>
     </message>
     <message>
         <source>Min</source>
-        <translation type="unfinished">Min</translation>
+        <translation>Min</translation>
     </message>
     <message>
         <source>Median</source>
-        <translation type="unfinished">Mittelwert</translation>
+        <translation>Mittelwert</translation>
     </message>
     <message>
         <source>RowStats</source>
-        <translation type="unfinished"></translation>
+        <translation>RowStats</translation>
     </message>
     <message>
         <source>Row Statistics of %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Zeilenstatistik von %1</translation>
     </message>
     <message>
         <source>Col</source>
-        <translation type="unfinished"></translation>
+        <translation>Col</translation>
     </message>
     <message>
         <source>Rows</source>
-        <translation type="unfinished">Zeilen</translation>
+        <translation>Zeilen</translation>
     </message>
     <message>
         <source>iMax</source>
-        <translation type="unfinished"></translation>
+        <translation>iMax</translation>
     </message>
     <message>
         <source>iMin</source>
-        <translation type="unfinished"></translation>
+        <translation>iMin</translation>
     </message>
     <message>
         <source>ColStats</source>
-        <translation type="unfinished"></translation>
+        <translation>ColStats</translation>
     </message>
     <message>
         <source>Column Statistics of %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Spaltenstatistik von %1</translation>
     </message>
     <message>
         <source>Index of Row</source>
-        <translation type="unfinished"></translation>
+        <translation>Zeilenindex</translation>
     </message>
     <message>
         <source>Number of Columns</source>
-        <translation type="unfinished"></translation>
+        <translation>Anzahl an Spalten</translation>
     </message>
     <message>
         <source>Standard Deviation</source>
-        <translation type="unfinished">Standardabweichung</translation>
+        <translation>Standardabweichung</translation>
     </message>
     <message>
         <source>Standard Error</source>
-        <translation type="unfinished">Standardfehler</translation>
+        <translation>Standardfehler</translation>
     </message>
     <message>
         <source>Maximum Value</source>
-        <translation type="unfinished"></translation>
+        <translation>Maximumwert</translation>
     </message>
     <message>
         <source>Minimum Value</source>
-        <translation type="unfinished"></translation>
+        <translation>Minimumwert</translation>
     </message>
     <message>
         <source>Number of Points</source>
-        <translation type="unfinished"></translation>
+        <translation>Anzahl an Punkten</translation>
     </message>
     <message>
         <source>Column Name</source>
-        <translation type="unfinished"></translation>
+        <translation>Beinhaltete Spalten</translation>
     </message>
     <message>
         <source>Rows Included</source>
-        <translation type="unfinished"></translation>
+        <translation>Beinhaltete Zeilen</translation>
     </message>
     <message>
         <source>Index of Maximum Value</source>
-        <translation type="unfinished"></translation>
+        <translation>Index des Maximumwerts</translation>
     </message>
     <message>
         <source>Index of Minimum Value</source>
-        <translation type="unfinished"></translation>
+        <translation>Index des Minimumwerts</translation>
     </message>
 </context>
 <context>
     <name>TexWidget</name>
     <message>
         <source>Equation</source>
-        <translation type="unfinished"></translation>
+        <translation>Gleichung</translation>
     </message>
 </context>
 <context>
     <name>TextDialog</name>
     <message>
         <source>QtiPlot - Text options</source>
-        <translation type="unfinished"></translation>
+        <translation>QtiPlot - Texteinstellungen</translation>
     </message>
     <message>
         <source>Text Color</source>
-        <translation type="unfinished"></translation>
+        <translation>Textfarbe</translation>
     </message>
     <message>
         <source>&amp;Font</source>
-        <translation type="unfinished"></translation>
+        <translation>Sch&amp;riftart</translation>
     </message>
     <message>
         <source>Alignment</source>
-        <translation type="unfinished">Ausrichtung</translation>
+        <translation>Ausrichtung</translation>
     </message>
     <message>
         <source>Center</source>
-        <translation type="unfinished"></translation>
+        <translation>Mittig</translation>
     </message>
     <message>
         <source>Left</source>
-        <translation type="unfinished">Links</translation>
+        <translation>Links</translation>
     </message>
     <message>
         <source>Right</source>
-        <translation type="unfinished">Rechts</translation>
+        <translation>Rechts</translation>
     </message>
     <message>
         <source>Distance to axis</source>
-        <translation type="unfinished">Abstand zur Achse</translation>
+        <translation>Abstand zur Achse</translation>
     </message>
     <message>
         <source>&amp;Inverted</source>
-        <translation type="unfinished">&amp;Invertiert</translation>
+        <translation>&amp;Invertiert</translation>
     </message>
     <message>
         <source>&amp;Apply to...</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Anwenden auf …</translation>
     </message>
     <message>
         <source>Object</source>
-        <translation type="unfinished">Objekt</translation>
+        <translation>Objekt</translation>
     </message>
     <message>
         <source>Layer</source>
-        <translation type="unfinished">Ebene</translation>
+        <translation>Ebene</translation>
     </message>
     <message>
         <source>Window</source>
-        <translation type="unfinished"></translation>
+        <translation>Fenster</translation>
     </message>
     <message>
         <source>All Windows</source>
-        <translation type="unfinished"></translation>
+        <translation>Alle Fenster</translation>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation type="unfinished">S&amp;chließen</translation>
+        <translation>S&amp;chließen</translation>
     </message>
     <message>
         <source>QtiPlot</source>
-        <translation type="unfinished">QtiPlot</translation>
+        <translation>QtiPlot</translation>
     </message>
     <message>
         <source>X Axis Title</source>
-        <translation type="unfinished"></translation>
+        <translation>X-Achsenbeschriftung</translation>
     </message>
     <message>
         <source>Y Axis Title</source>
-        <translation type="unfinished"></translation>
+        <translation>Y-Achsenbeschriftung</translation>
     </message>
     <message>
         <source>Top Axis Title</source>
-        <translation type="unfinished"></translation>
+        <translation>Beschriftung der oberen Achse</translation>
     </message>
     <message>
         <source>Right Axis Title</source>
-        <translation type="unfinished"></translation>
+        <translation>Beschriftung der rechten Achse</translation>
     </message>
 </context>
 <context>
     <name>TextEditor</name>
     <message>
         <source>QtiPlot</source>
-        <translation type="unfinished">QtiPlot</translation>
+        <translation>QtiPlot</translation>
     </message>
     <message>
         <source>Confirmation</source>
-        <translation type="unfinished"></translation>
+        <translation>Bestätigung</translation>
     </message>
     <message>
         <source>Are you sure you want to add %1 text lines into this text box?</source>
-        <translation type="unfinished"></translation>
+        <translation>Sind Sie sicher, dass Sie %1 Textzeilen in diese Textbox einfügen wollen?</translation>
     </message>
 </context>
 <context>
@@ -24821,181 +24841,181 @@ Wollen Sie trotzdem die Zellen einfügen?</translation>
     <message>
         <source>B</source>
         <comment>Button bold</comment>
-        <translation type="unfinished">B</translation>
+        <translation>B</translation>
     </message>
     <message>
         <source>It</source>
         <comment>Button italics</comment>
-        <translation type="unfinished">It</translation>
+        <translation>It</translation>
     </message>
     <message>
         <source>U</source>
         <comment>Button underline</comment>
-        <translation type="unfinished">U</translation>
+        <translation>U</translation>
     </message>
 </context>
 <context>
     <name>ThreeExpFit</name>
     <message>
         <source>ExpDecay3</source>
-        <translation type="unfinished"></translation>
+        <translation>ExpDecay3</translation>
     </message>
     <message>
         <source>Exponential decay</source>
-        <translation type="unfinished">Exponentielles Abklingen</translation>
+        <translation>Exponentieller Abfall</translation>
     </message>
     <message>
         <source>first amplitude</source>
-        <translation type="unfinished"></translation>
+        <translation>Erste Amplitude</translation>
     </message>
     <message>
         <source>first lifetime</source>
-        <translation type="unfinished"></translation>
+        <translation>Erste Lebensdauer</translation>
     </message>
     <message>
         <source>second amplitude</source>
-        <translation type="unfinished"></translation>
+        <translation>Zweite Amplitude</translation>
     </message>
     <message>
         <source>second lifetime</source>
-        <translation type="unfinished"></translation>
+        <translation>Zweite Lebensdauer</translation>
     </message>
     <message>
         <source>third amplitude</source>
-        <translation type="unfinished"></translation>
+        <translation>Dritte Amplitude</translation>
     </message>
     <message>
         <source>third lifetime</source>
-        <translation type="unfinished"></translation>
+        <translation>Dritte Lebensdauer</translation>
     </message>
     <message>
         <source>offset</source>
-        <translation type="unfinished">Offset</translation>
+        <translation>Offset</translation>
     </message>
 </context>
 <context>
     <name>TranslateCurveTool</name>
     <message>
         <source>Double-click on plot to select a data point!</source>
-        <translation type="unfinished">Auf das Diagramm doppelklicken, um einen Datenpunkt auszuwählen!</translation>
+        <translation>Auf das Diagramm doppelklicken, um einen Datenpunkt auszuwählen!</translation>
     </message>
     <message>
         <source>QtiPlot - Warning</source>
-        <translation type="unfinished">QtiPlot - Warnung</translation>
+        <translation>QtiPlot - Warnung</translation>
     </message>
     <message>
         <source>The column &apos;%1&apos; is read-only! Operation aborted!</source>
-        <translation type="unfinished">Die Spalte &apos;%1&apos; ist schreibgeschützt! Vorgang abgebrochen!</translation>
+        <translation>Die Spalte &apos;%1&apos; ist schreibgeschützt! Vorgang abgebrochen!</translation>
     </message>
     <message>
         <source>Curve selected! Move cursor and click to choose a point and double-click/press &apos;Enter&apos; to finish!</source>
-        <translation type="unfinished">Kurve ausgewählt! Bewegen Sie den Cursor, wählen Sie durch einen Klick einen Punkt aus und bestätigen Sie durch einen Doppelklick oder &apos;Enter&apos;!</translation>
+        <translation>Kurve ausgewählt! Bewegen Sie den Zeige, wählen Sie durch einen Klick einen Punkt aus und bestätigen Sie durch einen Doppelklick oder &apos;Enter&apos;!</translation>
     </message>
     <message>
         <source>This operation cannot be performed on function curves.</source>
-        <translation type="unfinished"></translation>
+        <translation>Diese Operation kann nicht an Funktionsgraphen durchgeführt werden.</translation>
     </message>
     <message>
         <source>This operation cannot be performed on curves plotted from columns having a non-numerical format.</source>
-        <translation type="unfinished"></translation>
+        <translation>Diese Operation kann nicht an Graphen durchgeführt werden, die aus Spalten geplottet wurden, welche ein nicht-numerisches Format haben.</translation>
     </message>
 </context>
 <context>
     <name>TwoExpFit</name>
     <message>
         <source>ExpDecay2</source>
-        <translation type="unfinished"></translation>
+        <translation>ExpDecay2</translation>
     </message>
     <message>
         <source>Exponential decay</source>
-        <translation type="unfinished">Exponentielles Abklingen</translation>
+        <translation>Exponentieller Abfall</translation>
     </message>
     <message>
         <source>first amplitude</source>
-        <translation type="unfinished"></translation>
+        <translation>Erste Amplitude</translation>
     </message>
     <message>
         <source>first lifetime</source>
-        <translation type="unfinished"></translation>
+        <translation>Erste Lebensdauer</translation>
     </message>
     <message>
         <source>second amplitude</source>
-        <translation type="unfinished"></translation>
+        <translation>Zweite Amplitude</translation>
     </message>
     <message>
         <source>second lifetime</source>
-        <translation type="unfinished"></translation>
+        <translation>Zweite Lebensdauer</translation>
     </message>
     <message>
         <source>offset</source>
-        <translation type="unfinished">Offset</translation>
+        <translation>Offset</translation>
     </message>
 </context>
 <context>
     <name>muParserScript</name>
     <message>
         <source>col() works only on tables!</source>
-        <translation type="unfinished"></translation>
+        <translation>col() funktioniert nur bei Tabellen!</translation>
     </message>
     <message>
         <source>There&apos;s no column named %1 in table %2!</source>
-        <translation type="unfinished"></translation>
+        <translation>In Tabelle %2 existiert keine Spalte namens %1!</translation>
     </message>
     <message>
         <source>There&apos;s no row %1 in table %2!</source>
-        <translation type="unfinished"></translation>
+        <translation>In Tabelle %2 existiert keine Zeile %1!</translation>
     </message>
     <message>
         <source>There&apos;s no column %1 in table %2!</source>
-        <translation type="unfinished"></translation>
+        <translation>In Tabelle %2 existiert keine Spalte %1!</translation>
     </message>
     <message>
         <source>tablecol() works only on tables!</source>
-        <translation type="unfinished"></translation>
+        <translation>tablecol() funktioniert nur bei Tabellen!</translation>
     </message>
     <message>
         <source>tablecol: wrong number of arguments (need 2, got %1)</source>
-        <translation type="unfinished"></translation>
+        <translation>tablecol: Falsche Anzahl an Argumenten (Zwei werden benötigt, %1 wurde(n) angegeben)</translation>
     </message>
     <message>
         <source>tablecol: first argument must be a string (table name)</source>
-        <translation type="unfinished"></translation>
+        <translation>tablecol: Das erste Argument muss eine Zeichenkette (Tabellenname) sein</translation>
     </message>
     <message>
         <source>Couldn&apos;t find a table named %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>Die Tabelle %1 konnte nicht gefunden werden.</translation>
     </message>
     <message>
         <source>cell() works only on tables and matrices!</source>
-        <translation type="unfinished"></translation>
+        <translation>cell() funktioniert nur bei Tabellen und Matrizen!</translation>
     </message>
     <message>
         <source>There&apos;s no row %1 in matrix %2!</source>
-        <translation type="unfinished"></translation>
+        <translation>In Matrix %2 existiert keine Zeile %1!</translation>
     </message>
     <message>
         <source>There&apos;s no column %1 in matrix %2!</source>
-        <translation type="unfinished"></translation>
+        <translation>In Matrix %2 existiert keine Spalte %1!</translation>
     </message>
     <message>
         <source>Out of memory</source>
-        <translation type="unfinished"></translation>
+        <translation>Nicht genügend Speicher vorhanden</translation>
     </message>
     <message>
         <source>SUM() works only on tables!</source>
-        <translation type="unfinished"></translation>
+        <translation>SUM() funktioniert nur bei Tabellen!</translation>
     </message>
     <message>
         <source>AVG() works only on tables!</source>
-        <translation type="unfinished"></translation>
+        <translation>AVG() funktioniert nur bei Tabellen!</translation>
     </message>
     <message>
         <source>MIN() works only on tables!</source>
-        <translation type="unfinished"></translation>
+        <translation>MIN() funktioniert nur bei Tabellen!</translation>
     </message>
     <message>
         <source>MAX() works only on tables!</source>
-        <translation type="unfinished"></translation>
+        <translation>MAX() funktioniert nur bei Tabellen!</translation>
     </message>
 </context>
 <context>

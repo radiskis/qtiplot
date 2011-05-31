@@ -13739,6 +13739,21 @@ pokud e1 pak e2 jinak e3.</translation>
         <translation>dilog(x):
  Počítá dilogaritmus pro skutečný argument. V zápise Lewinově to je Li_2(x), skutečná (reálná) část dilogaritmu skutečného x.</translation>
     </message>
+    <message>
+        <source>bessel_i0(x):
+  Regular modified cylindrical Bessel function of zeroth order, I_0(x).</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>bessel_i1(x):
+  Regular modified cylindrical Bessel function of first order, I_1(x).</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>bessel_in(double x, int n):
+ Regular modified cylindrical Bessel function of order n, I_n(x).</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>QtColorPicker</name>
