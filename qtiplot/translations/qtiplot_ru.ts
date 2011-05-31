@@ -11369,7 +11369,7 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>X Zoom (%)</source>
-        <translation>Масштабирование по X (%)</translation>
+        <translation type="obsolete">Масштабирование по X (%)</translation>
     </message>
     <message>
         <source>Y</source>
@@ -11377,7 +11377,7 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Y Zoom (%)</source>
-        <translation>Масштабирование по Y (%)</translation>
+        <translation type="obsolete">Масштабирование по Y (%)</translation>
     </message>
     <message>
         <source>Z</source>
@@ -11385,7 +11385,7 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Z Zoom (%)</source>
-        <translation>Масштабирование по Z (%)</translation>
+        <translation type="obsolete">Масштабирование по Z (%)</translation>
     </message>
     <message>
         <source>Zoom (%)</source>
@@ -11510,6 +11510,10 @@ have the same number of rows.</source>
     <message>
         <source>Precision</source>
         <translation>Точность</translation>
+    </message>
+    <message>
+        <source>Rotation</source>
+        <translation type="unfinished">Вращение</translation>
     </message>
 </context>
 <context>

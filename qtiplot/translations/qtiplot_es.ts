@@ -17001,15 +17001,15 @@ Do you want to insert cells?</source>
     </message>
     <message>
         <source>X Zoom (%)</source>
-        <translation type="unfinished">X Zoom (%)</translation>
+        <translation type="obsolete">X Zoom (%)</translation>
     </message>
     <message>
         <source>Y Zoom (%)</source>
-        <translation type="unfinished">Y Zoom (%)</translation>
+        <translation type="obsolete">Y Zoom (%)</translation>
     </message>
     <message>
         <source>Z Zoom (%)</source>
-        <translation type="unfinished">Z Zoom (%)</translation>
+        <translation type="obsolete">Z Zoom (%)</translation>
     </message>
     <message>
         <source>&amp;General</source>
@@ -17190,6 +17190,10 @@ Do you want to insert cells?</source>
     <message>
         <source>Precision</source>
         <translation type="unfinished">Precisión</translation>
+    </message>
+    <message>
+        <source>Rotation</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

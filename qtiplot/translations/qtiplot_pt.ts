@@ -16079,15 +16079,15 @@ s-ésimo zero positivo x_s da função regular cilíndrica de Bessel de ordem n,
     </message>
     <message>
         <source>X Zoom (%)</source>
-        <translation>X Zoom (%)</translation>
+        <translation type="obsolete">X Zoom (%)</translation>
     </message>
     <message>
         <source>Y Zoom (%)</source>
-        <translation>Y Zoom (%)</translation>
+        <translation type="obsolete">Y Zoom (%)</translation>
     </message>
     <message>
         <source>Z Zoom (%)</source>
-        <translation>Z Zoom (%)</translation>
+        <translation type="obsolete">Z Zoom (%)</translation>
     </message>
     <message>
         <source>&amp;General</source>
@@ -16295,6 +16295,10 @@ s-ésimo zero positivo x_s da função regular cilíndrica de Bessel de ordem n,
     </message>
     <message>
         <source>Filled bars</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Rotation</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

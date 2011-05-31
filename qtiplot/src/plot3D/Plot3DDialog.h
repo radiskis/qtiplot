@@ -140,6 +140,7 @@ private:
 	DoubleSpinBox *boxMajorGridWidth, *boxMinorGridWidth;
 	QComboBox *boxMajorGridStyle, *boxMinorGridStyle, *boxTickLabelsFormat;
 	QCheckBox *boxMajorGrids, *boxMinorGrids;
+	DoubleSpinBox *boxXRotation, *boxYRotation, *boxZRotation;
 };
 
 #endif

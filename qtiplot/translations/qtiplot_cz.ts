@@ -11333,15 +11333,15 @@ K tomu lze použít následujících zvláštních kódů:
     </message>
     <message>
         <source>X Zoom (%)</source>
-        <translation>Měřítko x (%)</translation>
+        <translation type="obsolete">Měřítko x (%)</translation>
     </message>
     <message>
         <source>Y Zoom (%)</source>
-        <translation>Měřítko y (%)</translation>
+        <translation type="obsolete">Měřítko y (%)</translation>
     </message>
     <message>
         <source>Z Zoom (%)</source>
-        <translation>Měřítko z (%)</translation>
+        <translation type="obsolete">Měřítko z (%)</translation>
     </message>
     <message>
         <source>Zoom (%)</source>
@@ -11498,6 +11498,10 @@ K tomu lze použít následujících zvláštních kódů:
     <message>
         <source>Precision</source>
         <translation>Přesnost</translation>
+    </message>
+    <message>
+        <source>Rotation</source>
+        <translation type="unfinished">Otáčení</translation>
     </message>
 </context>
 <context>

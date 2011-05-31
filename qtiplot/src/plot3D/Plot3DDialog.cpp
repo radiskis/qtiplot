@@ -377,75 +377,111 @@ void Plot3DDialog::initColorsPage()
 
 void Plot3DDialog::initGeneralPage()
 {
-    QGridLayout *gl1 = new QGridLayout();
-	boxLegend = new QCheckBox(tr("Show Legend"));
-    gl1->addWidget(boxLegend, 0, 0);
-	boxOrthogonal = new QCheckBox(tr("Orthogonal"));
-    gl1->addWidget(boxOrthogonal, 0, 1);
+	ApplicationWindow *app = (ApplicationWindow *)parent();
+	if (!app)
+		return;
 
-    gl1->addWidget(new QLabel(tr( "Line Width" )), 1, 0);
+	QGridLayout *gl1 = new QGridLayout();
+	boxLegend = new QCheckBox(tr("Show Legend"));
+	gl1->addWidget(boxLegend, 0, 0);
+	boxOrthogonal = new QCheckBox(tr("Orthogonal"));
+	gl1->addWidget(boxOrthogonal, 0, 1);
+
+	gl1->addWidget(new QLabel(tr( "Line Width" )), 1, 0);
 	boxMeshLineWidth = new QDoubleSpinBox();
 	boxMeshLineWidth->setDecimals(1);
 	boxMeshLineWidth->setSingleStep(0.1);
 	boxMeshLineWidth->setRange(0, 100);
-    gl1->addWidget(boxMeshLineWidth, 1, 1);
+	gl1->addWidget(boxMeshLineWidth, 1, 1);
 
-    gl1->addWidget(new QLabel( tr( "Resolution" )), 2, 0);
+	gl1->addWidget(new QLabel( tr( "Resolution" )), 2, 0);
 	boxResolution = new QSpinBox();
-    boxResolution->setRange(1, 100);
+	boxResolution->setRange(1, 100);
 	boxResolution->setSpecialValueText( "1 (all data)" );
-    gl1->addWidget(boxResolution, 2, 1);
+	gl1->addWidget(boxResolution, 2, 1);
 
-    gl1->addWidget(new QLabel( tr( "Numbers Font" )), 3, 0);
+	gl1->addWidget(new QLabel( tr( "Numbers Font" )), 3, 0);
 	btnNumbersFont = new QPushButton(tr( "&Font" ));
 	btnNumbersFont->setIcon(QIcon(":/font.png"));
-    gl1->addWidget(btnNumbersFont, 3, 1);
+	gl1->addWidget(btnNumbersFont, 3, 1);
 
-    gl1->addWidget(new QLabel( tr( "Distance labels - axis" )), 4, 0);
+	gl1->addWidget(new QLabel( tr( "Distance labels - axis" )), 4, 0);
 	boxDistance = new QSpinBox();
-    boxDistance->setRange(-1000, 1000);
-    boxDistance->setSingleStep(5);
-    gl1->addWidget(boxDistance, 4, 1);
-    gl1->setRowStretch(5, 1);
+	boxDistance->setRange(-1000, 1000);
+	boxDistance->setSingleStep(5);
+	gl1->addWidget(boxDistance, 4, 1);
 
-    QGroupBox *gb1 = new QGroupBox();
-    gb1->setLayout(gl1);
-
-    QGridLayout *gl2 = new QGridLayout();
-    gl2->addWidget(new QLabel(tr( "Zoom (%)" )), 0, 0);
+	gl1->addWidget(new QLabel(tr( "Zoom (%)" )), 5, 0);
 	boxZoom = new QSpinBox();
-    boxZoom->setRange(1, 10000);
-    boxZoom->setSingleStep(10);
+	boxZoom->setRange(1, 10000);
+	boxZoom->setSingleStep(10);
+	gl1->addWidget(boxZoom, 5, 1);
+	gl1->setRowStretch(6, 1);
 
-    gl2->addWidget(boxZoom, 0, 1);
-    gl2->addWidget(new QLabel(tr( "X Zoom (%)" )), 1, 0);
+	QGroupBox *gb1 = new QGroupBox();
+	gb1->setLayout(gl1);
+
+	QGridLayout *gl2 = new QGridLayout();
+
+	gl2->addWidget(new QLabel(tr( "Zoom (%)" )), 0, 1);
+	gl2->addWidget(new QLabel(tr( "Rotation" )), 0, 2);
+
+	QLabel *xLabel = new QLabel("&" + tr("X"));
+	gl2->addWidget(xLabel, 1, 0);
 	boxXScale = new QSpinBox();
-    boxXScale->setRange(1, 10000);
-    boxXScale->setSingleStep(10);
-    gl2->addWidget(boxXScale, 1, 1);
+	boxXScale->setRange(1, 10000);
+	boxXScale->setSingleStep(10);
+	xLabel->setBuddy(boxXScale);
+	gl2->addWidget(boxXScale, 1, 1);
 
-    gl2->addWidget(new QLabel(tr( "Y Zoom (%)" )), 2, 0);
+	boxXRotation = new DoubleSpinBox('f');
+	boxXRotation->setDecimals(1);
+	boxXRotation->setSingleStep(1.0);
+	boxXRotation->setLocale(app->locale());
+	boxXRotation->setRange(-360, 360);
+	gl2->addWidget(boxXRotation, 1, 2);
+
+	QLabel *yLabel = new QLabel("&" + tr("Y"));
+	gl2->addWidget(yLabel, 2, 0);
 	boxYScale = new QSpinBox();
-    boxYScale->setRange(1, 10000);
-    boxYScale->setSingleStep(10);
-    gl2->addWidget(boxYScale, 2, 1);
+	boxYScale->setRange(1, 10000);
+	boxYScale->setSingleStep(10);
+	gl2->addWidget(boxYScale, 2, 1);
+	yLabel->setBuddy(boxYScale);
 
-    gl2->addWidget(new QLabel(tr( "Z Zoom (%)" )), 3, 0);
+	boxYRotation = new DoubleSpinBox('f');
+	boxYRotation->setDecimals(1);
+	boxYRotation->setSingleStep(1.0);
+	boxYRotation->setLocale(app->locale());
+	boxYRotation->setRange(-360, 360);
+	gl2->addWidget(boxYRotation, 2, 2);
+
+	QLabel *zLabel = new QLabel("&" + tr("Z"));
+	gl2->addWidget(zLabel, 3, 0);
 	boxZScale = new QSpinBox();
-    boxZScale->setRange(1, 10000);
-    boxZScale->setSingleStep(10);
-    gl2->addWidget(boxZScale, 3, 1);
-    gl2->setRowStretch(4, 1);
+	boxZScale->setRange(1, 10000);
+	boxZScale->setSingleStep(10);
+	gl2->addWidget(boxZScale, 3, 1);
+	zLabel->setBuddy(boxZScale);
 
-    QGroupBox *gb2 = new QGroupBox();
-    gb2->setLayout(gl2);
+	gl2->setRowStretch(4, 1);
+
+	boxZRotation = new DoubleSpinBox('f');
+	boxZRotation->setDecimals(1);
+	boxZRotation->setSingleStep(1.0);
+	boxZRotation->setLocale(app->locale());
+	boxZRotation->setRange(-360, 360);
+	gl2->addWidget(boxZRotation, 3, 2);
+
+	QGroupBox *gb2 = new QGroupBox();
+	gb2->setLayout(gl2);
 
 	QHBoxLayout* hl = new QHBoxLayout();
 	hl->addWidget(gb1);
 	hl->addWidget(gb2);
 
-    general = new QWidget();
-    general->setLayout(hl);
+	general = new QWidget();
+	general->setLayout(hl);
 	generalDialog->insertTab(general, tr("&General"));
 
 	connect( boxZoom, SIGNAL(valueChanged(int)), this, SLOT(changeZoom(int)));
@@ -453,6 +489,9 @@ void Plot3DDialog::initGeneralPage()
 	connect( boxYScale, SIGNAL(valueChanged(int)), this, SLOT(changeZoom(int)));
 	connect( boxZScale, SIGNAL(valueChanged(int)), this, SLOT(changeZoom(int)));
 	connect( btnNumbersFont, SIGNAL(clicked()), this, SLOT(pickNumbersFont()));
+	connect( boxXRotation, SIGNAL(valueChanged(double)), this, SLOT(updatePlot()));
+	connect( boxYRotation, SIGNAL(valueChanged(double)), this, SLOT(updatePlot()));
+	connect( boxZRotation, SIGNAL(valueChanged(double)), this, SLOT(updatePlot()));
 }
 
 void Plot3DDialog::enableMajorGrids(bool on)
@@ -689,6 +728,16 @@ void Plot3DDialog::setPlot(Graph3D *g)
 	boxXScale->setValue(100);
 	boxYScale->setValue(100);
 	boxZScale->setValue(100);
+
+	boxXRotation->blockSignals(true);
+	boxXRotation->setValue(g->xRotation());
+	boxXRotation->blockSignals(false);
+	boxYRotation->blockSignals(true);
+	boxYRotation->setValue(g->yRotation());
+	boxYRotation->blockSignals(false);
+	boxZRotation->blockSignals(true);
+	boxZRotation->setValue(g->zRotation());
+	boxZRotation->blockSignals(false);
 
 	boxResolution->setValue(g->resolution());
 	boxLegend->setChecked(g->isLegendOn());
@@ -1086,6 +1135,7 @@ bool Plot3DDialog::updatePlot()
 		d_plot->setNumbersFont(numbersFont);
 		d_plot->setZoom(zoom*boxZoom->value()*0.01);
 		d_plot->setScale(xScale*boxXScale->value()*0.01, yScale*boxYScale->value()*0.01, zScale*boxZScale->value()*0.01);
+		d_plot->setRotation(boxXRotation->value(), boxYRotation->value(), boxZRotation->value());
 	} else if (generalDialog->currentPage() == (QWidget*)scale){
 		double start = qMin(boxFrom->value(), boxTo->value());
 		double end = qMax(boxFrom->value(), boxTo->value());
