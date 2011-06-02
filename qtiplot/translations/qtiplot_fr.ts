@@ -6070,7 +6070,7 @@ Les codes spéciaux suivants peuvent être utilisés :
     </message>
     <message>
         <source>Locally Installed OpenOffice/LibreOffice</source>
-        <translation type="unfinished"></translation>
+        <translation>OpenOffice/LibreOffice installation locale</translation>
     </message>
 </context>
 <context>
@@ -9709,15 +9709,15 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>&amp;Sort data</source>
-        <translation type="unfinished"></translation>
+        <translation>Trier les donnée&amp;s</translation>
     </message>
     <message>
         <source>Show &amp;plot</source>
-        <translation type="unfinished"></translation>
+        <translation>Afficher le &amp;graphe</translation>
     </message>
     <message>
         <source>Show results &amp;table</source>
-        <translation type="unfinished"></translation>
+        <translation>Afficher la &amp;table des résultats</translation>
     </message>
 </context>
 <context>
@@ -11473,7 +11473,7 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Rotation</source>
-        <translation type="unfinished">Rotation</translation>
+        <translation>Rotation</translation>
     </message>
 </context>
 <context>
@@ -12504,7 +12504,7 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Data Drawing Options</source>
-        <translation type="unfinished"></translation>
+        <translation>Options de tracé de points</translation>
     </message>
     <message>
         <source>Co&amp;nnect line across missing data</source>
@@ -12512,23 +12512,23 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>&amp;Grid on top of data</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Grille au dessus des données</translation>
     </message>
     <message>
         <source>&amp;Left</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Gauche</translation>
     </message>
     <message>
         <source>&amp;Right</source>
-        <translation type="unfinished"></translation>
+        <translation>D&amp;roite</translation>
     </message>
     <message>
         <source>&amp;Bottom</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Bas</translation>
     </message>
     <message>
         <source>&amp;Top</source>
-        <translation type="unfinished"></translation>
+        <translation>Hau&amp;t</translation>
     </message>
 </context>
 <context>
@@ -13716,17 +13716,20 @@ Calcule la fonction de distribution cumulée pur une distribution chi² avec df 
     <message>
         <source>bessel_i0(x):
   Regular modified cylindrical Bessel function of zeroth order, I_0(x).</source>
-        <translation type="unfinished"></translation>
+        <translation>bessel_i0(x) :
+  Fonction de bessel cylindrique à l&apos;ordre zéro, I_0(x).</translation>
     </message>
     <message>
         <source>bessel_i1(x):
   Regular modified cylindrical Bessel function of first order, I_1(x).</source>
-        <translation type="unfinished"></translation>
+        <translation>bessel_i1(x) :
+  Fonction de bessel cylindrique à l&apos;ordre un, I_1(x).</translation>
     </message>
     <message>
         <source>bessel_in(double x, int n):
  Regular modified cylindrical Bessel function of order n, I_n(x).</source>
-        <translation type="unfinished"></translation>
+        <translation>bessel_in(double x, int n) :
+  Fonction de bessel cylindrique à l&apos;ordre n, I_n(x).</translation>
     </message>
 </context>
 <context>
