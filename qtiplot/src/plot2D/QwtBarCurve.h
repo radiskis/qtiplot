@@ -58,12 +58,12 @@ public:
 
 	virtual QString saveToString();
 
+	QList <QwtBarCurve *> stackedCurvesList() const;
+	double stackOffset(int i, QList <QwtBarCurve *> stack) const;
+
 private:
 	virtual void draw(QPainter *painter,const QwtScaleMap &xMap,
 		const QwtScaleMap &yMap, int from, int to) const;
-
-	QList <QwtBarCurve *> stackedCurvesList() const;
-	double stackOffset(int i, QList <QwtBarCurve *> stack) const;
 
 protected:
 	int bar_offset;

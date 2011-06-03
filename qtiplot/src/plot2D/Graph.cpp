@@ -3365,31 +3365,31 @@ bool Graph::addCurves(Table* w, const QStringList& names, int style, double lWid
 		}
 	} else {
 		int curves = names.count();
-        int errCurves = 0;
+		int errCurves = 0;
 		QStringList lst = QStringList();
-        for (int i=0; i<curves; i++){//We rearrange the list so that the error bars are placed at the end
-        	int j = w->colIndex(names[i]);
-  	        if (w->colPlotDesignation(j) == Table::xErr || w->colPlotDesignation(j) == Table::yErr ||
+		for (int i=0; i<curves; i++){//We rearrange the list so that the error bars are placed at the end
+			int j = w->colIndex(names[i]);
+			if (w->colPlotDesignation(j) == Table::xErr || w->colPlotDesignation(j) == Table::yErr ||
 				w->colPlotDesignation(j) == Table::Label){
 				errCurves++;
 				lst << names[i];
 			} else
 				lst.prepend(names[i]);
-        }
+		}
 
-		for (int i = 0; i < curves; i++){			
-            int j = w->colIndex(names[i]);
-            PlotCurve *c = NULL;
-            if (w->colPlotDesignation(j) == Table::xErr || w->colPlotDesignation(j) == Table::yErr){
+		for (int i = 0; i < curves; i++){
+			int j = w->colIndex(names[i]);
+			PlotCurve *c = NULL;
+			if (w->colPlotDesignation(j) == Table::xErr || w->colPlotDesignation(j) == Table::yErr){
 				int xcol = w->colX(j);
 				int ycol = w->colY(j, xcol);
 				if (xcol < 0 || ycol < 0)
-                    return false;
+					return false;
 
 				ErrorBarsCurve *er = NULL;
-                if (w->colPlotDesignation(j) == Table::xErr)
+				if (w->colPlotDesignation(j) == Table::xErr)
 					er = addErrorBars(w->colName(xcol), w->colName(ycol), w, names[i], (int)ErrorBarsCurve::Horizontal);
-                else
+				else
 					er = addErrorBars(w->colName(xcol), w->colName(ycol), w, names[i]);
 
 				if (!er)
@@ -3403,18 +3403,18 @@ bool Graph::addCurves(Table* w, const QStringList& names, int style, double lWid
 				int xcol = w->colX(w->colIndex(labelsCol));
 				int ycol = w->colY(w->colIndex(labelsCol), xcol);
 				if (xcol < 0 || ycol < 0)
-                    return false;
+					return false;
 
 				DataCurve* mc = masterCurve(w->colName(xcol), w->colName(ycol));
 				if (mc){
-				    replot();
+					replot();
 					mc->setLabelsColumnName(labelsCol);
 				} else
 					return false;
 			} else
-                c = (PlotCurve *)insertCurve(w, names[i], style, startRow, endRow);
+				c = (PlotCurve *)insertCurve(w, names[i], style, startRow, endRow);
 
-            if (c && c->type() != ErrorBars){
+			if (c && c->type() != ErrorBars){
 				CurveLayout cl = initCurveLayout(style, curves - errCurves);
 				cl.sSize = sSize;
 				cl.lWidth = lWidth;
@@ -4941,7 +4941,7 @@ void Graph::plotBox(Table *w, const QStringList& names, int startRow, int endRow
 	}
 
 	QColor color = Qt::black;
-	for (int j = 0; j <(int)names.count(); j++){
+	for (int j = 0; j < names.count(); j++){
         BoxCurve *c = new BoxCurve(w, names[j], startRow, endRow);
 		insertCurve(c);
 
@@ -4950,7 +4950,7 @@ void Graph::plotBox(Table *w, const QStringList& names, int startRow, int endRow
         c->setData(QwtSingleArrayData(double(j+1), QwtArray<double>(), 0));
         c->loadData();
 		c->setPen(QPen(color, 1));
-		c->setSymbol(QwtSymbol(QwtSymbol::NoSymbol, QBrush(), QPen(color, 1), QSize(7,7)));
+		c->setSymbol(QwtSymbol(QwtSymbol::NoSymbol, QBrush(), QPen(color, 1), QSize(7, 7)));
 	}
 
 	foreach(FrameWidget *fw, d_enrichments){
