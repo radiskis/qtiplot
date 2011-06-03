@@ -107,10 +107,16 @@ void ErrorBarsCurve::drawErrorBars(QPainter *painter,
 
 	double d_xOffset = 0.0;
 	double d_yOffset = 0.0;
-	if (d_master_curve->type() == Graph::VerticalBars)
+
+	QList <QwtBarCurve *> stack;
+	if (d_master_curve->type() == Graph::VerticalBars){
 		d_xOffset = ((QwtBarCurve *)d_master_curve)->dataOffset();
-	else if (d_master_curve->type() == Graph::HorizontalBars)
+		stack = ((QwtBarCurve *)d_master_curve)->stackedCurvesList();
+	} else if (d_master_curve->type() == Graph::HorizontalBars){
 		d_yOffset = ((QwtBarCurve *)d_master_curve)->dataOffset();
+		stack = ((QwtBarCurve *)d_master_curve)->stackedCurvesList();
+	}
+	bool addStackOffset = !stack.isEmpty();
 
 	ScaleEngine *yScaleEngine = (ScaleEngine *)plot()->axisScaleEngine(yAxis());
 	bool logYScale = (yScaleEngine->type() == ScaleTransformation::Log10) ? true : false;
@@ -122,8 +128,17 @@ void ErrorBarsCurve::drawErrorBars(QPainter *painter,
 		skipPoints = 1;
 
 	for (int i = from; i <= to; i += skipPoints){
-		const double xval = x(i);
-		const double yval = y(i);
+		double xStackOffset = 0.0;
+		double yStackOffset = 0.0;
+		if (addStackOffset){
+			if (d_master_curve->type() == Graph::VerticalBars)
+				yStackOffset = ((QwtBarCurve *)d_master_curve)->stackOffset(i, stack);
+			else if (d_master_curve->type() == Graph::HorizontalBars)
+				xStackOffset = ((QwtBarCurve *)d_master_curve)->stackOffset(i, stack);
+		}
+
+		const double xval = x(i) + xStackOffset;
+		const double yval = y(i) + yStackOffset;
 
 		const double xi = xMap.xTransform(xval + d_xOffset);
 		const double yi = yMap.xTransform(yval + d_yOffset);
