@@ -8635,14 +8635,13 @@ void ApplicationWindow::printAllPlots()
 	printer.setColorMode (QPrinter::Color);
 	printer.setFullPage(true);
 
-	if (printer.setup())
-	{
+	if (printer.setup()){
 		QPainter *paint = new QPainter (&printer);
 
 		int plots = 0;
 		QList<MdiSubWindow *> windows = windowsList();
 		foreach(MdiSubWindow *w, windows){
-			if (w->isA("MultiLayer"))
+			if (qobject_cast<MultiLayer*>(w))
 				plots++;
 		}
 
@@ -8650,8 +8649,12 @@ void ApplicationWindow::printAllPlots()
 		printer.setFromTo (0, plots);
 
 		foreach(MdiSubWindow *w, windows){
-			if (w->isA("MultiLayer") && printer.newPage())
-				((MultiLayer*)w)->printAllLayers(paint);
+			MultiLayer *ml = qobject_cast<MultiLayer*>(w);
+			if (ml){
+				ml->printAllLayers(paint);
+				if (w != windows.last())
+					printer.newPage();
+			}
 		}
 		paint->end();
 		delete paint;
@@ -13982,6 +13985,7 @@ void ApplicationWindow::createActions()
 	connect(actionPrintPreview, SIGNAL(activated()), this, SLOT(printPreview()));
 
 	actionPrintAllPlots = new QAction(tr("Print All Plo&ts"), this);
+	actionPrintAllPlots->setShortcut(tr("Ctrl+Shift+P"));
 	connect(actionPrintAllPlots, SIGNAL(activated()), this, SLOT(printAllPlots()));
 
 	actionShowExportASCIIDialog = new QAction(tr("E&xport ASCII..."), this);
@@ -15016,6 +15020,7 @@ void ApplicationWindow::translateActionsStrings()
 	actionPrintPreview->setToolTip(tr("Print preview"));
 
 	actionPrintAllPlots->setMenuText(tr("Print All Plo&ts") + "...");
+	actionPrintAllPlots->setShortcut(tr("Ctrl+Shift+P"));
 	actionShowExportASCIIDialog->setMenuText(tr("E&xport ASCII..."));
 
 	actionCloseAllWindows->setMenuText(tr("&Quit"));
