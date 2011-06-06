@@ -594,18 +594,18 @@ QString LegendWidget::parse(const QString& str)
 		if (!lst.isEmpty()){
 			int lcmd = -1;
 			if (lst.count() >= 2){
-				if (lst[1].contains("@d",Qt::CaseInsensitive)) //look for d cmd (use curve name), default
-					lcmd=0;
-				else if (lst[1].contains("@c",Qt::CaseInsensitive)) //look for c cmd (use column name)
-					lcmd=1;
-				else if (lst[1].contains("@w",Qt::CaseInsensitive)) //look for w cmd (use table name)
-					lcmd=2;
-				else if (lst[1].contains("@wl",Qt::CaseInsensitive)) //look for wl cmd (use table label)
-					lcmd=3;
-				else if (lst[1].contains("@l",Qt::CaseInsensitive)) //look for l cmd (use column comment)
-					lcmd=4;
-				else if (lst[1].contains("@u",Qt::CaseInsensitive)) //look for c cmd (use column comment)
-					lcmd=5;
+				if (lst[1].contains("@d", Qt::CaseInsensitive)) //look for d cmd (use curve name), default
+					lcmd = 0;
+				else if (lst[1].contains("@c", Qt::CaseInsensitive)) //look for c cmd (use column name)
+					lcmd = 1;
+				else if (lst[1].contains("@wl", Qt::CaseInsensitive)) //look for w cmd (use table name)
+					lcmd = 3;
+				else if (lst[1].contains("@w", Qt::CaseInsensitive)) //look for wl cmd (use table label)
+					lcmd = 2;
+				else if (lst[1].contains("@l", Qt::CaseInsensitive)) //look for l cmd (use column comment)
+					lcmd = 4;
+				else if (lst[1].contains("@u", Qt::CaseInsensitive)) //look for c cmd (use column comment)
+					lcmd = 5;
 			}
 
 			int point = 0;

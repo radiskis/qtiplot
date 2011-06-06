@@ -4563,6 +4563,7 @@ void ApplicationWindow::open()
 	if (open_dialog->exec() != QDialog::Accepted || open_dialog->selectedFiles().isEmpty())
 		return;
 	workingDir = open_dialog->directory().path();
+	d_open_project_filter = open_dialog->selectedNameFilter();
 
 	switch(open_dialog->openMode()) {
 		case OpenProjectDialog::NewProject:
@@ -4594,6 +4595,7 @@ void ApplicationWindow::open()
 				ApplicationWindow *a = open (fn);
 				if (a){
 					a->workingDir = workingDir;
+					a->d_open_project_filter = d_open_project_filter;
 					if (isProjectFile(fn)){
 						recentProjects = a->recentProjects;//the recent projects must be saved
 						this->close();
@@ -6741,7 +6743,7 @@ QString ApplicationWindow::getSaveProjectName(const QString& fileName, bool *com
 {
 	QString fn = fileName;
 	if (fileName.isEmpty()){
-		QString filter = tr("QtiPlot project") + " (*.qti);;";
+		QString filter = tr("QtiPlot project") + " (*.qti);";
 		filter += tr("Compressed QtiPlot project") + " (*.qti.gz)";
 
 		QString windowTitle = tr("Save Project As");
@@ -6801,6 +6803,13 @@ void ApplicationWindow::saveWindowAs(const QString& fileName, bool compress)
 
 	QString fn = getSaveProjectName(fileName, &compress, 2);
 	if (!fn.isEmpty()){
+		/*if (w->inherits("Table") && fn.endsWith(".ogw")){
+			ImportExportPlugin *ep = exportPlugin("ogw");
+			if (!ep)
+				return;
+			ep->exportTable((Table *)w, fn, true, true, false);
+			return;
+		}*/
 		if (saveWindow(w, fn, compress))
 			updateRecentProjectsList(fn);
 	}
@@ -16386,7 +16395,6 @@ void ApplicationWindow::appendProject()
 	OpenProjectDialog *open_dialog = new OpenProjectDialog(this, false);
 	open_dialog->setDirectory(workingDir);
 	open_dialog->setExtensionWidget(0);
-	open_dialog->selectNameFilter(d_open_project_filter);
 	if (open_dialog->exec() != QDialog::Accepted || open_dialog->selectedFiles().isEmpty())
 		return;
 	workingDir = open_dialog->directory().path();
