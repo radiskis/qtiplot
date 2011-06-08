@@ -266,6 +266,7 @@ class Graph: public QwtPlot
 		DataCurve* insertCurve(Table* w, const QString& name, int style, int startRow = 0, int endRow = -1);
 		DataCurve* insertCurve(Table* w, int xcol, const QString& name, int style);
 		DataCurve* insertCurve(Table* w, const QString& xColName, const QString& yColName, int style, int startRow = 0, int endRow = -1);
+		DataCurve* insertCurve(Table* xt, const QString& xColName, Table* yt, const QString& yColName, int style, int startRow = 0, int endRow = -1);
 		void insertPlotItem(QwtPlotItem *i, int type);
 		void insertCurve(QwtPlotItem *c);
 

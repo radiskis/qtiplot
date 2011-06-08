@@ -3526,6 +3526,54 @@ DataCurve* Graph::insertCurve(Table* w, const QString& xColName, const QString& 
 	return c;
 }
 
+DataCurve* Graph::insertCurve(Table* xt, const QString& xColName, Table* yt, const QString& yColName, int style, int startRow, int endRow)
+{
+	if (!xt || !yt)
+		return NULL;
+
+	int xcol = xt->colIndex(xColName);
+	int ycol = yt->colIndex(yColName);
+	if (xcol < 0 || ycol < 0)
+		return NULL;
+
+	if (endRow < 0)
+		endRow = yt->numRows() - 1;
+
+	int xAxis = QwtPlot::xBottom;
+	if (style == HorizontalBars)
+		xAxis = QwtPlot::yLeft;
+
+	int size = 0;
+	for (int i = startRow; i <= endRow; i++ ){
+		if (!xt->text(i, xcol).isEmpty() && !yt->text(i, ycol).isEmpty()){
+			size++;
+			break;
+		}
+	}
+	if (!size)
+		return NULL;
+
+	DataCurve *c = new DataCurve(xt, xColName, yt, yColName, startRow, endRow);
+	insertCurve(c);
+	c->setPlotStyle(style);
+
+	CurveLayout cl = initCurveLayout(style, 0, false);
+	updateCurveLayout(c, &cl);
+
+	c->loadData();
+	c->enableSpeedMode();
+
+	int xColType = xt->columnType(xcol);
+	ScaleDraw *sd = (ScaleDraw *)axisScaleDraw(xAxis);
+	if (xColType == Table::Time && sd && sd->scaleType() != ScaleDraw::Time)
+		setLabelsDateTimeFormat(xAxis, ScaleDraw::Time, xt->columnFormat(xcol));
+	else if (xColType == Table::Date && sd && sd->scaleType() != ScaleDraw::Date)
+		setLabelsDateTimeFormat(xAxis, ScaleDraw::Date, xt->columnFormat(xcol));
+
+	addLegendItem();
+	return c;
+}
+
 QwtHistogram* Graph::addHistogram(Matrix *m)
 {
 	if (!m)
@@ -4826,18 +4874,19 @@ void Graph::copyCurves(Graph* g)
 			DataCurve *cv = (DataCurve *)it;
 			int n = cv->dataSize();
 			int style = ((PlotCurve *)it)->type();
+			Table *t = cv->table();
 
 			PlotCurve *c = 0;
 			if (style == Pie){
-				c = new PieCurve(cv->table(), cv->title().text(), cv->startRow(), cv->endRow());
+				c = new PieCurve(t, cv->title().text(), cv->startRow(), cv->endRow());
 				insertCurve(c);
 			} else if (style == Function) {
 				c = new FunctionCurve(cv->title().text());
 				insertCurve(c);
 				((FunctionCurve*)c)->copy((FunctionCurve*)cv);
 				((FunctionCurve*)c)->loadData(n);
-			} else if (style == VerticalBars || style == HorizontalBars) {
-				c = new QwtBarCurve(((QwtBarCurve*)cv)->orientation(), cv->table(), cv->xColumnName(),
+			} else if (style == VerticalBars || style == HorizontalBars){
+				c = new QwtBarCurve(((QwtBarCurve*)cv)->orientation(), t, cv->xColumnName(),
 									cv->title().text(), cv->startRow(), cv->endRow());
                 insertCurve(c);
 				((QwtBarCurve*)c)->copy((QwtBarCurve*)cv);
@@ -4845,31 +4894,31 @@ void Graph::copyCurves(Graph* g)
 				ErrorBarsCurve *er = (ErrorBarsCurve*)cv;
 				DataCurve *master_curve = masterCurve(er);
 				if (master_curve){
-					c = new ErrorBarsCurve(cv->table(), cv->title().text());
+					c = new ErrorBarsCurve(t, cv->title().text());
 					insertCurve(c);
 					((ErrorBarsCurve*)c)->copy(er);
 					((ErrorBarsCurve*)c)->setMasterCurve(master_curve);
 				}
-			} else if (style == Histogram) {
+			} else if (style == Histogram){
 			    QwtHistogram *h = (QwtHistogram*)cv;
 				if (h->matrix())
 					c = new QwtHistogram(h->matrix());
 				else
-					c = new QwtHistogram(cv->table(), cv->title().text(), cv->startRow(), cv->endRow());
+					c = new QwtHistogram(t, cv->title().text(), cv->startRow(), cv->endRow());
 				insertCurve(c);
 				((QwtHistogram *)c)->copy(h);
-			} else if (style == VectXYXY || style == VectXYAM) {
+			} else if (style == VectXYXY || style == VectXYAM){
 				VectorCurve::VectorStyle vs = VectorCurve::XYXY;
 				if (style == VectXYAM)
 					vs = VectorCurve::XYAM;
-				c = new VectorCurve(vs, cv->table(), cv->xColumnName(), cv->title().text(),
+				c = new VectorCurve(vs, t, cv->xColumnName(), cv->title().text(),
 									((VectorCurve *)cv)->vectorEndXAColName(),
 									((VectorCurve *)cv)->vectorEndYMColName(),
 									cv->startRow(), cv->endRow());
                 insertCurve(c);
 				((VectorCurve *)c)->copy((const VectorCurve *)cv);
-			} else if (style == Box) {
-				c = new BoxCurve(cv->table(), cv->title().text(), cv->startRow(), cv->endRow());
+			} else if (style == Box){
+				c = new BoxCurve(t, cv->title().text(), cv->startRow(), cv->endRow());
 				insertCurve(c);
 
 				QVector<double> y(n);
@@ -4879,7 +4928,10 @@ void Graph::copyCurves(Graph* g)
 				c->setData(dat);
 				((BoxCurve*)c)->copy((BoxCurve *)cv);
 			} else {
-				c = new DataCurve(cv->table(), cv->xColumnName(), cv->title().text(), cv->startRow(), cv->endRow());
+				if (t != cv->xTable())
+					c = new DataCurve(cv->xTable(), cv->xColumnName(), t, cv->title().text(), cv->startRow(), cv->endRow());
+				else
+					c = new DataCurve(t, cv->xColumnName(), cv->title().text(), cv->startRow(), cv->endRow());
 				insertCurve(c);
 			}
 			if (c->type() != Box && c->type() != ErrorBars && c->type() != Function){

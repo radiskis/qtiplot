@@ -3782,8 +3782,7 @@ MdiSubWindow* ApplicationWindow::window(const QString& name)
 Table* ApplicationWindow::table(const QString& name)
 {
 	QString caption = name.left(name.lastIndexOf("_"));
-
-    Folder *f = projectFolder();
+	Folder *f = projectFolder();
 	while (f){
 		QList<MdiSubWindow *> folderWindows = f->windowsList();
 		foreach(MdiSubWindow *w, folderWindows){
@@ -12627,7 +12626,7 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot, co
 					ag->plotPie(table, curve[1], pen, curve[5].toInt(),
 						curve[6].toInt(), first_color, startRow, endRow, visible);
 			}
-		}else if (s.left(6)=="curve\t"){
+		} else if (s.left(6) == "curve\t"){
 			QStringList curve = s.split("\t", QString::SkipEmptyParts);
 			if (!app->renamedTables.isEmpty()){
 				QString caption = (curve[2]).left((curve[2]).lastIndexOf("_"));
@@ -12664,11 +12663,20 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot, co
 			else
 				cl.penWidth = cl.lWidth;
 
-            int plotType = curve[3].toInt();
+			int plotType = curve[3].toInt();
+			int size = curve.count();
 			Table *w = app->table(curve[2]);
+			Table *xt = app->table(curve[1]);
 			PlotCurve *c = NULL;
-			if (w){
-				if(plotType == Graph::VectXYXY || plotType == Graph::VectXYAM){
+			if (xt && w && xt != w){
+				c = (PlotCurve *)ag->insertCurve(xt, curve[1], w, curve[2], plotType, curve[size - 3].toInt(), curve[size - 2].toInt());
+				ag->updateCurveLayout(c, &cl);
+				if (c && c->rtti() == QwtPlotItem::Rtti_PlotCurve){
+					c->setAxis(curve[size - 5].toInt(), curve[size - 4].toInt());
+					c->setVisible(curve.last().toInt());
+				}
+			} else if (w){
+				if (plotType == Graph::VectXYXY || plotType == Graph::VectXYAM){
 					QStringList colsList;
 					colsList<<curve[2]; colsList<<curve[20]; colsList<<curve[21];
 					if (d_file_version < 72)
@@ -12679,8 +12687,8 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot, co
 					int startRow = 0;
 					int endRow = -1;
 					if (d_file_version >= 90){
-						startRow = curve[curve.count()-3].toInt();
-						endRow = curve[curve.count()-2].toInt();
+						startRow = curve[size - 3].toInt();
+						endRow = curve[size - 2].toInt();
 					}
 
 					c = (PlotCurve *)ag->plotVectors(w, colsList, plotType, startRow, endRow);
@@ -12704,11 +12712,8 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot, co
 						c = (PlotCurve *)ag->insertCurve(w, curve[1].toInt(), curve[2], plotType);
 					else if (d_file_version < 90)
 						c = (PlotCurve *)ag->insertCurve(w, curve[1], curve[2], plotType);
-					else {
-						int startRow = curve[curve.count()-3].toInt();
-						int endRow = curve[curve.count()-2].toInt();
-						c = (PlotCurve *)ag->insertCurve(w, curve[1], curve[2], plotType, startRow, endRow);
-					}
+					else
+						c = (PlotCurve *)ag->insertCurve(w, curve[1], curve[2], plotType, curve[size - 3].toInt(), curve[size - 2].toInt());
 				}
 
 				if(plotType == Graph::Histogram){
@@ -12731,9 +12736,9 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot, co
 				if (d_file_version >= 88){
 					if (c && c->rtti() == QwtPlotItem::Rtti_PlotCurve){
 						if (d_file_version < 90)
-							c->setAxis(curve[curve.count()-2].toInt(), curve[curve.count()-1].toInt());
+							c->setAxis(curve[size - 2].toInt(), curve[size - 1].toInt());
 						else {
-							c->setAxis(curve[curve.count()-5].toInt(), curve[curve.count()-4].toInt());
+							c->setAxis(curve[size - 5].toInt(), curve[size - 4].toInt());
 							c->setVisible(curve.last().toInt());
 						}
 					}

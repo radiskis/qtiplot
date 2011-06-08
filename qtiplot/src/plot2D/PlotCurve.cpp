@@ -385,6 +385,7 @@ void PlotCurve::drawSideLines(QPainter *p, const QwtScaleMap &xMap, const QwtSca
 DataCurve::DataCurve(Table *t, const QString& xColName, const QString& name, int startRow, int endRow):
     PlotCurve(name),
 	d_table(t),
+	d_x_table(t),
 	d_x_column(xColName),
 	d_start_row(startRow),
 	d_end_row(endRow),
@@ -401,6 +402,28 @@ DataCurve::DataCurve(Table *t, const QString& xColName, const QString& name, int
 {
 	if (t && d_end_row < 0)
 		d_end_row = t->numRows() - 1;
+}
+
+DataCurve::DataCurve(Table *xt, const QString& xColName, Table *yt, const QString& name, int startRow, int endRow):
+	PlotCurve(name),
+	d_table(yt),
+	d_x_table(xt),
+	d_x_column(xColName),
+	d_start_row(startRow),
+	d_end_row(endRow),
+	d_labels_column(QString()),
+	d_labels_color(Qt::black),
+	d_labels_font(QFont()),
+	d_labels_angle(0.0),
+	d_white_out_labels(false),
+	d_show_labels(false),
+	d_labels_align(Qt::AlignHCenter),
+	d_labels_x_offset(0),
+	d_labels_y_offset(50),
+	d_selected_label(NULL)
+{
+	if (yt && d_end_row < 0)
+		d_end_row = yt->numRows() - 1;
 }
 
 void DataCurve::setRowRange(int startRow, int endRow)
@@ -521,7 +544,7 @@ void DataCurve::loadData()
 	if (!g)
 		return;
 
-	int xcol = d_table->colIndex(d_x_column);
+	int xcol = d_x_table->colIndex(d_x_column);
 	int ycol = d_table->colIndex(title().text());
 
 	if (xcol < 0 || ycol < 0){
@@ -531,7 +554,7 @@ void DataCurve::loadData()
 
 	int r = abs(d_end_row - d_start_row) + 1;
     QVarLengthArray<double> X(r), Y(r);
-	int xColType = d_table->columnType(xcol);
+	int xColType = d_x_table->columnType(xcol);
 	int yColType = d_table->columnType(ycol);
 
 	QStringList xLabels, yLabels;// store text labels
@@ -544,7 +567,7 @@ void DataCurve::loadData()
 	int size = 0, from = 0;
 	d_data_ranges.clear();
 	for (int i = d_start_row; i <= d_end_row; i++ ){
-		QString xval = d_table->text(i, xcol);
+		QString xval = d_x_table->text(i, xcol);
 		QString yval = d_table->text(i, ycol);
 		if (!xval.isEmpty() && !yval.isEmpty()){
 			bool valid_data = true;
