@@ -59,8 +59,10 @@ ImageExportDialog::ImageExportDialog(MdiSubWindow *window, QWidget * parent, boo
 	list << "PDF";
 	list << "SVG";
 
+#ifdef Q_OS_WIN
 	if (!qobject_cast<Graph3D *> (d_window))
 		list << "EMF";
+#endif
 
 #ifdef TEX_OUTPUT
 	if (qobject_cast<MultiLayer *> (d_window))
