@@ -105,6 +105,7 @@ public:
     };
 
 	DataCurve(Table *t, const QString& xColName, const QString& name, int startRow = 0, int endRow = -1);
+	DataCurve(Table *xt, const QString& xColName, Table *yt, const QString& name, int startRow = 0, int endRow = -1);
     void clone(DataCurve* c);
 
     virtual QString saveToString();
@@ -137,6 +138,7 @@ public:
     void setLabelsWhiteOut(bool whiteOut = true);
 
 	Table* table(){return d_table;};
+	Table* xTable(){return d_x_table;};
 
 	int startRow(){return d_start_row;};
 	int endRow(){return d_end_row;};
@@ -201,6 +203,8 @@ protected:
 	QList <ErrorBarsCurve *> d_error_bars;
 	//! The data source table.
 	Table *d_table;
+	//! The data source table in case X and Y datasets are from different tables.
+	Table *d_x_table;
 	//!\brief The name of the column used for abscissae values.
 	/*
 	 *The column name used for Y values is stored in title().text().

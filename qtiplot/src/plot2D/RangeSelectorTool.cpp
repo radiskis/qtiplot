@@ -180,7 +180,8 @@ void RangeSelectorTool::emitStatusText()
     } else {
 		DataCurve *c = (DataCurve*)d_selected_curve;
 		Table *t = c->table();
-		if (!t)
+		Table *xt = c->xTable();
+		if (!t || !xt)
 			return;
 
 		int row = c->tableRow(d_active_point);
@@ -192,10 +193,10 @@ void RangeSelectorTool::emitStatusText()
 		if (app)
 			prec = app->d_decimal_digits;
 
-		int xcol = t->colIndex(c->xColumnName());
+		int xcol = xt->colIndex(c->xColumnName());
 		QString xs = locale.toString(x - c->xOffset(), 'G', prec);
-		if (t->columnType(xcol) != Table::Numeric)
-			xs = t->text(row, xcol);
+		if (xt->columnType(xcol) != Table::Numeric)
+			xs = xt->text(row, xcol);
 
 		int ycol = t->colIndex(c->title().text());
 		QString ys = locale.toString(y - c->yOffset(), 'G', prec);

@@ -140,11 +140,12 @@ void DataPickerTool::setSelection(QwtPlotCurve *curve, int point_index)
 		DataCurve *c = (DataCurve*)d_selected_curve;
 		int row = c->tableRow(d_selected_point);
 		Table *t = c->table();
-		if (t){
-			int xcol = t->colIndex(c->xColumnName());
+		Table *xt = c->xTable();
+		if (t && xt){
+			int xcol = xt->colIndex(c->xColumnName());
 			QString xs = locale.toString(c->x(d_selected_point) - c->xOffset(), 'G', d_app->d_decimal_digits);
-			if (t->columnType(xcol) != Table::Numeric)
-				xs = t->text(row, xcol);
+			if (xt->columnType(xcol) != Table::Numeric)
+				xs = xt->text(row, xcol);
 
 			int ycol = t->colIndex(c->title().text());
 			QString ys = locale.toString(c->y(d_selected_point) - c->yOffset(), 'G', d_app->d_decimal_digits);
