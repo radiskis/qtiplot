@@ -2237,10 +2237,8 @@ void ApplicationWindow::updateColNames(const QString& oldName, const QString& ne
 	foreach (MdiSubWindow *w, windows){
 		if (w->isA("MultiLayer")){
 			QList<Graph *> layers = ((MultiLayer*)w)->layersList();
-			foreach(Graph *g, layers){
-				g->updateAxesTitles();
+			foreach(Graph *g, layers)
 				g->updateCurveNames(oldName, newName, false);
-			}
 		} else if (w->isA("Graph3D")){
 			QString name = ((Graph3D*)w)->formula();
 			if (name.contains(oldName)){
