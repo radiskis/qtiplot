@@ -84,6 +84,8 @@ TextDialog::TextDialog(TextType type, QWidget* parent, Qt::WFlags fl)
 		topLayout->addWidget(new QLabel(tr("Distance to axis")), 2, 0);
 		distanceBox = new QSpinBox();
 		distanceBox->setRange(0, 1000);
+		connect(distanceBox, SIGNAL(valueChanged(int)), this, SLOT(apply()));
+
 		topLayout->addWidget(distanceBox, 2, 1);
 		invertTitleBox = new QCheckBox(tr("&Inverted"));
 		invertTitleBox->hide();
@@ -116,7 +118,7 @@ TextDialog::TextDialog(TextType type, QWidget* parent, Qt::WFlags fl)
 	textEditBox = new QTextEdit();
 	textEditBox->setTextFormat(Qt::PlainText);
 
-	formatButtons =  new TextFormatButtons(textEditBox, TextFormatButtons::AxisLabel);
+	formatButtons = new TextFormatButtons(textEditBox, TextFormatButtons::AxisLabel);
 
 	setFocusPolicy(Qt::StrongFocus);
 	setFocusProxy(textEditBox);
@@ -130,6 +132,8 @@ TextDialog::TextDialog(TextType type, QWidget* parent, Qt::WFlags fl)
 	connect( buttonApply, SIGNAL( clicked() ), this, SLOT( apply() ) );
 	connect( buttonCancel, SIGNAL( clicked() ), this, SLOT( reject() ) );
 	connect( buttonFont, SIGNAL( clicked() ), this, SLOT(customFont() ) );
+	connect( colorBtn, SIGNAL(colorChanged()), this, SLOT(apply()));
+	connect( alignmentBox, SIGNAL(activated(int)), this, SLOT(apply()));
 }
 
 void TextDialog::setGraph(Graph *g)
@@ -171,7 +175,9 @@ void TextDialog::setGraph(Graph *g)
 			break;
 		}
 
+		distanceBox->blockSignals(true);
 		distanceBox->setValue(d_scale->spacing());
+		distanceBox->blockSignals(false);
 	}
 
 	setAlignment(l.renderFlags());
@@ -180,7 +186,10 @@ void TextDialog::setGraph(Graph *g)
 	else
 		setText(l.text());
 	selectedFont = l.font();
+
+	colorBtn->blockSignals(true);
 	colorBtn->setColor(l.color());
+	colorBtn->blockSignals(false);
 
 	QFont fnt = selectedFont;
 	fnt.setPointSize(QFont().pointSize() + 2);
@@ -330,8 +339,8 @@ int TextDialog::alignment()
 
 void TextDialog::setAlignment(int align)
 {
-	switch(align)
-	{
+	alignmentBox->blockSignals(true);
+	switch(align){
 		case Qt::AlignHCenter:
 			alignmentBox->setCurrentIndex(0);
 			break;
@@ -342,6 +351,7 @@ void TextDialog::setAlignment(int align)
 			alignmentBox->setCurrentIndex(2);
 			break;
 	}
+	alignmentBox->blockSignals(false);
 }
 
 void TextDialog::customFont()
@@ -353,6 +363,7 @@ void TextDialog::customFont()
 
 		fnt.setPointSize(QFont().pointSize() + 2);
 		textEditBox->setFont(fnt);
+		apply();
 	}
 }
 
