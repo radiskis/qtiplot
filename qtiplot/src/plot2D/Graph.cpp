@@ -5622,6 +5622,7 @@ void Graph::updateCurveNames(const QString& oldName, const QString& newName, boo
             c->updateColumnNames(oldName, newName, updateTableName);
 	}
 
+	updateAxesTitles();
 	replot();
 }
 
