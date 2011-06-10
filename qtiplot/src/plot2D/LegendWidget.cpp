@@ -646,7 +646,10 @@ QString LegendWidget::parse(const QString& str)
 							break;
 						}
 						case 3: // table label
-							s = s.replace(pos, pos2-pos+1, t->windowLabel());
+							if (!t->windowLabel().isEmpty())
+								s = s.replace(pos, pos2-pos+1, t->windowLabel());
+							else
+								s = s.replace(pos, pos2-pos+1, colLabel);
 							break;
 						case 5: //not implemented yet, use case 4 (L) instead
 						case 4: //use col comment for 2 arguments, use cell contents for 3 arguments

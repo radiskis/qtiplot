@@ -2237,10 +2237,11 @@ void ApplicationWindow::updateColNames(const QString& oldName, const QString& ne
 	foreach (MdiSubWindow *w, windows){
 		if (w->isA("MultiLayer")){
 			QList<Graph *> layers = ((MultiLayer*)w)->layersList();
-			foreach(Graph *g, layers)
-                g->updateCurveNames(oldName, newName, false);
-		}
-		else if (w->isA("Graph3D")){
+			foreach(Graph *g, layers){
+				g->updateAxesTitles();
+				g->updateCurveNames(oldName, newName, false);
+			}
+		} else if (w->isA("Graph3D")){
 			QString name = ((Graph3D*)w)->formula();
 			if (name.contains(oldName)){
 				name.replace(oldName,newName);
@@ -7956,13 +7957,12 @@ void ApplicationWindow::plotDoubleYAxis()
 	if (ml){
 		Graph *g = ml->activeLayer();
 		g->enableAxis(QwtPlot::yRight);
-		g->setAxisTitle(QwtPlot::yRight, tr("Y2 Axis Title"));
-
 		QwtPlotCurve *c = g->curve(cols - 1);
 		if (c){
 			c->setYAxis(QwtPlot::yRight);
 			g->setAutoScale();
 		}
+		g->updateAxisTitle(QwtPlot::yRight);
 	}
 }
 

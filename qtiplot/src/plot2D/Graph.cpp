@@ -154,7 +154,7 @@ Graph::Graph(int x, int y, int width, int height, QWidget* parent, Qt::WFlags f)
 	d_min_tick_length = 5;
 	d_maj_tick_length = 9;
 
-	d_axis_titles << "%(?Y)" << "" << "%(?X)" << "";
+	d_axis_titles << "%(?Y)" << "%(?Y)" << "%(?X)" << "";
 	updateAxesTitles();
 
 	// grid
@@ -1190,7 +1190,19 @@ QString Graph::parseAxisTitle(int axis)
 	QString name = QString::null;
 	QString comment = QString::null;
 	if (s.contains("%(?Y)", Qt::CaseInsensitive)){// parse Origin tag
-		PlotCurve *c = curve(0);
+		PlotCurve *c = NULL;
+		int index = -1;
+		for (int i = 0; i < d_curves.size(); i++){
+			PlotCurve *cv = curve(i);
+			if (cv && cv->yAxis() == axis){
+				c = cv;
+				index = i;
+				break;
+			}
+		}
+		if (!c)
+			c = curve(0);
+
 		if (c){
 			name = c->title().text();
 			int pos = name.lastIndexOf("_");
@@ -1198,7 +1210,7 @@ QString Graph::parseAxisTitle(int axis)
 				name = name.right(name.length() - pos - 1);
 
 			if (d_axis_title_policy > 1){
-				DataCurve *dc = dataCurve(0);
+				DataCurve *dc = dataCurve(index);
 				if (dc){
 					Table *t = dc->table();
 					if (t)
@@ -3674,6 +3686,14 @@ void Graph::updateAxesTitles()
 {
 	for (int i = 0; i < QwtPlot::axisCnt; i++)
 		((QwtPlot *)this)->setAxisTitle(i, parseAxisTitle(i));
+}
+
+void Graph::updateAxisTitle(int axis)
+{
+	if (axis < 0 || axis >= QwtPlot::axisCnt)
+		return;
+
+	((QwtPlot *)this)->setAxisTitle(axis, parseAxisTitle(axis));
 }
 
 void Graph::updatePlot()

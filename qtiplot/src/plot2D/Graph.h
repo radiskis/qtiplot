@@ -541,6 +541,7 @@ class Graph: public QwtPlot
 		void setAxisTitleString(int axis, const QString& text);
 		void setAxisTitle(int axis, const QString& text);
 		void updateAxesTitles();
+		void updateAxisTitle(int axis);
 		//! TODO: eliminate this function in version 0.9.1 (used only when restoring project files)
 		void setScaleTitle(int axis, const QString& text);
 

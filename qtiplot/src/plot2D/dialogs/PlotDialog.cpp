@@ -3496,6 +3496,7 @@ bool PlotDialog::acceptParams()
 		plotItem->setAxis(boxXAxis->currentIndex() + 2, boxYAxis->currentIndex());
 		if (graph->isAutoscalingEnabled())
 			graph->setAutoScale();
+		graph->updateAxesTitles();
 		return true;
 	} else if (privateTabWidget->currentPage() == spectroValuesPage){
   		Spectrogram *sp = (Spectrogram *)plotItem;
