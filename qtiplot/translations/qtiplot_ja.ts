@@ -919,10 +919,6 @@ Various parts of this file may not be displayed as expected.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Y2 Axis Title</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Not available for empty 3D surface plots!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4588,6 +4584,10 @@ Autocompletion will not be available!</source>
     </message>
     <message>
         <source>Align Right</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ctrl+Shift+P</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

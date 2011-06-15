@@ -8242,7 +8242,7 @@ den första representerar signalen och den andra svarsfunktionen!</translation>
     </message>
     <message>
         <source>Y2 Axis Title</source>
-        <translation>Y2-axeltitel</translation>
+        <translation type="obsolete">Y2-axeltitel</translation>
     </message>
     <message>
         <source>You must have more than one layer in the active window!</source>
@@ -8724,6 +8724,10 @@ Automatisk komplettering ej tillgängligt!</translation>
     </message>
     <message>
         <source>Align Right</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ctrl+Shift+P</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
