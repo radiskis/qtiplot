@@ -626,7 +626,10 @@ QString LegendWidget::parse(const QString& str)
 					switch(lcmd){
 						case -1: //use column name
 						{
-							s = s.replace(pos, pos2-pos+1, colLabel);
+							if (ycol >= 0 && !t->comment(ycol).isEmpty())
+								s = s.replace(pos, pos2-pos+1, t->comment(ycol));
+							else
+								s = s.replace(pos, pos2-pos+1, colLabel);
 							break;
 						}
 						case 0: //use curve title

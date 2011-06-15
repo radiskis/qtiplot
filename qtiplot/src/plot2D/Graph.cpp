@@ -1227,7 +1227,9 @@ QString Graph::parseAxisTitle(int axis)
 				break;
 				case ColComment:
 					if (!comment.isEmpty())
-						s.replace("%(?Y)", comment, Qt::CaseInsensitive);;
+						s.replace("%(?Y)", comment, Qt::CaseInsensitive);
+					else
+						s.replace("%(?Y)", name, Qt::CaseInsensitive);
 				break;
 				case NameAndComment:
 					if (!comment.isEmpty())
@@ -1263,8 +1265,10 @@ QString Graph::parseAxisTitle(int axis)
 				  s.replace("%(?X)", name, Qt::CaseInsensitive);
 				break;
 				case ColComment:
-				  if (!comment.isEmpty())
-					  s.replace("%(?X)", comment, Qt::CaseInsensitive);;
+					if (!comment.isEmpty())
+						s.replace("%(?X)", comment, Qt::CaseInsensitive);
+					else
+						s.replace("%(?X)", name, Qt::CaseInsensitive);
 				break;
 				case NameAndComment:
 				  if (!comment.isEmpty())
@@ -2087,6 +2091,9 @@ QString Graph::legendText(bool layerSpec, int fromIndex)
 					mode = app->d_graph_legend_display;
 
 				switch(mode){
+					case ColumnName:
+						text += ",@C";
+					break;
 					case ColumnComment:
 						text += ",@L";
 					break;

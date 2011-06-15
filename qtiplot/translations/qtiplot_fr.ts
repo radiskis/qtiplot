@@ -3536,7 +3536,7 @@ La première représente le signal et la seconde, la réponse de la fonction !</
     </message>
     <message>
         <source>Y2 Axis Title</source>
-        <translation>Axe Y2 </translation>
+        <translation type="obsolete">Axe Y2 </translation>
     </message>
     <message>
         <source>You must have more than one layer in the active window!</source>
@@ -4169,6 +4169,10 @@ L&apos;autocomplétion ne sera pas disponible !</translation>
     <message>
         <source>Align Right</source>
         <translation>Alignement à droite</translation>
+    </message>
+    <message>
+        <source>Ctrl+Shift+P</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

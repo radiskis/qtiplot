@@ -6291,10 +6291,6 @@ Varias partes de este archivo pueden no mostrarse como se esperaba.</translation
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Y2 Axis Title</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Paste Selection as Te&amp;xt</source>
         <translation type="unfinished"></translation>
     </message>
@@ -8470,6 +8466,10 @@ Autocompletion will not be available!</source>
     </message>
     <message>
         <source>Align Right</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ctrl+Shift+P</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

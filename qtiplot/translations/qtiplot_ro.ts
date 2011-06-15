@@ -4468,7 +4468,7 @@ Diverse părţi din acest fişier ar putea fi afişate incorect.</translation>
     </message>
     <message>
         <source>Y2 Axis Title</source>
-        <translation>Titlu Axă Y2 </translation>
+        <translation type="obsolete">Titlu Axă Y2 </translation>
     </message>
     <message>
         <source>Not available for empty 3D surface plots!</source>
@@ -7646,6 +7646,10 @@ Autocompletion will not be available!</source>
     <message>
         <source>Align Right</source>
         <translation>Aliniere la dreapta</translation>
+    </message>
+    <message>
+        <source>Ctrl+Shift+P</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

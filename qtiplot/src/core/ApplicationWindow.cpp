@@ -644,7 +644,7 @@ void ApplicationWindow::setDefaultOptions()
 	antialiasing2DPlots = false;
 	d_scale_plots_on_print = false;
 	d_print_cropmarks = false;
-	d_graph_legend_display = Graph::ColumnName;
+	d_graph_legend_display = Graph::Auto;
 	d_graph_attach_policy = FrameWidget::Scales;
 	d_graph_axis_labeling = Graph::Default;
 	d_synchronize_graph_scales = true;

@@ -2334,7 +2334,7 @@ První představuje funkci signálu a druhý funkci odpovědi!</translation>
     </message>
     <message>
         <source>Y2 Axis Title</source>
-        <translation>Název osy Y2</translation>
+        <translation type="obsolete">Název osy Y2</translation>
     </message>
     <message>
         <source>S&amp;creen Reader</source>
@@ -4146,6 +4146,10 @@ Různé části tohoto souboru se nemusí zobrazovat tak, jak se očekává.</tr
     <message>
         <source>Align Right</source>
         <translation>Zarovnat vpravo</translation>
+    </message>
+    <message>
+        <source>Ctrl+Shift+P</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

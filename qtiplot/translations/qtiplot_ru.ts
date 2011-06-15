@@ -3603,7 +3603,7 @@ Autocompletion will not be available!</source>
     </message>
     <message>
         <source>Y2 Axis Title</source>
-        <translation>Подпись оси Y2</translation>
+        <translation type="obsolete">Подпись оси Y2</translation>
     </message>
     <message>
         <source>You must have more than one layer in the active window!</source>
@@ -4163,6 +4163,10 @@ Autocompletion will not be available!</source>
     </message>
     <message>
         <source>Align Right</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ctrl+Shift+P</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

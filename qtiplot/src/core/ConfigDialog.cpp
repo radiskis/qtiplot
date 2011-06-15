@@ -1866,6 +1866,7 @@ void ConfigDialog::languageChange()
 
 	legendDisplayLabel->setText(tr("Legend display" ));
 	legendDisplayBox->clear();
+	legendDisplayBox->addItem(tr("Default"));
 	legendDisplayBox->addItem(tr("Column name"));
 	legendDisplayBox->addItem(tr("Column comment"));
 	legendDisplayBox->addItem(tr("Table name"));
