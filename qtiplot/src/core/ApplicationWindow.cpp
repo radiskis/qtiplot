@@ -4640,8 +4640,13 @@ bool ApplicationWindow::isFileReadable(const QString& file_name)
 
 ApplicationWindow* ApplicationWindow::open(const QString& fn, bool factorySettings, bool newProject)
 {
-	if (!this->isFileReadable(fn))
+	if (!this->isFileReadable(fn)){
+		if (recentProjects.contains(fn)){
+			recentProjects.removeAll(fn);
+			updateRecentProjectsList();
+		}
 		return NULL;
+	}
 
 	if (fn.endsWith(".opj", Qt::CaseInsensitive) || fn.endsWith(".ogm", Qt::CaseInsensitive) ||
 		fn.endsWith(".ogw", Qt::CaseInsensitive) || fn.endsWith(".ogg", Qt::CaseInsensitive))
@@ -15757,11 +15762,11 @@ ApplicationWindow* ApplicationWindow::importOPJ(const QString& filename, bool fa
 		return 0;
 
 	if (filename.endsWith(".opj", Qt::CaseInsensitive) || filename.endsWith(".ogg", Qt::CaseInsensitive)){
-		QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-
 		ApplicationWindow *app = this;
 		if (newProject)
 			app = new ApplicationWindow(factorySettings);
+
+		QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
 		app->setWindowTitle("QtiPlot - " + filename);
 		app->restoreApplicationGeometry();
@@ -15771,12 +15776,13 @@ ApplicationWindow* ApplicationWindow::importOPJ(const QString& filename, bool fa
 		op->setApplicationWindow(app);
 		op->import(filename);
 
-		app->explorerWindow->setVisible(true);
 		QApplication::restoreOverrideCursor();
 		return app;
 	} else if (filename.endsWith(".ogm", Qt::CaseInsensitive) || filename.endsWith(".ogw", Qt::CaseInsensitive)){
+		QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 		op->import(filename);
 		updateRecentProjectsList(filename);
+		QApplication::restoreOverrideCursor();
 		return this;
 	}
 	return 0;
