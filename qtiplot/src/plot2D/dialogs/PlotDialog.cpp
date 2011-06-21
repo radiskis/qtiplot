@@ -315,9 +315,14 @@ void PlotDialog::changePlotType(int plotType)
 		boxConnect->setCurrentIndex(1);//show line for Line and LineSymbol plots
 
 		int size = 2*boxSymbolSize->value() + 1;
-		QBrush br = QBrush(boxFillColor->color(), Qt::SolidPattern);
-		if (!boxFillSymbol->isChecked())
-			br = QBrush();
+
+		QBrush br = QBrush();
+		if (boxFillSymbol->isChecked()){
+			QColor fc = boxFillColor->color();
+			fc.setAlphaF(0.01*boxSymbolTransparency->value());
+			br = QBrush(fc, Qt::SolidPattern);
+		}
+
 		QPen pen = QPen(boxSymbolColor->color(), boxPenWidth->value(), Qt::SolidLine, Qt::FlatCap, Qt::MiterJoin);
 		pen.setCosmetic(true);
 		QwtSymbol s = QwtSymbol(boxSymbolStyle->selectedSymbol(), br, pen, QSize(size, size));
@@ -406,29 +411,46 @@ void PlotDialog::initLayerPage()
     boxBkgLayout->addWidget( new QLabel(tr( "Background Color" )), 0, 0 );
     boxBackgroundColor = new ColorButton();
     boxBkgLayout->addWidget( boxBackgroundColor, 0, 1 );
-    boxBkgLayout->addWidget( new QLabel(tr( "Opacity" )), 0, 2 );
+
     boxBackgroundTransparency = new QSpinBox();
-    boxBackgroundTransparency->setRange(0, 255);
-    boxBackgroundTransparency->setSingleStep(5);
+	boxBackgroundTransparency->setRange(0, 100);
     boxBackgroundTransparency->setWrapping(true);
-    boxBackgroundTransparency->setSpecialValueText(tr("Transparent"));
-    boxBkgLayout->addWidget( boxBackgroundTransparency, 0, 3 );
+	boxBackgroundTransparency->setSuffix(" %");
+
+	bkgOpacitySlider = new QSlider();
+	bkgOpacitySlider->setOrientation(Qt::Horizontal);
+	bkgOpacitySlider->setRange(0, 100);
+
+	QLabel *l1 = new QLabel("&" + tr("Opacity"));
+	l1->setBuddy(bkgOpacitySlider);
+	boxBkgLayout->addWidget(l1, 0, 2 );
+
+	QHBoxLayout* hb = new QHBoxLayout();
+	hb->addWidget(bkgOpacitySlider);
+	hb->addWidget(boxBackgroundTransparency);
+	boxBkgLayout->addLayout(hb, 0, 3 );
 
     boxBkgLayout->addWidget( new QLabel(tr("Border Color" )), 2, 0);
     boxBorderColor = new ColorButton();
     boxBkgLayout->addWidget( boxBorderColor, 2, 1);
 
-    boxBkgLayout->addWidget( new QLabel(tr( "Width" )), 2, 2);
     boxBorderWidth = new QSpinBox();
     boxBkgLayout->addWidget( boxBorderWidth, 2, 3);
 
-	boxBkgLayout->addWidget( new QLabel(tr( "Margin" )), 3, 0);
+	QLabel *l2 = new QLabel("&" + tr("Width"));
+	l2->setBuddy(boxBorderWidth);
+	boxBkgLayout->addWidget(l2, 2, 2);
+
 	boxMargin = new QSpinBox();
 	boxMargin->setRange( 0, 1000 );
 	boxMargin->setSingleStep(5);
 	boxBkgLayout->addWidget( boxMargin, 3, 1);
 
-	boxAntialiasing = new QCheckBox(tr("Antialiasing"));
+	QLabel *l3 = new QLabel("&" + tr("Margin"));
+	l3->setBuddy(boxMargin);
+	boxBkgLayout->addWidget(l3, 3, 0);
+
+	boxAntialiasing = new QCheckBox("&" + tr("Antialiasing"));
 	boxBkgLayout->addWidget( boxAntialiasing, 4, 0);
 
 	boxAutoscaling = new QCheckBox(tr("Auto&scaling"));
@@ -469,6 +491,8 @@ void PlotDialog::initLayerPage()
 	connect(boxBorderColor, SIGNAL(colorChanged()), this, SLOT(applyLayerFormat()));
 	connect(boxBackgroundColor, SIGNAL(colorChanged()), this, SLOT(applyLayerFormat()));
 	connect(boxBorderWidth, SIGNAL(valueChanged (int)), this, SLOT(applyLayerFormat()));
+	connect(bkgOpacitySlider, SIGNAL(valueChanged(int)), boxBackgroundTransparency, SLOT(setValue(int)));
+	connect(boxBackgroundTransparency, SIGNAL(valueChanged(int)), bkgOpacitySlider, SLOT(setValue(int)));
 }
 
 
@@ -570,23 +594,33 @@ void PlotDialog::initCanvasPage()
 	canvasColorBox = new QGroupBox();
 	QGridLayout *gl1 = new QGridLayout(canvasColorBox);
 
-	gl1->addWidget( new QLabel(tr("Color")), 0, 0);
 	boxCanvasColor = new ColorButton();
-	gl1->addWidget( boxCanvasColor, 0, 1);
-	gl1->addWidget( new QLabel(tr("Opacity")), 1, 0);
+	gl1->addWidget(boxCanvasColor, 0, 2);
+
+	QLabel *l4 = new QLabel("&" + tr("Color"));
+	l4->setBuddy(boxCanvasColor);
+	gl1->addWidget(l4, 0, 0);
+
 	boxCanvasTransparency = new QSpinBox();
-	boxCanvasTransparency->setRange(0, 255);
-	boxCanvasTransparency->setSingleStep(5);
+	boxCanvasTransparency->setRange(0, 100);
 	boxCanvasTransparency->setWrapping(true);
-	boxCanvasTransparency->setSpecialValueText(tr("Transparent"));
-	gl1->addWidget( boxCanvasTransparency, 1, 1);
+	boxCanvasTransparency->setSpecialValueText(" " + tr("Transparent"));
+	boxCanvasTransparency->setSuffix(" %");
 
 	canvasOpacitySlider = new QSlider();
 	canvasOpacitySlider->setOrientation(Qt::Horizontal);
-	canvasOpacitySlider->setRange(0, 255);
-	gl1->addWidget(canvasOpacitySlider, 1, 2);
+	canvasOpacitySlider->setRange(0, 100);
 
-	gl1->setColumnStretch(2, 1);
+	QLabel *l1 = new QLabel("&" + tr("Opacity"));
+	l1->setBuddy(canvasOpacitySlider);
+	gl1->addWidget(l1, 1, 0);
+
+	QHBoxLayout* hb = new QHBoxLayout();
+	hb->addWidget(canvasOpacitySlider);
+	hb->addWidget(boxCanvasTransparency);
+	gl1->addLayout(hb, 1, 2);
+
+	gl1->setColumnStretch(1, 1);
 	gl1->setRowStretch(2, 1);
 
 	canvasImageBox = new QGroupBox();
@@ -618,15 +652,20 @@ void PlotDialog::initCanvasPage()
 	boxFramed->setCheckable (true);
 
 	QGridLayout *boxFramedLayout = new QGridLayout(boxFramed);
-	boxFramedLayout->addWidget( new QLabel(tr("Color" )), 0, 0 );
 	boxFrameColor = new ColorButton(boxFramed);
 	boxFramedLayout->addWidget( boxFrameColor, 0, 1 );
 
-	boxFramedLayout->addWidget( new QLabel(tr( "Width" )), 1, 0 );
+	QLabel *l3 = new QLabel("&" + tr("Color"));
+	l3->setBuddy(boxFrameColor);
+	boxFramedLayout->addWidget(l3, 0, 0);
+
 	boxFrameWidth = new QSpinBox();
 	boxFrameWidth->setMinimum(1);
 	boxFramedLayout->addWidget( boxFrameWidth, 1, 1 );
 
+	QLabel *l2 = new QLabel("&" + tr("Width"));
+	l2->setBuddy(boxFrameWidth);
+	boxFramedLayout->addWidget(l2, 1, 0);
 	boxFramedLayout->setRowStretch(2, 1);
 
 	QVBoxLayout *vl1 = new QVBoxLayout();
@@ -664,7 +703,6 @@ void PlotDialog::initCanvasPage()
 	connect(boxCanvasTransparency, SIGNAL(valueChanged(int)), this, SLOT(updateCanvasTransparency(int)));
 	connect(colorBtn, SIGNAL(toggled(bool)), canvasColorBox, SLOT(setVisible(bool)));
 	connect(imageBtn, SIGNAL(toggled(bool)), canvasImageBox, SLOT(setVisible(bool)));
-
 	connect(canvasOpacitySlider, SIGNAL(valueChanged(int)), boxCanvasTransparency, SLOT(setValue(int)));
 	connect(boxCanvasTransparency, SIGNAL(valueChanged(int)), canvasOpacitySlider, SLOT(setValue(int)));
 }
@@ -853,36 +891,52 @@ void PlotDialog::initPiePage()
 	piePage = new QWidget();
 
 	QGridLayout *gl1 = new QGridLayout();
-	gl1->addWidget(new QLabel( tr( "Color" )), 0, 0);
 
 	boxPieLineColor = new ColorButton();
 	gl1->addWidget(boxPieLineColor, 0, 1);
 
-	gl1->addWidget(new QLabel(tr( "Style" )), 1, 0);
-	boxPieLineStyle = new PenStyleBox();
-	gl1->addWidget(boxPieLineStyle);
+	QLabel *l1 = new QLabel("&" + tr("Color"));
+	l1->setBuddy(boxPieLineColor);
+	gl1->addWidget(l1, 0, 0);
 
-	gl1->addWidget(new QLabel(tr( "Width")), 2, 0);
+	boxPieLineStyle = new PenStyleBox();
+	gl1->addWidget(boxPieLineStyle, 1, 1);
+
+	QLabel *l2 = new QLabel("&" + tr("Style"));
+	l2->setBuddy(boxPieLineStyle);
+	gl1->addWidget(l2, 1, 0);
+
 	boxPieLineWidth = new DoubleSpinBox('f');
 	boxPieLineWidth->setSingleStep(0.1);
 	boxPieLineWidth->setMinimum(0.0);
 	boxPieLineWidth->setLocale(((ApplicationWindow *)this->parent())->locale());
 	gl1->addWidget(boxPieLineWidth, 2, 1);
+
+	QLabel *l3 = new QLabel("&" + tr("Width"));
+	l3->setBuddy(boxPieLineWidth);
+	gl1->addWidget(l3, 2, 0);
+
 	gl1->setRowStretch(3,1);
 
 	QGroupBox *gb1 = new QGroupBox(tr( "Border" ));
 	gb1->setLayout(gl1);
 
 	QGridLayout *gl2 = new QGridLayout();
-	gl2->addWidget(new QLabel( tr( "First color" )), 0, 0);
 
 	boxFirstColor = new ColorBox();
 	gl2->addWidget(boxFirstColor, 0, 1);
 
-	gl2->addWidget(new QLabel( tr( "Pattern" )), 1, 0);
+	QLabel *l4 = new QLabel("&" + tr("First color"));
+	l4->setBuddy(boxFirstColor);
+	gl2->addWidget(l4, 0, 0);
+
 	boxPiePattern = new PatternBox(false);
 	gl2->addWidget(boxPiePattern, 1, 1);
 	gl2->setRowStretch(2, 1);
+
+	QLabel *l5 = new QLabel("&" + tr("Pattern"));
+	l5->setBuddy(boxPiePattern);
+	gl2->addWidget(l5, 1, 0);
 
 	QGroupBox *gb2 = new QGroupBox(tr( "Fill" ));
 	gb2->setLayout(gl2);
@@ -903,23 +957,31 @@ void PlotDialog::initPieGeometryPage()
 
 	QGroupBox *gb3 = new QGroupBox(tr( "3D View" ));
 	QGridLayout *gl3 = new QGridLayout(gb3);
-	gl3->addWidget(new QLabel( tr( "View Angle (deg)" )), 0, 0);
+
 	boxPieViewAngle = new DoubleSpinBox('f');
 	boxPieViewAngle->setWrapping(true);
 	boxPieViewAngle->setRange(0.0, 90.0);
 	boxPieViewAngle->setLocale(locale);
 	gl3->addWidget(boxPieViewAngle, 0, 1);
 
-    gl3->addWidget(new QLabel( tr( "Thickness (% of radius)" )), 1, 0);
+	QLabel *l1 = new QLabel("&" + tr("View Angle (deg)"));
+	l1->setBuddy(boxPieViewAngle);
+	gl3->addWidget(l1, 0, 0);
+
 	boxPieThickness = new DoubleSpinBox('f');
 	boxPieThickness->setLocale(locale);
 	boxPieThickness->setRange(0.0, 300.0);
 	gl3->addWidget(boxPieThickness, 1, 1);
+
+	QLabel *l2 = new QLabel("&" + tr("Thickness (% of radius)"));
+	l2->setBuddy(boxPieThickness);
+	gl3->addWidget(l2, 1, 0);
+
 	gl3->setRowStretch(2, 1);
 
 	QGroupBox *gb1 = new QGroupBox(tr( "Rotation" ));
 	QGridLayout *gl1 = new QGridLayout(gb1);
-	gl1->addWidget(new QLabel( tr( "Starting Azimuth (deg)" )), 0, 0);
+
 	boxPieStartAzimuth = new DoubleSpinBox('f');
 	boxPieStartAzimuth->setRange(0.0, 360.0);
 	boxPieStartAzimuth->setWrapping(true);
@@ -927,21 +989,34 @@ void PlotDialog::initPieGeometryPage()
 	boxPieStartAzimuth->setLocale(locale);
 	gl1->addWidget(boxPieStartAzimuth, 0, 1);
 
+	QLabel *l3 = new QLabel("&" + tr("Starting Azimuth (deg)"));
+	l3->setBuddy(boxPieStartAzimuth);
+	gl1->addWidget(l3, 0, 0);
+
     boxPieConterClockwise = new QCheckBox(tr("Counter cloc&kwise"));
 	gl1->addWidget(boxPieConterClockwise, 1, 0);
 	gl1->setRowStretch(2, 1);
 
 	QGroupBox *gb2 = new QGroupBox(tr( "Radius/Center" ));
 	QGridLayout *gl2 = new QGridLayout(gb2);
-	gl2->addWidget(new QLabel( tr( "Radius (% of frame)" )), 0, 0);
+
 	boxRadius = new QSpinBox();
 	boxRadius->setRange(0, 300);
 	boxRadius->setSingleStep(5);
 	gl2->addWidget(boxRadius, 0, 1);
-    gl2->addWidget(new QLabel( tr( "Horizontal Offset (% of frame)" )), 1, 0);
-    boxPieOffset = new QSpinBox();
+
+	QLabel *l4 = new QLabel("&" + tr("Radius (% of frame)"));
+	l4->setBuddy(boxRadius);
+	gl2->addWidget(l4, 0, 0);
+
+	boxPieOffset = new QSpinBox();
 	boxPieOffset->setRange(-100, 100);
 	gl2->addWidget(boxPieOffset, 1, 1);
+
+	QLabel *l5 = new QLabel("&" + tr("Horizontal Offset (% of frame)"));
+	l5->setBuddy(boxPieOffset);
+	gl2->addWidget(l5, 1, 0);
+
 	gl2->setRowStretch(2, 1);
 
 	QVBoxLayout* vl = new QVBoxLayout(pieGeometryPage);
@@ -982,11 +1057,16 @@ void PlotDialog::initPieLabelsPage()
 	boxPieWedge->setCheckable(true);
 
 	QGridLayout *gl2 = new QGridLayout(boxPieWedge);
-	gl2->addWidget(new QLabel( tr( "Dist. from Pie Edge" )), 0, 0);
+
 	boxPieEdgeDist = new DoubleSpinBox('f');
 	boxPieEdgeDist->setRange(-100, 100);
 	boxPieEdgeDist->setLocale(((ApplicationWindow *)this->parent())->locale());
 	gl2->addWidget(boxPieEdgeDist, 0, 1);
+
+	QLabel *l1 = new QLabel("&" + tr("Dist. from Pie Edge"));
+	l1->setBuddy(boxPieEdgeDist);
+	gl2->addWidget(l1, 0, 0);
+
 	gl2->setRowStretch(1, 1);
 
 	QVBoxLayout* vl = new QVBoxLayout(pieLabelsPage);
@@ -1147,11 +1227,13 @@ void PlotDialog::initLinePage()
 	boxConnect->addItem(tr("Vertical Steps"));
 	gl1->addWidget(boxConnect, 0, 1);
 
-	gl1->addWidget(new QLabel(tr( "Style" )), 1, 0);
 	boxLineStyle = new PenStyleBox();
 	gl1->addWidget(boxLineStyle, 1, 1);
 
-	gl1->addWidget(new QLabel(tr( "Width" )), 2, 0);
+	QLabel *l1 = new QLabel("&" + tr( "Style" ));
+	l1->setBuddy(boxLineStyle);
+	gl1->addWidget(l1, 1, 0);
+
 	boxLineWidth = new DoubleSpinBox('f');
 	boxLineWidth->setLocale(((ApplicationWindow *)this->parent())->locale());
 	boxLineWidth->setSingleStep(0.1);
@@ -1159,55 +1241,92 @@ void PlotDialog::initLinePage()
 	boxLineWidth->setValue( 1 );
 	gl1->addWidget(boxLineWidth, 2, 1);
 
-	gl1->addWidget(new QLabel(tr( "Color" )), 3, 0);
+	QLabel *l2 = new QLabel("&" + tr( "Width" ));
+	gl1->addWidget(l2, 2, 0);
+	l2->setBuddy(boxLineWidth);
+
 	boxLineColor = new ColorButton();
 	gl1->addWidget(boxLineColor, 3, 1);
 
-	QLabel *l = new QLabel(tr("Apply &to..."));
-	gl1->addWidget(l, 4, 0);
+	QLabel *l3 = new QLabel("&" + tr( "Color" ));
+	gl1->addWidget(l3, 3, 0);
+	l3->setBuddy(boxLineColor);
+
+	boxLineTransparency = new QSpinBox();
+	boxLineTransparency->setRange(0, 100);
+	boxLineTransparency->setSuffix(" %");
+	boxLineTransparency->setWrapping(true);
+
+	lineTransparencySlider = new QSlider();
+	lineTransparencySlider->setOrientation(Qt::Horizontal);
+	lineTransparencySlider->setRange(0, 100);
+
+	QLabel *l4 = new QLabel("&" + tr("Opacity"));
+	l4->setBuddy(lineTransparencySlider);
+	gl1->addWidget(l4, 4, 0);
+
+	QHBoxLayout* hb1 = new QHBoxLayout();
+	hb1->addWidget(lineTransparencySlider);
+	hb1->addWidget(boxLineTransparency);
+	gl1->addLayout(hb1, 4, 1);
 
 	lineFormatApplyToBox = new QComboBox();
 	lineFormatApplyToBox->insertItem(tr("Selected Curve"));
 	lineFormatApplyToBox->insertItem(tr("Layer"));
     lineFormatApplyToBox->insertItem(tr("Window"));
     lineFormatApplyToBox->insertItem(tr("All Windows"));
-	gl1->addWidget(lineFormatApplyToBox, 4, 1);
-	l->setBuddy(lineFormatApplyToBox);
+	gl1->addWidget(lineFormatApplyToBox, 5, 1);
+
+	QLabel *l5 = new QLabel(tr("Apply &to..."));
+	gl1->addWidget(l5, 5, 0);
+	l5->setBuddy(lineFormatApplyToBox);
 
 	boxApplyColorTo = new QCheckBox(tr("Apply Co&lor"));
 	boxApplyColorTo->setDisabled(true);
-	gl1->addWidget(boxApplyColorTo, 4, 2);
+	gl1->addWidget(boxApplyColorTo, 6, 1);
 
-	fillGroupBox = new QGroupBox(tr( "Fill area under curve" ));
+	gl1->setRowStretch(7, 1);
+	gl1->setColumnStretch(2, 1);
+
+	fillGroupBox = new QGroupBox("&" + tr("Fill area under curve"));
 	fillGroupBox->setCheckable(true);
 	QGridLayout *gl2 = new QGridLayout(fillGroupBox);
     gl2->addWidget(new QLabel(tr( "Fill color" )), 0, 0);
 	boxAreaColor = new ColorButton();
 	gl2->addWidget(boxAreaColor, 0, 1);
 
-	gl2->addWidget(new QLabel(tr( "Opacity" )), 1, 0);
 	boxCurveOpacity = new QSpinBox();
-	boxCurveOpacity->setRange(0, 255);
-	boxCurveOpacity->setSingleStep(5);
+	boxCurveOpacity->setRange(0, 100);
 	boxCurveOpacity->setWrapping(true);
-	boxCurveOpacity->setSpecialValueText(tr("Transparent"));
-	gl2->addWidget(boxCurveOpacity, 1, 1);
+	boxCurveOpacity->setSuffix(" %");
 
 	curveOpacitySlider = new QSlider();
 	curveOpacitySlider->setOrientation(Qt::Horizontal);
-	curveOpacitySlider->setRange(0, 255);
-	gl2->addWidget(curveOpacitySlider, 1, 2);
+	curveOpacitySlider->setRange(0, 100);
 
-	gl2->addWidget(new QLabel(tr( "Pattern" )), 2, 0);
+	QLabel *l7 = new QLabel("&" + tr("Opacity"));
+	l7->setBuddy(curveOpacitySlider);
+	gl2->addWidget(l7, 1, 0);
+
+	QHBoxLayout* hb = new QHBoxLayout();
+	hb->addWidget(curveOpacitySlider);
+	hb->addWidget(boxCurveOpacity);
+	gl2->addLayout(hb, 1, 1);
+
 	boxPattern = new PatternBox(false);
 	gl2->addWidget(boxPattern, 2, 1);
+	
+	QLabel *l6 = new QLabel("&" + tr("Pattern"));
+	l6->setBuddy(boxPattern);
+	gl2->addWidget(l6, 2, 0);
+	gl2->setColumnStretch(2, 1);
+	gl2->setRowStretch(3, 1);
 
 	linePage = new QWidget();
-	QVBoxLayout* vlayout = new QVBoxLayout(linePage);
-	vlayout->addWidget(gb);
-	vlayout->addWidget(fillGroupBox);
-	vlayout->addStretch();
-	privateTabWidget->addTab( linePage, tr( "Line" ) );
+	QHBoxLayout* hlayout = new QHBoxLayout(linePage);
+	hlayout->addWidget(gb);
+	hlayout->addWidget(fillGroupBox);
+	privateTabWidget->addTab(linePage, tr("Line"));
 
 	connect(lineFormatApplyToBox, SIGNAL(activated(int)), this, SLOT(enableBoxApplyColor(int)));
 	connect(boxLineWidth, SIGNAL(valueChanged(double)), this, SLOT(acceptParams()));
@@ -1221,6 +1340,9 @@ void PlotDialog::initLinePage()
 	connect(boxCurveOpacity, SIGNAL(valueChanged(int)), this, SLOT(acceptParams()));
 	connect(curveOpacitySlider, SIGNAL(valueChanged(int)), boxCurveOpacity, SLOT(setValue(int)));
 	connect(boxCurveOpacity, SIGNAL(valueChanged(int)), curveOpacitySlider, SLOT(setValue(int)));
+	connect(lineTransparencySlider, SIGNAL(valueChanged(int)), boxLineTransparency, SLOT(setValue(int)));
+	connect(boxLineTransparency, SIGNAL(valueChanged(int)), lineTransparencySlider, SLOT(setValue(int)));
+	connect(boxLineTransparency, SIGNAL(valueChanged(int)), this, SLOT(acceptParams()));
 }
 
 void PlotDialog::initSymbolsPage()
@@ -1244,19 +1366,46 @@ void PlotDialog::initSymbolsPage()
     boxSymbolSize->setRange(1, 100);
 	boxSymbolSize->setValue(5);
     gl->addWidget(boxSymbolSize, 1, 1);
-	boxFillSymbol = new QCheckBox( tr( "Fill Color" ));
-    gl->addWidget(boxFillSymbol, 2, 0);
-	boxFillColor = new ColorButton();
-    gl->addWidget(boxFillColor, 2, 1);
-    gl->addWidget(new QLabel(tr( "Edge Color" )), 3, 0);
+
+	gl->addWidget(new QLabel(tr( "Edge Color" )), 2, 0);
 	boxSymbolColor = new ColorButton();
-    gl->addWidget(boxSymbolColor, 3, 1);
-    gl->addWidget(new QLabel(tr( "Edge Width" )), 4, 0);
+	gl->addWidget(boxSymbolColor, 2, 1);
+	gl->addWidget(new QLabel(tr( "Edge Width" )), 3, 0);
 	boxPenWidth = new DoubleSpinBox('f');
 	boxPenWidth->setLocale(((ApplicationWindow *)this->parent())->locale());
 	boxPenWidth->setSingleStep(0.1);
     boxPenWidth->setRange(0.1, 100);
-    gl->addWidget(boxPenWidth, 4, 1);
+	gl->addWidget(boxPenWidth, 3, 1);
+
+	boxFillSymbol = new QCheckBox("&" + tr("Fill Color"));
+	gl->addWidget(boxFillSymbol, 4, 0);
+
+	boxFillColor = new ColorButton();
+	gl->addWidget(boxFillColor, 4, 1);
+
+	boxSymbolTransparency = new QSpinBox();
+	boxSymbolTransparency->setRange(0, 100);
+	boxSymbolTransparency->setSuffix(" %");
+	boxSymbolTransparency->setWrapping(true);
+
+	symbTransparencySlider = new QSlider();
+	symbTransparencySlider->setOrientation(Qt::Horizontal);
+	symbTransparencySlider->setRange(0, 100);
+
+	connect(symbTransparencySlider, SIGNAL(valueChanged(int)), boxSymbolTransparency, SLOT(setValue(int)));
+	connect(boxSymbolTransparency, SIGNAL(valueChanged(int)), symbTransparencySlider, SLOT(setValue(int)));
+
+	QLabel *l1 = new QLabel("&" + tr("Opacity"));
+	l1->setBuddy(symbTransparencySlider);
+	gl->addWidget(l1, 5, 0);
+
+	QHBoxLayout* hb = new QHBoxLayout();
+	hb->addWidget(symbTransparencySlider);
+	hb->addWidget(boxSymbolTransparency);
+	gl->addLayout(hb, 5, 1);
+
+	gl->setRowStretch(6, 1);
+	gl->setColumnStretch(2, 1);
 
 	imageSymBolFormatBox = new QGroupBox();
 	imageSymBolFormatBox->hide();
@@ -1276,6 +1425,7 @@ void PlotDialog::initSymbolsPage()
 	gl1->addWidget(new QLabel(tr("Preview")), 1, 0);
 	symbolImageLabel = new QLabel();
 	gl1->addWidget(symbolImageLabel, 1, 1);
+	gl1->setRowStretch(2, 1);
 
 	QHBoxLayout* hl = new QHBoxLayout();
 	hl->addWidget(standardSymbolFormatBox);
@@ -1300,7 +1450,7 @@ void PlotDialog::initSymbolsPage()
 	gl2->addWidget(symbolsFormatApplyToBox, 1, 1);
 	l->setBuddy(symbolsFormatApplyToBox);
 
-	gl2->setRowStretch (2, 1);
+	gl2->setColumnStretch(2, 1);
 
     symbolPage = new QWidget();
 	QVBoxLayout* vl = new QVBoxLayout(symbolPage);
@@ -1320,6 +1470,7 @@ void PlotDialog::initSymbolsPage()
 	connect(boxFillColor, SIGNAL(colorChanged()), this, SLOT(acceptParams()));
 	connect(boxFillSymbol, SIGNAL(clicked()), this, SLOT(fillSymbols()));
 	connect(boxSkipSymbols, SIGNAL(valueChanged(int)), this, SLOT(acceptParams()));
+	connect(boxSymbolTransparency, SIGNAL(valueChanged(int)), this, SLOT(acceptParams()));
 }
 
 void PlotDialog::initBoxPage()
@@ -1478,28 +1629,54 @@ void PlotDialog::initPercentilePage()
 
 	QGroupBox *gb2 = new QGroupBox(tr( "Symbol" ));
     QGridLayout *gl2 = new QGridLayout(gb2);
-    gl2->addWidget(new QLabel(tr( "Size" )), 0, 0);
 
 	boxPercSize = new QSpinBox();
 	boxPercSize->setMinValue( 1 );
     gl2->addWidget(boxPercSize, 0, 1);
 
-    boxFillSymbols = new QCheckBox(tr( "Fill Color" ));
-    gl2->addWidget(boxFillSymbols, 1, 0);
-	boxPercFillColor = new ColorButton();
-    gl2->addWidget(boxPercFillColor, 1, 1);
+	QLabel *l1 = new QLabel("&" + tr( "Size" ));
+	l1->setBuddy(boxPercSize);
+	gl2->addWidget(l1, 0, 0);
 
-    gl2->addWidget(new QLabel(tr( "Edge Color" )), 2, 0);
+	gl2->addWidget(new QLabel(tr( "Edge Color" )), 1, 0);
 	boxEdgeColor = new ColorButton();
-    gl2->addWidget(boxEdgeColor, 2, 1);
+	gl2->addWidget(boxEdgeColor, 1, 1);
 
-    gl2->addWidget(new QLabel(tr( "Edge Width" )), 3, 0);
 	boxEdgeWidth = new DoubleSpinBox('f');
 	boxEdgeWidth->setLocale(((ApplicationWindow *)parent())->locale());
 	boxEdgeWidth->setSingleStep(0.1);
     boxEdgeWidth->setRange(0, 100);
-    gl2->addWidget(boxEdgeWidth, 3, 1);
-    gl2->setRowStretch(4, 1);
+	gl2->addWidget(boxEdgeWidth, 2, 1);
+
+	QLabel *l2 = new QLabel("&" + tr("Edge Width"));
+	l2->setBuddy(boxEdgeWidth);
+	gl2->addWidget(l2, 2, 0);
+
+	boxFillSymbols = new QCheckBox("&" + tr("Fill Color"));
+	gl2->addWidget(boxFillSymbols, 3, 0);
+	boxPercFillColor = new ColorButton();
+	gl2->addWidget(boxPercFillColor, 3, 1);
+
+	boxPercentileTransparency = new QSpinBox();
+	boxPercentileTransparency->setRange(0, 100);
+	boxPercentileTransparency->setSuffix(" %");
+	boxPercentileTransparency->setWrapping(true);
+
+	percentileTransparencySlider = new QSlider();
+	percentileTransparencySlider->setOrientation(Qt::Horizontal);
+	percentileTransparencySlider->setRange(0, 100);
+
+	QLabel *l3 = new QLabel("&" + tr("Opacity"));
+	l3->setBuddy(percentileTransparencySlider);
+	gl2->addWidget(l3, 4, 0);
+
+	QHBoxLayout* hb1 = new QHBoxLayout();
+	hb1->addWidget(percentileTransparencySlider);
+	hb1->addWidget(boxPercentileTransparency);
+	gl2->addLayout(hb1, 4, 1);
+
+	gl2->setRowStretch(5, 1);
+	gl2->setColumnStretch(2, 1);
 
 	QHBoxLayout* hl1 = new QHBoxLayout();
 	QLabel *l = new QLabel(tr("Apply Format &to"));
@@ -1536,6 +1713,9 @@ void PlotDialog::initPercentilePage()
 	connect(boxEdgeColor, SIGNAL(colorChanged()), this, SLOT(acceptParams()));
 	connect(boxPercFillColor, SIGNAL(colorChanged()), this, SLOT(acceptParams()));
 	connect(boxFillSymbols, SIGNAL(clicked()), this, SLOT(fillBoxSymbols()));
+	connect(percentileTransparencySlider, SIGNAL(valueChanged(int)), boxPercentileTransparency, SLOT(setValue(int)));
+	connect(boxPercentileTransparency, SIGNAL(valueChanged(int)), percentileTransparencySlider, SLOT(setValue(int)));
+	connect(boxPercentileTransparency, SIGNAL(valueChanged(int)), this, SLOT(acceptParams()));
 }
 
 void PlotDialog::initSpectrogramValuesPage()
@@ -1708,13 +1888,19 @@ void PlotDialog::initContourLinesPage()
 
 void PlotDialog::fillBoxSymbols()
 {
-	boxPercFillColor->setEnabled(boxFillSymbols->isChecked());
+	bool filled = boxFillSymbols->isChecked();
+	boxPercFillColor->setEnabled(filled);
+	percentileTransparencySlider->setEnabled(filled);
+	boxPercentileTransparency->setEnabled(filled);
 	acceptParams();
 }
 
 void PlotDialog::fillSymbols()
 {
-	boxFillColor->setEnabled(boxFillSymbol->isChecked());
+	bool filled = boxFillSymbol->isChecked();
+	boxFillColor->setEnabled(filled);
+	boxSymbolTransparency->setEnabled(filled);
+	symbTransparencySlider->setEnabled(filled);
 	acceptParams();
 }
 
@@ -2586,6 +2772,7 @@ void PlotDialog::setActiveLayer(LayerItem *item)
 	boxAutoscaling->blockSignals(true);
     boxMargin->blockSignals(true);
     boxBackgroundTransparency->blockSignals(true);
+	bkgOpacitySlider->blockSignals(true);
     boxCanvasTransparency->blockSignals(true);
 	canvasOpacitySlider->blockSignals(true);
     boxBorderWidth->blockSignals(true);
@@ -2595,14 +2782,16 @@ void PlotDialog::setActiveLayer(LayerItem *item)
 	boxBorderColor->setColor(g->frameColor());
 
 	QColor c = g->paletteBackgroundColor();
-	boxBackgroundTransparency->setValue(c.alpha());
+	boxBackgroundTransparency->setValue(100*c.alphaF());
+	bkgOpacitySlider->setValue(boxBackgroundTransparency->value());
 	boxBackgroundColor->setEnabled(c.alpha());
 	c.setAlpha(255);
 	boxBackgroundColor->setColor(c);
 
 	c = g->canvasBackground();
-	boxCanvasTransparency->setValue(c.alpha());
-	canvasOpacitySlider->setValue(c.alpha());
+	int val = qRound(100*c.alphaF());
+	boxCanvasTransparency->setValue(val);
+	canvasOpacitySlider->setValue(val);
 	boxCanvasColor->setEnabled(c.alpha());
 	c.setAlpha(255);
 	boxCanvasColor->setColor(c);
@@ -2622,6 +2811,7 @@ void PlotDialog::setActiveLayer(LayerItem *item)
 	aspect_ratio = (double)g->canvas()->width()/(double)g->canvas()->height();
 
     boxBackgroundTransparency->blockSignals(false);
+	bkgOpacitySlider->blockSignals(false);
     boxCanvasTransparency->blockSignals(false);
 	canvasOpacitySlider->blockSignals(false);
     boxBorderWidth->blockSignals(false);
@@ -2837,8 +3027,18 @@ void PlotDialog::setActiveCurve(CurveTreeItem *item)
     boxConnect->setCurrentIndex(style);
 
 	boxLineStyle->setStyle(c->pen().style());
+	QColor lc = c->pen().color();
+	boxLineTransparency->blockSignals(true);
+	boxLineTransparency->setValue(qRound(100.0*lc.alphaF()));
+	boxLineTransparency->blockSignals(false);
+
+	lineTransparencySlider->blockSignals(true);
+	lineTransparencySlider->setValue(boxLineTransparency->value());
+	lineTransparencySlider->blockSignals(false);
+
+	lc.setAlpha(255);
 	boxLineColor->blockSignals(true);
-    boxLineColor->setColor(c->pen().color());
+	boxLineColor->setColor(lc);
     boxLineColor->blockSignals(false);
 	boxLineWidth->blockSignals(true);
     boxLineWidth->setValue(c->pen().widthF());
@@ -2848,9 +3048,10 @@ void PlotDialog::setActiveCurve(CurveTreeItem *item)
     fillGroupBox->blockSignals(false);
 
 	QColor ac = c->brush().color();
+	int val = qRound(100*ac.alphaF());
 	boxCurveOpacity->blockSignals(true);
-	boxCurveOpacity->setValue(ac.alpha());
-	curveOpacitySlider->setValue(ac.alpha());
+	boxCurveOpacity->setValue(val);
+	curveOpacitySlider->setValue(val);
 	boxCurveOpacity->blockSignals(false);
 
 	ac.setAlpha(255);
@@ -2879,10 +3080,23 @@ void PlotDialog::setActiveCurve(CurveTreeItem *item)
 		boxPenWidth->setValue(s.pen().widthF());
 		boxPenWidth->blockSignals(false);
 
-		boxFillSymbol->setChecked(s.brush() != Qt::NoBrush);
-		boxFillColor->setEnabled(s.brush() != Qt::NoBrush);
+		bool filled = s.brush() != Qt::NoBrush;
+		QColor fc = s.brush().color();
+		boxSymbolTransparency->blockSignals(true);
+		boxSymbolTransparency->setEnabled(filled);
+		boxSymbolTransparency->setValue(qRound(100.0*fc.alphaF()));
+		boxSymbolTransparency->blockSignals(false);
+
+		symbTransparencySlider->blockSignals(true);
+		symbTransparencySlider->setEnabled(filled);
+		symbTransparencySlider->setValue(boxSymbolTransparency->value());
+		symbTransparencySlider->blockSignals(false);
+
+		boxFillSymbol->setChecked(filled);
+		boxFillColor->setEnabled(filled);
 		boxFillColor->blockSignals(true);
-		boxFillColor->setColor(s.brush().color());
+		fc.setAlpha(255);
+		boxFillColor->setColor(fc);
 		boxFillColor->blockSignals(false);
 	} else {
 		imageSymbolBtn->setChecked(true);
@@ -3002,13 +3216,26 @@ void PlotDialog::setActiveCurve(CurveTreeItem *item)
             boxPercSize->setValue(s.size().width()/2);
 			boxPercSize->blockSignals(false);
 
+			QColor sc = s.brush().color();
+			bool filled = (s.brush() != Qt::NoBrush);
 			boxFillSymbols->blockSignals(true);
-            boxFillSymbols->setChecked(s.brush() != Qt::NoBrush);
+			boxFillSymbols->setChecked(filled);
 			boxFillSymbols->blockSignals(false);
 
-            boxPercFillColor->setEnabled(s.brush() != Qt::NoBrush);
+			boxPercentileTransparency->setEnabled(filled);
+			boxPercentileTransparency->blockSignals(true);
+			boxPercentileTransparency->setValue(100.0*sc.alphaF());
+			boxPercentileTransparency->blockSignals(false);
+
+			percentileTransparencySlider->setEnabled(filled);
+			percentileTransparencySlider->blockSignals(true);
+			percentileTransparencySlider->setValue(boxPercentileTransparency->value());
+			percentileTransparencySlider->blockSignals(false);
+
+			boxPercFillColor->setEnabled(filled);
 			boxPercFillColor->blockSignals(true);
-            boxPercFillColor->setColor(s.brush().color());
+			sc.setAlpha(255);
+			boxPercFillColor->setColor(sc);
 			boxPercFillColor->blockSignals(false);
 
 			boxEdgeColor->blockSignals(true);
@@ -3242,7 +3469,7 @@ void PlotDialog::applyCanvasFormatToLayer(Graph *g)
 	if (colorBtn->isChecked()){
 		g->setCanvasBackgroundImage("");
 		QColor c = boxCanvasColor->color();
-		c.setAlpha(boxCanvasTransparency->value());
+		c.setAlphaF(0.01*boxCanvasTransparency->value());
 		g->setCanvasBackground(c);
 	} else if (imageBtn->isChecked()){
 		QColor c = Qt::white;
@@ -3356,7 +3583,7 @@ void PlotDialog::applyFormatToLayer(Graph *g)
 	g->setMargin(boxMargin->value());
 
 	QColor c = boxBackgroundColor->color();
-	c.setAlpha(boxBackgroundTransparency->value());
+	c.setAlphaF(0.01*boxBackgroundTransparency->value());
 	g->setBackgroundColor(c);
 
 	g->setAntialiasing(boxAntialiasing->isChecked());
@@ -3559,11 +3786,14 @@ bool PlotDialog::acceptParams()
 		graph->setCurveStyle(item->plotItemIndex(), boxConnect->currentIndex());
 
 		QColor col = boxAreaColor->color();
-		col.setAlpha(boxCurveOpacity->value());
+		col.setAlphaF(0.01*boxCurveOpacity->value());
 		QBrush br = QBrush(col, boxPattern->getSelectedPattern());
 		if (!fillGroupBox->isChecked())
 			br = QBrush();
-		QPen pen = QPen(boxLineColor->color(), boxLineWidth->value(), boxLineStyle->style(), Qt::SquareCap, Qt::MiterJoin);
+
+		QColor lc = boxLineColor->color();
+		lc.setAlphaF(0.01*boxLineTransparency->value());
+		QPen pen = QPen(lc, boxLineWidth->value(), boxLineStyle->style(), Qt::SquareCap, Qt::MiterJoin);
 		pen.setCosmetic(true);
 		QwtPlotCurve *curve = (QwtPlotCurve *)plotItem;
 		curve->setPen(pen);
@@ -4264,11 +4494,13 @@ void PlotDialog::applyLineFormatToLayer(Graph *g)
 		if (c->type() == Graph::ErrorBars)
 			continue;
 
-		QPen pen = QPen(c->pen().color(), boxLineWidth->value(),
-					boxLineStyle->style(), Qt::SquareCap, Qt::MiterJoin);
-		pen.setCosmetic(true);
+		QColor lc = c->pen().color();
 		if (boxApplyColorTo->isChecked())
-			pen.setColor(boxLineColor->color());
+			lc = boxLineColor->color();
+		lc.setAlphaF(0.01*boxLineTransparency->value());
+
+		QPen pen = QPen(lc, boxLineWidth->value(), boxLineStyle->style(), Qt::SquareCap, Qt::MiterJoin);
+		pen.setCosmetic(true);
 		c->setPen(pen);
 
 		g->setCurveStyle(i, boxConnect->currentIndex());
@@ -4329,8 +4561,12 @@ void PlotDialog::applySymbolsFormatToCurve(QwtPlotCurve *c, bool fillColor, bool
 		int size = 2*boxSymbolSize->value() + 1;
 
 		QBrush br = symbol.brush();
+		QColor fc = br.color();
 		if (fillColor)
-			br = QBrush(boxFillColor->color(), Qt::SolidPattern);
+			fc = boxFillColor->color();
+		fc.setAlphaF(0.01*boxSymbolTransparency->value());
+		br = QBrush(fc, Qt::SolidPattern);
+
 		if (!boxFillSymbol->isChecked())
 			br = QBrush();
 
@@ -4587,12 +4823,14 @@ void PlotDialog::applyPercentileFormatToCurve(BoxCurve *b)
 	b->setMinStyle(boxMinStyle->selectedSymbol());
 
 	int size = 2*boxPercSize->value() + 1;
-	QBrush br = QBrush(boxPercFillColor->color(), Qt::SolidPattern);
-	if (!boxFillSymbols->isChecked())
-		br = QBrush();
+	QBrush br = QBrush();
+	if (boxFillSymbols->isChecked()){
+		QColor c = boxPercFillColor->color();
+		c.setAlphaF(0.01*boxPercentileTransparency->value());
+		br = QBrush(c, Qt::SolidPattern);
+	}
 
-	QPen pen = QPen(boxEdgeColor->color(), boxEdgeWidth->value(),
-					Qt::SolidLine, Qt::FlatCap, Qt::MiterJoin);
+	QPen pen = QPen(boxEdgeColor->color(), boxEdgeWidth->value(), Qt::SolidLine, Qt::FlatCap, Qt::MiterJoin);
 	pen.setCosmetic(true);
 	b->setSymbol(QwtSymbol(QwtSymbol::NoSymbol, br, pen, QSize(size, size)));
 }

@@ -593,8 +593,8 @@ void ApplicationWindow::setDefaultOptions()
 	d_graph_background_color = Qt::white;
 	d_graph_canvas_color = Qt::white;
 	d_graph_border_color = Qt::black;
-	d_graph_background_opacity = 255;
-	d_graph_canvas_opacity = 255;
+	d_graph_background_opacity = 100;
+	d_graph_canvas_opacity = 100;
 	d_graph_border_width = 0;
 	d_graph_tick_labels_dist = 4;
 	d_graph_axes_labels_dist = 2;
@@ -2958,11 +2958,11 @@ void ApplicationWindow::setPreferences(Graph* g)
 	g->setFrame(d_graph_border_width, d_graph_border_color);
 
 	QColor c = d_graph_background_color;
-	c.setAlpha(d_graph_background_opacity);
+	c.setAlphaF(0.01*d_graph_background_opacity);
 	g->setBackgroundColor(c);
 
 	c = d_graph_canvas_color;
-	c.setAlpha(d_graph_canvas_opacity);
+	c.setAlphaF(0.01*d_graph_canvas_opacity);
 	g->setCanvasBackground(c);
 }
 

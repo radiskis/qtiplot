@@ -45,6 +45,7 @@ class QCheckBox;
 class QLineEdit;
 class QCheckBox;
 class QSpinBox;
+class QSlider;
 class QNetworkProxy;
 
 class Graph;
@@ -138,6 +139,7 @@ private:
 	ColorButton *textColorBtn, *textBackgroundBtn;
 	QPushButton *textFontBtn;
 	QSpinBox *boxBackgroundTransparency;
+	QSlider *transparencySlider, *fillTransparencySlider;
 	TextFormatButtons *formatButtons, *texFormatButtons;
 	QPushButton *textDefaultBtn, *frameDefaultBtn, *rectangleDefaultBtn;
 	QCheckBox *autoUpdateTextBox, *texOutputBox;

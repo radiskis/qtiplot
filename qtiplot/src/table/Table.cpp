@@ -789,14 +789,14 @@ QString Table::saveCommands()
 
 QString Table::saveComments()
 {
-        QString s = "Comments\t";
-        for (int i=0; i<d_table->numCols(); i++){
-                if (comments.count() > i)
-                        s += comments[i] + "\t";
-                else
-                        s += "\t";
-        }
-        return s + "\n";
+	QString s = "Comments\t";
+	for (int i = 0; i < d_table->numCols(); i++){
+		if (comments.count() > i)
+			s += comments[i].replace("\n", " ").replace("\t", " ") + "\t";
+		else
+			s += "\t";
+	}
+	return s + "\n";
 }
 
 QString Table::saveHeader()

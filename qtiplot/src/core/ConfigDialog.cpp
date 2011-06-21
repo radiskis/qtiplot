@@ -325,14 +325,27 @@ void ConfigDialog::initPlotsPage()
 	boxBackgroundColor->setColor(app->d_graph_background_color);
     graphBackgroundLayout->addWidget(boxBackgroundColor, 0, 1 );
 
-	labelGraphBkgOpacity = new QLabel(tr( "Opacity" ));
+	labelGraphBkgOpacity = new QLabel(tr("Opacity" ));
     graphBackgroundLayout->addWidget(labelGraphBkgOpacity, 0, 2 );
     boxBackgroundTransparency = new QSpinBox();
-    boxBackgroundTransparency->setRange(0, 255);
-    boxBackgroundTransparency->setSingleStep(5);
+	boxBackgroundTransparency->setRange(0, 100);
+	boxBackgroundTransparency->setSuffix(" %");
     boxBackgroundTransparency->setWrapping(true);
+	boxBackgroundTransparency->setSpecialValueText(" " + tr("Transparent"));
 	boxBackgroundTransparency->setValue(app->d_graph_background_opacity);
-    graphBackgroundLayout->addWidget(boxBackgroundTransparency, 0, 3 );
+
+	bkgOpacitySlider = new QSlider();
+	bkgOpacitySlider->setOrientation(Qt::Horizontal);
+	bkgOpacitySlider->setRange(0, 100);
+	bkgOpacitySlider->setValue(app->d_graph_background_opacity);
+
+	connect(bkgOpacitySlider, SIGNAL(valueChanged(int)), boxBackgroundTransparency, SLOT(setValue(int)));
+	connect(boxBackgroundTransparency, SIGNAL(valueChanged(int)), bkgOpacitySlider, SLOT(setValue(int)));
+
+	QHBoxLayout* hb = new QHBoxLayout();
+	hb->addWidget(bkgOpacitySlider);
+	hb->addWidget(boxBackgroundTransparency);
+	graphBackgroundLayout->addLayout(hb, 0, 3 );
 
 	labelGraphCanvasColor = new QLabel(tr("Canvas Color" ));
     graphBackgroundLayout->addWidget(labelGraphCanvasColor, 1, 0);
@@ -343,11 +356,24 @@ void ConfigDialog::initPlotsPage()
 	labelGraphCanvasOpacity = new QLabel(tr("Opacity"));
     graphBackgroundLayout->addWidget(labelGraphCanvasOpacity, 1, 2 );
     boxCanvasTransparency = new QSpinBox();
-    boxCanvasTransparency->setRange(0, 255);
-    boxCanvasTransparency->setSingleStep(5);
+	boxCanvasTransparency->setRange(0, 100);
+	boxCanvasTransparency->setSuffix(" %");
     boxCanvasTransparency->setWrapping(true);
+	boxCanvasTransparency->setSpecialValueText(" " + tr("Transparent"));
 	boxCanvasTransparency->setValue(app->d_graph_canvas_opacity);
-    graphBackgroundLayout->addWidget(boxCanvasTransparency, 1, 3 );
+
+	canvasOpacitySlider = new QSlider();
+	canvasOpacitySlider->setOrientation(Qt::Horizontal);
+	canvasOpacitySlider->setRange(0, 100);
+	canvasOpacitySlider->setValue(app->d_graph_canvas_opacity);
+
+	connect(canvasOpacitySlider, SIGNAL(valueChanged(int)), boxCanvasTransparency, SLOT(setValue(int)));
+	connect(boxCanvasTransparency, SIGNAL(valueChanged(int)), canvasOpacitySlider, SLOT(setValue(int)));
+
+	QHBoxLayout* hb1 = new QHBoxLayout();
+	hb1->addWidget(canvasOpacitySlider);
+	hb1->addWidget(boxCanvasTransparency);
+	graphBackgroundLayout->addLayout(hb1, 1, 3);
 
 	labelGraphFrameColor = new QLabel(tr("Border Color"));
     graphBackgroundLayout->addWidget(labelGraphFrameColor, 2, 0);
@@ -362,6 +388,7 @@ void ConfigDialog::initPlotsPage()
     graphBackgroundLayout->addWidget(boxBorderWidth, 2, 3);
 
 	graphBackgroundLayout->setRowStretch(4, 1);
+	graphBackgroundLayout->setColumnStretch(4, 1);
 
 	boxResize = new QCheckBox();
 	boxResize->setChecked(!app->autoResizeLayers);
@@ -3601,8 +3628,10 @@ void ConfigDialog::setApplication(ApplicationWindow *app)
 	boxMargin->setValue(app->defaultPlotMargin);
 	boxBackgroundColor->setColor(app->d_graph_background_color);
 	boxBackgroundTransparency->setValue(app->d_graph_background_opacity);
+	bkgOpacitySlider->setValue(app->d_graph_background_opacity);
 	boxCanvasColor->setColor(app->d_graph_canvas_color);
 	boxCanvasTransparency->setValue(app->d_graph_canvas_opacity);
+	canvasOpacitySlider->setValue(app->d_graph_canvas_opacity);
 	boxBorderColor->setColor(app->d_graph_border_color);
 	boxBorderWidth->setValue(app->d_graph_border_width);
 	boxResize->setChecked(!app->autoResizeLayers);

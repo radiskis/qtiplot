@@ -357,8 +357,8 @@ private:
 	QComboBox *boxLinkAllXAxes;
 
 	FunctionDialog *functionEdit;
-	QSpinBox *boxCurveOpacity;
-	QSlider *curveOpacitySlider;
+	QSpinBox *boxCurveOpacity, *boxSymbolTransparency, *boxLineTransparency, *boxPercentileTransparency;
+	QSlider *curveOpacitySlider, *symbTransparencySlider, *lineTransparencySlider, *percentileTransparencySlider;
 
 	DoubleSpinBox *boxPlotX, *boxPlotY, *boxPlotWidth, *boxPlotHeight;
 	QComboBox *plotUnitBox, *gapApplyToBox;
@@ -376,7 +376,7 @@ private:
 	ColorButton *boxFrameColor;
 	QSpinBox *boxFrameWidth;
 	QPushButton *canvasDefaultBtn;
-	QSlider *canvasOpacitySlider;
+	QSlider *canvasOpacitySlider, *bkgOpacitySlider;
 
 	QCheckBox *boxLeftAxis, *boxRightAxis, *boxBottomAxis, *boxTopAxis;
 	QCompleter *completer;
