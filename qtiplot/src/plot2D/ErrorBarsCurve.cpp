@@ -99,12 +99,6 @@ void ErrorBarsCurve::drawErrorBars(QPainter *painter,
 	int sh2 = 0, sw2 = 0;
 	double x_factor = (double)painter->device()->logicalDpiX()/(double)plot()->logicalDpiX();
 	double y_factor = (double)painter->device()->logicalDpiY()/(double)plot()->logicalDpiY();
-	const QwtSymbol symbol = d_master_curve->symbol();
-	if (symbol.style() != QwtSymbol::NoSymbol){
-		sh2 = int(0.5*y_factor*symbol.size().height());
-		sw2 = int(0.5*x_factor*symbol.size().width());
-	}
-
 	double d_xOffset = 0.0;
 	double d_yOffset = 0.0;
 
@@ -115,6 +109,12 @@ void ErrorBarsCurve::drawErrorBars(QPainter *painter,
 	} else if (d_master_curve->type() == Graph::HorizontalBars){
 		d_yOffset = ((QwtBarCurve *)d_master_curve)->dataOffset();
 		stack = ((QwtBarCurve *)d_master_curve)->stackedCurvesList();
+	} else {
+		const QwtSymbol symbol = d_master_curve->symbol();
+		if (symbol.style() != QwtSymbol::NoSymbol){
+			sh2 = int(0.5*y_factor*symbol.size().height());
+			sw2 = int(0.5*x_factor*symbol.size().width());
+		}
 	}
 	bool addStackOffset = !stack.isEmpty();
 

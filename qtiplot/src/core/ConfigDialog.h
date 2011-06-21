@@ -47,6 +47,7 @@ class QSpinBox;
 class QLabel;
 class QRadioButton;
 class QListWidget;
+class QSlider;
 class ColorButton;
 class DoubleSpinBox;
 class QFontComboBox;
@@ -239,6 +240,7 @@ private:
 	QLabel *labelGraphBkgOpacity, *labelGraphCanvasOpacity;
 	ColorButton *boxBackgroundColor, *boxCanvasColor, *boxBorderColor;
 	QSpinBox *boxBackgroundTransparency, *boxCanvasTransparency, *boxBorderWidth, *boxTabLength;
+	QSlider *bkgOpacitySlider, *canvasOpacitySlider;
 	QCheckBox *completionBox, *lineNumbersBox;
 	QLabel *labelTabLength, *labelNotesFont;
 	QFontComboBox *boxFontFamily;

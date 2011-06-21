@@ -168,18 +168,28 @@ void EnrichmentDialog::initTextPage()
 	connect(textBackgroundBtn, SIGNAL(colorChanged()), this, SLOT(textFormatApplyTo()));
 	gl1->addWidget(textBackgroundBtn, 1, 1);
 
-	gl1->addWidget(new QLabel(tr("Opacity")), 2, 0);
-
 	boxBackgroundTransparency = new QSpinBox();
-	boxBackgroundTransparency->setRange(0, 255);
-    boxBackgroundTransparency->setSingleStep(5);
+	boxBackgroundTransparency->setRange(0, 100);
+	boxBackgroundTransparency->setSuffix(" %");
 	boxBackgroundTransparency->setWrapping(true);
-    boxBackgroundTransparency->setSpecialValueText(tr("Transparent"));
-	connect(boxBackgroundTransparency, SIGNAL(valueChanged(int)),
-			this, SLOT(updateTransparency(int)));
+	connect(boxBackgroundTransparency, SIGNAL(valueChanged(int)), this, SLOT(updateTransparency(int)));
 	gl1->addWidget(boxBackgroundTransparency, 2, 1);
 
-    gl1->addWidget(new QLabel(tr("Rotate (deg.)")), 3, 0);
+	transparencySlider = new QSlider();
+	transparencySlider->setOrientation(Qt::Horizontal);
+	transparencySlider->setRange(0, 100);
+
+	connect(transparencySlider, SIGNAL(valueChanged(int)), boxBackgroundTransparency, SLOT(setValue(int)));
+	connect(boxBackgroundTransparency, SIGNAL(valueChanged(int)), transparencySlider, SLOT(setValue(int)));
+
+	QLabel *l1 = new QLabel("&" + tr("Opacity"));
+	l1->setBuddy(transparencySlider);
+	gl1->addWidget(l1, 2, 0);
+
+	QHBoxLayout* hb = new QHBoxLayout();
+	hb->addWidget(transparencySlider);
+	hb->addWidget(boxBackgroundTransparency);
+	gl1->addLayout(hb, 2, 1);
 
     boxTextAngle = new QSpinBox();
     boxTextAngle->setRange(-360, 360);
@@ -187,6 +197,10 @@ void EnrichmentDialog::initTextPage()
     boxTextAngle->setWrapping(true);
     connect(boxTextAngle, SIGNAL(valueChanged(int)), this, SLOT(textFormatApplyTo()));
     gl1->addWidget(boxTextAngle, 3, 1);
+
+	QLabel *l2 = new QLabel("&" + tr("Rotate (deg.)"));
+	l2->setBuddy(boxTextAngle);
+	gl1->addWidget(l2, 3, 0);
 
     autoUpdateTextBox = new QCheckBox(tr("Auto-&update"));
 	gl1->addWidget(autoUpdateTextBox, 1, 2);
@@ -277,7 +291,6 @@ void EnrichmentDialog::initFramePage()
 
 	QGroupBox *gb = new QGroupBox();
 	QGridLayout *gl = new QGridLayout(gb);
-    gl->addWidget(new QLabel( tr("Shape")), 0, 0);
 
 	frameBox = new QComboBox();
 	frameBox->addItem(tr("None"));
@@ -290,18 +303,27 @@ void EnrichmentDialog::initFramePage()
 	connect(frameBox, SIGNAL(activated(int)), this, SLOT(frameApplyTo()));
     gl->addWidget(frameBox, 0, 1);
 
-    gl->addWidget(new QLabel(tr("Color")), 1, 0);
+	QLabel *l1 = new QLabel("&" + tr("Shape"));
+	l1->setBuddy(frameBox);
+	gl->addWidget(l1, 0, 0);
+
 	frameColorBtn = new ColorButton();
 	connect(frameColorBtn, SIGNAL(colorChanged()), this, SLOT(frameApplyTo()));
     gl->addWidget(frameColorBtn, 1, 1);
 
-	gl->addWidget(new QLabel(tr( "Line Style" )), 2, 0);
+	QLabel *l2 = new QLabel("&" + tr("Color"));
+	l2->setBuddy(frameColorBtn);
+	gl->addWidget(l2, 1, 0);
+
 	boxFrameLineStyle = new PenStyleBox();
 	connect(boxFrameLineStyle, SIGNAL(activated(int)), this, SLOT(frameApplyTo()));
 	gl->addWidget(boxFrameLineStyle, 2, 1);
 
+	QLabel *l3 = new QLabel("&" + tr("Line Style"));
+	l3->setBuddy(boxFrameLineStyle);
+	gl->addWidget(l3, 2, 0);
+
 	gl->setColumnStretch(1, 1);
-	gl->addWidget(new QLabel(tr("Width")), 3, 0);
 	boxFrameWidth = new DoubleSpinBox();
 	if(d_widget_type == Ellipse){
 		boxFrameWidth->setDecimals(2);
@@ -314,6 +336,10 @@ void EnrichmentDialog::initFramePage()
 		boxFrameWidth->setDecimals(0);
 		boxFrameWidth->setSingleStep(1.0);
 	}
+
+	QLabel *l4 = new QLabel("&" + tr("Width"));
+	l4->setBuddy(boxFrameWidth);
+	gl->addWidget(l4, 3, 0);
 
 	connect(boxFrameWidth, SIGNAL(valueChanged(double)), this, SLOT(frameApplyTo()));
 	gl->addWidget(boxFrameWidth, 3, 1);
@@ -356,19 +382,33 @@ void EnrichmentDialog::initPatternPage()
 	connect(backgroundColorBtn, SIGNAL(colorChanged()), this, SLOT(patternApplyTo()));
     gl->addWidget(backgroundColorBtn, 0, 1);
 
-	gl->addWidget(new QLabel(tr("Opacity")), 1, 0);
 	boxTransparency = new QSpinBox();
-	boxTransparency->setRange(0, 255);
-    boxTransparency->setSingleStep(5);
+	boxTransparency->setRange(0, 100);
+	boxTransparency->setSuffix(" %");
 	boxTransparency->setWrapping(true);
     boxTransparency->setSpecialValueText(tr("Transparent"));
 	connect(boxTransparency, SIGNAL(valueChanged(int)), this, SLOT(patternApplyTo()));
-	gl->addWidget(boxTransparency, 1, 1);
+	gl->addWidget(boxTransparency, 1, 2);
 
-	gl->addWidget(new QLabel(tr("Pattern")), 2, 0);
+	fillTransparencySlider = new QSlider();
+	fillTransparencySlider->setOrientation(Qt::Horizontal);
+	fillTransparencySlider->setRange(0, 100);
+	gl->addWidget(fillTransparencySlider, 1, 1);
+
+	connect(fillTransparencySlider, SIGNAL(valueChanged(int)), boxTransparency, SLOT(setValue(int)));
+	connect(boxTransparency, SIGNAL(valueChanged(int)), fillTransparencySlider, SLOT(setValue(int)));
+
+	QLabel *l1 = new QLabel("&" + tr("Opacity"));
+	l1->setBuddy(fillTransparencySlider);
+	gl->addWidget(l1, 1, 0);
+
 	patternBox = new PatternBox();
 	connect(patternBox, SIGNAL(activated(int)), this, SLOT(patternApplyTo()));
 	gl->addWidget(patternBox, 2, 1);
+
+	QLabel *l2 = new QLabel("&" + tr("Pattern"));
+	l2->setBuddy(patternBox);
+	gl->addWidget(l2, 2, 0);
 
 	gl->addWidget(new QLabel(tr("Pattern Color")), 3, 0);
 	patternColorBtn = new ColorButton();
@@ -416,7 +456,6 @@ void EnrichmentDialog::initGeometryPage()
 	attachToBox = new QComboBox();
 	attachToBox->addItem(tr("Page"));
 	attachToBox->addItem(tr("Layer Scales"));
-	//attachToBox->setCurrentIndex((int)lm->attachPolicy());
 
 	if (d_widget_type != MDIWindow)
 		bl1->addWidget(new QLabel(tr( "Attach to" )), 0, 0);
@@ -433,9 +472,11 @@ void EnrichmentDialog::initGeometryPage()
 	unitBox->insertItem(tr("pixel"));
 	if (d_widget_type != MDIWindow)
         unitBox->insertItem(tr("scale"));
-
-	bl1->addWidget(new QLabel(tr( "Unit" )), 1, 0);
 	bl1->addWidget(unitBox, 1, 1);
+
+	QLabel *l1 = new QLabel("&" + tr("Unit"));
+	l1->setBuddy(unitBox);
+	bl1->addWidget(l1, 1, 0);
 
 	QLocale locale = QLocale();
 	if (d_app)
@@ -573,11 +614,16 @@ void EnrichmentDialog::setWidget(QWidget *w)
 
 			QColor bc = l->backgroundColor();
 			boxBackgroundTransparency->blockSignals(true);
-			boxBackgroundTransparency->setValue(bc.alpha());
+			boxBackgroundTransparency->setValue(100*bc.alphaF());
 			boxBackgroundTransparency->blockSignals(false);
+
+			transparencySlider->blockSignals(true);
+			transparencySlider->setValue(boxBackgroundTransparency->value());
+			transparencySlider->blockSignals(false);
 
 			textBackgroundBtn->blockSignals(true);
 			textBackgroundBtn->setEnabled(bc.alpha());
+			bc.setAlpha(255);
 			textBackgroundBtn->setColor(bc);
 			textBackgroundBtn->blockSignals(false);
 
@@ -606,44 +652,29 @@ void EnrichmentDialog::setWidget(QWidget *w)
 
 			bestSizeButton->show();
 		}
-	} else if (d_widget_type == Frame){
-		RectangleWidget *r = qobject_cast<RectangleWidget *>(d_widget);
-		if (r){
-			backgroundColorBtn->blockSignals(true);
-			backgroundColorBtn->setColor(r->backgroundColor());
-			backgroundColorBtn->blockSignals(false);
+	} else if (d_widget_type == Frame || d_widget_type == Ellipse){
+		QColor bc = fw->backgroundColor();
 
-			boxTransparency->blockSignals(true);
-			boxTransparency->setValue(r->backgroundColor().alpha());
-			boxTransparency->blockSignals(false);
+		boxTransparency->blockSignals(true);
+		boxTransparency->setValue(100.0*bc.alphaF());
+		boxTransparency->blockSignals(false);
 
-			patternBox->blockSignals(true);
-			patternBox->setPattern(r->brush().style());
-			patternBox->blockSignals(false);
+		fillTransparencySlider->blockSignals(true);
+		fillTransparencySlider->setValue(boxTransparency->value());
+		fillTransparencySlider->blockSignals(false);
 
-			patternColorBtn->blockSignals(true);
-			patternColorBtn->setColor(r->brush().color());
-			patternColorBtn->blockSignals(false);
-		}
-	} else if (d_widget_type == Ellipse){
-		EllipseWidget *r = qobject_cast<EllipseWidget *>(d_widget);
-		if (r){
-			backgroundColorBtn->blockSignals(true);
-			backgroundColorBtn->setColor(r->backgroundColor());
-			backgroundColorBtn->blockSignals(false);
+		bc.setAlpha(255);
+		backgroundColorBtn->blockSignals(true);
+		backgroundColorBtn->setColor(bc);
+		backgroundColorBtn->blockSignals(false);
 
-			boxTransparency->blockSignals(true);
-			boxTransparency->setValue(r->backgroundColor().alpha());
-			boxTransparency->blockSignals(false);
+		patternBox->blockSignals(true);
+		patternBox->setPattern(fw->brush().style());
+		patternBox->blockSignals(false);
 
-			patternBox->blockSignals(true);
-			patternBox->setPattern(r->brush().style());
-			patternBox->blockSignals(false);
-
-			patternColorBtn->blockSignals(true);
-			patternColorBtn->setColor(r->brush().color());
-			patternColorBtn->blockSignals(false);
-		}
+		patternColorBtn->blockSignals(true);
+		patternColorBtn->setColor(fw->brush().color());
+		patternColorBtn->blockSignals(false);
 	}
 }
 
@@ -1042,7 +1073,7 @@ void EnrichmentDialog::patternApplyTo()
 void EnrichmentDialog::setPatternTo(FrameWidget *r)
 {
 	QColor c = backgroundColorBtn->color();
-	c.setAlpha(boxTransparency->value());
+	c.setAlphaF(0.01*boxTransparency->value());
 	r->setBackgroundColor(c);
 
 	QColor patternColor = patternColorBtn->color();
@@ -1162,7 +1193,7 @@ void EnrichmentDialog::textFormatApplyTo()
 void EnrichmentDialog::setTextFormatTo(LegendWidget *l)
 {
     QColor c = textBackgroundBtn->color();
-    c.setAlpha(boxBackgroundTransparency->value());
+	c.setAlphaF(0.01*boxBackgroundTransparency->value());
     l->setBackgroundColor(c);
     l->setTextColor(textColorBtn->color());
     l->setFont(textFont);
@@ -1181,7 +1212,7 @@ void EnrichmentDialog::setTextDefaultValues()
 	d_app->plotLegendFont = textFont;
 
 	QColor c = textBackgroundBtn->color();
-	c.setAlpha(boxBackgroundTransparency->value());
+	c.setAlphaF(0.01*boxBackgroundTransparency->value());
 	d_app->legendBackground = c;
 	d_app->d_legend_default_angle = boxTextAngle->value();
 	d_app->saveSettings();
@@ -1203,7 +1234,7 @@ void EnrichmentDialog::setRectangleDefaultValues()
 		return;
 
 	QColor c = backgroundColorBtn->color();
-	c.setAlpha(boxTransparency->value());
+	c.setAlphaF(0.01*boxTransparency->value());
 	d_app->d_rect_default_background = c;
 
 	QColor patternColor = patternColorBtn->color();

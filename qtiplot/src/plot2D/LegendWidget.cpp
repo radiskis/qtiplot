@@ -627,7 +627,7 @@ QString LegendWidget::parse(const QString& str)
 						case -1: //use column name
 						{
 							if (ycol >= 0 && !t->comment(ycol).isEmpty())
-								s = s.replace(pos, pos2-pos+1, t->comment(ycol));
+								s = s.replace(pos, pos2-pos+1, t->comment(ycol).replace("\n", " "));
 							else
 								s = s.replace(pos, pos2-pos+1, colLabel);
 							break;
@@ -660,7 +660,7 @@ QString LegendWidget::parse(const QString& str)
 							switch (lst.count()){
 								case 2: //2 arguments
 								{
-									s = s.replace(pos, pos2-pos+1, t->comment(ycol));
+									s = s.replace(pos, pos2-pos+1, t->comment(ycol).replace("\n", " "));
 									break;
 								}
 								case 3:  //3 arguments, display cell contents
