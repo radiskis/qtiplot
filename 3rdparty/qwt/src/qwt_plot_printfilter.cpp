@@ -536,11 +536,12 @@ void QwtPlotPrintFilter::reset(QwtPlotItem *item) const
             QwtPlotCurve *c = (QwtPlotCurve *)item;
 
             QwtSymbol symbol = c->symbol();
-
-            if ( cache.curveSymbolPenColors.contains(c) )
+			//commented out by Ion Vasilief since this affects the symbol pen width.
+			//TO DO: report bug to Qwt developper
+			/*if ( cache.curveSymbolPenColors.contains(c) )
             {
                 symbol.setPen(cache.curveSymbolPenColors[c]);
-            }
+			}*/
 
             if ( cache.curveSymbolBrushColors.contains(c) )
             {
@@ -555,7 +556,7 @@ void QwtPlotPrintFilter::reset(QwtPlotItem *item) const
                 QPen pen = c->pen();
                 pen.setColor(cache.curveColors[c]);
                 c->setPen(pen);
-            }
+			}
 
             break;
         }

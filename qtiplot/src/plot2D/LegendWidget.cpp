@@ -118,8 +118,9 @@ void LegendWidget::print(QPainter *painter, const QwtScaleMap map[QwtPlot::axisC
 	int width, height, textWidth, textHeight;
 	QwtArray<long> heights = itemsHeight(painter, symbolLineLength, width, height, textWidth, textHeight);
 
-	int dfx = qRound(d_frame_pen.width()*xfactor);
-	int dfy = qRound(d_frame_pen.width()*yfactor);
+	int lw = d_frame_pen.width();
+	int dfx = (lw > 1) ? qRound(0.5*lw*xfactor) : 0;
+	int dfy = (lw > 1) ? qRound(0.5*lw*yfactor) : 0;
 
 #ifdef TEX_OUTPUT
 	if (plot()->isExportingTeX()){
