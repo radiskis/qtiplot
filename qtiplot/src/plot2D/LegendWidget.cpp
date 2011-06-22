@@ -88,7 +88,7 @@ void LegendWidget::paintEvent(QPaintEvent *e)
 
 	const int symbolLineLength = line_length + symbolsMaxWidth();
 	int width, height, textWidth, textHeight;
-	QwtArray<long> heights = itemsHeight(&p, symbolLineLength, width, height, textWidth, textHeight);
+	QwtArray<long> heights = itemsHeight(&p, symbolLineLength, d_frame_pen.width(), width, height, textWidth, textHeight);
     resize(width, height);
 
 	drawFrame(&p, rect());
@@ -114,21 +114,18 @@ void LegendWidget::print(QPainter *painter, const QwtScaleMap map[QwtPlot::axisC
 	left_margin = int(left_margin*xfactor);
 	top_margin = int(top_margin*yfactor);
 
+	const int dfy = qRound(d_frame_pen.width()*yfactor);
 	const int symbolLineLength = int((line_length + symbolsMaxWidth())*xfactor);
 	int width, height, textWidth, textHeight;
-	QwtArray<long> heights = itemsHeight(painter, symbolLineLength, width, height, textWidth, textHeight);
-
-	int lw = d_frame_pen.width();
-	int dfx = (lw > 1) ? qRound(0.5*lw*xfactor) : 0;
-	int dfy = (lw > 1) ? qRound(0.5*lw*yfactor) : 0;
+	QwtArray<long> heights = itemsHeight(painter, symbolLineLength, dfy, width, height, textWidth, textHeight);
 
 #ifdef TEX_OUTPUT
 	if (plot()->isExportingTeX()){
-		drawFrame(painter, QRect(x, y, qRound(this->width()*xfactor), height).adjusted(-dfx, -dfy, dfx, dfy));
+		drawFrame(painter, QRect(x, y, qRound(this->width()*xfactor), height));
 		((QTeXPaintDevice *)painter->device())->setTextHorizontalAlignment(Qt::AlignLeft);
 	} else
 #endif
-	drawFrame(painter, QRect(x, y, width, height).adjusted(-dfx, -dfy, dfx, dfy));
+	drawFrame(painter, QRect(x, y, width, height));
 
 	drawText(painter, QRect(x, y, textWidth, textHeight), heights, symbolLineLength);
 
@@ -392,7 +389,7 @@ void LegendWidget::drawText(QPainter *p, const QRect& rect, QwtArray<long> heigh
 	p->restore();
 }
 
-QwtArray<long> LegendWidget::itemsHeight(QPainter *p, int symbolLineLength, int &width, int &height,
+QwtArray<long> LegendWidget::itemsHeight(QPainter *p, int symbolLineLength, int frameWidth, int &width, int &height,
 							 int &textWidth, int &textHeight)
 {
 	QString text = d_text->text();
@@ -403,7 +400,7 @@ QwtArray<long> LegendWidget::itemsHeight(QPainter *p, int symbolLineLength, int 
 	width = 0;
 	height = 0;
 	int maxL = 0;
-	int h = top_margin + d_frame_pen.width();
+	int h = top_margin + frameWidth;
 	for (int i=0; i<n; i++){
 		QString s = titles[i];
 		int textL = 0;
@@ -481,7 +478,7 @@ QwtArray<long> LegendWidget::itemsHeight(QPainter *p, int symbolLineLength, int 
 	height += 2*top_margin;
 	width = 2*left_margin + maxL;
 
-	int fw = 2*d_frame_pen.width();
+	int fw = 2*frameWidth;
     height += fw;
     width += fw;
 
