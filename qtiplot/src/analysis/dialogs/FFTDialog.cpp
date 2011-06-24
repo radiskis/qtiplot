@@ -293,8 +293,7 @@ void FFTDialog::fftMatrix()
 			QApplication::restoreOverrideCursor();
 			return;
 		}
-
-        fft2d_inv(x_int_re, x_int_im, x_fin_re, x_fin_im, width, height);
+		fft2d_inv(x_int_re, x_int_im, x_fin_re, x_fin_im, width, height);
     } else
         fft2d(x_int_re, x_int_im, width, height);
 
@@ -353,6 +352,8 @@ void FFTDialog::fftMatrix()
         imagCoeffMatrix->resize(d_matrix->size());
         ampMatrix->resize(d_matrix->size());
     }
+	realCoeffMatrix->setViewType(Matrix::ImageView);
+	imagCoeffMatrix->setViewType(Matrix::ImageView);
     ampMatrix->setViewType(Matrix::ImageView);
 
     Matrix::freeMatrixData(x_int_re, height);
