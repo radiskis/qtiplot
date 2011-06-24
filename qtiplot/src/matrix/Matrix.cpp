@@ -1348,7 +1348,7 @@ void Matrix::initImageView()
     imageLabel = new QLabel();
     imageLabel->setBackgroundRole(QPalette::Base);
     imageLabel->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
-    imageLabel->setScaledContents(true);
+	imageLabel->setScaledContents(true);
     imageLabel->installEventFilter(this);
     d_stack->addWidget(imageLabel);
 }
@@ -1793,7 +1793,7 @@ bool Matrix::eventFilter(QObject *object, QEvent *e)
 	if (object != (QObject*)imageLabel)
 		return MdiSubWindow::eventFilter(object, e);
 
-	if (e->type() == QEvent::MouseButtonPress && object == (QObject*)imageLabel){
+	if (e->type() == QEvent::MouseButtonPress){
 		const QMouseEvent *me = (const QMouseEvent *)e;
 		if (me->button() == Qt::LeftButton){
 			QDrag *drag = new QDrag(this);
@@ -1804,6 +1804,9 @@ bool Matrix::eventFilter(QObject *object, QEvent *e)
 			drag->exec();
 		}
 	}
+
+	if (e->type() == QEvent::Resize)
+		displayImage(d_matrix_model->renderImage());
 
 	return QObject::eventFilter(object, e);
 }
