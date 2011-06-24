@@ -43,6 +43,7 @@ MatrixDialog::MatrixDialog( QWidget* parent, Qt::WFlags fl )
 {
     setWindowTitle( tr( "QtiPlot - Matrix Properties" ) );
     setAttribute(Qt::WA_DeleteOnClose);
+	setSizeGripEnabled(true);
 
 	QGridLayout * topLayout = new QGridLayout();
 	QHBoxLayout * bottomLayout = new QHBoxLayout();

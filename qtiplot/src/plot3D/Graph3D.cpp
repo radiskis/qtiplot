@@ -1131,12 +1131,16 @@ void Graph3D::resetAxesLabels()
 {
 	QString s = labels[0];
 	if (s == "%(?X)"){
-		QStringList lst = plotAssociation.split(",");
-		if (!lst.isEmpty()){
-			s = lst[0].remove("(X)");
-			int pos = s.lastIndexOf("_");
-			if (pos > 0)
-				s = s.right(s.length() - pos - 1);
+		if (d_matrix)
+			s = tr("X axis");
+		else {
+			QStringList lst = plotAssociation.split(",");
+			if (!lst.isEmpty()){
+				s = lst[0].remove("(X)");
+				int pos = s.lastIndexOf("_");
+				if (pos > 0)
+					s = s.right(s.length() - pos - 1);
+			}
 		}
 	}
 
@@ -1147,12 +1151,16 @@ void Graph3D::resetAxesLabels()
 
 	s = labels[1];
 	if (s == "%(?Y)"){
-		QStringList lst = plotAssociation.split(",");
-		if (!lst.isEmpty()){
-			s = lst[1].remove("(Y)");
-			int pos = s.lastIndexOf("_");
-			if (pos > 0)
-				s = s.right(s.length() - pos - 1);
+		if (d_matrix)
+			s = tr("Y axis");
+		else {
+			QStringList lst = plotAssociation.split(",");
+			if (lst.size() > 1){
+				s = lst[1].remove("(Y)");
+				int pos = s.lastIndexOf("_");
+				if (pos > 0)
+					s = s.right(s.length() - pos - 1);
+			}
 		}
 	}
 
@@ -1163,12 +1171,16 @@ void Graph3D::resetAxesLabels()
 
 	s = labels[2];
 	if (s == "%(?Z)"){
-		QStringList lst = plotAssociation.split(",");
-		if (!lst.isEmpty()){
-			s = lst[2].remove("(Z)");
-			int pos = s.lastIndexOf("_");
-			if (pos > 0)
-				s = s.right(s.length() - pos - 1);
+		if (d_matrix)
+			s = tr("Y axis");
+		else {
+			QStringList lst = plotAssociation.split(",");
+			if (lst.size() > 2){
+				s = lst[2].remove("(Z)");
+				int pos = s.lastIndexOf("_");
+				if (pos > 0)
+					s = s.right(s.length() - pos - 1);
+			}
 		}
 	}
 
