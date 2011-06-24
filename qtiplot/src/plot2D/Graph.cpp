@@ -729,17 +729,14 @@ void Graph::setTicksLength(int minLength, int majLength)
 
 void Graph::changeTicksLength(int minLength, int majLength)
 {
-	if (minorTickLength() == minLength &&
-			majorTickLength() == majLength)
+	if (minorTickLength() == minLength && majorTickLength() == majLength)
 		return;
 
 	setTicksLength(minLength, majLength);
 
 	hide();
-	for (int i=0; i<4; i++)
-	{
-		if (axisEnabled(i))
-		{
+	for (int i = 0; i < 4; i++){
+		if (axisEnabled(i)){
 			enableAxis (i,false);
 			enableAxis (i,true);
 		}
@@ -6354,8 +6351,7 @@ int Graph::majorTickLength() const
 
 void Graph::setTickLength (int minLength, int majLength)
 {
-	if (d_maj_tick_length == majLength &&
-			d_min_tick_length == minLength)
+	if (d_maj_tick_length == majLength && d_min_tick_length == minLength)
 		return;
 
 	d_maj_tick_length = majLength;

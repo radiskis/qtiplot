@@ -39,6 +39,7 @@ ColorMapDialog::ColorMapDialog(QWidget* parent, Qt::WFlags fl)
 {
 setObjectName( "ColorMapDialog" );
 setWindowTitle(tr("QtiPlot") + " - " + tr("Custom Color Map"));
+setSizeGripEnabled(true);
 
 ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent);
 if (app)
