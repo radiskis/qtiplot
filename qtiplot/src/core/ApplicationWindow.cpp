@@ -10690,20 +10690,23 @@ void ApplicationWindow::deleteSelectedItems()
 		return;
 	}
 
-	Q3ListViewItem *item;
-	QList<Q3ListViewItem *> lst;
-	for (item = lv->firstChild(); item; item = item->nextSibling()){
-		if (item->isSelected())
-			lst.append(item);
+	QList<Folder *> folderList;
+	QList<MdiSubWindow *> windowList;
+	for (Q3ListViewItem *item = lv->firstChild(); item; item = item->nextSibling()){
+		if (!item->isSelected())
+			continue;
+
+		if (item->rtti() == FolderListItem::RTTI)
+			folderList << ((FolderListItem *)item)->folder();
+		else
+			windowList << ((WindowListItem *)item)->window();
 	}
 
 	folders->blockSignals(true);
-	foreach(item, lst){
-		if (item->rtti() == FolderListItem::RTTI)
-			deleteFolder(((FolderListItem *)item)->folder());
-		else
-			((WindowListItem *)item)->window()->close();
-	}
+	foreach(MdiSubWindow *w, windowList)
+		w->close();
+	foreach(Folder *f, folderList)
+		deleteFolder(f);
 	folders->blockSignals(false);
 }
 
@@ -17107,7 +17110,7 @@ bool ApplicationWindow::deleteFolder(Folder *f)
 		return false;
 	else {
 		Folder *parent = projectFolder();
-		if (current_folder){
+		if (current_folder && current_folder != parent){
 			if (current_folder->parent())
 				parent = (Folder *)current_folder->parent();
 		}
