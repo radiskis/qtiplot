@@ -234,7 +234,7 @@ ImageProfilesTool::ImageProfilesTool(ApplicationWindow *app, Graph *graph, Matri
 		double xVal = 0.5*(m->xStart() + m->xEnd());
 		double yVal = 0.5*(m->yStart() + m->yEnd());
 		if (d_graph){
-			connect(d_matrix, SIGNAL(destroyed()), d_graph, SLOT(disableTools()));
+			connect(d_matrix, SIGNAL(destroyed()), d_graph, SLOT(disableImageProfilesTool()));
 			connect(d_matrix, SIGNAL(modifiedData(Matrix *)), this, SLOT(modifiedMatrix(Matrix *)));
 
 			horSpinBox = new DoubleSpinBox('g');
@@ -395,12 +395,17 @@ void ImageProfilesTool::append(const QwtDoublePoint &pos)
 	if (d_hor_table){
 		for (int i = 0; i < d_matrix->numCols(); i++)
 			d_hor_table->setCell(i, 1, d_matrix->cell(row, i));
+		for (int i = d_matrix->numCols(); i < d_hor_table->numRows(); i++)
+			d_hor_table->setText(i, 1, "");
+
 		d_hor_table->notifyChanges();
 	}
 
 	if (d_ver_table){
 		for (int i = 0; i < d_matrix->numRows(); i++)
 			d_ver_table->setCell(i, 1, d_matrix->cell(i, col));
+		for (int i = d_matrix->numRows(); i < d_ver_table->numRows(); i++)
+			d_ver_table->setText(i, 1, "");
 		d_ver_table->notifyChanges();
 	}
 

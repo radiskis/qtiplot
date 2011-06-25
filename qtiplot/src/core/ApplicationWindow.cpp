@@ -15740,8 +15740,8 @@ MultiLayer* ApplicationWindow::plotImageProfiles(Matrix *m)
     Table *verTable = newHiddenTable(tr("Vertical"), QString::null, m->numRows(), 2);
 
 	Graph *sg = g->layer(1);
-	ImageProfilesTool *screener = new ImageProfilesTool(this, sg, m, horTable, verTable);
-	sg->setActiveTool(screener);
+	if (sg)
+		sg->setActiveTool(new ImageProfilesTool(this, sg, m, horTable, verTable));
 
 	if (horTable && g->layer(2))
 		g->layer(2)->addCurves(horTable, QStringList(horTable->colName(1)));

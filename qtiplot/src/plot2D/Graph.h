@@ -62,6 +62,7 @@ class ApplicationWindow;
 class Matrix;
 class SelectionMoveResizer;
 class RangeSelectorTool;
+class ImageProfilesTool;
 class DataCurve;
 class PlotCurve;
 class ErrorBarsCurve;
@@ -644,6 +645,7 @@ class Graph: public QwtPlot
 		//@}
 
 		void disableTools();
+		void disableImageProfilesTool();
 
 		/*! Enables the data range selector tool.
 		 *
@@ -885,6 +887,7 @@ signals:
 		QPointer<SelectionMoveResizer> d_markers_selector;
 		//! The current curve selection, or NULL if none is active.
 		QPointer<RangeSelectorTool> d_range_selector;
+		QPointer<ImageProfilesTool> d_image_profiles_tool;
 		//! The currently active tool, or NULL for default (pointer).
 		PlotToolInterface *d_active_tool, *d_peak_fit_tool;
 		//! Pointer to the currently selected text/legend

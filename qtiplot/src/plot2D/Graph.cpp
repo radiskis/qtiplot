@@ -127,6 +127,7 @@ Graph::Graph(int x, int y, int width, int height, QWidget* parent, Qt::WFlags f)
 	d_waterfall_offset_y = 0;
 
 	d_active_tool = NULL;
+	d_image_profiles_tool = NULL;
 	d_range_selector = NULL;
 	d_peak_fit_tool = NULL;
 	d_active_enrichment = NULL;
@@ -5128,18 +5129,23 @@ void Graph::setActiveTool(PlotToolInterface *tool)
 		return;
 	}
 
-    if (tool && tool->rtti() == PlotToolInterface::Rtti_MultiPeakFitTool){
+	if (tool && tool->rtti() == PlotToolInterface::Rtti_MultiPeakFitTool){
 		d_peak_fit_tool = tool;
 
-        if (d_range_selector)
-            d_range_selector->setEnabled(false);
-        return;
-    }
+		if (d_range_selector)
+			d_range_selector->setEnabled(false);
+		return;
+	}
 
-    if(d_active_tool)
-        delete d_active_tool;
+	if (tool && tool->rtti() == PlotToolInterface::Rtti_ImageProfilesTool){
+		d_image_profiles_tool = (ImageProfilesTool*)tool;
+		return;
+	}
 
-    d_active_tool = tool;
+	if(d_active_tool)
+		delete d_active_tool;
+
+	d_active_tool = tool;
 }
 
 void Graph::disableTools()
@@ -5152,9 +5158,9 @@ void Graph::disableTools()
 	if (drawLineActive())
 		drawLine(false);
 
-    if(d_active_tool)
-        delete d_active_tool;
-    d_active_tool = NULL;
+	if(d_active_tool)
+		delete d_active_tool;
+	d_active_tool = NULL;
 
 	if (d_peak_fit_tool)
 		delete d_peak_fit_tool;
@@ -5164,11 +5170,16 @@ void Graph::disableTools()
 		d_range_selector->setVisible(false);
 }
 
+void Graph::disableImageProfilesTool()
+{
+	if (d_image_profiles_tool)
+		delete d_image_profiles_tool;
+}
+
 bool Graph::hasActiveTool()
 {
 	if (zoomOn() || drawLineActive() || d_active_tool || d_peak_fit_tool ||
-		d_magnifier || d_panner ||
-		(d_range_selector && d_range_selector->isVisible()))
+		d_magnifier || d_panner || (d_range_selector && d_range_selector->isVisible()))
 		return true;
 
 	return false;
@@ -5487,11 +5498,11 @@ bool Graph::validCurvesDataSize()
 Graph::~Graph()
 {
 	if(d_markers_selector)
-        delete d_markers_selector;
+		delete d_markers_selector;
 	if(d_peak_fit_tool)
-        delete d_peak_fit_tool;
+		delete d_peak_fit_tool;
 	if(d_active_tool)
-        delete d_active_tool;
+		delete d_active_tool;
 	if (d_range_selector)
 		delete d_range_selector;
 	delete titlePicker;
@@ -5503,8 +5514,10 @@ Graph::~Graph()
 	if (d_panner)
 		delete d_panner;
 
+	disableImageProfilesTool();
+
 	foreach(FrameWidget *fw, d_enrichments)
-        fw->close();
+		fw->close();
 }
 
 void Graph::setAntialiasing(bool on, bool update)
