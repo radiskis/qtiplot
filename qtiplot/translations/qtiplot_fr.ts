@@ -4172,7 +4172,7 @@ L&apos;autocomplétion ne sera pas disponible !</translation>
     </message>
     <message>
         <source>Ctrl+Shift+P</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+Shift+P</translation>
     </message>
 </context>
 <context>
@@ -6042,7 +6042,7 @@ Les codes spéciaux suivants peuvent être utilisés :
     </message>
     <message>
         <source>Import Excel files using</source>
-        <translation>Importer des fichiers Excel en utilisant</translation>
+        <translation>Importer les fichiers Excel en utilisant</translation>
     </message>
     <message>
         <source>Excel Format Library</source>
@@ -6070,11 +6070,11 @@ Les codes spéciaux suivants peuvent être utilisés :
     </message>
     <message>
         <source>Co&amp;nnect line across missing data</source>
-        <translation type="unfinished"></translation>
+        <translation>Relier deux poi&amp;nts même lorsqu&apos;une donnée est manquante</translation>
     </message>
     <message>
         <source>Locally Installed OpenOffice/LibreOffice</source>
-        <translation>OpenOffice/LibreOffice installation locale</translation>
+        <translation>OpenOffice/LibreOffice (installation locale)</translation>
     </message>
 </context>
 <context>
@@ -9209,11 +9209,11 @@ Les codes spéciaux suivants peuvent être utilisés :
     </message>
     <message>
         <source>pixels</source>
-        <translation type="unfinished">pixels</translation>
+        <translation>pixels</translation>
     </message>
     <message>
         <source>Average</source>
-        <translation type="unfinished"></translation>
+        <translation>Moyenne</translation>
     </message>
 </context>
 <context>
@@ -12444,7 +12444,7 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Display</source>
-        <translation>Affichage :</translation>
+        <translation>Affichage</translation>
     </message>
     <message>
         <source>Percentage</source>
@@ -12520,7 +12520,7 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Co&amp;nnect line across missing data</source>
-        <translation type="unfinished"></translation>
+        <translation>Relier deux poi&amp;nts même lorsqu&apos;une donnée est manquante</translation>
     </message>
     <message>
         <source>&amp;Grid on top of data</source>
