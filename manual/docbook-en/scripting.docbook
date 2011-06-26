@@ -920,6 +920,13 @@ The caption policy can have one of the following values:
 
 You can access the name or label of a window by using the <userinput>objectName()</userinput> and <userinput>windowLabel()</userinput> functions.
 
+Here's how you can access and modify the geometry of a window in the project:
+<programlisting>
+t = table("Table1")
+t.setGeometry(10, 10, 800, 600)
+print t.x(), t.y(), t.width(), t.height()
+</programlisting>
+
 For a fast editing process, you can create template files from existing tables, matrices or plots. The templates can be used later on in order to create customized windows very easily:
 <programlisting>
 saveAsTemplate(graph("Graph1"), "my_plot.qpt")

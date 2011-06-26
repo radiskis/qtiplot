@@ -12814,6 +12814,14 @@ The following special codes can be used:
         <source>Z-Value</source>
         <translation>Valoare Z</translation>
     </message>
+    <message>
+        <source>pixels</source>
+        <translation type="unfinished">pixeli</translation>
+    </message>
+    <message>
+        <source>Average</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ImageWidget</name>

@@ -14729,6 +14729,14 @@ Följande specialkoder kan användas:
         <source>Z-Value</source>
         <translation>Z-värde</translation>
     </message>
+    <message>
+        <source>pixels</source>
+        <translation type="unfinished">pixlar</translation>
+    </message>
+    <message>
+        <source>Average</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ImageWidget</name>

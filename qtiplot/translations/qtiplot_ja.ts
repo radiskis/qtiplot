@@ -9532,6 +9532,14 @@ The following special codes can be used:
         <source>Z-Value</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>pixels</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Average</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ImageWidget</name>

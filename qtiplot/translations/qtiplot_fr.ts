@@ -9207,6 +9207,14 @@ Les codes spéciaux suivants peuvent être utilisés :
         <source>Z-Value</source>
         <translation>z</translation>
     </message>
+    <message>
+        <source>pixels</source>
+        <translation type="unfinished">pixels</translation>
+    </message>
+    <message>
+        <source>Average</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ImageWidget</name>
