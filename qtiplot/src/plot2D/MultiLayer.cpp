@@ -2043,7 +2043,7 @@ void MultiLayer::plotProfiles(Matrix* m)
 	g->setAxisTitle(QwtPlot::xTop, QString::null);
 	g->setTitle(QString::null);
 	g->enableAutoscaling(false);
-	g->setCanvasGeometry(QRect(60, 150, 400, 400));
+	g->setCanvasGeometry(QRect(60, 150, 390, 390));
 
 	g = addLayer();
 
@@ -2053,12 +2053,12 @@ void MultiLayer::plotProfiles(Matrix* m)
 	g->enableAxisLabels(QwtPlot::xBottom, false);
 
 	g->enableAxis(QwtPlot::yRight, false);
-	g->setScale(QwtPlot::yLeft, mmin, mmax);
+	g->setScale(QwtPlot::yLeft, mmin, mmax, 0.0, 5, 5);
 	g->setAxisTitle(QwtPlot::yLeft, QString::null);
 	g->setAxisTitle(QwtPlot::xBottom, QString::null);
 	g->setTitle(QString::null);
 	g->enableAutoscaling(false);
-	g->setCanvasGeometry(QRect(60, 0, 400, 100));
+	g->setCanvasGeometry(QRect(60, 0, 390, 100));
 
 	g = addLayer();
 
@@ -2075,7 +2075,7 @@ void MultiLayer::plotProfiles(Matrix* m)
 	g->setAxisTitle(QwtPlot::xTop, QString::null);
 	g->setTitle(QString::null);
 	g->enableAutoscaling(false);
-	g->setCanvasGeometry(QRect(500, 150, 110, 400));
+	g->setCanvasGeometry(QRect(500, 150, 110, 390));
 
 	QColor color = Qt::white;
 	color.setAlpha(0);

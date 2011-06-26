@@ -646,6 +646,7 @@ class Graph: public QwtPlot
 
 		void disableTools();
 		void disableImageProfilesTool();
+		QPointer<ImageProfilesTool> imageProfilesTool(){return d_image_profiles_tool;}
 
 		/*! Enables the data range selector tool.
 		 *

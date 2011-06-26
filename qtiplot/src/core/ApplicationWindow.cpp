@@ -13191,8 +13191,13 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot, co
 			}
 		} else if (s.startsWith ("<ImageProfileValues>") && s.endsWith ("</ImageProfileValues>")){
 			QStringList lst = s.remove("<ImageProfileValues>").remove("</ImageProfileValues>").split("\t");
-			if (lst.size() == 2 && ag->activeTool())
-				((ImageProfilesTool *)ag->activeTool())->append(QwtDoublePoint(lst[0].toDouble(), lst[1].toDouble()));
+			ImageProfilesTool *ipt = ag->imageProfilesTool();
+			if (ipt){
+				if (lst.size() == 3)
+					ipt->setAveragePixels(lst[2].toInt());
+				if (lst.size() >= 2)
+					ipt->append(QwtDoublePoint(lst[0].toDouble(), lst[1].toDouble()));
+			}
 		} else if (s.contains("<waterfall>")){
 			QStringList lst = s.trimmed().remove("<waterfall>").remove("</waterfall>").split(",");
 			if (lst.size() >= 2)

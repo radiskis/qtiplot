@@ -29,11 +29,13 @@
 #ifndef SCREEN_PICKER_TOOL_H
 #define SCREEN_PICKER_TOOL_H
 
-#include "PlotToolInterface.h"
+#include <PlotToolInterface.h>
+#include <DoubleSpinBox.h>
+
 #include <QObject>
 #include <QPointer>
 #include <QLabel>
-#include <DoubleSpinBox.h>
+#include <QSpinBox>
 
 #include <qwt_double_rect.h>
 #include <qwt_plot_marker.h>
@@ -108,6 +110,8 @@ class ImageProfilesTool : public ScreenPickerTool
 		virtual void append(const QwtDoublePoint &pos);
 		virtual int rtti() const { return Rtti_ImageProfilesTool;};
 
+		int averagePixels(){return averageBox->value();}
+		void setAveragePixels(int pixels);
 
 		QPointer<Matrix> matrix(){return d_matrix;};
 		QPointer<Table> horizontalTable(){return d_hor_table;};
@@ -116,12 +120,17 @@ class ImageProfilesTool : public ScreenPickerTool
 	private slots:
 		void modifiedMatrix(Matrix *);
 		void updateCursorPosition();
+		void updateCursorWidth(int width);
+
+	private:
+		void setCursorWidth(int width);
 
 	protected:
 		ApplicationWindow *d_app;
 		QPointer<Matrix> d_matrix;
 		QPointer<Table> d_hor_table, d_ver_table;
 		DoubleSpinBox *horSpinBox, *vertSpinBox;
+		QSpinBox *averageBox;
 		QLabel *zLabel;
 };
 
