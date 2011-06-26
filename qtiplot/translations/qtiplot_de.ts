@@ -16901,6 +16901,14 @@ die Reihenfolge der Parameter ist wichtig!</translation>
         <source>Z-Value</source>
         <translation>Z Wert</translation>
     </message>
+    <message>
+        <source>pixels</source>
+        <translation type="unfinished">Pixel</translation>
+    </message>
+    <message>
+        <source>Average</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ImageWidget</name>
