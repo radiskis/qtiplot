@@ -30,8 +30,8 @@
 #include <ApplicationWindow.h>
 #include <Table.h>
 #include <Matrix.h>
-#include "Graph.h"
-#include "PlotCurve.h"
+#include <Graph.h>
+#include <PlotCurve.h>
 #include <MultiLayer.h>
 #include <SymbolBox.h>
 #include <qwt_symbol.h>
@@ -45,7 +45,7 @@ ScreenPickerTool::ScreenPickerTool(Graph *graph, const QObject *status_target, c
 	d_move_restriction(NoRestriction)
 {
 	d_selection_marker.setLineStyle(QwtPlotMarker::Cross);
-	d_selection_marker.setLinePen(QPen(Qt::red,1));
+	d_selection_marker.setLinePen(QPen(Qt::red, 1));
 	setTrackerMode(QwtPicker::AlwaysOn);
 	setSelectionFlags(QwtPicker::PointSelection | QwtPicker::ClickSelection);
 	d_graph->canvas()->setCursor(QCursor(QPixmap(":/cursor.png"), -1, -1));
@@ -237,6 +237,10 @@ ImageProfilesTool::ImageProfilesTool(ApplicationWindow *app, Graph *graph, Matri
 			connect(d_matrix, SIGNAL(destroyed()), d_graph, SLOT(disableImageProfilesTool()));
 			connect(d_matrix, SIGNAL(modifiedData(Matrix *)), this, SLOT(modifiedMatrix(Matrix *)));
 
+			averageBox = new QSpinBox;
+			averageBox->setMinimum(1);
+			averageBox->setSuffix(" " + tr("pixels"));
+
 			horSpinBox = new DoubleSpinBox('g');
 			horSpinBox->setMinimumWidth(80);
 			horSpinBox->setSingleStep(1.0);
@@ -255,6 +259,7 @@ ImageProfilesTool::ImageProfilesTool(ApplicationWindow *app, Graph *graph, Matri
 
 			append(QwtDoublePoint(xVal, yVal));
 
+			connect(averageBox, SIGNAL(valueChanged(int)), this, SLOT(updateCursorWidth(int)));
 			connect(horSpinBox, SIGNAL(valueChanged(double)), this, SLOT(updateCursorPosition()));
 			connect(vertSpinBox, SIGNAL(valueChanged(double)), this, SLOT(updateCursorPosition()));
 
@@ -266,6 +271,8 @@ ImageProfilesTool::ImageProfilesTool(ApplicationWindow *app, Graph *graph, Matri
 
 				QHBoxLayout *box = new QHBoxLayout();
 				box->setSpacing(5);
+				box->addWidget(new QLabel(tr("Average")));
+				box->addWidget(averageBox);
 				box->addWidget(new QLabel(tr("Position") + ": " + tr("x")));
 				box->addWidget(horSpinBox);
 				box->addWidget(new QLabel(tr("y")));
@@ -295,6 +302,33 @@ void ImageProfilesTool::updateCursorPosition()
 
 	if (d_graph)
 		d_graph->replot();
+}
+
+void ImageProfilesTool::setAveragePixels(int pixels)
+{
+	averageBox->blockSignals(true);
+	averageBox->setValue(pixels);
+	averageBox->blockSignals(false);
+	setCursorWidth(pixels);
+}
+
+void ImageProfilesTool::setCursorWidth(int width)
+{
+	QBrush br = QBrush(Qt::red);
+	if (width > 1){
+		QColor c = Qt::red;
+		c.setAlphaF(0.25);
+		br.setColor(c);
+	}
+	d_selection_marker.setLinePen(QPen(br, width));
+}
+
+void ImageProfilesTool::updateCursorWidth(int width)
+{
+	setCursorWidth(width);
+	if (d_graph)
+		d_graph->replot();
+	append(QwtDoublePoint(horSpinBox->value(), vertSpinBox->value()));
 }
 
 void ImageProfilesTool::modifiedMatrix(Matrix *m)
@@ -350,6 +384,7 @@ ImageProfilesTool* ImageProfilesTool::clone(Graph *g)
 		d_ver_table->blockSignals(true);
 
 	ImageProfilesTool *tool = new ImageProfilesTool(d_app, g, d_matrix, d_hor_table, d_ver_table);
+	tool->setAveragePixels(averageBox->value());
 	tool->append(QwtDoublePoint(xValue(), yValue()));
 
 	if (d_hor_table)
@@ -368,11 +403,20 @@ void ImageProfilesTool::append(const QwtDoublePoint &pos)
 
 	MultiLayer *plot = d_graph->multiLayer();
 	Graph *gHor = plot->layer(2);
-	if (gHor)
+	if (gHor){
 		gHor->enableAutoscaling(false);
+		gHor->setAxisAutoScale(QwtPlot::yLeft);
+		gHor->setAxisStep(QwtPlot::yLeft, 0.0);
+		gHor->setAxisMaxMajor(QwtPlot::yLeft, 4);
+		gHor->setAxisMaxMinor(QwtPlot::yLeft, 5);
+	}
 	Graph *gVert = plot->layer(3);
 	if (gVert){
 		gVert->enableAutoscaling(false);
+		gVert->setAxisAutoScale(QwtPlot::xTop);
+		gVert->setAxisStep(QwtPlot::xTop, 0.0);
+		gVert->setAxisMaxMajor(QwtPlot::xTop, 4);
+		gVert->setAxisMaxMinor(QwtPlot::xTop, 5);
 		QwtPlotCurve *c = gVert->curve(0);
 		if (c)
 			c->setCurveType(QwtPlotCurve::Xfy);
@@ -390,21 +434,44 @@ void ImageProfilesTool::append(const QwtDoublePoint &pos)
 	int row = qRound(fabs((y - d_matrix->yStart())/d_matrix->dy()));
 	int col = qRound(fabs((x - d_matrix->xStart())/d_matrix->dx()));
 
+	int rows = d_matrix->numRows();
+	int cols = d_matrix->numCols();
+
 	zLabel->setText(QLocale().toString(d_matrix->cell(row, col)));
 
+	int pixels = averageBox->value();
 	if (d_hor_table){
-		for (int i = 0; i < d_matrix->numCols(); i++)
-			d_hor_table->setCell(i, 1, d_matrix->cell(row, i));
-		for (int i = d_matrix->numCols(); i < d_hor_table->numRows(); i++)
+		if (pixels > 1){
+			int endPixel = (pixels%2) ? row + pixels/2 : row + pixels/2 - 1;
+			for (int i = 0; i < cols; i++){
+				double val = 0.0;
+				for (int j = row - pixels/2; j <= endPixel; j++)
+					val += (j >= 0 && j < rows) ? d_matrix->cell(j, i) : 0.0;
+				d_hor_table->setCell(i, 1, val/(double)pixels);
+			}
+		} else {
+			for (int i = 0; i < cols; i++)
+				d_hor_table->setCell(i, 1, d_matrix->cell(row, i));
+		}
+		for (int i = cols; i < d_hor_table->numRows(); i++)
 			d_hor_table->setText(i, 1, "");
-
 		d_hor_table->notifyChanges();
 	}
 
 	if (d_ver_table){
-		for (int i = 0; i < d_matrix->numRows(); i++)
-			d_ver_table->setCell(i, 1, d_matrix->cell(i, col));
-		for (int i = d_matrix->numRows(); i < d_ver_table->numRows(); i++)
+		if (pixels > 1){
+			int endPixel = (pixels%2) ? col + pixels/2 : col + pixels/2 - 1;
+			for (int i = 0; i < rows; i++){
+				double val = 0.0;
+				for (int j = col - pixels/2; j <= endPixel; j++)
+					val += (j >= 0 && j < cols) ? d_matrix->cell(i, j) : 0.0;
+				d_ver_table->setCell(i, 1, val/(double)pixels);
+			}
+		} else {
+			for (int i = 0; i < rows; i++)
+				d_ver_table->setCell(i, 1, d_matrix->cell(i, col));
+		}
+		for (int i = rows; i < d_ver_table->numRows(); i++)
 			d_ver_table->setText(i, 1, "");
 		d_ver_table->notifyChanges();
 	}

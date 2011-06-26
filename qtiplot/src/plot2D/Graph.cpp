@@ -4346,19 +4346,19 @@ QString Graph::saveToString(bool saveAsTemplate)
 		s += QString::number(d_speed_mode_points) + "</SpeedMode>\n";
 	}
 
-	if (d_active_tool && d_active_tool->rtti() == PlotToolInterface::Rtti_ImageProfilesTool){
-		ImageProfilesTool *ipt = (ImageProfilesTool *)d_active_tool;
-		if (ipt){
-			s += "<ImageProfileTool>" +  ipt->matrix()->objectName();
-			if (!ipt->horizontalTable().isNull())
-				s += "\t" + ipt->horizontalTable()->objectName();
-			if (!ipt->verticalTable().isNull())
-				s += "\t" + ipt->verticalTable()->objectName();
-			s += "</ImageProfileTool>\n";
-			s += "<ImageProfileValues>";
-			s += QString::number(ipt->xValue()) + "\t" + QString::number(ipt->yValue());
-			s += "</ImageProfileValues>\n";
-		}
+	if (d_image_profiles_tool){
+		s += "<ImageProfileTool>" +  d_image_profiles_tool->matrix()->objectName();
+		if (!d_image_profiles_tool->horizontalTable().isNull())
+			s += "\t" + d_image_profiles_tool->horizontalTable()->objectName();
+		if (!d_image_profiles_tool->verticalTable().isNull())
+			s += "\t" + d_image_profiles_tool->verticalTable()->objectName();
+		s += "</ImageProfileTool>\n";
+		s += "<ImageProfileValues>";
+		s += QString::number(d_image_profiles_tool->xValue()) + "\t" + QString::number(d_image_profiles_tool->yValue());
+		int pixels = d_image_profiles_tool->averagePixels();
+		if (pixels > 1)
+			s += "\t" + QString::number(pixels);
+		s += "</ImageProfileValues>\n";
 	}
 
 	if (isWaterfallPlot()){
@@ -4775,9 +4775,6 @@ void Graph::copyScaleWidget(Graph* g, int i)
 
 void Graph::copyScaleDraw(Graph* g, int i)
 {
-	if (!g->axisEnabled(i))
-		return;
-
 	ScaleDraw *sdg = (ScaleDraw *)g->axisScaleDraw (i);
 	if (sdg->hasComponent(QwtAbstractScaleDraw::Labels)){
 		ScaleDraw::ScaleType type = sdg->scaleType();
@@ -4881,11 +4878,9 @@ void Graph::copy(Graph* g)
 
 	autoScaleFonts = g->autoscaleFonts();
 
-	if (g->activeTool() && g->activeTool()->rtti() == PlotToolInterface::Rtti_ImageProfilesTool){
-		ImageProfilesTool *ipt = (ImageProfilesTool *)g->activeTool();
-		if (ipt)
-			d_active_tool = ipt->clone(this);
-	}
+	ImageProfilesTool *ipt = g->imageProfilesTool();
+	if (ipt)
+		d_image_profiles_tool = ipt->clone(this);
 }
 
 void Graph::copyCurves(Graph* g)
@@ -4998,6 +4993,7 @@ void Graph::copyCurves(Graph* g)
 			sp->setRenderHint(QwtPlotItem::RenderAntialiased, it->testRenderHint(QwtPlotItem::RenderAntialiased));
   	        sp->showColorScale(((Spectrogram *)it)->colorScaleAxis(), ((Spectrogram *)it)->hasColorScale());
   	        sp->setColorBarWidth(((Spectrogram *)it)->colorBarWidth());
+			sp->setAxis(it->xAxis(), it->yAxis());
 			sp->setVisible(it->isVisible());
         }
     }
