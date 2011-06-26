@@ -38,6 +38,7 @@
 #include <qwt_scale_widget.h>
 
 #include <QLayout>
+#include <QApplication>
 
 ScreenPickerTool::ScreenPickerTool(Graph *graph, const QObject *status_target, const char *status_slot)
 	: QwtPlotPicker(graph->canvas()),
@@ -339,15 +340,16 @@ void ImageProfilesTool::modifiedMatrix(Matrix *m)
 	double mmin, mmax;
 	m->range(&mmin, &mmax);
 
+	MatrixModel *mm = m->matrixModel();
 	if (d_hor_table){
 		d_hor_table->setNumRows(m->numCols());
 		for (int i = 0; i < d_hor_table->numRows(); i++)
-			d_hor_table->setText(i, 0, QString::number(i));
+			d_hor_table->setCell(i, 0, mm->x(i));
 	}
 	if (d_ver_table){
 		d_ver_table->setNumRows(m->numRows());
 		for (int i = 0; i < d_ver_table->numRows(); i++)
-			d_ver_table->setText(i, 0, QString::number(i));
+			d_ver_table->setCell(i, 0, mm->y(i));
 	}
 
 	if (d_graph){
@@ -401,6 +403,8 @@ void ImageProfilesTool::append(const QwtDoublePoint &pos)
 	if (!d_app || !d_matrix)
 		return;
 
+	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+
 	MultiLayer *plot = d_graph->multiLayer();
 	Graph *gHor = plot->layer(2);
 	if (gHor){
@@ -437,42 +441,64 @@ void ImageProfilesTool::append(const QwtDoublePoint &pos)
 	int rows = d_matrix->numRows();
 	int cols = d_matrix->numCols();
 
+	if (row < 0)
+		row = 0;
+	else if (row >= rows)
+		row = rows - 1;
+
+	if (col < 0)
+		col = 0;
+	else if (col >= cols)
+		col = cols - 1;
+
 	zLabel->setText(QLocale().toString(d_matrix->cell(row, col)));
 
 	int pixels = averageBox->value();
 	if (d_hor_table){
+		if (d_hor_table->numRows() != cols)
+			d_hor_table->setNumRows(cols);
 		if (pixels > 1){
 			int endPixel = (pixels%2) ? row + pixels/2 : row + pixels/2 - 1;
 			for (int i = 0; i < cols; i++){
 				double val = 0.0;
-				for (int j = row - pixels/2; j <= endPixel; j++)
-					val += (j >= 0 && j < rows) ? d_matrix->cell(j, i) : 0.0;
-				d_hor_table->setCell(i, 1, val/(double)pixels);
+				int n = pixels;
+				for (int j = row - pixels/2; j <= endPixel; j++){
+					if (j < 0 || j >= rows){
+						n--;
+						continue;
+					}
+					val += d_matrix->cell(j, i);
+				}
+				d_hor_table->setCell(i, 1, val/(double)n);
 			}
 		} else {
 			for (int i = 0; i < cols; i++)
 				d_hor_table->setCell(i, 1, d_matrix->cell(row, i));
 		}
-		for (int i = cols; i < d_hor_table->numRows(); i++)
-			d_hor_table->setText(i, 1, "");
 		d_hor_table->notifyChanges();
 	}
 
 	if (d_ver_table){
+		if (d_ver_table->numRows() != rows)
+			d_ver_table->setNumRows(rows);
 		if (pixels > 1){
 			int endPixel = (pixels%2) ? col + pixels/2 : col + pixels/2 - 1;
 			for (int i = 0; i < rows; i++){
 				double val = 0.0;
-				for (int j = col - pixels/2; j <= endPixel; j++)
-					val += (j >= 0 && j < cols) ? d_matrix->cell(i, j) : 0.0;
-				d_ver_table->setCell(i, 1, val/(double)pixels);
+				int n = pixels;
+				for (int j = col - pixels/2; j <= endPixel; j++){
+					if (j < 0 || j >= cols){
+						n--;
+						continue;
+					}
+					val += d_matrix->cell(i, j);
+				}
+				d_ver_table->setCell(i, 1, val/(double)n);
 			}
 		} else {
 			for (int i = 0; i < rows; i++)
 				d_ver_table->setCell(i, 1, d_matrix->cell(i, col));
 		}
-		for (int i = rows; i < d_ver_table->numRows(); i++)
-			d_ver_table->setText(i, 1, "");
 		d_ver_table->notifyChanges();
 	}
 
@@ -482,6 +508,8 @@ void ImageProfilesTool::append(const QwtDoublePoint &pos)
 					.arg(locale.toString(pos.x(), 'G', prec))
 					.arg(locale.toString(pos.y(), 'G', prec))
 					.arg(locale.toString(d_matrix->cell(row, col), 'G', prec)));
+
+	QApplication::restoreOverrideCursor();
 }
 
 ImageProfilesTool::~ImageProfilesTool()
