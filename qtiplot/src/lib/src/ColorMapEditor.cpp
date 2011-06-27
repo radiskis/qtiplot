@@ -138,17 +138,7 @@ void ColorMapEditor::setColorMap(const QwtLinearColorMap& map)
 		connect(sb, SIGNAL(activated(DoubleSpinBox *)), this, SLOT(spinBoxActivated(DoubleSpinBox *)));
     	table->setCellWidget(i, 0, sb);
 
-		QColor c;
-		if (scaledColors)
-			c = QColor(map.rgb(QwtDoubleInterval(0, 1), colors[i]));
-		else {
-			if (!i)
-				c = map.color1();
-			else if (i == rows - 1)
-				c = map.color2();
-			else
-				c = QColor(map.rgb(QwtDoubleInterval(0, 1), 0.5*(colors[i] + colors[i + 1])));
-		}
+		QColor c = map.color(i);
 
 		QTableWidgetItem *it = new QTableWidgetItem(c.name());
 	#ifdef Q_CC_MSVC
@@ -310,12 +300,11 @@ QString ColorMapEditor::saveToXmlString(const QwtLinearColorMap& color_map)
 	QwtArray <double> colors = color_map.colorStops();
 	int stops = (int)colors.size();
 	s += "\t<ColorStops>" + QString::number(stops - 2) + "</ColorStops>\n";
-	for (int i = 1; i < stops - 1; i++)
-		{
+	for (int i = 1; i < stops - 1; i++){
 		s += "\t<Stop>" + QString::number(colors[i]) + "\t";
-		s += QColor(color_map.rgb(QwtDoubleInterval(0,1), colors[i])).name();
+		s += color_map.color(i).name();
 		s += "</Stop>\n";
-		}
+	}
 	return s += "</ColorMap>\n";
 }
 

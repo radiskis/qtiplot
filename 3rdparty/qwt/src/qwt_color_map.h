@@ -142,6 +142,7 @@ public:
 
     QColor color1() const;
     QColor color2() const;
+	QColor color(int index) const;
 
     virtual QRgb rgb(const QwtDoubleInterval &, double value) const;
     virtual unsigned char colorIndex(
