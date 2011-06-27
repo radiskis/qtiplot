@@ -11132,7 +11132,20 @@ void ApplicationWindow::showWindowContextMenu()
             cm.addAction(actionTransposeMatrix);
             cm.addAction(actionInvertMatrix);
             cm.insertSeparator();
-            cm.addAction(actionViewMatrix);
+
+			actionViewMatrix->setChecked(false);
+			cm.addAction(actionViewMatrix);
+
+			QMenu *paletteMenu = cm.addMenu (tr("&Palette"));
+			paletteMenu->addAction(actionMatrixDefaultScale);
+			paletteMenu->addAction(actionMatrixGrayScale);
+			paletteMenu->addAction(actionMatrixRainbowScale);
+			paletteMenu->addAction(actionMatrixCustomScale);
+
+			actionMatrixDefaultScale->setChecked(t->colorMapType() == Matrix::Default);
+			actionMatrixGrayScale->setChecked(t->colorMapType() == Matrix::GrayScale);
+			actionMatrixRainbowScale->setChecked(t->colorMapType() == Matrix::Rainbow);
+			actionMatrixCustomScale->setChecked(t->colorMapType() == Matrix::Custom);
 		}
 	}
 	cm.exec(QCursor::pos());

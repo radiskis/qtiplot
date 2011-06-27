@@ -339,6 +339,8 @@ void ImageProfilesTool::modifiedMatrix(Matrix *m)
 
 	double mmin, mmax;
 	m->range(&mmin, &mmax);
+	mmin = floor(mmin);
+	mmax = ceil(mmax);
 
 	MatrixModel *mm = m->matrixModel();
 	if (d_hor_table){
@@ -407,20 +409,12 @@ void ImageProfilesTool::append(const QwtDoublePoint &pos)
 
 	MultiLayer *plot = d_graph->multiLayer();
 	Graph *gHor = plot->layer(2);
-	if (gHor){
+	if (gHor)
 		gHor->enableAutoscaling(false);
-		gHor->setAxisAutoScale(QwtPlot::yLeft);
-		gHor->setAxisStep(QwtPlot::yLeft, 0.0);
-		gHor->setAxisMaxMajor(QwtPlot::yLeft, 4);
-		gHor->setAxisMaxMinor(QwtPlot::yLeft, 5);
-	}
+
 	Graph *gVert = plot->layer(3);
 	if (gVert){
 		gVert->enableAutoscaling(false);
-		gVert->setAxisAutoScale(QwtPlot::xTop);
-		gVert->setAxisStep(QwtPlot::xTop, 0.0);
-		gVert->setAxisMaxMajor(QwtPlot::xTop, 4);
-		gVert->setAxisMaxMinor(QwtPlot::xTop, 5);
 		QwtPlotCurve *c = gVert->curve(0);
 		if (c)
 			c->setCurveType(QwtPlotCurve::Xfy);
