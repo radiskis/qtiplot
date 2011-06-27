@@ -127,10 +127,9 @@ void ColorMapEditor::setColorMap(const QwtLinearColorMap& map)
 			if (rows > 1 && (colors[1] == 0))
 				sb->setSpecialValueText("<= " + d_locale.toString(min_val));
 			sb->setDisabled(true);
-		} else if (i == rows -1){
+		} else if (i == rows - 1)
 			sb->setRange(max_val, max_val);
-			sb->setDisabled(true);
-		} else
+		  else
 			sb->setRange(min_val, max_val);
 
 		sb->setValue(min_val + colors[i] * range.width());

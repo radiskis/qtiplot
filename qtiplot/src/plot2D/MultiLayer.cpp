@@ -2025,8 +2025,10 @@ void MultiLayer::plotProfiles(Matrix* m)
 
 	double mmin, mmax;
 	m->range(&mmin, &mmax);
-	Graph* g = addLayer();
+	mmin = floor(mmin);
+	mmax = ceil(mmax);
 
+	Graph* g = addLayer();
 	Spectrogram *s = g->plotSpectrogram(m, Graph::GrayScale);
 	if (!s)
 		return;
@@ -2043,7 +2045,7 @@ void MultiLayer::plotProfiles(Matrix* m)
 	g->setAxisTitle(QwtPlot::xTop, QString::null);
 	g->setTitle(QString::null);
 	g->enableAutoscaling(false);
-	g->setCanvasGeometry(QRect(60, 150, 390, 390));
+	g->setCanvasGeometry(QRect(60, 160, 380, 380));
 
 	g = addLayer();
 
@@ -2053,12 +2055,12 @@ void MultiLayer::plotProfiles(Matrix* m)
 	g->enableAxisLabels(QwtPlot::xBottom, false);
 
 	g->enableAxis(QwtPlot::yRight, false);
-	g->setScale(QwtPlot::yLeft, mmin, mmax, 0.0, 5, 5);
+	g->setScale(QwtPlot::yLeft, mmin, mmax);
 	g->setAxisTitle(QwtPlot::yLeft, QString::null);
 	g->setAxisTitle(QwtPlot::xBottom, QString::null);
 	g->setTitle(QString::null);
 	g->enableAutoscaling(false);
-	g->setCanvasGeometry(QRect(60, 0, 390, 100));
+	g->setCanvasGeometry(QRect(60, 10, 380, 100));
 
 	g = addLayer();
 
@@ -2075,7 +2077,7 @@ void MultiLayer::plotProfiles(Matrix* m)
 	g->setAxisTitle(QwtPlot::xTop, QString::null);
 	g->setTitle(QString::null);
 	g->enableAutoscaling(false);
-	g->setCanvasGeometry(QRect(500, 150, 110, 390));
+	g->setCanvasGeometry(QRect(500, 160, 110, 380));
 
 	QColor color = Qt::white;
 	color.setAlpha(0);
