@@ -31,6 +31,7 @@ public:
 
     void insert(double pos, const QColor &color);
     QRgb rgb(QwtLinearColorMap::Mode, double pos) const;
+	QRgb rgb(int index) const;
 
     QwtArray<double> stops() const;
 
@@ -106,6 +107,13 @@ inline QwtArray<double> QwtLinearColorMap::ColorStops::stops() const
     for ( int i = 0; i < (int)_stops.size(); i++ )
         positions[i] = _stops[i].pos;
     return positions;
+}
+
+inline QRgb QwtLinearColorMap::ColorStops::rgb(int index) const
+{
+	if (index >= 0 && index < _stops.size())
+		return _stops[index].rgb;
+	return QColor().rgb();
 }
 
 inline int QwtLinearColorMap::ColorStops::findUpper(double pos) const
@@ -328,6 +336,15 @@ void QwtLinearColorMap::addColorStop(double value, const QColor& color)
 QwtArray<double> QwtLinearColorMap::colorStops() const
 {
     return d_data->colorStops.stops();
+}
+
+/*!
+  \return the index-th color of the color range
+  \sa setColorInterval()
+*/
+QColor QwtLinearColorMap::color(int index) const
+{
+	return QColor(d_data->colorStops.rgb(index));
 }
 
 /*! 

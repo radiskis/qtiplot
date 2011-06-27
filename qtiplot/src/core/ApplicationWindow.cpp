@@ -6115,17 +6115,17 @@ void ApplicationWindow::saveSettings()
 	settings.setValue("/Axes", d_3D_axes_color);
 	settings.setValue("/Background", d_3D_background_color);
 
-    settings.setValue("/ColorMapMode", d_3D_color_map.mode());
+	settings.setValue("/ColorMapMode", d_3D_color_map.mode());
 	QList<QVariant> stop_values;
 	QStringList stop_colors;
 	QwtArray <double> colors = d_3D_color_map.colorStops();
 	int stops = (int)colors.size() - 1;
 	for (int i = 1; i < stops; i++){
-        stop_values << QVariant(colors[i]);
-		stop_colors << QColor(d_3D_color_map.rgb(QwtDoubleInterval(0, 1), colors[i])).name();
-    }
-    settings.setValue("/ColorMapStops", QVariant(stop_values));
-    settings.setValue("/ColorMapColors", stop_colors);
+		stop_values << QVariant(colors[i]);
+		stop_colors << d_3D_color_map.color(i).name();
+	}
+	settings.setValue("/ColorMapStops", QVariant(stop_values));
+	settings.setValue("/ColorMapColors", stop_colors);
 	settings.endGroup(); // Colors
 
 	settings.beginGroup("/Grids");
