@@ -15758,18 +15758,10 @@ MultiLayer* ApplicationWindow::plotImageProfiles(Matrix *m)
     Table *verTable = newHiddenTable(tr("Vertical"), QString::null, m->numRows(), 2);
 
 	Graph *sg = g->layer(1);
-	if (sg)
-		sg->setActiveTool(new ImageProfilesTool(this, sg, m, horTable, verTable));
-
-	if (horTable && g->layer(2))
-		g->layer(2)->addCurves(horTable, QStringList(horTable->colName(1)));
-
-	if (verTable && g->layer(3)){
-		DataCurve *c = g->layer(3)->insertCurve(verTable, verTable->colName(1), verTable->colName(0), Graph::Line);
-		if (c){
-			c->setAxis(QwtPlot::xTop, QwtPlot::yLeft);
-			c->setCurveType(QwtPlotCurve::Xfy);
-		}
+	if (sg){
+		ImageProfilesTool *ipt = new ImageProfilesTool(this, sg, m, horTable, verTable);
+		ipt->connectPlotLayers();
+		sg->setActiveTool(ipt);
 	}
 
 	QApplication::restoreOverrideCursor();

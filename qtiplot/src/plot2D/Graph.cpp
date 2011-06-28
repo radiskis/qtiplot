@@ -4806,7 +4806,7 @@ void Graph::copyScaleDraw(Graph* g, int i)
 
 	const QwtScaleDiv *div = g->axisScaleDiv(i);
 	//set same scale
-	setScale(i, div->lowerBound(), div->upperBound(), fabs(g->axisStep(i)), g->axisMaxMajor(i), g->axisMaxMinor(i),
+	setScale(i, div->lowerBound(), div->upperBound(), fabs(g->axisStep(i)), div->ticks(QwtScaleDiv::MajorTick).size(), g->axisMaxMinor(i),
 			se->type(), se->testAttribute(QwtScaleEngine::Inverted), se->axisBreakLeft(), se->axisBreakRight(),
 			se->breakPosition(), se->stepBeforeBreak(), se->stepAfterBreak(), se->minTicksBeforeBreak(),
 			se->minTicksAfterBreak(), se->log10ScaleAfterBreak(), se->breakWidth(), se->hasBreakDecoration());
@@ -4877,10 +4877,6 @@ void Graph::copy(Graph* g)
 	setAntialiasing(g->antialiasing(), false);
 
 	autoScaleFonts = g->autoscaleFonts();
-
-	ImageProfilesTool *ipt = g->imageProfilesTool();
-	if (ipt)
-		d_image_profiles_tool = ipt->clone(this);
 }
 
 void Graph::copyCurves(Graph* g)

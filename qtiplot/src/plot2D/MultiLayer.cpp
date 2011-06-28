@@ -76,6 +76,7 @@
 #include <ColorButton.h>
 #include <ScaleEngine.h>
 #include <ImportExportPlugin.h>
+#include <ScreenPickerTool.h>
 
 #include <gsl/gsl_vector.h>
 
@@ -1772,6 +1773,16 @@ void MultiLayer::copy(MultiLayer* ml)
 
 	if (ml->isWaterfallPlot())
 		setWaterfallLayout(true);
+
+	foreach (Graph *g, lst){
+		ImageProfilesTool *ipt = g->imageProfilesTool();
+		if (ipt){
+			Graph *g2 = layer(ml->layerIndex(g) + 1);
+			if (g2)
+				g2->setActiveTool(ipt->clone(g2));
+			break;
+		}
+	}
 
 	d_scale_layers = ml->scaleLayersOnResize();
 	linkXLayerAxes(ml->hasLinkedXLayerAxes());

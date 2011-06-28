@@ -103,6 +103,7 @@ class ImageProfilesTool : public ScreenPickerTool
 	Q_OBJECT
 	public:
 		ImageProfilesTool(ApplicationWindow *app, Graph *graph, Matrix *m, Table *horTable, Table *verTable);
+		void connectPlotLayers();
 
 		ImageProfilesTool* clone(Graph *g);
 
