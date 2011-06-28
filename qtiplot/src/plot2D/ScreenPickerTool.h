@@ -133,6 +133,7 @@ class ImageProfilesTool : public ScreenPickerTool
 		DoubleSpinBox *horSpinBox, *vertSpinBox;
 		QSpinBox *averageBox;
 		QLabel *zLabel;
+		QWidget *d_box;
 };
 
 #endif // ifndef SCREEN_PICKER_TOOL_H

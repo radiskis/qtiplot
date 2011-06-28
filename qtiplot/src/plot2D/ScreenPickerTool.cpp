@@ -227,7 +227,8 @@ ImageProfilesTool::ImageProfilesTool(ApplicationWindow *app, Graph *graph, Matri
 	d_app(app),
 	d_matrix(m),
 	d_hor_table(horTable),
-	d_ver_table(verTable)
+	d_ver_table(verTable),
+	d_box(NULL)
 {
 	d_selection_marker.setAxis(QwtPlot::xTop, QwtPlot::yLeft);
 
@@ -270,18 +271,19 @@ ImageProfilesTool::ImageProfilesTool(ApplicationWindow *app, Graph *graph, Matri
 				pal.setColor(QPalette::Window, QColor(Qt::lightGray));
 				plot->setPalette(pal);
 
-				QHBoxLayout *box = new QHBoxLayout();
-				box->setSpacing(5);
-				box->addWidget(new QLabel(tr("Average")));
-				box->addWidget(averageBox);
-				box->addWidget(new QLabel(tr("Position") + ": " + tr("x")));
-				box->addWidget(horSpinBox);
-				box->addWidget(new QLabel(tr("y")));
-				box->addWidget(vertSpinBox);
-				box->addWidget(new QLabel(tr("Z-Value")));
-				box->addWidget(zLabel);
+				d_box = new QWidget();
+				QHBoxLayout *hl = new QHBoxLayout(d_box);
+				hl->setSpacing(5);
+				hl->addWidget(new QLabel(tr("Average")));
+				hl->addWidget(averageBox);
+				hl->addWidget(new QLabel(tr("Position") + ": " + tr("x")));
+				hl->addWidget(horSpinBox);
+				hl->addWidget(new QLabel(tr("y")));
+				hl->addWidget(vertSpinBox);
+				hl->addWidget(new QLabel(tr("Z-Value")));
+				hl->addWidget(zLabel);
 
-				plot->toolBox()->insertLayout(0, box);
+				plot->toolBox()->insertWidget(0, d_box);
 			}
 		}
 
@@ -545,5 +547,10 @@ ImageProfilesTool::~ImageProfilesTool()
 	if (d_ver_table){
 		d_ver_table->askOnCloseEvent(false);
 		d_ver_table->close();
+	}
+
+	if (d_box){
+		delete d_box;
+		d_box = 0;
 	}
 }
