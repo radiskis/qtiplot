@@ -297,6 +297,29 @@ ImageProfilesTool::ImageProfilesTool(ApplicationWindow *app, Graph *graph, Matri
 	}
 }
 
+void ImageProfilesTool::connectPlotLayers()
+{
+	if (!d_graph)
+		return;
+
+	MultiLayer *plot = d_graph->multiLayer();
+	if (!plot)
+		return;
+
+	Graph *gHor = plot->layer(2);
+	if (gHor)
+		gHor->addCurves(d_hor_table, QStringList(d_hor_table->colName(1)));
+
+	Graph *gVert = plot->layer(3);
+	if (gVert){
+		DataCurve *c = gVert->insertCurve(d_ver_table, d_ver_table->colName(1), d_ver_table->colName(0), Graph::Line);
+		if (c){
+			c->setAxis(QwtPlot::xTop, QwtPlot::yLeft);
+			c->setCurveType(QwtPlotCurve::Xfy);
+		}
+	}
+}
+
 void ImageProfilesTool::updateCursorPosition()
 {
 	append(QwtDoublePoint(horSpinBox->value(), vertSpinBox->value()));
@@ -382,19 +405,25 @@ void ImageProfilesTool::modifiedMatrix(Matrix *m)
 
 ImageProfilesTool* ImageProfilesTool::clone(Graph *g)
 {
-	if (d_hor_table)
-		d_hor_table->blockSignals(true);
-	if (d_ver_table)
-		d_ver_table->blockSignals(true);
+	if (!d_matrix || !d_app)
+		return 0;
 
-	ImageProfilesTool *tool = new ImageProfilesTool(d_app, g, d_matrix, d_hor_table, d_ver_table);
+	Table *hTable = d_app->newHiddenTable(QString::null, QString::null, d_matrix->numCols(), 2);
+	Table *vTable = d_app->newHiddenTable(QString::null, QString::null, d_matrix->numRows(), 2);
+
+	ImageProfilesTool *tool = new ImageProfilesTool(d_app, g, d_matrix, hTable, vTable);
 	tool->setAveragePixels(averageBox->value());
-	tool->append(QwtDoublePoint(xValue(), yValue()));
+	if (g && g->multiLayer()){
+		Graph *gHor = g->multiLayer()->layer(2);
+		if (gHor)
+			gHor->removeCurve(0);
 
-	if (d_hor_table)
-		d_hor_table->blockSignals(false);
-	if (d_ver_table)
-		d_ver_table->blockSignals(false);
+		Graph *gVert = g->multiLayer()->layer(3);
+		if (gVert)
+			gVert->removeCurve(0);
+	}
+	tool->connectPlotLayers();
+	tool->append(QwtDoublePoint(xValue(), yValue()));
 	return tool;
 }
 
