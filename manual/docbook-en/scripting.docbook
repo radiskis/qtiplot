@@ -2085,7 +2085,7 @@ l.setTitleColor(QtGui.QColor("red"))
 l.setTitleAlignment(QtCore.Qt.AlignLeft)
 </programlisting>
 The alignment parameter can be any combination of the Qt alignment flags (see the
-<ulink url="http://www.riverbankcomputing.com/Docs/PyQt4/html/qt.html#AlignmentFlag-enum">PyQt documentation</ulink>
+<ulink url="http://www.riverbankcomputing.com/static/Docs/PyQt4/html/qt.html#AlignmentFlag-enum">PyQt documentation</ulink>
 for more details).
 <para>If you want you can remove the plot title using:</para>
 <programlisting>
@@ -3188,9 +3188,9 @@ l.export(fileName)
 This function uses some default parameters
 for the properties of the image. If you need more control over the exported images you can use one
 of the following specialized functions:<programlisting>
-l.exportVector(fileName, dpi = 96, color = True, size = QSizeF(), unit = Frame.Pixel, fontsFactor = 1.0)
-l.exportImage(fileName, quality = 100, transparent = False, dpi = 0, size = QSizeF(), unit = Frame.Pixel, fontsFactor = 1.0, compression = 0)
-l.exportTex(fileName, color = True, escapeStrings = True, fontSizes = True, size = QSizeF(), unit = Frame.Pixel, fontsFactor = 1.0)</programlisting>
+l.exportVector(fileName, dpi = 96, color = True, size = QtCore.QSizeF(), unit = Frame.Pixel, fontsFactor = 1.0)
+l.exportImage(fileName, quality = 100, transparent = False, dpi = 0, size = QtCore.QSizeF(), unit = Frame.Pixel, fontsFactor = 1.0, compression = 0)
+l.exportTex(fileName, color = True, escapeStrings = True, fontSizes = True, size = QtCore.QSizeF(), unit = Frame.Pixel, fontsFactor = 1.0)</programlisting>
 
 <para>The function <varname>exportVector</varname> can export the plot/layer to the following vector formats:
 .eps, .ps, .pdf.</para>
@@ -4656,5 +4656,11 @@ globals.x = 5
 <title>QtiPlot/Python API</title>
 The complete QtiPlot/Python API can be consulted
 <ulink url="http://soft.proindependent.com/doc/manual-en/Python-API/html/index.html">here</ulink>.
+</sect2>
+
+<sect2 id="PyQt-Class-Reference">
+<title>PyQt Class Reference</title>
+The complete PyQt class reference can be consulted
+<ulink url="http://www.riverbankcomputing.com/static/Docs/PyQt4/html/classes.html">here</ulink>.
 </sect2>
 </sect1>
