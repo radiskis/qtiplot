@@ -125,6 +125,7 @@ private:
 	QSpinBox *boxMajors, *boxMinors;
 	QGroupBox *TicksGroupBox, *AxesColorGroupBox;
 	QSpinBox *boxResolution, *boxDistance, *boxTransparency;
+	QSlider *transparencySlider;
 	QCheckBox *boxLegend, *boxSmooth, *boxBoxed, *boxCrossSmooth, *boxOrthogonal;
 	QListWidget *axesList, *axesList2;
 	QComboBox *boxType, *boxPointStyle;
