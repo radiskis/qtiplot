@@ -313,11 +313,23 @@ void Plot3DDialog::initColorsPage()
 	layout->setColumnStretch(1, 1);
 
     QGridLayout* vl2 = new QGridLayout();
-    vl2->addWidget(new QLabel( tr( "Opacity" )), 0, 0);
+
+	transparencySlider = new QSlider();
+	transparencySlider->setOrientation(Qt::Horizontal);
+	transparencySlider->setRange(0, 100);
+
 	boxTransparency = new QSpinBox();
-    boxTransparency->setRange(0, 100);
-    boxTransparency->setSingleStep(5);
-    vl2->addWidget(boxTransparency, 0, 1);
+	boxTransparency->setRange(0, 100);
+	boxTransparency->setSuffix(" %");
+
+	QHBoxLayout* hb0 = new QHBoxLayout();
+	hb0->addWidget(transparencySlider);
+	hb0->addWidget(boxTransparency);
+	vl2->addLayout(hb0, 0, 1);
+
+	QLabel *l1 = new QLabel("&" + tr( "Opacity" ));
+	l1->setBuddy(boxTransparency);
+	vl2->addWidget(l1, 0, 0);
 
     btnMesh = new ColorButton();
     QLabel *meshLabel = new QLabel(tr( "&Line" ));
@@ -371,8 +383,10 @@ void Plot3DDialog::initColorsPage()
     colors->setLayout(vl0);
 	generalDialog->insertTab(colors, tr( "&Colors" ) );
 
-	connect( btnColorMap, SIGNAL( clicked() ), this, SLOT(pickDataColorMap() ) );
-	connect( boxTransparency, SIGNAL( valueChanged(int) ), this, SLOT(changeTransparency(int) ) );
+	connect(btnColorMap, SIGNAL(clicked()), this, SLOT(pickDataColorMap()));
+	connect(transparencySlider, SIGNAL(valueChanged(int)), boxTransparency, SLOT(setValue(int)));
+	connect(boxTransparency, SIGNAL(valueChanged(int)), transparencySlider, SLOT(setValue(int)));
+	connect(boxTransparency, SIGNAL(valueChanged(int)), this, SLOT(changeTransparency(int)));
 }
 
 void Plot3DDialog::initGeneralPage()
@@ -714,7 +728,13 @@ void Plot3DDialog::setPlot(Graph3D *g)
 	colorMapFileGroupBox->setChecked(!d_color_map_file.isEmpty());
 
 	boxMeshLineWidth->setValue(g->meshLineWidth());
+
+	boxTransparency->blockSignals(true);
 	boxTransparency->setValue(int(100*g->transparency()));
+	boxTransparency->blockSignals(false);
+	transparencySlider->blockSignals(true);
+	transparencySlider->setValue(boxTransparency->value());
+	transparencySlider->blockSignals(false);
 
 	boxTitle->setText(g->plotTitle());
 	titleFont = g->titleFont();
