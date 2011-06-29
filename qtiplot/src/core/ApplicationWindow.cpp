@@ -13816,11 +13816,9 @@ void ApplicationWindow::setAppColors(const QColor& wc, const QColor& pc, const Q
 
 void ApplicationWindow::setPlot3DOptions()
 {
-	QList<MdiSubWindow *> windows = windowsList();
-	foreach(MdiSubWindow *w, windows){
-		if (w->isA("Graph3D")){
-			Graph3D *g = (Graph3D*)w;
-			g->setOrthogonal(d_3D_orthogonal);
+	foreach(MdiSubWindow *w, windowsList()){
+		Graph3D *g = qobject_cast<Graph3D*>(w);
+		if (g){
 			g->setAutoscale(d_3D_autoscale);
 			g->setAntialiasing(d_3D_smooth_mesh);
 		}

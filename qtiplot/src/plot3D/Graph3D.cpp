@@ -1172,7 +1172,7 @@ void Graph3D::resetAxesLabels()
 	s = labels[2];
 	if (s == "%(?Z)"){
 		if (d_matrix)
-			s = tr("Y axis");
+			s = tr("Z axis");
 		else {
 			QStringList lst = plotAssociation.split(",");
 			if (lst.size() > 2){
