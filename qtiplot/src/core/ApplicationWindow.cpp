@@ -700,7 +700,7 @@ void ApplicationWindow::setDefaultOptions()
 	d_3D_axes_font = QFont(family, pointSize, QFont::Normal, false);
 	d_3D_numbers_font = QFont(family, pointSize);
 	d_3D_title_font = QFont(family, pointSize + 2, QFont::Normal, false);
-    d_3D_color_map = QwtLinearColorMap(Qt::blue, Qt::red);
+	d_3D_color_map = LinearColorMap(Qt::blue, Qt::red);
 	d_3D_mesh_color = Qt::black;
 	d_3D_axes_color = Qt::black;
 	d_3D_numbers_color = Qt::black;
@@ -3225,7 +3225,7 @@ void ApplicationWindow::setMatrixDefaultScale()
 
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 	m->undoStack()->push(new MatrixSetColorMapCommand(m, m->colorMapType(), m->colorMap(),
-						Matrix::Default, QwtLinearColorMap(), tr("Set Default Palette")));
+						Matrix::Default, LinearColorMap(), tr("Set Default Palette")));
 	m->setDefaultColorMap();
 	QApplication::restoreOverrideCursor();
 }
@@ -3238,7 +3238,7 @@ void ApplicationWindow::setMatrixGrayScale()
 
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 	m->undoStack()->push(new MatrixSetColorMapCommand(m, m->colorMapType(), m->colorMap(),
-						Matrix::GrayScale, QwtLinearColorMap(), tr("Set Gray Scale Palette")));
+						Matrix::GrayScale, LinearColorMap(), tr("Set Gray Scale Palette")));
 	m->setGrayScale();
 	QApplication::restoreOverrideCursor();
 }
@@ -3251,7 +3251,7 @@ void ApplicationWindow::setMatrixRainbowScale()
 
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 	m->undoStack()->push(new MatrixSetColorMapCommand(m, m->colorMapType(), m->colorMap(),
-						Matrix::Rainbow, QwtLinearColorMap(), tr("Set Rainbow Palette")));
+						Matrix::Rainbow, LinearColorMap(), tr("Set Rainbow Palette")));
 	m->setRainbowColorMap();
 	QApplication::restoreOverrideCursor();
 }
@@ -3263,7 +3263,6 @@ void ApplicationWindow::showColorMapDialog()
 		return;
 
 	ColorMapDialog *cmd = new ColorMapDialog(this);
-	cmd->setAttribute(Qt::WA_DeleteOnClose);
 	cmd->setMatrix(m);
 	cmd->exec();
 }
@@ -5633,7 +5632,7 @@ void ApplicationWindow::readSettings()
 	d_3D_axes_color = settings.value("/Axes", d_3D_axes_color).value<QColor>();
 	d_3D_background_color = settings.value("/Background", d_3D_background_color).value<QColor>();
 
-	d_3D_color_map = QwtLinearColorMap(min_color, max_color);
+	d_3D_color_map = LinearColorMap(min_color, max_color);
 	d_3D_color_map.setMode((QwtLinearColorMap::Mode)settings.value("/ColorMapMode", QwtLinearColorMap::ScaledColors).toInt());
 	QList<QVariant> stop_values = settings.value("/ColorMapStops").toList();
 	QStringList stop_colors = settings.value("/ColorMapColors").toStringList();
@@ -12279,8 +12278,7 @@ Matrix* ApplicationWindow::openMatrix(ApplicationWindow* app, const QStringList 
 	app->setListViewDate(caption,list[3]);
 	w->setBirthDate(list[3]);
 
-	for (line++; line!=flist.end(); line++)
-	{
+	for (line++; line!=flist.end(); line++){
 		QStringList fields = (*line).split("\t");
 		if (fields[0] == "geometry") {
 			restoreWindowGeometry(app, w, *line);
@@ -12312,12 +12310,10 @@ Matrix* ApplicationWindow::openMatrix(ApplicationWindow* app, const QStringList 
 			w->setColorMapType((Matrix::ColorMapType)fields[1].toInt());
 		} else if (fields[0] == "<ColorMap>"){// d_file_version > 90
 			QStringList lst;
-			while ( *line != "</ColorMap>" ){
-				line++;
-				lst << *line;
-			}
+			while ( *line != "</ColorMap>" )
+				lst << *(++line);
 			lst.pop_back();
-			w->setColorMap(lst);
+			w->setColorMap(LinearColorMap::fromXmlStringList(lst));
 		} else // <data> or values
 			break;
 	}

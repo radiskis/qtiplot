@@ -37,35 +37,36 @@
 ColorMapDialog::ColorMapDialog(QWidget* parent, Qt::WFlags fl)
 	: QDialog(parent, fl)
 {
-setObjectName( "ColorMapDialog" );
-setWindowTitle(tr("QtiPlot") + " - " + tr("Custom Color Map"));
-setSizeGripEnabled(true);
+	setObjectName( "ColorMapDialog" );
+	setWindowTitle(tr("QtiPlot") + " - " + tr("Custom Color Map"));
+	setSizeGripEnabled(true);
+	setAttribute(Qt::WA_DeleteOnClose);
 
-ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent);
-if (app)
-	editor = new ColorMapEditor(app->locale());
-else
-	editor = new ColorMapEditor();
+	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent);
+	if (app)
+		editor = new ColorMapEditor(app->locale());
+	else
+		editor = new ColorMapEditor();
 
-applyBtn = new QPushButton(tr("&Apply"));
-connect(applyBtn, SIGNAL(clicked()), this, SLOT(apply()));
+	applyBtn = new QPushButton(tr("&Apply"));
+	connect(applyBtn, SIGNAL(clicked()), this, SLOT(apply()));
 
-closeBtn = new QPushButton(tr("&Close"));
-connect(closeBtn, SIGNAL(clicked()), this, SLOT(reject()));
+	closeBtn = new QPushButton(tr("&Close"));
+	connect(closeBtn, SIGNAL(clicked()), this, SLOT(reject()));
 
-QHBoxLayout* hb = new QHBoxLayout();
-hb->setSpacing(5);
-hb->addStretch();
-hb->addWidget(applyBtn);
-hb->addWidget(closeBtn);
-hb->addStretch();
+	QHBoxLayout* hb = new QHBoxLayout();
+	hb->setSpacing(5);
+	hb->addStretch();
+	hb->addWidget(applyBtn);
+	hb->addWidget(closeBtn);
+	hb->addStretch();
 
-QVBoxLayout* vl = new QVBoxLayout(this);
-vl->setSpacing(0);
-vl->addWidget(editor);
-vl->addLayout(hb);
+	QVBoxLayout* vl = new QVBoxLayout(this);
+	vl->setSpacing(0);
+	vl->addWidget(editor);
+	vl->addLayout(hb);
 
-setMaximumWidth(editor->width() + 20);
+	setMaximumWidth(editor->width() + 20);
 }
 
 void ColorMapDialog::setMatrix(Matrix *m)
@@ -74,11 +75,7 @@ void ColorMapDialog::setMatrix(Matrix *m)
 		return;
 
 	d_matrix = m;
-
-	double minValue = 0.0, maxValue = 0.0;
-	m->range(&minValue, &maxValue);
-
-	editor->setRange(minValue, maxValue);
+	editor->setRange(m->colorRange().minValue(), m->colorRange().maxValue());
 	editor->setColorMap(m->colorMap());
 }
 

@@ -2049,6 +2049,12 @@ int Table::nonEmptyRows()
 
 double Table::cell(int row, int col)
 {
+	int colType = colTypes[col];
+	if (colType == Time)
+		return fromTime(QTime::fromString(d_table->text(row, col).trimmed(), col_format[col].trimmed()));
+	else if (colType == Date)
+		return fromDateTime(QDateTime::fromString(d_table->text(row, col).trimmed(), col_format[col].trimmed()));
+
 	return locale().toDouble(d_table->text(row, col));
 }
 

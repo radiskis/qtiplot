@@ -46,8 +46,7 @@
 #include <ScriptingEnv.h>
 #include <Script.h>
 #include <TranslateCurveTool.h>
-
-#include <qwt_color_map.h>
+#include <LinearColorMap.h>
 
 #ifdef BROWSER_PLUGIN
 #include <qtbrowserplugin.h>
@@ -1405,7 +1404,7 @@ public:
 	bool d_3D_smooth_mesh, d_3D_legend, d_3D_orthogonal, d_3D_autoscale;
 	int d_3D_resolution, d_3D_projection;
 	QFont d_3D_title_font, d_3D_numbers_font, d_3D_axes_font;
-	QwtLinearColorMap d_3D_color_map;
+	LinearColorMap d_3D_color_map;
 	QColor d_3D_mesh_color;
 	QColor d_3D_axes_color;
 	QColor d_3D_numbers_color;

@@ -72,6 +72,7 @@
 #include <ColorBox.h>
 #include <PatternBox.h>
 #include <SymbolBox.h>
+#include <LinearColorMap.h>
 
 #include <QApplication>
 #include <QBitmap>
@@ -105,7 +106,6 @@
 #include <qwt_scale_widget.h>
 #include <qwt_scale_engine.h>
 #include <qwt_text_label.h>
-#include <qwt_color_map.h>
 #include <qwt_curve_fitter.h>
 
 #include <math.h>
@@ -5347,26 +5347,11 @@ void Graph::restoreSpectrogram(ApplicationWindow *app, const QStringList& lst)
             else if (color_policy == Spectrogram::Default)
                 sp->setDefaultColorMap();
         } else if (s.contains("<ColorMap>")){
-            s = *(++line);
-            int mode = s.remove("<Mode>").remove("</Mode>").stripWhiteSpace().toInt();
-            s = *(++line);
-            QColor color1 = QColor(s.remove("<MinColor>").remove("</MinColor>").stripWhiteSpace());
-            s = *(++line);
-            QColor color2 = QColor(s.remove("<MaxColor>").remove("</MaxColor>").stripWhiteSpace());
-
-            QwtLinearColorMap colorMap = QwtLinearColorMap(color1, color2);
-            colorMap.setMode((QwtLinearColorMap::Mode)mode);
-
-            s = *(++line);
-            int stops = s.remove("<ColorStops>").remove("</ColorStops>").stripWhiteSpace().toInt();
-            for (int i = 0; i < stops; i++)
-            {
-                s = (*(++line)).stripWhiteSpace();
-                QStringList l = QStringList::split("\t", s.remove("<Stop>").remove("</Stop>"));
-                colorMap.addColorStop(l[0].toDouble(), QColor(l[1]));
-            }
-            sp->setCustomColorMap(colorMap);
-            line++;
+			QStringList lst;
+			while ( *line != "</ColorMap>" )
+				lst << *(++line);
+			lst.pop_back();
+			sp->setCustomColorMap(LinearColorMap::fromXmlStringList(lst));
         } else if (s.contains("<Image>")){
             int mode = s.remove("<Image>").remove("</Image>").stripWhiteSpace().toInt();
             sp->setDisplayMode(QwtPlotSpectrogram::ImageMode, mode);

@@ -32,11 +32,11 @@
 #include <QApplication>
 #include <Matrix.h>
 #include <muParserScript.h>
+#include <LinearColorMap.h>
 
 #include <qwt_raster_data.h>
 #include <qwt_plot.h>
 #include <qwt_plot_spectrogram.h>
-#include <qwt_color_map.h>
 #include <qwt_plot_marker.h>
 
 class MatrixData;
@@ -71,9 +71,9 @@ public:
 	void setGrayScale();
 	void setDefaultColorMap();
 
-	QwtLinearColorMap colorMap(){return color_map;};
-	QwtLinearColorMap *colorMapPointer(){return &color_map;};
-	void setCustomColorMap(const QwtLinearColorMap& map);
+	LinearColorMap colorMap(){return color_map;};
+	LinearColorMap *colorMapPointer(){return &color_map;};
+	void setCustomColorMap(const LinearColorMap& map);
 
 	//! Used when saving a project file
 	QString saveToString();
@@ -124,10 +124,10 @@ public:
     bool setUseMatrixFormula(bool on = true);
 
     void updateData();
-	QwtDoubleInterval range();
-	void setRange(double vmin, double vmax);
+	QwtDoubleInterval range() const;
 
 protected:
+	virtual QImage renderImage(const QwtScaleMap &xMap, const QwtScaleMap &yMap, const QwtDoubleRect &rect) const;
 	virtual void drawContourLines (QPainter *p, const QwtScaleMap &xMap, const QwtScaleMap &yMap, const QwtRasterData::ContourLines &lines) const;
 	void updateLabels(QPainter *p, const QwtScaleMap &xMap, const QwtScaleMap &yMap, const QwtRasterData::ContourLines &lines) const;
 	void createLabels();
@@ -142,7 +142,7 @@ protected:
 	//! Flags
 	ColorMapPolicy color_map_policy;
 
-	QwtLinearColorMap color_map;
+	LinearColorMap color_map;
 	//! Flag telling if we display the labels
 	bool d_show_labels;
 	//! Labels color
@@ -168,9 +168,6 @@ protected:
 	bool d_color_map_pen;
 
 	QList<QPen> d_pen_list;
-
-	bool d_impose_range;
-	double d_min_value, d_max_value;
 };
 
 class MatrixData: public QwtRasterData

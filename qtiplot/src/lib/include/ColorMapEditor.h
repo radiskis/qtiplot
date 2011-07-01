@@ -30,7 +30,7 @@
 
 #include <QWidget>
 #include <QLocale>
-#include <qwt_color_map.h>
+#include <LinearColorMap.h>
 
 class QPushButton;
 class QTableWidget;
@@ -55,18 +55,18 @@ public:
 	*/
 	ColorMapEditor(const QLocale& locale = QLocale::system(), int precision = 6, QWidget* parent = 0);
 	//! Returns the customized color map.
-	QwtLinearColorMap colorMap(){return color_map;};
+	LinearColorMap colorMap(){return color_map;};
 	//! Use this function to initialize the color map to be edited.
-	void setColorMap(const QwtLinearColorMap& map);
+	void setColorMap(const LinearColorMap& map);
 	//! Use this function to initialize the values range.
 	void setRange(double min, double max);
-	//! Exports the map to a pseudo-XML string
-	static QString saveToXmlString(const QwtLinearColorMap& color_map);
 
 signals:
 	void scalingChanged();
 
 protected slots:
+	void updateLowerRangeLimit(double);
+	void updateUpperRangeLimit(double);
 	void updateColorMap();
 	void enableButtons(int row);
 	void showColorDialog(int row, int col);
@@ -84,7 +84,7 @@ private:
 	QCheckBox *scaleColorsBox;
 
 	//! Color map object
-	QwtLinearColorMap color_map;
+	LinearColorMap color_map;
 	//! Levels range
 	double min_val, max_val;
 	//! Locale settings used to display level values

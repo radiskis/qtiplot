@@ -900,3 +900,6 @@ msa
 msb
 msab
 mse
+setIntensityRange
+lowerBound
+upperBound

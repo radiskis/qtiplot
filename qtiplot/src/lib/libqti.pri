@@ -10,6 +10,7 @@ HEADERS  += src/lib/include/CollapsiveGroupBox.h \
 			src/lib/include/ColorMapEditor.h \
 			src/lib/include/DoubleSpinBox.h \
 			src/lib/include/ExtensibleFileDialog.h \
+			src/lib/include/LinearColorMap.h \
 			src/lib/include/LineNumberDisplay.h \
 			src/lib/include/PatternBox.h \
 			src/lib/include/PenStyleBox.h \
@@ -23,6 +24,7 @@ SOURCES  += src/lib/src/CollapsiveGroupBox.cpp \
 			src/lib/src/ColorMapEditor.cpp \
 			src/lib/src/DoubleSpinBox.cpp \
 			src/lib/src/ExtensibleFileDialog.cpp \
+			src/lib/src/LinearColorMap.cpp \
 			src/lib/src/LineNumberDisplay.cpp \
 			src/lib/src/PatternBox.cpp \
 			src/lib/src/PenStyleBox.cpp \

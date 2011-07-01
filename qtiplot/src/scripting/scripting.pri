@@ -78,6 +78,7 @@ contains(SCRIPTING_LANGS, Python) {
 			 $${SIP_DIR}/sipqtiSpectrogram.cpp\
              $${SIP_DIR}/sipqtiMultiLayer.cpp\
              $${SIP_DIR}/sipqtiTable.cpp\
+			 $${SIP_DIR}/sipqtiLinearColorMap.cpp\
 			 $${SIP_DIR}/sipqtiQwtLinearColorMap.cpp\
              $${SIP_DIR}/sipqtiMatrix.cpp\
              $${SIP_DIR}/sipqtiMdiSubWindow.cpp\

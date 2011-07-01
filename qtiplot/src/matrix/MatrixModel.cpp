@@ -463,25 +463,23 @@ bool MatrixModel::removeRows(int row, int count, const QModelIndex & parent)
 
 QImage MatrixModel::renderImage()
 {
-    QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
 	QImage image(QSize(d_cols, d_rows), QImage::Format_RGB32);
-	QwtLinearColorMap color_map = d_matrix->colorMap();
+	LinearColorMap color_map = d_matrix->colorMap();
 
-	double minValue = 0.0, maxValue = 0.0;
-	d_matrix->range(&minValue, &maxValue);
-    const QwtDoubleInterval intensityRange = QwtDoubleInterval (minValue, maxValue);
-    for ( int i = 0; i < d_rows; i++ ){
-    	QRgb *line = (QRgb *)image.scanLine(i);
+	const QwtDoubleInterval intensityRange = d_matrix->colorRange();
+	for ( int i = 0; i < d_rows; i++ ){
+		QRgb *line = (QRgb *)image.scanLine(i);
 		for ( int j = 0; j < d_cols; j++){
-		    double val = d_data[i*d_cols + j];
-		    if (gsl_isnan (val))
-                *line++ = color_map.rgb(intensityRange, 0.0);
+			double val = d_data[i*d_cols + j];
+			if (gsl_isnan (val))
+				*line++ = color_map.rgb(intensityRange, 0.0);
 			else if(fabs(val) < HUGE_VAL)
 				*line++ = color_map.rgb(intensityRange, val);
 		}
-     }
-     QApplication::restoreOverrideCursor();
+	 }
+	 QApplication::restoreOverrideCursor();
 	 return image;
 }
 

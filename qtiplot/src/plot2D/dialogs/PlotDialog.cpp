@@ -2928,7 +2928,7 @@ void PlotDialog::setActiveCurve(CurveTreeItem *item)
         customScaleBox->setChecked(sp->colorMapPolicy() == Spectrogram::Custom);
 
 		colorMapEditor->setRange(sp->range().minValue(), sp->range().maxValue());
-        colorMapEditor->setColorMap((const QwtLinearColorMap &)sp->colorMap());
+		colorMapEditor->setColorMap(sp->colorMap());
 
         levelsGroupBox->setChecked(sp->testDisplayMode(QwtPlotSpectrogram::ContourMode));
 
@@ -3746,7 +3746,7 @@ bool PlotDialog::acceptParams()
 
   	   if (grayScaleBox->isChecked()){
 		   sp->setGrayScale();
-	   	   colorMapEditor->setColorMap(QwtLinearColorMap(Qt::black, Qt::white));
+		   colorMapEditor->setColorMap(LinearColorMap(Qt::black, Qt::white));
   	   } else if (defaultScaleBox->isChecked()){
 	   	   sp->setDefaultColorMap();
 		   colorMapEditor->setColorMap(sp->colorMap());
