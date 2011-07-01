@@ -59,6 +59,7 @@
 #include <Q3TableSelection>
 #include <Q3MemArray>
 
+#include <gsl/gsl_math.h>
 #include <gsl/gsl_vector.h>
 #include <gsl/gsl_sort.h>
 #include <gsl/gsl_sort_vector.h>
@@ -520,7 +521,8 @@ bool Table::muParserCalculate(int col, int startRow, int endRow, bool notifyChan
 		resizeRows(endRow + 1);
 
 	QString cmd = commands[col];
-	if (cmd.isEmpty() || colTypes[col] != Numeric){
+	int colType = colTypes[col];
+	if (cmd.isEmpty() || colType == Text){
 		for (int i = startRow; i <= endRow; i++)
 			d_table->setText(i, col, cmd);
         if (notifyChanges)
@@ -549,31 +551,60 @@ bool Table::muParserCalculate(int col, int startRow, int endRow, bool notifyChan
 		return false;
 	}
 
-    QLocale loc = locale();
-    int prec;
-    char f;
-    columnNumericFormat(col, &f, &prec);
-
 	setAutoUpdateValues(false);
 
     if (mup->codeLines() == 1){
-        for (int i = startRow; i <= endRow; i++){
-            *r = i + 1.0;
-			d_table->setText(i, col, mup->evalSingleLineToString(loc, f, prec));
-        }
+		if (colType == Date || colType == Time){
+			QString fmt = col_format[col];
+			for (int i = startRow; i <= endRow; i++){
+				*r = i + 1.0;
+				double val = mup->evalSingleLine();
+				if (gsl_finite(val))
+					d_table->setText(i, col, dateTime(val).toString(fmt));
+			}
+		} else if (colType == Numeric){
+			QLocale loc = locale();
+			int prec;
+			char f;
+			columnNumericFormat(col, &f, &prec);
+			for (int i = startRow; i <= endRow; i++){
+				*r = i + 1.0;
+				d_table->setText(i, col, mup->evalSingleLineToString(loc, f, prec));
+			}
+		}
 	} else {
-        QVariant ret;
-        for (int i = startRow; i <= endRow; i++){
-            *r = i + 1.0;
-            ret = mup->eval();
-            if(ret.type() == QVariant::Double) {
-                d_table->setText(i, col, loc.toString(ret.toDouble(), f, prec));
-            } else if(ret.canConvert(QVariant::String))
-                d_table->setText(i, col, ret.toString());
-            else {
-                QApplication::restoreOverrideCursor();
-                return false;
-            }
+		if (colType == Date || colType == Time){
+			QString fmt = col_format[col];
+			for (int i = startRow; i <= endRow; i++){
+				*r = i + 1.0;
+				QVariant ret = mup->eval();
+				if (ret.type() == QVariant::Double){
+					double val = ret.toDouble();
+					if (gsl_finite(val))
+						d_table->setText(i, col, dateTime(val).toString(fmt));
+				} else {
+					QApplication::restoreOverrideCursor();
+					return false;
+				}
+			}
+		} else if (colType == Numeric){
+			QLocale loc = locale();
+			int prec;
+			char f;
+			columnNumericFormat(col, &f, &prec);
+
+			for (int i = startRow; i <= endRow; i++){
+				*r = i + 1.0;
+				QVariant ret = mup->eval();
+				if (ret.type() == QVariant::Double)
+					d_table->setText(i, col, loc.toString(ret.toDouble(), f, prec));
+				else if(ret.canConvert(QVariant::String))
+					d_table->setText(i, col, ret.toString());
+				else {
+					QApplication::restoreOverrideCursor();
+					return false;
+				}
+			}
 		}
 	}
 	if (notifyChanges)
@@ -625,29 +656,47 @@ bool Table::calculate(int col, int startRow, int endRow, bool forceMuParser, boo
 		return false;
 	}
 
-    QLocale loc = locale();
-    int prec;
-    char f;
-    columnNumericFormat(col, &f, &prec);
-
 	setAutoUpdateValues(false);
 
 	colscript->setDouble(col + 1.0, "j");
 	colscript->setDouble(startRow + 1.0, "sr");
 	colscript->setDouble(endRow + 1.0, "er");
-	QVariant ret;
-	for (int i = startRow; i <= endRow; i++){
-		colscript->setDouble(i + 1.0, "i");
-		ret = colscript->eval();
-		if(ret.type() == QVariant::Double)
-			d_table->setText(i, col, loc.toString(ret.toDouble(), f, prec));
-		else if(ret.canConvert(QVariant::String))
-			d_table->setText(i, col, ret.toString());
-		else {
-			QApplication::restoreOverrideCursor();
-			return false;
+
+	int colType = colTypes[col];
+	if (colType == Date || colType == Time){
+		QString fmt = col_format[col];
+		for (int i = startRow; i <= endRow; i++){
+			colscript->setDouble(i + 1.0, "i");
+			QVariant ret = colscript->eval();
+			if (ret.type() == QVariant::Double){
+				double val = ret.toDouble();
+				if (gsl_finite(val))
+					d_table->setText(i, col, dateTime(val).toString(fmt));
+			} else {
+				QApplication::restoreOverrideCursor();
+				return false;
+			}
+		}
+	} else if (colType == Numeric){
+		QLocale loc = locale();
+		int prec;
+		char f;
+		columnNumericFormat(col, &f, &prec);
+
+		for (int i = startRow; i <= endRow; i++){
+			colscript->setDouble(i + 1.0, "i");
+			QVariant ret = colscript->eval();
+			if(ret.type() == QVariant::Double)
+				d_table->setText(i, col, loc.toString(ret.toDouble(), f, prec));
+			else if(ret.canConvert(QVariant::String))
+				d_table->setText(i, col, ret.toString());
+			else {
+				QApplication::restoreOverrideCursor();
+				return false;
+			}
 		}
 	}
+
 	if (notifyChanges)
 		emit modifiedData(this, colName(col));
 	emit modifiedWindow(this);
@@ -1868,7 +1917,7 @@ void Table::sortColumns(const QStringList&s, int type, int order, const QString&
 				else
 					for (int j = 0; j < non_empty_cells; j++)
 						d_table->setText(valid_cell[j], col, strings[p[non_empty_cells - j - 1]]);
-			} else if (type == Date || type == Time) {
+			} else if (type == Date || type == Time){
 				QString format = col_format[col];
 				for (int j = 0; j<non_empty_cells; j++)
 					data_double[j] = fromDateTime(QDateTime::fromString(d_table->text(valid_cell[j], col), format));
