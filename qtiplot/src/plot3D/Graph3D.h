@@ -281,11 +281,11 @@ public slots:
 
 	//! \name Colors
 	//@{
-	void setDataColors(const QColor& cMin, const QColor& cMax){setDataColorMap(QwtLinearColorMap(cMin, cMax));};
-	void setDataColorMap(const QwtLinearColorMap& colorMap);
+	void setDataColors(const QColor& cMin, const QColor& cMax){setDataColorMap(LinearColorMap(cMin, cMax));};
+	void setDataColorMap(const LinearColorMap& colorMap);
 	void setDataColorMap(const QString& fileName);
 	void setDataColorMap(const ColorVector& colors);
-	void setDataColorMap(const ColorVector& colors, const QwtLinearColorMap& colorMap);
+	void setDataColorMap(const ColorVector& colors, const LinearColorMap& colorMap);
 
 	void changeTransparency(double t);
 	void setTransparency(double t);
@@ -299,8 +299,8 @@ public slots:
 	QColor gridColor(){return gridCol;};
 
 	QString colorMapFile(){return d_color_map_file;};
-	QwtLinearColorMap colorMap(){return d_color_map;};
-	QwtLinearColorMap *colorMapPointer(){return &d_color_map;};
+	LinearColorMap colorMap(){return d_color_map;};
+	LinearColorMap *colorMapPointer(){return &d_color_map;};
 
 	static bool openColorMapFile(ColorVector& cv, QString fname);
 
@@ -405,7 +405,7 @@ private:
   	int animation_redraw_wait;
 	//! File name of the color map used for the data (if any)
   	QString d_color_map_file;
-	QwtLinearColorMap d_color_map;
+	LinearColorMap d_color_map;
 
 	QTimer *d_timer;
 	QString title, plotAssociation;

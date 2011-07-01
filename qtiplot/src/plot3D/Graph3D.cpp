@@ -32,7 +32,7 @@
 #include <ApplicationWindow.h>
 #include <MyParser.h>
 #include <MatrixModel.h>
-#include <ColorMapEditor.h>
+#include <LinearColorMap.h>
 
 #include <QApplication>
 #include <QMessageBox>
@@ -50,7 +50,6 @@
 
 #include <qwt3d_io_gl2ps.h>
 #include <qwt3d_coordsys.h>
-#include <qwt_color_map.h>
 
 #include <gsl/gsl_vector.h>
 #include <gsl/gsl_math.h>
@@ -2770,7 +2769,7 @@ void Graph3D::save(const QString &fn, const QString &geometry, bool)
 	t << "WindowLabel\t" + windowLabel() + "\t" + QString::number(captionPolicy()) + "\n";
 	t << "Orthogonal\t" + QString::number(sp->ortho())+"\n";
 	if (d_color_map_file.isEmpty())
-		t << ColorMapEditor::saveToXmlString(d_color_map);
+		t << d_color_map.toXmlString();
 
 	t << "axisType\t" << scaleType[0] << "\t" << scaleType[1] << "\t" << scaleType[2] << "\n";
 
@@ -2875,7 +2874,7 @@ void Graph3D::setOptions(bool legend, int r, int dist)
 	setLabelsDistance(dist);
 }
 
-void Graph3D::setDataColorMap(const QwtLinearColorMap& colorMap)
+void Graph3D::setDataColorMap(const LinearColorMap& colorMap)
 {
 	if (!d_active_curve)
 		return;
@@ -2901,13 +2900,10 @@ void Graph3D::setDataColorMap(const QwtLinearColorMap& colorMap)
 	col_->setColorVector(cv);
 	d_active_curve->setDataColor(col_);
 
-	if (legendOn){
-		sp->showColorLegend(false);
-		sp->showColorLegend(legendOn);
-	}
+	sp->showColorLegend(legendOn);
 }
 
-void Graph3D::setDataColorMap(const ColorVector& colors, const QwtLinearColorMap& colorMap)
+void Graph3D::setDataColorMap(const ColorVector& colors, const LinearColorMap& colorMap)
 {
 	d_color_map = colorMap;
 	d_color_map_file = QString::null;
@@ -3390,24 +3386,15 @@ Graph3D* Graph3D::restore(ApplicationWindow* app, const QStringList &lst, int fi
 		plot->update();
 		return plot;
 	}
-	QString s = line.next().stripWhiteSpace();
-	int mode = s.remove("<Mode>").remove("</Mode>").stripWhiteSpace().toInt();
-	s = line.next();
-	QColor color1 = QColor(s.remove("<MinColor>").remove("</MinColor>").stripWhiteSpace());
-	s = line.next();
-	QColor color2 = QColor(s.remove("<MaxColor>").remove("</MaxColor>").stripWhiteSpace());
 
-	QwtLinearColorMap colorMap = QwtLinearColorMap(color1, color2);
-	colorMap.setMode((QwtLinearColorMap::Mode)mode);
-
-	s = line.next();
-	int stops = s.remove("<ColorStops>").remove("</ColorStops>").stripWhiteSpace().toInt();
-	for (int i = 0; i < stops; i++){
-		s = line.next().stripWhiteSpace();
-		QStringList l = QStringList::split("\t", s.remove("<Stop>").remove("</Stop>"));
-		colorMap.addColorStop(l[0].toDouble(), QColor(l[1]));
+	QStringList aux;
+	QString s = line.next();
+	while (s != "</ColorMap>" ){
+		aux << s;
+		s = line.next();
 	}
-	plot->setDataColorMap(colorMap);
+	aux.pop_back();
+	plot->setDataColorMap(LinearColorMap::fromXmlStringList(aux));
 
 	line.next();
 	s = line.next();

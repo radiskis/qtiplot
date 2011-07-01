@@ -886,7 +886,7 @@ private:
   Table(const Table&);
 };
 
-class QwtLinearColorMap /PyName=LinearColorMap/
+class QwtLinearColorMap
 {
 %TypeHeaderCode
 #include <qwt_color_map.h>
@@ -897,8 +897,8 @@ public:
   enum Mode {FixedColors, ScaledColors};
   QwtLinearColorMap(const QColor &, const QColor &, QwtLinearColorMap::Format=QwtColorMap::RGB);
 
-  void 	addColorStop (double, const QColor &);
-  void 	setMode (Mode);
+  void addColorStop (double, const QColor &);
+  void setMode (Mode);
 
   void  setColorInterval (const QColor &, const QColor &);
   QColor color1() const;
@@ -906,6 +906,26 @@ public:
 
 private:
   QwtLinearColorMap(const QwtLinearColorMap&);
+};
+
+class LinearColorMap : QwtLinearColorMap
+{
+%TypeHeaderCode
+#include <LinearColorMap.h>
+%End
+public:
+
+  LinearColorMap();
+  LinearColorMap(const QColor &, const QColor &);
+  //! Set the intensity range
+  void setIntensityRange(double vmin, double vmax);
+  //! Get the lower range limit
+  double lowerBound();
+  //! Get the upper range limit
+  double upperBound();
+
+private:
+  LinearColorMap(const LinearColorMap&);
 };
 
 class Matrix: MdiSubWindow
@@ -999,8 +1019,8 @@ public:
 	void setDefaultColorMap();
 	void setGrayScale();
 	void setRainbowColorMap();
-	QwtLinearColorMap *colorMapPointer()/PyName=colorMap/;
-	void setColorMap(const QwtLinearColorMap&);
+	LinearColorMap *colorMapPointer()/PyName=colorMap/;
+	void setColorMap(const LinearColorMap&);
 
 	void resetView();
 
@@ -1659,8 +1679,8 @@ public:
 	void setGrayScale();
 	void setDefaultColorMap();
 
-	QwtLinearColorMap *colorMapPointer()/PyName=colorMap/;
-	void setCustomColorMap(const QwtLinearColorMap& map);
+	LinearColorMap *colorMapPointer()/PyName=colorMap/;
+	void setCustomColorMap(const LinearColorMap& map);
 
 	bool hasLabels();
 	void showContourLineLabels(bool show = true);
@@ -2107,8 +2127,8 @@ public:
     void setDataColors(const QColor&, const QColor&);
 	QString colorMapFile();
     void setDataColorMap(const QString& fileName);
-	QwtLinearColorMap *colorMapPointer()/PyName=colorMap/;
-	void setDataColorMap(const QwtLinearColorMap&);
+	LinearColorMap *colorMapPointer()/PyName=colorMap/;
+	void setDataColorMap(const LinearColorMap&);
 
     void changeTransparency(double) /PyName=setOpacity/;
     void setResolution(int);

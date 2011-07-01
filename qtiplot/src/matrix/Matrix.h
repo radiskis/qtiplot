@@ -38,9 +38,9 @@
 #include <MdiSubWindow.h>
 #include <ScriptingEnv.h>
 #include <Script.h>
+#include <LinearColorMap.h>
 
 #include <qwt_double_rect.h>
-#include <qwt_color_map.h>
 
 #include <math.h>
 
@@ -139,11 +139,9 @@ public:
     ColorMapType colorMapType(){return d_color_map_type;};
 	void setColorMapType(ColorMapType mapType);
 
-	QwtLinearColorMap colorMap(){return d_color_map;};
-	QwtLinearColorMap *colorMapPointer(){return &d_color_map;};
-	void setColorMap(const QwtLinearColorMap& map);
-	//! Used when restoring from project files
-	void setColorMap(const QStringList& lst);
+	LinearColorMap colorMap(){return d_color_map;};
+	LinearColorMap *colorMapPointer(){return &d_color_map;};
+	void setColorMap(const LinearColorMap& map);
 	//! Resets the color map to the one defined by the user in the Preferences dialog (3D plots tab)
 	void setDefaultColorMap();
 	void setGrayScale();
@@ -283,10 +281,13 @@ public slots:
 	//! Set the X and Y coordinate intervals
 	void setCoordinates(double xs, double xe, double ys, double ye);
 
-	 //! Min and max values of the matrix.
-  	void range(double *min, double *max);
+	//! Min and max values of the matrix.
+	void range(double *min, double *max);
 	//! Returns true if no data values were set for this matrix
 	bool isEmpty();
+
+	//! Min and max values of the color map.
+	QwtDoubleInterval colorRange();
 
 	//! Scroll to row (row starts with 1)
 	void goToRow(int row);
@@ -339,12 +340,17 @@ private:
 	y_start,  //!< Y value corresponding to row 1
 	y_end;  //!< Y value corresponding to the last row
 
+	//! Minimum value corresponding to the first color in the color map
+	double d_color_min;
+	//! Maximum value corresponding to the last color in the color map
+	double d_color_max;
+
     //! Keeps track of the view type;
 	ViewType d_view_type;
 	//! Keeps track of the header view type;
 	HeaderViewType d_header_view_type;
 	//! The color map used to display images.
-	QwtLinearColorMap d_color_map;
+	LinearColorMap d_color_map;
 	//! The color map type.
 	ColorMapType d_color_map_type;
 	//! Column width in pixels;

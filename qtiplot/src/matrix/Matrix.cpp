@@ -32,7 +32,6 @@
 #include <ApplicationWindow.h>
 #include <muParserScript.h>
 #include <ScriptingEnv.h>
-#include <ColorMapEditor.h>
 #include <ExcelFileConverter.h>
 #include <ImportExportPlugin.h>
 
@@ -215,7 +214,7 @@ void Matrix::save(const QString &fn, const QString &info, bool saveAsTemplate)
 	if (d_color_map_type != Custom)
 		t << "ColorPolicy\t" + QString::number(d_color_map_type) + "\n";
 	else
-		t << ColorMapEditor::saveToXmlString(d_color_map);
+		t << d_color_map.toXmlString();
 
     if (notTemplate){//save data
 		t << "<data>\n";
@@ -291,26 +290,29 @@ void Matrix::restore(const QStringList &lst)
 	l = (*i++).split("\t");
 	d_color_map_type = (Matrix::ColorMapType)l[1].toInt();
 
-    if (lst.contains ("<ColorMap>")){
-        QStringList aux;
-        while (*i != "</ColorMap>"){
-            aux << *i;
-            i++;
-        }
-        setColorMap(aux);
-    }
+	if (lst.contains ("<ColorMap>")){
+		QStringList aux;
+		while (*i != "</ColorMap>"){
+			aux << *i;
+			i++;
+		}
+		setColorMap(LinearColorMap::fromXmlStringList(aux));
+	}
 
-    if (d_view_type == ImageView){
-	    if (d_table_view)
-            delete d_table_view;
-        if (d_select_all_shortcut)
-            delete d_select_all_shortcut;
-	    initImageView();
+	if (!formula_str.isEmpty())
+		calculate();
+
+	if (d_view_type == ImageView){
+		if (d_table_view)
+			delete d_table_view;
+		if (d_select_all_shortcut)
+			delete d_select_all_shortcut;
+		initImageView();
 		d_stack->setCurrentWidget(imageLabel);
 		if (d_color_map_type == Rainbow)
-            setRainbowColorMap();
+			setRainbowColorMap();
 	}
-    resetView();
+	resetView();
 }
 
 void Matrix::setNumericPrecision(int prec)
@@ -1202,6 +1204,16 @@ void Matrix::range(double *min, double *max)
 	*max = d_max;
 }
 
+QwtDoubleInterval Matrix::colorRange()
+{
+	if (d_color_map.intensityRange().isValid())
+		return d_color_map.intensityRange();
+
+	double minValue = 0.0, maxValue = 0.0;
+	range(&minValue, &maxValue);
+	return QwtDoubleInterval(minValue, maxValue);
+}
+
 double** Matrix::allocateMatrixData(int rows, int columns)
 {
 	double** data = (double **)malloc(rows * sizeof (double*));
@@ -1453,7 +1465,7 @@ void Matrix::setDefaultColorMap()
 void Matrix::setGrayScale()
 {
     d_color_map_type = GrayScale;
-	d_color_map = QwtLinearColorMap(Qt::black, Qt::white);
+	d_color_map = LinearColorMap(Qt::black, Qt::white);
 	if (d_view_type == ImageView)
 		displayImage(d_matrix_model->renderImage());
 	emit modifiedWindow(this);
@@ -1463,7 +1475,7 @@ void Matrix::setRainbowColorMap()
 {
     d_color_map_type = Rainbow;
 
-	d_color_map = QwtLinearColorMap(Qt::blue, Qt::red);
+	d_color_map = LinearColorMap(Qt::blue, Qt::red);
 	d_color_map.addColorStop(0.25, Qt::cyan);
 	d_color_map.addColorStop(0.5, Qt::green);
 	d_color_map.addColorStop(0.75, Qt::yellow);
@@ -1473,7 +1485,7 @@ void Matrix::setRainbowColorMap()
 	emit modifiedWindow(this);
 }
 
-void Matrix::setColorMap(const QwtLinearColorMap& map)
+void Matrix::setColorMap(const LinearColorMap& map)
 {
 	d_color_map_type = Custom;
 	d_color_map = map;
@@ -1481,31 +1493,6 @@ void Matrix::setColorMap(const QwtLinearColorMap& map)
 		displayImage(d_matrix_model->renderImage());
 
 	emit modifiedWindow(this);
-}
-
-void Matrix::setColorMap(const QStringList& lst)
-{
-	d_color_map_type = Custom;
-
-	QStringList::const_iterator line = lst.begin();
-  	QString s = (*line).stripWhiteSpace();
-
-	int mode = s.remove("<Mode>").remove("</Mode>").stripWhiteSpace().toInt();
-    s = *(++line);
-    QColor color1 = QColor(s.remove("<MinColor>").remove("</MinColor>").stripWhiteSpace());
-    s = *(++line);
-    QColor color2 = QColor(s.remove("<MaxColor>").remove("</MaxColor>").stripWhiteSpace());
-
-	d_color_map = QwtLinearColorMap(color1, color2);
-	d_color_map.setMode((QwtLinearColorMap::Mode)mode);
-
-	s = *(++line);
-	int stops = s.remove("<ColorStops>").remove("</ColorStops>").stripWhiteSpace().toInt();
-	for (int i = 0; i < stops; i++){
-		s = (*(++line)).stripWhiteSpace();
-		QStringList l = QStringList::split("\t", s.remove("<Stop>").remove("</Stop>"));
-		d_color_map.addColorStop(l[0].toDouble(), QColor(l[1]));
-	}
 }
 
 void Matrix::setColorMapType(ColorMapType mapType)
