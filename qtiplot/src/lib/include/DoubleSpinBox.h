@@ -58,6 +58,9 @@ public:
 
 	double value(){interpretText(); return d_value;};
 	bool setValue(double val);
+
+	QString prefix() const;
+	void setPrefix(const QString & prefix){d_prefix = prefix;}
 	
 	void setFormat(const char format, int prec = 1){d_format = format; setDecimals(prec);};
 
@@ -84,6 +87,7 @@ private:
 	double d_value;
 	double d_step;
 	int d_prec;
+	QString d_prefix;
 };
 
 //! A checkable DoubleSpinBox that can be used to select the limits of a double interval. 

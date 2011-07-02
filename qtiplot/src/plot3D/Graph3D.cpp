@@ -2882,8 +2882,8 @@ void Graph3D::setDataColorMap(const LinearColorMap& colorMap)
 	d_color_map = colorMap;
 	d_color_map_file = QString::null;
 
-	double zmin, zmax;
-	sp->coordinates()->axes[Z1].limits(zmin, zmax);
+	double zmin = d_active_curve->hull().minVertex.z;
+	double zmax = d_active_curve->hull().maxVertex.z;
 	const QwtDoubleInterval range = colorMap.intensityRange().isValid() ? colorMap.intensityRange() : QwtDoubleInterval(zmin, zmax);
 
 	int size = 255;
@@ -2896,7 +2896,7 @@ void Graph3D::setDataColorMap(const LinearColorMap& colorMap)
 		cv.push_back(rgb);
 	}
 
-	col_ = new StandardColor(d_active_curve);
+	col_ = new StandardColor(d_active_curve, size);
 	col_->setColorVector(cv);
 	d_active_curve->setDataColor(col_);
 
