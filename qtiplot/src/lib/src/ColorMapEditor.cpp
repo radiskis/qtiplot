@@ -97,7 +97,7 @@ void ColorMapEditor::updateColorMap()
 	QColor c_max = QColor(table->item(rows - 1, 1)->text());
 	LinearColorMap map(c_min, c_max);
 	QwtDoubleInterval range = QwtDoubleInterval(min_val, max_val);
-	for (int i = 1; i < rows-1; i++){
+	for (int i = 1; i < rows - 1; i++){
 		double val = (((DoubleSpinBox*)table->cellWidget(i, 0))->value() - min_val)/range.width();
 		map.addColorStop (val, QColor(table->item(i, 1)->text()));
 	}
@@ -124,12 +124,17 @@ void ColorMapEditor::setColorMap(const LinearColorMap& map)
 	table->setRowCount(rows);
 	table->blockSignals(true);
 
-	QwtDoubleInterval range = map.intensityRange().isValid() ? map.intensityRange() : QwtDoubleInterval(min_val, max_val);
+	if (map.intensityRange().isValid()){
+		min_val = map.intensityRange().minValue();
+		max_val = map.intensityRange().maxValue();
+	}
+
+	QwtDoubleInterval range = QwtDoubleInterval(min_val, max_val);
+	double width = range.width();
 	for (int i = 0; i < rows; i++){
 		DoubleSpinBox *sb = new DoubleSpinBox();
 		sb->setLocale(d_locale);
 		sb->setDecimals(d_precision);
-
 		if (i == 0){
 			sb->setRange(min_val, min_val);
 			sb->setSpecialValueText("<= " + d_locale.toString(min_val));
@@ -141,7 +146,7 @@ void ColorMapEditor::setColorMap(const LinearColorMap& map)
 		else
 			sb->setRange(min_val, max_val);
 
-		sb->setValue(min_val + colors[i] * range.width());
+		sb->setValue(min_val + colors[i]*width);
 
 		connect(sb, SIGNAL(valueChanged(double)), this, SLOT(updateColorMap()));
 		connect(sb, SIGNAL(activated(DoubleSpinBox *)), this, SLOT(spinBoxActivated(DoubleSpinBox *)));

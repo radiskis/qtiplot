@@ -2883,15 +2883,15 @@ void Graph3D::setDataColorMap(const LinearColorMap& colorMap)
 	d_color_map_file = QString::null;
 
 	double zmin, zmax;
-	sp->coordinates()->axes[Z1].limits (zmin, zmax);
-	const QwtDoubleInterval intensityRange = QwtDoubleInterval(zmin, zmax);
+	sp->coordinates()->axes[Z1].limits(zmin, zmax);
+	const QwtDoubleInterval range = colorMap.intensityRange().isValid() ? colorMap.intensityRange() : QwtDoubleInterval(zmin, zmax);
 
 	int size = 255;
 	double dsize = size;
 	double dz = fabs(zmax - zmin)/dsize;
 	Qwt3D::ColorVector cv;
 	for (int i = 0; i < size; i++){
-		QRgb color = colorMap.rgb(intensityRange, zmin + i*dz);
+		QRgb color = colorMap.rgb(range, zmin + i*dz);
 		RGBA rgb(qRed(color)/dsize, qGreen(color)/dsize, qBlue(color)/dsize, d_alpha);
 		cv.push_back(rgb);
 	}
