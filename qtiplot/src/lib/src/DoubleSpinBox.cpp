@@ -41,7 +41,8 @@ d_min_val(-DBL_MAX),
 d_max_val(DBL_MAX),
 d_value(0.0),
 d_step(0.1),
-d_prec(14)
+d_prec(14),
+d_prefix(QString::null)
 {
 	if (format == 'f')
 		d_prec = 1;
@@ -84,6 +85,9 @@ void DoubleSpinBox::interpretText()
 {
 	bool ok = false;
 	QString s = text();
+	if (!d_prefix.isEmpty())
+		s = s.mid(d_prefix.length());
+
 	double value = locale().toDouble(s, &ok);
 	if (ok && value == d_value)
 		return;
@@ -130,6 +134,11 @@ QAbstractSpinBox::StepEnabled DoubleSpinBox::stepEnabled () const
 	return stepDown | stepUp;
 }
 
+QString DoubleSpinBox::prefix() const
+{
+	return d_prefix;
+}
+
 bool DoubleSpinBox::setValue(double val)
 {
 	if (val >= d_min_val && val <= d_max_val){
@@ -145,15 +154,18 @@ bool DoubleSpinBox::setValue(double val)
 QString DoubleSpinBox::textFromValue (double value) const
 {
 	if (d_format == 'g' && fabs(value) < 1e-15)
-		return "0";
+		return d_prefix + "0";
 
+	QString s = QString::null;
 	if (!specialValueText().isEmpty() && value == d_min_val)
-		return specialValueText();
+		s = specialValueText();
 
 	if (d_prec <= 14)
-		return locale().toString(value, d_format, d_prec);
+		s = locale().toString(value, d_format, d_prec);
+	else
+		s = locale().toString(value, d_format, 6);
 
-	return locale().toString(value, d_format, 6);
+	return d_prefix + s;
 }
 
 QValidator::State DoubleSpinBox::validate(QString & , int & ) const

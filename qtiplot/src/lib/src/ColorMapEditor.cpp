@@ -136,14 +136,14 @@ void ColorMapEditor::setColorMap(const LinearColorMap& map)
 		sb->setLocale(d_locale);
 		sb->setDecimals(d_precision);
 		if (i == 0){
-			sb->setRange(min_val, min_val);
-			sb->setSpecialValueText("<= " + d_locale.toString(min_val));
+			sb->setPrefix("<= ");
 			sb->setDisabled(true);
 		} else if (i == 1)
 			connect(sb, SIGNAL(valueChanged(double)), this, SLOT(updateLowerRangeLimit(double)));
-		else if (i == rows - 1)
+		else if (i == rows - 1){
+			sb->setPrefix(">= ");
 			connect(sb, SIGNAL(valueChanged(double)), this, SLOT(updateUpperRangeLimit(double)));
-		else
+		} else
 			sb->setRange(min_val, max_val);
 
 		sb->setValue(min_val + colors[i]*width);
