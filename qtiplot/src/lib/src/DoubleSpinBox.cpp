@@ -2,7 +2,7 @@
     File                 : DoubleSpinBox.cpp
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2007-2008 by Ion Vasilief
+	Copyright            : (C) 2007-2011 by Ion Vasilief
     Email (use @ for *)  : ion_vasilief*yahoo.fr
     Description          : A Double Spin Box
 
@@ -134,8 +134,8 @@ bool DoubleSpinBox::setValue(double val)
 {
 	if (val >= d_min_val && val <= d_max_val){
 		d_value = val;
-        lineEdit()->setText(textFromValue(d_value));
-        return true;
+		lineEdit()->setText(textFromValue(d_value));
+		return true;
 	}
 
 	lineEdit()->setText(textFromValue(d_value));
@@ -144,6 +144,9 @@ bool DoubleSpinBox::setValue(double val)
 
 QString DoubleSpinBox::textFromValue (double value) const
 {
+	if (d_format == 'g' && fabs(value) < 1e-15)
+		return "0";
+
 	if (!specialValueText().isEmpty() && value == d_min_val)
 		return specialValueText();
 

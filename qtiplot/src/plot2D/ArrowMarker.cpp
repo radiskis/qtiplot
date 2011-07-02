@@ -63,8 +63,11 @@ void ArrowMarker::draw(QPainter *p, const QwtScaleMap &xMap, const QwtScaleMap &
 	const int x1 = xMap.transform(d_rect.right());
 	const int y1 = yMap.transform(d_rect.bottom());
 
+	double resFactor = (double)p->device()->logicalDpiX()/(double)plot()->logicalDpiX();
 	p->save();
-	QPen pen = QwtPainter::scaledPen(linePen());
+	QPen pen = linePen();
+	if (resFactor != 1.0)
+		pen.setWidthF(pen.widthF()*resFactor);
 	pen.setCapStyle(Qt::FlatCap);
 	pen.setJoinStyle(Qt::MiterJoin);
 	p->setPen(pen);
@@ -73,7 +76,7 @@ void ArrowMarker::draw(QPainter *p, const QwtScaleMap &xMap, const QwtScaleMap &
 	QwtPainter::drawLine(p, x0, y0, x1, y1);
 	p->restore();
 
-	int headLength = qRound(d_head_length*(double)p->device()->logicalDpiX()/(double)plot()->logicalDpiX());
+	int headLength = qRound(d_head_length*resFactor);
 
 	if (d_end_arrow){
 		p->save();

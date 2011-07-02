@@ -4870,11 +4870,11 @@ void Graph::copy(Graph* g)
 	d_zoomer[0]->setZoomBase();
 	d_zoomer[1]->setZoomBase();
 
-	copyEnrichments(g);
-
 	d_disable_curve_antialiasing = g->isCurveAntialiasingDisabled();
 	d_max_antialising_size = g->maxAntialisingSize();
 	setAntialiasing(g->antialiasing(), false);
+
+	copyEnrichments(g);
 
 	autoScaleFonts = g->autoscaleFonts();
 }
