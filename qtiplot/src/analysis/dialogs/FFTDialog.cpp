@@ -243,120 +243,126 @@ void FFTDialog::setMatrix(Matrix *m)
 
 void FFTDialog::fftMatrix()
 {
-    ApplicationWindow *app = (ApplicationWindow *)parent();
-    Matrix *mReal = app->matrix(boxReal->currentText());
-    if (!mReal)
-        return;
-
-    bool inverse = backwardBtn->isChecked();
-    int width = mReal->numCols();
-    int height = mReal->numRows();
-
-    bool errors = false;
-    Matrix *mIm = app->matrix(boxImaginary->currentText());
-    if (!mIm)
-        errors = true;
-    else if (mIm && (mIm->numCols() != width || mIm->numRows() != height)){
-        errors = true;
-        QMessageBox::warning(app, tr("QtiPlot"),
-        tr("The two matrices have different dimensions, the imaginary part will be neglected!"));
-    }
-
-    double **x_int_re = Matrix::allocateMatrixData(height, width); /* real coeff matrix */
-    if (!x_int_re)
+	ApplicationWindow *app = (ApplicationWindow *)parent();
+	Matrix *mReal = app->matrix(boxReal->currentText());
+	if (!mReal)
 		return;
-    double **x_int_im = Matrix::allocateMatrixData(height, width); /* imaginary coeff  matrix*/
+
+	bool inverse = backwardBtn->isChecked();
+	int width = mReal->numCols();
+	int height = mReal->numRows();
+
+	bool errors = false;
+	Matrix *mIm = app->matrix(boxImaginary->currentText());
+	if (!mIm)
+		errors = true;
+	else if (mIm && (mIm->numCols() != width || mIm->numRows() != height)){
+		errors = true;
+		QMessageBox::warning(app, tr("QtiPlot"),
+		tr("The two matrices have different dimensions, the imaginary part will be neglected!"));
+	}
+
+	double **x_int_re = Matrix::allocateMatrixData(height, width); // real coeff matrix
+	if (!x_int_re)
+		return;
+	double **x_int_im = Matrix::allocateMatrixData(height, width); // imaginary coeff  matrix
 	if (!x_int_im){
-	    Matrix::freeMatrixData(x_int_re, height);
+		Matrix::freeMatrixData(x_int_re, height);
 		return;
 	}
 
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
-    for (int i = 0; i < height; i++){
-        for (int j = 0; j < width; j++){
-            x_int_re[i][j] = mReal->cell(i, j);
-            if (errors)
-                x_int_im[i][j] = 0.0;
-            else
-                x_int_im[i][j] = mIm->cell(i, j);
-        }
-    }
+	if (errors){
+		for (int i = 0; i < height; i++){
+			for (int j = 0; j < width; j++){
+				x_int_re[i][j] = mReal->cell(i, j);
+				x_int_im[i][j] = 0.0;
+			}
+		}
+	} else {
+		for (int i = 0; i < height; i++){
+			for (int j = 0; j < width; j++){
+				x_int_re[i][j] = mReal->cell(i, j);
+				x_int_im[i][j] = mIm->cell(i, j);
+			}
+		}
+	}
 
-    double **x_fin_re = NULL, **x_fin_im = NULL;
-    if (inverse){
-        x_fin_re = Matrix::allocateMatrixData(height, width); // coeff of the initial image
-        x_fin_im = Matrix::allocateMatrixData(height, width); // filled with 0 if everythng OK
+	double **x_fin_re = NULL, **x_fin_im = NULL;
+	if (inverse){
+		x_fin_re = Matrix::allocateMatrixData(height, width); // coeff of the initial image
+		x_fin_im = Matrix::allocateMatrixData(height, width); // filled with 0 if everythng OK
 		if (!x_fin_re || !x_fin_im){
-		    Matrix::freeMatrixData(x_int_re, height);
-		    Matrix::freeMatrixData(x_int_im, height);
+			Matrix::freeMatrixData(x_int_re, height);
+			Matrix::freeMatrixData(x_int_im, height);
 			QApplication::restoreOverrideCursor();
 			return;
 		}
 		fft2d_inv(x_int_re, x_int_im, x_fin_re, x_fin_im, width, height);
-    } else
-        fft2d(x_int_re, x_int_im, width, height);
+	} else
+		fft2d(x_int_re, x_int_im, width, height);
 
-    Matrix *realCoeffMatrix = app->newMatrix(height, width);
-    QString realCoeffMatrixName = app->generateUniqueName(tr("RealMatrixFFT"));
-    app->setWindowName(realCoeffMatrix, realCoeffMatrixName);
-    realCoeffMatrix->setWindowLabel(tr("Real part of the FFT transform of") + " " + mReal->objectName());
+	Matrix *realCoeffMatrix = app->newMatrix(height, width);
+	QString realCoeffMatrixName = app->generateUniqueName(tr("RealMatrixFFT"));
+	app->setWindowName(realCoeffMatrix, realCoeffMatrixName);
+	realCoeffMatrix->setWindowLabel(tr("Real part of the FFT transform of") + " " + mReal->objectName());
 
-    Matrix *imagCoeffMatrix = app->newMatrix(height, width);
-    QString imagCoeffMatrixName = app->generateUniqueName(tr("ImagMatrixFFT"));
-    app->setWindowName(imagCoeffMatrix, imagCoeffMatrixName);
-    imagCoeffMatrix->setWindowLabel(tr("Imaginary part of the FFT transform of") + " " + mReal->objectName());
+	Matrix *imagCoeffMatrix = app->newMatrix(height, width);
+	QString imagCoeffMatrixName = app->generateUniqueName(tr("ImagMatrixFFT"));
+	app->setWindowName(imagCoeffMatrix, imagCoeffMatrixName);
+	imagCoeffMatrix->setWindowLabel(tr("Imaginary part of the FFT transform of") + " " + mReal->objectName());
 
-    Matrix *ampMatrix = app->newMatrix(height, width);
-    QString ampMatrixName = app->generateUniqueName(tr("AmplitudeMatrixFFT"));
-    app->setWindowName(ampMatrix, ampMatrixName);
-    ampMatrix->setWindowLabel(tr("Amplitudes of the FFT transform of") + " " + mReal->objectName());
+	Matrix *ampMatrix = app->newMatrix(height, width);
+	QString ampMatrixName = app->generateUniqueName(tr("AmplitudeMatrixFFT"));
+	app->setWindowName(ampMatrix, ampMatrixName);
+	ampMatrix->setWindowLabel(tr("Amplitudes of the FFT transform of") + " " + mReal->objectName());
 
-    if (inverse){
-        for (int i = 0; i < height; i++){
-            for (int j = 0; j < width; j++){
-                double re = x_fin_re[i][j];
-                double im = x_fin_im[i][j];
-                realCoeffMatrix->setCell(i, j, re);
-                imagCoeffMatrix->setCell(i, j, im);
-                ampMatrix->setCell(i, j, sqrt(re*re + im*im));
-            }
-        }
-        Matrix::freeMatrixData(x_fin_re, height);
-        Matrix::freeMatrixData(x_fin_im, height);
-    } else {
-        for (int i = 0; i < height; i++){
-            for (int j = 0; j < width; j++){
-                double re = x_int_re[i][j];
-                double im = x_int_im[i][j];
-                realCoeffMatrix->setCell(i, j, re);
-                imagCoeffMatrix->setCell(i, j, im);
-                ampMatrix->setCell(i, j, sqrt(re*re + im*im));
-            }
-        }
-    }
+	if (inverse){
+		for (int i = 0; i < height; i++){
+			for (int j = 0; j < width; j++){
+				double re = x_fin_re[i][j];
+				double im = x_fin_im[i][j];
+				realCoeffMatrix->setCell(i, j, re);
+				imagCoeffMatrix->setCell(i, j, im);
+				ampMatrix->setCell(i, j, sqrt(re*re + im*im));
+			}
+		}
+		Matrix::freeMatrixData(x_fin_re, height);
+		Matrix::freeMatrixData(x_fin_im, height);
+	} else {
+		for (int i = 0; i < height; i++){
+			for (int j = 0; j < width; j++){
+				double re = x_int_re[i][j];
+				double im = x_int_im[i][j];
+				realCoeffMatrix->setCell(i, j, re);
+				imagCoeffMatrix->setCell(i, j, im);
+				ampMatrix->setCell(i, j, sqrt(re*re + im*im));
+			}
+		}
+	}
 
-    if (boxNormalize->isChecked()){
-        double amp_min, amp_max;
-        ampMatrix->range(&amp_min, &amp_max);
-        for (int i = 0; i < height; i++){
-            for (int j = 0; j < width; j++){
-                double amp = ampMatrix->cell(i, j);
-                ampMatrix->setCell(i, j, amp/amp_max);
-            }
-        }
-    }
+	if (boxNormalize->isChecked()){
+		double amp_min, amp_max;
+		ampMatrix->range(&amp_min, &amp_max);
+		for (int i = 0; i < height; i++){
+			for (int j = 0; j < width; j++){
+				double amp = ampMatrix->cell(i, j);
+				ampMatrix->setCell(i, j, amp/amp_max);
+			}
+		}
+	}
 
-    if (d_matrix){
-        realCoeffMatrix->resize(d_matrix->size());
-        imagCoeffMatrix->resize(d_matrix->size());
-        ampMatrix->resize(d_matrix->size());
-    }
+	if (d_matrix){
+		realCoeffMatrix->resize(d_matrix->size());
+		imagCoeffMatrix->resize(d_matrix->size());
+		ampMatrix->resize(d_matrix->size());
+	}
 	realCoeffMatrix->setViewType(Matrix::ImageView);
 	imagCoeffMatrix->setViewType(Matrix::ImageView);
-    ampMatrix->setViewType(Matrix::ImageView);
+	ampMatrix->setViewType(Matrix::ImageView);
 
-    Matrix::freeMatrixData(x_int_re, height);
-    Matrix::freeMatrixData(x_int_im, height);
-    QApplication::restoreOverrideCursor();
+	Matrix::freeMatrixData(x_int_re, height);
+	Matrix::freeMatrixData(x_int_im, height);
+	QApplication::restoreOverrideCursor();
 }
