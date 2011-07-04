@@ -370,10 +370,13 @@ void Plot3DDialog::initColorsPage()
     AxesColorGroupBox = new QGroupBox(tr( "Coordinate System" ));
     AxesColorGroupBox->setLayout(gl1);
 
+	QVBoxLayout *vl1 = new QVBoxLayout();
+	vl1->addWidget(gb2);
+	vl1->addWidget(AxesColorGroupBox);
+
     QHBoxLayout* hb1 = new QHBoxLayout();
 	hb1->addWidget(linearColorMapGroupBox);
-    hb1->addWidget(gb2);
-    hb1->addWidget(AxesColorGroupBox);
+	hb1->addLayout(vl1);
 
     QVBoxLayout *vl0 = new QVBoxLayout();
 	vl0->addLayout(hb1);
@@ -425,11 +428,14 @@ void Plot3DDialog::initGeneralPage()
 	boxDistance->setSingleStep(5);
 	gl1->addWidget(boxDistance, 4, 1);
 
-	gl1->addWidget(new QLabel(tr( "Zoom (%)" )), 5, 0);
 	boxZoom = new QSpinBox();
 	boxZoom->setRange(1, 10000);
 	boxZoom->setSingleStep(10);
 	gl1->addWidget(boxZoom, 5, 1);
+
+	QLabel *l1 = new QLabel("&" + tr("Zoom (%)"));
+	l1->setBuddy(boxZoom);
+	gl1->addWidget(l1, 5, 0);
 	gl1->setRowStretch(6, 1);
 
 	QGroupBox *gb1 = new QGroupBox();

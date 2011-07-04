@@ -1554,9 +1554,15 @@ void Graph3D::updateScalesFromMatrix(double xl, double xr, double yl, double yr,
 	double **data = 0;
 	if (xmin <= xStart && xmax >= xEnd && ymin <= yStart && ymax >= yEnd){
 		data = Matrix::allocateMatrixData(cols, rows);
-		for (int i = 0; i < cols; i++ ){
-			for (int j = 0; j < rows; j++)
-				data[i][j] = d_matrix->cell(j, i);
+		for (int i = 0; i < cols; i++){
+			for (int j = 0; j < rows; j++){
+				double val = d_matrix->cell(j, i);
+				if (val < zmin)
+					val = zmin;
+				else if (val > zmax)
+					val = zmax;
+				data[i][j] = val;
+			}
 		}
 		d_active_curve->loadFromData(data, cols, rows, d_matrix->xStart(), d_matrix->xEnd(), d_matrix->yStart(), d_matrix->yEnd());
 	} else {
@@ -1586,7 +1592,12 @@ void Graph3D::updateScalesFromMatrix(double xl, double xr, double yl, double yr,
 				double dki, dkf;
 				dkf = modf(fabs((y - yStart)/dy), &dki);
 				int k = qRound(dki); if (dkf > 0.5) k++;
-				data[i][j] = d_matrix->cell(k, l);
+				double val = d_matrix->cell(k, l);
+				if (val < zmin)
+					val = zmin;
+				else if (val > zmax)
+					val = zmax;
+				data[i][j] = val;
 			}
 		}
 		d_active_curve->loadFromData(data, cols, rows, x_begin, x_end, y_begin, y_end);
