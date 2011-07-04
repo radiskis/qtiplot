@@ -442,6 +442,10 @@ void ApplicationWindow::initWindow()
 
 void ApplicationWindow::setDefaultOptions()
 {
+	d_fft_norm_amp = false;
+	d_fft_shift_res = true;
+	d_fft_power2 = true;
+
 	d_int_sort_data = false;
 	d_int_show_plot = true;
 	d_int_results_table = true;
@@ -5378,6 +5382,12 @@ void ApplicationWindow::readSettings()
 	d_int_results_table = settings.value("/ResultsTable", d_int_results_table).toBool();
 	settings.endGroup(); // Integration Dialog
 
+	settings.beginGroup("/FFT");
+	d_fft_norm_amp = settings.value("/NormalizeAmplitude", d_fft_norm_amp).toBool();
+	d_fft_shift_res = settings.value("/ShiftResults", d_fft_shift_res).toBool();
+	d_fft_power2 = settings.value("/Power2", d_fft_power2).toBool();
+	settings.endGroup(); // FFT Dialog
+
 	settings.endGroup(); // Dialogs
 
 	settings.beginGroup("/Colors");
@@ -5863,6 +5873,12 @@ void ApplicationWindow::saveSettings()
 	settings.setValue("/ShowPlot", d_int_show_plot);
 	settings.setValue("/ResultsTable", d_int_results_table);
 	settings.endGroup(); // Integration Dialog
+
+	settings.beginGroup("/FFT");
+	settings.setValue("/NormalizeAmplitude", d_fft_norm_amp);
+	settings.setValue("/ShiftResults", d_fft_shift_res);
+	settings.setValue("/Power2", d_fft_power2);
+	settings.endGroup(); // FFT Dialog
 
 	settings.endGroup(); // Dialogs
 

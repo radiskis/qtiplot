@@ -30,6 +30,22 @@
 #include <Matrix.h>
 #include <math.h>
 
+int next2Power(int n)
+{
+	int l2n = 0, p = 1; //l2n will become log_2(n)
+	while(p < n){
+		p *= 2;
+		l2n++;
+	}
+	n = 1 << l2n;
+	return n;
+}
+
+bool isPower2(int n)
+{
+	return n && !(n & (n - 1));
+}
+
 void fft(double* x_int_re, double* x_int_im, int taille)
 {
 	int size_2 = taille >> 1, tmp1 = 0;

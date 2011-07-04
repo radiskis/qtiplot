@@ -59,6 +59,7 @@ public slots:
 
 private:
     void fftMatrix();
+	void closeEvent (QCloseEvent *);
 
 	Graph *graph;
 	Table *d_table;
@@ -70,7 +71,7 @@ private:
 	QRadioButton *forwardBtn, *backwardBtn;
 	QComboBox* boxName, *boxReal, *boxImaginary;
 	DoubleSpinBox* boxSampling;
-	QCheckBox* boxNormalize, *boxOrder;
+	QCheckBox* boxNormalize, *boxOrder, *boxPower2;
 };
 
 #endif
