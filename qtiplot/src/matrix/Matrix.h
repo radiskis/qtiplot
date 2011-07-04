@@ -295,7 +295,7 @@ public slots:
 	void goToColumn(int col);
 
 	//! Allocate memory for a matrix buffer
-	static double** allocateMatrixData(int rows, int columns);
+	static double** allocateMatrixData(int rows, int columns, bool init = false);
 	//! Free memory used for a matrix buffer
 	static void freeMatrixData(double **data, int rows);
 

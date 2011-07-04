@@ -1214,13 +1214,29 @@ QwtDoubleInterval Matrix::colorRange()
 	return QwtDoubleInterval(minValue, maxValue);
 }
 
-double** Matrix::allocateMatrixData(int rows, int columns)
+double** Matrix::allocateMatrixData(int rows, int columns, bool init)
 {
 	double** data = (double **)malloc(rows * sizeof (double*));
 	if(!data){
 		QMessageBox::critical(0, tr("QtiPlot") + " - " + tr("Memory Allocation Error"),
 		tr("Not enough memory, operation aborted!"));
 		return NULL;
+	}
+
+	if (init){
+		for ( int i = 0; i < rows; ++i){
+			data[i] = (double *)calloc(columns, sizeof(double));
+			if(!data[i]){
+				for ( int j = 0; j < i; j++)
+					free(data[j]);
+				free(data);
+
+				QMessageBox::critical(0, tr("QtiPlot") + " - " + tr("Memory Allocation Error"),
+				tr("Not enough memory, operation aborted!"));
+				return NULL;
+			}
+		}
+		return data;
 	}
 
 	for ( int i = 0; i < rows; ++i){

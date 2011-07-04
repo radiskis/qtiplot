@@ -1193,6 +1193,9 @@ private slots:
 
 // TODO: a lot of this stuff should be private
 public:
+	bool d_fft_norm_amp;
+	bool d_fft_shift_res;
+	bool d_fft_power2;
 	bool d_int_sort_data;
 	bool d_int_show_plot;
 	bool d_int_results_table;
