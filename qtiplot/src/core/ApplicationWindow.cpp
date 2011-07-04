@@ -3782,10 +3782,9 @@ Table* ApplicationWindow::table(const QString& name)
 	QString caption = name.left(name.lastIndexOf("_"));
 	Folder *f = projectFolder();
 	while (f){
-		QList<MdiSubWindow *> folderWindows = f->windowsList();
-		foreach(MdiSubWindow *w, folderWindows){
+		foreach(MdiSubWindow *w, f->windowsList()){
 			if (w->inherits("Table") && w->objectName() == caption)
-				return (Table*)w;
+				return qobject_cast<Table*>(w);
 		}
 		f = f->folderBelow();
 	}
