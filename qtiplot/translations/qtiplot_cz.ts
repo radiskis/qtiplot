@@ -7411,6 +7411,42 @@ K tomu lze použít následujících zvláštních kódů:
         <source>Angle (deg)</source>
         <translation>Úhel (stupně)</translation>
     </message>
+    <message>
+        <source>2D</source>
+        <translation type="unfinished">2D</translation>
+    </message>
+    <message>
+        <source>QtiPlot</source>
+        <translation type="unfinished">QtiPlot</translation>
+    </message>
+    <message>
+        <source>The two matrices have different dimensions, the imaginary part will be neglected!</source>
+        <translation type="unfinished">Dvě matice mají různé rozměry. Pomyslná část bude opomenuta!</translation>
+    </message>
+    <message>
+        <source>RealMatrixFFT</source>
+        <translation type="unfinished">Skutečná matice FFT</translation>
+    </message>
+    <message>
+        <source>Real part of the FFT transform of</source>
+        <translation type="unfinished">Skutečná část FFT přeměnění</translation>
+    </message>
+    <message>
+        <source>ImagMatrixFFT</source>
+        <translation type="unfinished">Pomyslná matice FFT</translation>
+    </message>
+    <message>
+        <source>Imaginary part of the FFT transform of</source>
+        <translation type="unfinished">Pomyslná část FFT přeměnění</translation>
+    </message>
+    <message>
+        <source>AmplitudeMatrixFFT</source>
+        <translation type="unfinished">Rozkmitová matice FFT</translation>
+    </message>
+    <message>
+        <source>Amplitudes of the FFT transform of</source>
+        <translation type="unfinished">Rozkmity FFT přeměnění</translation>
+    </message>
 </context>
 <context>
     <name>FFTDialog</name>
@@ -7448,19 +7484,19 @@ K tomu lze použít následujících zvláštních kódů:
     </message>
     <message>
         <source>RealMatrixFFT</source>
-        <translation>Skutečná matice FFT</translation>
+        <translation type="obsolete">Skutečná matice FFT</translation>
     </message>
     <message>
         <source>AmplitudeMatrixFFT</source>
-        <translation>Rozkmitová matice FFT</translation>
+        <translation type="obsolete">Rozkmitová matice FFT</translation>
     </message>
     <message>
         <source>Amplitudes of the FFT transform of</source>
-        <translation>Rozkmity FFT přeměnění</translation>
+        <translation type="obsolete">Rozkmity FFT přeměnění</translation>
     </message>
     <message>
         <source>Real part of the FFT transform of</source>
-        <translation>Skutečná část FFT přeměnění</translation>
+        <translation type="obsolete">Skutečná část FFT přeměnění</translation>
     </message>
     <message>
         <source>Sampling Interval</source>
@@ -7480,19 +7516,19 @@ K tomu lze použít následujících zvláštních kódů:
     </message>
     <message>
         <source>QtiPlot</source>
-        <translation>QtiPlot</translation>
+        <translation type="obsolete">QtiPlot</translation>
     </message>
     <message>
         <source>Imaginary part of the FFT transform of</source>
-        <translation>Pomyslná část FFT přeměnění</translation>
+        <translation type="obsolete">Pomyslná část FFT přeměnění</translation>
     </message>
     <message>
         <source>ImagMatrixFFT</source>
-        <translation>Pomyslná matice FFT</translation>
+        <translation type="obsolete">Pomyslná matice FFT</translation>
     </message>
     <message>
         <source>The two matrices have different dimensions, the imaginary part will be neglected!</source>
-        <translation>Dvě matice mají různé rozměry. Pomyslná část bude opomenuta!</translation>
+        <translation type="obsolete">Dvě matice mají různé rozměry. Pomyslná část bude opomenuta!</translation>
     </message>
     <message>
         <source>&amp;Forward</source>
@@ -7501,6 +7537,18 @@ K tomu lze použít následujících zvláštních kódů:
     <message>
         <source>Please choose a column for the real part of the data!</source>
         <translation>Vyberte, prosím, sloupec pro skutečnou část dat!</translation>
+    </message>
+    <message>
+        <source>&amp;Zero pad to nearest power of 2 in output matrices</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>DC &amp;Shift Center</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Undo &amp;Shift</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

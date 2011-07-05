@@ -3971,6 +3971,41 @@ ifft.shiftFrequencies(False)
 ifft.setSampling(10)
 ifft.run()
 </programlisting>
+
+You can also perform 2D fast Fourrier transforms on matrices.
+The FFT routine takes in this case the following parameters:
+<emphasis>rm</emphasis> - specifies the real part input matrix,
+<emphasis>im</emphasis> - specifies the imaginary part input matrix,
+<emphasis>inverse</emphasis> - specifies the direction of the FFT,
+<emphasis>DCShift</emphasis> - if this is true, the DC component will be put in the center of the result matrix,
+otherwise, the DC component will locate at four corners of the result matrix,
+<emphasis>norm</emphasis> - specifies whether or not to normalize the amplitudes to 1,
+<emphasis>outputPower2Sizes</emphasis> - forces output matrices whose sizes are integer powers of 2 (zero padding is used to initialize the missing cells)
+<programlisting>
+fft = FFT(Matrix *rm, Matrix *im = NULL, bool inverse = False, bool DCShift = True, bool norm = False, bool outputPower2Sizes = True)
+</programlisting>
+
+Here's how you can perform the 2D FFT of a matrix called "Matrix1",
+and the inverse FFT in order to recover the original image:
+
+<programlisting>
+m = matrix("Matrix1")
+m.setViewType(1) # make sure the matrix has an image view
+
+fft = FFT(m)
+fft.run()
+fft.amplitudesMatrix().resize(500, 400)
+
+rMatrix = fft.realOutputMatrix()
+rMatrix.hide()
+iMatrix = fft.imaginaryOutputMatrix()
+iMatrix.hide()
+
+ifft = FFT(rMatrix, iMatrix, True)
+ifft.run()
+ifft.realOutputMatrix().hide()
+ifft.imaginaryOutputMatrix().hide()
+</programlisting>
 </sect3>
 
 <sect3 id="Python-Filtering">

@@ -12181,7 +12181,7 @@ Följande specialkoder kan användas:
     </message>
     <message>
         <source>QtiPlot</source>
-        <translation type="obsolete">QtiPlot</translation>
+        <translation type="unfinished">QtiPlot</translation>
     </message>
     <message>
         <source>Error</source>
@@ -12238,6 +12238,38 @@ Följande specialkoder kan användas:
     <message>
         <source>Angle (deg)</source>
         <translation>Vinkel (grader)</translation>
+    </message>
+    <message>
+        <source>2D</source>
+        <translation type="unfinished">2D</translation>
+    </message>
+    <message>
+        <source>The two matrices have different dimensions, the imaginary part will be neglected!</source>
+        <translation type="unfinished">De två matriserna har olika dimension, den imaginära delen tas ej med!</translation>
+    </message>
+    <message>
+        <source>RealMatrixFFT</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Real part of the FFT transform of</source>
+        <translation type="unfinished">Realdel av FFT-transformen av</translation>
+    </message>
+    <message>
+        <source>ImagMatrixFFT</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Imaginary part of the FFT transform of</source>
+        <translation type="unfinished">Imaginärdel av FFT-transformen av</translation>
+    </message>
+    <message>
+        <source>AmplitudeMatrixFFT</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Amplitudes of the FFT transform of</source>
+        <translation type="unfinished">Amplitud hos FFT-transformen av</translation>
     </message>
 </context>
 <context>
@@ -12316,35 +12348,35 @@ Följande specialkoder kan användas:
     </message>
     <message>
         <source>QtiPlot</source>
-        <translation>QtiPlot</translation>
+        <translation type="obsolete">QtiPlot</translation>
     </message>
     <message>
         <source>The two matrices have different dimensions, the imaginary part will be neglected!</source>
-        <translation>De två matriserna har olika dimension, den imaginära delen tas ej med!</translation>
-    </message>
-    <message>
-        <source>RealMatrixFFT</source>
-        <translation></translation>
+        <translation type="obsolete">De två matriserna har olika dimension, den imaginära delen tas ej med!</translation>
     </message>
     <message>
         <source>Real part of the FFT transform of</source>
-        <translation>Realdel av FFT-transformen av</translation>
-    </message>
-    <message>
-        <source>ImagMatrixFFT</source>
-        <translation></translation>
+        <translation type="obsolete">Realdel av FFT-transformen av</translation>
     </message>
     <message>
         <source>Imaginary part of the FFT transform of</source>
-        <translation>Imaginärdel av FFT-transformen av</translation>
-    </message>
-    <message>
-        <source>AmplitudeMatrixFFT</source>
-        <translation></translation>
+        <translation type="obsolete">Imaginärdel av FFT-transformen av</translation>
     </message>
     <message>
         <source>Amplitudes of the FFT transform of</source>
-        <translation>Amplitud hos FFT-transformen av</translation>
+        <translation type="obsolete">Amplitud hos FFT-transformen av</translation>
+    </message>
+    <message>
+        <source>&amp;Zero pad to nearest power of 2 in output matrices</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>DC &amp;Shift Center</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Undo &amp;Shift</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

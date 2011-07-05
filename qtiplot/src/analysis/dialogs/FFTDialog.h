@@ -54,8 +54,11 @@ public slots:
 	void setGraph(Graph *g);
 	void setTable(Table *t);
 	void setMatrix(Matrix *m);
+
+private slots:
 	void activateCurve(const QString& curveName);
 	void accept();
+	void updateShiftLabel();
 
 private:
     void fftMatrix();

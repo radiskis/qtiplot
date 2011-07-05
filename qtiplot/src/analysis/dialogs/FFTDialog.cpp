@@ -28,7 +28,6 @@
  ***************************************************************************/
 #include "FFTDialog.h"
 #include <FFT.h>
-#include <fft2D.h>
 #include <ApplicationWindow.h>
 #include <Table.h>
 #include <Graph.h>
@@ -73,6 +72,7 @@ FFTDialog::FFTDialog(int type, QWidget* parent, Qt::WFlags fl )
 	gb1->setLayout(hbox1);
 
 	QGridLayout *gl1 = new QGridLayout();
+	gl1->setColumnStretch(1, 1);
 	if (d_type == onGraph)
 		gl1->addWidget(new QLabel(tr("Curve")), 0, 0);
 	else if (d_type == onTable)
@@ -115,11 +115,11 @@ FFTDialog::FFTDialog(int type, QWidget* parent, Qt::WFlags fl )
 	boxNormalize = new QCheckBox(tr( "&Normalize Amplitude" ));
 	boxNormalize->setChecked(app->d_fft_norm_amp);
 
-	if (d_type != onMatrix){
-		boxOrder = new QCheckBox(tr( "&Shift Results" ));
-		boxOrder->setChecked(app->d_fft_shift_res);
-	} else {
-		boxPower2 = new QCheckBox(tr( "&Zero pad to nearest power of 2" ));
+	boxOrder = new QCheckBox(tr( "&Shift Results" ));
+	boxOrder->setChecked(app->d_fft_shift_res);
+
+	if (d_type == onMatrix){
+		boxPower2 = new QCheckBox(tr( "&Zero pad to nearest power of 2 in output matrices" ));
 		boxPower2->setChecked(app->d_fft_power2);
 	}
 
@@ -127,9 +127,8 @@ FFTDialog::FFTDialog(int type, QWidget* parent, Qt::WFlags fl )
 	vbox1->addWidget(gb1);
 	vbox1->addWidget(gb2);
 	vbox1->addWidget(boxNormalize);
-	if (d_type != onMatrix)
-		vbox1->addWidget(boxOrder);
-	else
+	vbox1->addWidget(boxOrder);
+	if (d_type == onMatrix)
 		vbox1->addWidget(boxPower2);
 	vbox1->addStretch();
 
@@ -147,8 +146,24 @@ FFTDialog::FFTDialog(int type, QWidget* parent, Qt::WFlags fl )
 	hbox2->addLayout(vbox2);
 
 	// signals and slots connections
-	connect( buttonOK, SIGNAL( clicked() ), this, SLOT( accept() ) );
-	connect( buttonCancel, SIGNAL( clicked() ), this, SLOT( close() ) );
+	connect(buttonOK, SIGNAL(clicked()), this, SLOT(accept()));
+	connect(buttonCancel, SIGNAL(clicked()), this, SLOT(close()));
+	if (d_type == onMatrix){
+		updateShiftLabel();
+		connect(forwardBtn, SIGNAL(toggled(bool)), this, SLOT(updateShiftLabel()));
+		connect(backwardBtn, SIGNAL(toggled(bool)), this, SLOT(updateShiftLabel()));
+	}
+}
+
+void FFTDialog::updateShiftLabel()
+{
+	if (d_type != onMatrix)
+		return;
+
+	if (forwardBtn->isChecked())
+		boxOrder->setText(tr("DC &Shift Center"));
+	else
+		boxOrder->setText(tr("Undo &Shift"));
 }
 
 void FFTDialog::accept()
@@ -251,156 +266,17 @@ void FFTDialog::setMatrix(Matrix *m)
 void FFTDialog::fftMatrix()
 {
 	ApplicationWindow *app = (ApplicationWindow *)parent();
+	if (!app)
+		return;
+
 	Matrix *mReal = app->matrix(boxReal->currentText());
 	if (!mReal)
 		return;
 
-	bool inverse = backwardBtn->isChecked();
-	int c = mReal->numCols();
-	int r = mReal->numRows();
-	int cols = c;
-	int rows = r;
-
-	if (boxPower2->isChecked()){
-		if (!isPower2(c))
-			cols = next2Power(c);
-		if (!isPower2(r))
-			rows = next2Power(r);
-	}
-
-	bool errors = false;
-	Matrix *mIm = app->matrix(boxImaginary->currentText());
-	if (!mIm)
-		errors = true;
-	else if (mIm && (mIm->numCols() != cols || mIm->numRows() != rows)){
-		errors = true;
-		QMessageBox::warning(app, tr("QtiPlot"),
-		tr("The two matrices have different dimensions, the imaginary part will be neglected!"));
-	}
-
-	double **x_int_re = Matrix::allocateMatrixData(rows, cols, true); // real coeff matrix
-	if (!x_int_re)
-		return;
-	double **x_int_im = Matrix::allocateMatrixData(rows, cols, true); // imaginary coeff  matrix
-	if (!x_int_im){
-		Matrix::freeMatrixData(x_int_re, rows);
-		return;
-	}
-
-	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-
-	for (int i = 0; i < r; i++)
-		for (int j = 0; j < c; j++)
-			x_int_re[i][j] = mReal->cell(i, j);
-
-	if (!errors){
-		for (int i = 0; i < r; i++)
-			for (int j = 0; j < c; j++)
-				x_int_im[i][j] = mIm->cell(i, j);
-	}
-
-	double **x_fin_re = NULL, **x_fin_im = NULL;
-	if (inverse){
-		x_fin_re = Matrix::allocateMatrixData(rows, cols);
-		x_fin_im = Matrix::allocateMatrixData(rows, cols);
-		if (!x_fin_re || !x_fin_im){
-			Matrix::freeMatrixData(x_int_re, rows);
-			Matrix::freeMatrixData(x_int_im, rows);
-			QApplication::restoreOverrideCursor();
-			return;
-		}
-		fft2d_inv(x_int_re, x_int_im, x_fin_re, x_fin_im, cols, rows);
-	} else
-		fft2d(x_int_re, x_int_im, cols, rows);
-
-	Matrix *realCoeffMatrix = app->newMatrix(rows, cols);
-	QString realCoeffMatrixName = app->generateUniqueName(tr("RealMatrixFFT"));
-	app->setWindowName(realCoeffMatrix, realCoeffMatrixName);
-	realCoeffMatrix->setWindowLabel(tr("Real part of the FFT transform of") + " " + mReal->objectName());
-
-	Matrix *imagCoeffMatrix = app->newMatrix(rows, cols);
-	QString imagCoeffMatrixName = app->generateUniqueName(tr("ImagMatrixFFT"));
-	app->setWindowName(imagCoeffMatrix, imagCoeffMatrixName);
-	imagCoeffMatrix->setWindowLabel(tr("Imaginary part of the FFT transform of") + " " + mReal->objectName());
-
-	Matrix *ampMatrix = app->newMatrix(rows, cols);
-	QString ampMatrixName = app->generateUniqueName(tr("AmplitudeMatrixFFT"));
-	app->setWindowName(ampMatrix, ampMatrixName);
-	ampMatrix->setWindowLabel(tr("Amplitudes of the FFT transform of") + " " + mReal->objectName());
-
-	// Automatically set a centered frequency domain range, suggestion of Dr. Armin Bayer (Qioptiq - www.qioptiq.com)
-	double fxmax = 0.0, fymax = 0.0, fxmin = 0.0, fymin = 0.0;
-	if (inverse){
-		fxmax = 1.0/mReal->dx();
-		fymax = 1.0/mReal->dy();
-
-		for (int i = 0; i < rows; i++){
-			for (int j = 0; j < cols; j++){
-				double re = x_fin_re[i][j];
-				double im = x_fin_im[i][j];
-				realCoeffMatrix->setCell(i, j, re);
-				imagCoeffMatrix->setCell(i, j, im);
-				ampMatrix->setCell(i, j, sqrt(re*re + im*im));
-			}
-		}
-		Matrix::freeMatrixData(x_fin_re, rows);
-		Matrix::freeMatrixData(x_fin_im, rows);
-	} else {
-		double dfx = 2*mReal->dx()*(cols - 1);
-		double dfy = 2*mReal->dy()*(rows - 1);
-		fxmax = cols/dfx;
-		fymax = rows/dfy;
-		fxmin = -(cols - 2)/dfx;
-		fymin = -(rows - 2)/dfy;
-
-		for (int i = 0; i < rows; i++){
-			for (int j = 0; j < cols; j++){
-				double re = x_int_re[i][j];
-				double im = x_int_im[i][j];
-				realCoeffMatrix->setCell(i, j, re);
-				imagCoeffMatrix->setCell(i, j, im);
-				ampMatrix->setCell(i, j, sqrt(re*re + im*im));
-			}
-		}
-	}
-	Matrix::freeMatrixData(x_int_re, rows);
-	Matrix::freeMatrixData(x_int_im, rows);
-
-	if (boxNormalize->isChecked()){
-		double amp_min, amp_max;
-		ampMatrix->range(&amp_min, &amp_max);
-		for (int i = 0; i < rows; i++){
-			for (int j = 0; j < cols; j++){
-				double amp = ampMatrix->cell(i, j);
-				ampMatrix->setCell(i, j, amp/amp_max);
-			}
-		}
-	}
-
-	realCoeffMatrix->resize(mReal->size());
-	imagCoeffMatrix->resize(mReal->size());
-	ampMatrix->resize(mReal->size());
-
-	realCoeffMatrix->setCoordinates(fxmin, fxmax, fymin, fymax);
-	imagCoeffMatrix->setCoordinates(fxmin, fxmax, fymin, fymax);
-	ampMatrix->setCoordinates(fxmin, fxmax, fymin, fymax);
-
-	Matrix::ViewType view = mReal->viewType();
-	realCoeffMatrix->setViewType(view);
-	imagCoeffMatrix->setViewType(view);
-	ampMatrix->setViewType(view);
-
-	Matrix::HeaderViewType headView = mReal->headerViewType();
-	realCoeffMatrix->setHeaderViewType(headView);
-	imagCoeffMatrix->setHeaderViewType(headView);
-	ampMatrix->setHeaderViewType(headView);
-
-	const LinearColorMap map = mReal->colorMap();
-	imagCoeffMatrix->setColorMap(map);
-	realCoeffMatrix->setColorMap(map);
-	ampMatrix->setColorMap(map);
-
-	QApplication::restoreOverrideCursor();
+	FFT *fft = new FFT(app, mReal, app->matrix(boxImaginary->currentText()), boxOrder->isChecked(),
+					backwardBtn->isChecked(), boxNormalize->isChecked(), boxPower2->isChecked());
+	fft->run();
+	delete fft;
 }
 
 void FFTDialog::closeEvent (QCloseEvent * e)
@@ -408,9 +284,8 @@ void FFTDialog::closeEvent (QCloseEvent * e)
 	ApplicationWindow *app = (ApplicationWindow *)parent();
 	if(app){
 		app->d_fft_norm_amp = boxNormalize->isChecked();
-		if (!d_matrix)
-			app->d_fft_shift_res = boxOrder->isChecked();
-		else
+		app->d_fft_shift_res = boxOrder->isChecked();
+		if (d_matrix)
 			app->d_fft_power2 = boxPower2->isChecked();
 	}
 

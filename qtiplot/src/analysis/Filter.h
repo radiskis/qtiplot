@@ -37,6 +37,7 @@ class MultiLayer;
 class QwtPlotCurve;
 class Graph;
 class Table;
+class Matrix;
 
 //! Abstract base class for data analysis operations
 class Filter : public QObject
@@ -46,6 +47,7 @@ class Filter : public QObject
 	public:
         Filter(ApplicationWindow *parent, Table *t = 0, const QString& name = QString());
 		Filter(ApplicationWindow *parent, Graph *g = 0, const QString& name = QString());
+		Filter(ApplicationWindow *parent, Matrix *m, const QString& name = QString());
 		Filter(ApplicationWindow *parent, QwtPlotCurve *c);
 		~Filter();
 
@@ -200,6 +202,7 @@ class Filter : public QObject
 		bool d_update_output_graph;
 
 		QString d_y_col_name;
+		Matrix *d_matrix;
 };
 
 #endif

@@ -35,6 +35,7 @@
 #include <PlotCurve.h>
 #include <MultiLayer.h>
 #include <ColorBox.h>
+#include <Matrix.h>
 
 #include <QApplication>
 #include <QMessageBox>
@@ -67,6 +68,14 @@ Filter::Filter( ApplicationWindow *parent, Table *t, const QString& name)
 	d_table = t;
 }
 
+Filter::Filter( ApplicationWindow *parent, Matrix *m, const QString& name)
+: QObject(parent)
+{
+	init();
+	setObjectName(name);
+	d_matrix = m;
+}
+
 void Filter::init()
 {
 	d_n = 0;
@@ -87,6 +96,7 @@ void Filter::init()
 	d_graphics_display = true;
 	d_update_output_graph = true;
 	d_y_col_name = QString::null;
+	d_matrix = NULL;
 }
 
 void Filter::setInterval(double from, double to)
@@ -258,6 +268,11 @@ void Filter::showLegend()
 
 bool Filter::run()
 {
+	if (d_matrix){
+		output();
+		return true;
+	}
+
 	if (d_init_err)
 		return false;
 

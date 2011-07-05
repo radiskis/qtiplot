@@ -7424,6 +7424,42 @@ Les codes spéciaux suivants peuvent être utilisés :
         <source>Angle (deg)</source>
         <translation>Angle (deg)</translation>
     </message>
+    <message>
+        <source>2D</source>
+        <translation type="unfinished">2D</translation>
+    </message>
+    <message>
+        <source>QtiPlot</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The two matrices have different dimensions, the imaginary part will be neglected!</source>
+        <translation type="unfinished">Les deux matrices ont des dimensions différentes, la partie imaginaire sera négligée !</translation>
+    </message>
+    <message>
+        <source>RealMatrixFFT</source>
+        <translation type="unfinished">ReelMatriceFFT</translation>
+    </message>
+    <message>
+        <source>Real part of the FFT transform of</source>
+        <translation type="unfinished">Partie réelle de la tranformée de Fourier de </translation>
+    </message>
+    <message>
+        <source>ImagMatrixFFT</source>
+        <translation type="unfinished">ImageMatriceFFT</translation>
+    </message>
+    <message>
+        <source>Imaginary part of the FFT transform of</source>
+        <translation type="unfinished">Partie Imaginaire de la transformée de Fourier de </translation>
+    </message>
+    <message>
+        <source>AmplitudeMatrixFFT</source>
+        <translation type="unfinished">AmplitudeMatriceFFT</translation>
+    </message>
+    <message>
+        <source>Amplitudes of the FFT transform of</source>
+        <translation type="unfinished">Amplitudes de la transformée de Fourier de</translation>
+    </message>
 </context>
 <context>
     <name>FFTDialog</name>
@@ -7484,36 +7520,44 @@ Les codes spéciaux suivants peuvent être utilisés :
         <translation>Choisissez une colonne pour la partie réelle des données !</translation>
     </message>
     <message>
-        <source>QtiPlot</source>
-        <translation></translation>
-    </message>
-    <message>
         <source>The two matrices have different dimensions, the imaginary part will be neglected!</source>
-        <translation>Les deux matrices ont des dimensions différentes, la partie imaginaire sera négligée !</translation>
+        <translation type="obsolete">Les deux matrices ont des dimensions différentes, la partie imaginaire sera négligée !</translation>
     </message>
     <message>
         <source>RealMatrixFFT</source>
-        <translation>ReelMatriceFFT</translation>
+        <translation type="obsolete">ReelMatriceFFT</translation>
     </message>
     <message>
         <source>Real part of the FFT transform of</source>
-        <translation>Partie réelle de la tranformée de Fourier de </translation>
+        <translation type="obsolete">Partie réelle de la tranformée de Fourier de </translation>
     </message>
     <message>
         <source>ImagMatrixFFT</source>
-        <translation>ImageMatriceFFT</translation>
+        <translation type="obsolete">ImageMatriceFFT</translation>
     </message>
     <message>
         <source>Imaginary part of the FFT transform of</source>
-        <translation>Partie Imaginaire de la transformée de Fourier de </translation>
+        <translation type="obsolete">Partie Imaginaire de la transformée de Fourier de </translation>
     </message>
     <message>
         <source>AmplitudeMatrixFFT</source>
-        <translation>AmplitudeMatriceFFT</translation>
+        <translation type="obsolete">AmplitudeMatriceFFT</translation>
     </message>
     <message>
         <source>Amplitudes of the FFT transform of</source>
-        <translation>Amplitudes de la transformée de Fourier de</translation>
+        <translation type="obsolete">Amplitudes de la transformée de Fourier de</translation>
+    </message>
+    <message>
+        <source>&amp;Zero pad to nearest power of 2 in output matrices</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>DC &amp;Shift Center</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Undo &amp;Shift</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
