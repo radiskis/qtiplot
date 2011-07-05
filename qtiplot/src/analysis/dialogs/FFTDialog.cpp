@@ -301,8 +301,8 @@ void FFTDialog::fftMatrix()
 
 	double **x_fin_re = NULL, **x_fin_im = NULL;
 	if (inverse){
-		x_fin_re = Matrix::allocateMatrixData(rows, cols); // coeff of the initial image
-		x_fin_im = Matrix::allocateMatrixData(rows, cols); // filled with 0 if everythng OK
+		x_fin_re = Matrix::allocateMatrixData(rows, cols);
+		x_fin_im = Matrix::allocateMatrixData(rows, cols);
 		if (!x_fin_re || !x_fin_im){
 			Matrix::freeMatrixData(x_int_re, rows);
 			Matrix::freeMatrixData(x_int_im, rows);
@@ -312,7 +312,6 @@ void FFTDialog::fftMatrix()
 		fft2d_inv(x_int_re, x_int_im, x_fin_re, x_fin_im, cols, rows);
 	} else
 		fft2d(x_int_re, x_int_im, cols, rows);
-
 
 	Matrix *realCoeffMatrix = app->newMatrix(rows, cols);
 	QString realCoeffMatrixName = app->generateUniqueName(tr("RealMatrixFFT"));
@@ -329,7 +328,12 @@ void FFTDialog::fftMatrix()
 	app->setWindowName(ampMatrix, ampMatrixName);
 	ampMatrix->setWindowLabel(tr("Amplitudes of the FFT transform of") + " " + mReal->objectName());
 
+	// Automatically set a centered frequency domain range, suggestion of Dr. Armin Bayer (Qioptiq - www.qioptiq.com)
+	double fxmax = 0.0, fymax = 0.0, fxmin = 0.0, fymin = 0.0;
 	if (inverse){
+		fxmax = 1.0/mReal->dx();
+		fymax = 1.0/mReal->dy();
+
 		for (int i = 0; i < rows; i++){
 			for (int j = 0; j < cols; j++){
 				double re = x_fin_re[i][j];
@@ -342,6 +346,13 @@ void FFTDialog::fftMatrix()
 		Matrix::freeMatrixData(x_fin_re, rows);
 		Matrix::freeMatrixData(x_fin_im, rows);
 	} else {
+		double dfx = 2*mReal->dx()*(cols - 1);
+		double dfy = 2*mReal->dy()*(rows - 1);
+		fxmax = cols/dfx;
+		fymax = rows/dfy;
+		fxmin = -(cols - 2)/dfx;
+		fymin = -(rows - 2)/dfy;
+
 		for (int i = 0; i < rows; i++){
 			for (int j = 0; j < cols; j++){
 				double re = x_int_re[i][j];
@@ -352,6 +363,8 @@ void FFTDialog::fftMatrix()
 			}
 		}
 	}
+	Matrix::freeMatrixData(x_int_re, rows);
+	Matrix::freeMatrixData(x_int_im, rows);
 
 	if (boxNormalize->isChecked()){
 		double amp_min, amp_max;
@@ -368,33 +381,25 @@ void FFTDialog::fftMatrix()
 	imagCoeffMatrix->resize(mReal->size());
 	ampMatrix->resize(mReal->size());
 
-	// Automatically set a centered frequency domain range, suggestion of Dr. Armin Bayer (Qioptiq - www.qioptiq.com)
-	double xmin = mReal->xStart();
-	double xmax = mReal->xEnd();
-	double ymin = mReal->yStart();
-	double ymax = mReal->yEnd();
-
-	double fxmax = (cols - 1)/(2*(xmax - xmin));
-	double fxmin = -fxmax;
-	fxmax = fxmax/(cols/2)*(cols/2 - 1);
-
-	double fymax = (rows - 1)/(2*(ymax - ymin));
-	double fymin = -fymax;
-	fymax = fymax/(rows/2)*(rows/2 - 1);
-
 	realCoeffMatrix->setCoordinates(fxmin, fxmax, fymin, fymax);
 	imagCoeffMatrix->setCoordinates(fxmin, fxmax, fymin, fymax);
 	ampMatrix->setCoordinates(fxmin, fxmax, fymin, fymax);
 
-	realCoeffMatrix->setViewType(Matrix::ImageView);
-	realCoeffMatrix->setColorMap(mReal->colorMap());
-	imagCoeffMatrix->setViewType(Matrix::ImageView);
-	imagCoeffMatrix->setColorMap(mReal->colorMap());
-	ampMatrix->setViewType(Matrix::ImageView);
-	ampMatrix->setColorMap(mReal->colorMap());
+	Matrix::ViewType view = mReal->viewType();
+	realCoeffMatrix->setViewType(view);
+	imagCoeffMatrix->setViewType(view);
+	ampMatrix->setViewType(view);
 
-	Matrix::freeMatrixData(x_int_re, rows);
-	Matrix::freeMatrixData(x_int_im, rows);
+	Matrix::HeaderViewType headView = mReal->headerViewType();
+	realCoeffMatrix->setHeaderViewType(headView);
+	imagCoeffMatrix->setHeaderViewType(headView);
+	ampMatrix->setHeaderViewType(headView);
+
+	const LinearColorMap map = mReal->colorMap();
+	imagCoeffMatrix->setColorMap(map);
+	realCoeffMatrix->setColorMap(map);
+	ampMatrix->setColorMap(map);
+
 	QApplication::restoreOverrideCursor();
 }
 
