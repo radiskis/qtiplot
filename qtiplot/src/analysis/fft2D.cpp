@@ -108,7 +108,7 @@ void fft_inv(double* x_int_re, double* x_int_im, int taille)
 	}
 }
 
-void fft2d(double **xtre, double **xtim, int width, int height)
+void fft2d(double **xtre, double **xtim, int width, int height, bool shift)
 {
 	double **xint_re = Matrix::allocateMatrixData(height, width);
 	if (!xint_re)
@@ -140,20 +140,27 @@ void fft2d(double **xtre, double **xtim, int width, int height)
 			x_int2_c[i] = xint_im[i][k];
 		}
 
-		fft(x_int_c,x_int2_c, height) ;
+		fft(x_int_c, x_int2_c, height) ;
 
-		int col = (k+(width>>1))%width;
-		for(int i=0; i<height; i++){
-			int row = (i+(height>>1))%height;
-			xtre[row][col] = x_int_c[i];
-			xtim[row][col] = x_int2_c[i];
+		if (shift){
+			int col = (k+(width>>1))%width;
+			for(int i=0; i<height; i++){
+				int row = (i+(height>>1))%height;
+				xtre[row][col] = x_int_c[i];
+				xtim[row][col] = x_int2_c[i];
+			}
+		} else {
+			for(int i=0; i<height; i++){
+				xtre[i][k] = x_int_c[i];
+				xtim[i][k] = x_int2_c[i];
+			}
 		}
 	}
 	Matrix::freeMatrixData(xint_re, height);
 	Matrix::freeMatrixData(xint_im, height);
 }
 
-void fft2d_inv(double **xtre, double **xtim, double **xrec_re, double **xrec_im, int width, int height)
+void fft2d_inv(double **xtre, double **xtim, double **xrec_re, double **xrec_im, int width, int height, bool undoShift)
 {
 	double **xint_re = Matrix::allocateMatrixData(height, width);
 	if (!xint_re)
@@ -167,11 +174,18 @@ void fft2d_inv(double **xtre, double **xtim, double **xrec_re, double **xrec_im,
 	double x_int_l[width], x_int2_l[width], x_int_c[height], x_int2_c[height];
 
 	for(int k = 0; k < height; k++){
-		int row = (k + (height>>1))%height;
-		for(int j = 0; j < width; j++){
-			int col = (j + (width>>1))%width;
-			x_int_l[j] = xtre[row][col];
-			x_int2_l[j] = xtim[row][col];
+		if (undoShift){
+			int row = (k + (height>>1))%height;
+			for(int j = 0; j < width; j++){
+				int col = (j + (width>>1))%width;
+				x_int_l[j] = xtre[row][col];
+				x_int2_l[j] = xtim[row][col];
+			}
+		} else {
+			for(int j = 0; j < width; j++){
+				x_int_l[j] = xtre[k][j];
+				x_int2_l[j] = xtim[k][j];
+			}
 		}
 
 		fft_inv(x_int_l, x_int2_l, width);

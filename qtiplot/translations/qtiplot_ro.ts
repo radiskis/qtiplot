@@ -10920,7 +10920,7 @@ The following special codes can be used:
     </message>
     <message>
         <source>QtiPlot</source>
-        <translation type="obsolete">QtiPlot</translation>
+        <translation type="unfinished">QtiPlot</translation>
     </message>
     <message>
         <source>Error</source>
@@ -10977,6 +10977,38 @@ The following special codes can be used:
     <message>
         <source>Angle (deg)</source>
         <translation>Unghi (grade)</translation>
+    </message>
+    <message>
+        <source>2D</source>
+        <translation type="unfinished">2D</translation>
+    </message>
+    <message>
+        <source>The two matrices have different dimensions, the imaginary part will be neglected!</source>
+        <translation type="unfinished">Cele două matrici au dimensiuni diferite, partea imaginară va fi ignorată!</translation>
+    </message>
+    <message>
+        <source>RealMatrixFFT</source>
+        <translation type="unfinished">MatriceRealăFFT</translation>
+    </message>
+    <message>
+        <source>Real part of the FFT transform of</source>
+        <translation type="unfinished">Partea reală a transformatei Fourier rapide a</translation>
+    </message>
+    <message>
+        <source>ImagMatrixFFT</source>
+        <translation type="unfinished">MatriceImaginarăFFT</translation>
+    </message>
+    <message>
+        <source>Imaginary part of the FFT transform of</source>
+        <translation type="unfinished">Partea imaginară a transformatei Fourier rapide a</translation>
+    </message>
+    <message>
+        <source>AmplitudeMatrixFFT</source>
+        <translation type="unfinished">MatriceAmplitudiniFFT</translation>
+    </message>
+    <message>
+        <source>Amplitudes of the FFT transform of</source>
+        <translation type="unfinished">Amplitudinea transformatei Fourier rapide a</translation>
     </message>
 </context>
 <context>
@@ -11039,35 +11071,47 @@ The following special codes can be used:
     </message>
     <message>
         <source>QtiPlot</source>
-        <translation>QtiPlot</translation>
+        <translation type="obsolete">QtiPlot</translation>
     </message>
     <message>
         <source>The two matrices have different dimensions, the imaginary part will be neglected!</source>
-        <translation>Cele două matrici au dimensiuni diferite, partea imaginară va fi ignorată!</translation>
+        <translation type="obsolete">Cele două matrici au dimensiuni diferite, partea imaginară va fi ignorată!</translation>
     </message>
     <message>
         <source>RealMatrixFFT</source>
-        <translation>MatriceRealăFFT</translation>
+        <translation type="obsolete">MatriceRealăFFT</translation>
     </message>
     <message>
         <source>Real part of the FFT transform of</source>
-        <translation>Partea reală a transformatei Fourier rapide a</translation>
+        <translation type="obsolete">Partea reală a transformatei Fourier rapide a</translation>
     </message>
     <message>
         <source>ImagMatrixFFT</source>
-        <translation>MatriceImaginarăFFT</translation>
+        <translation type="obsolete">MatriceImaginarăFFT</translation>
     </message>
     <message>
         <source>Imaginary part of the FFT transform of</source>
-        <translation>Partea imaginară a transformatei Fourier rapide a</translation>
+        <translation type="obsolete">Partea imaginară a transformatei Fourier rapide a</translation>
     </message>
     <message>
         <source>AmplitudeMatrixFFT</source>
-        <translation>MatriceAmplitudiniFFT</translation>
+        <translation type="obsolete">MatriceAmplitudiniFFT</translation>
     </message>
     <message>
         <source>Amplitudes of the FFT transform of</source>
-        <translation>Amplitudinea transformatei Fourier rapide a</translation>
+        <translation type="obsolete">Amplitudinea transformatei Fourier rapide a</translation>
+    </message>
+    <message>
+        <source>&amp;Zero pad to nearest power of 2 in output matrices</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>DC &amp;Shift Center</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Undo &amp;Shift</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

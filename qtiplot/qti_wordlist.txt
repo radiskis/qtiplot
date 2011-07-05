@@ -903,3 +903,6 @@ mse
 setIntensityRange
 lowerBound
 upperBound
+amplitudesMatrix
+realOutputMatrix
+imaginaryOutputMatrix

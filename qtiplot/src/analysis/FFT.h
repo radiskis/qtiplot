@@ -40,12 +40,17 @@ public:
 	FFT(ApplicationWindow *parent, QwtPlotCurve *c);
 	FFT(ApplicationWindow *parent, QwtPlotCurve *c, double start, double end);
 	FFT(ApplicationWindow *parent, Graph *g, const QString& curveTitle);
-    FFT(ApplicationWindow *parent, Graph *g, const QString& curveTitle, double start, double end);
+	FFT(ApplicationWindow *parent, Graph *g, const QString& curveTitle, double start, double end);
+	FFT(ApplicationWindow *parent, Matrix *re, Matrix *im = NULL, bool inverse = false, bool shift = true, bool norm = false, bool outputPower2Sizes = true);
 
     void setInverseFFT(bool inverse = true){d_inverse = inverse;};
     void setSampling(double sampling){d_sampling = sampling;};
     void normalizeAmplitudes(bool norm = true){d_normalize = norm;};
     void shiftFrequencies(bool shift = true){d_shift_order = shift;};
+
+	Matrix *amplitudesMatrix(){return d_amp_matrix;}
+	Matrix *realOutputMatrix(){return d_re_out_matrix;}
+	Matrix *imaginaryOutputMatrix(){return d_im_out_matrix;}
 
 private:
     void init();
@@ -53,6 +58,7 @@ private:
 	void outputGraphs();
 	void fftCurve();
 	void fftTable();
+	void fftMatrix();
 
     bool setDataFromTable(Table *t, const QString& realColName, const QString& imagColName = QString(), int from = 0, int to = -1);
 
@@ -65,6 +71,12 @@ private:
     bool d_shift_order;
 
     int d_real_col, d_imag_col;
+
+	Matrix *d_im_matrix;
+	Matrix *d_re_out_matrix;
+	Matrix *d_im_out_matrix;
+	Matrix *d_amp_matrix;
+	bool d_power2;
 };
 
 #endif

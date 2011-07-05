@@ -3225,7 +3225,12 @@ public:
   FFT(ApplicationWindow * /TransferThis/, Graph *, const QString&);
   FFT(ApplicationWindow * /TransferThis/, QwtPlotCurve *);
   FFT(ApplicationWindow * /TransferThis/, QwtPlotCurve *, double, double);
+  FFT(ApplicationWindow * /TransferThis/, Matrix *, Matrix * = NULL, bool = false, bool = true, bool = false, bool = true);
 
+  FFT(Matrix *, Matrix * = NULL, bool = false, bool = true, bool = false, bool = true) /NoDerived/;
+%MethodCode
+  SIPQTI_APP(new sipFFT(app, a0, a1, a2, a3, a4, a5))
+%End
   FFT(Table *, const QString&, const QString& = QString(), int = 1, int = -1) /NoDerived/;
 %MethodCode
   SIPQTI_APP(new sipFFT(app, a0, *a1, *a2, a3, a4))
@@ -3251,6 +3256,10 @@ public:
   void setSampling(double);
   void normalizeAmplitudes(bool=true);
   void shiftFrequencies(bool=true);
+
+  Matrix *amplitudesMatrix();
+  Matrix *realOutputMatrix();
+  Matrix *imaginaryOutputMatrix();
 
   bool run();
 };

@@ -7407,6 +7407,42 @@ The following special codes can be used:
         <source>Angle (deg)</source>
         <translation>Угол (градусы)</translation>
     </message>
+    <message>
+        <source>2D</source>
+        <translation type="unfinished">2D</translation>
+    </message>
+    <message>
+        <source>QtiPlot</source>
+        <translation type="unfinished">QtiPlot</translation>
+    </message>
+    <message>
+        <source>The two matrices have different dimensions, the imaginary part will be neglected!</source>
+        <translation type="unfinished">Две матрицы имеют различный размер, мнимая часть будет игнорирована!</translation>
+    </message>
+    <message>
+        <source>RealMatrixFFT</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Real part of the FFT transform of</source>
+        <translation type="unfinished">Действительная часть БПФ</translation>
+    </message>
+    <message>
+        <source>ImagMatrixFFT</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Imaginary part of the FFT transform of</source>
+        <translation type="unfinished">Мнимая часть БПФ</translation>
+    </message>
+    <message>
+        <source>AmplitudeMatrixFFT</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Amplitudes of the FFT transform of</source>
+        <translation type="unfinished">Амплитуды БПФ</translation>
+    </message>
 </context>
 <context>
     <name>FFTDialog</name>
@@ -7468,35 +7504,35 @@ The following special codes can be used:
     </message>
     <message>
         <source>QtiPlot</source>
-        <translation>QtiPlot</translation>
+        <translation type="obsolete">QtiPlot</translation>
     </message>
     <message>
         <source>The two matrices have different dimensions, the imaginary part will be neglected!</source>
-        <translation>Две матрицы имеют различный размер, мнимая часть будет игнорирована!</translation>
-    </message>
-    <message>
-        <source>RealMatrixFFT</source>
-        <translation></translation>
+        <translation type="obsolete">Две матрицы имеют различный размер, мнимая часть будет игнорирована!</translation>
     </message>
     <message>
         <source>Real part of the FFT transform of</source>
-        <translation>Действительная часть БПФ</translation>
-    </message>
-    <message>
-        <source>ImagMatrixFFT</source>
-        <translation></translation>
+        <translation type="obsolete">Действительная часть БПФ</translation>
     </message>
     <message>
         <source>Imaginary part of the FFT transform of</source>
-        <translation>Мнимая часть БПФ</translation>
-    </message>
-    <message>
-        <source>AmplitudeMatrixFFT</source>
-        <translation></translation>
+        <translation type="obsolete">Мнимая часть БПФ</translation>
     </message>
     <message>
         <source>Amplitudes of the FFT transform of</source>
-        <translation>Амплитуды БПФ</translation>
+        <translation type="obsolete">Амплитуды БПФ</translation>
+    </message>
+    <message>
+        <source>&amp;Zero pad to nearest power of 2 in output matrices</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>DC &amp;Shift Center</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Undo &amp;Shift</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

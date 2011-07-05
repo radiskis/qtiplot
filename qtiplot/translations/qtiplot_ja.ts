@@ -7776,6 +7776,42 @@ The following special codes can be used:
         <source>Angle (deg)</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>2D</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>QtiPlot</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The two matrices have different dimensions, the imaginary part will be neglected!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>RealMatrixFFT</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Real part of the FFT transform of</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>ImagMatrixFFT</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Imaginary part of the FFT transform of</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>AmplitudeMatrixFFT</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Amplitudes of the FFT transform of</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>FFTDialog</name>
@@ -7836,35 +7872,15 @@ The following special codes can be used:
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>QtiPlot</source>
+        <source>&amp;Zero pad to nearest power of 2 in output matrices</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>The two matrices have different dimensions, the imaginary part will be neglected!</source>
+        <source>DC &amp;Shift Center</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>RealMatrixFFT</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Real part of the FFT transform of</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>ImagMatrixFFT</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Imaginary part of the FFT transform of</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>AmplitudeMatrixFFT</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Amplitudes of the FFT transform of</source>
+        <source>Undo &amp;Shift</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

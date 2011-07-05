@@ -13813,7 +13813,7 @@ Die folgenden Spezialcodes können benutzt werden:
     </message>
     <message>
         <source>QtiPlot</source>
-        <translation type="obsolete">QtiPlot</translation>
+        <translation type="unfinished">QtiPlot</translation>
     </message>
     <message>
         <source>Error</source>
@@ -13870,6 +13870,38 @@ Die folgenden Spezialcodes können benutzt werden:
     <message>
         <source>Angle (deg)</source>
         <translation>Winkel (Grad)</translation>
+    </message>
+    <message>
+        <source>2D</source>
+        <translation type="unfinished">2D</translation>
+    </message>
+    <message>
+        <source>The two matrices have different dimensions, the imaginary part will be neglected!</source>
+        <translation type="unfinished">Die beiden Matrizen haben unterschiedliche Dimensionen, der Imaginärteil wird vernachlässigt!</translation>
+    </message>
+    <message>
+        <source>RealMatrixFFT</source>
+        <translation type="unfinished">RealMatrixFFT</translation>
+    </message>
+    <message>
+        <source>Real part of the FFT transform of</source>
+        <translation type="unfinished">Realteil der FFT Transformation von</translation>
+    </message>
+    <message>
+        <source>ImagMatrixFFT</source>
+        <translation type="unfinished">ImaginärMatrixFFT</translation>
+    </message>
+    <message>
+        <source>Imaginary part of the FFT transform of</source>
+        <translation type="unfinished">Imaginärteil der FFT Transformation von</translation>
+    </message>
+    <message>
+        <source>AmplitudeMatrixFFT</source>
+        <translation type="unfinished">AmplitudenmatrixFFT</translation>
+    </message>
+    <message>
+        <source>Amplitudes of the FFT transform of</source>
+        <translation type="unfinished">Amplituden der FFT Transformation von</translation>
     </message>
 </context>
 <context>
@@ -13948,35 +13980,47 @@ Die folgenden Spezialcodes können benutzt werden:
     </message>
     <message>
         <source>QtiPlot</source>
-        <translation>QtiPlot</translation>
+        <translation type="obsolete">QtiPlot</translation>
     </message>
     <message>
         <source>The two matrices have different dimensions, the imaginary part will be neglected!</source>
-        <translation>Die beiden Matrizen haben unterschiedliche Dimensionen, der Imaginärteil wird vernachlässigt!</translation>
+        <translation type="obsolete">Die beiden Matrizen haben unterschiedliche Dimensionen, der Imaginärteil wird vernachlässigt!</translation>
     </message>
     <message>
         <source>RealMatrixFFT</source>
-        <translation>RealMatrixFFT</translation>
+        <translation type="obsolete">RealMatrixFFT</translation>
     </message>
     <message>
         <source>Real part of the FFT transform of</source>
-        <translation>Realteil der FFT Transformation von</translation>
+        <translation type="obsolete">Realteil der FFT Transformation von</translation>
     </message>
     <message>
         <source>ImagMatrixFFT</source>
-        <translation>ImaginärMatrixFFT</translation>
+        <translation type="obsolete">ImaginärMatrixFFT</translation>
     </message>
     <message>
         <source>Imaginary part of the FFT transform of</source>
-        <translation>Imaginärteil der FFT Transformation von</translation>
+        <translation type="obsolete">Imaginärteil der FFT Transformation von</translation>
     </message>
     <message>
         <source>AmplitudeMatrixFFT</source>
-        <translation>AmplitudenmatrixFFT</translation>
+        <translation type="obsolete">AmplitudenmatrixFFT</translation>
     </message>
     <message>
         <source>Amplitudes of the FFT transform of</source>
-        <translation>Amplituden der FFT Transformation von</translation>
+        <translation type="obsolete">Amplituden der FFT Transformation von</translation>
+    </message>
+    <message>
+        <source>&amp;Zero pad to nearest power of 2 in output matrices</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>DC &amp;Shift Center</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Undo &amp;Shift</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

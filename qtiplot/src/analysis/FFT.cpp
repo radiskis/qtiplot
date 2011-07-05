@@ -27,11 +27,14 @@
  *                                                                         *
  ***************************************************************************/
 #include "FFT.h"
-#include "MultiLayer.h"
-#include "PlotCurve.h"
+#include <MultiLayer.h>
+#include <PlotCurve.h>
 #include <ColorBox.h>
+#include <Matrix.h>
+#include <fft2D.h>
 
 #include <QLocale>
+#include <QApplication>
 
 #include <gsl/gsl_fft_complex.h>
 #include <gsl/gsl_fft_halfcomplex.h>
@@ -71,7 +74,22 @@ FFT::FFT(ApplicationWindow *parent, Graph *g, const QString& curveTitle, double 
     setDataFromCurve(curveTitle, start, end);
 }
 
-void FFT::init ()
+FFT::FFT(ApplicationWindow *parent, Matrix *re, Matrix *im, bool inverse, bool shift, bool norm, bool outputPower2Sizes)
+: Filter(parent, re),
+d_inverse(inverse),
+d_normalize(norm),
+d_shift_order(shift),
+d_im_matrix(im),
+d_power2(outputPower2Sizes)
+{
+	setObjectName(tr("FFT") + " " + tr("2D"));
+	d_real_col = -1;
+	d_imag_col = -1;
+	d_sampling = 1.0;
+	d_output_graph = 0;
+}
+
+void FFT::init()
 {
     setObjectName(tr("FFT"));
     d_inverse = false;
@@ -81,6 +99,10 @@ void FFT::init ()
     d_imag_col = -1;
 	d_sampling = 1.0;
 	d_output_graph = 0;
+	d_im_matrix = NULL;
+	d_re_out_matrix = NULL;
+	d_im_out_matrix = NULL;
+	d_amp_matrix = NULL;
 }
 
 void FFT::fftCurve()
@@ -228,16 +250,23 @@ void FFT::fftTable()
 
 void FFT::output()
 {
+	if(d_inverse)
+		d_explanation = tr("Inverse") + " " + tr("FFT") + " " + tr("of") + " ";
+	else
+		d_explanation = tr("Forward") + " " + tr("FFT") + " " + tr("of") + " ";
+
+	if (d_matrix){
+		d_explanation += d_matrix->objectName();
+		return fftMatrix();
+	}
+
 	ApplicationWindow *app = (ApplicationWindow *)parent();
 	QString tableName = app->generateUniqueName(QString(objectName()));
 	QStringList header = QStringList();
-	if(d_inverse){
-		d_explanation = tr("Inverse") + " " + tr("FFT") + " " + tr("of") + " ";
+	if (d_inverse)
 		header << tr("Time");
-	} else {
-		d_explanation = tr("Forward") + " " + tr("FFT") + " " + tr("of") + " ";
+	else
 		header << tr("Frequency");
-	}
 
 	if (d_curve)
 		 d_explanation += d_curve->title().text();
@@ -258,6 +287,9 @@ void FFT::output()
 
 void FFT::outputGraphs()
 {
+	if (d_matrix)
+		return;
+
 	createOutputGraph();
 
 	MultiLayer *ml = d_output_graph->multiLayer();
@@ -383,4 +415,155 @@ bool FFT::setDataFromTable(Table *t, const QString& realColName, const QString& 
 		return false;
 	}
 	return true;
+}
+
+void FFT::fftMatrix()
+{
+	if (!d_matrix)
+		return;
+
+	ApplicationWindow *app = (ApplicationWindow *)parent();
+
+	int c = d_matrix->numCols();
+	int r = d_matrix->numRows();
+	int cols = c;
+	int rows = r;
+
+	if (d_power2){
+		if (!isPower2(c))
+			cols = next2Power(c);
+		if (!isPower2(r))
+			rows = next2Power(r);
+	}
+
+	bool errors = !d_im_matrix;
+	if (d_im_matrix && (d_im_matrix->numCols() != cols || d_im_matrix->numRows() != rows)){
+		errors = true;
+		QMessageBox::warning(app, tr("QtiPlot"),
+		tr("The two matrices have different dimensions, the imaginary part will be neglected!"));
+	}
+
+	double **x_int_re = Matrix::allocateMatrixData(rows, cols, true); // real coeff matrix
+	if (!x_int_re)
+		return;
+	double **x_int_im = Matrix::allocateMatrixData(rows, cols, true); // imaginary coeff  matrix
+	if (!x_int_im){
+		Matrix::freeMatrixData(x_int_re, rows);
+		return;
+	}
+
+	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+
+	for (int i = 0; i < r; i++)
+		for (int j = 0; j < c; j++)
+			x_int_re[i][j] = d_matrix->cell(i, j);
+
+	if (!errors){
+		for (int i = 0; i < r; i++)
+			for (int j = 0; j < c; j++)
+				x_int_im[i][j] = d_im_matrix->cell(i, j);
+	}
+
+	double **x_fin_re = NULL, **x_fin_im = NULL;
+	if (d_inverse){
+		x_fin_re = Matrix::allocateMatrixData(rows, cols);
+		x_fin_im = Matrix::allocateMatrixData(rows, cols);
+		if (!x_fin_re || !x_fin_im){
+			Matrix::freeMatrixData(x_int_re, rows);
+			Matrix::freeMatrixData(x_int_im, rows);
+			QApplication::restoreOverrideCursor();
+			return;
+		}
+		fft2d_inv(x_int_re, x_int_im, x_fin_re, x_fin_im, cols, rows, d_shift_order);
+	} else
+		fft2d(x_int_re, x_int_im, cols, rows, d_shift_order);
+
+	d_re_out_matrix = app->newMatrix(rows, cols);
+	QString realCoeffMatrixName = app->generateUniqueName(tr("RealMatrixFFT"));
+	app->setWindowName(d_re_out_matrix, realCoeffMatrixName);
+	d_re_out_matrix->setWindowLabel(tr("Real part of the FFT transform of") + " " + d_matrix->objectName());
+
+	d_im_out_matrix = app->newMatrix(rows, cols);
+	QString imagCoeffMatrixName = app->generateUniqueName(tr("ImagMatrixFFT"));
+	app->setWindowName(d_im_out_matrix, imagCoeffMatrixName);
+	d_im_out_matrix->setWindowLabel(tr("Imaginary part of the FFT transform of") + " " + d_matrix->objectName());
+
+	d_amp_matrix = app->newMatrix(rows, cols);
+	QString ampMatrixName = app->generateUniqueName(tr("AmplitudeMatrixFFT"));
+	app->setWindowName(d_amp_matrix, ampMatrixName);
+	d_amp_matrix->setWindowLabel(tr("Amplitudes of the FFT transform of") + " " + d_matrix->objectName());
+
+	// Automatically set a centered frequency domain range, suggestion of Dr. Armin Bayer (Qioptiq - www.qioptiq.com)
+	double fxmax = 0.0, fymax = 0.0, fxmin = 0.0, fymin = 0.0;
+	if (d_inverse){
+		fxmax = 1.0/d_matrix->dx();
+		fymax = 1.0/d_matrix->dy();
+
+		for (int i = 0; i < rows; i++){
+			for (int j = 0; j < cols; j++){
+				double re = x_fin_re[i][j];
+				double im = x_fin_im[i][j];
+				d_re_out_matrix->setCell(i, j, re);
+				d_im_out_matrix->setCell(i, j, im);
+				d_amp_matrix->setCell(i, j, sqrt(re*re + im*im));
+			}
+		}
+		Matrix::freeMatrixData(x_fin_re, rows);
+		Matrix::freeMatrixData(x_fin_im, rows);
+	} else {
+		double dfx = 2*d_matrix->dx()*(cols - 1);
+		double dfy = 2*d_matrix->dy()*(rows - 1);
+		fxmax = cols/dfx;
+		fymax = rows/dfy;
+		fxmin = -(cols - 2)/dfx;
+		fymin = -(rows - 2)/dfy;
+
+		for (int i = 0; i < rows; i++){
+			for (int j = 0; j < cols; j++){
+				double re = x_int_re[i][j];
+				double im = x_int_im[i][j];
+				d_re_out_matrix->setCell(i, j, re);
+				d_im_out_matrix->setCell(i, j, im);
+				d_amp_matrix->setCell(i, j, sqrt(re*re + im*im));
+			}
+		}
+	}
+	Matrix::freeMatrixData(x_int_re, rows);
+	Matrix::freeMatrixData(x_int_im, rows);
+
+	if (d_normalize){
+		double amp_min, amp_max;
+		d_amp_matrix->range(&amp_min, &amp_max);
+		for (int i = 0; i < rows; i++){
+			for (int j = 0; j < cols; j++){
+				double amp = d_amp_matrix->cell(i, j);
+				d_amp_matrix->setCell(i, j, amp/amp_max);
+			}
+		}
+	}
+
+	d_re_out_matrix->resize(d_matrix->size());
+	d_im_out_matrix->resize(d_matrix->size());
+	d_amp_matrix->resize(d_matrix->size());
+
+	d_re_out_matrix->setCoordinates(fxmin, fxmax, fymin, fymax);
+	d_im_out_matrix->setCoordinates(fxmin, fxmax, fymin, fymax);
+	d_amp_matrix->setCoordinates(fxmin, fxmax, fymin, fymax);
+
+	Matrix::ViewType view = d_matrix->viewType();
+	d_re_out_matrix->setViewType(view);
+	d_im_out_matrix->setViewType(view);
+	d_amp_matrix->setViewType(view);
+
+	Matrix::HeaderViewType headView = d_matrix->headerViewType();
+	d_re_out_matrix->setHeaderViewType(headView);
+	d_im_out_matrix->setHeaderViewType(headView);
+	d_amp_matrix->setHeaderViewType(headView);
+
+	const LinearColorMap map = d_matrix->colorMap();
+	d_im_out_matrix->setColorMap(map);
+	d_re_out_matrix->setColorMap(map);
+	d_amp_matrix->setColorMap(map);
+
+	QApplication::restoreOverrideCursor();
 }
