@@ -14011,15 +14011,15 @@ Die folgenden Spezialcodes können benutzt werden:
         <translation type="obsolete">Amplituden der FFT Transformation von</translation>
     </message>
     <message>
-        <source>&amp;Zero pad to nearest power of 2 in output matrices</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>DC &amp;Shift Center</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Undo &amp;Shift</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Zero pad to nearest power of 2 size</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -19011,6 +19011,10 @@ Wollen sie Zellen einfügen?</translation>
     <message>
         <source>&amp;Close</source>
         <translation type="obsolete">S&amp;chließen</translation>
+    </message>
+    <message>
+        <source>Resize freely</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

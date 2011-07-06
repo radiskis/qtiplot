@@ -12003,15 +12003,15 @@ The following special codes can be used:
         <translation type="obsolete">QtiPlot</translation>
     </message>
     <message>
-        <source>&amp;Zero pad to nearest power of 2 in output matrices</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>DC &amp;Shift Center</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Undo &amp;Shift</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Zero pad to nearest power of 2 size</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -16100,6 +16100,10 @@ Do you want to insert cells?</source>
     <message>
         <source>&amp;Close</source>
         <translation type="obsolete">&amp;Cerrar</translation>
+    </message>
+    <message>
+        <source>Resize freely</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

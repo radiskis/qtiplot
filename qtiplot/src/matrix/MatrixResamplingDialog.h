@@ -36,6 +36,7 @@ class QAbstractButton;
 class QDialogButtonBox;
 class QSpinBox;
 class QComboBox;
+class QLineEdit;
 
 //! Matrix properties dialog
 class MatrixResamplingDialog : public QDialog
@@ -54,13 +55,16 @@ private slots:
 	//! Apply changes
 	void apply();
 	void buttonClicked(QAbstractButton *);
+	void updateDimensionsInfo();
 
 private:
+	void calculateDimensions(int *newRows, int *newColumns);
 	Matrix *d_matrix;
 
 	QDialogButtonBox *buttonBox;
 	QSpinBox* boxColumns, *boxRows;
 	QComboBox *boxMethod, *boxAction;
+	QLineEdit *dimensionsLabel;
 };
 
 #endif // MATRIXRESAMPLINGDIALOG_H

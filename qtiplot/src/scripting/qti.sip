@@ -1013,7 +1013,7 @@ public:
 	double determinant();
 	double integrate();
 
-	void setViewType(ViewType);
+	void setViewType(ViewType, bool renderImage = true);
 	void setHeaderViewType(HeaderViewType);
 
 	void setDefaultColorMap();

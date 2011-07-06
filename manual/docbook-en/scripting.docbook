@@ -3989,8 +3989,9 @@ Here's how you can perform the 2D FFT of a matrix called "Matrix1",
 and the inverse FFT in order to recover the original image:
 
 <programlisting>
+from qti import *
 m = matrix("Matrix1")
-m.setViewType(1) # make sure the matrix has an image view
+m.setViewType(Matrix.ImageView) # make sure the matrix is displayed as image
 
 fft = FFT(m)
 fft.run()
