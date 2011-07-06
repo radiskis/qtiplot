@@ -35,6 +35,7 @@
 #include <MultiLayer.h>
 #include <Matrix.h>
 #include <DoubleSpinBox.h>
+#include <fft2D.h>
 
 #include <QRadioButton>
 #include <QGroupBox>
@@ -54,7 +55,6 @@ FFTDialog::FFTDialog(int type, QWidget* parent, Qt::WFlags fl )
 	setSizeGripEnabled( true );
 	setAttribute(Qt::WA_DeleteOnClose);
 
-	d_matrix = 0;
 	d_table = 0;
 	graph = 0;
 	d_type = type;
@@ -80,7 +80,7 @@ FFTDialog::FFTDialog(int type, QWidget* parent, Qt::WFlags fl )
 
 	if (d_type != onMatrix){
 		boxName = new QComboBox();
-		connect(boxName, SIGNAL(activated(const QString&)), this, SLOT(activateCurve(const QString&)));
+		connect(boxName, SIGNAL(activated(const QString&)), this, SLOT(activateDataSet(const QString&)));
 		gl1->addWidget(boxName, 0, 1);
 		setFocusProxy(boxName);
 	}
@@ -103,7 +103,8 @@ FFTDialog::FFTDialog(int type, QWidget* parent, Qt::WFlags fl )
 		if (d_type == onTable){
 			gl1->addWidget(new QLabel(tr("Sampling Interval")), 3, 0);
 			gl1->addWidget(boxSampling, 3, 1);
-		}
+		} else
+			connect(boxReal, SIGNAL(activated(const QString&)), this, SLOT(activateDataSet(const QString&)));
 	} else if (d_type == onGraph){
 		gl1->addWidget(new QLabel(tr("Sampling Interval")), 1, 0);
 		gl1->addWidget(boxSampling, 1, 1);
@@ -121,6 +122,7 @@ FFTDialog::FFTDialog(int type, QWidget* parent, Qt::WFlags fl )
 	if (d_type == onMatrix){
 		boxPower2 = new QCheckBox(tr( "&Zero pad to nearest power of 2 size" ));
 		boxPower2->setChecked(app->d_fft_power2);
+		boxPower2->hide();
 	}
 
 	QVBoxLayout *vbox1 = new QVBoxLayout();
@@ -203,12 +205,19 @@ void FFTDialog::setGraph(Graph *g)
 
 	graph = g;
 	boxName->insertStringList(g->analysableCurvesList());
-	activateCurve(boxName->currentText());
+	activateDataSet(boxName->currentText());
 }
 
-void FFTDialog::activateCurve(const QString& s)
+void FFTDialog::activateDataSet(const QString& s)
 {
-	if (d_table){
+	if (d_type == onMatrix){
+		ApplicationWindow *app = (ApplicationWindow *)parent();
+		if (app){
+			Matrix *m = app->matrix(s);
+			if (m)
+				boxPower2->setVisible(!isPower2(m->numRows()) || !isPower2(m->numCols()));
+		}
+	} else if (d_table){
 		int col = d_table->colIndex(s);
 		boxSampling->setValue(d_table->cell(1, col) - d_table->cell(0, col));
 	} else if (graph){
@@ -252,15 +261,16 @@ void FFTDialog::setTable(Table *t)
 
 void FFTDialog::setMatrix(Matrix *m)
 {
-    ApplicationWindow *app = (ApplicationWindow *)parent();
-    QStringList lst = app->matrixNames();
-    boxReal->addItems(lst);
-    if (m){
-        boxReal->setCurrentIndex(lst.indexOf(m->objectName()));
-        d_matrix = m;
-    }
-    boxImaginary->addItem (" ");
-    boxImaginary->addItems(lst);
+	ApplicationWindow *app = (ApplicationWindow *)parent();
+	QStringList lst = app->matrixNames();
+	boxReal->addItems(lst);
+	if (m){
+		boxReal->setCurrentIndex(lst.indexOf(m->objectName()));
+		d_type = onMatrix;
+		boxPower2->setVisible(!isPower2(m->numRows()) || !isPower2(m->numCols()));
+	}
+	boxImaginary->addItem (" ");
+	boxImaginary->addItems(lst);
 }
 
 void FFTDialog::fftMatrix()
@@ -273,8 +283,8 @@ void FFTDialog::fftMatrix()
 	if (!mReal)
 		return;
 
-	FFT *fft = new FFT(app, mReal, app->matrix(boxImaginary->currentText()), boxOrder->isChecked(),
-					backwardBtn->isChecked(), boxNormalize->isChecked(), boxPower2->isChecked());
+	FFT *fft = new FFT(app, mReal, app->matrix(boxImaginary->currentText()), backwardBtn->isChecked(),
+					boxOrder->isChecked(), boxNormalize->isChecked(), boxPower2->isChecked());
 	fft->run();
 	delete fft;
 }
@@ -282,10 +292,10 @@ void FFTDialog::fftMatrix()
 void FFTDialog::closeEvent (QCloseEvent * e)
 {
 	ApplicationWindow *app = (ApplicationWindow *)parent();
-	if(app){
+	if (app){
 		app->d_fft_norm_amp = boxNormalize->isChecked();
 		app->d_fft_shift_res = boxOrder->isChecked();
-		if (d_matrix)
+		if (d_type == onMatrix)
 			app->d_fft_power2 = boxPower2->isChecked();
 	}
 
