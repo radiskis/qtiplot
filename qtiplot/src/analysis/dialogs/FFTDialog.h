@@ -56,7 +56,7 @@ public slots:
 	void setMatrix(Matrix *m);
 
 private slots:
-	void activateCurve(const QString& curveName);
+	void activateDataSet(const QString& curveName);
 	void accept();
 	void updateShiftLabel();
 
@@ -66,7 +66,6 @@ private:
 
 	Graph *graph;
 	Table *d_table;
-	Matrix *d_matrix;
 	int d_type;
 
 	QPushButton* buttonOK;
