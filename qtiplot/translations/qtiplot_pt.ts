@@ -9943,15 +9943,15 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">QtiPlot</translation>
     </message>
     <message>
-        <source>&amp;Zero pad to nearest power of 2 in output matrices</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>DC &amp;Shift Center</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Undo &amp;Shift</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Zero pad to nearest power of 2 size</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -14729,6 +14729,10 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Bicubic</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Resize freely</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

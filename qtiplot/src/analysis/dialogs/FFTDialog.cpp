@@ -119,7 +119,7 @@ FFTDialog::FFTDialog(int type, QWidget* parent, Qt::WFlags fl )
 	boxOrder->setChecked(app->d_fft_shift_res);
 
 	if (d_type == onMatrix){
-		boxPower2 = new QCheckBox(tr( "&Zero pad to nearest power of 2 in output matrices" ));
+		boxPower2 = new QCheckBox(tr( "&Zero pad to nearest power of 2 size" ));
 		boxPower2->setChecked(app->d_fft_power2);
 	}
 

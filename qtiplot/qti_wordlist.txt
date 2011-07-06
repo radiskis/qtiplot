@@ -906,3 +906,5 @@ upperBound
 amplitudesMatrix
 realOutputMatrix
 imaginaryOutputMatrix
+Bilinear
+Bicubic

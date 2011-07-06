@@ -13521,7 +13521,7 @@ The following special codes can be used:
     </message>
     <message>
         <location filename="../src/analysis/dialogs/FFTDialog.cpp" line="122"/>
-        <source>&amp;Zero pad to nearest power of 2 in output matrices</source>
+        <source>&amp;Zero pad to nearest power of 2 size</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -17646,42 +17646,49 @@ have the same number of rows.</source>
 <context>
     <name>MatrixResamplingDialog</name>
     <message>
-        <location filename="../src/matrix/MatrixResamplingDialog.cpp" line="43"/>
+        <location filename="../src/matrix/MatrixResamplingDialog.cpp" line="44"/>
         <source>Resample</source>
         <translation>重新采样</translation>
     </message>
     <message>
-        <location filename="../src/matrix/MatrixResamplingDialog.cpp" line="47"/>
+        <location filename="../src/matrix/MatrixResamplingDialog.cpp" line="56"/>
         <source>Expand for every cell</source>
         <translation>扩展每一个单元格</translation>
     </message>
     <message>
-        <location filename="../src/matrix/MatrixResamplingDialog.cpp" line="48"/>
+        <location filename="../src/matrix/MatrixResamplingDialog.cpp" line="57"/>
         <source>Shrink into 1x1 for every</source>
         <translation>以下每个都缩减到1x1 - </translation>
     </message>
     <message>
-        <location filename="../src/matrix/MatrixResamplingDialog.cpp" line="55"/>
+        <location filename="../src/matrix/MatrixResamplingDialog.cpp" line="58"/>
+        <source>Resize freely</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/matrix/MatrixResamplingDialog.cpp" line="65"/>
+        <location filename="../src/matrix/MatrixResamplingDialog.cpp" line="136"/>
         <source>Columns</source>
         <translation>列</translation>
     </message>
     <message>
-        <location filename="../src/matrix/MatrixResamplingDialog.cpp" line="61"/>
+        <location filename="../src/matrix/MatrixResamplingDialog.cpp" line="71"/>
+        <location filename="../src/matrix/MatrixResamplingDialog.cpp" line="136"/>
         <source>Rows</source>
         <translation>行</translation>
     </message>
     <message>
-        <location filename="../src/matrix/MatrixResamplingDialog.cpp" line="67"/>
+        <location filename="../src/matrix/MatrixResamplingDialog.cpp" line="77"/>
         <source>Method</source>
         <translation>方法</translation>
     </message>
     <message>
-        <location filename="../src/matrix/MatrixResamplingDialog.cpp" line="69"/>
+        <location filename="../src/matrix/MatrixResamplingDialog.cpp" line="79"/>
         <source>Bilinear</source>
         <translation>双线性</translation>
     </message>
     <message>
-        <location filename="../src/matrix/MatrixResamplingDialog.cpp" line="70"/>
+        <location filename="../src/matrix/MatrixResamplingDialog.cpp" line="80"/>
         <source>Bicubic</source>
         <translation>双三次</translation>
     </message>
