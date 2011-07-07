@@ -507,6 +507,19 @@ bool DataCurve::updateData(Table *t, const QString& colName)
 	return true;
 }
 
+void DataCurve::setDataSource(Table *yt, int ycol, Table *xt, int xcol)
+{
+	if (!yt)
+		return;
+
+	d_table = yt;
+	d_x_table = (xt != NULL) ? xt : yt;
+	d_x_column = d_x_table->colName(xcol);
+	setTitle(yt->colName(ycol));
+
+	loadData();
+}
+
 void DataCurve::enableSpeedMode()
 {
 	Graph *g = (Graph *)plot();

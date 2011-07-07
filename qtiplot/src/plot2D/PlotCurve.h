@@ -139,6 +139,7 @@ public:
 
 	Table* table(){return d_table;};
 	Table* xTable(){return d_x_table;};
+	void setDataSource(Table *yt, int ycol = 1, Table *xt = NULL, int xcol = 0);
 
 	int startRow(){return d_start_row;};
 	int endRow(){return d_end_row;};
