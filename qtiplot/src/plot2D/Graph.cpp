@@ -1965,6 +1965,8 @@ void Graph::deselect()
 	scalePicker->deselect();
 	titlePicker->setSelected(false);
 	deselectCurves();
+	if (multiLayer())
+		multiLayer()->deselect();
 }
 
 void Graph::deselectCurves()
@@ -6895,6 +6897,8 @@ void Graph::print(QPainter *painter, const QRect &plotRect, const QwtPlotPrintFi
 
 	pfilter.reset((QwtPlot *)this);
 
+	plotLayout()->activate(this, contentsRect());
+
 	painter->restore();
 
 	d_is_printing = false;
@@ -6993,7 +6997,7 @@ QRect Graph::boundingRect()
 	QRect r = rect();
 
 	foreach(FrameWidget *fw, d_enrichments){
-		if (fw->isHidden())//pie labels can be hidden
+		if (fw->isHidden() || fw->visibleRegion().isEmpty())//pie labels can be hidden
 			continue;
 
 		r = r.united(fw->geometry());
