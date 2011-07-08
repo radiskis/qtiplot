@@ -253,6 +253,8 @@ public:
 	ExcelImportMethod excelImportMethod(){return d_excel_import_method;};
 	void setExcelImportMethod(const ExcelImportMethod& method){d_excel_import_method = method;};
 
+	void showNoDataMessage();
+
 public slots:
 	//! \name Projects and Project Files
 	//@{

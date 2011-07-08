@@ -3480,6 +3480,11 @@ void ApplicationWindow::showBinMatrixDialog()
 	cbmd->exec();
 }
 
+void ApplicationWindow::showNoDataMessage()
+{
+	QMessageBox::critical(this, tr("QtiPlot"), tr("Input error: empty data set!"));
+}
+
 #ifdef HAVE_ALGLIB
 void ApplicationWindow::smoothMatrix()
 {
@@ -3506,8 +3511,11 @@ void ApplicationWindow::showMatrixResamplingDialog(bool shrink)
 	if (!m)
 		return;
 
-	MatrixResamplingDialog *mrd = new MatrixResamplingDialog(m, shrink, this);
-	mrd->exec();
+	if (!m->isEmpty()){
+		MatrixResamplingDialog *mrd = new MatrixResamplingDialog(m, shrink, this);
+		mrd->exec();
+	} else
+		showNoDataMessage();
 }
 
 void ApplicationWindow::convertTableToMatrixRandomXYZ()
@@ -8796,18 +8804,21 @@ void ApplicationWindow::showFFTDialog()
 		return;
 
 	FFTDialog *sd = 0;
-	if (w->isA("MultiLayer")) {
+	if (qobject_cast<MultiLayer *>(w)){
 		Graph* g = ((MultiLayer*)w)->activeLayer();
 		if ( g && g->validCurvesDataSize() ){
 			sd = new FFTDialog(FFTDialog::onGraph, this);
 			sd->setGraph(g);
 		}
-	} else if (w->inherits("Table")) {
+	} else if (w->inherits("Table")){
 		sd = new FFTDialog(FFTDialog::onTable, this);
 		sd->setTable((Table*)w);
-	} else if (w->inherits("Matrix")) {
-		sd = new FFTDialog(FFTDialog::onMatrix, this);
-		sd->setMatrix((Matrix*)w);
+	} else if (qobject_cast<Matrix *>(w)){
+		if (!((Matrix *)w)->isEmpty()){
+			sd = new FFTDialog(FFTDialog::onMatrix, this);
+			sd->setMatrix((Matrix *)w);
+		} else
+			showNoDataMessage();
 	}
 
 	if (sd)
@@ -13374,13 +13385,16 @@ void ApplicationWindow::integrate()
 		IntegrationDialog *id = new IntegrationDialog(g, this);
 		id->show();
 	} else if (w->isA("Matrix")){
-		QDateTime dt = QDateTime::currentDateTime ();
-		QString info = dt.toString(Qt::LocalDate);
-		info += "\n" + tr("Integration of %1 from zero is").arg(QString(w->objectName())) + ":\t";
-		info += QString::number(((Matrix *)w)->integrate()) + "\n";
-		info += "-------------------------------------------------------------\n";
-		current_folder->appendLogInfo(info);
-		showResults(true);
+		if (!((Matrix *)w)->isEmpty()){
+			QDateTime dt = QDateTime::currentDateTime ();
+			QString info = dt.toString(Qt::LocalDate);
+			info += "\n" + tr("Integration of %1 from zero is").arg(QString(w->objectName())) + ":\t";
+			info += QString::number(((Matrix *)w)->integrate()) + "\n";
+			info += "-------------------------------------------------------------\n";
+			current_folder->appendLogInfo(info);
+			showResults(true);
+		} else
+			showNoDataMessage();
 	} else if (w->inherits("Table")){
 		Table *t = (Table *)w;
 		QStringList lst = t->selectedYColumns();
@@ -18275,7 +18289,10 @@ void ApplicationWindow::matrixDirectFFT()
 	if (!m)
 		return;
 
-	m->fft();
+	if (!m->isEmpty())
+		m->fft();
+	else
+		showNoDataMessage();
 }
 
 void ApplicationWindow::matrixInverseFFT()
@@ -18284,7 +18301,10 @@ void ApplicationWindow::matrixInverseFFT()
 	if (!m)
 		return;
 
-	m->fft(true);
+	if (!m->isEmpty())
+		m->fft(true);
+	else
+		showNoDataMessage();
 }
 
 void ApplicationWindow::setFormatBarColor(const QColor& color)
