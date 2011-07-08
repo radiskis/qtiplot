@@ -35,7 +35,7 @@ class QwtHistogram: public QwtBarCurve
 {
 public:
 	QwtHistogram(Table *t, const QString& name, int startRow = 0, int endRow = -1);
-    QwtHistogram(Matrix *m);
+	QwtHistogram(Matrix *m);
 
 	void copy(QwtHistogram *h);
 
@@ -53,28 +53,26 @@ public:
 	double end(){return d_end;};
 	double binSize(){return d_bin_size;};
 
-    void loadData();
+	void loadData();
 
-    double mean(){return d_mean;};
-    double standardDeviation(){return d_standard_deviation;};
-    double minimum(){return d_min;};
-    double maximum(){return d_max;};
+	double mean(){return d_mean;};
+	double standardDeviation(){return d_standard_deviation;};
+	double minimum(){return d_min;};
+	double maximum(){return d_max;};
 
 	Matrix* matrix(){return d_matrix;};
 
 private:
 	void init();
-	void draw(QPainter *painter,const QwtScaleMap &xMap,
-		const QwtScaleMap &yMap, int from, int to) const;
 
-    void loadDataFromMatrix();
+	void loadDataFromMatrix();
 	virtual void loadLabels();
 
-    Matrix *d_matrix;
+	Matrix *d_matrix;
 
 	bool d_autoBin;
 	double d_bin_size, d_begin, d_end;
 
-    //! Variables storing statistical information
+	//! Variables storing statistical information
 	double d_mean, d_standard_deviation, d_min, d_max;
 };

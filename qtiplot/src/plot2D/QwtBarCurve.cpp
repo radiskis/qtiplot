@@ -95,7 +95,7 @@ void QwtBarCurve::draw(QPainter *painter,
 	} else {
 		dy = abs(yMap.xTransform(y(from + 1)) - yMap.xTransform(y(from)));
 		for (int i = from + 2; i<to; i++){
-			double min = yMap.xTransform(y(i+1)) - yMap.xTransform(y(i));
+			double min = yMap.xTransform(y(i + 1)) - yMap.xTransform(y(i));
 			if (min <= dy)
 				dy = min;
 		}
@@ -104,10 +104,9 @@ void QwtBarCurve::draw(QPainter *painter,
 
 	QList <QwtBarCurve *> stack = stackedCurvesList();
 
-	const double half_width = (0.5-bar_offset*0.01)*bar_width;
+	const double half_width = (0.5 - bar_offset*0.01)*bar_width;
 	double bw1 = bar_width;
-	for (int i = from; i <= to; i++)
-	{
+	for (int i = from; i <= to; i++){
 		const double px = xMap.xTransform(x(i));
 		const double py = yMap.xTransform(y(i));
 
@@ -117,7 +116,7 @@ void QwtBarCurve::draw(QPainter *painter,
 				rect = QRectF(px - half_width, ref, bw1, (py - ref));
 			else {
 				if (stack.isEmpty())
-					rect = QRectF(px - half_width, py, bw1, (ref - py + 1));
+					rect = QRectF(px - half_width, py, bw1, (ref - py));
 				else {
 					double sOffset = stackOffset(i, stack);
 					rect = QRectF(px - half_width, yMap.xTransform(y(i) + sOffset), bw1, 1);
