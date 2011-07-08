@@ -70,47 +70,11 @@ void QwtHistogram::copy(QwtHistogram *h)
 	d_end = h->d_end;
 }
 
-void QwtHistogram::draw(QPainter *painter,
-		const QwtScaleMap &xMap, const QwtScaleMap &yMap, int from, int to) const
-{
-	if ( !painter || dataSize() <= 0 )
-		return;
-
-	if (to < 0)
-		to = dataSize() - 1;
-
-	painter->save();
-	painter->setPen(QwtPainter::scaledPen(pen()));
-	painter->setBrush(brush());
-
-	const double ref = yMap.transform(baseline()) + 1;
-	const double dx = abs(xMap.transform(x(from + 1)) - xMap.transform(x(from)));
-	const double bar_width = dx*(1 - gap()*0.01);
-	const double half_width = 0.5*(dx - bar_width);
-	const double xOffset = 0.01*offset()*bar_width + half_width;
-
-	if (gap()){
-		for (int i = from;  i <= to; i++){
-			const double py = yMap.transform(y(i));
-			painter->drawRect(QRectF(xMap.transform(x(i)) + xOffset, py, bar_width, (ref - py)));
-		}
-	} else {
-		for (int i = from;  i < to; i++){
-			painter->drawRect(QRectF(QPointF(xMap.transform(x(i)) + xOffset, yMap.transform(y(i))),
-									 QPointF(xMap.transform(x(i + 1)) + xOffset, ref)));
-		}
-		const double py = yMap.transform(y(to));
-		painter->drawRect(QRectF(xMap.transform(x(to)) + xOffset, py, bar_width, (ref - py)));
-	}
-
-	painter->restore();
-}
-
 QwtDoubleRect QwtHistogram::boundingRect() const
 {
 	QwtDoubleRect rect = QwtPlotCurve::boundingRect();
-	rect.setLeft(rect.left()-x(1));
-	rect.setRight(rect.right()+x(dataSize()-1));
+	rect.setLeft(rect.left() - x(1));
+	rect.setRight(rect.right() + x(dataSize() - 1));
 	rect.setTop(0);
 	rect.setBottom(1.2*rect.bottom());
 	return rect;
