@@ -144,7 +144,7 @@ Graph::Graph(int x, int y, int width, int height, QWidget* parent, Qt::WFlags f)
 	d_tex_escape_strings = true;
 #endif
 	d_axis_title_policy = Default;
-	d_Douglas_Peuker_tolerance = 0;
+	d_Douglas_Peuker_tolerance = 0.0;
 	d_speed_mode_points = 3000;
 	d_synchronize_scales = true;
 	d_missing_data_gap = false;
