@@ -237,6 +237,9 @@ class Graph: public QwtPlot
 		void setAxisTitlePolicy(const AxisTitlePolicy& policy){d_axis_title_policy = policy;};
 		void setSynchronizedScaleDivisions(bool on){d_synchronize_scales = on;};
 
+		QRectF pageGeometry(){return d_page_rect;}
+		void setPageGeometry(const QRectF& r){d_page_rect = r;}
+
 	public slots:
 		void copy(Graph* g);
 		void copyCurves(Graph* g);
@@ -915,6 +918,7 @@ signals:
 		QPixmap d_canvas_bkg_pix;
 
 		int d_waterfall_offset_x, d_waterfall_offset_y;
+		QRectF d_page_rect;
 };
 
 class ScaledFontsPrintFilter: public QwtPlotPrintFilter

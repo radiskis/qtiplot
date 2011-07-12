@@ -257,6 +257,10 @@ void MdiSubWindow::setMaximized()
 {
 	showMaximized();
 	d_status = Maximized;
+
+	if (d_folder)
+		d_folder->setActiveWindow(this);
+
 	emit statusChanged (this);
 }
 

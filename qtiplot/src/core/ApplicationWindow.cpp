@@ -597,8 +597,8 @@ void ApplicationWindow::setDefaultOptions()
 	d_graph_background_color = Qt::white;
 	d_graph_canvas_color = Qt::white;
 	d_graph_border_color = Qt::black;
-	d_graph_background_opacity = 100;
-	d_graph_canvas_opacity = 100;
+	d_graph_background_opacity = 0;
+	d_graph_canvas_opacity = 0;
 	d_graph_border_width = 0;
 	d_graph_tick_labels_dist = 4;
 	d_graph_axes_labels_dist = 2;
@@ -3779,12 +3779,19 @@ Matrix* ApplicationWindow::tableToMatrix(Table* t)
 	return m;
 }
 
-MdiSubWindow* ApplicationWindow::window(const QString& name)
+MdiSubWindow* ApplicationWindow::window(const QString& name, bool label)
 {
 	QList<MdiSubWindow *> windows = windowsList();
-	foreach(MdiSubWindow *w, windows){
-		if (w->objectName() == name)
-			return w;
+	if (label){
+		foreach(MdiSubWindow *w, windows){
+			if (w->windowLabel() == name)
+				return w;
+		}
+	} else {
+		foreach(MdiSubWindow *w, windows){
+			if (w->objectName() == name)
+				return w;
+		}
 	}
 	return  NULL;
 }
@@ -3880,8 +3887,7 @@ void ApplicationWindow::windowActivated(QMdiSubWindow *w)
 	if (d_opening_file)
 		return;
 
-	QList<MdiSubWindow *> windows = current_folder->windowsList();
-	foreach(MdiSubWindow *ow, windows){
+	foreach(MdiSubWindow *ow, current_folder->windowsList()){
 		if (ow != window && ow->status() == MdiSubWindow::Maximized){
 			ow->setNormal();
 			break;
@@ -12536,13 +12542,18 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot, co
 {
 	Graph* ag = 0;
 	int curveID = 0;
-	for (int j=0;j<(int)list.count()-1;j++){
-		QString s=list[j];
+	for (int j = 0; j < list.count() - 1; j++){
+		QString s = list[j];
 		if (s.contains ("ggeometry")){
 			QStringList fList = s.split("\t");
 			ag = (Graph*)plot->addLayer(fList[1].toInt(), fList[2].toInt(), fList[3].toInt(), fList[4].toInt());
 			ag->blockSignals(true);
 			ag->setAxisTitlePolicy(d_graph_axis_labeling);
+		}
+		else if (s.startsWith ("<PageGeometry>") && s.endsWith ("</PageGeometry>"))
+		{
+			QStringList lst = QStringList::split ("\t", s.remove("<PageGeometry>").remove("</PageGeometry>"));
+			ag->setPageGeometry(QRectF(lst[0].toDouble(), lst[1].toDouble(), lst[2].toDouble(), lst[3].toDouble()));
 		}
 		else if (s.left(10) == "Background"){
 			QStringList fList = s.split("\t");
@@ -17266,6 +17277,7 @@ bool ApplicationWindow::changeFolder(Folder *newFolder, bool force)
 
 	desactivateFolders();
 	newFolder->folderListItem()->setActive(true);
+	folders->setCurrentItem(newFolder->folderListItem());
 
 	Folder *oldFolder = current_folder;
 	MdiSubWindow::Status old_active_window_state = MdiSubWindow::Normal;
@@ -17274,8 +17286,7 @@ bool ApplicationWindow::changeFolder(Folder *newFolder, bool force)
 		old_active_window_state = old_active_window->status();
 
 	MdiSubWindow::Status active_window_state = MdiSubWindow::Normal;
-	MdiSubWindow *active_window = newFolder->activeWindow();
-
+	MdiSubWindow *active_window = newFolder->activeWindow(); 
 	if (active_window)
 		active_window_state = active_window->status();
 
@@ -17332,10 +17343,25 @@ bool ApplicationWindow::changeFolder(Folder *newFolder, bool force)
 		else if (active_window_state == MdiSubWindow::Maximized){
 			if (active_window->isA("Graph3D"))
 				((Graph3D *)active_window)->setIgnoreFonts(true);
-			active_window->showMaximized();
+			active_window->setMaximized();
+			MultiLayer *ml = qobject_cast<MultiLayer *>(active_window);
+			if (ml){
+				foreach (Graph *g, ml->layersList()){
+					QRectF rf = g->pageGeometry();
+					if (rf.isNull())
+						continue;
+
+					int x = qRound(rf.x()*ml->canvas()->width());
+					int y = qRound(rf.y()*ml->canvas()->height());
+					int w = qRound(rf.width()*ml->canvas()->width());
+					int h = qRound(rf.height()*ml->canvas()->height());
+					g->setGeometry(x, y, w, h);
+				}
+			}
+
 			if (active_window->isA("Graph3D"))
 				((Graph3D *)active_window)->setIgnoreFonts(false);
-			}
+		}
 	} else
 		d_active_window = (MdiSubWindow *)d_workspace->activeSubWindow();
 
@@ -18137,11 +18163,17 @@ void ApplicationWindow::restoreApplicationGeometry()
 
 	MultiLayer *ml = (MultiLayer *)activeWindow(MultiLayerWindow);
 	if (ml && ml->isMaximized()){
-		bool scaleLayers = ml->scaleLayersOnResize();
-		ml->setScaleLayersOnResize(true);
-		ml->showNormal();
-		ml->showMaximized();
-		ml->setScaleLayersOnResize(scaleLayers);
+		foreach (Graph *g, ml->layersList()){
+			QRectF rf = g->pageGeometry();
+			if (rf.isNull())
+				continue;
+
+			int x = qRound(rf.x()*ml->canvas()->width());
+			int y = qRound(rf.y()*ml->canvas()->height());
+			int w = qRound(rf.width()*ml->canvas()->width());
+			int h = qRound(rf.height()*ml->canvas()->height());
+			g->setGeometry(x, y, w, h);
+		}
 	}
 }
 

@@ -947,8 +947,8 @@ public slots:
 	bool alreadyUsedName(const QString& label);
 	bool projectHas2DPlots();
 
-	//! Returns a pointer to the window named "name"
-	MdiSubWindow* window(const QString& name);
+	//! Returns a pointer to the window named/labelled "name" depending on "label" value
+	MdiSubWindow* window(const QString& name, bool label = false);
 
 	//! Returns a list with the names of all the matrices in the project
 	QStringList matrixNames();

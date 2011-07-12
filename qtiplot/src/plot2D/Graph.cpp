@@ -143,11 +143,12 @@ Graph::Graph(int x, int y, int width, int height, QWidget* parent, Qt::WFlags f)
 	d_is_exporting_tex = false;
 	d_tex_escape_strings = true;
 #endif
-	d_axis_title_policy = Default;
+	d_axis_title_policy = ColComment;
 	d_Douglas_Peuker_tolerance = 0.0;
 	d_speed_mode_points = 3000;
 	d_synchronize_scales = true;
 	d_missing_data_gap = false;
+	d_page_rect = QRectF();
 
 	setGeometry(x, y, width, height);
 	setAutoReplot(false);
@@ -1182,7 +1183,7 @@ QString Graph::parseAxisTitle(int axis)
 		return QString::null;
 
 	QString s = d_axis_titles[axis];
-	if (s.trimmed().isEmpty())
+	if (s.trimmed().isEmpty() || !(s.contains("%(?X)", Qt::CaseInsensitive) || s.contains("%(?Y)", Qt::CaseInsensitive)))
 		return s;
 
 	QString name = QString::null;
@@ -4306,6 +4307,17 @@ QString Graph::saveToString(bool saveAsTemplate)
 	s+=QString::number(pos().y())+"\t";
 	s+=QString::number(geometry().width())+"\t";
 	s+=QString::number(geometry().height())+"\n";
+
+	MultiLayer *ml = multiLayer();
+	if (ml){
+		s += "<PageGeometry>";
+		s += QString::number((double)pos().x()/(double)ml->canvas()->width()) + "\t";
+		s += QString::number((double)pos().y()/(double)ml->canvas()->height()) + "\t";
+		s += QString::number((double)geometry().width()/(double)ml->canvas()->width()) + "\t";
+		s += QString::number((double)geometry().height()/(double)ml->canvas()->height());
+		s += "</PageGeometry>\n";
+	}
+
 	s+=saveTitle();
 	s+="<Antialiasing>" + QString::number(d_antialiasing) + "</Antialiasing>\n";
 	s+="<Autoscaling>" + QString::number(d_auto_scale) + "</Autoscaling>\n";
