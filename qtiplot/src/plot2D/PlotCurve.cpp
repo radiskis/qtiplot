@@ -525,14 +525,13 @@ void DataCurve::enableSpeedMode()
 	Graph *g = (Graph *)plot();
 	if (!g)
 		return;
+	if (g->getDouglasPeukerTolerance() == 0.0 || dataSize() < g->speedModeMaxPoints())
+		return;
 
-	if (g->getDouglasPeukerTolerance() != 0.0 && dataSize() >= g->speedModeMaxPoints()){
-		setCurveAttribute(QwtPlotCurve::Fitted);
+	setCurveAttribute(QwtPlotCurve::Fitted);
 
-		QwtWeedingCurveFitter *fitter = new QwtWeedingCurveFitter(g->getDouglasPeukerTolerance());
-		setCurveFitter(fitter);
-	}
-	//g->replot();
+	QwtWeedingCurveFitter *fitter = new QwtWeedingCurveFitter(g->getDouglasPeukerTolerance());
+	setCurveFitter(fitter);
 }
 
 void DataCurve::drawCurve(QPainter *p, int style, const QwtScaleMap &xMap, const QwtScaleMap &yMap, int from, int to) const

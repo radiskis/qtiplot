@@ -361,7 +361,7 @@ QRect MultiLayer::canvasChildrenRect()
 	return r.adjusted(0, 0, right_margin, bottom_margin);
 }
 
-void MultiLayer::resizeLayers (QResizeEvent *re)
+void MultiLayer::resizeLayers(QResizeEvent *re)
 {
 	if (!d_scale_layers || applicationWindow()->d_opening_file || graphsList.isEmpty()){
 		if (!applicationWindow()->d_opening_file)
@@ -384,8 +384,10 @@ void MultiLayer::resizeLayers (QResizeEvent *re)
 			return;
 	}
 
-	double w_ratio = (double)size.width()/(double)oldSize.width();
-	double h_ratio = (double)(size.height())/(double)(oldSize.height());
+	double w = (double)size.width();
+	double h = (double)size.height();
+	double w_ratio = w/(double)oldSize.width();
+	double h_ratio = h/(double)(oldSize.height());
 
 	if (d_common_axes_layout && !invalidOldSize){
 		arrangeLayers(false, false);
@@ -446,6 +448,9 @@ void MultiLayer::resizeLayers (QResizeEvent *re)
 			g->setCanvasGeometry(QRect(tl, br));
 		}
 	}
+
+	foreach (Graph *g, graphsList)
+		g->setPageGeometry(QRectF((double)g->x()/w, (double)g->y()/h, (double)g->width()/w, (double)g->height()/h));
 
 	if (d_is_waterfall_plot)
 		updateWaterfalls();

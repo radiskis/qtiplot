@@ -190,12 +190,16 @@ void Folder::removeWindow( MdiSubWindow *w )
 	if (!w)
 		return;
 
-	if (d_active_window && d_active_window == w)
-		d_active_window = NULL;
-
 	int index = lstWindows.indexOf(w);
 	if (index >= 0 && index < lstWindows.size())
 		lstWindows.removeAt(index);
+
+	if (d_active_window && d_active_window == w){
+		if (!lstWindows.isEmpty())
+			d_active_window = lstWindows.first();
+		else
+			d_active_window = NULL;
+	}
 }
 
 QString Folder::sizeToString()
@@ -254,9 +258,9 @@ FolderListItem::FolderListItem( FolderListItem *parent, Folder *f )
 
 void FolderListItem::setActive( bool o )
 {
-    if (o)
+	if (o)
 		setPixmap(0, QPixmap(":/folder_open.png"));
-    else
+	else
 		setPixmap(0, QPixmap(":/folder_closed.png"));
 
 	setSelected(o);
@@ -266,10 +270,10 @@ bool FolderListItem::isChildOf(FolderListItem *src)
 {
 	FolderListItem *parent = (FolderListItem *)this->parent();
 	while (parent){
-	if (parent == src)
-		return true;
+		if (parent == src)
+			return true;
 
-	parent = (FolderListItem *)parent->parent();
+		parent = (FolderListItem *)parent->parent();
 	}
 	return false;
 }
@@ -302,45 +306,42 @@ void FolderListView::expandedItem(Q3ListViewItem *item)
 
 void FolderListView::startDrag()
 {
-Q3ListViewItem *item = currentItem();
-if (!item)
-	return;
+	Q3ListViewItem *item = currentItem();
+	if (!item)
+		return;
 
-if (item == firstChild() && item->listView()->rootIsDecorated())
-	return;//it's the project folder so we don't want the user to move it
+	if (item == firstChild() && item->listView()->rootIsDecorated())
+		return;//it's the project folder so we don't want the user to move it
 
-QPoint orig = viewportToContents( viewport()->mapFromGlobal( QCursor::pos() ) );
+	QPoint orig = viewportToContents( viewport()->mapFromGlobal( QCursor::pos() ) );
 
-QPixmap pix;
-if (item->rtti() == FolderListItem::RTTI)
-	pix = QPixmap(":/folder_closed.png");
-else
-	pix = *item->pixmap (0);
+	QPixmap pix;
+	if (item->rtti() == FolderListItem::RTTI)
+		pix = QPixmap(":/folder_closed.png");
+	else
+		pix = *item->pixmap (0);
 
-Q3IconDrag *drag = new Q3IconDrag(viewport());
-drag->setPixmap(pix, QPoint(pix.width()/2, pix.height()/2 ) );
+	Q3IconDrag *drag = new Q3IconDrag(viewport());
+	drag->setPixmap(pix, QPoint(pix.width()/2, pix.height()/2 ) );
 
-QList<Q3ListViewItem *> lst;
-for (item = firstChild(); item; item = item->itemBelow())
-	{
-	if (item->isSelected())
-		lst.append(item);
+	QList<Q3ListViewItem *> lst;
+	for (item = firstChild(); item; item = item->itemBelow()){
+		if (item->isSelected())
+			lst.append(item);
 	}
 
-emit dragItems(lst);
-drag->drag();
+	emit dragItems(lst);
+	drag->drag();
 }
 
 void FolderListView::contentsDropEvent( QDropEvent *e )
 {
-Q3ListViewItem *dest = itemAt( contentsToViewport(e->pos()) );
-if ( dest && dest->rtti() == FolderListItem::RTTI)
-	{
-	emit dropItems(dest);
-	e->accept();
-    }
-else
-	e->ignore();
+	Q3ListViewItem *dest = itemAt( contentsToViewport(e->pos()) );
+	if (dest && dest->rtti() == FolderListItem::RTTI){
+		emit dropItems(dest);
+		e->accept();
+	} else
+		e->ignore();
 }
 
 void FolderListView::keyPressEvent ( QKeyEvent * e )
