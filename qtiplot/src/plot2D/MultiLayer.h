@@ -122,6 +122,8 @@ public:
 	bool hasSelectedLayers();
 	bool isLayerSelected(Graph*);
 
+	void adjustLayersToCanvasSize();
+
 public slots:
 	Graph* addLayer(int x = 0, int y = 0, int width = 0, int height = 0, bool = false);
 
@@ -144,7 +146,6 @@ public slots:
 	QSize arrangeLayers(bool userSize);
 	bool arrangeLayers(bool fit, bool userSize);
 	bool swapLayers(int src, int dest);
-    void adjustSize();
 	void updateLayersLayout(Graph *);
 
 	int getRows(){return d_rows;};

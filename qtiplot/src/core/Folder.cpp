@@ -179,9 +179,10 @@ MdiSubWindow *Folder::window(const QString &name, const char *cls, bool recursiv
 
 void Folder::addWindow( MdiSubWindow *w )
 {
-	if (w) {
+	if (w){
 		lstWindows.append( w );
 		w->setFolder(this);
+		d_active_window = w;
 	}
 }
 

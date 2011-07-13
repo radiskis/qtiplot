@@ -3887,12 +3887,12 @@ void ApplicationWindow::windowActivated(QMdiSubWindow *w)
 	if (d_opening_file)
 		return;
 
-	foreach(MdiSubWindow *ow, current_folder->windowsList()){
+	/*foreach(MdiSubWindow *ow, current_folder->windowsList()){
 		if (ow != window && ow->status() == MdiSubWindow::Maximized){
 			ow->setNormal();
 			break;
 		}
-	}
+	}*/
 
 	Folder *f = window->folder();
 	if (f)
@@ -6704,8 +6704,6 @@ bool ApplicationWindow::saveProject(bool compress)
 #endif
 
 	saveFolder(projectFolder(), projectname, compress);
-
-	setWindowTitle("QtiPlot - " + projectname);
 	savedProject();
 
 	if (autoSave){
@@ -10464,6 +10462,7 @@ void ApplicationWindow::savedProject()
 {
 	//QCoreApplication::processEvents();
 
+	setWindowTitle(tr("QtiPlot") + " - " + projectname);
 	actionSaveProject->setEnabled(false);
 	saved = true;
 
@@ -10480,11 +10479,15 @@ void ApplicationWindow::savedProject()
 
 void ApplicationWindow::modifiedProject()
 {
+	if (!windowTitle().contains("*"))
+		setWindowTitle(tr("QtiPlot") + " - " + projectname + " *");
+
 	if (saved == false)
 		return;
 
 	if (actionSaveProject)
 		actionSaveProject->setEnabled(true);
+
 	saved = false;
 }
 
@@ -17343,21 +17346,12 @@ bool ApplicationWindow::changeFolder(Folder *newFolder, bool force)
 		else if (active_window_state == MdiSubWindow::Maximized){
 			if (active_window->isA("Graph3D"))
 				((Graph3D *)active_window)->setIgnoreFonts(true);
-			active_window->setMaximized();
-			MultiLayer *ml = qobject_cast<MultiLayer *>(active_window);
-			if (ml){
-				foreach (Graph *g, ml->layersList()){
-					QRectF rf = g->pageGeometry();
-					if (rf.isNull())
-						continue;
 
-					int x = qRound(rf.x()*ml->canvas()->width());
-					int y = qRound(rf.y()*ml->canvas()->height());
-					int w = qRound(rf.width()*ml->canvas()->width());
-					int h = qRound(rf.height()*ml->canvas()->height());
-					g->setGeometry(x, y, w, h);
-				}
-			}
+			active_window->setMaximized();
+
+			MultiLayer *ml = qobject_cast<MultiLayer *>(active_window);
+			if (ml)
+				ml->adjustLayersToCanvasSize();
 
 			if (active_window->isA("Graph3D"))
 				((Graph3D *)active_window)->setIgnoreFonts(false);
@@ -18162,19 +18156,8 @@ void ApplicationWindow::restoreApplicationGeometry()
 	}
 
 	MultiLayer *ml = (MultiLayer *)activeWindow(MultiLayerWindow);
-	if (ml && ml->isMaximized()){
-		foreach (Graph *g, ml->layersList()){
-			QRectF rf = g->pageGeometry();
-			if (rf.isNull())
-				continue;
-
-			int x = qRound(rf.x()*ml->canvas()->width());
-			int y = qRound(rf.y()*ml->canvas()->height());
-			int w = qRound(rf.width()*ml->canvas()->width());
-			int h = qRound(rf.height()*ml->canvas()->height());
-			g->setGeometry(x, y, w, h);
-		}
-	}
+	if (ml && ml->isMaximized())
+		ml->adjustLayersToCanvasSize();
 }
 
 void ApplicationWindow::scriptsDirPathChanged(const QString& path)

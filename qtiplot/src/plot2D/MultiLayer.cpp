@@ -253,11 +253,6 @@ Graph* MultiLayer::addLayer(int x, int y, int width, int height, bool setPrefere
 	return g;
 }
 
-void MultiLayer::adjustSize()
-{
-    d_canvas->resize(size().width(), size().height() - LayerButton::btnSize());
-}
-
 void MultiLayer::activateGraph(LayerButton* button)
 {
 	for (int i = 0; i<buttonsList.count(); i++){
@@ -359,6 +354,21 @@ QRect MultiLayer::canvasChildrenRect()
 		r = r.united(g->boundingRect());
 
 	return r.adjusted(0, 0, right_margin, bottom_margin);
+}
+
+void MultiLayer::adjustLayersToCanvasSize()
+{
+	foreach (Graph *g, graphsList){
+		QRectF rf = g->pageGeometry();
+		if (rf.isNull())
+			continue;
+
+		int x = qRound(rf.x()*d_canvas->width());
+		int y = qRound(rf.y()*d_canvas->height());
+		int w = qRound(rf.width()*d_canvas->width());
+		int h = qRound(rf.height()*d_canvas->height());
+		g->setGeometry(x, y, w, h);
+	}
 }
 
 void MultiLayer::resizeLayers(QResizeEvent *re)
