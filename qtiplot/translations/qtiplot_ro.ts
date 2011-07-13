@@ -7649,7 +7649,7 @@ Autocompletion will not be available!</source>
     </message>
     <message>
         <source>Ctrl+Shift+P</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+Shift+P</translation>
     </message>
 </context>
 <context>
@@ -9577,11 +9577,11 @@ The following special codes can be used:
     </message>
     <message>
         <source>Co&amp;nnect line across missing data</source>
-        <translation type="unfinished"></translation>
+        <translation>Linia &amp;conectează toate datele (ignoră celulele goale)</translation>
     </message>
     <message>
         <source>Locally Installed OpenOffice/LibreOffice</source>
-        <translation type="unfinished"></translation>
+        <translation>Aplicația OpenOffice/LibreOffice instalată pe calculatorul dumneavoastră</translation>
     </message>
 </context>
 <context>
@@ -10920,7 +10920,7 @@ The following special codes can be used:
     </message>
     <message>
         <source>QtiPlot</source>
-        <translation type="unfinished">QtiPlot</translation>
+        <translation>QtiPlot</translation>
     </message>
     <message>
         <source>Error</source>
@@ -10980,35 +10980,35 @@ The following special codes can be used:
     </message>
     <message>
         <source>2D</source>
-        <translation type="unfinished">2D</translation>
+        <translation>2D</translation>
     </message>
     <message>
         <source>The two matrices have different dimensions, the imaginary part will be neglected!</source>
-        <translation type="unfinished">Cele două matrici au dimensiuni diferite, partea imaginară va fi ignorată!</translation>
+        <translation>Cele două matrici au dimensiuni diferite, partea imaginară va fi ignorată!</translation>
     </message>
     <message>
         <source>RealMatrixFFT</source>
-        <translation type="unfinished">MatriceRealăFFT</translation>
+        <translation>MatriceRealăFFT</translation>
     </message>
     <message>
         <source>Real part of the FFT transform of</source>
-        <translation type="unfinished">Partea reală a transformatei Fourier rapide a</translation>
+        <translation>Partea reală a transformatei Fourier rapide a</translation>
     </message>
     <message>
         <source>ImagMatrixFFT</source>
-        <translation type="unfinished">MatriceImaginarăFFT</translation>
+        <translation>MatriceImaginarăFFT</translation>
     </message>
     <message>
         <source>Imaginary part of the FFT transform of</source>
-        <translation type="unfinished">Partea imaginară a transformatei Fourier rapide a</translation>
+        <translation>Partea imaginară a transformatei Fourier rapide a</translation>
     </message>
     <message>
         <source>AmplitudeMatrixFFT</source>
-        <translation type="unfinished">MatriceAmplitudiniFFT</translation>
+        <translation>MatriceAmplitudiniFFT</translation>
     </message>
     <message>
         <source>Amplitudes of the FFT transform of</source>
-        <translation type="unfinished">Amplitudinea transformatei Fourier rapide a</translation>
+        <translation>Amplitudinea transformatei Fourier rapide a</translation>
     </message>
 </context>
 <context>
@@ -11103,15 +11103,15 @@ The following special codes can be used:
     </message>
     <message>
         <source>DC &amp;Shift Center</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Mută componenta continuă în centru</translation>
     </message>
     <message>
         <source>Undo &amp;Shift</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Rearanjază componenta continuă</translation>
     </message>
     <message>
         <source>&amp;Zero pad to nearest power of 2 size</source>
-        <translation type="unfinished"></translation>
+        <translation>Umple cu &amp;zero până la dimensiuni egale cu cea mai apropiată putere întreagă a lui 2</translation>
     </message>
 </context>
 <context>
@@ -12860,11 +12860,11 @@ The following special codes can be used:
     </message>
     <message>
         <source>pixels</source>
-        <translation type="unfinished">pixeli</translation>
+        <translation>pixeli</translation>
     </message>
     <message>
         <source>Average</source>
-        <translation type="unfinished"></translation>
+        <translation>Medie</translation>
     </message>
 </context>
 <context>
@@ -14287,7 +14287,7 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Resize freely</source>
-        <translation type="unfinished"></translation>
+        <translation>Redimensionează liber</translation>
     </message>
 </context>
 <context>
@@ -15148,7 +15148,7 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Rotation</source>
-        <translation type="unfinished">Rotaţie</translation>
+        <translation>Rotaţie</translation>
     </message>
 </context>
 <context>
@@ -16195,31 +16195,31 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Data Drawing Options</source>
-        <translation type="unfinished"></translation>
+        <translation>Opţiuni de desenare a datelor</translation>
     </message>
     <message>
         <source>Co&amp;nnect line across missing data</source>
-        <translation type="unfinished"></translation>
+        <translation>Linia &amp;conectează toate datele (ignoră celulele goale)</translation>
     </message>
     <message>
         <source>&amp;Grid on top of data</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Grilajul deasupra datelor</translation>
     </message>
     <message>
         <source>&amp;Left</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Stânga</translation>
     </message>
     <message>
         <source>&amp;Right</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Dreapta</translation>
     </message>
     <message>
         <source>&amp;Bottom</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Jos</translation>
     </message>
     <message>
         <source>&amp;Top</source>
-        <translation type="unfinished"></translation>
+        <translation>S&amp;us</translation>
     </message>
 </context>
 <context>
