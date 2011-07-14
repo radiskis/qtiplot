@@ -1142,6 +1142,7 @@ void ConfigDialog::initCurvesPage()
 	curvesBoxLayout->addWidget( lblCurveStyle, 0, 0 );
 	boxCurveStyle = new QComboBox();
 	curvesBoxLayout->addWidget( boxCurveStyle, 0, 1 );
+	lblCurveStyle->setBuddy(boxCurveStyle);
 
 	lblLineWidth = new QLabel();
 	curvesBoxLayout->addWidget( lblLineWidth, 1, 0 );
@@ -1151,6 +1152,7 @@ void ConfigDialog::initCurvesPage()
 	boxCurveLineWidth->setRange(0.1, 100);
 	boxCurveLineWidth->setValue(app->defaultCurveLineWidth);
 	curvesBoxLayout->addWidget( boxCurveLineWidth, 1, 1 );
+	lblLineWidth->setBuddy(boxCurveLineWidth);
 
 	lblLineStyle = new QLabel();
 	curvesBoxLayout->addWidget(lblLineStyle, 2, 0);
@@ -1167,15 +1169,30 @@ void ConfigDialog::initCurvesPage()
 	patternBox->setCurrentIndex(app->defaultCurveBrush);
 	fillCurvesBoxLayout->addWidget(patternBox, 0, 1);
 
-	lblCurveAlpha = new QLabel();
-	fillCurvesBoxLayout->addWidget(lblCurveAlpha, 1, 0);
+	lblPattern->setBuddy(patternBox);
+
+	curveOpacitySlider = new QSlider();
+	curveOpacitySlider->setOrientation(Qt::Horizontal);
+	curveOpacitySlider->setRange(0, 100);
+	curveOpacitySlider->setValue(app->defaultCurveAlpha);
+
 	curveAlphaBox = new QSpinBox();
-	curveAlphaBox->setRange(0, 255);
-	curveAlphaBox->setSingleStep(5);
+	curveAlphaBox->setRange(0, 100);
 	curveAlphaBox->setWrapping(true);
-	curveAlphaBox->setSpecialValueText(tr("Transparent"));
+	curveAlphaBox->setSuffix(" %");
 	curveAlphaBox->setValue(app->defaultCurveAlpha);
-	fillCurvesBoxLayout->addWidget(curveAlphaBox, 1, 1);
+
+	connect(curveOpacitySlider, SIGNAL(valueChanged(int)), curveAlphaBox, SLOT(setValue(int)));
+	connect(curveAlphaBox, SIGNAL(valueChanged(int)), curveOpacitySlider, SLOT(setValue(int)));
+
+	QHBoxLayout* hb1 = new QHBoxLayout();
+	hb1->addWidget(curveOpacitySlider);
+	hb1->addWidget(curveAlphaBox);
+	fillCurvesBoxLayout->addLayout(hb1, 1, 1);
+
+	lblCurveAlpha = new QLabel();
+	lblCurveAlpha->setBuddy(curveAlphaBox);
+	fillCurvesBoxLayout->addWidget(lblCurveAlpha, 1, 0);
 
 	QHBoxLayout *hl0 = new QHBoxLayout();
 	hl0->addWidget(curvesGroupBox);
@@ -1199,6 +1216,8 @@ void ConfigDialog::initCurvesPage()
 	boxSymbolSize->setValue(app->defaultSymbolSize/2);
 	symbLayout->addWidget( boxSymbolSize, 1, 1 );
 
+	lblSymbSize->setBuddy(boxSymbolSize);
+
 	lblSymbEdge = new QLabel();
 	symbLayout->addWidget(lblSymbEdge, 0, 2);
 
@@ -1208,6 +1227,8 @@ void ConfigDialog::initCurvesPage()
 	symbolEdgeBox->setRange(0.1, 100);
 	symbolEdgeBox->setValue(app->defaultSymbolEdge);
 	symbLayout->addWidget(symbolEdgeBox, 0, 3);
+
+	lblSymbEdge->setBuddy(symbolEdgeBox);
 
 	fillSymbolsBox = new QCheckBox();
 	fillSymbolsBox->setChecked(app->d_fill_symbols);
@@ -2156,9 +2177,9 @@ void ConfigDialog::languageChange()
 	groupBoxTableFonts->setTitle(tr("Fonts"));
 
 	//curves page
-	lblCurveStyle->setText(tr( "Default curve style" ));
-	lblLineWidth->setText(tr( "Line width" ));
-	lblSymbSize->setText(tr( "Symbol size" ));
+	lblCurveStyle->setText("&" + tr( "Default curve style" ));
+	lblLineWidth->setText("&" + tr( "Line width" ));
+	lblSymbSize->setText("&" + tr( "Symbol size" ));
 	btnLoadDefaultColors->setText(tr("&Load Default"));
 	btnNewColor->setToolTip(tr("New Color"));
 	btnRemoveColor->setToolTip(tr("Delete Color"));
@@ -2169,15 +2190,16 @@ void ConfigDialog::languageChange()
 	btnLoadDefaultSymbols->setText(tr("&Load Default"));
 	btnSymbolUp->setToolTip(tr("Move Symbol Up"));
 	btnSymbolDown->setToolTip(tr("Move Symbol Down"));
-	lblPattern->setText(tr("Pattern"));
-	lblCurveAlpha->setText(tr("Opacity"));
+	lblPattern->setText("&" + tr("Pattern"));
+	lblCurveAlpha->setText("&" + tr("Opacity"));
+	curveAlphaBox->setSpecialValueText(" " + tr("Transparent"));
 	lblLineStyle->setText(tr("Line style"));
 	fillCurvesGroupBox->setTitle(tr("Fill area under curve"));
 	curvesGroupBox->setTitle(tr("Default Line Style"));
 
 	symbolGroupBox->setTitle(tr("Default Symbol"));
 	lblSymbBox->setText(tr("Style"));
-	lblSymbEdge->setText(tr("Edge width"));
+	lblSymbEdge->setText("&" + tr("Edge width"));
 	fillSymbolsBox->setText(tr("&Fill Symbol"));
 
 	QStringList header = QStringList() << tr("Color") << tr("Name");

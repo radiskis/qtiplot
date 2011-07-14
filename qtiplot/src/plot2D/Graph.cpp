@@ -3105,7 +3105,7 @@ CurveLayout Graph::initCurveLayout(int style, int curves, bool guessLayout)
 
 			if (style == Area || style == VerticalBars || style == HorizontalBars || style == StackBar || style == StackColumn || style == Histogram){
 				cl.aStyle = app->defaultCurveBrush;
-				cl.filledArea = (double)app->defaultCurveAlpha/255.0;
+				cl.filledArea = 0.01*app->defaultCurveAlpha;
 			}
 
 			cl.lStyle = app->d_curve_line_style;

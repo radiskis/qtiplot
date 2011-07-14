@@ -658,7 +658,7 @@ void ApplicationWindow::setDefaultOptions()
 	defaultCurveLineWidth = 1;
 	d_curve_line_style = 0;//Qt::SolidLine;
 	defaultCurveBrush = 0;
-	defaultCurveAlpha = 255;
+	defaultCurveAlpha = 100;
 	defaultSymbolSize = 7;
 	defaultSymbolEdge = 1.0;
 	d_fill_symbols = true;

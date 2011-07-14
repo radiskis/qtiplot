@@ -3667,6 +3667,7 @@ bool PlotDialog::acceptParams()
 			tolerance = 0;
 
 		g->enableDouglasPeukerSpeedMode(tolerance, boxMaxPoints->value());
+		g->notifyChanges();
 		return true;
 	} else if (privateTabWidget->currentWidget() == layerDisplayPage){
 		LayerItem *item = (LayerItem *)listBox->currentItem();
