@@ -484,7 +484,7 @@ bool CurvesDialog::addCurveFromTable(ApplicationWindow *app, Table *t, const QSt
 	if (style == Graph::Area || style == Graph::VerticalBars || style == Graph::HorizontalBars ||
 		style == Graph::StackBar || style == Graph::StackColumn || style == Graph::Histogram){
 		cl.aStyle = app->defaultCurveBrush;
-		cl.filledArea = (double)app->defaultCurveAlpha/255.0;
+		cl.filledArea = 0.01*app->defaultCurveAlpha;
 	}
 
 	if (app->d_indexed_symbols){

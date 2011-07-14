@@ -153,8 +153,11 @@ bool DoubleSpinBox::setValue(double val)
 
 QString DoubleSpinBox::textFromValue (double value) const
 {
-	if (d_format == 'g' && fabs(value) < 1e-15)
+	if (d_format == 'g' && fabs(value) < 1e-15){
+		if (!specialValueText().isEmpty())
+			return specialValueText();
 		return d_prefix + "0";
+	}
 
 	QString s = QString::null;
 	if (!specialValueText().isEmpty() && value == d_min_val)

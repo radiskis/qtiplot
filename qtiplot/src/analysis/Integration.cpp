@@ -230,7 +230,7 @@ void Integration::output()
 		Qt::BrushStyle brushStyle = Qt::BDiagPattern;
 		ApplicationWindow *app = (ApplicationWindow *)parent();
 		if (app){
-			color.setAlpha(app->defaultCurveAlpha);
+			color.setAlphaF(0.01*app->defaultCurveAlpha);
 			brushStyle = PatternBox::brushStyle(app->defaultCurveBrush);
 		}
 		c->setBrush(QBrush(color, brushStyle));

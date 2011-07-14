@@ -240,7 +240,7 @@ private:
 	QLabel *labelGraphBkgOpacity, *labelGraphCanvasOpacity;
 	ColorButton *boxBackgroundColor, *boxCanvasColor, *boxBorderColor;
 	QSpinBox *boxBackgroundTransparency, *boxCanvasTransparency, *boxBorderWidth, *boxTabLength;
-	QSlider *bkgOpacitySlider, *canvasOpacitySlider;
+	QSlider *bkgOpacitySlider, *canvasOpacitySlider, *curveOpacitySlider;
 	QCheckBox *completionBox, *lineNumbersBox;
 	QLabel *labelTabLength, *labelNotesFont;
 	QFontComboBox *boxFontFamily;
