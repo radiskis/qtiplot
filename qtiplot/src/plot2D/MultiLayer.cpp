@@ -387,10 +387,13 @@ void MultiLayer::resizeLayers(QResizeEvent *re)
 
 	bool invalidOldSize = !oldSize.isValid();
 	if (invalidOldSize){
-	//The old size is invalid when maximizing a window or when a minimized window is restored from a project file
+		//The old size is invalid when maximizing a window or when a minimized window is restored from a project file
 		if (d_canvas_size.isValid())
 			oldSize = d_canvas_size;
-		else
+		else if (this->isMaximized()){
+			adjustLayersToCanvasSize();
+			return;
+		} else
 			return;
 	}
 
