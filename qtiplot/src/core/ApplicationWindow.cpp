@@ -17289,7 +17289,14 @@ bool ApplicationWindow::changeFolder(Folder *newFolder, bool force)
 		old_active_window_state = old_active_window->status();
 
 	MdiSubWindow::Status active_window_state = MdiSubWindow::Normal;
-	MdiSubWindow *active_window = newFolder->activeWindow(); 
+	MdiSubWindow *active_window = newFolder->activeWindow();
+
+	QList<MdiSubWindow *> lst = newFolder->windowsList();
+	foreach(MdiSubWindow *w, lst){
+		if (w->status() == MdiSubWindow::Maximized)
+			active_window = w;
+	}
+
 	if (active_window)
 		active_window_state = active_window->status();
 
@@ -17306,7 +17313,6 @@ bool ApplicationWindow::changeFolder(Folder *newFolder, bool force)
 			addFolderListViewItem(static_cast<Folder *>(f));
 	}
 
-	QList<MdiSubWindow *> lst = newFolder->windowsList();
 	foreach(MdiSubWindow *w, lst){
 		if (!hiddenWindows->contains(w) && show_windows_policy != HideAll){
 			//show only windows in the current folder which are not hidden by the user
