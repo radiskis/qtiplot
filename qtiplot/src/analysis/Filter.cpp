@@ -535,7 +535,7 @@ bool Filter::setDataFromTable(Table *t, const QString& xColName, const QString& 
     QVector<double> X(r), Y(r);
 
 	int size = 0;
-	for (int i = from; i<=to; i++ ){
+	for (int i = from; i <= to; i++){
 		QString xval = t->text(i, xcol);
 		QString yval = t->text(i, ycol);
 		if (!xval.isEmpty() && !yval.isEmpty()){
@@ -549,7 +549,7 @@ bool Filter::setDataFromTable(Table *t, const QString& xColName, const QString& 
 
 	if (size < d_min_points){
 		QMessageBox::critical((ApplicationWindow *)parent(), tr("QtiPlot") + " - " + tr("Error"),
-				tr("You need at least %1 points in order to perform this operation!").arg(d_min_points));
+		tr("You need at least %1 points in order to perform this operation!").arg(d_min_points));
         return false;
 	}
 

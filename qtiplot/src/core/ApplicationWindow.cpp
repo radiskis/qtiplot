@@ -921,7 +921,7 @@ void ApplicationWindow::initToolBars()
 	plotTools->addAction(btnCursor);
 
 	btnSelect = new QAction(tr("&Select Data Range"), this);
-	btnSelect->setShortcut( tr("ALT+S") );
+	btnSelect->setShortcut(QKeySequence(tr("Alt+Shift+S")));
 	btnSelect->setActionGroup(dataTools);
 	btnSelect->setCheckable( true );
 	btnSelect->setIcon(QIcon(":/cursors.png"));
@@ -13438,8 +13438,7 @@ void ApplicationWindow::differentiate()
 		QStringList lst = t->selectedYColumns();
 		int cols = lst.size();
 		if (!cols){
-        	QMessageBox::warning(this, tr("QtiPlot - Column selection error"),
-        	tr("Please select a 'Y' column first!"));
+			QMessageBox::warning(this, tr("QtiPlot - Column selection error"), tr("Please select a 'Y' column first!"));
 			return;
 		}
 
@@ -15521,7 +15520,7 @@ void ApplicationWindow::translateActionsStrings()
 	btnCursor->setToolTip(tr("Data reader"));
 
 	btnSelect->setMenuText(tr("&Select Data Range"));
-	btnSelect->setShortcut(tr("ALT+S"));
+	btnSelect->setShortcut(QKeySequence(tr("Alt+Shift+S")));
 	btnSelect->setToolTip(tr("Select data range"));
 
 	btnPicker->setMenuText(tr("S&creen Reader"));
