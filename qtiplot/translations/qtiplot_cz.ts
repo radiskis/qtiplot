@@ -4149,7 +4149,7 @@ Různé části tohoto souboru se nemusí zobrazovat tak, jak se očekává.</tr
     </message>
     <message>
         <source>Ctrl+Shift+P</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+Shift+P</translation>
     </message>
 </context>
 <context>
@@ -6035,7 +6035,7 @@ K tomu lze použít následujících zvláštních kódů:
     </message>
     <message>
         <source>Locally Installed Excel</source>
-        <translation>Místně nainstalovaného Excelu</translation>
+        <translation>Místně nainstalovaný Excel</translation>
     </message>
     <message>
         <source>Show &amp;gaps for empty table cells</source>
@@ -6055,11 +6055,11 @@ K tomu lze použít následujících zvláštních kódů:
     </message>
     <message>
         <source>Co&amp;nnect line across missing data</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Spojit čáru přes chybějící data</translation>
     </message>
     <message>
         <source>Locally Installed OpenOffice/LibreOffice</source>
-        <translation type="unfinished"></translation>
+        <translation>Místně nainstalovaný OpenOffice/LibreOffice</translation>
     </message>
 </context>
 <context>
@@ -7413,39 +7413,39 @@ K tomu lze použít následujících zvláštních kódů:
     </message>
     <message>
         <source>2D</source>
-        <translation type="unfinished">2D</translation>
+        <translation>2D</translation>
     </message>
     <message>
         <source>QtiPlot</source>
-        <translation type="unfinished">QtiPlot</translation>
+        <translation>QtiPlot</translation>
     </message>
     <message>
         <source>The two matrices have different dimensions, the imaginary part will be neglected!</source>
-        <translation type="unfinished">Dvě matice mají různé rozměry. Pomyslná část bude opomenuta!</translation>
+        <translation>Dvě matice mají různé rozměry. Pomyslná část bude opomenuta!</translation>
     </message>
     <message>
         <source>RealMatrixFFT</source>
-        <translation type="unfinished">Skutečná matice FFT</translation>
+        <translation>Skutečná matice FFT</translation>
     </message>
     <message>
         <source>Real part of the FFT transform of</source>
-        <translation type="unfinished">Skutečná část FFT přeměnění</translation>
+        <translation>Skutečná část proměny FFT</translation>
     </message>
     <message>
         <source>ImagMatrixFFT</source>
-        <translation type="unfinished">Pomyslná matice FFT</translation>
+        <translation>Pomyslná matice FFT</translation>
     </message>
     <message>
         <source>Imaginary part of the FFT transform of</source>
-        <translation type="unfinished">Pomyslná část FFT přeměnění</translation>
+        <translation>Pomyslná část proměny FFT</translation>
     </message>
     <message>
         <source>AmplitudeMatrixFFT</source>
-        <translation type="unfinished">Rozkmitová matice FFT</translation>
+        <translation>Rozkmitová matice FFT</translation>
     </message>
     <message>
         <source>Amplitudes of the FFT transform of</source>
-        <translation type="unfinished">Rozkmity FFT přeměnění</translation>
+        <translation>Rozkmity proměny FFT</translation>
     </message>
 </context>
 <context>
@@ -7464,11 +7464,11 @@ K tomu lze použít následujících zvláštních kódů:
     </message>
     <message>
         <source>&amp;Inverse</source>
-        <translation>&amp;Převracet</translation>
+        <translation>&amp;Převrácená hodnota</translation>
     </message>
     <message>
         <source>&amp;Shift Results</source>
-        <translation>&amp;Přesunout výsledky</translation>
+        <translation>&amp;Posunout výsledky</translation>
     </message>
     <message>
         <source>QtiPlot - Error</source>
@@ -7540,15 +7540,15 @@ K tomu lze použít následujících zvláštních kódů:
     </message>
     <message>
         <source>DC &amp;Shift Center</source>
-        <translation type="unfinished"></translation>
+        <translation>Střed &amp;posunu stejnosměrného proudu (DC)</translation>
     </message>
     <message>
         <source>Undo &amp;Shift</source>
-        <translation type="unfinished"></translation>
+        <translation>Vrátit &amp;posun zpět</translation>
     </message>
     <message>
         <source>&amp;Zero pad to nearest power of 2 size</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Nulová poduška k nejbližší síle 2 velikosti</translation>
     </message>
 </context>
 <context>
@@ -9243,11 +9243,11 @@ K tomu lze použít následujících zvláštních kódů:
     </message>
     <message>
         <source>pixels</source>
-        <translation type="unfinished">pixely</translation>
+        <translation>pixely</translation>
     </message>
     <message>
         <source>Average</source>
-        <translation type="unfinished"></translation>
+        <translation>Průměr</translation>
     </message>
 </context>
 <context>
@@ -9790,15 +9790,15 @@ K tomu lze použít následujících zvláštních kódů:
     </message>
     <message>
         <source>&amp;Sort data</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;řídit data</translation>
     </message>
     <message>
         <source>Show &amp;plot</source>
-        <translation type="unfinished"></translation>
+        <translation>Ukázat &amp;nákres</translation>
     </message>
     <message>
         <source>Show results &amp;table</source>
-        <translation type="unfinished"></translation>
+        <translation>Ukázat &amp;tabulku s výsledky</translation>
     </message>
 </context>
 <context>
@@ -10708,7 +10708,7 @@ K tomu lze použít následujících zvláštních kódů:
     </message>
     <message>
         <source>Resize freely</source>
-        <translation type="unfinished"></translation>
+        <translation>Změnit velikost bez omezení</translation>
     </message>
 </context>
 <context>
@@ -11565,7 +11565,7 @@ K tomu lze použít následujících zvláštních kódů:
     </message>
     <message>
         <source>Rotation</source>
-        <translation type="unfinished">Otáčení</translation>
+        <translation>Otáčení</translation>
     </message>
 </context>
 <context>
@@ -12596,31 +12596,31 @@ K tomu lze použít následujících zvláštních kódů:
     </message>
     <message>
         <source>Data Drawing Options</source>
-        <translation type="unfinished"></translation>
+        <translation>Volby pro kreslení dat</translation>
     </message>
     <message>
         <source>Co&amp;nnect line across missing data</source>
-        <translation type="unfinished"></translation>
+        <translation>S&amp;pojit čáru přes chybějící data</translation>
     </message>
     <message>
         <source>&amp;Grid on top of data</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Mřížka nahoře dat</translation>
     </message>
     <message>
         <source>&amp;Left</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Vlevo</translation>
     </message>
     <message>
         <source>&amp;Right</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Vpravo</translation>
     </message>
     <message>
         <source>&amp;Bottom</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Dole</translation>
     </message>
     <message>
         <source>&amp;Top</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Nahoře</translation>
     </message>
 </context>
 <context>
@@ -13810,17 +13810,20 @@ pokud e1 pak e2 jinak e3.</translation>
     <message>
         <source>bessel_i0(x):
   Regular modified cylindrical Bessel function of zeroth order, I_0(x).</source>
-        <translation type="unfinished"></translation>
+        <translation>bessel_i0(x):
+ Pravidelná upravená válcovitá Besselova funkce nultého řádu, I_0(x).</translation>
     </message>
     <message>
         <source>bessel_i1(x):
   Regular modified cylindrical Bessel function of first order, I_1(x).</source>
-        <translation type="unfinished"></translation>
+        <translation>bessel_i1(x):
+ Pravidelná upravená válcovitá Besselova funkce prvního řádu, I_1(x).</translation>
     </message>
     <message>
         <source>bessel_in(double x, int n):
  Regular modified cylindrical Bessel function of order n, I_n(x).</source>
-        <translation type="unfinished"></translation>
+        <translation>bessel_in(double x, int n):
+ Pravidelná upravená válcovitá Besselova funkce n-tého řádu, I_n(x).</translation>
     </message>
 </context>
 <context>
