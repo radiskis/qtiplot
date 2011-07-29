@@ -123,7 +123,6 @@ void Differentiation::output()
 		for (int i = 1; i < d_n-1; i++)
 			d_result_table->setText(i - 1, col, locale.toString(result[i], 'g', prec));
 	}
-	d_result_table->setColName(col, d_y_col_name);
 
     delete[] result;
 
@@ -133,7 +132,7 @@ void Differentiation::output()
 			d_output_graph->removeLegend();
 		}
 
-		d_output_graph->insertCurve(d_result_table, d_result_table->colName(col), 0);
+		d_output_graph->insertCurve(d_result_table, d_result_table->colLabel(col), 0);
 		if (d_update_output_graph)
 			d_output_graph->updatePlot();
 	}
