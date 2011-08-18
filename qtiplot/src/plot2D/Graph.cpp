@@ -1320,10 +1320,7 @@ void Graph::updateSecondaryAxis(int axis, bool changeFormat)
 			return;
 	}
 
-	int a = QwtPlot::xBottom;
-	if (axis == QwtPlot::yRight)
-		a = QwtPlot::yLeft;
-
+	int a = oppositeAxis(axis);
 	if (!axisEnabled(a))
 		return;
 
@@ -1340,8 +1337,47 @@ void Graph::updateSecondaryAxis(int axis, bool changeFormat)
 			setAxisScaleDraw(axis, new ScaleDraw(this, sd));
 	}
 
+	updateOppositeScaleDiv(axis);
+}
+
+int Graph::oppositeAxis(int axis)
+{
+	int a = -1;
+	switch (axis){
+		case QwtPlot::yLeft:
+			a = QwtPlot::yRight;
+		break;
+		case QwtPlot::yRight:
+			a = QwtPlot::yLeft;
+		break;
+		case QwtPlot::xBottom:
+			a = QwtPlot::xTop;
+		break;
+		case QwtPlot::xTop:
+			a = QwtPlot::xBottom;
+		break;
+	}
+	return a;
+}
+
+void Graph::updateOppositeScaleDiv(int axis)
+{
+	int a = oppositeAxis(axis);
+	if (!axisEnabled(a))
+		return;
+
 	ScaleEngine *sc_engine = (ScaleEngine *)axisScaleEngine(axis);
 	sc_engine->clone((ScaleEngine *)axisScaleEngine(a));
+
+	int minorTicks = axisMaxMinor(a);
+	int max_min_intervals = minorTicks;
+	if (minorTicks == 1)
+		max_min_intervals = 3;
+	if (minorTicks > 1)
+		max_min_intervals = minorTicks + 1;
+
+	setAxisMaxMajor(axis, axisMaxMajor(a));
+	setAxisMaxMinor(axis, minorTicks);
 
 	setAxisScaleDiv (axis, *axisScaleDiv(a));
 	d_user_step[axis] = d_user_step[a];
@@ -2369,36 +2405,35 @@ QString Graph::saveAxesFormulas()
 QString Graph::saveScale()
 {
 	QString s;
-	for (int i=0; i < QwtPlot::axisCnt; i++)
-	{
-		s += "scale\t" + QString::number(i)+"\t";
+	for (int i = 0; i < QwtPlot::axisCnt; i++){
+		s += "scale\t" + QString::number(i) + "\t";
 
 		const QwtScaleDiv *scDiv = axisScaleDiv(i);
 		QwtValueList lst = scDiv->ticks (QwtScaleDiv::MajorTick);
 
-		s += QString::number(QMIN(scDiv->lowerBound(), scDiv->upperBound()), 'g', 15)+"\t";
-		s += QString::number(QMAX(scDiv->lowerBound(), scDiv->upperBound()), 'g', 15)+"\t";
-		s += QString::number(d_user_step[i], 'g', 15)+"\t";
-		s += QString::number(axisMaxMajor(i))+"\t";
-		s += QString::number(axisMaxMinor(i))+"\t";
+		s += QString::number(QMIN(scDiv->lowerBound(), scDiv->upperBound()), 'g', 15) + "\t";
+		s += QString::number(QMAX(scDiv->lowerBound(), scDiv->upperBound()), 'g', 15) + "\t";
+		s += QString::number(d_user_step[i], 'g', 15) + "\t";
+		s += QString::number(axisMaxMajor(i)) + "\t";
+		s += QString::number(axisMaxMinor(i)) + "\t";
 
 		const ScaleEngine *sc_eng = (ScaleEngine *)axisScaleEngine(i);
-		s += QString::number((int)sc_eng->type())+"\t";
+		s += QString::number((int)sc_eng->type()) + "\t";
 		s += QString::number(sc_eng->testAttribute(QwtScaleEngine::Inverted));
 
 		ScaleEngine *se = (ScaleEngine *)axisScaleEngine(i);
-        if (se->hasBreak()){
-            s += "\t" + QString::number(se->axisBreakLeft(), 'g', 15);
-            s += "\t" + QString::number(se->axisBreakRight(), 'g', 15);
+		if (se->hasBreak()){
+			s += "\t" + QString::number(se->axisBreakLeft(), 'g', 15);
+			s += "\t" + QString::number(se->axisBreakRight(), 'g', 15);
 			s += "\t" + QString::number(se->breakPosition());
-            s += "\t" + QString::number(se->stepBeforeBreak(), 'g', 15);
-            s += "\t" + QString::number(se->stepAfterBreak(), 'g', 15);
-            s += "\t" + QString::number(se->minTicksBeforeBreak());
-            s += "\t" + QString::number(se->minTicksAfterBreak());
-            s += "\t" + QString::number(se->log10ScaleAfterBreak());
+			s += "\t" + QString::number(se->stepBeforeBreak(), 'g', 15);
+			s += "\t" + QString::number(se->stepAfterBreak(), 'g', 15);
+			s += "\t" + QString::number(se->minTicksBeforeBreak());
+			s += "\t" + QString::number(se->minTicksAfterBreak());
+			s += "\t" + QString::number(se->log10ScaleAfterBreak());
 			s += "\t" + QString::number(se->breakWidth());
-            s += "\t" + QString::number(se->hasBreakDecoration()) + "\n";
-        } else
+			s += "\t" + QString::number(se->hasBreakDecoration()) + "\n";
+		} else
 			 s += "\n";
 	}
 	return s;

@@ -235,6 +235,8 @@ class Graph: public QwtPlot
 
 		AxisTitlePolicy axisTitlePolicy(){return d_axis_title_policy;};
 		void setAxisTitlePolicy(const AxisTitlePolicy& policy){d_axis_title_policy = policy;};
+
+		bool hasSynchronizedScaleDivisions(){return d_synchronize_scales;};
 		void setSynchronizedScaleDivisions(bool on){d_synchronize_scales = on;};
 
 		QRectF pageGeometry(){return d_page_rect;}
@@ -723,6 +725,8 @@ class Graph: public QwtPlot
 		void notifyChanges();
 
 		void updateSecondaryAxis(int axis, bool changeFormat = false);
+		int oppositeAxis(int axis);
+		void updateOppositeScaleDiv(int axis);
 
 		bool isAutoscalingEnabled(){return d_auto_scale;};
 		void enableAutoscaling(bool on = true){d_auto_scale = on;};
