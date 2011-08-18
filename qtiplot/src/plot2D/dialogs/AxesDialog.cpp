@@ -1302,6 +1302,13 @@ bool AxesDialog::updatePlot(QWidget *page)
                           boxBreakPosition->value(), boxStepBeforeBreak->value(), boxStepAfterBreak->value(),
                           boxMinorTicksBeforeBreak->currentText().toInt(), boxMinorTicksAfterBreak->currentText().toInt(),
                           boxLog10AfterBreak->isChecked(), boxBreakWidth->value(), boxBreakDecoration->isChecked());
+
+		if (d_graph->hasSynchronizedScaleDivisions() && (a == QwtPlot::xTop || a == QwtPlot::yRight)){
+			d_graph->updateOppositeScaleDiv(d_graph->oppositeAxis(a));
+			d_graph->replot();
+			d_graph->updateMarkersBoundingRect();
+		}
+
 		d_graph->notifyChanges();
 	} else if (currentWidget == gridPage)
 		updateGrid();
