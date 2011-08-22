@@ -1037,7 +1037,7 @@
 <section ref="x6300.html#Python-WaterfallPlots" title="Waterfall Plots">
 </section>
 <section ref="x6300.html#Python-Plots3D" title="3D Plots">
-<section ref="x6300.html#AEN7305" title="Creating a 3D plot">
+<section ref="x6300.html#AEN7309" title="Creating a 3D plot">
 </section>
 <section ref="x6300.html#Python-3D-View" title="Customizing the view">
 </section>
@@ -1100,9 +1100,11 @@
 </section>
 <section ref="x6300.html#QtiPlot-Python-API" title="QtiPlot/Python API">
 </section>
+<section ref="x6300.html#PyQt-Class-Reference" title="PyQt Class Reference">
 </section>
 </section>
-<section ref="c7642.html" title="Frequently asked questions">
+</section>
+<section ref="c7659.html" title="Frequently asked questions">
 </section>
 </DCF>
 </assistantconfig>

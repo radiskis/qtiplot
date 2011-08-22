@@ -3407,7 +3407,6 @@ Graph3D* Graph3D::restore(ApplicationWindow* app, const QStringList &lst, int fi
 	aux.pop_back();
 	plot->setDataColorMap(LinearColorMap::fromXmlStringList(aux));
 
-	line.next();
 	s = line.next();
 
 	fList = s.split("\t", QString::SkipEmptyParts);
@@ -3423,6 +3422,7 @@ Graph3D* Graph3D::restore(ApplicationWindow* app, const QStringList &lst, int fi
 		s = line.next();
 		if (s == "<Grid>" && line.hasNext()){
 			s = line.next().stripWhiteSpace();
+
 			if (s.contains("<Major>")){
 				fList = s.remove("<Major>").remove("</Major>").split("\t", QString::SkipEmptyParts);
 				if (fList.size() == 4){
@@ -3434,6 +3434,7 @@ Graph3D* Graph3D::restore(ApplicationWindow* app, const QStringList &lst, int fi
 
 			if (line.hasNext())
 				s = line.next().stripWhiteSpace();
+
 			if (s.contains("<Minor>")){
 				fList = s.remove("<Minor>").remove("</Minor>").split("\t", QString::SkipEmptyParts);
 				if (fList.size() == 4){
