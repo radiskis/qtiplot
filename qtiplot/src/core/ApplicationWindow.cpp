@@ -770,7 +770,7 @@ void ApplicationWindow::setDefaultOptions()
 	d_export_color = true;
 	d_export_escape_tex_strings = true;
 	d_export_tex_font_sizes = true;
-	d_3D_export_text_mode = 0; //VectorWriter::PIXEL
+	d_3D_export_text_mode = 1; //VectorWriter::NATIVE
 	d_3D_export_sort = 1; //VectorWriter::SIMPLESORT
 }
 
