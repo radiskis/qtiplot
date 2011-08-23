@@ -1,6 +1,6 @@
 /*
  * GL2PS, an OpenGL to PostScript Printing Library
- * Copyright (C) 1999-2009 C. Geuzaine
+ * Copyright (C) 1999-2011 C. Geuzaine
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of either:
@@ -167,6 +167,7 @@ typedef struct {
      written to the file or not, and 'format' indicates if it is
      visible or not */
   GLenum format, type;
+  GLfloat zoom_x, zoom_y;
   GLfloat *pixels;
 } GL2PSimage;
 
@@ -304,10 +305,12 @@ static void *gl2psMalloc(size_t size)
 
 static void *gl2psRealloc(void *ptr, size_t size)
 {
+  void *orig = ptr;
   if(!size) return NULL;
-  ptr = realloc(ptr, size);
+  ptr = realloc(orig, size);
   if(!ptr){
     gl2psMsg(GL2PS_ERROR, "Couldn't reallocate requested memory");
+    free(orig);
     return NULL;
   }
   return ptr;
@@ -319,12 +322,12 @@ static void gl2psFree(void *ptr)
   free(ptr);
 }
 
-static size_t gl2psWriteBigEndian(unsigned long data, size_t bytes)
+static int gl2psWriteBigEndian(unsigned long data, int bytes)
 {
-  size_t i;
-  size_t size = sizeof(unsigned long);
+  int i;
+  int size = sizeof(unsigned long);
   for(i = 1; i <= bytes; ++i){
-    fputc(0xff & (data >> (size-i) * 8), gl2ps->stream);
+    fputc(0xff & (data >> (size - i) * 8), gl2ps->stream);
   }
   return bytes;
 }
@@ -391,10 +394,10 @@ static void *gl2psReallocCompress(unsigned int srcsize)
   return gl2ps->compress->start;
 }
 
-static size_t gl2psWriteBigEndianCompress(unsigned long data, size_t bytes)
+static int gl2psWriteBigEndianCompress(unsigned long data, int bytes)
 {
-  size_t i;
-  size_t size = sizeof(unsigned long);
+  int i;
+  int size = sizeof(unsigned long);
   for(i = 1; i <= bytes; ++i){
     *gl2ps->compress->src = (Bytef)(0xff & (data >> (size-i) * 8));
     ++gl2ps->compress->src;
@@ -440,7 +443,7 @@ static int gl2psPrintf(const char* fmt, ...)
   return ret;
 }
 
-static void gl2psPrintGzipHeader()
+static void gl2psPrintGzipHeader(void)
 {
 #if defined(GL2PS_HAVE_ZLIB)
   char tmp[10] = {'\x1f', '\x8b', /* magic numbers: 0x1f, 0x8b */
@@ -458,7 +461,7 @@ static void gl2psPrintGzipHeader()
 #endif
 }
 
-static void gl2psPrintGzipFooter()
+static void gl2psPrintGzipFooter(void)
 {
 #if defined(GL2PS_HAVE_ZLIB)
   int n;
@@ -745,6 +748,8 @@ static GL2PSimage *gl2psCopyPixmap(GL2PSimage *im)
   image->height = im->height;
   image->format = im->format;
   image->type = im->type;
+  image->zoom_x = im->zoom_x;
+  image->zoom_y = im->zoom_y;
 
   switch(image->format){
   case GL_RGBA:
@@ -786,6 +791,7 @@ static void gl2psUserWritePNG(png_structp png_ptr, png_bytep data, png_size_t le
 
 static void gl2psUserFlushPNG(png_structp png_ptr)
 {
+  (void) png_ptr;  /* not used */
 }
 
 static void gl2psConvertPixmapToPNG(GL2PSimage *pixmap, GL2PSlist *png)
@@ -841,15 +847,14 @@ static GLint gl2psAddText(GLint type, const char *str, const char *fontname,
 {
   GLfloat pos[4];
   GL2PSprimitive *prim;
-  //GLboolean valid;
+  GLboolean valid;
 
   if(!gl2ps || !str || !fontname) return GL2PS_UNINITIALIZED;
 
   if(gl2ps->options & GL2PS_NO_TEXT) return GL2PS_SUCCESS;
 
-  //The lines bellow were commented out by Ion Vasilief since this check prevents the export of some texts
-  //glGetBooleanv(GL_CURRENT_RASTER_POSITION_VALID, &valid);
-  //if(GL_FALSE == valid) return GL2PS_SUCCESS; /* the primitive is culled */
+  glGetBooleanv(GL_CURRENT_RASTER_POSITION_VALID, &valid);
+  if(GL_FALSE == valid) return GL2PS_SUCCESS; /* the primitive is culled */
 
   glGetFloatv(GL_CURRENT_RASTER_POSITION, pos);
 
@@ -1356,17 +1361,17 @@ static void gl2psDivideQuad(GL2PSprimitive *quad,
   (*t2)->verts[0] = quad->verts[0];
   (*t2)->verts[1] = quad->verts[2];
   (*t2)->verts[2] = quad->verts[3];
-  (*t2)->boundary = ((quad->boundary & 4) ? 2 : 0) | ((quad->boundary & 4) ? 2 : 0);
+  (*t2)->boundary = ((quad->boundary & 4) ? 2 : 0) | ((quad->boundary & 8) ? 4 : 0);
 }
 
 static int gl2psCompareDepth(const void *a, const void *b)
 {
-  GL2PSprimitive *q, *w;
+  const GL2PSprimitive *q, *w;
   GLfloat dq = 0.0F, dw = 0.0F, diff;
   int i;
 
-  q = *(GL2PSprimitive**)a;
-  w = *(GL2PSprimitive**)b;
+  q = *(const GL2PSprimitive* const*)a;
+  w = *(const GL2PSprimitive* const*)b;
 
   for(i = 0; i < q->numverts; i++){
     dq += q->verts[i].xyz[2];
@@ -1392,10 +1397,10 @@ static int gl2psCompareDepth(const void *a, const void *b)
 
 static int gl2psTrianglesFirst(const void *a, const void *b)
 {
-  GL2PSprimitive *q, *w;
+  const GL2PSprimitive *q, *w;
 
-  q = *(GL2PSprimitive**)a;
-  w = *(GL2PSprimitive**)b;
+  q = *(const GL2PSprimitive* const*)a;
+  w = *(const GL2PSprimitive* const*)b;
   return (q->type < w->type ? 1 : -1);
 }
 
@@ -1612,7 +1617,7 @@ static void gl2psTraverseBspTree(GL2PSbsptree *tree, GL2PSxyz eye, GLfloat epsil
   }
 }
 
-static void gl2psRescaleAndOffset()
+static void gl2psRescaleAndOffset(void)
 {
   GL2PSprimitive *prim;
   GLfloat minZ, maxZ, rangeZ, scaleZ;
@@ -2323,6 +2328,8 @@ static void gl2psParseFeedbackBuffer(GLint used)
         node->image = (GL2PSimage*)gl2psMalloc(sizeof(GL2PSimage));
         node->image->type = 0;
         node->image->format = 0;
+        node->image->zoom_x = 1.0F;
+        node->image->zoom_y = 1.0F;
         node->next = NULL;
 
         if(gl2ps->imagemap_head == NULL)
@@ -2425,7 +2432,7 @@ static void gl2psPrintPostScriptPixmap(GLfloat x, GLfloat y, GL2PSimage *im)
 
   gl2psPrintf("gsave\n");
   gl2psPrintf("%.2f %.2f translate\n", x, y);
-  gl2psPrintf("%d %d scale\n", width, height);
+  gl2psPrintf("%.2f %.2f scale\n", width * im->zoom_x, height * im->zoom_y);
 
   if(greyscale){ /* greyscale */
     gl2psPrintf("/picstr %d string def\n", width);
@@ -3197,7 +3204,7 @@ static void gl2psPrintTeXHeader(void)
   int i;
 
   if(gl2ps->filename && strlen(gl2ps->filename) < 256){
-    for(i = strlen(gl2ps->filename)-1; i >= 0; i--){
+    for(i = (int)strlen(gl2ps->filename) - 1; i >= 0; i--){
       if(gl2ps->filename[i] == '.'){
         strncpy(name, gl2ps->filename, i);
         name[i] = '\0';
@@ -3241,8 +3248,11 @@ static void gl2psPrintTeXPrimitive(void *data)
   case GL2PS_TEXT :
     fprintf(gl2ps->stream, "\\fontsize{%d}{0}\n\\selectfont",
             prim->data.text->fontsize);
-    fprintf(gl2ps->stream, "\\put(%g,%g){\\makebox(0,0)",
+    fprintf(gl2ps->stream, "\\put(%g,%g)",
             prim->verts[0].xyz[0], prim->verts[0].xyz[1]);
+    if(prim->data.text->angle)
+      fprintf(gl2ps->stream, "{\\rotatebox{%g}", prim->data.text->angle);
+    fprintf(gl2ps->stream, "{\\makebox(0,0)");
     switch(prim->data.text->alignment){
     case GL2PS_TEXT_C:
       fprintf(gl2ps->stream, "{");
@@ -3273,8 +3283,6 @@ static void gl2psPrintTeXPrimitive(void *data)
       fprintf(gl2ps->stream, "[bl]{");
       break;
     }
-    if(prim->data.text->angle)
-      fprintf(gl2ps->stream, "\\rotatebox{%g}{", prim->data.text->angle);
     fprintf(gl2ps->stream, "\\textcolor[rgb]{%g,%g,%g}{{%s}}",
             prim->verts[0].rgba[0], prim->verts[0].rgba[1], prim->verts[0].rgba[2],
             prim->data.text->str);
@@ -3301,6 +3309,7 @@ static void gl2psPrintTeXFooter(void)
 
 static void gl2psPrintTeXBeginViewport(GLint viewport[4])
 {
+  (void) viewport;  /* not used */
   glRenderMode(GL_FEEDBACK);
 
   if(gl2ps->header){
@@ -3392,6 +3401,30 @@ static int gl2psPrintPDFLineWidth(GLfloat lw)
 
 static void gl2psPutPDFText(GL2PSstring *text, int cnt, GLfloat x, GLfloat y)
 {
+  /*GLfloat rad, crad, srad;
+
+  if(text->angle == 0.0F){
+    gl2ps->streamlength += gl2psPrintf
+      ("BT\n"
+       "/F%d %d Tf\n"
+       "%f %f Td\n"
+       "(%s) Tj\n"
+       "ET\n",
+       cnt, text->fontsize, x, y, text->str);
+  }
+  else{
+    rad = (GLfloat)(M_PI * text->angle / 180.0F);
+    srad = (GLfloat)sin(rad);
+    crad = (GLfloat)cos(rad);
+    gl2ps->streamlength += gl2psPrintf
+      ("BT\n"
+       "/F%d %d Tf\n"
+       "%f %f %f %f %f %f Tm\n"
+       "(%s) Tj\n"
+       "ET\n",
+       cnt, text->fontsize, crad, srad, -srad, crad, x, y, text->str);
+  }*/
+
 	GLfloat rad = M_PI * text->angle / 180.0F;
 	GLfloat srad = (GLfloat)sin(rad);
 	GLfloat crad = (GLfloat)cos(rad);
@@ -4195,8 +4228,7 @@ static int gl2psPrintPDFGSObject(void)
 /* Put vertex' edge flag (8bit) and coordinates (32bit) in shader stream */
 
 static int gl2psPrintPDFShaderStreamDataCoord(GL2PSvertex *vertex,
-                                              size_t (*action)(unsigned long data,
-                                                               size_t size),
+                                              int (*action)(unsigned long data, int size),
                                               GLfloat dx, GLfloat dy,
                                               GLfloat xmin, GLfloat ymin)
 {
@@ -4242,8 +4274,7 @@ static int gl2psPrintPDFShaderStreamDataCoord(GL2PSvertex *vertex,
 /* Put vertex' rgb value (8bit for every component) in shader stream */
 
 static int gl2psPrintPDFShaderStreamDataRGB(GL2PSvertex *vertex,
-                                            size_t (*action)(unsigned long data,
-                                                             size_t size))
+                                            int (*action)(unsigned long data, int size))
 {
   int offs = 0;
   unsigned long imap;
@@ -4267,8 +4298,7 @@ static int gl2psPrintPDFShaderStreamDataRGB(GL2PSvertex *vertex,
 /* Put vertex' alpha (8/16bit) in shader stream */
 
 static int gl2psPrintPDFShaderStreamDataAlpha(GL2PSvertex *vertex,
-                                              size_t (*action)(unsigned long data,
-                                                               size_t size),
+                                              int (*action)(unsigned long data, int size),
                                               int sigbyte)
 {
   int offs = 0;
@@ -4295,8 +4325,7 @@ static int gl2psPrintPDFShaderStreamDataAlpha(GL2PSvertex *vertex,
 static int gl2psPrintPDFShaderStreamData(GL2PStriangle *triangle,
                                          GLfloat dx, GLfloat dy,
                                          GLfloat xmin, GLfloat ymin,
-                                         size_t (*action)(unsigned long data,
-                                                          size_t size),
+                                         int (*action)(unsigned long data, int size),
                                          int gray)
 {
   int i, offs = 0;
@@ -4514,8 +4543,7 @@ static int gl2psPrintPDFShaderSimpleExtGS(int obj, GLfloat alpha)
 /* Similar groups of functions for pixmaps and text */
 
 static int gl2psPrintPDFPixmapStreamData(GL2PSimage *im,
-                                         size_t (*action)(unsigned long data,
-                                                          size_t size),
+                                         int (*action)(unsigned long data, int size),
                                          int gray)
 {
   int x, y, shift;
@@ -5056,6 +5084,7 @@ static void gl2psPrintSVGPixmap(GLfloat x, GLfloat y, GL2PSimage *pixmap)
   gl2psPrintf("\"/>\n");
   gl2psListDelete(png);
 #else
+  (void) x; (void) y; (void) pixmap;  /* not used */
   gl2psMsg(GL2PS_WARNING, "GL2PS must be compiled with PNG support in "
            "order to embed images in SVG streams");
 #endif
@@ -5074,101 +5103,148 @@ static void gl2psPrintSVGPrimitive(void *data)
   if((gl2ps->options & GL2PS_OCCLUSION_CULL) && prim->culled) return;
 
   /* We try to draw connected lines as a single path to get nice line
-     joins and correct stippling. So if the primitive to print is not
-     a line we must first finish the current line (if any): */
+	 joins and correct stippling. So if the primitive to print is not
+	 a line we must first finish the current line (if any): */
   if(prim->type != GL2PS_LINE) gl2psEndSVGLine();
 
   gl2psSVGGetCoordsAndColors(prim->numverts, prim->verts, xyz, rgba);
 
   switch(prim->type){
   case GL2PS_POINT :
-    gl2psSVGGetColorString(rgba[0], col);
-    gl2psPrintf("<circle fill=\"%s\" ", col);
-    if(rgba[0][3] < 1.0F) gl2psPrintf("fill-opacity=\"%g\" ", rgba[0][3]);
-    gl2psPrintf("cx=\"%g\" cy=\"%g\" r=\"%g\"/>\n",
-                xyz[0][0], xyz[0][1], 0.5 * prim->width);
-    break;
+	gl2psSVGGetColorString(rgba[0], col);
+	gl2psPrintf("<circle fill=\"%s\" ", col);
+	if(rgba[0][3] < 1.0F) gl2psPrintf("fill-opacity=\"%g\" ", rgba[0][3]);
+	gl2psPrintf("cx=\"%g\" cy=\"%g\" r=\"%g\"/>\n",
+				xyz[0][0], xyz[0][1], 0.5 * prim->width);
+	break;
   case GL2PS_LINE :
-    if(!gl2psSamePosition(gl2ps->lastvertex.xyz, prim->verts[0].xyz) ||
-       !gl2psSameColor(gl2ps->lastrgba, prim->verts[0].rgba) ||
-       gl2ps->lastlinewidth != prim->width ||
-       gl2ps->lastpattern != prim->pattern ||
-       gl2ps->lastfactor != prim->factor){
-      /* End the current line if the new segment does not start where
-         the last one ended, or if the color, the width or the
-         stippling have changed (we will need to use multi-point
-         gradients for smooth-shaded lines) */
-      gl2psEndSVGLine();
-      newline = 1;
-    }
-    else{
-      newline = 0;
-    }
-    gl2ps->lastvertex = prim->verts[1];
-    gl2psSetLastColor(prim->verts[0].rgba);
-    gl2ps->lastlinewidth = prim->width;
-    gl2ps->lastpattern = prim->pattern;
-    gl2ps->lastfactor = prim->factor;
-    if(newline){
-      gl2psSVGGetColorString(rgba[0], col);
-      gl2psPrintf("<polyline fill=\"none\" stroke=\"%s\" stroke-width=\"%g\" ",
-                  col, prim->width);
-      if(rgba[0][3] < 1.0F) gl2psPrintf("stroke-opacity=\"%g\" ", rgba[0][3]);
-      gl2psPrintSVGDash(prim->pattern, prim->factor);
-      gl2psPrintf("points=\"%g,%g ", xyz[0][0], xyz[0][1]);
-    }
-    else{
-      gl2psPrintf("%g,%g ", xyz[0][0], xyz[0][1]);
-    }
-    break;
+	if(!gl2psSamePosition(gl2ps->lastvertex.xyz, prim->verts[0].xyz) ||
+	   !gl2psSameColor(gl2ps->lastrgba, prim->verts[0].rgba) ||
+	   gl2ps->lastlinewidth != prim->width ||
+	   gl2ps->lastpattern != prim->pattern ||
+	   gl2ps->lastfactor != prim->factor){
+	  /* End the current line if the new segment does not start where
+		 the last one ended, or if the color, the width or the
+		 stippling have changed (we will need to use multi-point
+		 gradients for smooth-shaded lines) */
+	  gl2psEndSVGLine();
+	  newline = 1;
+	}
+	else{
+	  newline = 0;
+	}
+	gl2ps->lastvertex = prim->verts[1];
+	gl2psSetLastColor(prim->verts[0].rgba);
+	gl2ps->lastlinewidth = prim->width;
+	gl2ps->lastpattern = prim->pattern;
+	gl2ps->lastfactor = prim->factor;
+	if(newline){
+	  gl2psSVGGetColorString(rgba[0], col);
+	  gl2psPrintf("<polyline fill=\"none\" stroke=\"%s\" stroke-width=\"%g\" ",
+				  col, prim->width);
+	  if(rgba[0][3] < 1.0F) gl2psPrintf("stroke-opacity=\"%g\" ", rgba[0][3]);
+	  gl2psPrintSVGDash(prim->pattern, prim->factor);
+	  gl2psPrintf("points=\"%g,%g ", xyz[0][0], xyz[0][1]);
+	}
+	else{
+	  gl2psPrintf("%g,%g ", xyz[0][0], xyz[0][1]);
+	}
+	break;
   case GL2PS_TRIANGLE :
-    gl2psPrintSVGSmoothTriangle(xyz, rgba);
-    break;
+	gl2psPrintSVGSmoothTriangle(xyz, rgba);
+	break;
   case GL2PS_QUADRANGLE :
-    gl2psMsg(GL2PS_WARNING, "There should not be any quad left to print");
-    break;
+	gl2psMsg(GL2PS_WARNING, "There should not be any quad left to print");
+	break;
   case GL2PS_PIXMAP :
-    gl2psPrintSVGPixmap(xyz[0][0], xyz[0][1], prim->data.image);
-    break;
+	gl2psPrintSVGPixmap(xyz[0][0], xyz[0][1], prim->data.image);
+	break;
   case GL2PS_TEXT :
-    gl2psSVGGetColorString(prim->verts[0].rgba, col);
-    gl2psPrintf("<text fill=\"%s\" x=\"%g\" y=\"%g\" font-size=\"%d\" ",
-                col, xyz[0][0], xyz[0][1], prim->data.text->fontsize);
-    if(prim->data.text->angle)
-      gl2psPrintf("transform=\"rotate(%g, %g, %g)\" ",
-                  -prim->data.text->angle, xyz[0][0], xyz[0][1]);
-    if(!strcmp(prim->data.text->fontname, "Times-Roman"))
-      gl2psPrintf("font-family=\"Times\">");
-    else if(!strcmp(prim->data.text->fontname, "Times-Bold"))
-      gl2psPrintf("font-family=\"Times\" font-weight=\"bold\">");
-    else if(!strcmp(prim->data.text->fontname, "Times-Italic"))
-      gl2psPrintf("font-family=\"Times\" font-style=\"italic\">");
-    else if(!strcmp(prim->data.text->fontname, "Times-BoldItalic"))
-      gl2psPrintf("font-family=\"Times\" font-style=\"italic\" font-weight=\"bold\">");
-    else if(!strcmp(prim->data.text->fontname, "Helvetica-Bold"))
-      gl2psPrintf("font-family=\"Helvetica\" font-weight=\"bold\">");
-    else if(!strcmp(prim->data.text->fontname, "Helvetica-Oblique"))
-      gl2psPrintf("font-family=\"Helvetica\" font-style=\"oblique\">");
-    else if(!strcmp(prim->data.text->fontname, "Helvetica-BoldOblique"))
-      gl2psPrintf("font-family=\"Helvetica\" font-style=\"oblique\" font-weight=\"bold\">");
-    else if(!strcmp(prim->data.text->fontname, "Courier-Bold"))
-      gl2psPrintf("font-family=\"Courier\" font-weight=\"bold\">");
-    else if(!strcmp(prim->data.text->fontname, "Courier-Oblique"))
-      gl2psPrintf("font-family=\"Courier\" font-style=\"oblique\">");
-    else if(!strcmp(prim->data.text->fontname, "Courier-BoldOblique"))
-      gl2psPrintf("font-family=\"Courier\" font-style=\"oblique\" font-weight=\"bold\">");
-    else
-      gl2psPrintf("font-family=\"%s\">", prim->data.text->fontname);
-    gl2psPrintf("%s</text>\n", prim->data.text->str);
-    break;
+  {
+	gl2psSVGGetColorString(prim->verts[0].rgba, col);
+
+	GLfloat dy = 0.0;// y offset introduced by Ion Vasilief
+	if (prim->data.text->alignment == GL2PS_TEXT_C || prim->data.text->alignment == GL2PS_TEXT_CL || prim->data.text->alignment == GL2PS_TEXT_CR)
+		dy = 0.5*prim->data.text->fontsize;
+	else if (prim->data.text->alignment == GL2PS_TEXT_T || prim->data.text->alignment == GL2PS_TEXT_TL || prim->data.text->alignment == GL2PS_TEXT_TR)
+		dy = prim->data.text->fontsize;
+	else
+		dy = - 0.5*prim->data.text->fontsize;
+
+	gl2psPrintf("<text fill=\"%s\" x=\"%g\" y=\"%g\" font-size=\"%d\" ",
+				col, xyz[0][0], xyz[0][1] + dy, prim->data.text->fontsize);
+	if(prim->data.text->angle)
+	  gl2psPrintf("transform=\"rotate(%g, %g, %g)\" ",
+				  -prim->data.text->angle, xyz[0][0], xyz[0][1]);
+	switch(prim->data.text->alignment){
+	case GL2PS_TEXT_C:
+	  gl2psPrintf("text-anchor=\"middle\" baseline-shift=\"%d\" ",
+				  -prim->data.text->fontsize / 2);
+	  break;
+	case GL2PS_TEXT_CL:
+	  gl2psPrintf("text-anchor=\"start\" baseline-shift=\"%d\" ",
+				  -prim->data.text->fontsize / 2);
+	  break;
+	case GL2PS_TEXT_CR:
+	  gl2psPrintf("text-anchor=\"end\" baseline-shift=\"%d\" ",
+				  -prim->data.text->fontsize / 2);
+	  break;
+	case GL2PS_TEXT_B:
+	  gl2psPrintf("text-anchor=\"middle\" baseline-shift=\"0\" ");
+	  break;
+	case GL2PS_TEXT_BR:
+	  gl2psPrintf("text-anchor=\"end\" baseline-shift=\"0\" ");
+	  break;
+	case GL2PS_TEXT_T:
+	  gl2psPrintf("text-anchor=\"middle\" baseline-shift=\"%d\" ",
+				  -prim->data.text->fontsize);
+	  break;
+	case GL2PS_TEXT_TL:
+	  gl2psPrintf("text-anchor=\"start\" baseline-shift=\"%d\" ",
+				  -prim->data.text->fontsize);
+	  break;
+	case GL2PS_TEXT_TR:
+	  gl2psPrintf("text-anchor=\"end\" baseline-shift=\"%d\" ",
+				  -prim->data.text->fontsize);
+	  break;
+	case GL2PS_TEXT_BL:
+	default: /* same as GL2PS_TEXT_BL */
+	  gl2psPrintf("text-anchor=\"start\" baseline-shift=\"0\" ");
+	  break;
+	}
+	if(!strcmp(prim->data.text->fontname, "Times-Roman"))
+	  gl2psPrintf("font-family=\"Times\">");
+	else if(!strcmp(prim->data.text->fontname, "Times-Bold"))
+	  gl2psPrintf("font-family=\"Times\" font-weight=\"bold\">");
+	else if(!strcmp(prim->data.text->fontname, "Times-Italic"))
+	  gl2psPrintf("font-family=\"Times\" font-style=\"italic\">");
+	else if(!strcmp(prim->data.text->fontname, "Times-BoldItalic"))
+	  gl2psPrintf("font-family=\"Times\" font-style=\"italic\" font-weight=\"bold\">");
+	else if(!strcmp(prim->data.text->fontname, "Helvetica-Bold"))
+	  gl2psPrintf("font-family=\"Helvetica\" font-weight=\"bold\">");
+	else if(!strcmp(prim->data.text->fontname, "Helvetica-Oblique"))
+	  gl2psPrintf("font-family=\"Helvetica\" font-style=\"oblique\">");
+	else if(!strcmp(prim->data.text->fontname, "Helvetica-BoldOblique"))
+	  gl2psPrintf("font-family=\"Helvetica\" font-style=\"oblique\" font-weight=\"bold\">");
+	else if(!strcmp(prim->data.text->fontname, "Courier-Bold"))
+	  gl2psPrintf("font-family=\"Courier\" font-weight=\"bold\">");
+	else if(!strcmp(prim->data.text->fontname, "Courier-Oblique"))
+	  gl2psPrintf("font-family=\"Courier\" font-style=\"oblique\">");
+	else if(!strcmp(prim->data.text->fontname, "Courier-BoldOblique"))
+	  gl2psPrintf("font-family=\"Courier\" font-style=\"oblique\" font-weight=\"bold\">");
+	else
+	  gl2psPrintf("font-family=\"%s\">", prim->data.text->fontname);
+	gl2psPrintf("%s</text>\n", prim->data.text->str);
+	break;
+  }
   case GL2PS_SPECIAL :
-    /* alignment contains the format for which the special output text
-       is intended */
-    if(prim->data.text->alignment == GL2PS_SVG)
-      gl2psPrintf("%s\n", prim->data.text->str);
-    break;
+	/* alignment contains the format for which the special output text
+	   is intended */
+	if(prim->data.text->alignment == GL2PS_SVG)
+	  gl2psPrintf("%s\n", prim->data.text->str);
+	break;
   default :
-    break;
+	break;
   }
 }
 
@@ -5831,7 +5907,8 @@ GL2PSDLL_API GLint gl2psDrawPixels(GLsizei width, GLsizei height,
                                    const void *pixels)
 {
   int size, i;
-  GLfloat pos[4], *piv;
+  const GLfloat *piv;
+  GLfloat pos[4], zoom_x, zoom_y;
   GL2PSprimitive *prim;
   GLboolean valid;
 
@@ -5851,6 +5928,8 @@ GL2PSDLL_API GLint gl2psDrawPixels(GLsizei width, GLsizei height,
   if(GL_FALSE == valid) return GL2PS_SUCCESS; /* the primitive is culled */
 
   glGetFloatv(GL_CURRENT_RASTER_POSITION, pos);
+  glGetFloatv(GL_ZOOM_X, &zoom_x);
+  glGetFloatv(GL_ZOOM_Y, &zoom_y);
 
   prim = (GL2PSprimitive*)gl2psMalloc(sizeof(GL2PSprimitive));
   prim->type = GL2PS_PIXMAP;
@@ -5869,6 +5948,8 @@ GL2PSDLL_API GLint gl2psDrawPixels(GLsizei width, GLsizei height,
   prim->data.image = (GL2PSimage*)gl2psMalloc(sizeof(GL2PSimage));
   prim->data.image->width = width;
   prim->data.image->height = height;
+  prim->data.image->zoom_x = zoom_x;
+  prim->data.image->zoom_y = zoom_y;
   prim->data.image->format = format;
   prim->data.image->type = type;
 
@@ -5879,10 +5960,10 @@ GL2PSDLL_API GLint gl2psDrawPixels(GLsizei width, GLsizei height,
       prim->data.image->format = GL_RGB;
       size = height * width * 3;
       prim->data.image->pixels = (GLfloat*)gl2psMalloc(size * sizeof(GLfloat));
-      piv = (GLfloat*)pixels;
+      piv = (const GLfloat*)pixels;
       for(i = 0; i < size; ++i, ++piv){
         prim->data.image->pixels[i] = *piv;
-        if(!((i+1)%3))
+        if(!((i + 1) % 3))
           ++piv;
       }
     }
@@ -5924,7 +6005,7 @@ GL2PSDLL_API GLint gl2psDrawImageMap(GLsizei width, GLsizei height,
   glPassThrough((GLfloat)width);
   glPassThrough((GLfloat)height);
   for(i = 0; i < size; i += sizeoffloat){
-    float *value = (float*)imagemap;
+    const float *value = (const float*)imagemap;
     glPassThrough(*value);
     imagemap += sizeoffloat;
   }

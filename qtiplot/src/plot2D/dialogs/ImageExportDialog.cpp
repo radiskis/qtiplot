@@ -305,6 +305,7 @@ void ImageExportDialog::updateAdvancedOptions (const QString & filter)
 	if (filter.contains("*.svg")){
 		if (qobject_cast<Graph3D *> (d_window)){
 			d_extension_toggle->setEnabled(true);
+			d_preview_button->setVisible(false);
 			d_vector_options->show();
 			d_custom_size_box->show();
 			return;
@@ -317,6 +318,7 @@ void ImageExportDialog::updateAdvancedOptions (const QString & filter)
 
 	if (filter.contains("*.pgf") && qobject_cast<Graph3D *> (d_window)){
 		d_vector_options->show();
+		d_preview_button->setVisible(false);
 		return;
 	}
 
