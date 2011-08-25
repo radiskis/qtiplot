@@ -286,7 +286,7 @@ void LegendWidget::drawText(QPainter *p, const QRect& rect, QwtArray<long> heigh
 	QString text = d_text->text();
 	QStringList titles = text.split("\n", QString::KeepEmptyParts);
 
-	for (int i=0; i<(int)titles.count(); i++){
+	for (int i = 0; i < titles.count(); i++){
 		int w = left_margin + d_frame_pen.width();
 		bool  curveSymbol = false;
 		QString s = titles[i];
@@ -299,7 +299,7 @@ void LegendWidget::drawText(QPainter *p, const QRect& rect, QwtArray<long> heigh
 				QwtText aux(parse(s.left(pos))); //not a pie chart
 				aux.setFont(d_text->font());
 				aux.setColor(d_text->color());
-				aux.setRenderFlags (Qt::AlignLeft | Qt::AlignVCenter);
+				aux.setRenderFlags (Qt::AlignLeft | Qt::AlignVCenter | Qt::TextExpandTabs);
 
 				QSize size = textSize(p, aux);
 				QRect tr = QRect(QPoint(w, height[i] - size.height()/2), size);
@@ -328,7 +328,7 @@ void LegendWidget::drawText(QPainter *p, const QRect& rect, QwtArray<long> heigh
                     QwtText aux(parse(s.left(pos)));
                     aux.setFont(d_text->font());
                     aux.setColor(d_text->color());
-					aux.setRenderFlags (Qt::AlignLeft | Qt::AlignVCenter);
+					aux.setRenderFlags (Qt::AlignLeft | Qt::AlignVCenter | Qt::TextExpandTabs);
 
 					QSize size = textSize(p, aux);
                     QRect tr = QRect(QPoint(w, height[i] - size.height()/2), size);
@@ -351,7 +351,7 @@ void LegendWidget::drawText(QPainter *p, const QRect& rect, QwtArray<long> heigh
 						QwtText aux(parse(s.left(pos)));
 						aux.setFont(d_text->font());
 						aux.setColor(d_text->color());
-						aux.setRenderFlags (Qt::AlignLeft | Qt::AlignVCenter);
+						aux.setRenderFlags (Qt::AlignLeft | Qt::AlignVCenter | Qt::TextExpandTabs);
 
 						QSize size = textSize(p, aux);
 						QRect tr = QRect(QPoint(w, height[i] - size.height()/2), size);
@@ -379,7 +379,7 @@ void LegendWidget::drawText(QPainter *p, const QRect& rect, QwtArray<long> heigh
 			QwtText aux(parse(s));
 			aux.setFont(d_text->font());
 			aux.setColor(d_text->color());
-			aux.setRenderFlags (Qt::AlignLeft | Qt::AlignVCenter);
+			aux.setRenderFlags (Qt::AlignLeft | Qt::AlignVCenter | Qt::TextExpandTabs);
 
 			QSize size = textSize(p, aux);
 			QRect tr = QRect(QPoint(w, height[i] - size.height()/2), size);
@@ -413,6 +413,7 @@ QwtArray<long> LegendWidget::itemsHeight(QPainter *p, int symbolLineLength, int 
 			if (pos >= 0 && (pos2==-1 || pos2>pos3)){
 				QwtText aux(parse(s.left(pos))); //not a pie chart
 				aux.setFont(d_text->font());
+				aux.setRenderFlags (Qt::AlignLeft | Qt::AlignVCenter | Qt::TextExpandTabs);
 				QSize size = textSize(p, aux);
 				textL += size.width();
 
@@ -436,6 +437,7 @@ QwtArray<long> LegendWidget::itemsHeight(QPainter *p, int symbolLineLength, int 
                 if (pos >= 0){
                     QwtText aux(parse(s.left(pos)));
                     aux.setFont(d_text->font());
+					aux.setRenderFlags (Qt::AlignLeft | Qt::AlignVCenter | Qt::TextExpandTabs);
                     QSize size = textSize(p, aux);
                     textL += size.width();
                     textL += symbolLineLength;
@@ -447,6 +449,7 @@ QwtArray<long> LegendWidget::itemsHeight(QPainter *p, int symbolLineLength, int 
 					if (pos >= 0){
 						QwtText aux(parse(s.left(pos)));
 						aux.setFont(d_text->font());
+						aux.setRenderFlags (Qt::AlignLeft | Qt::AlignVCenter | Qt::TextExpandTabs);
 						QSize size = textSize(p, aux);
 						textL += size.width();
 						textL += symbolLineLength;
@@ -460,6 +463,7 @@ QwtArray<long> LegendWidget::itemsHeight(QPainter *p, int symbolLineLength, int 
 
 		QwtText aux(parse(s));
 		aux.setFont(d_text->font());
+		aux.setRenderFlags (Qt::AlignLeft | Qt::AlignVCenter | Qt::TextExpandTabs);
 		QSize size = textSize(p, aux);
 		textL += size.width();
 		if (curveSymbol)
