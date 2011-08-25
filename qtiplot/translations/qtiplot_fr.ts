@@ -7426,39 +7426,39 @@ Les codes spéciaux suivants peuvent être utilisés :
     </message>
     <message>
         <source>2D</source>
-        <translation type="unfinished">2D</translation>
+        <translation>2D</translation>
     </message>
     <message>
         <source>QtiPlot</source>
-        <translation type="unfinished"></translation>
+        <translation>QtiPlot</translation>
     </message>
     <message>
         <source>The two matrices have different dimensions, the imaginary part will be neglected!</source>
-        <translation type="unfinished">Les deux matrices ont des dimensions différentes, la partie imaginaire sera négligée !</translation>
+        <translation>Les deux matrices ont des dimensions différentes, la partie imaginaire sera négligée !</translation>
     </message>
     <message>
         <source>RealMatrixFFT</source>
-        <translation type="unfinished">ReelMatriceFFT</translation>
+        <translation>ReelMatriceFFT</translation>
     </message>
     <message>
         <source>Real part of the FFT transform of</source>
-        <translation type="unfinished">Partie réelle de la tranformée de Fourier de </translation>
+        <translation>Partie réelle de la tranformée de Fourier de </translation>
     </message>
     <message>
         <source>ImagMatrixFFT</source>
-        <translation type="unfinished">ImageMatriceFFT</translation>
+        <translation>ImageMatriceFFT</translation>
     </message>
     <message>
         <source>Imaginary part of the FFT transform of</source>
-        <translation type="unfinished">Partie Imaginaire de la transformée de Fourier de </translation>
+        <translation>Partie Imaginaire de la transformée de Fourier de </translation>
     </message>
     <message>
         <source>AmplitudeMatrixFFT</source>
-        <translation type="unfinished">AmplitudeMatriceFFT</translation>
+        <translation>AmplitudeMatriceFFT</translation>
     </message>
     <message>
         <source>Amplitudes of the FFT transform of</source>
-        <translation type="unfinished">Amplitudes de la transformée de Fourier de</translation>
+        <translation>Amplitudes de la transformée de Fourier de</translation>
     </message>
 </context>
 <context>
@@ -7549,15 +7549,15 @@ Les codes spéciaux suivants peuvent être utilisés :
     </message>
     <message>
         <source>DC &amp;Shift Center</source>
-        <translation type="unfinished"></translation>
+        <translation>Centrer &amp;sur zéro</translation>
     </message>
     <message>
         <source>Undo &amp;Shift</source>
-        <translation type="unfinished"></translation>
+        <translation>Ann&amp;uler le dacalage</translation>
     </message>
     <message>
         <source>&amp;Zero pad to nearest power of 2 size</source>
-        <translation type="unfinished"></translation>
+        <translation>Bourrage de &amp;zéros proche  d&apos;une puissance de 2</translation>
     </message>
 </context>
 <context>
@@ -10675,7 +10675,7 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Resize freely</source>
-        <translation type="unfinished"></translation>
+        <translation>Redimmensionner librement</translation>
     </message>
 </context>
 <context>
