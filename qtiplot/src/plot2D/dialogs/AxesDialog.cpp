@@ -1838,7 +1838,7 @@ void AxesDialog::customAxisLabelFont()
 
 void AxesDialog::pageChanged ( QWidget *page )
 {
-	updatePlot(lastPage);
+	//updatePlot(lastPage);
 
 	if (lastPage == scalesPage && page == axesPage){
 		axesTitlesList->setCurrentRow(axesList->currentRow());

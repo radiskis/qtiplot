@@ -146,7 +146,7 @@ Graph::Graph(int x, int y, int width, int height, QWidget* parent, Qt::WFlags f)
 	d_axis_title_policy = ColComment;
 	d_Douglas_Peuker_tolerance = 0.0;
 	d_speed_mode_points = 3000;
-	d_synchronize_scales = true;
+	d_synchronize_scales = false;
 	d_missing_data_gap = false;
 	d_page_rect = QRectF();
 
@@ -2409,12 +2409,11 @@ QString Graph::saveScale()
 		s += "scale\t" + QString::number(i) + "\t";
 
 		const QwtScaleDiv *scDiv = axisScaleDiv(i);
-		QwtValueList lst = scDiv->ticks (QwtScaleDiv::MajorTick);
 
 		s += QString::number(QMIN(scDiv->lowerBound(), scDiv->upperBound()), 'g', 15) + "\t";
 		s += QString::number(QMAX(scDiv->lowerBound(), scDiv->upperBound()), 'g', 15) + "\t";
 		s += QString::number(d_user_step[i], 'g', 15) + "\t";
-		s += QString::number(axisMaxMajor(i)) + "\t";
+		s += QString::number(scDiv->ticks(QwtScaleDiv::MajorTick).count()) + "\t";
 		s += QString::number(axisMaxMinor(i)) + "\t";
 
 		const ScaleEngine *sc_eng = (ScaleEngine *)axisScaleEngine(i);
