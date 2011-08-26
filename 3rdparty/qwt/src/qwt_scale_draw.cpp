@@ -187,7 +187,7 @@ void QwtScaleDraw::getBorderDistHint(const QFont &font,
         start -= qwtAbs(minPos - qRound(map().p1()));
 
         end = labelRect(font, maxTick).right() + 1;
-        end -= qwtAbs(maxPos - qRound(map().p2()));
+		//end -= qwtAbs(maxPos - qRound(map().p2())); //Comented out by Ion Vasilief in order to avoid labels clipping
     }
 
     if ( start < 0 )
