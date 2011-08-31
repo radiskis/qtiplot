@@ -297,7 +297,7 @@ void TableDialog::apply()
 		tr("For internal consistency reasons the underscore character is replaced with a minus sign."));
 	}
 
-	QString name = colName->text().replace("-", "_");
+	QString name = colName->text().replace("-", "_").remove(QRegExp("\n"));
 
 	int sc = d_table->selectedColumn();
 	d_table->setColumnWidth(colWidth->value(), applyToAllBox->isChecked());

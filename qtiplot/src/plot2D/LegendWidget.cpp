@@ -59,7 +59,7 @@ d_angle(0),
 h_space(5),
 left_margin(10),
 top_margin(5),
-line_length(20),
+line_length(32),
 d_auto_update(false),
 d_tex_output(false)
 {
