@@ -30,7 +30,6 @@ INCLUDEPATH += src/analysis/dialogs/
 			   src/analysis/tTest.h \
 			   src/analysis/fft2D.h \
 			   src/analysis/fit_gsl.h \
-			   src/analysis/nrutil.h \
 
 	SOURCES += src/analysis/ChiSquareTest.cpp \
 			   src/analysis/Convolution.cpp \
@@ -57,7 +56,6 @@ INCLUDEPATH += src/analysis/dialogs/
 			   src/analysis/tTest.cpp \
 			   src/analysis/fft2D.cpp \
 			   src/analysis/fit_gsl.cpp \
-			   src/analysis/nrutil.cpp \
 
 	HEADERS += src/analysis/dialogs/AnovaDialog.h \
 			   src/analysis/dialogs/BaselineDialog.h \
