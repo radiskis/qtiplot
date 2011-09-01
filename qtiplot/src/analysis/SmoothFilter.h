@@ -30,6 +30,7 @@
 #define SMOOTHFILTER_H
 
 #include "Filter.h"
+#include <gsl/gsl_matrix_double.h>
 
 class SmoothFilter : public Filter
 {
@@ -59,6 +60,7 @@ private:
     void smoothAverage(double *x, double *y);
     void smoothSavGol(double *x, double *y);
     void smoothLowess(double *x, double *y);
+	static int savitzkyGolayCoefficients(int points, int polynom_order, gsl_matrix *h);
 
     //! The smooth method.
     SmoothMethod d_method;
