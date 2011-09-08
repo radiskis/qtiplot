@@ -4015,10 +4015,6 @@ Autocompletion will not be available!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>ALT+S</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>S&amp;creen Reader</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4588,6 +4584,10 @@ Autocompletion will not be available!</source>
     </message>
     <message>
         <source>Ctrl+Shift+P</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Alt+Shift+S</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -14467,6 +14467,15 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>The number of iterations must be at least 1!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Tried to smooth over more points (left+right+1=%1) than given as input (%2).</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Internal error in Savitzky-Golay algorithm.
+</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

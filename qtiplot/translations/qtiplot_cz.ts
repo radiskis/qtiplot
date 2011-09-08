@@ -514,7 +514,7 @@
     </message>
     <message>
         <source>ALT+S</source>
-        <translation>ALT+S</translation>
+        <translation type="obsolete">ALT+S</translation>
     </message>
     <message>
         <source>ALT+T</source>
@@ -4150,6 +4150,10 @@ Různé části tohoto souboru se nemusí zobrazovat tak, jak se očekává.</tr
     <message>
         <source>Ctrl+Shift+P</source>
         <translation>Ctrl+Shift+P</translation>
+    </message>
+    <message>
+        <source>Alt+Shift+S</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -14535,6 +14539,15 @@ pokud e1 pak e2 jinak e3.</translation>
     <message>
         <source>Setting polynomial order is only available for Savitzky-Golay smooth filters! Ignored option!</source>
         <translation>Nastavení mnohočlenného (polynomického) řádu je dostupné pouze u filtrů pro vyhlazování Savitzky-Golay! Volba není brána na vědomí!</translation>
+    </message>
+    <message>
+        <source>Tried to smooth over more points (left+right+1=%1) than given as input (%2).</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Internal error in Savitzky-Golay algorithm.
+</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

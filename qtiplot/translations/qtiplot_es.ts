@@ -4832,7 +4832,7 @@ Do you want to overwrite it?</source>
     </message>
     <message>
         <source>ALT+S</source>
-        <translation>ALT+S</translation>
+        <translation type="obsolete">ALT+S</translation>
     </message>
     <message>
         <source>S&amp;creen reader</source>
@@ -8470,6 +8470,10 @@ Autocompletion will not be available!</source>
     </message>
     <message>
         <source>Ctrl+Shift+P</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Alt+Shift+S</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -20161,6 +20165,15 @@ Do you want to overwrite it?</source>
     </message>
     <message>
         <source>The number of iterations must be at least 1!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Tried to smooth over more points (left+right+1=%1) than given as input (%2).</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Internal error in Savitzky-Golay algorithm.
+</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

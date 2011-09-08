@@ -1899,7 +1899,7 @@ Deseja sobrescrevê-lo?</translation>
     </message>
     <message>
         <source>ALT+S</source>
-        <translation>ALT+S</translation>
+        <translation type="obsolete">ALT+S</translation>
     </message>
     <message>
         <source>S&amp;creen reader</source>
@@ -6000,6 +6000,10 @@ Autocompletion will not be available!</source>
     </message>
     <message>
         <source>Ctrl+Shift+P</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Alt+Shift+S</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -19715,12 +19719,12 @@ Deseja sobreescrevê-lo?</translation>
     </message>
     <message>
         <source>Tried to smooth over more points (left+right+1=%1) than given as input (%2).</source>
-        <translation type="obsolete">Tentativa de suavizar sobre mais pontos (direito+esquerdo+1=%1) que os fornecidos (%2).</translation>
+        <translation type="unfinished">Tentativa de suavizar sobre mais pontos (direito+esquerdo+1=%1) que os fornecidos (%2).</translation>
     </message>
     <message>
         <source>Internal error in Savitzky-Golay algorithm.
 </source>
-        <translation type="obsolete">Erro interno no algorítimo de Savitzky-Golay.
+        <translation type="unfinished">Erro interno no algorítimo de Savitzky-Golay.
 </translation>
     </message>
     <message>
