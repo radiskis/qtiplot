@@ -258,7 +258,7 @@
     </message>
     <message>
         <source>ALT+S</source>
-        <translation>ALT+S</translation>
+        <translation type="obsolete">ALT+S</translation>
     </message>
     <message>
         <source>S&amp;creen Reader</source>
@@ -1110,7 +1110,7 @@ Various parts of this file may not be displayed as expected.</source>
     </message>
     <message>
         <source>Y2 Axis Title</source>
-        <translation>Τίτλος άξονα Y2</translation>
+        <translation type="obsolete">Τίτλος άξονα Y2</translation>
     </message>
     <message>
         <source>Not available for empty 3D surface plots!</source>
@@ -4100,6 +4100,14 @@ Autocompletion will not be available!</source>
         <source>Align Right</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Alt+Shift+S</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ctrl+Shift+P</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>AssociationsDialog</name>
@@ -5941,10 +5949,6 @@ The following special codes can be used:
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Show &amp;gaps for empty table cells</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Attach objects to</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5955,6 +5959,14 @@ The following special codes can be used:
     <message>
         <source>Layer Scales</source>
         <translation type="unfinished">Κλίμακες επιπέδου</translation>
+    </message>
+    <message>
+        <source>Co&amp;nnect line across missing data</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Locally Installed OpenOffice/LibreOffice</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -7292,6 +7304,42 @@ The following special codes can be used:
         <source>s</source>
         <translation>sec</translation>
     </message>
+    <message>
+        <source>2D</source>
+        <translation type="unfinished">2D</translation>
+    </message>
+    <message>
+        <source>QtiPlot</source>
+        <translation type="unfinished">QtiPlot</translation>
+    </message>
+    <message>
+        <source>The two matrices have different dimensions, the imaginary part will be neglected!</source>
+        <translation type="unfinished">Τα δύο μητρώα έχουν διαφορετικές διαστάσεις, το φανταστικό μέρος θα αγνοηθεί!</translation>
+    </message>
+    <message>
+        <source>RealMatrixFFT</source>
+        <translation type="unfinished">FFT μητρώου πραγματικού μέρους</translation>
+    </message>
+    <message>
+        <source>Real part of the FFT transform of</source>
+        <translation type="unfinished">Πραγματικό μέρος του μετασχηματισμού FFT του</translation>
+    </message>
+    <message>
+        <source>ImagMatrixFFT</source>
+        <translation type="unfinished">FFT μητρώου φανταστικού μέρους</translation>
+    </message>
+    <message>
+        <source>Imaginary part of the FFT transform of</source>
+        <translation type="unfinished">Φανταστικό μέρος του μετασχηματισμού FFT του</translation>
+    </message>
+    <message>
+        <source>AmplitudeMatrixFFT</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Amplitudes of the FFT transform of</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>FFTDialog</name>
@@ -7353,34 +7401,38 @@ The following special codes can be used:
     </message>
     <message>
         <source>QtiPlot</source>
-        <translation>QtiPlot</translation>
+        <translation type="obsolete">QtiPlot</translation>
     </message>
     <message>
         <source>The two matrices have different dimensions, the imaginary part will be neglected!</source>
-        <translation>Τα δύο μητρώα έχουν διαφορετικές διαστάσεις, το φανταστικό μέρος θα αγνοηθεί!</translation>
+        <translation type="obsolete">Τα δύο μητρώα έχουν διαφορετικές διαστάσεις, το φανταστικό μέρος θα αγνοηθεί!</translation>
     </message>
     <message>
         <source>RealMatrixFFT</source>
-        <translation>FFT μητρώου πραγματικού μέρους</translation>
+        <translation type="obsolete">FFT μητρώου πραγματικού μέρους</translation>
     </message>
     <message>
         <source>Real part of the FFT transform of</source>
-        <translation>Πραγματικό μέρος του μετασχηματισμού FFT του</translation>
+        <translation type="obsolete">Πραγματικό μέρος του μετασχηματισμού FFT του</translation>
     </message>
     <message>
         <source>ImagMatrixFFT</source>
-        <translation>FFT μητρώου φανταστικού μέρους</translation>
+        <translation type="obsolete">FFT μητρώου φανταστικού μέρους</translation>
     </message>
     <message>
         <source>Imaginary part of the FFT transform of</source>
-        <translation>Φανταστικό μέρος του μετασχηματισμού FFT του</translation>
+        <translation type="obsolete">Φανταστικό μέρος του μετασχηματισμού FFT του</translation>
     </message>
     <message>
-        <source>AmplitudeMatrixFFT</source>
+        <source>&amp;Zero pad to nearest power of 2 size</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Amplitudes of the FFT transform of</source>
+        <source>DC &amp;Shift Center</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Undo &amp;Shift</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -9074,6 +9126,14 @@ The following special codes can be used:
         <source>Z-Value</source>
         <translation>Τιμή Z</translation>
     </message>
+    <message>
+        <source>pixels</source>
+        <translation type="unfinished">pixels</translation>
+    </message>
+    <message>
+        <source>Average</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ImageWidget</name>
@@ -10469,6 +10529,10 @@ have the same number of rows.</source>
         <source>Bicubic</source>
         <translation>Δικυβική</translation>
     </message>
+    <message>
+        <source>Resize freely</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>MatrixSizeDialog</name>
@@ -11200,15 +11264,15 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>X Zoom (%)</source>
-        <translation>Εστίαση X (%)</translation>
+        <translation type="obsolete">Εστίαση X (%)</translation>
     </message>
     <message>
         <source>Y Zoom (%)</source>
-        <translation>Εστίαση Y (%)</translation>
+        <translation type="obsolete">Εστίαση Y (%)</translation>
     </message>
     <message>
         <source>Z Zoom (%)</source>
-        <translation>Εστίαση Z (%)</translation>
+        <translation type="obsolete">Εστίαση Z (%)</translation>
     </message>
     <message>
         <source>&amp;General</source>
@@ -11321,6 +11385,10 @@ have the same number of rows.</source>
     <message>
         <source>Bars</source>
         <translation>Ράβδοι</translation>
+    </message>
+    <message>
+        <source>Rotation</source>
+        <translation type="unfinished">Περιστροφή</translation>
     </message>
 </context>
 <context>
@@ -12341,6 +12409,34 @@ have the same number of rows.</source>
         <source>&amp;Hide</source>
         <translation type="unfinished">&amp;Απόκρυψη</translation>
     </message>
+    <message>
+        <source>Data Drawing Options</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Co&amp;nnect line across missing data</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Grid on top of data</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Left</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Right</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Bottom</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Top</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>PlotWizard</name>
@@ -13352,6 +13448,21 @@ have the same number of rows.</source>
  Compute the dilogarithm for a real argument. In Lewin&apos;s notation this is Li_2(x), the real part of the dilogarithm of a real x.</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>bessel_i0(x):
+  Regular modified cylindrical Bessel function of zeroth order, I_0(x).</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>bessel_i1(x):
+  Regular modified cylindrical Bessel function of first order, I_1(x).</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>bessel_in(double x, int n):
+ Regular modified cylindrical Bessel function of order n, I_n(x).</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>QtColorPicker</name>
@@ -14058,6 +14169,15 @@ have the same number of rows.</source>
     <message>
         <source>The number of iterations must be at least 1!</source>
         <translation>Ο αριθμός των επαναλήψεων θα πρέπει να είναι τουλάχιστον 1!</translation>
+    </message>
+    <message>
+        <source>Tried to smooth over more points (left+right+1=%1) than given as input (%2).</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Internal error in Savitzky-Golay algorithm.
+</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

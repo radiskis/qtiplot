@@ -928,7 +928,7 @@
     </message>
     <message>
         <source>ALT+S</source>
-        <translation>Alt+S</translation>
+        <translation type="obsolete">Alt+S</translation>
     </message>
     <message>
         <source>Screen reader</source>
@@ -4173,6 +4173,10 @@ L&apos;autocomplétion ne sera pas disponible !</translation>
     <message>
         <source>Ctrl+Shift+P</source>
         <translation>Ctrl+Shift+P</translation>
+    </message>
+    <message>
+        <source>Alt+Shift+S</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -14502,6 +14506,15 @@ Calcule la fonction de distribution cumulée pur une distribution chi² avec df 
     <message>
         <source>The number of iterations must be at least 1!</source>
         <translation>Le nombre d&apos;itérations doit être au moins de 1 !</translation>
+    </message>
+    <message>
+        <source>Tried to smooth over more points (left+right+1=%1) than given as input (%2).</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Internal error in Savitzky-Golay algorithm.
+</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

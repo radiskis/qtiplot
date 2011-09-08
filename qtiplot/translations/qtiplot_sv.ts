@@ -3976,7 +3976,7 @@ den första representerar signalen och den andra svarsfunktionen!</translation>
     </message>
     <message>
         <source>ALT+S</source>
-        <translation>ALT+V</translation>
+        <translation type="obsolete">ALT+V</translation>
     </message>
     <message>
         <source>S&amp;creen reader</source>
@@ -8728,6 +8728,10 @@ Automatisk komplettering ej tillgängligt!</translation>
     </message>
     <message>
         <source>Ctrl+Shift+P</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Alt+Shift+S</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -20920,6 +20924,15 @@ Vill du skriva över den?</translation>
     <message>
         <source>The number of iterations must be at least 1!</source>
         <translation>Antalet iterationer måste vara minsta 1!</translation>
+    </message>
+    <message>
+        <source>Tried to smooth over more points (left+right+1=%1) than given as input (%2).</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Internal error in Savitzky-Golay algorithm.
+</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
