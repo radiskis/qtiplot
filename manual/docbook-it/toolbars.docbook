@@ -19,8 +19,9 @@ I comandi di QtiPlot sono raggruppati in una serie di barre degli strumenti. Tut
     </imageobject>
   </mediaobject>
 </figure>
-<sect2 id="sec-I-comandi-della barra-degli-strumenti-Modifica">
-<title>I comandi della barra degli strumenti Modifica</title>
+
+<!-- <sect2 id="sec-I-comandi-della barra-degli-strumenti-Modifica">
+<title>I comandi della barra degli strumenti Modifica</title> -->
 <table tocentry="1" pgwide="1" frame="border">
 <title>I comandi della barra degli strumenti Modifica.</title>
 <tgroup cols="4">
@@ -76,7 +77,7 @@ I comandi di QtiPlot sono raggruppati in una serie di barre degli strumenti. Tut
 </tbody>
 </tgroup>
 </table>
-</sect2>
+<!-- </sect2> -->
 </sect1>
 
 <sect1 id="sec-file-toolbar">
@@ -94,8 +95,8 @@ La barra degli strumenti File permette di accedere con un solo clic ai comandi d
     </imageobject>
   </mediaobject>
 </figure>
-<sect2 id="sec-I-comandi-della barra-degli-strumenti-File">
-<title>I comandi della barra degli strumenti File</title>
+<!-- <sect2 id="sec-I-comandi-della barra-degli-strumenti-File">
+<title>I comandi della barra degli strumenti File</title> -->
 <table tocentry="1" pgwide="1" frame="sides">
 <title>I comandi della barra degli strumenti File.</title>
 <tgroup cols="4">
@@ -257,7 +258,7 @@ La barra degli strumenti File permette di accedere con un solo clic ai comandi d
 </tbody>
 </tgroup>
 </table>
-</sect2>
+<!-- </sect2> -->
 </sect1>
 
 
@@ -273,8 +274,9 @@ La barra degli strumenti File permette di accedere con un solo clic ai comandi d
     </imageobject>
   </mediaobject>
 </figure>
-<sect2 id="sec-I-comandi-della barra-degli-strumenti-Grafico">
-<title>I comandi della barra degli strumenti Grafico</title>
+
+<!-- <sect2 id="sec-I-comandi-della barra-degli-strumenti-Grafico"> 
+<title>I comandi della barra degli strumenti Grafico</title> -->
 <table tocentry="1" pgwide="1" frame="sides">
 <title>I comandi della barra degli strumenti Grafico.</title>
 <tgroup cols="4">
@@ -345,6 +347,7 @@ La barra degli strumenti File permette di accedere con un solo clic ai comandi d
    <entry>&add-error-bars-key;</entry>
    <entry>Aggiunge le barre di errore alla curva del grafico attivo.</entry>
   </row>
+
   <row>
    <entry>&add-remove-curve-icon;</entry>
    <entry><link linkend="add-remove-curve-cmd">&add-remove-curve-cmd;</link></entry>
@@ -363,7 +366,8 @@ La barra degli strumenti File permette di accedere con un solo clic ai comandi d
    <entry>&new-legend-key;</entry>
    <entry>Aggiunge una nuova legenda al grafico attivo.</entry>
   </row>
-  <row>
+  
+<row>
    <entry>&rescale-icon;</entry>
    <entry>&rescale-lnk;</entry>
    <entry>&rescale-key;</entry>
@@ -492,9 +496,9 @@ La barra degli strumenti File permette di accedere con un solo clic ai comandi d
 </tbody>
 </tgroup>
 </table>
-</sect2>
+<!-- </sect2>
 <sect2 id="sec-I-comandi-della barra-degli-strumenti-ingrandimento">
-<title>I comandi della barra degli strumenti di visualizzazione del grafico</title>
+<title>I comandi della barra degli strumenti di visualizzazione del grafico</title> -->
 <table tocentry="1" pgwide="1" frame="sides" id="zoom-commands-table">
 <title>I comandi di ingrandimento e riduzione della barra degli strumenti Grafico</title>
 <tgroup cols="4">
@@ -544,13 +548,13 @@ La barra degli strumenti File permette di accedere con un solo clic ai comandi d
 </tbody>
 </tgroup>
 </table>
-</sect2>
+<!-- </sect2> -->
 </sect1>
 
 <sect1 id="sec-table-toolbar">
-<title>La barra degli strumenti Tracciato da Tabelle</title>
+<title>La barra degli strumenti Tabella</title>
 
-<para>Questa barra permette di eseguire direttamente, con un solo clic, i comandi del men&ugrave; <link linkend="sec-plot-menu">Tracciato </link>. &Egrave; attiva quando &egrave; selezionata una tabella e serve per tracciare un grafico usando i dati di una tabella..</para>
+<para>Questa barra permette di eseguire direttamente, con un solo clic, i comandi del men&ugrave; <link linkend="sec-plot-menu">Grafico  </link>. &Egrave; attiva quando &egrave; selezionata una tabella e serve per tracciare un grafico usando i dati di una tabella..</para>
 <para>NdT: Per visualizzare questa barra selezionare la voce <emphasis>Tabella</emphasis> nel men&ugrave; <emphasis>Visualizza &rarr; Barre degli strumenti...</emphasis> .</para>
 
 <figure id="plot-table-toolbar">
@@ -563,10 +567,10 @@ La barra degli strumenti File permette di accedere con un solo clic ai comandi d
 </figure>
 
 
-<sect2 id="sec-I-comandi-della barra-degli-strumenti-tracciato">
-<title>I comandi della barra degli strumenti Tracciato</title>
+<!-- <sect2 id="sec-I-comandi-della barra-degli-strumenti-tracciato">
+<title>I comandi della barra degli strumenti Tracciato</title> -->
 <table tocentry="1" pgwide="1" frame="sides">
-<title>I comandi della barra degli strumenti Tracciato.</title>
+<title>I comandi della barra degli strumenti Grafico .</title>
 <tgroup cols="4">
   <colspec colname="icon" colwidth="1*" align="center"/>
   <colspec colname="command" colwidth="5*" align="left"/>
@@ -607,13 +611,13 @@ La barra degli strumenti File permette di accedere con un solo clic ai comandi d
   </row>
   <row>
    <entry>&area-icon;</entry>
-   <entry><link linkend="area-cmd">Tracciato &rarr; &area-cmd;</link></entry>
+   <entry><link linkend="area-cmd">Grafico  &rarr; &area-cmd;</link></entry>
    <entry></entry>
    <entry>Grafico ad area.</entry>
   </row>
   <row>
    <entry>&pie-icon;</entry>
-   <entry><link linkend="pie-cmd">Tracciato &rarr; &pie-cmd;</link></entry>
+   <entry><link linkend="pie-cmd">Grafico  &rarr; &pie-cmd;</link></entry>
    <entry></entry>
    <entry>Grafico a settori.</entry>
   </row>
@@ -644,11 +648,11 @@ La barra degli strumenti File permette di accedere con un solo clic ai comandi d
 </tbody>
 </tgroup>
 </table>
-</sect2>
+<!-- </sect2>
 
 <sect2 id="sec-tracciatogruppo1">
-<title>Comandi per &tablecommands-group1-title;</title>
-<table tocentry="1" pgwide="1" frame="sides" id="tablecommands-group1-table">
+<title>Comandi per &tablecommands-group1-title;</title>-->
+<table tocentry="1" pgwide="1" frame="sides" id="tablecommands-group1-table"> 
 <title>Comandi per &tablecommands-group1-title;.</title>
 <tgroup cols="4">
   <colspec colname="icon" colwidth="1*" align="center"/>
@@ -666,30 +670,30 @@ La barra degli strumenti File permette di accedere con un solo clic ai comandi d
  <tbody>
   <row>
    <entry>&line-icon;</entry>
-   <entry><link linkend="line-cmd">Tracciato &rarr; &line-cmd;</link></entry>
+   <entry><link linkend="line-cmd">Grafico  &rarr; &line-cmd;</link></entry>
    <entry></entry>
    <entry>Traccia il grafico dei dati con una linea.</entry>
   </row>
   <row>
    <entry>&horizontal-steps-icon;</entry>
-   <entry>Tracciato &rarr; &horizontal-steps-lnk;</entry>
+   <entry>Grafico  &rarr; &horizontal-steps-lnk;</entry>
    <entry></entry>
    <entry>Traccia il grafico con gradini orizzontali.</entry>
   </row>
   <row>
    <entry>&vertical-steps-icon;</entry>
-   <entry>Tracciato &rarr; &vertical-steps-lnk;</entry>
+   <entry>Grafico  &rarr; &vertical-steps-lnk;</entry>
    <entry></entry>
    <entry>Traccia il grafico con gradini verticali.</entry>
   </row>
 </tbody>
 </tgroup>
 </table>
-</sect2>
+<!--</sect2>
 
 <sect2 id="sec-tracciatogruppo2">
-<title>Comandi per &tablecommands-group2-title;</title>
-<table tocentry="1" pgwide="1" frame="sides" id="tablecommands-group2-table">
+<title>Comandi per &tablecommands-group2-title;</title> -->
+<table tocentry="1" pgwide="1" frame="sides" id="tablecommands-group2-table"> 
 <title>Comandi per &tablecommands-group2-title;.</title>
 <tgroup cols="4">
   <colspec colname="icon" colwidth="1*" align="center"/>
@@ -707,23 +711,22 @@ La barra degli strumenti File permette di accedere con un solo clic ai comandi d
  <tbody>
   <row>
    <entry>&scatter-icon;</entry>
-   <entry><link linkend="scatter-cmd">Tracciato &rarr; &scatter-cmd;</link></entry>
+   <entry><link linkend="scatter-cmd">Grafico  &rarr; &scatter-cmd;</link></entry>
    <entry></entry>
    <entry>Traccia il grafico con punti dispersi, non collegati .</entry>
   </row>
   <row>
    <entry>&vertical-drop-lines-icon;</entry>
-   <entry><link linkend="vertical-drop-lines-cmd">Tracciato &rarr; &vertical-drop-lines-cmd;</link></entry>
+   <entry><link linkend="vertical-drop-lines-cmd">Grafico  &rarr; &vertical-drop-lines-cmd;</link></entry>
    <entry></entry>
    <entry>Traccia il grafico con aste verticali.</entry>
   </row>
 </tbody>
 </tgroup>
 </table>
-</sect2>
 
-<sect2 id="sec-tracciatogruppo3">
-<title>Comandi per &tablecommands-group3-title;</title>
+<!-- <sect2 id="sec-tracciatogruppo3">
+<title>Comandi per &tablecommands-group3-title;</title> -->
 <table tocentry="1" pgwide="1" frame="sides" id="tablecommands-group3-table">
 <title>Comandi per &tablecommands-group3-title;.</title>
 <tgroup cols="4">
@@ -742,23 +745,23 @@ La barra degli strumenti File permette di accedere con un solo clic ai comandi d
  <tbody>
   <row>
    <entry>&line-symbol-icon;</entry>
-   <entry><link linkend="line-symbol-cmd">Tracciato &rarr; &line-symbol-cmd;</link></entry>
+   <entry><link linkend="line-symbol-cmd">Grafico  &rarr; &line-symbol-cmd;</link></entry>
    <entry></entry>
    <entry>Traccia il grafico con una linea e indica i punti.</entry>
   </row>
   <row>
    <entry>&spline-icon;</entry>
-   <entry><link linkend="spline-cmd">Tracciato &rarr; &spline-cmd;</link></entry>
+   <entry><link linkend="spline-cmd">Grafico  &rarr; &spline-cmd;</link></entry>
    <entry></entry>
    <entry>Traccia il grafico con una linea flessibile, spline.</entry>
   </row>
 </tbody>
 </tgroup>
 </table>
-</sect2>
+<!-- </sect2>
 
 <sect2 id="sec-tracciatogruppo4">
-<title>Comandi per &tablecommands-group4-title;</title>
+<title>Comandi per &tablecommands-group4-title;</title> -->
 <table tocentry="1" pgwide="1" frame="sides" id="tablecommands-group4-table">
 <title>Comandi per &tablecommands-group4-title;.</title>
 <tgroup cols="4">
@@ -777,35 +780,35 @@ La barra degli strumenti File permette di accedere con un solo clic ai comandi d
  <tbody>
   <row>
    <entry>&columns-icon;</entry>
-   <entry><link linkend="columns-cmd">Tracciato &rarr; &columns-cmd;</link></entry>
+   <entry><link linkend="columns-cmd">Grafico  &rarr; &columns-cmd;</link></entry>
    <entry></entry>
    <entry>Traccia il grafico con colonne.</entry>
   </row>
   <row>
    <entry>&rows-icon;</entry>
-   <entry><link linkend="rows-cmd">Tracciato &rarr; &rows-cmd;</link></entry>
+   <entry><link linkend="rows-cmd">Grafico  &rarr; &rows-cmd;</link></entry>
    <entry></entry>
    <entry>Traccia il grafico con barre orizzontali.</entry>
   </row>
   <row>
    <entry>&stack-column-icon;</entry>
-   <entry><link linkend="stack-column-cmd">Tracciato &rarr; Barre e colonne speciali &rarr; &stack-column-cmd;</link></entry>
+   <entry><link linkend="stack-column-cmd">Grafico  &rarr; Barre e colonne speciali &rarr; &stack-column-cmd;</link></entry>
    <entry></entry>
    <entry>Traccia il grafico con colonne impilate.</entry>
   </row>
   <row>
    <entry>&stack-bar-icon;</entry>
-   <entry><link linkend="stack-bar-cmd">Tracciato &rarr; Barre e colonne speciali &rarr; &stack-bar-cmd;</link></entry>
+   <entry><link linkend="stack-bar-cmd">Grafico  &rarr; Barre e colonne speciali &rarr; &stack-bar-cmd;</link></entry>
    <entry></entry>
    <entry>Traccia il grafico con barre impilate.</entry>
   </row>
 </tbody>
 </tgroup>
 </table>
-</sect2>
+<!-- </sect2>
 
 <sect2 id="sec-tracciatogruppo5">
-<title>Comandi per &tablecommands-group5-title;</title>
+<title>Comandi per &tablecommands-group5-title;</title> -->
 <table tocentry="1" pgwide="1" frame="sides" id="tablecommands-group5-table">
 <title>Comandi per &tablecommands-group5-title;.</title>
 <tgroup cols="4">
@@ -824,25 +827,25 @@ La barra degli strumenti File permette di accedere con un solo clic ai comandi d
  <tbody>
   <row>
    <entry>&box-plot-icon;</entry>
-   <entry><link linkend="box-plot-cmd">Tracciato &rarr; &box-plot-cmd;</link></entry>
+   <entry><link linkend="box-plot-cmd">Grafico  &rarr; &box-plot-cmd;</link></entry>
    <entry></entry>
    <entry>Traccia un grafico scatola-baffi.</entry>
   </row>
   <row>
    <entry>&histogram-icon;</entry>
-   <entry><link linkend="histogram-cmd">Tracciato &rarr; &histogram-cmd;</link></entry>
+   <entry><link linkend="histogram-cmd">Grafico  &rarr; &histogram-cmd;</link></entry>
    <entry></entry>
    <entry>Traccia un istogramma.</entry>
   </row>
   <row>
    <entry>&stacked-histogram-icon;</entry>
-   <entry><link linkend="stacked-histogram-cmd">Tracciato &rarr; &stacked-histogram-cmd;</link></entry>
+   <entry><link linkend="stacked-histogram-cmd">Grafico  &rarr; &stacked-histogram-cmd;</link></entry>
    <entry></entry>
    <entry>Traccia un grafico istogramma impilato in tavole soprastanti.</entry>
   </row>
   <row>
    <entry>&stem-and-leaf-icon;</entry>
-   <entry><link linkend="stem-and-leaf-cmd">Tracciato &rarr; &stem-and-leaf-cmd;</link></entry>
+   <entry><link linkend="stem-and-leaf-cmd">Grafico  &rarr; &stem-and-leaf-cmd;</link></entry>
    <entry></entry>
    <entry>Traccia un grafico ramo-foglie.</entry>
   </row>
@@ -850,10 +853,10 @@ La barra degli strumenti File permette di accedere con un solo clic ai comandi d
 </tbody>
 </tgroup>
 </table>
-</sect2>
+<!-- </sect2>
 
 <sect2 id="sec-tracciatogruppo6">
-<title>Comandi per &tablecommands-group6-title;</title>
+<title>Comandi per &tablecommands-group6-title;</title> -->
 <table tocentry="1" pgwide="1" frame="sides" id="tablecommands-group6-table">
 <title>Comandi per &tablecommands-group6-title;.</title>
 <tgroup cols="4">
@@ -872,23 +875,23 @@ La barra degli strumenti File permette di accedere con un solo clic ai comandi d
  <tbody>
   <row>
    <entry>&vectors-xyxy-icon;</entry>
-   <entry><link linkend="vectors-xyxy-cmd">Tracciato &rarr; &vectors-xyxy-cmd;</link></entry>
+   <entry><link linkend="vectors-xyxy-cmd">Grafico  &rarr; &vectors-xyxy-cmd;</link></entry>
    <entry></entry>
    <entry>Traccia un grafico del tipo vettori XYXY.</entry>
   </row>
   <row>
    <entry>&vectors-xyam-icon;</entry>
-   <entry><link linkend="vectors-xyam-cmd">Tracciato &rarr; &vectors-xyam-cmd;</link></entry>
+   <entry><link linkend="vectors-xyam-cmd">Grafico  &rarr; &vectors-xyam-cmd;</link></entry>
    <entry></entry>
    <entry>Traccia un grafico del tipo vettori XYAM.</entry>
   </row>
 </tbody>
 </tgroup>
 </table>
-</sect2>
+<!-- </sect2>
 
 <sect2 id="sec-tracciatogruppo7">
-<title>Comandi per &tablecommands-group7-title;</title>
+<title>Comandi per &tablecommands-group7-title;</title> -->
 <table tocentry="1" pgwide="1" frame="sides" id="tablecommands-group7-table">
 <title>Comandi per &tablecommands-group7-title;.</title>
 <tgroup cols="4">
@@ -907,59 +910,59 @@ La barra degli strumenti File permette di accedere con un solo clic ai comandi d
  <tbody>
   <row>
    <entry>&double-y-icon;</entry>
-   <entry><link linkend="double-y-cmd">Tracciato &rarr; &double-y-cmd;</link></entry>
+   <entry><link linkend="double-y-cmd">Grafico  &rarr; &double-y-cmd;</link></entry>
    <entry></entry>
    <entry>Traccia un grafico avente due assi Y.</entry>
   </row>
   <row>
    <entry>&waterfall-plot-icon;</entry>
-   <entry><link linkend="waterfall-plot-cmd">Tracciato &rarr; &waterfall-plot-cmd;</link></entry>
+   <entry><link linkend="waterfall-plot-cmd">Grafico  &rarr; &waterfall-plot-cmd;</link></entry>
    <entry></entry>
    <entry>Traccia un grafico multistrato con la serie di colonne selezionate.</entry>
   </row>
   <row>
    <entry>&zoom-plot-icon;</entry>
-   <entry><link linkend="zoom-plot-cmd">Tracciato &rarr; &zoom-plot-cmd;</link></entry>
+   <entry><link linkend="zoom-plot-cmd">Grafico  &rarr; &zoom-plot-cmd;</link></entry>
    <entry></entry>
    <entry>Traccia un grafico e nella stessa finestra dispone un ingrandimento di una sua porzione.</entry>
   </row>
   <row>
    <entry>&vertical-2-layers-icon;</entry>
-   <entry><link linkend="vertical-2-layers-cmd">Tracciato &rarr; &vertical-2-layers-cmd;</link></entry>
+   <entry><link linkend="vertical-2-layers-cmd">Grafico  &rarr; &vertical-2-layers-cmd;</link></entry>
    <entry></entry>
    <entry>Traccia il grafico e crea due tavole allineate verticalmente nella stessa finestra.</entry>
   </row>
   <row>
    <entry>&horizontal-2-layers-icon;</entry>
-   <entry><link linkend="horizontal-2-layers-cmd">Tracciato &rarr; &horizontal-2-layers-cmd;</link></entry>
+   <entry><link linkend="horizontal-2-layers-cmd">Grafico  &rarr; &horizontal-2-layers-cmd;</link></entry>
    <entry></entry>
    <entry>Traccia il grafico e crea due tavole allineate orizzontalmente nella stessa finestra.</entry>
   </row>
   <row>
    <entry>&four-layers-icon;</entry>
-   <entry><link linkend="four-layers-cmd">Tracciato &rarr; &four-layers-cmd;</link></entry>
+   <entry><link linkend="four-layers-cmd">Grafico  &rarr; &four-layers-cmd;</link></entry>
    <entry></entry>
    <entry>Traccia il grafico e crea 4 tavole nella stessa finestra.</entry>
   </row>
   <row>
    <entry>&stacked-layers-icon;</entry>
-   <entry><link linkend="stacked-layers-cmd">Tracciato &rarr; &stacked-layers-cmd;</link></entry>
+   <entry><link linkend="stacked-layers-cmd">Grafico  &rarr; &stacked-layers-cmd;</link></entry>
    <entry></entry>
    <entry>Per ogni colonna selezionata, traccia un grafico in una tavola diversa e soprastanti le tavole nella stessa finestra.</entry>
   </row>
   <row>
    <entry>&custom-panel-icon;</entry>
-   <entry><link linkend="custom-panel-cmd">Tracciato &rarr; &custom-panel-cmd;</link></entry>
+   <entry><link linkend="custom-panel-cmd">Grafico  &rarr; &custom-panel-cmd;</link></entry>
    <entry></entry>
    <entry>Apre il dialogo <link linkend="arrange-layers-dialog">Posizionare le tavole</link> per modificare la loro disposizione.</entry>
   </row>
 </tbody>
 </tgroup>
 </table>
-</sect2>
+<!-- </sect2>
 
 <sect2 id="sec-tracciatogruppo8">
-<title>Comandi per &tablecommands-group8-title;</title>
+<title>Comandi per &tablecommands-group8-title;</title> -->
 <table tocentry="1" pgwide="1" frame="sides" id="tablecommands-group8-table">
 <title>Comandi per &tablecommands-group8-title;.</title>
 <tgroup cols="4">
@@ -978,32 +981,32 @@ La barra degli strumenti File permette di accedere con un solo clic ai comandi d
  <tbody>
   <row>
    <entry>&bars-icon;</entry>
-   <entry><link linkend="bars-cmd">Tracciato &rarr; &bars-cmd;</link></entry>
+   <entry><link linkend="bars-cmd">Grafico  &rarr; &bars-cmd;</link></entry>
    <entry></entry>
    <entry>Traccia il grafico con barre 3D.</entry>
   </row>
   <row>
    <entry>&ribbons-icon;</entry>
-   <entry><link linkend="ribbons-cmd">Tracciato &rarr; &ribbons-cmd;</link></entry>
+   <entry><link linkend="ribbons-cmd">Grafico  &rarr; &ribbons-cmd;</link></entry>
    <entry></entry>
    <entry>Traccia il grafico con strisce 3D.</entry>
   </row>
   <row>
    <entry>&scatter3d-icon;</entry>
-   <entry><link linkend="scatter3d-cmd">Tracciato &rarr; &scatter3d-cmd;</link></entry>
+   <entry><link linkend="scatter3d-cmd">Grafico  &rarr; &scatter3d-cmd;</link></entry>
    <entry></entry>
    <entry>Traccia il grafico a dispersione in 3D.</entry>
   </row>
   <row>
    <entry>&trajectory-icon;</entry>
-   <entry><link linkend="trajectory-cmd">Tracciato &rarr; &trajectory-cmd;</link></entry>
+   <entry><link linkend="trajectory-cmd">Grafico  &rarr; &trajectory-cmd;</link></entry>
    <entry></entry>
    <entry>Traccia un grafico con le traiettorie.</entry>
   </row>
 </tbody>
 </tgroup>
 </table>
-</sect2>
+<!--</sect2> -->
 </sect1>
 
 <!--Toolbar image updated and missing items added. SRB (09/30/2010 ) -->
@@ -1021,8 +1024,8 @@ La barra degli strumenti File permette di accedere con un solo clic ai comandi d
   </mediaobject>
 </figure>
 
-<sect2 id="sec-colonna">
-<title>I comandi della barra degli strumenti Colonna</title>
+<!-- <sect2 id="sec-colonna">
+<title>I comandi della barra degli strumenti Colonna</title> -->
 <table tocentry="1" pgwide="1" frame="sides">
 <title>I comandi della barra degli strumenti Colonna.</title>
 <tgroup cols="4">
@@ -1043,21 +1046,28 @@ La barra degli strumenti File permette di accedere con un solo clic ai comandi d
    <entry>&set-column-values-icon;</entry>
    <entry><link linkend="set-column-values-cmd">Tabella &rarr; &set-column-values-cmd;</link></entry>
    <entry>&set-column-values-key;</entry>
-   <entry>Compila una colonna usando una funzione .</entry>
+   <entry>Compila la colonna usando una funzione .</entry>
   </row>
 
   <row>
    <entry>&fill-column-with-row-number-icon;</entry>
    <entry><link linkend="fill-column-with-row-number-cmd">Tabella &rarr; &fill-column-with-row-number-cmd;</link></entry>
    <entry>&fill-column-with-row-number-key;</entry>
-   <entry>Compila una colonna usando i corrispondenti numeri di riga.</entry>
+   <entry>Compila la colonna usando i corrispondenti numeri di riga.</entry>
   </row>
-  <row>
 
+  <row>
    <entry>&fill-column-with-random-values-icon;</entry>
    <entry><link linkend="fill-column-with-random-values-cmd">Tabella &rarr; &fill-column-with-random-values-cmd;</link></entry>
    <entry>&fill-column-with-random-values-key;</entry>
-   <entry>Compila una colonna con valori casuali.</entry>
+   <entry>Compila la colonna con valori casuali.</entry>
+  </row>
+
+  <row>
+   <entry>&fill-column-with-normal-random-values-icon;</entry>
+   <entry><link linkend="fill-column-with-normal-random-values-cmd">Table -> &fill-column-with-normal-random-values-cmd;</link></entry>
+   <entry>&fill-column-with-normal-random-values-key;</entry>
+   <entry>Compila la colonna con  di una distribuzione normale di valori casuali.</entry>
   </row>
 
   <row>
@@ -1073,6 +1083,7 @@ La barra degli strumenti File permette di accedere con un solo clic ai comandi d
    <entry>&statistics-on-columns-key;</entry>
    <entry>Esegue calcoli statistici sui valori delle colonne selezionate.</entry>
   </row>
+
   <row>
    <entry>&statistics-on-rows-icon;</entry>
    <entry><link linkend="statistics-on-rows-cmd">Analisi &rarr; &statistics-on-rows-cmd;</link></entry>
@@ -1117,6 +1128,7 @@ La barra degli strumenti File permette di accedere con un solo clic ai comandi d
    <entry>&set-column-as-none-key;</entry>
    <entry>Stabilisce che, nel grafico, la colonna sia ignorata.</entry>
   </row>
+
   <row>
    <entry>&move-column-first-icon;</entry>
    <entry><link linkend="move-column-first-cmd">Tabella &rarr; &move-column-first-cmd;</link></entry>
@@ -1178,11 +1190,17 @@ La barra degli strumenti File permette di accedere con un solo clic ai comandi d
 </tbody>
 </tgroup>
 </table>
-</sect2>
+<!-- </sect2> -->
 </sect1>
 
+
+<!-- AGGIUNGERE ELEMENTI NELLA PARTE PRECEDENTE -->
+
+
+
+
 <sect1 id="sec-plot3d-toolbar">
-<title>La barra degli strumenti Superficie 3D</title>
+<title>La barra degli strumenti Grafico 3D</title>
 
 <para></para>
 <figure id="plot-plot3d-toolbar">
@@ -1194,12 +1212,10 @@ La barra degli strumenti File permette di accedere con un solo clic ai comandi d
   </mediaobject>
 </figure>
 
-
-
-<sect2 id="sec-grafici3d">
-<title>I comandi della barra degli strumenti Superficie 3D</title>
+<!--<sect2 id="sec-grafici3d">
+<title>I comandi della barra degli strumenti Grafico 3D</title> -->
 <table tocentry="1" pgwide="1" frame="sides">
-<title>I comandi della barra degli strumenti Superficie 3D.</title>
+<title>I comandi della barra degli strumenti Grafico 3D.</title>
 <tgroup cols="4">
   <colspec colname="icon" colwidth="1*" align="center"/>
   <colspec colname="command" colwidth="5*" align="left"/>
@@ -1216,152 +1232,153 @@ La barra degli strumenti File permette di accedere con un solo clic ai comandi d
  <tbody>
   <row>
    <entry>&frame-icon;</entry>
-   <entry><link linkend="frame-cmd">Superficie 3D &rarr; &frame-cmd;</link></entry>
+   <entry><link linkend="frame-cmd">Grafico 3D &rarr; &frame-cmd;</link></entry>
    <entry></entry>
    <entry>Disegna solo i tre assi.</entry>
   </row>
   <row>
    <entry>&box-icon;</entry>
-   <entry><link linkend="box-cmd">Superficie 3D &rarr; &box-cmd;</link></entry>
+   <entry><link linkend="box-cmd">Grafico 3D &rarr; &box-cmd;</link></entry>
    <entry></entry>
    <entry>Disegna gli assi e i piani; crea una scatola intorno al grafico.</entry>
   </row>
   <row>
    <entry>&no-axes-icon;</entry>
-   <entry><link linkend="no-axes-cmd">Superficie 3D &rarr; &no-axes-cmd;</link></entry>
+   <entry><link linkend="no-axes-cmd">Grafico 3D &rarr; &no-axes-cmd;</link></entry>
    <entry></entry>
    <entry>Non disegna n&eacute; assi n&eacute; scatola.</entry>
   </row>
   <row>
    <entry>&front-grid-icon;</entry>
-   <entry><link linkend="front-grid-cmd">Superficie 3D &rarr; &front-grid-cmd;</link></entry>
+   <entry><link linkend="front-grid-cmd">Grafico 3D &rarr; &front-grid-cmd;</link></entry>
    <entry></entry>
    <entry>Disegna una griglia sul piano anteriore.</entry>
   </row>
   <row>
    <entry>&back-grid-icon;</entry>
-   <entry><link linkend="back-grid-cmd">Superficie 3D &rarr; &back-grid-cmd;</link></entry>
+   <entry><link linkend="back-grid-cmd">Grafico 3D &rarr; &back-grid-cmd;</link></entry>
    <entry></entry>
    <entry>Disegna una griglia sul piano posteriore.</entry>
   </row>
   <row>
    <entry>&left-grid-icon;</entry>
-   <entry><link linkend="left-grid-cmd">Superficie 3D &rarr; &left-grid-cmd;</link></entry>
+   <entry><link linkend="left-grid-cmd">Grafico 3D &rarr; &left-grid-cmd;</link></entry>
    <entry></entry>
    <entry>Disegna una griglia sul piano sinistro.</entry>
   </row>
   <row>
    <entry>&right-grid-icon;</entry>
-   <entry><link linkend="right-grid-cmd">Superficie 3D &rarr; &right-grid-cmd;</link></entry>
+   <entry><link linkend="right-grid-cmd">Grafico 3D &rarr; &right-grid-cmd;</link></entry>
    <entry></entry>
    <entry>Disegna una griglia sul piano destro.</entry>
   </row>
   <row>
    <entry>&top-grid-icon;</entry>
-   <entry><link linkend="top-grid-cmd">Superficie 3D &rarr; &top-grid-cmd;</link></entry>
+   <entry><link linkend="top-grid-cmd">Grafico 3D &rarr; &top-grid-cmd;</link></entry>
    <entry></entry>
    <entry>Disegna una griglia sul piano superiore.</entry>
   </row>
   <row>
    <entry>&floor-grid-icon;</entry>
-   <entry><link linkend="floor-grid-cmd">Superficie 3D &rarr; &floor-grid-cmd;</link></entry>
+   <entry><link linkend="floor-grid-cmd">Grafico 3D &rarr; &floor-grid-cmd;</link></entry>
    <entry></entry>
    <entry>Disegna una griglia sul piano inferiore.</entry>
   </row>
 
   <row>
    <entry>&perspective-icon;</entry>
-   <entry><link linkend="perspective-cmd">Superficie 3D &rarr; &perspective-cmd;</link></entry>
+   <entry><link linkend="perspective-cmd">Grafico 3D &rarr; &perspective-cmd;</link></entry>
    <entry></entry>
    <entry>Attiva e disattiva la prospettiva 3D.</entry>
   </row>
   <row>
    <entry>&reset-rotation-icon;</entry>
-   <entry><link linkend="reset-rotation-cmd">Superficie 3D &rarr; &reset-rotation-cmd;</link></entry>
+   <entry><link linkend="reset-rotation-cmd">Grafico 3D &rarr; &reset-rotation-cmd;</link></entry>
    <entry></entry>
    <entry>Ripristina la posizione originale dopo una rotazione.</entry>
   </row>
   <row>
    <entry>&autoscale-icon;</entry>
-   <entry><link linkend="autoscale-cmd">Superficie 3D &rarr; &autoscale-cmd;</link></entry>
+   <entry><link linkend="autoscale-cmd">Grafico 3D &rarr; &autoscale-cmd;</link></entry>
    <entry></entry>
    <entry>Adatta le dimensioni del grafico alle dimensioni della finestra che lo contiene. Ripristina le dimensioni degli assi.</entry>
   </row>
   <row>
    <entry>&bar-style-icon;</entry>
-   <entry><link linkend="bar-style-cmd">Superficie 3D &rarr; &bar-style-cmd;</link></entry>
+   <entry><link linkend="bar-style-cmd">Grafico 3D &rarr; &bar-style-cmd;</link></entry>
    <entry></entry>
    <entry>Modifica l'aspetto delle barre.</entry>
   </row>
   <row>
    <entry>&dots-icon;</entry>
-   <entry><link linkend="dots-cmd">Superficie 3D &rarr; &dots-cmd;</link></entry>
+   <entry><link linkend="dots-cmd">Grafico 3D &rarr; &dots-cmd;</link></entry>
    <entry></entry>
    <entry>Traccia il grafico a dispersione con dei punti.</entry>
   </row>
   <row>
    <entry>&cones-icon;</entry>
-   <entry><link linkend="cones-cmd">Superficie 3D &rarr; &cones-cmd;</link></entry>
+   <entry><link linkend="cones-cmd">Grafico 3D &rarr; &cones-cmd;</link></entry>
    <entry></entry>
    <entry>Traccia il grafico a dispersione con dei coni.</entry>
   </row>
   <row>
    <entry>&cross-hairs-icon;</entry>
-   <entry><link linkend="cross-hairs-cmd">Superficie 3D &rarr; &cross-hairs-cmd;</link></entry>
+   <entry><link linkend="cross-hairs-cmd">Grafico 3D &rarr; &cross-hairs-cmd;</link></entry>
    <entry></entry>
    <entry>Traccia il grafico a dispersione con delle crocette.</entry>
   </row>
   <row>
    <entry>&mesh-icon;</entry>
-   <entry><link linkend="mesh-cmd">Superficie 3D &rarr; &mesh-cmd;</link></entry>
+   <entry><link linkend="mesh-cmd">Grafico 3D &rarr; &mesh-cmd;</link></entry>
    <entry></entry>
    <entry>Traccia un grafico di superficie visualizzando solo il reticolo.</entry>
   </row>
   <row>
    <entry>&mesh-hidden-icon;</entry>
-   <entry><link linkend="mesh-hidden-cmd">Superficie 3D &rarr; &mesh-hidden-cmd;</link></entry>
+   <entry><link linkend="mesh-hidden-cmd">Grafico 3D &rarr; &mesh-hidden-cmd;</link></entry>
    <entry></entry>
    <entry>Traccia un grafico di superficie visualizzando il reticolo ma senza le linee nascoste (non trasparente ).</entry>
   </row>
   <row>
    <entry>&polygons-icon;</entry>
-   <entry><link linkend="polygons-cmd">Superficie 3D &rarr; &polygons-cmd;</link></entry>
+   <entry><link linkend="polygons-cmd">Grafico 3D &rarr; &polygons-cmd;</link></entry>
    <entry></entry>
    <entry>Disegna solo la superficie.</entry>
   </row>
   <row>
    <entry>&mesh-polygons-icon;</entry>
-   <entry><link linkend="mesh-polygons-cmd">Superficie 3D &rarr; &mesh-polygons-cmd;</link></entry>
+   <entry><link linkend="mesh-polygons-cmd">Grafico 3D &rarr; &mesh-polygons-cmd;</link></entry>
    <entry></entry>
    <entry>Disegna la superficie con il reticolo.</entry>
   </row>
   <row>
    <entry>&floor-icon;</entry>
-   <entry><link linkend="floor-cmd">Superficie 3D &rarr; &floor-cmd;</link></entry>
+   <entry><link linkend="floor-cmd">Grafico 3D &rarr; &floor-cmd;</link></entry>
    <entry></entry>
    <entry>Visualizza la proiezione del grafico sul piano inferiore.</entry>
   </row>
   <row>
    <entry>&isolines-icon;</entry>
-   <entry><link linkend="isolines-cmd">Superficie 3D &rarr; &isolines-cmd;</link></entry>
+   <entry><link linkend="isolines-cmd">Grafico 3D &rarr; &isolines-cmd;</link></entry>
    <entry></entry>
    <entry>Traccia la proiezione delle isolinee o curve di livello sul piano inferiore.</entry>
   </row>
   <row>
    <entry>&empty-icon;</entry>
-   <entry><link linkend="empty-cmd">Superficie 3D &rarr; &empty-cmd;</link></entry>
+   <entry><link linkend="empty-cmd">Grafico 3D &rarr; &empty-cmd;</link></entry>
    <entry></entry>
    <entry>Piano inferiore vuoto.</entry>
   </row>
   <row>
    <entry>&animation-icon;</entry>
-   <entry><link linkend="animation-cmd">Superficie 3D &rarr; &animation-cmd;</link></entry>
+   <entry><link linkend="animation-cmd">Grafico 3D &rarr; &animation-cmd;</link></entry>
    <entry></entry>
    <entry>Attiva e disattiva l'animazione, rotazione del grafico 3D.</entry>
   </row>
 </tbody>
 </tgroup>
 </table>
-</sect2>
+
+<!-- </sect2> -->
 </sect1>
 

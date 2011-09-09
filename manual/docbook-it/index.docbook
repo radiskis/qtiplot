@@ -3,8 +3,8 @@
 
   <!ENTITY appname "QtiPlot">
   <!ENTITY kappname "&appname;">
-  <!ENTITY kappversion "0.9.8.4">
-  <!ENTITY version "0.9.8.4">
+  <!ENTITY kappversion "0.9.8.3">
+  <!ENTITY version "0.9.8.3">
   <!ENTITY kappdirectory "qtiplot">
   <!ENTITY kappdownload "http://soft.proindependent.com/download.html" >
   <!ENTITY pic-dir "pics/" >
@@ -58,17 +58,21 @@
 <!ENTITY new-table-lnk '<link linkend="new-table-cmd"><command>Nuovo &rarr; Nuova tabella</command></link>'>
   <!ENTITY new-table-key "<keycode>Ctrl-T</keycode>">
   <!ENTITY new-table-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/table.png"/></imageobject></inlinemediaobject>'>
+
 <!ENTITY new-matrix-cmd "<command>Nuovo &rarr; Nuova matrice</command>">
 <!ENTITY new-matrix-lnk '<link linkend="new-matrix-cmd"><command>Nuovo &rarr; Nuova matrice</command></link>'>
   <!ENTITY new-matrix-key "<keycode>Ctrl-M</keycode>">
   <!ENTITY new-matrix-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/new_matrix.png"/></imageobject></inlinemediaobject>'>
+
 <!ENTITY new-note-cmd "<command>Nuovo &rarr; Nuove annotazioni</command>">
 <!ENTITY new-note-lnk '<link linkend="new-note-cmd"><command>Nuovo &rarr; Nuove annotazioni</command></link>'>
   <!ENTITY new-note-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/new_note.png"/></imageobject></inlinemediaobject>'>
+
 <!ENTITY new-graph-cmd "<command>Nuovo &rarr; Nuovo grafico</command>">
 <!ENTITY new-graph-lnk '<link linkend="new-graph-cmd"><command>Nuovo &rarr; Nuovo grafico</command></link>'>
   <!ENTITY new-graph-key "<keycode>Ctrl-G</keycode>">
   <!ENTITY new-graph-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/new_graph.png"/></imageobject></inlinemediaobject>'>
+
 <!ENTITY new-function-plot-cmd "<command>Nuovo &rarr; Nuovo grafico di funzione</command>">
 <!ENTITY new-function-plot-lnk '<link linkend="new-function-plot-cmd"><command>Nuovo &rarr; Nuovo grafico di funzione</command></link>'>
   <!ENTITY new-function-plot-key "<keycode>Ctrl-F</keycode>">
@@ -91,21 +95,26 @@
 <!ENTITY recent-projects-cmd "<command>Progetti recenti</command>">
 <!ENTITY recent-projects-lnk '<link linkend="recent-projects-cmd"><command>Progetti recenti</command></link>'>
 <!ENTITY close-cmd "<command>Chiudi</command>">
+
 <!ENTITY open-image-file-cmd "<command>Apri un file immagine</command>">
 <!ENTITY open-image-file-lnk '<link linkend="open-image-file-cmd"><command>Apri un file immagine</command></link>'>
   <!ENTITY open-image-file-key "<keycode>Ctrl-I</keycode>">
+
 <!ENTITY import-image-cmd "<command>Importa immagine...</command>">
 <!ENTITY import-image-lnk '<link linkend="import-image-cmd"><command>Importa immagine...</command></link>'>
+
 <!ENTITY save-project-cmd "<command>Salva il progetto</command>">
 <!ENTITY save-project-lnk '<link linkend="save-project-cmd"><command>Salva il progetto</command></link>'>
   <!ENTITY save-project-key "<keycode>Ctrl-S</keycode>">
   <!ENTITY save-project-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/filesave.png"/></imageobject></inlinemediaobject>'>
+
 <!ENTITY save-project-as-cmd "<command>Salva il progetto come...</command>">
 <!ENTITY save-project-as-lnk '<link linkend="save-project-as-cmd"><command>Salva il progetto come...</command></link>'>
 <!ENTITY save-project-as-key "<keycode>Ctrl-Maiusc-S</keycode>">
-<!-- aggiunta per salva finestra -->
-<!ENTITY save-windows-as-cmd "<command>Salva la finestra come...</command>">
-<!ENTITY save-windows-as-lnk '<link linkend="save-windows-as-cmd"><command>Salva la finestra come...</command></link>'>
+
+<!ENTITY save-window-as-cmd "<command>Salva la finestra come...</command>">
+<!ENTITY save-window-as-lnk '<link linkend="save-window-as-cmd"><command>Salva la finestra come...</command> command</link>'>
+ <!ENTITY save-window-as-key "<keycode>Ctrl-Shift-S</keycode>">
 
 <!--Open Excel and Open ODF spreadsheet commands added by SRB -->
 
@@ -136,7 +145,6 @@
 <!--export-cmd added SRB -->
 <!ENTITY export-cmd "<command>Esporta</command>">
 <!ENTITY export-lnk '<link linkend="export-cmd"><command>Esporta</command></link>'>
-
 
 <!ENTITY odf-presentation-cmd "<command>File &rarr; Crea un Open Document Presentation...</command>">
 <!ENTITY odf-presentation-lnk '<link linkend="odf-presentation-cmd"><command>File &rarr; Crea un Open Document Presentation...</command></link>'>
@@ -182,20 +190,25 @@
 
 <!ENTITY quit-cmd "<command>Esci</command>">
 <!ENTITY quit-lnk '<link linkend="quit-cmd"><command>Esci</command></link>'>
+<!--OLD  ENTITY quit-key "<keycode>Alt-F4</keycode>"-->
 <!ENTITY quit-key "<keycode>Ctrl-Q</keycode>">
 <!ENTITY quit-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/quit.png"/></imageobject></inlinemediaobject>'>
-<!--
-              menu: Edit Modifica
--->
+
+<!--       menu: Edit Modifica     -->
+
+<!ENTITY autocomplete-key "<keycode>Ctrl+U</keycode>">
+
 <!ENTITY edit-menu-lnk '<link linkend="sec-edit-menu">Modifica</link>'>
 <!ENTITY undo-cmd "<command>Annulla</command>">
 <!ENTITY undo-lnk '<link linkend="undo-cmd"><command>Annulla</command></link>'>
   <!ENTITY undo-key "<keycode>Ctrl-Z</keycode>">
   <!ENTITY undo-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/undo.png"/></imageobject></inlinemediaobject>'>
+
 <!ENTITY redo-cmd "<command>Ripristina</command>">
 <!ENTITY redo-lnk '<link linkend="redo-cmd"><command>Ripristina</command></link>'>
-  <!ENTITY redo-key "<keycode>Ctrl-Shift-Z (Ctrl-Maiusc-Z)</keycode>">
-  <!ENTITY redo-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/redo.png"/></imageobject></inlinemediaobject>'>
+<!-- Old: ENTITY redo-key "<keycode>Ctrl-R</keycode>" -->
+<!ENTITY redo-key "<keycode>Ctrl-Shift-Z (Ctrl-Maiusc-Z)</keycode>">
+<!ENTITY redo-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/redo.png"/></imageobject></inlinemediaobject>'>
 
 <!ENTITY cut-cmd "<command>Taglia</command>">
 <!ENTITY cut-lnk '<link linkend="cut-cmd">&cut-cmd;</link>'>
@@ -231,10 +244,12 @@
 <!ENTITY plot-wizard-lnk '<link linkend="plot-wizard-cmd"><command>Assistente per il grafico</command></link>'>
   <!ENTITY plot-wizard-key "<keycode>Ctrl-Alt-W</keycode>">
   <!ENTITY plot-wizard-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/wizard.png"/></imageobject></inlinemediaobject>'>
+
 <!ENTITY project-explorer-cmd "<command>Esploratore dei progetti</command>">
 <!ENTITY project-explorer-lnk '<link linkend="project-explorer-cmd"><command>Esploratore dei progetti</command></link>'>
   <!ENTITY project-explorer-key "<keycode>Ctrl-E</keycode>">
   <!ENTITY project-explorer-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/folder.png"/></imageobject></inlinemediaobject>'>
+
 <!ENTITY results-log-cmd "<command>Risultati delle analisi</command>">
 <!ENTITY results-log-lnk '<link linkend="results-log-cmd"><command>Risultati delle analisi</command></link>'>
   <!ENTITY results-log-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/log.png"/></imageobject></inlinemediaobject>'>
@@ -266,7 +281,6 @@
 
 <!ENTITY evaluate-cmd "<command>Valuta</command>">
 <!ENTITY evaluate-key "<keycode>Ctrl+Return</keycode>">
-
 
 <!--
               menu: Graph Grafico
@@ -407,9 +421,9 @@
 <!ENTITY gray-scale-lnk '<link linkend="gray-scale-cmd"><command>Mappa in scala di grigio</command></link>'>
   <!ENTITY gray-scale-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/gray_map.png"/></imageobject></inlinemediaobject>'>
 <!--
-              menu: Plot Tracciato
+              menu: Plot Grafico
 -->
-<!ENTITY plot-menu-lnk '<link linkend="sec-plot-menu">Tracciato</link>'>
+<!ENTITY plot-menu-lnk '<link linkend="sec-plot-menu">Graficoo</link>'>
 <!ENTITY line-cmd "<command>Linea</command>">
 <!ENTITY line-lnk '<link linkend="line-cmd"><command>Linea</command></link>'>
   <!ENTITY line-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/lPlot.png"/></imageobject></inlinemediaobject>'>
@@ -433,13 +447,17 @@
 <!ENTITY vertical-steps-cmd "<command>Gradini verticali</command>">
 <!ENTITY vertical-steps-lnk '<link linkend="vertical-steps-cmd">&vertical-steps-cmd;</link>'>
   <!ENTITY vertical-steps-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/vert_steps.png"/></imageobject></inlinemediaobject>'>
+
 <!ENTITY columns-cmd "<command>Colonne</command>">
 <!ENTITY columns-lnk '<link linkend="columns-cmd">&columns-cmd;</link>'>
   <!ENTITY columns-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/vertBars.png"/></imageobject></inlinemediaobject>'>
-
 <!ENTITY rows-cmd "<command>Barre</command>">
 <!ENTITY rows-lnk '<link linkend="rows-cmd">&rows-cmd;</link>'>
   <!ENTITY rows-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/hBars.png"/></imageobject></inlinemediaobject>'>
+
+<!ENTITY special-bar-column-cmd "<command>Barre e colonne speciali</command>">
+<!ENTITY special-bar-column-lnk '<link linkend="special-bar-column-cmd">&special-bar-column-cmd; command</link>'>
+
 <!ENTITY area-cmd "<command>Grafico ad area</command>">
 <!ENTITY area-lnk '<link linkend="area-cmd"><command>Grafico ad area</command></link>'>
   <!ENTITY area-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/area.png"/></imageobject></inlinemediaobject>'>
@@ -476,109 +494,140 @@
 
 <!ENTITY statistical-graphs-cmd "<command>Grafici di statistica</command>">
 <!ENTITY statistical-graphs-lnk '<link linkend="statistical-graphs-cmd"><command>Grafici di statistica</command></link>'>
-<!ENTITY box-plot-cmd "<command>Grafici di statistica &rarr; Diagramma a scatola</command>">
-<!ENTITY box-plot-lnk '<link linkend="box-plot-cmd"><command>Grafici di statistica &rarr; Diagramma a scatola</command></link>'>
+
+<!ENTITY box-plot-cmd "<command>Diagramma a scatola</command>">
+<!ENTITY box-plot-lnk '<link linkend="box-plot-cmd"><command>Diagramma a scatola</command></link>'>
   <!ENTITY box-plot-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/boxPlot.png"/></imageobject></inlinemediaobject>'>
 
-<!ENTITY histogram-cmd "<command>Grafici di statistica &rarr; Istogramma</command>">
-<!ENTITY histogram-lnk '<link linkend="histogram-cmd"><command>Grafici di statistica &rarr; Istogramma</command></link>'>
+<!ENTITY histogram-cmd "<command>Istogramma</command>">
+<!ENTITY histogram-lnk '<link linkend="histogram-cmd"><command>Istogramma</command></link>'>
   <!ENTITY histogram-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/histogram.png"/></imageobject></inlinemediaobject>'>
 
-<!ENTITY stacked-histogram-cmd "<command>Grafici di statistica &rarr; Istogrammi in tavole soprastanti</command>">
-<!ENTITY stacked-histogram-lnk '<link linkend="stacked-histogram-cmd"><command>Grafici di statistica &rarr; Istogrammi in tavole soprastanti</command></link>'>
+<!ENTITY stacked-histogram-cmd "<command>Istogrammi in tavole soprastanti</command>">
+<!ENTITY stacked-histogram-lnk '<link linkend="stacked-histogram-cmd"><command>Istogrammi in tavole soprastanti</command></link>'>
   <!ENTITY stacked-histogram-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/stacked_hist.png"/></imageobject></inlinemediaobject>'>
 
-<!ENTITY stem-and-leaf-cmd "<command>Grafici di statistica &rarr; Grafico ramo-foglie</command>">
+<!ENTITY stem-and-leaf-cmd "<command>Grafico ramo-foglie</command>">
 <!ENTITY stem-and-leaf-lnk '<link linkend="stem-and-leaf-cmd">&stem-and-leaf-cmd; command</link>'>
   <!ENTITY stem-and-leaf-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/leaf.png"/></imageobject></inlinemediaobject>'>
 
 <!ENTITY panel-cmd "<command>Pannelli</command>">
 <!ENTITY panel-lnk '<link linkend="panel-cmd"><command>Pannnelli</command></link>'>
-<!ENTITY vertical-2-layers-cmd "<command>Pannelli &rarr; Finestra con 2 tavole in verticale</command>">
-<!ENTITY vertical-2-layers-lnk '<link linkend="vertical-2-layers-cmd"><command>Pannelli &rarr; Finestra con 2 tavole in verticale</command></link>'>
-  <!ENTITY vertical-2-layers-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/panel_v2.png"/></imageobject></inlinemediaobject>'>
-<!ENTITY horizontal-2-layers-cmd "<command>Pannelli &rarr; Finestra con 2 tavole in orizzontale</command>">
-<!ENTITY horizontal-2-layers-lnk '<link linkend="horizontal-2-layers-cmd"><command>Pannelli &rarr; Finestra con 2 tavole in orizzontale</command></link>'>
-  <!ENTITY horizontal-2-layers-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/panel_h2.png"/></imageobject></inlinemediaobject>'>
-<!ENTITY four-layers-cmd "<command>Pannelli &rarr; Finestra con 4 tavole</command>">
-<!ENTITY four-layers-lnk '<link linkend="four-layers-cmd"><command>Pannelli &rarr; Finestra con 4 tavole</command></link>'>
-  <!ENTITY four-layers-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/panel_4.png"/></imageobject></inlinemediaobject>'>
-<!ENTITY stacked-layers-cmd "<command>Pannelli &rarr; Finestra con tavole soprastanti</command>">
-<!ENTITY stacked-layers-lnk '<link linkend="stacked-layers-cmd"><command>Pannelli &rarr; Finestra con tavole soprastanti</command></link>'>
 
-<!ENTITY custom-panel-cmd "<command>Pannelli &rarr; Personalizza...</command>">
+<!ENTITY vertical-2-layers-cmd "<command>Finestra con 2 tavole in verticale</command>">
+<!ENTITY vertical-2-layers-lnk '<link linkend="vertical-2-layers-cmd"><command>Finestra con 2 tavole in verticale</command></link>'>
+  <!ENTITY vertical-2-layers-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/panel_v2.png"/></imageobject></inlinemediaobject>'>
+
+<!ENTITY horizontal-2-layers-cmd "<command>Finestra con 2 tavole in orizzontale</command>">
+<!ENTITY horizontal-2-layers-lnk '<link linkend="horizontal-2-layers-cmd"><command>Finestra con 2 tavole in orizzontale</command></link>'>
+  <!ENTITY horizontal-2-layers-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/panel_h2.png"/></imageobject></inlinemediaobject>'>
+
+<!ENTITY four-layers-cmd "<command>Finestra con 4 tavole</command>">
+<!ENTITY four-layers-lnk '<link linkend="four-layers-cmd"><command>Finestra con 4 tavole</command></link>'>
+  <!ENTITY four-layers-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/panel_4.png"/></imageobject></inlinemediaobject>'>
+
+<!ENTITY stacked-layers-cmd "<command>Finestra con tavole soprastanti</command>">
+<!ENTITY stacked-layers-lnk '<link linkend="stacked-layers-cmd"><command>Finestra con tavole soprastanti</command></link>'>
+<!ENTITY stacked-layers-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/stacked.png"/></imageobject></inlinemediaobject>'>
+
+<!ENTITY custom-panel-cmd "<command>Personalizza...</command>">
 <!ENTITY custom-panel-lnk '<link linkend="custom-panel-cmd">&custom-panel-cmd; command</link>'>
 <!ENTITY custom-panel-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/arrangeLayers.png"/></imageobject></inlinemediaobject>'>
 
   <!ENTITY stacked-layers-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/stacked.png"/></imageobject></inlinemediaobject>'>
+
 <!ENTITY plot-3d-cmd "<command>Grafico 3D</command>">
 <!ENTITY plot-3d-lnk '<link linkend="plot-3d-cmd"><command>Grafico 3D</command></link>'>
 
-<!ENTITY ribbons-cmd "<command>Grafico 3D &rarr; Nastro</command>">
-<!ENTITY ribbons-lnk '<link linkend="ribbons-cmd"><command>Grafico 3D &rarr; Nastro</command></link>'>
+<!ENTITY ribbons-cmd "<command>Nastro</command>">
+<!ENTITY ribbons-lnk '<link linkend="ribbons-cmd"><command>Nastro</command></link>'>
   <!ENTITY ribbons-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/ribbon.png"/></imageobject></inlinemediaobject>'>
 
-<!ENTITY bars3d-cmd "<command>Grafico 3D &rarr; Barre</command>">
-<!ENTITY bars3d-lnk '<link linkend="bars-cmd"><command>Grafico 3D &rarr; Barre</command></link>'>
+<!ENTITY bars3d-cmd "<command>Barre</command>">
+<!ENTITY bars3d-lnk '<link linkend="bars-cmd"><command>Barre</command></link>'>
   <!ENTITY bars3d-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/bars.png"/></imageobject></inlinemediaobject>'>
 
-<!ENTITY scatter3d2-cmd "<command>Grafico 3D &rarr; Grafico a dispersione</command>">
-<!ENTITY scatter3d2-lnk '<link linkend="scatter3d-cmd"><command>Grafico 3D &rarr; Grafico a dispersione</command></link>'>
+<!ENTITY scatter3d2-cmd "<command>Grafico a dispersione</command>">
+<!ENTITY scatter3d2-lnk '<link linkend="scatter3d-cmd"><command>Grafico a dispersione</command></link>'>
   <!ENTITY scatter3d2-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/scatter.png"/></imageobject></inlinemediaobject>'>
-<!ENTITY trajectory-cmd "<command>Grafico 3D &rarr; Traiettoria</command>">
-<!ENTITY trajectory-lnk '<link linkend="trajectory-cmd"><command>Grafico 3D &rarr; Traiettoria</command></link>'>
+
+<!ENTITY trajectory-cmd "<command>Traiettoria</command>">
+<!ENTITY trajectory-lnk '<link linkend="trajectory-cmd"><command>Traiettoria</command></link>'>
   <!ENTITY trajectory-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/trajectory.png"/></imageobject></inlinemediaobject>'>
+
 <!--
               menu: Matrix Matrice
 -->
+
 <!ENTITY matrix-menu-lnk '<link linkend="sec-matrix-menu">Matrice</link>'>
 <!ENTITY set-properties-cmd "<command>Propriet&agrave;...</command>">
 <!ENTITY set-properties-lnk '<link linkend="set-properties-cmd"><command>Propriet&agrave;...</command></link>'>
+
 <!ENTITY set-dimensions-cmd "<command>Imposta le dimensioni...</command>">
 <!ENTITY set-dimensions-lnk '<link linkend="set-dimensions-cmd"><command>Imposta le dimensioni...</command></link>'>
+<!ENTITY set-dimensions-key "<keycode>Ctrl-D</keycode>">
 <!ENTITY set-values-cmd "<command>Imposta i valori...</command>">
 <!ENTITY set-values-lnk '<link linkend="set-values-cmd"><command>Imposta i valori...</command></link>'>
+<!ENTITY set-values-key "<keycode>Ctrl-Q</keycode>">
+
 <!ENTITY recalculate-cmd "<command>Aggiorna i valori</command>">
 <!ENTITY recalculate-key "<keycode>Ctrl-Return</keycode>">
+
 <!ENTITY rotate90-cmd "<command>Ruota di 90</command>">
 <!ENTITY rotate90-key "<keycode>Ctrl-Maiusc-R</keycode>">
+
 <!ENTITY rotate-90-cmd "<command>Ruota di -90</command>">
 <!ENTITY rotate-90-key "<keycode>Ctrl-Alt-R</keycode>">
+
 <!ENTITY flipV-cmd "<command>Capovolgi in verticale</command>">
 <!ENTITY flipV-key "<keycode>Ctrl-Maiusc-V</keycode>">
+
 <!ENTITY flipH-cmd "<command>Capovolgi in orizzontale</command>">
 <!ENTITY flipH-key "<keycode>Ctrl-Maiusc-H</keycode>">
+
 <!ENTITY expand-cmd "<command>Espandi...</command>">
 <!ENTITY expand-lnk '<link linkend="expand-cmd"><command>Espandi...</command></link>'>
+
 <!ENTITY shrink-cmd "<command>Comprimi...</command>">
 <!ENTITY shrink-lnk '<link linkend="shrink-cmd"><command>Comprimi...</command></link>'>
+
 <!ENTITY smooth-cmd "<command>Levigatura - Smooth</command>">
 <!ENTITY smooth-lnk '<link linkend="smooth-cmd"><command>Levigatura - Smooth</command></link>'>
+
 <!ENTITY transpose-cmd "<command>Genera matrice trasposta</command>">
 <!ENTITY transpose-lnk '<link linkend="transpose-cmd"><command>Genera matrice trasposta</command></link>'>
+
 <!ENTITY invert-cmd "<command>Genera matrice inversa</command>">
 <!ENTITY invert-lnk '<link linkend="invert-cmd"><command>Genera matrice inversa</command> command</link>'>
 
 <!ENTITY image-view-cmd "<command>Modalit&agrave; immagine</command>">
 <!ENTITY image-view-key "<keycode>Ctrl-Maiusc-I</keycode>">
+
 <!ENTITY table-view-cmd "<command>Modalit&agrave; dati</command>">
 <!ENTITY table-view-key "<keycode>Ctrl-Maiusc-D</keycode>">
+
 <!ENTITY gray-scale-cmd "<command>Scala di grigio</command>">
+
 <!ENTITY rainbow-palette-cmd "<command>Arcobaleno</command>">
+
 <!ENTITY custom-palette-cmd "<command>Personalizza</command>">
+
 <!ENTITY show-col-row-cmd "<command>Visualizza colonne e righe</command>">
 <!ENTITY show-col-row-key "<keycode>Ctrl-Maiusc-C</keycode>">
+
 <!ENTITY show-x-y-cmd "<command>Visualizza X e Y</command>">
 <!ENTITY show-x-y-key "<keycode>Ctrl-Maiusc-X</keycode>">
 
 <!ENTITY determinant-cmd "<command>Calcola il determinante</command>">
 <!ENTITY determinant-lnk '<link linkend="determinant-cmd"><command>Calcola il determinante</command></link>'>
+
 <!ENTITY convert-to-table-cmd "<command>Converti in foglio di calcolo</command>">
 <!ENTITY convert-to-table-lnk '<link linkend="convert-to-table-cmd"><command>Converti in foglio di calcolo</command></link>'>
 <!--
               menu: Table Tabella
 -->
 <!ENTITY table-menu-lnk '<link linkend="sec-table-menu">Tabella</link>'>
+
 <!ENTITY set-column-as-cmd "<command>Imposta la colonna come</command>">
 <!ENTITY set-column-as-lnk '<link linkend="set-column-as-cmd"><command>Imposta la colonna come</command></link>'>
 
@@ -625,6 +674,7 @@
 <!ENTITY column-options-lnk '<link linkend="column-options-cmd"><command>Opzioni della colonna...</command></link>'>
 <!ENTITY column-options-key "<keycode>Ctrl-Alt-O</keycode>">
 
+
 <!ENTITY set-column-values-cmd "<command>Imposta i valori della colonna...</command>">
 <!ENTITY set-column-values-lnk '<link linkend="set-column-values-cmd"><command>Imposta i valori della colonna...</command></link>'>
 <!ENTITY set-column-values-key "<keycode>Alt-Q</keycode>">
@@ -646,6 +696,11 @@
 <!ENTITY fill-column-with-random-values-lnk '<link linkend="fill-column-with-random-values-cmd"><command>Compila la colonna con &rarr; Valori casuali</command></link>'>
 <!ENTITY fill-column-with-random-values-key "">
 <!ENTITY fill-column-with-random-values-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/randomNumbers.png"/></imageobject></inlinemediaobject>'>
+
+<!ENTITY fill-column-with-normal-random-values-cmd "<command>Compila la colonna con &rarr; Valori casuali normali</command>">
+<!ENTITY fill-column-with-normal-random-values-lnk '<link linkend="fill-column-with-normal-random-values-cmd">&fill-column-with-normal-random-values-cmd;</link>'>
+<!ENTITY fill-column-with-normal-random-values-key "">
+<!ENTITY fill-column-with-normal-random-values-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/normalRandomNumbers.png"/></imageobject></inlinemediaobject>'>
 
 <!ENTITY clear-cmd "<command>Cancella</command>">
 <!ENTITY clear-lnk '<link linkend="clear-cmd"><command>Cancella</command></link>'>
@@ -732,15 +787,54 @@
 <!--
               menu: Analysis Analisi Tabella
 -->
+<!ENTITY analysis-ptr "Analisi &rarr; ">
+<!ENTITY desc-stats-ptr "Analisi &rarr; Statistiche descrittive &rarr; ">
+<!ENTITY hyp-test-ptr "Analisi &rarr; Test di ipotesi &rarr; ">
+<!ENTITY norm-ptr "Analisi &rarr; Normalizzza &rarr; ">
+
 <!ENTITY analysis-table-menu-lnk '<link linkend="sec-analysis-table-menu">Analisi</link>'>
 <!ENTITY statistics-on-columns-cmd "<command>Statistiche sulle colonne</command>">
 <!ENTITY statistics-on-columns-lnk '<link linkend="statistics-on-columns-cmd"><command>Statistiche sulle colonne</command></link>'>
 <!ENTITY statistics-on-columns-key "">
   <!ENTITY statistics-on-columns-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/col_stat.png"/></imageobject></inlinemediaobject>'>
+
 <!ENTITY statistics-on-rows-cmd "<command>Statistiche sulle righe</command>">
 <!ENTITY statistics-on-rows-lnk '<link linkend="statistics-on-rows-cmd"><command>Statistiche sulle righe</command></link>'>
 <!ENTITY statistics-on-rows-key "">
   <!ENTITY statistics-on-rows-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/stat_rows.png"/></imageobject></inlinemediaobject>'>
+
+
+
+
+
+
+<!ENTITY frequency-count-cmd "<command>Calcolo delle frequenze...</command>">
+<!ENTITY frequency-count-lnk '<link linkend="frequency-count-cmd">&frequency-count-cmd;</link>'>
+<!ENTITY frequency-count-key "">
+<!--ENTITY frequency-count-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/.png"/></imageobject></inlinemediaobject>'-->
+
+<!ENTITY normality-test-cmd "<command>Test di normalit&agrave;</command>">
+<!ENTITY normality-test-lnk '<link linkend="normality-test-cmd">&normality-test-cmd;</link>'>
+<!ENTITY normality-test-key "">
+<!--ENTITY normality-test-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/.png"/></imageobject></inlinemediaobject>'-->
+
+<!ENTITY t-test-1-cmd "<command>Test t di Student per un campione...</command>">
+<!ENTITY t-test-1-lnk '<link linkend="t-test-1-cmd">&t-test-1-cmd;</link>'>
+<!ENTITY t-test-1-key "">
+
+<!ENTITY t-test-2-cmd "<command>Test t di Student per due campioni...</command>">
+<!ENTITY t-test-2-lnk '<link linkend="t-test-2-cmd">&t-test-2-cmd;</link>'>
+<!ENTITY t-test-2-key "">
+
+<!ENTITY anova-1-cmd "<command>ANOVA Varianza a un fattore...</command>">
+<!ENTITY anova-1-lnk '<link linkend="anova-1-cmd">&anova-1-cmd;</link>'>
+<!ENTITY anova-1-key "">
+
+<!ENTITY anova-2-cmd "<command>ANOVA Varionza a due fattori...</command>">
+<!ENTITY anova-2-lnk '<link linkend="anova-2-cmd">&anova-2-cmd;</link>'>
+<!ENTITY anova-2-key "">
+
+
 <!ENTITY sort-column-cmd "<command>Ordina le colonne</command>">
 <!ENTITY sort-column-lnk '<link linkend="sort-column-cmd"><command>Ordina le colonne</command>Ordina le colonne</link>'>
 <!ENTITY sort-column-key "">
@@ -768,18 +862,37 @@
               menu: Analysis Analisi Grafico
 -->
 <!ENTITY analysis-graph-menu-lnk '<link linkend="sec-analysis-graph-menu">Analisi</link>'>
+
 <!ENTITY translate-cmd "<command>Traslazione</command>">
 <!ENTITY translate-lnk '<link linkend="translate-cmd"><command>Traslazione</command></link>'>
+
 <!ENTITY translate-vertical-cmd "<command>Traslazione &rarr; Verticale</command>">
 <!ENTITY translate-vertical-lnk '<link linkend="translate-vertical-cmd"><command>Traslazione &rarr; Verticale</command></link>'>
 <!ENTITY translate-horizontal-cmd "<command>Traslazione &rarr; Orizzontale</command>">
 <!ENTITY translate-horizontal-lnk '<link linkend="translate-horizontal-cmd"><command>Traslazione &rarr; Orizzontale</command></link>'>
-<!ENTITY differentiate-cmd "<command>Differenziale</command>">
-<!ENTITY differentiate-lnk '<link linkend="differentiate-cmd"><command>Differenziale</command></link>'>
-<!ENTITY integrate-cmd "<command>Integrazione...</command>">
-<!ENTITY integrate-lnk '<link linkend="integrate-cmd"><command>Integrazione...</command></link>'>
+
+<!-- <!ENTITY differentiate-cmd "<command>Differenziale</command>" -->
+<!-- <!ENTITY differentiate-lnk '<link linkend="differentiate-cmd"><command>Differenziale</command></link>'> -->
+
+<!ENTITY subtract-cmd "<command>Sottrazione</command>">
+<!ENTITY subtract-lnk '<link linkend="subtract-cmd">&subtract-cmd; command</link>'>
+
+<!ENTITY subtract-baseline-cmd "<command>Sottrazione &rarr; Baseline...</command>">
+<!ENTITY subtract-baseline-lnk '<link linkend="subtract-baseline-cmd">&subtract-baseline-cmd; command</link>'>
+<!ENTITY subtract-reference-data-cmd "<command>Sottrazione &rarr; Dati di riferimento...</command>">
+<!ENTITY subtract-reference-data-lnk '<link linkend="subtract-reference-data-cmd">&subtract-reference-data-cmd; command</link>'>
+<!ENTITY subtract-straight-line-cmd "<command>Sottrazione &rarr; Retta</command>">
+<!ENTITY subtract-straight-line-lnk '<link linkend="subtract-straight-line-cmd">&subtract-straight-line-cmd; command</link>'>
+
+<!ENTITY differentiate-cmd "<command>Derivata</command>">
+<!ENTITY differentiate-lnk '<link linkend="differentiate-cmd"><command>Derivata</command> command</link>'>
+<!ENTITY integrate-cmd "<command>Integrale...</command>">
+<!ENTITY integrate-lnk '<link linkend="integrate-cmd"><command>Integrale...</command></link>'>
+<!ENTITY integrate-curve-cmd "<command>Integrale</command>">
+<!ENTITY integrate-curve-lnk '<link linkend="integrate-curve-cmd">&integrate-curve-cmd;</link>'>
 <!ENTITY integrate-function-cmd "<command>Integrare la funzione...</command>">
 <!ENTITY integrate-function-lnk '<link linkend="integrate-function-cmd"><command>Integrare la funzione...</command></link>'>
+
 <!ENTITY smooth-cmd "<command>Levigatura - Smooth</command>">
 <!ENTITY smooth-lnk '<link linkend="smooth-cmd"><command>Levigatura - Smooth</command></link>'>
 <!ENTITY savitsky-golay-cmd "<command>Levigatura &rarr; Savitsky-Golay...</command>">
@@ -790,8 +903,9 @@
 <!ENTITY lowess-lnk '<link linkend="lowess-cmd"><command>Levigatura &rarr; Lowess...</command></link>'>
 <!ENTITY smooth-fft-filter-cmd "<command>Levigatura &rarr; Filtro FFT...</command>">
 <!ENTITY smooth-fft-filter-lnk '<link linkend="smooth-fft-filter-cmd"><command>Levigatura &rarr; Filtro FFT...</command></link>'>
-<!ENTITY fft-filter-cmd "<command>Filtro FFT</command>">
-<!ENTITY fft-filter-lnk '<link linkend="fft-filter-cmd"><command>Filtro FFT</command></link>'>
+
+<!ENTITY fft-filter-cmd "<command>Filtro di banda FFT</command>">
+<!ENTITY fft-filter-lnk '<link linkend="fft-filter-cmd"><command>Filtro di banda FFT</command></link>'>
 <!ENTITY fft-low-pass-cmd "<command>Filtro FFT &rarr; Passa basso...</command>">
 <!ENTITY fft-low-pass-lnk '<link linkend="fft-low-pass-cmd"><command>Filtro FFT &rarr; Passa basso...</command></link>'>
 <!ENTITY fft-high-pass-cmd "<command>Filtro FFT &rarr; Passa alto...</command>">
@@ -800,24 +914,35 @@
 <!ENTITY fft-band-pass-lnk '<link linkend="fft-band-pass-cmd"><command>FFT Filter &rarr; Filtro FFT &rarr; Passa banda...</command></link>'>
 <!ENTITY fft-band-block-cmd "<command>Filtro FFT &rarr; Blocca banda...</command>">
 <!ENTITY fft-band-block-lnk '<link linkend="fft-band-block-cmd"><command>Filtro FFT &rarr; Blocca banda...</command></link>'>
+
 <!ENTITY interpolate-cmd "<command>Interpolazione...</command>">
 <!ENTITY interpolate-lnk '<link linkend="interpolate-cmd"><command>Interpolazione...</command>d</link>'>
+
+<!ENTITY fit-fft-cmd "<command>Adattamento FFT</command>">
+<!ENTITY fit-fftr-lnk '<link linkend="fit-linear-cmd"><command>Adattamento lineare</command> command</link>'>
+
 <!ENTITY fit-linear-cmd "<command>Adattamento lineare</command>">
 <!ENTITY fit-linear-lnk '<link linkend="fit-linear-cmd"><command>Adattamento lineare</command></link>'>
 <!ENTITY fit-polynomial-cmd "<command>Adattamento polinomiale...</command>">
 <!ENTITY fit-polynomial-lnk '<link linkend="fit-polynomial-cmd"><command>Adattamento polinomiale...</command></link>'>
+
 <!ENTITY fit-exp-decay-cmd "<command>Adattamento decadimento esponenziale</command>">
 <!ENTITY fit-exp-decay-lnk '<link linkend="fit-exp-decay-cmd"><command>Adattamento decadimento esponenziale</command></link>'>
+
 <!ENTITY fit-exp-decay-1-cmd "<command>Adattamento decadimento esponenziale &rarr; Primo ordine...</command>">
 <!ENTITY fit-exp-decay-1-lnk '<link linkend="fit-exp-decay-1-cmd"><command>Adattamento decadimento esponenziale &rarr; Primo ordine...</command></link>'>
+
 <!ENTITY fit-exp-decay-2-cmd "<command>Adattamento decadimento esponenziale &rarr; Secondo ordine...</command>">
 <!ENTITY fit-exp-decay-2-lnk '<link linkend="fit-exp-decay-2-cmd"><command>Adattamento decadimento esponenziale &rarr; Secondo ordine...</command></link>'>
+
 <!ENTITY fit-exp-decay-3-cmd "<command>Adattamento decadimento esponenziale &rarr; Terzo ordine...</command>">
 <!ENTITY fit-exp-decay-3-lnk '<link linkend="fit-exp-decay-3-cmd"><command>Adattamento decadimento esponenziale &rarr; Terzo ordine...</command></link>'>
+
 <!ENTITY fit-exp-growth-cmd "<command>Adattamento accrescimento esponenziale...</command>">
 <!ENTITY fit-exp-growth-lnk '<link linkend="fit-exp-growth-cmd"><command>Adattamento accrescimento esponenziale...</command></link>'>
-<!ENTITY fit-bolzmann-cmd "<command>Adattamento di Bolzmann sigmoidale</command>">
-<!ENTITY fit-bolzmann-lnk '<link linkend="fit-bolzmann-cmd"><command>Adattamento di Bolzmann sigmoidale</command></link>'>
+
+<!ENTITY fit-boltzmann-cmd "<command>Adattamento di Boltzmann sigmoidale</command>">
+<!ENTITY fit-boltzmann-lnk '<link linkend="fit-boltzmann-cmd"><command>Adattamento di Boltzmann sigmoidale</command></link>'>
 <!ENTITY fit-gaussian-cmd "<command>Adattamento Gaussiano</command>">
 <!ENTITY fit-gaussian-lnk '<link linkend="fit-gaussian-cmd"><command>Adattamento Gaussiano</command></link>'>
 <!ENTITY fit-lorentzian-cmd "<command>Adattamento Lorentziano</command>">
@@ -1144,7 +1269,7 @@
 
 <bookinfo>
 
-<date>22 Febbraio 2011</date>
+<date>22 February 2011</date>
 <releaseinfo>Version updated for &appname; &version;</releaseinfo>
 
 <title>Il manuale di &appname;</title>
@@ -1195,17 +1320,17 @@
 </legalnotice>
 
 <abstract>  
-  <para>Questo documento &egrave; una guida per l'uso di &appname;, un programma per rappresentazioni grafiche bi e tridimensionali e per analisi di insiemi di dati.</para>
+  <para>Questo documento &egrave; una guida per l'uso di &appname;, un programma per analizzare dati e rappresentarli in grafici bi o tridimensionali.</para>
   <para>Questo manuale &egrave; composto da una serie di capitoli:</para>
   <para>- Il  <link linkend="introduction">primo capitolo</link> descrive i concetti principali e i termini utilizzati in &appname;.</para>
   <para>- Il  <link linkend="using">secondo capitolo</link> &egrave; una guida su come tracciare i grafici partendo da differenti insiemi di dati. &Egrave; quello che deve essere letto per primo per capire le basi di &appname; ed essere in grado di disegnare dei grafici. </para>
   <para>- Nei tre capitoli successivi sono descritti i  <link linkend="reference">comandi</link>, i <link linkend="toolbars">pulsanti</link> delle barre degli strumenti e i  <link linkend="dialogs">dialoghi</link> usati in &appname;. Questi capitoli costituiscono il manuale di riferimento per &appname;.</para>
   <para>- Gli altri due capitoli successivi descrivono in modo pi&ugrave; approfondito alcune specifiche funzionalit&agrave; di &appname;:  <link linkend="analysis">la statistica, l'analisi matematica dei dati</link> e la gestione degli  <link linkend="scripting">script</link>.</para>
-  <para>- <link linkend="aggiunte">L'ultimo capitolo</link> non &egrave; presente nella versione originale di questa guida, ma &egrave; stato aggiunto dal traduttore. Nella prima sezione di questo capitolo, oltre alla <link linkend="sec-lista-tabelle">lista delle tabelle</link> contenute in questo manuale, si trovano alcune informazioni sulla  <link linkend="sec-note-traduzione">traduzione del programma</link> e del <link linkend="sec-uso-man-it">manuale</link> stesso. Nella seconda sezione sono riportati <link linkend="sec-esempi-grafici">esempi di grafici</link> prodotti con QtiPlot. La sezione successiva contiene le informazioni su come <link linkend="sec-installare">ottenere e installare QtiPlot</link>, seguita dalla <link linkend="sec-licenze">GNU Free Documentation License</link>. I testi che non si riferiscono al funzionamento dell'applicazione non sono tradotti.</para>
+  <para>- <link linkend="aggiunte">L'ultimo capitolo</link> non &egrave; presente nella versione originale di questa guida, ma &egrave; stato aggiunto dal traduttore. Nella prima sezione di questo capitolo, oltre alla <link linkend="sec-lista-tabelle">lista delle tabelle</link> contenute in questo manuale, si trovano alcune informazioni sulla  <link linkend="sec-note-traduzione">traduzione del programma</link> e del <link linkend="sec-uso-man-it">manuale</link> stesso. Nella seconda sezione sono riportati <link linkend="sec-examples-grafici">esempi di grafici</link> prodotti con QtiPlot. La sezione successiva contiene le informazioni su come <link linkend="sec-installare">ottenere e installare QtiPlot</link>, seguita dalla <link linkend="sec-licenze">GNU Free Documentation License</link>. I testi che non si riferiscono al funzionamento dell'applicazione non sono tradotti.</para>
 <!--data di traduzione -->
   <sidebar id="data-traduzione">  
-  <para>Traduzione di Renato Rivoira <email>&email-renato;</email> del -02-2011 per QtiPlot Versione 0.9.8.3-.4</para> 
-  <para>Avvertenza: QtiPlot viene spesso arricchito di nuove funzionalit&agrave; per cui alcune parti della traduzione possono risultare non completamente aggiornate. Si consiglia di verificare sempre in <ulink url="http://soft.proindependent.com/qtiplot.html">http://soft.proindependent.com/qtiplot.html</ulink> se sono disponibili ulteriori aggiornamenti.</para>
+  <para>Traduzione di Renato Rivoira <email>&email-renato;</email>, rev. del -08-2011 per QtiPlot Versioni 0.9.8.3-.4-.5-.6-.7</para> 
+  <para>Avvertenza: QtiPlot viene periodicamente arricchito di nuove funzionalit&agrave; per cui alcune parti della traduzione possono risultare non completamente aggiornate. Si consiglia di verificare sempre in <ulink url="http://soft.proindependent.com/qtiplot.html">http://soft.proindependent.com/qtiplot.html</ulink> se sono disponibili ulteriori aggiornamenti.</para>
   </sidebar>
 </abstract>
 <keywordset>

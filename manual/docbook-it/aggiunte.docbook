@@ -7,9 +7,9 @@
 -->
 
 <title>Appendice. Sezioni aggiunte</title>
-<para>Questo capitolo non &egrave; presente nel manuale originale, oltre alla lista delle tabelle, contiene informazioni sulle traduzioni (del manuale e del programma), alcuni examples di grafici prodotti con QtiPlot, una breve guida per installare QtiPlot e, non tradotta, la sezione Crediti e Licenze </para>
+<para>Questo capitolo non &egrave; presente nel manuale originale, oltre alla lista delle tabelle, contiene informazioni sulle traduzioni (del manuale e del programma), alcuni esempi di grafici prodotti con QtiPlot, una breve guida per installare QtiPlot e, non tradotta, la sezione Crediti e Licenze </para>
 <sidebar id="avvertenza">   
-  <para>Avvertenza: QtiPlot viene spesso arricchito di nuove funzionalit&agrave; per cui alcune parti della traduzione possono risultare non completamente aggiornate. Si consiglia di verificare sempre in <ulink url="http://soft.proindependent.com/qtiplot.html">http://soft.proindependent.com/qtiplot.html</ulink> se sono disponibili ulteriori aggiornamenti.</para>
+  <para>Avvertenza: QtiPlot viene periodicamente arricchito di nuove funzionalit&agrave; per cui alcune parti della traduzione possono risultare non completamente aggiornate. Si consiglia di verificare sempre in <ulink url="http://soft.proindependent.com/qtiplot.html">http://soft.proindependent.com/qtiplot.html</ulink> se sono disponibili ulteriori aggiornamenti.</para>
   </sidebar>
 <sect1 id="sec-lista-tabelle">
 <title>Lista delle tabelle</title>
@@ -43,7 +43,7 @@
 <sect1 id="sec-note-traduzione">
 <title>Traduzione</title>
 <sidebar id="avvertenza1">   
-  <para>Avvertenza: QtiPlot viene spesso arricchito di nuove funzionalit&agrave; per cui alcune parti della traduzione possono risultare non completamente aggiornate. Si consiglia di verificare sempre in <ulink url="http://soft.proindependent.com/qtiplot.html">http://soft.proindependent.com/qtiplot.html</ulink> se sono disponibili ulteriori aggiornamenti.</para>
+  <para>Avvertenza: QtiPlot viene periodicamente arricchito di nuove funzionalit&agrave; per cui alcune parti della traduzione possono risultare non completamente aggiornate. Si consiglia di verificare sempre in <ulink url="http://soft.proindependent.com/qtiplot.html">http://soft.proindependent.com/qtiplot.html</ulink> se sono disponibili ulteriori aggiornamenti.</para>
   </sidebar>
 <sect2 id="sec-install-trad">
   <sect2info><indexterm><primary>Traduzione</primary><secondary>Installare la traduzione del programma</secondary></indexterm></sect2info>
@@ -114,7 +114,7 @@
 -->
 <sect1 id="sec-examples-grafici">
 <title>Esempi di grafici</title>
-<para>I seguenti grafici sono degli examples tratti da <ulink url="http://soft.proindependent.com/qtiplot.html">http://soft.proindependent.com/qtiplot.html</ulink>. Allo stesso indirizzo sono disponibili anche delle brevi videoguide sull'uso dell'applicazione.</para>
+<para>I seguenti grafici sono degli esempi tratti da <ulink url="http://soft.proindependent.com/qtiplot.html">http://soft.proindependent.com/qtiplot.html</ulink>. Allo stesso indirizzo sono disponibili anche delle brevi videoguide sull'uso dell'applicazione.</para>
 <para>Le didascalie non sono tradotte, i link permettono di collegarsi alla fonte originale.</para>
 <figure id="fig-cc8027-1">
     <title>Grafico scatola e baffi. </title>
@@ -338,10 +338,10 @@ qtiplot -X strd_nist_fit.py
 		INSTALLARE QTIPLOT
 		========
 -->
-<sect1 id="sec-installare">
+<sect1 id="sec-installare0983">
 <title>Installare QtiPlot (vers. 0.9.8.3)</title>
 <sidebar id="avvertenza2">   
-  <para>Avvertenza: QtiPlot viene spesso arricchito di nuove funzionalit&agrave; per cui alcune parti della traduzione possono risultare non completamente aggiornate. Si consiglia di verificare sempre in <ulink url="http://soft.proindependent.com/qtiplot.html">http://soft.proindependent.com/qtiplot.html</ulink> se sono disponibili ulteriori aggiornamenti.</para>
+  <para>Avvertenza: QtiPlot viene periodicamente arricchito di nuove funzionalit&agrave; per cui alcune parti della traduzione possono risultare non completamente aggiornate. Si consiglia di verificare sempre in <ulink url="http://soft.proindependent.com/qtiplot.html">http://soft.proindependent.com/qtiplot.html</ulink> se sono disponibili ulteriori aggiornamenti.</para>
   </sidebar>
 <sect2 id="sec-ottenere">
 <title>Come ottenere QtiPlot</title>
@@ -497,10 +497,10 @@ qtiplot
 </sect2>
 </sect1>
 
-<sect1 id="sec-installarenuova">
+<sect1 id="sec-installare0984">
 <title>Installare QtiPlot (vers.0.9.8.4)</title>
 <sidebar id="avvertenza2">   
-  <para>Avvertenza: QtiPlot viene spesso arricchito di nuove funzionalit&agrave; per cui alcune parti della traduzione possono risultare non completamente aggiornate. Si consiglia di verificare sempre in <ulink url="http://soft.proindependent.com/qtiplot.html">http://soft.proindependent.com/qtiplot.html</ulink> se sono disponibili ulteriori aggiornamenti.</para>
+  <para>Avvertenza: QtiPlot viene periodicamente arricchito di nuove funzionalit&agrave; per cui alcune parti della traduzione possono risultare non completamente aggiornate. Si consiglia di verificare sempre in <ulink url="http://soft.proindependent.com/qtiplot.html">http://soft.proindependent.com/qtiplot.html</ulink> se sono disponibili ulteriori aggiornamenti.</para>
   </sidebar>
 <sect2 id="sec-ottenere">
 <title>Licenze:</title>
@@ -562,6 +562,210 @@ Per installare QtiPlot:</para>
 </sect2>
 </sect1>
 
+<sect1 id="sec-installare0987">
+<title>Installare QtiPlot 0.9.8.7 in Ubuntu compilandolo da sorgenti</title>
+<sidebar id="avvertenza2">   
+  <para>Avvertenza: QtiPlot viene periodicamente arricchito di nuove funzionalit&agrave; per cui alcune parti della traduzione possono risultare non completamente aggiornate. Si consiglia di verificare sempre in <ulink url="http://soft.proindependent.com/qtiplot.html">http://soft.proindependent.com/qtiplot.html</ulink> se sono disponibili ulteriori aggiornamenti.</para>
+  </sidebar>
+<para>Questo procedimento di compilazione &egrave; descritto in modo pi&ugrave; completo e disponibile in originale in <ulink url="http://elubuntu.blogspot.com/2011/02/compilare-qtiplot-0984.html">http://elubuntu.blogspot.com/2011/02/compilare-qtiplot-0984.html</ulink>. </para>
+<para>Se non sono ancora presenti, installare gli strumenti per la compilazione dei programmi:<screen>sudo apt-get install build-essential</screen> e installare le dipendenze Qt (>= 4.5.0), GSL, muParser (1.32), zlib e libpng per compilare QtiPlot:<screen>sudo apt-get build-dep qtiplot</screen></para>
+
+<para>Scaricare il codice sorgente da <ulink url="http://download.berlios.de/qtiplot/qtiplot-0.9.8.7.tar.bz2">http://download.berlios.de/qtiplot/qtiplot-0.9.8.7.tar.bz2</ulink>:<screen>wget http://download.berlios.de/qtiplot/qtiplot-0.9.8.7.tar.bz2</screen></para>
+<para>Estrarre l'archivio:<screen>tar xjvf qtiplot-0.9.8.7.tar.bz2</screen></para>
+<para>Spostarsi nella cartella del file sorgente:<screen>cd qtiplot-0.9.8.7/</screen></para>
+<para>Il file <emphasis>README.html</emphasis> contiene le istruzioni per la compilazione e elenca le dipendenze necessarie. Le versioni leggermente modificate delle librerie Qwt (5.2) e QwtPlot3D sono gi&agrave; presenti nella sottocartella <emphasis>3rdparty/</emphasis> del codice sorgente di QtiPlot.</para>
+<para>Spostarsi nella sottocartella <emphasis>3rdparty/</emphasis><screen>cd 3rdparty/</screen></para>
+<para>Scaricare e compilare la libreria <ulink url="http://soft.proindependent.com/qtexengine/">QTeXEngine</ulink>:
+<screen>wget http://download.berlios.de/qtiplot/QTeXEngine-0.3-opensource.zip
+unzip QTeXEngine-0.3-opensource.zip
+cd QTeXEngine
+qmake
+make
+</screen></para>
+<para>Al termine verificare l'esito della compilazione con il comando <screen>echo $?</screen> che deve restituire 0.</para>
+<para>Scaricare e compilare la libreria > <ulink url="http://www.alglib.net/"> ALGLIB (2.6)</ulink>:
+<screen>cd ..
+wget http://www.alglib.net/translator/re/alglib-2.6.0.cpp.zip
+unzip alglib-2.6.0.cpp.zip ; mv cpp alglib
+cd alglib
+chmod +x build
+./build gcc
+</screen></para>
+<para>Verificare che il comando <emphasis>echo $?</emphasis> restituisca 0.</para>
+<para>Scaricare e compilare la libreria  <ulink url="http://www.stat.tamu.edu/%7Earedd/tamuanova/">TAMUANOVA</ulink>:
+<screen>cd ..
+wget http://www.stat.tamu.edu/~aredd/tamuanova/tamu_anova-0.2.tar.gz
+tar xzvf tamu_anova-0.2.tar.gz ; mv tamu_anova-0.2/ tamu_anova/
+cd tamu_anova/
+./configure
+make
+</screen></para>
+<para>Verificare che il comando <emphasis>echo $?</emphasis> restituisca 0.</para>
+<para>Per compilare <ulink url="http://en.wikipedia.org/wiki/Static_library">staticamente</ulink> la libreria QwtPlot3D, modificare il file: <emphasis>3rdparty/qwtplot3d/qwtplot3d.pro</emphasis> aggiungendo alla fine del file la riga:<screen>unix:CONFIG += staticlib</screen></para>
+<para>Tornare nella cartella principale di QtiPlot:<screen>cd ../..</screen></para>
+<para>Creare il file <emphasis>build.conf</emphasis> nella cartella del codice sorgente di QtiPlot copiando il file <emphasis>build.conf.example</emphasis> <screen>cp build.conf.example build.conf</screen>e modificarlo se i percorsi delle librerie o altre opzioni non corrispondono. <emphasis>QTI_ROOT</emphasis> &egrave; il percorso della cartella principale del codice sorgente di QtiPlot. Esempio di <emphasis>build.conf</emphasis> utilizzato:
+<screen>
+isEmpty( QTI_ROOT ) {
+  message( "each file including this config needs to set QTI_ROOT to the dir containing this file!" )
+}
+
+##########################################################
+##     System specific configuration
+##########################################################
+
+# Global include path which is always added at the end of the INCLUDEPATH
+SYS_INCLUDEPATH = /opt/local/include
+# Global lib path and libs which is ls always added at the end of LIBS
+SYS_LIBS = -L/opt/local/lib
+
+##########################################################
+## zlib (http://www.zlib.net/)
+##########################################################
+
+# include path. leave it blank to use SYS_INCLUDE
+ZLIB_INCLUDEPATH = $$QTI_ROOT/3rdparty/zlib/
+
+##########################################################
+## muParser (http://muparser.sourceforge.net/)
+##########################################################
+
+# include path. leave it blank to use SYS_INCLUDE
+MUPARSER_INCLUDEPATH = /usr/include/muParser/
+# link statically against a copy in 3rdparty/
+MUPARSER_LIBS = /usr/lib/libmuparser.so
+# or dynamically against a system-wide installation
+# MUPARSER_LIBS = -lmuparser
+
+##########################################################
+## GNU Sientific Library (http://www.gnu.org/software/gsl/)
+##########################################################
+
+# include path. leave it blank to use SYS_INCLUDE
+# GSL_INCLUDEPATH = $$QTI_ROOT/3rdparty/gsl/include
+# link statically against a copy in 3rdparty/
+# GSL_LIBS = $$QTI_ROOT/3rdparty/gsl/lib/libgsl.a \
+#            $$QTI_ROOT/3rdparty/gsl/lib/libgslcblas.a
+# or dynamically against a system-wide installation
+GSL_LIBS = -lgsl -lgslcblas
+
+##########################################################
+## QWT - use local copy till upstream catches up
+# http://qwt.sourceforge.net/index.html
+##########################################################
+
+# include path.
+QWT_INCLUDEPATH = $$QTI_ROOT/3rdparty/qwt/src
+# link locally against a copy in 3rdparty/
+QWT_LIBS = $$QTI_ROOT/3rdparty/qwt/lib/libqwt.a
+
+##########################################################
+## QwtPlot3D - use local copy till upstream catches up
+# http://qwtplot3d.sourceforge.net/
+##########################################################
+
+# include path.
+QWT3D_INCLUDEPATH = $$QTI_ROOT/3rdparty/qwtplot3d/include
+# link locally against a copy in 3rdparty/
+win32:QWT3D_LIBS = $$QTI_ROOT/3rdparty/qwtplot3d/lib/qwtplot3d.dll
+unix:QWT3D_LIBS = $$QTI_ROOT/3rdparty/qwtplot3d/lib/libqwtplot3d.a
+
+##########################################################
+## libpng - optional. you don't have to set these variables
+##########################################################
+
+# include path. leave it blank to use SYS_INCLUDE
+# LIBPNG_INCLUDEPATH = $$QTI_ROOT/3rdparty/libpng/
+# link statically against a copy in 3rdparty/
+# LIBPNG_LIBS = $$QTI_ROOT/3rdparty/libpng/libpng.a
+# or dynamically against a system-wide installation
+LIBPNG_LIBS = -lpng
+
+##########################################################
+## QTeXEngine - optional. you don't have to set these variables
+# http://soft.proindependent.com/qtexengine/
+##########################################################
+
+# include path.
+TEX_ENGINE_INCLUDEPATH = $$QTI_ROOT/3rdparty/QTeXEngine/src
+# link locally against a copy in 3rdparty/
+TEX_ENGINE_LIBS = $$QTI_ROOT/3rdparty/QTeXEngine/libQTeXEngine.a
+
+##########################################################
+## ALGLIB (2.6) - optional. you don't have to set these variables
+# http://www.alglib.net/
+##########################################################
+
+# include path.
+ALGLIB_INCLUDEPATH = $$QTI_ROOT/3rdparty/alglib/src
+# link locally against a copy in 3rdparty/
+ALGLIB_LIBS = $$QTI_ROOT/3rdparty/alglib/out/libalglib.a
+
+##########################################################
+## TAMUANOVA - optional. you don't have to set these variables
+# http://www.stat.tamu.edu/~aredd/tamuanova/
+##########################################################
+
+# include path.
+TAMUANOVA_INCLUDEPATH = $$QTI_ROOT/3rdparty/tamu_anova/
+# link locally against a copy in 3rdparty/
+TAMUANOVA_LIBS = $$QTI_ROOT/3rdparty/tamu_anova/libtamuanova.a
+
+##########################################################
+## python - only used if python is needed
+##########################################################
+
+# the python interpreter to use
+# (unix only, windows will use what ever is configured to execute .py files!)
+PYTHON = python
+
+##########################################################
+## Qt tools - allows to use specific versions
+##########################################################
+
+LUPDATE = lupdate
+LRELEASE = lrelease
+
+############################################################
+##  Target specific configuration: configure Qtiplot itself
+############################################################
+
+contains( TARGET, qtiplot ) {
+  # building without muParser doesn't work yet
+  SCRIPTING_LANGS += muParser
+  SCRIPTING_LANGS += Python
+
+  # a console displaying output of scripts; particularly useful on Windows
+  # where running QtiPlot from a terminal is inconvenient
+  DEFINES         += SCRIPTING_CONSOLE
+
+  #DEFINES         += QTIPLOT_DEMO
+
+  # Uncomment the following line if you want to perform a custom installation using the *.path variables defined in ./qtiplot.pro.
+  #CONFIG          += CustomInstall
+
+  # Uncomment the following line if you want to build QtiPlot as a browser plugin (not working on Internet Explorer).
+  #CONFIG          += BrowserPlugin
+  
+  CONFIG          += release
+  #CONFIG          += debug
+  
+  # Uncomment the following line if you want to link statically against Qt.
+  #CONFIG           += StaticBuild
+  #win32: CONFIG   += console
+}
+
+</screen></para>
+<para>Se non si intende compilare <emphasis>fitPlugins</emphasis> e <emphasis>manual</emphasis>, aprire il file <emphasis>qtiplot.pro</emphasis> e togliere dall'elenco le due cartelle.</para>
+<para>Compilare QtiPlot:
+<screen>qmake
+make
+</screen></para>
+<para>Verificare che il comando <emphasis>echo $?</emphasis> restituisca 0.</para>
+<para>Verificare il funzionamento del programma:<screen>qtiplot/qtiplot</screen></para>
+<para>Creare un collegamento al file eseguibile <emphasis>/qtiplot-0.9.8.7/qtiplot/qtiplot</emphasis> oppure installare QtiPlot:<screen>sudo make install</screen></para>
+
+</sect1>
+
 
 
 <!--
@@ -575,11 +779,11 @@ Per installare QtiPlot:</para>
 
 <para>QtiPlot</para>
 <para>Program copyright:</para>
-<para>2004-2011 Ion Vasilief <email>&email-ion;</email></para>
+<para>2004-2009 Ion Vasilief <email>&email-ion;</email></para>
 <para>2006-2007 Tilman Hoener zu Siederdissen <email>&email-tilman;</email></para>
 <para>2006-2007 Knut Franke <email>&email-knut;</email></para>
 <para>Documentation copyright:</para>
-<para>2004-2011 Ion Vasilief ion_vasilief@yahoo.fr</para>
+<para>2004-2009 Ion Vasilief ion_vasilief@yahoo.fr</para>
 <para>2006-2007 Roger Gadiou <email>&email-roger;</email></para>
 <para>2006-2007 Knut Franke Knut.Franke@gmx.de</para>
 <para>Permission is granted to copy, distribute and/or modify this document under the terms of the GNU Free Documentation License, Version 1.1 or any later version published by the Free Software Foundation; with no Invariant Sections, with no Front-Cover Texts, and with no Back-Cover Texts.</para>

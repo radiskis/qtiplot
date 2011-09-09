@@ -138,7 +138,7 @@
   <informalfigure id="fig-fit-polynomial-dialog">
     <mediaobject>
       <imageobject>
-        <imagedata  format="PNG" fileref="pics/fit-polynomial.png"/>
+        <imagedata  format="PNG" fileref="pics-it/fit-polynomial.png"/>
       </imageobject>
     </mediaobject>
   </informalfigure>
@@ -155,13 +155,13 @@
 </sect2>
 
 
-<sect2 id="sec-fit-bolzmann">
-<title>Adattamento con una funzione di Bolzmann. Adattamento di Bolzmann</title>
+<sect2 id="sec-fit-boltzmann">
+<title>Adattamento con una funzione di Boltzmann. Adattamento di Boltzmann</title>
 
 <para>Questo adattamento &egrave; usato per modellare curve con andamento sigmoidale (a S). La funzione usata &egrave;:</para>
 
 <equation>
-  <title>Equazione di Bolzmann</title>
+  <title>Equazione di Boltzmann</title>
   <mediaobject>
     <imageobject>
       <imagedata  format="PNG" fileref="equations/equation_bolzmann.png"/>
@@ -171,16 +171,16 @@
 
 <para>in cui A<subscript>1</subscript> &egrave; il limite inferiore di Y, A<subscript>2</subscript> &egrave; il limite superiore di Y, x<subscript>0</subscript> &egrave; il punto di inflessione (punto di flesso a met&agrave; ampiezza) e dx &egrave; l'ampiezza.</para>
 
-  <figure id="fig-fit-bolzman">
-    <title>Il risultato di un &fit-bolzmann-cmd;.</title>
+  <figure id="fig-fit-boltzman">
+    <title>Il risultato di un &fit-boltzmann-cmd;.</title>
     <mediaobject>
       <imageobject>
-        <imagedata  format="PNG" fileref="pics/fit-bolzmann.png"/>
+        <imagedata  format="PNG" fileref="pics/fit-boltzmann.png"/>
       </imageobject>
     </mediaobject>
   </figure>
 
-<para>Quando sull'asse X &egrave; impostata una scala logaritmica, il comando &fit-bolzmann-cmd; usa l'equazione logistica per la modellazione:</para>
+<para>Quando sull'asse X &egrave; impostata una scala logaritmica, il comando &fit-boltzmann-cmd; usa l'equazione logistica per la modellazione:</para>
 
 <equation>
   <title>Equazione logistica</title>
