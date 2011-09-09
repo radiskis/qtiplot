@@ -14,7 +14,7 @@
 		========
 -->
 <sect1 id="sec-2d-plots">
-<title>Tracciati 2D</title>
+<title>Grafici 2D</title>
 
 <para>Un grafico bidimensionale si basa su curve definite da valori Y calcolati come funzione di valori X. Ci sono due modi per ottenere grafici 2D, secondo come sono definiti i valori (X,Y):</para>
 
@@ -51,18 +51,18 @@
   <title>Grafico 2D semplice: la tabella</title>
   <mediaobject>
     <imageobject>
-      <imagedata  format="PNG" fileref="tutorial/simple-2dplot-1.png"/>
+      <imagedata  format="PNG" fileref="pics-it/simple-2dplot-1.png"/>
     </imageobject>
   </mediaobject>
 </figure>
 
-<para>Successivamente, si selezionano i dati che si vuole rappresentare nel grafico. Per selezionare le 2 colonne di dati appena immessi, cliccare con il tasto sinistro sul titolo della prima colonna e trascinare il puntatore del mouse sopra il titolo della seconda colonna tenendo premuto il tasto sinistro del mouse. Adesso, con le colonne selezionate, &egrave; possibile costruire il grafico (che in questo caso &egrave; un semplice insieme bidimensionale di punti) con il comando &scatter-lnk; dal men&ugrave; <emphasis>Tracciato</emphasis>, o cliccando sull'icona &scatter-icon; nella &plot-toolbar-lnk;. Il tracciato viene visualizzato in una una nuova tavola di una nuova finestra grafico. Ogni nuovo elemento viene creato usando le impostazioni di default. Si possono personalizzare le opzioni di default tramite la finestra per l'impostazione delle <link linkend="preferences-dialog">Preferenze</link>. In questo esempio, utilizzando le opzioni di default, si ottiene il seguente risultato:</para>
+<para>Successivamente, si selezionano i dati che si vuole rappresentare nel grafico. Per selezionare le 2 colonne di dati appena immessi, cliccare con il tasto sinistro sul titolo della prima colonna e trascinare il puntatore del mouse sopra il titolo della seconda colonna tenendo premuto il tasto sinistro del mouse. Adesso, con le colonne selezionate, &egrave; possibile costruire il grafico (che in questo caso &egrave; un semplice insieme bidimensionale di punti) con il comando &scatter-lnk; dal men&ugrave; <emphasis>Grafico</emphasis>, o cliccando sull'icona &scatter-icon; nella &plot-toolbar-lnk;. Il tracciato viene visualizzato in una una nuova tavola di una nuova finestra grafico. Ogni nuovo elemento viene creato usando le impostazioni di default. Si possono personalizzare le opzioni di default tramite la finestra per l'impostazione delle <link linkend="preferences-dialog">Preferenze</link>. In questo esempio, utilizzando le opzioni di default, si ottiene il seguente risultato:</para>
 
 <figure id="fig-simple-2dplot-2">
   <title>Grafico 2D semplice: grafico di default</title>
   <mediaobject>
     <imageobject>
-      <imagedata  format="PNG" fileref="tutorial/simple-2dplot-2.png"/>
+      <imagedata  format="PNG" fileref="pics-it/simple-2dplot-2.png"/>
     </imageobject>
   </mediaobject>
 </figure>
@@ -73,7 +73,7 @@
   <title>Grafico 2D semplice: il grafico finito.</title>
   <mediaobject>
     <imageobject>
-      <imagedata  format="PNG" fileref="tutorial/simple-2dplot-3.png"/>
+      <imagedata  format="PNG" fileref="pics-it/simple-2dplot-3.png"/>
     </imageobject>
   </mediaobject>
 </figure>
@@ -89,7 +89,7 @@
   <title>Grafico 2D con due assi Y.</title>
   <mediaobject>
     <imageobject>
-      <imagedata  format="PNG" fileref="pics/plot-two-axes.png"/>
+      <imagedata  format="PNG" fileref="pics-it/plot-two-axes.png"/>
     </imageobject>
   </mediaobject>
 </figure>
@@ -99,7 +99,7 @@
 <informalfigure id="fig-two-axes-dialog">
   <mediaobject>
     <imageobject>
-      <imagedata  format="PNG" fileref="pics/plot-two-axes-dialog.png"/>
+      <imagedata  format="PNG" fileref="pics-it/plot-two-axes-dialog.png"/>
     </imageobject>
   </mediaobject>
 </informalfigure>
@@ -121,7 +121,7 @@
   <title>Grafico 2D di funzione.</title>
   <mediaobject>
     <imageobject>
-      <imagedata  format="PNG" fileref="pics/direct-function-plot.png"/>
+      <imagedata  format="PNG" fileref="pics-it/direct-function-plot.png"/>
     </imageobject>
   </mediaobject>
 </figure>
@@ -139,7 +139,7 @@
   <title>Grafico 2D di funzione: compilare la colonna X.</title>
   <mediaobject>
     <imageobject>
-      <imagedata  format="PNG" fileref="tutorial/table-function-plot1.png"/>
+      <imagedata  format="PNG" fileref="pics-it/table-function-plot1.png"/>
     </imageobject>
   </mediaobject>
 </figure>
@@ -150,7 +150,7 @@
   <title>Grafico 2D di funzione: compilare la colonna Y</title>
   <mediaobject>
     <imageobject>
-      <imagedata  format="PNG" fileref="tutorial/table-function-plot2.png"/>
+      <imagedata  format="PNG" fileref="pics-it/table-function-plot2.png"/>
     </imageobject>
   </mediaobject>
 </figure>
@@ -297,7 +297,7 @@ I grafici 3D usano OpenGL quindi si possono facilmente ruotare, scalare e sposta
   <informalfigure>
     <mediaobject>
       <imageobject>
-        <imagedata  format="PNG" fileref="pics/multilayer-panel.png"/>
+        <imagedata  format="PNG" fileref="pics-it/multilayer-panel.png"/>
       </imageobject>
     </mediaobject>
   </informalfigure>

@@ -14,6 +14,16 @@ revision history. (see installation appendix comment) -->
 
 <para>&appname; &egrave; uno strumento dinamico: i grafici creati partendo da un insieme di dati e le tabelle che contengono i dati sono interconnessi. Quando una tabella viene modificata, tutti gli oggetti del grafico ad essa collegato (curve, scala degli assi, legende) sono  aggiornati automaticamente. Per esempio, cancellando una tabella o anche solo una delle colonne, vengono anche automaticamente rimosse le corrispondenti curve nel grafico dipendente. I grafici possono essere esportati in diversi formati e inseriti come immagini in documenti o presentazioni.</para>
 
+<para>Le finestre di QtiPlot:</para>
+<figure id="cosa-fa">
+  <title>Esempio.</title>
+  <mediaobject>
+    <imageobject>
+      <imagedata  format="PNG" fileref="pics-it/cosa-fa.png"/>
+    </imageobject>
+  </mediaobject>
+</figure>
+
 <para>Tutti i parametri per l'impostazione completa di tabelle, matrici e grafici possono essere salvati in un file progetto con estensione <emphasis>.qti</emphasis>. Questo file progetto pu&ograve; essere aperto usando la <link linkend="specify-a-file">riga di comando</link>, il men&ugrave; <link linkend="sec-file-menu">File</link>, o l'icona <emphasis>Apri un progetto esistente</emphasis> nella  <link linkend="sec-file-toolbar">barra degli strumenti per i file</link>.</para>
 
 <para>Su un grafico 2D, le operazioni di analisi dei dati ( integrazione, interpolazione, FFT, adattamenti e modellazioni di curve, ecc.) si realizzano usando il <emphasis>men&ugrave; Analisi</emphasis>. I risultati di tutte queste operazioni sono archiviati nel file del progetto . I risultati si possono visualizzare in qualsiasi momento tramite il comando  Visualizza &rarr;  &results-log-lnk; e si possono cancellare con il comando  Modifica &rarr; &clear-log-lnk;.</para>
@@ -22,6 +32,15 @@ revision history. (see installation appendix comment) -->
 
 <para>I componenti di un progetto si esplorano facilmente con l'esploratore dei progetti attraverso il comando <emphasis>Visualizza &rarr; Esploratore dei progetti</emphasis>. L'esploratore dei progetti consente anche di eseguire diverse operazioni sulle tabelle e sui grafici (riduzioni, ingrandimenti, chiusura, rinomina, stampa, ecc.).</para>
 
+<para>Esempio di lavoro con QtiPlot:</para>
+<figure id="progetto">
+  <title>Grafico prodotto con QtiPlot.</title>
+  <mediaobject>
+    <imageobject>
+      <imagedata  format="PNG" fileref="pics-it/progetto.png"/>
+    </imageobject>
+  </mediaobject>
+</figure>
 </sect1>
 
 <sect1 id="command-line-options">
@@ -35,7 +54,18 @@ revision history. (see installation appendix comment) -->
 <screen>
 qtiplot nome_del_file.&file-ext;
 </screen>
-
+<para>Come nell'esempio seguente:</para>
+<figure id="apertura-progetto">
+  <title>Apertura di un progetto direttamente da riga di comando.</title>
+  <mediaobject>
+    <imageobject>
+      <imagedata  format="PNG" fileref="pics-it/apertura-progetto.png"/>
+    </imageobject>
+  </mediaobject>
+</figure>
+<sidebar>
+<para>NdT. Attenzione: quando il percorso contiene spazi vuoti QtiPlot si avvia con un messaggio di errore senza trovare il file indicato</para>
+</sidebar>
 <para>Altri formati di file ammessi sono: <emphasis>.opj, .ogm, .ogw, .ogg</emphasis> per i progetti di tipo Origin, e <emphasis>.qti, qti.gz</emphasis> per i progetti di tipo QtiPlot.</para>
 <para>Il nome pu&ograve; anche riferirsi a un file ASCII:</para>
 
@@ -57,7 +87,15 @@ qtiplot ASCII_nome_del_file
 <sect2 id="qtiplot-options">
 	<sect2info><indexterm><primary>Opzioni della riga di comando</primary><secondary>Opzioni</secondary></indexterm></sect2info>
 <title>Opzioni della riga di comando</title>
-
+<para>Esempio di utilizzo delle opzioni della riga di comando:</para>
+<figure id="opzioni-riga-comando">
+  <title>Descrizione delle opzioni e informazioni sulla versione.</title>
+  <mediaobject>
+    <imageobject>
+      <imagedata  format="PNG" fileref="pics-it/opzioni-riga-comando.png"/>
+    </imageobject>
+  </mediaobject>
+</figure>
 <para>Le opzioni valide per la riga di comando sono:</para>
 <itemizedlist>
 <listitem><para>-a or --about: visualizza le informazioni su QtiPlot e esce</para></listitem>
@@ -71,6 +109,8 @@ qtiplot ASCII_nome_del_file
 <listitem><para>-X: esegue il file script senza visualizzare l'interfaccia utente.
 Attenzione, i grafici 2D eseguiti con questa modalit&agrave; non sempre sono rappresentati correttamente.</para></listitem>
 </itemizedlist>
+
+
 </sect2>
 </sect1>
 
@@ -101,6 +141,14 @@ Attenzione, i grafici 2D eseguiti con questa modalit&agrave; non sempre sono rap
       <indexterm><primary>tabella</primary></indexterm>
       <para>Una tabella &egrave; un foglio elettronico da usare come contenitore per i dati da inserire. La tabella &egrave; inserita in una sua propria finestra (la finestra Nuova Tabella). Essa pu&ograve; essere utilizzata per eseguire diversi calcoli e analisi statistiche sui dati. In ogni tabella, le colonne possono essere etichettate e impostate come valori sull'asse X, valori sull'asse Y oppure valori sull'asse Z quando si vuole tracciare un grafico 3D.</para>
       <para>Una tabella si crea con il comando File &rarr;  &new-table-lnk;. Ci sono diversi modi per compilare la tabella con i dati. Per usare i dati contenuti in un proprio file ASCII, i dati si importano con il comando File &rarr;  &import-ascii-lnk;. Per compilare la tabella manualmente si inseriscono i dati da tastiera. Per compilare la tabella con i risultati di una funzione matematica si usa il comando Tabella &rarr;  &set-column-values-lnk; dal men&ugrave; &table-menu-lnk;.</para>
+<figure id="tabella">
+  <title>Tabella</title>
+  <mediaobject>
+    <imageobject>
+      <imagedata  format="PNG" fileref="pics-it/tabella.png"/>
+    </imageobject>
+  </mediaobject>
+</figure>
     </listitem>
   </varlistentry>
   <varlistentry>
@@ -109,6 +157,22 @@ Attenzione, i grafici 2D eseguiti con questa modalit&agrave; non sempre sono rap
       <indexterm><primary>matrice</primary></indexterm>
       <para>Una matrice &egrave; una tabella speciale usata come contenitore di dati per i grafici 3D. Una matrice contiene i valori per l'asse Z e non comprende colonne o righe definite come valori sull'asse X o sull'asse Y. &Egrave; comunque possibile specificare i valori per l'asse X e per l'asse Y con il comando &set-dimensions-lnk; in &matrix-menu-lnk;.</para>
       <para>Una matrice si crea con il comando File &rarr;  &new-matrix-lnk;. Per usare dei dati contenuti in una matrice di formato ASCII, si importano i dati in una tabella con il comando &import-ascii-lnk;, e poi si converte la tabella in una matrice con il comando &convert-to-matrix-lnk;. Con il comando &set-values-lnk; in &matrix-menu-lnk;  e con le stesse modalit&agrave; usate per le tabelle, si pu&ograve; compilare la matrice con i risultati di una funzione matematica di tipo <emphasis>z=(i,j)</emphasis> in cui <emphasis>i</emphasis> e <emphasis>j</emphasis> sono i numeri delle righe e delle colonne.</para>
+<figure id="matrice">
+  <title>Matrice</title>
+  <mediaobject>
+    <imageobject>
+      <imagedata  format="PNG" fileref="pics-it/matrice.png"/>
+    </imageobject>
+  </mediaobject>
+</figure>
+<figure id="modifiche-matrice">
+  <title>Modifiche apportate alla matrice</title>
+  <mediaobject>
+    <imageobject>
+      <imagedata  format="PNG" fileref="pics-it/modifiche-matrice.png"/>
+    </imageobject>
+  </mediaobject>
+</figure>
     </listitem>
   </varlistentry>
   <varlistentry>
@@ -120,12 +184,28 @@ Attenzione, i grafici 2D eseguiti con questa modalit&agrave; non sempre sono rap
       <para>Un grafico (finestra di grafico) pu&ograve; contenere una o pi&ugrave; tavole. Una tavola &egrave; formata da assi, voci di testo, tracciati delle curve e da una unica area (tela del grafico) delimitata dalle linee degli assi. Per costruire il grafico nell'area di lavoro sono tracciate una o pi&ugrave; curve prodotte usando dati o funzioni. &Egrave; possibile modificare l'aspetto delle tavole costruite come grafico di una matrice e dei relativi tracciati contenuti . In questo documento, il termine finestra di grafico &egrave; sinonimo di grafico.</para>
       <para>Con il comando &add-layer-lnk; del men&ugrave; &graph-menu-lnk; si aggiunge una nuova tavola a una finestra grafico . Con il comando Grafico &rarr;  &remove-layer-lnk; si elimina una tavola, ma quando si rimuove una tavola si rimuove anche il tracciato contenuto. Si pu&ograve; copiare una tavola in una finestra diversa o una finestra in un'altra (la finestra viene aggiunta come una nuova tavola); per maggiori informazioni vedere alla sezione  <link linkend="sec-multilayer-plots">Finestre con pi&ugrave; tavole</link> .</para>
       <para>Le curve si aggiungono in diversi modi. Per generare le curve si usano i dati di una tabella o di una matrice oppure si producono con una funzione a una o due variabili ( vedere le sezioni  <link linkend="sec-2d-plots">Grafici 2D</link> e <link linkend="sec-3d-plots">Grafici 3D</link>).</para>
+<figure id="grafico">
+  <title>Grafico</title>
+  <mediaobject>
+    <imageobject>
+      <imagedata  format="PNG" fileref="pics-it/grafico.png"/>
+    </imageobject>
+  </mediaobject>
+</figure>
     </listitem>
   </varlistentry>
   <varlistentry>
     <term><link linkend="sec-intro-note">Annotazioni</link></term>
     <listitem>
       <para>Questa finestra &egrave; un contenitore di testi e si usa per aggiungere dei commenti al progetto, ma dispone anche di ulteriori potenzialit&agrave;. Pu&ograve; servire da calcolatrice, per eseguire singoli comandi e per editare degli script.</para>
+<figure id="annotazioni">
+  <title>Annotazioni</title>
+  <mediaobject>
+    <imageobject>
+      <imagedata  format="PNG" fileref="pics-it/annotazioni.png"/>
+    </imageobject>
+  </mediaobject>
+</figure>
     </listitem>
   </varlistentry>
   <varlistentry>
@@ -133,6 +213,14 @@ Attenzione, i grafici 2D eseguiti con questa modalit&agrave; non sempre sono rap
     <listitem>
       <para>Questa finestra &egrave; l'archivio dei risultati di tutti i calcoli eseguiti. Se questa finestra non &egrave; visibile, si pu&ograve; aprirla con l'<link linkend="sec-intro-project-explorer">Esploratore dei progetti</link> o con il comando Visualizza &rarr;   &results-log-lnk;.</para>
       <para>Il testo del rapporto &egrave; salvato nel file del progetto, quando si apre un progetto salvato in precedenza, il rapporto viene riscritto con i risultati dei calcoli precedenti. </para>
+<figure id="risultati">
+  <title>Risulati delle analisi</title>
+  <mediaobject>
+    <imageobject>
+      <imagedata  format="PNG" fileref="pics-it/risultati.png"/>
+    </imageobject>
+  </mediaobject>
+</figure>
     </listitem>
   </varlistentry>
   <varlistentry>
@@ -140,6 +228,14 @@ Attenzione, i grafici 2D eseguiti con questa modalit&agrave; non sempre sono rap
     <listitem>
       <para>In questa finestra sono elencate tutte le finestre del progetto. L'<link linkend="project-explorer-dialog">Esploratore dei progetti</link> permette di accedere velocemente a tutti gli elementi del progetto, sia nascosti che visibili. Pu&ograve; essere usato per eseguire diverse operazioni sugli elementi elencati come rinomina, visualizzazione, ecc. delle finestre.</para>
       <para>Dalla versione 0.8.5, un progetto pu&ograve; contenere diversi progetti indipendenti. In questo caso i singoli progetti sono salvati in cartelle diverse.</para>
+<figure id="esploratore">
+  <title>Esploratore del progetto</title>
+  <mediaobject>
+    <imageobject>
+      <imagedata  format="PNG" fileref="pics-it/esploratore.png"/>
+    </imageobject>
+  </mediaobject>
+</figure>
     </listitem>
   </varlistentry>
 </variablelist>
@@ -160,7 +256,7 @@ Quando si lavora con i dati, le tabelle sono il punto centrale di &appname;. Una
   <title>La tabella di QtiPlot</title>
   <mediaobject>
     <imageobject>
-      <imagedata  format="PNG" fileref="pics/table.png"/>
+      <imagedata  format="PNG" fileref="pics-it/table.png"/>
     </imageobject>
   </mediaobject>
 </figure>
@@ -287,7 +383,7 @@ In una matrice si possono anche inserire valori letti direttamente in un file AS
   <title>La finestra Risultati delle analisi di QtiPlot.</title>
   <mediaobject>
     <imageobject>
-      <imagedata  format="PNG" fileref="pics/log-window.png"/>
+      <imagedata  format="PNG" fileref="pics-it/risultati.png"/>
     </imageobject>
   </mediaobject>
 </figure>
@@ -306,7 +402,7 @@ In una matrice si possono anche inserire valori letti direttamente in un file AS
   <title>L'esploratore del progetto di QtiPlot.</title>
   <mediaobject>
     <imageobject>
-      <imagedata  format="PNG" fileref="pics/explorer1.png"/>
+      <imagedata  format="PNG" fileref="pics-it/explorer1.png"/>
     </imageobject>
   </mediaobject>
 </figure>

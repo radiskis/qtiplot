@@ -42,7 +42,7 @@
     <title>La finestra di dialogo &add-error-bars-cmd;.</title>
     <mediaobject>
       <imageobject>
-        <imagedata  format="PNG" fileref="pics/add-error-bars-1.png"/>
+        <imagedata  format="PNG" fileref="pics-it/add-error-bars-1.png"/>
       </imageobject>
     </mediaobject>
   </figure>
@@ -89,7 +89,7 @@
     <title>La finestra di dialogo &add-function-cmd;: le coordinate cartesiane.</title>
     <mediaobject>
       <imageobject>
-        <imagedata  format="PNG" fileref="pics/add-function-dialog1.png"/>
+        <imagedata  format="PNG" fileref="pics-it/add-function-dialog1.png"/>
       </imageobject>
     </mediaobject>
   </figure>
@@ -100,7 +100,7 @@
 	<title>La finestra di dialogo &add-function-cmd;: individuazione automatica delle costanti.</title>
 	<mediaobject>
 	  <imageobject>
-		<imagedata  format="PNG" fileref="pics/add-function-dialog4.png"/>
+		<imagedata  format="PNG" fileref="pics-it/add-function-dialog4.png"/>
 	  </imageobject>
 	</mediaobject>
   </figure>
@@ -111,7 +111,7 @@
     <title>La finestra di dialogo &add-function-cmd;: coordinate parametriche.</title>
     <mediaobject>
       <imageobject>
-        <imagedata  format="PNG" fileref="pics/add-function-dialog2.png"/>
+        <imagedata  format="PNG" fileref="pics-it/add-function-dialog2.png"/>
       </imageobject>
     </mediaobject>
   </figure>
@@ -121,7 +121,7 @@
     <title>La finestra di dialogo &add-function-cmd;: coordinate polari.</title>
     <mediaobject>
       <imageobject>
-        <imagedata  format="PNG" fileref="pics/add-function-dialog3.png"/>
+        <imagedata  format="PNG" fileref="pics-it/add-function-dialog3.png"/>
       </imageobject>
     </mediaobject>
   </figure>
@@ -136,7 +136,7 @@
     <title>La finestra di dialogo &add-layer-cmd;.</title>
     <mediaobject>
       <imageobject>
-        <imagedata  format="PNG" fileref="pics/add-layer.png"/>
+        <imagedata  format="PNG" fileref="pics-it/add-layer.png"/>
       </imageobject>
     </mediaobject>
   </figure>
@@ -154,7 +154,7 @@
     <title>La finestra di dialogo &add-remove-curve-cmd; .</title>
     <mediaobject>
       <imageobject>
-        <imagedata  format="PNG" fileref="pics/add-remove-curve.png"/>
+        <imagedata  format="PNG" fileref="pics-it/add-remove-curve.png"/>
       </imageobject>
     </mediaobject>
   </figure>
@@ -183,7 +183,7 @@
     <title>La finestra di dialogo &arrange-layers-cmd; per posizionare le tavole in una finestra.</title>
     <mediaobject>
       <imageobject>
-        <imagedata  format="PNG" fileref="pics/arrange-layers-dialog.png"/>
+        <imagedata  format="PNG" fileref="pics-it/arrange-layers-dialog.png"/>
       </imageobject>
     </mediaobject>
   </figure>
@@ -211,7 +211,7 @@
     <title>Opzioni per le linee e le frecce: la prima scheda.</title>
     <mediaobject>
       <imageobject>
-        <imagedata  format="PNG" fileref="pics/line-options-1.png"/>
+        <imagedata  format="PNG" fileref="pics-it/line-options-1.png"/>
       </imageobject>
     </mediaobject>
   </figure>
@@ -220,7 +220,7 @@
     <title>Opzioni per le linee e le frecce: la seconda scheda.</title>
     <mediaobject>
       <imageobject>
-        <imagedata  format="PNG" fileref="pics/line-options-2.png"/>
+        <imagedata  format="PNG" fileref="pics-it/line-options-2.png"/>
       </imageobject>
     </mediaobject>
   </figure>
@@ -229,7 +229,7 @@
     <title>Opzioni per le linee e le frecce: la terza scheda.</title>
     <mediaobject>
       <imageobject>
-        <imagedata  format="PNG" fileref="pics/line-options-3.png"/>
+        <imagedata  format="PNG" fileref="pics-it/line-options-3.png"/>
       </imageobject>
     </mediaobject>
   </figure>
@@ -247,7 +247,7 @@
     <title>&column-options-cmd; .</title>
     <mediaobject>
       <imageobject>
-        <imagedata  format="PNG" fileref="pics/column-options.png"/>
+        <imagedata  format="PNG" fileref="pics-it/column-options.png"/>
       </imageobject>
     </mediaobject>
   </figure>
@@ -268,7 +268,7 @@
     <title>Opzioni per le curve di livello: la scheda per i valori..</title>
     <mediaobject>
       <imageobject>
-        <imagedata  format="PNG" fileref="pics/contour-curve-dialog-9.png"/>
+        <imagedata  format="PNG" fileref="pics-it/contour-curve-dialog-9.png"/>
       </imageobject>
     </mediaobject>
   </figure>
@@ -279,7 +279,7 @@ La scheda <emphasis>Valori</emphasis>   permette di scegliere la matrice da usar
     <title>Opzioni per le curve di livello: la scheda per i colori.</title>
     <mediaobject>
       <imageobject>
-        <imagedata  format="PNG" fileref="pics/contour-curve-dialog-1.png"/>
+        <imagedata  format="PNG" fileref="pics-it/contour-curve-dialog-1.png"/>
       </imageobject>
     </mediaobject>
   </figure>
@@ -320,7 +320,7 @@ La scheda <emphasis>Valori</emphasis>   permette di scegliere la matrice da usar
     <title>Opzioni per le curve di livello: la scheda per le curve di livello.</title>
     <mediaobject>
       <imageobject>
-        <imagedata  format="PNG" fileref="pics/contour-curve-dialog-7.png"/>
+        <imagedata  format="PNG" fileref="pics-it/contour-curve-dialog-7.png"/>
       </imageobject>
     </mediaobject>
   </figure>
@@ -332,7 +332,7 @@ Quando si seleziona <emphasis>Usa la tavolozza dei colori</emphasis>, le curve s
     <title>Opzioni per le curve di livello: la scheda per le etichette.</title>
     <mediaobject>
       <imageobject>
-        <imagedata  format="PNG" fileref="pics/contour-curve-dialog-8.png"/>
+        <imagedata  format="PNG" fileref="pics-it/contour-curve-dialog-8.png"/>
       </imageobject>
     </mediaobject>
   </figure>
@@ -351,7 +351,7 @@ Quando si seleziona <emphasis>Usa la tavolozza dei colori</emphasis>, le curve s
     <title>Opzioni per il grafico: propriet&agrave; della tavola (vers. 0.9.8.3).</title>
     <mediaobject>
       <imageobject>
-        <imagedata  format="PNG" fileref="pics/custom-curves-1.png"/>
+        <imagedata  format="PNG" fileref="pics-it/custom-curves-1a.png"/>
       </imageobject>
     </mediaobject>
   </figure>
@@ -359,7 +359,7 @@ Quando si seleziona <emphasis>Usa la tavolozza dei colori</emphasis>, le curve s
     <title>Opzioni per il grafico: propriet&agrave; della tavola (vers. 0.9.8.4).</title>
     <mediaobject>
       <imageobject>
-        <imagedata  format="PNG" fileref="pics/custom-curves-1a.png"/>
+        <imagedata  format="PNG" fileref="pics/custom-curves-1.png"/>
       </imageobject>
     </mediaobject>
   </figure>
@@ -368,7 +368,7 @@ Quando si seleziona <emphasis>Usa la tavolozza dei colori</emphasis>, le curve s
     <title>Opzioni per il grafico: colore di sfondo per la tela.  (vers. 0.9.8.4).</title>
     <mediaobject>
       <imageobject>
-        <imagedata  format="PNG" fileref="pics/custom-canvas-1a.png"/>
+        <imagedata  format="PNG" fileref="pics-it/custom-canvas-1a.png"/>
       </imageobject>
     </mediaobject>
   </figure>
@@ -376,7 +376,7 @@ Quando si seleziona <emphasis>Usa la tavolozza dei colori</emphasis>, le curve s
     <title>Opzioni per il grafico: immagine di sfondo per la tela. (vers. 0.9.8.4).</title>
     <mediaobject>
       <imageobject>
-        <imagedata  format="PNG" fileref="pics/custom-canvas-2a.png"/>
+        <imagedata  format="PNG" fileref="pics-it/custom-canvas-2a.png"/>
       </imageobject>
     </mediaobject>
   </figure>
@@ -385,7 +385,7 @@ Quando si seleziona <emphasis>Usa la tavolozza dei colori</emphasis>, le curve s
     <title>Opzioni per il grafico: forma e dimensioni della tavola.</title>
     <mediaobject>
       <imageobject>
-        <imagedata  format="PNG" fileref="pics/custom-layer-geometry.png"/>
+        <imagedata  format="PNG" fileref="pics-it/custom-layer-geometry.png"/>
       </imageobject>
     </mediaobject>
   </figure>
@@ -398,7 +398,7 @@ Anche se la casella <emphasis>Modalit&agrave; veloce</emphasis> &egrave; selezio
     <title>Opzioni per il grafico: velocit&agrave; di tracciamento del grafico.</title>
     <mediaobject>
       <imageobject>
-        <imagedata  format="PNG" fileref="pics/custom-layer-speed.png"/>
+        <imagedata  format="PNG" fileref="pics-it/custom-layer-speed.png"/>
       </imageobject>
     </mediaobject>
   </figure>
@@ -409,7 +409,7 @@ Anche se la casella <emphasis>Modalit&agrave; veloce</emphasis> &egrave; selezio
     <title>Opzioni per il grafico: gestione delle matrici associate al grafico.</title>
     <mediaobject>
       <imageobject>
-        <imagedata  format="PNG" fileref="pics/custom-curves-3.png"/>
+        <imagedata  format="PNG" fileref="pics-it/custom-curves-3.png"/>
       </imageobject>
     </mediaobject>
   </figure>
@@ -423,7 +423,7 @@ Anche se la casella <emphasis>Modalit&agrave; veloce</emphasis> &egrave; selezio
     <title>Opzioni per il grafico: assegnazione degli assi.</title>
     <mediaobject>
       <imageobject>
-        <imagedata  format="PNG" fileref="pics/custom-curves-axes.png"/>
+        <imagedata  format="PNG" fileref="pics-it/custom-curves-axes.png"/>
       </imageobject>
     </mediaobject>
   </figure>
@@ -433,7 +433,7 @@ Anche se la casella <emphasis>Modalit&agrave; veloce</emphasis> &egrave; selezio
     <title>Opzioni per il grafico: formato della linea.</title>
     <mediaobject>
       <imageobject>
-        <imagedata  format="PNG" fileref="pics/custom-curves-4.png"/>
+        <imagedata  format="PNG" fileref="pics-it/custom-curves-4.png"/>
       </imageobject>
     </mediaobject>
   </figure>
@@ -443,7 +443,7 @@ Anche se la casella <emphasis>Modalit&agrave; veloce</emphasis> &egrave; selezio
     <title>Opzioni per il grafico: formato dei punti.</title>
     <mediaobject>
       <imageobject>
-        <imagedata  format="PNG" fileref="pics/custom-curves-2.png"/>
+        <imagedata  format="PNG" fileref="pics-it/custom-curves-2.png"/>
       </imageobject>
     </mediaobject>
   </figure>
@@ -453,7 +453,7 @@ Anche se la casella <emphasis>Modalit&agrave; veloce</emphasis> &egrave; selezio
     <title>Opzioni per il grafico: formato delle etichette.</title>
     <mediaobject>
       <imageobject>
-        <imagedata  format="PNG" fileref="pics/custom-curves-labels.png"/>
+        <imagedata  format="PNG" fileref="pics-it/custom-curves-labels.png"/>
       </imageobject>
     </mediaobject>
   </figure>
@@ -465,7 +465,7 @@ Anche se la casella <emphasis>Modalit&agrave; veloce</emphasis> &egrave; selezio
     <title>Opzioni per il grafico: propriet&agrave; per le barre di errore.</title>
     <mediaobject>
       <imageobject>
-        <imagedata  format="PNG" fileref="pics/custom-error-bars.png"/>
+        <imagedata  format="PNG" fileref="pics-it/custom-error-bars.png"/>
       </imageobject>
     </mediaobject>
   </figure>
@@ -480,10 +480,7 @@ Anche se la casella <emphasis>Modalit&agrave; veloce</emphasis> &egrave; selezio
     <title>Opzioni per il grafico a settori: propriet&agrave; dei settori.</title>
     <mediaobject>
       <imageobject>
-        <imagedata  format="PNG" fileref="pics/custom-curves-pie-1.png"/>
-
-
-
+        <imagedata  format="PNG" fileref="pics-it/custom-curves-pie-1.png"/>
       </imageobject>
     </mediaobject>
   </figure>
@@ -492,7 +489,7 @@ Anche se la casella <emphasis>Modalit&agrave; veloce</emphasis> &egrave; selezio
     <title>Opzioni per il grafico a settori: forma dei settori.</title>
     <mediaobject>
       <imageobject>
-        <imagedata  format="PNG" fileref="pics/custom-curves-pie-2.png"/>
+        <imagedata  format="PNG" fileref="pics-it/custom-curves-pie-2.png"/>
       </imageobject>
     </mediaobject>
   </figure>
@@ -501,7 +498,7 @@ Anche se la casella <emphasis>Modalit&agrave; veloce</emphasis> &egrave; selezio
     <title>Opzioni per il grafico a settori: propriet&agrave; delle etichette.</title>
     <mediaobject>
       <imageobject>
-        <imagedata  format="PNG" fileref="pics/custom-curves-pie-3.png"/>
+        <imagedata  format="PNG" fileref="pics-it/custom-curves-pie-3.png"/>
       </imageobject>
     </mediaobject>
   </figure>
@@ -513,7 +510,7 @@ Anche se la casella <emphasis>Modalit&agrave; veloce</emphasis> &egrave; selezio
     <title>Opzioni per i grafici scatola e baffi: propriet&agrave; del riempimento.</title>
     <mediaobject>
       <imageobject>
-        <imagedata  format="PNG" fileref="pics/custom-curves-box-1.png"/>
+        <imagedata  format="PNG" fileref="pics-it/custom-curves-box-1.png"/>
       </imageobject>
     </mediaobject>
   </figure>
@@ -530,7 +527,7 @@ Anche se la casella <emphasis>Modalit&agrave; veloce</emphasis> &egrave; selezio
     <title>Opzioni per i grafici scatola e baffi: propriet&agrave; della scatola e dei baffi (vers 0.9.8.4).</title>
     <mediaobject>
       <imageobject>
-        <imagedata  format="PNG" fileref="pics/custom-curves-box-2a.png"/>
+        <imagedata  format="PNG" fileref="pics-it/custom-curves-box-2a.png"/>
       </imageobject>
     </mediaobject>
   </figure>
@@ -547,7 +544,7 @@ Anche se la casella <emphasis>Modalit&agrave; veloce</emphasis> &egrave; selezio
     <title>Opzioni per i grafici scatola e baffi: propriet&agrave; del percentile (vers 0.9.8.4).</title>
     <mediaobject>
       <imageobject>
-        <imagedata  format="PNG" fileref="pics/custom-curves-box-3a.png"/>
+        <imagedata  format="PNG" fileref="pics-it/custom-curves-box-3a.png"/>
       </imageobject>
     </mediaobject>
   </figure>
@@ -560,7 +557,7 @@ Anche se la casella <emphasis>Modalit&agrave; veloce</emphasis> &egrave; selezio
     <title>Opzioni per i grafici con istogrammi: propriet&agrave; del riempimento.</title>
     <mediaobject>
       <imageobject>
-        <imagedata  format="PNG" fileref="pics/custom-curves-histogram-1.png"/>
+        <imagedata  format="PNG" fileref="pics-it/custom-curves-histogram-1.png"/>
       </imageobject>
     </mediaobject>
   </figure>
@@ -568,7 +565,7 @@ Anche se la casella <emphasis>Modalit&agrave; veloce</emphasis> &egrave; selezio
     <title>Opzioni per i grafici con istogrammi: propriet&agrave; degli spazi (distanze tra le barre).</title>
     <mediaobject>
       <imageobject>
-        <imagedata  format="PNG" fileref="pics/custom-curves-histogram-2.png"/>
+        <imagedata  format="PNG" fileref="pics-it/custom-curves-histogram-2.png"/>
       </imageobject>
     </mediaobject>
   </figure>
@@ -576,7 +573,7 @@ Anche se la casella <emphasis>Modalit&agrave; veloce</emphasis> &egrave; selezio
     <title>Opzioni per i grafici con istogrammi: propriet&agrave; dei dati.</title>
     <mediaobject>
       <imageobject>
-        <imagedata  format="PNG" fileref="pics/custom-curves-histogram-3.png"/>
+        <imagedata  format="PNG" fileref="pics-it/custom-curves-histogram-3.png"/>
       </imageobject>
     </mediaobject>
   </figure>
@@ -594,7 +591,7 @@ Anche se la casella <emphasis>Modalit&agrave; veloce</emphasis> &egrave; selezio
     <title>La finestra di dialogo &new-surface-3d-plot-cmd; (funzione).</title>
     <mediaobject>
       <imageobject>
-        <imagedata  format="PNG" fileref="pics/define-surface-plot.png"/>
+        <imagedata  format="PNG" fileref="pics-it/define-surface-plot.png"/>
       </imageobject>
     </mediaobject>
   </figure>
@@ -628,7 +625,7 @@ Anche se la casella <emphasis>Modalit&agrave; veloce</emphasis> &egrave; selezio
     
     <mediaobject>
       <imageobject>
-        <imagedata  format="PNG" fileref="pics/export-ascii.png"/>
+        <imagedata  format="PNG" fileref="pics-it/export-ascii.png"/>
       </imageobject>
     </mediaobject>
   </figure>
@@ -646,7 +643,7 @@ Anche se la casella <emphasis>Modalit&agrave; veloce</emphasis> &egrave; selezio
     <title>La finestra di dialogo &fft-cmd; per una curva in un grafico.</title>
     <mediaobject>
       <imageobject>
-        <imagedata  format="PNG" fileref="pics/fft-dialog-curve.png"/>
+        <imagedata  format="PNG" fileref="pics-it/fft-dialog-curve.png"/>
       </imageobject>
     </mediaobject>
   </figure>
@@ -656,7 +653,7 @@ Anche se la casella <emphasis>Modalit&agrave; veloce</emphasis> &egrave; selezio
     <title>La finestra di dialogo &fft-cmd; per i dati in una tabella.</title>
     <mediaobject>
       <imageobject>
-        <imagedata  format="PNG" fileref="pics/fft-dialog-table.png"/>
+        <imagedata  format="PNG" fileref="pics-it/fft-dialog-table.png"/>
       </imageobject>
     </mediaobject>
   </figure>
@@ -680,7 +677,7 @@ Anche se la casella <emphasis>Modalit&agrave; veloce</emphasis> &egrave; selezio
     <title>La finestra di dialogo &integrate-cmd; (vers. 0.9.8.4).</title>
     <mediaobject>
       <imageobject>
-        <imagedata  format="PNG" fileref="pics/integrate-dialoga.png"/>
+        <imagedata  format="PNG" fileref="pics-it/integrate-dialog.png"/>
       </imageobject>
     </mediaobject>
   </figure>
@@ -694,7 +691,7 @@ Anche se la casella <emphasis>Modalit&agrave; veloce</emphasis> &egrave; selezio
     <title>La finestra di dialogo &integrate-cmd; (vers. 0.9.8.3).</title>
     <mediaobject>
       <imageobject>
-        <imagedata  format="PNG" fileref="pics/integrate-dialog.png"/>
+        <imagedata  format="PNG" fileref="pics-it/integrate-dialog1.png"/>
       </imageobject>
     </mediaobject>
   </figure>
@@ -722,7 +719,7 @@ Anche se la casella <emphasis>Modalit&agrave; veloce</emphasis> &egrave; selezio
    
     <mediaobject>
       <imageobject>
-        <imagedata  format="PNG" fileref="pics/fit-dialog1.png"/>
+        <imagedata  format="PNG" fileref="pics-it/fit-dialog1.png"/>
       </imageobject>
     </mediaobject>
   </figure>
@@ -732,7 +729,7 @@ Anche se la casella <emphasis>Modalit&agrave; veloce</emphasis> &egrave; selezio
     
     <mediaobject>
       <imageobject>
-        <imagedata  format="PNG" fileref="pics/fit-dialog2.png"/>
+        <imagedata  format="PNG" fileref="pics-it/fit-dialog2.png"/>
       </imageobject>
     </mediaobject>
   </figure>
@@ -772,7 +769,7 @@ Anche se la casella <emphasis>Modalit&agrave; veloce</emphasis> &egrave; selezio
     
     <mediaobject>
       <imageobject>
-        <imagedata  format="PNG" fileref="pics/fit-dialog4.png"/>
+        <imagedata  format="PNG" fileref="pics-it/fit-dialog4.png"/>
       </imageobject>
     </mediaobject>
   </figure>
@@ -809,7 +806,7 @@ In
     <title>Opzioni generali del grafico: la scheda Scale.</title>
     <mediaobject>
       <imageobject>
-        <imagedata  format="PNG" fileref="pics/plot-options-1.png"/>
+        <imagedata  format="PNG" fileref="pics-it/plot-options-1.png"/>
       </imageobject>
     </mediaobject>
   </figure>
@@ -819,7 +816,7 @@ In
     <title>Opzioni generali del grafico: la scheda Griglie.</title>
     <mediaobject>
       <imageobject>
-        <imagedata  format="PNG" fileref="pics/plot-options-2.png"/>
+        <imagedata  format="PNG" fileref="pics-it/plot-options-2.png"/>
       </imageobject>
     </mediaobject>
   </figure>
@@ -828,7 +825,7 @@ In
     <title>Opzioni generali del grafico: la scheda Assi.</title>
     <mediaobject>
       <imageobject>
-        <imagedata  format="PNG" fileref="pics/plot-options-3.png"/>
+        <imagedata  format="PNG" fileref="pics-it/plot-options-3.png"/>
       </imageobject>
     </mediaobject>
   </figure>
@@ -838,7 +835,7 @@ In
     <title>Opzioni generali del grafico: la scheda Generale.</title>
     <mediaobject>
       <imageobject>
-        <imagedata  format="PNG" fileref="pics/plot-options-4.png"/>
+        <imagedata  format="PNG" fileref="pics-it/plot-options-4.png"/>
       </imageobject>
     </mediaobject>
   </figure>
@@ -859,7 +856,7 @@ In
     
     <mediaobject>
       <imageobject>
-        <imagedata  format="PNG" fileref="pics/plot-wizard.png"/>
+        <imagedata  format="PNG" fileref="pics-it/plot-wizard.png"/>
       </imageobject>
     </mediaobject>
   </figure>
@@ -876,7 +873,7 @@ In
     <title>Il pannello dell'esploratore dei progetti.</title>
     <mediaobject>
       <imageobject>
-        <imagedata  format="PNG" fileref="pics/explorer1.png"/>
+        <imagedata  format="PNG" fileref="pics-it/explorer1.png"/>
       </imageobject>
     </mediaobject>
   </figure>
@@ -898,7 +895,7 @@ In
     <title>Preferenze: i parametri generali per l'applicazione.</title>
     <mediaobject>
       <imageobject>
-        <imagedata  format="PNG" fileref="pics/preferences-dialog1.png"/>
+        <imagedata  format="PNG" fileref="pics-it/preferences-dialog1.png"/>
       </imageobject>
     </mediaobject>
   </figure>
@@ -928,7 +925,7 @@ I suggerimenti di completamento sono visualizzati automaticamente per le parole 
   <informalfigure id="fig-preferences-dialog-2">
     <mediaobject>
       <imageobject>
-        <imagedata  format="PNG" fileref="pics/preferences-dialog2.png"/>
+        <imagedata  format="PNG" fileref="pics-it/preferences-dialog2.png"/>
       </imageobject>
     </mediaobject>
   </informalfigure>
@@ -939,7 +936,7 @@ I suggerimenti di completamento sono visualizzati automaticamente per le parole 
   <informalfigure id="fig-preferences-dialog-3">
     <mediaobject>
       <imageobject>
-        <imagedata  format="PNG" fileref="pics/preferences-dialog3.png"/>
+        <imagedata  format="PNG" fileref="pics-it/preferences-dialog3.png"/>
       </imageobject>
     </mediaobject>
   </informalfigure>
@@ -950,7 +947,7 @@ I suggerimenti di completamento sono visualizzati automaticamente per le parole 
  <informalfigure id="fig-preferences-dialog-11">
     <mediaobject>
       <imageobject>
-        <imagedata  format="PNG" fileref="pics/preferences-dialog11.png"/>
+        <imagedata  format="PNG" fileref="pics-it/preferences-dialog11.png"/>
       </imageobject>
     </mediaobject>
   </informalfigure>
@@ -962,7 +959,7 @@ I suggerimenti di completamento sono visualizzati automaticamente per le parole 
     <title>Preferenze: le opzioni per l'indirizzo dei file (vers. 0.9.8.4). </title>
     <mediaobject>
       <imageobject>
-        <imagedata  format="PNG" fileref="pics/preferences-dialog13.png"/>
+        <imagedata  format="PNG" fileref="pics-it/preferences-dialog13.png"/>
       </imageobject>
     </mediaobject>
   </figure>
@@ -982,7 +979,7 @@ I suggerimenti di completamento sono visualizzati automaticamente per le parole 
     <title>Preferenze: le opzioni per la connessione. </title>
     <mediaobject>
       <imageobject>
-        <imagedata  format="PNG" fileref="pics/preferences-dialog16.png"/>
+        <imagedata  format="PNG" fileref="pics-it/preferences-dialog16.png"/>
       </imageobject>
     </mediaobject>
   </figure>
@@ -999,7 +996,7 @@ I suggerimenti di completamento sono visualizzati automaticamente per le parole 
     <title>Preferenze: le opzioni per le tabelle. </title>
     <mediaobject>
       <imageobject>
-        <imagedata  format="PNG" fileref="pics/preferences-dialog4.png"/>
+        <imagedata  format="PNG" fileref="pics-it/preferences-dialog4.png"/>
       </imageobject>
     </mediaobject>
   </figure>
@@ -1015,7 +1012,7 @@ I suggerimenti di completamento sono visualizzati automaticamente per le parole 
     <title>Preferenze: le opzioni per i grafici 2D.</title>
     <mediaobject>
       <imageobject>
-        <imagedata  format="PNG" fileref="pics/preferences-dialog5.png"/>
+        <imagedata  format="PNG" fileref="pics-it/preferences-dialog5.png"/>
       </imageobject>
     </mediaobject>
   </figure>
@@ -1026,7 +1023,7 @@ I suggerimenti di completamento sono visualizzati automaticamente per le parole 
   <informalfigure id="fig-preferences-dialog-6">
     <mediaobject>
       <imageobject>
-        <imagedata  format="PNG" fileref="pics/preferences-dialog6.png"/>
+        <imagedata  format="PNG" fileref="pics-it/preferences-dialog6.png"/>
       </imageobject>
     </mediaobject>
   </informalfigure>
@@ -1037,7 +1034,7 @@ I suggerimenti di completamento sono visualizzati automaticamente per le parole 
   <informalfigure id="fig-preferences-dialog-15">
     <mediaobject>
       <imageobject>
-        <imagedata  format="PNG" fileref="pics/preferences-dialog15.png"/>
+        <imagedata  format="PNG" fileref="pics-it/preferences-dialog15.png"/>
       </imageobject>
     </mediaobject>
   </informalfigure>
@@ -1048,7 +1045,7 @@ I suggerimenti di completamento sono visualizzati automaticamente per le parole 
   <informalfigure id="fig-preferences-dialog-7">
     <mediaobject>
       <imageobject>
-        <imagedata  format="PNG" fileref="pics/preferences-dialog7.png"/>
+        <imagedata  format="PNG" fileref="pics-it/preferences-dialog7.png"/>
       </imageobject>
     </mediaobject>
   </informalfigure>
@@ -1059,7 +1056,7 @@ I suggerimenti di completamento sono visualizzati automaticamente per le parole 
   <informalfigure id="fig-preferences-dialog-18">
 	<mediaobject>
 	  <imageobject>
-		<imagedata  format="PNG" fileref="pics/preferences-dialog18.png"/>
+		<imagedata  format="PNG" fileref="pics-it/preferences-dialog18.png"/>
 	  </imageobject>
 	</mediaobject>
   </informalfigure>
@@ -1070,7 +1067,7 @@ I suggerimenti di completamento sono visualizzati automaticamente per le parole 
   <informalfigure id="fig-preferences-dialog-17">
 	<mediaobject>
 	  <imageobject>
-		<imagedata  format="PNG" fileref="pics/preferences-dialog17.png"/>
+		<imagedata  format="PNG" fileref="pics-it/preferences-dialog17.png"/>
 	  </imageobject>
 	</mediaobject>
   </informalfigure>
@@ -1081,7 +1078,7 @@ I suggerimenti di completamento sono visualizzati automaticamente per le parole 
   <informalfigure id="fig-preferences-dialog-19">
 	<mediaobject>
 	  <imageobject>
-		<imagedata  format="PNG" fileref="pics/preferences-dialog19.png"/>
+		<imagedata  format="PNG" fileref="pics-it/preferences-dialog19.png"/>
 	  </imageobject>
 	</mediaobject>
   </informalfigure>
@@ -1092,7 +1089,7 @@ I suggerimenti di completamento sono visualizzati automaticamente per le parole 
   <informalfigure id="fig-preferences-dialog-8">
     <mediaobject>
       <imageobject>
-        <imagedata  format="PNG" fileref="pics/preferences-dialog8.png"/>
+        <imagedata  format="PNG" fileref="pics-it/preferences-dialog8.png"/>
       </imageobject>
     </mediaobject>
   </informalfigure>
@@ -1103,7 +1100,7 @@ I suggerimenti di completamento sono visualizzati automaticamente per le parole 
   <informalfigure id="fig-preferences-dialog-12">
     <mediaobject>
       <imageobject>
-        <imagedata  format="PNG" fileref="pics/preferences-dialog12.png"/>
+        <imagedata  format="PNG" fileref="pics-it/preferences-dialog12.png"/>
       </imageobject>
     </mediaobject>
   </informalfigure>
@@ -1116,7 +1113,7 @@ I suggerimenti di completamento sono visualizzati automaticamente per le parole 
     <title>Preferenze: le opzioni per i grafici 3D.</title>
     <mediaobject>
       <imageobject>
-        <imagedata  format="PNG" fileref="pics/preferences-dialog9.png"/>
+        <imagedata  format="PNG" fileref="pics-it/preferences-dialog9.png"/>
       </imageobject>
     </mediaobject>
   </figure>
@@ -1129,7 +1126,7 @@ I suggerimenti di completamento sono visualizzati automaticamente per le parole 
     <title>Preferenze: le opzioni per le annotazioni.</title>
     <mediaobject>
       <imageobject>
-        <imagedata  format="PNG" fileref="pics/preferences-dialog14.png"/>
+        <imagedata  format="PNG" fileref="pics-it/preferences-dialog14.png"/>
       </imageobject>
     </mediaobject>
   </figure>
@@ -1142,7 +1139,7 @@ I suggerimenti di completamento sono visualizzati automaticamente per le parole 
   
     <mediaobject>
       <imageobject>
-        <imagedata  format="PNG" fileref="pics/preferences-dialog10.png"/>
+        <imagedata  format="PNG" fileref="pics-it/preferences-dialog10.png"/>
       </imageobject>
     </mediaobject>
   </figure>
@@ -1206,7 +1203,7 @@ I suggerimenti di completamento sono visualizzati automaticamente per le parole 
     <title>La finestra di dialogo &set-dimensions-cmd; della matrice.</title>
     <mediaobject>
       <imageobject>
-        <imagedata  format="PNG" fileref="pics/matrix-set-dimensions.png"/>
+        <imagedata  format="PNG" fileref="pics-it/matrix-set-dimensions.png"/>
       </imageobject>
     </mediaobject>
   </figure>
@@ -1227,7 +1224,7 @@ del men&ugrave; <link linkend="sec-file-menu">File</link>. Pu&ograve; essere usa
     <title>La finestra di dialogo per le importazioni.</title>
     <mediaobject>
       <imageobject>
-        <imagedata  format="PNG" fileref="pics/set-import-options.png"/>
+        <imagedata  format="PNG" fileref="pics-it/set-import-options.png"/>
       </imageobject>
     </mediaobject>
   </figure>
@@ -1306,7 +1303,7 @@ che incrementa notevolmente la velocit&agrave; di valutazione.</para>
     <title>Grafico 3D: opzioni per un grafico di superficie. </title>
     <mediaobject>
       <imageobject>
-        <imagedata  format="PNG" fileref="pics/surface-plot-options-dialog1.png"/>
+        <imagedata  format="PNG" fileref="pics-it/surface-plot-options-dialog1.png"/>
       </imageobject>
     </mediaobject>
   </figure>
@@ -1319,7 +1316,7 @@ che incrementa notevolmente la velocit&agrave; di valutazione.</para>
   <informalfigure id="fig-surface-plot-options-2">
     <mediaobject>
       <imageobject>
-        <imagedata  format="PNG" fileref="pics/surface-plot-options-dialog2.png"/>
+        <imagedata  format="PNG" fileref="pics-it/surface-plot-options-dialog2.png"/>
       </imageobject>
     </mediaobject>
   </informalfigure>
@@ -1330,7 +1327,7 @@ che incrementa notevolmente la velocit&agrave; di valutazione.</para>
   <informalfigure id="fig-surface-plot-options-3">
     <mediaobject>
       <imageobject>
-		<imagedata  format="PNG" fileref="pics/surface-plot-options-dialog7.png"/>
+		<imagedata  format="PNG" fileref="pics-it/surface-plot-options-dialog7.png"/>
       </imageobject>
     </mediaobject>
   </informalfigure>
@@ -1341,7 +1338,7 @@ che incrementa notevolmente la velocit&agrave; di valutazione.</para>
   <informalfigure id="fig-surface-plot-options-4">
 	<mediaobject>
 	  <imageobject>
-		<imagedata  format="PNG" fileref="pics/surface-plot-options-dialog3.png"/>
+		<imagedata  format="PNG" fileref="pics-it/surface-plot-options-dialog3.png"/>
 	  </imageobject>
 	</mediaobject>
   </informalfigure>
@@ -1352,7 +1349,7 @@ che incrementa notevolmente la velocit&agrave; di valutazione.</para>
   <informalfigure id="fig-surface-plot-options-4">
     <mediaobject>
       <imageobject>
-        <imagedata  format="PNG" fileref="pics/surface-plot-options-dialog4.png"/>
+        <imagedata  format="PNG" fileref="pics-it/surface-plot-options-dialog4.png"/>
       </imageobject>
     </mediaobject>
   </informalfigure>
@@ -1368,7 +1365,7 @@ che incrementa notevolmente la velocit&agrave; di valutazione.</para>
 	<title>Grafico 3D: opzioni generali del grafico.</title>
     <mediaobject>
       <imageobject>
-        <imagedata  format="PNG" fileref="pics/surface-plot-options-dialog5.png"/>
+        <imagedata  format="PNG" fileref="pics-it/surface-plot-options-dialog5.png"/>
       </imageobject>
     </mediaobject>
   </figure>
@@ -1381,7 +1378,7 @@ che incrementa notevolmente la velocit&agrave; di valutazione.</para>
 	<title>Grafico 3D: opzioni di stampa del grafico.</title>
 	<mediaobject>
 	  <imageobject>
-		<imagedata  format="PNG" fileref="pics/surface-plot-options-dialog6.png"/>
+		<imagedata  format="PNG" fileref="pics-it/surface-plot-options-dialog6.png"/>
 	  </imageobject>
 	</mediaobject>
   </figure>
@@ -1402,7 +1399,7 @@ che incrementa notevolmente la velocit&agrave; di valutazione.</para>
     <title>La finestra di dialogo delle opzioni per il titolo degli assi.</title>
     <mediaobject>
       <imageobject>
-        <imagedata  format="PNG" fileref="pics/text-options-dialog.png"/>
+        <imagedata  format="PNG" fileref="pics-it/text-options-dialog.png"/>
       </imageobject>
     </mediaobject>
   </figure>
@@ -1427,7 +1424,7 @@ che incrementa notevolmente la velocit&agrave; di valutazione.</para>
     <title>La finestra di dialogo per le opzioni dei testi della legenda.</title>
     <mediaobject>
       <imageobject>
-        <imagedata  format="PNG" fileref="pics/text-options-dialog3.png"/>
+        <imagedata  format="PNG" fileref="pics-it/text-options-dialog3.png"/>
       </imageobject>
     </mediaobject>
   </figure>
