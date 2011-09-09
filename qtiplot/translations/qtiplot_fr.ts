@@ -4176,7 +4176,7 @@ L&apos;autocomplétion ne sera pas disponible !</translation>
     </message>
     <message>
         <source>Alt+Shift+S</source>
-        <translation type="unfinished"></translation>
+        <translation>Alt+Shift+S</translation>
     </message>
 </context>
 <context>
@@ -14509,12 +14509,12 @@ Calcule la fonction de distribution cumulée pur une distribution chi² avec df 
     </message>
     <message>
         <source>Tried to smooth over more points (left+right+1=%1) than given as input (%2).</source>
-        <translation type="unfinished"></translation>
+        <translation>À essayer de lisser avec plus de points (gauche+droite+1=%1) que donné en entrée (%2).</translation>
     </message>
     <message>
         <source>Internal error in Savitzky-Golay algorithm.
 </source>
-        <translation type="unfinished"></translation>
+        <translation>Erreur interne dans l&apos;algorithme de Savitzky-Golay.</translation>
     </message>
 </context>
 <context>
