@@ -3420,31 +3420,34 @@ bool Graph::addCurves(Table* w, const QStringList& names, int style, double lWid
 	} else {
 		int curves = names.count();
 		int errCurves = 0;
-		QStringList lst = QStringList();
+		QStringList lst = QStringList(), masterCurvesLst = QStringList();
 		for (int i=0; i<curves; i++){//We rearrange the list so that the error bars are placed at the end
-			int j = w->colIndex(names[i]);
+			QString colName = names[i];
+			int j = w->colIndex(colName);
 			if (w->colPlotDesignation(j) == Table::xErr || w->colPlotDesignation(j) == Table::yErr ||
 				w->colPlotDesignation(j) == Table::Label){
 				errCurves++;
-				lst << names[i];
-			} else
-				lst.prepend(names[i]);
+				lst << colName;
+			} else {
+				lst.prepend(colName);
+				masterCurvesLst << colName;
+			}
 		}
 
 		for (int i = 0; i < curves; i++){
-			int j = w->colIndex(names[i]);
+			int j = w->colIndex(lst[i]);
 			PlotCurve *c = NULL;
 			if (w->colPlotDesignation(j) == Table::xErr || w->colPlotDesignation(j) == Table::yErr){
 				int xcol = w->colX(j);
-				int ycol = w->colY(j, xcol);
+				int ycol = w->colY(j, xcol, masterCurvesLst);
 				if (xcol < 0 || ycol < 0)
 					return false;
 
 				ErrorBarsCurve *er = NULL;
 				if (w->colPlotDesignation(j) == Table::xErr)
-					er = addErrorBars(w->colName(xcol), w->colName(ycol), w, names[i], (int)ErrorBarsCurve::Horizontal);
+					er = addErrorBars(w->colName(xcol), w->colName(ycol), w, lst[i], (int)ErrorBarsCurve::Horizontal);
 				else
-					er = addErrorBars(w->colName(xcol), w->colName(ycol), w, names[i]);
+					er = addErrorBars(w->colName(xcol), w->colName(ycol), w, lst[i]);
 
 				if (!er)
 					continue;
@@ -3466,7 +3469,7 @@ bool Graph::addCurves(Table* w, const QStringList& names, int style, double lWid
 				} else
 					return false;
 			} else
-				c = (PlotCurve *)insertCurve(w, names[i], style, startRow, endRow);
+				c = (PlotCurve *)insertCurve(w, lst[i], style, startRow, endRow);
 
 			if (c && c->type() != ErrorBars){
 				CurveLayout cl = initCurveLayout(style, curves - errCurves);

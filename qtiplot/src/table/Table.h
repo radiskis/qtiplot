@@ -212,7 +212,7 @@ public slots:
 	bool noXColumn();
 	bool noYColumn();
 	int colX(int col);
-	int colY(int col, int xCol = -1);
+	int colY(int col, int xCol = -1, const QStringList& lst = QStringList());
 
 	QStringList getCommands(){return commands;};
 	//! Clear all column formulae.

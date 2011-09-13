@@ -269,8 +269,32 @@ void PlotDialog::editCurve()
 		} else {
 			AssociationsDialog* ad = app->showPlotAssociations(index);
 			if (ad)
-				connect((QObject *)ad, SIGNAL(destroyed()), this, SLOT(show()));
+				connect((QObject *)ad, SIGNAL(destroyed()), this, SLOT(plotAssociationsDialogClosed()));
 		}
+	}
+}
+
+void PlotDialog::plotAssociationsDialogClosed()
+{
+	show();
+
+	CurveTreeItem *item = (CurveTreeItem *)listBox->currentItem();
+	if (!item)
+		return;
+	if (item->type() != CurveTreeItem::PlotCurveTreeItem)
+		return;
+
+	QwtPlotItem *it = (QwtPlotItem *)item->plotItem();
+	if (!it || it->rtti() != QwtPlotItem::Rtti_PlotCurve)
+		return;
+
+	PlotCurve *c = (PlotCurve *)it;
+	if (c->type() != Graph::Function && ((DataCurve *)it)->table()){
+		QStringList lst = ((DataCurve *)it)->plotAssociation();
+		QString tableName = ((DataCurve *)it)->table()->name();
+		QString plotAssociation = tableName + ": " + lst.replaceInStrings(tableName + "_", "").join(", ");
+		if (item->text(0) != plotAssociation)
+			item->setText(0, plotAssociation);
 	}
 }
 

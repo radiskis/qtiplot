@@ -159,6 +159,7 @@ private slots:
 	void setLayerDefaultValues();
     void setEquidistantLevels();
     void showCustomPenColumn(bool on);
+	void plotAssociationsDialogClosed();
 
 private:
 	void resizeLayerToFitImage(Graph *g);
