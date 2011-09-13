@@ -346,26 +346,49 @@ int Table::colX(int col)
 	return xcol;
 }
 
-int Table::colY(int col, int xCol)
+int Table::colY(int col, int xCol, const QStringList &lst)
 {
 	int yCol = -1;
-	if (xCol >= 0){
-		for(int i = col - 1; i >= 0; i--){
-			if (col_plot_type[i] == Y && colX(i) == xCol)
-				return i;
-		}
-		for(int i = col + 1; i < (int)d_table->numCols(); i++){
-			if (col_plot_type[i] == Y && colX(i) == xCol)
-				return i;
+	int cols = numCols();
+	if (!lst.isEmpty()){
+		if (xCol >= 0){
+			for(int i = col - 1; i >= 0; i--){
+				if (col_plot_type[i] == Y && colX(i) == xCol && lst.contains(colName(i)))
+					return i;
+			}
+			for(int i = col + 1; i < cols; i++){
+				if (col_plot_type[i] == Y && colX(i) == xCol && lst.contains(colName(i)))
+					return i;
+			}
+		} else {
+			for(int i = col - 1; i >= 0; i--){
+				if (col_plot_type[i] == Y && lst.contains(colName(i)))
+					return i;
+			}
+			for(int i = col + 1; i < cols; i++){
+				if (col_plot_type[i] == Y && lst.contains(colName(i)))
+					return i;
+			}
 		}
 	} else {
-		for(int i = col - 1; i >= 0; i--){
-			if (col_plot_type[i] == Y)
-				return i;
-		}
-		for(int i = col + 1; i < (int)d_table->numCols(); i++){
-			if (col_plot_type[i] == Y)
-				return i;
+		if (xCol >= 0){
+			for(int i = col - 1; i >= 0; i--){
+				if (col_plot_type[i] == Y && colX(i) == xCol)
+					return i;
+			}
+			for(int i = col + 1; i < cols; i++){
+				if (col_plot_type[i] == Y && colX(i) == xCol)
+					return i;
+			}
+		} else {
+			for(int i = col - 1; i >= 0; i--){
+				if (col_plot_type[i] == Y)
+					return i;
+			}
+			for(int i = col + 1; i < cols; i++){
+				if (col_plot_type[i] == Y)
+					return i;
+			}
 		}
 	}
 	return yCol;
