@@ -96,6 +96,9 @@ void ErrorBarsCurve::draw(QPainter *painter,
 void ErrorBarsCurve::drawErrorBars(QPainter *painter,
 		const QwtScaleMap &xMap, const QwtScaleMap &yMap, int from, int to) const
 {
+	if (!d_master_curve)
+		return;
+
 	int sh2 = 0, sw2 = 0;
 	double x_factor = (double)painter->device()->logicalDpiX()/(double)plot()->logicalDpiX();
 	double y_factor = (double)painter->device()->logicalDpiY()/(double)plot()->logicalDpiY();
