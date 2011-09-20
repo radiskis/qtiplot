@@ -2688,12 +2688,12 @@ QString Graph::saveCurves()
 		int i = -1;
 		foreach (QwtPlotItem *it, d_curves){
 			i++;
-            if (it->rtti() == QwtPlotItem::Rtti_PlotSpectrogram){
-                s += ((Spectrogram *)it)->saveToString();
-                continue;
-            }
+			if (it->rtti() == QwtPlotItem::Rtti_PlotSpectrogram){
+				s += ((Spectrogram *)it)->saveToString();
+				continue;
+			}
 
-            DataCurve *c = (DataCurve *)it;
+			DataCurve *c = (DataCurve *)it;
 			if (c->type() != ErrorBars){
 				if (c->type() == Function){
 					s += ((FunctionCurve *)c)->saveToString();
@@ -2725,7 +2725,7 @@ QString Graph::saveCurves()
 				s += QString::number(er->minusSide()) + "\t";
 				s += QString::number(curveIndex(er->masterCurve())) + "\n";
 				s += er->saveToString();
-  	       }
+			}
 		}
 	}
 	return s;
@@ -3276,9 +3276,8 @@ ErrorBarsCurve* Graph::addErrorBars(const QString& yColName, Table *errTable, co
 		if (((PlotCurve *)it)->type() == ErrorBars || ((PlotCurve *)it)->type() == Function)
 			continue;
 
-		if (it->title().text() == yColName){
+		if (it->title().text() == yColName)
 			return addErrorBars((DataCurve*)it, errTable, errColName, type, width, cap, color, through, minus, plus);
-		}
 	}
 	return NULL;
 }
@@ -3293,9 +3292,6 @@ ErrorBarsCurve* Graph::addErrorBars(const QString& xColName, const QString& yCol
 ErrorBarsCurve* Graph::addErrorBars(DataCurve *c, Table *errTable, const QString& errColName,
 				int type, double width, int cap, const QColor& color, bool through, bool minus, bool plus)
 {
-	if (!c)
-		return NULL;
-
 	ErrorBarsCurve *er = new ErrorBarsCurve(type, errTable, errColName);
 	insertCurve(er);
 
@@ -3307,8 +3303,18 @@ ErrorBarsCurve* Graph::addErrorBars(DataCurve *c, Table *errTable, const QString
 	er->drawMinusSide(minus);
 	er->drawThroughSymbol(through);
 
-	updatePlot();
+	if (c)
+		updatePlot();
 	return er;
+}
+
+void Graph::loadErrorBars(QList<ErrorBarsCurve *> errBars, QList<int> mcIndexes)
+{
+	for (int i = 0; i < errBars.size() && i < mcIndexes.size(); i++){
+		ErrorBarsCurve *er = errBars[i];
+		if (er)
+			er->setMasterCurve(dataCurve(mcIndexes[i]));
+	}
 }
 
 bool Graph::isPiePlot()

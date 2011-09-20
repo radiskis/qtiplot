@@ -384,6 +384,8 @@ class Graph: public QwtPlot
 				bool through = true, bool minus = true, bool plus = true);
 
 		void updateErrorBars(ErrorBarsCurve *er, bool xErr, double width, int cap, const QColor& c, bool plus, bool minus, bool through);
+		//! Used when restoring project files
+		void loadErrorBars(QList<ErrorBarsCurve *> errBars, QList<int> mcIndexes);
 
 		//! Returns a valid master curve for the error bars curve.
 		DataCurve* masterCurve(ErrorBarsCurve *er);

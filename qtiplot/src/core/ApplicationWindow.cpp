@@ -12545,6 +12545,8 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot, co
 {
 	Graph* ag = 0;
 	int curveID = 0;
+	QList<int> mcIndexes;
+	QList<ErrorBarsCurve *> errBars;
 	for (int j = 0; j < list.count() - 1; j++){
 		QString s = list[j];
 		if (s.contains ("ggeometry")){
@@ -12889,10 +12891,17 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot, co
 			Table *w = app->table(curve[3]);
 			Table *errTable = app->table(curve[4]);
 			if (w && errTable){
-				DataCurve *mc = (curve.size() >= 12) ? ag->dataCurve(curve[11].toInt()) : ag->masterCurve(curve[2], curve[3]);
-				ag->addErrorBars(mc, errTable, curve[4], curve[1].toInt(),
+				bool useMasterIndex = (curve.size() >= 12);
+				int mcIndex = curve[11].toInt();
+				DataCurve *mc = useMasterIndex ? ag->dataCurve(mcIndex) : ag->masterCurve(curve[2], curve[3]);
+				ErrorBarsCurve *err = ag->addErrorBars(mc, errTable, curve[4], curve[1].toInt(),
 					curve[5].toDouble(), curve[6].toInt(), QColor(curve[7]),
 					curve[8].toInt(), curve[10].toInt(), curve[9].toInt());
+
+				if (!mc && useMasterIndex){
+					mcIndexes << mcIndex;
+					errBars << err;
+				}
 			}
 			curveID++;
 		}
@@ -13257,6 +13266,7 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot, co
 		}
 	}
 	if (ag){
+		ag->loadErrorBars(errBars, mcIndexes);
 		ag->disableCurveAntialiasing(app->d_disable_curve_antialiasing, app->d_curve_max_antialising_size);
 		ag->updateAxesTitles();
 		ag->updateLayout();
