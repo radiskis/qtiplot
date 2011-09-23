@@ -2,7 +2,7 @@
     File                 : Matrix.cpp
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2004-2009 by Ion Vasilief
+	Copyright            : (C) 2004 - 2011 by Ion Vasilief
     Email (use @ for *)  : ion_vasilief*yahoo.fr
     Description          : Matrix worksheet class
 
@@ -26,8 +26,8 @@
  *   Boston, MA  02110-1301  USA                                           *
  *                                                                         *
  ***************************************************************************/
-#include "Matrix.h"
-#include "MatrixCommand.h"
+#include <Matrix.h>
+#include <MatrixCommand.h>
 #include <Graph.h>
 #include <ApplicationWindow.h>
 #include <muParserScript.h>
@@ -1402,12 +1402,12 @@ void Matrix::initTableView()
 	hHeader->setDefaultSectionSize(d_column_width);
 
     int cols = numCols();
-	for(int i=0; i<cols; i++)
+	for(int i = 0; i < cols; i++)
 		d_table_view->setColumnWidth(i, d_column_width);
 
 	QHeaderView* vHeader = (QHeaderView*)d_table_view->verticalHeader();
 	vHeader->setMovable(false);
-	vHeader->setResizeMode(QHeaderView::ResizeToContents);
+	vHeader->setResizeMode(QHeaderView::Fixed);
 
     d_stack->addWidget(d_table_view);
 
