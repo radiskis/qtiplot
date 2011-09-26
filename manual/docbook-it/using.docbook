@@ -51,7 +51,7 @@
   <title>Grafico 2D semplice: la tabella</title>
   <mediaobject>
     <imageobject>
-      <imagedata  format="PNG" fileref="pics-it/simple-2dplot-1.png"/>
+      <imagedata  format="PNG" fileref="pics-it/semplice-2dplot-1.png"/>
     </imageobject>
   </mediaobject>
 </figure>
@@ -62,7 +62,7 @@
   <title>Grafico 2D semplice: grafico di default</title>
   <mediaobject>
     <imageobject>
-      <imagedata  format="PNG" fileref="pics-it/simple-2dplot-2.png"/>
+      <imagedata  format="PNG" fileref="pics-it/semplice-2dplot-2.png"/>
     </imageobject>
   </mediaobject>
 </figure>
@@ -73,7 +73,7 @@
   <title>Grafico 2D semplice: il grafico finito.</title>
   <mediaobject>
     <imageobject>
-      <imagedata  format="PNG" fileref="pics-it/simple-2dplot-3.png"/>
+      <imagedata  format="PNG" fileref="pics-it/semplice-2dplot-3.png"/>
     </imageobject>
   </mediaobject>
 </figure>
@@ -89,7 +89,7 @@
   <title>Grafico 2D con due assi Y.</title>
   <mediaobject>
     <imageobject>
-      <imagedata  format="PNG" fileref="pics-it/plot-two-axes.png"/>
+      <imagedata  format="PNG" fileref="pics-it/grafico-due-axes.png"/>
     </imageobject>
   </mediaobject>
 </figure>
@@ -99,7 +99,7 @@
 <informalfigure id="fig-two-axes-dialog">
   <mediaobject>
     <imageobject>
-      <imagedata  format="PNG" fileref="pics-it/plot-two-axes-dialog.png"/>
+      <imagedata  format="PNG" fileref="pics-it/grafico-due-axes-dialog.png"/>
     </imageobject>
   </mediaobject>
 </informalfigure>
@@ -121,7 +121,7 @@
   <title>Grafico 2D di funzione.</title>
   <mediaobject>
     <imageobject>
-      <imagedata  format="PNG" fileref="pics-it/direct-function-plot.png"/>
+      <imagedata  format="PNG" fileref="pics-it/grafico-di-funzione-direttamente.png"/>
     </imageobject>
   </mediaobject>
 </figure>
@@ -139,7 +139,7 @@
   <title>Grafico 2D di funzione: compilare la colonna X.</title>
   <mediaobject>
     <imageobject>
-      <imagedata  format="PNG" fileref="pics-it/table-function-plot1.png"/>
+      <imagedata  format="PNG" fileref="pics-it/tabella-function-plot1.png"/>
     </imageobject>
   </mediaobject>
 </figure>
@@ -150,7 +150,7 @@
   <title>Grafico 2D di funzione: compilare la colonna Y</title>
   <mediaobject>
     <imageobject>
-      <imagedata  format="PNG" fileref="pics-it/table-function-plot2.png"/>
+      <imagedata  format="PNG" fileref="pics-it/tabella-function-plot2.png"/>
     </imageobject>
   </mediaobject>
 </figure>
@@ -297,7 +297,7 @@ I grafici 3D usano OpenGL quindi si possono facilmente ruotare, scalare e sposta
   <informalfigure>
     <mediaobject>
       <imageobject>
-        <imagedata  format="PNG" fileref="pics-it/multilayer-panel.png"/>
+        <imagedata  format="PNG" fileref="pics-it/multitavole-panel.png"/>
       </imageobject>
     </mediaobject>
   </informalfigure>

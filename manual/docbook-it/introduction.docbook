@@ -19,7 +19,7 @@ revision history. (see installation appendix comment) -->
   <title>Esempio.</title>
   <mediaobject>
     <imageobject>
-      <imagedata  format="PNG" fileref="pics-it/cosa-fa.png"/>
+      <imagedata  format="PNG" fileref="pics-it/cosa-fa-qtiplot.png"/>
     </imageobject>
   </mediaobject>
 </figure>
@@ -37,7 +37,7 @@ revision history. (see installation appendix comment) -->
   <title>Grafico prodotto con QtiPlot.</title>
   <mediaobject>
     <imageobject>
-      <imagedata  format="PNG" fileref="pics-it/progetto.png"/>
+      <imagedata  format="PNG" fileref="pics-it/esempio-di-progetto.png"/>
     </imageobject>
   </mediaobject>
 </figure>
@@ -59,7 +59,7 @@ qtiplot nome_del_file.&file-ext;
   <title>Apertura di un progetto direttamente da riga di comando.</title>
   <mediaobject>
     <imageobject>
-      <imagedata  format="PNG" fileref="pics-it/apertura-progetto.png"/>
+      <imagedata  format="PNG" fileref="pics-it/apri-progetto.png"/>
     </imageobject>
   </mediaobject>
 </figure>
@@ -169,7 +169,7 @@ Attenzione, i grafici 2D eseguiti con questa modalit&agrave; non sempre sono rap
   <title>Modifiche apportate alla matrice</title>
   <mediaobject>
     <imageobject>
-      <imagedata  format="PNG" fileref="pics-it/modifiche-matrice.png"/>
+      <imagedata  format="PNG" fileref="pics-it/matrice-modifiche.png"/>
     </imageobject>
   </mediaobject>
 </figure>
@@ -217,7 +217,7 @@ Attenzione, i grafici 2D eseguiti con questa modalit&agrave; non sempre sono rap
   <title>Risulati delle analisi</title>
   <mediaobject>
     <imageobject>
-      <imagedata  format="PNG" fileref="pics-it/risultati.png"/>
+      <imagedata  format="PNG" fileref="pics-it/risultati-analisi.png"/>
     </imageobject>
   </mediaobject>
 </figure>
@@ -232,7 +232,7 @@ Attenzione, i grafici 2D eseguiti con questa modalit&agrave; non sempre sono rap
   <title>Esploratore del progetto</title>
   <mediaobject>
     <imageobject>
-      <imagedata  format="PNG" fileref="pics-it/esploratore.png"/>
+      <imagedata  format="PNG" fileref="pics-it/esploratore-progetto.png"/>
     </imageobject>
   </mediaobject>
 </figure>
@@ -256,7 +256,7 @@ Quando si lavora con i dati, le tabelle sono il punto centrale di &appname;. Una
   <title>La tabella di QtiPlot</title>
   <mediaobject>
     <imageobject>
-      <imagedata  format="PNG" fileref="pics-it/table.png"/>
+      <imagedata  format="PNG" fileref="pics-it/tabella1.png"/>
     </imageobject>
   </mediaobject>
 </figure>
@@ -383,7 +383,7 @@ In una matrice si possono anche inserire valori letti direttamente in un file AS
   <title>La finestra Risultati delle analisi di QtiPlot.</title>
   <mediaobject>
     <imageobject>
-      <imagedata  format="PNG" fileref="pics-it/risultati.png"/>
+      <imagedata  format="PNG" fileref="pics-it/risultati-analisi.png"/>
     </imageobject>
   </mediaobject>
 </figure>
@@ -402,7 +402,7 @@ In una matrice si possono anche inserire valori letti direttamente in un file AS
   <title>L'esploratore del progetto di QtiPlot.</title>
   <mediaobject>
     <imageobject>
-      <imagedata  format="PNG" fileref="pics-it/explorer1.png"/>
+      <imagedata  format="PNG" fileref="pics-it/esploratore-progetto1.png"/>
     </imageobject>
   </mediaobject>
 </figure>

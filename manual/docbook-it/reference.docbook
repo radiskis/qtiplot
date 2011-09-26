@@ -24,7 +24,7 @@ Nei menu appaiono elementi diversi secondo quale tipo di finestra &egrave; attiv
 <informalfigure id="file-nuovo-progetto2">
                <mediaobject>
                  <imageobject>
-                    <imagedata  format="PNG" fileref="pics-it/file-nuovo-progetto2.png"/>
+                    <imagedata  format="PNG" fileref="pics-it/file-nuovo-progetto-1.png"/>
                  </imageobject>
                </mediaobject>
              </informalfigure>
@@ -33,7 +33,7 @@ Nei menu appaiono elementi diversi secondo quale tipo di finestra &egrave; attiv
 <informalfigure id="file-nuovo-progetto1">
                <mediaobject>
                  <imageobject>
-                    <imagedata  format="PNG" fileref="pics-it/file-nuovo-progetto1.png"/>
+                    <imagedata  format="PNG" fileref="pics-it/file-nuovo-progetto-2.png"/>
                  </imageobject>
                </mediaobject>
              </informalfigure>
@@ -255,7 +255,7 @@ Nei menu appaiono elementi diversi secondo quale tipo di finestra &egrave; attiv
     <informalfigure id="fig-export-graph-png">
       <mediaobject>
         <imageobject>
-          <imagedata  format="PNG" fileref="pics-it/export-graph-png.png"/>
+          <imagedata  format="PNG" fileref="pics-it/esporta-graph-png.png"/>
         </imageobject>
       </mediaobject>
     </informalfigure>
@@ -265,7 +265,7 @@ Nei menu appaiono elementi diversi secondo quale tipo di finestra &egrave; attiv
     <informalfigure id="fig-export-graph-eps">
       <mediaobject>
         <imageobject>
-          <imagedata  format="PNG" fileref="pics-it/export-graph-eps.png"/>
+          <imagedata  format="PNG" fileref="pics-it/esporta-graph-eps.png"/>
         </imageobject>
       </mediaobject>
     </informalfigure>
@@ -275,7 +275,7 @@ Nei menu appaiono elementi diversi secondo quale tipo di finestra &egrave; attiv
 	<informalfigure id="fig-export-graph-tex">
       <mediaobject>
         <imageobject>
-          <imagedata  format="PNG" fileref="pics-it/export-graph-tex.png"/>
+          <imagedata  format="PNG" fileref="pics-it/esporta-graph-tex.png"/>
         </imageobject>
       </mediaobject>
     </informalfigure>
@@ -778,7 +778,7 @@ Nei menu appaiono elementi diversi secondo quale tipo di finestra &egrave; attiv
 <!--  ************************************************  -->
 <!--		beginning of plot 2d			-->
 
-<sect1 id="sec-plot-menu"><title>Il menu Grafico</title>
+<sect1 id="sec-plot-menu"><title>Il menu Grafico 2D</title>
 <para>Questo menu &egrave; attivo solo quando &egrave; selezionata una tabella. I suoi comandi permettono di tracciare i grafici dei dati della tabella selezionata. Ognuno dei suoi comandi crea una nuova finestra di grafico che contiene una sola tavola vuota. Il nuovo grafico &egrave; tracciato in questa tavola vuota.</para>
 
 <sect2 id="line-cmd"><title>&line-cmd;</title>
@@ -1328,7 +1328,7 @@ Nei menu appaiono elementi diversi secondo quale tipo di finestra &egrave; attiv
 </sect4>
 
 <sect4 id="normality-test-cmd"> <title>&normality-test-cmd;</title>
-	<para>Nuovi comandi per 0.9.8.4. NdT: Questi comandi sono presenti in QtiPlot a partire dalla versione 0.9.8.4</para>
+	<para>Nuovi comandi per 0.9.8.4</para>
 	  <para>Il comando <emphasis>Test di Normalit&agrave;</emphasis> esegue il test <ulink url="http://en.wikipedia.org/wiki/Shapiro-Wilk_test">Shapiro-Wilk</ulink> sulla colonna selezionata per determinare quanto la distribuzione dei dati della colonna &egrave; conforme a una distribuzione normale. Per una discussione dettagliata di questo argomento, vedere l'articolo di Wikipedia <ulink url="http://en.wikipedia.org/wiki/Normality_test">Normality Testing</ulink>.</para>
 </sect4>
 </sect3>
@@ -1362,7 +1362,7 @@ Nei menu appaiono elementi diversi secondo quale tipo di finestra &egrave; attiv
     <informalfigure id="sort-table-dialog">
       <mediaobject>
         <imageobject>
-          <imagedata  format="PNG" fileref="pics-it/sort-table-dialog.png"/>
+          <imagedata  format="PNG" fileref="pics-it/ordina-table-dialog.png"/>
         </imageobject>
       </mediaobject>
     </informalfigure>
@@ -1439,7 +1439,7 @@ Nei menu appaiono elementi diversi secondo quale tipo di finestra &egrave; attiv
 <informalfigure id="baseline-dialog">	    
 	    <mediaobject>
 	      <imageobject>
-	        <imagedata  format="PNG" fileref="pics-it/baseline-dialog.png"/>
+	        <imagedata  format="PNG" fileref="pics-it/lineabase-dialog.png"/>
 	      </imageobject>
 	    </mediaobject>
 	  </informalfigure>
@@ -1450,7 +1450,7 @@ Nei menu appaiono elementi diversi secondo quale tipo di finestra &egrave; attiv
 <informalfigure id="mathondatasets-dialog">	    
 	    <mediaobject>
 	      <imageobject>
-	        <imagedata  format="PNG" fileref="pics-it/mathondatasets-dialog.png"/>
+	        <imagedata  format="PNG" fileref="pics-it/operazioni-sui-dati-dialog.png"/>
 	      </imageobject>
 	    </mediaobject>
 	  </informalfigure>
@@ -1503,7 +1503,7 @@ Nei menu appaiono elementi diversi secondo quale tipo di finestra &egrave; attiv
 	    <title>La finestra di dialogo per la levigatura con il metodo &savitsky-golay-cmd;.</title>
 	    <mediaobject>
 	      <imageobject>
-	        <imagedata  format="PNG" fileref="pics-it/smooth-1-dialog.png"/>
+	        <imagedata  format="PNG" fileref="pics-it/leviga-1-dialog.png"/>
 	      </imageobject>
 	    </mediaobject>
 	  </figure>
@@ -1524,7 +1524,7 @@ Nei menu appaiono elementi diversi secondo quale tipo di finestra &egrave; attiv
 	    <title>La finestra di dialogo per la levigatura con il metodo della media mobile &moving-window-cmd;.</title>
 	    <mediaobject>
 	      <imageobject>
-	        <imagedata  format="PNG" fileref="pics-it/smooth-2-dialog.png"/>
+	        <imagedata  format="PNG" fileref="pics-it/leviga-2-dialog.png"/>
 	      </imageobject>
 	    </mediaobject>
 	  </figure>
@@ -1556,7 +1556,7 @@ Nei menu appaiono elementi diversi secondo quale tipo di finestra &egrave; attiv
 	    <title>La finestra di dialogo per il filtraggio Passa Basso &fft-low-pass-cmd;.</title>
 	    <mediaobject>
 	      <imageobject>
-	        <imagedata  format="PNG" fileref="pics-it/filter-fft-low-dialog.png"/>
+	        <imagedata  format="PNG" fileref="pics-it/filtro-fft-low-dialog.png"/>
 	      </imageobject>
 	    </mediaobject>
 	  </figure>
@@ -1570,7 +1570,7 @@ Nei menu appaiono elementi diversi secondo quale tipo di finestra &egrave; attiv
 	    <title>La finestra di dialogo per il filtraggio Passa Alto &fft-high-pass-cmd;.</title>
 	    <mediaobject>
 	      <imageobject>
-	        <imagedata  format="PNG" fileref="pics-it/filter-fft-low-dialog.png"/>
+	        <imagedata  format="PNG" fileref="pics-it/filtro-fft-low-dialog.png"/>
 	      </imageobject>
 	    </mediaobject>
 	  </figure>
@@ -1598,7 +1598,7 @@ Nei menu appaiono elementi diversi secondo quale tipo di finestra &egrave; attiv
 	    <title>La finestra di dialogo per il filtraggio Blocca Banda &fft-band-block-cmd;.</title>
 	    <mediaobject>
 	      <imageobject>
-	        <imagedata  format="PNG" fileref="pics-it/filter-fft-block-dialog.png"/>
+	        <imagedata  format="PNG" fileref="pics-it/filtro-fft-block-dialog.png"/>
 	      </imageobject>
 	    </mediaobject>
 	  </figure>
@@ -1614,7 +1614,7 @@ Nei menu appaiono elementi diversi secondo quale tipo di finestra &egrave; attiv
 	    <title>La finestra di dialogo per interpolazione &interpolate-cmd;.</title>
 	    <mediaobject>
 	      <imageobject>
-	        <imagedata  format="PNG" fileref="pics-it/interpolate-dialog.png"/>
+	        <imagedata  format="PNG" fileref="pics-it/interpolazione-dialog.png"/>
 	      </imageobject>
 	    </mediaobject>
 	  </figure>
@@ -1963,18 +1963,7 @@ Nei menu appaiono elementi diversi secondo quale tipo di finestra &egrave; attiv
 <sect2 id="format-curves-cmd"><title>&format-curves-cmd;</title>
     <para>Apre il dialogo <link linkend="custom-curves-dialog-lines">Personalizzare le curve nei grafici con linee e punti</link>. Permette di personalizzare gli stili di linea e colori per tracciare le curve.</para>
     <para>Quando &egrave; attiva una finestra di grafico di superficie, questa voce non &egrave; presente nel menu. </para>
-<sidebar>
-    <para>NdT: nella versione di QtiPlot in prova il comando non &egrave; presente nel menu Formato.</para>
-<para>Per accedere ai comandi delle opzioni per le curve si deve cliccare con il destro in un punto vuoto nell'area del grafico e selezionare <emphasis>Propriet&agrave;</emphasis> e successivamente, nell'albero degli elementi, attivare l'origine dei dati (tabella) come nell'esempio sottostante.</para>
-<figure id="fig-opzioni-curve-dialog">
-	    <title>La finestra di dialogo delle opzioni per le curve.</title>
-	    <mediaobject>
-	      <imageobject>
-	        <imagedata  format="PNG" fileref="pics-it/opzioni-per-le-curve.png"/>
-	      </imageobject>
-	    </mediaobject>
-	  </figure>
-</sidebar>
+
 </sect2>
 
 <sect2 id="format-scales-cmd"><title>&format-scales-cmd;</title>
@@ -2115,42 +2104,42 @@ Nei menu appaiono elementi diversi secondo quale tipo di finestra &egrave; attiv
 
   <sect2 id="bar-style-cmd"><title>&bar-style-cmd;</title>
     <para>Pulsante del comando: &bar-style-icon;</para>
-    <para>Permette di personalizzare le barre nei grafici con <link linkend="fig-3d-bars">istogrammi 3D</link>. NdT: Nella versione provata, commuta solo il tracciato del grafico in un tracciato di questo tipo e non apre nessun dialogo per modificarlo. Tutte le modifiche al grafico si attuano invece tramite il menu Formato.</para>
+    <para>Permette di personalizzare le barre nei grafici con <link linkend="fig-3d-bars">istogrammi 3D</link>.</para>
 </sect2>
 
   <sect2 id="dots-cmd"><title>&dots-cmd;</title>
     <para>Pulsante del comando: &dots-icon;</para>
-    <para>Permette di personalizzare lo stile di disegno dei punti dati nei <link linkend="fig-3d-scatter">grafici 3D con punti</link>. NdT: Nella versione provata, commuta solo il tracciato del grafico in un tracciato di questo tipo e non apre nessun dialogo per modificarlo. Tutte le modifiche al grafico si attuano invece tramite il menu Formato.</para>
+    <para>Permette di personalizzare lo stile di disegno dei punti dati nei <link linkend="fig-3d-scatter">grafici 3D con punti</link></para>
 </sect2>
 
   <sect2 id="cones-cmd"><title>&cones-cmd;</title>
     <para>Pulsante del comando: &cones-icon;</para>
-    <para>Permette di personalizzare lo stile dei coni per i punti dati nei <link linkend="fig-3d-scatter">grafici 3D con punti</link>. NdT: Nella versione provata, commuta solo il tracciato del grafico in un tracciato di questo tipo e non apre nessun dialogo per modificarlo. Tutte le modifiche al grafico si attuano invece tramite il menu Formato</para>
+    <para>Permette di personalizzare lo stile dei coni per i punti dati nei <link linkend="fig-3d-scatter">grafici 3D con punti</link>.</para>
 </sect2>
 
   <sect2 id="cross-hairs-cmd"><title>&cross-hairs-cmd;</title>
     <para>Pulsante del comando: &cross-hairs-icon;</para>
-    <para>Permette di personalizzare lo stile delle crocette per i punti dati nei <link linkend="fig-3d-scatter">grafici 3D con punti</link>. NdT: Nella versione provata, commuta solo il tracciato del grafico in un tracciato di questo tipo e non apre nessun dialogo per modificarlo. Tutte le modifiche al grafico si attuano invece tramite il menu Formato</para>
+    <para>Permette di personalizzare lo stile delle crocette per i punti dati nei <link linkend="fig-3d-scatter">grafici 3D con punti</link>.</para>
 </sect2>
 
   <sect2 id="mesh-cmd"><title>&mesh-cmd;</title>
     <para>Pulsante del comando: &mesh-icon;</para>
-    <para>In un grafico di superficie 3D permette di modificare lo stile di disegno della superficie. NdT: Nella versione provata, commuta solo il tracciato del grafico in un tracciato di questo tipo e non apre nessun dialogo per modificarlo. Tutte le modifiche al grafico si attuano invece tramite il menu Formato</para>
+    <para>In un grafico di superficie 3D permette di modificare lo stile di disegno della superficie.</para>
 </sect2>
 
   <sect2 id="mesh-hidden-cmd"><title>&mesh-hidden-cmd;</title>
     <para>Pulsante del comando: &mesh-hidden-icon;</para>
-    <para>In un grafico di superficie 3D permette di modificare lo stile di disegno della superficie. Individua e non visualizza le linee nascoste. NdT: Nella versione provata, commuta solo il tracciato del grafico in un tracciato di questo tipo e non apre nessun dialogo per modificarlo. Tutte le modifiche al grafico si attuano invece tramite il menu Formato</para>
+    <para>In un grafico di superficie 3D permette di modificare lo stile di disegno della superficie. Individua e non visualizza le linee nascoste.</para>
 </sect2>
 
   <sect2 id="polygons-cmd"><title>&polygons-cmd;</title>
     <para>Pulsante del comando: &polygons-icon;</para>
-    <para>In un grafico di superficie 3D permette di modificare lo stile di disegno della superficie. NdT: Nella versione provata, commuta solo il tracciato del grafico in un tracciato di questo tipo e non apre nessun dialogo per modificarlo. Tutte le modifiche al grafico si attuano invece tramite il menu Formato</para>
+    <para>In un grafico di superficie 3D permette di modificare lo stile di disegno della superficie.</para>
 </sect2>
 
   <sect2 id="mesh-polygons-cmd"><title>&mesh-polygons-cmd;</title>
     <para>Pulsante del comando: &mesh-polygons-icon;</para>
-    <para>In un grafico di superficie 3D permette di modificare lo stile di disegno della superficie. NdT: Nella versione provata, commuta solo il tracciato del grafico in un tracciato di questo tipo e non apre nessun dialogo per modificarlo. Tutte le modifiche al grafico si attuano invece tramite il menu Formato</para>
+    <para>In un grafico di superficie 3D permette di modificare lo stile di disegno della superficie</para>
 </sect2>
 
   <sect2 id="floor-cmd"><title>&floor-cmd;</title>

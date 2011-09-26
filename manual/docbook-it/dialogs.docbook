@@ -42,7 +42,7 @@
     <title>La finestra di dialogo &add-error-bars-cmd;.</title>
     <mediaobject>
       <imageobject>
-        <imagedata  format="PNG" fileref="pics-it/add-error-bars-1.png"/>
+        <imagedata  format="PNG" fileref="pics-it/aggiungi-error-bars-1.png"/>
       </imageobject>
     </mediaobject>
   </figure>
@@ -89,7 +89,7 @@
     <title>La finestra di dialogo &add-function-cmd;: le coordinate cartesiane.</title>
     <mediaobject>
       <imageobject>
-        <imagedata  format="PNG" fileref="pics-it/add-function-dialog1.png"/>
+        <imagedata  format="PNG" fileref="pics-it/aggiungi-function-dialog1.png"/>
       </imageobject>
     </mediaobject>
   </figure>
@@ -100,7 +100,7 @@
 	<title>La finestra di dialogo &add-function-cmd;: individuazione automatica delle costanti.</title>
 	<mediaobject>
 	  <imageobject>
-		<imagedata  format="PNG" fileref="pics-it/add-function-dialog4.png"/>
+		<imagedata  format="PNG" fileref="pics-it/aggiungi-function-dialog4.png"/>
 	  </imageobject>
 	</mediaobject>
   </figure>
@@ -111,7 +111,7 @@
     <title>La finestra di dialogo &add-function-cmd;: coordinate parametriche.</title>
     <mediaobject>
       <imageobject>
-        <imagedata  format="PNG" fileref="pics-it/add-function-dialog2.png"/>
+        <imagedata  format="PNG" fileref="pics-it/aggiungi-function-dialog2.png"/>
       </imageobject>
     </mediaobject>
   </figure>
@@ -121,7 +121,7 @@
     <title>La finestra di dialogo &add-function-cmd;: coordinate polari.</title>
     <mediaobject>
       <imageobject>
-        <imagedata  format="PNG" fileref="pics-it/add-function-dialog3.png"/>
+        <imagedata  format="PNG" fileref="pics-it/aggiungi-function-dialog3.png"/>
       </imageobject>
     </mediaobject>
   </figure>
@@ -136,7 +136,7 @@
     <title>La finestra di dialogo &add-layer-cmd;.</title>
     <mediaobject>
       <imageobject>
-        <imagedata  format="PNG" fileref="pics-it/add-layer.png"/>
+        <imagedata  format="PNG" fileref="pics-it/aggiungi-layer.png"/>
       </imageobject>
     </mediaobject>
   </figure>
@@ -154,7 +154,7 @@
     <title>La finestra di dialogo &add-remove-curve-cmd; .</title>
     <mediaobject>
       <imageobject>
-        <imagedata  format="PNG" fileref="pics-it/add-remove-curve.png"/>
+        <imagedata  format="PNG" fileref="pics-it/aggiungi-remove-curve.png"/>
       </imageobject>
     </mediaobject>
   </figure>
@@ -183,7 +183,7 @@
     <title>La finestra di dialogo &arrange-layers-cmd; per posizionare le tavole in una finestra.</title>
     <mediaobject>
       <imageobject>
-        <imagedata  format="PNG" fileref="pics-it/arrange-layers-dialog.png"/>
+        <imagedata  format="PNG" fileref="pics-it/disponi-layers-dialog.png"/>
       </imageobject>
     </mediaobject>
   </figure>
@@ -211,7 +211,7 @@
     <title>Opzioni per le linee e le frecce: la prima scheda.</title>
     <mediaobject>
       <imageobject>
-        <imagedata  format="PNG" fileref="pics-it/line-options-1.png"/>
+        <imagedata  format="PNG" fileref="pics-it/linea-options-1.png"/>
       </imageobject>
     </mediaobject>
   </figure>
@@ -220,7 +220,7 @@
     <title>Opzioni per le linee e le frecce: la seconda scheda.</title>
     <mediaobject>
       <imageobject>
-        <imagedata  format="PNG" fileref="pics-it/line-options-2.png"/>
+        <imagedata  format="PNG" fileref="pics-it/linea-options-2.png"/>
       </imageobject>
     </mediaobject>
   </figure>
@@ -229,7 +229,7 @@
     <title>Opzioni per le linee e le frecce: la terza scheda.</title>
     <mediaobject>
       <imageobject>
-        <imagedata  format="PNG" fileref="pics-it/line-options-3.png"/>
+        <imagedata  format="PNG" fileref="pics-it/linea-options-3.png"/>
       </imageobject>
     </mediaobject>
   </figure>
@@ -247,7 +247,7 @@
     <title>&column-options-cmd; .</title>
     <mediaobject>
       <imageobject>
-        <imagedata  format="PNG" fileref="pics-it/column-options.png"/>
+        <imagedata  format="PNG" fileref="pics-it/colonna-options.png"/>
       </imageobject>
     </mediaobject>
   </figure>
@@ -347,16 +347,9 @@ Quando si seleziona <emphasis>Usa la tavolozza dei colori</emphasis>, le curve s
 <sect1 id="custom-curves-dialog">
   <title>Opzioni per il grafico</title>
   <para>Questo dialogo si apre con il comando <link linkend="format-plot-cmd">&format-plot-cmd;</link> dal men&ugrave; <link linkend="sec-format-menu">Formato</link>. Si apre anche con un doppio clic sul grafico oppure cliccando con il tasto destro sul grafico e selezionando <emphasis>Propriet&agrave;...</emphasis> nel men&ugrave; che viene aperto. Quando la finestra contiene pi&ugrave; di una tavola, QtiPlot si posiziona sulla tavola attiva. Le opzioni contenute in questa finestra di dialogo dipendono dal tipo di grafico selezionato.</para>
-  <figure id="fig-custom-curves-1">
-    <title>Opzioni per il grafico: propriet&agrave; della tavola (vers. 0.9.8.3).</title>
-    <mediaobject>
-      <imageobject>
-        <imagedata  format="PNG" fileref="pics-it/custom-curves-1a.png"/>
-      </imageobject>
-    </mediaobject>
-  </figure>
-<figure id="fig-custom-curves-1a">
-    <title>Opzioni per il grafico: propriet&agrave; della tavola (vers. 0.9.8.4).</title>
+
+<figure id="fig-custom-curves-1">
+    <title>Opzioni per il grafico: propriet&agrave; della tavola.</title>
     <mediaobject>
       <imageobject>
         <imagedata  format="PNG" fileref="pics/custom-curves-1.png"/>
@@ -365,7 +358,7 @@ Quando si seleziona <emphasis>Usa la tavolozza dei colori</emphasis>, le curve s
   </figure>
 <para>Questa seconda scheda &egrave; presente solo nelle versioni recenti di QtiPlot. In essa si imposta il colore o l'immagine  e il tipo di bordo da usare per la tela del grafico.</para>
 <figure id="fig-custom-canvas-1a">
-    <title>Opzioni per il grafico: colore di sfondo per la tela.  (vers. 0.9.8.4).</title>
+    <title>Opzioni per il grafico: colore di sfondo per la tela.</title>
     <mediaobject>
       <imageobject>
         <imagedata  format="PNG" fileref="pics-it/custom-canvas-1a.png"/>
@@ -373,7 +366,7 @@ Quando si seleziona <emphasis>Usa la tavolozza dei colori</emphasis>, le curve s
     </mediaobject>
   </figure>
 <figure id="fig-custom-canvas-2a">
-    <title>Opzioni per il grafico: immagine di sfondo per la tela. (vers. 0.9.8.4).</title>
+    <title>Opzioni per il grafico: immagine di sfondo per la tela..</title>
     <mediaobject>
       <imageobject>
         <imagedata  format="PNG" fileref="pics-it/custom-canvas-2a.png"/>
@@ -514,37 +507,21 @@ Anche se la casella <emphasis>Modalit&agrave; veloce</emphasis> &egrave; selezio
       </imageobject>
     </mediaobject>
   </figure>
-
-  <figure id="fig-custom-curves-box-2">
-    <title>Opzioni per i grafici scatola e baffi: propriet&agrave; della scatola e dei baffi (vers 0.9.8.3).</title>
+ 
+<figure id="fig-custom-curves-box-2">
+    <title>Opzioni per i grafici scatola e baffi: propriet&agrave; della scatola e dei baffi.</title>
     <mediaobject>
       <imageobject>
-        <imagedata  format="PNG" fileref="pics/custom-curves-box-2.png"/>
-      </imageobject>
-    </mediaobject>
-  </figure>
-<figure id="fig-custom-curves-box-2a">
-    <title>Opzioni per i grafici scatola e baffi: propriet&agrave; della scatola e dei baffi (vers 0.9.8.4).</title>
-    <mediaobject>
-      <imageobject>
-        <imagedata  format="PNG" fileref="pics-it/custom-curves-box-2a.png"/>
-      </imageobject>
-    </mediaobject>
-  </figure>
-  <figure id="fig-custom-curves-box-3">
-    <title>Opzioni per i grafici scatola e baffi: propriet&agrave; del percentile (vers 0.9.8.3).</title>
-    <mediaobject>
-      <imageobject>
-        <imagedata  format="PNG" fileref="pics/custom-curves-box-3.png"/>
+        <imagedata  format="PNG" fileref="pics-it/custom-curves-box-2.png"/>
       </imageobject>
     </mediaobject>
   </figure>
 
-<figure id="fig-custom-curves-box-3a">
-    <title>Opzioni per i grafici scatola e baffi: propriet&agrave; del percentile (vers 0.9.8.4).</title>
+<figure id="fig-custom-curves-box-3">
+    <title>Opzioni per i grafici scatola e baffi: propriet&agrave; del percentile.</title>
     <mediaobject>
       <imageobject>
-        <imagedata  format="PNG" fileref="pics-it/custom-curves-box-3a.png"/>
+        <imagedata  format="PNG" fileref="pics-it/custom-curves-box-3.png"/>
       </imageobject>
     </mediaobject>
   </figure>
@@ -617,6 +594,7 @@ Anche se la casella <emphasis>Modalit&agrave; veloce</emphasis> &egrave; selezio
 <sect1 id="export-ascii-dialog">
   <title>Esportare file ASCII</title>
       <indexterm><primary>table</primary></indexterm>
+
   <para>Questo dialogo si apre selezionando il comando <link linkend="export-ascii-cmd">&export-ascii-cmd;</link> dal men&ugrave; <link linkend="sec-file-menu">File</link>. Il comando &egrave; disponibile quando il progetto contiene almeno una tabella.</para>
   <para>Questo comando si usa per esportare tutti o una parte dei dati da un progetto a un file ASCII. In alternativa si pu&ograve; scegliere di esportare una tabella o una matrice in formato .tex, .odf o .html.</para>
   <para>Nel seguente esempio di esportazione di una selezione di dati da una tabella a un file ASCII, il nome della colonna selezionata &egrave; esportato nella prima riga del file. Quando &egrave; selezionata l'opzione <emphasis>Includi i commenti della colonna</emphasis>, i commenti dell'intestazione sono esportati nella seconda riga del file. Come separatore di colonne &egrave; usato il carattere TAB. Quando, come nell'esempio, la casella <emphasis>Esporta selezione</emphasis> viene selezionata sono esportate solo le colonne selezionate.</para>
@@ -664,39 +642,24 @@ Anche se la casella <emphasis>Modalit&agrave; veloce</emphasis> &egrave; selezio
 <!-- ************************************************** -->
 <!--		Integrate dialog			-->
 <!-- ************************************************** -->
-<sect1 id="integrate-dialog">
+<sect1 id="integrate-function-dialog">
   <title>Integrare la funzione</title>  
-<sect2><title>Integrare la funzione (vers.0.9.8.4)</title>  
 <para>Questo dialogo si apre quando si seleziona il comando &integrate-function-cmd; nel men&ugrave; &analysis-menu-lnk;. Cliccando sul pulsante <emphasis>Integrare</emphasis> si esegue una integrazione numerica della funzione definita dall'utente.</para>
 <para>La funzione si definisce nel campo di testo <emphasis>Funzione</emphasis>.  Una casella combinata elenca e mette a disposizione le funzioni interne gi&agrave; definite. Con il pulsante <emphasis>Aggiungi</emphasis> si copia la funzione selezionata dalla casella combinata al campo di testo, nel punto in cui si trova il cursore. Con il pulsante <emphasis>Cancella</emphasis> si cancella l'intero contenuto del campo <emphasis>Funzione</emphasis>. Cliccando sul pulsante <emphasis>Recenti</emphasis> si apre la finestra di dialogo <emphasis>Funzioni recenti</emphasis> dove una casella combinata elenca le funzioni usate di recente. Selezionando una di queste e facendo clic su <emphasis>OK</emphasis> si sostituisce la funzione contenuta nel campo <emphasis>Funzione</emphasis> con quella  selezionata.</para>
 <para>Il secondo campo di testo visualizza il nome della variabile indipendente della funzione (cio&egrave;, la variabile di integrazione), per impostazione predefinita la variabile &egrave; x.</para>
  <para>Il terzo parametro &egrave; il numero massimo di sottointervalli che l'algoritmo di integrazione pu&ograve; utilizzare per integrare la funzione. Il valore di default 1000 dovrebbe funzionare in quasi tutte le circostanze.</para>
 <para>Il quarto parametro &egrave; il limite di <emphasis>Tolleranza</emphasis>. Valori piccoli costringono l'algoritmo a utilizzare molti sottointervalli. Il valore di default 0,01 dovrebbe funzionare per la maggior parte delle funzioni. I due campi successivi definiscono il limite inferiore e il limite superiore di integrazione. Impostare questi valori come si desidera.</para>
 <para>L'ultimo elemento di controllo &egrave; la casella <emphasis>Viualizza l'area nel grafico</emphasis>. Selezionare questa opzione quando si vuole tracciare il grafico della funzione integrata nella tavola attiva. Per ottenere una tabella con i dati del tracciato fare clic con il taso destro sulla curva prodotta e selezionare il comando <emphasis>Foglio di calcolo</emphasis>.</para>
-  <figure id="fig-integrate-dialoga">
-    <title>La finestra di dialogo &integrate-cmd; (vers. 0.9.8.4).</title>
+  <figure id="fig-integrate-function-dialog">
+    <title>La finestra di dialogo &integrate-function-cmd;.</title>
     <mediaobject>
       <imageobject>
-        <imagedata  format="PNG" fileref="pics-it/integrate-dialog.png"/>
+        <imagedata  format="PNG" fileref="pics-it/integrazione-dialog.png"/>
       </imageobject>
     </mediaobject>
   </figure>
-  <para>La tabella dei <link linkend="sec-intro-log-window">Risultati delle analisi</link> di integrazione si visualizza con <link linkend="sec-intro-project-explorer">Esploratore del progetto</link>.</para>
-</sect2>
-<sect2> 
-  <title>Integrare la funzione (vers. 0.9.8.3)</title>
-  <para>Questo dialogo si apre quando si seleziona il comando &integrate-function-cmd; nel men&ugrave; &analysis-menu-lnk;.
-  Il primo campo di testo della finestra <emphasis>Funzione</emphasis> permette di digitare la funzione che si vuole integrare. Il secondo campo di testo visualizza il nome della variabile indipendente della funzione (cio&egrave;, la variabile di integrazione), per impostazione predefinita la variabile &egrave; x. Il terzo parametro &egrave; <emphasis>Ordine dell'integrazione</emphasis>: ordine 1 corrisponde alla regola trapezoidale, in questo caso la curva &egrave; prodotta unendo direttamente con un segmento due punti consecutivi. Scegliendo ordine 2, sono usati tre punti e la curva &egrave; prodotta con un polinomio di secondo grado. Quando si dispone di una grande quantit&agrave; di punti, l'ordine 1 &egrave; sufficiente. </para>
-  <figure id="fig-integrate-dialog">
-    <title>La finestra di dialogo &integrate-cmd; (vers. 0.9.8.3).</title>
-    <mediaobject>
-      <imageobject>
-        <imagedata  format="PNG" fileref="pics-it/integrate-dialog1.png"/>
-      </imageobject>
-    </mediaobject>
-  </figure>
-  <para>La tabella dei <link linkend="sec-intro-log-window">Risultati delle analisi</link> di integrazione si visualizza con <link linkend="sec-intro-project-explorer">Esploratore del progetto</link>.</para>
-</sect2>
+  <para>I risultati numerici dell'integrazione sono visibili nella tabella dei <link linkend="sec-intro-log-window">Risultati delle analisi</link>.</para>
+
 </sect1>
 
 <!-- ************************************************** -->
@@ -758,10 +721,7 @@ Anche se la casella <emphasis>Modalit&agrave; veloce</emphasis> &egrave; selezio
   	</orderedlist>
   <para>Dopo l'adattamento, si apre una finestra che visualizza il rapporto sui risultati del processo di adattamento .</para>
   <para>Secondo le impostazioni della scheda <emphasis>Parametri in uscita</emphasis>, ad ogni modellazione o adattamento, viene creata una curva di funzione (se &egrave; selezionata l'opzione <emphasis>Genera la curva dell'adattamento usando &rarr; Dei dati X distribuiti uniformemente</emphasis>) o una nuova tabella (se &egrave; selezionata l'opzione <emphasis>Genera la curva dell'adattamento usando &rarr; I dati X originali usati per l'adattamento</emphasis>). La nuova tabella comprende tutti i valori X e Y usati per calcolare e tracciare il grafico della funzione. La tabella &egrave; preimposta come nascosta, si visualizza con <link linkend="project-explorer-dialog">Esploratore dei progetti</link>.</para>
-  <sidebar>
-  <title>NdT: copia di quanto descritto per la finestra di dialogo Preferenze alla scheda Adattamenti.</title>
-  <para>Selezionando l'icona <emphasis>Adattamenti</emphasis> si apre la sesta scheda della finestra di dialogo delle preferenze. Questa scheda &egrave; utilizzata per impostare i parametri di adattamento predefiniti. La maggior parte delle opzioni sono standard e facilmente comprensibili. A prima vista, invece il parametro <emphasis>Genera la curva dell'adattamento usando</emphasis> pu&ograve; essere fonte di confusione. Anche se &egrave; consuetudine tracciare una curva di adattamento di tipo y = f (x) utilizzando <emphasis>i dati X originali utilizzati nelle operazioni di adattamento</emphasis>, QtiPlot fornisce un'alternativa (selezionando l'opzione <emphasis>Dei dati X distribuiti uniformemente</emphasis>) che permette di tracciare la curva con un numero di punti dati per X determinato dall'utente (default = 100) e distribuito in modo uniforme su tutto l'intervallo X dell'adattamento. Dato che un adattamento lineare &egrave; completamente definito da 2 punti, , &egrave; possibile impostare QtiPlot (selezionando la casella 2 punti per gli adattamenti lineari) in modo che, di default, usi semplicemente 2 punti dati per tracciare gli adattamenti lineari.</para>
-  </sidebar>
+ 
   <para>La terza scheda &egrave; usata per personalizzare i dati in uscita dopo una operazione di adattamento.</para>
   <figure id="fig-non-linear-curve-fit-4">
     <title>La finestra del terzo passo per eseguire un &non-linear-curve-fit-cmd; .</title>
@@ -936,6 +896,7 @@ I suggerimenti di completamento sono visualizzati automaticamente per le parole 
   <informalfigure id="fig-preferences-dialog-3">
     <mediaobject>
       <imageobject>
+
         <imagedata  format="PNG" fileref="pics-it/preferences-dialog3.png"/>
       </imageobject>
     </mediaobject>
@@ -956,18 +917,10 @@ I suggerimenti di completamento sono visualizzati automaticamente per le parole 
 <title>La scheda Indirizzi dei file</title>
    <para>La scheda <emphasis>Indirizzi dei file</emphasis> consente di definire percorsi personalizzati per le cartelle contenenti i file  <emphasis>Traduzioni</emphasis>, i file <emphasis>Manuale (Aiuto)</emphasis> e i <emphasis>File di configurazione Python</emphasis>, <emphasis>qtiplotrc.py</emphasis> e <emphasis>qtiUtil.py</emphasis> nel caso che QtiPlot venga compilato con il supporto per gli script Python. Inoltre, &egrave; previsto un indirizzo di default per la cartella del <emphasis>Compilatore LaTeX</emphasis> e un'altro per la cartella degli  <emphasis>script</emphasis> che devono essere caricati all'avvio del programma. La cartella <emphasis>Compilatore LaTex</emphasis> ha significato solo quando QtiPlot &egrave; stato compilato con il supporto <emphasis>LaTex</emphasis>.</para>
   <figure id="fig-preferences-dialog-13">
-    <title>Preferenze: le opzioni per l'indirizzo dei file (vers. 0.9.8.4). </title>
+    <title>Preferenze: le opzioni per l'indirizzo dei file. </title>
     <mediaobject>
       <imageobject>
         <imagedata  format="PNG" fileref="pics-it/preferences-dialog13.png"/>
-      </imageobject>
-    </mediaobject>
-  </figure>
-<figure id="fig-preferences-dialogold-13">
-    <title>Preferenze: le opzioni per l'indirizzo dei file (vers. 0.9.8.3). </title>
-    <mediaobject>
-      <imageobject>
-        <imagedata  format="PNG" fileref="pics/preferences-dialog13old.png"/>
       </imageobject>
     </mediaobject>
   </figure>
@@ -1264,6 +1217,7 @@ del men&ugrave; <link linkend="sec-file-menu">File</link>. Pu&ograve; essere usa
 <sect1 id="set-values-dialog">
   <title>Impostare i valori della matrice</title>
       <indexterm><primary>matrix</primary></indexterm>
+
   <para>Il comando Imposta i valori si trova nel men&ugrave; &matrix-menu-lnk;. Permette di compilare una matrice con i risultati di una funzione di tipo <emphasis>z=f(i,j)</emphasis> in cui <code>i</code> e <code>j</code> sono i numeri di riga e di colonna.</para>
   <para>Si possono usare valori X e valori Y definiti con il comando &set-dimensions-lnk; e anche definire una funzione basata sulle variabili X e Y.</para>
   <para>Si pu&ograve; scrivere la funzione in diverse righe. Le funzioni intrinseche disponibili sono elencate nella sezione <link linkend="sec-muParser">muParser</link> del capitolo <emphasis>Espressioni matematiche e script</emphasis>.</para>

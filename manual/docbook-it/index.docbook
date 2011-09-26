@@ -34,7 +34,7 @@
   <!ENTITY analysis-chapter SYSTEM "analysis.docbook">
   <!ENTITY scripting-chapter SYSTEM "scripting.docbook">
   <!ENTITY faq-chapter SYSTEM "faq.docbook">
-  <!ENTITY aggiunte-chapter SYSTEM "aggiunte.docbook">
+  <!ENTITY note-chapter SYSTEM "note.docbook">
 
 <!--
 ======================== COMMANDS ENTITIES ============================
@@ -1326,10 +1326,15 @@
   <para>- Il  <link linkend="using">secondo capitolo</link> &egrave; una guida su come tracciare i grafici partendo da differenti insiemi di dati. &Egrave; quello che deve essere letto per primo per capire le basi di &appname; ed essere in grado di disegnare dei grafici. </para>
   <para>- Nei tre capitoli successivi sono descritti i  <link linkend="reference">comandi</link>, i <link linkend="toolbars">pulsanti</link> delle barre degli strumenti e i  <link linkend="dialogs">dialoghi</link> usati in &appname;. Questi capitoli costituiscono il manuale di riferimento per &appname;.</para>
   <para>- Gli altri due capitoli successivi descrivono in modo pi&ugrave; approfondito alcune specifiche funzionalit&agrave; di &appname;:  <link linkend="analysis">la statistica, l'analisi matematica dei dati</link> e la gestione degli  <link linkend="scripting">script</link>.</para>
-  <para>- <link linkend="aggiunte">L'ultimo capitolo</link> non &egrave; presente nella versione originale di questa guida, ma &egrave; stato aggiunto dal traduttore. Nella prima sezione di questo capitolo, oltre alla <link linkend="sec-lista-tabelle">lista delle tabelle</link> contenute in questo manuale, si trovano alcune informazioni sulla  <link linkend="sec-note-traduzione">traduzione del programma</link> e del <link linkend="sec-uso-man-it">manuale</link> stesso. Nella seconda sezione sono riportati <link linkend="sec-examples-grafici">esempi di grafici</link> prodotti con QtiPlot. La sezione successiva contiene le informazioni su come <link linkend="sec-installare">ottenere e installare QtiPlot</link>, seguita dalla <link linkend="sec-licenze">GNU Free Documentation License</link>. I testi che non si riferiscono al funzionamento dell'applicazione non sono tradotti.</para>
+
+<!-- Informazioni sul capitolo aggiunto per la traduzione italiana -->
+
+<para>- <link linkend="note">L'ultimo capitolo</link> non &egrave; presente nella versione originale di questa guida, ma &egrave; stato aggiunto dal traduttore per fornire informazioni sulla traduzione del manuale e del programma. I testi che non si riferiscono al funzionamento dell'applicazione non sono tradotti.</para>
+
 <!--data di traduzione -->
+
   <sidebar id="data-traduzione">  
-  <para>Traduzione di Renato Rivoira <email>&email-renato;</email>, rev. del -08-2011 per QtiPlot Versioni 0.9.8.3-.4-.5-.6-.7</para> 
+  <para>Traduzione di Renato Rivoira <email>&email-renato;</email> del -09-2011 per QtiPlot versione 0.9.8.7</para> 
   <para>Avvertenza: QtiPlot viene periodicamente arricchito di nuove funzionalit&agrave; per cui alcune parti della traduzione possono risultare non completamente aggiornate. Si consiglia di verificare sempre in <ulink url="http://soft.proindependent.com/qtiplot.html">http://soft.proindependent.com/qtiplot.html</ulink> se sono disponibili ulteriori aggiornamenti.</para>
   </sidebar>
 </abstract>
@@ -1362,8 +1367,8 @@
 <chapter id="scripting">
   &scripting-chapter;
 </chapter>
-<chapter id="aggiunte">
-  &aggiunte-chapter;
+<chapter id="note">
+  &note-chapter;
 </chapter>
-&faq-chapter;
+  &faq-chapter;
 </book>
