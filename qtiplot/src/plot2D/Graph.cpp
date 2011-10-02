@@ -3486,24 +3486,8 @@ bool Graph::addCurves(Table* w, const QStringList& names, int style, double lWid
 		}
 	}
 
-	replot();
-
-	updateSecondaryAxis(QwtPlot::xTop, true);
-	updateSecondaryAxis(QwtPlot::yRight, true);
 	updateAxesTitles();
-
-	replot();
-
-	d_zoomer[0]->setZoomBase();
-	d_zoomer[1]->setZoomBase();
-
-	if (!d_auto_scale){
-	//We need this hack due to the fact that in Qwt 5.0 we can't
-	//disable autoscaling in an easier way, like for example: setAxisAutoScale(axisId, false)
-		for (int i = 0; i < QwtPlot::axisCnt; i++)
-			setAxisScaleDiv(i, *axisScaleDiv(i));
-	}
-
+	updatePlot();
 	return true;
 }
 
@@ -4934,6 +4918,7 @@ void Graph::copy(Graph* g)
 	copyEnrichments(g);
 
 	autoScaleFonts = g->autoscaleFonts();
+	d_synchronize_scales = g->hasSynchronizedScaleDivisions();
 }
 
 void Graph::copyCurves(Graph* g)
