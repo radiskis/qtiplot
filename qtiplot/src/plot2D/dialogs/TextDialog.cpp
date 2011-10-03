@@ -159,6 +159,10 @@ void TextDialog::setGraph(Graph *g)
 			break;
 			case QwtScaleDraw::LeftScale:
 				setWindowTitle(tr("QtiPlot") + " - " + tr("Y Axis Title"));
+				invertTitleBox->blockSignals(true);
+				invertTitleBox->setChecked(d_scale->testLayoutFlag(QwtScaleWidget::TitleInverted));
+				invertTitleBox->show();
+				invertTitleBox->blockSignals(false);
 				axis = QwtPlot::yLeft;
 			break;
 			case QwtScaleDraw::TopScale:
@@ -219,6 +223,8 @@ void TextDialog::apply()
 				axis = QwtPlot::xBottom;
 			break;
 			case QwtScaleDraw::LeftScale:
+				d_scale->setLayoutFlag(QwtScaleWidget::TitleInverted, invertTitleBox->isChecked());
+				d_scale->repaint();
 				axis = QwtPlot::yLeft;
 			break;
 			case QwtScaleDraw::TopScale:
@@ -300,7 +306,7 @@ void TextDialog::formatLayerLabels(Graph *g)
 			scale->setTitle(t);
 			if (d_text_type == AxisTitle){
 				scale->setSpacing(distanceBox->value());
-				if (i == QwtPlot::yRight){
+				if (i == QwtPlot::yRight || i == QwtPlot::yLeft){
 					scale->setLayoutFlag(QwtScaleWidget::TitleInverted, invertTitleBox->isChecked());
 					scale->repaint();
 				}

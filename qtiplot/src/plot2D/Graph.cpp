@@ -2512,23 +2512,22 @@ QString Graph::saveAxesTitleAlignement()
 		if (axisEnabled(i))
 			axes[i] = QString::number(axisTitle(i).renderFlags());
 	}
+	s += axes.join("\t") + "\n";
 
-	s += axes.join("\t")+"\n";
-
-	s += "AxesTitleDistance\t";
-	bool invertYRightTitle = false;
+	QStringList invertedTitles;
 	for (int i = 0; i < QwtPlot::axisCnt; i++){
 		axes[i] = "-1";
+		invertedTitles << "0";
 		if (axisEnabled(i)){
 			const QwtScaleWidget *scale = axisWidget(i);
 			axes[i] = QString::number(scale->spacing());
-			if (i == yRight && scale->testLayoutFlag(QwtScaleWidget::TitleInverted))
-				invertYRightTitle = true;
+			if (scale->testLayoutFlag(QwtScaleWidget::TitleInverted))
+				invertedTitles[i] = "1";
 		}
 	}
-	s += axes.join("\t")+"\n";
-	if (invertYRightTitle)
-		s += "<InvertedRightTitle>1</InvertedRightTitle>\n";
+
+	s += "AxesTitleDistance\t" + axes.join("\t") + "\n";
+	s += "InvertedTitle\t" + invertedTitles.join("\t") + "\n";
 	return s;
 }
 
@@ -4807,9 +4806,7 @@ void Graph::copyScaleWidget(Graph* g, int i)
 
 			d_axis_titles[i] = g->axisTitleString(i);
 			scale->setTitle(g->axisTitle(i));
-
-			if (i == yRight)
-				scale->setLayoutFlag(QwtScaleWidget::TitleInverted, g->axisWidget(i)->testLayoutFlag(QwtScaleWidget::TitleInverted));
+			scale->setLayoutFlag(QwtScaleWidget::TitleInverted, g->axisWidget(i)->testLayoutFlag(QwtScaleWidget::TitleInverted));
 		}
 	}
 }
