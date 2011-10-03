@@ -12981,15 +12981,23 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot, co
 		} else if (s.contains ("AxesTitleDistance")){
 			QStringList align = s.split("\t", QString::SkipEmptyParts);
 			align.pop_front();
-			for (int i=0; i<(int)align.count(); i++)
+			for (int i = 0; i < align.count(); i++)
 				ag->setAxisTitleDistance(i, align[i].toInt());
 		} else if (s.contains ("<InvertedRightTitle>")){
 			QwtScaleWidget *scale = ag->axisWidget(QwtPlot::yRight);
 			if (scale)
 				scale->setLayoutFlag(QwtScaleWidget::TitleInverted, true);
+		} else if (s.contains ("InvertedTitle")){
+			QStringList invertTitles = s.split("\t", QString::SkipEmptyParts);
+			invertTitles.pop_front();
+			for (int i = 0; i < invertTitles.count(); i++){
+				QwtScaleWidget *scale = ag->axisWidget(i);
+				if (scale)
+					scale->setLayoutFlag(QwtScaleWidget::TitleInverted, invertTitles[i].toInt());
+			}
 		} else if (s.contains ("ScaleFont")){
-			QStringList fList=s.split("\t");
-			QFont fnt=QFont (fList[1],fList[2].toInt(),fList[3].toInt(),fList[4].toInt());
+			QStringList fList = s.split("\t");
+			QFont fnt = QFont (fList[1], fList[2].toInt(), fList[3].toInt(), fList[4].toInt());
 			fnt.setUnderline(fList[5].toInt());
 			fnt.setStrikeOut(fList[6].toInt());
 
