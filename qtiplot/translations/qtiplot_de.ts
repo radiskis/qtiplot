@@ -10121,43 +10121,43 @@ Autocompletion will not be available!</source>
     </message>
     <message>
         <source>Align &amp;Top</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Oben Ausrichten</translation>
     </message>
     <message>
         <source>Align &amp;Bottom</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Unten Ausrichten</translation>
     </message>
     <message>
         <source>Align &amp;Left</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Links Ausrichten</translation>
     </message>
     <message>
         <source>Align &amp;Right</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Rechts Ausrichten</translation>
     </message>
     <message>
         <source>Align Top</source>
-        <translation type="unfinished"></translation>
+        <translation>Oben Ausrichten</translation>
     </message>
     <message>
         <source>Align Bottom</source>
-        <translation type="unfinished"></translation>
+        <translation>Unten Ausrichten</translation>
     </message>
     <message>
         <source>Align Left</source>
-        <translation type="unfinished"></translation>
+        <translation>Links Ausrichten</translation>
     </message>
     <message>
         <source>Align Right</source>
-        <translation type="unfinished"></translation>
+        <translation>Rechts Ausrichten</translation>
     </message>
     <message>
         <source>Ctrl+Shift+P</source>
-        <translation type="unfinished"></translation>
+        <translation>Strg+Shift+P</translation>
     </message>
     <message>
         <source>Alt+Shift+S</source>
-        <translation type="unfinished"></translation>
+        <translation>Alt+Shift+S</translation>
     </message>
 </context>
 <context>
@@ -12311,23 +12311,23 @@ Die folgenden Spezialcodes können benutzt werden:
     </message>
     <message>
         <source>Co&amp;nnect line across missing data</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Verbinde Linie über fehlende Daten</translation>
     </message>
     <message>
         <source>Attach objects to</source>
-        <translation type="unfinished"></translation>
+        <translation>Objekte anhängen an</translation>
     </message>
     <message>
         <source>Page</source>
-        <translation type="unfinished">Seite</translation>
+        <translation>Seite</translation>
     </message>
     <message>
         <source>Layer Scales</source>
-        <translation type="unfinished">Ebenenskalierung</translation>
+        <translation>Ebenenskalierung</translation>
     </message>
     <message>
         <source>Locally Installed OpenOffice/LibreOffice</source>
-        <translation type="unfinished"></translation>
+        <translation>Lokale OpenOffice/LibreOffice-Installation</translation>
     </message>
 </context>
 <context>
@@ -13817,7 +13817,7 @@ Die folgenden Spezialcodes können benutzt werden:
     </message>
     <message>
         <source>QtiPlot</source>
-        <translation type="unfinished">QtiPlot</translation>
+        <translation>QtiPlot</translation>
     </message>
     <message>
         <source>Error</source>
@@ -13877,35 +13877,35 @@ Die folgenden Spezialcodes können benutzt werden:
     </message>
     <message>
         <source>2D</source>
-        <translation type="unfinished">2D</translation>
+        <translation>2D</translation>
     </message>
     <message>
         <source>The two matrices have different dimensions, the imaginary part will be neglected!</source>
-        <translation type="unfinished">Die beiden Matrizen haben unterschiedliche Dimensionen, der Imaginärteil wird vernachlässigt!</translation>
+        <translation>Die beiden Matrizen haben unterschiedliche Dimensionen, der Imaginärteil wird vernachlässigt!</translation>
     </message>
     <message>
         <source>RealMatrixFFT</source>
-        <translation type="unfinished">RealMatrixFFT</translation>
+        <translation>RealMatrixFFT</translation>
     </message>
     <message>
         <source>Real part of the FFT transform of</source>
-        <translation type="unfinished">Realteil der FFT Transformation von</translation>
+        <translation>Realteil der FFT Transformation von</translation>
     </message>
     <message>
         <source>ImagMatrixFFT</source>
-        <translation type="unfinished">ImaginärMatrixFFT</translation>
+        <translation>ImagMatrixFFT</translation>
     </message>
     <message>
         <source>Imaginary part of the FFT transform of</source>
-        <translation type="unfinished">Imaginärteil der FFT Transformation von</translation>
+        <translation>Imaginärteil der FFT Transformation von</translation>
     </message>
     <message>
         <source>AmplitudeMatrixFFT</source>
-        <translation type="unfinished">AmplitudenmatrixFFT</translation>
+        <translation>AmplitudenmatrixFFT</translation>
     </message>
     <message>
         <source>Amplitudes of the FFT transform of</source>
-        <translation type="unfinished">Amplituden der FFT Transformation von</translation>
+        <translation>Amplituden der FFT Transformation von</translation>
     </message>
 </context>
 <context>
@@ -14016,15 +14016,15 @@ Die folgenden Spezialcodes können benutzt werden:
     </message>
     <message>
         <source>DC &amp;Shift Center</source>
-        <translation type="unfinished"></translation>
+        <translation>DC &amp;Verschiebe Zentrum</translation>
     </message>
     <message>
         <source>Undo &amp;Shift</source>
-        <translation type="unfinished"></translation>
+        <translation>Verschiebung &amp;Rückgängig machen</translation>
     </message>
     <message>
         <source>&amp;Zero pad to nearest power of 2 size</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Setze Block auf Größe der nächsten Potenz nahe Zwei</translation>
     </message>
 </context>
 <context>
@@ -16885,23 +16885,23 @@ die Reihenfolge der Parameter ist wichtig!</translation>
     </message>
     <message>
         <source>Compression</source>
-        <translation type="unfinished"></translation>
+        <translation>Komprimierung</translation>
     </message>
     <message>
         <source>None</source>
-        <translation type="unfinished">Keine</translation>
+        <translation>Keine</translation>
     </message>
     <message>
         <source>LZW</source>
-        <translation type="unfinished"></translation>
+        <translation>LZW</translation>
     </message>
     <message>
         <source>&amp;Preview</source>
-        <translation type="unfinished">&amp;Vorschau</translation>
+        <translation>&amp;Vorschau</translation>
     </message>
     <message>
         <source>Export preview of window: </source>
-        <translation type="unfinished"></translation>
+        <translation>Vorschau des Fensters exportieren:</translation>
     </message>
 </context>
 <context>
@@ -16951,11 +16951,11 @@ die Reihenfolge der Parameter ist wichtig!</translation>
     </message>
     <message>
         <source>pixels</source>
-        <translation type="unfinished">Pixel</translation>
+        <translation>Pixel</translation>
     </message>
     <message>
         <source>Average</source>
-        <translation type="unfinished"></translation>
+        <translation>Durchschnitt</translation>
     </message>
 </context>
 <context>
@@ -17256,7 +17256,7 @@ in der ASCII-Datei unterschiedlich viele Zeilen aufweisen.</translation>
     </message>
     <message>
         <source>Ignore lines containing</source>
-        <translation type="unfinished"></translation>
+        <translation>Ignoriere Linien mit</translation>
     </message>
 </context>
 <context>
@@ -17854,75 +17854,75 @@ Die Grenzen müssen innerhalb des X-Bereichs sein. Fall diese Werte nicht bekann
     <name>IntegrationDialog</name>
     <message>
         <source>QtiPlot - Integration Options</source>
-        <translation type="unfinished">QtiPlot - Integrationsoptionen</translation>
+        <translation>QtiPlot - Integrationsoptionen</translation>
     </message>
     <message>
         <source>Curve</source>
-        <translation type="unfinished">Kurve</translation>
+        <translation>Kurve</translation>
     </message>
     <message>
         <source>From Xmin</source>
-        <translation type="unfinished">Von X-Min</translation>
+        <translation>Von X-Min</translation>
     </message>
     <message>
         <source>To Xmax</source>
-        <translation type="unfinished">bis X-Max</translation>
+        <translation>bis X-Max</translation>
     </message>
     <message>
         <source>&amp;Sort data</source>
-        <translation type="unfinished"></translation>
+        <translation>Daten &amp;Sortieren</translation>
     </message>
     <message>
         <source>Show &amp;plot</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Plot anzeigen</translation>
     </message>
     <message>
         <source>&amp;Integrate</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Integrieren</translation>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation type="unfinished">S&amp;chließen</translation>
+        <translation>S&amp;chließen</translation>
     </message>
     <message>
         <source>From row</source>
-        <translation type="unfinished"></translation>
+        <translation>Von Reihe</translation>
     </message>
     <message>
         <source>To row</source>
-        <translation type="unfinished"></translation>
+        <translation>Bis Reihe</translation>
     </message>
     <message>
         <source>Show results &amp;table</source>
-        <translation type="unfinished"></translation>
+        <translation>Ergebnis&amp;tabelle anzeigen</translation>
     </message>
     <message>
         <source>QtiPlot - Warning</source>
-        <translation type="unfinished">QtiPlot - Warnung</translation>
+        <translation>QtiPlot - Warnung</translation>
     </message>
     <message>
         <source>The curve &lt;b&gt; %1 &lt;/b&gt; doesn&apos;t exist anymore! Operation aborted!</source>
-        <translation type="unfinished">Die Kurve &lt;b&gt; %1 &lt;/b&gt; existiert nicht mehr! Operation abgebrochen!</translation>
+        <translation>Die Kurve &lt;b&gt; %1 &lt;/b&gt; existiert nicht mehr! Operation abgebrochen!</translation>
     </message>
     <message>
         <source>QtiPlot - Input error</source>
-        <translation type="unfinished">QtiPlot - Eingabefehler</translation>
+        <translation>QtiPlot - Eingabefehler</translation>
     </message>
     <message>
         <source>Please enter x limits that satisfy: from &lt; to!</source>
-        <translation type="unfinished">Bitte geben Sie einen X-Bereich ein, so dass Anfang &lt; Ende ist!</translation>
+        <translation>Bitte geben Sie einen X-Bereich ein, so dass Anfang &lt; Ende ist!</translation>
     </message>
     <message>
         <source>Integration of %1</source>
-        <translation type="unfinished">Integration von %1</translation>
+        <translation>Integration von %1</translation>
     </message>
     <message>
         <source>Column</source>
-        <translation type="unfinished">Spalte</translation>
+        <translation>Spalte</translation>
     </message>
     <message>
         <source>Area</source>
-        <translation type="unfinished">Fläche</translation>
+        <translation>Fläche</translation>
     </message>
 </context>
 <context>
@@ -19018,7 +19018,7 @@ Wollen sie Zellen einfügen?</translation>
     </message>
     <message>
         <source>Resize freely</source>
-        <translation type="unfinished"></translation>
+        <translation>Größe frei verändern</translation>
     </message>
 </context>
 <context>
@@ -20467,7 +20467,7 @@ Wollen sie Zellen einfügen?</translation>
     </message>
     <message>
         <source>Rotation</source>
-        <translation type="unfinished">Rotation</translation>
+        <translation>Rotation</translation>
     </message>
 </context>
 <context>
@@ -21551,39 +21551,39 @@ Wollen sie Zellen einfügen?</translation>
     </message>
     <message>
         <source>Edit &amp;Range...</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Bereich bearbeiten …</translation>
     </message>
     <message>
         <source>Data Drawing Options</source>
-        <translation type="unfinished"></translation>
+        <translation>Datenzeichnungseinstellungen</translation>
     </message>
     <message>
         <source>Co&amp;nnect line across missing data</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Verbinde Linie über fehlende Daten</translation>
     </message>
     <message>
         <source>&amp;Grid on top of data</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Gitter über die Daten</translation>
     </message>
     <message>
         <source>&amp;Left</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Links</translation>
     </message>
     <message>
         <source>&amp;Right</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Rechts</translation>
     </message>
     <message>
         <source>&amp;Bottom</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Unten</translation>
     </message>
     <message>
         <source>&amp;Top</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Oben</translation>
     </message>
     <message>
         <source>&amp;Hide</source>
-        <translation type="unfinished">Aus&amp;blenden</translation>
+        <translation>Aus&amp;blenden</translation>
     </message>
 </context>
 <context>
@@ -22829,17 +22829,20 @@ Berechnet den Dilogarithmus eines realen Arguments. In der Lewin-Notation entspr
     <message>
         <source>bessel_i0(x):
   Regular modified cylindrical Bessel function of zeroth order, I_0(x).</source>
-        <translation type="unfinished"></translation>
+        <translation>bessel_i0(x):
+  Regulär veränderte zylindrische Bessel-Funktion der Ordnung Null, I_0(x).</translation>
     </message>
     <message>
         <source>bessel_i1(x):
   Regular modified cylindrical Bessel function of first order, I_1(x).</source>
-        <translation type="unfinished"></translation>
+        <translation>bessel_i1(x):
+  Regulär veränderte zylindrische Bessel-Funktion der Ordnung Eins, I_1(x).</translation>
     </message>
     <message>
         <source>bessel_in(double x, int n):
  Regular modified cylindrical Bessel function of order n, I_n(x).</source>
-        <translation type="unfinished"></translation>
+        <translation>bessel_in(double x, int n):
+Regulär veränderte zylindrische Bessel-Funktion der Ordnung N, I_n(x).</translation>
     </message>
 </context>
 <context>
@@ -23415,7 +23418,7 @@ Wollen Sie sie überschreiben?</translation>
     </message>
     <message>
         <source>untitled</source>
-        <translation type="unfinished">nicht benannt</translation>
+        <translation>unbenannt</translation>
     </message>
 </context>
 <context>
@@ -23426,7 +23429,7 @@ Wollen Sie sie überschreiben?</translation>
     </message>
     <message>
         <source>%1 Source (*.%2);</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 Quelle (*.%2);</translation>
     </message>
 </context>
 <context>
@@ -23681,12 +23684,13 @@ Wollen Sie sie überschreiben?</translation>
     </message>
     <message>
         <source>Tried to smooth over more points (left+right+1=%1) than given as input (%2).</source>
-        <translation type="unfinished"></translation>
+        <translation>Versuchte über mehr Punkte (links+rechts+1=%1) als als Eingabe (%2) gegeben zu glätten.</translation>
     </message>
     <message>
         <source>Internal error in Savitzky-Golay algorithm.
 </source>
-        <translation type="unfinished"></translation>
+        <translation>Interner Fehler im Savitzky-Golay-Algorithmus.
+</translation>
     </message>
 </context>
 <context>
