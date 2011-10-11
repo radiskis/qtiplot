@@ -2,7 +2,7 @@
 	File                 : QtiPlotApplication.cpp
 	Project              : QtiPlot
 --------------------------------------------------------------------
-	Copyright            : (C) 2010 by Ion Vasilief
+	Copyright            : (C) 2010 - 2011 by Ion Vasilief
 	Email (use @ for *)  : ion_vasilief*yahoo.fr
 	Description          : QtiPlot application
 
@@ -31,9 +31,11 @@
 #include <ApplicationWindow.h>
 #include <QFileOpenEvent>
 #include <QTimer>
+#include <QMenu>
 
 #ifdef Q_WS_MAC
 	void qt_mac_set_menubar_merge(bool enable);
+	void qt_mac_set_dock_menu(QMenu *menu);
 #endif
 
 QtiPlotApplication::QtiPlotApplication( int & argc, char ** argv) : QApplication( argc, argv)
@@ -73,6 +75,7 @@ QtiPlotApplication::QtiPlotApplication( int & argc, char ** argv) : QApplication
 
 	#ifdef Q_WS_MAC
 		qt_mac_set_menubar_merge(false);
+		updateDockMenu();
 	#endif
 }
 
@@ -94,25 +97,25 @@ bool QtiPlotApplication::event(QEvent *event)
 		if (!d_windows.isEmpty()){
 			foreach(ApplicationWindow *w, d_windows){
 				if (w->projectname == file){
-					if (!w->isActiveWindow() && d_windows.count() > 1){
-						w->hide();
-						w->show();
-					}
+					if (!w->isActiveWindow() && d_windows.count() > 1)
+						activateWindow(w);
 					return true;
 				}
 			}
 
 			ApplicationWindow *mw = d_windows.last();
 			if (mw){
-				ApplicationWindow *app = mw->open(file, false, true);
+				mw->open(file, false, true);
 				if (mw->projectname == "untitled"){
 					mw->close();
 					d_windows.removeAll(mw);
 				}
-				if (app)
-					d_windows << app;
 			}
 		}
+
+	#ifdef Q_WS_MAC
+		updateDockMenu();
+	#endif
 		return true;
 	}
 
@@ -120,3 +123,76 @@ bool QtiPlotApplication::event(QEvent *event)
 		return QApplication::event(event);
 	}
 }
+
+void QtiPlotApplication::remove(ApplicationWindow *w)
+{
+	d_windows.removeAll(w);
+
+#ifdef Q_WS_MAC
+	updateDockMenu();
+#endif
+}
+
+void QtiPlotApplication::activateWindow(ApplicationWindow *w)
+{
+	if (!w)
+		return;
+
+	((QWidget *)w)->activateWindow();
+	w->raise();
+	setActiveWindow(w);
+
+#ifdef Q_WS_MAC
+	updateDockMenu();
+#endif
+}
+
+#ifdef Q_WS_MAC
+void QtiPlotApplication::updateDockMenu()
+{
+	QMenu *dockMenu = new QMenu();
+
+	foreach(ApplicationWindow *w, d_windows){
+		QAction *a = dockMenu->addAction(w->windowTitle());
+		a->setIconVisibleInMenu(true);
+		a->setCheckable(true);
+		a->setChecked(w == activeWindow() && !w->isMinimized());
+		a->setData(QVariant(d_windows.indexOf(w)));
+	}
+
+	dockMenu->addSeparator();
+	dockMenu->addAction(QObject::tr("New Window"), this, SLOT(newWindow()));
+
+	connect(dockMenu, SIGNAL(triggered(QAction *)), this, SLOT(activateWindow(QAction *)));
+
+	qt_mac_set_dock_menu(dockMenu);
+}
+
+void QtiPlotApplication::activateWindow(QAction *a)
+{
+	if (!a)
+		return;
+
+	QVariant data = a->data();
+	if (!data.isValid())
+		return;
+	activateWindow(d_windows.at(data.toInt()));
+}
+
+void QtiPlotApplication::newWindow()
+{
+	if (d_windows.isEmpty())
+		return;
+
+	ApplicationWindow *mw = new ApplicationWindow();
+	if (!mw)
+		return;
+
+	mw->restoreApplicationGeometry();
+#if (!defined(QTIPLOT_PRO) && !defined(QTIPLOT_DEMO) && !defined(Q_WS_X11))
+	mw->showDonationDialog();
+#endif
+
+	updateDockMenu();
+}
+#endif

@@ -756,6 +756,9 @@ public slots:
 	void dragEnterEvent( QDragEnterEvent* e );
 	void dropEvent( QDropEvent* e );
 	void customEvent( QEvent* e);
+#ifdef Q_WS_MAC
+	void hideEvent (QHideEvent *);
+#endif
 	//@}
 
 	//! \name Dialogs
