@@ -145,6 +145,7 @@ using namespace std;
 #include <qwt_plot_magnifier.h>
 #include <qwt_symbol.h>
 
+#include <QHideEvent>
 #include <QPluginLoader>
 #include <QFileDialog>
 #include <QInputDialog>
@@ -10640,10 +10641,16 @@ void ApplicationWindow::closeEvent( QCloseEvent* ce )
 			ce->ignore();
 			break;
 	}
-
-	if (ce->isAccepted())
-		((QtiPlotApplication *)QCoreApplication::instance ())->remove(this);
 }
+
+#ifdef Q_WS_MAC
+void ApplicationWindow::hideEvent (QHideEvent * event)
+{
+	if (event->spontaneous())
+		((QtiPlotApplication *)QCoreApplication::instance())->updateDockMenu();
+	event->accept();
+}
+#endif
 
 QMessageBox::StandardButton ApplicationWindow::showSaveProjectMessage()
 {
@@ -17939,7 +17946,12 @@ ApplicationWindow::~ApplicationWindow()
 
 	QApplication::clipboard()->clear(QClipboard::Clipboard);
 	QApplication::restoreOverrideCursor();
+
+#ifdef Q_WS_MAC
+	((QtiPlotApplication *)QCoreApplication::instance ())->remove(this);
+#endif
 }
+
 //Added svn_revision number to end of version string. (SRB 10/01/2010 )
 QString ApplicationWindow::versionString()
 {

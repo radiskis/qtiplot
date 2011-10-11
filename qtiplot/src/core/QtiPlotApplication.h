@@ -2,7 +2,7 @@
 	File                 : QtiPlotApplication.h
 	Project              : QtiPlot
 --------------------------------------------------------------------
-	Copyright            : (C) 2010 by Ion Vasilief
+	Copyright            : (C) 2010 - 2011 by Ion Vasilief
 	Email (use @ for *)  : ion_vasilief*yahoo.fr
 	Description          : QtiPlot application
 
@@ -38,9 +38,13 @@ class QtiPlotApplication : public QApplication
 {
 	Q_OBJECT
 public:
-	QtiPlotApplication( int & argc, char ** argv);
-	void remove(ApplicationWindow *w){d_windows.removeAll(w);};
+	QtiPlotApplication(int & argc, char ** argv);
+	void remove(ApplicationWindow *w);
 	void append(ApplicationWindow *w){if (w) d_windows.append(w);};
+	void activateWindow(ApplicationWindow *w);
+#ifdef Q_WS_MAC
+	void updateDockMenu();
+#endif
 
 protected:
 	bool event(QEvent *);
@@ -50,6 +54,10 @@ private:
 
 private slots:
 	void close();
+#ifdef Q_WS_MAC
+	void newWindow();
+	void activateWindow(QAction *);
+#endif
 };
 
 #endif // QTIPLOTAPPLICATION_H
