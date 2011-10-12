@@ -152,6 +152,7 @@ void QtiPlotApplication::updateDockMenu()
 {
 	QMenu *dockMenu = new QMenu();
 
+#ifdef QT_MAC_USE_COCOA
 	foreach(ApplicationWindow *w, d_windows){
 		QAction *a = dockMenu->addAction(w->windowTitle());
 		a->setIconVisibleInMenu(true);
@@ -159,11 +160,11 @@ void QtiPlotApplication::updateDockMenu()
 		a->setChecked(w == activeWindow() && !w->isMinimized());
 		a->setData(QVariant(d_windows.indexOf(w)));
 	}
-
 	dockMenu->addSeparator();
-	dockMenu->addAction(QObject::tr("New Window"), this, SLOT(newWindow()));
-
 	connect(dockMenu, SIGNAL(triggered(QAction *)), this, SLOT(activateWindow(QAction *)));
+#endif
+
+	dockMenu->addAction(QObject::tr("New Window"), this, SLOT(newWindow()));
 
 	qt_mac_set_dock_menu(dockMenu);
 }
