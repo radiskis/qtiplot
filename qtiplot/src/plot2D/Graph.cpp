@@ -3485,8 +3485,22 @@ bool Graph::addCurves(Table* w, const QStringList& names, int style, double lWid
 		}
 	}
 
+	replot();
+
+	updateSecondaryAxis(QwtPlot::xTop, true);
+	updateSecondaryAxis(QwtPlot::yRight, true);
 	updateAxesTitles();
-	updatePlot();
+
+	replot();
+
+	d_zoomer[0]->setZoomBase();
+	d_zoomer[1]->setZoomBase();
+
+	if (!d_auto_scale){
+		for (int i = 0; i < QwtPlot::axisCnt; i++)
+			 setAxisScaleDiv(i, *axisScaleDiv(i));
+	}
+
 	return true;
 }
 
