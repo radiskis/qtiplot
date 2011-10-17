@@ -134,6 +134,7 @@ private:
 	Graph *d_graph;
 	QPointer <Table> d_param_table;
 	QList <Fit*> d_user_functions, d_built_in_functions, d_plugins;
+	QList <QwtPlotCurve*> d_result_curves;
 	QList <MdiSubWindow*> srcTables;
 	FunctionCurve *d_preview_curve;
 

@@ -84,6 +84,7 @@ void Filter::init()
 	d_points = 100;
 	d_max_iterations = 1000;
 	d_curve = 0;
+	d_result_curve = 0;
 	d_prec = ((ApplicationWindow *)parent())->fit_output_precision;
 	d_init_err = false;
     d_sort_data = true;
@@ -479,6 +480,8 @@ QwtPlotCurve* Filter::addResultCurve(double *x, double *y)
 		d_output_graph->insertPlotItem(c, Graph::Line);
 		if (d_update_output_graph)
 			d_output_graph->updatePlot();
+
+		d_result_curve = c;
 	}
 	return (QwtPlotCurve*)c;
 }
