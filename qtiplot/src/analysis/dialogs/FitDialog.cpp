@@ -1468,6 +1468,7 @@ void FitDialog::accept()
 		if (!d_current_fit->isA("PolynomialFit") && !d_current_fit->isA("LinearFit") && !d_current_fit->isA("LinearSlopeFit"))
 			d_current_fit->scaleErrors(scaleErrorsBox->isChecked());
 		d_current_fit->fit();
+		d_result_curves << d_current_fit->resultCurve();
 		double *res = d_current_fit->results();
 		double *err = d_current_fit->errors();
 		QLocale locale = app->locale();
@@ -1587,7 +1588,22 @@ void FitDialog::enableApplyChanges(int)
 
 void FitDialog::deleteFitCurves()
 {
-	d_graph->deleteFitCurves();
+	foreach(QwtPlotCurve *c, d_result_curves){
+		if (((PlotCurve *)c)->type() != Graph::Function){
+			Table *t = ((DataCurve *)c)->table();
+			if (t){
+				t->askOnCloseEvent(false);
+				t->close();
+			}
+		}
+		d_graph->removeCurve(c);
+	}
+
+	if (!d_result_curves.isEmpty()){
+		d_graph->replot();
+		d_result_curves.clear();
+	}
+
 	boxCurve->clear();
 	boxCurve->addItems(d_graph->analysableCurvesList());
 	changeDataRange();

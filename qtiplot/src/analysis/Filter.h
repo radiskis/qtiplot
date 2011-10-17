@@ -102,6 +102,8 @@ class Filter : public QObject
         Table *resultTable(){return d_result_table;};
 		//! Returns a pointer to the graph where the result curve should be displayed
 		Graph *outputGraph(){return d_output_graph;};
+		//! Returns a pointer to the plot curve created to display the results
+		QwtPlotCurve *resultCurve(){return d_result_curve;};
 
         bool error(){return d_init_err;};
 		void setError(bool on = true){d_init_err = on;};
@@ -176,6 +178,9 @@ class Filter : public QObject
 
 		//! The curve to be analysed
 		QwtPlotCurve *d_curve;
+
+		//! The resulting curve
+		QwtPlotCurve *d_result_curve;
 
 		//! Precision (number of significant digits) used for the results output
 		int d_prec;

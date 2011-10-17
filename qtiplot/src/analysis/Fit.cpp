@@ -1036,6 +1036,7 @@ FunctionCurve * Fit::insertFitFunctionCurve(const QString& name, int penWidth, b
 		c->loadData(d_points);
 	d_output_graph->insertPlotItem(c, Graph::Line);
 	d_output_graph->addFitCurve(c);
+	d_result_curve = c;
 	return c;
 }
 

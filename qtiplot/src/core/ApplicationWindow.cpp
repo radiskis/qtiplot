@@ -15866,32 +15866,25 @@ ApplicationWindow* ApplicationWindow::importOPJ(const QString& filename, bool fa
 
 void ApplicationWindow::deleteFitTables()
 {
-	QList<QWidget*>* mLst = new QList<QWidget*>();
 	QList<MdiSubWindow *> windows = windowsList();
 	foreach(MdiSubWindow *w, windows){
-		if (w->isA("MultiLayer"))
-			mLst->append(w);
-	}
-
-	foreach(QWidget *ml, *mLst){
-		if (ml->isA("MultiLayer")){
-			QList<Graph *> layers = ((MultiLayer*)ml)->layersList();
-			foreach(Graph *g, layers){
-				QList<QwtPlotCurve *> curves = g->fitCurvesList();
-				foreach(QwtPlotCurve *c, curves){
-					if (((PlotCurve *)c)->type() != Graph::Function){
-						Table *t = ((DataCurve *)c)->table();
-						if (!t)
-							continue;
-
-						t->askOnCloseEvent(false);
-						t->close();
-					}
+		MultiLayer *ml = qobject_cast<MultiLayer*>(w);
+		if (!ml)
+			continue;
+		QList<Graph *> layers = ml->layersList();
+		foreach(Graph *g, layers){
+			QList<QwtPlotCurve *> curves = g->fitCurvesList();
+			foreach(QwtPlotCurve *c, curves){
+				if (((PlotCurve *)c)->type() != Graph::Function){
+					Table *t = ((DataCurve *)c)->table();
+					if (!t)
+						continue;
+					t->askOnCloseEvent(false);
+					t->close();
 				}
 			}
 		}
 	}
-	delete mLst;
 }
 
 QList<MdiSubWindow *> ApplicationWindow::windowsList()
